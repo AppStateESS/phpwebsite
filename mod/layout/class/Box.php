@@ -65,21 +65,56 @@ class PHPWS_Layout_Box {
     $DB->addValue("template", $this->getTemplate());
     $DB->addValue("box_order", $this->nextBox());
     $DB->addValue("active", 1);
-    $DB->insert();
-    echo $DB->lastQuery();
+    return $DB->insert();
+    
   }
 
   function nextBox(){
     $DB = new PHPWS_DB("mod_layout_box");
     $DB->addWhere("theme", $this->getTheme());
     $DB->addWhere("theme_var", $this->getThemeVar());
-
-    $max = $DB->select("max", "box_order");
+    $DB->addColumn("box_order");
+    $max = $DB->select("max");
     if (isset($max))
       return $max + 1;
     else
       return 1;
   }
+
+  function setDefaultTemplate(){
+    static $configExists = 0;
+    static $theme_box = NULL;
+    
+    $contentVar = $this->getContentVar();
+    
+    if ($configExists == -1)
+      return NULL;
+
+    if ($configExists == 0){
+      $includeFile =  PHPWS_Layout::getThemeDir() . "config.php";
+      
+      if (!is_file($includeFile)){
+	$configExists = -1;
+	return NULL;
+      }
+      include $includeFile;
+      
+      if (!isset($theme_box)){
+	$configExists = -1;
+	return NULL;
+      }
+    }
+    
+    $configExists = 1;
+    
+    if (isset($theme_box[$contentVar]))
+      $this->setTemplate($theme_box[$contentVar]);
+    elseif (isset($theme_box['default']))
+      $this->setTemplate($theme_box['default']);
+    else
+      $this->setTemplate(NULL);
+  }
+
   
 }
 ?>
