@@ -69,9 +69,6 @@ function initLanguage(){
 	  setcookie("phpws_default_language", $language, CORE_COOKIE_TIMEOUT);
 	  $language_set = TRUE;
 	  break;
-	} else {
-	  // BAD ERROR HERE!!!
-	  exit("locale failed.");
 	}
       }
     }
