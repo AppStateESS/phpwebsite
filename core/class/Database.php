@@ -970,6 +970,7 @@ class PHPWS_DB {
   }
 
   function import($text, $report_errors=TRUE){
+    $text = strtolower($text);
     PHPWS_DB::touchDB();
 
     $prefix = PHPWS_DB::getPrefix();
@@ -1024,14 +1025,15 @@ class PHPWS_DB {
 		);
 
     foreach ($query_list as $command) {
-      if (preg_match ('/int/i', $command)) {
-	if(!preg_match('/null/i', $command)) {
-	  $command .= ' NOT NULL';
+      if (preg_match ('/(smallint|int)\s/', $command)) {
+	if(!preg_match('/\sdefault/i', $command)) {
+	  $command = preg_replace('/int/', 'int default 0', $command);
 	}
 
-	if(!preg_match('/default/i', $command)) {
-	  $command .= ' DEFAULT 0';
+	if(!preg_match('/\snull/', $command)) {
+	  $command = preg_replace('/int/', 'int not null', $command);
 	}
+
       }
 
       $command = preg_replace($from, $to, $command);
