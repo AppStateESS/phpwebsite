@@ -86,12 +86,10 @@ define("FORCE_THEME_TEMPLATES", FALSE);
  * know what you are doing.
  */
 // *nix / Linux environments
-//ini_set("include_path", ".:" . PHPWS_SOURCE_DIR . "lib/pear/");
+{LINUX_PEAR}ini_set("include_path", ".:" . PHPWS_SOURCE_DIR . "lib/pear/");
 
 // Windows environments. Use this one instead on a windows machine.
-//ini_set("include_path", ".;".PHPWS_SOURCE_DIR."lib\\pear\\");
-
-{pear}
+{WINDOWS_PEAR}ini_set("include_path", ".;" . PHPWS_SOURCE_DIR . "lib\\pear\\");
 
 /************************ LANGUAGE *****************************/
 /**
