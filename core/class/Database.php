@@ -21,6 +21,7 @@ class PHPWS_DB {
   var $_index    = NULL;
   var $_column   = NULL;
   var $_qwhere   = NULL;
+  var $_indexby  = NULL;
 
   function PHPWS_DB($table=NULL){
     PHPWS_DB::touchDB();
@@ -263,6 +264,14 @@ class PHPWS_DB {
     return $this->_column;
   }
 
+  function setIndexBy($indexby){
+    $this->_indexby = $indexby;
+  }
+
+  function getIndexBy(){
+    return $this->_indexby;
+  }
+
 
   function addOrder($order){
     if (is_array($order))
@@ -431,8 +440,13 @@ class PHPWS_DB {
       $where = $this->getWhere(TRUE);
       $order = $this->getOrder(TRUE);
       $limit = $this->getLimit(TRUE);
+
+      $indexby = $this->getIndexBy();
       
       if (isset($columnList)){
+	if (isset($indexby) && !in_array($indexby, $columnList))
+	  $columnList[] = $indexby;
+
 	if ($type == "max" || $type == "min")
 	  $columns = implode("", array($type . "(", array_shift($columnList), ")"));
 	else
@@ -452,6 +466,14 @@ class PHPWS_DB {
       break;
 
     case "col":
+      if (isset($indexby)){
+	$result = PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getAll($sql, NULL, $mode), $type);
+	if (PEAR::isError($result))
+	  return $result;
+
+	return PHPWS_DB::indexBy($result, $indexby, TRUE);
+      }
+
       return PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getCol($sql), $type);
       break;
 
@@ -478,10 +500,38 @@ class PHPWS_DB {
 
     case "all":
     default:
-      return PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getAll($sql, NULL, $mode), $type);
+      $result = PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getAll($sql, NULL, $mode), $type);
+      if (PEAR::isError($result))
+	return $result;
+
+      if (isset($indexby))
+	return PHPWS_DB::indexBy($result, $indexby);
+
+      return $result;
       break;
     }
   }
+
+  function indexBy($sql, $indexby, $colMode=FALSE){
+    if (!is_array($sql))
+      return $sql;
+
+    foreach ($sql as $item){
+      if (!isset($item[$indexby]))
+	return $sql;
+
+
+      if ($colMode){
+	$col = $this->getColumn();
+	$rows[$item[$indexby]] = $item[$col[0]];
+      } else {
+	$rows[$item[$indexby]] = $item;
+      }
+    }
+
+    return $rows;
+  }
+
 
   function delete(){
     $table = $this->getTable();
@@ -739,7 +789,7 @@ class PHPWS_DB {
       return $value;
   }// END FUNC dbReady()
 
-  function loadObjects($className, $indexby=NULL, $onlyOne=NULL){
+  function loadObjects($className, $onlyOne=NULL){
     if (!class_exists($className))
       return PHPWS_Error::get(PHPWS_CLASS_NOT_EXIST, "core", "PHPWS_DB::loadObjects");
 
@@ -751,7 +801,7 @@ class PHPWS_DB {
     if (PEAR::isError($result) || !isset($result))
       return $result;
 
-    foreach ($result as $itemResult){
+    foreach ($result as $indexby2 => $itemResult){
       $genClass = new $className;
       if(is_array($classVars)) {
 	foreach($classVars as $key => $value) {
@@ -768,12 +818,7 @@ class PHPWS_DB {
 	}
       }
 
-      if (isset($indexby) && isset($itemResult[$indexby]))
-	$items[$itemResult[$indexby]] = $genClass;
-      elseif (isset($itemResult['id']) && isset($items[$itemResult['id']]))
-	$items[$itemResult['id']] = $genClass;
-      else
-	$items[] = $genClass;
+      $items[$indexby] = $genClass;
     }
 
     if ((bool)$onlyOne == TRUE && isset($items[0]))

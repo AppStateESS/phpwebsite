@@ -21,7 +21,7 @@ class PHPWS_Panel_Link {
   function init($id){
     $db = & new PHPWS_DB("controlpanel_link");
     $db->addWhere("id", $id);
-    $result = $db->loadObjects("PHPWS_Panel_Link", NULL, TRUE);
+    $result = $db->loadObjects("PHPWS_Panel_Link", TRUE);
     if (PEAR::isError($result))
       return $result;
     else

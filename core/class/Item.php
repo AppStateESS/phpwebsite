@@ -143,7 +143,7 @@ class PHPWS_Item {
       $DB->addWhere("id", (int)$this->_id);
 
       $className = get_class($this);
-      $itemResult = $DB->loadObjects($className, NULL, TRUE);
+      $itemResult = $DB->loadObjects($className, TRUE);
 
       if (PEAR::isError($itemResult))
 	return $itemResult;

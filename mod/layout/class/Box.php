@@ -110,7 +110,8 @@ class Layout_Box {
     $db->addWhere("id", $this->getID(), "!=");
     $db->addWhere("theme", $this->getTheme());
     $db->addWhere("theme_var", $this->getThemeVar());
-    $boxes = $db->loadObjects("Layout_Box", "box_order");
+    $db->setIndexBy("box_order");
+    $boxes = $db->loadObjects("Layout_Box");
 
     if (!isset($boxes))
       return;
@@ -137,7 +138,8 @@ class Layout_Box {
     $db->addWhere("id", $this->getID(), "!=");
     $db->addWhere("theme", $this->getTheme());
     $db->addWhere("theme_var", $this->getThemeVar());
-    $boxes = $db->loadObjects("Layout_Box", "box_order");
+    $db->setIndexBy("box_order");
+    $boxes = $db->loadObjects("Layout_Box");
 
     if (!isset($boxes))
       return;

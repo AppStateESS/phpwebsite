@@ -47,7 +47,8 @@ class PHPWS_ControlPanel {
     $DB = new PHPWS_DB("controlpanel_link");
     $DB->addOrder("tab");
     $DB->addOrder("link_order");
-    $result = $DB->loadObjects("PHPWS_Panel_Link", 'id');
+    $DB->setIndexBy("id");
+    $result = $DB->loadObjects("PHPWS_Panel_Link");
 
     foreach ($result as $link){
       if (!$link->isRestricted() || $_SESSION['User']->allow($link->getItemName()))
