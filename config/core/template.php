@@ -34,5 +34,10 @@ define("FORCE_MOD_TEMPLATES", TRUE);
 
 define("RETURN_BLANK_TEMPLATES", TRUE);
 
+/**
+ * If you want template to prefix the templates it is using with an
+ * information tag, set the below to TRUE.
+ */
 
+define("LABEL_TEMPLATES", FALSE);
 ?>
