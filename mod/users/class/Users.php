@@ -105,18 +105,18 @@ class PHPWS_User {
 
   function setUsername($username){
     if (empty($username) || preg_match("/\W+/", $username))
-      return PHPWS_Error::get(USER_ERR_BAD_USERNAME, "users", "setUsername");
+      return PHPWS_Error::get(USER_ERR_BAD_USERNAME, "users", "setUsername", $username);
    
     if (strlen($username) < USERNAME_LENGTH)
-      return PHPWS_Error::get(USER_ERR_BAD_USERNAME, "users", "setUsername");
+      return PHPWS_Error::get(USER_ERR_BAD_USERNAME, "users", "setUsername", $username);
    
     $this->username = $username;
 
     if ($this->isDuplicateUsername())
-      return PHPWS_Error::get(USER_ERR_DUP_USERNAME, "users", "save"); ;
+      return PHPWS_Error::get(USER_ERR_DUP_USERNAME, "users", "setUsername", $username); ;
 
     if ($this->isDuplicateGroup())
-      return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, "users", "save"); ;
+      return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, "users", "setUsername", $username); ;
     
 
     return TRUE;
@@ -336,7 +336,12 @@ class PHPWS_User {
       $this->display_name = $this->username;
 
     if (!isset($this->authorize))
-      $this->authorize = $this->getUserSetting("default_authorize");
+      $this->authorize = $this->getUserSetting("default_authorization");
+
+    if ($newUser == TRUE)
+      $this->created = mktime();
+    else
+      $this->updated = mktime();
 
     $db = & new PHPWS_DB("users");
     if (isset($this->id))
