@@ -3,6 +3,7 @@
 class PHPWS_ControlPanel {
 
   function display($content=NULL, $imbed = TRUE){
+    Layout::addStyle("controlpanel");
     PHPWS_Core::initModClass("controlpanel", "Panel.php");
     $panel = new PHPWS_Panel('controlpanel');
     $panel->loadTabs();
