@@ -8,7 +8,7 @@ class oldDB{
       $table = PHPWS_DB::extractTableName($query);
       $sql = str_replace($table, $prefix . $table, $sql);
     }
-
+    $GLOBALS['PEAR_DB']->setFetchMode(DB_FETCHMODE_ASSOC);
     return PHPWS_DB::query($sql);
   }// END FUNC query()
 
