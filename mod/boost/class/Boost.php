@@ -8,9 +8,6 @@ if (PEAR::isError($result)){
   PHPWS_Core::errorPage();
 }
 
-define("BOOST_ERR_NOT_MODULE",    -1);
-define("BOOST_ERR_NO_INSTALLSQL", -2);
-
 define("BOOST_NEW",     0);
 define("BOOST_START",   1);
 define("BOOST_PENDING", 2);
@@ -72,6 +69,7 @@ class PHPWS_Boost {
   }
 
   function install(){
+    $content = array();
     if (!$this->isModules())
       return PHPWS_Error::get(BOOST_NO_MODULES_SET, "boost", "install");
 
@@ -167,7 +165,7 @@ class PHPWS_Boost {
     $filesDir = $homeDir . "/files/" . $mod->getTitle();
     if (!is_dir($filesDir)){
       $content[] = _("Creating files directory for module.");
-      $this->addLog($mod->getTitle(), _("Created directory") . " " . $fileDir);
+      $this->addLog($mod->getTitle(), _("Created directory") . " " . $filesDir);
       mkdir($filesDir);
     }
 
@@ -192,7 +190,7 @@ class PHPWS_Boost {
       $modImage = $homeDir . "/images/mod/" . $mod->getTitle() . "/";
       $this->addLog($mod->getTitle(), _print(_("Copying directory [var1] to [var2]"), array($modSource, $modImage)));
       $content[] = _("Copying source image directory for module.");
-      echo "copying $modSource to $modImage";
+
       PHPWS_File::recursiveFileCopy($modSource, $modImage);
       chdir($homeDir);
     }
