@@ -174,7 +174,11 @@ class Layout {
 
   function alternateTheme($template, $module, $file){
     $theme = Layout::getTheme();
-    $GLOBALS['Style'][] = Layout::styleLink("themes/$theme/style.css");
+    if (isset($GLOBALS['Style']))
+      array_unshift($GLOBALS['Style'], Layout::styleLink("themes/$theme/style.css"));
+    else
+      $GLOBALS['Style'][] = Layout::styleLink("themes/$theme/style.css");
+
     $template['STYLE'] = implode("\n", $GLOBALS['Style']);
     $result = PHPWS_Template::process($template, $module, $file);
     echo $result;
@@ -323,7 +327,10 @@ class Layout {
     if (!isset($template))
       Layout::displayErrorMessage();
 
-    $GLOBALS['Style'][] = Layout::styleLink("themes/$theme/style.css");
+    if (isset($GLOBALS['Style']))
+      array_unshift($GLOBALS['Style'], Layout::styleLink("themes/$theme/style.css"));
+    else
+      $GLOBALS['Style'][] = Layout::styleLink("themes/$theme/style.css");
 
     $template['THEME_DIRECTORY'] = "themes/$theme/";
     $template['STYLE'] = implode("\n", $GLOBALS['Style']);
@@ -351,24 +358,53 @@ class Layout {
     return in_array($content_var, $_SESSION['Layout_Content_Vars']);
   }
 
-  function getJavascript($script, $data){
+  function getJavascript($script, $data=NULL){
+    if (isset($data) && !is_array($data))
+      return PHPWS_Error::get();
+
     PHPWS_CORE::initCoreClass("File.php");
-    $headfile = "java/$script/head.js";
-    $bodyfile = "java/$script/body.js";
+    $headfile    = "java/$script/head.js";
+    $bodyfile    = "java/$script/body.js";
+    $defaultfile = "java/$script/default.php";
+
+    if (is_file($defaultfile))
+      include $defaultfile;
+
+    if (isset($default)){
+      if (isset($data))
+	$data = array_merge($default, $data);
+      else
+	$data = $default;
+    }
+
 
     if (is_file($headfile)){
-      $tpl = new PHPWS_Template;
-      $tpl->setFile($headfile, TRUE);
-      $tpl->setData($data);
-      $GLOBALS['Layout_JS'][$script]['head'] = $tpl->get();
+      if (isset($data)){
+	$tpl = new PHPWS_Template;
+	$tpl->setFile($headfile, TRUE);
+	$tpl->setData($data);
+	$result = $tpl->get();
+	if (!empty($result))
+	  $GLOBALS['Layout_JS'][$script]['head'] = $result;
+	else
+	  $GLOBALS['Layout_JS'][$script]['head'] = PHPWS_File::readFile($headfile);	  
+      } else
+	$GLOBALS['Layout_JS'][$script]['head'] = PHPWS_File::readFile($headfile);
     }
 
     if (is_file($bodyfile)){
-      $tpl = new PHPWS_Template;
-      $tpl->setFile($bodyfile, TRUE);
-      $tpl->setData($data);
-
-      return $tpl->get();
+      if (isset($data)){
+	$tpl = new PHPWS_Template;
+	$tpl->setFile($bodyfile, TRUE);
+	$tpl->setData($data);
+	
+	$result = $tpl->get();
+	if (!empty($result))
+	  return $result;
+	else
+	  return PHPWS_File::readFile($bodyfile);
+      } else
+	return PHPWS_File::readFile($bodyfile);
     }
 
   }
