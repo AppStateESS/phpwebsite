@@ -162,7 +162,6 @@ class PHPWS_Form {
     return $this->add($name, "hidden", $value);
   }
 
-
   /**
    * Adds a form element to the class
    *
@@ -226,7 +225,10 @@ class PHPWS_Form {
       $label = $name;
 
     foreach ($this->_elements[$name] as $key=>$element){
-      $result = $this->_elements[$name][$key]->setLabel($label);
+      if (is_array($label))
+	$result = $this->_elements[$name][$key]->setLabel($label[$key]);
+      else
+	$result = $this->_elements[$name][$key]->setLabel($label);
       if (PEAR::isError($result))
 	return $result;
     }
@@ -915,18 +917,12 @@ class PHPWS_Form {
     return CrutchForm::makeForm($name, $action, $elements, $method, $breaks, $file);
   }
 
-  function getId(){   	 
-    static $id = 0; 	 
-    
-    $id++;
-    return $id; 	 
-  }
-
 }// End of PHPWS_Form Class
 
 
 class Form_TextField extends Form_Element{
   function get(){
+    $this->type = "textfield";
     return "<input type=\"text\" "
       . $this->getName(TRUE) 
       . $this->getTitle(TRUE)
@@ -940,6 +936,7 @@ class Form_TextField extends Form_Element{
 
 class Form_Submit extends Form_Element{
   function get(){
+    $this->type = "submit";
     return "<input type=\"submit\" "
       . $this->getName(TRUE) 
       . $this->getValue(TRUE) 
@@ -951,6 +948,7 @@ class Form_Submit extends Form_Element{
 
 class Form_Hidden extends Form_Element {
   function get(){
+    $this->type = "hidden";
     return "<input type=\"hidden\" " 
       . $this->getName(TRUE)
       . $this->getValue(TRUE)
@@ -960,6 +958,7 @@ class Form_Hidden extends Form_Element {
 
 class Form_File extends Form_Element {
   function get(){
+    $this->type = "file";
     return "<input type=\"file\" "
       . $this->getName(TRUE) 
       . $this->getTitle(TRUE)
@@ -978,6 +977,7 @@ class Form_Password extends Form_Element {
   }
 
   function get(){
+    $this->type = "password";
     return "<input type=\"password\" "
       . $this->getName(TRUE) 
       . $this->getTitle(TRUE)
@@ -1033,6 +1033,7 @@ class Form_TextArea extends Form_Element{
   }
 
   function get(){
+    $this->type = "textarea";
     $value = $this->getValue();
     $value = htmlspecialchars($value, ENT_NOQUOTES);
     $value = str_replace("&#x0024;", "&", $value);
@@ -1069,6 +1070,7 @@ class Form_Select extends Form_Element{
   var $match = NULL;
 
   function get(){
+    $this->type = "select";
     $content[] = "<select " . $this->getName(TRUE) . $this->getId(TRUE) . $this->getData() . ">";
     foreach($this->value as $value=>$label){
       if ($this->isMatch($value))
@@ -1098,6 +1100,7 @@ class Form_Multiple extends Form_Element{
   var $match = NULL;
 
   function get(){
+    $this->type = "multiple";
     $content[] = "<select " . $this->getName(TRUE) . $this->getId(TRUE) . "multiple=\"multiple\" " 
       . $this->getData()
       . $this->getWidth(TRUE)
@@ -1146,6 +1149,7 @@ class Form_CheckBox extends Form_Element{
   }
 
   function get(){
+    $this->type = "checkbox";
     return "<input type=\"checkbox\" " . $this->getName(TRUE)
       . $this->getId(TRUE)
       . $this->getTitle(TRUE)
@@ -1173,6 +1177,7 @@ class Form_RadioButton extends Form_Element{
   }
 
   function get(){
+    $this->type = "radio";
     return "<input type=\"radio\" " . $this->getName(TRUE)
       . $this->getId(TRUE)
       . $this->getTitle(TRUE)
@@ -1186,6 +1191,7 @@ class Form_RadioButton extends Form_Element{
 
 
 class Form_Element {
+  var $type        = NULL;
   var $name        = NULL;
   var $value       = NULL;
   var $css_class   = NULL;
@@ -1238,7 +1244,12 @@ class Form_Element {
   }
 
   function quickId(){
-    $this->setId(FORM_ID_IDENTIFIER . PHPWS_Form::getId());
+    if (!isset($GLOBALS['Form_Ids'][$this->type]))
+      $GLOBALS['Form_Ids'][$this->type] = 0;
+
+    $GLOBALS['Form_Ids'][$this->type]++;
+
+    $this->id = $this->type . $GLOBALS['Form_Ids'][$this->type];
   }
 
   function getId($formMode=FALSE){
