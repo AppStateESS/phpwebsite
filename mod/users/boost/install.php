@@ -13,10 +13,16 @@ function install(&$content){
     if (!is_array($result)){
       $anon = new PHPWS_User;
       $anon->setUsername(_("Anonymous"));
-      $anon->save();
+      $result = $anon->save();
+
+      if (PEAR::isError($result))
+	return $result;
 
       $user->setDeity(TRUE);
-      $user->save();
+      $result = $user->save();
+      if (PEAR::isError($result))
+	return $result;
+
       $content[] = _("User created successfully.");
 
       $db = & new PHPWS_DB("users_config");
