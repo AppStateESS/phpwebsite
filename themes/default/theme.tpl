@@ -4,6 +4,7 @@
    <div id="content">
      <div id="header">{HEADER}</div>
      {BODY}
+     <div id="bottom">{BOTTOM}</div>
    </div>
    <div id="footer">{FOOTER}</div>
 </div>
