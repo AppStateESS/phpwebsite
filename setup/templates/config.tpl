@@ -145,9 +145,19 @@ define("PHPWS_LOG_ERRORS", TRUE);
 
 define("PHPWS_ALLOWED_TAGS", "<b><a><i><u><ul><ol><li><table><tr><td><dd><dt><dl><p><br><div><span><blockquote><th><tt><img><pre><hr>");
 
-/********************** Mod Rewrite ***************************/
+/********************** MOD REWRITE ***************************/
 define("USE_MOD_REWRITE", TRUE);
 
+/******************* ALLOWED IMAGES TYPES *********************/
 
+$allowedImageTypes = array("image/jpeg",
+			   "image/jpg",
+			   "image/pjpeg",
+			   "image/png",
+			   "image/x-png",
+			   "image/gif",
+			   "image/wbmp");
+
+define("ALLOWED_IMAGE_TYPES", serialize($allowedImageTypes));
 
 ?>
