@@ -1,8 +1,12 @@
 <?php
 
-define('USER_ERR_LABEL_NOT_FOUND', 1); 
-define('USER_ERR_UNKNOWN_INPUT',   2); 
-
+/**
+ * Class for the administrative settings for demographics
+ *
+ * @version $Id$
+ * @author  Matt McNaney <matt at tux dot appstate dot edu>
+ * @package Core
+ */
 
 class User_Demographic {
   var $_label         = NULL;
@@ -27,7 +31,7 @@ class User_Demographic {
   
 
   function setLabel($label){
-    $this->_label = preg_replace("/[a-z]+[a-z0-9_]/i", "//1//2", $label);
+    $this->_label = preg_replace("/([a-z]+)([a-z0-9_])/i", "\\1\\2", $label);
   }
 
   function getLabel(){
@@ -145,7 +149,6 @@ class User_Demographic {
   function isRequired(){
     return (bool)$this->_required;
   }
-
 
 }
 
