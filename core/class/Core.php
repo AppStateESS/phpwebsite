@@ -109,25 +109,20 @@ class PHPWS_Core {
   }
 
   function setLastPost(){
-    if (isset($_POST))
-      $_SESSION['PHPWS_LastPost'] = $_POST;
-    else
-      $_SESSION['PHPWS_LastPost'] = array();
+    if (!PHPWS_Core::isPosted()){
+      $_SESSION['PHPWS_LastPost'][] = md5(serialize($_POST));
+      if (count($_SESSION['PHPWS_LastPost']) > MAX_POST_TRACK)
+	array_shift($_SESSION['PHPWS_LastPost']);
+    }
   }
 
-  function isLastPost($postVar=NULL){
-    if ($_POST == PHPWS_Core::getLastPost())
-      return TRUE;
-    return FALSE;
-  }
- 
-  function getLastPost(){
-    if (!isset($_SESSION['PHPWS_LastPost']))
+  function isPosted(){
+    if (!isset($_SESSION['PHPWS_LastPost']) || !isset($_POST))
       return FALSE;
 
-    return $_SESSION['PHPWS_LastPost'];
+    return in_array(md5(serialize($_POST)), $_SESSION['PHPWS_LastPost']);
   }
-
+ 
   function home(){
     header("location:./");
     exit();
