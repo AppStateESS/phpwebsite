@@ -25,6 +25,8 @@ class Category{
     $result = $db->loadObject($this);
     if (PEAR::isError($result))
       return $result;
+
+    $this->loadImage();
   }
 
   function setId($id){
@@ -61,10 +63,17 @@ class Category{
 
   function setImage($image){
     $this->image = $image;
+
+    if (is_numeric($image))
+      $this->loadImage();
   }
 
   function getImage(){
     return $this->image;
+  }
+
+  function loadImage(){
+    $this->image = PHPWS_File::create("image", $this->image);
   }
 
   function setThumbnail($thumbnail){
@@ -81,7 +90,11 @@ class Category{
     if (isset($this->id))
       $db->addWhere("id", $this->id);
 
-    return $db->saveObject($this);
+    $tmpImage = $this->image;
+    $this->image = $this->image->getId();
+    $result = $db->saveObject($this);
+    $this->image = $tmpImage;
+    return $result;
   }
 
 }
