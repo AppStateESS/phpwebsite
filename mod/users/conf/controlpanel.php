@@ -8,5 +8,13 @@ $links[] = array("label"       => _("User Administration"),
 		 "tab"         => "admin"
 		 );
 
+$links[] = array("label"       => _("User Settings"),
+		 "restricted"  => FALSE,
+		 "url"         => "index.php?module=users&action[user]=main",
+		 "description" => _("Lets you edit your personal user information."),
+		 "image"       => "users.png",
+		 "tab"         => "my_settings"
+		 );
+
 
 ?>
