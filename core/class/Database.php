@@ -853,12 +853,11 @@ class PHPWS_DB {
       return $value;
   }// END FUNC dbReady()
 
-  function loadObject(&$object, $variables=NULL, $className=NULL){
+  function loadObject(&$object, $variables=NULL){
     if (!is_object($object))
       return PHPWS_Error::get(PHPWS_DB_NOT_OBJECT, "core", "PHPWS_DB::loadObject");
 
-    if (empty($className))
-      $className = get_class($object);
+    $className = get_class($object);
 
     $classVars = get_class_vars($className);
     if(!is_array($classVars))
@@ -870,7 +869,7 @@ class PHPWS_DB {
       if (PEAR::isError($variables))
 	return $variables;
       elseif (empty($variables))
-	$variables = array();
+	return;
     }
     
 
@@ -900,7 +899,7 @@ class PHPWS_DB {
 
     foreach ($result as $indexby => $itemResult){
       $genClass = & new $className;
-      PHPWS_DB::loadObject($genClass, $itemResult, $className);
+      PHPWS_DB::loadObject($genClass, $itemResult);
 
       if (isset($indexby))
 	$items[$indexby] = $genClass;
