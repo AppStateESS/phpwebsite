@@ -23,22 +23,26 @@ class Users_Permission {
     // Get the permission level for the group
     $permissionLvl = $this->getPermissionLevel($module);
 
-    if ($permissionLvl == 0)
+    switch ($permissionLvl) {
+    case NO_PERMISSION:
       return FALSE;
+      break;
 
-    // If no items exist in the permission object, return FALSE
-    if (!isset($this->permissions[$module]['items'][$itemname]))
-      return FALSE;
-    
-    if ($permissionLvl == UNRESTRICTED_PERMISSION ||
-	( isset($this->permissions[$module]['items']) && 
-	  in_array($item_id, $this->permissions[$module]['items'][$itemname])
-	  )
-	){
+    case UNRESTRICTED_PERMISSION:
       return TRUE;
-    }
-    else {
-      return FALSE;
+      break;
+
+    case RESTRICTED_PERMISSION:
+      // If no items exist in the permission object, return FALSE
+      if (!isset($this->permissions[$module]['items']) ||
+	  !isset($this->permissions[$module]['items'][$itemname])) {
+	return FALSE;
+      } elseif (in_array($item_id, $this->permissions[$module]['items'][$itemname])){
+	return TRUE;
+      } else {
+	return FALSE;
+      }
+      break;
     }
   }
 
@@ -50,7 +54,11 @@ class Users_Permission {
 	return $result;
     }
 
-    if(isset($this->permissions[$module]['permissions'])){
+    if ($this->getPermissionLevel($module) == NO_PERMISSION) {
+      return FALSE;
+    }
+
+    if(!empty($this->permissions[$module]['permissions'])) {
       if (isset($subpermission)){
 	if (!isset($this->permissions[$module]['permissions'][$subpermission])){
 	  PHPWS_Error::log(USER_ERR_FAIL_ON_SUBPERM, 'users', 'allow', 'SubPerm: ' . $subpermission);
@@ -58,6 +66,7 @@ class Users_Permission {
 	}
 
 	$allow = $this->permissions[$module]['permissions'][$subpermission];
+
 	if ((bool)$allow){
 	  if (isset($item_id)){
 	    // subpermission is set as is item id

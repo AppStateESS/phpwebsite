@@ -191,6 +191,7 @@ class User_Form {
     $pageTags['ACTIONS'] = _('Actions');
 
     $pager = & new DBPager('users', 'User_Manager');
+    $pager->setDefaultLimit(10);
     $pager->setModule('users');
     $pager->setTemplate('manager/users.tpl');
     $pager->setLink('index.php?module=users&amp;action=admin&amp;tab=manage_users&amp;authkey=' . Current_User::getAuthKey());
@@ -670,31 +671,32 @@ class User_Form {
    */
   function signup_form($user, $message=NULL)
   {
-    $username = NULL;
-
     $form = & new PHPWS_Form;
     $form->addHidden('module', 'users');
     $form->addHidden('action', 'user');
     $form->addHidden('command', 'submit_new_user');
 
-    $form->addText('username', $username);
+    $form->addText('username', $user->getUsername());
     $form->setLabel('username', _('Username'));
 
     $new_user_method =  PHPWS_User::getUserSetting('new_user_method');
 
-    if ($new_user_method != AUTO_SIGNUP) {
-      $form->addPassword('password1');
+    if ($new_user_method == AUTO_SIGNUP) {
+      $form->addPassword('password1', $user->getPassword());
+      $form->allowValue('password1');
       $form->setLabel('password1', _('Password'));
 
-      $form->addPassword('password2');
+      $form->addPassword('password2', $user->getPassword());
+      $form->allowValue('password2');
       $form->setLabel('password2', _('Confirm'));
     }
+
+    $form->addText('email', $user->getEmail());
+    $form->setLabel('email', _('Email Address'));
 
     $form->addText('confirm_phrase');
     $form->setLabel('confirm_phrase', _('Confirm text'));
  
-    $form->addTplTag('SIGNUP_LABEL', _('New Account Sign-up'));
-
     if (PHPWS_User::getUserSetting('graphic_confirm') && function_exists('gd_info')) {
       $form->addTplTag('CONFIRM_INSTRUCTIONS', _('Please type the word seen in the image.'));
       $result = User_Form::confirmGraphic();
@@ -713,7 +715,7 @@ class User_Form {
 
     if (isset($message)){
       foreach ($message as $tag=>$error)
-	$template[strtoupper($tag) . '_ERROR'] = $error;
+	$template[$tag] = $error;
     }
 
     $result = PHPWS_Template::process($template, 'users', 'forms/signup_form.tpl');
@@ -744,7 +746,6 @@ class User_Form {
       $_SESSION['USER_CONFIRM_PHRASE'] = $phrase;
       return '<img src="' . $directory . $filename . '" />';
     }
-
   }
 }
 

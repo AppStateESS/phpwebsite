@@ -62,6 +62,16 @@ class PHPWS_User {
     return $this->id;
   }
 
+  function login()
+  {
+    $this->setLogged(TRUE);
+    $this->setLastLogged(mktime());
+    $this->addLogCount();
+    $this->makeAuthKey();
+    $this->save();
+    $this->init();
+  }
+
   function isDuplicateDisplayName($display_name, $id=NULL)
   {
     $DB = & new PHPWS_DB('users');
@@ -95,7 +105,7 @@ class PHPWS_User {
   function isDuplicateGroup($name, $id=NULL)
   {
     $DB = & new PHPWS_DB('users_groups');
-    $DB->addWhere('name', $this->username);
+    $DB->addWhere('name', $name);
     if (isset($id))
       $DB->addWhere('user_id', $id, '!=');
 
@@ -284,7 +294,7 @@ class PHPWS_User {
   function getEmail($html=FALSE, $showAddress=FALSE)
   {
     if ($html == TRUE){
-      if ($showAddress) {
+      if ($showAddress == TRUE) {
 	return sprintf('<a href="mailto:%s">%s</a>', $this->email, $this->email);
       }
       else {
@@ -483,8 +493,9 @@ class PHPWS_User {
   }
 
 
-  function makeAuthKey($key)
+  function makeAuthKey()
   {
+    $key = rand();
     $this->_auth_key = md5($this->username . $key . mktime());
   }
 

@@ -301,13 +301,16 @@ class User_Action {
     //    test($_REQUEST);
   }
 
+  /**
+   * Checks a new user's form for errors
+   */
   function postNewUser(&$user)
   {
     $new_user_method = PHPWS_User::getUserSetting('new_user_method');
 
     $result = $user->setUsername($_POST['username']);
     if (PEAR::isError($result)) {
-      $error['USERNAME_ERROR'] = $result->getMessage();
+      $error['USERNAME_ERROR'] = _('Please try another user name.');
     }
 
     if ($new_user_method == AUTO_SIGNUP) {
@@ -318,18 +321,22 @@ class User_Action {
 	  $error['PASSWORD_ERROR'] = $result->getMessage();
 	}
 	else {
-	  $user->setPassword($_POST['password1']);
+	  $user->setPassword($_POST['password1'], FALSE);
 	}
       }
+    }
+
+    if (empty($_POST['email'])) {
+      $error['EMAIL_ERROR'] = _('Missing an email address.');
     } else {
-      if (empty($_POST['email'])) {
-	$error['EMAIL_ERROR'] = _('Missing an email address.');
-      } else {
-	$result = $user->setEmail($_POST['email']);
-	if (PEAR::isError($result)) {
-	  $error['EMAIL_ERROR'] = $result->getMessage();
-	}
+      $result = $user->setEmail($_POST['email']);
+      if (PEAR::isError($result)) {
+	$error['EMAIL_ERROR'] = _('This email address cannot be used.');
       }
+    }
+
+    if (!User_Action::confirm()) {
+      $error['CONFIRM_ERROR'] = _('Confirmation phrase is not correct.');
     }
 
     if (isset($error)) {
@@ -337,6 +344,26 @@ class User_Action {
     } else {
       return TRUE;
     }
+  }
+
+
+  function confirm()
+  {
+    if (!PHPWS_User::getUserSetting('graphic_confirm')) {
+      return TRUE;
+    }
+
+    if (isset($_POST['confirm_graphic']) &&
+	isset($_SESSION['USER_CONFIRM_PHRASE']) &&
+	$_POST['confirm_graphic'] == $_SESSION['USER_CONFIRM_PHRASE']) {
+      $result = TRUE;
+    } else {
+      $result = FALSE;
+    }
+
+    unset($_SESSION['USER_CONFIRM_PHRASE']);
+    return $result;
+
   }
 
   function postUser(&$user, $set_username=TRUE){
@@ -427,19 +454,21 @@ class User_Action {
       break;
 
     case 'signup_user':
+      $title = _('New Account Sign-up');
       if (Current_User::isLogged()) {
-	Layout::add(_('You already have an account.'));
+	$content = _('You already have an account.');
 	break;
       }
       $user = & new PHPWS_User;
       if (PHPWS_User::getUserSetting('new_user_method') == 0) {
-	Layout::add(_('Sorry, we are not accepting new users at this time.'));
+	$content = _('Sorry, we are not accepting new users at this time.');
 	break;
       }
-      Layout::add(User_Form::signup_form($user), NULL, NULL, TRUE);
+      $content = User_Form::signup_form($user);
       break;
 
     case 'submit_new_user':
+      $title = _('New Account Sign-up');
       $user_method = PHPWS_User::getUserSetting('new_user_method');
       if ($user_method == 0) {
 	Current_User::disallow(_('New user signup not allowed.'));
@@ -448,19 +477,54 @@ class User_Action {
 
       $user = & new PHPWS_User;
       $result = User_Action::postNewUser($user);
-      
+
       if (is_array($result)) {
 	$content = User_Form::signup_form($user, $result);
       } else {
-	Layout::add('its all good');
+	$result = User_Action::saveNewUser($user);
+	if ($result) {
+	  $content = _('Account created successfully!');
+	} else {
+	  $content = _('An error occurred when trying to create your account. Please try again later.');
+	}
       }
-
       break;
 
     case 'logout':
       PHPWS_Core::killAllSessions();
       PHPWS_Core::home();
       break;
+    }
+
+    if (isset($title)) {
+      $tag['TITLE'] = $title;
+    }
+
+    if(isset($content)) {
+      $tag['CONTENT'] = $content;
+    }
+      
+    if (isset($tag)) {
+      $final = PHPWS_Template::process($tag, 'users', 'main.tpl');
+      Layout::add($final);
+    }
+
+
+  }
+
+  function saveNewUser(&$user)
+  {
+    $user->setPassword($user->getPassword());
+    $user->setApproved(TRUE);
+    $result = $user->save();
+    if (PEAR::isError($result)) {
+      PHPWS_Error::log($result);
+      return FALSE;
+    } else {
+      $user->login();
+      $_SESSION['User'] = $user;
+      Current_User::getLogin();
+      return TRUE;
     }
   }
 
@@ -531,12 +595,7 @@ class User_Action {
 	$user->save();
       }
 
-      $user->setLogged(TRUE);
-      $user->setLastLogged(mktime());
-      $user->addLogCount();
-      $user->makeAuthKey($password);
-      $user->save();
-      $user->init();
+      $user->login();
       $_SESSION['User'] = $user;
       return TRUE;
     } else
