@@ -25,7 +25,14 @@ switch ($_REQUEST['action']){
 
  case "install":
    PHPWS_Core::initModClass("boost", "Action.php");
-   $content[] = Boost_Action::installModule($_REQUEST['opmod']);
+   $result = Boost_Action::installModule($_REQUEST['opmod']);
+   if (PEAR::isError($result)) {
+     PHPWS_Error::log($result);
+     $content[] = _('An error occurred while installing this module.') .
+       ' ' . _('Please check your error logs.');
+   } else {
+     $content[] = $result;
+   }
    break;
 
  case "uninstall":
