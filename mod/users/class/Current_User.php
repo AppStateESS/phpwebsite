@@ -30,9 +30,9 @@ class Current_User {
   }
 
   function getLogin(){
-    PHPWS_Core::initModClass("users", "Form.php");
+    PHPWS_Core::initModClass('users', 'Form.php');
     $login = User_Form::logBox();
-    Layout::set($login, "users", "CNT_user_small");
+    Layout::set($login, 'users', 'login_box');
   }
 
   function isDeity(){
@@ -69,14 +69,19 @@ class Current_User {
   }
 
   function updateLastLogged(){
-    $db = & new PHPWS_DB("users");
-    $db->addWhere("id", $_SESSION['User']->getId());
-    $db->addValue("last_logged", mktime());
+    $db = & new PHPWS_DB('users');
+    $db->addWhere('id', $_SESSION['User']->getId());
+    $db->addValue('last_logged', mktime());
     return $db->update();
   }
 
   function getUsername(){
     return $_SESSION['User']->getUsername();
+  }
+
+  function getDisplayName()
+  {
+    return $_SESSION['User']->getDisplayName();
   }
 
   function isLogged(){

@@ -16,6 +16,9 @@ define('USER_ERR_DUP_EMAIL',       -13);
 define('USER_ERR_NO_EMAIL',        -14);
 define('USER_ERR_BAD_EMAIL',       -15);
 define('USER_ERR_ITEM_PERM_FILE',  -16);
+define('USER_ERR_FONT_MISSING',    -17);
+define('USER_ERR_WRITE_CONFIRM',   -18);
+define('USER_ERR_BAD_DISPLAY_NAME',-19);
 
 /* User Variable Errors */
 define('USER_ERR_NO_MODULE',       -20);

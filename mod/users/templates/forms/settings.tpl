@@ -1,13 +1,26 @@
 {START_FORM}
-<table cellpadding="4" cellspacing="0" width="100%">
+<table class="form-table">
   <tr>
-    <td><b>{DEFAULT_GROUP_LABEL}</b> {DEFAULT_HELP}</td>
-    <td>{DEFAULT_GROUP}</td>
+    <td><span class="label">{USER_SIGNUP_LABEL}</span>
+    </td>
+    <td>
+        {USER_SIGNUP_1} {USER_SIGNUP_1_LABEL}<br />
+        {USER_SIGNUP_2} {USER_SIGNUP_2_LABEL}<br />
+	{USER_SIGNUP_3} {USER_SIGNUP_3_LABEL}<br />
+	{USER_SIGNUP_4} {USER_SIGNUP_4_LABEL}
+    </td>
   </tr>
   <tr>
+    <td><span class="label">{GRAPHIC_CONFIRM_DESC}</span>
+    </td>
+    <td>{GRAPHIC_CONFIRM} {GRAPHIC_CONFIRM_LABEL}
+    </td>
+  </tr>
   <tr>
-    <td></td>
-    <td></td>
+    <td><span class="label">{USER_MENU_LABEL}</span>
+    </td>
+    <td>{USER_MENU}
+    </td>
   </tr>
 </table>
 <br />

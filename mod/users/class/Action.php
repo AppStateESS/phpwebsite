@@ -305,22 +305,38 @@ class User_Action {
   function postUser(&$user, $set_username=TRUE){
     if ($set_username){
       $result = $user->setUsername($_POST['username']);
-      if (PEAR::isError($result))
+      if (PEAR::isError($result)) {
 	$error['USERNAME_ERROR'] = $result->getMessage();
+      }
+    }
+
+    if (isset($_POST['display_name'])) {
+      $result = $user->setDisplayName($_POST['display_name']);
+      if (PEAR::isError($result)) {
+	$error['DISPLAY_ERROR'] = $result->getMessage();
+      }
     }
 
     if (!$user->isUser() || (!empty($_POST['password1']) || !empty($_POST['password2']))){
       $result = $user->checkPassword($_POST['password1'], $_POST['password2']);
 
-      if (PEAR::isError($result))
+      if (PEAR::isError($result)) {
 	$error['PASSWORD_ERROR'] = $result->getMessage();
-      else
+      }
+      else {
 	$user->setPassword($_POST['password1']);
+      }
+    }
+
+    if (isset($_POST['display_name'])) {
+
     }
 
     $result = $user->setEmail($_POST['email']);
-    if (PEAR::isError($result))
+    if (PEAR::isError($result)) {
       $error['EMAIL_ERROR'] = $result->getMessage();
+    }
+    
 
     if (isset($error))
       return $error;
@@ -375,6 +391,11 @@ class User_Action {
       PHPWS_Core::initModClass('users', 'My_Page.php');
       $my_page = & new My_Page;
       $my_page->main();
+      break;
+
+    case 'signup_user':
+      $result = User_Action::signup_user();
+      Layout::add($result, NULL, NULL, TRUE);
       break;
 
     case 'logout':
@@ -524,11 +545,24 @@ class User_Action {
   }
 
   function update_settings(){
+    if (!Current_User::authorized('users', 'settings')) {
+      Current_User::disallow();
+      return;
+    }
     $db = & new PHPWS_DB('users_config');
-    if (is_numeric($_POST['default_group']))
-      $db->addValue('default_group', (int)$_POST['default_group']);
 
-    $db->update();
+    if (is_numeric($_POST['user_signup'])) {
+      $db->addValue('new_user_method', (int)$_POST['user_signup']);
+    }
+
+    if (isset($_POST['graphic_confirm'])) {
+      $db->addValue('graphic_confirm', 1);
+    } else {
+      $db->addValue('graphic_confirm', 0);
+    }
+    $db->addValue('user_menu', $_POST['user_menu']);
+
+    return $db->update();
   }
 
   function getAuthorizationList(){
@@ -580,6 +614,22 @@ class User_Action {
     $db = & new PHPWS_DB('users_auth_scripts');
     $db->addWhere('id', (int)$script_id);
     return $db->delete();
+  }
+
+  function signup_user()
+  {
+    switch (PHPWS_User::getUserSetting('new_user_method')) {
+    case 0:
+      return _('Sorry, we are not accepting new users at this time.');
+      break;
+
+    case 1:
+    case 2:
+    case 3:
+      return User_Form::signup_form();
+      break;
+    }
+    
   }
 
 }

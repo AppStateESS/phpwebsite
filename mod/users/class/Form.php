@@ -9,6 +9,10 @@
  */
 PHPWS_Core::initCoreClass('Form.php');
 
+define('AUTO_SIGNUP',    1);
+define('CONFIRM_SIGNUP', 2);
+define('APPROVE_SIGNUP', 3);
+
 class User_Form {
 
   function logBox($logged=TRUE){
@@ -16,8 +20,7 @@ class User_Form {
 
     if (Current_User::isLogged()){
       $username = Current_User::getUsername();
-      $form['TITLE']   = sprintf(_('Hello %s'), $username);
-      $form['CONTENT'] = User_Form::loggedIn();
+      return User_Form::loggedIn();
     }
     else {
       $form['TITLE']   = _('Please Login');
@@ -31,6 +34,9 @@ class User_Form {
   function loggedIn(){
     translate('users');
     PHPWS_Core::initCoreClass('Text.php');
+    $template['GREETING'] = _('Hello');
+    $template['USERNAME'] = Current_User::getUsername();
+    $template['DISPLAY_NAME'] = Current_User::getDisplayName();
     $template['MODULES'] = PHPWS_Text::moduleLink(_('Control Panel'),
 						  'controlpanel',
 						  array('command'=>'panel_view'));
@@ -65,6 +71,11 @@ class User_Form {
     $form->setId('block_username', 'username');
     
     $template = $form->getTemplate();
+
+    $signup_vars = array('action'  => 'user',
+			 'command' => 'signup_user');
+
+    $template['NEW_ACCOUNT'] = PHPWS_Text::moduleLink(USER_SIGNUP_QUESTION, 'users', $signup_vars);
 
     return PHPWS_Template::process($template, 'users', 'forms/loginBox.tpl');
   }
@@ -276,6 +287,7 @@ class User_Form {
 
 
   function getMemberList(&$group){
+    PHPWS_Core::initCoreClass("Pager.php");
     $content = NULL;
 
     Layout::addStyle('users');
@@ -369,25 +381,35 @@ class User_Form {
       $content[] = _('Only another deity can create a deity.');
     } else {
       // CHANGE TO SECURELINK!!
-      $link = '<a href="index.php?module=users&amp;user=' . $user->getId() . '&amp;action=admin&amp;command=deify';
       $content[] = _('Are you certain you want this user to have complete control of this web site?');
-      $content[] = $link . '&amp;authorize=1">' . _('Yes, make them a deity.') . '</a>';
-      $content[] = $link . '&amp;authorize=0">' . _('No, leave them as a mortal.') . '</a>';
+
+      $values['user']      = $user->getId();
+      $values['action']    = 'admin';
+      $values['command']   = 'deify';
+      $values['authorize'] = '1';
+      $content[] = PHPWS_Text::secureLink(_('Yes, make them a deity.'), 'users', $values);
+      $values['authorize'] = '0';
+      $content[] = PHPWS_Text::secureLink(_('No, leave them as a mortal.'), 'users', $values);
     }
 
     return implode('<br />', $content);
   }
 
   function mortalize(&$user){
-    if (!$_SESSION['User']->isDeity())
+    if (!$_SESSION['User']->isDeity()) {
       $content[] = _('Only another deity can create a mortal.');
-    elseif($user->getId() == $_SESSION['User']->getId())
+    }
+    elseif($user->getId() == $_SESSION['User']->getId()) {
       $content[] = _('A deity can not make themselves mortal.');
+    }
     else {
-      $link = '<a href="index.php?module=users&amp;user=' . $user->getId() . '&amp;action=admin&command=mortalize';
-      $content[] = _('Are you certain you want strip complete control from this user?');
-      $content[] = $link . '&amp;authorize=1">' . _('Yes, make them a mortal.') . '</a>';
-      $content[] = $link . '&amp;authorize=0">' . _('No, leave them as a deity.') . '</a>';
+      $values['user']      = $user->getId();
+      $values['action']    = 'admin';
+      $values['command']   = 'mortalize';
+      $values['authorize'] = '1';
+      $content[] = PHPWS_Text::secureLink(_('Yes, make them a mortal.'), 'users', $values);
+      $values['authorize'] = '0';
+      $content[] = PHPWS_Text::secureLink(_('No, leave them as a deity.'), 'users', $values);
     }
     return implode('<br />', $content);
   }
@@ -602,13 +624,6 @@ class User_Form {
   function settings(){
     PHPWS_Core::initModClass('help', 'Help.php');
 
-    $default_group = PHPWS_User::getUserSetting('default_group', TRUE);
-
-    if (PEAR::isError($default_group)){
-      PHPWS_Error::log($default_group);
-      $default_group = 0;
-    }
-
     $content = array();
 
     $form = new PHPWS_Form('user_settings');
@@ -617,20 +632,97 @@ class User_Form {
     $form->addHidden('command', 'update_settings');
     $form->addSubmit('submit',_('Update Settings'));
 
-    $groups = User_Action::getGroups('group');
+    $signup_modes = array(0, AUTO_SIGNUP, CONFIRM_SIGNUP, APPROVE_SIGNUP);
+    $signup_labels = array(_('Not allowed'),
+			   _('Immediate'),
+			   _('Email Verification'),
+			   _('Approval with Email Verification')
+			   );
+    $form->addRadio('user_signup', $signup_modes);
+    $form->setLabel('user_signup', $signup_labels);
+    $form->addTplTag('USER_SIGNUP_LABEL', _('User Signup Mode'));
+    $form->setMatch('user_signup', PHPWS_User::getUserSetting('new_user_method'));
 
-    $groups[0] = '-' . _('No Default') . '-';
-    ksort($groups);
+    $form->addTplTag('GRAPHIC_CONFIRM_DESC', _('Graphic Authenticator'));
 
-    $form->add('default_group', 'select', $groups);
-    $form->setMatch('default_group', $default_group);
-    $form->setLabel('default_group', _('Default User Group'));
+    if (function_exists('gd_info')) {
+      $form->addCheckbox('graphic_confirm');
+      $form->setLabel('graphic_confirm', _('Use graphic authentication?'));
+      $form->setMatch('graphic_confirm', PHPWS_User::getUserSetting('graphic_confirm'));
+    }
+
+    // Replace below with a directory read
+    $menu_options['Default.tpl'] = 'Default.tpl';
+    $menu_options['top.tpl']     = 'top.tpl';
+
+    $form->addSelect('user_menu', $menu_options);
+    $form->setMatch('user_menu', PHPWS_User::getUserSetting('user_menu'));
+    $form->setLabel('user_menu', _('User Menu'));
+
 
     $template = $form->getTemplate();
-    $template['DEFAULT_HELP'] = PHPWS_Help::get('users', 'default_user_group');
+
     return PHPWS_Template::process($template, 'users', 'forms/settings.tpl');
   }
 
+  function signup_form()
+  {
+    $username = NULL;
+
+    $form = & new PHPWS_Form;
+    $form->addHidden('action', 'user');
+    $form->addHidden('command', 'submit_new_user');
+    $form->addText('new_username', $username);
+    $form->setLabel('new_username', _('Username'));
+    $form->addPassword('new_password');
+    $form->setLabel('new_password', _('Password'));
+    $form->addPassword('confirm_password');
+    $form->setLabel('confirm_password', _('Confirm'));
+    $form->addText('confirm_phrase');
+    $form->setLabel('confirm_phrase', _('Confirm text'));
+
+    if (ENABLE_GRAPHIC_CONFIRMATION && function_exists('gd_info')) {
+      $result = User_Form::confirmGraphic();
+      if (PEAR::isError($result)) {
+	PHPWS_Error::log($result);
+      } else {
+	$form->addText('confirm_graphic');
+	$form->setLabel('confirm_graphic', _('Confirm Graphic'));
+	$form->addTplTag('GRAPHIC', $result);
+      }
+    }
+    echo $_SESSION['USER_CONFIRM_PHRASE'];
+    $template = $form->getTemplate();
+    $result = PHPWS_Template::process($template, 'users', 'signup_form.tpl');
+    return $result;
+  }
+
+  function confirmGraphic()
+  {
+    require_once 'Text/CAPTCHA.php';
+
+    if (!is_file(GC_FONT_PATH . GC_FONT_FILE)) {
+      return PHPWS_Error::get(USER_ERR_FRONT_MISSING, 'users', 'User_Form::confirmGraphic', GC_FONT_PATH . GC_FONT_FILE);
+    }
+
+    $cap = Text_CAPTCHA::factory('Image');
+    $option['font_size'] = GC_FONT_SIZE;
+    $option['font_path'] = GC_FONT_PATH;
+    $option['font_file'] = GC_FONT_FILE;
+
+    $cap->init(GC_WIDTH, GC_HEIGHT, NULL, $option);
+    $phrase = $cap->getPhrase();
+    $directory = './images/users/confirm/';
+    $filename = session_id() . '.png';
+    $write_result = file_put_contents($directory . $filename, $cap->getCAPTCHAAsPNG());
+    if (!$write_result) {
+      return PHPWS_Error::get(USER_ERR_WRITE_CONFIRM, 'users', 'User_Form::confirmGraphic', $directory); 
+    } else {
+      $_SESSION['USER_CONFIRM_PHRASE'] = $phrase;
+      return '<img src="' . $directory . $filename . '" />';
+    }
+
+  }
 }
 
 ?>

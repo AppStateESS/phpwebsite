@@ -62,12 +62,13 @@ class PHPWS_User {
     return $this->id;
   }
 
-  function isDuplicateUsername()
+  function isDuplicateDisplayName($display_name, $id=NULL)
   {
     $DB = & new PHPWS_DB('users');
-    $DB->addWhere('username', $this->username);
-    if (isset($this->id))
-      $DB->addWhere('id', $this->id, '!=');
+    $DB->addWhere('display_name', $display_name);
+    if (!empty($id)) {
+      $DB->addWhere('id', $id, '!=');
+    }
 
     $result = $DB->select('one');
     if (PEAR::isError($result))
@@ -76,12 +77,27 @@ class PHPWS_User {
       return (bool)$result;
   }
 
-  function isDuplicateGroup()
+  function isDuplicateUsername($username, $id=NULL)
+  {
+    $DB = & new PHPWS_DB('users');
+    $DB->addWhere('username', $username);
+    if (!empty($id)) {
+      $DB->addWhere('id', $id, '!=');
+    }
+
+    $result = $DB->select('one');
+    if (PEAR::isError($result))
+      return $result;
+    else
+      return (bool)$result;
+  }
+
+  function isDuplicateGroup($name, $id=NULL)
   {
     $DB = & new PHPWS_DB('users_groups');
     $DB->addWhere('name', $this->username);
-    if (isset($this->id))
-      $DB->addWhere('user_id', $this->id, '!=');
+    if (isset($id))
+      $DB->addWhere('user_id', $id, '!=');
 
     $result = $DB->select('one');
     if (PEAR::isError($result))
@@ -107,6 +123,7 @@ class PHPWS_User {
       return (bool)$result;
   }
 
+
   function setUsername($username)
   {
     if (empty($username) || preg_match('/\W+/', $username)) {
@@ -119,17 +136,18 @@ class PHPWS_User {
 			      'setUsername', $username);
     }
    
-    $this->username = $username;
-
-    if ($this->isDuplicateUsername()) {
+    if ($this->isDuplicateUsername($username, $this->id) ||
+	$this->isDuplicateDisplayName($username, $this->id)) {
       return PHPWS_Error::get(USER_ERR_DUP_USERNAME, 'users',
 			      'setUsername', $username); ;
     }
 
-    if ($this->isDuplicateGroup()) {
+    if ($this->isDuplicateGroup($username, $this->id)) {
       return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, 'users',
 			      'setUsername', $username); ;
     }
+
+    $this->username = $username;
     
     return TRUE;
   }
@@ -279,8 +297,27 @@ class PHPWS_User {
 
   function setDisplayName($name)
   {
+    if (empty($name) || preg_match('/[^\w\s]/', $name)) {
+      return PHPWS_Error::get(USER_ERR_BAD_DISPLAY_NAME, 'users',
+			      'setUsername', $name);
+    }
+
+    if (strlen($name) < DISPLAY_NAME_LENGTH) {
+      return PHPWS_Error::get(USER_ERR_BAD_DISPLAY_NAME, 'users',
+			      'setUsername', $name);
+    }
+
+    if ($this->isDuplicateUsername($name, $this->id) || 
+	$this->isDuplicateDisplayName($name, $this->id)) {
+      return PHPWS_Error::get(USER_ERR_DUP_USERNAME, 'users',
+			      'setDisplayName', $name); ;
+    }
+
     $this->display_name = $name;
+
+    return TRUE;
   }
+
 
   function getDisplayName()
   {
@@ -312,10 +349,6 @@ class PHPWS_User {
     
     if (is_array($result))
       $groupList = array_merge($result, $groupList);
-
-    $default_group = PHPWS_User::getUserSetting('default_group');
-    if ($default_group != 0)
-      $groupList[] = $default_group;
 
     $this->setGroups($groupList);
   }
@@ -388,12 +421,17 @@ class PHPWS_User {
     else
       $newUser = FALSE;
 
-    $result = $this->isDuplicateUsername();
-    if (PEAR::isError($result))
+    $result = ($this->isDuplicateUsername($this->username, $this->id) ||
+	       $this->isDuplicateDisplayName($this->username, $this->id) ||
+	       $this->isDuplicateUsername($this->display_name, $this->id) ||
+	       $this->isDuplicateDisplayName($this->display_name, $this->id)) ? TRUE : FALSE;
+    if (PEAR::isError($result)) {
       return $result;
+    }
 
-    if ($result == TRUE)
+    if ($result == TRUE) {
 	return PHPWS_Error::get(USER_ERR_DUP_USERNAME, 'users', 'save');
+    }
 
     $result = $this->isDuplicateEmail();
     if (PEAR::isError($result))
@@ -402,15 +440,16 @@ class PHPWS_User {
     if ($result == TRUE)
 	return PHPWS_Error::get(USER_ERR_DUP_EMAIL, 'users', 'save');
 
-    $result = $this->isDuplicateGroup();
+    $result = $this->isDuplicateGroup($this->username, $this->id);
     if (PEAR::isError($result))
       return $result;
 
     if ($result == TRUE)
 	return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, 'users', 'save');
 
-    if (empty($this->display_name))
+    if (empty($this->display_name)) {
       $this->display_name = $this->username;
+    }
 
     if (!isset($this->authorize))
       $this->authorize = $this->getUserSetting('default_authorization');

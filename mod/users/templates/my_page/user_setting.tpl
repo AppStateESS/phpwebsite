@@ -1,18 +1,25 @@
 {START_FORM}
-<table cellspacing="0" cellpadding="4" width="100%">
+<table class="form-table">
+  <tr>
+    <td><span class="label">{DISPLAY_NAME_LABEL}</span></td>
+    <td>{DISPLAY_NAME}</td>
+  </tr>
+  <!-- BEGIN display-error -->
+  <tr><td colspan="2"><span class="error-message">{DISPLAY_ERROR}</span></td></tr>
+  <!-- END display-error -->
   <!-- BEGIN password-change -->
   <tr>
-    <td><b>{PASSWORD1_LABEL}</b></td><td>{PASSWORD1}&nbsp;{PASSWORD2}</td>
+    <td><span class="label">{PASSWORD1_LABEL}</span></td><td>{PASSWORD1}&nbsp;{PASSWORD2}</td>
   </tr>
   <!-- BEGIN password-error -->
-  <tr><td class="user-error" colspan="2">{PASSWORD_ERROR}</td></tr>
+  <tr><td colspan="2"><span class="error-message">{PASSWORD_ERROR}</span></td></tr>
   <!-- END password-error -->
   <!-- END password-change -->
   <tr class="bg-light">
-    <td><b>{EMAIL_LABEL}</b></td><td>{EMAIL}</td>
+    <td><span class="label">{EMAIL_LABEL}</span></td><td>{EMAIL}</td>
   </tr>
   <!-- BEGIN email-error -->
-  <tr><td class="user-error" colspan="2">{EMAIL_ERROR}</td></tr>
+  <tr><td colspan="2"><span class="error-message">{EMAIL_ERROR}</span></td></tr>
   <!-- END email-error -->
 </table>
 {SUBMIT}
