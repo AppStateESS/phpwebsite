@@ -52,6 +52,13 @@ class Block_Admin {
       $content = Block_Admin::edit($block);
       break;
 
+    case 'delete':
+      $block->kill();
+      $title = _('Block list');
+      $content = Block_Admin::blockList();
+      $message = _('Block deleted.');
+      break;
+
     case 'edit':
       $title = ('Edit Block');
       $content = Block_Admin::edit($block);
@@ -161,7 +168,6 @@ class Block_Admin {
   {
     $block->setTitle($_POST['title']);
     $block->setContent($_POST['content']);
-    $block->setModule('block');
     return TRUE;
   }
 
@@ -173,6 +179,12 @@ class Block_Admin {
 
     $vars['action'] = 'store';
     $links[] = PHPWS_Text::secureLink(_('Store'), 'block', $vars);
+
+    $vars['action'] = 'delete';
+    $confirm_vars['QUESTION'] = _('Are you sure you want to permanently delete this block?');
+    $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('block', $vars, TRUE);
+    $confirm_vars['LINK'] = _('Delete');
+    $links[] = Layout::getJavascript('confirm', $confirm_vars);
 
     return implode(' | ', $links);
   }
