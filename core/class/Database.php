@@ -25,6 +25,7 @@ class PHPWS_DB {
   var $groupby     = NULL;
   var $_allColumns = NULL;
   var $_DB         = array();
+  var $_lock       = FALSE;
 
   function PHPWS_DB($table=NULL){
     PHPWS_DB::touchDB();
@@ -50,6 +51,15 @@ class PHPWS_DB {
     $this->_DB[$db->table] = $db;
   }
 
+  function lock()
+  {
+    
+  }
+
+  function unlock()
+  {
+
+  }
 
   function touchDB(){
     if (!PHPWS_DB::isConnected())
@@ -423,18 +433,61 @@ class PHPWS_DB {
   }
 
 
-  function setLimit($limit){
-    $this->limit = preg_replace("/[^\d\s,]/", "", $limit);
+  function setLimit($limit, $offset=NULL){
+    unset($this->limit);
+
+    if (is_array($limit)) {
+      $_limit = $limit[0];
+      $_offset = $limit[1];
+    }
+    elseif (preg_match("/,/", $limit)) {
+      $split = explode(",", $limit);
+      $_limit = trim($split[0]);
+      $_offset = trim($split[1]);
+    }
+    else {
+      $_limit = $limit;
+      $_offset = $offset;
+    }
+
+    $this->limit['total'] = preg_replace("/[^\d\s]/", "", $_limit);
+
+    if (isset($_offset))
+      $this->limit['offset'] = preg_replace("/[^\d\s]/", "", $_offset);
+
+    return TRUE;
+  }
+
+  function _getLimitDivider(){
+    switch (PHPWS_DB::getDBType()) {
+    case "pgsql":
+      return " OFFSET ";
+      break;
+
+    case "mysql":
+    default:
+      return ", ";
+      break;
+    }
   }
 
   function getLimit($dbReady=FALSE){
     if (empty($this->limit))
       return NULL;
 
-    if ($dbReady)
-      return "LIMIT " . $this->limit;
+    if ($dbReady) {
+      $limit[] = "LIMIT " . $this->limit['total'];
+
+      if (isset($this->limit['offset'])) {
+	$limit[] = $this->limit['offset'];
+      }
+
+      $divider = PHPWS_DB::_getLimitDivider();
+      return implode($divider, $limit);
+    }
     else
       return $this->limit;
+
   }
 
   function resetLimit(){
