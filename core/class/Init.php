@@ -31,6 +31,7 @@ PHPWS_Core::initCoreClass('Item.php');
 PHPWS_Core::initCoreClass('Debug.php');
 PHPWS_Core::initCoreClass('Error.php');
 PHPWS_Core::initCoreClass('Cache.php');
+PHPWS_Core::initCoreClass('Key.php');
 
 if (USE_CRUTCH_FILES || PHPWS_TRANSLATION == FALSE) {
   PHPWS_Core::initCoreClass('Crutch.php');
