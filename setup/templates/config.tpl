@@ -117,7 +117,15 @@ define('DEFAULT_LANGUAGE', 'en-us');
 
 define('PHPWS_LIST_TOGGLE_CLASS', ' class=\'bg-light\'');
 
-
+/************************ EDITOR *******************************/
+/*
+ * If you have downloaded a wysiwyg editor or editors for
+ * phpwebsite, you may enable their use below. You can also
+ * choose which editor you want to use as the default.
+ * Example: define('DEFAULT_EDITOR_TOOL', 'FCKeditor');
+ */
+define('USE_WYSIWYG_EDITOR', FALSE);
+define('DEFAULT_EDITOR_TOOL', '');
 
 /*********************** ERROR DEFINITIONS *********************/
 /**
