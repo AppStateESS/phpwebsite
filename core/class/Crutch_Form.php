@@ -2,8 +2,7 @@
 class CrutchForm {
   function makeForm($name, $action, $elements, $method='post', $breaks=FALSE, $file=FALSE) {
     if($file) {
-      $form[0] = '<form name="' . $name '" action="' . $action . '" method="' 
-	. $method . '" enctype="multipart/form-data">\n';
+      $form[0] = "<form name=\"$name\" action=\"$action\" method=\"$method\" enctype=\"multipart/form-data\">\n";
     } else {
       $form[0] = '<form name="' . $name . '" action="' . $action . '" method="' 
 	. $method . '">' . "\n";
