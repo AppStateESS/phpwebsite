@@ -60,6 +60,6 @@ $site_end_time = ((float)$usec + (float)$sec);
 $memory_used = round( (memory_get_usage() / 1024) / 1024, 2);
 $execute_time = round( ($site_end_time - $site_start_time), 2);
 
-//echo '$memory_used mb / $execute_time secs';
+//echo "$memory_used mb / $execute_time secs";
 
 ?>
