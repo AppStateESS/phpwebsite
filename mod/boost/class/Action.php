@@ -22,8 +22,8 @@ class Boost_Action {
 
     if ($versionInfo['version'] > $module->getVersion()){
       $template['STATUS'] = _("An update is available.") . "<br />";
-      $template['UPGRADE_PATH_LABEL'] = _("Download here");
-      $template['UPGRADE_PATH'] = "<a href=\"" . $versionInfo['path'] . $versionInfo['filename'] . "\">" . $versionInfo['path'] . $versionInfo['filename'] . "</a>";
+      $template['UPDATE_PATH_LABEL'] = _("Download here");
+      $template['UPDATE_PATH'] = "<a href=\"" . $versionInfo['path'] . $versionInfo['filename'] . "\">" . $versionInfo['path'] . $versionInfo['filename'] . "</a>";
     }
     else {
       $template['STATUS'] = _("No update required.");
@@ -59,11 +59,11 @@ class Boost_Action {
     return $content;
   }
 
-  function upgradeModule($module_title){
+  function updateModule($module_title){
     PHPWS_Core::initModClass("boost", "Boost.php");
     $boost = new PHPWS_Boost;
     $boost->loadModules(array($module_title), FALSE);
-    $content = $boost->upgrade();
+    $content = $boost->update();
     return $content;
   }
 }

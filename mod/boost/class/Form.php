@@ -71,9 +71,9 @@ class Boost_Form {
 	  $uninstallVars = array('opmod'=>$title, "action"=>'uninstall');
 	  $template['UNINSTALL'] = PHPWS_Text::secureLink(_("Uninstall"), "boost", $uninstallVars);
 	}
-	if ($mod->needsUpgrade()){
-	  $link_title = _("Upgrade");
-	  $link_command['action'] = "upgrade";
+	if ($mod->needsUpdate()){
+	  $link_title = _("Update");
+	  $link_command['action'] = "update";
 	}
 	else {
 	  $version_check = $mod->getVersionHttp();
