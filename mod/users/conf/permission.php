@@ -9,5 +9,4 @@ $permissions["delete_groups"]    = _("Delete Groups");
 $permissions["edit_permissions"] = _("Edit Permissions");
 $permissions["setttings"]        = _("Settings");
 
-$itemPermissions = TRUE;
 ?>
