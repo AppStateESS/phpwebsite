@@ -154,6 +154,15 @@ function 'listAction' into the template tag 'ACTION'. The listAction
 function will get information from the $image object to create the
 appropriate administration links.
 
+You can also substitute and action outside of using an alternate
+method. For example, if I wanted the image title to run through a
+special function:
+
+$pager->addRowTag("title", "Cabinet_Action", "capitalizeTitle");
+
+Now my object would run through
+Cabinet_Action::capitalizeTitle($image);
+and I could return a captialized image title;
 
 Adding Toggles
 --------------------------------------------------------------------
