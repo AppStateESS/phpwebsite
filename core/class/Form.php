@@ -438,6 +438,9 @@ class PHPWS_Form {
     return TRUE;
   }
 
+  /**
+   * Allows the password value to appear in the form.
+   */
   function allowValue($name){
     if (!$this->testName($name))
       return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setSize', array($name));
