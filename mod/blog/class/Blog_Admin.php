@@ -140,13 +140,16 @@ class Blog_Admin {
 
     case "restore":
       $title = _("Blog Restore") . " : " . $blog->getTitle();
-      $content = Blog_Admin::restoreVersion($blog);
+      $content = Blog_Admin::restoreVersionList($blog);
       break;
 
     case "restorePrevBlog":
-      exit("restorePrevBlog needs work");
-      //      $result = Version::restore($blog, $_REQUEST['replace_order'], "blog_entries");
-      $blog->save();
+      if (Current_User::isRestricted("blog") || !Current_User::authorized("blog")) {
+	Current_User::disallow();
+	return;
+      }
+	
+      Blog_Admin::restoreBlog($_REQUEST['version_id']);
       $title = _("Blog Archive");
       $message = _("Blog entry restored.");
       $content = Blog_Admin::entry_list();
@@ -377,33 +380,33 @@ class Blog_Admin {
     return $version->save();
   }
   
-  function restoreVersion(&$blog){
+  function restoreVersionList(&$blog){
     $version = & new Version("blog_entries");
     $version->setSource($blog);
-    $version->getBackupList();
-    test($version);
-   
-    exit("restoreVersion needs work");
+    $version_list = $version->getBackupList();
+
     $tpl = & new PHPWS_Template("blog");
     $tpl->setFile("version.tpl");
-
     $tpl->setCurrentBlock("repeat_row");
 
     $count = 0;
 
     $vars['action'] = "admin";
     $vars['command'] = "restorePrevBlog";
-    $vars['blog_id'] = $blog->id;
 
-    foreach ($result as $order=>$oldBlog){
+    foreach ($version_list as $backup_id => $backup){
       $count++;
       if ($count%2)
 	$template['TOGGLE'] = "class=\"toggle1\"";
       else
 	$template['TOGGLE'] = "class=\"toggle2\"";
 
-      $vars['replace_order'] = $order;
-      $template['BLOG'] = $oldBlog->view(FALSE);
+      $blog = & new Blog;
+      $backup->loadObject($blog);
+
+      $vars['version_id'] = $backup->getId();
+      $template['CREATED'] = $backup->getCreationDate(TRUE);
+      $template['BLOG'] = $blog->view(FALSE);
       $template['RESTORE_LINK'] = PHPWS_Text::secureLink(_("Restore this blog"), "blog", $vars);
       $tpl->setData($template);
       $tpl->parseCurrentBlock();
@@ -498,6 +501,11 @@ class Blog_Admin {
     $version->setApproved(TRUE);
     $version->save();
     $version->authorizeCreator("blog");
+  }
+
+  function restoreBlog($version_id) {
+    $version = & new Version("blog_entries", $version_id);
+    $version->restore();
   }
 }
 
