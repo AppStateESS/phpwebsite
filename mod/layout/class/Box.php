@@ -14,7 +14,7 @@ class PHPWS_Layout_Box {
   }
 
   function load($id){
-    $DB = new PHPWS_DB("mod_layout_box");
+    $DB = new PHPWS_DB("layout_box");
     $DB->addWhere("id", $id);
     $result = $DB->select("row");
     $this->setTheme($result['theme']);
@@ -58,7 +58,7 @@ class PHPWS_Layout_Box {
 
 
   function save(){
-    $DB = new PHPWS_DB("mod_layout_box");
+    $DB = new PHPWS_DB("layout_box");
     $DB->addValue("theme", $this->getTheme());
     $DB->addValue("content_var", $this->getContentVar());
     $DB->addValue("theme_var", $this->getThemeVar());
@@ -70,7 +70,7 @@ class PHPWS_Layout_Box {
   }
 
   function nextBox(){
-    $DB = new PHPWS_DB("mod_layout_box");
+    $DB = new PHPWS_DB("layout_box");
     $DB->addWhere("theme", $this->getTheme());
     $DB->addWhere("theme_var", $this->getThemeVar());
     $DB->addColumn("box_order");
