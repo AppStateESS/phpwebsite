@@ -14,6 +14,9 @@ class Blog_User {
     $db->setLimit($limit);
     $db->addOrder("date desc");
     $result = $db->getObjects("Blog");
+
+    if (empty($result))
+      return ("No blog entries found.");
     
     foreach ($result as $blog)
       $list[] = $blog->view(); 
