@@ -1,6 +1,6 @@
 <?php
 
-$config = PHPWS_Core::getConfigFile("help", "config.php");
+$config = PHPWS_Core::getConfigFile('help', 'config.php');
 
 if (PEAR::isError($config)){
   PHPWS_Error::log($config);
@@ -11,27 +11,27 @@ if (PEAR::isError($config)){
 class PHPWS_Help{
 
   function show_link($module, $help, $label=NULL){
-    Layout::addStyle("help");
     if (!isset($label))
       $label = DEFAULT_HELP_LABEL;
 
     $vars['label'] = $label;
-    $vars['address'] = "index.php?module=help&amp;helpMod=$module&amp;option=$help";
-    $link = Layout::getJavascript("open_window", $vars);
-    $result = PHPWS_Template::process(array("LINK"=> $link), "help", "link.tpl");
+    $vars['address'] = 'index.php?module=help&amp;helpMod=$module&amp;option=' . $help;
+    $link = Layout::getJavascript('open_window', $vars);
+    $result = PHPWS_Template::process(array('LINK'=> $link), 'help', 'link.tpl');
+
     return $result;
   }
 
   function show_help(){
     if (!isset($_REQUEST['helpMod'])){
-      echo "help page information here";
+      echo 'help page information here';
       exit();
     }
 
-    $module = preg_replace("/[^\w]+/", "", $_REQUEST['helpMod']);
-    $help = preg_replace("/[^\w\-]+/", "", $_REQUEST['option']);
-    $filename = "mod/$module/conf/help.". CURRENT_LANGUAGE . ".php";
-    $default = "mod/$module/conf/help.php";
+    $module = preg_replace('/[^\w]+/', '', $_REQUEST['helpMod']);
+    $help = preg_replace('/[^\w\-]+/', '', $_REQUEST['option']);
+    $filename = PHPWS_SOURCE_DIR . sprintf('mod/%s/conf/help.%s.php', $module, CURRENT_LANGUAGE);
+    $default = PHPWS_SOURCE_DIR . sprintf('mod/%s/conf/help.php', $module);
     if (!is_file($filename)){
       if (!is_file($default)){
 	PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, "core", "show_help", $default);
@@ -46,8 +46,10 @@ class PHPWS_Help{
       exit(_("No help exists for this topic."));
       return NULL;
     }
-    Layout::addStyle("help");
-    Layout::alternateTheme($$help, "help", "help.tpl");
+
+    $template['TITLE'] = $$help;
+    $template['CONTENT'] = ${$help . '_content'};
+    Layout::alternateTheme($template, "help", "help.tpl");
   }
 
 }
