@@ -90,7 +90,7 @@ class PHPWS_List {
 
 	$this->_pager->limit = $this->_paging['limit'];
       }
-	 
+
       $this->_pager->setData($this->_getIds());
 
       if(isset($_REQUEST['list']) && ($this->_name == $_REQUEST['list'])) $this->_pager->pageData();
@@ -198,6 +198,7 @@ class PHPWS_List {
       $listTags = array_merge($listTags, $this->_extraListTags);
 
       $listTpl->setData($listTags);
+
       $content = $listTpl->get();
     } else {
       $listTags["LIST_ITEMS"] = "<tr><td colspan=\"$columns\">" . _("No items for the current list.") . "</td></tr>";
@@ -206,10 +207,6 @@ class PHPWS_List {
       $listTpl->setData($listTags);
       $content = $listTpl->get();
     }
-
-    /* reinitialize where and order before next list */
-    $this->setWhere();
-    $this->setOrder();
 
     $this->createState();
     return $content;
@@ -230,12 +227,10 @@ class PHPWS_List {
       } else return PHPWS_Error::get(PHPWS_LIST_COLUMNS_NOT_SET, "core", "PHPWS_List::getList()");
     } else return PHPWS_Error::get(PHPWS_LIST_TABLE_NOT_SET, "core", "PHPWS_List::getList()");
 
-    /*
     $where = $this->getWhere();
 
     if(isset($where))
-      $db->addWhere($where);
-    */
+      $db->setQWhere($where);
 
     if(is_array($ids) && (sizeof($ids) > 0)) {
       foreach ($ids as $id){
@@ -251,7 +246,6 @@ class PHPWS_List {
 
     /* Set associative mode for db and execute query */
     $result = $db->select();
-
     /* Return result of query */
     return $result;
   }// END FUNC getItems()
@@ -263,14 +257,14 @@ class PHPWS_List {
 
       $where = $this->getWhere();
       if(isset($where))
-	$db->addWhere($where);
-
+	$db->setQWhere($where);
       
       $order = $this->getOrder();
       if(isset($order))
 	$db->addOrder($order);
 
-      return $db->select("col");
+      $result = $db->select("col");
+      return $result;
     } else return PHPWS_Error::get(PHPWS_LIST_TABLE_NOT_SET, "core", "PHPWS_List::getList()");
   }
 
