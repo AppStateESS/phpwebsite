@@ -3,6 +3,8 @@
 PHPWS_Core::initModClass("users", "Permission.php");
 PHPWS_Core::configRequireOnce("users", "config.php");
 
+define("ANONYMOUS_ID", 1);
+
 class PHPWS_User {
   var $id            = NULL;
   var $username      = NULL;
@@ -10,7 +12,7 @@ class PHPWS_User {
   var $active        = TRUE;
   var $authorize     = NULL;
   var $last_logged   = 0;
-  var $time_logged   = 0;
+  var $log_count     = 0;
   var $created       = 0;
   var $updated       = 0;
   var $active        = FALSE;
@@ -154,6 +156,29 @@ class PHPWS_User {
 
   function isLogged(){
     return (bool)$this->_logged;
+  }
+
+  function setLastLogged($time){
+    $this->last_logged = $time;
+  }
+
+  function getLastLogged($mode=NULL){
+    if (empty($mode))
+      return $this->last_logged;
+    else {
+      if ($this->last_logged == 0 || empty($this->last_logged))
+	return NULL;
+      else
+	return strftime($mode, $this->last_logged);
+    }
+  }
+
+  function addLogCount(){
+    $this->log_count++;
+  }
+
+  function getLogCount(){
+    return $this->log_count;
   }
 
   function isUser(){
@@ -314,6 +339,9 @@ class PHPWS_User {
       $this->authorize = $this->getUserSetting("default_authorize");
 
     $db = & new PHPWS_DB("users");
+    if (isset($this->id))
+      $db->addWhere("id", $this->id);
+
     $result = $db->saveObject($this);
 
     if (PEAR::isError($result)){
@@ -321,7 +349,7 @@ class PHPWS_User {
       return PHPWS_Error::get(USER_ERR_USER_NOT_SAVED, "users", "save");
     }
 
-    if ($this->authorize > 0){
+    if ($this->authorize > 0 && !$this->isAnonymousUser()){
       if ($this->authorize == LOCAL_AUTHORIZATION)
 	$this->saveLocalAuthorization();
       elseif ($this->authorize == GLOBAL_AUTHORIZATION)
@@ -337,13 +365,21 @@ class PHPWS_User {
 
   }
 
+  function isAnonymousUser(){
+    return ($this->id == ANONYMOUS_ID);
+  }
+
   function saveLocalAuthorization(){
+    if (empty($this->username) || empty($this->_password))
+      return FALSE;
+
     $db = & new PHPWS_DB("user_authorization");
     $db->addWhere("username", $this->username);
     $db->delete();
+    $db->resetWhere();
     $db->addValue("username", $this->username);
     $db->addValue("password", $this->_password);
-    $db->insert();
+    return $db->insert();
   }
 
   function saveGlobalAuthorization(){

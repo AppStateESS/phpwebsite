@@ -159,6 +159,29 @@ class User_Form {
   }
 
   function manageUsers(){
+    PHPWS_Core::initCoreClass("DBPager.php");
+    PHPWS_Core::initModClass("users", "User_Manager.php");
+
+    $pageTags['USERNAME'] = _("Username");
+    $pageTags['LAST_LOGGED'] = _("Last Logged");
+    $pageTags['ACTIVE'] = _("Active");
+    $pageTags['ACTIONS'] = _("Actions");
+
+    $pager = & new DBPager("users", "User_Manager");
+    $pager->setModule("users");
+    $pager->setTemplate("manager/users.tpl");
+    $pager->setLink("index.php?module=users&action=admin&tab=manage_users");
+    $pager->addTags($pageTags);
+    $pager->setMethod("active", "listActive");
+    $pager->setMethod("last_logged", "listLastLogged");
+    if (!Current_User::isDeity())
+      $pager->addWhere("id", ANONYMOUS_ID, "!=");
+
+    return $pager->get();
+  }
+
+  /*
+  function manageUsers(){
     PHPWS_Core::initModClass("users", "User_Manager.php");
     if (!isset($_SESSION['User_Manager']))
       $manager = & new User_Manager;
@@ -179,6 +202,7 @@ class User_Form {
     return $content;
 
   }
+  */
 
   function manageGroups(){
     PHPWS_Core::initModClass("users", "Group_Manager.php");
@@ -521,11 +545,91 @@ class User_Form {
     return $content;
   }
 
+  function authorizationSetup(){
+    Layout::addStyle("users");
+
+    $values['DROP_Q'] = _("Are you sure you want to drop this authorization script?");
+
+    Layout::loadModuleJavascript("users", "authorize.js", $values);
+
+    $template = array();
+    PHPWS_Core::initCoreClass("File.php");
+
+    $auth_list = User_Action::getAuthorizationList();
+
+    foreach ($auth_list as $auth){
+      $file_compare[] = $auth['filename'];
+    }
+
+    $form = & new PHPWS_Form;
+
+    $form->addHidden("module", "users");
+    $form->addHidden("action", "admin");
+    $form->addHidden("command", "postAuthorization");
+
+    $file_list = PHPWS_File::readDirectory(PHPWS_SOURCE_DIR . "mod/users/scripts/", FALSE, TRUE);
+
+    $remaining_files = array_diff($file_list, $file_compare);
+
+    if (empty($remaining_files))
+      $template['FILE_LIST'] = _("No new scripts found");
+    else {
+      $form->addSelect("file_list", $remaining_files);
+      $form->reindexValue("file_list");
+      $form->addSubmit("add_script", _("Add Script File"));
+    }
+
+    $form->mergeTemplate($template);
+    $form->addSubmit("submit", _("Update Default"));
+    $template = $form->getTemplate();
+
+    $template['AUTH_LIST_LABEL'] = _("Authorization Scripts");
+    $template['DEFAULT_LABEL'] = _("Default");
+    $template['DISPLAY_LABEL'] = _("Display Name");
+    $template['FILENAME_LABEL'] = _("Script Filename");
+    $template['ACTION_LABEL'] = _("Action");
+
+    $tpl = new PHPWS_Template("users");
+    $tpl->setFile("forms/authorization.tpl");
+    $tpl->setData($template);
+
+    $default_authorization = PHPWS_User::getUserSetting("default_authorization");
+
+    foreach ($auth_list as $authorize){
+      extract($authorize);
+      if ($default_authorization == $id)
+	$checked = "checked=\"checked\"";
+      else
+	$checked = NULL;
+
+      $getVars['module'] = "users";
+      $getVars['action'] = "admin";
+      $getVars['command'] = "dropScript";
+      $links[1] = "<a href=\"javascript:void(0)\" onclick=\"drop($id)\">Drop</a>";
+      //      $links[1] = PHPWS_Text::moduleLink(_("Drop"), "users", $getVars);
+
+      $getVars['command'] = "editScript";
+      $links[2] = PHPWS_Text::moduleLink(_("Edit"), "users", $getVars);
+
+      $row['CHECK'] = "<input type=\"radio\" name=\"default_authorization\" value=\"$id\" $checked />";
+      $row['DISPLAY_NAME'] = $display_name;
+      $row['FILENAME'] = $filename;
+      $row['ACTION'] = implode(" | ", $links);
+      
+      $tpl->setCurrentBlock("auth-rows");
+      $tpl->setData($row);
+      $tpl->parseCurrentBlock();
+    }
+
+    $content = $tpl->get();
+    return $content;
+  }
+
   function settings(){
     PHPWS_Core::initModClass("help", "Help.php");
-    $settings = PHPWS_User::getSettings();
 
     $default_group = PHPWS_User::getUserSetting("default_group");
+
     if (PEAR::isError($default_group)){
       PHPWS_Error::log($default_group);
       $default_group = 0;
@@ -535,7 +639,7 @@ class User_Form {
 
     $form = new PHPWS_Form("user_settings");
     $form->addHidden("module", "users");
-    $form->addHidden("action", "hidden", "admin");
+    $form->addHidden("action", "admin");
     $form->addHidden("command", "update_settings");
     $form->addSubmit("submit",_("Update Settings"));
 
@@ -544,14 +648,12 @@ class User_Form {
     $groups[0] = "-" . _("No Default") . "-";
     ksort($groups);
 
-    $template['DEFAULT_GROUP_LABEL'] = _("Default User Group");
     $form->add("default_group", "select", $groups);
     $form->setMatch("default_group", $default_group);
+    $form->setLabel("default_group", _("Default User Group"));
 
-    $template['DEFAULT_HELP'] = PHPWS_Help::show_link("users", "default_user_group");
-
-    $form->mergeTemplate($template);
     $template = $form->getTemplate();
+    $template['DEFAULT_HELP'] = PHPWS_Help::show_link("users", "default_user_group");
     return PHPWS_Template::process($template, "users", "forms/settings.tpl");
   }
 

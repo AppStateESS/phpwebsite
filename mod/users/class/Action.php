@@ -43,6 +43,15 @@ class User_Action {
       $content = User_Form::userForm($user);
       break;      
 
+    case "authorization":
+      $content = User_Form::authorizationSetup();
+      break;
+
+    case "postAuthorization":
+      User_Action::postAuthorization();
+      $content = _("Authorization updated.") . "<hr />" . User_Form::authorizationSetup();
+      break;
+
       /** End User Forms **/
 
       /** Group Forms **/
@@ -264,8 +273,7 @@ class User_Action {
       $tabs["manage_groups"] = array("title"=>_("Manage Groups"), "link"=>$link);
     }
 
-    if (Current_User::allow("users", "demographics"))
-      $tabs["demographics"] = array("title"=>_("Demographics"), "link"=>$link);
+    $tabs['authorization'] = array("title"=>_("Authorization"), "link"=>$link);
 
     if (Current_User::allow("users", "settings"))
       $tabs["settings"] = array("title"=>_("Settings"), "link"=>$link);
@@ -351,6 +359,9 @@ class User_Action {
     else
       $authorize = $user->getAuthorize();
 
+    if (empty($authorize))
+      return FALSE;
+
     $result = User_Action::authorize($authorize, $username, $password);
 
     if (PEAR::isError($result)){
@@ -372,6 +383,9 @@ class User_Action {
       }
 
       $user->setLogged(TRUE);
+      $user->setLastLogged(mktime());
+      $user->addLogCount();
+      $user->save();
       $_SESSION['User'] = $user;
       return TRUE;
     } else
@@ -387,42 +401,8 @@ class User_Action {
   }
 
   function authorize($authorize, $username, $password){
-    switch ($authorize){
-    case LOCAL_AUTHORIZATION:
-      $result = User_Action::localAuth($username, $password);
-      break;
-
-    case GLOBAL_AUTHORIZATION:
-      $result = User_Action::globalAuth($username, $password);
-      break;
-
-    default:
-      $result = User_Action::foreignAuth($authorize, $username, $password);
-      break;
-    }
-
-    return $result;
-  }
-
-  function localAuth($username, $password){
-    $db = & new PHPWS_DB("user_authorization");
-    $db->addWhere("username", strtolower(preg_replace("/\W/", "", $username)));
-    $db->addWhere("password", md5($password));
-    $result = $db->select("one");
-
-    if (PEAR::isError($result))
-      return $result;
-    else
-      return isset($result);
-  }
-
-  function globalAuth(){
-
-  }
-
-  function foreignauth($authorize, $username, $password){
-    $db = & new PHPWS_DB("users_foreign_alt");
-    $db->setIndexBy("alt_code");
+    $db = & new PHPWS_DB("users_auth_scripts");
+    $db->setIndexBy("id");
     $db->addWhere("active", 1);
     $result = $db->select();
 
@@ -445,7 +425,7 @@ class User_Action {
     } else
       return FALSE;
 
-
+    return $result;
   }
 
   function postMembers(){
@@ -479,10 +459,45 @@ class User_Action {
     $db = & new PHPWS_DB("users_config");
     if (is_numeric($_POST['default_group']))
       $db->addValue("default_group", $_POST['default_group']);
+    
+    if (is_numeric($_POST['default_authorization']))
+      $db->addValue("default_authorization", $_POST['default_authorization']);
 
     $db->update();
   }
 
+  function getAuthorizationList(){
+    $db = & new PHPWS_DB("users_auth_scripts");
+    $db->addOrder("display_name");
+    $result = $db->select();
+
+    if (PEAR::isError($result)){
+      PHPWS_Error::log($result);
+      return NULL;
+    }
+
+    return $result;
+  }
+
+  function postAuthorization(){
+    if (isset($_POST['add_script'])){
+      if (!isset($_POST['file_list']))
+	return FALSE;
+
+      $db = & new PHPWS_DB("users_auth_scripts");
+      $db->addWhere("filename", $_POST['file_list']);
+      $result = $db->select("one");
+      if (PEAR::isError($result))
+	return $result;
+      elseif (!empty($result))
+	return;
+
+      $db->resetWhere();
+      $db->addValue("display_name", $_POST['file_list']);
+      $db->addValue("filename", $_POST['file_list']);
+      $db->insert();
+    }
+  }
 
 }
 
