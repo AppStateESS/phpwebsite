@@ -21,7 +21,8 @@ class PHPWS_User extends PHPWS_Item {
 		     "_permission",
 		     "_logged",
 		     "_last_logged",
-		     "_settings"
+		     "_settings",
+		     "_user_group"
 		     );
 
     $this->addExclude($exclude);
@@ -107,7 +108,7 @@ class PHPWS_User extends PHPWS_Item {
   }
 
 
-  function getSettings(){
+  function getUserSettings(){
     return $this->_settings;
   }
 
@@ -339,11 +340,13 @@ class PHPWS_User extends PHPWS_Item {
     if ($this->isAnonymous())
       return FALSE;
 
-    $settings = $this->getSettings();
+    $settings = $this->getUserSettings();
     if (!isset($settings))
       return TRUE;
 
     $DB = new PHPWS_DB("users_settings");
+
+    echo phpws_debug::testarray($settings);
 
     foreach ($settings as $label => $varset){
       foreach ($varset as $varName => $varValue){

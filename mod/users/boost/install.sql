@@ -1,4 +1,4 @@
-CREATE TABLE users_config ( anonymous INT NOT NULL );
+CREATE TABLE users_config ( anonymous INT NOT NULL, default_group INT NOT NULL );
 
 CREATE TABLE users_demographic_items ( label CHAR(20) NOT NULL, input_type CHAR(15) NOT NULL, presets TEXT );
 

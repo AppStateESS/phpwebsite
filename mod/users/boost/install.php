@@ -22,6 +22,7 @@ function users_install(&$content, $branchInstall=FALSE){
 
 	$setting = & new PHPWS_DB("users_config");
 	$setting->addValue("anonymous", $anon->getId());
+	$setting->addValue("default_group", 0);
 	$setting->insert();
 
 	$user->setDeity(TRUE);
