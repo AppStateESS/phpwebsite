@@ -8,7 +8,7 @@ function _($text){
 }
 */
 /**
- * Pre-094 code
+ * Pre-1.x code
  */
 
 define('PHPWS_TBL_PREFIX', TABLE_PREFIX);
@@ -42,6 +42,11 @@ class oldCore extends oldDB{
 
   function moduleExists($module){
     PHPWS_Core::moduleExists($module);
+  }
+
+  function killSession($session){
+    $_SESSION[$session] = NULL;
+    unset($_SESSION[$session]);
   }
 
 }
@@ -109,8 +114,9 @@ class PHPWS_Crutch {
   }
 
   function startSessions(){
-    if (!isset($_SESSION['OBJ_user']))
+    if (!isset($_SESSION['OBJ_user'])) {
       $_SESSION['OBJ_user'] = $_SESSION['User'];
+    }
 
     if (!isset($_SESSION['translate'])) {
       $_SESSION['translate'] = & new oldTranslate;
