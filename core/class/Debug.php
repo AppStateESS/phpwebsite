@@ -80,10 +80,14 @@ class PHPWS_Debug {
   function testObject($objVar, $displayTags=1) {
     if(is_object($objVar)) {
       $objectInfo = (get_object_vars($objVar));
-      return "<b>Class Name :</b> " . get_class($objVar) .
+      return '<b>' . _('Class Name') . ':</b> ' . get_class($objVar) .
 	PHPWS_Debug::testArray($objectInfo, $displayTags);
     }
-    return "PHPWS_Debug: testObject received a/an " . gettype($objVar) . " variable, not an object<br />";
+    if (gettype($objVar) != 'object') {
+      return sprint_f(_('PHPWS_Debug: testObject received a/an %s variable, not an object.'), gettype($objVar)) . "<br />";
+    } else {
+      return _('This is an incomplete object. If this is a sessioned object, make sure to declare the class before the variable.') . "<br />";
+    }
   } // END FUNC testObject
 
 
@@ -143,6 +147,23 @@ function test($value, $exitAfter=FALSE){
   echo PHPWS_Debug::test($value);
   if ($exitAfter)
     exit();
+}
+
+function objectInfo($object){
+  if (!is_object($object)){
+    if (gettype($object) == 'object') {
+      echo _('This is an incomplete object. If this is a sessioned object, make sure to declare the class before the variable.') . "<br />";
+    } else {
+      printf(_('Variable is a %s, not an object.'), gettype($object));
+    }
+    return;
+  }
+
+  $info['class'] = get_class($object);
+  $info['methods'] = get_class_methods($info['class']);
+
+  test($info);
+  return TRUE;
 }
 
 ?>
