@@ -2,10 +2,6 @@
 
 require("Cache/Lite.php");
 
-// put in config file
-define("CACHE_LIFETIME", 3600);
-define("CACHE_DIRECTORY", "/tmp/");
-
 class PHPWS_Cache {
 
   function &initCache($lifetime=CACHE_LIFETIME){
@@ -20,14 +16,10 @@ class PHPWS_Cache {
   }
 
   function isEnabled(){
-    if (!is_file(CACHE_DIRECTORY . "phpws_cache.ini")){
-      PHPWS_Cache::writeIni();
+    if (defined("ALLOW_CACHE_LITE"))
+      return ALLOW_CACHE_LITE;
+    else
       return FALSE;
-    } else {
-      $result = parse_ini_file(CACHE_DIRECTORY . "phpws_cache.ini");
-      return (bool)$result['cache'];
-    }
-
   }
 
   function get($key){
