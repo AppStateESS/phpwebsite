@@ -27,13 +27,13 @@ class PHPWS_Panel{
 
   }
 
-  
   function loadTabs(){
     $itemname = $this->getItemname();
     $DB = new PHPWS_DB("controlpanel_tab");
     $DB->addWhere("itemname", $itemname);
     $DB->addOrder("tab_order");
-    $result = $DB->loadItems("PHPWS_Panel_Tab", "id");
+    $result = $DB->loadObjects("PHPWS_Panel_Tab", 'id');
+
     if (PEAR::isError($result))
       exit("ERROR in loadTabs");
 
@@ -41,6 +41,9 @@ class PHPWS_Panel{
   }
 
   function setTabs($tabs){
+    if (!is_array($tabs))
+      return PHPWS_Error::get("CP_BAD_TABS", "controlpanel", "setTabs");
+      
     $this->_tabs = $tabs;
   }
 

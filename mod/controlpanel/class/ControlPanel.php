@@ -9,6 +9,7 @@ class PHPWS_ControlPanel {
 
     if (!isset($content)){
       $allLinks = PHPWS_ControlPanel::getAllLinks();
+
       foreach ($allLinks[$panel->getCurrentTab()] as $id => $link)
 	$content[] = $link->view();
   
@@ -26,7 +27,8 @@ class PHPWS_ControlPanel {
     $DB = new PHPWS_DB("controlpanel_link");
     $DB->addOrder("tab");
     $DB->addOrder("link_order");
-    $result = $DB->loadItems("PHPWS_Panel_Link");
+    $result = $DB->loadObjects("PHPWS_Panel_Link", 'id');
+
     foreach ($result as $link){
       if (!$link->isRestricted() || $_SESSION['User']->allow($link->getItemName()))
 	$allLinks[$link->getTab()][] = $link;

@@ -170,7 +170,7 @@ class PHPWS_Panel_Tab {
     if ($color = $this->getColor())
       $tpl['COLOR'] = " style=\"background-color : #" . $color . "\"";
 
-    $phptpl = & new PHPWS_Template();
+    $phptpl = new PHPWS_Template();
 
     if ($phptpl->setFile("mod/controlpanel/templates/" . $tabfile, TRUE) == FALSE)
       return PEAR::raiseError("Unable to find template <b>$tabfile</b>");
