@@ -1,5 +1,5 @@
 <?php
 
-define("BLOG_VIEW_DATE_FORMAT", "%A, %B %e");
+define("BLOG_VIEW_DATE_FORMAT", "%T, %A, %B %e");
 
 ?>
