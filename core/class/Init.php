@@ -182,10 +182,20 @@ function loadBrowserInformation(){
 	else
 	  $platform .= " " . $newVars[$platformCheck + 1] . " " . $newVars[$platformCheck + 2];
 
-	$program = explode("/", $newVars[9]);
-      } else
-	$program = explode("/", $newVars[8]);
-	
+	if (isset($newVars[9]))
+	  $program = explode("/", $newVars[9]);
+	elseif(isset($newVars[8]))
+	  $program = explode("/", $newVars[8]);
+	else
+	  $program = _("Unknown");
+      } else {
+	if (isset($newVars[8]))
+	  $program = explode("/", $newVars[8]);
+	elseif (isset($newVars[7]))
+	  $program = explode("/", $newVars[7]);
+	else
+	  $program = _("Unknown");
+      }
 
       break;
     }
