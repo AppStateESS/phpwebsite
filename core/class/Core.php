@@ -16,6 +16,11 @@ class PHPWS_Core {
     if (!$moduleList = PHPWS_Core::getModules())
       die ("No modules are active");
 
+    if (PEAR::isError($moduleList)){
+      PHPWS_Error::log($moduleList);
+      PHPWS_Core::errorPage();
+    }
+      
     foreach ($moduleList as $mod){
       PHPWS_Core::setCurrentModule($mod['title']);
       /* Using include instead of require to prevent broken mods from hosing the site */
@@ -121,6 +126,11 @@ class PHPWS_Core {
     exit();
   }
 
+  function killSession($sess_name){
+    $_SESSION[$sess_name] = NULL;
+    unset($_SESSION[$sess_name]);
+  }
+
   function killAllSessions(){
     $_SESSION = array();
     unset($_SESSION);
@@ -173,6 +183,44 @@ class PHPWS_Core {
       return PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, "core", "getConfigFile", "file = $file");
 
     return $file;
+  }
+
+  function &loadAsMod(){
+    PHPWS_Core::initCoreClass("Module.php");
+    
+    $core = & new PHPWS_Module;
+    $core->setTitle("core");
+    $core->setDirectory(PHPWS_SOURCE_DIR . "core/");
+    $file = PHPWS_Core::getConfigFile("core", "version.php");
+    if (PEAR::isError($file))
+      return $file;
+    else
+      include $file;
+
+    $core->setVersion($version);
+    $core->setRegister(TRUE);
+    $core->setInstallSQL(TRUE);
+
+    return $core;
+  }
+
+  function log($message, $filename, $type=NULL){
+    require_once "Log.php";
+    if (!is_writable(PHPWS_LOG_DIRECTORY))
+      exit("Unable to write to log directory");
+
+    $conf = array('mode' => LOG_PERMISSION, 'timeFormat' => LOG_TIME_FORMAT);
+    $log  = &Log::singleton('file', PHPWS_LOG_DIRECTORY . $filename, $type, $conf, PEAR_LOG_NOTICE);
+
+    $log->log($message, PEAR_LOG_NOTICE);
+
+    $log->close();
+
+  }
+
+  function errorPage(){
+    include "config/core/error_page.html";
+    exit();
   }
 
 }// End of core class
