@@ -54,6 +54,9 @@ class PHPWS_Core {
       if (is_file($includeFile))
 	include($includeFile);
     }
+
+    if (isset($GLOBALS['pre094_modules']))
+      PHPWS_Crutch::closeSessions();
   }
 
 
@@ -77,18 +80,15 @@ class PHPWS_Core {
       is_file($runtimeFile) ? include_once $runtimeFile : NULL;
     }
 
-    if (isset($GLOBALS['pre094_modules'])){
+    if (isset($GLOBALS['pre094_modules']))
       PHPWS_Crutch::startSessions();
-    }
   }
 
 
   function runCurrentModule(){
     if (isset($_REQUEST['module'])){
-
       PHPWS_Core::setCurrentModule($_REQUEST['module']);
       $modFile = PHPWS_SOURCE_DIR . "mod/" . $_REQUEST['module'] . "/index.php";
-
       if (is_file($modFile))
 	include $modFile;
     }
