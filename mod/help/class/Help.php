@@ -8,8 +8,6 @@ if (PEAR::isError($config)){
   include_once $config;
 } 
 
-class CLS_Help extends PHPWS_Help{}
-
 class PHPWS_Help{
 
   function show_link($module, $help, $label=NULL){
