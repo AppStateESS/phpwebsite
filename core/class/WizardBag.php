@@ -91,8 +91,7 @@ class PHPWS_WizardBag {
    * @author Matthew McNaney <matt@NOSPAM.tux.appstate.edu>
    */
   function home(){
-    header("location:index.php");
-    exit();
+    PHPWS_Core::home();
   }
 
   /**
