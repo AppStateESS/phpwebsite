@@ -45,6 +45,7 @@ class Categories_Action{
       break;
 
     case "postCategory":
+      $title = _("Manage Categories");
       $result = Categories_Action::postCategory($category);
       if (is_array($result)){
 	$content[] = Categories_Action::edit($category, $result);
