@@ -111,6 +111,12 @@ class PHPWS_Template extends HTML_Template_Sigma {
   }
 
   function process($template, $module, $file){
+    if (!is_array($template)) {
+      return PHPWS_Error::log(PHPWS_VAR_TYPE, 'core', 
+		       'PHPWS_Template::process', 
+		       'template=' . gettype($template));
+      return NULL;
+    }
     if (PEAR::isError($template)){
       PHPWS_Error::log($template);
       return NULL;
