@@ -14,8 +14,9 @@ require_once "config/core/template.php";
  */
 
 class PHPWS_Template extends HTML_Template_Sigma {
-  var $module = NULL;
-  var $error  = NULL;
+  var $module           = NULL;
+  var $error            = NULL;
+  var $lastTemplatefile = NULL;
 
   function PHPWS_Template($module=NULL, $file=NULL){
     $this->HTML_Template_Sigma();
@@ -60,11 +61,10 @@ class PHPWS_Template extends HTML_Template_Sigma {
 
   function setFile($file, $strict=FALSE){
     $module = $this->getModule();
-      $this->setCache();
-    if ($strict == TRUE)
+    $this->setCache();
+    if ($strict == TRUE) {
       $result = $this->loadTemplatefile($file);
-
-    else {
+    } else {
       $altFile = PHPWS_Template::getTplDir($module) . $file;
 
       if (PEAR::isError($altFile))
@@ -82,8 +82,10 @@ class PHPWS_Template extends HTML_Template_Sigma {
       }
     }
 
-    if ($result)
+    if ($result) {
+      $this->lastTemplatefile = $file;
       return $result;
+    }
     else 
       return $this->err[0];
   }
@@ -148,8 +150,8 @@ class PHPWS_Template extends HTML_Template_Sigma {
       return $result;
 
     if (LABEL_TEMPLATES == TRUE){
-      $start = "\n<!-- START TPL: " . $tpl->lastTemplatefile . "-->\n";
-      $end = "\n<!-- END TPL: " . $tpl->lastTemplatefile . "-->\n";
+      $start = "\n<!-- START TPL: " . $tpl->lastTemplatefile . " -->\n";
+      $end = "\n<!-- END TPL: " . $tpl->lastTemplatefile . " -->\n";
     }
     else
       $start = $end = NULL;
