@@ -61,7 +61,7 @@ class Categories{
     return $children;
   }
 
-  function getCategoryLinks($module, $item_id, $item_name=NULL){
+  function _getItemsCategories($module, $item_id, $item_name){
     PHPWS_Core::initModClass("categories", "Category_Item.php");
     if (empty($module) || empty($item_id))
       return NULL;
@@ -79,16 +79,39 @@ class Categories{
     $db->addWhere("id", $cat_list);
     $cat_result = $db->getObjects("Category");
 
+    return $cat_result;
+  }
+
+  function getExtendedLinks($module, $item_id, $item_name=NULL){
+    $cat_result = Categories::_getItemsCategories($module, $item_id, $item_name);
+
+    if (empty($cat_result))
+      return NULL;
+
     foreach ($cat_result as $cat){
-      $link[] = Categories::_createViewLink($cat);
+      $link[] = Categories::_createExtendedLink($cat, "extended");
     }
 
     return $link;
   }
 
+  function getSimpleLinks($module, $item_id, $item_name=NULL){
+    $cat_result = Categories::_getItemsCategories($module, $item_id, $item_name);
+
+    if (empty($cat_result))
+      return NULL;
+
+    foreach ($cat_result as $cat){
+      $link[] = $cat->getViewLink();
+    }
+
+    return $link;
+
+  }
+
 
   function showCategoryLinks($module, $item_id, $item_name=NULL){
-    $links = Categories::getCategoryLinks($module, $item_id, $item_name);
+    $links = Categories::getExtendedLinks($module, $item_id, $item_name);
 
     if (empty($links))
       return NULL;
@@ -109,11 +132,14 @@ class Categories{
 
   }
 
-  function _createViewLink($category){
+  function _createExtendedLink($category, $mode){
     $link[] = $category->getViewLink();
-    if ($category->parent){
-      $parent = & new Category($category->parent);
-      $link[] = Categories::_createViewLink($parent);
+
+    if ($mode == "extended") {
+      if ($category->parent){
+	$parent = & new Category($category->parent);
+	$link[] = Categories::_createExtendedLink($parent, "extended");
+      }
     }
 
     return implode(" " . CAT_LINK_DIVIDERS . " ", array_reverse($link));

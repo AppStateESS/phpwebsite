@@ -74,6 +74,10 @@ class Categories_Action{
     Layout::add(PHPWS_ControlPanel::display($finalPanel));
   }
 
+  function user(){
+    echo "w00t!";
+  }
+
   function affirm($content, $return){
     $template['CONTENT'] = $content;
 
@@ -142,9 +146,6 @@ class Categories_Action{
     return $panel;
   }
   
-  function user(){
-
-  }
 
   function edit(&$category, $errors=NULL){
     $template = NULL;

@@ -9,7 +9,7 @@ PHPWS_Core::initModClass("categories", "Categories.php");
 if ($_REQUEST['action'] == 'admin'){
   Categories_Action::admin();
 }
-elseif ($_REQUEST['action'] == 'user'){
+else {
   Categories_Action::user();
 }
 
