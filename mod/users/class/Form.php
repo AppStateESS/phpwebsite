@@ -51,10 +51,12 @@ class User_Form {
     $form->add("module", "hidden", "users");
     $form->add("action[user]", "hidden", "loginBox");
     $form->add("block_username", "text", $username);
-    $form->setTag("block_username", "USERNAME_FORM");
     $form->add("block_password", "password");
-    $form->setTag("block_password", "PASSWORD_FORM");
     $form->add("submit", "submit", _("Log In"));
+
+    $form->setLabel("block_username", _("Username"));
+    $form->setLabel("block_password", _("Password"));
+    $form->setId("block_username", "username");
     
     $template = $form->getTemplate(TRUE, TRUE, $template);
 
