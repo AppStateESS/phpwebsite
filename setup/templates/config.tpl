@@ -145,5 +145,9 @@ define("PHPWS_LOG_ERRORS", TRUE);
 
 define("PHPWS_ALLOWED_TAGS", "<b><a><i><u><ul><ol><li><table><tr><td><dd><dt><dl><p><br><div><span><blockquote><th><tt><img><pre><hr>");
 
+/********************** Mod Rewrite ***************************/
+define("USE_MOD_REWRITE", TRUE);
+
+
 
 ?>
