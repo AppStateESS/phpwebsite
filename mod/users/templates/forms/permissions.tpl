@@ -5,10 +5,10 @@
 <h2 class="bgcolor2" style="padding : 4px">{MODULE_NAME}</h2>
 <table class="bgcolor1" width="100%">
 <tr>
-<td style="width : 200px">
-    {PERMISSION_0}
+<td style="width : 250px">
+    {PERMISSION_0}<br />
     <!-- BEGIN partial -->
-    {PERMISSION_1}
+    {PERMISSION_1}<br />
     <!-- END partial -->
     {PERMISSION_2}
 </td>
