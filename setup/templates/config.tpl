@@ -136,4 +136,14 @@ define("PHPWS_LIST_TOGGLE_CLASS", " class=\"bg-light\"");
 /* Error logging presets */
 define("PHPWS_LOG_ERRORS", TRUE);
 
+/*********************** TEXT SETTINGS *************************/
+/**
+ * These are the default tags that phpWebSite will allow from
+ * form entries. If a tag is NOT on this list, it will be stripped
+ * from the entry.
+ */
+
+define("PHPWS_ALLOWED_TAGS", "<b><a><i><u><ul><ol><li><table><tr><td><dd><dt><dl><p><br><div><span><blockquote><th><tt><img><pre><hr>");
+
+
 ?>
