@@ -742,10 +742,7 @@ class PHPWS_Form {
 
       foreach ($element as $subElement){
 	if ($this->types[$elementName] == 'hidden'){
-	  if (!isset($div))
-	    $template['START_FORM'] .= "\n<div id=\"form\">\n";
 	  ($helperTags == TRUE) ? $template['START_FORM'] .= $subElement->get() ."\n" : $template['HIDDEN'] .= $subElement->get() . "\n";
-	  $div = TRUE;
 	  continue;
 	}
 
@@ -766,10 +763,7 @@ class PHPWS_Form {
     }      
 
     if (isset($this->_action)){
-      if (isset($div))
-	$template['END_FORM'] = "\n</div>\n</form>\n";
-      else
-	$template['END_FORM'] = "</form>\n";
+      $template['END_FORM'] = "</form>\n";
     }
 
     if (isset($this->_template))
