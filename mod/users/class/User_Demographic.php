@@ -38,6 +38,10 @@ class User_Demographic {
     return $this->_label;
   }
 
+  function getFormLabel(){
+    return "demographic[" . $this->getLabel() ."]";
+  }
+
   function setInputType($input_type){
     switch (strtolower($input_type)){
     case "textfield":
@@ -74,6 +78,7 @@ class User_Demographic {
   function addSpecialInfo(&$form){
     $inputType = $this->getInputType();
     $specialInfo = $this->getSpecialInfo();
+
     if (!isset($specialInfo))
       return TRUE;
 
@@ -82,12 +87,12 @@ class User_Demographic {
 
     switch($inputType){
     case "textfield":
-      $form->setSize($this->getLabel(), $specialInfo);
+      $form->setSize($this->getFormLabel(), $specialInfo);
       break;
 
     case "select":
       $final = User_Demographic::buildSpecialArray($specialInfo);
-      $form->setValue($this->getLabel(), $final);
+      $form->setValue($this->getFormLabel(), $final);
       break;
 
     case "radio":
@@ -95,12 +100,12 @@ class User_Demographic {
       $count = 1;
       foreach($answers as $key=>$value){
 	$final[] = $key;
-	$label = strtoupper($this->getLabel() . "_" . $count . "_" . "lbl");
+	$label = strtoupper($this->getFormLabel() . "_" . $count . "_" . "lbl");
 	$template[$label] = $value;
 	$count++;
       }
       $form->mergeTemplate($template);
-      $form->setValue($this->getLabel(), $final);
+      $form->setValue($this->getFormLabel(), $final);
       break;
     }
   }
