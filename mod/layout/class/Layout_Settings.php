@@ -15,11 +15,13 @@ class Layout_Settings{
   var $meta_content     = NULL;
   var $header           = NULL;
   var $footer           = NULL;
+  var $cache            = TRUE;
   var $_contentVars     = array();
   var $_boxes           = array();
   var $_box_order       = array();
   var $_move_box        = FALSE;
   var $_theme_variables = NULL;
+
 
 
   function Layout_Settings(){
