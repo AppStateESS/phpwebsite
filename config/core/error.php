@@ -54,5 +54,7 @@ $errors[PHPWS_NO_MOD_FOUND]          = _("Module not found in the database.");
 // Error.php 600 - 699
 $errors[PHPWS_NO_ERROR_FILE]         = _("No error message file found.");
 
+// Help.php 700 - 799
+$errors[PHPWS_UNMATCHED_OPTION]      = _("Help option not found in help configuration file.");
 
 ?>

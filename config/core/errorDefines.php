@@ -56,4 +56,7 @@ define("PHPWS_NO_MOD_FOUND",          -500);
 
 /*************** Error.php ****************/
 define("PHPWS_NO_ERROR_FILE",         -600);
+
+/*************** Help.php  ****************/
+define("PHPWS_UNMATCHED_OPTION",      -700);
 ?>
