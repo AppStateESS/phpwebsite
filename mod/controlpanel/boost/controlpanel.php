@@ -15,6 +15,4 @@ $tabs[] = array("title" => _("Administration"),
 $tabs[] = array("title" => _("Developer"),
 		"link"  => "index.php?module=controlpanel",
 		);
-echo "tabs are ";
-echo phpws_debug::testarray($tabs);
 ?>

@@ -122,7 +122,6 @@ class Demographics {
       $item->addSpecialInfo($form);
       $template[strtoupper($item->getLabel()) . "_LBL"] = $item->getProperName(TRUE);
     }
-
     $form->mergeTemplate($template);
   }
 
