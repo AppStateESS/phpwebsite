@@ -185,50 +185,32 @@ class User_Form {
     return $pager->get();
   }
 
-  /*
-  function manageUsers(){
-    PHPWS_Core::initModClass("users", "User_Manager.php");
-    if (!isset($_SESSION['User_Manager']))
-      $manager = & new User_Manager;
-    else
-      $manager = unserialize($_SESSION['User_Manager']);
-
-    if (isset($_POST['search_users']))
-      $manager->setWhere("username LIKE '%" . $_POST['search_users'] . "%'");
-
-    $content = $manager->getList("users", "Testing User Title");
-
-    $_SESSION['User_Manager'] = serialize($manager);
-
-    if (PEAR::isError($content)){
-      PHPWS_Error::log($content);
-      return $content->getMessage();
-    }
-    return $content;
-
-  }
-  */
 
   function manageGroups(){
+    Layout::addStyle("users");
+    PHPWS_Core::initCoreClass("DBPager.php");
     PHPWS_Core::initModClass("users", "Group_Manager.php");
-    if (!isset($_SESSION['Group_Manager']))
-      $manager = & new Group_Manager;
-    else
-      $manager = unserialize($_SESSION['Group_Manager']);
 
-    if (isset($_POST['search_groups']))
-      $manager->setWhere("name LIKE '%" . $_POST['search_groups'] . "%'");
+    $pageTags['GROUPNAME'] = _("Group Name");
+    //    $pageTags['ACTIVE'] = _("Active");
+    $pageTags['MEMBERS_LABEL'] = _("Members");
+    $pageTags['ACTIONS_LABEL'] = _("Actions");
 
-    $content = $manager->getList("users", "Testing Group Title");
+    $pager = & new DBPager("users_groups", "Group_Manager");
+    $pager->setModule("users");
+    $pager->setTemplate("manager/groups.tpl");
+    $pager->setLink("index.php?module=users&action=admin&tab=manage_groups");
+    $pager->addTags($pageTags);
+    $pager->setMethod("active", "listActive");
+    $pager->addToggle("class=\"toggle1\"");
+    $pager->addToggle("class=\"toggle2\"");
+    $pager->addRowTag("actions", "Group_Manager", "listAction");
+    $pager->addRowTag("members", "Group_Manager", "listMembers");
 
-    $_SESSION['Group_Manager'] = serialize($manager);
+    if (!Current_User::isDeity())
+      $pager->addWhere("id", ANONYMOUS_ID, "!=");
 
-    if (PEAR::isError($content)){
-      PHPWS_Error::log($content);
-      return $content->getMessage();
-    }
-    return $content;
-
+    return $pager->get();
   }
 
   function manageMembers(&$group){
@@ -438,18 +420,18 @@ class User_Form {
     $members = $group->getMembers();
 
     if ($group->getId() > 0){
-      $form->add("groupId", "hidden", $group->getId());
-      $form->add("submit", "submit", _("Update Group"));
+      $form->addHidden("groupId", $group->getId());
+      $form->addSubmit("submit", _("Update Group"));
     } else
-      $form->add("submit", "submit", _("Add Group"));
+      $form->addSubmit("submit", _("Add Group"));
 
-    $form->add("module", "hidden", "users");
-    $form->add("action[admin]", "hidden", "postGroup");
+    $form->addHidden("module", "users");
+    $form->addHidden("action", "admin");
+    $form->addHidden("command", "postGroup");
 
-    $form->add("groupname", "textfield", $group->getName());
-
+    $form->addText("groupname", $group->getName());
+    $form->setLabel("groupname", _("Group Name"));
     $template = $form->getTemplate();
-    $template['GROUPNAME_LBL'] = _("Group Name");
 
     $content = PHPWS_Template::process($template, "users", "forms/groupForm.tpl");
     return $content;

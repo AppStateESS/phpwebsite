@@ -175,8 +175,6 @@ class User_Action {
 
       break;
 
-
-
     case "postGroup":
       PHPWS_Core::initModClass("users", "Group.php");
       $id = (isset($_REQUEST['groupId']) ? (int)$_REQUEST['groupId'] : NULL);
@@ -203,7 +201,6 @@ class User_Action {
       User_Form::setActiveDemographics();
       $content = User_Form::demographics("Demographics updated");
       break;
-
 
     case "addMember":
       PHPWS_Core::initModClass("users", "Group.php");
@@ -285,7 +282,7 @@ class User_Action {
     if (Current_User::allow("users", "settings"))
       $tabs["settings"] = array("title"=>_("Settings"), "link"=>$link);
 
-    $panel = & new PHPWS_Panel("users");
+    $panel = & new PHPWS_Panel("user_user_panel");
     $panel->quickSetTabs($tabs);
     $panel->setModule("users");
     $panel->setPanel("panel.tpl");

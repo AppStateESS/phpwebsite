@@ -1,29 +1,15 @@
 <?php
 
-class PHPWS_Group extends PHPWS_Item {
-  var $_id          = NULL;
-  var $_name        = NULL;
-  var $_user_id     = 0;
+class PHPWS_Group {
+  var $id           = NULL;
+  var $name         = NULL;
+  var $user_id      = 0;
+  var $active       = FALSE;
   var $_members     = NULL;
   var $_permissions = NULL;
   var $_groups      = NULL;
   
   function PHPWS_Group($id=NULL, $loadGroups=TRUE){
-    $excludes = array (
-		       "_owner",
-		       "_editor",
-		       "_ip",
-		       "_created",
-		       "_updated",
-		       "_approved",
-		       "_members",
-		       "_permissions",
-		       "_groups"
-		       );
-
-    $this->addExclude($excludes);
-    $this->setTable("users_groups");
-
     if (isset($id)){
       $this->setId($id);
       $this->init();
@@ -31,6 +17,28 @@ class PHPWS_Group extends PHPWS_Item {
       if ($loadGroups == TRUE)
 	$this->loadGroups();
     }
+  }
+
+  function init(){
+    $db = & new PHPWS_DB("users_groups");
+    $db->addWhere("id", $this->id);
+    return $db->loadObject($this, "PHPWS_Group");
+  }
+
+  function setId($id){
+    $this->id = (int)$id;
+  }
+
+  function getId(){
+    return $this->id;
+  }
+
+  function setActive($active){
+    $this->active = (bool)$active;
+  }
+
+  function isActive(){
+    return (bool)$this->active;
   }
 
   function loadGroups(){
@@ -61,7 +69,6 @@ class PHPWS_Group extends PHPWS_Item {
     $db->addColumn("member_id");
     $result = $db->select("col");
     $this->setMembers($result);
-
   }
 
   function setName($name, $test=FALSE){
@@ -142,7 +149,12 @@ class PHPWS_Group extends PHPWS_Item {
   }
 
   function save(){
-    $result = $this->commit();
+    $db = & new PHPWS_DB("users_groups");
+
+    if (isset($this->id))
+      $db->addWhere("id", $this->id);
+
+    $result = $db->saveObject($this);
     $members = $this->getMembers();
 
     if (isset($members)){
@@ -155,8 +167,6 @@ class PHPWS_Group extends PHPWS_Item {
 	$db->resetValues();
       }
     }
-
-    return $result;
   }
 
   function allow($itemName, $subpermission=NULL, $item_id=NULL, $returnType=FALSE){

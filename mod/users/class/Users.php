@@ -60,10 +60,6 @@ class PHPWS_User {
     return $this->id;
   }
 
-  function getAuthorize(){
-    return $this->authorize;
-  }
- 
   function isDuplicateUsername(){
     $DB = & new PHPWS_DB("users");
     $DB->addWhere("username", $this->username);
