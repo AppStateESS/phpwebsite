@@ -755,6 +755,11 @@ class PHPWS_Form {
 
     }
 
+    if (empty($current) || $current == 0)
+      $selectList[] = "<option value=\"0\" selected=\"selected\">---- " . _("No image") . " ----</option>";
+    else
+      $selectList[] = "<option value=\"0\">---- " . _("No image") . " ----</option>";
+
     foreach ($imageList as $directory=>$info){
       if ($directory == $module)
 	$directory = _("Main");
@@ -778,7 +783,6 @@ class PHPWS_Form {
 	  $selectList[] = "<option value=\"$id\" selected=\"selected\">$title</value>";
 	else
 	  $selectList[] = "<option value=\"$id\">$title</value>";
-
       }
 
       $selectList[] = "</optgroup>";
