@@ -1,45 +1,50 @@
 <?php
 
-function install(&$content){
+function install(&$content, $branchInstall=FALSE){
   PHPWS_Core::initModClass("users", "Users.php");
   PHPWS_Core::initModClass("users", "Action.php");
+  PHPWS_Core::initModClass("users", "Demographics.php");
   include PHPWS_Core::getConfigFile("users", "config.php");
 
   $user = & new PHPWS_User;
   $content[] = "<hr />";
 
-  if (isset($_POST['module']) && $_POST['module']=="users"){
-    $result = User_Action::postUser($user);
-    if (!is_array($result)){
-      $anon = new PHPWS_User;
-      $anon->setUsername(_("Anonymous"));
-      $result = $anon->save();
+  if ($branchInstall==FALSE){
+    if (isset($_POST['module']) && $_POST['module']=="users"){
+      $result = User_Action::postUser($user);
+      if (!is_array($result)){
+	$anon = new PHPWS_User;
+	$anon->setUsername(_("Anonymous"));
+	$result = $anon->save();
 
-      if (PEAR::isError($result))
-	return $result;
+	if (PEAR::isError($result))
+	  return $result;
 
-      $user->setDeity(TRUE);
-      $result = $user->save();
-      if (PEAR::isError($result))
-	return $result;
+	$user->setDeity(TRUE);
+	$result = $user->save();
+	if (PEAR::isError($result))
+	  return $result;
 
-      $content[] = _("User created successfully.");
+	$content[] = _("User created successfully.");
 
-      $db = & new PHPWS_DB("users_config");
-      $db->addValue("anonymous", $anon->getId());
+	$db = & new PHPWS_DB("users_config");
+	$db->addValue("anonymous", $anon->getId());
 
-      return TRUE;
+      } else {
+	foreach ($result as $error)
+	  $errors[] = $error->getMessage();
+	$content[] = userForm($user, implode("<br />", $errors));
+	return FALSE;
+      }
     } else {
-      foreach ($result as $error)
-	$errors[] = $error->getMessage();
-      $content[] = userForm($user, implode("<br />", $errors));
+      $content[] = _("Please create a user to administrate the site.") . "<br />";
+      $content[] = userForm($user);
       return FALSE;
     }
-  } else {
-    $content[] = _("Please create a user to administrate the site.") . "<br />";
-    $content[] = userForm($user);
-    return FALSE;
   }
+
+  $result = Demographics::import("mod/users/conf/demographics.txt");
+  return TRUE;
 
 }
 
