@@ -291,6 +291,7 @@ class PHPWS_List {
       $db->addColumn($this->_idColumn);
 
       $where = $this->getWhere();
+
       if(isset($where))
 	$db->setQWhere($where);
       
@@ -482,7 +483,7 @@ class PHPWS_List {
 
   function setWhere($where = NULL) {
     if(isset($where) && is_string($where)) {
-      $this->_where = $where;
+      $this->_where = preg_replace("/where/i", "", $where);
       return TRUE;
     } else {
       $this->_where = NULL;
@@ -492,7 +493,7 @@ class PHPWS_List {
 
   function setOrder($order = NULL) {
     if(isset($order) && is_string($order)) {
-      $this->_order = $order;
+      $this->_order = preg_replace("/order by/i", "", $order);
       return TRUE;
     } else {
       $this->_order = NULL;
@@ -543,8 +544,8 @@ class PHPWS_List {
       }
     }
 
-    if(isset($order)) return " ORDER BY $order";
-    else if(isset($this->_order)) return " ORDER BY $this->_order";
+    if(isset($order)) return "$order";
+    else if(isset($this->_order)) return "$this->_order";
     else return NULL;
   } // END FUNC getOrder()
 
