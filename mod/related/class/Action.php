@@ -167,9 +167,7 @@ class Related_Action {
 
     $related = & Related_Action::getBank();
     $related->setBanked(TRUE);
-
-    header("location:" . $related->getUrl());
-    exit();
+    PHPWS_Core::reroute($related->getUrl());
   }
 
   function quit(){
