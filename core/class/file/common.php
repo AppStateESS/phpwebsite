@@ -25,6 +25,8 @@ class File_Common {
       return FALSE;
 
     $db = & new PHPWS_DB($table);
+    $db->addWhere("id", $this->id);
+    return $db->loadObject($this);
   }
 
 
@@ -88,6 +90,8 @@ class File_Common {
 
   function setModule($module){
     $this->module = $module;
+    if (empty($this->directory))
+      $this->setDirectory($module);
   }
 
   function getModule(){
@@ -109,7 +113,7 @@ class File_Common {
     if (empty($this->directory))
       return PHPWS_Error::get(PHPWS_DIRECTORY_NOT_SET, "core", "PHPWS_File::getPath");
 
-    return $this->getDirectory() . $this->getFilename();
+    return "images/" . $this->getDirectory() . $this->getFilename();
   }
 
   function allowType($type=NULL){
@@ -126,9 +130,9 @@ class File_Common {
 
   function allowSize($size=NULL){
     if ($this->_classtype == "doc")
-      $limit = unserialize(MAX_DOC_SIZE);
+      $limit = MAX_DOC_SIZE;
     else
-      $limit = unserialize(MAX_IMAGE_SIZE);
+      $limit = MAX_IMAGE_SIZE;
 
     if (!isset($size))
       $size = $this->getSize();
@@ -136,9 +140,13 @@ class File_Common {
     return ($size <= $limit) ? TRUE : FALSE;
   }
 
+  function fileIsSet($varName){
+    return (empty($_FILES) || empty($_FILES[$varName]['name'])) ? FALSE : TRUE;
+  }
+
   function getFILES($varName){
-    if (empty($_FILES) || empty($_FILES[$varName]))
-      return PHPWS_Error::get(PHPWS_FILE_NO_FILES, "core", "PHPWS_Image::loadUpload");
+    if (!$this->fileIsSet($varName))
+      return PHPWS_Error::get(PHPWS_FILE_NO_FILES, "core", "PHPWS_File::getFILES");
 
     $this->filename = $_FILES[$varName]['name'];
     $this->setSize($_FILES[$varName]['size']);
@@ -146,6 +154,21 @@ class File_Common {
     $this->setType($_FILES[$varName]['type']);
   }
 
+  function write(){
+    $temp_dir = $this->getTmpName();
+    $path = $this->getPath();
+
+    if (empty($temp_dir))
+      return PHPWS_Error::get(PHPWS_FILE_NO_TMP, "core", "PHPWS_image::write", $path);
+
+    if (PEAR::isError($path))
+      return $path;
+
+    if(!@move_uploaded_file($temp_dir, $path))
+      return PHPWS_Error::get(PHPWS_FILE_DIR_NONWRITE, "core", "PHPWS_image::writeImage", $path);
+
+    return TRUE;
+  }
 
 }
 

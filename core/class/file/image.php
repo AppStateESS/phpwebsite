@@ -17,7 +17,9 @@ define("IMAGETYPE_IFF",    14);
 define("IMAGETYPE_WBMP",   15);
 define("IMAGETYPE_XBM",    16);
 
-class PHPWS_image extends File_Common{
+PHPWS_Core::initCoreClass("file/common.php");
+
+class PHPWS_Image extends File_Common{
 
   var $width     = NULL;
   var $height    = NULL;
@@ -199,7 +201,7 @@ class PHPWS_image extends File_Common{
       return TRUE;
   }
 
-  function loadUpload($varName){
+  function importPost($varName){
     $result = $this->getFILES($varName);
 
     if (PEAR::isError($result))
@@ -210,23 +212,21 @@ class PHPWS_image extends File_Common{
     return $result;
   }
 
-  function writeImage(){
-    $temp_dir = $this->getTmpName();
-    $path = $this->getPath();
+  function save(){
+    if (empty($this->alt))
+      $this->alt = $this->title;
 
-    if (empty($temp_dir))
-      return PHPWS_Error::get(PHPWS_IMG_NO_TMP, "core", "PHPWS_image::writeImage", $path);
+    $result = $this->write();
+    if (PEAR::isError($result))
+      return $result;
 
-    if (PEAR::isError($path))
-      return $path;
+    $db = & new PHPWS_DB("images");
+    if (isset($this->id))
+      $db->addWhere("id", $this->id);
 
-    if(!move_uploaded_file($temp_dir, $path))
-      return PHPWS_Error::get(PHPWS_IMG_DIR_NONWRITE, "core", "PHPWS_image::writeImage", $path);
-
-    return TRUE;
+    return $db->saveObject($this);
   }
-  
+ 
 }
-
 
 ?>

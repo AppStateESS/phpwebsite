@@ -1,5 +1,7 @@
 <?php
 
+PHPWS_Core::initCoreClass("file/common.php");
+
 class PHPWS_doc extends File_Common {
 
   function setType($type){
