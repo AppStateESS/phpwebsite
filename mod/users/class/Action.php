@@ -3,6 +3,7 @@
 class User_Action {
 
   function adminAction($command){
+    $content = NULL;
 
     PHPWS_Core::initModClass("users", "Form.php");
     PHPWS_Core::initModClass("controlpanel", "Panel.php");
@@ -17,31 +18,32 @@ class User_Action {
     case "main":
 
       if (isset($_REQUEST['tab']))
-	$content = User_Action::adminAction($_REQUEST['tab']);
+	User_Action::adminAction($_REQUEST['tab']);
       else {
 	$panel = & new PHPWS_Panel("users");
 
 	$currentTab = $panel->getCurrentTab();
 
 	if(isset($currentTab))
-	  $content = User_Action::adminAction($currentTab);
+	  User_Action::adminAction($currentTab);
 	else
-	  $content = User_Action::adminAction(DEFAULT_USER_MENU);
+	  User_Action::adminAction(DEFAULT_USER_MENU);
       }
+      return;
       break;
 
       /** Form cases **/
     case "new_user":
       $user = & new PHPWS_User;
-      return User_Form::userForm($user);
+      $content = User_Form::userForm($user);
       break;
 
     case "manage_users":
-      return User_Form::manageUsers();
+      $content = User_Form::manageUsers();
       break;
 
     case "demographics":
-      return User_Form::demographics();
+      $content = User_Form::demographics();
       break;
 
 
@@ -113,11 +115,19 @@ class User_Action {
     if (isset($ID)){
       $_SESSION['User'] = new PHPWS_User($ID);
       $_SESSION['User']->setLogged(TRUE);
+      User_Action::updateLastLogged();
       PHPWS_User::getLogin();
       return TRUE;
     }
     
     return FALSE;
+  }
+
+  function updateLastLogged(){
+    $db = & new PHPWS_DB("users");
+    $db->addWhere("id", $_SESSION['User']->getId());
+    $db->addValue("last_logged", mktime());
+    return $db->update();
   }
 
 
