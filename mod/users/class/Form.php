@@ -27,7 +27,7 @@ class PHPWS_User_Form {
     translate("users");
     if ($logged){
       $username = $_SESSION['User']->getUsername();
-      $form['TITLE']   = _print(_("Hello [var1]", $username));
+      $form['TITLE']   = _print(_("Hello [var1]"), array($username));
       $form['CONTENT'] = PHPWS_User_Form::loggedIn();
     }
     else {
