@@ -10,10 +10,15 @@ class Users_Permission {
 
 
   function allow($itemName, $subpermission=NULL, $item_id=NULL, $returnType=FALSE){
-    if (!isset($this->permissions[$itemName]))
+    if (!isset($this->permissions[$itemName])){
       $result = Users_Permission::loadPermission($itemName, $this->permissions);
+    }
 
-    $permissionLvl = $this->permissions[$itemName]['permission_level'];
+    $permissionLvl = (int)$this->permissions[$itemName]['permission_level'];
+
+    if (!$returnType && $permissionLvl == 0)
+      return FALSE;
+      
 
     if(isset($this->permissions[$itemName]['permissions'])){
       if (isset($subpermission)){
@@ -36,8 +41,9 @@ class Users_Permission {
 	  return FALSE;
       } else
 	return ($returnType ? $permissionLvl : TRUE);
-    } else
-      return ($returnType ? $permissionLvl : TRUE);
+    } else {
+      return ($returnType ? $permissionLvl : (bool)$permissionLvl);
+    }
   }
 
   function loadPermission($itemName, &$permissions){
@@ -71,14 +77,16 @@ class Users_Permission {
       return TRUE;
     }
 
-    if ($useItem)
+    if ($useItem){
       $itemResult = $itemDB->select("col");
 
-    if (PEAR::isError($itemResult))
-      return $itemResult;
+      if (PEAR::isError($itemResult))
+	return $itemResult;
 
-    if (!isset($itemResult))
-      $itemResult = array();
+      if (!isset($itemResult))
+	$itemResult = array();
+    } else
+      $itemResult = NULL;
 
     $permissionSet = array();
     foreach ($permResult as $permission){
@@ -97,6 +105,7 @@ class Users_Permission {
     $permissions[$itemName]['permission_level'] = $permissionLevel;
     $permissions[$itemName]['items']            = $itemResult;
     $permissions[$itemName]['permissions']      = $permissionSet;
+
     return TRUE;
   }
 
@@ -171,26 +180,33 @@ class Users_Permission {
   }
 
 
-  function setPermissions($group_id, $itemName, $permissions){
+  function setPermissions($group_id, $itemName, $level, $subpermissions=NULL){
     $tableName = Users_Permission::getPermissionTableName($itemName);
-    $DB = new PHPWS_DB($tableName);
-    $DB->addWhere("group_id", $group_id);
-    $newRights = $DB->select("row");
+    $db = new PHPWS_DB($tableName);
+    $db->addWhere("group_id", $group_id);
 
-    if (PEAR::isError($newRights))
-      return $newRights;
+    $db->delete();
 
-    if (isset($newRights)){
-      foreach ($permissions as $name=>$switch)
-	$newRights[$name] = (int)$switch;
-      $command = "update";
-    } else {
-      $newRights = $permissions;
-      $newRights['group_id'] = $group_id;
-      $command = "insert";
+    $db->resetWhere();
+
+    $db->addValue("group_id", (int)$group_id);
+    $columns = $db->getTableColumns();
+
+    $db->addValue("permission_level", (int)$level);
+
+    if (isset($subpermissions)){
+      foreach ($columns as $colName){
+	if ($colName == "permission_level" || $colName == "group_id")
+	  continue;
+	
+	if (isset($subpermissions[$colName]) && (int)$subpermissions[$colName] == 1)
+	  $db->addValue($colName, 1);
+	else
+	  $db->addValue($colName, 0);
+      }
     }
-    $DB->addValue($newRights);
-    $DB->$command();
+
+    $db->insert();
 
   }
   

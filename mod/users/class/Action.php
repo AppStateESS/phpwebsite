@@ -66,7 +66,7 @@ class User_Action {
 	break;
       }
 
-      $content = User_Form::setPermissions($id);
+      $content = User_Form::setPermissions($id, "user");
       break;
 
     case "new_group":
@@ -152,6 +152,23 @@ class User_Action {
       }
       break;
 
+    case "postPermission":
+      PHPWS_Core::initModClass("users", "Group.php");
+      $id = $_POST['group'];
+      $group = & new PHPWS_Group($id);
+      User_Action::postPermission($group);
+
+      $content = _("Permissions updated.") . "<hr />";
+
+      if ($_POST['type'] == "user")
+	$content .= User_Form::manageUsers();
+      else
+	$content .= User_Form::manageGroups();
+
+      break;
+
+
+
     case "postGroup":
       PHPWS_Core::initModClass("users", "Group.php");
       $id = (isset($_REQUEST['groupId']) ? (int)$_REQUEST['groupId'] : NULL);
@@ -221,6 +238,35 @@ class User_Action {
       break;
     }
   }
+
+  function postPermission(&$group){
+    PHPWS_Core::initModClass("users", "Permission.php");
+
+    if (isset($_POST['update']))
+      foreach ($_POST['update'] as $update => $nullIt);
+    elseif (isset($_POST['update_all']))
+      $update = "all";
+    else
+      exit("need error in postPermission");
+
+    $permission = $_POST['permission'];
+    $subperm = $_POST['subpermission'];
+
+    if ($update == "all"){
+      foreach ($permission as $itemname => $status){
+	Users_Permission::setPermissions($group->getId(), $itemname, $status, $subperm[$itemname]);
+      }
+    } else {
+      if (isset($subperm[$update]))
+	$subpermission = $subperm[$update];
+      else
+	$subpermission = NULL;
+      Users_Permission::setPermissions($group->getId(), $update, $permission[$update], $subpermission);
+    }
+
+    return TRUE;
+  }
+
 
   function loginUser($username, $password){
     // Note assuming here we are using the one username database

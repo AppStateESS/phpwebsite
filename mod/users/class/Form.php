@@ -61,13 +61,19 @@ class User_Form {
     return PHPWS_Template::process($template, "users", "forms/loginBox.tpl");
   }
 
-  function setPermissions($id){
+  function setPermissions($id, $type){
     $group = new PHPWS_Group($id, FALSE);
 
     $modules = PHPWS_Core::getModules();
 
     $tpl = & new PHPWS_Template("users");
     $tpl->setFile("forms/permissions.tpl");
+
+    $form = & new PHPWS_Form();
+    $form->add("module", "hidden", "users");
+    $form->add("action[admin]", "hidden", "postPermission");
+    $form->add("group", "hidden", $id);
+    $form->add("type", "hidden", $type);
 
     foreach ($modules as $mod){
       $row = User_Form::modulePermission($mod, $group);
@@ -76,6 +82,10 @@ class User_Form {
       $tpl->setData($template);
       $tpl->parseCurrentBlock("module");
     }
+
+    $form->add("update_all", "submit", _("Update All"));
+    $template = $form->getTemplate();
+    $tpl->setData($template);
 
     $content  = $tpl->get();
     return $content;

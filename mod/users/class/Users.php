@@ -17,7 +17,7 @@ class PHPWS_User extends PHPWS_Item {
 		     "_editor",
 		     "_ip",
 		     "_groups",
-		     "_permissions",
+		     "_permission",
 		     "_logged",
 		     "_last_logged",
 		     "_settings"
