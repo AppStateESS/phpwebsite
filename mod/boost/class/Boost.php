@@ -95,7 +95,7 @@ class PHPWS_Boost {
       $content[] = "<b>" . _("Installing") . " - " . $mod->getProperName() ."</b>";
 
       if ($this->getStatus($title) == BOOST_START && $mod->isImportSQL()){
-	$content[] = _("Importing SQL file.");
+	$content[] = _("Importing SQL install file.");
 	$result = PHPWS_Boost::importSQL($mod->getDirectory() . "boost/install.sql");
 
 	if (is_array($result)){
@@ -104,6 +104,8 @@ class PHPWS_Boost {
 
 	  $content[] = _("An import error occurred.");
 	  $content[] = _("Check your logs for more information.");
+	  return implode("<br />", $content);
+	  return;
 	} else
 	  $content[] = _("Import successful.");
       }
@@ -121,7 +123,7 @@ class PHPWS_Boost {
 	  $content[] = _("Installation complete!");
 	break;
       }
-      elseif ($result === NULL){
+      elseif ($result === -1){
 	$this->setStatus($title, BOOST_DONE);
 	$this->createDirectories($mod, $content);
 	$this->registerModule($mod, $content);
@@ -147,7 +149,7 @@ class PHPWS_Boost {
     $installFunction = $mod->getTitle() . "_install";
     if (!is_file($onInstallFile)){
       $this->addLog($mod->getTitle(), _("No installation file found."));
-      return NULL;
+      return -1;
     }
 
     if ($this->getStatus($mod->getTitle()) == BOOST_START)
@@ -196,15 +198,15 @@ class PHPWS_Boost {
       $content[] = "<b>" . _("Uninstalling") . " - " . $mod->getProperName() ."</b>";
 
       if ($this->getStatus($title) == BOOST_START && $mod->isImportSQL()){
-	$content[] = _("Importing SQL file.");
+	$content[] = _("Importing SQL uninstall file.");
 	$result = PHPWS_Boost::importSQL($mod->getDirectory() . "boost/uninstall.sql");
 
-	if (is_array($result)){
-	  foreach ($result as $error)
-	    PHPWS_Error::log($error);
+	if (PEAR::isError($result)){
+	  PHPWS_Error::log($result);
 
 	  $content[] = _("An import error occurred.");
 	  $content[] = _("Check your logs for more information.");
+	  return implode("<br />", $content);
 	} else
 	  $content[] = _("Import successful.");
       }
@@ -219,10 +221,10 @@ class PHPWS_Boost {
 	$content[] = _("Finished uninstalling module!");
 	break;
       }
-      elseif ($result === NULL){
+      elseif ($result == -1){
 	$this->setStatus($title, BOOST_DONE);
-	$this->createDirectories($mod, $content);
-	$this->registerModule($mod, $content);
+	$this->removeDirectories($mod, $content);
+	$this->unregisterModule($mod, $content);
       }
       elseif ($result === FALSE){
 	$this->setStatus($title, BOOST_PENDING);
@@ -245,8 +247,9 @@ class PHPWS_Boost {
     $onUninstallFile = $mod->getDirectory() . "boost/uninstall.php";
     $installFunction = $mod->getTitle() . "_uninstall";
     if (!is_file($onUninstallFile)){
+      $uninstallCnt[] = _("Uninstall file not found.");
       $this->addLog($mod->getTitle(), _("No uninstall file found."));
-      return NULL;
+      return -1;
     }
 
     if ($this->getStatus($mod->getTitle()) == BOOST_START)
@@ -591,7 +594,7 @@ class PHPWS_Boost {
     require_once "File.php";
 
     if (!is_file($file))
-      return PHPWS_Error::get(BOOST_ERR_NO_INSTALLSQL, "boost", "importSQL", "File: " . $sqlFile);
+      return PHPWS_Error::get(BOOST_ERR_NO_INSTALLSQL, "boost", "importSQL", "File: " . $file);
 
     $sql = File::readAll($file);
     $result = PHPWS_DB::import($sql);
@@ -606,8 +609,12 @@ class PHPWS_Boost {
   function aboutView($module){
     PHPWS_Core::initCoreClass("Module.php");
     $mod = & new PHPWS_Module($module);
-    $file = $mod->getDirectory() . "conf/about.php";
-    include $file;
+    $file = $mod->getDirectory() . "conf/about.html";
+
+    if (is_file($file))
+      include $file;
+    else
+      echo _("The About file is missing for this module.");
     exit();
   }
 
