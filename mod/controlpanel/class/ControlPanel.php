@@ -12,14 +12,12 @@ class PHPWS_ControlPanel {
     if (!isset($_SESSION['Control_Panel_Tabs'])){
       PHPWS_ControlPanel::loadTabs($panel);
     }
-    else
+    else {
       $panel->setTabs($_SESSION['Control_Panel_Tabs']);
-
+    }
 
     $allLinks = PHPWS_ControlPanel::getAllLinks();
 
-    if (!$allLinks)
-      return _("Control Panel does not contain any links.");
 
     $checkTabs = $panel->getTabs();
 
@@ -31,18 +29,26 @@ class PHPWS_ControlPanel {
       exit();
     } 
 
-    $links = array_keys($allLinks);
-
     $defaultTabs = PHPWS_ControlPanel::getDefaultTabs();
+
     foreach ($defaultTabs as $tempTab)
       $tabList[] = $tempTab['id'];
+
+    if (!empty($allLinks)) {
+      $links = array_keys($allLinks);
+    }
 
     foreach ($checkTabs as $tab){
       if ($tab->getItemname() == "controlpanel" &&
 	  in_array($tab->getId(), $tabList) &&
-	  !in_array($tab->getId(), $links)){
+	  (!isset($links) || !in_array($tab->getId(), $links))
+	  ) {
 	$panel->dropTab($tab->id);
       }
+    }
+
+    if (empty($panel->tabs)) {
+      return _('No tabs available in the Control Panel.');
     }
 
     if (!isset($content)){
@@ -55,6 +61,9 @@ class PHPWS_ControlPanel {
     } else
       $panel->setContent($content);
 
+    if (!isset($panel->tabs[$panel->getCurrentTab()])) {
+      return _('An error occurred while accessing the Control Panel.');
+    }
     $tab = $panel->tabs[$panel->getCurrentTab()];
     $link = str_replace("&amp;", "&",$tab->getLink(FALSE)) . "&tab=" . $tab->getId();
     $current_link = ereg_replace($_SERVER['PHP_SELF'] . "\?", "", $_SERVER['REQUEST_URI']);
@@ -98,18 +107,22 @@ class PHPWS_ControlPanel {
   function getAllLinks(){
     $allLinks = NULL;
 
-    if (isset($_SESSION['CP_All_links']))
+    // This session prevents the DB query and link
+    // creation from being repeated.
+    if (isset($_SESSION['CP_All_links'])) {
       return $_SESSION['CP_All_links'];
+    }
 
     $DB = new PHPWS_DB("controlpanel_link");
     $DB->addOrder("tab");
     $DB->addOrder("link_order");
     $DB->setIndexBy("id");
     $result = $DB->getObjects("PHPWS_Panel_Link");
-
+    
     foreach ($result as $link){
-      if (!$link->isRestricted() || $_SESSION['User']->allow($link->getItemName()))
+      if (!$link->isRestricted() || Current_User::allow($link->getItemName())) {
 	$allLinks[$link->getTab()][] = $link;
+      }
     }
     
     $_SESSION['CP_All_links'] = $allLinks;
