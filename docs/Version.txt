@@ -1,0 +1,258 @@
+Version Documentation
+by Matthew McNaney
+
+
+Note: This copy is a rough draft at best. It is more to get the
+documentation down for future reference. Eventually a better format
+will be created.
+
+
+Introduction
+---------------------------------------------------------------------
+Version is module that assists with storing past 'versions' of your
+content. It also contains approval processing tools that work with
+item permissioning.
+
+
+Requirements
+---------------------------------------------------------------------
+Version uses a data 'source'. This 'source' is what version bases its
+processes upon. Although your source can be an array of data, you may
+find it easier to use an object. Version accepts both.
+
+If you are using an object, the variables of it _must_ be identical to
+the column names of the table that contains it. So if your object
+looks like this:
+$this->name
+$this->address
+$this->city
+then your database table needs to look like:
+
+name |  address  |  city
+
+If you variables differ, then your source data should be an array, you
+can then load the values however you wish.
+
+The variable/table column "id" is _required_. Version expects to find
+an variable named "id" when processing your data. 
+
+To use the approval functionality, you should familiarize yourself
+with item permissioning under the User module: the basics of which
+will be covered in this documentation.
+
+
+Getting Started
+---------------------------------------------------------------------
+Version is not a static class. You will need to instantiate it.
+
+$version = & new Version("source_table");
+
+The "source_table" is the database table you use to store your source
+data.
+
+After instantiating the version, you need to set the source.
+
+$version->setSource($my_item);
+
+Again, $my_item can be an object or an array.
+
+Important: make sure to set the source at the proper time. For
+example, this would be bad:
+
+$version->setSource($new_item);
+$new_id = $new_item->save();
+$new_item->id = $new_id;
+
+The reason this will cause a problem was because Version expects to
+find the current id of the source. If you are saving a new item,
+version needs that information. You could either place the setSource
+function call AFTER the $new_item was saved and filled in with its new
+id or you could call
+$version->setSourceId($new_id)
+afterwards.
+
+
+Saving a version
+---------------------------------------------------------------------
+There are two states for a version: approved and unapproved.
+When an approved version is saved, it is added to the version
+table. This is like making a backup.
+An unapproved version, is added to the version table, but it isn't
+made active until it is approved by an administrator (more on that
+later).
+
+If you simply wanted to start saving versions or backups of items,
+then you want to save an approved version. First the version to 'approved'.
+
+$version->setApproved(TRUE);
+
+Now save it:
+
+$version->save();
+
+Version will then save an approved version to a duplicate table (which
+version creates automatically).
+
+
+Unapproved vs. Approved
+---------------------------------------------------------------------
+You may want to save a version as unapproved if the user is someone
+with restricted privileges. (A restricted user is someone who is able
+to perform actions on a limited number of items.) This way, the user
+can make edits to an item but only someone with unrestricted rights
+may approve them.
+
+Saving an unapproved version is simple. Just set
+$version->setApproved(FALSE);
+and then
+$version->save();
+
+
+Editing the Unapproved
+---------------------------------------------------------------------
+A restricted user is able to edit an unapproved item as often as they
+want. You will need to check for its existence first.
+
+Create your version as normal:
+$version = & new Version("my_mod_table");
+$version->setSource($my_mod_item);
+
+Now call the 'isWaitingApproval' function:
+
+$approval_id = $version->isWaitingApproval();
+
+If an integer is returned, then that is the id of the unapproved
+version. (Note: you can only have one unapproved version per item).
+Now you just need to load that version.
+
+You can create a new version by entering the id on the second
+construction parameter:
+
+$unapproved_version = & new Version("my_mod_table", $approve_id);
+
+or you can just reset the version that was in use:
+
+$version->setId($approval_id);
+$version->init();
+
+However you do it, you will now have a version that contains the item
+information that is awaiting approval. You can retrieve it two
+ways. If you just want an array of values:
+
+$my_items_data = $version->getSource();
+
+Alternately, you can give version your current object and have it fill
+in the information.
+
+$my_item = & new My_Item;
+$version->loadObject($my_item);
+
+Now you can edit the data however you want. Just make sure of one
+thing. You need to make sure you are keeping track of that version
+id. If you don't then each user edit will create a NEW version. You
+don't want that, you want them to continue editing the same
+version. Just pass the version id to your edit function if needed:
+
+My_Module::edit($my_item, $version_id);
+
+Then make sure to include it as a hidden variable in your form:
+
+$form->addHidden("module", "my_module");
+
+if (isset($version_id))
+   $form->addHidden("version_id", $version_id);
+
+After you collect the changes from the POST variable, instead of
+saving your item, set it as the source in the version:
+
+// collect the version_id from the form
+$version = & new Version("my_mod_table", $version_id);
+
+$version->setSource($updated_item);
+$version->save();
+
+This will update the unapproved version. You could setApproved(FALSE)
+but remember we are updating a version that is already unapproved so
+it is unnecessary.
+
+
+Approving an Version
+---------------------------------------------------------------------
+Before I go into approving something, let me briefly cover the
+creating an unapprove list.
+
+First create your version object. Next build your approval list.
+
+$approvalList = $version->getUnapproved();
+
+By default, getUnapproved will return ALL unapproved versions. If you
+want to restrict the list to the current user, you can request it like
+so:
+
+$approvalList = $version->getUnapproved(TRUE);
+
+The getUnapproved function will return an array of version objects.
+You will need to create the listing menu yourself. It may be easier to
+divide results into new items and updated items. You can check do this
+by checking the source id of each version (ala
+$version->getSourceId()). If the source id is zero, then it is a new
+item. Otherwise it is an update of a current item.
+
+Once the version id is passed back to your module, you will need to
+save your new or updated item and then save the version as approved.
+
+$version = & new Version("my_mod_table", $version_id);
+$my_item = & new My_Item;
+$version->loadObject($my_item);
+
+// Save the new version of your item
+$my_item->save();
+
+// If this was a new item, you will need to set the new source id
+// so the version will link up
+$version->setSourceId($my_item->id);
+
+$version->setApproved(TRUE);
+$version->save();
+
+Now you have:
+- Saved the new or updated version of your item
+- Updated the version as approved
+- Given the version its new source id if it had none
+
+If this was a new item, you may want to take is to give the restricted
+user item permissions. You can do so through the authorizeCreator
+function.
+
+$version->authorizeCreator("my_mod");
+
+This would give the creator of the version item rights for the newly
+created item.
+
+If you are using specific multiple item permissions, you can enter an
+item permission name just as you can with the User permission functions.
+
+$version->authorizeCreator("my_mod", "subsection");
+
+Read the user documentation for more information on item permission
+names.
+
+
+Dropping an Version
+---------------------------------------------------------------------
+If you want to remove a version (unapproved or otherwise) you can just
+call the kill function like so:
+
+$version = & new Version("my_mod_table", $version_id);
+$version->kill();
+
+It will be removed from the database forever (be careful!).
+
+
+Restoring a Version
+---------------------------------------------------------------------
+Sometimes you may want to undo some changes and return to another
+version. This is pretty simple.
+
+Instantiate your new version.
+
