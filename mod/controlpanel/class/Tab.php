@@ -1,4 +1,11 @@
 <?php
+/**
+ * Tab class
+ *
+ * @version $Id$
+ * @author  Matt McNaney <matt at tux dot appstate dot edu>
+ * @package Core
+ */
 
 class PHPWS_Panel_Tab {
   var $_id          = NULL;
@@ -102,15 +109,6 @@ class PHPWS_Panel_Tab {
     return $this->_style = $style;
   }
 
-  function setTabFile($tabfile){
-    $this->_tabfile = $tabfile;
-  }
-
-
-  function getTabFile(){
-
-    return $this->_tabfile;
-  }
 
   function setItemname($itemname){
     $this->_itemname = $itemname;
