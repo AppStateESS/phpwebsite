@@ -1,5 +1,4 @@
 <?php
-
 if (!isset($_REQUEST['action'])) return;
 
 if (!class_exists("PHPWS_User")){

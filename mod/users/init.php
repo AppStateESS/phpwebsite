@@ -12,9 +12,4 @@ if (isset($_REQUEST['action']['admin']))
 include_once $includeFile;
 
 PHPWS_Core::initModClass("users", "Users.php");
-if (isset($_REQUEST['action']) && $_REQUEST['module'] == "users")
-     PHPWS_Core::initModClass("users", "User_Manager.php");
-     else
-     PHPWS_Core::killSession("User_Manager");
-
 ?>
