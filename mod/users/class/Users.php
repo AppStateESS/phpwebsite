@@ -530,6 +530,22 @@ class PHPWS_User {
     $db->delete();
   }
 
+  function savePermissions($module, $item_id){
+    if (!PHPWS_Core::moduleExists($module))
+      return PHPWS_Error::get(PHPWS_NO_MOD_FOUND, "users", __CLASS__ . "::" . __FUNCTION__);
+
+    PHPWS_Core::initModClass("users", "Permission.php");
+    Users_Permission::savePermissions($module, $item_id);
+  }
+
+  function assignPermissions($module, $item_id=NULL){
+    if (!PHPWS_Core::moduleExists($module))
+      return PHPWS_Error::get(PHPWS_NO_MOD_FOUND, "users", __CLASS__ . "::" . __FUNCTION__);
+
+    PHPWS_Core::initModClass("users", "Permission.php");
+    return Users_Permission::assignPermissions($module, $item_id);
+  }
+
 }
 
 ?>
