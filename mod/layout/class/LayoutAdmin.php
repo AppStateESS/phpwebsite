@@ -45,7 +45,7 @@ class Layout_Admin{
     case "postMeta":
       PHPWS_Core::initModClass("layout", "Initialize.php");
       Layout_Admin::postMeta();
-      Layout_Init::initSettings(TRUE);
+      Layout::reset();
       $template['TITLE'] = _("Edit Meta Tags");
       $template['MESSAGE'] = _("Meta Tags updated.");
       $content = Layout_Admin::metaForm();
@@ -119,7 +119,7 @@ class Layout_Admin{
     $form->addHidden("action", "admin");
     $form->addHidden("command", "changeBoxSettings");
     $form->addRadio("move_boxes",  array(0, 1));
-    if (isset($_SESSION['Move_Boxes']))
+    if (Layout::isMoveBox())
       $form->setMatch("move_boxes", 1);
     else
       $form->setMatch("move_boxes", 0);
@@ -156,7 +156,7 @@ class Layout_Admin{
   }
 
   function metaForm(){
-    extract($_SESSION['Layout_Settings']);
+    extract($_SESSION['Layout_Settings']->getMetaTags());
 
     $index = substr($meta_robots, 0, 1);
     $follow = substr($meta_robots, 1, 1);
@@ -203,21 +203,26 @@ class Layout_Admin{
       $result = $box->save();
     }
 
-    Layout_Box::reorderBoxes($box->getTheme(), $currentThemeVar);
+    if (PEAR::isError($result)){
+      PHPWS_Error::log($result);
+      Layout::add("An unexpected error occurred when trying to save the new box position.");
+      return;
+    }
 
-    Layout::initLayout(TRUE);
+    Layout_Box::reorderBoxes($box->getTheme(), $currentThemeVar);
+    Layout::resetBoxes();
     return TRUE;
   }
 
   function moveBoxesTag($box){
     PHPWS_Core::initCoreClass("Form.php");
 
-    $themeVars = Layout::getThemeVariables();
+    $themeVars = $_SESSION['Layout_Settings']->getThemeVariables();
 
     $menu["up"] = _("Move Up");
     $menu["down"] = _("Move Down");
     foreach ($themeVars as $var){
-      if ($box['theme_var'] == $var)
+      if ($box->theme_var == $var)
 	continue;
       $menu[$var] = _("Move to") . " " . $var;
     }
@@ -226,9 +231,9 @@ class Layout_Admin{
     $form->addHidden("module", "layout");
     $form->addHidden("action", "admin");
     $form->addHidden("command", "moveBox");
-    $form->addHidden("box_source", $box['id']);
+    $form->addHidden("box_source", $box->id);
     $form->addSelect("box_dest", $menu);
-    $form->setMatch("box_dest", $box['theme_var']);
+    $form->setMatch("box_dest", $box->theme_var);
     $form->addSubmit("move", _("Move"));
 
     $template = $form->getTemplate();
@@ -265,9 +270,9 @@ class Layout_Admin{
 
   function saveBoxSettings(){
     if ($_REQUEST['move_boxes'] == 1)
-      $_SESSION['Move_Boxes'] = TRUE;
+      Layout::moveBoxes(TRUE);
     else
-      PHPWS_Core::killSession("Move_Boxes");
+      Layout::moveBoxes(FALSE);
   }
 
 
