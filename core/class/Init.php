@@ -50,6 +50,10 @@ function initLanguage(){
   elseif (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])){
     $userLang = explode(",", preg_replace("/(;q=\d\.*\d*)/", "", $_SERVER['HTTP_ACCEPT_LANGUAGE']));
     foreach ($userLang as $language){
+      if (strlen($language) == 2)
+	$language = doubleLanguage($language);
+
+
       $newLocale =  setlocale(LC_ALL, $language);
       if ($newLocale != FALSE){
 	setcookie("", $language, CORE_COOKIE_TIMEOUT);
@@ -69,6 +73,28 @@ function initLanguage(){
 
   if ($language_set == FALSE)
     setlocale(LC_ALL, $language);
+
+  loadLanguageDefaults($language);
+
+}
+
+function loadLanguageDefaults($language){
+  $rootDir = "config/core/i18n/";
+
+  if (is_file($rootDir . $language . ".php")){
+    require_once $rootDir . $language . ".php";
+  }
+  else {
+    $rootLanguage = explode("_", $language);
+    if (is_file($rootDir . $rootLanguage . "_default.php"))
+      require_once $rootDir . $rootLanguage . "_default.php";
+    else
+      require_once $rootDir . "default.php";
+  }
+}
+
+function doubleLanguage($language){
+  return $language . "_" . strtoupper($language);
 }
 
 /* replaces var# with array variables */ 
