@@ -1,0 +1,1 @@
+$values['address'] = "index.php?module=mymod&amp;action=view_in_small_window";

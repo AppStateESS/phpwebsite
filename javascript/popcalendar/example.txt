@@ -1,0 +1,10 @@
+<?php
+
+$vars = array("FORM_NAME"=>"myForm", "INPUT_NAME"=>"start_date", "DEFAULT_DATE"=>date("d-m-Y"));
+$java = Layout::getJavascript("popcalendar", $vars);
+
+Layout::add("CNT_layout", "<form name=\"myForm\" action=\"index.php\" method=\"post\">");
+Layout::add("CNT_layout", $java);
+Layout::add("CNT_layout", "</form>");
+
+?>
