@@ -605,6 +605,16 @@ $panel = & new PHPWS_Panel("links");
 Put the links in it:
 $panel->quickSetTabs($tabs);
 
+I am also going to use my own template for my panel. To do so I set:
+$panel->setModule("links");
+$panel->setPanel("panel.tpl");
+
+My template file is in the templates/ directory. I am using a special
+style sheet as well. To get it included, I just have to tell the
+Layout module about it.
+
+Layout::addStyle("links");
+
 And return the result with $panel->display($content);
 
 The content appears beneath the tabs. To get my panel to be surrounded
@@ -615,7 +625,7 @@ Now I just return the result and put it in the Layout.
 
 Using Layout
 Getting your code to display in phpWebSite is simple. Every theme has
-a BODY tag (you will read about tags and template later). The BODY tag
+a BODY tag (you will read about tags and templates later). The BODY tag
 is where the main portion of content gets displayed. Usually, it
 doesn't share its space with other modules (though it is
 possible). For our administrative panel we KNOW that it is the only
@@ -637,6 +647,10 @@ Layout::add($content, "links", "sideBox");
 When ever I want to use that box, I make sure I use the same marker
 name. If I want to add more data to the sideBox I can just call the
 add() function again. It will append the text, not replace it.
+
+(For more information on Layout, look in mod/layout/docs/devdoc.txt)
+
+
 
 
 
