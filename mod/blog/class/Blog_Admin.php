@@ -190,7 +190,6 @@ class Blog_Admin {
 	$message = $result;
       }
 
-
       $content = Blog_Admin::entry_list();
       break;
     }
@@ -280,7 +279,6 @@ class Blog_Admin {
     $template['CATEGORIES_LABEL'] = _('Category');
 
     $template['CATEGORIES'] = $cat_item->getForm();
-    //    $template['CATEGORIES'] = Categories::getForm('blog', $blog->id);
 
     if (Current_User::isUnrestricted('blog') && empty($version_id)){
       $assign = PHPWS_User::assignPermissions('blog', $blog->getId());
@@ -351,12 +349,6 @@ class Blog_Admin {
       return FALSE;
     }
 
-    /*
-    if (PHPWS_Core::isPosted()) {
-      return _('Ignoring duplicate post.');
-    }
-    */
-
     if (empty($_POST['title'])) {
       return array(_('Missing title.'));
     } else {
@@ -397,10 +389,10 @@ class Blog_Admin {
 	  $version->authorizeCreator('blog');
 	  
 	  if (PEAR::isError($result)) {
-	    PHPWS_Error::log($resul);
+	    PHPWS_Error::log($result);
 	    return FALSE;
 	  }
-	  
+	  return _('Blog updated and approved.');
 	} else {
 	  $result = Blog_Admin::saveVersion($blog, $version, FALSE);
 	  if (PEAR::isError($result)) {
@@ -447,14 +439,19 @@ class Blog_Admin {
     if (empty($blog->date)) {
       $blog->date = mktime();
     }
+
     $version->setSource($blog);
     $version->setApproved($approved);
     $result = $version->save();
-    if (!PEAR::isError($result)) {
-      $cat_item = & new Category_Item('blog');
-      Blog_Admin::_loadCategory($cat_item, $blog, $version);
-      $cat_item->updateVersion($approved);
+
+    if (PEAR::isError($result)) {
+      return $result;
     }
+
+    $cat_item = & new Category_Item('blog');
+    $cat_item->setApproved($approved);
+    Blog_Admin::_loadCategory($cat_item, $blog, $version);
+    $cat_item->savePost();
   }
   
   function restoreVersionList(&$blog)
@@ -586,7 +583,8 @@ class Blog_Admin {
 
     $cat_item = & new Category_Item('blog');
     Blog_Admin::_loadCategory($cat_item, $blog, $version);
-    $cat_item->updateVersion(TRUE);
+    $cat_item->setApproved(TRUE);
+    $cat_item->saveVersion();
 
     $version->setSourceId($blog->id);
     $version->setApproved(TRUE);
