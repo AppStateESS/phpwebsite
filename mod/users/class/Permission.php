@@ -247,7 +247,6 @@ class Users_Permission {
     return implode("", array($module, "_item_permissions"));
   }
 
-
   function setPermissions($group_id, $module, $level, $subpermissions=NULL){
     $tableName = Users_Permission::getPermissionTableName($module);
     if (!PHPWS_DB::isTable($tableName))
@@ -375,6 +374,7 @@ class Users_Permission {
     $table = Users_Permission::getItemPermissionTableName($module);
     $db = & new PHPWS_DB($table);
     $db->addWhere("item_id", $item_id);
+    $db->addWhere("item_name", $item_name);
     $db->delete();
     $db->reset();
 
@@ -397,6 +397,22 @@ class Users_Permission {
 	$db->addWhere("group_id", $group_id);
 	$db->delete();
       }
+  }
+
+  function grantUserItemPermission($user_id, $module, $item_id, $itemname=NULL)
+  {
+    if (!isset($itemname))
+      $itemname = $module;
+    $table = Users_Permission::getItemPermissionTableName($module);
+
+    $user = & new PHPWS_User($user_id);
+    $group_id = $user->getUserGroup();
+    
+    $db = & new PHPWS_DB($table);
+    $db->addValue("item_id", $item_id);
+    $db->addValue("item_name", $item_name);
+    $db->addValue("group_id", $group_id);
+    return $db->insert();
   }
 }
 
