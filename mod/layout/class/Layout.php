@@ -191,6 +191,21 @@ class Layout {
     exit();
   }
 
+  function _noContent($theme, $finalList){
+    $finalTheme = &Layout::loadTheme($theme);
+    if (PEAR::isError($finalTheme)){
+      PHPWS_Error::log($finalTheme);
+      PHPWS_Core::errorPage();
+    }
+    
+    if (!isset($finalList))
+      PHPWS_Error::log(LAYOUT_NO_CONTENT, "layout", "display");
+    elseif (PEAR::isError($finalList))
+      PHPWS_Error::log($finalList);
+    
+    echo $finalTheme->get();
+  }
+
   function display(){
     $themeVarList = array();
     $themeDir =  Layout::getThemeDir();
@@ -205,19 +220,7 @@ class Layout {
     $finalList = Layout::getBoxContent();
 
     if (!is_array($finalList)){
-      $finalTheme = &Layout::loadTheme($theme);
-      if (PEAR::isError($finalTheme)){
-	PHPWS_Error::log($finalTheme);
-	PHPWS_Core::errorPage();
-      }
-	
-
-      if (!isset($finalList))
-	PHPWS_Error::log(LAYOUT_NO_CONTENT, "layout", "display");
-      elseif (PEAR::isError($finalList))
-	PHPWS_Error::log($finalList);
-      
-      echo $finalTheme->get();
+      Layout::_noContent();
       return;
     }
 
@@ -272,20 +275,40 @@ class Layout {
     } else
       $finalLayout[] = implode("<br />", $unsortedLayout[$theme_var]);
 
+    $finalTheme = &Layout::loadTheme($theme, $finalLayout);
+
+
+
+    if (PEAR::isError($finalTheme))
+      $finalContent = implode("", $finalLayout);
+    else
+      $finalContent = $finalTheme->get();
+
+    Layout::wrap($theme, $finalContent);
+  }
+
+  function wrap($theme, $finalContent){
+    $template['TEST_JS'] = Layout::getJavascript("test");
+
     if (isset($GLOBALS['Layout_JS'])){
       foreach ($GLOBALS['Layout_JS'] as $script=>$javascript)
 	$jsHead[] = $javascript['head'];
 
       if (isset($jsHead))
-	$finalLayout['JAVASCRIPT'] = implode("\n", $jsHead);
+	$template['JAVASCRIPT'] = implode("\n", $jsHead);
     }
 
-    $finalTheme = &Layout::loadTheme($theme, $finalLayout);
-
-    if (PEAR::isError($finalTheme))
-      echo implode("", $finalLayout);
+    if (isset($GLOBALS['Style']))
+      array_unshift($GLOBALS['Style'], Layout::styleLink("themes/$theme/style.css"));
     else
-      echo $finalTheme->get();
+      $GLOBALS['Style'][] = Layout::styleLink("themes/$theme/style.css");
+    $template['STYLE'] = implode("\n", $GLOBALS['Style']);
+
+    $template['CONTENT'] = $finalContent;
+
+    $result = PHPWS_Template::process($template, "layout", "header.tpl");
+
+    echo $result;
   }
 
   function displayErrorMessage(){
@@ -332,14 +355,6 @@ class Layout {
     if (!isset($template))
       Layout::displayErrorMessage();
 
-    if (isset($GLOBALS['Style']))
-      array_unshift($GLOBALS['Style'], Layout::styleLink("themes/$theme/style.css"));
-    else
-      $GLOBALS['Style'][] = Layout::styleLink("themes/$theme/style.css");
-
-    $template['THEME_DIRECTORY'] = "themes/$theme/";
-    $template['STYLE'] = implode("\n", $GLOBALS['Style']);
-
     $tpl = new PHPWS_Template;
     $themeDir = Layout::getThemeDir();
 
@@ -352,6 +367,8 @@ class Layout {
 
     if (PEAR::isError($result))
       return $result;
+
+    $template['THEME_DIRECTORY'] = "themes/$theme/";
 
     $tpl->setData($template);
     return $tpl;
