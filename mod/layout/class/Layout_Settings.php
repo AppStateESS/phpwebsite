@@ -16,11 +16,18 @@ class Layout_Settings {
   var $header           = NULL;
   var $footer           = NULL;
   var $cache            = TRUE;
+
+  // Make sure to update your saveSettings function
+  // Remove all hidden variables from the update
   var $_contentVars     = array();
   var $_boxes           = array();
   var $_box_order       = array();
   var $_move_box        = FALSE;
   var $_theme_variables = NULL;
+  var $_default_box     = NULL;
+  var $_persistant_css  = NULL;
+  var $_default_css     = NULL;
+  var $_alternate_css   = NULL;
 
 
 
@@ -125,16 +132,65 @@ class Layout_Settings {
       $this->current_theme = $this->default_theme;
 
     $themeInit = './themes/' . $this->current_theme . '/theme.ini';
-    $theme_variables[] = DEFAULT_THEME_VAR;
-    $theme_variables[] = DEFAULT_BOX_VAR;
 
     if (is_file($themeInit)){
       $themeVars = parse_ini_file($themeInit, TRUE);
-      if (isset($themeVars['theme_variables'])) {
-	$theme_variables = array_merge($theme_variables, $themeVars['theme_variables']);
-      }
+      $this->loadBoxSettings($themeVars);
+      $this->loadStyleSheets($themeVars);
+    } else {
+      exit('missing theme.ini');
     }
 
+
+  }
+
+  function loadStyleSheets($themeVars) {
+    extract($themeVars);
+
+    if (!isset($persistant_style_sheet) && !isset($default_style_sheet)) {
+      $this->_persistant_css = array('file' => 'style.css');
+      return;
+    }
+
+    if (isset($persistant_style_sheet)) {
+      $this->_persistant_css = array('file' => $persistant_style_sheet['file']);
+    }
+    
+    if (isset($default_style_sheet)) {
+      $this->_default_css = array('file' => $default_style_sheet['file'],
+				  'title' => $default_style_sheet['title']);
+    }
+   
+    for ($i = 1; 1; $i++) {
+      $filename = 'alternate_style_sheet_' . $i;
+      if (!isset($$filename)) {
+	break;
+      }
+
+      $this->_alternate_css[] = array('file' => ${$filename}['file'],
+				      'title' => ${$filename}['title']);
+    }
+  }
+
+  function loadBoxSettings($themeVars) {
+    $theme_variables[] = DEFAULT_THEME_VAR;
+    $theme_variables[] = DEFAULT_BOX_VAR;
+
+    if (isset($themeVars['box_settings'])) {
+      if (isset($themeVars['box_settings']['default_box'])) {
+	$default_box = $themeVars['box_settings']['default_box'];
+	
+	if (is_file('themes/' . $this->current_theme . '/boxstyles/' . $default_box)) {
+	  $this->_default_box = $default_box;
+	} else {
+	  $this->_default_box = 'box.tpl';
+	}
+      }
+    }
+    
+    if (isset($themeVars['theme_variables'])) {
+      $theme_variables = array_merge($theme_variables, $themeVars['theme_variables']);
+    }
     $this->_theme_variables = $theme_variables;
   }
 
@@ -146,6 +202,10 @@ class Layout_Settings {
     unset($vars['_box_order']);
     unset($vars['_move_box']);
     unset($vars['_theme_variables']);
+    unset($vars['_default_box']);
+    unset($vars['_persistant_css']);
+    unset($vars['_default_css']);
+    unset($vars['_alternate_css']);
     unset($vars['current_theme']);
     $db->addValue($vars);
     return $db->update();
