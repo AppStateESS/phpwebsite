@@ -131,7 +131,7 @@ class PHPWS_Crutch {
 
       foreach ($layout_info as $layout){
 	if (isset($GLOBALS[$layout['content_var']]))
-	  Layout::add($GLOBALS[$layout['content_var']], $layout['content_var']);
+	  Layout::add($GLOBALS[$layout['content_var']], $module, $layout['content_var']);
       }
     }
   }
