@@ -155,12 +155,17 @@ class PHPWS_Core {
     PHPWS_Core::reroute();
   }
 
+  function getHttp(){
+    if ( isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on' )
+      return "https://";
+    else
+      return "http://";
+      
+  }
+
   function reroute($address=NULL){
     if (!preg_match("/^http/", $address)){
-      $http = "http://";
-
-      if ( isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on' )
-	$http = "https://";
+      $http = PHPWS_Core::getHttp();
 
       $dirArray = explode("/", $_SERVER['PHP_SELF']);
       array_pop($dirArray);
@@ -364,6 +369,19 @@ class PHPWS_Core {
       }
     }
     return TRUE;
+  }
+
+  function getHomeDir(){
+    $address[] = $_SERVER['DOCUMENT_ROOT'];
+    $address[] = dirname($_SERVER['PHP_SELF']);
+    return implode("", $address) . "/";
+  }
+
+  function getHomeHttp(){
+    $address[] = PHPWS_Core::getHttp();
+    $address[] = $_SERVER['HTTP_HOST'];
+    $address[] = dirname($_SERVER['PHP_SELF']);
+    return implode("", $address) . "/";
   }
 
 }// End of core class
