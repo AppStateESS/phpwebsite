@@ -5,7 +5,7 @@ The Related module allows administrators to link information. Once one
 or more items are linked, they will reference one another when either
 is viewed.
 
-Making you module work with the Related module, is simple and
+Making your module work with the Related module is simple and
 straightforward.
 
 You should access the Related module when an individual item (an
