@@ -1,6 +1,6 @@
 <?php
 
-define ('DBPAGER_DEFAULT_LIMIT', 5);
+define ('DBPAGER_DEFAULT_LIMIT', 10);
 define ('DBPAGER_PAGE_LIMIT', 8);
 define ('DBPAGER_DEFAULT_EMPTY_MESSAGE', _('No rows found.'));
 
