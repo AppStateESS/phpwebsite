@@ -1,0 +1,4 @@
+RewriteEngine On
+Options +FollowSymlinks
+
+RewriteRule   (\w+)/(\w+)/(\d+)$ index.php?module=$1&action=$2&id=$3
