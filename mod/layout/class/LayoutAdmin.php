@@ -184,9 +184,11 @@ class Layout_Admin{
   function changeTheme($theme){
     $_SESSION['Layout_Settings']->default_theme = $theme;
     $_SESSION['Layout_Settings']->saveSettings();
+    Layout::reset();
   }
 
   function confirmThemeChange(){
+    Layout::reset();
     $form = & new PHPWS_Form("confirmThemeChange");
     $form->addHidden("module", "layout");
     $form->addHidden("action", "admin");
