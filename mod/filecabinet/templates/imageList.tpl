@@ -1,10 +1,10 @@
-<table cellpadding="6" cellspacing="0" width="100%">
-  <tr class="fc-list-title">
-    <td width="40%">{TITLE}&nbsp;{TITLE_SORT}</td>
-    <td width="25%">{FILENAME}&nbsp;{FILENAME_SORT}</td>
-    <td width="15%">{MODULE}&nbsp;{MODULE_SORT}</td>
-    <td width="10%">{SIZE}&nbsp;{SIZE_SORT}</td>
-    <td width="10%">{ACTION}</td>
+<table cellpadding="6" cellspacing="1" width="100%">
+  <tr>
+    <th width="40%">{TITLE}&nbsp;{TITLE_SORT}</th>
+    <th width="25%">{FILENAME}&nbsp;{FILENAME_SORT}</th>
+    <th width="15%">{MODULE}&nbsp;{MODULE_SORT}</th>
+    <th width="10%">{SIZE}&nbsp;{SIZE_SORT}</th>
+    <th width="10%">{ACTION}</th>
   </tr>
 <!-- BEGIN listrows -->
   <tr {TOGGLE}>
