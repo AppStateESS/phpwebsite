@@ -41,6 +41,13 @@ class Layout {
       return PHPWS_Error::get(LAYOUT_NO_THEME, "layout", "getTheme");
   }
 
+  function getThemeVariables(){
+    if (!isset($_SESSION['Layout_Settings']))
+      Layout::initLayout();
+
+    return $_SESSION['Layout_Settings']['theme_variables'];
+  }
+
   function getThemeDir(){
     $themeDir =  Layout::getTheme();
     if (PEAR::isError($themeDir))
@@ -212,8 +219,8 @@ class Layout {
 
       if (Layout::isBoxTpl($contentVar)){
 	$tpl = new PHPWS_Template;
-
-	$file = $_SESSION['Layout_Boxes'][$contentVar]['template'];
+	$box = $_SESSION['Layout_Boxes'][$contentVar];
+	$file = $box['template'];
 	$directory = "themes/$theme/boxstyles/";
 	if (isset($file) && is_file($directory . $file))
 	  $tpl->setFile($directory . $file, TRUE);
@@ -223,6 +230,10 @@ class Layout {
 	$tpl->setData($template);
 
 	$unsortedLayout[$theme_var][$order] = $tpl->get();
+	if (Layout::isMoveBox()){
+	  PHPWS_Core::initModClass("layout", "LayoutAdmin.php");
+	  $unsortedLayout[$theme_var][$order] .= Layout_Admin::moveBoxesTag($box);
+	}
       } else {
 	$unsortedLayout[$theme_var][$order] = implode("", $template);
       }
@@ -277,6 +288,11 @@ class Layout {
     return "<link rel=\"stylesheet\" href=\"$file\" type=\"text/css\" />";
   }
 
+  function isMoveBox(){
+    return isset($_SESSION['Move_Boxes']);
+  }
+
+
   function &loadTheme($theme, $template=NULL){
     if (!isset($template))
       Layout::displayErrorMessage();
@@ -302,7 +318,6 @@ class Layout {
     $tpl->setData($template);
     return $tpl;
   }
-
 
   function isContentVar($content_var){
     if (!isset($_SESSION['Layout_Content_Vars']))
