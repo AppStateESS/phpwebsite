@@ -233,7 +233,8 @@ class PHPWS_User extends PHPWS_Item {
 	  else
 	    return FALSE;
 	}
-      }
+      } else
+	return TRUE;
     } else
       return TRUE;
   }
@@ -324,7 +325,7 @@ class PHPWS_User extends PHPWS_Item {
   function disallow(){
     $title = "Sorry Charlie...";
     $content = "That section of the site is off limits to your type";
-    PHPWS_Layout::add(array($title, $content), TRUE);
+    PHPWS_Layout::add(array("TITLE"=>$title, "CONTENT"=>$content), "User_Main");
   }
 
 }
