@@ -9,8 +9,16 @@ class Current_User {
     Current_User::getLogin();
   }
   
-  function allow($itemName, $subpermission=NULL, $item_id=NULL){
-    return $_SESSION['User']->allow($itemName, $subpermission, $item_id);
+  function allow($itemName, $subpermission=NULL, $item_id=NULL, $verify=TRUE){
+    return $_SESSION['User']->allow($itemName, $subpermission, $item_id, $verify);
+  }
+
+  function deityAllow(){
+    return $_SESSION['User']->deityAllow();
+  }
+
+  function disallow($message=NULL){
+    PHPWS_Users::disallow($message);
   }
 
   function getLogin(){
