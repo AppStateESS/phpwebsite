@@ -1,5 +1,7 @@
 <?php
 
-define("CATEGORIES_ALLOW_WYSIWYG", FALSE);
+define('CATEGORIES_ALLOW_WYSIWYG',    FALSE);
+define('DEFAULT_UNCATEGORIZED_TITLE', _('Uncategorized'));
+define('DEFAULT_UNCATEGORIZED_ICON',  NULL);
 
 ?>
