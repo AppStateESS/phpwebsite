@@ -1,3 +1,4 @@
+<h1>{SIGNUP_LABEL}</h1>
 {START_FORM}
 <table class="form-table">
   <tr>
@@ -15,7 +16,7 @@
   <tr>
     <td>{CONFIRM_GRAPHIC_LABEL}
     </td>
-    <td>{GRAPHIC}<br />{CONFIRM_GRAPHIC}
+    <td>{GRAPHIC}<br />{CONFIRM_GRAPHIC} {CONFIRM_INSTRUCTIONS}
     </td>
   </tr>
 </table>
