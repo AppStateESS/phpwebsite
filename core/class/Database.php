@@ -65,7 +65,13 @@ class PHPWS_DB {
   }
 
   function isTableColumn($columnName){
-    $columns =  $GLOBALS['PEAR_DB']->tableInfo($this->getTable());
+    $table = & $this->getTable();
+    if (!isset($table))
+      return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, "core", "PHPWS_DB::isTableColumn");
+
+    $columns =  $GLOBALS['PEAR_DB']->tableInfo($table);
+    if (PEAR::isError($columns))
+      return $columns;
 
     foreach ($columns as $colInfo)
       if (ereg($colInfo['name'], $columnName) !== FALSE)
@@ -261,8 +267,7 @@ class PHPWS_DB {
 	$this->_values = $this->_values + $column;
       else
 	$this->_values = $column;
-    }
-    else
+    } else
       $this->_values[$column] = $value;
   }
 
@@ -727,6 +732,8 @@ class PHPWS_DB {
     }
     elseif (is_null($value))
       return "NULL";
+    elseif (is_bool($value))
+      return ($value ? 1 : 0);
     else
       return $value;
   }// END FUNC dbReady()
@@ -772,6 +779,35 @@ class PHPWS_DB {
       return array_shift($items);
     else
       return $items;
+  }
+
+  function saveObject($object, $stripChar=FALSE){
+
+    if (!is_object($object))
+      return PHPWS_Error::get(PHPWS_WRONG_TYPE, "core", "PHPWS_DB::saveObject", _("Type") . ": " . gettype($object));
+
+    $object_vars = get_object_vars($object);
+
+    if (!is_array($object_vars))
+      return PHPWS_Error::get(PHPWS_DB_NO_OBJ_VARS, "core", "PHPWS_DB::saveObject");
+
+    foreach ($object_vars as $column => $value){
+      if ($stripChar == TRUE)
+	$column = substr($column, 1);
+      if (!$this->isTableColumn($column))
+	continue;
+
+      $this->addValue($column, $value);
+    }
+
+    if (isset($this->_where) && count($this->_where))
+      $result = $this->update();
+    else
+      $result = $this->insert();
+
+    $this->resetValues();
+
+    return $result;
   }
 
 }
