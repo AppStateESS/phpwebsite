@@ -937,9 +937,19 @@ class PHPWS_Form {
     return CrutchForm::formSubmit($value, $name, $class);
   }
 
+  function formSelect($name, $opt_array, $match = NULL, $ignore_index = FALSE, $match_to_value = FALSE, $onchange = NULL, $label = NULL)
+  {
+    return CrutchForm::formSelect($name, $opt_array, $match, $ignore_index, $match_to_value, $onchange, $label);
+  }
+
   function formHidden($name, $value=NULL) {
     return CrutchForm::formHidden($name, $value);
   }
+
+  function formCheckBox($name, $value = 1, $match = NULL, $match_diff = NULL, $label = NULL) {
+    return CrutchForm::formCheck($name, $value, $match, $match_diff, $label);
+  }
+
 
   function makeForm($name, $action, $elements, $method="post", $breaks=FALSE, $file=FALSE) {
     return CrutchForm::makeForm($name, $action, $elements, $method, $breaks, $file);
