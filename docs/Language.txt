@@ -79,9 +79,11 @@ it might be easier to just create a list of files to translate.
 grep -lr --include="*.php" "_(" * > translate_list.txt
 
 Open the list and make sure the file list looks correct. Now run
-xgettext against it.
+xgettext against it. Make sure you run the list from where it was
+created. If you don't the file locations will be incorrect.
 
 xgettext -n -L C --keyword=_ -f translate_list.txt
+
 
 A couple of switches were added here:
 
