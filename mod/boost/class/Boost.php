@@ -333,13 +333,14 @@ class PHPWS_Boost {
     if (is_dir($modSource)){
       $modImage = $homeDir . "/images/mod/" . $mod->getTitle() . "/";
       $this->addLog($mod->getTitle(), sprintf(_("Copying directory %1\$s to %2\$s"), $modSource, $modImage));
-      $content[] = _("Copying source image directory for module.");
 
+      $content[] = _("Copying source image directory for module.");
+     
       $result = PHPWS_File::recursiveFileCopy($modSource, $modImage);
       if ($result)
-	$content[] = _("Source image directory created successfully.");
+	$content[] = _("Source image directory copied successfully.");
       else
-	$content[] = _("Source image directory could not be created.");
+	$content[] = _("Source image directory failed to copy.");
       chdir($homeDir);
     }
   }
