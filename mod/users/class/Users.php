@@ -368,9 +368,6 @@ class PHPWS_User {
       return $this->createGroup();
     else
       return $this->updateGroup();
-
-    return TRUE;
-
   }
 
   function isAnonymousUser(){
@@ -400,6 +397,7 @@ class PHPWS_User {
     $group->setUserId($this->getId());
     $group->setActive($this->isActive());
     $result = $group->save();
+
     if (PEAR::isError($result)){
       PHPWS_Error::log($result);
       $this->kill();
