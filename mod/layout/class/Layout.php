@@ -246,7 +246,7 @@ class PHPWS_Layout {
     $bodyfile = "java/$script/body.js";
 
     if (is_file($headfile))
-      $GLOBALS['Layout_JS'][$script]['head'] = PHPWS_File::readFile($headfile);
+      $GLOBALS['Layout_JS'][$script]['head'] = implode("", file($headfile));
 
     if (is_file($bodyfile)){
       $tpl = new PHPWS_Template;
