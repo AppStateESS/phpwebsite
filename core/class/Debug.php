@@ -117,7 +117,7 @@ class PHPWS_Debug {
 	  }
 
           $info .= "<tr>\n"; 
-	  $info .= "<td valign=\"top\"><b>" . $key . "</b></td>\n";
+	  $info .= "<td valign=\"top\"><b>" . htmlspecialchars($key) . "</b></td>\n";
 	  $info .= "<td>" . $value . "</td>\n";
 	  $info .= "</tr>\n";
         }
