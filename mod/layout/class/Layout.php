@@ -156,14 +156,12 @@ class Layout {
       $GLOBALS['Style'][] = $style;
   }
 
-  function alternateTheme($template, $module, $file){
-    $theme = Layout::getTheme();
-    Layout::importStyleSheets();
-    Layout::submitHeaders($theme, $template);
-    $result = PHPWS_Template::process($template, $module, $file);
-    echo $result;
+  function nakedDisplay($content) {
+    Layout::disableRobots();
+    echo (Layout::wrap($content));
     exit();
   }
+
 
   function checkSettings(){
     if (!isset($_SESSION['Layout_Settings'])) {
@@ -196,6 +194,11 @@ class Layout {
 
   function clear($module, $contentVar){
     unset($GLOBALS['Layout'][$module][$contentVar]);
+  }
+
+  function disableRobots()
+  {
+    $GLOBALS['Layout_Robots'] = '00';
   }
 
   function disableFollow(){
