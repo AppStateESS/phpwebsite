@@ -1,4 +1,4 @@
-This file is collection of messages you may come accross in your
+This file is collection of messages you may come across in your
 error.log file.
 
 
