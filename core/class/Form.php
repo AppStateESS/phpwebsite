@@ -102,6 +102,59 @@ class PHPWS_Form {
     return $value;
   }
 
+  function addText($name, $value=NULL){
+    return $this->add($name, "text", $value);
+  }
+
+  function addTextField($name, $value=NULL){
+    return $this->add($name, "text", $value);
+  }
+
+  function addTextarea($name, $value=NULL){
+    return $this->add($name, "textarea", $value);
+  }
+
+  function addSubmit($name, $value){
+    return $this->add($name, "submit", $value);
+  }
+
+  function addPassword($name, $value=NULL){
+    return $this->add($name, "password", $value);
+  }
+
+  function addSelect($name, $value){
+    return $this->add($name, "select", $value);
+  }
+
+  function addDropBox($name, $value){
+    return $this->add($name, "select", $value);
+  }
+
+  function addMultiple($name, $value){
+    return $this->add($name, "multiple", $value);
+  }
+
+  function addRadio($name, $value){
+    return $this->add($name, "radio", $value);
+  }
+
+  function addRadioButton($name, $value){
+    return $this->add($name, "radio", $value);
+  }
+
+  function addCheck($name, $value){
+    return $this->add($name, "check", $value);
+  }
+
+  function addCheckBox($name, $value){
+    return $this->add($name, "check", $value);
+  }
+
+  function addHidden($name, $value){
+    return $this->add($name, "hidden", $value);
+  }
+
+
   /**
    * Adds a form element to the class
    *
@@ -639,7 +692,7 @@ class PHPWS_Form {
   }
 
   function _imageSelectArray($module, $current){
-    $db = & new PHPWS_DB("images");
+    $db = & new PHPWS_DB("image_catalog");
     $db->addWhere("module", $module);
     $db->addOrder("directory");
     $db->setIndexBy("id");
