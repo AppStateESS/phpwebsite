@@ -22,5 +22,14 @@ You should be able to remove any other files and folders.
 
 --> DO NOT remove the license.txt file. <--
 
+The custom.js allows you to change the default options for
+FCKeditor. It must reside in the editor directory.
+
+This editor was tested in Firefox and occasionally would crash the
+program so beware.
+
+Also, the word 'content' is restricted. Do not use it as the name of
+your text area.
+
 Please see the Editors.txt file in the docs/ directory for more
 information.
