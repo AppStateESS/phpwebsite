@@ -176,8 +176,8 @@ class PHPWS_Text {
       $allowedTagString = PHPWS_ALLOWED_TAGS;
 
     $replace_source = array("/(\[code\])(.*)(\[\/code\])/seU",
-			    "<br>",
-			    "'");
+			    "/<br>/",
+			    "/'/");
     $replace_dest = array("'\\1' . str_replace('\n', '', PHPWS_Text::utfEncode('\\2')) . '\\3'",
 			  "<br />",
 			  "&#39;");
@@ -305,17 +305,18 @@ class PHPWS_Text {
    */
   function moduleLink($title, $module=NULL, $getVars=NULL, $target=NULL){
     $link[] = "<a href=\"./";
+    $link[] = "index.php";
 
-    if (PHPWS_Core::moduleExists($module)){
-      $link[] = "index.php?module=$module";
-
-      if (is_array($getVars)){
-	foreach ($getVars as $var_name=>$value)
-	  $vars[] = $var_name . "=" . $value;
-	
-	$link[] = implode("&amp;", $vars);
-      }
+    $link[] = "?";
+    
+    $vars[] = "module=$module";
+    if (is_array($getVars)){
+      foreach ($getVars as $var_name=>$value)
+	$vars[] = $var_name . "=" . $value;
     }
+    
+    $link[] = implode("&amp;", $vars);
+
     $link[] = "\"";
 
     if ($target=="blank" || $target === TRUE)
