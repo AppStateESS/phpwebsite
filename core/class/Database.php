@@ -89,7 +89,7 @@ class PHPWS_DB {
   }
 
 
-  function getTableColumns(){
+  function getTableColumns($fullInfo=FALSE){
     if (isset($this->_allColumns))
       return $this->_allColumns;
 
@@ -98,7 +98,7 @@ class PHPWS_DB {
       return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, "core", "PHPWS_DB::isTableColumn");
 
     $columns =  $GLOBALS['PEAR_DB']->tableInfo($table);
-    if (PEAR::isError($columns))
+    if (PEAR::isError($columns) || $fullInfo == TRUE)
       return $columns;
 
     foreach ($columns as $colInfo)
@@ -816,6 +816,45 @@ class PHPWS_DB {
       $query = preg_replace($from, $to, $query);
   }
 
+  function buildSetting($info){
+    extract($info);
+
+    switch ($type){
+    case "string":
+      return "char($len)";
+      break;
+
+    case "blob":
+      return "text";
+      break;
+
+    default:
+      return $type;
+    }
+  }
+
+
+  function parseColumns($columns){
+    foreach ($columns as $info){
+      $setting = PHPWS_DB::buildSetting($info);
+      if (isset($info['flags'])){
+	if (stristr($info['flags'], "multiple_key")){
+	  $createIndex[] = "CREATE INDEX " .  $info['name'] . " on " . $info['table'] . "(" . $info['name'] . ")";
+	  $info['flags'] = str_replace(" multiple_key", "", $info['flags']);
+	}
+	$preFlag = array("/not_null/", "/primary_key/", "/default_(.*)?/", "/blob/");
+	$postFlag = array("NOT NULL", "PRIMARY KEY", "DEFAULT '\\1'", "");
+	$multipleFlag = array("multiple_key", "");
+	$flags = " " . preg_replace($preFlag, $postFlag, $info['flags']);
+      }
+      else
+	$flags = NULL;
+      
+      $parameters[] = $info['name'] . " $setting" . $flags; 
+    }
+    return $parameters;
+  }
+
   function export($tableName, $structure=TRUE, $contents=TRUE){
     PHPWS_DB::touchDB();
     $dbfile = PHPWS_SOURCE_DIR . "core/class/dbexport/" . $GLOBALS['PEAR_DB']->dbsyntax . ".php";
@@ -828,23 +867,8 @@ class PHPWS_DB {
     if ($structure == TRUE){      
       $columns =  $GLOBALS['PEAR_DB']->tableInfo($tableName);
 
-      foreach ($columns as $info){
-	$setting = export($info);
-	if (isset($info['flags'])){
-	  if (stristr($info['flags'], "multiple_key")){
-	    $createIndex[] = "CREATE INDEX " .  $info['name'] . " on " . $info['table'] . "(" . $info['name'] . ")";
-	    $info['flags'] = str_replace(" multiple_key", "", $info['flags']);
-	  }
-	  $preFlag = array("/not_null/", "/primary_key/", "/default_(.*)?/");
-	  $postFlag = array("NOT NULL", "PRIMARY KEY", "DEFAULT '\\1'");
-	  $multipleFlag = array("multiple_key", "");
-	  $flags = " " . preg_replace($preFlag, $postFlag, $info['flags']);
-	}
-	else
-	  $flags = NULL;
+      $parameters = PHPWS_DB::parseColumns($columns);
 
-	$parameters[] = $info['name'] . " $setting" . $flags; 
-      }
 
       $index = PHPWS_DB::getIndex();
 
@@ -1025,9 +1049,9 @@ class PHPWS_DB {
     else {
       $result = $this->insert();
       if (is_numeric($result)){
-	if (in_array("id", $object_vars))
+	if (array_key_exists("id", $object_vars))
 	  $object->id = (int)$result;
-	elseif (in_array("_id", $object_vars))
+	elseif (array_key_exists("_id", $object_vars))
 	  $object->_id = (int)$result;
       }
     }
