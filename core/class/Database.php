@@ -280,7 +280,7 @@ class PHPWS_DB {
 	}
       }
       return TRUE;
-    } elseif (empty($value) || $value == 'null') {
+    } elseif (is_null($value) || (string)$value == 'null') {
       if (empty($operator) || (strtoupper($operator) != 'IS NOT' && $operator != '!=')) {
 	$operator = 'IS';
       } else {
