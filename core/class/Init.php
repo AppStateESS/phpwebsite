@@ -30,6 +30,8 @@ PHPWS_Core::initCoreClass("Text.php");
 PHPWS_Core::initCoreClass("Item.php");
 PHPWS_Core::initCoreClass("Debug.php");
 PHPWS_Core::initCoreClass("Error.php");
+PHPWS_Core::initCoreClass("Cache.php");
+
 
 if (PHPWS_TRANSLATION == FALSE)
      PHPWS_Core::initCoreClass("Crutch.php");
