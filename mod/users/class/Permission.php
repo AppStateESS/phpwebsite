@@ -1,20 +1,123 @@
 <?php
 
-class PHPWS_User_Permission{
+class Users_Permission {
+  var $permissions = NULL;
+  var $groups      = NULL;
+  
+  function Users_Permission($groups=NULL){
+    $this->groups = $groups;
+  }
+
+
+  function allow($itemName, $subpermission=NULL, $item_id=NULL, $returnType=FALSE){
+    if (!isset($this->permissions[$itemName]))
+      $result = Users_Permission::loadPermission($itemName, $this->permissions);
+
+    $permissionLvl = $this->permissions[$itemName]['permission_level'];
+
+    if(isset($this->permissions[$itemName]['permissions'])){
+      if (isset($subpermission)){
+	if (!isset($this->permissions[$itemName]['permissions'][$subpermission])){
+	  PHPWS_Error::log(USER_ERR_FAIL_ON_SUBPERM, "users", "allow", "SubPerm: $subpermission");
+	  return FALSE;
+	}
+	$allow = $this->permissions[$itemName]['permissions'][$subpermission];
+
+	if ((bool)$allow){
+	  if (isset($item_id)){
+	    if (in_array($item_id, $this->permissions[$itemName]['items']))
+	      return ($returnType ? $permissionLvl : TRUE);
+	    else
+	      return FALSE;
+	  }
+	  else
+	    return ($returnType ? $permissionLvl : TRUE);
+	} else
+	  return FALSE;
+      } else
+	return ($returnType ? $permissionLvl : TRUE);
+    } else
+      return ($returnType ? $permissionLvl : TRUE);
+  }
+
+  function loadPermission($itemName, &$permissions){
+    $groups = $this->groups;
+    $permTable = Users_Permission::getPermissionTableName($itemName);
+    $itemTable = Users_Permission::getItemPermissionTableName($itemName);
+
+    PHPWS_DB::isTable($itemTable) ? $useItem = TRUE : $useItem = FALSE;
+
+    if(!PHPWS_DB::isTable($permTable)){
+      $permissions[$itemName]['permission_level'] = FULL_PERMISSION;
+      return TRUE;
+    }
+
+    $permDB = new PHPWS_DB($permTable);
+    $itemDB = new PHPWS_DB($itemTable);
+
+    if (isset($groups) && count($groups)){
+      foreach ($groups as $group_id){
+	if ($useItem)
+	  $itemDB->addWhere("group_id", $group_id, NULL, "or");
+	
+	$permDB->addWhere("group_id", $group_id, NULL, "or");
+      }
+    }
+
+    $permResult = $permDB->select();
+
+    if (!isset($permResult)){
+      $permissions[$itemName]['permission_level'] = NO_PERMISSION;
+      return TRUE;
+    }
+
+    if ($useItem)
+      $itemResult = $itemDB->select("col");
+
+    if (PEAR::isError($itemResult))
+      return $itemResult;
+
+    if (!isset($itemResult))
+      $itemResult = array();
+
+    $permissionSet = array();
+    foreach ($permResult as $permission){
+      unset($permission['group_id']);
+      $permissionLevel = $permission['permission_level'];
+      unset($permission['permission_level']);
+      
+      foreach($permission as $name=>$value){
+	if (!isset($permissionSet[$name]))
+	  $permissionSet[$name] = $value;
+	elseif ($permissionSet[$name] < $value)
+	  $permissionSet[$name] = $value;
+      }
+    }
+
+    $permissions[$itemName]['permission_level'] = $permissionLevel;
+    $permissions[$itemName]['items']            = $itemResult;
+    $permissions[$itemName]['permissions']      = $permissionSet;
+    return TRUE;
+  }
+
 
   function createPermissions($module){
-    // FIX
-    include "mod/$module/conf/permission.php";
+    $file = PHPWS_Core::getConfigFile($module, "permission.php");
+    if (PEAR::isError($file))
+      return PHPWS_Error::get(USER_ERR_PERM_FILE, "users", "createPermissions", "Module: $module");
+
     if (!isset($permissions))
       return PHPWS_Error::get(USER_ERR_PERM_FILE, "users", "createPermissions", "Module: $module");
 
+    include_once $file;
+
     foreach ($permissions as $itemName=>$subpermissions){
-      $result = PHPWS_User_Permission::createPermissionTable($itemName, $subpermissions);
+      $result = Users_Permission::createPermissionTable($itemName, $subpermissions);
       if (PEAR::isError($result))
 	$errors[] = $result;
 
       if (isset($itemPermissions[$itemName]) && $itemPermissions[$itemName]==TRUE){
-	$result = PHPWS_User_Permission::createItemPermissionTable($itemName);
+	$result = Users_Permission::createItemPermissionTable($itemName);
 	if (PEAR::isError($result))
 	  $errors[] = $result;
       }
@@ -27,7 +130,7 @@ class PHPWS_User_Permission{
   }
 
   function createPermissionTable($itemName, $subpermissions=NULL){
-    $tableName = PHPWS_User_Permission::getPermissionTableName($itemName);
+    $tableName = Users_Permission::getPermissionTableName($itemName);
     $columnSetting = "smallint NOT NULL default '0'";
 
     if (PHPWS_DB::isTable($tableName))
@@ -47,7 +150,7 @@ class PHPWS_User_Permission{
   }
 
   function createItemPermissionTable($itemName){
-    $tableName = PHPWS_User_Permission::getItemPermissionTableName($itemName);
+    $tableName = Users_Permission::getItemPermissionTableName($itemName);
 
     if (PHPWS_DB::isTable($tableName))
       return PHPWS_Error::get(USER_ERR_PERM_TABLE, "users", "createItemPermissionTable", "Table Name: $tableName");
@@ -69,7 +172,7 @@ class PHPWS_User_Permission{
 
 
   function setPermissions($group_id, $itemName, $permissions){
-    $tableName = PHPWS_User_Permission::getPermissionTableName($itemName);
+    $tableName = Users_Permission::getPermissionTableName($itemName);
     $DB = new PHPWS_DB($tableName);
     $DB->addWhere("group_id", $group_id);
     $newRights = $DB->select("row");

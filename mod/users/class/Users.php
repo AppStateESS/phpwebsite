@@ -1,11 +1,13 @@
 <?php
 
+PHPWS_Core::initModClass("users", "Permission.php");
+
 class PHPWS_User extends PHPWS_Item {
   var $_username     = NULL;
   var $_password     = NULL;
   var $_deity        = FALSE;
   var $_groups       = NULL;
-  var $_permissions  = array();
+  var $_permission   = NULL;
   var $_logged       = FALSE;
   var $_last_logged  = NULL;
   var $_settings     = NULL;
@@ -149,85 +151,17 @@ class PHPWS_User extends PHPWS_Item {
     return $this->_groups;
   }
 
-
-  function loadPermission($itemName){
-    PHPWS_Core::initModClass("users", "Permission.php");
-    $groups = &$this->getGroups();
-
-    $permTable = PHPWS_User_Permission::getPermissionTableName($itemName);
-    $itemTable = PHPWS_User_Permission::getItemPermissionTableName($itemName);
-
-    PHPWS_DB::isTable($itemTable) ? $useItem = TRUE : $useItem = FALSE;
-
-    if(!PHPWS_DB::isTable($permTable)){
-      $this->_permissions[$itemName] = FULL_PERMISSION;
-      return TRUE;
-    }
-
-    $permDB = new PHPWS_DB($permTable);
-    $itemDB = new PHPWS_DB($itemTable);
-
-    foreach ($groups as $group_id){
-      if ($useItem)
-	$itemDB->addWhere("group_id", $group_id, NULL, "or");
-
-      $permDB->addWhere("group_id", $group_id, NULL, "or");
-    }
-
-    $permResult = $permDB->select();
-    if (!isset($permResult)){
-      $this->_permissions[$itemName] = NO_PERMISSION;
-      return TRUE;
-    }
-
-    if ($useItem)
-      $itemResult = $itemDB->select("col");
-
-    if (PEAR::isError($itemResult))
-      return $itemResult;
-
-    if (!isset($itemResult))
-      $itemResult = array();
-
-    $permissionSet = array();
-    foreach ($permResult as $permission){
-      unset($permission['group_id']);
-      foreach($permission as $name=>$value){
-	if (!isset($permissionSet[$name]))
-	  $permissionSet[$name] = $value;
-	elseif ($permissionSet[$name] < $value)
-	  $permissionSet[$name] = $value;
-      }
-    }
-    
-    $this->_permissions[$itemName]['items'] = $itemResult;
-    $this->_permissions[$itemName]['permissions'] = $permissionSet;
-    return TRUE;
-  }
-
-
   function allow($itemName, $subpermission=NULL, $item_id=NULL){
+    PHPWS_Core::initModClass("users", "Permission.php");
     if ($this->isDeity())
       return TRUE;
 
-    if (!isset($this->_permissions[$itemName]))
-      $result = $this->loadPermission($itemName);
+    if (!isset($this->_permission)){
+      $groups = &$this->getGroups();
+      $this->_permission = & new Users_Permission($groups);
+    }
 
-    if(isset($this->_permissions[$itemName]['permissions'])){
-      if (isset($subpermission)){
-	$allow = $this->_permissions[$itemName]['permissions'][$subpermission];
-	if ($allow == FULL_PERMISSION)
-	  return TRUE;
-	elseif ($allow == PARTIAL_PERMISSION){
-	  if (isset($item_id))
-	    return in_array($item_id, $this->_permissions[$itemName]['items']);
-	  else
-	    return TRUE;
-	}
-      } else
-	return TRUE;
-    } else
-      return (bool)$this->_permissions[$itemName];
+    return $this->_permission->allow($itemName, $subpermission, $item_id);
   }
 
   function save(){
@@ -288,6 +222,19 @@ class PHPWS_User extends PHPWS_Item {
       return PHPWS_Error::get(USER_ERR_USER_NOT_SAVED, "users", "save");
     } else
       return TRUE;
+  }
+
+  function getUserGroup(){
+    $db = & new PHPWS_DB("users_groups");
+    $db->addWhere("user_id", $this->getId());
+    $db->addColumn("id");
+    $result = $db->select("one");
+    if (PEAR::isError($result))
+      return $result;
+    elseif (!isset($result))
+      return PHPWS_Error::get(USER_ERR_MISSING_GROUP, "users", "getUserGroup");
+    else
+      return $result;
   }
 
   function isAnonymous(){

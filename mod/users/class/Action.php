@@ -56,6 +56,19 @@ class User_Action {
 
       /** Group Forms **/
 
+    case "setUserPermissions":
+      PHPWS_Core::initModClass("users", "Group.php");
+      $user = & new PHPWS_User($_REQUEST['user']);
+      $id = $user->getUserGroup();
+      if (PEAR::isError($id)){
+	PHPWS_Error::log($id);
+	$content = _("A fatal error occurred. Please check your logs.");
+	break;
+      }
+
+      $content = User_Form::setPermissions($id);
+      break;
+
     case "new_group":
       PHPWS_Core::initModClass("users", "Group.php");
       $group = & new PHPWS_Group;

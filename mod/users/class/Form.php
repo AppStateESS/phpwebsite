@@ -61,6 +61,82 @@ class User_Form {
     return PHPWS_Template::process($template, "users", "forms/loginBox.tpl");
   }
 
+  function setPermissions($id){
+    $group = new PHPWS_Group($id, FALSE);
+
+    $modules = PHPWS_Core::getModules();
+
+    $tpl = & new PHPWS_Template("users");
+    $tpl->setFile("forms/permissions.tpl");
+
+    foreach ($modules as $mod){
+      $row = User_Form::modulePermission($mod, $group);
+      $template = array("ROW" => $row);
+      $tpl->setCurrentBlock("module");
+      $tpl->setData($template);
+      $tpl->parseCurrentBlock("module");
+    }
+
+    $content  = $tpl->get();
+    return $content;
+  }
+
+
+  function modulePermission($mod, &$group){
+    Layout::addStyle("users");
+    $file = PHPWS_Core::getConfigFile($mod['title'], "permission.php");
+    $template = NULL;
+
+    if (PEAR::isError($file))
+      return;
+
+    include $file;
+    if (!isset($permissions))
+      return;
+
+    $permSet[NO_PERMISSION]      = _("None");
+    $permSet[FULL_PERMISSION]    = _("Full");
+
+    if ($itemPermissions == TRUE)
+      $permSet[PARTIAL_PERMISSION] = _("Partial");
+    else
+      unset($permSet[PARTIAL_PERMISSION]);
+
+    ksort($permSet);
+
+    $permCheck = $group->allow($mod['title'], NULL, NULL, TRUE);
+
+    foreach ($permSet as $key => $value){
+      if ((int)$key == (int)$permCheck)
+	$checked = "checked=\"checked\"";
+      else
+	$checked = NULL;
+      $name = "permission[" . $mod['title'] . "]";
+      $radio[] = "<input type=\"radio\" name=\"$name\" value=\"$key\" $checked /> $value";
+    }
+
+    $form = & new PHPWS_Form;
+
+    foreach ($permissions as $itemname => $permVal){
+      foreach ($permVal as $permName => $permProper){
+	$formName = "subpermission[$itemname][$permName]"; 
+	$form->add($formName, "checkbox", 1);
+	if ($group->allow($itemname, $permName))
+	  $form->setMatch($formName, 1);
+	$subperm[] = $form->get($formName) . " $permProper";
+      }
+    }
+
+    $template["SUBPERMISSIONS"] = implode("<br />", $subperm);
+    $template["CHOICE"] = implode("<br />", $radio);
+    $template["MODULE_NAME"] = $mod['proper_name'];
+    $form->add("update[" . $mod['title'] . "]", "submit", _print(_("Update [var1]"), $mod['proper_name']));
+    $template["UPDATE"] = $form->get("update[" . $mod['title'] . "]");
+
+    $content = PHPWS_Template::process($template, "users", "forms/mod_permission.tpl");
+    return $content;
+  }
+
   function adminPanel($content){
     PHPWS_Core::initModClass("controlpanel", "Panel.php");
 
