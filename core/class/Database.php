@@ -651,7 +651,7 @@ class PHPWS_DB {
 	  $query = str_replace($tableName, $prefix . $tableName, $query);
 	}
 	$sqlCommand = array();
-
+	PHPWS_DB::homogenize($query);
 	$result = PHPWS_DB::query($query);
 	if (DB::isError($result))
 	  $errors[] = $result;
@@ -662,6 +662,13 @@ class PHPWS_DB {
       return $errors;
     else
       return TRUE;
+  }
+
+  function homogenize(&$query){
+    $from = array("/datetime/i");
+    $to   = array("varchar(50)");
+
+    $query = preg_replace($from, $to, $query);
   }
 
   function export($tableName, $structure=TRUE, $contents=TRUE){
