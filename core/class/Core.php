@@ -307,13 +307,6 @@ class PHPWS_Core {
     return $db->select("col");
   }
 
-  function checkJS(){
-    if (isset($_COOKIE['js_check']))
-      define("JAVASCRIPT_ON", TRUE);
-    else
-      define("JAVASCRIPT_ON", FALSE);
-  }
-
 }// End of core class
 
 ?>
