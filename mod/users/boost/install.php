@@ -1,40 +1,42 @@
 <?php
 
-function onInstall(){
+function install(&$content){
   PHPWS_Core::initModClass("users", "Users.php");
   PHPWS_Core::initModClass("users", "Action.php");
   include PHPWS_Core::getConfigFile("users", "config.php");
-  PHPWS_Boost::lock("users");
+
   $user = & new PHPWS_User;
   $content[] = "<hr />";
 
   if (isset($_POST['module']) && $_POST['module']=="users"){
     $result = User_Action::postUser($user);
     if (!is_array($result)){
+      $anon = new PHPWS_User;
+      $anon->setUsername(_("Anonymous"));
+      $anon->save();
+
       $user->setDeity(TRUE);
       $user->save();
-      PHPWS_Boost::finish("users");
-
       $content[] = _("User created successfully.");
-      $content[] = PHPWS_Text::link("index.php?step=3", _("Continue installation..."));
+
+      $db = & new PHPWS_DB("users_config");
+      $db->addValue("anonymous", $anon->getId());
+
+      return TRUE;
     } else {
       foreach ($result as $error)
 	$errors[] = $error->getMessage();
       $content[] = userForm($user, implode("<br />", $errors));
+      return FALSE;
     }
   } else {
     $content[] = _("Please create a user to administrate the site.") . "<br />";
     $content[] = userForm($user);
+    return FALSE;
   }
-  return implode("\n", $content);
+
 }
 
-
-function postUser(&$user){
-  echo phpws_debug::testarray($_POST);
-
-  return FALSE;
-}
 
 function userForm(&$user, $message=NULL){
   PHPWS_Core::initCoreClass("Form.php");
