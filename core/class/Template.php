@@ -1,5 +1,6 @@
 <?php
 require_once "HTML/Template/IT.php";
+require_once "config/core/template.php";
 
 /**
  * Controls templates
@@ -13,7 +14,7 @@ require_once "HTML/Template/IT.php";
  */
 
 class PHPWS_Template extends HTML_Template_IT {
-  var $_module = NULL;
+  var $module = NULL;
 
   function PHPWS_Template($module=NULL, $file=NULL){
     $this->HTML_Template_IT();
@@ -53,7 +54,7 @@ class PHPWS_Template extends HTML_Template_IT {
       }
       else {
 	$file = "templates/$module/$file";
-	$result = $this->loadTemplatefile($file);	
+	$result = $this->loadTemplatefile($file);
       }
     }
 
@@ -64,11 +65,11 @@ class PHPWS_Template extends HTML_Template_IT {
   }
 
   function setModule($module){
-    $this->_module = $module;
+    $this->module = $module;
   }
 
   function getModule(){
-    return $this->_module;
+    return $this->module;
   }
 
   function setData($data){
@@ -81,12 +82,22 @@ class PHPWS_Template extends HTML_Template_IT {
 
   }
 
+  function getLastTplFile(){
+    return PHPWS_File::readFile($this->lastTemplatefile);
+  }
+
   function process($template, $module, $file){
     $tpl = & new PHPWS_Template($module, $file);
+
     if (PEAR::isError($tpl))
       return $tpl;
     $tpl->setData($template);
-    return $tpl->get();
+    $result = $tpl->get();
+    if (!isset($result) && RETURN_BLANK_TEMPLATES)
+      return $tpl->getLastTplFile();
+    else
+      return $result;
+
   }
 }
 
