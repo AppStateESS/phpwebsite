@@ -22,7 +22,7 @@ session_start();
 
 $content = array();
 $setup = & new Setup;
-$title = _("phpWebSite 0.9.4") . " - ";
+$title = "phpWebSite 0.9.4 - ";
 
 if (!$setup->checkSession($content) || !isset($_REQUEST['step']))
   $step = 0;
