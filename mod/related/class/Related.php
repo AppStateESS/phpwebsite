@@ -222,9 +222,8 @@ class Related {
     $this->friends = array();
     
     $friend = $friends[$position];
-
+    
     if (isset($friend->id)){
-      $friend->clearRelated();
       $friend->kill();
     }
 
@@ -326,10 +325,18 @@ class Related {
   function clearRelated(){
     $db = & new PHPWS_DB("related_friends");
     $db->addWhere("source_id", $this->id);
-    $db->delete();
+    $result = $db->delete();
+  }
+
+  function clearFriends(){
+    $db = & new PHPWS_DB("related_friends");
+    $db->addWhere("friend_id", $this->id);
+    $result = $db->delete();
   }
 
   function kill(){
+    $this->clearRelated();
+    $this->clearFriends();
     $db = & new PHPWS_DB("related_main");
     $db->addWhere("id", $this->id);
     $db->delete();
