@@ -1,9 +1,8 @@
 <?php
 
-define("FORM_ID_IDENTIFIER", "f");
+PHPWS_Core::configRequireOnce("core", "formConfig.php", TRUE);
 
-//require_once PHPWS_Core::getConfigFile("core", "formConfig.php");
-require_once "config/core/formConfig.php";
+//require_once "config/core/formConfig.php";
 /**
  * Creates HTML form elements and/or an entire form
  *
@@ -874,13 +873,6 @@ class PHPWS_Form {
   }
 
 
-  function getId(){
-    static $id = 0;
-
-    $id++;
-    return $id;
-  }
-
 }// End of PHPWS_Form Class
 
 
@@ -931,7 +923,6 @@ class Form_File extends Form_Element {
 class Form_Password extends Form_Element {
   function Form_Password($name, $value=NULL){
     $this->setName($name);
-    $this->setId(FORM_ID_IDENTIFIER . PHPWS_Form::getId());
     $this->setValue($value);
     $this->allowValue = FALSE;
   }
@@ -1164,7 +1155,7 @@ class Form_Element {
   }
 
   function quickId(){
-    $this->setId(FORM_ID_IDENTIFIER . PHPWS_Form::getId());
+    $this->setId($this->name);
   }
 
   function getId($formMode=FALSE){
