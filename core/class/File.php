@@ -110,16 +110,13 @@ class PHPWS_File {
         chdir($fromPath);
         $handle = opendir('.');
         while (($file = readdir($handle)) !== FALSE) {
-	  echo "file is $file <br />";
           if (($file != ".") && ($file != "..") && ($file != "CVS")) {
             if (is_dir($file)) {
               PHPWS_File::recursiveFileCopy ($fromPath . $file . "/", $toPath . $file."/");
               chdir($fromPath);
             }
-            if (is_file($file)){
-	      echo "copying $fromPath . $file, $toPath . $file <br />";
+            if (is_file($file))
               @copy($fromPath . $file, $toPath . $file);
-	    }
           }
         }
         closedir($handle);
