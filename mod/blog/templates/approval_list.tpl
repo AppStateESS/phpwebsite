@@ -3,8 +3,13 @@
 <!-- BEGIN new-approval -->
 <div style="margin : 1em">
 <div class="bgcolor1" style="padding : 3px">
-  <div style="float: left;">{BLOG_INFO}</div>
+  <div style="float: left;">
+  <b>{DATE_LABEL}:</b> {DATE}<br />
+  <b>{CREATOR_LABEL}:</b> {CREATOR}&nbsp;&nbsp;&nbsp;&nbsp;
+<!-- BEGIN editor -->  <b>{EDITOR_LABEL}:</b> {EDITOR} <!-- END editor -->
+  </div>
   <div style="text-align: right;">{BLOG_LINKS}</div>
+  <div style="clear : both"></div>
 </div>
 {ENTRY}
 </div>
@@ -14,8 +19,12 @@
 <!-- BEGIN update-approval -->
 <div style="margin : 1em">
 <div class="bgcolor1" style="padding : 3px">
-  <div style="float: left;">{BLOG_INFO}</div>
+  <div style="float: left;">
+  <b>{DATE_LABEL}:</b> {DATE}<br />
+  <b>{CREATOR_LABEL}:</b> {CREATOR}&nbsp;&nbsp;&nbsp;&nbsp;
+  </div>
   <div style="text-align: right;">{BLOG_LINKS}</div>
+  <div style="clear : both"></div>
 </div>
 {ENTRY}
 </div>
