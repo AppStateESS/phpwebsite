@@ -184,7 +184,7 @@ class PHPWS_Form {
    * a style width. The width will size itself depending on side of
    * or its contained (i.e. a table cell)
    *
-   * @author             Matthew McNaney <matt@NOSPAM.tux.appstate.edu>
+   * @author             Matthew McNaney <matt at tux dot appstate dot edu>
    * @param string name  Name of element to set the type
    * @param string width Percentage of width wanted on element
    */
@@ -210,7 +210,7 @@ class PHPWS_Form {
    * Note: You can set the height of a text field, but it will look
    * strange and it has no real functionality.
    *
-   * @author              Matthew McNaney <matt@NOSPAM.tux.appstate.edu>
+   * @author              Matthew McNaney <matt at tux dot appstate dot edu>
    * @param string name   Name of element to set the type
    * @param string height Percentage of height wanted on element
    */
@@ -231,7 +231,7 @@ class PHPWS_Form {
    *
    * Rows must be more than 1 and less than 100
    *
-   * @author Matthew McNaney <matt@NOSPAM.tux.appstate.edu>
+   * @author Matthew McNaney <matt at tux dot appstate dot edu>
    * @param string name Name of element to set the rows
    * @param string rows Number rows to use in a textarea
    */
@@ -252,7 +252,7 @@ class PHPWS_Form {
    *
    * Columns must be more than 10 and less than 500
    *
-   * @author Matthew McNaney <matt@NOSPAM.tux.appstate.edu>
+   * @author Matthew McNaney <matt at tux dot appstate dot edu>
    * @param string name Name of element to set the rows
    * @param string rows Number columns to use in a textarea
    */
@@ -276,7 +276,7 @@ class PHPWS_Form {
    * and what order you want it in. PHPWS_Form does not check your settings
    * so be careful you don't use the same number more than once.
    *
-   * @author               Matthew McNaney <matt@NOSPAM.tux.appstate.edu>
+   * @author               Matthew McNaney <matt at tux dot appstate dot edu>
    * @param  string  name  Name of element to set the type
    * @param  integer order Numeric order of tab queue
    */
@@ -296,7 +296,7 @@ class PHPWS_Form {
    * Sets the number of characters for text boxes, number of rows
    * for select boxes
    *
-   * @author Matthew McNaney <matt@NOSPAM.tux.appstate.edu>
+   * @author Matthew McNaney <matt at tux dot appstate dot edu>
    * @param string name Name of element to set the type
    * @param string size Size to make the element
    */
@@ -319,7 +319,7 @@ class PHPWS_Form {
    * variable for your template. A good function to use to convert
    * old templates. 
    *
-   * @author                Matthew McNaney <matt@NOSPAM.tux.appstate.edu>
+   * @author                Matthew McNaney <matt at tux dot appstate dot edu>
    * @param string name     Name of element to set the type
    * @param string template Name of template tag to print for this element
    */
@@ -351,7 +351,7 @@ class PHPWS_Form {
    *
    * This would change the index array to array('apple'=>'apple', 'orange'=>'orange', etc.
    *
-   * @author                    Matthew McNaney <matt@NOSPAM.tux.appstate.edu>
+   * @author                    Matthew McNaney <matt at tux dot appstate dot edu>
    * @param string name         Name of element to set the type
    */
   function reindexValue($name){
@@ -383,7 +383,7 @@ class PHPWS_Form {
    * Also, match will ONLY match to the VALUE of a select box unless you set
    * optionMatch to TRUE.
    *
-   * @author                    Matthew McNaney <matt@NOSPAM.tux.appstate.edu>
+   * @author                    Matthew McNaney <matt at tux dot appstate dot edu>
    * @param string name         Name of element to set the type
    * @param string match        Value to match against the element's value
    * @param boolean optionMatch If TRUE, then a select box will try to match
@@ -407,7 +407,7 @@ class PHPWS_Form {
   /**
    * Sets the max text size for a text, password, file element
    *
-   * @author Matthew McNaney<matt@NOSPAM.tux.appstate.edu>
+   * @author Matthew McNaney<matt at tux dot appstate dot edu>
    * @param string  name Name of element to set the maxsize
    * @param integer maxsize The max number of characters allowed in the element's field
    */
@@ -436,7 +436,7 @@ class PHPWS_Form {
   /**
    * Indicates whether an element exists
    *
-   * @author         Matthew McNaney<matt@NOSPAM.tux.appstate.edu>
+   * @author         Matthew McNaney<matt at tux dot appstate dot edu>
    * @param  string  name Name to check if exists
    * @return boolean TRUE if the element exists, FALSE otherwise
    */
@@ -517,7 +517,7 @@ class PHPWS_Form {
    *
    * If you need to send the form elsewhere, set the directory here.
    *
-   * @author                   Matthew McNaney<matt@NOSPAM.tux.appstate.edu>
+   * @author                   Matthew McNaney<matt at tux dot appstate dot edu>
    * @param  string  directory Directory that a form will post to
    */
   function setAction($directory){
@@ -565,7 +565,7 @@ class PHPWS_Form {
    * 
    * Hidden variables will be added on to START_FORM. They will NOT have their own template tag.
    *
-   * @author                     Matthew McNaney<matt@NOSPAM.tux.appstate.edu>
+   * @author                     Matthew McNaney<matt at tux dot appstate dot edu>
    * @param  boolean phpws       If TRUE and the action is missing, phpWebSite will attempt to use your directory settings instead
    * @param  boolean helperTags  If TRUE START and END_FORM tags will be created, otherwise they will not
    * @param  array   template    If a current template is supplied, form will add to it.
@@ -581,10 +581,8 @@ class PHPWS_Form {
       return PHPWS_Error::get(PHPWS_FORM_NO_TEMPLATE, "core", "PHPWS_Form::getTemplate");
 
 
-    if ($helperTags){
+    if ($helperTags)
       $template["START_FORM"] = $this->getStart();
-      $template["DEFAULT_SUBMIT"] = "<input type=\"submit\" value=\"" . _("Submit") ."\">\n";
-    }
 
     foreach ($this->_elements as $elementName=>$element){
       $multiple = FALSE;
@@ -638,7 +636,122 @@ class PHPWS_Form {
 
     if (isset($this->_action))
       return "<form " . $formName . "action=\"" . $this->_action . "\" " . $this->_method . $this->_encode . ">\n";
+  }
+
+  function _imageSelectArray($module, $current){
+    $db = & new PHPWS_DB("images");
+    $db->addWhere("module", $module);
+    $db->addOrder("directory");
+    $db->setIndexBy("id");
+    $result = $db->getObjects("PHPWS_image");
+
+    if (PEAR::isError($result))
+      return $result;
+
+
+    foreach ($result as $image){
+      $directory = $image->getDirectory();
+
+      $dividedDir = explode("/", $directory);
+      array_pop($dividedDir);
+
+      $subdir = array_pop($dividedDir);
+
+      $imageList[$subdir]['links'][$image->getId()] = $image->getTitle()
+	. " [" . $image->getFileName() . "]";
+
+      if (!empty($dividedDir))
+	$imageList[$subdir]['parents'] = $dividedDir;
+
+    }
+
+    foreach ($imageList as $directory=>$info){
+      if ($directory == $module)
+	$directory = _("Main");
+
+      $directoryTitle = array();
+      if (isset($info['parents'])){
+	foreach ($info['parents'] as $parent){
+	  if ($parent == $module)
+	    $parent = _("Main");
+
+	  $directoryTitle[] = ucfirst($parent) . " &gt; ";
+	}
+      }
+
+      $directoryTitle[] = ucfirst($directory);
+
+      $selectList[] = "<optgroup label=\"" . implode("", $directoryTitle) . "\">";
+
+      foreach ($info['links'] as $id=>$title){
+	if ($id == $current)
+	  $selectList[] = "<option value=\"$id\" selected=\"selected\">$title</value>";
+	else
+	  $selectList[] = "<option value=\"$id\">$title</value>";
+
+      }
+
+      $selectList[] = "</optgroup>";
+    }
+    return $selectList;
+  }
+  
+  function addImage($name, $module, $current=NULL){
+    PHPWS_Core::initCoreClass("file/image.php");
+
+    $selectList = PHPWS_Form::_imageSelectArray($module, $current);
+    $this->add($name . "_file", "file");
+    $this->add($name . "_title", "text");
     
+    if (isset($selectList)){
+      $selectInput[] = "<select name=\"{$name}_select\">";
+      $selectInput[] = implode("\n", $selectList);
+      $selectInput[] = "</select>";
+      $template[strtoupper($name) . "_SELECT"] = implode("\n", $selectInput);
+    }
+
+    $this->mergeTemplate($template);
+  }
+
+  function postImage($name, $module, $directory=NULL){
+    $image = PHPWS_File::create("image");
+
+    $uploadName = $name . "_file";
+    $titleName  = $name . "_title";
+    $selectName = $name . "_select";
+
+    if ($image->fileIsSet($uploadName)){
+      $result = $image->importPost($uploadName);
+      
+      if (PEAR::isError($result) || is_array($result))
+	return $result;
+      
+      $image->setModule($module);
+
+      if (isset($directory))
+	$image->setDirectory($directory);
+      else
+	$image->setDirectory($module);
+
+      if (!empty($_POST[$titleName])){
+	$image->setTitle($_POST[$titleName]);
+	$image->setAlt($_POST[$titleName]);
+      } else {
+	$image->setTitle($image->getFilename());
+	$image->setAlt($image->getFilename());
+      }
+
+      $result = $image->save();
+      
+      if (PEAR::isError($result))
+	return $result;
+      else
+	return $image;
+    } else {
+      $image->setId($_POST[$selectName]);
+      $image->init();
+      return $image;
+    }
   }
 
   function formTextField($name, $value, $size=30, $maxsize=255, $label=NULL){
@@ -832,9 +945,6 @@ class Form_Select extends Form_Element{
   function isMatch($match){
     if (!isset($this->match))
       return FALSE;
-
-    if ($this->name == "ANN_anonymous")
-    echo "testing " . $this->match . " to $match <br />";
 
     return ($this->match == $match) ? TRUE : FALSE;
   }
