@@ -9,8 +9,8 @@ class Layout_Admin{
     $content = NULL;
     $panel = & new PHPWS_Panel("layout");
 
-    if (isset($_REQUEST['sub']))
-      $command = $_REQUEST['sub'];
+    if (isset($_REQUEST['command']))
+      $command = $_REQUEST['command'];
     else
       $command = $panel->getCurrentTab();
 
@@ -69,8 +69,9 @@ class Layout_Admin{
   function boxesForm($message = NULL){
     $form = & new PHPWS_Form("boxes");
     $form->add("module", "hidden", "layout");
-    $form->add("action[admin]", "hidden", "changeBoxSettings");
-    $form->add("move_boxes", "radio", array(0, 1));
+    $form->addHidden("action", "admin");
+    $form->addHidden("command", "changeBoxSettings");
+    $form->addRadio("move_boxes",  array(0, 1));
     if (isset($_SESSION['Move_Boxes']))
       $form->setMatch("move_boxes", 1);
     else
@@ -102,12 +103,13 @@ class Layout_Admin{
     }
 
     $form = new PHPWS_Form;
-    $form->add("module", "hidden", "layout");
-    $form->add("action[admin]", "hidden", "moveBox");
-    $form->add("box_source", "hidden", $box['id']);
-    $form->add("box_dest", "select", $menu);
+    $form->addHidden("module", "layout");
+    $form->addHidden("action", "admin");
+    $form->addHidden("command", "moveBox");
+    $form->addHidden("box_source", $box['id']);
+    $form->addSelect("box_dest", $menu);
     $form->setMatch("box_dest", $box['theme_var']);
-    $form->add("move", "submit", _("Move"));
+    $form->addSubmit("move", _("Move"));
 
     $template = $form->getTemplate();
     return PHPWS_Template::process($template, "layout", "move_box_select.tpl");
