@@ -76,6 +76,11 @@ class Block_Admin {
       PHPWS_Core::goBack();
       break;
 
+    case 'copy':
+      Block_Admin::copyBlock($block);
+      PHPWS_Core::goBack();
+      break;
+
     case 'postBlock':
       Block_Admin::postBlock($block);
       $result = $block->save();
@@ -145,14 +150,12 @@ class Block_Admin {
     }
 
     if (Editor::willWork()){
-      $editor = & new Editor('htmlarea', 'content', 
-			     PHPWS_Text::parseOutput($block->getContent(), FALSE, FALSE));
+      $editor = & new Editor('htmlarea', 'content', $block->getContent());
       $block_content = $editor->get();
       $form->addTplTag('CONTENT', $block_content);
       $form->addTplTag('CONTENT_LABEL', PHPWS_Form::makeLabel('content',_('Content')));
     } else {
-      $form->addTextArea('entry',
-			 PHPWS_Text::parseOutput($blog->getEntry(), FALSE, FALSE, FALSE));
+      $form->addTextArea('content', $block->getContent());
       $form->setRows('content', '10');
       $form->setWidth('content', '80%');
       $form->setLabel('content', _('Entry'));
@@ -179,6 +182,9 @@ class Block_Admin {
 
     $vars['action'] = 'store';
     $links[] = PHPWS_Text::secureLink(_('Store'), 'block', $vars);
+
+    $vars['action'] = 'copy';
+    $links[] = PHPWS_Text::secureLink(_('Copy'), 'block', $vars);
 
     $vars['action'] = 'delete';
     $confirm_vars['QUESTION'] = _('Are you sure you want to permanently delete this block?');
@@ -238,5 +244,9 @@ class Block_Admin {
     $result = $db->insert();
   }
   
+  function copyBlock(&$block)
+  {
+    Clipboard::copy($block->getTitle(), $block->getTag());
+  }
 }
 ?>

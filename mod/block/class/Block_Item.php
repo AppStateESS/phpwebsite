@@ -42,7 +42,7 @@ class Block_Item {
 
   function setContent($content)
   {
-    $this->content = PHPWS_Text::parseInput($content);
+    $this->content = PHPWS_Text::prepare($content);
   }
 
   function getKey()
@@ -51,13 +51,18 @@ class Block_Item {
     return $key;
   }
 
+  function getTag()
+  {
+    return '[block:' . $this->id . ']';
+  }
+
   function summarize(){
     return substr(strip_tags($this->getContent()), 0, 40);
   }
 
   function getContent()
   {
-    return PHPWS_Text::parseOutput($this->content);
+    return PHPWS_Text::parseEncoded($this->content);
   }
 
   function init()
