@@ -10,5 +10,5 @@
 </td>
 </tr>
 </table>
-{CHECK_ALL}{UPDATE}
+<div style="text-align : center">{UPDATE}</div>
 </div>
