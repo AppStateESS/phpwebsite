@@ -62,11 +62,11 @@ class Category{
   }
 
   function setDescription($description){
-    $this->description = PHPWS_Text::parseInput($description);
+    $this->description = PHPWS_Text::prepare($description);
   }
 
   function getDescription(){
-    return PHPWS_Text::parseOutput($this->description);
+    return PHPWS_Text::parseEncoded($this->description);
   }
 
   function setParent($parent){
