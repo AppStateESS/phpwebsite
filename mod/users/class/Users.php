@@ -313,9 +313,9 @@ class PHPWS_User extends PHPWS_Item {
     return $settings[$setting];
   }
 
-  function closeAction($command){
+  function adminAction($command){
     switch ($command){
-    case "admin":
+    case "main":
       PHPWS_Core::initModClass("users", "Form.php");
       PHPWS_User_Form::adminPanel();
       break;
