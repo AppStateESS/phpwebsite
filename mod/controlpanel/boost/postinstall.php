@@ -1,6 +1,5 @@
 <?php
-if (!$_SESSION["OBJ_user"]->isDeity()){
-  header("location:index.php");
+if (!$_SESSION["OBJ_user"]->isDeity())
   exit();
-}
+
 ?>
