@@ -57,7 +57,8 @@ define("CORE_COOKIE_TIMEOUT", 2592000);
  * need not be at any other time.
  */
 
-define("CHECK_DIRECTORY_PERMISSIONS", TRUE);
+// FOR NOW, this will be FALSE. MUST BE TRUE on Release
+define("CHECK_DIRECTORY_PERMISSIONS", FALSE);
 
 /********************** Logging Settings **********************/
 
