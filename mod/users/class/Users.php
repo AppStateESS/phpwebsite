@@ -165,6 +165,7 @@ class PHPWS_User extends PHPWS_Item {
 
 
   function loadModulePermission($module, $itemName=NULL){
+    PHPWS_Core::initModClass("users", "Permission.php");
     if (!isset($itemName))
       $itemName = DEFAULT_ITEMNAME;
 
