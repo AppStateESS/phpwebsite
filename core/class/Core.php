@@ -26,9 +26,8 @@ class PHPWS_Core {
     foreach ($moduleList as $mod){
       PHPWS_Core::setCurrentModule($mod['title']);
 
-      /* Check to see if this is an older module and load Crutch if so */
+      /* Check to see if this is an older module */
       if ($mod['pre94'] == 1){
-	PHPWS_Core::initCoreClass('Crutch.php');
 	PHPWS_Crutch::initializeModule($mod['title']);
 	$GLOBALS['pre094_modules'][] = $mod['title'];
 	$GLOBALS['Modules'][$mod['title']] = $mod;
@@ -75,12 +74,22 @@ class PHPWS_Core {
       PHPWS_Core::errorPage();
     }
 
-    foreach ($GLOBALS['Modules'] as $title=>$mod){
-      if (isset($GLOBALS['pre094_modules']) && 
-	  !isset($GLOBALS['Crutch_Session_Started']) && 
-	  in_array($title, $GLOBALS['pre094_modules']))
-	PHPWS_Crutch::startSessions();
+    foreach ($GLOBALS['Modules'] as $title=>$mod) {
+      if (isset($GLOBALS['pre094_modules'])) {
+	if (!isset($GLOBALS['Crutch_Session_Started']) && 
+	    in_array($title, $GLOBALS['pre094_modules'])) {
+	  PHPWS_Crutch::startSessions();
+	}
 	
+	if (isset($GLOBALS['Crutch_Sessions'][$title])) {
+	  foreach ($GLOBALS['Crutch_Sessions'][$title] as $session_name => $class_name) {
+	    if (!isset($_SESSION[$session_name])) {
+	      $_SESSION[$session_name] = & new $class_name;
+	    }
+	  }
+	}
+
+      }
       PHPWS_Core::setCurrentModule($title);
       $runtimeFile = PHPWS_SOURCE_DIR . 'mod/' . $mod['title'] . '/inc/runtime.php';
       is_file($runtimeFile) ? include_once $runtimeFile : NULL;
