@@ -122,6 +122,18 @@ class PHPWS_Template extends HTML_Template_Sigma {
       return _("Template error.");
     }
 
+    foreach ($template as $key => $value) {
+      if (!is_array($value)) {
+	continue;
+      }
+
+      foreach ($value as $content) {
+	$tpl->setCurrentBlock($key);
+	$tpl->setData($content);
+	$tpl->parseCurrentBlock();
+      }
+    }
+
     $tpl->setData($template);
 
     $result = $tpl->get();
