@@ -1,51 +1,66 @@
 <?php
-class PHPWS_User_Demographics {
-  var $_name;
-  var $_type;
+
+define('USER_ERR_LABEL_NOT_FOUND', 1); 
+define('USER_ERR_UNKNOWN_INPUT',   2); 
+
+class User_Demographic {
+  var $_label      = NULL;
+  var $_input_type = NULL;
+  var $_presets    = NULL;
 
 
-  function installDemographics($file){
-    if (!is_file($file))
-      return PEAR::raiseError("File not found: $file");
-    
-    include $file;
-    
-    if (!isset($demo) || !is_array($demo))
-      return PEAR::raiseError("Demo variable missing from config file.");
-    
-    foreach ($demo as $key=>$value){
-      switch ($key){
-      case "name":
-	$this->setName($value);
-	break;
-	
-      case "type":
-	$this->setType($value);
-	break;
+  function User_Demographic($label=NULL){
+    if (!isset($label))
+      return;
 
-      }// END key switch
-    }
-  }
-
-  function setName($name){
-    $DB = new PHPWS_DB("users_demographics");
-    if ($DB->isTableColumn($name))
-      return PEAR::raiseError("Column name exists");
-
-    $this->_name = $name;
-  }
-
-  function getName(){
-    return $this->_name;
-  }
-
-  function setType($type){
-    $this->_type($type);
-  }
-
-  function getType(){
-    return $this->_type;
+    $DB = new PHPWS_DB("user_demographic_items");
+    $DB->addWhere("label", $label);
+    $item = $DB->loadItems("User_Demographic", TRUE);
+    if (PEAR::isError($item))
+      PHPWS_Error::private(USER_ERR_LABEL_NOT_FOUND, "users", "User_Demographics");
+    else
+      $this = $item;
   }
   
+  function setLabel($label){
+    $this->_label = preg_replace("/[a-z]+[a-z0-9_]/i", "//1//2", $label);
+
+  }
+
+  function getLabel(){
+    return $this->_label;
+
+  } 
+  function setInputType($input_type){
+    switch (strtolower($input_type)){
+    case "textfield":
+    case "textarea":
+    case "radio":
+    case "checkbox":
+    case "select":
+    case "multiple":
+      $this->_input_type = $input_type;
+      return TRUE;
+      break;
+
+    default:
+      return PHPWS_Error::get(USER_ERR_UNKNOWN_INPUT, "users", "setInputType");
+      break;
+
+    }
+
+  }
+
+  function getInputType(){
+    return $this->_input_type;
+  }
+
+  function setPresets($presets){
+
+  }
+
+  function getPresets(){
+
+  }
 }
 ?>
