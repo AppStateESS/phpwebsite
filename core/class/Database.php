@@ -164,7 +164,7 @@ class PHPWS_DB {
 	return $columns;
 
       foreach ($columns as $colInfo)
-	if (preg_match("/primary/", $colInfo['flags']) && preg_match("/int/", $colInfo['type']))
+	if ($colInfo['name'] == "id" && preg_match("/primary/", $colInfo['flags']) && preg_match("/int/", $colInfo['type']))
 	  return $colInfo['name'];
     }
 
@@ -376,7 +376,6 @@ class PHPWS_DB {
     $this->resetColumns();
     $this->_indexby = NULL;
     $this->_qwhere  = NULL;
-    $this->_indexby = NULL;
   }
 
   function lastQuery(){
@@ -558,6 +557,7 @@ class PHPWS_DB {
       $rows[$index] = $item;
   }
 
+
   function delete(){
     $table = $this->getTable();
     if (!$table)
@@ -565,11 +565,9 @@ class PHPWS_DB {
 
     $where = $this->getWhere(TRUE);
 
-    $sql = "DELETE from $table $where";
-
+    $sql = "DELETE FROM $table $where";
     return PHPWS_DB::query($sql);
   }
-
   
 
   function dropTable(){
@@ -592,8 +590,8 @@ class PHPWS_DB {
     foreach ($values as $column=>$value)
       $parameters[] = $column . " " . $value;
 
-    $sql = "CREATE TABLE $table ( " . implode(", ", $parameters) . " )";
 
+    $sql = "CREATE TABLE $table ( " . implode(", ", $parameters) . " )";
     return PHPWS_DB::query($sql);
   }
 
@@ -603,7 +601,7 @@ class PHPWS_DB {
       return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, "core", "PHPWS_DB::addColumn");
 
     if (isset($after)){
-      if ($after == strtolower("first"))
+      if (strtolower($after) == "first")
 	$location = "FIRST";
       else
 	$location = "AFTER $after";
