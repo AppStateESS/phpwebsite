@@ -36,5 +36,10 @@ define("USER_ERR_PASSWORD_LENGTH", -9);
 define("USER_ERR_PASSWORD_EASY",   -10);
 
 
+/* Demographics errors */
+define('USER_ERR_LABEL_NOT_FOUND', -21); 
+define('USER_ERR_UNKNOWN_INPUT',   -22); 
+
+
 
 ?>
