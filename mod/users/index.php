@@ -3,7 +3,7 @@
 if (!isset($_REQUEST['action'])) return;
 
 if (!class_exists("PHPWS_User")){
-     PHPWS_Error::log("PHPWS_CLASS_NOT_CONSTRUCTED", "core", NULL, "<b>Class:</b> PHPWS_Users");
+     PHPWS_Error::log("PHPWS_CLASS_NOT_CONSTRUCTED", "core", NULL, "Class: PHPWS_Users");
      return;
 }
 
