@@ -38,7 +38,16 @@ class DBPager {
   var $module       = NULL;
 
   var $toggles      = NULL;
-  
+
+  /**
+   * Methods the developer wants to run prior to
+   * using the object
+   */
+  var $runMethods   = NULL;
+
+  /**
+   * List of methods in class
+   */  
   var $_methods     = NULL;
 
   var $_classVars   = NULL;
@@ -131,9 +140,12 @@ class DBPager {
 
   }
 
-  function setSearch($column){
-    if (ctype_alnum($column) && $this->db->isTableColumn($column))
-      $this->searchColumn = $column;
+  function setSearch(){
+    $col_list = func_get_args();
+
+    foreach ($col_list as $column)
+      if (ctype_alnum($column) && $this->db->isTableColumn($column))
+	$this->searchColumn[] = $column;
   }
 
   function setPageTurnerLeft($turner){
@@ -165,6 +177,13 @@ class DBPager {
     $this->methods[$column_name]['variable'] = $variable;
   }
 
+  function addRunMethod($method){
+    if (!in_array(strtolower($method), $this->_methods))
+      return;
+
+    $this->runMethods[] = $method;
+  }
+
   function getLinkEnd(){
     $values[] = "page=" .  $this->current_page;
     $values[] = "limit=" . $this->limit;
@@ -192,15 +211,17 @@ class DBPager {
   }
 
   function getTotalRows(){
-    $test = $this->db->addColumn("*", FALSE, TRUE);
+    $this->db->addColumn("*", FALSE, TRUE);
     $result = $this->db->select("one");
     $this->db->resetColumns();
     return $result;
   }
 
   function initialize(){
-    if (isset($this->search) && isset($this->searchColumn))
-      $this->addWhere($this->searchColumn, $this->search, "REGEXP");
+    if (!empty($this->search) && isset($this->searchColumn)){
+      foreach ($this->searchColumn as $column_name)
+	$this->addWhere($column_name, $this->search, "REGEXP", "OR");
+    }
 
     $count = $this->getTotalRows();
     if (PEAR::isError($count))
@@ -223,7 +244,6 @@ class DBPager {
       return $result;
 
     $this->object_rows = &$result;
-
   }
 
   function getPageLinks(){
@@ -358,6 +378,11 @@ class DBPager {
       return NULL;
 
     foreach ($this->object_rows as $object){
+      if (isset($this->runMethods)){
+	foreach ($this->runMethods as $method)
+	  $object->{$method}();
+      }
+
       foreach ($this->_classVars as $varname){
 	if (isset($this->methods[$varname])){
 	  $funcName = strtolower($this->methods[$varname]['method']);
