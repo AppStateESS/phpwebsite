@@ -1,6 +1,6 @@
 <?php
 
-class PHPWS_Panel_Link extends PHPWS_Item{
+class PHPWS_Panel_Link {
   var $_id;
   var $_label;
   var $_module;
@@ -13,22 +13,37 @@ class PHPWS_Panel_Link extends PHPWS_Item{
   var $_link_order;
 
   function PHPWS_Panel_Link($id=NULL){
-    $exclude = array ("_owner",
-		      "_editor",
-		      "_ip");
+    if (isset($id))
+      $this->init($id);
+  }
 
-    $this->addExclude($exclude);
-    $this->setTable("controlpanel_link");
+  function init($id){
+    $db = & new PHPWS_DB("controlpanel_link");
+    $db->addWhere("id", $id);
+    $result = $db->loadObjects("PHPWS_Panel_Link", NULL, TRUE);
+    if (PEAR::isError($result))
+      return $result;
+    else
+      $this = $result;
   }
 
   function setTab($tab){
     $this->_tab = $tab;
   }
 
-
   function getTab(){
     return $this->_tab;
   }
+
+
+  function setLabel($label){
+    $this->_label = $label;
+  }
+
+  function getLabel(){
+    return $this->_label;
+  }
+
 
   function getDescription(){
     return $this->_description;
@@ -44,15 +59,15 @@ class PHPWS_Panel_Link extends PHPWS_Item{
   }
 
   function getImage($tag=FALSE, $linkable=FALSE){
-    if ($tag){
-      PHPWS_Core::initCoreClass("Image.php");
-      $image = new PHPWS_Image($this->_image);
-      if ($linkable)
-	return "<a href=\"" . $this->getUrl() . "\">" . $image->getTag() . "</a>";
-      else
-	return $image->getTag();
-    } else
+    if ($tag == FALSE)
       return $this->_image;
+
+    $image = "<img src=\"" . $this->_image . "\" border=\"0\" />";
+
+    if ($linkable == TRUE)
+      $image = "<a href=\"" . $this->_url . "\">" . $image . "</a>";
+
+    return $image;
   }
 
   function setUrl($url){
@@ -65,6 +80,25 @@ class PHPWS_Panel_Link extends PHPWS_Item{
     else
       return $this->_url;
   }
+
+  function getLinkOrder(){
+    if (isset($this->_link_order))
+      return $this->_link_order;
+
+    $DB = @ new PHPWS_DB("controlpanel_link");
+    $DB->addWhere('tab', $this->getTab());
+    $DB->addColumn('link_order');
+    $max = $DB->select("max");
+    
+    if (PEAR::isError($max))
+      return $max;
+
+    if (isset($max))
+      return $max + 1;
+    else
+      return 1;
+  }
+
 
   function setModule($module){
     $this->_module = $module;
@@ -87,7 +121,20 @@ class PHPWS_Panel_Link extends PHPWS_Item{
   }
 
   function setRestricted($restrict){
-    $this->_restricted($restrict);
+    $this->_restricted = $restrict;
+  }
+
+  function save(){
+
+    $db = & new PHPWS_DB("controlpanel_link");
+    if (isset($this->_id))
+      $db->addWhere("id", $this->_id);
+
+    $this->_link_order = $this->getLinkOrder();
+
+    $result = $db->saveObject($this, TRUE);
+    return $result;
+
   }
 
   function view(){

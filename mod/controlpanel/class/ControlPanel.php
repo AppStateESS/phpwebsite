@@ -11,10 +11,18 @@ class PHPWS_ControlPanel {
     if (!isset($content)){
       $allLinks = PHPWS_ControlPanel::getAllLinks();
 
-      foreach ($allLinks[$panel->getCurrentTab()] as $id => $link)
-	$content[] = $link->view();
-  
-      $panel->setContent(implode("", $content));
+      if (!$allLinks){
+	echo "problem with alllinks";
+	return NULL;
+      }
+
+      if (isset($allLinks[$panel->getCurrentTab()])){
+	foreach ($allLinks[$panel->getCurrentTab()] as $id => $link)
+	  $content[] = $link->view();
+	
+	$panel->setContent(implode("", $content));
+      } else
+	$panel->setContent(NULL);
     } else
       $panel->setContent($content);
     return $panel->display($imbed);
@@ -22,6 +30,7 @@ class PHPWS_ControlPanel {
 
 
   function getAllLinks(){
+    $allLinks = NULL;
     if (isset($_SESSION['CP_All_links']))
       return $_SESSION['CP_All_links'];
 

@@ -10,6 +10,7 @@
 class PHPWS_Panel_Tab {
   var $_id          = NULL;
   var $_title       = NULL;
+  var $_label       = NULL;
   var $_link        = NULL;
   var $_tab_order   = NULL;
   var $_color       = NULL;
@@ -55,6 +56,14 @@ class PHPWS_Panel_Tab {
       return str_replace(" ", "&nbsp;", $this->_title);
     else
       return $this->_title;
+  }
+
+  function setLabel($label){
+    $this->_label = $label;
+  }
+
+  function getLabel(){
+    return $this->_label;
   }
 
   function setLink($link){
@@ -124,6 +133,7 @@ class PHPWS_Panel_Tab {
 
     $id                   = $this->getId();
     $save['title']        = $this->getTitle(FALSE);
+    $save['label']        = $this->getLabel();
     $save['link']         = $this->getLink(FALSE);
     $save['color']        = $this->getColor();
     $save['itemname']     = $this->getItemname();
