@@ -1,6 +1,17 @@
 <?php
 
 class PHPWS_Error {
+
+  /**
+   * This is a crutch function for 0.x compatibility
+   */
+  function PHPWS_Error($module, $funcName, $message)
+  {
+    $error = $module . ' - ' . $funcName . ' - ' . $message;
+    return PEAR::raiseError($message, 1, NULL, NULL, $error);
+  }
+
+
   function isError($item){
     return PEAR::isError($item);
   }
