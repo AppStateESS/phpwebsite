@@ -177,13 +177,22 @@ class PHPWS_Group {
     }
   }
 
-  function allow($itemName, $subpermission=NULL, $item_id=NULL, $returnType=FALSE){
+  function allow($itemName, $permission=NULL, $item_id=NULL, $itemname=NULL){
     PHPWS_Core::initModClass("users", "Permission.php");
 
     if (!isset($this->_permission))
       $this->loadPermissions();
 
-    return $this->_permission->allow($itemName, $subpermission, $item_id, $returnType);
+    return $this->_permission->allow($itemName, $permission, $item_id, $itemname);
+  }
+
+  function getPermissionLevel($module){
+    PHPWS_Core::initModClass("users", "Permission.php");
+
+    if (!isset($this->_permission))
+      $this->loadPermissions();
+
+    return $this->_permission->getPermissionLevel($module);
   }
 
   function loadPermissions($loadAll=TRUE){

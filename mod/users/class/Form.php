@@ -31,7 +31,7 @@ class User_Form {
   function loggedIn(){
     translate("users");
     PHPWS_Core::initCoreClass("Text.php");
-    $template["MODULES"] = PHPWS_Text::secureLink(_("Control Panel"), "controlpanel", array("command"=>"panel_view"));
+    $template["MODULES"] = PHPWS_Text::moduleLink(_("Control Panel"), "controlpanel", array("command"=>"panel_view"));
     $template["LOGOUT"] = PHPWS_Text::moduleLink(_("Log Out"), "users", array("action"=>"user", "command"=>"logout"));
     $template["HOME"] = PHPWS_Text::moduleLink(_("Home"));
 
@@ -51,7 +51,9 @@ class User_Form {
     $form->addHidden("action", "user");
     $form->addHidden("command", "loginBox");
     $form->addText("block_username", $username);
+    $form->setWidth("block_username", "98%");
     $form->addPassword("block_password");
+    $form->setWidth("block_password", "98%");
     $form->addSubmit("submit", _("Log In"));
 
     $form->setLabel("block_username", _("Username"));
@@ -113,16 +115,16 @@ class User_Form {
       return;
 
     $permSet[NO_PERMISSION]      = NO_PERM_NAME;
-    $permSet[FULL_PERMISSION]    = FULL_PERM_NAME;
+    $permSet[UNRESTRICTED_PERMISSION]    = FULL_PERM_NAME;
 
-    if (isset($itemPermissions) && $itemPermissions == TRUE)
-      $permSet[PARTIAL_PERMISSION] = PART_PERM_NAME;
+    if (isset($item_permissions) && $item_permissions == TRUE)
+      $permSet[RESTRICTED_PERMISSION] = PART_PERM_NAME;
     else
-      unset($permSet[PARTIAL_PERMISSION]);
+      unset($permSet[RESTRICTED_PERMISSION]);
 
     ksort($permSet);
 
-    $permCheck = $group->allow($mod['title'], NULL, NULL, TRUE);
+    $permCheck = $group->getPermissionLevel($mod['title']);
 
     foreach ($permSet as $key => $value){
       $form = & new PHPWS_Form;
@@ -140,7 +142,7 @@ class User_Form {
 	$form = & new PHPWS_Form;
 	$name = "sub_permission[{$mod['title']}][$permName]";
 	$form->addCheckBox($name, 1);
-	if ($group->allow($mod['title'], $permName, NULL, TRUE))
+	if ($group->allow($mod['title'], $permName))
 	  $subcheck = 1;
 	else
 	  $subcheck = 0;

@@ -18,8 +18,8 @@ define("BAD_PASSWORDS",
 define("DEFAULT_ITEMNAME", "common");
 define("DEFAULT_USER_MENU", "new_user");
 
-define("FULL_PERMISSION",    2);
-define("PARTIAL_PERMISSION", 1);
+define("UNRESTRICTED_PERMISSION",    2);
+define("RESTRICTED_PERMISSION", 1);
 define("NO_PERMISSION",      0);
 
 define("FULL_PERM_NAME", _("Unrestricted"));

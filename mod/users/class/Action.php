@@ -77,7 +77,7 @@ class User_Action {
       break;
 
     case "setUserPermissions":
-      if (!Current_User::allow("users", "edit_permissions")){
+      if (!Current_User::authorized("users", "edit_permissions")){
 	PHPWS_User::disallow();
         return;
       }
@@ -93,7 +93,7 @@ class User_Action {
       /********************** Group Forms ************************/
 
     case "setGroupPermissions":
-      if (!Current_User::allow("users", "edit_permissions")){
+      if (!Current_User::authorized("users", "edit_permissions")){
 	PHPWS_User::disallow();
         return;
       }

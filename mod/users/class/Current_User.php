@@ -9,8 +9,12 @@ class Current_User {
     Current_User::getLogin();
   }
   
-  function allow($itemName, $subpermission=NULL, $item_id=NULL, $verify=TRUE){
-    return $_SESSION['User']->allow($itemName, $subpermission, $item_id, $verify);
+  function allow($module, $subpermission=NULL, $item_id=NULL, $itemname=NULL){
+    return $_SESSION['User']->allow($module, $subpermission, $item_id, $itemname, FALSE);
+  }
+
+  function authorized($module, $subpermission=NULL, $item_id=NULL, $itemname=NULL){
+    return $_SESSION['User']->allow($module, $subpermission, $item_id, $itemname, TRUE);
   }
 
   function deityAllow(){
@@ -50,6 +54,18 @@ class Current_User {
     return $_SESSION['User']->verifyAuthKey();
   }
 
+  function isRestricted($module){
+    $level = $_SESSION['User']->getPermissionLevel($module);
+    return $level == RESTRICTED_PERMISSION ? TRUE : FALSE;
+  }
+
+  function isUnrestricted($module){
+    if (Current_User::isDeity())
+      return TRUE;
+    $level = $_SESSION['User']->getPermissionLevel($module);
+    return $level == UNRESTRICTED_PERMISSION ? TRUE : FALSE;
+  }
+
   function updateLastLogged(){
     $db = & new PHPWS_DB("users");
     $db->addWhere("id", $_SESSION['User']->getId());
@@ -74,7 +90,7 @@ class Current_User {
 
   function getPermissionLevel($module){
     if ($_SESSION['User']->isDeity())
-      return FULL_PERMISSION;
+      return UNRESTRICTED_PERMISSION;
 
     return $_SESSION['User']->_permission->getPermissionLevel($module);
   }

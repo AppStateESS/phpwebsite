@@ -305,7 +305,7 @@ class PHPWS_User {
     return TRUE;
   }
 
-  function allow($itemName, $subpermission=NULL, $item_id=NULL, $verify=TRUE){
+  function allow($itemName, $subpermission=NULL, $item_id=NULL, $itemname=NULL, $verify=FALSE){
     if ($verify && !$this->verifyAuthKey())
       return FALSE;
 
@@ -313,7 +313,7 @@ class PHPWS_User {
     if ($this->isDeity())
       return TRUE;
 
-    return $this->_permission->allow($itemName, $subpermission, $item_id);
+    return $this->_permission->allow($itemName, $subpermission, $item_id, $itemname);
   }
 
   /**
@@ -527,12 +527,12 @@ class PHPWS_User {
     $db->delete();
   }
 
-  function savePermissions($module, $item_id){
+  function savePermissions($module, $item_id, $item_name=NULL){
     if (!PHPWS_Core::moduleExists($module))
       return PHPWS_Error::get(PHPWS_NO_MOD_FOUND, "users", __CLASS__ . "::" . __FUNCTION__);
 
     PHPWS_Core::initModClass("users", "Permission.php");
-    Users_Permission::savePermissions($module, $item_id);
+    Users_Permission::savePermissions($module, $item_id, $item_name);
   }
 
   function assignPermissions($module, $item_id=NULL){
@@ -542,6 +542,16 @@ class PHPWS_User {
     PHPWS_Core::initModClass("users", "Permission.php");
     return Users_Permission::assignPermissions($module, $item_id);
   }
+
+  function getPermissionLevel($module){
+    PHPWS_Core::initModClass("users", "Permission.php");
+
+    if (!isset($this->_permission))
+      $this->loadPermissions();
+
+    return $this->_permission->getPermissionLevel($module);
+  }
+
 
 }
 
