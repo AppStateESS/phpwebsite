@@ -5,7 +5,7 @@
  * 
  * @version $Id$
  * @author  Matthew McNaney <matt at tux dot appstate dot edu>
- * @author  Adam Morton <adam@NOSPAM.tux.appstate.edu>
+ * @author  Adam Morton
  * @author  Steven Levin <steven@NOSPAM.tux.appstate.edu>
  * @author  Don Seiler <don@NOSPAM.seiler.us>
  * @package Core
@@ -18,10 +18,11 @@ class PHPWS_Text {
   var $use_breaker    = TRUE;
   var $use_encoded    = FALSE;
   var $use_strip_tags = TRUE;
-  var $_allowed_tags  = PHPWS_ALLOWED_TAGS;
+  var $_allowed_tags  = NULL;
 
   function PHPWS_Text($text=NULL, $encoded=FALSE)
   {
+    $this->resetAllowedTags();
     $this->setText($text, $encoded);
   }
 
@@ -79,7 +80,7 @@ class PHPWS_Text {
 
   function resetAllowedTags()
   {
-    $this->_allowed_tags = PHPWS_ALLOWED_TAGS;
+    $this->_allowed_tags = preg_replace('/\s/','',  PHPWS_ALLOWED_TAGS);
   }
 
   function clearAllowedTags()
