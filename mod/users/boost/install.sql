@@ -21,7 +21,7 @@ CREATE TABLE users_members (
 
 CREATE TABLE users (
   id int NOT NULL default '0',
-  last_logged int default NULL,
+  last_logged int default 0,
   log_count int NOT NULL default '0',
   authorize smallint NOT NULL default '0',
   created int NOT NULL default '0',
