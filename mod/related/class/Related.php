@@ -132,7 +132,7 @@ class Related {
     $db->addColumn("friend_id");
     $result = $db->select("col");
 
-    if (PEAR::isError($result))
+    if (PEAR::isError($result) || empty($result))
       return $result;
 
     foreach ($result as $id)
@@ -223,8 +223,10 @@ class Related {
     
     $friend = $friends[$position];
 
-    if (isset($friend->id))
-      $friend->clearRelated($this->id);
+    if (isset($friend->id)){
+      $friend->clearRelated();
+      $friend->kill();
+    }
 
     unset($friends[$position]);
 
@@ -316,11 +318,15 @@ class Related {
     }
   }
 
-  function clearRelated($friend_id=NULL){
+  function clearRelated(){
     $db = & new PHPWS_DB("related_friends");
-    if (isset($friend_id))
-      $db->addWhere("friend_id", (int)$friend_id);
     $db->addWhere("source_id", $this->id);
+    $db->delete();
+  }
+
+  function kill(){
+    $db = & new PHPWS_DB("related_main");
+    $db->addWhere("id", $this->id);
     $db->delete();
   }
 
