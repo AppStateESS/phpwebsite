@@ -207,7 +207,7 @@ class DBPager {
 
   function getLimit(){
     $start = ($this->current_page - 1) * $this->limit;
-    return $start . "," . $this->limit; 
+    return array($start, $this->limit);
   }
 
   function getTotalRows(){
