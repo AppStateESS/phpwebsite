@@ -200,6 +200,7 @@ class Category_Item {
 
   }
 
+
   function getCategoryItems(){
     PHPWS_Core::initModClass("categories", "Category_Item.php");
 

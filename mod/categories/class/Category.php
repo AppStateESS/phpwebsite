@@ -144,6 +144,10 @@ class Category{
     $db->addWhere("id", $this->id);
     return $db->delete();
   }
+
+  function getViewLink(){
+    return PHPWS_Text::rerouteLink($this->title, "categories", "viewCategory", $this->id);
+  }
 }
 
 ?>

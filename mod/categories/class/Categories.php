@@ -9,6 +9,9 @@
  */
 
 PHPWS_Core::configRequireOnce("categories", "errorDefines.php");
+PHPWS_Core::initModClass("categories", "Category.php");
+
+define("CAT_LINK_DIVIDERS", "&gt;&gt;");
 
 class Categories{
 
@@ -21,7 +24,7 @@ class Categories{
     $list = Categories::_makeLink($result);
     Layout::addStyle("categories");
     return $list;
-   }
+  }
 
   /**
    * Ditto the above
@@ -58,8 +61,66 @@ class Categories{
     return $children;
   }
 
+  function getCategoryLinks($module, $item_id, $item_name=NULL){
+    PHPWS_Core::initModClass("categories", "Category_Item.php");
+    if (empty($module) || empty($item_id))
+      return NULL;
+
+    $cat = & new Category_Item($module, $item_name);
+    $cat->setItemId($item_id);
+    $result = $cat->getCategoryItems();
+
+    if (empty($result))
+      return NULL;
+
+    $cat_list = array_keys($result);
+
+    $db = & new PHPWS_DB("categories");
+    $db->addWhere("id", $cat_list);
+    $cat_result = $db->getObjects("Category");
+
+    foreach ($cat_result as $cat){
+      $link[] = Categories::_createViewLink($cat);
+    }
+
+    return $link;
+  }
+
+
+  function showCategoryLinks($module, $item_id, $item_name=NULL){
+    $links = Categories::getCategoryLinks($module, $item_id, $item_name);
+
+    if (empty($links))
+      return NULL;
+    
+    $tpl = & new PHPWS_Template("categories");
+    $tpl->setFile("minilist.tpl");
+    $tpl->setCurrentBlock("link-list");
+
+    foreach ($links as $link){
+      $tpl->setData(array("LINK"=>$link));
+      $tpl->parseCurrentBlock();
+    }
+
+    $data['CONTENT'] = $tpl->get();
+    $data['TITLE'] = _("Categories");
+
+    Layout::add($data, "categories", "category_box");
+
+  }
+
+  function _createViewLink($category){
+    $link[] = $category->getViewLink();
+    if ($category->parent){
+      $parent = & new Category($category->parent);
+      $link[] = Categories::_createViewLink($parent);
+    }
+
+    return implode(" " . CAT_LINK_DIVIDERS . " ", array_reverse($link));
+  }
+
+
   function getCategories($mode="sorted"){
-    PHPWS_Core::initModClass("categories", "Category.php");
     $db = & new PHPWS_DB("categories");
     
     switch ($mode){
@@ -99,7 +160,7 @@ class Categories{
       if (!empty($category->children)) {
 	$sublist = Categories::_buildList($category->children);
 	foreach ($sublist as $subkey => $subvalue){
-	  $indexed[$subkey] = $category->title . " &gt;&gt; " . $subvalue;
+	  $indexed[$subkey] = $category->title . " " . CAT_LINK_DIVIDERS . " " . $subvalue;
 	}
       }
     }
