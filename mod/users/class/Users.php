@@ -50,8 +50,8 @@ class PHPWS_User {
       return $result;
 
     $this->loadUserGroups();
+    $this->loadPermissions();
   }
-
 
   function setId($id){
     $this->id = (int)$id;
@@ -312,9 +312,6 @@ class PHPWS_User {
     PHPWS_Core::initModClass("users", "Permission.php");
     if ($this->isDeity())
       return TRUE;
-
-    if (!isset($this->_permission))
-      $this->loadPermissions();
 
     return $this->_permission->allow($itemName, $subpermission, $item_id);
   }
