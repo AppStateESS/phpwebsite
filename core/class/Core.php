@@ -231,8 +231,8 @@ class PHPWS_Core {
 	return $file;
     } else
       require_once $file;
-      
 
+    return TRUE;
   }
 
   function &loadAsMod(){
