@@ -180,4 +180,29 @@ define("ALLOW_SIGMA_CACHE", TRUE);
 define("CACHE_LIFETIME", 3600);
 define("CACHE_DIRECTORY", "/tmp");
 
+/******************** MOD_REROUTE *******************************/
+/**
+ * Mod_reroute is an Apache web server process that allows you to
+ * reduce the size of your web urls. It must be enabled for it to
+ * function properly.
+ */
+
+define("MOD_REWRITE_ENABLED", FALSE);
+
+/******************* RELATIVE ADDRESSING ***********************
+ * The parseInput function the Text class will remove urls
+ * and replace them with relative addresses if this option is TRUE
+ * For example:
+ * <a href="http://www.mysite.com/index.php?">Home</a>
+ * <img src="http://www.mysite.com/images/mymod/candy.jpg" />
+ * will become
+ * <a href="./index.php?">Home</a>
+ * <img src="./images/mymod/candy.jpg" />
+ *
+ * If for some reason you don't want this to happen, change to
+ * FALSE
+ */
+
+define("MAKE_ADDRESSES_RELATIVE", TRUE);
+
 ?>
