@@ -259,7 +259,7 @@ class Blog_Admin {
       $form->addSubmit('submit', _('Add Entry'));
 
     if (Editor::willWork()){
-      $editor = & new Editor('htmlarea', 'entry', $blog->getEntry(TRUE));
+      $editor = & new Editor('entry', $blog->getEntry(TRUE));
       $entry = $editor->get();
       $form->addTplTag('ENTRY', $entry);
       $form->addTplTag('ENTRY_LABEL', PHPWS_Form::makeLabel('entry',_('Entry')));

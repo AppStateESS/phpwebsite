@@ -150,7 +150,7 @@ class Block_Admin {
     }
 
     if (Editor::willWork()){
-      $editor = & new Editor('htmlarea', 'content', $block->getContent());
+      $editor = & new Editor('content', $block->getContent());
       $block_content = $editor->get();
       $form->addTplTag('CONTENT', $block_content);
       $form->addTplTag('CONTENT_LABEL', PHPWS_Form::makeLabel('content',_('Content')));
