@@ -556,8 +556,6 @@ class Layout {
   }
 
   function wrap($theme, $content){
-    $template['TEST_JS'] = Layout::getJavascript("test");
-
     if (isset($GLOBALS['Layout_JS'])){
       foreach ($GLOBALS['Layout_JS'] as $script=>$javascript)
 	$jsHead[] = $javascript['head'];
