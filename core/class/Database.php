@@ -229,6 +229,9 @@ class PHPWS_DB {
     if (!PHPWS_DB::allowed($column))
       return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, "core", "PHPWS_DB::addWhere", $column);
 
+    if (PHPWS_Text::checkUnslashed($value))
+      $value = addslashes($value);
+
     if (isset($group))
       $this->where[$group]['values'][] = array('column'=>$column, 'value'=>$value, 'operator'=>$operator, 'conj'=>$conj);
     else
@@ -331,11 +334,13 @@ class PHPWS_DB {
 
 
   function addOrder($order){
-    if (is_array($order))
-      foreach ($order as $value)
-	    $this->order[] = $value;
+    if (is_array($order)){
+      foreach ($order as $value){
+	$this->order[] = preg_replace("/[^\w\s]/", "", $value);
+      }
+    }
     else
-      $this->order[] = $order;
+      $this->order[] = preg_replace("/[^\w\s]/", "", $order);
   }
 
   function getOrder($dbReady=FALSE){
@@ -387,7 +392,7 @@ class PHPWS_DB {
 
 
   function setLimit($limit){
-    $this->limit = $limit;
+    $this->limit = preg_replace("/[^\d\s,]/", "", $limit);
   }
 
   function getLimit($dbReady=FALSE){
@@ -886,7 +891,7 @@ class PHPWS_DB {
       if (PEAR::isError($variables))
 	return $variables;
       elseif (empty($variables))
-	return;
+	return FALSE;
     }
 
     foreach($classVars as $key => $value) {
@@ -901,6 +906,8 @@ class PHPWS_DB {
 	  $object->$key = $variables[$column];
       }
     }
+
+    return TRUE;
   }
 
   function getObjects($className){
