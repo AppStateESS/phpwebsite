@@ -75,6 +75,8 @@ class PHPWS_Boost {
     if (!$this->isModules())
       return PHPWS_Error::get(BOOST_NO_MODULES_SET, 'boost', 'install');
 
+    $last_mod = end($this->modules);
+
     foreach ($this->modules as $title => $mod){
       $title = trim($title);
       if ($this->getStatus($title) == BOOST_DONE)
@@ -110,15 +112,20 @@ class PHPWS_Boost {
 	$this->setStatus($title, BOOST_DONE);
 	$this->createDirectories($mod, $content);
 	$this->registerModule($mod, $content);
+	$continue = TRUE;
 	break;
       }
       elseif ($result === -1){
+	// No installation file (install.php) was found.
 	$this->setStatus($title, BOOST_DONE);
 	$this->createDirectories($mod, $content);
 	$this->registerModule($mod, $content);
+	$continue = TRUE;
+	break;
       }
       elseif ($result === FALSE){
 	$this->setStatus($title, BOOST_PENDING);
+	$continue = FALSE;
 	break;
       }
       elseif (PEAR::isError($result)){
@@ -126,14 +133,20 @@ class PHPWS_Boost {
 	$content[] = '<b>' . $result->getMessage() .'</b>';
 	$content[] = '<br />';
 	PHPWS_Error::log($result);
+	$continue = TRUE;
+	break;
       }
+
     }
 
-    if ($result == TRUE || $result == -1){
-      if ($inBoost == FALSE)
+    if ($continue && $last_mod->title != $title){
+      // inBoost checks to see if we are in the Setup program
+      if ($inBoost == FALSE) {
 	$content[] = '<a href="index.php?step=3">' . _('Continue installation...') . '</a>';
-      else
+      }
+      else {
 	$content[] = _('Installation complete!');
+      }
     }
     
     return implode('<br />', $content);    
@@ -172,8 +185,9 @@ class PHPWS_Boost {
       $installCnt[] = _('Processing installation file.');
       return $installFunction($installCnt);
     }
-    else
+    else {
       return TRUE;
+    }
   }
 
   function onUpgrade($mod, &$upgradeCnt)
