@@ -80,7 +80,7 @@ class Users_Permission {
 	}
       }
     } else {
-      return TRUE;
+      return FALSE;
     }
   }
 
