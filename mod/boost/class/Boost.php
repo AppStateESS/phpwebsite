@@ -1,7 +1,14 @@
 <?php
 
 PHPWS_Core::initCoreClass("Module.php");
-require_once PHPWS_Core::getConfigFile("boost", "config.php");
+$result = PHPWS_Core::getConfigFile("boost", "config.php");
+
+if (PEAR::isError($result)){
+  PHPWS_Error::log($result);
+  PHPWS_Core::errorPage();
+}
+
+require_once $result;
 
 class PHPWS_Boost {
   var $module = NULL;
@@ -30,6 +37,7 @@ class PHPWS_Boost {
     $sql = File::readAll($sqlFile);
 
     $result = PHPWS_DB::import($sql);
+    
   }
 
   function log($message, $write=FALSE){
