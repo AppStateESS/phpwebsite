@@ -271,7 +271,24 @@ class PHPWS_DB {
     $this->addWhere($base_column, $match_column, $operator, $conj, $group, TRUE);
   }
 
-  function addWhere($column, $value, $operator=NULL, $conj=NULL, $group=NULL, $join=FALSE){
+  function addWhere($column, $value=NULL, $operator=NULL, $conj=NULL, $group=NULL, $join=FALSE){
+    if (is_array($column)) {
+      foreach ($column as $new_column => $new_value) {
+	$result = $this->addWhere($new_column, $new_value);
+	if (PEAR::isError($result)) {
+	  return $result;
+	}
+      }
+      return TRUE;
+    } elseif (empty($value) || $value == 'null') {
+      if (empty($operator) || (strtoupper($operator) != 'IS NOT' && $operator != '!=')) {
+	$operator = 'IS';
+      } else {
+	$operator = 'IS NOT';
+      }
+      $value = 'NULL';
+    }
+
     if (isset($operator)) {
       $operator = strtoupper($operator);
     }
@@ -333,7 +350,9 @@ class PHPWS_DB {
 		     'LIKE',
 		     'REGEXP',
 		     'IN',
-		     'BETWEEN');
+		     'BETWEEN',
+		     'IS',
+		     'IS NOT');
 
     return in_array(strtoupper($operator), $allowed);
   }
@@ -376,9 +395,12 @@ class PHPWS_DB {
 	  if (is_array($value)) {
 	    switch ($operator){
 	    case 'IN':
-
-	      foreach ($value as $temp_val){
-		$temp_val_list[] = "'$temp_val'";
+	      foreach ($value as $temp_val) {
+		if (strtolower($temp_val) != 'null') {
+		  $temp_val_list[] = "'$temp_val'";
+		} else {
+		  $temp_val_list[] = $temp_val;
+		}
 	      }
 	      $value = '(' . implode(', ', $temp_val_list) . ')';
 
@@ -391,10 +413,16 @@ class PHPWS_DB {
 
 	    $sql[] = "$column $operator $value";
 	  } else {
-	    if ($join)
+	    if ($join) {
 	      $sql[] = "$column $operator $value";
-	    else
-	      $sql[] = "$column $operator '$value'";
+	    }
+	    else {
+	      if (strtolower($value) != 'null') {
+		$sql[] = "$column $operator '$value'";
+	      } else {
+		$sql[] = "$column $operator $value";
+	      }
+	    }
 	  }
 
 	  $startSub = TRUE;
