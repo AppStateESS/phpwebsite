@@ -102,10 +102,10 @@ class Demographics {
       return NULL;
 
     foreach ($demo as $item){
-      $label = $item->getLabel();
-      $form->add($label, $item->getInputType());
+      $result = $form->add($item->getFormLabel(), $item->getInputType());
+      $form->setTag($item->getFormLabel(), $item->getLabel());
       $item->addSpecialInfo($form);
-      $template[strtoupper($label) . "_LBL"] = $item->getProperName(TRUE);
+      $template[strtoupper($item->getLabel()) . "_LBL"] = $item->getProperName(TRUE);
     }
 
     $form->mergeTemplate($template);
