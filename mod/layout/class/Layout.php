@@ -1,4 +1,14 @@
 <?php
+
+/**
+ * Controls the viewing and layout of the site
+ *
+ * @version $Id$
+ * @author  Matt McNaney <matt at tux dot appstate dot edu>
+ * @package Core
+ */
+
+
 PHPWS_Core::initCoreClass("Template.php");
 //PHPWS_Core::initCoreClass("Cache.php");
 class Layout {
@@ -230,10 +240,13 @@ class Layout {
       echo $finalTheme->get();
   }
 
+  function displayErrorMessage(){
+    $template[DEFAULT_THEME_VAR] = DISPLAY_ERROR_MESSAGE;
+  }
 
   function &loadTheme($theme, $template=NULL){
     if (!isset($template))
-      $template[DEFAULT_THEME_VAR] = DISPLAY_ERROR_MESSAGE;
+      Layout::displayErrorMessage();
 
     $template['THEME_DIRECTORY'] = "themes/$theme/";
     $template['STYLE'] = "<link rel=\"stylesheet\" href=\"themes/$theme/style.css\" type=\"text/css\" />";
@@ -298,8 +311,7 @@ class Layout {
 
     $result = $box->save();
     if (PEAR::isError($result)){
-      echo $result->getMessage();
-      echo phpws_debug::testobject($result);
+      PHPWS_Error::log($result);
       exit();
     }
 
