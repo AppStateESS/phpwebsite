@@ -1,6 +1,6 @@
 <?php
 
-if (isset($_SERVER['windir']))
+if (isset($_SERVER['windir']) || preg_match("/microsoft/i", $_SERVER['SERVER_SOFTWARE']))
   ini_set("include_path", ".;.\\lib\\pear\\");
 else
   ini_set("include_path", ".:./lib/pear/");
