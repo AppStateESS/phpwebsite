@@ -19,7 +19,7 @@ class DBPager {
   /**
    * Name of the class used
    */
-  var $class        = NULL;
+  var $class = NULL;
 
   /**
    * The current rows to display.
@@ -29,30 +29,30 @@ class DBPager {
   /**
    * Object rows pulled from DB
    */
-  var $object_rows  = NULL;
+  var $object_rows = NULL;
 
   /**
    * Name of the module using list
    * Needed for template purposes
    */ 
-  var $module       = NULL;
+  var $module = NULL;
 
-  var $toggles      = NULL;
+  var $toggles = NULL;
 
   /**
    * Methods the developer wants to run prior to
    * using the object
    */
-  var $runMethods   = NULL;
+  var $runMethods = NULL;
 
   /**
    * List of methods in class
    */  
-  var $_methods     = NULL;
+  var $_methods = NULL;
 
-  var $_classVars   = NULL;
+  var $_classVars = NULL;
 
-  var $extra_tags   = NULL;
+  var $extra_tags = NULL;
 
   var $page_turner_left = "&lt;";
 
@@ -61,47 +61,46 @@ class DBPager {
   /**
    * Template file name and directory
    */
-  var $template     = NULL;
+  var $template = NULL;
 
   /**
    * Limit of rows to pull from db
    */
-  var $limit        = DBPAGER_DEFAULT_LIMIT;
+  var $limit = NULL;
 
-
-  var $limitList    = array(5, 10, 25);
+  var $limitList = array(5, 10, 25);
 
   var $searchColumn = NULL;
 
   /**
    * Which column to order by
    */
-  var $orderby      = NULL;
+  var $orderby = NULL;
 
-  var $orderby_dir  = NULL;
+  var $orderby_dir = NULL;
 
-  var $link         = NULL;
+  var $link = NULL;
 
-  var $search       = NULL;
+  var $search = NULL;
 
   /**
    * Total number of rows in database
    */
-  var $total_rows   = NULL;
+  var $total_rows = NULL;
 
   /**
    * Total number of pages needed to display data
    */
-  var $total_pages  = NULL;
+  var $total_pages = NULL;
 
   /**
    * Database object
    */
-  var $db           = NULL;
+  var $db = NULL;
 
   var $current_page = 1;
 
-  var $methods   = array();
+  var $methods = array();
 
   var $error;
 
@@ -138,6 +137,11 @@ class DBPager {
     if (isset($_REQUEST['search']) && !empty($_REQUEST['search']))
       $this->search = preg_replace("/\W/", "", $_REQUEST['search']);
 
+  }
+
+  function setDefaultLimit($limit) {
+    if (empty($this->limit))
+      $this->limit = (int)$limit;
   }
 
   function setSearch(){
@@ -184,19 +188,6 @@ class DBPager {
     $this->runMethods[] = $method;
   }
 
-  function getLinkEnd(){
-    $values[] = "page=" .  $this->current_page;
-    $values[] = "limit=" . $this->limit;
-    if (isset($this->orderby)){
-      $values[] = "orderby=" . $this->orderby;
-
-      if (isset($this->orderby_dir))
-	$values[] = "orderby_dir=" . $this->orderby_dir;
-    }
-    
-    return implode("&amp;", $values);
-  }
-
   function addWhere($column, $value, $operator=NULL, $conj=NULL, $group=NULL){
     return $this->db->addWhere($column, $value, $operator, $conj, $group);
   }
@@ -206,6 +197,10 @@ class DBPager {
   }
 
   function getLimit(){
+    if (empty($this->limit)) {
+      $this->limit = DBPAGER_DEFAULT_LIMIT;
+    }
+
     $start = ($this->current_page - 1) * $this->limit;
     return array($start, $this->limit);
   }
@@ -218,12 +213,17 @@ class DBPager {
   }
 
   function initialize(){
+    if (empty($this->limit)) {
+      $this->limit = DBPAGER_DEFAULT_LIMIT;
+    }
+
     if (!empty($this->search) && isset($this->searchColumn)){
       foreach ($this->searchColumn as $column_name)
 	$this->addWhere($column_name, $this->search, "REGEXP", "OR");
     }
 
     $count = $this->getTotalRows();
+
     if (PEAR::isError($count))
       return $count;
 
@@ -263,6 +263,7 @@ class DBPager {
       $paddingPoint = $limitList[] = $this->total_pages - 1;
       $limitList[] = $this->total_pages;
     }
+    $values = $this->getLinkValues();
 
     if ($this->current_page != 1){
       $values['page'] = "page=" . ($this->current_page - 1);
@@ -287,7 +288,7 @@ class DBPager {
       if (isset($padding1))
 	$recock = TRUE;
 
-      $values = $this->getLinkValues();
+
       $values['page'] = "page=$i";
 
       if ($this->current_page != $i)
@@ -345,6 +346,10 @@ class DBPager {
   }
 
   function getLinkValues(){
+    if (empty($this->limit)) {
+      $this->limit = DBPAGER_DEFAULT_LIMIT;
+    }
+
     $values['page'] = "page=" . $this->current_page;
     $values['limit'] = "limit=" . $this->limit;
 
@@ -459,6 +464,10 @@ class DBPager {
   }
 
   function _setHiddenVars(&$form, $addSearch=TRUE){
+    if (empty($this->limit)) {
+      $this->limit = DBPAGER_DEFAULT_LIMIT;
+    }
+
     $link = str_replace("index.php?", "", $this->link);
     $link_list = explode("&", html_entity_decode($link));
     foreach ($link_list as $var){
@@ -510,6 +519,7 @@ class DBPager {
     $template['PAGES']     = $pages;
 
     $rows = $this->getPageRows();
+
     $template['LIMITS']    = $this->getLimitList();
 
     if (isset($this->searchColumn))
