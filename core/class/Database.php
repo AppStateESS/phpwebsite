@@ -271,13 +271,20 @@ class PHPWS_DB {
   }
 
   function addWhere($column, $value, $operator=NULL, $conj=NULL, $group=NULL, $join=FALSE){
+    $operator = strtoupper($operator);
     if (is_array($value)){
-      foreach ($value as $newVal){
-	$result = $this->addWhere($column, $newVal, $operator, $conj, $group);
-	if (PEAR::isError($result))
-	  return $result;
+      if (empty($operator)) {
+	$operator = "IN";
       }
-      return;
+      if ($operator != "IN" && $operator != "BETWEEN"){
+	foreach ($value as $newVal){
+	  $result = $this->addWhere($column, $newVal, $operator, $conj, $group);
+	  if (PEAR::isError($result))
+	    return $result;
+	}
+
+	return;
+      }
     }
 
 
@@ -292,7 +299,16 @@ class PHPWS_DB {
     if (!PHPWS_DB::allowed($column))
       return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, "core", "PHPWS_DB::addWhere", $column);
 
-    $value = $GLOBALS['PEAR_DB']->escapeSimple($value);
+    if (is_array($value)) {
+      foreach ($value as $temp_val) {
+	$temp_val = $GLOBALS['PEAR_DB']->escapeSimple($temp_val);
+	$new_value_list[] = $temp_val;
+      }
+
+      $value = $new_value_list;
+    } else {
+      $value = $GLOBALS['PEAR_DB']->escapeSimple($value);
+    }
 
     if (isset($group))
       $this->where[$group]['values'][] = array('column'=>$column, 'value'=>$value, 'operator'=>$operator, 'conj'=>$conj, 'join'=>$join);
@@ -309,10 +325,12 @@ class PHPWS_DB {
 		     '!=',
 		     '<>',
 		     '<=>',
-		     'like',
-		     'regexp');
+		     'LIKE',
+		     'REGEXP',
+		     'IN',
+		     'BETWEEN');
 
-    return in_array(strtolower($operator), $allowed);
+    return in_array(strtoupper($operator), $allowed);
   }
 
   function setQWhere($where){
@@ -349,10 +367,29 @@ class PHPWS_DB {
 
 	  if ($startSub == TRUE) $sql[] = $conj;
 
-	  if ($join)
+	  if (is_array($value)) {
+	    switch ($operator){
+	    case "IN":
+
+	      foreach ($value as $temp_val){
+		$temp_val_list[] = "'{$temp_val}'";
+	      }
+	      $value = "(" . implode(", ", $temp_val_list) . ")";
+
+	      break;
+
+	    case "BETWEEN":
+	      $value = "'{$value[0]}' AND '{$value[1]}'";
+	      break;
+	    }
+
 	    $sql[] = "$column $operator $value";
-	  else
-	    $sql[] = "$column $operator '$value'";
+	  } else {
+	    if ($join)
+	      $sql[] = "$column $operator $value";
+	    else
+	      $sql[] = "$column $operator '$value'";
+	  }
 
 	  $startSub = TRUE;
 	}
