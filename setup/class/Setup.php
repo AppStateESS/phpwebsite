@@ -48,12 +48,12 @@ class Setup{
       elseif (Setup::writeConfigFile()){
 	PHPWS_Core::killSession("configSettings");
 	$content[] = _("Your configuration file was written successfully!") . "<br /><br />";
-	$content[] = PHPWS_Text::link("index.php", _("Move on to Step 2"), array("step"=>2)) . "<br />";
+	$content[] = "<a href=\"index.php?step=2\">" . _("Move on to Step 2") . "</a><br />";
       } else {
 	$content[] = _("Your configuration file could not be written into the following directory:") . "<br />";
 	$content[] = "<pre>$configDir</pre>";
 	$content[] = _("Please check your directory permissions and try again.") . "<br />";
-	$content[] = PHPWS_Text::link("help/permissions." . DEFAULT_LANGUAGE . ".txt", _("Permission Help"), NULL, "index");
+	$content[] = "<a href=\"help/permissions." . DEFAULT_LANGUAGE . ".txt\">" . _("Permission Help") . "</a>";
       }
     }
   }
@@ -233,6 +233,8 @@ class Setup{
     $form->add("pear", "select", $pear_select);
     $form->setMatch("pear", "local");
 
+    $form->addSubmit("submit", _("Continue"));
+
     $form->mergeTemplate($formTpl);
     $content[] = Setup::createForm($form, "generalConfig.tpl");
   }
@@ -301,6 +303,7 @@ class Setup{
     $form->setSize("dbprefix", 20);
 
     $form->mergeTemplate($formTpl);
+    $form->addSubmit("default_submit", _("Continue"));
     $content[] = Setup::createForm($form, "databaseConfig.tpl");
   }
 
@@ -321,7 +324,7 @@ class Setup{
   }
 
   function checkDirectories(&$content){
-    $error = FALSE;
+    $errorDir = TRUE;
     $directory[] = Setup::getSourceDir() . "config/";
     $directory[] = Setup::getSourceDir() . "images/";
     $directory[] = Setup::getSourceDir() . "templates/";
@@ -329,18 +332,31 @@ class Setup{
     $directory[] = Setup::getSourceDir() . "logs/";
 
     foreach ($directory as $id=>$check){
-      if (!is_writable($check))
+      if (!is_dir($check))
+	$dirExist[] = $check;
+      elseif (!is_writable($check))
 	$writableDir[] = $check;
+    }
+
+    if (isset($dirExist)){
+      $content[] = _("The following directories need to be created:");
+      $content[] = "<pre>" . implode("<br />", $dirExist) . "</pre>";
+      $content[] = "<br />";
+      $errorDir = FALSE;
     }
       
     if (isset($writableDir)){
       $content[] = _("The following directories are not writable:");
       $content[] = "<pre>" . implode("<br />", $writableDir) . "</pre>";
-      $content[] = _("Please make these changes and return.") . "<br />";
-      $content[] = PHPWS_Text::link("help/permissions." . DEFAULT_LANGUAGE . ".txt", _("Permission Help"), NULL, "index");
-      return FALSE;
+      $content[] = "<a href=\"help/permissions." . DEFAULT_LANGUAGE . ".txt\">" . _("Permission Help") . "</a>";
+      $content[] = "<br />";
+      $errorDir = FALSE;
     }
-    else return TRUE;
+
+    if (!$errorDir)
+      $content[] = "<br />" . _("Please make these changes and return.") . "<br />";
+
+    return $errorDir;
   }
 
   function show($content, $title=NULL){
@@ -386,7 +402,7 @@ class Setup{
       . "<p>If however you have questions about its functioning and API, please visit "
       . "us at irc: freenode.net #phpwebsite </p>";
 
-    $content[] = PHPWS_Text::link("index.php", _("Begin Installation"), array("step"=>$step));
+    $content[] = "<a href=\"index.php?step=$step\">" . _("Begin Installation") . "</a>";
     return;
   }
 
@@ -406,7 +422,7 @@ class Setup{
 
     if ($result == TRUE){
       $content[] = _("Core installation successful.") . "<br /><br />";
-      $content[] = PHPWS_Text::link("index.php?step=3", _("Continue to Module Installation"));
+      $content[] = "<a href=\"index.php?step=3\">" . _("Continue to Module Installation") . "</a>";
     }
   }
 
