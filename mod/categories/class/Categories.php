@@ -101,7 +101,11 @@ class Categories{
     return $cat_result;
   }
 
-
+  /**
+   * Returns an array of category links applicable to the item
+   *
+   * @author Matthew McNaney
+   */
   function getSimpleLinks($module, $item_id, $item_name=NULL){
     $cat_result = Categories::_getItemsCategories($module, $item_id, $item_name);
 
