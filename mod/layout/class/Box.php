@@ -17,12 +17,20 @@ class Layout_Box {
     $DB = new PHPWS_DB("layout_box");
     $DB->addWhere("id", $id);
     $result = $DB->select("row");
+    $this->setID($id);
     $this->setTheme($result['theme']);
     $this->setContentVar($result['content_var']);
     $this->setThemeVar($result['theme_var']);
     $this->setTemplate($result['template']);
   }
 
+  function setID($id){
+    $this->_id = $id;
+  }
+
+  function getID(){
+    return $this->_id;
+  }
 
   function setTheme($theme){
     $this->_theme = $theme;
@@ -65,7 +73,21 @@ class Layout_Box {
     $DB->addValue("template", $this->getTemplate());
     $DB->addValue("box_order", $this->nextBox());
     $DB->addValue("active", 1);
-    return $DB->insert();
+
+    if (isset($this->_id)){
+      $DB->addWhere("id", $this->getID());
+      echo "updating";
+      return $DB->update();
+    }
+    else {
+      $result = $DB->insert();
+      if (PEAR::isError($result))
+	return $result;
+      else {
+	$this->setID($result);
+	return TRUE;
+      }
+    }
     
   }
 
