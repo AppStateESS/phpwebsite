@@ -10,11 +10,12 @@ class PHPWS_Image extends File_Common{
   var $border    = 0;
 
   function PHPWS_Image($id=NULL){
+    $this->_classtype = "image";
     if (empty($id))
       return;
     
     $this->setId($id);
-    $this->init();
+    $result = $this->init();
   }
 
   function getTag(){
@@ -217,8 +218,11 @@ class PHPWS_Image extends File_Common{
   }
 
   function save(){
-    if (empty($this->alt))
+    if (empty($this->alt)){
+      if (empty($this->title))
+	$this->title = $this->filename;
       $this->alt = $this->title;
+    }
 
     $result = $this->write();
     if (PEAR::isError($result))
