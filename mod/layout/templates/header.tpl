@@ -6,7 +6,7 @@
 {JAVASCRIPT}
 {STYLE}
 </head>
-<body>
+<body {ONLOAD}>
 {CONTENT}
 </body>
 </html>
