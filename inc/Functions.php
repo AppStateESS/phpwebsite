@@ -21,13 +21,13 @@ if (!function_exists("file_get_contents")){
 }
 
 if (!function_exists("file_put_contents")){
-  function file_put_contents($filename, $data){
-    if($fp = @fopen($fileName, "wb")){
-      fwrite($fp, $data);
-      fclose($fp);
-      return TRUE;
-    } else
-      return FALSE;
+  function file_put_contents($filename, $content, $flags = 0) {
+    if (!($file = @fopen($filename, ($flags & 1) ? 'a' : 'w'))) {
+      return false;
+    }
+    $n = fwrite($file, $content);
+    fclose($file);
+    return $n ? $n : false;
   }
 }
 
