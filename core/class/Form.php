@@ -890,6 +890,10 @@ class PHPWS_Form {
     return $id; 	 
   }
 
+  function getLabel($name, $formMode=FALSE){
+    return $this->_elements[$name]->getLabel($formMode);
+  }
+
 }// End of PHPWS_Form Class
 
 
@@ -1191,8 +1195,21 @@ class Form_Element {
 
   function getLabel($formMode=FALSE){
     if ($formMode){
-      if (isset($this->label))
-	return PHPWS_Form::makeLabel($this->getId(), $this->label);
+      if (isset($this->label)){
+	if (is_array($this->label)){
+	  if (isset($GLOBALS['form_label_repeats'][$this->name]))
+	    $GLOBALS['form_label_repeats'][$this->name]++;
+	  else
+	    $GLOBALS['form_label_repeats'][$this->name] = 0;
+
+	  $key = $GLOBALS['form_label_repeats'][$this->name];
+
+	  $label = $this->label[$key];
+	} else
+	  $label = $this->label;
+
+	return PHPWS_Form::makeLabel($this->getId(), $label);
+      }
       else
 	return NULL;
     }
