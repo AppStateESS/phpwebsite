@@ -61,6 +61,15 @@ class PHPWS_SQL {
     return implode(" ", $sql);
   }
 
+  function readyImport(&$query){
+    $from = array('/datetime/i',
+		  '/double\((\d+),(\d+)\)/Uie'
+		  );
+    $to   = array('timestamp without time zone',
+		  "'numeric(' . (\\1 + \\2) . ', \\2)'"
+		  );
+    $query = preg_replace($from, $to, $query);
+  }
 
 }
 

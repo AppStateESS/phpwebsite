@@ -49,6 +49,9 @@ class PHPWS_SQL {
     return implode(" ", $sql);
   }
 
+  function readyImport(&$query){
+    return;
+  }
 }
 
 ?>
