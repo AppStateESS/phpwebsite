@@ -24,3 +24,7 @@
 7) Always parse user submitted information. Don't let bad information
    make it to the database query. If it does and it returns a negative
    result, recover gracefully.
+
+8) Use the database class when you can. It has security measures built
+   in. If you use a straight query, you are expected to scour any user
+   data that makes it to the query string.
