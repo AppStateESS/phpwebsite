@@ -18,6 +18,7 @@ class Blog_Admin {
 
     switch ($command){
     case "edit":
+      $panel->setCurrentTab("list");;
       $title = _("Update Blog Entry");
       $content[] = Blog_Admin::edit($blog);
       break;
@@ -84,12 +85,12 @@ class Blog_Admin {
       $submit = _("Add Entry");
 
     if (Editor::willWork()){
-      $editor = & new Editor("htmlarea", "entry", $blog->getEntry());
+      $editor = & new Editor("htmlarea", "entry", $blog->getEntry(TRUE));
       $entry = $editor->get();
       $form->addTplTag("ENTRY", $entry);
       $form->addTplTag("ENTRY_LABEL", PHPWS_Form::makeLabel("entry",_("Entry")));
     } else {
-      $form->addTextArea("entry", $blog->getEntry());
+      $form->addTextArea("entry", $blog->getEntry(TRUE));
       $form->setRows("entry", "10");
       $form->setWidth("entry", "80%");
       $form->setLabel("entry", _("Entry"));
@@ -102,7 +103,6 @@ class Blog_Admin {
     $form->addSubmit("submit", $submit);
 
     $template = $form->getTemplate();
-
     $assign = PHPWS_User::assignPermissions("blog", $blog->getId());
     $template = array_merge($assign, $template);
 
