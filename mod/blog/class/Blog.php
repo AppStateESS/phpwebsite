@@ -28,11 +28,15 @@ class Blog {
       return $result;
   }
 
+  function setEntry($entry)
+  {
+    $this->entry = PHPWS_Text::prepare($entry);
+  }
 
   function getEntry($print=FALSE)
   {
     if ($print) {
-      return PHPWS_Text::parseOutput($this->entry);
+      return PHPWS_Text::parseEncoded($this->entry);
     }
     else
       return $this->entry;
@@ -43,12 +47,14 @@ class Blog {
     return $this->id;
   }
 
+  function setTitle($title)
+  {
+    $this->title = strip_tags($title);
+  }
+
   function getTitle($print=FALSE)
   {
-    if ($print)
-      return PHPWS_Text::parseOutput($this->title);
-    else
-      return $this->title;
+    return $this->title;
   }
 
   function getFormatedDate($type=BLOG_VIEW_DATE_FORMAT)

@@ -259,12 +259,12 @@ class Blog_Admin {
       $form->addSubmit('submit', _('Add Entry'));
 
     if (Editor::willWork()){
-      $editor = & new Editor('htmlarea', 'entry', PHPWS_Text::parseOutput($blog->getEntry(), FALSE, FALSE));
+      $editor = & new Editor('htmlarea', 'entry', $blog->getEntry(TRUE));
       $entry = $editor->get();
       $form->addTplTag('ENTRY', $entry);
       $form->addTplTag('ENTRY_LABEL', PHPWS_Form::makeLabel('entry',_('Entry')));
     } else {
-      $form->addTextArea('entry', PHPWS_Text::parseOutput($blog->getEntry(), FALSE, FALSE, FALSE));
+      $form->addTextArea('entry', $blog->getEntry(TRUE));
       $form->setRows('entry', '10');
       $form->setWidth('entry', '80%');
       $form->setLabel('entry', _('Entry'));
@@ -330,7 +330,7 @@ class Blog_Admin {
   }
 
   function getListEntry(&$blog){
-    return substr(strip_tags(PHPWS_Text::parseOutput($blog->entry)), 0, 30) . ' . . .';
+    return substr(strip_tags($blog->getEntry(TRUE)), 0, 30) . ' . . .';
   }
 
   function entry_list(){
@@ -365,10 +365,11 @@ class Blog_Admin {
     if (empty($_POST['title'])) {
       return array(_('Missing title.'));
     } else {
-      $blog->title = PHPWS_Text::parseInput($_POST['title']);
+      $blog->title = strip_tags($_POST['title']);
     }
 
-    $blog->entry = PHPWS_Text::parseInput($_POST['entry']);
+    $blog->setEntry($_POST['entry']);
+
     $blog->restricted = (int)$_POST['viewable'];
 
     if (isset($_REQUEST['version_id'])) {
