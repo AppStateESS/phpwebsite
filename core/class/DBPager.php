@@ -52,6 +52,8 @@ class DBPager {
 
   var $limitList    = array(5, 10, 25);
 
+  var $searchColumn = NULL;
+
   /**
    * Which column to order by
    */
@@ -60,6 +62,8 @@ class DBPager {
   var $orderby_dir  = NULL;
 
   var $link         = NULL;
+
+  var $search       = NULL;
 
   /**
    * Total number of rows in database
@@ -84,7 +88,6 @@ class DBPager {
 
   function DBPager($table, $class){
     $this->db = & new PHPWS_DB($table);
-
     if (PEAR::isError($this->db)){
       $this->error = $this->db;
       $this->db = NULL;
@@ -112,6 +115,15 @@ class DBPager {
 
     if (isset($_REQUEST['orderby_dir']))
       $this->orderby_dir = preg_replace("/\W/", "", $_REQUEST['orderby_dir']);
+
+    if (isset($_REQUEST['search']) && !empty($_REQUEST['search']))
+      $this->search = preg_replace("/\W/", "", $_REQUEST['search']);
+
+  }
+
+  function setSearch($column){
+    if (ctype_alnum($column) && $this->db->isTableColumn($column))
+      $this->searchColumn = $column;
   }
 
   function addToggle($toggle){
@@ -169,12 +181,17 @@ class DBPager {
   }
 
   function initialize(){
-    $count = $this->getTotalRows();
+    if (isset($this->search) && isset($this->searchColumn))
+      $this->addWhere($this->searchColumn, $this->search, "REGEXP");
 
+    $count = $this->getTotalRows();
     if (PEAR::isError($count))
       return $count;
 
     $this->total_rows = &$count;
+    $this->total_pages = ceil($this->total_rows / $this->limit);
+    if ($this->current_page > $this->total_pages)
+      $this->current_page = $this->total_pages;
 
     if ($this->limit > 0)
       $this->db->setLimit($this->getLimit());
@@ -188,7 +205,7 @@ class DBPager {
       return $result;
 
     $this->object_rows = &$result;
-    $this->total_pages = ceil($this->total_rows / $this->limit);
+
   }
 
   function getPageLinks(){
@@ -200,7 +217,7 @@ class DBPager {
       $values['page'] = "page=$i";
 
       if ($this->current_page != $i)
-	$pages[] = "<a href=\"" . $this->link . "&amp;" . implode("&amp;", $values) . "\">$i</a>";
+	$pages[] = "<a href=\"" . $this->link . "&amp;" . implode("&amp;", $values) . "\">$i</a>\n";
       else
 	$pages[] = $i;
     }
@@ -242,6 +259,10 @@ class DBPager {
   function getLinkValues(){
     $values['page'] = "page=" . $this->current_page;
     $values['limit'] = "limit=" . $this->limit;
+
+    if (isset($this->search))
+      $values['search'] = "search=" . $this->search;
+
     if (isset($this->orderby)){
       $values['orderby'] = "orderby=" . $this->orderby;
       if (isset($this->orderby_dir))
@@ -316,6 +337,48 @@ class DBPager {
     $this->rowTags[$tag] = array("class"=>$class, "method"=>$method);
   }
 
+  function getPageDrop(){
+    for ($i = 1; $i <= $this->total_pages; $i++)
+      $page_list[$i] = $i;
+
+    $form = & new PHPWS_Form("page_list");
+    $form->setMethod("get");
+    $this->_setHiddenVars($form);
+    $form->addSelect("page", $page_list);
+    $form->setExtra("page", "onchange=\"this.form.submit()\"");
+    if (isset($_REQUEST['page']))
+      $form->setMatch("page", (int)$_REQUEST['page']);
+    if (!javascriptEnabled())
+      $form->addSubmit("go", _("Go"));
+    $template = $form->getTemplate();
+    return implode("\n", $template);
+  }
+
+
+  function getSearchBox(){
+    $form = & new PHPWS_Form("search_list");
+    $form->setMethod("get");
+    $this->_setHiddenVars($form, FALSE);
+    $form->addText("search", $this->search);
+    $form->setLabel("search", _("Search"));
+    $template = $form->getTemplate();
+    return implode("\n", $template);
+  }
+
+  function _setHiddenVars(&$form, $addSearch=TRUE){
+    $link = str_replace("index.php?", "", $this->link);
+    $link_list = explode("&", html_entity_decode($link));
+    foreach ($link_list as $var){
+      $i = explode("=", $var);
+      if ($i[0] == "authkey")
+	continue;
+      $form->addHidden($i[0], $i[1]);
+    }
+
+    $form->addHidden("limit", $this->limit);
+    if ($addSearch == TRUE && isset($this->search))
+      $form->addHidden("search", $this->search);
+  }
 
   function get(){
     $result = $this->initialize();
@@ -332,14 +395,31 @@ class DBPager {
     if ($this->total_rows < 1)
       return NULL;
 
+  
+    $template['PAGE_LABEL']  = _("Page");
+    $template['LIMIT_LABEL'] = _("Limit");
+    $template['PAGE_DROP'] = $this->getPageDrop();
+
+    $total_row = $this->total_rows;
+
+    $start_row = ( ($this->current_page - 1) * $this->limit ) + 1;
+    $end_row   = $this->current_page * $this->limit;
+    if ($end_row > $total_row)
+      $end_row = $total_row;
+
+    $template['TOTAL_ROWS']  = "$start_row - $end_row " . _("of") . " $total_row";
+
     $pages = $this->getPageLinks();
-    
     if (PEAR::isError($pages))
       return $pages;
-    
+
     $template['PAGES']     = $pages;
+
     $rows = $this->getPageRows();
     $template['LIMITS']    = $this->getLimitList();
+
+    if (isset($this->searchColumn))
+      $template['SEARCH']    = $this->getSearchBox();
 
     $tpl = new PHPWS_Template($this->module);
     $result = $tpl->setFile($this->template);
