@@ -124,17 +124,31 @@ class PHPWS_Core {
 
   function setLastPost(){
     if (!PHPWS_Core::isPosted()){
-      $_SESSION['PHPWS_LastPost'][] = md5(serialize($_POST));
+      $key = PHPWS_Core::_getPostKey();
+      $_SESSION['PHPWS_LastPost'][] = $key;
       if (count($_SESSION['PHPWS_LastPost']) > MAX_POST_TRACK)
 	array_shift($_SESSION['PHPWS_LastPost']);
     }
   }
 
+  function _getPostKey(){
+    $key = serialize($_POST);
+
+    if (isset($_FILES)){
+      foreach ($_FILES as $file){
+	extract($file);
+	$key .= $name . $type . $size;
+      }
+    }
+
+    return md5($key);
+  }
+
   function isPosted(){
     if (!isset($_SESSION['PHPWS_LastPost']) || !isset($_POST))
       return FALSE;
-
-    return in_array(md5(serialize($_POST)), $_SESSION['PHPWS_LastPost']);
+    $key = PHPWS_Core::_getPostKey();
+    return in_array($key, $_SESSION['PHPWS_LastPost']);
   }
  
   function home(){
