@@ -37,16 +37,27 @@ class PHPWS_ControlPanel_Link extends PHPWS_Item{
     $this->_image = $image;
   }
 
-  function getImage(){
-    return $this->_image;
+  function getImage($tag=FALSE, $linkable=FALSE){
+    if ($tag){
+      PHPWS_Core::initCoreClass("Image.php");
+      $image = new PHPWS_Image($this->_image);
+      if ($linkable)
+	return "<a href=\"" . $this->getUrl() . "\">" . $image->getTag() . "</a>";
+      else
+	return $image->getTag();
+    } else
+      return $this->_image;
   }
 
   function setUrl($url){
     $this->_url = $url;
   }
   
-  function getUrl(){
-    return $this->_url;
+  function getUrl($tag=FALSE){
+    if ($tag)
+      return "<a href=\"" . $this->_url . "\">" . $this->getLabel() . "</a>";
+    else
+      return $this->_url;
   }
 
   function setModule($module){

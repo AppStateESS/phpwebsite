@@ -15,8 +15,6 @@ class PHPWS_ControlPanel {
     $DB->addOrder("tab_order");
     $result = $DB->loadItems("PHPWS_ControlPanel_Tab");
 
-    echo $DB->lastQuery();
-
     foreach ($result as $tab){
       if (isset($active) && $active == $tab->getId())
 	$result = $tab->view(TRUE, $activeLinkable);
@@ -36,6 +34,7 @@ class PHPWS_ControlPanel {
     $currentTab = PHPWS_ControlPanel::getCurrentTab();
 
     $links = PHPWS_ControlPanel::getAllLinks($currentTab);
+    $template['LINKS'] = PHPWS_ControlPanel::buildGrid($links[$currentTab]);
 
     $result = PHPWS_ControlPanel::getTabs('controlpanel', $_SESSION['ControlPanel_Current_Tab'], FALSE, array_keys($links));
     
@@ -52,6 +51,21 @@ class PHPWS_ControlPanel {
       PHPWS_ControlPanel::setCurrentTab($currentTab);       
       return $currentTab;
     }
+  }
+
+  function buildGrid($links){
+
+    foreach ($links as $link){
+      $tpl['IMAGE'] = $link->getImage(TRUE, TRUE);
+      $tpl['URL']   = $link->getUrl();
+      $tpl['NAME']  = $link->getLabel();
+      $tpl['DESCRIPTION'] = $link->getDescription();
+      $final[] = PHPWS_Template::process($tpl, "controlpanel", "link/view.tpl");
+    }
+
+    echo $final[0];
+
+    //    return $grid;
   }
 
   function setCurrentTab($tab){
