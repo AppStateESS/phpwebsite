@@ -305,7 +305,11 @@ class PHPWS_User {
     return TRUE;
   }
 
-  function allow($itemName, $subpermission=NULL, $item_id=NULL, $itemname=NULL, $verify=FALSE){
+  function allowedItem($module, $item_id, $itemname=NULL){
+    return $this->_permission->allowedItem($module, $item_id, $itemname);
+  }
+
+  function allow($module, $subpermission=NULL, $item_id=NULL, $itemname=NULL, $verify=FALSE){
     if ($verify && !$this->verifyAuthKey())
       return FALSE;
 
@@ -313,7 +317,7 @@ class PHPWS_User {
     if ($this->isDeity())
       return TRUE;
 
-    return $this->_permission->allow($itemName, $subpermission, $item_id, $itemname);
+    return $this->_permission->allow($module, $subpermission, $item_id, $itemname);
   }
 
   /**

@@ -16,6 +16,26 @@ class Users_Permission {
     $this->groups = $groups;
   }
 
+  function allowedItem($module, $item_id, $itemname=NULL){
+    if (!isset($itemname))
+      $itemname = $module;
+
+    // If no items exist in the permission object, return FALSE
+    if (!isset($this->permissions[$module]['items'][$itemname]))
+      return FALSE;
+    
+    if ($permissionLvl == UNRESTRICTED_PERMISSION ||
+	( isset($this->permissions[$module]['items']) && 
+	  in_array($item_id, $this->permissions[$module]['items'][$itemname])
+	  )
+	){
+      return TRUE;
+    }
+    else {
+      return FALSE;
+    }
+  }
+
   function allow($module, $subpermission=NULL, $item_id=NULL, $itemname=NULL){
     // If permissions object is not set, load it
     if (!isset($this->permissions[$module])){
@@ -40,31 +60,28 @@ class Users_Permission {
 	$allow = $this->permissions[$module]['permissions'][$subpermission];
 	if ((bool)$allow){
 	  if (isset($item_id)){
-	    if (!isset($itemname))
-	      $itemname = $module;
-
-	    // If no items exist in the permission object, return FALSE
-	    if (!isset($this->permissions[$module]['items'][$itemname]))
-	      return FALSE;
-
-	    if ($permissionLvl == UNRESTRICTED_PERMISSION ||
-		( isset($this->permissions[$module]['items']) && in_array($item_id, $this->permissions[$module]['items'][$itemname]) )
-		){
-	      return TRUE;
-	    }
-	    else {
-	      return FALSE;
-	    }
-	  }
-	  else {
+	    // subpermission is set as is item id
+	    return $this->allowedItem($module, $item_id, $itemname);
+	  } else {
+	    // subpermission is set and item id is not
 	    return TRUE;
 	  }
-	} else
+	} else {
+	  // subpermission is not allowed
 	  return FALSE;
-      } else
-	return TRUE;
-    } else
+	}
+      } else {
+	if (isset($item_id)){
+	  // subpermission is not set and item id is set
+	  return $this->itemIsAllowed($module, $item_id, $itemname);
+	} else {
+	  // subpermission is not set and item id is not set
+	  return TRUE;
+	}
+      }
+    } else {
       return TRUE;
+    }
   }
 
   function getPermissionLevel($module){

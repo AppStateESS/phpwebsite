@@ -17,6 +17,10 @@ class Current_User {
     return $_SESSION['User']->allow($module, $subpermission, $item_id, $itemname, TRUE);
   }
 
+  function allowedItem($module, $item_id, $itemname=NULL){
+    return $_SESSION['User']->allowedItem($module, $item_id, $itemname);
+  }
+
   function deityAllow(){
     return $_SESSION['User']->deityAllow();
   }
