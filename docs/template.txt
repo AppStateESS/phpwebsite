@@ -83,7 +83,7 @@ One added or missing character can cause it not to work. Compare the
 BEGIN and END comments character by character.
 
 Another hint. If you are imbedding duplicate rows, the parent row must
-be parsed before the others.
+be parsed _after_ the the child rows.
 
 For example, lets say you want a list of families by last name. Inside,
 the first names of the family members are listed. Here is what the
