@@ -137,7 +137,7 @@ class PHPWS_Boost {
 
     if ($result == TRUE || $result == -1){
       if ($inBoost == FALSE)
-	$content[] = PHPWS_Text::link("index.php?step=3", _("Continue installation..."));
+	$content[] = "<a href=\"index.php?step=3\">" . _("Continue installation...") . "</a>";
       else
 	$content[] = _("Installation complete!");
     }

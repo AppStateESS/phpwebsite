@@ -377,18 +377,19 @@ class User_Form {
     if (isset($message))
       $tpl['MESSAGE'] = $message;
 
-    $tpl['USERNAME_LBL'] = _("Username");
-    $tpl['PASSWORD_LBL'] = _("Password");
-
     $form->add("action[admin]", "hidden", "postUser");
     $form->add("module", "hidden", "users");
     $form->add("username", "text", $user->getUsername());
     $form->add("password1", "password");
     $form->add("password2", "password");
 
+    $form->setLabel("username", _("Username"));
+    $form->setLabel("password1", _("Password"));
+
     Demographics::form($form, $user);
 
-    $form->mergeTemplate($tpl);
+    if (isset($tpl))
+      $form->mergeTemplate($tpl);
 
     $template = $form->getTemplate();
 

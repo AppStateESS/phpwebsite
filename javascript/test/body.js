@@ -1,1 +1,1 @@
-onLoad="testJS()"
+onload="testJS()"

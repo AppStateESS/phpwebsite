@@ -4,49 +4,23 @@ define("DEFAULT_LAYOUT_TAB", "boxes");
 
 class Layout_Admin{
 
-  function main(){
-    $content = array();
+  function admin(){
     PHPWS_Core::initModClass("controlpanel", "Panel.php");
-
-    if (isset($_REQUEST['tab']))
-      Layout_Admin::action($_REQUEST['tab'], $content);
-    else {
-      $panel = & new PHPWS_Panel("layout");
-
-      $currentTab = $panel->getCurrentTab();
-
-      if(isset($currentTab))
-	Layout_Admin::action($currentTab, $content);
-      else {
-	$panel->setCurrentTab(DEFAULT_LAYOUT_TAB);
-	Layout_Admin::action(DEFAULT_LAYOUT_TAB, $content);
-      }
-    }
-
-    Layout_Admin::adminPanel(implode("", $content));
-  }
-
-
-  function adminPanel($content){
-    PHPWS_Core::initModClass("controlpanel", "Panel.php");
-
-    $tabs["boxes"] = array("title"=>"Boxes", "link"=>"index.php?module=layout&amp;action[admin]=main");
-    $tabs["meta"]  = array("title"=>"Meta Tags", "link"=>"index.php?module=layout&amp;action[admin]=main");
-
+    $content = NULL;
     $panel = & new PHPWS_Panel("layout");
-    $panel->quickSetTabs($tabs);
-    $panel->setContent($content);
-    Layout::add(PHPWS_ControlPanel::display($panel->display()));
-  }
 
-  function action($command, &$content){
+    if (isset($_REQUEST['sub']))
+      $command = $_REQUEST['sub'];
+    else
+      $command = $panel->getCurrentTab();
+
     switch ($command){
     case "boxes":
-      Layout_Admin::boxesForm($content);
+      $content = Layout_Admin::boxesForm();
       break;
 
     case "meta":
-
+      $content = Layout_Admin::metaForm();
       break;
 
     case "moveBox":
@@ -58,10 +32,25 @@ class Layout_Admin{
     case "changeBoxSettings":
       Layout_Admin::saveBoxSettings();
       $message= _("Settings changed");
-      Layout_Admin::boxesForm($content, $message);
+      $content = Layout_Admin::boxesForm($message);
       break;
-      
     }
+
+    Layout_Admin::adminPanel($content);
+  }
+
+
+  function adminPanel($content){
+    PHPWS_Core::initModClass("controlpanel", "Panel.php");
+    Layout::addStyle("layout");
+
+    $tabs["boxes"] = array("title"=>"Boxes", "link"=>"index.php?module=layout&amp;action=admin");
+    $tabs["meta"]  = array("title"=>"Meta Tags", "link"=>"index.php?module=layout&amp;action=admin");
+
+    $panel = & new PHPWS_Panel("layout");
+    $panel->quickSetTabs($tabs);
+    $panel->setContent($content);
+    Layout::add(PHPWS_ControlPanel::display($panel->display()));
   }
 
   function saveBoxSettings(){
@@ -71,10 +60,14 @@ class Layout_Admin{
       PHPWS_Core::killSession("Move_Boxes");
   }
 
-  function boxesForm(&$content, $message = NULL){
-    PHPWS_Core::initCoreClass("Form.php");
+  function metaForm(){
+    $form = & new PHPWS_Form("metatags");
+    $form->addHidden("module", "layout");
+    
+  }
 
-    $form = new PHPWS_Form("boxes");
+  function boxesForm($message = NULL){
+    $form = & new PHPWS_Form("boxes");
     $form->add("module", "hidden", "layout");
     $form->add("action[admin]", "hidden", "changeBoxSettings");
     $form->add("move_boxes", "radio", array(0, 1));
@@ -83,15 +76,17 @@ class Layout_Admin{
     else
       $form->setMatch("move_boxes", 0);
 
+    $form->addSubmit("default_submit", "Change Settings");
+
     $template = $form->getTemplate();
 
     $template['MOVE_BOX_LABEL'] = _("Adjust Site Layout");
     $template['MOVE_BOXES_ON']  = _("On");
     $template['MOVE_BOXES_OFF']  = _("Off");
     $template['MESSAGE'] = $message;
-    $content[] = PHPWS_Template::process($template, "layout", "BoxControl.tpl");
-
+    return PHPWS_Template::process($template, "layout", "BoxControl.tpl");
   }
+
 
   function moveBoxesTag($box){
     PHPWS_Core::initCoreClass("Form.php");
