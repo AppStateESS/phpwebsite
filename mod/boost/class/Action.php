@@ -52,6 +52,17 @@ class Boost_Action {
     */
   }
 
+  function uninstallModule($module_title){
+    PHPWS_Core::initModClass("boost", "Boost.php");
+    
+    $boost = new PHPWS_Boost;
+    $boost->loadModules(array($module_title));
+
+    $content = $boost->uninstall();
+
+    return $content;
+  }
+
 }
 
 ?>
