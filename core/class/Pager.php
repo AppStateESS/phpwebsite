@@ -231,6 +231,10 @@ class PHPWS_Pager {
   }
     
   function getBackLink($back = "&#60;&#60;") {
+    if($this->_limits[0] > $this->_numrows) {
+      return null;
+    }
+
     if($this->start == 0){
       $backLink = $back . "\n";
     } else {
@@ -245,6 +249,10 @@ class PHPWS_Pager {
   }
   
   function getForwardLink($forward = "&#62;&#62;") {
+    if($this->_limits[0] > $this->_numrows) {
+      return null;
+    }
+
     if(($this->start + $this->limit) >= $this->_numrows){
       $forwardLink = $forward . "\n";
     } else {
@@ -259,6 +267,10 @@ class PHPWS_Pager {
   }
   
   function getSectionLinks() {
+    if($this->_limits[0] > $this->_numrows) {
+      return null;
+    }
+
     $numSections = ceil($this->_numrows / $this->limit);
     $sectionLinks = NULL;
     $pad = PHPWS_PAGER_PAD;
@@ -320,23 +332,28 @@ class PHPWS_Pager {
   
   function getLimitLinks($addPipes=FALSE) {
     $count = 0;
-    foreach($this->_limits as $limit) {
-      if($limit != $this->limit) {
-	$limitLinks[$count] = "<a href=\"" . $this->_linkBack . "&amp;PAGER_limit=" . $limit . "&amp;PAGER_start=0&amp;PAGER_section=1" . $this->_anchor . "\"";
-	if(!is_null($this->_class)) {
-	  $limitLinks[$count] .= " class=\"" . $this->_class . "\"";
+    $limitLinks = array();
+    for($x = 0; $x < sizeof($this->_limits); $x++) {
+      if(($this->_limits[$x] < $this->_numrows) || (isset($this->_limits[$x - 1]) && ($this->_limits[$x - 1] < $this->_numrows))) {
+	if($this->_limits[$x] != $this->limit) {
+	  $limitLinks[$count] = "<a href=\"" . $this->_linkBack . "&amp;PAGER_limit=" . $this->_limits[$x] . "&amp;PAGER_start=0&amp;PAGER_section=1" . $this->_anchor . "\"";
+	  if(!is_null($this->_class)) {
+	    $limitLinks[$count] .= " class=\"" . $this->_class . "\"";
+	  }
+	  $limitLinks[$count] .= ">" . $this->_limits[$x] . "</a>";
+	} else {
+	  $limitLinks[$count] = $this->_limits[$x];
 	}
-	$limitLinks[$count] .= ">" . $limit . "</a>";
-      } else {
-	$limitLinks[$count] = $limit;
+	$count ++;
       }
-      $count ++;
     }
 
-    if($addPipes) {
-      return implode("&#160;|&#160;", $limitLinks);
-    } else {
-      return implode("&#160;", $limitLinks);
+    if(sizeof($limitLinks) > 0) {
+      if($addPipes) {
+	return implode("&#160;|&#160;", $limitLinks);
+      } else {
+	return implode("&#160;", $limitLinks);
+      }
     }
   }
 
