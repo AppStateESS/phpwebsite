@@ -219,7 +219,7 @@ class Version {
       $version_db->addWhere("vr_creator", Current_User::getId());
     }
 
-    $version_db->addWhere("vr_approved", 0);
+    $result = $version_db->addWhere("vr_approved", 0);
     $result = $version_db->select();
 
     if (PEAR::isError($result) || empty($result))
