@@ -1,5 +1,4 @@
 <?php
-
 if (!isset($_REQUEST['action'])) return;
 
 $content = array();
@@ -28,6 +27,10 @@ switch ($_REQUEST['action']){
    PHPWS_Core::initModClass("boost", "Action.php");
    $content[] = Boost_Action::installModule($_REQUEST['opmod']);
    break;
+
+ case "uninstall":
+   PHPWS_Core::initModClass("boost", "Action.php");
+   $content[] = Boost_Action::uninstallModule($_REQUEST['opmod']);
 
 }// End area switch
 
