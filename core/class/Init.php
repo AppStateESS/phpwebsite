@@ -72,15 +72,21 @@ function initLanguage(){
 }
 
 /* replaces var# with array variables */ 
-function _print($text, $variables){
-  if (!is_array($variables))
-    return $text;
+function _print($text, $variables, $var2=NULL){
+  
+  if (!is_array($variables)){
+    $temp[] = $variables;
+    $variables = $temp;
+  }
+
+  if (isset($var2))
+    $variables[] = $var2;
 
   foreach ($variables as $key=>$value){
     $varNum = $key + 1;
     $text = str_replace("[var" . $varNum . "]", $value, $text);
   }
-
+  
   return $text;
 }
 
