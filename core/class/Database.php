@@ -629,7 +629,7 @@ class PHPWS_DB {
     $where = $this->getWhere(TRUE);
 
     foreach ($values as $index=>$data)
-      $columns[] = '$index = ' . PHPWS_DB::dbReady($data);
+      $columns[] = $index . ' = ' . PHPWS_DB::dbReady($data);
 
     $query = "UPDATE $table SET " . implode(', ', $columns) ." $where";
 
