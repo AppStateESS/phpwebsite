@@ -77,7 +77,7 @@ class PHPWS_Boost {
     return isset($this->modules);
   }
 
-  function install(){
+  function install($inBoost=TRUE){
     $content = array();
     if (!$this->isModules())
       return PHPWS_Error::get(BOOST_NO_MODULES_SET, "boost", "install");
@@ -113,8 +113,12 @@ class PHPWS_Boost {
       if ($result === TRUE){
 	$this->setStatus($title, BOOST_DONE);
 	$this->createDirectories($mod, $content);
+
 	$this->registerModule($mod, $content);
-	$content[] = PHPWS_Text::link("index.php?step=3", _("Continue installation..."));
+	if ($inBoost == FALSE)
+	  $content[] = PHPWS_Text::link("index.php?step=3", _("Continue installation..."));
+	else
+	  $content[] = "Need to put something here. link to module depending on quantity.";
 	break;
       }
       elseif ($result === NULL){
@@ -201,7 +205,7 @@ class PHPWS_Boost {
     }
   }
 
-  function onInstall($mod, &$content){
+  function onInstall($mod, &$installCnt){
     $onInstallFile = $mod->getDirectory() . "boost/install.php";
     $installFunction = $mod->getTitle() . "_install";
     if (!is_file($onInstallFile)){
@@ -212,11 +216,22 @@ class PHPWS_Boost {
     if ($this->getStatus($mod->getTitle()) == BOOST_START)
       $this->setStatus($mod->getTitle(), BOOST_PENDING);
 
+    /**
+     * If module was before 094, install differently
+     */
+    if ($mod->isPre94()){
+      PHPWS_Core::initCoreClass("Crutch.php");
+      $content = NULL;
+      include_once($onInstallFile);
+      $installCnt[] = $content;
+      return TRUE;
+    }
+
     include_once($onInstallFile);
 
     if (function_exists($installFunction)){
-      $content[] = _("Processing installation file.");
-      return $installFunction($content);
+      $installCnt[] = _("Processing installation file.");
+      return $installFunction($installCnt);
     }
     else
       return TRUE;
@@ -323,8 +338,9 @@ class PHPWS_Boost {
 
   function registerOthersToSelf($module, &$content){
     $content[] = _("Registering other modules to this module.");
-    
+
     $modules = PHPWS_Boost::getInstalledModules();
+
     if (!is_array($modules))
       return;
 

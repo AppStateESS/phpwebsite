@@ -23,6 +23,12 @@ switch ($_REQUEST['action']){
    PHPWS_Core::initModClass("boost", "Boost.php");
    PHPWS_Boost::aboutView($_REQUEST['aboutmod']);
    break;
+
+ case "install":
+   PHPWS_Core::initModClass("boost", "Action.php");
+   $content[] = Boost_Action::installModule($_REQUEST['opmod']);
+   break;
+
 }// End area switch
 
 $boostPanel->setContent(implode("", $content));

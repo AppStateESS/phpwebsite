@@ -34,6 +34,24 @@ class Boost_Action {
     return PHPWS_Template::process($template, "boost", "check_update.tpl");
   }
 
+  function installModule($module_title){
+    PHPWS_Core::initModClass("boost", "Boost.php");
+    
+    $boost = new PHPWS_Boost;
+    $boost->loadModules(array($module_title));
+
+    $content = $boost->install();
+
+    return $content;
+
+    /*
+    if ($_SESSION['Boost']->isFinished())
+      return TRUE;
+    else
+      return FALSE;
+    */
+  }
+
 }
 
 ?>
