@@ -1,0 +1,385 @@
+Writing Modules for phpWebSite
+
+PhpWebSite has come a long way since it was a phpNuke fork. In 0.8.x
+it became moduler. With 0.9.x it was rewritten from the ground up and
+to become more of a platform for web programs.
+
+Now that we approach the release of 0.9.4, phpWebSite is going through
+another metamorphosis. There are new tools and techniques to create a
+module. This document will attempt to take you through this process.
+
+I am currently writing this document while 0.9.4 is still in the alpha
+phase. There are still some key core components that need
+development. However, before they can get written, a content module is
+needed to work against. So while I develop the first native module for
+0.9.4, I will go through the process to create it.
+
+This document is expected to go through some change. I plan on
+releasing it early (before 0.9.4's official release) and updating it
+as features are added. Eventually, I hope the full powers of 0.9.4 are
+reflected within.
+
+
+Getting Started
+
+First, decide the module's name and its function. We will be creating
+creating a module to deal with links. It function will be to allow
+users to submit links, categorize them, etc. Pretty simple actually
+but it should contain enough functionality to cover the core's basics.
+The name of the module will be simply "links".
+
+Second, we need to create specific directories. Here are the ones I am
+making along with why they need to be there.
+
+phpwebsite/mod/links/
+Our basic directory. It is important that the directory name is the
+same as the module name.
+
+The rest of the directories will be placed in the above directory.
+
+boost/
+This directory contains information on how to install, update, and
+uninstall your module. 99% of the time, this is required.
+
+class/
+This directory contains your module's class files. (If you are not
+programming using oop, you are going to have a great deal of
+difficulty from this point on.)
+
+conf/
+This is where your configuration files are placed. These will be
+copied to the phpwebsite/config/links/ directory upon
+installation. These are copied so branches can each have
+their own config file if they need it.
+
+docs/
+This is where we would put documentation on our module.
+
+img/
+Any images that are specific to our module need to go here. They will
+be copied to images/mod/links/ when the module is installed.
+
+inc/
+Another important directory. This directory contains your modules
+start up and close down files. More about this later.
+
+lang/
+Contains your po file translations. More about this later as well.
+
+templates/
+Contains your template files. These will be copied to
+templates/mod/links/ on install.
+
+Next we need to make the installation files. Remember I said earlir
+that 99.9% of the time you needed to make a boost directory? You can
+create a simple module that doesn't require installation and therefore
+doesn't need most of the above directories.
+
+Make a directory named 'example'.
+
+Save a file named 'index.php' in that directory with the following
+information.
+
+<--------------- Start Code ------------------>
+<?php
+
+Layout::add("Hello World!");
+
+?>
+<--------------- End Code -------------------->
+
+Now go to your phpwebsite installation. Now type the following at the
+end of your address line:
+
+index.php?module=example
+
+
+When you go to the page, you should see "Hello World!" on your page.
+
+Want to change make it a little more flashy?
+
+Change the 'Layout' line to the following:
+
+Layout::add(array("TITLE"=>"My First Module",
+                  "CONTENT"=>"Hello World!"),
+                  "exampleContent");
+
+Now it should be in a box! Ok it's not that exciting, but that is the
+most basic module you can design.
+
+
+We on the other hand are going to make an installable module. So we
+will be using Boost, the installation module in phpWebSite.
+
+To get started, we need to give boost some basic information about our
+module. This information will go into a file appropiately named
+'boost.php'. It will be placed into the conf/ directory. In fact, any
+time another module needs information about your module, it expects a
+file to be in your conf directory. For example, the control panel
+module will want icon and tab information. So we would create a
+controlpanel.php file and put it in conf/. We will get into this in
+more detail later.
+
+The boost.php file will have the following variables:
+
+proper_name - This is the title of the module. Ours will be "Links".
+
+version - This number tracks the development of our module. The format
+is 1.2.3. Minor fixes increment the last number (3). Large fixes
+increment the second number (2). Major upgrades of a program increment
+the first number (1). Since our module is brand new we will start with
+0.0.1
+
+register = If our module needs to register with other modules, this is
+set to TRUE. What this means is when this module is installed and
+other modules are installed after it, links would check to see if
+these other modules needed processing. For now, we will keep this at
+FALSE.
+
+import_sql = If this is set to TRUE, boost will look for a install.sql
+file. We will be using this.
+
+image_dir = If this module uses user submitted images, you would set
+this to TRUE. Don't confuse this with images used by the
+module. Submitted images are different than administrative icons and
+the like. We can set this to FALSE.
+
+file_dir = If your module needs a directory to save files to, change
+this to TRUE. This will be FALSE for us.
+
+about - If true then this module has an About file. The About file
+just tells the admin who wrote the module, where the module is hosted
+on the web, and other errata. We'll set this to TRUE.
+
+version_http - You may want to keep a file somewhere that lets the
+user know if they can get an updated copy. This variable stores the
+web address to that file. We'll use this as well.
+
+priority - Most of the time, you can leave this alone. Priority
+determines the order that modules are loaded for execution. Some
+modules, like users and layout, are very import to load first. The
+default value is 50 but you can leave it blank. We will fill it in
+just for instructional purposes.
+
+
+So here is our boost.php file:
+
+<?php
+$proper_name  = "Links";
+$version      = "0.0.1";
+$register     = FALSE;
+$import_sql   = TRUE;
+$image_dir    = FALSE;
+$file_dir     = FALSE;
+$version_http = "http://phpwebsite.appstate.edu/updates/links.ini";
+$about        = TRUE;
+$priority     = 50;
+?>
+
+If you have links on your phpwebsite installation, some of this
+information may have changed by the time you are reading this.
+
+SQL
+Although you can write a module without accessing the database, most
+of the time you will. So we need to tell Boost what our database
+tables look like.
+
+The best way to do this process is to make the table in your database,
+then export it.
+
+First we need to decide the structure of the most common element in
+our module. For links, that would be 'a link'. So lets create a table:
+
+CREATE TABLE links_links
+
+This looks strange because I am repeating the word 'links'
+twice. However, the first part of the table name should always be the
+name of your module followed by an underline. Everything beyond that,
+describes what the table contains. In this case, the table holds
+'links'. I could just as easily named it "links_href" or
+"links_clickable_words_that_take_you_to_another_page".
+I think using the word "links" again is sufficient. What is important
+to note is that I am NOT using uppercase characters in my table
+name. Uppercase letters can confused some databases. Not saying they
+can't handle it, it is just that different databases handle it
+differently. They all understand lowercase table and column
+names. This allows your module to be instantly accessible by other
+databases running phpwebsite. Just go ahead and do it.
+
+Now I need to decide the structure of this table. Most of the time,
+the first column you make will be the 'id' column. The 'id' of an item
+(our 'item' is our link) gives it a number different from all the
+other items in the table. So we need to make the id and integer (INT)
+and also make it the primary key. This will accomplish two things.
+1) When we ask for a link by its id, the database will find it faster
+and
+2) phpWebSite will automatically increment this number as we add more
+links.
+
+Here are some other columns I am going to create:
+
+title - will hold the text displayed for the link.
+
+description - a short description about the site. Don't use 'desc' as
+a column name. The database won't like it.
+
+keywords - words that we want associated with the link for searching
+
+href - the actual link address itself
+
+secure - whether the link is a secure link or not
+
+user_id - the user_id of the person who submitted the link
+
+active - switch to determine whether the link is seen or not
+
+hits - records the amount of times a link has been clicked
+
+created - lists the date a link was created
+
+That should be sufficient for now. Here is what we will put in our
+install.sql file.
+
+CREATE TABLE links_links (
+id INT NOT NULL ,
+title VARCHAR( 255 ) NOT NULL ,
+description TEXT NOT NULL ,
+keywords TEXT NOT NULL ,
+href VARCHAR( 255 ) NOT NULL ,
+secure SMALLINT NOT NULL ,
+user_id INT NOT NULL ,
+active SMALLINT NOT NULL ,
+hits INT NOT NULL ,
+created INT NOT NULL ,
+PRIMARY KEY ( id )
+);
+
+This was a MySQL export. Notice that it does not contain any backticks
+(`). This is something specific to MySQL. It will confuse other
+databases, so don't use it. Also notice that we did not use
+TINYINT. They are MySQL specific. We also did not put integer lengths
+in the define. They tend to break MicrosoftSQL.
+
+This should be sufficient.
+
+Since you have told phpWebSite that you are using an SQL file for
+installation, it will expect one for uninstalling the module as
+well. Fortunately, these are easy to make. Create a file named
+uninstall.sql and just drop the data.
+
+DROP TABLE links_links;
+
+We are almost ready to install. The Links module requires an
+administrative interface. The easiest way to do this, is to register
+with the Control Panel module.
+
+Before we make this file, lets take a look how the Control Panel
+module creates a link on newly installed modules. If you look in the
+mod/controlpanel/boost/ directory, you will see a file named
+register.php. This file tells Boost what to do when a new module is
+installed. Notice the function name at the top of the file,
+"controlpanel_register". This is the function that Boost by
+default. As you can see it is just moduleName_register. There are two
+required parameters for the function, $module and $content.
+
+Notice that the $content variable has an ampersand. This indicates
+that the variable is being passed by reference. In other words,
+what ever we do to the $content variable, effects the variable sent
+by Boost. This lets the module return a specific value without having
+to send back the content created by the function.
+
+The 'module' variable is just the module's title. 
+
+I won't get into the intricacies of the register file, but we can
+follow what happens to our Links module.
+
+The register function for Control Panel is going to be looking for a
+registration file. It will look for that file in the conf/
+directory. So lets make one!
+
+Because you may want to make multiple links, control panel expects its
+information in an array. Here is what variables we will be filling in:
+
+label - the clickable text that will be next to the icon.
+
+restricted - indicates whether this is a restricted module or if any
+user can see it.
+
+url - the address that instructs phpWebSite how to access it.
+
+description - a short description of what the icon takes us to.
+
+image - the name of the icon.
+
+tab - the location to place the icon.
+
+
+Here is our array to put into the controlpanel.php file:
+
+$link[] = array("label"       => _("Links Administration"),
+                "restricted"  => TRUE,
+                "url"         =>
+                "index.php?module=links&action=admin&subaction=menu",
+		"description" => _("Admin the links on your site."),
+		"image"       => "links.png",
+		"tab"         => "content"
+                );
+
+Now we just save that file in the conf/ directory. You can also add
+tabs to Control Panel, but you will need to read its documentation.
+
+Back to Control Panel's register function. It uses the 'module'
+parameter to check for the existance of the file we just made. If it
+sees it, it includes it and then inserts the various tabs and links
+into the database. Meanwhile it reports its status by adding lines of
+text to the 'content' array. If it was successful, it returns TRUE and
+FALSE otherwise. To see exactly HOW Control Panel does this, you will
+have to review the register.php file. One thing interesting to note is
+that Control Panel registers itself when it gets installed. In other
+words, when you install a module that has a register file it will:
+1) register itself to itself,
+2) register other modules to itself, and
+3) get registered by other modules.
+
+BTW, conversely if your module has a register.php file, it needs an
+unregister.php file as well. This file will remove the changes it made
+to a module when it gets uninstalled. For example, Control Panel drops
+your icon when you uninstall your module.
+
+There are two more files that can help with your module's
+installation and uninstallation. They are install.php and
+uninstall.php.
+
+The install.php file will be included if found and Boost will attempt
+to run a function entitled moduleName_install. For example, take a
+look at the install.php file in mod/users/boost/. When the user module
+is installed, it needs to create its first user. So it creates a form
+for you to enter your user name and password. Remember when you were
+installing phpWebSite? The new user form came from this file. This
+file will also suspend the completion of a module's installation by
+what it returns. The users_install function returns FALSE when it
+isn't finished and TRUE when it is. If it returns an error object
+(explained later) then Boost knows there was a problem and the module
+doesn't get installed.
+
+The uninstall file works the same way. When you are uninstalling a
+module, it allows it to perform some last minute maintenance.
+
+If the install file for users looks complicated, don't worry. Nine
+times out of ten you won't need one.
+
+Ready to install
+Links is now ready to install. We just go to Boost, click on Other
+Modules and click the install link. But wait, what about our About
+file? This is really simple, just create a very small HTML web page
+and drop it in your module's conf/ directory. You can click on About
+to see the one that comes with links.
+
+Once you click Install, Boost should handle the rest. If there is a
+problem, you should get a warning message from either your module (if
+you wrote error messages in your register.php or install.php files) or
+from Boost itself. Bad errors will appear in either the error.log or
+boost.log file in your logs/ directory.
+
+If there aren't any errors, then you should get a "Installation
+Successful" message.
