@@ -11,8 +11,9 @@ if (isset($_GET['cp_desc_toggle'])){
 if (isset($_REQUEST['action'])){
   PHPWS_Core::initModClass("controlpanel", "Action.php");
 
-  if ($_REQUEST['action'] == "admin" && Current_User::allow("controlpanel"))
+  if ($_REQUEST['action'] == "admin" && Current_User::allow("controlpanel")) {
     CP_Action::adminAction();
+  }
 } elseif ($_SESSION['User']->isLogged()){
   Layout::add(PHPWS_ControlPanel::display());
 }
