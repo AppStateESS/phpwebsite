@@ -1019,7 +1019,7 @@ class Form_Element {
   function getMaxSize($formMode=FALSE){
     if ($formMode){
       if (isset($this->maxsize))
-	return "maxsize=\"" . $this->maxsize . "\"";
+	return "maxlength=\"" . $this->maxsize . "\"";
       else
 	return NULL;
     }
