@@ -1,4 +1,5 @@
-<script language="javascript">
+<script type=\"text/javascript\">
+//<![CDATA[
 
 function change_title(){
  var new_title = "";
@@ -14,4 +15,5 @@ function change_title(){
  
 }
 
+//]]>
 </script>

@@ -1,1 +1,1 @@
-<script language="javascript" src="javascript/example/example.js"></script>
+<script type="text/javascript" src="javascript/example/example.js"></script>

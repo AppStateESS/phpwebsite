@@ -1,4 +1,5 @@
-<script type="text/javascript">
+<script type=\"text/javascript\">
+//<![CDATA[
 
 function addBold(element){
         element.value = element.value + '<b>Bold Text</b>';
@@ -47,4 +48,6 @@ function addEmail(element){
 function addLink(element){ 
         element.value = element.value + '<a href="http://www.web_address.here">Click Text Here</a>';
 }
+
+//]]>
 </script>
