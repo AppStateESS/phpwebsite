@@ -178,7 +178,6 @@ class PHPWS_Core {
     }
   }
 
-  
   function getConfigFile($module, $file){
     if ($module == "core")
       $file = PHPWS_SOURCE_DIR . "config/core/$file";
@@ -204,8 +203,9 @@ class PHPWS_Core {
       include $file;
 
     $core->setVersion($version);
-    $core->setRegister(TRUE);
-    $core->setInstallSQL(TRUE);
+    $core->setRegister(FALSE);
+    $core->setImportSQL(TRUE);
+    $core->setProperName("Core");
 
     return $core;
   }
