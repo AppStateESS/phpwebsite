@@ -6,14 +6,12 @@
 #tabmenu {
   width : 100%;
   padding : 3px;
-margin-bottom : -2px;
-margin-left : -2px;
-
+  margin-bottom : -2px;
+  margin-left : -2px;
 }
 
 #tabmenu li {
   display: inline;
-  overflow: hidden;
   list-style-type: none;
   border: 2px solid #7B95B4;
   font-weight: bold;
