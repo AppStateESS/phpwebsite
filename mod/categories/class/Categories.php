@@ -16,10 +16,9 @@ define("CAT_LINK_DIVIDERS", "&gt;&gt;");
 class Categories{
 
   /**
-   * This function and the next were for testing.
-   * though not used now, may be expanded in the future
+   * Returns a list of category links
    */
-  function getCSS(){
+  function getCategoryList(){
     $result = Categories::getCategories();
     $list = Categories::_makeLink($result);
     Layout::addStyle("categories");
@@ -27,18 +26,18 @@ class Categories{
   }
 
   /**
-   * Ditto the above
+   * Creates the links based on categories sent to it
    */
   function _makeLink($list){
     $tpl = & new PHPWS_Template("categories");
     $tpl->setFile("list.tpl");
 
-    $vars['action'] = "add_category";
+    $vars['action'] = "view";
     $tpl->setCurrentBlock("link_row");
 
     foreach ($list as $category){
       $vars['id'] = $category->id;
-      $link = PHPWS_Text::moduleLink($category->title, "category", $vars);
+      $link = PHPWS_Text::moduleLink($category->title, "categories", $vars);
 
       if (!empty($category->children)) {
 	$link .= Categories::_makeLink($category->children);
@@ -102,11 +101,10 @@ class Categories{
       return NULL;
 
     foreach ($cat_result as $cat){
-      $link[] = $cat->getViewLink();
+      $link[] = $cat->getViewLink($module);
     }
 
     return $link;
-
   }
 
 
@@ -131,6 +129,41 @@ class Categories{
     Layout::add($data, "categories", "category_box");
 
   }
+
+  function getAllItems($cat_id, $module=NULL) {
+    $category = & new Category((int)$cat_id);
+    PHPWS_Core::initModClass("categories", "Category_Item.php");
+    PHPWS_Core::initCoreClass("DBPager.php");
+
+    $pageTags['TITLE_LABEL'] = _("Title");
+    $pageTags['MODULE_LABEL'] = _("Module");
+
+    $pager = & new DBPager("category_items", "Category_Item");
+    $pager->addWhere("cat_id", $category->id);
+    $pager->addWhere("version_id", 0);
+
+    if (isset($module)) {
+      $pager->addWhere("module", $module);
+    }
+    $pager->setModule("categories");
+    $pager->setDefaultLimit(10);
+    $pager->setTemplate("category_item_list.tpl");
+    $pager->setLink("index.php?module=categories&amp;action=view&amp;id=$cat_id");
+    $pager->addTags($pageTags);
+    $pager->addToggle("class=\"toggle1\"");
+    $pager->addToggle("class=\"toggle2\"");
+    $pager->setMethod("title", "getLink", TRUE);
+    $pager->setMethod("module", "getProperName");
+    $content = $pager->get();
+
+    if (empty($content)) {
+      return _("No categories found.");
+    }
+    else {
+      return $content;
+    }
+  }
+
 
   function _createExtendedLink($category, $mode){
     $link[] = $category->getViewLink();

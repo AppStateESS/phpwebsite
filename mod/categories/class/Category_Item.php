@@ -12,14 +12,13 @@
 PHPWS_Core::configRequireOnce("categories", "errorDefines.php");
 
 class Category_Item {
-  var $item_id    = 0;
-  var $cat_id     = 0;
-  var $version_id = 0;
-  var $module     = NULL;
-  var $item_name  = NULL;
-  var $title      = NULL;
-  var $link       = NULL;
-
+  var $item_id      = 0;
+  var $cat_id       = 0;
+  var $version_id   = 0;
+  var $module       = NULL;
+  var $item_name    = NULL;
+  var $title        = NULL;
+  var $link         = NULL;
 
   function Category_Item($module=NULL, $item_name=NULL)
   {
@@ -43,6 +42,12 @@ class Category_Item {
   function getModule()
   {
     return $this->module;
+  }
+
+  function getProperName(){
+    PHPWS_Core::initCoreClass("Module.php");
+    $mod = & new PHPWS_Module($this->module);
+    return $mod->getProperName();
   }
 
   function setItemName($item_name)

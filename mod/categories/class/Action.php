@@ -75,7 +75,21 @@ class Categories_Action{
   }
 
   function user(){
-    echo "w00t!";
+    $mod = $id = NULL;
+    $action = & $_REQUEST['action'];
+    switch ($action) {
+    case "view":
+      if (isset($_REQUEST['id']))
+	$id = &$_REQUEST['id'];
+
+      if (isset($_REQUEST['ref_mod']))
+	$mod = $_REQUEST['ref_mod'];
+
+      $content = Categories_Action::viewCategory($id, $mod);
+      break;
+    }
+
+    Layout::add($content);
   }
 
   function affirm($content, $return){
@@ -272,6 +286,24 @@ class Categories_Action{
     return implode(" | ", $links);
     
   }
+
+  function viewCategory($id, $module=NULL) {
+    $list = Categories::getCategoryList();
+    if (isset($module)) {
+      PHPWS_Core::initCoreClass("Module.php");
+      $template['MODULE_LABEL'] = _("Module");
+      $mod = & new PHPWS_Module($module);
+      $template['MODULE'] = $mod->getProperName();
+    }
+
+    $content = Categories::getAllItems($id, $module);
+
+    $template['LIST'] = &$list;
+    $template['CONTENT'] = &$content;
+    $content = PHPWS_Template::process($template, "categories", "view_categories.tpl");
+    return $content;
+  }
+
 }
 
 ?>

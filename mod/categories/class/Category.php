@@ -144,9 +144,17 @@ class Category{
     return $db->delete();
   }
 
-  function getViewLink(){
-    return PHPWS_Text::rerouteLink($this->title, "categories", "viewCategory", $this->id);
+  function getViewLink($module=NULL){
+    if (isset($module)) {
+      $vars['action']  = "view";
+      $vars['id']      = $this->id;
+      $vars['ref_mod'] = $module;
+      return PHPWS_Text::moduleLink($this->title, "categories", $vars);
+    } else {
+      return PHPWS_Text::rerouteLink($this->title, "categories", "view", $this->id);
+    }
   }
+
 }
 
 ?>
