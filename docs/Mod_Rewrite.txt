@@ -11,7 +11,7 @@ http://www.mysite.com/index.php?module=article&action=view&id=5312
 
 Using mod_rewrite functionality, you could change that link to:
 
-http://www.mysite.com/view/article/5312
+http://www.mysite.com/article/view/5312
 
 This is more straight forward, easier for search engines to index, and
 much easier to explain over the phone. PhpWebSite can help you achieve
@@ -42,39 +42,42 @@ Your site should be ready to use mod_rewrite now.
 
 Making you Module use mod_rewrite
 
-The rewrite function is very basic. All it facilitates is the viewing
-of a specific item from your module. You won't be accessing
-administrative functionality using rewrite as it is unnecessary. Pages
-that can not be viewed by the general public have no need to use
-rewrite.
+The rewrite function is very basic. All it facilitates are simple user
+accessible commands. You won't be accessing administrative
+functionality using rewrite as it is unnecessary. Pages that can not
+be viewed by the general public have no need to use rewrite.
 
 You will need a way to 'catch' the request for viewing an item in your
 module. Let's look at our previous example:
 
-http://www.mysite.com/view/article/5312
+http://www.mysite.com/article/view/5312
 
-When this is sent to phpWebSite it is going to go to the article
-module and tell it that it wants to view article 5312. It will rewrite
+When this is sent to phpWebSite, it is going to go to the article
+module and tell it that it wants to 'view' article 5312. It will rewrite
 the address to:
 
 http://www.mysite.com/index.php?module=article&action=view&id=5312
 
-You should expect the 'action=view' in your code. Here is an example
-of how you may handle it:
+You are sending three bits of information:
+1) what module you are using,
+2) what your 'action' is going to be, and
+3) what the id should be used.
+
+In may index.php file, I may have something like the following.
 
 if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'view'){
   $article = & new Article($_REQUEST['id']);
   $article->view();
 }
 
-So what your link needs to include is the name of your module and the
-id of the item.
+You can change the 'action' value for each user process that you wish
+to allow.
 
 Keep in mind however that not everyone will use mod_rewrite, so you
 should plan accordingly.
 
 if (USE_MOD_REWRITE == TRUE)
-   $link = "view/article/$id";
+   $link = "article/view/$id";
 else
    $link = "index.php?module=article&action=view&id=5312";
 
