@@ -22,7 +22,6 @@ class Blog {
       return FALSE;
 
     $db = & new PHPWS_DB('blog_entries');
-    $db->addWhere('id', $this->id);
     $result = $db->loadObject($this);
     if (PEAR::isError($result))
       return $result;
@@ -58,9 +57,7 @@ class Blog {
   function save()
   {
     $db = & new PHPWS_DB('blog_entries');
-    if (!empty($this->id)) {
-      $db->addWhere('id', $this->id);
-    } else {
+    if (empty($this->id)) {
       $this->date = mktime();
     }
 
