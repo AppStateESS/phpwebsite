@@ -8,7 +8,7 @@ else
 
 define("PHPWS_SOURCE_DIR", "./");
 define("PHPWS_LOG_DIRECTORY", "./logs/");
-define("LOG_PERMISSION", 644);
+define("LOG_PERMISSION", 0644);
 define("LOG_TIME_FORMAT", "%X %x");
 define("PHPWS_LOG_ERRORS", TRUE);
 
