@@ -59,6 +59,13 @@ class User_Action {
       $content = User_Form::userForm($user);
       break;      
 
+    case 'deleteUser':
+      $user->kill();
+      $title = _('Manage Users');
+      $content = User_Form::manageUsers();
+      $message = _('User deleted.');
+      break;
+
     case 'authorization':
       $title = _('Authorization');
       $content = User_Form::authorizationSetup();
@@ -483,17 +490,7 @@ class User_Action {
       if (is_array($result)) {
 	$content = User_Form::signup_form($user, $result);
       } else {
-	$result = User_Action::saveNewUser($user);
-	if ($result) {
-	  $content = _('Account created successfully!');
-	  $content .= '<br />';
-	  $content .= _('You will return to the home page in five seconds.');
-	  $content .= '<br />';
-	  $content .= PHPWS_Text::moduleLink(_('Click here if you are not redirected.'));
-	  Layout::metaRoute();
-	} else {
-	  $content = _('An error occurred when trying to create your account. Please try again later.');
-	}
+	$content = User_Action::successfulSignup($user);
       }
       break;
 
@@ -515,14 +512,37 @@ class User_Action {
       $final = PHPWS_Template::process($tag, 'users', 'main.tpl');
       Layout::add($final);
     }
+  }
 
+  function successfulSignup($user)
+  {
+
+    switch (PHPWS_Users::getUserSetting('new_user_method')) {
+    case AUTO_SIGNUP:
+      $result = User_Action::saveNewUser($user, TRUE);
+      if ($result) {
+	$content[] = _('Account created successfully!');
+	$content[] = _('You will return to the home page in five seconds.');
+	$content[] = PHPWS_Text::moduleLink(_('Click here if you are not redirected.'));
+	Layout::metaRoute();
+      } else {
+	$content[] = _('An error occurred when trying to create your account. Please try again later.');
+      }
+      break;
+
+    case CONFIRM_SIGNUP:
+      $result = User_Action::saveNewUser($user, TRUE);
+      $content[] = _();
+    }
+
+    return implode('<br />', $content);
 
   }
 
-  function saveNewUser(&$user)
+  function saveNewUser(&$user, $approved)
   {
     $user->setPassword($user->getPassword());
-    $user->setApproved(TRUE);
+    $user->setApproved($approved);
     $result = $user->save();
     if (PEAR::isError($result)) {
       PHPWS_Error::log($result);
