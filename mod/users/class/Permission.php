@@ -8,7 +8,6 @@ class Users_Permission {
     $this->groups = $groups;
   }
 
-
   function allow($module, $subpermission=NULL, $item_id=NULL, $returnType=FALSE){
     if (!isset($this->permissions[$module])){
       $result = Users_Permission::loadPermission($module, $this->permissions);
@@ -237,6 +236,17 @@ class Users_Permission {
     }
 
     return $db->insert();
+  }
+
+  function assign(){
+    $content = NULL;
+
+    //    Users_Permission::getPartial();
+
+
+    $text['title'] = _("Assign Users");
+    $text['content'] = $content;
+    Layout::add($text, "users", "users_assign", TRUE);
   }
 
 }
