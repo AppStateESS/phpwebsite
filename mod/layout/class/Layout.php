@@ -278,11 +278,25 @@ class Layout {
     if (!isset($filename))
       $filename = "style.css";
 
-    $cssFile = PHPWS_Template::getTplDir($module) . $filename;
-    if (!FORCE_THEME_TEMPLATES && !is_file($cssFile))
-      $cssFile = "templates/$module/$filename";
+    if (FORCE_MOD_TEMPLATES){
+      $cssFile = "mod/$module/templates/$filename";
+      if (is_file($cssFile))
+	$GLOBALS['Style'][] = Layout::styleLink($cssFile);
+      return;
+    }
 
-    $GLOBALS['Style'][] = Layout::styleLink($cssFile);
+    $themeFile = PHPWS_Template::getTplDir($module) . $filename;
+    if (is_file($themeFile)){
+      $GLOBALS['Style'][] = Layout::styleLink($cssFile);
+      return;
+    } elseif (FORCE_THEME_TEMPLATES)
+	return;
+
+    $cssFile = "templates/$module/$filename";      
+    if (is_file($cssFile))
+      $GLOBALS['Style'][] = Layout::styleLink($cssFile);
+
+    return;
   }
 
   function styleLink($file){
