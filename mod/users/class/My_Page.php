@@ -1,17 +1,27 @@
 <?php
 
 class My_Page {
-  var $scripts = NULL;
   var $modules = NULL;
 
   function main(){
-    $this->init();
+    $result = $this->init();
+
+    if (PEAR::isError($result)){
+      log($result);
+      return _("The is a problem with My Page.");
+    }
+
     $panel = & My_Page::cpanel();
 
     if (isset($_REQUEST['tab']) && $_REQUEST['tab'] != "my_page")
-      $module = $_REQUEST['tab'];
+      $module = preg_replace("/\W/", "", $_REQUEST['tab']);
     else
       $module = "users";
+
+    if (!$this->moduleIsRegistered($module)){
+      Layout::add(_("This module is not registered with My Page"));
+      return;
+    }
 
     $content = My_Page::userOption($module);
     
@@ -21,17 +31,19 @@ class My_Page {
 
   function init(){
     PHPWS_Core::initCoreClass("Module.php");
-    $db = & new PHPWS_DB("users_my_page_scripts");
-    $result = $db->select();
+    $db = & new PHPWS_DB("users_my_page_mods");
+    $db->addColumn("mod_title");
+    $result = $db->select("col");
 
     if (PEAR::isError($result))
       return $result;
 
-    foreach ($result as $script){
-      $module = & new PHPWS_Module($script['module']);
-      $this->modules[$script['module']] = $module;
-      $this->scripts[$script['module']] = $script['filename'];
-    }
+    foreach ($result as $mod_title)
+      $this->modules[$mod_title] = & new PHPWS_Module($mod_title);
+  }
+
+  function moduleIsRegistered($module){
+    return in_array($module, array_keys($this->modules));
   }
 
   function cpanel(){
@@ -51,11 +63,10 @@ class My_Page {
   }
 
   function userOption($module_title){
-    $module = $this->modules[$module_title];
+    $module = & new PHPWS_Module($module_title);
     $directory = $module->getDirectory();
-    $file = $this->scripts[$module->getTitle()];
 
-    $final_file = $directory . "inc/$file";
+    $final_file = $directory . "inc/my_page.php";
 
     if (!is_file($final_file)){
       PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, "users", "userOption", $final_file);
@@ -69,6 +80,18 @@ class My_Page {
     $content = my_page();
     return $content;
   }
+
+  function registerMyPage($mod_title){
+    $filename = "mod/$mod_title/inc/my_page.php";
+
+    if (!is_file($filename))
+      return FALSE;
+
+    $db = & new PHPWS_DB("users_my_page_mods");
+    $db->addValue("mod_title", $mod_title);
+    return $db->insert();
+  }
+
 
 }
 
