@@ -111,6 +111,62 @@ class PHPWS_Panel_Tab {
       return 1;
   }
 
+
+  /**
+   * Moves the tab 'up' the order, which is actually a lower
+   * order number
+   */ 
+  function moveUp(){
+    $db = & new PHPWS_DB("controlpanel_tab");
+    $db->setIndexBy("tab_order");
+    $db->addOrder("tab_order");
+    $allTabs = $db->getObjects("PHPWS_Panel_Tab");
+
+    $current_order = $this->getOrder();
+    if ($current_order == 1){
+      unset($allTabs[1]);
+      $allTabs[] = $this;
+    } else {
+      $tempObj = $allTabs[$current_order - 1];
+      $allTabs[$current_order] = $tempObj;
+      $allTabs[$current_order - 1] = $this;
+    }
+
+
+    $count = 1;
+    foreach ($allTabs as $tab){
+      $tab->setOrder($count);
+      $tab->save();
+      $count++;
+    }
+  }
+
+  function moveDown(){
+    $db = & new PHPWS_DB("controlpanel_tab");
+    $db->setIndexBy("tab_order");
+    $db->addOrder("tab_order");
+    $allTabs = $db->getObjects("PHPWS_Panel_Tab");
+    $number_of_tabs = count($allTabs);
+
+    $current_order = $this->getOrder();
+    if ($current_order == $number_of_tabs){
+      unset($allTabs[$current_order]);
+      array_unshift($allTabs, $this);
+    } else {
+      $tempObj = $allTabs[$current_order + 1];
+      $allTabs[$current_order] = $tempObj;
+      $allTabs[$current_order + 1] = $this;
+    }
+
+    $count = 1;
+    foreach ($allTabs as $tab){
+      $tab->setOrder($count);
+      $tab->save();
+      $count++;
+    }
+
+  }
+
   /*
   function kill(){
     $db = & new PHPWS_DB("controlpanel_tab");

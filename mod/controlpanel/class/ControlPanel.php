@@ -74,6 +74,7 @@ class PHPWS_ControlPanel {
   function getAllTabs(){
     $db = & new PHPWS_DB("controlpanel_tab");
     $db->setIndexBy("id");
+    $db->addOrder("tab_order");
     return $db->getObjects("PHPWS_Panel_Tab");
   }
 
