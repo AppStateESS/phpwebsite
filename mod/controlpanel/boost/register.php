@@ -1,6 +1,6 @@
 <?php
 
-function register($module, &$content){
+function controlpanel_register($module, &$content){
   PHPWS_Core::initModClass("controlpanel", "Tab.php");
   PHPWS_Core::initModClass("controlpanel", "Link.php");
   $cpFile = PHPWS_Core::getConfigFile($module, "controlpanel.php");
@@ -26,6 +26,7 @@ function register($module, &$content){
 
       $tab->save();
     }
+    $content[] = _print(_("Control Panel tabs created for [var1]."), $module);
   }
 
   if (isset($links) && is_array($links)){
@@ -62,6 +63,7 @@ function register($module, &$content){
       }
       $db->resetWhere();
     }
+    $content[] = _print(_("Control Panel links created for [var1]."), $module);
   }
 
 
