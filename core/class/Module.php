@@ -13,12 +13,15 @@ class PHPWS_Module {
   var $_import_sql   = FALSE;
 
   function PHPWS_Module($title=NULL){
-    if (isset($title))
-      $this->init($title);
+    if (isset($title)){
+      $this->setTitle($title);
+      $this->init();
+    }
   }
 
-  function init($title){
-    $this->setTitle($title);
+  function init(){
+    $title = $this->getTitle();
+
     $proper_name   = NULL;
     $version       = .001;
     $active        = TRUE;
@@ -32,7 +35,6 @@ class PHPWS_Module {
     $result = PHPWS_Core::getConfigFile($title, "boost.php");
     if (PEAR::isError($result))
       return $result;
-
 
     include $result;
     
