@@ -1,12 +1,11 @@
 <?php
 
-//echo $_SESSION['User']->debug();
+
 
 $DB = new PHPWS_DB("user_permissions");
 if (!isset($_REQUEST['action'])){
-     return;
+  return;
 }
-
 
 if (isset($_REQUEST['User_Form']))
      PHPWS_Core::initModClass("users", "Form.php");
@@ -35,7 +34,7 @@ switch ($area){
      return;
    switch ($command){
    case "admin":
-     PHPWS_ControlPanel::subTab(1, "stuff");
+     PHPWS_User_Form::adminPanel();
      break;
 
    } // End of closed command switch
