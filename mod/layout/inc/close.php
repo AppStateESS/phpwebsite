@@ -3,7 +3,8 @@
 /**
  * Crutch display of old modules
  */
-PHPWS_Crutch::getOldLayout();
+if (isset($GLOBALS['pre094_modules']))
+  PHPWS_Crutch::getOldLayout();
 
 Layout::display();
 
