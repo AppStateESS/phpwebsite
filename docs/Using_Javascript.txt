@@ -1,0 +1,74 @@
+Using Javascript Test
+by Matthew McNaney
+
+
+The Layout module has a mechanism to allow easy insertion of
+Javascript into your modules.
+
+We will start with creating a Javascript and then move on how to
+implement it.
+
+We will be writing one named Example. It can be found
+phpwebsite/javascript/example/example.html. Point your browser to that
+file to see it in action.
+
+It is very basic. You enter some text into the text field, click the
+button, and an alert box pops up with the data in it. We are going to
+turn this script into one usable by phpWebSite.
+
+Once you have the main script, you will need to break it into two
+sections: the head and the body. These will be saved into files named
+head.js and body.js respectively.
+
+Take a look at example.html. You will see that the header includes a
+javascript file. The included file contains the javascript functions.
+This is the preferable method of using javascript. It keeps your html
+page neat. You _could_ put all the functions in the header as well but
+it tends to look unorganized.
+
+Anyway, we extract this:
+<script language="javascript" src="example.js"></script>
+
+and save it in head.js with some slight editing.
+
+<script language="javascript"
+src="javascript/example/example.js"></script>
+
+Now we move on to the body.js. We will copy this portion:
+
+<input type="button" value="Click Me" 
+onClick="example(document.myForm.exampletext.value)" />
+
+and save it in a file named body.js with, again, a few edits:
+
+<input type="button" value="Click Me" 
+onClick="example(document.{FORM_NAME}.{TEXT_FIELD}.value)" />
+
+The example.js file gets copied into the javascript/example directory
+as well.
+
+Now we are ready to implement the javascript into our code:
+
+$content = "<form name=\"myForm\" action=\"index.php\" method=\"post\">
+<input type=\"textfield\" name=\"exampletext\" />";
+
+$values = array("FORM_NAME"=>"myForm", "TEXT_FIELD"=>"exampletext");
+
+$content .=  Layout::getJavascript("example", $values);
+$content .=  "</form>";
+
+Layout::add($content);
+
+The getJavascript() function will then:
+1) Replace the tags found in the head.js file with values in the array
+(there weren't any in this example) and then paste the head into the
+page header,
+2) Replace the tags found in the body.js with values in the array
+(FORM_NAME and TEXT_FIELD) and then return that data. 
+
+
+This should get you started. For more examples, just look at the
+scripts included with phpWebSite. Some are very complicated (like
+HyperTextArea). What is nice is that you really don't need to know
+much about how the script functions for it to work in phpWebSite. All
+you really need to know how it is accessed.
