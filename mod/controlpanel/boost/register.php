@@ -3,6 +3,7 @@
 function controlpanel_register($module, &$content){
   PHPWS_Core::initModClass("controlpanel", "Tab.php");
   PHPWS_Core::initModClass("controlpanel", "Link.php");
+  PHPWS_Core::initModClass("controlpanel", "ControlPanel.php");
   $cpFile = PHPWS_Core::getConfigFile($module, "controlpanel.php");
 
   if (PEAR::isError($cpFile)){
