@@ -1,4 +1,4 @@
-<script type=\"text/javascript\">
+<script type="text/javascript">
 //<![CDATA[
 
 function Start(page) {
