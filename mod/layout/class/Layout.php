@@ -82,7 +82,6 @@ class Layout {
 	$GLOBALS['Layout'][$module][$contentVar]['content'][$key][] = $value;
 
     $GLOBALS['Layout'][$module][$contentVar]['box'] = $box;
-    $GLOBALS['Layout'][$module][$contentVar]['hold']= NULL;
   }
 
 
@@ -94,23 +93,6 @@ class Layout {
 
     $GLOBALS['Layout'][$module][$contentVar]['content'] = NULL;
     Layout::add($text, $module, $contentVar, $box);
-  }
-
-  function hold($text, $module=NULL, $contentVar=NULL, $box=TRUE, $time=NULL){
-    if (!isset($contentVar))
-      $contentVar = DEFAULT_CONTENT_VAR;
-
-    $box = (bool)$box;
-
-    Layout::set($text, $module, $contentVar, $box);
-
-    if (!isset($time) || !is_numeric($time))
-      $GLOBALS['Layout'][$module][$contentVar]['hold'] = mktime() + DEFAULT_LAYOUT_HOLD; 
-    elseif($time == -1)
-      $GLOBALS['Layout'][$module][$contentVar]['hold'] = $time;
-    else
-      $GLOBALS['Layout'][$module][$contentVar]['hold'] = mktime() + $time;
-
   }
 
   function clear($module, $contentVar){
@@ -153,12 +135,6 @@ class Layout {
       return NULL;
   }
 
-  function getBoxHold($module, $contentVar){
-    if (isset($GLOBALS['Layout'][$module][$contentVar]))
-      return $GLOBALS['Layout'][$module][$contentVar]['hold'];
-    else
-      return 0;
-  }
 
   function dropContentVar($module, $contentVar){
     unset($GLOBALS['Layout'][$module][$contentVar]);
@@ -220,7 +196,7 @@ class Layout {
     $finalList = Layout::getBoxContent();
 
     if (!is_array($finalList)){
-      Layout::_noContent();
+      Layout::_noContent($theme, $finalList);
       return;
     }
 
@@ -260,10 +236,6 @@ class Layout {
 	  $unsortedLayout[$theme_var][$order] = implode("", $template);
 	}
 
-	$hold = Layout::getBoxHold($module, $contentVar);
-
-	if($hold > mktime() || (bool)$hold == FALSE)
-	  Layout::dropContentVar($module, $contentVar);
       }
     }
 
@@ -442,7 +414,6 @@ class Layout {
     
     if (!isset($theme_var))
       $theme_var = DEFAULT_THEME_VAR;
-
 
     $box = new Layout_Box;
     $box->setTheme($theme);
