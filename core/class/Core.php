@@ -36,8 +36,10 @@ class PHPWS_Core {
   }
 
   function closeModules(){
-    if (!isset($GLOBALS['Modules']))
-      die("No modules are active");
+    if (!isset($GLOBALS['Modules'])){
+      PHPWS_Error::log(PHPWS_NO_MODULES, "core", "runtimeModules");
+      PHPWS_Core::errorPage();
+    }
     
     foreach ($GLOBALS['Modules'] as $mod){
       $includeFile = PHPWS_SOURCE_DIR . "mod/" . $mod['title'] . "/close.php";
@@ -55,8 +57,10 @@ class PHPWS_Core {
   }
 
   function runtimeModules(){
-    if (!isset($GLOBALS['Modules']))
-      die("Core was unable to locate modules");
+    if (!isset($GLOBALS['Modules'])){
+      PHPWS_Error::log(PHPWS_NO_MODULES, "core", "runtimeModules");
+      PHPWS_Core::errorPage();
+    }
 
     foreach ($GLOBALS['Modules'] as $title=>$mod){
       PHPWS_Core::setCurrentModule($title);
@@ -247,6 +251,5 @@ class PHPWS_Core {
   }
 
 }// End of core class
-
 
 ?>
