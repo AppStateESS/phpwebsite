@@ -10,6 +10,7 @@ class PHPWS_Module {
   var $_image_dir     = TRUE;
   var $_file_dir      = TRUE;
   var $_register      = FALSE;
+  var $_unregister    = FALSE;
   var $_import_sql    = FALSE;
   var $_version_http  = NULL;
   var $_about         = FALSE;
@@ -72,6 +73,9 @@ class PHPWS_Module {
     if (isset($register))
       $this->setRegister($register);
 
+    if (isset($unregister))
+      $this->setUnregister($unregister);
+
     if (isset($version_http))
       $this->setVersionHttp($version_http);
 
@@ -132,6 +136,14 @@ class PHPWS_Module {
 
   function isRegister(){
     return $this->_register;
+  }
+
+  function setUnregister($unregister){
+    $this->_unregister = (bool)$unregister;
+  }
+
+  function isUnregister(){
+    return $this->_unregister;
   }
 
   function setImportSQL($sql){
