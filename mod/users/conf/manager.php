@@ -11,7 +11,7 @@ $lists        = array("users"  => NULL);
 
 $tables       = array("users"  => "users");
 
-$templates    = array("users"  => "mod/users/template/manager.tpl");
+$templates    = array("users"  => "manager");
 
 $activeValues = array(0=>"Active", 1=>"Inactive");
 $approvedValues = array(0=>"True", 1=>"False");
@@ -26,5 +26,16 @@ $usersColumns = array("id"      =>"ID",
 		      "updated" =>NULL,
 		      "password"=>NULL
 		      );
+
+$usersActions = array("delete"=>"Delete");
+
+$usersPermissions = array();
+
+$usersPaging = array("op"=>"PHPWS_Users_op=testing",
+			   "limit"=>10,
+			   "section"=>1,
+			   "limits"=>array(5,10,20,50),
+			   "back"=>"&#60;&#60;",
+			   "forward"=>"&#62;&#62;");
 
 ?>

@@ -379,19 +379,6 @@ class PHPWS_User extends PHPWS_Item {
       }
       break;
 
-    case "manage_users":
-      $content =  "Manage Users not built yet...";
-      break;
-
-    case "new_group":
-      $content =  "New Group not built yet...";
-      break;
-
-    case "manage_groups":
-      $content =  "Manage groups not built yet...";
-      break;
-
-
     default:
       $content =  "Unknown command";
       break;

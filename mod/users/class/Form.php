@@ -85,6 +85,14 @@ class PHPWS_User_Form {
     return $result;
   }
 
+  function managerUsers(){
+    PHPWS_Core::initCoreClass("Manager.php");
+    PHPWS_Core::initModClass("users", "Manager.php");
+    $manager = new PHPWS_User_Manager;
+    $content = $manager->getList("users", "Testing User Title");
+    return $content;
+  }
+
   function &userForm($user=NULL){
     if (!isset($user))
       $user = new PHPWS_User;
@@ -116,11 +124,18 @@ class PHPWS_User_Form {
   }
 
   function adminForm($command, $user=NULL){
+
     switch ($command){
     case "new_user":
       return PHPWS_User_Form::newUser($user);
       break;
+
+    case "manage_users":
+      return PHPWS_User_Form::managerUsers($user);
+      break;
+
     }
+
   }
 
 }
