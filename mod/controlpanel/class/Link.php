@@ -26,8 +26,8 @@ class PHPWS_ControlPanel_Link extends PHPWS_Item {
   function get() {
     PHPWS_Core::initCoreClass("Text.php");
     if(!isset($this->_module) || !isset($this->_url)) {
-      $message = Translate::get("The module or url was not set for the link.");
-      return new PHPWS_Error("controlpanel", "PHPWS_ControlPanel_Link::get", $message);
+      $message = Translate::get("The module or url was not set for the link in PHPWS_ControlPanel_Link::get.");
+      return PEAR::raiseError($message);
     }
 
     $tags["NAME"] = $this->getLabel();
@@ -59,7 +59,7 @@ class PHPWS_ControlPanel_Link extends PHPWS_Item {
     }
 
     if(isset($message)) {
-      return new PHPWS_Error("controlpanel", "PHPWS_ControlPanel_Link::save", $message);
+      return PEAR::raiseError($message);
     } else {
       return $this->commit();
     }
@@ -74,7 +74,7 @@ class PHPWS_ControlPanel_Link extends PHPWS_Item {
     }
 
     if(isset($message)) {
-      return new PHPWS_Error("controlpanel", "PHPWS_ControlPanel_Link::setModule", $message);
+      return PEAR::raiseError($message);
     } else {
       return TRUE;
     }
@@ -101,7 +101,7 @@ class PHPWS_ControlPanel_Link extends PHPWS_Item {
     }
 
     if(isset($message)) {
-      return new PHPWS_Error("controlpanel", "PHPWS_ControlPanel_Link::setDescription", $message);
+      return PEAR::raiseError($message);
     } else {
       return TRUE;
     }
@@ -132,7 +132,7 @@ class PHPWS_ControlPanel_Link extends PHPWS_Item {
     }
 
     if(isset($message)) {
-      return new PHPWS_Error("controlpanel", "PHPWS_ControlPanel_Link::setImage", $message);
+      return PEAR::raiseError($message);
     } else {
       return TRUE;
     }
@@ -162,7 +162,7 @@ class PHPWS_ControlPanel_Link extends PHPWS_Item {
     }
 
     if(isset($message)) {
-      return new PHPWS_Error("controlpanel", "PHPWS_ControlPanel_Link::setAdmin", $message);
+      return PEAR::raiseError($message);
     } else {
       return TRUE;
     }

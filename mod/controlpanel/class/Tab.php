@@ -1,226 +1,201 @@
 <?php
 
-require_once (PHPWS_SOURCE_DIR . "mod/controlpanel/class/Link.php");
-
-define("CP_DEFAULT_GRID_SIZE", 3);
-
-class PHPWS_ControlPanel_Tab extends PHPWS_Item {
-
-  var $_links = NULL;
-  var $_grid = CP_DEFAULT_GRID_SIZE;
-  var $_taborder = NULL;
-  var $_title = NULL;
+class PHPWS_ControlPanel_Tab {
+  var $_id          = NULL;
+  var $_title       = NULL;
+  var $_link        = NULL;
+  var $_directory   = NULL;
+  var $_inactivetpl = NULL;
+  var $_activetpl   = NULL;
+  var $_tab_order    = NULL;
+  var $_color       = NULL;
+  var $_frame       = NULL;
+  var $_style       = NULL;
 
   function PHPWS_ControlPanel_Tab($id=NULL) {
-    $this->setTable("mod_controlpanel_tab");
 
     if(isset($id)) {
       $this->setId($id);
       $this->init();
     }
+  }
+
+  function setId($id){
+    $this->_id = $id;
+  }
+
+  function getId(){
+    return $this->_id;
+  }
+
+  function init(){
+    $DB = new PHPWS_DB("mod_controlpanel_tab");
+    $DB->addWhere("id", $this->getId());
+    $result = $DB->select("row");
+
+    foreach ($result as $key=>$value)
+      $this->{'_' . $key} = $value;
 
   }
 
+  function getId(){
+    return $this->_id;
+  }
+
   function setTitle($title){
-    $this->_title = PHPWS_Text::parseInput($title);
+    $this->_title = strip_tags($title);
   }
 
   function getTitle(){
     return $this->_title;
   }
 
-  function setOrder($order){
-    $this->_taborder = $order;
+  function setLink($link){
+    $this->_link = $link;
   }
 
-  function addLink($id){
-    $this->_links[] = $id;
-  }
-
-  function dropLink($id){
-    if (!is_array($this->_links))
-      return TRUE;
-
-    $link = array_search($id, $this->_links);
-    if (is_numeric($link)){
-      unset($this->_links[$link]);
-      return TRUE;
+  function getLink($addTitle=TRUE){
+    if ($addTitle){
+      $title = $this->getTitle();
+      $link = $this->getLink(FALSE);
+      return "<a href=\"$link\">$title</a>";
     } else
-      return FALSE;
+      return $this->_link;
   }
 
-  function setLinks($links){
-    $this->_links = NULL;
-    if (!is_array($links))
-      return;
 
-    foreach ($links as $id)
-      $this->_links[$id] = new PHPWS_ControlPanel_Link($id);
+  function setDirectory($directory){
+    $this->_directory = $directory;
   }
 
-  function getLinks(){
-    return $this->_links;
+  function getDirectory(){
+    return $this->_directory;
   }
 
-  function setGrid($size){
-    if (!is_numeric($size)){
-      $message = $_SESSION["translate"]->it("The size <b>$size</b> was not a number") . ".";
-      return new PHPWS_Error("controlpanel", "PHPWS_ControlPanel_Tab::setGrid", $message);
-    }
-
-    $this->_grid = $size;
+  function setInactiveTpl($template){
+    $this->_inactivetpl = $template;
   }
 
-  function getTab(){
-    if (!$this->isActive() || !isset($this->_links))
-      return NULL;
-    $colspan = NULL;
-    $allRows = array();
-    $cell = $count = 1;    
-    $grid = $this->_grid;
-    $imageStatus = $_SESSION['User']->getUserVar("image_status", "controlpanel");
-    $descStatus =  $_SESSION['User']->getUserVar("desc_status", "controlpanel");
-
-    if (!isset($imageStatus[$this->getId()]))
-      $imageStatus[$this->getId()] = 1;
-
-    if (!isset($descStatus[$this->getId()]))
-      $descStatus[$this->getId()] = 1;
-
-    if (count($this->_links)){
-      foreach ($this->_links as $id) {
-	$newlink = new PHPWS_ControlPanel_Link($id);
-	if ($newlink->isViewable()) {
-	  $newlink->showImage((bool)$imageStatus[$this->getId()]);
-	  $newlink->showDescription((bool)$descStatus[$this->getId()]);
-	  $result = $newlink->get();
-	  if (!PHPWS_Error::isError($result))
-	    $links[$count] = $result;
-	  $count++;
-	} else {
-	  continue;
-	}
-      }
-
-      if (!isset($links)) {
-	return NULL;
-      }
-
-      $total = count($links);
-    } else {
-      return NULL;
-    }
-
-    $rows = floor($total / $grid);
-
-    if ($remainder = $total % $grid) {
-      $rows++;
-    }
-
-    for($i = 0; $i < $rows; $i++) {
-      $allCells = array();
-      $cellTpl = array();
-      $cellTpl['WIDTH'] = "width=\"" . floor( 100 / $grid) . "%\"";
-
-      for ($j=0; $j < $grid; $j++, $cell++) {
-	if ($cell <= $total) {
-	  if (isset($links[$cell]))
-	    $cellTpl["CONTENT"] = $links[$cell];
-	} else {
-	  $cellTpl['CONTENT'] = "&nbsp;";
-	}
-
-	$allCells[] = PHPWS_Template::process($cellTpl, "controlpanel", "grid/cell.tpl");
-      }
-
-      $allCellTpl = array('CELLS'=>implode("", $allCells));
-
-      $allRows[] = PHPWS_Template::process($allCellTpl, "controlpanel", "grid/row.tpl");
-    }
-    $allRowTpl = array('ROWS'=>implode("", $allRows));
-
-    if ($imageStatus[$this->getId()]) {
-      $allRowTpl['IMAGE_SWITCH'] = PHPWS_Text::moduleLink(Translate::get("Image Off"), "controlpanel", array("cp_image_toggle"=>1, "tab"=>$this->getId()));
-    } else {
-      $allRowTpl['IMAGE_SWITCH'] = PHPWS_Text::moduleLink(Translate::get("Image On"), "controlpanel", array("cp_image_toggle"=>1, "tab"=>$this->getId()));
-    }
-
-    if ($descStatus[$this->getId()]) {
-      $allRowTpl['DESC_SWITCH'] = PHPWS_Text::moduleLink(Translate::get("Desc Off"), "controlpanel", array("cp_desc_toggle"=>1, "tab"=>$this->getId()));
-    } else {
-      $allRowTpl['DESC_SWITCH'] = PHPWS_Text::moduleLink(Translate::get("Desc On"), "controlpanel", array("cp_desc_toggle"=>1, "tab"=>$this->getId()));
-    }
-
-    return PHPWS_Template::process($allRowTpl, "controlpanel", "grid/grid.tpl");
+  function setActiveTpl($template){
+    $this->_activetpl = $template;
   }
 
-  function tabExists($label){
-     return $GLOBALS['core']->getOne("select id from mod_controlpanel_tab where label='$label'", TRUE);
+  function getTemplate($active){
+    if ($active == TRUE)
+      return $this->_activetpl;
+    else
+      return $this->_inactivetpl;
   }
 
+  function setOrder($order){
+    $this->_tab_order = $order;
+  }
+
+  function getOrder(){
+    if (isset($this->_tab_order))
+      return $this->_tab_order;
+
+    $DB = @ new PHPWS_DB("mod_controlpanel_tab");
+    $DB->addWhere('frame', $this->getFrame());
+    $DB->addColumn('tab_order');
+    $max = $DB->select("max");
+    
+    if (PEAR::isError($max))
+      exit($max->getMessage());
+
+    if (isset($max))
+      return $max + 1;
+    else
+      return 1;
+  }
+
+  function setColor($color){
+    $this->_color = $color;
+  }
+
+  function getColor(){
+    return $this->_color;
+  }
+  
+  function setStyle($style){
+    $this->_style = $style;
+  }
+
+  function getStyle(){
+    return $this->_style = $style;
+  }
+
+  function setFrame($frame){
+    $this->_frame = $frame;
+  }
+
+  function getFrame(){
+    return $this->_frame;
+  }
 
   function save(){
-    if (isset($this->_label) && isset($this->_title)){
-      
-      $id = $this->getId();
+    $DB = @ new PHPWS_DB("mod_controlpanel_tab");
 
-      if (!isset($id)){
-	if(!($order = $GLOBALS['core']->sqlMaxValue($this->getTable(), "taborder")))
-	  $order = 1;
-	else
-	  $order++;
+    $id                   = $this->getId();
+    $save['title']        = $this->getTitle();
+    $save['link']         = $this->getLink(FALSE);
+    $save['directory']    = $this->getDirectory();
+    $save['activetpl']    = $this->getTemplate(TRUE);
+    $save['inactivetpl']  = $this->getTemplate(FALSE);
+    $save['color']        = $this->getColor();
+    $save['frame']        = $this->getFrame();
+    $save['style']        = $this->getStyle();
+    $save['tab_order']    = $this->getOrder();
 
-	$this->setOrder($order);
-      }
-      $this->commit();
-    }
-    else {
-      $message = $_SESSION["translate"]->it("Label and Title are not set") . ".";
-      return new PHPWS_Error("controlpanel", "PHPWS_ControlPanel_Tab::save", $message);
-    }
+    foreach ($save as $key=>$value)
+      if (is_null($value))
+	unset ($save[$key]);
+
+    $DB->addValue($save);
+
+    if (isset($id)){
+      $DB->addWhere("id", $id);
+      $result = $DB->update();
+    } else
+      $result = $DB->insert();
+
+    return $result;
   }
 
-
-  function load($label){
-    $id = $GLOBALS['core']->getOne("select id from mod_controlpanel_tab where label='$label'", TRUE);
-    if ($id){
-      $this->setId($id);
-      $this->init();
-    } else {
-      $message = $_SESSION["translate"]->it("Tab <b>$label</b> does not exist") . ".";
-      return new PHPWS_Error("controlpanel", "PHPWS_ControlPanel_Tab::load", $message);
-    }
-  }
-
-
-  function toggleImage($tab){
-    $image = $_SESSION['User']->getUserVar("image_status", "controlpanel");
-    if (!isset($image[$tab]) || $image[$tab])
-      $_SESSION['User']->setUserVar("image_status", array($tab=>0));
+  function view($active=FALSE, $linkable=TRUE){
+    if ($linkable)
+      $tpl['TITLE'] = $this->getLink();
     else
-      $_SESSION['User']->setUserVar("image_status", array($tab=>1));
+      $tpl['TITLE'] = $this->getTitle();
+
+    $filename = $this->getDirectory() . $this->getTemplate($active);
+
+    if ($color = $this->getColor())
+      $tpl['COLOR'] = " style=\"background-color : #" . $color . "\"";
+
+    $phptpl = & new PHPWS_Template();
+
+    if ($phptpl->setFile($filename, TRUE) == FALSE)
+      return PEAR::raiseError("Unable to find template <b>$filename</b>");
+
+    $phptpl->setData($tpl);
+
+    $result = $phptpl->get();
+    return $result;
   }
 
-  function toggleDesc($tab){
-    $desc = $_SESSION['User']->getUserVar("desc_status", "controlpanel");
-    if (!isset($desc[$tab]) || $desc[$tab])
-      $_SESSION['User']->setUserVar("desc_status", array($tab=>0));
+  function nextBox(){
+
+    $DB->addWhere("theme", $this->getTheme());
+    $DB->addWhere("theme_var", $this->getThemeVar());
+    $DB->addColumn("box_order");
+    $max = $DB->select("max");
+    if (isset($max))
+      return $max + 1;
     else
-      $_SESSION['User']->setUserVar("desc_status", array($tab=>1));
+      return 1;
   }
 
-  function isEmpty(){
-    if (!isset($this->_links))
-      return TRUE;
-
-    foreach($this->_links as $id){
-      $link = new PHPWS_ControlPanel_Link($id);
-      if ($link->isViewable())
-	return FALSE;
-    }
-
-    return TRUE;
-  }
 }
 
 ?>
