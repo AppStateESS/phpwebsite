@@ -1,8 +1,4 @@
 <?php
-define("FORM_ID_IDENTIFIER", "f");
-PHPWS_Core::configRequireOnce("core", "formConfig.php", TRUE);
-
-//require_once "config/core/formConfig.php";
 /**
  * Creates HTML form elements and/or an entire form
  *
@@ -31,6 +27,10 @@ PHPWS_Core::configRequireOnce("core", "formConfig.php", TRUE);
  * @package Core
  *
  */
+
+define("FORM_ID_IDENTIFIER", "f");
+PHPWS_Core::configRequireOnce("core", "formConfig.php", TRUE);
+
 class PHPWS_Form {
   var $id = NULL;
   
@@ -225,16 +225,21 @@ class PHPWS_Form {
     if (!$this->testName($name))
       return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, "core", "PHPWS_Form::setExtra", array($name));
 
-    if (empty($label))
+    if (empty($label)) {
       $label = $name;
+    }
 
     foreach ($this->_elements[$name] as $key=>$element){
-      if (is_array($label))
+      if (is_array($label)) {
 	$result = $this->_elements[$name][$key]->setLabel($label[$key]);
-      else
+      }
+      else {
 	$result = $this->_elements[$name][$key]->setLabel($label);
-      if (PEAR::isError($result))
+      }
+
+      if (PEAR::isError($result)) {
 	return $result;
+      }
     }
   }
 
