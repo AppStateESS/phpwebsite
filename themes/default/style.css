@@ -130,3 +130,9 @@ table.form-table .label {
 div.blog-box div.content {
 	padding : 5px;
 }
+
+.error {
+       background-color : #e76c6c;
+       padding : 2px;
+       color : #fff;
+}
