@@ -80,43 +80,6 @@ location and do not try to put it within a box template. If you have
 specific templates and formating with your module, you may wish to
 trigger this option.
 
-Holding your Content
-
-Everytime the page is loaded, Layout clears out its content slots. If
-you want your data to be retained so you don't have to recreate it
-each time, you can use the hold() function.
-
-For example, the User module uses the hold() function for the log in
-box. Since the log in box is on every page and remains the same
-throughout the session, there isn't a reason to recreate each time.
-
-Users first checks to see if the content has been set with the get()
-function.
-
-From the runtime.php file:
-
-if (!Layout::isBoxSet("users", "CNT_user_small")) PHPWS_User::getLogin();
-
-If the content has not been set, users creates the login box in the
-getLogin() function:
-
-Layout::hold($login, "users", "CNT_user_small", TRUE, -1);
-
-Now the data will not be cleared. When the page is refreshed, the
-above check will pass and Users won't need to recreate the box.
-
-The fifth parameter determines how often this box is refreshed. The
-Users example has it set to -1. This means that it should be retained
-indefinately. If you want the data to time out, just enter the amount
-of seconds you want it to last. For example:
-
-Layout::hold($content, "newsFeed", "FeedBox", TRUE, 3600);
-
-This would clear out the content in the box after 1 hour (60 seconds
-times 60 minutes). The example 'newsFeed' module could then check the
-box like Users did above. Once it was clear, it could grab the news
-feed and fill the content back in.
-
 
 Adding Style Sheets
 
