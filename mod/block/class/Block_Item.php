@@ -73,6 +73,21 @@ class Block_Item {
     return $db->saveObject($this);
   }
 
+  function clearPins()
+  {
+    $db = & new PHPWS_DB('block_pinned');
+    $db->addWhere('block_id', $this->id);
+    $db->delete();
+  }
+
+  function kill()
+  {
+    $this->clearPins();
+    $db = & new PHPWS_DB('block');
+    $db->addWhere('id', $this->id);
+    $db->delete();
+  }
+
   function view($pin_mode=FALSE)
   {
     if ($pin_mode) {
@@ -81,7 +96,7 @@ class Block_Item {
       $link['mod']   = $this->_module;
       $link['item']  = $this->_item_id;
       $link['itname'] = $this->_itemname;
-      $img = '<img src="./images/block/pin.png" />';
+      $img = '<img src="./images/mod/block/pin.png" />';
       $opt = PHPWS_Text::secureLink($img, 'block', $link);
     } elseif (Current_User::allow('block')) {
       $js_var['ADDRESS'] = 'index.php?module=block&amp;action=remove'
@@ -92,7 +107,7 @@ class Block_Item {
 	. '&amp;authkey=' . Current_User::getAuthKey();
 	
       $js_var['QUESTION'] = _('Are you sure you want to remove this block from this page?');
-      $js_var['LINK'] = '<img src="./images/block/remove.png" />';
+      $js_var['LINK'] = '<img src="./images/mod/block/remove.png" />';
 	
       $opt = Layout::getJavascript('confirm', $js_var);
     } else {
