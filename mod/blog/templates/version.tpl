@@ -1,0 +1,7 @@
+{INSTRUCTION}
+<!-- BEGIN repeat_row -->
+<div {TOGGLE} style="border : black 1px solid; margin : 5px; padding :
+5px;">
+{BLOG}{CREATED}<br />{RESTORE_LINK}</div>
+<!-- END repeat_row -->
+
