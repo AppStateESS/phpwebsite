@@ -6,32 +6,37 @@ The phpWebSite database class is meant to prevent the tedious creation
 of long sql strings and to assist the beginning programmer to access
 the database. It uses the PEAR DB library as its backbone.
 
+Most of the functions return a result. The result varies except in the
+case of an error. If there is an error, you will receive a PEAR error
+object.
+
+
 Accessing the database statically.
 If you do not wish to create a object for phpwebsite, you can
 access the database directly using these functions:
 
-PHPWS_DB::loadDB($dsn)
+PHPWS_DB::loadDB(dsn)
 When phpws_db is accessed, it will load the database according to
 phpwebsite's configuration file. If you need to change the database
 connection then you can send a different dsn string to this function.
 For information on the dsn format please read this page:
 http://pear.php.net/manual/en/package.database.db.intro-dsn.php
 
-PHPWS_DB::query($sql)
+PHPWS_DB::query(sql)
 You can send any database query string to this function. The result
 depends upon the usage. See this page for more details:
 http://pear.php.net/manual/en/package.database.db.intro-query.php
 
-PHPWS_DB::select($type, $query)
+PHPWS_DB::select(type, query)
 Select can be called statically and from an object. To call it
 statically, enter the "type" of return you want and the select
 "query". For select types, see below.
 
-PHPWS_DB::import($text)
+PHPWS_DB::import(text)
 This function will take a database export and attempt to import it
 into the current database.
 
-PHPWS_DB::export($tableName, $structure, $contents)
+PHPWS_DB::export(tableName, structure, contents)
 This function will return a text string export of a specific table.
 If structure is TRUE (default value) then you will get back the CREATE
 TABLE information. If $contents is TRUE (default value) you will
@@ -41,8 +46,16 @@ is FALSE).
 PHPWS_DB::listTables()
 Returns a list array of tables in your database.
 
+PHPWS_DB::isTable(table_name)
+Returns TRUE if the submitted table name is in the current
+database. Returns FALSE if it is not.
+
+
 PHPWS_DB::listDatabase()
 Returns a list of databases that are accessible by your dsn entry.
+
+PHPWS_DB::lastQuery()
+Returns the last query sent to the PEAR database object.
 
 
 Constructing a database object
@@ -57,17 +70,21 @@ The table name is not mandatory, you could add it later like so:
 $db->setTable("tableName");
 
 Now you decide what kind of query you require: select, insert, update,
-delete, create or drop table, or create or drop column.
+delete, create or drop table, create or drop column, etc.
+
+(Note: from here on, the database object's creation ($db) is implied
+when it is used in an example.)
+
 
 SELECT
 The select function has many options to determine its results.
 
-We will use the following table as an example:
+We will use the following table (named "friends") as an example:
 
 id   |   name   |   age    |  sex
 ------------------------------------------
 3    | Chris    |   33     | male
-4    | Suzy     |   24     | female
+4    | Lucy     |   22     | female
 5    | Laura    |   44     | female
 6    | Mike     |   22     | male
 7    | Chris    |   18     | female      
@@ -87,7 +104,7 @@ The result here would be an array with the following form:
       
 1 =>  id    => 4
       name  => Lucy
-      age   => 24
+      age   => 22
       sex   => female
 
 2 =>  id    => 5
@@ -99,6 +116,11 @@ The result here would be an array with the following form:
       name  => Mike
       age   => 22
       sex   => male
+
+4 =>  id    => 7
+      name  => Chris
+      age   => 18
+      sex   => female
 
 
 Using Where
@@ -148,6 +170,15 @@ Kind of complicated but it would look like this if you wrote the
 query.
 
 select * from mytable where (id > 3 AND id < 6) OR (name LIKE 'L%');
+
+You also have the option of sending your own where string to the
+object using setQWhere():
+
+$db->setQWhere("(id > 3 AND id < 6) OR (name LIKE 'L%'");
+
+You can use this function if having problems using the addWhere
+function.
+
 
 Ordering
 If we wanted to select in a certain order we use the addOrder
@@ -201,7 +232,336 @@ $db->setLimit(amount);
 So if I only want 2 rows returned:
 $db->setLimit(2);
 
+Receiving the select data
+Now that we have set some parameters, we now can call the select()
+function to pass our data to a variable. In most cases, this data will
+be returned as an array.
+
+The 'type' parameter of select allows you to alter the format of the
+result as well. Here are the choices:
+
+all
+This is the default case. It will return all the columns specified in
+an array. If you set columns, only they will be returned.
+
+assoc
+This case uses the PEAR getAssoc function. You may try to use this
+function but it does different things depending on how results are
+returned. Be careful.
+
+col
+This case returns just one column from a query. You will need to
+choose a column to return by using the addColumn() function. If the
+column is not set, select() will return the first column in the table.
+The column will not be an associative array.
+
+min / max
+These cases will return the minimum or maximum result
+respectively. This value will be a string. Like the 'col' case, you
+will need to use addColumn to specify which result column you want.
+
+one
+In this case, you expect just one result. This result will be a
+string.
+
+row
+This case returns an associate array for just one row from the table.
+
+Indexing the result
+
+Sometimes you want a database result indexed for easier
+manipulation. To do so, you can use the setIndexBy() function.
+
+For example, if you were to run our previous select
+statement with the index set to use the 'id' column:
+
+$db->setIndexBy('id');
+
+The result would look like the following:
+
+3 =>  id    => 3
+      name  => Chris
+      age   => 33
+      sex   => male
+      
+4 =>  id    => 4
+      name  => Lucy
+      age   => 22
+      sex   => female
+
+5 =>  id    => 5
+      name  => Laura
+      age   => 44
+      sex   => female
+
+6 =>  id    => 6
+      name  => Mike
+      age   => 22
+      sex   => male
+
+7 =>  id    => 7
+      name  => Chris
+      age   => 18
+      sex   => female
+
+
+If you choose to index by a column that is repeated, the
+select with create a sorted array within that result. For example:
+
+$db->setIndexBy('age');
+
+would return:
+33 =>  id    => 3
+       name  => Chris
+       age   => 33
+       sex   => male
+      
+22 =>  0 =>  id    => 4
+             name  => Lucy
+             age   => 22
+             sex   => female
+
+       1 =>  id    => 6
+             name  => Mike
+             age   => 22
+             sex   => male
+
+44 =>  id    => 5
+       name  => Laura
+       age   => 44
+       sex   => female
+
+18 =>  id    => 7
+       name  => Chris
+       age   => 18
+       sex   => female
+
+
+Setting the Mode
+Normally, the select function will return the results as an
+associative array. You may also receive the results in an ordered
+format or as objects.
+
+$db->setMode('ordered');
+or
+$db->setMode('object');
+
+
+Returning results as objects
+If your table columns are named the same as a class's, you can change
+your result into an array of objects (or just one).
+
+Instead of the select function use the loadObjects function.
+
+$db->loadObjects(classname, onlyOne);
+
+For example, say I had a class named "friend" and I wanted to grab the
+results from the 'friends' database object we made earlier.
+
+$result = $db->loadObjects("friend");
+
+Now I will have an array of 'friend' objects. If I wanted to create
+just one object from my query, I would set onlyOne equal to TRUE.
+
+$friend = $db->loadObjects("friend", TRUE);
+
+You can use many of the same parameters (where, order, indexby) that
+you used for select.
+
+Make sure that you require the class file before you try to make
+objects from it.
+
+
+Insert
+
+The insert function adds a new row to the database. The options you
+need to set are few.
+
+First create your db object as discussed above. Then start adding
+values to it. For example, say we want to add a new friend.
+
+$db->addValue("name", "Doug");
+$db->addValue("age", "26");
+$db->addValue("sex", "male");
+
+You could also add the values via an array:
+
+$values['name'] = "Doug";
+$values['age'] = 26;
+$values['sex'] = "male";
+
+$db->addValue($values);
+
+Finally, call the insert function:
+$result = $db->insert();
+
+You may have noticed that I did not set the id value. That is because
+the insert function does that automatically.
+
+In phpWebSite, the database class classifies any column that is named
+"id", is the primary key, and is an integer as the main index. It will
+automatically increment the id for you.
+
+Normally, the insert function returns TRUE if the insert was
+successful (a PEAR error object if not). If the insert function
+locates an index, it will return the new id instead. So in the example
+above, the result would be the last id plus one: 8.
+
+Update
+
+The update function changes the values of a table row. You only need
+to addValue to the columns that require change. For example, let's say
+we got Doug's sex wrong (poor Doug, saddled with such a masculine
+name).
+
+$db->addValue("sex", "female");
+
+We also need to make sure we update the correct record. So we need to
+specify which record to update using addWhere.
+
+$db->addWhere("id", 8);
+
+Finally we call the update function:
+$db->update();
+
+If you do not set the where statement, ALL rows will be updated.
+
+
+saveObject
+Just as there is a function to load objects, there is one to save them
+as well:
+
+$db->saveObject(object, strip_character);
+
+So let's say we wanted to save one of the 'friend' objects we have
+edited.
+
+$db->saveObject($friend);
+
+This will update the table if the where values are set in the database
+object. If the where values are not set, a new row will be inserted.
+
+If your object is using underscores as the first character for all
+your variables and your table columns do not, you can set
+strip_character to TRUE to have them removed.
+
+Also saveObject will not save variables that do not have a
+corresponding column name.
+
+
+Delete
+The delete function removes a row from a database table. Let's say
+Doug was offended at getting her sex wrong and she is no longer my
+friend.
+
+$db->addWhere("id", 8);
+$db->delete();
+
+The row is removed from the database.
+
+Like update, if you do not use addWhere, all rows will be deleted from
+the database. Be VERY careful.
+
+Note: addOrder and setLimit are not supported at this time for delete
+and update. We will readdress this when MySQL 4.0 becomes standard.
+
+
+Reseting the Object
+At times you may want to reset some of your objects settings so that
+you can reuse it. Here are the functions you can call and what they
+clear in your object:
+
+resetTable
+Resets the table. You could also just use setTable.
+
+resetWhere
+Clears the where clauses.
+
+resetOrder
+Clears the orders.
+
+resetValues
+Clears the values.
+
+resetLimit
+Clears the limit.
+
+resetColumns
+Clears the columns.
+
+reset
+Clears the where clauses, the values, the limit, the orders, the
+columns, the index by value, and the QWhere value. The table stays intact.
+
+
+Table functions
+
+The database class has a few other functions to help you alter or
+review the structure of the table it was assigned.
+
+getTableColumns
+If you need a listing table columns, use the this function.
+
+$result = $db->getTableColumns();
+
+It will return a listing of the column names in an array.
+
+
+isTableColumn
+Returns TRUE is the column sent to it exists in the table.
+
+if ($db->isTableColumn('name'))
+   echo "Name is found!";
+else
+   echo "Oh oh! Name column is missing!";
+
+
+dropTable
+The removes the currently assigned table from the database.
+
+$db->dropTable();
+
+
+createTable
+This function creates a table. After your database object has been
+created, simply add the columns using addValue. DO NOT use addColumn
+for this process.
+
+$db = new PHPWS_DB("new_table");
+$db->addValue("id", "INT NOT NULL PRIMARY KEY");
+$db->addValue("message", " TEXT NOT NULL");
+$db->addValue("allow_view", "SMALLINT NOT NULL");
+
+$db->createTable();
+
+Make sure you put the primary key in the addValue statement.
+
+
+addTableColumn
+This function helps to add one column to the table.
+
+$db->addTableColumn(column_name, column_parameters, after);
+
+Here is an example of adding a new column to our friends table:
+
+$db->addTableColumn("favorite_food", "varchar(50) NULL", "name");
+
+This would create the column right after the 'name' column. If the
+'after' parameter is left blank, the column will be placed at the end
+of the table. If the 'after' parameter is sent the word 'first' then
+it will place the column at the beginning of the table.
+
+
+dropTableColumn
+Removes a column from the table.
+
+$db->dropTableColumn(column_name);
+
+To remove the favorite_food column.
+$db->dropTableColumn('favorite_food');
 
 
 
-
+This concludes the directions for the database class. If you have any
+questions about the class or these directions, please send them to:
+matt at tux dot appstate dot edu.
