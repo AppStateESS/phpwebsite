@@ -81,7 +81,7 @@ class PHPWS_Template extends HTML_Template_IT {
   }
 
   function getLastTplFile(){
-    return $tpl->getfile($this->lastTemplatefile);
+    return $this->getfile($this->lastTemplatefile);
   }
 
   function process($template, $module, $file){
@@ -107,6 +107,17 @@ class PHPWS_Template extends HTML_Template_IT {
       return $start . $tpl->getLastTplFile() . $end;
     else
       return $start . $result . $end;
+  }
+
+  function processTemplate($template, $module, $file, $defaultTpl=TRUE){
+    if ($defaultTpl)
+      return PHPWS_Template::process($template, $module, $file);
+    else {
+      $tpl = & new PHPWS_Template($module);
+      $tpl->setFile($file, TRUE);
+      $tpl->setData($template);
+      return $tpl->get();
+    }
   }
 }
 
