@@ -34,16 +34,6 @@ Select can be called statically and from an object. To call it
 statically, enter the "type" of return you want and the select
 "query". For select types, see below.
 
-PHPWS_DB::import(text)
-This function will take a database export and attempt to import it
-into the current database.
-
-PHPWS_DB::export(tableName, structure, contents)
-This function will return a text string export of a specific table.
-If structure is TRUE (default value) then you will get back the CREATE
-TABLE information. If $contents is TRUE (default value) you will
-receive the contents of that table as well (or instead of if structure
-is FALSE).
 
 PHPWS_DB::listTables()
 Returns a list array of tables in your database.
@@ -58,6 +48,21 @@ Returns a list of databases that are accessible by your dsn entry.
 
 PHPWS_DB::lastQuery()
 Returns the last query sent to the PEAR database object.
+
+
+The following functions cannot be called statically, however they do
+not require a table assignment.
+
+$db->import(text)
+This function will take a database export and attempt to import it
+into the current database.
+
+$db->export(tableName, structure, contents)
+This function will return a text string export of a specific table.
+If structure is TRUE (default value) then you will get back the CREATE
+TABLE information. If $contents is TRUE (default value) you will
+receive the contents of that table as well (or instead of if structure
+is FALSE).
 
 
 Constructing a database object
