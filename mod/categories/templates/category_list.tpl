@@ -12,6 +12,7 @@
   </tr>
 <!-- END listrows -->
 </table>
+{EMPTY_MESSAGE}
 <br />
 <div style="text-align : center">
 {TOTAL_ROWS}<br />
