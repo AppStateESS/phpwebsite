@@ -46,21 +46,35 @@ class Cabinet_Action {
     return $panel;
   }
 
+  function listAction($image){
+    return "<a href=\"index.php?id=" . $image->getId() . "\">Edit</a>";
+  }
+
   function manager($type){
     Layout::addStyle("filecabinet");
     PHPWS_Core::initCoreClass("DBPager.php");
-    if ($type == "image"){
-      $tags['PAGE_LABEL'] = _("Page");
+    PHPWS_Core::initCoreClass("Image.php");
 
-      PHPWS_Core::initCoreClass("file/image.php");
-      $pager = & new DBPager("images", "phpws_image");
-      $pager->addWhere("type", "image/jpeg");
-      $pager->setLink("index.php?module=filecabinet&amp;action=main&amp;tab=image");
+    if ($type == "image"){
+      $pager = & new DBPager("images", "PHPWS_Image");
       $pager->setModule("filecabinet");
       $pager->setTemplate("imageList.tpl");
+      $pager->setLink("index.php?module=filecabinet&amp;action=main&amp;tab=image");
+
+      $pager->setMethod("title", "getJSView");
+      $pager->addRowTag("action", "Cabinet_Action", "listAction");
+
       $pager->addToggle("class=\"fc-list-row1\"");
       $pager->addToggle("class=\"fc-list-row2\"");
       $pager->addToggle("class=\"fc-list-row3\"");
+
+      $tags['PAGE_LABEL'] = _("Page");
+      $tags['TITLE']      = _("Title");
+      $tags['FILENAME']   = _("Filename");
+      $tags['MODULE']     = _("Module");
+      $tags['SIZE']       = _("Size");
+      $tags['ACTION']     = _("Action");
+
       $pager->addTags($tags);
 
       $result = $pager->get();
