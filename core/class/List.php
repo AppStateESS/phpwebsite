@@ -1,6 +1,6 @@
 <?php
 
-require_once(PHPWS_SOURCE_DIR . "class/Pager.php");
+PHPWS_Core::initCoreClass("Pager.php");
 
 /**
  * @version $Id$
