@@ -32,7 +32,7 @@ class PHPWS_Error {
 
     if (isset($extraInfo)){
       if (is_array($extraInfo))
-	vsprintf($message, $extraInfo);
+	$message = vsprintf($message, $extraInfo);
       else
 	$fullError[] = " [" . $extraInfo . "]";
     }
