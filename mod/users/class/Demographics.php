@@ -97,7 +97,7 @@ class Demographics {
     switch ($item->getInputType()){
     case "textfield":
     case "textarea":
-      $form->setValue($item->getFormLabel(), $value);
+      $form->add($item->getFormLabel(), $value);
       break;
     }
   }
