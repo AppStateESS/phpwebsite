@@ -2,7 +2,7 @@
 
 define ('DBPAGER_DEFAULT_LIMIT', 5);
 define ('DBPAGER_PAGE_LIMIT', 8);
-
+define ('DBPAGER_DEFAULT_EMPTY_MESSAGE', _('No rows found.'));
 
 /**
  * DB Pager differs from other paging methods in that it applies
@@ -102,6 +102,11 @@ class DBPager {
 
   var $methods = array();
 
+  /**
+   * Message echoed if no rows are found
+   */
+  var $empty_message = DBPAGER_DEFAULT_EMPTY_MESSAGE;
+
   var $error;
 
   function DBPager($table, $class){
@@ -181,6 +186,10 @@ class DBPager {
     $this->methods[$column_name]['variable'] = $variable;
   }
 
+  function setEmptyMessage($message){
+    $this->empty_message = strip_tags($message);
+  }
+
   function addRunMethod($method){
     if (!in_array(strtolower($method), $this->_methods))
       return;
@@ -208,11 +217,7 @@ class DBPager {
   function getTotalRows(){
     $result = $this->db->select('count');
     $this->db->resetColumns();
-    if (PEAR::isError($result)) {
-      return $result;
-    } else {
-      return $result[0]['count'];
-    }
+    return $result;
   }
 
 
@@ -257,8 +262,13 @@ class DBPager {
   }
 
   function getPageLinks(){
-    if ($this->total_pages < 1)
-      return PHPWS_Error::get(DBPAGER_NO_TOTAL_PAGES, 'core', 'DBPager::getPageLinks');
+
+    if ($this->total_pages < 1) {
+      $current_page = $total_pages = 1;
+    } else {
+      $current_page = $this->current_page;
+      $total_pages = $this->total_pages;
+    }
 
     $limit_pages = ($this->total_pages > DBPAGER_PAGE_LIMIT) ? TRUE : FALSE;
     
@@ -275,12 +285,12 @@ class DBPager {
     }
     $values = $this->getLinkValues();
 
-    if ($this->current_page != 1){
+    if ($current_page != 1){
       $values['page'] = 'page=' . ($this->current_page - 1);
       $pages[] = '<a href="' . $this->link . '&amp;' . implode('&amp;', $values) . '">' . $this->page_turner_left . "</a>\n";
     }
 
-    for ($i=1; $i <= $this->total_pages; $i++){
+    for ($i=1; $i <= $total_pages; $i++){
       if ($limit_pages && !in_array($i, $limitList)){
 
 	if (!isset($padding1)){
@@ -446,8 +456,12 @@ class DBPager {
   }
 
   function getPageDrop(){
-    for ($i = 1; $i <= $this->total_pages; $i++)
-      $page_list[$i] = $i;
+    if (empty($this->total_pages)) {
+      $page_list[1] = 1;
+    } else {
+      for ($i = 1; $i <= $this->total_pages; $i++)
+	$page_list[$i] = $i;
+    }
 
     $form = & new PHPWS_Form('page_list');
     $form->setMethod('get');
@@ -508,24 +522,23 @@ class DBPager {
     if (!isset($this->template))
       return PHPWS_Error::get(DBPAGER_TEMPLATE_NOT_SET, 'core', 'DBPager::get()');
 
-    if ($this->total_rows < 1)
-      return NULL;
-
+    if ($this->total_rows < 1) {
+      $total_row = $start_row = $end_row = 1;
+    } else {
+      $total_row = $this->total_rows;
+      $start_row = ( ($this->current_page - 1) * $this->limit ) + 1;
+      $end_row   = $this->current_page * $this->limit;
+      if ($end_row > $total_row)
+	$end_row = $total_row;
+    }
   
     $template['PAGE_LABEL']  = _('Page');
     $template['LIMIT_LABEL'] = _('Limit');
     $template['PAGE_DROP'] = $this->getPageDrop();
-
-    $total_row = $this->total_rows;
-
-    $start_row = ( ($this->current_page - 1) * $this->limit ) + 1;
-    $end_row   = $this->current_page * $this->limit;
-    if ($end_row > $total_row)
-      $end_row = $total_row;
-
     $template['TOTAL_ROWS']  = $start_row . ' - ' . $end_row . ' ' . _('of') . ' ' . $total_row;
 
     $pages = $this->getPageLinks();
+
     if (PEAR::isError($pages))
       return $pages;
 
@@ -564,6 +577,8 @@ class DBPager {
       }
       
       $this->getSortButtons($template);
+    } else {
+      $template['EMPTY_MESSAGE'] = $this->empty_message;
     }
 
     DBPager::plugExtraTags($template);
