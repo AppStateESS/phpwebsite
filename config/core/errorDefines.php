@@ -69,6 +69,11 @@ define("PHPWS_UNMATCHED_OPTION",      -700);
 
 /*************** File.php ****************/
 define("PHPWS_FILE_DELETE_DENIED",    -800);
-define("PHPWS_DIR_DELETE_DENIED",    -800);
+define("PHPWS_DIR_DELETE_DENIED",     -801);
+
+/*************** Image.php ****************/
+define("PHPWS_FILENAME_ONOT_SET",     -900);
+define("PHPWS_DIRECTORY_NOT_SET",     -901);
+define("PHPWS_BOUND_FAILED",          -902);
 
 ?>

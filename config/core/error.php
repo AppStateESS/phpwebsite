@@ -1,6 +1,6 @@
 <?php
 translate("core");
-// Generic
+// Generic 1 - 99
 $errors[PHPWS_UNKNOWN]               = _("Unknown Error.");
 $errors[PHPWS_FILE_NOT_FOUND]        = _("File not found.");
 $errors[PHPWS_CLASS_NOT_EXIST]       = _("Class does not exist.");
@@ -66,5 +66,10 @@ $errors[PHPWS_UNMATCHED_OPTION]      = _("Help option not found in help configur
 // File.php 800 - 899
 $errors[PHPWS_FILE_DELETE_DENIED]    = _("Unable to delete file.");
 $errors[PHPWS_DIR_DELETE_DENIED]     = _("Unable to delete directory.");
+
+// Image.php 900 - 1000
+$errors[PHPWS_FILENAME_NOT_SET]      = _("Filename not set.");
+$errors[PHPWS_DIRECTORY_NOT_SET]     = _("Directory not set.");
+$errors[PHPWS_BOUND_FAILED]          = _("There was a problem loading the image file.");
 
 ?>
