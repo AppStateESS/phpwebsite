@@ -28,18 +28,22 @@ class PHPWS_Help{
       exit();
     }
 
-    $module = preg_replace("/\W/", "", $_REQUEST['helpMod']);
-    $help = preg_replace("/\W/", "", $_REQUEST['option']);
-    $file = PHPWS_Core::getConfigFile($module, "help.". DEFAULT_LANGUAGE . ".php");
-    if (PEAR::isError($file)){
-      PHPWS_Error::log($file);
-      return NULL;
-    }
-    
-    include $file;
+    $module = preg_replace("/[^\w]+/", "", $_REQUEST['helpMod']);
+    $help = preg_replace("/[^\w\-]+/", "", $_REQUEST['option']);
+    $filename = "mod/$module/conf/help.". CURRENT_LANGUAGE . ".php";
+    $default = "mod/$module/conf/help.php";
+    if (!is_file($filename)){
+      if (!is_file($default)){
+	PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, "core", "show_help", $default);
+	exit(_("The help file for this module is missing."));
+      } else
+	include $default;
+    } else
+      include $filename;
 
     if (!isset($$help)){
       PHPWS_Error::log(PHPWS_UNMATCHED_OPTION, "core", "PHPWS_Help::show_link", "Option: $help");
+      exit(_("No help exists for this topic."));
       return NULL;
     }
     Layout::addStyle("help");
