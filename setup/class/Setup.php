@@ -364,6 +364,7 @@ class Setup{
   }
 
   function welcome(&$content){
+    unset($_SESSION['Boost']);
     $step = 1;
     if (Setup::configExists())
       $step = 2;
@@ -383,17 +384,15 @@ class Setup{
   }
 
   function createCore(&$content){
-    PHPWS_Core::initModClass("boost", "Boost.php");
-    $core = & PHPWS_Core::loadAsMod();
-    $boost = new PHPWS_Boost;
-    $boost->setModule($core);
-    $result = $boost->install(FALSE);
-    $content[] = $boost->getLog() . "<br /><br />";
+    require_once("File.php");
+    $content[] = _("Importing core database file.") . "<br />";
+    $installSQL = File::readAll("core/boost/install.sql");
+    $result = PHPWS_DB::import($installSQL);
 
-   if ($result == TRUE){
-     $content[] = _("Core installation successful.") . "<br />";
-     $content[] = PHPWS_Text::link("index.php?step=3", _("Continue to Module Installation"));
-   }
+    if ($result == TRUE){
+      $content[] = _("Core installation successful.") . "<br /><br />";
+      $content[] = PHPWS_Text::link("index.php?step=3", _("Continue to Module Installation"));
+    }
   }
 
 
@@ -407,35 +406,15 @@ class Setup{
   }
 
   function installModules(&$content){
-    $finish = TRUE;
-    $modList = & PHPWS_Boost::toInstall($modules);
-
-    foreach ($modList as $title => $cond){
-      if ($cond == TRUE)
-	continue;
-
-      $finish = FALSE;
-      $boost = new PHPWS_Boost;
-      $result = $boost->loadModule($title);
-      if (PEAR::isError($result)){
-	PHPWS_Error::log($result);
-	continue;
-      }
-      $content[] = "<b>" . _("Installing") . " - " . $boost->module->getProperName(TRUE) . "</b><br />";
-      $result = $boost->install();
-
-      $content[] = $boost->getLog() . "<br /><br />";
-      if (PHPWS_Boost::isLocked($title)){
-	echo "$title is locked!";
-	break;
-      }
+    $modules = explode(",", DEFAULT_MODULES);
+    if (!isset($_SESSION['Boost'])){
+      $_SESSION['Boost'] = new PHPWS_Boost;
+      $_SESSION['Boost']->loadModules($modules);
     }
+
+    $content[] = $_SESSION['Boost']->install();
   }
 
-  function installModule($title){
-    $module = new PHPWS_Module($title);
-
-  }
 
 }
 
