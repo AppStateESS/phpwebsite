@@ -30,7 +30,6 @@ PHPWS_Core::initializeModules();
 session_name(SESSION_NAME);
 session_start();
 
-//include ("test.php");
 PHPWS_Core::runtimeModules();
 PHPWS_Core::runCurrentModule();
 PHPWS_Core::closeModules();
