@@ -11,150 +11,267 @@ if (PEAR::isError($result)){
 define("BOOST_ERR_NOT_MODULE",    -1);
 define("BOOST_ERR_NO_INSTALLSQL", -2);
 
+define("BOOST_NEW",     0);
+define("BOOST_START",   1);
+define("BOOST_PENDING", 2);
+define("BOOST_DONE",    3);
+
+
 require_once $result;
 
 class PHPWS_Boost {
-  var $module = NULL;
-  var $log    = array();
+  var $modules       = NULL;
+  var $status        = NULL;
+  var $current       = NULL;
+  var $installedMods = NULL;
 
-  function loadModule($module){
-    $this->module = & new PHPWS_Module($module);
-    $result = $this->module->init();
-
-    if (PEAR::isError($result))
-      return $result;
-
-    return TRUE;
-  }
-
-  function setModule($module){
+  function addModule($module){
     if (!is_object($module) || get_class($module) != "phpws_module")
       return PHPWS_Error::get(BOOST_ERR_NOT_MODULE, "boost", "setModule");
 
-    $this->module = $module;
+    $this->modules[$module->getTitle()] = $module;
   }
 
-  function install($register=TRUE){
-    if (!PHPWS_Boost::isLocked($this->module->getTitle())){
-      if ($this->module->isImportSQL()){
-	$this->addLog(_("Importing SQL file."), TRUE);
-	$result = $this->importSQL("install.sql");
-	if (PEAR::isError($result)){
-	  $this->addLog(_("A fatal error occurred."), TRUE);
-	  $this->addLog($result->getMessage(), TRUE);
-	  PHPWS_Error::log($result);
-	  return FALSE;
+  function loadModules($modules){
+    foreach ($modules as $title){
+      $mod = & new PHPWS_Module(trim($title));
+      $this->addModule($mod);
+      $this->setStatus($title, BOOST_NEW);
+    }
+  }
+
+  function getInstalledModules(){
+    $db = & new PHPWS_DB("modules");
+    $db->addColumn("title");
+    $modules = $db->loadObjects("PHPWS_Module");
+    return $modules;
+  }
+
+
+  function setStatus($title, $status){
+    $this->status[trim($title)] = $status;
+  }
+
+  function getStatus($title){
+    if (!isset($this->status[$title]))
+      return NULL;
+
+    return $this->status[$title];
+  }
+
+  function setCurrent($title){
+    $this->current = $title;
+  }
+
+  function getCurrent(){
+    return $this->current;
+  }
+
+  function isModules(){
+    return isset($this->modules);
+  }
+
+  function install(){
+    if (!$this->isModules())
+      return PHPWS_Error::get(BOOST_NO_MODULES_SET, "boost", "install");
+
+    foreach ($this->modules as $title => $mod){
+      $title = trim($title);
+      if ($this->getStatus($title) == BOOST_DONE)
+	continue;
+
+      if ($this->getCurrent() != $title && $this->getStatus($title) == BOOST_NEW){
+	$this->setCurrent($title);
+	$this->setStatus($title, BOOST_START);
+      }
+
+      $content[] = "<b>" . _("Installing") . " - " . $mod->getProperName() ."</b>";
+
+      if ($this->getStatus($title) == BOOST_START && $mod->isImportSQL()){
+	$content[] = _("Importing SQL file.");
+	$result = PHPWS_Boost::importSQL($mod->getDirectory() . "boost/install.sql");
+
+	if (is_array($result)){
+	  foreach ($result as $error)
+	    PHPWS_Error::log($error);
+
+	  $content[] = _("An import error occurred.");
+	  $content[] = _("Check your logs for more information.");
 	} else
-	  $this->addLog(_("Import successful."), TRUE);
+	  $content[] = _("Import successful.");
       }
 
-      $this->addLog(_("Registering module to core."), TRUE);
-      $result = $this->registerModule();
-      
-      if (PEAR::isError($result)){
-	$this->addLog(_("A fatal error occurred."), TRUE);
-	$this->addLog($result->getMessage(), TRUE);
+      if ($this->getStatus($title) == BOOST_START){
+      }
+
+      $result = $this->onInstall($title, $content);
+
+      if ($result == TRUE){
+	$this->setStatus($title, BOOST_DONE);
+	$this->registerModule($mod, $content);
+	$content[] = PHPWS_Text::link("index.php?step=3", _("Continue installation..."));
+	break;
+      }
+      elseif ($result === NULL){
+	$this->setStatus($title, BOOST_DONE);
+	$this->registerModule($mod, $content);
+      }
+      elseif ($result == FALSE){
+	$this->setStatus($title, BOOST_PENDING);
+	break;
+      }
+      elseif (PEAR::isError($result)){
+	$content[] = _("There was a problem in the installation file.");
 	PHPWS_Error::log($result);
-	return FALSE;
-      } else
-	$this->addLog(_("Registration successful."), TRUE);
-    }
-
-    $onInstallFile = PHPWS_SOURCE_DIR . "mod/" . $this->module->getTitle() . "/boost/install.php";
-
-    if (is_file($onInstallFile)){
-      $this->addLog(_("Processing installation file."), TRUE);
-      PHPWS_Boost::onInstall($onInstallFile);
-    } else
-      PHPWS_Boost::finish($this->module->getTitle());
-
-    return TRUE;
-  }
-
-  function toInstall($modules){
-    if (!isset($_SESSION['Install_Modules'])){
-      if (PHPWS_DB::isTable("modules")){
-	$db = & new PHPWS_DB("modules");
-	$db->addColumn("title");
-	$mods = $db->select("col");
-      } else
-	$mods = array();
-
-      foreach ($modules as $title){
-	if (in_array(trim($title), $mods))
-	  $_SESSION['Install_Modules'][trim($title)] = TRUE;
-	else
-	  $_SESSION['Install_Modules'][trim($title)] = FALSE;
+	$content[] = $result->getMessage();
       }
     }
-    return $_SESSION['Install_Modules'];
+
+    return implode("<br />", $content);    
   }
 
-  function onInstall($file){
-    include_once($file);
-
-    if (function_exists("onInstall")){
-      $result = onInstall();
-      $this->addLog($result);
+  function onInstall($title, &$content){
+    $onInstallFile = PHPWS_SOURCE_DIR . "mod/" . $title . "/boost/install.php";
+    if (!is_file($onInstallFile)){
+      $this->addLog($title, _("No installation file found."));
+      return NULL;
     }
+
+    if ($this->getStatus($title) == BOOST_START)
+      $this->setStatus($title, BOOST_PENDING);
+
+    include_once($onInstallFile);
+
+    if (function_exists("install")){
+      $content[] = _("Processing installation file.");
+      return install($content);
+    }
+    else
+      return TRUE;
   }
 
-  function registerModule(){
+  function registerModule($module, &$content){
+    $content[] = _("Registering module to core.");
+
     $db = new PHPWS_DB("modules");
-    $db->addWhere("title", $this->module->getTitle());
+    $db->addWhere("title", $module->getTitle());
     $db->delete();
     $db->resetWhere();
-    $result = $db->saveObject($this->module, TRUE);
+    if (!$module->getProperName())
+      $module->setProperName($module->getProperName(TRUE));
+
+    $result = $module->save();
+
+    if (PEAR::isError($result)){
+      PHPWS_Error::log($result);
+      $content[] = _("An error occurred during registration.");
+      $content[] = _("Check your logs for more information.") . "<br />";
+    } else {
+      $content[] = _("Registration successful.");
+
+      $selfselfResult = $this->registerModToMod($module, $module, $content);
+      $otherResult = $this->registerOthersToSelf($module, $content);
+      $selfResult = $this->registerSelfToOthers($module, $content);
+    }
+
+    $content[] = "<br />";
     return $result;
+  }
+
+  function getRegMods(){
+    $db = & new PHPWS_DB("modules");
+    $db->addWhere("register", 1);
+    return $db->loadObjects("PHPWS_Module");
+  }
+
+  function setRegistered($module, $registered){
+    $db = & new PHPWS_DB("registered");
+    $db->addValue("registered", $registered);
+    $db->addValue("module", $module);
+    $result = $db->insert();
+    if (PEAR::isError($result))
+      return $result;
+    else
+      return (bool)$result;
+
+  }
+
+  function isRegistered($module, $registered){
+    $db = & new PHPWS_DB("registered");
+    $db->addWhere("registered", $registered);
+    $db->addWhere("module", $module);
+    $result = $db->select("one");
+    if (PEAR::isError($result))
+      return $result;
+    else
+      return (bool)$result;
+  }
+
+  function registerModToMod($sourceMod, $regMod, &$content){
+    $registerFile = $sourceMod->getDirectory() . "boost/register.php";
+
+    if (!is_file($registerFile))
+      return NULL;
+
+    if (PHPWS_Boost::isRegistered($sourceMod->getTitle(), $regMod->getTitle()))
+      return NULL;
+
+    include_once($registerFile);
+
+    if (!function_exists("register"))
+      return NULL;
+
+    $result = register($regMod->getTitle(), $content);    
+
+    if (PEAR::isError($result)){
+      $content[] = _print(_("An error occurred while registering the [var1] module."), array($regMod->getProperName()));
+      $content[] = $result->getMessage();
+    } elseif ($result == TRUE){
+      PHPWS_BOOST::setRegistered($sourceMod->getTitle(), $regMod->getTitle());
+      $content[] = _print(_("[var1] successfully registered to [var2]."), array($sourceMod->getProperName(TRUE), $regMod->getProperName(TRUE)));
+    }
+  }
+
+
+  function registerSelfToOthers($module, &$content){
+    $content[] = _("Registering this module to other modules.");
+    
+    $modules = PHPWS_Boost::getRegMods();
+
+    if (!is_array($modules))
+      return;
+
+    foreach ($modules as $regMod)
+      $result = $this->registerModToMod($module, $regMod, $content);
+
+  }
+
+  function registerOthersToSelf($module, &$content){
+    $content[] = _("Registering other modules to this module.");
+    
+    $modules = PHPWS_Boost::getInstalledModules();
+    if (!is_array($modules))
+      return;
+
+    foreach ($modules as $regMod)
+      $result = $this->registerModToMod($module, $regMod, $content);
   }
 
 
   function importSQL($file){
     require_once "File.php";
-    $sqlFile = $this->module->getDirectory() . "boost/$file";
 
-    if (!is_file($sqlFile))
+    if (!is_file($file))
       return PHPWS_Error::get(BOOST_ERR_NO_INSTALLSQL, "boost", "importSQL", "File: " . $sqlFile);
 
-    $sql = File::readAll($sqlFile);
-
+    $sql = File::readAll($file);
     $result = PHPWS_DB::import($sql);
     return $result;
   }
 
-  function addLog($message, $write=FALSE){
-    $this->log[] = $message;
-
-    if ($write == TRUE){
-      $message = _("Module") . " - " . $this->module->getProperName(TRUE) . " : " . $message;
-      PHPWS_Core::log($message, "boost.log");
-    }
-  }
-
-  function getLog(){
-    $result = implode("\n<br />", $this->log);
-    $this->log = array();
-    return $result;
-  }
-
-  function lock($module){
-    $_SESSION['Boost_Hold'][$module] = TRUE;
-  }
-
-  function isLocked($module){
-    if (isset($_SESSION['Boost_Hold'][$module]))
-      return $_SESSION['Boost_Hold'][$module];
-    return FALSE;
-  }
-
-
-  function finish($module){
-    PHPWS_Boost::unlock($module);
-  }
-
-  function unlock($module){
-    $_SESSION['Boost_Hold'][$module] = FALSE;
-    $_SESSION['Install_Modules'][$module] = TRUE;
+  function addLog($module, $message){
+    $message = _("Module") . " - " . $module . " : " . $message;
+    PHPWS_Core::log($message, "boost.log");
   }
 
 }
