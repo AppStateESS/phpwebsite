@@ -1,0 +1,86 @@
+The following is a rough draft of information for using control panel.
+It will eventually be tranferred to an XML format.
+
+
+Quick Tab Setup
+
+Create an array of tabs. The index of the tab will be the identifier. The
+value of the array is an array as well which describes how it is displayed.
+
+For example:
+
+$link1 = "index.php?module=myMod&amp;command=main_menu";
+$command1 = array ("title" => "Main Menu", "link" => $link1);
+
+$link2 = "index.php?module=myMod&amp;command=add_new";
+$command2 = array ("title" => "Add New", "link" => $link2);
+
+$tabs['main_menu'] = $command1;
+$tabs['add_new']   = $command2;
+
+This would create tabs like so:
+
+ ___________   __________
+| Main Menu | | Add New  |
+---------------------------------
+
+The link for Main Menu would be:
+http://index.php?module=myMod&command=main_menu&tab=main_menu
+
+
+Note that in the above example I used a 'command' variable to transfer
+data. Since the tab variable echoes the index, you may just want that
+to be the command. You 'catching' code could look like this:
+
+switch ($_GET['tab']){
+       case "main_menu":
+       MyMod::main_menu();
+       break;
+
+       case "add_new":
+       MyMod::add_new();
+       break;
+}
+
+Of course you could use the command variable as well. It is up
+to you.
+
+Now you need to create a panel:
+
+PHPWS_Core::initModClass("controlpanel", "Panel.php"); // Initializes the class
+$panel = & new PHPWS_Panel("myMod");
+
+Now put the tabs in the panel:
+$panel->quickSetTabs($tabs);
+
+Now you need to decide what the user sees below the tabs. You need to set the
+content.
+
+Control Panel will keep track of what tab is highlighted. You need to keep
+track of what content is supplied and when.
+
+So:
+
+if ($_GET['tab'] == "main_menu")
+   $content = MyMod::main_menu_content();
+
+
+Once the tabs and content are set, you are ready to display them.
+
+$finalPanel = $panel->display();
+
+Now put it in layout:
+
+Layout::add($finalPanel);
+
+
+Tips:
+Use the 'allow' function in Users to control what tabs can be seen:
+
+$tabs['main_menu'] = $command1;
+
+if ($_SESSION['User']->allow("myMod", "add_new"))
+   $tabs['add_new']   = $command2;
+
+
+
