@@ -58,4 +58,7 @@ function loadConfig($hub_dir=NULL){
 
 PHPWS_Core::report();
 
+if (isset($_REQUEST['reset']))
+     PHPWS_Core::killAllSessions();
+
 ?>
