@@ -38,6 +38,7 @@ class Demo_Manager extends User_Demographic{
 			    "active"     => TRUE
 			    ));
     $list->setName("demographics");
+    $list->setTemplate("manager/demographics.tpl");
     $list->setOp("action[admin]=main&amp;tab=demographics");
     $list->setPaging(array("limit"=>5,
 			   "section"=>TRUE,
@@ -47,6 +48,9 @@ class Demo_Manager extends User_Demographic{
     $list->setExtraListTags($form->getTemplate());
 
     $content = $list->getList();
+    if (PEAR::isError($content))
+      return $content->getMessage();
+
     $_SESSION['All_Demo'] = $list->getLastIds();
     return $content;
   }
