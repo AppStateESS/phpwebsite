@@ -317,13 +317,22 @@ class PHPWS_File {
 	if($file == "." || $file == "..") {
 	  continue;
 	} elseif(is_dir($dir . $file)) {
-	  PHPWS_File::rmdir($dir . $file . "/");
+	  PHPWS_File::rmdir($dir . $file);
 	} elseif(is_file($dir . $file)) {
-	  unlink($dir . "/" . $file);
+	  $result = @unlink($dir . $file);
+	  if (!$result){
+	    PHPWS_Error::log(PHPWS_FILE_DELETE_DENIED, "core", "PHPWS_File::rmdir", $dir . $file);
+	    return FALSE;
+	  }
 	}
       }
       closedir($handle);
-      rmdir($dir);
+      $result = @rmdir($dir);
+      if (!$result){
+	PHPWS_Error::log(PHPWS_DIR_DELETE_DENIED, "core", "PHPWS_File::rmdir", $dir);
+	return FALSE;
+      }
+
       return TRUE;
     } else {
       return FALSE;
