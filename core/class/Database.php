@@ -211,8 +211,9 @@ class PHPWS_DB {
 
   function getWhere($dbReady=FALSE){
     $extra = FALSE;
+    $where = NULL;
 
-    if (!count($this->_where)){
+    if (empty($this->_where)){
       if (isset($this->_qwhere))
 	return "WHERE " . $this->_qwhere;
       return NULL;
@@ -241,12 +242,15 @@ class PHPWS_DB {
       }
 
       if (isset($this->_qwhere))
-	$sql[] = " AND " . $this->_qwhere;
+	$sql[] = " AND (" . $this->_qwhere . ")";
 
+      if (isset($sql))
+	$where = "WHERE " . implode(" ", $sql);
+
+      return $where;
     } else
       return $this->_where;
 
-    return "WHERE " . implode(" ", $sql);
   }
 
   function resetWhere(){
