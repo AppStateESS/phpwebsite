@@ -120,7 +120,7 @@ class Category_Item {
   }
 
 
-  function savePost(){
+  function savePost($save_uncategorized=FALSE){
     if (!isset($_POST) ||
 	!isset($_POST['categories'][$this->module][$this->item_name]) ||
 	!$this->_testVars()
@@ -158,6 +158,9 @@ class Category_Item {
       }
   }
 
+  /**
+   * Removes a category item
+   */
   function clear()
   {
     $db = & new PHPWS_DB("category_items");
