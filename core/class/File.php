@@ -1,31 +1,6 @@
 <?php
 
 class PHPWS_File {
-
-  function &create($type, $id=NULL){
-    if ($type != "image" && $type != "doc")
-      return PHPWS_Error::get(PHPWS_FILE_WRONG_CONSTRUCT, "core", "PHPWS_File::create", $type);
-    
-    $className = "PHPWS_" . $type;
-    $fileName = $type . ".php";
-
-    PHPWS_Core::initCoreClass("file/common.php");
-    PHPWS_Core::initCoreClass("file/$fileName");
-
-    if (!class_exists($className))
-      return PHPWS_Error::get(PHPWS_FILE_NONCLASS, "core", "PHPWS_File::create", $className);
-
-    if (isset($id))
-      $object = & new $className($id);
-    else
-      $object = & new $className;
-
-    $object->setClassType($type);
-
-    return $object;
-  }
-
-
   /**
    * Returns the contents of a directory in an array
    * 
