@@ -4,7 +4,6 @@ class Block_Item {
   var $id          = 0;
   var $title       = NULL;
   var $content     = NULL;
-  var $_key        = NULL;
 
   function Block_Item($id=NULL)
   {
@@ -46,14 +45,10 @@ class Block_Item {
     $this->content = PHPWS_Text::parseInput($content);
   }
 
-  function setKey($key)
-  {
-    $this->_key = $key;
-  }
-
   function getKey()
   {
-    return $this->_key;
+    $key = & new Key('block', 'block', $this->id);
+    return $key;
   }
 
   function summarize(){
@@ -96,9 +91,9 @@ class Block_Item {
     $db->delete();
   }
 
-  function view($pin_mode=FALSE)
+  function view($pin_mode=FALSE, $admin_icon=TRUE)
   {
-    $key = &$this->_key;
+    $key = &$this->getKey();
     if ($pin_mode) {
       $link['action']   = 'pin';
       $link['block_id'] = $this->id;
@@ -107,7 +102,7 @@ class Block_Item {
       $link['itname'] = $key->getItemName();
       $img = '<img src="./images/mod/block/pin.png" />';
       $opt = PHPWS_Text::secureLink($img, 'block', $link);
-    } elseif (Current_User::allow('block')) {
+    } elseif (Current_User::allow('block') && $admin_icon) {
       $js_var['ADDRESS'] = 'index.php?module=block&amp;action=remove'
 	. '&amp;block_id=' . $this->id
 	. '&amp;mod=' . $key->getModule()
