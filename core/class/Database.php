@@ -549,7 +549,7 @@ class PHPWS_DB {
 	if (PEAR::isError($result))
 	  return $result;
 
-	return PHPWS_DB::indexBy($result, $indexby, TRUE);
+	return PHPWS_DB::_indexBy($result, $indexby, TRUE);
       }
 
       return PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getCol($sql), $type);
@@ -583,14 +583,14 @@ class PHPWS_DB {
 	return $result;
 
       if (isset($indexby))
-	return PHPWS_DB::indexBy($result, $indexby);
+	return PHPWS_DB::_indexBy($result, $indexby);
 
       return $result;
       break;
     }
   }
 
-  function indexBy($sql, $indexby, $colMode=FALSE){
+  function _indexBy($sql, $indexby, $colMode=FALSE){
     if (!is_array($sql))
       return $sql;
 
