@@ -1,4 +1,11 @@
 <?php
+/**
+ * Facilitates versioning, backup, and approvals
+ *
+ * @version $Id$
+ * @author  Matt McNaney <matt at tux dot appstate dot edu>
+ * @package Core
+ */
 
 define("VERSION_TABLE_SUFFIX", "_version");
 
@@ -252,10 +259,12 @@ class Version {
     $version_db->addWhere("source_id", $this->source_id);
     $version_db->addColumn("vr_number");
     $current_version = $version_db->select("max");
-    if (empty($current_version))
+    if (empty($current_version)) {
       $current_version = 1;
-    else
+    }
+    else {
       $current_version++;
+    }
 
     return $current_version;
   }
@@ -355,16 +364,36 @@ class Version {
     $db = & new PHPWS_DB($this->version_table);
     $db->addWhere("source_id", $this->source_id);
     $db->addWhere("vr_approved", 1);
+    $db->addWhere("vr_current", 0);
+    $db->addOrder("vr_number desc");
     $result = $db->select();
+
+    if (empty($result))
+      return NULL;
 
     foreach ($result as $row){
       $version = & new Version($this->source_table);
       $version->_plugInVersion($row);
       $backup_list[$row['id']] = $version;
     }
+    
+    return $backup_list;
+  }
 
-    test($backup_list, 1);
+  function restore(){
+    $db = & new PHPWS_DB($this->source_table);
+    $db->addWhere("id", $this->source_id);
+    $data = $this->getSource();
+    $db->addValue($data);
+    $result = $db->update();
+    if (PEAR::isError($result))
+      return $result;
 
+    unset($this->id);
+    $this->setSource($data);
+    $this->setApproved(TRUE);
+    $this->vr_number = $this->_getVersionNumber();
+    return $this->save();
   }
 }
 
