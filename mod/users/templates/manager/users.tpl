@@ -4,7 +4,6 @@
 <td width="20%"><span style="font-weight : bold">{USERNAME_ORDER_LINK}&#160;{USERNAME_LABEL}</span></td>
 <td width="20%"><span style="font-weight : bold">{LAST_LOGGED_ORDER_LINK}&#160;{LAST_LOGGED_LABEL}</span></td>
 <td width="10%"><span style="font-weight : bold">{APPROVED_ORDER_LINK}&#160;{ACTIVE_LABEL}</span></td>
-<td width="10%"><span style="font-weight : bold">{DEITY_ORDER_LINK}&#160;{DEITY_LABEL}</span></td>
 <td><span style="font-weight : bold">{ACTIONS_LABEL}</span></td>
 </tr>
 <!-- BEGIN row -->
@@ -17,9 +16,6 @@
 </td>
 <td align="left">
 {ACTIVE}
-</td>
-<td>
-{DEITY}
 </td>
 <td>{ACTIONS}</td>
 </tr>
