@@ -176,14 +176,32 @@ $pager->addToggle("style=\"background-color : white\"");
 $pager->addToggle("style=\"background-color : blue\"");
 
 The pager will alternate between each toggle color as it displays the
-rows (2).
+rows (2). I recommend, however, that you use toggle css classes.
+
+$pager->addToggle("class=\"toggle1\"");
+$pager->addToggle("class=\"toggle2\"");
+
+These are supported in several default themes.
+
+
+Adding Search
+--------------------------------------------------------------------
+You can easily add a search text box to your pager.
+$pager->setSearch("search_column");
+
+So if I wanted to search among the db table column 'filename' I would
+add:
+$pager->setSearch("filename");
+
+Then all you need to do is add the SEARCH tag into your template.
 
 
 Plugging in Page Tags
 --------------------------------------------------------------------
 If you want to add extra dynamic information to your list template,
 you will need to use the addTags function. In the below example, I
-need to translate the column headers, so I am plugging them into addTags.
+need to translate the column headers, so I am plugging them into
+addTags.
 
 $tags['PAGE_LABEL'] = _("Page");
 $tags['TITLE']      = _("Title");
@@ -239,8 +257,19 @@ navigation:
 Clicking on the page links will let the user move through the
 data. Clicking on the limit links will let the user control how many
 rows are displayed on screen at a time.
-
+ 
 The PAGE_LABEL tag is from the Page Tags section.
+
+Here is a full list of the navigation and information tags.
+
+TOTAL_ROWS  : lists the current page within the total number of pages
+PAGE_LABEL  : translated text that says "Page"
+PAGES       : listing of pages with page 'turners' on each end
+PAGE_DROP   : a drop select box for selecting a specific page
+LIMIT_LABEL : translated text that says "Limit"
+LIMITS      : a small list of limit options
+SEARCH      : a search box (see Adding Search above)
+
 
 
 Conclusion
