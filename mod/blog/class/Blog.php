@@ -50,26 +50,24 @@ class Blog {
   }
 
   function save(){
-    PHPWS_Core::initCoreClass("Backup.php");
+    PHPWS_Core::initModClass("version", "Version.php");
 
     $db = & new PHPWS_DB("blog_entries");
     if (isset($this->id))
       $db->addWhere("id", $this->id);
+    else
+      $this->date = mktime();
 
-    $this->date = mktime();
-    $result = $db->saveObject($this);
+    $result = Version::saveObject("blog", $db, $this);
 
-    if (PEAR::isError($result))
-      return $result;
-
-    Backup::save($this->id, "blog_entries");
+    return $result;
   }
 
-  function view(){
+  function view($edit=TRUE){
     $template['TITLE'] = $this->getTitle(TRUE);
     $template['ENTRY'] = $this->getEntry(TRUE);
 
-    if (Current_User::allow("blog", "edit_blog", $this->getId(), FALSE)){
+    if ($edit && Current_User::allow("blog", "edit_blog", $this->getId())){
       $vars['action']  = "admin";
       $vars['blog_id'] = $this->getId();
       $vars['command'] = "edit";
@@ -81,13 +79,13 @@ class Blog {
   }
 
   function kill(){
-    PHPWS_Core::initCoreClass("Backup.php");
+    PHPWS_Core::initCoreClass("Version.php");
 
     $db = & new PHPWS_DB("blog_entries");
     $db->addWhere("id", $this->id);
     $db->delete();
 
-    Backup::flush($this->id, "blog_entries");
+    Version::flush($this->id, "blog_entries");
   }
 }
 

@@ -3,13 +3,27 @@
 class Blog_Admin {
 
   function main(){
-    $title = $message = $content = NULL;
+    $previous_version = $title = $message = $content = NULL;
     $panel = & Blog_Admin::cpanel();
+    PHPWS_Core::initModClass("version", "Version.php");
 
-    if (isset($_REQUEST['blog_id']))
-      $blog = & new Blog((int)$_REQUEST['blog_id']);
-    else
-      $blog = & new Blog;
+    $blog = & new Blog;
+
+    if (isset($_REQUEST['blog_id'])){
+      if (Current_User::isRestricted("blog")){
+	$unapproved = Version::getUnapproved("blog_entries", $_REQUEST['blog_id']);
+	if (!empty($unapproved)){
+	  PHPWS_DB::loadObject($blog, $unapproved);
+	  $previous_version = TRUE;
+	} else {
+	  $blog->id = (int)$_REQUEST['blog_id'];
+	  $blog->init();
+	}
+      } else {
+	$blog->id = (int)$_REQUEST['blog_id'];
+	$blog->init();
+      }
+    }
 
     if (isset($_REQUEST['command']))
       $command = $_REQUEST['command'];
@@ -20,6 +34,8 @@ class Blog_Admin {
     case "edit":
       $panel->setCurrentTab("list");;
       $title = _("Update Blog Entry");
+      if ($previous_version)
+	$message = _("This version has not been approved.");
       $content = Blog_Admin::edit($blog);
       break;
 
@@ -41,17 +57,22 @@ class Blog_Admin {
       break;
 
     case "restore":
-      $title = _("Blog Restore");
-      $content = Blog_Admin::restoreBackup($blog);
+      $title = _("Blog Restore") . " : " . $blog->getTitle();
+      $content = Blog_Admin::restoreVersion($blog);
       break;
 
     case "postEntry":
       $panel->setCurrentTab("list");;
       Blog_Admin::postEntry($blog);
-      $blog->save();
+      
+      if (Current_User::isRestricted("blog"))
+	$message = _("Blog entry submitted for approval");
+      else
+	$message = _("Blog entry updated.");	
+		
+      $result = $blog->save();
       PHPWS_User::savePermissions("blog", $blog->getId());
       $title = _("Blog Archive");
-      $message = _("Blog entry updated.");
       $content = Blog_Admin::entry_list();
       break;
     }
@@ -100,12 +121,12 @@ class Blog_Admin {
       $submit = _("Add Entry");
 
     if (Editor::willWork()){
-      $editor = & new Editor("htmlarea", "entry", $blog->getEntry(TRUE));
+      $editor = & new Editor("htmlarea", "entry", PHPWS_Text::parseOutput($blog->getEntry(), FALSE, FALSE));
       $entry = $editor->get();
       $form->addTplTag("ENTRY", $entry);
       $form->addTplTag("ENTRY_LABEL", PHPWS_Form::makeLabel("entry",_("Entry")));
     } else {
-      $form->addTextArea("entry", $blog->getEntry(TRUE));
+      $form->addTextArea("entry", PHPWS_Text::parseOutput($blog->getEntry(), FALSE, FALSE));
       $form->setRows("entry", "10");
       $form->setWidth("entry", "80%");
       $form->setLabel("entry", _("Entry"));
@@ -128,16 +149,25 @@ class Blog_Admin {
     $link['action'] = "admin";
     $link['blog_id'] = $blog->getId();
 
-    $link['command'] = "edit";
-    $list[] = PHPWS_Text::secureLink(_("Edit"), "blog", $link);
+    if (Current_User::allow("blog", "edit_blog", $blog->getId())){
+      $link['command'] = "edit";
+      $list[] = PHPWS_Text::secureLink(_("Edit"), "blog", $link);
+    }
     
-    $link['command'] = "delete";
-    $list[] = PHPWS_Text::secureLink(_("Delete"), "blog", $link);
+    if (Current_User::allow("blog", "delete_blog")){
+      $link['command'] = "delete";
+      $list[] = PHPWS_Text::secureLink(_("Delete"), "blog", $link);
+    }
 
-    $link['command'] = "restore";
-    $list[] = PHPWS_Text::secureLink(_("Restore"), "blog", $link);
+    if (Current_User::isUnrestricted("blog")){
+      $link['command'] = "restore";
+      $list[] = PHPWS_Text::secureLink(_("Restore"), "blog", $link);
+    }
 
-    return implode(" | ", $list);
+    if (isset($list))
+      return implode(" | ", $list);
+    else
+      return _("No action");
   }
 
   function getListEntry(&$blog){
@@ -146,7 +176,6 @@ class Blog_Admin {
 
   function entry_list(){
     PHPWS_Core::initCoreClass("DBPager.php");
-
     $pager = & new DBPager("blog_entries", "Blog");
     $pager->setModule("blog");
     $pager->setTemplate("list.tpl");
@@ -169,12 +198,41 @@ class Blog_Admin {
     return TRUE;
   }
 
-  function restoreBackup(&$blog){
-    PHPWS_Core::initCoreClass("Backup.php");
+  /*
+  function restoreVersion(&$blog){
+    PHPWS_Core::initCoreClass("Version.php");
 
-    $result = Backup::get($blog->id, "blog_entries");
-    tesT($result);
+    $result = Version::get($blog->id, "blog_entries", "blog");
+
+    $tpl = & new PHPWS_Template("blog");
+    $tpl->setFile("version.tpl");
+
+    $tpl->setCurrentBlock("repeat_row");
+
+    $count = 0;
+
+    $vars['action'] = "admin";
+    $vars['command'] = "restorePrevBlog";
+    $vars['current_id'] = $blog->id;
+
+    foreach ($result as $order=>$oldBlog){
+      $count++;
+      if ($count%2)
+	$template['TOGGLE'] = "class=\"toggle1\"";
+      else
+	$template['TOGGLE'] = "class=\"toggle2\"";
+
+      $vars['replace_order'] = $order;
+      $template['BLOG'] = $oldBlog->view(FALSE);
+      $template['RESTORE_LINK'] = PHPWS_Text::secureLink(_("Restore this blog"), "blog", $vars);
+      $tpl->setData($template);
+      $tpl->parseCurrentBlock();
+    }
+
+    $tpl->setData(array("INSTRUCTION"=>_("Choose the blog entry you want to restore.")));
+    return $tpl->get();
   }
+  */
 }
 
 ?>
