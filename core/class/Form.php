@@ -120,6 +120,9 @@ class PHPWS_Form {
 
     $result = PHPWS_Form::createElement($name, $type, $value);
 
+    if (PEAR::isError($result))
+      return $result;
+
     if (preg_match("/\[\w*\]$/Ui", $name)){
       $keyValue = PHPWS_Form::extractKeyValue($name);
       extract($keyValue);
@@ -498,6 +501,10 @@ class PHPWS_Form {
     case "hidden":
       return new Form_Hidden($name, $value);
       break;
+
+    default:
+      return PHPWS_Error::get(PHPWS_FORM_UNKNOWN_TYPE, "core", "PHPWS_Form::createElement");
+      break;
     }
 
   }
@@ -672,7 +679,7 @@ class PHPWS_Form {
 
 class Form_TextField extends Form_Element{
   function get(){
-    return "<input type=\"textfield\" "
+    return "<input type=\"text\" "
       . $this->getName(TRUE) 
       . $this->getValue(TRUE) 
       . $this->getWidth(TRUE)
@@ -839,7 +846,9 @@ class Form_Multiple extends Form_Element{
 
   function get(){
     $content[] = "<select " . $this->getName(TRUE) . "multiple=\"multiple\" " 
-      . $this->getData() . ">";
+      . $this->getData()
+      . $this->getWidth(TRUE)
+      . ">";
     foreach($this->value as $value=>$label){
       if ($this->isMatch($value))
 	$content[] = "<option value=\"$value\" selected=\"selected\">$label</option>";
@@ -1041,7 +1050,7 @@ class Form_Element {
   function getWidth($formMode=FALSE){
     if ($formMode){
       if (isset($this->width))
-	return "style=\"width : " . $this->width . "%\" ";
+	return "style=\"width : " . $this->width . "\" ";
       else
 	return NULL;
     }
