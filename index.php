@@ -14,6 +14,7 @@ else {
 /* Show all errors */
 error_reporting (E_ALL);
 
+
 ob_start();
 
 /* Security against those with register globals = on */
@@ -27,7 +28,7 @@ if (ini_get('register_globals')){
 require_once PHPWS_SOURCE_DIR . "core/class/Init.php";
 
 PHPWS_Core::checkSecurity();
-
+PHPWS_Core::checkJS();
 PHPWS_Core::initializeModules();
 
 session_name(SESSION_NAME);
