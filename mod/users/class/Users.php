@@ -597,13 +597,6 @@ class PHPWS_User {
     }
   }
 
-  function dropUser()
-  {
-    $DB = new PHPWS_DB('users_settings');
-    $DB->addWhere('id', $this->getID());
-    return $DB->delete();
-  }
-
 
   function getSettings()
   {
@@ -641,7 +634,14 @@ class PHPWS_User {
 
     $db = & new PHPWS_DB('users');
     $db->addWhere('id', $this->id);
-    $db->delete();
+    $result = $db->delete();
+    if (PEAR::isError($result)) {
+      return $result;
+    }
+    
+    $user_group = & new PHPWS_Group($this->getUserGroup());
+    $user_group->kill();
+    
   }
 
   function savePermissions($key)
