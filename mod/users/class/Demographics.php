@@ -35,6 +35,8 @@ class Demographics {
 	}
 	if (isset($newdemo[3]))
 	  $db->addValue("proper_name", $newdemo[3]);
+	else
+	  $db->addValue("proper_name", ucwords(str_replace("_", " ", $newdemo[0])));
       }
 
       $db->insert();
