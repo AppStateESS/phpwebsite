@@ -747,11 +747,12 @@ class PHPWS_Form {
 	return $result;
       else
 	return $image;
-    } else {
+    } elseif (isset($_POST[$selectName])){
       $image->setId($_POST[$selectName]);
       $image->init();
       return $image;
-    }
+    } else
+      return NULL;
   }
 
   function formTextField($name, $value, $size=30, $maxsize=255, $label=NULL){
