@@ -502,8 +502,17 @@ class Setup{
       $_SESSION['Boost'] = new PHPWS_Boost;
       $_SESSION['Boost']->loadModules($modules);
     }
+    $result = $_SESSION['Boost']->install(FALSE);
 
-    $content[] = $_SESSION['Boost']->install(FALSE);
+    if (PEAR::isError($result)) {
+      PHPWS_Error::log($result);
+      $content[] = _('An error occurred while trying to install your modules.') 
+	. ' ' . _('Please check your error logs and try again.');
+      return TRUE;
+    } else {
+      $content[] =  $result;
+    }
+
     if ($_SESSION['Boost']->isFinished())
       return TRUE;
     else
