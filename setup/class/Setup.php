@@ -55,7 +55,6 @@ class Setup{
 	$content[] = _("Please check your directory permissions and try again.") . "<br />";
 	$content[] = PHPWS_Text::link("help/permissions." . DEFAULT_LANGUAGE . ".txt", _("Permission Help"), NULL, "index");
       }
-	
     }
   }
 
@@ -87,6 +86,11 @@ class Setup{
     }
     else
       Setup::setConfigSet("source_dir", $source_dir);
+
+    if ($_POST['pear'] == 'local')
+      Setup::setConfigSet("pear", Setup::createIniSet());
+    else
+      Setup::setConfigSet("pear", NULL);
 
     Setup::setConfigSet("site_hash", $_POST['site_hash']);
     return $check;
@@ -193,6 +197,9 @@ class Setup{
     $form = & new PHPWS_Form("generalConfig");
     $site_hash  = Setup::getConfigSet("site_hash");
     $source_dir = Setup::getConfigSet("source_dir");
+    $pear_select = array("local" =>_("Use Pear files included with phpWebSite (recommended)."),
+			 "system"=>_("Use server's Pear library files (not recommended).")
+			 );
 
     //    $content[] = _("To get started, we need to create your config file.");
 
@@ -204,6 +211,10 @@ class Setup{
       . _("The example is randomly generated.") . " "
       . _("You may change it if you wish.");
 
+    $formTpl['PEAR_LBL'] = _("Pear Configuration");
+    $formTpl['PEAR_DEF'] = _("phpWebSite uses the Pear library extensively.") . "<br />"
+      . _("We suggest you use the library files included with phpWebSite.");
+
     $form->add("source_dir", "textfield", $source_dir);
     $form->setSize("source_dir", 50);
     $form->add("step",   "hidden", "1");
@@ -211,6 +222,9 @@ class Setup{
 
     $form->add("site_hash", "textfield", $site_hash);
     $form->setSize("site_hash", 40);
+
+    $form->add("pear", "select", $pear_select);
+    $form->setMatch("pear", "local");
 
     $form->mergeTemplate($formTpl);
     $content[] = Setup::createForm($form, "generalConfig.tpl");
@@ -292,11 +306,11 @@ class Setup{
   }
 
   function getSourceDir(){
-    $dir = explode("/", __FILE__);
+    $dir = explode(DIRECTORY_SEPARATOR, __FILE__);
     for ($i=0; $i < 3; $i++)
       array_pop($dir);
 
-    return implode("/", $dir) . "/";
+    return implode(DIRECTORY_SEPARATOR, $dir) . DIRECTORY_SEPARATOR;
   }
 
   function checkDirectories(&$content){
@@ -373,6 +387,16 @@ class Setup{
     $boost = new PHPWS_Boost;
     $boost->setModule($core);
     $boost->install();
+  }
+
+
+  function createIniSet(){
+    $iniDir = $this->getConfigSet("source_dir");
+
+    if (isset($_SERVER['windir']) || preg_match("/microsoft/i", $_SERVER['SERVER_SOFTWARE']))
+      return "ini_set(\"include_path\", \".;" . $iniDir . "lib\\pear\\\");";
+    else
+      return "ini_set(\"include_path\", \".:" . $iniDir . "lib/pear/\");";
   }
 
 }
