@@ -33,6 +33,7 @@ define('USERNAME_LENGTH', 4);
 define('DISPLAY_NAME_LENGTH', 4);
 define('GROUPNAME_LENGTH', 4);
 
+define('LOGIN_BUTTON', _('Login'));
 define('USER_SIGNUP_QUESTION', _('Want to join?'));
 
 
