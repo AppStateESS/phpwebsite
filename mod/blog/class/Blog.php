@@ -80,6 +80,8 @@ class Blog {
 
   function view($edit=TRUE, $limited=TRUE)
   {
+    $key = & new Key('blog', 'entry', $this->id);
+
     PHPWS_Core::initModClass('categories', 'Categories.php');
     $template['TITLE'] = $this->getTitle(TRUE);
     $template['DATE']  = $this->getFormatedDate();
@@ -96,13 +98,12 @@ class Blog {
       $links[] = $this->getViewLink();
     } elseif ($this->id) {
 	$related = & new Related;
-	$related->setMainId($this->id);
-	$related->setModule('blog');
+	$related->setKey($key);
 	$related->setUrl($this->getViewLink(TRUE));
 	$related->setTitle($this->getTitle(TRUE));
 	$related->show();
 
-	Block::show('blog', $this->id);
+	Block::show($key);
     }
 
     $result = Categories::getSimpleLinks('blog', $this->id);
