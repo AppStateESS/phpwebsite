@@ -16,13 +16,6 @@
 	{FOLLOW} {FOLLOW_LABEL}
     </td>
   </tr>
-  <tr>
-    <td><b>{CACHE_LABEL}</b></td>
-    <td>
-      {CACHE_1} {CACHE_1_LABEL}<br />
-      {CACHE_2} {CACHE_2_LABEL}
-    </td>
-  </tr>
 </table>
 {SUBMIT}
 {END_FORM}
