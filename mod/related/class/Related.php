@@ -241,12 +241,9 @@ class Related {
       $db->addWhere("module", $this->getModule());
       $db->addWhere("main_id", $this->getMainId());
       $db->addWhere("item_name", $this->getItemName(TRUE));
-      $result = $db->getObjects("Related", TRUE);
+      $result = $db->loadObject($this);
       if (PEAR::isError($result))
 	return $result;
-
-      if (!empty($result))
-	$this = $result;
 
       $this->loadFriends();
     }
