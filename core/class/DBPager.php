@@ -212,6 +212,13 @@ class DBPager {
     return $result;
   }
 
+
+  /**
+   * Pulls the appropiate rows from the data base.
+   *
+   * This function pulls the database information then plugs
+   * the data it gets into the object.
+   */
   function initialize(){
     if (empty($this->limit)) {
       $this->limit = DBPAGER_DEFAULT_LIMIT;
@@ -471,6 +478,9 @@ class DBPager {
     $link = str_replace("index.php?", "", $this->link);
     $link_list = explode("&", html_entity_decode($link));
     foreach ($link_list as $var){
+      if (empty($var)) {
+	continue;
+      }
       $i = explode("=", $var);
       if ($i[0] == "authkey")
 	continue;
