@@ -2,15 +2,21 @@
 {START_FORM}
 <table class="form-table">
   <tr>
-    <td>{NEW_USERNAME_LABEL}
+    <td>{USERNAME_LABEL}
+    <!-- START username-error -->
+    <div class="error">{USERNAME_ERROR}</div>
+    <!-- END username-error -->
     </td>
-    <td>{NEW_USERNAME}
+    <td>{USERNAME}
     </td>
   </tr>
   <tr>
-    <td>{NEW_PASSWORD_LABEL}
+    <td>{PASSWORD1_LABEL}
     </td>
-    <td>{NEW_PASSWORD} {CONFIRM_PASSWORD_LABEL} {CONFIRM_PASSWORD}
+    <td>{PASSWORD1} {PASSWORD2_LABEL} {PASSWORD2}
+    <!-- BEGIN password-error -->
+    {PASSWORD_ERROR}
+    <!-- END password-error -->
     </td>
   </tr>
   <tr>
