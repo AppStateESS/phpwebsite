@@ -20,6 +20,13 @@ class Cabinet_Action {
       else
 	$content[] = Cabinet_Action::manager(DEFAULT_CABINET_LIST);
       break;
+
+    case "edit":
+      break;
+
+    case "delete":
+
+      break;
     }
 
     $panel->setContent(implode("", $content));
@@ -47,7 +54,9 @@ class Cabinet_Action {
   }
 
   function listAction($image){
-    return "<a href=\"index.php?id=" . $image->getId() . "\">Edit</a>";
+    $links[] = "<a href=\"index.php?action=editImage&amp;id=" . $image->getId() . "\">Edit</a>";
+    $links[] = "<a href=\"index.php?action=deleteImage&amp;id=" . $image->getId() . "\">Delete</a>";
+    return implode(" | ", $links);
   }
 
   function manager($type){
