@@ -113,6 +113,28 @@ class Users_Permission {
     return TRUE;
   }
 
+  function removePermissions($module){
+    $tableName = Users_Permission::getPermissionTableName($module);
+    $itemTableName = Users_Permission::getItemPermissionTableName($module);
+
+    $DB = & new PHPWS_DB($tableName);
+
+    $result = $DB->dropTable();
+    if (PEAR::isError($result))
+      $errors[] = $result;
+
+    $result = $DB->setTable($itemTableName);
+    if (PEAR::isError($result))
+      $errors[] = $result;
+
+    if (isset($errors)){
+      foreach ($errors as $error)
+	PHPWS_Error::log($error);
+      return FALSE;
+    }
+
+    return TRUE;
+  }
 
   function createPermissions($module){
     $permissions = NULL;
@@ -148,7 +170,7 @@ class Users_Permission {
     if (PHPWS_DB::isTable($tableName))
       return PHPWS_Error::get(USER_ERR_PERM_TABLE, "users", "createPermissionTable", "Table Name: $tableName");
 
-    $DB = new PHPWS_DB($tableName);
+    $DB = & new PHPWS_DB($tableName);
     
     $columns['group_id'] = "int NOT NULL default '0'";
     $columns['permission_level'] = "smallint NOT NULL default'0'";
