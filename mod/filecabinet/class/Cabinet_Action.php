@@ -44,6 +44,20 @@ class Cabinet_Action {
       $content = Cabinet_Action::editImage($image);
       break;
 
+    case "copyImage":
+      if (!isset($_REQUEST['image_id'])){
+	$title = _("Manage Images");
+	$content = Cabinet_Action::manager("image");
+	break;
+      }
+
+      $image = & new PHPWS_Image((int)$_REQUEST['image_id']);
+      Clipboard::copy($image->getTitle(), $image->getTag());
+      $title = _("Manage Images");
+      $content = Cabinet_Action::manager("image");
+
+      break;
+
     case "delete":
       break;
 
@@ -93,6 +107,9 @@ class Cabinet_Action {
     $links[] = PHPWS_Text::secureLink(_("Edit"), "filecabinet", $vars);
     $vars['action'] = "deleteImage";
     $links[] = PHPWS_Text::secureLink(_("Delete"), "filecabinet", $vars);
+    $vars['action'] = "copyImage";
+    $links[] = PHPWS_Text::moduleLink(_("Copy"), "filecabinet", $vars);
+
     return implode(" | ", $links);
   }
 
