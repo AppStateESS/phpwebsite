@@ -253,8 +253,9 @@ class Category_Item {
       return PHPWS_Error::get(CAT_DB_PROBLEM, 'categories', 'Categories::getForm');
     }
       
-    if (empty($categories))
+    if (empty($categories)) {
       return _('No categories exist.');
+    }
 
     $multiple = & new Form_Multiple('categories[' . $this->getModule() . '][' . $this->getItemName() . ']', $categories);
     $multiple->setSize(5);
