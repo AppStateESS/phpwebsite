@@ -19,6 +19,7 @@ define("DEFAULT_TEMPLATE", $table);
 define("DEFAULT_THEME_VAR", "BODY");
 define("DEFAULT_LAYOUT_HOLD", 20);
 define("DEFAULT_CONTENT_VAR", "_MAIN");
+define("MAX_ORDER_VALUE", 99999);
 
 if (!defined("ALLOW_THEME_PHP_INSERTION"))
      define("ALLOW_THEME_PHP_INSERTION", FALSE);
