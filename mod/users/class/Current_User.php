@@ -95,6 +95,9 @@ class Current_User {
     return $_SESSION['User']->_permission->getPermissionLevel($module);
   }
 
+  function giveItemPermission($module, $item_id, $itemname){
+    return Users_Permission::giveItemPermission(Current_User::getId(), $module, $item_id, $itemname);
+  }
 }
 
 ?>

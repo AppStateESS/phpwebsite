@@ -555,7 +555,6 @@ class PHPWS_User {
     return $this->_permission->getPermissionLevel($module);
   }
 
-
 }
 
 ?>

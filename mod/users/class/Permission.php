@@ -399,7 +399,7 @@ class Users_Permission {
       }
   }
 
-  function grantUserItemPermission($user_id, $module, $item_id, $itemname=NULL)
+  function giveItemPermission($user_id, $module, $item_id, $itemname=NULL)
   {
     if (!isset($itemname))
       $itemname = $module;
@@ -409,10 +409,22 @@ class Users_Permission {
     $group_id = $user->getUserGroup();
     
     $db = & new PHPWS_DB($table);
+    $db->addWhere("item_id", $item_id);
+    $db->addWhere("item_name", $itemname);
+    $db->addWhere("group_id", $group_id);
+    $db->delete();
+    $db->reset();
+
     $db->addValue("item_id", $item_id);
-    $db->addValue("item_name", $item_name);
+    $db->addValue("item_name", $itemname);
     $db->addValue("group_id", $group_id);
-    return $db->insert();
+    $result = $db->insert();
+    if (PEAR::isError($result)) {
+      return $result;
+    } else {
+      return TRUE;
+    }
+      
   }
 }
 
