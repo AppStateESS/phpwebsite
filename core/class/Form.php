@@ -884,7 +884,7 @@ class PHPWS_Form {
   function getId(){   	 
     static $id = 0; 	 
     
-    $id++; 	 
+    $id++;
     return $id; 	 
   }
 
@@ -907,7 +907,6 @@ class Form_Submit extends Form_Element{
   function get(){
     return "<input type=\"submit\" "
       . $this->getName(TRUE) 
-      . $this->getId(TRUE)
       . $this->getValue(TRUE) 
       . $this->getWidth(TRUE)
       . $this->getData() . " />";
