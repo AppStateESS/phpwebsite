@@ -21,7 +21,7 @@ class PHPWS_Error {
       $fullError[] = "Core";
 
     if (isset($funcName))
-      $fullError[] = "::$funcName()";
+      $fullError[] = " - $funcName()";
 
     if (isset($errors[$value]))
       $message = $errors[$value];
