@@ -79,6 +79,12 @@ The getJavascript() function will then:
 
 Voila! We now have a customizable Javascript!
 
+One quick note. You may wish to have default values placed into your
+javascript should the developer leave them out. To do so, just create
+a default.php file in the directory with your head and body
+file. Next, create an array named $default and fill it with your
+values. The key of each value should match the tag in your script.
+
 This should get you started. For more examples, just look at the
 scripts included with phpWebSite. Some are very complicated (e.g.
 HyperTextArea) while others are very basic (e.g. Check All).
