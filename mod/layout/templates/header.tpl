@@ -3,7 +3,7 @@
 {XHTML}
 <head>
 <base href="http://localhost/phpwebsite094/" />
-<title>Your Mama</title>
+<title>{PAGE_TITLE}</title>
 {METATAGS}
 {JAVASCRIPT}
 {STYLE}

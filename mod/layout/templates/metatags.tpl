@@ -9,6 +9,13 @@
   <tr class="toggle1">
     <td><b>{META_DESCRIPTION_LABEL}</b></td><td>{META_DESCRIPTION}</td>
   </tr>
+  <tr>
+    <td><b>{ROBOT_LABEL}</b></td>
+    </td>
+    <td>{INDEX} <b>{INDEX_LABEL}</b><br />
+	{FOLLOW} <b>{FOLLOW_LABEL}</b>
+    </td>
+  </tr>
 </table>
 {SUBMIT}
 {END_FORM}
