@@ -71,6 +71,24 @@ class Editor {
       return PHPWS_Error::get(EDITOR_MISSING_FILE, "core", "Editor::constructor", $type);
   }
 
+  function willWork(){
+    extract($GLOBALS['browser_info']);
+
+    if (!isset($javascript) || $javascript == FALSE)
+      return FALSE;
+
+    if ($browser == "Opera")
+      return FALSE;
+
+    if ($engine == "Mozilla" &&
+	( ($engine_version >= "5.0") || ($browser == "MSIE" && $browser_version > "5.5") )
+	)
+      return TRUE;
+
+    return FALSE;
+
+  }
+
 }
 
 ?>
