@@ -76,21 +76,17 @@ class Blog {
     $this->date = mktime();
 
     if (Current_User::isRestricted("blog")) {
-      echo "should create or update a current unapproved item";
       $result = Version::saveUnapproved("blog", "blog_entries", $this);
     }
     else {
       if ($isVersion == TRUE) {
 	if ($approve == TRUE) {
-	  echo "should have approved the version in the queue";
 	  $db->saveObject($this);
 	  $result = Version::saveApproved("blog", "blog_entries", $this);
 	} else {
-	  echo "should have updated the unapproved in the queue";
 	  $result = Version::saveUnapproved("blog", "blog_entries", $this);
 	}
       } else {
-	echo "should have saved the original and made a new approved version";
 	$result = $db->saveObject($this);
 	if (PEAR::isError($result))
 	  return $result;
