@@ -17,7 +17,17 @@ class PHPWS_ControlPanel {
     if (!$allLinks)
       return _("Control Panel does not contain any links.");
 
-    $tabs = array_keys($panel->getTabs());
+    $checkTabs = $panel->getTabs();
+
+    if (empty($checkTabs)){
+      PHPWS_Error::log(CP_NO_TABS, "controlpanel", "display");
+      PHPWS_ControlPanel::makeDefaultTabs();
+      PHPWS_ControlPanel::reset();
+      PHPWS_Core::errorPage();
+      exit();
+    } 
+
+    $tabs = array_keys($checkTabs);
     $links = array_keys($allLinks);
 
     foreach ($tabs as $tabId)
@@ -63,6 +73,35 @@ class PHPWS_ControlPanel {
   function reset(){
     unset($_SESSION['Control_Panel_Tabs']);
     unset($_SESSION['CP_All_links']);
+  }
+
+  function makeDefaultTabs(){
+    include PHPWS_Core::getConfigFile("controlpanel", "controlpanel.php");
+    
+    foreach ($tabs as $tab){
+      $newTab = & new PHPWS_Panel_Tab;
+      $newTab->setTitle($tab['title']);
+      $newTab->setLabel($tab['label']);
+      $newTab->setLink($tab['link']);
+      $newTab->setItemname("controlpanel");
+      $newTab->save();
+
+      if ($tab['label'] == "unsorted")
+	$defaultId = $newTab->getId();
+    }
+
+    $db = & new PHPWS_DB("controlpanel_link");
+    $result = $db->loadObjects("PHPWS_Panel_Link");
+
+    $count = 1;
+
+    foreach ($result as $link){
+      $link->setTab($defaultId);
+      $link->setLinkOrder($count);
+      $link->save();
+      $count++;
+    }
+
   }
 
 }
