@@ -17,7 +17,7 @@ class PHPWS_ControlPanel {
     $result = $DB->loadItems("PHPWS_ControlPanel_Tab");
 
     foreach ($result as $tab){
-      if (isset($active) && $active == $tab->getId())
+      if (isset($active[$itemname]) && $active[$itemname] == $tab->getId())
 	$result = $tab->view(TRUE, $activeLinkable);
       else
 	$result = $tab->view(FALSE);
@@ -37,9 +37,9 @@ class PHPWS_ControlPanel {
 
     $links = PHPWS_ControlPanel::getAllLinks();
 
-    $template['LINKS'] = PHPWS_ControlPanel::buildGrid($links[$currentTab]);
+    $template['LINKS'] = PHPWS_ControlPanel::buildPanel($links[$currentTab]);
 
-    $result = PHPWS_ControlPanel::getTabs('controlpanel', $_SESSION['ControlPanel_Current_Tab'], FALSE, array_keys($links));
+    $result = PHPWS_ControlPanel::getTabs('controlpanel', $_SESSION['ControlPanel_Current_Tab'], TRUE, array_keys($links));
     if (PEAR::isError($result))
       echo $result->getMessage();
 
@@ -59,14 +59,14 @@ class PHPWS_ControlPanel {
     }
   }
 
-  function buildGrid($links){
+  function buildPanel($links){
 
     foreach ($links as $link){
       $tpl['IMAGE'] = $link->getImage(TRUE, TRUE);
       $tpl['URL']   = $link->getUrl();
       $tpl['NAME']  = $link->getLabel();
       $tpl['DESCRIPTION'] = $link->getDescription();
-      $final[] = PHPWS_Template::process($tpl, "controlpanel", "link/view.tpl");
+      $final[] = PHPWS_Template::process($tpl, "controlpanel", "link.tpl");
     }
 
     return implode("", $final);

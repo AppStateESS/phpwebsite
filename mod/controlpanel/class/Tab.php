@@ -47,7 +47,7 @@ class PHPWS_ControlPanel_Tab {
   }
 
   function getTitle(){
-    return $this->_title;
+    return str_replace(" ", "&nbsp;", $this->_title);
   }
 
   function setLink($link){
@@ -81,7 +81,7 @@ class PHPWS_ControlPanel_Tab {
   }
 
   function getTemplate($active){
-    if ($active == TRUE)
+    if ((bool)$active == TRUE)
       return $this->_activetpl;
     else
       return $this->_inactivetpl;
