@@ -37,6 +37,15 @@ class PHPWS_Boost {
     }
   }
 
+  function isFinished(){
+    if (in_array(BOOST_NEW, $this->status)
+	|| in_array(BOOST_START, $this->status)
+	|| in_array(BOOST_PENDING, $this->status))
+      return FALSE;
+
+    return TRUE;
+  }
+
   function getInstalledModules(){
     $db = & new PHPWS_DB("modules");
     $db->addColumn("title");
@@ -226,7 +235,6 @@ class PHPWS_Boost {
       $content[] = _("Check your logs for more information.") . "<br />";
     } else {
       $content[] = _("Registration successful.");
-
       $selfselfResult = $this->registerModToMod($module, $module, $content);
       $otherResult = $this->registerOthersToSelf($module, $content);
       $selfResult = $this->registerSelfToOthers($module, $content);
@@ -276,17 +284,19 @@ class PHPWS_Boost {
 
     include_once($registerFile);
 
-    if (!function_exists("register"))
+    $registerFunc = $sourceMod->getTitle() . "_register";
+
+    if (!function_exists($registerFunc))
       return NULL;
 
-    $result = register($regMod->getTitle(), $content);    
+    $result = $registerFunc($regMod->getTitle(), $content);    
 
     if (PEAR::isError($result)){
       $content[] = _print(_("An error occurred while registering the [var1] module."), array($regMod->getProperName()));
       $content[] = $result->getMessage();
     } elseif ($result == TRUE){
-      PHPWS_BOOST::setRegistered($sourceMod->getTitle(), $regMod->getTitle());
-      $content[] = _print(_("[var1] successfully registered to [var2]."), array($sourceMod->getProperName(TRUE), $regMod->getProperName(TRUE)));
+      PHPWS_Boost::setRegistered($sourceMod->getTitle(), $regMod->getTitle());
+      $content[] = _print(_("[var1] successfully registered to [var2]."), array($regMod->getProperName(TRUE), $sourceMod->getProperName(TRUE)));
     }
   }
 
@@ -299,8 +309,10 @@ class PHPWS_Boost {
     if (!is_array($modules))
       return;
 
-    foreach ($modules as $regMod)
-      $result = $this->registerModToMod($module, $regMod, $content);
+    foreach ($modules as $regMod){
+      $regMod->init();
+      $result = $this->registerModToMod($regMod, $module, $content);
+    }
 
   }
 
@@ -311,8 +323,10 @@ class PHPWS_Boost {
     if (!is_array($modules))
       return;
 
-    foreach ($modules as $regMod)
+    foreach ($modules as $regMod){
+      $regMod->init();
       $result = $this->registerModToMod($module, $regMod, $content);
+    }
   }
 
 
