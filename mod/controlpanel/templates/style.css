@@ -9,7 +9,7 @@ background-color : #E8E9EA;
 
 /*--------------- Tabs ---------------*/
 .tabmenu {
-  width : 100%;
+  width : 90%;
   padding : 3px;
   margin-bottom : 1px;
   margin-left : -2px;
@@ -75,12 +75,13 @@ background-color : #E8E9EA;
 
 
 /*-------------- Content -----------------*/
+
 .frame {
   margin-left : 1px;
   margin-top : -2px;
   display : table;
-  width : 100%;
-  background: #92B4DE;
+  width : 95%;
+  background-color: #92B4DE;
   height: auto;
   padding: 5px;
   border: 2px solid #7B95B4;
@@ -95,6 +96,7 @@ background-color : #E8E9EA;
 }
 
 /*--------------- Links -----------------*/
+
 div.link {
 font-size : .8em;
 margin : 5px;
@@ -102,7 +104,9 @@ padding : 5px;
 float : left;
 position : relative;
 width : 150px;
+height : 90px;
 text-align : top;
+display : inline;
 }
 
 div.link img {
