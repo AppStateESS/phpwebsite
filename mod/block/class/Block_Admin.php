@@ -150,15 +150,15 @@ class Block_Admin {
     }
 
     if (Editor::willWork()){
-      $editor = & new Editor('content', $block->getContent());
+      $editor = & new Editor('block_content', $block->getContent());
       $block_content = $editor->get();
-      $form->addTplTag('CONTENT', $block_content);
-      $form->addTplTag('CONTENT_LABEL', PHPWS_Form::makeLabel('content',_('Content')));
+      $form->addTplTag('BLOCK_CONTENT', $block_content);
+      $form->addTplTag('BLOCK_CONTENT_LABEL', PHPWS_Form::makeLabel('block_content',_('Content')));
     } else {
-      $form->addTextArea('content', $block->getContent());
-      $form->setRows('content', '10');
-      $form->setWidth('content', '80%');
-      $form->setLabel('content', _('Entry'));
+      $form->addTextArea('block_content', $block->getContent());
+      $form->setRows('block_content', '10');
+      $form->setWidth('block_content', '80%');
+      $form->setLabel('block_content', _('Entry'));
     }
 
     $template = $form->getTemplate();
@@ -170,7 +170,7 @@ class Block_Admin {
   function postBlock(&$block)
   {
     $block->setTitle($_POST['title']);
-    $block->setContent($_POST['content']);
+    $block->setContent($_POST['block_content']);
     return TRUE;
   }
 

@@ -5,8 +5,8 @@
     <td class="element">{TITLE}</td>
   </tr>
   <tr>
-    <td class="label">{CONTENT_LABEL}</td>
-    <td class="element">{CONTENT}</td>
+    <td class="label">{BLOCK_CONTENT_LABEL}</td>
+    <td class="element">{BLOCK_CONTENT}</td>
   </tr>
   <tr>
     <td class="label">{MODULE_LABEL}</td>
