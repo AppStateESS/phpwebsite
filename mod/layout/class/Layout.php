@@ -10,7 +10,7 @@
 
 
 PHPWS_Core::initCoreClass("Template.php");
-//PHPWS_Core::initCoreClass("Cache.php");
+
 class Layout {
   function initLayout($refresh=FALSE){
     if ($refresh == TRUE || !isset($_SESSION['Layout_Settings'])){
