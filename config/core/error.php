@@ -19,6 +19,7 @@ $errors[PHPWS_DB_NO_OBJ_VARS]        = _("No variables in object.");
 $errors[PHPWS_DB_BAD_OP]             = _("Not an acceptable operator.");
 $errors[PHPWS_DB_BAD_TABLE_NAME]     = _("Improper table name.");
 $errors[PHPWS_DB_BAD_COL_NAME]       = _("Improper colume name.");
+$errors[PHPWS_DB_NO_COLUMN_SET]      = _("Missing column to select.");
 
 
 // List.php 200 - 299
