@@ -13,6 +13,7 @@ function _($text){
 
 define('PHPWS_TBL_PREFIX', TABLE_PREFIX);
 define('PHPWS_HOME_DIR' , './');
+define('CRUTCH_MODULE_ACTIVE', TRUE);
 PHPWS_Core::initCoreClass('WizardBag.php');
 PHPWS_Core::initCoreClass('Crutch_Form.php');
 PHPWS_Core::initCoreClass('Crutch_DB.php');
@@ -105,11 +106,8 @@ class PHPWS_Crutch {
 	PHPWS_Core::initModClass($module, $requireMe);
     }
 
-    if (isset($mod_sessions) && (isset($init_object))){
-      foreach ($mod_sessions as $sessionName){
-	if (isset($init_object[$sessionName]) && !isset($_SESSION[$sessionName]))
-	  $_SESSION[$sessionName] = & new $init_object[$sessionName];
-      }
+    if (isset($init_object)) {
+      $GLOBALS['Crutch_Sessions'][$module] = $init_object;
     }
   }
 
@@ -125,8 +123,8 @@ class PHPWS_Crutch {
     if (!isset($_SESSION['OBJ_layout']))
       $_SESSION['OBJ_layout'] = & new oldLayout;
 
-    $GLOBALS['Crutch_Session_Started'] = TRUE;
 
+    $GLOBALS['Crutch_Session_Started'] = TRUE;
   }
 
   function closeSessions(){
