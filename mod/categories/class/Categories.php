@@ -17,9 +17,10 @@ class Categories{
   /**
    * Returns a list of category links
    */
-  function getCategoryList(){
+  function getCategoryList($module){
     $result = Categories::getCategories();
-    $list = Categories::_makeLink($result);
+
+    $list = Categories::_makeLink($result, $module);
     Layout::addStyle("categories");
     return $list;
   }
@@ -27,19 +28,40 @@ class Categories{
   /**
    * Creates the links based on categories sent to it
    */
-  function _makeLink($list){
+  function _makeLink($list, $module){
     $tpl = & new PHPWS_Template("categories");
     $tpl->setFile("simple_list.tpl");
 
-    $vars['action'] = "view";
+    $vars['action'] = 'view';
+
+    if (!empty($module)) {
+      $vars['ref_mod'] = $module;
+      $db = & new PHPWS_DB("category_items");
+    }
+
     $tpl->setCurrentBlock("link_row");
 
+
+
     foreach ($list as $category){
+      if (!empty($module)) {
+	$db->addWhere('module', $module);
+	$db->addWhere('cat_id', $category->id);
+	list($count) = $db->select('count');
+	$db->resetWhere();
+	$items = ' (' . $count['count'] . ' ' . _('items') . ')';
+      } else {
+	$items = NULL;
+      }
+
       $vars['id'] = $category->id;
-      $link = PHPWS_Text::moduleLink($category->title, "categories", $vars);
+
+      $title = $category->title . $items;
+
+      $link = PHPWS_Text::moduleLink($title, "categories", $vars);
 
       if (!empty($category->children)) {
-	$link .= Categories::_makeLink($category->children);
+	$link .= Categories::_makeLink($category->children, $module);
       }
 
       $tpl->setData(array("LINK" => $link));
@@ -58,6 +80,7 @@ class Categories{
     }
     return $children;
   }
+
 
   function _getItemsCategories($module, $item_id, $item_name){
     PHPWS_Core::initModClass('categories', 'Category_Item.php');
@@ -78,6 +101,8 @@ class Categories{
     return $cat_result;
   }
 
+
+  /* Needed ?
   function getExtendedLinks($module, $item_id, $item_name=NULL){
     $cat_result = Categories::_getItemsCategories($module, $item_id, $item_name);
 
@@ -90,6 +115,7 @@ class Categories{
 
     return $link;
   }
+  */
 
   function getSimpleLinks($module, $item_id, $item_name=NULL){
     $cat_result = Categories::_getItemsCategories($module, $item_id, $item_name);
@@ -104,6 +130,7 @@ class Categories{
     return $link;
   }
 
+  /* Not sure if needed anymore 
 
   function showCategoryLinks($module, $item_id, $item_name=NULL){
     $links = Categories::getExtendedLinks($module, $item_id, $item_name);
@@ -126,7 +153,7 @@ class Categories{
     Layout::add($data, 'categories', 'category_box');
 
   }
-
+  */
 
 
   function _createExtendedLink($category, $mode){
@@ -221,9 +248,13 @@ class Categories{
       $tpl->parseCurrentBlock();
     }
 
+    $vars['action'] = 'view';
+    if (isset($module)) {
+      $vars['ref_mod'] = $module;
+    }
+
     $tpl->setCurrentBlock('parent-row');
-    $tpl->setData(array('PARENT' =>
-			PHPWS_Text::rerouteLink( _('Top Level'), 'categories', 'view')));
+    $tpl->setData(array('PARENT' => PHPWS_Text::moduleLink( _('Top Level'), 'categories', $vars)));
     $tpl->parseCurrentBlock();
 
     if (!empty($category)){
@@ -248,19 +279,46 @@ class Categories{
     return $content;
   }
 
-  function getModuleListing(){
+  function getModuleListing($cat_id){
     PHPWS_Core::initCoreClass('Module.php');
     $db = & new PHPWS_DB('category_items');
     $db->addColumn('module');
+    $db->addWhere('cat_id' , (int)$cat_id);
     $result = $db->select('count');
+
+    if (empty($result))
+      return NULL;
     foreach ($result as $mod_results){
       $module = & new PHPWS_Module($mod_results['module']);
       $mod_list[$module->getTitle()] = $module->getProperName() 
-	. ' (' . $mod_results['count']. ')';
+	. ' (' . $mod_results['count'] . ' ' . _('items') . ')';
     }
 
     return $mod_list;
+  }
 
+  function listModuleItems(&$category){
+    $module_list = Categories::getModuleListing($category->getId());
+
+    if (empty($module_list)) {
+      return _('No items available in this category.');
+    }
+
+    $vars['action'] = 'view';
+    $vars['id'] = $category->getId();
+
+    $tpl = & new PHPWS_Template("categories");
+    $tpl->setFile('module_list.tpl');
+
+    $tpl->setCurrentBlock('module-row');
+    foreach ($module_list as $mod_key => $module){
+      $vars['ref_mod'] = $mod_key;
+      $link['MODULE_ROW'] = PHPWS_Text::moduleLink($module, "categories", $vars);
+      $tpl->setData($link);
+      $tpl->parseCurrentBlock();
+    }
+
+    return $tpl->get();
   }
 
 }

@@ -291,18 +291,20 @@ class Categories_Action{
     $category = NULL;
 
     if (empty($id)) {
-      $content = Categories::getCategoryList();
-      $template['TITLE'] = _('Choose a category. . .');
+      $content = Categories::getCategoryList($module);
+      $template['TITLE'] = _('All Catergories');
     } else {
       $category = & new Category((int)$id);
       
-      if (isset($module)) {
+      if (isset($module) && $module != '0') {
 	PHPWS_Core::initCoreClass('Module.php');
 	$mod = & new PHPWS_Module($module);
 	$template['TITLE'] = _('Module') . ':' . $mod->getProperName();
+	$content = Categories_Action::getAllItems($category, $module);
+      } else {
+	$template['TITLE'] = _('Module Listing');
+	$content = Categories::listModuleItems($category);
       }
-      
-      $content = Categories_Action::getAllItems($category, $module);
     }
 
     $family_list = Categories::cookieCrumb($category, $module);
@@ -318,21 +320,35 @@ class Categories_Action{
   /**
    * Listing of all items within a category
    */
-  function getAllItems(&$category, $module=NULL) {
+  function getAllItems(&$category, $module) {
     PHPWS_Core::initModClass('categories', 'Category_Item.php');
     PHPWS_Core::initCoreClass('DBPager.php');
 
-    $pageTags['TITLE_LABEL'] = _('Title');
-    $pageTags['MODULE_LABEL'] = _('Module');
-    
+    $pageTags['TITLE_LABEL'] = _('Item Title');
+
+    $mod_list = Categories::getModuleListing($category->getId());    
+    if (!empty($mod_list)) {
+      array_unshift($mod_list, _('All Modules'));
+    } else {
+      $mod_list[0] = _('All Modules');
+    }
+
     $form = & new PHPWS_Form;
+    $form->setMethod('get');
     $form->addHidden('module', 'categories');
     $form->addHidden('action', 'view');
     $form->addHidden('id', $category->getId());
+    $form->addSelect('ref_mod', $mod_list);
 
-    $mod_list = Categories::getModuleListing();
-    // create drop down box here
+    if (isset($_REQUEST['ref_mod'])) {
+      $form->setMatch('ref_mod', $_REQUEST['ref_mod']);
+    }
 
+    $form->addSubmit("submit", _('View Module'));
+
+    $form_tpl = $form->getTemplate();
+
+    $pageTags['MODULE_LIST'] = implode('', $form_tpl);
 
     $pager = & new DBPager('category_items', 'Category_Item');
     $pager->addWhere('cat_id', $category->id);
@@ -349,7 +365,6 @@ class Categories_Action{
     $pager->addToggle('class="toggle1"');
     $pager->addToggle('class="toggle2"');
     $pager->setMethod('title', 'getLink', TRUE);
-    $pager->setMethod('module', 'getProperName');
     $content = $pager->get();
 
     if (empty($content)) {
