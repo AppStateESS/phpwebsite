@@ -47,7 +47,10 @@ class PHPWS_Panel_Tab {
       return $this->title;
   }
 
-  function setLink($link){
+  function setLink($link, $secure=TRUE){
+    if ($secure)
+      $link .= "&amp;authkey=" . Current_User::getAuthKey();
+
     $this->link = $link;
   }
 
