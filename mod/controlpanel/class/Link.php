@@ -83,7 +83,7 @@ class PHPWS_Panel_Link {
     $image = "<img src=\"" . $this->image . "\" border=\"0\" alt=\"" . $this->getLabel() . "\"/>";
 
     if ($linkable == TRUE)
-      $image = "<a href=\"" . $this->url . "\">" . $image . "</a>";
+      $image = "<a href=\"" . $this->url . "&amp;authkey=" . Current_User::getAuthKey() . "\">" . $image . "</a>";
 
     return $image;
   }
@@ -94,7 +94,7 @@ class PHPWS_Panel_Link {
   
   function getUrl($tag=FALSE){
     if ($tag)
-      return "<a href=\"" . $this->url . "\">" . $this->getLabel() . "</a>";
+      return "<a href=\"" . $this->url . "&amp;authkey=" . Current_User::getAuthKey() . "\">" . $this->getLabel() . "</a>";
     else
       return $this->url;
   }
