@@ -26,7 +26,7 @@ class Blog_Admin {
     switch ($command){
     case "disapproveBlog":
       if (!Current_User::authorized("blog") ||
-	  Current_User::isRestricted("blog")      ||
+	  Current_User::isRestricted("blog")||
 	  !isset($_REQUEST['version_id'])) {
 	$title = _("Sorry");
 	$content = _("Action not allowed.");
@@ -73,7 +73,7 @@ class Blog_Admin {
 	  $link = _("A version of this entry is awaiting approval.");
 	  $linkVar['action']     = "admin";
 	  $linkVar['command']    = "editUnapproved";
-	  $linkVar['version_id'] = $version_id;
+	  $linkVar['version_id'] = $approval_id;
 	  $message = PHPWS_Text::secureLink($link, "blog", $linkVar);
 	  $content = Blog_Admin::edit($blog);
 	}
@@ -152,17 +152,45 @@ class Blog_Admin {
       $content = Blog_Admin::entry_list();
       break;
 
+    case "removePrevBlog":
+      if (!Current_User::isDeity()) {
+	Current_User::disallow();
+	return;
+      }
+      
+      Blog_Admin::removePrevBlog($_REQUEST['version_id']);
+      $title = _("Blog Archive");
+      $message = _("Blog entry removed.");
+      $content = Blog_Admin::entry_list();
+      break;
+
     case "postEntry":
-      $panel->setCurrentTab("list");;
+      $title = _("Blog Archive");
+
+      $panel->setCurrentTab("list");
+
+      if (PHPWS_Core::isPosted()) {
+	$message = _("Ignoring repeat post.");
+	$content = Blog_Admin::entry_list();
+	break;
+      }
+      
       $result = Blog_Admin::postEntry($blog);
 
       if ($result == FALSE) {
 	$message = _("An error occurred when trying to save your entry.");
+      } elseif (is_array($result)) {
+	$message = implode("<br />", $result);
+	if (empty($blog->id)) {
+	  $panel->setCurrentTab("new");
+	}
+	$content = Blog_Admin::edit($blog);
+	break;
       } else {
 	$message = $result;
       }
 
-      $title = _("Blog Archive");
+
       $content = Blog_Admin::entry_list();
       break;
     }
@@ -205,16 +233,21 @@ class Blog_Admin {
     return $panel;
   }
 
-  function edit(&$blog, $version_id=NULL){
+  function edit(&$blog, $version_id=NULL)
+  {
     PHPWS_Core::initCoreClass("Editor.php");
+    PHPWS_Core::initModClass("categories", "Category_Item.php");
     $form = & new PHPWS_Form;
     $form->addHidden("module", "blog");
     $form->addHidden("action", "admin");
     $form->addHidden("command", "postEntry");
 
+    $cat_item = & new Category_Item("blog");
+    $cat_item->setItemId($blog->id);
+    
     if (isset($version_id)) {
       $form->addHidden("version_id", $version_id);
-	
+      $cat_item->setVersionId($version_id);
       if (Current_User::isUnrestricted("blog")) {
 	$form->addSubmit("approve_entry", _("Save Changes and Approve"));
       }
@@ -243,6 +276,11 @@ class Blog_Admin {
     $form->setLabel("title", _("Title"));
 
     $template = $form->getTemplate();
+
+    $template['CATEGORIES_LABEL'] = _("Category");
+
+    $template['CATEGORIES'] = $cat_item->getForm();
+    //    $template['CATEGORIES'] = Categories::getForm("blog", $blog->id);
 
     if (Current_User::isUnrestricted("blog") && empty($version_id)){
       $assign = PHPWS_User::assignPermissions("blog", $blog->getId());
@@ -313,9 +351,19 @@ class Blog_Admin {
       return FALSE;
     }
 
-    $blog->title = PHPWS_Text::parseInput($_POST['title']);
+    if (PHPWS_Core::isPosted()) {
+      return _("Ignoring duplicate post.");
+    }
+
+    if (empty($_POST['title'])) {
+      return array(_("Missing title."));
+    } else {
+      $blog->title = PHPWS_Text::parseInput($_POST['title']);
+    }
+
     $blog->entry = PHPWS_Text::parseInput($_POST['entry']);
     $blog->date  = mktime();
+
 
     if (isset($_REQUEST['version_id'])) {
       $version = & new Version("blog_entries", $_REQUEST['version_id']);
@@ -332,6 +380,7 @@ class Blog_Admin {
 	return FALSE;
       }
       else {
+	Blog_Admin::saveCategories($blog, $version);
 	return _("Blog entry submitted for approval");
       }
     }
@@ -347,7 +396,7 @@ class Blog_Admin {
 	  $result = Blog_Admin::saveVersion($blog, $version, TRUE);
 	  $version->authorizeCreator("blog");
 	  if (PEAR::isError($result)) {
-	    PHPWS_Error::log($result);
+	    PHPWS_Error::log($resul);
 	    return FALSE;
 	  }
 	} else {
@@ -365,19 +414,58 @@ class Blog_Admin {
 	  PHPWS_Error::log($result);
 	  return FALSE;
 	}
+
 	PHPWS_User::savePermissions("blog", $blog->getId());
+	Blog_Admin::saveCategories($blog);
 	return _("Blog entry saved.");
       }
     }
   }
 
-  function saveVersion(&$blog, &$version, $approved){
+
+  function saveCategories(&$blog, $version=NULL)
+  {
+    PHPWS_Core::initModClass("categories", "Category_Item.php");
+    $cat_item = & new Category_Item("blog");
+    PHPWS_Core::initModClass("categories", "Category_Item.php");
+    Blog_Admin::_loadCategory($cat_item, $blog, $version);
+    $result = $cat_item->savePost();
+  }
+
+  function _loadCategory(&$cat_item, &$blog, $version=NULL)
+  {
+    $cat_item->setItemId($blog->getId());
+    $cat_item->setTitle($blog->getTitle());
+    if (MOD_REWRITE_ENABLED) {
+      $link = "blog/view/" . $blog->getId();
+    } else {
+      $link = "index.php?module=blog&amp;action=view&amp;id=" . $blog->getId();
+    }
+    
+    $cat_item->setLink($link);
+
+    if (isset($version)) {
+      $cat_item->setVersionId($version->getId());
+    }
+  }
+
+
+  function saveVersion(&$blog, &$version, $approved)
+  {
+    PHPWS_Core::initModClass("categories", "Category_Item.php");
     $version->setSource($blog);
     $version->setApproved($approved);
-    return $version->save();
+    $result = $version->save();
+    if (!PEAR::isError($result)) {
+      $cat_item = & new Category_Item("blog");
+      Blog_Admin::_loadCategory($cat_item, $blog, $version);
+      $cat_item->updateVersion($approved);
+    }
+
   }
   
-  function restoreVersionList(&$blog){
+  function restoreVersionList(&$blog)
+  {
     $version = & new Version("blog_entries");
     $version->setSource($blog);
     $version_list = $version->getBackupList();
@@ -389,7 +477,7 @@ class Blog_Admin {
     $count = 0;
 
     $vars['action'] = "admin";
-    $vars['command'] = "restorePrevBlog";
+
 
     foreach ($version_list as $backup_id => $backup){
       $count++;
@@ -404,7 +492,14 @@ class Blog_Admin {
       $vars['version_id'] = $backup->getId();
       $template['CREATED'] = $backup->getCreationDate(TRUE);
       $template['BLOG'] = $blog->view(FALSE);
-      $template['RESTORE_LINK'] = PHPWS_Text::secureLink(_("Restore this blog"), "blog", $vars);
+
+      $vars['command'] = "restorePrevBlog";
+      $template['RESTORE_LINK'] = PHPWS_Text::secureLink(_("Restore"), "blog", $vars);
+
+      if (Current_User::isDeity()) {
+	$vars['command'] = "removePrevBlog";
+	$template['REMOVE_LINK'] = PHPWS_Text::secureLink(_("Remove"), "blog", $vars);
+      }
       $tpl->setData($template);
       $tpl->parseCurrentBlock();
     }
@@ -429,7 +524,7 @@ class Blog_Admin {
       $blog = & new Blog;
       $vr_blog->loadObject($blog);
 
-      $mini_tpl['ENTRY']     = $blog->view(FALSE);
+      $mini_tpl['ENTRY']     = $blog->view(FALSE, FALSE);
       $linkVar['action']     = "admin";
       $linkVar['version_id'] = $vr_blog->getVersionId();
 
@@ -490,10 +585,16 @@ class Blog_Admin {
   }
 
   function approveBlog($version_id){
+    PHPWS_Core::initModClass("categories", "Category_Item.php");
     $version = & new Version("blog_entries", $version_id);
     $blog = & new Blog;
     $version->loadObject($blog);
     $blog->save();
+
+    $cat_item = & new Category_Item("blog");
+    Blog_Admin::_loadCategory($cat_item, $blog, $version);
+    $cat_item->updateVersion(TRUE);
+
     $version->setSourceId($blog->id);
     $version->setApproved(TRUE);
     $version->save();
@@ -503,6 +604,11 @@ class Blog_Admin {
   function restoreBlog($version_id) {
     $version = & new Version("blog_entries", $version_id);
     $version->restore();
+  }
+
+  function removePrevBlog($version_id){
+    $version = & new Version("blog_entries", $version_id);
+    $version->kill();
   }
 }
 

@@ -4,10 +4,10 @@ class Blog_User {
 
   function show(){
     $key = "front blog page";
-    
-    if ($content = PHPWS_Cache::get($key))
+
+    if (!Current_User::allow("blog") && $content = PHPWS_Cache::get($key))
       return $content;
-    
+
     $limit = 5;
 
     $db = & new PHPWS_DB("blog_entries");
@@ -22,9 +22,11 @@ class Blog_User {
       $list[] = $blog->view(); 
 
     $content = implode("", $list);
-    PHPWS_Cache::save($key, $content);
-    return $content;
+    if (!Current_User::allow("blog")) {
+      PHPWS_Cache::save($key, $content);
+    }
 
+    return $content;
   }
 
 }

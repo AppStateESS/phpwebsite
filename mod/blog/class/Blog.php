@@ -75,11 +75,15 @@ class Blog {
       $vars['blog_id'] = $this->getId();
       $vars['action']  = "admin";
       $vars['command'] = "edit";
-      $template['EDIT'] = PHPWS_Text::secureLink(_("Edit"), "blog", $vars);
+      $links[] = PHPWS_Text::secureLink(_("Edit"), "blog", $vars);
     }
 
     if ($limited) {
-      $template['VIEW'] = PHPWS_Text::rerouteLink(_("View"), "blog", "view", $this->getId());
+      $links[] = PHPWS_Text::rerouteLink(_("View"), "blog", "view", $this->getId());
+    }
+
+    if (isset($links)) {
+      $template['LINKS'] = implode(" | " , $links);
     }
 
     return PHPWS_Template::process($template, "blog", "view.tpl");
