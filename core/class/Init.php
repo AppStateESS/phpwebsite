@@ -10,9 +10,8 @@ if (!function_exists("bindtextdomain")){
   }
 } else {
   define("PHPWS_TRANSLATION", TRUE);
-  translate("core");
   initLanguage();
-  bindtextdomain("messages", "./locale");
+  translate("core");
   textdomain("messages");
 }
 
@@ -52,12 +51,13 @@ function initLanguage(){
   }
   elseif (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])){
     $userLang = explode(",", preg_replace("/(;q=\d\.*\d*)/", "", $_SERVER['HTTP_ACCEPT_LANGUAGE']));
+
     foreach ($userLang as $language){
       if (strlen($language) == 2)
 	$language = doubleLanguage($language);
 
+      $newLocale = setlocale(LC_ALL, $language);
 
-      $newLocale =  setlocale(LC_ALL, $language);
       if ($newLocale != FALSE){
 	setcookie("", $language, CORE_COOKIE_TIMEOUT);
 	$language_set = TRUE;
@@ -69,6 +69,9 @@ function initLanguage(){
 	  setcookie("phpws_default_language", $language, CORE_COOKIE_TIMEOUT);
 	  $language_set = TRUE;
 	  break;
+	} else {
+	  // BAD ERROR HERE!!!
+	  exit("locale failed.");
 	}
       }
     }
@@ -78,7 +81,6 @@ function initLanguage(){
     setlocale(LC_ALL, $language);
 
   loadLanguageDefaults($language);
-
 }
 
 function loadLanguageDefaults($language){
@@ -101,8 +103,16 @@ function doubleLanguage($language){
 }
 
 function translate($module){
-  if (PHPWS_TRANSLATION)
-    bindtextdomain("messages", "./locale/" . $module);
+  if (!defined("PHPWS_TRANSLATION") || !PHPWS_TRANSLATION)
+    return;
+
+  if ($module == "core")
+    $directory = PHPWS_SOURCE_DIR . "locale";
+  else
+    $directory = PHPWS_SOURCE_DIR . "mod/$module/locale";
+
+  $final = bindtextdomain("messages", $directory);
+  textdomain("messages");
 }
 
 
