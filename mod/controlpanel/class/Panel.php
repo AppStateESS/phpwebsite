@@ -44,8 +44,10 @@ class PHPWS_Panel{
     $DB->setIndexBy("id");
     $result = $DB->getObjects("PHPWS_Panel_Tab");
 
-    if (PEAR::isError($result))
-      exit("ERROR in loadTabs");
+    if (PEAR::isError($result)){
+      PHPWS_Error::log($result);
+      PHPWS_Core::errorPage();
+    }
 
     $this->setTabs($result);
   }
@@ -122,6 +124,7 @@ class PHPWS_Panel{
   function getFirstTab(){
     PHPWS_Core::initModClass("controlpanel", "Tab.php");
     $result = NULL;
+
     $tabs = $this->getTabs();
 
     if (isset($tabs)){
@@ -139,13 +142,16 @@ class PHPWS_Panel{
     $module     = $this->getModule();
     $content    = $this->getContent();
 
-    if (!isset($panel))
-      $panel = CP_DEFAULT_PANEL;
-
     if (!isset($module))
       $module = 'controlpanel';
 
+    if (!isset($panel))
+      $panel = CP_DEFAULT_PANEL;
+
     $tplObj = & new PHPWS_Template($module, $panel);
+
+    if (PEAR::isError($tplObj))
+      return $tplObj;
 
     foreach ($tabs as $id=>$tab){
       $tpl['TITLE'] = $tab->getLink();
@@ -157,7 +163,6 @@ class PHPWS_Panel{
 	$tpl['STATUS'] = "class=\"inactive\"";
 	$tpl['INACTIVE'] = " ";
       }
-
       $tplObj->setCurrentBlock("tabs");
       $tplObj->setData($tpl);
       $tplObj->parseCurrentBlock("tabs");
