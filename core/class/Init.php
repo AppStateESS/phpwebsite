@@ -52,25 +52,27 @@ function initLanguage(){
       $locale = setlocale(LC_ALL, DEFAULT_LANGUAGE);
   } else {
     $userLang = getBrowserLanguage();
-
     $locale_found = FALSE;
-    
-    foreach ($userLang as $language){
-      $locale = setlocale(LC_ALL, $language);
-      if ($locale == FALSE && strlen($language) == 2){
-	$locale = setlocale(LC_ALL, doubleLanguage($language));
 
-	if ($locale != FALSE){
-	  $locale_found = TRUE;
-	  setcookie("phpws_default_language", $locale, CORE_COOKIE_TIMEOUT);
-	  break;
+    if ($userLang[0] != DEFAULT_LANGUAGE){
+      foreach ($userLang as $language){
+	$test[1] = $language;
+	$test[2] = substr($language, 0, 2);
+	$test[3] = $test[2] . "_" . strtoupper($test[2]);
+
+	foreach ($test as $langTest){
+	  if (setlocale(LC_ALL, $langTest)){
+	    $locale_found = TRUE;
+	    $locale = $langTest;
+	    setcookie("phpws_default_language", $locale, CORE_COOKIE_TIMEOUT);
+	    break;
+	  }
 	}
       }
     }
 
-    if ($locale_found == FALSE){
+    if ($locale_found == FALSE)
       $locale = setlocale(LC_ALL, DEFAULT_LANGUAGE);
-    }
   }
 
   if ($locale != FALSE)
@@ -79,6 +81,34 @@ function initLanguage(){
     define("CURRENT_LANGUAGE", DEFAULT_LANGUAGE);
 
   loadLanguageDefaults($locale);
+}
+
+function checkJavascript(){
+  if (!isset($_SESSION['Javascript_Check'])){
+    $_SESSION['Javascript_Check'] = TRUE;
+    Layout::getJavascript("test");
+  } else {
+    if (isset($_SESSION['Javascript_Enabled']))
+      $GLOBALS['browser_info']['javascript'] = $_SESSION['Javascript_Enabled'];
+    else {
+      if (isset($_COOKIE['js_check'])){
+	$_SESSION['Javascript_Enabled'] = TRUE;
+	$GLOBALS['browser_info']['javascript'] = TRUE;
+      }
+      else {
+	$_SESSION['Javascript_Enabled'] = FALSE;
+	$GLOBALS['browser_info']['javascript'] = FALSE;
+      }
+      setcookie ("js_check", "", time() - 3600);
+    }
+  }
+}
+
+function javascriptEnabled(){
+  if (!isset($_SESSION['Javascript_Enabled']))
+    return NULL;
+  else
+    return $_SESSION['Javascript_Enabled'];
 }
 
 function loadBrowserInformation(){
@@ -175,6 +205,7 @@ function getBrowserLanguage(){
   else
     return array(DEFAULT_LANGUAGE);
 }
+
 
 function loadLanguageDefaults($language){
   $rootDir = "config/core/i18n/";
