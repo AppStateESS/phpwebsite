@@ -7,12 +7,21 @@
   <tr class="bg-light">
     <td><b>{USERNAME_LABEL}</b></td><td>{USERNAME}</td>
   </tr>
+  <!-- BEGIN username-error -->
+  <tr><td class="user-error" colspan="2">{USERNAME_ERROR}</td></tr>
+  <!-- END username-error -->
   <tr>
     <td><b>{PASSWORD1_LABEL}</b></td><td>{PASSWORD1}&nbsp;{PASSWORD2}</td>
   </tr>
+  <!-- BEGIN password-error -->
+  <tr><td class="user-error" colspan="2">{PASSWORD_ERROR}</td></tr>
+  <!-- END password-error -->
   <tr class="bg-light">
-    <td><b>{CONTACT_EMAIL_LBL}</b></td><td>{CONTACT_EMAIL}</td>
+    <td><b>{EMAIL_LABEL}</b></td><td>{EMAIL}</td>
   </tr>
+  <!-- BEGIN email-error -->
+  <tr><td class="user-error" colspan="2">{EMAIL_ERROR}</td></tr>
+  <!-- END email-error -->
 </table>
 {SUBMIT}
 {END_FORM}

@@ -8,15 +8,13 @@ if (!class_exists("PHPWS_User")){
 
 PHPWS_Core::initModClass("users", "Action.php");
 
-foreach ($_REQUEST['action'] as $area=>$command);
-
-switch ($area){
+switch ($_REQUEST['action']){
  case "user":
-   User_Action::userAction($command);
+   User_Action::userAction();
    break;
 
  case "admin":
-   User_Action::adminAction($command);
+   User_Action::adminAction();
    break;
 }// End area switch
 
