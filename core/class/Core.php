@@ -250,6 +250,15 @@ class PHPWS_Core {
       return FALSE;
   }
 
+  function checkSecurity(){
+    if (CHECK_DIRECTORY_PERMISSIONS == TRUE && !isset($_SESSION['SECURE'])){
+      if (is_writable("./config/") || is_writable("./templates/")){
+	PHPWS_Error::log(PHPWS_DIR_NOT_SECURE, "core");
+	PHPWS_Core::errorPage();
+      }
+    }
+  }
+
 }// End of core class
 
 ?>
