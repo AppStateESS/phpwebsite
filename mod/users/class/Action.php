@@ -47,6 +47,12 @@ class User_Action {
       $content = User_Form::authorizationSetup();
       break;
 
+    case "dropAuthScript":
+      if (isset($_REQUEST['script_id']))
+	User_Action::dropAuthorization($_REQUEST['script_id']);
+      $content = User_Form::authorizationSetup();
+      break;
+
     case "postAuthorization":
       User_Action::postAuthorization();
       $content = _("Authorization updated.") . "<hr />" . User_Form::authorizationSetup();
@@ -287,7 +293,10 @@ class User_Action {
 
 
   function userAction(){
-    $command = $_REQUEST['command'];
+    if (isset($_REQUEST['command']))
+      $command = $_REQUEST['command'];
+    else
+      $command = "user_settings";
 
     switch ($command){
     case "loginBox":
@@ -299,6 +308,11 @@ class User_Action {
       }
       break;
       
+    case "user_settings":
+      PHPWS_Core::initModClass("users", "User_Setting.php");
+      User_Setting::main();
+      break;
+
     case "logout":
       PHPWS_Core::killAllSessions();
       PHPWS_Core::home();
@@ -353,7 +367,7 @@ class User_Action {
 
     // if result is blank then check against the default authorization
     if ($result == FALSE){
-      $authorize = PHPWS_User::getUserSetting("default_authorize");
+      $authorize = PHPWS_User::getUserSetting("default_authorization");
       $createUser = TRUE;
     }
     else
@@ -373,12 +387,18 @@ class User_Action {
       if ($createUser == TRUE){
 	$result = $user->setUsername($username);
 
-	if (PEAR::isError($result))
+	if (PEAR::isError($result)){
+	  PHPWS_Error::log($result);
 	  return FALSE;
+	}
 
 	$user->setAuthorize($authorize);
 	$user->setActive(TRUE);
 	$user->setApproved(TRUE);
+
+	if (function_exists("post_authorize"))
+	  post_authorize($user);
+
 	$user->save();
       }
 
@@ -391,6 +411,7 @@ class User_Action {
     } else
       return FALSE;
   }
+
 
   function postGroup(&$group, $showLikeGroups=FALSE){
     $result = $group->setName($_POST['groupname'], TRUE);
@@ -412,20 +433,24 @@ class User_Action {
       extract($result[$authorize]);
       $file = "mod/users/scripts/$filename";
       if(!is_file($file)){
-	PHPWS_Error::log(USER_ERR_MISSING_AUTH, "users", "foreignauth", $file);
+	PHPWS_Error::log(USER_ERR_MISSING_AUTH, "users", "authorize", $file);
 	return FALSE;
       }
 
       include $file;
-
-      $result = authorize($username, $password);
-
-      return $result;
+      if (function_exists("authorize")){
+	$result = authorize($username, $password);
+	return $result;
+      } else {
+	PHPWS_Error::log(USER_ERR_MISSING_AUTH, "users", "authorize");
+	return FALSE;
+      }
     } else
       return FALSE;
 
     return $result;
   }
+
 
   function postMembers(){
     if (isset($_POST['member_join'])){
@@ -494,8 +519,26 @@ class User_Action {
       $db->resetWhere();
       $db->addValue("display_name", $_POST['file_list']);
       $db->addValue("filename", $_POST['file_list']);
-      $db->insert();
+      $result = $db->insert();
+      if (PEAR::isError($result))
+	return $result;
     }
+
+
+    if (isset($_POST['default_authorization'])){
+      $db = & new PHPWS_DB("users_config");
+      $db->addValue("default_authorization", (int)$_POST['default_authorization']);
+      $result = $db->update();
+      if (PEAR::isError($result))
+	return $result;
+    }
+    return TRUE;
+  }
+
+  function dropAuthorization($script_id){
+    $db = & new PHPWS_DB("users_auth_scripts");
+    $db->addWhere("id", (int)$script_id);
+    return $db->delete();
   }
 
 }
