@@ -305,6 +305,8 @@ class Layout {
 
 
   function isContentVar($content_var){
+    if (!isset($_SESSION['Layout_Content_Vars']))
+      return FALSE;
     return in_array($content_var, $_SESSION['Layout_Content_Vars']);
   }
 
