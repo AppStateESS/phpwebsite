@@ -23,8 +23,10 @@ class PHPWS_Template extends HTML_Template_IT {
     if (isset($file)){
       $result = $this->setFile($file);
 
-      if (PEAR::isError($result))
+      if (PEAR::isError($result)){
 	PHPWS_Error::log($result);
+	$this = $result;
+      }
     }
   }
 
@@ -81,6 +83,8 @@ class PHPWS_Template extends HTML_Template_IT {
 
   function process($template, $module, $file){
     $tpl = & new PHPWS_Template($module, $file);
+    if (PEAR::isError($tpl))
+      return $tpl;
     $tpl->setData($template);
     return $tpl->get();
   }
