@@ -81,7 +81,8 @@ $panel = & new PHPWS_Panel("myModPanel");
 
 The myModItem designates the 'panel name'. You could have multiple
 panels in your module with different names. The panel name allows
-Control Panel to keep them separate.
+Control Panel to keep them separate. Your panel name should not be
+identical to your module name.
 
 Setting the Tabs
 Put the tabs in the panel like so:
