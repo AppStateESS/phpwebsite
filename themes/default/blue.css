@@ -84,6 +84,33 @@ background-color : #ADB583;
 color : black;
 }
 
+div.blog-box {
+	background-color : #A9BBEF;
+	border : 2px white solid;
+	margin : 5px 5px 15px 5px;
+}
+
+
+input {
+color: #fff;
+background: #4A77BB;
+border: #000 solid 1px;
+}
+
+textarea {
+color: #fff;
+background: #4A77BB;
+border: #000 solid 1px;
+}
+
+input[type="submit"] {
+color: #fff;
+background: #4A77BB;
+border: 1px #000 outset;
+cursor : default;
+cursor : pointer;
+}
+
 
 /*-----------Control Panel --------------*/
 .frame {
@@ -131,16 +158,3 @@ background-color : #CBCEAC;
 color: black;
 }
 
-input {
-color: #fff;
-background: #4A77BB;
-border: #000 solid 1px;
-}
-
-input[type="submit"] {
-color: #fff;
-background: #4A77BB;
-border: 1px #000 outset;
-cursor : default;
-cursor : pointer;
-}

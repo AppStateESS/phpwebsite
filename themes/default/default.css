@@ -8,7 +8,6 @@ body {
 	background-color: #ADB583;
 }
 
-
 #content h1 {
 	background-color : #DEE2BD;
 }
@@ -81,6 +80,11 @@ background: #ADB583;
 border: #000 solid 1px;
 }
 
+textarea {
+color: #fff;
+background: #4A77BB;
+border: #000 solid 1px;
+}
 
 input[type="submit"] {
 color: #000;
@@ -98,6 +102,12 @@ cursor : pointer;
 #user-menu a:hover{
 background-color : #ADB583;
 color : black;
+}
+
+div.blog-box {
+background-color : #CBCEAC;
+border : 2px white solid;
+margin : 5px 5px 15px 5px;
 }
 
 /*--------------- Control Panel ---------------*/

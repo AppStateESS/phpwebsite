@@ -20,7 +20,7 @@ form {
 }
 
 #container {
-	width: 90%;
+	width: 95%;
 	border: 5px solid #FFF;
 	margin : 10px auto;
 	padding: 10px;
@@ -34,7 +34,8 @@ form {
 
 #content {
 	margin-left : 18%;
-	width : 74%;
+	border-with
+	
 }
 
 #content h1, h2 {
@@ -124,4 +125,8 @@ table.form-table .label {
 	padding : 2px 4px 2px 0;
 	text-align : right;
 	margin-bottom : 5px;
+}
+
+div.blog-box div.content {
+	padding : 5px;
 }
