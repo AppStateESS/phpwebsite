@@ -1,5 +1,4 @@
 <div id="container">
-   <div id="gutter"></div>
    <div id="sidepanel">{SIDEPANEL}</div>
    <div id="gutter"></div>
    <div id="content">
