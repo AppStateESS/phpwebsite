@@ -258,32 +258,32 @@ class PHPWS_Text {
 
     switch ($type) {
     case "chars_space":
-    if (eregi("^[a-z_0-9 ]+$",$userEntry)) return TRUE;
+    if (preg_match("/^[\w\s]+$/",$userEntry)) return TRUE;
     else return FALSE;
     break;
 
     case "number":
-    if (ereg("^[0-9]+$",$userEntry)) return TRUE;
+    if (preg_match("/^[\d]+$/",$userEntry)) return TRUE;
     else return FALSE;
     break;
 
     case "url":
-    if (eregi("^(http:\/\/)[_a-z0-9-]+(\.[_a-z0-9-]+|\/)", $userEntry)) return TRUE;
+    if (preg_match("/^(http:\/\/)[_a-z0-9-]+(\.[_a-z0-9-]+|\/)/", $userEntry)) return TRUE;
     else return FALSE;
     break;
 
     case "email":
-    if (eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)+$", $userEntry)) return TRUE;
+    if (preg_match("/^[\w]+(\.[\w]+)*@[\w]+(\.[\w]+)+$/", $userEntry)) return TRUE;
     else return FALSE;
     break;
 
     case "file":
-    if (eregi("^[a-z_0-9\.]+$",$userEntry)) return TRUE;
+    if (preg_match("/^[\w\.]+$/",$userEntry)) return TRUE;
     else return FALSE;
     break;
 
     default:
-      if (eregi("^[a-z_0-9]+$",$userEntry)) return TRUE;
+      if (preg_match("/^[\w]+$/",$userEntry)) return TRUE;
       else return FALSE;
     break;
     }
