@@ -420,6 +420,18 @@ class PHPWS_Form {
     return TRUE;
   }
 
+  function allowValue($name){
+    if (!$this->testName($name))
+      return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, "core", "PHPWS_Form::setSize", array($name));
+
+    foreach ($this->_elements[$name] as $key=>$element){
+      $result = $this->_elements[$name][$key]->allowValue();
+      if (PEAR::isError($result))
+	return $result;
+    }
+    return TRUE;
+  }
+
   /**
    * Changed the template tag name for the form element
    *
@@ -1263,6 +1275,10 @@ class Form_Element {
 
   function setId($id){
     $this->id = $id;
+  }
+
+  function allowValue(){
+    $this->allowValue = TRUE;
   }
 
   function quickId(){
