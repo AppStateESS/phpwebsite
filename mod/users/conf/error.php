@@ -3,8 +3,8 @@
 translate("users");
 $errors = array(
 		USER_ERROR                => _("Unknown error."),
-		USER_ERR_DUP_USERNAME     => _("An user with this name already exists."),
-		USER_ERR_DUP_EMAIL        => _("An user with this email already exists."),
+		USER_ERR_DUP_USERNAME     => _("User with this name already exists."),
+		USER_ERR_DUP_EMAIL        => _("User with this email already exists."),
 		USER_ERR_DUP_GROUPNAME    => _("A group with this name already exists."),
 		USER_ERR_PERM_TABLE       => _("Permission table name already exists."),
 		USER_ERR_PERM_MISS        => _("Permission table not found."),
