@@ -1,5 +1,4 @@
 <?php
-
 /* Show all errors */
 error_reporting (E_ALL);
 
@@ -21,10 +20,10 @@ if (ini_get('register_globals')){
 }
 
 /* Loads Pear config file */
-include(PHPWS_SOURCE_DIR . "conf/pear_config.php");
+include PHPWS_SOURCE_DIR . "conf/pear_config.php";
 
 /* Load the Core class */
-require_once(PHPWS_SOURCE_DIR . "core/Core.php");
+require_once PHPWS_SOURCE_DIR . "class/Core.php";
 
 PHPWS_Core::initializeModules();
 
