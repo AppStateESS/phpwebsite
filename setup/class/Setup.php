@@ -156,7 +156,7 @@ class Setup{
       return TRUE;
     else {
       $content[] = _("Unable to connect to the database with the information provided.") . "<br />";
-      $content[] = PHPWS_Text::link("help/database." . DEFAULT_LANGUAGE . ".txt", _("Database Help"), NULL, "index");
+      $content[] = "<a href=\"help/database." . DEFAULT_LANGUAGE . ".txt\">" . _("Database Help") . "</a>";
       return FALSE;
     }
 
