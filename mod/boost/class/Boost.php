@@ -101,7 +101,7 @@ class PHPWS_Boost {
 
       $result = $this->onInstall($title, $content);
 
-      if ($result == TRUE){
+      if ($result === TRUE){
 	$this->setStatus($title, BOOST_DONE);
 	$this->createDirectories($mod, $content);
 	$this->registerModule($mod, $content);
@@ -113,14 +113,15 @@ class PHPWS_Boost {
 	$this->createDirectories($mod, $content);
 	$this->registerModule($mod, $content);
       }
-      elseif ($result == FALSE){
+      elseif ($result === FALSE){
 	$this->setStatus($title, BOOST_PENDING);
 	break;
       }
       elseif (PEAR::isError($result)){
-	$content[] = _("There was a problem in the installation file.");
+	$content[] = _("There was a problem in the installation file:");
+	$content[] = "<b>" . $result->getMessage() ."</b>";
+	$content[] = "<br />";
 	PHPWS_Error::log($result);
-	$content[] = $result->getMessage();
       }
     }
 
@@ -175,15 +176,6 @@ class PHPWS_Boost {
       $content[] = _("Creating image directory for module.");
       mkdir($imageDir);
     }
-
-    /*
-    $modImage = $homeDir . "/images/mod/" . $mod->getTitle();
-    if (!is_dir($modImage)){
-      $this->addLog($mod->getTitle(), _("Created directory") . " " . $modImage);
-      $content[] = _("Creating source image directory for module.");
-      mkdir($modImage);
-    }
-    */
 
     $modSource = $mod->getDirectory() . "img/";
     if (is_dir($modSource)){
