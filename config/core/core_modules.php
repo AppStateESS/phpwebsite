@@ -1,9 +1,11 @@
 <?php
 $core_modules = array("users",
-			"controlpanel",
-			"layout",
-			"boost"
-			);
+		      "controlpanel",
+		      "layout",
+		      "boost",
+		      "related",
+		      "categories"
+		      );
 
 
 ?>
