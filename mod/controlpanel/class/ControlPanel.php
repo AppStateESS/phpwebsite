@@ -2,7 +2,7 @@
 
 class PHPWS_ControlPanel {
 
-  function getTabs($frame, $active=NULL, $activeLinkable=TRUE, $only=NULL){
+  function getTabs($itemname, $active=NULL, $activeLinkable=TRUE, $only=NULL){
     PHPWS_Core::initModClass("controlpanel", "Tab.php");
     $DB = & new PHPWS_DB("controlpanel_tab");
 
@@ -11,8 +11,9 @@ class PHPWS_ControlPanel {
 	$DB->addWhere("id", $tabId, NULL, "or");
     }
 
-    $DB->addWhere("frame", $frame);
+    $DB->addWhere("itemname", $itemname);
     $DB->addOrder("tab_order");
+
     $result = $DB->loadItems("PHPWS_ControlPanel_Tab");
 
     foreach ($result as $tab){
@@ -31,24 +32,29 @@ class PHPWS_ControlPanel {
   }
 
   function display(){
-    $currentTab = PHPWS_ControlPanel::getCurrentTab();
 
-    $links = PHPWS_ControlPanel::getAllLinks($currentTab);
+    $currentTab = PHPWS_ControlPanel::getCurrentTab("controlpanel");
+
+    $links = PHPWS_ControlPanel::getAllLinks();
+
     $template['LINKS'] = PHPWS_ControlPanel::buildGrid($links[$currentTab]);
 
     $result = PHPWS_ControlPanel::getTabs('controlpanel', $_SESSION['ControlPanel_Current_Tab'], FALSE, array_keys($links));
-    
+    if (PEAR::isError($result))
+      echo $result->getMessage();
+
+
     $template['TABS'] = implode("", $result);
 
     return PHPWS_Template::process($template, "controlpanel", "panel.tpl");
   }
 
-  function getCurrentTab(){
-    if (isset($_SESSION['ControlPanel_Current_Tab']))
-      return $_SESSION['ControlPanel_Current_Tab'];
+  function getCurrentTab($itemName){
+    if (isset($_SESSION['ControlPanel_Current_Tab'][$itemName]))
+      return $_SESSION['ControlPanel_Current_Tab'][$itemName];
     else {
-      $currentTab = PHPWS_ControlPanel::getFirstTab("controlpanel");
-      PHPWS_ControlPanel::setCurrentTab($currentTab);       
+      $currentTab = PHPWS_ControlPanel::getFirstTab($itemName);
+      PHPWS_ControlPanel::setCurrentTab($itemName, $currentTab);       
       return $currentTab;
     }
   }
@@ -63,18 +69,17 @@ class PHPWS_ControlPanel {
       $final[] = PHPWS_Template::process($tpl, "controlpanel", "link/view.tpl");
     }
 
-    echo $final[0];
+    return implode("", $final);
 
-    //    return $grid;
   }
 
-  function setCurrentTab($tab){
-    $_SESSION['ControlPanel_Current_Tab'] = $tab;
+  function setCurrentTab($itemName, $tab){
+    $_SESSION['ControlPanel_Current_Tab'][$itemName] = $tab;
   }
 
-  function getFirstTab($frame){
+  function getFirstTab($itemName){
     $DB = & new PHPWS_DB("controlpanel_tab");
-    $DB->addWhere("frame", $frame);
+    $DB->addWhere("itemname", $itemName);
     $DB->addColumn("tab_order");
     $result = $DB->select("min");
 
@@ -82,16 +87,20 @@ class PHPWS_ControlPanel {
   }
 
   function getAllLinks(){
+    if (isset($_SESSION['CP_All_links']))
+      return $_SESSION['CP_All_links'];
+
     $DB = new PHPWS_DB("controlpanel_link");
     $DB->addOrder("tab");
     $DB->addOrder("link_order");
     $result = $DB->loadItems("PHPWS_ControlPanel_Link");
     foreach ($result as $link){
-      if ($_SESSION['User']->allow($link->getModule(), $link->getItemName()))
+      if (!$link->isRestricted() || $_SESSION['User']->allow($link->getItemName()))
 	$allLinks[$link->getTab()][] = $link;
     }
-
-    return $allLinks;
+    
+    $_SESSION['CP_All_links'] = $allLinks;
+    return $_SESSION['CP_All_links'];
   }
 
 }

@@ -5,6 +5,7 @@ class PHPWS_ControlPanel_Link extends PHPWS_Item{
   var $_label;
   var $_module;
   var $_itemName;
+  var $_restricted;
   var $_tab;
   var $_url;
   var $_description;
@@ -32,6 +33,11 @@ class PHPWS_ControlPanel_Link extends PHPWS_Item{
   function getDescription(){
     return $this->_description;
   }
+
+  function setDescription($description){
+    $this->_description = $description;
+  }
+
 
   function setImage($image){
     $this->_image = $image;
@@ -74,6 +80,14 @@ class PHPWS_ControlPanel_Link extends PHPWS_Item{
 
   function getItemName(){
     return $this->_itemName;
+  }
+
+  function isRestricted(){
+    return (bool)$this->_restricted;
+  }
+
+  function setRestricted($restrict){
+    $this->_restricted($restrict);
   }
 
 }

@@ -9,7 +9,7 @@ class PHPWS_ControlPanel_Tab {
   var $_activetpl   = NULL;
   var $_tab_order   = NULL;
   var $_color       = NULL;
-  var $_frame       = NULL;
+  var $_itemname    = NULL;
   var $_style       = NULL;
 
   function PHPWS_ControlPanel_Tab($id=NULL) {
@@ -96,7 +96,7 @@ class PHPWS_ControlPanel_Tab {
       return $this->_tab_order;
 
     $DB = @ new PHPWS_DB("controlpanel_tab");
-    $DB->addWhere('frame', $this->getFrame());
+    $DB->addWhere('itemname', $this->getItemname());
     $DB->addColumn('tab_order');
     $max = $DB->select("max");
     
@@ -125,12 +125,12 @@ class PHPWS_ControlPanel_Tab {
     return $this->_style = $style;
   }
 
-  function setFrame($frame){
-    $this->_frame = $frame;
+  function setItemname($itemname){
+    $this->_itemname = $itemname;
   }
 
-  function getFrame(){
-    return $this->_frame;
+  function getItemname(){
+    return $this->_itemname;
   }
 
   function save(){
@@ -143,7 +143,7 @@ class PHPWS_ControlPanel_Tab {
     $save['activetpl']    = $this->getTemplate(TRUE);
     $save['inactivetpl']  = $this->getTemplate(FALSE);
     $save['color']        = $this->getColor();
-    $save['frame']        = $this->getFrame();
+    $save['itemname']     = $this->getItemname();
     $save['style']        = $this->getStyle();
     $save['tab_order']    = $this->getOrder();
 
