@@ -87,7 +87,17 @@ class Layout_Box {
 
   function save(){
     $db = new PHPWS_DB("layout_box");
-    
+    $db->addWhere("module", $this->module);
+    $db->addWhere("content_var", $this->content_var);
+    $result = $db->select("one");
+
+    if (PEAR::isError($result))
+      return $result;
+    elseif (!empty($result) && $result != $this->id)
+      return FALSE;
+
+    $db->reset();
+
     if (!isset($this->box_order))
       $this->box_order = $this->nextBox();
 

@@ -28,7 +28,8 @@ class Layout_Init{
   function loadContentVar(){
     $DB = new PHPWS_DB("layout_box");
     $DB->addWhere("theme", Layout::getTheme());
-    $DB->addColumn("content_var", TRUE);
+    $DB->addColumn("content_var");
+    $DB->setindexBy("module");
     $result = $DB->select("col");
     if (PEAR::isError($result))
       return PEAR::raiseError("layout", "loadContentVar", $result->getMessage());
@@ -58,7 +59,7 @@ class Layout_Init{
       return NULL;
 
     foreach ($boxes as $row)
-      $final[$row['content_var']] = $row;
+      $final[$row['module']][$row['content_var']] = $row;
 
     return $final;
   }

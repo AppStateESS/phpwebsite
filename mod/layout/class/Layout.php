@@ -71,17 +71,18 @@ class Layout {
       }
     } else {
       $box = FALSE;
+      $module = "layout";
       $contentVar = DEFAULT_CONTENT_VAR;
     }
 
     if (!is_array($text))
-      $GLOBALS['Layout'][$contentVar]['content']['CONTENT'][] = $text;
+      $GLOBALS['Layout'][$module][$contentVar]['content']['CONTENT'][] = $text;
     else
       foreach ($text as $key=>$value)
-	$GLOBALS['Layout'][$contentVar]['content'][$key][] = $value;
+	$GLOBALS['Layout'][$module][$contentVar]['content'][$key][] = $value;
 
-    $GLOBALS['Layout'][$contentVar]['box'] = $box;
-    $GLOBALS['Layout'][$contentVar]['hold']= NULL;
+    $GLOBALS['Layout'][$module][$contentVar]['box'] = $box;
+    $GLOBALS['Layout'][$module][$contentVar]['hold']= NULL;
   }
 
 
@@ -91,7 +92,7 @@ class Layout {
 
     $box = (bool)$box;
 
-    $GLOBALS['Layout'][$contentVar]['content'] = NULL;
+    $GLOBALS['Layout'][$module][$contentVar]['content'] = NULL;
     Layout::add($text, $module, $contentVar, $box);
   }
 
@@ -104,11 +105,11 @@ class Layout {
     Layout::set($text, $module, $contentVar, $box);
 
     if (!isset($time) || !is_numeric($time))
-      $GLOBALS['Layout'][$contentVar]['hold'] = mktime() + DEFAULT_LAYOUT_HOLD; 
+      $GLOBALS['Layout'][$module][$contentVar]['hold'] = mktime() + DEFAULT_LAYOUT_HOLD; 
     elseif($time == -1)
-      $GLOBALS['Layout'][$contentVar]['hold'] = $time;
+      $GLOBALS['Layout'][$module][$contentVar]['hold'] = $time;
     else
-      $GLOBALS['Layout'][$contentVar]['hold'] = mktime() + $time;
+      $GLOBALS['Layout'][$module][$contentVar]['hold'] = mktime() + $time;
 
   }
 
@@ -129,45 +130,46 @@ class Layout {
     if (!isset($GLOBALS['Layout']))
       return PHPWS_Error::get(LAYOUT_SESSION_NOT_SET, "layout", "getBoxContent");
 
-    foreach ($GLOBALS['Layout'] as $contentVar=>$contentList){
-      if (!is_array($contentList) || !isset($contentList['content']))
-	continue;
-
-      foreach ($contentList['content'] as $tag=>$content)
-	$finalList[$contentVar][strtoupper($tag)] = implode("", $content);
-
+    foreach ($GLOBALS['Layout'] as $module=>$content){
+      foreach ($content as $contentVar=>$contentList){
+	if (!is_array($contentList) || !isset($contentList['content']))
+	  continue;
+	
+	foreach ($contentList['content'] as $tag=>$content)
+	  $finalList[$module][$contentVar][strtoupper($tag)] = implode("", $content);
+      }
     }
     return $finalList;
   }
 
-  function getBoxThemeVar($contentVar){
-    if (isset($_SESSION['Layout_Boxes'][$contentVar]))
-      return $_SESSION['Layout_Boxes'][$contentVar]['theme_var'];
+  function getBoxThemeVar($module, $contentVar){
+    if (isset($_SESSION['Layout_Boxes'][$module][$contentVar]))
+      return $_SESSION['Layout_Boxes'][$module][$contentVar]['theme_var'];
     else
       return NULL;
   }
 
-  function getBoxHold($contentVar){
-    if (isset($GLOBALS['Layout'][$contentVar]))
-      return $GLOBALS['Layout'][$contentVar]['hold'];
+  function getBoxHold($module, $contentVar){
+    if (isset($GLOBALS['Layout'][$module][$contentVar]))
+      return $GLOBALS['Layout'][$module][$contentVar]['hold'];
     else
       return 0;
   }
 
-  function dropContentVar($contentVar){
-    unset($GLOBALS['Layout'][$contentVar]);
+  function dropContentVar($module, $contentVar){
+    unset($GLOBALS['Layout'][$module][$contentVar]);
   }
 
-  function getBoxOrder($contentVar){
-    if (isset($_SESSION['Layout_Boxes'][$contentVar]))
-      return $_SESSION['Layout_Boxes'][$contentVar]['box_order'];
+  function getBoxOrder($module, $contentVar){
+    if (isset($_SESSION['Layout_Boxes'][$module][$contentVar]))
+      return $_SESSION['Layout_Boxes'][$module][$contentVar]['box_order'];
     else
       return NULL;
   }
 
-  function isBoxTpl($contentVar){
-    if (isset($GLOBALS['Layout'][$contentVar]))
-      return $GLOBALS['Layout'][$contentVar]['box'];
+  function isBoxTpl($module, $contentVar){
+    if (isset($GLOBALS['Layout'][$module][$contentVar]))
+      return $GLOBALS['Layout'][$module][$contentVar]['box'];
     else
       return NULL;
   }
@@ -215,47 +217,48 @@ class Layout {
       return;
     }
 
-    foreach ($finalList as $contentVar=>$template){
-      // Need to check for theme variable
-      if(!($theme_var = Layout::getBoxThemeVar($contentVar)))
-	$theme_var = DEFAULT_THEME_VAR;
+    foreach ($finalList as $module=>$content){
+      foreach ($content as $contentVar=>$template){
+	// Need to check for theme variable
+	if(!($theme_var = Layout::getBoxThemeVar($module, $contentVar)))
+	  $theme_var = DEFAULT_THEME_VAR;
 
-      if (!in_array($theme_var, $themeVarList))
-	$themeVarList[] = $theme_var;
+	if (!in_array($theme_var, $themeVarList))
+	  $themeVarList[] = $theme_var;
 
-      $order = Layout::getBoxOrder($contentVar);
+	$order = Layout::getBoxOrder($module, $contentVar);
 
-      if (!isset($order))
-	$order = MAX_ORDER_VALUE;
+	if (!isset($order))
+	  $order = MAX_ORDER_VALUE;
 
-      if (Layout::isBoxTpl($contentVar)){
-	$tpl = new PHPWS_Template;
-	$box = $_SESSION['Layout_Boxes'][$contentVar];
-	$file = $box['template'];
-	$directory = "themes/$theme/boxstyles/";
-	if (isset($file) && is_file($directory . $file))
-	  $tpl->setFile($directory . $file, TRUE);
-	else
-	  $tpl->setTemplate(DEFAULT_TEMPLATE);
+	if (Layout::isBoxTpl($module, $contentVar)){
+	  $tpl = new PHPWS_Template;
+	  $box = $_SESSION['Layout_Boxes'][$module][$contentVar];
+	  $file = $box['template'];
+	  $directory = "themes/$theme/boxstyles/";
+	  if (isset($file) && is_file($directory . $file))
+	    $tpl->setFile($directory . $file, TRUE);
+	  else
+	    $tpl->setTemplate(DEFAULT_TEMPLATE);
 
-	$tpl->setData($template);
+	  $tpl->setData($template);
 
-	$unsortedLayout[$theme_var][$order] = $tpl->get();
-	if (Layout::isMoveBox()){
-	  Layout::addStyle("layout");
-	  PHPWS_Core::initModClass("layout", "LayoutAdmin.php");
-	  $unsortedLayout[$theme_var][$order] .= Layout_Admin::moveBoxesTag($box);
+	  $unsortedLayout[$theme_var][$order] = $tpl->get();
+	  if (Layout::isMoveBox()){
+	    Layout::addStyle("layout");
+	    PHPWS_Core::initModClass("layout", "LayoutAdmin.php");
+	    $unsortedLayout[$theme_var][$order] .= Layout_Admin::moveBoxesTag($box);
+	  }
+	} else {
+	  $unsortedLayout[$theme_var][$order] = implode("", $template);
 	}
-      } else {
-	$unsortedLayout[$theme_var][$order] = implode("", $template);
+
+	$hold = Layout::getBoxHold($module, $contentVar);
+
+	if($hold > mktime() || (bool)$hold == FALSE)
+	  Layout::dropContentVar($module, $contentVar);
       }
-
-      $hold = Layout::getBoxHold($contentVar);
-
-      if($hold > mktime() || (bool)$hold == FALSE)
-	Layout::dropContentVar($contentVar);
     }
-
 
     if (isset($themeVarList)){
       foreach ($themeVarList as $theme_var){
