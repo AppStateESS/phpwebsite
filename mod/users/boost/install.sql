@@ -1,6 +1,6 @@
 CREATE TABLE users_config (
   default_group int NOT NULL default '0',
-  default_authorize smallint NOT NULL default '1'
+  default_authorization smallint NOT NULL default '1'
 );
 
 INSERT INTO users_config VALUES (0, 1);
@@ -20,7 +20,7 @@ CREATE TABLE users_members (
 CREATE TABLE users (
   id int NOT NULL default '0',
   last_logged int default NULL,
-  time_logged int NOT NULL default '0',
+  log_count int NOT NULL default '0',
   authorize smallint NOT NULL default '0',
   created int NOT NULL default '0',
   updated int NOT NULL default '0',
@@ -38,9 +38,9 @@ CREATE TABLE user_authorization (
   password CHAR(32) NOT NULL default ''
 );
 
-CREATE TABLE users_foreign_alt (
-  alt_code smallint(6) NOT NULL default '0',
+CREATE TABLE users_auth_scripts (
+  id smallint NOT NULL default '0',
   display_name varchar(40) NOT NULL default '',
   filename varchar(40) NOT NULL default '',
-  active smallint(6) NOT NULL default '0'
+  PRIMARY KEY (id)
 );
