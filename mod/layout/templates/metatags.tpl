@@ -12,8 +12,15 @@
   <tr>
     <td><b>{ROBOT_LABEL}</b></td>
     </td>
-    <td>{INDEX} <b>{INDEX_LABEL}</b><br />
-	{FOLLOW} <b>{FOLLOW_LABEL}</b>
+    <td>{INDEX} {INDEX_LABEL}<br />
+	{FOLLOW} {FOLLOW_LABEL}
+    </td>
+  </tr>
+  <tr>
+    <td><b>{CACHE_LABEL}</b></td>
+    <td>
+      {CACHE_1} {CACHE_1_LABEL}<br />
+      {CACHE_2} {CACHE_2_LABEL}
     </td>
   </tr>
 </table>
