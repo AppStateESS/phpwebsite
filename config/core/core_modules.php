@@ -1,5 +1,9 @@
 <?php
+$core_modules = array("users",
+			"controlpanel",
+			"layout",
+			"boost"
+			);
 
-$core_modules = "users, controlpanel, layout, boost";
 
 ?>
