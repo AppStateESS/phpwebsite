@@ -253,7 +253,7 @@ class Layout {
     else
       $content = $finalTheme->get();
 
-    $fullpage = Layout::wrap(Layout::getCurrentTheme(), $content);
+    $fullpage = Layout::wrap($content);
 
     return $fullpage;
   }
@@ -596,7 +596,8 @@ class Layout {
       . "\" />";
   }
 
-  function wrap($theme, $content){
+  function wrap($content){
+    $theme = Layout::getCurrentTheme();
     if (isset($GLOBALS['Layout_JS'])){
       foreach ($GLOBALS['Layout_JS'] as $script=>$javascript)
 	$jsHead[] = $javascript['head'];
@@ -614,6 +615,11 @@ class Layout {
     $result = PHPWS_Template::process($template, "layout", "header.tpl");
 
     return $result;
+  }
+
+  function blank($content){
+    echo Layout::wrap($content);
+    exit();
   }
 }
 ?>
