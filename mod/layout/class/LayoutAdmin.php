@@ -7,7 +7,7 @@ class Layout_Admin{
   function admin(){
     PHPWS_Core::initModClass("controlpanel", "Panel.php");
     $content = NULL;
-    $panel = & new PHPWS_Panel("layout");
+    $panel = Layout_Admin::adminPanel();
 
     if (isset($_REQUEST['command']))
       $command = $_REQUEST['command'];
@@ -35,12 +35,12 @@ class Layout_Admin{
       $content = Layout_Admin::boxesForm($message);
       break;
     }
-
-    Layout_Admin::adminPanel($content);
+    $panel->setContent($content);
+    Layout::add(PHPWS_ControlPanel::display($panel->display()));
   }
 
 
-  function adminPanel($content){
+  function &adminPanel(){
     PHPWS_Core::initModClass("controlpanel", "Panel.php");
     Layout::addStyle("layout");
 
@@ -49,8 +49,7 @@ class Layout_Admin{
 
     $panel = & new PHPWS_Panel("layout");
     $panel->quickSetTabs($tabs);
-    $panel->setContent($content);
-    Layout::add(PHPWS_ControlPanel::display($panel->display()));
+    return $panel;
   }
 
   function saveBoxSettings(){
