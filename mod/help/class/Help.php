@@ -37,36 +37,41 @@ class PHPWS_Help{
 
   function show_help(){
     if (!isset($_REQUEST['helpMod'])){
-      echo 'help page information here';
+      exit();
+    }
+    
+    $module = $_REQUEST['helpMod'];
+    $option = strtolower($_REQUEST['option']);
+
+    $filename = PHPWS_SOURCE_DIR . sprintf('mod/%s/conf/help.%s.ini', $module, CURRENT_LANGUAGE);
+    $default = PHPWS_SOURCE_DIR . sprintf('mod/%s/conf/help.ini', $module);
+
+    if (is_file($filename)) {
+      $help_info = @parse_ini_file($filename, TRUE);
+    } elseif (is_file($default)) {
+      $help_info = @parse_ini_file($default, TRUE);
+    } else {
+      echo _('No help file exists for this module.');
       exit();
     }
 
-    $module = preg_replace('/[^\w]+/', '', $_REQUEST['helpMod']);
-    $help = preg_replace('/[^\w\-]+/', '', $_REQUEST['option']);
-    $filename = PHPWS_SOURCE_DIR . sprintf('mod/%s/conf/help.%s.php', $module, CURRENT_LANGUAGE);
-    $default = PHPWS_SOURCE_DIR . sprintf('mod/%s/conf/help.php', $module);
-    if (!is_file($filename)){
-      if (!is_file($default)){
-	PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, "core", "show_help", $default);
-	exit(_("The help file for this module is missing."));
-      } else
-	include $default;
-    } else
-      include $filename;
 
-    if (!isset($$help)){
-      PHPWS_Error::log(PHPWS_UNMATCHED_OPTION, "core", "PHPWS_Help::show_link", "Option: $help");
-      exit(_("No help exists for this topic."));
-      return NULL;
+    if (!isset($help_info[$option])) {
+      echo _('No help exists for this topic.');
     }
 
-    if (isset($_REQUEST['pre'])) {
-      $template['TITLE'] = $$help;
-      $template['CONTENT'] = ${$help . '_content'};
-    } else {
-      $template = & $$help;
+    if (isset($help_info[$option]['title'])) {
+      Layout::addPageTitle($help_info[$option]['title']);
+      $template['TITLE'] = $help_info[$option]['title'];
     }
-    Layout::alternateTheme($template, "help", "help.tpl");
+
+    if (isset($help_info[$option]['content'])) {
+      $template['CONTENT'] = $help_info[$option]['content'];
+    }
+
+    $content = PHPWS_Template::process($template, 'help', 'help.tpl');
+
+    Layout::nakedDisplay($content);
   }
 
 }
