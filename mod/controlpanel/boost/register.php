@@ -35,19 +35,31 @@ function register($module, &$content){
       $link->setLabel($info['label']);
       $link->setRestricted($info['restricted']);
       $link->setUrl($info['url']);
+      $link->setActive(1);
+
+      if (isset($info['itemname']))
+	$link->setItemName($info['itemname']);
+      else
+	$link->setItemName($module);
+
       $link->setDescription($info['description']);
       $link->setImage("images/mod/$module/" . $info['image']);
       $db->addWhere("label", $info['tab']);
       $result = $db->select("row");
-      if (PEAR::isError($result))
-	echo $result->getMessage();
+      if (PEAR::isError($result)){
+	PHPWS_Error::log($result);
+	continue;
+      }
       elseif (!isset($result))
 	exit("problem");
 
       $link->setTab($result['id']);
       $result = $link->save();
-      if (PEAR::isError($result))
-	echo $result->getUserInfo();
+      if (PEAR::isError($result)){
+	PHPWS_Error::log($result);
+	$content[] = _("There was a problem trying to save a Control Panel link.");
+	return FALSE;
+      }
       $db->resetWhere();
     }
   }
