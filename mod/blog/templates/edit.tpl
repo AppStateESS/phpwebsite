@@ -1,21 +1,29 @@
 {START_FORM}
-<table cellpadding="4">
+<table class="form-table" cellpadding="4">
   <tr>
-    <td><b>{TITLE_LABEL}</b></td>
+    <td><span class="label">{TITLE_LABEL}</span></td>
     <td>{TITLE}</td>
   </tr>
   <tr>
-    <td><b>{ENTRY_LABEL}</b></td>
+    <td><span class="label">{ENTRY_LABEL}</span></td>
     <td>{ENTRY}</td>
   </tr>
   <tr>
-    <td><b>{ASSIGNED_GROUPS_LABEL}</b></td>
+    <td><span class="label">{ASSIGNED_GROUPS_LABEL}</span></td>
     <td>{ASSIGNED_GROUPS}</td>
   </tr>
   <tr>
-    <td><b>{CATEGORIES_LABEL}</b></td>
+    <td><span class="label">{VIEWABLE_MAIN_LABEL}</span></td>
+    <td>
+      {VIEWABLE_1} {VIEWABLE_1_LABEL}<br />
+      {VIEWABLE_2} {VIEWABLE_2_LABEL}<br />
+      {VIEWABLE_3} {VIEWABLE_3_LABEL}
+    </td>
+  </tr>
+  <tr>
+    <td><span class="label">{CATEGORIES_LABEL}</span></td>
     <td>{CATEGORIES}</td>
   </tr>
- </table>
+</table>
 {SUBMIT} {APPROVE_ENTRY}
 {END_FORM}

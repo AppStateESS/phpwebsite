@@ -1,10 +1,11 @@
 <?php
 
 class Blog {
-  var $id    = NULL;
-  var $title = NULL;
-  var $entry = NULL;
-  var $date  = NULL;
+  var $id         = NULL;
+  var $title      = NULL;
+  var $entry      = NULL;
+  var $date       = NULL;
+  var $restricted = 0;
 
   function Blog($id=NULL)
   {
@@ -52,6 +53,16 @@ class Blog {
   function getFormatedDate($type=BLOG_VIEW_DATE_FORMAT)
   {
     return strftime($type, $this->date);
+  }
+
+  function isRestricted()
+  {
+    return (bool)$this->restricted;
+  }
+
+  function getRestricted()
+  {
+    return $this->restricted;
   }
 
   function save()

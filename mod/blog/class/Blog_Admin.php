@@ -274,11 +274,24 @@ class Blog_Admin {
     $form->setSize('title', 40);
     $form->setLabel('title', _('Title'));
 
+    if (Current_User::isUnrestricted('blog') && empty($version_id)) {
+      $viewable_opts[] = 0;
+      $viewable_opts[] = 1;
+      $viewable_opts[] = 2;
+      $viewable_label[] = _('Unrestricted');
+      $viewable_label[] = _('Only logged in users');
+      $viewable_label[] = _('Only certain groups');
+      
+      $form->addRadio('viewable', $viewable_opts);
+      $form->setLabel('viewable', $viewable_label);
+      $form->setMatch('viewable', $blog->getRestricted());
+    }
+
     $template = $form->getTemplate();
 
-    $template['CATEGORIES_LABEL'] = _('Category');
-
-    $template['CATEGORIES'] = $cat_item->getForm();
+    $template['CATEGORIES_LABEL']    = _('Category');
+    $template['CATEGORIES']          = $cat_item->getForm();
+    $template['VIEWABLE_MAIN_LABEL'] = _('Viewing Permissions');
 
     if (Current_User::isUnrestricted('blog') && empty($version_id)){
       $assign = PHPWS_User::assignPermissions('blog', $blog->getId());
@@ -353,6 +366,7 @@ class Blog_Admin {
     }
 
     $blog->entry = PHPWS_Text::parseInput($_POST['entry']);
+    $blog->restricted = (int)$_POST['viewable'];
 
     if (isset($_REQUEST['version_id'])) {
       $version = & new Version('blog_entries', $_REQUEST['version_id']);
