@@ -801,7 +801,7 @@ class PHPWS_DB {
     if (PEAR::isError($result) || !isset($result))
       return $result;
 
-    foreach ($result as $indexby2 => $itemResult){
+    foreach ($result as $indexby => $itemResult){
       $genClass = new $className;
       if(is_array($classVars)) {
 	foreach($classVars as $key => $value) {
