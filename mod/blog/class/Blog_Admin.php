@@ -63,15 +63,12 @@ class Blog_Admin {
 	$version->setId($approval_id);
 	$version->init();
 
-	if (PEAR::isError($unApproved)){
-	  PHPWS_Error::log($unApproved);
-	  $content = _("An error occurred while loading an unapproved blog.");
-	  break;
-	}
+	$unapproved_blog = & new Blog;
+	$version->loadObject($unapproved_blog);
 
 	if (Current_User::isRestricted("blog")) {
 	  $message = _("This version has not been approved.");
-	  $content = Blog_Admin::edit($unApproved);
+	  $content = Blog_Admin::edit($unapproved_blog, $version->getId());
 	} else {
 	  $link = _("A version of this entry is awaiting approval.");
 	  $linkVar['action']     = "admin";
@@ -495,9 +492,9 @@ class Blog_Admin {
   function approveBlog($version_id){
     $version = & new Version("blog_entries", $version_id);
     $blog = & new Blog;
-    PHPWS_Core::plugObject($blog, $version->getSource());
+    $version->loadObject($blog);
     $blog->save();
-    $version->setSource($blog);
+    $version->setSourceId($blog->id);
     $version->setApproved(TRUE);
     $version->save();
     $version->authorizeCreator("blog");

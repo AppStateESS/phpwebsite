@@ -66,17 +66,20 @@ class Blog {
     return $result;
   }
 
-  function view($edit=TRUE)
+  function view($edit=TRUE, $limited=TRUE)
   {
     $template['TITLE'] = $this->getTitle(TRUE);
     $template['ENTRY'] = $this->getEntry(TRUE);
 
     if ($edit && Current_User::allow("blog", "edit_blog", $this->getId())){
-      $vars['action']  = "admin";
       $vars['blog_id'] = $this->getId();
+      $vars['action']  = "admin";
       $vars['command'] = "edit";
-      
       $template['EDIT'] = PHPWS_Text::secureLink(_("Edit"), "blog", $vars);
+    }
+
+    if ($limited) {
+      $template['VIEW'] = PHPWS_Text::rerouteLink(_("View"), "blog", "view", $this->getId());
     }
 
     return PHPWS_Template::process($template, "blog", "view.tpl");
