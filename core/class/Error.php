@@ -17,10 +17,10 @@ class PHPWS_Error {
   }
 
   function &get($value, $module, $funcName=NULL, $extraInfo=NULL){
-    $errorFile = PHPWS_Core::getConfigFile($module, "error.php");
+    $errorFile = PHPWS_Core::getConfigFile($module, 'error.php');
 
     if (!($errorFile))
-      return PHPWS_Error::get(PHPWS_NO_ERROR_FILE, "core", "PHPWS_Error::get", "Module: $module");
+      return PHPWS_Error::get(PHPWS_NO_ERROR_FILE, 'core', 'PHPWS_Error::get', 'Module: ' . $module);
 
     include $errorFile;
     if (!isset($errors))
@@ -29,10 +29,10 @@ class PHPWS_Error {
     if (PEAR::isError($value))
       $value = $value->getCode();
 
-    if ($module != "core")
+    if ($module != 'core')
       $fullError[] = $module;
     else
-      $fullError[] = "Core";
+      $fullError[] = 'Core';
 
     if (isset($funcName))
       $fullError[] = " - $funcName()";
@@ -42,16 +42,16 @@ class PHPWS_Error {
     else
       $message = $errors[PHPWS_UNKNOWN];
 
-    $fullError[] = " - " . $message;
+    $fullError[] = ' - ' . $message;
 
     if (isset($extraInfo)){
       if (is_array($extraInfo))
 	$message = vsprintf($message, $extraInfo);
       else
-	$fullError[] = " [" . $extraInfo . "]";
+	$fullError[] = ' [' . $extraInfo . ']';
     }
 
-    $error = &PEAR::raiseError($message, $value, NULL, NULL, implode("", $fullError));
+    $error = &PEAR::raiseError($message, $value, NULL, NULL, implode('', $fullError));
 
     return $error;
   }
@@ -67,7 +67,7 @@ class PHPWS_Error {
 
     $final = PHPWS_Error::printError($error);
 
-    PHPWS_Core::log($final, "error.log", _("Error"));
+    PHPWS_Core::log($final, 'error.log', _('Error'));
   }
 
 
@@ -78,7 +78,7 @@ class PHPWS_Error {
     if (!isset($message))
       $message = $error->getmessage();
     
-    $final = "[" . $code . "] $message"; 
+    $final = '[' . $code . "] $message"; 
 
     return $final;
   }
