@@ -146,9 +146,9 @@ class Categories{
   }
 
 
-  function getCategories($mode="sorted"){
+  function getCategories($mode="sorted", $drop=NULL){
     $db = & new PHPWS_DB("categories");
-    
+
     switch ($mode){
     case "sorted":
       $db->addWhere("parent", 0);
@@ -168,7 +168,7 @@ class Categories{
 
     case "list":
       $list = Categories::getCategories();
-      $indexed = Categories::_buildList($list);
+      $indexed = Categories::_buildList($list, $drop);
 
       return $indexed;
       break;
@@ -177,20 +177,30 @@ class Categories{
     return $result;
   }
 
-  function _buildList($list){
+  function _buildList($list, $drop=NULL){
     if (empty($list))
       return NULL;
 
     foreach ($list as $category){
+      if ($category->id == $drop) {
+	continue;
+      }
       $indexed[$category->id] = $category->title;
       if (!empty($category->children)) {
-	$sublist = Categories::_buildList($category->children);
-	foreach ($sublist as $subkey => $subvalue){
-	  $indexed[$subkey] = $category->title . " " . CAT_LINK_DIVIDERS . " " . $subvalue;
+	$sublist = Categories::_buildList($category->children, $drop);
+	if (isset($sublist)) {
+	  foreach ($sublist as $subkey => $subvalue){
+	    $indexed[$subkey] = $category->title . " " . CAT_LINK_DIVIDERS . " " . $subvalue;
+	  }
 	}
       }
     }
-    return $indexed;
+
+    if (isset($indexed)) {
+      return $indexed;
+    } else {
+      return NULL;
+    }
   }
 
 }
