@@ -51,56 +51,6 @@ class PHPWS_User extends PHPWS_Item {
     }
   }
 
-  /**
-   * Return a textual error message for a error code
-   * Function is copied from DB.php in PEAR libs.
-   *
-   * @param integer $value error code
-   *
-   * @return string error message, or false if the error code was
-   * not recognized
-   */
-  function error($value, $funcName=NULL, $extraInfo=NULL){
-    static $errors;
-
-    if (!isset($errors)) {
-      $errors = array(
-			     USER_ERROR                => "Unknown error",
-			     USER_ERR_DUP_USERNAME     => "Duplicate user name",
-			     USER_ERR_DUP_GROUPNAME    => "Duplicate group name",
-			     USER_ERR_PERM_TABLE       => "Permission table name already exists",
-			     USER_ERR_PERM_MISS        => "Permission table not found",
-			     USER_ERR_PERM_FILE        => "Module's permission file is missing",
-			     USER_ERR_BAD_USERNAME     => "Username is improperly formatted",
-			     USER_ERR_PASSWORD_MATCH   => "Passwords do not match",
-			     USER_ERR_PASSWORD_LENGTH  => "Password must be [var1] in length",
-			     USER_ERR_PASSWORD_EASY    => "Password is too easy to guess"
-			     );
-    }
-    
-    if (PEAR::isError($value)) {
-      $value = $value->getCode();
-    }
-
-    $fullError[] = "<b>Module:</b> User";
-
-    if (isset($funcName))
-      $fullError[] = "<b>Function:</b> " . $funcName . "()";
-    
-
-    if (isset($errors[$value]))
-      $message = $errors[$value] . ".";
-    else
-      $message = $errors[USER_ERROR] . ".";
-
-    $fullError[] = "<b>Message:</b> " . $message;
-
-    if (isset($extraInfo))
-      $fullError[] = "<b>Extra:</b> " . $extraInfo;
-
-    return PEAR::raiseError($message, $value, NULL, NULL, implode("<br />", $fullError));
-  }
-
   function setUsername($username, $checkDuplicate=FALSE){
     if (preg_match("/^[a-z]+[a-z0-9_]{3}$/iU", $username)){
       if ((bool)$checkDuplicate == TRUE){
@@ -108,7 +58,7 @@ class PHPWS_User extends PHPWS_Item {
 	$DB->addWhere("username", $username);
 	$result = $DB->select("one");
 	if (isset($result) && !PEAR::isError($result))
-	  return $this->error(USER_ERR_DUP_USERNAME, "setUsername");
+	  return PHPWS_Error::get(USER_ERR_DUP_USERNAME, "users", "setUsername");
       }
 	
 	$this->_username = $username;
@@ -129,7 +79,12 @@ class PHPWS_User extends PHPWS_Item {
   }
 
   function checkPassword($pass1, $pass2){
-    include PHPWS_Core::includeFile("users", "config.php");
+    $config = PHPWS_Core::getConfigFile("users", "config.php");
+
+    if (!$config)
+      exit("Config file not found");
+      
+    include $config;
 
     if ($pass1 != $pass2)
       return PHPWS_User::error(USER_ERR_PASSWORD_MATCH, "checkPassword");
