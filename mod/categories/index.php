@@ -1,9 +1,8 @@
 <?php
 
-if (!defined("PHPWS_SOURCE_DIR")){
-  header("location:../../index.php");
+if (!defined("PHPWS_SOURCE_DIR"))
   exit();
-}
+
 PHPWS_Core::initModClass("categories", "Action.php");
 PHPWS_Core::initModClass("categories", "Categories.php");
 
