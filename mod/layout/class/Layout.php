@@ -216,6 +216,9 @@ class Layout {
 
 	if (Layout::isBoxTpl($module, $contentVar)){
 	  $tpl = new PHPWS_Template;
+	  if (!isset($_SESSION['Layout_Boxes'][$module][$contentVar]))
+	    exit("Error control needed in Layout in the display function.");
+
 	  $box = $_SESSION['Layout_Boxes'][$module][$contentVar];
 	  $file = $box['template'];
 	  $directory = "themes/$theme/boxstyles/";
@@ -258,7 +261,28 @@ class Layout {
   }
 
 
+  function submitHeaders($theme, &$template){
+    $testing = TRUE;
+
+    if($testing == FALSE && stristr($_SERVER["HTTP_ACCEPT"],"application/xhtml+xml")){
+      header("Content-Type: application/xhtml+xml; charset=UTF-8");
+      $template["XML"] = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+      $template["DOCTYPE"] = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\n\"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">";
+      $template["XHTML"] = "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"" . CURRENT_LANGUAGE . "\">";
+    } else {
+
+      header("Content-Type: text/html; charset=UTF-8");
+      $template["DOCTYPE"] = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">";
+      $template["XHTML"] = "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"" . CURRENT_LANGUAGE . "\" lang=\"" . CURRENT_LANGUAGE . "\">";
+    }
+    header("Content-Language: " . CURRENT_LANGUAGE);
+    header("Content-Script-Type: text/javascript");
+    header("Content-Style-Type: text/css");
+  }
+
   function wrap($theme, $finalContent){
+    Layout::submitHeaders($theme, $template);
+
     $template['TEST_JS'] = Layout::getJavascript("test");
 
     if (isset($GLOBALS['Layout_JS'])){
@@ -272,10 +296,10 @@ class Layout {
       array_unshift($GLOBALS['Style'], Layout::styleLink("themes/$theme/style.css"));
     else
       $GLOBALS['Style'][] = Layout::styleLink("themes/$theme/style.css");
+
+
     $template['STYLE'] = implode("\n", $GLOBALS['Style']);
-
     $template['CONTENT'] = $finalContent;
-
     $result = PHPWS_Template::process($template, "layout", "header.tpl");
 
     echo $result;
@@ -339,7 +363,6 @@ class Layout {
       return $result;
 
     $template['THEME_DIRECTORY'] = "themes/$theme/";
-
     $tpl->setData($template);
     return $tpl;
   }
