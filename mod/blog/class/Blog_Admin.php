@@ -362,8 +362,6 @@ class Blog_Admin {
     }
 
     $blog->entry = PHPWS_Text::parseInput($_POST['entry']);
-    $blog->date  = mktime();
-
 
     if (isset($_REQUEST['version_id'])) {
       $version = & new Version("blog_entries", $_REQUEST['version_id']);
@@ -435,7 +433,7 @@ class Blog_Admin {
   function _loadCategory(&$cat_item, &$blog, $version=NULL)
   {
     $cat_item->setItemId($blog->getId());
-    $cat_item->setTitle($blog->getTitle());
+    $cat_item->setTitle($blog->getTitle() . " - " . $blog->getFormatedDate());
     if (MOD_REWRITE_ENABLED) {
       $link = "blog/view/" . $blog->getId();
     } else {
@@ -554,7 +552,7 @@ class Blog_Admin {
 
       if ($vr_blog->getSourceId() > 0) {
 	$edit_approves = TRUE;
-	$mini_tpl['DATE'] = $vr_blog->getEdittedDate(TRUE);
+	$mini_tpl['DATE'] = $vr_blog->getEditedDate(TRUE);
 	$mini_tpl['DATE_LABEL'] = _("Updated");
 	$tpl->setCurrentBlock("update-approval");
       } else {
