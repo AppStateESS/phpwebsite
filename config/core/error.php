@@ -18,15 +18,17 @@ $errors[PHPWS_DB_NO_VALUES]          = _("No values were set before the query");
 $errors[PHPWS_DB_NO_OBJ_VARS]        = _("No variables in object.");
 
 
-
 // List.php 200 - 299
 $errors[PHPWS_LIST_MOD_NOT_SET]      = _("Module not set.");
 $errors[PHPWS_LIST_CLASS_NOT_SET]    = _("Class not set.");
 $errors[PHPWS_LIST_TABLE_NOT_SET]    = _("Table not set.");
-$errors[PHPWS_LIST_COLUMNS_NOT_SET]  = _("Columns not set.");
+$errors[PHPWS_LIST_COLUMNS_NOT_SET]  = _("List columns not set.");
 $errors[PHPWS_LIST_NAME_NOT_SET]     = _("Name not set.");
 $errors[PHPWS_LIST_OP_NOT_SET]       = _("Op not set.");
+$errors[PHPWS_LIST_CLASS_NOT_EXISTS] = _("Class does not exist.");
 $errors[PHPWS_LIST_NO_ITEMS_PASSED]  = _("No items passed.");
+$errors[PHPWS_LIST_DB_COL_NOT_SET]   = _("Database columns not set.");
+
 
 // Form.php 300 - 399
 $errors[PHPWS_FORM_BAD_NAME]         = _("You may not use '[var1]' as a form element name.");

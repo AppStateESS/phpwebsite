@@ -26,7 +26,9 @@ define("PHPWS_LIST_TABLE_NOT_SET",    -202);
 define("PHPWS_LIST_COLUMNS_NOT_SET",  -203);
 define("PHPWS_LIST_NAME_NOT_SET",     -204);
 define("PHPWS_LIST_OP_NOT_SET",       -205);
-define("PHPWS_LIST_NO_ITEMS_PASSED",  -206);
+define("PHPWS_LIST_CLASS_NOT_EXISTS", -206);
+define("PHPWS_LIST_NO_ITEMS_PASSED",  -207);
+define("PHPWS_LIST_DB_COL_NOT_SET",   -208);
 
 /************* Form.php *****************/
 define("PHPWS_FORM_BAD_NAME",         -301);
