@@ -93,10 +93,15 @@ class PHPWS_Form {
   function reset(){
     $this->_elements = array();
     $this->_action   = NULL;
-    $this->_method   = "method=\"post\"";
+    $this->_method   = "post";
     $this->_encode   = NULL;
   }
 
+  function setMethod($method){
+    if ($method != "post" && $method != "get")
+      return;
+    $this->_method = $method;
+  }
   function setTemplateFile($file){
     $this->templateFile = $file;
   }
@@ -329,6 +334,19 @@ class PHPWS_Form {
 	return $result;
     }
     return TRUE;
+  }
+
+  function setTitle($name, $title){
+    if (!$this->testName($name))
+      return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, "core", "PHPWS_Form::setRows", array($name));
+
+    foreach ($this->_elements[$name] as $key=>$element){
+      $result = $this->_elements[$name][$key]->setTitle($title);
+      if (PEAR::isError($result))
+	return $result;
+    }
+    return TRUE;
+   
   }
 
   /**
@@ -602,17 +620,24 @@ class PHPWS_Form {
     $this->_action = $directory;
   }
 
-  function get($name){
+  function get($name, $all=FALSE){
     if (!isset($this->_elements[$name]))
       return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, "core", "PHPWS_Form::get", array($name));
 
     if (count($this->_elements[$name]) > 1)
       $multiple = TRUE;
 
-    foreach ($this->_elements[$name] as $element)
-      $content[] = $element->get();
-    
-    return implode("\n", $content);
+    if ($all == FALSE){
+      foreach ($this->_elements[$name] as $element)
+	$content[] = $element->get();
+      return implode("\n", $content);
+    } else {
+      foreach ($this->_elements[$name] as $element){
+	$content['elements'][] = $element->get();
+	$content['labels'][] = $element->getLabel(TRUE, TRUE);
+      }
+      return $content;
+    }
   }
 
   function grab($name){
@@ -711,6 +736,13 @@ class PHPWS_Form {
     return implode("\n", $form);
   }
 
+  function getMethod($tagMode=FALSE){
+    if ($tagMode == TRUE)
+      return "method=\"" . $this->_method . "\"";
+    else
+      return $this->_method;
+  }
+
   function getStart(){
     if (!isset($this->_action))
       $this->_action = "index.php";
@@ -721,7 +753,7 @@ class PHPWS_Form {
       $formName = NULL;
 
     if (isset($this->_action))
-      return "<form " . $formName . "action=\"" . $this->_action . "\" " . $this->_method . $this->_encode . ">\n";
+      return "<form " . $formName . "action=\"" . $this->_action . "\" " . $this->getMethod(TRUE) . $this->_encode . ">\n";
   }
 
   function _imageSelectArray($module, $current){
@@ -880,7 +912,7 @@ class PHPWS_Form {
   }
 
   function makeForm($name, $action, $elements, $method="post", $breaks=FALSE, $file=FALSE) {
-    return CrutchForm::makeForm($name, $action, $elements, $method="post", $breaks, $file);
+    return CrutchForm::makeForm($name, $action, $elements, $method, $breaks, $file);
   }
 
   function getId(){   	 
@@ -890,10 +922,6 @@ class PHPWS_Form {
     return $id; 	 
   }
 
-  function getLabel($name, $formMode=FALSE){
-    return $this->_elements[$name]->getLabel($formMode);
-  }
-
 }// End of PHPWS_Form Class
 
 
@@ -901,6 +929,7 @@ class Form_TextField extends Form_Element{
   function get(){
     return "<input type=\"text\" "
       . $this->getName(TRUE) 
+      . $this->getTitle(TRUE)
       . $this->getId(TRUE)
       . $this->getValue(TRUE) 
       . $this->getWidth(TRUE)
@@ -933,6 +962,7 @@ class Form_File extends Form_Element {
   function get(){
     return "<input type=\"file\" "
       . $this->getName(TRUE) 
+      . $this->getTitle(TRUE)
       . $this->getId(TRUE)
       . $this->getWidth(TRUE)
       . $this->getData()
@@ -950,6 +980,7 @@ class Form_Password extends Form_Element {
   function get(){
     return "<input type=\"password\" "
       . $this->getName(TRUE) 
+      . $this->getTitle(TRUE)
       . $this->getId(TRUE)
       . $this->getValue(TRUE)
       . $this->getWidth(TRUE)
@@ -1025,6 +1056,7 @@ class Form_TextArea extends Form_Element{
 
     return "<textarea "
       . $this->getName(TRUE) 
+      . $this->getTitle(TRUE)
       . $this->getId(TRUE)
       . implode(" ", $dimensions) . " "
       . $this->getData()
@@ -1115,9 +1147,10 @@ class Form_CheckBox extends Form_Element{
 
   function get(){
     return "<input type=\"checkbox\" " . $this->getName(TRUE)
-      . $this->getId(TRUE) . " " 
-      . $this->getValue(TRUE) . " " 
-      . $this->getMatch() . " "
+      . $this->getId(TRUE)
+      . $this->getTitle(TRUE)
+      . $this->getValue(TRUE)
+      . $this->getMatch()
       . $this->getData()
       . " />";
   }
@@ -1142,6 +1175,7 @@ class Form_RadioButton extends Form_Element{
   function get(){
     return "<input type=\"radio\" " . $this->getName(TRUE)
       . $this->getId(TRUE)
+      . $this->getTitle(TRUE)
       . $this->getValue(TRUE)
       . $this->getMatch()
       . $this->getData()
@@ -1163,11 +1197,40 @@ class Form_Element {
   var $tag         = NULL;
   var $label       = NULL;
   var $id          = NULL;
+  var $title       = NULL;
   
   function Form_Element($name, $value=NULL){
     $this->setName($name);
     if (isset($value))
       $this->setValue($value);
+  }
+
+  function setTitle($title){
+    $this->title = strip_tags($title);
+  }
+
+  function getTitle($formMode=FALSE){
+    if ($formMode){
+      if (isset($this->title)){
+	if (is_array($this->title)){
+	  if (isset($GLOBALS['form_title_repeats'][$this->name]))
+	    $GLOBALS['form_title_repeats'][$this->name]++;
+	  else
+	    $GLOBALS['form_title_repeats'][$this->name] = 0;
+
+	  $key = $GLOBALS['form_title_repeats'][$this->name];
+
+	  $title = $this->title[$key];
+	} else
+	  $title = $this->title;
+
+	return "title=\"$title\" ";
+      } elseif (isset($this->label)){
+	$title = $this->getLabel(TRUE, FALSE);
+	return "title=\"$title\" ";
+      } else
+	return NULL;
+    }
   }
 
   function setId($id){
@@ -1193,7 +1256,7 @@ class Form_Element {
     $this->label = $label;
   }
 
-  function getLabel($formMode=FALSE){
+  function getLabel($formMode=FALSE, $tagMode=TRUE){
     if ($formMode){
       if (isset($this->label)){
 	if (is_array($this->label)){
@@ -1208,7 +1271,10 @@ class Form_Element {
 	} else
 	  $label = $this->label;
 
-	return PHPWS_Form::makeLabel($this->getId(), $label);
+	if ($tagMode)
+	  return PHPWS_Form::makeLabel($this->getId(), $label);
+	else
+	  return $label;
       }
       else
 	return NULL;
