@@ -27,10 +27,9 @@ switch ($area){
  case "admin":
    if (!$_SESSION['User']->allow("users"))
      PHPWS_User::disallow();
-   else
+   else 
      PHPWS_User::adminAction($command);
    break;
 }// End area switch
-
 
 ?>
