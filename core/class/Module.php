@@ -2,33 +2,65 @@
 
 class PHPWS_Module {
   var $_title         = NULL;
+  var $_proper_name   = NULL;
   var $_directory     = NULL;
   var $_version       = NULL;
   var $_active        = FALSE; 
   var $_image_dir     = NULL;
   var $_files_dir     = NULL;
   var $_register      = FALSE;
-  var $_install_sql   = FALSE;
-  var $_update_sql    = FALSE;
-  var $_uninstall_sql = FALSE;
+  var $_import_sql   = FALSE;
 
   function PHPWS_Module($module=NULL){
-    if (isset($module)  && $module != "core")
-      $this->init($module);
+    if (isset($module))
+      $this->setTitle($module);
   }
 
-  function init($module){
-    $this->setTitle($module);
+  function init(){
+    $title         = $this->getTitle();
+    $proper_name   = NULL;
+    $version       = .001;
+    $active        = TRUE;
+    $image_dir     = NULL;
+    $files_dir     = NULL;
+    $register      = FALSE;
+    $import_sql    = FALSE;
+
+    $this->setDirectory(PHPWS_SOURCE_DIR . "mod/$title/");
+    
+    $result = PHPWS_Core::getConfigFile($title, "boost.php");
+    if (PEAR::isError($result))
+      return $result;
+
+
+    include $result;
+    
+    $this->setProperName($proper_name);
+    $this->setVersion($version);
+    $this->setActive($active);
+    $this->setImportSQL($import_sql);
+    $this->setRegister($register);
   }
 
 
   function setTitle($title){
     $this->_title = $title;
-    $this->setDirectory(PHPWS_SOURCE_DIR . "mod/$title/");
+
   }
 
   function getTitle(){
     return $this->_title;
+  }
+
+  function setProperName($name){
+    $this->_proper_name = $name;
+  }
+
+  function getProperName($useTitle=FALSE){
+    if (!isset($this->_proper_name) && $useTitle == TRUE)
+      return ucwords($this->getTitle());
+    else
+      return $this->_proper_name;
   }
 
   function setDirectory($directory){
@@ -55,12 +87,20 @@ class PHPWS_Module {
     return $this->_register;
   }
 
-  function setInstallSQL($sql){
-    $this->_install_sql = (bool)$sql;
+  function setImportSQL($sql){
+    $this->_import_sql = (bool)$sql;
   }
 
-  function isInstallSQL(){
-    return $this->_install_sql;
+  function isImportSQL(){
+    return $this->_import_sql;
+  }
+
+  function setActive($active){
+    $this->_active = (bool)$active;
+  }
+
+  function isActive(){
+    return $this->_active;
   }
 
 }
