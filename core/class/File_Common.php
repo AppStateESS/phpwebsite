@@ -113,7 +113,7 @@ class File_Common {
     if (empty($this->directory))
       return PHPWS_Error::get(PHPWS_DIRECTORY_NOT_SET, "core", "PHPWS_File::getPath");
 
-    return "images/" . $this->getDirectory() . $this->getFilename();
+    return "./images/" . $this->getDirectory() . $this->getFilename();
   }
 
   function allowType($type=NULL){
