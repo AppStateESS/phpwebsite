@@ -3,8 +3,10 @@
 {TABS}
 </tr>
 </table>
-<table border="0" width="100%" cellpadding="8" cellspacing="0">
-<tr><td class="bg_medium">
+<table border="0" width="100%" cellpadding="4" cellspacing="0">
+<tr>
+<!-- BEGIN active --><td class="bg-medium">{ACTIVE}<!-- END active -->
+<!-- BEGIN inactive --><td class="bg-light">{INACTIVE}<!-- END inactive -->
 {LINKS}
 </td></tr>
 </table>
