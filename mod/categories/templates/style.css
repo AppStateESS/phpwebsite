@@ -1,0 +1,97 @@
+/*------------- CONTROL PANEL ------------------*/
+
+/*--------------- Tabs ---------------*/
+#linkstab {
+  width : 100%;
+  padding : 3px;
+  margin-bottom : 1px;
+  margin-left : -2px;
+}
+
+#linkstab li {
+  display: inline;
+  list-style-type: none;
+  font-weight: bold;
+}
+
+
+#linkstab li.active {
+  color : white;
+  background-color : #9DAFFF;
+  font-size: 0.8em;
+  padding: 5px 5px 4px 5px;
+}
+
+#linkstab li.inactive {
+  background-color : #B3D1FF;
+  font-size: 0.8em;
+  padding: 5px 5px 2px 5px;
+}
+
+
+#linkstab li.active a:link { 
+	text-decoration: none;
+	color: black;
+}
+
+#linkstab li.active a:visited { 
+	text-decoration: none; 
+	color: black;
+}
+
+#linkstab li.active a:hover { 
+	text-decoration: none; 
+	color: white;
+}
+
+#linkstab li.inactive a:link { 
+	text-decoration: none; 
+	color: black;
+}
+
+#linkstab li.inactive a:visited { 
+	text-decoration: none; 
+	color: black;
+}
+
+#linkstab li.inactive a:hover { 
+	text-decoration: none; 
+	color: white;
+}
+
+#linkstab li.inactive:hover {
+  background: #4EDE44;
+  color: white;
+}
+
+
+/*-------------- Content -----------------*/
+#linksframe {
+  margin-left : 1px;
+  margin-top : -2px;
+  display : table;
+  width : 100%;
+  background: #9DAFFF;
+  height: 100%;
+  padding-top: 5px;
+  padding-left : 0px;
+  padding-right : 0px;
+}
+
+#linksbackgrd {
+  background-color : white;
+  padding-top : 5px;
+  height : 100%;
+  width : 100%;
+}
+
+
+.page-title {
+  background-color : #F2F2F2;
+  border-left : solid 2px #B3D1FF;
+  border-bottom : solid 2px #B3D1FF;
+  padding : .2em;
+  font-size : 1.1em;
+  font-weight : bold;
+  
+}
