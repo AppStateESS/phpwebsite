@@ -2,7 +2,7 @@ CREATE TABLE users_config ( anonymous INT NOT NULL );
 
 CREATE TABLE users_demographic_items ( label CHAR(20) NOT NULL, input_type CHAR(15) NOT NULL, presets TEXT );
 
-CREATE TABLE users_groups ( id INT NOT NULL PRIMARY KEY, active SMALLINT NOT NULL, name CHAR(50) NOT NULL, user_id SMALLINT NULL );
+CREATE TABLE users_groups ( id INT NOT NULL PRIMARY KEY, active SMALLINT NOT NULL, name CHAR(50) NOT NULL, user_id INT NOT NULL );
 
 CREATE TABLE users_item_permissions ( group_id INT NOT NULL, item_id INT NOT NULL );
 
