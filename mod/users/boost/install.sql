@@ -8,7 +8,7 @@ CREATE TABLE users_item_permissions ( group_id INT NOT NULL, item_id INT NOT NUL
 
 CREATE TABLE users_members ( group_id INT NOT NULL, member_id INT NOT NULL );
 
-CREATE TABLE users_permissions ( group_id INT NOT NULL, add_edit_users SMALLINT NOT NULL, delete_users SMALLINT NOT NULL, add_edit_groups SMALLINT NOT NULL, delete_groups SMALLINT NOT NULL, edit_permissions SMALLINT NOT NULL );
+CREATE TABLE users_permissions ( group_id INT NOT NULL, permission_level SMALLINT NOT NULL, add_edit_users SMALLINT NOT NULL, delete_users SMALLINT NOT NULL, add_edit_groups SMALLINT NOT NULL, delete_groups SMALLINT NOT NULL, edit_permissions SMALLINT NOT NULL );
 
 CREATE TABLE users_settings ( id INT NOT NULL, label CHAR(30) NOT NULL, var_name CHAR(100) NOT NULL, var_value TEXT );
 
