@@ -2,12 +2,22 @@
 
 /*-------------- Main Menu -----------*/
 
-.tab-list {
-background-color : yellow;
+.tab-title {
+font-weight : bold;
+background-color : #E8E9EA;
 }
 
 .link-list {
-background-color : red;
+
+}
+
+div.admin-menu-title {
+font-weight : bold;
+font-size : 1.1em;
+color : white;
+font-style : italic;
+background-color : #94B6DE;
+padding : 4px;
 }
 
 /*--------------- Tabs ---------------*/
