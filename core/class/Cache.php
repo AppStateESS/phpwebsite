@@ -46,10 +46,11 @@ class PHPWS_Cache {
     if (!PHPWS_Cache::isEnabled())
       return;
 
-    if (!is_string($content))
+    if (!is_string($content)) {
       return PHPWS_Error::get(PHPWS_VAR_TYPE, 'core', __CLASS__ . '::' .__FUNCTION__);
+    }
     $cache = & PHPWS_Cache::initCache($lifetime);
-    $result = $cache->save($content, md5($key));
+    return $cache->save($content, md5($key));
   }
 
 }
