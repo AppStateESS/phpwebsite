@@ -15,30 +15,24 @@ define("IMAGETYPE_JPX",    11);
 // This is 12 in php php > 4.3
 define("IMAGETYPE_SWC",    13); 
 
-PHPWS_Core::initCoreClass("File.php");
-
-class PHPWS_Image extends PHPWS_File{
-  var $_width     = NULL;
-  var $_height    = NULL;
-  var $_alt       = NULL;
-  var $_border    = 0;
-
-  function PHPWS_Image($id=NULL){
-    $this->setTable("images");
-
-    $this->addExclude(array("_border"));
-
-    if (isset($id)){
-      $this->setId($id);
-      $this->init();
-    }
-  }
+class PHPWS_Image{
+  var $directory = NULL;
+  var $filename  = NULL;
+  var $width     = NULL;
+  var $height    = NULL;
+  var $title     = NULL;
+  var $alt       = NULL;
+  var $border    = 0;
 
   function getTag(){
     $tag[] = "<img";
-    $tag[] = "src=\"" . $this->getPath() . "\"";
-    $tag[] = "alt=\"" . $this->getAlt() . "\"";
-    $tag[] = "title=\"" . $this->getTitle() . "\"";
+
+    $path = $this->getPath();
+    if (PEAR::isError($path))
+      return $path;
+    $tag[] = "src=\"$path\"";
+    $tag[] = "alt=\"" . $this->getAlt(TRUE) . "\"";
+    $tag[] = "title=\"" . $this->getTitle(TRUE) . "\"";
     $tag[] = "width=\"" . $this->getWidth() . "\"";
     $tag[] = "height=\"" . $this->getHeight() . "\"";
     $tag[] = "border=\"" . $this->getBorder() . "\"";
@@ -46,36 +40,80 @@ class PHPWS_Image extends PHPWS_File{
     return implode(" ", $tag);
   }
 
+  function setDirectory($directory){
+    if (!preg_match("/\/$/", $directory))
+      $directory .= "/";
+    $this->directory = $directory;
+  }
 
-  function _setWidth($width){
-    $this->_width = $width;
+  function getDirectory(){
+    return $this->directory;
+  }
+
+  function setFilename($filename){
+    $this->filename = $filename;
+  }
+
+  function getFilename(){
+    return $this->filename;
+  }
+
+  function getPath(){
+    if (empty($this->filename))
+      return PHPWS_Error::get(PHPWS_FILENAME_NOT_SET, "core", "PHPWS_Image::getPath");
+
+    if (empty($this->directory))
+      return PHPWS_Error::get(PHPWS_DIRECTORY_NOT_SET, "core", "PHPWS_Image::getPath");
+
+    return $this->getDirectory() . $this->getFilename();
+  }
+
+  function setWidth($width){
+    $this->width = $width;
   }
 
   function getWidth(){
-    return $this->_width;
+    return $this->width;
   }
 
-  function _setHeight($height){
-    $this->_height = $height;
+  function setHeight($height){
+    $this->height = $height;
   }
 
   function getHeight(){
-    return $this->_height;
+    return $this->height;
   }
 
   function setBounds(){
-    $bound = getimagesize($this->getPath());
-    $this->_setWidth($bound[0]);
-    $this->_setHeight($bound[1]);
-    $this->_setType($bound[2]);
+    $bound = @getimagesize($this->getPath());
+    if (!is_array($bound))
+      return PHPWS_Error::get(PHPWS_BOUND_FAILED, "core", "PHPWS_Image::setBounds", $this->getPath());
+
+    $this->setWidth($bound[0]);
+    $this->setHeight($bound[1]);
+    $this->setType($bound[2]);
   }
 
   function setAlt($alt){
-    $this->_alt = $alt;
+    $this->alt = $alt;
   }
 
-  function getAlt(){
-    return $this->_alt;
+  function getAlt($check=FALSE){
+    if ((bool)$check && empty($this->alt) && isset($this->title))
+      return $this->title;
+
+    return $this->alt;
+  }
+
+  function setTitle($title){
+    $this->title($title);
+  }
+
+  function getTitle($check=FALSE){
+    if ((bool)$check && empty($this->title) && isset($this->alt))
+      return $this->alt;
+
+    return $this->title;
   }
 
   function setBorder($border){
@@ -83,119 +121,8 @@ class PHPWS_Image extends PHPWS_File{
   }
 
   function getBorder(){
-    return $this->_border;
+    return $this->border;
   }
-
-  function save(){
-    $this->setBounds();
-    $height = $this->getHeight();
-    $width  = $this->getWidth();
-    $alt    = $this->getAlt();
-    $type   = $this->getType();
-
-    if (!isset($alt)){
-      if ($title = $this->getTitle())
-	$this->setAlt($title);
-      else {
-	$this->setTitle($this->getFilename());
-	$this->setAlt($this->getFilename());
-      }
-    }
-
-    $this->commit();
-  }
-
-  /**
-   * Creates a thumbnail of a jpeg or png image.
-   *
-   * @author   Jeremy Agee <jagee@NOSPAM.tux.appstate.edu>
-   * @modified Adam Morton <adam@NOSPAM.tux.appstate.edu>
-   * @modified Steven Levin <steven@NOSPAM.tux.appstate.edu>
-   * @modified Matthew McNaney <matt at NOSPAM dot tux dot appstate dot edu>
-   * @param    string  $fileName          The file name of the image you want thumbnailed.
-   * @param    string  $directory         Path to the file you want thumbnailed
-   * @param    string  $tndirectory       The path to where the new thumbnail file is stored
-   * @param    integer $maxHeight         Set width of the thumbnail if you do not want to use the default 
-   * @param    integer $maxWidth          Set height of the thumbnail if you do not want to use the default
-   * @return   array   0=>thumbnailFileName, 1=>thumbnailWidth, 2=>thumbnailHeight 
-   * @access   public
-   */
-  function makeThumbnail($fileName, $directory, $tndirectory, $maxWidth=125, $maxHeight=125){
-    $image = new PHPWS_Image;
-
-    $image->setDirectory($directory);
-    $image->setName = $fileName;
-
-    $image = implode("", array($directory, $fileName));
-
-    if (!is_file($image))
-      return PEAR::raiseError("Image <b>$image</b> not found.");
-
-    $imageInfo = getimagesize($image);
-
-    if($imageInfo[0] > $imageInfo[1]) {
-      $scale = $maxWidth / $imageInfo[0];
-    } else{
-      $scale = $maxHeight / $imageInfo[1];
-    }
-
-    $thumbnailWidth = round($scale * $imageInfo[0]);
-    $thumbnailHeight = round($scale * $imageInfo[1]);
-    $thumbnailImage = NULL;
-    if(PHPWS_Image::chkgd2())
-        $thumbnailImage = ImageCreateTrueColor($thumbnailWidth, $thumbnailHeight);
-    else
-        $thumbnailImage = ImageCreate($thumbnailWidth, $thumbnailHeight);
-  
-    if ($imageInfo[2] == 2) {
-      $fullImage = ImageCreateFromJPEG($image);
-    } else if ($imageInfo[2] == 3){
-      $fullImage = ImageCreateFromPNG($image);
-    }
-  
-    ImageCopyResized($thumbnailImage, $fullImage, 0, 0, 0, 0, $thumbnailWidth, $thumbnailHeight, ImageSX($fullImage), ImageSY($fullImage));
-    ImageDestroy($fullImage);
-
-    $thumbnailFileName = explode('.', $fileName);
-
-    if ($imageInfo[2] == 2) {
-      $thumbnailFileName = $thumbnailFileName[0] . "_tn.jpg";
-      imagejpeg($thumbnailImage, $tndirectory . $thumbnailFileName);
-    } else if ($imageInfo[2] == 3){
-      $thumbnailFileName = $thumbnailFileName[0] . "_tn.png";
-      imagepng($thumbnailImage, $tndirectory . $thumbnailFileName);
-    }
-
-    
-    return array($thumbnailFileName, $thumbnailWidth, $thumbnailHeight);
-  } // END FUNC makeThumbnail()
-
-  function chkgd2(){
-    if(function_exists("gd_info")) {
-      $gdver = gd_info();
-      if(strstr($gdver["GD Version"], "1.") != FALSE) {
-	return FALSE;
-      } else {
-	return TRUE;
-      }
-    } else {
-      ob_start();
-      phpinfo(8);
-      $phpinfo=ob_get_contents();
-      ob_end_clean();
-      $phpinfo=strip_tags($phpinfo);
-      $phpinfo=stristr($phpinfo,"gd version");
-      $phpinfo=stristr($phpinfo,"version");
-      $end=strpos($phpinfo," ");
-      $phpinfo=substr($phpinfo,0,$end);
-      $phpinfo=substr($phpinfo,7);
-      if(version_compare("2.0", "$phpinfo")==1)
-	return FALSE;
-      else
-	return TRUE;
-    }
-  }// END FUNC chkgd2()
-  
   
 }
 
