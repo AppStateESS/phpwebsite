@@ -97,10 +97,8 @@ class PHPWS_Form {
     $this->_encode   = NULL;
   }
 
-  function extractKeyValue($name){
-    $value['index'] = preg_replace("/\w+\[(\w*)\]$/", "\\1", $name);
-    $value['name'] = preg_replace("/\[\w*\]$/", "", $name);
-    return $value;
+  function setTemplateFile($file){
+    $this->templateFile = $file;
   }
 
   function addText($name, $value=NULL){
@@ -173,7 +171,7 @@ class PHPWS_Form {
    * @param mixed  value The default value of the form element
    */
   function add($name, $type=NULL, $value=NULL){
-    if (preg_match("/[^\[\]a-z0-9_]/i", $name))
+    if (preg_match("/[^\[\]\w]+/i", $name))
       return PHPWS_Error::get(PHPWS_FORM_BAD_NAME, "core", "PHPWS_Form::add", array($name));
 
     $result = PHPWS_Form::createElement($name, $type, $value);
@@ -181,12 +179,7 @@ class PHPWS_Form {
     if (PEAR::isError($result))
       return $result;
 
-    if (preg_match("/\[\w*\]$/Ui", $name)){
-      $keyValue = PHPWS_Form::extractKeyValue($name);
-      extract($keyValue);
-      $this->_elements[$name][$index] = $result;
-    }
-    elseif (is_array($result)){
+    if (is_array($result)){
       foreach ($result as $element){
 	if ($type != "radio")
 	  $element->isArray = TRUE;
@@ -214,6 +207,10 @@ class PHPWS_Form {
       if (PEAR::isError($result))
 	return $result;
     }
+  }
+
+  function makeLabel($name, $label){
+    return "<label for=\"$name\">$label</label>";
   }
 
   function setLabel($name, $label=NULL){
@@ -411,16 +408,10 @@ class PHPWS_Form {
    * @param string template Name of template tag to print for this element
    */
   function setTag($name, $tag){
-    if (preg_match("/\[\w*\]$/Ui", $name)){
-      $keyValue = PHPWS_Form::extractKeyValue($name);
-      extract($keyValue);
-      $this->_elements[$name][$index]->setTag($tag);
-    } else {
-      foreach ($this->_elements[$name] as $key=>$element){
-	$result = $this->_elements[$name][$key]->setTag($tag);
-	if (PEAR::isError($result))
-	  return $result;
-      }
+    foreach ($this->_elements[$name] as $key=>$element){
+      $result = $this->_elements[$name][$key]->setTag($tag);
+      if (PEAR::isError($result))
+	return $result;
     }
   }
 
@@ -670,6 +661,9 @@ class PHPWS_Form {
 
     if ($helperTags)
       $template["START_FORM"] = $this->getStart();
+
+    if (Current_User::isLogged())
+      $this->addHidden("authkey", Current_User::getAuthKey());
 
     foreach ($this->_elements as $elementName=>$element){
       $multiple = FALSE;
@@ -1198,7 +1192,7 @@ class Form_Element {
   function getLabel($formMode=FALSE){
     if ($formMode){
       if (isset($this->label))
-	return "<label for=\"" . $this->getId() . "\">" . $this->label . "</label>";
+	return PHPWS_Form::makeLabel($this->getId(), $this->label);
       else
 	return NULL;
     }
@@ -1349,7 +1343,7 @@ class Form_Element {
   }
 
   function setTag($tag){
-    $this->tag =$tag;
+    $this->tag = $tag;
   }
 
   function getTag(){
@@ -1358,7 +1352,7 @@ class Form_Element {
     else {
       $name = str_replace("][", "_", $this->name);
       $name = str_replace("[", "_", $name);
-      $name = str_replace("]", "_", $name);
+      $name = str_replace("]", "", $name);
       
       return strtoupper($name);
     }
