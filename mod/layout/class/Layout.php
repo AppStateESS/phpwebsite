@@ -285,10 +285,17 @@ class Layout {
     // Load body of theme 
     $finalTheme = &Layout::loadTheme(Layout::getCurrentTheme(), $bodyLayout);
 
-    if (PEAR::isError($finalTheme))
+    if (PEAR::isError($finalTheme)) {
       $content = implode('', $bodyLayout);
-    else
+    }
+    else {
       $content = $finalTheme->get();
+      if (LABEL_TEMPLATES) {
+	$content = "\n<!-- START TPL: " . $finalTheme->lastTemplatefile . " -->\n"
+	  . $content
+	  . "\n<!-- END TPL: " . $finalTheme->lastTemplatefile . " -->\n";
+      }
+    }
 
     $fullpage = Layout::wrap($content);
 
@@ -533,6 +540,9 @@ class Layout {
     }
   }
 
+  /**
+   * Inserts the content data into the current theme
+   */
   function &loadTheme($theme, $template){
     $tpl = new PHPWS_Template;
     $themeDir = Layout::getThemeDir();
@@ -644,6 +654,9 @@ class Layout {
     $GLOBALS['Layout_Page_Title_Add'][] = $title;
   }
 
+  /**
+   * Wraps the content with the layout header
+   */
   function wrap($content){
     $theme = Layout::getCurrentTheme();
     if (isset($GLOBALS['Layout_JS'])){
