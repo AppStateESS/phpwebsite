@@ -81,8 +81,11 @@ class Blog {
 
     if ($limited) {
       $links[] = PHPWS_Text::rerouteLink(_("View"), "blog", "view", $this->getId());
-    } else {
-      Categories::showCategoryLinks("blog", $this->id);
+    }
+
+    $result = Categories::getSimpleLinks("blog", $this->id);
+    if (!empty($result)) {
+      $template['CATEGORIES'] = implode(", ", $result);
     }
 
     if (isset($links)) {
