@@ -44,6 +44,9 @@ body {
 	padding-bottom : 10px;
 }
 
+#header img {
+	padding : 0px;
+}
 
 #footer {
 	clear: both;
@@ -139,3 +142,9 @@ div.box a:hover, div.box a:active {
 input {
 	font-size : 9pt;
 }
+
+img {
+    padding : 5px;
+}
+
+
