@@ -432,7 +432,7 @@ class Setup{
     $tpl = & new PHPWS_Template;
     $tpl->setFile("setup/templates/setup.tpl", TRUE);
     if (!isset($title))
-      $title = _("phpWebSite 0.9.4 Alpha Setup");
+      $title = _("phpWebSite 1.0.0 Alpha Setup");
 
     $setupData['TITLE'] = $title;
     $setupData['MAIN_CONTENT'] = implode("", $content);
@@ -461,7 +461,7 @@ class Setup{
     if (Setup::configExists())
       $step = 2;
 
-    $content[] = "<b>Welcome to the phpWebSite 0.9.4 Alpha Installation</b><br />";
+    $content[] = "<b>Welcome to the phpWebSite 1.0.0 Alpha Installation</b><br />";
     $content[] = ""
       . "<p>The word 'Alpha' should clue you in that this software is by no means "
       . "ready for a production environment. Unless you are a developer, installation "
@@ -479,7 +479,8 @@ class Setup{
     require_once("File.php");
     $content[] = _("Importing core database file.") . "<br />";
     $installSQL = File::readAll("core/boost/install.sql");
-    $result = PHPWS_DB::import($installSQL);
+    $db = & new PHPWS_DB;
+    $result = $db->import($installSQL);
 
     if (is_array($result)){
       foreach ($result as $error)
