@@ -120,8 +120,10 @@ class Setup{
       $check = FALSE;
     }
 
+    /*
     if (!empty($_POST['dbhost']))
       $content[] = _("Notice: Missing a host reference.") . "<br />";
+    */
 
     Setup::setConfigSet("dbhost", $_POST['dbhost']);
 
@@ -152,17 +154,57 @@ class Setup{
     if (CHECK_DB_CONNECTION == FALSE)
       return TRUE;
 
-    if (Setup::testDBConnect())
+    $checkConnection = Setup::testDBConnect();
+
+    if ($checkConnection == 1) {
       return TRUE;
+    }
+    elseif ($checkConnection == -1) {
+      $content[] = _("PhpWebSite was able to connect but the database itself does not exist.") . "<br />";
+      $content[] = "<a href=\"index.php?step=1a\">" . _("Do you want phpWebSite to create the database?") . "</a>" . "<br />";
+      $content[] = _("If not, you will need to create the database yourself and return to the setup.") . "<br />";
+      return FALSE;
+    }
     else {
       $content[] = _("Unable to connect to the database with the information provided.") . "<br />";
-      $content[] = "<a href=\"help/database." . DEFAULT_LANGUAGE . ".txt\">" . _("Database Help") . "</a>";
+      $content[] = "<a href=\"help/database." . DEFAULT_LANGUAGE . ".txt\" target=\"index\">" . _("Database Help") . "</a>";
       return FALSE;
     }
 
   }
 
-  function testDBConnect(){
+
+  function createDatabase(&$content){
+    $dsn = Setup::getDSN(1);
+    $db = & DB::connect($dsn);
+
+    if (PEAR::isError($db)) {
+      test($db);
+      PHPWS_Error::log($db);
+      $content[] = _("Unable to connect.") . "<br />";
+      $content[] = _("Check your configuration settings.");
+      return FALSE;
+    }
+
+    $result = $db->query("CREATE DATABASE " . Setup::getConfigSet("dbname"));
+    if (PEAR::isError($result)) {
+      test($db);
+      PHPWS_Error::log($db);
+      $content[] = _("Unable to create the database.") . "<br />";
+      $content[] = _("You will need to create it manually and rerun the setup.");
+      return FALSE;
+    }
+
+    $dsn = Setup::getDSN(2);
+    Setup::setConfigSet("dsn", $dsn);
+    $_SESSION['configSettings']['database'] = TRUE;
+
+    $content[] = _("The database creation succeeded!") . "<br />";
+    $content[] = "<a href=\"index.php?step=1\">" . _("You can now finish the creation of your config file.") . "</a>";
+
+  }
+
+  function getDSN($mode){
     $dbtype = Setup::getConfigSet("dbtype");
     $dbuser = Setup::getConfigSet("dbuser");
     $dbpass = Setup::getConfigSet("dbpass");
@@ -170,23 +212,49 @@ class Setup{
     $dbport = Setup::getConfigSet("dbport");
     $dbname = Setup::getConfigSet("dbname");
 
-    $dsn = $dbtype . "://" . $dbuser . ":" . $dbpass . "@" . $dbhost;
-
+    $dsn =  $dbtype . "://" . $dbuser . ":" . $dbpass . "@" . $dbhost;
     if (!empty($dbport))
       $dsn .= ":" . $dbport;
 
-    $dsn .= "/" . $dbname;
-    
-    $result = DB::connect($dsn);
+    switch ($mode){
+    case 1:
+      return $dsn;
+      break;
 
-    if (PEAR::isError($result)){
-      PHPWS_Error::log($result);
+    case 2:
+      $dsn .= "/" . $dbname;
+      return $dsn;
+      break;
+    }
+  }
+
+  function testDBConnect(){
+    $dsn = Setup::getDSN(1);
+    $connection = DB::connect($dsn);
+
+    if (PEAR::isError($connection)){
+      PHPWS_Error::log($connection);
       return FALSE;
     }
     else {
+      $connection->disconnect();
+
+      $dsn = Setup::getDSN(2);
+      $result = DB::connect($dsn);
+
+      if (PEAR::isError($result)) {
+	if ($result->getCode() == DB_ERROR_NOSUCHDB) {
+	  return -1;
+	} else {
+	  PHPWS_Error::log($connection);
+	  return 0;
+	}
+      }
+
       Setup::setConfigSet("dsn", $dsn);
-      return TRUE;
+      return 1;
     }
+
   }
 
   function setConfigSet($setting, $value){
@@ -280,26 +348,26 @@ class Setup{
     $formTpl['DBPREFIX_LBL'] = _("Table Prefix");
     $formTpl['DBPREFIX_DEF'] = _("If phpWebSite is sharing a database with another application, we suggest you give the tables a prefix.");
 
-
-    $form->add("dbtype", "select", $databases);
+    $form->addSelect("dbtype", $databases);
     $form->setMatch("dbtype", Setup::getConfigSet("dbtype"));
 
-    $form->add("dbuser", "textfield", Setup::getConfigSet("dbuser"));
+    $form->addText("dbuser", Setup::getConfigSet("dbuser"));
     $form->setSize("dbuser", 20);
 
-    $form->add("dbpass", "password");
+    $form->addPassword("dbpass", Setup::getConfigSet("dbpass"));
+    $form->allowValue("dbpass");
     $form->setSize("dbpass", 20);
 
-    $form->add("dbhost", "textfield", Setup::getConfigSet("dbhost"));
+    $form->addText("dbhost", Setup::getConfigSet("dbhost"));
     $form->setSize("dbhost", 20);
 
-    $form->add("dbport", "textfield", Setup::getConfigSet("dbport"));
+    $form->addText("dbport", Setup::getConfigSet("dbport"));
     $form->setSize("dbport", 6);
 
-    $form->add("dbname", "textfield", Setup::getConfigSet("dbname"));
+    $form->addText("dbname", Setup::getConfigSet("dbname"));
     $form->setSize("dbname", 20);
 
-    $form->add("dbprefix", "textfield", Setup::getConfigSet("dbprefix"));
+    $form->addText("dbprefix", Setup::getConfigSet("dbprefix"));
     $form->setSize("dbprefix", 20);
 
     $form->mergeTemplate($formTpl);
