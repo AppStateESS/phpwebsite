@@ -14,19 +14,18 @@ class Layout_Box {
     if (!isset($id))
       return;
 
-    $result = $this->load($id);
+    $result = $this->init($id);
     if (PEAR::isError($result))
       PHPWS_Error::log($result);
   }
 
-  function load($id){
+  function init($id){
     $DB = new PHPWS_DB("layout_box");
     $DB->addWhere("id", $id);
-    $result = $DB->loadObjects("Layout_Box", TRUE);
+    $result = $DB->loadObject($this);
+
     if (PEAR::isError($result))
       return $result;
-    else
-      $this = $result;
   }
 
   function setID($id){
@@ -116,7 +115,7 @@ class Layout_Box {
     $db->addWhere("theme", $this->getTheme());
     $db->addWhere("theme_var", $this->getThemeVar());
     $db->setIndexBy("box_order");
-    $boxes = $db->loadObjects("Layout_Box");
+    $boxes = $db->getObjects("Layout_Box");
 
     if (!isset($boxes))
       return;
@@ -144,7 +143,7 @@ class Layout_Box {
     $db->addWhere("theme", $this->getTheme());
     $db->addWhere("theme_var", $this->getThemeVar());
     $db->setIndexBy("box_order");
-    $boxes = $db->loadObjects("Layout_Box");
+    $boxes = $db->getObjects("Layout_Box");
 
     if (!isset($boxes))
       return;
@@ -172,7 +171,7 @@ class Layout_Box {
     $db->addWhere("theme", $theme);
     $db->addWhere("theme_var", $themeVar);
     $db->addOrder("box_order");
-    $boxes = $db->loadObjects("Layout_Box");
+    $boxes = $db->getObjects("Layout_Box");
 
     if (!isset($boxes))
       return;
