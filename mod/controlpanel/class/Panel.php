@@ -51,6 +51,10 @@ class PHPWS_Panel{
     return $this->_tabs;
   }
 
+  function dropTab($id){
+    unset($this->_tabs[$id]);
+  }
+
   function setContent($content){
     $this->_content = $content;
   }
