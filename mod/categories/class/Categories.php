@@ -66,12 +66,10 @@ class Categories{
 
     $cat = & new Category_Item($module, $item_name);
     $cat->setItemId($item_id);
-    $result = $cat->getCategoryItems();
+    $cat_list = $cat->getCategoryItemIds();
 
-    if (empty($result))
+    if (empty($cat_list))
       return NULL;
-
-    $cat_list = array_keys($result);
 
     $db = & new PHPWS_DB('categories');
     $db->addWhere('id', $cat_list);
@@ -129,42 +127,6 @@ class Categories{
 
   }
 
-  /**
-   * Listing of all items within a category
-   */
-  function getAllItems(&$category, $module=NULL) {
-    PHPWS_Core::initModClass('categories', 'Category_Item.php');
-    PHPWS_Core::initCoreClass('DBPager.php');
-
-
-    $pageTags['TITLE_LABEL'] = _('Title');
-    $pageTags['MODULE_LABEL'] = _('Module');
-
-    $pager = & new DBPager('category_items', 'Category_Item');
-    $pager->addWhere('cat_id', $category->id);
-    $pager->addWhere('version_id', 0);
-
-    if (isset($module)) {
-      $pager->addWhere('module', $module);
-    }
-    $pager->setModule('categories');
-    $pager->setDefaultLimit(10);
-    $pager->setTemplate('category_item_list.tpl');
-    $pager->setLink('index.php?module=categories&amp;action=view&amp;id=' . $category->getId());
-    $pager->addTags($pageTags);
-    $pager->addToggle('class="toggle1"');
-    $pager->addToggle('class="toggle2"');
-    $pager->setMethod('title', 'getLink', TRUE);
-    $pager->setMethod('module', 'getProperName');
-    $content = $pager->get();
-
-    if (empty($content)) {
-      return _('No items found in this category.');
-    }
-    else {
-      return $content;
-    }
-  }
 
 
   function _createExtendedLink($category, $mode){
@@ -284,6 +246,21 @@ class Categories{
 
     $content = $tpl->get();
     return $content;
+  }
+
+  function getModuleListing(){
+    PHPWS_Core::initCoreClass('Module.php');
+    $db = & new PHPWS_DB('category_items');
+    $db->addColumn('module');
+    $result = $db->select('count');
+    foreach ($result as $mod_results){
+      $module = & new PHPWS_Module($mod_results['module']);
+      $mod_list[$module->getTitle()] = $module->getProperName() 
+	. ' (' . $mod_results['count']. ')';
+    }
+
+    return $mod_list;
+
   }
 
 }

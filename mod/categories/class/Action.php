@@ -302,7 +302,7 @@ class Categories_Action{
 	$template['TITLE'] = _('Module') . ':' . $mod->getProperName();
       }
       
-      $content = Categories::getAllItems($category, $module);
+      $content = Categories_Action::getAllItems($category, $module);
     }
 
     $family_list = Categories::cookieCrumb($category, $module);
@@ -313,6 +313,53 @@ class Categories_Action{
     $content = PHPWS_Template::process($template, 'categories', 'view_categories.tpl');
     return $content;
   }
+
+
+  /**
+   * Listing of all items within a category
+   */
+  function getAllItems(&$category, $module=NULL) {
+    PHPWS_Core::initModClass('categories', 'Category_Item.php');
+    PHPWS_Core::initCoreClass('DBPager.php');
+
+    $pageTags['TITLE_LABEL'] = _('Title');
+    $pageTags['MODULE_LABEL'] = _('Module');
+    
+    $form = & new PHPWS_Form;
+    $form->addHidden('module', 'categories');
+    $form->addHidden('action', 'view');
+    $form->addHidden('id', $category->getId());
+
+    $mod_list = Categories::getModuleListing();
+    // create drop down box here
+
+
+    $pager = & new DBPager('category_items', 'Category_Item');
+    $pager->addWhere('cat_id', $category->id);
+    $pager->addWhere('version_id', 0);
+
+    if (isset($module)) {
+      $pager->addWhere('module', $module);
+    }
+    $pager->setModule('categories');
+    $pager->setDefaultLimit(10);
+    $pager->setTemplate('category_item_list.tpl');
+    $pager->setLink('index.php?module=categories&amp;action=view&amp;id=' . $category->getId());
+    $pager->addTags($pageTags);
+    $pager->addToggle('class="toggle1"');
+    $pager->addToggle('class="toggle2"');
+    $pager->setMethod('title', 'getLink', TRUE);
+    $pager->setMethod('module', 'getProperName');
+    $content = $pager->get();
+
+    if (empty($content)) {
+      return _('No items found in this category.');
+    }
+    else {
+      return $content;
+    }
+  }
+
 
 }
 

@@ -205,6 +205,16 @@ class Category_Item {
 
   }
 
+  function getCategoryItemIds(){
+    $db = & new PHPWS_DB("category_items");
+    $db->addWhere("version_id", $this->getVersionId());
+    $db->addWhere("item_id", $this->getItemId());
+    $db->addWhere("module", $this->getModule());
+    $db->addWhere("item_name", $this->getItemName());
+    $db->addColumn("cat_id");
+
+    return $db->select("col");
+  }
 
   function getCategoryItems(){
     PHPWS_Core::initModClass("categories", "Category_Item.php");
