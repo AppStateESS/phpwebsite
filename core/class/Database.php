@@ -1264,6 +1264,18 @@ class PHPWS_DB {
     return PHPWS_Core::plugObject($object, $variables);
   }
 
+  /**
+   * Creates an array of objects contructed from the submitted
+   * class name.
+   *
+   * Use this function instead of select() to get an array of objects.
+   * Note that your class variables and column names MUST match exactly.
+   * Unmatched pairs will be ignored.
+   * @author Matthew McNaney <matt at tux dot appstate dot edu>
+   * @param string $className Name of object class
+   * @return array $items     Array of objects
+   * @access public
+   */
   function getObjects($className){
     if (!class_exists($className))
       return PHPWS_Error::get(PHPWS_CLASS_NOT_EXIST, 'core', 'PHPWS_DB::getObjects');
