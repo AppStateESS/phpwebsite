@@ -1,0 +1,5 @@
+<?php
+
+/* Item crutch file */
+
+?>
