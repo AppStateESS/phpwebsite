@@ -13,7 +13,7 @@ class PHPWS_Module {
   var $_import_sql    = FALSE;
   var $_version_http  = NULL;
   var $_about         = FALSE;
-  var $_api           = "0.9.4";
+  var $_pre94         = FALSE;
 
   function PHPWS_Module($title=NULL){
     if (isset($title)){
@@ -33,6 +33,15 @@ class PHPWS_Module {
 
     include $result;
 
+    if (isset($mod_title)){
+      $this->_pre94 = TRUE;
+      $proper_name = $mod_pname;
+      if (!isset($active)|| $active == 'on')
+	$active = TRUE;
+      else
+	$active == FALSE;
+    }
+
     if (isset($proper_name))
       $this->setProperName($proper_name);
 
@@ -47,6 +56,9 @@ class PHPWS_Module {
 
     if (isset($import_sql))
       $this->setImportSQL($import_sql);
+
+    if ($this->isPre94())
+      $this->setImportSQL(FALSE);
 
     if (isset($image_dir))
       $this->setImageDir($image_dir);
@@ -159,6 +171,9 @@ class PHPWS_Module {
     return $this->_about;
   }
 
+  function isPre94(){
+    return $this->_pre94;
+  }
 
   function setAPI($api){
     $this->_api = $api;
@@ -208,6 +223,5 @@ class PHPWS_Module {
   }
 
 }
-
 
 ?>
