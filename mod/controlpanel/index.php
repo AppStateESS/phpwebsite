@@ -13,6 +13,6 @@ if (isset($_GET['cp_desc_toggle']))
   PHPWS_ControlPanel_Tab::toggleDesc($_GET['tab']);
 
 if ($_SESSION['User']->isLogged())
-     PHPWS_Layout::add(PHPWS_ControlPanel::display());
+     Layout::add(PHPWS_ControlPanel::display());
 
 ?>
