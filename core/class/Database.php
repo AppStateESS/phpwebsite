@@ -783,7 +783,7 @@ class PHPWS_DB {
 	return $result;
       elseif ($result && $this->affectedRows()){
 	$result->fetchInto($row);
-	return $row[0];
+	return array_shift($row);
       }
       break;
 
@@ -954,6 +954,13 @@ class PHPWS_DB {
       $GLOBALS['PEAR_DB']->disconnect();
   }
 
+  function importFile($filename){
+    if (!is_file($filename)) {
+      return PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, 'core', 'PHPWS_DB::importFile');
+    }
+    $data = file_get_contents($filename);
+    return PHPWS_DB::import($data);
+  }
 
   function import($text, $report_errors=TRUE){
     PHPWS_DB::touchDB();
@@ -975,6 +982,7 @@ class PHPWS_DB {
 	  $query = str_replace($tableName, $prefix . $tableName, $query);
 	}
 	$sqlCommand = array();
+
 	PHPWS_DB::homogenize($query);
 
 	$result = PHPWS_DB::query($query);
@@ -1094,15 +1102,19 @@ class PHPWS_DB {
   }
 
   function extractTableName($sql_value){
-    require_once PHPWS_SOURCE_DIR . 'core/Array.php';
     $temp = explode(' ', trim($sql_value));
-    PHPWS_Array::dropNulls($temp);
+
     if (!is_array($temp))
       return NULL;
-    foreach ($temp as $whatever)
-      $format[] = $whatever;
 
-      switch (trim(strtolower($format[0]))) {
+    foreach ($temp as $whatever){
+      if (empty($whatever)) {
+	continue;
+      }
+      $format[] = $whatever;
+    }
+
+    switch (trim(strtolower($format[0]))) {
       case 'insert':
       if (stristr($format[1], 'into'))
 	return preg_replace('/\(+.*$/', '', str_replace('`', '', $format[2]));
@@ -1125,7 +1137,7 @@ class PHPWS_DB {
       break;
 
       default:
-	return preg_replace('/\(+.*$/', '', str_replace('`', '', $format[2]));
+	return preg_replace('/\W/', '', $format[2]);
       break;
       }
   }// END FUNC extractTableName
