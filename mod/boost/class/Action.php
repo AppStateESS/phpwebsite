@@ -9,6 +9,9 @@ class Boost_Action {
     $file = $module->getVersionHttp();
     $valueArray = file($file);
 
+    if (!isset($valueArray) || !stristr($valueArray[0], "version"))
+      return _("Update file not found.");
+
     foreach ($valueArray as $values){
       list($key, $value) = explode("=", preg_replace("/\s/", "", $values));
       $versionInfo[$key] = $value;
