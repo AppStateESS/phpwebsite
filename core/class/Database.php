@@ -959,7 +959,9 @@ class PHPWS_DB {
       return PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, 'core', 'PHPWS_DB::importFile');
     }
     $data = file_get_contents($filename);
-    return PHPWS_DB::import($data);
+
+    $db = & new PHPWS_DB;
+    return $db->import($data);
   }
 
   function import($text, $report_errors=TRUE){
