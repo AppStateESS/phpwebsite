@@ -1,0 +1,5 @@
+<?php
+
+Layout::addOnLoad('FCKinit();');
+
+?>
