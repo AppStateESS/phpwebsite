@@ -1,37 +1,47 @@
 Database Assistance
 
-Have you created a database? If not, log in to your database and do so.
-(example: CREATE DATABASE phpwebsite094). We recommend you invest in a
-web enabled database tool (we use phpMyAdmin and so should you if you
-are running MySQL).
+Have you created a database? If not, log in to your database and do
+so (example: CREATE DATABASE phpwebsite094). We recommend you invest
+in a web enabled database tool. We use phpMyAdmin for MySQL and
+phpPgAdmin for Postgres. Both are excellent web administration tools.
 
 Make sure your database is running. It seems like a simple thing but
 the service may be inactive.
 
-Next check that your database type you choose matches the database service
-running on your server. The fastest way (on Unix) is to run a grep on services.
-For example, here is grep on MySQL.
+Next check that your database type you choose matches the database
+service running on your server. The fastest way (on Unix) is to run a
+grep on services. For example, here is grep on MySQL.
 
 ps -aux | grep mysql
 
-In Windows, it should be easy enough to locate the database installation in
-service administrator tools.
+In Windows, it should be easy enough to locate the database
+installation in service administrator tools.
 
-The best way to answer the above (and the rest of the questions) is to log in
-to the database. If the service is not running, you won't be able to get in...
-obviously.
+The best way to answer the above (and the rest of the questions) is to
+log in to the database. If the service is not running, you won't be
+able to get in... obviously.
 
-If the service IS running but you can't login using the user name and password
-you entered in the phpWebSite configuration, then you should log in as root or
-administrator and check that the user has been created. If so, the password
-may be at fault.
+If the service IS running but you can't login using the user name and
+password you entered in the phpWebSite configuration, then you should
+log in as root or administrator and check that the user has been
+created. If so, the password may be at fault.
 
-In most cases you will be running phpWebSite on the same server as the database.
-This means you should leave the host reference as "localhost". If you are running
-the database on a different server, you will need to test your connection to that
-server. Check to see if the database responds to a particular port. If so, make
-sure you enter it correctly on in the configuration screen.
+In most cases you will be running phpWebSite on the same server as the
+database. This means you should leave the host reference as
+"localhost". If you are running the database on a different server,
+you will need to test your connection to that server. Check to see if
+the database responds to a particular port. If so, make sure you enter
+it correctly on in the configuration screen.
 
-Finally, if you want to create the configuration file, but for some reason
-DO NOT want it to check the connection, change the CHECK_DB_CONNECTION value
-to FALSE in your setup/config.php file.
+Finally, if you want to create the configuration file, but for some
+reason DO NOT want it to check the connection, change the
+CHECK_DB_CONNECTION value to FALSE in your setup/config.php file.
+
+
+Other possible problems
+---------------------------------------------------------------------
+
+If you get this message : Notice: Missing a host reference.
+and you are running Postgres try the following:
+Leave host name blank (normally localhost) and change the host
+reference port to 5432.
