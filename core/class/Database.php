@@ -536,20 +536,13 @@ class PHPWS_DB {
   function getLimit($dbReady=FALSE){
     if (empty($this->limit))
       return NULL;
-
+    
     if ($dbReady) {
-      $limit[] = "LIMIT " . $this->limit['total'];
-
-      if (isset($this->limit['offset'])) {
-	$limit[] = $this->limit['offset'];
-      }
-
-      $divider = $this->_sql->offset;
-      return implode(" {$divider} ", $limit);
+      return $this->_sql->getLimit($this->limit);
     }
-    else
+    else {
       return $this->limit;
-
+    }
   }
 
   function resetLimit(){

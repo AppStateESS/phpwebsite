@@ -2,8 +2,6 @@
 
 class PHPWS_SQL {
 
-  var $offset = ",";
-
   function export(&$info){
     switch ($info['type']){
     case "int":
@@ -40,6 +38,16 @@ class PHPWS_SQL {
     return $setting;
   }
 
+
+  function getLimit($limit){
+    $limit[] = "LIMIT " . $limit['total'];
+    
+    if (isset($limit['offset'])) {
+      $limit[] = ", " . $limit['offset'];
+    }
+    
+    return implode(" ", $limit);
+  }
 
 }
 

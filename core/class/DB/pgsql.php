@@ -2,8 +2,6 @@
 
 class PHPWS_SQL {
 
-  var $offset = "OFFSET";
-
   function export(&$info){
     switch ($info['type']){
 
@@ -45,6 +43,20 @@ class PHPWS_SQL {
     }
     return $setting;
   }
+
+  function getLimit($limit){
+    $sql[] = "LIMIT";
+
+    if (isset($limit['offset'])) {
+      $sql[] = $limit['offset'];
+      $sql[] = "OFFSET";
+    }
+
+    $sql[] = $limit['total'];
+    
+    return implode(" ", $sql);
+  }
+
 
 }
 
