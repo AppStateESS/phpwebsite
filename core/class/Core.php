@@ -13,8 +13,10 @@
 class PHPWS_Core {
 
   function initializeModules(){
-    if (!$moduleList = PHPWS_Core::getModules())
-      die ("No modules are active");
+    if (!$moduleList = PHPWS_Core::getModules()){
+      PHPWS_Error::log(PHPWS_NO_MODULES, "core", "initializeModules");
+      PHPWS_Core::errorPage();
+    }
 
     if (PEAR::isError($moduleList)){
       PHPWS_Error::log($moduleList);
@@ -178,7 +180,7 @@ class PHPWS_Core {
 
   
   function getConfigFile($module, $file){
-    $file = "config/$module/$file";
+    $file = "./config/$module/$file";
     if (!is_file($file))
       return PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, "core", "getConfigFile", "file = $file");
 
