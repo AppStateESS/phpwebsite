@@ -61,15 +61,24 @@ class Block_Admin {
       break;
 
     case 'postBlock':
-      $result = Block_Admin::postBlock($block);
+      Block_Admin::postBlock($block);
       $result = $block->save();
-      test($result);
-      $title = _('Block saved.');
-      //      $content = Block_Admin::edit($block);
+
+      $message = _('Block saved.');
+      $title = _('Block list');
+      $content = Block_Admin::blockList();
+      break;
+
+    case 'list':
+      $title = _('Block list');
+      $content = Block_Admin::blockList();
       break;
     }
 
     $template['TITLE'] = &$title;
+    if (isset($message)) {
+      $template['MESSAGE'] = &$message;
+    }
     $template['CONTENT'] = &$content;
 
     return PHPWS_Template::process($template, 'block', 'admin.tpl');
@@ -94,12 +103,14 @@ class Block_Admin {
     }
 
     if (Editor::willWork()){
-      $editor = & new Editor('htmlarea', 'content', PHPWS_Text::parseOutput($block->getContent(), FALSE, FALSE));
+      $editor = & new Editor('htmlarea', 'content', 
+			     PHPWS_Text::parseOutput($block->getContent(), FALSE, FALSE));
       $block_content = $editor->get();
       $form->addTplTag('CONTENT', $block_content);
       $form->addTplTag('CONTENT_LABEL', PHPWS_Form::makeLabel('content',_('Content')));
     } else {
-      $form->addTextArea('entry', PHPWS_Text::parseOutput($blog->getEntry(), FALSE, FALSE, FALSE));
+      $form->addTextArea('entry',
+			 PHPWS_Text::parseOutput($blog->getEntry(), FALSE, FALSE, FALSE));
       $form->setRows('content', '10');
       $form->setWidth('content', '80%');
       $form->setLabel('content', _('Entry'));
@@ -118,5 +129,42 @@ class Block_Admin {
     $block->setModule('block');
     return TRUE;
   }
+
+  function _getListAction(&$block){
+    $vars['action']   = 'edit';
+    $vars['block_id'] = $block->getId();
+
+    $links[] = PHPWS_Text::secureLink(_('Edit'), 'block', $vars);
+
+    return implode(' | ', $links);
+  }
+
+  function blockList()
+  {
+    PHPWS_Core::initCoreClass('DBPager.php');
+    
+    $pageTags['TITLE']   = _('Title');
+    $pageTags['CONTENT'] = _('Content');
+    $pageTags['ACTION']  = _('Action');
+
+    $link = 'index.php?module=block&amp;action=list&amp;authkey='
+      . Current_User::getAuthKey();
+
+    $pager = & new DBPager('block', 'Block');
+    $pager->setModule('block');
+    $pager->setTemplate('list.tpl');
+    $pager->setLink($link);
+    $pager->addToggle('class="toggle1"');
+    $pager->addToggle('class="toggle2"');
+    $pager->addTags($pageTags);
+    $pager->setMethod('content', 'summarize');
+    $pager->addRowTag('action', 'Block_Admin', '_getListAction');
+    
+    $content = $pager->get();
+
+    return $content;
+
+  }
+       
 }
 ?>

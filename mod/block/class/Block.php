@@ -41,6 +41,10 @@ class Block {
     $this->content = PHPWS_Text::parseInput($content);
   }
 
+  function summarize(){
+    return substr(strip_tags($this->getContent()), 0, 40);
+  }
+
   function getContent()
   {
     return PHPWS_Text::parseOutput($this->content);
