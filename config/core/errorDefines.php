@@ -22,6 +22,9 @@ define("PHPWS_DB_BAD_OP",             -103);
 define("PHPWS_DB_BAD_TABLE_NAME",     -104);
 define("PHPWS_DB_BAD_COL_NAME",       -104);
 define("PHPWS_DB_NO_COLUMN_SET",      -105);
+define("PHPWS_DB_NOT_OBJECT",         -106);
+define("PHPWS_DB_NO_VARIABLES",       -107);
+
 
 /************* List.php *****************/
 define("PHPWS_LIST_MOD_NOT_SET",      -200);
@@ -72,8 +75,11 @@ define("PHPWS_FILE_DELETE_DENIED",    -800);
 define("PHPWS_DIR_DELETE_DENIED",     -801);
 
 /*************** Image.php ****************/
-define("PHPWS_FILENAME_ONOT_SET",     -900);
+define("PHPWS_FILENAME_NOT_SET",      -900);
 define("PHPWS_DIRECTORY_NOT_SET",     -901);
 define("PHPWS_BOUND_FAILED",          -902);
+
+/*************** Text.php *****************/
+define("PHPWS_TEXT_NOT_STRING",       -1000);
 
 ?>

@@ -20,6 +20,8 @@ $errors[PHPWS_DB_BAD_OP]             = _("Not an acceptable operator.");
 $errors[PHPWS_DB_BAD_TABLE_NAME]     = _("Improper table name.");
 $errors[PHPWS_DB_BAD_COL_NAME]       = _("Improper colume name.");
 $errors[PHPWS_DB_NO_COLUMN_SET]      = _("Missing column to select.");
+$errors[PHPWS_DB_NOT_OBJECT]         = _("Expecting an object variable.");
+$errors[PHPWS_DB_NO_VARIABLES]       = _("Class does not contain variables.");
 
 
 // List.php 200 - 299
@@ -35,17 +37,17 @@ $errors[PHPWS_LIST_DB_COL_NOT_SET]   = _("Database columns not set.");
 
 
 // Form.php 300 - 399
-$errors[PHPWS_FORM_BAD_NAME]         = _("You may not use '[var1]' as a form element name.");
-$errors[PHPWS_FORM_MISSING_NAME]     = _("Unable to find element '[var1]'.");
+$errors[PHPWS_FORM_BAD_NAME]         = _("You may not use '%s' as a form element name.");
+$errors[PHPWS_FORM_MISSING_NAME]     = _("Unable to find element '%s'.");
 $errors[PHPWS_FORM_MISSING_TYPE]     = _("Input type not set.");
 $errors[PHPWS_FORM_WRONG_ELMT_TYPE]  = _("Wrong element type for procedure.");
 $errors[PHPWS_FORM_NAME_IN_USE]      = _("Can't change name. Already in use.");
 $errors[PHPWS_FORM_NO_ELEMENTS]      = _("No form elements have been created.");
 $errors[PHPWS_FORM_NO_TEMPLATE]      = _("The submitted template is not an array.");
-$errors[PHPWS_FORM_NO_FILE]          = _("<b>[var1]</b> not found in _FILES array.");
-$errors[PHPWS_FORM_IMG_TOO_BIG]      = _("Submitted image was larger than [var1]KB limit.");
-$errors[PHPWS_FORM_WIDTH_TOO_BIG]    = _("Submitted image width was larger than [var1] pixel limit.");
-$errors[PHPWS_FORM_HEIGHT_TOO_BIG]   = _("Submitted image height was larger than [var1] pixel limit.");
+$errors[PHPWS_FORM_NO_FILE]          = _("'%s' not found in _FILES array.");
+$errors[PHPWS_FORM_IMG_TOO_BIG]      = _("Submitted image was larger than %sKB limit.");
+$errors[PHPWS_FORM_WIDTH_TOO_BIG]    = _("Submitted image width was larger than %s pixel limit.");
+$errors[PHPWS_FORM_HEIGHT_TOO_BIG]   = _("Submitted image height was larger than %s pixel limit.");
 $errors[PHPWS_FORM_UNKNOWN_TYPE]     = _("Unrecognized form type.");
 $errors[PHPWS_FORM_INVALID_MATCH]    = _("Match for must be an array for a multiple input.");
 
@@ -67,9 +69,12 @@ $errors[PHPWS_UNMATCHED_OPTION]      = _("Help option not found in help configur
 $errors[PHPWS_FILE_DELETE_DENIED]    = _("Unable to delete file.");
 $errors[PHPWS_DIR_DELETE_DENIED]     = _("Unable to delete directory.");
 
-// Image.php 900 - 1000
+// Image.php 900 - 999
 $errors[PHPWS_FILENAME_NOT_SET]      = _("Filename not set.");
 $errors[PHPWS_DIRECTORY_NOT_SET]     = _("Directory not set.");
 $errors[PHPWS_BOUND_FAILED]          = _("There was a problem loading the image file.");
+
+// Text.php 1000-1100
+$errors[PHPWS_TEXT_NOT_STRING]       = _("Function expected a string variable.");
 
 ?>
