@@ -1,14 +1,9 @@
 <?php
 chdir("../");
-if (isset($_REQUEST['step']) && $_REQUEST['step'] > 1){
+if (isset($_REQUEST['step']) && $_REQUEST['step'] > 1)
   require_once "./config/core/config.php";
-}
-else {
-  if (preg_match("/win32/i", $_SERVER['SERVER_SOFTWARE']))
-    ini_set("include_path", ".;lib\\pear\\");
-  else
-    ini_set("include_path", ".:lib/pear/");
-}
+else
+  require_once "./setup/preconfig.php";
 
 require_once "./core/class/Init.php";
 include_once "./setup/config.php";
