@@ -24,6 +24,9 @@ PHPWS_Core::initCoreClass("Item.php");
 PHPWS_Core::initCoreClass("Debug.php");
 PHPWS_Core::initCoreClass("Error.php");
 
+if (PHPWS_TRANSLATION == FALSE)
+     PHPWS_Core::initCoreClass("Crutch.php");
+
 if (!defined("USE_ROOT_CONFIG"))
      define("USE_ROOT_CONFIG", FALSE);
 
