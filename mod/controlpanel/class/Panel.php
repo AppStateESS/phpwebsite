@@ -42,7 +42,7 @@ class PHPWS_Panel{
     $DB->addWhere("itemname", $itemname);
     $DB->addOrder("tab_order");
     $DB->setIndexBy("id");
-    $result = $DB->loadObjects("PHPWS_Panel_Tab");
+    $result = $DB->getObjects("PHPWS_Panel_Tab");
 
     if (PEAR::isError($result))
       exit("ERROR in loadTabs");

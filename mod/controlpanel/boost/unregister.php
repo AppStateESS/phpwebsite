@@ -27,7 +27,7 @@ function controlpanel_unregister($module, &$content){
     $db = & new PHPWS_DB("controlpanel_link");
     foreach ($itemnameList as $itemname){
       $db->addWhere("itemname", $itemname);
-      $result = $db->loadObjects("PHPWS_Panel_Link");
+      $result = $db->getObjects("PHPWS_Panel_Link");
       
       if (PEAR::isError($result) || empty($result))
 	return $result;
@@ -55,7 +55,7 @@ function controlpanel_unregister($module, &$content){
     $db = & new PHPWS_DB("controlpanel_tab");
     foreach ($labelList as $label){
       $db->addWhere("label", $label);
-      $result = $db->loadObjects("PHPWS_Panel_Tab");
+      $result = $db->getObjects("PHPWS_Panel_Tab");
 
       if (PEAR::isError($result) || empty($result))
 	return $result;
