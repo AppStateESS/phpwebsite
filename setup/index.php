@@ -1,13 +1,18 @@
 <?php
 chdir("../");
-if (isset($_REQUEST['step']) && $_REQUEST['step'] > 1)
-     require_once "config/core/config.php";
-     else
-     ini_set("include_path", ".:lib/pear/");
+if (isset($_REQUEST['step']) && $_REQUEST['step'] > 1){
+  require_once "./config/core/config.php";
+}
+else {
+  if (preg_match("/win32/i", $_SERVER['SERVER_SOFTWARE']))
+    ini_set("include_path", ".;lib\\pear\\");
+  else
+    ini_set("include_path", ".:lib/pear/");
+}
 
-require_once "core/class/Init.php";
-include_once "setup/config.php";
-require_once "setup/class/Setup.php";
+require_once "./core/class/Init.php";
+include_once "./setup/config.php";
+require_once "./setup/class/Setup.php";
 
 PHPWS_Core::initCoreClass("Form.php");
 PHPWS_Core::initCoreClass("Text.php");
