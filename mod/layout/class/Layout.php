@@ -1,5 +1,6 @@
 <?php
-
+PHPWS_Core::initCoreClass("Template.php");
+//PHPWS_Core::initCoreClass("Cache.php");
 class Layout {
 
   function initLayout($refresh=FALSE){
@@ -252,13 +253,17 @@ class Layout {
     return in_array($content_var, $_SESSION['Layout_Content_Vars']);
   }
 
-  function addJS($script, $data){
+  function getJavascript($script, $data){
     PHPWS_CORE::initCoreClass("File.php");
     $headfile = "java/$script/head.js";
     $bodyfile = "java/$script/body.js";
 
-    if (is_file($headfile))
-      $GLOBALS['Layout_JS'][$script]['head'] = implode("", file($headfile));
+    if (is_file($headfile)){
+      $tpl = new PHPWS_Template;
+      $tpl->setFile($headfile, TRUE);
+      $tpl->setData($data);
+      $GLOBALS['Layout_JS'][$script]['head'] = $tpl->get();
+    }
 
     if (is_file($bodyfile)){
       $tpl = new PHPWS_Template;
