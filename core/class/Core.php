@@ -256,6 +256,17 @@ class PHPWS_Core {
     }
   }
 
+  function coreModList(){
+    $file = PHPWS_Core::getConfigFile("core", "core_modules.php");
+    if (PEAR::isError($file))
+      return $file;
+
+    include $file;
+    $list = explode(",", $core_modules);
+
+    return $list;
+  }
+
 }// End of core class
 
 ?>
