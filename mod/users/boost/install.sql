@@ -11,8 +11,7 @@ CREATE TABLE users_members ( group_id INT NOT NULL, member_id INT NOT NULL );
 CREATE TABLE users_permissions ( group_id INT NOT NULL, add_edit_users SMALLINT NOT NULL, delete_users SMALLINT NOT NULL, add_edit_groups SMALLINT NOT NULL, delete_groups SMALLINT NOT NULL, edit_permissions SMALLINT NOT NULL );
 
 CREATE TABLE users_settings ( id INT NOT NULL, label CHAR(30) NOT NULL, var_name CHAR(100) NOT NULL, var_value TEXT );
-
-CREATE TABLE users ( id INT NOT NULL PRIMARY KEY, created INT NOT NULL, updated INT NOT NULL, active SMALLINT NOT NULL, approved SMALLINT NOT NULL, username CHAR(30) NOT NULL, password CHAR(32) , deity SMALLINT NOT NULL );
+CREATE TABLE users ( id INT NOT NULL PRIMARY KEY, created INT NOT NULL, updated INT NOT NULL, active SMALLINT NOT NULL, approved SMALLINT NOT NULL, username CHAR(255) NOT NULL, password CHAR(255) NULL, deity SMALLINT NOT NULL );
 
 CREATE TABLE users_demographics (
   label CHAR(20) NOT NULL default '',
