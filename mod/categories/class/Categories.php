@@ -77,7 +77,7 @@ class Categories{
       $result = $db->select("col");
 
       if (is_array($result))
-	array_unshift($result, "-" . _("Top Level")) . "-";
+	array_unshift($result, "-" . _("Top Level") . "-");
       else
 	$result = array(0=>"-" . _("Top Level") . "-");
       break;
