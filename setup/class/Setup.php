@@ -3,7 +3,7 @@
 class Setup{
 
   function configExists(){
-    return is_file("config/core/config.php");
+    return is_file('config/core/config.php');
   }
 
   function initConfigSet(){
@@ -25,10 +25,10 @@ class Setup{
     Setup::initConfigSet();
 
     if (isset($_POST['action'])){
-      if ($_POST['action'] == "postGeneralConfig"){
+      if ($_POST['action'] == 'postGeneralConfig'){
 	if (Setup::postGeneralConfig($content))
 	  $_SESSION['configSettings']['general'] = TRUE;
-      } elseif ($_POST['action'] == "postDatabaseConfig"){
+      } elseif ($_POST['action'] == 'postDatabaseConfig'){
 	if (Setup::postDatabaseConfig($content))
 	  $_SESSION['configSettings']['database'] = TRUE;
       }
@@ -39,113 +39,113 @@ class Setup{
     elseif ($_SESSION['configSettings']['database'] == FALSE)
       Setup::databaseConfig($content);
     else {
-      $configDir = Setup::getConfigSet("source_dir") . "config/core/";
-      if (is_file($configDir . "config.php")){
-	$content[] = _("Your configuration file already exists.") . "<br />"
-	  . _("Remove the following file and refresh to continue:") . "<br />"
-	  . "<pre>" . $configDir . "config.php</pre>";
+      $configDir = Setup::getConfigSet('source_dir') . 'config/core/';
+      if (is_file($configDir . 'config.php')){
+	$content[] = _('Your configuration file already exists.') . '<br />'
+	  . _('Remove the following file and refresh to continue:') . '<br />'
+	  . '<pre>' . $configDir . 'config.php</pre>';
       }
       elseif (Setup::writeConfigFile()){
-	PHPWS_Core::killSession("configSettings");
-	$content[] = _("Your configuration file was written successfully!") . "<br /><br />";
-	$content[] = "<a href=\"index.php?step=2\">" . _("Move on to Step 2") . "</a><br />";
+	PHPWS_Core::killSession('configSettings');
+	$content[] = _('Your configuration file was written successfully!') . '<br /><br />';
+	$content[] = '<a href="index.php?step=2">' . _('Move on to Step 2') . '</a><br />';
       } else {
-	$content[] = _("Your configuration file could not be written into the following directory:") . "<br />";
+	$content[] = _('Your configuration file could not be written into the following directory:') . '<br />';
 	$content[] = "<pre>$configDir</pre>";
-	$content[] = _("Please check your directory permissions and try again.") . "<br />";
-	$content[] = "<a href=\"help/permissions." . DEFAULT_LANGUAGE . ".txt\">" . _("Permission Help") . "</a>";
+	$content[] = _('Please check your directory permissions and try again.') . '<br />';
+	$content[] = '<a href="help/permissions.' . DEFAULT_LANGUAGE . '.txt">' . _('Permission Help') . '</a>';
       }
     }
   }
 
   function writeConfigFile(){
-    require_once "File.php";
+    require_once 'File.php';
 
-    $location = Setup::getConfigSet("source_dir") . "config/core/";
+    $location = Setup::getConfigSet('source_dir') . 'config/core/';
     if (!is_writable($location))
       return FALSE;
 
     $tpl = & new PHPWS_Template;
-    $tpl->setFile("setup/templates/config.tpl", TRUE);
+    $tpl->setFile('setup/templates/config.tpl', TRUE);
     $tpl->setData($_SESSION['configSettings']);
     $configFile = $tpl->get();
 
-    return File::write($location . "config.php", $configFile, FILE_MODE_WRITE);
+    return File::write($location . 'config.php', $configFile, FILE_MODE_WRITE);
   }
 
   function postGeneralConfig(&$content){
     $check = TRUE;
     $source_dir = $_POST['source_dir'];
 
-    if (!preg_match("/\/$/", $source_dir))
-      $source_dir = $source_dir . "/";
+    if (!preg_match('/\/$/', $source_dir))
+      $source_dir = $source_dir . '/';
 
     if (!is_dir($source_dir)){
-      $content[] = _("Unable to locate the source directory:") . " " . $source_dir;
+      $content[] = _('Unable to locate the source directory:') . ' ' . $source_dir;
       $check = FALSE;
     }
     else
-      Setup::setConfigSet("source_dir", $source_dir);
+      Setup::setConfigSet('source_dir', $source_dir);
 
 
-    Setup::setConfigSet("LINUX_PEAR", "//");
-    Setup::setConfigSet("WINDOWS_PEAR", "//");
+    Setup::setConfigSet('LINUX_PEAR', '//');
+    Setup::setConfigSet('WINDOWS_PEAR', '//');
 
     if ($_POST['pear'] == 'local'){
       if (PHPWS_Core::isWindows())
-	Setup::setConfigSet("WINDOWS_PEAR", NULL);
+	Setup::setConfigSet('WINDOWS_PEAR', NULL);
       else
-	Setup::setConfigSet("LINUX_PEAR", NULL);
+	Setup::setConfigSet('LINUX_PEAR', NULL);
     }
 
-    Setup::setConfigSet("site_hash", $_POST['site_hash']);
+    Setup::setConfigSet('site_hash', $_POST['site_hash']);
     return $check;
   }
 
   function postDatabaseConfig(&$content){
     $check = TRUE;
-    $currentPW = Setup::getConfigSet("dbpass");
+    $currentPW = Setup::getConfigSet('dbpass');
 
     if (!empty($_POST['dbuser']))
-      Setup::setConfigSet("dbuser", $_POST['dbuser']);
+      Setup::setConfigSet('dbuser', $_POST['dbuser']);
     else {
-      $content[] = _("Missing a database user name.") . "<br />";
+      $content[] = _('Missing a database user name.') . '<br />';
       $check = FALSE;
     }
 
     if (!empty($_POST['dbpass']))
-      Setup::setConfigSet("dbpass", $_POST['dbpass']);
+      Setup::setConfigSet('dbpass', $_POST['dbpass']);
     elseif (empty($currentPW)) {
-      $content[] = _("Missing a database password.") . "<br />";
+      $content[] = _('Missing a database password.') . '<br />';
       $check = FALSE;
     }
 
     /*
     if (!empty($_POST['dbhost']))
-      $content[] = _("Notice: Missing a host reference.") . "<br />";
+      $content[] = _('Notice: Missing a host reference.') . '<br />';
     */
 
-    Setup::setConfigSet("dbhost", $_POST['dbhost']);
+    Setup::setConfigSet('dbhost', $_POST['dbhost']);
 
     if (!empty($_POST['dbname']))
-      Setup::setConfigSet("dbname", $_POST['dbname']);
+      Setup::setConfigSet('dbname', $_POST['dbname']);
     else {
-      $content[] = _("Missing a database name.") . "<br />";
+      $content[] = _('Missing a database name.') . '<br />';
       $check = FALSE;
     }
 
     if (!empty($_POST['dbprefix'])){
-      if (preg_match("/^([a-z])+([a-z0-9_]*)$/i", $_POST['dbprefix']))
-	Setup::setConfigSet("dbprefix", $_POST['dbprefix']);
+      if (preg_match('/^([a-z])+([a-z0-9_]*)$/i', $_POST['dbprefix']))
+	Setup::setConfigSet('dbprefix', $_POST['dbprefix']);
       else {
-	$content[] = _("The Table Prefix may only consist of letters, numbers, and the underscore character.") . "<br />";
-	$content[] = _("It also may not begin with a number.") . "<br />";
+	$content[] = _('The Table Prefix may only consist of letters, numbers, and the underscore character.') . '<br />';
+	$content[] = _('It also may not begin with a number.') . '<br />';
 	$check = FALSE;
       }
     }
 
-    Setup::setConfigSet("dbtype", $_POST['dbtype']);
-    Setup::setConfigSet("dbport", $_POST['dbport']);
+    Setup::setConfigSet('dbtype', $_POST['dbtype']);
+    Setup::setConfigSet('dbport', $_POST['dbport']);
 
 
     if (!$check)
@@ -160,14 +160,14 @@ class Setup{
       return TRUE;
     }
     elseif ($checkConnection == -1) {
-      $content[] = _("PhpWebSite was able to connect but the database itself does not exist.") . "<br />";
-      $content[] = "<a href=\"index.php?step=1a\">" . _("Do you want phpWebSite to create the database?") . "</a>" . "<br />";
-      $content[] = _("If not, you will need to create the database yourself and return to the setup.") . "<br />";
+      $content[] = _('PhpWebSite was able to connect but the database itself does not exist.') . '<br />';
+      $content[] = '<a href="index.php?step=1a">' . _('Do you want phpWebSite to create the database?') . '</a>' . '<br />';
+      $content[] = _('If not, you will need to create the database yourself and return to the setup.') . '<br />';
       return FALSE;
     }
     else {
-      $content[] = _("Unable to connect to the database with the information provided.") . "<br />";
-      $content[] = "<a href=\"help/database." . DEFAULT_LANGUAGE . ".txt\" target=\"index\">" . _("Database Help") . "</a>";
+      $content[] = _('Unable to connect to the database with the information provided.') . '<br />';
+      $content[] = '<a href="help/database.' . DEFAULT_LANGUAGE . '.txt" target="index">' . _('Database Help') . '</a>';
       return FALSE;
     }
 
@@ -180,40 +180,40 @@ class Setup{
 
     if (PEAR::isError($db)) {
       PHPWS_Error::log($db);
-      $content[] = _("Unable to connect.") . "<br />";
-      $content[] = _("Check your configuration settings.");
+      $content[] = _('Unable to connect.') . '<br />';
+      $content[] = _('Check your configuration settings.');
       return FALSE;
     }
 
-    $result = $db->query("CREATE DATABASE " . Setup::getConfigSet("dbname"));
+    $result = $db->query('CREATE DATABASE ' . Setup::getConfigSet('dbname'));
     if (PEAR::isError($result)) {
       test($db);
       PHPWS_Error::log($db);
-      $content[] = _("Unable to create the database.") . "<br />";
-      $content[] = _("You will need to create it manually and rerun the setup.");
+      $content[] = _('Unable to create the database.') . '<br />';
+      $content[] = _('You will need to create it manually and rerun the setup.');
       return FALSE;
     }
 
     $dsn = Setup::getDSN(2);
-    Setup::setConfigSet("dsn", $dsn);
+    Setup::setConfigSet('dsn', $dsn);
     $_SESSION['configSettings']['database'] = TRUE;
 
-    $content[] = _("The database creation succeeded!") . "<br />";
-    $content[] = "<a href=\"index.php?step=1\">" . _("You can now finish the creation of your config file.") . "</a>";
+    $content[] = _('The database creation succeeded!') . '<br />';
+    $content[] = '<a href="index.php?step=1">' . _('You can now finish the creation of your config file.') . '</a>';
 
   }
 
   function getDSN($mode){
-    $dbtype = Setup::getConfigSet("dbtype");
-    $dbuser = Setup::getConfigSet("dbuser");
-    $dbpass = Setup::getConfigSet("dbpass");
-    $dbhost = Setup::getConfigSet("dbhost");
-    $dbport = Setup::getConfigSet("dbport");
-    $dbname = Setup::getConfigSet("dbname");
+    $dbtype = Setup::getConfigSet('dbtype');
+    $dbuser = Setup::getConfigSet('dbuser');
+    $dbpass = Setup::getConfigSet('dbpass');
+    $dbhost = Setup::getConfigSet('dbhost');
+    $dbport = Setup::getConfigSet('dbport');
+    $dbname = Setup::getConfigSet('dbname');
 
-    $dsn =  $dbtype . "://" . $dbuser . ":" . $dbpass . "@" . $dbhost;
+    $dsn =  $dbtype . '://' . $dbuser . ':' . $dbpass . '@' . $dbhost;
     if (!empty($dbport))
-      $dsn .= ":" . $dbport;
+      $dsn .= ':' . $dbport;
 
     switch ($mode){
     case 1:
@@ -221,7 +221,7 @@ class Setup{
       break;
 
     case 2:
-      $dsn .= "/" . $dbname;
+      $dsn .= '/' . $dbname;
       return $dsn;
       break;
     }
@@ -252,7 +252,7 @@ class Setup{
 	}
       }
 
-      Setup::setConfigSet("dsn", $dsn);
+      Setup::setConfigSet('dsn', $dsn);
       return 1;
     }
 
@@ -270,110 +270,110 @@ class Setup{
   }
 
   function generalConfig(&$content){
-    $form = & new PHPWS_Form("generalConfig");
-    $site_hash  = Setup::getConfigSet("site_hash");
-    $source_dir = Setup::getConfigSet("source_dir");
-    $pear_select = array("local" =>_("Use Pear files included with phpWebSite (recommended)."),
-			 "system"=>_("Use server's Pear library files (not recommended).")
+    $form = & new PHPWS_Form('generalConfig');
+    $site_hash  = Setup::getConfigSet('site_hash');
+    $source_dir = Setup::getConfigSet('source_dir');
+    $pear_select = array('local' =>_('Use Pear files included with phpWebSite (recommended).'),
+			 'system'=>_('Use server\'s Pear library files (not recommended).')
 			 );
 
-    //    $content[] = _("To get started, we need to create your config file.");
+    //    $content[] = _('To get started, we need to create your config file.');
 
-    $formTpl['SOURCE_DIR_LBL'] = _("Source Directory");
-    $formTpl['SOURCE_DIR_DEF'] = _("This is the directory where phpWebSite is installed.");
+    $formTpl['SOURCE_DIR_LBL'] = _('Source Directory');
+    $formTpl['SOURCE_DIR_DEF'] = _('This is the directory where phpWebSite is installed.');
 
-    $formTpl['SITE_HASH_LBL'] = _("Site Hash");
-    $formTpl['SITE_HASH_DEF'] = _("The character string below differentiates your site from others on the same server.") . "<br />"
-      . _("The example is randomly generated.") . " "
-      . _("You may change it if you wish.");
+    $formTpl['SITE_HASH_LBL'] = _('Site Hash');
+    $formTpl['SITE_HASH_DEF'] = _('The character string below differentiates your site from others on the same server.') . '<br />'
+      . _('The example is randomly generated.') . ' '
+      . _('You may change it if you wish.');
 
-    $formTpl['PEAR_LBL'] = _("Pear Configuration");
-    $formTpl['PEAR_DEF'] = _("phpWebSite uses the Pear library extensively.") . "<br />"
-      . _("We suggest you use the library files included with phpWebSite.");
+    $formTpl['PEAR_LBL'] = _('Pear Configuration');
+    $formTpl['PEAR_DEF'] = _('phpWebSite uses the Pear library extensively.') . '<br />'
+      . _('We suggest you use the library files included with phpWebSite.');
 
-    $form->add("source_dir", "textfield", $source_dir);
-    $form->setSize("source_dir", 50);
-    $form->add("step",   "hidden", "1");
-    $form->add("action", "hidden", "postGeneralConfig");
+    $form->add('source_dir', 'textfield', $source_dir);
+    $form->setSize('source_dir', 50);
+    $form->add('step',   'hidden', '1');
+    $form->add('action', 'hidden', 'postGeneralConfig');
 
-    $form->add("site_hash", "textfield", $site_hash);
-    $form->setSize("site_hash", 40);
+    $form->add('site_hash', 'textfield', $site_hash);
+    $form->setSize('site_hash', 40);
 
-    $form->add("pear", "select", $pear_select);
-    $form->setMatch("pear", "local");
+    $form->add('pear', 'select', $pear_select);
+    $form->setMatch('pear', 'local');
 
-    $form->addSubmit("submit", _("Continue"));
+    $form->addSubmit('submit', _('Continue'));
 
     $form->mergeTemplate($formTpl);
-    $content[] = Setup::createForm($form, "generalConfig.tpl");
+    $content[] = Setup::createForm($form, 'generalConfig.tpl');
   }
 
 
   function databaseConfig(&$content){
-    $form = & new PHPWS_Form("databaseConfig");
-    $form->add("step",   "hidden", "1");
-    $form->add("action", "hidden", "postDatabaseConfig");
+    $form = & new PHPWS_Form('databaseConfig');
+    $form->add('step',   'hidden', '1');
+    $form->add('action', 'hidden', 'postDatabaseConfig');
 
-    $databases = array ("mysql" =>"MySQL",
-			"ibase" =>"InterBase",
-			"mssql" =>"Microsoft SQL Server",
-			"msql"  =>"Mini SQL",
-			"oci8"  =>"Oracle 7/8/8i",
-			"odbc"  =>"ODBC",
-			"pgsql" =>"PostgreSQL",
-			"sybase"=>"SyBase",
-			"fbsql" =>"FrontBase",
-			"ifx"   =>"Informix");
+    $databases = array ('mysql' =>'MySQL',
+			'ibase' =>'InterBase',
+			'mssql' =>'Microsoft SQL Server',
+			'msql'  =>'Mini SQL',
+			'oci8'  =>'Oracle 7/8/8i',
+			'odbc'  =>'ODBC',
+			'pgsql' =>'PostgreSQL',
+			'sybase'=>'SyBase',
+			'fbsql' =>'FrontBase',
+			'ifx'   =>'Informix');
 
-    $formTpl['DBTYPE_LBL'] = _("Database Type");
-    $formTpl['DBTYPE_DEF'] = _("phpWebSite supports several databases. Choose the type your server currently is running.");
+    $formTpl['DBTYPE_LBL'] = _('Database Type');
+    $formTpl['DBTYPE_DEF'] = _('phpWebSite supports several databases. Choose the type your server currently is running.');
 
-    $formTpl['DBUSER_LBL'] = _("Database User");
-    $formTpl['DBUSER_DEF'] = _("This is the user name that phpWebSite will use to access its database.")
-      . " <br /><i>" . _("Note: it is a good idea to give each phpWebSite installation its own user.") . "</i>";
+    $formTpl['DBUSER_LBL'] = _('Database User');
+    $formTpl['DBUSER_DEF'] = _('This is the user name that phpWebSite will use to access its database.')
+      . ' <br /><i>' . _('Note: it is a good idea to give each phpWebSite installation its own user.') . '</i>';
 
-    $formTpl['DBPASS_LBL'] = _("Database Password");
-    $formTpl['DBPASS_DEF'] = _("Enter the database's user password here.");
+    $formTpl['DBPASS_LBL'] = _('Database Password');
+    $formTpl['DBPASS_DEF'] = _('Enter the database\'s user password here.');
 
-    $formTpl['DBHOST_LBL'] = _("Host Specification");
-    $formTpl['DBHOST_DEF'] = _("If your database is on the same server as your phpWebSite installation, leave this as &#x22;localhost&#x22;.")
-      . "<br />" . _("Otherwise, enter the ip or dns to the database server.");
+    $formTpl['DBHOST_LBL'] = _('Host Specification');
+    $formTpl['DBHOST_DEF'] = _('If your database is on the same server as your phpWebSite installation, leave this as &#x22;localhost&#x22;.')
+      . '<br />' . _('Otherwise, enter the ip or dns to the database server.');
 
-    $formTpl['DBPORT_LBL'] = _("Host Specification Port");
-    $formTpl['DBPORT_DEF'] = _("If your host specification requires access via a specific port, enter it here.");
+    $formTpl['DBPORT_LBL'] = _('Host Specification Port');
+    $formTpl['DBPORT_DEF'] = _('If your host specification requires access via a specific port, enter it here.');
 
-    $formTpl['DBNAME_LBL'] = _("Database Name");
-    $formTpl['DBNAME_DEF'] = _("The database's name into which you are installing phpWebSite.")
-      . "<br /><i>" . _("Note: if you have not made this database yet, you should do so before continuing.") . "</i>";
+    $formTpl['DBNAME_LBL'] = _('Database Name');
+    $formTpl['DBNAME_DEF'] = _('The database\'s name into which you are installing phpWebSite.')
+      . '<br /><i>' . _('Note: if you have not made this database yet, you should do so before continuing.') . '</i>';
 
-    $formTpl['DBPREFIX_LBL'] = _("Table Prefix");
-    $formTpl['DBPREFIX_DEF'] = _("If phpWebSite is sharing a database with another application, we suggest you give the tables a prefix.");
+    $formTpl['DBPREFIX_LBL'] = _('Table Prefix');
+    $formTpl['DBPREFIX_DEF'] = _('If phpWebSite is sharing a database with another application, we suggest you give the tables a prefix.');
 
-    $form->addSelect("dbtype", $databases);
-    $form->setMatch("dbtype", Setup::getConfigSet("dbtype"));
+    $form->addSelect('dbtype', $databases);
+    $form->setMatch('dbtype', Setup::getConfigSet('dbtype'));
 
-    $form->addText("dbuser", Setup::getConfigSet("dbuser"));
-    $form->setSize("dbuser", 20);
+    $form->addText('dbuser', Setup::getConfigSet('dbuser'));
+    $form->setSize('dbuser', 20);
 
-    $form->addPassword("dbpass", Setup::getConfigSet("dbpass"));
-    $form->allowValue("dbpass");
-    $form->setSize("dbpass", 20);
+    $form->addPassword('dbpass', Setup::getConfigSet('dbpass'));
+    $form->allowValue('dbpass');
+    $form->setSize('dbpass', 20);
 
-    $form->addText("dbhost", Setup::getConfigSet("dbhost"));
-    $form->setSize("dbhost", 20);
+    $form->addText('dbhost', Setup::getConfigSet('dbhost'));
+    $form->setSize('dbhost', 20);
 
-    $form->addText("dbport", Setup::getConfigSet("dbport"));
-    $form->setSize("dbport", 6);
+    $form->addText('dbport', Setup::getConfigSet('dbport'));
+    $form->setSize('dbport', 6);
 
-    $form->addText("dbname", Setup::getConfigSet("dbname"));
-    $form->setSize("dbname", 20);
+    $form->addText('dbname', Setup::getConfigSet('dbname'));
+    $form->setSize('dbname', 20);
 
-    $form->addText("dbprefix", Setup::getConfigSet("dbprefix"));
-    $form->setSize("dbprefix", 20);
+    $form->addText('dbprefix', Setup::getConfigSet('dbprefix'));
+    $form->setSize('dbprefix', 20);
 
     $form->mergeTemplate($formTpl);
-    $form->addSubmit("default_submit", _("Continue"));
-    $content[] = Setup::createForm($form, "databaseConfig.tpl");
+    $form->addSubmit('default_submit', _('Continue'));
+    $content[] = Setup::createForm($form, 'databaseConfig.tpl');
   }
 
   function createForm($form, $tplFile){
@@ -394,11 +394,11 @@ class Setup{
 
   function checkDirectories(&$content){
     $errorDir = TRUE;
-    $directory[] = Setup::getSourceDir() . "config/";
-    $directory[] = Setup::getSourceDir() . "images/";
-    $directory[] = Setup::getSourceDir() . "templates/";
-    $directory[] = Setup::getSourceDir() . "files/";
-    $directory[] = Setup::getSourceDir() . "logs/";
+    $directory[] = Setup::getSourceDir() . 'config/';
+    $directory[] = Setup::getSourceDir() . 'images/';
+    $directory[] = Setup::getSourceDir() . 'templates/';
+    $directory[] = Setup::getSourceDir() . 'files/';
+    $directory[] = Setup::getSourceDir() . 'logs/';
 
     foreach ($directory as $id=>$check){
       if (!is_dir($check))
@@ -408,34 +408,34 @@ class Setup{
     }
 
     if (isset($dirExist)){
-      $content[] = _("The following directories need to be created:");
-      $content[] = "<pre>" . implode("<br />", $dirExist) . "</pre>";
-      $content[] = "<br />";
+      $content[] = _('The following directories need to be created:');
+      $content[] = '<pre>' . implode('<br />', $dirExist) . '</pre>';
+      $content[] = '<br />';
       $errorDir = FALSE;
     }
       
     if (isset($writableDir)){
-      $content[] = _("The following directories are not writable:");
-      $content[] = "<pre>" . implode("<br />", $writableDir) . "</pre>";
-      $content[] = "<a href=\"help/permissions." . DEFAULT_LANGUAGE . ".txt\">" . _("Permission Help") . "</a>";
-      $content[] = "<br />";
+      $content[] = _('The following directories are not writable:');
+      $content[] = '<pre>' . implode('<br />', $writableDir) . '</pre>';
+      $content[] = '<a href="help/permissions.' . DEFAULT_LANGUAGE . '.txt">' . _('Permission Help') . '</a>';
+      $content[] = '<br />';
       $errorDir = FALSE;
     }
 
     if (!$errorDir)
-      $content[] = "<br />" . _("Please make these changes and return.") . "<br />";
+      $content[] = '<br />' . _('Please make these changes and return.') . '<br />';
 
     return $errorDir;
   }
 
   function show($content, $title=NULL){
     $tpl = & new PHPWS_Template;
-    $tpl->setFile("setup/templates/setup.tpl", TRUE);
+    $tpl->setFile('setup/templates/setup.tpl', TRUE);
     if (!isset($title))
-      $title = _("phpWebSite 1.0.0 Alpha Setup");
+      $title = _('phpWebSite 1.0.0 Alpha Setup');
 
     $setupData['TITLE'] = $title;
-    $setupData['MAIN_CONTENT'] = implode("", $content);
+    $setupData['MAIN_CONTENT'] = implode('', $content);
     $tpl->setData($setupData);
     return $tpl->get();
   }
@@ -445,9 +445,9 @@ class Setup{
       $_SESSION['sessionCheck'] = TRUE;
 
       if (isset($_REQUEST['check'])){
-	$content[] = _("There is a problem with your sessions.") . "<br />";
-	$content[] = _("phpWebSite depends on sessions to move data between pages.") . "<br />";
-	$content[] = PHPWS_Text::link("help/sessions." . DEFAULT_LANGUAGE . ".txt", _("Sessions Help"), NULL, "index");
+	$content[] = _('There is a problem with your sessions.') . '<br />';
+	$content[] = _('phpWebSite depends on sessions to move data between pages.') . '<br />';
+	$content[] = PHPWS_Text::link('help/sessions.' . DEFAULT_LANGUAGE . '.txt', _('Sessions Help'), NULL, 'index');
 	return;
       }
       return FALSE;
@@ -461,38 +461,38 @@ class Setup{
     if (Setup::configExists())
       $step = 2;
 
-    $content[] = "<b>Welcome to the phpWebSite 1.0.0 Alpha Installation</b><br />";
-    $content[] = ""
-      . "<p>The word 'Alpha' should clue you in that this software is by no means "
-      . "ready for a production environment. Unless you are a developer, installation "
-      . "help will be met with derisive laughter and scorn.</p>";
+    $content[] = '<b>Welcome to the phpWebSite 1.0.0 Alpha Installation</b><br />';
+    $content[] = ''
+      . '<p>The word "Alpha" should clue you in that this software is by no means '
+      . 'ready for a production environment. Unless you are a developer, installation '
+      . 'help will be met with derisive laughter and scorn.</p>';
 
-    $content[] = ""
-      . "<p>If however you have questions about its functioning and API, please visit "
-      . "us at irc: freenode.net #phpwebsite </p>";
+    $content[] = ''
+      . '<p>If however you have questions about its functioning and API, please visit '
+      . 'us at irc: freenode.net #phpwebsite </p>';
 
-    $content[] = "<a href=\"index.php?step=$step\">" . _("Begin Installation") . "</a>";
+    $content[] = "<a href=\"index.php?step=$step\">" . _('Begin Installation') . '</a>';
     return;
   }
 
   function createCore(&$content){
-    require_once("File.php");
-    $content[] = _("Importing core database file.") . "<br />";
-    $installSQL = File::readAll("core/boost/install.sql");
+    require_once('File.php');
+    $content[] = _('Importing core database file.') . '<br />';
+    $installSQL = File::readAll('core/boost/install.sql');
     $db = & new PHPWS_DB;
     $result = $db->import($installSQL);
 
     if (is_array($result)){
       foreach ($result as $error)
 	PHPWS_Error::log($error);
-      $content[] = _("Some errors occurred while creating the core database tables.") . "<br />";
-      $content[] = _("Please check your error log file.") . "<br />";
+      $content[] = _('Some errors occurred while creating the core database tables.') . '<br />';
+      $content[] = _('Please check your error log file.') . '<br />';
       return;
     }
 
     if ($result == TRUE){
-      $content[] = _("Core installation successful.") . "<br /><br />";
-      $content[] = "<a href=\"index.php?step=3\">" . _("Continue to Module Installation") . "</a>";
+      $content[] = _('Core installation successful.') . '<br /><br />';
+      $content[] = '<a href="index.php?step=3">' . _('Continue to Module Installation') . '</a>';
     }
   }
 
@@ -521,10 +521,10 @@ class Setup{
   }
 
   function finish(&$content){
-    $content[] = "<hr />";
-    $content[] = _("Installation of phpWebSite is complete.") . "<br />";
-    $content[] = _("If you experienced any error messages, check your error.log file.") . "<br />";
-    $content[] = "<a href=\"../index.php\">" . _("Go to my new website!") . "</a>" . "<br />";
+    $content[] = '<hr />';
+    $content[] = _('Installation of phpWebSite is complete.') . '<br />';
+    $content[] = _('If you experienced any error messages, check your error.log file.') . '<br />';
+    $content[] = '<a href="../index.php">' . _('Go to my new website!') . '</a>' . '<br />';
 
   }
 
