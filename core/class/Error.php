@@ -5,7 +5,7 @@ class PHPWS_Error {
   function &get($value, $module, $funcName=NULL, $extraInfo=NULL){
     $errorFile = PHPWS_Core::getConfigFile($module, "error.php");
 
-    if (PEAR::isError($errorFile))
+    if (!($errorFile))
       return PHPWS_Error::get(PHPWS_NO_ERROR_FILE, "core", "PHPWS_Error::get", "Module: $module");
 
     include $errorFile;
