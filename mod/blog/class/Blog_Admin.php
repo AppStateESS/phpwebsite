@@ -229,6 +229,12 @@ class Blog_Admin {
 
   function entry_list(){
     PHPWS_Core::initCoreClass("DBPager.php");
+
+    $pageTags['TITLE']  = _("Title");
+    $pageTags['ENTRY']  = _("Entry");
+    $pageTags['DATE']   = _("Creation Date");
+    $pageTags['ACTION'] = _("Action");
+
     $pager = & new DBPager("blog_entries", "Blog");
     $pager->setModule("blog");
     $pager->setTemplate("list.tpl");
@@ -236,6 +242,8 @@ class Blog_Admin {
     $pager->addToggle("class=\"toggle1\"");
     $pager->addToggle("class=\"toggle2\"");
     $pager->setMethod("date", "getFormatedDate");
+    $pager->addTags($pageTags);
+    $pager->setSearch("title");
     $pager->addRowTag("entry", "Blog_Admin", "getListEntry");
     $pager->addRowTag("action", "Blog_Admin", "getListAction");
     $content = $pager->get();
@@ -251,7 +259,7 @@ class Blog_Admin {
     return TRUE;
   }
 
-  /*
+  
   function restoreVersion(&$blog){
     PHPWS_Core::initCoreClass("Version.php");
 
@@ -285,7 +293,7 @@ class Blog_Admin {
     $tpl->setData(array("INSTRUCTION"=>_("Choose the blog entry you want to restore.")));
     return $tpl->get();
   }
-  */
+  
 }
 
 ?>
