@@ -745,8 +745,6 @@ class PHPWS_DB {
 	    $groupby .= ", $addgroup";
 	  }
 	}
-
-	$type = 'all';
       }
 
       $sql = "SELECT $columns FROM $table $where $groupby $order $limit";
@@ -798,7 +796,11 @@ class PHPWS_DB {
       break;
 
     case 'count':
-
+      $result = $this->select('row', $sql);
+      if (PEAR::isError($result)){
+	return $result;
+      }
+      return $result['COUNT(*)'];
       break;
 
     case 'all':
