@@ -159,6 +159,7 @@ class User_Form {
   }
 
   function manageUsers(){
+    Layout::addStyle("users");
     PHPWS_Core::initCoreClass("DBPager.php");
     PHPWS_Core::initModClass("users", "User_Manager.php");
 
@@ -174,6 +175,10 @@ class User_Form {
     $pager->addTags($pageTags);
     $pager->setMethod("active", "listActive");
     $pager->setMethod("last_logged", "listLastLogged");
+    $pager->addToggle("class=\"toggle1\"");
+    $pager->addToggle("class=\"toggle2\"");
+    $pager->addRowTag("actions", "User_Manager", "listAction");
+
     if (!Current_User::isDeity())
       $pager->addWhere("id", ANONYMOUS_ID, "!=");
 
@@ -605,8 +610,9 @@ class User_Form {
       $getVars['module'] = "users";
       $getVars['action'] = "admin";
       $getVars['command'] = "dropScript";
-      $links[1] = "<a href=\"javascript:void(0)\" onclick=\"drop($id)\">Drop</a>";
-      //      $links[1] = PHPWS_Text::moduleLink(_("Drop"), "users", $getVars);
+
+      if ($filename != "local.php" && $filename != "global.php")
+	$links[1] = "<a href=\"javascript:void(0)\" onclick=\"drop($id)\">Drop</a>";
 
       $getVars['command'] = "editScript";
       $links[2] = PHPWS_Text::moduleLink(_("Edit"), "users", $getVars);

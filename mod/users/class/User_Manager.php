@@ -19,6 +19,26 @@ class User_Manager extends PHPWS_User{
 
   }
 
+  function listAction($user){
+    $id = $user->id;
+
+    $linkVar['action'] = "admin";
+    $linkVar['user_id'] = $id;
+
+    $linkVar['command'] = "editUser";
+    $links[] = PHPWS_Text::moduleLink(_("Edit"), "users", $linkVar);
+
+    if ($user->active){
+      $linkVar['command'] = "deactivateUser";
+      $links[] = PHPWS_Text::moduleLink(_("Deactivate"), "users", $linkVar);
+    } else {
+      $linkVar['command'] = "activateUser";
+      $links[] = PHPWS_Text::moduleLink(_("Activate"), "users", $linkVar);
+    }
+
+    return implode(" | ", $links);
+  }
+
 }
 
 ?>

@@ -39,7 +39,7 @@ class User_Action {
       break;
 
     case "editUser":
-      $user = & new PHPWS_User($_REQUEST["user"]);
+      $user = & new PHPWS_User($_REQUEST["user_id"]);
       $content = User_Form::userForm($user);
       break;      
 
@@ -403,7 +403,6 @@ class User_Action {
   function authorize($authorize, $username, $password){
     $db = & new PHPWS_DB("users_auth_scripts");
     $db->setIndexBy("id");
-    $db->addWhere("active", 1);
     $result = $db->select();
 
     if (empty($result))
