@@ -59,6 +59,9 @@ class Current_User {
   }
 
   function isRestricted($module){
+    if (Current_User::isDeity())
+      return FALSE;
+     
     $level = $_SESSION['User']->getPermissionLevel($module);
     return $level == RESTRICTED_PERMISSION ? TRUE : FALSE;
   }
