@@ -8,6 +8,6 @@ define("DEFAULT_DBNAME", "phpwebsite");
 
 define("CHECK_DB_CONNECTION", TRUE);
 
-define("DEFAULT_MODULES", "users, layout, controlpanel");
+define("DEFAULT_MODULES", "users, layout, controlpanel, boost");
 
 ?>
