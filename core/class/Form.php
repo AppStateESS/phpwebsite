@@ -763,6 +763,13 @@ class Form_TextArea extends Form_Element{
       return $this->cols;
   }
 
+  function setHeight($height){
+    $this->height = $height;
+  }
+
+  function getHeight(){
+    return $this->height;
+  }
 
   function get(){
     $value = $this->getValue();
@@ -774,12 +781,12 @@ class Form_TextArea extends Form_Element{
       $value = "\n" . $value;
 
     if (isset($this->width))
-      $style[] = "width : " . $this->width . "%";
+      $style[] = "width : " . $this->width;
     else
       $dimensions[] = $this->getCols(TRUE);
 
     if (isset($this->height))
-      $style[] = "height : " . $this->height . "%";
+      $style[] = "height : " . $this->height;
     else
       $dimensions[] = $this->getRows(TRUE);
 
@@ -1028,7 +1035,7 @@ class Form_Element {
   }
 
   function setWidth($width){
-    $this->width = (int)$width;
+    $this->width = $width;
   }
 
   function getWidth($formMode=FALSE){
