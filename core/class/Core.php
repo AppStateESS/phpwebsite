@@ -258,6 +258,9 @@ class PHPWS_Core {
     return $file;
   }
 
+  /**
+   * Loads a config file. If missing, shows error page
+   */
   function configRequireOnce($module, $file, $exitOnError=TRUE){
     $file = PHPWS_Core::getConfigFile($module, $file);
 

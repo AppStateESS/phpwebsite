@@ -269,7 +269,12 @@ class PHPWS_Text {
     }
   }// END FUNC isValidInput()
 
-
+  /**
+   * Returns a reroutable link
+   *
+   * MOD_REWRITE_ENABLED must be true and mod_reroute must be enabled
+   * in Apache
+   */
   function rerouteLink($subject, $module, $action, $id){
     if ((bool)MOD_REWRITE_ENABLED == FALSE) {
       return PHPWS_Text::moduleLink($subject, $module, array("action" => $action, "id" => $id));
