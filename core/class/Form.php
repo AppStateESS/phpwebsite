@@ -1,5 +1,5 @@
 <?php
-
+define("FORM_ID_IDENTIFIER", "f");
 PHPWS_Core::configRequireOnce("core", "formConfig.php", TRUE);
 
 //require_once "config/core/formConfig.php";
@@ -872,6 +872,12 @@ class PHPWS_Form {
     return CrutchForm::makeForm($name, $action, $elements, $method="post", $breaks, $file);
   }
 
+  function getId(){   	 
+    static $id = 0; 	 
+    
+    $id++; 	 
+    return $id; 	 
+  }
 
 }// End of PHPWS_Form Class
 
@@ -1155,7 +1161,7 @@ class Form_Element {
   }
 
   function quickId(){
-    $this->setId($this->name);
+    $this->setId(FORM_ID_IDENTIFIER . PHPWS_Form::getId());
   }
 
   function getId($formMode=FALSE){
