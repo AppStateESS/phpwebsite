@@ -1,5 +1,6 @@
 CREATE TABLE modules ( 
 	title CHAR(40) NOT NULL, 
+	proper_name CHAR(40) NOT NULL,
 	priority SMALLINT NOT NULL, 
 	active SMALLINT NOT NULL, 
 	version CHAR(20) NOT NULL, 
