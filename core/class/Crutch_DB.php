@@ -1,6 +1,17 @@
 <?php
 
 class oldDB{
+  var $mode = NULL;
+
+  function query($sql, $addTablePrefix=FALSE, $error_pass=FALSE){
+    if ($addTablePrefix) {
+      $table = PHPWS_DB::extractTableName($query);
+      $sql = str_replace($table, $prefix . $table, $sql);
+    }
+
+    return PHPWS_DB::query($sql);
+  }// END FUNC query()
+
 
   function sqlInsert ($db_array, $table_name, $check_dup=FALSE, $returnId=FALSE, $show_sql=FALSE, $autoIncrement=TRUE) {
     $db = & new PHPWS_DB($table_name);
@@ -34,6 +45,9 @@ class oldDB{
 
   function sqlSelect($table_name, $match_column=NULL, $match_value=NULL, $order_by=NULL, $compare=NULL, $and_or=NULL, $limit=NULL, $mode=NULL, $test=FALSE) {
     $db = & new PHPWS_DB($table_name);
+    if (isset($this->mode)) {
+      $db->setMode($this->mode);
+    }
     oldDB::addWhere($db, $match_column, $match_value, $compare, $and_or);
     return $db->select();
   }
@@ -56,6 +70,10 @@ class oldDB{
 	$db->addWhere($match_column, $match_value, $compare, $and_or);
       }
     }
+  }
+
+  function setFetchMode($fetchMode){
+    $this->mode = $fetchMode;
   }
 
   function getCol($sql){
