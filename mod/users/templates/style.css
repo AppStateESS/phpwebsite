@@ -43,3 +43,10 @@ background-color : #E4E4E4;
 .toggle2 {
 background-color : white;
 }
+
+.user-error {
+background-color : red;
+font-weight : bold;
+color : white;
+
+}
