@@ -63,7 +63,7 @@ Getting the Category Form List
 The category item object needs just the above ids in order to create a
 selection menu. To get that menu, I call getForm:
 
-$template['CATEGORY_LISTING'] - $category_item->getForm();
+$template['CATEGORY_LISTING'] = $category_item->getForm();
 
 This tag must be in the middle of the form's beginning and end
 tags. For example, if you are using phpwebsite's form class:
@@ -73,12 +73,39 @@ tags. For example, if you are using phpwebsite's form class:
 .
 Pick one or more categories for this entry
 {CATEGORY_LISTING}
-
 .
 .
 {END_FORM}
 
 
+Saving the Results
+----------------------------------------------------------------------
+After submitting your module's form, you need to catch the category
+results. 
+
+First create your category item object:
+
+$category_item = & new Category_Item('blog');
+
+Where 'blog' is your module's name. Now you need to load your category
+item. The first two are familiar.
+
+$category_item->setItemId($blog->id);
+$category_item->setVersionId($version_id); // if using versioning
+
+There are two other parameters that need setting.
+
+$category_item->setTitle($blog->title);
+
+The title is what is seen when your module's item is seen in a
+category listing.
+
+$link = 'index.php?module=blog&amp;action=view&amp;id='
+. $blog->getId();
+
+$category_item->setLink($link);
+
+* Use '&amp;' instead of '&' in your links to make it XHTML compliant.
 
 
 
