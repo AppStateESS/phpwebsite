@@ -45,6 +45,10 @@ class PHPWS_Template extends HTML_Template_IT {
 
       if (FORCE_THEME_TEMPLATES || is_file($altFile))
 	$result = $this->loadTemplatefile($altFile);
+      elseif (FORCE_MOD_TEMPLATES){
+	$file = PHPWS_SOURCE_DIR . "mod/$module/templates/$file";
+	$result = $this->loadTemplatefile($file);	
+      }
       else {
 	$file = "templates/$module/$file";
 	$result = $this->loadTemplatefile($file);	
