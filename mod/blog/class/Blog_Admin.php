@@ -448,7 +448,7 @@ class Blog_Admin {
     $cat_item = & new Category_Item('blog');
     $cat_item->setApproved($approved);
     Blog_Admin::_loadCategory($cat_item, $blog, $version);
-    $cat_item->savePost();
+    $cat_item->savePost(TRUE);
   }
   
   function restoreVersionList(&$blog)
@@ -457,14 +457,9 @@ class Blog_Admin {
     $version->setSource($blog);
     $version_list = $version->getBackupList();
 
-    $tpl = & new PHPWS_Template('blog');
-    $tpl->setFile('version.tpl');
-    $tpl->setCurrentBlock('repeat_row');
-
     $count = 0;
 
     $vars['action'] = 'admin';
-
 
     foreach ($version_list as $backup_id => $backup){
       $count++;
@@ -487,12 +482,10 @@ class Blog_Admin {
 	$vars['command'] = 'removePrevBlog';
 	$template['REMOVE_LINK'] = PHPWS_Text::secureLink(_('Remove'), 'blog', $vars);
       }
-      $tpl->setData($template);
-      $tpl->parseCurrentBlock();
+      $tpl['repeat_row'][] = $template;
     }
-
-    $tpl->setData(array('INSTRUCTION'=>_('Choose the blog entry you want to restore.')));
-    return $tpl->get();
+    $tpl['INSTRUCTION'] = _('Choose the blog entry you want to restore.');
+    return PHPWS_Template::processTemplate($tpl, 'blog', 'version.tpl');
   }
   
   function approvalList(){
