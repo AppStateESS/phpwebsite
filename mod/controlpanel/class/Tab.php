@@ -8,7 +8,6 @@ class PHPWS_Panel_Tab {
   var $_color       = NULL;
   var $_itemname    = NULL;
   var $_style       = NULL;
-  var $_tabfile     = NULL;
 
   function PHPWS_Panel_Tab($id=NULL) {
 
@@ -144,40 +143,6 @@ class PHPWS_Panel_Tab {
       $result = $DB->update();
     } else
       $result = $DB->insert();
-
-    return $result;
-  }
-
-  function view($active=FALSE){
-    include_once PHPWS_SOURCE_DIR . "mod/controlpanel/conf/config.php";
-
-    $tpl['TITLE'] = $this->getLink();
-
-    if ($active){
-      $tpl['STATUS'] = "class=\"active\"";
-      $tpl['ACTIVE'] = " ";
-    }
-    else {
-      $tpl['STATUS'] = "class=\"inactive\"";
-      $tpl['INACTIVE'] = " ";
-    }
-
-    $tabfile = $this->getTabFile();
-
-    if (!isset($tabfile))
-      $tabfile = CP_DEFAULT_TAB;
-
-    if ($color = $this->getColor())
-      $tpl['COLOR'] = " style=\"background-color : #" . $color . "\"";
-
-    $phptpl = new PHPWS_Template();
-
-    if ($phptpl->setFile("mod/controlpanel/templates/" . $tabfile, TRUE) == FALSE)
-      return PEAR::raiseError("Unable to find template <b>$tabfile</b>");
-
-    $phptpl->setData($tpl);
-
-    $result = $phptpl->get();
 
     return $result;
   }
