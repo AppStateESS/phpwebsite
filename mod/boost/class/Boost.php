@@ -590,7 +590,6 @@ class PHPWS_Boost {
     }
 
     if (PHPWS_Boost::isRegistered($register_to_mod->getTitle(), $register_mod->getTitle())) {
-      echo 'returning null from is registered';
       return NULL;
     }
 
