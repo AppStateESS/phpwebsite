@@ -56,16 +56,16 @@ class Layout {
     return "themes/" . $themeDir . "/";
   }
 
-  function add($text, $contentVar=NULL, $box=TRUE){
+  function add($text, $module=NULL, $contentVar=NULL, $box=TRUE){
     // If content variable is not in system (and not NULL) then make
     // a new box for it.
 
-    if (isset($contentVar)){
+    if (isset($module) && isset($contentVar)){
       if(!is_string($contentVar))
 	return PEAR::raiseError("Content variable is not a string");
 
       if (!Layout::isContentVar($contentVar)){
-	Layout::addBox($contentVar);
+	Layout::addBox($contentVar, $module);
 	Layout_Init::initContentVar();
 	Layout_Init::initBoxes();
       }
@@ -85,23 +85,23 @@ class Layout {
   }
 
 
-  function set($text, $contentVar=NULL, $box=TRUE){
+  function set($text, $module=NULL, $contentVar=NULL, $box=TRUE){
     if (!isset($contentVar))
       $contentVar = DEFAULT_CONTENT_VAR;
 
     $box = (bool)$box;
 
     $GLOBALS['Layout'][$contentVar]['content'] = NULL;
-    Layout::add($text, $contentVar, $box);
+    Layout::add($text, $module, $contentVar, $box);
   }
 
-  function hold($text, $contentVar=NULL, $box=TRUE, $time=NULL){
+  function hold($text, $module=NULL, $contentVar=NULL, $box=TRUE, $time=NULL){
     if (!isset($contentVar))
       $contentVar = DEFAULT_CONTENT_VAR;
 
     $box = (bool)$box;
 
-    Layout::set($text, $contentVar, $box);
+    Layout::set($text, $module, $contentVar, $box);
 
     if (!isset($time) || !is_numeric($time))
       $GLOBALS['Layout'][$contentVar]['hold'] = mktime() + DEFAULT_LAYOUT_HOLD; 
@@ -216,7 +216,6 @@ class Layout {
     }
 
     foreach ($finalList as $contentVar=>$template){
-
       // Need to check for theme variable
       if(!($theme_var = Layout::getBoxThemeVar($contentVar)))
 	$theme_var = DEFAULT_THEME_VAR;
@@ -274,7 +273,7 @@ class Layout {
 	$finalLayout['JAVASCRIPT'] = implode("\n", $jsHead);
     }
 
-      $finalTheme = &Layout::loadTheme($theme, $finalLayout);
+    $finalTheme = &Layout::loadTheme($theme, $finalLayout);
 
     if (PEAR::isError($finalTheme))
       echo implode("", $finalLayout);
@@ -408,7 +407,7 @@ class Layout {
 
   }
 
-  function addBox($content_var, $theme_var=NULL, $template=NULL, $theme=NULL){
+  function addBox($content_var, $module, $theme_var=NULL, $template=NULL, $theme=NULL){
     PHPWS_Core::initModClass("layout", "Box.php");
     PHPWS_Core::initModClass("layout", "Initialize.php");
 
@@ -422,6 +421,7 @@ class Layout {
     $box = new Layout_Box;
     $box->setTheme($theme);
     $box->setContentVar($content_var);
+    $box->setModule($module);
     $box->setThemeVar($theme_var);
 
     if (isset($template))
