@@ -14,6 +14,7 @@ define("PHPWS_WRONG_TYPE",            -9);
 define("PHPWS_DIR_NOT_SECURE",       -10);
 define("PHPWS_DIR_CANT_CREATE",      -11);
 define("PHPWS_WRONG_CLASS",          -12);
+define("PHPWS_UNKNOWN_MODULE",       -13);
 
 /*********** Database.php ***************/
 
@@ -28,6 +29,7 @@ define("PHPWS_DB_NOT_OBJECT",         -106);
 define("PHPWS_DB_NO_VARIABLES",       -107);
 define("PHPWS_DB_NO_WHERE",           -108);
 define("PHPWS_DB_NO_JOIN_DB",         -109);
+define("PHPWS_DB_NO_TABLE",           -110);
 
 
 /************* List.php *****************/

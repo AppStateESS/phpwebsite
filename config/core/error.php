@@ -13,6 +13,7 @@ $errors[PHPWS_WRONG_TYPE]            = _("Wrong data type.");
 $errors[PHPWS_DIR_NOT_SECURE]        = _("Directories are not secure.");
 $errors[PHPWS_DIR_CANT_CREATE]       = _("Unable to create file directory.");
 $errors[PHPWS_WRONG_CLASS]           = _("Unknown or incorrect class.");
+$errors[PHPWS_UNKNOWN_MODULE]        = _("Unknown module.");
 
 // Database.php 100 - 199
 $errors[PHPWS_DB_ERROR_TABLE]        = _("Table name not set.");
@@ -26,6 +27,7 @@ $errors[PHPWS_DB_NOT_OBJECT]         = _("Expecting an object variable.");
 $errors[PHPWS_DB_NO_VARIABLES]       = _("Class does not contain variables.");
 $errors[PHPWS_DB_NO_WHERE]           = _("Function was expecting a 'where' parameter.");
 $errors[PHPWS_DB_NO_JOIN_DB]         = _("Join database does not exist.");
+$errors[PHPWS_DB_NO_TABLE]           = _("Table does not exist.");
 
 // List.php 200 - 299
 $errors[PHPWS_LIST_MOD_NOT_SET]       = _("Module not set.");
