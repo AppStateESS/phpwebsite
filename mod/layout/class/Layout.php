@@ -67,10 +67,12 @@ class Layout {
     $box->setModule($module);
     $box->setThemeVar($theme_var);
 
-    if (isset($template))
+    if (isset($template)) {
       $box->setTemplate($template);
-    else
-      $box->setDefaultTemplate();
+    }
+    else {
+      $box->setTemplate($_SESSION['Layout_Settings']->_default_box);
+    }
 
     $result = $box->save();
     if (PEAR::isError($result)){
@@ -156,7 +158,7 @@ class Layout {
 
   function alternateTheme($template, $module, $file){
     $theme = Layout::getTheme();
-    Layout::loadStyleSheets();
+    Layout::importStyleSheets();
     Layout::submitHeaders($theme, $template);
     $result = PHPWS_Template::process($template, $module, $file);
     echo $result;
@@ -487,39 +489,37 @@ class Layout {
     return Layout::loadJavascriptFile($directory, $module, $data);
   }
 
-  function loadStyleSheets(){
-    $theme = Layout::getTheme();
 
-    $directory = "./themes/$theme/";
-    $file = $directory . 'config.php';
+  function importStyleSheets(){
+    $directory = Layout::getThemeDir();
 
-    if (is_file($file)){
-      include $file;
+    $persistant = $_SESSION['Layout_Settings']->_persistant_css;
+    $default    = $_SESSION['Layout_Settings']->_default_css;
+    $alternate  = $_SESSION['Layout_Settings']->_alternate_css;
 
-      if (isset($persistant))
-	Layout::addToStyleList(array('file'=>$directory . $persistant));
-      else
-	Layout::addToStyleList(Layout::getTheme() . 'style.css');
+    if (!empty($persistant)) {
+      Layout::addToStyleList(array('file'=>$directory . $persistant['file'],
+				   'import' => TRUE));
+    } else {
+      Layout::addToStyleList(Layout::getTheme() . 'style.css');
+    }
 
-      if (isset($default) && (isset($default['file']) && isset($default['title']))){
-	Layout::addToStyleList(array('file'=>$directory . $default['file'],
-				     'title'=>$default['title'])
-			       );
-
-	  if (isset($alternate) && is_array($alternate)){
-	    foreach ($alternate as $altStyle){
-	      if (isset($altStyle['file']) && isset($altStyle['title']))
-		Layout::addToStyleList(array('file'=>$directory . $altStyle['file'],
-					     'title'=>$altStyle['title'],
-					     'alternate'=>TRUE
-					     )
-				       );	      
-	    }
-	  }
-
+    if (!empty($default) && (isset($default['file']) && isset($default['title']))) {
+      Layout::addToStyleList(array('file'=>$directory . $default['file'],
+				   'title'=>$default['title'])
+			     );
+    }
+      
+    if (!empty($alternate) && is_array($alternate)) {
+      foreach ($alternate as $altStyle){
+	if (isset($altStyle['file']) && isset($altStyle['title']))
+	  Layout::addToStyleList(array('file'=>$directory . $altStyle['file'],
+				       'title'=>$altStyle['title'],
+				       'alternate'=>TRUE
+				       )
+				 );      
       }
-    } else
-      Layout::addToStyleList('style.css');
+    }
   }
 
   function &loadTheme($theme, $template){
@@ -567,7 +567,6 @@ class Layout {
 
   function styleLink($link, $header=FALSE){
     // NEED TO CHCEK if using xml-stylesheet
-
     extract($link);
 
     if (!empty($title))
@@ -643,7 +642,7 @@ class Layout {
       $template['JAVASCRIPT'] = implode("\n", $jsHead);
     }
 
-    Layout::loadStyleSheets();
+    Layout::importStyleSheets();
     Layout::submitHeaders($theme, $template);
     $template['METATAGS']   = Layout::getMetaTags();
     $template['PAGE_TITLE'] = $_SESSION['Layout_Settings']->getPageTitle();
