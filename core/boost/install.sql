@@ -4,7 +4,8 @@ CREATE TABLE modules (
 	priority SMALLINT NOT NULL, 
 	active SMALLINT NOT NULL, 
 	version CHAR(20) NOT NULL, 
-	register SMALLINT NOT NULL 
+	register SMALLINT NOT NULL,
+	pre94 SMALLINT NOT NULL
 	);
 
 CREATE TABLE registered ( 
