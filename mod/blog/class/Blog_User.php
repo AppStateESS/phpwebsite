@@ -5,10 +5,11 @@ class Blog_User {
   function show(){
     $key = "front blog page";
 
-    if (!Current_User::isLogged() &&
+    if (!Current_User::isLogged()    &&
 	!Current_User::allow("blog") &&
-	$content = PHPWS_Cache::get($key))
+	$content = PHPWS_Cache::get($key)) {
       return $content;
+    }
 
     $limit = 5;
 
