@@ -20,6 +20,10 @@ function install(&$content, $branchInstall=FALSE){
 	if (PEAR::isError($result))
 	  return $result;
 
+	$setting = & new PHPWS_DB("users_config");
+	$setting->addValue("anonymous", $anon->getId());
+	$setting->insert();
+
 	$user->setDeity(TRUE);
 	$result = $user->save();
 	if (PEAR::isError($result))
@@ -43,7 +47,19 @@ function install(&$content, $branchInstall=FALSE){
     }
   }
 
-  $result = Demographics::import("mod/users/conf/demographics.txt");
+  $content[] = _("Importing demographics information.");
+  $result = Demographics::import("demographics.txt");
+  if (PEAR::isError($result)){
+    $content[] = _("And error occurred while importing your demographics settings.");
+    $content[] = _("Please check your demographics.txt file.");
+    PHPWS_Error::log($result);
+  } else {
+    $db = new PHPWS_DB("users_demographics");
+    $db->addWhere("label", "contact_email");
+    $db->addValue("active", 1);
+    $db->update();
+    $content[] = _("Import successful.");
+  }
   return TRUE;
 
 }
