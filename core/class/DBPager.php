@@ -78,6 +78,8 @@ class DBPager {
 
   var $current_page = 1;
 
+  var $methods   = array();
+
   var $error;
 
   function DBPager($table, $class){
@@ -90,8 +92,11 @@ class DBPager {
 
     if (class_exists($class))
       $this->class = $class;
-    else
-      exit("CLASS DOES NOT EXIST.");
+    else {
+      $this->error = PHPWS_Error::get(PHPWS_CLASS_NOT_EXIST, "core", "DB_Pager::DBPager", $class);
+      PHPWS_Error::log($this->error);
+      return;
+    }
 
     $this->_methods = get_class_methods($class);
     $this->_classVars = array_keys(get_class_vars($class));
@@ -107,8 +112,6 @@ class DBPager {
 
     if (isset($_REQUEST['orderby_dir']))
       $this->orderby_dir = preg_replace("/\W/", "", $_REQUEST['orderby_dir']);
-
-
   }
 
   function addToggle($toggle){
@@ -125,6 +128,10 @@ class DBPager {
 
   function setTemplate($template){
     $this->template = $template;
+  }
+
+  function setMethod($column_name, $substitute){
+    $this->methods[$column_name] = $substitute;
   }
 
   function getLinkEnd(){
@@ -184,7 +191,7 @@ class DBPager {
 
   function getPageLinks(){
     if ($this->total_pages < 1)
-      exit("NO TOTAL PAGES");
+      return PHPWS_Error::get(DBPAGER_NO_TOTAL_PAGES, "core", "DBPager::getPageLinks");
 
     for ($i=1; $i <= $this->total_pages; $i++){
       $values = $this->getLinkValues();
@@ -255,29 +262,60 @@ class DBPager {
 
   function getPageRows(){
     $count = 0;
+
     foreach ($this->object_rows as $object){
       foreach ($this->_classVars as $varname){
-	$funcName = "getlist" . $varname;
+	if (isset($this->methods[$varname]))
+	  $funcName = strtolower($this->methods[$varname]);
+	else
+	  $funcName = NULL;
+
 	if (in_array($funcName, $this->_methods))
 	  $template[$count][strtoupper($varname)] = $object->{$funcName}();
 	else
 	  $template[$count][strtoupper($varname)] = $object->{$varname};
       }
+
+      if (isset($this->rowTags)){
+	foreach ($this->rowTags as $tagName=>$methodCall){
+	  $result = call_user_func(array($methodCall['class'], $methodCall['method']), $object);
+	  $template[$count][strtoupper($tagName)] = $result;
+	}
+      }
+
       $count++;
     }
 
     return $template;
   }
 
+  function addRowTag($tag, $class, $method){
+    if (!class_exists($class))
+      exit("Class does not exist.");
+
+    $classMethods = get_class_methods($class);
+
+    if (!in_array(strtolower($method), $classMethods))
+      exit("Method not in class");
+
+    $this->rowTags[$tag] = array("class"=>$class, "method"=>$method);
+  }
+
+
   function get(){
     $this->initialize();
     if (!isset($this->module))
-      exit("NO MODULE SET!");
+      return PHPWS_Error::get(DBPAGER_MODULE_NOT_SET, "core", "DBPager::get()");
 
     if (!isset($this->template))
-      exit("NO TEMPLATE FILE!");
+      return PHPWS_Error::get(DBPAGER_TEMPLATE_NOT_SET, "core", "DBPager::get()");
 
-    $template['PAGES']     = $this->getPageLinks();
+    $pages = $this->getPageLinks();
+
+    if (PEAR::isError($pages))
+      return $pages;
+
+    $template['PAGES']     = $pages;
     $template['LIMITS']    = $this->getLimitList();
     $rows = $this->getPageRows();
 
@@ -316,7 +354,6 @@ class DBPager {
     return $tpl->get();
 
   }
-  
 
 }
 
