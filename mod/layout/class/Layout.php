@@ -409,9 +409,9 @@ class Layout {
 	if (!empty($result))
 	  $GLOBALS['Layout_JS'][$script]['head'] = $result;
 	else
-	  $GLOBALS['Layout_JS'][$script]['head'] = PHPWS_File::readFile($headfile);	  
+	  $GLOBALS['Layout_JS'][$script]['head'] = file_get_contents($headfile);	  
       } else
-	$GLOBALS['Layout_JS'][$script]['head'] = PHPWS_File::readFile($headfile);
+	$GLOBALS['Layout_JS'][$script]['head'] = file_get_contents($headfile);
     }
 
     if (is_file($bodyfile)){
@@ -424,9 +424,9 @@ class Layout {
 	if (!empty($result))
 	  return $result;
 	else
-	  return PHPWS_File::readFile($bodyfile);
+	  return file_get_contents($bodyfile);
       } else
-	return PHPWS_File::readFile($bodyfile);
+	return file_get_contents($bodyfile);
     }
 
   }
