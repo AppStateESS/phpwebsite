@@ -21,3 +21,7 @@ Add display name
 Images
 ------------
 Add image security from 0.x
+
+Boost
+---------------
+Take a look at Pear install protocol
