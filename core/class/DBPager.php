@@ -185,7 +185,6 @@ class DBPager {
       return $result;
 
     $this->object_rows = &$result;
-
     $this->total_pages = ceil($this->total_rows / $this->limit);
   }
 
@@ -263,6 +262,9 @@ class DBPager {
   function getPageRows(){
     $count = 0;
 
+    if (!isset($this->object_rows))
+      return NULL;
+
     foreach ($this->object_rows as $object){
       foreach ($this->_classVars as $varname){
 	if (isset($this->methods[$varname]))
@@ -304,20 +306,24 @@ class DBPager {
 
   function get(){
     $this->initialize();
+
     if (!isset($this->module))
       return PHPWS_Error::get(DBPAGER_MODULE_NOT_SET, "core", "DBPager::get()");
 
     if (!isset($this->template))
       return PHPWS_Error::get(DBPAGER_TEMPLATE_NOT_SET, "core", "DBPager::get()");
 
-    $pages = $this->getPageLinks();
+    if ($this->total_rows < 1)
+      return NULL;
 
+    $pages = $this->getPageLinks();
+    
     if (PEAR::isError($pages))
       return $pages;
-
+    
     $template['PAGES']     = $pages;
-    $template['LIMITS']    = $this->getLimitList();
     $rows = $this->getPageRows();
+    $template['LIMITS']    = $this->getLimitList();
 
     $tpl = new PHPWS_Template($this->module);
     $result = $tpl->setFile($this->template);
@@ -328,23 +334,26 @@ class DBPager {
       $max_tog = count($this->toggles);
 
     $count = 0;
-    foreach ($rows as $rowitem){
-      if (isset($max_tog)){
-	$rowitem['TOGGLE'] = $this->toggles[$count];
-	$count++;
-
-	if ($count >= $max_tog)
-	  $count = 0;
-      } else
-	$rowitem['TOGGLE'] = NULL;
-
-      $tpl->setCurrentBlock("listrows");
-      $tpl->setData($rowitem);
-      $tpl->parseCurrentBlock();
+    if (isset($rows)){
+      foreach ($rows as $rowitem){
+	if (isset($max_tog)){
+	  $rowitem['TOGGLE'] = $this->toggles[$count];
+	  $count++;
+	  
+	  if ($count >= $max_tog)
+	    $count = 0;
+	} else
+	  $rowitem['TOGGLE'] = NULL;
+	
+	$tpl->setCurrentBlock("listrows");
+	$tpl->setData($rowitem);
+	$tpl->parseCurrentBlock();
+      }
+      
+      $this->getSortButtons($template);
     }
 
-    $this->getSortButtons($template);
-
+    
     if (isset($this->extra_tags)){
       foreach ($this->extra_tags as $key=>$value)
 	$template[$key] = $value;
