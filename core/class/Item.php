@@ -143,15 +143,13 @@ class PHPWS_Item {
       $DB->addWhere("id", (int)$this->_id);
 
       $className = get_class($this);
-      $itemResult = $DB->loadObjects($className, TRUE);
+      $itemResult = $DB->loadObject($this);
 
       if (PEAR::isError($itemResult))
 	return $itemResult;
 
       if (!isset($itemResult))
 	return PHPWS_Error::get(PHPWS_ITEM_NO_RESULT, "core", "PHPWS_Item::init");
-      else
-	$this = $itemResult;
     } else
       return PHPWS_Error::get(PHPWS_ITEM_ID_TABLE, "core", "PHPWS_Item::init");
 
