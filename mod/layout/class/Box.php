@@ -88,6 +88,7 @@ class Layout_Box {
     $db = new PHPWS_DB("layout_box");
     $db->addWhere("module", $this->module);
     $db->addWhere("content_var", $this->content_var);
+    $db->addWhere("theme", $this->theme);
     $result = $db->select("one");
 
     if (PEAR::isError($result))
