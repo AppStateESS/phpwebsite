@@ -1,0 +1,171 @@
+Translating your module using gettext
+by 
+Matthew McNaney
+---------------------------------------------------------------------
+
+phpWebSite uses the gettext utilities recommended by GNU.
+http://www.gnu.org/software/gettext/manual/html_chapter/gettext.html#SEC_Top
+
+This document should help you get started. Special thanks to Joao
+Prado Maia for writing a very helpful tutorial on OnLamp.
+( http://www.onlamp.com/pub/a/php/2002/06/13/php.html?page=1 )
+
+Before attempting to use gettext, please make sure that you have
+gettext compiled on your web server. You must have gettext enabled in
+PHP as well.
+
+
+Getting started
+---------------------------------------------------------------------
+
+As you are writing, you will need to indicate which code portions need
+translating. You do this with the gettext function:
+
+echo gettext("Hello World!");
+
+You can also use a simple underscore like so:
+
+echo _("Hello World!");
+
+We recommend the latter. It is far simplier to type in.
+
+Please take time to read some rules about using gettext here:
+http://www.gnu.org/software/gettext/manual/html_node/gettext_15.html#SEC15
+
+
+Sometimes you may have to put some variables in your text. While it
+may be tempting to use '$', don't. Instead use printf or sprintf.
+
+Example:
+
+$content = sprintf(_("Hello %s! You have logged in %d times!"),
+	           $name, $logged_times);
+
+If you have multiple variables of the same type, use this format:
+
+$content = sprintf(_("Hello %1/$s! Your ranking is %2/$s!"),
+	           $name, $ranking);
+
+This format maintains the variable association. If you used the
+following:
+
+$content = sprintf(_("Hello %s! Your ranking is %s!"),
+	           $name, $ranking);
+
+and it was translated with the ranking portion first, then your
+sentence would get scrambled.
+
+
+First we need to create a 'po' file. This file is simply a text file
+that is later compiled into a 'mo' file. The 'mo' file is read by php
+to exchange what you originally wrote into another language.
+
+To create our po file, we will use xgettext
+
+xgettext --keyword=_ testing.php
+
+Note: The --keyword portion is necessary if you are using the
+_("Hello!") method of gettext.
+
+This would create a message file for just the testing.php file.
+
+xgettext --keyword=_ *.php
+
+This would create a message file for all the files ending in php.
+
+However, since there can be many files through different directories,
+it might be easier to just create a list of files to translate.
+
+grep -lr --include="*.php" "_(" * > translate_list.txt
+
+Open the list and make sure the file list looks correct. Now run
+xgettext against it.
+
+xgettext -n -L C --keyword=_ -f translate_list.txt
+
+A couple of switches were added here:
+
+-n   : puts line numbers next to the translations
+-L C : tells xgettext that we are parsing a C file. Were aren't but
+       doing this avoids error messages.
+-f   : tell xgettext to get the file names from our translate_list.txt
+       file
+
+Once your messages.po file is created successfully, we need to create
+a home for it. Go into your module directory. Now make the following
+directory:
+
+locale/[language]/LC_MESSAGES/
+
+The [language] is the 2 to 5 letter code for what language the module
+was written in. For example, I write my code in English, so I would
+use:
+
+locale/en_US/LC_MESSAGES/
+
+Now copy your messages file to that directory.
+
+Congratulations, you have done the bare miniumum to make your module
+internationally compatible!
+
+
+Translating the your module
+---------------------------------------------------------------------
+--------------------------------------------------
+The messages file has an id and a blank translation for every string
+you marked in your code. If a translation is blank, gettext will just
+return the original phrase. So if _("Hello") is left blank for a
+particular language, then "Hello" is what you will see.
+
+If I didn't create my translation file, then, obviously, all my
+translations are blank. Therefore, the user will once again see the
+original text.
+
+Long story short, you don't need to translate your own module into the
+language it was written in.
+
+If you want to translate the module for your language, create or copy
+the po file. Now you need to edit the file. There are several editors
+that facilitate translation. Emacs has a setting. Kbabel, which comes
+with KDE is probably the more intuitive choice.
+
+Open the message.po file in your editor. You will be shown the
+original string. The translation will be below it. Type in your 
+translation.
+
+Once you are satified with your translations, save the file. Now you
+need to ready the file for the gettext program, which does not
+actually use the text po file.
+
+msgfmt messages.po
+
+The 'msgfmt' program will create a message.mo file. Put this file in
+the proper locale directory and phpWebSite is ready to be translated.
+
+
+Making sure your module translates
+---------------------------------------------------------------------
+---------------------------------------------------
+As different modules are called, phpWebSite will tell gettext where
+your language modules are located. If somehow phpWebSite gets lost and
+can't find you files you can just call the translate function:
+
+translate("module_name");
+
+Calling this function tells gettext where it should be looking for the
+proper translations. For example:
+
+function called_from_other_module(){
+    translate("my_module");
+    return _("Important data");
+}
+
+
+Conclusion
+---------------------------------------------------------------------
+This document is the first draft of instructions to use phpWebSite's
+gettext ability. If you find it complicated, incomplete, or otherwise
+are unable to translate your module, please let me know at:
+
+matt at tux dot appstate dot edu
+
