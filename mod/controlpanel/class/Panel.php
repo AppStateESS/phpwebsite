@@ -18,13 +18,22 @@ class PHPWS_Panel{
     foreach ($tabs as $id=>$info){
       $tab = new PHPWS_Panel_Tab;
       $tab->setId($id);
-      $tab->setTitle($info['title']);
-      $tab->setLink($info['link']);
+
+      if (!isset($info['title']))
+	return PHPWS_Error::get(CP_MISSING_TITLE, "controlpanel", "quickSetTabs");
+      else
+	$tab->setTitle($info['title']);
+
+      if (!isset($info['link']))
+	return PHPWS_Error::get(CP_MISSING_LINK, "controlpanel", "quickSetTabs");
+      else
+	$tab->setLink($info['link']);
+
       $tab->setOrder($count);
       $count++;
       $this->_tabs[$id] = $tab;
     }
-
+    return TRUE;
   }
 
   function loadTabs(){
