@@ -31,7 +31,7 @@ class User_Form {
   function loggedIn(){
     translate("users");
     PHPWS_Core::initCoreClass("Text.php");
-    $template["MODULES"] = PHPWS_Text::moduleLink(_("Control Panel"), "controlpanel", array("command"=>"panel_view"));
+    $template["MODULES"] = PHPWS_Text::secureLink(_("Control Panel"), "controlpanel", array("command"=>"panel_view"));
     $template["LOGOUT"] = PHPWS_Text::moduleLink(_("Log Out"), "users", array("action"=>"user", "command"=>"logout"));
     $template["HOME"] = PHPWS_Text::moduleLink(_("Home"));
 
@@ -63,39 +63,38 @@ class User_Form {
     return PHPWS_Template::process($template, "users", "forms/loginBox.tpl");
   }
 
-  function setPermissions($id, $type){
-    $group = new PHPWS_Group($id, FALSE);
-    if (PEAR::isError($group)){
-      PHPWS_Error::log($group);
-      $content = _("A fatal error occurred. Please check your logs.");
-      return $content;
-    }
+  function setPermissions($id){
+    Layout::addStyle("users");
+    $group = & new PHPWS_Group($id, FALSE);
+    test($group);
 
     $modules = PHPWS_Core::getModules();
 
     $tpl = & new PHPWS_Template("users");
     $tpl->setFile("forms/permissions.tpl");
 
-    $form = & new PHPWS_Form();
-    $form->add("module", "hidden", "users");
-    $form->add("action[admin]", "hidden", "postPermission");
-    $form->add("group", "hidden", $id);
-    $form->add("type", "hidden", $type);
-
     foreach ($modules as $mod){
-      $row = User_Form::modulePermission($mod, $group);
-      $template = array("ROW" => $row);
+      $mod_template = User_Form::modulePermission($mod, $group);
+      if ($mod_template == false)
+	continue;
+
       $tpl->setCurrentBlock("module");
-      $tpl->setData($template);
+      $tpl->setData($mod_template);
       $tpl->parseCurrentBlock("module");
     }
 
-    $form->add("update_all", "submit", _("Update All"));
+    $form = & new PHPWS_Form();
+    $form->addHidden("module", "users");
+    $form->addHidden("action", "admin");
+    $form->addHidden("command", "postPermission");
+    $form->addHidden("group_id", $id);
+    $form->add("update", "submit", _("Update"));
     $template = $form->getTemplate();
-    $template['TITLE'] = sprintf(_("Permissions for %s"), $group->getName());
+
     $tpl->setData($template);
 
-    $content  = $tpl->get();
+    $content = $tpl->get();
+
     return $content;
   }
 
@@ -103,12 +102,11 @@ class User_Form {
   function modulePermission($mod, &$group){
     $group->loadPermissions(FALSE);
 
-    Layout::addStyle("users");
     $file = PHPWS_Core::getConfigFile($mod['title'], "permission.php");
     $template = NULL;
 
-    if (PEAR::isError($file))
-      return;
+    if ($file == FALSE)
+      return $file;
 
     include $file;
 
@@ -128,34 +126,26 @@ class User_Form {
     $permCheck = $group->allow($mod['title'], NULL, NULL, TRUE);
 
     foreach ($permSet as $key => $value){
-      if ((int)$key == (int)$permCheck)
-	$checked = "checked=\"checked\"";
-      else
-	$checked = NULL;
-      $name = "permission[" . $mod['title'] . "]";
-      $radio[] = "<input type=\"radio\" name=\"$name\" value=\"$key\" $checked /> $value";
+      $form = & new PHPWS_Form;
+      $name = "module_permission[{$mod['title']}]";
+      $result = $form->addRadio($name, $key);
+      $form->setMatch($name, $permCheck);
+      $template['PERMISSION_' . $key] = $form->get($name);
     }
-
-    $form = & new PHPWS_Form;
 
     if (isset($permissions)){
       foreach ($permissions as $permName => $permProper){
-	$formName = "subpermission[" . $mod['title'] . "][$permName]"; 
-	$form->add($formName, "checkbox", 1);
-	if ($group->allow($mod['title'], $permName))
-	  $form->setMatch($formName, 1);
-	$subperm[] = $form->get($formName) . " $permProper";
+	$form = & new PHPWS_Form;
+	$name = "sub_permission[{$mod['title']}][$permName]";
+	$form->addCheckBox($name, 1);
+	$subpermissions[] = $form->get($name) . " " . $permProper;
       }
 
-      $template["SUBPERMISSIONS"] = implode("<br />", $subperm);
+      $template['SUBPERMISSIONS'] = implode("<br />", $subpermissions);
     }
-    $template["CHOICE"] = implode("<br />", $radio);
-    $template["MODULE_NAME"] = $mod['proper_name'];
-    $form->add("update[" . $mod['title'] . "]", "submit", sprintf(_("Update %s"), $mod['proper_name']));
-    $template["UPDATE"] = $form->get("update[" . $mod['title'] . "]");
 
-    $content = PHPWS_Template::process($template, "users", "forms/mod_permission.tpl");
-    return $content;
+    $template['MODULE_NAME'] = $mod['proper_name'];
+    return $template;
   }
 
   function manageUsers(){
@@ -171,7 +161,7 @@ class User_Form {
     $pager = & new DBPager("users", "User_Manager");
     $pager->setModule("users");
     $pager->setTemplate("manager/users.tpl");
-    $pager->setLink("index.php?module=users&action=admin&tab=manage_users");
+    $pager->setLink("index.php?module=users&amp;action=admin&amp;tab=manage_users&amp;authkey=" . Current_User::getAuthKey());
     $pager->addTags($pageTags);
     $pager->setMethod("active", "listActive");
     $pager->setMethod("last_logged", "listLastLogged");
@@ -199,7 +189,7 @@ class User_Form {
     $pager = & new DBPager("users_groups", "Group_Manager");
     $pager->setModule("users");
     $pager->setTemplate("manager/groups.tpl");
-    $pager->setLink("index.php?module=users&action=admin&tab=manage_groups");
+    $pager->setLink("index.php?module=users&amp;action=admin&amp;tab=manage_groups&amp;authkey=" . Current_User::getAuthKey());
     $pager->addTags($pageTags);
     $pager->setMethod("active", "listActive");
     $pager->addToggle("class=\"toggle1\"");
@@ -209,6 +199,8 @@ class User_Form {
 
     if (!Current_User::isDeity())
       $pager->addWhere("id", ANONYMOUS_ID, "!=");
+
+    $pager->addWhere("user_id", 0);
 
     return $pager->get();
   }
@@ -282,10 +274,14 @@ class User_Form {
       $groupResult = $db->select();
 
       $count = 0;
+
+      $vars['action'] = "admin";
+      $vars['command'] = "dropMember";
+      $vars['group'] = $group->getId();
       foreach ($groupResult as $item){
 	$count++;
-	$action = "<a href=\"index.php?module=users&amp;action[admin]=dropMember&amp;member=" . $item['id'] . "&amp;group="
-	  . $group->getId() . "\">Drop</a>";
+	$vars['member'] = $item['id'];
+	$action = PHPWS_Text::secureLink(_("Drop"), "users", $vars);
 	if ($count % 2)
 	  $template['STYLE'] = "class=\"bg-light\"";
 	else
@@ -298,7 +294,7 @@ class User_Form {
 
       $pager = & new PHPWS_Pager;
       $pager->setData($data);
-      $pager->setLinkBack("index.php?module=users&amp;group=" . $group->getId() . "&amp;action[admin]=manageMembers");
+      $pager->setLinkBack("index.php?module=users&amp;group=" . $group->getId() . "&amp;action=admin&amp;command=manageMembers");
       $pager->pageData();
       $content = $pager->getData();
     }
@@ -311,42 +307,6 @@ class User_Form {
       return $content->getMessage();
     }
     return $content;
-  }
-
-
-  function demographics($message=NULL){
-    PHPWS_Core::initModClass("users", "Demographics.php");
-    PHPWS_Core::initModClass("users", "Demo_Manager.php");
-
-    if (isset($message))
-      $finalForm['MESSAGE'] = $message;
-
-    $finalForm['SELECTIONS'] = Demo_Manager::getList();
-    return PHPWS_Template::process($finalForm, "users", "manager/demoList.tpl");
-  }
-
-  function setActiveDemographics(){
-    PHPWS_Core::initModClass("users", "Demographics.php");
-    $alldemo = $_SESSION['All_Demo'];
-    unset($_SESSION['All_Demo']);
-
-    $db = & new PHPWS_DB("users_demographics");
-
-    if (PEAR::isError($alldemo))
-      Layout::add($alldemo->getMessage());
-
-    if (!isset($alldemo))
-      return;
-
-    foreach ($alldemo as $label){
-      $db->addWhere("label", $label);
-      if (isset($_POST['demo'][$label]))
-	$db->addValue("active", 1);
-      else
-	$db->addValue("active", 0);
-      $result = $db->update();
-      $db->reset();
-    }
   }
 
   function userForm(&$user, $message=NULL){
@@ -597,7 +557,7 @@ class User_Form {
 	$links[1] = "<a href=\"javascript:void(0)\" onclick=\"drop($id)\">Drop</a>";
 
       $getVars['command'] = "editScript";
-      $links[2] = PHPWS_Text::moduleLink(_("Edit"), "users", $getVars);
+      $links[2] = PHPWS_Text::secureLink(_("Edit"), "users", $getVars);
 
       $row['CHECK'] = "<input type=\"radio\" name=\"default_authorization\" value=\"$id\" $checked />";
       $row['DISPLAY_NAME'] = $display_name;

@@ -1,4 +1,11 @@
 <?php
+/**
+ * Controls results from forms and administration functions
+ *
+ * @version $Id$
+ * @author  Matt McNaney <matt at tux dot appstate dot edu>
+ * @package Core
+ */
 
 
 class User_Action {
@@ -7,7 +14,7 @@ class User_Action {
     $content = NULL;
 
     if (!Current_User::allow("users")){
-      PHPWS_User::disallow();
+      PHPWS_User::disallow(_("User tried to perform an Users admin function."));
       return;
     }
 
@@ -41,6 +48,7 @@ class User_Action {
       break;
 
     case "editUser":
+      $title = _("Edit User");
       $user = & new PHPWS_User($_REQUEST["user_id"]);
       $content = User_Form::userForm($user);
       break;      
@@ -72,15 +80,9 @@ class User_Action {
       }
 
       PHPWS_Core::initModClass("users", "Group.php");
-      $user = & new PHPWS_User($_REQUEST['user']);
-      $id = $user->getUserGroup();
-      if (PEAR::isError($id)){
-	PHPWS_Error::log($id);
-	$content = _("A fatal error occurred. Please check your logs.");
-	break;
-      }
-
-      $content = User_Form::setPermissions($id, "user");
+      $user = & new PHPWS_User($_REQUEST['user_id']);
+      $title = sprintf(_("Permissions for %s"), $user->getUsername());
+      $content = User_Form::setPermissions($user->getUserGroup());
       break;
 
 
@@ -167,11 +169,9 @@ class User_Action {
       break;
 
     case "postPermission":
-      PHPWS_Core::initModClass("users", "Group.php");
-      $id = $_POST['group'];
-      $group = & new PHPWS_Group($id);
-      User_Action::postPermission($group);
-
+      User_Action::postPermission();
+      echo "posting permissions";
+      break;
       $content = _("Permissions updated.") . "<hr />";
 
       if ($_POST['type'] == "user")
@@ -232,7 +232,7 @@ class User_Action {
 
     default:
       $content = "Unknown command";
-      echo phpws_debug::testarray($_REQUEST);
+      test($_REQUEST);
       break;
     }
 
@@ -329,34 +329,19 @@ class User_Action {
     }
   }
 
-  function postPermission(&$group){
+  function postPermission(){
     PHPWS_Core::initModClass("users", "Permission.php");
 
-    if (isset($_POST['update']))
-      foreach ($_POST['update'] as $update => $nullIt);
-    elseif (isset($_POST['update_all']))
-      $update = "all";
-    else
-      exit("need error in postPermission");
+    extract($_POST);
+    
+    // Error here
+    if (!isset($group_id))
+      return FALSE;
 
-    $permission = $_POST['permission'];
-    if (isset($_POST['subpermission']))
-      $subperm = $_POST['subpermission'];
-
-    if ($update == "all"){
-      foreach ($permission as $itemname => $status){
-	Users_Permission::setPermissions($group->getId(), $itemname, $status, isset($subperm[$itemname]) ? $subperm[$itemname] : NULL);
-      }
-    } elseif (isset($subperm)) {
-      if (isset($subperm[$update]))
-	$subpermission = $subperm[$update];
-      else
-	$subpermission = NULL;
-      Users_Permission::setPermissions($group->getId(), $update, $permission[$update], $subpermission);
-    } else
-      Users_Permission::setPermissions($group->getId(), $update, $permission[$update]);
-
-    return TRUE;
+    foreach ($module_permission as $mod_title=>$permission){
+      $subpermission = isset($sub_permission[$mod_title]) ? $sub_permission[$mod_title] : NULL;
+      Users_Permission::setPermissions($group_id, $mod_title, $permission, $subpermission);
+    }
   }
 
 

@@ -209,8 +209,11 @@ class Users_Permission {
 
   function setPermissions($group_id, $module, $level, $subpermissions=NULL){
     $tableName = Users_Permission::getPermissionTableName($module);
+    if (!PHPWS_DB::isTable($tableName))
+      return;
+
     $db = new PHPWS_DB($tableName);
-    $db->addWhere("group_id", $group_id);
+    $db->addWhere("group_id", (int)$group_id);
 
     $db->delete();
 
