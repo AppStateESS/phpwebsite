@@ -1,7 +1,5 @@
 <?php
 
-define("LOCAL_AUTHORIZATION", 1);
-define("GLOBAL_AUTHORIZATION", 2);
 
 class User_Action {
 
@@ -228,59 +226,28 @@ class User_Action {
   }
 
   function postUser(&$user){
-    if ($user->isUser())
-      $result = $user->setUsername($_POST['username'], FALSE);
-    else
-      $result = $user->setUsername($_POST['username'], TRUE);
+    $result = $user->setUsername($_POST['username']);
 
     if (PEAR::isError($result))
-      $error[] = $result;
+      $error['USERNAME_ERROR'] = $result->getMessage();
 
     if (!$user->isUser() || (!empty($_POST['password1']) || !empty($_POST['password2']))){
       $result = $user->checkPassword($_POST['password1'], $_POST['password2']);
 
       if (PEAR::isError($result))
-	$error[] = $result;
+	$error['PASSWORD_ERROR'] = $result->getMessage();
       else
 	$user->setPassword($_POST['password1']);
     }
 
-    if (isset($_POST['demographic'])){
-      PHPWS_Core::initModClass("users", "Demographics.php");
-      $result = Demographics::post($user);
-    }
+    $result = $user->setEmail($_POST['email']);
+    if (PEAR::isError($result))
+      $error['EMAIL_ERROR'] = $result->getMessage();
 
     if (isset($error))
       return $error;
     else
       return TRUE;
-
-
-
-    
-    if (is_array($result)){
-      foreach ($result as $error)
-	$messages[] = $error->getMessage();
-      $content = User_Form::userForm($user, implode("<br />", $messages));
-    }
-    else {
-      $result = $user->save();
-      if (PEAR::isError($result)){
-	  $content = User_Form::userForm($user, $result->getMessage());
-	  break;
-      }
-      
-      if (!isset($id)){
-	$message = sprintf(_("User '%s' created successfully"), $user->getUsername());
-	unset($user);
-	$user = & new PHPWS_User;
-	$content = User_Form::userForm($user, $message);
-      } else {
-	$content = sprintf(_("User '%s' updated successfully"), $user->getUsername()) . "<hr />";
-	unset($user);
-	$content .= User_Form::manageUsers();
-      }
-    }
   }
 
   function &cpanel(){
@@ -316,10 +283,12 @@ class User_Action {
 
     switch ($command){
     case "loginBox":
-      //      if (!PHPWS_Core::isPosted()){
+      if (!Current_User::isLogged()){
 	if (!User_Action::loginUser($_POST['block_username'], $_POST['block_password']))
 	  User_Action::badLogin();
-	//      }
+	else
+	  Current_User::getLogin();
+      }
       break;
       
     case "logout":
@@ -361,6 +330,7 @@ class User_Action {
 
 
   function loginUser($username, $password){
+    $createUser = FALSE;
     // First check if they are currently a user in local system
     $user = & new PHPWS_User;
 
@@ -374,33 +344,38 @@ class User_Action {
     }
 
     // if result is blank then check against the default authorization
-    if ($result == FALSE)
+    if ($result == FALSE){
       $authorize = PHPWS_User::getUserSetting("default_authorize");
+      $createUser = TRUE;
+    }
     else
       $authorize = $user->getAuthorize();
 
     $result = User_Action::authorize($authorize, $username, $password);
 
-    if ($result){
-      echo "logged in";
-    } else
-      echo "not logged in";
-
-    exit();
-
-    $registrationScript = "default.php";
-
-    include PHPWS_SOURCE_DIR . "mod/users/scripts/login/" . $registrationScript;
-
-    if (!isset($logged) or $logged !== TRUE)
+    if (PEAR::isError($result)){
+      PHPWS_Error::log($result);
       return FALSE;
-
-    if (isset($id)){
-      Current_User::init($id);
-      return TRUE;
     }
-    
-    return FALSE;
+
+    if ($result == TRUE){
+      if ($createUser == TRUE){
+	$result = $user->setUsername($username);
+
+	if (PEAR::isError($result))
+	  return FALSE;
+
+	$user->setAuthorize($authorize);
+	$user->setActive(TRUE);
+	$user->setApproved(TRUE);
+	$user->save();
+      }
+
+      $user->setLogged(TRUE);
+      $_SESSION['User'] = $user;
+      return TRUE;
+    } else
+      return FALSE;
   }
 
   function postGroup(&$group, $showLikeGroups=FALSE){
@@ -445,7 +420,31 @@ class User_Action {
 
   }
 
-  function foreignauth(){
+  function foreignauth($authorize, $username, $password){
+    $db = & new PHPWS_DB("users_foreign_alt");
+    $db->setIndexBy("alt_code");
+    $db->addWhere("active", 1);
+    $result = $db->select();
+
+    if (empty($result))
+      return FALSE;
+
+    if (isset($result[$authorize])){
+      extract($result[$authorize]);
+      $file = "mod/users/scripts/$filename";
+      if(!is_file($file)){
+	PHPWS_Error::log(USER_ERR_MISSING_AUTH, "users", "foreignauth", $file);
+	return FALSE;
+      }
+
+      include $file;
+
+      $result = authorize($username, $password);
+
+      return $result;
+    } else
+      return FALSE;
+
 
   }
 
@@ -457,7 +456,7 @@ class User_Action {
   }
 
   function badLogin(){
-    Layout::add("Unable to find your account. Please try again.", "users", "User_Main");
+    Layout::add(_("Username and password refused."), "users", "User_Main");
   }
 
   function getGroups($mode=NULL){

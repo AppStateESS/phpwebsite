@@ -8,20 +8,22 @@ class PHPWS_User {
   var $username      = NULL;
   var $deity         = FALSE;
   var $active        = TRUE;
-  var $authorize     = 0;
-  var $active        = 0;
+  var $authorize     = NULL;
   var $last_logged   = 0;
   var $time_logged   = 0;
   var $created       = 0;
   var $updated       = 0;
-  var $active        = 0;
-  var $approved      = 0;
+  var $active        = FALSE;
+  var $approved      = FALSE;
   var $email         = NULL;
-  
+  var $display_name  = NULL;
+
+  var $_password     = NULL;
   var $_groups       = NULL;
   var $_permission   = NULL;
-  //  var $_settings     = NULL;
   var $_user_group   = NULL;
+  // Indicates whether this is a logged in user
+  var $_logged       = FALSE;
  
   function PHPWS_User($id=NULL){
     if(!isset($id))
@@ -42,7 +44,6 @@ class PHPWS_User {
       return $result;
 
     $this->loadUserGroups();
-    //    $this->loadUserSettings();
   }
 
 
@@ -58,29 +59,64 @@ class PHPWS_User {
     return $this->authorize;
   }
  
-  function isDuplicateUsername($username){
+  function isDuplicateUsername(){
     $DB = & new PHPWS_DB("users");
-    $DB->addWhere("username", $username);
-    return $DB->select("one");
+    $DB->addWhere("username", $this->username);
+    if (isset($this->id))
+      $DB->addWhere("id", $this->id, "!=");
+
+    $result = $DB->select("one");
+    if (PEAR::isError($result))
+      return $result;
+    else
+      return (bool)$result;
   }
 
-  function isDuplicateEmail($email){
-    $DB = & new PHPWS_DB("users");
-    $DB->addWhere("email", $email);
-    return $DB->select("one");
+  function isDuplicateGroup(){
+    $DB = & new PHPWS_DB("users_groups");
+    $DB->addWhere("name", $this->username);
+    if (isset($this->id))
+      $DB->addWhere("user_id", $this->id, "!=");
+
+    $result = $DB->select("one");
+    if (PEAR::isError($result))
+      return $result;
+    else
+      return (bool)$result;
   }
 
-  function setUsername($username, $checkDuplicate=FALSE){
+  function isDuplicateEmail(){
+    if (empty($this->email))
+      return FALSE;
+
+    $DB = & new PHPWS_DB("users");
+    $DB->addWhere("email", $this->email);
+    if (isset($this->id))
+      $DB->addWhere("id", $this->id, "!=");
+
+    $result = $DB->select("one");
+    if (PEAR::isError($result))
+      return $result;
+    else
+      return (bool)$result;
+  }
+
+  function setUsername($username){
     if (empty($username) || preg_match("/\W+/", $username))
       return PHPWS_Error::get(USER_ERR_BAD_USERNAME, "users", "setUsername");
    
     if (strlen($username) < USERNAME_LENGTH)
       return PHPWS_Error::get(USER_ERR_BAD_USERNAME, "users", "setUsername");
    
-    if ((bool)$checkDuplicate == TRUE){
-    }
-
     $this->username = $username;
+
+    if ($this->isDuplicateUsername())
+      return PHPWS_Error::get(USER_ERR_DUP_USERNAME, "users", "save"); ;
+
+    if ($this->isDuplicateGroup())
+      return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, "users", "save"); ;
+    
+
     return TRUE;
   }
 
@@ -90,9 +126,9 @@ class PHPWS_User {
 
   function setPassword($password, $hashPass=TRUE){
     if ($hashPass)
-      $this->password = md5($password);
+      $this->_password = md5($password);
     else
-      $this->password = $password;
+      $this->_password = $password;
   }
 
   function checkPassword($pass1, $pass2){
@@ -109,7 +145,7 @@ class PHPWS_User {
   }
 
   function getPassword(){
-    return $this->password;
+    return $this->_password;
   }
 
   function setLogged($status){
@@ -121,7 +157,7 @@ class PHPWS_User {
   }
 
   function isUser(){
-    return isset($this->_id);
+    return isset($this->id);
   }
 
   function setDeity($deity){
@@ -140,27 +176,51 @@ class PHPWS_User {
     return (bool)$this->active;
   }
 
-  /*
-  function getUserSettings(){
-    return $this->_settings;
+  function setAuthorize($authorize){
+    $this->authorize = (int)$authorize;
   }
 
-
-  function loadUserSettings(){
-    $db = & new PHPWS_DB("users_settings");
-    $db->addWhere("id", $this->getId());
-    $result = $db->select();
-    if (PEAR::isError($result)){
-      PHPWS_Error::log($result);
-      return;
-    } elseif (!isset($result))
-	return;
-
-    foreach ($result as $setting)
-      $this->_settings[$setting['label']][$setting['var_name']] = $setting['var_value'];
-
+  function getAuthorize(){
+    return $this->authorize;
   }
-  */
+
+  function setApproved($approve){
+    $this->approved = (bool)$approve;
+  }
+
+  function isApproved(){
+    return (bool)$this->approved;
+  }
+
+  function setEmail($email){
+    $this->email = $email;
+
+    if (!PHPWS_Text::isValidInput($email, "email"))
+      return PHPWS_Error::get(USER_ERR_BAD_EMAIL, "users", "setEmail");
+
+    if ($this->isDuplicateEmail())
+      return PHPWS_Error::get(USER_ERR_DUP_EMAIL, "users", "setEmail");
+
+    return TRUE;
+  }
+
+  function getEmail($html=FALSE){
+    if ($html == TRUE)
+      return "<a href=\"mailto:" . $this->email . "\">" . $this->getDisplayName() . "</a>";
+    else
+      return $this->email;
+  }
+
+  function setDisplayName($name){
+    $this->display_name = $name;
+  }
+
+  function getDisplayName(){
+    if (empty($this->display_name))
+      return $this->username;
+    else
+      return $this->display_name;
+  }
 
   function loadUserGroups(){
     $group = $this->getUserGroup();
@@ -219,44 +279,54 @@ class PHPWS_User {
   }
 
   function save(){
-    $newUser = FALSE;
     PHPWS_Core::initModClass("users", "Group.php");
-    $username = $this->getUsername();
 
-    if (!isset($this->_id)){
+    if (!isset($this->id))
       $newUser = TRUE;
-      $userDB = & new PHPWS_DB("users");
-      $userDB->addWhere("username", $username);
-      $result = $userDB->select("one");
+    else
+      $newUser = FALSE;
 
-      if (isset($result)){
-	if (PEAR::isError($result))
-	  return $result;
-	else
-	  return PHPWS_Error::get(USER_ERR_DUP_USERNAME, "users", "save");
-      }
+    $result = $this->isDuplicateUsername();
+    if (PEAR::isError($result))
+      return $result;
 
-      $groupDB = & new PHPWS_DB("users_groups");
-      $groupDB->addWhere("name", $username);
-      $result = $groupDB->select("one");
+    if ($result == TRUE)
+	return PHPWS_Error::get(USER_ERR_DUP_USERNAME, "users", "save");
 
-      if (isset($result)){
-	if (PEAR::isError($result))
-	  return $result;
-	else
-	  return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, "users", "save");
-      }
-    }
+    $result = $this->isDuplicateEmail();
+    if (PEAR::isError($result))
+      return $result;
 
-    $userDB->reset();
-    $result = $userDB->saveObject($this);
+    if ($result == TRUE)
+	return PHPWS_Error::get(USER_ERR_DUP_EMAIL, "users", "save");
+
+    $result = $this->isDuplicateGroup();
+    if (PEAR::isError($result))
+      return $result;
+
+    if ($result == TRUE)
+	return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, "users", "save");
+
+    if (empty($this->display_name))
+      $this->display_name = $this->username;
+
+    if (!isset($this->authorize))
+      $this->authorize = $this->getUserSetting("default_authorize");
+
+    $db = & new PHPWS_DB("users");
+    $result = $db->saveObject($this);
 
     if (PEAR::isError($result)){
       PHPWS_Error::log($result);
       return PHPWS_Error::get(USER_ERR_USER_NOT_SAVED, "users", "save");
     }
 
-    $this->saveVar();
+    if ($this->authorize > 0){
+      if ($this->authorize == LOCAL_AUTHORIZATION)
+	$this->saveLocalAuthorization();
+      elseif ($this->authorize == GLOBAL_AUTHORIZATION)
+	$this->saveGlobalAuthorization();
+    }
 
     if ($newUser)
       return $this->createGroup();
@@ -264,6 +334,19 @@ class PHPWS_User {
       return $this->updateGroup();
 
     return TRUE;
+
+  }
+
+  function saveLocalAuthorization(){
+    $db = & new PHPWS_DB("user_authorization");
+    $db->addWhere("username", $this->username);
+    $db->delete();
+    $db->addValue("username", $this->username);
+    $db->addValue("password", $this->_password);
+    $db->insert();
+  }
+
+  function saveGlobalAuthorization(){
 
   }
 
@@ -324,99 +407,12 @@ class PHPWS_User {
       return $result;
   }
 
-  function isAnonymous(){
-    return (PHPWS_User::getUserSetting('anonymous') == $this->getId() ? TRUE : FALSE);
-  }
-
   function disallow(){
     $title = _("Sorry") . "...";
     $content = ("You do not have permission for this action.");
     Layout::add(array("TITLE"=>$title, "CONTENT"=>$content), "users", "User_Main");
   }
 
-
-  /*********************** User Var Code *******************/
-  function getVar($varName, $label){
-    if ($this->isAnonymous())
-      return FALSE;
-
-    return (isset($this->_settings[$label][$varName])) ? $this->_settings[$label][$varName] : NULL;
-  }
-
-
-  function setVar($varName, $varValue, $label, $merge=FALSE){
-    if ($this->isAnonymous())
-      return FALSE;
-
-    PHPWS_Core::initCoreClass("Text.php");
-
-    if (!PHPWS_Text::isValidInput($varName))
-      return PHPWS_Error::get(USER_ERR_BAD_VAR, "users", "setUserVar");
-
-    if ($merge == TRUE){
-      $currentVar = $this->getUserVar($varName, $label);
-      
-      if (is_array($currentVar) && is_array($varValue)){
-	foreach ($varValue as $key=>$value)
-	  $currentVar[$key] = $value;
-	
-	$varValue = $currentVar;
-      }
-    }
-
-    $this->_settings[$label][$varName] = $varValue;
-  }
-   
-
-  function saveVar(){
-    if ($this->isAnonymous())
-      return FALSE;
-
-    $settings = $this->getUserSettings();
-    if (!isset($settings))
-      return TRUE;
-
-    $DB = new PHPWS_DB("users_settings");
-
-    foreach ($settings as $label => $varset){
-      foreach ($varset as $varName => $varValue){
-	$this->dropVar($varName, $label);
-	$DB->addValue("id", $this->getId());
-	$DB->addValue("label", $label);
-	$DB->addValue("var_name", $varName);
-	$DB->addValue("var_value", $varValue);
-	$result = $DB->insert();
-	$DB->resetValues();
-	if (PEAR::isError($result))
-	  PHPWS_Error::log($result);
-      }
-    }
-    return TRUE;
-  }
-
-  function dropVar($varName, $label){
-    PHPWS_Core::initCoreClass("Text.php");
-    if ($this->isAnonymous())
-      return FALSE;
-
-    if (isset($this->_settings[$label][$varName]))
-      unset($this->_settings[$label][$varName]);
-
-    if (!(PHPWS_Text::isValidInput($varName)))
-      return PHPWS_Error::get(USER_ERR_BAD_VAR, "users", "setUserVar");
-
-    $DB = new PHPWS_DB("users_settings");
-    $DB->addWhere("label", $label);
-    $DB->addWhere("id", $this->getID());
-    $DB->addWhere("var_name", $varName);
-    return $DB->delete();
-  }
-
-  function dropLabel($label){
-    $DB = new PHPWS_DB("users_settings");
-    $DB->addWhere("label", $label);
-    return $DB->delete();
-  }
 
   function dropUser(){
     $DB = new PHPWS_DB("users_settings");

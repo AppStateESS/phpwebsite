@@ -3,11 +3,10 @@
 class Current_User {
 
   function init($id){
-      $_SESSION['User'] = new PHPWS_User($id);
-      $_SESSION['User']->setLogged(TRUE);
-      Current_User::updateLastLogged();
-      Current_User::getLogin();
-
+    $_SESSION['User'] = new PHPWS_User($id);
+    $_SESSION['User']->setLogged(TRUE);
+    Current_User::updateLastLogged();
+    Current_User::getLogin();
   }
   
   function allow($itemName, $subpermission=NULL, $item_id=NULL){
@@ -17,13 +16,12 @@ class Current_User {
   function getLogin(){
     PHPWS_Core::initModClass("users", "Form.php");
     $login = User_Form::logBox();
-    Layout::hold($login, "users", "CNT_user_small", TRUE, -1);
+    Layout::set($login, "users", "CNT_user_small");
   }
 
   function logAnonymous(){
     PHPWS_Core::initModClass("users", "Action.php");
-    $id = PHPWS_User::getUserSetting('anonymous');
-    $_SESSION['User'] = new PHPWS_User($id);
+    $_SESSION['User'] = new PHPWS_User(1);
   }
 
   function isDeity(){
@@ -42,9 +40,12 @@ class Current_User {
   }
 
   function getUsername(){
-
+    return $_SESSION['User']->getUsername();
   }
 
+  function isLogged(){
+    return $_SESSION['User']->isLogged();
+  }
 
 }
 

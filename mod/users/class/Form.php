@@ -14,8 +14,8 @@ class User_Form {
   function logBox($logged=TRUE){
     translate("users");
 
-    if ($_SESSION['User']->isLogged()){
-      $username = $_SESSION['User']->getUsername();
+    if (Current_User::isLogged()){
+      $username = Current_User::getUsername();
       $form['TITLE']   = sprintf(_("Hello %s"), $username);
       $form['CONTENT'] = User_Form::loggedIn();
     }
@@ -32,7 +32,7 @@ class User_Form {
     translate("users");
     PHPWS_Core::initCoreClass("Text.php");
     $template["MODULES"] = PHPWS_Text::moduleLink(_("Control Panel"), "controlpanel");
-    $template["LOGOUT"] = PHPWS_Text::moduleLink(_("Log Out"), "users", array("action[user]"=>"logout"));
+    $template["LOGOUT"] = PHPWS_Text::moduleLink(_("Log Out"), "users", array("action"=>"user", "command"=>"logout"));
     $template["HOME"] = PHPWS_Text::moduleLink(_("Home"));
 
     return PHPWS_Template::process($template, "users", "usermenus/Default.tpl");
