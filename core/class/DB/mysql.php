@@ -4,11 +4,10 @@ class PHPWS_SQL {
 
   var $offset = ",";
 
-
   function export(&$info){
     switch ($info['type']){
     case "int":
-      if ($info['len'] > 6)
+      if (!isset($info['len']) || $info['len'] > 6)
 	$setting = "INT";
       else
 	$setting = "SMALLINT";
@@ -35,6 +34,7 @@ class PHPWS_SQL {
       $setting = "TIMESTAMP";
       $info['flags'] = NULL;
       break;
+
     }
 
     return $setting;
