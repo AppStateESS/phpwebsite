@@ -34,7 +34,16 @@ class oldDB{
   function sqlImport($filename, $write=TRUE, $suppress_error=FALSE){
     PHPWS_Core::initCoreClass('File.php');
     $text = PHPWS_File::readFile($filename);
-    return PHPWS_DB::import($text, TRUE);
+
+    $db = & new PHPWS_DB;
+    $result = $db->import($text, FALSE);
+
+    if (PEAR::isError($result)) {
+      PHPWS_Error::log($result);
+      return FALSE;
+    } else {
+      return TRUE;
+    }
   }
 
   function sqlDelete($table_name, $match_column=NULL, $match_value=NULL, $compare='=', $and_or='and') {
@@ -77,12 +86,22 @@ class oldDB{
   }
 
   function getCol($sql){
-    return PHPWS_DB::select('col', $sql);
+    $db = & new PHPWS_DB;
+    return $db->getCol($sql);
   }
 
   function getAll($sql){
-    return PHPWS_DB::select('all', $sql);
+    $db = & new PHPWS_DB;
+    return $db->getAll($sql);
   }
+
+  function sqlMaxValue($table, $column){
+    $db = & new PHPWS_DB($table);
+    $db->addColumn($column);
+
+    $result = $db->select('max');
+  }
+
 }
 
 
