@@ -22,6 +22,7 @@ $errors[PHPWS_DB_BAD_COL_NAME]       = _("Improper colume name.");
 $errors[PHPWS_DB_NO_COLUMN_SET]      = _("Missing column to select.");
 $errors[PHPWS_DB_NOT_OBJECT]         = _("Expecting an object variable.");
 $errors[PHPWS_DB_NO_VARIABLES]       = _("Class does not contain variables.");
+$errors[PHPWS_DB_NO_WHERE]           = _("Function was expecting a 'where' parameter.");
 
 
 // List.php 200 - 299
@@ -69,6 +70,9 @@ $errors[PHPWS_FILE_DELETE_DENIED]    = _("Unable to delete file.");
 $errors[PHPWS_DIR_DELETE_DENIED]     = _("Unable to delete directory.");
 $errors[PHPWS_DIR_NOT_WRITABLE]      = _("Directory is not writable.");
 $errors[PHPWS_FILE_CANT_READ]        = _("Cannot read file.");
+$errors[PHPWS_FILE_NO_FILES]         = _("_FILES array not present.");
+$errors[PHPWS_FILE_DIR_NONWRITE]     = _("Unable to save file in selected directory.");
+$errors[PHPWS_FILE_NO_TMP]            = _("Upload directory not set in file object.");
 
 // Image.php 900 - 999
 $errors[PHPWS_FILENAME_NOT_SET]      = _("Filename not set.");
@@ -77,10 +81,8 @@ $errors[PHPWS_BOUND_FAILED]          = _("There was a problem loading the image 
 $errors[PHPWS_IMG_SIZE]              = _("Image was larger than %dK size limit.");
 $errors[PHPWS_IMG_WIDTH]             = _("Image width was larger than %d pixel limit.");
 $errors[PHPWS_IMG_HEIGHT]            = _("Image height was larger than %d pixel limit.");
-$errors[PHPWS_IMG_NO_FILES]          = _("_FILES array not present.");
 $errors[PHPWS_IMG_WRONG_TYPE]        = _("Unacceptable image type.");
-$errors[PHPWS_IMG_DIR_NONWRITE]      = _("Unable to save file in selected directory.");
-$errors[PHPWS_IMG_NO_TMP]            = _("Upload directory not set in image object.");
+
 
 // Text.php 1000-1100
 $errors[PHPWS_TEXT_NOT_STRING]       = _("Function expected a string variable.");

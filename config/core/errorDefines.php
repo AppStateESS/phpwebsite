@@ -24,6 +24,7 @@ define("PHPWS_DB_BAD_COL_NAME",       -104);
 define("PHPWS_DB_NO_COLUMN_SET",      -105);
 define("PHPWS_DB_NOT_OBJECT",         -106);
 define("PHPWS_DB_NO_VARIABLES",       -107);
+define("PHPWS_DB_NO_WHERE",           -108);
 
 
 /************* List.php *****************/
@@ -72,7 +73,11 @@ define("PHPWS_FILE_WRONG_CONSTRUCT",  -800);
 define("PHPWS_FILE_NONCLASS",         -801);
 define("PHPWS_FILE_DELETE_DENIED",    -802);
 define("PHPWS_DIR_DELETE_DENIED",     -803);
-define("PHPWS_DIR_NOT_WRITABLE",      -804);
+define("PHPWS_FILE_NO_FILES",         -804);
+define("PHPWS_FILE_CANT_READ",        -805);
+define("PHPWS_FILE_DIR_NONWRITE",     -806);
+define("PHPWS_FILE_NO_TMP",           -807);
+
 
 /*************** Image.php ****************/
 define("PHPWS_FILENAME_NOT_SET",      -900);
@@ -81,10 +86,9 @@ define("PHPWS_BOUND_FAILED",          -902);
 define("PHPWS_IMG_SIZE",              -903);
 define("PHPWS_IMG_HEIGHT",            -904);
 define("PHPWS_IMG_WIDTH",             -905);
-define("PHPWS_IMG_NO_FILES",          -906);
-define("PHPWS_IMG_WRONG_TYPE",        -907);
-define("PHPWS_IMG_DIR_NONWRITE",      -908);
-define("PHPWS_IMG_NO_TMP",            -909);
+define("PHPWS_IMG_WRONG_TYPE",        -906);
+
+
 
 /*************** Text.php *****************/
 define("PHPWS_TEXT_NOT_STRING",       -1000);
