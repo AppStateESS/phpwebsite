@@ -230,6 +230,10 @@ class PHPWS_Form {
     }
   }
 
+  function addTplTag($tag, $data){
+    $this->_template[$tag] = $data;
+  }
+
   /**
    * Removes a form element from the class
    * @author Matthew McNaney <matt at tux dot appstate dot edu>
