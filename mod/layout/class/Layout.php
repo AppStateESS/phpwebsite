@@ -8,39 +8,19 @@
  * @package Core
  */
 
-
+PHPWS_CORE::initModClass("layout", "Layout_Settings.php");
 PHPWS_Core::initCoreClass("Template.php");
 
 class Layout {
 
-  function _noContent($theme, $finalList){
-    $finalTheme = &Layout::loadTheme($theme);
-    if (PEAR::isError($finalTheme)){
-      PHPWS_Error::log($finalTheme);
-      PHPWS_Core::errorPage();
-    }
-    
-    if (!isset($finalList))
-      PHPWS_Error::log(LAYOUT_NO_CONTENT, "layout", "display");
-    elseif (PEAR::isError($finalList))
-      PHPWS_Error::log($finalList);
-    
-    echo $finalTheme->get();
-  }
-
   function add($text, $module=NULL, $contentVar=NULL, $box=TRUE){
+    Layout::checkSettings();
     // If content variable is not in system (and not NULL) then make
     // a new box for it.
-
+    
     if (isset($module) && isset($contentVar)){
-      if(!is_string($contentVar))
-	return PEAR::raiseError("Content variable is not a string");
-
-      if (!Layout::isContentVar($contentVar)){
+      if (!$_SESSION['Layout_Settings']->isContentVar($contentVar))
 	Layout::addBox($contentVar, $module);
-	Layout_Init::initContentVar();
-	Layout_Init::initBoxes();
-      }
     } else {
       $box = FALSE;
       $module = "layout";
@@ -54,14 +34,14 @@ class Layout {
 	$GLOBALS['Layout'][$module][$contentVar]['content'][$key][] = $value;
 
     $GLOBALS['Layout'][$module][$contentVar]['box'] = $box;
+
   }
 
   function addBox($content_var, $module, $theme_var=NULL, $template=NULL, $theme=NULL){
     PHPWS_Core::initModClass("layout", "Box.php");
-    PHPWS_Core::initModClass("layout", "Initialize.php");
 
     if (!isset($theme))
-      $theme = &Layout::getTheme();
+      $theme = $_SESSION['Layout_Settings']->current_theme;
     
     if (!isset($theme_var))
       $theme_var = DEFAULT_THEME_VAR;
@@ -80,9 +60,16 @@ class Layout {
     $result = $box->save();
     if (PEAR::isError($result)){
       PHPWS_Error::log($result);
-      exit();
+      PHPWS_Core::errorPage();
     }
 
+  }
+
+  function addJSFile($directory){
+    $jsfile = PHPWS_SOURCE_DIR . $directory;
+
+    if (!is_file($jsfile))
+      return PHPWS_Error::get(LAYOUT_JS_FILE_NOT_FOUND, "layout", "addJSFile", $jsfile);
   }
 
   function addJSHeader($script, $index=NULL){
@@ -93,14 +80,6 @@ class Layout {
     
     $GLOBALS['Layout_JS'][$index]['head'] = $script;
   }
-
-  function addJSFile($directory){
-    $jsfile = PHPWS_SOURCE_DIR . $directory;
-
-    if (!is_file($jsfile))
-      return PHPWS_Error::get(LAYOUT_JS_FILE_NOT_FOUND, "layout", "addJSFile", $jsfile);
-  }
-
 
   function addStyle($module, $filename=NULL){
     if (!isset($filename))
@@ -142,6 +121,36 @@ class Layout {
     exit();
   }
 
+  function checkSettings(){
+    if (!isset($_SESSION['Layout_Settings']))
+      $_SESSION['Layout_Settings'] = & new Layout_Settings;
+  }
+
+  function createBox($module, $contentVar, $template){
+    $tpl = new PHPWS_Template;
+    
+    $box = Layout::getBox($module, $contentVar);
+    
+    $file = $box->template;
+    $directory = "themes/" . Layout::getCurrentTheme() . "/boxstyles/";
+    if (isset($file) && is_file($directory . $file))
+      $tpl->setFile($directory . $file, TRUE);
+    else
+      $tpl->setTemplate(DEFAULT_TEMPLATE);
+    
+    $tpl->setData($template);
+    
+    $content = $tpl->get();
+
+    if (Layout::isMoveBox()){
+      Layout::addStyle("layout");
+      PHPWS_Core::initModClass("layout", "LayoutAdmin.php");
+      $content .= Layout_Admin::moveBoxesTag($box);
+    }
+
+    return $content;
+  }
+
   function clear($module, $contentVar){
     unset($GLOBALS['Layout'][$module][$contentVar]);
   }
@@ -176,107 +185,67 @@ class Layout {
     }
   }
 
-
   function display(){
     $themeVarList = array();
-    $themeDir =  Layout::getThemeDir();
-    if (!PEAR::isError($themeDir)){
-      $includeFile = $themeDir . "config.php";
-      if (is_file($includeFile))
-	include $includeFile;
-    }
+    $contentList = Layout::getBoxContent();
 
-    $theme = Layout::getTheme();
+    // if content list is blank
+    // 404 error?
 
-    $finalList = Layout::getBoxContent();
-
-    if (!is_array($finalList)){
-      Layout::_noContent($theme, $finalList);
-      return;
-    }
-
-    foreach ($finalList as $module=>$content){
+    foreach ($contentList as $module=>$content){
       foreach ($content as $contentVar=>$template){
-	// Need to check for theme variable
-	if(!($theme_var = Layout::getBoxThemeVar($module, $contentVar)))
+	if(!($theme_var = $_SESSION['Layout_Settings']->getBoxThemeVar($module, $contentVar)))
 	  $theme_var = DEFAULT_THEME_VAR;
 
 	if (!in_array($theme_var, $themeVarList))
 	  $themeVarList[] = $theme_var;
 
-	$order = Layout::getBoxOrder($module, $contentVar);
+	$order = $_SESSION['Layout_Settings']->getBoxOrder($module, $contentVar);
 
-	if (!isset($order))
+	if (empty($order))
 	  $order = MAX_ORDER_VALUE;
 
 	if (Layout::isBoxTpl($module, $contentVar)){
-	  $tpl = new PHPWS_Template;
-	  if (!isset($_SESSION['Layout_Boxes'][$module][$contentVar])){
-	    // check this
-	    Layout::addBox($contentVar, $module);
-	    Layout_Init::initContentVar();
-	    Layout_Init::initBoxes();
-	  }
-
-	  $box = $_SESSION['Layout_Boxes'][$module][$contentVar];
-
-	  $file = $box['template'];
-	  $directory = "themes/$theme/boxstyles/";
-	  if (isset($file) && is_file($directory . $file))
-	    $tpl->setFile($directory . $file, TRUE);
-	  else
-	    $tpl->setTemplate(DEFAULT_TEMPLATE);
-
-	  $tpl->setData($template);
-
-	  $unsortedLayout[$theme_var][$order] = $tpl->get();
-	  if (Layout::isMoveBox()){
-	    Layout::addStyle("layout");
-	    PHPWS_Core::initModClass("layout", "LayoutAdmin.php");
-	    $unsortedLayout[$theme_var][$order] .= Layout_Admin::moveBoxesTag($box);
-	  }
-	} else {
+	  $unsortedLayout[$theme_var][$order] = Layout::createBox($module, $contentVar, $template);
+	} else
 	  $unsortedLayout[$theme_var][$order] = implode("", $template);
-	}
-
       }
     }
 
     if (isset($themeVarList)){
       foreach ($themeVarList as $theme_var){
 	ksort($unsortedLayout[$theme_var]);
-	$finalLayout[strtoupper($theme_var)] = implode("", $unsortedLayout[$theme_var]);
+	$bodyLayout[strtoupper($theme_var)] = implode("", $unsortedLayout[$theme_var]);
       }
     } else
-      $finalLayout[] = implode("<br />", $unsortedLayout[$theme_var]);
+      $bodyLayout[] = implode("<br />", $unsortedLayout[$theme_var]);
 
-    $finalTheme = &Layout::loadTheme($theme, $finalLayout);
+    // Load body of theme 
+    $finalTheme = &Layout::loadTheme(Layout::getCurrentTheme(), $bodyLayout);
 
     if (PEAR::isError($finalTheme))
-      $finalContent = implode("", $finalLayout);
+      $content = implode("", $bodyLayout);
     else
-      $finalContent = $finalTheme->get();
+      $content = $finalTheme->get();
 
-    Layout::wrap($theme, $finalContent);
+    Layout::wrap(Layout::getCurrentTheme(), $content);
   }
 
-  function displayErrorMessage(){
-    $template[DEFAULT_THEME_VAR] = DISPLAY_ERROR_MESSAGE;
+  function getBox($module, $contentVar){
+    return $_SESSION['Layout_Settings']->_boxes[$module][$contentVar];
   }
 
-  function dropContentVar($module, $contentVar){
-    unset($GLOBALS['Layout'][$module][$contentVar]);
+  function getContentVars(){
+    Layout::checkSettings();
+    return $_SESSION['Layout_Settings']->getContentVars();
   }
 
-  function get($module, $content_var){
-    if (Layout::isBoxSet($module, $content_var))
-      return $GLOBALS['Layout'][$module][$content_var];
-    else
-      return NULL;
+  function getCurrentTheme(){
+    return $_SESSION['Layout_Settings']->current_theme;
   }
 
   function getBoxContent(){
-    $finalList = NULL;
+    $list = NULL;
     if (!isset($GLOBALS['Layout']))
       return PHPWS_Error::get(LAYOUT_SESSION_NOT_SET, "layout", "getBoxContent");
 
@@ -286,41 +255,11 @@ class Layout {
 	  continue;
 	
 	foreach ($contentList['content'] as $tag=>$content)
-	  $finalList[$module][$contentVar][strtoupper($tag)] = implode("", $content);
+	  $list[$module][$contentVar][strtoupper($tag)] = implode("", $content);
       }
     }
-    return $finalList;
+    return $list;
   }
-
-  function getBoxOrder($module, $contentVar){
-    if (isset($_SESSION['Layout_Boxes'][$module][$contentVar]))
-      return $_SESSION['Layout_Boxes'][$module][$contentVar]['box_order'];
-    else
-      return NULL;
-  }
-
-  function getBoxes(){
-    return $_SESSION['Layout_Boxes'];
-  }
-
-
-  function getBoxThemeVar($module, $contentVar){
-    if (isset($_SESSION['Layout_Boxes'][$module][$contentVar]))
-      return $_SESSION['Layout_Boxes'][$module][$contentVar]['theme_var'];
-    else
-      return NULL;
-  }
-
-
-  function getContentVars(){
-    if (isset($_SESSION['Layout_Content_Vars']))
-      $content_vars = $_SESSION['Layout_Content_Vars'];
-    else
-      $content_vars = Layout_Init::loadContentVar();
-
-    return $content_vars;
-  }
-
 
   function getJavascript($directory, $data=NULL){
     if (isset($data) && !is_array($data))
@@ -359,7 +298,6 @@ class Layout {
     }
 
   }
-
   function getMetaRobot(){
     if (!isset($GLOBALS['Layout_Robots']))
       $meta_robots = "11";
@@ -383,17 +321,16 @@ class Layout {
       return "none";
       break;
     }
-
   }
 
   function getMetaTags(){
-    extract($_SESSION['Layout_Settings']);
+    extract($_SESSION['Layout_Settings']->getMetaTags());
 
     // Say it loud
     $metatags[] = "<meta name=\"generator\" content=\"phpWebSite\" />";
 
     if (!empty($author))
-      $metatags[] = "<meta name=\"author\" content=\"meta_author\" />";
+      $metatags[] = "<meta name=\"author\" content=\"$meta_author\" />";
     else
       $metatags[] = "<meta name=\"author\" content=\"phpWebSite\" />";
 
@@ -412,58 +349,15 @@ class Layout {
     return implode("\n", $metatags);
   }
 
-  function &getTheme(){
-    if (!isset($_SESSION['Layout_Settings']))
-      Layout::initLayout();
-
-    $currentTheme = & $_SESSION['Layout_Settings']['current_theme'];
-    if (isset($currentTheme))
-      return $currentTheme;
-    else
-      return PHPWS_Error::get(LAYOUT_NO_THEME, "layout", "getTheme");
+  function getTheme(){
+    return $_SESSION['Layout_Settings']->current_theme;
   }
 
   function getThemeDir(){
-    $themeDir =  Layout::getTheme();
-    if (PEAR::isError($themeDir))
-      return $themeDir;
-
+    Layout::checkSettings();
+    $themeDir = Layout::getTheme();
     return "themes/" . $themeDir . "/";
   }
-
-  function getThemeVariables(){
-    if (!isset($_SESSION['Layout_Settings']))
-      Layout::initLayout();
-
-    return $_SESSION['Layout_Settings']['theme_variables'];
-  }
-
-
-  function initLayout($refresh=FALSE){
-    if ($refresh == TRUE || !isset($_SESSION['Layout_Settings'])){
-      PHPWS_Core::initModClass("layout", "Initialize.php");
-      Layout_Init::initSettings();
-      Layout_Init::initContentVar();
-      Layout_Init::initBoxes();
-    } elseif (isset($GLOBALS['Layout_Initialized']))
-	return;
-
-    $boxes = Layout::getBoxes();
-
-    $GLOBALS['Layout_Robots'] = $_SESSION['Layout_Settings']['meta_robots'];
-
-    if (!isset($boxes)){
-      PHPWS_Core::initModClass("layout", "Initialize.php");
-      $boxes = Layout_Init::loadBoxes();
-    }
-    $_SESSION['Layout_Boxes'] = $boxes;
-    $GLOBALS['Layout_Initialized'] = TRUE;
-  }
-
-  function isBoxSet($module, $content_var){
-    return isset($GLOBALS['Layout'][$module][$content_var]);
-  }
-
 
   function isBoxTpl($module, $contentVar){
     if (isset($GLOBALS['Layout'][$module][$contentVar]))
@@ -472,23 +366,8 @@ class Layout {
       return NULL;
   }
 
-  function isContentVar($content_var){
-    if (!isset($_SESSION['Layout_Content_Vars']))
-      return FALSE;
-    return in_array($content_var, $_SESSION['Layout_Content_Vars']);
-  }
-
   function isMoveBox(){
-    return isset($_SESSION['Move_Boxes']);
-  }
-
-  function loadModuleJavascript($module, $filename, $data=NULL){
-    $directory = PHPWS_SOURCE_DIR . "mod/$module/javascript/$filename";
-
-    if (!is_file($directory))
-      return FALSE;
-      
-    return Layout::loadJavascriptFile($directory, $module, $data);
+    return $_SESSION['Layout_Settings']->isMoveBox();
   }
 
   function loadJavascriptFile($filename, $index, $data=NULL){
@@ -508,10 +387,7 @@ class Layout {
       Layout::addJSHeader(file_get_contents($filename), $index);
   }
 
-  function &loadTheme($theme, $template=NULL){
-    if (!isset($template))
-      Layout::displayErrorMessage();
-
+  function &loadTheme($theme, $template){
     $tpl = new PHPWS_Template;
     $themeDir = Layout::getThemeDir();
 
@@ -530,7 +406,20 @@ class Layout {
     return $tpl;
   }
 
-  function set($text, $module=NULL, $contentVar=NULL, $box=TRUE){
+  function moveBoxes($key){
+    $_SESSION['Layout_Settings']->_move_box = (bool)$key;
+  }
+
+  function reset(){
+    $_SESSION['Layout_Settings'] = & new Layout_Settings;
+  }
+
+  function resetBoxes(){
+    $_SESSION['Layout_Settings']->loadBoxes();
+  }
+
+  function set($text, $module, $contentVar, $box=TRUE){
+    Layout::checkSettings();
     if (!isset($contentVar))
       $contentVar = DEFAULT_CONTENT_VAR;
 
@@ -563,7 +452,7 @@ class Layout {
     header("Content-Style-Type: text/css");
   }
 
-  function wrap($theme, $finalContent){
+  function wrap($theme, $content){
     Layout::submitHeaders($theme, $template);
 
     $template['TEST_JS'] = Layout::getJavascript("test");
@@ -583,12 +472,12 @@ class Layout {
     $template['METATAGS'] = Layout::getMetaTags();
     $template['PAGE_TITLE'] = $_SESSION['Layout_Settings']['page_title'];
     $template['STYLE'] = implode("\n", $GLOBALS['Style']);
-    $template['CONTENT'] = $finalContent;
+    $template['CONTENT'] = $content;
     $result = PHPWS_Template::process($template, "layout", "header.tpl");
 
     echo $result;
   }
 
-}
 
+}
 ?>
