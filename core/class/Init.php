@@ -13,12 +13,6 @@ if (!function_exists("bindtextdomain")){
   textdomain("messages");
 }
 
-ini_set("include_path", ".:lib/pear/");
-/***** Pear Classes *****/
-require_once "PEAR.php";
-require_once "Log.php";
-
-
 /* Load the Core class */
 require_once PHPWS_SOURCE_DIR . "core/class/Core.php";
 require_once PHPWS_Core::getConfigFile("core", "errorDefines.php");
