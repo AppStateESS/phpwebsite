@@ -15,7 +15,7 @@ class PHPWS_DB {
   var $_table      = NULL;
   var $_where      = array();
   var $_order      = array();
-  var $_value      = array();
+  var $_values     = array();
   var $_mode       = DEFAULT_MODE;
   var $_limit      = NULL;
   var $_index      = NULL;
@@ -259,10 +259,10 @@ class PHPWS_DB {
   }
 
   function addColumn($column, $distinct=FALSE, $count=FALSE){
-    if ($distinct == TRUE)
+    if ((bool)$distinct == TRUE)
       $column = "DISTINCT " .  $column;
 
-    if ($count)
+    if ((bool)$count == TRUE)
       $column = "COUNT($column)";
 
     $this->_column[] = $column;
@@ -351,6 +351,11 @@ class PHPWS_DB {
     $this->_limit = "";
   }
 
+  function resetColumns(){
+    $this->_column = NULL;
+  }
+
+
   function affectedRows(){
     $query =  PHPWS_DB::lastQuery();
     $process = strtolower(substr($query, 0, strpos($query, " ")));
@@ -368,12 +373,15 @@ class PHPWS_DB {
     $this->resetValues();
     $this->resetLimit();
     $this->resetOrder();
+    $this->resetColumns();
+    $this->_indexby = NULL;
+    $this->_qwhere  = NULL;
+    $this->_indexby = NULL;
   }
 
   function lastQuery(){
     return $GLOBALS['PEAR_DB']->last_query;
   }
-
 
   function insert(){
     $maxID = TRUE;
@@ -529,18 +537,26 @@ class PHPWS_DB {
       if (!isset($item[$indexby]))
 	return $sql;
 
-
       if ($colMode){
 	$col = $this->getColumn();
-	$rows[$item[$indexby]] = $item[$col[0]];
-      } else {
-	$rows[$item[$indexby]] = $item;
-      }
+	PHPWS_DB::expandIndex($rows, $item[$indexby], $item[$col[0]]);
+      } else
+	PHPWS_DB::expandIndex($rows, $item[$indexby], $item);
     }
-
     return $rows;
   }
 
+  function expandIndex(&$rows, $index, $item){
+    if (isset($rows[$index])){
+      if (!is_array($rows[$index][0])){
+	$hold = $rows[$index];
+	$rows[$index] = array();
+	$rows[$index][] = $hold;
+      }
+      $rows[$index][] = $item;
+    } else
+      $rows[$index] = $item;
+  }
 
   function delete(){
     $table = $this->getTable();
