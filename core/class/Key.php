@@ -74,6 +74,12 @@ class Key {
     }
   }
 
+  function &getHomeKey()
+  {
+    return new Key('home', 'homepage', '1');
+  }
+
+
 }
 
 ?>
