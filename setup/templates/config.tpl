@@ -134,7 +134,12 @@ define('PHPWS_LOG_ERRORS', TRUE);
  * from the entry.
  */
 
-define('PHPWS_ALLOWED_TAGS', '<b><a><i><u><ul><ol><li><table><tr><td><dd><dt><dl><p><br><div><span><blockquote><th><tt><img><pre><hr>');
+define('PHPWS_ALLOWED_TAGS', '
+<b><a><i><u><ul><ol><li>
+<table><tr><td><dd><dt><dl>
+<p><br><div><span><blockquote>
+<th><tt><img><pre><hr>
+');
 
 /********************** MOD REWRITE ***************************/
 define('USE_MOD_REWRITE', TRUE);
@@ -161,15 +166,25 @@ define('MAX_IMAGE_HEIGHT', 600);
  * 1) Cache_Lite - a data caching method
  * 2) Sigma      - a template caching method
  *
- * You have the option of turning the template cache here.
+ * Sigma is TRUE by default. Cache_Lite is FALSE by default.
+ * You may or may not notice a speed increase. It is up to you
+ * to decide.
+ *
+ * The CACHE_LIFETIME decides how many seconds between cache
+ * updates. You will need to decide what is the optimal number.
+ * The default is 3600 seconds (1 hour)
+ *
  * 
- * The cache directory MUST BE WRITABLE by the webserver
+ * The cache directory MUST BE WRITABLE by the webserver or it will
+ * not work. Read the line above one more time. Make sure the
+ * CACHE_DIRECTORY is set to writable directory. PHP normally uses
+ * /tmp/. The directory MUST have a forward slash (/) on the end.
  */
 
-define('ALLOW_CACHE_LITE', TRUE);
+define('ALLOW_CACHE_LITE', FALSE);
 define('ALLOW_SIGMA_CACHE', TRUE);
 define('CACHE_LIFETIME', 3600);
-define('CACHE_DIRECTORY', '/tmp');
+define('CACHE_DIRECTORY', '/tmp/');
 
 /******************** MOD_REROUTE *******************************/
 /**
