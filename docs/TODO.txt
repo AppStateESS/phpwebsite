@@ -1,9 +1,6 @@
 Layout
 -----------
-Have an option for templates to comment their position for debugging.
-
-Put in a system for theme developers to create default positions for
-modules.
+None
 
 
 Users
