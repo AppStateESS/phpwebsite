@@ -1,0 +1,5 @@
+{START_FORM}
+{FOOTER}
+<br /><br />
+{SUBMIT}
+{END_FORM}
