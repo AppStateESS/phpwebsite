@@ -140,7 +140,7 @@ class PHPWS_Item {
   function init() {
     if((isset($this->_id) && isset($this->_table))) {
       $DB = new PHPWS_DB($this->_table);
-      $DB->addWhere("id", $this->_id);
+      $DB->addWhere("id", (int)$this->_id);
 
       $className = get_class($this);
       $itemResult = $DB->loadObjects($className, NULL, TRUE);
