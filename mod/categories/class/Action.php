@@ -164,7 +164,7 @@ class Categories_Action{
     } else
       $form->add("submit", "submit", _("Add Category"));
 
-    $category_list = Categories::getCategories("list");
+    $category_list = Categories::getCategories("list", $category->getId());
 
     if (is_array($category_list)) {
       $reverse = array_reverse($category_list, TRUE);
@@ -175,10 +175,10 @@ class Categories_Action{
       $category_list = array(0=>"-" . _("Top Level") . "-");
     }
 
-    
-    $form->add("parent", "select", $category_list);
-    $form->setLabel("parent", _("Parent"));
 
+    $form->add("parent", "select", $category_list);
+    $form->setMatch("parent", $category->getParent());
+    $form->setLabel("parent", _("Parent"));
 
     if (isset($errors['title']))
       $template['TITLE_ERROR'] = $errors['title'];
@@ -233,6 +233,7 @@ class Categories_Action{
 
     $pager = & new DBPager("categories", "Category");
     $pager->setModule("categories");
+    $pager->setDefaultLimit(10);
     $pager->setTemplate("category_list.tpl");
     $pager->setLink("index.php?module=categories&amp;action=admin&amp;tab=list");
     $pager->addTags($pageTags);
@@ -242,6 +243,7 @@ class Categories_Action{
     $pager->setMethod("parent", "getParentTitle");
     $pager->addRowTag("action", "Categories_Action", "getListAction");
     $content = $pager->get();
+
     if (empty($content)) {
       return _("No categories found.");
     }
