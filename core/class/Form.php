@@ -115,6 +115,10 @@ class PHPWS_Form {
     return $this->add($name, "textarea", $value);
   }
 
+  function addFile($name){
+    return $this->add($name, "file");
+  }
+
   function addSubmit($name, $value){
     return $this->add($name, "submit", $value);
   }
@@ -723,7 +727,7 @@ class PHPWS_Form {
   }
 
   function _imageSelectArray($module, $current){
-    $db = & new PHPWS_DB("image_catalog");
+    $db = & new PHPWS_DB("images");
     $db->addWhere("module", $module);
     $db->addOrder("directory");
     $db->setIndexBy("id");
@@ -732,6 +736,8 @@ class PHPWS_Form {
     if (PEAR::isError($result))
       return $result;
 
+    if (empty($result))
+      return NULL;
 
     foreach ($result as $image){
       $directory = $image->getDirectory();
@@ -781,25 +787,28 @@ class PHPWS_Form {
   }
   
   function addImage($name, $module, $current=NULL){
-    PHPWS_Core::initCoreClass("file/image.php");
+    PHPWS_Core::initCoreClass("Image.php");
 
     $selectList = PHPWS_Form::_imageSelectArray($module, $current);
 
-    $this->add($name . "_file", "file");
-    $this->add($name . "_title", "text");
+    if (PEAR::isError($selectList))
+      return $selectList;
+
+    $this->addFile($name . "_file");
+    $this->addText($name . "_title");
 
     if (isset($selectList)){
       $selectInput[] = "<select name=\"{$name}_select\" " . $this->getId(TRUE) . ">";
       $selectInput[] = implode("\n", $selectList);
       $selectInput[] = "</select>";
       $template[strtoupper($name) . "_SELECT"] = implode("\n", $selectInput);
+      $this->mergeTemplate($template);
     }
-
-    $this->mergeTemplate($template);
   }
 
   function postImage($name, $module, $directory=NULL){
-    $image = PHPWS_File::create("image");
+    PHPWS_Core::initCoreClass("Image.php");
+    $image = & new PHPWS_Image;
 
     $uploadName = $name . "_file";
     $titleName  = $name . "_title";
