@@ -1,0 +1,68 @@
+This is a rough draft for template. It will eventually be transfered
+to an XML manual.
+
+Templates
+
+The fastest way to use templates are to use the process function like so:
+
+$template = array("HEADING" => "Welcome", "CONTENT" => "This is beginning");
+$module = "mymod";
+$file  = "welcome.tpl";
+
+PHPWS_Template::process($template, $module, $file);
+
+
+The 'welcome.tpl' file will look something like the following:
+
+<div class="title">{HEADING}</div>
+<span class="content">{CONTENT}</span>
+
+The template class uses the module variable to look for the template file.
+It will first look in the theme (e.g. theme/mytheme/templates/mymod/welcome.tpl)
+then it will look in the template directory (e.g. templetes/mymod/welcome.tpl).
+Finally it will look in the mod directory itself (e.g. mod/mymod/templates/welcome.tpl).
+
+(Note: this order may change depending on your template config file.)
+
+The process function will return your template file with the tabs filled in.
+
+
+Sometimes you may want to create your own template object. This comes in handy for
+repeated rows.
+
+First run the constructor:
+
+$tpl = new PHPWS_Template($module);
+
+Now set the file:
+
+$result = $tpl->setFile($template_file);
+
+The result will either be TRUE or a PHPWS_Error object.
+
+Lets say the template looked like the following:
+
+<ol>
+  <!-- BEGIN repeat_row -->
+   <li>{NAME} {COLOR}</li>
+  <!-- END repeat_row -->
+</ol>
+
+To have the line item repeat you would use setCurrentBlock, like so:
+
+$tpl->setCurrentBlock("repeat_row");
+
+$tpl->setData(array('NAME'=>'Sam', 'COLOR'=>'red'));
+$tpl->parseCurrentBlock();
+
+$tpl->setData(array('NAME'=>'Ted', 'COLOR'=>'green'));
+$tpl->parseCurrentBlock();
+
+$tpl->setData(array('NAME'=>'Pat', 'COLOR'=>'blue'));
+$tpl->parseCurrentBlock();
+
+This will repeat the 'li' line over and over within the same template.
+
+
+To get your data for presentation call get like so:
+$content = $tpl->get();
