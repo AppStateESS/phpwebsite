@@ -2,6 +2,7 @@
 
 function users_register($module, &$content){
   PHPWS_Core::initModClass("users", "Permission.php");
+  PHPWS_Core::initModClass("users", "My_Page.php");
 
   $result = Users_Permission::createPermissions($module);
   
@@ -13,12 +14,21 @@ function users_register($module, &$content){
     else {
       $content[] = _("Permissions table not created successfully.");
       PHPWS_Error::log($result);
+      return FALSE;
     }
-    return FALSE;
-  } else {
+  } else
     $content[] = _("Permissions table created successfully.");
-    return TRUE;
-  }
+
+  $result = My_Page::registerMyPage($module);
+
+  if (PEAR::isError($result)){
+    PHPWS_Boost::addLog("users", _("A problem occurred when trying to register this module to My Page."));
+    $content[] = _("A problem occurred when trying to register this module to My Page.");
+    return FALSE;
+  } elseif ($result != FALSE)
+    $content[] = _("My Page registered to Users module.");
+
+  return TRUE;
 }
 
 ?>
