@@ -44,10 +44,7 @@ $errors[PHPWS_FORM_WRONG_ELMT_TYPE]  = _("Wrong element type for procedure.");
 $errors[PHPWS_FORM_NAME_IN_USE]      = _("Can't change name. Already in use.");
 $errors[PHPWS_FORM_NO_ELEMENTS]      = _("No form elements have been created.");
 $errors[PHPWS_FORM_NO_TEMPLATE]      = _("The submitted template is not an array.");
-$errors[PHPWS_FORM_NO_FILE]          = _("'%s' not found in _FILES array.");
-$errors[PHPWS_FORM_IMG_TOO_BIG]      = _("Submitted image was larger than %sKB limit.");
-$errors[PHPWS_FORM_WIDTH_TOO_BIG]    = _("Submitted image width was larger than %s pixel limit.");
-$errors[PHPWS_FORM_HEIGHT_TOO_BIG]   = _("Submitted image height was larger than %s pixel limit.");
+$errors[PHPWS_FORM_NO_FILE]          = _("File not found in _FILES array.");
 $errors[PHPWS_FORM_UNKNOWN_TYPE]     = _("Unrecognized form type.");
 $errors[PHPWS_FORM_INVALID_MATCH]    = _("Match for must be an array for a multiple input.");
 
@@ -66,13 +63,24 @@ $errors[PHPWS_NO_ERROR_FILE]         = _("No error message file found.");
 $errors[PHPWS_UNMATCHED_OPTION]      = _("Help option not found in help configuration file.");
 
 // File.php 800 - 899
+$errors[PHPWS_FILE_WRONG_CONSTRUCT]  = _("PHPWS_File received an unknown construct.");
+$errors[PHPWS_FILE_NONCLASS]         = _("Class not found.");
 $errors[PHPWS_FILE_DELETE_DENIED]    = _("Unable to delete file.");
 $errors[PHPWS_DIR_DELETE_DENIED]     = _("Unable to delete directory.");
+$errors[PHPWS_DIR_NOT_WRITABLE]      = _("Directory is not writable.");
+$errors[PHPWS_FILE_CANT_READ]        = _("Cannot read file.");
 
 // Image.php 900 - 999
 $errors[PHPWS_FILENAME_NOT_SET]      = _("Filename not set.");
 $errors[PHPWS_DIRECTORY_NOT_SET]     = _("Directory not set.");
 $errors[PHPWS_BOUND_FAILED]          = _("There was a problem loading the image file.");
+$errors[PHPWS_IMG_SIZE]              = _("Image was larger than %dK size limit.");
+$errors[PHPWS_IMG_WIDTH]             = _("Image width was larger than %d pixel limit.");
+$errors[PHPWS_IMG_HEIGHT]            = _("Image height was larger than %d pixel limit.");
+$errors[PHPWS_IMG_NO_FILES]          = _("_FILES array not present.");
+$errors[PHPWS_IMG_WRONG_TYPE]        = _("Unacceptable image type.");
+$errors[PHPWS_IMG_DIR_NONWRITE]      = _("Unable to save file in selected directory.");
+$errors[PHPWS_IMG_NO_TMP]            = _("Upload directory not set in image object.");
 
 // Text.php 1000-1100
 $errors[PHPWS_TEXT_NOT_STRING]       = _("Function expected a string variable.");

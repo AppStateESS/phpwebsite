@@ -46,11 +46,8 @@ define("PHPWS_FORM_MISSING_TYPE",     -305);
 define("PHPWS_FORM_NO_ELEMENTS",      -306);
 define("PHPWS_FORM_NO_TEMPLATE",      -307);
 define("PHPWS_FORM_NO_FILE",          -308);
-define("PHPWS_FORM_IMG_TOO_BIG",      -309);
-define("PHPWS_FORM_WIDTH_TOO_BIG",    -310);
-define("PHPWS_FORM_HEIGHT_TOO_BIG",   -311);
-define("PHPWS_FORM_UNKNOWN_TYPE",     -312);
-define("PHPWS_FORM_INVALID_MATCH",    -313);
+define("PHPWS_FORM_UNKNOWN_TYPE",     -309);
+define("PHPWS_FORM_INVALID_MATCH",    -310);
 
 define("PHPWS_FORM_ERROR_FILE_POST",  -320);
 
@@ -71,13 +68,23 @@ define("PHPWS_UNMATCHED_OPTION",      -700);
 
 
 /*************** File.php ****************/
-define("PHPWS_FILE_DELETE_DENIED",    -800);
-define("PHPWS_DIR_DELETE_DENIED",     -801);
+define("PHPWS_FILE_WRONG_CONSTRUCT",  -800);
+define("PHPWS_FILE_NONCLASS",         -801);
+define("PHPWS_FILE_DELETE_DENIED",    -802);
+define("PHPWS_DIR_DELETE_DENIED",     -803);
+define("PHPWS_DIR_NOT_WRITABLE",      -804);
 
 /*************** Image.php ****************/
 define("PHPWS_FILENAME_NOT_SET",      -900);
 define("PHPWS_DIRECTORY_NOT_SET",     -901);
 define("PHPWS_BOUND_FAILED",          -902);
+define("PHPWS_IMG_SIZE",              -903);
+define("PHPWS_IMG_HEIGHT",            -904);
+define("PHPWS_IMG_WIDTH",             -905);
+define("PHPWS_IMG_NO_FILES",          -906);
+define("PHPWS_IMG_WRONG_TYPE",        -907);
+define("PHPWS_IMG_DIR_NONWRITE",      -908);
+define("PHPWS_IMG_NO_TMP",            -909);
 
 /*************** Text.php *****************/
 define("PHPWS_TEXT_NOT_STRING",       -1000);
