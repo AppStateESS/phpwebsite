@@ -226,7 +226,7 @@ class User_Action {
   function userAction($command){
     switch ($command){
     case "loginBox":
-      if (!PHPWS_Core::isLastPost()){
+      if (!PHPWS_Core::isPosted()){
 	if (!User_Action::loginUser($_POST['block_username'], $_POST['block_password']))
 	  User_Action::badLogin();
       }
