@@ -172,6 +172,15 @@ class Layout {
       return NULL;
   }
 
+  function alternateTheme($template, $module, $file){
+    $theme = Layout::getTheme();
+    $GLOBALS['Style'][] = Layout::styleLink("themes/$theme/style.css");
+    $template['STYLE'] = implode("\n", $GLOBALS['Style']);
+    $result = PHPWS_Template::process($template, $module, $file);
+    echo $result;
+    exit();
+  }
+
   function display(){
     $themeVarList = array();
     $themeDir =  Layout::getThemeDir();
