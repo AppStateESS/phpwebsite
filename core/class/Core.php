@@ -197,6 +197,9 @@ class PHPWS_Core {
   }
 
   function getConfigFile($module, $file){
+    $file = preg_replace("/[^\w\.]/", "", $file);
+    $module = preg_replace("/[^\w\.]/", "", $module);
+
     if ($module == "core"){
       $altfile = PHPWS_SOURCE_DIR . "config/core/$file";
       $file = "./config/core/$file";
@@ -215,6 +218,21 @@ class PHPWS_Core {
     }
 
     return $file;
+  }
+
+  function configRequireOnce($module, $file, $exitOnError=TRUE){
+    $file = PHPWS_Core::getConfigFile($module, $file);
+
+    if (PEAR::isError($file)){
+      PHPWS_Error::log($file);
+      if ($exitOnError)
+	PHPWS_Core::errorPage();
+      else
+	return $file;
+    } else
+      require_once $file;
+      
+
   }
 
   function &loadAsMod(){
