@@ -1,5 +1,5 @@
 {START_FORM}
-<table cellpadding="4" width="100%">
+<table cellpadding="4">
   <tr>
     <td><b>{TITLE_LABEL}</b></td>
     <td>{TITLE}</td>

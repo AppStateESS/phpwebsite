@@ -3,8 +3,8 @@
 class Blog_Admin {
 
   function main(){
+    $title = $message = $content = NULL;
     $panel = & Blog_Admin::cpanel();
-    $content = array();
 
     if (isset($_REQUEST['blog_id']))
       $blog = & new Blog((int)$_REQUEST['blog_id']);
@@ -20,30 +20,45 @@ class Blog_Admin {
     case "edit":
       $panel->setCurrentTab("list");;
       $title = _("Update Blog Entry");
-      $content[] = Blog_Admin::edit($blog);
+      $content = Blog_Admin::edit($blog);
       break;
 
     case "new":
       $title = _("New Blog Entry");
-      $content[] = Blog_Admin::edit($blog);
+      $content = Blog_Admin::edit($blog);
+      break;
+
+    case "delete":
+      $title = _("Blog Archive");
+      $message = _("Blog entry Deleted");
+      $blog->kill();
+      $content = Blog_Admin::entry_list();
       break;
 
     case "list":
       $title = _("Blog Archive");
-      $content[] = Blog_Admin::entry_list();
+      $content = Blog_Admin::entry_list();
+      break;
+
+    case "restore":
+      $title = _("Blog Restore");
+      $content = Blog_Admin::restoreBackup($blog);
       break;
 
     case "postEntry":
+      $panel->setCurrentTab("list");;
       Blog_Admin::postEntry($blog);
       $blog->save();
       PHPWS_User::savePermissions("blog", $blog->getId());
-      $title = _("Success!");
-      $content[] = _("Blog updated.");
+      $title = _("Blog Archive");
+      $message = _("Blog entry updated.");
+      $content = Blog_Admin::entry_list();
       break;
     }
 
     $template['TITLE']   = $title;
-    $template['CONTENT'] = implode("", $content);
+    $template['MESSAGE'] = $message;
+    $template['CONTENT'] = $content;
     $final = PHPWS_Template::process($template, "blog", "main.tpl");
 
     $panel->setContent($final);
@@ -119,6 +134,9 @@ class Blog_Admin {
     $link['command'] = "delete";
     $list[] = PHPWS_Text::secureLink(_("Delete"), "blog", $link);
 
+    $link['command'] = "restore";
+    $list[] = PHPWS_Text::secureLink(_("Restore"), "blog", $link);
+
     return implode(" | ", $list);
   }
 
@@ -139,13 +157,23 @@ class Blog_Admin {
     $pager->addRowTag("entry", "Blog_Admin", "getListEntry");
     $pager->addRowTag("action", "Blog_Admin", "getListAction");
     $content = $pager->get();
-    return $content;
+    if (empty($content))
+      return _("No entries made.");
+    else
+      return $content;
   }
 
   function postEntry(&$blog){
     $blog->title = PHPWS_Text::parseInput($_POST['title']);
     $blog->entry = PHPWS_Text::parseInput($_POST['entry']);
     return TRUE;
+  }
+
+  function restoreBackup(&$blog){
+    PHPWS_Core::initCoreClass("Backup.php");
+
+    $result = Backup::get($blog->id, "blog_entries");
+    tesT($result);
   }
 }
 

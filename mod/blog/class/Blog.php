@@ -7,15 +7,12 @@ class Blog {
   var $date  = NULL;
 
   function Blog($id=NULL){
-    if (!isset($id)){
-      $this->date = mktime();
-      return;
+    if (isset($id)){
+      $this->id = (int)$id;
+      $result = $this->init();
+      if (PEAR::isError($result))
+	PHPWS_Error::log($result);
     }
-
-    $this->id = (int)$id;
-    $result = $this->init();
-    if (PEAR::isError($result))
-      PHPWS_Error::log($result);
   }
 
   function init(){
@@ -53,17 +50,25 @@ class Blog {
   }
 
   function save(){
+    PHPWS_Core::initCoreClass("Backup.php");
+
     $db = & new PHPWS_DB("blog_entries");
     if (isset($this->id))
       $db->addWhere("id", $this->id);
 
-    return $db->saveObject($this);
+    $this->date = mktime();
+    $result = $db->saveObject($this);
+
+    if (PEAR::isError($result))
+      return $result;
+
+    Backup::save($this->id, "blog_entries");
   }
 
   function view(){
     $template['TITLE'] = $this->getTitle(TRUE);
     $template['ENTRY'] = $this->getEntry(TRUE);
-    
+
     if (Current_User::allow("blog", "edit_blog", $this->getId(), FALSE)){
       $vars['action']  = "admin";
       $vars['blog_id'] = $this->getId();
@@ -73,6 +78,16 @@ class Blog {
     }
 
     return PHPWS_Template::process($template, "blog", "view.tpl");
+  }
+
+  function kill(){
+    PHPWS_Core::initCoreClass("Backup.php");
+
+    $db = & new PHPWS_DB("blog_entries");
+    $db->addWhere("id", $this->id);
+    $db->delete();
+
+    Backup::flush($this->id, "blog_entries");
   }
 }
 
