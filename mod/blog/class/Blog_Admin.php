@@ -285,13 +285,14 @@ class Blog_Admin {
       $form->addRadio('viewable', $viewable_opts);
       $form->setLabel('viewable', $viewable_label);
       $form->setMatch('viewable', $blog->getRestricted());
+      $form->addTplTag('VIEWABLE_MAIN_LABEL', _('Viewing Permissions'));
     }
 
     $template = $form->getTemplate();
 
     $template['CATEGORIES_LABEL']    = _('Category');
     $template['CATEGORIES']          = $cat_item->getForm();
-    $template['VIEWABLE_MAIN_LABEL'] = _('Viewing Permissions');
+
 
     if (Current_User::isUnrestricted('blog') && empty($version_id)){
       $assign = PHPWS_User::assignPermissions('blog', $blog->getId());
@@ -370,7 +371,11 @@ class Blog_Admin {
 
     $blog->setEntry($_POST['entry']);
 
-    $blog->restricted = (int)$_POST['viewable'];
+    if (isset($_POST['viewable'])) {
+      $blog->restricted = (int)$_POST['viewable'];
+    } else {
+      $blog->restricted = 0;
+    }
 
     if (isset($_REQUEST['version_id'])) {
       $version = & new Version('blog_entries', $_REQUEST['version_id']);
@@ -461,6 +466,17 @@ class Blog_Admin {
 
     if (PEAR::isError($result)) {
       return $result;
+    }
+
+    if (!$version->isApproved()) {
+      $approval = $version->createApproval();
+      $approval->setModule('blog');
+      $approval->setInfo($blog->getTitle());
+      $approval->setViewUrl('index.php?module=blog&amp;action=view');
+      $approval->setEditUrl('index.php?module=blog&amp;action=admin&amp;command=edit');
+      $approval->setApproveUrl('index.php?module=blog&amp;action=admin&amp;command=approve');
+      $approval->setRefuseUrl('index.php?module=blog&amp;action=admin&amp;command=refuse');
+      $approval->save();
     }
 
     $cat_item = & new Category_Item('blog');
