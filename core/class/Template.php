@@ -76,14 +76,12 @@ class PHPWS_Template extends HTML_Template_IT {
     if (!is_array($data))
       return PEAR::raiseError("The submitted data was not an array is was a " . gettype($data));
 
-    foreach($data as $tag=>$content){
+    foreach($data as $tag=>$content)
       $this->setVariable($tag, $content);
-    }
-
   }
 
   function getLastTplFile(){
-    return PHPWS_File::readFile($this->lastTemplatefile);
+    return $tpl->getfile($this->lastTemplatefile);
   }
 
   function process($template, $module, $file){
@@ -92,12 +90,23 @@ class PHPWS_Template extends HTML_Template_IT {
     if (PEAR::isError($tpl))
       return $tpl;
     $tpl->setData($template);
+
     $result = $tpl->get();
-    if (!isset($result) && RETURN_BLANK_TEMPLATES)
-      return $tpl->getLastTplFile();
-    else
+
+    if (PEAR::isError($result))
       return $result;
 
+    if (LABEL_TEMPLATES == TRUE){
+      $start = "\n<!-- START TPL: " . $tpl->lastTemplatefile . "-->\n";
+      $end = "\n<!-- END TPL: " . $tpl->lastTemplatefile . "-->\n";
+    }
+    else
+      $start = $end = NULL;
+
+    if (!isset($result) && RETURN_BLANK_TEMPLATES)
+      return $start . $tpl->getLastTplFile() . $end;
+    else
+      return $start . $result . $end;
   }
 }
 
