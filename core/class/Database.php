@@ -20,6 +20,7 @@ class PHPWS_DB {
   var $_limit    = NULL;
   var $_index    = NULL;
   var $_column   = NULL;
+  var $_qwhere   = NULL;
 
   function PHPWS_DB($table=NULL){
     PHPWS_DB::touchDB();
@@ -182,17 +183,20 @@ class PHPWS_DB {
       $this->_where[$group]['values'][] = array('column'=>$column, 'value'=>$value, 'operator'=>$operator, 'conj'=>$conj);
     else
       $this->_where[0]['values'][] = array('column'=>$column, 'value'=>$value, 'operator'=>$operator, 'conj'=>$conj);
+  }
 
+  function setQWhere($where){
+    $this->_qwhere = $where;
   }
 
   function getWhere($dbReady=FALSE){
     $extra = FALSE;
 
-    if (!count($this->_where))
+    if (!count($this->_where)){
+      if (isset($this->_qwhere))
+	return "WHERE " . $this->_qwhere;
       return NULL;
-
-    if (count($this->_where) > 1)
-      $extra = TRUE;
+    }
 
     $startMain = FALSE;
     if ($dbReady){
@@ -200,10 +204,10 @@ class PHPWS_DB {
 	if (!isset($groups['values']))
 	  continue;
 	$startSub = FALSE;
-	if ($extra == TRUE){
-	  if ($startMain == TRUE) $sql[] = $groups['conj'];
-	  $sql[] = "(";
-	}
+
+	if ($startMain == TRUE) $sql[] = $groups['conj'];
+	$sql[] = "(";
+
 
 	foreach ($groups['values'] as $value){
 	  if ($startSub == TRUE) $sql[] = $value['conj'];
@@ -212,9 +216,13 @@ class PHPWS_DB {
 	  $startSub = TRUE;
 	}
 
-	if ($extra == TRUE) $sql[] = ")";
+	$sql[] = ")";
 	$startMain = TRUE;
       }
+
+      if (isset($this->_qwhere))
+	$sql[] = " AND " . $this->_qwhere;
+
     } else
       return $this->_where;
 
