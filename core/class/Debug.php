@@ -68,9 +68,8 @@ class PHPWS_Debug {
   function testObject($objVar, $displayTags=1) {
     if(is_object($objVar)) {
       $objectInfo = (get_object_vars($objVar));
-      $info[] = "<b>Class Name :</b> " . get_class($value);
-      $info[] = PHPWS_Debug::testArray($objectInfo, $displayTags);
-      return implode("<br />", $info);
+      return "<b>Class Name :</b> " . get_class($objVar) .
+	PHPWS_Debug::testArray($objectInfo, $displayTags);
     }
     return "PHPWS_Debug: testObject received a/an " . gettype($objVar) . " variable, not an object<br />";
   } // END FUNC testObject
