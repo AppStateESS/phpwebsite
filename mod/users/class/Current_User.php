@@ -47,6 +47,10 @@ class Current_User {
     return $_SESSION['User']->isLogged();
   }
 
+  function save(){
+    return $_SESSION['User']->save();
+  }
+
 }
 
 ?>
