@@ -2,7 +2,8 @@
    <div id="sidepanel">{DEFAULT}</div>
    <div id="gutter"></div>
    <div id="content">
-     <div id="header">{LAYOUT_HEADER}</div>
+     <!-- BEGIN header --><div id="header">{LAYOUT_HEADER}</div><!--
+   END header -->
      {BODY}
      <div id="bottom">{BOTTOM}</div>
    </div>

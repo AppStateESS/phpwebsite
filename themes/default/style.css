@@ -3,8 +3,6 @@ body {
 	padding : 0;
 	font-size: 10pt;
 	font-family : Arial, Helvetica, sans-serif;
-	color: #000;
-	background-color : #DFE3BA;
 }
 
 #gutter {
@@ -14,7 +12,6 @@ body {
 
 #container {
 	width: 90%;
-	background-color: #ADB583;
 	border: 5px solid #FFF;
 	margin : 10px auto;
 	padding: 10px;
@@ -31,20 +28,11 @@ body {
 	width : 74%;
 }
 
-
-#content h1 {
-	background-color : #DEE2BD;
+#content h1, h2 {
 	padding : 3px;
 }
-
-#content h2 {
-	background-color : #EDF4D1;
-	padding : 3px;
-}
-
 
 #header {
-	background-color : #ADB583;
 	padding-bottom : 10px;
 }
 
@@ -60,19 +48,15 @@ body {
 	border-top : white 1px solid;
 }
 
-
 a:link, a:visited {
 	text-decoration: underline;
-	color: #000;
 }
+
 a:hover, a:active {
 	text-decoration: none;
-	color: #A03E19;
 }
 
-
 h1, h2, h3 {
-	color: #A03E19;
 	font-family: "Trebuchet MS", Verdana, serif;	
 	margin: 0;
 	text-transform: lowercase;
@@ -91,56 +75,24 @@ h3 {
 	font-size :  10pt;
 }
 
-.toggle1 {
-	background-color : #EDF4D1;
-}
-
-.toggle2 {
-	background-color : white;
-}
-
-
 th {
 	font-weight : bold;
 	font-family : "Trebuchet MS", Verdana, serif;
-	color: #A03E19;
 	text-align : left;
-	background-color : #DFE3BA;
 }
 
 tr, td {
 	vertical-align : top;
 }
 
-
 div.box {
-	background-color : #CBCEAC;
 	margin-bottom : 10px;
 	padding : 6px;
-}
-
-#sidepanel div.box {
-	border : white 2px solid;
-}
-
-div.box a:link, div.box a:visited {
-	color: #42443A;
-}
-div.box a:hover, div.box a:active {
-	color: #42443A;
 }
 
 .box h1, .box h2, .box h3 {
 	font-size : 12pt;
 	font-weight : bold;
-}
-
-.bgcolor1 {
-	background-color : #DEE2BD;
-}
-
-.bgcolor2 {
-	background-color : #EDF4D1;
 }
 
 input {
@@ -150,4 +102,3 @@ input {
 table.form-table .label {
 	margin-right : 20px;
 }
-	

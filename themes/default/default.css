@@ -1,0 +1,124 @@
+body {
+	color: #000;
+	background-color : #DFE3BA;
+}
+
+
+#container {
+	background-color: #ADB583;
+}
+
+
+#content h1 {
+	background-color : #DEE2BD;
+}
+
+#content h2 {
+	background-color : #EDF4D1;
+}
+
+
+#header {
+	background-color : #ADB583;
+}
+
+
+
+a:link, a:visited {
+	color: #000;
+}
+
+a:hover, a:active {
+	color: #A03E19;
+}
+
+
+h1, h2, h3 {
+	color: #A03E19;
+}
+
+.toggle1 {
+	background-color : #EDF4D1;
+}
+
+.toggle2 {
+	background-color : white;
+}
+
+
+th {
+	color: #A03E19;
+	background-color : #DFE3BA;
+}
+
+div.box {
+	background-color : #CBCEAC;
+}
+
+#sidepanel div.box {
+	border : white 2px solid;
+}
+
+div.box a:link, div.box a:visited {
+	color: #42443A;
+}
+div.box a:hover, div.box a:active {
+	color: #42443A;
+}
+
+
+.bgcolor1 {
+	background-color : #DEE2BD;
+}
+
+.bgcolor2 {
+	background-color : #EDF4D1;
+}
+
+/*--------------- Control Panel ---------------*/
+
+.frame {
+background-color: #CBCEAC;
+border-color : #90996E; 
+}
+
+.backgrd {
+border-left-color: #90996E;
+border-top-color: #90996E;
+}
+
+.tabmenu li {
+border-color: #90996E;
+}
+
+.tabmenu li.inactive {
+background-color : #DEDFBA;
+color : #49493D;
+}
+
+.tabmenu li.active {
+background-color : #CBCEAC;
+color : #49493D;
+}
+
+.tabmenu li.active a:visited {
+color: #49493D;
+}
+
+.tabmenu li.inactive a:link {
+color: #49493D;
+}
+
+.tabmenu li.inactive a:visited {
+color: #49493D;
+}
+
+.tabmenu li.inactive a:hover {
+color: black;
+}
+
+.tabmenu li.inactive:hover {
+background-color : #CBCEAC;
+color: black;
+}
+
