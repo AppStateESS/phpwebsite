@@ -85,18 +85,25 @@ class User_Form {
   }
 
   function manageUsers(){
+    PHPWS_Core::initModClass("users", "User_Manager.php");
     if (!isset($_SESSION['User_Manager']))
-      $_SESSION['User_Manager'] = & new User_Manager;
+      $manager = & new User_Manager;
+    else
+      $manager = unserialize($_SESSION['User_Manager']);
 
     if (isset($_POST['search_users']))
-      $_SESSION['User_Manager']->setWhere("username LIKE '%" . $_POST['search_users'] . "%'");
+      $manager->setWhere("username LIKE '%" . $_POST['search_users'] . "%'");
 
-    $content = $_SESSION['User_Manager']->getList("users", "Testing User Title");
+    $content = $manager->getList("users", "Testing User Title");
+
+    $_SESSION['User_Manager'] = serialize($manager);
+
     if (PEAR::isError($content)){
       PHPWS_Error::log($content);
       return $content->getMessage();
     }
     return $content;
+
   }
 
 
@@ -170,7 +177,32 @@ class User_Form {
     return $result;
   }
 
+  function deify(&$user){
+    if (!$_SESSION['User']->isDeity() || ($user->getId() == $_SESSION['User']->getId())){
+      $content[] = _("Only another deity can create a deity.");
+    } else {
+      $link = "<a href=\"index.php?module=users&amp;user=" . $user->getId() . "&amp;action[admin]=deify";
+      $content[] = _("Are you certain you want this user to have complete control of this web site?");
+      $content[] = $link . "&amp;authorize=1\">" . _("Yes, make them a deity.") . "</a>";
+      $content[] = $link . "&amp;authorize=0\">" . _("No, leave them as a mortal.") . "</a>";
+    }
 
+    return implode("<br />", $content);
+  }
+
+  function mortalize(&$user){
+    if (!$_SESSION['User']->isDeity())
+      $content[] = _("Only another deity can create a mortal.");
+    elseif($user->getId() == $_SESSION['User']->getId())
+      $content[] = _("A deity can not make themselves mortal.");
+    else {
+      $link = "<a href=\"index.php?module=users&amp;user=" . $user->getId() . "&amp;action[admin]=mortalize";
+      $content[] = _("Are you certain you want strip complete control from this user?");
+      $content[] = $link . "&amp;authorize=1\">" . _("Yes, make them a mortal.") . "</a>";
+      $content[] = $link . "&amp;authorize=0\">" . _("No, leave them as a deity.") . "</a>";
+    }
+    return implode("<br />", $content);
+  }
 
 }
 

@@ -46,11 +46,51 @@ class User_Action {
       $content = User_Form::demographics();
       break;
 
+    case "editUser":
+      $user = & new PHPWS_User($_REQUEST["user"]);
+      $content = User_Form::userForm($user);
+      break;
+      
+
+    case "deify":
+      $user = & new PHPWS_User($_REQUEST["user"]);
+      if (isset($_GET['authorize'])){
+	if ($_GET['authorize'] == 1 && $_SESSION['User']->isDeity()){
+	  $user->setDeity(TRUE);
+	  $user->save();
+	  $content = _("User deified.") . "<hr />" . User_Form::manageUsers();
+	  break;
+	} else {
+	  $content = _("User remains a lowly mortal.") . "<hr />" . User_Form::manageUsers();
+	  break;
+	}
+      } else
+	$content = User_Form::deify($user);
+      break;      
+
+    case "mortalize":
+      $user = & new PHPWS_User($_REQUEST["user"]);
+      if (isset($_GET['authorize'])){
+	if ($_GET['authorize'] == 1 && $_SESSION['User']->isDeity()){
+	  $user->setDeity(FALSE);
+	  $user->save();
+	  $content = _("User transformed into a lowly mortal.") . "<hr />" . User_Form::manageUsers();
+	  break;
+	} else {
+	  $content = _("User remains a deity.") . "<hr />" . User_Form::manageUsers();
+	  break;
+	}
+      } else 
+	$content = User_Form::mortalize($user);
+      break;      
+      
 
       /** Action cases **/
 
     case "postUser":
-      $user = & new PHPWS_User();
+      $id = ($_REQUEST['userId'] ? (int)$_REQUEST['userId'] : NULL);
+
+      $user = & new PHPWS_User($id);
       $result = User_Action::postUser($user);
 
       if (is_array($result)){
@@ -64,10 +104,17 @@ class User_Action {
 	  $content = User_Form::userForm($user, $result->getMessage());
 	  break;
 	}
-	$message = _print(_("User <b>[var1]</b> created successfully"), array($user->getUsername()));
-	unset($user);
-	$user = & new PHPWS_User;
-	$content = User_Form::userForm($user, $message);
+
+	if (!isset($id)){
+	  $message = _print(_("User <b>[var1]</b> created successfully"), array($user->getUsername()));
+	  unset($user);
+	  $user = & new PHPWS_User;
+	  $content = User_Form::userForm($user, $message);
+	} else {
+	  $content = _print(_("User <b>[var1]</b> updated successfully"), array($user->getUsername())) . "<hr />";
+	  unset($user);
+	  $content .= User_Form::manageUsers();
+	}
       }
       break;
 
@@ -148,17 +195,22 @@ class User_Action {
   }
 
   function postUser(&$user){
-    $result = $user->setUsername($_POST['username'], TRUE);
-
-    if (PEAR::isError($result))
-      $error[] = $result;
-
-    $result = $user->checkPassword($_POST['password1'], $_POST['password2']);
-
-    if (PEAR::isError($result))
-      $error[] = $result;
+    if ($user->isUser())
+      $result = $user->setUsername($_POST['username'], FALSE);
     else
-      $user->setPassword($_POST['password1']);
+      $result = $user->setUsername($_POST['username'], TRUE);
+
+    if (PEAR::isError($result))
+      $error[] = $result;
+
+    if (!$user->isUser() || (!empty($_POST['password1']) || !empty($_POST['password2']))){
+      $result = $user->checkPassword($_POST['password1'], $_POST['password2']);
+
+      if (PEAR::isError($result))
+	$error[] = $result;
+      else
+	$user->setPassword($_POST['password1']);
+    }
 
     if (isset($_POST['demographic'])){
       PHPWS_Core::initModClass("users", "Demographics.php");

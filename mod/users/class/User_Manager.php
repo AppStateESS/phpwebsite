@@ -28,12 +28,17 @@ class User_Manager extends PHPWS_List{
     $this->setIdColumn("id");
     $this->setClass("User_List");
     $this->setTable("users");
-    $this->setColumns(array("username"    => TRUE,
-			    "last_logged" => TRUE,
-			    "active"      => TRUE,
-			    "deity"       => TRUE,
-			    "actions"     => FALSE
-			    ));
+
+    $columns = array("username"    => TRUE,
+		     "last_logged" => TRUE,
+		     "active"      => TRUE,
+		     "actions"     => FALSE
+		     );
+
+    if ($_SESSION['User']->isDeity())
+      $columns["deity"] = TRUE;
+
+    $this->setColumns($columns);
     $this->setName("user_manager");
     $this->setTemplate("manager/users.tpl");
     $this->setOp("action[admin]=main&amp;tab=manage_users");
@@ -67,17 +72,20 @@ class User_List{
   }
 
   function getlistactive(){
+    $id = $this->userList['id'];
     if ($this->userList['active'])
-      return _("Active");
+      return "<a href=\"index.php?module=users&amp;action[admin]=deactivate&amp;user=$id\">" . _("Active") . "</a>";
     else
-      return _("Disabled");
+      return "<a href=\"index.php?module=users&amp;action[admin]=activate&amp;user=$id\">" . _("Disabled") . "</a>";
   }
 
   function getlistdeity(){
+    $id = $this->userList['id'];
+    $link = "<a href=\"index.php?module=users&amp;user=$id";
     if ($this->userList['deity'])
-      return _("Deity");
+      return $link . "&amp;action[admin]=mortalize\">" . _("Deity") . "</a>";
     else
-      return _("Mortal");
+      return $link . "&amp;action[admin]=deify\">" . _("Mortal") . "</a>";
   }
 
   function getlistactions(){

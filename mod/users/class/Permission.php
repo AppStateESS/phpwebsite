@@ -20,9 +20,10 @@ class PHPWS_User_Permission{
       }
     }
 
-    if (isset($errors))
+    if (isset($errors)){
       echo phpws_debug::testarray($errors);
-
+      echo "createPermissions Permission.php";
+    }
   }
 
   function createPermissionTable($itemName, $subpermissions=NULL){

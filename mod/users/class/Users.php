@@ -1,5 +1,9 @@
 <?php
 
+define ("USER_NOT_ALLOWED",     0);
+define ("USER_PARTIAL_ALLOWED", 1);
+define ("USER_FULL_ALLOWED",    2);
+
 class PHPWS_User extends PHPWS_Item {
   var $_username     = NULL;
   var $_password     = NULL;
@@ -24,9 +28,13 @@ class PHPWS_User extends PHPWS_Item {
     $this->addExclude($exclude);
     $this->setTable("users");
 
-    if(isset($id)) {
+    if(isset($id) && is_numeric($id)) {
       $this->setId($id);
-      $this->init();
+      $result = $this->init();
+      if (PEAR::isError($result)){
+	$this = $result;
+	return FALSE;
+      }
       $this->loadUserGroups();
     }
   }
@@ -81,6 +89,10 @@ class PHPWS_User extends PHPWS_Item {
 
   function isLogged(){
     return (bool)$this->_logged;
+  }
+
+  function isUser(){
+    return isset($this->_id);
   }
 
   function setDeity($deity){
@@ -148,8 +160,10 @@ class PHPWS_User extends PHPWS_Item {
 
     PHPWS_DB::isTable($itemTable) ? $useItem = TRUE : $useItem = FALSE;
 
-    if(!PHPWS_DB::isTable($permTable))
-      return PHPWS_Error::get(USER_ERR_PERM_MISS, "users", "loadModulePermission", "Table Name: $permTable");
+    if(!PHPWS_DB::isTable($permTable)){
+      $this->_permissions[$itemName] = USER_FULL_ALLOWED;
+      return TRUE;
+    }
 
     $permDB = new PHPWS_DB($permTable);
     $itemDB = new PHPWS_DB($itemTable);
@@ -162,6 +176,10 @@ class PHPWS_User extends PHPWS_Item {
     }
 
     $permResult = $permDB->select();
+    if (!isset($permResult)){
+      $this->_permissions[$itemName] = USER_NOT_ALLOWED;
+      return TRUE;
+    }
 
     if ($useItem)
       $itemResult = $itemDB->select("col");
@@ -190,7 +208,6 @@ class PHPWS_User extends PHPWS_Item {
 
 
   function allow($itemName, $subpermission=NULL, $item_id=NULL){
-
     if ($this->isDeity())
       return TRUE;
 
@@ -211,7 +228,7 @@ class PHPWS_User extends PHPWS_Item {
       } else
 	return TRUE;
     } else
-      return TRUE;
+      return (bool)$this->_permissions[$itemName];
   }
 
   function save(){
