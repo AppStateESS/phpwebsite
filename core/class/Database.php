@@ -1063,6 +1063,9 @@ class PHPWS_DB {
 
   
   function allowed($value){
+    if (!is_string($value))
+      return FALSE;
+
     $reserved = array("ADD", "ALL", "ALTER", "ANALYZE", "AND", "AS", "ASC", "AUTO_INCREMENT", "BDB",
 		      "BERKELEYDB", "BETWEEN", "BIGINT", "BINARY", "BLOB", "BOTH", "BTREE", "BY", "CASCADE",
 		      "CASE", "CHANGE", "CHAR", "CHARACTER", "COLLATE", "COLUMN", "COLUMNS", "CONSTRAINT", "CREATE",
