@@ -11,6 +11,9 @@ class PHPWS_Module {
   var $_file_dir      = TRUE;
   var $_register      = FALSE;
   var $_import_sql    = FALSE;
+  var $_version_http  = NULL;
+  var $_about         = FALSE;
+  var $_api           = "0.9.4";
 
   function PHPWS_Module($title=NULL){
     if (isset($title)){
@@ -53,6 +56,15 @@ class PHPWS_Module {
 
     if (isset($register))
       $this->setRegister($register);
+
+    if (isset($version_http))
+      $this->setVersionHttp($version_http);
+
+    if (isset($about))
+      $this->setAbout($about);
+
+    if (isset($api))
+      $this->setAPI($api);
   }
 
 
@@ -139,6 +151,27 @@ class PHPWS_Module {
     return $this->_active;
   }
 
+  function setAbout($about){
+    $this->_about = (bool)$about;
+  }
+
+  function isAbout(){
+    return $this->_about;
+  }
+
+
+  function setAPI($api){
+    $this->_api = $api;
+  }
+
+  function setVersionHttp($http){
+    $this->_version_http = $http;
+  }
+
+  function getVersionHttp(){
+    return $this->_version_http;
+  }
+
   function save(){
     $db = new PHPWS_DB("modules");
     $db->addWhere("title", $this->getTitle());
@@ -148,6 +181,30 @@ class PHPWS_Module {
       $this->setProperName($this->getProperName(TRUE));
 
     return $db->saveObject($this, TRUE);
+  }
+
+  function isInstalled(){
+    $db = & new PHPWS_DB("modules");
+    $db->addWhere("title", $this->getTitle());
+    $result = $db->select("row");
+    if (PEAR::isError($result)){
+      PHPWS_Error::log($result);
+      return FALSE;
+    } else
+      return isset($result);
+  }
+
+  function needsUpgrade(){
+    $db = & new PHPWS_DB("modules");
+    $db->addWhere("title", $this->getTitle());
+    $result = $db->select("row");
+    if (PEAR::isError($result)){
+      PHPWS_Error::log($result);
+      return FALSE;
+    }
+
+    return ($result['version'] < $this->getVersion() ? TRUE : FALSE);
+
   }
 
 }
