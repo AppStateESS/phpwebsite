@@ -77,10 +77,14 @@ class Blog {
     }
   }
 
+  function &getKey()
+  {
+    return new Key('blog', 'entry', $this->id);
+  }
 
   function view($edit=TRUE, $limited=TRUE)
   {
-    $key = & new Key('blog', 'entry', $this->id);
+    $key = $this->getKey();
 
     PHPWS_Core::initModClass('categories', 'Categories.php');
     $template['TITLE'] = $this->getTitle(TRUE);
