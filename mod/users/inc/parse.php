@@ -7,8 +7,12 @@ function new_account($item)
   }
   $signup_vars = array('action'  => 'user',
 		       'command' => 'signup_user');
-  
-  return PHPWS_Text::moduleLink(USER_SIGNUP_QUESTION, 'users', $signup_vars);
+  if (!empty($item[1])) {
+    $link = strip_tags($item[1]);
+  } else {
+    $link = USER_SIGNUP_QUESTION;
+  }
+  return PHPWS_Text::moduleLink($link, 'users', $signup_vars);
 }
 
 ?>
