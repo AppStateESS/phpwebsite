@@ -6,8 +6,8 @@
 </head>
 <body class="help-window">
 <div id="help">
-<div class="help-title">{TITLE}</div>
-<div class="help-content">{CONTENT}</div>
+<div class="box-title">{TITLE}</div>
+<div class="box-content">{CONTENT}</div>
 </div>
 </body>
 </html>

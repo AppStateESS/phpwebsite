@@ -7,18 +7,6 @@ body.help-window {
 	background-color : #CDDEEE;
 }
 
-div.help-title {
-	background-color : #94B6DE;
-	padding : 5px;
-	color : black;
-	font-weight : bold;
-}
-
-div.help-content {
-	padding : 5px;
-	background-color : white;
-}
-
 .help-link a:link {
   text-decoration : none;
   color : red;
