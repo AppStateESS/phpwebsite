@@ -31,10 +31,10 @@ class Demo_Manager extends User_Demographic{
     $list->setIdColumn("label");
     $list->setClass("Demo_Manager");
     $list->setTable("users_demographics");
-    $list->setColumns(array("input_type" => TRUE,
-			    "proper_name"=> TRUE,
-			    "required"   => TRUE,
-			    "active"     => TRUE
+    $list->setDBColumns(array("input_type",
+			    "proper_name",
+			    "required",
+			    "active"
 			    ));
     $list->setName("demographics");
     $list->setTemplate("manager/demographics.tpl");
