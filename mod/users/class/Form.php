@@ -72,6 +72,8 @@ class User_Form {
     $tpl = & new PHPWS_Template("users");
     $tpl->setFile("forms/permissions.tpl");
 
+    $group->loadPermissions(FALSE);
+
     foreach ($modules as $mod){
       $mod_template = User_Form::modulePermission($mod, $group);
       if ($mod_template == false)
@@ -87,7 +89,7 @@ class User_Form {
     $form->addHidden("action", "admin");
     $form->addHidden("command", "postPermission");
     $form->addHidden("group_id", $id);
-    $form->add("update", "submit", _("Update"));
+    $form->addSubmit("update", _("Update"));
     $template = $form->getTemplate();
 
     $tpl->setData($template);
@@ -99,8 +101,6 @@ class User_Form {
 
 
   function modulePermission($mod, &$group){
-    $group->loadPermissions(FALSE);
-
     $file = PHPWS_Core::getConfigFile($mod['title'], "permission.php");
     $template = NULL;
 

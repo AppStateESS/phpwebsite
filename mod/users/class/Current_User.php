@@ -72,6 +72,13 @@ class Current_User {
     return $_SESSION['User']->save();
   }
 
+  function getPermissionLevel($module){
+    if ($_SESSION['User']->isDeity())
+      return FULL_PERMISSION;
+
+    return $_SESSION['User']->_permission->getPermissionLevel($module);
+  }
+
 }
 
 ?>
