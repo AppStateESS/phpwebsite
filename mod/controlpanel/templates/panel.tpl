@@ -1,12 +1,10 @@
-<table border="0" width="100%" cellpadding="0" cellspacing="0">
+<table border="0" width="50%" cellpadding="0" cellspacing="0">
 <tr>
 {TABS}
 </tr>
 </table>
-<table border="0" width="100%" cellpadding="4" cellspacing="0">
-<tr>
-<!-- BEGIN active --><td class="bg-medium">{ACTIVE}<!-- END active -->
-<!-- BEGIN inactive --><td class="bg-light">{INACTIVE}<!-- END inactive -->
+<div class="bg-medium" style="padding : 1pt 1pt 1pt 1pt">
+<div style="background-color : white ; margin : 1pt 1pt 1pt 1pt; padding : 3pt 3pt 3pt 3pt">
 {LINKS}
-</td></tr>
-</table>
+</div>
+</div>
