@@ -24,6 +24,7 @@ class PHPWS_User {
   var $_groups       = NULL;
   var $_permission   = NULL;
   var $_user_group   = NULL;
+  var $_auth_key     = NULL;
   // Indicates whether this is a logged in user
   var $_logged       = FALSE;
  
@@ -117,7 +118,6 @@ class PHPWS_User {
     if ($this->isDuplicateGroup())
       return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, "users", "setUsername", $username); ;
     
-
     return TRUE;
   }
 
@@ -288,7 +288,17 @@ class PHPWS_User {
     return ($this->authorize == LOCAL_AUTHORIZATION || $this->authorize == GLOBAL_AUTHORIZATION) ? TRUE : FALSE;
   }
 
+  function verifyAuthKey(){
+    if (!isset($_REQUEST['authkey']) || $_REQUEST['authkey'] != $this->getAuthKey())
+      return FALSE;
+
+    return TRUE;
+  }
+
   function allow($itemName, $subpermission=NULL, $item_id=NULL){
+    if (!$this->verifyAuthKey())
+      return FALSE;
+
     PHPWS_Core::initModClass("users", "Permission.php");
     if ($this->isDeity())
       return TRUE;
@@ -372,6 +382,14 @@ class PHPWS_User {
 
   function isAnonymousUser(){
     return ($this->id == ANONYMOUS_ID);
+  }
+
+  function makeAuthKey($key){
+    $this->_auth_key = md5($this->username . $key . mktime());
+  }
+
+  function getAuthKey(){
+    return $this->_auth_key;
   }
 
   function saveLocalAuthorization(){

@@ -32,6 +32,14 @@ class Current_User {
     return $_SESSION['User']->getId();
   }
 
+  function getAuthKey(){
+    return $_SESSION['User']->getAuthKey();
+  }
+
+  function verifyAuthKey(){
+    return $_SESSION['User']->verifyAuthKey();
+  }
+
   function updateLastLogged(){
     $db = & new PHPWS_DB("users");
     $db->addWhere("id", $_SESSION['User']->getId());

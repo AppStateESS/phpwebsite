@@ -414,6 +414,7 @@ class User_Action {
       $user->setLogged(TRUE);
       $user->setLastLogged(mktime());
       $user->addLogCount();
+      $user->makeAuthKey($password);
       $user->save();
       $_SESSION['User'] = $user;
       return TRUE;
