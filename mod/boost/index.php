@@ -31,7 +31,12 @@ switch ($_REQUEST['action']){
  case "uninstall":
    PHPWS_Core::initModClass("boost", "Action.php");
    $content[] = Boost_Action::uninstallModule($_REQUEST['opmod']);
+   break;
 
+ case "upgrade":
+   PHPWS_Core::initModClass("boost", "Action.php");
+   $content[] = Boost_Action::upgradeModule($_REQUEST['opmod']);
+   break;
 }// End area switch
 
 $boostPanel->setContent(implode("", $content));
