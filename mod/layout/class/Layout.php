@@ -1,20 +1,20 @@
 <?php
 
-class PHPWS_Layout {
+class Layout {
 
   function initLayout($refresh=FALSE){
     if ($refresh == TRUE || !isset($_SESSION['Layout_Settings'])){
       PHPWS_Core::initModClass("layout", "Initialize.php");
-      PHPWS_Layout_Init::initSettings();
-      PHPWS_Layout_Init::initContentVar();
-      PHPWS_Layout_Init::initBoxes();
+      Layout_Init::initSettings();
+      Layout_Init::initContentVar();
+      Layout_Init::initBoxes();
     }
 
-    $boxes = PHPWS_Layout::getBoxes();
+    $boxes = Layout::getBoxes();
 
     if (!isset($boxes)){
       PHPWS_Core::initModClass("layout", "Initialize.php");
-      $boxes = PHPWS_Layout_Init::loadBoxes();
+      $boxes = Layout_Init::loadBoxes();
     }
     $_SESSION['Layout_Boxes'] = $boxes;
   }
@@ -22,13 +22,13 @@ class PHPWS_Layout {
 
   function &getTheme(){
     if (!isset($_SESSION['Layout_Settings']))
-      PHPWS_Layout::initLayout();
+      Layout::initLayout();
 
     return $_SESSION['Layout_Settings']['current_theme'];
   }
 
   function getThemeDir(){
-    return "themes/" . PHPWS_Layout::getTheme() . "/";
+    return "themes/" . Layout::getTheme() . "/";
   }
 
   function add($text, $contentVar=NULL, $box=TRUE){
@@ -39,10 +39,10 @@ class PHPWS_Layout {
       if(!is_string($contentVar))
 	return PEAR::raiseError("Content variable is not a string");
 
-      if (!PHPWS_Layout::isContentVar($contentVar)){
-	PHPWS_Layout::addBox($contentVar);
-	PHPWS_Layout_Init::initContentVar();
-	PHPWS_Layout_Init::initBoxes();
+      if (!Layout::isContentVar($contentVar)){
+	Layout::addBox($contentVar);
+	Layout_Init::initContentVar();
+	Layout_Init::initBoxes();
       }
     } else {
       $box = FALSE;
@@ -66,8 +66,8 @@ class PHPWS_Layout {
 
     $box = (bool)$box;
 
-    $_SESSION['Layout'][$contentVar]['content'] = array();
-    PHPWS_Layout::add($text, $contentVar, $box);
+    $_SESSION['Layout'][$contentVar]['content'] = NULL;
+    Layout::add($text, $contentVar, $box);
   }
 
   function hold($text, $contentVar=NULL, $box=TRUE, $time=NULL){
@@ -76,7 +76,7 @@ class PHPWS_Layout {
 
     $box = (bool)$box;
 
-    PHPWS_Layout::set($text, $contentVar, $box);
+    Layout::set($text, $contentVar, $box);
 
     if (!isset($time) || !is_numeric($time))
       $_SESSION['Layout'][$contentVar]['hold'] = mktime() + DEFAULT_LAYOUT_HOLD; 
@@ -101,6 +101,9 @@ class PHPWS_Layout {
 
   function getBoxContent(){
     $finalList = NULL;
+    if (!isset($_SESSION['Layout']))
+      return PHPWS_Error::get(LAYOUT_SESSION_NOT_SET, "layout", "getBoxContent");
+
     foreach ($_SESSION['Layout'] as $contentVar=>$contentList)
       foreach ($contentList['content'] as $tag=>$content){
       $finalList[$contentVar][strtoupper($tag)] = implode("", $content);
@@ -142,34 +145,43 @@ class PHPWS_Layout {
 
   function display(){
     $themeVarList = array();
-    $includeFile = PHPWS_Layout::getThemeDir() . "config.php";
+    $includeFile = Layout::getThemeDir() . "config.php";
 
     if (is_file($includeFile))
       include $includeFile;
 
-    $theme = PHPWS_Layout::getTheme();
+    $theme = Layout::getTheme();
 
-    $finalList = PHPWS_Layout::getBoxContent();
+    $finalList = Layout::getBoxContent();
 
-    //::to do - What to do if data is not sent ?
-    if (!isset($finalList))
-      return PEAR::raiseError("No data was sent to Layout");
+    if (!is_array($finalList)){
+      $finalTheme = &Layout::loadTheme($theme);
+
+      if (!isset($finalList))
+	PHPWS_Error::log(LAYOUT_NO_CONTENT, "layout", "display");
+      elseif (PEAR::isError($finalList))
+	PHPWS_Error::log($finalList);
+      
+      echo $finalTheme->get();
+      return;
+    }
+
 
     foreach ($finalList as $contentVar=>$template){
 
       // Need to check for theme variable
-      if(!($theme_var = PHPWS_Layout::getBoxThemeVar($contentVar)))
+      if(!($theme_var = Layout::getBoxThemeVar($contentVar)))
 	$theme_var = DEFAULT_THEME_VAR;
 
       if (!in_array($theme_var, $themeVarList))
 	$themeVarList[] = $theme_var;
 
-      $order = PHPWS_Layout::getBoxOrder($contentVar);
+      $order = Layout::getBoxOrder($contentVar);
 
       if (!isset($order))
 	$order = MAX_ORDER_VALUE;
 
-      if (PHPWS_Layout::isBoxTpl($contentVar)){
+      if (Layout::isBoxTpl($contentVar)){
 	$tpl = new PHPWS_Template;
 
 	$file = $_SESSION['Layout_Boxes'][$contentVar]['template'];
@@ -186,10 +198,10 @@ class PHPWS_Layout {
 	$unsortedLayout[$theme_var][$order] = implode("", $template);
       }
 
-      $hold = PHPWS_Layout::getBoxHold($contentVar);
+      $hold = Layout::getBoxHold($contentVar);
 
       if($hold > mktime() || (bool)$hold == FALSE)
-	PHPWS_Layout::dropContentVar($contentVar);
+	Layout::dropContentVar($contentVar);
     }
 
 
@@ -209,7 +221,7 @@ class PHPWS_Layout {
 	$finalLayout['JAVASCRIPT'] = implode("\n", $jsHead);
     }
 
-      $finalTheme = &PHPWS_Layout::loadTheme($theme, $finalLayout);
+      $finalTheme = &Layout::loadTheme($theme, $finalLayout);
 
     if (PEAR::isError($finalTheme))
       echo implode("", $finalLayout);
@@ -220,13 +232,13 @@ class PHPWS_Layout {
 
   function &loadTheme($theme, $template=NULL){
     if (!isset($template))
-      $template[DEFAULT_THEME_VAR] = "No content to display!";
+      $template[DEFAULT_THEME_VAR] = DISPLAY_ERROR_MESSAGE;
 
     $template['THEME_DIRECTORY'] = "themes/$theme/";
     $template['STYLE'] = "<link rel=\"stylesheet\" href=\"themes/$theme/style.css\" type=\"text/css\" />";
 
     $tpl = new PHPWS_Template;
-    $result = $tpl->setFile(PHPWS_Layout::getThemeDir() . "theme.tpl", TRUE);
+    $result = $tpl->setFile(Layout::getThemeDir() . "theme.tpl", TRUE);
 
     if (PEAR::isError($result))
       return $result;
@@ -263,13 +275,13 @@ class PHPWS_Layout {
     PHPWS_Core::initModClass("layout", "Initialize.php");
 
     if (!isset($theme))
-      $theme = &PHPWS_Layout::getTheme();
+      $theme = &Layout::getTheme();
     
     if (!isset($theme_var))
       $theme_var = DEFAULT_THEME_VAR;
 
 
-    $box = new PHPWS_Layout_Box;
+    $box = new Layout_Box;
     $box->setTheme($theme);
     $box->setContentVar($content_var);
     $box->setThemeVar($theme_var);
@@ -298,7 +310,7 @@ class PHPWS_Layout {
     if (isset($_SESSION['Layout_Content_Vars']))
       $content_vars = $_SESSION['Layout_Content_Vars'];
     else
-      $content_vars = PHPWS_Layout_Init::loadContentVar();
+      $content_vars = Layout_Init::loadContentVar();
 
     return $content_vars;
   }

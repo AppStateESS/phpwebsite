@@ -1,6 +1,6 @@
 <?php
 
-class PHPWS_Layout_Box {
+class Layout_Box {
   var $_id          = NULL;
   var $_theme       = NULL; 
   var $_content_var = NULL;
@@ -8,7 +8,7 @@ class PHPWS_Layout_Box {
   var $_template    = NULL;
   var $_box_order       = NULL;
 
-  function PHPWS_Layout_Box($id=NULL){
+  function Layout_Box($id=NULL){
     if (isset($id))
       $this->load($id);
   }
@@ -91,7 +91,7 @@ class PHPWS_Layout_Box {
       return NULL;
 
     if ($configExists == 0){
-      $includeFile =  PHPWS_Layout::getThemeDir() . "config.php";
+      $includeFile =  Layout::getThemeDir() . "config.php";
       
       if (!is_file($includeFile)){
 	$configExists = -1;

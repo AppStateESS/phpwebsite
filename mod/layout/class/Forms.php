@@ -1,6 +1,6 @@
 <?php
 
-class PHPWS_Layout_Forms extends PHPWS_Layout_Box {
+class Layout_Forms extends Layout_Box {
 
   function admin(){
     $this->_panel = TRUE;

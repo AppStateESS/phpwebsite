@@ -1,7 +1,7 @@
 <?php
 
 
-class PHPWS_Layout_Init{
+class Layout_Init{
 
   function loadSettings(){
     $DB = new PHPWS_DB("layout_config");
@@ -16,7 +16,7 @@ class PHPWS_Layout_Init{
 
   function loadContentVar(){
     $DB = new PHPWS_DB("layout_box");
-    $DB->addWhere("theme", PHPWS_Layout::getTheme());
+    $DB->addWhere("theme", Layout::getTheme());
     $DB->addColumn("content_var", TRUE);
     $result = $DB->select("col");
     if (PEAR::isError($result))
@@ -28,19 +28,19 @@ class PHPWS_Layout_Init{
   }
 
   function initSettings(){
-    $_SESSION['Layout_Settings'] = PHPWS_Layout_Init::loadSettings();
+    $_SESSION['Layout_Settings'] = Layout_Init::loadSettings();
   }
 
   function initContentVar(){
-    $_SESSION['Layout_Content_Vars'] = PHPWS_Layout_Init::loadContentVar();
+    $_SESSION['Layout_Content_Vars'] = Layout_Init::loadContentVar();
   }
 
   function initBoxes(){
-    $_SESSION['Layout_Boxes'] = PHPWS_Layout_Init::loadBoxes();
+    $_SESSION['Layout_Boxes'] = Layout_Init::loadBoxes();
   }
 
   function loadBoxes(){
-    $theme = PHPWS_Layout::getTheme();
+    $theme = Layout::getTheme();
     $DB = new PHPWS_DB("layout_box");
     $DB->addWhere("theme", $theme);
     if(!$boxes = $DB->select())
@@ -57,10 +57,10 @@ class PHPWS_Layout_Init{
   function installModule($module){
     include PHPWS_SOURCE_DIR . "mod/$module/conf/layout.php";
     foreach ($layout_info as $row){
-      if (PHPWS_Layout::isContentVar($row['content_var']))
+      if (Layout::isContentVar($row['content_var']))
 	continue;
 
-      PHPWS_Layout::addBox(PHPWS_Layout::getTheme(), $row['content_var'], $row['theme_var'], "default_box.tpl");
+      Layout::addBox(Layout::getTheme(), $row['content_var'], $row['theme_var'], "default_box.tpl");
     }
   }
 
