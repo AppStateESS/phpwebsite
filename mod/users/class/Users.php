@@ -1,9 +1,5 @@
 <?php
 
-define ("USER_NOT_ALLOWED",     0);
-define ("USER_PARTIAL_ALLOWED", 1);
-define ("USER_FULL_ALLOWED",    2);
-
 class PHPWS_User extends PHPWS_Item {
   var $_username     = NULL;
   var $_password     = NULL;
@@ -40,19 +36,22 @@ class PHPWS_User extends PHPWS_Item {
   }
 
   function setUsername($username, $checkDuplicate=FALSE){
-    if (preg_match("/^[a-z]+[a-z0-9_]{3}$/iU", $username)){
-      if ((bool)$checkDuplicate == TRUE){
-	$DB = new PHPWS_DB("users");
-	$DB->addWhere("username", $username);
-	$result = $DB->select("one");
-	if (isset($result) && !PEAR::isError($result))
-	  return PHPWS_Error::get(USER_ERR_DUP_USERNAME, "users", "setUsername");
-      }
-	$this->_username = $username;
-	return TRUE;
-    }
-    else 
+    if (empty($username) || preg_match("/\W+/", $username))
       return PHPWS_Error::get(USER_ERR_BAD_USERNAME, "users", "setUsername");
+
+    if (strlen($username) < USERNAME_LENGTH)
+      return PHPWS_Error::get(USER_ERR_BAD_USERNAME, "users", "setUsername");
+
+    if ((bool)$checkDuplicate == TRUE){
+      $DB = new PHPWS_DB("users");
+      $DB->addWhere("username", $username);
+      $result = $DB->select("one");
+      if (isset($result) && !PEAR::isError($result))
+	return PHPWS_Error::get(USER_ERR_DUP_USERNAME, "users", "setUsername");
+    }
+    $this->_username = $username;
+    return TRUE;
+
   }
 
   function getUsername(){
@@ -161,7 +160,7 @@ class PHPWS_User extends PHPWS_Item {
     PHPWS_DB::isTable($itemTable) ? $useItem = TRUE : $useItem = FALSE;
 
     if(!PHPWS_DB::isTable($permTable)){
-      $this->_permissions[$itemName] = USER_FULL_ALLOWED;
+      $this->_permissions[$itemName] = FULL_PERMISSION;
       return TRUE;
     }
 
@@ -177,7 +176,7 @@ class PHPWS_User extends PHPWS_Item {
 
     $permResult = $permDB->select();
     if (!isset($permResult)){
-      $this->_permissions[$itemName] = USER_NOT_ALLOWED;
+      $this->_permissions[$itemName] = NO_PERMISSION;
       return TRUE;
     }
 

@@ -16,7 +16,6 @@ class User_Action {
     switch ($command){
       /** Main switch for tabs **/
     case "main":
-
       if (isset($_REQUEST['tab']))
 	User_Action::adminAction($_REQUEST['tab']);
       else {
@@ -33,6 +32,8 @@ class User_Action {
       break;
 
       /** Form cases **/
+
+      /** User Forms **/
     case "new_user":
       $user = & new PHPWS_User;
       $content = User_Form::userForm($user);
@@ -49,9 +50,21 @@ class User_Action {
     case "editUser":
       $user = & new PHPWS_User($_REQUEST["user"]);
       $content = User_Form::userForm($user);
-      break;
-      
+      break;      
 
+      /** End User Forms **/
+
+      /** Group Forms **/
+
+    case "new_group":
+      PHPWS_Core::initModClass("users", "Group.php");
+      $group = & new PHPWS_Group;
+      $content = User_Form::groupForm($group);
+      break;
+
+      /** End Group Forms **/
+
+      /** Action cases **/
     case "deify":
       $user = & new PHPWS_User($_REQUEST["user"]);
       if (isset($_GET['authorize'])){
@@ -83,12 +96,9 @@ class User_Action {
       } else 
 	$content = User_Form::mortalize($user);
       break;      
-      
-
-      /** Action cases **/
 
     case "postUser":
-      $id = ($_REQUEST['userId'] ? (int)$_REQUEST['userId'] : NULL);
+      $id = (isset($_REQUEST['userId']) ? (int)$_REQUEST['userId'] : NULL);
 
       $user = & new PHPWS_User($id);
       $result = User_Action::postUser($user);
@@ -115,6 +125,28 @@ class User_Action {
 	  unset($user);
 	  $content .= User_Form::manageUsers();
 	}
+      }
+      break;
+
+    case "postGroup":
+      PHPWS_Core::initModClass("users", "Group.php");
+      $id = (isset($_REQUEST['groupId']) ? (int)$_REQUEST['groupId'] : NULL);
+
+      $group = & new PHPWS_Group($id);
+      $result = User_Action::postGroup($group);
+
+      if (PEAR::isError($result)){
+	$content = $result->getMessage() . "<hr />";
+	$content .= User_form::groupForm($group);
+      } else {
+	$result = $group->save();
+	if (PEAR::isError($result)){
+	  PHPWS_Error::log($result);
+	  $content .= _("An error occurred when trying to save the group.") . "<hr />";
+	} else
+	  $content .= _("Group created.") . "<hr />";
+	$group = & new PHPWS_Group($id);
+	$content .= User_form::groupForm($group);
       }
       break;
 
@@ -223,6 +255,20 @@ class User_Action {
       return TRUE;
   }
 
+  function postGroup(&$group, $showLikeGroups=FALSE){
+    $result = $group->setName($_POST['groupname'], TRUE);
+    if (PEAR::isError($result))
+      return $result;
+
+    return TRUE;
+  }
+
+  function postMembers(){
+    if (isset($_POST['member_join'])){
+      foreach($_POST['member_join'] as $id => $nullit);
+      $group->addMember($id);
+    }
+  }
 
   function badLogin(){
     Layout::add("Unable to find your account. Please try again.", "User_Main");

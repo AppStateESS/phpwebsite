@@ -204,6 +204,123 @@ class User_Form {
     return implode("<br />", $content);
   }
 
+  function groupForm(&$group){
+    translate("users");
+
+    $form = & new PHPWS_Form("groupForm");
+    $members = $group->getMembers();
+
+    if ($group->getId() > 0){
+      $form->add("groupId", "hidden", $group->getId());
+      $form->add("submit", "submit", _("Update Group"));
+    } else
+      $form->add("submit", "submit", _("Add Group"));
+
+    $form->add("module", "hidden", "users");
+    $form->add("action[admin]", "hidden", "postGroup");
+
+    $form->add("groupname", "textfield", $group->getName());
+
+    $template = $form->getTemplate();
+    $template['GROUPNAME_LBL'] = _("Group Name");
+
+    $content = PHPWS_Template::process($template, "users", "forms/groupForm.tpl");
+    return $content;
+  }
+
+  function memberForm(){
+    $form->add("add_member", "textfield");
+    $form->add("new_member_submit", "submit", _("Search"));
+    
+    $template['CURRENT_MEMBERS'] = User_Form::memberListForm($group);
+    $template['ADD_MEMBER_LBL'] = _("Add Member");
+    $template['CURRENT_MEMBERS_LBL'] = _("Current Members");
+
+    if (isset($_POST['new_member_submit']) && !empty($_POST["add_member"])){
+      $result = User_Form::getLikeGroups($_POST['add_member'], $group);
+      if (isset($result)) {
+	$template['LIKE_GROUPS'] = $result;
+	$template['LIKE_INSTRUCTION'] = _("Members found.");
+      } else
+	$template['LIKE_INSTRUCTION'] = _("No matches found.");
+    }
+
+  }
+
+  function memberListForm($group){
+    $members = $group->getMembers();
+    if (!isset($members))
+      return _("None found");
+
+    $db = & new PHPWS_DB("users_groups");
+    foreach ($members as $id)
+      $db->addWhere("id", $id);
+    $db->addOrder("name");
+
+    $result = $db->loadObjects("PHPWS_Group", "id");
+
+    $tpl = & new PHPWS_Template("users");
+    $tpl->setFile("forms/memberlist.tpl");
+    $count = 0;
+    $form = new PHPWS_Form;
+
+    foreach ($result as $group){
+      $form->add("member_drop[" . $group->getId() . "]", "submit", _("Drop"));
+      $dropbutton = $form->get("member_drop[" . $group->getId() ."]");
+      $count++;
+      $tpl->setCurrentBlock("row");
+      $tpl->setData(array("NAME"=>$group->getName(), "DROP"=>$dropbutton));
+      if ($count%2)
+	$tpl->setData(array("STYLE" => "class=\"bg-light\""));
+      $tpl->parseCurrentBlock();
+    }
+
+    return $tpl->get();
+
+  }
+
+
+  function getLikeGroups($name, &$group){
+    $db = & new PHPWS_DB("users_groups");
+    $name = preg_replace("/[^\w]/", "", $name);
+    $db->addWhere("name", "%$name%", "LIKE");
+
+    if (!is_null($group->getName()))
+      $db->addWhere("name", $group->getName(), "!=");
+
+    $members = $group->getMembers();
+    if (isset($members)){
+      foreach ($members as $id)
+	$db->addWhere("id", $id, "!=");
+    }
+
+    $result = $db->loadObjects("PHPWS_Group", "id");
+
+    if (PEAR::isError($result)){
+      PHPWS_Error::log($result);
+      return NULL;
+    } elseif (!isset($result))
+	return NULL;
+
+    $tpl = & new PHPWS_Template("users");
+    $tpl->setFile("forms/likeGroups.tpl");
+    $count = 0;
+    $form = new PHPWS_Form;
+
+    foreach ($result as $group){
+      $form->add("member_join[" . $group->getId() . "]", "submit", _("Add"));
+      $addbutton = $form->get("member_join[" . $group->getId() ."]");
+      $count++;
+      $tpl->setCurrentBlock("row");
+      $tpl->setData(array("NAME"=>$group->getName(), "ADD"=>$addbutton));
+      if ($count%2)
+	$tpl->setData(array("STYLE" => "class=\"bg-light\""));
+      $tpl->parseCurrentBlock();
+    }
+
+    $content = $tpl->get();
+    return $content;
+  }
 }
 
 ?>
