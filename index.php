@@ -24,7 +24,7 @@ if (ini_get('register_globals')){
 }
 
 /* Initialize core defines */
-require_once PHPWS_SOURCE_DIR . "class/Init.php";
+require_once PHPWS_SOURCE_DIR . "core/class/Init.php";
 
 PHPWS_Core::initializeModules();
 
