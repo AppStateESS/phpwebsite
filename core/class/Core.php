@@ -66,10 +66,6 @@ class PHPWS_Core {
   }
 
   function runtimeModules(){
-    if (isset($GLOBALS['pre094_modules'])){
-      PHPWS_Crutch::startSessions();
-    }
-
     if (!isset($GLOBALS['Modules'])){
       PHPWS_Error::log(PHPWS_NO_MODULES, "core", "runtimeModules");
       PHPWS_Core::errorPage();
@@ -81,6 +77,9 @@ class PHPWS_Core {
       is_file($runtimeFile) ? include_once $runtimeFile : NULL;
     }
 
+    if (isset($GLOBALS['pre094_modules'])){
+      PHPWS_Crutch::startSessions();
+    }
   }
 
 
