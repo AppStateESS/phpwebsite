@@ -1,13 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+{XML}{XML_STYLE}{DOCTYPE}{XHTML}
 <head>
 <title>{TITLE}</title>
 {STYLE}
 </head>
-<body class="help-window">
-<div id="help">
-<div class="box-title">{TITLE}</div>
-<div class="box-content">{CONTENT}</div>
-</div>
+<body>
+<h1>{TITLE}</h1>
+<p>{CONTENT}</p>
 </body>
 </html>
