@@ -355,9 +355,12 @@ class Version {
     return Users_Permission::giveItemPermission($this->getCreator(), $module, $this->source_id, $itemname);
   }
 
-  function flush($item_id, $table){
-    $version = & new Version($table, $item_id);
-    $version->kill();
+  function flush($table, $item_id)
+  {
+    $version = & new Version($table);
+    $db = & new PHPWS_DB($version->version_table);
+    $db->addWhere('source_id', (int)$item_id);
+    return $db->delete();
   }
 
   function kill(){
