@@ -5,6 +5,12 @@ if (!isset($_REQUEST['action'])){
   return;
 }
 
+if (!class_exists("PHPWS_User")){
+     PHPWS_Error::log("PHPWS_CLASS_NOT_CONSTRUCTED", "core", NULL, "<b>Class:</b> PHPWS_Users");
+     return;
+}
+
+PHPWS_Core::initModClass("users", "User_Functions.php");
 foreach ($_REQUEST['action'] as $area=>$command);
 
 switch ($area){
@@ -12,8 +18,9 @@ switch ($area){
    switch ($command){
    case "loginBox":
      if (!PHPWS_Core::isLastPost())
-       if (!PHPWS_User::loginUser($_POST['block_username'], $_POST['block_password']))
-	 echo "not logged in";
+       if (!User_Functions::loginUser($_POST['block_username'], $_POST['block_password']))
+	 User_Functions::badLogin();
+
 
      break;
 
