@@ -4,7 +4,7 @@
 class PHPWS_Layout_Init{
 
   function loadSettings(){
-    $DB = new PHPWS_DB("mod_layout_config");
+    $DB = new PHPWS_DB("layout_config");
     $settings = $DB->select("row");
 
     //if (isset($user_cookie_theme))
@@ -15,7 +15,7 @@ class PHPWS_Layout_Init{
   }
 
   function loadContentVar(){
-    $DB = new PHPWS_DB("mod_layout_box");
+    $DB = new PHPWS_DB("layout_box");
     $DB->addWhere("theme", PHPWS_Layout::getTheme());
     $DB->addColumn("content_var", TRUE);
     $result = $DB->select("col");
@@ -41,7 +41,7 @@ class PHPWS_Layout_Init{
 
   function loadBoxes(){
     $theme = PHPWS_Layout::getTheme();
-    $DB = new PHPWS_DB("mod_layout_box");
+    $DB = new PHPWS_DB("layout_box");
     $DB->addWhere("theme", $theme);
     if(!$boxes = $DB->select())
       return NULL;
@@ -66,7 +66,7 @@ class PHPWS_Layout_Init{
 
 
   function initTheme(){
-    $DB = new PHPWS_DB("mod_layout_box");
+    $DB = new PHPWS_DB("layout_box");
   }
 
 }

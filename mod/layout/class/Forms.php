@@ -9,7 +9,7 @@ class PHPWS_Layout_Forms extends PHPWS_Layout_Box {
 
   function panel(){
     $form = new EZform;
-    list($settings) = $GLOBALS["core"]->sqlSelect("mod_layout_config");
+    list($settings) = $GLOBALS["core"]->sqlSelect("layout_config");
     $theme_names = $this->get_themes();
 
     $form->add("theme_select", "select", $theme_names);
@@ -167,7 +167,7 @@ class PHPWS_Layout_Forms extends PHPWS_Layout_Box {
     }
 
     if (isset($_POST['update_user'])){
-      if ($GLOBALS['core']->sqlUpdate(array('userAllow'=>(int)$_POST['userAllow']), "mod_layout_config")){
+      if ($GLOBALS['core']->sqlUpdate(array('userAllow'=>(int)$_POST['userAllow']), "layout_config")){
 	$this->userAllow = (int)$_POST['userAllow'];
 	$GLOBALS["CNT_layout"]["content"] = "<b>" . $_SESSION["translate"]->it("User option updated") . ".</b><hr />";
       }
@@ -177,7 +177,7 @@ class PHPWS_Layout_Forms extends PHPWS_Layout_Box {
 
   function purgeBoxes(){
     $themes = $this->get_themes();
-    $allBoxes = $GLOBALS['core']->sqlSelect("mod_layout_box");
+    $allBoxes = $GLOBALS['core']->sqlSelect("layout_box");
     $check = array();
     $missing = array();
 
@@ -195,7 +195,7 @@ class PHPWS_Layout_Forms extends PHPWS_Layout_Box {
     if (count($missing)){
       $content = "<b>" . $_SESSION["translate"]->it("Removed all boxes from missing theme(s)") . ":</b><br />";
       foreach ($missing as $killtheme){
-	$GLOBALS['core']->sqlDelete("mod_layout_box", "theme", $killtheme);
+	$GLOBALS['core']->sqlDelete("layout_box", "theme", $killtheme);
 	$content .= $killtheme . "<br />";
       }
     } else
@@ -355,7 +355,7 @@ class PHPWS_Layout_Forms extends PHPWS_Layout_Box {
 
     }
 
-    $GLOBALS["core"]->sqlUpdate($update, "mod_layout_config");
+    $GLOBALS["core"]->sqlUpdate($update, "layout_config");
 
   }
 
