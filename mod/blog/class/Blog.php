@@ -68,6 +68,7 @@ class Blog {
 
   function view($edit=TRUE, $limited=TRUE)
   {
+    PHPWS_Core::initModClass("categories", "Categories.php");
     $template['TITLE'] = $this->getTitle(TRUE);
     $template['ENTRY'] = $this->getEntry(TRUE);
 
@@ -80,6 +81,8 @@ class Blog {
 
     if ($limited) {
       $links[] = PHPWS_Text::rerouteLink(_("View"), "blog", "view", $this->getId());
+    } else {
+      Categories::showCategoryLinks("blog", $this->id);
     }
 
     if (isset($links)) {
