@@ -168,4 +168,9 @@ define("PHPWS_FORM_INVALID_MATCH",    -313);
 
 define("PHPWS_FORM_ERROR_FILE_POST",  -320);
 
+
+/*************** Item.php *****************/
+define("PHPWS_ITEM_ID_TABLE",           -400);
+define("PHPWS_ITEM_NO_RESULT",          -401);
+
 ?>

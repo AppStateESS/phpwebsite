@@ -37,4 +37,8 @@ $errors[PHPWS_FORM_HEIGHT_TOO_BIG]   = _("Submitted image height was larger than
 $errors[PHPWS_FORM_UNKNOWN_TYPE]     = _("Unrecognized form type.");
 $errors[PHPWS_FORM_INVALID_MATCH]    = _("Match for must be an array for a multiple input.");
 
+
+// Item.php 400 - 499
+$errors[PHPWS_ITEM_ID_TABLE]         = _("Id and table not set.");
+$errors[PHPWS_ITEM_NO_RESULT]        = _("No result returned from database.");
 ?>
