@@ -74,7 +74,7 @@ class Group_List{
   function getlistactions(){
     $startLink = "<a href=\"index.php?module=users&amp;group=" . $this->groupList['id'] . "&amp;action[admin]=";
     $links[] = $startLink . "editGroup\">" . _("Edit") . "</a>";
-    $links[] = $startLink . "editGroupPermissions\">" . _("Permissions") . "</a>";
+    $links[] = $startLink . "setGroupPermissions\">" . _("Permissions") . "</a>";
     $links[] = $startLink . "deleteGroup\">" . _("Delete") . "</a>";
     return implode("&nbsp;|&nbsp;", $links);
   }

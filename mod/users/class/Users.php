@@ -221,6 +221,8 @@ class PHPWS_User extends PHPWS_Item {
 
     if ($newUser)
       return $this->createGroup();
+    else
+      return $this->updateGroup();
 
     return TRUE;
 
@@ -239,6 +241,33 @@ class PHPWS_User extends PHPWS_Item {
     } else
       return TRUE;
   }
+
+  function updateGroup(){
+    $db = & new PHPWS_DB("users_groups");
+    $db->addWhere("user_id", $this->getId());
+    $db->addColumn("id");
+    $result = $db->select("one");
+
+    if (PEAR::isError($result)){
+      PHPWS_Error::log($result);
+
+      return PHPWS_Error::get(USER_ERROR, "users", "updateGroup");
+    }
+
+    $group = new PHPWS_Group($result);
+
+    $group->setName($this->getUsername());
+    $group->setActive($this->isActive());
+
+    $result = $group->save();
+    if (PEAR::isError($result)){
+      PHPWS_Error::log($result);
+      $this->kill();
+      return PHPWS_Error::get(USER_ERROR, "users", "updateGroup");
+    } else
+      return TRUE;
+  }
+
 
   function getUserGroup(){
     $db = & new PHPWS_DB("users_groups");

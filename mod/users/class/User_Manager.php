@@ -17,7 +17,6 @@ class User_Manager extends PHPWS_List{
     $listTags = array("USERNAME_LABEL"    => _("Username"),
 		      "LAST_LOGGED_LABEL" => _("Last Online"),
 		      "ACTIVE_LABEL"      => _("Status"),
-		      "DEITY_LABEL"       => _("Deity"),
 		      "ACTIONS_LABEL"     => _("Actions"),
 		      "SEARCH_LABEL"      => _("Search for User"),
 		      "SEARCH"            => implode("", $search)
@@ -32,11 +31,9 @@ class User_Manager extends PHPWS_List{
     $columns = array("username"    => TRUE,
 		     "last_logged" => TRUE,
 		     "active"      => TRUE,
-		     "actions"     => FALSE
+		     "actions"     => FALSE,
+		     "deity"       => TRUE
 		     );
-
-    if ($_SESSION['User']->isDeity())
-      $columns["deity"] = TRUE;
 
     $this->setColumns($columns);
     $this->setName("user_manager");
@@ -54,7 +51,7 @@ class User_Manager extends PHPWS_List{
 }
 
 class User_List{
-  var $userList = NULl;
+  var $userList = NULL;
 
   function User_List($userList){
     $this->userList = $userList;
@@ -79,15 +76,6 @@ class User_List{
       return "<a href=\"index.php?module=users&amp;action[admin]=activate&amp;user=$id\">" . _("Disabled") . "</a>";
   }
 
-  function getlistdeity(){
-    $id = $this->userList['id'];
-    $link = "<a href=\"index.php?module=users&amp;user=$id";
-    if ($this->userList['deity'])
-      return $link . "&amp;action[admin]=mortalize\">" . _("Deity") . "</a>";
-    else
-      return $link . "&amp;action[admin]=deify\">" . _("Mortal") . "</a>";
-  }
-
   function getlistactions(){
     $startLink = "<a href=\"index.php?module=users&amp;user=" . $this->userList['id'] . "&amp;action[admin]=";
 
@@ -99,6 +87,13 @@ class User_List{
 
     if ($_SESSION['User']->allow("users", "delete_users"))
       $links[] = $startLink . "deleteUser\">" . _("Delete") . "</a>";
+
+    if ($_SESSION['User']->isDeity()){
+      if ($this->userList['deity'])
+	$links[] = $startLink . "mortalize\">" . _("Deity") . "</a>";
+      else
+	$links[] = $startLink . "deify\">" . _("Mortal") . "</a>";
+    }
 
     return implode("&nbsp;|&nbsp;", $links);
   }

@@ -206,12 +206,9 @@ class Users_Permission {
       }
     }
 
-    $db->insert();
-
+    return $db->insert();
   }
-  
 
 }
-
 
 ?>

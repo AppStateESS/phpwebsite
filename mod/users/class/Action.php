@@ -74,6 +74,19 @@ class User_Action {
       $content = User_Form::setPermissions($id, "user");
       break;
 
+
+    case "setGroupPermissions":
+      if (!$_SESSION['User']->allow("users", "edit_permissions")){
+	PHPWS_User::disallow();
+        return;
+      }
+
+      PHPWS_Core::initModClass("users", "Group.php");
+
+      $content = User_Form::setPermissions($_REQUEST['group'], "group");
+      break;
+
+
     case "new_group":
       PHPWS_Core::initModClass("users", "Group.php");
       $group = & new PHPWS_Group;
@@ -92,6 +105,13 @@ class User_Action {
       break;
 
       /** End Group Forms **/
+
+      /** Misc Forms **/
+    case "settings":
+      $content = User_Form::settings();
+      break;
+
+      /** End Misc Forms **/
 
       /** Action cases **/
     case "deify":
@@ -260,7 +280,7 @@ class User_Action {
 
     if ($update == "all"){
       foreach ($permission as $itemname => $status){
-	Users_Permission::setPermissions($group->getId(), $itemname, $status, $subperm[$itemname]);
+	Users_Permission::setPermissions($group->getId(), $itemname, $status, isset($subperm[$itemname]) ? $subperm[$itemname] : NULL);
       }
     } elseif (isset($subperm)) {
       if (isset($subperm[$update]))
@@ -268,7 +288,8 @@ class User_Action {
       else
 	$subpermission = NULL;
       Users_Permission::setPermissions($group->getId(), $update, $permission[$update], $subpermission);
-    }
+    } else
+      Users_Permission::setPermissions($group->getId(), $update, $permission[$update]);
 
     return TRUE;
   }
@@ -366,6 +387,22 @@ class User_Action {
 
   function badLogin(){
     Layout::add("Unable to find your account. Please try again.", "User_Main");
+  }
+
+  function getGroups($mode=NULL){
+    PHPWS_Core::initModClass("users", "Group.php");
+
+    $db = & new PHPWS_DB("users_groups");
+    if ($mode == "users")
+      $db->addWhere("user_id", 0, ">");
+    elseif ($mode == "group")
+      $db->addWhere("user_id", 0);
+
+    $db->addOrder("name");
+    $db->setIndexBy("id");
+    $db->addColumn("name");
+
+    return $db->select("col");
   }
 
 }

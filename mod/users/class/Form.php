@@ -63,6 +63,11 @@ class User_Form {
 
   function setPermissions($id, $type){
     $group = new PHPWS_Group($id, FALSE);
+    if (PEAR::isError($group)){
+      PHPWS_Error::log($group);
+      $content = _("A fatal error occurred. Please check your logs.");
+      return $content;
+    }
 
     $modules = PHPWS_Core::getModules();
 
@@ -85,6 +90,7 @@ class User_Form {
 
     $form->add("update_all", "submit", _("Update All"));
     $template = $form->getTemplate();
+    $template['TITLE'] = _print(_("Permissions for [var1]"), $group->getName());
     $tpl->setData($template);
 
     $content  = $tpl->get();
@@ -151,20 +157,22 @@ class User_Form {
   function adminPanel($content){
     PHPWS_Core::initModClass("controlpanel", "Panel.php");
 
-    $tabs["new_user"] = array("title"=>"New User", "link"=>"index.php?module=users&amp;action[admin]=main");
+    $tabs["new_user"] = array("title"=>_("New User"), "link"=>"index.php?module=users&amp;action[admin]=main");
 
-    if ($_SESSION['User']->allow("users", "edit_users"))
-      $tabs["manage_users"] = array("title"=>"Manage Users", "link"=>"index.php?module=users&amp;action[admin]=main");
+    if ($_SESSION['User']->allow("users", "edit_users") || $_SESSION['User']->allow("users", "delete_users"))
+      $tabs["manage_users"] = array("title"=>_("Manage Users"), "link"=>"index.php?module=users&amp;action[admin]=main");
 
 
     if ($_SESSION['User']->allow("users", "add_edit_groups")){
-      $tabs["new_group"] = array("title"=>"New Group", "link"=>"index.php?module=users&amp;action[admin]=main");
-      $tabs["manage_groups"] = array("title"=>"Manage Groups", "link"=>"index.php?module=users&amp;action[admin]=main");
+      $tabs["new_group"] = array("title"=>_("New Group"), "link"=>"index.php?module=users&amp;action[admin]=main");
+      $tabs["manage_groups"] = array("title"=>_("Manage Groups"), "link"=>"index.php?module=users&amp;action[admin]=main");
     }
 
     if ($_SESSION['User']->allow("users", "demographics"))
-      $tabs["demographics"] = array("title"=>"Demographics", "link"=>"index.php?module=users&amp;action[admin]=main");
+      $tabs["demographics"] = array("title"=>_("Demographics"), "link"=>"index.php?module=users&amp;action[admin]=main");
 
+    if ($_SESSION['User']->allow("users", "settings"))
+      $tabs["settings"] = array("title"=>_("Settings"), "link"=>"index.php?module=users&amp;action[admin]=main");
 
     $panel = & new PHPWS_Panel("users");
     $panel->quickSetTabs($tabs);
@@ -466,8 +474,8 @@ class User_Form {
     foreach ($members as $id)
       $db->addWhere("id", $id);
     $db->addOrder("name");
-
-    $result = $db->loadObjects("PHPWS_Group", "id");
+    $db->setIndexBy("id");
+    $result = $db->loadObjects("PHPWS_Group");
 
     $tpl = & new PHPWS_Template("users");
     $tpl->setFile("forms/memberlist.tpl");
@@ -503,8 +511,8 @@ class User_Form {
       foreach ($members as $id)
 	$db->addWhere("id", $id, "!=");
     }
-
-    $result = $db->loadObjects("PHPWS_Group", "id");
+    $db->setIndexBy("id");
+    $result = $db->loadObjects("PHPWS_Group");
 
     if (PEAR::isError($result)){
       PHPWS_Error::log($result);
@@ -532,6 +540,29 @@ class User_Form {
     $content = $tpl->get();
     return $content;
   }
+
+  function settings(){
+    $content = array();
+
+    $form = new PHPWS_Form("user_settings");
+    $form->add("module", "hidden", "users");
+    $form->add("action[admin]", "hidden", "update_settings");
+
+    $groups = User_Action::getGroups("group");
+
+
+    $template['DEFAULT_GROUP_LABEL'] = _("Default User Group");
+    if (isset($groups))
+      $form->add("default_group", "select", $groups);
+    else
+      $template['DEFAULT_GROUP'] = _("No groups created.");
+    
+    $form->mergeTemplate($template);
+    $template = $form->getTemplate();
+    return PHPWS_Template::process($template, "users", "forms/settings.tpl");
+  }
+
+
 }
 
 ?>
