@@ -70,27 +70,28 @@ class Blog {
 
     $db = & new PHPWS_DB("blog_entries");
 
-    if (isset($this->id))
+    if (isset($this->id)) {
       $db->addWhere("id", $this->id);
-
-    $this->date = mktime();
+    } else {
+      $this->date = mktime();
+    }
 
     if (Current_User::isRestricted("blog")) {
-      $result = Version::saveUnapproved("blog", "blog_entries", $this);
+      $result = Version::saveUnapproved("blog_entries", $this);
     }
     else {
       if ($isVersion == TRUE) {
 	if ($approve == TRUE) {
 	  $db->saveObject($this);
-	  $result = Version::saveApproved("blog", "blog_entries", $this);
+	  $result = Version::saveApproved("blog_entries", $this);
 	} else {
-	  $result = Version::saveUnapproved("blog", "blog_entries", $this);
+	  $result = Version::saveUnapproved("blog_entries", $this);
 	}
       } else {
 	$result = $db->saveObject($this);
 	if (PEAR::isError($result))
 	  return $result;
-	$result = Version::saveVersion("blog", "blog_entries", $this);
+	$result = Version::saveVersion("blog_entries", $this);
 	test($result);
       }
     }
