@@ -1,7 +1,7 @@
 Writing Modules for phpWebSite
 
 PhpWebSite has come a long way since it was a phpNuke fork. In 0.8.x
-it became moduler. With 0.9.x it was rewritten from the ground up and
+it became modular. With 0.9.x it was rewritten from the ground up and
 to become more of a platform for web programs.
 
 Now that we approach the release of 0.9.4, phpWebSite is going through
@@ -70,7 +70,7 @@ templates/
 Contains your template files. These will be copied to
 templates/mod/links/ on install.
 
-Next we need to make the installation files. Remember I said earlir
+Next we need to make the installation files. Remember I said earlier
 that 99.9% of the time you needed to make a boost directory? You can
 create a simple module that doesn't require installation and therefore
 doesn't need most of the above directories.
@@ -112,7 +112,7 @@ We on the other hand are going to make an installable module. So we
 will be using Boost, the installation module in phpWebSite.
 
 To get started, we need to give boost some basic information about our
-module. This information will go into a file appropiately named
+module. This information will go into a file appropriately named
 'boost.php'. It will be placed into the conf/ directory. In fact, any
 time another module needs information about your module, it expects a
 file to be in your conf directory. For example, the control panel
@@ -254,7 +254,7 @@ created INT NOT NULL ,
 PRIMARY KEY ( id )
 );
 
-This was a MySQL export. Notice that it does not contain any backticks
+This was a MySQL export. Notice that it does not contain any back-ticks
 (`). This is something specific to MySQL. It will confuse other
 databases, so don't use it. Also notice that we did not use
 TINYINT. They are MySQL specific. We also did not put integer lengths
@@ -329,7 +329,7 @@ Now we just save that file in the conf/ directory. You can also add
 tabs to Control Panel, but you will need to read its documentation.
 
 Back to Control Panel's register function. It uses the 'module'
-parameter to check for the existance of the file we just made. If it
+parameter to check for the existence of the file we just made. If it
 sees it, it includes it and then inserts the various tabs and links
 into the database. Meanwhile it reports its status by adding lines of
 text to the 'content' array. If it was successful, it returns TRUE and
