@@ -1,13 +1,12 @@
-<h1>{SIGNUP_LABEL}</h1>
 {START_FORM}
 <table class="form-table">
   <tr>
     <td>{USERNAME_LABEL}
-    <!-- START username-error -->
-    <div class="error">{USERNAME_ERROR}</div>
-    <!-- END username-error -->
     </td>
     <td>{USERNAME}
+    <!-- BEGIN username-error -->
+    <div class="error">{USERNAME_ERROR}</div>
+    <!-- END username-error -->
     </td>
   </tr>
   <tr>
@@ -15,14 +14,26 @@
     </td>
     <td>{PASSWORD1} {PASSWORD2_LABEL} {PASSWORD2}
     <!-- BEGIN password-error -->
-    {PASSWORD_ERROR}
+    <div class="error">{PASSWORD_ERROR}</div>
     <!-- END password-error -->
+    </td>
+  </tr>
+  <tr>
+    <td>{EMAIL_LABEL}
+    </td>
+    <td>{EMAIL}
+    <!-- BEGIN email-error -->
+    <div class="error">{EMAIL_ERROR}</div>
+    <!-- END email-error -->
     </td>
   </tr>
   <tr>
     <td>{CONFIRM_GRAPHIC_LABEL}
     </td>
     <td>{GRAPHIC}<br />{CONFIRM_GRAPHIC} {CONFIRM_INSTRUCTIONS}
+    <!-- BEGIN graphic-error -->
+    <div class="error">{CONFIRM_ERROR}</div>
+    <!-- END graphic-error -->
     </td>
   </tr>
 </table>
