@@ -277,8 +277,6 @@ class Layout {
 
     $finalTheme = &Layout::loadTheme($theme, $finalLayout);
 
-
-
     if (PEAR::isError($finalTheme))
       $finalContent = implode("", $finalLayout);
     else
@@ -287,15 +285,15 @@ class Layout {
     Layout::wrap($theme, $finalContent);
   }
 
+
   function wrap($theme, $finalContent){
     $template['TEST_JS'] = Layout::getJavascript("test");
 
     if (isset($GLOBALS['Layout_JS'])){
       foreach ($GLOBALS['Layout_JS'] as $script=>$javascript)
 	$jsHead[] = $javascript['head'];
-
-      if (isset($jsHead))
-	$template['JAVASCRIPT'] = implode("\n", $jsHead);
+      
+      $template['JAVASCRIPT'] = implode("\n", $jsHead);
     }
 
     if (isset($GLOBALS['Style']))
@@ -429,6 +427,10 @@ class Layout {
 	return file_get_contents($bodyfile);
     }
 
+  }
+
+  function addJavascript($script){
+    $GLOBALS['Layout_JS'][]['head'] = $script;
   }
 
   function addBox($content_var, $module, $theme_var=NULL, $template=NULL, $theme=NULL){
