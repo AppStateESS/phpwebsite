@@ -229,7 +229,7 @@ a column name. The database won't like it.
 
 keywords - words that we want associated with the link for searching
 
-href - the actual link address itself
+url - the actual link address itself
 
 secure - whether the link is a secure link or not
 
@@ -249,10 +249,11 @@ id INT NOT NULL ,
 title VARCHAR( 255 ) NOT NULL ,
 description TEXT NOT NULL ,
 keywords TEXT NOT NULL ,
-href VARCHAR( 255 ) NOT NULL ,
+url VARCHAR( 255 ) NOT NULL ,
 secure SMALLINT NOT NULL ,
 user_id INT NOT NULL ,
 active SMALLINT NOT NULL ,
+approved SMALLINT NOT NULL ,
 hits INT NOT NULL ,
 created INT NOT NULL ,
 PRIMARY KEY ( id )
@@ -763,16 +764,175 @@ comments will be echoed.
 
 Creating the Form Object
 
-PhpWebSite comes with a form class.
+PhpWebSite comes with a form class. Although you could type out all
+your input tags, the Form class can simplify the process.
+
+Look at the edit() function. Near the top we create our form object:
+
+$form = & new PHPWS_Form('edit_form');
+
+Next, I am going to create some hidden variables. To add form
+elements, you just use the add() function:
+
+$form->add("module", "hidden", "links");
+$form->add("action", "hidden", "admin");
+$form->add("subaction", "hidden", "postLink");
 
 
+The first variable is the name of the form element. The second
+paramter is the type (hidden, textfield, radio button, check box,
+etc.). The final parameter is the value of the element.
 
+The above are our routing variables. The first hidden variable tells
+phpwebsite what module to use. The second and third hidden variables
+guide our links module. This will cause links to send information to
+the admin() function. The admin function will then compare the
+subaction to the switch statement. More on that later.
+
+We want the edit function to have a dual purpose. It should allow for
+both the creation and updating of links. As such I am going to add the
+following:
+
+$link_id = $link->getId();
+
+if (isset($link_id)){
+  $form->add("link_id", "hidden", $id);
+  $form->add("submit", "submit", _("Update Link"));
+  $template['PAGE_TITLE'] = _("Update Link");
+} else {
+  $form->add("submit", "submit", _("Add Link"));
+  $template['PAGE_TITLE'] = _("Add Link");
+}
+
+If the link object has an id, it is obviously not new. Therefore we
+set the form to update. Besides adding the correct terminology to our
+title and submit button, we add the link's id to a hidden
+variable. Remember in our admin function we catch this variable to
+recreate our link object? You'll see how this comes in handy later.
+
+Now let add our first form element that requires interaction. We need
+a text field for the title of the link.		     
 
 Accessing the Database
 A special database class was written for phpWebSite. Once you know how
 it works, it can make database queries much easier. If you want to
 know more about how it works, look up the Database class documentation
 in this directory.
+
+$form->add("title", "textfield", $link->getTitle());
+
+I am using the $link object to fill in the text field value. Since our
+link object is new, the title is NULL. Therefore, the textfield is
+going to be empty. However, if we are editing a link or we have to
+return to this function after an error, the user submitted title will
+fill in the text field.
+
+The user is going to need to know what to type here. A blank textfield
+without a labeled purpose will perplex our user. So I am going to
+create a label.
+
+$template['TITLE_LBL'] = _("Title");
+
+This will put the word "Title" in my template which I will eventually
+merge with my form. You may ask "Why not just label the title in my
+template?" You can do that, however that ends up restricting the
+language options of your module.
+
+Translating your Module
+
+You probably have noticed the _() function calls here and there. These
+calls are shorthand for the gettext function.
+
+Gettext is a php function that facilitates the translation of
+phpWebSite. Everytime you wrap a phrase in _(), it will targeted
+during the creation of your translation files. These are called po
+files. They contain the original phrase and then the translation of
+that phrase. So when I use _("Hello") in a script, it will appear as
+"Hola", "Bonjour", "Hallo", "Ciao", or others depending on the
+language of the viewer. You may also use gettext("translate this") if
+you prefer, but _() is acceptable.
+
+So, although this may make your module's templates more "taggy", the
+increase the usability of your module. If you believe that your module
+will only be used by specific people, then you can avoid using it. Be
+warned though it is tedious to put these in later.
+
+Back to our Form
+
+Now would be a good time to test what we have so far. I need to create
+a template for this form. I am going to create a file named 'edit.tpl'
+and save it in templates/forms/. Take a look at that file now.
+
+There are two important tags for forms: {START_FORM} and
+{END_FORM}. They indicate the start and end of our form. All of our
+form tags will go between them. So far we just have two form tags and
+one template tag. Your form tags will be the same as the form
+element's name. So the title textfield's tag is {TITLE}. The submit
+button is {SUBMIT}. I also need a tag for the title label:
+{TITLE_LBL}. Now I just put each of these tags in my template. I am
+going to use a table because I like my labels to line up with the form
+elements.
+
+<div class="page-title">{PAGE_TITLE}</div>
+{START_FORM}
+<table width="100%" cellpadding="4" cellspacing="4">
+  <tr>
+    <td><b>{TITLE_LBL}:</b></td>
+    <td>{TITLE}</td>
+  </tr>
+</table>
+{SUBMIT}
+{END_FORM}
+
+The file you are viewing is obviously much larger now, but we just
+want to test to make sure all is well.
+
+Now I want to get these form elements out of the form object. Before I
+do however I want to merge my $template variable with the one the form
+object will produce. To do so I run:
+
+$form->mergeTemplate($template);
+
+Now to get my final template:
+
+$final_template = $form->getTemplate();
+
+The last step is to process the template and  return the content back
+to the admin function.
+
+return PHPWS_Template::process($final_template, "links", "forms/edit.tpl");
+
+When I refresh the page, my form appears. I know I am in good shape to
+continue.
+
+Now I go through and add the rest of the form elements I will need for
+the link. As I add them, I update my template with the new
+information, tweaking as I go. Instead of adding a normal textarea, I
+decided to use a javascript tool called HyperTextArea.
+
+First, I need to check to see if the user is using javascript. You
+should stay away from making mission critical process javascript
+only. Try to allow for a backup mechanism. Here is the code for the
+description text area:
+
+if (JAVASCRIPT_ON){
+  $values['NAME'] = "edit_form";
+  $values['VALUE'] = $link->getDescription();
+  $template['DESCRIPTION'] = Layout::getJavascript("hypertext", $values);
+} else {
+  $form->add("description", "textarea", $link->getDescription());
+  $form->setWidth("description", "80%");
+}
+
+If javascript is enabled, I load the hypertext javascript. The values
+(NAME and VALUE) fill in specific tags in the javascript. You should
+be able to find out what values a script accepts by viewing the README
+file in the javascript directory.
+
+If javascript is not available, I just create a simple form text area.
+
+Now that the form is ready, I need to write the code to catch the
+results.
 
 
 
