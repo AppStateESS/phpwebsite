@@ -39,4 +39,5 @@ define("LAYOUT_SESSION_NOT_SET",    -1);
 define("LAYOUT_NO_CONTENT",         -2);
 define("LAYOUT_NO_THEME",           -3);
 define("LAYOUT_BAD_JS_DATA",        -4);
+define("LAYOUT_JS_FILE_NOT_FOUND",  -5);
 ?>
