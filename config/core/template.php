@@ -37,6 +37,8 @@ define("RETURN_BLANK_TEMPLATES", TRUE);
 /**
  * If you want template to prefix the templates it is using with an
  * information tag, set the below to TRUE.
+ * DO NOT leave this set to TRUE or use this on a live server
+ * as it reveals your installation path.
  */
 
 define("LABEL_TEMPLATES", FALSE);
