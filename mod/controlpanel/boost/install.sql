@@ -3,6 +3,7 @@ CREATE TABLE controlpanel_link (
  id INT NOT NULL PRIMARY KEY,
  tab CHAR(255) NOT NULL,
  active SMALLINT NOT NULL,
+ label CHAR(50) NULL,	
  itemname CHAR(50) NOT NULL,
  restricted SMALLINT NOT NULL,
  url TEXT,
