@@ -195,6 +195,8 @@ class PHPWS_DB {
 
     if (!isset($operator))
       $operator = "=";
+    elseif (!PHPWS_DB::checkOperator($operator))
+      return PHPWS_Error::get(PHPWS_DB_BAD_OP, "core", "PHPWS_DB::addWhere", _("DB Operator:") . $operator);
 
     if (!isset($conj))
       $conj = "AND";
@@ -203,6 +205,21 @@ class PHPWS_DB {
       $this->_where[$group]['values'][] = array('column'=>$column, 'value'=>$value, 'operator'=>$operator, 'conj'=>$conj);
     else
       $this->_where[0]['values'][] = array('column'=>$column, 'value'=>$value, 'operator'=>$operator, 'conj'=>$conj);
+  }
+
+  function checkOperator($operator){
+    $allowed = array('>',
+		     '>=',
+		     '<',
+		     '<=',
+		     '=',
+		     '!=',
+		     '<>',
+		     '<=>',
+		     'like',
+		     'regexp');
+
+    return in_array(strtolower($operator), $allowed);
   }
 
   function setQWhere($where){
@@ -625,22 +642,6 @@ class PHPWS_DB {
   }
 
 
-  function parseValue($value=NULL) {
-    if (is_array($value) || is_object($value))
-      return PHPWS_DB::dbReady(serialize($value));
-    elseif (is_string($value)){
-      if (PHPWS_Text::checkUnslashed($value)){
-	$value = PHPWS_Text::stripSlashQuotes($value);
-	$value = addslashes($value);
-      }
-      return "'$value'";
-    }
-    elseif (is_null($value))
-      return "NULL";
-    else
-      return $value;
-  }
-
   function getDBType(){
     return $GLOBALS['PEAR_DB']->phptype;
   }
@@ -813,13 +814,8 @@ class PHPWS_DB {
   function dbReady($value=NULL) {
     if (is_array($value) || is_object($value))
       return PHPWS_DB::dbReady(serialize($value));
-    elseif (is_string($value)){
-      if (PHPWS_Text::checkUnslashed($value)){
-	$value = PHPWS_Text::stripSlashQuotes($value);
-	$value = addslashes($value);
-      }
-      return "'$value'";
-    }
+    elseif (is_string($value))
+      return "'" . $GLOBALS['PEAR_DB']->escapeSimple($value) . "'";
     elseif (is_null($value))
       return "NULL";
     elseif (is_bool($value))
