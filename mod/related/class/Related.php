@@ -267,19 +267,24 @@ class Related {
 
     switch ($mode){
     case "create":
-      $content['CONTENT'] = Related_Action::create($this);
+      $body = Related_Action::create($this);
       break;
 
     case "edit":
-      $content['CONTENT'] = Related_Action::edit($this);
+      $body = Related_Action::edit($this);
       break;
 
     case "view":
-      $content['CONTENT'] = Related_Action::view($this);
+      $body = Related_Action::view($this);
       break;
     }
 
-    Layout::add($content, "related", "bank");
+    if (!empty($body)) {
+      $content['CONTENT'] = &$body;
+      Layout::add($content, "related", "bank");
+    }
+
+    return TRUE;
   }
 
   function save(){
