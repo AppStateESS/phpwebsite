@@ -31,6 +31,7 @@ class PHPWS_Core {
 	PHPWS_Core::initCoreClass("Crutch.php");
 	PHPWS_Crutch::initializeModule($mod['title']);
 	$GLOBALS['pre094_modules'][] = $mod['title'];
+	$GLOBALS['Modules'][$mod['title']] = $mod;
       }
 
       /* Using include instead of require to prevent broken mods from hosing the site */
@@ -75,13 +76,15 @@ class PHPWS_Core {
     }
 
     foreach ($GLOBALS['Modules'] as $title=>$mod){
+      if (isset($GLOBALS['pre094_modules']) && 
+	  !isset($GLOBALS['Crutch_Session_Started']) && 
+	  in_array($title, $GLOBALS['pre094_modules']))
+	PHPWS_Crutch::startSessions();
+	
       PHPWS_Core::setCurrentModule($title);
       $runtimeFile = PHPWS_SOURCE_DIR . "mod/" . $mod['title'] . "/inc/runtime.php";
       is_file($runtimeFile) ? include_once $runtimeFile : NULL;
     }
-
-    if (isset($GLOBALS['pre094_modules']))
-      PHPWS_Crutch::startSessions();
   }
 
 
