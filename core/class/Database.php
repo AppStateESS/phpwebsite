@@ -67,7 +67,8 @@ class PHPWS_DB {
     return $GLOBALS['PEAR_DB']->query($sql);
   }
 
-  function isTableColumn($columnName){
+
+  function getTableColumns(){
     $table = & $this->getTable();
     if (!isset($table))
       return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, "core", "PHPWS_DB::isTableColumn");
@@ -77,10 +78,18 @@ class PHPWS_DB {
       return $columns;
 
     foreach ($columns as $colInfo)
-      if (ereg($colInfo['name'], $columnName) !== FALSE)
-	return TRUE;
+      $allColumns[] = $colInfo['name'];
 
-    return FALSE;
+    return $allColumns;
+  }
+
+  function isTableColumn($columnName){
+    $columns = $this->getTableColumns();
+
+    if (PEAR::isError($columns))
+      return $columns;
+
+    return in_array($columnName, $columns);
   }
 
   function setMode($mode){
