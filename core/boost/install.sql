@@ -5,6 +5,7 @@ CREATE TABLE modules (
 	active SMALLINT NOT NULL, 
 	version CHAR(20) NOT NULL, 
 	register SMALLINT NOT NULL,
+	unregister SMALLINT NOT NULL,
 	pre94 SMALLINT NOT NULL
 	);
 
