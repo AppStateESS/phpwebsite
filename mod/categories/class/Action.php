@@ -84,11 +84,13 @@ class Categories_Action{
     $action = & $_REQUEST['action'];
     switch ($action) {
     case 'view':
-      if (isset($_REQUEST['id']))
+      if (isset($_REQUEST['id'])) {
 	$id = &$_REQUEST['id'];
+      }
 
-      if (isset($_REQUEST['ref_mod']))
+      if (isset($_REQUEST['ref_mod'])) {
 	$mod = $_REQUEST['ref_mod'];
+      }
 
       $content = Categories_Action::viewCategory($id, $mod);
       break;
@@ -296,9 +298,9 @@ class Categories_Action{
   function viewCategory($id=NULL, $module=NULL) {
     $category = NULL;
 
-    if (empty($id)) {
+    if (!isset($id)) {
       $content = Categories::getCategoryList($module);
-      $template['TITLE'] = _('All Catergories');
+      $template['TITLE'] = _('All Categories');
     } else {
       $category = & new Category((int)$id);
       
