@@ -1,6 +1,9 @@
 <?php
 
 class PHPWS_Error {
+  function isError($item){
+    return PEAR::isError($item);
+  }
 
   function &get($value, $module, $funcName=NULL, $extraInfo=NULL){
     $errorFile = PHPWS_Core::getConfigFile($module, "error.php");
