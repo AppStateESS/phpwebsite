@@ -7,31 +7,28 @@ body {
 	background-color : #DFE3BA;
 }
 
+#gutter {
+	float : left;
+	width : 3%;
+}
 
 #container {
-	width: 80%;
+	width: 90%;
 	background-color: #ADB583;
 	border: 5px solid #FFF;
 	margin : 10px auto;
 	padding: 10px;
 }
 
+#sidepanel {
+	float : left;
+	width : 17%;
+}
+
 #content {
-	padding: 5px;
-	margin-left: 180px;
-}
-
-#sidebar {
-	float: left;
-	width: 147px;
-	margin: 0;
-	margin-right: 5px;
-	padding: 3px;
-}
-
-// IE hack
-#container > #sidebar {
-	width : 150px;
+	float : left;
+	margin-left: 3%;
+	width : 74%
 }
 
 #footer {
@@ -55,7 +52,7 @@ a:hover, a:active {
 
 h1, h2, h3 {
 	color: #A03E19;
-	font-family: "Trebuchet MS", Verdana;	
+	font-family: "Trebuchet MS", Verdana, serif;	
 	margin: 0;
 	text-transform: lowercase;
 	font-weight : bold;
@@ -86,7 +83,7 @@ h3 {
 
 th {
 	font-weight : bold;
-	font-family : "Trebuchet MS", Verdana;
+	font-family : "Trebuchet MS", Verdana, serif;
 	color: #A03E19;
 	text-align : left;
 	background-color : #DFE3BA;
