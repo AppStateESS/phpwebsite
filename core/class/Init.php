@@ -5,8 +5,8 @@ if (!defined("PHPWS_SOURCE_DIR"))
 /* Initialize language settings */
 if (!function_exists("bindtextdomain")){
   define("PHPWS_TRANSLATION", FALSE);
-  function _($sting) {
-    return $string;
+  function _($text) {
+    return $text;
   }
 } else {
   define("PHPWS_TRANSLATION", TRUE);
