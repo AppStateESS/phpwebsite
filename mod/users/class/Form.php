@@ -15,7 +15,7 @@ class User_Form {
     translate("users");
     if ($logged){
       $username = $_SESSION['User']->getUsername();
-      $form['TITLE']   = _print(_("Hello [var1]"), array($username));
+      $form['TITLE']   = sprintf(_("Hello %s"), $username);
       $form['CONTENT'] = User_Form::loggedIn();
     }
     else {
@@ -90,7 +90,7 @@ class User_Form {
 
     $form->add("update_all", "submit", _("Update All"));
     $template = $form->getTemplate();
-    $template['TITLE'] = _print(_("Permissions for [var1]"), $group->getName());
+    $template['TITLE'] = sprintf(_("Permissions for %s"), $group->getName());
     $tpl->setData($template);
 
     $content  = $tpl->get();
@@ -149,7 +149,7 @@ class User_Form {
     }
     $template["CHOICE"] = implode("<br />", $radio);
     $template["MODULE_NAME"] = $mod['proper_name'];
-    $form->add("update[" . $mod['title'] . "]", "submit", _print(_("Update [var1]"), $mod['proper_name']));
+    $form->add("update[" . $mod['title'] . "]", "submit", sprintf(_("Update %s"), $mod['proper_name']));
     $template["UPDATE"] = $form->get("update[" . $mod['title'] . "]");
 
     $content = PHPWS_Template::process($template, "users", "forms/mod_permission.tpl");
@@ -476,7 +476,7 @@ class User_Form {
       $db->addWhere("id", $id);
     $db->addOrder("name");
     $db->setIndexBy("id");
-    $result = $db->loadObjects("PHPWS_Group");
+    $result = $db->getObjects("PHPWS_Group");
 
     $tpl = & new PHPWS_Template("users");
     $tpl->setFile("forms/memberlist.tpl");
@@ -513,7 +513,7 @@ class User_Form {
 	$db->addWhere("id", $id, "!=");
     }
     $db->setIndexBy("id");
-    $result = $db->loadObjects("PHPWS_Group");
+    $result = $db->getObjects("PHPWS_Group");
 
     if (PEAR::isError($result)){
       PHPWS_Error::log($result);
