@@ -1,12 +1,11 @@
-<h1>{PAGE_TITLE}</h1>
 {START_FORM}
 <table border="0" width="100%" cellpadding="4" cellspacing="4">
   <tr>
-    <td><b>{PARENT_LBL}:</b></td>
+    <td width="15%"><b>{PARENT_LABEL}:</b></td>
     <td>{PARENT}</td>
   </tr>
   <tr>
-    <td><b>{TITLE_LBL}:</b></td>
+    <td><b>{TITLE_LABEL}:</b></td>
     <td>{TITLE}
 	<!-- BEGIN title-error -->
 	<div class="cat-error">{TITLE_ERROR}</div>
@@ -14,13 +13,13 @@
     </td>
   </tr>
   <tr>
-    <td><b>{DESC_LBL}:</b></td>
-    <td>{DESCRIPTION}</td>
+    <td><b>{CAT_DESCRIPTION_LABEL}:</b></td>
+    <td>{CAT_DESCRIPTION}</td>
   </tr>
   <tr>
-    <td><b>{IMAGE_LBL}:</b></td>
+    <td><b>{IMAGE_LABEL}:</b></td>
     <td>{IMAGE_FILE}<br />
-	<b>{IMAGE_LABEL}</b>: {IMAGE_TITLE}<br />
+	<b>{IMAGE_TITLE_LABEL}</b>: {IMAGE_TITLE}<br />
 	{IMAGE_SELECT}
 	<!-- BEGIN image-error -->
 	<div class="cat-error">{IMAGE_ERROR}</div>
