@@ -83,4 +83,19 @@ if ($_SESSION['User']->allow("myMod", "add_new"))
    $tabs['add_new']   = $command2;
 
 
+You may want to put your content into the Control Panel's main page. To do so
+just do the following:
 
+$content = PHPWS_ControlPanel::display($panel->display());
+Layout::add($content);
+
+This places your tabs and content into the content of the Control Panel's content.
+
+If you are using the 'tab' variable to control the flow of your module, you may want
+to use the getCurrentTab function. When seen for the first time, there isn't a
+'tab' variable. For example you may use something like the below:
+
+if (!isset($_REQUEST['tab']))
+   $content = MyMod::admin_action($panel->getCurrentTab());
+else
+   $content = MyMod::admin_action($_REQUEST['tab']);
