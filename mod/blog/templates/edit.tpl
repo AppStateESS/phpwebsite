@@ -8,6 +8,10 @@
     <td><b>{ENTRY_LABEL}</b></td>
     <td>{ENTRY}</td>
   </tr>
+  <tr>
+    <td><b>{ASSIGNED_GROUPS_LABEL}</b></td>
+    <td>{ASSIGNED_GROUPS}</td>
+  </tr>
  </table>
 {SUBMIT}
 {END_FORM}

@@ -35,6 +35,7 @@ class Blog_Admin {
     case "postEntry":
       Blog_Admin::postEntry($blog);
       $blog->save();
+      PHPWS_User::savePermissions("blog", $blog->getId());
       $title = _("Success!");
       $content[] = _("Blog updated.");
       break;
@@ -101,6 +102,10 @@ class Blog_Admin {
     $form->addSubmit("submit", $submit);
 
     $template = $form->getTemplate();
+
+    $assign = PHPWS_User::assignPermissions("blog", $blog->getId());
+    $template = array_merge($assign, $template);
+
     return PHPWS_Template::process($template, "blog", "edit.tpl");
   }
 
