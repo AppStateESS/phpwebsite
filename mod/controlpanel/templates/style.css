@@ -1,14 +1,14 @@
 /*------------- CONTROL PANEL ------------------*/
 
 /*--------------- Tabs ---------------*/
-#tabmenu {
+.tabmenu {
   width : 100%;
   padding : 3px;
   margin-bottom : 1px;
   margin-left : -2px;
 }
 
-#tabmenu li {
+.tabmenu li {
   display: inline;
   list-style-type: none;
   border: 2px solid #7B95B4;
@@ -16,7 +16,7 @@
 }
 
 
-#tabmenu li.active {
+.tabmenu li.active {
   color : white;
   background-color : #92B4DE;
   font-size: 0.8em;
@@ -24,51 +24,51 @@
   border-bottom : none;
 }
 
-#tabmenu li.inactive {
+.tabmenu li.inactive {
   background-color : #CBDFEB;
   font-size: 0.8em;
   padding: 5px 5px 2px 5px;
 }
 
 
-#tabmenu li.active a:link { 
+.tabmenu li.active a:link { 
 	text-decoration: none;
 	color: #3A5574;
 }
 
-#tabmenu li.active a:visited { 
+.tabmenu li.active a:visited { 
 	text-decoration: none; 
 	color: #2D3D55;
 }
 
-#tabmenu li.active a:hover { 
+.tabmenu li.active a:hover { 
 	text-decoration: none; 
 	color: white;
 }
 
-#tabmenu li.inactive a:link { 
+.tabmenu li.inactive a:link { 
 	text-decoration: none; 
 	color: #3A5574;
 }
 
-#tabmenu li.inactive a:visited { 
+.tabmenu li.inactive a:visited { 
 	text-decoration: none; 
 	color: #2D3D55;
 }
 
-#tabmenu li.inactive a:hover { 
+.tabmenu li.inactive a:hover { 
 	text-decoration: none; 
 	color: white;
 }
 
-#tabmenu li.inactive:hover {
+.tabmenu li.inactive:hover {
   background: #9FC5EF;
   color: white;
 }
 
 
 /*-------------- Content -----------------*/
-#frame {
+.frame {
   margin-left : 1px;
   margin-top : -2px;
   display : table;
@@ -79,7 +79,7 @@
   border: 2px solid #7B95B4;
 }
 
-#backgrd {
+.backgrd {
   background-color : white;
   padding : 5px;
   border-left: 2px solid #7B95B4;
