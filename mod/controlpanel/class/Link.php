@@ -70,7 +70,7 @@ class PHPWS_Panel_Link {
     if ($tag == FALSE)
       return $this->_image;
 
-    $image = "<img src=\"" . $this->_image . "\" border=\"0\" />";
+    $image = "<img src=\"" . $this->_image . "\" border=\"0\" alt=\"" . $this->getLabel() . "\"/>";
 
     if ($linkable == TRUE)
       $image = "<a href=\"" . $this->_url . "\">" . $image . "</a>";
