@@ -385,13 +385,11 @@ class Users_Permission {
   }
 
 
-  function savePermissions($module, $item_id, $item_name=NULL){
-    if(!isset($item_name))
-      $item_name = $module;
-    $table = Users_Permission::getItemPermissionTableName($module);
+  function savePermissions($key){
+    $table = Users_Permission::getItemPermissionTableName($key->module);
     $db = & new PHPWS_DB($table);
-    $db->addWhere("item_id", $item_id);
-    $db->addWhere("item_name", $item_name);
+    $db->addWhere("item_id", $key->item_id);
+    $db->addWhere("item_name", $key->item_name);
     $db->delete();
     $db->reset();
 
@@ -399,8 +397,8 @@ class Users_Permission {
       return;
 
     $groups = & $_POST['assigned_groups'];
-    $db->addValue("item_name", $item_name);
-    $db->addValue("item_id", $item_id);
+    $db->addValue("item_name", $key->item_name);
+    $db->addValue("item_id", $key->item_id);
     foreach ($groups as $group_id){
       $db->addValue("group_id", $group_id);
       $db->insert();
