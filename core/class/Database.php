@@ -299,7 +299,7 @@ class PHPWS_DB {
   }
 
   function getAllValues(){
-    if (!count($this->_values))
+    if (!isset($this->_values) || !count($this->_values))
       return NULL;
 
     return $this->_values;
