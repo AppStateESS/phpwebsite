@@ -1,8 +1,13 @@
 <?php
 class CrutchForm {
-  function makeForm($name, $action, $elements, $method="post", $breaks=FALSE, $file=FALSE) {
-    if($file) $form[0] = "<form name=\"$name\" action=\"$action\" method=\"$method\" enctype=\"multipart/form-data\">\n";
-    else $form[0] = "<form name=\"$name\" action=\"$action\" method=\"$method\">\n";
+  function makeForm($name, $action, $elements, $method='post', $breaks=FALSE, $file=FALSE) {
+    if($file) {
+      $form[0] = '<form name="' . $name '" action="' . $action . '" method="' 
+	. $method . '" enctype="multipart/form-data">\n';
+    } else {
+      $form[0] = '<form name="' . $name . '" action="' . $action . '" method="' 
+	. $method . '">' . "\n";
+    }
     
     if($breaks) {
       $form[1] = implode("<br />\n", $elements);
@@ -11,7 +16,7 @@ class CrutchForm {
     }
 
     $form[2] = "</form>\n";
-    return implode("", $form);
+    return implode('', $form);
   }
 
   function formTextField($name, $value, $size=NULL, $maxsize=NULL, $label=NULL){
@@ -23,7 +28,7 @@ class CrutchForm {
     if (isset($maxsize))
       $form->setMaxSize($maxsize);
 
-    return "$label " . $form->get();
+    return $label . ' ' . $form->get();
   }
 
   function formTextArea ($name, $value=NULL, $rows=5, $cols=40, $label=NULL){
@@ -48,7 +53,7 @@ class CrutchForm {
       $form->setMatch();
 
     if (isset($label))
-      return $form->get() . " " . $label;
+      return $form->get() . ' ' . $label;
     else
       return $form->get();
 	
@@ -62,7 +67,7 @@ class CrutchForm {
       $form->setMatch();
 
     if (isset($label))
-      return $form->get() . " " . $label;
+      return $form->get() . ' ' . $label;
     else
       return $form->get();
   }
@@ -84,9 +89,9 @@ class CrutchForm {
   function formDate($date_name, $date_match=NULL, $yearStart=NULL, $yearEnd=NULL, $useBlanks=FALSE){
     $form = & new Form_File($date_name);
     if (!isset($date_match) && !isset($useBlanks))
-      $date_match = date("Ymd");
+      $date_match = date('Ymd');
     elseif(!$date_match && $useBlanks)
-      $date_match = "        ";
+      $date_match = '        ';
 
     $y_match = substr($date_match, 0, 4);
     $m_match = substr($date_match, 4, 2);
@@ -113,7 +118,7 @@ class CrutchForm {
 
 
     if (!$yearStart)
-      $yearStart = date("Y", mktime());
+      $yearStart = date('Y', mktime());
 
     if (!isset($length) || $length < 0 || $length > 1000)
       $length = 10;
@@ -124,29 +129,29 @@ class CrutchForm {
     }
 
     if($useBlanks) {
-      $day[""] = "";
+      $day[''] = '';
       asort($day);
       reset($day);
-      $month[""] = "";
+      $month[''] = '';
       asort($month);
       reset($month);
-      $year[""] = "";
+      $year[''] = '';
       asort($year);
       reset($year);
     }
 
     $form = & new PHPWS_Form;
-    $form->add($date_name . "_month", "select", $month);
-    $form->setMatch($date_name . "_month", $m_match);
-    $form->add($date_name . "_day", "select", $day);
-    $form->setMatch($date_name . "_day", $d_match);
-    $form->add($date_name . "_year", "select", $year);
-    $form->setMatch($date_name . "_year", $y_match);
+    $form->add($date_name . '_month', 'select', $month);
+    $form->setMatch($date_name . '_month', $m_match);
+    $form->add($date_name . '_day', 'select', $day);
+    $form->setMatch($date_name . '_day', $d_match);
+    $form->add($date_name . '_year', 'select', $year);
+    $form->setMatch($date_name . '_year', $y_match);
 
-    $dateOrder[strpos(PHPWS_DATE_ORDER, "m")] = $form->get($date_name . "_month");
-    $dateOrder[strpos(PHPWS_DATE_ORDER, "d")] = $form->get($date_name . "_day");
-    $dateOrder[strpos(PHPWS_DATE_ORDER, "y")] = $form->get($date_name . "_year");
-    return sprintf("%s %s %s", $dateOrder[0], $dateOrder[1], $dateOrder[2]);
+    $dateOrder[strpos(PHPWS_DATE_ORDER, 'm')] = $form->get($date_name . '_month');
+    $dateOrder[strpos(PHPWS_DATE_ORDER, 'd')] = $form->get($date_name . '_day');
+    $dateOrder[strpos(PHPWS_DATE_ORDER, 'y')] = $form->get($date_name . '_year');
+    return sprintf('%s %s %s', $dateOrder[0], $dateOrder[1], $dateOrder[2]);
   }
 
 }

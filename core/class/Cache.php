@@ -1,6 +1,6 @@
 <?php
 
-require("Cache/Lite.php");
+require('Cache/Lite.php');
 
 class PHPWS_Cache {
 
@@ -16,7 +16,7 @@ class PHPWS_Cache {
   }
 
   function isEnabled(){
-    if (defined("ALLOW_CACHE_LITE"))
+    if (defined('ALLOW_CACHE_LITE'))
       return ALLOW_CACHE_LITE;
     else
       return FALSE;
@@ -32,9 +32,9 @@ class PHPWS_Cache {
   }
 
   function writeIni($switch=0){
-    PHPWS_Core::initCoreClass("File.php");
+    PHPWS_Core::initCoreClass('File.php');
     $info = "cache = $switch\n";
-    return PHPWS_File::writeFile(CACHE_DIRECTORY . "phpws_cache.ini", $info, TRUE);
+    return PHPWS_File::writeFile(CACHE_DIRECTORY . 'phpws_cache.ini', $info, TRUE);
   }
 
   function clean(){
@@ -47,7 +47,7 @@ class PHPWS_Cache {
       return;
 
     if (!is_string($content))
-      return PHPWS_Error::get(PHPWS_VAR_TYPE, "core", __CLASS__ . "::" .__FUNCTION__);
+      return PHPWS_Error::get(PHPWS_VAR_TYPE, 'core', __CLASS__ . '::' .__FUNCTION__);
     $cache = & PHPWS_Cache::initCache($lifetime);
     $result = $cache->save($content, md5($key));
   }

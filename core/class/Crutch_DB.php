@@ -13,7 +13,7 @@ class oldDB{
     return $result;
   }
 
-  function sqlUpdate($db_array, $table_name, $match_column=NULL, $match_value=NULL, $compare="=", $and_or="and") {
+  function sqlUpdate($db_array, $table_name, $match_column=NULL, $match_value=NULL, $compare='=', $and_or='and') {
     $db = & new PHPWS_DB($table_name);
     $db->addValue($db_array);
     oldDB::addWhere($db, $match_column, $match_value, $compare, $and_or);
@@ -21,12 +21,12 @@ class oldDB{
   }
 
   function sqlImport($filename, $write=TRUE, $suppress_error=FALSE){
-    PHPWS_Core::initCoreClass("File.php");
+    PHPWS_Core::initCoreClass('File.php');
     $text = PHPWS_File::readFile($filename);
     return PHPWS_DB::import($text, TRUE);
   }
 
-  function sqlDelete($table_name, $match_column=NULL, $match_value=NULL, $compare="=", $and_or="and") {
+  function sqlDelete($table_name, $match_column=NULL, $match_value=NULL, $compare='=', $and_or='and') {
     $db = & new PHPWS_DB($table_name);
     oldDB::addWhere($db, $match_column, $match_value, $compare, $and_or);
     return $db->delete();
@@ -59,11 +59,11 @@ class oldDB{
   }
 
   function getCol($sql){
-    return PHPWS_DB::select("col", $sql);
+    return PHPWS_DB::select('col', $sql);
   }
 
   function getAll($sql){
-    return PHPWS_DB::select("all", $sql);
+    return PHPWS_DB::select('all', $sql);
   }
 }
 

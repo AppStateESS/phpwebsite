@@ -1,7 +1,7 @@
 <?php
 
-define ("DBPAGER_DEFAULT_LIMIT", 5);
-define ("DBPAGER_PAGE_LIMIT", 8);
+define ('DBPAGER_DEFAULT_LIMIT', 5);
+define ('DBPAGER_PAGE_LIMIT', 8);
 
 
 /**
@@ -54,9 +54,9 @@ class DBPager {
 
   var $extra_tags = NULL;
 
-  var $page_turner_left = "&lt;";
+  var $page_turner_left = '&lt;';
 
-  var $page_turner_right = "&gt;";
+  var $page_turner_right = '&gt;';
 
   /**
    * Template file name and directory
@@ -114,7 +114,7 @@ class DBPager {
     if (class_exists($class))
       $this->class = $class;
     else {
-      $this->error = PHPWS_Error::get(PHPWS_CLASS_NOT_EXIST, "core", "DB_Pager::DBPager", $class);
+      $this->error = PHPWS_Error::get(PHPWS_CLASS_NOT_EXIST, 'core', 'DB_Pager::DBPager', $class);
       PHPWS_Error::log($this->error);
       return;
     }
@@ -129,13 +129,13 @@ class DBPager {
       $this->limit = (int)$_REQUEST['limit'];
 
     if (isset($_REQUEST['orderby']))
-      $this->orderby = preg_replace("/\W/", "", $_REQUEST['orderby']);
+      $this->orderby = preg_replace('/\W/', '', $_REQUEST['orderby']);
 
     if (isset($_REQUEST['orderby_dir']))
-      $this->orderby_dir = preg_replace("/\W/", "", $_REQUEST['orderby_dir']);
+      $this->orderby_dir = preg_replace('/\W/', '', $_REQUEST['orderby_dir']);
 
     if (isset($_REQUEST['search']) && !empty($_REQUEST['search']))
-      $this->search = preg_replace("/\W/", "", $_REQUEST['search']);
+      $this->search = preg_replace('/\W/', '', $_REQUEST['search']);
 
   }
 
@@ -206,8 +206,8 @@ class DBPager {
   }
 
   function getTotalRows(){
-    $this->db->addColumn("*", FALSE, TRUE);
-    $result = $this->db->select("one");
+    $this->db->addColumn('*', FALSE, TRUE);
+    $result = $this->db->select('one');
     $this->db->resetColumns();
     return $result;
   }
@@ -226,7 +226,7 @@ class DBPager {
 
     if (!empty($this->search) && isset($this->searchColumn)){
       foreach ($this->searchColumn as $column_name)
-	$this->addWhere($column_name, $this->search, "REGEXP", "OR");
+	$this->addWhere($column_name, $this->search, 'REGEXP', 'OR');
     }
 
     $count = $this->getTotalRows();
@@ -243,7 +243,7 @@ class DBPager {
       $this->db->setLimit($this->getLimit());
 
     if (isset($this->orderby))
-      $this->db->addOrder($this->orderby . " " . $this->orderby_dir);
+      $this->db->addOrder($this->orderby . ' ' . $this->orderby_dir);
 
     $result = $this->db->getObjects($this->class);
 
@@ -255,7 +255,7 @@ class DBPager {
 
   function getPageLinks(){
     if ($this->total_pages < 1)
-      return PHPWS_Error::get(DBPAGER_NO_TOTAL_PAGES, "core", "DBPager::getPageLinks");
+      return PHPWS_Error::get(DBPAGER_NO_TOTAL_PAGES, 'core', 'DBPager::getPageLinks');
 
     $limit_pages = ($this->total_pages > DBPAGER_PAGE_LIMIT) ? TRUE : FALSE;
     
@@ -273,21 +273,21 @@ class DBPager {
     $values = $this->getLinkValues();
 
     if ($this->current_page != 1){
-      $values['page'] = "page=" . ($this->current_page - 1);
-      $pages[] = "<a href=\"" . $this->link . "&amp;" . implode("&amp;", $values) . "\">" . $this->page_turner_left . "</a>\n";
+      $values['page'] = 'page=' . ($this->current_page - 1);
+      $pages[] = '<a href="' . $this->link . '&amp;' . implode('&amp;', $values) . '">' . $this->page_turner_left . "</a>\n";
     }
 
     for ($i=1; $i <= $this->total_pages; $i++){
       if ($limit_pages && !in_array($i, $limitList)){
 
 	if (!isset($padding1)){
-	  $pages[] = "...";
+	  $pages[] = '...';
 	  $padding1 = TRUE;
 	  continue;
 	}
 
 	if (isset($padding1) && !isset($padding2) && isset($recock)){
-	  $pages[] = "...";
+	  $pages[] = '...';
 	  $padding2 = TRUE;
 	}
 	continue;
@@ -299,7 +299,7 @@ class DBPager {
       $values['page'] = "page=$i";
 
       if ($this->current_page != $i)
-	$pages[] = "<a href=\"" . $this->link . "&amp;" . implode("&amp;", $values) . "\">$i</a>\n";
+	$pages[] = '<a href="' . $this->link . '&amp;' . implode('&amp;', $values) . "\">$i</a>\n";
       else
 	$pages[] = $i;
 
@@ -308,44 +308,44 @@ class DBPager {
 	   !in_array($i, $limitList)
 	   )
 	{
-	  $pages[] = "...";
+	  $pages[] = '...';
 	  $padding2 = TRUE;
 	}
     }
 
     if ($this->current_page != $this->total_pages){
-      $values['page'] = "page=" . ($this->current_page + 1);
-      $pages[] = "<a href=\"" . $this->link . "&amp;" . implode("&amp;", $values) . "\">" . $this->page_turner_right . "</a>\n";
+      $values['page'] = 'page=' . ($this->current_page + 1);
+      $pages[] = '<a href="' . $this->link . '&amp;' . implode('&amp;', $values) . '">' . $this->page_turner_right . "</a>\n";
     }
 
-    return implode(" ", $pages);
+    return implode(' ', $pages);
   }
 
   function getSortButtons(&$template){
     foreach ($this->_classVars as $varname){
       $values = $this->getLinkValues();
-      $buttonname = $varname . "_SORT";
+      $buttonname = $varname . '_SORT';
 
-      $values['orderby'] = "orderby=$varname";
+      $values['orderby'] = 'orderby=$varname';
 
       if ($this->orderby == $varname){
-	if ($this->orderby_dir == "desc"){
+	if ($this->orderby_dir == 'desc'){
 	  unset($values['orderby_dir']);
-	  $button = "<img src=\"images/core/list/up_pointer.png\" border=\"0\" />";
+	  $button = '<img src="images/core/list/up_pointer.png" border="0" />';
 	} elseif ($this->orderby_dir =="asc") {
-	  $values['orderby_dir'] = "orderby_dir=desc";
-	  $button = "<img src=\"images/core/list/down_pointer.png\" border=\"0\" />";
+	  $values['orderby_dir'] = 'orderby_dir=desc';
+	  $button = '<img src="images/core/list/down_pointer.png" border="0" />';
 	} else {
-	  $button = "<img src=\"images/core/list/sort_none.png\" border=\"0\" />";
-	  $values['orderby_dir'] = "orderby_dir=asc";
+	  $button = '<img src="images/core/list/sort_none.png" border="0" />';
+	  $values['orderby_dir'] = 'orderby_dir=asc';
 	}
 
       } else {
-	$button = "<img src=\"images/core/list/sort_none.png\" border=\"0\" />";
-	$values['orderby_dir'] = "orderby_dir=asc";
+	$button = '<img src="images/core/list/sort_none.png" border="0" />';
+	$values['orderby_dir'] = 'orderby_dir=asc';
       }
 
-      $link = "<a href=\"" . $this->link . "&amp;" . implode("&amp;", $values) . "\">$button</a>";
+      $link = '<a href="' . $this->link . '&amp;' . implode('&amp;', $values) . '">' . $button . '</a>';
 
       $template[strtoupper($buttonname)] = $link;
     }
@@ -357,16 +357,16 @@ class DBPager {
       $this->limit = DBPAGER_DEFAULT_LIMIT;
     }
 
-    $values['page'] = "page=" . $this->current_page;
-    $values['limit'] = "limit=" . $this->limit;
+    $values['page'] = 'page=' . $this->current_page;
+    $values['limit'] = 'limit=' . $this->limit;
 
     if (isset($this->search))
-      $values['search'] = "search=" . $this->search;
+      $values['search'] = 'search=' . $this->search;
 
     if (isset($this->orderby)){
-      $values['orderby'] = "orderby=" . $this->orderby;
+      $values['orderby'] = 'orderby=' . $this->orderby;
       if (isset($this->orderby_dir))
-	$values['orderby_dir'] = "orderby_dir=" . $this->orderby_dir;
+	$values['orderby_dir'] = 'orderby_dir=' . $this->orderby_dir;
     }
 
     return $values;
@@ -376,10 +376,10 @@ class DBPager {
     foreach ($this->limitList as $limit){
       $values = $this->getLinkValues();
       $values['limit'] = "limit=$limit";
-      $links[] = "<a href=\"" . $this->link . "&amp;" . implode("&amp;", $values) . "\">$limit</a>";
+      $links[] = '<a href="' . $this->link . '&amp;' . implode('&amp;', $values) . '">' . $limit . '</a>';
     }
 
-    return implode(" ", $links);
+    return implode(' ', $links);
   }
 
 
@@ -432,40 +432,40 @@ class DBPager {
 
   function addRowTag($tag, $class, $method){
     if (!class_exists($class))
-      exit("Class does not exist.");
+      exit('Class does not exist.');
 
     $classMethods = get_class_methods($class);
 
     if (!in_array(strtolower($method), $classMethods))
-      exit("Method not in class");
+      exit('Method not in class');
 
-    $this->rowTags[$tag] = array("class"=>$class, "method"=>$method);
+    $this->rowTags[$tag] = array('class'=>$class, 'method'=>$method);
   }
 
   function getPageDrop(){
     for ($i = 1; $i <= $this->total_pages; $i++)
       $page_list[$i] = $i;
 
-    $form = & new PHPWS_Form("page_list");
-    $form->setMethod("get");
+    $form = & new PHPWS_Form('page_list');
+    $form->setMethod('get');
     $this->_setHiddenVars($form);
-    $form->addSelect("page", $page_list);
-    $form->setExtra("page", "onchange=\"this.form.submit()\"");
+    $form->addSelect('page', $page_list);
+    $form->setExtra('page', 'onchange="this.form.submit()"');
     if (isset($_REQUEST['page']))
-      $form->setMatch("page", (int)$_REQUEST['page']);
+      $form->setMatch('page', (int)$_REQUEST['page']);
     if (!javascriptEnabled())
-      $form->addSubmit("go", _("Go"));
+      $form->addSubmit('go', _('Go'));
     $template = $form->getTemplate();
     return implode("\n", $template);
   }
 
 
   function getSearchBox(){
-    $form = & new PHPWS_Form("search_list");
-    $form->setMethod("get");
+    $form = & new PHPWS_Form('search_list');
+    $form->setMethod('get');
     $this->_setHiddenVars($form, FALSE);
-    $form->addText("search", $this->search);
-    $form->setLabel("search", _("Search"));
+    $form->addText('search', $this->search);
+    $form->setLabel('search', _('Search'));
     $template = $form->getTemplate();
     return implode("\n", $template);
   }
@@ -475,21 +475,21 @@ class DBPager {
       $this->limit = DBPAGER_DEFAULT_LIMIT;
     }
 
-    $link = str_replace("index.php?", "", $this->link);
-    $link_list = explode("&", html_entity_decode($link));
+    $link = str_replace('index.php?', '', $this->link);
+    $link_list = explode('&', html_entity_decode($link));
     foreach ($link_list as $var){
       if (empty($var)) {
 	continue;
       }
-      $i = explode("=", $var);
-      if ($i[0] == "authkey")
+      $i = explode('=', $var);
+      if ($i[0] == 'authkey')
 	continue;
       $form->addHidden($i[0], $i[1]);
     }
 
-    $form->addHidden("limit", $this->limit);
+    $form->addHidden('limit', $this->limit);
     if ($addSearch == TRUE && isset($this->search))
-      $form->addHidden("search", $this->search);
+      $form->addHidden('search', $this->search);
   }
 
   function get(){
@@ -500,17 +500,17 @@ class DBPager {
       return $result;
 
     if (!isset($this->module))
-      return PHPWS_Error::get(DBPAGER_MODULE_NOT_SET, "core", "DBPager::get()");
+      return PHPWS_Error::get(DBPAGER_MODULE_NOT_SET, 'core', 'DBPager::get()');
 
     if (!isset($this->template))
-      return PHPWS_Error::get(DBPAGER_TEMPLATE_NOT_SET, "core", "DBPager::get()");
+      return PHPWS_Error::get(DBPAGER_TEMPLATE_NOT_SET, 'core', 'DBPager::get()');
 
     if ($this->total_rows < 1)
       return NULL;
 
   
-    $template['PAGE_LABEL']  = _("Page");
-    $template['LIMIT_LABEL'] = _("Limit");
+    $template['PAGE_LABEL']  = _('Page');
+    $template['LIMIT_LABEL'] = _('Limit');
     $template['PAGE_DROP'] = $this->getPageDrop();
 
     $total_row = $this->total_rows;
@@ -520,7 +520,7 @@ class DBPager {
     if ($end_row > $total_row)
       $end_row = $total_row;
 
-    $template['TOTAL_ROWS']  = "$start_row - $end_row " . _("of") . " $total_row";
+    $template['TOTAL_ROWS']  = $start_row . ' - ' . $end_row . ' ' . _('of') . ' ' . $total_row;
 
     $pages = $this->getPageLinks();
     if (PEAR::isError($pages))
@@ -555,7 +555,7 @@ class DBPager {
 	} else
 	  $rowitem['TOGGLE'] = NULL;
 	
-	$tpl->setCurrentBlock("listrows");
+	$tpl->setCurrentBlock('listrows');
 	$tpl->setData($rowitem);
 	$tpl->parseCurrentBlock();
       }

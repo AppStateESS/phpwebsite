@@ -6,9 +6,9 @@
  * @author  Matt McNaney <matt at tux dot appstate dot edu>
  * @package Core
  */
-require_once "DB.php";
+require_once 'DB.php';
 
-define ("DEFAULT_MODE", DB_FETCHMODE_ASSOC);
+define ('DEFAULT_MODE', DB_FETCHMODE_ASSOC);
 
 class PHPWS_DB {
 
@@ -37,13 +37,13 @@ class PHPWS_DB {
       if (PEAR::isError($result))
 	PHPWS_Error::log($result);
     }
-    $this->setMode("assoc");
+    $this->setMode('assoc');
     $type = $GLOBALS['PEAR_DB']->dbsyntax;
 
-    $result = PHPWS_Core::initCoreClass("DB/{$type}.php");
+    $result = PHPWS_Core::initCoreClass('DB/' . $type .'.php');
     if ($result == FALSE) {
-      PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, "core", "PHPWS_DB::PHPWS_DB", 
-		       PHPWS_SOURCE_DIR . "core/class/DB/{$type}.php");
+      PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'PHPWS_DB::PHPWS_DB', 
+		       PHPWS_SOURCE_DIR . 'core/class/DB/' . $type . '.php');
       PHPWS_Core::errorPage();
     }
     $this->_sql = & new PHPWS_SQL;
@@ -51,13 +51,13 @@ class PHPWS_DB {
   
   function addDB($db){
     if (!is_object($db))
-      return PHPWS_Error::get(PHPWS_DB_NOT_OBJECT, "core", "PHPWS_DB::addJoin", gettype($db));
+      return PHPWS_Error::get(PHPWS_DB_NOT_OBJECT, 'core', 'PHPWS_DB::addJoin', gettype($db));
 
-    if (strtoupper(get_class($db)) != "PHPWS_DB")
-      return PHPWS_Error::get(PHPWS_WRONG_CLASS, "core", "PHPWS_DB::addJoin", get_class($db));
+    if (strtoupper(get_class($db)) != 'PHPWS_DB')
+      return PHPWS_Error::get(PHPWS_WRONG_CLASS, 'core', 'PHPWS_DB::addJoin', get_class($db));
 
     if (empty($db->table))
-      return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, "core", "PHPWS_DB::addJoin");
+      return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::addJoin');
 
     $this->_DB[$db->table] = $db;
   }
@@ -135,7 +135,7 @@ class PHPWS_DB {
 
     $table = & $this->getTable();
     if (!isset($table))
-      return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, "core", "PHPWS_DB::isTableColumn");
+      return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::isTableColumn');
 
     $columns =  $GLOBALS['PEAR_DB']->tableInfo($table);
     if (PEAR::isError($columns))
@@ -163,15 +163,15 @@ class PHPWS_DB {
 
   function setMode($mode){
     switch (strtolower($mode)){
-    case "ordered":
+    case 'ordered':
       $this->mode = DB_FETCHMODE_ORDERED;
       break;
 
-    case "object":
+    case 'object':
       $this->mode = DB_FETCHMODE_OBJECT;
       break;
 
-    case "assoc":
+    case 'assoc':
       $this->mode = DB_FETCHMODE_ASSOC;
       break;
     }
@@ -193,11 +193,11 @@ class PHPWS_DB {
   }
 
   function listTables(){
-    return $GLOBALS['PEAR_DB']->getlistOf("tables");
+    return $GLOBALS['PEAR_DB']->getlistOf('tables');
   }
 
   function listDatabases(){
-    return $GLOBALS['PEAR_DB']->getlistOf("databases");
+    return $GLOBALS['PEAR_DB']->getlistOf('databases');
   }
 
 
@@ -213,7 +213,7 @@ class PHPWS_DB {
     if (PHPWS_DB::allowed($table))
       $this->table = $table;
     else
-      return PHPWS_Error::get(PHPWS_DB_BAD_TABLE_NAME, "core", "PHPWS_DB::setTable", $table);
+      return PHPWS_Error::get(PHPWS_DB_BAD_TABLE_NAME, 'core', 'PHPWS_DB::setTable', $table);
   }
 
   function setIndex($index){
@@ -230,7 +230,7 @@ class PHPWS_DB {
       return $columns;
     
     foreach ($columns as $colInfo)
-      if ($colInfo['name'] == "id" && preg_match("/primary/", $colInfo['flags']) && preg_match("/int/", $colInfo['type']))
+      if ($colInfo['name'] == 'id' && preg_match('/primary/', $colInfo['flags']) && preg_match('/int/', $colInfo['type']))
 	return $colInfo['name'];
 
     return NULL;
@@ -261,7 +261,7 @@ class PHPWS_DB {
       if (!isset($this->groupBy))
 	return NULL;
       else
-	return "GROUP BY " . implode(", ", $this->groupBy);
+	return 'GROUP BY ' . implode(', ', $this->groupBy);
     }
     return $this->groupBy;
   }
@@ -277,10 +277,10 @@ class PHPWS_DB {
 
     if (is_array($value)){
       if (empty($operator)) {
-	$operator = "IN";
+	$operator = 'IN';
       }
       
-      if ($operator != "IN" && $operator != "BETWEEN"){
+      if ($operator != 'IN' && $operator != 'BETWEEN'){
 	foreach ($value as $newVal){
 	  $result = $this->addWhere($column, $newVal, $operator, $conj, $group);
 	  if (PEAR::isError($result))
@@ -293,15 +293,15 @@ class PHPWS_DB {
 
 
     if (!isset($operator))
-      $operator = "=";
+      $operator = '=';
     elseif (!PHPWS_DB::checkOperator($operator))
-      return PHPWS_Error::get(PHPWS_DB_BAD_OP, "core", "PHPWS_DB::addWhere", _("DB Operator:") . $operator);
+      return PHPWS_Error::get(PHPWS_DB_BAD_OP, 'core', 'PHPWS_DB::addWhere', _('DB Operator:') . $operator);
 
     if (!isset($conj))
-      $conj = "AND";
+      $conj = 'AND';
 
     if (!PHPWS_DB::allowed($column))
-      return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, "core", "PHPWS_DB::addWhere", $column);
+      return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::addWhere', $column);
 
     if (is_array($value)) {
       foreach ($value as $temp_val) {
@@ -338,7 +338,7 @@ class PHPWS_DB {
   }
 
   function setQWhere($where){
-    $where = preg_replace("/where/i", "", $where);
+    $where = preg_replace('/where/i', '', $where);
     $this->qwhere = $where;
   }
 
@@ -348,7 +348,7 @@ class PHPWS_DB {
 
     if (empty($this->where)){
       if (isset($this->qwhere)) {
-	return "WHERE " . $this->qwhere;
+	return 'WHERE ' . $this->qwhere;
       }
       return NULL;
     }
@@ -361,29 +361,29 @@ class PHPWS_DB {
 	$startSub = FALSE;
 
 	if ($startMain == TRUE) $sql[] = $groups['conj'];
-	$sql[] = "(";
+	$sql[] = '(';
 
 
 	foreach ($groups['values'] as $whereValues){
 	  extract($whereValues);
 
-	  if (strstr($column, ".") == FALSE)
-	    $column = $this->getTable() . "." . $column;
+	  if (strstr($column, '.') == FALSE)
+	    $column = $this->getTable() . '.' . $column;
 
 	  if ($startSub == TRUE) $sql[] = $conj;
 
 	  if (is_array($value)) {
 	    switch ($operator){
-	    case "IN":
+	    case 'IN':
 
 	      foreach ($value as $temp_val){
-		$temp_val_list[] = "'{$temp_val}'";
+		$temp_val_list[] = "'$temp_val'";
 	      }
-	      $value = "(" . implode(", ", $temp_val_list) . ")";
+	      $value = '(' . implode(', ', $temp_val_list) . ')';
 
 	      break;
 
-	    case "BETWEEN":
+	    case 'BETWEEN':
 	      $value = "'{$value[0]}' AND '{$value[1]}'";
 	      break;
 	    }
@@ -399,18 +399,18 @@ class PHPWS_DB {
 	  $startSub = TRUE;
 	}
 
-	$sql[] = ")";
+	$sql[] = ')';
 	$startMain = TRUE;
       }
 
       if (isset($this->qwhere))
-	$sql[] = " AND (" . $this->qwhere . ")";
+	$sql[] = ' AND (' . $this->qwhere . ')';
 
       if (isset($sql)){
 	if ($addWhere)
-	  $where = "WHERE " . implode(" ", $sql);
+	  $where = 'WHERE ' . implode(' ', $sql);
 	else
-	  $where = implode(" ", $sql);
+	  $where = implode(' ', $sql);
       }
 
       return $where;
@@ -425,10 +425,10 @@ class PHPWS_DB {
 
   function addColumn($column, $distinct=FALSE, $count=FALSE){
     if (!PHPWS_DB::allowed($column))
-      return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, "core", "PHPWS_DB::addColumn", $column);
+      return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::addColumn', $column);
 
     if ((bool)$distinct == TRUE)
-      $column = "DISTINCT " .  $column;
+      $column = 'DISTINCT ' .  $column;
 
     if ((bool)$count == TRUE)
       $column = "COUNT($column)";
@@ -453,11 +453,11 @@ class PHPWS_DB {
   function addOrder($order){
     if (is_array($order)){
       foreach ($order as $value){
-	$this->order[] = preg_replace("/[^\w\s]/", "", $value);
+	$this->order[] = preg_replace('/[^\w\s]/', '', $value);
       }
     }
     else
-      $this->order[] = preg_replace("/[^\w\s]/", "", $order);
+      $this->order[] = preg_replace('/[^\w\s]/', '', $order);
   }
 
   function getOrder($dbReady=FALSE){
@@ -465,7 +465,7 @@ class PHPWS_DB {
       return NULL;
 
     if ($dbReady)
-      return "ORDER BY " . implode(", ", $this->order);
+      return 'ORDER BY ' . implode(', ', $this->order);
     else
       return $this->order;
   }
@@ -483,7 +483,7 @@ class PHPWS_DB {
       }
     } else {
       if (!PHPWS_DB::allowed($column))
-	return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, "core", "PHPWS_DB::addValue", $column);
+	return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::addValue', $column);
 
       $this->values[$column] = $value;
     }
@@ -515,8 +515,8 @@ class PHPWS_DB {
       $_limit = $limit[0];
       $_offset = $limit[1];
     }
-    elseif (preg_match("/,/", $limit)) {
-      $split = explode(",", $limit);
+    elseif (preg_match('/,/', $limit)) {
+      $split = explode(',', $limit);
       $_limit = trim($split[0]);
       $_offset = trim($split[1]);
     }
@@ -525,10 +525,10 @@ class PHPWS_DB {
       $_offset = $offset;
     }
 
-    $this->limit['total'] = preg_replace("/[^\d\s]/", "", $_limit);
+    $this->limit['total'] = preg_replace('/[^\d\s]/', '', $_limit);
 
     if (isset($_offset))
-      $this->limit['offset'] = preg_replace("/[^\d\s]/", "", $_offset);
+      $this->limit['offset'] = preg_replace('/[^\d\s]/', '', $_offset);
 
     return TRUE;
   }
@@ -546,7 +546,7 @@ class PHPWS_DB {
   }
 
   function resetLimit(){
-    $this->limit = "";
+    $this->limit = '';
   }
 
   function resetColumns(){
@@ -556,9 +556,9 @@ class PHPWS_DB {
 
   function affectedRows(){
     $query =  PHPWS_DB::lastQuery();
-    $process = strtolower(substr($query, 0, strpos($query, " ")));
+    $process = strtolower(substr($query, 0, strpos($query, ' ')));
 
-    if ($process == "select"){
+    if ($process == 'select'){
       $rows = $GLOBALS['PEAR_DB']->num_rows; 
       return array_pop($rows);
     }
@@ -584,12 +584,12 @@ class PHPWS_DB {
     $maxID = TRUE;
     $table = $this->getTable();
     if (!$table)
-      return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, "core", "PHPWS_DB::insert");
+      return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::insert');
 
     $values = $this->getAllValues();
 
     if (!isset($values))
-      return PHPWS_Error::get(PHPWS_DB_NO_VALUES, "core", "PHPWS_DB::insert");
+      return PHPWS_Error::get(PHPWS_DB_NO_VALUES, 'core', 'PHPWS_DB::insert');
 
     $idColumn = $this->getIndex();
 
@@ -605,7 +605,7 @@ class PHPWS_DB {
       $set[] = PHPWS_DB::dbReady($entry);
     }
 
-    $query = "INSERT INTO $table (" . implode(", ", $columns) . ") VALUES (" . implode(", ", $set) . ")";
+    $query = 'INSERT INTO ' . $table . ' (' . implode(', ', $columns) . ') VALUES (' . implode(', ', $set) . ')';
 
     $result = PHPWS_DB::query($query);
 

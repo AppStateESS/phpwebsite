@@ -14,7 +14,7 @@ class PHPWS_Core {
 
   function initializeModules(){
     if (!$moduleList = PHPWS_Core::getModules()){
-      PHPWS_Error::log(PHPWS_NO_MODULES, "core", "initializeModules");
+      PHPWS_Error::log(PHPWS_NO_MODULES, 'core', 'initializeModules');
       PHPWS_Core::errorPage();
     }
 
@@ -28,14 +28,14 @@ class PHPWS_Core {
 
       /* Check to see if this is an older module and load Crutch if so */
       if ($mod['pre94'] == 1){
-	PHPWS_Core::initCoreClass("Crutch.php");
+	PHPWS_Core::initCoreClass('Crutch.php');
 	PHPWS_Crutch::initializeModule($mod['title']);
 	$GLOBALS['pre094_modules'][] = $mod['title'];
 	$GLOBALS['Modules'][$mod['title']] = $mod;
       }
 
       /* Using include instead of require to prevent broken mods from hosing the site */
-      $includeFile = PHPWS_SOURCE_DIR . "mod/" . $mod['title'] . "/inc/init.php";
+      $includeFile = PHPWS_SOURCE_DIR . 'mod/' . $mod['title'] . '/inc/init.php';
 
       if (is_file($includeFile))
 	include($includeFile);
@@ -46,12 +46,12 @@ class PHPWS_Core {
 
   function closeModules(){
     if (!isset($GLOBALS['Modules'])){
-      PHPWS_Error::log(PHPWS_NO_MODULES, "core", "runtimeModules");
+      PHPWS_Error::log(PHPWS_NO_MODULES, 'core', 'runtimeModules');
       PHPWS_Core::errorPage();
     }
     
     foreach ($GLOBALS['Modules'] as $mod){
-      $includeFile = PHPWS_SOURCE_DIR . "mod/" . $mod['title'] . "/inc/close.php";
+      $includeFile = PHPWS_SOURCE_DIR . 'mod/' . $mod['title'] . '/inc/close.php';
       if (is_file($includeFile))
 	include($includeFile);
     }
@@ -62,16 +62,16 @@ class PHPWS_Core {
 
 
   function getModules($active=TRUE){
-    $DB = new PHPWS_DB("modules");
+    $DB = new PHPWS_DB('modules');
     if ($active == TRUE)
-      $DB->addWhere("active", 1);
-    $DB->addOrder("priority asc");
+      $DB->addWhere('active', 1);
+    $DB->addOrder('priority asc');
     return $DB->select();
   }
 
   function runtimeModules(){
     if (!isset($GLOBALS['Modules'])){
-      PHPWS_Error::log(PHPWS_NO_MODULES, "core", "runtimeModules");
+      PHPWS_Error::log(PHPWS_NO_MODULES, 'core', 'runtimeModules');
       PHPWS_Core::errorPage();
     }
 
@@ -82,7 +82,7 @@ class PHPWS_Core {
 	PHPWS_Crutch::startSessions();
 	
       PHPWS_Core::setCurrentModule($title);
-      $runtimeFile = PHPWS_SOURCE_DIR . "mod/" . $mod['title'] . "/inc/runtime.php";
+      $runtimeFile = PHPWS_SOURCE_DIR . 'mod/' . $mod['title'] . '/inc/runtime.php';
       is_file($runtimeFile) ? include_once $runtimeFile : NULL;
     }
   }
@@ -91,7 +91,7 @@ class PHPWS_Core {
   function runCurrentModule(){
     if (isset($_REQUEST['module'])){
       PHPWS_Core::setCurrentModule($_REQUEST['module']);
-      $modFile = PHPWS_SOURCE_DIR . "mod/" . $_REQUEST['module'] . "/index.php";
+      $modFile = PHPWS_SOURCE_DIR . 'mod/' . $_REQUEST['module'] . '/index.php';
       if (is_file($modFile))
 	include $modFile;
     }
@@ -99,25 +99,25 @@ class PHPWS_Core {
 
 
   function initModClass($module, $file){
-    $classFile = PHPWS_SOURCE_DIR . "mod/" . $module . "/class/" . $file;
+    $classFile = PHPWS_SOURCE_DIR . 'mod/' . $module . '/class/' . $file;
     if (is_file($classFile)){
       require_once $classFile;
       return TRUE;
     }
     else {
-      PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, "core", __CLASS__ . "::" .__FUNCTION__, "File: $classFile");
+      PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', __CLASS__ . '::' .__FUNCTION__, "File: $classFile");
       return FALSE;
     }
   }
 
   function initCoreClass($file){
-    $classFile = PHPWS_SOURCE_DIR . "core/class/" . $file;
+    $classFile = PHPWS_SOURCE_DIR . 'core/class/' . $file;
     if (is_file($classFile)){
       require_once $classFile;
       return TRUE;
     }
     else {
-      PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, "core", "initCoreClass", "File: $classFile");
+      PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'initCoreClass', "File: $classFile");
       return FALSE;
     }
   }
@@ -157,27 +157,27 @@ class PHPWS_Core {
 
   function getHttp(){
     if ( isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on' )
-      return "https://";
+      return 'https://';
     else
-      return "http://";
+      return 'http://';
       
   }
 
   function reroute($address=NULL){
-    if (!preg_match("/^http/", $address)){
+    if (!preg_match('/^http/', $address)){
       $http = PHPWS_Core::getHttp();
 
-      $dirArray = explode("/", $_SERVER['PHP_SELF']);
+      $dirArray = explode('/', $_SERVER['PHP_SELF']);
       array_pop($dirArray);
-      $dirArray[] = "";
+      $dirArray[] = '';
       
-      $directory = implode("/", $dirArray);
+      $directory = implode('/', $dirArray);
       
-      $location = "{$http}{$_SERVER['HTTP_HOST']}{$directory}{$address}";
+      $location = $http . $_SERVER['HTTP_HOST'] . $directory . $address;
     } else
       $location = &$address;
 
-    header("location:$location");
+    header('location:' . $location);
     exit();
   }
 
@@ -209,15 +209,15 @@ class PHPWS_Core {
       return NULL;
 
     switch ($_GET['report']){
-    case "post":
+    case 'post':
       echo phpws_debug::testarray($_POST);
       break;
 
-    case "request":
+    case 'request':
       echo phpws_debug::testarray($_REQUEST);
       break;
 
-    case "session":
+    case 'session':
       if (!isset($_GET['session']))
 	return NULL;
 
@@ -236,21 +236,22 @@ class PHPWS_Core {
   }
 
   function getConfigFile($module, $file){
-    $file = preg_replace("/[^\-\w\.\\\\\/]/", "", $file);
-    $module = preg_replace("/[^\w\.]/", "", $module);
+    $file = preg_replace('/[^\-\w\.\\\\\/]/', '', $file);
+    $module = preg_replace('/[^\w\.]/', '', $module);
 
-    if ($module == "core"){
-      $altfile = PHPWS_SOURCE_DIR . "config/core/$file";
-      $file = "./config/core/$file";
+    if ($module == 'core'){
+      $altfile = PHPWS_SOURCE_DIR . 'config/core/' . $file;
+      $file = './config/core/' . $file;
     }
     else {
-      $altfile = PHPWS_SOURCE_DIR . "mod/$module/conf/$file";
-      $file = "config/$module/$file";
+      $altfile = PHPWS_SOURCE_DIR . 'mod/' . $module . '/conf/' . $file;
+      $file = './config/' . $module . '/' . $file;
     }
 
     if (!is_file($file) || FORCE_MOD_CONFIG){
-      if (!is_file($altfile))
+      if (!is_file($altfile)) {
 	return FALSE;
+      }
       else
 	$file = $altfile;
     }
@@ -277,12 +278,12 @@ class PHPWS_Core {
   }
 
   function &loadAsMod(){
-    PHPWS_Core::initCoreClass("Module.php");
+    PHPWS_Core::initCoreClass('Module.php');
     
     $core = & new PHPWS_Module;
-    $core->setTitle("core");
-    $core->setDirectory(PHPWS_SOURCE_DIR . "core/");
-    $file = PHPWS_Core::getConfigFile("core", "version.php");
+    $core->setTitle('core');
+    $core->setDirectory(PHPWS_SOURCE_DIR . 'core/');
+    $file = PHPWS_Core::getConfigFile('core', 'version.php');
     if (PEAR::isError($file))
       return $file;
     else
@@ -291,21 +292,21 @@ class PHPWS_Core {
     $core->setVersion($version);
     $core->setRegister(FALSE);
     $core->setImportSQL(TRUE);
-    $core->setProperName("Core");
+    $core->setProperName('Core');
 
     return $core;
   }
 
   function log($message, $filename, $type=NULL){
-    require_once "Log.php";
+    require_once 'Log.php';
 
     if (!is_writable(PHPWS_LOG_DIRECTORY))
-      exit("Unable to write to log directory " . PHPWS_LOG_DIRECTORY);
+      exit('Unable to write to log directory ' . PHPWS_LOG_DIRECTORY);
 
     $conf = array('mode' => LOG_PERMISSION, 'timeFormat' => LOG_TIME_FORMAT);
     $log  = &Log::singleton('file', PHPWS_LOG_DIRECTORY . $filename, $type, $conf, PEAR_LOG_NOTICE);
 
-    if (get_class($log) == "log_file"){
+    if (get_class($log) == 'log_file'){
       $log->log($message, PEAR_LOG_NOTICE);
       $log->close();
     }
@@ -313,12 +314,12 @@ class PHPWS_Core {
   }
 
   function errorPage(){
-    include "config/core/error_page.html";
+    include 'config/core/error_page.html';
     exit();
   }
 
   function isWindows(){
-    if (isset($_SERVER['WINDIR']) || preg_match("/(microsoft|win32)/i", $_SERVER['SERVER_SOFTWARE']))
+    if (isset($_SERVER['WINDIR']) || preg_match('/(microsoft|win32)/i', $_SERVER['SERVER_SOFTWARE']))
       return TRUE;
     else
       return FALSE;
@@ -326,15 +327,15 @@ class PHPWS_Core {
 
   function checkSecurity(){
     if (CHECK_DIRECTORY_PERMISSIONS == TRUE && !isset($_SESSION['SECURE'])){
-      if (is_writable("./config/") || is_writable("./templates/")){
-	PHPWS_Error::log(PHPWS_DIR_NOT_SECURE, "core");
+      if (is_writable('./config/') || is_writable('./templates/')){
+	PHPWS_Error::log(PHPWS_DIR_NOT_SECURE, 'core');
 	PHPWS_Core::errorPage();
       }
     }
   }
 
   function coreModList(){
-    $file = PHPWS_Core::getConfigFile("core", "core_modules.php");
+    $file = PHPWS_Core::getConfigFile('core', 'core_modules.php');
     if (PEAR::isError($file))
       return $file;
 
@@ -343,9 +344,9 @@ class PHPWS_Core {
   }
 
   function installModList(){
-    $db = & new PHPWS_DB("modules");
-    $db->addColumn("title");
-    return $db->select("col");
+    $db = & new PHPWS_DB('modules');
+    $db->addColumn('title');
+    return $db->select('col');
   }
 
   function stripObjValues($object){
@@ -354,7 +355,7 @@ class PHPWS_Core {
     $var_array = NULL;
 
     if(!is_array($classVars))
-      return PHPWS_Error::get(PHPWS_CLASS_VARS, "core", "PHPWS_Core::stripObjValues", $className);
+      return PHPWS_Error::get(PHPWS_CLASS_VARS, 'core', 'PHPWS_Core::stripObjValues', $className);
 
 
     foreach ($classVars as $key => $value) {
@@ -371,19 +372,19 @@ class PHPWS_Core {
     $classVars = get_class_vars($className);
 
     if(!is_array($classVars))
-      return PHPWS_Error::get(PHPWS_CLASS_VARS, "core", "PHPWS_Core::plugObject", $className);
+      return PHPWS_Error::get(PHPWS_CLASS_VARS, 'core', 'PHPWS_Core::plugObject', $className);
 
     if (isset($variables) && !is_array($variables))
-      return PHPWS_Error::get(PHPWS_WRONG_TYPE, "core", __CLASS__ . "::" . __FUNCTION__, gettype($variables));
+      return PHPWS_Error::get(PHPWS_WRONG_TYPE, 'core', __CLASS__ . '::' . __FUNCTION__, gettype($variables));
 
 
     foreach($classVars as $key => $value) {
       $column = $key;
-      if($column[0] == "_")
+      if($column[0] == '_')
 	$column = substr($column, 1, strlen($column));
       
       if(isset($variables[$column])){
-	if (preg_match("/^[aO]:\d+:/", $variables[$column]))
+	if (preg_match('/^[aO]:\d+:/', $variables[$column]))
 	  $object->$key = unserialize($variables[$column]);
 	else
 	  $object->$key = $variables[$column];
@@ -395,14 +396,14 @@ class PHPWS_Core {
   function getHomeDir(){
     $address[] = $_SERVER['DOCUMENT_ROOT'];
     $address[] = dirname($_SERVER['PHP_SELF']);
-    return implode("", $address) . "/";
+    return implode('', $address) . '/';
   }
 
   function getHomeHttp(){
     $address[] = PHPWS_Core::getHttp();
     $address[] = $_SERVER['HTTP_HOST'];
     $address[] = dirname($_SERVER['PHP_SELF']);
-    return implode("", $address) . "/";
+    return implode('', $address) . '/';
   }
 
 }// End of core class

@@ -11,12 +11,12 @@ function _($text){
  * Pre-094 code
  */
 
-define("PHPWS_TBL_PREFIX", TABLE_PREFIX);
-define("PHPWS_HOME_DIR" , "./");
-PHPWS_Core::initCoreClass("WizardBag.php");
-PHPWS_Core::initCoreClass("Crutch_Form.php");
-PHPWS_Core::initCoreClass("Crutch_DB.php");
-PHPWS_Core::initModClass("help", "Help.php");
+define('PHPWS_TBL_PREFIX', TABLE_PREFIX);
+define('PHPWS_HOME_DIR' , './');
+PHPWS_Core::initCoreClass('WizardBag.php');
+PHPWS_Core::initCoreClass('Crutch_Form.php');
+PHPWS_Core::initCoreClass('Crutch_DB.php');
+PHPWS_Core::initModClass('help', 'Help.php');
 
 class CLS_Help extends PHPWS_Help{}
 
@@ -25,7 +25,7 @@ class oldCore extends oldDB{
   var $datetime = NULL;
 
   function oldCore(){
-    $this->home_dir = "";
+    $this->home_dir = '';
     $this->datetime = new PHPWS_DateTime;
   }
 
@@ -46,10 +46,10 @@ class PHPWS_DateTime{
   var $time_dif;
 
   function PHPWS_DateTime(){
-    $this->date_month  = "m";
-    $this->date_day    = "d";
-    $this->date_year   = "Y";
-    $this->day_mode    = "l";
+    $this->date_month  = 'm';
+    $this->date_day    = 'd';
+    $this->date_year   = 'Y';
+    $this->day_mode    = 'l';
     $this->day_start   = PHPWS_DAY_START;
     $this->time_dif    = PHPWS_TIME_DIFF * 3600;
     
@@ -76,13 +76,13 @@ class PHPWS_Crutch {
     if (isset($_REQUEST['module']))
       $GLOBALS['module'] = $_REQUEST['module'];
     else
-      $GLOBALS['module'] = "home";
+      $GLOBALS['module'] = 'home';
   }
 
   function initializeModule($module){
     PHPWS_Crutch::setModule();
 
-    $includeFile = PHPWS_SOURCE_DIR . "mod/" . $module . "/conf/boost.php";
+    $includeFile = PHPWS_SOURCE_DIR . 'mod/' . $module . '/conf/boost.php';
     include($includeFile);
     if (isset($mod_class_files) && is_array($mod_class_files)){
       foreach ($mod_class_files as $requireMe)
@@ -112,9 +112,9 @@ class PHPWS_Crutch {
   }
 
   function closeSessions(){
-    PHPWS_Core::killSession("OBJ_user");
-    PHPWS_Core::killSession("translate");
-    PHPWS_Core::killSession("OBJ_layout");
+    PHPWS_Core::killSession('OBJ_user');
+    PHPWS_Core::killSession('translate');
+    PHPWS_Core::killSession('OBJ_layout');
   }
 
   function getOldLayout(){
@@ -122,7 +122,7 @@ class PHPWS_Crutch {
       return;
 
     foreach ($GLOBALS['pre094_modules'] as $module){
-      $file = PHPWS_SOURCE_DIR . "mod/$module/conf/layout.php";
+      $file = PHPWS_SOURCE_DIR . 'mod/' . $module . '/conf/layout.php';
       if (!is_file($file))
 	continue;
 
@@ -143,9 +143,9 @@ class PHPWS_Crutch {
 class oldTranslate {
   var $test = 1;
   function it($phrase, $var1=NULL, $var2=NULL, $var3=NULL){
-    $phrase = str_replace("[var1]", $var1, $phrase);
-    $phrase = str_replace("[var2]", $var2, $phrase);
-    $phrase = str_replace("[var3]", $var3, $phrase);
+    $phrase = str_replace('[var1]', $var1, $phrase);
+    $phrase = str_replace('[var2]', $var2, $phrase);
+    $phrase = str_replace('[var3]', $var3, $phrase);
 
     return $phrase;
   }
@@ -158,6 +158,6 @@ if (isset($_REQUEST['module'])){
   $GLOBALS['module'] = $_REQUEST['module'];
 }
 
-PHPWS_Core::initModClass("help", "Help.php");
+PHPWS_Core::initModClass('help', 'Help.php');
 
 ?>
