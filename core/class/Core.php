@@ -25,6 +25,14 @@ class PHPWS_Core {
       
     foreach ($moduleList as $mod){
       PHPWS_Core::setCurrentModule($mod['title']);
+
+      /* Check to see if this is an older module and load Crutch if so */
+      if ($mod['pre94'] == 1){
+	PHPWS_Core::initCoreClass("Crutch.php");
+	PHPWS_Crutch::initializeModule($mod['title']);
+	$GLOBALS['pre094_modules'][] = $mod['title'];
+      }
+
       /* Using include instead of require to prevent broken mods from hosing the site */
       $includeFile = PHPWS_SOURCE_DIR . "mod/" . $mod['title'] . "/inc/init.php";
 
@@ -58,6 +66,10 @@ class PHPWS_Core {
   }
 
   function runtimeModules(){
+    if (isset($GLOBALS['pre094_modules'])){
+      PHPWS_Crutch::startSessions();
+    }
+
     if (!isset($GLOBALS['Modules'])){
       PHPWS_Error::log(PHPWS_NO_MODULES, "core", "runtimeModules");
       PHPWS_Core::errorPage();
@@ -158,6 +170,10 @@ class PHPWS_Core {
     switch ($_GET['report']){
     case "post":
       echo phpws_debug::testarray($_POST);
+      break;
+
+    case "request":
+      echo phpws_debug::testarray($_REQUEST);
       break;
 
     case "session":
