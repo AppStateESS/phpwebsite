@@ -158,11 +158,11 @@ class PHPWS_Form {
     return $this->add($name, 'radio', $value);
   }
 
-  function addCheck($name, $value){
+  function addCheck($name, $value=1){
     return $this->add($name, 'check', $value);
   }
 
-  function addCheckBox($name, $value){
+  function addCheckBox($name, $value=1){
     return $this->add($name, 'check', $value);
   }
 
@@ -1129,7 +1129,7 @@ class Form_TextArea extends Form_Element{
       . $this->getId(TRUE)
       . implode(' ', $dimensions) . ' '
       . $this->getData()
-      . sprinf('>%s</textarea>', $value);
+      . sprintf('>%s</textarea>', $value);
   }
 
 }
