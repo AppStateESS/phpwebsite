@@ -164,15 +164,12 @@ class PHPWS_User extends PHPWS_Item {
   }
 
 
-  function loadModulePermission($module, $itemName=NULL){
+  function loadPermission($itemName){
     PHPWS_Core::initModClass("users", "Permission.php");
-    if (!isset($itemName))
-      $itemName = DEFAULT_ITEMNAME;
-
     $groups = &$this->getGroups();
 
-    $permTable = PHPWS_User_Permission::getPermissionTableName($module, $itemName);
-    $itemTable = PHPWS_User_Permission::getItemPermissionTableName($module, $itemName);
+    $permTable = PHPWS_User_Permission::getPermissionTableName($itemName);
+    $itemTable = PHPWS_User_Permission::getItemPermissionTableName($itemName);
 
     PHPWS_DB::isTable($itemTable) ? $useItem = TRUE : $useItem = FALSE;
 
@@ -211,31 +208,28 @@ class PHPWS_User extends PHPWS_Item {
       }
     }
     
-    $this->_permissions[$module][$itemName]['items'] = $itemResult;
-    $this->_permissions[$module][$itemName]['permissions'] = $permissionSet;
+    $this->_permissions[$itemName]['items'] = $itemResult;
+    $this->_permissions[$itemName]['permissions'] = $permissionSet;
     return TRUE;
   }
 
 
-  function allow($module, $itemName, $subpermission=NULL, $item_id=NULL){
+  function allow($itemName, $subpermission=NULL, $item_id=NULL){
 
     if ($this->isDeity())
       return TRUE;
 
-    if (!isset($itemName))
-      $itemName = $module;
+    if (!isset($this->_permissions[$itemName]))
+      $result = $this->loadPermission($itemName);
 
-    if (!isset($this->_permissions[$module][$itemName]))
-      $result = $this->loadModulePermission($module, $itemName);
-
-    if(isset($this->_permissions[$module][$itemName])){
+    if(isset($this->_permissions[$itemName])){
       if (isset($subpermission)){
-	$allow = $this->_permissions[$module][$itemName]['permissions'][$subpermission];
+	$allow = $this->_permissions[$itemName]['permissions'][$subpermission];
 	if ($allow == FULL_PERMISSION)
 	  return TRUE;
 	elseif ($allow == PARTIAL_PERMISSION){
 	  if (isset($item_id))
-	    return in_array($item_id, $this->_permissions[$module][$itemName]['items']);
+	    return in_array($item_id, $this->_permissions[$itemName]['items']);
 	  else
 	    return FALSE;
 	}
