@@ -23,8 +23,7 @@ class User_Form {
       return User_Form::loggedIn();
     }
     else {
-      $form['TITLE']   = _('Please Login');
-      $form['CONTENT'] = User_Form::loggedOut();
+      return User_Form::loggedOut();
     }
 
     return $form;
@@ -43,9 +42,11 @@ class User_Form {
     $template['LOGOUT'] = PHPWS_Text::moduleLink(_('Log Out'),
 						 'users',
 						 array('action'=>'user', 'command'=>'logout'));
-    $template['HOME'] = PHPWS_Text::moduleLink(_('Home'));
+    $template['HOME_USER_PANEL'] = $template['HOME'] = PHPWS_Text::moduleLink(_('Home'));
+    
+    $usermenu = PHPWS_User::getUserSetting('user_menu');
 
-    return PHPWS_Template::process($template, 'users', 'usermenus/Default.tpl');
+    return PHPWS_Template::process($template, 'users', 'usermenus/' . $usermenu);
   }
 
   function loggedOut(){
@@ -61,10 +62,8 @@ class User_Form {
     $form->addHidden('action', 'user');
     $form->addHidden('command', 'loginBox');
     $form->addText('block_username', $username);
-    $form->setWidth('block_username', '98%');
     $form->addPassword('block_password');
-    $form->setWidth('block_password', '98%');
-    $form->addSubmit('submit', _('Log In'));
+    $form->addSubmit('submit', LOGIN_BUTTON);
 
     $form->setLabel('block_username', _('Username'));
     $form->setLabel('block_password', _('Password'));
@@ -75,9 +74,10 @@ class User_Form {
     $signup_vars = array('action'  => 'user',
 			 'command' => 'signup_user');
 
+    $template['HOME_LOGIN'] = $template['HOME'] = PHPWS_Text::moduleLink(_('Home'));
     $template['NEW_ACCOUNT'] = PHPWS_Text::moduleLink(USER_SIGNUP_QUESTION, 'users', $signup_vars);
-
-    return PHPWS_Template::process($template, 'users', 'forms/loginBox.tpl');
+    $usermenu = PHPWS_User::getUserSetting('user_menu');
+    return PHPWS_Template::process($template, 'users', 'usermenus/' . $usermenu);
   }
 
   function setPermissions($id){
@@ -681,7 +681,7 @@ class User_Form {
     $form->addText('confirm_phrase');
     $form->setLabel('confirm_phrase', _('Confirm text'));
 
-    if (ENABLE_GRAPHIC_CONFIRMATION && function_exists('gd_info')) {
+    if (PHPWS_User::getUserSetting('graphic_confirm') && function_exists('gd_info')) {
       $result = User_Form::confirmGraphic();
       if (PEAR::isError($result)) {
 	PHPWS_Error::log($result);
@@ -691,7 +691,7 @@ class User_Form {
 	$form->addTplTag('GRAPHIC', $result);
       }
     }
-    echo $_SESSION['USER_CONFIRM_PHRASE'];
+
     $template = $form->getTemplate();
     $result = PHPWS_Template::process($template, 'users', 'signup_form.tpl');
     return $result;

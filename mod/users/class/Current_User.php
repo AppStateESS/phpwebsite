@@ -32,7 +32,7 @@ class Current_User {
   function getLogin(){
     PHPWS_Core::initModClass('users', 'Form.php');
     $login = User_Form::logBox();
-    Layout::set($login, 'users', 'login_box');
+    Layout::set($login, 'users', 'login_box', FALSE);
   }
 
   function isDeity(){
