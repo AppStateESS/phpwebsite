@@ -31,8 +31,9 @@ class Blog {
 
   function getEntry($print=FALSE)
   {
-    if ($print)
+    if ($print) {
       return PHPWS_Text::parseOutput($this->entry);
+    }
     else
       return $this->entry;
   }
@@ -100,7 +101,7 @@ class Blog {
     PHPWS_Core::initModClass('categories', 'Categories.php');
     $template['TITLE'] = $this->getTitle(TRUE);
     $template['DATE']  = $this->getFormatedDate();
-    $template['ENTRY'] = $this->getEntry(TRUE);
+    $template['ENTRY'] = PHPWS_Text::parseTag($this->getEntry(TRUE));
 
     if ($edit && Current_User::allow('blog', 'edit_blog', $this->getId())){
       $vars['blog_id'] = $this->getId();
