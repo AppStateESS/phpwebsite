@@ -34,11 +34,19 @@ class Layout {
     if (!isset($_SESSION['Layout_Settings']))
       Layout::initLayout();
 
-    return $_SESSION['Layout_Settings']['current_theme'];
+    $currentTheme = & $_SESSION['Layout_Settings']['current_theme'];
+    if (isset($currentTheme))
+      return $currentTheme;
+    else
+      return PHPWS_Error::get(LAYOUT_NO_THEME, "layout", "getTheme");
   }
 
   function getThemeDir(){
-    return "themes/" . Layout::getTheme() . "/";
+    $themeDir =  Layout::getTheme();
+    if (PEAR::isError($themeDir))
+      return $themeDir;
+
+    return "themes/" . $themeDir . "/";
   }
 
   function add($text, $contentVar=NULL, $box=TRUE){
@@ -114,9 +122,13 @@ class Layout {
     if (!isset($_SESSION['Layout']))
       return PHPWS_Error::get(LAYOUT_SESSION_NOT_SET, "layout", "getBoxContent");
 
-    foreach ($_SESSION['Layout'] as $contentVar=>$contentList)
-      foreach ($contentList['content'] as $tag=>$content){
-      $finalList[$contentVar][strtoupper($tag)] = implode("", $content);
+    foreach ($_SESSION['Layout'] as $contentVar=>$contentList){
+      if (!is_array($contentList) || !isset($contentList['content']))
+	continue;
+
+      foreach ($contentList['content'] as $tag=>$content)
+	$finalList[$contentVar][strtoupper($tag)] = implode("", $content);
+
     }
     return $finalList;
   }
@@ -155,10 +167,12 @@ class Layout {
 
   function display(){
     $themeVarList = array();
-    $includeFile = Layout::getThemeDir() . "config.php";
-
-    if (is_file($includeFile))
-      include $includeFile;
+    $themeDir =  Layout::getThemeDir();
+    if (!PEAR::isError($themeDir)){
+      $includeFile = $themeDir . "config.php";
+      if (is_file($includeFile))
+	include $includeFile;
+    }
 
     $theme = Layout::getTheme();
 
@@ -166,6 +180,11 @@ class Layout {
 
     if (!is_array($finalList)){
       $finalTheme = &Layout::loadTheme($theme);
+      if (PEAR::isError($finalTheme)){
+	PHPWS_Error::log($finalTheme);
+	PHPWS_Core::errorPage();
+      }
+	
 
       if (!isset($finalList))
 	PHPWS_Error::log(LAYOUT_NO_CONTENT, "layout", "display");
@@ -268,7 +287,14 @@ class Layout {
     $template['STYLE'] = implode("\n", $GLOBALS['Style']);
 
     $tpl = new PHPWS_Template;
-    $result = $tpl->setFile(Layout::getThemeDir() . "theme.tpl", TRUE);
+    $themeDir = Layout::getThemeDir();
+
+    if (PEAR::isError($themeDir)){
+      	PHPWS_Error::log($themeDir);
+	PHPWS_Core::errorPage();
+    }
+
+    $result = $tpl->setFile($themeDir . "theme.tpl", TRUE);
 
     if (PEAR::isError($result))
       return $result;
