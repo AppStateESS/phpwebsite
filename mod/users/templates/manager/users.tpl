@@ -1,14 +1,18 @@
 <table border="0" cellspacing="1" cellpadding="4" width="100%" id="user-manager">
 <tr>
-<th>{USERNAME}&#160;{USERNAME_SORT}</td>
-<th>{LAST_LOGGED}&#160;{LAST_LOGGED_SORT}</td>
-<th width="10%">{ACTIVE}</td>
-<th>{ACTIONS}</td>
+<th>{USERNAME}&#160;{USERNAME_SORT}</th>
+<th>{EMAIL}&#160;{EMAIL_SORT}</th>
+<th>{LAST_LOGGED}&#160;{LAST_LOGGED_SORT}</th>
+<th width="10%">{ACTIVE}</th>
+<th>{ACTIONS}</th>
 </tr>
 <!-- BEGIN listrows -->
 <tr {TOGGLE}>
 <td>
 {USERNAME}
+</td>
+<td>
+{EMAIL}
 </td>
 <td style="font-size : .8em;">
 {LAST_LOGGED}
