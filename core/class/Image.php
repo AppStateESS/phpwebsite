@@ -50,6 +50,27 @@ class PHPWS_Image extends File_Common{
     return implode(" ", $tag);
   }
 
+  function getLink($newTarget=FALSE){
+    $tag[] = "<a href=\"";
+    $tag[] = $this->getPath();
+    $tag[] = "\"";
+    if ($newTarget)
+      $tag[] = " target=\"_blank\"";
+
+    $tag[] = ">";
+    $tag[] = $this->getTitle();
+    $tag[] = "</a>";
+
+    return implode("", $tag);
+  }
+
+  function getJSView(){
+    $values['address'] = $this->getPath();
+    $values['label']   = $this->getTitle();
+    $values['width'] = $this->getWidth();
+    $values['height'] = $this->getHeight();
+    return Layout::getJavascript("open_window", $values);
+  }
 
   function setType($type){
     if (is_numeric($type)){
