@@ -3,14 +3,25 @@
 class Blog_Admin {
 
   function main(){
+    if (!Current_User::allow("blog")){
+      Current_User::disallow(_("User attempted access to Blog administration."));
+      return;
+    }
+
+
     $previous_version = $title = $message = $content = NULL;
     $panel = & Blog_Admin::cpanel();
     PHPWS_Core::initModClass("version", "Version.php");
 
     $blog = & new Blog;
 
+    if (isset($_REQUEST['command']))
+      $command = $_REQUEST['command'];
+    else
+      $command = $panel->getCurrentTab();
+
     if (isset($_REQUEST['blog_id'])){
-      if (Current_User::isRestricted("blog")){
+      if ($command == "editUnapproved" || Current_User::isRestricted("blog")){
 	$unapproved = Version::getUnapproved("blog_entries", $_REQUEST['blog_id']);
 	if (!empty($unapproved)){
 	  PHPWS_DB::loadObject($blog, $unapproved);
@@ -25,18 +36,35 @@ class Blog_Admin {
       }
     }
 
-    if (isset($_REQUEST['command']))
-      $command = $_REQUEST['command'];
-    else
-      $command = $panel->getCurrentTab();
 
     switch ($command){
     case "edit":
+      if (!Current_User::authorized("blog", "edit_blog", $_REQUEST['blog_id'])){
+	Current_User::disallow(_("You do not have permission to edit this entry."));
+	return;
+      }
       $panel->setCurrentTab("list");;
       $title = _("Update Blog Entry");
       if ($previous_version)
 	$message = _("This version has not been approved.");
+      elseif (Version::waitingApproval("blog_entries", $blog->id)){
+	$link = _("A version of this entry is awaiting approval.");
+	$values['action'] = "admin";
+	$values['blog_id'] = $blog->id;
+	$values['command'] = "editUnapproved";
+	$message = PHPWS_Text::secureLink($link, "blog", $values);
+      }
       $content = Blog_Admin::edit($blog);
+      break;
+
+
+    case "editUnapproved":
+      if (!Current_User::authorized("blog", "edit_blog")){
+	Current_User::disallow(_("You do not have permission to approve this entry."));
+	return;
+      }
+      $title = _("Update Unapproved Blog Entry");
+      $content = Blog_Admin::edit($blog, TRUE);
       break;
 
     case "new":
@@ -65,13 +93,32 @@ class Blog_Admin {
       $panel->setCurrentTab("list");;
       Blog_Admin::postEntry($blog);
       
-      if (Current_User::isRestricted("blog"))
+      if (Current_User::isRestricted("blog")){
+	// User is restricted. Make unapproved version
 	$message = _("Blog entry submitted for approval");
-      else
-	$message = _("Blog entry updated.");	
-		
-      $result = $blog->save();
-      PHPWS_User::savePermissions("blog", $blog->getId());
+	$result = $blog->save();
+      }
+      else {
+	// User is unrestricted
+	if (isset($_POST['unapproved'])){
+	  // blog is unapproved
+	  if (isset($_POST['approve_entry'])){
+	    // blog is approved by admin
+	    $message = _("Blog entry approved.");
+	    $result = $blog->save(TRUE, TRUE);
+	  }
+	  else {
+	    // unapproved blog is updated
+	    $message = _("Unapproved blog entry updated.");
+	    $result = $blog->save(TRUE, FALSE);
+	  }
+	} else {
+	  $message = _("Blog entry updated.");
+	  $result = $blog->save();
+	  PHPWS_User::savePermissions("blog", $blog->getId());
+	}
+      }
+
       $title = _("Blog Archive");
       $content = Blog_Admin::entry_list();
       break;
@@ -107,18 +154,23 @@ class Blog_Admin {
     return $panel;
   }
 
-  function edit(&$blog){
+  function edit(&$blog, $needs_approval=FALSE){
     PHPWS_Core::initCoreClass("Editor.php");
     $form = & new PHPWS_Form;
     $form->addHidden("module", "blog");
     $form->addHidden("action", "admin");
     $form->addHidden("command", "postEntry");
 
+    if ($needs_approval == TRUE){
+      $form->addSubmit("approve_entry", _("Save Changes and Approve"));
+      $form->addHidden("unapproved", 1);
+    }
+
     if (isset($blog->id)){
       $form->addHidden("blog_id", $blog->id);
-      $submit = _("Update Entry");
+      $form->addSubmit("submit", _("Update Entry"));
     } else
-      $submit = _("Add Entry");
+      $form->addSubmit("submit", _("Add Entry"));
 
     if (Editor::willWork()){
       $editor = & new Editor("htmlarea", "entry", PHPWS_Text::parseOutput($blog->getEntry(), FALSE, FALSE));
@@ -126,7 +178,7 @@ class Blog_Admin {
       $form->addTplTag("ENTRY", $entry);
       $form->addTplTag("ENTRY_LABEL", PHPWS_Form::makeLabel("entry",_("Entry")));
     } else {
-      $form->addTextArea("entry", PHPWS_Text::parseOutput($blog->getEntry(), FALSE, FALSE));
+      $form->addTextArea("entry", PHPWS_Text::parseOutput($blog->getEntry(), FALSE, FALSE, FALSE));
       $form->setRows("entry", "10");
       $form->setWidth("entry", "80%");
       $form->setLabel("entry", _("Entry"));
@@ -136,11 +188,12 @@ class Blog_Admin {
     $form->setSize("title", 40);
     $form->setLabel("title", _("Title"));
 
-    $form->addSubmit("submit", $submit);
-
     $template = $form->getTemplate();
-    $assign = PHPWS_User::assignPermissions("blog", $blog->getId());
-    $template = array_merge($assign, $template);
+
+    if ($needs_approval == FALSE){
+      $assign = PHPWS_User::assignPermissions("blog", $blog->getId());
+      $template = array_merge($assign, $template);
+    }
 
     return PHPWS_Template::process($template, "blog", "edit.tpl");
   }

@@ -6,7 +6,8 @@ class Blog {
   var $entry = NULL;
   var $date  = NULL;
 
-  function Blog($id=NULL){
+  function Blog($id=NULL)
+  {
     if (isset($id)){
       $this->id = (int)$id;
       $result = $this->init();
@@ -15,7 +16,8 @@ class Blog {
     }
   }
 
-  function init(){
+  function init()
+  {
     if (!isset($this->id))
       return FALSE;
 
@@ -27,43 +29,81 @@ class Blog {
   }
 
 
-  function getEntry($print=FALSE){
+  function getEntry($print=FALSE)
+  {
     if ($print)
       return PHPWS_Text::parseOutput($this->entry);
     else
       return $this->entry;
   }
 
-  function getId(){
+  function getId()
+  {
     return $this->id;
   }
 
-  function getTitle($print=FALSE){
+  function getTitle($print=FALSE)
+  {
     if ($print)
       return PHPWS_Text::parseOutput($this->title);
     else
       return $this->title;
   }
 
-  function getFormatedDate($type="%x"){
+  function getFormatedDate($type="%x")
+  {
     return strftime($type, $this->date);
   }
 
-  function save(){
+  function save($isVersion=FALSE, $approve=FALSE)
+  {
     PHPWS_Core::initModClass("version", "Version.php");
 
+    /*
+     * if restricted createUnapproved or updateUnapproved
+     * if unrestricted
+     *   if approving an unapproved  updateApproved
+     *   if updating an unapproved   updateUnapproved
+     *   if ignoring unapproved or     createApproved
+     *   no unapproved
+     */
+
     $db = & new PHPWS_DB("blog_entries");
+
     if (isset($this->id))
       $db->addWhere("id", $this->id);
-    else
-      $this->date = mktime();
 
-    $result = Version::saveObject("blog", $db, $this);
+    $this->date = mktime();
+
+    if (Current_User::isRestricted("blog")) {
+      echo "should create or update a current unapproved item";
+      $result = Version::saveUnapproved("blog", "blog_entries", $this);
+    }
+    else {
+      if ($isVersion == TRUE) {
+	if ($approve == TRUE) {
+	  echo "should have approved the version in the queue";
+	  $db->saveObject($this);
+	  $result = Version::saveApproved("blog", "blog_entries", $this);
+	} else {
+	  echo "should have updated the unapproved in the queue";
+	  $result = Version::saveUnapproved("blog", "blog_entries", $this);
+	}
+      } else {
+	echo "should have saved the original and made a new approved version";
+	$result = $db->saveObject($this);
+	if (PEAR::isError($result))
+	  return $result;
+	$result = Version::saveVersion("blog", "blog_entries", $this);
+	test($result);
+      }
+    }
 
     return $result;
   }
 
-  function view($edit=TRUE){
+  function view($edit=TRUE)
+  {
     $template['TITLE'] = $this->getTitle(TRUE);
     $template['ENTRY'] = $this->getEntry(TRUE);
 
@@ -78,7 +118,8 @@ class Blog {
     return PHPWS_Template::process($template, "blog", "view.tpl");
   }
 
-  function kill(){
+  function kill()
+  {
     PHPWS_Core::initCoreClass("Version.php");
 
     $db = & new PHPWS_DB("blog_entries");
