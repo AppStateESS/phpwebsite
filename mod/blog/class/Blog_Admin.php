@@ -337,10 +337,7 @@ class Blog_Admin {
     $pager->addRowTag('entry', 'Blog_Admin', 'getListEntry');
     $pager->addRowTag('action', 'Blog_Admin', 'getListAction');
     $content = $pager->get();
-    if (empty($content))
-      return _('No entries made.');
-    else
-      return $content;
+    return $content;
   }
 
   function postEntry(&$blog){
