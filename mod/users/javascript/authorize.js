@@ -3,9 +3,7 @@
 
 function drop(auth_id){
    if (confirm('{DROP_Q}')){
-      alert("yes");
-   } else {
-      alert("no");
+     	location.href =	"index.php?module=users&action=admin&command=dropAuthScript&script_id=" + auth_id;
    }
 }
 
