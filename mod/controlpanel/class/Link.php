@@ -3,8 +3,9 @@
 class PHPWS_Panel_Link {
   var $_id;
   var $_label;
+  var $_active;
   var $_module;
-  var $_itemName;
+  var $_itemname;
   var $_restricted;
   var $_tab;
   var $_url;
@@ -35,6 +36,13 @@ class PHPWS_Panel_Link {
     return $this->_tab;
   }
 
+  function setActive($active){
+    $this->_active = (bool)$active;
+  }
+
+  function getActive(){
+    return $this->_active;
+  }
 
   function setLabel($label){
     $this->_label = $label;
@@ -109,11 +117,11 @@ class PHPWS_Panel_Link {
   }
 
   function setItemName($itemname){
-    $this->_itemName = $itemName;
+    $this->_itemname = $itemname;
   }
 
   function getItemName(){
-    return $this->_itemName;
+    return $this->_itemname;
   }
 
   function isRestricted(){
