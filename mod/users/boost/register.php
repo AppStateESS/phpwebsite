@@ -3,7 +3,6 @@
 function users_register($module, &$content){
   PHPWS_Core::initModClass("users", "Permission.php");
 
-  $content[] = _("Creating permissions table.");
   $result = Users_Permission::createPermissions($module);
   
   if (PEAR::isError($result)){
