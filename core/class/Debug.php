@@ -11,6 +11,8 @@
 class PHPWS_Debug {
 
   function test($value){
+    if (empty($value))
+      return "NULL";
     switch(gettype($value)){
     case "object":
       return PHPWS_Debug::testObject($value);
