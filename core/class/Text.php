@@ -14,6 +14,126 @@
 PHPWS_Core::configRequireOnce('core', 'profanity.php');
 
 class PHPWS_Text {
+  var $use_profanity  = FILTER_PROFANITY;
+  var $use_breaker    = TRUE;
+  var $use_encoded    = FALSE;
+  var $use_strip_tags = TRUE;
+  var $_allowed_tags  = PHPWS_ALLOWED_TAGS;
+
+  function PHPWS_Text($text=NULL, $encoded=FALSE)
+  {
+    $this->setText($text, $encoded);
+  }
+
+  function setText($text, $encoded=FALSE)
+  {
+    if (empty($text) || !is_string($text)) {
+      return;
+    }
+
+    if ($encoded) {
+      $this->text = html_entity_decode($text, ENT_QUOTES);
+    } else {
+      $this->text = $text;
+    }
+  }
+
+  function useProfanity($use = TRUE)
+  {
+    $this->use_profanity = (bool)$use;
+  }
+
+  function useBreaker($use = TRUE)
+  {
+    $this->use_breaker = (bool)$use;
+  }
+
+  function useEncoded($use = TRUE)
+  {
+    $this->use_encoded = (bool)$use;
+  }
+
+  function useStripTags($use = TRUE)
+  {
+    $this->use_strip_tags = (bool)$use;
+  }
+
+  function addAllowedTags($tags)
+  {
+    if (is_array($tags)) {
+      $this->_allowed_tags .= implode('', $tags);
+    } else {
+      $this->_allowed_tags .= $tags;
+    }
+  }
+
+  function setAllowedTags($tags)
+  {
+    if (is_array($tags)) {
+      $this->_allowed_tags = implode('', $tags);
+    } else {
+      $this->_allowed_tags = $tags;
+    }
+  }
+
+  function resetAllowedTags()
+  {
+    $this->_allowed_tags = PHPWS_ALLOWED_TAGS;
+  }
+
+  function clearAllowedTags()
+  {
+    $this->_allowed_tags = NULL;
+  }
+
+  function get($mode='print')
+  {
+    if (empty($this->text)) {
+      return NULL;
+    }
+    $text = $this->text;
+
+    if ($mode == 'print') {
+      $text = PHPWS_Text::parseBBCode($text);
+
+      if (!$this->use_profanity) {
+	$text = PHPWS_Text::profanityFilter($text);
+      }
+      
+      if ($this->use_breaker) {
+	$text = PHPWS_Text::breaker($text);
+      }
+      
+      if ($this->use_strip_tags) {
+	$text = PHPWS_Text::strip_tags($text, $this->_allowed_tags);
+      }
+    } elseif ($mode == 'db') {
+      $text = PHPWS_Text::parseInput($text);
+    }
+
+    return $text;
+  }
+
+  function strip_tags($text, $allowed_tags) {
+    return strip_tags($text, $allowed_tags);
+  }
+
+  function parseBBCode($text)
+  {
+    require_once('HTML/BBCodeParser.php');
+    
+    // Set up BBCodeParser
+    $config  = parse_ini_file(PHPWS_SOURCE_DIR . '/config/core/BBCodeParser.ini', true);
+    $options = &PEAR::getStaticProperty('HTML_BBCodeParser', '_options');
+    $options = $config['HTML_BBCodeParser'];
+    unset($options);
+
+    // Parse BBCode
+    $parser = new HTML_BBCodeParser();
+    $parser->setText($text);
+    $parser->parse();
+    return $parser->getParsed();
+  }
 
   /**
    * Removes profanity from a text string
@@ -26,14 +146,15 @@ class PHPWS_Text {
    * @access public
    */
   function profanityFilter($text) {
-    PHPWS_Core::configRequireOnce('core', 'profanity.php');
-    if (!is_string($text))
+    if (!is_string($text)) {
       return PHPWS_Error::get(PHPWS_TEXT_NOT_STRING, 'core', 'PHPWS_Text::profanityFilter');
+    }
 
     $words = unserialize(PROFANE_WORDS);
 
-    foreach ($words as $matchWord=>$replaceWith)
+    foreach ($words as $matchWord=>$replaceWith) {
       $text = preg_replace("/$matchWord/i", $replaceWith, $text);
+    }
 
     return $text;
   }// END FUNC profanityFilter()
@@ -62,7 +183,7 @@ class PHPWS_Text {
    * by certain tags (see below). This will prevent breaks in tables etc.
    * Make sure you enter the tags in regular expression form.
    *
-   * @author Matt McNaney <matt@NOSPAM_tux.appstate.edu>
+   * @author Matt McNaney <matt at tux dot appstate dot edu>
    * @param  string $text    Text you wish breaked
    * @return string $content Formatted text
    * @access public
@@ -76,23 +197,23 @@ class PHPWS_Text {
       return $text . "\n";
 
     $lines = count($text_array);
-    $endings = array ("<br \/>",
-		      "<br>",
-		      "<img .*>",
-		      "<\/?p.*>",
-		      "<\/?area.*>",
-		      "<\/?map.*>",
-		      "<\/?li.*>",
-		      "<\/?ol.*>",
-		      "<\/?ul.*>",
-		      "<\/?dl.*>",
-		      "<\/?dt.*>",
-		      "<\/?dd.*>",
-		      "<\/?table.*>",
-		      "<\/?th.*>",
-		      "<\/?tr.*>",
-		      "<\/?td.*>",
-		      "<\/?h..*>");
+    $endings = array ('<br \/>',
+		      '<br>',
+		      '<img .*>',
+		      '<\/?p.*>',
+		      '<\/?area.*>',
+		      '<\/?map.*>',
+		      '<\/?li.*>',
+		      '<\/?ol.*>',
+		      '<\/?ul.*>',
+		      '<\/?dl.*>',
+		      '<\/?dt.*>',
+		      '<\/?dd.*>',
+		      '<\/?table.*>',
+		      '<\/?th.*>',
+		      '<\/?tr.*>',
+		      '<\/?td.*>',
+		      '<\/?h..*>');
 
     $search_string = implode('|', $endings);
 
@@ -102,7 +223,7 @@ class PHPWS_Text {
 
     foreach ($text_array as $sentence){
       if(!$preFlag) {
-	if(preg_match("/<pre>\$/iU", trim($sentence))) {
+	if(preg_match('/<pre>\$/iU', trim($sentence))) {
 	  $preFlag = TRUE;
 	  $content[] = $sentence."\n";
 	  continue;
@@ -126,25 +247,16 @@ class PHPWS_Text {
    * Removes tags from text
    *
    * This function replaces the functionality of the 'parse' function
-   * Should be used after a post or get or before saving it to the database
+   * Should be used after a post or get or before s
+    $t->useProfanity(!$filter_profanity);
+    $t->useBreaker($run_breakeraving it to the database
    *
    * @author                       Matthew McNaney <matt at tux dot appstate dot edu>
    * @param   string  text         Text to parse
    * @param   mixed   allowedTags  The tags that will not be stripped from the text
    * @return  string  text         Stripped text
    */
-  function parseInput($text, $allowedTags=NULL){
-    if ($allowedTags == 'none')
-      $allowedTagString = NULL;
-    elseif (is_array($allowedTags))
-      $allowedTagString = implode('', $allowedTags);
-    elseif (is_string($allowedTags))
-      $allowedTagString = $allowedTags;
-    else
-      $allowedTagString = PHPWS_ALLOWED_TAGS;
-
-    $text = strip_tags($text, $allowedTagString);
-
+  function parseInput($text){
     PHPWS_Text::encodeXHTML($text);
     if (MAKE_ADDRESSES_RELATIVE) {
       PHPWS_Text::makeRelative($text);
@@ -159,7 +271,7 @@ class PHPWS_Text {
     return $xhtml;
   }
 
-  function encodeXHTML(&$text){
+  function encodeXHTML($text){
     $xhtml = PHPWS_Text::XHTMLArray();
     $text = strtr($text, $xhtml);
     $text = preg_replace("/&(?!\w+;)(?!#)/U", "&amp;\\1", $text);
@@ -183,34 +295,15 @@ class PHPWS_Text {
    * @param   string  text         Text to parse
    * @return  string  text         Stripped text
    */
-  function parseOutput($text, $printTags = FALSE, $filter_profanity = TRUE, $run_breaker = TRUE)
+  function parseOutput($text, $printTags = FALSE)
   {
-    if (empty($text))
-      return NULL;
-    require_once('HTML/BBCodeParser.php');
+    $t = & new PHPWS_Text;
+    $t->setText($text, TRUE);
 
-    // Set up BBCodeParser
-    $config  = parse_ini_file(PHPWS_SOURCE_DIR . '/config/core/BBCodeParser.ini', true);
-    $options = &PEAR::getStaticProperty('HTML_BBCodeParser', '_options');
-    $options = $config['HTML_BBCodeParser'];
-    unset($options);
-
-    if ($filter_profanity && FILTER_PROFANITY)
-      $text = PHPWS_Text::profanityFilter($text);
-
-    // Parse BBCode
-    $parser = new HTML_BBCodeParser();
-    $parser->setText($text);
-    $parser->parse();
-    $text = $parser->getParsed();
-    if ($run_breaker) {
-      $text = PHPWS_Text::breaker($text);
+    if ($printTags) {
+      return $t->get(FALSE);
     }
-
-    if ($printTags == FALSE)
-      $text = html_entity_decode($text, ENT_QUOTES);
-
-    return $text;
+    return $t->get();
   }
 
   /**
@@ -407,6 +500,48 @@ class PHPWS_Text {
     $text = str_replace($address, "./", $text);
   }
 
+  function parseTag($text)
+  {
+    if (!isset($GLOBALS['embedded_tags'])) {
+      return $text;
+    }
+
+    foreach ($GLOBALS['embedded_tags'] as $module => $funcName) {
+      $search = "\[($module):([\w:]*)\]";
+      $text = preg_replace_callback("/$search/Ui", 'getEmbedded', $text);
+    }
+
+    return $text;
+  }
+
+  function addTag($module, $function_name)
+  {
+    $GLOBALS['embedded_tags'][$module] = $function_name;
+  }
+
 }//END CLASS CLS_text
 
+
+function getEmbedded($stuff){
+  $module = $stuff[1];
+  $values = explode(':', $stuff[2]);
+
+  if (!isset($GLOBALS['embedded_tags'][$module])) {
+    return;
+  }
+
+  $filename = PHPWS_SOURCE_DIR . 'mod/' . $module . '/inc/parse.php';
+  if (!is_file($filename)) {
+    return;
+  }
+
+  require_once $filename;
+
+  $funcName = &$GLOBALS['embedded_tags'][$module];
+  if (!function_exists($funcName)) {
+    return NULL;
+  }
+  
+  return $funcName($values);
+}
 ?>
