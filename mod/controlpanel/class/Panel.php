@@ -124,6 +124,8 @@ class PHPWS_Panel{
     $module     = $this->getModule();
     $content    = $this->getContent();
 
+    $tplObj = & new PHPWS_Template("controlpanel", "panel.tpl");
+
     if (!isset($panel))
       $panel = CP_DEFAULT_PANEL;
 
@@ -131,10 +133,19 @@ class PHPWS_Panel{
       $module = 'controlpanel';
 
     foreach ($tabs as $id=>$tab){
-      if ($id == $currentTab)
-	$tablist[] = $tab->view(TRUE);
-      else
-	$tablist[] = $tab->view(FALSE);
+      $tpl['TITLE'] = $tab->getLink();
+      if ($id == $currentTab){
+	$tpl['STATUS'] = "class=\"active\"";
+	$tpl['ACTIVE'] = " ";
+      }
+      else {
+	$tpl['STATUS'] = "class=\"inactive\"";
+	$tpl['INACTIVE'] = " ";
+      }
+
+      $tplObj->setCurrentBlock("tabs");
+      $tplObj->setData($tpl);
+      $tplObj->parseCurrentBlock("tabs");
     }
 
     if ($imbed){
@@ -142,10 +153,10 @@ class PHPWS_Panel{
       $template['IMBED2'] = " ";
     }
 
-    $template['TABS'] = implode("", $tablist);
     $template['CONTENT'] = $content;
 
-    $result = PHPWS_Template::process($template, $module, $panel);
+    $tplObj->setData($template);
+    $result = $tplObj->get();
     return $result;
   }
 
