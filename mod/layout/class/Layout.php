@@ -35,16 +35,19 @@ class PHPWS_Layout {
     // If content variable is not in system (and not NULL) then make
     // a new box for it.
 
-    if (isset($contentVar) && !PHPWS_Layout::isContentVar($contentVar)){
-      PHPWS_Layout::addBox($contentVar);
-      PHPWS_Layout_Init::initContentVar();
-    }
+    if (isset($contentVar)){
+      if(!is_string($contentVar))
+	return PEAR::raiseError("Content variable is not a string");
 
-    if (!isset($contentVar)){
+      if (!PHPWS_Layout::isContentVar($contentVar)){
+	PHPWS_Layout::addBox($contentVar);
+	PHPWS_Layout_Init::initContentVar();
+	PHPWS_Layout_Init::initBoxes();
+      }
+    } else {
       $box = FALSE;
       $contentVar = DEFAULT_CONTENT_VAR;
     }
-
 
     if (!is_array($text))
       $_SESSION['Layout'][$contentVar]['content']['CONTENT'][] = $text;
@@ -138,7 +141,6 @@ class PHPWS_Layout {
   }
 
   function display(){
-
     $themeVarList = array();
     $includeFile = PHPWS_Layout::getThemeDir() . "config.php";
 
@@ -152,7 +154,6 @@ class PHPWS_Layout {
     //::to do - What to do if data is not sent ?
     if (!isset($finalList))
       return PEAR::raiseError("No data was sent to Layout");
-
 
     foreach ($finalList as $contentVar=>$template){
 
@@ -168,9 +169,8 @@ class PHPWS_Layout {
       if (!isset($order))
 	$order = MAX_ORDER_VALUE;
 
-      if ($box = PHPWS_Layout::isBoxTpl($contentVar)){
+      if (PHPWS_Layout::isBoxTpl($contentVar)){
 	$tpl = new PHPWS_Template;
-	echo phpws_debug::testarray($_SESSION['Layout_Boxes']);
 
 	$file = $_SESSION['Layout_Boxes'][$contentVar]['template'];
 	$directory = "themes/$theme/boxstyles/";
@@ -268,6 +268,7 @@ class PHPWS_Layout {
     if (!isset($theme_var))
       $theme_var = DEFAULT_THEME_VAR;
 
+
     $box = new PHPWS_Layout_Box;
     $box->setTheme($theme);
     $box->setContentVar($content_var);
@@ -278,10 +279,12 @@ class PHPWS_Layout {
     else
       $box->setDefaultTemplate();
 
-
     $result = $box->save();
-    if (PEAR::isError($result))
+    if (PEAR::isError($result)){
       echo $result->getMessage();
+      echo phpws_debug::testobject($result);
+      exit();
+    }
 
   }
 
