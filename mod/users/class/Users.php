@@ -3,7 +3,7 @@
 PHPWS_Core::initModClass("users", "Permission.php");
 
 class PHPWS_User extends PHPWS_Item {
-  var $_username     = NULL;
+  var $username     = NULL;
   var $_password     = NULL;
   var $_deity        = FALSE;
   var $_groups       = NULL;
@@ -54,13 +54,13 @@ class PHPWS_User extends PHPWS_Item {
       if (isset($result) && !PEAR::isError($result))
 	return PHPWS_Error::get(USER_ERR_DUP_USERNAME, "users", "setUsername");
     }
-    $this->_username = $username;
+    $this->username = $username;
     return TRUE;
 
   }
 
   function getUsername(){
-    return $this->_username;
+    return $this->username;
   }
 
   function setPassword($password, $hashPass=TRUE){
@@ -186,7 +186,7 @@ class PHPWS_User extends PHPWS_Item {
    * Crutch function for versions prior to 0.9.4
    */
   function allow_access($itemName, $subpermission=NULL, $item_id=NULL){
-    $this->allow($itemName, $subpermission, $item_id);
+    return $this->allow($itemName, $subpermission, $item_id);
   }
 
   function save(){
@@ -352,8 +352,6 @@ class PHPWS_User extends PHPWS_Item {
       return TRUE;
 
     $DB = new PHPWS_DB("users_settings");
-
-    echo phpws_debug::testarray($settings);
 
     foreach ($settings as $label => $varset){
       foreach ($varset as $varName => $varValue){
