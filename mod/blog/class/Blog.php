@@ -68,6 +68,19 @@ class Blog {
     return $result;
   }
 
+  function getViewLink($bare=FALSE){
+    if ($bare) {
+      if (MOD_REWRITE_ENABLED) {
+	return './blog/view/' . $this->id;
+      } else {
+	return './index.php?module=blog&amp;action=view&amp;id=' . $this->id;
+      }
+    } else {
+      return PHPWS_Text::rerouteLink(_('View'), 'blog', 'view', $this->getId());
+    }
+  }
+
+
   function view($edit=TRUE, $limited=TRUE)
   {
     PHPWS_Core::initModClass('categories', 'Categories.php');
@@ -83,7 +96,14 @@ class Blog {
     }
 
     if ($limited) {
-      $links[] = PHPWS_Text::rerouteLink(_('View'), 'blog', 'view', $this->getId());
+      $links[] = $this->getViewLink();
+    } elseif ($this->id) {
+	$related = & new Related;
+	$related->setMainId($this->id);
+	$related->setModule('blog');
+	$related->setUrl($this->getViewLink(TRUE));
+	$related->setTitle($this->getTitle(TRUE));
+	$related->show();
     }
 
     $result = Categories::getSimpleLinks('blog', $this->id);
