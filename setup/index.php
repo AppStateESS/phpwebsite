@@ -22,13 +22,15 @@ $title = _("phpWebSite 0.9.4") . " - ";
 
 if (!$setup->checkSession($content) || !isset($_REQUEST['step']))
   $step = 0;
+else
+$step = $_REQUEST['step'];
 
-  if (!$setup->checkDirectories($content)){
-    $title .=  _("Directory Permissions");
-     exit(Setup::show($content, $title));
-  }
+if (!$setup->checkDirectories($content)){
+  $title .= _("Directory Permissions");
+  exit(Setup::show($content, $title));
+}
 
-switch ($_REQUEST['step']){
+switch ($step){
  case 0:
    $title .=  "Alpha Setup";
    $setup->welcome($content);
