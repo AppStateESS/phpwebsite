@@ -75,13 +75,13 @@ class Layout {
     }
 
     if (!is_array($text))
-      $_SESSION['Layout'][$contentVar]['content']['CONTENT'][] = $text;
+      $GLOBALS['Layout'][$contentVar]['content']['CONTENT'][] = $text;
     else
       foreach ($text as $key=>$value)
-	$_SESSION['Layout'][$contentVar]['content'][$key][] = $value;
+	$GLOBALS['Layout'][$contentVar]['content'][$key][] = $value;
 
-    $_SESSION['Layout'][$contentVar]['box'] = $box;
-    $_SESSION['Layout'][$contentVar]['hold']= NULL;
+    $GLOBALS['Layout'][$contentVar]['box'] = $box;
+    $GLOBALS['Layout'][$contentVar]['hold']= NULL;
   }
 
 
@@ -91,7 +91,7 @@ class Layout {
 
     $box = (bool)$box;
 
-    $_SESSION['Layout'][$contentVar]['content'] = NULL;
+    $GLOBALS['Layout'][$contentVar]['content'] = NULL;
     Layout::add($text, $contentVar, $box);
   }
 
@@ -104,32 +104,32 @@ class Layout {
     Layout::set($text, $contentVar, $box);
 
     if (!isset($time) || !is_numeric($time))
-      $_SESSION['Layout'][$contentVar]['hold'] = mktime() + DEFAULT_LAYOUT_HOLD; 
+      $GLOBALS['Layout'][$contentVar]['hold'] = mktime() + DEFAULT_LAYOUT_HOLD; 
     elseif($time == -1)
-      $_SESSION['Layout'][$contentVar]['hold'] = $time;
+      $GLOBALS['Layout'][$contentVar]['hold'] = $time;
     else
-      $_SESSION['Layout'][$contentVar]['hold'] = mktime() + $time;
+      $GLOBALS['Layout'][$contentVar]['hold'] = mktime() + $time;
 
   }
 
   function clear($contentVar){
-    unset($_SESSION['Layout'][$contentVar]);
+    unset($GLOBALS['Layout'][$contentVar]);
   }
 
 
   function get($content_var){
-    if (isset($_SESSION['Layout'][$content_var]))
-      return $_SESSION['Layout'][$content_var];
+    if (isset($GLOBALS['Layout'][$content_var]))
+      return $GLOBALS['Layout'][$content_var];
     else
       return NULL;
   }
 
   function getBoxContent(){
     $finalList = NULL;
-    if (!isset($_SESSION['Layout']))
+    if (!isset($GLOBALS['Layout']))
       return PHPWS_Error::get(LAYOUT_SESSION_NOT_SET, "layout", "getBoxContent");
 
-    foreach ($_SESSION['Layout'] as $contentVar=>$contentList){
+    foreach ($GLOBALS['Layout'] as $contentVar=>$contentList){
       if (!is_array($contentList) || !isset($contentList['content']))
 	continue;
 
@@ -148,14 +148,14 @@ class Layout {
   }
 
   function getBoxHold($contentVar){
-    if (isset($_SESSION['Layout'][$contentVar]))
-      return $_SESSION['Layout'][$contentVar]['hold'];
+    if (isset($GLOBALS['Layout'][$contentVar]))
+      return $GLOBALS['Layout'][$contentVar]['hold'];
     else
       return 0;
   }
 
   function dropContentVar($contentVar){
-    unset($_SESSION['Layout'][$contentVar]);
+    unset($GLOBALS['Layout'][$contentVar]);
   }
 
   function getBoxOrder($contentVar){
@@ -166,8 +166,8 @@ class Layout {
   }
 
   function isBoxTpl($contentVar){
-    if (isset($_SESSION['Layout'][$contentVar]))
-      return $_SESSION['Layout'][$contentVar]['box'];
+    if (isset($GLOBALS['Layout'][$contentVar]))
+      return $GLOBALS['Layout'][$contentVar]['box'];
     else
       return NULL;
   }
@@ -231,6 +231,7 @@ class Layout {
 
 	$unsortedLayout[$theme_var][$order] = $tpl->get();
 	if (Layout::isMoveBox()){
+	  Layout::addStyle("layout");
 	  PHPWS_Core::initModClass("layout", "LayoutAdmin.php");
 	  $unsortedLayout[$theme_var][$order] .= Layout_Admin::moveBoxesTag($box);
 	}
@@ -375,7 +376,6 @@ class Layout {
     }
 
   }
-
 
   function getBoxes(){
     return $_SESSION['Layout_Boxes'];
