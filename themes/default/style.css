@@ -23,12 +23,11 @@ body {
 #sidepanel {
 	float : left;
 	width : 17%;
-	display : inline;
+	margin-right : 1%;
 }
 
 #content {
-	float : left;
-	margin-left: 3%;
+	margin-left : 18%;
 	width : 74%;
 }
 
