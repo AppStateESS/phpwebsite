@@ -191,40 +191,6 @@ class Layout_Box {
       return 1;
   }
 
-  function setDefaultTemplate(){
-    static $configExists = 0;
-    static $theme_box = NULL;
-    
-    $contentVar = $this->getContentVar();
-    
-    if ($configExists == -1)
-      return NULL;
-
-    if ($configExists == 0){
-      $includeFile =  Layout::getThemeDir() . 'config.php';
-      
-      if (!is_file($includeFile)){
-	$configExists = -1;
-	return NULL;
-      }
-      include $includeFile;
-      
-      if (!isset($theme_box)){
-	$configExists = -1;
-	return NULL;
-      }
-    }
-    
-    $configExists = 1;
-    
-    if (isset($theme_box[$contentVar]))
-      $this->setTemplate($theme_box[$contentVar]);
-    elseif (isset($theme_box['default']))
-      $this->setTemplate($theme_box['default']);
-    else
-      $this->setTemplate(NULL);
-  }
-
   function kill(){
     $theme_var = $this->getThemeVar();
     $theme = $this->getTheme();
