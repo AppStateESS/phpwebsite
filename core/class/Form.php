@@ -866,11 +866,11 @@ class Form_CheckBox extends Form_Element{
   var $match = FALSE;
 
   function setMatch($match=TRUE){
-    $this->match = (bool)$match;
+    $this->match = $match;
   }
 
   function getMatch(){
-    if ($this->match)
+    if ($this->match == $this->getValue())
       return "checked=\"checked\"";
     else
       return NULL;
@@ -891,11 +891,11 @@ class Form_RadioButton extends Form_Element{
   var $match = FALSE;
 
   function setMatch($match=TRUE){
-    $this->match = (bool)$match;
+    $this->match = $match;
   }
 
   function getMatch(){
-    if ($this->match)
+    if ($this->match == $this->getValue())
       return "checked=\"checked\"";
     else
       return NULL;
