@@ -133,7 +133,7 @@ class PHPWS_User extends PHPWS_Item {
     $this->_groups = $groups;
   }
 
-  function &getGroups(){
+  function getGroups(){
     return $this->_groups;
   }
 

@@ -1,67 +1,113 @@
-mod/users/index.php
 <?php
 
-define('USER_ERR_LABEL_NOT_FOUND', 1); 
-define('USER_ERR_UNKNOWN_INPUT',   2); 
+PHPWS_Core::initModClass("users", "User_Demographic.php");
 
-class User_Demographic {
-  var $_label      = NULL;
-  var $_input_type = NULL;
-  var $_presets    = NULL;
+class Demographics {
 
+  function import($file){
+    $file = PHPWS_Core::getConfigFile("users", $file);
 
-  function User_Demographic($label=NULL){
-    if (!isset($label))
-      return;
+    if (PEAR::isError($file))
+      return $file;
 
-    $DB = new PHPWS_DB("user_demographic_items");
-    $DB->addWhere("label", $label);
-    $item = $DB->loadObjects("User_Demographic", NULL, TRUE);
-    if (PEAR::isError($item))
-      PHPWS_Error::log(USER_ERR_LABEL_NOT_FOUND, "users", "User_Demographics");
-    else
-      $this = $item;
+    $db = new PHPWS_DB("users_demographics");
+
+    $demo = file($file);
+
+    foreach ($demo as $item){
+      if (preg_match("/^[a-z]/i", $item)){
+	$newdemo = explode(":", trim($item));
+	$db->addValue("label", trim($newdemo[0]));
+	$db->addValue("input_type", trim($newdemo[1]));
+	if (isset($newdemo[2])){
+	  if (preg_match("/^file/", trim($newdemo[2]))){
+	    $temp = explode(",", trim($newdemo[2]));
+	    $filename = $temp[1];
+	    $special = Demographics::getSpecialFile($filename);
+	    if (PEAR::isError($special))
+	      return $special;
+
+	    $db->addValue("special_info", $special);
+	  } else {
+	    $db->addValue("special_info", $newdemo[2]);
+	  }
+
+	}
+	if (isset($newdemo[3]))
+	  $db->addValue("proper_name", $newdemo[3]);
+      }
+
+      $db->insert();
+      $db->resetValues();
+    }
   }
-  
-  function setLabel($label){
-    $this->_label = preg_replace("/[a-z]+[a-z0-9_]/i", "//1//2", $label);
 
-  }
+  function getDemographics($mode=NULL, $activeOnly=FALSE){
+    $db = new PHPWS_DB("users_demographics");
+    if ($activeOnly)
+      $db->addWhere("active", 1);
 
-  function getLabel(){
-    return $this->_label;
-
-  } 
-  function setInputType($input_type){
-    switch (strtolower($input_type)){
-    case "textfield":
-    case "textarea":
-    case "radio":
-    case "checkbox":
-    case "select":
-    case "multiple":
-      $this->_input_type = $input_type;
-      return TRUE;
+    switch ($mode){
+    case "label":
+      $db->addColumn("label");
+      $result = $db->select("col");
       break;
 
+    case "object":
     default:
-      return PHPWS_Error::get(USER_ERR_UNKNOWN_INPUT, "users", "setInputType");
+      $result = $db->loadObjects("User_Demographic");
       break;
+    }
+    return $result;
+  }
 
+  function getSpecialFile($file){
+    $file = PHPWS_Core::getConfigFile("users", $file);
+    if (PEAR::isError($file))
+      return $file;
+
+    $special = file($file);
+    return implode("", $special);
+  }
+
+  //Maybe Delete
+  function allDemographicsTpl(&$template){
+    $labels = Demographics::getDemographics("label", TRUE);
+
+    foreach ($labels as $item){
+      if (!isset($template[strtoupper($item)]))
+	continue;
+
+      $itemLbl = strtoupper($item) . "_LBL";
+
+      if (isset($template[$itemLbl]))
+	$demoRow['LABEL'] = $template[$itemLbl];
+
+      $demoRow['INPUT'] = $template[strtoupper($item)];
+      $rows[] = PHPWS_Template::process($demoRow, "users", "forms/demoRow.tpl");
     }
 
+    return implode("\n", $rows);
   }
 
-  function getInputType(){
-    return $this->_input_type;
+  function form(&$form, &$user){
+    if (!isset($user))
+      $user = new PHPWS_User;
+
+    $demo = Demographics::getDemographics(NULL, TRUE);
+
+    if (!isset($demo))
+      return NULL;
+
+    foreach ($demo as $item){
+      $label = $item->getLabel();
+      $form->add($label, $item->getInputType());
+      $item->addSpecialInfo($form);
+      $template[strtoupper($label) . "_LBL"] = $item->getProperName(TRUE);
+    }
+
+    $form->mergeTemplate($template);
   }
 
-  function setPresets($presets){
-
-  }
-
-  function getPresets(){
-
-  }
 }
 ?>
