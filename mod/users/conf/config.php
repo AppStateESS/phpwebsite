@@ -35,6 +35,7 @@ define("USER_ERR_BAD_USERNAME",    -7);
 define("USER_ERR_PASSWORD_MATCH",  -8);
 define("USER_ERR_PASSWORD_LENGTH", -9);
 define("USER_ERR_PASSWORD_EASY",   -10);
+define("USER_ERR_USER_NOT_SAVED",  -11);
 
 /* User Variable Errors */
 define("USER_ERR_NO_MODULE",     -20);

@@ -18,7 +18,7 @@ class PHPWS_Group extends PHPWS_Item {
 		       );
 
     $this->addExclude($excludes);
-    $this->setTable("user_groups");
+    $this->setTable("users_groups");
 
     if (isset($id))
       $this->init($id);

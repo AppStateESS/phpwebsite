@@ -20,7 +20,7 @@ class User_Demographic {
     if (!isset($label))
       return;
 
-    $DB = new PHPWS_DB("user_demographic_items");
+    $DB = new PHPWS_DB("users_demographic_items");
     $DB->addWhere("label", $label);
     $item = $DB->loadObjects("User_Demographic", NULL, TRUE);
     if (PEAR::isError($item))

@@ -121,12 +121,17 @@ class User_Action {
   }
 
 
-  function &getSetting($setting){
+  function getUserConfig($setting){
     static $settings;
 
     if (!isset($settings)){
-      $DB = new PHPWS_DB("users_settings");
+      $DB = new PHPWS_DB("users_config");
       $settings = $DB->select("row");
+    }
+
+    if (PEAR::isError($settings)){
+      PHPWS_Error::log($settings);
+      return NULL;
     }
 
     return $settings[$setting];
@@ -144,6 +149,11 @@ class User_Action {
       $error[] = $result;
     else
       $user->setPassword($_POST['password1']);
+
+    if (isset($_POST['demographic'])){
+      PHPWS_Core::initModClass("users", "Demographics.php");
+      $result = Demographics::post($user);
+    }
 
     if (isset($error))
       return $error;

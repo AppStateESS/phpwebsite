@@ -14,7 +14,8 @@ $errors = array(
 		USER_ERR_LABEL_NOT_FOUND  => _("Demographic label not found"),
 		USER_ERR_UNKNOWN_INPUT    => _("Unknown input type"),
 		USER_ERR_NO_MODULE        => _("Module does not exist"),
-		USER_ERR_BAD_VAR          => _("Invalid variable name")
+		USER_ERR_BAD_VAR          => _("Invalid variable name"),
+		USER_ERR_USER_NOT_SAVED   => _("Unable to save user information")
 		);
 
 ?>

@@ -92,6 +92,16 @@ class Demographics {
     return implode("\n", $rows);
   }
 
+
+  function setFormValue($value, &$item, &$form){
+    switch ($item->getInputType()){
+    case "textfield":
+    case "textarea":
+      $form->setValue($item->getFormLabel(), $value);
+      break;
+    }
+  }
+
   function form(&$form, &$user){
     if (!isset($user))
       $user = new PHPWS_User;
@@ -103,12 +113,29 @@ class Demographics {
 
     foreach ($demo as $item){
       $result = $form->add($item->getFormLabel(), $item->getInputType());
+      $formValue = $user->getVar($item->getLabel(), "demographics");
+
+      if (isset($formValue))
+	Demographics::setFormValue($formValue, $item, $form);
+
       $form->setTag($item->getFormLabel(), $item->getLabel());
       $item->addSpecialInfo($form);
       $template[strtoupper($item->getLabel()) . "_LBL"] = $item->getProperName(TRUE);
     }
 
     $form->mergeTemplate($template);
+  }
+
+  function setDemographic(&$user, $name, $value, $label){
+    $user->setVar($name, $value, "demographics");
+  }
+
+
+  function post(&$user){
+    $demo = & $_POST['demographic'];
+
+    foreach ($demo as $name => $value)
+      Demographics::setDemographic($user, $name, $value, "demographics");
   }
 
 }
