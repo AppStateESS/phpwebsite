@@ -12,6 +12,7 @@ function _($text){
  */
 
 define("PHPWS_TBL_PREFIX", TABLE_PREFIX);
+define("PHPWS_HOME_DIR" , "./");
 PHPWS_Core::initCoreClass("WizardBag.php");
 PHPWS_Core::initCoreClass("Crutch_Form.php");
 PHPWS_Core::initCoreClass("Crutch_DB.php");
@@ -86,10 +87,8 @@ class PHPWS_Crutch {
   }
 
   function startSessions(){
-    if (!isset($_SESSION['OBJ_user'])){
-      $_SESSION['OBJ_user'] = & $_SESSION['User'];
-      $_SESSION['OBJ_user']->username = $_SESSION['OBJ_user']->getUsername();
-    }
+    if (!isset($_SESSION['OBJ_user']))
+      $_SESSION['OBJ_user'] = $_SESSION['User'];
 
     if (!isset($_SESSION['translate']))
       $_SESSION['translate'] = & new oldTranslate;
@@ -97,6 +96,12 @@ class PHPWS_Crutch {
     if (!isset($_SESSION['OBJ_layout']))
       $_SESSION['OBJ_layout'] = & new oldLayout;
 
+  }
+
+  function closeSessions(){
+    PHPWS_Core::killSession("OBJ_user");
+    PHPWS_Core::killSession("translate");
+    PHPWS_Core::killSession("OBJ_layout");
   }
 
   function getOldLayout(){
