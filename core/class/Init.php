@@ -201,7 +201,9 @@ function loadBrowserInformation(){
     }
     break;
 
-  }
+  default:
+    $program[0] = $program[1] = $platform = $browser['engine_version'] = $browser['engine'] = _("Unknown");
+  }// End engine switch
 
   $browser['platform'] = $platform;
   $browser['browser'] = $program[0];
