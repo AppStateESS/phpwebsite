@@ -10,6 +10,9 @@ $errors = array(
 		USER_ERR_BAD_USERNAME     => "Username is improperly formatted",
 		USER_ERR_PASSWORD_MATCH   => "Passwords do not match",
 		USER_ERR_PASSWORD_LENGTH  => "Password must be [var1] in length",
-		USER_ERR_PASSWORD_EASY    => "Password is too easy to guess"
+		USER_ERR_PASSWORD_EASY    => "Password is too easy to guess",
+		USER_ERR_LABEL_NOT_FOUND  => "Demographic label not found",
+		USER_ERR_UNKNOWN_INPUT    => "Unknown input type"
 		);
+
 ?>
