@@ -665,22 +665,30 @@ class User_Form {
     return PHPWS_Template::process($template, 'users', 'forms/settings.tpl');
   }
 
+  /**
+   * Signup form for new users
+   */
   function signup_form()
   {
     $username = NULL;
 
     $form = & new PHPWS_Form;
+    $form->addHidden('module', 'users');
     $form->addHidden('action', 'user');
     $form->addHidden('command', 'submit_new_user');
+
     $form->addText('new_username', $username);
     $form->setLabel('new_username', _('Username'));
+
     $form->addPassword('new_password');
     $form->setLabel('new_password', _('Password'));
+
     $form->addPassword('confirm_password');
     $form->setLabel('confirm_password', _('Confirm'));
+
     $form->addText('confirm_phrase');
     $form->setLabel('confirm_phrase', _('Confirm text'));
-
+ 
     $form->addTplTag('CONFIRM_INSTRUCTIONS', _('Please type the word seen in the image.'));
     $form->addTplTag('SIGNUP_LABEL', _('New Account Sign-up'));
 
@@ -695,6 +703,8 @@ class User_Form {
       }
     }
 
+    $form->addSubmit('submit', _('Sign up'));
+ 
     $template = $form->getTemplate();
     $result = PHPWS_Template::process($template, 'users', 'forms/signup_form.tpl');
     return $result;
