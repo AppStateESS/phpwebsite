@@ -49,7 +49,7 @@ class Categories{
 	$db->addWhere('cat_id', $category->id);
 	list($count) = $db->select('count');
 	$db->resetWhere();
-	$items = ' (' . $count['count'] . ' ' . _('items') . ')';
+	$items = ' - ' . $count['count'] . ' ' . _('item(s)');
       } else {
 	$items = NULL;
       }
@@ -102,21 +102,6 @@ class Categories{
   }
 
 
-  /* Needed ?
-  function getExtendedLinks($module, $item_id, $item_name=NULL){
-    $cat_result = Categories::_getItemsCategories($module, $item_id, $item_name);
-
-    if (empty($cat_result))
-      return NULL;
-
-    foreach ($cat_result as $cat){
-      $link[] = Categories::_createExtendedLink($cat, 'extended');
-    }
-
-    return $link;
-  }
-  */
-
   function getSimpleLinks($module, $item_id, $item_name=NULL){
     $cat_result = Categories::_getItemsCategories($module, $item_id, $item_name);
 
@@ -129,32 +114,6 @@ class Categories{
 
     return $link;
   }
-
-  /* Not sure if needed anymore 
-
-  function showCategoryLinks($module, $item_id, $item_name=NULL){
-    $links = Categories::getExtendedLinks($module, $item_id, $item_name);
-
-    if (empty($links))
-      return NULL;
-    
-    $tpl = & new PHPWS_Template('categories');
-    $tpl->setFile('minilist.tpl');
-    $tpl->setCurrentBlock('link-list');
-
-    foreach ($links as $link){
-      $tpl->setData(array('LINK'=>$link));
-      $tpl->parseCurrentBlock();
-    }
-
-    $data['CONTENT'] = $tpl->get();
-    $data['TITLE'] = _('Categories');
-
-    Layout::add($data, 'categories', 'category_box');
-
-  }
-  */
-
 
   function _createExtendedLink($category, $mode){
     $link[] = $category->getViewLink();
@@ -288,12 +247,12 @@ class Categories{
 
     if (empty($result))
       return NULL;
-    foreach ($result as $mod_results){
-      $module = & new PHPWS_Module($mod_results['module']);
-      $mod_list[$module->getTitle()] = $module->getProperName() 
-	. ' (' . $mod_results['count'] . ' ' . _('items') . ')';
-    }
 
+    $module = & new PHPWS_Module($result['module']);
+
+    $mod_list[$module->getTitle()] = $module->getProperName() 
+      . ' - ' . $result['COUNT(*)'] . ' ' . _('item(s)');
+    
     return $mod_list;
   }
 
