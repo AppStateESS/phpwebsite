@@ -30,16 +30,17 @@ if (ini_get('register_globals')){
 require_once PHPWS_SOURCE_DIR . "core/class/Init.php";
 
 PHPWS_Core::checkSecurity();
-PHPWS_Core::checkJS();
 PHPWS_Core::initializeModules();
 
 session_name(SESSION_NAME);
 session_start();
 
+checkJavascript();
+
 PHPWS_Core::runtimeModules();
 PHPWS_Core::runCurrentModule();
-PHPWS_Core::closeModules();
 
+PHPWS_Core::closeModules();
 ob_end_flush();
 
 PHPWS_DB::disconnect();
