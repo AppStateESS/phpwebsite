@@ -309,8 +309,8 @@ class User_Action {
       break;
       
     case "user_settings":
-      PHPWS_Core::initModClass("users", "User_Setting.php");
-      User_Setting::main();
+      PHPWS_Core::initModClass("users", "My_Page.php");
+      My_Page::main();
       break;
 
     case "logout":
