@@ -106,6 +106,128 @@ class User_Form {
 
   }
 
+  function manageGroups(){
+    PHPWS_Core::initModClass("users", "Group_Manager.php");
+    if (!isset($_SESSION['Group_Manager']))
+      $manager = & new Group_Manager;
+    else
+      $manager = unserialize($_SESSION['Group_Manager']);
+
+    if (isset($_POST['search_groups']))
+      $manager->setWhere("name LIKE '%" . $_POST['search_groups'] . "%'");
+
+    $content = $manager->getList("users", "Testing Group Title");
+
+    $_SESSION['Group_Manager'] = serialize($manager);
+
+    if (PEAR::isError($content)){
+      PHPWS_Error::log($content);
+      return $content->getMessage();
+    }
+    return $content;
+
+  }
+
+  function manageMembers(&$group){
+    $form = & new PHPWS_Form("memberList");
+    $form->add("module", "hidden", "users");
+    $form->add("action[admin]", "hidden", "manageMembers");
+    $form->add("group", "hidden", $group->getId());
+    $form->add("search_member", "textfield");
+    $form->add("search", "submit", _("Add"));
+
+    $template['NAME_LABEL'] = _("Group name");
+    $template['GROUPNAME'] = $group->getName();
+    $template['ADD_MEMBER_LBL'] = _("Add Member");
+
+    if (isset($_POST['search_member'])){
+      $_SESSION['Last_Member_Search'] = preg_replace("/[\W]+/", "", $_POST['search_member']);
+      $db = & new PHPWS_DB("users_groups");
+      $db->addWhere("name", $_SESSION['Last_Member_Search']);
+      $db->addColumn("id");
+      $result = $db->select("one");
+
+      if (isset($result)){
+	if (PEAR::isError($result))
+	  PHPWS_Error::log($result);
+	else {
+	  $group->addMember($result);
+	  $group->save();
+	  unset($_SESSION['Last_Member_Search']);
+	}
+
+      }
+    }
+
+
+    if (isset($_SESSION['Last_Member_Search'])){
+      $result = User_Form::getLikeGroups($_SESSION['Last_Member_Search'], $group);
+      if (isset($result)) {
+	$template['LIKE_GROUPS'] = $result;
+	$template['LIKE_INSTRUCTION'] = _("Member not found.") . " " . _("Closest matches below.");
+      } else
+	$template['LIKE_INSTRUCTION'] = _("Member not found.") . " " . _("No matches found.");
+    }
+
+    $template = $form->getTemplate(TRUE, TRUE, $template);
+
+    $template['CURRENT_MEMBERS_LBL'] = _("Current Members");
+    $template['CURRENT_MEMBERS'] = User_Form::getMemberList($group);
+
+    $result =  PHPWS_Template::process($template, "users", "forms/memberForm.tpl");
+    return $result;
+
+  }
+
+
+  function getMemberList(&$group){
+    $content = NULL;
+    PHPWS_Core::initCoreClass("Pager.php");
+    Layout::addStyle("users");
+
+
+    $result = $group->getMembers();
+    unset($db);
+    if ($result){
+      $db = & new PHPWS_DB("users_groups");
+      $db->addColumn("name");
+      $db->addColumn("id");
+      $db->addWhere("id", $result, "=", "or");
+
+      $groupResult = $db->select();
+
+      $count = 0;
+      foreach ($groupResult as $item){
+	$count++;
+	$action = "<a href=\"index.php?module=users&amp;action[admin]=dropMember&amp;member=" . $item['id'] . "&amp;group="
+	  . $group->getId() . "\">Drop</a>";
+	if ($count % 2)
+	  $template['STYLE'] = "class=\"bg-light\"";
+	else
+	  $template['STYLE'] = NULL;
+	$template['NAME'] = $item['name'];
+	$template['ACTION'] = $action;
+
+	$data[] = PHPWS_Template::process($template, "users", "forms/memberlist.tpl");
+      }
+
+      $pager = & new PHPWS_Pager;
+      $pager->setData($data);
+      $pager->setLinkBack("index.php?module=users&amp;group=" . $group->getId() . "&amp;action[admin]=manageMembers");
+      $pager->pageData();
+      $content = $pager->getData();
+    }
+
+    if (!isset($content))
+      $content = _("No members.");
+
+    if (PEAR::isError($content)){
+      PHPWS_Error::log($content);
+      return $content->getMessage();
+    }
+    return $content;
+  }
+
 
   function demographics($message=NULL){
     PHPWS_Core::initModClass("users", "Demographics.php");
@@ -230,7 +352,7 @@ class User_Form {
 
   function memberForm(){
     $form->add("add_member", "textfield");
-    $form->add("new_member_submit", "submit", _("Search"));
+    $form->add("new_member_submit", "submit", _("Add"));
     
     $template['CURRENT_MEMBERS'] = User_Form::memberListForm($group);
     $template['ADD_MEMBER_LBL'] = _("Add Member");
@@ -305,14 +427,15 @@ class User_Form {
     $tpl = & new PHPWS_Template("users");
     $tpl->setFile("forms/likeGroups.tpl");
     $count = 0;
-    $form = new PHPWS_Form;
 
-    foreach ($result as $group){
-      $form->add("member_join[" . $group->getId() . "]", "submit", _("Add"));
-      $addbutton = $form->get("member_join[" . $group->getId() ."]");
+    foreach ($result as $member){
+      if (isset($members))
+	if (in_array($member->getId(), $members))
+	  continue;
+      $link = "<a href=\"index.php?module=users&amp;action[admin]=addMember&amp;member=" . $member->getId() . "&amp;group=" . $group->getId() . "\">" . _("Add") . "</a>";
       $count++;
       $tpl->setCurrentBlock("row");
-      $tpl->setData(array("NAME"=>$group->getName(), "ADD"=>$addbutton));
+      $tpl->setData(array("NAME"=>$member->getName(), "ADD"=>$link));
       if ($count%2)
 	$tpl->setData(array("STYLE" => "class=\"bg-light\""));
       $tpl->parseCurrentBlock();

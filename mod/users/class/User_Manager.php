@@ -91,7 +91,9 @@ class User_List{
   function getlistactions(){
     $startLink = "<a href=\"index.php?module=users&amp;user=" . $this->userList['id'] . "&amp;action[admin]=";
     $links[] = $startLink . "editUser\">" . _("Edit") . "</a>";
+    $links[] = $startLink . "setUserPermissions\">" . _("Permissions") . "</a>";
     $links[] = $startLink . "deleteUser\">" . _("Delete") . "</a>";
+
     return implode("&nbsp;|&nbsp;", $links);
   }
 

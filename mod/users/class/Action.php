@@ -62,6 +62,17 @@ class User_Action {
       $content = User_Form::groupForm($group);
       break;
 
+    case "manage_groups":
+      PHPWS_Core::killSession("Last_Member_Search");
+      $content = User_Form::manageGroups();
+      break;
+
+    case "manageMembers":
+      PHPWS_Core::initModClass("users", "Group.php");
+      $group = & new PHPWS_Group($_REQUEST['group']);
+      $content = User_Form::manageMembers($group);
+      break;
+
       /** End Group Forms **/
 
       /** Action cases **/
@@ -155,9 +166,27 @@ class User_Action {
       $content = User_Form::demographics("Demographics updated");
       break;
 
+
+    case "addMember":
+      PHPWS_Core::initModClass("users", "Group.php");
+      $group = & new PHPWS_Group($_REQUEST['group']);
+      $group->addMember($_REQUEST['member']);
+      $group->save();
+      $content = User_Form::manageMembers($group);
+      break;
+
+    case "dropMember":
+      PHPWS_Core::initModClass("users", "Group.php");
+      $group = & new PHPWS_Group($_REQUEST['group']);
+      $group->dropMember($_REQUEST['member']);
+      $group->save();
+      $content = User_Form::manageMembers($group);
+      break;
+
+
     default:
       $content = "Unknown command";
-      User_Action::adminAction(DEFAULT_USER_MENU);
+      echo phpws_debug::testarray($_REQUEST);
       break;
     }
 

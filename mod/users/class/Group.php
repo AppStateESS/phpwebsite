@@ -3,7 +3,7 @@
 class PHPWS_Group extends PHPWS_Item {
   var $_id       = NULL;
   var $_name     = NULL;
-  var $_user_id  = NULL;
+  var $_user_id  = 0;
   var $_members  = NULL;
   
   function PHPWS_Group($id=NULL){
@@ -21,10 +21,20 @@ class PHPWS_Group extends PHPWS_Item {
     $this->setTable("users_groups");
 
     if (isset($id)){
-      $this->init($id);
+      $this->setId($id);
+      $this->init();
+      $this->loadMembers();
     }
   }
 
+  function loadMembers(){
+    $db = & new PHPWS_DB("users_members");
+    $db->addWhere("group_id", $this->getId());
+    $db->addColumn("member_id");
+    $result = $db->select("col");
+    $this->setMembers($result);
+
+  }
 
   function setName($name, $test=FALSE){
     if ($test == TRUE){
@@ -64,6 +74,21 @@ class PHPWS_Group extends PHPWS_Item {
     return $this->_user_id;
   }
 
+  function setMembers($members){
+    $this->_members = $members;
+  }
+
+  function dropMember($member){
+    $key = array_search($member, $this->_members);
+    unset($this->_members[$key]);
+  }
+
+  function dropAllMembers(){
+    $db = & new PHPWS_DB("users_members");
+    $db->addWhere("group_id", $this->getId());
+    return $db->delete();
+  }
+
   function addMember($member, $test=FALSE){
     if ($test == TRUE){
       $db = & new PHPWS_DB("users_groups");
@@ -90,6 +115,18 @@ class PHPWS_Group extends PHPWS_Item {
 
   function save(){
     $result = $this->commit();
+    $members = $this->getMembers();
+
+    if (isset($members)){
+      $this->dropAllMembers();
+      $db = & new PHPWS_DB("users_members");
+      foreach($members as $member){
+	$db->addValue("group_id", $this->getId());
+	$db->addValue("member_id", $member);
+	$db->insert();
+	$db->resetValues();
+      }
+    }
 
     return $result;
   }
