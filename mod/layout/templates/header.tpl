@@ -1,6 +1,4 @@
-{XML}
-{DOCTYPE}
-{XHTML}
+{XML}{XML_STYLE}{DOCTYPE}{XHTML}
 <head>
 <base href="http://localhost/phpwebsite094/" />
 <title>{PAGE_TITLE}</title>
@@ -8,7 +6,7 @@
 {JAVASCRIPT}
 {STYLE}
 </head>
-<body {TEST_JS}>
+<body>
 {CONTENT}
 </body>
 </html>
