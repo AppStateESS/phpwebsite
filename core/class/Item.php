@@ -4,16 +4,15 @@
 //require_once("Net/CheckIP.php");    
 
 /**
- * Base class for items used in phpWebSite modules.
+ * Base class for items used in phpWebSite's 0.x  modules.
  *
- * This is the base class for any item used in phpWebSite modules.
- * It contains database identification, owner, created, updated,
- * and other information.  These variables can be manipulated via
- * get and set functions provided in this class.
+ * This class exists to supply backward compatibility with 0.x
+ * modules.
  *
  * @version $Id$
- * @author  Steven Levin <steven@tux.appstate.edu>
- * @author  Adam Morton <adam@tux.appstate.edu>
+ * @author  Steven Levin <steven at tux dot appstate dot edu>
+ * @author  Adam Morton
+ * @author  Matthew McNaney <matt at tux dot appstate dot edu>
  * @package Core
  */
 class PHPWS_Item {
@@ -27,6 +26,8 @@ class PHPWS_Item {
    */
   var $_id = NULL;
 
+  var $_label = NULL;
+
   /**
    * The username of the user who currently owns this item.
    *
@@ -35,6 +36,8 @@ class PHPWS_Item {
    * @access  private
    */
   var $_owner = NULL;
+
+  var $_hidden = 0;
 
   /**
    * The username of the user who last updated this item.
@@ -187,62 +190,11 @@ class PHPWS_Item {
       $this->setIp();
     }
 
-    $commitValues = get_object_vars($this);
-    if(is_array($commitValues)) {
-      /* removing values from the commit array that need to be excluded */
-      if(is_array($this->_exclude)) {
-	foreach($this->_exclude as $value) {
-	  unset($commitValues[$value]);
-	}
-      }
-
-      foreach($commitValues as $key => $value) {
-	$oldKey = $key;
-	/* removeving the underscore before private variables to match columns in the database */
-	if($key[0] == "_") {
-	  $key = substr($key, 1, strlen($key));
-	  $commitValues[$key] = $commitValues[$oldKey];
-	  unset($commitValues[$oldKey]);
-	}
-
-	/* changing boolean variables to a value that can be saved in the db */
-	if(is_bool($commitValues[$key])) {
-	  if($commitValues[$key]) {
-	    $commitValues[$key] = 1;
-	  } else {
-	    $commitValues[$key] = 0;
-	  }
-	}
-	
-	/* serializing all objects and arrays */
-	if(is_object($commitValues[$key]) || is_array($commitValues[$key])) {
-	  $commitValues[$key] = addslashes(serialize($commitValues[$key]));
-	}
-      }
-    } else {
-      $error = "Was not able to get_object_vars in PHPWS_Item::commit().";
-      return PEAR::raiseError($error);
+    $db = & new PHPWS_DB($this->_table);
+    if (isset($this->_id)) {
+      $db->addWhere('id', $this->_id);
     }
-
-    if(is_array($extras)) {
-      $commitValues = array_merge($commitValues, $extras);
-    }
-
-    /* if this item's id exists then the database call is an update, otherwise it is an insert */
-    $DB = new PHPWS_DB($this->_table);
-    $DB->addValue($commitValues);
-    if(isset($this->_id)) {
-      $DB->addWhere("id", $this->_id);
-      return $DB->update();
-    } else {
-      $result = $DB->insert();
-      if(PEAR::isError($result)) {
-	return $result;
-      } else {
-	$this->_id = $result;
-	return TRUE;
-      }      
-    }
+    return $db->saveObject($this, TRUE);
   } // END FUNC commit
 
   /**
