@@ -26,6 +26,10 @@ class PHPWS_Debug {
       else
 	return "FALSE";
 
+    case "string":
+      return preg_replace("/\n/", "\\\\n", htmlspecialchars($value));
+      break;
+
     default:
       return $value;
     }
@@ -133,8 +137,10 @@ class PHPWS_Debug {
 
 } // END CLASS PHPWS_Debug
 
-function test($value){
+function test($value, $exitAfter=FALSE){
   echo PHPWS_Debug::test($value);
+  if ($exitAfter)
+    exit();
 }
 
 ?>
