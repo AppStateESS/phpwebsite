@@ -1,5 +1,15 @@
 /*------------- CONTROL PANEL ------------------*/
 
+/*-------------- Main Menu -----------*/
+
+.tab-list {
+background-color : yellow;
+}
+
+.link-list {
+background-color : red;
+}
+
 /*--------------- Tabs ---------------*/
 .tabmenu {
   width : 100%;
