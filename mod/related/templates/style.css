@@ -1,0 +1,18 @@
+#related-bank {
+ font-size : .8em;
+}
+
+#related-bank #instructions {
+ text-align : left;
+}
+
+#related-bank div.link {
+  margin-bottom : 2px;
+  background-color : #ebebeb;
+  text-align : center;
+  font-weight : bold;
+}
+
+a img {
+ border : 0;
+}
