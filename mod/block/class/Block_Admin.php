@@ -64,6 +64,11 @@ class Block_Admin {
       $message = _('Block stored.');
       break;
 
+    case 'remove':
+      Block_Admin::removeBlock();
+      PHPWS_Core::goBack();
+      break;
+
     case 'postBlock':
       Block_Admin::postBlock($block);
       $result = $block->save();
@@ -75,7 +80,7 @@ class Block_Admin {
 
     case 'pin':
       Block_Admin::pinBlock();
-      PHPWS_Core::goBack();      
+      PHPWS_Core::goBack();
       break;
 
     case 'list':
@@ -91,6 +96,27 @@ class Block_Admin {
     $template['CONTENT'] = &$content;
 
     return PHPWS_Template::process($template, 'block', 'admin.tpl');
+  }
+
+  function removeBlock()
+  {
+    if (!isset($_GET['mod']) ||
+	!isset($_GET['item']) ||
+	!isset($_GET['itname']) ||
+	!isset($_GET['block_id'])
+	)
+      return;
+
+    $db = & new PHPWS_DB('block_pinned');
+    $db->addWhere('block_id', $_GET['block_id']);
+    $db->addWhere('module', $_GET['mod']);
+    $db->addWhere('item_id', $_GET['item']);
+    $db->addWhere('itemname', $_GET['itname']);
+    $result = $db->delete();
+    if (PEAR::isError($result)) {
+      PHPWS_Error::log($result);
+    }
+
   }
 
   function edit(&$block)
@@ -189,9 +215,9 @@ class Block_Admin {
     unset($_SESSION['Stored_Blocks'][$block_id]);
 
     $values['block_id'] = $block_id;
-    $values['module']   = $_GET['pinmod'];
-    $values['item_id']  = $_GET['item_id'];
-    $values['itemname'] = $_GET['itemname'];
+    $values['module']   = $_GET['mod'];
+    $values['item_id']  = $_GET['item'];
+    $values['itemname'] = $_GET['itname'];
 
     $db = & new PHPWS_DB('block_pinned');
     $db->addWhere($values);
