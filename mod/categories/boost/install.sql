@@ -8,12 +8,11 @@ CREATE TABLE categories (
   PRIMARY KEY  (id)
 );
 
-
-CREATE TABLE categories_children (
-  cat_id int NOT NULL default '0',
-  kid_id int NOT NULL default '0'
-);
-
-CREATE TABLE categories_modules (
-  mod_title varchar(40) NOT NULL default ''
+CREATE TABLE category_items (
+  cat_id int(11) NOT NULL default '0',
+  item_id int(11) NOT NULL default '0',
+  module varchar(40) NOT NULL default '',
+  item_name varchar(40) NOT NULL default '',
+  label varchar(255) NOT NULL default '',
+  link varchar(255) NOT NULL default ''
 );
