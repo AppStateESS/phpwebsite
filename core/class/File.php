@@ -94,26 +94,39 @@ class PHPWS_File {
    * @access   public
    */
   function recursiveFileCopy ($fromPath, $toPath) {
-    if(@mkdir($toPath, 0755)){
-
-      if (is_dir($fromPath)) {
-        chdir($fromPath);
-        $handle = opendir('.');
-        while (($file = readdir($handle)) !== FALSE) {
-          if (($file != ".") && ($file != "..") && ($file != "CVS")) {
-            if (is_dir($file)) {
-              PHPWS_File::recursiveFileCopy ($fromPath . $file . "/", $toPath . $file."/");
-              chdir($fromPath);
-            }
-            if (is_file($file))
-              @copy($fromPath . $file, $toPath . $file);
-          }
-        }
-        closedir($handle);
-        return TRUE;
-      } else
-        return FALSE;
+    if (!is_dir($toPath)){
+      $result = @mkdir($toPath, 0755);
+      if (!$result){
+	PHPWS_Error::log(PHPWS_DIR_CANT_CREATE, "core", "PHPWS_File::recursiveFileCopy", $toPath);
+	return FALSE;
+      }
     }
+    else {
+      $result = is_writable($toPath);
+      if (!$result){
+	PHPWS_Error::log(PHPWS_DIR_NOT_WRITABLE, "core", "PHPWS_File::recursiveFileCopy", $toPath);
+	return FALSE;
+      }
+    }
+
+    if (is_dir($fromPath)) {
+      chdir($fromPath);
+      $handle = opendir('.');
+      while (($file = readdir($handle)) !== FALSE) {
+	if (($file != ".") && ($file != "..") && ($file != "CVS")) {
+	  if (is_dir($file)) {
+	    PHPWS_File::recursiveFileCopy ($fromPath . $file . "/", $toPath . $file."/");
+	    chdir($fromPath);
+	  }
+	  if (is_file($file))
+	    @copy($fromPath . $file, $toPath . $file);
+	}
+      }
+      closedir($handle);
+      return TRUE;
+    } else
+      return FALSE;
+
   }// END FUNC recursiveFileCopy()
 
 
