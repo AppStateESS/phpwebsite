@@ -11,7 +11,6 @@ if (isset($_REQUEST['action']['admin']))
 
 include_once $includeFile;
 
-PHPWS_Core::initModClass("users", "ModSetting.php");
 PHPWS_Core::initModClass("users", "Users.php");
 
 ?>
