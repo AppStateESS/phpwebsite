@@ -155,6 +155,23 @@ class Category{
     }
   }
 
+  function _addParent(&$list, $parent){
+    $cat = & new Category($parent);
+    $list[$cat->id] = $cat;
+    if ($cat->parent != 0) {
+      $cat->_addParent($list, $cat->parent);
+    }
+  }
+
+  function getFamily(){
+    $list = array();
+    $list[$this->id] = $this;
+    if ($this->parent != 0) {
+      $this->_addParent($list, $this->parent);
+    }
+    $list = array_reverse($list, TRUE);
+    return $list;
+  }
 }
 
 ?>

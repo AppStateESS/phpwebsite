@@ -8,13 +8,12 @@
  * @package categories
  */
 
-PHPWS_Core::configRequireOnce("categories", "errorDefines.php");
-PHPWS_Core::initModClass("categories", "Category.php");
+PHPWS_Core::configRequireOnce('categories', 'errorDefines.php');
+PHPWS_Core::initModClass('categories', 'Category.php');
 
-define("CAT_LINK_DIVIDERS", "&gt;&gt;");
+define('CAT_LINK_DIVIDERS', '&gt;&gt;');
 
 class Categories{
-
   /**
    * Returns a list of category links
    */
@@ -30,7 +29,7 @@ class Categories{
    */
   function _makeLink($list){
     $tpl = & new PHPWS_Template("categories");
-    $tpl->setFile("list.tpl");
+    $tpl->setFile("simple_list.tpl");
 
     $vars['action'] = "view";
     $tpl->setCurrentBlock("link_row");
@@ -61,7 +60,7 @@ class Categories{
   }
 
   function _getItemsCategories($module, $item_id, $item_name){
-    PHPWS_Core::initModClass("categories", "Category_Item.php");
+    PHPWS_Core::initModClass('categories', 'Category_Item.php');
     if (empty($module) || empty($item_id))
       return NULL;
 
@@ -74,9 +73,9 @@ class Categories{
 
     $cat_list = array_keys($result);
 
-    $db = & new PHPWS_DB("categories");
-    $db->addWhere("id", $cat_list);
-    $cat_result = $db->getObjects("Category");
+    $db = & new PHPWS_DB('categories');
+    $db->addWhere('id', $cat_list);
+    $cat_result = $db->getObjects('Category');
 
     return $cat_result;
   }
@@ -88,7 +87,7 @@ class Categories{
       return NULL;
 
     foreach ($cat_result as $cat){
-      $link[] = Categories::_createExtendedLink($cat, "extended");
+      $link[] = Categories::_createExtendedLink($cat, 'extended');
     }
 
     return $link;
@@ -114,50 +113,53 @@ class Categories{
     if (empty($links))
       return NULL;
     
-    $tpl = & new PHPWS_Template("categories");
-    $tpl->setFile("minilist.tpl");
-    $tpl->setCurrentBlock("link-list");
+    $tpl = & new PHPWS_Template('categories');
+    $tpl->setFile('minilist.tpl');
+    $tpl->setCurrentBlock('link-list');
 
     foreach ($links as $link){
-      $tpl->setData(array("LINK"=>$link));
+      $tpl->setData(array('LINK'=>$link));
       $tpl->parseCurrentBlock();
     }
 
     $data['CONTENT'] = $tpl->get();
-    $data['TITLE'] = _("Categories");
+    $data['TITLE'] = _('Categories');
 
-    Layout::add($data, "categories", "category_box");
+    Layout::add($data, 'categories', 'category_box');
 
   }
 
-  function getAllItems($cat_id, $module=NULL) {
-    $category = & new Category((int)$cat_id);
-    PHPWS_Core::initModClass("categories", "Category_Item.php");
-    PHPWS_Core::initCoreClass("DBPager.php");
+  /**
+   * Listing of all items within a category
+   */
+  function getAllItems(&$category, $module=NULL) {
+    PHPWS_Core::initModClass('categories', 'Category_Item.php');
+    PHPWS_Core::initCoreClass('DBPager.php');
 
-    $pageTags['TITLE_LABEL'] = _("Title");
-    $pageTags['MODULE_LABEL'] = _("Module");
 
-    $pager = & new DBPager("category_items", "Category_Item");
-    $pager->addWhere("cat_id", $category->id);
-    $pager->addWhere("version_id", 0);
+    $pageTags['TITLE_LABEL'] = _('Title');
+    $pageTags['MODULE_LABEL'] = _('Module');
+
+    $pager = & new DBPager('category_items', 'Category_Item');
+    $pager->addWhere('cat_id', $category->id);
+    $pager->addWhere('version_id', 0);
 
     if (isset($module)) {
-      $pager->addWhere("module", $module);
+      $pager->addWhere('module', $module);
     }
-    $pager->setModule("categories");
+    $pager->setModule('categories');
     $pager->setDefaultLimit(10);
-    $pager->setTemplate("category_item_list.tpl");
-    $pager->setLink("index.php?module=categories&amp;action=view&amp;id=$cat_id");
+    $pager->setTemplate('category_item_list.tpl');
+    $pager->setLink('index.php?module=categories&amp;action=view&amp;id=' . $category->getId());
     $pager->addTags($pageTags);
-    $pager->addToggle("class=\"toggle1\"");
-    $pager->addToggle("class=\"toggle2\"");
-    $pager->setMethod("title", "getLink", TRUE);
-    $pager->setMethod("module", "getProperName");
+    $pager->addToggle('class="toggle1"');
+    $pager->addToggle('class="toggle2"');
+    $pager->setMethod('title', 'getLink', TRUE);
+    $pager->setMethod('module', 'getProperName');
     $content = $pager->get();
 
     if (empty($content)) {
-      return _("No categories found.");
+      return _('No items found in this category.');
     }
     else {
       return $content;
@@ -168,38 +170,38 @@ class Categories{
   function _createExtendedLink($category, $mode){
     $link[] = $category->getViewLink();
 
-    if ($mode == "extended") {
+    if ($mode == 'extended') {
       if ($category->parent){
 	$parent = & new Category($category->parent);
-	$link[] = Categories::_createExtendedLink($parent, "extended");
+	$link[] = Categories::_createExtendedLink($parent, 'extended');
       }
     }
 
-    return implode(" " . CAT_LINK_DIVIDERS . " ", array_reverse($link));
+    return implode(' ' . CAT_LINK_DIVIDERS . ' ', array_reverse($link));
   }
 
 
-  function getCategories($mode="sorted", $drop=NULL){
-    $db = & new PHPWS_DB("categories");
+  function getCategories($mode='sorted', $drop=NULL){
+    $db = & new PHPWS_DB('categories');
 
     switch ($mode){
-    case "sorted":
-      $db->addWhere("parent", 0);
-      $db->addOrder("title");
-      $cats = $db->getObjects("Category");
+    case 'sorted':
+      $db->addWhere('parent', 0);
+      $db->addOrder('title');
+      $cats = $db->getObjects('Category');
       if (empty($cats))
 	return NULL;
       $result = Categories::initList($cats);
       return $result;
       break;
 
-    case "idlist":
-      $db->addColumn("title");
-      $db->setIndexBy("id");
-      $result = $db->select("col");
+    case 'idlist':
+      $db->addColumn('title');
+      $db->setIndexBy('id');
+      $result = $db->select('col');
       break;
 
-    case "list":
+    case 'list':
       $list = Categories::getCategories();
       $indexed = Categories::_buildList($list, $drop);
 
@@ -223,7 +225,7 @@ class Categories{
 	$sublist = Categories::_buildList($category->children, $drop);
 	if (isset($sublist)) {
 	  foreach ($sublist as $subkey => $subvalue){
-	    $indexed[$subkey] = $category->title . " " . CAT_LINK_DIVIDERS . " " . $subvalue;
+	    $indexed[$subkey] = $category->title . ' ' . CAT_LINK_DIVIDERS . ' ' . $subvalue;
 	  }
 	}
       }
@@ -234,6 +236,54 @@ class Categories{
     } else {
       return NULL;
     }
+  }
+
+  function getTopLevel(){
+    $db = & new PHPWS_DB('categories');
+    $db->addWhere('parent', 0);
+    return $db->getObjects('Category');
+  }
+
+  function cookieCrumb($category=NULL, $module=NULL){
+    Layout::addStyle('categories');
+
+    $top_level = Categories::getTopLevel();
+
+
+    $tpl = & new PHPWS_Template('categories');
+    $tpl->setFile('list.tpl');
+
+    foreach ($top_level as $top_cats) {
+      $tpl->setCurrentBlock('child-row');
+      $tpl->setData(array('CHILD' => $top_cats->getViewLink($module)));
+      $tpl->parseCurrentBlock();
+    }
+
+    $tpl->setCurrentBlock('parent-row');
+    $tpl->setData(array('PARENT' =>
+			PHPWS_Text::rerouteLink( _('Top Level'), 'categories', 'view')));
+    $tpl->parseCurrentBlock();
+
+    if (!empty($category)){
+      $family_list = $category->getFamily();
+
+      foreach ($family_list as $parent){
+	if (isset($parent->children)) {
+	  foreach ($parent->children as $child) {
+	    $tpl->setCurrentBlock('child-row');
+	    $tpl->setData(array('CHILD' => $child->getViewLink($module)));
+	    $tpl->parseCurrentBlock();
+	  }
+	}
+	
+	$tpl->setCurrentBlock('parent-row');
+	$tpl->setData(array('PARENT' => $parent->getViewLink($module)));
+	$tpl->parseCurrentBlock();
+      }
+    }
+
+    $content = $tpl->get();
+    return $content;
   }
 
 }
