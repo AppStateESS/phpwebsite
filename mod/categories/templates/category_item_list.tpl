@@ -1,15 +1,9 @@
-<table cellpadding="4" cellspacing="1" width="100%">
-  <tr>
-    <th>{TITLE_LABEL}&#160;{TITLE_SORT}</th>
-    <th width="25%">{MODULE_LABEL}&#160;{MODULE_SORT}</th>
-  </tr>
+<h3>{TITLE_LABEL}&#160;{TITLE_SORT}</h3>
+
 <!-- BEGIN listrows -->
-  <tr {TOGGLE}>
-    <td>{TITLE}</td>
-    <td>{MODULE}</td>
-  </tr>
+<div style="padding : 5px" {TOGGLE}>{TITLE}</div>
 <!-- END listrows -->
-</table>
+
 <br />
 <div style="text-align : center">
 {TOTAL_ROWS}<br />
@@ -19,3 +13,4 @@
 <div style="text-align : right">
 {SEARCH}
 </div>
+{MODULE_LIST}
