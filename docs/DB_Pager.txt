@@ -1,7 +1,7 @@
 DB Pager Documentation by Matthew McNaney
 ------------------------------------------------------------------
 
-Before version 0.9.4, PhpWebSite has some great paging tools. There
+Before version 0.9.4, PhpWebSite had some great paging tools. There
 were just two little details that were troublesome.
 
 1) Often you would need to session the class. This created a bit of
