@@ -1,1 +1,1 @@
-<?php Layout::initLayout(); ?>
+<?php Layout::checkSettings(); ?>
