@@ -93,4 +93,7 @@ $errors[DBPAGER_NO_TOTAL_PAGES]       = _("No pages found.");
 $errors[DBPAGER_MODULE_NOT_SET]       = _("Module was not set.");
 $errors[DBPAGER_TEMPLATE_NOT_SET]     = _("Template was not set.");
 
+// Editor.php 1200 - 1299
+$errors[EDITOR_MISSING_FILE]          = _("Unable to find the specified editor type.");
+
 ?>

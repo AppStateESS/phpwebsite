@@ -99,5 +99,6 @@ define("DBPAGER_NO_TOTAL_PAGES",      -1100);
 define("DBPAGER_MODULE_NOT_SET",      -1101);
 define("DBPAGER_TEMPLATE_NOT_SET",    -1102);
 
-
+/************** Editor.php ****************/
+define("EDITOR_MISSING_FILE",         -1200);
 ?>
