@@ -20,5 +20,13 @@ $tabs[] = array("id" => "unsorted",
 		"link"  => "index.php?module=controlpanel",
 		);
 
+$link[] = array("label"       => _("Control Panel"),
+		"restricted"  => TRUE,
+		"url"         => "index.php?module=controlpanel&amp;action=admin",
+		"description" => _("Allow manipulation of the control panel."),
+		"image"       => "controlpanel.png",
+		"tab"         => "admin"
+		);
+
 
 ?>
