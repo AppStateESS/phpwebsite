@@ -70,7 +70,16 @@ class oldLayout {
 
 class PHPWS_Crutch {
 
+  function setModule(){
+    if (isset($_REQUEST['module']))
+      $GLOBALS['module'] = $_REQUEST['module'];
+    else
+      $GLOBALS['module'] = "home";
+  }
+
   function initializeModule($module){
+    PHPWS_Crutch::setModule();
+
     $includeFile = PHPWS_SOURCE_DIR . "mod/" . $module . "/conf/boost.php";
     include($includeFile);
     if (isset($mod_class_files) && is_array($mod_class_files)){
@@ -95,6 +104,8 @@ class PHPWS_Crutch {
 
     if (!isset($_SESSION['OBJ_layout']))
       $_SESSION['OBJ_layout'] = & new oldLayout;
+
+    $GLOBALS['Crutch_Session_Started'] = TRUE;
 
   }
 
