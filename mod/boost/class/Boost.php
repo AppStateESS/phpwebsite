@@ -29,9 +29,9 @@ class PHPWS_Boost {
     $this->modules[$module->getTitle()] = $module;
   }
 
-  function loadModules($modules){
+  function loadModules($modules, $file=TRUE){
     foreach ($modules as $title){
-      $mod = & new PHPWS_Module(trim($title));
+      $mod = & new PHPWS_Module(trim($title), $file);
       $this->addModule($mod);
       $this->setStatus($title, BOOST_NEW);
     }
@@ -92,7 +92,7 @@ class PHPWS_Boost {
 	$this->setStatus($title, BOOST_START);
       }
 
-      $content[] = "<b>" . _("Installing") . " - " . $mod->getProperName() ."</b>";
+      $content[] = _("Installing") . " - " . $mod->getProperName();
 
       if ($this->getStatus($title) == BOOST_START && $mod->isImportSQL()){
 	$content[] = _("Importing SQL install file.");
@@ -181,6 +181,44 @@ class PHPWS_Boost {
     else
       return TRUE;
   }
+
+  function onUpgrade($mod, &$upgradeCnt){
+    $onUpgradeFile = $mod->getDirectory() . "boost/upgrade.php";
+    $upgradeFunction = $mod->getTitle() . "_upgrade";
+    $currentVersion = $mod->getVersion();
+    if (!is_file($onUpgradeFile)){
+      $this->addLog($mod->getTitle(), _("No upgrade file found."));
+      return -1;
+    }
+
+    if ($this->getStatus($mod->getTitle()) == BOOST_START)
+      $this->setStatus($mod->getTitle(), BOOST_PENDING);
+
+    /**
+     * If module was before 094, upgrade differently
+     */
+    if ($mod->isPre94()){
+      PHPWS_Core::initCoreClass("Crutch.php");
+      PHPWS_Crutch::startSessions();
+      $content = NULL;
+      include_once($onUpgradeFile);
+      $upgradeCnt[] = $content;
+      if ($status)
+	return TRUE;
+      else
+	return PHPWS_Error::get(BOOST_FAILED_PRE94_UPGRADE, "boost", "upgrade");
+    }
+
+    include_once($onUpgradeFile);
+
+    if (function_exists($upgradeFunction)){
+      $upgradeCnt[] = _("Processing upgrade file.");
+      return $upgradeFunction($upgradeCnt, $currentVersion);
+    }
+    else
+      return TRUE;
+  }
+
 
   function uninstall(){
     $content = array();
@@ -275,6 +313,53 @@ class PHPWS_Boost {
     }
     else
       return TRUE;
+  }
+
+  function upgrade(){
+    $content = array();
+    if (!$this->isModules())
+      return PHPWS_Error::get(BOOST_NO_MODULES_SET, "boost", "install");
+
+    foreach ($this->modules as $title => $mod){
+      $title = trim($title);
+      if ($this->getStatus($title) == BOOST_DONE)
+	continue;
+      
+      if ($this->getCurrent() != $title && $this->getStatus($title) == BOOST_NEW){
+	$this->setCurrent($title);
+	$this->setStatus($title, BOOST_START);
+      }
+
+      $content[] = _("Upgrading") . " - " . $mod->getProperName();
+    
+      $result = $this->onUpgrade($mod, $content);
+    
+      if ($result === TRUE){
+	$this->setStatus($title, BOOST_DONE);
+	$newMod = & new PHPWS_Module($mod->getTitle());
+	$newMod->save();
+	break;
+      }
+      elseif ($result === -1){
+	$this->setStatus($title, BOOST_DONE);
+      }
+      elseif ($result === FALSE){
+	$this->setStatus($title, BOOST_PENDING);
+	break;
+      }
+      elseif (PEAR::isError($result)){
+	$content[] = _("There was a problem in the upgrade file:");
+	$content[] = $result->getMessage();
+	$content[] = "<br />";
+	PHPWS_Error::log($result);
+      }
+    }
+  
+    if ($result == TRUE || $result == -1){
+      $content[] = _("Upgrade complete!");
+    }
+  
+    return implode("<br />", $content);    
   }
 
 

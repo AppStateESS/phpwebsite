@@ -7,7 +7,7 @@ class Boost_Action {
     $module = & new PHPWS_Module($mod_title);
 
     $file = $module->getVersionHttp();
-    $valueArray = file($file);
+    $valueArray = @file($file);
 
     if (!isset($valueArray) || !stristr($valueArray[0], "version"))
       return _("Update file not found.");
@@ -39,11 +39,9 @@ class Boost_Action {
     
     $boost = new PHPWS_Boost;
     $boost->loadModules(array($module_title));
-
     $content = $boost->install();
 
     return $content;
-
     /*
     if ($_SESSION['Boost']->isFinished())
       return TRUE;
@@ -63,6 +61,13 @@ class Boost_Action {
     return $content;
   }
 
+  function upgradeModule($module_title){
+    PHPWS_Core::initModClass("boost", "Boost.php");
+    $boost = new PHPWS_Boost;
+    $boost->loadModules(array($module_title), FALSE);
+    $content = $boost->upgrade();
+    return $content;
+  }
 }
 
 ?>

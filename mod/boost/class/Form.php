@@ -69,7 +69,7 @@ class Boost_Form {
       } else {
 	if ($type != "core_mods"){
 	  $uninstallVars = array('opmod'=>$title, "action"=>'uninstall');
-	  $template['UNINSTALL'] = PHPWS_Text::moduleLink(_("Uninstall"), "boost", $uninstallVars);
+	  $template['UNINSTALL'] = PHPWS_Text::secureLink(_("Uninstall"), "boost", $uninstallVars);
 	}
 	if ($mod->needsUpgrade()){
 	  $link_title = _("Upgrade");
@@ -93,7 +93,7 @@ class Boost_Form {
       }
 
       if (isset($link_command['action'])){
-	$template['COMMAND'] = PHPWS_Text::moduleLink($link_title, "boost", $link_command);
+	$template['COMMAND'] = PHPWS_Text::secureLink($link_title, "boost", $link_command);
       } else
 	$template['COMMAND'] = $link_title;
       
