@@ -89,7 +89,7 @@ class PHPWS_Panel{
   function getCurrentTab(){
     $itemname = $this->getItemname();
 
-    if (isset($_REQUEST['tab']))
+    if (isset($_REQUEST['tab']) && $itemname == $_REQUEST['module'])
       $this->setCurrentTab($_REQUEST['tab']);
 
     if (isset($_SESSION['Panel_Current_Tab'][$itemname]))
@@ -113,7 +113,7 @@ class PHPWS_Panel{
     return $result;
   }
 
-  function display(){
+  function display($imbed=TRUE){
     $itemname = $this->getItemname();
     $currentTab = $this->getCurrentTab();
     $tabs = $this->getTabs();
@@ -132,6 +132,11 @@ class PHPWS_Panel{
 	$tablist[] = $tab->view(TRUE);
       else
 	$tablist[] = $tab->view(FALSE);
+    }
+
+    if ($imbed){
+      $template['IMBED1'] = " ";
+      $template['IMBED2'] = " ";
     }
 
     $template['TABS'] = implode("", $tablist);

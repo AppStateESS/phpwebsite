@@ -2,7 +2,7 @@
 
 class PHPWS_ControlPanel {
 
-  function display($content=NULL){
+  function display($content=NULL, $imbed = TRUE){
     PHPWS_Core::initModClass("controlpanel", "Panel.php");
     $panel = new PHPWS_Panel('controlpanel');
     $panel->loadTabs();
@@ -15,7 +15,7 @@ class PHPWS_ControlPanel {
       $panel->setContent(implode("", $content));
     } else
       $panel->setContent($content);
-    return $panel->display();
+    return $panel->display($imbed);
   }
 
 
