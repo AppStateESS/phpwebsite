@@ -101,19 +101,18 @@ class PHPWS_Boost {
 	  $content[] = _("Import successful.");
       }
 
-      if ($this->getStatus($title) == BOOST_START){
-      }
-
       $result = $this->onInstall($title, $content);
 
       if ($result == TRUE){
 	$this->setStatus($title, BOOST_DONE);
+	$this->createDirectories($mod, $content);
 	$this->registerModule($mod, $content);
 	$content[] = PHPWS_Text::link("index.php?step=3", _("Continue installation..."));
 	break;
       }
       elseif ($result === NULL){
 	$this->setStatus($title, BOOST_DONE);
+	$this->createDirectories($mod, $content);
 	$this->registerModule($mod, $content);
       }
       elseif ($result == FALSE){
@@ -128,6 +127,75 @@ class PHPWS_Boost {
     }
 
     return implode("<br />", $content);    
+  }
+
+
+  function createDirectories($mod, &$content, $homeDir = NULL, $overwrite=FALSE){
+    PHPWS_Core::initCoreClass("File.php");
+    if (!isset($homeDir))
+      $homeDir = getcwd();
+
+
+    $configSource = $mod->getDirectory() . "conf/";
+    if (is_dir($configSource)){
+      $configDest   = $homeDir . "/config/" . $mod->getTitle() . "/";
+      if ($overwrite == TRUE || !is_dir($configDest)){
+	$content[] = _("Copying configuration files.");
+	$this->addLog($mod->getTitle(), _print(_("Copying directory [var1] to [var2]"), array($configSource, $configDest)));
+	PHPWS_File::recursiveFileCopy($configSource, $configDest);
+	chdir($homeDir);
+      }
+    }
+
+    $templateSource = $mod->getDirectory() . "templates/";
+    if (is_dir($templateSource)){
+      $templateDest   = $homeDir . "/templates/" . $mod->getTitle() . "/";
+      if ($overwrite == TRUE || !is_dir($templateDest)){
+	$content[] = _("Copying template files.");
+	$this->addLog($mod->getTitle(), _print(_("Copying directory [var1] to [var2]"), array($templateSource, $templateDest)));
+	PHPWS_File::recursiveFileCopy($templateSource, $templateDest);
+	chdir($homeDir);
+      }
+    }
+
+    if (!is_dir($homeDir . "/images/mod/")){
+      $content[] = _("Creating module image directory.");
+      $this->addLog($mod->getTitle(), _("Created directory") . " $homeDir/images/mod/");
+      mkdir("$homeDir/images/mod");
+    }
+
+    $filesDir = $homeDir . "/files/" . $mod->getTitle();
+    if (!is_dir($filesDir)){
+      $content[] = _("Creating files directory for module.");
+      $this->addLog($mod->getTitle(), _("Created directory") . " " . $fileDir);
+      mkdir($filesDir);
+    }
+
+    $imageDir = $homeDir . "/images/" . $mod->getTitle();
+    if (!is_dir($imageDir)){
+      $this->addLog($mod->getTitle(), _("Created directory") . " " . $imageDir);
+      $content[] = _("Creating image directory for module.");
+      mkdir($imageDir);
+    }
+
+    /*
+    $modImage = $homeDir . "/images/mod/" . $mod->getTitle();
+    if (!is_dir($modImage)){
+      $this->addLog($mod->getTitle(), _("Created directory") . " " . $modImage);
+      $content[] = _("Creating source image directory for module.");
+      mkdir($modImage);
+    }
+    */
+
+    $modSource = $mod->getDirectory() . "img/";
+    if (is_dir($modSource)){
+      $modImage = $homeDir . "/images/mod/" . $mod->getTitle() . "/";
+      $this->addLog($mod->getTitle(), _print(_("Copying directory [var1] to [var2]"), array($modSource, $modImage)));
+      $content[] = _("Copying source image directory for module.");
+      echo "copying $modSource to $modImage";
+      PHPWS_File::recursiveFileCopy($modSource, $modImage);
+      chdir($homeDir);
+    }
   }
 
   function onInstall($title, &$content){
