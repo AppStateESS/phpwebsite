@@ -71,6 +71,12 @@ class PHPWS_ControlPanel {
     $panel->setTabs($result);
   }
 
+  function getAllTabs(){
+    $db = & new PHPWS_DB("controlpanel_tab");
+    $db->setIndexBy("id");
+    return $db->getObjects("PHPWS_Panel_Tab");
+  }
+
   function getAllLinks(){
     $allLinks = NULL;
 
