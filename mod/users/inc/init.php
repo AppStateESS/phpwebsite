@@ -7,5 +7,6 @@ include_once $includeFile;
 
 PHPWS_Core::initModClass("users", "Users.php");
 PHPWS_Core::initModClass("users", "Current_User.php");
+PHPWS_Text::addTag('users', 'new_account');
 
 ?>
