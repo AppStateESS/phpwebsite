@@ -84,11 +84,12 @@ class User_Form {
     Layout::add(PHPWS_ControlPanel::display($panel->display()));
   }
 
-  function managerUsers(){
-    PHPWS_Core::initCoreClass("Manager.php");
-    PHPWS_Core::initModClass("users", "Manager.php");
-    $manager = & new PHPWS_User_Manager;
+  function manageUsers(){
+    PHPWS_Core::initModClass("users", "User_Manager.php");
+    $manager = & new User_Manager;
     $content = $manager->getList("users", "Testing User Title");
+    if (PEAR::isError($content))
+	return $content->getMessage();
     return $content;
   }
 
@@ -101,7 +102,7 @@ class User_Form {
       $finalForm['MESSAGE'] = $message;
 
     $finalForm['SELECTIONS'] = Demo_Manager::getList();
-    return PHPWS_Template::process($finalForm, "users", "demographics/listActive.html");
+    return PHPWS_Template::process($finalForm, "users", "manager/demoList.tpl");
   }
 
   function setActiveDemographics(){
