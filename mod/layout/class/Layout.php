@@ -30,8 +30,10 @@ class Layout {
     if (!is_array($text))
       $GLOBALS['Layout'][$module][$contentVar]['content']['CONTENT'][] = $text;
     else
-      foreach ($text as $key=>$value)
-	$GLOBALS['Layout'][$module][$contentVar]['content'][$key][] = $value;
+      foreach ($text as $key=>$value){
+	if (is_string($value))
+	  $GLOBALS['Layout'][$module][$contentVar]['content'][$key][] = $value;
+      }
 
     $GLOBALS['Layout'][$module][$contentVar]['box'] = $box;
 
@@ -154,7 +156,6 @@ class Layout {
 
   function createBox($module, $contentVar, $template){
     $tpl = new PHPWS_Template;
-    
     $box = Layout::getBox($module, $contentVar);
     
     $file = $box->template;
@@ -253,7 +254,9 @@ class Layout {
     else
       $content = $finalTheme->get();
 
-    Layout::wrap(Layout::getCurrentTheme(), $content);
+    $fullpage = Layout::wrap(Layout::getCurrentTheme(), $content);
+
+    return $fullpage;
   }
 
   function getBox($module, $contentVar){
@@ -281,7 +284,7 @@ class Layout {
 	  continue;
 	
 	foreach ($contentList['content'] as $tag=>$content)
-	  $list[$module][$contentVar][strtoupper($tag)] = implode("", $content);
+	    $list[$module][$contentVar][strtoupper($tag)] = implode("", $content);
       }
     }
     return $list;
@@ -289,6 +292,10 @@ class Layout {
 
   function getDefaultTheme(){
     return $_SESSION['Layout_Settings']->default_theme;
+  }
+
+  function getFooter(){
+    return PHPWS_Text::parseOutput($_SESSION['Layout_Settings']->footer);
   }
 
   function getHeader(){
@@ -498,6 +505,8 @@ class Layout {
       return $result;
 
     $template['HEADER']   = Layout::getHeader();
+    $template['FOOTER']   = Layout::getFooter();
+
     $template['THEME_DIRECTORY'] = "themes/$theme/";
     $tpl->setData($template);
     return $tpl;
@@ -587,9 +596,7 @@ class Layout {
     $template['ONLOAD'] = Layout::getOnLoad();
     $result = PHPWS_Template::process($template, "layout", "header.tpl");
 
-    echo $result;
+    return $result;
   }
-
-
 }
 ?>
