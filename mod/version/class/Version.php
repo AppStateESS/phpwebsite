@@ -410,7 +410,63 @@ class Version {
     $this->vr_number = $this->_getVersionNumber();
     return $this->save();
   }
-}
 
+  function &createApproval()
+  {
+    PHPWS_Core::initModClass('version', 'Approval.php');
+    $approval = & new Version_Approval;
+    $approval->setVersionId($this->id);
+    $approval->setTable($this->source_table);
+    return $approval;
+  }
+
+  /**
+   *
+   */
+  function checkApproval()
+  {
+    PHPWS_Core::initModClass('notes', 'Notes.php');
+
+    if (isset($_SESSION['Approval_Checked']) ||
+	!Current_User::isLogged()) {
+      return;
+    }
+
+    PHPWS_Core::initModClass('version', 'Approval.php');
+    $unapproved_list = Version::getUnapprovedNotices();
+
+    if (!empty($unapproved_list)) {
+      foreach ($unapproved_list as $unapproved) {
+	$result = Notes::add(_('Approval') . ': ' . $unapproved->getInfo(), _('This item needs approval.'));
+      }
+    }
+
+    $_SESSION['Approval_Checked'] = 1;    
+  }
+
+  
+  /**
+   * Pulls a list of unapproved notices
+   */
+  function getUnapprovedNotices()
+  {
+    // Check the user's access to each module
+    $module_list = PHPWS_Core::getModules(TRUE, TRUE);
+    foreach ($module_list as $mod) {
+      if (Current_User::isUnrestricted($mod)) {
+	$final_list[] = $mod;
+      }
+    }
+
+    $db = & new PHPWS_DB('version_approval');
+    foreach ($final_list as $module_title) {
+      $db->addWhere('module', $module_title, NULL, 'OR');
+    }
+
+    return $db->getObjects('Version_Approval');
+  }
+
+  
+}
 
 ?>
