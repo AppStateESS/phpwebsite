@@ -78,7 +78,7 @@ class PHPWS_Group {
 
   function setName($name, $test=FALSE){
     if ($test == TRUE){
-      if (empty($name) || preg_match("/\W+/", $name))
+      if (empty($name) || preg_match("/[^\w\s]+/", $name))
 	return PHPWS_Error::get(USER_ERR_BAD_GROUP_NAME, "users", "setName");
 
       if (strlen($name) < GROUPNAME_LENGTH)
@@ -187,6 +187,9 @@ class PHPWS_Group {
   }
 
   function loadPermissions($loadAll=TRUE){
+    if ($loadAll && isset($this->_groups))
+      $groups = $this->_groups;
+
     $groups[] = $this->getId();
     $this->_permission = & new Users_Permission($groups);
   }
