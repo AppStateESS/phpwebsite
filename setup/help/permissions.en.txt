@@ -2,7 +2,7 @@ Setting Permissions
 
 If you are running Apache under Linux/Unix you have two options:
 
-1) Log in as root and CHOWN the directory to apache.apache like so
+1) Log in as root and CHOWN the directory to websrv.websrv like so
    chown -R websrv.websrv directoryName/
    
    websrv is the user and group name of the web server. For example, 
@@ -12,6 +12,8 @@ If you are running Apache under Linux/Unix you have two options:
 
 2) If you can't log in as root, a less secure way is:
    chmod -R 777 directoryName/
+
+You MUST change the permissions back after setup.
 
 After installation of phpWebSite or its modules, the following directories
 should remain writable:
