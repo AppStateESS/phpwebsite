@@ -857,6 +857,9 @@ class PHPWS_DB {
     if (!is_object($object))
       return PHPWS_Error::get(PHPWS_DB_NOT_OBJECT, "core", "PHPWS_DB::loadObject");
 
+    if (empty($this->where))
+      return PHPWS_Error::get(PHPWS_DB_NO_WHERE, "core", "PHPWS_DB::loadObject");
+
     $className = get_class($object);
 
     $classVars = get_class_vars($className);
@@ -871,7 +874,6 @@ class PHPWS_DB {
       elseif (empty($variables))
 	return;
     }
-    
 
     foreach($classVars as $key => $value) {
       $column = $key;
