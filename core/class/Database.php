@@ -12,16 +12,17 @@ define ("DEFAULT_MODE", DB_FETCHMODE_ASSOC);
 
 class PHPWS_DB {
 
-  var $table      = NULL;
-  var $where      = array();
-  var $order      = array();
-  var $values     = array();
-  var $mode       = DEFAULT_MODE;
-  var $limit      = NULL;
-  var $index      = NULL;
-  var $column     = NULL;
-  var $qwhere     = NULL;
-  var $indexby    = NULL;
+  var $table       = NULL;
+  var $where       = array();
+  var $order       = array();
+  var $values      = array();
+  var $mode        = DEFAULT_MODE;
+  var $limit       = NULL;
+  var $index       = NULL;
+  var $column      = NULL;
+  var $qwhere      = NULL;
+  var $indexby     = NULL;
+  var $groupby     = NULL;
   var $_allColumns = NULL;
 
   function PHPWS_DB($table=NULL){
@@ -190,6 +191,21 @@ class PHPWS_DB {
 
   function addGroup($group, $conj){
     $this->where[$group]['conj'] = $conj;
+  }
+
+  function addGroupBy($group_by){
+    if (PHPWS_DB::allowed($group_by))
+      $this->groupBy[] = $group_by;
+  }
+
+  function getGroupBy($dbReady=FALSE){
+    if ((bool)$dbReady == TRUE){
+      if (!isset($this->groupBy))
+	return NULL;
+      else
+	return "GROUP BY " . implode(", ", $this->groupBy);
+    }
+    return $this->groupBy;
   }
 
   function addWhere($column, $value, $operator=NULL, $conj=NULL, $group=NULL){
@@ -490,9 +506,10 @@ class PHPWS_DB {
       if (!$table)
 	return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, "core", "PHPWS_DB::select");
 
-      $where = $this->getWhere(TRUE);
-      $order = $this->getOrder(TRUE);
-      $limit = $this->getLimit(TRUE);
+      $where   = $this->getWhere(TRUE);
+      $order   = $this->getOrder(TRUE);
+      $limit   = $this->getLimit(TRUE);
+      $groupby = $this->getGroupBy(TRUE);
 
       $indexby = $this->getIndexBy();
       
@@ -508,7 +525,7 @@ class PHPWS_DB {
       else
 	$columns = "*";
 
-      $sql = "SELECT $columns FROM $table $where $order $limit";
+      $sql = "SELECT $columns FROM $table $where $groupby $order $limit";
     } else
       $mode = DB_FETCHMODE_ASSOC;
     // assoc does odd things if the resultant return is two items or less
