@@ -574,7 +574,7 @@ class PHPWS_DB {
 
 	$result = PHPWS_DB::query($query);
 	if (DB::isError($result))
-	  $errors[] = $result->getMessage();
+	  $errors[] = $result;
       }
     }
 
