@@ -572,7 +572,7 @@ class User_Form {
     $form->addHidden("action", "admin");
     $form->addHidden("command", "postAuthorization");
 
-    $file_list = PHPWS_File::readDirectory(PHPWS_SOURCE_DIR . "mod/users/scripts/", FALSE, TRUE);
+    $file_list = PHPWS_File::readDirectory(PHPWS_SOURCE_DIR . "mod/users/scripts/", FALSE, TRUE, FALSE, array("php"));
 
     $remaining_files = array_diff($file_list, $file_compare);
 
