@@ -8,9 +8,8 @@
  * @package Core
  */
 
-PHPWS_Core::initModClass("layout", "Layout_Settings.php");
-PHPWS_Core::initCoreClass("Template.php");
-PHPWS_Core::initModClass("layout", "Crutch.php");
+PHPWS_Core::initModClass('layout', 'Layout_Settings.php');
+PHPWS_Core::initCoreClass('Template.php');
 
 class Layout {
 
@@ -24,7 +23,7 @@ class Layout {
 	Layout::addBox($contentVar, $module);
     } else {
       $box = FALSE;
-      $module = "layout";
+      $module = 'layout';
       $contentVar = DEFAULT_CONTENT_VAR;
     }
 
@@ -40,7 +39,7 @@ class Layout {
   }
 
   function addBox($content_var, $module, $theme_var=NULL, $template=NULL, $theme=NULL){
-    PHPWS_Core::initModClass("layout", "Box.php");
+    PHPWS_Core::initModClass('layout', 'Box.php');
 
     if (!isset($theme))
       $theme = $_SESSION['Layout_Settings']->current_theme;
@@ -71,7 +70,7 @@ class Layout {
     $jsfile = PHPWS_SOURCE_DIR . $directory;
 
     if (!is_file($jsfile))
-      return PHPWS_Error::get(LAYOUT_JS_FILE_NOT_FOUND, "layout", "addJSFile", $jsfile);
+      return PHPWS_Error::get(LAYOUT_JS_FILE_NOT_FOUND, 'layout', 'addJSFile', $jsfile);
   }
 
   function addJSHeader($script, $index=NULL){
@@ -92,7 +91,7 @@ class Layout {
       return;
 
     if (!isset($filename))
-      $filename = "style.css";
+      $filename = 'style.css';
 
     $cssFile['tag'] = $module;
     $cssFile['import'] = TRUE;
@@ -107,7 +106,7 @@ class Layout {
     if (is_file($cssFile['file']))
       Layout::addToStyleList($cssFile);
     
-    $themeFile['file']   = "./" . PHPWS_Template::getTplDir($module) . $filename;
+    $themeFile['file']   = './' . PHPWS_Template::getTplDir($module) . $filename;
     $themeFile['import'] = TRUE;
 
     if (is_file($themeFile['file'])){
@@ -129,10 +128,10 @@ class Layout {
     else
       extract($value);
 
-    $style = array("file"      =>$file,
-		   "import"    =>$import,
-		   "alternate" =>$alternate,
-		   "title"     =>$title
+    $style = array('file'      =>$file,
+		   'import'    =>$import,
+		   'alternate' =>$alternate,
+		   'title'     =>$title
 		   );
 
     if (isset($tag))
@@ -159,7 +158,7 @@ class Layout {
     $box = Layout::getBox($module, $contentVar);
     
     $file = $box->template;
-    $directory = "themes/" . Layout::getCurrentTheme() . "/boxstyles/";
+    $directory = 'themes/' . Layout::getCurrentTheme() . '/boxstyles/';
     if (isset($file) && is_file($directory . $file))
       $tpl->setFile($directory . $file, TRUE);
     else
@@ -170,7 +169,7 @@ class Layout {
     $content = $tpl->get();
 
     if (Layout::isMoveBox()){
-      PHPWS_Core::initModClass("layout", "LayoutAdmin.php");
+      PHPWS_Core::initModClass('layout', 'LayoutAdmin.php');
       $content .= Layout_Admin::moveBoxesTag($box);
     }
 
@@ -186,12 +185,12 @@ class Layout {
       Layout::initLayout();
 
     switch ($GLOBALS['Layout_Robots']){
-    case "01":
-      $GLOBALS['Layout_Robots'] = "00";
+    case '01':
+      $GLOBALS['Layout_Robots'] = '00';
       break;
 
-    case "11":
-      $GLOBALS['Layout_Robots'] = "10";
+    case '11':
+      $GLOBALS['Layout_Robots'] = '10';
       break;
     }
   }
@@ -201,12 +200,12 @@ class Layout {
       Layout::initLayout();
 
     switch ($GLOBALS['Layout_Robots']){
-    case "10":
-      $GLOBALS['Layout_Robots'] = "00";
+    case '10':
+      $GLOBALS['Layout_Robots'] = '00';
       break;
 
-    case "11":
-      $GLOBALS['Layout_Robots'] = "01";
+    case '11':
+      $GLOBALS['Layout_Robots'] = '01';
       break;
     }
   }
@@ -234,23 +233,23 @@ class Layout {
 	if (Layout::isBoxTpl($module, $contentVar)){
 	  $unsortedLayout[$theme_var][$order] = Layout::createBox($module, $contentVar, $template);
 	} else
-	  $unsortedLayout[$theme_var][$order] = implode("", $template);
+	  $unsortedLayout[$theme_var][$order] = implode('', $template);
       }
     }
 
     if (isset($themeVarList)){
       foreach ($themeVarList as $theme_var){
 	ksort($unsortedLayout[$theme_var]);
-	$bodyLayout[strtoupper($theme_var)] = implode("", $unsortedLayout[$theme_var]);
+	$bodyLayout[strtoupper($theme_var)] = implode('', $unsortedLayout[$theme_var]);
       }
     } else
-      $bodyLayout[] = implode("<br />", $unsortedLayout[$theme_var]);
+      $bodyLayout[] = implode('<br />', $unsortedLayout[$theme_var]);
 
     // Load body of theme 
     $finalTheme = &Layout::loadTheme(Layout::getCurrentTheme(), $bodyLayout);
 
     if (PEAR::isError($finalTheme))
-      $content = implode("", $bodyLayout);
+      $content = implode('', $bodyLayout);
     else
       $content = $finalTheme->get();
 
@@ -276,7 +275,7 @@ class Layout {
   function getBoxContent(){
     $list = NULL;
     if (!isset($GLOBALS['Layout']))
-      return PHPWS_Error::get(LAYOUT_SESSION_NOT_SET, "layout", "getBoxContent");
+      return PHPWS_Error::get(LAYOUT_SESSION_NOT_SET, 'layout', 'getBoxContent');
 
     foreach ($GLOBALS['Layout'] as $module=>$content){
       foreach ($content as $contentVar=>$contentList){
@@ -284,7 +283,7 @@ class Layout {
 	  continue;
 	
 	foreach ($contentList['content'] as $tag=>$content)
-	    $list[$module][$contentVar][strtoupper($tag)] = implode("", $content);
+	    $list[$module][$contentVar][strtoupper($tag)] = implode('', $content);
       }
     }
     return $list;
@@ -306,10 +305,10 @@ class Layout {
     if (isset($data) && !is_array($data))
       return PHPWS_Error::get();
 
-    PHPWS_CORE::initCoreClass("File.php");
-    $headfile    = "./javascript/$directory/head.js";
-    $bodyfile    = "./javascript/$directory/body.js";
-    $defaultfile = "./javascript/$directory/default.php";
+    PHPWS_CORE::initCoreClass('File.php');
+    $headfile    = './javascript/' . $directory . '/head.js';
+    $bodyfile    = './javascript/' . $directory . '/body.js';
+    $defaultfile = './javascript/' . $directory . '/default.php';
 
     if (is_file($defaultfile))
       include $defaultfile;
@@ -342,25 +341,25 @@ class Layout {
 
   function getMetaRobot(){
     if (!isset($GLOBALS['Layout_Robots']))
-      $meta_robots = "11";
+      $meta_robots = '11';
     else
       $meta_robots = $GLOBALS['Layout_Robots'];
 
     switch ((string)$meta_robots){
-    case "11":
-      return "all";
+    case '11':
+      return 'all';
       break;
 
-    case "10":
-      return "index, nofollow";
+    case '10':
+      return 'index, nofollow';
       break;
 
-    case "01":
-      return "noindex, follow";
+    case '01':
+      return 'noindex, follow';
       break;
 
-    case "00":
-      return "none";
+    case '00':
+      return 'none';
       break;
     }
   }
@@ -369,24 +368,24 @@ class Layout {
     extract($_SESSION['Layout_Settings']->getMetaTags());
 
     // Say it loud
-    $metatags[] = "<meta name=\"generator\" content=\"phpWebSite\" />";
+    $metatags[] = '<meta name="generator" content="phpWebSite" />';
 
     if (!empty($author))
-      $metatags[] = "<meta name=\"author\" content=\"$meta_author\" />";
+      $metatags[] = '<meta name="author" content="' . $meta_author . '" />';
     else
-      $metatags[] = "<meta name=\"author\" content=\"phpWebSite\" />";
+      $metatags[] = '<meta name="author" content="phpWebSite" />';
 
     if (!empty($meta_keywords))
-      $metatags[] = "<meta name=\"keywords\" content=\"$meta_keywords\" />";
+      $metatags[] = '<meta name="keywords" content="' . $meta_keywords .'" />';
 
     if (!empty($meta_description))
-      $metatags[] = "<meta name=\"description\" content=\"$meta_description\" />";
+      $metatags[] = '<meta name="description" content="' . $meta_description . '" />';
     
     if (!empty($meta_owner))
-      $metatags[] = "<meta name=\"owner\" content=\"$meta_owner\" />";
+      $metatags[] = '<meta name="owner" content="' . $meta_owner . '" />';
 
     $robot = Layout::getMetaRobot();
-    $metatags[] = "<meta name=\"robots\" content=\"$robot\" />";
+    $metatags[] = '<meta name="robots" content="' . $robot . '" />';
 
     return implode("\n", $metatags);
   }
@@ -395,7 +394,7 @@ class Layout {
     if (!isset($GLOBALS['Layout_Onload']))
       return NULL;
 
-    return "onload=\"" . implode(" ", $GLOBALS['Layout_Onload']) ."\"";
+    return 'onload="' . implode(' ', $GLOBALS['Layout_Onload']) . '"';
   }
 
   function getStyleLinks($header=FALSE){
@@ -459,7 +458,7 @@ class Layout {
     $theme = Layout::getTheme();
 
     $directory = "./themes/$theme/";
-    $file = $directory . "config.php";
+    $file = $directory . 'config.php';
 
     if (is_file($file)){
       include $file;
@@ -467,7 +466,7 @@ class Layout {
       if (isset($persistant))
 	Layout::addToStyleList(array('file'=>$directory . $persistant));
       else
-	Layout::addToStyleList(Layout::getTheme() . "style.css");
+	Layout::addToStyleList(Layout::getTheme() . 'style.css');
 
       if (isset($default) && (isset($default['file']) && isset($default['title']))){
 	Layout::addToStyleList(array('file'=>$directory . $default['file'],
@@ -487,7 +486,7 @@ class Layout {
 
       }
     } else
-      Layout::addToStyleList("style.css");
+      Layout::addToStyleList('style.css');
   }
 
   function &loadTheme($theme, $template){
@@ -499,7 +498,7 @@ class Layout {
 	PHPWS_Core::errorPage();
     }
 
-    $result = $tpl->setFile($themeDir . "theme.tpl", TRUE);
+    $result = $tpl->setFile($themeDir . 'theme.tpl', TRUE);
 
     if (PEAR::isError($result))
       return $result;
@@ -541,7 +540,7 @@ class Layout {
     extract($link);
 
     if (!empty($title))
-      $cssTitle = "title=\"$title\"";
+      $cssTitle = 'title="' . $title . '"';
     else
       $cssTitle = NULL;
 
@@ -566,13 +565,14 @@ class Layout {
     if($testing == FALSE && stristr($_SERVER['HTTP_ACCEPT'],'application/xhtml+xml')){
       header('Content-Type: application/xhtml+xml; charset=UTF-8');
       $template['XML'] = '<?xml version="1.0" encoding="UTF-8"?>';
-      $template['DOCTYPE'] = 
-	'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">';
+      $template['DOCTYPE'] = "\n" . '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+';
       $template['XHTML'] = '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="' . CURRENT_LANGUAGE . '">';
       $template['XML_STYLE'] = Layout::getStyleLinks(TRUE);
     } else {
       header('Content-Type: text/html; charset=UTF-8');
-      $template['DOCTYPE'] = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+      $template['DOCTYPE'] = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+';
       $template['XHTML'] = '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="' . CURRENT_LANGUAGE . '" lang="' . CURRENT_LANGUAGE . '">';
       $template['STYLE'] = Layout::getStyleLinks(FALSE);
     }
