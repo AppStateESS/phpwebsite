@@ -1,2 +1,2 @@
-<div class="admin-menu-title" style="margin-bottom : 5px;">{TITLE}</div>
+<h1>{TITLE}</h1>
 {CONTENT}

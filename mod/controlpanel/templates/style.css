@@ -7,15 +7,6 @@ font-weight : bold;
 background-color : #E8E9EA;
 }
 
-div.admin-menu-title {
-font-weight : bold;
-font-size : 1.1em;
-color : white;
-font-style : italic;
-background-color : #94B6DE;
-padding : 4px;
-}
-
 /*--------------- Tabs ---------------*/
 .tabmenu {
   width : 100%;
