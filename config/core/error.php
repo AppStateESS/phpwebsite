@@ -16,6 +16,7 @@ $errors[PHPWS_DIR_NOT_SECURE]        = _("Directories are not secure.");
 $errors[PHPWS_DB_ERROR_TABLE]        = _("Table name not set.");
 $errors[PHPWS_DB_NO_VALUES]          = _("No values were set before the query");
 $errors[PHPWS_DB_NO_OBJ_VARS]        = _("No variables in object.");
+$errors[PHPWS_DB_BAD_OP]             = _("Not an acceptable operator.");
 
 
 // List.php 200 - 299

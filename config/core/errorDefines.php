@@ -18,6 +18,7 @@ define("PHPWS_DIR_NOT_SECURE",       -10);
 define("PHPWS_DB_ERROR_TABLE",        -100);
 define("PHPWS_DB_NO_VALUES",          -101);
 define("PHPWS_DB_NO_OBJ_VARS",        -102);
+define("PHPWS_DB_BAD_OP",             -103);
 
 /************* List.php *****************/
 define("PHPWS_LIST_MOD_NOT_SET",      -200);
