@@ -9,15 +9,17 @@ box_order SMALLINT NOT NULL,
 active SMALLINT NOT NULL);
 
 CREATE TABLE layout_config (
-default_theme CHAR(50) NOT NULL,
-userAllow SMALLINT NOT NULL,
-page_title CHAR(255),
-meta_keywords TEXT,
-meta_description CHAR(180),
-meta_robots CHAR(2),
-meta_owner CHAR(40),
-meta_author CHAR(40),
-meta_content CHAR(40) NOT NULL
-);
+  default_theme varchar(50) NOT NULL default '',
+  userAllow smallint NOT NULL default '0',
+  page_title varchar(255) default NULL,
+  meta_keywords text,
+  meta_description varchar(180) default NULL,
+  meta_robots char(2) default NULL,
+  meta_owner varchar(40) default NULL,
+  meta_author varchar(40) default NULL,
+  meta_content varchar(40) NOT NULL default '',
+  header text,
+  footer text
+)
 
-INSERT INTO layout_config VALUES ('default', 1, 'phpWebSite', 'phpwebsite', NULL, '11', NULL, NULL, 'ISO-8859-1');
+INSERT INTO layout_config VALUES ('default', 1, 'phpWebSite', 'phpwebsite', NULL, '11', NULL, NULL, 'ISO-8859-1', NULL, NULL);
