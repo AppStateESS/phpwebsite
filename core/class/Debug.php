@@ -20,6 +20,12 @@ class PHPWS_Debug {
       return PHPWS_Debug::testArray($value);
       break;
 
+    case "boolean":
+      if ($value)
+	return "TRUE";
+      else
+	return "FALSE";
+
     default:
       return $value;
     }
