@@ -97,6 +97,9 @@ class PHPWS_List {
       else $this->_pager->pageData(FALSE);
 
       $items = $this->getItems($this->_pager->getData());
+      if (PEAR::isError($items))
+	return $items;
+
       $totalItems = $this->_pager->getNumRows();
     } else {
       $items = $this->getItems();
@@ -147,7 +150,6 @@ class PHPWS_List {
 
     /* Build each item's row */
     $listTags['LIST_ITEMS'] = array();
-
     $this->_lastIds = NULL;
     if($totalItems > 0) {
       foreach($items as $item) {
