@@ -22,13 +22,11 @@ body {
 }
 
 #sidebar {
-	background-color : #CBCEAC;
-	border : white 2px solid;
 	float: left;
 	width: 147px;
 	margin: 0;
 	margin-right: 5px;
-	padding: 5px;
+	padding: 3px;
 }
 
 // IE hack
@@ -105,7 +103,10 @@ tr, td {
 }
 
 div.box {
-	margin-bottom : 6px;
+	background-color : #CBCEAC;
+	border : white 2px solid;
+	margin-bottom : 10px;
+	padding : 6px;
 }
 
 div.box a:link, div.box a:visited {
