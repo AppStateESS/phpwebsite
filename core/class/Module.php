@@ -14,6 +14,7 @@ class PHPWS_Module {
   var $_version_http  = NULL;
   var $_about         = FALSE;
   var $_pre94         = FALSE;
+  var $_fullMod       = TRUE;
 
   function PHPWS_Module($title=NULL){
     if (isset($title)){
@@ -28,8 +29,10 @@ class PHPWS_Module {
     $this->setDirectory(PHPWS_SOURCE_DIR . "mod/$title/");
     
     $result = PHPWS_Core::getConfigFile($title, "boost.php");
-    if (PEAR::isError($result))
+    if (PEAR::isError($result)){
+      $this->_fullMod = FALSE;
       return $result;
+    }
 
     include $result;
 
@@ -219,9 +222,11 @@ class PHPWS_Module {
     }
 
     return ($result['version'] < $this->getVersion() ? TRUE : FALSE);
-
   }
-
+  
+  function isFullMod(){
+    return $this->_fullMod;
+  }
 }
 
 ?>
