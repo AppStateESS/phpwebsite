@@ -42,6 +42,7 @@ class Layout_Admin{
     case "edit_footer":
       $result = Layout_Admin::postFooter();
       if (PEAR::isError($result)){
+	PHPWS_Error::log($result);
 	$title = _("Error");
 	$content = _("There was a problem updating the settings.");
       } else {
