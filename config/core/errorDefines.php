@@ -19,6 +19,8 @@ define("PHPWS_DB_ERROR_TABLE",        -100);
 define("PHPWS_DB_NO_VALUES",          -101);
 define("PHPWS_DB_NO_OBJ_VARS",        -102);
 define("PHPWS_DB_BAD_OP",             -103);
+define("PHPWS_DB_BAD_TABLE_NAME",     -104);
+define("PHPWS_DB_BAD_COL_NAME",       -104);
 
 /************* List.php *****************/
 define("PHPWS_LIST_MOD_NOT_SET",      -200);
