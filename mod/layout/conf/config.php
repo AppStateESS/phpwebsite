@@ -35,7 +35,8 @@ if (!defined("ALLOW_THEME_PHP_INSERTION"))
 
 /********** Errors ****************/
 
-define("LAYOUT_SESSION_NOT_SET",    1);
-define("LAYOUT_NO_CONTENT",         2);
+define("LAYOUT_SESSION_NOT_SET",    -1);
+define("LAYOUT_NO_CONTENT",         -2);
+define("LAYOUT_NO_THEME",           -3);
 
 ?>
