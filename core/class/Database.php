@@ -24,6 +24,7 @@ class PHPWS_DB {
   var $indexby     = NULL;
   var $groupby     = NULL;
   var $_allColumns = NULL;
+  var $_columnInfo = NULL;
   var $_DB         = array();
   var $_lock       = FALSE;
   var $_sql        = NULL;
@@ -111,23 +112,44 @@ class PHPWS_DB {
     return $GLOBALS['PEAR_DB']->query($sql);
   }
 
+  function getColumnInfo($col_name, $parsed=FALSE){
+    if (!isset($this->_columnInfo))
+      $this->getTableColumns();
+
+    if (isset($this->_columnInfo[$col_name])) {
+      if ($parsed == TRUE)
+	return $this->parsePearCol($this->_columnInfo[$col_name], TRUE);
+      else
+	return $this->_columnInfo[$col_name];
+    }
+    else
+      return NULL;
+  }
 
   function getTableColumns($fullInfo=FALSE){
-    if (isset($this->_allColumns))
+    if (isset($this->_allColumns) && $fullInfo == FALSE) {
       return $this->_allColumns;
+    } elseif (isset($this->_columnInfo) && $fullInfo == TRUE) {
+      return $this->_columnInfo;
+    }
 
     $table = & $this->getTable();
     if (!isset($table))
       return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, "core", "PHPWS_DB::isTableColumn");
 
     $columns =  $GLOBALS['PEAR_DB']->tableInfo($table);
-    if (PEAR::isError($columns) || $fullInfo == TRUE)
+    if (PEAR::isError($columns))
       return $columns;
 
-    foreach ($columns as $colInfo)
+    foreach ($columns as $colInfo) {
+      $this->_columnInfo[$colInfo['name']] = $colInfo;
       $this->_allColumns[] = $colInfo['name'];
+    }
 
-    return $this->_allColumns;
+    if ($fullInfo == TRUE)
+      return $this->_columnInfo;
+    else
+      return $this->_allColumns;
   }
 
   function isTableColumn($columnName){
@@ -723,30 +745,34 @@ class PHPWS_DB {
   function _indexBy($sql, $indexby, $colMode=FALSE){
     if (!is_array($sql))
       return $sql;
+    $stacked = FALSE;
 
     foreach ($sql as $item){
-      if (!isset($item[$indexby]))
+      if (!isset($item[(string)$indexby]))
 	return $sql;
 
       if ($colMode){
 	$col = $this->getColumn();
-	PHPWS_DB::expandIndex($rows, $item[$indexby], $item[$col[0]]);
+	PHPWS_DB::_expandIndex($rows, $item[$indexby], $item[$col[0]], $stacked);
       } else
-	PHPWS_DB::expandIndex($rows, $item[$indexby], $item);
+	PHPWS_DB::_expandIndex($rows, $item[$indexby], $item, $stacked);
     }
+
     return $rows;
   }
 
-  function expandIndex(&$rows, $index, $item){
-    if (isset($rows[$index])){
-      if (isset($rows[$index][0]) && !is_array($rows[$index][0])){
+  function _expandIndex(&$rows, $index, $item, &$stacked){
+    if (isset($rows[$index])) {
+      if (!$stacked) {
 	$hold = $rows[$index];
 	$rows[$index] = array();
 	$rows[$index][] = $hold;
+	$stacked = TRUE;
       }
-      $rows[$index][] = $item;
-    } else
+	$rows[$index][] = $item;
+    } else {
       $rows[$index] = $item;
+    }
   }
 
 
@@ -787,7 +813,7 @@ class PHPWS_DB {
     return PHPWS_DB::query($sql);
   }
 
-  function addTableColumn($column, $parameter, $after=NULL){
+  function addTableColumn($column, $parameter, $after=NULL, $indexed=FALSE){
     $table = $this->getTable();
     if (!$table)
       return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, "core", "PHPWS_DB::addColumn");
@@ -805,7 +831,17 @@ class PHPWS_DB {
 
     $sql = "ALTER TABLE $table ADD $column $parameter $location";
 
-    return PHPWS_DB::query($sql);
+    $result = PHPWS_DB::query($sql);
+    if (PEAR::isError($result))
+      return $result;
+
+    if ($indexed == TRUE){
+      $indexSql = "CREATE INDEX $column on $table($column)";
+      $result = PHPWS_DB::query($indexSql);
+      if (PEAR::isError($result))
+	return $result;
+    }
+    return TRUE;
   }
 
 
@@ -882,29 +918,44 @@ class PHPWS_DB {
   }
 
 
+  function parsePearCol($info, $strip_name=FALSE){
+    $setting = $this->_sql->export($info);
+
+    if (isset($info['flags'])){
+      if (stristr($info['flags'], "multiple_key")){
+	$column_info['index'] = "CREATE INDEX " .  $info['name'] . " on " . $info['table'] . "(" . $info['name'] . ")";
+	$info['flags'] = str_replace(" multiple_key", "", $info['flags']);
+      }
+      $preFlag = array("/not_null/", "/primary_key/", "/default_(.*)?/", "/blob/");
+      $postFlag = array("NOT NULL", "PRIMARY KEY", "DEFAULT '\\1'", "");
+      $multipleFlag = array("multiple_key", "");
+      $flags = " " . preg_replace($preFlag, $postFlag, $info['flags']);
+    }
+    else
+      $flags = NULL;
+    
+    if ($strip_name == TRUE) {
+      $column_info['parameters'] = $setting . $flags; 
+    }
+    else {
+      $column_info['parameters'] = $info['name'] . " $setting" . $flags; 
+    }
+
+    return $column_info;
+  }
+
   function parseColumns($columns){
     foreach ($columns as $info){
       if (!is_array($info))
 	continue;
 
-      $setting = $this->_sql->export($info);
+      $result = $this->parsePearCol($info);
+      if (isset($result['index']))
+	$column_info['index'][] = $result['index'];
 
-      if (isset($info['flags'])){
-	if (stristr($info['flags'], "multiple_key")){
-	  $column_info['index'][] = "CREATE INDEX " .  $info['name'] . " on " . $info['table'] . "(" . $info['name'] . ")";
-	  $info['flags'] = str_replace(" multiple_key", "", $info['flags']);
-	}
-	$preFlag = array("/not_null/", "/primary_key/", "/default_(.*)?/", "/blob/");
-	$postFlag = array("NOT NULL", "PRIMARY KEY", "DEFAULT '\\1'", "");
-	$multipleFlag = array("multiple_key", "");
-	$flags = " " . preg_replace($preFlag, $postFlag, $info['flags']);
-      }
-      else
-	$flags = NULL;
-      
-      $column_info['parameters'][] = $info['name'] . " $setting" . $flags; 
+      $column_info['parameters'][] = $result['parameters'];
     }
-    
+
     return $column_info;
   }
 
