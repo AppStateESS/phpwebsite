@@ -701,7 +701,10 @@ class PHPWS_Form {
 
       foreach ($element as $subElement){
 	if ($this->types[$elementName] == "hidden"){
+	  if (!isset($div))
+	    $template["START_FORM"] .= "\n<div>\n";
 	  ($helperTags == TRUE) ? $template["START_FORM"] .= $subElement->get() ."\n" : $template["HIDDEN"] .= $subElement->get() . "\n";
+	  $div = TRUE;
 	  continue;
 	}
 
@@ -726,6 +729,9 @@ class PHPWS_Form {
 
     if (isset($this->_template))
       $template = array_merge($this->_template, $template);
+
+    if (isset($div))
+      $template["START_FORM"] .= "\n</div>\n";
 
     if ($phpws == TRUE)
       return $template;
@@ -921,8 +927,9 @@ class PHPWS_Form {
 
 
 class Form_TextField extends Form_Element{
+  var $type = "textfield";
+
   function get(){
-    $this->type = "textfield";
     return "<input type=\"text\" "
       . $this->getName(TRUE) 
       . $this->getTitle(TRUE)
@@ -935,8 +942,9 @@ class Form_TextField extends Form_Element{
 }
 
 class Form_Submit extends Form_Element{
+  var $type = "submit";
+
   function get(){
-    $this->type = "submit";
     return "<input type=\"submit\" "
       . $this->getName(TRUE) 
       . $this->getValue(TRUE) 
@@ -947,8 +955,9 @@ class Form_Submit extends Form_Element{
 }
 
 class Form_Hidden extends Form_Element {
+  var $type = "hidden";
+
   function get(){
-    $this->type = "hidden";
     return "<input type=\"hidden\" " 
       . $this->getName(TRUE)
       . $this->getValue(TRUE)
@@ -957,8 +966,9 @@ class Form_Hidden extends Form_Element {
 }
 
 class Form_File extends Form_Element {
+  var $type = "file";
+
   function get(){
-    $this->type = "file";
     return "<input type=\"file\" "
       . $this->getName(TRUE) 
       . $this->getTitle(TRUE)
@@ -970,6 +980,8 @@ class Form_File extends Form_Element {
 }
 
 class Form_Password extends Form_Element {
+  var $type = "password";
+
   function Form_Password($name, $value=NULL){
     $this->setName($name);
     $this->setValue($value);
@@ -977,7 +989,6 @@ class Form_Password extends Form_Element {
   }
 
   function get(){
-    $this->type = "password";
     return "<input type=\"password\" "
       . $this->getName(TRUE) 
       . $this->getTitle(TRUE)
@@ -990,6 +1001,7 @@ class Form_Password extends Form_Element {
 }
 
 class Form_TextArea extends Form_Element{
+  var $type = "textarea";
   var $rows        = DFLT_ROWS;
   var $cols        = DFLT_COLS;
   var $height      = NULL;
@@ -1033,7 +1045,6 @@ class Form_TextArea extends Form_Element{
   }
 
   function get(){
-    $this->type = "textarea";
     $value = $this->getValue();
     $value = htmlspecialchars($value, ENT_NOQUOTES);
     $value = str_replace("&#x0024;", "&", $value);
@@ -1067,10 +1078,10 @@ class Form_TextArea extends Form_Element{
 }
 
 class Form_Select extends Form_Element{
+  var $type = "select";
   var $match = NULL;
 
   function get(){
-    $this->type = "select";
     $content[] = "<select " . $this->getName(TRUE) . $this->getId(TRUE) . $this->getData() . ">";
     foreach($this->value as $value=>$label){
       if ($this->isMatch($value))
@@ -1097,10 +1108,11 @@ class Form_Select extends Form_Element{
 }
 
 class Form_Multiple extends Form_Element{
+  var $type = "multiple";
+  var $isArray = TRUE;
   var $match = NULL;
 
   function get(){
-    $this->type = "multiple";
     $content[] = "<select " . $this->getName(TRUE) . $this->getId(TRUE) . "multiple=\"multiple\" " 
       . $this->getData()
       . $this->getWidth(TRUE)
@@ -1136,6 +1148,7 @@ class Form_Multiple extends Form_Element{
 
 class Form_CheckBox extends Form_Element{
   var $match = FALSE;
+  var $type  = "checkbox";
 
   function setMatch($match=TRUE){
     $this->match = $match;
@@ -1149,7 +1162,6 @@ class Form_CheckBox extends Form_Element{
   }
 
   function get(){
-    $this->type = "checkbox";
     return "<input type=\"checkbox\" " . $this->getName(TRUE)
       . $this->getId(TRUE)
       . $this->getTitle(TRUE)
@@ -1163,6 +1175,7 @@ class Form_CheckBox extends Form_Element{
 
 
 class Form_RadioButton extends Form_Element{
+  var $type  = "radio";
   var $match = FALSE;
 
   function setMatch($match=TRUE){
@@ -1177,7 +1190,6 @@ class Form_RadioButton extends Form_Element{
   }
 
   function get(){
-    $this->type = "radio";
     return "<input type=\"radio\" " . $this->getName(TRUE)
       . $this->getId(TRUE)
       . $this->getTitle(TRUE)
