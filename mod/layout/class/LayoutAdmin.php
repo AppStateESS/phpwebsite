@@ -71,7 +71,6 @@ class Layout_Admin{
       $content = Layout_Admin::editHeader();
       break;
 
-
     case "meta":
       $title = _("Edit Meta Tags");
       $content = Layout_Admin::metaForm();
@@ -113,6 +112,8 @@ class Layout_Admin{
 
     $template['TITLE']   = $title;
     $template['CONTENT'] = $content;
+    if (isset($message))
+      $template['MESSAGE'] = $message;
     
     $final = PHPWS_Template::process($template, "layout", "main.tpl");
     $panel->setContent($final);
@@ -160,7 +161,7 @@ class Layout_Admin{
 
   function boxesForm(){
     $form = & new PHPWS_Form("boxes");
-    $form->add("module", "hidden", "layout");
+    $form->addHidden("module", "layout");
     $form->addHidden("action", "admin");
     $form->addHidden("command", "changeBoxSettings");
     $form->addRadio("move_boxes",  array(0, 1));
@@ -178,6 +179,7 @@ class Layout_Admin{
     $template['MOVE_BOXES_OFF']  = _("Off");
     return PHPWS_Template::process($template, "layout", "BoxControl.tpl");
   }
+
 
   function changeTheme($theme){
     $_SESSION['Layout_Settings']->default_theme = $theme;
@@ -200,25 +202,24 @@ class Layout_Admin{
     $form = & new PHPWS_Form("edit_header");
     $form->addHidden("module", "layout");
     $form->addHidden("action", "admin");
-    $form->addHidden("command", "edit_header");
+    $form->addHidden("command", "edit_footer");
 
-    $header = $_SESSION['Layout_Settings']->header;
+    $footer = $_SESSION['Layout_Settings']->footer;
 
     if (Editor::willWork()){
-      $editor = & new Editor("htmlarea", "header", $header);
+      $editor = & new Editor("htmlarea", "footer", $footer);
       $headInfo = $editor->get();
-      $form->addTplTag("HEADER", $headInfo);
+      $form->addTplTag("FOOTER", $headInfo);
     } else {
-      $form->addTextArea("header", $header);
-      $form->setRows("header", 10);
-      $form->setWidth("header", "80%");
+      $form->addTextArea("footer", $footer);
+      $form->setRows("footer", 10);
+      $form->setWidth("footer", "80%");
     }
 
-    $form->addSubmit("submit", _("Update Header"));
+    $form->addSubmit("submit", _("Update Footer"));
 
     $template = $form->getTemplate();
-    return PHPWS_Template::process($template, "layout", "edit_header.tpl");
-    
+    return PHPWS_Template::process($template, "layout", "edit_footer.tpl");
   }
 
 
@@ -338,9 +339,16 @@ class Layout_Admin{
     return PHPWS_Template::process($template, "layout", "move_box_select.tpl");
   }
 
+
   function postHeader(){
     $header = PHPWS_Text::parseInput($_POST['header']);
     $_SESSION['Layout_Settings']->header = trim($header);
+    return $_SESSION['Layout_Settings']->saveSettings();
+  }
+
+  function postFooter(){
+    $footer = PHPWS_Text::parseInput($_POST['footer']);
+    $_SESSION['Layout_Settings']->footer = trim($footer);
     return $_SESSION['Layout_Settings']->saveSettings();
   }
 
