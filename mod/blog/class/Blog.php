@@ -4,6 +4,7 @@ class Blog {
   var $id         = NULL;
   var $title      = NULL;
   var $entry      = NULL;
+  var $author     = NULL;
   var $date       = NULL;
   var $restricted = 0;
 
@@ -42,6 +43,11 @@ class Blog {
       return $this->entry;
   }
 
+  function getAuthor()
+  {
+    return $this->author;
+  }
+
   function getId()
   {
     return $this->id;
@@ -77,6 +83,10 @@ class Blog {
     $db = & new PHPWS_DB('blog_entries');
     if (empty($this->id)) {
       $this->date = mktime();
+    }
+
+    if (empty($this->author)) {
+      $this->author = Current_User::getDisplayName();
     }
 
     $result = $db->saveObject($this);
@@ -133,6 +143,10 @@ class Blog {
       $template['CATEGORIES'] = implode(', ', $result);
     }
 
+    $template['POSTED_BY'] = _('Posted by');
+    $template['POSTED_ON'] = _('Posted on');
+    $template['AUTHOR'] = $this->getAuthor();
+    
     if (isset($links)) {
       $template['LINKS'] = implode(' | ' , $links);
     }
