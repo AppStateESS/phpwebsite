@@ -4,11 +4,11 @@ Matthew McNaney
 ---------------------------------------------------------------------
 
 phpWebSite uses the gettext utilities recommended by GNU.
-http://www.gnu.org/software/gettext/manual/html_chapter/gettext.html#SEC_Top
+http://www.gnu.org/software/gettext/manual/html_chapter/gettext.html
 
 This document should help you get started. Special thanks to Joao
 Prado Maia for writing a very helpful tutorial on OnLamp.
-( http://www.onlamp.com/pub/a/php/2002/06/13/php.html?page=1 )
+( http://www.onlamp.com/lpt/a/2429 )
 
 Before attempting to use gettext, please make sure that you have
 gettext compiled on your web server. You must have gettext enabled in
@@ -113,7 +113,6 @@ internationally compatible!
 
 Translating the your module
 ---------------------------------------------------------------------
---------------------------------------------------
 The messages file has an id and a blank translation for every string
 you marked in your code. If a translation is blank, gettext will just
 return the original phrase. So if _("Hello") is left blank for a
@@ -124,7 +123,8 @@ translations are blank. Therefore, the user will once again see the
 original text.
 
 Long story short, you don't need to translate your own module into the
-language it was written in.
+language it was written in. However, creating an untranslated file for
+future translators to copy would probably be appreciated.
 
 If you want to translate the module for your language, create or copy
 the po file. Now you need to edit the file. There are several editors
@@ -147,7 +147,6 @@ the proper locale directory and phpWebSite is ready to be translated.
 
 Making sure your module translates
 ---------------------------------------------------------------------
----------------------------------------------------
 As different modules are called, phpWebSite will tell gettext where
 your language modules are located. If somehow phpWebSite gets lost and
 can't find you files you can just call the translate function:
