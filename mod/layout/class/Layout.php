@@ -17,7 +17,7 @@ class Layout {
     Layout::checkSettings();
     // If content variable is not in system (and not NULL) then make
     // a new box for it.
-    
+
     if (isset($module) && isset($contentVar)){
       if (!$_SESSION['Layout_Settings']->isContentVar($contentVar)) {
 	Layout::addBox($contentVar, $module);
@@ -48,11 +48,18 @@ class Layout {
   function addBox($content_var, $module, $theme_var=NULL, $template=NULL, $theme=NULL){
     PHPWS_Core::initModClass('layout', 'Box.php');
 
-    if (!isset($theme))
+    if (!isset($theme)) {
       $theme = $_SESSION['Layout_Settings']->current_theme;
-    
-    if (!isset($theme_var))
-      $theme_var = DEFAULT_NEW_BOX_VAR;
+    }
+
+    if (!isset($theme_var)) {
+      $mod_theme_var = strtoupper(sprintf('%s_%s', $module, $content_var));
+      if (in_array($mod_theme_var, $_SESSION['Layout_Settings']->_theme_variables)) {
+	$theme_var = $mod_theme_var;
+      } else {
+	$theme_var = DEFAULT_BOX_VAR;
+      }
+    }
 
     $box = new Layout_Box;
     $box->setTheme($theme);
@@ -157,8 +164,9 @@ class Layout {
   }
 
   function checkSettings(){
-    if (!isset($_SESSION['Layout_Settings']))
+    if (!isset($_SESSION['Layout_Settings'])) {
       $_SESSION['Layout_Settings'] = & new Layout_Settings;
+    }
   }
 
   function createBox($module, $contentVar, $template){
@@ -220,6 +228,17 @@ class Layout {
 
   function display(){
     $themeVarList = array();
+
+    $header = Layout::getHeader();
+    if (!empty($header)) {
+      Layout::add($header, 'layout', 'header', FALSE);
+    }
+
+    $footer = Layout::getFooter();
+    if (!empty($footer)) {
+      Layout::add($footer, 'layout', 'footer', FALSE);
+    }
+
     $contentList = Layout::getBoxContent();
 
     // if content list is blank
@@ -321,14 +340,17 @@ class Layout {
     $bodyfile    = './javascript/' . $directory . '/body.js';
     $defaultfile = './javascript/' . $directory . '/default.php';
 
-    if (is_file($defaultfile))
-      include $defaultfile;
+    if (is_file($defaultfile)) {
+      require_once $defaultfile;
+    }
 
     if (isset($default)){
-      if (isset($data))
+      if (isset($data)) {
 	$data = array_merge($default, $data);
-      else
+      }
+      else {
 	$data = $default;
+      }
     }
 
     Layout::loadJavascriptFile($headfile, $directory, $data);
@@ -511,13 +533,11 @@ class Layout {
 
     $result = $tpl->setFile($themeDir . 'theme.tpl', TRUE);
 
-    if (PEAR::isError($result))
+    if (PEAR::isError($result)) {
       return $result;
+    }
 
-    $template['HEADER']   = Layout::getHeader();
-    $template['FOOTER']   = Layout::getFooter();
-
-    $template['THEME_DIRECTORY'] = "themes/$theme/";
+    $template['THEME_DIRECTORY'] = 'themes/' . $theme . '/';
     $tpl->setData($template);
     return $tpl;
   }
