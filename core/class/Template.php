@@ -30,7 +30,7 @@ class PHPWS_Template extends HTML_Template_IT {
 
   function getTplDir($module){
     if (!class_exists("Layout"))
-      return NULL;
+      return PHPWS_SOURCE_DIR . "mod/$module/templates/";    
     
     $theme = Layout::getThemeDir();
     return $theme . "templates/" . $module . "/";
