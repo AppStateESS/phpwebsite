@@ -955,7 +955,7 @@ class PHPWS_DB {
   }
 
 
-  function import($text){
+  function import($text, $report_errors=TRUE){
     PHPWS_DB::touchDB();
 
     $prefix = PHPWS_DB::getPrefix();
@@ -983,23 +983,31 @@ class PHPWS_DB {
       }
     }
 
-    if (isset($errors))
-      return $errors;
+    if (isset($errors)) {
+      if ($report_errors) {
+	return $errors;
+      } else {
+	foreach ($errors as $_error){
+	  PHPWS_Error::log($_error);
+	}
+	return FALSE;
+      }
+    }
     else
       return TRUE;
   }
 
 
   function homogenize(&$query){
-    switch (PHPWS_DB::getDBType()){
-    case 'pgsql':
-      $from = array("/datetime/i");
-      $to   = array('timestamp without time zone');
-      break;
-    }
+    $from = array('/int\(\d+\)/iU',
+		  '/mediumtext/'
+		  );
+    $to = array('int',
+		'text'
+		);
+    $query = preg_replace($from, $to, $query);
 
-    if (isset($from))
-      $query = preg_replace($from, $to, $query);
+    $this->_sql->readyImport($query);
   }
 
 
