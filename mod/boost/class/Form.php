@@ -55,7 +55,8 @@ class Boost_Form {
       $template = $link_command = NULL;
       $link_command['opmod'] = $title;
       $mod = & new PHPWS_Module($title);
-
+      if (!$mod->isFullMod())
+	continue;
       $proper_name = $mod->getProperName();
       if (!isset($proper_name))
 	$proper_name = $title;
