@@ -50,7 +50,7 @@ class Blog {
       return $this->title;
   }
 
-  function getFormatedDate($type="%x")
+  function getFormatedDate($type=BLOG_VIEW_DATE_FORMAT)
   {
     return strftime($type, $this->date);
   }
@@ -58,10 +58,12 @@ class Blog {
   function save()
   {
     $db = & new PHPWS_DB("blog_entries");
-
     if (!empty($this->id)) {
       $db->addWhere("id", $this->id);
+    } else {
+      $this->date = mktime();
     }
+
     $result = $db->saveObject($this);
     return $result;
   }
@@ -70,6 +72,7 @@ class Blog {
   {
     PHPWS_Core::initModClass("categories", "Categories.php");
     $template['TITLE'] = $this->getTitle(TRUE);
+    $template['DATE']  = $this->getFormatedDate();
     $template['ENTRY'] = $this->getEntry(TRUE);
 
     if ($edit && Current_User::allow("blog", "edit_blog", $this->getId())){
