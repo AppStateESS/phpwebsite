@@ -57,45 +57,12 @@ class Blog {
 
   function save($isVersion=FALSE, $approve=FALSE)
   {
-    PHPWS_Core::initModClass("version", "Version.php");
-
-    /*
-     * if restricted createUnapproved or updateUnapproved
-     * if unrestricted
-     *   if approving an unapproved  updateApproved
-     *   if updating an unapproved   updateUnapproved
-     *   if ignoring unapproved or     createApproved
-     *   no unapproved
-     */
-
     $db = & new PHPWS_DB("blog_entries");
 
     if (isset($this->id)) {
       $db->addWhere("id", $this->id);
-    } else {
-      $this->date = mktime();
     }
-
-    if (Current_User::isRestricted("blog")) {
-      $result = Version::saveUnapproved("blog_entries", $this);
-    }
-    else {
-      if ($isVersion == TRUE) {
-	if ($approve == TRUE) {
-	  $db->saveObject($this);
-	  $result = Version::saveApproved("blog_entries", $this);
-	} else {
-	  $result = Version::saveUnapproved("blog_entries", $this);
-	}
-      } else {
-	$result = $db->saveObject($this);
-	if (PEAR::isError($result))
-	  return $result;
-	$result = Version::saveVersion("blog_entries", $this);
-	test($result);
-      }
-    }
-
+    $result = $db->saveObject($this);
     return $result;
   }
 
