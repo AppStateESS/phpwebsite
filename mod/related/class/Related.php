@@ -23,18 +23,18 @@ class Related {
       return;
 
     $this->setId($id);
-    $this->init();
+    $result = $this->init();
+    if (PEAR::isError($result))
+      PHPWS_Error::log($result);
   }
 
   function init(){
     $db = & new PHPWS_DB("related_main");
     $db->addWhere("id", $this->id);
-    $result = $db->loadObjects('Related', TRUE);
+    $result = $db->loadObject($this);
 
     if (PEAR::isError($result))
       return $result;
-
-    $this = $result;
   }
 
   function setId($id){
@@ -241,7 +241,7 @@ class Related {
       $db->addWhere("module", $this->getModule());
       $db->addWhere("main_id", $this->getMainId());
       $db->addWhere("item_name", $this->getItemName(TRUE));
-      $result = $db->loadObjects("Related", TRUE);
+      $result = $db->getObjects("Related", TRUE);
       if (PEAR::isError($result))
 	return $result;
 
@@ -290,6 +290,9 @@ class Related {
 
     if (isset($this->id))
       $db->addWhere("id", $this->id);
+
+    if (!isset($this->item_name))
+      $this->item_name = $this->module;
 
     $result = $db->saveObject($this);
 

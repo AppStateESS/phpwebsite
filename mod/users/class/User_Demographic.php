@@ -22,11 +22,9 @@ class User_Demographic {
 
     $DB = new PHPWS_DB("users_demographic_items");
     $DB->addWhere("label", $label);
-    $item = $DB->loadObjects("User_Demographic", TRUE);
-    if (PEAR::isError($item))
-      PHPWS_Error::log(USER_ERR_LABEL_NOT_FOUND, "users", "User_Demographics");
-    else
-      $this = $item;
+    $result = $DB->loadObject($this);
+    if (PEAR::isError($result))
+      return $result;
   }
   
 
