@@ -180,7 +180,11 @@ class PHPWS_Core {
 
   
   function getConfigFile($module, $file){
-    $file = "./config/$module/$file";
+    if ($module == "core")
+      $file = PHPWS_SOURCE_DIR . "config/core/$file";
+    else
+      $file = PHPWS_SOURCE_DIR . "config/mod/$module/$file";
+
     if (!is_file($file))
       return PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, "core", "getConfigFile", "file = $file");
 
