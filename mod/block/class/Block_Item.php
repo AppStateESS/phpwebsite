@@ -4,9 +4,7 @@ class Block_Item {
   var $id          = 0;
   var $title       = NULL;
   var $content     = NULL;
-  var $_module     = NULL;
-  var $_item_id    = NULL;
-  var $_itemname   = NULL;
+  var $_key        = NULL;
 
   function Block_Item($id=NULL)
   {
@@ -46,6 +44,16 @@ class Block_Item {
   function setContent($content)
   {
     $this->content = PHPWS_Text::parseInput($content);
+  }
+
+  function setKey($key)
+  {
+    $this->_key = $key;
+  }
+
+  function getKey()
+  {
+    return $this->_key;
   }
 
   function summarize(){
@@ -90,20 +98,21 @@ class Block_Item {
 
   function view($pin_mode=FALSE)
   {
+    $key = &$this->_key;
     if ($pin_mode) {
       $link['action']   = 'pin';
       $link['block_id'] = $this->id;
-      $link['mod']   = $this->_module;
-      $link['item']  = $this->_item_id;
-      $link['itname'] = $this->_itemname;
+      $link['mod']   = $key->getModule();
+      $link['item']  = $key->getItemId();
+      $link['itname'] = $key->getItemName();
       $img = '<img src="./images/mod/block/pin.png" />';
       $opt = PHPWS_Text::secureLink($img, 'block', $link);
     } elseif (Current_User::allow('block')) {
       $js_var['ADDRESS'] = 'index.php?module=block&amp;action=remove'
 	. '&amp;block_id=' . $this->id
-	. '&amp;mod=' . $this->_module
-	. '&amp;item=' . $this->_item_id
-	. '&amp;itname=' . $this->_itemname
+	. '&amp;mod=' . $key->getModule()
+	. '&amp;item=' . $key->getItemId()
+	. '&amp;itname=' . $key->getItemName()
 	. '&amp;authkey=' . Current_User::getAuthKey();
 	
       $js_var['QUESTION'] = _('Are you sure you want to remove this block from this page?');
