@@ -85,6 +85,7 @@ class PHPWS_Group {
 
       $db = & new PHPWS_DB('users_groups');
       $db->addWhere('name', $name);
+      $db->addWhere('id', $this->id, '!=');
       $result = $db->select('one');
       if (isset($result)){
 	if(PEAR::isError($result))
@@ -171,6 +172,17 @@ class PHPWS_Group {
 	$db->resetValues();
       }
     }
+  }
+
+  function kill()
+  {
+    if ($this->id == ANONYMOUS_ID) {
+      return PHPWS_Error::get(USER_ANONGROUP_DELETE, 'users', 'kill');
+    }
+    $db = & new PHPWS_DB('users_groups');
+    $db->addWhere('id', $this->id);
+    $db->delete();
+    $this->dropAllMembers();
   }
 
   function allow($itemName, $permission=NULL, $item_id=NULL, $itemname=NULL){
