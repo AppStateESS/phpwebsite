@@ -5,13 +5,13 @@
  * The source directory tells the system where your installation
  * is. This is important to branches.
  */
-define("PHPWS_SOURCE_DIR", "{source_dir}");
+define('PHPWS_SOURCE_DIR', '{source_dir}');
 
 /**
  * Your site hash defines your site identity. It is used
  * to create cookies and name your session hash (see below).
  */
-define("SITE_HASH", "{site_hash}");
+define('SITE_HASH', '{site_hash}');
 
 /**
  * If you do not name your session, then branches or other
@@ -19,7 +19,7 @@ define("SITE_HASH", "{site_hash}");
  * You can name your session whatever you wish, but basing
  * it on your site hash is not a bad idea.
  */
-define("SESSION_NAME", md5(SITE_HASH));
+define('SESSION_NAME', md5(SITE_HASH));
 
 
 /**
@@ -28,22 +28,22 @@ define("SESSION_NAME", md5(SITE_HASH));
  * those people, you will need to attach a table prefix to 
  * each installation.
  */
-define("TABLE_PREFIX", "{dbprefix}");
+define('TABLE_PREFIX', '{dbprefix}');
 
 /**
  * This is you database information. The format is as follows:
- * "db_type://dbuser:dbpassword@dbhost/dbname"
+ * 'db_type://dbuser:dbpassword@dbhost/dbname'
  * This format must be exact.
  */ 
-//define("PHPWS_DSN", "dbtype://dbuser:dbpass@localhost/dbname");
-define("PHPWS_DSN", "{dsn}");
+//define('PHPWS_DSN', 'dbtype://dbuser:dbpass@localhost/dbname');
+define('PHPWS_DSN', '{dsn}');
 
 
 /**
  * The core will occasionally save cookies. They do not contain
  * important information. This is the time until they expire.
  */
-define("CORE_COOKIE_TIMEOUT", 2592000);
+define('CORE_COOKIE_TIMEOUT', 2592000);
 
 /********************** Security Settings *********************/
 /**
@@ -58,26 +58,26 @@ define("CORE_COOKIE_TIMEOUT", 2592000);
  */
 
 // FOR NOW, this will be FALSE. MUST BE TRUE on Release
-define("CHECK_DIRECTORY_PERMISSIONS", FALSE);
+define('CHECK_DIRECTORY_PERMISSIONS', FALSE);
 
 /********************** Logging Settings **********************/
 
 /**
  * Directory where logs will be written
  */
-define("PHPWS_LOG_DIRECTORY", "./logs/");
+define('PHPWS_LOG_DIRECTORY', './logs/');
 
 /**
  * Determines the permissions given to log files when written
  * to the logs directory.
  * This MUST be 4 digits and without quotation marks.
  */
-define("LOG_PERMISSION", 0644);
+define('LOG_PERMISSION', 0644);
 
 /**
  *  The time format for each log entry
  */
-define("LOG_TIME_FORMAT", "%X %x");
+define('LOG_TIME_FORMAT', '%X %x');
 
 /************************ POST CHECK ***************************/
 /**
@@ -85,7 +85,7 @@ define("LOG_TIME_FORMAT", "%X %x");
  * isPosted is called and a previous post matches the list, the
  * developer can prevent back clicking and refresh problems.
  */
-define("MAX_POST_TRACK", 10);
+define('MAX_POST_TRACK', 10);
 
 /*********************** CONFIG FILES **************************/
 /**
@@ -94,21 +94,21 @@ define("MAX_POST_TRACK", 10);
  * core to only grab mod configuration files, set the below
  * to TRUE.
  */
-define("FORCE_MOD_CONFIG", TRUE);
+define('FORCE_MOD_CONFIG', TRUE);
 
 /********************** PEAR SETTINGS **************************/
 
 /**
- * phpWebSite ships with a "known working version" of pear. This
+ * phpWebSite ships with a 'known working version' of pear. This
  * means it works for us. You may decide to alter this depending
  * on how your server is setup. Do not edit it unless you
  * know what you are doing.
  */
 // *nix / Linux environments
-{LINUX_PEAR}ini_set("include_path", ".:" . PHPWS_SOURCE_DIR . "lib/pear/");
+{LINUX_PEAR}ini_set('include_path', '.:' . PHPWS_SOURCE_DIR . 'lib/pear/');
 
 // Windows environments. Use this one instead on a windows machine.
-{WINDOWS_PEAR}ini_set("include_path", ".;" . PHPWS_SOURCE_DIR . "lib\\pear\\");
+{WINDOWS_PEAR}ini_set('include_path', '.;' . PHPWS_SOURCE_DIR . 'lib\\pear\\');
 
 /************************ LANGUAGE *****************************/
 /**
@@ -117,14 +117,14 @@ define("FORCE_MOD_CONFIG", TRUE);
  * has been tested with setlocale or you will get English each
  * time.
  */
-define("DEFAULT_LANGUAGE", "en-us");
+define('DEFAULT_LANGUAGE', 'en-us');
 
 /************************ LIST ********************************/
 /**
  * Assigns a css style to the toggle element in list
  */
 
-define("PHPWS_LIST_TOGGLE_CLASS", " class=\"bg-light\"");
+define('PHPWS_LIST_TOGGLE_CLASS', ' class=\'bg-light\'');
 
 
 
@@ -134,7 +134,7 @@ define("PHPWS_LIST_TOGGLE_CLASS", " class=\"bg-light\"");
  */
 
 /* Error logging presets */
-define("PHPWS_LOG_ERRORS", TRUE);
+define('PHPWS_LOG_ERRORS', TRUE);
 
 /*********************** TEXT SETTINGS *************************/
 /**
@@ -143,25 +143,25 @@ define("PHPWS_LOG_ERRORS", TRUE);
  * from the entry.
  */
 
-define("PHPWS_ALLOWED_TAGS", "<b><a><i><u><ul><ol><li><table><tr><td><dd><dt><dl><p><br><div><span><blockquote><th><tt><img><pre><hr>");
+define('PHPWS_ALLOWED_TAGS', '<b><a><i><u><ul><ol><li><table><tr><td><dd><dt><dl><p><br><div><span><blockquote><th><tt><img><pre><hr>');
 
 /********************** MOD REWRITE ***************************/
-define("USE_MOD_REWRITE", TRUE);
+define('USE_MOD_REWRITE', TRUE);
 
 /******************* ALLOWED IMAGES TYPES *********************/
 
-$allowedImageTypes = array("image/jpeg",
-			   "image/jpg",
-			   "image/pjpeg",
-			   "image/png",
-			   "image/x-png",
-			   "image/gif",
-			   "image/wbmp");
+$allowedImageTypes = array('image/jpeg',
+			   'image/jpg',
+			   'image/pjpeg',
+			   'image/png',
+			   'image/x-png',
+			   'image/gif',
+			   'image/wbmp');
 
-define("ALLOWED_IMAGE_TYPES", serialize($allowedImageTypes));
-define("MAX_IMAGE_SIZE", 50000);
-define("MAX_IMAGE_WIDTH", 800);
-define("MAX_IMAGE_HEIGHT", 600);
+define('ALLOWED_IMAGE_TYPES', serialize($allowedImageTypes));
+define('MAX_IMAGE_SIZE', 50000);
+define('MAX_IMAGE_WIDTH', 800);
+define('MAX_IMAGE_HEIGHT', 600);
 
 /******************** CACHING **********************************/
 /**
@@ -175,10 +175,10 @@ define("MAX_IMAGE_HEIGHT", 600);
  * The cache directory MUST BE WRITABLE by the webserver
  */
 
-define("ALLOW_CACHE_LITE", TRUE);
-define("ALLOW_SIGMA_CACHE", TRUE);
-define("CACHE_LIFETIME", 3600);
-define("CACHE_DIRECTORY", "/tmp");
+define('ALLOW_CACHE_LITE', TRUE);
+define('ALLOW_SIGMA_CACHE', TRUE);
+define('CACHE_LIFETIME', 3600);
+define('CACHE_DIRECTORY', '/tmp');
 
 /******************** MOD_REROUTE *******************************/
 /**
@@ -187,22 +187,30 @@ define("CACHE_DIRECTORY", "/tmp");
  * function properly.
  */
 
-define("MOD_REWRITE_ENABLED", FALSE);
+define('MOD_REWRITE_ENABLED', FALSE);
 
 /******************* RELATIVE ADDRESSING ***********************
  * The parseInput function the Text class will remove urls
  * and replace them with relative addresses if this option is TRUE
  * For example:
- * <a href="http://www.mysite.com/index.php?">Home</a>
- * <img src="http://www.mysite.com/images/mymod/candy.jpg" />
+ * <a href='http://www.mysite.com/index.php?'>Home</a>
+ * <img src='http://www.mysite.com/images/mymod/candy.jpg' />
  * will become
- * <a href="./index.php?">Home</a>
- * <img src="./images/mymod/candy.jpg" />
+ * <a href='./index.php?'>Home</a>
+ * <img src='./images/mymod/candy.jpg' />
  *
  * If for some reason you don't want this to happen, change to
  * FALSE
  */
 
-define("MAKE_ADDRESSES_RELATIVE", TRUE);
+define('MAKE_ADDRESSES_RELATIVE', TRUE);
+
+/******************* Compatibility Mode *************************
+ * If you are using modules created prior to 1.0.0, this needs
+ * to be set to TRUE.
+ * Otherwise, you can change it to FALSE
+ */
+
+define('USE_CRUTCH_FILES', TRUE);
 
 ?>
