@@ -11,7 +11,7 @@
 class User_Action {
 
   function adminAction(){
-    $content = NULL;
+    $message = $content = NULL;
 
     if (!Current_User::allow("users")){
       PHPWS_User::disallow(_("User tried to perform an Users admin function."));
@@ -66,7 +66,8 @@ class User_Action {
 
     case "postAuthorization":
       User_Action::postAuthorization();
-      $content = _("Authorization updated.") . "<hr />" . User_Form::authorizationSetup();
+      $message = _("Authorization updated.");
+      $content = User_Form::authorizationSetup();
       break;
 
       /** End User Forms **/
@@ -134,10 +135,12 @@ class User_Action {
 	if ($_GET['authorize'] == 1 && Current_User::isDeity()){
 	  $user->setDeity(TRUE);
 	  $user->save();
-	  $content = _("User deified.") . "<hr />" . User_Form::manageUsers();
+	  $message = _("User deified.");
+	  $content = User_Form::manageUsers();
 	  break;
 	} else {
-	  $content = _("User remains a lowly mortal.") . "<hr />" . User_Form::manageUsers();
+	  $message = _("User remains a lowly mortal.");
+	  $content = User_Form::manageUsers();
 	  break;
 	}
       } else
@@ -161,23 +164,41 @@ class User_Action {
       break;      
 
     case "postUser":
-      if (PHPWS_Core::isPosted()){
-	$content = _("This is a duplicate post.");
-	break;
-      }
       $result = User_Action::postUser($user);
+
+      if ($result === TRUE){
+	$user->setActive(TRUE);
+	$user->save();
+	if (isset($_POST['user_id']))
+	  $message = _("User updated.");
+	else
+	  $message = _("User created.");
+	
+	$panel->setCurrentTab("manage_users");
+	$title = _("Manage Users");
+	$content = User_Form::manageUsers();
+      } else {
+	$message = implode("<br />", $result);
+	if (isset($_POST['user_id']))
+	  $title = _("Edit User");
+	else
+	  $title = _("Create User");
+
+	$content = User_Form::userForm($user);
+      }
       break;
 
     case "postPermission":
       User_Action::postPermission();
-      echo "posting permissions";
-      break;
-      $content = _("Permissions updated.") . "<hr />";
-
-      if ($_POST['type'] == "user")
-	$content .= User_Form::manageUsers();
-      else
-	$content .= User_Form::manageGroups();
+      $title = _("Permissions updated");
+      $current_tab = $panel->getCurrentTab();
+      if ($current_tab == "manage_users"){
+	$title = _("Manage Users");
+	$content = User_Form::manageUsers();
+      } else {
+	$title = _("Manage Groups");
+	$content = User_Form::manageGroups();
+      }
 
       break;
 
@@ -231,6 +252,7 @@ class User_Action {
       break;
 
     default:
+      $title = "Warning";
       $content = "Unknown command";
       test($_REQUEST);
       break;
@@ -238,6 +260,7 @@ class User_Action {
 
     $template['CONTENT'] = $content;
     $template['TITLE'] = $title;
+    $template['MESSAGE'] = $message;
 
     $final = PHPWS_Template::process($template, "users", "main.tpl");
 
