@@ -201,6 +201,35 @@ class PHPWS_File {
   }// END FUNC fileCopy()
 
   /**
+   * Makes a new directory given a path name
+   *
+   * @author   Darren Greene <dg49379@NOSPAM.tux.appstate.edu>
+   * @param    string  $pathname     name of the path to create directory
+   * @param    string  $permissions  octal Unix Permissions
+   * @return   boolean $dirCreated   true if directory was created
+   * @access   public
+   */
+  function makeDir($pathname, $permissions=NULL) {
+    if(is_dir($pathname)) {
+      return true;
+    }
+
+    $dirCreated = false;
+    $oldMask = umask();
+	
+    if ($permissions != NULL)
+      $dirCreated = @mkdir($pathname, $permissions);
+    else
+      $dirCreated = @mkdir($pathname, PHPWS_DIR_PERMISSIONS);
+	
+    umask($oldMask);
+	
+    return $dirCreated;
+  }
+
+
+
+  /**
    * Creates a thumbnail of a jpeg or png image.
    *
    * @author   Jeremy Agee <jagee@NOSPAM.tux.appstate.edu>
