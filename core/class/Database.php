@@ -547,7 +547,7 @@ class PHPWS_DB {
 
   function import($text){
     PHPWS_DB::touchDB();
-    require_once PHPWS_SOURCE_DIR . "core/File.php";
+
     $prefix = PHPWS_DB::getPrefix();
 
     $sqlArray = PHPWS_Text::sentence($text);
@@ -557,6 +557,7 @@ class PHPWS_DB {
 	continue;
 
       $sqlCommand[] = $sqlRow;
+
       if (preg_match("/;$/", $sqlRow)){
 	$query = implode(" ", $sqlCommand);
 
@@ -566,7 +567,7 @@ class PHPWS_DB {
 	}
 	$sqlCommand = array();
 
-	$result = PHPWS_DB::query($query);    PHPWS_DB::touchDB();
+	$result = PHPWS_DB::query($query);
 	if (DB::isError($result))
 	  $errors[] = $result->getMessage();
       }
@@ -638,7 +639,7 @@ class PHPWS_DB {
       if ($prefix = PHPWS_DB::getPrefix())
 	$tableName = str_replace("", $prefix, $tableName);
 
-      $sql[] = "CREATE TABLE $tableName ( " .  implode(", ", $parameters) ." )";
+      $sql[] = "CREATE TABLE $tableName ( " .  implode(", ", $parameters) ." );";
       if (isset($createIndex))
 	$sql = array_merge($sql, $createIndex);
     }
@@ -647,13 +648,15 @@ class PHPWS_DB {
       $DB = new PHPWS_DB($tableName);
 
       if ($rows = $DB->select()){
+	if (PEAR::isError($rows))
+	  return $rows;
 	foreach ($rows as $dataRow){
 	  foreach ($dataRow as $key=>$value){
 	    $allKeys[] = $key;
 	    $allValues[] = PHPWS_DB::quote($value);
 	  }
 	  
-	  $sql[] = "INSERT INTO $tableName (" . implode(", ", $allKeys) . ") VALUES (" . implode(", ", $allValues) . ")";
+	  $sql[] = "INSERT INTO $tableName (" . implode(", ", $allKeys) . ") VALUES (" . implode(", ", $allValues) . ");";
 	  $allKeys = $allValues = array();
 	}
       }
