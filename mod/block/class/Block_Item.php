@@ -124,7 +124,7 @@ class Block_Item {
 
     $link['block_id'] = $this->id;
     $template = array('TITLE'   => $this->getTitle(),
-		      'CONTENT' => $this->getContent(),
+		      'CONTENT' => PHPWS_Text::parseTag($this->getContent()),
 		      'OPT'     => $opt
 		      );
     
