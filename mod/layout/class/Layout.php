@@ -8,8 +8,9 @@
  * @package Core
  */
 
-PHPWS_CORE::initModClass("layout", "Layout_Settings.php");
+PHPWS_Core::initModClass("layout", "Layout_Settings.php");
 PHPWS_Core::initCoreClass("Template.php");
+PHPWS_Core::initModClass("layout", "Crutch.php");
 
 class Layout {
 
@@ -562,25 +563,26 @@ class Layout {
   function submitHeaders($theme, &$template){
     $testing = true;
 
-    if($testing == FALSE && stristr($_SERVER["HTTP_ACCEPT"],"application/xhtml+xml")){
-      header("Content-Type: application/xhtml+xml; charset=UTF-8");
-      $template["XML"] = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-      $template["DOCTYPE"] = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\n\"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n";
-      $template["XHTML"] = "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"" . CURRENT_LANGUAGE . "\">\n";
-      $template["XML_STYLE"] = Layout::getStyleLinks(TRUE);
+    if($testing == FALSE && stristr($_SERVER['HTTP_ACCEPT'],'application/xhtml+xml')){
+      header('Content-Type: application/xhtml+xml; charset=UTF-8');
+      $template['XML'] = '<?xml version="1.0" encoding="UTF-8"?>';
+      $template['DOCTYPE'] = 
+	'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">';
+      $template['XHTML'] = '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="' . CURRENT_LANGUAGE . '">';
+      $template['XML_STYLE'] = Layout::getStyleLinks(TRUE);
     } else {
-      header("Content-Type: text/html; charset=UTF-8");
-      $template["DOCTYPE"] = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
-      $template["XHTML"] = "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"" . CURRENT_LANGUAGE . "\" lang=\"" . CURRENT_LANGUAGE . "\">\n";
+      header('Content-Type: text/html; charset=UTF-8');
+      $template['DOCTYPE'] = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+      $template['XHTML'] = '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="' . CURRENT_LANGUAGE . '" lang="' . CURRENT_LANGUAGE . '">';
       $template['STYLE'] = Layout::getStyleLinks(FALSE);
     }
-    header("Content-Language: " . CURRENT_LANGUAGE);
-    header("Content-Script-Type: text/javascript");
-    header("Content-Style-Type: text/css");
+    header('Content-Language: ' . CURRENT_LANGUAGE);
+    header('Content-Script-Type: text/javascript');
+    header('Content-Style-Type: text/css');
 
     if ($_SESSION['Layout_Settings']->cache == FALSE){
-      header("Cache-Control : no-cache");
-      header("Pragma: no-cache");
+      header('Cache-Control : no-cache');
+      header('Pragma: no-cache');
     }
   }
 
@@ -589,11 +591,16 @@ class Layout {
   }
 
   function getBase(){
-    return "<base href=\""
+    return '<base href="'
       . PHPWS_Core::getHttp()
       . $_SERVER['HTTP_HOST']
       . preg_replace("/index.*/", "", $_SERVER['PHP_SELF'])
-      . "\" />";
+      . '" />';
+  }
+
+  function addPageTitle($title)
+  {
+    $GLOBALS['Layout_Page_Title_Add'][] = $title;
   }
 
   function wrap($content){
@@ -608,7 +615,7 @@ class Layout {
     Layout::loadStyleSheets();
     Layout::submitHeaders($theme, $template);
     $template['METATAGS']   = Layout::getMetaTags();
-    $template['PAGE_TITLE'] = $_SESSION['Layout_Settings']->page_title;
+    $template['PAGE_TITLE'] = $_SESSION['Layout_Settings']->getPageTitle();
     $template['CONTENT']    = $content;
     $template['ONLOAD']     = Layout::getOnLoad();
     $template['BASE']       = Layout::getBase();
