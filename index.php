@@ -22,14 +22,8 @@ error_reporting (E_ALL);
 
 ob_start();
 
-/* Security against those with register globals = on */
-if (ini_get('register_globals')){
-  foreach ($_REQUEST as $requestVarName=>$nullIT)
-    unset($requestVarName);
-  unset($nullIT);
-}
 
-/* Initialize core defines */
+require_once PHPWS_SOURCE_DIR . 'inc/Security.php';
 require_once PHPWS_SOURCE_DIR . 'core/class/Init.php';
 
 PHPWS_Core::checkSecurity();
