@@ -418,7 +418,7 @@ class Setup{
       $_SESSION['Boost']->loadModules($modules);
     }
 
-    $content[] = $_SESSION['Boost']->install();
+    $content[] = $_SESSION['Boost']->install(FALSE);
     if ($_SESSION['Boost']->isFinished())
       return TRUE;
     else
