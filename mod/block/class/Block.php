@@ -29,7 +29,6 @@ class Block {
 	continue;
       }
 
-      $block->setKey($key);
       $content[] = $block->view(TRUE);
     }
 
