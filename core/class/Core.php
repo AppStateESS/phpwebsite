@@ -60,12 +60,19 @@ class PHPWS_Core {
   }
 
 
-  function getModules($active=TRUE){
+  function getModules($active=TRUE, $just_title=FALSE){
     $DB = new PHPWS_DB('modules');
-    if ($active == TRUE)
+    if ($active == TRUE) {
       $DB->addWhere('active', 1);
+    }
     $DB->addOrder('priority asc');
-    return $DB->select();
+
+    if ($just_title==TRUE) {
+      $DB->addColumn('title');
+      return $DB->select('col');
+    } else {
+      return $DB->select();
+    }
   }
 
   function runtimeModules(){
