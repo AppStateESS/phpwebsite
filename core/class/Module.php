@@ -11,13 +11,13 @@ class PHPWS_Module {
   var $_register      = FALSE;
   var $_import_sql   = FALSE;
 
-  function PHPWS_Module($module=NULL){
-    if (isset($module))
-      $this->setTitle($module);
+  function PHPWS_Module($title=NULL){
+    if (isset($title))
+      $this->init($title);
   }
 
-  function init(){
-    $title         = $this->getTitle();
+  function init($title){
+    $this->setTitle($title);
     $proper_name   = NULL;
     $version       = .001;
     $active        = TRUE;
@@ -58,7 +58,7 @@ class PHPWS_Module {
 
   function getProperName($useTitle=FALSE){
     if (!isset($this->_proper_name) && $useTitle == TRUE)
-      return ucwords($this->getTitle());
+      return ucwords(str_replace("_", " ", $this->getTitle()));
     else
       return $this->_proper_name;
   }
