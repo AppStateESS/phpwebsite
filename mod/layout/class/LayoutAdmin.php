@@ -32,8 +32,9 @@ class Layout_Admin{
       if (isset($_POST['confirm'])){
 	Layout_Admin::changeTheme($_POST['theme']);
 	$template['MESSAGE'] = _("Theme settings updated.");
-      } else
+      } else {
 	Layout::reset();
+      }
 
       $content = Layout_Admin::adminThemes();
       break;
@@ -93,15 +94,14 @@ class Layout_Admin{
 
     case "postTheme":
       if ($_POST['default_theme'] != $_SESSION['Layout_Settings']->current_theme){
-	$_SESSION['Layout_Settings']->current_theme = $_POST['default_theme'];
 	Layout::resetBoxes();
 	$title = _("Confirm Theme Change");
 	$content = Layout_Admin::confirmThemeChange();
+	$_SESSION['Layout_Settings']->current_theme = $_POST['default_theme'];
       } else {
 	$title = _("Themes");
 	$content = Layout_Admin::adminThemes();
       }
-	
       break;
 
     case "theme":
