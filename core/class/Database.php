@@ -1195,6 +1195,10 @@ class PHPWS_DB {
     if (!is_object($object))
       return PHPWS_Error::get(PHPWS_DB_NOT_OBJECT, 'core', 'PHPWS_DB::loadObject');
 
+    if (!empty($object->id)) {
+      $this->addWhere('id', $object->id);
+    }
+
     $variables = $this->select('row');
 
     if (PEAR::isError($variables))
@@ -1228,7 +1232,7 @@ class PHPWS_DB {
     return $items;
   }
 
-  function saveObject(&$object, $stripChar=FALSE){
+  function saveObject(&$object, $stripChar=FALSE, $autodetect_id=TRUE){
 
     if (!is_object($object))
       return PHPWS_Error::get(PHPWS_WRONG_TYPE, 'core', 'PHPWS_DB::saveObject', _('Type') . ': ' . gettype($object));
@@ -1244,10 +1248,15 @@ class PHPWS_DB {
       if (!$this->isTableColumn($column))
 	continue;
 
+      if ($autodetect_id && ($column == 'id' && $value > 0)) {
+	$this->addWhere('id', $value);
+      }
+
       $this->addValue($column, $value);
     }
 
-    if (isset($this->qwhere) || ((isset($this->where) && count($this->where)))) {
+    if (isset($this->qwhere) ||
+	((isset($this->where) && count($this->where)))) {
       $result = $this->update();
     }
     else {
