@@ -41,4 +41,8 @@ $errors[PHPWS_FORM_INVALID_MATCH]    = _("Match for must be an array for a multi
 // Item.php 400 - 499
 $errors[PHPWS_ITEM_ID_TABLE]         = _("Id and table not set.");
 $errors[PHPWS_ITEM_NO_RESULT]        = _("No result returned from database.");
+
+// Module.php 500 - 599
+$errors[PHPWS_NO_MOD_FOUND]          = _("Module not found in the database.");
+
 ?>
