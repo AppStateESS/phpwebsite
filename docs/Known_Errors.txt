@@ -1,0 +1,21 @@
+This file is collection of messages you may come accross in your
+error.log file.
+
+
+Error [notice] [-18] SELECT * FROM modules WHERE ( active = '1' )
+ORDER BY priority asc  [nativecode=1146 ** Table
+'database_name.modules' doesn't exist] 
+
+Something is really wrong. The modules table is missing from your
+database. As this is a core table, its existance is vital. This
+is usually an indication that your database is empty as the modules
+table is the first table hit by phpWebSite. Either you need to run
+setup or you need to restore from backup.
+
+-------------------------------------------------------------------
+Error [notice] [-27]  [nativecode=Unknown database 'database_name'] **
+mysql://db_username:db_password@localhost/database_name
+
+This is a worse error than the one above. This means you are missing
+your database. You need to create the database then restore from
+backup or run setup.

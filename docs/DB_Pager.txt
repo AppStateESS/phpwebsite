@@ -1,0 +1,269 @@
+DB Pager Documentation by Matthew McNaney
+------------------------------------------------------------------
+
+Before version 0.9.4, PhpWebSite has some great paging tools. There
+were just two little details that were troublesome.
+
+1) Often you would need to session the class. This created a bit of
+   overhead and refresh problems.
+2) The pager class would need ALL the results of your data before
+   displaying a portion of the results. Either you repeatedly pulled
+   all the data at one time or you sessioned the results.
+3) The mechanism for employing the pager was complicated.
+
+After working with our Pager class and viewing PEAR's pager class, we
+have tried to combine the best of both worlds.
+
+1) You don't need to session the DB Pager object. It is constructed
+   per page hit and gets its data from the previous view.
+2) The DB Pager pulls ONLY the data information needed per page view.
+3) The process is much simpler.
+
+There are a few downsides:
+
+1) If a user leaves the pager to go to another page, it will be reset
+   to its original settings. However, if you must have it remember the
+   settings from the previous view, you _could_ session the settings.
+2) It expects you to use OOP.
+3) It expects a specific object/table synchronizing.
+
+
+Getting Started
+--------------------------------------------------------------------
+You will need to require the DB Pager class:
+
+PHPWS_Core::initCoreClass("DBPager.php");
+or
+require_once "core/class/DBPager.php";
+
+You will also need to require the 'working class'. This is the object
+that is going to hold your row data. I will be using File Cabinet as an
+example:
+
+PHPWS_Core::initCoreClass("Image.php");
+
+The File Cabinet uses the image and document class extensively.
+
+Now I need to make my pager object:
+
+$pager = & new DBPager("images", "PHPWS_Image");
+
+The 'images' variable refers to what table to access. The second
+parameter 'PHPWS_Image' is the class to construct from the table
+information. 
+
+
+Setting Main Parameters
+--------------------------------------------------------------------
+There are three main parameters that need to be set for the pager to
+function properly: the module, the template, and the link.
+
+Module:
+The module that is using the pager. Use the setModule function:
+
+$pager->setModule("filecabinet");
+
+
+Template:
+This is the template that the pager will use to display your data (see
+below for template setup information). Use the the setTemplate
+function and supply the path below your module's template directory
+(just like using PHPWS_Template::process):
+
+$pager->setTemplate("imageList.tpl");
+
+
+Link:
+Finally, you will need to set the link address. Pager appends its view
+information on the end of this link. It will look something like the
+following:
+
+$pager->setLink("index.php?module=filecabinet&amp;action=main&amp;tab=image");
+
+With these parameters set, the pager is ready to get started. It will
+pull a number of rows (based on the page limit) from the specified
+table. Each of these rows will then be put into an object (1). Each
+variable will be put into a template array. This template array will
+be run against the row tags in your template. Remember that all the
+variables from your object will be in the template but it is up to you
+to create the appropriate tags.
+
+Displaying the Page
+--------------------------------------------------------------------
+To get the data, just call the get function:
+
+$content = $pager->get();
+
+Layout::add($content);
+
+
+Where Options
+--------------------------------------------------------------------
+If you want to set restrictions on the table data, you can use the
+addWhere function. This function works just like the Database class
+function of the same name.
+
+$pager->addWhere("type", "image/jpeg");
+
+If I entered these parameters, then the pager would only pull the rows
+where the 'type' was equal to 'image/jpeg'. The same rules apply to
+this function as to Database. You can set groups, set AND or OR, and
+use less/greater-than.
+
+
+Using Alternate Methods
+--------------------------------------------------------------------
+By default, the Pager just echoes an object's variables. For example,
+normally the image title would go into my template like so:
+
+$template_row['TITLE'] = $image->title;
+
+However, in File Cabinet, I wanted to use the Image class' getJSView
+function instead. So, I tell the pager that I want to substitute that
+function for the variable like so:
+
+$pager->setMethod("title", "getJSView");
+
+So now the template would look like:
+
+$template_row['TITLE'] = $image->getJSView();
+
+Remember that if you use the setMethod function, pager will always try
+to call the function from the object directly. If you want to call a
+static function outside of the row object, then read on.
+
+
+Plugging in Special Row Tags
+--------------------------------------------------------------------
+If you want to plug in special tags per row, then you can do so using
+the addRowTag function. For example, in File Cabinet, I wanted to add
+some action links for each row. Here is how I did it:
+
+$pager->addRowTag("action", "Cabinet_Action", "listAction");
+
+The first parameter 'action' is the tag name. 'Cabinet_Action' is the
+name of the class where my method is located. Finally, 'listAction' is
+the name of the method.
+
+For each row pulled from the database, pager will do the following:
+
+$template_row['ACTION'] = Cabinet_Action::listAction($image);
+
+In other words, it will put the result from calling the static
+function 'listAction' into the template tag 'ACTION'. The listAction
+function will get information from the $image object to create the
+appropriate administration links.
+
+
+Adding Toggles
+--------------------------------------------------------------------
+Non-colored rows are not only boring, they make it more difficult to
+match information across the page. To combat this, you need to use the
+addToggle function. Here is how you could add red, white, and blue
+stripes to your list.
+
+$pager->addToggle("style=\"background-color : red\"");
+$pager->addToggle("style=\"background-color : white\"");
+$pager->addToggle("style=\"background-color : blue\"");
+
+The pager will alternate between each toggle color as it displays the
+rows (2).
+
+
+Plugging in Page Tags
+--------------------------------------------------------------------
+If you want to add extra dynamic information to your list template,
+you will need to use the addTags function. In the below example, I
+need to translate the column headers, so I am plugging them into addTags.
+
+$tags['PAGE_LABEL'] = _("Page");
+$tags['TITLE']      = _("Title");
+$tags['FILENAME']   = _("Filename");
+$tags['MODULE']     = _("Module");
+$tags['SIZE']       = _("Size");
+$tags['ACTION']     = _("Action");
+
+$pager->addTags($tags);
+
+
+
+Setting up your template
+--------------------------------------------------------------------
+Before you continue, make sure you know how templates work in
+phpWebSite(3). 
+
+The easiest way to make a page list is to use a table(4). Take a look
+at File Cabinet's pager template imageList.tpl.
+
+Notice the header row. It contains the labels for the columns. Next to
+the column name is a COLUMNNAME_SORT tag. This tag will display a
+sorting graphic. By clicking on this graphic, the user can order the
+data by column alphabetically.
+
+After the headers come the actual rows. Notice that the column tag
+names are identical to the table column names. The ACTION tag is from
+the Special Row Tags section.
+
+<!-- BEGIN listrows -->
+  <tr {TOGGLE}>
+    <td>{TITLE}</td>
+    <td>{FILENAME}</td>
+    <td>{MODULE}</td>
+    <td>{SIZE}</td>
+    <td>{ACTION}</td>   
+  </tr>
+<!-- END listrows -->
+
+VERY IMPORTANT!!
+You must use the listrows commenting. Pager will repeat the rows
+within the listrows comments. Without them, you will only see one row.
+
+Finally, you need to include the PAGES and LIMITS tags for page
+navigation:
+
+<div align="center">
+  <b>{PAGE_LABEL}</b><br />
+  {PAGES}<br />
+  {LIMITS}
+</div>
+
+Clicking on the page links will let the user move through the
+data. Clicking on the limit links will let the user control how many
+rows are displayed on screen at a time.
+
+The PAGE_LABEL tag is from the Page Tags section.
+
+
+Conclusion
+--------------------------------------------------------------------
+I hope you find the DB Pager class useful. If you have questions,
+please visit our IRC channel #phpwebsite at freenode.net.
+
+If you have questions or comments about this document, please email me
+at:
+
+Matt McNaney <matt at tux dot appstate dot edu>
+
+
+
+Footnotes
+--------------------------------------------------------------------
+(1) Here is where it is important that your object variables match the
+    table column names:
+
+Table column    : title    > All is well, the title will be put into 
+Object variable : title    > the object's 'title' variable.
+
+Table column    : name     > Unless there is an object variable entitled
+Object variable : title    > 'name', this information will get lost.
+
+
+(2) Make sure you have the {TOGGLE} tag in your list.
+
+Example <tr {TOGGLE}><td>{TITLE}</td></tr>
+
+
+(3) Look in docs/template.txt.
+
+
+(4) Do you know how to make a tableless CSS design? Go for it :)
