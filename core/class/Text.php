@@ -280,9 +280,9 @@ class PHPWS_Text {
       return PHPWS_Text::moduleLink($subject, $module, array('action' => $action, 'id' => $id));
     } else {
       if (!isset($id)) {
-	return "<a href=\"{$module}/{$action}\">$subject</a>";
+	return sprintf('<a href="%s/%s">%s</a>', $module, $action, $subject);
       } else {
-	return "<a href=\"{$module}/{$action}/{$id}\">$subject</a>";
+	return sprintf('<a href="%s/%s/%s">%s</a>', $module, $action, $subject, $id);
       }
     }
   }
@@ -337,11 +337,11 @@ class PHPWS_Text {
     if ($target=='blank' || $target === TRUE)
       $link[] = ' target="_blank" ';
     elseif ($target=="index")
-      $link[] = " target=\"index\" ";
+      $link[] = ' target="index" ';
 
-    $link[] = ">";
+    $link[] = '>';
 
-    return implode("", $link) . strip_tags($subject, "<img>") . "</a>";
+    return implode('', $link) . strip_tags($subject, '<img>') . '</a>';
   }// END FUNC indexLink()
 
 
