@@ -1,0 +1,207 @@
+Database Documentation
+by Matthew McNaney
+
+Introduction
+The phpWebSite database class is meant to prevent the tedious creation
+of long sql strings and to assist the beginning programmer to access
+the database. It uses the PEAR DB library as its backbone.
+
+Accessing the database statically.
+If you do not wish to create a object for phpwebsite, you can
+access the database directly using these functions:
+
+PHPWS_DB::loadDB($dsn)
+When phpws_db is accessed, it will load the database according to
+phpwebsite's configuration file. If you need to change the database
+connection then you can send a different dsn string to this function.
+For information on the dsn format please read this page:
+http://pear.php.net/manual/en/package.database.db.intro-dsn.php
+
+PHPWS_DB::query($sql)
+You can send any database query string to this function. The result
+depends upon the usage. See this page for more details:
+http://pear.php.net/manual/en/package.database.db.intro-query.php
+
+PHPWS_DB::select($type, $query)
+Select can be called statically and from an object. To call it
+statically, enter the "type" of return you want and the select
+"query". For select types, see below.
+
+PHPWS_DB::import($text)
+This function will take a database export and attempt to import it
+into the current database.
+
+PHPWS_DB::export($tableName, $structure, $contents)
+This function will return a text string export of a specific table.
+If structure is TRUE (default value) then you will get back the CREATE
+TABLE information. If $contents is TRUE (default value) you will
+receive the contents of that table as well (or instead of if structure
+is FALSE).
+
+PHPWS_DB::listTables()
+Returns a list array of tables in your database.
+
+PHPWS_DB::listDatabase()
+Returns a list of databases that are accessible by your dsn entry.
+
+
+Constructing a database object
+Creating an object allows easier manipulation of complicated queries.
+
+To get started, construct a phpws db object like so.
+
+$db = & new PHPWS_DB("tableName");
+
+The table name is not mandatory, you could add it later like so:
+
+$db->setTable("tableName");
+
+Now you decide what kind of query you require: select, insert, update,
+delete, create or drop table, or create or drop column.
+
+SELECT
+The select function has many options to determine its results.
+
+We will use the following table as an example:
+
+id   |   name   |   age    |  sex
+------------------------------------------
+3    | Chris    |   33     | male
+4    | Suzy     |   24     | female
+5    | Laura    |   44     | female
+6    | Mike     |   22     | male
+7    | Chris    |   18     | female      
+
+
+Once you have created your object you merely need to call:
+$result = $db->select();
+
+An array of rows found will be placed into the $result variable.
+
+The result here would be an array with the following form:
+
+0 =>  id    => 3
+      name  => Chris
+      age   => 33
+      sex   => male
+      
+1 =>  id    => 4
+      name  => Lucy
+      age   => 24
+      sex   => female
+
+2 =>  id    => 5
+      name  => Laura
+      age   => 44
+      sex   => female
+
+3 =>  id    => 6
+      name  => Mike
+      age   => 22
+      sex   => male
+
+
+Using Where
+
+If you want to narrow your selection, you will need to add where
+conditions to your object. To do this use:
+
+$db->addWhere(column_name, value, operator, conjuction, group)
+
+column name - the column table you want to match against.
+
+value       - the value to compare the column against
+
+operator    - how to compare the column to the value. This
+              defaults to equal (=).
+
+conj        - the conjuction between where conditions
+	      AND or OR with AND being the default
+
+group       - the group to file this where
+
+
+Here are some conditional statement and how they would be executed:
+
+Where the id is equal to 4
+$db->addWhere('id', 4);
+
+Where the id is equal to 4 or 5
+$db->addWhere('id', 4);
+$db->addWhere('id', 5, '=', 'and');
+note: the above could also be:
+$db->addWhere('id', 5, NULL 'and');
+
+Where the age is greater than 20 and less than 45.
+$db->addWhere('age', 20, '>');
+$db->addWhere('age', 45, '<', 'and');
+
+Grouping conditionals allow proper ordering:
+
+Where the id is greater than 3 and less than 6 OR
+the name starts with the letter 'L'
+$db->addWhere('id',    3,  '>',    NULL, 'idgroup');
+$db->addWhere('id',    6,  '<',    'or', 'idgroup');
+$db->addWhere('name', 'L', 'like', 'or', 'namegroup');
+
+Kind of complicated but it would look like this if you wrote the
+query.
+
+select * from mytable where (id > 3 AND id < 6) OR (name LIKE 'L%');
+
+Ordering
+If we wanted to select in a certain order we use the addOrder
+function:
+$db->addOrder(columnname_direction);
+
+For example, if we wanted the list in reverse order by name:
+$db->addOrder('name desc');
+
+If we wanted it the next ordering element to be age in ascending
+order:
+$db->addOrder('age asc');
+
+
+Setting columns
+Normally, the select function will grab all the columns from a
+table. You may not want this. If this is the case then you need to
+specify which columns to grab using the addColumn function.
+
+$db->addColumn(column_name, distinct, count);
+
+So if I wanted to only receive the 'name' column in my result:
+$db->addColumn('name');
+
+I can keep adding columns that I want to receive as well:
+$db->addColumn('age');
+
+If I want distinct answers, I can send TRUE as the second
+parameter. For example, say I wanted a column of all names but I
+didn't want any repeats. If I use:
+
+$db->addColumn('name', TRUE);
+
+then I will not see the name 'Chris' twice. Distinct defaults
+to FALSE.
+
+If I want to count the number of rows in a table:
+$db->addColumn('name', FALSE, TRUE);
+
+Number of distinct rows:
+$db->addColumn('name', TRUE, TRUE);
+
+Note that you must enter a column name for both count and distinct.
+
+Limiting results
+
+If you want to control how many results you receive, use the setLimit
+function.
+$db->setLimit(amount);
+
+So if I only want 2 rows returned:
+$db->setLimit(2);
+
+
+
+
+

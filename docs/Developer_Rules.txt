@@ -1,12 +1,20 @@
 1) Sessions should be at a minimum and removed from memory as soon as they are
    no longer in use.
+
 2) Sessions should be hidden from the module developer. If your module is
    accessible by other developers, let them access information by using
    an instanced method. Keep track of your sessions separately. 0.9.3
    used this far too often.
+
 3) Module developers should also not need to know the name of your
    GLOBAL variables.
+
 4) Use the error class functionality. It makes it easier to debug your code.
+
 5) When making a database dump, make it generic. For example, KEY doesn't work
    in postgres. Postgres also ignores capitalization when creating db columns.
    Also, giving sizes to integers (e.g. INT(11)) doesn't working in MicrosoftSQL. 
+
+6) When a user (not an admin) is entering ANY data, you should not
+   allow html tags. Use the parseText function as anonymous. They
+   should use BBCode parsing only.

@@ -383,3 +383,138 @@ boost.log file in your logs/ directory.
 
 If there aren't any errors, then you should get a "Installation
 Successful" message.
+
+Writing the Code
+
+Links is installed, but it doesn't DO anything. In fact, I usually
+write a module first and worry about the install files at the very
+end. This is because I usually don't know all the things that it
+needs until the module is finished.
+
+As I decide to add elements, I will discuss them here. It is debateable
+whether that is the BEST way to teach you, but I think it is the best
+way for you to learn what I know.
+
+Before I continue, keep some things in mind. I will offer example code
+that may NOT be in Links. For example, I will start testing the module
+with sample code. This code will be removed before release. Most of
+the time this code will be pretty minor.
+
+Also, I will touch on some components of the core but I won't go in
+detail about each module. That should be covered that module's
+documentation. If I use every feature of every module, the Links
+module will be a Frankenstein's monster of code. We will only use what
+we need.
+
+Ok first thing I want to do is create my index.php file. When
+phpWebSite is told to use a specific module, it will route itself to
+the index.php file contained within your module's directory. What
+happens from that point on is up to you.
+
+I am going to start with a basic admin structure. The first thing I
+want to do is make a form to create links. To do so, I need a link
+class. Look at the file Link.php in the class/ directory.
+
+Notice the class name: Links_Link. I don't name it just 'Link' because
+there is the slim possibility that 'Link' could become a class name
+somewhere else. Get in the habit of prefixing your class names with
+the name of your module.
+
+The variable construction is simple: they are the same as the columns
+in our link table. I am making all of these variables public.
+(Note: php 4 doesn't really use public and private variables, but you
+should get in the habit of thinking about them).
+
+I am going to assign all these variables as NULL except for some
+exceptions. 'User_id' is going to be set to 0. I figure that some
+links may be posted anonomously. Since all users have ids above zero,
+this will be a good indicator. 'Active', 'hits', and 'created' will be
+defaulted to zero as well. I am also making a private value
+'_error'. The underscore denotes it as 'private'.
+
+Next I create the constructor with an id value parameter. The default
+will be 'NULL' so I can construct a blank link object. If the id
+parameter is available, I am going to run the init() function. If the
+init() function fails it will return an error object. Because the
+error happened in the constructor, I am going to store the error in
+the _error variable and log the error.
+
+Let's go over the error object. It would be in your best interest to
+handle error reporting in this manner. PEAR (one of the php libraries
+used extensively by phpWebSite) has a great error class. We use a
+modified form of it.
+
+To see how this works, take a look at the init() function. It is going
+to select a link from the database that matches the id number sent to
+it. One of three things could happen:
+1) it finds the link in the database (that's good!),
+2) it fails to find the link in the database (that's bad), or
+3) there was an error trying to select from the database (real bad).
+
+If the first condition happens, we just pass the information to the
+rest of the function. If the second condition happens, then we need to
+create our own error.
+
+if (empty($result))
+   return PHPWS_Error::get(LINKS_ERR_NOT_FOUND,
+		           "links",
+			   "Links_Link::init",
+			   "id=" . $this->getId()
+			   );
+
+Two things we need setup for our error control to function. First, we
+should define our error codes. You can set your codes however you wish
+however I find the easiest way is to define negative number values to
+descriptive code names. For example, in init you see the define
+LINKS_ERR_LINK_NOT_FOUND. All my error codes will be prefixed by
+LINKS_ERR. The rest of the code tells me what it is for. You can put
+these codes where ever you wish. The best place would be at the top of
+the class or in a config file. The advantage of a config file is that
+all your errors are in one place and you won't have a number overlap.
+I put my error codes in the conf/config.php file.
+
+Next I need to write an explanation of the error. I save these to the
+conf/ directory in a file named 'error.php'. Take a look at that
+file. I create an array named 'errors'. The key of each error is the
+define we made earlier and the value of the array row is the message.
+
+Back to the init function. Notice that we check for an empty
+result. If that is the case, a null was returned and we need to return
+the error we created using the PHPWS_Error::get function.
+
+PHPWS_Error::get(error_id, module_name, [class_name::]function_name, extra_data);
+
+The result will be an PEAR error object. Notice that I put the name of
+the class along with the function. If your function has a generic name
+(get, load, init, etc.), putting the class name will help you track
+down where the error originated.
+
+We can do a couple of things with the error object. We can print it
+using PHPWS_Error::printError(), or we can log it using
+PHPWS_Error::log(). In Links case, I am logging the error and then
+copying it to the _error variable. The error will show up in
+logs/error.log if it occurs.
+
+If the result passes the empty check, I am checking to see if the
+result is an error object.
+
+elseif (PEAR::isError($result))
+  return $result;
+
+If it is an error I am just returning it instead of creating my own
+error object. When writing your module, you should "pass the buck" like
+this as well. It will allow you to get to the root of the problem and
+avoid redundant code.
+
+
+Accessing the Database
+A special database class was written for phpWebSite. Once you know how
+it works, it can make database queries much easier. If you want to
+know more about how it works, look up the Database class documentation.
+
+
+
+Glossary
+-------------------------------------------------------------------
+define - a constant variable.
+See http://www.php.net/manual/en/function.define.php
