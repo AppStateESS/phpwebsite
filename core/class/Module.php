@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Class contains module information
+ *
+ * @version $Id$
+ * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ */
 class PHPWS_Module {
   var $title         = NULL;
   var $proper_name   = NULL;
@@ -236,7 +241,7 @@ class PHPWS_Module {
       return isset($result);
   }
 
-  function needsUpgrade(){
+  function needsUpdate(){
     $db = & new PHPWS_DB('modules');
     $db->addWhere('title', $this->getTitle());
     $result = $db->select('row');
