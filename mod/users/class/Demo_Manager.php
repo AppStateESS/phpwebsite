@@ -15,7 +15,6 @@ class Demo_Manager extends User_Demographic{
   }
 
   function getList(){
-    
     $listTags = array("ACTIVE_LABEL"      => _("Active"),
 		      "PROPER_NAME_LABEL" => _("Proper Name"),
 		      "INPUT_TYPE_LABEL"  => _("Input Type"),

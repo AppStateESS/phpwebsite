@@ -7,6 +7,7 @@ class PHPWS_User extends PHPWS_Item {
   var $_groups       = NULL;
   var $_permissions  = array();
   var $_logged       = FALSE;
+  var $_last_logged  = NULL;
   var $_settings     = NULL;
  
   function PHPWS_User($id=NULL){
@@ -16,6 +17,7 @@ class PHPWS_User extends PHPWS_Item {
 		     "_groups",
 		     "_permissions",
 		     "_logged",
+		     "_last_logged",
 		     "_settings"
 		     );
 
@@ -99,7 +101,6 @@ class PHPWS_User extends PHPWS_Item {
     $login = User_Form::logBox($_SESSION['User']->isLogged());
     Layout::hold($login, "CNT_user_small", TRUE, -1);
   }
-
 
   function loadUserGroups(){
     $DB = & new PHPWS_DB("users_groups");
@@ -214,31 +215,35 @@ class PHPWS_User extends PHPWS_Item {
   }
 
   function save(){
+    $newUser = FALSE;
     PHPWS_Core::initModClass("users", "Group.php");
     $username = $this->getUsername();
 
-    $DB = new PHPWS_DB("users");
-    $DB->addWhere("username", $username);
-    $result = $DB->select("one");
+    if (!isset($this->_id)){
+      $newUser = TRUE;
+      $DB = new PHPWS_DB("users");
+      $DB->addWhere("username", $username);
+      $result = $DB->select("one");
 
-    if (isset($result)){
-      if (PEAR::isError($result))
-	return $result;
-      else
-	return PHPWS_Error::get(USER_ERR_DUP_USERNAME, "users", "save");
+      if (isset($result)){
+	if (PEAR::isError($result))
+	  return $result;
+	else
+	  return PHPWS_Error::get(USER_ERR_DUP_USERNAME, "users", "save");
+      }
+
+      $DB = new PHPWS_DB("users_groups");
+      $DB->addWhere("name", $username);
+      $result = $DB->select("one");
+
+      if (isset($result)){
+	if (PEAR::isError($result))
+	  return $result;
+	else
+	  return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, "users", "save");
+      }
     }
 
-    $DB = new PHPWS_DB("users_groups");
-    $DB->addWhere("name", $username);
-    $result = $DB->select("one");
-
-    if (isset($result)){
-      if (PEAR::isError($result))
-	return $result;
-      else
-	return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, "users", "save");
-    }
-    
     $result = $this->commit();
 
     if (PEAR::isError($result)){
@@ -248,8 +253,16 @@ class PHPWS_User extends PHPWS_Item {
 
     $this->saveVar();
 
+    if ($newUser)
+      return $this->createGroup();
+
+    return TRUE;
+
+  }
+
+  function createGroup(){
     $group = new PHPWS_Group;
-    $group->setName($username);
+    $group->setName($this->getUsername());
     $group->setUserId($this->getId());
     $group->setActive($this->isActive());
     $result = $group->save();
@@ -257,7 +270,8 @@ class PHPWS_User extends PHPWS_Item {
       PHPWS_Error::log($result);
       $this->kill();
       return PHPWS_Error::get(USER_ERR_USER_NOT_SAVED, "users", "save");
-    }
+    } else
+      return TRUE;
   }
 
   function isAnonymous(){
