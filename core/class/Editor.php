@@ -30,7 +30,7 @@ class Editor {
       $this->setName($name);
 
     if (isset($data))
-      $this->setData($data);
+      $this->setData(trim($data));
 
   }
 
