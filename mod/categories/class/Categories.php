@@ -6,6 +6,31 @@ define("CAT_NO_MOD_TABLE",   -3);
 
 class Categories{
 
+  function delete(&$category){
+    $modules = Categories::listModules();
+
+    if (!empty($modules)){
+      foreach ($modules as $mod){
+	$result = Categories::dropModuleCategory($category, $mod);
+	if (PEAR::isError($result))
+	  PHPWS_Error::log($result);
+      }
+    }
+
+    return $category->kill();
+  }
+
+  function dropModuleCategory(&$category, $module){
+    $tableName = Categories::categoryTableName($module);
+
+    if (!PHPWS_DB::isTable($tableName))
+      return FALSE;
+
+    $db = & new PHPWS_DB($tableName);
+    $db->addWhere("cat_id", $category->id);
+    return $db->delete();
+  }
+
   function getForm($module, $id=NULL, $item_name=NULL){
     if (empty($itemname))
       $itemname = $module;
@@ -90,6 +115,12 @@ class Categories{
     $db = & new PHPWS_DB("categories_modules");
     $db->addValue("mod_title", $module);
     $db->insert();
+  }
+
+  function listModules(){
+    $db = & new PHPWS_DB("categories_modules");
+    $db->addColumn("mod_title");
+    return $db->select("col");
   }
 
   function removeModule($module){

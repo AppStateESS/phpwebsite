@@ -73,7 +73,8 @@ class Category{
   }
 
   function loadImage(){
-    $this->image = PHPWS_File::create("image", $this->image);
+    PHPWS_Core::initCoreClass("Image.php");
+    $this->image = new PHPWS_Image($this->image);
   }
 
   function setThumbnail($thumbnail){
@@ -97,6 +98,13 @@ class Category{
     return $result;
   }
 
+  function kill(){
+    if (empty($this->id))
+      return FALSE;
+    $db = & new PHPWS_DB("categories");
+    $db->addWhere("id", $this->id);
+    return $db->delete();
+  }
 }
 
 ?>

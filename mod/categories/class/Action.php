@@ -6,6 +6,7 @@ PHPWS_Core::initModClass("categories", "Category.php");
 class Categories_Action{
 
   function admin(){
+    $content = array();
     $panel = & Categories_Action::cpanel();
 
     if (isset($_REQUEST['subaction']))
@@ -13,18 +14,34 @@ class Categories_Action{
     else
       $subaction = $panel->getCurrentTab();
 
-    if (isset($_REQUEST['link_id']))
-      $category = & new Category($_REQUEST['cat_id']);
+    if (isset($_REQUEST['category_id']))
+      $category = & new Category($_REQUEST['category_id']);
     else
       $category = & new Category;
 
     switch ($subaction){
-    case "new":
+    case "deleteCategory":
+      Categories::delete($category);
+      $content[] = Categories_Action::category_list();
+      break;
+
+    case "edit":
+      if ($category->id)
+	$title = _("Update Category");
+      else
+	$title = _("Add Category");
+
       $content[] = Categories_Action::edit($category);
       break;
 
     case "list":
+      $title = _("Manage Categories");
       $content[] = Categories_Action::category_list();
+      break;
+
+    case "new":
+      $title = _("Add Category");
+      $content[] = Categories_Action::edit($category);
       break;
 
     case "postCategory":
@@ -45,7 +62,13 @@ class Categories_Action{
 
       break;
     }
-    $panel->setContent(implode("", $content));
+
+    $template['TITLE']   = $title;
+    $template['CONTENT'] = implode("", $content);
+
+    $final = PHPWS_Template::process($template, "categories", "menu.tpl");
+
+    $panel->setContent($final);
     $finalPanel = $panel->display();
     Layout::add(PHPWS_ControlPanel::display($finalPanel));
   }
@@ -60,15 +83,17 @@ class Categories_Action{
     return PHPWS_Template::process($template, "categories", "affirm.tpl");
   }
 
+
   function postCategory(&$category){
     PHPWS_Core::initCoreClass("File.php");
+
     if (empty($_POST['title']))
       $errors['title'] = _("Your category must have a title.");
 
     $category->setTitle($_POST['title']);
 
-    if (!empty($_POST['description'])){
-      $description = $_POST['description'];
+    if (!empty($_POST['cat_description'])){
+      $description = $_POST['cat_description'];
 
       $category->setDescription($description);
     }
@@ -122,6 +147,7 @@ class Categories_Action{
 
   function edit(&$category, $errors=NULL){
     $template = NULL;
+    PHPWS_Core::initCoreClass("Editor.php");
 
     $form = & new PHPWS_Form('edit_form');
     $form->add("module", "hidden", "categories");
@@ -131,32 +157,38 @@ class Categories_Action{
     $cat_id = $category->getId();
 
     if (isset($cat_id)){
-      $form->add("cat_id", "hidden", $cat_id);
+      $form->add("category_id", "hidden", $cat_id);
       $form->add("submit", "submit", _("Update Category"));
-      $template['PAGE_TITLE'] = _("Update Category");
-    } else {
+    } else
       $form->add("submit", "submit", _("Add Category"));
-      $template['PAGE_TITLE'] = _("Add Category");
-    }
 
     $category_list = Categories::getCategories("parent");
 
-    $template['PARENT_LBL'] = _("Parent");
     $form->add("parent", "select", $category_list);
+    $form->setLabel("parent", _("Parent"));
 
-    $template['TITLE_LBL'] = _("Title");
+
     if (isset($errors['title']))
       $template['TITLE_ERROR'] = $errors['title'];
     $form->add("title", "textfield", $category->getTitle());
     $form->setsize("title", 40);
+    $form->setLabel("title", _("Title"));
 
-    $template['DESC_LBL'] = _("Description");
-    $form->add("description", "textarea", $category->getDescription());
-    $form->setRows("description", "10");
-    $form->setWidth("description", "80%");
+    if (Editor::willWork()){
+      $editor = & new Editor("htmlarea", "cat_description", $category->getDescription());
+      $description = $editor->get();
+      $form->addTplTag("CAT_DESCRIPTION", $description);
+      $form->addTplTag("CAT_DESCRIPTION_LABEL", _("Description"));
+    } else {
+      $form->addTextArea("cat_description", $category->getDescription());
+      $form->setRows("cat_description", "10");
+      $form->setWidth("cat_description", "80%");
+      $form->setLabel("cat_description", _("Description"));
+    }
 
+    $form->addTplTag("IMAGE_TITLE_LABEL", _("Image Title"));
+    
 
-    $template['IMAGE_LBL'] = _("Image");
     if (isset($errors['image']))
       $template['IMAGE_ERROR'] = $errors['image'];
 
@@ -175,7 +207,7 @@ class Categories_Action{
       $template['CURRENT_IMG'] = $image->getTitle();
     }
 
-    $template['IMAGE_LABEL'] = _("Image Title");
+    $template['IMAGE_LABEL'] = _("Image");
 
     $form->mergeTemplate($template);
     $final_template = $form->getTemplate();
@@ -184,7 +216,38 @@ class Categories_Action{
   }
 
   function category_list(){
+    PHPWS_Core::initCoreClass("DBPager.php");
 
+    $pager = & new DBPager("categories", "Category");
+    $pager->setModule("categories");
+    $pager->setTemplate("category_list.tpl");
+    $pager->setLink("index.php?module=categories&amp;action=admin&amp;tab=list");
+    $pager->addToggle("class=\"toggle1\"");
+    $pager->addToggle("class=\"toggle2\"");
+    $pager->addRowTag("action", "Categories_Action", "getListAction");
+    $content = $pager->get();
+    return $content;
+  }
+
+  function getListAction($category){
+    $vars['module']      = "categories";
+    $vars['action']      = "admin";
+    $vars['category_id'] = $category->getId();
+
+    $vars['subaction'] = "edit";
+    $links[] = PHPWS_Text::moduleLink(_("Edit"), "categories", $vars);
+
+    if (javascriptEnabled()){
+      $question['QUESTION'] = "Are you sure you want to delete this category:\\n" . $category->getTitle();
+      Layout::loadModuleJavascript("categories", "category_list.js", $question);
+      $links[] = "<a href=\"javascript:void(0)\" onclick=\"confirmDelete(" . $category->getId() . ")\">" . _("Delete") . "</a>";
+    } else {
+      $vars['subaction'] = "delete";
+      $links[] = PHPWS_Text::moduleLink(_("Delete"), "categories", $vars);
+    }
+
+    return implode(" | ", $links);
+    
   }
 }
 
