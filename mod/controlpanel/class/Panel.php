@@ -95,8 +95,9 @@ class PHPWS_Panel{
     if (isset($_REQUEST['tab']) && $itemname == $_REQUEST['module'])
       $this->setCurrentTab($_REQUEST['tab']);
 
-    if (isset($_SESSION['Panel_Current_Tab'][$itemname]))
+    if (isset($_SESSION['Panel_Current_Tab'][$itemname])){
       return $_SESSION['Panel_Current_Tab'][$itemname];
+    }
     else {
       $currentTab = $this->getFirstTab();
       $this->setCurrentTab($currentTab);       
@@ -106,7 +107,7 @@ class PHPWS_Panel{
 
   function getFirstTab(){
     PHPWS_Core::initModClass("controlpanel", "Tab.php");
-    $result = 0;
+    $result = NULL;
     $tabs = $this->getTabs();
 
     if (isset($tabs)){
