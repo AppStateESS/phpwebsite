@@ -114,12 +114,12 @@ class PHPWS_Panel{
   }
 
   function display($imbed=TRUE){
-    $itemname = $this->getItemname();
+    $itemname   = $this->getItemname();
     $currentTab = $this->getCurrentTab();
-    $tabs = $this->getTabs();
-    $panel = $this->getPanel();
-    $module = $this->getModule();
-    $content = $this->getContent();
+    $tabs       = $this->getTabs();
+    $panel      = $this->getPanel();
+    $module     = $this->getModule();
+    $content    = $this->getContent();
 
     if (!isset($panel))
       $panel = CP_DEFAULT_PANEL;
@@ -142,8 +142,8 @@ class PHPWS_Panel{
     $template['TABS'] = implode("", $tablist);
     $template['CONTENT'] = $content;
 
-    return PHPWS_Template::process($template, $module, $panel);
-
+    $result = PHPWS_Template::process($template, $module, $panel);
+    return $result;
   }
 
 
