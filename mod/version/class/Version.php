@@ -56,10 +56,6 @@ class Version {
     return $this->id;
   }
 
-  function getSourceId(){
-    return $this->source_id;
-  }
-
   function getCreationDate($format=FALSE){
     if ($format = TRUE) {
       return strftime("%c", $this->vr_create_date);
@@ -134,6 +130,14 @@ class Version {
     }
 
     return TRUE;
+  }
+
+  function setSourceId($id){
+    $this->source_id = (int)$id;
+  }
+
+  function getSourceId(){
+    return $this->source_id;
   }
 
   function save(){
