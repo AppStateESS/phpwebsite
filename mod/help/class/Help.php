@@ -15,7 +15,20 @@ class PHPWS_Help{
       $label = DEFAULT_HELP_LABEL;
 
     $vars['label'] = $label;
-    $vars['address'] = 'index.php?module=help&amp;helpMod=$module&amp;option=' . $help;
+    $vars['address'] = 'index.php?module=help&amp;pre=1&amp;helpMod=' . $module . '&amp;option=' . $help;
+    $link = Layout::getJavascript('open_window', $vars);
+    $result = PHPWS_Template::process(array('LINK'=> $link), 'help', 'link.tpl');
+
+    return $result;
+  }
+
+  function get($module, $help, $label=NULL)
+  {
+    if (!isset($label))
+      $label = DEFAULT_HELP_LABEL;
+
+    $vars['label'] = $label;
+    $vars['address'] = 'index.php?module=help&amp;helpMod=' . $module . '&amp;option=' . $help;
     $link = Layout::getJavascript('open_window', $vars);
     $result = PHPWS_Template::process(array('LINK'=> $link), 'help', 'link.tpl');
 
@@ -47,8 +60,12 @@ class PHPWS_Help{
       return NULL;
     }
 
-    $template['TITLE'] = $$help;
-    $template['CONTENT'] = ${$help . '_content'};
+    if (isset($_REQUEST['pre'])) {
+      $template['TITLE'] = $$help;
+      $template['CONTENT'] = ${$help . '_content'};
+    } else {
+      $template = & $$help;
+    }
     Layout::alternateTheme($template, "help", "help.tpl");
   }
 
