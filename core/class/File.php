@@ -2,7 +2,7 @@
 
 class PHPWS_File {
 
-  function &create($type){
+  function &create($type, $id=NULL){
     if ($type != "image" && $type != "doc")
       return PHPWS_Error::get(PHPWS_FILE_WRONG_CONSTRUCT, "core", "PHPWS_File::create", $type);
     
@@ -15,7 +15,12 @@ class PHPWS_File {
     if (!class_exists($className))
       return PHPWS_Error::get(PHPWS_FILE_NONCLASS, "core", "PHPWS_File::create", $className);
 
-    $object = & new $className;
+    if (isset($id))
+      $object = & new $className($id);
+    else
+      $object = & new $className;
+
+    $object->setClassType($type);
 
     return $object;
   }
@@ -322,7 +327,7 @@ class PHPWS_File {
   }// END FUNC chkgd2()
 }
 
-if (phpversion() < "4.3"){
+if (!function_exists("file_get_contents")){
   function file_get_contents($filename){
     if (!is_file($filename))
       return FALSE;
@@ -338,7 +343,7 @@ if (phpversion() < "4.3"){
   }
 }
 
-if (phpversion() < "5.0"){
+if (!function_exists("file_put_contents")){
   function file_put_contents($filename, $data){
     if($fp = @fopen($fileName, "wb")){
       fwrite($fp, $data);
@@ -347,6 +352,12 @@ if (phpversion() < "5.0"){
     } else
       return FALSE;
   }
+}
+
+if (!function_exists ("mime_content_type")) {
+ function mime_content_type ($file) {
+  return exec ("file -bi " . escapeshellcmd($file));
+ }
 }
 
 ?>

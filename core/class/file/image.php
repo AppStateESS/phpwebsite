@@ -23,7 +23,14 @@ class PHPWS_image extends File_Common{
   var $height    = NULL;
   var $alt       = NULL;
   var $border    = 0;
-  var $_table    = "images";
+
+  function PHPWS_Image($id=NULL){
+    if (empty($id))
+      return;
+    
+    $this->setId($id);
+    $this->init();
+  }
 
   function getTag(){
     $tag[] = "<img";
@@ -122,12 +129,15 @@ class PHPWS_image extends File_Common{
 
   function setBounds($path=NULL){
     if (empty($path))
-      $bound = @getimagesize($this->getPath());
-    else
-      $bound = @getimagesize($path);
+      $path = $this->getPath();
+
+    $bound = @getimagesize($path);
 
     if (!is_array($bound))
-      return PHPWS_Error::get(PHPWS_BOUND_FAILED, "core", "PHPWS_Image::setBounds", $this->getPath());
+      return PHPWS_Error::get(PHPWS_BOUND_FAILED, "core", "PHPWS_image::setBounds", $this->getPath());
+
+    $size = @filesize($path);
+    $this->setSize($size);
 
     $this->setWidth($bound[0]);
     $this->setHeight($bound[1]);
@@ -175,13 +185,13 @@ class PHPWS_image extends File_Common{
       $errors[] = PHPWS_Error::get(PHPWS_IMG_SIZE, "core", "PHPWS_Image::checkBounds", array($this->getSize()));
 
     if (!$this->allowType())
-      $errors[] = PHPWS_Error::get(PHPWS_IMG_WRONG_TYPE, "core", "PHPWS_Image::checkBounds");
+      $errors[] = PHPWS_Error::get(PHPWS_IMG_WRONG_TYPE, "core", "PHPWS_image::checkBounds");
 
     if (!$this->allowWidth())
-      $errors[] = PHPWS_Error::get(PHPWS_IMG_WIDTH, "core", "PHPWS_Image::checkBounds", array($this->getWidth()));
+      $errors[] = PHPWS_Error::get(PHPWS_IMG_WIDTH, "core", "PHPWS_image::checkBounds", array($this->getWidth()));
 
     if (!$this->allowHeight())
-      $errors[] = PHPWS_Error::get(PHPWS_IMG_HEIGHT, "core", "PHPWS_Image::checkBounds", array($this->getHeight()));
+      $errors[] = PHPWS_Error::get(PHPWS_IMG_HEIGHT, "core", "PHPWS_image::checkBounds", array($this->getHeight()));
 
     if (isset($errors))
       return $errors;
@@ -189,13 +199,11 @@ class PHPWS_image extends File_Common{
       return TRUE;
   }
 
-  function importFiles($varName){
-    if (empty($_FILES) || empty($_FILES[$varName]))
-      return PHPWS_Error::get(PHPWS_IMG_NO_FILES, "core", "PHPWS_Image::importFiles");
+  function loadUpload($varName){
+    $result = $this->getFILES($varName);
 
-    $this->filename = $_FILES[$varName]['name'];
-    $this->setSize($_FILES[$varName]['size']);
-    $this->setTmpName($_FILES[$varName]['tmp_name']);
+    if (PEAR::isError($result))
+      return $result;
 
     $this->setBounds($this->getTmpName());
     $result = $this->checkBounds();
@@ -207,13 +215,13 @@ class PHPWS_image extends File_Common{
     $path = $this->getPath();
 
     if (empty($temp_dir))
-      return PHPWS_Error::get(PHPWS_IMG_NO_TMP, "core", "PHPWS_Image::writeImage", $path);
+      return PHPWS_Error::get(PHPWS_IMG_NO_TMP, "core", "PHPWS_image::writeImage", $path);
 
     if (PEAR::isError($path))
       return $path;
 
     if(!move_uploaded_file($temp_dir, $path))
-      return PHPWS_Error::get(PHPWS_IMG_DIR_NONWRITE, "core", "PHPWS_Image::writeImage", $path);
+      return PHPWS_Error::get(PHPWS_IMG_DIR_NONWRITE, "core", "PHPWS_image::writeImage", $path);
 
     return TRUE;
   }
