@@ -38,6 +38,7 @@ class PHPWS_Text {
     }
   }
 
+
   function useProfanity($use = TRUE)
   {
     $this->use_profanity = (bool)$use;
@@ -86,32 +87,33 @@ class PHPWS_Text {
     $this->_allowed_tags = NULL;
   }
 
-  function get($mode='print')
+  function getPrint()
   {
     if (empty($this->text)) {
       return NULL;
     }
     $text = $this->text;
 
-    if ($mode == 'print') {
-      $text = PHPWS_Text::parseBBCode($text);
+    $text = PHPWS_Text::parseBBCode($text);
 
-      if (!$this->use_profanity) {
-	$text = PHPWS_Text::profanityFilter($text);
-      }
+    if (!$this->use_profanity) {
+      $text = PHPWS_Text::profanityFilter($text);
+    }
       
-      if ($this->use_breaker) {
-	$text = PHPWS_Text::breaker($text);
-      }
+    if ($this->use_breaker) {
+      $text = PHPWS_Text::breaker($text);
+    }
       
-      if ($this->use_strip_tags) {
-	$text = PHPWS_Text::strip_tags($text, $this->_allowed_tags);
-      }
-    } elseif ($mode == 'db') {
-      $text = PHPWS_Text::parseInput($text);
+    if ($this->use_strip_tags) {
+      $text = PHPWS_Text::strip_tags($text, $this->_allowed_tags);
     }
 
     return $text;
+  }
+
+  function getDB()
+  {
+    return PHPWS_Text::parseInput($text);
   }
 
   function strip_tags($text, $allowed_tags) {
@@ -243,21 +245,19 @@ class PHPWS_Text {
   }// END FUNC breaker()
 
 
+  function parseInput($text){
+    return PHPWS_Text::prepare($text);
+  }
+
    /**
-   * Removes tags from text
-   *
-   * This function replaces the functionality of the 'parse' function
-   * Should be used after a post or get or before s
-    $t->useProfanity(!$filter_profanity);
-    $t->useBreaker($run_breakeraving it to the database
+   * Prepares text for saving in the database.
    *
    * @author                       Matthew McNaney <matt at tux dot appstate dot edu>
    * @param   string  text         Text to parse
-   * @param   mixed   allowedTags  The tags that will not be stripped from the text
-   * @return  string  text         Stripped text
    */
-  function parseInput($text){
-    PHPWS_Text::encodeXHTML($text);
+  function prepare($text)
+  {
+    $text = PHPWS_Text::encodeXHTML($text);
     if (MAKE_ADDRESSES_RELATIVE) {
       PHPWS_Text::makeRelative($text);
     }
@@ -298,13 +298,22 @@ class PHPWS_Text {
   function parseOutput($text, $printTags = FALSE)
   {
     $t = & new PHPWS_Text;
-    $t->setText($text, TRUE);
+    $t->setText($text, FALSE);
 
+    $text = $t->getPrint();
     if ($printTags) {
-      return $t->get(FALSE);
+      return $t->encodeXHTML($text);
+    } else {
+      return $text;
     }
-    return $t->get();
   }
+
+  function parseEncoded($text) {
+    $t = & new PHPWS_Text;
+    $t->setText($text, TRUE);
+    return $t->getPrint();
+  }
+
 
   /**
    * Checks the validity of text based on the type
