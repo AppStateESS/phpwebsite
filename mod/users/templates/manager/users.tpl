@@ -1,16 +1,16 @@
 <table border="0" cellspacing="1" cellpadding="4" width="100%" id="user-manager">
-<tr class="bg-dark">
-<td width="20%"><span style="font-weight : bold">{USERNAME}&#160;{USERNAME_SORT}</span></td>
-<td width="20%"><span style="font-weight : bold">{LAST_LOGGED}&#160;{LAST_LOGGED_SORT}</span></td>
-<td width="10%"><span style="font-weight : bold">{ACTIVE}</span></td>
-<td><span style="font-weight : bold">{ACTIONS}</span></td>
+<tr>
+<th>{USERNAME}&#160;{USERNAME_SORT}</td>
+<th>{LAST_LOGGED}&#160;{LAST_LOGGED_SORT}</td>
+<th width="10%">{ACTIVE}</td>
+<th>{ACTIONS}</td>
 </tr>
 <!-- BEGIN listrows -->
 <tr {TOGGLE}>
 <td>
 {USERNAME}
 </td>
-<td class="last-logged">
+<td style="font-size : .8em;">
 {LAST_LOGGED}
 </td>
 <td align="left">

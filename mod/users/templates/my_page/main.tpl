@@ -1,4 +1,4 @@
-<div class="header" style="margin-bottom : 5px">{TITLE}</div>
+<h1>{TITLE}</h1>
 <!-- BEGIN message -->
 <b>{MESSAGE}</b>
 <hr />

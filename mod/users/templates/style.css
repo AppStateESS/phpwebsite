@@ -1,52 +1,5 @@
-#user-manager td.last-logged {
-	font-size : .8em;
-
-}
-
-div.like-group {
-background-color : #94B6DE;
-font-size : .9em;
-font-weight : bold;
-}
-
-div.header {
-background-color : #94B6DE;
-font-weight : bold;
-padding : 4px;
-}
-
-.user-table th {
-  font-weight : bold;
-  background-color : #94B6DE;
-}
-
-div.module-permission {
-margin : 10px;
-padding : 5px;
-float : left;
-position : relative;
-text-align : top;
-background-color : #E4E4E4;
-}
-
-div.module-permission div.mod-title {
-font-weight : bold;
-background-color : #BAC1FF;
-width : 100%;
-padding : 2px;
-}
-
-.toggle1 {
-background-color : #E4E4E4;
-}
-
-.toggle2 {
-background-color : white;
-}
-
-.user-error {
-background-color : red;
-font-weight : bold;
-color : white;
-
+div.permission {
+	border : 1px solid black;
+	margin : 6px;
+	padding : 0px;
 }

@@ -2,8 +2,8 @@
 {FILE_LIST}{ADD_SCRIPT}
 <br />
 <br />
-<div class="header">{AUTH_LIST_LABEL}</div>
-<table class="user-table" cellpadding="4" width="100%">
+<h1>{AUTH_LIST_LABEL}</h1>
+<table cellpadding="4" width="100%">
   <tr>
     <th>{DEFAULT_LABEL}</th>
     <th>{DISPLAY_LABEL}</th>
