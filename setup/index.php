@@ -23,8 +23,10 @@ $title = _("phpWebSite 0.9.4") . " - ";
 if (!$setup->checkSession($content) || !isset($_REQUEST['step']))
   $step = 0;
 
-if (!$setup->checkDirectories($content))
+  if (!$setup->checkDirectories($content)){
+    $title .=  _("Directory Permissions");
      exit(Setup::show($content, $title));
+  }
 
 switch ($_REQUEST['step']){
  case 0:
