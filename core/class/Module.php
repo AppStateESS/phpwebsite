@@ -26,13 +26,13 @@ class PHPWS_Module {
   }
 
   function initByDB(){
-    $db = & new PHPWS_DB("modules");
-    $db->addWhere("title", $this->title);
+    $db = & new PHPWS_DB('modules');
+    $db->addWhere('title', $this->title);
     return $db->loadObject($this);
   }
 
   function initByFile(){
-    $result = PHPWS_Core::getConfigFile($this->title, "boost.php");
+    $result = PHPWS_Core::getConfigFile($this->title, 'boost.php');
     if ($result == FALSE){
       $this->fullMod = FALSE;
       return $result;
@@ -117,7 +117,7 @@ class PHPWS_Module {
 
   function getProperName($useTitle=FALSE){
     if (!isset($this->proper_name) && $useTitle == TRUE)
-      return ucwords(str_replace("_", " ", $this->getTitle()));
+      return ucwords(str_replace('_', ' ', $this->getTitle()));
     else
       return $this->proper_name;
   }
@@ -215,8 +215,8 @@ class PHPWS_Module {
   }
 
   function save(){
-    $db = new PHPWS_DB("modules");
-    $db->addWhere("title", $this->getTitle());
+    $db = new PHPWS_DB('modules');
+    $db->addWhere('title', $this->getTitle());
     $db->delete();
     $db->resetWhere();
     if (!$this->getProperName())
@@ -226,9 +226,9 @@ class PHPWS_Module {
   }
 
   function isInstalled(){
-    $db = & new PHPWS_DB("modules");
-    $db->addWhere("title", $this->getTitle());
-    $result = $db->select("row");
+    $db = & new PHPWS_DB('modules');
+    $db->addWhere('title', $this->getTitle());
+    $result = $db->select('row');
     if (PEAR::isError($result)){
       PHPWS_Error::log($result);
       return FALSE;
@@ -237,9 +237,9 @@ class PHPWS_Module {
   }
 
   function needsUpgrade(){
-    $db = & new PHPWS_DB("modules");
-    $db->addWhere("title", $this->getTitle());
-    $result = $db->select("row");
+    $db = & new PHPWS_DB('modules');
+    $db->addWhere('title', $this->getTitle());
+    $result = $db->select('row');
     if (PEAR::isError($result)){
       PHPWS_Error::log($result);
       return FALSE;

@@ -25,7 +25,6 @@ class File_Common {
       return FALSE;
 
     $db = & new PHPWS_DB($table);
-    $db->addWhere("id", $this->id);
     return $db->loadObject($this);
   }
 

@@ -1,6 +1,6 @@
 <?php
 
-PHPWS_Core::initCoreClass("File_Common.php");
+PHPWS_Core::initCoreClass('File_Common.php');
 
 class PHPWS_Image extends File_Common{
 
@@ -10,7 +10,7 @@ class PHPWS_Image extends File_Common{
   var $border    = 0;
 
   function PHPWS_Image($id=NULL){
-    $this->_classtype = "image";
+    $this->_classtype = 'image';
     if (empty($id))
       return;
     
@@ -19,33 +19,33 @@ class PHPWS_Image extends File_Common{
   }
 
   function getTag(){
-    $tag[] = "<img";
+    $tag[] = '<img';
 
     $path = $this->getPath();
     if (PEAR::isError($path))
       return $path;
-    $tag[] = "src=\"$path\"";
-    $tag[] = "alt=\"" . $this->getAlt(TRUE) . "\"";
-    $tag[] = "title=\"" . $this->getTitle(TRUE) . "\"";
-    $tag[] = "width=\"" . $this->getWidth() . "\"";
-    $tag[] = "height=\"" . $this->getHeight() . "\"";
-    $tag[] = "border=\"" . $this->getBorder() . "\"";
-    $tag[] = "/>";
-    return implode(" ", $tag);
+    $tag[] = 'src="' . $path . '"';
+    $tag[] = 'alt="' . $this->getAlt(TRUE) . '"';
+    $tag[] = 'title="' . $this->getTitle(TRUE) . '"';
+    $tag[] = 'width="' . $this->getWidth() . '"';
+    $tag[] = 'height="' . $this->getHeight() . '"';
+    $tag[] = 'border="' . $this->getBorder() . '"';
+    $tag[] = '/>';
+    return implode(' ', $tag);
   }
 
   function getLink($newTarget=FALSE){
-    $tag[] = "<a href=\"";
+    $tag[] = '<a href="';
     $tag[] = $this->getPath();
-    $tag[] = "\"";
+    $tag[] = '"';
     if ($newTarget)
-      $tag[] = " target=\"_blank\"";
+      $tag[] = ' target="_blank"';
 
-    $tag[] = ">";
+    $tag[] = '>';
     $tag[] = $this->getTitle();
-    $tag[] = "</a>";
+    $tag[] = '</a>';
 
-    return implode("", $tag);
+    return implode('', $tag);
   }
 
   function getJSView(){
@@ -53,58 +53,58 @@ class PHPWS_Image extends File_Common{
     $values['label']   = $this->getTitle();
     $values['width'] = $this->getWidth();
     $values['height'] = $this->getHeight();
-    return Layout::getJavascript("open_window", $values);
+    return Layout::getJavascript('open_window', $values);
   }
 
   function setType($type){
     if (is_numeric($type)){
-      if (phpversion() >= "4.3.0")
+      if (phpversion() >= '4.3.0')
 	$new_type = image_type_to_mime_type($type);
       else {
 	switch ($type){
 	case IMAGETYPE_GIF:
-	  $new_type = "image/gif";
+	  $new_type = 'image/gif';
 	  break;
 	case IMAGETYPE_JPEG:
-	  $new_type = "image/jpeg";
+	  $new_type = 'image/jpeg';
 	  break;
 	case IMAGETYPE_PNG:
-	  $new_type = "image/png";
+	  $new_type = 'image/png';
 	  break;
 	case IMAGETYPE_SWF:
-	  $new_type = "application/x-shockwave-flash";
+	  $new_type = 'application/x-shockwave-flash';
 	  break;
 	case IMAGETYPE_PSD:
-	  $new_type = "image/psd";
+	  $new_type = 'image/psd';
 	  break;
 	case IMAGETYPE_BMP:
-	  $new_type = "image/bmp";
+	  $new_type = 'image/bmp';
 	  break;
 	case IMAGETYPE_TIFF_MM:
 	case IMAGETYPE_TIFF_II:
-	  $new_type = "image/tiff";
+	  $new_type = 'image/tiff';
 	  break;
 	case IMAGETYPE_JPC:
-	  $new_type = "application/octet-stream";
+	  $new_type = 'application/octet-stream';
 	  break;
 	case IMAGETYPE_JP2:
-	  $new_type = "image/jp2";
+	  $new_type = 'image/jp2';
 	  break;
 	case IMAGETYPE_JPX:
 	case IMAGETYPE_JB2:
-	  $new_type = "application/octet-stream";
+	  $new_type = 'application/octet-stream';
 	  break;
 	case IMAGETYPE_SWC:
-	  $new_type = "application/x-shockwave-flash";
+	  $new_type = 'application/x-shockwave-flash';
 	  break;
 	case IMAGETYPE_IFF:
-	  $new_type = "image/iff";
+	  $new_type = 'image/iff';
 	  break;
 	case IMAGETYPE_WBMP:
-	  $new_type = "image/vnd.wap.wbmp";
+	  $new_type = 'image/vnd.wap.wbmp';
 	  break;
 	case IMAGETYPE_XBM:
-	  $new_type = "image/xbm";
+	  $new_type = 'image/xbm';
 	  break;
 	}
       }
@@ -141,7 +141,7 @@ class PHPWS_Image extends File_Common{
     $bound = @getimagesize($path);
 
     if (!is_array($bound))
-      return PHPWS_Error::get(PHPWS_BOUND_FAILED, "core", "PHPWS_image::setBounds", $this->getPath());
+      return PHPWS_Error::get(PHPWS_BOUND_FAILED, 'core', 'PHPWS_image::setBounds', $this->getPath());
 
     $size = @filesize($path);
     $this->setSize($size);
@@ -189,16 +189,16 @@ class PHPWS_Image extends File_Common{
 
   function checkBounds(){
     if (!$this->allowSize())
-      $errors[] = PHPWS_Error::get(PHPWS_IMG_SIZE, "core", "PHPWS_Image::checkBounds", array($this->getSize()));
+      $errors[] = PHPWS_Error::get(PHPWS_IMG_SIZE, 'core', 'PHPWS_Image::checkBounds', array($this->getSize()));
 
     if (!$this->allowType())
-      $errors[] = PHPWS_Error::get(PHPWS_IMG_WRONG_TYPE, "core", "PHPWS_image::checkBounds");
+      $errors[] = PHPWS_Error::get(PHPWS_IMG_WRONG_TYPE, 'core', 'PHPWS_image::checkBounds');
 
     if (!$this->allowWidth())
-      $errors[] = PHPWS_Error::get(PHPWS_IMG_WIDTH, "core", "PHPWS_image::checkBounds", array($this->getWidth()));
+      $errors[] = PHPWS_Error::get(PHPWS_IMG_WIDTH, 'core', 'PHPWS_image::checkBounds', array($this->getWidth()));
 
     if (!$this->allowHeight())
-      $errors[] = PHPWS_Error::get(PHPWS_IMG_HEIGHT, "core", "PHPWS_image::checkBounds", array($this->getHeight()));
+      $errors[] = PHPWS_Error::get(PHPWS_IMG_HEIGHT, 'core', 'PHPWS_image::checkBounds', array($this->getHeight()));
 
     if (isset($errors))
       return $errors;
@@ -228,9 +228,7 @@ class PHPWS_Image extends File_Common{
     if (PEAR::isError($result))
       return $result;
 
-    $db = & new PHPWS_DB("images");
-    if (isset($this->id))
-      $db->addWhere("id", $this->id);
+    $db = & new PHPWS_DB('images');
 
     return $db->saveObject($this);
   }

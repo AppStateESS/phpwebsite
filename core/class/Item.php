@@ -1,8 +1,5 @@
 <?php
 
-/* required for proper IP authorization */
-//require_once("Net/CheckIP.php");    
-
 /**
  * Base class for items used in phpWebSite's 0.x  modules.
  *
@@ -32,7 +29,7 @@ class PHPWS_Item {
    * The username of the user who currently owns this item.
    *
    * @var     integer
-   * @example $this->_owner = "steven";
+   * @example $this->_owner = 'steven';
    * @access  private
    */
   var $_owner = NULL;
@@ -43,7 +40,7 @@ class PHPWS_Item {
    * The username of the user who last updated this item.
    *
    * @var integer
-   * @example $this->_editor = "admin";
+   * @example $this->_editor = 'admin';
    * @access private
    */
   var $_editor = NULL;
@@ -54,7 +51,7 @@ class PHPWS_Item {
    * Must be a valid IPv4 or IPv6 address.
    *
    * @var     string
-   * @example $this->_ip = "127.0.0.1";
+   * @example $this->_ip = '127.0.0.1';
    * @access  private
    */
   var $_ip = NULL;
@@ -102,10 +99,10 @@ class PHPWS_Item {
   /**
    * The table name this item should store and access data from.
    *
-   * Must be a valid table in the database and be sql "friendly".
+   * Must be a valid table in the database and be sql 'friendly'.
    *
    * @var     string
-   * @example $this->_table = "myitem_table";
+   * @example $this->_table = 'myitem_table';
    * @access  private
    */
   var $_table = NULL;
@@ -117,10 +114,10 @@ class PHPWS_Item {
    * <code>$this->add_exclude();</code>
    *
    * @var     array
-   * @example $this->_exclude = array("_exclude", "_table", "_id");
+   * @example $this->_exclude = array('_exclude', '_table', '_id');
    * @access  private
    */
-  var $_exclude = array("_exclude", "_table", "_id");
+  var $_exclude = array('_exclude', '_table', '_id');
 
   /**
    * Loads all data for this item and the object which called this function.
@@ -143,7 +140,7 @@ class PHPWS_Item {
   function init() {
     if((isset($this->_id) && isset($this->_table))) {
       $DB = new PHPWS_DB($this->_table);
-      $DB->addWhere("id", (int)$this->_id);
+      $DB->addWhere('id', (int)$this->_id);
 
       $className = get_class($this);
       $itemResult = $DB->loadObject($this);
@@ -152,9 +149,9 @@ class PHPWS_Item {
 	return $itemResult;
 
       if (!isset($itemResult))
-	return PHPWS_Error::get(PHPWS_ITEM_NO_RESULT, "core", "PHPWS_Item::init");
+	return PHPWS_Error::get(PHPWS_ITEM_NO_RESULT, 'core', 'PHPWS_Item::init');
     } else
-      return PHPWS_Error::get(PHPWS_ITEM_ID_TABLE, "core", "PHPWS_Item::init");
+      return PHPWS_Error::get(PHPWS_ITEM_ID_TABLE, 'core', 'PHPWS_Item::init');
 
     return TRUE;
   } // END FUNC init
@@ -209,11 +206,11 @@ class PHPWS_Item {
   function kill() {
     if(isset($this->_id) && isset($this->_table)) {
       $DB = new PHPWS_DB($this->_table);
-      $DB->addWhere("id", $this->_id);
+      $DB->addWhere('id', $this->_id);
       $result = $DB->delete();
       return (PEAR::isError($result) ? $result : TRUE);
     } else
-      return PHPWS_Error::get(PHPWS_ITEM_ID_TABLE, "core", "PHPWS_Item::kill");
+      return PHPWS_Error::get(PHPWS_ITEM_ID_TABLE, 'core', 'PHPWS_Item::kill');
   } // END FUNC kill
 
   /**
@@ -239,7 +236,7 @@ class PHPWS_Item {
 	  $this->$key = $value;
 	  return TRUE;
 	} else {
-	  $key = "_" . $key;
+	  $key = '_' . $key;
 	  if(array_key_exists($key, $classVars)) {
 	    $this->$key = $value;
 	    return TRUE;
@@ -247,7 +244,7 @@ class PHPWS_Item {
 	}
       }
     } else {
-      $error = "Argument passed was not an array in PHPWS_Item::setVars()";
+      $error = 'Argument passed was not an array in PHPWS_Item::setVars()';
       return PEAR::raiseError($error);
     }
   } // END FUNC setVars
@@ -265,7 +262,7 @@ class PHPWS_Item {
     if($id) {
       $this->_id = $id;
     } else {
-      $error = "No ID was passed in PHPWS_Item::setId().";
+      $error = 'No ID was passed in PHPWS_Item::setId().';
       return PEAR::raiseError($error);
     }
   } // END FUNC setId
@@ -285,12 +282,12 @@ class PHPWS_Item {
 	$this->_owner = $_SESSION['PHPWS_User']->username;
       } else {
 	$this->_owner = NULL;
-	$error = "The user session did not contain a name in PHPWS_Item::setOwner().";
+	$error = 'The user session did not contain a name in PHPWS_Item::setOwner().';
 	return PEAR::raiseError($error);
       }
     } else {
       $this->_owner = NULL;
-      $error = "The user session was not available in PHPWS_Item::setOwner().";
+      $error = 'The user session was not available in PHPWS_Item::setOwner().';
       return PEAR::raiseError($error);
     }
   } // END FUNC setOwner
@@ -310,12 +307,12 @@ class PHPWS_Item {
 	$this->_editor = $_SESSION['PHPWS_User']->username;
       } else {
 	$this->_editor = NULL;
-	$error = "The user session did not contain a username in PHPWS_Item::setEditor().";
+	$error = 'The user session did not contain a username in PHPWS_Item::setEditor().';
 	return PEAR::raiseError($error);
       }
     } else {
       $this->_editor = NULL;
-      $error = "The user session was not available in PHPWS_Item::setEditor().";
+      $error = 'The user session was not available in PHPWS_Item::setEditor().';
       return PEAR::raiseError($error);
     }
   } // END FUNC set_editor
@@ -332,12 +329,12 @@ class PHPWS_Item {
    */
   function setIp() {
     if(isset($_SERVER['REMOTE_ADDR'])) {
-      if(class_exists("Net_CheckIP")) {
+      if(class_exists('Net_CheckIP')) {
 	if(Net_CheckIP::check_ip($_SERVER['REMOTE_ADDR'])) {
 	  $this->_ip = $_SERVER['REMOTE_ADDR'];
 	} else {
 	  $this->_ip = NULL;
-	  $error = "The remote address provided was not valid in PHPWS_Item::setIp().";
+	  $error = 'The remote address provided was not valid in PHPWS_Item::setIp().';
 	  return PEAR::raiseError($error);
 	}
       } else {
@@ -345,7 +342,7 @@ class PHPWS_Item {
       }
     } else {
       $this->_ip = NULL;
-      $error = "No remote address was available to set the ip in PHPWS_Item::setIp.";
+      $error = 'No remote address was available to set the ip in PHPWS_Item::setIp.';
       return PEAR::raiseError($error);
     }
   } // END FUNC setIp
@@ -413,7 +410,7 @@ class PHPWS_Item {
   /**
    * Sets the table name for this item.
    *
-   * Makes sure the name passed in is a valid string and an sql "friendly" name.
+   * Makes sure the name passed in is a valid string and an sql 'friendly' name.
    *
    * @param  string $table The name of the table
    * @return TRUE on success and pear error on failure
@@ -423,7 +420,7 @@ class PHPWS_Item {
     if(is_string($table)) {
       $this->_table = $table;
     } else {
-      $error = "Table name passed was not a string in PHPWS_Item::setTable().";
+      $error = 'Table name passed was not a string in PHPWS_Item::setTable().';
       return PEAR::raiseError($error);
     }
   } // END FUNC setTable
@@ -441,7 +438,7 @@ class PHPWS_Item {
     if(is_array($list))
       $this->_exclude = array_merge($this->_exclude, $list);
     else {
-      $error = "Argument passed was not an array in PHPWS_Item::addExclude().";
+      $error = 'Argument passed was not an array in PHPWS_Item::addExclude().';
       return PEAR::raiseError($error);
     }
   } // END FUNC addExclude
@@ -526,7 +523,7 @@ class PHPWS_Item {
    */
   function getCreated() {
     if(isset($this->_created))
-      return date(PHPWS_DATE_FORMAT . " " . PHPWS_TIME_FORMAT, $this->_created);
+      return date(PHPWS_DATE_FORMAT . ' ' . PHPWS_TIME_FORMAT, $this->_created);
     else
       return NULL;
   } // END FUNC getCreated
@@ -541,7 +538,7 @@ class PHPWS_Item {
    */
   function getUpdated() {
     if(isset($this->_updated)) 
-      return date(PHPWS_DATE_FORMAT . " " . PHPWS_TIME_FORMAT, $this->_updated);
+      return date(PHPWS_DATE_FORMAT . ' ' . PHPWS_TIME_FORMAT, $this->_updated);
     else 
       return NULL;
   } // END FUNC getUpdated
