@@ -60,28 +60,24 @@ class PHPWS_Template extends HTML_Template_Sigma {
 
   function setFile($file, $strict=FALSE){
     $module = $this->getModule();
-    if ($strict == TRUE){
       $this->setCache();
+    if ($strict == TRUE)
       $result = $this->loadTemplatefile($file);
-    }
+
     else {
       $altFile = PHPWS_Template::getTplDir($module) . $file;
 
       if (PEAR::isError($altFile))
 	return $altFile;
 
-      if (FORCE_THEME_TEMPLATES || is_file($altFile)){
-	$this->setCache();
+      if (FORCE_THEME_TEMPLATES || is_file($altFile))
 	$result = $this->loadTemplatefile($altFile);
-      }
       elseif (FORCE_MOD_TEMPLATES){
 	$file = PHPWS_SOURCE_DIR . "mod/$module/templates/$file";
-	$this->setCache();
 	$result = $this->loadTemplatefile($file);
       }
       else {
 	$file = "templates/$module/$file";
-	$this->setCache();
 	$result = $this->loadTemplatefile($file);
       }
     }
