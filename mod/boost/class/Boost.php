@@ -8,11 +8,11 @@ if (PEAR::isError($result)){
   PHPWS_Core::errorPage();
 }
 
-define("BOOST_NEW",     0);
-define("BOOST_START",   1);
-define("BOOST_PENDING", 2);
-define("BOOST_DONE",    3);
-
+define("BOOST_NEW",      0);
+define("BOOST_START",    1);
+define("BOOST_PENDING",  2);
+define("BOOST_DONE",     3);
+define("PRE094_SUCCESS", 4);
 
 require_once $result;
 
@@ -108,7 +108,7 @@ class PHPWS_Boost {
 	  $content[] = _("Import successful.");
       }
 
-      $result = (bool)$this->onInstall($mod, $content);
+      $result = $this->onInstall($mod, $content);
 
       if ($result === TRUE){
 	$this->setStatus($title, BOOST_DONE);
@@ -162,7 +162,10 @@ class PHPWS_Boost {
       $content = NULL;
       include_once($onInstallFile);
       $installCnt[] = $content;
-      return $status;
+      if ($status)
+	return TRUE;
+      else
+	return PHPWS_Error::get(BOOST_FAILED_PRE94_INSTALL, "boost", "install");
     }
 
     include_once($onInstallFile);
@@ -420,6 +423,7 @@ class PHPWS_Boost {
       $selfselfResult = $this->unregisterModToMod($module, $module, $content);
       $otherResult = $this->unregisterOthersToSelf($module, $content);
       $selfResult = $this->unregisterSelfToOthers($module, $content);
+      $result = $this->unregisterAll($module);
     }
 
     $content[] = "<br />";
@@ -497,7 +501,7 @@ class PHPWS_Boost {
 
     if (!is_file($unregisterFile))
       return NULL;
-
+    
     if (!PHPWS_Boost::isRegistered($sourceMod->getTitle(), $regMod->getTitle()))
       return NULL;
 
@@ -575,6 +579,12 @@ class PHPWS_Boost {
       $regMod->init();
       $result = $this->unregisterModToMod($module, $regMod, $content);
     }
+  }
+
+  function unregisterAll($module){
+    $db = & new PHPWS_DB("registered");
+    $db->addWhere("registered", $module->getTitle());
+    return $db->delete();
   }
 
   function importSQL($file){
