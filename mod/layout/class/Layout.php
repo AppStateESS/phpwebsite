@@ -12,7 +12,6 @@
 PHPWS_Core::initCoreClass("Template.php");
 //PHPWS_Core::initCoreClass("Cache.php");
 class Layout {
-
   function initLayout($refresh=FALSE){
     if ($refresh == TRUE || !isset($_SESSION['Layout_Settings'])){
       PHPWS_Core::initModClass("layout", "Initialize.php");
@@ -244,12 +243,29 @@ class Layout {
     $template[DEFAULT_THEME_VAR] = DISPLAY_ERROR_MESSAGE;
   }
 
+  function addStyle($module, $filename=NULL){
+    if (!isset($filename))
+      $filename = "style.css";
+
+    $cssFile = PHPWS_Template::getTplDir($module) . $filename;
+    if (!FORCE_THEME_TEMPLATES && !is_file($cssFile))
+      $cssFile = "templates/$module/$filename";
+
+    $GLOBALS['Style'][] = Layout::styleLink($cssFile);
+  }
+
+  function styleLink($file){
+    return "<link rel=\"stylesheet\" href=\"$file\" type=\"text/css\" />";
+  }
+
   function &loadTheme($theme, $template=NULL){
     if (!isset($template))
       Layout::displayErrorMessage();
 
+    $GLOBALS['Style'][] = Layout::styleLink("themes/$theme/style.css");
+
     $template['THEME_DIRECTORY'] = "themes/$theme/";
-    $template['STYLE'] = "<link rel=\"stylesheet\" href=\"themes/$theme/style.css\" type=\"text/css\" />";
+    $template['STYLE'] = implode("\n", $GLOBALS['Style']);
 
     $tpl = new PHPWS_Template;
     $result = $tpl->setFile(Layout::getThemeDir() . "theme.tpl", TRUE);
