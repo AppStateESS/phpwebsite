@@ -126,11 +126,6 @@ class PHPWS_User {
     return $this->_settings;
   }
 
-  function getLogin(){
-    PHPWS_Core::initModClass("users", "Form.php");
-    $login = User_Form::logBox($_SESSION['User']->isLogged());
-    Layout::hold($login, "users", "CNT_user_small", TRUE, -1);
-  }
 
   function loadUserSettings(){
     $db = & new PHPWS_DB("users_settings");
@@ -319,11 +314,6 @@ class PHPWS_User {
     Layout::add(array("TITLE"=>$title, "CONTENT"=>$content), "users", "User_Main");
   }
 
-  function logAnonymous(){
-    PHPWS_Core::initModClass("users", "Action.php");
-    $id = PHPWS_User::getUserSetting('anonymous');
-    $_SESSION['User'] = new PHPWS_User($id);
-  }
 
   /*********************** User Var Code *******************/
   function getVar($varName, $label){

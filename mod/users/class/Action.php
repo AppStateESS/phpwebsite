@@ -8,7 +8,7 @@ class User_Action {
     PHPWS_Core::initModClass("users", "Form.php");
     PHPWS_Core::initModClass("controlpanel", "Panel.php");
 
-    if (!$_SESSION['User']->allow("users")){
+    if (!Current_User::allow("users")){
       PHPWS_User::disallow();
       return;
     }
@@ -57,7 +57,7 @@ class User_Action {
       /** Group Forms **/
 
     case "setUserPermissions":
-      if (!$_SESSION['User']->allow("users", "edit_permissions")){
+      if (!Current_User::allow("users", "edit_permissions")){
 	PHPWS_User::disallow();
         return;
       }
@@ -76,7 +76,7 @@ class User_Action {
 
 
     case "setGroupPermissions":
-      if (!$_SESSION['User']->allow("users", "edit_permissions")){
+      if (!Current_User::allow("users", "edit_permissions")){
 	PHPWS_User::disallow();
         return;
       }
@@ -117,7 +117,7 @@ class User_Action {
     case "deify":
       $user = & new PHPWS_User($_REQUEST["user"]);
       if (isset($_GET['authorize'])){
-	if ($_GET['authorize'] == 1 && $_SESSION['User']->isDeity()){
+	if ($_GET['authorize'] == 1 && Current_User::isDeity()){
 	  $user->setDeity(TRUE);
 	  $user->save();
 	  $content = _("User deified.") . "<hr />" . User_Form::manageUsers();
@@ -133,7 +133,7 @@ class User_Action {
     case "mortalize":
       $user = & new PHPWS_User($_REQUEST["user"]);
       if (isset($_GET['authorize'])){
-	if ($_GET['authorize'] == 1 && $_SESSION['User']->isDeity()){
+	if ($_GET['authorize'] == 1 && Current_User::isDeity()){
 	  $user->setDeity(FALSE);
 	  $user->save();
 	  $content = _("User transformed into a lowly mortal.") . "<hr />" . User_Form::manageUsers();
@@ -311,23 +311,14 @@ class User_Action {
     if (!isset($logged) or $logged !== TRUE)
       return FALSE;
 
-    if (isset($ID)){
-      $_SESSION['User'] = new PHPWS_User($ID);
-      $_SESSION['User']->setLogged(TRUE);
-      User_Action::updateLastLogged();
-      PHPWS_User::getLogin();
+    if (isset($id)){
+      Current_User::init($id);
       return TRUE;
     }
     
     return FALSE;
   }
 
-  function updateLastLogged(){
-    $db = & new PHPWS_DB("users");
-    $db->addWhere("id", $_SESSION['User']->getId());
-    $db->addValue("last_logged", mktime());
-    return $db->update();
-  }
 
 
   function postUser(&$user){

@@ -4,8 +4,8 @@ if (!class_exists("PHPWS_User"))
      return;
 
 if (!isset($_SESSION['User']))
-     PHPWS_User::logAnonymous();
+     Current_User::logAnonymous();
 
-if (!Layout::isBoxSet("users", "CNT_user_small")) PHPWS_User::getLogin();
+if (!Layout::isBoxSet("users", "CNT_user_small")) Current_User::getLogin();
 
 ?>
