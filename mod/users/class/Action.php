@@ -301,6 +301,43 @@ class User_Action {
     //    test($_REQUEST);
   }
 
+  function postNewUser(&$user)
+  {
+    $new_user_method = PHPWS_User::getUserSetting('new_user_method');
+
+    $result = $user->setUsername($_POST['username']);
+    if (PEAR::isError($result)) {
+      $error['USERNAME_ERROR'] = $result->getMessage();
+    }
+
+    if ($new_user_method == AUTO_SIGNUP) {
+      if (!$user->isUser() || (!empty($_POST['password1']) || !empty($_POST['password2']))){
+	$result = $user->checkPassword($_POST['password1'], $_POST['password2']);
+	
+	if (PEAR::isError($result)) {
+	  $error['PASSWORD_ERROR'] = $result->getMessage();
+	}
+	else {
+	  $user->setPassword($_POST['password1']);
+	}
+      }
+    } else {
+      if (empty($_POST['email'])) {
+	$error['EMAIL_ERROR'] = _('Missing an email address.');
+      } else {
+	$result = $user->setEmail($_POST['email']);
+	if (PEAR::isError($result)) {
+	  $error['EMAIL_ERROR'] = $result->getMessage();
+	}
+      }
+    }
+
+    if (isset($error)) {
+      return $error;
+    } else {
+      return TRUE;
+    }
+  }
 
   function postUser(&$user, $set_username=TRUE){
     if ($set_username){
@@ -326,10 +363,6 @@ class User_Action {
       else {
 	$user->setPassword($_POST['password1']);
       }
-    }
-
-    if (isset($_POST['display_name'])) {
-
     }
 
     $result = $user->setEmail($_POST['email']);
@@ -394,8 +427,34 @@ class User_Action {
       break;
 
     case 'signup_user':
-      $result = User_Action::signup_user();
-      Layout::add($result, NULL, NULL, TRUE);
+      if (Current_User::isLogged()) {
+	Layout::add(_('You already have an account.'));
+	break;
+      }
+      $user = & new PHPWS_User;
+      if (PHPWS_User::getUserSetting('new_user_method') == 0) {
+	Layout::add(_('Sorry, we are not accepting new users at this time.'));
+	break;
+      }
+      Layout::add(User_Form::signup_form($user), NULL, NULL, TRUE);
+      break;
+
+    case 'submit_new_user':
+      $user_method = PHPWS_User::getUserSetting('new_user_method');
+      if ($user_method == 0) {
+	Current_User::disallow(_('New user signup not allowed.'));
+	return;
+      }
+
+      $user = & new PHPWS_User;
+      $result = User_Action::postNewUser($user);
+      
+      if (is_array($result)) {
+	$content = User_Form::signup_form($user, $result);
+      } else {
+	Layout::add('its all good');
+      }
+
       break;
 
     case 'logout':
@@ -618,18 +677,6 @@ class User_Action {
 
   function signup_user()
   {
-    switch (PHPWS_User::getUserSetting('new_user_method')) {
-    case 0:
-      return _('Sorry, we are not accepting new users at this time.');
-      break;
-
-    case 1:
-    case 2:
-    case 3:
-      return User_Form::signup_form();
-      break;
-    }
-    
   }
 
 }

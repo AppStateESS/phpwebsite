@@ -668,7 +668,7 @@ class User_Form {
   /**
    * Signup form for new users
    */
-  function signup_form()
+  function signup_form($user, $message=NULL)
   {
     $username = NULL;
 
@@ -677,22 +677,26 @@ class User_Form {
     $form->addHidden('action', 'user');
     $form->addHidden('command', 'submit_new_user');
 
-    $form->addText('new_username', $username);
-    $form->setLabel('new_username', _('Username'));
+    $form->addText('username', $username);
+    $form->setLabel('username', _('Username'));
 
-    $form->addPassword('new_password');
-    $form->setLabel('new_password', _('Password'));
+    $new_user_method =  PHPWS_User::getUserSetting('new_user_method');
 
-    $form->addPassword('confirm_password');
-    $form->setLabel('confirm_password', _('Confirm'));
+    if ($new_user_method != AUTO_SIGNUP) {
+      $form->addPassword('password1');
+      $form->setLabel('password1', _('Password'));
+
+      $form->addPassword('password2');
+      $form->setLabel('password2', _('Confirm'));
+    }
 
     $form->addText('confirm_phrase');
     $form->setLabel('confirm_phrase', _('Confirm text'));
  
-    $form->addTplTag('CONFIRM_INSTRUCTIONS', _('Please type the word seen in the image.'));
     $form->addTplTag('SIGNUP_LABEL', _('New Account Sign-up'));
 
     if (PHPWS_User::getUserSetting('graphic_confirm') && function_exists('gd_info')) {
+      $form->addTplTag('CONFIRM_INSTRUCTIONS', _('Please type the word seen in the image.'));
       $result = User_Form::confirmGraphic();
       if (PEAR::isError($result)) {
 	PHPWS_Error::log($result);
@@ -706,6 +710,12 @@ class User_Form {
     $form->addSubmit('submit', _('Sign up'));
  
     $template = $form->getTemplate();
+
+    if (isset($message)){
+      foreach ($message as $tag=>$error)
+	$template[strtoupper($tag) . '_ERROR'] = $error;
+    }
+
     $result = PHPWS_Template::process($template, 'users', 'forms/signup_form.tpl');
     return $result;
   }
