@@ -1,4 +1,5 @@
 <?php
+
 class CrutchForm {
   function makeForm($name, $action, $elements, $method='post', $breaks=FALSE, $file=FALSE) {
     if($file) {
@@ -44,6 +45,29 @@ class CrutchForm {
     return $form->get();
   }
 
+  
+  function formSelect($name, $opt_array, $match = NULL, $ignore_index = FALSE, $match_to_value = FALSE, $onchange = NULL, $label = NULL)
+  {
+
+    $form = & new Form_Select($name);
+    $form->setName($name);
+
+    if ($ignore_index) {
+      foreach ($opt_array as $opt_value) {
+	$new_vars[$opt_value] = $opt_value;
+      }
+      $opt_array = $new_vars;
+    }
+
+    $form->setValue($opt_array);
+
+    if (isset($match)) {
+      $form->setMatch($match);
+    }
+
+    return $form->get();
+  }
+  
   function formRadio($name, $value, $match=NULL, $match_diff=NULL, $label=NULL) {
     $form = & new Form_RadioButton($name, $value);
     if (isset($match_diff) && $match == $match_diff)
