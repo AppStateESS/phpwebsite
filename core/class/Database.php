@@ -519,6 +519,9 @@ class PHPWS_DB {
       break;
 
     case "col":
+      if (empty($this->column))
+	return PHPWS_Error::get(PHPWS_DB_NO_COLUMN_SET, "core", "PHPWS_DB::select");
+
       if (isset($indexby)){
 	$result = PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getAll($sql, NULL, $mode), $type);
 	if (PEAR::isError($result))
