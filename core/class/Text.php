@@ -144,7 +144,11 @@ class PHPWS_Text {
       $allowedTagString = PHPWS_ALLOWED_TAGS;
 
     $text = strip_tags($text, $allowedTagString);
+
     PHPWS_Text::encodeXHTML($text);
+    if (MAKE_ADDRESSES_RELATIVE) {
+      PHPWS_Text::makeRelative($text);
+    }
     return trim($text);
   }
 
@@ -266,6 +270,15 @@ class PHPWS_Text {
   }// END FUNC isValidInput()
 
 
+  function rerouteLink($subject, $module, $action, $id){
+    if ((bool)MOD_REWRITE_ENABLED == FALSE) {
+      return PHPWS_Text::moduleLink($subject, $module, array("action" => $action, "id" => $id));
+    } else {
+      return "<a href=\"{$module}/{$action}/{$id}\">$subject</a>";
+    }
+  }
+
+
   function secureLink($subject, $module=NULL, $getVars=NULL, $target=NULL, $title=NULL){
     if (Current_User::isLogged())
       $getVars['authkey'] = Current_User::getAuthKey();
@@ -371,6 +384,12 @@ class PHPWS_Text {
     $text = str_replace("\\\"", "\"", $text);
     return $text;
   }// END FUNC stripSlashQuotes()
+
+  function makeRelative(&$text){
+    $address = addslashes(PHPWS_Core::getHomeHttp());
+    $text = str_replace($address, "./", $text);
+  }
+
 }//END CLASS CLS_text
 
 ?>
