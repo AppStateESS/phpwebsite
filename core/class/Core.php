@@ -247,16 +247,19 @@ class PHPWS_Core {
    * Loads a config file. If missing, shows error page
    */
   function configRequireOnce($module, $file, $exitOnError=TRUE){
-    $file = PHPWS_Core::getConfigFile($module, $file);
+    $config_file = PHPWS_Core::getConfigFile($module, $file);
 
-    if (PEAR::isError($file)){
-      PHPWS_Error::log($file);
-      if ($exitOnError)
+    if (empty($config_file) || !$config_file){
+      PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'configRequireOnce', $file);
+      if ($exitOnError) {
 	PHPWS_Core::errorPage();
-      else
-	return $file;
-    } else
-      require_once $file;
+      }
+      else {
+	return $config_file;
+      }
+    } else {
+      require_once $config_file;
+    }
 
     return TRUE;
   }
