@@ -252,12 +252,12 @@ class Related {
     }
   }
 
-  function show(){
+  function show($allowEdit=TRUE){
     PHPWS_Core::initCoreClass("Module.php");
     Layout::addStyle("related");
 
     $this->load();
-    if (!Current_User::allow("related"))
+    if (!Current_User::allow("related") || (bool)$allowEdit == FALSE)
       $mode = "view";
     elseif (Related_Action::isBanked())
       $mode = "edit";
