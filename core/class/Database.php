@@ -271,11 +271,15 @@ class PHPWS_DB {
   }
 
   function addWhere($column, $value, $operator=NULL, $conj=NULL, $group=NULL, $join=FALSE){
-    $operator = strtoupper($operator);
+    if (isset($operator)) {
+      $operator = strtoupper($operator);
+    }
+
     if (is_array($value)){
       if (empty($operator)) {
 	$operator = "IN";
       }
+      
       if ($operator != "IN" && $operator != "BETWEEN"){
 	foreach ($value as $newVal){
 	  $result = $this->addWhere($column, $newVal, $operator, $conj, $group);
