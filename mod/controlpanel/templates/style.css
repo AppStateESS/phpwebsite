@@ -18,49 +18,56 @@ background-color : #E8E9EA;
 .tabmenu li {
   display: inline;
   list-style-type: none;
-  border: 2px solid #7B95B4;
+  border-width : 2px;
+  border-style : solid;
+  border-color : black;
   font-weight: bold;
 }
 
 
 .tabmenu li.active {
   color : white;
-  background-color : #92B4DE;
+  background-color : #575757;
   font-size: 0.8em;
   padding: 5px 5px 4px 5px;
   border-bottom : none;
 }
 
 .tabmenu li.inactive {
-  background-color : #CBDFEB;
+  background-color : #d7d7d7;
   font-size: 0.8em;
   padding: 5px 5px 2px 5px;
+}
+
+.tabmenu li.inactive:hover {
+  background: #696969;
+  color: white;
 }
 
 
 .tabmenu li.active a:link { 
 	text-decoration: none;
-	color: #3A5574;
+	color: white;
 }
 
 .tabmenu li.active a:visited { 
 	text-decoration: none; 
-	color: #2D3D55;
+	color: white;
 }
 
 .tabmenu li.active a:hover { 
 	text-decoration: none; 
-	color: white;
+	color: gray;
 }
 
 .tabmenu li.inactive a:link { 
 	text-decoration: none; 
-	color: #3A5574;
+	color: black;
 }
 
 .tabmenu li.inactive a:visited { 
 	text-decoration: none; 
-	color: #2D3D55;
+	color: black;
 }
 
 .tabmenu li.inactive a:hover { 
@@ -68,10 +75,6 @@ background-color : #E8E9EA;
 	color: white;
 }
 
-.tabmenu li.inactive:hover {
-  background: #9FC5EF;
-  color: white;
-}
 
 
 /*-------------- Content -----------------*/
@@ -81,17 +84,23 @@ background-color : #E8E9EA;
   margin-top : -2px;
   display : table;
   width : 95%;
-  background-color: #92B4DE;
+  background-color: #575757;
   height: auto;
   padding: 5px;
-  border: 2px solid #7B95B4;
+  border-width : 2px;
+  border-style : solid;
+  border-color : black;
 }
 
 .backgrd {
   background-color : white;
   padding : 5px;
-  border-left: 2px solid #7B95B4;
-  border-top: 2px solid #7B95B4;
+  border-left-width : 2px;
+  border-top-width : 2px;
+  border-left-style : solid;
+  border-top-style : solid;
+  border-left-color : #696969;
+  border-top-color : #696969;
   height : 100%;
 }
 
