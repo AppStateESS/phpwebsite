@@ -18,6 +18,8 @@ if (!function_exists("bindtextdomain")){
   textdomain("messages");
 }
 
+loadBrowserInformation();
+
 /* Load the Core class */
 require_once PHPWS_SOURCE_DIR . "core/class/Core.php";
 require_once PHPWS_Core::getConfigFile("core", "errorDefines.php");
@@ -48,8 +50,9 @@ function initLanguage(){
     $locale = setlocale(LC_ALL, $language);
     if ($locale == FALSE)
       $locale = setlocale(LC_ALL, DEFAULT_LANGUAGE);
-  } elseif (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])){
-    $userLang = explode(",", preg_replace("/(;q=\d\.*\d*)/", "", $_SERVER['HTTP_ACCEPT_LANGUAGE']));
+  } else {
+    $userLang = getBrowserLanguage();
+
     $locale_found = FALSE;
     
     foreach ($userLang as $language){
@@ -76,6 +79,101 @@ function initLanguage(){
     define("CURRENT_LANGUAGE", DEFAULT_LANGUAGE);
 
   loadLanguageDefaults($locale);
+}
+
+function loadBrowserInformation(){
+  $agent = $_SERVER['HTTP_USER_AGENT'];
+  $agentVars = explode(" ", $agent);
+
+  foreach ($agentVars as $agent){
+    $newVars[] = preg_replace("/[^\w\.\/]/", "", $agent);
+  }
+
+  list($engine, $engine_version) = explode("/", $newVars[0]);
+  $browser['engine'] = $engine;
+  $browser['engine_version'] = $engine_version;
+
+  switch ($engine){
+  case "Opera":
+    $platform = $newVars[1];
+    $program = explode("/", $newVars[0]);
+
+    if ($platform == "Windows"){
+      if ($newVars[2] == "NT" && $newVars[3] == "5.0")
+	$platform = "Windows 2000";
+      else
+	$platform .= " " . $newVars[2] . " " . $newVars[3];
+    }
+    break;
+
+  case "Mozilla":
+    switch ($engine_version){
+    case "4.0":
+      $program[0] = $newVars[2];
+      $program[1] = $newVars[3];
+      $platform = $newVars[4];
+      if ($platform == "Windows"){
+	if ($newVars[5] == "NT" && $newVars[6] == "5.0")
+	  $platform = "Windows 2000";
+	else
+	  $platform .= " " . $newVars[5] . " " . $newVars[6];
+      }
+      break;
+
+    case "4.74":
+      $platform = $newVars[2];
+      if ($platform == "Windows"){
+	if ($newVars[3] == "NT" && $newVars[4] == "5.0")
+	  $platform = "Windows 2000";
+	else
+	  $platform .= " " . $newVars[3] . " " . $newVars[4];
+
+	$program = explode("/", $newVars[9]);
+      }
+      $program[0] = "Netscape";
+      $program[1] = "4.74";
+      break;
+
+    case "5.0":
+      if ($newVars[5] == "Opera"){
+	$platformCheck = 1;
+	$program[0] = "Opera";
+	$program[1] = $newVars[6];
+      } else 
+	$platformCheck = 3;
+
+      $platform = $newVars[$platformCheck];
+
+      if ($platform == "Windows"){
+	if ($newVars[$platformCheck + 1] == "NT" && $newVars[$platformCheck + 2] == "5.0")
+	  $platform = "Windows 2000";
+	else
+	  $platform .= " " . $newVars[$platformCheck + 1] . " " . $newVars[$platformCheck + 2];
+
+	$program = explode("/", $newVars[9]);
+      } else
+	$program = explode("/", $newVars[8]);
+	
+
+      break;
+    }
+    break;
+
+  }
+
+  $browser['platform'] = $platform;
+  $browser['browser'] = $program[0];
+  $browser['browser_version'] = $program[1];
+
+  $GLOBALS['browser_info'] = &$browser;
+}
+
+
+function getBrowserLanguage(){
+  if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']))
+    return explode(",", preg_replace("/(;q=\d\.*\d*)/", "", $_SERVER['HTTP_ACCEPT_LANGUAGE']));
+  else
+    return array(DEFAULT_LANGUAGE);
 }
 
 function loadLanguageDefaults($language){
