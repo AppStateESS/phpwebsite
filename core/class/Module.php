@@ -6,11 +6,11 @@ class PHPWS_Module {
   var $_priority      = 50;
   var $_directory     = NULL;
   var $_version       = NULL;
-  var $_active        = FALSE; 
-  var $_image_dir     = NULL;
-  var $_files_dir     = NULL;
+  var $_active        = TRUE; 
+  var $_image_dir     = TRUE;
+  var $_file_dir      = TRUE;
   var $_register      = FALSE;
-  var $_import_sql   = FALSE;
+  var $_import_sql    = FALSE;
 
   function PHPWS_Module($title=NULL){
     if (isset($title)){
@@ -22,14 +22,6 @@ class PHPWS_Module {
   function init(){
     $title = $this->getTitle();
 
-    $proper_name   = NULL;
-    $version       = .001;
-    $active        = TRUE;
-    $image_dir     = NULL;
-    $files_dir     = NULL;
-    $register      = FALSE;
-    $import_sql    = FALSE;
-
     $this->setDirectory(PHPWS_SOURCE_DIR . "mod/$title/");
     
     $result = PHPWS_Core::getConfigFile($title, "boost.php");
@@ -37,12 +29,30 @@ class PHPWS_Module {
       return $result;
 
     include $result;
-    
-    $this->setProperName($proper_name);
-    $this->setVersion($version);
-    $this->setActive($active);
-    $this->setImportSQL($import_sql);
-    $this->setRegister($register);
+
+    if (isset($proper_name))
+      $this->setProperName($proper_name);
+
+    if (isset($priority))
+      $this->setPriority($priority);
+
+    if (isset($version))
+      $this->setVersion($version);
+
+    if (isset($active))
+      $this->setActive($active);
+
+    if (isset($import_sql))
+      $this->setImportSQL($import_sql);
+
+    if (isset($image_dir))
+      $this->setImageDir($image_dir);
+
+    if (isset($file_dir))
+      $this->setFileDir($file_dir);
+
+    if (isset($register))
+      $this->setRegister($register);
   }
 
 
@@ -103,6 +113,22 @@ class PHPWS_Module {
 
   function isImportSQL(){
     return $this->_import_sql;
+  }
+
+  function setImageDir($switch){
+    $this->_image_dir = (bool)$switch;
+  }
+
+  function isImageDir(){
+    return $this->_image_dir;
+  }
+
+  function setFileDir($switch){
+    $this->_file_dir = (bool)$switch;
+  }
+
+  function isFileDir(){
+    return $this->_file_dir;
   }
 
   function setActive($active){
