@@ -65,6 +65,7 @@ function controlpanel_unregister($module, &$content){
     }
   }
 
+  $content[] = _("Control Panel links and tabs have been removed.");
   PHPWS_ControlPanel::reset();
 }
 ?>
