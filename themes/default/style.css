@@ -23,6 +23,7 @@ body {
 #sidepanel {
 	float : left;
 	width : 17%;
+	display : inline;
 }
 
 #content {
