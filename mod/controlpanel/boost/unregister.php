@@ -7,7 +7,7 @@ function controlpanel_unregister($module, &$content){
   $itemnameList = array();
   $cpFile = PHPWS_Core::getConfigFile($module, "controlpanel.php");
 
-  if (!is_file($cpFile))
+  if (is_object($cpFile) || !is_file($cpFile))
     return TRUE;
 
   include_once($cpFile);
