@@ -351,6 +351,14 @@ class PHPWS_Boost {
     PHPWS_Core::log($message, "boost.log");
   }
 
+  function aboutView($module){
+    PHPWS_Core::initCoreClass("Module.php");
+    $mod = & new PHPWS_Module($module);
+    $file = $mod->getDirectory() . "conf/about.php";
+    include $file;
+    exit();
+  }
+
 }
 
 ?>
