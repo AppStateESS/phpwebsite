@@ -24,6 +24,7 @@ class PHPWS_DB {
   var $indexby     = NULL;
   var $groupby     = NULL;
   var $_allColumns = NULL;
+  var $_DB         = array();
 
   function PHPWS_DB($table=NULL){
     PHPWS_DB::touchDB();
@@ -36,6 +37,20 @@ class PHPWS_DB {
     $this->setMode("assoc");
   }
   
+  function addDB($db){
+    if (!is_object($db))
+      return PHPWS_Error::get(PHPWS_DB_NOT_OBJECT, "core", "PHPWS_DB::addJoin", gettype($db));
+
+    if (strtoupper(get_class($db)) != "PHPWS_DB")
+      return PHPWS_Error::get(PHPWS_WRONG_CLASS, "core", "PHPWS_DB::addJoin", get_class($db));
+
+    if (empty($db->table))
+      return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, "core", "PHPWS_DB::addJoin");
+
+    $this->_DB[$db->table] = $db;
+  }
+
+
   function touchDB(){
     if (!PHPWS_DB::isConnected())
       PHPWS_DB::loadDB();
@@ -208,7 +223,11 @@ class PHPWS_DB {
     return $this->groupBy;
   }
 
-  function addWhere($column, $value, $operator=NULL, $conj=NULL, $group=NULL){
+  function addJoinWhere($base_column, $match_column, $operator=NULL, $conj=NULL, $group=NULL){
+    $this->addWhere($base_column, $match_column, $operator, $conj, $group, TRUE);
+  }
+
+  function addWhere($column, $value, $operator=NULL, $conj=NULL, $group=NULL, $join=FALSE){
     if (is_array($value)){
       foreach ($value as $newVal){
 	$result = $this->addWhere($column, $newVal, $operator, $conj, $group);
@@ -217,6 +236,7 @@ class PHPWS_DB {
       }
       return;
     }
+
 
     if (!isset($operator))
       $operator = "=";
@@ -229,13 +249,12 @@ class PHPWS_DB {
     if (!PHPWS_DB::allowed($column))
       return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, "core", "PHPWS_DB::addWhere", $column);
 
-    if (PHPWS_Text::checkUnslashed($value))
-      $value = addslashes($value);
+    $value = $GLOBALS['PEAR_DB']->escapeSimple($value);
 
     if (isset($group))
-      $this->where[$group]['values'][] = array('column'=>$column, 'value'=>$value, 'operator'=>$operator, 'conj'=>$conj);
+      $this->where[$group]['values'][] = array('column'=>$column, 'value'=>$value, 'operator'=>$operator, 'conj'=>$conj, 'join'=>$join);
     else
-      $this->where[0]['values'][] = array('column'=>$column, 'value'=>$value, 'operator'=>$operator, 'conj'=>$conj);
+      $this->where[0]['values'][] = array('column'=>$column, 'value'=>$value, 'operator'=>$operator, 'conj'=>$conj, 'join'=>$join);
   }
 
   function checkOperator($operator){
@@ -258,7 +277,7 @@ class PHPWS_DB {
     $this->qwhere = $where;
   }
 
-  function getWhere($dbReady=FALSE){
+  function getWhere($dbReady=FALSE, $addWhere=TRUE){
     $extra = FALSE;
     $where = NULL;
 
@@ -279,10 +298,19 @@ class PHPWS_DB {
 	$sql[] = "(";
 
 
-	foreach ($groups['values'] as $value){
-	  if ($startSub == TRUE) $sql[] = $value['conj'];
+	foreach ($groups['values'] as $whereValues){
+	  extract($whereValues);
 
-	  $sql[] = $value['column'] . " " . $value['operator'] . " '" . $value['value'] . "'";
+	  if (strstr($column, ".") == FALSE)
+	    $column = $this->getTable() . "." . $column;
+
+	  if ($startSub == TRUE) $sql[] = $conj;
+
+	  if ($join)
+	    $sql[] = "$column $operator $value";
+	  else
+	    $sql[] = "$column $operator '$value'";
+
 	  $startSub = TRUE;
 	}
 
@@ -293,8 +321,12 @@ class PHPWS_DB {
       if (isset($this->qwhere))
 	$sql[] = " AND (" . $this->qwhere . ")";
 
-      if (isset($sql))
-	$where = "WHERE " . implode(" ", $sql);
+      if (isset($sql)){
+	if ($addWhere)
+	  $where = "WHERE " . implode(" ", $sql);
+	else
+	  $where = implode(" ", $sql);
+      }
 
       return $where;
     } else
@@ -309,6 +341,9 @@ class PHPWS_DB {
   function addColumn($column, $distinct=FALSE, $count=FALSE){
     if (!PHPWS_DB::allowed($column))
       return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, "core", "PHPWS_DB::addColumn", $column);
+
+    if (strstr($column, ".") == FALSE)
+      $column = $this->getTable() . "." . $column;
 
     if ((bool)$distinct == TRUE)
       $column = "DISTINCT " .  $column;
@@ -506,18 +541,35 @@ class PHPWS_DB {
       
       $mode = $this->getMode();
       
-      $table = $this->getTable();
-    
+      if (!empty($this->_DB)){
+	$tables[] = $this->getTable();
+	foreach ($this->_DB as $altDB){
+	  $tables[] = $altDB->getTable();
+	  $extraWhere[] = $altDB->getWhere(TRUE, FALSE);
+	  $columns = $altDB->getColumn();
+	  if (isset($columnList))
+	    $columnList = array_merge($columnList, $columns);
+	  else
+	    $columnList = $columns;
+	}
+
+	$table = implode(", ", $tables);
+      } else
+	$table = $this->getTable();
+
       if (!$table)
 	return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, "core", "PHPWS_DB::select");
 
       $where   = $this->getWhere(TRUE);
+      if (isset($extraWhere))
+	$where .= " AND " . implode(" AND ", $extraWhere);
+
       $order   = $this->getOrder(TRUE);
       $limit   = $this->getLimit(TRUE);
       $groupby = $this->getGroupBy(TRUE);
 
       $indexby = $this->getIndexBy();
-      
+
       if (isset($columnList)){
 	if (isset($indexby) && !in_array($indexby, $columnList))
 	  $columnList[] = $indexby;
@@ -997,7 +1049,7 @@ class PHPWS_DB {
     if(in_array(strtoupper($value), $reserved))
       return FALSE;
 
-    if(preg_match("/[^\w\*]/", $value)) 
+    if(preg_match("/[^\w\*\.]/", $value)) 
       return FALSE;
 
     return TRUE;
