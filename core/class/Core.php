@@ -22,7 +22,7 @@ class PHPWS_Core {
       PHPWS_Error::log($moduleList);
       PHPWS_Core::errorPage();
     }
-      
+    
     foreach ($moduleList as $mod){
       PHPWS_Core::setCurrentModule($mod['title']);
 
@@ -37,10 +37,10 @@ class PHPWS_Core {
       /* Using include instead of require to prevent broken mods from hosing the site */
       $includeFile = PHPWS_SOURCE_DIR . "mod/" . $mod['title'] . "/inc/init.php";
 
-      if (is_file($includeFile)){
+      if (is_file($includeFile))
 	include($includeFile);
-	$GLOBALS['Modules'][$mod['title']] = $mod;
-      }
+
+      $GLOBALS['Modules'][$mod['title']] = $mod;
     }
   }
 
@@ -138,7 +138,23 @@ class PHPWS_Core {
   }
  
   function home(){
-    header("location:./");
+    PHPWS_Core::reroute();
+  }
+
+  function reroute($address=NULL){
+    $http = "http";
+
+    if ( isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on' )
+      $http = "https";
+   
+    $dirArray = explode("/", $_SERVER['PHP_SELF']);
+    array_pop($dirArray);
+    $dirArray[] = "";
+
+    $directory = implode("/", $dirArray);
+
+    $location = "{$http}://{$_SERVER['HTTP_HOST']}{$directory}{$address}";
+    header("location:$location");
     exit();
   }
 
@@ -209,10 +225,9 @@ class PHPWS_Core {
       $file = "config/$module/$file";
     }
 
-
     if (!is_file($file) || FORCE_MOD_CONFIG){
       if (!is_file($altfile))
-	return PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, "core", "getConfigFile", "file = $file");
+	return FALSE;
       else
 	$file = $altfile;
     }
