@@ -1,4 +1,5 @@
 RewriteEngine On
 Options +FollowSymlinks
 
-RewriteRule   (\w+)/(\w+)/(\d+)$ index.php?module=$1&action=$2&id=$3
+RewriteRule   ^(\w+)/(\w+)$ index.php?module=$1&action=$2 [NC]
+RewriteRule   ^(\w+)/(\w+)/(\d+)$ index.php?module=$1&action=$2&id=$3 [NC]
