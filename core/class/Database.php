@@ -818,7 +818,10 @@ class PHPWS_DB {
 	}
       }
 
-      $items[$indexby] = $genClass;
+      if (isset($indexby))
+	$items[$indexby] = $genClass;
+      else
+	$items[] = $genClass;
     }
 
     if ((bool)$onlyOne == TRUE && isset($items[0]))
