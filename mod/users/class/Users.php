@@ -57,7 +57,9 @@ class PHPWS_User extends PHPWS_Item {
   }
 
   function checkPassword($pass1, $pass2){
-    if ($pass1 != $pass2)
+    if (empty($pass1) || empty($pass2))
+      return PHPWS_Error::get(USER_ERR_PASSWORD_LENGTH, "users", "checkPassword");
+    elseif ($pass1 != $pass2)
       return PHPWS_Error::get(USER_ERR_PASSWORD_MATCH, "users", "checkPassword");
     elseif(strlen($pass1) < PASSWORD_LENGTH)
       return PHPWS_Error::get(USER_ERR_PASSWORD_LENGTH, "users", "checkPassword");
