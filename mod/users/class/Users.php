@@ -182,6 +182,13 @@ class PHPWS_User extends PHPWS_Item {
     return $this->_permission->allow($itemName, $subpermission, $item_id);
   }
 
+  /**
+   * Crutch function for versions prior to 0.9.4
+   */
+  function allow_access($itemName, $subpermission=NULL, $item_id=NULL){
+    $this->allow($itemName, $subpermission, $item_id);
+  }
+
   function save(){
     $newUser = FALSE;
     PHPWS_Core::initModClass("users", "Group.php");
