@@ -41,6 +41,8 @@ class Current_User {
   }
 
   function getAuthKey(){
+    if (!isset($_SESSION['User']))
+      return NULL;
     return $_SESSION['User']->getAuthKey();
   }
 
@@ -60,6 +62,9 @@ class Current_User {
   }
 
   function isLogged(){
+    if (!isset($_SESSION['User']))
+      return FALSE;
+
     return $_SESSION['User']->isLogged();
   }
 
