@@ -450,6 +450,7 @@ class User_Action {
       $user->addLogCount();
       $user->makeAuthKey($password);
       $user->save();
+      $user->init();
       $_SESSION['User'] = $user;
       return TRUE;
     } else
