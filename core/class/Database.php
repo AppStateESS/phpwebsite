@@ -944,9 +944,12 @@ class PHPWS_DB {
     if (!is_object($object))
       return PHPWS_Error::get(PHPWS_DB_NOT_OBJECT, "core", "PHPWS_DB::loadObject");
 
-    $className = get_class($object);
+    if (isset($variables) && !is_array($variables))
+      return PHPWS_Error::get(PHPWS_WRONG_TYPE, "core", __CLASS__ . "::" . __METHOD__, gettype($variables));
 
+    $className = get_class($object);
     $classVars = get_class_vars($className);
+
     if(!is_array($classVars))
       return PHPWS_Error::get(PHPWS_DB_NO_VARIABLES, "core", "PHPWS_DB::loadObject");
 
