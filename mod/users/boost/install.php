@@ -19,6 +19,7 @@ function users_install(&$content, $branchInstall=FALSE){
 	$anon->setEmail("blank@127.0.0.1");
 	$anon->setActive(TRUE);
 	$anon->setApproved(TRUE);
+	$anon->setAuthorize(0);
 	$result = $anon->save();
 
 	if (PEAR::isError($result))
@@ -27,15 +28,16 @@ function users_install(&$content, $branchInstall=FALSE){
 	$user->setDeity(TRUE);
 	$user->setActive(TRUE);
 	$user->setApproved(TRUE);
+	$user->setAuthorize(1);
 	$result = $user->save();
 	if (PEAR::isError($result))
 	  return $result;
 
 	$content[] = _("User created successfully.");
-
-	$db = & new PHPWS_DB("users_config");
-	$db->addValue("anonymous", $anon->getId());
-
+	$db = & new PHPWS_DB("users_auth_scripts");
+	$db->addValue("display_name", _("Local"));
+	$db->addValue("filename", "local.php");
+	$db->insert();
       } else {
 	$content[] = userForm($user, $result);
 	return FALSE;
