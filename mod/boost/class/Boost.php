@@ -96,7 +96,8 @@ class PHPWS_Boost {
 
       if ($this->getStatus($title) == BOOST_START && $mod->isImportSQL()){
 	$content[] = _("Importing SQL install file.");
-	$result = PHPWS_Boost::importSQL($mod->getDirectory() . "boost/install.sql");
+	$db = & new PHPWS_DB;
+	$result = $db->importFile($mod->getDirectory() . "boost/install.sql");
 
 	if (is_array($result)){
 	  foreach ($result as $error)
@@ -706,7 +707,8 @@ class PHPWS_Boost {
       return PHPWS_Error::get(BOOST_ERR_NO_INSTALLSQL, "boost", "importSQL", "File: " . $file);
 
     $sql = File::readAll($file);
-    $result = PHPWS_DB::import($sql);
+    $db = & new PHPWS_DB;
+    $result = $db->import($sql);
     return $result;
   }
 
