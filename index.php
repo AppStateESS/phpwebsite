@@ -2,7 +2,7 @@
 
 define("AUTO_ROUTE", TRUE);
 
-if (is_file("config/core/config.php")) include_once "config/core/config.php";
+if (is_file("config/core/config.php")) require_once "config/core/config.php";
 else {
   if (AUTO_ROUTE == TRUE){
     header("location:setup/");
@@ -10,6 +10,8 @@ else {
   } else
     exit(_("Fatal Error: Could not locate your configuration file."));
 }
+
+require_once PHPWS_SOURCE_DIR . "inc/Functions.php";
 
 /* Show all errors */
 error_reporting (E_ALL);
