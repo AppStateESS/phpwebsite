@@ -27,6 +27,7 @@ require_once PHPWS_SOURCE_DIR . "class/Core.php";
 
 PHPWS_Core::initializeModules();
 
+session_name(SESSION_NAME);
 session_start();
 
 //include ("test.php");
@@ -43,14 +44,18 @@ PHPWS_Core::setLastPost();
  */
 function loadConfig($hub_dir=NULL){
   /* Check for config file and define source directory. */
-  if(is_file($hub_dir . "conf/db_config.php")){
-    include($hub_dir . "conf/db_config.php");
+  if(is_file($hub_dir . "conf/config.php")){
+    include($hub_dir . "conf/config.php");
     define("PHPWS_SOURCE_DIR", $source_dir);
-    define("CONFIG_FILE", $source_dir . "conf/db_config.php");
+    define("CONFIG_FILE", $source_dir . "conf/config.php");
+    define("SESSION_NAME", md5($site_hash));
   }
   else {
     header("location:setup/set_config.php");
     exit();
   }
 }
+
+PHPWS_Core::report();
+
 ?>
