@@ -277,6 +277,8 @@ class Layout_Admin{
     $form->addCheckBox("follow", 1);
     $form->setMatch("follow", $follow);
     $form->setLabel("follow", _("Allow Link Following"));
+    $form->addRadio("cache", array(0, 1));
+    $form->setLabel("cache", array(_("Disable browser caching"), _("Allow browser caching")));
 
     $form->addSubmit("submit", _("Update"));
 
