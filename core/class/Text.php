@@ -179,7 +179,8 @@ class PHPWS_Text {
    * @param   string  text         Text to parse
    * @return  string  text         Stripped text
    */
-  function parseOutput($text, $printTags=FALSE, $filter_profanity=TRUE){
+  function parseOutput($text, $printTags = FALSE, $filter_profanity = TRUE, $run_breaker = TRUE)
+  {
     if (empty($text))
       return NULL;
     require_once("HTML/BBCodeParser.php");
@@ -198,7 +199,10 @@ class PHPWS_Text {
     $parser->setText($text);
     $parser->parse();
     $text = $parser->getParsed();
-    $text = PHPWS_Text::breaker($text);
+    if ($run_breaker) {
+      $text = PHPWS_Text::breaker($text);
+    }
+
     if ($printTags == FALSE)
       $text = html_entity_decode($text, ENT_QUOTES);
 
