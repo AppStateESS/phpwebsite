@@ -1,5 +1,5 @@
 <?php
-if (!isset($_REQUEST['action'])) return;
+if (!Current_User::isDeity() || !isset($_REQUEST['action'])) return;
 
 $content = array();
 PHPWS_Core::initModClass("boost", "Form.php");
