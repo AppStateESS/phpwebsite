@@ -90,8 +90,9 @@ function checkJavascript(){
     $_SESSION['Javascript_Check'] = TRUE;
     Layout::getJavascript('test');
   } else {
-    if (isset($_SESSION['Javascript_Enabled']))
+    if (isset($_SESSION['Javascript_Enabled'])) {
       $GLOBALS['browser_info']['javascript'] = $_SESSION['Javascript_Enabled'];
+    }
     else {
       if (isset($_COOKIE['js_check'])){
 	$_SESSION['Javascript_Enabled'] = TRUE;

@@ -289,8 +289,9 @@ class PHPWS_Text {
 
 
   function secureLink($subject, $module=NULL, $getVars=NULL, $target=NULL, $title=NULL){
-    if (Current_User::isLogged())
+    if (Current_User::isLogged()) {
       $getVars['authkey'] = Current_User::getAuthKey();
+    }
 
     return PHPWS_Text::moduleLink($subject, $module, $getVars, $target, $title);
   }
