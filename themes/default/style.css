@@ -38,6 +38,11 @@ body {
 	padding : 3px;
 }
 
+#content h2 {
+	background-color : #EDF4D1;
+	padding : 3px;
+}
+
 
 #header {
 	background-color : #ADB583;
