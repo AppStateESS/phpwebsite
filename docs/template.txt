@@ -30,6 +30,56 @@ The process function will return your template file with the tabs filled in.
 Sometimes you may want to create your own template object. This comes in handy for
 repeated rows.
 
+Lets say the template looked like the following:
+
+{TITLE}
+<ol>
+  <!-- BEGIN repeat_row -->
+   <li>{NAME} {POSITION}</li>
+  <!-- END repeat_row -->
+</ol>
+{CONCLUSION}
+
+To have the line item repeat you would put the row array INSIDE the
+row definition. 
+
+This will repeat the 'li' line over and over within the same template.
+Here is an example:
+
+$template['TITLE'] = 'Names of Cabinet';
+$template['CONCLUSION'] = 'Visit office for more information.';
+
+$template['repeat_row'][] = array('NAME' => 'Tom Horn',
+			          'POSITION' => 'President');
+
+$template['repeat_row'][] = array('NAME' => 'Jane Plymore',
+			          'POSITION' => 'Vice President');
+
+The template class will then expect a repeated row named 'repeat_row'
+and it will try to plug in the values from the array.
+
+Note: If you are getting repeats outside of your BEGIN/END tags MAKE
+SURE your tags are set properly:
+
+<ol>
+  <!-- BEGIN repeat_row-->
+   <li>{NAME} {POSITION}</li>
+  <!-- END repeat_row -->
+</ol>
+
+The above won't work. It's so small it is hard to notice. Look at the
+BEGIN line. There isn't a space between the 'repeat_row' and the
+'-->'.
+One added or missing character can cause it not to work. Compare the
+BEGIN and END comments character by character.
+
+
+Embedded Rows
+---------------------------------------------------------------------
+Sometimes you will have repeat rows inside other repeated rows. This
+is beyond the abilities of the above example. You will need to
+instantiate a template object.
+
 First run the constructor:
 
 $tpl = & new PHPWS_Template($module);
@@ -39,14 +89,6 @@ Now set the file:
 $result = $tpl->setFile($template_file);
 
 The result will either be TRUE or a PHPWS_Error object.
-
-Lets say the template looked like the following:
-
-<ol>
-  <!-- BEGIN repeat_row -->
-   <li>{NAME} {COLOR}</li>
-  <!-- END repeat_row -->
-</ol>
 
 To have the line item repeat you would use setCurrentBlock, like so:
 
@@ -61,28 +103,10 @@ $tpl->parseCurrentBlock();
 $tpl->setData(array('NAME'=>'Pat', 'COLOR'=>'blue'));
 $tpl->parseCurrentBlock();
 
-This will repeat the 'li' line over and over within the same template.
-
-
 To get your data for presentation call get like so:
 $content = $tpl->get();
 
-Note: If you are getting repeats outside of your BEGIN/END tags MAKE
-SURE your tags are set properly:
-
-<ol>
-  <!-- BEGIN repeat_row-->
-   <li>{NAME} {COLOR}</li>
-  <!-- END repeat_row -->
-</ol>
-
-The above won't work. It's so small it is hard to notice. Look at the
-BEGIN line. There isn't a space between the 'repeat_row' and the
-'-->'.
-One added or missing character can cause it not to work. Compare the
-BEGIN and END comments character by character.
-
-Another hint. If you are imbedding duplicate rows, the parent row must
+Another hint. If you are imbedding repeating rows, the parent row must
 be parsed _after_ the the child rows.
 
 For example, lets say you want a list of families by last name. Inside,
