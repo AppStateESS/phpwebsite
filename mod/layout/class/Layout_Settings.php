@@ -2,7 +2,7 @@
 
 PHPWS_Core::initModClass("layout", "Box.php");
 
-class Layout_Settings{
+class Layout_Settings {
   var $current_theme    = NULL;
   var $default_theme  	= NULL;
   var $userAllow  	= 0;
@@ -43,6 +43,15 @@ class Layout_Settings{
       return $this->_boxes[$module][$contentVar]->getBoxOrder();
     else
       return FALSE;
+  }
+
+  function getPageTitle()
+  {
+    if (isset($GLOBALS['Layout_Page_Title_Add'])) {
+      return $this->page_title . implode(LAYOUT_TITLE_DIVIDER, $GLOBALS['Layout_Page_Title_Add']);
+    } else {
+      return $this->page_title;
+    }
   }
 
   function getContentVars(){
