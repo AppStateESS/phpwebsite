@@ -103,9 +103,6 @@ class PHPWS_User_Form {
     Layout::add(PHPWS_ControlPanel::display($panel->display()));
   }
 
-  function newUser(&$user){
-  }
-
   function managerUsers(){
     PHPWS_Core::initCoreClass("Manager.php");
     PHPWS_Core::initModClass("users", "Manager.php");
@@ -123,7 +120,6 @@ class PHPWS_User_Form {
       $finalForm['MESSAGE'] = $message;
 
     $finalForm['SELECTIONS'] = Demo_Manager::getList();
-    
     return PHPWS_Template::process($finalForm, "users", "demographics/listActive.html");
   }
 
