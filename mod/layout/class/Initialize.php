@@ -16,6 +16,7 @@ class PHPWS_Layout_Init{
 
   function loadContentVar(){
     $DB = new PHPWS_DB("mod_layout_box");
+    $DB->addWhere("theme", PHPWS_Layout::getTheme());
     $DB->addColumn("content_var", TRUE);
     $result = $DB->select("col");
     if (PEAR::isError($result))
