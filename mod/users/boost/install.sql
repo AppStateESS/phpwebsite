@@ -44,3 +44,7 @@ CREATE TABLE users_auth_scripts (
   filename varchar(40) NOT NULL default '',
   PRIMARY KEY (id)
 );
+
+CREATE TABLE users_my_page_mods (
+  mod_title varchar(40) NOT NULL default ''
+);
