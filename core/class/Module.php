@@ -204,7 +204,7 @@ class PHPWS_Module {
     if (!$this->getProperName())
       $this->setProperName($this->getProperName(TRUE));
 
-    return $db->saveObject($this, TRUE);
+    return $db->saveObject($this);
   }
 
   function isInstalled(){
