@@ -33,11 +33,11 @@ class PHPWS_Module {
 
   function initByFile(){
     $result = PHPWS_Core::getConfigFile($this->title, "boost.php");
-    if (PEAR::isError($result)){
+    if ($result == FALSE){
       $this->fullMod = FALSE;
       return $result;
     }
-    
+
     include $result;
     
     if (isset($mod_title)){
