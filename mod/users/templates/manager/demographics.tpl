@@ -1,6 +1,5 @@
-
 {START_FORM}
-<h3>{TITLE}&#160;{NAV_INFO}</h3>
+{TITLE}&#160;{NAV_INFO}
 <table border="0" cellspacing="1" cellpadding="4">
 <tr class="bg-dark">
 <td width="10%" align="center"><b>{ACTIVE_LABEL}</b></td>
