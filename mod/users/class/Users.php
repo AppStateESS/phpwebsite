@@ -295,8 +295,14 @@ class PHPWS_User {
     return TRUE;
   }
 
-  function allow($itemName, $subpermission=NULL, $item_id=NULL){
-    if (!$this->verifyAuthKey())
+  function deityAllow(){
+    if (!$this->verifyAuthKey() || !$this->isDeity())
+      return FALSE;
+    return TRUE;
+  }
+
+  function allow($itemName, $subpermission=NULL, $item_id=NULL, $verify=TRUE){
+    if ($verify && !$this->verifyAuthKey())
       return FALSE;
 
     PHPWS_Core::initModClass("users", "Permission.php");
@@ -467,12 +473,14 @@ class PHPWS_User {
       return $result;
   }
 
-  function disallow(){
+  function disallow($message=NULL){
     $title = _("Sorry") . "...";
     $content = ("You do not have permission for this action.");
     Layout::add(array("TITLE"=>$title, "CONTENT"=>$content), "users", "User_Main");
-  }
 
+    PHPWS_Core::initModClass("security", "Security.php");
+    Security::log($message);
+  }
 
   function dropUser(){
     $DB = new PHPWS_DB("users_settings");
