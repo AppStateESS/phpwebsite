@@ -28,6 +28,7 @@ class PHPWS_DB {
   var $_DB         = array();
   var $_lock       = FALSE;
   var $_sql        = NULL;
+  var $_distinct   = FALSE;
 
   function PHPWS_DB($table=NULL){
     PHPWS_DB::touchDB();
@@ -423,18 +424,22 @@ class PHPWS_DB {
     $this->where = array();
   }
 
-  function addColumn($column, $distinct=FALSE, $count=FALSE){
+  function isDistinct(){
+    $this->_distinct = TRUE;
+  }
+
+  function notDistinct(){
+    $this->_distinct = FALSE;
+  }
+
+  function addColumn($column, $distinct=FALSE){
     if (!PHPWS_DB::allowed($column))
       return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::addColumn', $column);
 
     if ((bool)$distinct == TRUE)
       $column = 'DISTINCT ' .  $column;
 
-    if ((bool)$count == TRUE)
-      $column = "COUNT($column)";
-
     $this->column[] = $column;
-
   }
 
   function getColumn(){
@@ -618,15 +623,15 @@ class PHPWS_DB {
   function update(){
     $table = $this->getTable();
     if (!$table)
-      return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, "core", "PHPWS_DB::update");
+      return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::update');
 
     $values = $this->getAllValues();
     $where = $this->getWhere(TRUE);
 
     foreach ($values as $index=>$data)
-      $columns[] = "$index = " . PHPWS_DB::dbReady($data);
+      $columns[] = '$index = ' . PHPWS_DB::dbReady($data);
 
-    $query = "UPDATE $table SET " . implode(", ", $columns) ." $where";
+    $query = "UPDATE $table SET " . implode(', ', $columns) ." $where";
 
     $result = PHPWS_DB::query($query);
 
@@ -639,69 +644,110 @@ class PHPWS_DB {
   function addTableNames(&$values, $table){
     
     foreach ($values as $val){
-      if (stristr($val, "count"))
+      if (stristr($val, 'count'))
 	$newValue[] = $val;
       else
-	$newValue[] = $table . "." . $val;
+	$newValue[] = $table . '.' . $val;
     }
 
     $values = $newValue;
   }
 
+  function count(){
+
+    return $this->select('one');
+  }
+
+  function getSelectSQL($type){
+    $columnList = $this->getColumn();
+
+    if (isset($columnList))
+      PHPWS_DB::addTableNames($columnList, $this->table);
+      
+    if (!empty($this->_DB)){
+      $tables[] = $this->getTable();
+      foreach ($this->_DB as $altDB){
+	$tables[] = $altDB->getTable();
+	$extraWhere[] = $altDB->getWhere(TRUE, FALSE);
+	$columns = $altDB->getColumn();
+	PHPWS_DB::addTableNames($columns, $altDB->table);
+	if (isset($columnList))
+	  $columnList = array_merge($columnList, $columns);
+	else
+	  $columnList = $columns;
+      }
+
+      $table = implode(', ', $tables);
+    } else
+      $table = $this->getTable();
+
+
+    if (!$table)
+      return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::select');
+
+    $where   = $this->getWhere(TRUE);
+    if (isset($extraWhere))
+      $where .= ' AND ' . implode(' AND ', $extraWhere);
+
+    $order   = $this->getOrder(TRUE);
+    $limit   = $this->getLimit(TRUE);
+    $groupby = $this->getGroupBy(TRUE);
+
+    if (isset($columnList)){
+      if (isset($indexby) && !in_array($indexby, $columnList))
+	$columnList[] = $indexby;
+      if ($type == 'max' || $type == 'min') {
+	$columns = implode('', array($type . '(', array_shift($columnList), ')'));
+      }
+      else {
+	$columns = implode(', ', $columnList);
+      }
+
+    }
+    else {
+      $columns = '*';
+    }
+
+    $sql_array['columns'] = &$columns;
+    $sql_array['table']   = &$table;
+    $sql_array['where']   = &$where;
+    $sql_array['groupby'] = &$groupby;
+    $sql_array['order']   = &$order;
+    $sql_array['limit']   = &$limit;
+
+    return $sql_array;
+
+    $sql = "SELECT $columns FROM $table $where $groupby $order $limit";
+    return $sql;
+  }
+
   function select($type=NULL, $sql=NULL){
     PHPWS_DB::touchDB();
-    if (!isset($sql)){
-      if (isset($type))
-	$type = strtolower($type);
-      
-      $columnList = $this->getColumn();
-      if (isset($columnList))
-	PHPWS_DB::addTableNames($columnList, $this->table);
+    if (isset($type))
+      $type = strtolower($type);
 
-      $mode = $this->getMode();
-      
-      if (!empty($this->_DB)){
-	$tables[] = $this->getTable();
-	foreach ($this->_DB as $altDB){
-	  $tables[] = $altDB->getTable();
-	  $extraWhere[] = $altDB->getWhere(TRUE, FALSE);
-	  $columns = $altDB->getColumn();
-	  PHPWS_DB::addTableNames($columns, $altDB->table);
-	  if (isset($columnList))
-	    $columnList = array_merge($columnList, $columns);
-	  else
-	    $columnList = $columns;
+    $mode = $this->getMode();
+    $indexby = $this->getIndexBy();
+
+    if (!isset($sql)){
+      $sql_array = $this->getSelectSQL($type);
+      extract($sql_array);
+
+      if ($type == 'count') {
+	if ($columns == "*") {
+	  $columns = 'COUNT(*)';
+	} else {
+	  $add_group = $columns;
+	  $columns .= ', COUNT(*)';	
+	  if (empty($groupby)) {
+	    $groupby = "GROUP BY $add_group";
+	  } else {
+	    $groupby .= ", $addgroup";
+	  }
 	}
 
-	$table = implode(", ", $tables);
-      } else
-	$table = $this->getTable();
-
-
-      if (!$table)
-	return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, "core", "PHPWS_DB::select");
-
-      $where   = $this->getWhere(TRUE);
-      if (isset($extraWhere))
-	$where .= " AND " . implode(" AND ", $extraWhere);
-
-      $order   = $this->getOrder(TRUE);
-      $limit   = $this->getLimit(TRUE);
-      $groupby = $this->getGroupBy(TRUE);
-
-      $indexby = $this->getIndexBy();
-
-      if (isset($columnList)){
-	if (isset($indexby) && !in_array($indexby, $columnList))
-	  $columnList[] = $indexby;
-	if ($type == "max" || $type == "min")
-	  $columns = implode("", array($type . "(", array_shift($columnList), ")"));
-	else
-	  $columns = implode(", ", $columnList);
-
+	$type = 'all';
       }
-      else
-	$columns = "*";
 
       $sql = "SELECT $columns FROM $table $where $groupby $order $limit";
     } else
@@ -711,13 +757,13 @@ class PHPWS_DB {
     // not sure why it is coded that way. Use the default instead
 
     switch ($type){
-    case "assoc":
+    case 'assoc':
       return PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getAssoc($sql, NULL,NULL, $mode), $type);
       break;
 
-    case "col":
+    case 'col':
       if (empty($this->column))
-	return PHPWS_Error::get(PHPWS_DB_NO_COLUMN_SET, "core", "PHPWS_DB::select");
+	return PHPWS_Error::get(PHPWS_DB_NO_COLUMN_SET, 'core', 'PHPWS_DB::select');
 
       if (isset($indexby)){
 	$result = PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getAll($sql, NULL, $mode), $type);
@@ -730,8 +776,8 @@ class PHPWS_DB {
       return PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getCol($sql), $type);
       break;
 
-    case "min":
-    case "max":
+    case 'min':
+    case 'max':
       $result = $GLOBALS['PEAR_DB']->query($sql);
       if (DB::isError($result))
 	return $result;
@@ -741,17 +787,21 @@ class PHPWS_DB {
       }
       break;
 
-    case "one":
+    case 'one':
       $value = $GLOBALS['PEAR_DB']->getOne($sql, NULL, $mode);
       db_trim($value);
       return $value;
       break;
 
-    case "row":
+    case 'row':
       return PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getRow($sql, array(), $mode), $type);
       break;
 
-    case "all":
+    case 'count':
+
+      break;
+
+    case 'all':
     default:
       $result = PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getAll($sql, NULL, $mode), $type);
       if (PEAR::isError($result))
@@ -766,15 +816,15 @@ class PHPWS_DB {
   }
 
   function getRow($sql){
-    return $this->select("row", $sql);
+    return $this->select('row', $sql);
   }
 
   function getCol($sql){
-    return $this->select("col", $sql);
+    return $this->select('col', $sql);
   }
 
   function getAll($sql){
-    return $this->select("all", $sql);
+    return $this->select('all', $sql);
   }
 
   function _indexBy($sql, $indexby, $colMode=FALSE){
@@ -814,7 +864,7 @@ class PHPWS_DB {
   function delete(){
     $table = $this->getTable();
     if (!$table)
-      return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, "core", "PHPWS_DB::delete");
+      return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::delete');
 
     $where = $this->getWhere(TRUE);
 
@@ -826,7 +876,7 @@ class PHPWS_DB {
   function dropTable(){
     $table = $this->getTable();
     if (!$table)
-      return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, "core", "PHPWS_DB::dropTable");
+      return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::dropTable');
 
     $sql = "DROP TABLE $table";
 
@@ -836,29 +886,29 @@ class PHPWS_DB {
   function createTable(){
     $table = $this->getTable();
     if (!$table)
-      return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, "core", "PHPWS_DB::createTable");
+      return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::createTable');
 
     $values = $this->getAllValues();
 
     foreach ($values as $column=>$value)
-      $parameters[] = $column . " " . $value;
+      $parameters[] = $column . ' ' . $value;
 
 
-    $sql = "CREATE TABLE $table ( " . implode(", ", $parameters) . " )";
+    $sql = "CREATE TABLE $table ( " . implode(', ', $parameters) . ' )';
     return PHPWS_DB::query($sql);
   }
 
   function addTableColumn($column, $parameter, $after=NULL, $indexed=FALSE){
     $table = $this->getTable();
     if (!$table)
-      return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, "core", "PHPWS_DB::addColumn");
+      return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::addColumn');
 
     if (!PHPWS_DB::allowed($column))
-      return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, "core", "PHPWS_DB::addTableColumn", $column);
+      return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::addTableColumn', $column);
 
     if (isset($after)){
-      if (strtolower($after) == "first")
-	$location = "FIRST";
+      if (strtolower($after) == 'first')
+	$location = 'FIRST';
       else
 	$location = "AFTER $after";
     } else
@@ -883,10 +933,10 @@ class PHPWS_DB {
   function dropTableColumn($column){
     $table = $this->getTable();
     if (!$table)
-      return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, "core", "PHPWS_DB::dropColumn");
+      return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::dropColumn');
 
     if (!PHPWS_DB::allowed($column))
-      return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, "core", "PHPWS_DB::dropTableColumn", $column);
+      return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::dropTableColumn', $column);
 
     $sql = "ALTER TABLE $table DROP $column";
 
@@ -918,7 +968,7 @@ class PHPWS_DB {
       $sqlCommand[] = $sqlRow;
 
       if (preg_match("/;$/", $sqlRow)){
-	$query = implode(" ", $sqlCommand);
+	$query = implode(' ', $sqlCommand);
 
 	if (isset($prefix)){
 	  $tableName = PHPWS_DB::extractTableName($query);
@@ -942,9 +992,9 @@ class PHPWS_DB {
 
   function homogenize(&$query){
     switch (PHPWS_DB::getDBType()){
-    case "pgsql":
+    case 'pgsql':
       $from = array("/datetime/i");
-      $to   = array("timestamp without time zone");
+      $to   = array('timestamp without time zone');
       break;
     }
 
@@ -957,14 +1007,15 @@ class PHPWS_DB {
     $setting = $this->_sql->export($info);
 
     if (isset($info['flags'])){
-      if (stristr($info['flags'], "multiple_key")){
-	$column_info['index'] = "CREATE INDEX " .  $info['name'] . " on " . $info['table'] . "(" . $info['name'] . ")";
-	$info['flags'] = str_replace(" multiple_key", "", $info['flags']);
+      if (stristr($info['flags'], 'multiple_key')){
+	$column_info['index'] = 'CREATE INDEX ' .  $info['name'] . ' on ' . $info['table'] 
+	  . '(' . $info['name'] . ')';
+	$info['flags'] = str_replace(' multiple_key', '', $info['flags']);
       }
-      $preFlag = array("/not_null/", "/primary_key/", "/default_(.*)?/", "/blob/");
-      $postFlag = array("NOT NULL", "PRIMARY KEY", "DEFAULT '\\1'", "");
-      $multipleFlag = array("multiple_key", "");
-      $flags = " " . preg_replace($preFlag, $postFlag, $info['flags']);
+      $preFlag = array('/not_null/', '/primary_key/', '/default_(.*)?/', '/blob/');
+      $postFlag = array('NOT NULL', 'PRIMARY KEY', "DEFAULT '\\1'", '');
+      $multipleFlag = array('multiple_key', '');
+      $flags = ' ' . preg_replace($preFlag, $postFlag, $info['flags']);
     }
     else
       $flags = NULL;
@@ -1004,9 +1055,9 @@ class PHPWS_DB {
       $index = $this->getIndex();
 
       if ($prefix = PHPWS_DB::getPrefix())
-	$tableName = str_replace("", $prefix, $tableName);
+	$tableName = str_replace('', $prefix, $tableName);
 
-      $sql[] = "CREATE TABLE $tableName ( " .  implode(", ", $column_info['parameters']) ." );";
+      $sql[] = "CREATE TABLE $tableName ( " .  implode(', ', $column_info['parameters']) .' );';
       if (isset($column_info['index']))
 	$sql = array_merge($sql, $column_info['index']);
     }
@@ -1021,7 +1072,7 @@ class PHPWS_DB {
 	    $allValues[] = PHPWS_DB::quote($value);
 	  }
 	  
-	  $sql[] = "INSERT INTO $tableName (" . implode(", ", $allKeys) . ") VALUES (" . implode(", ", $allValues) . ");";
+	  $sql[] = "INSERT INTO $tableName (" . implode(', ', $allKeys) . ') VALUES (' . implode(', ', $allValues) . ');';
 	  $allKeys = $allValues = array();
 	}
       }
@@ -1035,8 +1086,8 @@ class PHPWS_DB {
   }
 
   function extractTableName($sql_value){
-    require_once PHPWS_SOURCE_DIR . "core/Array.php";
-    $temp = explode(" ", trim($sql_value));
+    require_once PHPWS_SOURCE_DIR . 'core/Array.php';
+    $temp = explode(' ', trim($sql_value));
     PHPWS_Array::dropNulls($temp);
     if (!is_array($temp))
       return NULL;
@@ -1044,29 +1095,29 @@ class PHPWS_DB {
       $format[] = $whatever;
 
       switch (trim(strtolower($format[0]))) {
-      case "insert":
-      if (stristr($format[1], "into"))
-	return preg_replace("/\(+.*$/", "", str_replace("`", "", $format[2]));
+      case 'insert':
+      if (stristr($format[1], 'into'))
+	return preg_replace('/\(+.*$/', '', str_replace('`', '', $format[2]));
       else
-	return preg_replace("/\(+.*$/", "", str_replace("`", "", $format[1]));
+	return preg_replace('/\(+.*$/', '', str_replace('`', '', $format[1]));
       break;
 	
-      case "update":
-	return preg_replace("/\(+.*$/", "", str_replace("`", "", $format[1]));
+      case 'update':
+	return preg_replace('/\(+.*$/', '', str_replace('`', '', $format[1]));
       break;
       
-      case "select":
-      case "show":
-	return preg_replace("/\(+.*$/", "", str_replace("`", "", $format[3]));
+      case 'select':
+      case 'show':
+	return preg_replace('/\(+.*$/', '', str_replace('`', '', $format[3]));
       break;
 
-      case "drop":
-      case "alter":
-	return preg_replace("/;/", "", str_replace("`", "", $format[2]));
+      case 'drop':
+      case 'alter':
+	return preg_replace('/;/', '', str_replace('`', '', $format[2]));
       break;
 
       default:
-	return preg_replace("/\(+.*$/", "", str_replace("`", "", $format[2]));
+	return preg_replace('/\(+.*$/', '', str_replace('`', '', $format[2]));
       break;
       }
   }// END FUNC extractTableName
@@ -1086,7 +1137,7 @@ class PHPWS_DB {
     elseif (is_string($value))
       return "'" . $GLOBALS['PEAR_DB']->escapeSimple($value) . "'";
     elseif (is_null($value))
-      return "NULL";
+      return 'NULL';
     elseif (is_bool($value))
       return ($value ? 1 : 0);
     else
@@ -1095,9 +1146,9 @@ class PHPWS_DB {
 
   function loadObject(&$object){
     if (!is_object($object))
-      return PHPWS_Error::get(PHPWS_DB_NOT_OBJECT, "core", "PHPWS_DB::loadObject");
+      return PHPWS_Error::get(PHPWS_DB_NOT_OBJECT, 'core', 'PHPWS_DB::loadObject');
 
-    $variables = $this->select("row");
+    $variables = $this->select('row');
 
     if (PEAR::isError($variables))
       return $variables;
@@ -1109,7 +1160,7 @@ class PHPWS_DB {
 
   function getObjects($className){
     if (!class_exists($className))
-      return PHPWS_Error::get(PHPWS_CLASS_NOT_EXIST, "core", "PHPWS_DB::getObjects");
+      return PHPWS_Error::get(PHPWS_CLASS_NOT_EXIST, 'core', 'PHPWS_DB::getObjects');
 
     $items = NULL;
     $result = $this->select();
@@ -1133,12 +1184,12 @@ class PHPWS_DB {
   function saveObject(&$object, $stripChar=FALSE){
 
     if (!is_object($object))
-      return PHPWS_Error::get(PHPWS_WRONG_TYPE, "core", "PHPWS_DB::saveObject", _("Type") . ": " . gettype($object));
+      return PHPWS_Error::get(PHPWS_WRONG_TYPE, 'core', 'PHPWS_DB::saveObject', _('Type') . ': ' . gettype($object));
 
     $object_vars = get_object_vars($object);
 
     if (!is_array($object_vars))
-      return PHPWS_Error::get(PHPWS_DB_NO_OBJ_VARS, "core", "PHPWS_DB::saveObject");
+      return PHPWS_Error::get(PHPWS_DB_NO_OBJ_VARS, 'core', 'PHPWS_DB::saveObject');
 
     foreach ($object_vars as $column => $value){
       if ($stripChar == TRUE)
@@ -1155,9 +1206,9 @@ class PHPWS_DB {
     else {
       $result = $this->insert();
       if (is_numeric($result)){
-	if (array_key_exists("id", $object_vars))
+	if (array_key_exists('id', $object_vars))
 	  $object->id = (int)$result;
-	elseif (array_key_exists("_id", $object_vars))
+	elseif (array_key_exists('_id', $object_vars))
 	  $object->_id = (int)$result;
       }
     }
@@ -1172,33 +1223,33 @@ class PHPWS_DB {
     if (!is_string($value))
       return FALSE;
 
-    $reserved = array("ADD", "ALL", "ALTER", "ANALYZE", "AND", "AS", "ASC", "AUTO_INCREMENT", "BDB",
-		      "BERKELEYDB", "BETWEEN", "BIGINT", "BINARY", "BLOB", "BOTH", "BTREE", "BY", "CASCADE",
-		      "CASE", "CHANGE", "CHAR", "CHARACTER", "COLLATE", "COLUMN", "COLUMNS", "CONSTRAINT", "CREATE",
-		      "CROSS", "CURRENT_DATE", "CURRENT_TIME", "CURRENT_TIMESTAMP", "DATABASE", "DATABASES",
-		      "DAY_HOUR", "DAY_MINUTE", "DAY_SECOND", "DEC", "DECIMAL", "DEFAULT",
-		      "DELAYED", "DELETE", "DESC", "DESCRIBE", "DISTINCT", "DISTINCTROW",
-		      "DOUBLE", "DROP", "ELSE", "ENCLOSED", "ERRORS", "ESCAPED", "EXISTS", "EXPLAIN", "FIELDS",
-		      "FLOAT", "FOR", "FOREIGN", "FROM", "FULLTEXT", "FUNCTION", "GEOMETRY", "GRANT", "GROUP",
-		      "HASH", "HAVING", "HELP", "HIGH_PRIORITY", "HOUR_MINUTE", "HOUR_SECOND",
-		      "IF", "IGNORE", "IN", "INDEX", "INFILE", "INNER", "INNODB", "INSERT", "INT",
-		      "INTEGER", "INTERVAL", "INTO", "IS", "JOIN", "KEY", "KEYS", "KILL", "LEADING",
-		      "LEFT", "LIKE", "LIMIT", "LINES", "LOAD", "LOCK", "LONG", "LONGBLOB", "LONGTEXT",
-		      "LOW_PRIORITY", "MASTER_SERVER_ID", "MATCH", "MEDIUMBLOB", "MEDIUMINT", "MEDIUMTEXT", 
-		      "MIDDLEINT", "MINUTE_SECOND", "MRG_MYISAM", "NATURAL", "NOT", "NULL", "NUMERIC", "ON", "OPTIMIZE",
-		      "OPTION", "OPTIONALLY", "OR", "ORDER", "OUTER", "OUTFILE", "PRECISION", "PRIMARY", "PRIVILEGES",
-		      "PROCEDURE", "PURGE", "READ", "REAL", "REFERENCES", "REGEXP", "RENAME", "REPLACE", "REQUIRE",
-		      "RESTRICT", "RETURNS", "REVOKE", "RIGHT", "RLIKE", "RTREE", "SELECT", "SET", "SHOW",
-		      "SMALLINT", "SONAME", "SPATIAL", "SQL_BIG_RESULT", "SQL_CALC_FOUND_ROWS", "SQL_SMALL_RESULT",
-		      "SSL", "STARTING", "STRAIGHT_JOIN", "STRIPED", "TABLE", "TABLES", "TERMINATED", "THEN", "TINYBLOB",
-		      "TINYINT", "TINYTEXT", "TO", "TRAILING", "TYPES", "UNION", "UNIQUE", "UNLOCK", "UNSIGNED",
-		      "UPDATE", "USAGE", "USE", "USER_RESOURCES", "USING", "VALUES", "VARBINARY", "VARCHAR", "VARYING",
-		      "WARNINGS", "WHEN", "WHERE", "WITH", "WRITE", "XOR", "YEAR_MONTH", "ZEROFILL");
+    $reserved = array('ADD', 'ALL', 'ALTER', 'ANALYZE', 'AND', 'AS', 'ASC', 'AUTO_INCREMENT', 'BDB',
+		      'BERKELEYDB', 'BETWEEN', 'BIGINT', 'BINARY', 'BLOB', 'BOTH', 'BTREE', 'BY', 'CASCADE',
+		      'CASE', 'CHANGE', 'CHAR', 'CHARACTER', 'COLLATE', 'COLUMN', 'COLUMNS', 'CONSTRAINT', 'CREATE',
+		      'CROSS', 'CURRENT_DATE', 'CURRENT_TIME', 'CURRENT_TIMESTAMP', 'DATABASE', 'DATABASES',
+		      'DAY_HOUR', 'DAY_MINUTE', 'DAY_SECOND', 'DEC', 'DECIMAL', 'DEFAULT',
+		      'DELAYED', 'DELETE', 'DESC', 'DESCRIBE', 'DISTINCT', 'DISTINCTROW',
+		      'DOUBLE', 'DROP', 'ELSE', 'ENCLOSED', 'ERRORS', 'ESCAPED', 'EXISTS', 'EXPLAIN', 'FIELDS',
+		      'FLOAT', 'FOR', 'FOREIGN', 'FROM', 'FULLTEXT', 'FUNCTION', 'GEOMETRY', 'GRANT', 'GROUP',
+		      'HASH', 'HAVING', 'HELP', 'HIGH_PRIORITY', 'HOUR_MINUTE', 'HOUR_SECOND',
+		      'IF', 'IGNORE', 'IN', 'INDEX', 'INFILE', 'INNER', 'INNODB', 'INSERT', 'INT',
+		      'INTEGER', 'INTERVAL', 'INTO', 'IS', 'JOIN', 'KEY', 'KEYS', 'KILL', 'LEADING',
+		      'LEFT', 'LIKE', 'LIMIT', 'LINES', 'LOAD', 'LOCK', 'LONG', 'LONGBLOB', 'LONGTEXT',
+		      'LOW_PRIORITY', 'MASTER_SERVER_ID', 'MATCH', 'MEDIUMBLOB', 'MEDIUMINT', 'MEDIUMTEXT', 
+		      'MIDDLEINT', 'MINUTE_SECOND', 'MRG_MYISAM', 'NATURAL', 'NOT', 'NULL', 'NUMERIC', 'ON', 'OPTIMIZE',
+		      'OPTION', 'OPTIONALLY', 'OR', 'ORDER', 'OUTER', 'OUTFILE', 'PRECISION', 'PRIMARY', 'PRIVILEGES',
+		      'PROCEDURE', 'PURGE', 'READ', 'REAL', 'REFERENCES', 'REGEXP', 'RENAME', 'REPLACE', 'REQUIRE',
+		      'RESTRICT', 'RETURNS', 'REVOKE', 'RIGHT', 'RLIKE', 'RTREE', 'SELECT', 'SET', 'SHOW',
+		      'SMALLINT', 'SONAME', 'SPATIAL', 'SQL_BIG_RESULT', 'SQL_CALC_FOUND_ROWS', 'SQL_SMALL_RESULT',
+		      'SSL', 'STARTING', 'STRAIGHT_JOIN', 'STRIPED', 'TABLE', 'TABLES', 'TERMINATED', 'THEN', 'TINYBLOB',
+		      'TINYINT', 'TINYTEXT', 'TO', 'TRAILING', 'TYPES', 'UNION', 'UNIQUE', 'UNLOCK', 'UNSIGNED',
+		      'UPDATE', 'USAGE', 'USE', 'USER_RESOURCES', 'USING', 'VALUES', 'VARBINARY', 'VARCHAR', 'VARYING',
+		      'WARNINGS', 'WHEN', 'WHERE', 'WITH', 'WRITE', 'XOR', 'YEAR_MONTH', 'ZEROFILL');
 
     if(in_array(strtoupper($value), $reserved))
       return FALSE;
 
-    if(preg_match("/[^\w\*\.]/", $value)) 
+    if(preg_match('/[^\w\*\.]/', $value)) 
       return FALSE;
 
     return TRUE;
@@ -1217,7 +1268,7 @@ class PHPWS_DB {
       return $sql;
 
     switch ($type){
-    case "col":
+    case 'col':
       array_walk($sql, 'db_trim');
       break;
 
