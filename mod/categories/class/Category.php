@@ -12,8 +12,7 @@ class Category{
   var $title       = NULL;
   var $description = NULL;
   var $parent      = NULL;
-  var $image       = NULL;
-  var $thumbnail   = NULL;
+  var $icon        = NULL;
   var $children    = NULL;
 
 
@@ -34,7 +33,7 @@ class Category{
     if (PEAR::isError($result))
       return $result;
 
-    $this->loadImage();
+    $this->loadIcon();
     $this->loadChildren();
   }
 
@@ -86,21 +85,21 @@ class Category{
     return $parent->title;
   }
 
-  function setImage($image){
-    $this->image = $image;
+  function setIcon($icon){
+    $this->icon = $icon;
 
-    if (is_numeric($image))
-      $this->loadImage();
+    if (is_numeric($icon))
+      $this->loadIcon();
   }
 
-  function getImage(){
-    return $this->image;
+  function getIcon(){
+    return $this->icon;
   }
 
-  function loadImage(){
+  function loadIcon(){
     PHPWS_Core::initCoreClass("Image.php");
-    if (!empty($this->image))
-      $this->image = new PHPWS_Image($this->image);
+    if (!empty($this->icon))
+      $this->icon = new PHPWS_Image($this->icon);
   }
 
   function loadChildren(){
@@ -130,10 +129,10 @@ class Category{
     if (isset($this->id))
       $db->addWhere("id", $this->id);
 
-    $tmpImage = $this->image;
-    $this->image = $this->image->getId();
+    $tmpIcon = $this->icon;
+    $this->icon = $this->icon->getId();
     $result = $db->saveObject($this);
-    $this->image = $tmpImage;
+    $this->icon = $tmpIcon;
     return $result;
   }
 

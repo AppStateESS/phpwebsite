@@ -116,7 +116,7 @@ class Categories_Action{
 
       $errors['image'] = implode("<br />", $messages);
     } elseif (get_class($image) == "phpws_image")
-	$category->setImage($image);
+	$category->setIcon($image);
     
     if (isset($errors))
       return $errors;
@@ -198,18 +198,17 @@ class Categories_Action{
       $form->setLabel("cat_description", _("Description"));
     }
 
-    $form->addTplTag("IMAGE_TITLE_LABEL", _("Image Title"));
-    
+    $form->addTplTag("IMAGE_TITLE_LABEL", _("Icon Title"));
 
     if (isset($errors['image']))
       $template['IMAGE_ERROR'] = $errors['image'];
 
-    $image = $category->getImage();
+    $image = $category->getIcon();
 
     if (!empty($image)){
       $image_id = $image->getId();
       $form->add("current_image", "hidden", $image->getId());
-      $template['CURRENT_IMG_LABEL'] = _("Current Image");
+      $template['CURRENT_IMG_LABEL'] = _("Current Icon");
       $template['CURRENT_IMG'] = $image->getTitle();
     }
     else
@@ -217,7 +216,7 @@ class Categories_Action{
 
     $result = $form->addImage("image", "categories", $image_id);
 
-    $template['IMAGE_LABEL'] = _("Image");
+    $template['IMAGE_LABEL'] = _("Icon");
 
     $form->mergeTemplate($template);
     $final_template = $form->getTemplate();
@@ -243,7 +242,12 @@ class Categories_Action{
     $pager->setMethod("parent", "getParentTitle");
     $pager->addRowTag("action", "Categories_Action", "getListAction");
     $content = $pager->get();
-    return $content;
+    if (empty($content)) {
+      return _("No categories found.");
+    }
+    else {
+      return $content;
+    }
   }
 
   function getListAction($category){

@@ -54,7 +54,7 @@ class Categories{
 
   function initList($list){
     foreach ($list as $cat){
-      $cat->loadImage();
+      $cat->loadIcon();
       $cat->loadChildren();
       $children[$cat->id] = $cat;
     }
