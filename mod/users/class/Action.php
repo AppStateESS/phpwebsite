@@ -1,41 +1,34 @@
 <?php
 
+define("LOCAL_AUTHORIZATION", 1);
+define("GLOBAL_AUTHORIZATION", 2);
+
 class User_Action {
 
-  function adminAction($command){
+  function adminAction(){
     $content = NULL;
-
-    PHPWS_Core::initModClass("users", "Form.php");
-    PHPWS_Core::initModClass("controlpanel", "Panel.php");
 
     if (!Current_User::allow("users")){
       PHPWS_User::disallow();
       return;
     }
 
+    $panel = & User_Action::cpanel();
+    
+    if (isset($_REQUEST['command']))
+      $command = $_REQUEST['command'];
+    else
+      $command = $panel->getCurrentTab();
+
+    if (isset($_REQUEST['user_id']))
+      $user = & new PHPWS_User($_REQUEST['user_id']);
+    else
+      $user = & new PHPWS_User;
+
     switch ($command){
-      /** Main switch for tabs **/
-    case "main":
-      if (isset($_REQUEST['tab']))
-	User_Action::adminAction($_REQUEST['tab']);
-      else {
-	$panel = & new PHPWS_Panel("users");
-
-	$currentTab = $panel->getCurrentTab();
-
-	if(isset($currentTab))
-	  User_Action::adminAction($currentTab);
-	else
-	  User_Action::adminAction(DEFAULT_USER_MENU);
-      }
-      return;
-      break;
-
       /** Form cases **/
-
       /** User Forms **/
     case "new_user":
-      $user = & new PHPWS_User;
       $content = User_Form::userForm($user);
       break;
 
@@ -147,34 +140,11 @@ class User_Action {
       break;      
 
     case "postUser":
-      $id = (isset($_REQUEST['userId']) ? (int)$_REQUEST['userId'] : NULL);
-
-      $user = & new PHPWS_User($id);
-      $result = User_Action::postUser($user);
-
-      if (is_array($result)){
-	foreach ($result as $error)
-	  $messages[] = $error->getMessage();
-	$content = User_Form::userForm($user, implode("<br />", $messages));
+      if (PHPWS_Core::isPosted()){
+	$content = _("This is a duplicate post.");
+	break;
       }
-      else {
-	$result = $user->save();
-	if (PEAR::isError($result)){
-	  $content = User_Form::userForm($user, $result->getMessage());
-	  break;
-	}
-
-	if (!isset($id)){
-	  $message = sprintf(_("User '%s' created successfully"), $user->getUsername());
-	  unset($user);
-	  $user = & new PHPWS_User;
-	  $content = User_Form::userForm($user, $message);
-	} else {
-	  $content = sprintf(_("User '%s' updated successfully"), $user->getUsername()) . "<hr />";
-	  unset($user);
-	  $content .= User_Form::manageUsers();
-	}
-      }
+      User_Action::postUser($user);
       break;
 
     case "postPermission":
@@ -250,16 +220,106 @@ class User_Action {
       break;
     }
 
-    User_Form::adminPanel($content);
+    $panel->setContent($content);
+    $finalPanel = $panel->display();
+
+    Layout::add(PHPWS_ControlPanel::display($finalPanel));
+
   }
 
-  function userAction($command){
+  function postUser(&$user){
+    if ($user->isUser())
+      $result = $user->setUsername($_POST['username'], FALSE);
+    else
+      $result = $user->setUsername($_POST['username'], TRUE);
+
+    if (PEAR::isError($result))
+      $error[] = $result;
+
+    if (!$user->isUser() || (!empty($_POST['password1']) || !empty($_POST['password2']))){
+      $result = $user->checkPassword($_POST['password1'], $_POST['password2']);
+
+      if (PEAR::isError($result))
+	$error[] = $result;
+      else
+	$user->setPassword($_POST['password1']);
+    }
+
+    if (isset($_POST['demographic'])){
+      PHPWS_Core::initModClass("users", "Demographics.php");
+      $result = Demographics::post($user);
+    }
+
+    if (isset($error))
+      return $error;
+    else
+      return TRUE;
+
+
+
+    
+    if (is_array($result)){
+      foreach ($result as $error)
+	$messages[] = $error->getMessage();
+      $content = User_Form::userForm($user, implode("<br />", $messages));
+    }
+    else {
+      $result = $user->save();
+      if (PEAR::isError($result)){
+	  $content = User_Form::userForm($user, $result->getMessage());
+	  break;
+      }
+      
+      if (!isset($id)){
+	$message = sprintf(_("User '%s' created successfully"), $user->getUsername());
+	unset($user);
+	$user = & new PHPWS_User;
+	$content = User_Form::userForm($user, $message);
+      } else {
+	$content = sprintf(_("User '%s' updated successfully"), $user->getUsername()) . "<hr />";
+	unset($user);
+	$content .= User_Form::manageUsers();
+      }
+    }
+  }
+
+  function &cpanel(){
+    PHPWS_Core::initModClass("controlpanel", "Panel.php");
+    $link = "index.php?module=users&amp;action=admin";
+
+    $tabs["new_user"] = array("title"=>_("New User"), "link"=>$link);
+    
+    if (Current_User::allow("users", "edit_users") || Current_User::allow("users", "delete_users"))
+      $tabs["manage_users"] = array("title"=>_("Manage Users"), "link"=>$link);
+
+    if (Current_User::allow("users", "add_edit_groups")){
+      $tabs["new_group"] = array("title"=>_("New Group"), "link"=>$link);
+      $tabs["manage_groups"] = array("title"=>_("Manage Groups"), "link"=>$link);
+    }
+
+    if (Current_User::allow("users", "demographics"))
+      $tabs["demographics"] = array("title"=>_("Demographics"), "link"=>$link);
+
+    if (Current_User::allow("users", "settings"))
+      $tabs["settings"] = array("title"=>_("Settings"), "link"=>$link);
+
+    $panel = & new PHPWS_Panel("users");
+    $panel->quickSetTabs($tabs);
+    $panel->setModule("users");
+    $panel->setPanel("panel.tpl");
+    return $panel;
+  }
+
+
+  function userAction(){
+    $command = $_REQUEST['command'];
+
     switch ($command){
     case "loginBox":
-      if (!PHPWS_Core::isPosted()){
+      //      if (!PHPWS_Core::isPosted()){
 	if (!User_Action::loginUser($_POST['block_username'], $_POST['block_password']))
 	  User_Action::badLogin();
-      }
+	//      }
       break;
       
     case "logout":
@@ -301,8 +361,32 @@ class User_Action {
 
 
   function loginUser($username, $password){
-    // Note assuming here we are using the one username database
-    // ie case insensitive
+    // First check if they are currently a user in local system
+    $user = & new PHPWS_User;
+
+    $db = & new PHPWS_DB("users");
+    $db->addWhere("username", strtolower(preg_replace("/\W/", "", $username)));
+    $result = $db->loadObject($user);
+
+    if (PEAR::isError($result)){
+      PHPWS_Error::log($result);
+      return FALSE;
+    }
+
+    // if result is blank then check against the default authorization
+    if ($result == FALSE)
+      $authorize = PHPWS_User::getUserSetting("default_authorize");
+    else
+      $authorize = $user->getAuthorize();
+
+    $result = User_Action::authorize($authorize, $username, $password);
+
+    if ($result){
+      echo "logged in";
+    } else
+      echo "not logged in";
+
+    exit();
 
     $registrationScript = "default.php";
 
@@ -319,43 +403,50 @@ class User_Action {
     return FALSE;
   }
 
-
-
-  function postUser(&$user){
-    if ($user->isUser())
-      $result = $user->setUsername($_POST['username'], FALSE);
-    else
-      $result = $user->setUsername($_POST['username'], TRUE);
-
-    if (PEAR::isError($result))
-      $error[] = $result;
-
-    if (!$user->isUser() || (!empty($_POST['password1']) || !empty($_POST['password2']))){
-      $result = $user->checkPassword($_POST['password1'], $_POST['password2']);
-
-      if (PEAR::isError($result))
-	$error[] = $result;
-      else
-	$user->setPassword($_POST['password1']);
-    }
-
-    if (isset($_POST['demographic'])){
-      PHPWS_Core::initModClass("users", "Demographics.php");
-      $result = Demographics::post($user);
-    }
-
-    if (isset($error))
-      return $error;
-    else
-      return TRUE;
-  }
-
   function postGroup(&$group, $showLikeGroups=FALSE){
     $result = $group->setName($_POST['groupname'], TRUE);
     if (PEAR::isError($result))
       return $result;
 
     return TRUE;
+  }
+
+  function authorize($authorize, $username, $password){
+    switch ($authorize){
+    case LOCAL_AUTHORIZATION:
+      $result = User_Action::localAuth($username, $password);
+      break;
+
+    case GLOBAL_AUTHORIZATION:
+      $result = User_Action::globalAuth($username, $password);
+      break;
+
+    default:
+      $result = User_Action::foreignAuth($authorize, $username, $password);
+      break;
+    }
+
+    return $result;
+  }
+
+  function localAuth($username, $password){
+    $db = & new PHPWS_DB("user_authorization");
+    $db->addWhere("username", strtolower(preg_replace("/\W/", "", $username)));
+    $db->addWhere("password", md5($password));
+    $result = $db->select("one");
+
+    if (PEAR::isError($result))
+      return $result;
+    else
+      return isset($result);
+  }
+
+  function globalAuth(){
+
+  }
+
+  function foreignauth(){
+
   }
 
   function postMembers(){

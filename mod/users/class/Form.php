@@ -13,7 +13,8 @@ class User_Form {
 
   function logBox($logged=TRUE){
     translate("users");
-    if ($logged){
+
+    if ($_SESSION['User']->isLogged()){
       $username = $_SESSION['User']->getUsername();
       $form['TITLE']   = sprintf(_("Hello %s"), $username);
       $form['CONTENT'] = User_Form::loggedIn();
@@ -39,26 +40,25 @@ class User_Form {
 
   function loggedOut(){
     translate("users");
+
     if (isset($_REQUEST["block_username"]))
       $username = $_REQUEST["block_username"];
     else
       $username = NULL;
 
-    $template["USERNAME"] = _("Username");
-    $template["PASSWORD"] = _("Password");
-    
     $form = & new PHPWS_Form("User_Login");
-    $form->add("module", "hidden", "users");
-    $form->add("action[user]", "hidden", "loginBox");
-    $form->add("block_username", "text", $username);
-    $form->add("block_password", "password");
-    $form->add("submit", "submit", _("Log In"));
+    $form->addHidden("module", "users");
+    $form->addHidden("action", "user");
+    $form->addHidden("command", "loginBox");
+    $form->addText("block_username", $username);
+    $form->addPassword("block_password");
+    $form->addSubmit("submit", _("Log In"));
 
     $form->setLabel("block_username", _("Username"));
     $form->setLabel("block_password", _("Password"));
     $form->setId("block_username", "username");
     
-    $template = $form->getTemplate(TRUE, TRUE, $template);
+    $template = $form->getTemplate();
 
     return PHPWS_Template::process($template, "users", "forms/loginBox.tpl");
   }
@@ -156,31 +156,6 @@ class User_Form {
 
     $content = PHPWS_Template::process($template, "users", "forms/mod_permission.tpl");
     return $content;
-  }
-
-  function adminPanel($content){
-    PHPWS_Core::initModClass("controlpanel", "Panel.php");
-
-    $tabs["new_user"] = array("title"=>_("New User"), "link"=>"index.php?module=users&amp;action[admin]=main");
-
-    if ($_SESSION['User']->allow("users", "edit_users") || $_SESSION['User']->allow("users", "delete_users"))
-      $tabs["manage_users"] = array("title"=>_("Manage Users"), "link"=>"index.php?module=users&amp;action[admin]=main");
-
-    if ($_SESSION['User']->allow("users", "add_edit_groups")){
-      $tabs["new_group"] = array("title"=>_("New Group"), "link"=>"index.php?module=users&amp;action[admin]=main");
-      $tabs["manage_groups"] = array("title"=>_("Manage Groups"), "link"=>"index.php?module=users&amp;action[admin]=main");
-    }
-
-    if ($_SESSION['User']->allow("users", "demographics"))
-      $tabs["demographics"] = array("title"=>_("Demographics"), "link"=>"index.php?module=users&amp;action[admin]=main");
-
-    if ($_SESSION['User']->allow("users", "settings"))
-      $tabs["settings"] = array("title"=>_("Settings"), "link"=>"index.php?module=users&amp;action[admin]=main");
-
-    $panel = & new PHPWS_Panel("users");
-    $panel->quickSetTabs($tabs);
-    $panel->setContent($content);
-    Layout::add(PHPWS_ControlPanel::display($panel->display()));
   }
 
   function manageUsers(){
@@ -366,37 +341,38 @@ class User_Form {
   function userForm(&$user, $message=NULL){
     translate("users");
 
-    PHPWS_Core::initModClass("users", "Demographics.php");
     $form = & new PHPWS_Form;
 
     if ($user->getId() > 0){
-      $form->add("userId", "hidden", $user->getId());
-      $form->add("submit", "submit", _("Update User"));
-    } else {
-      $form->add("submit", "submit", _("Add User"));
-    }
+      $form->addHidden("userId", $user->getId());
+      $form->addSubmit("submit", _("Update User"));
+    } else
+      $form->addSubmit("submit", _("Add User"));
 
-    if (isset($message))
-      $tpl['MESSAGE'] = $message;
 
-    $form->add("action[admin]", "hidden", "postUser");
-    $form->add("module", "hidden", "users");
-    $form->add("username", "text", $user->getUsername());
-    $form->add("password1", "password");
-    $form->add("password2", "password");
+    $form->addHidden("action", "admin");
+    $form->addHidden("command", "postUser");
 
+    $form->addHidden("module", "users");
+    $form->addText("username", $user->getUsername());
+    $form->addPassword("password1");
+    $form->addPassword("password2");
+    $form->addText("email");
+
+    $form->setLabel("email", _("Email Address"));
     $form->setLabel("username", _("Username"));
     $form->setLabel("password1", _("Password"));
-
-    Demographics::form($form, $user);
 
     if (isset($tpl))
       $form->mergeTemplate($tpl);
 
     $template = $form->getTemplate();
+    if (isset($message)){
+      foreach ($message as $tag=>$error)
+	$template[strtoupper($tag) . "_ERROR"] = $error;
+    }
 
-    $result = PHPWS_Template::process($template, "users", "forms/userForm.tpl");
-    return $result;
+    return PHPWS_Template::process($template, "users", "forms/userForm.tpl");
   }
 
   function deify(&$user){
@@ -558,9 +534,10 @@ class User_Form {
     $content = array();
 
     $form = new PHPWS_Form("user_settings");
-    $form->add("module", "hidden", "users");
-    $form->add("action[admin]", "hidden", "update_settings");
-    $form->add("submit", "submit", _("Update Settings"));
+    $form->addHidden("module", "users");
+    $form->addHidden("action", "hidden", "admin");
+    $form->addHidden("command", "update_settings");
+    $form->addSubmit("submit",_("Update Settings"));
 
     $groups = User_Action::getGroups("group");
 

@@ -16,7 +16,7 @@ class Current_User {
 
   function getLogin(){
     PHPWS_Core::initModClass("users", "Form.php");
-    $login = User_Form::logBox($_SESSION['User']->isLogged());
+    $login = User_Form::logBox();
     Layout::hold($login, "users", "CNT_user_small", TRUE, -1);
   }
 
@@ -39,6 +39,10 @@ class Current_User {
     $db->addWhere("id", $_SESSION['User']->getId());
     $db->addValue("last_logged", mktime());
     return $db->update();
+  }
+
+  function getUsername(){
+
   }
 
 

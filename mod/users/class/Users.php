@@ -6,14 +6,21 @@ PHPWS_Core::configRequireOnce("users", "config.php");
 class PHPWS_User {
   var $id            = NULL;
   var $username      = NULL;
-  var $password      = NULL;
   var $deity         = FALSE;
   var $active        = TRUE;
+  var $authorize     = 0;
+  var $active        = 0;
+  var $last_logged   = 0;
+  var $time_logged   = 0;
+  var $created       = 0;
+  var $updated       = 0;
+  var $active        = 0;
+  var $approved      = 0;
+  var $email         = NULL;
+  
   var $_groups       = NULL;
   var $_permission   = NULL;
-  var $_logged       = FALSE;
-  var $_last_logged  = NULL;
-  var $_settings     = NULL;
+  //  var $_settings     = NULL;
   var $_user_group   = NULL;
  
   function PHPWS_User($id=NULL){
@@ -35,7 +42,7 @@ class PHPWS_User {
       return $result;
 
     $this->loadUserGroups();
-    $this->loadUserSettings();
+    //    $this->loadUserSettings();
   }
 
 
@@ -46,7 +53,23 @@ class PHPWS_User {
   function getId(){
     return $this->id;
   }
+
+  function getAuthorize(){
+    return $this->authorize;
+  }
  
+  function isDuplicateUsername($username){
+    $DB = & new PHPWS_DB("users");
+    $DB->addWhere("username", $username);
+    return $DB->select("one");
+  }
+
+  function isDuplicateEmail($email){
+    $DB = & new PHPWS_DB("users");
+    $DB->addWhere("email", $email);
+    return $DB->select("one");
+  }
+
   function setUsername($username, $checkDuplicate=FALSE){
     if (empty($username) || preg_match("/\W+/", $username))
       return PHPWS_Error::get(USER_ERR_BAD_USERNAME, "users", "setUsername");
@@ -55,15 +78,10 @@ class PHPWS_User {
       return PHPWS_Error::get(USER_ERR_BAD_USERNAME, "users", "setUsername");
    
     if ((bool)$checkDuplicate == TRUE){
-      $DB = new PHPWS_DB("users");
-      $DB->addWhere("username", $username);
-      $result = $DB->select("one");
-      if (isset($result) && !PEAR::isError($result))
-	return PHPWS_Error::get(USER_ERR_DUP_USERNAME, "users", "setUsername");
     }
+
     $this->username = $username;
     return TRUE;
-   
   }
 
   function getUsername(){
@@ -122,6 +140,7 @@ class PHPWS_User {
     return (bool)$this->active;
   }
 
+  /*
   function getUserSettings(){
     return $this->_settings;
   }
@@ -141,6 +160,7 @@ class PHPWS_User {
       $this->_settings[$setting['label']][$setting['var_name']] = $setting['var_value'];
 
   }
+  */
 
   function loadUserGroups(){
     $group = $this->getUserGroup();
