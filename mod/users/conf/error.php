@@ -1,5 +1,5 @@
 <?php
-
+translate("users");
 $errors = array(
 		USER_ERROR                => _("Unknown error"),
 		USER_ERR_DUP_USERNAME     => _("Duplicate user name"),

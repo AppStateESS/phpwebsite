@@ -24,6 +24,7 @@ class PHPWS_User_Form {
   }
 
   function logBox($logged=TRUE){
+    translate("users");
     if ($logged){
       $username = $_SESSION['User']->getUsername();
       $form['TITLE']   = _print(_("Hello [var1]", $username));
@@ -39,6 +40,7 @@ class PHPWS_User_Form {
 
 
   function loggedIn(){
+    translate("users");
     PHPWS_Core::initCoreClass("Text.php");
     $template["MODULES"] = PHPWS_Text::moduleLink(_("Control Panel"), "controlpanel");
     $template["LOGOUT"] = PHPWS_Text::moduleLink(_("Log Out"), "users", array("action[user]"=>"logout"));
@@ -48,6 +50,7 @@ class PHPWS_User_Form {
   }
 
   function loggedOut(){
+    translate("users");
     if (isset($_REQUEST["block_username"]))
       $username = $_REQUEST["block_username"];
     else
@@ -170,6 +173,8 @@ class PHPWS_User_Form {
   }
 
   function userForm(&$user){
+    translate("users");
+
     PHPWS_Core::initModClass("users", "Demographics.php");
     $form = & new PHPWS_Form;
 
