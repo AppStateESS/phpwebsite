@@ -1,7 +1,9 @@
 <?php
+
 /* Show all errors */
 error_reporting (E_ALL);
 
+ob_start();
 /* Determine if this is a hub or branch site and load the
  * appropiate config file. $hub_dir will be included if
  * coming from a branch site
@@ -22,21 +24,19 @@ if (ini_get('register_globals')){
 /* Loads Pear config file */
 include PHPWS_SOURCE_DIR . "conf/pear_config.php";
 
-/* Load the Core class */
-require_once PHPWS_SOURCE_DIR . "class/Core.php";
+/* Initialize core defines */
+require_once PHPWS_SOURCE_DIR . "class/Init.php";
 
-PHPWS_Core::initializeModules();
-
-session_name(SESSION_NAME);
-session_start();
-
-PHPWS_Core::runtimeModules();
-PHPWS_Core::runCurrentModule();
-PHPWS_Core::closeModules();
+ob_end_flush();
 
 PHPWS_DB::disconnect();
 
 PHPWS_Core::setLastPost();
+
+PHPWS_Core::report();
+
+if (isset($_REQUEST['reset']))
+     PHPWS_Core::killAllSessions();
 
 /**
  * loads the config file
@@ -54,10 +54,5 @@ function loadConfig($hub_dir=NULL){
     exit();
   }
 }
-
-PHPWS_Core::report();
-
-if (isset($_REQUEST['reset']))
-     PHPWS_Core::killAllSessions();
 
 ?>
