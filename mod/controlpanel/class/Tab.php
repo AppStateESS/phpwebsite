@@ -8,14 +8,11 @@
  */
 
 class PHPWS_Panel_Tab {
-  var $_id          = NULL;
-  var $_title       = NULL;
-  var $_label       = NULL;
-  var $_link        = NULL;
-  var $_tab_order   = NULL;
-  var $_color       = NULL;
-  var $_itemname    = NULL;
-  var $_style       = NULL;
+  var $id          = NULL;
+  var $title       = NULL;
+  var $link        = NULL;
+  var $tab_order   = NULL;
+  var $itemname    = NULL;
 
   function PHPWS_Panel_Tab($id=NULL) {
 
@@ -26,44 +23,32 @@ class PHPWS_Panel_Tab {
   }
 
   function setId($id){
-    $this->_id = $id;
+    $this->id = $id;
   }
 
   function init(){
     $DB = new PHPWS_DB("controlpanel_tab");
     $DB->addWhere("id", $this->getId());
-    $result = $DB->select("row");
-
-    foreach ($result as $key=>$value)
-      $this->{'_' . $key} = $value;
-
+    $DB->loadObject($this);
   }
 
   function getId(){
-    return $this->_id;
+    return $this->id;
   }
 
   function setTitle($title){
-    $this->_title = strip_tags($title);
+    $this->title = strip_tags($title);
   }
 
   function getTitle($noBreak=TRUE){
     if ($noBreak)
-      return str_replace(" ", "&nbsp;", $this->_title);
+      return str_replace(" ", "&nbsp;", $this->title);
     else
-      return $this->_title;
-  }
-
-  function setLabel($label){
-    $this->_label = $label;
-  }
-
-  function getLabel(){
-    return $this->_label;
+      return $this->title;
   }
 
   function setLink($link){
-    $this->_link = $link;
+    $this->link = $link;
   }
 
   function getLink($addTitle=TRUE){
@@ -72,20 +57,19 @@ class PHPWS_Panel_Tab {
       $link = $this->getLink(FALSE);
       return "<a href=\"$link" . "&amp;tab=" . $this->getId() . "\">$title</a>";
     } else
-      return $this->_link;
+      return $this->link;
   }
 
 
   function setOrder($order){
-    $this->_tab_order = $order;
+    $this->tab_order = $order;
   }
 
   function getOrder(){
-    if (isset($this->_tab_order))
-      return $this->_tab_order;
+    if (isset($this->tab_order))
+      return $this->tab_order;
 
-    $DB = @ new PHPWS_DB("controlpanel_tab");
-    $DB->addWhere('itemname', $this->getItemname());
+    $DB = & new PHPWS_DB("controlpanel_tab");
     $DB->addColumn('tab_order');
     $max = $DB->select("max");
     
@@ -98,74 +82,36 @@ class PHPWS_Panel_Tab {
       return 1;
   }
 
-  function setColor($color){
-    $this->_color = $color;
-  }
-
-  function getColor(){
-    return $this->_color;
-  }
-  
-  function setStyle($style){
-    $this->_style = $style;
-  }
-
-  function getStyle(){
-    return $this->_style;
-  }
-
-
   function setItemname($itemname){
-    $this->_itemname = $itemname;
+    $this->itemname = $itemname;
   }
 
   function getItemname(){
-    return $this->_itemname;
+    return $this->itemname;
   }
 
   function save(){
-    // MUST HAVE ITEMNAME!
-    $DB = @ new PHPWS_DB("controlpanel_tab");
-
-    $id                   = $this->getId();
-    $save['title']        = $this->getTitle(FALSE);
-    $save['label']        = $this->getLabel();
-    $save['link']         = $this->getLink(FALSE);
-    $save['color']        = $this->getColor();
-    $save['itemname']     = $this->getItemname();
-    $save['style']        = $this->getStyle();
-    $save['tab_order']    = $this->getOrder();
-
-    foreach ($save as $key=>$value)
-      if (is_null($value))
-	unset ($save[$key]);
-
-    $DB->addValue($save);
-
-    if (isset($id)){
-      $DB->addWhere("id", $id);
-      $result = $DB->update();
-    } else {
-      $result = $DB->insert();
-      if (is_numeric($result))
-	$this->setId($result);
-    }
-
-    return $result;
+    $db = & new PHPWS_DB("controlpanel_tab");
+    $db->addWhere("id", $this->id);
+    $db->delete();
+    $db->resetWhere();
+    $this->tab_order = $this->getOrder();
+    return $db->saveObject($this);
   }
 
   function nextBox(){
-
-    $DB->addWhere("theme", $this->getTheme());
-    $DB->addWhere("theme_var", $this->getThemeVar());
-    $DB->addColumn("box_order");
-    $max = $DB->select("max");
+    $db = & new PHPWS_DB("controlpanel_tab");
+    $db->addWhere("theme", $this->getTheme());
+    $db->addWhere("theme_var", $this->getThemeVar());
+    $db->addColumn("box_order");
+    $max = $db->select("max");
     if (isset($max))
       return $max + 1;
     else
       return 1;
   }
 
+  /*
   function kill(){
     $db = & new PHPWS_DB("controlpanel_tab");
     $db->addWhere("id", $this->getId());
@@ -191,7 +137,7 @@ class PHPWS_Panel_Tab {
     }
 
   }
-
+  */
 }
 
 ?>

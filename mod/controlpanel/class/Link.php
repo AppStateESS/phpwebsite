@@ -1,17 +1,17 @@
 <?php
 
 class PHPWS_Panel_Link {
-  var $_id;
-  var $_label;
-  var $_active;
-  var $_module;
-  var $_itemname;
-  var $_restricted;
-  var $_tab;
-  var $_url;
-  var $_description;
-  var $_image;
-  var $_link_order;
+  var $id;
+  var $label;
+  var $active;
+  var $module;
+  var $itemname;
+  var $restricted;
+  var $tab;
+  var $url;
+  var $description;
+  var $image;
+  var $link_order;
 
   function PHPWS_Panel_Link($id=NULL){
     if (!isset($id))
@@ -31,81 +31,81 @@ class PHPWS_Panel_Link {
   }
 
   function setId($id){
-    $this->_id = (int)$id;
+    $this->id = (int)$id;
   }
 
   function getId(){
-    return $this->_id;
+    return $this->id;
   }
 
   function setTab($tab){
-    $this->_tab = $tab;
+    $this->tab = $tab;
   }
 
   function getTab(){
-    return $this->_tab;
+    return $this->tab;
   }
 
   function setActive($active){
-    $this->_active = (bool)$active;
+    $this->active = (bool)$active;
   }
 
   function getActive(){
-    return $this->_active;
+    return $this->active;
   }
 
   function setLabel($label){
-    $this->_label = $label;
+    $this->label = $label;
   }
 
   function getLabel(){
-    return $this->_label;
+    return $this->label;
   }
 
 
   function getDescription(){
-    return $this->_description;
+    return $this->description;
   }
 
   function setDescription($description){
-    $this->_description = $description;
+    $this->description = $description;
   }
 
 
   function setImage($image){
-    $this->_image = $image;
+    $this->image = $image;
   }
 
   function getImage($tag=FALSE, $linkable=FALSE){
     if ($tag == FALSE)
-      return $this->_image;
+      return $this->image;
 
-    $image = "<img src=\"" . $this->_image . "\" border=\"0\" alt=\"" . $this->getLabel() . "\"/>";
+    $image = "<img src=\"" . $this->image . "\" border=\"0\" alt=\"" . $this->getLabel() . "\"/>";
 
     if ($linkable == TRUE)
-      $image = "<a href=\"" . $this->_url . "\">" . $image . "</a>";
+      $image = "<a href=\"" . $this->url . "\">" . $image . "</a>";
 
     return $image;
   }
 
   function setUrl($url){
-    $this->_url = $url;
+    $this->url = $url;
   }
   
   function getUrl($tag=FALSE){
     if ($tag)
-      return "<a href=\"" . $this->_url . "\">" . $this->getLabel() . "</a>";
+      return "<a href=\"" . $this->url . "\">" . $this->getLabel() . "</a>";
     else
-      return $this->_url;
+      return $this->url;
   }
 
   function setLinkOrder($order){
-    $this->_link_order = (int)$order;
+    $this->link_order = (int)$order;
   }
 
   function getLinkOrder(){
-    if (isset($this->_link_order))
-      return $this->_link_order;
+    if (isset($this->link_order))
+      return $this->link_order;
 
     $DB = @ new PHPWS_DB("controlpanel_link");
     $DB->addWhere('tab', $this->getTab());
@@ -123,40 +123,38 @@ class PHPWS_Panel_Link {
 
 
   function setModule($module){
-    $this->_module = $module;
+    $this->module = $module;
   }
 
   function getModule(){
-    return $this->_module;
+    return $this->module;
   }
 
   function setItemName($itemname){
-    $this->_itemname = $itemname;
+    $this->itemname = $itemname;
   }
 
   function getItemName(){
-    return $this->_itemname;
+    return $this->itemname;
   }
 
   function isRestricted(){
-    return (bool)$this->_restricted;
+    return (bool)$this->restricted;
   }
 
   function setRestricted($restrict){
-    $this->_restricted = $restrict;
+    $this->restricted = $restrict;
   }
 
   function save(){
-
     $db = & new PHPWS_DB("controlpanel_link");
-    if (isset($this->_id))
-      $db->addWhere("id", $this->_id);
+    if (isset($this->id))
+      $db->addWhere("id", $this->id);
 
-    $this->_link_order = $this->getLinkOrder();
+    $this->link_order = $this->getLinkOrder();
 
-    $result = $db->saveObject($this, TRUE);
+    $result = $db->saveObject($this);
     return $result;
-
   }
 
   function view(){

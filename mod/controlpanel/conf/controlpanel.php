@@ -1,27 +1,22 @@
 <?php
 
-$tabs[] = array("title" => _("My Settings"),
-		"label" => "my_settings",
+$tabs[] = array("id" => "content",
+		"title" => _("Content"),
 		"link"  => "index.php?module=controlpanel",
 		);
 
-$tabs[] = array("title" => _("Content"),
-		"label" => "content",
+$tabs[] = array("id" => "admin",
+		"title" => _("Administration"),
 		"link"  => "index.php?module=controlpanel",
 		);
 
-$tabs[] = array("title" => _("Administration"),
-		"label" => "admin",
+$tabs[] = array("id" => "developer",
+		"title" => _("Developer"),
 		"link"  => "index.php?module=controlpanel",
 		);
 
-$tabs[] = array("title" => _("Developer"),
-		"label" => "developer",
-		"link"  => "index.php?module=controlpanel",
-		);
-
-$tabs[] = array("title" => _("Unsorted"),
-		"label" => "unsorted",
+$tabs[] = array("id" => "unsorted",
+		"title" => _("Unsorted"),
 		"link"  => "index.php?module=controlpanel",
 		);
 
