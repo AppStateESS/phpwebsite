@@ -17,8 +17,7 @@ switch ($_REQUEST['action']){
    $related->loadFriends();
    $related->setBanked(TRUE);
    Related_Action::newBank($related);
-   header("location:" . $related->getUrl());
-   exit();
+   PHPWS_Core::reroute($related->getUrl());
    break;
 
  case "add":
