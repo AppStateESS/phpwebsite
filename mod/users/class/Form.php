@@ -9,37 +9,18 @@
  */
 PHPWS_Core::initCoreClass("Form.php");
 
-class PHPWS_User_Form {
-
-  function adminForm($command){
-
-    switch ($command){
-    case "new_user":
-      $user = & new PHPWS_User;
-      return PHPWS_User_Form::userForm($user);
-      break;
-
-    case "manage_users":
-      return PHPWS_User_Form::managerUsers($user);
-      break;
-
-    case "demographics":
-      return PHPWS_User_Form::demographics();
-      break;
-    }
-
-  }
+class User_Form {
 
   function logBox($logged=TRUE){
     translate("users");
     if ($logged){
       $username = $_SESSION['User']->getUsername();
       $form['TITLE']   = _print(_("Hello [var1]"), array($username));
-      $form['CONTENT'] = PHPWS_User_Form::loggedIn();
+      $form['CONTENT'] = User_Form::loggedIn();
     }
     else {
       $form['TITLE']   = _("Please Login");
-      $form['CONTENT'] = PHPWS_User_Form::loggedOut();
+      $form['CONTENT'] = User_Form::loggedOut();
     }
 
     return $form;
@@ -147,7 +128,7 @@ class PHPWS_User_Form {
     }
   }
 
-  function userForm(&$user){
+  function userForm(&$user, $message=NULL){
     translate("users");
 
     PHPWS_Core::initModClass("users", "Demographics.php");
@@ -160,10 +141,8 @@ class PHPWS_User_Form {
       $form->add("submit", "submit", _("Add User"));
     }
 
-    if (isset($user->message)){
-      $tpl['MESSAGE'] = implode("<br />", $user->message);
-      $user->message = NULL;
-    }
+    if (isset($message))
+      $tpl['MESSAGE'] = $message;
 
     $tpl['USERNAME_LBL'] = _("Username");
     $tpl['PASSWORD_LBL'] = _("Password");
@@ -177,27 +156,13 @@ class PHPWS_User_Form {
     Demographics::form($form, $user);
 
     $form->mergeTemplate($tpl);
+
     $template = $form->getTemplate();
 
     $result = PHPWS_Template::process($template, "users", "forms/userForm.tpl");
     return $result;
   }
 
-  function &postUser(){
-    $user = & new PHPWS_User();
-
-    $result = $user->setUsername($_POST['username'], TRUE);
-    if (PEAR::isError($result))
-      $user->message[] = $result->getMessage();
-
-    $result = $user->checkPassword($_POST['password1'], $_POST['password2']);
-    if (PEAR::isError($result))
-      $user->message[] = $result->getMessage();
-    else
-      $user->setPassword($_POST['password1']);
-
-    return $user;
-  }
 
 
 }
