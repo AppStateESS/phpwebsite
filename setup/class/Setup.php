@@ -87,10 +87,16 @@ class Setup{
     else
       Setup::setConfigSet("source_dir", $source_dir);
 
-    if ($_POST['pear'] == 'local')
-      Setup::setConfigSet("pear", Setup::createIniSet());
-    else
-      Setup::setConfigSet("pear", NULL);
+
+    Setup::setConfigSet("LINUX_PEAR", "//");
+    Setup::setConfigSet("WINDOWS_PEAR", "//");
+
+    if ($_POST['pear'] == 'local'){
+      if (PHPWS_Core::isWindows())
+	Setup::setConfigSet("WINDOWS_PEAR", NULL);
+      else
+	Setup::setConfigSet("LINUX_PEAR", NULL);
+    }
 
     Setup::setConfigSet("site_hash", $_POST['site_hash']);
     return $check;
@@ -393,16 +399,6 @@ class Setup{
       $content[] = _("Core installation successful.") . "<br /><br />";
       $content[] = PHPWS_Text::link("index.php?step=3", _("Continue to Module Installation"));
     }
-  }
-
-
-  function createIniSet(){
-    $iniDir = $this->getConfigSet("source_dir");
-
-    if (isset($_SERVER['windir']) || preg_match("/microsoft/i", $_SERVER['SERVER_SOFTWARE']))
-      return "ini_set(\"include_path\", \".;" . $iniDir . "lib\\pear\\\");";
-    else
-      return "ini_set(\"include_path\", \".:" . $iniDir . "lib/pear/\");";
   }
 
   function installModules(&$content){
