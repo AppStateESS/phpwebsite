@@ -238,17 +238,105 @@ class Users_Permission {
     return $db->insert();
   }
 
-  function assign(){
+  function assignPermissions($module, $item_id=NULL){
     $content = NULL;
 
-    //    Users_Permission::getPartial();
+    $groups = Users_Permission::_getPartial($module);
 
+    if (PEAR::isError($groups)){
+      PHPWS_Error::log($groups);
+      $text['ASSIGNED_GROUPS_TITLE'] = _("Error");
+      $text['ASSIGNED_GROUPS'] = _("An error occurred when accessing the permission system.");
+    } elseif (empty($groups)){
+      $text['ASSIGNED_GROUPS_TITLE'] = _("Assign Group Permissions");
+      $text['ASSIGNED_GROUPS'] = _("No groups found.");
+    } else
+      $text = Users_Permission::_listAssigned($module, $groups, $item_id);
 
-    $text['title'] = _("Assign Users");
-    $text['content'] = $content;
-    Layout::add($text, "users", "users_assign", TRUE);
+    if (PEAR::isError($text)){
+      PHPWS_Error::log($text);
+      unset($text);
+      $text['ASSIGNED_GROUPS_TITLE'] = _("Error");
+      $text['ASSIGNED_GROUPS'] = _("An error occurred when accessing the permission system.");
+    }
+
+    return $text;
   }
 
+  function _getPartial($module){
+    $itemTable = Users_Permission::getItemPermissionTableName($module);
+    $permTable = Users_Permission::getPermissionTableName($module);
+
+    if (!PHPWS_DB::isTable($permTable))
+      return PHPWS_Error::get(USER_ERR_PERM_FILE, "users", __CLASS__ . "::" . __FUNCTION__);
+
+    if (!PHPWS_DB::isTable($itemTable))
+      return PHPWS_Error::get(USER_ERR_ITEM_PERM_FILE, "users", __CLASS__ . "::" . __FUNCTION__);
+
+    $db = & new PHPWS_DB($permTable);
+    $db->addWhere("permission_level", PARTIAL_PERMISSION);
+    $db->addColumn("group_id");
+    $result = $db->select("col");
+
+    return $result;
+  }
+
+  function _listAssigned($module, $groups, $item_id=NULL){
+    PHPWS_Core::initModClass("users", "Group.php");
+
+    $db = & new PHPWS_DB("users_groups");
+    foreach ($groups as $group_id)
+      $db->addWhere("id", $group_id, "=", "OR");
+
+    $result = $db->getObjects("PHPWS_Group");
+
+    foreach ($result as $group)
+      $inputs[$group->getId()] = $group->getName();
+
+    $form = & new PHPWS_Form;
+    $form->addMultiple("assigned_groups", $inputs);
+    $form->setId("assigned_groups", "assigned_groups");
+    $form->setLabel("assigned_groups", _("Assign Group Permissions"));
+
+    if (isset($item_id)){
+      $itemTable = Users_Permission::getItemPermissionTableName($module);
+      $db->reset();
+      $db->setTable($itemTable);
+      $db->addWhere("item_id", (int)$item_id);
+      $db->addColumn ("group_id");
+      $result = $db->select("col");
+
+      if (PEAR::isError($result))
+	return $result;
+
+      if (!empty($result))
+	$form->setMatch("assigned_groups", $result);
+    }
+    
+    $template = $form->getTemplate();
+
+    return $template;
+  }
+
+  function savePermissions($module, $item_id){
+    $table = Users_Permission::getItemPermissionTableName($module);
+    $db = & new PHPWS_DB($table);
+    $db->addWhere("item_id", $item_id);
+    $db->delete();
+    $db->reset();
+
+    if (!isset($_POST['assigned_groups']) || !is_array($_POST['assigned_groups']))
+      return;
+
+    $groups = & $_POST['assigned_groups'];
+
+    $db->addValue("item_id", $item_id);
+    foreach ($groups as $group_id){
+      $db->addValue("group_id", $group_id);
+      $db->insert();
+    }
+
+  }
 }
 
 ?>
