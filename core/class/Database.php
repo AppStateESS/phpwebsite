@@ -342,9 +342,6 @@ class PHPWS_DB {
     if (!PHPWS_DB::allowed($column))
       return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, "core", "PHPWS_DB::addColumn", $column);
 
-    if (strstr($column, ".") == FALSE)
-      $column = $this->getTable() . "." . $column;
-
     if ((bool)$distinct == TRUE)
       $column = "DISTINCT " .  $column;
 
@@ -531,6 +528,15 @@ class PHPWS_DB {
       return TRUE;
   }
 
+  function addTableNames(&$values, $table){
+    
+    foreach ($values as $val){
+      $newValue[] = $table . "." . $val;
+    }
+
+    $values = $newValue;
+  }
+
   function select($type=NULL, $sql=NULL){
     PHPWS_DB::touchDB();
     if (!isset($sql)){
@@ -538,7 +544,9 @@ class PHPWS_DB {
 	$type = strtolower($type);
       
       $columnList = $this->getColumn();
-      
+      if (isset($columnList))
+	PHPWS_DB::addTableNames($columnList, $this->table);
+
       $mode = $this->getMode();
       
       if (!empty($this->_DB)){
@@ -547,6 +555,7 @@ class PHPWS_DB {
 	  $tables[] = $altDB->getTable();
 	  $extraWhere[] = $altDB->getWhere(TRUE, FALSE);
 	  $columns = $altDB->getColumn();
+	  PHPWS_DB::addTableNames($columns, $altDB->table);
 	  if (isset($columnList))
 	    $columnList = array_merge($columnList, $columns);
 	  else
@@ -556,6 +565,7 @@ class PHPWS_DB {
 	$table = implode(", ", $tables);
       } else
 	$table = $this->getTable();
+
 
       if (!$table)
 	return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, "core", "PHPWS_DB::select");
@@ -573,11 +583,11 @@ class PHPWS_DB {
       if (isset($columnList)){
 	if (isset($indexby) && !in_array($indexby, $columnList))
 	  $columnList[] = $indexby;
-
 	if ($type == "max" || $type == "min")
 	  $columns = implode("", array($type . "(", array_shift($columnList), ")"));
 	else
 	  $columns = implode(", ", $columnList);
+
       }
       else
 	$columns = "*";
