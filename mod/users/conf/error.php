@@ -17,7 +17,9 @@ $errors = array(
 		USER_ERR_BAD_VAR          => _("Invalid variable name."),
 		USER_ERR_USER_NOT_SAVED   => _("Unable to save user information."),
 		USER_ERR_BAD_GROUP_NAME   => _("Improperly formatted group name."),
-		USER_ERR_GROUP_DNE        => _("Group does not exist.")
+		USER_ERR_GROUP_DNE        => _("Group does not exist."),
+		USER_ERR_MISSING_GROUP    => _("User is missing their permission group"),
+		USER_ERR_FAIL_ON_SUBPERM  => _("Module tried to detect a non-existant permission.")
 		);
 
 ?>

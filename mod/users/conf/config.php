@@ -39,6 +39,7 @@ define("USER_ERR_PASSWORD_MATCH",  -8);
 define("USER_ERR_PASSWORD_LENGTH", -9);
 define("USER_ERR_PASSWORD_EASY",   -10);
 define("USER_ERR_USER_NOT_SAVED",  -11);
+define("USER_ERR_MISSING_GROUP",   -12);
 
 /* User Variable Errors */
 define("USER_ERR_NO_MODULE",       -20);
@@ -51,5 +52,9 @@ define('USER_ERR_UNKNOWN_INPUT',   -31);
 /* Group errors */
 define('USER_ERR_BAD_GROUP_NAME',  -40);
 define('USER_ERR_GROUP_DNE',       -41);
+
+/* Permission errors */
+define("USER_ERR_FAIL_ON_SUBPERM", -50);
+
 
 ?>
