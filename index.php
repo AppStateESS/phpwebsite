@@ -6,16 +6,16 @@ $site_start_time = ((float)$usec + (float)$sec);
 // REMOVE !
 define("AUTO_ROUTE", TRUE);
 
-if (is_file("config/core/config.php")) require_once "config/core/config.php";
+if (is_file('config/core/config.php')) require_once 'config/core/config.php';
 else {
   if (AUTO_ROUTE == TRUE){
-    header("location:http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "setup/");
+    header('location:http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . 'setup/');
     exit();
   } else
-    exit("Fatal Error: Could not locate your configuration file.");
+    exit('Fatal Error: Could not locate your configuration file.');
 }
 
-require_once PHPWS_SOURCE_DIR . "inc/Functions.php";
+require_once PHPWS_SOURCE_DIR . 'inc/Functions.php';
 
 /* Show all errors */
 error_reporting (E_ALL);
@@ -30,7 +30,7 @@ if (ini_get('register_globals')){
 }
 
 /* Initialize core defines */
-require_once PHPWS_SOURCE_DIR . "core/class/Init.php";
+require_once PHPWS_SOURCE_DIR . 'core/class/Init.php';
 
 PHPWS_Core::checkSecurity();
 PHPWS_Core::initializeModules();
@@ -54,12 +54,12 @@ PHPWS_Core::report();
 if (isset($_REQUEST['reset']))
      PHPWS_Core::killAllSessions();
 
-list($usec, $sec) = explode(" ", microtime());
+list($usec, $sec) = explode(' ', microtime());
 $site_end_time = ((float)$usec + (float)$sec);
 
 $memory_used = round( (memory_get_usage() / 1024) / 1024, 2);
 $execute_time = round( ($site_end_time - $site_start_time), 2);
 
-//echo "$memory_used mb / $execute_time secs";
+//echo '$memory_used mb / $execute_time secs';
 
 ?>
