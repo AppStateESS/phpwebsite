@@ -42,7 +42,7 @@ define('GC_FONT_SIZE', 22);
 define('GC_FONT_PATH', '/usr/X11R6/lib/X11/fonts/TTF/');
 define('GC_FONT_FILE', 'luxisb.ttf');
 define('GC_WIDTH', 200);
-define('GC_HEIGHT', 60);
+define('GC_HEIGHT', 70);
 
 /** Authorization Mode
  * Leave this alone
