@@ -15,7 +15,6 @@ class PHPWS_User {
   var $log_count     = 0;
   var $created       = 0;
   var $updated       = 0;
-  var $active        = FALSE;
   var $approved      = FALSE;
   var $email         = NULL;
   var $display_name  = NULL;
