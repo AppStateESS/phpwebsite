@@ -66,7 +66,7 @@ class Boost_Form {
 	$link_title = _("Install");
 	$link_command['action'] = "install";
       } else {
-	if ($type == "core_mods"){
+	if ($type != "core_mods"){
 	  $uninstallVars = array('opmod'=>$title, "action"=>'uninstall');
 	  $template['UNINSTALL'] = PHPWS_Text::moduleLink(_("Uninstall"), "boost", $uninstallVars);
 	}
