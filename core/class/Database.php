@@ -206,6 +206,7 @@ class PHPWS_DB {
   }
 
   function setQWhere($where){
+    $where = preg_replace("/where/i", "", $where);
     $this->_qwhere = $where;
   }
 
@@ -626,6 +627,9 @@ class PHPWS_DB {
       return $value;
   }
 
+  function getDBType(){
+    return $GLOBALS['PEAR_DB']->phptype;
+  }
 
 
   function disconnect(){
@@ -638,7 +642,6 @@ class PHPWS_DB {
     PHPWS_DB::touchDB();
 
     $prefix = PHPWS_DB::getPrefix();
-
     $sqlArray = PHPWS_Text::sentence($text);
 
     foreach ($sqlArray as $sqlRow){
@@ -656,6 +659,7 @@ class PHPWS_DB {
 	}
 	$sqlCommand = array();
 	PHPWS_DB::homogenize($query);
+
 	$result = PHPWS_DB::query($query);
 	if (DB::isError($result))
 	  $errors[] = $result;
@@ -668,11 +672,17 @@ class PHPWS_DB {
       return TRUE;
   }
 
-  function homogenize(&$query){
-    $from = array("/datetime/i");
-    $to   = array("varchar(50)");
 
-    $query = preg_replace($from, $to, $query);
+  function homogenize(&$query){
+    switch (PHPWS_DB::getDBType()){
+    case "pgsql":
+      $from = array("/datetime/i");
+      $to   = array("timestamp without time zone");
+      break;
+    }
+
+    if (isset($from))
+      $query = preg_replace($from, $to, $query);
   }
 
   function export($tableName, $structure=TRUE, $contents=TRUE){
