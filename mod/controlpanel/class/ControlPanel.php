@@ -7,13 +7,10 @@ class PHPWS_ControlPanel {
     $DB = & new PHPWS_DB("controlpanel_tab");
     $DB->addWhere("frame", $frame);
     $DB->addOrder("tab_order");
-    $DB->addColumn("id");
-    $result = $DB->select("col");
+    $result = $DB->loadItems("PHPWS_ControlPanel_Tab");
 
-    foreach ($result as $id){
-      $tab = & new PHPWS_ControlPanel_Tab($id);
-
-      if (isset($active) && $active == $id)
+    foreach ($result as $tab){
+      if (isset($active) && $active == $tab->getId())
 	$result = $tab->view(TRUE, $activeLinkable);
       else
 	$result = $tab->view(FALSE);
@@ -33,11 +30,10 @@ class PHPWS_ControlPanel {
     $result = PHPWS_ControlPanel::getTabs('controlpanel', $_SESSION['ControlPanel_Current_Tab'], FALSE);
     
     $template['TABS'] = implode("", $result);
-    //$template['LINKS'] = PHPWS_Links::getLinks($currentTab);
+
+    $links = PHPWS_ControlPanel::getLinks();
 
     return PHPWS_Template::process($template, "controlpanel", "panel.tpl");
-
-
   }
 
   function getCurrentTab(){
@@ -61,6 +57,23 @@ class PHPWS_ControlPanel {
     $result = $DB->select("min");
 
     return $result;
+  }
+
+  function getLinks($tab=NULL){
+    
+    if (!isset($_SESSION['CP_Links'])){
+      $DB = new PHPWS_DB("controlpanel_link");
+      if (isset($tab))
+	$DB->addWhere("tab", $tab);
+      $result = $DB->loadItems("PHPWS_ControlPanel_Link");
+      $_SESSION['CP_Links'] = $result;
+      foreach ($result as $row=>$item){
+	if (
+
+      }
+
+    }
+      echo phpws_debug::testarray($_SESSION['CP_Links']);
   }
 
 }
