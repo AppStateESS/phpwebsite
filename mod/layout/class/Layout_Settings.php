@@ -127,8 +127,15 @@ class Layout_Settings{
 
   function saveSettings(){
     $db = & new PHPWS_DB("layout_config");
-    $db->setQWhere("1");
-    return $db->saveObject($this);
+    $vars = PHPWS_Core::stripObjValues($this);
+    unset($vars['_contentVars']);
+    unset($vars['_boxes']);
+    unset($vars['_box_order']);
+    unset($vars['_move_box']);
+    unset($vars['_theme_variables']);
+    unset($vars['current_theme']);
+    $db->addValue($vars);
+    return $db->update();
   }
 
 }
