@@ -588,6 +588,14 @@ class Layout {
     $_SESSION['Layout_Settings']->_cache = FALSE;
   }
 
+  function getBase(){
+    return "<base href=\""
+      . PHPWS_Core::getHttp()
+      . $_SERVER['HTTP_HOST']
+      . preg_replace("/index.*/", "", $_SERVER['PHP_SELF'])
+      . "\" />";
+  }
+
   function wrap($theme, $content){
     if (isset($GLOBALS['Layout_JS'])){
       foreach ($GLOBALS['Layout_JS'] as $script=>$javascript)
@@ -598,10 +606,11 @@ class Layout {
 
     Layout::loadStyleSheets();
     Layout::submitHeaders($theme, $template);
-    $template['METATAGS'] = Layout::getMetaTags();
+    $template['METATAGS']   = Layout::getMetaTags();
     $template['PAGE_TITLE'] = $_SESSION['Layout_Settings']->page_title;
-    $template['CONTENT'] = $content;
-    $template['ONLOAD'] = Layout::getOnLoad();
+    $template['CONTENT']    = $content;
+    $template['ONLOAD']     = Layout::getOnLoad();
+    $template['BASE']       = Layout::getBase();
     $result = PHPWS_Template::process($template, "layout", "header.tpl");
 
     return $result;
