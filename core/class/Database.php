@@ -1020,7 +1020,6 @@ class PHPWS_DB {
   }
 
   function import($text, $report_errors=TRUE){
-    $text = strtolower($text);
     PHPWS_DB::touchDB();
 
     $prefix = PHPWS_DB::getPrefix();
