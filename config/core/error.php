@@ -14,6 +14,7 @@ $errors[PHPWS_DIR_NOT_SECURE]        = _("Directories are not secure.");
 $errors[PHPWS_DIR_CANT_CREATE]       = _("Unable to create file directory.");
 $errors[PHPWS_WRONG_CLASS]           = _("Unknown or incorrect class.");
 $errors[PHPWS_UNKNOWN_MODULE]        = _("Unknown module.");
+$errors[PHPWS_CLASS_VARS]            = _("Unable to derive class variables.");
 
 // Database.php 100 - 199
 $errors[PHPWS_DB_ERROR_TABLE]        = _("Table name not set.");

@@ -15,6 +15,7 @@ define("PHPWS_DIR_NOT_SECURE",       -10);
 define("PHPWS_DIR_CANT_CREATE",      -11);
 define("PHPWS_WRONG_CLASS",          -12);
 define("PHPWS_UNKNOWN_MODULE",       -13);
+define("PHPWS_CLASS_VARS",           -14);
 
 /*********** Database.php ***************/
 
