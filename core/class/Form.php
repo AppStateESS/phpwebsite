@@ -477,12 +477,22 @@ class PHPWS_Form {
 
     case "radio":
     case "radiobutton":
-      return new Form_RadioButton($name, $value);
+      if (is_array($value)){
+	foreach ($value as $sub)
+	  $radio[] = new Form_RadioButton($name, $sub);
+	return $radio;
+      } else
+	return new Form_RadioButton($name, $value);
       break;
 
     case "check":
     case "checkbox":
-      return new Form_CheckBox($name, $value);
+      if (is_array($value)){
+	foreach ($value as $sub)
+	  $check[] = new Form_Checkbox($name, $sub);
+	return $check;
+      } else
+	return new Form_Checkbox($name, $value);
       break;
 
     case "hidden":
@@ -637,7 +647,7 @@ class PHPWS_Form {
   }
 
   function formDate($date_name, $date_match=NULL, $yearStart=NULL, $yearEnd=NULL, $useBlanks=FALSE){
-    return CrutchForm::formDate($date_name, $date_match=NULL, $yearStart=NULL, $yearEnd=NULL, $useBlanks=FALSE);
+    return CrutchForm::formDate($date_name, $date_match, $yearStart, $yearEnd, $useBlanks);
   }
 
   function formRadio($name, $value, $match=NULL, $match_diff=NULL, $label=NULL) {
@@ -645,7 +655,7 @@ class PHPWS_Form {
   }
 
   function formSubmit($value, $name=NULL, $class=NULL) {
-    return CrutchForm::formSubmit($value, $name=NULL, $class=NULL);
+    return CrutchForm::formSubmit($value, $name, $class);
   }
 
   function formHidden($name, $value=NULL) {
