@@ -18,8 +18,9 @@ CREATE TABLE layout_config (
   meta_owner varchar(40) default NULL,
   meta_author varchar(40) default NULL,
   meta_content varchar(40) NOT NULL default '',
-  header text,
-  footer text
-)
+  header text default NULL,
+  footer text default NULL,
+  cache smallint NOT NULL default '0'
+);
 
-INSERT INTO layout_config VALUES ('default', 1, 'phpWebSite', 'phpwebsite', NULL, '11', NULL, NULL, 'ISO-8859-1', NULL, NULL);
+INSERT INTO layout_config VALUES ('default', 1, 'phpWebSite', 'phpwebsite', NULL, '11', NULL, NULL, 'ISO-8859-1', NULL, NULL, 1);
