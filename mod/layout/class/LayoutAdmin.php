@@ -80,6 +80,9 @@ class Layout_Admin{
     $form->add("move_boxes", "radio", array(0, 1));
     if (isset($_SESSION['Move_Boxes']))
       $form->setMatch("move_boxes", 1);
+    else
+      $form->setMatch("move_boxes", 0);
+
     $template = $form->getTemplate();
 
     $template['MOVE_BOX_LABEL'] = _("Adjust Site Layout");
