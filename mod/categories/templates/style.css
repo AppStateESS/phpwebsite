@@ -1,49 +1,7 @@
-ul.cat-list, ul.cat-list ul {
-  width: 150px;
-  background-color: #DEE2BD;
-  padding : 0px;
-  cursor: default;
-  margin : 2px;
-}
-ul.cat-list li {
-  height : 20px;
-  list-style-type: none;
-  position: relative;
-  padding : 4px;
-  margin : -1px 1px -1px 1px;
-  color: black;
-  border : black 1px solid;
-}
-ul.cat-list li > ul {
-  z-index : 1;
-  display: none;
-  position: absolute;
-  top: 5px;
-  left: 120px;
-}
-ul.cat-list li:hover, ul.cat-list li.CSStoHighlight {
-  background-color: #ffa;
-  color: #000;
-}
-ul.cat-list ul.CSStoShow {
-  display: block;
-}
-ul.cat-list li:hover > ul {
-  display: block;
+ul.link-list {
+  padding : 0;
 }
 
-
-ul.cat-list li a {
- color: black;
- display: block;
- width: 100%;
- text-decoration: underline;
- }
-
-ul.cat-list li a:hover, ul.cat-list li a.CSStoHighLink {
- color: #000;
-}
-
-ul.cat-list li:hover > a {
- color: #000;
+ul.link-list li {
+  margin-left : 0px;    
 }
