@@ -176,9 +176,6 @@ class PHPWS_Group {
 
   function kill()
   {
-    if ($this->id == ANONYMOUS_ID) {
-      return PHPWS_Error::get(USER_ANONGROUP_DELETE, 'users', 'kill');
-    }
     $db = & new PHPWS_DB('users_groups');
     $db->addWhere('id', $this->id);
     $db->delete();

@@ -35,11 +35,6 @@ class Current_User {
     Layout::set($login, "users", "CNT_user_small");
   }
 
-  function logAnonymous(){
-    PHPWS_Core::initModClass("users", "Action.php");
-    $_SESSION['User'] = new PHPWS_User(1);
-  }
-
   function isDeity(){
     return $_SESSION['User']->isDeity();
   }

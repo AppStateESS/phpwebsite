@@ -23,9 +23,7 @@ $errors = array(
 		USER_ERR_FAIL_ON_SUBPERM  => _('Module tried to detect a non-existant permission.'),
 		USER_ERR_NO_EMAIL         => _('User\'s email address is missing.'),
 		USER_ERR_BAD_EMAIL        => _('User\'s email address is missing or malformed.'),
-		USER_ERR_MISSING_AUTH     => _('Missing authorization script.'),
-		USER_ANONGROUP_DELETE     => _('The anonymous group may not be deleted.')
-		
+		USER_ERR_MISSING_AUTH     => _('Missing authorization script.')
 		);
 
 ?>

@@ -31,8 +31,12 @@ class User_Form {
   function loggedIn(){
     translate('users');
     PHPWS_Core::initCoreClass('Text.php');
-    $template['MODULES'] = PHPWS_Text::moduleLink(_('Control Panel'), 'controlpanel', array('command'=>'panel_view'));
-    $template['LOGOUT'] = PHPWS_Text::moduleLink(_('Log Out'), 'users', array('action'=>'user', 'command'=>'logout'));
+    $template['MODULES'] = PHPWS_Text::moduleLink(_('Control Panel'),
+						  'controlpanel',
+						  array('command'=>'panel_view'));
+    $template['LOGOUT'] = PHPWS_Text::moduleLink(_('Log Out'),
+						 'users',
+						 array('action'=>'user', 'command'=>'logout'));
     $template['HOME'] = PHPWS_Text::moduleLink(_('Home'));
 
     return PHPWS_Template::process($template, 'users', 'usermenus/Default.tpl');
@@ -102,7 +106,8 @@ class User_Form {
   }
 
 
-  function modulePermission($mod, &$group){
+  function modulePermission($mod, &$group)
+  {
     $file = PHPWS_Core::getConfigFile($mod['title'], 'permission.php');
     $template = NULL;
 
@@ -114,13 +119,15 @@ class User_Form {
     if (!isset($use_permissions) || $use_permissions == FALSE)
       return;
 
-    $permSet[NO_PERMISSION]      = NO_PERM_NAME;
+    $permSet[NO_PERMISSION]              = NO_PERM_NAME;
     $permSet[UNRESTRICTED_PERMISSION]    = FULL_PERM_NAME;
 
-    if (isset($item_permissions) && $item_permissions == TRUE)
+    if (isset($item_permissions) && $item_permissions == TRUE) {
       $permSet[RESTRICTED_PERMISSION] = PART_PERM_NAME;
-    else
+    }
+    else {
       unset($permSet[RESTRICTED_PERMISSION]);
+    }
 
     ksort($permSet);
 
@@ -185,9 +192,6 @@ class User_Form {
     $pager->setSearch('username', 'email');
     $pager->addRowTag('actions', 'User_Manager', 'listAction');
 
-    if (!Current_User::isDeity())
-      $pager->addWhere('id', ANONYMOUS_ID, '!=');
-
     return $pager->get();
   }
 
@@ -215,10 +219,6 @@ class User_Form {
     $pager->addRowTag('members', 'Group_Manager', 'listMembers');
 
     $pager->addWhere('user_id', 0);
-    if (Current_User::isDeity()) {
-      $pager->addWhere('id', ANONYMOUS_ID, '=', 'or');
-    }
-
     return $pager->get();
   }
 

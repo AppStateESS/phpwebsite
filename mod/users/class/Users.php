@@ -3,8 +3,6 @@
 PHPWS_Core::initModClass('users', 'Permission.php');
 PHPWS_Core::configRequireOnce('users', 'config.php');
 
-define('ANONYMOUS_ID', 1);
-
 class PHPWS_User {
   var $id            = NULL;
   var $username      = NULL;
@@ -27,7 +25,8 @@ class PHPWS_User {
   // Indicates whether this is a logged in user
   var $_logged       = FALSE;
  
-  function PHPWS_User($id=NULL){
+  function PHPWS_User($id=NULL)
+  {
     if(!isset($id)){
       $auth = PHPWS_User::getUserSetting('default_authorization');
       $this->setAuthorize($auth);
@@ -36,11 +35,13 @@ class PHPWS_User {
     $this->setId($id);
     $result = $this->init();
 
-    if (PEAR::isError($result))
+    if (PEAR::isError($result)) {
       PHPWS_Error::log($result);
+    }
   }
 
-  function init(){
+  function init()
+  {
     $db = & new PHPWS_DB('users');
     $result = $db->loadObject($this);
 
@@ -51,15 +52,18 @@ class PHPWS_User {
     $this->loadPermissions();
   }
 
-  function setId($id){
+  function setId($id)
+  {
     $this->id = (int)$id;
   }
 
-  function getId(){
+  function getId()
+  {
     return $this->id;
   }
 
-  function isDuplicateUsername(){
+  function isDuplicateUsername()
+  {
     $DB = & new PHPWS_DB('users');
     $DB->addWhere('username', $this->username);
     if (isset($this->id))
@@ -72,7 +76,8 @@ class PHPWS_User {
       return (bool)$result;
   }
 
-  function isDuplicateGroup(){
+  function isDuplicateGroup()
+  {
     $DB = & new PHPWS_DB('users_groups');
     $DB->addWhere('name', $this->username);
     if (isset($this->id))
@@ -85,7 +90,8 @@ class PHPWS_User {
       return (bool)$result;
   }
 
-  function isDuplicateEmail(){
+  function isDuplicateEmail()
+  {
     if (empty($this->email))
       return FALSE;
 
@@ -101,20 +107,29 @@ class PHPWS_User {
       return (bool)$result;
   }
 
-  function setUsername($username){
-    if (empty($username) || preg_match('/\W+/', $username))
-      return PHPWS_Error::get(USER_ERR_BAD_USERNAME, 'users', 'setUsername', $username);
+  function setUsername($username)
+  {
+    if (empty($username) || preg_match('/\W+/', $username)) {
+      return PHPWS_Error::get(USER_ERR_BAD_USERNAME, 'users',
+			      'setUsername', $username);
+    }
    
-    if (strlen($username) < USERNAME_LENGTH)
-      return PHPWS_Error::get(USER_ERR_BAD_USERNAME, 'users', 'setUsername', $username);
+    if (strlen($username) < USERNAME_LENGTH) {
+      return PHPWS_Error::get(USER_ERR_BAD_USERNAME, 'users',
+			      'setUsername', $username);
+    }
    
     $this->username = $username;
 
-    if ($this->isDuplicateUsername())
-      return PHPWS_Error::get(USER_ERR_DUP_USERNAME, 'users', 'setUsername', $username); ;
+    if ($this->isDuplicateUsername()) {
+      return PHPWS_Error::get(USER_ERR_DUP_USERNAME, 'users',
+			      'setUsername', $username); ;
+    }
 
-    if ($this->isDuplicateGroup())
-      return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, 'users', 'setUsername', $username); ;
+    if ($this->isDuplicateGroup()) {
+      return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, 'users',
+			      'setUsername', $username); ;
+    }
     
     return TRUE;
   }
@@ -131,35 +146,45 @@ class PHPWS_User {
   }
 
   function checkPassword($pass1, $pass2){
-    if (empty($pass1) || empty($pass2))
+    if (empty($pass1) || empty($pass2)) {
       return PHPWS_Error::get(USER_ERR_PASSWORD_LENGTH, 'users', 'checkPassword');
-    elseif ($pass1 != $pass2)
+    }
+    elseif ($pass1 != $pass2) {
       return PHPWS_Error::get(USER_ERR_PASSWORD_MATCH, 'users', 'checkPassword');
-    elseif(strlen($pass1) < PASSWORD_LENGTH)
+    }
+    elseif(strlen($pass1) < PASSWORD_LENGTH) {
       return PHPWS_Error::get(USER_ERR_PASSWORD_LENGTH, 'users', 'checkPassword');
-    elseif(preg_match('/(' . implode('|', unserialize(BAD_PASSWORDS)) . ')/i', $pass1))
+    }
+    elseif(preg_match('/(' . implode('|', unserialize(BAD_PASSWORDS)) . ')/i', $pass1)) {
       return PHPWS_Error::get(USER_ERR_PASSWORD_EASY, 'users', 'checkPassword');
-    else
+    }
+    else {
       return TRUE;
+    }
   }
 
-  function getPassword(){
+  function getPassword()
+  {
     return $this->_password;
   }
 
-  function setLogged($status){
+  function setLogged($status)
+  {
     $this->_logged = $status;
   }
 
-  function isLogged(){
+  function isLogged()
+  {
     return (bool)$this->_logged;
   }
 
-  function setLastLogged($time){
+  function setLastLogged($time)
+  {
     $this->last_logged = $time;
   }
 
-  function getLastLogged($mode=NULL){
+  function getLastLogged($mode=NULL)
+  {
     if (empty($mode))
       return $this->last_logged;
     else {
@@ -170,51 +195,63 @@ class PHPWS_User {
     }
   }
 
-  function addLogCount(){
+  function addLogCount()
+  {
     $this->log_count++;
   }
 
-  function getLogCount(){
+  function getLogCount()
+  {
     return $this->log_count;
   }
 
-  function isUser(){
+  function isUser()
+  {
     return isset($this->id);
   }
 
-  function setDeity($deity){
+  function setDeity($deity)
+  {
     $this->deity = (bool)$deity;
   }
 
-  function isDeity(){
+  function isDeity()
+  {
     return $this->deity;
   }
 
-  function setActive($active){
+  function setActive($active)
+  {
     $this->active = (bool)$active;
   }
 
-  function isActive(){
+  function isActive()
+  {
     return (bool)$this->active;
   }
 
-  function setAuthorize($authorize){
+  function setAuthorize($authorize)
+  {
     $this->authorize = (int)$authorize;
   }
 
-  function getAuthorize(){
+  function getAuthorize()
+  {
     return $this->authorize;
   }
 
-  function setApproved($approve){
+  function setApproved($approve)
+  {
     $this->approved = (bool)$approve;
   }
 
-  function isApproved(){
+  function isApproved()
+  {
     return (bool)$this->approved;
   }
 
-  function setEmail($email){
+  function setEmail($email)
+  {
     $this->email = $email;
 
     if (!PHPWS_Text::isValidInput($email, 'email'))
@@ -226,7 +263,8 @@ class PHPWS_User {
     return TRUE;
   }
 
-  function getEmail($html=FALSE, $showAddress=FALSE){
+  function getEmail($html=FALSE, $showAddress=FALSE)
+  {
     if ($html == TRUE){
       if ($showAddress) {
 	return sprintf('<a href="mailto:%s">%s</a>', $this->email, $this->email);
@@ -239,18 +277,21 @@ class PHPWS_User {
       return $this->email;
   }
 
-  function setDisplayName($name){
+  function setDisplayName($name)
+  {
     $this->display_name = $name;
   }
 
-  function getDisplayName(){
+  function getDisplayName()
+  {
     if (empty($this->display_name))
       return $this->username;
     else
       return $this->display_name;
   }
 
-  function loadUserGroups(){
+  function loadUserGroups()
+  {
     $group = $this->getUserGroup();
     if (PEAR::isError($group)){
       echo $group->getMessage();
@@ -280,36 +321,46 @@ class PHPWS_User {
   }
 
 
-  function setGroups($groups){
+  function setGroups($groups)
+  {
     $this->_groups = $groups;
   }
 
-  function getGroups(){
+  function getGroups()
+  {
     return $this->_groups;
   }
 
-  function canChangePassword(){
+  function canChangePassword()
+  {
     return ($this->authorize == LOCAL_AUTHORIZATION || $this->authorize == GLOBAL_AUTHORIZATION) ? TRUE : FALSE;
   }
 
-  function verifyAuthKey(){
+  function verifyAuthKey()
+  {
     if (!isset($_REQUEST['authkey']) || $_REQUEST['authkey'] != $this->getAuthKey())
       return FALSE;
 
     return TRUE;
   }
 
-  function deityAllow(){
+  function deityAllow()
+  {
     if (!$this->verifyAuthKey() || !$this->isDeity())
       return FALSE;
     return TRUE;
   }
 
-  function allowedItem($module, $item_id, $itemname=NULL){
+  function allowedItem($module, $item_id, $itemname=NULL)
+  {
     return $this->_permission->allowedItem($module, $item_id, $itemname);
   }
 
-  function allow($module, $subpermission=NULL, $item_id=NULL, $itemname=NULL, $verify=FALSE){
+  function allow($module, $subpermission=NULL, $item_id=NULL, $itemname=NULL, $verify=FALSE)
+  {
+    if (!$this->isLogged()) {
+      return FALSE;
+    }
     if ($verify && !$this->verifyAuthKey())
       return FALSE;
 
@@ -323,11 +374,13 @@ class PHPWS_User {
   /**
    * Crutch function for versions prior to 0.9.4
    */
-  function allow_access($itemName, $subpermission=NULL, $item_id=NULL){
+  function allow_access($itemName, $subpermission=NULL, $item_id=NULL)
+  {
     return $this->allow($itemName, $subpermission, $item_id);
   }
 
-  function save(){
+  function save()
+  {
     PHPWS_Core::initModClass('users', 'Group.php');
 
     if (!isset($this->id))
@@ -375,11 +428,13 @@ class PHPWS_User {
       return PHPWS_Error::get(USER_ERR_USER_NOT_SAVED, 'users', 'save');
     }
 
-    if ($this->authorize > 0 && !$this->isAnonymousUser()){
-      if ($this->authorize == LOCAL_AUTHORIZATION)
+    if ($this->authorize > 0 && !$this->isLogged()){
+      if ($this->authorize == LOCAL_AUTHORIZATION) {
 	$this->saveLocalAuthorization();
-      elseif ($this->authorize == GLOBAL_AUTHORIZATION)
+      }
+      elseif ($this->authorize == GLOBAL_AUTHORIZATION) {
 	$this->saveGlobalAuthorization();
+      }
     }
 
     if ($newUser)
@@ -388,19 +443,19 @@ class PHPWS_User {
       return $this->updateGroup();
   }
 
-  function isAnonymousUser(){
-    return ($this->id == ANONYMOUS_ID);
-  }
 
-  function makeAuthKey($key){
+  function makeAuthKey($key)
+  {
     $this->_auth_key = md5($this->username . $key . mktime());
   }
 
-  function getAuthKey(){
+  function getAuthKey()
+  {
     return $this->_auth_key;
   }
 
-  function saveLocalAuthorization(){
+  function saveLocalAuthorization()
+  {
     if (empty($this->username) || empty($this->_password))
       return FALSE;
 
@@ -413,11 +468,13 @@ class PHPWS_User {
     return $db->insert();
   }
 
-  function saveGlobalAuthorization(){
+  function saveGlobalAuthorization()
+  {
 
   }
 
-  function createGroup(){
+  function createGroup()
+  {
     $group = new PHPWS_Group;
     $group->setName($this->getUsername());
     $group->setUserId($this->getId());
@@ -432,7 +489,8 @@ class PHPWS_User {
       return TRUE;
   }
 
-  function updateGroup(){
+  function updateGroup()
+  {
     $db = & new PHPWS_DB('users_groups');
     $db->addWhere('user_id', $this->getId());
     $db->addColumn('id');
@@ -459,7 +517,8 @@ class PHPWS_User {
   }
 
 
-  function getUserGroup(){
+  function getUserGroup()
+  {
     if (isset($this->_user_group))
       return $this->_user_group;
 
@@ -475,7 +534,8 @@ class PHPWS_User {
       return $result;
   }
 
-  function disallow($message=NULL){
+  function disallow($message=NULL)
+  {
     $template['TITLE'] = _('Sorry');
     $template['CONTENT']  = ('You do not have permission for this action.');
     $content = PHPWS_Template::process($template, 'users', 'disallow.tpl');
@@ -487,19 +547,22 @@ class PHPWS_User {
     }
   }
 
-  function dropUser(){
+  function dropUser()
+  {
     $DB = new PHPWS_DB('users_settings');
     $DB->addWhere('id', $this->getID());
     return $DB->delete();
   }
 
 
-  function getSettings(){
+  function getSettings()
+  {
     $DB = new PHPWS_DB('users_config');
     return $DB->select('row');
   }
 
-  function getUserSetting($setting, $refresh=FALSE){
+  function getUserSetting($setting, $refresh=FALSE)
+  {
     static $settings;
 
     if (!isset($settings) || $refresh == TRUE){
@@ -513,7 +576,8 @@ class PHPWS_User {
     return $settings[$setting];
   }
 
-  function loadPermissions($loadAll=TRUE){
+  function loadPermissions($loadAll=TRUE)
+  {
     if ($loadAll == TRUE){
       $groups = &$this->getGroups();
     } else
@@ -522,7 +586,8 @@ class PHPWS_User {
     $this->_permission = & new Users_Permission($groups);
   }
 
-  function kill(){
+  function kill()
+  {
     if (empty($this->id))
       return FALSE;
 
@@ -531,7 +596,8 @@ class PHPWS_User {
     $db->delete();
   }
 
-  function savePermissions($key){
+  function savePermissions($key)
+  {
     if (!PHPWS_Core::moduleExists($key->module))
       return PHPWS_Error::get(PHPWS_NO_MOD_FOUND, 'users', __CLASS__ . '::' . __FUNCTION__);
 
@@ -539,7 +605,8 @@ class PHPWS_User {
     Users_Permission::savePermissions($key);
   }
 
-  function assignPermissions($module, $item_id=NULL){
+  function assignPermissions($module, $item_id=NULL)
+  {
     if (!PHPWS_Core::moduleExists($module))
       return PHPWS_Error::get(PHPWS_NO_MOD_FOUND, 'users', __CLASS__ . '::' . __FUNCTION__);
 
@@ -547,7 +614,8 @@ class PHPWS_User {
     return Users_Permission::assignPermissions($module, $item_id);
   }
 
-  function getPermissionLevel($module){
+  function getPermissionLevel($module)
+  {
     if ($this->isDeity())
       return UNRESTRICTED_PERMISSION;
 

@@ -24,7 +24,6 @@ define('USER_ERR_BAD_VAR',         -21);
 /* Group errors */
 define('USER_ERR_BAD_GROUP_NAME',  -30);
 define('USER_ERR_GROUP_DNE',       -31);
-define('USER_ANONGROUP_DELETE',    -32);
 
 /* Permission errors */
 define('USER_ERR_FAIL_ON_SUBPERM', -40);
