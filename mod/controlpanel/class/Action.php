@@ -27,6 +27,20 @@ class CP_Action {
       PHPWS_ControlPanel::reset();
       $content = CP_Action::adminMenu();
       break;
+
+    case "link_up":
+      $link = & new PHPWS_Panel_Link($_REQUEST['link_id']);
+      $link->moveup();
+      PHPWS_ControlPanel::reset();
+      $content = CP_Action::adminMenu();
+      break;
+
+    case "link_down":
+      $link = & new PHPWS_Panel_Link($_REQUEST['link_id']);
+      $link->movedown();
+      PHPWS_ControlPanel::reset();
+      $content = CP_Action::adminMenu();
+      break;
     }
 
     $template['TITLE'] = _("Control Panel Administration");
@@ -41,39 +55,64 @@ class CP_Action {
   function adminMenu(){
     $tabs = PHPWS_ControlPanel::getAllTabs();
     $links = PHPWS_ControlPanel::getAllLinks();
-    
+
+   
     $tpl = & new PHPWS_Template("controlpanel");
     $tpl->setFile("panelList.tpl");
 
-    $values['module'] = "controlpanel";
-    $values['action'] = "admin";
+    $tvalues['module'] = $lvalues['module'] = "controlpanel";
+    $tvalues['action'] = $lvalues['action'] = "admin";
 
-    $up_command = _("Move tab order up");
-    $down_command = _("Move tab order down");
+    $up_tab_command = _("Move tab order up");
+    $down_tab_command = _("Move tab order down");
+    $up_tab = "<img title=\"$up_tab_command\" alt=\"$up_tab_command\" src=\"images/core/list/up_pointer.png\" border=\"0\" />";
+    $down_tab = "<img title=\"$down_tab_command\" alt=\"$down_tab_command\" src=\"images/core/list/down_pointer.png\" border=\"0\" />";
 
-    $up = "<img title=\"$up_command\" alt=\"$up_command\" src=\"images/core/list/up_pointer.png\" border=\"0\" />";
-    $down = "<img title=\"$down_command\" alt=\"$down_command\" src=\"images/core/list/down_pointer.png\" border=\"0\" />";
+    $up_link_command = _("Move link order up");
+    $down_link_command = _("Move link order down");
+    $up_link = "<img title=\"$up_link_command\" alt=\"$up_link_command\" src=\"images/core/list/up_pointer.png\" border=\"0\" />";
+    $down_link = "<img title=\"$down_link_command\" alt=\"$down_link_command\" src=\"images/core/list/down_pointer.png\" border=\"0\" />";
 
+    if (count($tabs) > 1)
+      $move_tabs = TRUE;
+    else
+      $move_tabs = FALSE;
 
     foreach ($tabs as $tab_obj){
-      $action = array();
+      $taction = array();
       if (isset($links[$tab_obj->getId()])){
+	if (count($links[$tab_obj->getId()]) > 1)
+	  $move_links = TRUE;
+	else
+	  $move_links = FALSE;
 	foreach ($links[$tab_obj->getId()] as $link_obj){
+	  $laction = array();
+	  if ($move_links){
+	    $lvalues['link_id'] = $link_obj->getId();
+	    $lvalues['command'] = "link_up";
+	    $laction[] = PHPWS_Text::moduleLink($up_link, "controlpanel", $lvalues);
+	  
+	    $lvalues['command'] = "link_down";
+	    $laction[] = PHPWS_Text::moduleLink($down_link, "controlpanel", $lvalues);
+	  }
+
 	  $tpl->setCurrentBlock("link-list");
-	  $tpl->setData(array("LINK"=>$link_obj->getLabel()));
+	  $tpl->setData(array("LINK"=>$link_obj->getLabel(), "LACTION"=>implode("", $laction)));
 	  $tpl->parseCurrentBlock();
 	}
       }
-      $values['tab_id'] = $tab_obj->getId();
-      $values['command'] = "tab_up";
-      $action[] = PHPWS_Text::moduleLink($up, "controlpanel", $values);
 
-      $values['command'] = "tab_down";
-      $action[] = PHPWS_Text::moduleLink($down, "controlpanel", $values);
-
+      if ($move_tabs){
+	$tvalues['tab_id'] = $tab_obj->getId();
+	$tvalues['command'] = "tab_up";
+	$taction[] = PHPWS_Text::moduleLink($up_tab, "controlpanel", $tvalues);
+	
+	$tvalues['command'] = "tab_down";
+	$taction[] = PHPWS_Text::moduleLink($down_tab, "controlpanel", $tvalues);
+      }
 
       $tpl->setCurrentBlock("tab-list");
-      $tpl->setData(array("TAB"=>$tab_obj->getTitle(), "ACTION"=>implode("", $action)));
+      $tpl->setData(array("TAB"=>$tab_obj->getTitle(), "TACTION"=>implode("", $taction)));
       $tpl->parseCurrentBlock();
     }
 

@@ -9,11 +9,20 @@ class PHPWS_ControlPanel {
 
     $panel = new PHPWS_Panel('controlpanel');
 
-    if (!isset($_SESSION['Control_Panel_Tabs']))
+    if (!isset($_SESSION['Control_Panel_Tabs'])){
       PHPWS_ControlPanel::loadTabs($panel);
+      $tab = $panel->tabs[$panel->getCurrentTab()];
+      $link = $tab->getLink(FALSE);
+      if (!preg_match("/module=controlpanel/", $link)){
+	$_SESSION['Control_Panel_Tabs'] = $panel->getTabs();
+	header("location:" . str_replace("&amp;", "&",$tab->getLink(FALSE)));
+	exit();
+      }
+    }
     else
       $panel->setTabs($_SESSION['Control_Panel_Tabs']);
 
+    
     $allLinks = PHPWS_ControlPanel::getAllLinks();
 
     if (!$allLinks)

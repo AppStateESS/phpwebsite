@@ -165,6 +165,62 @@ class PHPWS_Panel_Link {
     return PHPWS_Template::process($tpl, "controlpanel", "link.tpl");
   }
 
+  /**
+   * Moves the tab 'up' the order, which is actually a lower
+   * order number
+   */ 
+  function moveUp(){
+    $db = & new PHPWS_DB("controlpanel_link");
+    $db->setIndexBy("link_order");
+    $db->addOrder("link_order");
+    $allLinks = $db->getObjects("PHPWS_Panel_Link");
+
+    $current_order = $this->getLinkOrder();
+    if ($current_order == 1){
+      unset($allLinks[1]);
+      $allLinks[] = $this;
+    } else {
+      $tempObj = $allLinks[$current_order - 1];
+      $allLinks[$current_order] = $tempObj;
+      $allLinks[$current_order - 1] = $this;
+    }
+
+
+    $count = 1;
+    foreach ($allLinks as $link){
+      $link->setLinkOrder($count);
+      $link->save();
+      $count++;
+    }
+  }
+
+  function moveDown(){
+    $db = & new PHPWS_DB("controlpanel_link");
+    $db->setIndexBy("link_order");
+    $db->addOrder("link_order");
+    $allLinks = $db->getObjects("PHPWS_Panel_Link");
+    $number_of_links = count($allLinks);
+
+    $current_order = $this->getLinkOrder();
+    if ($current_order == $number_of_links){
+      unset($allLinks[$current_order]);
+      array_unshift($allLinks, $this);
+    } else {
+      $tempObj = $allLinks[$current_order + 1];
+      $allLinks[$current_order] = $tempObj;
+      $allLinks[$current_order + 1] = $this;
+    }
+
+    $count = 1;
+    foreach ($allLinks as $link){
+      $link->setLinkOrder($count);
+      $link->save();
+      $count++;
+    }
+  }
+
+  
+
   function kill(){
     $db = & new PHPWS_DB("controlpanel_link");
     $db->addWhere("id", $this->getId());
