@@ -197,7 +197,7 @@ class PHPWS_Core {
   }
 
   function getConfigFile($module, $file){
-    $file = preg_replace("/[^\w\.\\\\\/]/", "", $file);
+    $file = preg_replace("/[^\-\w\.\\\\\/]/", "", $file);
     $module = preg_replace("/[^\w\.]/", "", $module);
 
     if ($module == "core"){
