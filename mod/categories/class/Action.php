@@ -279,7 +279,7 @@ class Categories_Action{
     $vars['category_id'] = $category->getId();
 
     $vars['subaction'] = 'edit';
-    $links[] = PHPWS_Text::moduleLink(_('Edit'), 'categories', $vars);
+    $links[] = PHPWS_Text::secureLink(_('Edit'), 'categories', $vars);
 
     if (javascriptEnabled()){
       $js_vars['QUESTION'] = _('Are you sure you want to delete this category?');
