@@ -6,11 +6,11 @@
 <table class="bgcolor1" width="100%">
 <tr>
 <td style="width : 200px">
-    {PERMISSION_0}None
+    {PERMISSION_0}
     <!-- BEGIN partial -->
-    {PERMISSION_1}Partial
+    {PERMISSION_1}
     <!-- END partial -->
-    {PERMISSION_2}Full
+    {PERMISSION_2}
 </td>
 <!-- BEGIN subpermissions -->
 <td>{SUBPERMISSIONS}</td>
