@@ -4,7 +4,7 @@ function layout_install(&$content, $branchInstall=FALSE)
 {
   $page_title = NULL;
 
-  if ($_POST['process_layout']) {
+  if (isset($_POST['process_layout'])) {
     if (empty($_POST['page_title'])) {
       $error  = _('Please enter a page title.');
     } else {
@@ -32,7 +32,6 @@ function layout_install(&$content, $branchInstall=FALSE)
   $available_themes = PHPWS_File::readDirectory($theme_dir, TRUE);
 
   $form = & new PHPWS_Form;
-  $form->mergeTemplate($tpl);
   $form->addHidden('step', 3);
   $form->addHidden('module', 'layout');
   $form->addHidden('process_layout', 1);
