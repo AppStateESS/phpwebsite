@@ -1,16 +1,27 @@
 <?php
 
-
 class Layout_Init{
 
   function loadSettings(){
+    require_once("File.php");
     $DB = new PHPWS_DB("layout_config");
     $settings = $DB->select("row");
 
     //if (isset($user_cookie_theme))
     // $settings['current_theme'] = $cookieTheme;
 
-    $settings['current_theme'] = $settings['default_theme'];
+    $currentTheme = $settings['default_theme'];
+
+    $settings['current_theme'] = $currentTheme;
+
+    $transferFile = "./themes/$currentTheme/transfers.tpl";
+
+    if (is_file($transferFile)){
+      $themeVars = explode("\n", trim(File::readAll($transferFile)));
+      $settings['theme_variables'] = $themeVars;
+    } else
+      $settings['theme_variables'] = array("body");
+
     return $settings;
   }
 
@@ -62,11 +73,6 @@ class Layout_Init{
 
       Layout::addBox(Layout::getTheme(), $row['content_var'], $row['theme_var'], "default_box.tpl");
     }
-  }
-
-
-  function initTheme(){
-    $DB = new PHPWS_DB("layout_box");
   }
 
 }
