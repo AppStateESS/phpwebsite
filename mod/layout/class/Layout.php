@@ -150,6 +150,7 @@ class Layout {
   function alternateTheme($template, $module, $file){
     $theme = Layout::getTheme();
     Layout::loadStyleSheets();
+    Layout::submitHeaders($theme, $template);
     $result = PHPWS_Template::process($template, $module, $file);
     echo $result;
     exit();
