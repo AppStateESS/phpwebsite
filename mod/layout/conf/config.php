@@ -27,7 +27,7 @@ define('DEFAULT_THEME_VAR', 'BODY');
 define('DEFAULT_LAYOUT_HOLD', 20);
 define('DEFAULT_CONTENT_VAR', '_MAIN');
 define('MAX_ORDER_VALUE', 99999);
-define('PAGE_TITLE_DIVIDER', '-');
+define('PAGE_TITLE_DIVIDER', ' - ');
 
 
 define('DISPLAY_ERROR_MESSAGE', $display_error_message);
