@@ -26,7 +26,8 @@ There are a few downsides:
    settings from the previous view, you _could_ session the settings.
 2) It expects you to use OOP.
 3) It expects a specific object/table synchronizing.
-
+4) The pager can only order items with the information it obtains from
+   the database.
 
 Getting Started
 --------------------------------------------------------------------
