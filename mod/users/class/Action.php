@@ -57,6 +57,11 @@ class User_Action {
       /** Group Forms **/
 
     case "setUserPermissions":
+      if (!$_SESSION['User']->allow("users", "edit_permissions")){
+	PHPWS_User::disallow();
+        return;
+      }
+
       PHPWS_Core::initModClass("users", "Group.php");
       $user = & new PHPWS_User($_REQUEST['user']);
       $id = $user->getUserGroup();
@@ -250,13 +255,14 @@ class User_Action {
       exit("need error in postPermission");
 
     $permission = $_POST['permission'];
-    $subperm = $_POST['subpermission'];
+    if (isset($_POST['subpermission']))
+      $subperm = $_POST['subpermission'];
 
     if ($update == "all"){
       foreach ($permission as $itemname => $status){
 	Users_Permission::setPermissions($group->getId(), $itemname, $status, $subperm[$itemname]);
       }
-    } else {
+    } elseif (isset($subperm)) {
       if (isset($subperm[$update]))
 	$subpermission = $subperm[$update];
       else
