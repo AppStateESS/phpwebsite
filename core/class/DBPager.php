@@ -474,6 +474,7 @@ class DBPager {
   }
 
   function get(){
+    $template = array();
     $result = $this->initialize();
 
     if (PEAR::isError($result))
@@ -542,15 +543,18 @@ class DBPager {
       $this->getSortButtons($template);
     }
 
-    
-    if (isset($this->extra_tags)){
-      foreach ($this->extra_tags as $key=>$value)
-	$template[$key] = $value;
-    }
+    DBPager::plugExtraTags($template);
 
     $tpl->setData($template);
     return $tpl->get();
 
+  }
+
+  function plugExtraTags(&$template){
+    if (isset($this->extra_tags)){
+      foreach ($this->extra_tags as $key=>$value)
+	$template[$key] = $value;
+    }
   }
 
 }
