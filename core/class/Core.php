@@ -186,6 +186,7 @@ class PHPWS_Core {
     } else
       $location = &$address;
 
+    $location = preg_replace('/&amp;/', '&', $location);
     header('location:' . $location);
     exit();
   }
@@ -211,37 +212,6 @@ class PHPWS_Core {
 
   function setCurrentModule($module){
     $GLOBALS['PHPWS_Current_Mod'] = $module;
-  }
-
-  function report(){
-    if (!isset($_GET['report']))
-      return NULL;
-
-    switch ($_GET['report']){
-    case 'post':
-      echo phpws_debug::testarray($_POST);
-      break;
-
-    case 'request':
-      echo phpws_debug::testarray($_REQUEST);
-      break;
-
-    case 'session':
-      if (!isset($_GET['session']))
-	return NULL;
-
-      $sessionName = &$_GET['session'];
-      $session = $_SESSION[$sessionName];
-
-      if (is_object($session))
-	echo phpws_debug::testobject($session);
-      elseif (is_array($session))
-	echo phpws_debug::testarray($session);
-      else
-	echo
-	  $session;
-      break;
-    }
   }
 
   function getConfigFile($module, $file){
