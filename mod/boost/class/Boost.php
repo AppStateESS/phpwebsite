@@ -172,18 +172,22 @@ class PHPWS_Boost {
       mkdir("$homeDir/images/mod");
     }
 
-    $filesDir = $homeDir . "/files/" . $mod->getTitle();
-    if (!is_dir($filesDir)){
-      $content[] = _("Creating files directory for module.");
-      $this->addLog($mod->getTitle(), _("Created directory") . " " . $filesDir);
-      mkdir($filesDir);
+    if ($mod->isFileDir()){
+      $filesDir = $homeDir . "/files/" . $mod->getTitle();
+      if (!is_dir($filesDir)){
+	$content[] = _("Creating files directory for module.");
+	$this->addLog($mod->getTitle(), _("Created directory") . " " . $filesDir);
+	mkdir($filesDir);
+      }
     }
 
-    $imageDir = $homeDir . "/images/" . $mod->getTitle();
-    if (!is_dir($imageDir)){
-      $this->addLog($mod->getTitle(), _("Created directory") . " " . $imageDir);
-      $content[] = _("Creating image directory for module.");
-      mkdir($imageDir);
+    if ($mod->isImageDir()){
+      $imageDir = $homeDir . "/images/" . $mod->getTitle();
+      if (!is_dir($imageDir)){
+	$this->addLog($mod->getTitle(), _("Created directory") . " " . $imageDir);
+	$content[] = _("Creating image directory for module.");
+	mkdir($imageDir);
+      }
     }
 
     $modSource = $mod->getDirectory() . "img/";
@@ -199,6 +203,7 @@ class PHPWS_Boost {
 
   function onInstall($title, &$content){
     $onInstallFile = PHPWS_SOURCE_DIR . "mod/" . $title . "/boost/install.php";
+    $installFunction = $title . "_install";
     if (!is_file($onInstallFile)){
       $this->addLog($title, _("No installation file found."));
       return NULL;
@@ -209,9 +214,9 @@ class PHPWS_Boost {
 
     include_once($onInstallFile);
 
-    if (function_exists("install")){
+    if (function_exists($installFunction)){
       $content[] = _("Processing installation file.");
-      return install($content);
+      return $installFunction($content);
     }
     else
       return TRUE;
