@@ -1058,42 +1058,18 @@ class PHPWS_DB {
       return $value;
   }// END FUNC dbReady()
 
-  function loadObject(&$object, $variables=NULL){
+  function loadObject(&$object){
     if (!is_object($object))
       return PHPWS_Error::get(PHPWS_DB_NOT_OBJECT, "core", "PHPWS_DB::loadObject");
 
-    if (isset($variables) && !is_array($variables))
-      return PHPWS_Error::get(PHPWS_WRONG_TYPE, "core", __CLASS__ . "::" . __FUNCTION__, gettype($variables));
+    $variables = $this->select("row");
 
-    $className = get_class($object);
-    $classVars = get_class_vars($className);
+    if (PEAR::isError($variables))
+      return $variables;
+    elseif (empty($variables))
+      return FALSE;
 
-    if(!is_array($classVars))
-      return PHPWS_Error::get(PHPWS_DB_NO_VARIABLES, "core", "PHPWS_DB::loadObject");
-
-    if (!isset($variables)){
-      $variables = $this->select("row");
-
-      if (PEAR::isError($variables))
-	return $variables;
-      elseif (empty($variables))
-	return FALSE;
-    }
-
-    foreach($classVars as $key => $value) {
-      $column = $key;
-      if($column[0] == "_")
-	$column = substr($column, 1, strlen($column));
-      
-      if(isset($variables[$column])){
-	if (preg_match("/^[aO]:\d+:/", $variables[$column]))
-	  $object->$key = unserialize($variables[$column]);
-	else
-	  $object->$key = $variables[$column];
-      }
-    }
-
-    return TRUE;
+    return PHPWS_Core::plugObject($object, $variables);
   }
 
   function getObjects($className){
@@ -1108,7 +1084,7 @@ class PHPWS_DB {
 
     foreach ($result as $indexby => $itemResult){
       $genClass = & new $className;
-      PHPWS_DB::loadObject($genClass, $itemResult);
+      PHPWS_Core::plugObject($genClass, $itemResult);
 
       if (isset($indexby))
 	$items[$indexby] = $genClass;

@@ -340,6 +340,32 @@ class PHPWS_Core {
     return $db->select("col");
   }
 
+  function plugObject(&$object, $variables){
+    $className = get_class($object);
+    $classVars = get_class_vars($className);
+
+    if(!is_array($classVars))
+      return PHPWS_Error::get(PHPWS_CLASS_VARS, "core", "PHPWS_Core::plugObject", $className);
+
+    if (isset($variables) && !is_array($variables))
+      return PHPWS_Error::get(PHPWS_WRONG_TYPE, "core", __CLASS__ . "::" . __FUNCTION__, gettype($variables));
+
+
+    foreach($classVars as $key => $value) {
+      $column = $key;
+      if($column[0] == "_")
+	$column = substr($column, 1, strlen($column));
+      
+      if(isset($variables[$column])){
+	if (preg_match("/^[aO]:\d+:/", $variables[$column]))
+	  $object->$key = unserialize($variables[$column]);
+	else
+	  $object->$key = $variables[$column];
+      }
+    }
+    return TRUE;
+  }
+
 }// End of core class
 
 ?>
