@@ -5,6 +5,18 @@ body {
 	font-family : Arial, Helvetica, sans-serif;
 }
 
+.larger {
+	font-size : 110%;
+}
+
+.smaller {
+	font-size : 90%;
+}
+
+.padded {
+	padding : 3px;
+}
+
 img {
     border-style : none;
 }
@@ -12,6 +24,14 @@ img {
 form {
      margin : 0;
      padding : 0;
+}
+
+.align-left {
+     text-align : left;
+}
+
+.align-right {
+     text-align : right;
 }
 
 #gutter {
@@ -57,6 +77,14 @@ form {
 	margin-top: 15px;
 	border-top : white 1px solid;
 }
+
+#notes-list ul {
+       list-style-type : none;
+       margin-left : 0;
+       padding-left : 0;
+       font-size : 90%;
+}
+
 
 a:link, a:visited {
 	text-decoration: underline;
@@ -126,6 +154,7 @@ table.form-table .label {
 	text-align : right;
 	margin-bottom : 5px;
 }
+
 
 div.blog-box div.content {
 	padding : 5px;
