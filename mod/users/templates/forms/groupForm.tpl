@@ -1,4 +1,4 @@
 {START_FORM}
-<span style="font-weight : bold">{GROUPNAME_LBL}</span> {GROUPNAME}
+<span style="font-weight : bold">{GROUPNAME_LABEL}</span> {GROUPNAME}
 {SUBMIT}
 {END_FORM}
