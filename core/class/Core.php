@@ -193,7 +193,7 @@ class PHPWS_Core {
     }
 
 
-    if (!is_file($file)){
+    if (!is_file($file) || FORCE_MOD_CONFIG){
       if (!is_file($altfile))
 	return PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, "core", "getConfigFile", "file = $file");
       else
