@@ -17,6 +17,15 @@
       {SITE_HASH}
     </div>
   </div>
+
+  <div class="config-item">
+    <div class="label">{PEAR_LBL}</div>
+    <div class="definition">{PEAR_DEF}</div>
+    <div class="form-item">
+      {PEAR}
+    </div>
+  </div>
+
 {DEFAULT_SUBMIT}
 </div>
 {END_FORM}
