@@ -20,3 +20,7 @@
 6) When a user (not an admin) is entering ANY data, you should not
    allow html tags. Use the parseText function as anonymous. They
    should use BBCode or Wiki parsing only.
+
+7) Always parse user submitted information. Don't let bad information
+   make it to the database query. If it does and it returns a negative
+   result, recover gracefully.
