@@ -1,21 +1,21 @@
 <?php
 
 class PHPWS_Module {
-  var $_title         = NULL;
-  var $_proper_name   = NULL;
-  var $_priority      = 50;
-  var $_directory     = NULL;
-  var $_version       = NULL;
-  var $_active        = TRUE; 
-  var $_image_dir     = TRUE;
-  var $_file_dir      = TRUE;
-  var $_register      = FALSE;
-  var $_unregister    = FALSE;
-  var $_import_sql    = FALSE;
-  var $_version_http  = NULL;
-  var $_about         = FALSE;
-  var $_pre94         = FALSE;
-  var $_fullMod       = TRUE;
+  var $title         = NULL;
+  var $proper_name   = NULL;
+  var $priority      = 50;
+  var $directory     = NULL;
+  var $version       = NULL;
+  var $active        = TRUE; 
+  var $image_dir     = TRUE;
+  var $file_dir      = TRUE;
+  var $register      = FALSE;
+  var $unregister    = FALSE;
+  var $import_sql    = FALSE;
+  var $version_http  = NULL;
+  var $about         = FALSE;
+  var $pre94         = FALSE;
+  var $fullMod       = TRUE;
 
   function PHPWS_Module($title=NULL){
     if (isset($title)){
@@ -31,14 +31,14 @@ class PHPWS_Module {
     
     $result = PHPWS_Core::getConfigFile($title, "boost.php");
     if (PEAR::isError($result)){
-      $this->_fullMod = FALSE;
+      $this->fullMod = FALSE;
       return $result;
     }
 
     include $result;
 
     if (isset($mod_title)){
-      $this->_pre94 = TRUE;
+      $this->pre94 = TRUE;
       $proper_name = $mod_pname;
       if (!isset($active)|| $active == 'on')
 	$active = TRUE;
@@ -82,124 +82,118 @@ class PHPWS_Module {
     if (isset($about))
       $this->setAbout($about);
 
-    if (isset($api))
-      $this->setAPI($api);
   }
 
 
   function setTitle($title){
-    $this->_title = trim($title);
+    $this->title = trim($title);
   }
 
   function getTitle(){
-    return $this->_title;
+    return $this->title;
   }
 
   function setProperName($name){
-    $this->_proper_name = $name;
+    $this->proper_name = $name;
   }
 
   function getProperName($useTitle=FALSE){
-    if (!isset($this->_proper_name) && $useTitle == TRUE)
+    if (!isset($this->proper_name) && $useTitle == TRUE)
       return ucwords(str_replace("_", " ", $this->getTitle()));
     else
-      return $this->_proper_name;
+      return $this->proper_name;
   }
 
   function setPriority($priority){
-    $this->_priority = (int)$priority;
+    $this->priority = (int)$priority;
   }
 
   function getPriority(){
-    return $this->_priority;
+    return $this->priority;
   }
 
   function setDirectory($directory){
-    $this->_directory = $directory;
+    $this->directory = $directory;
   }
 
   function getDirectory(){
-    return $this->_directory;
+    return $this->directory;
   }
 
   function setVersion($version){
-    $this->_version = $version;
+    $this->version = $version;
   }
 
   function getVersion(){
-    return $this->_version;
+    return $this->version;
   }
 
   function setRegister($register){
-    $this->_register = (bool)$register;
+    $this->register = (bool)$register;
   }
 
   function isRegister(){
-    return $this->_register;
+    return $this->register;
   }
 
   function setUnregister($unregister){
-    $this->_unregister = (bool)$unregister;
+    $this->unregister = (bool)$unregister;
   }
 
   function isUnregister(){
-    return $this->_unregister;
+    return $this->unregister;
   }
 
   function setImportSQL($sql){
-    $this->_import_sql = (bool)$sql;
+    $this->import_sql = (bool)$sql;
   }
 
   function isImportSQL(){
-    return $this->_import_sql;
+    return $this->import_sql;
   }
 
   function setImageDir($switch){
-    $this->_image_dir = (bool)$switch;
+    $this->image_dir = (bool)$switch;
   }
 
   function isImageDir(){
-    return $this->_image_dir;
+    return $this->image_dir;
   }
 
   function setFileDir($switch){
-    $this->_file_dir = (bool)$switch;
+    $this->file_dir = (bool)$switch;
   }
 
   function isFileDir(){
-    return $this->_file_dir;
+    return $this->file_dir;
   }
 
   function setActive($active){
-    $this->_active = (bool)$active;
+    $this->active = (bool)$active;
   }
 
   function isActive(){
-    return $this->_active;
+    return $this->active;
   }
 
   function setAbout($about){
-    $this->_about = (bool)$about;
+    $this->about = (bool)$about;
   }
 
   function isAbout(){
-    return $this->_about;
+    return $this->about;
   }
 
   function isPre94(){
-    return $this->_pre94;
-  }
-
-  function setAPI($api){
-    $this->_api = $api;
+    return $this->pre94;
   }
 
   function setVersionHttp($http){
-    $this->_version_http = $http;
+    $this->version_http = $http;
   }
 
   function getVersionHttp(){
-    return $this->_version_http;
+    return $this->version_http;
   }
 
   function save(){
@@ -237,7 +231,7 @@ class PHPWS_Module {
   }
   
   function isFullMod(){
-    return $this->_fullMod;
+    return $this->fullMod;
   }
 }
 
