@@ -14,15 +14,6 @@ define('PHPWS_SOURCE_DIR', '{source_dir}');
 define('SITE_HASH', '{site_hash}');
 
 /**
- * If you do not name your session, then branches or other
- * installations on the same server will get confused.
- * You can name your session whatever you wish, but basing
- * it on your site hash is not a bad idea.
- */
-define('SESSION_NAME', md5(SITE_HASH));
-
-
-/**
  * Some people are not blessed with the ability to just have
  * more than one database on their server. If you are one of
  * those people, you will need to attach a table prefix to 
