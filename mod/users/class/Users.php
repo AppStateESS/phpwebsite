@@ -479,8 +479,10 @@ class PHPWS_User {
     $content = ("You do not have permission for this action.");
     Layout::add(array("TITLE"=>$title, "CONTENT"=>$content), "users", "User_Main");
 
-    PHPWS_Core::initModClass("security", "Security.php");
-    Security::log($message);
+    if (isset($message)){
+      PHPWS_Core::initModClass("security", "Security.php");
+      Security::log($message);
+    }
   }
 
   function dropUser(){
