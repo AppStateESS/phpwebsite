@@ -1,193 +1,262 @@
 <?php
 
+define("VERSION_TABLE_SUFFIX", "_version");
+
+/* Error messages */
+define("VERSION_MISSING_ID",     -1);
+define("VERSION_NO_TABLE",       -2);
+define("VERSION_NOT_MODULE",     -3);
+define("VERSION_WRONG_SET_VAR",  -4);
+define("VERSION_MISSING_SOURCE", -5);
+
 class Version {
-  var $_error = NULL;
+  var $id             = 0;
+  var $source_id      = 0;
+  var $source_table   = NULL;
+  var $module         = NULL;
+  var $version_table  = NULL;
+  var $source_data    = NULL;
 
-  function getVersion($version_id, $table, $strip=TRUE, $switch_id=TRUE){
-    $versionTable = Version::getVersionTable($table);
+  var $vr_creator     = 0;
+  var $vr_editor      = 0;
+  var $vr_create_date = 0;
+  var $vr_edit_date   = 0;
+  var $vr_number      = 0;
+  var $vr_current     = 0;
+  var $vr_approved    = 0;
+  var $vr_locked      = 0;
+  
+  var $_error         = NULL;
 
-    if (PEAR::isError($versionTable))
-      return $versionTable;
-
-    $db = & new PHPWS_DB($versionTable);
-    $db->addWhere("id", (int)$version_id);
-    $result = $db->select("row");
-    if (PEAR::isError($result))
-      return $result;
-
-    if ($strip)
-      Version::_stripVersionVars($result);
-
-    if ($switch_id)
-      Version::_exchangeID($result);
-
-    return $result;
-  }
-
-  function getVersionTableName($table){
-    return $table . "_version";
-  }
-
-  function getVersionTable($table){
-    if (!PHPWS_DB::isTable($table))
-      return PHPWS_Error::get(PHPWS_DB_NO_TABLE, "core", __CLASS__ . "::" . __FUNCTION__);
-
-    $versionTable = Version::getVersionTableName($table);
-    if (!PHPWS_DB::isTable($versionTable)){
-      $result = Version::_buildVersionTable($table);
-
-      if (PEAR::isError($result))
-	return $result;
+  function Version($module, $source_table, $id=NULL)
+  {
+    $this->module = $module;
+    $this->source_table = $source_table;
+    $this->id = (int)$id;
+    $result = $this->init();
+    if (PEAR::isError($result)) {
+      $this->_error = $result;
+      return;
     }
-    return $versionTable;
   }
 
-  function getUnapproved($table, $id=NULL, $strip=TRUE){
-    if (isset($GLOBALS['Unapproved'][$table][$id]))
-      $result = $GLOBALS['Unapproved'][$table][$id];
-    $versionTable = Version::getVersionTable($table);
+  function setId($id){
+    $this->id = (int)$id;
+  }
 
-    if (PEAR::isError($versionTable))
-      return $versionTable;
+  function getId(){
+    return $this->id;
+  }
 
-    $db = & new PHPWS_DB($versionTable);
+  function getVersionId(){
+    return $this->id;
+  }
 
-    if (isset($id)){
-      $db->addWhere("main_id", (int)$id);
-      $mode = "row";
+  function getSourceId(){
+    return $this->source_id;
+  }
+
+  function getCreationDate($format=FALSE){
+    if ($format = TRUE) {
+      return strftime("%c", $this->vr_create_date);
     } else {
-      $mode = "all";
+      return $this->vr_create_date;
+    }
+  }
+
+  function getEdittedDate($format=FALSE){
+    if ($format = TRUE) {
+      return strftime("%c", $this->vr_edit_date);
+    } else {
+      return $this->vr_edit_date;
+    }
+  }
+
+  function getCreator(){
+    return $this->vr_creator;
+  }
+
+  function getEditor(){
+    return $this->vr_editor;
+  }
+
+  function setApproved($approve){
+    $this->vr_approved = (int)$approve;
+  }
+
+  function isApproved(){
+    return (bool)$this->vr_approved;
+  }
+
+  function init()
+  {
+    if (!PHPWS_Core::moduleExists($this->module)) {
+      return PHPWS_Error::get(VERSION_NOT_MODULE, "version", "init", $this->module);
     }
 
-    $db->addWhere("approved", 0);
-    $result = $db->select($mode);
+    if (!PHPWS_DB::isTable($this->source_table))
+      return PHPWS_Error::get(VERSION_NO_TABLE, "version", "init", $this->source_table);
 
-    if (isset($result) && $strip)
-      Version::_stripVersionVars($result);
-    return $result;
+    $result = $this->_initVersionTable();
+    if (PEAR::isError($result)) {
+      $this->_error = $result;
+      return;
+    }
+
+    if (!empty($this->id)) {
+      $result = $this->_initVersion();
+      if (PEAR::isError($result)) {
+	return $result;
+      }
+    }
   }
 
-  function waitingApproval($table, $id){
-    $result = Version::getUnapproved($table, $id);
-
-    if (PEAR::isError($result))
-      return $result;
-
-    if (isset($result))
-      $GLOBALS['Unapproved'][$table][$id] = $result;
-
-    return empty($result) ? FALSE : $result['id'];
+  function getSource(){
+    return $this->source_data;
   }
 
-  function isLocked($table, $id){
-    $result = Version::getUnapproved($table, $id);
-    return isset($result) ? TRUE : FALSE;
-  }
-
-
-  function saveUnapproved($table, $object){
-    $result = Version::waitingApproval($table, $object->id);
-
-    if (Version::waitingApproval($table, $object->id)) {
-      return Version::updateUnapproved($table, $object);
+  function setSource($source_data){
+    if (is_object($source_data)) {
+      $data_values = get_object_vars($source_data);
+    }
+    elseif (is_array($source_data)) {
+      $data_values = $source_data;
     }
     else {
-      return Version::createUnapproved($table, $object);
+      return PHPWS_Error::get(VERSION_WRONG_SET_VAR, "version", "set", gettype($source_data));
     }
+
+    $this->source_data = $data_values;
+    if (isset($this->source_data['id'])) {
+      $this->source_id = $this->source_data['id'];
+    }
+
+    return TRUE;
   }
 
-  function saveApproved($table, $object){
-    if (Version::waitingApproval($table, $object->id))
-      return Version::updateApproved($table, $object);
+  function save(){
+    $source_db = & new PHPWS_DB($this->source_table);
+    $version_db = & new PHPWS_DB($this->version_table);
+    if (empty($this->source_data))
+      return PHPWS_Error::get(VERSION_MISSING_SOURCE, "version", "save");
+
+    if (empty($this->id)) {
+      $this->vr_creator = Current_User::getId();
+      $this->vr_create_date = mktime();
+    }
+    else {
+      $this->vr_editor = Current_User::getId();
+      $this->vr_edit_date = mktime();
+    }
+
+    if (empty($this->vr_number))
+      $this->vr_number = $this->_getVersionNumber();
+
+    if ($this->vr_approved || empty($this->source_id)) {
+      $this->vr_current = 1;
+    } else {
+      $this->vr_current = 0;
+    }
+
+    foreach ($this->source_data as $col_name => $col_val) {
+      if ($col_name == "id") {
+	$version_db->addValue("source_id", (int)$col_val);
+      } else {
+	if (!$version_db->isTableColumn($col_name)) {
+	  if($source_db->isTableColumn($col_name)) {
+	    $result = $this->_copyVersionColumn($col_name);
+	    if (PEAR::isError($result)){
+	      return $result;
+	    }
+	  } else {
+	    continue;
+	  }
+	}
+
+	$version_db->addValue($col_name, $col_val);
+      }
+    }
+
+    $version_db->addValue("vr_creator",     $this->vr_creator);
+    $version_db->addValue("vr_editor",      $this->vr_editor);
+    $version_db->addValue("vr_create_date", $this->vr_create_date);
+    $version_db->addValue("vr_edit_date",   $this->vr_edit_date);
+    $version_db->addValue("vr_number",      $this->vr_number);
+    $version_db->addValue("vr_current",     $this->vr_current);
+    $version_db->addValue("vr_approved",    $this->vr_approved);
+
+    if ($this->vr_current) {
+      $this->_clearCurrents();
+    }
+
+    if (!empty($this->id)) {
+      $version_db->addWhere("id", $this->id);
+      return $version_db->update();
+    } else {
+      $result = $version_db->insert();
+      $this->id = $result;
+    }
+    return TRUE;
+  }
+
+  function _clearCurrents(){
+    $db = & new PHPWS_DB($this->version_table);
+    $db->addWhere("source_id", $this->source_id);
+    $db->addValue("vr_current", 0);
+    $db->update();
+  }
+
+  function getUnapproved($restrict=FALSE){
+    $version_db = & new PHPWS_DB($this->version_table);
+
+    if ($restrict == TRUE) {
+      $version_db->addWhere("vr_creator", Current_User::getId());
+    }
+
+    $version_db->addWhere("vr_approved", 0);
+    $result = $version_db->select();
+
+    if (PEAR::isError($result))
+      return $result;
+
+    foreach ($result as $row) {
+      $version = & new Version($this->module, $this->source_table);
+      $version->_plugInVersion($row);
+      $unapproved_list[$row['id']] = $version;
+    }
+
+    return $unapproved_list;
+  }
+
+  function _plugInVersion($data){
+    PHPWS_DB::loadObject($this, $data);
+    $diff = array_diff_assoc($data, get_object_vars($this));
+    $this->setSource($diff);
+
+    return TRUE;
+  }
+
+  function _copyVersionColumn($col_name){
+    $source_db = & new PHPWS_DB($this->source_table);
+    $version_db = & new PHPWS_DB($this->version_table);
+
+    $col_info = $source_db->getColumnInfo($col_name, TRUE);
+    if (isset($col_info['index']))
+      $index = TRUE;
     else
-      return Version::createApproved($table, $object);
+      $index = FALSE;
+
+    return $version_db->addTableColumn($col_name, $col_info['parameters'], NULL, $index);
   }
 
-  function saveVersion($table, $object){
-    return Version::createApproved($table, $object);
-  }
-
-  function updateUnapproved($table, $object){
-    $db = Version::_prepareDB($table, $object);
-
-    if (PEAR::isError($db))
-      return $db;
-
-    Version::_prepareUpdate($db, $table, $object, 0);
-
-    if (!isset($db->values['main_id']))
-      $db->addValue("main_id", 0);
-
-    return $db->update();
-  }
-
-  function createUnapproved($table, $object){
-    $db = Version::_prepareDB($table, $object);
-    if (PEAR::isError($db))
-      return $db;
-
-    $version_number = Version::_getCurrentVersionNumber($db->getTable(), $object->id);
-    Version::_addVersionValues($db, 0, 0, $version_number);
-
-    if (!isset($db->values['main_id']))
-      $db->addValue("main_id", 0);
-
-    return $db->insert();
-  }
-
-  function updateApproved($table, &$object){
-    $db = Version::_prepareDB($table, $object);
-    if (PEAR::isError($db))
-      return $db;
-
-    Version::_clearCurrents($db->getTable(), $object->id);
-    Version::_prepareUpdate($db, $table, $object, 1);
-
-    if (!isset($db->values['main_id']))
-      $db->addValue("main_id", 0);
-
-    $result = $db->update();
-  }
-
-  function createApproved($table, &$object){
-    $db = Version::_prepareDB($table, $object);
-    if (PEAR::isError($db))
-      return $db;
-
-    Version::_clearCurrents($db->getTable(), $object->id);
-
-    $version_number = Version::_getCurrentVersionNumber($db->getTable(), $object->id);
-    Version::_addVersionValues($db, 1, 1, $version_number);
-
-    if (!isset($db->values['main_id']))
-      $db->addValue("main_id", 0);
-
-    $result = $db->insert();
-  }
-
-
-  function _addVersionValues(&$db, $current, $approved, $version_number){
-    $db->addValue("version_date",    mktime());
-    $db->addValue("last_editor",     Current_User::getId());
-    $db->addValue("version_number",  $version_number);
-    $db->addValue("current_version", (int)$current);
-    $db->addValue("approved",        (int)$approved);
-
-    // Need to code this portion when workflow is ready!
-    $db->addValue("approve_group", 0);
-    // Code this for multiple users
-    $db->addValue("locked",        0);
-  }
-
-
-  function _getCurrentVersionNumber($table, $id){
-    if ($id == 0)
+  function _getVersionNumber(){
+    if (empty($this->source_id))
       return 1;
+    $version_db = & new PHPWS_DB($this->version_table);
 
-    $db = & new PHPWS_DB($table);
-    $db->addWhere("main_id", $id);
-    $db->addColumn("version_number");
-    $current_version = $db->select("max");
+    $version_db->addWhere("source_id", $this->source_id);
+    $version_db->addColumn("vr_number");
+    $current_version = $version_db->select("max");
     if (empty($current_version))
       $current_version = 1;
     else
@@ -196,96 +265,57 @@ class Version {
     return $current_version;
   }
 
-  function _clearCurrents($versionTable, $id){
-    $db = & new PHPWS_DB($versionTable);
-    $db->addWhere("main_id", $id);
-    $db->addValue("current_version", 0);
-    return $db->update();
+  function _initVersion()
+  {
+    $version_db = & new PHPWS_DB($this->version_table);
+    $version_db->addWhere("id", $this->id);
+    $row = $version_db->select("row");
+    if (PEAR::isError($row))
+      return $row;
+
+    $this->_plugInVersion($row);
   }
 
-  function _plugObjectValues(&$object, &$db){
-    $object_vars = get_object_vars($object);
+  function _initVersionTable()
+  {
+    $this->version_table = $this->source_table . VERSION_TABLE_SUFFIX;
+    if (!PHPWS_DB::isTable($this->version_table)){
+      $result = Version::_buildVersionTable();
 
-    if (empty($object_vars)) {
-      return NULL;
+      if (PEAR::isError($result))
+	return $result;
     }
 
-    foreach ($object_vars as $column_name => $column_value){
-      if (!$db->isTableColumn($column_name)) {
-	continue;
-      }
-
-      if ($column_name == "id") {
-	$db->addValue("main_id", $column_value);
-	continue;
-      }
-
-      $db->addValue($column_name, $column_value);
-    }
+    return TRUE;
   }
 
-
-  function &_prepareDB($table, &$object){
-    $versionTable = Version::getVersionTable($table);
-    if (PEAR::isError($versionTable))
-      return $versionTable;
-
-    $db = & new PHPWS_DB($versionTable);
-    Version::_plugObjectValues($object, $db);
-
-    $db->setTable($versionTable);
-    return $db;
-  }
-
-  function _exchangeID(&$version){
-    $version['id'] = $version['main_id'];
-    unset($version['main_id']);
-  }
-
-  function _prepareUpdate(&$db, $table, &$object, $approved){
-    $unapproved = Version::getUnapproved($table, $object->id, FALSE);
-    $version_number = $unapproved['version_number'];
-    $db->addWhere("main_id", $object->id);
-    $db->addWhere("version_number", $version_number);
-    Version::_addVersionValues($db, $approved, $approved, $version_number);
-  }
-
-  function _stripVersionVars(&$version){
-    unset($version['last_editor']);
-    unset($version['version_date']);
-    unset($version['version_number']);
-    unset($version['current_version']);
-    unset($version['approved']);
-    unset($version['approve_group']);
-    unset($version['locked']);
-  }
-
-  function _buildVersionTable($table){
-    $db = & new PHPWS_DB($table);
-    $allColumns = $db->getTableColumns(TRUE);
+  function _buildVersionTable(){
+    $source_db = & new PHPWS_DB($this->source_table);
+    $allColumns = $source_db->getTableColumns(TRUE);
 
     foreach ($allColumns as $editCol){
       $newColumns[] = $editCol;
       if ($editCol['name'] == "id")
-	$newColumns[] = array("table" => $table,
-			      "name"  => "main_id",
+	$newColumns[] = array("table" => $this->version_table,
+			      "name"  => "source_id",
 			      "type"  => "int",
 			      "flags" => "NOT NULL"
 			      );
     }
 
-    $parsed_columns = $db->parseColumns($newColumns);
+    $parsed_columns = $source_db->parseColumns($newColumns);
     $columns = $parsed_columns['parameters'];
-    $columns[] = "last_editor int NOT NULL default 0";
-    $columns[] = "version_date int NOT NULL";
-    $columns[] = "version_number smallint NOT NULL default 1";
-    $columns[] = "current_version smallint NOT NULL default 0";
-    $columns[] = "approved smallint NOT NULL default 0";
-    $columns[] = "approve_group smallint NOT NULL default 0";
-    $columns[] = "locked smallint NOT NULL default 0";
 
-    $sql = "CREATE TABLE " . Version::getVersionTableName($table) .
-      " (" . implode(", ", $columns) . ")";
+    $result = PHPWS_Core::getConfigFile("version", "config.php");
+    if (PEAR::isError($result))
+      return $result;
+
+    include $result;
+    foreach ($version_columns as $verCol) {
+      $columns[] = $verCol['name'] . " " . $verCol['sql'];
+    }
+
+    $sql = "CREATE TABLE " . $this->version_table . " (" . implode(", ", $columns) . ")";
 
     $result = PHPWS_DB::query($sql);
     if (PEAR::isError($result))
@@ -295,66 +325,19 @@ class Version {
       return PHPWS_DB::query($parsed_columns['index']);
   }
 
-
-  function getAll($id, $table, $class = NULL){
-    $versionTable = Version::getVersionTable($table);
-    if (PEAR::isError($versionTable))
-      return $versionTable;
-
-    $db = & new PHPWS_DB($versionTable);
-    $db->addWhere("main_id", (int)$id);
-    $db->addWhere("approved", 1);
-    $db->addWhere("current_version", 0);
-    $db->setIndexBy("version_number");
-    $db->addOrder("version_number desc");
-
-    if (isset($class) && class_exists($class))
-      $result = $db->getObjects($class);
-    else
-      $result = $db->select();
-
-    return $result;
+  function loadObject(&$object){
+    $data = $this->getSource();
+    PHPWS_DB::loadObject($object, $data);
   }
 
-  function restore(&$object, $order, $table){
-    $versionTable = Version::getVersionTable($table);
-    if (PEAR::isError($versionTable))
-      return $versionTable;
-
-    $db = & new PHPWS_DB($versionTable);
-    $db->addWhere("main_id", (int)$object->id);
-    $db->addWhere("version_number", $order);
-    $db->addWhere("approved", 1);
-    $result = $db->select("row");
-
-    if (empty($result))
-      return FALSE;
-
-    Version::_stripVersionVars($result);
-    foreach ($result as $key => $value) {
-      $object->$key = $value;
-    }
-
-    return TRUE;
+  function isWaitingApproval(){
+    $db = & new PHPWS_DB($this->version_table);
+    $db->addWhere("source_id", $this->source_id);
+    $db->addWhere("vr_approved", 0);
+    $db->addColumn("id");
+    return $db->select("one");
   }
-
-  function loadVersion($table, $version_id, $class_name) {
-    $data = Version::getVersion($version_id, $table);
-    if (PEAR::isError($data))
-      return $data;
-
-    if (!class_exists($class_name))
-      return PHPWS_Error::get(PHPWS_CLASS_NOT_EXIST, "core", "Version::loadVersion");
-
-    $object = new $class_name;
-
-    $result = PHPWS_DB::loadObject($object, $data);
-    if (PEAR::isError($result))
-      return $result;
-    else
-      return $object;
-  }
-
 }
+
 
 ?>
