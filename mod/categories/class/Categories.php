@@ -327,6 +327,10 @@ class Categories{
     $db->delete();
   }
 
+  function delete($category){
+    $category->kill();
+  }
+
 }
 
 ?>
