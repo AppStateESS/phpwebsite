@@ -46,6 +46,7 @@ class Setup{
 	  . "<pre>" . $configDir . "config.php</pre>";
       }
       elseif (Setup::writeConfigFile()){
+	PHPWS_Core::killSession("configSettings");
 	$content[] = _("Your configuration file was written successfully!") . "<br /><br />";
 	$content[] = PHPWS_Text::link("index.php", _("Move on to Step 2"), array("step"=>2)) . "<br />";
       } else {
@@ -291,7 +292,6 @@ class Setup{
   }
 
   function getSourceDir(){
-
     $dir = explode("/", __FILE__);
     for ($i=0; $i < 3; $i++)
       array_pop($dir);
@@ -305,6 +305,7 @@ class Setup{
     $directory[] = Setup::getSourceDir() . "images/";
     $directory[] = Setup::getSourceDir() . "templates/";
     $directory[] = Setup::getSourceDir() . "files/";
+    $directory[] = Setup::getSourceDir() . "logs/";
 
     foreach ($directory as $id=>$check){
       if (!is_writable($check))
@@ -316,14 +317,17 @@ class Setup{
       $content[] = "<pre>" . implode("<br />", $writableDir) . "</pre>";
       $content[] = _("Please make these changes and return.") . "<br />";
       $content[] = PHPWS_Text::link("help/permissions." . DEFAULT_LANGUAGE . ".txt", _("Permission Help"), NULL, "index");
-      exit(Setup::show($content));
+      return;
     }
   }
 
-  function show($content){
+  function show($content, $title=NULL){
     $tpl = & new PHPWS_Template;
     $tpl->setFile("setup/templates/setup.tpl", TRUE);
-    $setupData['TITLE'] = _("phpWebSite 0.9.4 Alpha Setup");
+    if (!isset($title))
+      $title = _("phpWebSite 0.9.4 Alpha Setup");
+
+    $setupData['TITLE'] = $title;
     $setupData['MAIN_CONTENT'] = implode("", $content);
     $tpl->setData($setupData);
     return $tpl->get();
@@ -337,7 +341,7 @@ class Setup{
 	$content[] = _("There is a problem with your sessions.") . "<br />";
 	$content[] = _("phpWebSite depends on sessions to move data between pages.") . "<br />";
 	$content[] = PHPWS_Text::link("help/sessions." . DEFAULT_LANGUAGE . ".txt", _("Sessions Help"), NULL, "index");
-	exit(Setup::show($content));
+	return;
       }
       return FALSE;
     }
@@ -360,8 +364,15 @@ class Setup{
       . "us at irc: freenode.net #phpwebsite </p>";
 
     $content[] = PHPWS_Text::link("index.php", _("Begin Installation"), array("step"=>$step));
+    return;
+  }
 
-    exit(Setup::show($content));
+  function createCore(&$content){
+    PHPWS_Core::initModClass("boost", "Boost.php");
+    $core = & PHPWS_Core::loadAsMod();
+    $boost = new PHPWS_Boost;
+    $boost->setModule($core);
+    $boost->install();
   }
 
 }
