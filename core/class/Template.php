@@ -40,24 +40,48 @@ class PHPWS_Template extends HTML_Template_Sigma {
     return $theme . "templates/" . $module . "/";
   }
 
+  function setCache(){
+    if (!PHPWS_Template::allowSigmaCache() ||
+	!defined("CACHE_DIRECTORY")        ||
+	!defined("CACHE_LIFETIME")         ||
+	!is_writable(CACHE_DIRECTORY)
+	)
+      return;
+
+    $this->setCacheRoot(CACHE_DIRECTORY);
+  }
+
+  function allowSigmaCache(){
+    if (defined("ALLOW_SIGMA_CACHE"))
+      return ALLOW_SIGMA_CACHE;
+    else
+      return FALSE;
+  }
+
   function setFile($file, $strict=FALSE){
     $module = $this->getModule();
-    if ($strict == TRUE)
+    if ($strict == TRUE){
+      $this->setCache();
       $result = $this->loadTemplatefile($file);
+    }
     else {
       $altFile = PHPWS_Template::getTplDir($module) . $file;
 
       if (PEAR::isError($altFile))
 	return $altFile;
 
-      if (FORCE_THEME_TEMPLATES || is_file($altFile))
+      if (FORCE_THEME_TEMPLATES || is_file($altFile)){
+	$this->setCache();
 	$result = $this->loadTemplatefile($altFile);
+      }
       elseif (FORCE_MOD_TEMPLATES){
 	$file = PHPWS_SOURCE_DIR . "mod/$module/templates/$file";
-	$result = $this->loadTemplatefile($file);	
+	$this->setCache();
+	$result = $this->loadTemplatefile($file);
       }
       else {
 	$file = "templates/$module/$file";
+	$this->setCache();
 	$result = $this->loadTemplatefile($file);
       }
     }
