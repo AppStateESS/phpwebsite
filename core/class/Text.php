@@ -180,6 +180,8 @@ class PHPWS_Text {
    * @return  string  text         Stripped text
    */
   function parseOutput($text, $printTags=FALSE){
+    if (empty($text))
+      return NULL;
     require_once("HTML/BBCodeParser.php");
 
     // Set up BBCodeParser
@@ -187,7 +189,6 @@ class PHPWS_Text {
     $options = &PEAR::getStaticProperty("HTML_BBCodeParser", "_options");
     $options = $config["HTML_BBCodeParser"];
     unset($options);
-
 
     if (FILTER_PROFANITY) 
       $text = PHPWS_Text::profanityFilter($text);
