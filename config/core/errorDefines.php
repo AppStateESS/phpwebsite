@@ -9,6 +9,7 @@ define("PHPWS_DIR_NOT_WRITABLE",      -4);
 define("PHPWS_VAR_TYPE",              -5);
 define("PHPWS_STRICT_TEXT",           -6);
 define("PHPWS_INVALID_VALUE",         -7);
+define("PHPWS_NO_MODULES",            -8);
 
 
 /*********** Database.php ***************/

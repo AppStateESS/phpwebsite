@@ -8,6 +8,7 @@ $errors[PHPWS_DIR_NOT_WRITABLE]      = _("Directory is not writable");
 $errors[PHPWS_VAR_TYPE]              = _("Wrong variable type.");
 $errors[PHPWS_STRICT_TEXT]           = _("Improperly formated text.");
 $errors[PHPWS_INVALID_VALUE]         = _("Invalid value");
+$errors[PHPWS_NO_MODULES]            = _("No active modules installed.");
 
 // Database.php 100 - 199
 $errors[PHPWS_DB_ERROR_TABLE]        = _("Table name not set");
