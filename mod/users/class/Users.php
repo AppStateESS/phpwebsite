@@ -222,7 +222,7 @@ class PHPWS_User extends PHPWS_Item {
     if (!isset($this->_permissions[$itemName]))
       $result = $this->loadPermission($itemName);
 
-    if(isset($this->_permissions[$itemName])){
+    if(isset($this->_permissions[$itemName]['permissions'])){
       if (isset($subpermission)){
 	$allow = $this->_permissions[$itemName]['permissions'][$subpermission];
 	if ($allow == FULL_PERMISSION)
@@ -312,7 +312,20 @@ class PHPWS_User extends PHPWS_Item {
     return $settings[$setting];
   }
 
+  function closeAction($command){
+    switch ($command){
+    case "admin":
+      PHPWS_Core::initModClass("users", "Form.php");
+      PHPWS_User_Form::adminPanel();
+      break;
+    }
+  }
 
+  function disallow(){
+    $title = "Sorry Charlie...";
+    $content = "That section of the site is off limits to your type";
+    PHPWS_Layout::add(array($title, $content), TRUE);
+  }
 
 }
 

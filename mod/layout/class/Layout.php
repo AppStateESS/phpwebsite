@@ -130,7 +130,7 @@ class PHPWS_Layout {
       return NULL;
   }
 
-  function getBoxTpl($contentVar){
+  function isBoxTpl($contentVar){
     if (isset($_SESSION['Layout'][$contentVar]))
       return $_SESSION['Layout'][$contentVar]['box'];
     else
@@ -162,19 +162,19 @@ class PHPWS_Layout {
 
       if (!in_array($theme_var, $themeVarList))
 	$themeVarList[] = $theme_var;
-      
+
       $order = PHPWS_Layout::getBoxOrder($contentVar);
 
       if (!isset($order))
 	$order = MAX_ORDER_VALUE;
 
-      if ($box = PHPWS_Layout::getBoxTpl($contentVar)){
+      if ($box = PHPWS_Layout::isBoxTpl($contentVar)){
 	$tpl = new PHPWS_Template;
+	echo phpws_debug::testarray($_SESSION['Layout_Boxes']);
 
 	$file = $_SESSION['Layout_Boxes'][$contentVar]['template'];
 	$directory = "themes/$theme/boxstyles/";
-
-	if (isset($file))
+	if (isset($file) && is_file($directory . $file))
 	  $tpl->setFile($directory . $file, TRUE);
 	else
 	  $tpl->setTemplate(DEFAULT_TEMPLATE);
@@ -182,8 +182,9 @@ class PHPWS_Layout {
 	$tpl->setData($template);
 
 	$unsortedLayout[$theme_var][$order] = $tpl->get();
-      } else
+      } else {
 	$unsortedLayout[$theme_var][$order] = implode("", $template);
+      }
 
       $hold = PHPWS_Layout::getBoxHold($contentVar);
 
@@ -208,7 +209,7 @@ class PHPWS_Layout {
 	$finalLayout['JAVASCRIPT'] = implode("\n", $jsHead);
     }
 
-    $finalTheme = &PHPWS_Layout::loadTheme($theme, $finalLayout);
+      $finalTheme = &PHPWS_Layout::loadTheme($theme, $finalLayout);
 
     if (PEAR::isError($finalTheme))
       echo implode("", $finalLayout);

@@ -1,14 +1,9 @@
 <?php
 
-
-
 $DB = new PHPWS_DB("user_permissions");
 if (!isset($_REQUEST['action'])){
   return;
 }
-
-if (isset($_REQUEST['User_Form']))
-     PHPWS_Core::initModClass("users", "Form.php");
 
 foreach ($_REQUEST['action'] as $area=>$command);
 
@@ -30,16 +25,10 @@ switch ($area){
    break;
 
  case "closed":
-   if (!$_SESSION['User']->allow("users", "user"))
-     return;
-   switch ($command){
-   case "admin":
-     PHPWS_User_Form::adminPanel();
-     break;
-
-   } // End of closed command switch
-
-
+   if (!$_SESSION['User']->allow("users"))
+     PHPWS_User::disallow();
+   else
+     PHPWS_User::closeAction($command);
    break;
 }// End area switch
 
