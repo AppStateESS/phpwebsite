@@ -32,7 +32,7 @@ CREATE TABLE images (
   directory varchar(150) NOT NULL default '',
   type varchar(30) NOT NULL default '',
   title varchar(255) NOT NULL default '',
-  description text NOT NULL,
+  description text,
   size int NOT NULL default '0',
   width smallint NOT NULL default '0',
   height smallint NOT NULL default '0',
@@ -40,4 +40,3 @@ CREATE TABLE images (
   module varchar(40) default NULL,
   PRIMARY KEY  (id)
 );
-
