@@ -539,6 +539,18 @@ class PHPWS_Form {
     }
   }
 
+  function setClass($name, $class_name)
+  {
+    if (!$this->testName($name))
+      return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setMatch', array($name));
+
+    foreach ($this->_elements[$name] as $key=>$element){
+      $result = $this->_elements[$name][$key]->setClass($class_name);
+      if (PEAR::isError($result))
+	return $result;
+    }
+  }
+
   /**
    * Sets the max text size for a text, password, file element
    *
@@ -987,6 +999,7 @@ class Form_TextField extends Form_Element{
       . $this->getId(TRUE)
       . $this->getValue(TRUE) 
       . $this->getWidth(TRUE)
+      . $this->getClass(TRUE)
       . $this->getData() . ' />';
   }
 
@@ -1000,6 +1013,7 @@ class Form_Submit extends Form_Element{
       . $this->getName(TRUE) 
       . $this->getValue(TRUE) 
       . $this->getWidth(TRUE)
+      . $this->getClass(TRUE)
       . $this->getData() . ' />';
   }
 
@@ -1025,6 +1039,7 @@ class Form_File extends Form_Element {
       . $this->getTitle(TRUE)
       . $this->getId(TRUE)
       . $this->getWidth(TRUE)
+      . $this->getClass(TRUE)
       . $this->getData()
       . ' />';
   }
@@ -1046,6 +1061,7 @@ class Form_Password extends Form_Element {
       . $this->getId(TRUE)
       . $this->getValue(TRUE)
       . $this->getWidth(TRUE)
+      . $this->getClass(TRUE)
       . $this->getData()
       . ' />';
   }
@@ -1121,6 +1137,7 @@ class Form_TextArea extends Form_Element{
       . $this->getName(TRUE) 
       . $this->getTitle(TRUE)
       . $this->getId(TRUE)
+      . $this->getClass(TRUE)
       . implode(' ', $dimensions) . ' '
       . $this->getData()
       . sprintf('>%s</textarea>', $value);
@@ -1133,7 +1150,11 @@ class Form_Select extends Form_Element{
   var $match = NULL;
 
   function get(){
-    $content[] = '<select ' . $this->getName(TRUE) . $this->getId(TRUE) . $this->getData() . '>';
+    $content[] = '<select '
+      . $this->getName(TRUE)
+      . $this->getId(TRUE)
+      . $this->getClass(TRUE)
+      . $this->getData() . '>';
     if (empty($this->value)) {
       return NULL;
     }
@@ -1170,6 +1191,7 @@ class Form_Multiple extends Form_Element{
     $content[] = '<select ' . $this->getName(TRUE) . $this->getId(TRUE) . 'multiple="multiple" ' 
       . $this->getData()
       . $this->getWidth(TRUE)
+      . $this->getClass(TRUE)
       . '>';
     foreach($this->value as $value=>$label){
       if ($this->isMatch($value))
@@ -1220,6 +1242,7 @@ class Form_CheckBox extends Form_Element{
       . $this->getId(TRUE)
       . $this->getTitle(TRUE)
       . $this->getValue(TRUE)
+      . $this->getClass(TRUE)
       . $this->getMatch()
       . $this->getData()
       . ' />';
@@ -1248,6 +1271,7 @@ class Form_RadioButton extends Form_Element{
       . $this->getId(TRUE)
       . $this->getTitle(TRUE)
       . $this->getValue(TRUE)
+      . $this->getClass(TRUE)
       . $this->getMatch()
       . $this->getData()
       . ' />';
@@ -1399,7 +1423,7 @@ class Form_Element {
     $this->css_class = $css_class;
   }
 
-  function getClass($formMode){
+  function getClass($formMode=FALSE){
     if ($formMode)
       return (isset($this->css_class)) ? 'class="' . $this->css_class . '"' : NULL;
     else
