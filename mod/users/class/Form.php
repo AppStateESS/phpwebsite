@@ -112,11 +112,11 @@ class User_Form {
     if (!isset($use_permissions) || $use_permissions == FALSE)
       return;
 
-    $permSet[NO_PERMISSION]      = _("None");
-    $permSet[FULL_PERMISSION]    = _("Full");
+    $permSet[NO_PERMISSION]      = NO_PERM_NAME;
+    $permSet[FULL_PERMISSION]    = FULL_PERM_NAME;
 
     if (isset($itemPermissions) && $itemPermissions == TRUE)
-      $permSet[PARTIAL_PERMISSION] = _("Partial");
+      $permSet[PARTIAL_PERMISSION] = PART_PERM_NAME;
     else
       unset($permSet[PARTIAL_PERMISSION]);
 
