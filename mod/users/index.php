@@ -8,7 +8,7 @@ if (!isset($_REQUEST['action'])){
 foreach ($_REQUEST['action'] as $area=>$command);
 
 switch ($area){
- case "open":
+ case "user":
    switch ($command){
    case "loginBox":
      if (!PHPWS_Core::isLastPost())
@@ -24,11 +24,11 @@ switch ($area){
    } // End of open command switch
    break;
 
- case "closed":
+ case "admin":
    if (!$_SESSION['User']->allow("users"))
      PHPWS_User::disallow();
    else
-     PHPWS_User::closeAction($command);
+     PHPWS_User::adminAction($command);
    break;
 }// End area switch
 
