@@ -31,7 +31,7 @@ class User_Form {
   function loggedIn(){
     translate("users");
     PHPWS_Core::initCoreClass("Text.php");
-    $template["MODULES"] = PHPWS_Text::moduleLink(_("Control Panel"), "controlpanel");
+    $template["MODULES"] = PHPWS_Text::moduleLink(_("Control Panel"), "controlpanel", array("command"=>"panel_view"));
     $template["LOGOUT"] = PHPWS_Text::moduleLink(_("Log Out"), "users", array("action"=>"user", "command"=>"logout"));
     $template["HOME"] = PHPWS_Text::moduleLink(_("Home"));
 
