@@ -15,7 +15,9 @@ $errors = array(
 		USER_ERR_UNKNOWN_INPUT    => _("Unknown input type."),
 		USER_ERR_NO_MODULE        => _("Module does not exist."),
 		USER_ERR_BAD_VAR          => _("Invalid variable name."),
-		USER_ERR_USER_NOT_SAVED   => _("Unable to save user information.")
+		USER_ERR_USER_NOT_SAVED   => _("Unable to save user information."),
+		USER_ERR_BAD_GROUP_NAME   => _("Improperly formatted group name."),
+		USER_ERR_GROUP_DNE        => _("Group does not exist.")
 		);
 
 ?>

@@ -23,6 +23,9 @@ define("PARTIAL_PERMISSION", 1);
 define("NO_PERMISSION",      0);
 
 define("PASSWORD_LENGTH", 5);
+define("USERNAME_LENGTH", 4);
+define("GROUPNAME_LENGTH", 4);
+
 
 /* Errors */
 define("USER_ERROR",               -1);
@@ -38,13 +41,15 @@ define("USER_ERR_PASSWORD_EASY",   -10);
 define("USER_ERR_USER_NOT_SAVED",  -11);
 
 /* User Variable Errors */
-define("USER_ERR_NO_MODULE",     -20);
-define("USER_ERR_BAD_VAR",       -21);
+define("USER_ERR_NO_MODULE",       -20);
+define("USER_ERR_BAD_VAR",         -21);
 
 /* Demographics errors */
-define('USER_ERR_LABEL_NOT_FOUND', -31); 
-define('USER_ERR_UNKNOWN_INPUT',   -32); 
+define('USER_ERR_LABEL_NOT_FOUND', -30); 
+define('USER_ERR_UNKNOWN_INPUT',   -31); 
 
-
+/* Group errors */
+define('USER_ERR_BAD_GROUP_NAME',  -40);
+define('USER_ERR_GROUP_DNE',       -41);
 
 ?>
