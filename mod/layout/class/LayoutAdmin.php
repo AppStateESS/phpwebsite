@@ -29,6 +29,9 @@ class Layout_Admin{
 
     case "confirmThemeChange":
       Layout_Admin::changeTheme($_POST['theme']);
+      $template['TITLE'] = _("Themes");
+      $template['MESSAGE'] = _("Theme settings updated.");
+      $content = Layout_Admin::adminThemes();
       break;
 
     case "meta":
@@ -107,6 +110,7 @@ class Layout_Admin{
 
     $form->addSelect("default_theme", $themeList);
     $form->reindexValue("default_theme");
+    $form->setMatch("default_theme", Layout::getDefaultTheme());
     $form->setLabel("default_theme", _("Default Theme"));
 
     $template = $form->getTemplate();

@@ -41,6 +41,10 @@ class Layout_Settings{
       return FALSE;
   }
 
+  function getContentVars(){
+    return $this->_contentVars();
+  }
+
   function getMetaTags(){
     $meta['meta_author']      = $this->meta_author;
     $meta['meta_keywords']    = $this->meta_keywords;

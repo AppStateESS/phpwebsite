@@ -89,33 +89,48 @@ class Layout {
 
     if (FORCE_MOD_TEMPLATES){
       $cssFile = "mod/$module/templates/$filename";
-      if (is_file($cssFile))
-	$GLOBALS['Style'][$index] = Layout::styleLink($cssFile);
+      if (is_file(PHPWS_SOURCE_DIR . $cssFile))
+	Layout::addToStyleList(array('file'=>PHPWS_SOURCE_HTTP . $cssFile, 'relative'=>FALSE));
       return;
     }
 
     $themeFile = PHPWS_Template::getTplDir($module) . $filename;
     if (is_file($themeFile)){
-      $GLOBALS['Style'][$index] = Layout::styleLink($cssFile);
+      Layout::addToStyleList($cssFile);
       return;
     } elseif (FORCE_THEME_TEMPLATES)
 	return;
 
     $cssFile = "templates/$module/$filename";      
     if (is_file($cssFile))
-      $GLOBALS['Style'][$index] = Layout::styleLink($cssFile);
+      Layout::addToStyleList($cssFile);
 
     return;
   }
 
+  function addToStyleList($value){
+    $alternate = FALSE;
+    $title     = NULL;
+    $relative  = TRUE;
+
+    if (!is_array($value))
+      $file = $value;
+    else
+      extract($value);
+
+    $style = array("file"      =>$file,
+		   "alternate" =>$alternate,
+		   "title"     =>$title,
+		   "relative"  =>$relative
+		   );
+
+
+    $GLOBALS['Style'][] = $style;
+  }
+
   function alternateTheme($template, $module, $file){
     $theme = Layout::getTheme();
-    if (isset($GLOBALS['Style']))
-      array_unshift($GLOBALS['Style'], Layout::styleLink("themes/$theme/style.css"));
-    else
-      $GLOBALS['Style'][] = Layout::styleLink("themes/$theme/style.css");
-
-    $template['STYLE'] = implode("\n", $GLOBALS['Style']);
+    Layout::loadStyleSheets();
     $result = PHPWS_Template::process($template, $module, $file);
     echo $result;
     exit();
@@ -261,6 +276,11 @@ class Layout {
     return $list;
   }
 
+  function getDefaultTheme(){
+    return $_SESSION['Layout_Settings']->default_theme;
+  }
+
+
   function getJavascript($directory, $data=NULL){
     if (isset($data) && !is_array($data))
       return PHPWS_Error::get();
@@ -298,6 +318,7 @@ class Layout {
     }
 
   }
+
   function getMetaRobot(){
     if (!isset($GLOBALS['Layout_Robots']))
       $meta_robots = "11";
@@ -349,6 +370,13 @@ class Layout {
     return implode("\n", $metatags);
   }
 
+  function getStyleLinks($header=FALSE){
+    foreach ($GLOBALS['Style'] as $link)
+      $links[] = Layout::styleLink($link, $header);
+
+    return implode("\n", $links);
+  }
+
   function getTheme(){
     return $_SESSION['Layout_Settings']->current_theme;
   }
@@ -385,6 +413,46 @@ class Layout {
 	Layout::addJSHeader(file_get_contents($filename), $index);
     } else
       Layout::addJSHeader(file_get_contents($filename), $index);
+  }
+
+  function loadModuleJavascript($module, $filename, $data=NULL){
+    $directory = PHPWS_SOURCE_DIR . "mod/$module/javascript/$filename";
+
+    if (!is_file($directory))
+      return FALSE;
+      
+    return Layout::loadJavascriptFile($directory, $module, $data);
+  }
+
+  function loadStyleSheets(){
+    $theme = Layout::getDefaultTheme();
+
+    $directory = "./themes/$theme/";
+    $file = $directory . "style.php";
+
+    if (is_file($file)){
+      include $file;
+
+      if (isset($persistant))
+	Layout::addToStyleList(array('file'=>$persistant));
+
+      if (isset($default) && (isset($default['file']) && isset($default['title']))){
+	Layout::addToStyleList(array('file'=>$default['file'], 'title'=>$default['title']));
+
+	  if (isset($alternate) && is_array($alternate)){
+	    foreach ($alternate as $altStyle){
+	      if (isset($altStyle['file']) && isset($altStyle['title']))
+		Layout::addToStyleList(array('file'=>$altStyle['file'],
+					     'title'=>$altStyle['title'],
+					     'alternate'=>TRUE
+					     )
+				       );	      
+	    }
+	  }
+
+      }
+    } else
+      Layout::addToStyleList("style.css");
   }
 
   function &loadTheme($theme, $template){
@@ -429,23 +497,47 @@ class Layout {
     Layout::add($text, $module, $contentVar, $box);
   }
 
-  function styleLink($file){
-    return "<link rel=\"stylesheet\" href=\"$file\" type=\"text/css\" />";
+  function styleLink($link, $header=FALSE){
+    extract($link);
+    $theme = Layout::getCurrentTheme();
+
+    if ($relative){
+      $directory = "./themes/$theme/$file";
+    } else
+      $directory = $file;
+
+    if (!empty($title))
+      $cssTitle = "title=\"$title\"";
+    else
+      $cssTitle = NULL;
+
+    if ($header == TRUE){
+      if ($alternate == TRUE)
+	return "<?xml-stylesheet alternate=\"yes\" $cssTitle  href=\"$directory\" type=\"text/css\"?>";
+      else
+	return "<?xml-stylesheet $cssTitle href=\"$directory\" type=\"text/css\"?>";
+    } else {
+      if ($alternate == TRUE)
+	return "<link rel=\"alternate stylesheet\" $cssTitle href=\"$directory\" type=\"text/css\" />";
+      else
+	return "<link rel=\"stylesheet\" $cssTitle href=\"$directory\" type=\"text/css\" />";
+    }
   }
 
   function submitHeaders($theme, &$template){
-    $testing = TRUE;
+    $testing = true;
 
     if($testing == FALSE && stristr($_SERVER["HTTP_ACCEPT"],"application/xhtml+xml")){
       header("Content-Type: application/xhtml+xml; charset=UTF-8");
-      $template["XML"] = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-      $template["DOCTYPE"] = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\n\"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">";
-      $template["XHTML"] = "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"" . CURRENT_LANGUAGE . "\">";
+      $template["XML"] = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+      $template["DOCTYPE"] = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\n\"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n";
+      $template["XHTML"] = "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"" . CURRENT_LANGUAGE . "\">\n";
+      $template["XML_STYLE"] = Layout::getStyleLinks(TRUE);
     } else {
-
       header("Content-Type: text/html; charset=UTF-8");
-      $template["DOCTYPE"] = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">";
-      $template["XHTML"] = "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"" . CURRENT_LANGUAGE . "\" lang=\"" . CURRENT_LANGUAGE . "\">";
+      $template["DOCTYPE"] = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
+      $template["XHTML"] = "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"" . CURRENT_LANGUAGE . "\" lang=\"" . CURRENT_LANGUAGE . "\">\n";
+      $template['STYLE'] = Layout::getStyleLinks(FALSE);
     }
     header("Content-Language: " . CURRENT_LANGUAGE);
     header("Content-Script-Type: text/javascript");
@@ -453,8 +545,6 @@ class Layout {
   }
 
   function wrap($theme, $content){
-    Layout::submitHeaders($theme, $template);
-
     $template['TEST_JS'] = Layout::getJavascript("test");
 
     if (isset($GLOBALS['Layout_JS'])){
@@ -464,14 +554,10 @@ class Layout {
       $template['JAVASCRIPT'] = implode("\n", $jsHead);
     }
 
-    if (isset($GLOBALS['Style']))
-      array_unshift($GLOBALS['Style'], Layout::styleLink("themes/$theme/style.css"));
-    else
-      $GLOBALS['Style'][] = Layout::styleLink("themes/$theme/style.css");
-
+    Layout::loadStyleSheets();
+    Layout::submitHeaders($theme, $template);
     $template['METATAGS'] = Layout::getMetaTags();
-    $template['PAGE_TITLE'] = $_SESSION['Layout_Settings']['page_title'];
-    $template['STYLE'] = implode("\n", $GLOBALS['Style']);
+    $template['PAGE_TITLE'] = $_SESSION['Layout_Settings']->page_title;
     $template['CONTENT'] = $content;
     $result = PHPWS_Template::process($template, "layout", "header.tpl");
 
