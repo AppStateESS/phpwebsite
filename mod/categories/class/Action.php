@@ -78,7 +78,7 @@ class Categories_Action{
     $image = PHPWS_Form::postImage("image", "categories");
 
     if (PEAR::isError($image)){
-      PHPWS_Error::log($result);
+      PHPWS_Error::log($image);
       $errors['image'] = _("There was a problem saving your image to the server.");
     } elseif (is_array($image)){
       foreach ($image as $message)
@@ -168,7 +168,7 @@ class Categories_Action{
       $image_id = NULL;
 
     $result = $form->addImage("image", "categories", $image_id);
-    
+
     if (isset($image)){
       $form->add("current_image", "hidden", $image->getId());
       $template['CURRENT_IMG_LABEL'] = _("Current Image");
