@@ -4,7 +4,8 @@ $core_modules = array("users",
 		      "layout",
 		      "boost",
 		      "related",
-		      "categories"
+		      "categories",
+		      "filecabinet"
 		      );
 
 
