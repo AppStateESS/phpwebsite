@@ -236,7 +236,7 @@ class PHPWS_Text {
     elseif (is_string($allowedTags))
       $allowedTagString = $allowedTags;
     else {
-      $allowedTagString = $GLOBALS["core"]->allowed_tags;
+      $allowedTagString = PHPWS_ALLOWED_TAGS;
     }
 
     $text = preg_replace("/(\[code\])(.*)(\[\/code\])/seU", "'\\1' . stripslashes(PHPWS_Core::utfEncode('\\2')) . '\\3'", $text);
