@@ -12,6 +12,15 @@ switch ($_REQUEST['action']){
    Related_Action::start();
    break;
 
+ case "edit":
+   $related = & new Related($_REQUEST['id']);
+   $related->loadFriends();
+   $related->setBanked(TRUE);
+   Related_Action::newBank($related);
+   header("location:" . $related->getUrl());
+   exit();
+   break;
+
  case "add":
    Related_Action::add();
    break;
@@ -35,6 +44,16 @@ switch ($_REQUEST['action']){
  case "save":
    Related_Action::save();
    break;
+
+ case "changeForm":
+   Related_Action::changeForm();
+   break;
+
+ case "postTitle":
+   Related_Action::postTitle();
+   break;
+   
+   
   
 }
 

@@ -13,6 +13,13 @@
   font-weight : bold;
 }
 
+#related-title {
+  margin-bottom : 2px;
+  font-size : 1.2em;
+  text-align : center;
+  font-weight : bold;
+}
+
 a img {
  border : 0;
 }

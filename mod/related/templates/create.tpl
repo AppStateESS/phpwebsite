@@ -3,7 +3,7 @@
 {TITLE}<br />
 <b>{MODULE_LBL}:</b>
 {MODULE}<br />
-<div id="link">
+<div class="link">
 {LINK}
 </div>
 <hr />

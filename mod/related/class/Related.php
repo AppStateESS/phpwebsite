@@ -17,6 +17,26 @@ class Related {
   var $_banked   = FALSE;
   var $_current  = NULL;
 
+
+  function Related($id=NULL){
+    if (empty($id))
+      return;
+
+    $this->setId($id);
+    $this->init();
+  }
+
+  function init(){
+    $db = & new PHPWS_DB("related_main");
+    $db->addWhere("id", $this->id);
+    $result = $db->loadObjects('Related', TRUE);
+
+    if (PEAR::isError($result))
+      return $result;
+
+    $this = $result;
+  }
+
   function setId($id){
     $this->id = (int)$id;
   }
@@ -54,7 +74,7 @@ class Related {
 
 
   function setTitle($title){
-    $this->title = preg_replace("/[^\w\s]/", "", strip_tags($title));
+    $this->title = preg_replace("/[^" . ALLOWED_TITLE_CHARS . "]/", "", strip_tags($title));
   }
 
   function getTitle(){
@@ -109,13 +129,15 @@ class Related {
     $db = & new PHPWS_DB("related_friends");
     $db->addWhere("source_id", $this->id);
     $db->addOrder("rating");
-    $db->setIndexBy("rating");
+    $db->addColumn("friend_id");
     $result = $db->select("col");
 
     if (PEAR::isError($result))
       return $result;
 
-    $this->friends = $result;
+    foreach ($result as $id)
+      $this->friends[] = & new Related($id);
+
   }
 
   function isSame($object){
@@ -198,6 +220,11 @@ class Related {
 
     $friends = $this->friends;
     $this->friends = array();
+    
+    $friend = $friends[$position];
+
+    if (isset($friend->id))
+      $friend->clearRelated($this->id);
 
     unset($friends[$position]);
 
@@ -218,6 +245,8 @@ class Related {
 
       if (!empty($result))
 	$this = $result;
+
+      $this->loadFriends();
     }
   }
 
@@ -226,7 +255,6 @@ class Related {
     Layout::addStyle("related");
 
     $this->load();
-
     if (!Current_User::allow("related"))
       $mode = "view";
     elseif (Related_Action::isBanked())
@@ -288,8 +316,10 @@ class Related {
     }
   }
 
-  function clearRelated(){
+  function clearRelated($friend_id=NULL){
     $db = & new PHPWS_DB("related_friends");
+    if (isset($friend_id))
+      $db->addWhere("friend_id", (int)$friend_id);
     $db->addWhere("source_id", $this->id);
     $db->delete();
   }

@@ -25,6 +25,7 @@ class Related_Action {
   }
 
   function edit(&$current){
+    PHPWS_Core::initCoreClass("Module.php");
     $tpl = new PHPWS_Template("related");
     $result = $tpl->setFile("edit.tpl");
 
@@ -33,15 +34,38 @@ class Related_Action {
     $template['MODULE_LBL'] = _("Module");
     $template['TITLE'] = $related->getUrl(TRUE);
 
-    if (!$related->isSame($current) && !$related->isFriend($current))
+    $id = $related->getId();
+
+    $js['QUESTION'] = _("What do you want the title to be?");
+    $js['TITLE']    = $related->getTitle();
+    $js['LINK']     = "<img src=\"images/mod/related/edit.png\"/>";
+    $js['ALLOWED']  = ALLOWED_TITLE_CHARS;
+
+    $edit = Layout::getJavascript("related_title_change", $js);
+
+    $template["EDIT"] = $edit;
+
+    if (!$related->isSame($current) && !$related->isFriend($current)){
       $template['ADD_LINK'] = "<a href=\"index.php?module=related&amp;action=add\">"
       . _("Add Item") . "</a>";
 
 
+      if ($current->hasFriends()){
+	$extra_friends = Related_Action::listFriends($current);
+	$template['EXTRA_INSTRUCTIONS'] = _("This item is related to the following:");
+	
+	if (is_array($extra_friends)){
+	  foreach ($extra_friends as $key=>$friend_item){
+	    $tpl->setCurrentBlock("extra_list");
+	    $tpl->setData(array("EXTRA_NAME"=>$friend_item));
+	    $tpl->parseCurrentBlock();
+	  }
+	}
+      }
+    }
 
     $template['QUIT_LINK'] = "<a href=\"index.php?module=related&amp;action=quit\">"
       . _("Quit") . "</a>";
-
 
     Related_Action::setCurrent($current);
 
@@ -52,13 +76,14 @@ class Related_Action {
       $template['SAVE_LINK'] = "<a href=\"index.php?module=related&amp;action=save\">"
 	. _("Save") . "</a>";
 
-      $friends = Related_Action::listFriends();
+      $friends = Related_Action::listFriends($related);
 
       if (is_array($friends)){
 	foreach ($friends as $key=>$friend_item){
 	  $up = "<a href=\"index.php?module=related&amp;action=up&amp;pos=$key\"><img src=\"images/mod/related/up.png\"/></a>";
 	  $down = "<a href=\"index.php?module=related&amp;action=down&amp;pos=$key\"><img src=\"images/mod/related/down.png\"/></a>";
 	  $remove = "<a href=\"index.php?module=related&amp;action=remove&amp;pos=$key\"><img src=\"images/mod/related/remove.png\"/></a>";
+
 
 	  $tpl->setCurrentBlock("friend_list");
 	  $tpl->setData(array("FRIEND_NAME"=>$friend_item,
@@ -72,6 +97,7 @@ class Related_Action {
     } else
       $template['FRIEND_NAME'] = _("View other items to add them to the list.");
 
+
     $tpl->setData($template);
 
     return $tpl->get();
@@ -81,16 +107,25 @@ class Related_Action {
   function view(&$related){
     $tpl = new PHPWS_Template("related");
     $result = $tpl->setFile("view.tpl");
-    Related_Action::newBank($related);
+
+    $template['TITLE'] = $related->getUrl(TRUE);
 
     if (Current_User::allow("related"))
-      $template['EDIT_LINK'] = "<a href=\"index.php?module=related&amp;action=start\">"
+      $template['EDIT_LINK'] = "<a href=\"index.php?module=related&amp;action=edit&amp;id=" . $related->getId() . "\">"
 	. _("Edit") . "</a>";
 
-    $tpl->setData($template);
+    $friends = Related_Action::listFriends($related);
 
+      if (is_array($friends)){
+	foreach ($friends as $key=>$friend_item){
+	  $tpl->setCurrentBlock("friend_list");
+	  $tpl->setData(array("FRIEND_NAME"=>$friend_item));
+	  $tpl->parseCurrentBlock();
+	}
+      }
+
+    $tpl->setData($template);
     return $tpl->get();
-    
   }
 
   function newBank(&$related){
@@ -115,14 +150,8 @@ class Related_Action {
       return FALSE;
   }
 
-  function listFriends(){
-    if (!Related_Action::isBanked())
-      return _("Bank not created.");
-
-    $related = & Related_Action::getBank();
-
+  function listFriends($related){
     $friends = $related->getFriends();
-
     if (empty($friends))
       return NULL;
 
@@ -161,6 +190,12 @@ class Related_Action {
     $friend = & $_SESSION['Current_Friend'];
 
     $related->addFriend($friend);
+
+    if ($friend->hasFriends()){
+      $friendlist = $friend->getFriends();
+      foreach ($friendlist as $extra_friend)
+	$related->addFriend($extra_friend);
+    }
 
     header("location:" . $friend->getUrl());
     exit();
@@ -215,6 +250,36 @@ class Related_Action {
     }
     
     Related_Action::quit();
+  }
+
+  function changeForm(){
+    $template['PAGE_TITLE'] = _("Change Related Title");
+
+    $related = Related_Action::getBank();
+
+    $form = & new PHPWS_Form;
+    $form->add("module", "hidden", "related");
+    $form->add("action", "hidden", "postTitle");
+    $form->add("title", "text", $related->getTitle());
+    $form->setSize("title", "30");
+    $form->add("submit", "submit", "Update");
+
+    $form->mergeTemplate($template);
+
+    $template = $form->getTemplate();
+
+    echo PHPWS_Template::process($template, "related", "change.tpl");
+    exit();
+  }
+
+  function postTitle(){
+    if ($_REQUEST['new_title'] != 'null'){
+      $related = & $_SESSION['Related_Bank'];
+      $related->setTitle($_REQUEST['new_title']);
+    }
+
+    header("location:" . $related->getUrl());
+    exit();
   }
 
 }
