@@ -14,18 +14,20 @@ class PHPWS_Panel_Link {
   var $_link_order;
 
   function PHPWS_Panel_Link($id=NULL){
-    if (isset($id))
-      $this->init($id);
+    if (!isset($id))
+      return;
+
+    $result = $this->init($id);
+    if (PEAR::isError($result))
+      PHPWS_Error::log($result);
   }
 
   function init($id){
     $db = & new PHPWS_DB("controlpanel_link");
     $db->addWhere("id", $id);
-    $result = $db->loadObjects("PHPWS_Panel_Link", TRUE);
+    $result = $db->loadObject($this);
     if (PEAR::isError($result))
       return $result;
-    else
-      $this = $result;
   }
 
   function setId($id){
@@ -177,7 +179,7 @@ class PHPWS_Panel_Link {
     $db->reset();
     $db->addWhere("tab", $tab);
     $db->addOrder("link_order");
-    $result = $db->loadObjects("PHPWS_Panel_Link");
+    $result = $db->getObjects("PHPWS_Panel_Link");
 
     if (PEAR::isError($result))
       return $result;
