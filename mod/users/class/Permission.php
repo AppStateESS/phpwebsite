@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Class to control the user permissioning
+ *
+ * @version $Id$
+ * @author Matt McNaney <matt at tux dot appstate dot edu>
+ * @package User Module
+ */
+
 class Users_Permission {
   var $permissions = NULL;
   var $groups      = NULL;
@@ -214,7 +222,7 @@ class Users_Permission {
     if (!PHPWS_DB::isTable($tableName))
       return;
 
-    $db = new PHPWS_DB($tableName);
+    $db = & new PHPWS_DB($tableName);
     $db->addWhere("group_id", (int)$group_id);
 
     $db->delete();
@@ -225,6 +233,11 @@ class Users_Permission {
     $columns = $db->getTableColumns();
 
     $db->addValue("permission_level", (int)$level);
+
+    if ($level == NO_PERMISSION){
+      unset($subpermissions);
+      Users_Permission::clearItemPermissions($module, $group_id);
+    }
 
     if (isset($subpermissions)){
       foreach ($columns as $colName){
@@ -351,7 +364,15 @@ class Users_Permission {
       $db->addValue("group_id", $group_id);
       $db->insert();
     }
+  }
 
+  function clearItemPermissions($module, $group_id){
+      $itemTable = Users_Permission::getItemPermissionTableName($module);
+      if (PHPWS_DB::isTable($itemTable)){
+	$db = & new PHPWS_DB($itemTable);
+	$db->addWhere("group_id", $group_id);
+	$db->delete();
+      }
   }
 }
 
