@@ -5,6 +5,15 @@ body {
 	font-family : Arial, Helvetica, sans-serif;
 }
 
+img {
+    border-style : none;
+}
+
+form {
+     margin : 0;
+     padding : 0;
+}
+
 #gutter {
 	float : left;
 	width : 3%;
@@ -99,6 +108,20 @@ input {
 	font-size : 9pt;
 }
 
+table.form-table {
+        width : 100%;
+}
+
+table.form-table td {
+	padding : 5px;
+}
+
 table.form-table .label {
 	margin-right : 20px;
+}
+
+#user-menu {
+	padding : 2px 4px 2px 0;
+	text-align : right;
+	margin-bottom : 5px;
 }

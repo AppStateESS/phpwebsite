@@ -1,4 +1,5 @@
 <div id="container">
+   <div id="user-menu">{USERS_LOGIN_BOX}</div>
    <div id="sidepanel">{DEFAULT}</div>
    <div id="gutter"></div>
    <div id="content">
