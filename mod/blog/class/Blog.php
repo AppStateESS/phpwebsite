@@ -136,12 +136,10 @@ class Blog {
   function kill()
   {
     PHPWS_Core::initModClass('version', 'Version.php');
-
+    Version::flush('blog_entries', $this->id);
     $db = & new PHPWS_DB('blog_entries');
     $db->addWhere('id', $this->id);
-    $db->delete();
-
-    Version::flush('blog_entries', $this->id);
+    return $db->delete();
   }
 }
 

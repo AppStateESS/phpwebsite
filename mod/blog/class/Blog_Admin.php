@@ -159,9 +159,9 @@ class Blog_Admin {
       }
       
       Blog_Admin::removePrevBlog($_REQUEST['version_id']);
-      $title = _('Blog Archive');
+      $title = _('Blog Restore');
       $message = _('Blog entry removed.');
-      $content = Blog_Admin::entry_list();
+      $content = Blog_Admin::restoreVersionList($blog);
       break;
 
     case 'postEntry':
@@ -312,7 +312,10 @@ class Blog_Admin {
     
     if (Current_User::allow('blog', 'delete_blog')){
       $link['command'] = 'delete';
-      $list[] = PHPWS_Text::secureLink(_('Delete'), 'blog', $link);
+      $confirm_vars['QUESTION'] = _('Are you sure you want to permanently delete this blog entry?');
+      $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('blog', $link, TRUE);
+      $confirm_vars['LINK'] = _('Delete');
+      $list[] = Layout::getJavascript('confirm', $confirm_vars);
     }
 
     if (Current_User::isUnrestricted('blog')){
@@ -474,7 +477,10 @@ class Blog_Admin {
     $count = 0;
 
     $vars['action'] = 'admin';
-
+    if (empty($version_list)) {
+      $tpl['INSTRUCTION'] = _('No backups of this blog entry exist.');
+      return PHPWS_Template::processTemplate($tpl, 'blog', 'version.tpl');
+    }
     foreach ($version_list as $backup_id => $backup){
       $count++;
       if ($count%2)
@@ -494,7 +500,11 @@ class Blog_Admin {
 
       if (Current_User::isDeity()) {
 	$vars['command'] = 'removePrevBlog';
-	$template['REMOVE_LINK'] = PHPWS_Text::secureLink(_('Remove'), 'blog', $vars);
+	$vars['blog_id'] = $blog->getId();
+	$confirm['QUESTION'] = _('Are you sure you want to purge this backup copy?');
+	$confirm['ADDRESS'] = PHPWS_Text::linkAddress('blog', $vars, TRUE);
+	$confirm['LINK'] = _('Remove');
+	$template['REMOVE_LINK'] = Layout::getJavascript('confirm', $confirm);
       }
       $tpl['repeat_row'][] = $template;
     }
