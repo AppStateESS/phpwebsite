@@ -75,6 +75,15 @@ div.box a:hover, div.box a:active {
 	background-color : #EDF4D1;
 }
 
+#user-menu {
+	background-color : #fff;
+}
+
+#user-menu a:hover{
+background-color : #ADB583;
+color : black;
+}
+
 
 /*-----------Control Panel --------------*/
 .frame {
@@ -122,3 +131,16 @@ background-color : #CBCEAC;
 color: black;
 }
 
+input {
+color: #fff;
+background: #4A77BB;
+border: #000 solid 1px;
+}
+
+input[type="submit"] {
+color: #fff;
+background: #4A77BB;
+border: 1px #000 outset;
+cursor : default;
+cursor : pointer;
+}

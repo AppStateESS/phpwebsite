@@ -75,6 +75,22 @@ div.box a:hover, div.box a:active {
 	background-color : #EDF4D1;
 }
 
+input {
+color: #000;
+background: #ADB583;
+border: #000 solid 1px;
+}
+
+
+input[type="submit"] {
+color: #000;
+background: #ADB583;
+border: 1px #000 outset;
+cursor : default;
+cursor : pointer;
+}
+
+
 #user-menu {
 	background-color : #DEE2BD;
 }
