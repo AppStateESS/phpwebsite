@@ -64,7 +64,7 @@ class Blog {
     $template['TITLE'] = $this->getTitle(TRUE);
     $template['ENTRY'] = $this->getEntry(TRUE);
     
-    if (Current_User::allow("blog", "edit", $this->getId(), FALSE)){
+    if (Current_User::allow("blog", "edit_blog", $this->getId(), FALSE)){
       $vars['action']  = "admin";
       $vars['blog_id'] = $this->getId();
       $vars['command'] = "edit";
