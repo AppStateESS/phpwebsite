@@ -10,6 +10,7 @@ $errors[PHPWS_STRICT_TEXT]           = _("Improperly formated text.");
 $errors[PHPWS_INVALID_VALUE]         = _("Invalid value.");
 $errors[PHPWS_NO_MODULES]            = _("No active modules installed.");
 $errors[PHPWS_WRONG_TYPE]            = _("Wrong data type.");
+$errors[PHPWS_DIR_NOT_SECURE]        = _("Directories are not secure.");
 
 // Database.php 100 - 199
 $errors[PHPWS_DB_ERROR_TABLE]        = _("Table name not set.");
