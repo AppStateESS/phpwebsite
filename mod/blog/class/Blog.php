@@ -101,6 +101,8 @@ class Blog {
 	$related->setUrl($this->getViewLink(TRUE));
 	$related->setTitle($this->getTitle(TRUE));
 	$related->show();
+
+	Block::show('blog', $this->id);
     }
 
     $result = Categories::getSimpleLinks('blog', $this->id);
