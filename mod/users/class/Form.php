@@ -85,9 +85,13 @@ class User_Form {
   }
 
   function manageUsers(){
-    PHPWS_Core::initModClass("users", "User_Manager.php");
-    $manager = & new User_Manager;
-    $content = $manager->getList("users", "Testing User Title");
+    if (!isset($_SESSION['User_Manager']))
+      $_SESSION['User_Manager'] = & new User_Manager;
+
+    if (isset($_POST['search_users']))
+      $_SESSION['User_Manager']->setWhere("username LIKE '%" . $_POST['search_users'] . "%'");
+
+    $content = $_SESSION['User_Manager']->getList("users", "Testing User Title");
     if (PEAR::isError($content))
 	return $content->getMessage();
     return $content;
