@@ -853,34 +853,54 @@ class PHPWS_DB {
       return $value;
   }// END FUNC dbReady()
 
-  function loadObjects($className, $onlyOne=NULL){
+  function loadObject(&$object, $variables=NULL, $className=NULL){
+    if (!is_object($object))
+      return PHPWS_Error::get(PHPWS_DB_NOT_OBJECT, "core", "PHPWS_DB::loadObject");
+
+    if (empty($className))
+      $className = get_class($object);
+
+    $classVars = get_class_vars($className);
+    if(!is_array($classVars))
+      return PHPWS_Error::get(PHPWS_DB_NO_VARIABLES, "core", "PHPWS_DB::loadObject");
+
+    if (!isset($variables)){
+      $variables = $this->select("row");
+
+      if (PEAR::isError($variables))
+	return $variables;
+      elseif (empty($variables))
+	$variables = array();
+    }
+    
+
+    foreach($classVars as $key => $value) {
+      $column = $key;
+      if($column[0] == "_")
+	$column = substr($column, 1, strlen($column));
+      
+      if(isset($variables[$column])){
+	if (preg_match("/^[aO]:\d+:/", $variables[$column]))
+	  $object->$key = unserialize($variables[$column]);
+	else
+	  $object->$key = $variables[$column];
+      }
+    }
+  }
+
+  function getObjects($className){
     if (!class_exists($className))
-      return PHPWS_Error::get(PHPWS_CLASS_NOT_EXIST, "core", "PHPWS_DB::loadObjects");
+      return PHPWS_Error::get(PHPWS_CLASS_NOT_EXIST, "core", "PHPWS_DB::getObjects");
 
     $items = NULL;
     $result = $this->select();
-
-    $classVars = get_class_vars($className);
 
     if (PEAR::isError($result) || !isset($result))
       return $result;
 
     foreach ($result as $indexby => $itemResult){
-      $genClass = new $className;
-      if(is_array($classVars)) {
-	foreach($classVars as $key => $value) {
-	  $column = $key;
-	  if($column[0] == "_")
-	    $column = substr($column, 1, strlen($column));
-	  
-	  if(isset($itemResult[$column])){
-	    if (preg_match("/^[aO]:\d+:/", $itemResult[$column]))
-	      $genClass->$key = unserialize($itemResult[$column]);
-	    else
-	      $genClass->$key = $itemResult[$column];
-	  }
-	}
-      }
+      $genClass = & new $className;
+      PHPWS_DB::loadObject($genClass, $itemResult, $className);
 
       if (isset($indexby))
 	$items[$indexby] = $genClass;
@@ -888,10 +908,7 @@ class PHPWS_DB {
 	$items[] = $genClass;
     }
 
-    if ((bool)$onlyOne == TRUE && isset($items[0]))
-      return array_shift($items);
-    else
-      return $items;
+    return $items;
   }
 
   function saveObject(&$object, $stripChar=FALSE){
