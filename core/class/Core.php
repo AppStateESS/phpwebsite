@@ -262,9 +262,13 @@ class PHPWS_Core {
       return $file;
 
     include $file;
-    $list = explode(",", $core_modules);
+    return $core_modules;
+  }
 
-    return $list;
+  function installModList(){
+    $db = & new PHPWS_DB("modules");
+    $db->addColumn("title");
+    return $db->select("col");
   }
 
 }// End of core class
