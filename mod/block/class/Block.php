@@ -3,21 +3,17 @@ PHPWS_Core::initModClass('block', 'Block_Item.php');
 
 class Block {
 
-  function show($module, $id, $itemname=NULL)
+  function show($key)
   {
-    if (empty($itemname)) {
-      $itemname = $module;
-    }
-
-    Block::showBlocks($module, $id, $itemname);
+    Block::showBlocks($key);
 
     if (isset($_SESSION['Stored_Blocks'])) {
-      Block::viewStoredBlocks($module, $id, $itemname);
+      Block::viewStoredBlocks($key);
     }
   
   }
 
-  function viewStoredBlocks($module, $id, $itemname)
+  function viewStoredBlocks($key)
   {
     if (!isset($_SESSION['Stored_Blocks'])) {
       return FALSE;
@@ -32,9 +28,8 @@ class Block {
       if (isset($GLOBALS['Current_Blocks'][$block_id])) {
 	continue;
       }
-      $block->_module   = $module;
-      $block->_item_id  = $id;
-      $block->_itemname = $itemname;
+
+      $block->setKey($key);
       $content[] = $block->view(TRUE);
     }
 
@@ -45,14 +40,11 @@ class Block {
     Layout::add($complete, 'block', 'Block_List', FALSE);
   }
 
-  function showBlocks($module, $id, $itemname)
+  function showBlocks($key)
   {
-    $db = & new PHPWS_DB('block_pinned');
-    $db->addWhere('module',   $module);
-    $db->addWhere('item_id',  $id);
-    $db->addWhere('itemname', $itemname);
-    $db->addColumn('block_id');
-    $result = $db->select('col');
+    $key->setTable('block_pinned');
+    $key->setColumnName('block_id');
+    $result = $key->getMatches();
 
     if (empty($result)) {
       return;
@@ -60,9 +52,7 @@ class Block {
 
     foreach ($result as $block_id) {
       $block = & new Block_Item($block_id);
-      $block->_module   = $module;
-      $block->_item_id  = $id;
-      $block->_itemname = $itemname;
+      $block->setKey($key);
 
       Layout::add($block->view(), 'block', $block->getContentVar(), FALSE);
       $GLOBALS['Current_Blocks'][$block_id] = TRUE;
