@@ -113,16 +113,20 @@ class Layout {
 
   }
 
-  function clear($contentVar){
-    unset($GLOBALS['Layout'][$contentVar]);
+  function clear($module, $contentVar){
+    unset($GLOBALS['Layout'][$module][$contentVar]);
   }
 
 
-  function get($content_var){
-    if (isset($GLOBALS['Layout'][$content_var]))
-      return $GLOBALS['Layout'][$content_var];
+  function get($module, $content_var){
+    if (Layout::isBoxSet($module, $content_var))
+      return $GLOBALS['Layout'][$module][$content_var];
     else
       return NULL;
+  }
+
+  function isBoxSet($module, $content_var){
+    return isset($GLOBALS['Layout'][$module][$content_var]);
   }
 
   function getBoxContent(){
