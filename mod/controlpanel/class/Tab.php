@@ -145,8 +145,11 @@ class PHPWS_Panel_Tab {
     if (isset($id)){
       $DB->addWhere("id", $id);
       $result = $DB->update();
-    } else
+    } else {
       $result = $DB->insert();
+      if (is_numeric($result))
+	$this->setId($result);
+    }
 
     return $result;
   }
@@ -161,6 +164,32 @@ class PHPWS_Panel_Tab {
       return $max + 1;
     else
       return 1;
+  }
+
+  function kill(){
+    $db = & new PHPWS_DB("controlpanel_tab");
+    $db->addWhere("id", $this->getId());
+    $result = $db->delete();
+    if (PEAR::isError($result))
+      return $result;
+
+    $db->reset();
+    $db->addOrder("tab_order");
+    $result = $db->loadObjects("PHPWS_Panel_Tab");
+
+    if (PEAR::isError($result))
+      return $result;
+
+    if (empty($result))
+      return TRUE;
+
+    $count = 1;
+    foreach ($result as $tab){
+      $tab->setOrder($count);
+      $tab->save();
+      $count++;
+    }
+
   }
 
 }
