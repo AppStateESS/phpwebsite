@@ -4,7 +4,7 @@
  * Also contains extra HTML utilities
  * 
  * @version $Id$
- * @author  Matthew McNaney <matt@NOSPAM.tux.appstate.edu>
+ * @author  Matthew McNaney <matt at tux dot appstate dot edu>
  * @author  Adam Morton <adam@NOSPAM.tux.appstate.edu>
  * @author  Steven Levin <steven@NOSPAM.tux.appstate.edu>
  * @author  Don Seiler <don@NOSPAM.seiler.us>
@@ -18,7 +18,7 @@ class PHPWS_Text {
    *
    * Profanity definitions are set by the core in the textSettings.php file
    *
-   * @author Matthew McNaney <matt@NOSPAM.tux.appstate.edu>
+   * @author Matthew McNaney <matt at tux dot appstate dot edu>
    * @param  string $text Text to be parsed
    * @return string Parsed text
    * @access public
@@ -49,12 +49,7 @@ class PHPWS_Text {
     if (!is_string($text))
       return PHPWS_Error::get(PHPWS_TEXT_NOT_STRING, "core", "PHPWS_Text::sentence");
 
-    if (strstr($text, "\r"))
-      $text_array = explode("\r\n",$text);
-    else
-      $text_array = explode("\n",$text);
-
-    return $text_array;
+    return preg_split("/\r\n|\n/", $text);
   }// END FUNC sentence()
 
 
@@ -120,51 +115,23 @@ class PHPWS_Text {
   }// END FUNC breaker()
 
 
-  /**
-   * Returns a string with backslashes before characters that need
-   * to be quoted in database queries.
-   *
-   * Different than basic command as it checks to see if magic slashes is on.
-   * If magic quotes is on, then addslashes will just return the string
-   *
-   * @author Matthew McNaney <matt@NOSPAM.tux.appstate.edu>
-   * @param  string $text  Text to addslashes to.
-   * @return string Slashed text
-   * @access public
-   */
-  function addslashes($text) {
-    if (get_magic_quotes_gpc()) return $text;
-    else return addslashes($text);
-  }// END FUNC addslashes
-
-
-  /**
-   * Returns a string with backslashes removed BUT ONLY
-   * if magic slashes is on.
-   *
-   * @author Matthew McNaney <matt@NOSPAM.tux.appstatee.edu>
-   * @param  string $text Text to be stripped
-   * @return string $text Stripped text
-   * @access public
-   */
-  function stripslashes($text) {
-    if (get_magic_quotes_gpc()==1) return stripslashes($text);
-    else return $text;
-  }// END FUNC stripslashes()
-
    /**
    * Removes tags from text
    *
    * This function replaces the functionality of the 'parse' function
    * Should be used after a post or get or before saving it to the database
    *
-   * @author                       Matthew McNaney <matt@NOSPAM.tux.appstate.edu>
+   * @author                       Matthew McNaney <matt at tux dot appstate dot edu>
    * @param   string  text         Text to parse
    * @param   mixed   allowedTags  The tags that will not be stripped from the text
    * @return  string  text         Stripped text
    */
   function parseInput($text, $allowedTags=NULL){
     $text = PHPWS_Text::stripSlashQuotes($text);
+
+    if ( !preg_match("/src=[\"'][\w\.\/:]+.(jpg|gif|jpeg|bmp|png)[\"']/iU", $text) || 
+	 preg_match("/onload=/i", $text))
+      $text = preg_replace("/<img.+>/Uei", "", $text);
 
     if ($allowedTags == "none")
       $allowedTagString = NULL;
@@ -203,7 +170,7 @@ class PHPWS_Text {
    * the breaker function.
    * Should be used after retrieving data from the database
    *
-   * @author                       Matthew McNaney <matt@NOSPAM.tux.appstate.edu>
+   * @author                       Matthew McNaney <matt at tux dot appstate dot edu>
    * @param   string  text         Text to parse
    * @return  string  text         Stripped text
    */
@@ -211,7 +178,7 @@ class PHPWS_Text {
     require_once("HTML/BBCodeParser.php");
 
     // Set up BBCodeParser
-    $config = parse_ini_file(PHPWS_SOURCE_DIR . "/conf/BBCodeParser.ini", true);
+    $config  = parse_ini_file(PHPWS_SOURCE_DIR . "/config/core/BBCodeParser.ini", true);
     $options = &PEAR::getStaticProperty("HTML_BBCodeParser", "_options");
     $options = $config["HTML_BBCodeParser"];
     unset($options);
@@ -247,7 +214,7 @@ class PHPWS_Text {
    * is used to pull database data, etc. Also, will ALWAYS return FALSE
    * if it receives blank data. 
    *
-   * @author Matthew McNaney <matt@NOSPAM.tux.appstate.edu>
+   * @author Matthew McNaney <matt at tux dot appstate dot edu>
    * @param  string  $userEntry Text to be checked
    * @param  string  $type      What type of comparison
    * @return boolean TRUE on valid input, FALSE on invalid input
@@ -258,7 +225,7 @@ class PHPWS_Text {
 
     switch ($type) {
     case "chars_space":
-    if (preg_match("/^[\w\s]+$/",$userEntry)) return TRUE;
+    if (preg_match("/^[\w\s]+$/i",$userEntry)) return TRUE;
     else return FALSE;
     break;
 
@@ -268,26 +235,26 @@ class PHPWS_Text {
     break;
 
     case "url":
-    if (preg_match("/^(http:\/\/)[_a-z0-9-]+(\.[_a-z0-9-]+|\/)/", $userEntry)) return TRUE;
+    if (preg_match("/^(http(s){0,1}:\/\/)[_a-z0-9-]+(\.[_a-z0-9-]+|\/)/i", $userEntry)) return TRUE;
     else return FALSE;
     break;
 
     case "email":
-    if (preg_match("/^[\w]+(\.[\w]+)*@[\w]+(\.[\w]+)+$/", $userEntry)) return TRUE;
+    if (preg_match("/^[\w]+(\.[\w]+)*@[\w]+(\.[\w]+)+$/i", $userEntry)) return TRUE;
     else return FALSE;
     break;
 
     case "file":
-    if (preg_match("/^[\w\.]+$/",$userEntry)) return TRUE;
+    if (preg_match("/^[\w\.]+$/i",$userEntry)) return TRUE;
     else return FALSE;
     break;
 
     default:
-      if (preg_match("/^[\w]+$/",$userEntry)) return TRUE;
+      if (preg_match("/^[\w]+$/i",$userEntry)) return TRUE;
       else return FALSE;
     break;
     }
-  }// END FUNC validForm()
+  }// END FUNC isValidInput()
 
 
   /**
@@ -297,7 +264,7 @@ class PHPWS_Text {
    * local information ONLY. It adds the hub web address and index.php automatically.
    * You supply the name of the module and the variables.
    *
-   * @author Matthew McNaney <matt@NOSPAM.tux.appstate.edu>
+   * @author Matthew McNaney <matt at tux dot appstate dot edu>
    * @param string title String to appear as the 'click on' word(s)
    * @param string module Name of module to access
    * @param array getVars Associative array of GET variable to append to the link
@@ -340,8 +307,13 @@ class PHPWS_Text {
    * @return string $link Appended string
    * @access public
    */
-  function checkLink($link){
-    if (!stristr($link, "://")) return "http://".$link;
+  function checkLink($link, $ssl=FALSE){
+    if (!stristr($link, "://")){
+      if ($ssl)
+	return "https://".$link;
+      else
+	return "http://".$link;
+    }
     else return $link;
   }// END FUNC checkLink()
   
@@ -349,7 +321,7 @@ class PHPWS_Text {
   /**
    * Returns TRUE if the text appears to have unslashed quotes or apostrophes
    *
-   * @author Matthew McNaney <matt@NOSPAM.tux.appstate.edu>
+   * @author Matthew McNaney <matt at tux dot appstate dot edu>
    * @param  string  $text Text to be checked for unslashed quotes or apostrophes
    * @return boolean TRUE on success, FALSE on failure
    * @access public
@@ -364,7 +336,7 @@ class PHPWS_Text {
   /**
    * Removes slashes ONLY from quotes or apostrophes, nothing else
    *
-   * @author Matthew McNaney <matt@NOSPAM.tux.appstate.edu>
+   * @author Matthew McNaney <matt at tux dot appstate dot edu>
    * @param  string $text Text to remove slashes from
    * @return string $text Parsed text
    * @access public
