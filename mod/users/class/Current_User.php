@@ -22,7 +22,7 @@ class Current_User {
   }
 
   function disallow($message=NULL){
-    PHPWS_Users::disallow($message);
+    PHPWS_User::disallow($message);
   }
 
   function getLogin(){
