@@ -1,8 +1,8 @@
 <script type="text/javascript">
 //<![CDATA[
 
-function Start(page) {
-OpenWin = this.open(page, "CtrlWindow", "toolbar={toolbar},scrollbars={scrollbars},menubar={menubar},location={location},resizable={resizable}, width={width}, height={height}");
+function open_window(page, width, height) {
+  OpenWin = this.open(page, "CtrlWindow", "toolbar={toolbar},scrollbars={scrollbars},menubar={menubar},location={location},resizable={resizable}, width=" + width + ", height=" + height);
 }
 
 //]]>
