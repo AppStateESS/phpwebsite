@@ -1,6 +1,7 @@
 <?php
 
 define("DEFAULT_THEME_VAR", "BODY");
+define("DEFAULT_LAYOUT_HOLD", 20);
 
 class PHPWS_Layout {
 
@@ -32,24 +33,56 @@ class PHPWS_Layout {
     return "themes/" . PHPWS_Layout::getTheme() . "/";
   }
 
-  function add($contentVar, $textArray, $box=TRUE){
-      $GLOBALS['Layout'][$contentVar]['content'][] = $textArray;
-      $GLOBALS['Layout'][$contentVar]['box'] = $box;
+  function add($contentVar, $text, $box=TRUE){
+    //need to check for existance of contentvar
+
+    if (!is_array($text))
+      $content['CONTENT'] = $text;
+    else
+      $content = $text;
+
+    $box = (bool)$box;
+    $_SESSION['Layout'][$contentVar]['content'][] = $content;
+    $_SESSION['Layout'][$contentVar]['box'] = $box;
+    $_SESSION['Layout'][$contentVar]['hold']= NULL;
   }
 
   function set($contentVar, $textArray, $box=TRUE){
-    $GLOBALS['Layout'][$contentVar]['content'] = array();
+    $box = (bool)$box;
+    $_SESSION['Layout'][$contentVar]['content'] = array();
     PHPWS_Layout::add($contentVar, $textArray, $box);
   }
 
+  function hold($contentVar, $textArray, $box=TRUE, $time=NULL){
+    $box = (bool)$box;
 
-  function clear($contentVar){
-    unset($GLOBALS['Layout'][$contentVar]);
+    PHPWS_Layout::set($contentVar, $textArray, $box);
+
+    if (!isset($time) || !is_numeric($time))
+      $_SESSION['Layout'][$contentVar]['hold'] = mktime() + DEFAULT_LAYOUT_HOLD; 
+    elseif($time == -1)
+      $_SESSION['Layout'][$contentVar]['hold'] = $time;
+    else
+      $_SESSION['Layout'][$contentVar]['hold'] = mktime() + $time;
+
   }
 
+  function clear($contentVar){
+    unset($_SESSION['Layout'][$contentVar]);
+  }
+
+
+  function get($content_var){
+    if (isset($_SESSION['Layout'][$content_var]))
+      return $_SESSION['Layout'][$content_var];
+    else
+      return NULL;
+  }
+
+
   function display(){
-    global $Layout;
-    
+    $Layout = &$_SESSION['Layout'];
+
     $theme = PHPWS_Layout::getTheme();
 
     if (!isset($Layout))
@@ -62,6 +95,7 @@ class PHPWS_Layout {
 
     foreach ($finalList as $contentVar=>$contentList){
       $template = array();
+      // Need to check for existance of box
       $themeVarList[] = $theme_var = $_SESSION['Layout_Boxes'][$contentVar]['theme_var'];
       $order = $_SESSION['Layout_Boxes'][$contentVar]['box_order'];
 
@@ -80,6 +114,8 @@ class PHPWS_Layout {
       } else
 	$unsortedLayout[$theme_var][$order] = implode("", $template);
 
+      if(!isset($Layout[$contentVar]['hold']) || ($Layout[$contentVar]['hold'] > -1 && $Layout[$contentVar]['hold'] < mktime()))
+	unset($Layout[$contentVar]);
     }
 
     foreach ($themeVarList as $theme_var){
@@ -87,6 +123,14 @@ class PHPWS_Layout {
       $finalLayout[strtoupper($theme_var)] = implode("", $unsortedLayout[$theme_var]);
     }
 
+    if (isset($GLOBALS['Layout_JS'])){
+      foreach ($GLOBALS['Layout_JS'] as $script=>$javascript)
+	$jsHead[] = $javascript['head'];
+
+      if (isset($jsHead))
+	$finalLayout['JAVASCRIPT'] = implode("\n", $jsHead);
+    }
+    
     return PHPWS_Layout::loadTheme($theme, $finalLayout);
   }
 
@@ -107,6 +151,24 @@ class PHPWS_Layout {
 
   function isContentVar($content_var){
     return isset($_SESSION['Layout_Content_Vars'][$content_var]);
+  }
+
+  function addJS($script, $data){
+    PHPWS_CORE::initCoreClass("File.php");
+    $headfile = "java/$script/head.js";
+    $bodyfile = "java/$script/body.js";
+
+    if (is_file($headfile))
+      $GLOBALS['Layout_JS'][$script]['head'] = PHPWS_File::readFile($headfile);
+
+    if (is_file($bodyfile)){
+      $tpl = new PHPWS_Template();
+      $tpl->setFile($bodyfile, TRUE);
+      $tpl->setData($data);
+
+      return $tpl->get();
+    }
+
   }
 
   function createBox($theme, $content_var, $theme_var, $template){
