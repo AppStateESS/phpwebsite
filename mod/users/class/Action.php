@@ -37,7 +37,7 @@ class User_Action {
       break;
 
     case "manage_users":
-      return User_Form::managerUsers($user);
+      return User_Form::manageUsers();
       break;
 
     case "demographics":
