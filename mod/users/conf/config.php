@@ -22,6 +22,10 @@ define("FULL_PERMISSION",    2);
 define("PARTIAL_PERMISSION", 1);
 define("NO_PERMISSION",      0);
 
+define("FULL_PERM_NAME", _("Unrestricted"));
+define("PART_PERM_NAME", _("Restricted"));
+define("NO_PERM_NAME", _("None"));
+
 define("PASSWORD_LENGTH", 5);
 define("USERNAME_LENGTH", 4);
 define("GROUPNAME_LENGTH", 4);
