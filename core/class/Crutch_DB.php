@@ -13,14 +13,32 @@ class oldDB{
     return $result;
   }
 
+  function sqlUpdate($db_array, $table_name, $match_column=NULL, $match_value=NULL, $compare="=", $and_or="and") {
+    $db = & new PHPWS_DB($table_name);
+    $db->addValue($db_array);
+    oldDB::addWhere($db, $match_column, $match_value, $compare, $and_or);
+    return $db->update();
+  }
+
   function sqlImport($filename, $write=TRUE, $suppress_error=FALSE){
     PHPWS_Core::initCoreClass("File.php");
     $text = PHPWS_File::readFile($filename);
-    return PHPWS_DB::import($text);
+    return PHPWS_DB::import($text, TRUE);
+  }
+
+  function sqlDelete($table_name, $match_column=NULL, $match_value=NULL, $compare="=", $and_or="and") {
+    $db = & new PHPWS_DB($table_name);
+    oldDB::addWhere($db, $match_column, $match_value, $compare, $and_or);
+    return $db->delete();
   }
 
   function sqlSelect($table_name, $match_column=NULL, $match_value=NULL, $order_by=NULL, $compare=NULL, $and_or=NULL, $limit=NULL, $mode=NULL, $test=FALSE) {
-    $sql = & new PHPWS_DB($table_name);
+    $db = & new PHPWS_DB($table_name);
+    oldDB::addWhere($db, $match_column, $match_value, $compare, $and_or);
+    return $db->select();
+  }
+
+  function addWhere(&$db, $match_column, $match_value, $compare, $and_or){
     if (isset($match_column)){
       if (is_array($match_column)){
 	foreach ($match_column as $columnName=>$columnValue){
@@ -32,14 +50,12 @@ class oldDB{
 	  if (is_array($and_or) && isset($and_or[$columnName]))
 	    $conj = $and_or[$columnName];
 	  
-	  $sql->addWhere($columnName, $columnValue, $operator, $conj);
+	  $db->addWhere($columnName, $columnValue, $operator, $conj);
 	}
       } else {
-	$sql->addWhere($match_column, $match_value, $order_by, $compare);
+	$db->addWhere($match_column, $match_value, $compare, $and_or);
       }
     }
-
-    return $sql->select();
   }
 
   function getCol($sql){
