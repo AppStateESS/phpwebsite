@@ -20,7 +20,7 @@ class PHPWS_SQL {
       $setting = "TEXT";
       $info['flags'] = NULL;
       break;
-    
+
     case "bpchar":
       $setting = "CHAR(255)";
 
@@ -39,6 +39,10 @@ class PHPWS_SQL {
     case "timestamp":
       $setting = "TIMESTAMP";
       $info['flags'] = NULL;
+      break;
+
+    default:
+      exit(_("Unknown column type:") . " " . $info['type']);
       break;
     }
     return $setting;
