@@ -531,7 +531,10 @@ class PHPWS_DB {
   function addTableNames(&$values, $table){
     
     foreach ($values as $val){
-      $newValue[] = $table . "." . $val;
+      if (stristr($val, "count"))
+	$newValue[] = $val;
+      else
+	$newValue[] = $table . "." . $val;
     }
 
     $values = $newValue;
@@ -1014,7 +1017,7 @@ class PHPWS_DB {
       $this->addValue($column, $value);
     }
 
-    if (isset($this->where) && count($this->where))
+    if (isset($this->qwhere) || (isset($this->where) && count($this->where)))
       $result = $this->update();
     else {
       $result = $this->insert();
