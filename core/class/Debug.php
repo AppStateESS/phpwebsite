@@ -12,24 +12,24 @@ class PHPWS_Debug {
 
   function test($value){
     if (empty($value))
-      return "NULL";
+      return 'NULL';
     switch(gettype($value)){
-    case "object":
+    case 'object':
       return PHPWS_Debug::testObject($value);
       break;
       
-    case "array":
+    case 'array':
       return PHPWS_Debug::testArray($value);
       break;
 
-    case "boolean":
+    case 'boolean':
       if ($value)
-	return "TRUE";
+	return 'TRUE';
       else
-	return "FALSE";
+	return 'FALSE';
 
-    case "string":
-      return preg_replace("/\n/", "\\\\n", htmlspecialchars($value));
+    case 'string':
+      return preg_replace("/\n/", "\\\\n", htmlspecialchars($value)) . '<br />';
       break;
 
     default:
@@ -84,9 +84,9 @@ class PHPWS_Debug {
 	PHPWS_Debug::testArray($objectInfo, $displayTags);
     }
     if (gettype($objVar) != 'object') {
-      return sprint_f(_('PHPWS_Debug: testObject received a/an %s variable, not an object.'), gettype($objVar)) . "<br />";
+      return sprint_f(_('PHPWS_Debug: testObject received a/an %s variable, not an object.'), gettype($objVar)) . '<br />';
     } else {
-      return _('This is an incomplete object. If this is a sessioned object, make sure to declare the class before the variable.') . "<br />";
+      return _('This is an incomplete object. If this is a sessioned object, make sure to declare the class before the variable.') . '<br />';
     }
   } // END FUNC testObject
 
@@ -105,10 +105,12 @@ class PHPWS_Debug {
   function testArray($arrayVar, $displayTags=1) {
     if(is_array($arrayVar)) {
       if(count($arrayVar)) {
-        $info = "<table cellpadding=\"3\" border=\"1\">\n";
-	$info .= "<tr>\n";
-	$info .= "<td><b>KEY</b></td>\n";
-	$info .= "<td><b>VALUE</b></td>\n";
+        $info = 
+'<table cellpadding="3" border="1">
+<tr>
+<td><b>KEY</b></td>
+<td><b>VALUE</b></td>
+';
 
         foreach($arrayVar as $key => $value) {
           if(is_array($value)) {
