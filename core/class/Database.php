@@ -609,7 +609,7 @@ class PHPWS_DB {
 
   function expandIndex(&$rows, $index, $item){
     if (isset($rows[$index])){
-      if (!is_array($rows[$index][0])){
+      if (isset($rows[$index][0]) && !is_array($rows[$index][0])){
 	$hold = $rows[$index];
 	$rows[$index] = array();
 	$rows[$index][] = $hold;
