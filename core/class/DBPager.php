@@ -551,18 +551,13 @@ class DBPager {
     if (isset($this->searchColumn))
       $template['SEARCH']    = $this->getSearchBox();
 
-    $tpl = new PHPWS_Template($this->module);
-    $result = $tpl->setFile($this->template);
-    if (PEAR::isError($result))
-      return $result;
-
     if (isset($this->toggles))
       $max_tog = count($this->toggles);
 
     $count = 0;
     if (isset($rows)){
       foreach ($rows as $rowitem){
-	if (isset($max_tog)){
+	if (isset($max_tog)) {
 	  $rowitem['TOGGLE'] = $this->toggles[$count];
 	  $count++;
 	  
@@ -570,10 +565,8 @@ class DBPager {
 	    $count = 0;
 	} else
 	  $rowitem['TOGGLE'] = NULL;
-	
-	$tpl->setCurrentBlock('listrows');
-	$tpl->setData($rowitem);
-	$tpl->parseCurrentBlock();
+
+	$template['listrows'][] = $rowitem;
       }
       
       $this->getSortButtons($template);
@@ -582,10 +575,7 @@ class DBPager {
     }
 
     DBPager::plugExtraTags($template);
-
-    $tpl->setData($template);
-    return $tpl->get();
-
+    return PHPWS_Template::process($template, $this->module, $this->template);
   }
 
   function plugExtraTags(&$template){
