@@ -353,19 +353,21 @@ Returning results as objects
 If your table columns are named the same as a class's, you can change
 your result into an array of objects (or just one).
 
-Instead of the select function use the loadObjects function.
+Instead of the select function use the getObjects function.
 
-$db->loadObjects(classname, onlyOne);
+$db->getObjects(classname);
 
 For example, say I had a class named "friend" and I wanted to grab the
 results from the 'friends' database object we made earlier.
 
-$result = $db->loadObjects("friend");
+$result = $db->getObjects("friend");
 
 Now I will have an array of 'friend' objects. If I wanted to create
-just one object from my query, I would set onlyOne equal to TRUE.
+just one object from my query, I would use use the loadObject function instead.
 
-$friend = $db->loadObjects("friend", TRUE);
+$friend = & new Friend;
+$db->addWhere("id", 5);
+$result = $db->loadObject($friend);
 
 You can use many of the same parameters (where, order, indexby) that
 you used for select.
