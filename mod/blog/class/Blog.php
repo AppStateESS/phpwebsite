@@ -21,8 +21,8 @@ class Blog {
     if (!isset($this->id))
       return FALSE;
 
-    $db = & new PHPWS_DB("blog_entries");
-    $db->addWhere("id", $this->id);
+    $db = & new PHPWS_DB('blog_entries');
+    $db->addWhere('id', $this->id);
     $result = $db->loadObject($this);
     if (PEAR::isError($result))
       return $result;
@@ -57,9 +57,9 @@ class Blog {
 
   function save()
   {
-    $db = & new PHPWS_DB("blog_entries");
+    $db = & new PHPWS_DB('blog_entries');
     if (!empty($this->id)) {
-      $db->addWhere("id", $this->id);
+      $db->addWhere('id', $this->id);
     } else {
       $this->date = mktime();
     }
@@ -70,43 +70,43 @@ class Blog {
 
   function view($edit=TRUE, $limited=TRUE)
   {
-    PHPWS_Core::initModClass("categories", "Categories.php");
+    PHPWS_Core::initModClass('categories', 'Categories.php');
     $template['TITLE'] = $this->getTitle(TRUE);
     $template['DATE']  = $this->getFormatedDate();
     $template['ENTRY'] = $this->getEntry(TRUE);
 
-    if ($edit && Current_User::allow("blog", "edit_blog", $this->getId())){
+    if ($edit && Current_User::allow('blog', 'edit_blog', $this->getId())){
       $vars['blog_id'] = $this->getId();
-      $vars['action']  = "admin";
-      $vars['command'] = "edit";
-      $links[] = PHPWS_Text::secureLink(_("Edit"), "blog", $vars);
+      $vars['action']  = 'admin';
+      $vars['command'] = 'edit';
+      $links[] = PHPWS_Text::secureLink(_('Edit'), 'blog', $vars);
     }
 
     if ($limited) {
-      $links[] = PHPWS_Text::rerouteLink(_("View"), "blog", "view", $this->getId());
+      $links[] = PHPWS_Text::rerouteLink(_('View'), 'blog', 'view', $this->getId());
     }
 
-    $result = Categories::getSimpleLinks("blog", $this->id);
+    $result = Categories::getSimpleLinks('blog', $this->id);
     if (!empty($result)) {
-      $template['CATEGORIES'] = implode(", ", $result);
+      $template['CATEGORIES'] = implode(', ', $result);
     }
 
     if (isset($links)) {
-      $template['LINKS'] = implode(" | " , $links);
+      $template['LINKS'] = implode(' | ' , $links);
     }
 
-    return PHPWS_Template::process($template, "blog", "view.tpl");
+    return PHPWS_Template::process($template, 'blog', 'view.tpl');
   }
 
   function kill()
   {
-    PHPWS_Core::initCoreClass("Version.php");
+    PHPWS_Core::initModClass('version', 'Version.php');
 
-    $db = & new PHPWS_DB("blog_entries");
-    $db->addWhere("id", $this->id);
+    $db = & new PHPWS_DB('blog_entries');
+    $db->addWhere('id', $this->id);
     $db->delete();
 
-    Version::flush($this->id, "blog_entries");
+    Version::flush('blog_entries', $this->id);
   }
 }
 
