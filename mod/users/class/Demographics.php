@@ -57,7 +57,7 @@ class Demographics {
 
     case "object":
     default:
-      $result = $db->loadObjects("User_Demographic");
+      $result = $db->getObjects("User_Demographic");
       break;
     }
     return $result;
