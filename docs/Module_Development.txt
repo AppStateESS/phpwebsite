@@ -635,9 +635,8 @@ So say for links I may want a small side box:
 Layout::add($content, "links", "sideBox");
 
 When ever I want to use that box, I make sure I use the same marker
-name. Like other names we have discussed, you shoul
-
-
+name. If I want to add more data to the sideBox I can just call the
+add() function again. It will append the text, not replace it.
 
 
 
