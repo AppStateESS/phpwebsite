@@ -121,11 +121,9 @@ class Setup{
     }
 
     if (!empty($_POST['dbhost']))
-      Setup::setConfigSet("dbhost", $_POST['dbhost']);
-    else {
-      $content[] = _("Missing a host reference.") . "<br />";
-      $check = FALSE;
-    }
+      $content[] = _("Notice: Missing a host reference.") . "<br />";
+
+    Setup::setConfigSet("dbhost", $_POST['dbhost']);
 
     if (!empty($_POST['dbname']))
       Setup::setConfigSet("dbname", $_POST['dbname']);
@@ -180,8 +178,11 @@ class Setup{
     $dsn .= "/" . $dbname;
     
     $result = DB::connect($dsn);
-    if (PEAR::isError($result))
+
+    if (PEAR::isError($result)){
+      PHPWS_Error::log($result);
       return FALSE;
+    }
     else {
       Setup::setConfigSet("dsn", $dsn);
       return TRUE;
