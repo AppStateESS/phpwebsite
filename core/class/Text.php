@@ -285,10 +285,10 @@ class PHPWS_Text {
     $link[] = "<a href=\"./";
     $link[] = "index.php";
 
-    $link[] = "?";
-
-    if (isset($module))
+    if (isset($module)){
+      $link[] = "?";
       $vars[] = "module=$module";
+    }
 
     if (is_array($getVars)){
       foreach ($getVars as $var_name=>$value)
