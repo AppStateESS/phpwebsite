@@ -437,10 +437,26 @@ class Layout {
     if (!empty($meta_owner))
       $metatags[] = '<meta name="owner" content="' . $meta_owner . '" />';
 
+    if (isset($GLOBALS['extra_meta_tags']) && is_array($GLOBALS['extra_meta_tags'])) {
+      $metatags = array_merge($metatags, $GLOBALS['extra_meta_tags']);
+    }
+
     $robot = Layout::getMetaRobot();
     $metatags[] = '<meta name="robots" content="' . $robot . '" />';
 
     return implode("\n", $metatags);
+  }
+
+  function metaRoute($address=NULL, $time=5)
+  {
+    if (empty($address)) {
+      $address = './index.php';
+    }
+
+    $time = (int)$time;
+
+    $GLOBALS['extra_meta_tags'][] = '<meta http-equiv="refresh" content="' .
+      $time . '; url=' . $address . '" />';
   }
 
   function getOnLoad(){
