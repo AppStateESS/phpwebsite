@@ -49,7 +49,7 @@ class PHPWS_Boost {
   function getInstalledModules(){
     $db = & new PHPWS_DB("modules");
     $db->addColumn("title");
-    $modules = $db->loadObjects("PHPWS_Module");
+    $modules = $db->getObjects("PHPWS_Module");
     return $modules;
   }
 
@@ -447,13 +447,13 @@ class PHPWS_Boost {
   function getRegMods(){
     $db = & new PHPWS_DB("modules");
     $db->addWhere("register", 1);
-    return $db->loadObjects("PHPWS_Module");
+    return $db->getObjects("PHPWS_Module");
   }
 
   function getUnregMods(){
     $db = & new PHPWS_DB("modules");
     $db->addWhere("unregister", 1);
-    return $db->loadObjects("PHPWS_Module");
+    return $db->getObjects("PHPWS_Module");
   }
 
   function setRegistered($module, $registered){
