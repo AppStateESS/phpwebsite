@@ -10,7 +10,9 @@ function _($text){
 /**
  * Pre-1.x code
  */
-
+if (!defined('TABLE_PREFIX')) {
+  define('TABLE_PREFIX', NULL);
+}
 define('PHPWS_TBL_PREFIX', TABLE_PREFIX);
 define('PHPWS_HOME_DIR' , './');
 define('CRUTCH_MODULE_ACTIVE', TRUE);
