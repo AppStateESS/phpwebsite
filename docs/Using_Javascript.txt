@@ -1,32 +1,33 @@
 Using Javascript Test
 by Matthew McNaney
 
+Modular Javascript insertion is easy with the Layout function
+getJavascript. This document gives the basics to inserting any
+javascript into any module. 
 
-The Layout module has a mechanism to allow easy insertion of
-Javascript into your modules.
+We will start with a self-standing Javascript file. You can find it in
+your phpWebSite installation under javascript/example/example.html.
+Point your browser to this file to see it in action.
 
-We will start with creating a Javascript and then move on how to
-implement it.
+The script is very basic. You enter some text into the text field, click the
+button, and an alert box pops up with that data. Once you have your
+script, you just need to convert into one usable by phpWebSite.
 
-We will be writing one named Example. It can be found
-phpwebsite/javascript/example/example.html. Point your browser to that
-file to see it in action.
+First, break the script into two sections: the head and the
+body. Take a look at example.html. You will see that the header includes a
+Javascript file.
 
-It is very basic. You enter some text into the text field, click the
-button, and an alert box pops up with the data in it. We are going to
-turn this script into one usable by phpWebSite.
+<script language="javascript" src="example.js"></script>
 
-Once you have the main script, you will need to break it into two
-sections: the head and the body. These will be saved into files named
-head.js and body.js respectively.
+Looking in the example.js file, you will see a function named
+example() that takes one parameter: entry. This 'entry' is then echoed
+in the alert function.
 
-Take a look at example.html. You will see that the header includes a
-javascript file. The included file contains the javascript functions.
-This is the preferable method of using javascript. It keeps your html
+(Incidently, This is the preferable method of using javascript. It keeps your html
 page neat. You _could_ put all the functions in the header as well but
-it tends to look unorganized.
+it tends to look unorganized.)
 
-Anyway, we extract this:
+We will extract this:
 <script language="javascript" src="example.js"></script>
 
 and save it in head.js with some slight editing.
@@ -34,18 +35,23 @@ and save it in head.js with some slight editing.
 <script language="javascript"
 src="javascript/example/example.js"></script>
 
-Now we move on to the body.js. We will copy this portion:
+We do so because we will move the example.js file into our
+javascript/example/ directory.
+
+Now we move on to create the body.js. The body.js content is passed to
+the user at the execution of the getJavascript function.
+We will copy this portion:
 
 <input type="button" value="Click Me" 
 onClick="example(document.myForm.exampletext.value)" />
 
-and save it in a file named body.js with, again, a few edits:
+and save it into body.js with a few edits.
 
 <input type="button" value="Click Me" 
 onClick="example(document.{FORM_NAME}.{TEXT_FIELD}.value)" />
 
-The example.js file gets copied into the javascript/example directory
-as well.
+When the module developer calls the getJavascript function, they will
+indicate what FORM_NAME and TEXT_FIELD should contain.
 
 Now we are ready to implement the javascript into our code:
 
@@ -61,14 +67,22 @@ Layout::add($content);
 
 The getJavascript() function will then:
 1) Replace the tags found in the head.js file with values in the array
-(there weren't any in this example) and then paste the head into the
-page header,
-2) Replace the tags found in the body.js with values in the array
-(FORM_NAME and TEXT_FIELD) and then return that data. 
+   (there weren't any in this example) and then paste the result into the
+   page header.
 
+2) Replace the tags found in the body.js with values in the array
+   (FORM_NAME and TEXT_FIELD). The completed data will then be
+   returned as the function result.
+
+3) The module developer finally merges the returned data with his form
+   and puts it into Layout.
+
+Voila! We now have a customizable Javascript!
 
 This should get you started. For more examples, just look at the
-scripts included with phpWebSite. Some are very complicated (like
-HyperTextArea). What is nice is that you really don't need to know
-much about how the script functions for it to work in phpWebSite. All
-you really need to know how it is accessed.
+scripts included with phpWebSite. Some are very complicated (e.g.
+HyperTextArea) while others are very basic (e.g. Check All).
+
+What is nice is that you really don't need to know much about how the
+script functions for it to work in phpWebSite. All you really need to
+know how it is accessed.
