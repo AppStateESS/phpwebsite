@@ -17,6 +17,7 @@ PHPWS_Core::initCoreClass("Form.php");
 PHPWS_Core::initCoreClass("Text.php");
 PHPWS_Core::initCoreClass("Template.php");
 PHPWS_Core::initModClass("boost", "Boost.php");
+PHPWS_Core::initModClass("users", "Current_User.php");
 
 session_start();
 
