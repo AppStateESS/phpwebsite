@@ -20,6 +20,12 @@ class Users_Permission {
     if (!isset($itemname))
       $itemname = $module;
 
+    // Get the permission level for the group
+    $permissionLvl = $this->getPermissionLevel($module);
+
+    if ($permissionLvl == 0)
+      return FALSE;
+
     // If no items exist in the permission object, return FALSE
     if (!isset($this->permissions[$module]['items'][$itemname]))
       return FALSE;
@@ -43,12 +49,6 @@ class Users_Permission {
       if (PEAR::isError($result))
 	return $result;
     }
-
-    // Get the permission level for the group
-    $permissionLvl = $this->getPermissionLevel($module);
-
-    if ($permissionLvl == 0)
-      return FALSE;
 
     if(isset($this->permissions[$module]['permissions'])){
       if (isset($subpermission)){
