@@ -3,9 +3,10 @@
 class PHPWS_User_Permission{
 
   function createPermissions($module){
+    // FIX
     include "mod/$module/conf/permission.php";
     if (!isset($permissions))
-      return PHPWS_User::error(USER_ERR_PERM_FILE, "createPermissions", "Module: $module");
+      return PHPWS_Error::get(USER_ERR_PERM_FILE, "users", "createPermissions", "Module: $module");
 
     foreach ($permissions as $itemName=>$subpermissions){
       $result = PHPWS_User_Permission::createPermissionTable($itemName, $subpermissions);
@@ -29,7 +30,7 @@ class PHPWS_User_Permission{
     $columnSetting = "smallint NOT NULL default '0'";
 
     if (PHPWS_DB::isTable($tableName))
-      return PHPWS_User::error(USER_ERR_PERM_TABLE, "createPermissionTable", "Table Name: $tableName");
+      return PHPWS_Error::get(USER_ERR_PERM_TABLE, "users", "createPermissionTable", "Table Name: $tableName");
 
     $DB = new PHPWS_DB($tableName);
     
@@ -48,7 +49,7 @@ class PHPWS_User_Permission{
     $tableName = PHPWS_User_Permission::getItemPermissionTableName($itemName);
 
     if (PHPWS_DB::isTable($tableName))
-      return PHPWS_User::error(USER_ERR_PERM_TABLE, "createItemPermissionTable", "Table Name: $tableName");
+      return PHPWS_Error::get(USER_ERR_PERM_TABLE, "users", "createItemPermissionTable", "Table Name: $tableName");
     
     $DB = new PHPWS_DB($tableName);
     
