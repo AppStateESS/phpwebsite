@@ -1,4 +1,14 @@
 <?php
+
+/**
+ * Links categories to specific items
+ *
+ * @version $Id$
+ * @author  Matt McNaney <matt at tux dot appstate dot edu>
+ * @package categories
+ */
+
+
 PHPWS_Core::configRequireOnce("categories", "errorDefines.php");
 
 class Category_Item {

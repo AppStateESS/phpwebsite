@@ -1,4 +1,11 @@
 <?php
+/**
+ * Category class.
+ *
+ * @version $Id$
+ * @author  Matt McNaney <matt at tux dot appstate dot edu>
+ * @package categories
+ */
 
 class Category{
   var $id          = NULL;
@@ -7,6 +14,7 @@ class Category{
   var $parent      = NULL;
   var $image       = NULL;
   var $thumbnail   = NULL;
+  var $children    = NULL;
 
 
   function Category($id=NULL){
@@ -27,6 +35,7 @@ class Category{
       return $result;
 
     $this->loadImage();
+    $this->loadChildren();
   }
 
   function setId($id){
@@ -50,7 +59,7 @@ class Category{
   }
 
   function getDescription(){
-    return $this->description;
+    return PHPWS_Text::parseOutput($this->description);
   }
 
   function setParent($parent){
@@ -59,6 +68,22 @@ class Category{
 
   function getParent(){
     return $this->parent;
+  }
+
+  function getParentTitle(){
+    static $parentTitle = array();
+
+    if ($this->parent == 0) {
+      return _("Top Level");
+    }
+
+    if (isset($parentTitle[$this->parent]))
+      return $parentTitle[$this->parent];
+
+    $parent = & new Category($this->parent);
+    $parentTitle[$parent->id] = $parent->title;
+
+    return $parent->title;
   }
 
   function setImage($image){
@@ -74,7 +99,21 @@ class Category{
 
   function loadImage(){
     PHPWS_Core::initCoreClass("Image.php");
-    $this->image = new PHPWS_Image($this->image);
+    if (!empty($this->image))
+      $this->image = new PHPWS_Image($this->image);
+  }
+
+  function loadChildren(){
+    $db = & new PHPWS_DB("categories");
+    $db->addWhere("parent", $this->id);
+    $db->addOrder("title");
+    $result = $db->getObjects("Category");
+    if (empty($result)) {
+      $this->children = NULL;
+      return;
+    }
+
+    $this->children = Categories::initList($result);
   }
 
   function setThumbnail($thumbnail){

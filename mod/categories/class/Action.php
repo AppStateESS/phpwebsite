@@ -163,8 +163,18 @@ class Categories_Action{
     } else
       $form->add("submit", "submit", _("Add Category"));
 
-    $category_list = Categories::getCategories("parent");
+    $category_list = Categories::getCategories("list");
 
+    if (is_array($category_list)) {
+      $reverse = array_reverse($category_list, TRUE);
+      $reverse[0] = "-" . _("Top Level") . "-";
+      $category_list = array_reverse($reverse, TRUE);
+    }
+    else {
+      $category_list = array(0=>"-" . _("Top Level") . "-");
+    }
+
+    
     $form->add("parent", "select", $category_list);
     $form->setLabel("parent", _("Parent"));
 
@@ -195,18 +205,16 @@ class Categories_Action{
 
     $image = $category->getImage();
 
-    if (isset($image))
+    if (!empty($image)){
       $image_id = $image->getId();
-    else
-      $image_id = NULL;
-
-    $result = $form->addImage("image", "categories", $image_id);
-
-    if (isset($image)){
       $form->add("current_image", "hidden", $image->getId());
       $template['CURRENT_IMG_LABEL'] = _("Current Image");
       $template['CURRENT_IMG'] = $image->getTitle();
     }
+    else
+      $image_id = NULL;
+
+    $result = $form->addImage("image", "categories", $image_id);
 
     $template['IMAGE_LABEL'] = _("Image");
 
@@ -219,12 +227,19 @@ class Categories_Action{
   function category_list(){
     PHPWS_Core::initCoreClass("DBPager.php");
 
+    $pageTags['TITLE_LABEL'] = _("Title");
+    $pageTags['PARENT_LABEL'] = _("Parent");
+    $pageTags['ACTION_LABEL'] = _("Action");
+
     $pager = & new DBPager("categories", "Category");
     $pager->setModule("categories");
     $pager->setTemplate("category_list.tpl");
     $pager->setLink("index.php?module=categories&amp;action=admin&amp;tab=list");
+    $pager->addTags($pageTags);
     $pager->addToggle("class=\"toggle1\"");
     $pager->addToggle("class=\"toggle2\"");
+    $pager->setMethod("description", "getDescription");
+    $pager->setMethod("parent", "getParentTitle");
     $pager->addRowTag("action", "Categories_Action", "getListAction");
     $content = $pager->get();
     return $content;

@@ -1,134 +1,110 @@
 <?php
 
-define("CATEGORY_NOT_FOUND", -1);
-define("CAT_DB_PROBLEM",     -2);
-define("CAT_NO_MOD_TABLE",   -3);
+/**
+ * General category administration
+ *
+ * @version $Id$
+ * @author  Matt McNaney <matt at tux dot appstate dot edu>
+ * @package categories
+ */
+
+PHPWS_Core::configRequireOnce("categories", "errorDefines.php");
 
 class Categories{
 
-  function delete(&$category){
-    $modules = Categories::listModules();
+  /**
+   * This function and the next were for testing.
+   * though not used now, may be expanded in the future
+   */
+  function getCSS(){
+    $result = Categories::getCategories();
+    $list = Categories::_makeLink($result);
+    Layout::addStyle("categories");
+    return $list;
+   }
 
-    if (!empty($modules)){
-      foreach ($modules as $mod){
-	$result = Categories::dropModuleCategory($category, $mod);
-	if (PEAR::isError($result))
-	  PHPWS_Error::log($result);
+  /**
+   * Ditto the above
+   */
+  function _makeLink($list){
+    $tpl = & new PHPWS_Template("categories");
+    $tpl->setFile("list.tpl");
+
+    $vars['action'] = "add_category";
+    $tpl->setCurrentBlock("link_row");
+
+    foreach ($list as $category){
+      $vars['id'] = $category->id;
+      $link = PHPWS_Text::moduleLink($category->title, "category", $vars);
+
+      if (!empty($category->children)) {
+	$link .= Categories::_makeLink($category->children);
       }
+
+      $tpl->setData(array("LINK" => $link));
+      $tpl->parseCurrentBlock();
     }
 
-    return $category->kill();
+    $links = $tpl->get();
+    return $links;
   }
 
-  function dropModuleCategory(&$category, $module){
-    $tableName = Categories::categoryTableName($module);
-
-    if (!PHPWS_DB::isTable($tableName))
-      return FALSE;
-
-    $db = & new PHPWS_DB($tableName);
-    $db->addWhere("cat_id", $category->id);
-    return $db->delete();
-  }
-
-  function getForm($module, $id=NULL, $item_name=NULL){
-    if (empty($itemname))
-      $itemname = $module;
-
-    $categories = Categories::getCategories("idlist");
-
-    if (PEAR::isError($categories)){
-      PHPWS_Error::log($categories);
-      return PHPWS_Error::get(CAT_DB_PROBLEM, "categories", "Categories::getForm");
+  function initList($list){
+    foreach ($list as $cat){
+      $cat->loadImage();
+      $cat->loadChildren();
+      $children[$cat->id] = $cat;
     }
-      
-    if (empty($categories))
-      return _("No categories exist.");
-
-    $multiple = & new Form_Multiple("categories", $categories);
-    $multiple->setSize(5);
-    $multiple->setWidth("100%");
-
-    if (isset($id)){
-      $itemMatch = Categories::getMatch($module, $id, $item_name);
-      if (PEAR::isError($itemMatch))
-	return $itemMatch;
-
-      if (isset($itemMatch))
-	$multiple->setMatch($itemMatch);
-    }
-
-    return $multiple->get();
+    return $children;
   }
 
-
-  function getMatch($module, $id, $item_name){
-    $tableName = Categories::categoryTableName($module);
-    if (!PHPWS_DB::isTable($tableName))
-      return PHPWS_Error::get(CAT_NO_MOD_TABLE, "categories", "Categories::getMatch", $tableName);
-
-    $db = & new PHPWS_DB($tableName);
-    $db->addWhere("item_id", $id);
-    $db->addWhere("item_name", $item_name);
-    $db->addColumn("cat_id");
-    $result = $db->select("col");
-
-    if (PEAR::isError($result)){
-      PHPWS_Error::log($result);
-      return PHPWS_Error::get(CAT_DB_PROBLEM, "categories", "Categories::getMatch");
-    }
-
-    return $result;
-  }
-
-  function categoryTableName($module){
-    return $module . "_categories";
-  }
-
-
-  function getCategories($mode){
+  function getCategories($mode="sorted"){
+    PHPWS_Core::initModClass("categories", "Category.php");
     $db = & new PHPWS_DB("categories");
-
+    
     switch ($mode){
+    case "sorted":
+      $db->addWhere("parent", 0);
+      $db->addOrder("title");
+      $cats = $db->getObjects("Category");
+      if (empty($cats))
+	return NULL;
+      $result = Categories::initList($cats);
+      return $result;
+      break;
+
     case "idlist":
       $db->addColumn("title");
       $db->setIndexBy("id");
       $result = $db->select("col");
       break;
 
-    case "parent":
-      $db->addColumn("title");
-      $db->setIndexBy("id");
-      $result = $db->select("col");
+    case "list":
+      $list = Categories::getCategories();
+      $indexed = Categories::_buildList($list);
 
-      if (is_array($result))
-	array_unshift($result, "-" . _("Top Level") . "-");
-      else
-	$result = array(0=>"-" . _("Top Level") . "-");
+      return $indexed;
       break;
     }
 
     return $result;
   }
 
-  function addModule($module){
-    $db = & new PHPWS_DB("categories_modules");
-    $db->addValue("mod_title", $module);
-    $db->insert();
-  }
+  function _buildList($list){
+    if (empty($list))
+      return NULL;
 
-  function listModules(){
-    $db = & new PHPWS_DB("categories_modules");
-    $db->addColumn("mod_title");
-    return $db->select("col");
+    foreach ($list as $category){
+      $indexed[$category->id] = $category->title;
+      if (!empty($category->children)) {
+	$sublist = Categories::_buildList($category->children);
+	foreach ($sublist as $subkey => $subvalue){
+	  $indexed[$subkey] = $category->title . " &gt;&gt; " . $subvalue;
+	}
+      }
+    }
+    return $indexed;
   }
-
-  function removeModule($module){
-    $db = & new PHPWS_DB("categories_modules");
-    $db->addWhere("mod_title", $module);
-    $db->delete();
-  }
-
 
 }
 
