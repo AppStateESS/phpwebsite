@@ -37,7 +37,6 @@ PHPWS_Core::runtimeModules();
 PHPWS_Core::runCurrentModule();
 PHPWS_Core::closeModules();
 
-
 ob_end_flush();
 
 PHPWS_DB::disconnect();

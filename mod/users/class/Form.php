@@ -164,7 +164,6 @@ class User_Form {
     if ($_SESSION['User']->allow("users", "edit_users") || $_SESSION['User']->allow("users", "delete_users"))
       $tabs["manage_users"] = array("title"=>_("Manage Users"), "link"=>"index.php?module=users&amp;action[admin]=main");
 
-
     if ($_SESSION['User']->allow("users", "add_edit_groups")){
       $tabs["new_group"] = array("title"=>_("New Group"), "link"=>"index.php?module=users&amp;action[admin]=main");
       $tabs["manage_groups"] = array("title"=>_("Manage Groups"), "link"=>"index.php?module=users&amp;action[admin]=main");

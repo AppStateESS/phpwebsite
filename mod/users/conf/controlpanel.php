@@ -1,6 +1,6 @@
 <?php
 
-$links[] = array("label"       => _("User Administration"),
+$link[] = array("label"       => _("User Administration"),
 		 "restricted"  => TRUE,
 		 "url"         => "index.php?module=users&action[admin]=main",
 		 "description" => _("Lets you create and edit users and groups."),
@@ -8,7 +8,7 @@ $links[] = array("label"       => _("User Administration"),
 		 "tab"         => "admin"
 		 );
 
-$links[] = array("label"       => _("User Settings"),
+$link[] = array("label"       => _("User Settings"),
 		 "restricted"  => FALSE,
 		 "url"         => "index.php?module=users&action[user]=main",
 		 "description" => _("Lets you edit your personal user information."),
