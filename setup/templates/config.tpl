@@ -91,6 +91,27 @@ define("LOG_TIME_FORMAT", "%X %x");
 
 define("FORCE_THEME_TEMPLATES", FALSE);
 
+/**
+ * phpWebSite uses templates from the templates directory by default.
+ * This makes sense for ordering purposes and to make branches load
+ * faster.
+ * However if you are developing, you may not want it too. In that
+ * case you can force the core to pull module templates from the
+ * module template directory directly. Set the below to TRUE if
+ * this is the case.
+ */
+
+define("FORCE_MOD_TEMPLATES", TRUE);
+
+
+/*********************** CONFIG FILES **************************/
+/**
+ * By default, phpWebSite checks configuration files in the
+ * config directory when getConfigFile is called. If you wish
+ * core to only grab mod configuration files, set the below
+ * to TRUE.
+ */
+define("FORCE_MOD_CONFIG", TRUE);
 
 /********************** PEAR SETTINGS **************************/
 
