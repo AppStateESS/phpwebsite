@@ -1,0 +1,176 @@
+Using Layout
+
+The Layout module allows you display your data in phpWebSite. Layout
+also controls the theming of your site.
+
+Adding data to Layout
+
+All themes in phpWebSite should have a BODY tag. This tag designates
+the main text area of a theme. The quickest way to access this data
+is:
+
+Layout::add($content);
+
+The $content variable is your string of text you want displayed.
+
+Formatting your content
+
+All data goes through 'box' templates. 'Box' is a generic term for the
+small templates that are used in the larger theme template. All boxes
+need to have a CONTENT tag. When you use the add() function, this is
+where your data is piped.
+
+Some box templates may contain other tags. The most common of these is
+the TITLE tag. To access the TITLE tag, you will change the format of
+your call to add:
+
+$box['TITLE']   = "Title of my Box Template";
+$box['CONTENT'] = "This is the content of my box template.";
+
+Layout::add($box);
+
+When you send an array to the add() function, it will try to match the
+keys to the tags in the template. In the example above, the box
+assigned to the BODY tag would require a TITLE tag.
+
+
+Pegging your Content
+
+Sometime you may want to assign your layout to a 'peg'. This means
+your data can be manipulated by the administrator. Usually a pegged
+element is put into a smaller area than is required by the BODY tag.
+
+To peg your content, just enter your module name and a peg name:
+
+Layout::add($content, "myModule", "smallBox");
+
+Each time you call the add() function in this manner, the submitted
+content will be appended.
+
+For example:
+
+Layout::add('1', "myModule", "smallBox");
+Layout::add('2', "myModule", "smallBox");
+Layout::add('3', "myModule", "smallBox");
+
+would be displayed as:
+
+123
+
+
+If you want to completely overwrite what is in your peg, you can use
+the set() function. It is identical in format to the add() function.
+
+Layout::set($content, "myModule", "smallBox");
+
+Anything that was in the 'smallBox' peg will get overwritten.
+
+There is a final variable in both add() and set() functions (as well
+as hold() which you will read about in a second).
+
+If you do not want your content to be inserted in a box template, you
+can indicate this with the fourth parameter.
+
+For example:
+
+Layout::add($content, "myModule", "smallBox", FALSE);
+
+The FALSE above tells layout to just put the content in the tag
+location and do not try to put it within a box template. If you have
+specific templates and formating with your module, you may wish to
+trigger this option.
+
+Holding your Content
+
+Everytime the page is loaded, Layout clears out its content slots. If
+you want your data to be retained so you don't have to recreate it
+each time, you can use the hold() function.
+
+For example, the User module uses the hold() function for the log in
+box. Since the log in box is on every page and remains the same
+throughout the session, there isn't a reason to recreate each time.
+
+Users first checks to see if the content has been set with the get()
+function.
+
+From the runtime.php file:
+
+if (!Layout::isBoxSet("users", "CNT_user_small")) PHPWS_User::getLogin();
+
+If the content has not been set, users creates the login box in the
+getLogin() function:
+
+Layout::hold($login, "users", "CNT_user_small", TRUE, -1);
+
+Now the data will not be cleared. When the page is refreshed, the
+above check will pass and Users won't need to recreate the box.
+
+The fifth parameter determines how often this box is refreshed. The
+Users example has it set to -1. This means that it should be retained
+indefinately. If you want the data to time out, just enter the amount
+of seconds you want it to last. For example:
+
+Layout::hold($content, "newsFeed", "FeedBox", TRUE, 3600);
+
+This would clear out the content in the box after 1 hour (60 seconds
+times 60 minutes). The example 'newsFeed' module could then check the
+box like Users did above. Once it was clear, it could grab the news
+feed and fill the content back in.
+
+
+Adding Style Sheets
+
+Instead of adding style components to your module's templates, a
+better plan would to put them all on one style sheet. You can then
+instruct Layout to include your style sheet at the top of the page using
+addStyle().
+
+For example if you call this in your module:
+
+Layout::addStyle("myModule", "myModule.css");
+
+Layout will add the following in your header:
+
+<link rel="stylesheet" href="templates/controlpanel/myModule.css"
+type="text/css" />
+
+The second parameter is optional. If you leave it blank, Layout will
+look for a style sheet named 'style.css' in the same directory.
+
+All you need to do is include your style sheet file in the templates/
+directory of your module.
+
+
+Using Javascript
+
+If you are familiar with using JavaScript in phpWebSite version 0.9.3
+and below, be readdy for a big change.
+
+Layout allows you to use JavaScript in your module via the
+getJavascript() function.
+
+The format is:
+
+Layout::getJavascript('scriptName', $value_array);
+
+For example, if we wanted to use the CheckAll script we would enter
+the following:
+
+$values['FORM_NAME'] = "myForm";
+$values['TOGGLE']    = "Check All";
+
+$result = Layout::getJavascript('check_all', $values);
+
+The result would return the following from the body.js file:
+
+<a href="#" onclick="CheckAll()">Check All</a>
+
+The head.js file would be echoed in the head of the theme.
+
+The value array will be used in both the head and body of a
+javascript. For more information, look for a README file in the
+javascript directory. It should tell you how to use it.
+
+For more information of how to incorporate javascript in your module,
+please read the documentation in the docs directory of your phpWebSite
+installation.
