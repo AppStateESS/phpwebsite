@@ -7,4 +7,6 @@ $image_dir    = TRUE;
 $file_dir     = FALSE;
 $version_http = "http://phpwebsite.appstate.edu/test/update.ini";
 $about        = TRUE;
+$priority     = 10;
+
 ?>
