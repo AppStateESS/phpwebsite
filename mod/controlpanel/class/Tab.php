@@ -175,7 +175,7 @@ class PHPWS_Panel_Tab {
 
     $db->reset();
     $db->addOrder("tab_order");
-    $result = $db->loadObjects("PHPWS_Panel_Tab");
+    $result = $db->getObjects("PHPWS_Panel_Tab");
 
     if (PEAR::isError($result))
       return $result;
