@@ -179,13 +179,22 @@ class PHPWS_Core {
   }
 
   function getConfigFile($module, $file){
-    if ($module == "core")
-      $file = PHPWS_SOURCE_DIR . "config/core/$file";
-    else
-      $file = PHPWS_SOURCE_DIR . "config/mod/$module/$file";
+    if ($module == "core"){
+      $altfile = PHPWS_SOURCE_DIR . "config/core/$file";
+      $file = "./config/core/$file";
+    }
+    else {
+      $altfile = PHPWS_SOURCE_DIR . "mod/$module/conf/$file";
+      $file = "config/$module/$file";
+    }
 
-    if (!is_file($file))
-      return PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, "core", "getConfigFile", "file = $file");
+
+    if (!is_file($file)){
+      if (!is_file($altfile))
+	return PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, "core", "getConfigFile", "file = $file");
+      else
+	$file = $altfile;
+    }
 
     return $file;
   }
@@ -212,8 +221,9 @@ class PHPWS_Core {
 
   function log($message, $filename, $type=NULL){
     require_once "Log.php";
+
     if (!is_writable(PHPWS_LOG_DIRECTORY))
-      exit("Unable to write to log directory");
+      exit("Unable to write to log directory " . PHPWS_LOG_DIRECTORY);
 
     $conf = array('mode' => LOG_PERMISSION, 'timeFormat' => LOG_TIME_FORMAT);
     $log  = &Log::singleton('file', PHPWS_LOG_DIRECTORY . $filename, $type, $conf, PEAR_LOG_NOTICE);
