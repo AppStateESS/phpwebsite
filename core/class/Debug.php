@@ -128,7 +128,7 @@ class PHPWS_Debug {
 } // END CLASS PHPWS_Debug
 
 function test($value){
-  return PHPWS_Debug::test($value);
+  echo PHPWS_Debug::test($value);
 }
 
 ?>
