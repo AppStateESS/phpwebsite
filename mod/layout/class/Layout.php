@@ -19,22 +19,29 @@ class Layout {
     // a new box for it.
     
     if (isset($module) && isset($contentVar)){
-      if (!$_SESSION['Layout_Settings']->isContentVar($contentVar))
+      if (!$_SESSION['Layout_Settings']->isContentVar($contentVar)) {
 	Layout::addBox($contentVar, $module);
+      }
     } else {
       $box = FALSE;
       $module = 'layout';
       $contentVar = DEFAULT_CONTENT_VAR;
     }
 
-    if (!is_array($text))
+    Layout::_loadBox($text, $module, $contentVar, $box);
+  }
+
+  function _loadBox($text, $module, $contentVar, $box)
+  {
+    if (!is_array($text)) {
       $GLOBALS['Layout'][$module][$contentVar]['content']['CONTENT'][] = $text;
-    else
+    }
+    else {
       foreach ($text as $key=>$value){
 	if (is_string($value))
 	  $GLOBALS['Layout'][$module][$contentVar]['content'][$key][] = $value;
       }
-
+    }
     $GLOBALS['Layout'][$module][$contentVar]['box'] = $box;
   }
 
@@ -278,14 +285,17 @@ class Layout {
       return PHPWS_Error::get(LAYOUT_SESSION_NOT_SET, 'layout', 'getBoxContent');
 
     foreach ($GLOBALS['Layout'] as $module=>$content){
-      foreach ($content as $contentVar=>$contentList){
-	if (!is_array($contentList) || !isset($contentList['content']))
+      foreach ($content as $contentVar=>$contentList) {
+	if (!is_array($contentList) || !isset($contentList['content'])) {
 	  continue;
+	}
 	
-	foreach ($contentList['content'] as $tag=>$content)
-	    $list[$module][$contentVar][strtoupper($tag)] = implode('', $content);
+	foreach ($contentList['content'] as $tag=>$content) {
+	  $list[$module][$contentVar][strtoupper($tag)] = implode('', $content);
+	}
       }
     }
+
     return $list;
   }
 
