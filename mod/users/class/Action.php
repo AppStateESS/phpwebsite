@@ -27,10 +27,12 @@ class User_Action {
       /** Form cases **/
       /** User Forms **/
     case "new_user":
+      $title = _("Create User");
       $content = User_Form::userForm($user);
       break;
 
     case "manage_users":
+      $title = _("Manage Users");
       $content = User_Form::manageUsers();
       break;
 
@@ -44,6 +46,7 @@ class User_Action {
       break;      
 
     case "authorization":
+      $title = _("Authorization");
       $content = User_Form::authorizationSetup();
       break;
 
@@ -96,11 +99,13 @@ class User_Action {
     case "new_group":
       PHPWS_Core::initModClass("users", "Group.php");
       $group = & new PHPWS_Group;
+      $title = _("Create Group");
       $content = User_Form::groupForm($group);
       break;
 
     case "manage_groups":
       PHPWS_Core::killSession("Last_Member_Search");
+      $title = _("Manage Groups");
       $content = User_Form::manageGroups();
       break;
 
@@ -114,6 +119,7 @@ class User_Action {
 
       /** Misc Forms **/
     case "settings":
+      $title = _("Settings");
       $content = User_Form::settings();
       break;
 
@@ -157,7 +163,7 @@ class User_Action {
 	$content = _("This is a duplicate post.");
 	break;
       }
-      User_Action::postUser($user);
+      $result = User_Action::postUser($user);
       break;
 
     case "postPermission":
@@ -230,10 +236,14 @@ class User_Action {
       break;
     }
 
-    $panel->setContent($content);
-    $finalPanel = $panel->display();
+    $template['CONTENT'] = $content;
+    $template['TITLE'] = $title;
 
-    Layout::add(PHPWS_ControlPanel::display($finalPanel));
+    $final = PHPWS_Template::process($template, "users", "main.tpl");
+
+    $panel->setContent($final);
+
+    Layout::add(PHPWS_ControlPanel::display($panel->display()));
 
   }
 
