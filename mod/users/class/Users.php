@@ -531,12 +531,12 @@ class PHPWS_User {
     $db->delete();
   }
 
-  function savePermissions($module, $item_id, $item_name=NULL){
-    if (!PHPWS_Core::moduleExists($module))
+  function savePermissions($key){
+    if (!PHPWS_Core::moduleExists($key->module))
       return PHPWS_Error::get(PHPWS_NO_MOD_FOUND, 'users', __CLASS__ . '::' . __FUNCTION__);
 
     PHPWS_Core::initModClass('users', 'Permission.php');
-    Users_Permission::savePermissions($module, $item_id, $item_name);
+    Users_Permission::savePermissions($key);
   }
 
   function assignPermissions($module, $item_id=NULL){
