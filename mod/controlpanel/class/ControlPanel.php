@@ -12,19 +12,19 @@ class PHPWS_ControlPanel {
     else
       $panel->setTabs($_SESSION['Control_Panel_Tabs']);
 
+    $allLinks = PHPWS_ControlPanel::getAllLinks();
+
+    if (!$allLinks)
+      return _("Control Panel does not contain any links.");
+
+    $tabs = array_keys($panel->getTabs());
+    $links = array_keys($allLinks);
+
+    foreach ($tabs as $tabId)
+      if (!in_array($tabId, $links))
+	$panel->dropTab($tabId);
+
     if (!isset($content)){
-      $allLinks = PHPWS_ControlPanel::getAllLinks();
-
-      if (!$allLinks)
-	return _("Control Panel does not contain any links.");
-
-      $tabs = array_keys($panel->getTabs());
-      $links = array_keys($allLinks);
-
-      foreach ($tabs as $tabId)
-	if (!in_array($tabId, $links))
-	  $panel->dropTab($tabId);
-
       if (isset($allLinks[$panel->getCurrentTab()])){
 	foreach ($allLinks[$panel->getCurrentTab()] as $id => $link)
 	  $content[] = $link->view();
@@ -33,6 +33,7 @@ class PHPWS_ControlPanel {
       }
     } else
       $panel->setContent($content);
+
     $_SESSION['Control_Panel_Tabs'] = $panel->getTabs();
     return $panel->display($imbed);
   }
@@ -60,8 +61,8 @@ class PHPWS_ControlPanel {
   }
 
   function reset(){
-    unset($_SESSION['PHPWS_ControlPanel']);
     unset($_SESSION['Control_Panel_Tabs']);
+    unset($_SESSION['CP_All_links']);
   }
 
 }
