@@ -27,8 +27,7 @@ class PHPWS_Panel_Tab {
   }
 
   function init(){
-    $DB = new PHPWS_DB("controlpanel_tab");
-    $DB->addWhere("id", $this->getId());
+    $DB = new PHPWS_DB('controlpanel_tab');
     $DB->loadObject($this);
   }
 
@@ -42,14 +41,14 @@ class PHPWS_Panel_Tab {
 
   function getTitle($noBreak=TRUE){
     if ($noBreak)
-      return str_replace(" ", "&nbsp;", $this->title);
+      return str_replace(' ', '&nbsp;', $this->title);
     else
       return $this->title;
   }
 
   function setLink($link, $secure=TRUE){
     if ($secure)
-      $link .= "&amp;authkey=" . Current_User::getAuthKey();
+      $link .= '&amp;authkey=' . Current_User::getAuthKey();
 
     $this->link = $link;
   }
@@ -58,7 +57,7 @@ class PHPWS_Panel_Tab {
     if ($addTitle){
       $title = $this->getTitle();
       $link = $this->getLink(FALSE);
-      return "<a href=\"$link" . "&amp;tab=" . $this->getId() . "\">$title</a>";
+      return sprintf('<a href="%s&amp;tab=%s">%s</a>', $link, $this->getId(), $title);
     } else
       return $this->link;
   }
@@ -72,9 +71,9 @@ class PHPWS_Panel_Tab {
     if (isset($this->tab_order))
       return $this->tab_order;
 
-    $DB = & new PHPWS_DB("controlpanel_tab");
+    $DB = & new PHPWS_DB('controlpanel_tab');
     $DB->addColumn('tab_order');
-    $max = $DB->select("max");
+    $max = $DB->select('max');
     
     if (PEAR::isError($max))
       exit($max->getMessage());
@@ -94,20 +93,20 @@ class PHPWS_Panel_Tab {
   }
 
   function save(){
-    $db = & new PHPWS_DB("controlpanel_tab");
-    $db->addWhere("id", $this->id);
+    $db = & new PHPWS_DB('controlpanel_tab');
+    $db->addWhere('id', $this->id);
     $db->delete();
     $db->resetWhere();
     $this->tab_order = $this->getOrder();
-    return $db->saveObject($this);
+    return $db->saveObject($this, FALSE, FALSE);
   }
 
   function nextBox(){
-    $db = & new PHPWS_DB("controlpanel_tab");
-    $db->addWhere("theme", $this->getTheme());
-    $db->addWhere("theme_var", $this->getThemeVar());
-    $db->addColumn("box_order");
-    $max = $db->select("max");
+    $db = & new PHPWS_DB('controlpanel_tab');
+    $db->addWhere('theme', $this->getTheme());
+    $db->addWhere('theme_var', $this->getThemeVar());
+    $db->addColumn('box_order');
+    $max = $db->select('max');
     if (isset($max))
       return $max + 1;
     else
@@ -120,10 +119,10 @@ class PHPWS_Panel_Tab {
    * order number
    */ 
   function moveUp(){
-    $db = & new PHPWS_DB("controlpanel_tab");
-    $db->setIndexBy("tab_order");
-    $db->addOrder("tab_order");
-    $allTabs = $db->getObjects("PHPWS_Panel_Tab");
+    $db = & new PHPWS_DB('controlpanel_tab');
+    $db->setIndexBy('tab_order');
+    $db->addOrder('tab_order');
+    $allTabs = $db->getObjects('PHPWS_Panel_Tab');
 
     $current_order = $this->getOrder();
     if ($current_order == 1){
@@ -145,10 +144,10 @@ class PHPWS_Panel_Tab {
   }
 
   function moveDown(){
-    $db = & new PHPWS_DB("controlpanel_tab");
-    $db->setIndexBy("tab_order");
-    $db->addOrder("tab_order");
-    $allTabs = $db->getObjects("PHPWS_Panel_Tab");
+    $db = & new PHPWS_DB('controlpanel_tab');
+    $db->setIndexBy('tab_order');
+    $db->addOrder('tab_order');
+    $allTabs = $db->getObjects('PHPWS_Panel_Tab');
     $number_of_tabs = count($allTabs);
 
     $current_order = $this->getOrder();
@@ -170,33 +169,6 @@ class PHPWS_Panel_Tab {
 
   }
 
-  /*
-  function kill(){
-    $db = & new PHPWS_DB("controlpanel_tab");
-    $db->addWhere("id", $this->getId());
-    $result = $db->delete();
-    if (PEAR::isError($result))
-      return $result;
-
-    $db->reset();
-    $db->addOrder("tab_order");
-    $result = $db->getObjects("PHPWS_Panel_Tab");
-
-    if (PEAR::isError($result))
-      return $result;
-
-    if (empty($result))
-      return TRUE;
-
-    $count = 1;
-    foreach ($result as $tab){
-      $tab->setOrder($count);
-      $tab->save();
-      $count++;
-    }
-
-  }
-  */
 }
 
 ?>

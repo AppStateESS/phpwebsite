@@ -1,6 +1,6 @@
 <?php
 
-PHPWS_Core::initModClass("layout", "Box.php");
+PHPWS_Core::initModClass('layout', 'Box.php');
 
 class Layout_Settings {
   var $current_theme    = NULL;
@@ -83,9 +83,9 @@ class Layout_Settings {
   
   function loadBoxes(){
     $theme = $this->current_theme;
-    $db = new PHPWS_db("layout_box");
-    $db->addWhere("theme", $theme);
-    if(!$boxes = $db->getObjects("Layout_Box"))
+    $db = new PHPWS_db('layout_box');
+    $db->addWhere('theme', $theme);
+    if(!$boxes = $db->getObjects('Layout_Box'))
       return;
 
     foreach ($boxes as $box)
@@ -96,11 +96,11 @@ class Layout_Settings {
 
 
   function loadContentVars(){
-    $db = new PHPWS_db("layout_box");
-    $db->addWhere("theme", $this->current_theme);
-    $db->addColumn("content_var");
-    $db->setindexBy("module");
-    $result = $db->select("col");
+    $db = new PHPWS_db('layout_box');
+    $db->addWhere('theme', $this->current_theme);
+    $db->addColumn('content_var');
+    $db->setindexBy('module');
+    $result = $db->select('col');
     if (PEAR::isError($result)){
       PHPWS_Error::log($result);
       PHPWS_Core::errorPage();
@@ -113,8 +113,8 @@ class Layout_Settings {
   }
 
   function loadSettings(){
-    require_once("File.php");
-    $db = new PHPWS_DB("layout_config");
+    require_once('File.php');
+    $db = new PHPWS_DB('layout_config');
     $result = $db->loadObject($this);
 
     if (PEAR::isError($result)){
@@ -125,7 +125,7 @@ class Layout_Settings {
     if (empty($this->current_theme))
       $this->current_theme = $this->default_theme;
 
-    $transferFile = "./themes/" . $this->current_theme . "/transfers.tpl";
+    $transferFile = './themes/' . $this->current_theme . '/transfers.tpl';
 
     if (is_file($transferFile)){
       $themeVars = explode("\n", trim(File::readAll($transferFile)));
@@ -135,7 +135,7 @@ class Layout_Settings {
   }
 
   function saveSettings(){
-    $db = & new PHPWS_DB("layout_config");
+    $db = & new PHPWS_DB('layout_config');
     $vars = PHPWS_Core::stripObjValues($this);
     unset($vars['_contentVars']);
     unset($vars['_boxes']);

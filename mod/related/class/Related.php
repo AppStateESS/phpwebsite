@@ -1,7 +1,7 @@
 <?php
 
-PHPWS_Core::configRequireOnce("related", "config.php");
-PHPWS_Core::initModClass("related", "Action.php");
+PHPWS_Core::configRequireOnce('related', 'config.php');
+PHPWS_Core::initModClass('related', 'Action.php');
 
 
 class Related {
@@ -29,8 +29,7 @@ class Related {
   }
 
   function init(){
-    $db = & new PHPWS_DB("related_main");
-    $db->addWhere("id", $this->id);
+    $db = & new PHPWS_DB('related_main');
     $result = $db->loadObject($this);
 
     if (PEAR::isError($result))
@@ -74,7 +73,7 @@ class Related {
 
 
   function setTitle($title){
-    $this->title = preg_replace("/[^" . ALLOWED_TITLE_CHARS . "]/", "", strip_tags($title));
+    $this->title = preg_replace('/[^' . ALLOWED_TITLE_CHARS . ']/', '', strip_tags($title));
   }
 
   function getTitle(){
@@ -86,10 +85,12 @@ class Related {
   }
 
   function getUrl($clickable=FALSE){
-    if ($clickable)
-      return "<a href=\"" . $this->url . "\">" . $this->title . "</a>";
-    else
+    if ($clickable) {
+      return sprintf('<a href="%s">%s</a>', $this->url, $this->title);
+    }
+    else {
       return $this->url;
+    }
   }
 
 
@@ -126,11 +127,11 @@ class Related {
     if (!isset($this->id))
       return NULL;
 
-    $db = & new PHPWS_DB("related_friends");
-    $db->addWhere("source_id", $this->id);
-    $db->addOrder("rating");
-    $db->addColumn("friend_id");
-    $result = $db->select("col");
+    $db = & new PHPWS_DB('related_friends');
+    $db->addWhere('source_id', $this->id);
+    $db->addOrder('rating');
+    $db->addColumn('friend_id');
+    $result = $db->select('col');
 
     if (PEAR::isError($result) || empty($result))
       return $result;
@@ -236,10 +237,10 @@ class Related {
 
   function load(){
     if (!isset($this->id)){
-      $db = & new PHPWS_DB("related_main");
-      $db->addWhere("module", $this->getModule());
-      $db->addWhere("main_id", $this->getMainId());
-      $db->addWhere("item_name", $this->getItemName(TRUE));
+      $db = & new PHPWS_DB('related_main');
+      $db->addWhere('module', $this->getModule());
+      $db->addWhere('main_id', $this->getMainId());
+      $db->addWhere('item_name', $this->getItemName(TRUE));
       $result = $db->loadObject($this);
       if (PEAR::isError($result))
 	return $result;
@@ -249,48 +250,45 @@ class Related {
   }
 
   function show($allowEdit=TRUE){
-    PHPWS_Core::initCoreClass("Module.php");
-    Layout::addStyle("related");
+    PHPWS_Core::initCoreClass('Module.php');
+    Layout::addStyle('related');
 
     $this->load();
-    if (!Current_User::allow("related") || (bool)$allowEdit == FALSE)
-      $mode = "view";
+    if (!Current_User::allow('related') || (bool)$allowEdit == FALSE)
+      $mode = 'view';
     elseif (Related_Action::isBanked())
-      $mode = "edit";
+      $mode = 'edit';
     elseif (isset($this->id))
-      $mode = "view";
+      $mode = 'view';
     else
-      $mode = "create";
+      $mode = 'create';
 
     $content['TITLE'] = RELATED_TITLE;
 
     switch ($mode){
-    case "create":
+    case 'create':
       $body = Related_Action::create($this);
       break;
 
-    case "edit":
+    case 'edit':
       $body = Related_Action::edit($this);
       break;
 
-    case "view":
+    case 'view':
       $body = Related_Action::view($this);
       break;
     }
 
     if (!empty($body)) {
       $content['CONTENT'] = &$body;
-      Layout::add($content, "related", "bank");
+      Layout::add($content, 'related', 'bank');
     }
 
     return TRUE;
   }
 
   function save(){
-    $db = & new PHPWS_DB("related_main");
-
-    if (isset($this->id))
-      $db->addWhere("id", $this->id);
+    $db = & new PHPWS_DB('related_main');
 
     if (!isset($this->item_name))
       $this->item_name = $this->module;
@@ -323,30 +321,30 @@ class Related {
   }
 
   function clearRelated(){
-    $db = & new PHPWS_DB("related_friends");
-    $db->addWhere("source_id", $this->id);
+    $db = & new PHPWS_DB('related_friends');
+    $db->addWhere('source_id', $this->id);
     $result = $db->delete();
   }
 
   function clearFriends(){
-    $db = & new PHPWS_DB("related_friends");
-    $db->addWhere("friend_id", $this->id);
+    $db = & new PHPWS_DB('related_friends');
+    $db->addWhere('friend_id', $this->id);
     $result = $db->delete();
   }
 
   function kill(){
     $this->clearRelated();
     $this->clearFriends();
-    $db = & new PHPWS_DB("related_main");
-    $db->addWhere("id", $this->id);
+    $db = & new PHPWS_DB('related_main');
+    $db->addWhere('id', $this->id);
     $db->delete();
   }
 
   function addRelation($id, $rating){
-    $db = & new PHPWS_DB("related_friends");
-    $db->addValue("source_id", $this->id);
-    $db->addValue("friend_id", $id);
-    $db->addValue("rating", $rating);
+    $db = & new PHPWS_DB('related_friends');
+    $db->addValue('source_id', $this->id);
+    $db->addValue('friend_id', $id);
+    $db->addValue('rating', $rating);
     $db->insert();
   }
 

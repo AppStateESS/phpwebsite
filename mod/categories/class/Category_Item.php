@@ -9,7 +9,7 @@
  */
 
 
-PHPWS_Core::configRequireOnce("categories", "errorDefines.php");
+PHPWS_Core::configRequireOnce('categories', 'errorDefines.php');
 
 class Category_Item {
   var $item_id      = 0;
@@ -46,7 +46,7 @@ class Category_Item {
   }
 
   function getProperName(){
-    PHPWS_Core::initCoreClass("Module.php");
+    PHPWS_Core::initCoreClass('Module.php');
     $mod = & new PHPWS_Module($this->module);
     return $mod->getProperName();
   }
@@ -114,7 +114,7 @@ class Category_Item {
   function getLink($html=FALSE)
   {
     if ($html == TRUE) {
-      return "<a href=\"" . $this->link . "\">" . $this->title . "</a>";
+      return sprintf('<a href="%s">%s</a>', $this->link, $this->title);
     } else {
       return $this->link;
     }
@@ -153,19 +153,19 @@ class Category_Item {
 
   function clearVersion()
   {
-    $db = & new PHPWS_DB("category_items");
-    $db->addWhere("version_id", $this->version_id);
-    $db->addWhere("module",     $this->module);
-    $db->addWhere("item_name",  $this->item_name);
+    $db = & new PHPWS_DB('category_items');
+    $db->addWhere('version_id', $this->version_id);
+    $db->addWhere('module',     $this->module);
+    $db->addWhere('item_name',  $this->item_name);
     return $db->delete();
   }
 
   function clearItem()
   {
-    $db = & new PHPWS_DB("category_items");
-    $db->addWhere("item_id", $this->item_id);
-    $db->addWhere("module",     $this->module);
-    $db->addWhere("item_name",  $this->item_name);
+    $db = & new PHPWS_DB('category_items');
+    $db->addWhere('item_id', $this->item_id);
+    $db->addWhere('module',     $this->module);
+    $db->addWhere('item_name',  $this->item_name);
     return $db->delete();
   }
 
@@ -214,24 +214,24 @@ class Category_Item {
    */
   function clear()
   {
-    $db = & new PHPWS_DB("category_items");
+    $db = & new PHPWS_DB('category_items');
     if (!empty($this->version_id)) {
-      $db->addWhere("version_id", $this->version_id);
+      $db->addWhere('version_id', $this->version_id);
     }
 
     if (!empty($this->item_id)) {
-      $db->addWhere("item_id",    $this->item_id);
+      $db->addWhere('item_id',    $this->item_id);
     }
 
-    $db->addWhere("module",     $this->module);
-    $db->addWhere("item_name",  $this->item_name);
+    $db->addWhere('module',     $this->module);
+    $db->addWhere('item_name',  $this->item_name);
     return $db->delete();
   }
 
   function _save(){
     if (!$this->_testVars() || empty($this->cat_id))
       {
-	return PHPWS_Error::get(CAT_ITEM_MISSING_VAL, "categories", "Category_Item::save");
+	return PHPWS_Error::get(CAT_ITEM_MISSING_VAL, 'categories', 'Category_Item::save');
       }
 
     if ($this->version_id > 0 && $this->_approved && !empty($this->item_id)) {
@@ -239,24 +239,24 @@ class Category_Item {
       $this->clearItem();
     }
 
-    $db = & new PHPWS_DB("category_items");
+    $db = & new PHPWS_DB('category_items');
 
     return $db->saveObject($this);
   }
 
   function getForm(){
-    PHPWS_Core::initModClass("categories", "Categories.php");
-    $categories = Categories::getCategories("list");
+    PHPWS_Core::initModClass('categories', 'Categories.php');
+    $categories = Categories::getCategories('list');
 
     if (PEAR::isError($categories)){
       PHPWS_Error::log($categories);
-      return PHPWS_Error::get(CAT_DB_PROBLEM, "categories", "Categories::getForm");
+      return PHPWS_Error::get(CAT_DB_PROBLEM, 'categories', 'Categories::getForm');
     }
       
     if (empty($categories))
-      return _("No categories exist.");
+      return _('No categories exist.');
 
-    $multiple = & new Form_Multiple("categories[" . $this->getModule() . "][" . $this->getItemName() . "]", $categories);
+    $multiple = & new Form_Multiple('categories[' . $this->getModule() . '][' . $this->getItemName() . ']', $categories);
     $multiple->setSize(5);
     if ($this->item_id || $this->version_id) {
       $cat_items  = $this->getCategoryItems();
@@ -265,50 +265,49 @@ class Category_Item {
       }
     }
 
-    //    $multiple->setWidth("100%");
+    //    $multiple->setWidth('100%');
 
     return $multiple->get();
 
   }
 
   function getCategoryItemIds(){
-    $db = & new PHPWS_DB("category_items");
-    $db->addWhere("version_id", $this->getVersionId());
-    $db->addWhere("item_id", $this->getItemId());
-    $db->addWhere("module", $this->getModule());
-    $db->addWhere("item_name", $this->getItemName());
-    $db->addColumn("cat_id");
+    $db = & new PHPWS_DB('category_items');
+    $db->addWhere('version_id', $this->getVersionId());
+    $db->addWhere('item_id',    $this->getItemId());
+    $db->addWhere('module',     $this->getModule());
+    $db->addWhere('item_name',  $this->getItemName());
+    $db->addColumn('cat_id');
 
-    return $db->select("col");
+    return $db->select('col');
   }
 
   function getCategoryItems(){
-    PHPWS_Core::initModClass("categories", "Category_Item.php");
+    PHPWS_Core::initModClass('categories', 'Category_Item.php');
 
-    $db = & new PHPWS_DB("category_items");
-    $db->addWhere("version_id", $this->getVersionId());
-    $db->addWhere("item_id", $this->getItemId());
-    $db->addWhere("module", $this->getModule());
-    $db->addWhere("item_name", $this->getItemName());
-    $db->setIndexBy("cat_id");
-    return $db->getObjects("category_item");
+    $db = & new PHPWS_DB('category_items');
+    $db->addWhere('version_id', $this->getVersionId());
+    $db->addWhere('item_id', $this->getItemId());
+    $db->addWhere('module', $this->getModule());
+    $db->addWhere('item_name', $this->getItemName());
+    $db->setIndexBy('cat_id');
+    return $db->getObjects('category_item');
   }
 
   function _updateVersion()
   {
-    $db = & new PHPWS_DB("category_items");
+    $db = & new PHPWS_DB('category_items');
 
     if ($this->_approved && empty($this->item_id)) {
       return FALSE;
     }
 
-    //    $db->addWhere("version_id", $this->getVersionId());
-    $db->addWhere("module",     $this->getModule());
-    $db->addWhere("item_name",  $this->getItemName());
+    $db->addWhere('module',     $this->getModule());
+    $db->addWhere('item_name',  $this->getItemName());
     $db->delete();
 
     if ($this->_approved) {
-      $db->addValue("version_id", 0);
+      $db->addValue('version_id', 0);
     }
   }
 }

@@ -27,8 +27,7 @@ class Category{
   }
   
   function init(){
-    $db = & new PHPWS_DB("categories");
-    $db->addWhere("id", $this->id);
+    $db = & new PHPWS_DB('categories');
     $result = $db->loadObject($this);
     if (PEAR::isError($result))
       return $result;
@@ -73,7 +72,7 @@ class Category{
     static $parentTitle = array();
 
     if ($this->parent == 0) {
-      return _("Top Level");
+      return _('Top Level');
     }
 
     if (isset($parentTitle[$this->parent]))
@@ -97,16 +96,16 @@ class Category{
   }
 
   function loadIcon(){
-    PHPWS_Core::initCoreClass("Image.php");
+    PHPWS_Core::initCoreClass('Image.php');
     if (!empty($this->icon))
       $this->icon = new PHPWS_Image($this->icon);
   }
 
   function loadChildren(){
-    $db = & new PHPWS_DB("categories");
-    $db->addWhere("parent", $this->id);
-    $db->addOrder("title");
-    $result = $db->getObjects("Category");
+    $db = & new PHPWS_DB('categories');
+    $db->addWhere('parent', $this->id);
+    $db->addOrder('title');
+    $result = $db->getObjects('Category');
     if (empty($result)) {
       $this->children = NULL;
       return;
@@ -124,10 +123,7 @@ class Category{
   }
   
   function save(){
-    $db = & new PHPWS_DB("categories");
-
-    if (isset($this->id))
-      $db->addWhere("id", $this->id);
+    $db = & new PHPWS_DB('categories');
 
     if (isset($this->icon)) {
       $tmpIcon = $this->icon;
@@ -144,19 +140,19 @@ class Category{
   function kill(){
     if (empty($this->id))
       return FALSE;
-    $db = & new PHPWS_DB("categories");
-    $db->addWhere("id", $this->id);
+    $db = & new PHPWS_DB('categories');
+    $db->addWhere('id', $this->id);
     return $db->delete();
   }
 
   function getViewLink($module=NULL){
     if (isset($module)) {
-      $vars['action']  = "view";
+      $vars['action']  = 'view';
       $vars['id']      = $this->id;
       $vars['ref_mod'] = $module;
-      return PHPWS_Text::moduleLink($this->title, "categories", $vars);
+      return PHPWS_Text::moduleLink($this->title, 'categories', $vars);
     } else {
-      return PHPWS_Text::rerouteLink($this->title, "categories", "view", $this->id);
+      return PHPWS_Text::rerouteLink($this->title, 'categories', 'view', $this->id);
     }
   }
 

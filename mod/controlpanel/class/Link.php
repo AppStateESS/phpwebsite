@@ -23,8 +23,7 @@ class PHPWS_Panel_Link {
   }
 
   function init($id){
-    $db = & new PHPWS_DB("controlpanel_link");
-    $db->addWhere("id", $id);
+    $db = & new PHPWS_DB('controlpanel_link');
     $result = $db->loadObject($this);
     if (PEAR::isError($result))
       return $result;
@@ -80,10 +79,11 @@ class PHPWS_Panel_Link {
     if ($tag == FALSE)
       return $this->image;
 
-    $image = "<img src=\"" . $this->image . "\" border=\"0\" alt=\"" . $this->getLabel() . "\"/>";
+    $image = sprintf('<img src="%s" border="0" alt="%s"/>', $this->image, $this->getLabel());
 
-    if ($linkable == TRUE)
-      $image = "<a href=\"" . $this->url . "&amp;authkey=" . Current_User::getAuthKey() . "\">" . $image . "</a>";
+    if ($linkable == TRUE) {
+      $image = sprintf('<a href="%s&amp;authkey=%s">%s</a>', $this->url, Current_User::getAuthKey(), $image);
+    }
 
     return $image;
   }
@@ -93,8 +93,9 @@ class PHPWS_Panel_Link {
   }
   
   function getUrl($tag=FALSE){
-    if ($tag)
-      return "<a href=\"" . $this->url . "&amp;authkey=" . Current_User::getAuthKey() . "\">" . $this->getLabel() . "</a>";
+    if ($tag) {
+      return sprintf('<a href="%s&amp;authkey=%s">%s</a>', $this->url, Current_User::getAuthKey(), $this->getLabel());
+    }
     else
       return $this->url;
   }
@@ -107,10 +108,10 @@ class PHPWS_Panel_Link {
     if (isset($this->link_order))
       return $this->link_order;
 
-    $DB = @ new PHPWS_DB("controlpanel_link");
+    $DB = @ new PHPWS_DB('controlpanel_link');
     $DB->addWhere('tab', $this->getTab());
     $DB->addColumn('link_order');
-    $max = $DB->select("max");
+    $max = $DB->select('max');
     
     if (PEAR::isError($max))
       return $max;
@@ -147,10 +148,7 @@ class PHPWS_Panel_Link {
   }
 
   function save(){
-    $db = & new PHPWS_DB("controlpanel_link");
-    if (isset($this->id))
-      $db->addWhere("id", $this->id);
-
+    $db = & new PHPWS_DB('controlpanel_link');
     $this->link_order = $this->getLinkOrder();
 
     $result = $db->saveObject($this);
@@ -162,7 +160,7 @@ class PHPWS_Panel_Link {
     $tpl['NAME']        = $this->getUrl(TRUE);
     $tpl['DESCRIPTION'] = $this->getDescription();
 
-    return PHPWS_Template::process($tpl, "controlpanel", "link.tpl");
+    return PHPWS_Template::process($tpl, 'controlpanel', 'link.tpl');
   }
 
   /**
@@ -170,10 +168,10 @@ class PHPWS_Panel_Link {
    * order number
    */ 
   function moveUp(){
-    $db = & new PHPWS_DB("controlpanel_link");
-    $db->setIndexBy("link_order");
-    $db->addOrder("link_order");
-    $allLinks = $db->getObjects("PHPWS_Panel_Link");
+    $db = & new PHPWS_DB('controlpanel_link');
+    $db->setIndexBy('link_order');
+    $db->addOrder('link_order');
+    $allLinks = $db->getObjects('PHPWS_Panel_Link');
 
     $current_order = $this->getLinkOrder();
     if ($current_order == 1){
@@ -195,10 +193,10 @@ class PHPWS_Panel_Link {
   }
 
   function moveDown(){
-    $db = & new PHPWS_DB("controlpanel_link");
-    $db->setIndexBy("link_order");
-    $db->addOrder("link_order");
-    $allLinks = $db->getObjects("PHPWS_Panel_Link");
+    $db = & new PHPWS_DB('controlpanel_link');
+    $db->setIndexBy('link_order');
+    $db->addOrder('link_order');
+    $allLinks = $db->getObjects('PHPWS_Panel_Link');
     $number_of_links = count($allLinks);
 
     $current_order = $this->getLinkOrder();
@@ -222,8 +220,8 @@ class PHPWS_Panel_Link {
   
 
   function kill(){
-    $db = & new PHPWS_DB("controlpanel_link");
-    $db->addWhere("id", $this->getId());
+    $db = & new PHPWS_DB('controlpanel_link');
+    $db->addWhere('id', $this->getId());
     $result = $db->delete();
     if (PEAR::isError($result))
       return $result;
@@ -231,9 +229,9 @@ class PHPWS_Panel_Link {
     $tab = $this->getTab();
     
     $db->reset();
-    $db->addWhere("tab", $tab);
-    $db->addOrder("link_order");
-    $result = $db->getObjects("PHPWS_Panel_Link");
+    $db->addWhere('tab', $tab);
+    $db->addOrder('link_order');
+    $result = $db->getObjects('PHPWS_Panel_Link');
 
     if (PEAR::isError($result))
       return $result;

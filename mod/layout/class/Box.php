@@ -14,22 +14,19 @@ class Layout_Box {
     if (!isset($id))
       return;
 
-    $result = $this->init($id);
+    $this->setID($id);
+    $result = $this->init();
     if (PEAR::isError($result))
       PHPWS_Error::log($result);
   }
 
-  function init($id){
-    $DB = new PHPWS_DB("layout_box");
-    $DB->addWhere("id", $id);
-    $result = $DB->loadObject($this);
-
-    if (PEAR::isError($result))
-      return $result;
+  function init(){
+    $DB = new PHPWS_DB('layout_box');
+    return $DB->loadObject($this);
   }
 
   function setID($id){
-    $this->id = $id;
+    $this->id = (int)$id;
   }
 
   function getID(){
@@ -85,11 +82,11 @@ class Layout_Box {
   }
 
   function save(){
-    $db = new PHPWS_DB("layout_box");
-    $db->addWhere("module", $this->module);
-    $db->addWhere("content_var", $this->content_var);
-    $db->addWhere("theme", $this->theme);
-    $result = $db->select("one");
+    $db = new PHPWS_DB('layout_box');
+    $db->addWhere('module', $this->module);
+    $db->addWhere('content_var', $this->content_var);
+    $db->addWhere('theme', $this->theme);
+    $result = $db->select('one');
 
     if (PEAR::isError($result))
       return $result;
@@ -104,25 +101,22 @@ class Layout_Box {
     if (!isset($this->active))
       $this->active = 1;
 
-    if (isset($this->id))
-      $db->addWhere('id', $this->id);
-
     return $db->saveObject($this);
   }
 
   function moveUp(){
-    $db = & new PHPWS_DB("layout_box");
-    $db->addWhere("id", $this->getID(), "!=");
-    $db->addWhere("theme", $this->getTheme());
-    $db->addWhere("theme_var", $this->getThemeVar());
-    $db->setIndexBy("box_order");
-    $boxes = $db->getObjects("Layout_Box");
+    $db = & new PHPWS_DB('layout_box');
+    $db->addWhere('id', $this->getID(), '!=');
+    $db->addWhere('theme', $this->getTheme());
+    $db->addWhere('theme_var', $this->getThemeVar());
+    $db->setIndexBy('box_order');
+    $boxes = $db->getObjects('Layout_Box');
 
     if (!isset($boxes))
       return;
 
-    $db->addColumn("box_order");
-    $max = $db->select("max");
+    $db->addColumn('box_order');
+    $max = $db->select('max');
     $oldOrder = $this->getBoxOrder();
     $newOrder = $oldOrder - 1;
 
@@ -139,18 +133,18 @@ class Layout_Box {
   }
 
   function moveDown(){
-    $db = & new PHPWS_DB("layout_box");
-    $db->addWhere("id", $this->getID(), "!=");
-    $db->addWhere("theme", $this->getTheme());
-    $db->addWhere("theme_var", $this->getThemeVar());
-    $db->setIndexBy("box_order");
-    $boxes = $db->getObjects("Layout_Box");
+    $db = & new PHPWS_DB('layout_box');
+    $db->addWhere('id', $this->getID(), '!=');
+    $db->addWhere('theme', $this->getTheme());
+    $db->addWhere('theme_var', $this->getThemeVar());
+    $db->setIndexBy('box_order');
+    $boxes = $db->getObjects('Layout_Box');
 
     if (!isset($boxes))
       return;
 
-    $db->addColumn("box_order");
-    $max = $db->select("max");
+    $db->addColumn('box_order');
+    $max = $db->select('max');
     $oldOrder = $this->getBoxOrder();
     $newOrder = $oldOrder + 1;
 
@@ -168,11 +162,11 @@ class Layout_Box {
 
 
   function reorderBoxes($theme, $themeVar){
-    $db = & new PHPWS_DB("layout_box");
-    $db->addWhere("theme", $theme);
-    $db->addWhere("theme_var", $themeVar);
-    $db->addOrder("box_order");
-    $boxes = $db->getObjects("Layout_Box");
+    $db = & new PHPWS_DB('layout_box');
+    $db->addWhere('theme', $theme);
+    $db->addWhere('theme_var', $themeVar);
+    $db->addOrder('box_order');
+    $boxes = $db->getObjects('Layout_Box');
 
     if (!isset($boxes))
       return;
@@ -186,11 +180,11 @@ class Layout_Box {
   }
 
   function nextBox(){
-    $DB = new PHPWS_DB("layout_box");
-    $DB->addWhere("theme", $this->getTheme());
-    $DB->addWhere("theme_var", $this->getThemeVar());
-    $DB->addColumn("box_order");
-    $max = $DB->select("max");
+    $DB = new PHPWS_DB('layout_box');
+    $DB->addWhere('theme', $this->getTheme());
+    $DB->addWhere('theme_var', $this->getThemeVar());
+    $DB->addColumn('box_order');
+    $max = $DB->select('max');
     if (isset($max))
       return $max + 1;
     else
@@ -207,7 +201,7 @@ class Layout_Box {
       return NULL;
 
     if ($configExists == 0){
-      $includeFile =  Layout::getThemeDir() . "config.php";
+      $includeFile =  Layout::getThemeDir() . 'config.php';
       
       if (!is_file($includeFile)){
 	$configExists = -1;
@@ -235,8 +229,8 @@ class Layout_Box {
     $theme_var = $this->getThemeVar();
     $theme = $this->getTheme();
 
-    $db = & new PHPWS_DB("layout_box");
-    $db->addWhere("id", $this->getId());
+    $db = & new PHPWS_DB('layout_box');
+    $db->addWhere('id', $this->getId());
     $result = $db->delete();
   
     if (PEAR::isError($result))
