@@ -12,6 +12,7 @@ if (isset($_GET['cp_image_toggle']))
 if (isset($_GET['cp_desc_toggle']))
   PHPWS_ControlPanel_Tab::toggleDesc($_GET['tab']);
 
-  PHPWS_Layout::add(PHPWS_ControlPanel::display());
+if ($_SESSION['User']->isLogged())
+     PHPWS_Layout::add(PHPWS_ControlPanel::display());
 
 ?>
