@@ -26,6 +26,8 @@ PHPWS_DB::query(sql)
 You can send any database query string to this function. The result
 depends upon the usage. See this page for more details:
 http://pear.php.net/manual/en/package.database.db.intro-query.php
+Note: You should always be cautious when using a straight query as
+they are a common target of SQL injection.
 
 PHPWS_DB::select(type, query)
 Select can be called statically and from an object. To call it
