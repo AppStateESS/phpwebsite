@@ -1,7 +1,7 @@
 <?php
 
 if (isset($_GET['active']))
-     PHPWS_ControlPanel::setCurrentTab($_GET['active']);
+     PHPWS_ControlPanel::setCurrentTab("controlpanel", $_GET['active']);
 
 if(!isset($_SESSION['PHPWS_ControlPanel']))
   $_SESSION['PHPWS_ControlPanel'] = new PHPWS_ControlPanel;
