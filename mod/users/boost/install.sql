@@ -1,20 +1,46 @@
-CREATE TABLE users_config ( anonymous INT NOT NULL, default_group INT NOT NULL );
+CREATE TABLE users_config (
+  default_group int NOT NULL default '0',
+  default_authorize smallint NOT NULL default '1'
+);
 
-CREATE TABLE users_demographic_items ( label CHAR(20) NOT NULL, input_type CHAR(15) NOT NULL, presets TEXT );
+INSERT INTO users_config VALUES (0, 1);
 
-CREATE TABLE users_groups ( id INT NOT NULL PRIMARY KEY, active SMALLINT NOT NULL, name CHAR(50) NOT NULL, user_id INT NOT NULL );
+CREATE TABLE users_groups (
+ id INT NOT NULL PRIMARY KEY,
+ active SMALLINT NOT NULL,
+ name CHAR(50) NOT NULL,
+ user_id INT NOT NULL
+ );
 
-CREATE TABLE users_members ( group_id INT NOT NULL, member_id INT NOT NULL );
+CREATE TABLE users_members (
+ group_id INT NOT NULL,
+ member_id INT NOT NULL
+ );
 
-CREATE TABLE users_settings ( id INT NOT NULL, label CHAR(30) NOT NULL, var_name CHAR(100) NOT NULL, var_value TEXT );
+CREATE TABLE users (
+  id int NOT NULL default '0',
+  last_logged int default NULL,
+  time_logged int NOT NULL default '0',
+  authorize smallint NOT NULL default '0',
+  created int NOT NULL default '0',
+  updated int NOT NULL default '0',
+  active smallint NOT NULL default '0',
+  approved smallint NOT NULL default '0',
+  username varchar(30) NOT NULL default '',
+  display_name varchar(30) NOT NULL default '',
+  email varchar(100) default NULL,
+  deity smallint NOT NULL default '0',
+  PRIMARY KEY  (id)
+);
 
-CREATE TABLE users ( id INT NOT NULL PRIMARY KEY, last_logged INT NULL, created INT NOT NULL, updated INT NOT NULL, active SMALLINT NOT NULL, approved SMALLINT NOT NULL, username CHAR(255) NOT NULL, password CHAR(255) NULL, deity SMALLINT NOT NULL );
+CREATE TABLE user_authorization (
+  username varchar(40) NOT NULL default '',
+  password CHAR(32) NOT NULL default ''
+);
 
-CREATE TABLE users_demographics (
-  label CHAR(20) NOT NULL default '',
-  input_type CHAR(20) NOT NULL default '',
-  special_info text,
-  proper_name CHAR(50) default NULL,
-  required smallint NOT NULL default '0',
-  active smallint NOT NULL default '0'
+CREATE TABLE users_foreign_alt (
+  alt_code smallint(6) NOT NULL default '0',
+  display_name varchar(40) NOT NULL default '',
+  filename varchar(40) NOT NULL default '',
+  active smallint(6) NOT NULL default '0'
 );
