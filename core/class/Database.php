@@ -26,6 +26,7 @@ class PHPWS_DB {
   var $_allColumns = NULL;
   var $_DB         = array();
   var $_lock       = FALSE;
+  var $_sql        = NULL;
 
   function PHPWS_DB($table=NULL){
     PHPWS_DB::touchDB();
@@ -36,6 +37,15 @@ class PHPWS_DB {
 	PHPWS_Error::log($result);
     }
     $this->setMode("assoc");
+    $type = $GLOBALS['PEAR_DB']->dbsyntax;
+
+    $result = PHPWS_Core::initCoreClass("DB/{$type}.php");
+    if ($result == FALSE) {
+      PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, "core", "PHPWS_DB::PHPWS_DB", 
+		       PHPWS_SOURCE_DIR . "core/class/DB/{$type}.php");
+      PHPWS_Core::errorPage();
+    }
+    $this->_sql = & new PHPWS_SQL;
   }
   
   function addDB($db){
@@ -82,6 +92,7 @@ class PHPWS_DB {
     else
       $GLOBALS['PEAR_DB'] = DB::connect(PHPWS_DSN);
 
+
     if (PEAR::isError($GLOBALS['PEAR_DB'])){
       PHPWS_Error::log($GLOBALS['PEAR_DB']);
       PHPWS_Core::errorPage();
@@ -91,6 +102,8 @@ class PHPWS_DB {
       PHPWS_DB::setPrefix(TABLE_PREFIX);
     else
       PHPWS_DB::setPrefix(NULL);
+
+    return TRUE;
   }
 
   function query($sql){
@@ -185,20 +198,18 @@ class PHPWS_DB {
     $this->index = $index;
   }
 
-  function getIndex($checkTable=FALSE){
+  function getIndex(){
     if (isset($this->index))
       return $this->index;
-
-    if ($checkTable && $this->getTable()){
-      $columns =  $GLOBALS['PEAR_DB']->tableInfo($this->getTable());
-
-      if (PEAR::isError($columns))
-	return $columns;
-
-      foreach ($columns as $colInfo)
-	if ($colInfo['name'] == "id" && preg_match("/primary/", $colInfo['flags']) && preg_match("/int/", $colInfo['type']))
-	  return $colInfo['name'];
-    }
+    
+    $columns =  $GLOBALS['PEAR_DB']->tableInfo($this->getTable());
+    
+    if (PEAR::isError($columns))
+      return $columns;
+    
+    foreach ($columns as $colInfo)
+      if ($colInfo['name'] == "id" && preg_match("/primary/", $colInfo['flags']) && preg_match("/int/", $colInfo['type']))
+	return $colInfo['name'];
 
     return NULL;
   }
@@ -458,19 +469,6 @@ class PHPWS_DB {
     return TRUE;
   }
 
-  function _getLimitDivider(){
-    switch (PHPWS_DB::getDBType()) {
-    case "pgsql":
-      return " OFFSET ";
-      break;
-
-    case "mysql":
-    default:
-      return ", ";
-      break;
-    }
-  }
-
   function getLimit($dbReady=FALSE){
     if (empty($this->limit))
       return NULL;
@@ -482,8 +480,8 @@ class PHPWS_DB {
 	$limit[] = $this->limit['offset'];
       }
 
-      $divider = PHPWS_DB::_getLimitDivider();
-      return implode($divider, $limit);
+      $divider = $this->_sql->offset;
+      return implode(" {$divider} ", $limit);
     }
     else
       return $this->limit;
@@ -536,7 +534,7 @@ class PHPWS_DB {
     if (!isset($values))
       return PHPWS_Error::get(PHPWS_DB_NO_VALUES, "core", "PHPWS_DB::insert");
 
-    $idColumn = PHPWS_DB::getIndex(TRUE);
+    $idColumn = $this->getIndex();
 
     if (PEAR::isError($idColumn))
       return $idColumn;
@@ -651,8 +649,10 @@ class PHPWS_DB {
       $sql = "SELECT $columns FROM $table $where $groupby $order $limit";
     } else
       $mode = DB_FETCHMODE_ASSOC;
+
     // assoc does odd things if the resultant return is two items or less
     // not sure why it is coded that way. Use the default instead
+
     switch ($type){
     case "assoc":
       return PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getAssoc($sql, NULL,NULL, $mode), $type);
@@ -869,30 +869,14 @@ class PHPWS_DB {
       $query = preg_replace($from, $to, $query);
   }
 
-  function buildSetting($info){
-    extract($info);
-
-    switch ($type){
-    case "string":
-      return "char($len)";
-      break;
-
-    case "blob":
-      return "text";
-      break;
-
-    default:
-      return $type;
-    }
-  }
-
 
   function parseColumns($columns){
     foreach ($columns as $info){
-      $setting = PHPWS_DB::buildSetting($info);
+      $setting = $this->_sql->export($info);
+
       if (isset($info['flags'])){
 	if (stristr($info['flags'], "multiple_key")){
-	  $createIndex[] = "CREATE INDEX " .  $info['name'] . " on " . $info['table'] . "(" . $info['name'] . ")";
+	  $column_info['createIndex'][] = "CREATE INDEX " .  $info['name'] . " on " . $info['table'] . "(" . $info['name'] . ")";
 	  $info['flags'] = str_replace(" multiple_key", "", $info['flags']);
 	}
 	$preFlag = array("/not_null/", "/primary_key/", "/default_(.*)?/", "/blob/");
@@ -903,27 +887,22 @@ class PHPWS_DB {
       else
 	$flags = NULL;
       
-      $parameters[] = $info['name'] . " $setting" . $flags; 
+      $column_info['parameters'][] = $info['name'] . " $setting" . $flags; 
     }
-    return $parameters;
+
+    return $column_info;
   }
 
-  function export($tableName, $structure=TRUE, $contents=TRUE){
+  function export($structure=TRUE, $contents=TRUE){
     PHPWS_DB::touchDB();
-    $dbfile = PHPWS_SOURCE_DIR . "core/class/dbexport/" . $GLOBALS['PEAR_DB']->dbsyntax . ".php";
-
-    if (!is_file($dbfile))
-      return NULL;
-
-    include_once($dbfile);
 
     if ($structure == TRUE){      
-      $columns =  $GLOBALS['PEAR_DB']->tableInfo($tableName);
+      $columns =  $GLOBALS['PEAR_DB']->tableInfo($this->table);
 
-      $parameters = PHPWS_DB::parseColumns($columns);
-
-
-      $index = PHPWS_DB::getIndex();
+      $column_info = $this->parseColumns($columns);
+      extract($column_info);
+      
+      $index = $this->getIndex();
 
       if ($prefix = PHPWS_DB::getPrefix())
 	$tableName = str_replace("", $prefix, $tableName);
@@ -934,9 +913,7 @@ class PHPWS_DB {
     }
 
     if ($contents == TRUE){
-      $DB = new PHPWS_DB($tableName);
-
-      if ($rows = $DB->select()){
+      if ($rows = $this->select()){
 	if (PEAR::isError($rows))
 	  return $rows;
 	foreach ($rows as $dataRow){
