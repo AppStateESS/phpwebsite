@@ -26,6 +26,6 @@
     </div>
   </div>
 
-{DEFAULT_SUBMIT}
+{SUBMIT}
 </div>
 {END_FORM}
