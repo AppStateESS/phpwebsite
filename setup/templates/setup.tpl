@@ -22,6 +22,12 @@ body {
 
 }
 
+.user-error {
+  background-color : red;
+  color : white;
+  font-weight : bold;
+}
+
 #title {
  font-size : 150%;
  font-weight : bold;
