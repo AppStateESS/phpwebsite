@@ -1,5 +1,10 @@
 <?php
 
+$tabs[] = array("title" => _("My Page"),
+		"label" => "my_page",
+		"link"  => "index.php?module=users&amp;action=user",
+		);
+
 $link[] = array("label"       => _("User Administration"),
 		 "restricted"  => TRUE,
 		 "url"         => "index.php?module=users&amp;action=admin",
@@ -7,14 +12,5 @@ $link[] = array("label"       => _("User Administration"),
 		 "image"       => "users.png",
 		 "tab"         => "admin"
 		 );
-
-$link[] = array("label"       => _("User Settings"),
-		 "restricted"  => FALSE,
-		 "url"         => "index.php?module=users&action=user",
-		 "description" => _("Lets you edit your personal user information."),
-		 "image"       => "users.png",
-		 "tab"         => "my_settings"
-		 );
-
 
 ?>
