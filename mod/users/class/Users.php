@@ -475,9 +475,10 @@ class PHPWS_User {
   }
 
   function disallow($message=NULL){
-    $title = _("Sorry") . "...";
-    $content = ("You do not have permission for this action.");
-    Layout::add(array("TITLE"=>$title, "CONTENT"=>$content), "users", "User_Main");
+    $template['TITLE'] = _("Sorry") . "...";
+    $template['CONTENT']  = ("You do not have permission for this action.");
+    $content = PHPWS_Template::process($template, "users", "disallow.tpl");
+    Layout::add($content);
 
     if (isset($message)){
       PHPWS_Core::initModClass("security", "Security.php");
