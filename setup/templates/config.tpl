@@ -55,8 +55,9 @@ define("PHPWS_LOG_DIRECTORY", "./logs/");
 /**
  * Determines the permissions given to log files when written
  * to the logs directory.
+ * This MUST be 4 digits and without quotation marks.
  */
-define("LOG_PERMISSION", 644);
+define("LOG_PERMISSION", 0644);
 
 /**
  *  The time format for each log entry
