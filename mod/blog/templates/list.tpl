@@ -1,9 +1,9 @@
 <table cellpadding="4" cellspacing="1" width="100%">
   <tr>
-    <th><b>Title</b></th>
-    <th><b>Entry</b></th>
-    <th><b>Date</b></th>
-    <th><b>Action</b></th>
+    <th><b>{TITLE}</b> {TITLE_SORT}</th>
+    <th><b>{ENTRY}</b></th>
+    <th><b>{DATE}</b> {DATE_SORT}</th>
+    <th><b>{ACTION}</b></th>
   </tr>
 <!-- BEGIN listrows -->
   <tr {TOGGLE}>
@@ -14,3 +14,11 @@
   </tr>
 <!-- END listrows -->
 </table>
+<div style="text-align : center">
+{TOTAL_ROWS}<br />
+{PAGE_LABEL} {PAGES}<br />
+{LIMIT_LABEL} {LIMITS}
+</div>
+<div style="text-align : right">
+{SEARCH}
+</div>
