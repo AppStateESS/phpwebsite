@@ -7,15 +7,12 @@ function users_register($module, &$content){
   $result = Users_Permission::createPermissions($module);
   
   if (is_null($result)){
-    if ($result->getCode() == USER_ERR_PERM_FILE){
       $content[] = _("Permissions file not found.");
       PHPWS_Boost::addLog("users", _("Permissions file not found."));
-    }
-    else {
+  } elseif (PEAR::isError($result)) {
       $content[] = _("Permissions table not created successfully.");
       PHPWS_Error::log($result);
       return FALSE;
-    }
   } else
     $content[] = _("Permissions table created successfully.");
 
