@@ -61,42 +61,33 @@ class Categories_Action{
   }
 
   function postCategory(&$category){
-    PHPWS_Core::initCoreClass("Image.php");
+    PHPWS_Core::initCoreClass("File.php");
     if (empty($_POST['title']))
       $errors['title'] = _("Your category must have a title.");
 
     $category->setTitle($_POST['title']);
 
     if (!empty($_POST['description'])){
-      if (CATEGORIES_ALLOW_WYSIWYG && JAVASCRIPT_ON)
-	$description = stripslashes($_POST['description']);
-      else
-	$description = $_POST['description'];
+      $description = $_POST['description'];
 
       $category->setDescription($description);
     }
 
     $category->setParent((int)$_POST['parent']);
 
-    $image = & new PHPWS_Image;
-    $result = $image->importFiles("image");
+    $image = PHPWS_Form::postImage("image", "categories");
 
-    if (is_array($result)){
-      foreach ($result as $message)
+    if (PEAR::isError($image)){
+      PHPWS_Error::log($result);
+      $errors['image'] = _("There was a problem saving your image to the server.");
+    } elseif (is_array($image)){
+      foreach ($image as $message)
 	$messages[] = $message->getMessage();
 
       $errors['image'] = implode("<br />", $messages);
-    } else {
-      $image->setDirectory("images/categories");
-      $result = $image->writeImage();
-
-      if (PEAR::isError($result)){
-	PHPWS_Error::log($result);
-	$errors['image'] = _("Unable to save the image file." . " " . _("Please contact your administrator."));
-      } else
-	$category->setImage($image->getFilename());
-    }
-  
+    } elseif (get_class($image) == "phpws_image")
+	$category->setImage($image);
+    
     if (isset($errors))
       return $errors;
     else
@@ -160,29 +151,31 @@ class Categories_Action{
     $form->setsize("title", 40);
 
     $template['DESC_LBL'] = _("Description");
-    if (CATEGORIES_ALLOW_WYSIWYG && JAVASCRIPT_ON){
-      $values['NAME'] = "description";
-      $values['VALUE'] = $category->getDescription();
-      $template['DESCRIPTION'] = Layout::getJavascript("hypertext", $values);
-    } else {
-      $form->add("description", "textarea", $category->getDescription());
-      $form->setRows("description", "10");
-      $form->setWidth("description", "80%");
-    }
+    $form->add("description", "textarea", $category->getDescription());
+    $form->setRows("description", "10");
+    $form->setWidth("description", "80%");
+
 
     $template['IMAGE_LBL'] = _("Image");
     if (isset($errors['image']))
       $template['IMAGE_ERROR'] = $errors['image'];
 
-    $form->add("image", "file");
-
     $image = $category->getImage();
 
+    if (isset($image))
+      $image_id = $image->getId();
+    else
+      $image_id = NULL;
+
+    $result = $form->addImage("image", "categories", $image_id);
+    
     if (isset($image)){
-      $form->add("current_image", "hidden", $image);
+      $form->add("current_image", "hidden", $image->getId());
       $template['CURRENT_IMG_LABEL'] = _("Current Image");
-      $template['CURRENT_IMG'] = $image;
+      $template['CURRENT_IMG'] = $image->getTitle();
     }
+
+    $template['IMAGE_LABEL'] = _("Image Title");
 
     $form->mergeTemplate($template);
     $final_template = $form->getTemplate();
