@@ -51,7 +51,8 @@ class PHPWS_Core {
 
   function getModules($active=TRUE){
     $DB = new PHPWS_DB("modules");
-    $DB->addWhere("active", 1);
+    if ($active == TRUE)
+      $DB->addWhere("active", 1);
     $DB->addOrder("priority asc");
     return $DB->select();
   }
@@ -232,7 +233,7 @@ class PHPWS_Core {
     $conf = array('mode' => LOG_PERMISSION, 'timeFormat' => LOG_TIME_FORMAT);
     $log  = &Log::singleton('file', PHPWS_LOG_DIRECTORY . $filename, $type, $conf, PEAR_LOG_NOTICE);
 
-    if (get_class($log) == "log"){
+    if (get_class($log) == "log_file"){
       $log->log($message, PEAR_LOG_NOTICE);
       $log->close();
     }
