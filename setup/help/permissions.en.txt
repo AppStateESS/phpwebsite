@@ -1,0 +1,29 @@
+Setting Permissions
+
+If you are running Apache under Linux/Unix you have two options:
+
+1) Log in as root and CHOWN the directory to apache.apache like so
+   chown -R websrv.websrv directoryName/
+   
+   websrv is the user and group name of the web server. For example, 
+   Apache uses "apache" or sometimes "nobody". So for an Apache
+   installation, I would use:
+   chown -R apache.apache directoryName/
+
+2) If you can't log in as root, a less secure way is:
+   chmod -R 777 directoryName/
+
+After installation of phpWebSite or its modules, the following directories
+should remain writable:
+
+phpwebsite/images/
+phpwebsite/files/
+
+These two directories need to be writable only during a phpwebsite or module
+install:
+
+phpwebsite/templates/
+phpwebsite/config/
+
+Make sure to restrict the permissions on those directories after done with
+your installation.
