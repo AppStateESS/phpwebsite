@@ -28,6 +28,14 @@ class PHPWS_Panel_Link {
       $this = $result;
   }
 
+  function setId($id){
+    $this->_id = (int)$id;
+  }
+
+  function getId(){
+    return $this->_id;
+  }
+
   function setTab($tab){
     $this->_tab = $tab;
   }
@@ -87,6 +95,10 @@ class PHPWS_Panel_Link {
       return "<a href=\"" . $this->_url . "\">" . $this->getLabel() . "</a>";
     else
       return $this->_url;
+  }
+
+  function setLinkOrder($order){
+    $this->_link_order = (int)$order;
   }
 
   function getLinkOrder(){
@@ -151,6 +163,34 @@ class PHPWS_Panel_Link {
     $tpl['DESCRIPTION'] = $this->getDescription();
 
     return PHPWS_Template::process($tpl, "controlpanel", "link.tpl");
+  }
+
+  function kill(){
+    $db = & new PHPWS_DB("controlpanel_link");
+    $db->addWhere("id", $this->getId());
+    $result = $db->delete();
+    if (PEAR::isError($result))
+      return $result;
+
+    $tab = $this->getTab();
+    
+    $db->reset();
+    $db->addWhere("tab", $tab);
+    $db->addOrder("link_order");
+    $result = $db->loadObjects("PHPWS_Panel_Link");
+
+    if (PEAR::isError($result))
+      return $result;
+
+    if (empty($result))
+      return TRUE;
+
+    $count = 1;
+    foreach ($result as $link){
+      $link->setLinkOrder($count);
+      $link->save();
+      $count++;
+    }
   }
 
 }
