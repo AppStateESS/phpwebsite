@@ -16,27 +16,30 @@ class PHPWS_Module {
   var $about         = FALSE;
   var $pre94         = FALSE;
   var $fullMod       = TRUE;
+  var $_error        = NULL;
 
-  function PHPWS_Module($title=NULL){
+  function PHPWS_Module($title=NULL, $file=TRUE){
     if (isset($title)){
       $this->setTitle($title);
-      $this->init();
+      $this->init($file);
     }
   }
 
-  function init(){
-    $title = $this->getTitle();
+  function initByDB(){
+    $db = & new PHPWS_DB("modules");
+    $db->addWhere("title", $this->title);
+    return $db->loadObject($this);
+  }
 
-    $this->setDirectory(PHPWS_SOURCE_DIR . "mod/$title/");
-    
-    $result = PHPWS_Core::getConfigFile($title, "boost.php");
+  function initByFile(){
+    $result = PHPWS_Core::getConfigFile($this->title, "boost.php");
     if (PEAR::isError($result)){
       $this->fullMod = FALSE;
       return $result;
     }
-
+    
     include $result;
-
+    
     if (isset($mod_title)){
       $this->pre94 = TRUE;
       $proper_name = $mod_pname;
@@ -45,7 +48,7 @@ class PHPWS_Module {
       else
 	$active == FALSE;
     }
-
+    
     if (isset($proper_name))
       $this->setProperName($proper_name);
 
@@ -82,6 +85,21 @@ class PHPWS_Module {
     if (isset($about))
       $this->setAbout($about);
 
+    return TRUE;
+  }
+
+  function init($file=TRUE){
+    $title = $this->getTitle();
+
+    $this->setDirectory(PHPWS_SOURCE_DIR . "mod/$title/");
+
+    if ($file == TRUE)
+      $result = PHPWS_Module::initByFile();
+    else
+      $result = PHPWS_Module::initByDB();
+
+    if (PEAR::isError($result))
+      $this->_error = $result;
   }
 
 
