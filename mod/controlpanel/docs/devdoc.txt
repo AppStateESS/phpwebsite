@@ -141,10 +141,11 @@ if ($_SESSION['User']->allow("myMod", "add_new"))
    $tabs['add_new']   = $command2;
 
 
-You may want to put your content into the Control Panel's main page. To do so
-just do the following:
+You may want to put your content into the Control Panel's main
+page. To do so just do the following:
 
 $content = PHPWS_ControlPanel::display($panel->display());
 Layout::add($content);
 
-This places your tabs and content into the content of the Control Panel's content.
+This places your tabs and content into the content of the Control
+Panel's content. 
