@@ -332,7 +332,7 @@ class User_Form {
     $form = & new PHPWS_Form;
 
     if ($user->getId() > 0){
-      $form->addHidden("userId", $user->getId());
+      $form->addHidden("user_id", $user->getId());
       $form->addSubmit("submit", _("Update User"));
     } else
       $form->addSubmit("submit", _("Add User"));
