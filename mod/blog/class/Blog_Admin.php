@@ -24,6 +24,28 @@ class Blog_Admin {
     }
 
     switch ($command){
+    case "disapproveBlog":
+      if (!Current_User::authorized("blog") ||
+	  Current_User::isRestricted("blog")      ||
+	  !isset($_REQUEST['version_id'])) {
+	$title = _("Sorry");
+	$content = _("Action not allowed.");
+	break;
+      }
+
+      $result = Blog_Admin::disapprove($_REQUEST['version_id']);
+      if (PEAR::isError($result)) {
+	$message = _("There was a problem removing the approval item.");
+      }
+      else {
+	$message = _("Blog removed from approval queue.");
+      }
+
+      $title = _("Blog Entries Awaiting Approval");
+      $content = Blog_Admin::approvalList();
+
+      break;
+
     case "edit":
       $panel->setCurrentTab("list");;
       if (!Current_User::authorized("blog", "edit_blog", $_REQUEST['blog_id'])){
@@ -33,7 +55,7 @@ class Blog_Admin {
 
       $title = _("Update Blog Entry");
 
-      $version = & new Version("blog", "blog_entries");
+      $version = & new Version("blog_entries");
       $version->setSource($blog);
       $approval_id = $version->isWaitingApproval();
 
@@ -42,6 +64,7 @@ class Blog_Admin {
 	$version->init();
 
 	if (PEAR::isError($unApproved)){
+	  PHPWS_Error::log($unApproved);
 	  $content = _("An error occurred while loading an unapproved blog.");
 	  break;
 	}
@@ -70,12 +93,15 @@ class Blog_Admin {
       break;
 
     case "approveBlog":
-      if (Current_User::isRestricted("blog")) {
-	Current_User::disallow(_("Tried to approve a blog."));
-	return;
+      if (!Current_User::authorized("blog") ||
+	  Current_User::isRestricted("blog")      ||
+	  !isset($_REQUEST['version_id'])) {
+	$title = _("Sorry");
+	$content = _("Action not allowed.");
+	break;
       }
 
-      Version::approve("blog_entries", $_REQUEST['version_id']);
+      Blog_Admin::approveBlog($_REQUEST['version_id']);
       $title = _("Blog Entries Awaiting Approval");
       $message = _("Blog entry approved.");
       $content = Blog_Admin::approvalList();
@@ -88,7 +114,7 @@ class Blog_Admin {
 	return;
       }
 
-      $version = & new Version("blog", "blog_entries", $_REQUEST['version_id']);
+      $version = & new Version("blog_entries", $_REQUEST['version_id']);
       $version->loadObject($blog);
 
       $title = _("Update Unapproved Blog Entry");
@@ -118,7 +144,8 @@ class Blog_Admin {
       break;
 
     case "restorePrevBlog":
-      $result = Version::restore($blog, $_REQUEST['replace_order'], "blog_entries");
+      exit("restorePrevBlog needs work");
+      //      $result = Version::restore($blog, $_REQUEST['replace_order'], "blog_entries");
       $blog->save();
       $title = _("Blog Archive");
       $message = _("Blog entry restored.");
@@ -127,47 +154,12 @@ class Blog_Admin {
 
     case "postEntry":
       $panel->setCurrentTab("list");;
-      Blog_Admin::postEntry($blog);
+      $result = Blog_Admin::postEntry($blog);
 
-      if (isset($_REQUEST['version_id']))
-	$version = & new Version("blog", "blog_entries", $_REQUEST['version_id']);
-      else
-	$version = & new Version("blog", "blog_entries");
-
-      if (Current_User::isRestricted("blog")){
-	$version->setSource($blog);
-	$version->setApproved(FALSE);
-	$result = $version->save();
-
-	if (PEAR::isError($result)) {
-	  PHPWS_Error::log($result);
-	  $message = _("An error occurred when trying to save your entry.");
-	}
-	else {
-	  $message = _("Blog entry submitted for approval");
-	}
-      }
-      else {
-	// User is unrestricted
-	if (isset($version_id)){
-	  if (isset($_POST['approve_entry'])) {
-	    $message = _("Blog approved.");
-	    Version::approve("blog_entries", $version_id);
-	    $result = $blog->save();
-	    Version::givePermission("blog", "blog_entries", $version_id);
-	  }
-	  else {
-	    $message = _("Unapproved blog updated.");
-	    Version::saveUnapproved("blog_entries", $blog, $version_id);
-	  }
-	} else {
-	  $message = _("Blog entry updated.");
-	  $result = $blog->save();
-	  PHPWS_User::savePermissions("blog", $blog->getId());
-	  $version->setSource($blog);
-	  $version->setApproved(TRUE);
-	  $version->save();
-	}
+      if ($result == FALSE) {
+	$message = _("An error occurred when trying to save your entry.");
+      } else {
+	$message = $result;
       }
 
       $title = _("Blog Archive");
@@ -185,7 +177,6 @@ class Blog_Admin {
     Layout::add(PHPWS_ControlPanel::display($finalPanel));
 
   }
-
 
   function &cpanel()
   {
@@ -317,18 +308,82 @@ class Blog_Admin {
   }
 
   function postEntry(&$blog){
+    if (!Current_User::authorized("blog", "edit_blog")) {
+      echo "not authorized";
+      return FALSE;
+    }
+
     $blog->title = PHPWS_Text::parseInput($_POST['title']);
     $blog->entry = PHPWS_Text::parseInput($_POST['entry']);
     $blog->date  = mktime();
-    return TRUE;
+
+    if (isset($_REQUEST['version_id'])) {
+      $version = & new Version("blog_entries", $_REQUEST['version_id']);
+    }
+    else {
+      $version = & new Version("blog_entries");
+    }
+
+    if (Current_User::isRestricted("blog")){
+      $result = Blog_Admin::saveVersion($blog, $version, FALSE);
+      
+      if (PEAR::isError($result)) {
+	PHPWS_Error::log($result);
+	return FALSE;
+      }
+      else {
+	return _("Blog entry submitted for approval");
+      }
+    }
+    else {
+      // User is unrestricted
+      if ((bool)$version->getId()){
+	if (isset($_POST['approve_entry'])){
+	  $result = $blog->save();
+	  if (PEAR::isError($result)) {
+	    PHPWS_Error::log($result);
+	    return FALSE;
+	  }
+	  $result = Blog_Admin::saveVersion($blog, $version, TRUE);
+	  $version->authorizeCreator("blog");
+	  if (PEAR::isError($result)) {
+	    PHPWS_Error::log($result);
+	    return FALSE;
+	  }
+	} else {
+	  $result = Blog_Admin::saveVersion($blog, $version, FALSE);
+	  if (PEAR::isError($result)) {
+	    PHPWS_Error::log($result);
+	    return FALSE;
+	  }
+	  return _("Unapproved blog updated.");
+	}
+      } else {
+	$blog->save();
+	$result = Blog_Admin::saveVersion($blog, $version, TRUE);
+	if (PEAR::isError($result)) {
+	  PHPWS_Error::log($result);
+	  return FALSE;
+	}
+	PHPWS_User::savePermissions("blog", $blog->getId());
+	return _("Blog entry saved.");
+      }
+    }
   }
 
+  function saveVersion(&$blog, &$version, $approved){
+    $version->setSource($blog);
+    $version->setApproved($approved);
+    return $version->save();
+  }
   
   function restoreVersion(&$blog){
-    PHPWS_Core::initCoreClass("Version.php");
-
-    $result = Version::getAll($blog->id, "blog_entries", "blog");
-
+    $version = & new Version("blog_entries");
+    $version->setSource($blog);
+    $version->getBackupList();
+    test($version);
+   
+    exit("restoreVersion needs work");
     $tpl = & new PHPWS_Template("blog");
     $tpl->setFile("version.tpl");
 
@@ -359,7 +414,7 @@ class Blog_Admin {
   }
   
   function approvalList(){
-    $version = & new Version("blog", "blog_entries");
+    $version = & new Version("blog_entries");
 
     $approvalList = $version->getUnapproved(Current_User::isRestricted("blog"));
 
@@ -396,34 +451,54 @@ class Blog_Admin {
 
       $editor_id = $vr_blog->getEditor();
 
-      if ($editor_id) {
+      if (!empty($editor_id)) {
 	$editor = & new PHPWS_User($editor_id);
 	$mini_tpl['EDITOR_LABEL'] = _("Editor");
 	$mini_tpl['EDITOR'] = $editor->getEmail(TRUE);
       }
 
       if ($vr_blog->getSourceId() > 0) {
+	$edit_approves = TRUE;
 	$mini_tpl['DATE'] = $vr_blog->getEdittedDate(TRUE);
 	$mini_tpl['DATE_LABEL'] = _("Updated");
 	$tpl->setCurrentBlock("update-approval");
       } else {
+	$new_approves = TRUE;
 	$mini_tpl['DATE'] = $vr_blog->getCreationDate(TRUE);
 	$mini_tpl['DATE_LABEL'] = _("Created");
 	$tpl->setCurrentBlock("new-approval");
       }
-
       $tpl->setData($mini_tpl);
       $tpl->parseCurrentBlock();
     }
 
-    $template['NEW_LABEL'] = _("New Blog Entries");
-    $template['UPDATED_LABEL'] = _("Updated Blog Entries");
+    if (isset($new_approves))
+      $template['NEW_LABEL'] = _("New Blog Entries");
+
+    if (isset($edit_approves))
+      $template['UPDATED_LABEL'] = _("Updated Blog Entries");
+
     $tpl->setData($template);
 
     $content = $tpl->get();
     return $content;
   }
 
+  function disapprove($version_id){
+    $version = & new Version("blog_entries", $version_id);
+    return $version->kill();
+  }
+
+  function approveBlog($version_id){
+    $version = & new Version("blog_entries", $version_id);
+    $blog = & new Blog;
+    PHPWS_Core::plugObject($blog, $version->getSource());
+    $blog->save();
+    $version->setSource($blog);
+    $version->setApproved(TRUE);
+    $version->save();
+    $version->authorizeCreator("blog");
+  }
 }
 
 ?>

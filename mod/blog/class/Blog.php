@@ -55,11 +55,11 @@ class Blog {
     return strftime($type, $this->date);
   }
 
-  function save($isVersion=FALSE, $approve=FALSE)
+  function save()
   {
     $db = & new PHPWS_DB("blog_entries");
 
-    if (isset($this->id)) {
+    if (!empty($this->id)) {
       $db->addWhere("id", $this->id);
     }
     $result = $db->saveObject($this);
