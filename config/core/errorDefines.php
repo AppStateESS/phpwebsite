@@ -61,4 +61,10 @@ define("PHPWS_NO_ERROR_FILE",         -600);
 
 /*************** Help.php  ****************/
 define("PHPWS_UNMATCHED_OPTION",      -700);
+
+
+/*************** File.php ****************/
+define("PHPWS_FILE_DELETE_DENIED",    -800);
+define("PHPWS_DIR_DELETE_DENIED",    -800);
+
 ?>

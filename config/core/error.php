@@ -59,4 +59,8 @@ $errors[PHPWS_NO_ERROR_FILE]         = _("No error message file found.");
 // Help.php 700 - 799
 $errors[PHPWS_UNMATCHED_OPTION]      = _("Help option not found in help configuration file.");
 
+// File.php 800 - 899
+$errors[PHPWS_FILE_DELETE_DENIED]    = _("Unable to delete file.");
+$errors[PHPWS_DIR_DELETE_DENIED]     = _("Unable to delete directory.");
+
 ?>
