@@ -10,12 +10,13 @@ define("PHPWS_VAR_TYPE",              -5);
 define("PHPWS_STRICT_TEXT",           -6);
 define("PHPWS_INVALID_VALUE",         -7);
 define("PHPWS_NO_MODULES",            -8);
-
+define("PHPWS_WRONG_TYPE",            -9);
 
 /*********** Database.php ***************/
 
 define("PHPWS_DB_ERROR_TABLE",        -100);
 define("PHPWS_DB_NO_VALUES",          -101);
+define("PHPWS_DB_NO_OBJ_VARS",        -102);
 
 /************* List.php *****************/
 define("PHPWS_LIST_MOD_NOT_SET",      -200);
@@ -51,4 +52,7 @@ define("PHPWS_ITEM_NO_RESULT",        -401);
 
 /*************** Module.php ***************/
 define("PHPWS_NO_MOD_FOUND",          -500);   
+
+/*************** Error.php ****************/
+define("PHPWS_NO_ERROR_FILE",         -600);
 ?>
