@@ -442,8 +442,10 @@ class User_Action {
       if (!Current_User::isLogged()){
 	if (!User_Action::loginUser($_POST['block_username'], $_POST['block_password']))
 	  User_Action::badLogin();
-	else
+	else {
 	  Current_User::getLogin();
+	  PHPWS_Core::goBack();
+	}
       }
       break;
       
@@ -484,6 +486,11 @@ class User_Action {
 	$result = User_Action::saveNewUser($user);
 	if ($result) {
 	  $content = _('Account created successfully!');
+	  $content .= '<br />';
+	  $content .= _('You will return to the home page in five seconds.');
+	  $content .= '<br />';
+	  $content .= PHPWS_Text::moduleLink(_('Click here if you are not redirected.'));
+	  Layout::metaRoute();
 	} else {
 	  $content = _('An error occurred when trying to create your account. Please try again later.');
 	}
@@ -732,10 +739,6 @@ class User_Action {
     $db = & new PHPWS_DB('users_auth_scripts');
     $db->addWhere('id', (int)$script_id);
     return $db->delete();
-  }
-
-  function signup_user()
-  {
   }
 
 }
