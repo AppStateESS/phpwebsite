@@ -11,5 +11,4 @@ $badPasswords = array ("pass",
 		       "asdlkj"		       
 		       );
 
-
 ?>
