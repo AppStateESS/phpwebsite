@@ -206,10 +206,13 @@ class DBPager {
   }
 
   function getTotalRows(){
-    $this->db->addColumn('*', FALSE, TRUE);
-    $result = $this->db->select('one');
+    $result = $this->db->select('count');
     $this->db->resetColumns();
-    return $result;
+    if (PEAR::isError($result)) {
+      return $result;
+    } else {
+      return $result[0]['count'];
+    }
   }
 
 
