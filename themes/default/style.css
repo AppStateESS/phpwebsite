@@ -28,8 +28,21 @@ body {
 #content {
 	float : left;
 	margin-left: 3%;
-	width : 74%
+	width : 74%;
 }
+
+
+#content h1 {
+	background-color : #DEE2BD;
+	padding : 3px;
+}
+
+
+#header {
+	background-color : #ADB583;
+	padding-bottom : 10px;
+}
+
 
 #footer {
 	clear: both;
@@ -60,8 +73,6 @@ h1, h2, h3 {
 
 h1 {
 	font-size :  16pt;
-	margin-bottom : 5px;
-	margin-top : 5px;
 }
 
 h2 {
@@ -94,16 +105,14 @@ tr, td {
 }
 
 
-#content h1 {
-	background-color : #DEE2BD;
-	padding : 3px;
-}
-
 div.box {
 	background-color : #CBCEAC;
-	border : white 2px solid;
 	margin-bottom : 10px;
 	padding : 6px;
+}
+
+#sidepanel div.box {
+	border : white 2px solid;
 }
 
 div.box a:link, div.box a:visited {
