@@ -99,8 +99,8 @@ class Layout_Settings {
     $db = new PHPWS_db('layout_box');
     $db->addWhere('theme', $this->current_theme);
     $db->addColumn('content_var');
-    $db->setindexBy('module');
     $result = $db->select('col');
+
     if (PEAR::isError($result)){
       PHPWS_Error::log($result);
       PHPWS_Core::errorPage();
@@ -113,7 +113,6 @@ class Layout_Settings {
   }
 
   function loadSettings(){
-    require_once('File.php');
     $db = new PHPWS_DB('layout_config');
     $result = $db->loadObject($this);
 
@@ -125,13 +124,18 @@ class Layout_Settings {
     if (empty($this->current_theme))
       $this->current_theme = $this->default_theme;
 
-    $transferFile = './themes/' . $this->current_theme . '/transfers.tpl';
+    $themeInit = './themes/' . $this->current_theme . '/theme.ini';
+    $theme_variables[] = DEFAULT_THEME_VAR;
+    $theme_variables[] = DEFAULT_BOX_VAR;
 
-    if (is_file($transferFile)){
-      $themeVars = explode("\n", trim(File::readAll($transferFile)));
-      $this->_theme_variables = $themeVars;
-    } else
-      $this->_theme_variables = array(DEFAULT_THEME_VAR);
+    if (is_file($themeInit)){
+      $themeVars = parse_ini_file($themeInit, TRUE);
+      if (isset($themeVars['theme_variables'])) {
+	$theme_variables = array_merge($theme_variables, $themeVars['theme_variables']);
+      }
+    }
+
+    $this->_theme_variables = $theme_variables;
   }
 
   function saveSettings(){
