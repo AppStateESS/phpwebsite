@@ -130,11 +130,14 @@ increment the second number (2). Major upgrades of a program increment
 the first number (1). Since our module is brand new we will start with
 0.0.1
 
-register = If our module needs to register with other modules, this is
-set to TRUE. What this means is when this module is installed and
-other modules are installed after it, links would check to see if
-these other modules needed processing. For now, we will keep this at
+register - If our module needs to perform an action when other modules
+are installed, this is set to TRUE. For now, we will keep this at
 FALSE.
+
+unregister - If our module needs to perform an action when other
+modules are uninstalled, then this is set to TRUE. Some modules (like
+Layout) perform an action when a module is uninstalled but NOT when
+one is installed.
 
 import_sql = If this is set to TRUE, boost will look for a install.sql
 file. We will be using this.
@@ -167,7 +170,8 @@ So here is our boost.php file:
 <?php
 $proper_name  = "Links";
 $version      = "0.0.1";
-$register     = FALSE;
+$register     = FALSE; // You could also leave this blank
+$unregister   = FALSE; // Ditto
 $import_sql   = TRUE;
 $image_dir    = FALSE;
 $file_dir     = FALSE;
@@ -319,7 +323,7 @@ Here is our array to put into the controlpanel.php file:
 $link[] = array("label"       => _("Links Administration"),
                 "restricted"  => TRUE,
                 "url"         =>
-                "index.php?module=links&action=admin&subaction=menu",
+                "index.php?module=links&action=admin",
 		"description" => _("Admin the links on your site."),
 		"image"       => "links.png",
 		"tab"         => "content"
@@ -373,7 +377,7 @@ Links is now ready to install. We just go to Boost, click on Other
 Modules and click the install link. But wait, what about our About
 file? This is really simple, just create a very small HTML web page
 and drop it in your module's conf/ directory. You can click on About
-to see the one that comes with links.
+to see the one that comes with Links.
 
 Once you click Install, Boost should handle the rest. If there is a
 problem, you should get a warning message from either your module (if
@@ -393,7 +397,10 @@ needs until the module is finished.
 
 As I decide to add elements, I will discuss them here. It is debateable
 whether that is the BEST way to teach you, but I think it is the best
-way for you to learn what I know.
+way for you to learn what I know. Also, I don't plan everything out as
+I go. Usually I write some code, come back, add to it, tweak, etc. But
+when writing this documentation, we will pretend that I knew exactly
+how the module would turn out in the end.
 
 Before I continue, keep some things in mind. I will offer example code
 that may NOT be in Links. For example, I will start testing the module
@@ -507,10 +514,140 @@ this as well. It will allow you to get to the root of the problem and
 avoid redundant code.
 
 
+The Administration Menu
+
+I want to start getting some data into our database. What I am going
+to do is create a form to enter information about our link, check the
+information for errors, put the information into a link object, and
+save it to the database.
+
+First we have a decision to make. How do we access the link creation?
+Remember that we are coming from the control panel link we made on
+installation. This is what I am thinking: we will have two tabs, one
+called 'New' and one called 'Edit'. The 'New' link will take them to
+the creation of a new link. 'Edit' will take them to a listing of
+links so they can be administrated.
+
+First thing I am going to do is make an Action.php class. This class
+will handle the various requests that come into the module. That is
+its only purpose. Look at the Action.php file.
+
+Now I need to require this file in the index.php file so I can use it.
+PHPWS_Core::initModClass("links", "Action.php");
+
+I could just as easily done it this way:
+require_once PHPWS_SOURCE_DIR . "mod/links/class/Action.php";
+
+However, the initModClass does this for me. It will also silence an
+error and log it, if the file is missing. Do whichever way you
+prefer. Do make sure that you use 'require_once' instead of simply
+'require'. That makes sure a class is not redeclared.
+
+By the way, the PHPWS_SOURCE_DIR is defined as the default directory
+for your installation. This can be very important if you want your
+module to be branch* compatible.
+
+Something else that I am going to add is a reroute at the top of the
+index file. I am going to use our source directory definition from
+above.
+
+if (!defined("PHPWS_SOURCE_DIR")){
+  header("location:../../index.php");
+  exit();
+}
+
+This will send someone who is trying to access the index.php file
+directly back to our home page. Notice I put it before the class
+inclusions. If I didn't they wouldn't work and phpWebSite would print
+an error. Try to prevent users from seeing errors at all times.
+
+Since I know that I will have user and administrative functionality, I
+create some division of process:
+
+if ($_REQUEST['action'] == 'admin'){
+  Links_Action::admin();
+}
+elseif ($_REQUEST['user']){
+  Links_Action::user();
+}
+
+The admin function will take care of administrative options and the
+user function will take care of user options.
+
+Of course you can do this any way you wish. Create a class named
+Admin.php and one named User.php and launch functions from there. Put
+a switch statement in the index to handle all the requests. It is up
+to you.
+
+Back to the Links_Action class, I have a function for admin and user
+options. I'll be working on the administrative portion first. I like
+to have my major module options in a tabbed format. To do so, I use
+the control panel module. It lets me embed my tabs within the
+phpWebSite control panel. This just lets the site admin work with in
+an easier interface.
+
+To see how this is done, look at the cpanel() function. It creates the
+links that I need:
+
+$newLink = "index.php?module=links&amp;action=admin";
+$newCommand = array ("title"=>_("New"), "link"=> $newLink);
+	
+$listLink = "index.php?module=links&amp;action=admin";
+$listCommand = array ("title"=>_("List"), "link"=> $listLink);
+
+Then I put them in an array:
+$tabs['new'] = $newCommand;
+$tabs['list'] = $listCommand;
+
+I create a control panel object:
+$panel = & new PHPWS_Panel("links");
+
+Put the links in it:
+$panel->quickSetTabs($tabs);
+
+And return the result with $panel->display($content);
+
+The content appears beneath the tabs. To get my panel to be surrounded
+by the main control panel, I just use its display function:
+PHPWS_ControlPanel::display($panel->display($content));
+
+Now I just return the result and put it in the Layout.
+
+Using Layout
+Getting your code to display in phpWebSite is simple. Every theme has
+a BODY tag (you will read about tags and template later). The BODY tag
+is where the main portion of content gets displayed. Usually, it
+doesn't share its space with other modules (though it is
+possible). For our administrative panel we KNOW that it is the only
+thing we want in the main content area. So we just send our content to
+Layout like so:
+
+Layout::add($content);
+
+However, you may not want to put content in the BODY. You may want to
+create content in a small box to the side or above the BODY. To do so,
+you need to tell the Layout module to store the content.
+
+Layout::add($content, $module_name, $marker);
+
+So say for links I may want a small side box:
+
+Layout::add($content, "links", "sideBox");
+
+When ever I want to use that box, I make sure I use the same marker
+name. Like other names we have discussed, you shoul
+
+
+
+
+
 Accessing the Database
 A special database class was written for phpWebSite. Once you know how
 it works, it can make database queries much easier. If you want to
-know more about how it works, look up the Database class documentation.
+know more about how it works, look up the Database class documentation
+in this directory.
+
+
 
 
 
@@ -518,3 +655,7 @@ Glossary
 -------------------------------------------------------------------
 define - a constant variable.
 See http://www.php.net/manual/en/function.define.php
+
+branch - An installation of phpWebSite that shares the files from a
+central hub. This allows several sites on the same server using one
+set of code.
