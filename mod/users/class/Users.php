@@ -602,17 +602,15 @@ class PHPWS_User {
 
   function getUserSetting($setting, $refresh=FALSE)
   {
-    static $settings;
-
-    if (!isset($settings) || $refresh == TRUE){
-      unset($settings);
-      $settings = PHPWS_User::getSettings();
+    if (!isset($GLOBALS['User_Settings']) || $refresh == TRUE){
+      unset($GLOBALS['User_Settings']);
+      $GLOBALS['User_Settings'] = PHPWS_User::getSettings();
     }
 
-    if (PEAR::isError($settings))
-      return $settings;
+    if (PEAR::isError($GLOBALS['User_Settings']))
+      return $GLOBALS['User_Settings'];
 
-    return $settings[$setting];
+    return $GLOBALS['User_Settings'][$setting];
   }
 
   function loadPermissions($loadAll=TRUE)
