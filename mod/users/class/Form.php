@@ -681,6 +681,9 @@ class User_Form {
     $form->addText('confirm_phrase');
     $form->setLabel('confirm_phrase', _('Confirm text'));
 
+    $form->addTplTag('CONFIRM_INSTRUCTIONS', _('Please type the word seen in the image.'));
+    $form->addTplTag('SIGNUP_LABEL', _('New Account Sign-up'));
+
     if (PHPWS_User::getUserSetting('graphic_confirm') && function_exists('gd_info')) {
       $result = User_Form::confirmGraphic();
       if (PEAR::isError($result)) {
@@ -693,7 +696,7 @@ class User_Form {
     }
 
     $template = $form->getTemplate();
-    $result = PHPWS_Template::process($template, 'users', 'signup_form.tpl');
+    $result = PHPWS_Template::process($template, 'users', 'forms/signup_form.tpl');
     return $result;
   }
 
