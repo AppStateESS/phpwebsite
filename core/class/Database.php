@@ -801,6 +801,9 @@ class PHPWS_DB {
     if (PEAR::isError($sql) || !is_array($sql))
       return $sql;
 
+    if (!count($sql))
+      return NULL;
+
     if ($GLOBALS['PEAR_DB']->phptype != 'pgsql')
       return $sql;
 
