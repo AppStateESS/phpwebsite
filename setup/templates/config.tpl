@@ -45,6 +45,24 @@ define("PHPWS_DSN", "{dsn}");
  */
 define("CORE_COOKIE_TIMEOUT", 2592000);
 
+/********************** Logging Settings **********************/
+
+/**
+ * Directory where logs will be written
+ */
+define("PHPWS_LOG_DIRECTORY", "./logs/");
+
+/**
+ * Determines the permissions given to log files when written
+ * to the logs directory.
+ */
+define("LOG_PERMISSION", 644);
+
+/**
+ *  The time format for each log entry
+ */
+define("LOG_TIME_FORMAT", "%X %x");
+
 /*********************** TEMPLATES *****************************/
 /**
  * Setting FORCE_THEME_TEMPLATES to TRUE forces the template class
@@ -98,8 +116,5 @@ define("PHPWS_LIST_TOGGLE_CLASS", " class=\"bg-light\"");
 
 /* Error logging presets */
 define("PHPWS_LOG_ERRORS", TRUE);
-define("PHPWS_LOG_DIRECTORY", "./logs/");
-
-
 
 ?>
