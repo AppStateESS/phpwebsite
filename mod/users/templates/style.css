@@ -12,6 +12,12 @@ font-weight : bold;
 div.header {
 background-color : #94B6DE;
 font-weight : bold;
+padding : 4px;
+}
+
+.user-table th {
+  font-weight : bold;
+  background-color : #94B6DE;
 }
 
 div.module-permission {
