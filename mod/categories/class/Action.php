@@ -6,6 +6,10 @@ PHPWS_Core::initModClass('categories', 'Category.php');
 class Categories_Action{
 
   function admin(){
+    if (!Current_User::authorized('categories')) {
+      Current_User::disallow(_('You are not authorized to administrate categories.'));
+      return;
+    }
     $content = array();
     $panel = & Categories_Action::cpanel();
 
@@ -98,7 +102,7 @@ class Categories_Action{
 
     $value['action'] = 'admin';
     $value['subaction'] = $return;
-    $template['LINK'] = PHPWS_Text::moduleLink('Continue', 'categories', $value);
+    $template['LINK'] = PHPWS_Text::secureLink('Continue', 'categories', $value);
 
     return PHPWS_Template::process($template, 'categories', 'affirm.tpl');
   }
@@ -276,9 +280,10 @@ class Categories_Action{
     $links[] = PHPWS_Text::moduleLink(_('Edit'), 'categories', $vars);
 
     if (javascriptEnabled()){
-      $question['QUESTION'] = "Are you sure you want to delete this category:\\n" . $category->getTitle();
-      Layout::loadModuleJavascript('categories', 'category_list.js', $question);
-      $links[] = '<a href="javascript:void(0)" onclick="confirmDelete(' . $category->getId() . ')">' . _('Delete') . '</a>';
+      $js_vars['QUESTION'] = _('Are you sure you want to delete this category?');
+      $js_vars['ADDRESS']  = 'index.php?module=categories&amp;action=admin&amp;subaction=deleteCategory&amp;category_id=' . $category->getId() . '&amp;authkey=' . Current_User::getAuthKey();
+      $js_vars['LINK']     = _('Delete');
+      $links[] = Layout::getJavascript('confirm', $js_vars);
     } else {
       $vars['subaction'] = 'delete';
       $links[] = PHPWS_Text::moduleLink(_('Delete'), 'categories', $vars);
