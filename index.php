@@ -1,7 +1,9 @@
 <?php
 
-// REMOVE !
+list($usec, $sec) = explode(" ", microtime());
+$site_start_time = ((float)$usec + (float)$sec);
 
+// REMOVE !
 define("AUTO_ROUTE", TRUE);
 
 if (is_file("config/core/config.php")) require_once "config/core/config.php";
@@ -40,7 +42,6 @@ checkJavascript();
 
 PHPWS_Core::runtimeModules();
 PHPWS_Core::runCurrentModule();
-
 PHPWS_Core::closeModules();
 ob_end_flush();
 
@@ -53,5 +54,12 @@ PHPWS_Core::report();
 if (isset($_REQUEST['reset']))
      PHPWS_Core::killAllSessions();
 
-     printf("%.2f mb", (memory_get_usage() / 1024) / 1024);
+list($usec, $sec) = explode(" ", microtime());
+$site_end_time = ((float)$usec + (float)$sec);
+
+$memory_used = round( (memory_get_usage() / 1024) / 1024, 2);
+$execute_time = round( ($site_end_time - $site_start_time), 2);
+
+echo "$memory_used mb / $execute_time secs";
+
 ?>
