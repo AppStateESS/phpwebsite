@@ -92,8 +92,10 @@ class User_Form {
       $_SESSION['User_Manager']->setWhere("username LIKE '%" . $_POST['search_users'] . "%'");
 
     $content = $_SESSION['User_Manager']->getList("users", "Testing User Title");
-    if (PEAR::isError($content))
-	return $content->getMessage();
+    if (PEAR::isError($content)){
+      PHPWS_Error::log($content);
+      return $content->getMessage();
+    }
     return $content;
   }
 
