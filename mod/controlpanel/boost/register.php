@@ -38,7 +38,7 @@ function controlpanel_register($module, &$content){
       if (isset($info['itemname']))
 	$tab->setItemname($info['itemname']);
       else
-	$tab->setItemname($module);
+	$tab->setItemname("controlpanel");
 
       $result = $tab->save();
       if (PEAR::isError($result)){
