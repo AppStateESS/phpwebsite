@@ -26,7 +26,7 @@ class PHPWS_Core {
     foreach ($moduleList as $mod){
       PHPWS_Core::setCurrentModule($mod['title']);
       /* Using include instead of require to prevent broken mods from hosing the site */
-      $includeFile = PHPWS_SOURCE_DIR . "mod/" . $mod['title'] . "/init.php";
+      $includeFile = PHPWS_SOURCE_DIR . "mod/" . $mod['title'] . "/inc/init.php";
 
       if (is_file($includeFile)){
 	include($includeFile);
@@ -42,7 +42,7 @@ class PHPWS_Core {
     }
     
     foreach ($GLOBALS['Modules'] as $mod){
-      $includeFile = PHPWS_SOURCE_DIR . "mod/" . $mod['title'] . "/close.php";
+      $includeFile = PHPWS_SOURCE_DIR . "mod/" . $mod['title'] . "/inc/close.php";
       if (is_file($includeFile))
 	include($includeFile);
     }
@@ -65,7 +65,7 @@ class PHPWS_Core {
 
     foreach ($GLOBALS['Modules'] as $title=>$mod){
       PHPWS_Core::setCurrentModule($title);
-      $runtimeFile = PHPWS_SOURCE_DIR . "mod/" . $mod['title'] . "/runtime.php";
+      $runtimeFile = PHPWS_SOURCE_DIR . "mod/" . $mod['title'] . "/inc/runtime.php";
       is_file($runtimeFile) ? include_once $runtimeFile : NULL;
     }
 
