@@ -40,13 +40,13 @@ class PHPWS_SQL {
 
 
   function getLimit($limit){
-    $limit[] = "LIMIT " . $limit['total'];
+    $sql[] = "LIMIT " . $limit['total'];
     
     if (isset($limit['offset'])) {
-      $limit[] = ", " . $limit['offset'];
+      $sql[] = ", " . $limit['offset'];
     }
-    
-    return implode(" ", $limit);
+
+    return implode(" ", $sql);
   }
 
 }
