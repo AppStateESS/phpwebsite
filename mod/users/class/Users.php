@@ -551,6 +551,9 @@ class PHPWS_User {
   }
 
   function getPermissionLevel($module){
+    if ($this->isDeity())
+      return UNRESTRICTED_PERMISSION;
+
     PHPWS_Core::initModClass("users", "Permission.php");
 
     if (!isset($this->_permission))
