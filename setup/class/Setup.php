@@ -179,7 +179,6 @@ class Setup{
     $db = & DB::connect($dsn);
 
     if (PEAR::isError($db)) {
-      test($db);
       PHPWS_Error::log($db);
       $content[] = _("Unable to connect.") . "<br />";
       $content[] = _("Check your configuration settings.");
@@ -234,7 +233,7 @@ class Setup{
 
     if (PEAR::isError($connection)){
       PHPWS_Error::log($connection);
-      return FALSE;
+      return 0;
     }
     else {
       $connection->disconnect();
@@ -243,7 +242,9 @@ class Setup{
       $result = DB::connect($dsn);
 
       if (PEAR::isError($result)) {
-	if ($result->getCode() == DB_ERROR_NOSUCHDB) {
+	// mysql delivers the first error, postgres the second
+	if ($result->getCode() == DB_ERROR_NOSUCHDB ||
+	    $result->getCode() == DB_ERROR_CONNECT_FAILED) {
 	  return -1;
 	} else {
 	  PHPWS_Error::log($connection);
