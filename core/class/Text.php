@@ -296,6 +296,29 @@ class PHPWS_Text {
     return PHPWS_Text::moduleLink($subject, $module, $getVars, $target, $title);
   }
 
+  function linkAddress($module=NULL, $getVars=NULL, $secure=FALSE){
+    if (Current_User::isLogged() && $secure) {
+      $getVars['authkey'] = Current_User::getAuthKey();
+    }
+
+    $link[] = 'index.php';
+    
+    if (isset($module)){
+      $link[] = '?';
+      $vars[] = "module=$module";
+    }
+    
+    if (is_array($getVars)){
+      foreach ($getVars as $var_name=>$value)
+	$vars[] = $var_name . '=' . $value;
+    }
+    
+    if (isset($vars))
+      $link[] = implode('&amp;', $vars);
+
+    return implode('', $link);
+  }
+
   /**
    * Allows a quick link function for phpWebSite modules to the index.php.
    * 
@@ -316,24 +339,8 @@ class PHPWS_Text {
       $link[] = 'title="' . strip_tags($title) . '" ';
 
     $link[] = 'href="./';
-
-    $link[] = 'index.php';
-
-    if (isset($module)){
-      $link[] = '?';
-      $vars[] = "module=$module";
-    }
-
-    if (is_array($getVars)){
-      foreach ($getVars as $var_name=>$value)
-	$vars[] = $var_name . '=' . $value;
-    }
-
-    if (isset($vars))
-      $link[] = implode('&amp;', $vars);
-
+    $link[] = PHPWS_Text::linkAddress($module, $getVars);
     $link[] = '"';
-
     if ($target=='blank' || $target === TRUE)
       $link[] = ' target="_blank" ';
     elseif ($target=="index")
