@@ -6,6 +6,6 @@
 if (isset($GLOBALS['pre094_modules']))
   PHPWS_Crutch::getOldLayout();
 
-Layout::display();
+echo Layout::display();
 
 ?>
