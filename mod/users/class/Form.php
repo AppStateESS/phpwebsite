@@ -66,7 +66,6 @@ class User_Form {
   function setPermissions($id){
     Layout::addStyle("users");
     $group = & new PHPWS_Group($id, FALSE);
-    test($group);
 
     $modules = PHPWS_Core::getModules();
 
@@ -130,21 +129,33 @@ class User_Form {
       $name = "module_permission[{$mod['title']}]";
       $result = $form->addRadio($name, $key);
       $form->setMatch($name, $permCheck);
-      $template['PERMISSION_' . $key] = $form->get($name);
+      $form->setLabel($name, $value);
+      $radio = $form->get($name, TRUE);
+      $template['PERMISSION_' . $key] = $radio['elements'][0] . $radio['labels'][0];
     }
+
 
     if (isset($permissions)){
       foreach ($permissions as $permName => $permProper){
 	$form = & new PHPWS_Form;
 	$name = "sub_permission[{$mod['title']}][$permName]";
 	$form->addCheckBox($name, 1);
-	$subpermissions[] = $form->get($name) . " " . $permProper;
+	if ($group->allow($mod['title'], $permName, NULL, TRUE))
+	  $subcheck = 1;
+	else
+	  $subcheck = 0;
+	$form->setMatch($name, $subcheck);
+	$form->setLabel($name, $permProper);
+
+	$tags = $form->get($name, TRUE);
+	$subpermissions[] = $tags['elements'][0] . " " . $tags['labels'][0];
       }
 
       $template['SUBPERMISSIONS'] = implode("<br />", $subpermissions);
     }
 
     $template['MODULE_NAME'] = $mod['proper_name'];
+
     return $template;
   }
 
@@ -167,6 +178,7 @@ class User_Form {
     $pager->setMethod("last_logged", "listLastLogged");
     $pager->addToggle("class=\"toggle1\"");
     $pager->addToggle("class=\"toggle2\"");
+    $pager->setSearch("username");
     $pager->addRowTag("actions", "User_Manager", "listAction");
 
     if (!Current_User::isDeity())
@@ -329,6 +341,7 @@ class User_Form {
     $form->addPassword("password1");
     $form->addPassword("password2");
     $form->addText("email", $user->getEmail());
+    $form->setSize("email", 30);
 
     $form->setLabel("email", _("Email Address"));
     $form->setLabel("username", _("Username"));
