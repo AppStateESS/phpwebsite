@@ -81,6 +81,10 @@ class Layout {
     $GLOBALS['Layout_JS'][$index]['head'] = $script;
   }
 
+  function addOnLoad($onload){
+    $GLOBALS['Layout_Onload'][] = $onload;
+  }
+
   function addStyle($module, $filename=NULL){
     if (!isset($filename))
       $filename = "style.css";
@@ -286,9 +290,9 @@ class Layout {
       return PHPWS_Error::get();
 
     PHPWS_CORE::initCoreClass("File.php");
-    $headfile    = "javascript/$directory/head.js";
-    $bodyfile    = "javascript/$directory/body.js";
-    $defaultfile = "javascript/$directory/default.php";
+    $headfile    = "./javascript/$directory/head.js";
+    $bodyfile    = "./javascript/$directory/body.js";
+    $defaultfile = "./javascript/$directory/default.php";
 
     if (is_file($defaultfile))
       include $defaultfile;
@@ -368,6 +372,13 @@ class Layout {
     $metatags[] = "<meta name=\"robots\" content=\"$robot\" />";
 
     return implode("\n", $metatags);
+  }
+
+  function getOnLoad(){
+    if (!isset($GLOBALS['Layout_Onload']))
+      return NULL;
+
+    return "onload=\"" . implode(" ", $GLOBALS['Layout_Onload']) ."\"";
   }
 
   function getStyleLinks($header=FALSE){
@@ -559,6 +570,7 @@ class Layout {
     $template['METATAGS'] = Layout::getMetaTags();
     $template['PAGE_TITLE'] = $_SESSION['Layout_Settings']->page_title;
     $template['CONTENT'] = $content;
+    $template['ONLOAD'] = Layout::getOnLoad();
     $result = PHPWS_Template::process($template, "layout", "header.tpl");
 
     echo $result;
