@@ -130,8 +130,9 @@ class DBPager {
     $this->template = $template;
   }
 
-  function setMethod($column_name, $substitute){
-    $this->methods[$column_name] = $substitute;
+  function setMethod($column_name, $substitute, $variable=NULL){
+    $this->methods[$column_name]['method'] = $substitute;
+    $this->methods[$column_name]['variable'] = $variable;
   }
 
   function getLinkEnd(){
@@ -169,6 +170,7 @@ class DBPager {
 
   function initialize(){
     $count = $this->getTotalRows();
+
     if (PEAR::isError($count))
       return $count;
 
@@ -181,6 +183,7 @@ class DBPager {
       $this->db->addOrder($this->orderby . " " . $this->orderby_dir);
 
     $result = $this->db->getObjects($this->class);
+
     if (PEAR::isError($result))
       return $result;
 
@@ -267,13 +270,23 @@ class DBPager {
 
     foreach ($this->object_rows as $object){
       foreach ($this->_classVars as $varname){
-	if (isset($this->methods[$varname]))
-	  $funcName = strtolower($this->methods[$varname]);
-	else
-	  $funcName = NULL;
+	if (isset($this->methods[$varname])){
+	  $funcName = strtolower($this->methods[$varname]['method']);
+	  if (isset($this->methods[$varname]['variable']))
+	    $variable = $this->methods[$varname]['variable'];
+	  else
+	    $variable = NULL;
+	}
+	else {
+	 $variable =  $funcName = NULL;
+	}
 
-	if (in_array($funcName, $this->_methods))
-	  $template[$count][strtoupper($varname)] = $object->{$funcName}();
+	if (in_array($funcName, $this->_methods)){
+	  if (isset($variable))
+	    $template[$count][strtoupper($varname)] = $object->{$funcName}($variable);
+	  else
+	    $template[$count][strtoupper($varname)] = $object->{$funcName}();
+	}
 	else
 	  $template[$count][strtoupper($varname)] = $object->{$varname};
       }
@@ -305,7 +318,10 @@ class DBPager {
 
 
   function get(){
-    $this->initialize();
+    $result = $this->initialize();
+
+    if (PEAR::isError($result))
+      return $result;
 
     if (!isset($this->module))
       return PHPWS_Error::get(DBPAGER_MODULE_NOT_SET, "core", "DBPager::get()");
