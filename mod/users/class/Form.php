@@ -101,13 +101,14 @@ class User_Form {
       return;
 
     include $file;
-    if (!isset($permissions))
+
+    if (!isset($use_permissions) || $use_permissions == FALSE)
       return;
 
     $permSet[NO_PERMISSION]      = _("None");
     $permSet[FULL_PERMISSION]    = _("Full");
 
-    if ($itemPermissions == TRUE)
+    if (isset($itemPermissions) && $itemPermissions == TRUE)
       $permSet[PARTIAL_PERMISSION] = _("Partial");
     else
       unset($permSet[PARTIAL_PERMISSION]);
@@ -127,17 +128,17 @@ class User_Form {
 
     $form = & new PHPWS_Form;
 
-    foreach ($permissions as $itemname => $permVal){
-      foreach ($permVal as $permName => $permProper){
-	$formName = "subpermission[$itemname][$permName]"; 
+    if (isset($permissions)){
+      foreach ($permissions as $permName => $permProper){
+	$formName = "subpermission[" . $mod['title'] . "][$permName]"; 
 	$form->add($formName, "checkbox", 1);
-	if ($group->allow($itemname, $permName))
+	if ($group->allow($mod['title'], $permName))
 	  $form->setMatch($formName, 1);
 	$subperm[] = $form->get($formName) . " $permProper";
       }
-    }
 
-    $template["SUBPERMISSIONS"] = implode("<br />", $subperm);
+      $template["SUBPERMISSIONS"] = implode("<br />", $subperm);
+    }
     $template["CHOICE"] = implode("<br />", $radio);
     $template["MODULE_NAME"] = $mod['proper_name'];
     $form->add("update[" . $mod['title'] . "]", "submit", _print(_("Update [var1]"), $mod['proper_name']));
@@ -150,10 +151,11 @@ class User_Form {
   function adminPanel($content){
     PHPWS_Core::initModClass("controlpanel", "Panel.php");
 
-    if ($_SESSION['User']->allow("users", "add_edit_users")){
-      $tabs["new_user"] = array("title"=>"New User", "link"=>"index.php?module=users&amp;action[admin]=main");
+    $tabs["new_user"] = array("title"=>"New User", "link"=>"index.php?module=users&amp;action[admin]=main");
+
+    if ($_SESSION['User']->allow("users", "edit_users"))
       $tabs["manage_users"] = array("title"=>"Manage Users", "link"=>"index.php?module=users&amp;action[admin]=main");
-    }
+
 
     if ($_SESSION['User']->allow("users", "add_edit_groups")){
       $tabs["new_group"] = array("title"=>"New Group", "link"=>"index.php?module=users&amp;action[admin]=main");

@@ -90,9 +90,15 @@ class User_List{
 
   function getlistactions(){
     $startLink = "<a href=\"index.php?module=users&amp;user=" . $this->userList['id'] . "&amp;action[admin]=";
-    $links[] = $startLink . "editUser\">" . _("Edit") . "</a>";
-    $links[] = $startLink . "setUserPermissions\">" . _("Permissions") . "</a>";
-    $links[] = $startLink . "deleteUser\">" . _("Delete") . "</a>";
+
+    if ($_SESSION['User']->allow("users", "edit_users"))
+      $links[] = $startLink . "editUser\">" . _("Edit") . "</a>";
+    
+    if ($_SESSION['User']->allow("users", "edit_permissions"))
+      $links[] = $startLink . "setUserPermissions\">" . _("Permissions") . "</a>";
+
+    if ($_SESSION['User']->allow("users", "delete_users"))
+      $links[] = $startLink . "deleteUser\">" . _("Delete") . "</a>";
 
     return implode("&nbsp;|&nbsp;", $links);
   }

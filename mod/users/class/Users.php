@@ -34,6 +34,7 @@ class PHPWS_User extends PHPWS_Item {
 	return FALSE;
       }
       $this->loadUserGroups();
+      $this->loadUserSettings();
     }
   }
 
@@ -113,6 +114,21 @@ class PHPWS_User extends PHPWS_Item {
     PHPWS_Core::initModClass("users", "Form.php");
     $login = User_Form::logBox($_SESSION['User']->isLogged());
     Layout::hold($login, "CNT_user_small", TRUE, -1);
+  }
+
+  function loadUserSettings(){
+    $db = & new PHPWS_DB("users_settings");
+    $db->addWhere("id", $this->getId());
+    $result = $db->select();
+    if (PEAR::isError($result)){
+      PHPWS_Error::log($result);
+      return;
+    } elseif (!isset($result))
+	return;
+
+    foreach ($result as $setting)
+      $this->_settings[$setting['label']][$setting['var_name']] = $setting['var_value'];
+
   }
 
   function loadUserGroups(){
@@ -242,8 +258,8 @@ class PHPWS_User extends PHPWS_Item {
   }
 
   function disallow(){
-    $title = "Sorry Charlie...";
-    $content = "That section of the site is off limits to your type";
+    $title = _("Sorry") . "...";
+    $content = ("You do not have permission for this action.");
     Layout::add(array("TITLE"=>$title, "CONTENT"=>$content), "User_Main");
   }
 

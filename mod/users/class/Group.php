@@ -17,7 +17,8 @@ class PHPWS_Group extends PHPWS_Item {
 		       "_updated",
 		       "_approved",
 		       "_members",
-		       "_permissions"
+		       "_permissions",
+		       "_groups"
 		       );
 
     $this->addExclude($excludes);
