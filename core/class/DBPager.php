@@ -1,12 +1,18 @@
 <?php
 
 define ("DBPAGER_DEFAULT_LIMIT", 5);
+define ("DBPAGER_PAGE_LIMIT", 8);
+
 
 /**
  * DB Pager differs from other paging methods in that it applies
  * limits and store the object results. Other pagers require you
  * to pull all the data at once. 
  * This pager pulls only the data it needs for display.
+ *
+ * @version $Id$
+ * @author  Matt McNaney <matt@NOSPAM.tux.appstate.edu>
+ * @package Core
  */
 
 class DBPager {
@@ -38,6 +44,10 @@ class DBPager {
   var $_classVars   = NULL;
 
   var $extra_tags   = NULL;
+
+  var $page_turner_left = "&lt;";
+
+  var $page_turner_right = "&gt;";
 
   /**
    * Template file name and directory
@@ -107,7 +117,7 @@ class DBPager {
     if (isset($_REQUEST['page']))
       $this->current_page = (int)$_REQUEST['page'];
 
-    if (isset($_REQUEST['limit']))
+    if (isset($_REQUEST['limit']) && $_REQUEST['limit'] > 0)
       $this->limit = (int)$_REQUEST['limit'];
 
     if (isset($_REQUEST['orderby']))
@@ -124,6 +134,14 @@ class DBPager {
   function setSearch($column){
     if (ctype_alnum($column) && $this->db->isTableColumn($column))
       $this->searchColumn = $column;
+  }
+
+  function setPageTurnerLeft($turner){
+    $this->page_turner_left = $turner;
+  }
+
+  function setPageTurnerRight($turner){
+    $this->page_turner_right = $turner;
   }
 
   function addToggle($toggle){
@@ -212,7 +230,43 @@ class DBPager {
     if ($this->total_pages < 1)
       return PHPWS_Error::get(DBPAGER_NO_TOTAL_PAGES, "core", "DBPager::getPageLinks");
 
+    $limit_pages = ($this->total_pages > DBPAGER_PAGE_LIMIT) ? TRUE : FALSE;
+    
+    if ($limit_pages){
+      $limitList[] = 1;
+      $limitList[] = 2;
+
+      $limitList[] = $this->current_page - 1;
+      $limitList[] = $this->current_page;
+      $limitList[] = $this->current_page + 1;
+      
+      $paddingPoint = $limitList[] = $this->total_pages - 1;
+      $limitList[] = $this->total_pages;
+    }
+
+    if ($this->current_page != 1){
+      $values['page'] = "page=" . ($this->current_page - 1);
+      $pages[] = "<a href=\"" . $this->link . "&amp;" . implode("&amp;", $values) . "\">" . $this->page_turner_left . "</a>\n";
+    }
+
     for ($i=1; $i <= $this->total_pages; $i++){
+      if ($limit_pages && !in_array($i, $limitList)){
+
+	if (!isset($padding1)){
+	  $pages[] = "...";
+	  $padding1 = TRUE;
+	  continue;
+	}
+
+	if (isset($padding1) && !isset($padding2) && isset($recock)){
+	  $pages[] = "...";
+	  $padding2 = TRUE;
+	}
+	continue;
+      }
+      if (isset($padding1))
+	$recock = TRUE;
+
       $values = $this->getLinkValues();
       $values['page'] = "page=$i";
 
@@ -220,6 +274,20 @@ class DBPager {
 	$pages[] = "<a href=\"" . $this->link . "&amp;" . implode("&amp;", $values) . "\">$i</a>\n";
       else
 	$pages[] = $i;
+
+      if ( $limit_pages &&
+	   !isset($padding2) &&
+	   !in_array($i, $limitList)
+	   )
+	{
+	  $pages[] = "...";
+	  $padding2 = TRUE;
+	}
+    }
+
+    if ($this->current_page != $this->total_pages){
+      $values['page'] = "page=" . ($this->current_page + 1);
+      $pages[] = "<a href=\"" . $this->link . "&amp;" . implode("&amp;", $values) . "\">" . $this->page_turner_right . "</a>\n";
     }
 
     return implode(" ", $pages);
