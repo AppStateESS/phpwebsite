@@ -16,7 +16,9 @@ define("PHPWS_HOME_DIR" , "./");
 PHPWS_Core::initCoreClass("WizardBag.php");
 PHPWS_Core::initCoreClass("Crutch_Form.php");
 PHPWS_Core::initCoreClass("Crutch_DB.php");
+PHPWS_Core::initModClass("help", "Help.php");
 
+class CLS_Help extends PHPWS_Help{}
 
 class oldCore extends oldDB{
   var $home_dir = NULL;
