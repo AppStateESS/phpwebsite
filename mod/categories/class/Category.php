@@ -36,7 +36,7 @@ class Category{
   }
 
   function setTitle($title){
-    $this->title = $title;
+    $this->title = strip_tags($title);
   }
 
   function getTitle(){
@@ -44,7 +44,7 @@ class Category{
   }
 
   function setDescription($description){
-    $this->description = $description;
+    $this->description = PHPWS_Text::parseInput($description);
   }
 
   function getDescription(){
@@ -76,7 +76,12 @@ class Category{
   }
   
   function save(){
-    echo phpws_debug::testobject($this);
+    $db = & new PHPWS_DB("categories");
+
+    if (isset($this->id))
+      $db->addWhere("id", $this->id);
+
+    return $db->saveObject($this);
   }
 
 }

@@ -30,15 +30,14 @@ class Categories_Action{
     case "postCategory":
       $result = Categories_Action::postCategory($category);
       if (is_array($result)){
-	$content[] = Categories_Action::showErrors($result);
-	$content[] = Categories_Action::edit($category);
+	$content[] = Categories_Action::edit($category, $result);
       } else {
 	$direction = (isset($category->id)) ? "list" : "new";
 
 	$result = $category->save();
 	if (PEAR::isError($result)){
 	  PHPWS_Error::log($result);
-	  $content[] = Categories_Action::showErrors(_("Unable to save category."));
+	  $content[] = Categories_Action::affirm(_("Unable to save category.") . " " .  _("Please contact your administrator."), $direction);
 	}
 	else
 	  $content[] = Categories_Action::affirm(_("Category saved successfully."), $direction);
@@ -54,7 +53,6 @@ class Categories_Action{
   function affirm($content, $return){
     $template['CONTENT'] = $content;
 
-
     $value['action'] = "admin";
     $value['subaction'] = $return;
     $template['LINK'] = PHPWS_Text::moduleLink("Continue", "categories", $value);
@@ -63,8 +61,9 @@ class Categories_Action{
   }
 
   function postCategory(&$category){
+    PHPWS_Core::initCoreClass("Image.php");
     if (empty($_POST['title']))
-      $errors[] = _("Your category must have a title.");
+      $errors['title'] = _("Your category must have a title.");
 
     $category->setTitle($_POST['title']);
 
@@ -79,28 +78,31 @@ class Categories_Action{
 
     $category->setParent((int)$_POST['parent']);
 
+    $image = & new PHPWS_Image;
+    $result = $image->importFiles("image");
+
+    if (is_array($result)){
+      foreach ($result as $message)
+	$messages[] = $message->getMessage();
+
+      $errors['image'] = implode("<br />", $messages);
+    } else {
+      $image->setDirectory("images/categories");
+      $result = $image->writeImage();
+
+      if (PEAR::isError($result)){
+	PHPWS_Error::log($result);
+	$errors['image'] = _("Unable to save the image file." . " " . _("Please contact your administrator."));
+      } else
+	$category->setImage($image->getFilename());
+    }
+  
     if (isset($errors))
       return $errors;
     else
       return TRUE;
   }
 
-  function showErrors($errors){
-    $tpl = & new PHPWS_Template("categories");
-    $tpl->setFile("error_list.tpl");
-
-    if (is_string($errors))
-      $tpl->setData(array('ERROR'=>$errors));
-    elseif (is_array($errors)){
-      $tpl->setCurrentBlock("errors");
-      foreach ($errors as $error){
-	$tpl->setData(array('ERROR'=>$error));
-	$tpl->parseCurrentBlock();
-      }
-    }
-
-    return $tpl->get();
-  }
 
   function &cpanel(){
     Layout::addStyle("categories");
@@ -127,7 +129,7 @@ class Categories_Action{
 
   }
 
-  function edit(&$category){
+  function edit(&$category, $errors=NULL){
     $template = NULL;
 
     $form = & new PHPWS_Form('edit_form');
@@ -152,6 +154,8 @@ class Categories_Action{
     $form->add("parent", "select", $category_list);
 
     $template['TITLE_LBL'] = _("Title");
+    if (isset($errors['title']))
+      $template['TITLE_ERROR'] = $errors['title'];
     $form->add("title", "textfield", $category->getTitle());
     $form->setsize("title", 40);
 
@@ -164,6 +168,20 @@ class Categories_Action{
       $form->add("description", "textarea", $category->getDescription());
       $form->setRows("description", "10");
       $form->setWidth("description", "80%");
+    }
+
+    $template['IMAGE_LBL'] = _("Image");
+    if (isset($errors['image']))
+      $template['IMAGE_ERROR'] = $errors['image'];
+
+    $form->add("image", "file");
+
+    $image = $category->getImage();
+
+    if (isset($image)){
+      $form->add("current_image", "hidden", $image);
+      $template['CURRENT_IMG_LABEL'] = _("Current Image");
+      $template['CURRENT_IMG'] = $image;
     }
 
     $form->mergeTemplate($template);

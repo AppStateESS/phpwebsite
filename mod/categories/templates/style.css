@@ -73,6 +73,7 @@
   width : 100%;
   background: #9DAFFF;
   height: 100%;
+  padding-bottom : 0px;
   padding-top: 5px;
   padding-left : 0px;
   padding-right : 0px;
@@ -93,5 +94,12 @@
   padding : .2em;
   font-size : 1.1em;
   font-weight : bold;
-  
+}
+
+.cat-error {
+  background-color : red;
+  color : white;
+  font-size : .8em;
+  font-weight : bold;
+  margin-top : 3px;
 }
