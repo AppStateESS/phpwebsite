@@ -20,4 +20,5 @@
     </td>
   </tr>
 </table>
+{SUBMIT}
 {END_FORM}
