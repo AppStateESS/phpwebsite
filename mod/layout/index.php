@@ -1,8 +1,7 @@
 <?php
 
-if ($_REQUEST['module'] != "layout" || !isset($_REQUEST['action'])){
-  layoutDefault();
-}
+if ($_REQUEST['module'] != "layout" || !isset($_REQUEST['action']))
+  exit();
 
 PHPWS_Core::initModClass("layout", "LayoutAdmin.php");
 
@@ -13,7 +12,4 @@ switch ($_REQUEST['action']){
 } // END action switch
 
 
-function layoutDefault(){
-  exit(header("location:./../../index.php"));
-}
 ?>
