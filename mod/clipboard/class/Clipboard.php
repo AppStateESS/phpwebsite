@@ -20,6 +20,11 @@ class Clipboard
 	PHPWS_Core::reroute($_SERVER['HTTP_REFERER']);
       }
       break;
+
+    case "clear":
+      unset($_SESSION['Clipboard']);
+      PHPWS_Core::reroute($_SERVER['HTTP_REFERER']);
+      break;
     }
 
   }
@@ -67,8 +72,12 @@ class Clipboard
       $content[] = Layout::getJavascript("open_window", $data) . " " . $drop;
     }
 
-    $vars['CONTENT'] = implode("<br />", $content);
-    $vars['TITLE'] = "clipboard";
+    $clipVars['action'] = "clear";
+    $template['CLEAR'] = PHPWS_Text::moduleLink(_("Clear"), "clipboard", $clipVars);
+    $template['LINKS'] = implode("<br />", $content);
+
+    $vars['CONTENT'] = PHPWS_Template::process($template, "clipboard", "list.tpl");
+    $vars['TITLE'] = _("Clipboard");
 
     Layout::set($vars, "clipboard", "clipboard", TRUE);
   }
