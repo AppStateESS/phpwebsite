@@ -115,12 +115,7 @@ class PHPWS_Boost {
       if ($result === TRUE){
 	$this->setStatus($title, BOOST_DONE);
 	$this->createDirectories($mod, $content);
-
 	$this->registerModule($mod, $content);
-	if ($inBoost == FALSE)
-	  $content[] = PHPWS_Text::link("index.php?step=3", _("Continue installation..."));
-	else
-	  $content[] = _("Installation complete!");
 	break;
       }
       elseif ($result === -1){
@@ -140,6 +135,13 @@ class PHPWS_Boost {
       }
     }
 
+    if ($result == TRUE || $result == -1){
+      if ($inBoost == FALSE)
+	$content[] = PHPWS_Text::link("index.php?step=3", _("Continue installation..."));
+      else
+	$content[] = _("Installation complete!");
+    }
+    
     return implode("<br />", $content);    
   }
 
@@ -216,8 +218,8 @@ class PHPWS_Boost {
       if ($result === TRUE){
 	$this->setStatus($title, BOOST_DONE);
 	$this->removeDirectories($mod, $content);
-
 	$this->unregisterModule($mod, $content);
+	$content[] = "<hr />";
 	$content[] = _("Finished uninstalling module!");
 	break;
       }
@@ -238,9 +240,7 @@ class PHPWS_Boost {
       }
 
     }
-
     return implode("<br />", $content);    
-
   }
 
   function onUninstall($mod, &$uninstallCnt){
@@ -288,7 +288,7 @@ class PHPWS_Boost {
       $configDest   = $homeDir . "/config/" . $mod->getTitle() . "/";
       if ($overwrite == TRUE || !is_dir($configDest)){
 	$content[] = _("Copying configuration files.");
-	$this->addLog($mod->getTitle(), _print(_("Copying directory [var1] to [var2]"), array($configSource, $configDest)));
+	$this->addLog($mod->getTitle(), sprintf(_("Copying directory %1\$s to %2\$s"), $configSource, $configDest));
 	PHPWS_File::recursiveFileCopy($configSource, $configDest);
 	chdir($homeDir);
       }
@@ -299,7 +299,7 @@ class PHPWS_Boost {
       $templateDest   = $homeDir . "/templates/" . $mod->getTitle() . "/";
       if ($overwrite == TRUE || !is_dir($templateDest)){
 	$content[] = _("Copying template files.");
-	$this->addLog($mod->getTitle(), _print(_("Copying directory [var1] to [var2]"), array($templateSource, $templateDest)));
+	$this->addLog($mod->getTitle(), sprintf(_("Copying directory %1\$s to %2\$s"), $templateSource, $templateDest));
 	PHPWS_File::recursiveFileCopy($templateSource, $templateDest);
 	chdir($homeDir);
       }
@@ -332,10 +332,14 @@ class PHPWS_Boost {
     $modSource = $mod->getDirectory() . "img/";
     if (is_dir($modSource)){
       $modImage = $homeDir . "/images/mod/" . $mod->getTitle() . "/";
-      $this->addLog($mod->getTitle(), _print(_("Copying directory [var1] to [var2]"), array($modSource, $modImage)));
+      $this->addLog($mod->getTitle(), sprintf(_("Copying directory %1\$s to %2\$s"), $modSource, $modImage));
       $content[] = _("Copying source image directory for module.");
 
-      PHPWS_File::recursiveFileCopy($modSource, $modImage);
+      $result = PHPWS_File::recursiveFileCopy($modSource, $modImage);
+      if ($result)
+	$content[] = _("Source image directory created successfully.");
+      else
+	$content[] = _("Source image directory could not be created.");
       chdir($homeDir);
     }
   }
@@ -347,37 +351,37 @@ class PHPWS_Boost {
 
     $configDir = "$homeDir/config/" . $mod->getTitle() . "/";
     if (is_dir($configDir)){
-      $this->addLog($mod->getTitle(), _print(_("Removing directory [var1]"), $configDir));
+      $this->addLog($mod->getTitle(), sprintf(_("Removing directory %s"), $configDir));
       if(!PHPWS_File::rmdir($configDir))
-	$this->addLog($mod->getTitle(), _print(_("Unable to removing directory [var1]"), $configDir));
+	$this->addLog($mod->getTitle(), sprintf(_("Unable to remove directory %s"), $configDir));
     }
 
     $templateDir = "$homeDir/templates/" . $mod->getTitle() . "/";
     if (is_dir($templateDir)){
-      $this->addLog($mod->getTitle(), _print(_("Removing directory [var1]"), $templateDir));
+      $this->addLog($mod->getTitle(), sprintf(_("Removing directory %s"), $templateDir));
       if(!PHPWS_File::rmdir($templateDir))
-	$this->addLog($mod->getTitle(), _print(_("Unable to removing directory [var1]"), $templateDir));
+	$this->addLog($mod->getTitle(), sprintf(_("Unable to remove directory %s"), $templateDir));
     }
 
     $imageDir = "$homeDir/images/" . $mod->getTitle() . "/";
     if (is_dir($imageDir)){
-      $this->addLog($mod->getTitle(), _print(_("Removing directory [var1]"), $imageDir));
+      $this->addLog($mod->getTitle(), sprintf(_("Removing directory %s"), $imageDir));
       if(!PHPWS_File::rmdir($imageDir))
-	$this->addLog($mod->getTitle(), _print(_("Unable to removing directory [var1]"), $imageDir));
+	$this->addLog($mod->getTitle(), sprintf(_("Unable to remove directory %s"), $imageDir));
     }
 
     $fileDir = "$homeDir/files/" . $mod->getTitle() . "/";
     if (is_dir($fileDir)){
-      $this->addLog($mod->getTitle(), _print(_("Removing directory [var1]"), $fileDir));
+      $this->addLog($mod->getTitle(), sprintf(_("Removing directory %s"), $fileDir));
       if(!PHPWS_File::rmdir($fileDir))
-	$this->addLog($mod->getTitle(), _print(_("Unable to removing directory [var1]"), $fileDir));
+	$this->addLog($mod->getTitle(), sprintf(_("Unable to remove directory %s"), $fileDir));
     }
 
     $imageModDir = "$homeDir/images/mod/" . $mod->getTitle() . "/";
     if (is_dir($imageModDir)){
-      $this->addLog($mod->getTitle(), _print(_("Removing directory [var1]"), $imageModDir));
+      $this->addLog($mod->getTitle(), sprintf(_("Removing directory %s"), $imageModDir));
       if(!PHPWS_File::rmdir($imageModDir))
-	$this->addLog($mod->getTitle(), _print(_("Unable to removing directory [var1]"), $imageModDir));
+	$this->addLog($mod->getTitle(), sprintf(_("Unable to remove directory %s"), $imageModDir));
     }
     
   }
@@ -398,11 +402,15 @@ class PHPWS_Boost {
     if (PEAR::isError($result)){
       PHPWS_Error::log($result);
       $content[] = _("An error occurred during registration.");
-      $content[] = _("Check your logs for more information.") . "<br />";
+      $content[] = _("Check your logs for more information.");
     } else {
       $content[] = _("Registration successful.");
-      $selfselfResult = $this->registerModToMod($module, $module, $content);
-      $otherResult = $this->registerOthersToSelf($module, $content);
+
+      if ($module->isRegister()){
+	$selfselfResult = $this->registerModToMod($module, $module, $content);
+	$otherResult = $this->registerOthersToSelf($module, $content);
+      }
+
       $selfResult = $this->registerSelfToOthers($module, $content);
     }
 
@@ -420,22 +428,31 @@ class PHPWS_Boost {
     if (PEAR::isError($result)){
       PHPWS_Error::log($result);
       $content[] = _("An error occurred while unregistering.");
-      $content[] = _("Check your logs for more information.") . "<br />";
+      $content[] = _("Check your logs for more information.");
     } else {
       $content[] = _("Unregistering was successful.");
-      $selfselfResult = $this->unregisterModToMod($module, $module, $content);
-      $otherResult = $this->unregisterOthersToSelf($module, $content);
+
+      if ($module->isUnregister()){
+	$selfselfResult = $this->unregisterModToMod($module, $module, $content);
+	$otherResult = $this->unregisterOthersToSelf($module, $content);
+      }
+
       $selfResult = $this->unregisterSelfToOthers($module, $content);
       $result = $this->unregisterAll($module);
     }
-
-    $content[] = "<br />";
+    
     return $result;
   }
 
   function getRegMods(){
     $db = & new PHPWS_DB("modules");
     $db->addWhere("register", 1);
+    return $db->loadObjects("PHPWS_Module");
+  }
+
+  function getUnregMods(){
+    $db = & new PHPWS_DB("modules");
+    $db->addWhere("unregister", 1);
     return $db->loadObjects("PHPWS_Module");
   }
 
@@ -491,11 +508,12 @@ class PHPWS_Boost {
     $result = $registerFunc($regMod->getTitle(), $content);    
 
     if (PEAR::isError($result)){
-      $content[] = _print(_("An error occurred while registering the [var1] module."), array($regMod->getProperName()));
-      $content[] = $result->getMessage();
+      $content[] = sprintf(_("An error occurred while registering the %s module."), $regMod->getProperName());
+      $content[] = PHPWS_Boost::addLog($regMod->getTitle(), $result->getMessage());
+      $content[] = PHPWS_Error::log($result);
     } elseif ($result == TRUE){
       PHPWS_Boost::setRegistered($sourceMod->getTitle(), $regMod->getTitle());
-      $content[] = _print(_("[var1] successfully registered to [var2]."), array($regMod->getProperName(TRUE), $sourceMod->getProperName(TRUE)));
+      $content[] = sprintf(_("%1\$s successfully registered to %2\$s."), $regMod->getProperName(TRUE), $sourceMod->getProperName(TRUE));
     }
   }
 
@@ -504,10 +522,11 @@ class PHPWS_Boost {
 
     if (!is_file($unregisterFile))
       return NULL;
-    
+
+    /*    
     if (!PHPWS_Boost::isRegistered($sourceMod->getTitle(), $regMod->getTitle()))
       return NULL;
-
+    */
     include_once($unregisterFile);
 
     $unregisterFunc = $sourceMod->getTitle() . "_unregister";
@@ -518,11 +537,12 @@ class PHPWS_Boost {
     $result = $unregisterFunc($regMod->getTitle(), $content);    
 
     if (PEAR::isError($result)){
-      $content[] = _print(_("An error occurred while unregistering the [var1] module."), array($regMod->getProperName()));
-      $content[] = $result->getMessage();
+      $content[] = sprintf(_("An error occurred while unregistering the %s module."),$regMod->getProperName());
+      PHPWS_Error::log($result);
+      PHPWS_Boost::addLog($regMod->getTitle(), $result->getMessage());
     } elseif ($result == TRUE){
       PHPWS_Boost::unsetRegistered($sourceMod->getTitle(), $regMod->getTitle());
-      $content[] = _print(_("[var1] successfully unregistered from [var2]."), array($regMod->getProperName(TRUE), $sourceMod->getProperName(TRUE)));
+      $content[] = sprintf(_("%1\$s successfully unregistered from %2\$s."), $regMod->getProperName(TRUE), $sourceMod->getProperName(TRUE));
     }
   }
 
@@ -537,21 +557,24 @@ class PHPWS_Boost {
 
     foreach ($modules as $regMod){
       $regMod->init();
-      $result = $this->registerModToMod($regMod, $module, $content);
+      if ($regMod->isRegister())
+	$result = $this->registerModToMod($regMod, $module, $content);
     }
   }
 
   function unregisterSelfToOthers($module, &$content){
     $content[] = _("Unregistering this module from other modules.");
     
-    $modules = PHPWS_Boost::getRegMods();
+    $modules = PHPWS_Boost::getUnregMods();
 
     if (!is_array($modules))
       return;
 
     foreach ($modules as $regMod){
       $regMod->init();
-      $result = $this->unregisterModToMod($regMod, $module, $content);
+
+      if ($regMod->isUnregister())
+	$result = $this->unregisterModToMod($regMod, $module, $content);
     }
   }
 
@@ -617,8 +640,6 @@ class PHPWS_Boost {
       echo _("The About file is missing for this module.");
     exit();
   }
-
-
 }
 
 ?>
