@@ -103,6 +103,17 @@ class PHPWS_Module {
     return $this->_active;
   }
 
+  function save(){
+    $db = new PHPWS_DB("modules");
+    $db->addWhere("title", $this->getTitle());
+    $db->delete();
+    $db->resetWhere();
+    if (!$this->getProperName())
+      $this->setProperName($this->getProperName(TRUE));
+
+    return $db->saveObject($this, TRUE);
+  }
+
 }
 
 
