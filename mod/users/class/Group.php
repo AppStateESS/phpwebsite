@@ -119,6 +119,9 @@ class PHPWS_Group {
   }
 
   function dropMember($member){
+    if (!is_array($this->_members))
+      return;
+
     $key = array_search($member, $this->_members);
     unset($this->_members[$key]);
   }

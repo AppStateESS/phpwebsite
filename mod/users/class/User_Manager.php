@@ -42,6 +42,9 @@ class User_Manager extends PHPWS_User{
     return implode(" | ", $links);
   }
 
+  function listEmail(){
+    return $this->getEmail(TRUE, TRUE);
+  }
 }
 
 ?>

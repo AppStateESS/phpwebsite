@@ -228,9 +228,13 @@ class PHPWS_User {
     return TRUE;
   }
 
-  function getEmail($html=FALSE){
-    if ($html == TRUE)
-      return "<a href=\"mailto:" . $this->email . "\">" . $this->getDisplayName() . "</a>";
+  function getEmail($html=FALSE, $showAddress=FALSE){
+    if ($html == TRUE){
+      if ($showAddress)
+	return "<a href=\"mailto:" . $this->email . "\">" . $this->email . "</a>";
+      else
+	return "<a href=\"mailto:" . $this->email . "\">" . $this->getDisplayName() . "</a>";
+    }
     else
       return $this->email;
   }
@@ -494,11 +498,13 @@ class PHPWS_User {
     return $DB->select("row");
   }
 
-  function getUserSetting($setting){
+  function getUserSetting($setting, $refresh=FALSE){
     static $settings;
 
-    if (!isset($settings))
+    if (!isset($settings) || $refresh == TRUE){
+      unset($settings);
       $settings = PHPWS_User::getSettings();
+    }
 
     if (PEAR::isError($settings))
       return $settings;

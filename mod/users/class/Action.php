@@ -11,6 +11,7 @@
 class User_Action {
 
   function adminAction(){
+    PHPWS_Core::initModClass("users", "Group.php");
     $message = $content = NULL;
 
     if (!Current_User::allow("users")){
@@ -26,9 +27,14 @@ class User_Action {
       $command = $panel->getCurrentTab();
 
     if (isset($_REQUEST['user_id']))
-      $user = & new PHPWS_User($_REQUEST['user_id']);
-    else
+      $user = & new PHPWS_User((int)$_REQUEST['user_id']);
+    else 
       $user = & new PHPWS_User;
+
+    if (isset($_REQUEST['group_id']))
+      $group = & new PHPWS_Group((int)$_REQUEST['group_id']);
+    else 
+      $group = & new PHPWS_Group;
 
     switch ($command){
       /** Form cases **/
@@ -70,10 +76,6 @@ class User_Action {
       $content = User_Form::authorizationSetup();
       break;
 
-      /** End User Forms **/
-
-      /** Group Forms **/
-
     case "setUserPermissions":
       if (!Current_User::allow("users", "edit_permissions")){
 	PHPWS_User::disallow();
@@ -82,10 +84,13 @@ class User_Action {
 
       PHPWS_Core::initModClass("users", "Group.php");
       $user = & new PHPWS_User($_REQUEST['user_id']);
-      $title = sprintf(_("Permissions for %s"), $user->getUsername());
+      $title = _("Set User Permissions") . " : " . $user->getUsername();
       $content = User_Form::setPermissions($user->getUserGroup());
       break;
 
+      /** End User Forms **/
+
+      /********************** Group Forms ************************/
 
     case "setGroupPermissions":
       if (!Current_User::allow("users", "edit_permissions")){
@@ -94,15 +99,18 @@ class User_Action {
       }
 
       PHPWS_Core::initModClass("users", "Group.php");
-
-      $content = User_Form::setPermissions($_REQUEST['group'], "group");
+      $title = _("Set Group Permissions") ." : ". $group->getName();
+      $content = User_Form::setPermissions($_REQUEST['group_id'], "group");
       break;
 
 
     case "new_group":
-      PHPWS_Core::initModClass("users", "Group.php");
-      $group = & new PHPWS_Group;
       $title = _("Create Group");
+      $content = User_Form::groupForm($group);
+      break;
+
+    case "edit_group":
+      $title = _("Edit Group");
       $content = User_Form::groupForm($group);
       break;
 
@@ -114,13 +122,20 @@ class User_Action {
 
     case "manageMembers":
       PHPWS_Core::initModClass("users", "Group.php");
-      $group = & new PHPWS_Group($_REQUEST['group']);
+      $title = _("Manage Members") . " : " . $group->getName();
       $content = User_Form::manageMembers($group);
       break;
 
-      /** End Group Forms **/
+    case "postMembers":
+      $title = _("Manage Members") . " : " . $group->getName();
+      $content = User_Form::manageMembers($group);
 
-      /** Misc Forms **/
+      $result = User_Action::postMembers();
+      break;
+
+      /************************* End Group Forms *******************/
+
+      /************************* Misc Forms ************************/
     case "settings":
       $title = _("Settings");
       $content = User_Form::settings();
@@ -190,7 +205,7 @@ class User_Action {
 
     case "postPermission":
       User_Action::postPermission();
-      $title = _("Permissions updated");
+      $message = _("Permissions updated");
       $current_tab = $panel->getCurrentTab();
       if ($current_tab == "manage_users"){
 	$title = _("Manage Users");
@@ -209,18 +224,21 @@ class User_Action {
       $group = & new PHPWS_Group($id);
       $result = User_Action::postGroup($group);
 
+
       if (PEAR::isError($result)){
-	$content = $result->getMessage() . "<hr />";
-	$content .= User_form::groupForm($group);
+	$message = $result->getMessage();
+	$title = isset($group->id) ? _("Edit Group") : _("Create Group");
+	$content = User_form::groupForm($group);
       } else {
 	$result = $group->save();
 	if (PEAR::isError($result)){
 	  PHPWS_Error::log($result);
-	  $content .= _("An error occurred when trying to save the group.") . "<hr />";
+	  $message = _("An error occurred when trying to save the group.");
 	} else
-	  $content .= _("Group created.") . "<hr />";
-	$group = & new PHPWS_Group($id);
-	$content .= User_form::groupForm($group);
+	  $message = _("Group created.");
+
+	$title = _("Manage Groups");
+	$content = User_Form::manageGroups();
       }
       break;
 
@@ -231,24 +249,27 @@ class User_Action {
 
     case "addMember":
       PHPWS_Core::initModClass("users", "Group.php");
-      $group = & new PHPWS_Group($_REQUEST['group']);
       $group->addMember($_REQUEST['member']);
       $group->save();
+      unset($_SESSION['Last_Member_Search']);
+      $title = _("Manage Members") . " : " . $group->getName();
       $content = User_Form::manageMembers($group);
       break;
 
     case "dropMember":
       PHPWS_Core::initModClass("users", "Group.php");
-      $group = & new PHPWS_Group($_REQUEST['group']);
       $group->dropMember($_REQUEST['member']);
       $group->save();
+      unset($_SESSION['Last_Member_Search']);
+      $title = _("Manage Members") . " : " . $group->getName();
       $content = User_Form::manageMembers($group);
       break;
 
     case "update_settings":
       $result = User_Action::update_settings();
-      $content = _("User settings updated.") . "<hr />";
-      $content .= User_Form::settings();
+      $title = _("Settings");
+      $message = _("User settings updated.");
+      $content = User_Form::settings();
       break;
 
     default:
@@ -269,6 +290,11 @@ class User_Action {
     Layout::add(PHPWS_ControlPanel::display($panel->display()));
 
   }
+
+  function postMembers(){
+    //    test($_REQUEST);
+  }
+
 
   function postUser(&$user, $set_username=TRUE){
     if ($set_username){
@@ -470,13 +496,6 @@ class User_Action {
   }
 
 
-  function postMembers(){
-    if (isset($_POST['member_join'])){
-      foreach($_POST['member_join'] as $id => $nullit);
-      $group->addMember($id);
-    }
-  }
-
   function badLogin(){
     Layout::add(_("Username and password refused."), "users", "User_Main");
   }
@@ -500,11 +519,12 @@ class User_Action {
   function update_settings(){
     $db = & new PHPWS_DB("users_config");
     if (is_numeric($_POST['default_group']))
-      $db->addValue("default_group", $_POST['default_group']);
-    
+      $db->addValue("default_group", (int)$_POST['default_group']);
+
+    /*    
     if (is_numeric($_POST['default_authorization']))
       $db->addValue("default_authorization", $_POST['default_authorization']);
-
+    */
     $db->update();
   }
 

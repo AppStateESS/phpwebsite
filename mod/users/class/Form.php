@@ -165,6 +165,7 @@ class User_Form {
     PHPWS_Core::initModClass("users", "User_Manager.php");
 
     $pageTags['USERNAME'] = _("Username");
+    $pageTags['EMAIL'] = _("Email");
     $pageTags['LAST_LOGGED'] = _("Last Logged");
     $pageTags['ACTIVE'] = _("Active");
     $pageTags['ACTIONS'] = _("Actions");
@@ -176,9 +177,10 @@ class User_Form {
     $pager->addTags($pageTags);
     $pager->setMethod("active", "listActive");
     $pager->setMethod("last_logged", "listLastLogged");
+    $pager->setMethod("email", "listEmail");
     $pager->addToggle("class=\"toggle1\"");
     $pager->addToggle("class=\"toggle2\"");
-    $pager->setSearch("username");
+    $pager->setSearch("username", "email");
     $pager->addRowTag("actions", "User_Manager", "listAction");
 
     if (!Current_User::isDeity())
@@ -203,6 +205,7 @@ class User_Form {
     $pager->setTemplate("manager/groups.tpl");
     $pager->setLink("index.php?module=users&amp;action=admin&amp;tab=manage_groups&amp;authkey=" . Current_User::getAuthKey());
     $pager->addTags($pageTags);
+    $pager->addRunMethod("loadMembers");
     $pager->setMethod("active", "listActive");
     $pager->addToggle("class=\"toggle1\"");
     $pager->addToggle("class=\"toggle2\"");
@@ -219,15 +222,16 @@ class User_Form {
 
   function manageMembers(&$group){
     $form = & new PHPWS_Form("memberList");
-    $form->add("module", "hidden", "users");
-    $form->add("action[admin]", "hidden", "manageMembers");
-    $form->add("group", "hidden", $group->getId());
-    $form->add("search_member", "textfield");
-    $form->add("search", "submit", _("Add"));
+    $form->addHidden("module", "users");
+    $form->addHidden("action", "admin");
+    $form->addHidden("command", "postMembers");
+    $form->addHidden("group_id", $group->getId());
+    $form->addText("search_member");
+    $form->setLabel("search_member", _("Add Member"));
+    $form->addSubmit("search", _("Add"));
 
     $template['NAME_LABEL'] = _("Group name");
     $template['GROUPNAME'] = $group->getName();
-    $template['ADD_MEMBER_LBL'] = _("Add Member");
 
     if (isset($_POST['search_member'])){
       $_SESSION['Last_Member_Search'] = preg_replace("/[\W]+/", "", $_POST['search_member']);
@@ -247,7 +251,6 @@ class User_Form {
 
       }
     }
-
 
     if (isset($_SESSION['Last_Member_Search'])){
       $result = User_Form::getLikeGroups($_SESSION['Last_Member_Search'], $group);
@@ -289,11 +292,11 @@ class User_Form {
 
       $vars['action'] = "admin";
       $vars['command'] = "dropMember";
-      $vars['group'] = $group->getId();
+      $vars['group_id'] = $group->getId();
       foreach ($groupResult as $item){
 	$count++;
 	$vars['member'] = $item['id'];
-	$action = PHPWS_Text::secureLink(_("Drop"), "users", $vars);
+	$action = PHPWS_Text::secureLink(_("Drop"), "users", $vars, NULL, _("Drop this member from the group."));
 	if ($count % 2)
 	  $template['STYLE'] = "class=\"bg-light\"";
 	else
@@ -363,7 +366,8 @@ class User_Form {
     if (!$_SESSION['User']->isDeity() || ($user->getId() == $_SESSION['User']->getId())){
       $content[] = _("Only another deity can create a deity.");
     } else {
-      $link = "<a href=\"index.php?module=users&amp;user=" . $user->getId() . "&amp;action[admin]=deify";
+      // CHANGE TO SECURELINK!!
+      $link = "<a href=\"index.php?module=users&amp;user=" . $user->getId() . "&amp;action=admin&amp;command=deify";
       $content[] = _("Are you certain you want this user to have complete control of this web site?");
       $content[] = $link . "&amp;authorize=1\">" . _("Yes, make them a deity.") . "</a>";
       $content[] = $link . "&amp;authorize=0\">" . _("No, leave them as a mortal.") . "</a>";
@@ -378,7 +382,7 @@ class User_Form {
     elseif($user->getId() == $_SESSION['User']->getId())
       $content[] = _("A deity can not make themselves mortal.");
     else {
-      $link = "<a href=\"index.php?module=users&amp;user=" . $user->getId() . "&amp;action[admin]=mortalize";
+      $link = "<a href=\"index.php?module=users&amp;user=" . $user->getId() . "&amp;action=admin&command=mortalize";
       $content[] = _("Are you certain you want strip complete control from this user?");
       $content[] = $link . "&amp;authorize=1\">" . _("Yes, make them a mortal.") . "</a>";
       $content[] = $link . "&amp;authorize=0\">" . _("No, leave them as a deity.") . "</a>";
@@ -488,11 +492,18 @@ class User_Form {
     $tpl->setFile("forms/likeGroups.tpl");
     $count = 0;
 
+    $vars['action'] = "admin";
+    $vars['command'] = "addMember";
+    $vars['group_id'] = $group->getId();
+
     foreach ($result as $member){
       if (isset($members))
 	if (in_array($member->getId(), $members))
 	  continue;
-      $link = "<a href=\"index.php?module=users&amp;action[admin]=addMember&amp;member=" . $member->getId() . "&amp;group=" . $group->getId() . "\">" . _("Add") . "</a>";
+
+      $vars['member'] = $member->getId();
+      $link = PHPWS_Text::secureLink( _("Add"), "users", $vars, NULL, _("Add this user to this group."));
+
       $count++;
       $tpl->setCurrentBlock("row");
       $tpl->setData(array("NAME"=>$member->getName(), "ADD"=>$link));
@@ -589,7 +600,7 @@ class User_Form {
   function settings(){
     PHPWS_Core::initModClass("help", "Help.php");
 
-    $default_group = PHPWS_User::getUserSetting("default_group");
+    $default_group = PHPWS_User::getUserSetting("default_group", TRUE);
 
     if (PEAR::isError($default_group)){
       PHPWS_Error::log($default_group);
