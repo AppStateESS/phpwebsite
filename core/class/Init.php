@@ -40,44 +40,39 @@ function initLanguage(){
   if (!defined("CORE_COOKIE_TIMEOUT"))
     define("CORE_COOKIE_TIMEOUT", 3600);
 
-
-  $language_set = FALSE;
-  $language = DEFAULT_LANGUAGE;
-
   if (isset($_COOKIE["phpws_default_language"])){
     $language = $_COOKIE["phpws_default_language"];
-    setlocale(LC_ALL, $language);
-    $language_set = TRUE;
-  }
-  elseif (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])){
+    $locale = setlocale(LC_ALL, $language);
+    if ($locale == FALSE)
+      $locale = setlocale(LC_ALL, DEFAULT_LANGUAGE);
+  } elseif (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])){
     $userLang = explode(",", preg_replace("/(;q=\d\.*\d*)/", "", $_SERVER['HTTP_ACCEPT_LANGUAGE']));
-
+    $locale_found = FALSE;
+    
     foreach ($userLang as $language){
-      if (strlen($language) == 2)
-	$language = doubleLanguage($language);
+      $locale = setlocale(LC_ALL, $language);
+      if ($locale == FALSE && strlen($language) == 2){
+	$locale = setlocale(LC_ALL, doubleLanguage($language));
 
-      $newLocale = setlocale(LC_ALL, $language);
-
-      if ($newLocale != FALSE){
-	setcookie("", $language, CORE_COOKIE_TIMEOUT);
-	$language_set = TRUE;
-	break;
-      } else {
-	$language = $language . "_" . strtoupper($language);
-	$newLocale =  setlocale(LC_ALL, $language);
-	if ($newLocale != FALSE){
-	  setcookie("phpws_default_language", $language, CORE_COOKIE_TIMEOUT);
-	  $language_set = TRUE;
+	if ($locale != FALSE){
+	  $locale_found = TRUE;
+	  setcookie("phpws_default_language", $locale, CORE_COOKIE_TIMEOUT);
 	  break;
 	}
       }
     }
+
+    if ($locale_found == FALSE){
+      $locale = setlocale(LC_ALL, DEFAULT_LANGUAGE);
+    }
   }
 
-  if ($language_set == FALSE)
-    setlocale(LC_ALL, $language);
+  if ($locale != FALSE)
+    define("CURRENT_LANGUAGE", $locale);
+  else
+    define("CURRENT_LANGUAGE", DEFAULT_LANGUAGE);
 
-  loadLanguageDefaults($language);
+  loadLanguageDefaults($locale);
 }
 
 function loadLanguageDefaults($language){
