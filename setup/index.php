@@ -12,30 +12,41 @@ require_once "./setup/class/Setup.php";
 PHPWS_Core::initCoreClass("Form.php");
 PHPWS_Core::initCoreClass("Text.php");
 PHPWS_Core::initCoreClass("Template.php");
+PHPWS_Core::initModClass("boost", "Boost.php");
 
 session_start();
 
 $content = array();
 $setup = & new Setup;
-$title = _("phpWebSite 0.9.4 Alpha Setup");
+$title = _("phpWebSite 0.9.4") . " - ";
 
 if (!$setup->checkSession($content) || !isset($_REQUEST['step'])){
+  $title .=  "Alpha Setup";
   $setup->welcome($content);
   echo Setup::show($content, $title);
   exit();
 }
 
-$setup->checkDirectories($content);
+if (!$setup->checkDirectories($content))
+     exit(Setup::show($content, $title));
 
 switch ($_REQUEST['step']){
  case 1:
-   $title = _("phpWebSite 0.9.4 - Create Config File");
+   $title .= _("Create Config File");
    $setup->createConfig($content);
    break;
 
  case 2:
-   $title = _("phpWebSite 0.9.4 - Create Core");
-   $setup->createCore($content);
+   $modules = explode(",", DEFAULT_MODULES);
+   PHPWS_Boost::toInstall($modules);
+
+   $title .= _("Create Core");
+   $result = $setup->createCore($content);
+   break;
+
+ case 3:
+   $title .= _("Install Modules");
+   $result = $setup->installModules($content);
    break;
 }
 
