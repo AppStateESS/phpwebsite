@@ -66,3 +66,60 @@ This will repeat the 'li' line over and over within the same template.
 
 To get your data for presentation call get like so:
 $content = $tpl->get();
+
+Note: If you are getting repeats outside of your BEGIN/END tags MAKE
+SURE your tags are set properly:
+
+<ol>
+  <!-- BEGIN repeat_row-->
+   <li>{NAME} {COLOR}</li>
+  <!-- END repeat_row -->
+</ol>
+
+The above won't work. It's so small it is hard to notice. Look at the
+BEGIN line. There isn't a space between the 'repeat_row' and the
+'-->'.
+One added or missing character can cause it not to work. Compare the
+BEGIN and END comments character by character.
+
+Another hint. If you are imbedding duplicate rows, the parent row must
+be parsed before the others.
+
+For example, lets say you want a list of families by last name. Inside,
+the first names of the family members are listed. Here is what the
+template may look like.
+
+<ol>
+<!-- BEGIN lastname-list -->
+  <li>
+    {LAST_NAME}
+    <ol>
+      <!-- BEGIN firstname-list -->
+      <li>{FIRST_NAME}</li>
+      <!-- END firstname-list -->
+    </ol>
+  </li>
+<!-- END lastname-list -->
+</ol>
+
+Here is the code:
+
+foreach ($families as $lastname){
+  foreach ($members[$lastname] as $firstname){
+    $tpl->setCurrentBlock("firstname-list");
+    $tpl->setData(array("FIRST_NAME"=>$firstname));
+    $tpl->parseCurrentBlock();
+  }
+
+  $tpl->setCurrentBlock("lastname-list");
+  $tpl->setData(array("LAST_NAME"=>$lastname));
+  $tpl->parseCurrentBlock();
+}
+
+
+If the lastname rows were put before the first name list, the first
+names would be put under the wrong last names.
+
+Remember to work inside to outside for order of importance.
+
+
