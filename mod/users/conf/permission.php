@@ -1,10 +1,10 @@
 <?php
 
-$permissions['users']["add_edit_users"]   = "Add / Edit Users";
-$permissions['users']["delete_users"]     = "Delete Users";
-$permissions['users']["add_edit_groups"]  = "Add / Edit Groups";
-$permissions['users']["delete_groups"]   = "Delete Groups";
-$permissions['users']["edit_permissions"] = "Edit Permissions";
+$permissions['users']["add_edit_users"]   = _("Add / Edit Users");
+$permissions['users']["delete_users"]     = _("Delete Users");
+$permissions['users']["add_edit_groups"]  = _("Add / Edit Groups");
+$permissions['users']["delete_groups"]    = _("Delete Groups");
+$permissions['users']["edit_permissions"] = _("Edit Permissions");
 
-$itemPermissions['users'] = TRUE;
+$itemPermissions = TRUE;
 ?>
