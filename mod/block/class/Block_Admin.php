@@ -1,13 +1,10 @@
 <?php
 
-PHPWS_Core::initModClass('block', 'Block.php');
-
 class Block_Admin {
 
   function action()
   {
     $panel = & Block_Admin::cpanel();
-
     if (isset($_REQUEST['action'])) {
       $action = $_REQUEST['action'];
     }
@@ -44,9 +41,9 @@ class Block_Admin {
   function route($action)
   {
     if (isset($_REQUEST['block_id'])) {
-      $block = & new Block($_REQUEST['block_id']);
+      $block = & new Block_Item($_REQUEST['block_id']);
     } else {
-      $block = & new Block();
+      $block = & new Block_Item();
     }
 
     switch ($action) {
@@ -60,6 +57,13 @@ class Block_Admin {
       $content = Block_Admin::edit($block);
       break;
 
+    case 'store':
+      Block_Admin::storeBlock($block);
+      $title = _('Block list');
+      $content = Block_Admin::blockList();
+      $message = _('Block stored.');
+      break;
+
     case 'postBlock':
       Block_Admin::postBlock($block);
       $result = $block->save();
@@ -67,6 +71,11 @@ class Block_Admin {
       $message = _('Block saved.');
       $title = _('Block list');
       $content = Block_Admin::blockList();
+      break;
+
+    case 'pin':
+      Block_Admin::pinBlock();
+      PHPWS_Core::goBack();      
       break;
 
     case 'list':
@@ -131,10 +140,13 @@ class Block_Admin {
   }
 
   function _getListAction(&$block){
-    $vars['action']   = 'edit';
     $vars['block_id'] = $block->getId();
 
+    $vars['action'] = 'edit';
     $links[] = PHPWS_Text::secureLink(_('Edit'), 'block', $vars);
+
+    $vars['action'] = 'store';
+    $links[] = PHPWS_Text::secureLink(_('Store'), 'block', $vars);
 
     return implode(' | ', $links);
   }
@@ -150,7 +162,7 @@ class Block_Admin {
     $link = 'index.php?module=block&amp;action=list&amp;authkey='
       . Current_User::getAuthKey();
 
-    $pager = & new DBPager('block', 'Block');
+    $pager = & new DBPager('block', 'Block_Item');
     $pager->setModule('block');
     $pager->setTemplate('list.tpl');
     $pager->setLink($link);
@@ -163,8 +175,30 @@ class Block_Admin {
     $content = $pager->get();
 
     return $content;
-
   }
-       
+
+  function storeBlock(&$block)
+  {
+    $_SESSION['Stored_Blocks'][$block->getID()] = $block;
+  }
+  
+  function pinBlock()
+  {
+    $block_id = (int)$_GET['block_id'];
+
+    unset($_SESSION['Stored_Blocks'][$block_id]);
+
+    $values['block_id'] = $block_id;
+    $values['module']   = $_GET['pinmod'];
+    $values['item_id']  = $_GET['item_id'];
+    $values['itemname'] = $_GET['itemname'];
+
+    $db = & new PHPWS_DB('block_pinned');
+    $db->addWhere($values);
+    $result = $db->delete();
+    $db->addValue($values);
+    $result = $db->insert();
+  }
+  
 }
 ?>

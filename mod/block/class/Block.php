@@ -1,80 +1,48 @@
 <?php
+PHPWS_Core::initModClass('block', 'Block_Item.php');
 
 class Block {
-  var $id      = 0;
-  var $title   = NULL;
-  var $content = NULL;
-  var $module  = NULL;
 
-  function Block($id=NULL)
+  function show($module, $id, $itemname=NULL)
   {
-    if (empty($id)) {
-      return;
+    if (empty($itemname)) {
+      $itemname = $module;
     }
 
-    $this->setId($id);
-    $this->init();
+    if (isset($_SESSION['Stored_Blocks'])) {
+      Block::viewStoredBlocks($module, $id, $itemname);
+    }
+  
   }
 
-  function setId($id)
+  function viewStoredBlocks($module, $id, $itemname)
   {
-    $this->id = (int)$id;
-  }
-
-  function getId()
-  {
-    return $this->id;
-  }
-
-  function setTitle($title)
-  {
-    $this->title = strip_tags($title);
-  }
-
-  function getTitle()
-  {
-    return $this->title;
-  }
-
-  function setContent($content)
-  {
-    $this->content = PHPWS_Text::parseInput($content);
-  }
-
-  function summarize(){
-    return substr(strip_tags($this->getContent()), 0, 40);
-  }
-
-  function getContent()
-  {
-    return PHPWS_Text::parseOutput($this->content);
-  }
-
-  function setModule($module)
-  {
-    $this->module = $module;
-  }
-
-  function getModule()
-  {
-    return $this->module;
-  }
-
-  function init()
-  {
-    if (empty($this->id)) {
+    if (!isset($_SESSION['Stored_Blocks'])) {
       return FALSE;
     }
+    
+    $block_list = & $_SESSION['Stored_Blocks'];
 
-    $db = & new PHPWS_DB('block');
-    return $db->loadObject($this);
+    $link['action']   = 'pin';
+    $link['pinmod']   = $module;
+    $link['item_id']   = $id;
+    $link['itemname'] = $itemname;
+
+    $pin = '<img src="./images/block/pin.png" />';
+    foreach ($block_list as $block_id => $block) {
+      $link['block_id'] = $block_id;
+      $template = array('TITLE'   => $block->getTitle(),
+			'CONTENT' => $block->getContent(),
+			'PIN'     => PHPWS_Text::secureLink($pin, 'block', $link)
+			);
+      
+      $content[] = PHPWS_Template::process($template, 'block', 'sample.tpl');
+    }
+
+    $complete = implode('', $content);
+    Layout::add($complete, 'block', 'Block_List', FALSE);
   }
 
-  function save()
-  {
-    $db = & new PHPWS_DB('block');
-    return $db->saveObject($this);
-  }
 }
 
 ?>
