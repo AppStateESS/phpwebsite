@@ -289,14 +289,14 @@ class PHPWS_Manager {
    */
   function init() {
     if(!isset($this->_module)) {
-      $message = $_SESSION['translate']->it("Manager cannot initialize, the module was not set.");
+      $message = _("Manager cannot initialize, the module was not set.");
       $error = new PHPWS_Error("core", "PHPWS_Manager::init()", $message, "exit", 1);
       $error->message(NULL);
     }
 
     $config = PHPWS_SOURCE_DIR . "mod/" . $this->_module . "/conf/manager.php";
     if(!file_exists($config)) {
-      $message = $_SESSION['translate']->it("Manager configuration file not found for module: [var1]", $this->_module);
+      $message = _("Manager configuration file not found for module: [var1]", $this->_module);
       $error = new PHPWS_Error("core", "PHPWS_Manager::init()", $message, "exit", 1);
       $error->message(NULL);
     }
@@ -304,7 +304,7 @@ class PHPWS_Manager {
     include($config);
 
     if(!is_array($lists) || !is_array($templates)) {
-      $message = $_SESSION['translate']->it("Manager configuration file is an improper format.");
+      $message = _("Manager configuration file is an improper format.");
       $error = new PHPWS_Error("core", "PHPWS_Manager::init()", $message, "exit", 1);
       $error->message(NULL);
     }
@@ -336,7 +336,7 @@ class PHPWS_Manager {
 	 || (isset($$extraLabels) && !is_array($$extraLabels))
 	 || (isset($$paging) && !is_array($$paging))) {
 
-	$message = $_SESSION['translate']->it("Manager configuration file is an improper format.");
+	$message = _("Manager configuration file is an improper format.");
 	$error = new PHPWS_Error("core", "PHPWS_Manager::init()", $message, "exit", 1);
 	$error->message(NULL);
       }
@@ -374,7 +374,7 @@ class PHPWS_Manager {
     $this->listName = $listName;
 
     if(!isset($this->_table) && !isset($this->_request)) {
-      $message = $_SESSION['translate']->it("Manager was not fully initialized to get a list.");
+      $message = _("Manager was not fully initialized to get a list.");
       $error = new PHPWS_Error("core", "PHPWS_Manager::getList()", $message, "exit", 1);
       $error->message(NULL);
     }
@@ -598,9 +598,9 @@ class PHPWS_Manager {
 	      $rowTags["HIDDEN"] = $this->_listValues['hidden'][$item['hidden']];
 	    } else {
 	      if($item["hidden"] == 1)
-		$rowTags["HIDDEN"] = $_SESSION['translate']->it("Hidden");
+		$rowTags["HIDDEN"] = _("Hidden");
 	      else
-		$rowTags["HIDDEN"] = $_SESSION['translate']->it("Visible");
+		$rowTags["HIDDEN"] = _("Visible");
 	    }
 	  } else if($listColumn == "approved") {
 	    /* Setting message depending if this item is approved or not */
@@ -608,9 +608,9 @@ class PHPWS_Manager {
 	      $rowTags["APPROVED"] = $this->_listValues['approved'][$item['approved']];
 	    } else {
 	      if($item["approved"] == 1)
-		$rowTags["APPROVED"] = $_SESSION['translate']->it("Approved");
+		$rowTags["APPROVED"] = _("Approved");
 	      else
-		$rowTags["APPROVED"] = $_SESSION['translate']->it("Unapproved");
+		$rowTags["APPROVED"] = _("Unapproved");
 	    }
 	  } else if($listColumn == "groups") {
 	    $groups = unserialize($item["groups"]);
@@ -671,7 +671,7 @@ class PHPWS_Manager {
       if($makeForm) {
 	/* Create action select and Go button */
 	$listTags["ACTION_SELECT"] = PHPWS_Form::formSelect($this->_request, $actions);
-	$listTags["ACTION_BUTTON"] = PHPWS_Form::formSubmit($_SESSION['translate']->it("Go"));
+	$listTags["ACTION_BUTTON"] = PHPWS_Form::formSubmit(_("Go"));
 	$listTags["TOGGLE_ALL"] = PHPWS_WizardBag::js_insert("check_all", "PHPWS_MAN_LIST_" . $this->listName);
 	
 	/* Add hidden variable to designate the current module */
@@ -685,7 +685,7 @@ class PHPWS_Manager {
       }
       
     } else {
-      $listTags["LIST_ITEMS"] = "<tr><td colspan=\"" . $columns . "\">" . $_SESSION['translate']->it("No items for the current list.") . "</td></tr>";
+      $listTags["LIST_ITEMS"] = "<tr><td colspan=\"" . $columns . "\">" . _("No items for the current list.") . "</td></tr>";
       $content = PHPWS_Template::processTemplate($listTags, "core", $listTpl, FALSE);
     }
 
