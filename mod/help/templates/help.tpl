@@ -1,10 +1,4 @@
-{XML}{XML_STYLE}{DOCTYPE}{XHTML}
-<head>
-<title>{TITLE}</title>
-{STYLE}
-</head>
-<body>
+<div style="padding : 10px">
 <h1>{TITLE}</h1>
 <p>{CONTENT}</p>
-</body>
-</html>
+</div>
