@@ -115,7 +115,7 @@ class PHPWS_User extends PHPWS_Item {
   function getLogin(){
     PHPWS_Core::initModClass("users", "Form.php");
     $login = User_Form::logBox($_SESSION['User']->isLogged());
-    Layout::hold($login, "CNT_user_small", TRUE, -1);
+    Layout::hold($login, "users", "CNT_user_small", TRUE, -1);
   }
 
   function loadUserSettings(){
@@ -301,7 +301,7 @@ class PHPWS_User extends PHPWS_Item {
   function disallow(){
     $title = _("Sorry") . "...";
     $content = ("You do not have permission for this action.");
-    Layout::add(array("TITLE"=>$title, "CONTENT"=>$content), "User_Main");
+    Layout::add(array("TITLE"=>$title, "CONTENT"=>$content), "users", "User_Main");
   }
 
   function logAnonymous(){

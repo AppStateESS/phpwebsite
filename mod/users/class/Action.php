@@ -375,7 +375,7 @@ class User_Action {
   }
 
   function badLogin(){
-    Layout::add("Unable to find your account. Please try again.", "User_Main");
+    Layout::add("Unable to find your account. Please try again.", "users", "User_Main");
   }
 
   function getGroups($mode=NULL){

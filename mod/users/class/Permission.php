@@ -139,6 +139,7 @@ class Users_Permission {
   function createPermissions($module){
     $permissions = NULL;
     $file = PHPWS_Core::getConfigFile($module, "permission.php");
+
     if (PEAR::isError($file))
       return PHPWS_Error::get(USER_ERR_PERM_FILE, "users", "createPermissions", "Module: $module");
 
