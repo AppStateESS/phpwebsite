@@ -60,9 +60,23 @@ class Layout_Admin{
   }
 
   function metaForm(){
+    extract($_SESSION['Layout_Settings']);
+
     $form = & new PHPWS_Form("metatags");
     $form->addHidden("module", "layout");
-    
+    $form->addHidden("action", "admin");
+    $form->addHidden("command", "postMeta");
+    $form->addText("page_title", $page_title);
+    $form->setLabel("page_title", _("Page Title"));
+    $form->addTextArea("meta_keywords", $meta_keywords);
+    $form->setLabel("meta_keywords", _("Keywords"));
+    $form->addTextArea("meta_description", $meta_description);
+    $form->setLabel("meta_description", _("Description"));
+    $form->addSubmit("submit", _("Update"));
+
+    $template = $form->getTemplate();
+
+    return PHPWS_Template::process($template, "layout", "metatags.tpl");
   }
 
   function boxesForm($message = NULL){
