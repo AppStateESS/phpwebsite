@@ -95,12 +95,19 @@ class Layout_Admin{
 
     $themeVars = Layout::getThemeVariables();
 
+    $menu["up"] = _("Move Up");
+    $menu["down"] = _("Move Down");
+    foreach ($themeVars as $var){
+      if ($box['theme_var'] == $var)
+	continue;
+      $menu[$var] = _("Move to") . " " . $var;
+    }
+
     $form = new PHPWS_Form;
     $form->add("module", "hidden", "layout");
     $form->add("action[admin]", "hidden", "moveBox");
     $form->add("box_source", "hidden", $box['id']);
-    $form->add("box_dest", "select", $themeVars);
-    $form->reindexValue("box_dest");
+    $form->add("box_dest", "select", $menu);
     $form->setMatch("box_dest", $box['theme_var']);
     $form->add("move", "submit", _("Move"));
 
@@ -111,8 +118,21 @@ class Layout_Admin{
   function moveBox(){
     PHPWS_Core::initModClass("layout", "Box.php");
     $box = new Layout_Box($_POST['box_source']);
-    $box->setThemeVar(strtoupper($_POST['box_dest']));
-    $result = $box->save();
+
+    $currentThemeVar = $box->getThemeVar();
+
+    if ($_POST['box_dest'] == "up")
+      $box->moveUp();
+    elseif ($_POST['box_dest'] == "down")
+      $box->moveDown();
+    else {
+      $box->setThemeVar($_POST['box_dest']);
+      $box->setBoxOrder(NULL);
+      $result = $box->save();
+    }
+
+    Layout_Box::reorderBoxes($box->getTheme(), $currentThemeVar);
+
     Layout::initLayout(TRUE);
     return TRUE;
   }
