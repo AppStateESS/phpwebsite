@@ -22,6 +22,7 @@ Back in a few.</b><br />";
 
 
 define("DEFAULT_TEMPLATE", $table);
+define("DEFAULT_NEW_BOX_VAR", "SIDEPANEL");
 define("DEFAULT_THEME_VAR", "BODY");
 define("DEFAULT_LAYOUT_HOLD", 20);
 define("DEFAULT_CONTENT_VAR", "_MAIN");

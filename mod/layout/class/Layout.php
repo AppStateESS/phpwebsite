@@ -36,7 +36,6 @@ class Layout {
       }
 
     $GLOBALS['Layout'][$module][$contentVar]['box'] = $box;
-
   }
 
   function addBox($content_var, $module, $theme_var=NULL, $template=NULL, $theme=NULL){
@@ -46,7 +45,7 @@ class Layout {
       $theme = $_SESSION['Layout_Settings']->current_theme;
     
     if (!isset($theme_var))
-      $theme_var = DEFAULT_THEME_VAR;
+      $theme_var = DEFAULT_NEW_BOX_VAR;
 
     $box = new Layout_Box;
     $box->setTheme($theme);
