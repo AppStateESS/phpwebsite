@@ -62,7 +62,7 @@ class Layout {
       PHPWS_Error::log($result);
       PHPWS_Core::errorPage();
     }
-
+    Layout::resetBoxes();
   }
 
   function addJSFile($directory){
@@ -86,36 +86,41 @@ class Layout {
   }
 
   function addStyle($module, $filename=NULL){
+    if (isset($GLOBALS['Style'][$module]))
+      return;
+
     if (!isset($filename))
       $filename = "style.css";
 
-    $index = $module . "_" . preg_replace("/\W/", "", $filename);
+    $cssFile['tag'] = $module;
+    $cssFile['import'] = TRUE;
 
-    if (FORCE_MOD_TEMPLATES){
-      $cssFile = "mod/$module/templates/$filename";
-      if (is_file(PHPWS_SOURCE_DIR . $cssFile))
-	Layout::addToStyleList(array('file'=>PHPWS_SOURCE_HTTP . $cssFile, 'relative'=>FALSE));
-      return;
-    }
+    $templateLoc = "./templates/$module/$filename";
 
-    $themeFile = PHPWS_Template::getTplDir($module) . $filename;
-    if (is_file($themeFile)){
+    if (FORCE_MOD_TEMPLATES || !is_file($templateLoc))
+      $cssFile['file'] = PHPWS_SOURCE_HTTP . "mod/$module/templates/$filename";
+    else 
+      $cssFile['file'] = $templateLoc;
+
+    if (is_file($cssFile['file']))
       Layout::addToStyleList($cssFile);
+    
+    $themeFile['file']   = "./" . PHPWS_Template::getTplDir($module) . $filename;
+    $themeFile['import'] = TRUE;
+
+    if (is_file($themeFile['file'])){
+      Layout::addToStyleList($themeFile);
       return;
     } elseif (FORCE_THEME_TEMPLATES)
 	return;
 
-    $cssFile = "templates/$module/$filename";      
-    if (is_file($cssFile))
-      Layout::addToStyleList($cssFile);
-
-    return;
   }
 
   function addToStyleList($value){
     $alternate = FALSE;
     $title     = NULL;
-    $relative  = TRUE;
+    $import    = FALSE;
+    $tag       = NULL;
 
     if (!is_array($value))
       $file = $value;
@@ -123,13 +128,15 @@ class Layout {
       extract($value);
 
     $style = array("file"      =>$file,
+		   "import"    =>$import,
 		   "alternate" =>$alternate,
-		   "title"     =>$title,
-		   "relative"  =>$relative
+		   "title"     =>$title
 		   );
 
-
-    $GLOBALS['Style'][] = $style;
+    if (isset($tag))
+      $GLOBALS['Style'][$tag] = $style;
+    else
+      $GLOBALS['Style'][] = $style;
   }
 
   function alternateTheme($template, $module, $file){
@@ -162,7 +169,6 @@ class Layout {
     $content = $tpl->get();
 
     if (Layout::isMoveBox()){
-      Layout::addStyle("layout");
       PHPWS_Core::initModClass("layout", "LayoutAdmin.php");
       $content .= Layout_Admin::moveBoxesTag($box);
     }
@@ -251,7 +257,8 @@ class Layout {
   }
 
   function getBox($module, $contentVar){
-    return $_SESSION['Layout_Settings']->_boxes[$module][$contentVar];
+    if (isset($_SESSION['Layout_Settings']->_boxes[$module][$contentVar]))
+      return $_SESSION['Layout_Settings']->_boxes[$module][$contentVar];
   }
 
   function getContentVars(){
@@ -284,6 +291,9 @@ class Layout {
     return $_SESSION['Layout_Settings']->default_theme;
   }
 
+  function getHeader(){
+    return PHPWS_Text::parseOutput($_SESSION['Layout_Settings']->header);
+  }
 
   function getJavascript($directory, $data=NULL){
     if (isset($data) && !is_array($data))
@@ -382,6 +392,9 @@ class Layout {
   }
 
   function getStyleLinks($header=FALSE){
+    if (!isset($GLOBALS['Style']))
+      Layout::addToStyleList(Layout::getTheme() . "/style.css");
+
     foreach ($GLOBALS['Style'] as $link)
       $links[] = Layout::styleLink($link, $header);
 
@@ -436,24 +449,28 @@ class Layout {
   }
 
   function loadStyleSheets(){
-    $theme = Layout::getDefaultTheme();
+    $theme = Layout::getTheme();
 
     $directory = "./themes/$theme/";
-    $file = $directory . "style.php";
+    $file = $directory . "config.php";
 
     if (is_file($file)){
       include $file;
 
       if (isset($persistant))
-	Layout::addToStyleList(array('file'=>$persistant));
+	Layout::addToStyleList(array('file'=>$directory . $persistant));
+      else
+	Layout::addToStyleList(Layout::getTheme() . "style.css");
 
       if (isset($default) && (isset($default['file']) && isset($default['title']))){
-	Layout::addToStyleList(array('file'=>$default['file'], 'title'=>$default['title']));
+	Layout::addToStyleList(array('file'=>$directory . $default['file'],
+				     'title'=>$default['title'])
+			       );
 
 	  if (isset($alternate) && is_array($alternate)){
 	    foreach ($alternate as $altStyle){
 	      if (isset($altStyle['file']) && isset($altStyle['title']))
-		Layout::addToStyleList(array('file'=>$altStyle['file'],
+		Layout::addToStyleList(array('file'=>$directory . $altStyle['file'],
 					     'title'=>$altStyle['title'],
 					     'alternate'=>TRUE
 					     )
@@ -480,6 +497,7 @@ class Layout {
     if (PEAR::isError($result))
       return $result;
 
+    $template['HEADER']   = Layout::getHeader();
     $template['THEME_DIRECTORY'] = "themes/$theme/";
     $tpl->setData($template);
     return $tpl;
@@ -509,13 +527,9 @@ class Layout {
   }
 
   function styleLink($link, $header=FALSE){
-    extract($link);
-    $theme = Layout::getCurrentTheme();
+    // NEED TO CHCEK if using xml-stylesheet
 
-    if ($relative){
-      $directory = "./themes/$theme/$file";
-    } else
-      $directory = $file;
+    extract($link);
 
     if (!empty($title))
       $cssTitle = "title=\"$title\"";
@@ -523,15 +537,17 @@ class Layout {
       $cssTitle = NULL;
 
     if ($header == TRUE){
-      if ($alternate == TRUE)
-	return "<?xml-stylesheet alternate=\"yes\" $cssTitle  href=\"$directory\" type=\"text/css\"?>";
+      if (isset($alternate) && $alternate == TRUE)
+	return "<?xml-stylesheet alternate=\"yes\" $cssTitle  href=\"$file\" type=\"text/css\"?>";
       else
-	return "<?xml-stylesheet $cssTitle href=\"$directory\" type=\"text/css\"?>";
+	return "<?xml-stylesheet $cssTitle href=\"$file\" type=\"text/css\"?>";
     } else {
-      if ($alternate == TRUE)
-	return "<link rel=\"alternate stylesheet\" $cssTitle href=\"$directory\" type=\"text/css\" />";
+      if ($import == TRUE)
+	return "<style type=\"text/css\"> @import url(\"$file\"); </style>";
+      elseif (isset($alternate) && $alternate == TRUE)
+	return "<link rel=\"alternate stylesheet\" $cssTitle href=\"$file\" type=\"text/css\" />";
       else
-	return "<link rel=\"stylesheet\" $cssTitle href=\"$directory\" type=\"text/css\" />";
+	return "<link rel=\"stylesheet\" $cssTitle href=\"$file\" type=\"text/css\" />";
     }
   }
 

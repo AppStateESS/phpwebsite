@@ -16,63 +16,102 @@ class Layout_Admin{
 
     switch ($command){
     case "boxes":
-      $template['TITLE'] = _("Adjust Boxes");
+      $title = _("Adjust Boxes");
       $content = Layout_Admin::boxesForm();
       break;
 
     case "changeBoxSettings":
       Layout_Admin::saveBoxSettings();
-      $template['TITLE'] = _("Adjust Boxes");
+      $title = _("Adjust Boxes");
       $template['MESSAGE'] = _("Settings changed");
       $content = Layout_Admin::boxesForm();
       break;
 
     case "confirmThemeChange":
-      Layout_Admin::changeTheme($_POST['theme']);
-      $template['TITLE'] = _("Themes");
-      $template['MESSAGE'] = _("Theme settings updated.");
+      $title = _("Themes");
+      if (isset($_POST['confirm'])){
+	Layout_Admin::changeTheme($_POST['theme']);
+	$template['MESSAGE'] = _("Theme settings updated.");
+      } else
+	Layout::reset();
+
       $content = Layout_Admin::adminThemes();
       break;
 
+    case "edit_footer":
+      $result = Layout_Admin::postFooter();
+      if (PEAR::isError($result)){
+	$title = _("Error");
+	$content = _("There was a problem updating the settings.");
+      } else {
+	$title = _("Footer updated.");
+	$content = Layout_Admin::editFooter();
+      }
+      break;
+
+
+    case "edit_header":
+      $result = Layout_Admin::postHeader();
+      if (PEAR::isError($result)){
+	$title = _("Error");
+	$content = _("There was a problem updating the settings.");
+      } else {
+	$title = _("Header updated.");
+	$content = Layout_Admin::editHeader();
+      }
+      break;
+
+    case "footer":
+      $title = _("Edit Footer");
+      $content = Layout_Admin::editFooter();
+      break;
+
+    case "header":
+      $title = _("Edit Header");
+      $content = Layout_Admin::editHeader();
+      break;
+
+
     case "meta":
-      $template['TITLE'] = _("Edit Meta Tags");
+      $title = _("Edit Meta Tags");
       $content = Layout_Admin::metaForm();
       break;
 
     case "moveBox":
       $result = Layout_Admin::moveBox();
       if ($result === TRUE)
-	exit(header("location:" . $_SERVER['HTTP_REFERER']));
+	PHPWS_Core::reroute($_SERVER['HTTP_REFERER']);
       break;
 
     case "postMeta":
       PHPWS_Core::initModClass("layout", "Initialize.php");
       Layout_Admin::postMeta();
       Layout::reset();
-      $template['TITLE'] = _("Edit Meta Tags");
+      $title = _("Edit Meta Tags");
       $template['MESSAGE'] = _("Meta Tags updated.");
       $content = Layout_Admin::metaForm();
       break;
 
     case "postTheme":
-      if ($_POST['default_theme'] == $_SESSION['Layout_Settings']['default_theme']){
-	Layout_Admin::postTheme();
-	$template['TITLE'] = _("Themes");
-	$template['MESSAGE'] = _("Theme settings updated.");
+      if ($_POST['default_theme'] != $_SESSION['Layout_Settings']->current_theme){
+	$_SESSION['Layout_Settings']->current_theme = $_POST['default_theme'];
+	Layout::resetBoxes();
+	$title = _("Confirm Theme Change");
+	$content = Layout_Admin::confirmThemeChange();
+      } else {
+	$title = _("Themes");
 	$content = Layout_Admin::adminThemes();
       }
-      else {
-	$template['TITLE'] = _("Confirm Theme Change");
-	$content = Layout_Admin::confirmThemeChange();
-      }
+	
       break;
 
     case "theme":
-      $template['TITLE'] = _("Themes");
+      $title = _("Themes");
       $content = Layout_Admin::adminThemes();
       break;
     }
 
+    $template['TITLE']   = $title;
     $template['CONTENT'] = $content;
     
     $final = PHPWS_Template::process($template, "layout", "main.tpl");
@@ -84,11 +123,13 @@ class Layout_Admin{
 
   function &adminPanel(){
     PHPWS_Core::initModClass("controlpanel", "Panel.php");
-    Layout::addStyle("layout");
+    $link = "index.php?module=layout&amp;action=admin";
 
-    $tabs["boxes"] = array("title"=>_("Boxes"), "link"=>"index.php?module=layout&amp;action=admin");
-    $tabs["meta"]  = array("title"=>_("Meta Tags"), "link"=>"index.php?module=layout&amp;action=admin");
-    $tabs["theme"]  = array("title"=>_("Themes"), "link"=>"index.php?module=layout&amp;action=admin");
+    $tabs["boxes"]     = array("title"=>_("Boxes"),     "link"=>$link);
+    $tabs["meta"]      = array("title"=>_("Meta Tags"), "link"=>$link);
+    $tabs["theme"]     = array("title"=>_("Themes"),    "link"=>$link);
+    $tabs["header"]    = array("title"=>_("Header"),    "link"=>$link);
+    $tabs["footer"]    = array("title"=>_("Footer"),    "link"=>$link);
 
     $panel = & new PHPWS_Panel("layout");
     $panel->quickSetTabs($tabs);
@@ -128,7 +169,7 @@ class Layout_Admin{
     else
       $form->setMatch("move_boxes", 0);
 
-    $form->addSubmit("default_submit", "Change Settings");
+    $form->addSubmit("submit", "Change Settings");
 
     $template = $form->getTemplate();
 
@@ -139,9 +180,8 @@ class Layout_Admin{
   }
 
   function changeTheme($theme){
-    $db = & new PHPWS_DB("layout_config");
-    $db->addValue("default_theme", $theme);
-    $db->update();
+    $_SESSION['Layout_Settings']->default_theme = $theme;
+    $_SESSION['Layout_Settings']->saveSettings();
   }
 
   function confirmThemeChange(){
@@ -150,8 +190,62 @@ class Layout_Admin{
     $form->addHidden("action", "admin");
     $form->addHidden("command", "confirmThemeChange");
     $form->addHidden("theme", $_POST['default_theme']);
-    $form->addSubmit("confirm", _("Click here to complete the theme change."));
+    $form->addSubmit("confirm", _("Click here to complete the theme change"));
+    $form->addSubmit("decline", _("Click here to restore the default theme"));
     return $form->getMerge();
+  }
+
+  function editFooter(){
+    PHPWS_Core::initCoreClass("Editor.php");
+    $form = & new PHPWS_Form("edit_header");
+    $form->addHidden("module", "layout");
+    $form->addHidden("action", "admin");
+    $form->addHidden("command", "edit_header");
+
+    $header = $_SESSION['Layout_Settings']->header;
+
+    if (Editor::willWork()){
+      $editor = & new Editor("htmlarea", "header", $header);
+      $headInfo = $editor->get();
+      $form->addTplTag("HEADER", $headInfo);
+    } else {
+      $form->addTextArea("header", $header);
+      $form->setRows("header", 10);
+      $form->setWidth("header", "80%");
+    }
+
+    $form->addSubmit("submit", _("Update Header"));
+
+    $template = $form->getTemplate();
+    return PHPWS_Template::process($template, "layout", "edit_header.tpl");
+    
+  }
+
+
+  function editHeader(){
+    PHPWS_Core::initCoreClass("Editor.php");
+    $form = & new PHPWS_Form("edit_header");
+    $form->addHidden("module", "layout");
+    $form->addHidden("action", "admin");
+    $form->addHidden("command", "edit_header");
+
+    $header = $_SESSION['Layout_Settings']->header;
+
+    if (Editor::willWork()){
+      $editor = & new Editor("htmlarea", "header", $header);
+      $headInfo = $editor->get();
+      $form->addTplTag("HEADER", $headInfo);
+    } else {
+      $form->addTextArea("header", $header);
+      $form->setRows("header", 10);
+      $form->setWidth("header", "80%");
+    }
+
+    $form->addSubmit("submit", _("Update Header"));
+
+    $template = $form->getTemplate();
+    return PHPWS_Template::process($template, "layout", "edit_header.tpl");
+    
   }
 
   function getThemeList(){
@@ -242,6 +336,12 @@ class Layout_Admin{
 
     $template = $form->getTemplate();
     return PHPWS_Template::process($template, "layout", "move_box_select.tpl");
+  }
+
+  function postHeader(){
+    $header = PHPWS_Text::parseInput($_POST['header']);
+    $_SESSION['Layout_Settings']->header = trim($header);
+    return $_SESSION['Layout_Settings']->saveSettings();
   }
 
   function postMeta(){

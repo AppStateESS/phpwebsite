@@ -13,6 +13,8 @@ class Layout_Settings{
   var $meta_owner  	= NULL;
   var $meta_author      = NULL;
   var $meta_content     = NULL;
+  var $header           = NULL;
+  var $footer           = NULL;
   var $_contentVars     = array();
   var $_boxes           = array();
   var $_box_order       = array();
@@ -101,7 +103,7 @@ class Layout_Settings{
 
   function loadSettings(){
     require_once("File.php");
-    $db = new PHPWS_db("layout_config");
+    $db = new PHPWS_DB("layout_config");
     $result = $db->loadObject($this);
 
     if (PEAR::isError($result)){
@@ -119,6 +121,12 @@ class Layout_Settings{
       $this->_theme_variables = $themeVars;
     } else
       $this->_theme_variables = array(DEFAULT_THEME_VAR);
+  }
+
+  function saveSettings(){
+    $db = & new PHPWS_DB("layout_config");
+    $db->setQWhere("1");
+    return $db->saveObject($this);
   }
 
 }
