@@ -13,16 +13,6 @@ function users_install(&$content, $branchInstall=FALSE){
       $result = User_Action::postUser($user);
 
       if (!is_array($result)){
-	$anon = new PHPWS_User;
-	$anon->setUsername("ANON");
-	$anon->setActive(TRUE);
-	$anon->setApproved(TRUE);
-	$anon->setAuthorize(0);
-	$result = $anon->save();
-
-	if (PEAR::isError($result))
-	  return $result;
-
 	$user->setDeity(TRUE);
 	$user->setActive(TRUE);
 	$user->setApproved(TRUE);
