@@ -578,6 +578,15 @@ class Layout {
     header("Content-Language: " . CURRENT_LANGUAGE);
     header("Content-Script-Type: text/javascript");
     header("Content-Style-Type: text/css");
+
+    if ($_SESSION['Layout_Settings']->cache == FALSE){
+      header("Cache-Control : no-cache");
+      header("Pragma: no-cache");
+    }
+  }
+
+  function cacheOff(){
+    $_SESSION['Layout_Settings']->_cache = FALSE;
   }
 
   function wrap($theme, $content){
