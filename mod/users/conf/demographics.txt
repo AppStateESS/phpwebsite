@@ -1,0 +1,48 @@
+// Format for demographic sections
+// label:type of input:special info:proper name
+// Special Info:
+// textfield - number of characters
+// select    - filename of choices
+// radio     - variable value,label, repeat
+
+// Personal
+first_name:textfield:15
+middle_name:textfield:15
+middle_initial:textfield:1
+last_name:textfield:15
+social_security:textfield:10
+id_number:textfield:10
+sex:radio:m,Male\nf,Female
+
+// Address
+home_address_1a:textfield:30
+home_address_1b:textfield:30
+home_address_2a:textfield:30
+home_address_2b:textfield:30
+business_address_1a:textfield:30
+business_address_1b:textfield:30
+business_address_2a:textfield:30
+business_address_2b:textfield:30
+permanent_address_1a:textfield:30
+permanent_address_1b:textfield:30
+permanent_address_2a:textfield:30
+permanent_address_2b:textfield:30
+
+city_main:textfield:15
+state_main:select:file,states.txt
+country_main:select:file,country.txt
+zipcode_main:textfield:12
+
+city_secondary:textfield:15
+state_secondary:select:file,states.txt
+country_secondary:select:file,country.txt
+zipcode_secondary:textfield:12
+
+// Contact
+permanent_email:textfield:20
+contact_email:textfield:20
+fax_phone:textfield:15
+cell_phone:textfield:15
+day_phone:textfield:15
+evening_phone:textfield:15
+homepage:textfield:30
