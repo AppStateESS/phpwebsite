@@ -1,6 +1,8 @@
 <?php
 
-if (!isset($_REQUEST['module']))
+if (!isset($_REQUEST['module'])){
      $content = Blog_User::show();
+     Layout::add($content);
+}
 
 ?>
