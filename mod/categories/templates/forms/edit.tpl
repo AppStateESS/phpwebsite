@@ -1,4 +1,4 @@
-<div class="page-title">{PAGE_TITLE}</div>
+<h1>{PAGE_TITLE}</h1>
 {START_FORM}
 <table border="0" width="100%" cellpadding="4" cellspacing="4">
   <tr>
