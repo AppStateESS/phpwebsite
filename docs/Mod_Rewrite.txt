@@ -1,0 +1,95 @@
+Using Mod_Rewrite with phpWebSite
+
+When writing a module, you may find that some of your links are
+getting rather complicated.
+
+For example, say you are writing a module that looks at news
+articles. You have link to an article on your home page and it looks
+something like the following:
+
+http://www.mysite.com/index.php?module=article&action=view&id=5312
+
+Using mod_rewrite functionality, you could change that link to:
+
+http://www.mysite.com/view/article/5312
+
+This is more straight forward, easier for search engines to index, and
+much easier to explain over the phone. PhpWebSite can help you achieve
+this.
+
+Before you start trying to write modules that take advantage of this,
+you will need to make sure your installation of phpWebSite supports
+it.
+
+First off, you have to be running Apache. If you are not, it won't
+work. There may be solutions for Microsoft IIS and other web servers
+but you will have to learn the differences yourself.
+
+Second, you need to configure Apache to use mod_rewrite. Look in your
+httpd.conf file for this line:
+LoadModule rewrite_module modules/mod_rewrite.so
+Add it if it is not there and restart your server.
+
+Third, look in your phpWebSite root directory and you should see a file
+named ".htaccess" (note the period). Uncomment all the lines by
+removing the pound sign (#) in front of each line.
+
+Finally, you will need to configure phpWebSite to use mod_rewrite. Go
+into your config/core/config.php file and change the define to:
+define("USE_MOD_REWRITE", TRUE);
+
+Your site should be ready to use mod_rewrite now.
+
+Making you Module use mod_rewrite
+
+The rewrite function is very basic. All it facilitates is the viewing
+of a specific item from your module. You won't be accessing
+administrative functionality using rewrite as it is unnecessary. Pages
+that can not be viewed by the general public have no need to use
+rewrite.
+
+You will need a way to 'catch' the request for viewing an item in your
+module. Let's look at our previous example:
+
+http://www.mysite.com/view/article/5312
+
+When this is sent to phpWebSite it is going to go to the article
+module and tell it that it wants to view article 5312. It will rewrite
+the address to:
+
+http://www.mysite.com/index.php?module=article&action=view&id=5312
+
+You should expect the 'action=view' in your code. Here is an example
+of how you may handle it:
+
+if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'view'){
+  $article = & new Article($_REQUEST['id']);
+  $article->view();
+}
+
+So what your link needs to include is the name of your module and the
+id of the item.
+
+Keep in mind however that not everyone will use mod_rewrite, so you
+should plan accordingly.
+
+if (USE_MOD_REWRITE == TRUE)
+   $link = "view/article/$id";
+else
+   $link = "index.php?module=article&action=view&id=5312";
+
+
+One more quick note. When phpWebSite uses mod_rewrite, it has to make
+sure that relative links in your theme still function. Therefore, the
+layout module will insert the following in with your metatags:
+
+<base href="http://www.your_site_address.org/" />
+
+If it doesn't do this, the relative links (i.e.images, javascript,
+style sheets) will start looking in directories below the fake address
+sent to the page. The only problem with this is that if you output
+anything outside of using the Layout module, it will disrupt this
+header statement and your style sheets and images may have problems.
+
+To prevent this, make sure that all output is through Layout and that
+you catch errors using the Error class.
