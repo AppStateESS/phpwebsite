@@ -13,7 +13,7 @@ class PHPWS_Panel{
       $this->setItemname($itemname);
   }
 
-  function quickSetTabs($tabs){
+  function quickSetTabs($tabs, $secure=TRUE){
     $count = 1;
     foreach ($tabs as $id=>$info){
       $tab = new PHPWS_Panel_Tab;
@@ -27,7 +27,7 @@ class PHPWS_Panel{
       if (!isset($info['link']))
 	return PHPWS_Error::get(CP_MISSING_LINK, "controlpanel", "quickSetTabs");
       else
-	$tab->setLink($info['link']);
+	$tab->setLink($info['link'], $secure);
 
       if (!isset($info['itemname']))
 	$tab->setItemname($this->itemname);
