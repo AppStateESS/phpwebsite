@@ -43,8 +43,6 @@ PHPWS_DB::disconnect();
 
 PHPWS_Core::setLastPost();
 
-PHPWS_Core::report();
-
 if (isset($_REQUEST['reset']))
      PHPWS_Core::killAllSessions();
 
