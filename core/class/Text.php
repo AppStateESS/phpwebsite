@@ -517,7 +517,7 @@ class PHPWS_Text {
     }
 
     foreach ($GLOBALS['embedded_tags'] as $module => $funcName) {
-      $search = "\[($module):([\w:]*)\]";
+      $search = "\[($module):([\w\s:\.\?\!]*)\]";
       $text = preg_replace_callback("/$search/Ui", 'getEmbedded', $text);
     }
 
