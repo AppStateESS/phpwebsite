@@ -11,7 +11,7 @@
  * @package Core
  */
 
-PHPWS_Core::configRequireOnce("core", "profanity.php");
+PHPWS_Core::configRequireOnce('core', 'profanity.php');
 
 class PHPWS_Text {
 
@@ -26,9 +26,9 @@ class PHPWS_Text {
    * @access public
    */
   function profanityFilter($text) {
-    PHPWS_Core::configRequireOnce("core", "profanity.php");
+    PHPWS_Core::configRequireOnce('core', 'profanity.php');
     if (!is_string($text))
-      return PHPWS_Error::get(PHPWS_TEXT_NOT_STRING, "core", "PHPWS_Text::profanityFilter");
+      return PHPWS_Error::get(PHPWS_TEXT_NOT_STRING, 'core', 'PHPWS_Text::profanityFilter');
 
     $words = unserialize(PROFANE_WORDS);
 
@@ -49,7 +49,7 @@ class PHPWS_Text {
    */
   function sentence($text, $stripNewlines = FALSE){
     if (!is_string($text))
-      return PHPWS_Error::get(PHPWS_TEXT_NOT_STRING, "core", "PHPWS_Text::sentence");
+      return PHPWS_Error::get(PHPWS_TEXT_NOT_STRING, 'core', 'PHPWS_Text::sentence');
 
     return preg_split("/\r\n|\n/", $text);
   }// END FUNC sentence()
@@ -68,7 +68,7 @@ class PHPWS_Text {
    * @access public
    */
   function breaker($text){
-    if (!is_string($text)) exit ("breaker() was not sent a string");
+    if (!is_string($text)) exit ('breaker() was not sent a string');
 
     $text_array = PHPWS_Text::sentence(trim($text));
 
@@ -94,7 +94,7 @@ class PHPWS_Text {
 		      "<\/?td.*>",
 		      "<\/?h..*>");
 
-    $search_string = implode("|", $endings);
+    $search_string = implode('|', $endings);
 
     $count = 0;
     $content = NULL;
@@ -118,7 +118,7 @@ class PHPWS_Text {
       }
     }
 
-    return implode("", $content);
+    return implode('', $content);
   }// END FUNC breaker()
 
 
@@ -134,10 +134,10 @@ class PHPWS_Text {
    * @return  string  text         Stripped text
    */
   function parseInput($text, $allowedTags=NULL){
-    if ($allowedTags == "none")
+    if ($allowedTags == 'none')
       $allowedTagString = NULL;
     elseif (is_array($allowedTags))
-      $allowedTagString = implode("", $allowedTags);
+      $allowedTagString = implode('', $allowedTags);
     elseif (is_string($allowedTags))
       $allowedTagString = $allowedTags;
     else
@@ -153,8 +153,8 @@ class PHPWS_Text {
   }
 
   function XHTMLArray(){
-    $xhtml["\$"] = "&#x0024;";
-    $xhtml["<br>"] = "<br />";
+    $xhtml["\$"] = '&#x0024;';
+    $xhtml['<br>'] = '<br />';
     
     return $xhtml;
   }
@@ -168,7 +168,7 @@ class PHPWS_Text {
   }
 
   function textareaDecode($text){
-    $text = str_replace("<br />", "", $text);
+    $text = str_replace('<br />', '', $text);
     return $text;
   }
 
@@ -187,12 +187,12 @@ class PHPWS_Text {
   {
     if (empty($text))
       return NULL;
-    require_once("HTML/BBCodeParser.php");
+    require_once('HTML/BBCodeParser.php');
 
     // Set up BBCodeParser
-    $config  = parse_ini_file(PHPWS_SOURCE_DIR . "/config/core/BBCodeParser.ini", true);
-    $options = &PEAR::getStaticProperty("HTML_BBCodeParser", "_options");
-    $options = $config["HTML_BBCodeParser"];
+    $config  = parse_ini_file(PHPWS_SOURCE_DIR . '/config/core/BBCodeParser.ini', true);
+    $options = &PEAR::getStaticProperty('HTML_BBCodeParser', '_options');
+    $options = $config['HTML_BBCodeParser'];
     unset($options);
 
     if ($filter_profanity && FILTER_PROFANITY)
@@ -237,27 +237,27 @@ class PHPWS_Text {
     if (empty($userEntry) || !is_string($userEntry)) return FALSE;
 
     switch ($type) {
-    case "chars_space":
+    case 'chars_space':
     if (preg_match("/^[\w\s]+$/i",$userEntry)) return TRUE;
     else return FALSE;
     break;
 
-    case "number":
+    case 'number':
     if (preg_match("/^[\d]+$/",$userEntry)) return TRUE;
     else return FALSE;
     break;
 
-    case "url":
+    case 'url':
     if (preg_match("/^(http(s){0,1}:\/\/)[_a-z0-9-]+(\.[_a-z0-9-]+|\/)/i", $userEntry)) return TRUE;
     else return FALSE;
     break;
 
-    case "email":
+    case 'email':
     if (preg_match("/^[\w]+(\.[\w]+)*@[\w]+(\.[\w]+)+$/i", $userEntry)) return TRUE;
     else return FALSE;
     break;
 
-    case "file":
+    case 'file':
     if (preg_match("/^[\w\.]+$/i",$userEntry)) return TRUE;
     else return FALSE;
     break;
@@ -275,11 +275,15 @@ class PHPWS_Text {
    * MOD_REWRITE_ENABLED must be true and mod_reroute must be enabled
    * in Apache
    */
-  function rerouteLink($subject, $module, $action, $id){
+  function rerouteLink($subject, $module, $action, $id=NULL){
     if ((bool)MOD_REWRITE_ENABLED == FALSE) {
-      return PHPWS_Text::moduleLink($subject, $module, array("action" => $action, "id" => $id));
+      return PHPWS_Text::moduleLink($subject, $module, array('action' => $action, 'id' => $id));
     } else {
-      return "<a href=\"{$module}/{$action}/{$id}\">$subject</a>";
+      if (!isset($id)) {
+	return "<a href=\"{$module}/{$action}\">$subject</a>";
+      } else {
+	return "<a href=\"{$module}/{$action}/{$id}\">$subject</a>";
+      }
     }
   }
 
@@ -305,32 +309,32 @@ class PHPWS_Text {
    * @return string The complated link.
    */
   function moduleLink($subject, $module=NULL, $getVars=NULL, $target=NULL, $title=NULL){
-    $link[] = "<a ";
+    $link[] = '<a ';
 
     if (isset($title))
-      $link[] = "title=\"" . strip_tags($title) . "\" ";
+      $link[] = 'title="' . strip_tags($title) . '" ';
 
-    $link[] = "href=\"./";
+    $link[] = 'href="./';
 
-    $link[] = "index.php";
+    $link[] = 'index.php';
 
     if (isset($module)){
-      $link[] = "?";
+      $link[] = '?';
       $vars[] = "module=$module";
     }
 
     if (is_array($getVars)){
       foreach ($getVars as $var_name=>$value)
-	$vars[] = $var_name . "=" . $value;
+	$vars[] = $var_name . '=' . $value;
     }
 
     if (isset($vars))
-      $link[] = implode("&amp;", $vars);
+      $link[] = implode('&amp;', $vars);
 
-    $link[] = "\"";
+    $link[] = '"';
 
-    if ($target=="blank" || $target === TRUE)
-      $link[] = " target=\"_blank\" ";
+    if ($target=='blank' || $target === TRUE)
+      $link[] = ' target="_blank" ';
     elseif ($target=="index")
       $link[] = " target=\"index\" ";
 
