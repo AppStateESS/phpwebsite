@@ -16,8 +16,8 @@ body {
 #frame {
   margin-top : 20px;
   padding : 10px;
-  margin-left : 100px;
-  margin-right : 100px;
+  margin-left : 50px;
+  margin-right : 50px;
   background-color : #DCDDE2;
 
 }
