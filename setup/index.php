@@ -1,6 +1,5 @@
 <?php
 chdir("../");
-
 if (!is_file("lib/pear/DB.php"))
      exit(_("Unable to locate your pear library files."));
 
@@ -36,22 +35,27 @@ if (!$setup->checkDirectories($content)){
 }
 
 switch ($step){
- case 0:
+ case "0":
    $title .=  "Alpha Setup";
    $setup->welcome($content);
    break;
 
- case 1:
+ case "1":
    $title .= _("Create Config File");
    $setup->createConfig($content);
    break;
 
- case 2:
+ case "1a":
+   $title .= _("Create Database");
+   $setup->createDatabase($content);
+   break;
+
+ case "2":
    $title .= _("Create Core");
    $result = $setup->createCore($content);
    break;
 
- case 3:
+ case "3":
    $title .= _("Install Modules");
    $result = $setup->installModules($content);
    if ($result)
