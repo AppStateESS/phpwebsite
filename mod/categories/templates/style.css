@@ -87,15 +87,6 @@
 }
 
 
-.page-title {
-  background-color : #F2F2F2;
-  border-left : solid 2px #B3D1FF;
-  border-bottom : solid 2px #B3D1FF;
-  padding : .2em;
-  font-size : 1.1em;
-  font-weight : bold;
-}
-
 .cat-error {
   background-color : red;
   color : white;
