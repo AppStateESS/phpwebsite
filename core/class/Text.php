@@ -11,6 +11,8 @@
  * @package Core
  */
 
+PHPWS_Core::configRequireOnce("core", "profanity.php");
+
 class PHPWS_Text {
 
   /**
@@ -68,7 +70,11 @@ class PHPWS_Text {
   function breaker($text){
     if (!is_string($text)) exit ("breaker() was not sent a string");
 
-    $text_array = PHPWS_Text::sentence($text);
+    $text_array = PHPWS_Text::sentence(trim($text));
+
+    if (count($text_array) == 1)
+      return $text . "\n";
+
     $lines = count($text_array);
     $endings = array ("<br \/>",
 		      "<br>",
@@ -111,6 +117,7 @@ class PHPWS_Text {
 	$content[] = $sentence."\n";
       }
     }
+
     return implode("", $content);
   }// END FUNC breaker()
 
@@ -127,12 +134,6 @@ class PHPWS_Text {
    * @return  string  text         Stripped text
    */
   function parseInput($text, $allowedTags=NULL){
-    $text = PHPWS_Text::stripSlashQuotes($text);
-
-    if ( !preg_match("/src=[\"'][\w\.\/:]+.(jpg|gif|jpeg|bmp|png)[\"']/iU", $text) || 
-	 preg_match("/onload=/i", $text))
-      $text = preg_replace("/<img.+>/Uei", "", $text);
-
     if ($allowedTags == "none")
       $allowedTagString = NULL;
     elseif (is_array($allowedTags))
@@ -142,25 +143,29 @@ class PHPWS_Text {
     else
       $allowedTagString = PHPWS_ALLOWED_TAGS;
 
-    $replace_source = array("/(\[code\])(.*)(\[\/code\])/seU",
-			    "/<br>/",
-			    "/'/");
-    $replace_dest = array("'\\1' . str_replace('\n', '', PHPWS_Text::utfEncode('\\2')) . '\\3'",
-			  "<br />",
-			  "&#39;");
-
-    $text = preg_replace($replace_source, $replace_dest, $text);
-
-    return strip_tags($text, $allowedTagString);
+    $text = strip_tags($text, $allowedTagString);
+    PHPWS_Text::encodeXHTML($text);
+    return $text;
   }
 
-  function utfEncode($text){
-    $text = PHPWS_Text::stripSlashQuotes($text);
+  function XHTMLArray(){
+    $xhtml["\$"] = "&#x0024;";
+    $xhtml["<br>"] = "<br />";
+    
+    return $xhtml;
+  }
 
-    $search = array("/</", "/>/");
-    $replace = array('&#x003c;', '&#x003e;');
+  function encodeXHTML(&$text){
+    $xhtml = PHPWS_Text::XHTMLArray();
+    $text = strtr($text, $xhtml);
+    $text = preg_replace("/&(?!\w+;)(?!#)/U", "&amp;\\1", $text);
+    $text = htmlentities($text, ENT_QUOTES);
+    return $text;
+  }
 
-    return preg_replace($search, $replace, $text);
+  function textareaDecode($text){
+    $text = str_replace("<br />", "", $text);
+    return $text;
   }
 
   /**
@@ -183,21 +188,20 @@ class PHPWS_Text {
     $options = $config["HTML_BBCodeParser"];
     unset($options);
 
+
     if (FILTER_PROFANITY) 
       $text = PHPWS_Text::profanityFilter($text);
-
-    if ($printTags)
-      $text = htmlspecialchars($text);
-
-    $text = preg_replace("/&(?!\w+;)(?!#)/U", "&#x0026;\\1", $text);
-
-    $text = str_replace("\$", '&#x0024;', $text);
 
     // Parse BBCode
     $parser = new HTML_BBCodeParser();
     $parser->setText($text);
     $parser->parse();
-    return PHPWS_Text::breaker($parser->getParsed());
+    $text = $parser->getParsed();
+    $text = PHPWS_Text::breaker($text);
+    if ($printTags == FALSE)
+      $text = html_entity_decode($text, ENT_QUOTES);
+
+    return $text;
   }
 
   /**
@@ -257,6 +261,13 @@ class PHPWS_Text {
   }// END FUNC isValidInput()
 
 
+  function secureLink($title, $module=NULL, $getVars=NULL, $target=NULL){
+    if (Current_User::isLogged())
+      $getVars['authkey'] = Current_User::getAuthKey();
+
+    return PHPWS_Text::moduleLink($title, $module, $getVars, $target);
+  }
+
   /**
    * Allows a quick link function for phpWebSite modules to the index.php.
    * 
@@ -275,14 +286,17 @@ class PHPWS_Text {
     $link[] = "index.php";
 
     $link[] = "?";
-    
-    $vars[] = "module=$module";
+
+    if (isset($module))
+      $vars[] = "module=$module";
+
     if (is_array($getVars)){
       foreach ($getVars as $var_name=>$value)
 	$vars[] = $var_name . "=" . $value;
     }
-    
-    $link[] = implode("&amp;", $vars);
+
+    if (isset($vars))
+      $link[] = implode("&amp;", $vars);
 
     $link[] = "\"";
 
