@@ -12,6 +12,7 @@ define("PHPWS_INVALID_VALUE",         -7);
 define("PHPWS_NO_MODULES",            -8);
 define("PHPWS_WRONG_TYPE",            -9);
 define("PHPWS_DIR_NOT_SECURE",       -10);
+define("PHPWS_DIR_CANT_CREATE",      -11);
 
 /*********** Database.php ***************/
 
