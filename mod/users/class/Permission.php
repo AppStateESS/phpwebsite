@@ -11,13 +11,14 @@ class Users_Permission {
   function allow($module, $subpermission=NULL, $item_id=NULL, $returnType=FALSE){
     if (!isset($this->permissions[$module])){
       $result = Users_Permission::loadPermission($module, $this->permissions);
+      if (PEAR::isError($result))
+	return $result;
     }
 
     $permissionLvl = (int)$this->permissions[$module]['permission_level'];
 
     if (!$returnType && $permissionLvl == 0)
       return FALSE;
-      
 
     if(isset($this->permissions[$module]['permissions'])){
       if (isset($subpermission)){
@@ -25,6 +26,7 @@ class Users_Permission {
 	  PHPWS_Error::log(USER_ERR_FAIL_ON_SUBPERM, "users", "allow", "SubPerm: $subpermission");
 	  return FALSE;
 	}
+
 	$allow = $this->permissions[$module]['permissions'][$subpermission];
 
 	if ((bool)$allow){
@@ -60,6 +62,7 @@ class Users_Permission {
 
     $permDB = new PHPWS_DB($permTable);
     $itemDB = new PHPWS_DB($itemTable);
+    $itemDB->addColumn("item_id");
 
     if (isset($groups) && count($groups)){
       foreach ($groups as $group_id){
@@ -239,8 +242,10 @@ class Users_Permission {
   }
 
   function assignPermissions($module, $item_id=NULL){
-    $content = NULL;
+    if ((int)Current_User::getPermissionLevel($module) < FULL_PERMISSION)
+      return array('ASSIGNED_GROUPS_TITLE'=>NULL, 'ASSIGNED_GROUPS'=>NULL);
 
+    $content = NULL;
     $groups = Users_Permission::_getPartial($module);
 
     if (PEAR::isError($groups)){
@@ -297,6 +302,7 @@ class Users_Permission {
     $form->addMultiple("assigned_groups", $inputs);
     $form->setId("assigned_groups", "assigned_groups");
     $form->setLabel("assigned_groups", _("Assign Group Permissions"));
+    $form->setWidth("assigned_groups", "200px");
 
     if (isset($item_id)){
       $itemTable = Users_Permission::getItemPermissionTableName($module);
@@ -312,10 +318,20 @@ class Users_Permission {
       if (!empty($result))
 	$form->setMatch("assigned_groups", $result);
     }
-    
+
     $template = $form->getTemplate();
 
     return $template;
+  }
+
+  function getPermissionLevel($module){
+    if (!isset($this->permissions))
+      $this->loadPermission($module, $this->permissions);
+
+    if (!isset($this->permissions[$module]))
+	return NULL;
+
+    return $this->permissions[$module]['permission_level'];
   }
 
   function savePermissions($module, $item_id){
