@@ -331,8 +331,9 @@ class Setup{
       $content[] = "<pre>" . implode("<br />", $writableDir) . "</pre>";
       $content[] = _("Please make these changes and return.") . "<br />";
       $content[] = PHPWS_Text::link("help/permissions." . DEFAULT_LANGUAGE . ".txt", _("Permission Help"), NULL, "index");
-      return;
+      return FALSE;
     }
+    else return TRUE;
   }
 
   function show($content, $title=NULL){
@@ -386,7 +387,13 @@ class Setup{
     $core = & PHPWS_Core::loadAsMod();
     $boost = new PHPWS_Boost;
     $boost->setModule($core);
-    $boost->install();
+    $result = $boost->install(FALSE);
+    $content[] = $boost->getLog() . "<br /><br />";
+
+   if ($result == TRUE){
+     $content[] = _("Core installation successful.") . "<br />";
+     $content[] = PHPWS_Text::link("index.php?step=3", _("Continue to Module Installation"));
+   }
   }
 
 
@@ -397,6 +404,37 @@ class Setup{
       return "ini_set(\"include_path\", \".;" . $iniDir . "lib\\pear\\\");";
     else
       return "ini_set(\"include_path\", \".:" . $iniDir . "lib/pear/\");";
+  }
+
+  function installModules(&$content){
+    $finish = TRUE;
+    $modList = & PHPWS_Boost::toInstall($modules);
+
+    foreach ($modList as $title => $cond){
+      if ($cond == TRUE)
+	continue;
+
+      $finish = FALSE;
+      $boost = new PHPWS_Boost;
+      $result = $boost->loadModule($title);
+      if (PEAR::isError($result)){
+	PHPWS_Error::log($result);
+	continue;
+      }
+      $content[] = "<b>" . _("Installing") . " - " . $boost->module->getProperName(TRUE) . "</b><br />";
+      $result = $boost->install();
+
+      $content[] = $boost->getLog() . "<br /><br />";
+      if (PHPWS_Boost::isLocked($title)){
+	echo "$title is locked!";
+	break;
+      }
+    }
+  }
+
+  function installModule($title){
+    $module = new PHPWS_Module($title);
+
   }
 
 }
