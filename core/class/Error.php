@@ -6,7 +6,7 @@ class PHPWS_Error {
     $errorFile = PHPWS_Core::getConfigFile($module, "error.php");
 
     if (PEAR::isError($errorFile))
-      exit($errorFile->getMessage());
+      return PHPWS_Error::get(PHPWS_NO_ERROR_FILE, "core", "PHPWS_Error::get", "Module: $module");
 
     include $errorFile;
     if (!isset($errors))
@@ -24,9 +24,9 @@ class PHPWS_Error {
       $fullError[] = "::$funcName()";
 
     if (isset($errors[$value]))
-      $message = $errors[$value] . ".";
+      $message = $errors[$value];
     else
-      $message = $errors[PHPWS_UNKNOWN] . ".";
+      $message = $errors[PHPWS_UNKNOWN];
 
     $fullError[] = " - " . $message;
 
@@ -38,6 +38,7 @@ class PHPWS_Error {
     }
 
     $error = &PEAR::raiseError($message, $value, NULL, NULL, implode("", $fullError));
+
     return $error;
   }
 
