@@ -50,8 +50,9 @@ class Clipboard
 
   function show()
   {
-    if (!isset($_SESSION['Clipboard']))
+    if (!isset($_SESSION['Clipboard'])) {
       Clipboard::init();
+    }
 
     if (empty($_SESSION['Clipboard']->components)) {
       Clipboard::clear();
