@@ -261,11 +261,11 @@ class PHPWS_Text {
   }// END FUNC isValidInput()
 
 
-  function secureLink($title, $module=NULL, $getVars=NULL, $target=NULL){
+  function secureLink($subject, $module=NULL, $getVars=NULL, $target=NULL, $title=NULL){
     if (Current_User::isLogged())
       $getVars['authkey'] = Current_User::getAuthKey();
 
-    return PHPWS_Text::moduleLink($title, $module, $getVars, $target);
+    return PHPWS_Text::moduleLink($subject, $module, $getVars, $target, $title);
   }
 
   /**
@@ -281,8 +281,14 @@ class PHPWS_Text {
    * @param array getVars Associative array of GET variable to append to the link
    * @return string The complated link.
    */
-  function moduleLink($title, $module=NULL, $getVars=NULL, $target=NULL){
-    $link[] = "<a href=\"./";
+  function moduleLink($subject, $module=NULL, $getVars=NULL, $target=NULL, $title=NULL){
+    $link[] = "<a ";
+
+    if (isset($title))
+      $link[] = "title=\"" . strip_tags($title) . "\" ";
+
+    $link[] = "href=\"./";
+
     $link[] = "index.php";
 
     if (isset($module)){
@@ -307,7 +313,7 @@ class PHPWS_Text {
 
     $link[] = ">";
 
-    return implode("", $link) . strip_tags($title, "<img>") . "</a>";
+    return implode("", $link) . strip_tags($subject, "<img>") . "</a>";
   }// END FUNC indexLink()
 
 
