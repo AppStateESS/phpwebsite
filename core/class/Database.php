@@ -8,6 +8,11 @@
  */
 require_once 'DB.php';
 
+// Changing LOG_DB to TRUE will cause ALL DB traffic to get logged
+// This can log can get very large, very fast. DO NOT turn it on
+// on a live server. It is for development purposes only.
+define ('LOG_DB', FALSE);
+
 define ('DEFAULT_MODE', DB_FETCHMODE_ASSOC);
 
 class PHPWS_DB {
@@ -108,8 +113,22 @@ class PHPWS_DB {
     return TRUE;
   }
 
-  function query($sql){
+  function logDB($sql)
+  {
+    if (!defined('LOG_DB') || LOG_DB != TRUE) {
+      return;
+    }
+
+    PHPWS_Core::log($sql, 'db.log');
+  }
+
+  function query($sql, $prefix=FALSE){
     PHPWS_DB::touchDB();
+    if ($prefix == TRUE) {
+      $sql = PHPWS_DB::prefixTable($sql);
+    }
+
+    PHPWS_DB::logDB($sql);
     return $GLOBALS['PEAR_DB']->query($sql);
   }
 
@@ -639,7 +658,6 @@ class PHPWS_DB {
     }
 
     $query = 'INSERT INTO ' . $table . ' (' . implode(', ', $columns) . ') VALUES (' . implode(', ', $set) . ')';
-
     $result = PHPWS_DB::query($query);
 
     if (DB::isError($result))
@@ -660,7 +678,6 @@ class PHPWS_DB {
       $columns[] = $index . ' = ' . PHPWS_DB::dbReady($data);
 
     $query = "UPDATE $table SET " . implode(', ', $columns) ." $where";
-
     $result = PHPWS_DB::query($query);
 
     if (DB::isError($result))
@@ -682,7 +699,6 @@ class PHPWS_DB {
   }
 
   function count(){
-
     return $this->select('one');
   }
 
@@ -792,18 +808,20 @@ class PHPWS_DB {
 	return PHPWS_Error::get(PHPWS_DB_NO_COLUMN_SET, 'core', 'PHPWS_DB::select');
 
       if (isset($indexby)){
+	PHPWS_DB::logDB($sql);
 	$result = PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getAll($sql, NULL, $mode), $type);
 	if (PEAR::isError($result))
 	  return $result;
 
 	return PHPWS_DB::_indexBy($result, $indexby, TRUE);
       }
-
+      PHPWS_DB::logDB($sql);
       return PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getCol($sql), $type);
       break;
 
     case 'min':
     case 'max':
+      PHPWS_DB::logDB($sql);
       $result = $GLOBALS['PEAR_DB']->query($sql);
       if (DB::isError($result))
 	return $result;
@@ -814,16 +832,19 @@ class PHPWS_DB {
       break;
 
     case 'one':
+      PHPWS_DB::logDB($sql);
       $value = $GLOBALS['PEAR_DB']->getOne($sql, NULL, $mode);
       db_trim($value);
       return $value;
       break;
 
     case 'row':
+      PHPWS_DB::logDB($sql);
       return PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getRow($sql, array(), $mode), $type);
       break;
 
     case 'count':
+      PHPWS_DB::logDB($sql);
       $result = $this->select('row', $sql);
       if (PEAR::isError($result)){
 	return $result;
@@ -838,6 +859,7 @@ class PHPWS_DB {
 
     case 'all':
     default:
+      PHPWS_DB::logDB($sql);
       $result = PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getAll($sql, NULL, $mode), $type);
       if (PEAR::isError($result))
 	return $result;
@@ -1154,6 +1176,12 @@ class PHPWS_DB {
 
   function quote($text){
     return $GLOBALS['PEAR_DB']->quote($text);
+  }
+
+  function prefixTable($sql)
+  {
+    $tablename = PHPWS_DB::extractTableName($sql);
+    return str_replace($tablename, PHPWS_DB::getPrefix() . $tablename, $sql);
   }
 
   function extractTableName($sql_value){
