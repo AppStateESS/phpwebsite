@@ -1,3 +1,5 @@
+
+
 ul.link-list {
   padding : 0;
 }
@@ -8,60 +10,77 @@ ul.link-list li {
 
 /* -------- View Categories --------- */
 #category-item-list {
+  display : block;		    
   padding : 4px;
   margin : 5px;
-  border : 1px solid black;		    
-  float : right;
+  border : 1px black solid;
 }
 
-
-ul.cat-list, ul.cat-list ul {
-  width: 150px;
-  background-color: #DEE2BD;
-  padding : 0px;
-  cursor: default;
-  margin : 2px;
-}
-ul.cat-list li {
-  height : 20px;
-  list-style-type: none;
-  position: relative;
-  padding : 4px;
-  margin : -1px 1px -1px 1px;
-  color: black;
-  border : black 1px solid;
-}
-ul.cat-list li > ul {
-  z-index : 1;
-  display: none;
-  position: absolute;
-  top: 5px;
-  left: 120px;
-}
-ul.cat-list li:hover, ul.cat-list li.CSStoHighlight {
-  background-color: #ffa;
-  color: #000;
-}
-ul.cat-list ul.CSStoShow {
-  display: block;
-}
-ul.cat-list li:hover > ul {
-  display: block;
+#cookie-menu {
+margin-bottom : 10px;
 }
 
+/*  List by James N Pope via http://css.maxdesign.com.au/ */
 
-ul.cat-list li a {
- color: black;
- display: block;
- width: 100%;
- text-decoration: underline;
- }
+ul#navlist { font-family: sans-serif; }
 
-ul.cat-list li a:hover, ul.cat-list li a.CSStoHighLink {
- color: #000;
+ul#navlist a
+{
+font-weight: bold;
+text-decoration: none;
 }
 
-ul.cat-list li:hover > a {
- color: #000;
+ul#navlist, ul#navlist ul, ul#navlist li
+{
+margin: 0px;
+padding: 0px;
+list-style-type: none;
 }
 
+ul#navlist li { float: left;}
+
+ul#navlist li a
+{
+color: #ffffff;
+background-color: #000000;
+padding: 3px;
+border: 1px #ffffff outset;
+}
+
+ul#navlist li a:hover
+{
+color: white;
+background-color: grey;
+}
+
+ul#navlist li a:active
+{
+color: #cccccc;
+background-color: #000000;
+border: 1px #ffffff inset;
+}
+
+ul#subnavlist { display: none; }
+ul#subnavlist li { float: none; }
+
+ul#subnavlist li a
+{
+padding: 0px;
+margin: 0px;
+}
+
+ul#navlist li:hover ul#subnavlist
+{
+display: block;
+position: absolute;
+font-size: 8pt;
+padding-top: 5px;
+}
+
+ul#navlist li:hover ul#subnavlist li a
+{
+display: block;
+width: 10em;
+border: none;
+padding: 2px;
+}
