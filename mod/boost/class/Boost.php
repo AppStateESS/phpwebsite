@@ -23,7 +23,7 @@ class PHPWS_Boost {
   var $installedMods = NULL;
 
   function addModule($module){
-    if (!is_object($module) || get_class($module) != "phpws_module")
+    if (!is_object($module) || strtolower(get_class($module)) != "phpws_module")
       return PHPWS_Error::get(BOOST_ERR_NOT_MODULE, "boost", "setModule");
 
     $this->modules[$module->getTitle()] = $module;
