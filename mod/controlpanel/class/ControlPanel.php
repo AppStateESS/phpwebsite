@@ -2,17 +2,19 @@
 
 class PHPWS_ControlPanel {
 
-  function display(){
+  function display($content=NULL){
     PHPWS_Core::initModClass("controlpanel", "Panel.php");
     $panel = new PHPWS_Panel('controlpanel');
     $panel->loadTabs();
 
-    $allLinks = PHPWS_ControlPanel::getAllLinks();
-    foreach ($allLinks[$panel->getCurrentTab()] as $id => $link)
+    if (!isset($content)){
+      $allLinks = PHPWS_ControlPanel::getAllLinks();
+      foreach ($allLinks[$panel->getCurrentTab()] as $id => $link)
 	$content[] = $link->view();
   
-
-    $panel->setContent(implode("", $content));
+      $panel->setContent(implode("", $content));
+    } else
+      $panel->setContent($content);
     return $panel->display();
   }
 
