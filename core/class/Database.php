@@ -891,7 +891,7 @@ class PHPWS_DB {
       return $items;
   }
 
-  function saveObject($object, $stripChar=FALSE){
+  function saveObject(&$object, $stripChar=FALSE){
 
     if (!is_object($object))
       return PHPWS_Error::get(PHPWS_WRONG_TYPE, "core", "PHPWS_DB::saveObject", _("Type") . ": " . gettype($object));
@@ -912,8 +912,15 @@ class PHPWS_DB {
 
     if (isset($this->where) && count($this->where))
       $result = $this->update();
-    else
+    else {
       $result = $this->insert();
+      if (is_numeric($result)){
+	if (in_array("id", $object_vars))
+	  $object->id = (int)$result;
+	elseif (in_array("_id", $object_vars))
+	  $object->_id = (int)$result;
+      }
+    }
 
     $this->resetValues();
 
