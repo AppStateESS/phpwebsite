@@ -239,6 +239,13 @@ class PHPWS_Core {
     exit();
   }
 
+  function isWindows(){
+    if (isset($_SERVER['WINDIR']) || preg_match("/(microsoft|win32)/i", $_SERVER['SERVER_SOFTWARE']))
+      return TRUE;
+    else
+      return FALSE;
+  }
+
 }// End of core class
 
 
