@@ -10,6 +10,8 @@
    GLOBAL variables.
 
 4) Use the error class functionality. It makes it easier to debug your code.
+   Do not all ANY errors to be seen by the user. Deal with them internally
+   by logging the errors and/or serving a non specific message to the user.
 
 5) When making a database dump, make it generic. For example, KEY doesn't work
    in postgres. Postgres also ignores capitalization when creating db columns.
@@ -17,4 +19,4 @@
 
 6) When a user (not an admin) is entering ANY data, you should not
    allow html tags. Use the parseText function as anonymous. They
-   should use BBCode parsing only.
+   should use BBCode or Wiki parsing only.
