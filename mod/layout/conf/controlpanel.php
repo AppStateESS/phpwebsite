@@ -1,6 +1,6 @@
 <?php
 
-$links[] = array("label"       => _("Layout"),
+$link[] = array("label"       => _("Layout"),
 		 "restricted"  => TRUE,
 		 "url"         => "index.php?module=layout&action[admin]=main",
 		 "description" => _("Control the layout of your site."),

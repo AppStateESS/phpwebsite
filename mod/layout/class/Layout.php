@@ -215,7 +215,6 @@ class Layout {
       return;
     }
 
-
     foreach ($finalList as $contentVar=>$template){
 
       // Need to check for theme variable
