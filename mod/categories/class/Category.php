@@ -129,8 +129,13 @@ class Category{
     if (isset($this->id))
       $db->addWhere("id", $this->id);
 
-    $tmpIcon = $this->icon;
-    $this->icon = $this->icon->getId();
+    if (isset($this->icon)) {
+      $tmpIcon = $this->icon;
+      $this->icon = $this->icon->getId();
+    } else {
+      $tmpIcon = NULL;
+    }
+
     $result = $db->saveObject($this);
     $this->icon = $tmpIcon;
     return $result;
