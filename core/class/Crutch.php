@@ -12,13 +12,18 @@ function _($text){
  */
 
 define("PHPWS_TBL_PREFIX", TABLE_PREFIX);
+PHPWS_Core::initCoreClass("WizardBag.php");
+PHPWS_Core::initCoreClass("Crutch_Form.php");
+PHPWS_Core::initCoreClass("Crutch_DB.php");
 
 
 class oldCore extends oldDB{
-  var $home_dir;
+  var $home_dir = NULL;
+  var $datetime = NULL;
 
   function oldCore(){
     $this->home_dir = "";
+    $this->datetime = new PHPWS_DateTime;
   }
 
   function moduleExists($module){
@@ -27,48 +32,30 @@ class oldCore extends oldDB{
 
 }
 
+class PHPWS_DateTime{
+  var $date_month;
+  var $date_day;
+  var $date_year;
+  var $day_mode;
+  var $day_start;
+  var $date_order;
+  var $time_format;
+  var $time_dif;
 
-class oldDB{
-
-  function sqlImport($filename, $write=TRUE, $suppress_error=FALSE){
-    PHPWS_Core::initCoreClass("File.php");
-    $text = PHPWS_File::readFile($filename);
-    return PHPWS_DB::import($text);
+  function PHPWS_DateTime(){
+    $this->date_month  = "m";
+    $this->date_day    = "d";
+    $this->date_year   = "Y";
+    $this->day_mode    = "l";
+    $this->day_start   = PHPWS_DAY_START;
+    $this->time_dif    = PHPWS_TIME_DIFF * 3600;
+    
+    // Deprecated.  Use above defines
+    $this->date_order  = PHPWS_DATE_FORMAT;
+    $this->time_format = PHPWS_TIME_FORMAT;
   }
-
-  function sqlSelect($table_name, $match_column=NULL, $match_value=NULL, $order_by=NULL, $compare=NULL, $and_or=NULL, $limit=NULL, $mode=NULL, $test=FALSE) {
-    $sql = & new PHPWS_DB($table_name);
-    if (isset($match_column)){
-      if (is_array($match_column)){
-	foreach ($match_column as $columnName=>$columnValue){
-	  $operator = $conj = NULL;
-
-	  if (is_array($compare) && isset($compare[$columnName]))
-	    $operator = $compare[$columnName];
-	  
-	  if (is_array($and_or) && isset($and_or[$columnName]))
-	    $conj = $and_or[$columnName];
-	  
-	  $sql->addWhere($columnName, $columnValue, $operator, $conj);
-	}
-      } else {
-	$sql->addWhere($match_column, $match_value, $order_by, $compare);
-      }
-    }
-
-    return $sql->select();
-  }
-
-  function getCol($sql){
-    return PHPWS_DB::select("col", $sql);
-  }
-
-  function getAll($sql){
-    return PHPWS_DB::select("all", $sql);
-  }
-
-
 }
+
 
 class oldLayout {
   var $current_theme;
@@ -99,8 +86,10 @@ class PHPWS_Crutch {
   }
 
   function startSessions(){
-    if (!isset($_SESSION['OBJ_user']))
+    if (!isset($_SESSION['OBJ_user'])){
       $_SESSION['OBJ_user'] = & $_SESSION['User'];
+      $_SESSION['OBJ_user']->username = $_SESSION['OBJ_user']->getUsername();
+    }
 
     if (!isset($_SESSION['translate']))
       $_SESSION['translate'] = & new oldTranslate;
