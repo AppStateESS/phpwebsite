@@ -1,0 +1,26 @@
+Layout
+-----------
+Have an option for templates to comment their position for debugging.
+
+Put in a system for theme developers to create default positions for
+modules.
+
+
+Users
+-----------
+Give the admin the ability to ban someone from logging in. Block ip as
+well?
+
+Figure out a clean way to assign permissions to a specific user (i.e.
+without pulling up the entire list of users)
+
+Finish new user signup.
+
+Make assigning of groups by a restricted user limited. Don't want them
+to give more permissions to themselves than they currently have.
+
+Add display name
+
+Images
+------------
+Add image security from 0.x
