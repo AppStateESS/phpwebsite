@@ -800,7 +800,12 @@ class PHPWS_DB {
       if (PEAR::isError($result)){
 	return $result;
       }
-      return $result['COUNT(*)'];
+      if (count($result) > 1) {
+	return $result;
+      }
+      else {
+	return $result['COUNT(*)'];
+      }
       break;
 
     case 'all':
@@ -1009,13 +1014,31 @@ class PHPWS_DB {
 
 
   function homogenize(&$query){
+    $query_list = explode(',', $query);
+
     $from = array('/int\(\d+\)/iU',
 		  '/mediumtext/'
 		  );
     $to = array('int',
 		'text'
 		);
-    $query = preg_replace($from, $to, $query);
+
+    foreach ($query_list as $command) {
+      if (preg_match ('/int/i', $command)) {
+	if(!preg_match('/null/i', $command)) {
+	  $command .= ' NOT NULL';
+	}
+
+	if(!preg_match('/default/i', $command)) {
+	  $command .= ' DEFAULT 0';
+	}
+      }
+
+      $command = preg_replace($from, $to, $command);
+      $newlist[] = $command;
+    }
+
+    $query = implode(',', $newlist);
 
     $this->_sql->readyImport($query);
   }
