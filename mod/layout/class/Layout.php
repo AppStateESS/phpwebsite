@@ -362,9 +362,9 @@ class Layout {
       return PHPWS_Error::get();
 
     PHPWS_CORE::initCoreClass("File.php");
-    $headfile    = "java/$script/head.js";
-    $bodyfile    = "java/$script/body.js";
-    $defaultfile = "java/$script/default.php";
+    $headfile    = "javascript/$script/head.js";
+    $bodyfile    = "javascript/$script/body.js";
+    $defaultfile = "javascript/$script/default.php";
 
     if (is_file($defaultfile))
       include $defaultfile;
