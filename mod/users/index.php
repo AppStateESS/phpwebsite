@@ -1,4 +1,7 @@
 <?php
+
+//echo $_SESSION['User']->debug();
+
 $DB = new PHPWS_DB("user_permissions");
 if (!isset($_REQUEST['action'])){
      return;
@@ -28,7 +31,7 @@ switch ($area){
    break;
 
  case "closed":
-   if (!$_SESSION['User']->allow_access("users"))
+   if (!$_SESSION['User']->allow("users", "user"))
      return;
    switch ($command){
    case "admin":
@@ -40,7 +43,6 @@ switch ($area){
 
    break;
 }// End area switch
-  
 
- 
+
 ?>
