@@ -163,4 +163,21 @@ define("MAX_IMAGE_SIZE", 50000);
 define("MAX_IMAGE_WIDTH", 800);
 define("MAX_IMAGE_HEIGHT", 600);
 
+/******************** CACHING **********************************/
+/**
+ * There are two forms of caching in phpWebSite, both developed by
+ * the PEAR team:
+ * 1) Cache_Lite - a data caching method
+ * 2) Sigma      - a template caching method
+ *
+ * You have the option of turning the template cache here.
+ * 
+ * The cache directory MUST BE WRITABLE by the webserver
+ */
+
+define("ALLOW_CACHE_LITE", TRUE);
+define("ALLOW_SIGMA_CACHE", TRUE);
+define("CACHE_LIFETIME", 3600);
+define("CACHE_DIRECTORY", "/tmp");
+
 ?>
