@@ -15,19 +15,35 @@ function controlpanel_register($module, &$content){
   if (isset($tabs) && is_array($tabs)){
     foreach ($tabs as $info){
       $tab = new PHPWS_Panel_Tab;
+      if (!isset($info['title'])){
+	$content[] = _("Unable to create tab.") . " " . _("Missing title.");
+	continue;
+      }	
       $tab->setTitle($info['title']);
+
+      if (!isset($info['link'])){
+	$content[] = _("Unable to create tab.") . " " . _("Missing link.");
+	continue;
+      }	
+
       $tab->setLink($info['link']);
-      $tab->setLabel($info['label']);
+
+      if (!isset($info['label']))
+	$tab->setLabel(strtolower(preg_replace("/\W/", "_", $info['title'])));
+      else
+	$tab->setLabel($info['label']);
 
       if (isset($info['itemname']))
 	$tab->setItemname($info['itemname']);
       else
-	$tab->setItemname($module);
+	$tab->setItemname("controlpanel");
 
       $tab->save();
     }
     $content[] = _print(_("Control Panel tabs created for [var1]."), $module);
-  }
+  } else
+    PHPWS_Boost::addLog($module, _("No Control Panel tabs found."));
+    
 
   if (isset($link) && is_array($link)){
     $db = new PHPWS_DB("controlpanel_tab");
@@ -62,10 +78,16 @@ function controlpanel_register($module, &$content){
 	PHPWS_Error::log($result);
 	continue;
       }
-      elseif (!isset($result))
-	exit("problem");
+      elseif (!isset($result)){
+	$db->reset();
+	$db->addWhere("label", "unsorted");
+	$db->addColumn("id");
+	$tab_id = $db->select("one");
+	PHPWS_Boost::addLog($module, _("Unable to load a link into a specified tab."));
+      } else
+	$tab_id = $result['id'];
 
-      $modlink->setTab($result['id']);
+      $modlink->setTab($tab_id);
       $result = $modlink->save();
       if (PEAR::isError($result)){
 	PHPWS_Error::log($result);
@@ -74,11 +96,11 @@ function controlpanel_register($module, &$content){
       }
       $db->resetWhere();
     }
-    PHPWS_ControlPanel::reset();
     $content[] = _print(_("Control Panel links created for [var1]."), $module);
-  }
+  } else
+    PHPWS_Boost::addLog($module, _("No Control Panel links found."));
 
-
+  PHPWS_ControlPanel::reset();
   return TRUE;
 }
 
