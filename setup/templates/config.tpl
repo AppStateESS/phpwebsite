@@ -103,6 +103,13 @@ define("FORCE_THEME_TEMPLATES", FALSE);
 
 define("FORCE_MOD_TEMPLATES", TRUE);
 
+/************************ POST CHECK ***************************/
+/**
+ * Determines how many previous posts the session will store. If
+ * isPosted is called and a previous post matches the list, the
+ * developer can prevent back clicking and refresh problems.
+ */
+define("MAX_POST_TRACK", 10);
 
 /*********************** CONFIG FILES **************************/
 /**
