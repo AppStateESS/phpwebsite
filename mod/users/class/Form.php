@@ -50,6 +50,12 @@ class PHPWS_User_Form {
 
     return PHPWS_Template::process($template, "users", "forms/loginBox.tpl");
   }
+
+  function adminPanel(){
+    $tabs = PHPWS_ControlPanel::getTabs();
+
+  }
+
 }
 
 ?>
