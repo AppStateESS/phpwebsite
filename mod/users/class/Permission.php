@@ -5,7 +5,7 @@ class PHPWS_User_Permission{
   function createPermissions($module){
     include "mod/$module/conf/permission.php";
     if (!isset($permissions))
-      return PEAR::raiseError(PHPWS_User::errorMessage(USER_ERR_PERM_FILE) . ": <b>$module</b>", USER_ERR_PERM_FILE);
+      return PHPWS_User::error(USER_ERR_PERM_FILE, "createPermissions", "Module: $module");
 
     foreach ($permissions as $itemName=>$subpermissions){
       $result = PHPWS_User_Permission::createPermissionTable($itemName, $subpermissions);
@@ -29,7 +29,7 @@ class PHPWS_User_Permission{
     $columnSetting = "smallint NOT NULL default '0'";
 
     if (PHPWS_DB::isTable($tableName))
-      return PEAR::raiseError(PHPWS_User::errorMessage(USER_ERR_PERM_TABLE) . ": <b>$tableName</b>", USER_ERR_PERM_TABLE);
+      return PHPWS_User::error(USER_ERR_PERM_TABLE, "createPermissionTable", "Table Name: $tableName");
 
     $DB = new PHPWS_DB($tableName);
     
@@ -48,7 +48,7 @@ class PHPWS_User_Permission{
     $tableName = PHPWS_User_Permission::getItemPermissionTableName($itemName);
 
     if (PHPWS_DB::isTable($tableName))
-      return PEAR::raiseError(PHPWS_User::errorMessage(USER_ERR_PERM_TABLE) . ": <b>$tableName</b>", USER_ERR_PERM_TABLE);
+      return PHPWS_User::error(USER_ERR_PERM_TABLE, "createItemPermissionTable", "Table Name: $tableName");
     
     $DB = new PHPWS_DB($tableName);
     

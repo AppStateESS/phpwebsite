@@ -51,16 +51,76 @@ class PHPWS_User_Form {
     return PHPWS_Template::process($template, "users", "forms/loginBox.tpl");
   }
 
-  function adminPanel(){
+  function adminPanel($content){
     PHPWS_Core::initModClass("controlpanel", "Panel.php");
-    $tabs["new_user"] = array("title"=>"New Users", "link"=>"index.php?module=users&amp;action[admin]=new_user");
-    $tabs["manage_users"] = array("title"=>"Manage Users", "link"=>"index.php?module=users&amp;action[admin]=manage_users");
+
+    if ($_SESSION['User']->allow("users", "add_edit_users")){
+      $tabs["new_user"] = array("title"=>"New User", "link"=>"index.php?module=users&amp;action[admin]=main");
+      $tabs["manage_users"] = array("title"=>"Manage Users", "link"=>"index.php?module=users&amp;action[admin]=main");
+    }
+
+    if ($_SESSION['User']->allow("users", "add_edit_groups")){
+      $tabs["new_group"] = array("title"=>"New Group", "link"=>"index.php?module=users&amp;action[admin]=main");
+      $tabs["manage_groups"] = array("title"=>"Manage Groups", "link"=>"index.php?module=users&amp;action[admin]=main");
+    }
+
 
     $panel = new PHPWS_Panel("users");
     $panel->quickSetTabs($tabs);
-    $panel->setContent("something");
+    $panel->setContent($content);
     PHPWS_Layout::add(PHPWS_ControlPanel::display($panel->display()));
+  }
 
+  function newUser($user=NULL){
+    $form = &PHPWS_User_Form::userForm($user);
+    $form->add("submit", "submit", "Add User");
+
+    $template = $form->getTemplate();
+    if (isset($user->message)){
+      $template['MESSAGE'] = implode("<br />", $user->message);
+      $user->message = NULL;
+    }
+
+    $result = PHPWS_Template::process($template, "users", "forms/userForm.tpl");
+    return $result;
+  }
+
+  function &userForm($user=NULL){
+    if (!isset($user))
+      $user = new PHPWS_User;
+
+    $form = new PHPWS_Form("new_user");
+    $form->add("module", "hidden", "users");
+    $form->add("action[admin]", "hidden", "post_newUser");
+    $form->add("username", "text", $user->getUsername());
+    $form->add("password1", "password");
+    $form->add("password2", "password");
+
+    return $form;
+  }
+
+  function &postUser(){
+    $user = new PHPWS_User();
+
+    $result = $user->setUsername($_POST['username'], TRUE);
+    if (PEAR::isError($result))
+      $user->message[] = $result->getMessage();
+
+    $result = $user->checkPassword($_POST['password1'], $_POST['password2']);
+    if (PEAR::isError($result))
+      $user->message[] = $result->getMessage();
+    else
+      $user->setPassword($_POST['password1']);
+
+    return $user;
+  }
+
+  function adminForm($command, $user=NULL){
+    switch ($command){
+    case "new_user":
+      return PHPWS_User_Form::newUser($user);
+      break;
+    }
   }
 
 }
