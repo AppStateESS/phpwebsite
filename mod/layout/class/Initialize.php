@@ -17,7 +17,7 @@ class PHPWS_Layout_Init{
   function loadContentVar(){
     $DB = new PHPWS_DB("mod_layout_vars");
     if (DB::isError($result = $DB->select()))
-      return new PHPWS_Error("layout", "loadContentVar", $result->getMessage());
+      return PEAR::raiseError("layout", "loadContentVar", $result->getMessage());
     elseif (is_null($result))
       return NULL;
 
