@@ -1,21 +1,22 @@
 <?php
 
+// REMOVE !
+
 define("AUTO_ROUTE", TRUE);
 
 if (is_file("config/core/config.php")) require_once "config/core/config.php";
 else {
   if (AUTO_ROUTE == TRUE){
-    header("location:setup/");
+    header("location:http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . "setup/");
     exit();
   } else
-    exit(_("Fatal Error: Could not locate your configuration file."));
+    exit("Fatal Error: Could not locate your configuration file.");
 }
 
 require_once PHPWS_SOURCE_DIR . "inc/Functions.php";
 
 /* Show all errors */
 error_reporting (E_ALL);
-
 
 ob_start();
 
@@ -52,4 +53,5 @@ PHPWS_Core::report();
 if (isset($_REQUEST['reset']))
      PHPWS_Core::killAllSessions();
 
+     printf("%.2f mb", (memory_get_usage() / 1024) / 1024);
 ?>
