@@ -11,13 +11,6 @@ class PHPWS_ControlPanel {
 
     if (!isset($_SESSION['Control_Panel_Tabs'])){
       PHPWS_ControlPanel::loadTabs($panel);
-      $tab = $panel->tabs[$panel->getCurrentTab()];
-      $link = $tab->getLink(FALSE);
-      if (!preg_match("/module=controlpanel/", $link)){
-	$_SESSION['Control_Panel_Tabs'] = $panel->getTabs();
-	header("location:" . str_replace("&amp;", "&",$tab->getLink(FALSE)));
-	exit();
-      }
     }
     else
       $panel->setTabs($_SESSION['Control_Panel_Tabs']);
@@ -61,6 +54,22 @@ class PHPWS_ControlPanel {
       }
     } else
       $panel->setContent($content);
+
+    $tab = $panel->tabs[$panel->getCurrentTab()];
+    $link = str_replace("&amp;", "&",$tab->getLink(FALSE)) . "&tab=" . $tab->getId();
+    $current_link = ereg_replace($_SERVER['PHP_SELF'] . "\?", "", $_SERVER['REQUEST_URI']);
+
+    // Headers to the tab's link if it is not a control panel
+    // link tab. 
+    if (isset($_REQUEST['command']) &&
+	$_REQUEST['command'] == "panel_view" &&
+	!preg_match("/controlpanel/", $link) &&
+	$link != $current_link
+	){
+      header("location:$link");
+      exit();
+    }
+
 
     $_SESSION['Control_Panel_Tabs'] = $panel->getTabs();
     return $panel->display($imbed);
