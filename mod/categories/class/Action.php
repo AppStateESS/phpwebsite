@@ -22,6 +22,7 @@ class Categories_Action{
     switch ($subaction){
     case 'deleteCategory':
       Categories::delete($category);
+      $title = _('Manage Categories');
       $content[] = Categories_Action::category_list();
       break;
 
