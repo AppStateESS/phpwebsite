@@ -14,7 +14,7 @@ class User_Action {
     PHPWS_Core::initModClass('users', 'Group.php');
     $message = $content = NULL;
 
-    if (!Current_User::allow('users')){
+    if (!Current_User::authorized('users')){
       PHPWS_User::disallow(_('User tried to perform an Users admin function.'));
       return;
     }
@@ -112,6 +112,12 @@ class User_Action {
     case 'edit_group':
       $title = _('Edit Group');
       $content = User_Form::groupForm($group);
+      break;
+
+    case 'remove_group':
+      $group->kill();
+      $title = _('Manage Groups');
+      $content = User_Form::manageGroups();
       break;
 
     case 'manage_groups':
@@ -462,7 +468,7 @@ class User_Action {
     $result = $group->setName($_POST['groupname'], TRUE);
     if (PEAR::isError($result))
       return $result;
-
+    $group->setActive(TRUE);
     return TRUE;
   }
 
