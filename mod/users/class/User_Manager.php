@@ -23,22 +23,21 @@ class User_Manager extends PHPWS_List{
 		      );
 
 
+    $this->setDualTemplate(FALSE);
     $this->setModule("users");
     $this->setIdColumn("id");
     $this->setClass("User_List");
     $this->setTable("users");
 
-    $columns = array("username"    => TRUE,
-		     "last_logged" => TRUE,
-		     "active"      => TRUE,
-		     "actions"     => FALSE,
-		     "deity"       => TRUE
-		     );
+    $dbcolumns = array("username", "last_logged", "active", "deity");
+    $listcolumns = array("username", "last_logged", "active", "deity", "actions");
 
     if (!$_SESSION['User']->isDeity())
       $this->setWhere("deity = 0");
 
-    $this->setColumns($columns);
+    $this->setDbColumns($dbcolumns);
+    $this->setListColumns($listcolumns);
+
     $this->setName("user_manager");
     $this->setTemplate("manager/users.tpl");
     $this->setOp("action[admin]=main&amp;tab=manage_users");
