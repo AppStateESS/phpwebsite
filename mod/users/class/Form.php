@@ -68,7 +68,7 @@ class PHPWS_User_Form {
     $panel = new PHPWS_Panel("users");
     $panel->quickSetTabs($tabs);
     $panel->setContent($content);
-    PHPWS_Layout::add(PHPWS_ControlPanel::display($panel->display()));
+    Layout::add(PHPWS_ControlPanel::display($panel->display()));
   }
 
   function newUser($user=NULL){

@@ -1,3 +1,4 @@
+mod/users/index.php
 <?php
 
 define('USER_ERR_LABEL_NOT_FOUND', 1); 
@@ -15,9 +16,9 @@ class User_Demographic {
 
     $DB = new PHPWS_DB("user_demographic_items");
     $DB->addWhere("label", $label);
-    $item = $DB->loadItems("User_Demographic", TRUE);
+    $item = $DB->loadObjects("User_Demographic", NULL, TRUE);
     if (PEAR::isError($item))
-      PHPWS_Error::private(USER_ERR_LABEL_NOT_FOUND, "users", "User_Demographics");
+      PHPWS_Error::log(USER_ERR_LABEL_NOT_FOUND, "users", "User_Demographics");
     else
       $this = $item;
   }

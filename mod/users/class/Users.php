@@ -1,27 +1,5 @@
 <?php
 
-define("DEFAULT_ITEMNAME", "common");
-define("DEFAULT_USER_MENU", "new_user");
-
-define("USER_ERROR",               -1);
-define("USER_ERR_DUP_USERNAME",    -2);
-define("USER_ERR_DUP_GROUPNAME",   -3);
-define("USER_ERR_PERM_TABLE",      -4);
-define("USER_ERR_PERM_MISS",       -5);
-define("USER_ERR_PERM_FILE",       -6);
-define("USER_ERR_BAD_USERNAME",    -7);
-define("USER_ERR_PASSWORD_MATCH",  -8);
-define("USER_ERR_PASSWORD_LENGTH", -9);
-define("USER_ERR_PASSWORD_EASY",   -10);
-
-define("FULL_PERMISSION",    2);
-define("PARTIAL_PERMISSION", 1);
-define("NO_PERMISSION",      0);
-
-define("MSG_USER_CREATED", "User created successfully");
-
-define("PASSWORD_LENGTH", 5);
-
 class PHPWS_User extends PHPWS_Item {
   var $_username    = NULL;
   var $_password    = NULL;
@@ -119,7 +97,7 @@ class PHPWS_User extends PHPWS_Item {
   function getLogin(){
     PHPWS_Core::initModClass("users", "Form.php");
     $login = PHPWS_User_Form::logBox($_SESSION['User']->isLogged());
-    PHPWS_Layout::hold($login, "CNT_user_small", TRUE, -1);
+    Layout::hold($login, "CNT_user_small", TRUE, -1);
   }
 
 
@@ -271,83 +249,19 @@ class PHPWS_User extends PHPWS_Item {
 
   }
 
-  function loginUser($username, $password){
-    // Note assuming here we are using the one username database
-    // ie case insensitive
-
-    $registrationScript = "default.php";
-
-    include PHPWS_SOURCE_DIR . "mod/users/scripts/login/" . $registrationScript;
-
-    if (!isset($logged) or $logged !== TRUE)
-      return FALSE;
-
-    if (isset($ID)){
-      $_SESSION['User'] = new PHPWS_User($ID);
-      $_SESSION['User']->setLogged(TRUE);
-      PHPWS_User::getLogin();
-      return TRUE;
-    }
-    
-    return FALSE;
-  }
-
-
-  function logAnonymous(){
-    $id = &PHPWS_User::getSetting('anonymous');
-    $_SESSION['User'] = new PHPWS_User($id);
-  }
-
-  function &getSetting($setting){
-    static $settings;
-
-    if (!isset($settings)){
-      $DB = new PHPWS_DB("users_settings");
-      $settings = $DB->select("row");
-    }
-
-    return $settings[$setting];
-  }
-
-  function adminAction($command){
-    PHPWS_Core::initModClass("users", "Form.php");
-
-    switch ($command){
-    case "main":
-      if (isset($_REQUEST['tab']))
-	$content = PHPWS_User_Form::adminForm($_REQUEST['tab']);
-      else
-	$content = PHPWS_User_Form::adminForm(DEFAULT_USER_MENU);
-      break;
-
-    case "post_newUser":
-      if (PHPWS_Core::isLastPost())
-	$content =  PHPWS_User_Form::adminForm("new_user");
-      
-      $user = &PHPWS_User_Form::postUser();
-      if (isset($user->message))
-	$content =  PHPWS_User_Form::adminForm("new_user", $user);
-      else {
-	$user->save();
-	unset($user);
-	$content =  MSG_USER_CREATED;
-      }
-      break;
-
-    default:
-      $content =  "Unknown command";
-      break;
-    }
-
-    PHPWS_User_Form::adminPanel($content);
-  }
-
 
   function disallow(){
     $title = "Sorry Charlie...";
     $content = "That section of the site is off limits to your type";
-    PHPWS_Layout::add(array("TITLE"=>$title, "CONTENT"=>$content), "User_Main");
+    Layout::add(array("TITLE"=>$title, "CONTENT"=>$content), "User_Main");
   }
+
+  function logAnonymous(){
+    PHPWS_Core::initModClass("users", "User_Functions.php");
+    $id = &User_Functions::getSetting('anonymous');
+    $_SESSION['User'] = new PHPWS_User($id);
+  }
+
 
 }
 
