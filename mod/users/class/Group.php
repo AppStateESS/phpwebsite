@@ -88,25 +88,25 @@ class PHPWS_Group {
 	else
 	  return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, "users", "setName");
       } else {
-	$this->_name = $name;
+	$this->name = $name;
 	return TRUE;
       }
     } else {
-      $this->_name = $name;
+      $this->name = $name;
       return TRUE;
     }
   }
 
   function getName(){
-    return $this->_name;
+    return $this->name;
   }
 
   function setUserId($id){
-    $this->_user_id = $id;
+    $this->user_id = $id;
   }
 
   function getUserId(){
-    return $this->_user_id;
+    return $this->user_id;
   }
 
   function setMembers($members){
