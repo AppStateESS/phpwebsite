@@ -12,48 +12,20 @@
 PHPWS_Core::initCoreClass("Template.php");
 
 class Layout {
-  function initLayout($refresh=FALSE){
-    if ($refresh == TRUE || !isset($_SESSION['Layout_Settings'])){
-      PHPWS_Core::initModClass("layout", "Initialize.php");
-      Layout_Init::initSettings();
-      Layout_Init::initContentVar();
-      Layout_Init::initBoxes();
+
+  function _noContent($theme, $finalList){
+    $finalTheme = &Layout::loadTheme($theme);
+    if (PEAR::isError($finalTheme)){
+      PHPWS_Error::log($finalTheme);
+      PHPWS_Core::errorPage();
     }
-
-    $boxes = Layout::getBoxes();
-
-    if (!isset($boxes)){
-      PHPWS_Core::initModClass("layout", "Initialize.php");
-      $boxes = Layout_Init::loadBoxes();
-    }
-    $_SESSION['Layout_Boxes'] = $boxes;
-  }
-
-
-  function &getTheme(){
-    if (!isset($_SESSION['Layout_Settings']))
-      Layout::initLayout();
-
-    $currentTheme = & $_SESSION['Layout_Settings']['current_theme'];
-    if (isset($currentTheme))
-      return $currentTheme;
-    else
-      return PHPWS_Error::get(LAYOUT_NO_THEME, "layout", "getTheme");
-  }
-
-  function getThemeVariables(){
-    if (!isset($_SESSION['Layout_Settings']))
-      Layout::initLayout();
-
-    return $_SESSION['Layout_Settings']['theme_variables'];
-  }
-
-  function getThemeDir(){
-    $themeDir =  Layout::getTheme();
-    if (PEAR::isError($themeDir))
-      return $themeDir;
-
-    return "themes/" . $themeDir . "/";
+    
+    if (!isset($finalList))
+      PHPWS_Error::log(LAYOUT_NO_CONTENT, "layout", "display");
+    elseif (PEAR::isError($finalList))
+      PHPWS_Error::log($finalList);
+    
+    echo $finalTheme->get();
   }
 
   function add($text, $module=NULL, $contentVar=NULL, $box=TRUE){
@@ -84,74 +56,77 @@ class Layout {
     $GLOBALS['Layout'][$module][$contentVar]['box'] = $box;
   }
 
+  function addBox($content_var, $module, $theme_var=NULL, $template=NULL, $theme=NULL){
+    PHPWS_Core::initModClass("layout", "Box.php");
+    PHPWS_Core::initModClass("layout", "Initialize.php");
 
-  function set($text, $module=NULL, $contentVar=NULL, $box=TRUE){
-    if (!isset($contentVar))
-      $contentVar = DEFAULT_CONTENT_VAR;
+    if (!isset($theme))
+      $theme = &Layout::getTheme();
+    
+    if (!isset($theme_var))
+      $theme_var = DEFAULT_THEME_VAR;
 
-    $box = (bool)$box;
+    $box = new Layout_Box;
+    $box->setTheme($theme);
+    $box->setContentVar($content_var);
+    $box->setModule($module);
+    $box->setThemeVar($theme_var);
 
-    $GLOBALS['Layout'][$module][$contentVar]['content'] = NULL;
-    Layout::add($text, $module, $contentVar, $box);
-  }
-
-  function clear($module, $contentVar){
-    unset($GLOBALS['Layout'][$module][$contentVar]);
-  }
-
-
-  function get($module, $content_var){
-    if (Layout::isBoxSet($module, $content_var))
-      return $GLOBALS['Layout'][$module][$content_var];
+    if (isset($template))
+      $box->setTemplate($template);
     else
-      return NULL;
-  }
+      $box->setDefaultTemplate();
 
-  function isBoxSet($module, $content_var){
-    return isset($GLOBALS['Layout'][$module][$content_var]);
-  }
-
-  function getBoxContent(){
-    $finalList = NULL;
-    if (!isset($GLOBALS['Layout']))
-      return PHPWS_Error::get(LAYOUT_SESSION_NOT_SET, "layout", "getBoxContent");
-
-    foreach ($GLOBALS['Layout'] as $module=>$content){
-      foreach ($content as $contentVar=>$contentList){
-	if (!is_array($contentList) || !isset($contentList['content']))
-	  continue;
-	
-	foreach ($contentList['content'] as $tag=>$content)
-	  $finalList[$module][$contentVar][strtoupper($tag)] = implode("", $content);
-      }
+    $result = $box->save();
+    if (PEAR::isError($result)){
+      PHPWS_Error::log($result);
+      exit();
     }
-    return $finalList;
+
   }
 
-  function getBoxThemeVar($module, $contentVar){
-    if (isset($_SESSION['Layout_Boxes'][$module][$contentVar]))
-      return $_SESSION['Layout_Boxes'][$module][$contentVar]['theme_var'];
-    else
-      return NULL;
+  function addJSHeader($script, $index=NULL){
+    static $index_count = 0;
+
+    if (empty($index))
+      $index = $index_count++;
+    
+    $GLOBALS['Layout_JS'][$index]['head'] = $script;
+  }
+
+  function addJSFile($directory){
+    $jsfile = PHPWS_SOURCE_DIR . $directory;
+
+    if (!is_file($jsfile))
+      return PHPWS_Error::get(LAYOUT_JS_FILE_NOT_FOUND, "layout", "addJSFile", $jsfile);
   }
 
 
-  function dropContentVar($module, $contentVar){
-    unset($GLOBALS['Layout'][$module][$contentVar]);
-  }
+  function addStyle($module, $filename=NULL){
+    if (!isset($filename))
+      $filename = "style.css";
 
-  function getBoxOrder($module, $contentVar){
-    if (isset($_SESSION['Layout_Boxes'][$module][$contentVar]))
-      return $_SESSION['Layout_Boxes'][$module][$contentVar]['box_order'];
-    else
-      return NULL;
-  }
+    $index = $module . "_" . preg_replace("/\W/", "", $filename);
 
-  function isBoxTpl($module, $contentVar){
-    if (isset($GLOBALS['Layout'][$module][$contentVar]))
-      return $GLOBALS['Layout'][$module][$contentVar]['box'];
-    else
-      return NULL;
+    if (FORCE_MOD_TEMPLATES){
+      $cssFile = "mod/$module/templates/$filename";
+      if (is_file($cssFile))
+	$GLOBALS['Style'][$index] = Layout::styleLink($cssFile);
+      return;
+    }
+
+    $themeFile = PHPWS_Template::getTplDir($module) . $filename;
+    if (is_file($themeFile)){
+      $GLOBALS['Style'][$index] = Layout::styleLink($cssFile);
+      return;
+    } elseif (FORCE_THEME_TEMPLATES)
+	return;
+
+    $cssFile = "templates/$module/$filename";      
+    if (is_file($cssFile))
+      $GLOBALS['Style'][$index] = Layout::styleLink($cssFile);
+
+    return;
   }
 
   function alternateTheme($template, $module, $file){
@@ -167,20 +142,40 @@ class Layout {
     exit();
   }
 
-  function _noContent($theme, $finalList){
-    $finalTheme = &Layout::loadTheme($theme);
-    if (PEAR::isError($finalTheme)){
-      PHPWS_Error::log($finalTheme);
-      PHPWS_Core::errorPage();
-    }
-    
-    if (!isset($finalList))
-      PHPWS_Error::log(LAYOUT_NO_CONTENT, "layout", "display");
-    elseif (PEAR::isError($finalList))
-      PHPWS_Error::log($finalList);
-    
-    echo $finalTheme->get();
+  function clear($module, $contentVar){
+    unset($GLOBALS['Layout'][$module][$contentVar]);
   }
+
+  function disableFollow(){
+    if (!isset($GLOBALS['Layout_Robots']))
+      Layout::initLayout();
+
+    switch ($GLOBALS['Layout_Robots']){
+    case "01":
+      $GLOBALS['Layout_Robots'] = "00";
+      break;
+
+    case "11":
+      $GLOBALS['Layout_Robots'] = "10";
+      break;
+    }
+  }
+
+  function disableIndex(){
+    if (!isset($GLOBALS['Layout_Robots']))
+      Layout::initLayout();
+
+    switch ($GLOBALS['Layout_Robots']){
+    case "10":
+      $GLOBALS['Layout_Robots'] = "00";
+      break;
+
+    case "11":
+      $GLOBALS['Layout_Robots'] = "01";
+      break;
+    }
+  }
+
 
   function display(){
     $themeVarList = array();
@@ -216,10 +211,15 @@ class Layout {
 
 	if (Layout::isBoxTpl($module, $contentVar)){
 	  $tpl = new PHPWS_Template;
-	  if (!isset($_SESSION['Layout_Boxes'][$module][$contentVar]))
-	    exit("Error control needed in Layout in the display function.");
+	  if (!isset($_SESSION['Layout_Boxes'][$module][$contentVar])){
+	    // check this
+	    Layout::addBox($contentVar, $module);
+	    Layout_Init::initContentVar();
+	    Layout_Init::initBoxes();
+	  }
 
 	  $box = $_SESSION['Layout_Boxes'][$module][$contentVar];
+
 	  $file = $box['template'];
 	  $directory = "themes/$theme/boxstyles/";
 	  if (isset($file) && is_file($directory . $file))
@@ -260,118 +260,67 @@ class Layout {
     Layout::wrap($theme, $finalContent);
   }
 
-
-  function submitHeaders($theme, &$template){
-    $testing = TRUE;
-
-    if($testing == FALSE && stristr($_SERVER["HTTP_ACCEPT"],"application/xhtml+xml")){
-      header("Content-Type: application/xhtml+xml; charset=UTF-8");
-      $template["XML"] = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-      $template["DOCTYPE"] = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\n\"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">";
-      $template["XHTML"] = "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"" . CURRENT_LANGUAGE . "\">";
-    } else {
-
-      header("Content-Type: text/html; charset=UTF-8");
-      $template["DOCTYPE"] = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">";
-      $template["XHTML"] = "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"" . CURRENT_LANGUAGE . "\" lang=\"" . CURRENT_LANGUAGE . "\">";
-    }
-    header("Content-Language: " . CURRENT_LANGUAGE);
-    header("Content-Script-Type: text/javascript");
-    header("Content-Style-Type: text/css");
-  }
-
-  function wrap($theme, $finalContent){
-    Layout::submitHeaders($theme, $template);
-
-    $template['TEST_JS'] = Layout::getJavascript("test");
-
-    if (isset($GLOBALS['Layout_JS'])){
-      foreach ($GLOBALS['Layout_JS'] as $script=>$javascript)
-	$jsHead[] = $javascript['head'];
-      
-      $template['JAVASCRIPT'] = implode("\n", $jsHead);
-    }
-
-    if (isset($GLOBALS['Style']))
-      array_unshift($GLOBALS['Style'], Layout::styleLink("themes/$theme/style.css"));
-    else
-      $GLOBALS['Style'][] = Layout::styleLink("themes/$theme/style.css");
-
-
-    $template['STYLE'] = implode("\n", $GLOBALS['Style']);
-    $template['CONTENT'] = $finalContent;
-    $result = PHPWS_Template::process($template, "layout", "header.tpl");
-
-    echo $result;
-  }
-
   function displayErrorMessage(){
     $template[DEFAULT_THEME_VAR] = DISPLAY_ERROR_MESSAGE;
   }
 
-  function addStyle($module, $filename=NULL){
-    if (!isset($filename))
-      $filename = "style.css";
+  function dropContentVar($module, $contentVar){
+    unset($GLOBALS['Layout'][$module][$contentVar]);
+  }
 
-    $index = $module . "_" . preg_replace("/\W/", "", $filename);
+  function get($module, $content_var){
+    if (Layout::isBoxSet($module, $content_var))
+      return $GLOBALS['Layout'][$module][$content_var];
+    else
+      return NULL;
+  }
 
-    if (FORCE_MOD_TEMPLATES){
-      $cssFile = "mod/$module/templates/$filename";
-      if (is_file($cssFile))
-	$GLOBALS['Style'][$index] = Layout::styleLink($cssFile);
-      return;
+  function getBoxContent(){
+    $finalList = NULL;
+    if (!isset($GLOBALS['Layout']))
+      return PHPWS_Error::get(LAYOUT_SESSION_NOT_SET, "layout", "getBoxContent");
+
+    foreach ($GLOBALS['Layout'] as $module=>$content){
+      foreach ($content as $contentVar=>$contentList){
+	if (!is_array($contentList) || !isset($contentList['content']))
+	  continue;
+	
+	foreach ($contentList['content'] as $tag=>$content)
+	  $finalList[$module][$contentVar][strtoupper($tag)] = implode("", $content);
+      }
     }
-
-    $themeFile = PHPWS_Template::getTplDir($module) . $filename;
-    if (is_file($themeFile)){
-      $GLOBALS['Style'][$index] = Layout::styleLink($cssFile);
-      return;
-    } elseif (FORCE_THEME_TEMPLATES)
-	return;
-
-    $cssFile = "templates/$module/$filename";      
-    if (is_file($cssFile))
-      $GLOBALS['Style'][$index] = Layout::styleLink($cssFile);
-
-    return;
+    return $finalList;
   }
 
-  function styleLink($file){
-    return "<link rel=\"stylesheet\" href=\"$file\" type=\"text/css\" />";
+  function getBoxOrder($module, $contentVar){
+    if (isset($_SESSION['Layout_Boxes'][$module][$contentVar]))
+      return $_SESSION['Layout_Boxes'][$module][$contentVar]['box_order'];
+    else
+      return NULL;
   }
 
-  function isMoveBox(){
-    return isset($_SESSION['Move_Boxes']);
+  function getBoxes(){
+    return $_SESSION['Layout_Boxes'];
   }
 
 
-  function &loadTheme($theme, $template=NULL){
-    if (!isset($template))
-      Layout::displayErrorMessage();
-
-    $tpl = new PHPWS_Template;
-    $themeDir = Layout::getThemeDir();
-
-    if (PEAR::isError($themeDir)){
-      	PHPWS_Error::log($themeDir);
-	PHPWS_Core::errorPage();
-    }
-
-    $result = $tpl->setFile($themeDir . "theme.tpl", TRUE);
-
-    if (PEAR::isError($result))
-      return $result;
-
-    $template['THEME_DIRECTORY'] = "themes/$theme/";
-    $tpl->setData($template);
-    return $tpl;
+  function getBoxThemeVar($module, $contentVar){
+    if (isset($_SESSION['Layout_Boxes'][$module][$contentVar]))
+      return $_SESSION['Layout_Boxes'][$module][$contentVar]['theme_var'];
+    else
+      return NULL;
   }
 
-  function isContentVar($content_var){
-    if (!isset($_SESSION['Layout_Content_Vars']))
-      return FALSE;
-    return in_array($content_var, $_SESSION['Layout_Content_Vars']);
+
+  function getContentVars(){
+    if (isset($_SESSION['Layout_Content_Vars']))
+      $content_vars = $_SESSION['Layout_Content_Vars'];
+    else
+      $content_vars = Layout_Init::loadContentVar();
+
+    return $content_vars;
   }
+
 
   function getJavascript($directory, $data=NULL){
     if (isset($data) && !is_array($data))
@@ -411,6 +360,128 @@ class Layout {
 
   }
 
+  function getMetaRobot(){
+    if (!isset($GLOBALS['Layout_Robots']))
+      $meta_robots = "11";
+    else
+      $meta_robots = $GLOBALS['Layout_Robots'];
+
+    switch ((string)$meta_robots){
+    case "11":
+      return "all";
+      break;
+
+    case "10":
+      return "index, nofollow";
+      break;
+
+    case "01":
+      return "noindex, follow";
+      break;
+
+    case "00":
+      return "none";
+      break;
+    }
+
+  }
+
+  function getMetaTags(){
+    extract($_SESSION['Layout_Settings']);
+
+    // Say it loud
+    $metatags[] = "<meta name=\"generator\" content=\"phpWebSite\" />";
+
+    if (!empty($author))
+      $metatags[] = "<meta name=\"author\" content=\"meta_author\" />";
+    else
+      $metatags[] = "<meta name=\"author\" content=\"phpWebSite\" />";
+
+    if (!empty($meta_keywords))
+      $metatags[] = "<meta name=\"keywords\" content=\"$meta_keywords\" />";
+
+    if (!empty($meta_description))
+      $metatags[] = "<meta name=\"description\" content=\"$meta_description\" />";
+    
+    if (!empty($meta_owner))
+      $metatags[] = "<meta name=\"owner\" content=\"$meta_owner\" />";
+
+    $robot = Layout::getMetaRobot();
+    $metatags[] = "<meta name=\"robots\" content=\"$robot\" />";
+
+    return implode("\n", $metatags);
+  }
+
+  function &getTheme(){
+    if (!isset($_SESSION['Layout_Settings']))
+      Layout::initLayout();
+
+    $currentTheme = & $_SESSION['Layout_Settings']['current_theme'];
+    if (isset($currentTheme))
+      return $currentTheme;
+    else
+      return PHPWS_Error::get(LAYOUT_NO_THEME, "layout", "getTheme");
+  }
+
+  function getThemeDir(){
+    $themeDir =  Layout::getTheme();
+    if (PEAR::isError($themeDir))
+      return $themeDir;
+
+    return "themes/" . $themeDir . "/";
+  }
+
+  function getThemeVariables(){
+    if (!isset($_SESSION['Layout_Settings']))
+      Layout::initLayout();
+
+    return $_SESSION['Layout_Settings']['theme_variables'];
+  }
+
+
+  function initLayout($refresh=FALSE){
+    if ($refresh == TRUE || !isset($_SESSION['Layout_Settings'])){
+      PHPWS_Core::initModClass("layout", "Initialize.php");
+      Layout_Init::initSettings();
+      Layout_Init::initContentVar();
+      Layout_Init::initBoxes();
+    } elseif (isset($GLOBALS['Layout_Initialized']))
+	return;
+
+    $boxes = Layout::getBoxes();
+
+    $GLOBALS['Layout_Robots'] = $_SESSION['Layout_Settings']['meta_robots'];
+
+    if (!isset($boxes)){
+      PHPWS_Core::initModClass("layout", "Initialize.php");
+      $boxes = Layout_Init::loadBoxes();
+    }
+    $_SESSION['Layout_Boxes'] = $boxes;
+    $GLOBALS['Layout_Initialized'] = TRUE;
+  }
+
+  function isBoxSet($module, $content_var){
+    return isset($GLOBALS['Layout'][$module][$content_var]);
+  }
+
+
+  function isBoxTpl($module, $contentVar){
+    if (isset($GLOBALS['Layout'][$module][$contentVar]))
+      return $GLOBALS['Layout'][$module][$contentVar]['box'];
+    else
+      return NULL;
+  }
+
+  function isContentVar($content_var){
+    if (!isset($_SESSION['Layout_Content_Vars']))
+      return FALSE;
+    return in_array($content_var, $_SESSION['Layout_Content_Vars']);
+  }
+
+  function isMoveBox(){
+    return isset($_SESSION['Move_Boxes']);
+  }
+
   function loadModuleJavascript($module, $filename, $data=NULL){
     $directory = PHPWS_SOURCE_DIR . "mod/$module/javascript/$filename";
 
@@ -437,63 +508,85 @@ class Layout {
       Layout::addJSHeader(file_get_contents($filename), $index);
   }
 
-  function addJSHeader($script, $index=NULL){
-    static $index_count = 0;
+  function &loadTheme($theme, $template=NULL){
+    if (!isset($template))
+      Layout::displayErrorMessage();
 
-    if (empty($index))
-      $index = $index_count++;
-    
-    $GLOBALS['Layout_JS'][$index]['head'] = $script;
-  }
+    $tpl = new PHPWS_Template;
+    $themeDir = Layout::getThemeDir();
 
-  function addJSFile($directory){
-    $jsfile = PHPWS_SOURCE_DIR . $directory;
-
-    if (!is_file($jsfile))
-      return PHPWS_Error::get(LAYOUT_JS_FILE_NOT_FOUND, "layout", "addJSFile", $jsfile);
-  }
-
-  function addBox($content_var, $module, $theme_var=NULL, $template=NULL, $theme=NULL){
-    PHPWS_Core::initModClass("layout", "Box.php");
-    PHPWS_Core::initModClass("layout", "Initialize.php");
-
-    if (!isset($theme))
-      $theme = &Layout::getTheme();
-    
-    if (!isset($theme_var))
-      $theme_var = DEFAULT_THEME_VAR;
-
-    $box = new Layout_Box;
-    $box->setTheme($theme);
-    $box->setContentVar($content_var);
-    $box->setModule($module);
-    $box->setThemeVar($theme_var);
-
-    if (isset($template))
-      $box->setTemplate($template);
-    else
-      $box->setDefaultTemplate();
-
-    $result = $box->save();
-    if (PEAR::isError($result)){
-      PHPWS_Error::log($result);
-      exit();
+    if (PEAR::isError($themeDir)){
+      	PHPWS_Error::log($themeDir);
+	PHPWS_Core::errorPage();
     }
 
+    $result = $tpl->setFile($themeDir . "theme.tpl", TRUE);
+
+    if (PEAR::isError($result))
+      return $result;
+
+    $template['THEME_DIRECTORY'] = "themes/$theme/";
+    $tpl->setData($template);
+    return $tpl;
   }
 
-  function getBoxes(){
-    return $_SESSION['Layout_Boxes'];
+  function set($text, $module=NULL, $contentVar=NULL, $box=TRUE){
+    if (!isset($contentVar))
+      $contentVar = DEFAULT_CONTENT_VAR;
+
+    $box = (bool)$box;
+
+    $GLOBALS['Layout'][$module][$contentVar]['content'] = NULL;
+    Layout::add($text, $module, $contentVar, $box);
   }
 
+  function styleLink($file){
+    return "<link rel=\"stylesheet\" href=\"$file\" type=\"text/css\" />";
+  }
 
-  function getContentVars(){
-    if (isset($_SESSION['Layout_Content_Vars']))
-      $content_vars = $_SESSION['Layout_Content_Vars'];
+  function submitHeaders($theme, &$template){
+    $testing = TRUE;
+
+    if($testing == FALSE && stristr($_SERVER["HTTP_ACCEPT"],"application/xhtml+xml")){
+      header("Content-Type: application/xhtml+xml; charset=UTF-8");
+      $template["XML"] = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+      $template["DOCTYPE"] = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"\n\"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">";
+      $template["XHTML"] = "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"" . CURRENT_LANGUAGE . "\">";
+    } else {
+
+      header("Content-Type: text/html; charset=UTF-8");
+      $template["DOCTYPE"] = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\n\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">";
+      $template["XHTML"] = "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"" . CURRENT_LANGUAGE . "\" lang=\"" . CURRENT_LANGUAGE . "\">";
+    }
+    header("Content-Language: " . CURRENT_LANGUAGE);
+    header("Content-Script-Type: text/javascript");
+    header("Content-Style-Type: text/css");
+  }
+
+  function wrap($theme, $finalContent){
+    Layout::submitHeaders($theme, $template);
+
+    $template['TEST_JS'] = Layout::getJavascript("test");
+
+    if (isset($GLOBALS['Layout_JS'])){
+      foreach ($GLOBALS['Layout_JS'] as $script=>$javascript)
+	$jsHead[] = $javascript['head'];
+      
+      $template['JAVASCRIPT'] = implode("\n", $jsHead);
+    }
+
+    if (isset($GLOBALS['Style']))
+      array_unshift($GLOBALS['Style'], Layout::styleLink("themes/$theme/style.css"));
     else
-      $content_vars = Layout_Init::loadContentVar();
+      $GLOBALS['Style'][] = Layout::styleLink("themes/$theme/style.css");
 
-    return $content_vars;
+    $template['METATAGS'] = Layout::getMetaTags();
+    $template['PAGE_TITLE'] = $_SESSION['Layout_Settings']['page_title'];
+    $template['STYLE'] = implode("\n", $GLOBALS['Style']);
+    $template['CONTENT'] = $finalContent;
+    $result = PHPWS_Template::process($template, "layout", "header.tpl");
+
+    echo $result;
   }
 
 }
