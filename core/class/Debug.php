@@ -13,9 +13,7 @@ class PHPWS_Debug {
   function test($value){
     switch(gettype($value)){
     case "object":
-      $info = PHPWS_Debug::testObject($value);
-      $info['CLASS_NAME'] = get_class($value);
-      $info['CLASS_METHODS'] = PHPWS_Debug::test(get_class_methods($value));
+      return PHPWS_Debug::testObject($value);
       break;
       
     case "array":
@@ -70,7 +68,9 @@ class PHPWS_Debug {
   function testObject($objVar, $displayTags=1) {
     if(is_object($objVar)) {
       $objectInfo = (get_object_vars($objVar));
-      return PHPWS_Debug::testArray($objectInfo, $displayTags);
+      $info[] = "<b>Class Name :</b> " . get_class($value);
+      $info[] = PHPWS_Debug::testArray($objectInfo, $displayTags);
+      return implode("<br />", $info);
     }
     return "PHPWS_Debug: testObject received a/an " . gettype($objVar) . " variable, not an object<br />";
   } // END FUNC testObject
