@@ -49,6 +49,8 @@ switch ($step){
  case 3:
    $title .= _("Install Modules");
    $result = $setup->installModules($content);
+   if ($result)
+     $setup->finish($content);
    break;
 }
 
