@@ -64,7 +64,7 @@ class Version {
     }
   }
 
-  function getEdittedDate($format=FALSE){
+  function getEditedDate($format=FALSE){
     if ($format = TRUE) {
       return strftime("%c", $this->vr_edit_date);
     } else {
