@@ -411,7 +411,8 @@ class Setup{
   }
 
   function installModules(&$content){
-    $modules = explode(",", DEFAULT_MODULES);
+    $modules = PHPWS_Core::coreModList();
+
     if (!isset($_SESSION['Boost'])){
       $_SESSION['Boost'] = new PHPWS_Boost;
       $_SESSION['Boost']->loadModules($modules);
