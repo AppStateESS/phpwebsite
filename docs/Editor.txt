@@ -1,0 +1,130 @@
+Browser Editors in phpWebSite
+by Matthew McNaney <matt at tux dot appstate dot edu>
+------------------------------
+
+
+Although phpWebSite does not supply a javascript wysiwyg editor, it does
+contain the editors you need to use them.
+
+Currently Supported Editor
+-----------------------------
+PhpWebSite ships with the following wysiwyg editors ready for use:
+
+Htmlarea (project discontinued)
+FCKeditor
+
+
+Plugging in a Supported Editor
+-----------------------------
+Look for the directory that matches the name of the editor under the
+javascript/editors directory. There should be a readme.txt file in
+that directory. Make sure to read it for further instruction. It
+should include the editor's web address.
+
+In most cases, all you need to do is untar/unzip the editor into that
+directory. Many times you can remove any example files, documentation,
+or scripts that allow the program to function under asp, perl, python,
+etc. Do not delete any *.js files nor any licensing files.
+
+
+Configuring your Editor
+------------------------------
+You will first need to alter your config/core/config.php file. Search
+for EDITOR.
+Set the USE_WYSIWYG_EDITOR define to 'TRUE'.
+Set the DEFAULT_EDITOR_TOOL to the editor you are using. The editor
+name will be the same as the editor's directory.
+
+You should customize your editor via a file specified by readme.txt
+file. In most cases you do not want to make customizations in the
+editor's original files.
+
+
+Using the Editor in your Module
+------------------------------
+The Editor class allows developers to place these wysiwyg editors into
+their forms. Please keep one guideline in mind: be careful who has access
+to your editor. Depending on the capabilities of the editor, you may
+not want general users to have access to things such as image upload,
+table creation, font colorization, etc.
+
+First, include the Editor class in your function, like so:
+
+PHPWS_Core::initCoreClass('Editor.php');
+or
+require_once PHPWS_SOURCE_DIR . 'core/class/Editor.php';
+
+Next, make sure the Editor will work:
+if (!Editor::willWork()) {
+   echo plainOleTextArea();
+}
+
+The willWork function confirms the user's browser compatibility and
+whether the admin is allowing the editor on their site.
+
+If willWork is TRUE then you can construct the Editor object:
+
+$editor = & new Editor ('name_of_textarea', 'Default textarea text.');
+
+The 'name_of_textarea' will be the name of text area input. The second
+parameter is the value of that textarea (i.e. what appears defaultly
+in the text area box).
+
+Now you just need to capture the editor data:
+
+$textarea_content = $editor->get();
+
+Now you can echo this into your form. If you want to put the editor
+into your phpWebSite form object, do so:
+
+$form->addTplTag('TEXT_AREA', $content);
+
+You may want to make a label for it as well like so:
+
+$form->addTplTag('TEXT_AREA_LABEL',
+		 PHPWS_Form::makeLabel('name_of_textarea',
+				       'My text area example');
+
+
+Creating your own Editor
+----------------------------
+If you come across an editor that is not currently supported, it is
+fairly simple (or complex depending on the editor) to fit it within
+phpWebSite.
+
+First, try and get it working on its own. This will give you an idea
+of what is required. You should look for two main instructions:
+
+1) What does the editor require in the header of the page? Usually,
+   the editor require the inclusion of a file or definition of a
+   function. Put this information in a head.js file. Use {NAME} if you
+   want to plug-in the text area's name into the script. Use {VALUE}
+   for the text area's value. Look at current head.js files for an
+   example.
+   
+2) What does the editor return to the body when called? This
+   information will go into the body.js file. So if an editor returned
+   the actual textfield or iframe content, this call would go into
+   body.js. Again, see current files for an example.
+
+3) Should their be a default name or value? Is there a process that
+   needs to be performed before execution of the script? If yes, then
+   you should use the default.php file. This php file will allow you
+   set default values, parse input into the form, basically any task
+   you need to accomplish in code. Take a look at a default.php file
+   for examples.
+
+Once your head.js, body.js and default.php files are set up, your
+editor should function. Change the default editor in the config.php
+file to test it.
+
+Troubleshooting
+---------------------------
+Bad directory pathing is the problem most experienced when creating a
+new editor. Most editors expect to be plopped down in the web
+root. Since you are moving it over to the javascript/editors directory
+instead you will need to make sure it knows where it is located.
+
+Check the script for a base dir value. Try replacing it with directory
+to the editor from the root (e.g. ./javascript/editors/my_wysiwyg).
+
