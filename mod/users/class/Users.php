@@ -7,7 +7,7 @@ class PHPWS_User extends PHPWS_Item {
   var $_groups      = NULL;
   var $_permissions = array();
   var $_logged      = FALSE;
-  var $message      = NULL;
+  var $_modSettings = NULL;
  
   function PHPWS_User($id=NULL){
     $exclude = array("_owner",
@@ -16,7 +16,7 @@ class PHPWS_User extends PHPWS_Item {
 		     "_groups",
 		     "_permissions",
 		     "_logged",
-		     "message"
+		     "_modSettings"
 		     );
 
     $this->addExclude($exclude);
@@ -38,11 +38,11 @@ class PHPWS_User extends PHPWS_Item {
 	if (isset($result) && !PEAR::isError($result))
 	  return PHPWS_Error::get(USER_ERR_DUP_USERNAME, "users", "setUsername");
       }
-	
 	$this->_username = $username;
+	return TRUE;
     }
     else 
-      return $this->error(USER_ERR_BAD_USERNAME, "setUsername");
+      return PHPWS_Error::get(USER_ERR_BAD_USERNAME, "users", "setUsername");
   }
 
   function getUsername(){
@@ -57,19 +57,12 @@ class PHPWS_User extends PHPWS_Item {
   }
 
   function checkPassword($pass1, $pass2){
-    $config = PHPWS_Core::getConfigFile("users", "config.php");
-
-    if (!$config)
-      exit("Config file not found");
-      
-    include $config;
-
     if ($pass1 != $pass2)
-      return PHPWS_User::error(USER_ERR_PASSWORD_MATCH, "checkPassword");
+      return PHPWS_Error::get(USER_ERR_PASSWORD_MATCH, "users", "checkPassword");
     elseif(strlen($pass1) < PASSWORD_LENGTH)
-      return PHPWS_User::error(USER_ERR_PASSWORD_LENGTH, "checkPassword");
-    elseif(preg_match("/(" . implode("|", $badPasswords) . ")/i", $pass1))
-      return PHPWS_User::error(USER_ERR_PASSWORD_EASY, "checkPassword");
+      return PHPWS_Error::get(USER_ERR_PASSWORD_LENGTH, "users", "checkPassword");
+    elseif(preg_match("/(" . implode("|", unserialize(BAD_PASSWORDS)) . ")/i", $pass1))
+      return PHPWS_Error::get(USER_ERR_PASSWORD_EASY, "users", "checkPassword");
     else
       return TRUE;
   }
@@ -96,7 +89,7 @@ class PHPWS_User extends PHPWS_Item {
 
   function getLogin(){
     PHPWS_Core::initModClass("users", "Form.php");
-    $login = PHPWS_User_Form::logBox($_SESSION['User']->isLogged());
+    $login = User_Form::logBox($_SESSION['User']->isLogged());
     Layout::hold($login, "CNT_user_small", TRUE, -1);
   }
 
@@ -148,7 +141,7 @@ class PHPWS_User extends PHPWS_Item {
     PHPWS_DB::isTable($itemTable) ? $useItem = TRUE : $useItem = FALSE;
 
     if(!PHPWS_DB::isTable($permTable))
-      return $this->error(USER_ERR_PERM_MISS, "loadModulePermission", "Table Name: $permTable");
+      return PHPWS_Error::get(USER_ERR_PERM_MISS, "users", "loadModulePermission", "Table Name: $permTable");
 
     $permDB = new PHPWS_DB($permTable);
     $itemDB = new PHPWS_DB($itemTable);
@@ -215,7 +208,7 @@ class PHPWS_User extends PHPWS_Item {
 
   function save(){
     PHPWS_Core::initModClass("users", "Group.php");
-    $username = &$this->getUsername();
+    $username = $this->getUsername();
 
     $DB = new PHPWS_DB("users");
     $DB->addWhere("username", $username);
@@ -225,7 +218,7 @@ class PHPWS_User extends PHPWS_Item {
       if (PEAR::isError($result))
 	return $result;
       else
-	return $this->error(USER_ERR_DUP_USERNAME, "save");
+	return PHPWS_Error::get(USER_ERR_DUP_USERNAME, "users", "save");
     }
 
     $DB = new PHPWS_DB("user_groups");
@@ -236,7 +229,7 @@ class PHPWS_User extends PHPWS_Item {
       if (PEAR::isError($result))
 	return $result;
       else
-	return $this->error(USER_ERR_DUP_GROUPNAME, "save");
+	return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, "users", "save");
     }
     
     $result = $this->commit();
@@ -257,9 +250,94 @@ class PHPWS_User extends PHPWS_Item {
   }
 
   function logAnonymous(){
-    PHPWS_Core::initModClass("users", "User_Functions.php");
-    $id = &User_Functions::getSetting('anonymous');
+    PHPWS_Core::initModClass("users", "Action.php");
+    $id = & User_Action::getSetting('anonymous');
     $_SESSION['User'] = new PHPWS_User($id);
+  }
+
+  /*********************** User Var Code *******************/
+  function getVar($varName, $module){
+    if (!$this->getID())
+      return FALSE;
+
+    if (!PHPWS_Core::moduleExists($module))
+      return PHPWS_Error::get(USER_ERR_NO_MODULE, "users", "getUserVar");
+    
+    return (isset($this->modSettings[$module][$varName])) ? $this->modSettings[$module][$varName] : NULL;
+  }
+
+
+  function setVar($varName, $varValue, $module, $merge=FALSE){
+    if (!$this->getID())
+      return;
+
+    if (!PHPWS_Core::moduleExists($module))
+      return PHPWS_Error::get(USER_ERR_NO_MODULE, "users", "setUserVar");
+
+    PHPWS_Core::initCoreMod("Text.php");
+
+    if (!PHPWS_Text::isValidInput($varName))
+      return PHPWS_Error::get(USER_ERR_BAD_VAR, "users", "setUserVar");
+
+    if (!($id = $this->getID()))
+      return FALSE;
+
+    $currentVar = $this->getUserVar($varName, $module);
+    
+    if (is_array($currentVar) && is_array($varValue) && $merge == TRUE){
+      foreach ($varValue as $key=>$value)
+	$currentVar[$key] = $value;
+
+      $varValue = $currentVar;
+    }
+
+    $DB = new PHPWS_DB("user_settings");
+    $DB->addValue("module", $module);
+    $DB->addValue("id", $id);
+    $DB->addValue("var_name", $varName);
+    $DB->addValue("var_value", $varValue);
+
+    $this->dropUserVar($varName, $module);
+    if ($DB->insert()){
+      $this->_modSettings[$module][$varName] = $varValue;
+      return TRUE;
+    } else
+      return FALSE;
+  }
+
+  function dropVar($varName, $module){
+    if (!$this->getID())
+      return;
+
+    if (isset($this->modSettings[$module][$varName]))
+      unset($this->modSettings[$module][$varName]);
+
+    if (!PHPWS_Core::moduleExists($module))
+      return PHPWS_Error::get(USER_ERR_NO_MODULE, "users", "setUserVar");
+
+    if (!(PHPWS_Core::isValidInput($varName)))
+      return PHPWS_Error::get(USER_ERR_BAD_VAR, "users", "setUserVar");
+
+    $DB = new PHPWS_DB("user_settings");
+    $DB->addWhere("module", $module);
+    $DB->addWhere("id", $user->getID());
+    $DB->addWhere("var_name", $varName);
+    return $DB->delete();
+  }
+
+  function dropModule($module){
+    if (!PHPWS_Core::moduleExists($module))
+      return PHPWS_Error::get(USER_ERR_NO_MODULE, "users", "setUserVar");
+
+    $DB = new PHPWS_DB("user_settings");
+    $DB->addWhere("module", $module);
+    return $DB->delete();
+  }
+
+  function dropUser(){
+    $DB = new PHPWS_DB("user_settings");
+    $DB->addWhere("id", $this->getID());
+    return $DB->delete();
   }
 
 
