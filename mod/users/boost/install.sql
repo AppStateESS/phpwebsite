@@ -4,11 +4,7 @@ CREATE TABLE users_demographic_items ( label CHAR(20) NOT NULL, input_type CHAR(
 
 CREATE TABLE users_groups ( id INT NOT NULL PRIMARY KEY, active SMALLINT NOT NULL, name CHAR(50) NOT NULL, user_id INT NOT NULL );
 
-CREATE TABLE users_item_permissions ( group_id INT NOT NULL, item_id INT NOT NULL );
-
 CREATE TABLE users_members ( group_id INT NOT NULL, member_id INT NOT NULL );
-
-CREATE TABLE users_permissions ( group_id INT NOT NULL, permission_level SMALLINT NOT NULL, add_edit_users SMALLINT NOT NULL, delete_users SMALLINT NOT NULL, add_edit_groups SMALLINT NOT NULL, delete_groups SMALLINT NOT NULL, edit_permissions SMALLINT NOT NULL );
 
 CREATE TABLE users_settings ( id INT NOT NULL, label CHAR(30) NOT NULL, var_name CHAR(100) NOT NULL, var_value TEXT );
 
