@@ -39,11 +39,11 @@ class Demo_Manager extends User_Demographic{
     $list->setName("demographics");
     $list->setTemplate("manager/demographics.tpl");
     $list->setOp("action[admin]=main&amp;tab=demographics");
-    $list->setPaging(array("limit"=>5,
-			   "section"=>TRUE,
-			   "limits"=>array(5, 10 , 25),
-			   "forward"    => "&#062;&#062;",
-			   "back"       => "&#060;&#060;" ));
+    $list->setPaging(array("limit"    => 10,
+			   "section"  => TRUE,
+			   "limits"   => array(5, 10 , 25),
+			   "forward"  => "&#062;&#062;",
+			   "back"     => "&#060;&#060;" ));
     $list->setExtraListTags($form->getTemplate());
 
     $content = $list->getList();
