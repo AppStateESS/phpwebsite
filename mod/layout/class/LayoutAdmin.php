@@ -22,8 +22,9 @@ class Layout_Admin{
 
     case "changeBoxSettings":
       Layout_Admin::saveBoxSettings();
-      $message= _("Settings changed");
-      $content = Layout_Admin::boxesForm($message);
+      $template['TITLE'] = _("Adjust Boxes");
+      $template['MESSAGE'] = _("Settings changed");
+      $content = Layout_Admin::boxesForm();
       break;
 
     case "confirmThemeChange":
@@ -112,7 +113,7 @@ class Layout_Admin{
     return PHPWS_Template::process($template, "layout", "themes.tpl");
   }
 
-  function boxesForm($message = NULL){
+  function boxesForm(){
     $form = & new PHPWS_Form("boxes");
     $form->add("module", "hidden", "layout");
     $form->addHidden("action", "admin");
@@ -130,7 +131,6 @@ class Layout_Admin{
     $template['MOVE_BOX_LABEL'] = _("Adjust Site Layout");
     $template['MOVE_BOXES_ON']  = _("On");
     $template['MOVE_BOXES_OFF']  = _("Off");
-    $template['MESSAGE'] = $message;
     return PHPWS_Template::process($template, "layout", "BoxControl.tpl");
   }
 
