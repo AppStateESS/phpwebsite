@@ -29,10 +29,6 @@ class PHPWS_Panel_Tab {
     $this->_id = $id;
   }
 
-  function getId(){
-    return $this->_id;
-  }
-
   function init(){
     $DB = new PHPWS_DB("controlpanel_tab");
     $DB->addWhere("id", $this->getId());
@@ -115,7 +111,7 @@ class PHPWS_Panel_Tab {
   }
 
   function getStyle(){
-    return $this->_style = $style;
+    return $this->_style;
   }
 
 
