@@ -13,10 +13,8 @@ class Version {
   var $id             = 0;
   var $source_id      = 0;
   var $source_table   = NULL;
-  var $module         = NULL;
   var $version_table  = NULL;
   var $source_data    = NULL;
-
   var $vr_creator     = 0;
   var $vr_editor      = 0;
   var $vr_create_date = 0;
@@ -28,9 +26,8 @@ class Version {
   
   var $_error         = NULL;
 
-  function Version($module, $source_table, $id=NULL)
+  function Version($source_table, $id=NULL)
   {
-    $this->module = $module;
     $this->source_table = $source_table;
     $this->id = (int)$id;
     $result = $this->init();
@@ -90,10 +87,6 @@ class Version {
 
   function init()
   {
-    if (!PHPWS_Core::moduleExists($this->module)) {
-      return PHPWS_Error::get(VERSION_NOT_MODULE, "version", "init", $this->module);
-    }
-
     if (!PHPWS_DB::isTable($this->source_table))
       return PHPWS_Error::get(VERSION_NO_TABLE, "version", "init", $this->source_table);
 
@@ -112,7 +105,9 @@ class Version {
   }
 
   function getSource(){
-    return $this->source_data;
+    $data = $this->source_data;
+    $data['id'] = $this->source_id;
+    return $data;
   }
 
   function setSource($source_data){
@@ -216,11 +211,11 @@ class Version {
     $version_db->addWhere("vr_approved", 0);
     $result = $version_db->select();
 
-    if (PEAR::isError($result))
+    if (PEAR::isError($result) || empty($result))
       return $result;
-
+    
     foreach ($result as $row) {
-      $version = & new Version($this->module, $this->source_table);
+      $version = & new Version($this->source_table);
       $version->_plugInVersion($row);
       $unapproved_list[$row['id']] = $version;
     }
@@ -229,7 +224,7 @@ class Version {
   }
 
   function _plugInVersion($data){
-    PHPWS_DB::loadObject($this, $data);
+    PHPWS_Core::plugObject($this, $data);
     $diff = array_diff_assoc($data, get_object_vars($this));
     $this->setSource($diff);
 
@@ -327,7 +322,7 @@ class Version {
 
   function loadObject(&$object){
     $data = $this->getSource();
-    PHPWS_DB::loadObject($object, $data);
+    PHPWS_Core::plugObject($object, $data);
   }
 
   function isWaitingApproval(){
@@ -336,6 +331,40 @@ class Version {
     $db->addWhere("vr_approved", 0);
     $db->addColumn("id");
     return $db->select("one");
+  }
+
+  function authorizeCreator($module, $itemname=NULL){
+    if (empty($this->source_id))
+      return FALSE;
+    return Users_Permission::giveItemPermission($this->getCreator(), $module, $this->source_id, $itemname);
+  }
+
+  function kill(){
+    if (empty($this->id))
+      return FALSE;
+
+    $db = & new PHPWS_DB($this->version_table);
+    $db->addWhere("id", $this->id);
+    return $db->delete();
+  }
+
+  function getBackupList(){
+    if (empty($this->source_id))
+      return FALSE;
+
+    $db = & new PHPWS_DB($this->version_table);
+    $db->addWhere("source_id", $this->source_id);
+    $db->addWhere("vr_approved", 1);
+    $result = $db->select();
+
+    foreach ($result as $row){
+      $version = & new Version($this->source_table);
+      $version->_plugInVersion($row);
+      $backup_list[$row['id']] = $version;
+    }
+
+    test($backup_list, 1);
+
   }
 }
 
