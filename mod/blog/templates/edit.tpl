@@ -13,5 +13,5 @@
     <td>{ASSIGNED_GROUPS}</td>
   </tr>
  </table>
-{SUBMIT}
+{SUBMIT} {APPROVE_ENTRY}
 {END_FORM}
