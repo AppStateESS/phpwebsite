@@ -105,24 +105,29 @@ class Related_Action {
 
 
   function view(&$related){
+    $friends = Related_Action::listFriends($related);
+
+    if (!is_array($friends)) {
+      return $friends;
+    }
+
     $tpl = new PHPWS_Template("related");
     $result = $tpl->setFile("view.tpl");
 
     $template['TITLE'] = $related->getUrl(TRUE);
 
-    if (Current_User::allow("related"))
-      $template['EDIT_LINK'] = "<a href=\"index.php?module=related&amp;action=edit&amp;id=" . $related->getId() . "\">"
-	. _("Edit") . "</a>";
+    if (Current_User::allow("related")) {
+      $linkvars = array('action' => 'edit',
+			'id'     => $related->getId()
+			);
+      $template['EDIT_LINK'] = PHPWS_Text::moduleLink(_('Edit'), 'related', $linkvars);
+    }
 
-    $friends = Related_Action::listFriends($related);
-
-      if (is_array($friends)){
-	foreach ($friends as $key=>$friend_item){
-	  $tpl->setCurrentBlock("friend_list");
-	  $tpl->setData(array("FRIEND_NAME"=>$friend_item));
-	  $tpl->parseCurrentBlock();
-	}
-      }
+    foreach ($friends as $key=>$friend_item){
+      $tpl->setCurrentBlock("friend_list");
+      $tpl->setData(array("FRIEND_NAME"=>$friend_item));
+      $tpl->parseCurrentBlock();
+    }
 
     $tpl->setData($template);
     return $tpl->get();
@@ -173,8 +178,7 @@ class Related_Action {
   function quit(){
     $location = $_SESSION['Related_Bank']->getUrl();
     unset($_SESSION['Related_Bank']);
-    header("location:$location");
-    exit();
+    PHPWS_Core::reroute($location);
   }
 
   function add(){
@@ -195,8 +199,7 @@ class Related_Action {
 	$related->addFriend($extra_friend);
     }
 
-    header("location:" . $friend->getUrl());
-    exit();
+    PHPWS_Core::reroute($friend->getUrl());
   }
 
   function up(){
@@ -207,8 +210,7 @@ class Related_Action {
       return _("Missing position.");
 
     $_SESSION['Related_Bank']->moveFriendUp($_REQUEST['pos']);
-    header("location:" . $_SESSION['Current_Friend']->getUrl());
-    exit();
+    PHPWS_Core::reroute($_SESSION['Current_Friend']->getUrl());
   }
 
   function down(){
@@ -219,8 +221,7 @@ class Related_Action {
       return _("Missing position.");
 
     $_SESSION['Related_Bank']->moveFriendDown($_REQUEST['pos']);
-    header("location:" . $_SESSION['Current_Friend']->getUrl());
-    exit();
+    PHPWS_Core::reroute($_SESSION['Current_Friend']->getUrl());
   }
 
   function remove(){
@@ -231,8 +232,7 @@ class Related_Action {
       return _("Missing position.");
 
     $_SESSION['Related_Bank']->removeFriend($_REQUEST['pos']);
-    header("location:" . $_SESSION['Current_Friend']->getUrl());
-    exit();
+    PHPWS_Core::reroute($_SESSION['Current_Friend']->getUrl());
   }
 
   function save(){
@@ -275,9 +275,7 @@ class Related_Action {
       $related = & $_SESSION['Related_Bank'];
       $related->setTitle($_REQUEST['new_title']);
     }
-
-    header("location:" . $related->getUrl());
-    exit();
+    PHPWS_Core::reroute($related->getUrl());
   }
 
 }
