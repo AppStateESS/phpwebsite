@@ -12,6 +12,10 @@
     <td><b>{ASSIGNED_GROUPS_LABEL}</b></td>
     <td>{ASSIGNED_GROUPS}</td>
   </tr>
+  <tr>
+    <td><b>{CATEGORIES_LABEL}</b></td>
+    <td>{CATEGORIES}</td>
+  </tr>
  </table>
 {SUBMIT} {APPROVE_ENTRY}
 {END_FORM}
