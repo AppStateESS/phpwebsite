@@ -587,9 +587,10 @@ class PHPWS_Form {
       return PHPWS_Error::get(PHPWS_FORM_NO_TEMPLATE, "core", "PHPWS_Form::getTemplate");
 
 
-    if ($helperTags)
+    if ($helperTags){
       $template["START_FORM"] = $this->getStart();
-
+      $template["DEFAULT_SUBMIT"] = "<input type=\"submit\" value=\"" . _("Submit") ."\">\n";
+    }
     foreach ($this->_elements as $elementName=>$element){
       $count = 0;
       $formElement = $element->_getInput();
@@ -608,18 +609,25 @@ class PHPWS_Form {
       if (is_array($formElement)){
 	foreach ($formElement as $data){
 	  $count++;
+	  $elementName = str_replace("][", "_", $elementName);
+	  $elementName = str_replace("[", "_", $elementName);
+	  $elementName = str_replace("]", "_", $elementName);
 	  $template[strtoupper($elementName) . "_$count"] = $data;
 	}
       } else
 	$template[strtoupper($elementName)] = $formElement;
     }
-    $template["DEFAULT_SUBMIT"] = "<input type=\"submit\" value=\"" . _("Submit") ."\">\n";
+
     if (isset($this->_action))
       $template["END_FORM"]   = "</form>\n";
 
     if (isset($this->_template))
       $template = array_merge($this->_template, $template);
-    return $template;
+
+    if ($phpws == TRUE)
+      return $template;
+    else
+      return implode("\n", $template);
   }
 
   /**
