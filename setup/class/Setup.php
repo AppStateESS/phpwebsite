@@ -396,6 +396,14 @@ class Setup{
     $installSQL = File::readAll("core/boost/install.sql");
     $result = PHPWS_DB::import($installSQL);
 
+    if (is_array($result)){
+      foreach ($result as $error)
+	PHPWS_Error::log($error);
+      $content[] = _("Some errors occurred while creating the core database tables.") . "<br />";
+      $content[] = _("Please check your error log file.") . "<br />";
+      return;
+    }
+
     if ($result == TRUE){
       $content[] = _("Core installation successful.") . "<br /><br />";
       $content[] = PHPWS_Text::link("index.php?step=3", _("Continue to Module Installation"));
@@ -410,8 +418,19 @@ class Setup{
     }
 
     $content[] = $_SESSION['Boost']->install();
+    if ($_SESSION['Boost']->isFinished())
+      return TRUE;
+    else
+      return FALSE;
   }
 
+  function finish(&$content){
+    $content[] = "<hr />";
+    $content[] = _("Installation of phpWebSite is complete.") . "<br />";
+    $content[] = _("If you experienced any error messages, check your error.log file.") . "<br />";
+    $content[] = "<a href=\"../index.php\">" . _("Go to my new website!") . "</a>" . "<br />";
+
+  }
 
 }
 
