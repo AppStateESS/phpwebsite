@@ -1,5 +1,9 @@
 <?php
 chdir("../");
+
+if (!is_file("lib/pear/DB.php"))
+     exit(_("Unable to locate your pear library files."));
+
 if (isset($_REQUEST['step']) && $_REQUEST['step'] > 1)
   require_once "./config/core/config.php";
 else
