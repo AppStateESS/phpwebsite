@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Contains forms for users and demographics
+ *
+ * @version $Id$
+ * @author  Matt McNaney <matt at tux dot appstate dot edu>
+ * @package Core
+ */
 PHPWS_Core::initCoreClass("Form.php");
 
 class PHPWS_User_Form {
@@ -107,51 +114,23 @@ class PHPWS_User_Form {
     return $content;
   }
 
+
   function demographics($message=NULL){
     PHPWS_Core::initModClass("users", "Demographics.php");
-    $demo = Demographics::getDemographics();
-
-    if (PEAR::isError($demo))
-      return $demo;
-
-    if (isset($demo)){
-      $form = & new PHPWS_Form("demographic");
-
-      foreach ($demo as $item){
-	$form->reset();
-
-	if (isset($item['proper_name']))
-	  $tpl['LABEL'] = $item->getProperName();
-	else
-	  $tpl['LABEL'] = ucfirst(str_replace("_", " ", $item->getLabel()));
-
-	$label = "demo[" . $item->getLabel() . "]";
-
-	$form->add($label, 'checkbox', 1);
-	$form->setMatch($label, $item->getActive());
-	$tpl['CHECKBOX']= $form->get($label);
-	$rows[] = PHPWS_Template::process($tpl, "users", "demographics/demoRow.html");
-      }
-    }
-    $form->reset();
+    PHPWS_Core::initModClass("users", "Demo_Manager.php");
 
     if (isset($message))
       $finalForm['MESSAGE'] = $message;
 
-    $finalForm['SELECTIONS'] = implode("\n", $rows);
-    $finalForm['TOGGLE'] = Layout::getJavascript("check_all", array("FORM_NAME"=>"demographic", "TOGGLE"=>"Toggle All"));
-
-    $form->add("module", "hidden", "users");
-    $form->add("action[admin]", "hidden", "setActiveDemographics");
-    $form->add("submit", "submit", "Update Active");
-
-    $finalForm = $form->getTemplate(TRUE, TRUE, $finalForm);
+    $finalForm['SELECTIONS'] = Demo_Manager::getList();
+    
     return PHPWS_Template::process($finalForm, "users", "demographics/listActive.html");
   }
 
   function setActiveDemographics(){
     PHPWS_Core::initModClass("users", "Demographics.php");
-    $alldemo = Demographics::getDemographics("label");
+    $alldemo = $_SESSION['All_Demo'];
+    unset($_SESSION['All_Demo']);
 
     $db = & new PHPWS_DB("users_demographics");
 
