@@ -62,6 +62,7 @@ class PHPWS_SQL {
   }
 
   function readyImport(&$query){
+
     $from = array('/datetime/i',
 		  '/double\((\d+),(\d+)\)/Uie'
 		  );
@@ -69,6 +70,14 @@ class PHPWS_SQL {
 		  "'numeric(' . (\\1 + \\2) . ', \\2)'"
 		  );
     $query = preg_replace($from, $to, $query);
+
+    if (preg_match("/id int [\w\s]* primary key[\w\s]*,/iU", $query)){
+      $tableName = PHPWS_DB::extractTableName($query);
+
+      $query = preg_replace('/primary key/i', '', $query);
+      $query .= 'CREATE UNIQUE INDEX id ON ' . $tableName . "(id);";
+    }
+
   }
 
 }
