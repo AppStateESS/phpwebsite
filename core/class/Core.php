@@ -160,6 +160,11 @@ class PHPWS_Core {
     return in_array($key, $_SESSION['PHPWS_LastPost']);
   }
  
+  function goBack()
+  {
+    PHPWS_Core::reroute($_SERVER['HTTP_REFERER']);
+  }
+
   function home(){
     PHPWS_Core::reroute();
   }
