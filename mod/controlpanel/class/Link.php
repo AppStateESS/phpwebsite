@@ -3,7 +3,8 @@
 class PHPWS_ControlPanel_Link extends PHPWS_Item{
   var $_id;
   var $_label;
-  var $_active;
+  var $_module;
+  var $_itemName;
   var $_tab;
   var $_url;
   var $_description;
@@ -17,6 +18,15 @@ class PHPWS_ControlPanel_Link extends PHPWS_Item{
 
     $this->addExclude($exclude);
     $this->setTable("controlpanel_link");
+  }
+
+  function setTab($tab){
+    $this->_tab = $tab;
+  }
+
+
+  function getTab(){
+    return $this->_tab;
   }
 
   function getDescription(){
@@ -37,6 +47,22 @@ class PHPWS_ControlPanel_Link extends PHPWS_Item{
   
   function getUrl(){
     return $this->_url;
+  }
+
+  function setModule($module){
+    $this->_module = $module;
+  }
+
+  function getModule(){
+    return $this->_module;
+  }
+
+  function setItemName($itemname){
+    $this->_itemName = $itemName;
+  }
+
+  function getItemName(){
+    return $this->_itemName;
   }
 
 }
