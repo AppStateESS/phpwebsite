@@ -50,8 +50,10 @@ class PHPWS_DB {
     else
       $GLOBALS['PEAR_DB'] = DB::connect(PHPWS_DSN);
 
-    if (PEAR::isError($GLOBALS['PEAR_DB']))
-      die ($GLOBALS['PEAR_DB']->getMessage() . "<br />" . "Check your configuration file.");
+    if (PEAR::isError($GLOBALS['PEAR_DB'])){
+      PHPWS_Error::log($GLOBALS['PEAR_DB']);
+      PHPWS_Core::errorPage();
+    }
 
     if (defined(TABLE_PREFIX))
       PHPWS_DB::setPrefix(TABLE_PREFIX);
@@ -147,7 +149,7 @@ class PHPWS_DB {
 	return $columns;
 
       foreach ($columns as $colInfo)
-	if (strpos($colInfo['flags'], "primary_key") !== FALSE)
+	if (preg_match("/primary/", $colInfo['flags']) && preg_match("/int/", $colInfo['type']))
 	  return $colInfo['name'];
     }
 
@@ -345,7 +347,6 @@ class PHPWS_DB {
 
     $idColumn = PHPWS_DB::getIndex(TRUE);
 
-
     if (PEAR::isError($idColumn))
       return $idColumn;
     elseif(isset($idColumn)) {
@@ -424,11 +425,11 @@ class PHPWS_DB {
     // not sure why it is coded that way. Use the default instead
     switch ($type){
     case "assoc":
-      return $GLOBALS['PEAR_DB']->getAssoc($sql, NULL,NULL, $mode);
+      return PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getAssoc($sql, NULL,NULL, $mode), $type);
       break;
 
     case "col":
-      return $GLOBALS['PEAR_DB']->getCol($sql);
+      return PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getCol($sql), $type);
       break;
 
     case "min":
@@ -443,16 +444,18 @@ class PHPWS_DB {
       break;
 
     case "one":
-      return $GLOBALS['PEAR_DB']->getOne($sql, NULL, $mode);
+      $value = $GLOBALS['PEAR_DB']->getOne($sql, NULL, $mode);
+      db_trim($value);
+      return $value;
       break;
 
     case "row":
-      return $GLOBALS['PEAR_DB']->getRow($sql, array(), $mode);
+      return PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getRow($sql, array(), $mode), $type);
       break;
 
     case "all":
     default:
-      return $GLOBALS['PEAR_DB']->getAll($sql, NULL, $mode);
+      return PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getAll($sql, NULL, $mode), $type);
       break;
     }
   }
@@ -810,6 +813,39 @@ class PHPWS_DB {
     return $result;
   }
 
+
+  function autoTrim($sql, $type){
+    if (PEAR::isError($sql) || !is_array($sql))
+      return $sql;
+
+    if ($GLOBALS['PEAR_DB']->phptype != 'pgsql')
+      return $sql;
+
+    switch ($type){
+    case "col":
+      array_walk($sql, 'db_trim');
+      break;
+
+    default:
+      array_walk($sql, 'db_trim');
+      break;
+    }
+
+    return $sql;
+  }
+
+}
+
+function db_trim(&$value){
+  if (PEAR::isError($value) || !isset($value))
+    return;
+
+  if (is_array($value)){
+    array_walk($value, 'db_trim');
+    return;
+  }
+
+  $value = rtrim($value);
 }
 
 ?>
