@@ -1,4 +1,4 @@
 <div class="link">{IMAGE}
-<a href="{URL}">{NAME}</a><br />
+{NAME}<br />
 <p>{DESCRIPTION}</p>
 </div>
