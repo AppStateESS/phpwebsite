@@ -96,9 +96,8 @@ class Block_Item {
     $db->delete();
   }
 
-  function view($pin_mode=FALSE, $admin_icon=TRUE)
+  function view(&$key, $pin_mode=FALSE, $admin_icon=TRUE)
   {
-    $key = &$this->getKey();
     if ($pin_mode) {
       $link['action']   = 'pin';
       $link['block_id'] = $this->id;

@@ -29,7 +29,7 @@ class Block {
 	continue;
       }
 
-      $content[] = $block->view(TRUE);
+      $content[] = $block->view($key, TRUE);
     }
 
     if (empty($content)) {
@@ -51,9 +51,7 @@ class Block {
 
     foreach ($result as $block_id) {
       $block = & new Block_Item($block_id);
-      $block->setKey($key);
-
-      Layout::add($block->view(), 'block', $block->getContentVar(), FALSE);
+      Layout::add($block->view($key), 'block', $block->getContentVar(), FALSE);
       $GLOBALS['Current_Blocks'][$block_id] = TRUE;
     }
 
