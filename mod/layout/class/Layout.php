@@ -13,7 +13,7 @@ PHPWS_Core::initCoreClass('Template.php');
 
 class Layout {
 
-  function add($text, $module=NULL, $contentVar=NULL, $box=TRUE){
+  function add($text, $module=NULL, $contentVar=NULL, $box=FALSE){
     Layout::checkSettings();
     // If content variable is not in system (and not NULL) then make
     // a new box for it.
@@ -23,7 +23,6 @@ class Layout {
 	Layout::addBox($contentVar, $module);
       }
     } else {
-      $box = FALSE;
       $module = 'layout';
       $contentVar = DEFAULT_CONTENT_VAR;
     }
@@ -172,9 +171,13 @@ class Layout {
   function createBox($module, $contentVar, $template){
     $tpl = new PHPWS_Template;
     $box = Layout::getBox($module, $contentVar);
-    
-    $file = $box->template;
-    $directory = 'themes/' . Layout::getCurrentTheme() . '/boxstyles/';
+    if (empty($box)) {
+      $file = $_SESSION['Layout_Settings']->_default_box;
+    } else {
+      $file = $box->template;
+    }
+
+    $directory = Layout::getThemedir() . '/boxstyles/';
     if (isset($file) && is_file($directory . $file))
       $tpl->setFile($directory . $file, TRUE);
     else
@@ -245,22 +248,24 @@ class Layout {
     }
 
     $contentList = Layout::getBoxContent();
-
     // if content list is blank
     // 404 error?
 
     foreach ($contentList as $module=>$content){
       foreach ($content as $contentVar=>$template){
-	if(!($theme_var = $_SESSION['Layout_Settings']->getBoxThemeVar($module, $contentVar)))
+	if(!($theme_var = $_SESSION['Layout_Settings']->getBoxThemeVar($module, $contentVar))) {
 	  $theme_var = DEFAULT_THEME_VAR;
+	}
 
-	if (!in_array($theme_var, $themeVarList))
+	if (!in_array($theme_var, $themeVarList)) {
 	  $themeVarList[] = $theme_var;
+	}
 
 	$order = $_SESSION['Layout_Settings']->getBoxOrder($module, $contentVar);
 
-	if (empty($order))
+	if (empty($order)) {
 	  $order = MAX_ORDER_VALUE;
+	}
 
 	if (Layout::isBoxTpl($module, $contentVar)){
 	  $unsortedLayout[$theme_var][$order] = Layout::createBox($module, $contentVar, $template);
@@ -291,8 +296,11 @@ class Layout {
   }
 
   function getBox($module, $contentVar){
-    if (isset($_SESSION['Layout_Settings']->_boxes[$module][$contentVar]))
+    if (isset($_SESSION['Layout_Settings']->_boxes[$module][$contentVar])) {
       return $_SESSION['Layout_Settings']->_boxes[$module][$contentVar];
+    } else {
+      return NULL;
+    }
   }
 
   function getContentVars(){
