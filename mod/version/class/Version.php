@@ -235,6 +235,9 @@ class Version {
   }
 
   function _plugInVersion($data){
+    if (!is_array($data)){
+      return FALSE;
+    }
     PHPWS_Core::plugObject($this, $data);
     $diff = array_diff_assoc($data, get_object_vars($this));
     $this->setSource($diff);
@@ -350,6 +353,11 @@ class Version {
     if (empty($this->source_id))
       return FALSE;
     return Users_Permission::giveItemPermission($this->getCreator(), $module, $this->source_id, $itemname);
+  }
+
+  function flush($item_id, $table){
+    $version = & new Version($table, $item_id);
+    $version->kill();
   }
 
   function kill(){
