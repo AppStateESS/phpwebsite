@@ -1,0 +1,93 @@
+Categories documentation
+by
+Matthew McNaney
+
+Introduction
+----------------------------------------------------------------------
+Categories helps sort your module's information. This allows items
+from different modules which share similiar characteristics to be
+accessed together.
+
+
+Getting Started
+----------------------------------------------------------------------
+I will be using the Blog Module for my examples. The word 'item' is
+used as a generic description of what your module creates. For
+example, Blog has a blog entry 'item'. A calendar module would have an
+event 'item'.
+
+I will be referring to two types of items in my descriptions. The
+first item is your module's item. The second item is the category
+item. The category item is just a link to your module's item. So for
+each item in your module, category will retain some of its information
+and then sort it.
+
+
+The Category Menu
+----------------------------------------------------------------------
+There are two main steps to assigning your item to a category. First,
+you need to include the category listing multiple selection box into
+your form. Second, you need to catch the results of that form.
+
+To retrieve the category multiple select input for inclusion into your
+form, you need to first create a category item.
+
+
+Creating a Category Item
+----------------------------------------------------------------------
+To associate your item to a category, you must first create a category
+item object, like so:
+
+$category_item = & new Category_Item('blog');
+
+With 'blog' being your module's title.
+
+
+Setting the Category Item Variables
+----------------------------------------------------------------------
+The category object item needs a link to your item. You must assign an
+id to the category. This id will could be your module item's id, the
+id of the current version* of your item, or both.
+
+To set your module's item id:
+
+$category_item->setItemId($blog->id);
+
+If my module's item is actually a version of the original or an
+unapproved version, I will also set the version id:
+
+$category_item->setVersionId($version_id);
+
+Getting the Category Form List
+----------------------------------------------------------------------
+The category item object needs just the above ids in order to create a
+selection menu. To get that menu, I call getForm:
+
+$template['CATEGORY_LISTING'] - $category_item->getForm();
+
+This tag must be in the middle of the form's beginning and end
+tags. For example, if you are using phpwebsite's form class:
+
+{START_FORM}
+.
+.
+Pick one or more categories for this entry
+{CATEGORY_LISTING}
+
+.
+.
+{END_FORM}
+
+
+
+
+
+
+
+
+
+
+
+* See Version.txt for information on versioning.
+
+
