@@ -516,17 +516,19 @@ class PHPWS_Text {
       return $text;
     }
 
-    foreach ($GLOBALS['embedded_tags'] as $module => $funcName) {
-      $search = "\[($module):([\w\s:\.\?\!]*)\]";
-      $text = preg_replace_callback("/$search/Ui", 'getEmbedded', $text);
+    foreach ($GLOBALS['embedded_tags'] as $module => $function_names) {
+      foreach ($function_names as $funcName) {
+	$search = "\[($module):([\w\s:\.\?\!]*)\]";
+	$text = preg_replace_callback("/$search/Ui", 'getEmbedded', $text);
+      }
     }
-
+    
     return $text;
   }
 
   function addTag($module, $function_name)
   {
-    $GLOBALS['embedded_tags'][$module] = $function_name;
+    $GLOBALS['embedded_tags'][$module][] = $function_name;
   }
 
 }//END CLASS CLS_text
@@ -547,11 +549,11 @@ function getEmbedded($stuff){
 
   require_once $filename;
 
-  $funcName = &$GLOBALS['embedded_tags'][$module];
+  $funcName = $values[0];
   if (!function_exists($funcName)) {
     return NULL;
   }
-  
+  unset($values[0]);
   return $funcName($values);
 }
 ?>
