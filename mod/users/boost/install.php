@@ -12,20 +12,21 @@ function users_install(&$content, $branchInstall=FALSE){
   if ($branchInstall==FALSE){
     if (isset($_POST['module']) && $_POST['module']=="users"){
       $result = User_Action::postUser($user);
+
       if (!is_array($result)){
 	$anon = new PHPWS_User;
-	$anon->setUsername(_("Anonymous"));
+	$anon->setUsername("ANON");
+	$anon->setEmail("blank@127.0.0.1");
+	$anon->setActive(TRUE);
+	$anon->setApproved(TRUE);
 	$result = $anon->save();
 
 	if (PEAR::isError($result))
 	  return $result;
 
-	$setting = & new PHPWS_DB("users_config");
-	$setting->addValue("anonymous", $anon->getId());
-	$setting->addValue("default_group", 0);
-	$setting->insert();
-
 	$user->setDeity(TRUE);
+	$user->setActive(TRUE);
+	$user->setApproved(TRUE);
 	$result = $user->save();
 	if (PEAR::isError($result))
 	  return $result;
@@ -36,9 +37,7 @@ function users_install(&$content, $branchInstall=FALSE){
 	$db->addValue("anonymous", $anon->getId());
 
       } else {
-	foreach ($result as $error)
-	  $errors[] = $error->getMessage();
-	$content[] = userForm($user, implode("<br />", $errors));
+	$content[] = userForm($user, $result);
 	return FALSE;
       }
     } else {
@@ -48,47 +47,37 @@ function users_install(&$content, $branchInstall=FALSE){
     }
   }
 
-  $content[] = _("Importing demographics information.");
-  $result = Demographics::import("demographics.txt");
-  if (PEAR::isError($result)){
-    $content[] = _("And error occurred while importing your demographics settings.");
-    $content[] = _("Please check your demographics.txt file.");
-    PHPWS_Error::log($result);
-  } else {
-    $db = new PHPWS_DB("users_demographics");
-    $db->addWhere("label", "contact_email");
-    $db->addValue("active", 1);
-    $db->update();
-    $content[] = _("Import successful.");
-  }
   return TRUE;
-
 }
 
 
-function userForm(&$user, $message=NULL){
+function userForm(&$user, $errors=NULL){
   PHPWS_Core::initCoreClass("Form.php");
   PHPWS_Core::initModClass("users", "Form.php");
 
   translate("users");
   $form = & new PHPWS_Form;
-  $form->add("submit", "submit", _("Add User"));
 
-  if (isset($message))
-    $tpl['MESSAGE'] = $message;
+  $form->addHidden("step", 3);
+  $form->addHidden("module", "users");
+  $form->addText("username", $user->getUsername());
+  $form->addText("email", $user->getEmail());
+  $form->addPassword("password1");
+  $form->addPassword("password2");
 
-  $tpl['USERNAME_LBL'] = _("Username");
-  $tpl['PASSWORD_LBL'] = _("Password");
+  $form->setLabel("username", _("Username"));
+  $form->setLabel("password1", _("Password"));
+  $form->setLabel("email", _("Email"));
 
-  $form->add("step", "hidden", 3);
-  $form->add("module", "hidden", "users");
-  $form->add("username", "text", $user->getUsername());
-  $form->add("password1", "password");
-  $form->add("password2", "password");
+  $form->addSubmit("submit", _("Add User"));
   
   $form->mergeTemplate($tpl);
 
   $template = $form->getTemplate();
+
+  if (!empty($errors))
+    foreach ($errors as $tag=>$message)
+      $template[$tag] = $message;
 
   $result = PHPWS_Template::process($template, "users", "forms/userForm.tpl");
 
