@@ -8,11 +8,16 @@ class PHPWS_Group {
   var $_members     = NULL;
   var $_permissions = NULL;
   var $_groups      = NULL;
+  var $_error       = NULL;
   
   function PHPWS_Group($id=NULL, $loadGroups=TRUE){
     if (isset($id)){
       $this->setId($id);
-      $this->init();
+      $result = $this->init();
+      if (PEAR::isError($result)){
+	$this->_error = $result;
+	return;
+      }
       $this->loadMembers();
       if ($loadGroups == TRUE)
 	$this->loadGroups();
@@ -22,7 +27,7 @@ class PHPWS_Group {
   function init(){
     $db = & new PHPWS_DB("users_groups");
     $db->addWhere("id", $this->id);
-    return $db->loadObject($this, "PHPWS_Group");
+    return $db->loadObject($this);
   }
 
   function setId($id){
