@@ -1,5 +1,4 @@
 {START_FORM}
-<!-- BEGIN message --><div class="lo-message">{MESSAGE}</div><!-- END message -->
 <div id="box-settings">
   <div class="setting" style="background-color : #CDDEEE">
     {MOVE_BOX_LABEL}
