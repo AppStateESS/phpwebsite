@@ -128,9 +128,9 @@ $db->addWhere('id', 4);
 
 Where the id is equal to 4 or 5
 $db->addWhere('id', 4);
-$db->addWhere('id', 5, '=', 'and');
+$db->addWhere('id', 5, '=', 'or');
 note: the above could also be:
-$db->addWhere('id', 5, NULL 'and');
+$db->addWhere('id', 5, NULL 'or');
 
 Where the age is greater than 20 and less than 45.
 $db->addWhere('age', 20, '>');
