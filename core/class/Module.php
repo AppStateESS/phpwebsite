@@ -3,6 +3,7 @@
 class PHPWS_Module {
   var $_title         = NULL;
   var $_proper_name   = NULL;
+  var $_priority      = 50;
   var $_directory     = NULL;
   var $_version       = NULL;
   var $_active        = FALSE; 
@@ -44,8 +45,7 @@ class PHPWS_Module {
 
 
   function setTitle($title){
-    $this->_title = $title;
-
+    $this->_title = trim($title);
   }
 
   function getTitle(){
@@ -61,6 +61,14 @@ class PHPWS_Module {
       return ucwords(str_replace("_", " ", $this->getTitle()));
     else
       return $this->_proper_name;
+  }
+
+  function setPriority($priority){
+    $this->_priority = (int)$priority;
+  }
+
+  function getPriority(){
+    return $this->_priority;
   }
 
   function setDirectory($directory){
