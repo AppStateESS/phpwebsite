@@ -33,7 +33,6 @@
 
 #tabmenu li.active a:link { 
 	text-decoration: none;
-	display : block;
 	color: #3A5574;
 }
 
