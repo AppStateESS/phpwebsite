@@ -108,7 +108,7 @@ class PHPWS_Boost {
 	  $content[] = _("Import successful.");
       }
 
-      $result = $this->onInstall($title, $content);
+      $result = $this->onInstall($mod, $content);
 
       if ($result === TRUE){
 	$this->setStatus($title, BOOST_DONE);
@@ -201,16 +201,16 @@ class PHPWS_Boost {
     }
   }
 
-  function onInstall($title, &$content){
-    $onInstallFile = PHPWS_SOURCE_DIR . "mod/" . $title . "/boost/install.php";
-    $installFunction = $title . "_install";
+  function onInstall($mod, &$content){
+    $onInstallFile = $mod->getDirectory() . "boost/install.php";
+    $installFunction = $mod->getTitle() . "_install";
     if (!is_file($onInstallFile)){
-      $this->addLog($title, _("No installation file found."));
+      $this->addLog($mod->getTitle(), _("No installation file found."));
       return NULL;
     }
 
-    if ($this->getStatus($title) == BOOST_START)
-      $this->setStatus($title, BOOST_PENDING);
+    if ($this->getStatus($mod->getTitle()) == BOOST_START)
+      $this->setStatus($mod->getTitle(), BOOST_PENDING);
 
     include_once($onInstallFile);
 
