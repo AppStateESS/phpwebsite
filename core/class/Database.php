@@ -212,7 +212,7 @@ class PHPWS_DB {
 	foreach ($groups['values'] as $value){
 	  if ($startSub == TRUE) $sql[] = $value['conj'];
 
-	  $sql[] = $value['column'] . $value['operator'] . "'" . $value['value'] . "'";
+	  $sql[] = $value['column'] . " " . $value['operator'] . " '" . $value['value'] . "'";
 	  $startSub = TRUE;
 	}
 
