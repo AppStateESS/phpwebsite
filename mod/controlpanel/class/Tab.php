@@ -1,18 +1,16 @@
 <?php
 
-class PHPWS_ControlPanel_Tab {
+class PHPWS_Panel_Tab {
   var $_id          = NULL;
   var $_title       = NULL;
   var $_link        = NULL;
-  var $_directory   = NULL;
-  var $_inactivetpl = NULL;
-  var $_activetpl   = NULL;
   var $_tab_order   = NULL;
   var $_color       = NULL;
   var $_itemname    = NULL;
   var $_style       = NULL;
+  var $_tabfile     = NULL;
 
-  function PHPWS_ControlPanel_Tab($id=NULL) {
+  function PHPWS_Panel_Tab($id=NULL) {
 
     if(isset($id)) {
       $this->setId($id);
@@ -46,8 +44,11 @@ class PHPWS_ControlPanel_Tab {
     $this->_title = strip_tags($title);
   }
 
-  function getTitle(){
-    return str_replace(" ", "&nbsp;", $this->_title);
+  function getTitle($noBreak=TRUE){
+    if ($noBreak)
+      return str_replace(" ", "&nbsp;", $this->_title);
+    else
+      return $this->_title;
   }
 
   function setLink($link){
@@ -58,34 +59,11 @@ class PHPWS_ControlPanel_Tab {
     if ($addTitle){
       $title = $this->getTitle();
       $link = $this->getLink(FALSE);
-      return "<a href=\"$link\">$title</a>";
+      return "<a href=\"$link" . "&amp;tab=" . $this->getId() . "\">$title</a>";
     } else
       return $this->_link;
   }
 
-
-  function setDirectory($directory){
-    $this->_directory = $directory;
-  }
-
-  function getDirectory(){
-    return $this->_directory;
-  }
-
-  function setInactiveTpl($template){
-    $this->_inactivetpl = $template;
-  }
-
-  function setActiveTpl($template){
-    $this->_activetpl = $template;
-  }
-
-  function getTemplate($active){
-    if ((bool)$active == TRUE)
-      return $this->_activetpl;
-    else
-      return $this->_inactivetpl;
-  }
 
   function setOrder($order){
     $this->_tab_order = $order;
@@ -125,6 +103,16 @@ class PHPWS_ControlPanel_Tab {
     return $this->_style = $style;
   }
 
+  function setTabFile($tabfile){
+    $this->_tabfile = $tabfile;
+  }
+
+
+  function getTabFile(){
+
+    return $this->_tabfile;
+  }
+
   function setItemname($itemname){
     $this->_itemname = $itemname;
   }
@@ -134,14 +122,12 @@ class PHPWS_ControlPanel_Tab {
   }
 
   function save(){
+    // MUST HAVE ITEMNAME!
     $DB = @ new PHPWS_DB("controlpanel_tab");
 
     $id                   = $this->getId();
-    $save['title']        = $this->getTitle();
+    $save['title']        = $this->getTitle(FALSE);
     $save['link']         = $this->getLink(FALSE);
-    $save['directory']    = $this->getDirectory();
-    $save['activetpl']    = $this->getTemplate(TRUE);
-    $save['inactivetpl']  = $this->getTemplate(FALSE);
     $save['color']        = $this->getColor();
     $save['itemname']     = $this->getItemname();
     $save['style']        = $this->getStyle();
@@ -162,25 +148,37 @@ class PHPWS_ControlPanel_Tab {
     return $result;
   }
 
-  function view($active=FALSE, $linkable=TRUE){
-    if ($linkable)
-      $tpl['TITLE'] = $this->getLink();
-    else
-      $tpl['TITLE'] = $this->getTitle();
+  function view($active=FALSE){
+    include_once PHPWS_SOURCE_DIR . "mod/controlpanel/conf/config.php";
 
-    $filename = $this->getDirectory() . $this->getTemplate($active);
+    $tpl['TITLE'] = $this->getLink();
+
+    if ($active){
+      $tpl['STATUS'] = "class=\"active\"";
+      $tpl['ACTIVE'] = " ";
+    }
+    else {
+      $tpl['STATUS'] = "class=\"inactive\"";
+      $tpl['INACTIVE'] = " ";
+    }
+
+    $tabfile = $this->getTabFile();
+
+    if (!isset($tabfile))
+      $tabfile = CP_DEFAULT_TAB;
 
     if ($color = $this->getColor())
       $tpl['COLOR'] = " style=\"background-color : #" . $color . "\"";
 
     $phptpl = & new PHPWS_Template();
 
-    if ($phptpl->setFile($filename, TRUE) == FALSE)
-      return PEAR::raiseError("Unable to find template <b>$filename</b>");
+    if ($phptpl->setFile("mod/controlpanel/templates/" . $tabfile, TRUE) == FALSE)
+      return PEAR::raiseError("Unable to find template <b>$tabfile</b>");
 
     $phptpl->setData($tpl);
 
     $result = $phptpl->get();
+
     return $result;
   }
 

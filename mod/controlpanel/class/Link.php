@@ -1,6 +1,6 @@
 <?php
 
-class PHPWS_ControlPanel_Link extends PHPWS_Item{
+class PHPWS_Panel_Link extends PHPWS_Item{
   var $_id;
   var $_label;
   var $_module;
@@ -12,7 +12,7 @@ class PHPWS_ControlPanel_Link extends PHPWS_Item{
   var $_image;
   var $_link_order;
 
-  function PHPWS_ControlPanel_Link($id=NULL){
+  function PHPWS_Panel_Link($id=NULL){
     $exclude = array ("_owner",
 		      "_editor",
 		      "_ip");
@@ -88,6 +88,14 @@ class PHPWS_ControlPanel_Link extends PHPWS_Item{
 
   function setRestricted($restrict){
     $this->_restricted($restrict);
+  }
+
+  function view(){
+    $tpl['IMAGE']       = $this->getImage(TRUE, TRUE);
+    $tpl['NAME']        = $this->getUrl(TRUE);
+    $tpl['DESCRIPTION'] = $this->getDescription();
+
+    return PHPWS_Template::process($tpl, "controlpanel", "link.tpl");
   }
 
 }
