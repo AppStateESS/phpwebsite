@@ -28,8 +28,11 @@ class PHPWS_User {
   var $_logged       = FALSE;
  
   function PHPWS_User($id=NULL){
-    if(!isset($id))
+    if(!isset($id)){
+      $auth = PHPWS_User::getUserSetting("default_authorization");
+      $this->setAuthorize($auth);
       return;
+    }
     $this->setId($id);
     $result = $this->init();
 
@@ -283,6 +286,10 @@ class PHPWS_User {
 
   function getGroups(){
     return $this->_groups;
+  }
+
+  function canChangePassword(){
+    return ($this->authorize == LOCAL_AUTHORIZATION || $this->authorize == GLOBAL_AUTHORIZATION) ? TRUE : FALSE;
   }
 
   function allow($itemName, $subpermission=NULL, $item_id=NULL){
