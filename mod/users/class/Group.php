@@ -162,16 +162,16 @@ class PHPWS_Group extends PHPWS_Item {
   function allow($itemName, $subpermission=NULL, $item_id=NULL, $returnType=FALSE){
     PHPWS_Core::initModClass("users", "Permission.php");
 
-    if (!isset($this->_permission)){
-      $groups = &$this->getGroups();
-      $groups[] = $this->getId();
-      $this->_permission = & new Users_Permission($groups);
-    }
+    if (!isset($this->_permission))
+      $this->loadPermissions();
 
     return $this->_permission->allow($itemName, $subpermission, $item_id, $returnType);
   }
 
-
+  function loadPermissions($loadAll=TRUE){
+    $groups[] = $this->getId();
+    $this->_permission = & new Users_Permission($groups);
+  }
 
 }
 

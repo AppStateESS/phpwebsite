@@ -35,6 +35,9 @@ class User_Manager extends PHPWS_List{
 		     "deity"       => TRUE
 		     );
 
+    if (!$_SESSION['User']->isDeity())
+      $this->setWhere("deity = 0");
+
     $this->setColumns($columns);
     $this->setName("user_manager");
     $this->setTemplate("manager/users.tpl");

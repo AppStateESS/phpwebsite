@@ -238,6 +238,11 @@ class User_Action {
       $content = User_Form::manageMembers($group);
       break;
 
+    case "update_settings":
+      $result = User_Action::update_settings();
+      $content = _("User settings updated.") . "<hr />";
+      $content .= User_Form::settings();
+      break;
 
     default:
       $content = "Unknown command";
@@ -325,22 +330,6 @@ class User_Action {
   }
 
 
-  function getUserConfig($setting){
-    static $settings;
-
-    if (!isset($settings)){
-      $DB = new PHPWS_DB("users_config");
-      $settings = $DB->select("row");
-    }
-
-    if (PEAR::isError($settings)){
-      PHPWS_Error::log($settings);
-      return NULL;
-    }
-
-    return $settings[$setting];
-  }
-
   function postUser(&$user){
     if ($user->isUser())
       $result = $user->setUsername($_POST['username'], FALSE);
@@ -404,6 +393,15 @@ class User_Action {
 
     return $db->select("col");
   }
+
+  function update_settings(){
+    $db = & new PHPWS_DB("users_config");
+    if (is_numeric($_POST['default_group']))
+      $db->addValue("default_group", $_POST['default_group']);
+
+    $db->update();
+  }
+
 
 }
 

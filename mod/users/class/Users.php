@@ -11,6 +11,7 @@ class PHPWS_User extends PHPWS_Item {
   var $_logged       = FALSE;
   var $_last_logged  = NULL;
   var $_settings     = NULL;
+  var $_user_group   = NULL;
  
   function PHPWS_User($id=NULL){
     $exclude = array("_owner",
@@ -132,15 +133,13 @@ class PHPWS_User extends PHPWS_Item {
   }
 
   function loadUserGroups(){
-    $DB = & new PHPWS_DB("users_groups");
-    $DB->addWhere("user_id", $this->getId());
-    $DB->addColumn("id");
-    $group = $DB->select("one");
+    $group = $this->getUserGroup();
     if (PEAR::isError($group)){
       echo $group->getMessage();
       return;
     }
-    $groupList[] = $group;
+
+    $this->_user_group = $groupList[] = $group;
 
     $DB = & new PHPWS_DB("users_members");
     $DB->addWhere("member_id", $group);
@@ -154,6 +153,10 @@ class PHPWS_User extends PHPWS_Item {
     
     if (is_array($result))
       $groupList = array_merge($result, $groupList);
+
+    $default_group = PHPWS_User::getUserSetting("default_group");
+    if ($default_group != 0)
+      $groupList[] = $default_group;
 
     $this->setGroups($groupList);
   }
@@ -172,10 +175,8 @@ class PHPWS_User extends PHPWS_Item {
     if ($this->isDeity())
       return TRUE;
 
-    if (!isset($this->_permission)){
-      $groups = &$this->getGroups();
-      $this->_permission = & new Users_Permission($groups);
-    }
+    if (!isset($this->_permission))
+      $this->loadPermissions();
 
     return $this->_permission->allow($itemName, $subpermission, $item_id);
   }
@@ -270,6 +271,9 @@ class PHPWS_User extends PHPWS_Item {
 
 
   function getUserGroup(){
+    if (isset($this->_user_group))
+      return $this->_user_group;
+
     $db = & new PHPWS_DB("users_groups");
     $db->addWhere("user_id", $this->getId());
     $db->addColumn("id");
@@ -283,7 +287,7 @@ class PHPWS_User extends PHPWS_Item {
   }
 
   function isAnonymous(){
-    return (User_Action::getUserConfig('anonymous') == $this->getId() ? TRUE : FALSE);
+    return (PHPWS_User::getUserSetting('anonymous') == $this->getId() ? TRUE : FALSE);
   }
 
   function disallow(){
@@ -294,7 +298,7 @@ class PHPWS_User extends PHPWS_Item {
 
   function logAnonymous(){
     PHPWS_Core::initModClass("users", "Action.php");
-    $id = User_Action::getUserConfig('anonymous');
+    $id = PHPWS_User::getUserSetting('anonymous');
     $_SESSION['User'] = new PHPWS_User($id);
   }
 
@@ -387,6 +391,32 @@ class PHPWS_User extends PHPWS_Item {
     return $DB->delete();
   }
 
+
+  function getSettings(){
+      $DB = new PHPWS_DB("users_config");
+      return $DB->select("row");
+  }
+
+  function getUserSetting($setting){
+    static $settings;
+
+    if (!isset($settings))
+      $settings = PHPWS_User::getSettings();
+
+    if (PEAR::isError($settings))
+      return $settings;
+
+    return $settings[$setting];
+  }
+
+  function loadPermissions($loadAll=TRUE){
+    if ($loadAll == TRUE){
+      $groups = &$this->getGroups();
+    } else
+      $groups[] = $this->getUserGroup();
+
+    $this->_permission = & new Users_Permission($groups);
+  }
 
 }
 

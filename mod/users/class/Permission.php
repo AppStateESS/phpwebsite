@@ -48,6 +48,7 @@ class Users_Permission {
 
   function loadPermission($module, &$permissions){
     $groups = $this->groups;
+
     $permTable = Users_Permission::getPermissionTableName($module);
     $itemTable = Users_Permission::getItemPermissionTableName($module);
 
@@ -91,11 +92,14 @@ class Users_Permission {
     $permissionSet = array();
     foreach ($permResult as $permission){
       unset($permission['group_id']);
-      $permissionLevel = $permission['permission_level'];
+     
+      if (!isset($permissionLevel) || $permissionLevel < $permission['permission_level'])
+	$permissionLevel = $permission['permission_level'];
+
       unset($permission['permission_level']);
       
       foreach($permission as $name=>$value){
-	if (!isset($permissionSet[$name]))
+	if (!isset($permissionSet[$name]) || $permissionSet[$name] < $value)
 	  $permissionSet[$name] = $value;
 	elseif ($permissionSet[$name] < $value)
 	  $permissionSet[$name] = $value;

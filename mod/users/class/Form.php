@@ -99,6 +99,8 @@ class User_Form {
 
 
   function modulePermission($mod, &$group){
+    $group->loadPermissions(FALSE);
+
     Layout::addStyle("users");
     $file = PHPWS_Core::getConfigFile($mod['title'], "permission.php");
     $template = NULL;
@@ -542,21 +544,33 @@ class User_Form {
   }
 
   function settings(){
+    PHPWS_Core::initModClass("help", "Help.php");
+    $settings = PHPWS_User::getSettings();
+
+    $default_group = PHPWS_User::getUserSetting("default_group");
+    if (PEAR::isError($default_group)){
+      PHPWS_Error::log($default_group);
+      $default_group = 0;
+    }
+
     $content = array();
 
     $form = new PHPWS_Form("user_settings");
     $form->add("module", "hidden", "users");
     $form->add("action[admin]", "hidden", "update_settings");
+    $form->add("submit", "submit", _("Update Settings"));
 
     $groups = User_Action::getGroups("group");
 
+    $groups[0] = "-" . _("No Default") . "-";
+    ksort($groups);
 
     $template['DEFAULT_GROUP_LABEL'] = _("Default User Group");
-    if (isset($groups))
-      $form->add("default_group", "select", $groups);
-    else
-      $template['DEFAULT_GROUP'] = _("No groups created.");
-    
+    $form->add("default_group", "select", $groups);
+    $form->setMatch("default_group", $default_group);
+
+    $template['DEFAULT_HELP'] = PHPWS_Help::show_link("users", "default_user_group");
+
     $form->mergeTemplate($template);
     $template = $form->getTemplate();
     return PHPWS_Template::process($template, "users", "forms/settings.tpl");
