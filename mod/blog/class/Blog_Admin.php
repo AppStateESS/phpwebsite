@@ -405,8 +405,8 @@ class Blog_Admin {
 	  PHPWS_Error::log($result);
 	  return FALSE;
 	}
-
-	PHPWS_User::savePermissions('blog', $blog->getId());
+	$key = $blog->getKey();
+	PHPWS_User::savePermissions($key);
 	return _('Blog entry saved.');
       }
     }
