@@ -708,6 +708,18 @@ class PHPWS_DB {
     }
   }
 
+  function getRow($sql){
+    return $this->select("row", $sql);
+  }
+
+  function getCol($sql){
+    return $this->select("col", $sql);
+  }
+
+  function getAll($sql){
+    return $this->select("all", $sql);
+  }
+
   function _indexBy($sql, $indexby, $colMode=FALSE){
     if (!is_array($sql))
       return $sql;
@@ -872,11 +884,14 @@ class PHPWS_DB {
 
   function parseColumns($columns){
     foreach ($columns as $info){
+      if (!is_array($info))
+	continue;
+
       $setting = $this->_sql->export($info);
 
       if (isset($info['flags'])){
 	if (stristr($info['flags'], "multiple_key")){
-	  $column_info['createIndex'][] = "CREATE INDEX " .  $info['name'] . " on " . $info['table'] . "(" . $info['name'] . ")";
+	  $column_info['index'][] = "CREATE INDEX " .  $info['name'] . " on " . $info['table'] . "(" . $info['name'] . ")";
 	  $info['flags'] = str_replace(" multiple_key", "", $info['flags']);
 	}
 	$preFlag = array("/not_null/", "/primary_key/", "/default_(.*)?/", "/blob/");
@@ -889,7 +904,7 @@ class PHPWS_DB {
       
       $column_info['parameters'][] = $info['name'] . " $setting" . $flags; 
     }
-
+    
     return $column_info;
   }
 
@@ -900,16 +915,14 @@ class PHPWS_DB {
       $columns =  $GLOBALS['PEAR_DB']->tableInfo($this->table);
 
       $column_info = $this->parseColumns($columns);
-      extract($column_info);
-      
       $index = $this->getIndex();
 
       if ($prefix = PHPWS_DB::getPrefix())
 	$tableName = str_replace("", $prefix, $tableName);
 
-      $sql[] = "CREATE TABLE $tableName ( " .  implode(", ", $parameters) ." );";
-      if (isset($createIndex))
-	$sql = array_merge($sql, $createIndex);
+      $sql[] = "CREATE TABLE $tableName ( " .  implode(", ", $column_info['parameters']) ." );";
+      if (isset($column_info['index']))
+	$sql = array_merge($sql, $column_info['index']);
     }
 
     if ($contents == TRUE){
@@ -999,7 +1012,7 @@ class PHPWS_DB {
       return PHPWS_Error::get(PHPWS_DB_NOT_OBJECT, "core", "PHPWS_DB::loadObject");
 
     if (isset($variables) && !is_array($variables))
-      return PHPWS_Error::get(PHPWS_WRONG_TYPE, "core", __CLASS__ . "::" . __METHOD__, gettype($variables));
+      return PHPWS_Error::get(PHPWS_WRONG_TYPE, "core", __CLASS__ . "::" . __FUNCTION__, gettype($variables));
 
     $className = get_class($object);
     $classVars = get_class_vars($className);
