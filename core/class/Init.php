@@ -97,25 +97,6 @@ function doubleLanguage($language){
   return $language . "_" . strtoupper($language);
 }
 
-/* replaces var# with array variables */ 
-function _print($text, $variables, $var2=NULL){
-  
-  if (!is_array($variables)){
-    $temp[] = $variables;
-    $variables = $temp;
-  }
-
-  if (isset($var2))
-    $variables[] = $var2;
-
-  foreach ($variables as $key=>$value){
-    $varNum = $key + 1;
-    $text = str_replace("[var" . $varNum . "]", $value, $text);
-  }
-  
-  return $text;
-}
-
 function translate($module){
   if (PHPWS_TRANSLATION)
     bindtextdomain("messages", "./locale/" . $module);
