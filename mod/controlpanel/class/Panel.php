@@ -148,6 +148,11 @@ class PHPWS_Panel{
     if (!isset($panel))
       $panel = CP_DEFAULT_PANEL;
 
+    if (!is_file(PHPWS_Template::getTplDir($module) . $panel)){
+      $module = 'controlpanel';
+      $panel = CP_DEFAULT_PANEL;
+    }
+
     $tplObj = & new PHPWS_Template($module, $panel);
 
     if (PEAR::isError($tplObj))
