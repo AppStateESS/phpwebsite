@@ -29,22 +29,33 @@ function controlpanel_register($module, &$content){
     $content[] = _print(_("Control Panel tabs created for [var1]."), $module);
   }
 
-  if (isset($links) && is_array($links)){
+  if (isset($link) && is_array($link)){
     $db = new PHPWS_DB("controlpanel_tab");
-    foreach ($links as $info){
-      $link = new PHPWS_Panel_Link;
-      $link->setLabel($info['label']);
-      $link->setRestricted($info['restricted']);
-      $link->setUrl($info['url']);
-      $link->setActive(1);
+    foreach ($link as $info){
+      $modlink = new PHPWS_Panel_Link;
+
+      if (isset($info['label']))
+	$modlink->setLabel($info['label']);
+
+      if (isset($info['restricted']))
+	$modlink->setRestricted($info['restricted']);
+      elseif (isset($info['admin']))
+	$modlink->setRestricted($info['admin']);
+
+      $modlink->setUrl($info['url']);
+      $modlink->setActive(1);
 
       if (isset($info['itemname']))
-	$link->setItemName($info['itemname']);
+	$modlink->setItemName($info['itemname']);
       else
-	$link->setItemName($module);
+	$modlink->setItemName($module);
 
-      $link->setDescription($info['description']);
-      $link->setImage("images/mod/$module/" . $info['image']);
+      $modlink->setDescription($info['description']);
+      if (is_string($info['image']))
+	$modlink->setImage("images/mod/$module/" . $info['image']);
+      elseif(is_array($info['image']))
+	$modlink->setImage("images/mod/$module/" . $info['image']['name']);
+
       $db->addWhere("label", $info['tab']);
       $result = $db->select("row");
       if (PEAR::isError($result)){
@@ -54,8 +65,8 @@ function controlpanel_register($module, &$content){
       elseif (!isset($result))
 	exit("problem");
 
-      $link->setTab($result['id']);
-      $result = $link->save();
+      $modlink->setTab($result['id']);
+      $result = $modlink->save();
       if (PEAR::isError($result)){
 	PHPWS_Error::log($result);
 	$content[] = _("There was a problem trying to save a Control Panel link.");
@@ -63,6 +74,7 @@ function controlpanel_register($module, &$content){
       }
       $db->resetWhere();
     }
+    PHPWS_ControlPanel::reset();
     $content[] = _print(_("Control Panel links created for [var1]."), $module);
   }
 

@@ -59,6 +59,11 @@ class PHPWS_ControlPanel {
     return $_SESSION['CP_All_links'];
   }
 
+  function reset(){
+    unset($_SESSION['PHPWS_ControlPanel']);
+    unset($_SESSION['Control_Panel_Tabs']);
+  }
+
 }
 
 ?>
