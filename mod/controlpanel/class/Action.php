@@ -105,10 +105,10 @@ class CP_Action {
       if ($move_tabs){
 	$tvalues['tab_id'] = $tab_obj->getId();
 	$tvalues['command'] = "tab_up";
-	$taction[] = PHPWS_Text::moduleLink($up_tab, "controlpanel", $tvalues);
+	$taction[] = PHPWS_Text::secureLink($up_tab, "controlpanel", $tvalues);
 	
 	$tvalues['command'] = "tab_down";
-	$taction[] = PHPWS_Text::moduleLink($down_tab, "controlpanel", $tvalues);
+	$taction[] = PHPWS_Text::secureLink($down_tab, "controlpanel", $tvalues);
       }
 
       $tpl->setCurrentBlock("tab-list");
