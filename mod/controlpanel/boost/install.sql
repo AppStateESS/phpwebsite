@@ -1,3 +1,10 @@
+CREATE TABLE controlpanel_tab (
+  id CHAR(255) NOT NULL default '',
+  title CHAR(255) NOT NULL default '',
+  link CHAR(255) NOT NULL default '',
+  tab_order smallint NOT NULL default '0',
+  itemname CHAR(255) NOT NULL default ''
+);
 
 CREATE TABLE controlpanel_link (
  id INT NOT NULL PRIMARY KEY,
@@ -11,15 +18,3 @@ CREATE TABLE controlpanel_link (
  image CHAR(255),
  link_order SMALLINT NOT NULL
  );
-
-CREATE TABLE controlpanel_tab (
-  id int NOT NULL default '0',
-  title CHAR(255) NOT NULL default '',
-  label CHAR(255) NOT NULL default '',
-  link CHAR(255) NOT NULL default '',
-  tab_order smallint NOT NULL default '0',
-  color CHAR(50) default NULL,
-  itemname CHAR(255) NOT NULL default '',
-  style CHAR(50) default NULL,
-  PRIMARY KEY  (id)
-);

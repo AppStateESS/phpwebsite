@@ -16,6 +16,12 @@ function controlpanel_register($module, &$content){
   if (isset($tabs) && is_array($tabs)){
     foreach ($tabs as $info){
       $tab = new PHPWS_Panel_Tab;
+
+      if (!isset($info['id']))
+	$tab->setId(strtolower(preg_replace("/\W/", "_", $info['title'])));
+      else
+	$tab->setId($info['id']);
+
       if (!isset($info['title'])){
 	$content[] = _("Unable to create tab.") . " " . _("Missing title.");
 	continue;
@@ -29,17 +35,17 @@ function controlpanel_register($module, &$content){
 
       $tab->setLink($info['link']);
 
-      if (!isset($info['label']))
-	$tab->setLabel(strtolower(preg_replace("/\W/", "_", $info['title'])));
-      else
-	$tab->setLabel($info['label']);
-
       if (isset($info['itemname']))
 	$tab->setItemname($info['itemname']);
       else
-	$tab->setItemname("controlpanel");
+	$tab->setItemname($module);
 
-      $tab->save();
+      $result = $tab->save();
+      if (PEAR::isError($result)){
+	$content[] = _("An error occurred when trying to save a controlpanel tab.");
+	PHPWS_Error::log($result);
+	return FALSE;
+      }
     }
     $content[] = sprintf(_("Control Panel tabs created for %s."), $module);
   } else
@@ -73,20 +79,18 @@ function controlpanel_register($module, &$content){
       elseif(is_array($info['image']))
 	$modlink->setImage("images/mod/$module/" . $info['image']['name']);
 
-      $db->addWhere("label", $info['tab']);
-      $result = $db->select("row");
+      $db->addWhere("id", $info['tab']);
+      $db->addColumn("id");
+      $result = $db->select("one");
       if (PEAR::isError($result)){
 	PHPWS_Error::log($result);
 	continue;
       }
       elseif (!isset($result)){
-	$db->reset();
-	$db->addWhere("label", "unsorted");
-	$db->addColumn("id");
-	$tab_id = $db->select("one");
+	$tab_id = "unsorted";
 	PHPWS_Boost::addLog($module, _("Unable to load a link into a specified tab."));
       } else
-	$tab_id = $result['id'];
+	$tab_id = $info['tab'];
 
       $modlink->setTab($tab_id);
       $result = $modlink->save();
