@@ -3,7 +3,6 @@
 function users_install(&$content, $branchInstall=FALSE){
   PHPWS_Core::initModClass("users", "Users.php");
   PHPWS_Core::initModClass("users", "Action.php");
-  PHPWS_Core::initModClass("users", "Demographics.php");
   include PHPWS_Core::getConfigFile("users", "config.php");
 
   $user = & new PHPWS_User;
@@ -16,7 +15,6 @@ function users_install(&$content, $branchInstall=FALSE){
       if (!is_array($result)){
 	$anon = new PHPWS_User;
 	$anon->setUsername("ANON");
-	$anon->setEmail("blank@127.0.0.1");
 	$anon->setActive(TRUE);
 	$anon->setApproved(TRUE);
 	$anon->setAuthorize(0);
