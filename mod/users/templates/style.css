@@ -13,3 +13,19 @@ div.header {
 background-color : #94B6DE;
 font-weight : bold;
 }
+
+div.module-permission {
+margin : 10px;
+padding : 5px;
+float : left;
+position : relative;
+text-align : top;
+background-color : #E4E4E4;
+}
+
+div.module-permission div.mod-title {
+font-weight : bold;
+background-color : #BAC1FF;
+width : 100%;
+padding : 2px;
+}
