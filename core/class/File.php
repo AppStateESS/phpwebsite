@@ -130,9 +130,9 @@ class PHPWS_File {
   }// END FUNC recursiveFileCopy()
 
 
-  function writeFile($fileName, $text, $allowOverwrite=FALSE, $errorReport=FALSE){
+  function writeFile($filename, $text, $allowOverwrite=FALSE, $errorReport=FALSE){
     if (!$allowOverwrite){
-      if (@is_writable($fileName))
+      if (@is_writable($filename))
 	return FALSE;
     }
 
