@@ -350,14 +350,14 @@ class Layout {
     return in_array($content_var, $_SESSION['Layout_Content_Vars']);
   }
 
-  function getJavascript($script, $data=NULL){
+  function getJavascript($directory, $data=NULL){
     if (isset($data) && !is_array($data))
       return PHPWS_Error::get();
 
     PHPWS_CORE::initCoreClass("File.php");
-    $headfile    = "javascript/$script/head.js";
-    $bodyfile    = "javascript/$script/body.js";
-    $defaultfile = "javascript/$script/default.php";
+    $headfile    = "javascript/$directory/head.js";
+    $bodyfile    = "javascript/$directory/body.js";
+    $defaultfile = "javascript/$directory/default.php";
 
     if (is_file($defaultfile))
       include $defaultfile;
@@ -369,20 +369,7 @@ class Layout {
 	$data = $default;
     }
 
-
-    if (is_file($headfile)){
-      if (isset($data)){
-	$tpl = new PHPWS_Template;
-	$tpl->setFile($headfile, TRUE);
-	$tpl->setData($data);
-	$result = $tpl->get();
-	if (!empty($result))
-	  $GLOBALS['Layout_JS'][$script]['head'] = $result;
-	else
-	  $GLOBALS['Layout_JS'][$script]['head'] = file_get_contents($headfile);	  
-      } else
-	$GLOBALS['Layout_JS'][$script]['head'] = file_get_contents($headfile);
-    }
+    Layout::loadJavascriptFile($headfile, $directory, $data);
 
     if (is_file($bodyfile)){
       if (isset($data)){
@@ -401,8 +388,46 @@ class Layout {
 
   }
 
-  function addJavascript($script){
-    $GLOBALS['Layout_JS'][]['head'] = $script;
+  function loadModuleJavascript($module, $filename, $data=NULL){
+    $directory = PHPWS_SOURCE_DIR . "mod/$module/javascript/$filename";
+
+    if (!is_file($directory))
+      return FALSE;
+      
+    return Layout::loadJavascriptFile($directory, $module, $data);
+  }
+
+  function loadJavascriptFile($filename, $index, $data=NULL){
+    if (!is_file($filename))
+      return FALSE;
+    
+    if (isset($data)){
+      $tpl = new PHPWS_Template;
+      $tpl->setFile($filename, TRUE);
+      $tpl->setData($data);
+      $result = $tpl->get();
+      if (!empty($result))
+	Layout::addJSHeader($result, $index);
+      else
+	Layout::addJSHeader(file_get_contents($filename), $index);
+    } else
+      Layout::addJSHeader(file_get_contents($filename), $index);
+  }
+
+  function addJSHeader($script, $index=NULL){
+    static $index_count = 0;
+
+    if (empty($index))
+      $index = $index_count++;
+    
+    $GLOBALS['Layout_JS'][$index]['head'] = $script;
+  }
+
+  function addJSFile($directory){
+    $jsfile = PHPWS_SOURCE_DIR . $directory;
+
+    if (!is_file($jsfile))
+      return PHPWS_Error::get(LAYOUT_JS_FILE_NOT_FOUND, "layout", "addJSFile", $jsfile);
   }
 
   function addBox($content_var, $module, $theme_var=NULL, $template=NULL, $theme=NULL){
