@@ -13,7 +13,6 @@ define("LOG_PERMISSION", 0644);
 define("LOG_TIME_FORMAT", "%X %x");
 define("PHPWS_LOG_ERRORS", TRUE);
 define("FORCE_MOD_CONFIG", TRUE);
-define("FORCE_MOD_TEMPLATES", TRUE);
 define("DEFAULT_LANGUAGE", "en");
 
 ?>
