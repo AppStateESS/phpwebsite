@@ -19,7 +19,9 @@
   </tr>
   <tr>
     <td><b>{IMAGE_LBL}:</b></td>
-    <td>{IMAGE}
+    <td>{IMAGE_FILE}<br />
+	<b>{IMAGE_LABEL}</b>: {IMAGE_TITLE}<br />
+	{IMAGE_SELECT}
 	<!-- BEGIN image-error -->
 	<div class="cat-error">{IMAGE_ERROR}</div>
 	<!-- END image-error -->
