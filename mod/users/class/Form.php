@@ -386,7 +386,7 @@ class User_Form {
     $form->addText("username", $user->getUsername());
     $form->addPassword("password1");
     $form->addPassword("password2");
-    $form->addText("email");
+    $form->addText("email", $user->getEmail());
 
     $form->setLabel("email", _("Email Address"));
     $form->setLabel("username", _("Username"));

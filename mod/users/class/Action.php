@@ -240,11 +240,12 @@ class User_Action {
 
   }
 
-  function postUser(&$user){
-    $result = $user->setUsername($_POST['username']);
-
-    if (PEAR::isError($result))
-      $error['USERNAME_ERROR'] = $result->getMessage();
+  function postUser(&$user, $set_username=TRUE){
+    if ($set_username){
+      $result = $user->setUsername($_POST['username']);
+      if (PEAR::isError($result))
+	$error['USERNAME_ERROR'] = $result->getMessage();
+    }
 
     if (!$user->isUser() || (!empty($_POST['password1']) || !empty($_POST['password2']))){
       $result = $user->checkPassword($_POST['password1'], $_POST['password2']);
@@ -296,7 +297,7 @@ class User_Action {
     if (isset($_REQUEST['command']))
       $command = $_REQUEST['command'];
     else
-      $command = "user_settings";
+      $command = "my_page";
 
     switch ($command){
     case "loginBox":
@@ -308,9 +309,10 @@ class User_Action {
       }
       break;
       
-    case "user_settings":
+    case "my_page":
       PHPWS_Core::initModClass("users", "My_Page.php");
-      My_Page::main();
+      $my_page = & new My_Page;
+      $my_page->main();
       break;
 
     case "logout":
