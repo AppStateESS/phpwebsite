@@ -39,9 +39,7 @@ class Boost_Action {
     
     $boost = new PHPWS_Boost;
     $boost->loadModules(array($module_title));
-    $content = $boost->install();
-
-    return $content;
+    return $boost->install();
     /*
     if ($_SESSION['Boost']->isFinished())
       return TRUE;
