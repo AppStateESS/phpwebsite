@@ -20,6 +20,17 @@ PHPWS_Core::initModClass('help', 'Help.php');
 
 class CLS_Help extends PHPWS_Help{}
 
+class oldTranslate {
+  var $test = 1;
+  function it($phrase, $var1=NULL, $var2=NULL, $var3=NULL){
+    $phrase = str_replace('[var1]', $var1, $phrase);
+    $phrase = str_replace('[var2]', $var2, $phrase);
+    $phrase = str_replace('[var3]', $var3, $phrase);
+
+    return $phrase;
+  }
+}
+
 class oldCore extends oldDB{
   var $home_dir = NULL;
   var $datetime = NULL;
@@ -101,8 +112,9 @@ class PHPWS_Crutch {
     if (!isset($_SESSION['OBJ_user']))
       $_SESSION['OBJ_user'] = $_SESSION['User'];
 
-    if (!isset($_SESSION['translate']))
+    if (!isset($_SESSION['translate'])) {
       $_SESSION['translate'] = & new oldTranslate;
+    }
 
     if (!isset($_SESSION['OBJ_layout']))
       $_SESSION['OBJ_layout'] = & new oldLayout;
@@ -139,19 +151,6 @@ class PHPWS_Crutch {
   }
 
 }
-
-class oldTranslate {
-  var $test = 1;
-  function it($phrase, $var1=NULL, $var2=NULL, $var3=NULL){
-    $phrase = str_replace('[var1]', $var1, $phrase);
-    $phrase = str_replace('[var2]', $var2, $phrase);
-    $phrase = str_replace('[var3]', $var3, $phrase);
-
-    return $phrase;
-  }
-}
-
-
 
 $GLOBALS['core'] = & new oldCore;
 if (isset($_REQUEST['module'])){
