@@ -6,6 +6,9 @@ if (PEAR::isError($includeFile)){
   return;
 }
 
+if (isset($_REQUEST['action']['admin']))
+     PHPWS_Core::initCoreClass("List.php");
+
 include_once $includeFile;
 
 PHPWS_Core::initModClass("users", "ModSetting.php");
