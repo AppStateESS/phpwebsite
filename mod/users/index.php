@@ -17,11 +17,10 @@ switch ($area){
  case "user":
    switch ($command){
    case "loginBox":
-     if (!PHPWS_Core::isLastPost())
+     if (!PHPWS_Core::isLastPost()){
        if (!User_Functions::loginUser($_POST['block_username'], $_POST['block_password']))
 	 User_Functions::badLogin();
-
-
+     }
      break;
 
    case "logout":
@@ -35,7 +34,7 @@ switch ($area){
    if (!$_SESSION['User']->allow("users"))
      PHPWS_User::disallow();
    else 
-     PHPWS_User::adminAction($command);
+     User_Functions::adminAction($command);
    break;
 }// End area switch
 
