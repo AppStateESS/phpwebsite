@@ -1,0 +1,6 @@
+<?php
+
+Layout::display();
+
+?>
+
