@@ -26,6 +26,8 @@ if (ini_get('register_globals')){
 /* Initialize core defines */
 require_once PHPWS_SOURCE_DIR . "core/class/Init.php";
 
+PHPWS_Core::checkSecurity();
+
 PHPWS_Core::initializeModules();
 
 session_name(SESSION_NAME);

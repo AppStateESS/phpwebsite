@@ -45,6 +45,20 @@ define("PHPWS_DSN", "{dsn}");
  */
 define("CORE_COOKIE_TIMEOUT", 2592000);
 
+/********************** Security Settings *********************/
+/**
+ * If CHECK_DIRECTORY_PERMISSIONS is TRUE the phpwebsite WILL
+ * NOT let you run the site until the following directories are
+ * made non writable.
+ * config/
+ * templates/
+ * 
+ * These directories are made writable during installations but
+ * need not be at any other time.
+ */
+
+define("CHECK_DIRECTORY_PERMISSIONS", TRUE);
+
 /********************** Logging Settings **********************/
 
 /**
