@@ -117,7 +117,7 @@ define("FORCE_MOD_CONFIG", TRUE);
  * has been tested with setlocale or you will get English each
  * time.
  */
-define("DEFAULT_LANGUAGE", "en");
+define("DEFAULT_LANGUAGE", "en-us");
 
 /************************ LIST ********************************/
 /**
@@ -159,5 +159,8 @@ $allowedImageTypes = array("image/jpeg",
 			   "image/wbmp");
 
 define("ALLOWED_IMAGE_TYPES", serialize($allowedImageTypes));
+define("MAX_IMAGE_SIZE", 50000);
+define("MAX_IMAGE_WIDTH", 800);
+define("MAX_IMAGE_HEIGHT", 600);
 
 ?>
