@@ -3,6 +3,27 @@
 class Version {
   var $_error = NULL;
 
+  function getVersion($version_id, $table, $strip=TRUE, $switch_id=TRUE){
+    $versionTable = Version::getVersionTable($table);
+
+    if (PEAR::isError($versionTable))
+      return $versionTable;
+
+    $db = & new PHPWS_DB($versionTable);
+    $db->addWhere("id", (int)$version_id);
+    $result = $db->select("row");
+    if (PEAR::isError($result))
+      return $result;
+
+    if ($strip)
+      Version::_stripVersionVars($result);
+
+    if ($switch_id)
+      Version::_exchangeID($result);
+
+    return $result;
+  }
+
   function getVersionTableName($table){
     return $table . "_version";
   }
@@ -21,7 +42,7 @@ class Version {
     return $versionTable;
   }
 
-  function getUnapproved($table, $id, $strip=TRUE){
+  function getUnapproved($table, $id=NULL, $strip=TRUE){
     if (isset($GLOBALS['Unapproved'][$table][$id]))
       $result = $GLOBALS['Unapproved'][$table][$id];
     $versionTable = Version::getVersionTable($table);
@@ -30,9 +51,17 @@ class Version {
       return $versionTable;
 
     $db = & new PHPWS_DB($versionTable);
-    $db->addWhere("id", (int)$id);
+
+    if (isset($id)){
+      $db->addWhere("main_id", (int)$id);
+      $mode = "row";
+    } else {
+      $mode = "all";
+    }
+
     $db->addWhere("approved", 0);
-    $result = $db->select("row");
+    $result = $db->select($mode);
+
     if (isset($result) && $strip)
       Version::_stripVersionVars($result);
     return $result;
@@ -46,7 +75,8 @@ class Version {
 
     if (isset($result))
       $GLOBALS['Unapproved'][$table][$id] = $result;
-    return empty($result) ? FALSE : TRUE;
+
+    return empty($result) ? FALSE : $result['id'];
   }
 
   function isLocked($table, $id){
@@ -55,52 +85,57 @@ class Version {
   }
 
 
-  function saveUnapproved($module, $table, $object){
+  function saveUnapproved($table, $object){
+    $result = Version::waitingApproval($table, $object->id);
+
+    if (Version::waitingApproval($table, $object->id)) {
+      return Version::updateUnapproved($table, $object);
+    }
+    else {
+      return Version::createUnapproved($table, $object);
+    }
+  }
+
+  function saveApproved($table, $object){
     if (Version::waitingApproval($table, $object->id))
-      return Version::updateUnapproved($module, $table, $object);
+      return Version::updateApproved($table, $object);
     else
-      return Version::createUnapproved($module, $table, $object);
+      return Version::createApproved($table, $object);
   }
 
-  function saveApproved($module, $table, $object){
-    if (Version::waitingApproval($table, $object->id))
-      return Version::updateApproved($module, $table, $object);
-    else
-      return Version::createApproved($module, $table, $object);
+  function saveVersion($table, $object){
+    return Version::createApproved($table, $object);
   }
 
-  function saveVersion($module, $table, $object){
-    return Version::createApproved($module, $table, $object);
-  }
-
-  function updateUnapproved($module, $table, $object){
+  function updateUnapproved($table, $object){
     $db = Version::_prepareDB($table, $object);
+
     if (PEAR::isError($db))
       return $db;
 
     Version::_prepareUpdate($db, $table, $object, 0);
 
-    if (!isset($db->values['id']))
-      $db->addValue("id", 0);
+    if (!isset($db->values['main_id']))
+      $db->addValue("main_id", 0);
 
     return $db->update();
   }
 
-  function createUnapproved($module, $table, $object){
+  function createUnapproved($table, $object){
     $db = Version::_prepareDB($table, $object);
     if (PEAR::isError($db))
       return $db;
 
-    $version_number = Version::_getCurrentVersionNumber($db);
+    $version_number = Version::_getCurrentVersionNumber($db->getTable(), $object->id);
     Version::_addVersionValues($db, 0, 0, $version_number);
 
-    if (!isset($db->values['id']))
-      $db->addValue("id", 0);
+    if (!isset($db->values['main_id']))
+      $db->addValue("main_id", 0);
 
     return $db->insert();
   }
 
-  function updateApproved($module, $table, &$object){
+  function updateApproved($table, &$object){
     $db = Version::_prepareDB($table, $object);
     if (PEAR::isError($db))
       return $db;
@@ -108,24 +143,24 @@ class Version {
     Version::_clearCurrents($db->getTable(), $object->id);
     Version::_prepareUpdate($db, $table, $object, 1);
 
-    if (!isset($db->values['id']))
-      $db->addValue("id", 0);
+    if (!isset($db->values['main_id']))
+      $db->addValue("main_id", 0);
 
     $result = $db->update();
   }
 
-  function createApproved($module, $table, &$object){
+  function createApproved($table, &$object){
     $db = Version::_prepareDB($table, $object);
     if (PEAR::isError($db))
       return $db;
 
     Version::_clearCurrents($db->getTable(), $object->id);
 
-    $version_number = Version::_getCurrentVersionNumber($db);
+    $version_number = Version::_getCurrentVersionNumber($db->getTable(), $object->id);
     Version::_addVersionValues($db, 1, 1, $version_number);
 
-    if (!isset($db->values['id']))
-      $db->addValue("id", 0);
+    if (!isset($db->values['main_id']))
+      $db->addValue("main_id", 0);
 
     $result = $db->insert();
   }
@@ -145,7 +180,12 @@ class Version {
   }
 
 
-  function _getCurrentVersionNumber($db){
+  function _getCurrentVersionNumber($table, $id){
+    if ($id == 0)
+      return 1;
+
+    $db = & new PHPWS_DB($table);
+    $db->addWhere("main_id", $id);
     $db->addColumn("version_number");
     $current_version = $db->select("max");
     if (empty($current_version))
@@ -158,7 +198,7 @@ class Version {
 
   function _clearCurrents($versionTable, $id){
     $db = & new PHPWS_DB($versionTable);
-    $db->addWhere("id", $id);
+    $db->addWhere("main_id", $id);
     $db->addValue("current_version", 0);
     return $db->update();
   }
@@ -166,12 +206,19 @@ class Version {
   function _plugObjectValues(&$object, &$db){
     $object_vars = get_object_vars($object);
 
-    if (empty($object_vars))
+    if (empty($object_vars)) {
       return NULL;
+    }
 
     foreach ($object_vars as $column_name => $column_value){
-      if (!$db->isTableColumn($column_name))
+      if (!$db->isTableColumn($column_name)) {
 	continue;
+      }
+
+      if ($column_name == "id") {
+	$db->addValue("main_id", $column_value);
+	continue;
+      }
 
       $db->addValue($column_name, $column_value);
     }
@@ -184,22 +231,26 @@ class Version {
       return $versionTable;
 
     $db = & new PHPWS_DB($versionTable);
-
     Version::_plugObjectValues($object, $db);
 
     $db->setTable($versionTable);
     return $db;
   }
 
+  function _exchangeID(&$version){
+    $version['id'] = $version['main_id'];
+    unset($version['main_id']);
+  }
+
   function _prepareUpdate(&$db, $table, &$object, $approved){
     $unapproved = Version::getUnapproved($table, $object->id, FALSE);
     $version_number = $unapproved['version_number'];
-    $db->addWhere("id", $object->id);
+    $db->addWhere("main_id", $object->id);
     $db->addWhere("version_number", $version_number);
     Version::_addVersionValues($db, $approved, $approved, $version_number);
   }
 
-  function _stripVersionVars($version){
+  function _stripVersionVars(&$version){
     unset($version['last_editor']);
     unset($version['version_date']);
     unset($version['version_number']);
@@ -214,13 +265,17 @@ class Version {
     $allColumns = $db->getTableColumns(TRUE);
 
     foreach ($allColumns as $editCol){
-      if ($editCol['name'] == "id")
-	$editCol['flags'] = preg_replace("/primary_key/i", "", $editCol['flags']);
       $newColumns[] = $editCol;
+      if ($editCol['name'] == "id")
+	$newColumns[] = array("table" => $table,
+			      "name"  => "main_id",
+			      "type"  => "int",
+			      "flags" => "NOT NULL"
+			      );
     }
 
-    $columns = PHPWS_DB::parseColumns($newColumns);
-
+    $parsed_columns = $db->parseColumns($newColumns);
+    $columns = $parsed_columns['parameters'];
     $columns[] = "last_editor int NOT NULL default 0";
     $columns[] = "version_date int NOT NULL";
     $columns[] = "version_number smallint NOT NULL default 1";
@@ -232,7 +287,72 @@ class Version {
     $sql = "CREATE TABLE " . Version::getVersionTableName($table) .
       " (" . implode(", ", $columns) . ")";
 
-    return PHPWS_DB::query($sql);
+    $result = PHPWS_DB::query($sql);
+    if (PEAR::isError($result))
+      return $result;
+
+    if (isset($parsed_columns['index']))
+      return PHPWS_DB::query($parsed_columns['index']);
+  }
+
+
+  function getAll($id, $table, $class = NULL){
+    $versionTable = Version::getVersionTable($table);
+    if (PEAR::isError($versionTable))
+      return $versionTable;
+
+    $db = & new PHPWS_DB($versionTable);
+    $db->addWhere("main_id", (int)$id);
+    $db->addWhere("approved", 1);
+    $db->addWhere("current_version", 0);
+    $db->setIndexBy("version_number");
+    $db->addOrder("version_number desc");
+
+    if (isset($class) && class_exists($class))
+      $result = $db->getObjects($class);
+    else
+      $result = $db->select();
+
+    return $result;
+  }
+
+  function restore(&$object, $order, $table){
+    $versionTable = Version::getVersionTable($table);
+    if (PEAR::isError($versionTable))
+      return $versionTable;
+
+    $db = & new PHPWS_DB($versionTable);
+    $db->addWhere("main_id", (int)$object->id);
+    $db->addWhere("version_number", $order);
+    $db->addWhere("approved", 1);
+    $result = $db->select("row");
+
+    if (empty($result))
+      return FALSE;
+
+    Version::_stripVersionVars($result);
+    foreach ($result as $key => $value) {
+      $object->$key = $value;
+    }
+
+    return TRUE;
+  }
+
+  function loadVersion($table, $version_id, $class_name) {
+    $data = Version::getVersion($version_id, $table);
+    if (PEAR::isError($data))
+      return $data;
+
+    if (!class_exists($class_name))
+      return PHPWS_Error::get(PHPWS_CLASS_NOT_EXIST, "core", "Version::loadVersion");
+
+    $object = new $class_name;
+
+    $result = PHPWS_DB::loadObject($object, $data);
+    if (PEAR::isError($result))
+      return $result;
+    else
+      return $object;
   }
 
 }
