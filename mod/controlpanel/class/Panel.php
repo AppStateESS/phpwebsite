@@ -83,7 +83,7 @@ class PHPWS_Panel{
 
 
   function setModule($module){
-    $this->_module($module);
+    $this->_module = $module;
   }
 
   function getModule(){
@@ -91,7 +91,7 @@ class PHPWS_Panel{
   }
 
   function setPanel($panel){
-    $this->_panel($panel);
+    $this->_panel = $panel;
   }
 
   function getPanel(){
@@ -131,7 +131,7 @@ class PHPWS_Panel{
     return $result;
   }
 
-  function display($imbed=TRUE){
+  function display(){
     $itemname   = $this->getItemname();
     $currentTab = $this->getCurrentTab();
     $tabs       = $this->getTabs();
@@ -139,13 +139,13 @@ class PHPWS_Panel{
     $module     = $this->getModule();
     $content    = $this->getContent();
 
-    $tplObj = & new PHPWS_Template("controlpanel", "panel.tpl");
-
     if (!isset($panel))
       $panel = CP_DEFAULT_PANEL;
 
     if (!isset($module))
       $module = 'controlpanel';
+
+    $tplObj = & new PHPWS_Template($module, $panel);
 
     foreach ($tabs as $id=>$tab){
       $tpl['TITLE'] = $tab->getLink();
@@ -161,11 +161,6 @@ class PHPWS_Panel{
       $tplObj->setCurrentBlock("tabs");
       $tplObj->setData($tpl);
       $tplObj->parseCurrentBlock("tabs");
-    }
-
-    if ($imbed){
-      $template['IMBED1'] = " ";
-      $template['IMBED2'] = " ";
     }
 
     $template['CONTENT'] = $content;
