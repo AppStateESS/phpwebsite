@@ -7,18 +7,20 @@ PHPWS_Core::initModClass('related', 'Action.php');
 class Related {
 
   var $id        = NULL;
-  var $main_id   = NULL;
+  var $item_id   = NULL;
   var $module    = NULL;
   var $item_name = NULL;
   var $title     = NULL;
   var $url       = NULL;
   var $active    = TRUE;
   var $friends   = NULL;
+  var $_key      = NULL;
   var $_banked   = FALSE;
   var $_current  = NULL;
 
 
-  function Related($id=NULL){
+  function Related($id=NULL)
+  {
     if (empty($id))
       return;
 
@@ -28,49 +30,48 @@ class Related {
       PHPWS_Error::log($result);
   }
 
-  function init(){
+  function init()
+  {
     $db = & new PHPWS_DB('related_main');
     $result = $db->loadObject($this);
 
     if (PEAR::isError($result))
       return $result;
+
+    $this->_key = & new Key($this->module, $this->item_name, $this->item_id);
   }
 
-  function setId($id){
+  function setId($id)
+  {
     $this->id = (int)$id;
   }
 
-  function getId(){
+  function getId()
+  {
     return $this->id;
   }
 
-  function setMainId($main_id){
-    $this->main_id = $main_id;
+  function setKey($key)
+  {
+    $this->_key = $key;
   }
 
-  function getMainId(){
-    return $this->main_id;
+  function getKey($key)
+  {
+    return $this->_key;
   }
 
-  function setModule($module){
-    $this->module = $module;
+  function getItemId(){
+    return $this->_key->getItemId();
   }
 
   function getModule(){
-    return $this->module;
+    return $this->_key->getModule();
   }
 
-  function setItemName($item_name){
-    $this->item_name = $item_name;
+  function getItemName(){
+    return $this->_key->getItemName();
   }
-
-  function getItemName($sub=FALSE){
-    if ($sub == TRUE && empty($this->item_name))
-      return $this->getModule();
-    else
-      return $this->item_name;
-  }
-
 
   function setTitle($title){
     $this->title = preg_replace('/[^' . ALLOWED_TITLE_CHARS . ']/', '', strip_tags($title));
@@ -142,13 +143,7 @@ class Related {
   }
 
   function isSame($object){
-    if ($this->getMainId() == $object->getMainId() &&
-	$this->getModule() == $object->getModule() &&
-	$this->getItemName(TRUE) == $object->getItemName(TRUE)
-	)
-      return TRUE;
-    else
-      return FALSE;
+    return $this->_key->isEqual($object->_key);
   }
 
   function isFriend($checkObj){
@@ -156,8 +151,9 @@ class Related {
       return FALSE;
 
     foreach ($this->friends as $friend){
-      if($friend->isSame($checkObj))
+      if($friend->isSame($checkObj)) {
 	return TRUE;
+      }
     }
 
     return FALSE;
@@ -238,9 +234,9 @@ class Related {
   function load(){
     if (!isset($this->id)){
       $db = & new PHPWS_DB('related_main');
-      $db->addWhere('module', $this->getModule());
-      $db->addWhere('main_id', $this->getMainId());
-      $db->addWhere('item_name', $this->getItemName(TRUE));
+      $db->addWhere('module', $this->_key->getModule());
+      $db->addWhere('item_id', $this->_key->getItemId());
+      $db->addWhere('item_name', $this->_key->getItemName(TRUE));
       $result = $db->loadObject($this);
       if (PEAR::isError($result))
 	return $result;
@@ -289,9 +285,10 @@ class Related {
 
   function save(){
     $db = & new PHPWS_DB('related_main');
-
-    if (!isset($this->item_name))
-      $this->item_name = $this->module;
+    
+    $this->module    = $this->_key->getModule();
+    $this->item_id   = $this->_key->getItemId();
+    $this->item_name = $this->_key->getItemName();
 
     $result = $db->saveObject($this);
 
