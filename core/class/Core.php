@@ -105,7 +105,7 @@ class PHPWS_Core {
       return TRUE;
     }
     else {
-      PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, "core", "initModClass", "File: $classFile");
+      PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, "core", __CLASS__ . "::" .__FUNCTION__, "File: $classFile");
       return FALSE;
     }
   }
@@ -142,18 +142,22 @@ class PHPWS_Core {
   }
 
   function reroute($address=NULL){
-    $http = "http";
+    if (!preg_match("/^http/", $address)){
+      $http = "http://";
 
-    if ( isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on' )
-      $http = "https";
-   
-    $dirArray = explode("/", $_SERVER['PHP_SELF']);
-    array_pop($dirArray);
-    $dirArray[] = "";
+      if ( isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on' )
+	$http = "https://";
 
-    $directory = implode("/", $dirArray);
+      $dirArray = explode("/", $_SERVER['PHP_SELF']);
+      array_pop($dirArray);
+      $dirArray[] = "";
+      
+      $directory = implode("/", $dirArray);
+      
+      $location = "{$http}{$_SERVER['HTTP_HOST']}{$directory}{$address}";
+    } else
+      $location = &$address;
 
-    $location = "{$http}://{$_SERVER['HTTP_HOST']}{$directory}{$address}";
     header("location:$location");
     exit();
   }
