@@ -6,3 +6,8 @@ CREATE TABLE modules (
 	version CHAR(20) NOT NULL, 
 	register SMALLINT NOT NULL 
 	);
+
+CREATE TABLE registered ( 
+	module CHAR(40) NOT NULL, 
+	registered CHAR(40) NOT NULL
+	);
