@@ -321,6 +321,12 @@ class Categories{
     return $tpl->get();
   }
 
+  function removeModule($module){
+    $db = & new PHPWS_DB("category_items");
+    $db->addWhere("module", $module);
+    $db->delete();
+  }
+
 }
 
 ?>
