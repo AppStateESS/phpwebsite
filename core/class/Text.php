@@ -145,7 +145,7 @@ class PHPWS_Text {
 
     $text = strip_tags($text, $allowedTagString);
     PHPWS_Text::encodeXHTML($text);
-    return $text;
+    return trim($text);
   }
 
   function XHTMLArray(){
@@ -179,7 +179,7 @@ class PHPWS_Text {
    * @param   string  text         Text to parse
    * @return  string  text         Stripped text
    */
-  function parseOutput($text, $printTags=FALSE){
+  function parseOutput($text, $printTags=FALSE, $filter_profanity=TRUE){
     if (empty($text))
       return NULL;
     require_once("HTML/BBCodeParser.php");
@@ -190,7 +190,7 @@ class PHPWS_Text {
     $options = $config["HTML_BBCodeParser"];
     unset($options);
 
-    if (FILTER_PROFANITY) 
+    if ($filter_profanity && FILTER_PROFANITY)
       $text = PHPWS_Text::profanityFilter($text);
 
     // Parse BBCode
