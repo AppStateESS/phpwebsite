@@ -347,8 +347,9 @@ class PHPWS_DB {
     $where = NULL;
 
     if (empty($this->where)){
-      if (isset($this->qwhere))
+      if (isset($this->qwhere)) {
 	return "WHERE " . $this->qwhere;
+      }
       return NULL;
     }
 
@@ -1155,8 +1156,9 @@ class PHPWS_DB {
       $this->addValue($column, $value);
     }
 
-    if (isset($this->qwhere) || (isset($this->where) && count($this->where)))
+    if (isset($this->qwhere) || ((isset($this->where) && count($this->where)))) {
       $result = $this->update();
+    }
     else {
       $result = $this->insert();
       if (is_numeric($result)){
