@@ -7,7 +7,7 @@
 	var startAt = 1			// 0 - sunday ; 1 - monday
 	var showWeekNumber = 1	// 0 - don't show; 1 - show
 	var showToday = 1		// 0 - don't show; 1 - show
-	var imgDir = "java/popcalendar/images/"			// directory for images ... e.g. var imgDir="/img/"
+	var imgDir = "javascript/popcalendar/images/"			// directory for images ... e.g. var imgDir="/img/"
 
 	var gotoString = "Go To Current Month"
 	var todayString = "Today is"
