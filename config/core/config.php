@@ -11,7 +11,7 @@ define("PHPWS_SOURCE_DIR", "/var/www/html/phpwebsite094/");
  * Your site hash defines your site identity. It is used
  * to create cookies and name your session hash (see below).
  */
-define("SITE_HASH", "864e52134234ea29bd8e6fbbd9b5707c");
+define("SITE_HASH", "864e5c6d0332598e6fbbd9b5707c");
 
 /**
  * If you do not name your session, then branches or other
@@ -19,7 +19,7 @@ define("SITE_HASH", "864e52134234ea29bd8e6fbbd9b5707c");
  * You can name your session whatever you wish, but basing
  * it on your site hash is not a bad idea.
  */
-define("SESSION_NAME", md5("asdjhkh12366asd123ljhhsafdh"));
+define("SESSION_NAME", md5(SITE_HASH));
 
 
 /**
@@ -35,7 +35,7 @@ define("TABLE_PREFIX", "");
  * "db_type://dbuser:dbpassword@dbhost/dbname"
  * This format must be exact.
  */ 
-define("PHPWS_DSN", "db_type://dbuser:dbpassword@dbhost/dbname");
+define("PHPWS_DSN", "mysql://dbuser:dbpass@localhost/phpwebsite");
 
 /**
  * The core will occasionally save cookies. They do not contain
@@ -67,6 +67,13 @@ ini_set("include_path", ".:" . PHPWS_SOURCE_DIR . "lib/pear/");
  */
 define("DEFAULT_LANGUAGE", "en");
 
+/************************ LIST ********************************/
+/**
+ * Assigns a css style to the toggle element in list
+ */
+
+define("PHPWS_LIST_TOGGLE_CLASS", " class=\"bg-light\"");
+
 
 /*********************** ERROR DEFINITIONS *********************/
 /**
@@ -81,21 +88,22 @@ define("PHPWS_LOG_DIRECTORY", "./logs/");
 /* Error defines */
 
 /************* Generic  *****************/
-define("PHPWS_UNKNOWN",                1);
-define("PHPWS_FILE_NOT_FOUND",         2);
-define("PHPWS_CLASS_NOT_CONSTRUCTED",  3);
+define("PHPWS_UNKNOWN",               -1);
+define("PHPWS_FILE_NOT_FOUND",        -2);
+define("PHPWS_CLASS_NOT_EXIST",       -3);
 
 /*********** Database.php ***************/
 
-define("PHPWS_DB_ERROR_TABLE",       100);
-define("PHPWS_DB_NO_CLASS",          101);
-define("PHPWS_DB_NO_VALUES",         102);
+define("PHPWS_DB_ERROR_TABLE",        -100);
+define("PHPWS_DB_NO_VALUES",          -101);
 
-/************ Manager.php ***************/
-define("MANAGER_ERR_MODULE_NOT_SET", 200);
-define("MANAGER_ERR_TABLE_NOT_SET",  201);
-define("MANAGER_ERR_CLASS_NOT_SET",  202);
-define("MANAGER_INC_FILE_NOT_FOUND", 203);
-define("MANAGER_CLASS_NON_EXISTS",   204);
+/************* List.php *****************/
+define("PHPWS_LIST_MOD_NOT_SET",      -200);
+define("PHPWS_LIST_CLASS_NOT_SET",    -201);
+define("PHPWS_LIST_TABLE_NOT_SET",    -202);
+define("PHPWS_LIST_COLUMNS_NOT_SET",  -203);
+define("PHPWS_LIST_NAME_NOT_SET",     -204);
+define("PHPWS_LIST_OP_NOT_SET",       -205);
+define("PHPWS_LIST_NO_ITEMS_PASSED",  -206);
 
 ?>
