@@ -165,12 +165,12 @@ class User_Action {
 	}
 
 	if (!isset($id)){
-	  $message = _print(_("User <b>[var1]</b> created successfully"), array($user->getUsername()));
+	  $message = sprintf(_("User '%s' created successfully"), $user->getUsername());
 	  unset($user);
 	  $user = & new PHPWS_User;
 	  $content = User_Form::userForm($user, $message);
 	} else {
-	  $content = _print(_("User <b>[var1]</b> updated successfully"), array($user->getUsername())) . "<hr />";
+	  $content = sprintf(_("User '%s' updated successfully"), $user->getUsername()) . "<hr />";
 	  unset($user);
 	  $content .= User_Form::manageUsers();
 	}
