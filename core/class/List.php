@@ -11,48 +11,28 @@ PHPWS_Core::initCoreClass("Pager.php");
 class PHPWS_List {
 
   var $_module        = NULL;
+  var $_controller    = NULL;
   var $_class         = NULL;
   var $_table         = NULL;
-  var $_columns       = array();
+  var $_ids           = NULL;
+  var $_dbColumns     = array();
+  var $_listColumns   = array();
   var $_name          = NULL;
   var $_template      = NULL;
   var $_op            = NULL;
-  var $_paging        = NULL;
+  var $_paging        = array();
   var $_where         = NULL;
   var $_order         = NULL;
   var $_overrideOrder = array();
-  var $_pager = NULL;
-  var $_anchor = FALSE;
-  var $_idColumn = "id";
+  var $_pager         = NULL;
+  var $_anchor        = FALSE;
+  var $_idColumn      = "id";
   var $_extraListTags = array();
   var $_extraRowTags  = array();
   var $_lastIds       = NULL;
-
-  function getLastIds(){
-    return $this->_lastIds;
-  }
-
-  function createState(){
-    $settings = array ("override" => $this->_overrideOrder,
-		       "pager"    => $this->_pager);
-
-    $_SESSION['List_State'][$this->_module][$this->_name] = $settings;
-  }
-  
-  function setState(){
-    if (PHPWS_Core::getCurrentModule() != $this->_module && isset($_SESSION['List_State'][$this->_module]))
-      unset($_SESSION['List_State'][PHPWS_Core::getCurrentModule()]);
-      
-    if (isset($_SESSION['List_State'][$this->_module][$this->_name])){
-
-      $this->_pager = $_SESSION['List_State'][$this->_module][$this->_name]['pager'];
-      $this->_overrideOrder = $_SESSION['List_State'][$this->_module][$this->_name]['override'];
-    }
-  }
-
+  var $_dualTemplates = TRUE;
 
   function getList() {
-    $this->setState();
     if(!isset($this->_module))
       return PHPWS_Error::get(PHPWS_LIST_MODULE_NOT_SET, "core", "PHPWS_List::getList");
 
@@ -62,8 +42,13 @@ class PHPWS_List {
     if(!isset($this->_table))
       return PHPWS_Error::get(PHPWS_LIST_TABLE_NOT_SET, "core", "PHPWS_List::getList");
 
-    if(!isset($this->_columns))
-      return PHPWS_Error::get(PHPWS_LIST_COLUMNS_NOT_SET, "core", "PHPWS_List::getList");
+    if(!isset($this->_dbColumns))
+      return PHPWS_Error::get(PHPWS_LIST_DB_COL_NOT_SET, "core", "PHPWS_List::getList");
+
+    if(!isset($this->_listColumns)){
+      $this->_listColumns = $this->_dbColumns;
+      //      return PHPWS_Error::get(PHPWS_LIST_COLUMNS_NOT_SET, "core", "PHPWS_List::getList");
+    }
 
     if(!isset($this->_name))
       return PHPWS_Error::get(PHPWS_LIST_NAME_NOT_SET, "core", "PHPWS_List::getList");
@@ -71,38 +56,67 @@ class PHPWS_List {
     if(!isset($this->_op))
       return PHPWS_Error::get(PHPWS_LIST_OP_NOT_SET, "core", "PHPWS_List::getList");
 
-    $listTpl = & new PHPWS_Template($this->_module);
-    $result  = $listTpl->setFile($this->getTemplate()); 
+    if(!isset($this->_template))
+      $this->_template = $this->_name;
 
-    if (PEAR::isError($result))
-      return $result;
+    if(!isset($this->_controller))
+      $this->_controller = $this->_module;
+
+    $theme = Layout::getTheme();
+
+    if ($this->_dualTemplates){
+      $themeRowTpl = "themes/$theme/templates/$this->_module/$this->_template/row.tpl";
+      $moduleRowTpl = PHPWS_SOURCE_DIR."mod/$this->_module/templates/$this->_template/row.tpl"; 
+
+      $themeListTpl = "themes/$theme/templates/$this->_module/$this->_template/list.tpl";
+      $moduleListTpl = PHPWS_SOURCE_DIR."mod/$this->_module/templates/$this->_template/list.tpl"; 
+
+      if(file_exists($themeRowTpl)) $rowTpl = $themeRowTpl;
+      else $rowTpl = $moduleRowTpl;
+
+      if(file_exists($themeListTpl)) $listTpl = $themeListTpl;
+      else $listTpl = $moduleListTpl;
+    } else {
+      $listTpl = & new PHPWS_Template($this->_module);
+      $result  = $listTpl->setFile($this->getTemplate()); 
+
+      if (PEAR::isError($result))
+	return $result;
+    }
 
     if(isset($_REQUEST['list']) && ($this->_name == $_REQUEST['list'])) $this->catchOrder();
 
-    if(isset($this->_paging) && is_array($this->_paging)) {
+    if(isset($this->_paging) && is_array($this->_paging) && (sizeof($this->_paging) > 0)) {
       if(!isset($this->_pager)) {
 	$this->_pager = new PHPWS_Pager;
-	$this->_pager->setLinkBack("./index.php?module=$this->_module&amp;$this->_op&amp;list=$this->_name");
+	$this->_pager->setLinkBack("./index.php?module=$this->_controller&amp;$this->_op&amp;list=$this->_name");
 	$this->_pager->setLimits($this->_paging['limits']);
 	$this->_pager->makeArray(TRUE);
-
+	
 	if($this->_anchor) $this->_pager->setAnchor("#$this->_name");
-
+	
 	$this->_pager->limit = $this->_paging['limit'];
       }
 
-      $this->_pager->setData($this->_getIds());
+      if(is_array($this->_ids)) {
+	$this->_pager->setData($this->_orderIds($this->_ids));
+      } else {
+	$this->_pager->setData($this->_getIds());
+      }
 
       if(isset($_REQUEST['list']) && ($this->_name == $_REQUEST['list'])) $this->_pager->pageData();
       else $this->_pager->pageData(FALSE);
 
       $items = $this->getItems($this->_pager->getData());
-      if (PEAR::isError($items))
-	return $items;
-
       $totalItems = $this->_pager->getNumRows();
     } else {
-      $items = $this->getItems();
+      $this->_pager = NULL;
+
+      if(is_array($this->_ids))
+	$items = $this->getItems($this->_ids);
+      else
+	$items = $this->getItems();
+
       $totalItems = sizeof($items);
     }
 
@@ -111,7 +125,8 @@ class PHPWS_List {
     if($this->_anchor) $listTags["ANCHOR"] = "<a name=\"$this->_name\" />";
 
     $columns = 0;
-    foreach($this->_columns as $column => $select) {
+
+    foreach($this->_dbColumns as $column) {
       $capscolumn = strtoupper($column);
       $key = "{$capscolumn}_ORDER_LINK";
       $listTags[$key] = NULL;
@@ -125,23 +140,23 @@ class PHPWS_List {
 
 	switch($overRide) {
 	case 0: 
-	  $listTags[$key] .= "<a href=\"./index.php?module=$this->_module&amp;$this->_op&amp;list=$this->_name&amp;column=$column&amp;order=1$anchor\">";
-	  $listTags[$key] .= "<img src=\"images/core/list/sort_none.png\" border=\"0\" /></a>";
+	  $listTags[$key] .= "<a href=\"./index.php?module=$this->_controller&amp;$this->_op&amp;list=$this->_name&amp;column=$column&amp;order=1$anchor\">";
+	  $listTags[$key] .= "<img src=\"./images/core/list/sort_none.png\" border=\"0\" alt=\"sort_none\" /></a>";
 	  break;
 
 	case 1:
-	  $listTags[$key] .= "<a href=\"./index.php?module=$this->_module&amp;$this->_op&amp;list=$this->_name&amp;column=$column&amp;order=2$anchor\">";
-	  $listTags[$key] .= "<img src=\"images/core/list/up_pointer.png\" border=\"0\" /></a>";
+	  $listTags[$key] .= "<a href=\"./index.php?module=$this->_controller&amp;$this->_op&amp;list=$this->_name&amp;column=$column&amp;order=2$anchor\">";
+	  $listTags[$key] .= "<img src=\"./images/core/list/up_pointer.png\" border=\"0\" alt=\"up_pointer\" /></a>";
 	  break;
 	  
 	case 2:
-	  $listTags[$key] .= "<a href=\"./index.php?module=$this->_module&amp;$this->_op&amp;list=$this->_name&amp;column=$column&amp;order=0$anchor\">";
-	  $listTags[$key] .= "<img src=\"images/core/list/down_pointer.png\" border=\"0\" /></a>";
+	  $listTags[$key] .= "<a href=\"./index.php?module=$this->_controller&amp;$this->_op&amp;list=$this->_name&amp;column=$column&amp;order=0$anchor\">";
+	  $listTags[$key] .= "<img src=\"./images/core/list/down_pointer.png\" border=\"0\" alt=\"down_pointer\" /></a>";
 	  break;
 	  
 	default:
-	  $listTags[$key] .= "<a href=\"./index.php?module=$this->_module&amp;$this->_op&amp;list=$this->_name&amp;column=$column&amp;order=1$anchor\">";
-	  $listTags[$key] .= "<img src=\"images/core/list/sort_none.png\" border=\"0\" /></a>";
+	  $listTags[$key] .= "<a href=\"./index.php?module=$this->_controller&amp;$this->_op&amp;list=$this->_name&amp;column=$column&amp;order=1$anchor\">";
+	  $listTags[$key] .= "<img src=\"./images/core/list/sort_none.png\" border=\"0\" alt=\"sort_none\" /></a>";
 	}
       }
 
@@ -155,18 +170,18 @@ class PHPWS_List {
       foreach($items as $item) {
 	$this->_lastIds[] = $item[$this->_idColumn];
 	$object = NULL;
-
 	if(class_exists($this->_class)) {
 	  $object = new $this->_class($item);
-
 	  $classMethods = get_class_methods($this->_class);
-	} else return PHPWS_Error::get(PHPWS_LIST_CLASS_NOT_EXISTS, "core", "PHPWS_List::getList()");
-
+	} else
+	  return PHPWS_Error::get(PHPWS_LIST_CLASS_NOT_EXISTS, "core", "PHPWS_List::getList()");
+	
 	PHPWS_List::toggle($row_class, PHPWS_LIST_TOGGLE_CLASS);
-
+	/* Build row tags array for processTemplate() */
+	$rowTags = array();
 	$rowTags["ROW_CLASS"] = $row_class;
 
-	foreach($this->_columns as $column => $select) {
+	foreach($this->_listColumns as $column) {
 	  $capscolumn = strtoupper($column);
 	  $method = strtolower($column);
 	  $method = "getlist{$method}";
@@ -180,14 +195,19 @@ class PHPWS_List {
 
 	$rowTags = array_merge($rowTags, $this->_extraRowTags);
 
-	/* Process this item and concatenate onto the current list of items */
-
-	$listTpl->setCurrentBlock("row");
-	$listTpl->setData($rowTags);
-	$listTpl->parseCurrentBlock("row");
+	if ($this->_dualTemplates){
+	  /* Process this item and concatenate onto the current list of items */
+	  $listTags["LIST_ITEMS"][] = PHPWS_Template::processTemplate($rowTags, "core", $rowTpl, FALSE);
+	} else {
+	  $listTpl->setCurrentBlock("row");
+	  $listTpl->setData($rowTags);
+	  $listTpl->parseCurrentBlock("row");
+	}
       }
 
-      if(isset($this->_pager)) {
+      $listTags["LIST_ITEMS"] = implode("\n", $listTags["LIST_ITEMS"]);
+      
+      if(isset($this->_pager) && is_object($this->_pager)) {
 	$listTags['NAV_BACKWARD'] = $this->_pager->getBackLink($this->_paging['back']);
 	$listTags['NAV_FORWARD'] = $this->_pager->getForwardLink($this->_paging['forward']);
 	if($this->_paging['section']) {
@@ -195,35 +215,47 @@ class PHPWS_List {
 	}
 	$listTags['NAV_LIMITS'] = $this->_pager->getLimitLinks();
 	$listTags['NAV_INFO'] = $this->_pager->getSectionInfo();
+      } else {
+	$listTags['TOTAL'] = $totalItems;
       }      
 
       $listTags = array_merge($listTags, $this->_extraListTags);
 
-      $listTpl->setData($listTags);
-
-      $content = $listTpl->get();
+      if ($this->_dualTemplates)
+	$content = PHPWS_Template::processTemplate($listTags, "core", $listTpl, FALSE);
+      else {
+	$listTpl->setData($listTags);
+	$content = $listTpl->get();
+      }
     } else {
-      $listTags["LIST_ITEMS"] = "<tr><td colspan=\"$columns\">" . _("No items for the current list.") . "</td></tr>";
+      $listTags["LIST_ITEMS"] = "<tr><td colspan=\"$columns\">" . $_SESSION['translate']->it("No items for the current list.") . "</td></tr>";
       $listTags = array_merge($listTags, $this->_extraListTags);
 
-      $listTpl->setData($listTags);
-      $content = $listTpl->get();
+      if ($this->_dualTemplates)
+	$content = PHPWS_Template::processTemplate($listTags, "core", $listTpl, FALSE);
+      else {
+	$listTpl->setData($listTags);
+	$content = $listTpl->get();
+      }
     }
+    
+    /* reinitialize where and order before next list */
+    $this->setWhere();
+    $this->setOrder();
 
-    $this->createState();
     return $content;
   }// END FUNC getList()
 
   function getItems($ids=NULL) {
     /* Make sure the table name is set before continuing */
     if(isset($this->_table)) {
-      if(is_array($this->_columns)) {
+      if(is_array($this->_dbColumns)) {
 
 	$db = & new PHPWS_DB($this->_table);
 	$db->addColumn($this->_idColumn);
 
-	foreach($this->_columns as $column => $select) {
-	  if(($column != "id") && $select)
+	foreach($this->_dbColumns as $column) {
+	  if($column != "id")
 	    $db->addColumn($column);
 	}
       } else return PHPWS_Error::get(PHPWS_LIST_COLUMNS_NOT_SET, "core", "PHPWS_List::getList()");
@@ -232,7 +264,7 @@ class PHPWS_List {
     $where = $this->getWhere();
 
     if(isset($where))
-      $db->setQWhere($where);
+      $db->setQWhere(preg_replace("/where/i", "", $where));
 
     if(is_array($ids) && (sizeof($ids) > 0)) {
       foreach ($ids as $id){
@@ -244,10 +276,11 @@ class PHPWS_List {
     $order = $this->getOrder();
 
     if(isset($order))
-      $db->addOrder($order);
+      $db->addOrder(preg_replace("/order by/i", "", $order));
 
     /* Set associative mode for db and execute query */
     $result = $db->select();
+
     /* Return result of query */
     return $result;
   }// END FUNC getItems()
@@ -260,6 +293,34 @@ class PHPWS_List {
       $where = $this->getWhere();
       if(isset($where))
 	$db->setQWhere($where);
+      
+      $order = $this->getOrder();
+      if(isset($order))
+	$db->addOrder($order);
+
+      $result = $db->select("col");
+      return $result;
+    } else return PHPWS_Error::get(PHPWS_LIST_TABLE_NOT_SET, "core", "PHPWS_List::getList()");
+  }
+
+  function _orderIds($ids) {
+    if(isset($this->_table)) {
+      $db = & new PHPWS_DB($this->_table);
+      $db->addColumn($this->_idColumn);
+
+      $where = $this->getWhere();
+      if(isset($where))
+	$qwhere[] = $where;
+      
+      if(is_array($ids) && (sizeof($ids) > 0)) {
+	foreach($ids as $id)
+	  $subwhere[] = "$this->_idColumn='$id'";
+
+	$qwhere[] = implode(" OR ", $subwhere);
+      }
+
+      if (isset($qwhere))
+	$db->setQWhere(implode(" AND ", $qwhere));
       
       $order = $this->getOrder();
       if(isset($order))
@@ -297,7 +358,9 @@ class PHPWS_List {
 	else
 	  return FALSE;
       } else return PHPWS_Error::get(PHPWS_LIST_TABLE_NOT_SET, "core", "PHPWS_List::getList()");
-    } else return PHPWS_Error::get(PHPWS_LIST_NO_ITEMS_PASSED, "core", "PHPWS_List::getList()");
+    } else
+      return PHPWS_Error::get(PHPWS_LIST_NO_ITEMS_PASSED, "core", "PHPWS_List::getList()");
+
   } // END FUNC _doMassUpdate()
 
   function setModule($module) {
@@ -308,6 +371,15 @@ class PHPWS_List {
       return FALSE;
     }
   } // END FUNC setModule
+
+  function setController($controller) {
+    if(is_string($controller)) {
+      $this->_controller = $controller;
+      return TRUE;
+    } else {
+      return FALSE;
+    }
+  } // END FUNC setController
 
   function setTable($table) {
     if(is_string($table)) {
@@ -336,14 +408,32 @@ class PHPWS_List {
     }
   }
 
-  function setColumns($columns) {
-    if(is_array($columns)) {
-      $this->_columns = $columns;
+  function setIds($ids) {
+    if(is_array($ids)) {
+      $this->_ids = $ids;
       return TRUE;
     } else {
       return FALSE;
     }
-  } // END FUNC setColumns()
+  } // END FUNC setIds()
+
+  function setDbColumns($dbColumns) {
+    if(is_array($dbColumns)) {
+      $this->_dbColumns = $dbColumns;
+      return TRUE;
+    } else {
+      return FALSE;
+    }
+  } // END FUNC setDbColumns()
+
+  function setListColumns($listColumns) {
+    if(is_array($listColumns)) {
+      $this->_listColumns = $listColumns;
+      return TRUE;
+    } else {
+      return FALSE;
+    }
+  } // END FUNC setListColumns()
 
   function setName($name) {
     if(is_string($name)) {
@@ -354,7 +444,7 @@ class PHPWS_List {
     }
   } // END FUNC setName()
 
-  function setTemplate($template){
+  function setTemplate($template) {
     if(is_string($template)) {
       $this->_template = $template;
       return TRUE;
@@ -405,7 +495,7 @@ class PHPWS_List {
       $this->_order = $order;
       return TRUE;
     } else {
-      $this->_ºorder = NULL;
+      $this->_order = NULL;
       return FALSE;
     }
   } // END FUNC setOrder()
@@ -428,20 +518,33 @@ class PHPWS_List {
     }
   } // END FUNC setExtraRowTags()
 
+  function getModule() {
+    return $this->_module;
+  }
+
+  function getName() {
+    return $this->_name;
+  }
+
   function getWhere() {
-    return $this->_where;
+    if(isset($this->_where)) {
+      $sql = " WHERE $this->_where";
+      return $sql;
+    } else {
+      return NULL;
+    }
   } // END FUNC getWhere()
 
   function getOrder() {
-    foreach($this->_columns as $column => $select) {
+    foreach($this->_dbColumns as $column) {
       if(isset($this->_overrideOrder[$column][1])) {
 	$order = $this->_overrideOrder[$column][1];
 	break;
       }
     }
 
-    if(isset($order)) return $order;
-    else if(isset($this->_order)) return $this->_order;
+    if(isset($order)) return " ORDER BY $order";
+    else if(isset($this->_order)) return " ORDER BY $this->_order";
     else return NULL;
   } // END FUNC getOrder()
 
@@ -485,6 +588,13 @@ class PHPWS_List {
     } else $tog = NULL;
   }
 
+  function getLastIds(){
+    return $this->_lastIds;
+  }
+
+  function setDualTemplate($value){
+    $this->_dualTemplates = (bool)$value;
+  }
 
 } // END CLASS PHPWS_List
 
