@@ -7,6 +7,8 @@
  * @package categories
  */
 
+PHPWS_Core::configRequireOnce('categories', 'config.php');
+
 class Category{
   var $id          = NULL;
   var $title       = NULL;
@@ -17,8 +19,15 @@ class Category{
 
 
   function Category($id=NULL){
-    if (empty($id))
+    if (!isset($id)) {
       return;
+    } elseif ($id == 0) {
+      $this->id     = 0;
+      $this->title  = DEFAULT_UNCATEGORIZED_TITLE;
+      $this->icon   = DEFAULT_UNCATEGORIZED_ICON;
+      $this->parent = 0;
+      return;
+    }
 
     $this->setId($id);
     $result = $this->init();
@@ -102,6 +111,9 @@ class Category{
   }
 
   function loadChildren(){
+    if ($this->id == 0) {
+      return;
+    }
     $db = & new PHPWS_DB('categories');
     $db->addWhere('parent', $this->id);
     $db->addOrder('title');

@@ -136,11 +136,19 @@ class Categories{
     case 'sorted':
       $db->addWhere('parent', 0);
       $db->addOrder('title');
+
       $cats = $db->getObjects('Category');
-      if (empty($cats))
-	return NULL;
+
+      $uncat = & new Category(0);
+
+      if (empty($cats)) {
+	$cats[] = $uncat;
+      }
+      else {
+	array_unshift($cats, $uncat);
+      }
+
       $result = Categories::initList($cats);
-      return $result;
       break;
 
     case 'idlist':

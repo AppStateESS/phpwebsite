@@ -124,16 +124,17 @@ class Category_Item {
     $this->_approved = (bool)$approved;
   }
 
-  function savePost(){
-    if (!isset($_POST) ||
-	!isset($_POST['categories'][$this->module][$this->item_name]) ||
-	!$this->_testVars()
-	)
-      {
-	return FALSE;
-      }
-
-    $categories = $_POST['categories'][$this->module][$this->item_name];	
+  function savePost($save_uncategorized=FALSE)
+  {
+    if (!isset($_POST) || !$this->_testVars()) {
+      return FALSE;
+    }
+    
+    if (isset($_POST['categories'][$this->module][$this->item_name])) {
+      $categories = $_POST['categories'][$this->module][$this->item_name];      
+    } elseif ($save_uncategorized) {
+      $categories = array(0);
+    }
 
     if (!empty($this->version_id)) {
       $this->clearVersion();
@@ -141,7 +142,7 @@ class Category_Item {
 
     foreach ($categories as $cat_id){
       $this->cat_id = $cat_id;
-      $result = $this->_save();
+      $result = $this->_save($save_uncategorized);
 
       if (PEAR::isError($result)) {
 	return $result;
@@ -228,12 +229,11 @@ class Category_Item {
     return $db->delete();
   }
 
-  function _save(){
-    if (!$this->_testVars() || empty($this->cat_id))
-      {
-	return PHPWS_Error::get(CAT_ITEM_MISSING_VAL, 'categories', 'Category_Item::save');
-      }
-
+  function _save($save_uncategorized=FALSE){
+    if (!$this->_testVars() || (empty($this->cat_id) && $save_uncategorized == FALSE)) {
+      return PHPWS_Error::get(CAT_ITEM_MISSING_VAL, 'categories', 'Category_Item::save');
+    }
+	
     if ($this->version_id > 0 && $this->_approved && !empty($this->item_id)) {
       $this->version_id = 0;
       $this->clearItem();
