@@ -32,7 +32,7 @@ repeated rows.
 
 First run the constructor:
 
-$tpl = new PHPWS_Template($module);
+$tpl = & new PHPWS_Template($module);
 
 Now set the file:
 
