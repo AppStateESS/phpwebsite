@@ -19,6 +19,7 @@ class Category_Item {
   var $item_name    = NULL;
   var $title        = NULL;
   var $link         = NULL;
+  var $_approved    = TRUE;
 
   function Category_Item($module=NULL, $item_name=NULL)
   {
@@ -119,8 +120,11 @@ class Category_Item {
     }
   }
 
+  function setApproved($approved){
+    $this->_approved = (bool)$approved;
+  }
 
-  function savePost($save_uncategorized=FALSE){
+  function savePost(){
     if (!isset($_POST) ||
 	!isset($_POST['categories'][$this->module][$this->item_name]) ||
 	!$this->_testVars()
@@ -131,11 +135,58 @@ class Category_Item {
 
     $categories = $_POST['categories'][$this->module][$this->item_name];	
 
-    $this->clear();
+    if (!empty($this->version_id)) {
+      $this->clearVersion();
+    }
 
     foreach ($categories as $cat_id){
       $this->cat_id = $cat_id;
-      $result = $this->save();
+      $result = $this->_save();
+
+      if (PEAR::isError($result)) {
+	return $result;
+      }
+    }
+
+    return TRUE;
+  }
+
+  function clearVersion()
+  {
+    $db = & new PHPWS_DB("category_items");
+    $db->addWhere("version_id", $this->version_id);
+    $db->addWhere("module",     $this->module);
+    $db->addWhere("item_name",  $this->item_name);
+    return $db->delete();
+  }
+
+  function clearItem()
+  {
+    $db = & new PHPWS_DB("category_items");
+    $db->addWhere("item_id", $this->item_id);
+    $db->addWhere("module",     $this->module);
+    $db->addWhere("item_name",  $this->item_name);
+    return $db->delete();
+  }
+
+  function saveVersion(){
+    if (empty($this->item_id) && empty($this->version_id)) {
+      return PHPWS_Error::get();
+    }
+
+    $db = & new PHPWS_DB('category_items');
+    $db->addWhere('version_id', (int)$this->version_id);
+    $db->addWhere('module',     $this->module);
+    $db->addWhere('item_name',  $this->item_name);
+    $db->addColumn('cat_id');
+
+    $result = $db->select('col');
+    $db->delete();
+
+    foreach ($result as $cat_id){
+      $this->cat_id = $cat_id;
+      
+      $result = $this->_save();
 
       if (PEAR::isError($result)) {
 	return $result;
@@ -148,7 +199,7 @@ class Category_Item {
   function _testVars(){
     if (
 	empty($this->module)    || empty($this->item_name) ||
-	( empty($this->item_id) && empty($this->version_id) )   ||
+	( !isset($this->item_id) && !isset($this->version_id) )   ||
 	empty($this->title)     || empty($this->link)      
 	)
       {
@@ -164,20 +215,32 @@ class Category_Item {
   function clear()
   {
     $db = & new PHPWS_DB("category_items");
-    $db->addWhere("version_id", $this->version_id);
-    $db->addWhere("item_id",    $this->item_id);
+    if (!empty($this->version_id)) {
+      $db->addWhere("version_id", $this->version_id);
+    }
+
+    if (!empty($this->item_id)) {
+      $db->addWhere("item_id",    $this->item_id);
+    }
+
     $db->addWhere("module",     $this->module);
     $db->addWhere("item_name",  $this->item_name);
     return $db->delete();
   }
 
-  function save(){
+  function _save(){
     if (!$this->_testVars() || empty($this->cat_id))
       {
 	return PHPWS_Error::get(CAT_ITEM_MISSING_VAL, "categories", "Category_Item::save");
       }
 
+    if ($this->version_id > 0 && $this->_approved && !empty($this->item_id)) {
+      $this->version_id = 0;
+      $this->clearItem();
+    }
+
     $db = & new PHPWS_DB("category_items");
+
     return $db->saveObject($this);
   }
 
@@ -231,41 +294,22 @@ class Category_Item {
     return $db->getObjects("category_item");
   }
 
-  function updateVersion($approved=FALSE)
+  function _updateVersion()
   {
-    if (!$this->_testVars()) {
-	return PHPWS_Error::get(CAT_ITEM_MISSING_VAL, "categories", "Category_Item::save");
-    }
-
     $db = & new PHPWS_DB("category_items");
 
-    $db->addWhere("version_id", $this->getVersionId());
+    if ($this->_approved && empty($this->item_id)) {
+      return FALSE;
+    }
+
+    //    $db->addWhere("version_id", $this->getVersionId());
     $db->addWhere("module",     $this->getModule());
     $db->addWhere("item_name",  $this->getItemName());
+    $db->delete();
 
-    if (isset($_POST['categories'][$this->getModule()][$this->getItemName()])) {
-      if ($approved) {
-	$this->version_id = 0;
-      }
-      $db->delete();
-      return $this->savePost();
-    }
-
-    if ($approved) {
-      if (empty($this->item_id)) {
-	return FALSE;
-      }
-      // item is approved
+    if ($this->_approved) {
       $db->addValue("version_id", 0);
     }
-
-    $db->addValue("item_id", $this->getItemId());
-    $db->addValue("title",   $this->getTitle());
-    $db->addValue("link",    $this->getLink());
-
-    $result = $db->update();
-
-    return $result;
   }
 }
 
