@@ -1,5 +1,5 @@
 <?php
-require_once "HTML/Template/IT.php";
+require_once "HTML/Template/Sigma.php";
 require_once "config/core/template.php";
 
 /**
@@ -13,11 +13,11 @@ require_once "config/core/template.php";
  * @package Core
  */
 
-class PHPWS_Template extends HTML_Template_IT {
+class PHPWS_Template extends HTML_Template_Sigma {
   var $module = NULL;
 
   function PHPWS_Template($module=NULL, $file=NULL){
-    $this->HTML_Template_IT();
+    $this->HTML_Template_Sigma();
     if (isset($module))
       $this->setModule($module);
 
