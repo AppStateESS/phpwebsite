@@ -6,8 +6,8 @@ function controlpanel_register($module, &$content){
   PHPWS_Core::initModClass("controlpanel", "ControlPanel.php");
   $cpFile = PHPWS_Core::getConfigFile($module, "controlpanel.php");
 
-  if (PEAR::isError($cpFile)){
-    PHPWS_Boost::addLog("controlpanel", $cpFile->getUserInfo());
+  if ($cpFile == FALSE){
+    PHPWS_Boost::addLog($module, _("No Control Panel file found."));
     return NULL;
   }
 

@@ -5,8 +5,8 @@ function categories_register($module, &$content){
 
   $catFile = PHPWS_Core::getConfigFile($module, "categories.php");
 
-  if (PEAR::isError($catFile)){
-    PHPWS_Boost::addLog("categories", $catFile->getUserInfo());
+  if ($catFile == FALSE){
+    PHPWS_Boost::addLog("categories", _("No Categories file found."));
     return NULL;
   }
 
