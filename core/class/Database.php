@@ -597,50 +597,25 @@ class PHPWS_DB {
 
   function export($tableName, $structure=TRUE, $contents=TRUE){
     PHPWS_DB::touchDB();
+    $dbfile = PHPWS_SOURCE_DIR . "core/class/dbexport/" . $GLOBALS['PEAR_DB']->dbsyntax . ".php";
+
+    if (!is_file($dbfile))
+      return NULL;
+
+    include_once($dbfile);
 
     if ($structure == TRUE){      
       $columns =  $GLOBALS['PEAR_DB']->tableInfo($tableName);
 
       foreach ($columns as $info){
-
-	switch ($info['type']){
-	case "int":
-	  if ($info['len'] > 6)
-	    $setting = "INT";
-	  else
-	    $setting = "SMALLINT";
-	  break;
-	  
-	case "blob":
-	  $setting = "TEXT";
-	  $info['flags'] = NULL;
-	  break;
-
-	case "string":
-	  $setting = "CHAR(" . $info['len'] . ")";
-	  break;
-
-	case "date":
-	  $setting = "DATE";
-	  break;
-
-	case "real":
-	  $setting = "FLOAT";
-	  break;
-
-	case "timestamp":
-	  $setting = "TIMESTAMP";
-	  $info['flags'] = NULL;
-	  break;
-	}
-
+	$setting = export($info);
 	if (isset($info['flags'])){
 	  if (stristr($info['flags'], "multiple_key")){
 	    $createIndex[] = "CREATE INDEX " .  $info['name'] . " on " . $info['table'] . "(" . $info['name'] . ")";
 	    $info['flags'] = str_replace(" multiple_key", "", $info['flags']);
 	  }
-	  $preFlag = array("/not_null/", "/primary_key/");
-	  $postFlag = array("NOT NULL", "PRIMARY KEY");
+	  $preFlag = array("/not_null/", "/primary_key/", "/default_(.*)?/");
+	  $postFlag = array("NOT NULL", "PRIMARY KEY", "DEFAULT '\\1'");
 	  $multipleFlag = array("multiple_key", "");
 	  $flags = " " . preg_replace($preFlag, $postFlag, $info['flags']);
 	}
