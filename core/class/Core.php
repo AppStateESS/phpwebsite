@@ -345,6 +345,24 @@ class PHPWS_Core {
     return $db->select("col");
   }
 
+  function stripObjValues($object){
+    $className = get_class($object);
+    $classVars = get_class_vars($className);
+    $var_array = NULL;
+
+    if(!is_array($classVars))
+      return PHPWS_Error::get(PHPWS_CLASS_VARS, "core", "PHPWS_Core::stripObjValues", $className);
+
+
+    foreach ($classVars as $key => $value) {
+      if (isset($object->$key))
+	$var_array[$key] = $object->$key;
+    }
+
+    return $var_array;
+  }
+ 
+
   function plugObject(&$object, $variables){
     $className = get_class($object);
     $classVars = get_class_vars($className);
