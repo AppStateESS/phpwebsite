@@ -15,7 +15,7 @@ class PHPWS_ControlPanel {
     else
       $panel->setTabs($_SESSION['Control_Panel_Tabs']);
 
-    
+
     $allLinks = PHPWS_ControlPanel::getAllLinks();
 
     if (!$allLinks)
@@ -32,7 +32,7 @@ class PHPWS_ControlPanel {
     } 
 
     $links = array_keys($allLinks);
-    
+
     $defaultTabs = PHPWS_ControlPanel::getDefaultTabs();
     foreach ($defaultTabs as $tempTab)
       $tabList[] = $tempTab['id'];
@@ -44,7 +44,7 @@ class PHPWS_ControlPanel {
 	$panel->dropTab($tab->id);
       }
     }
-    
+
     if (!isset($content)){
       if (isset($allLinks[$panel->getCurrentTab()])){
 	foreach ($allLinks[$panel->getCurrentTab()] as $id => $link)
@@ -66,8 +66,7 @@ class PHPWS_ControlPanel {
 	!preg_match("/controlpanel/", $link) &&
 	$link != $current_link
 	){
-      header("location:$link");
-      exit();
+      PHPWS_Core::reroute($link);
     }
 
 
