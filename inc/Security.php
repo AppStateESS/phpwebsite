@@ -20,19 +20,18 @@ if (ini_get('session.use_trans_sid')) {
   ini_set('url_rewriter.tags', '');
 }
 
-
 define('SESSION_NAME', md5(SITE_HASH . $_SERVER['REMOTE_ADDR']));
 
 // Attempt to clean out the xss tags
 clearRequest();
+
 function clearRequest()
 {
   $scriptPattern = array('/(%3C|<|&lt;|&#60;)\s*(script|\?)/iU');
-  
   foreach ($_REQUEST as $key => $value) {
-    $_REQUEST[$key] = preg_replace($scriptPattern, '', strip_tags($value));
+    $_REQUEST[$key] = preg_replace($scriptPattern, '', $value);
     if (isset($_GET[$key])) {
-      $_GET[$key] = $_REQUEST[$key];
+      $_GET[$key] = strip_tags($_REQUEST[$key]);
     }
 
     if (isset($_POST[$key])) {
