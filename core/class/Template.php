@@ -15,6 +15,7 @@ require_once "config/core/template.php";
 
 class PHPWS_Template extends HTML_Template_Sigma {
   var $module = NULL;
+  var $error  = NULL;
 
   function PHPWS_Template($module=NULL, $file=NULL){
     $this->HTML_Template_Sigma();
@@ -26,7 +27,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
 
       if (PEAR::isError($result)){
 	PHPWS_Error::log($result);
-	$this = $result;
+	$this->error = $result;
       }
     }
   }
@@ -45,6 +46,9 @@ class PHPWS_Template extends HTML_Template_Sigma {
       $result = $this->loadTemplatefile($file);
     else {
       $altFile = PHPWS_Template::getTplDir($module) . $file;
+
+      if (PEAR::isError($altFile))
+	return $altFile;
 
       if (FORCE_THEME_TEMPLATES || is_file($altFile))
 	$result = $this->loadTemplatefile($altFile);
@@ -73,8 +77,10 @@ class PHPWS_Template extends HTML_Template_Sigma {
   }
 
   function setData($data){
-    if (!is_array($data))
-      return PEAR::raiseError("The submitted data was not an array is was a " . gettype($data));
+    if (PEAR::isError($data)){
+      PHPWS_Error::log($data);
+      return NULL;
+    }
 
     foreach($data as $tag=>$content)
       $this->setVariable($tag, $content);
@@ -85,10 +91,17 @@ class PHPWS_Template extends HTML_Template_Sigma {
   }
 
   function process($template, $module, $file){
+    if (PEAR::isError($template)){
+      PHPWS_Error::log($template);
+      return NULL;
+    }
+      
     $tpl = & new PHPWS_Template($module, $file);
 
-    if (PEAR::isError($tpl))
-      return $tpl;
+    if (PEAR::isError($tpl->error)){
+      return _("Template error.");
+    }
+
     $tpl->setData($template);
 
     $result = $tpl->get();
