@@ -15,6 +15,7 @@ define("USER_ERR_MISSING_GROUP",   -12);
 define("USER_ERR_DUP_EMAIL",       -13);
 define("USER_ERR_NO_EMAIL",        -14);
 define("USER_ERR_BAD_EMAIL",       -15);
+define("USER_ERR_ITEM_PERM_FILE",  -16);
 
 /* User Variable Errors */
 define("USER_ERR_NO_MODULE",       -20);
