@@ -1,3 +1,6 @@
 <?php
-echo PHPWS_Layout::display();
+
+Layout::display();
+
 ?>
+

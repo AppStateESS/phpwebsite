@@ -1,4 +1,5 @@
 <?php
-PHPWS_Layout::initLayout();
+
+  Layout::initLayout();
 
 ?>
