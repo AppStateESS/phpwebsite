@@ -32,13 +32,7 @@ PHPWS_Core::configRequireOnce("core", "formConfig.php", TRUE);
  *
  */
 class PHPWS_Form {
-  /**
-   * Optional name of form
-   * @var string
-   * @access private
-   */
-  var $_formName = NULL;
-
+  var $id = NULL;
   
   /**
    * Array of form elements
@@ -82,11 +76,13 @@ class PHPWS_Form {
 
   var $tagReplace = array();
 
+  var $allowFormName = FALSE;
+
   /**
    * Constructor for class
    */
-  function PHPWS_Form($formName=NULL){
-    $this->_formName = $formName;
+  function PHPWS_Form($id=NULL){
+    $this->id = $id;
     $this->reset();
   }
 
@@ -95,6 +91,14 @@ class PHPWS_Form {
     $this->_action   = NULL;
     $this->_method   = "post";
     $this->_encode   = NULL;
+  }
+
+  function allowFormName(){
+    $this->allowFormName = TRUE;
+  }
+
+  function getId(){
+    return $this->id;
   }
 
   function setMethod($method){
@@ -702,7 +706,7 @@ class PHPWS_Form {
       foreach ($element as $subElement){
 	if ($this->types[$elementName] == "hidden"){
 	  if (!isset($div))
-	    $template["START_FORM"] .= "\n<div>\n";
+	    $template["START_FORM"] .= "\n<div id=\"form\">\n";
 	  ($helperTags == TRUE) ? $template["START_FORM"] .= $subElement->get() ."\n" : $template["HIDDEN"] .= $subElement->get() . "\n";
 	  $div = TRUE;
 	  continue;
@@ -724,14 +728,16 @@ class PHPWS_Form {
       }
     }      
 
-    if (isset($this->_action))
-      $template["END_FORM"]   = "</form>\n";
+    if (isset($this->_action)){
+      if (isset($div))
+	$template["END_FORM"] = "\n</div>\n</form>\n";
+      else
+	$template["END_FORM"] = "</form>\n";
+    }
 
     if (isset($this->_template))
       $template = array_merge($this->_template, $template);
 
-    if (isset($div))
-      $template["START_FORM"] .= "\n</div>\n";
 
     if ($phpws == TRUE)
       return $template;
@@ -755,8 +761,12 @@ class PHPWS_Form {
     if (!isset($this->_action))
       $this->_action = "index.php";
 
-    if (isset($this->_formName))
-      $formName = "name=\"" . $this->_formName . "\" id=\"" . $this->_formName . "\" ";
+    if (isset($this->id)){
+      if ($this->allowFormName)
+	$formName = "name=\"" . $this->id . "\" id=\"" . $this->id . "\" ";
+      else
+	$formName = "id=\"" . $this->id . "\" ";
+    }
     else
       $formName = NULL;
 
