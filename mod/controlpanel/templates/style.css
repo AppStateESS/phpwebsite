@@ -88,7 +88,7 @@
   width : 100%;
 }
 
-
+/*--------------- Links -----------------*/
 div.link {
 font-size : .8em;
 margin : 5px;
@@ -101,7 +101,7 @@ text-align : top;
 
 div.link img {
 float : left;
-margin : 5px;
+margin-right : .5em;
 margin-bottom : 20%;
 }
 
