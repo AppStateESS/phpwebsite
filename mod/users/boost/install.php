@@ -1,6 +1,6 @@
 <?php
 
-function install(&$content, $branchInstall=FALSE){
+function users_install(&$content, $branchInstall=FALSE){
   PHPWS_Core::initModClass("users", "Users.php");
   PHPWS_Core::initModClass("users", "Action.php");
   PHPWS_Core::initModClass("users", "Demographics.php");
