@@ -12,16 +12,17 @@ define ("DEFAULT_MODE", DB_FETCHMODE_ASSOC);
 
 class PHPWS_DB {
 
-  var $_table    = NULL;
-  var $_where    = array();
-  var $_order    = array();
-  var $_value    = array();
-  var $_mode     = DEFAULT_MODE;
-  var $_limit    = NULL;
-  var $_index    = NULL;
-  var $_column   = NULL;
-  var $_qwhere   = NULL;
-  var $_indexby  = NULL;
+  var $_table      = NULL;
+  var $_where      = array();
+  var $_order      = array();
+  var $_value      = array();
+  var $_mode       = DEFAULT_MODE;
+  var $_limit      = NULL;
+  var $_index      = NULL;
+  var $_column     = NULL;
+  var $_qwhere     = NULL;
+  var $_indexby    = NULL;
+  var $_allColumns = NULL;
 
   function PHPWS_DB($table=NULL){
     PHPWS_DB::touchDB();
@@ -70,6 +71,9 @@ class PHPWS_DB {
 
 
   function getTableColumns(){
+    if (isset($this->_allColumns))
+      return $this->_allColumns;
+
     $table = & $this->getTable();
     if (!isset($table))
       return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, "core", "PHPWS_DB::isTableColumn");
@@ -79,9 +83,9 @@ class PHPWS_DB {
       return $columns;
 
     foreach ($columns as $colInfo)
-      $allColumns[] = $colInfo['name'];
+      $this->_allColumns[] = $colInfo['name'];
 
-    return $allColumns;
+    return $this->_allColumns;
   }
 
   function isTableColumn($columnName){
