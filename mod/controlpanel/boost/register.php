@@ -41,7 +41,7 @@ function controlpanel_register($module, &$content){
 
       $tab->save();
     }
-    $content[] = _print(_("Control Panel tabs created for [var1]."), $module);
+    $content[] = sprintf(_("Control Panel tabs created for %s."), $module);
   } else
     PHPWS_Boost::addLog($module, _("No Control Panel tabs found."));
     
@@ -97,7 +97,7 @@ function controlpanel_register($module, &$content){
       }
       $db->resetWhere();
     }
-    $content[] = _print(_("Control Panel links created for [var1]."), $module);
+    $content[] = sprintf(_("Control Panel links created for %s."), $module);
   } else
     PHPWS_Boost::addLog($module, _("No Control Panel links found."));
 
