@@ -173,6 +173,12 @@ class PHPWS_DB {
   }
 
   function addWhere($column, $value, $operator=NULL, $conj=NULL, $group=NULL){
+    if (is_array($value)){
+      foreach ($value as $newVal)
+	$this->addWhere($column, $newVal, $operator, $conj, $group);
+      return;
+    }
+
     if (!isset($operator))
       $operator = "=";
 
