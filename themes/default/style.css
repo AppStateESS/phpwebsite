@@ -1,0 +1,134 @@
+body {
+	margin : 0;
+	padding : 0;
+	font-size: 10pt;
+	font-family : Arial, Helvetica, sans-serif;
+	color: #000;
+	background-color : #DFE3BA;
+}
+
+
+#container {
+	width: 80%;
+	background-color: #ADB583;
+	border: 5px solid #FFF;
+	margin : 10px auto;
+	padding: 10px;
+}
+
+#content {
+	padding: 5px;
+	margin-left: 180px;
+}
+
+#sidebar {
+	background-color : #CBCEAC;
+	border : white 2px solid;
+	float: left;
+	width: 147px;
+	margin: 0;
+	margin-right: 5px;
+	padding: 5px;
+}
+
+// IE hack
+#container > #sidebar {
+	width : 150px;
+}
+
+#footer {
+	clear: both;
+	padding: 5px;
+	margin-top: 5px;
+}
+
+
+a:link, a:visited {
+	text-decoration: underline;
+	color: #000;
+}
+a:hover, a:active {
+	text-decoration: none;
+	color: #A03E19;
+}
+
+
+h1, h2, h3 {
+	color: #A03E19;
+	font-family: "Trebuchet MS", Verdana;	
+	margin: 0;
+	text-transform: lowercase;
+	font-weight : bold;
+}
+
+h1 {
+	font-size :  16pt;
+	margin-bottom : 5px;
+	margin-top : 5px;
+}
+
+h2 {
+	font-size :  12pt;
+}
+
+h3 {
+	font-size :  10pt;
+}
+
+.toggle1 {
+	background-color : #EDF4D1;
+}
+
+.toggle2 {
+	background-color : white;
+}
+
+
+th {
+	font-weight : bold;
+	font-family : "Trebuchet MS", Verdana;
+	color: #A03E19;
+	text-align : left;
+	background-color : #DFE3BA;
+}
+
+tr, td {
+	vertical-align : top;
+}
+
+td {
+	padding : 10px;
+}
+
+#content h1 {
+	background-color : #DEE2BD;
+	padding : 3px;
+}
+
+div.box {
+	margin-bottom : 6px;
+}
+
+div.box a:link, div.box a:visited {
+	color: #42443A;
+}
+div.box a:hover, div.box a:active {
+	color: #42443A;
+}
+
+.box h1, .box h2, .box h3 {
+	font-size : 12pt;
+	font-weight : bold;
+}
+
+.bgcolor1 {
+	background-color : #DEE2BD;
+}
+
+.bgcolor2 {
+	background-color : #EDF4D1;
+}
+
+input {
+	font-size : 9pt;
+}
