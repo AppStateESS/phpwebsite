@@ -22,14 +22,15 @@ class PHPWS_User extends PHPWS_Item {
   var $_deity       = FALSE;
   var $_groups      = NULL;
   var $_permissions = array();
+  var $_logged      = FALSE;
 
   function PHPWS_User($id=NULL){
     $exclude = array("_owner",
 		     "_editor",
 		     "_ip",
-		     "_login",
 		     "_groups",
-		     "_permissions"
+		     "_permissions",
+		     "_logged"
 		     );
 
     $this->addExclude($exclude);
@@ -40,8 +41,6 @@ class PHPWS_User extends PHPWS_Item {
       $this->init();
       $this->loadUserGroups();
     }
-
-
   }
 
   /**
@@ -105,6 +104,13 @@ class PHPWS_User extends PHPWS_Item {
     return $this->_password;
   }
 
+  function setLogged($status){
+    $this->_logged = $status;
+  }
+
+  function isLogged(){
+    return $this->_logged;
+  }
 
   function setDeity($deity){
     $this->_deity = (bool)$deity;
@@ -116,29 +122,10 @@ class PHPWS_User extends PHPWS_Item {
 
   function getLogin(){
     PHPWS_Core::initModClass("users", "Form.php");
-    $login = PHPWS_User_Form::logBox((bool)$this->getID());
+    $login = PHPWS_User_Form::logBox($_SESSION['User']->isLogged());
     PHPWS_Layout::hold($login, "CNT_user_small", TRUE, -1);
   }
 
-  function loginUser($username, $password){
-    // Note assuming here we are using the one username database
-    // ie case insensitive
-
-    $registrationScript = "default.php";
-
-    include PHPWS_SOURCE_DIR . "mod/users/scripts/login/" . $registrationScript;
-
-    if (!isset($logged) or $logged !== TRUE)
-      return FALSE;
-
-    if (isset($ID)){
-      $_SESSION['User'] = new PHPWS_User($ID);
-      $_SESSION['User']->getLogin();
-      return TRUE;
-    }
-    
-    return FALSE;
-  }
 
   function loadUserGroups(){
     $DB = & new PHPWS_DB("user_groups");
@@ -292,7 +279,47 @@ class PHPWS_User extends PHPWS_Item {
 
   }
 
+  function loginUser($username, $password){
+    // Note assuming here we are using the one username database
+    // ie case insensitive
+
+    $registrationScript = "default.php";
+
+    include PHPWS_SOURCE_DIR . "mod/users/scripts/login/" . $registrationScript;
+
+    if (!isset($logged) or $logged !== TRUE)
+      return FALSE;
+
+    if (isset($ID)){
+      $_SESSION['User'] = new PHPWS_User($ID);
+      $_SESSION['User']->setLogged(TRUE);
+      PHPWS_User::getLogin();
+      return TRUE;
+    }
+    
+    return FALSE;
+  }
+
+
+  function logAnonymous(){
+    $id = &PHPWS_User::getSetting('anonymous');
+    $_SESSION['User'] = new PHPWS_User($id);
+  }
+
+  function &getSetting($setting){
+    static $settings;
+
+    if (!isset($settings)){
+      $DB = new PHPWS_DB("users_settings");
+      $settings = $DB->select("row");
+    }
+
+    return $settings[$setting];
+  }
+
+
 
 }
+
 
 ?>
