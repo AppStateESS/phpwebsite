@@ -615,13 +615,19 @@ Layout module about it.
 
 Layout::addStyle("links");
 
-And return the result with $panel->display($content);
+The resultant object is then passed back to the admin() function. At the
+end of admin() I call:
 
-The content appears beneath the tabs. To get my panel to be surrounded
-by the main control panel, I just use its display function:
+$finalPanel = $panel->display($content);
+
+I want the content to appear beneath the tabs. To get my panel to be
+surrounded by the main control panel, I just use its display function:
+
 PHPWS_ControlPanel::display($panel->display($content));
 
-Now I just return the result and put it in the Layout.
+This will return my control panel inside of the main control panel.
+
+Now I take this result and put it into the Layout.
 
 Using Layout
 Getting your code to display in phpWebSite is simple. Every theme has
@@ -635,12 +641,12 @@ Layout like so:
 Layout::add($content);
 
 However, you may not want to put content in the BODY. You may want to
-create content in a small box to the side or above the BODY. To do so,
+create content in a small box to the side or above the BODY. To do so, 
 you need to tell the Layout module to store the content.
 
 Layout::add($content, $module_name, $marker);
 
-So say for links I may want a small side box:
+So, say for links I may want a small side box:
 
 Layout::add($content, "links", "sideBox");
 
@@ -650,6 +656,114 @@ add() function again. It will append the text, not replace it.
 
 (For more information on Layout, look in mod/layout/docs/devdoc.txt)
 
+In Links, the control panel doesn't need its own box. It just needs to
+be in the main content area. So I call:
+
+Layout::add(PHPWS_ControlPanel::display($finalPanel));
+
+
+Steering the Data
+
+Back to the module. I am going to create a switch statement to decide
+where we are headed next. We have two tabs: New and List. To discover
+which tab the user is viewing, I will call:
+
+if (isset($_REQUEST['subaction']))
+  $subaction = $_REQUEST['subaction'];
+else
+  $subaction = $panel->getCurrentTab();
+
+Since we are coming here from the control panel, there will not be a
+request variable for subaction, so we will fill the variable with the
+current tab result. Now I use the $subaction variable to steer the logic:
+
+switch ($subaction){
+case "new":
+$content = Links_Action::edit($link);
+break;
+
+case "list":
+$content = Links_Action::link_list();
+break;
+}
+
+You will also notice that I am creating a $link object here and
+passing it to the edit function. This will make more sense as we get
+further in the script.
+
+
+Creating our First Link Form
+
+We are now in the edit function.
+ function edit(&$link)
+
+We sent the link object by reference. This prevents copies of the
+object being created over and over.
+
+We will now go over two main components of phpWebSite: forms and
+templates. We will also touch on the translation system as well.
+
+
+Templates
+
+Templates files describe the structure of a page. Look at
+theme.tpl in one of the theme directories. That is a template. When
+you are viewing phpWebSite, you are actually seeing an amalgamation of
+templates.
+
+You will need a working knowledge of HTML before tackling
+templates. The upside is that is all you really need. They aren't
+complicated.
+
+
+Let's say you had a short section of HTML that displayed a picture and
+some text.
+
+<div align="center">
+<img src="my_beach_trip.jpg" width="500"
+height="430">
+</div>
+<br />
+<p>Here is a picture of me at the beach. The shark bite caused a few
+stiches but otherwise look at that sunset. Wow!</p>
+
+
+If you had a phpWebSite module that echoed this information, you
+wouldn't want to create the <div> and <p> tags. What if the person
+using your module didn't like that layout? So instead you make a
+template that receives the above content. It would look something like
+this: 
+
+<div align="center">
+{IMAGE}
+</div>
+<br />
+<p>{COMMENT}</p>
+
+See? We removed the content that is supplied from our module and
+substituted the 'tags' IMAGE and COMMENT. PhpWebSite separates the
+tags from the other text by the {curly braces}.
+
+One more quick comment then we will move on. If you want some text to
+only appear if a tag get filled in, you can place special comments in
+your template. For example, if the above template might not have an
+image we may not want the <div> and <br /> tags to appear. Here is
+what we would change:
+
+<!-- START image_placement -->
+<div align="center">
+{IMAGE}
+</div>
+<br />
+<!-- END image_placement -->
+<p>{COMMENT}</p>
+
+Now if the {IMAGE} tag is empty, nothing between the START and END
+comments will be echoed.
+
+Creating the Form Object
+
+PhpWebSite comes with a form class.
 
 
 
