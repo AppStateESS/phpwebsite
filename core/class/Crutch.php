@@ -32,6 +32,56 @@ class oldTranslate {
   }
 }
 
+class Fatcat {
+  function getCategoryList()
+  {
+    return Categories::getCategories();
+  }
+
+  function showSelect($module_id=NULL, $mode="multiple", $rows = NULL, $module_title=NULL, $purge=FALSE, $setSticky=TRUE)
+  {
+    PHPWS_Core::initModClass('categories', 'Category_Item.php');
+    if (empty($module_title)) {
+      $module_title = PHPWS_Core::getCurrentModule();
+    }
+    $cat_item = & new Category_Item($module_title);
+    $cat_item->setItemId($module_id);
+    return $cat_item->getForm();
+  }
+
+  function purge($id, $module)
+  {
+    PHPWS_Core::initModClass('categories', 'Category_Item.php');
+    $cat_item = & new Category_Item($module);
+    $cat_item->setItemId($id);
+    $cat_item->clear();
+  }
+
+  function activate()
+  {
+    echo 'activate function needs to be written';
+  }
+
+  function deactivate(){
+    echo 'deactivate function needs to be written';
+  }
+
+  function saveSelect($title, $link, $item_id, $groups=NULL, $module_title=NULL,
+		      $href=NULL, $rating=NULL, $active=NULL)
+  {
+    PHPWS_Core::initModClass('categories', 'Category_Item.php');
+    if (empty($module_title)) {
+      $module_title = PHPWS_Core::getCurrentModule();
+    }
+
+    $cat_item = & new Category_Item($module_title);
+    $cat_item->setItemId((int)$item_id);
+    $cat_item->setTitle(strip_tags($title));
+    $cat_item->setLink($link);
+    test($cat_item->save());
+  }
+}
+
 class oldCore extends oldDB{
   var $home_dir = NULL;
   var $datetime = NULL;
@@ -76,16 +126,18 @@ class PHPWS_DateTime{
   }
 }
 
-
-class oldLayout {
+class PHPWS_Layout {
   var $current_theme;
 
-  function oldLayout(){
-    $current_theme = Layout::getTheme();
+  function PHPWS_Layout(){
+    $this->current_theme = Layout::getTheme();
+  }
+
+  function addPageTitle($title){
+    return Layout::addPageTitle($title);
   }
 
 }
-
 
 class PHPWS_Crutch {
 
@@ -114,15 +166,20 @@ class PHPWS_Crutch {
   function startSessions(){
     if (!isset($_SESSION['OBJ_user'])) {
       $_SESSION['OBJ_user'] = $_SESSION['User'];
+      $_SESSION['OBJ_user']->admin_switch = & $_SESSION['User']->deity;
     }
 
     if (!isset($_SESSION['translate'])) {
       $_SESSION['translate'] = & new oldTranslate;
     }
 
-    if (!isset($_SESSION['OBJ_layout']))
-      $_SESSION['OBJ_layout'] = & new oldLayout;
+    if (!isset($_SESSION['OBJ_layout'])) {
+      $_SESSION['OBJ_layout'] = & new PHPWS_Layout;
+    }
 
+    if (!isset($_SESSION['OBJ_fatcat'])) {
+      $_SESSION['OBJ_fatcat'] = & new Fatcat;
+    }
 
     $GLOBALS['Crutch_Session_Started'] = TRUE;
   }
