@@ -2,12 +2,20 @@
 
 class PHPWS_ControlPanel {
 
-  function getTabs($frame, $active=NULL, $activeLinkable=TRUE){
+  function getTabs($frame, $active=NULL, $activeLinkable=TRUE, $only=NULL){
     PHPWS_Core::initModClass("controlpanel", "Tab.php");
     $DB = & new PHPWS_DB("controlpanel_tab");
+
+    if (isset($only) && is_array($only)){
+      foreach ($only as $tabId)
+	$DB->addWhere("id", $tabId, NULL, "or");
+    }
+
     $DB->addWhere("frame", $frame);
     $DB->addOrder("tab_order");
     $result = $DB->loadItems("PHPWS_ControlPanel_Tab");
+
+    echo $DB->lastQuery();
 
     foreach ($result as $tab){
       if (isset($active) && $active == $tab->getId())
@@ -27,11 +35,11 @@ class PHPWS_ControlPanel {
   function display(){
     $currentTab = PHPWS_ControlPanel::getCurrentTab();
 
-    $result = PHPWS_ControlPanel::getTabs('controlpanel', $_SESSION['ControlPanel_Current_Tab'], FALSE);
+    $links = PHPWS_ControlPanel::getAllLinks($currentTab);
+
+    $result = PHPWS_ControlPanel::getTabs('controlpanel', $_SESSION['ControlPanel_Current_Tab'], FALSE, array_keys($links));
     
     $template['TABS'] = implode("", $result);
-
-    $links = PHPWS_ControlPanel::getLinks();
 
     return PHPWS_Template::process($template, "controlpanel", "panel.tpl");
   }
@@ -59,21 +67,17 @@ class PHPWS_ControlPanel {
     return $result;
   }
 
-  function getLinks($tab=NULL){
-    
-    if (!isset($_SESSION['CP_Links'])){
-      $DB = new PHPWS_DB("controlpanel_link");
-      if (isset($tab))
-	$DB->addWhere("tab", $tab);
-      $result = $DB->loadItems("PHPWS_ControlPanel_Link");
-      $_SESSION['CP_Links'] = $result;
-      foreach ($result as $row=>$item){
-	if (
-
-      }
-
+  function getAllLinks(){
+    $DB = new PHPWS_DB("controlpanel_link");
+    $DB->addOrder("tab");
+    $DB->addOrder("link_order");
+    $result = $DB->loadItems("PHPWS_ControlPanel_Link");
+    foreach ($result as $link){
+      if ($_SESSION['User']->allow($link->getModule(), $link->getItemName()))
+	$allLinks[$link->getTab()][] = $link;
     }
-      echo phpws_debug::testarray($_SESSION['CP_Links']);
+
+    return $allLinks;
   }
 
 }
