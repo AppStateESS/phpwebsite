@@ -20,26 +20,24 @@ $content = array();
 $setup = & new Setup;
 $title = _("phpWebSite 0.9.4") . " - ";
 
-if (!$setup->checkSession($content) || !isset($_REQUEST['step'])){
-  $title .=  "Alpha Setup";
-  $setup->welcome($content);
-  echo Setup::show($content, $title);
-  exit();
-}
+if (!$setup->checkSession($content) || !isset($_REQUEST['step']))
+  $step = 0;
 
 if (!$setup->checkDirectories($content))
      exit(Setup::show($content, $title));
 
 switch ($_REQUEST['step']){
+ case 0:
+   $title .=  "Alpha Setup";
+   $setup->welcome($content);
+   break;
+
  case 1:
    $title .= _("Create Config File");
    $setup->createConfig($content);
    break;
 
  case 2:
-   $modules = explode(",", DEFAULT_MODULES);
-   PHPWS_Boost::toInstall($modules);
-
    $title .= _("Create Core");
    $result = $setup->createCore($content);
    break;
