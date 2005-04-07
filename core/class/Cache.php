@@ -37,7 +37,7 @@ class PHPWS_Cache {
     return PHPWS_File::writeFile(CACHE_DIRECTORY . 'phpws_cache.ini', $info, TRUE);
   }
 
-  function clean(){
+  function clearCache(){
     $cache = & PHPWS_Cache::initCache();
     $cache->clean();
   }
