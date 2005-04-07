@@ -1,0 +1,61 @@
+Cache List in phpWebSite
+by Matt McNaney
+--------------------------
+
+PhpWebSite has a caching class from the Pear library. It is easy to
+use but be aware of the following issues:
+
+- If the display is user specific, as in it is only seen by one user,
+  caching is probably a waste of resources. Try a cache something that
+  is to the benefit of several viewers.
+
+- Be careful caching data that requires a different view depending on
+  who is logged in. For example, you may have Edit links available for
+  certain users. If you cache the data for a regular user, the
+  administrators will not see those links.
+
+- Don't cache individual templates. The template class takes care of that
+  automatically. Do cache the results of several templates observing
+  the rules above.
+
+
+Cache in action
+----------------------------
+Here is how your code might look on a simple application:
+
+$key = 'myModsContent';
+
+$content = PHPWS_Cache::get($key);
+
+if (!empty($content)) {
+  $content = getContentTheHardWay();
+  PHPWS_Cache::save($key, $content);
+}
+ 
+Layout::add($content);
+
+
+Pretty simple.
+First, create a 'key' for your content. This should be unique so don't
+use something like:
+
+$key = 'stuff';
+
+because there is a chance some other module developer may use it as
+well.
+
+Next, check to see a cache has been created already using the 'get'
+function. If a cache has not been created or the cache has expired,
+you will get NULL back.
+
+Should you get nothing back from the 'get' function, create your
+content as normal and then use the 'save' function with the 'key' you
+made earlier.
+
+Finally, display the either the cached content or the created content
+using Layout.
+
+If you need to clear the cache then use the clearCache function:
+PHPWS_Cache::clearCache();
+
+This will clear all the caches for the site so use it sparingly.
