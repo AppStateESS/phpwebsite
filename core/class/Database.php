@@ -699,7 +699,7 @@ class PHPWS_DB {
   }
 
   function count(){
-    return $this->select('one');
+    return $this->select('count');
   }
 
   function getSelectSQL($type){
