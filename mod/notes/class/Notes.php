@@ -29,14 +29,22 @@ class Notes {
     $db->addOrder('title');
     $result = $db->getObjects('Note_Item');
 
-    /*
     if (empty($result)) {
       $_SESSION['No_Notes'] = 1;
     }
-    */
+
+    $total_notes = count($result);
+
+    $template['COUNT_LABEL'] = sprintf(_('You have %s notes saved.'), $total_notes);
+
     foreach ($result as $note) {
       $template['note'][] = array('NOTE_TITLE' => $note->getTitle());
     }
+
+    $vars['command'] = 'close_notes';
+
+    $template['CLOSE'] = PHPWS_Text::moduleLink(_('Close'), 'notes', $vars);
+
     $content['TITLE'] = _("Notes");
     $content['CONTENT'] = PHPWS_Template::process($template, 'notes', 'small_list.tpl');
     Layout::add($content, 'notes', 'reminder', TRUE);
