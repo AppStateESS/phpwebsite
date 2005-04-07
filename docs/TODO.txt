@@ -1,7 +1,8 @@
-Layout
+Approval
 -----------
-None
+Main menu for approval needed
 
+Icon for control panel
 
 Users
 -----------
@@ -16,7 +17,14 @@ Finish new user signup.
 Make assigning of groups by a restricted user limited. Don't want them
 to give more permissions to themselves than they currently have.
 
-Add display name
+Have a mechanism for other modules to perform processes when a user is
+deleted.
+
+
+Notes
+------------
+General work and tweaking
+
 
 Images
 ------------
