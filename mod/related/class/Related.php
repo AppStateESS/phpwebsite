@@ -277,7 +277,7 @@ class Related {
 
     if (!empty($body)) {
       $content['CONTENT'] = &$body;
-      Layout::add($content, 'related', 'bank');
+      Layout::add($content, 'related', 'bank', TRUE);
     }
 
     return TRUE;

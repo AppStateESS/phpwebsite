@@ -3,69 +3,69 @@
 class Related_Action {
 
   function create(&$related){
-    $template['TITLE_LBL'] = _("Title");
-    $template['MODULE_LBL'] = _("Module");
+    $template['TITLE_LBL'] = _('Title');
+    $template['MODULE_LBL'] = _('Module');
 
-    $instructions[] = _("Currently, nothing is associated with this item.");
-    $instructions[] = _("If you want to add related information to this item, click the 'Build Related' link.");
+    $instructions[] = _('Currently, nothing is associated with this item.');
+    $instructions[] = _('If you want to add related information to this item, click the "Build Related" link.');
 
-    $template['INSTRUCTIONS'] = implode("<br />", $instructions);
+    $template['INSTRUCTIONS'] = implode('<br />', $instructions);
 
     Related_Action::newBank($related);
 
-    $template['LINK'] = "<a href=\"index.php?module=related&amp;action=start\">" . 
-      _("Build Related") . "</a>";
+    $template['LINK'] = '<a href="index.php?module=related&amp;action=start">' . 
+      _('Build Related') . '</a>';
 
     $template['TITLE'] = $related->getUrl(TRUE);
 
     $module = & new PHPWS_Module($related->getModule());
     $template['MODULE'] = $module->getProperName(TRUE);
 
-    return PHPWS_Template::process($template, "related", "create.tpl");
+    return PHPWS_Template::process($template, 'related', 'create.tpl');
   }
 
   function edit(&$current){
-    PHPWS_Core::initCoreClass("Module.php");
-    $tpl = new PHPWS_Template("related");
-    $result = $tpl->setFile("edit.tpl");
+    PHPWS_Core::initCoreClass('Module.php');
+    $tpl = new PHPWS_Template('related');
+    $result = $tpl->setFile('edit.tpl');
 
     $related = & Related_Action::getBank();
-    $template['TITLE_LBL'] = _("Title");
-    $template['MODULE_LBL'] = _("Module");
+    $template['TITLE_LBL'] = _('Title');
+    $template['MODULE_LBL'] = _('Module');
     $template['TITLE'] = $related->getUrl(TRUE);
 
     $id = $related->getId();
 
-    $js['QUESTION'] = _("What do you want the title to be?");
+    $js['QUESTION'] = _('What do you want the title to be?');
     $js['TITLE']    = $related->getTitle();
-    $js['LINK']     = "<img src=\"images/mod/related/edit.png\"/>";
+    $js['LINK']     = '<img src="images/mod/related/edit.png"/>';
     $js['ALLOWED']  = ALLOWED_TITLE_CHARS;
 
-    $edit = Layout::getJavascript("related_title_change", $js);
+    $edit = Layout::getJavascript('related_title_change', $js);
 
-    $template["EDIT"] = $edit;
+    $template['EDIT'] = $edit;
 
     if (!$related->isSame($current) && !$related->isFriend($current)){
-      $template['ADD_LINK'] = "<a href=\"index.php?module=related&amp;action=add\">"
-      . _("Add Item") . "</a>";
+      $template['ADD_LINK'] = '<a href="index.php?module=related&amp;action=add">'
+      . _('Add Item') . '</a>';
 
 
       if ($current->hasFriends()){
 	$extra_friends = Related_Action::listFriends($current);
-	$template['EXTRA_INSTRUCTIONS'] = _("This item is related to the following:");
+	$template['EXTRA_INSTRUCTIONS'] = _('This item is related to the following:');
 	
 	if (is_array($extra_friends)){
 	  foreach ($extra_friends as $key=>$friend_item){
-	    $tpl->setCurrentBlock("extra_list");
-	    $tpl->setData(array("EXTRA_NAME"=>$friend_item));
+	    $tpl->setCurrentBlock('extra_list');
+	    $tpl->setData(array('EXTRA_NAME'=>$friend_item));
 	    $tpl->parseCurrentBlock();
 	  }
 	}
       }
     }
 
-    $template['QUIT_LINK'] = "<a href=\"index.php?module=related&amp;action=quit\">"
-      . _("Quit") . "</a>";
+    $template['QUIT_LINK'] = '<a href="index.php?module=related&amp;action=quit">'
+      . _('Quit') . '</a>';
 
     Related_Action::setCurrent($current);
 
@@ -73,29 +73,29 @@ class Related_Action {
     $template['MODULE'] = $module->getProperName(TRUE);
 
     if ($related->hasFriends()){
-      $template['SAVE_LINK'] = "<a href=\"index.php?module=related&amp;action=save\">"
-	. _("Save") . "</a>";
+      $template['SAVE_LINK'] = '<a href="index.php?module=related&amp;action=save">'
+	. _('Save') . '</a>';
 
       $friends = Related_Action::listFriends($related);
 
       if (is_array($friends)){
 	foreach ($friends as $key=>$friend_item){
-	  $up = "<a href=\"index.php?module=related&amp;action=up&amp;pos=$key\"><img src=\"images/mod/related/up.png\"/></a>";
-	  $down = "<a href=\"index.php?module=related&amp;action=down&amp;pos=$key\"><img src=\"images/mod/related/down.png\"/></a>";
-	  $remove = "<a href=\"index.php?module=related&amp;action=remove&amp;pos=$key\"><img src=\"images/mod/related/remove.png\"/></a>";
+	  $up = '<a href="index.php?module=related&amp;action=up&amp;pos=' . $key . '"><img src="images/mod/related/up.png"/></a>';
+	  $down = '<a href="index.php?module=related&amp;action=down&amp;pos=' . $key . '"><img src="images/mod/related/down.png"/></a>';
+	  $remove = '<a href="index.php?module=related&amp;action=remove&amp;pos=' . $key . '"><img src="images/mod/related/remove.png"/></a>';
 
 
-	  $tpl->setCurrentBlock("friend_list");
-	  $tpl->setData(array("FRIEND_NAME"=>$friend_item,
-			      "UP"=>$up,
-			      "DOWN"=>$down,
-			      "REMOVE"=>$remove
+	  $tpl->setCurrentBlock('friend_list');
+	  $tpl->setData(array('FRIEND_NAME'=>$friend_item,
+			      'UP'=>$up,
+			      'DOWN'=>$down,
+			      'REMOVE'=>$remove
 			      ));
 	  $tpl->parseCurrentBlock();
 	}
       }
     } else
-      $template['FRIEND_NAME'] = _("View other items to add them to the list.");
+      $template['FRIEND_NAME'] = _('View other items to add them to the list.');
 
 
     $tpl->setData($template);
@@ -111,12 +111,12 @@ class Related_Action {
       return $friends;
     }
 
-    $tpl = new PHPWS_Template("related");
-    $result = $tpl->setFile("view.tpl");
+    $tpl = new PHPWS_Template('related');
+    $result = $tpl->setFile('view.tpl');
 
     $template['TITLE'] = $related->getUrl(TRUE);
 
-    if (Current_User::allow("related")) {
+    if (Current_User::allow('related')) {
       $linkvars = array('action' => 'edit',
 			'id'     => $related->getId()
 			);
@@ -124,8 +124,8 @@ class Related_Action {
     }
 
     foreach ($friends as $key=>$friend_item){
-      $tpl->setCurrentBlock("friend_list");
-      $tpl->setData(array("FRIEND_NAME"=>$friend_item));
+      $tpl->setCurrentBlock('friend_list');
+      $tpl->setData(array('FRIEND_NAME'=>$friend_item));
       $tpl->parseCurrentBlock();
     }
 
@@ -168,7 +168,7 @@ class Related_Action {
 
   function start(){
     if (!isset($_SESSION['Related_Bank']))
-      return _("Bank not created.");
+      return _('Bank not created.');
 
     $related = & Related_Action::getBank();
     $related->setBanked(TRUE);
@@ -183,10 +183,10 @@ class Related_Action {
 
   function add(){
     if (!isset($_SESSION['Related_Bank']))
-      return _("Bank not created.");
+      return _('Bank not created.');
 
     if (!isset($_SESSION['Current_Friend']))
-      return _("Friend not created.");
+      return _('Friend not created.');
 
     $related = & $_SESSION['Related_Bank'];
     $friend = & $_SESSION['Current_Friend'];
@@ -204,10 +204,10 @@ class Related_Action {
 
   function up(){
     if (!isset($_SESSION['Related_Bank']))
-      return _("Bank not created.");
+      return _('Bank not created.');
 
     if (!isset($_REQUEST['pos']))
-      return _("Missing position.");
+      return _('Missing position.');
 
     $_SESSION['Related_Bank']->moveFriendUp($_REQUEST['pos']);
     PHPWS_Core::reroute($_SESSION['Current_Friend']->getUrl());
@@ -215,10 +215,10 @@ class Related_Action {
 
   function down(){
     if (!isset($_SESSION['Related_Bank']))
-      return _("Bank not created.");
+      return _('Bank not created.');
 
     if (!isset($_REQUEST['pos']))
-      return _("Missing position.");
+      return _('Missing position.');
 
     $_SESSION['Related_Bank']->moveFriendDown($_REQUEST['pos']);
     PHPWS_Core::reroute($_SESSION['Current_Friend']->getUrl());
@@ -226,10 +226,10 @@ class Related_Action {
 
   function remove(){
     if (!isset($_SESSION['Related_Bank']))
-      return _("Bank not created.");
+      return _('Bank not created.');
 
     if (!isset($_REQUEST['pos']))
-      return _("Missing position.");
+      return _('Missing position.');
 
     $_SESSION['Related_Bank']->removeFriend($_REQUEST['pos']);
     PHPWS_Core::reroute($_SESSION['Current_Friend']->getUrl());
@@ -237,13 +237,13 @@ class Related_Action {
 
   function save(){
     if (!isset($_SESSION['Related_Bank']))
-      return _("Bank not created.");
+      return _('Bank not created.');
 
     $result = $_SESSION['Related_Bank']->save();
 
     if (PEAR::isError($result)){
       PHPWS_Error::log($result);
-      Layout::add(_("The Related module encountered a database error."));
+      Layout::add(_('The Related module encountered a database error.'));
       return;
     }
     
@@ -251,22 +251,22 @@ class Related_Action {
   }
 
   function changeForm(){
-    $template['PAGE_TITLE'] = _("Change Related Title");
+    $template['PAGE_TITLE'] = _('Change Related Title');
 
     $related = Related_Action::getBank();
 
     $form = & new PHPWS_Form;
-    $form->add("module", "hidden", "related");
-    $form->add("action", "hidden", "postTitle");
-    $form->add("title", "text", $related->getTitle());
-    $form->setSize("title", "30");
-    $form->add("submit", "submit", "Update");
+    $form->add('module', 'hidden', 'related');
+    $form->add('action', 'hidden', 'postTitle');
+    $form->add('title', 'text', $related->getTitle());
+    $form->setSize('title', '30');
+    $form->add('submit', 'submit', 'Update');
 
     $form->mergeTemplate($template);
 
     $template = $form->getTemplate();
 
-    echo PHPWS_Template::process($template, "related", "change.tpl");
+    echo PHPWS_Template::process($template, 'related', 'change.tpl');
     exit();
   }
 
