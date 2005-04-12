@@ -8,7 +8,8 @@ $core_modules = array('users',
 		      'filecabinet',
 		      'version',
 		      'clipboard',
-		      'notes'
+		      'notes',
+		      'comments'
 		      );
 
 
