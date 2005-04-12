@@ -84,10 +84,9 @@ background-color : #ADB583;
 color : black;
 }
 
-div.blog-box {
+div.blog div.box {
 	background-color : #A9BBEF;
 	border : 2px white solid;
-	margin : 5px 5px 15px 5px;
 }
 
 
