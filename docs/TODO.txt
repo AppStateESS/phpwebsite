@@ -12,7 +12,11 @@ well?
 Figure out a clean way to assign permissions to a specific user (i.e.
 without pulling up the entire list of users)
 
-Finish new user signup.
+Finish new user signup. Confirm email address as well.
+Add instructions some describing the signup.
+
+Check into time zone for users set at creation.
+
 
 Make assigning of groups by a restricted user limited. Don't want them
 to give more permissions to themselves than they currently have.
@@ -33,3 +37,17 @@ Add image security from 0.x
 Boost
 ---------------
 Take a look at Pear install protocol
+
+Comments
+--------------
+system track a user's comments
+
+Search panel per user
+
+create different views
+
+Layout
+---------------
+meta data on a per page basis
+
+Add module styles to templates (ie class="module-name")
