@@ -101,7 +101,7 @@ class Blog {
 	return './index.php?module=blog&amp;action=view&amp;id=' . $this->id;
       }
     } else {
-      return PHPWS_Text::rerouteLink(_('View'), 'blog', 'view', $this->getId());
+      return PHPWS_Text::rewriteLink(_('View'), 'blog', 'view', $this->getId());
     }
   }
 
@@ -110,8 +110,29 @@ class Blog {
     return new Key('blog', 'entry', $this->id);
   }
 
+  function viewCommentsLink()
+  {
+    $key = $this->getKey();
+    $comment_count = Comments::countComments($key);
+    
+    if (empty($comment_count)) {
+      $link = _('No comments');
+    } else {
+      $link = sprintf(_('%d comments'), $comment_count);
+    }
+    return PHPWS_Text::rewriteLink($link, 'blog', 'view_comments', $this->getId());
+  }
+
+  function createCommentLink()
+  {
+    $vars['action'] = 'make_comment';
+    $vars['blog_id'] = $this->getId();
+    return PHPWS_Text::moduleLink(_('Make Comment'), 'blog', $vars);
+  }
+
   function view($edit=TRUE, $limited=TRUE)
   {
+    PHPWS_Core::initModClass('comments', 'Comments.php');
     $key = $this->getKey();
 
     PHPWS_Core::initModClass('categories', 'Categories.php');
@@ -127,15 +148,18 @@ class Blog {
     }
 
     if ($limited) {
-      $links[] = $this->getViewLink();
+      $links[] = $this->viewCommentsLink();
     } elseif ($this->id) {
-	$related = & new Related;
-	$related->setKey($key);
-	$related->setUrl($this->getViewLink(TRUE));
-	$related->setTitle($this->getTitle(TRUE));
-	$related->show();
+      $template['COMMENTS'] = Comments::getAll($key);
+      $template['COMMENT_LINK'] = Blog::createCommentLink();
 
-	Block::show($key);
+      $related = & new Related;
+      $related->setKey($key);
+      $related->setUrl($this->getViewLink(TRUE));
+      $related->setTitle($this->getTitle(TRUE));
+      $related->show();
+
+      Block::show($key);
     }
 
     $result = Categories::getSimpleLinks('blog', $this->id);
