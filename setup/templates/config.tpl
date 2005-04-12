@@ -149,8 +149,6 @@ define('PHPWS_ALLOWED_TAGS', '
 <th><tt><img><pre><hr>
 ');
 
-/********************** MOD REWRITE ***************************/
-define('USE_MOD_REWRITE', TRUE);
 
 /******************* ALLOWED IMAGES TYPES *********************/
 
@@ -194,9 +192,9 @@ define('ALLOW_SIGMA_CACHE', TRUE);
 define('CACHE_LIFETIME', 3600);
 define('CACHE_DIRECTORY', '/tmp/');
 
-/******************** MOD_REROUTE *******************************/
+/******************** MOD_REWRITE *******************************/
 /**
- * Mod_reroute is an Apache web server process that allows you to
+ * Mod_rewrite is an Apache web server process that allows you to
  * reduce the size of your web urls. It must be enabled for it to
  * function properly.
  */
