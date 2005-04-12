@@ -26,19 +26,19 @@
  */
 
 
-$censor = "*bleep*";
+$censor = '*bleep*';
 $words = array(
-		   "[\s-\.]+cock"=>" " .$censor,
-		   "mother\s?fucker"=>$censor,
-		   "fuck"=>$censor,
-		   "shit"=>$censor,
-		   "asshole"=>$censor,
-		   "cunt"=>$censor,
-		   "nigger.*"=>"... I am a racist idiot! ",
-		   "faggot.*"=>"... I have issues with my sexuality! "
+		   '[\s-\.]+cock'   =>$censor,
+		   'mother\s?fucker'=>$censor,
+		   'fuck'           =>$censor,
+		   'shit'           =>$censor,
+		   'asshole'        =>$censor,
+		   'cunt'           =>$censor,
+		   'nigger.*'       =>'... I am a racist idiot! ',
+		   'faggot.*'       =>'... I have issues with my sexuality! '
 		   );
 
-define("FILTER_PROFANITY", TRUE);
-define("PROFANE_WORDS", serialize($words));
+define('ALLOW_PROFANITY', FALSE);
+define('PROFANE_WORDS', serialize($words));
 
 ?>
