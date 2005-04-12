@@ -10,16 +10,13 @@ class Comment_Item {
   var $id          = 0;
 
   // Id of thread
-  var $thread_id   = 0
+  var $thread_id   = 0;
 
   // Id of comment this comment is a child of
   var $parent      = 0;
 
-  // Order rank of item
-  var $cm_order    = 1;
-
-  // Title of comment
-  var $title       = NULL;
+  // Subject of comment
+  var $subject       = NULL;
 
   // Content of comment
   var $entry       = NULL;
@@ -27,11 +24,14 @@ class Comment_Item {
   // Author (display name) of comment writer
   var $author      = NULL;
 
+  // IP address of poster
+  var $author_ip   = NULL;
+
   // Date comment was created
-  var $create_time = NULL;
+  var $create_time = 0;
 
   // Date comment was edited
-  var $edit_time   = NULL;
+  var $edit_time   = 0;
 
   // Reason comment was edited
   var $edit_reason = NULL;
@@ -48,6 +48,7 @@ class Comment_Item {
       return;
     }
 
+    $this->setId($id);
     $result = $this->init();
     if (PEAR::isError($result)) {
       $this->_error = $result;
@@ -88,19 +89,19 @@ class Comment_Item {
   }
 
 
-  function setTitle($title)
+  function setSubject($subject)
   {
-    $this->title = strip_tags(trim($title));
+    $this->subject = strip_tags(trim($subject));
   }
 
-  function getTitle()
+  function getSubject()
   {
-    return $this->title;
+    return $this->subject;
   }
 
   function setEntry($entry)
   {
-    $this->entry(PHPWS_Text::parseInput($entry));
+    $this->entry = PHPWS_Text::parseInput($entry);
   }
 
   function getEntry($format=TRUE)
@@ -114,7 +115,11 @@ class Comment_Item {
 
   function stampAuthor()
   {
-    $this->author = Current_User::getDisplayName();
+    if (Current_User::isLogged()) {
+      $this->author = Current_User::getDisplayName();
+    } else {
+      $this->author = DEFAULT_ANONYMOUS_TITLE;
+    }
   }
 
   function getAuthor()
@@ -122,9 +127,14 @@ class Comment_Item {
     return $this->author;
   }
 
+  function stampIP()
+  {
+    $this->author_ip = $_SERVER['REMOTE_ADDR'];
+  }
+
   function stampCreateTime()
   {
-    $this->create_time = gmktime();
+    $this->create_time = gmmktime();
   }
 
   function getCreateTime($format=TRUE)
@@ -138,10 +148,10 @@ class Comment_Item {
   
   function stampEditTime()
   {
-    $this->edit_time = gmktime();
+    $this->edit_time = gmmktime();
   }
 
-  function getStampTime($format=TRUE)
+  function getEditTime($format=TRUE)
   {
     if ($format) {
       return strftime(COMMENT_DATE_FORMAT, $this->edit_time);
@@ -163,6 +173,49 @@ class Comment_Item {
   function getError()
   {
     return $this->_error;
+  }
+
+  function getTpl()
+  {
+    $template['SUBJECT']     = $this->getSubject();
+    $template['ENTRY']       = $this->getEntry(TRUE);
+    $template['AUTHOR']      = $this->getAuthor();
+    $template['CREATE_TIME'] = $this->getCreateTime();
+    if (isset($this->edit_author)) {
+      $template['EDIT_AUTHOR'] = $this->getEditAuthor();
+      $template['EDIT_TIME']   = $this->getEditTime();
+    }
+    
+    if (Current_User::allow('comments')) {
+      
+    }
+    
+  }
+
+  function save()
+  {
+    if (empty($this->thread_id) ||
+	empty($this->subject)   ||
+	empty($this->entry)) {
+      return FALSE;
+    }
+
+    if (empty($this->create_time)) {
+      $this->stampCreateTime();
+    }
+
+    if (empty($this->author)) {
+      $this->stampAuthor();
+      $this->stampIP();
+    }
+
+    if ((bool)$this->id) {
+      $this->stampEditTime();
+      $this->stampEditAuthor();
+    }
+
+    $db = & new PHPWS_DB('comments_items');
+    return $db->saveObject($this);
   }
 
 }
