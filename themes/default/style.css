@@ -6,6 +6,14 @@ body {
 }
 
 
+.b {
+   font-weight : bold;
+}
+
+.i {
+   font-style : italize;
+}
+
 .larger {
 	font-size : 110%;
 }
@@ -112,20 +120,21 @@ h1, h2, h3 {
 	font-family: "Trebuchet MS", Verdana, serif;	
 	margin: 0;
 	padding : 0;
-//	text-transform: lowercase;
+	border : 0;
 	font-weight : bold;
+	
 }
 
 h1 {
-	font-size :  14pt;
+	font-size :  115%;
 }
 
 h2 {
-	font-size :  12pt;
+	font-size :  110%;
 }
 
 h3 {
-	font-size :  10pt;
+	font-size :  105%;
 }
 
 th {
@@ -140,10 +149,6 @@ tr, td {
 
 div.box {
 	margin-bottom : 10px;
-}
-
-div.box h3 {
-	padding : 5px;
 }
 
 
