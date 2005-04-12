@@ -83,6 +83,10 @@ class Comments {
       $comment_list[] = $cm_item->getTpl();
     }
 
+    $template['comment-list'] = $comment_list;
+
+    $content = PHPWS_Template::process($template, 'comments', 'flat_list.tpl');
+    return $content;
   }
 
   function unregister($module)

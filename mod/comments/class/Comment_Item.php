@@ -94,9 +94,13 @@ class Comment_Item {
     $this->subject = strip_tags(trim($subject));
   }
 
-  function getSubject()
+  function getSubject($format=TRUE)
   {
-    return $this->subject;
+    if ($format) {
+      return PHPWS_Text::parseOutput($this->subject);
+    } else {
+      return $this->subject;
+    }
   }
 
   function setEntry($entry)
@@ -132,6 +136,11 @@ class Comment_Item {
     $this->author_ip = $_SERVER['REMOTE_ADDR'];
   }
 
+  function getIP()
+  {
+    return $this->author_ip;
+  }
+
   function stampCreateTime()
   {
     $this->create_time = gmmktime();
@@ -140,7 +149,7 @@ class Comment_Item {
   function getCreateTime($format=TRUE)
   {
     if ($format) {
-      return strftime(COMMENT_DATE_FORMAT, $this->create_time);
+      return gmstrftime(COMMENT_DATE_FORMAT, $this->create_time);
     } else {
       return $this->create_time;
     }
@@ -177,19 +186,24 @@ class Comment_Item {
 
   function getTpl()
   {
-    $template['SUBJECT']     = $this->getSubject();
-    $template['ENTRY']       = $this->getEntry(TRUE);
-    $template['AUTHOR']      = $this->getAuthor();
-    $template['CREATE_TIME'] = $this->getCreateTime();
+    $template['SUBJECT']       = $this->getSubject(TRUE);
+    $template['SUBJECT_LABEL'] = _('Subject');
+    $template['ENTRY']         = $this->getEntry(TRUE);
+    $template['ENTRY_LABEL']   = _('Comment');
+    $template['AUTHOR']        = $this->getAuthor();
+    $template['AUTHOR_LABEL']  = _('Author');
+    $template['POSTED_BY']     = _('Posted by');
+    $template['POSTED_ON']     = _('Posted on');
+    $template['CREATE_TIME']   = $this->getCreateTime();
     if (isset($this->edit_author)) {
       $template['EDIT_AUTHOR'] = $this->getEditAuthor();
       $template['EDIT_TIME']   = $this->getEditTime();
     }
     
     if (Current_User::allow('comments')) {
-      
+      $template['IP_ADDRESS'] = $this->getIp();
     }
-    
+    return $template;
   }
 
   function save()
