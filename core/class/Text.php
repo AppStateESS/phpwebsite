@@ -14,7 +14,7 @@
 PHPWS_Core::configRequireOnce('core', 'profanity.php');
 
 class PHPWS_Text {
-  var $use_profanity  = FILTER_PROFANITY;
+  var $use_profanity  = ALLOW_PROFANITY;
   var $use_breaker    = TRUE;
   var $use_encoded    = FALSE;
   var $use_strip_tags = TRUE;
