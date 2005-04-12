@@ -1,9 +1,22 @@
 <?php
-if (!defined('PHPWS_SOURCE_DIR'))
-     define('PHPWS_SOURCE_DIR', './');
 
-if (!defined('PHPWS_SOURCE_HTTP'))
-     define('PHPWS_SOURCE_HTTP', './');
+/**
+ * Init initializes phpWebSite. It does the following:
+ * - sets the language settings and contains the 'translate function'
+ * - starts most the vital core classes
+ * - contains basic functions for checking javascript status
+ *
+ * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ * @version $Id$
+ */
+
+if (!defined('PHPWS_SOURCE_DIR')) {
+  define('PHPWS_SOURCE_DIR', './');
+}
+
+if (!defined('PHPWS_SOURCE_HTTP')) {
+  define('PHPWS_SOURCE_HTTP', './');
+}
 
 /* Initialize language settings */
 if (!function_exists('bindtextdomain')){
