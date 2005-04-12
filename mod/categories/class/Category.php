@@ -164,7 +164,7 @@ class Category{
       $vars['ref_mod'] = $module;
       return PHPWS_Text::moduleLink($this->title, 'categories', $vars);
     } else {
-      return PHPWS_Text::rerouteLink($this->title, 'categories', 'view', $this->id);
+      return PHPWS_Text::rewriteLink($this->title, 'categories', 'view', $this->id);
     }
   }
 
