@@ -373,19 +373,19 @@ class PHPWS_Text {
   }// END FUNC isValidInput()
 
   /**
-   * Returns a reroutable link
+   * Returns a rewritable link
    *
-   * MOD_REWRITE_ENABLED must be true and mod_reroute must be enabled
+   * MOD_REWRITE_ENABLED must be true and mod_rewrite must be enabled
    * in Apache
    */
-  function rerouteLink($subject, $module, $action, $id=NULL){
+  function rewriteLink($subject, $module, $action, $id=NULL){
     if ((bool)MOD_REWRITE_ENABLED == FALSE) {
       return PHPWS_Text::moduleLink($subject, $module, array('action' => $action, 'id' => $id));
     } else {
       if (!isset($id)) {
 	return sprintf('<a href="%s/%s">%s</a>', $module, $action, $subject);
       } else {
-	return sprintf('<a href="%s/%s/%s">%s</a>', $module, $action, $subject, $id);
+	return sprintf('<a href="%s/%s/%s">%s</a>', $module, $action, $id, $subject);
       }
     }
   }
@@ -399,9 +399,18 @@ class PHPWS_Text {
     return PHPWS_Text::moduleLink($subject, $module, $getVars, $target, $title);
   }
 
-  function linkAddress($module=NULL, $getVars=NULL, $secure=FALSE){
+  /**
+   * Makes the index string for moduleLink. Can also be called alone
+   *
+   * @author Matthew McNaney <matt at tux dot appstate dot edu>
+   */
+  function linkAddress($module=NULL, $getVars=NULL, $secure=FALSE, $add_base=FALSE){
     if (Current_User::isLogged() && $secure) {
       $getVars['authkey'] = Current_User::getAuthKey();
+    }
+
+    if ($add_base == TRUE) {
+      $link[] = PHPWS_HOME_HTTP;
     }
 
     $link[] = 'index.php';
