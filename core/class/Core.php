@@ -199,7 +199,7 @@ class PHPWS_Core {
       $location = &$address;
 
     $location = preg_replace('/&amp;/', '&', $location);
-    header('location:' . $location);
+    header('Location: ' . $location);
     exit();
   }
 
