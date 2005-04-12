@@ -1,15 +1,25 @@
 <?php
 
+/**
+ * Main file for loading phpwebsite. Initializes core,
+ * checks security, loads modules.
+ *
+ * @author Matthew McNaney <matt at tux dot appstate edu>
+ * @version $Id$
+ */
+
+
 list($usec, $sec) = explode(" ", microtime());
 $site_start_time = ((float)$usec + (float)$sec);
 
 // REMOVE !
 define("AUTO_ROUTE", TRUE);
+define('PHPWS_HOME_HTTP', 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/");
 
 if (is_file('config/core/config.php')) require_once 'config/core/config.php';
 else {
   if (AUTO_ROUTE == TRUE){
-    header('location:http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . 'setup/');
+    header('Location: ' . PHPWS_HOME_HTTP . 'setup/');
     exit();
   } else
     exit('Fatal Error: Could not locate your configuration file.');
@@ -21,7 +31,6 @@ require_once PHPWS_SOURCE_DIR . 'inc/Functions.php';
 error_reporting (E_ALL);
 
 ob_start();
-
 
 require_once PHPWS_SOURCE_DIR . 'inc/Security.php';
 require_once PHPWS_SOURCE_DIR . 'core/class/Init.php';
@@ -49,8 +58,9 @@ if (isset($_REQUEST['reset']))
 list($usec, $sec) = explode(' ', microtime());
 $site_end_time = ((float)$usec + (float)$sec);
 
-$memory_used = round( (memory_get_usage() / 1024) / 1024, 2);
-$execute_time = round( ($site_end_time - $site_start_time), 2);
+$memory_used = round( (memory_get_usage() / 1024) / 1024, 3);
+$execute_time = round( ($site_end_time - $site_start_time), 3);
+$url = (explode('/', $_SERVER['PHP_SELF']));
 
 //echo "$memory_used mb / $execute_time secs";
 
