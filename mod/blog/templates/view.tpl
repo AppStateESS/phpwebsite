@@ -16,7 +16,6 @@
     </div>
     <!-- BEGIN comments -->
     <div class="border-top padded">
-      <div class="bgcolor1 padded">{COMMENT_LINK}</div>
       <div class="padded">{COMMENTS}</div>
     </div>
     <!-- END comments -->

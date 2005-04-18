@@ -78,6 +78,14 @@ class Blog {
     return $this->restricted;
   }
 
+  function &makeThread()
+  {
+    $thread = Comments::makeThread($this->getKey(),
+				   $this->getViewLink(TRUE)
+				   );
+    return $thread;
+  }
+
   function save()
   {
     $db = & new PHPWS_DB('blog_entries');
@@ -96,9 +104,9 @@ class Blog {
   function getViewLink($bare=FALSE){
     if ($bare) {
       if (MOD_REWRITE_ENABLED) {
-	return './blog/view/' . $this->id;
+	return './blog/view_comments/' . $this->id;
       } else {
-	return './index.php?module=blog&amp;action=view&amp;id=' . $this->id;
+	return './index.php?module=blog&amp;action=view_comments&amp;id=' . $this->id;
       }
     } else {
       return PHPWS_Text::rewriteLink(_('View'), 'blog', 'view', $this->getId());
@@ -113,7 +121,8 @@ class Blog {
   function viewCommentsLink()
   {
     $key = $this->getKey();
-    $comment_count = Comments::countComments($key);
+    $comments = & new Comments($key);
+    $comment_count = $comments->countComments();
     
     if (empty($comment_count)) {
       $link = _('No comments');
@@ -129,6 +138,7 @@ class Blog {
     $vars['blog_id'] = $this->getId();
     return PHPWS_Text::moduleLink(_('Make Comment'), 'blog', $vars);
   }
+
 
   function view($edit=TRUE, $limited=TRUE)
   {
@@ -147,12 +157,12 @@ class Blog {
       $links[] = PHPWS_Text::secureLink(_('Edit'), 'blog', $vars);
     }
 
+    $comments = $this->makeThread();
+
     if ($limited) {
       $links[] = $this->viewCommentsLink();
     } elseif ($this->id) {
-      $template['COMMENTS'] = Comments::getAll($key);
-      $template['COMMENT_LINK'] = Blog::createCommentLink();
-
+      $template['COMMENTS'] = $comments->getAll();
       $related = & new Related;
       $related->setKey($key);
       $related->setUrl($this->getViewLink(TRUE));

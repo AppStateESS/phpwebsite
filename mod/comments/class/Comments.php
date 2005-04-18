@@ -15,79 +15,133 @@ PHPWS_Core::initModClass('comments', 'Comment_Thread.php');
 
 class Comments {
 
-  function countComments($key)
+  function &makeThread($key, $source_url)
   {
-    $c_thread = & new Comment_Thread($key);
-    if (empty($c_thread->id)) {
+    $thread = & new Comment_Thread;
+    $thread->setKey($key);
+    $thread->setSourceUrl($source_url);
+    $thread->buildThread();
+    return $thread;
+  }
+
+  function countComments()
+  {
+    if (empty($this->cm_thread->id)) {
       return 0;
     }
 
-    return $c_thread->countComments();
+    $db = & new PHPWS_DB('comments_items');
+    $db->addWhere('thread_id', $this->cm_thread->id);
+    return $db->count();
   }
 
-  function &getForm()
+  function userAction($command)
+  {
+    if (isset($_REQUEST['thread_id'])) {
+      $thread = & new Comment_Thread($_REQUEST['thread_id']);
+    } else {
+      $thread = & new Comment_Thread;
+    }
+    
+    switch ($command) {
+    case 'post_comment':
+      $title = _('Post Comment');
+      $content[] = Comments::form($thread);
+      break;
+
+    case 'save_comment':
+      if (!isset($thread)) {
+	$title = _('Error');
+	$content[] = _('Missing thread information.');
+	break;
+      }
+
+      $result = Comments::saveComment($thread);
+      if (PEAR::isError($result)) {
+	PHPWS_Error::log($result);
+	$title = _('Sorry');
+	$content[] = _('A problem occurred when trying to save your comment.');
+	$content[] = _('Please try again later.');
+      } else {
+	Layout::metaRoute($thread->source_url);
+	$title = _('Comment saved successfully!');
+	$content[] = _('You will returned to the source page in a moment.');
+	$content[] = '<a href="' . $thread->source_url . '">' . 
+	  _('Otherwise you may return immediately by clicking here.') .
+	  '</a>';
+      }
+      break;
+    }
+
+    $template['TITLE'] = $title;
+    $template['CONTENT'] = implode('<br />', $content);
+
+    Layout::add(PHPWS_Template::process($template, 'comments', 'main.tpl'));
+
+  }
+  
+  function saveComment(&$thread)
+  {
+    if (isset($_POST['cm_id'])) {
+      $cm_item = & new Comment_Item($_POST['cm_id']);
+    } else {
+      $cm_item = & new Comment_Item;
+    }
+
+    $cm_item->setThreadId($thread->id);
+    $cm_item->setSubject($_POST['cm_subject']);
+    $cm_item->setEntry($_POST['cm_entry']);
+    return $cm_item->save();
+  }
+
+  function form(&$thread)
   {
     if (isset($_REQUEST['comment_id'])) {
       $c_item = & new Comment_Item($_REQUEST['comment_id']);
     } else {
       $c_item = & new Comment_Item;
     }
+    
+    if (isset($_REQUEST['cm_parent'])) {
+      $c_parent = & new Comment_Item($_REQUEST['cm_parent']);
+    }
 
     $form = & new PHPWS_Form;
-
+    
     if (!empty($c_item->id)) {
       $form->addHidden('cm_id', $c_item->id);
     }
 
-    $form->addText('cm_subject', $c_item->getSubject());
-    $form->setLabel('cm_subject', _('Subject'));
-    $form->setSize('cm_subject', 40);
+    $form->addHidden('module', 'comments');
+    $form->addHidden('user_action', 'save_comment');
+    $form->addHidden('thread_id',    $thread->getId());
 
+    $form->addText('cm_subject');
+    $form->setLabel('cm_subject', _('Subject'));
+    $form->setSize('cm_subject', 50);
+
+    if (isset($c_parent) && empty($c_item->subject)) {
+      $form->setValue('cm_subject', _('Re:') . $c_parent->getSubject());
+    } else {
+      $form->setValue('cm_subject', $c_item->getSubject());
+    }
+
+
+    
     $form->addTextArea('cm_entry', $c_item->getEntry());
     $form->setLabel('cm_entry', _('Comment'));
     $form->setCols('cm_entry', 50);
     $form->setRows('cm_entry', 10);
 
-    return $form;
-  }
+    $form->addSubmit(_('Post Comment'));
 
-  function getAll($key)
-  {
-    $c_thread = & new Comment_Thread($key);
-    $result = $c_thread->getComments();
+    $template = $form->getTemplate();
+    $template['BACK_LINK'] = $thread->getSourceUrl(TRUE);
 
-    if (empty($result)) {
-      return _('No comments.');
-    }
-
-    switch (CURRENT_VIEW_MODE) {
-    case THREADED_VIEW:
-      $content = Comments::viewThreaded($result);
-      break;
-
-    case NESTED_VIEW:
-      $content = Comments::viewNested($result);
-      break;
-
-    case FLAT_VIEW:
-      $content = Comments::viewFlat($result);
-      break;
-      
-    }
+    $content = PHPWS_Template::process($template, 'comments', 'edit.tpl');
     return $content;
   }
 
-  function viewFlat($comments)
-  {
-    foreach ($comments as $cm_item) {
-      $comment_list[] = $cm_item->getTpl();
-    }
-
-    $template['comment-list'] = $comment_list;
-
-    $content = PHPWS_Template::process($template, 'comments', 'flat_list.tpl');
-    return $content;
-  }
 
   function unregister($module)
   {
@@ -113,28 +167,6 @@ class Comments {
     } else {
       return TRUE;
     }
-  }
-
-  function post($key)
-  {
-    $c_thread = & new Comment_Thread($key);
-    if (empty($c_thread->id)) {
-      $result = $c_thread->save();
-      if (PEAR::isError($result)) {
-	return $result;
-      }
-    }
-
-    if (isset($_POST['cm_id'])) {
-      $cm_item = & new Comment_Item($_POST['cm_id']);
-    } else {
-      $cm_item = & new Comment_Item;
-    }
-
-    $cm_item->setThreadId($c_thread->id);
-    $cm_item->setSubject($_POST['cm_subject']);
-    $cm_item->setEntry($_POST['cm_entry']);
-    return $cm_item->save();
   }
 
 }

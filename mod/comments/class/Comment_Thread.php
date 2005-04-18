@@ -1,26 +1,63 @@
 <?php
 
+/**
+ * Class for comment threads. Threads hold all the comments for
+ * a specific item.
+ *
+ * @author Matt McNaney <matt at tux dot appstate dot edu>
+ * @version $Id$
+ */ 
+
 PHPWS_Core::initModClass('comments', 'Comment_Item.php');
 
 class Comment_Thread {
-  var $id        = 0;
-  var $module    = NULL;
-  var $item_name = NULL;
-  var $item_id   = NULL;
-  var $_comments = NULL;
-  var $_error    = NULL;
+  var $id          = 0;
+  var $module      = NULL;
+  var $item_name   = NULL;
+  var $item_id     = NULL;
+  var $source_url = NULL;
+  var $_key        = NULL;
+  var $_comments   = NULL;
+  var $_error      = NULL;
 
-  function Comment_Thread($key=NULL)
+  /*
+  function Comment_Thread($key, $source_url)
   {
-    if (empty($key)) {
+    $this->setSourceUrl($source_url);
+    $this->setKey($key);
+    $this->init();
+  }
+  */
+
+  function Comment_Thread($id=NULL)
+  {
+    if (empty($id)) {
       return;
     }
 
-    $this->setKey($key);
+    $this->setId($id);
     $this->init();
   }
 
   function init()
+  {
+    $db = & new PHPWS_DB('comments_threads');
+    $db->addWhere('id', $this->id);
+    $result = $db->loadObject($this);
+    if (PHPWS_Error::log($result)) {
+      PHPWS_Error::log($result);
+      $this->_error = $result->getMessage();
+    }
+  }
+
+
+  /**
+   * Creates a new thread
+   *
+   * If there is a thread in the database, it is loaded.
+   * If there is NOT then one is created.
+   */
+  function buildThread()
   {
     $db = & new PHPWS_DB('comments_threads');
     $db->addWhere('module', $this->module);
@@ -31,23 +68,45 @@ class Comment_Thread {
       $this->_error($result->getMessage());
       return $result;
     } elseif (empty($result)) {
-      $this->_error = _('Warning: comment thread not found');
-      return FALSE;
+      $result = $this->save();
+      if (PEAR::isError($result)) {
+	PHPWS_Error::log($result);
+	$this->_error = _('Error occurred trying to create new thread.');
+      }
+      return TRUE;
     } else {
       return TRUE;
     }
   }
 
-  function countComments()
+
+  function setId($id)
   {
-    $db = & new PHPWS_DB('comments_items');
-    $db->addWhere('thread_id', $this->id);
-    return $db->count();
+    $this->id = (int)$id;
   }
-  
+
+  function getId()
+  {
+    return $this->id;
+  }
+
+  function setSourceUrl($link)
+  {
+    $this->source_url = $link;
+  }
+
+  function getSourceUrl($full=FALSE)
+  {
+    if ($full==TRUE) {
+      return '<a href="' . $this->source_url . '">' . _('Go Back') . '</a>';
+    } else {
+      return htmlentities($this->source_url, ENT_QUOTES);
+    }
+  }
 
   function setKey($key)
   {
+    $this->_key = $key;
     $this->setModule($key->getModule());
     $this->setItemName($key->getItemName());
     $this->setItemId($key->getItemId());
@@ -68,6 +127,7 @@ class Comment_Thread {
     $this->item_id = (int)$item_id;
   }
 
+
   function getComments()
   {
     $this->loadComments();
@@ -75,6 +135,22 @@ class Comment_Thread {
       return NULL;
     }
     return $this->_comments;
+  }
+
+  function postLink()
+  {
+    $vars['user_action']   = 'post_comment';
+    $vars['thread_id']     = $this->id;
+    return PHPWS_Text::moduleLink(_('Post Comment'), 'comments', $vars);
+  }
+
+  function replyLink(&$comment)
+  {
+    $vars['user_action']   = 'post_comment';
+    $vars['thread_id']     = $this->id;
+    $vars['cm_parent']     = $comment->getId();
+
+    return PHPWS_Text::moduleLink(_('Reply'), 'comments', $vars);
   }
 
   function loadComments()
@@ -96,6 +172,47 @@ class Comment_Thread {
   {
     $db = & new PHPWS_DB('comments_threads');
     return $db->saveObject($this);
+  }
+
+  function getAll()
+  {
+    $result = $this->getComments();
+
+    $template['NEW_POST_LINK'] = $this->postLink();
+    if (!empty($result)) {
+      $template['comment-list'] = $this->getItemTemplates($result);
+    } else {
+      $template['MESSAGE'] = _('No comments.');
+    }
+
+    switch (CURRENT_VIEW_MODE) {
+    case THREADED_VIEW:
+      $template_file = 'threaded_view.tpl';
+      break;
+	
+    case NESTED_VIEW:
+      $template_file = 'nested_view.tpl';
+      break;
+	
+    case FLAT_VIEW:
+      $template_file = 'flat_view.tpl';
+      break;
+    }
+
+    $content = PHPWS_Template::process($template, 'comments', $template_file);
+      
+    return $content;
+  }
+
+  function getItemTemplates($comments)
+  {
+    foreach ($comments as $cm_item) {
+      $tpl = $cm_item->getTpl();
+      $tpl['REPLY_LINK'] = $this->replyLink($cm_item);
+      $comment_list[] = $tpl;
+    }
+
+    return $comment_list;
   }
 
 }

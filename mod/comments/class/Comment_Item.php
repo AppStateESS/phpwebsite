@@ -3,6 +3,8 @@
  * Contains information for an individual comment
  */
 
+define('COMMENTS_MISSING_THREAD', 1);
+
 PHPWS_Core::configRequireOnce('comments', 'config.php');
 
 class Comment_Item {
@@ -40,7 +42,7 @@ class Comment_Item {
   var $edit_author = NULL;
 
   // Error encountered when processing object
-  var $_error = NULL;
+  var $_error      = NULL;
 
   function Comment_Item($id=NULL)
   {
@@ -60,7 +62,7 @@ class Comment_Item {
     if (!isset($this->id))
       return FALSE;
 
-    $db = & new PHPWS_DB('comment_items');
+    $db = & new PHPWS_DB('comments_items');
     $result = $db->loadObject($this);
     if (PEAR::isError($result))
       return $result;
@@ -199,7 +201,7 @@ class Comment_Item {
       $template['EDIT_AUTHOR'] = $this->getEditAuthor();
       $template['EDIT_TIME']   = $this->getEditTime();
     }
-    
+
     if (Current_User::allow('comments')) {
       $template['IP_ADDRESS'] = $this->getIp();
     }
@@ -211,7 +213,7 @@ class Comment_Item {
     if (empty($this->thread_id) ||
 	empty($this->subject)   ||
 	empty($this->entry)) {
-      return FALSE;
+      return PHPWS_Error::get(COMMENTS_MISSING_THREAD, 'comments', 'Comment_Item::save');
     }
 
     if (empty($this->create_time)) {
