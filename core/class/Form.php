@@ -221,6 +221,18 @@ class PHPWS_Form {
     }
   }
 
+  function setValue($name, $value){
+    if (!$this->testName($name))
+      return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setExtra', array($name));
+
+    foreach ($this->_elements[$name] as $key=>$element){
+      $result = $this->_elements[$name][$key]->setValue($value);
+      if (PEAR::isError($result))
+	return $result;
+    }
+  }
+
+
   function makeLabel($name, $label){
     return sprintf('<label for="%s">%s</label>', $name, $label);
   }
