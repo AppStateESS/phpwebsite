@@ -45,9 +45,9 @@ class Notes {
 
     $template['CLOSE'] = PHPWS_Text::moduleLink(_('Close'), 'notes', $vars);
 
-    $content['TITLE'] = _("Notes");
-    $content['CONTENT'] = PHPWS_Template::process($template, 'notes', 'small_list.tpl');
-    Layout::add($content, 'notes', 'reminder', TRUE);
+    $template['TITLE'] = _('Notes');
+    $content = PHPWS_Template::process($template, 'notes', 'small_list.tpl');
+    Layout::add($content, 'notes', 'reminder');
   }
 
 }
