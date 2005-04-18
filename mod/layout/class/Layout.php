@@ -13,7 +13,10 @@ PHPWS_Core::initCoreClass('Template.php');
 
 class Layout {
 
-  function add($text, $module=NULL, $contentVar=NULL, $box=FALSE){
+  function add($text, $module=NULL, $contentVar=NULL){
+    if (is_array($text)) {
+      echo  $module;
+    }
     Layout::checkSettings();
     // If content variable is not in system (and not NULL) then make
     // a new box for it.
@@ -27,24 +30,15 @@ class Layout {
       $contentVar = DEFAULT_CONTENT_VAR;
     }
 
-    Layout::_loadBox($text, $module, $contentVar, $box);
+    Layout::_loadBox($text, $module, $contentVar);
   }
 
-  function _loadBox($text, $module, $contentVar, $box)
+  function _loadBox($text, $module, $contentVar)
   {
-    if (!is_array($text)) {
-      $GLOBALS['Layout'][$module][$contentVar]['content']['CONTENT'][] = $text;
-    }
-    else {
-      foreach ($text as $key=>$value){
-	if (is_string($value))
-	  $GLOBALS['Layout'][$module][$contentVar]['content'][$key][] = $value;
-      }
-    }
-    $GLOBALS['Layout'][$module][$contentVar]['box'] = $box;
+      $GLOBALS['Layout'][$module][$contentVar][] = $text;
   }
 
-  function addBox($content_var, $module, $theme_var=NULL, $template=NULL, $theme=NULL){
+  function addBox($content_var, $module, $theme_var=NULL, $theme=NULL){
     PHPWS_Core::initModClass('layout', 'Box.php');
 
     if (!isset($theme)) {
@@ -65,13 +59,6 @@ class Layout {
     $box->setContentVar($content_var);
     $box->setModule($module);
     $box->setThemeVar($theme_var);
-
-    if (isset($template)) {
-      $box->setTemplate($template);
-    }
-    else {
-      $box->setTemplate($_SESSION['Layout_Settings']->_default_box);
-    }
 
     $result = $box->save();
     if (PEAR::isError($result)){
@@ -168,21 +155,10 @@ class Layout {
     }
   }
 
-  function createBox($module, $contentVar, $template){
+  function createBox($module, $contentVar){
     $tpl = new PHPWS_Template;
     $box = Layout::getBox($module, $contentVar);
-    if (empty($box)) {
-      $file = $_SESSION['Layout_Settings']->_default_box;
-    } else {
-      $file = $box->template;
-    }
 
-    $directory = Layout::getThemedir() . '/boxstyles/';
-    if (isset($file) && is_file($directory . $file))
-      $tpl->setFile($directory . $file, TRUE);
-    else
-      $tpl->setTemplate(DEFAULT_TEMPLATE);
-    
     $tpl->setData($template);
     
     $content = $tpl->get();
@@ -266,11 +242,7 @@ class Layout {
 	if (empty($order)) {
 	  $order = MAX_ORDER_VALUE;
 	}
-
-	if (Layout::isBoxTpl($module, $contentVar)){
-	  $unsortedLayout[$theme_var][$order] = Layout::createBox($module, $contentVar, $template);
-	} else
-	  $unsortedLayout[$theme_var][$order] = implode('', $template);
+	$unsortedLayout[$theme_var][$order] = $template;
       }
     }
 
@@ -326,13 +298,7 @@ class Layout {
 
     foreach ($GLOBALS['Layout'] as $module=>$content){
       foreach ($content as $contentVar=>$contentList) {
-	if (!is_array($contentList) || !isset($contentList['content'])) {
-	  continue;
-	}
-	
-	foreach ($contentList['content'] as $tag=>$content) {
-	  $list[$module][$contentVar][strtoupper($tag)] = implode('', $content);
-	}
+	$list[$module][$contentVar] = implode('', $contentList);
       }
     }
 
@@ -483,14 +449,7 @@ class Layout {
   function getThemeDir(){
     Layout::checkSettings();
     $themeDir = Layout::getTheme();
-    return "themes/" . $themeDir . "/";
-  }
-
-  function isBoxTpl($module, $contentVar){
-    if (isset($GLOBALS['Layout'][$module][$contentVar]))
-      return $GLOBALS['Layout'][$module][$contentVar]['box'];
-    else
-      return NULL;
+    return "./themes/" . $themeDir . "/";
   }
 
   function isMoveBox(){
@@ -574,7 +533,7 @@ class Layout {
       return $result;
     }
 
-    $template['THEME_DIRECTORY'] = 'themes/' . $theme . '/';
+    $template['THEME_DIRECTORY'] = './themes/' . $theme . '/';
     $tpl->setData($template);
     return $tpl;
   }
@@ -591,15 +550,13 @@ class Layout {
     $_SESSION['Layout_Settings']->loadBoxes();
   }
 
-  function set($text, $module, $contentVar, $box=TRUE){
+  function set($text, $module, $contentVar){
     Layout::checkSettings();
     if (!isset($contentVar))
       $contentVar = DEFAULT_CONTENT_VAR;
 
-    $box = (bool)$box;
-
-    $GLOBALS['Layout'][$module][$contentVar]['content'] = NULL;
-    Layout::add($text, $module, $contentVar, $box);
+    $GLOBALS['Layout'][$module] = NULL;
+    Layout::add($text, $module, $contentVar);
   }
 
   function styleLink($link, $header=FALSE){

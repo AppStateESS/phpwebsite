@@ -6,7 +6,6 @@ class Layout_Box {
   var $content_var = NULL;
   var $module      = NULL;
   var $theme_var   = NULL;
-  var $template    = NULL;
   var $box_order   = NULL;
   var $active      = NULL;
 
@@ -49,10 +48,6 @@ class Layout_Box {
     $this->theme_var = $theme_var;
   }
 
-  function setTemplate($template){
-    $this->template = $template;
-  }
-
   function getTheme(){
     return $this->theme;
   }
@@ -67,10 +62,6 @@ class Layout_Box {
 
   function getThemeVar(){
     return $this->theme_var;
-  }
-
-  function getTemplate(){
-    return $this->template;
   }
 
   function getBoxOrder(){

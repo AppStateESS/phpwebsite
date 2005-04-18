@@ -5,23 +5,12 @@
 // MAKE SURE to carefully inspect all of your current themes' theme.php files
 // BEFORE changing this to TRUE.
 
-$table = '
-<table cellpadding="3" cellspacing="1" style="background-color : black">
-  <tr>
-    <td style="background-color : black; color : white"><b>{TITLE}</b></td>
-  </tr>
-  <tr>
-    <td style="background-color : white ; color : black">{CONTENT}</td>
-  </tr>
-</table>';
-
 $display_error_message = '
 <div align="center"><img src="images/core/sorry.gif" /></div>
 <b>We seem to be experiencing technical difficulties.
 Back in a few.</b><br />';
 
 
-define('DEFAULT_TEMPLATE', $table);
 define('DEFAULT_BOX_VAR', 'DEFAULT');
 define('DEFAULT_THEME_VAR', 'BODY');
 define('DEFAULT_LAYOUT_HOLD', 20);
