@@ -1,22 +1,22 @@
 Writing Modules for phpWebSite
 
 PhpWebSite has come a long way since it was a phpNuke fork. In 0.8.x
-it became modular. With 0.9.x it was rewritten from the ground up and
+it became modular. With 0.x it was rewritten from the ground up and
 to become more of a platform for web programs.
 
-Now that we approach the release of 0.9.4, phpWebSite is going through
+Now that we approach the release of 1.x, phpWebSite is going through
 another metamorphosis. There are new tools and techniques to create a
 module. This document will attempt to take you through this process.
 
-I am currently writing this document while 0.9.4 is still in the alpha
+I am currently writing this document while 1.x is still in the alpha
 phase. There are still some key core components that need
 development. However, before they can get written, a content module is
 needed to work against. So while I develop the first native module for
 0.9.4, I will go through the process to create it.
 
 This document is expected to go through some change. I plan on
-releasing it early (before 0.9.4's official release) and updating it
-as features are added. Eventually, I hope the full powers of 0.9.4 are
+releasing it early (before 1.0.0's official release) and updating it
+as features are added. Eventually, I hope the full powers of 1.0.0 are
 reflected within.
 
 
