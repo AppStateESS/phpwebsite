@@ -51,3 +51,7 @@ Layout
 meta data on a per page basis
 
 Add module styles to templates (ie class="module-name")
+
+Core
+---------------
+Caching needs a per item clear
