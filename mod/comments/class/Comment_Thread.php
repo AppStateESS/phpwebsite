@@ -20,14 +20,6 @@ class Comment_Thread {
   var $_comments   = NULL;
   var $_error      = NULL;
 
-  /*
-  function Comment_Thread($key, $source_url)
-  {
-    $this->setSourceUrl($source_url);
-    $this->setKey($key);
-    $this->init();
-  }
-  */
 
   function Comment_Thread($id=NULL)
   {
@@ -48,6 +40,13 @@ class Comment_Thread {
       PHPWS_Error::log($result);
       $this->_error = $result->getMessage();
     }
+  }
+
+  function countComments()
+  {
+    $db = & new PHPWS_DB('comments_items');
+    $db->addWhere('thread_id', $this->id);
+    return $db->count();
   }
 
 
@@ -144,20 +143,10 @@ class Comment_Thread {
     return PHPWS_Text::moduleLink(_('Post Comment'), 'comments', $vars);
   }
 
-  function replyLink(&$comment)
-  {
-    $vars['user_action']   = 'post_comment';
-    $vars['thread_id']     = $this->id;
-    $vars['cm_parent']     = $comment->getId();
-
-    return PHPWS_Text::moduleLink(_('Reply'), 'comments', $vars);
-  }
-
   function loadComments()
   {
     $db = & new PHPWS_DB('comments_items');
     $db->addWhere('thread_id', $this->id);
-    $db->addOrder('parent');
     $db->addOrder('create_time');
     $result = $db->getObjects('Comment_Item');
     if (PEAR::isError($result)) {
@@ -176,6 +165,20 @@ class Comment_Thread {
 
   function getAll()
   {
+    
+    PHPWS_Core::initCoreClass('DBPager.php');
+
+    $page_tags['NEW_POST_LINK'] = $this->postLink();
+    $pager = & new DBPager('comments_items', 'Comment_Item');
+    $pager->setModule('comments');
+    $pager->setTemplate('flat_view2.tpl');
+    $pager->setLink($this->getSourceUrl(FALSE));
+    $pager->addPageTags($page_tags);
+    $pager->addRowTags('getTpl');
+    $content = $pager->get();
+
+    return $content;
+
     $result = $this->getComments();
 
     $template['NEW_POST_LINK'] = $this->postLink();
@@ -209,6 +212,11 @@ class Comment_Thread {
     foreach ($comments as $cm_item) {
       $tpl = $cm_item->getTpl();
       $tpl['REPLY_LINK'] = $this->replyLink($cm_item);
+      if ( ( ($cm_item->getAuthorId() > 0) 
+	     && (Current_User::getId() == $cm_item->getAuthorId()) )
+	   || Current_User::allow('comments')) {
+	$tpl['EDIT_LINK'] = $this->editLink($cm_item);
+      }
       $comment_list[] = $tpl;
     }
 
