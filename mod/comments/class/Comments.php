@@ -2,6 +2,9 @@
 
 /**
  * Developer class for accessing comments
+ *
+ * @author Matt McNaney <matt at tux dot appstate dot edu>
+ * @version $Id$
  */
 
 define('THREADED_VIEW', 1);
@@ -22,17 +25,6 @@ class Comments {
     $thread->setSourceUrl($source_url);
     $thread->buildThread();
     return $thread;
-  }
-
-  function countComments()
-  {
-    if (empty($this->cm_thread->id)) {
-      return 0;
-    }
-
-    $db = & new PHPWS_DB('comments_items');
-    $db->addWhere('thread_id', $this->cm_thread->id);
-    return $db->count();
   }
 
   function userAction($command)
@@ -65,7 +57,7 @@ class Comments {
       } else {
 	Layout::metaRoute($thread->source_url);
 	$title = _('Comment saved successfully!');
-	$content[] = _('You will returned to the source page in a moment.');
+	$content[] = _('You will be returned to the source page in a moment.');
 	$content[] = '<a href="' . $thread->source_url . '">' . 
 	  _('Otherwise you may return immediately by clicking here.') .
 	  '</a>';
@@ -91,25 +83,41 @@ class Comments {
     $cm_item->setThreadId($thread->id);
     $cm_item->setSubject($_POST['cm_subject']);
     $cm_item->setEntry($_POST['cm_entry']);
+    if (isset($_POST['cm_parent'])) {
+      $cm_item->setParent($_POST['cm_parent']);
+    }
+
+    if ($cm_item->id) {
+      if (isset($_POST['edit_reason'])) {
+	$cm_item->setEditReason($_POST['edit_reason']);
+      }
+    }
+
     return $cm_item->save();
   }
 
   function form(&$thread)
   {
-    if (isset($_REQUEST['comment_id'])) {
-      $c_item = & new Comment_Item($_REQUEST['comment_id']);
+    if (isset($_REQUEST['cm_id'])) {
+      $c_item = & new Comment_Item($_REQUEST['cm_id']);
     } else {
       $c_item = & new Comment_Item;
-    }
-    
-    if (isset($_REQUEST['cm_parent'])) {
-      $c_parent = & new Comment_Item($_REQUEST['cm_parent']);
     }
 
     $form = & new PHPWS_Form;
     
+    if (isset($_REQUEST['cm_parent'])) {
+      $c_parent = & new Comment_Item($_REQUEST['cm_parent']);
+      $form->addHidden('cm_parent', $c_parent->getId());
+      $form->addTplTag('PARENT_SUBJECT', $c_parent->getSubject());
+      $form->addTplTag('PARENT_ENTRY', $c_parent->getEntry());
+    }
+    
     if (!empty($c_item->id)) {
       $form->addHidden('cm_id', $c_item->id);
+      $form->addText('edit_reason', $c_item->getEditReason());
+      $form->setLabel('edit_reason', _('Reason for edit'));
+      $form->setSize('edit_reason', 50);
     }
 
     $form->addHidden('module', 'comments');
@@ -125,10 +133,8 @@ class Comments {
     } else {
       $form->setValue('cm_subject', $c_item->getSubject());
     }
-
-
     
-    $form->addTextArea('cm_entry', $c_item->getEntry());
+    $form->addTextArea('cm_entry', $c_item->getEntry(FALSE));
     $form->setLabel('cm_entry', _('Comment'));
     $form->setCols('cm_entry', 50);
     $form->setRows('cm_entry', 10);
