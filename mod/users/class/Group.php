@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Individual group objects
+ *
+ * @author Matt McNaney <matt at tux dot appstate dot edu>
+ * @version $Id$
+ */
+
 class PHPWS_Group {
   var $id           = NULL;
   var $name         = NULL;
@@ -206,6 +213,50 @@ class PHPWS_Group {
 
     $groups[] = $this->getId();
     $this->_permission = & new Users_Permission($groups);
+  }
+
+  function getTplTags()
+  {
+    $this->loadMembers();
+    $id = $this->id;
+
+    $linkVar['action'] = "admin";
+    $linkVar['group_id'] = $id;
+
+    $linkVar['command'] = "edit_group";
+    $links[] = PHPWS_Text::secureLink(_("Edit"), "users", $linkVar, NULL, _("Edit Group"));
+
+    $linkVar['command'] = "setGroupPermissions";
+    $links[] = PHPWS_Text::secureLink(_("Permissions"), "users", $linkVar);
+
+    $linkVar['command'] = "manageMembers";
+    $links[] = PHPWS_Text::secureLink(_("Members"), "users", $linkVar);
+    
+    if ($this->active){
+      $linkVar['command'] = "deactivateGroup";
+      $links[] = PHPWS_Text::moduleLink(_("Deactivate"), "groups", $linkVar);
+    } else {
+      $linkVar['command'] = "activateGroup";
+      $links[] = PHPWS_Text::moduleLink(_("Activate"), "groups", $linkVar);
+    }
+    
+    $linkVar['command'] = 'remove_group';
+    $removelink['ADDRESS'] = PHPWS_Text::linkAddress('users', $linkVar, TRUE);
+    $removelink['QUESTION'] = _('Are you SURE you want to remove this group?');
+    $removelink['LINK'] = _('Remove');
+    $links[] = Layout::getJavascript('confirm', $removelink);
+
+    $template['ACTIONS'] = implode(" | ", $links);
+    
+    $members = $this->getMembers();
+
+    if (isset($members)) {
+      $template['MEMBERS'] = count($members);
+    }
+    else {
+      $template['MEMBERS'] = 0;
+    }
+    return $template;
   }
 
 }

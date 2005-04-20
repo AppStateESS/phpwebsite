@@ -675,6 +675,59 @@ class PHPWS_User {
     return $this->_permission->getPermissionLevel($module);
   }
 
+  function getUserTpl()
+  { 
+    if ($this->isActive()) {
+      $template['ACTIVE'] =  _('Yes');
+    } else {
+      $template['ACTIVE'] = _('No');
+    }
+
+    $logged = $this->getLastLogged('%c');
+
+    if (empty($logged)) {
+      $template['LAST_LOGGED'] =  _('Never');
+    } else {
+      $template['LAST_LOGGED'] = $logged;
+    }
+
+    $template['EMAIL'] = $this->getEmail(TRUE, TRUE);
+
+
+    $linkVar['action'] = 'admin';
+    $linkVar['user_id'] = $this->id;
+
+    $jsvar['QUESTION'] = sprintf(_('Are you certain you want to delete the user &quot;%s&quot; permanently?'),
+				 $this->getUsername());
+    $jsvar['ADDRESS']  = 'index.php?module=users&amp;action=admin&amp;command=deleteUser&amp;user_id='
+      . $this->id . '&amp;authkey=' . Current_User::getAuthKey();
+    $jsvar['LINK']     = _('Delete');
+    
+    
+    $linkVar['command'] = 'editUser';
+    $links[] = PHPWS_Text::secureLink(_('Edit'), 'users', $linkVar);
+
+    $linkVar['command'] = 'setUserPermissions';
+    $links[] = PHPWS_Text::secureLink(_('Permissions'), 'users', $linkVar);
+
+    if (!$this->isDeity() && ($this->id != Current_User::getId())) {
+      $links[] = Layout::getJavascript('confirm', $jsvar);
+    }
+
+    if ($this->active){
+      $linkVar['command'] = 'deactivateUser';
+      $links[] = PHPWS_Text::secureLink(_('Deactivate'), 'users', $linkVar);
+    } else {
+      $linkVar['command'] = 'activateUser';
+      $links[] = PHPWS_Text::secureLink(_('Activate'), 'users', $linkVar);
+    }
+
+
+    $template['ACTIONS'] = implode(' | ', $links);
+
+    return $template;
+  }
+
 }
 
 ?>
