@@ -52,7 +52,12 @@ class DBPager {
 
   var $_classVars = NULL;
 
-  var $extra_tags = NULL;
+  var $page_tags = NULL;
+
+  /**
+   * Tags set per row by the object
+   */
+  var $row_tags = NULL;
 
   var $page_turner_left = '&lt;';
 
@@ -100,12 +105,15 @@ class DBPager {
 
   var $current_page = 1;
 
-  var $methods = array();
-
   /**
    * Message echoed if no rows are found
    */
   var $empty_message = DBPAGER_DEFAULT_EMPTY_MESSAGE;
+
+  /**
+   * Template made before processed
+   */
+  var $final_template = NULL;
 
   var $error;
 
@@ -181,9 +189,23 @@ class DBPager {
     $this->template = $template;
   }
 
-  function setMethod($column_name, $substitute, $variable=NULL){
-    $this->methods[$column_name]['method'] = $substitute;
-    $this->methods[$column_name]['variable'] = $variable;
+  function addRowTags()
+  {
+    if (func_num_args() < 1) {
+      return FALSE;
+    }
+
+    $method = func_get_arg(0);
+
+    if (func_num_args() > 1) {
+      $variables = func_get_args();
+      //strip the method
+      array_shift($variables);
+    } else {
+      $variables = NULL;
+    }
+
+    $this->row_tags = array('method'=>$method, 'variable'=>$variables);
   }
 
   function setEmptyMessage($message){
@@ -201,8 +223,8 @@ class DBPager {
     return $this->db->addWhere($column, $value, $operator, $conj, $group);
   }
 
-  function addTags($tags){
-    $this->extra_tags = $tags;
+  function addPageTags($tags){
+    $this->page_tags = $tags;
   }
 
   function getLimit(){
@@ -404,55 +426,33 @@ class DBPager {
 
     foreach ($this->object_rows as $object){
       if (isset($this->runMethods)){
-	foreach ($this->runMethods as $method)
-	  $object->{$method}();
+	foreach ($this->runMethods as $run_function)
+	  $object->{$run_function}();
       }
 
-      foreach ($this->_classVars as $varname){
-	if (isset($this->methods[$varname])){
-	  $funcName = strtolower($this->methods[$varname]['method']);
-	  if (isset($this->methods[$varname]['variable']))
-	    $variable = $this->methods[$varname]['variable'];
-	  else
-	    $variable = NULL;
-	}
-	else {
-	 $variable =  $funcName = NULL;
-	}
-
-	if (in_array($funcName, $this->_methods)){
-	  if (isset($variable))
-	    $template[$count][strtoupper($varname)] = $object->{$funcName}($variable);
-	  else
-	    $template[$count][strtoupper($varname)] = $object->{$funcName}();
-	}
-	else
-	  $template[$count][strtoupper($varname)] = $object->{$varname};
+      foreach ($this->_classVars as $varname) {
+	$template[$count][strtoupper($varname)] = $object->{$varname};
       }
 
-      if (isset($this->rowTags)){
-	foreach ($this->rowTags as $tagName=>$methodCall){
-	  $result = call_user_func(array($methodCall['class'], $methodCall['method']), $object);
-	  $template[$count][strtoupper($tagName)] = $result;
+      if (!empty($this->row_tags)) {
+	extract($this->row_tags);
+	if (!in_array(strtolower($method), $this->_methods)) {
+	  continue;
 	}
+
+	if (empty($variable)) {
+	  $row_result = $object->{$method}();
+	} else {
+	  $row_result = call_user_func_array(array(&$object, $method), $variable);
+	}
+
+	$template[$count] = array_merge($template[$count], $row_result);
       }
 
       $count++;
     }
 
     return $template;
-  }
-
-  function addRowTag($tag, $class, $method){
-    if (!class_exists($class))
-      exit('Class does not exist.');
-
-    $classMethods = get_class_methods($class);
-
-    if (!in_array(strtolower($method), $classMethods))
-      exit('Method not in class');
-
-    $this->rowTags[$tag] = array('class'=>$class, 'method'=>$method);
   }
 
   function getPageDrop(){
@@ -563,8 +563,9 @@ class DBPager {
 	  
 	  if ($count >= $max_tog)
 	    $count = 0;
-	} else
+	} else {
 	  $rowitem['TOGGLE'] = NULL;
+	}
 
 	$template['listrows'][] = $rowitem;
       }
@@ -574,13 +575,19 @@ class DBPager {
       $template['EMPTY_MESSAGE'] = $this->empty_message;
     }
 
-    DBPager::plugExtraTags($template);
+    DBPager::plugPageTags($template);
+    $this->final_template = $template;
     return PHPWS_Template::process($template, $this->module, $this->template);
   }
 
-  function plugExtraTags(&$template){
-    if (isset($this->extra_tags)){
-      foreach ($this->extra_tags as $key=>$value)
+  function getFinalTemplate()
+  {
+    return $this->final_template;
+  }
+
+  function plugPageTags(&$template){
+    if (isset($this->page_tags)){
+      foreach ($this->page_tags as $key=>$value)
 	$template[$key] = $value;
     }
   }
