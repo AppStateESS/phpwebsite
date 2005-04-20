@@ -182,28 +182,23 @@ class User_Form {
   function manageUsers(){
     Layout::addStyle('users');
     PHPWS_Core::initCoreClass('DBPager.php');
-    PHPWS_Core::initModClass('users', 'User_Manager.php');
 
-    $pageTags['USERNAME'] = _('Username');
-    $pageTags['EMAIL'] = _('Email');
-    $pageTags['LAST_LOGGED'] = _('Last Logged');
-    $pageTags['ACTIVE'] = _('Active');
-    $pageTags['ACTIONS'] = _('Actions');
+    $pageTags['USERNAME_LABEL'] = _('Username');
+    $pageTags['EMAIL_LABEL'] = _('Email');
+    $pageTags['LAST_LOGGED_LABEL'] = _('Last Logged');
+    $pageTags['ACTIVE_LABEL'] = _('Active');
+    $pageTags['ACTIONS_LABEL'] = _('Actions');
 
-    $pager = & new DBPager('users', 'User_Manager');
+    $pager = & new DBPager('users', 'PHPWS_User');
     $pager->setDefaultLimit(10);
     $pager->setModule('users');
     $pager->setTemplate('manager/users.tpl');
     $pager->setLink('index.php?module=users&amp;action=admin&amp;tab=manage_users&amp;authkey=' . Current_User::getAuthKey());
-    $pager->addTags($pageTags);
-    $pager->setMethod('active', 'listActive');
-    $pager->setMethod('last_logged', 'listLastLogged');
-    $pager->setMethod('email', 'listEmail');
+    $pager->addPageTags($pageTags);
+    $pager->addRowTags('getUserTpl');
     $pager->addToggle('class="toggle1"');
     $pager->addToggle('class="toggle2"');
     $pager->setSearch('username', 'email');
-    $pager->addRowTag('actions', 'User_Manager', 'listAction');
-
     return $pager->get();
   }
 
@@ -211,25 +206,20 @@ class User_Form {
   function manageGroups(){
     Layout::addStyle('users');
     PHPWS_Core::initCoreClass('DBPager.php');
-    PHPWS_Core::initModClass('users', 'Group_Manager.php');
 
     $pageTags['GROUPNAME'] = _('Group Name');
     //    $pageTags['ACTIVE'] = _('Active');
     $pageTags['MEMBERS_LABEL'] = _('Members');
     $pageTags['ACTIONS_LABEL'] = _('Actions');
 
-    $pager = & new DBPager('users_groups', 'Group_Manager');
+    $pager = & new DBPager('users_groups', 'PHPWS_Group');
     $pager->setModule('users');
     $pager->setTemplate('manager/groups.tpl');
     $pager->setLink('index.php?module=users&amp;action=admin&amp;tab=manage_groups&amp;authkey=' . Current_User::getAuthKey());
-    $pager->addTags($pageTags);
-    $pager->addRunMethod('loadMembers');
-    $pager->setMethod('active', 'listActive');
+    $pager->addPageTags($pageTags);
+    $pager->addRowTags('getTplTags');
     $pager->addToggle('class="toggle1"');
     $pager->addToggle('class="toggle2"');
-    $pager->addRowTag('actions', 'Group_Manager', 'listAction');
-    $pager->addRowTag('members', 'Group_Manager', 'listMembers');
-
     $pager->addWhere('user_id', 0);
     return $pager->get();
   }
