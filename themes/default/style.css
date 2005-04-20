@@ -5,6 +5,12 @@ body {
 	font-family : Arial, Helvetica, sans-serif;
 }
 
+q {
+   display : block;
+   width : 75%;
+   padding : 5px;
+   font-size : 90%;
+}
 
 .b {
    font-weight : bold;
@@ -176,7 +182,6 @@ table.form-table .label {
 
 
 .error {
-       background-color : #e76c6c;
-       padding : 2px;
-       color : #fff;
+       color : #cf2626;
+       font-weight : bold;
 }
