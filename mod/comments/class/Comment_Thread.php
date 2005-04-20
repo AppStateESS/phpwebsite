@@ -171,7 +171,7 @@ class Comment_Thread {
     $page_tags['NEW_POST_LINK'] = $this->postLink();
     $pager = & new DBPager('comments_items', 'Comment_Item');
     $pager->setModule('comments');
-    $pager->setTemplate('flat_view2.tpl');
+    $pager->setTemplate('flat_view.tpl');
     $pager->setLink($this->getSourceUrl(FALSE));
     $pager->addPageTags($page_tags);
     $pager->addRowTags('getTpl');
