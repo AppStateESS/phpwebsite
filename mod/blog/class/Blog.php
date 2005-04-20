@@ -81,7 +81,7 @@ class Blog {
   function &makeThread()
   {
     $thread = Comments::makeThread($this->getKey(),
-				   $this->getViewLink(TRUE)
+				   './index.php?module=blog&amp;action=view_comments&amp;id=' . $this->id
 				   );
     return $thread;
   }
@@ -120,8 +120,7 @@ class Blog {
 
   function viewCommentsLink()
   {
-    $key = $this->getKey();
-    $comments = & new Comments($key);
+    $comments = $this->makeThread();
     $comment_count = $comments->countComments();
     
     if (empty($comment_count)) {
