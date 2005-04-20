@@ -1,6 +1,9 @@
 <?php
 /**
  * Contains information for an individual comment
+ *
+ * @author Matt McNaney <matt at tux dot appstate dot edu>
+ * @version $Id$
  */
 
 define('COMMENTS_MISSING_THREAD', 1);
@@ -18,13 +21,16 @@ class Comment_Item {
   var $parent      = 0;
 
   // Subject of comment
-  var $subject       = NULL;
+  var $subject     = NULL;
 
   // Content of comment
   var $entry       = NULL;
 
+  // Author's user id
+  var $author_id   = 0;
+
   // Author (display name) of comment writer
-  var $author      = NULL;
+  var $author_name = NULL;
 
   // IP address of poster
   var $author_ip   = NULL;
@@ -122,15 +128,22 @@ class Comment_Item {
   function stampAuthor()
   {
     if (Current_User::isLogged()) {
-      $this->author = Current_User::getDisplayName();
+      $this->author_name = Current_User::getDisplayName();PHPWS_Core::initCoreClass("DBPager.php");
+      $this->author_id = Current_User::getId();
     } else {
-      $this->author = DEFAULT_ANONYMOUS_TITLE;
+      $this->author_name = DEFAULT_ANONYMOUS_TITLE;
+      $this->author_id = 0;
     }
   }
 
-  function getAuthor()
+  function getAuthorName()
   {
-    return $this->author;
+    return $this->author_name;
+  }
+
+  function getAuthorId()
+  {
+    return $this->author_id;
   }
 
   function stampIP()
@@ -156,25 +169,37 @@ class Comment_Item {
       return $this->create_time;
     }
   }
-  
-  function stampEditTime()
+
+  function stampEditor()
   {
+    $this->edit_author = Current_User::getDisplayName();
     $this->edit_time = gmmktime();
   }
+  
 
   function getEditTime($format=TRUE)
   {
     if ($format) {
-      return strftime(COMMENT_DATE_FORMAT, $this->edit_time);
+      if (empty($this->edit_time)) {
+	return NULL;
+      } else {
+	return gmstrftime(COMMENT_DATE_FORMAT, $this->edit_time);
+      }
     } else {
       return $this->edit_time;
     }
   }
 
-  function stampEditAuthor()
+  function setEditReason($reason)
   {
-    $this->edit_author = Current_User::getDisplayName();
+    $this->edit_reason = strip_tags($reason);
   }
+
+  function getEditReason()
+  {
+    return $this->edit_reason;
+  }
+
 
   function getEditAuthor()
   {
@@ -192,14 +217,20 @@ class Comment_Item {
     $template['SUBJECT_LABEL'] = _('Subject');
     $template['ENTRY']         = $this->getEntry(TRUE);
     $template['ENTRY_LABEL']   = _('Comment');
-    $template['AUTHOR']        = $this->getAuthor();
+    $template['AUTHOR']        = $this->getAuthorName();
     $template['AUTHOR_LABEL']  = _('Author');
     $template['POSTED_BY']     = _('Posted by');
     $template['POSTED_ON']     = _('Posted on');
     $template['CREATE_TIME']   = $this->getCreateTime();
     if (isset($this->edit_author)) {
-      $template['EDIT_AUTHOR'] = $this->getEditAuthor();
-      $template['EDIT_TIME']   = $this->getEditTime();
+      $template['EDIT_AUTHOR']       = $this->getEditAuthor();
+      $template['EDIT_AUTHOR_LABEL'] = _('Edited by');
+      $template['EDIT_TIME_LABEL']   = _('Edited on');
+      $template['EDIT_TIME']         = $this->getEditTime();
+      if (!empty($this->edit_reason)) {
+	$template['EDIT_REASON']       = $this->getEditReason();
+	$template['EDIT_REASON_LABEL'] = _('Reason');
+      }
     }
 
     if (Current_User::allow('comments')) {
@@ -226,12 +257,34 @@ class Comment_Item {
     }
 
     if ((bool)$this->id) {
-      $this->stampEditTime();
-      $this->stampEditAuthor();
+      $this->stampEditor();
     }
 
     $db = & new PHPWS_DB('comments_items');
     return $db->saveObject($this);
+  }
+
+  function editLink()
+  {
+    if (Current_User::allow('comments') ||
+	($this->author_id > 0 && $this->author_id == Current_User::getId())
+	) {
+      $vars['user_action']   = 'post_comment';
+      $vars['thread_id']     = $this->thread_id;
+      $vars['cm_id']         = $this->getId();
+      return PHPWS_Text::moduleLink(_('Edit'), 'comments', $vars);
+    } else {
+      return NULL;
+    }
+  }
+
+  function replyLink()
+  {
+    $vars['user_action']   = 'post_comment';
+    $vars['thread_id']     = $this->thread_id;
+    $vars['cm_parent']     = $this->getId();
+
+    return PHPWS_Text::moduleLink(_('Reply'), 'comments', $vars);
   }
 
 }
