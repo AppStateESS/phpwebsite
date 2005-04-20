@@ -137,33 +137,47 @@ static function outside of the row object, then read on.
 Plugging in Special Row Tags
 --------------------------------------------------------------------
 If you want to plug in special tags per row, then you can do so using
-the addRowTag function. For example, in File Cabinet, I wanted to add
-some action links for each row. Here is how I did it:
+the addRowTags function.
 
-$pager->addRowTag("action", "Cabinet_Action", "listAction");
+This function works differently than addPageTags which just required
+an array of tags. Row tags have the potential to be different every
+iteration. Therefore you need to call them via the object.
 
-The first parameter 'action' is the tag name. 'Cabinet_Action' is the
-name of the class where my method is located. Finally, 'listAction' is
-the name of the method.
+$pager->addRowTags('get_row_tags');
 
-For each row pulled from the database, pager will do the following:
+This would call a method named 'get_row_tags' on each new object.
 
-$template_row['ACTION'] = Cabinet_Action::listAction($image);
+$object->get_row_tags();
 
-In other words, it will put the result from calling the static
-function 'listAction' into the template tag 'ACTION'. The listAction
-function will get information from the $image object to create the
-appropriate administration links.
+This function must return an associative array.
 
-You can also substitute and action outside of using an alternate
-method. For example, if I wanted the image title to run through a
-special function:
+class my_object {
+      function get_row_tags()
+      {
+         $template['TITLE'] = $this->getFormatedTitle();
+         return $template;
+      }
 
-$pager->addRowTag("title", "Cabinet_Action", "capitalizeTitle");
+      function getFormatedTitle()
+      {
+         return strtoupper($this->title);
+      }
+}
 
-Now my object would run through
-Cabinet_Action::capitalizeTitle($image);
-and I could return a captialized image title;
+So if the 'title' column is pulled from the table as 'my pets', your
+addition of the new row tag would replace it with 'MY PETS'.
+
+Note that you can also add static row tags and conditionals using this
+function.
+
+One last note. You can add parameters to addRowTags as well:
+
+$pager->addRowTags('get_row_tags', TRUE, 21, 'clown');
+
+function get_row_tags($likes_chocolate, $age, $occupation) {
+...
+} 
+
 
 Adding Toggles
 --------------------------------------------------------------------
@@ -200,7 +214,7 @@ Then all you need to do is add the SEARCH tag into your template.
 Plugging in Page Tags
 --------------------------------------------------------------------
 If you want to add extra dynamic information to your list template,
-you will need to use the addTags function. In the below example, I
+you will need to use the addPAgeTags function. In the below example, I
 need to translate the column headers, so I am plugging them into
 addTags.
 
@@ -211,8 +225,12 @@ $tags['MODULE']     = _("Module");
 $tags['SIZE']       = _("Size");
 $tags['ACTION']     = _("Action");
 
-$pager->addTags($tags);
+$pager->addPageTags($tags);
 
+Plugging in Row Tags
+--------------------------------------------------------------------
+Like page tags, you may want individual static tags per row. Use
+addRowTags for this in the same way as page tags.
 
 
 Setting up your template
