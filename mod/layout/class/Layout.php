@@ -14,8 +14,8 @@ PHPWS_Core::initCoreClass('Template.php');
 class Layout {
 
   function add($text, $module=NULL, $contentVar=NULL){
-    if (is_array($text)) {
-      echo  $module;
+    if (!is_string($text)) {
+      return;
     }
     Layout::checkSettings();
     // If content variable is not in system (and not NULL) then make
