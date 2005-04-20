@@ -259,8 +259,6 @@ class Related {
     else
       $mode = 'create';
 
-    $content['TITLE'] = RELATED_TITLE;
-
     switch ($mode){
     case 'create':
       $body = Related_Action::create($this);
@@ -276,8 +274,9 @@ class Related {
     }
 
     if (!empty($body)) {
-      $content['CONTENT'] = &$body;
-      Layout::add($content, 'related', 'bank', TRUE);
+      $content = &$body;
+      
+      Layout::add($content, 'related', 'bank');
     }
 
     return TRUE;
