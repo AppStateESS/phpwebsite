@@ -222,20 +222,25 @@ class Comment_Item {
     $template['POSTED_BY']     = _('Posted by');
     $template['POSTED_ON']     = _('Posted on');
     $template['CREATE_TIME']   = $this->getCreateTime();
+    $template['REPLY_LINK']    = $this->replyLink();
+    $template['EDIT_LINK']     = $this->editLink();
     if (isset($this->edit_author)) {
       $template['EDIT_AUTHOR']       = $this->getEditAuthor();
       $template['EDIT_AUTHOR_LABEL'] = _('Edited by');
       $template['EDIT_TIME_LABEL']   = _('Edited on');
       $template['EDIT_TIME']         = $this->getEditTime();
-      if (!empty($this->edit_reason)) {
+      if (isset($this->edit_reason)) {
 	$template['EDIT_REASON']       = $this->getEditReason();
 	$template['EDIT_REASON_LABEL'] = _('Reason');
       }
+    } else {
+	$template['EDIT_TIME'] = NULL;
     }
 
     if (Current_User::allow('comments')) {
       $template['IP_ADDRESS'] = $this->getIp();
     }
+
     return $template;
   }
 
