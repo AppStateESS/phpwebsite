@@ -10,6 +10,8 @@
 
 PHPWS_Core::initModClass('comments', 'Comment_Item.php');
 
+define('NO_COMMENTS_FOUND', 'none');
+
 class Comment_Thread {
   var $id          = 0;
   var $module      = NULL;
@@ -42,13 +44,34 @@ class Comment_Thread {
     }
   }
 
-  function countComments()
+  function countComments($formatted=FALSE)
   {
     $db = & new PHPWS_DB('comments_items');
     $db->addWhere('thread_id', $this->id);
-    return $db->count();
+    $count =  $db->count();
+    if ($formatted) {
+      if (empty($count)) {
+	return _('No comments');
+      } elseif ($count == 1) {
+	return _('1 comment');
+      } else {
+	return sprintf(_('%s comments'), $count);
+      }
+    } else {
+      return $count;
+    }
   }
 
+  function getLastPoster()
+  {
+    $db = & new PHPWS_DB('comments_items');
+    $db->addWhere('thread_id', $this->id);
+    $db->setLimit(1);
+    $db->addOrder('create_time DESC');
+    $db->addColumn('author_name');
+    $result = $db->select('one');
+    return $result;
+  }
 
   /**
    * Creates a new thread
@@ -127,34 +150,11 @@ class Comment_Thread {
   }
 
 
-  function getComments()
-  {
-    $this->loadComments();
-    if (empty($this->_comments)) {
-      return NULL;
-    }
-    return $this->_comments;
-  }
-
   function postLink()
   {
     $vars['user_action']   = 'post_comment';
     $vars['thread_id']     = $this->id;
     return PHPWS_Text::moduleLink(_('Post Comment'), 'comments', $vars);
-  }
-
-  function loadComments()
-  {
-    $db = & new PHPWS_DB('comments_items');
-    $db->addWhere('thread_id', $this->id);
-    $db->addOrder('create_time');
-    $result = $db->getObjects('Comment_Item');
-    if (PEAR::isError($result)) {
-      PHPWS_Error::log($result);
-      $this->_error = $result;
-      return NULL;
-    }
-    $this->_comments = $result;
   }
 
   function save()
@@ -163,47 +163,41 @@ class Comment_Thread {
     return $db->saveObject($this);
   }
 
-  function getAll()
+  function flatView()
   {
-    
     PHPWS_Core::initCoreClass('DBPager.php');
 
     $page_tags['NEW_POST_LINK'] = $this->postLink();
     $pager = & new DBPager('comments_items', 'Comment_Item');
     $pager->setModule('comments');
     $pager->setTemplate('flat_view.tpl');
-    $pager->setLink($this->getSourceUrl(FALSE));
+    $pager->setLink($this->source_url);
     $pager->addPageTags($page_tags);
     $pager->addRowTags('getTpl');
+    $pager->addWhere('thread_id', $this->id);
+    $pager->setLimitList(array(10, 20, 50));
+    $pager->setEmptyMessage(_('No comments'));
     $content = $pager->get();
-
     return $content;
+  }
 
-    $result = $this->getComments();
-
-    $template['NEW_POST_LINK'] = $this->postLink();
-    if (!empty($result)) {
-      $template['comment-list'] = $this->getItemTemplates($result);
-    } else {
-      $template['MESSAGE'] = _('No comments.');
-    }
+  function getAll()
+  {
 
     switch (CURRENT_VIEW_MODE) {
     case THREADED_VIEW:
-      $template_file = 'threaded_view.tpl';
+      $content = $this->threadedView();
       break;
 	
     case NESTED_VIEW:
-      $template_file = 'nested_view.tpl';
+      $content = $this->nestedView();
       break;
 	
     case FLAT_VIEW:
-      $template_file = 'flat_view.tpl';
+      $content = $this->flatView();
       break;
     }
 
-    $content = PHPWS_Template::process($template, 'comments', $template_file);
-      
     return $content;
   }
 
