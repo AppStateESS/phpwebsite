@@ -173,6 +173,15 @@ class DBPager {
     $this->page_turner_right = $turner;
   }
 
+  function setLimitList($list)
+  {
+    if (!is_array($list)) {
+      return FALSE;
+    }
+
+    $this->limitList = $list;
+  }
+
   function addToggle($toggle){
     $this->toggles[] = $toggle;
   }
@@ -509,6 +518,36 @@ class DBPager {
       $form->addHidden('search', $this->search);
   }
 
+  function _getNavigation(&$template)
+  {
+    if ($this->total_rows < 1) {
+      $total_row = $start_row = $end_row = 1;
+    } else {
+      $total_row = $this->total_rows;
+      $start_row = ( ($this->current_page - 1) * $this->limit ) + 1;
+      $end_row   = $this->current_page * $this->limit;
+      if ($end_row > $total_row)
+	$end_row = $total_row;
+    }
+
+    $pages = $this->getPageLinks();
+
+    if (PEAR::isError($pages))
+      return $pages;
+
+    $template['PAGES']     = $pages;
+    $template['PAGE_LABEL']  = _('Page');
+    $template['LIMIT_LABEL'] = _('Limit');
+    $template['PAGE_DROP'] = $this->getPageDrop();
+    $template['TOTAL_ROWS']  = $start_row . ' - ' . $end_row . ' ' . _('of') . ' ' . $total_row;
+    $template['LIMITS']    = $this->getLimitList();
+
+    if (isset($this->searchColumn)) {
+      $template['SEARCH']    = $this->getSearchBox();
+    }
+
+  }
+
   function get(){
     $template = array();
     $result = $this->initialize();
@@ -522,40 +561,18 @@ class DBPager {
     if (!isset($this->template))
       return PHPWS_Error::get(DBPAGER_TEMPLATE_NOT_SET, 'core', 'DBPager::get()');
 
-    if ($this->total_rows < 1) {
-      $total_row = $start_row = $end_row = 1;
-    } else {
-      $total_row = $this->total_rows;
-      $start_row = ( ($this->current_page - 1) * $this->limit ) + 1;
-      $end_row   = $this->current_page * $this->limit;
-      if ($end_row > $total_row)
-	$end_row = $total_row;
-    }
   
-    $template['PAGE_LABEL']  = _('Page');
-    $template['LIMIT_LABEL'] = _('Limit');
-    $template['PAGE_DROP'] = $this->getPageDrop();
-    $template['TOTAL_ROWS']  = $start_row . ' - ' . $end_row . ' ' . _('of') . ' ' . $total_row;
 
-    $pages = $this->getPageLinks();
-
-    if (PEAR::isError($pages))
-      return $pages;
-
-    $template['PAGES']     = $pages;
 
     $rows = $this->getPageRows();
 
-    $template['LIMITS']    = $this->getLimitList();
-
-    if (isset($this->searchColumn))
-      $template['SEARCH']    = $this->getSearchBox();
 
     if (isset($this->toggles))
       $max_tog = count($this->toggles);
 
     $count = 0;
     if (isset($rows)){
+      $this->_getNavigation($template);
       foreach ($rows as $rowitem){
 	if (isset($max_tog)) {
 	  $rowitem['TOGGLE'] = $this->toggles[$count];
