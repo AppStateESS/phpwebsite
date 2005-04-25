@@ -1,0 +1,57 @@
+BBcode in phpWebsite
+by Matthew McNaney
+------------------------------
+
+In most cases, phpWebSite modules parse anonymous and registered
+user-submitted data for html tags. To allow those users to express
+themselves, phpWebSite uses BBcodes. These are special characters that
+allow html markup without the use of html tags. For example:
+[b]text[/b] = Bold text
+[i]text[/i] = Italicized text
+[url="http://www.google.com"] = Clickable link to Google
+
+The developers of phpBB have a great FAQ here:
+http://www.phpbb.com/phpBB/faq.php?mode=bbcode
+
+
+Smilies
+-----------------------------------------
+phpWebsite ships with basic 'smilie' support.
+
+You may want to expand upon your collection. Here is an excellent
+source of graphics:
+http://sourceforge.net/project/shownotes.php?release_id=282009
+
+To add your smilies:
+1) copy the graphics into images/core/smilies/
+2) edit/copy over your config/core/smiles.pak file
+
+The release linked to above contains its own smiles.pak file. If you
+want to allow the use of all the smilies, just drop it into the
+config/core/ directory. If you want to add a config line the format
+is below. _Ignore the newlines_. They are inserted for
+clarity.
+
+name_of_image.ext
+=+:
+Title of Image
+=+:
+shortcutWord
+
+For example, look at the smilies for Very Happy
+
+icon.biggrin.gif
+=+:
+Very Happy
+=+:
+:D
+
+
+All together this looks like this:
+
+icon_biggrin.gif=+:Very Happy=+::D
+
+So then, if I typed
+:D
+
+in a comment, I would get the icon_biggrin.gif graphic instead.
