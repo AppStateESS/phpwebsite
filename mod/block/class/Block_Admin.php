@@ -150,7 +150,7 @@ class Block_Admin {
     }
 
     if (Editor::willWork()){
-      $editor = & new Editor('block_content', $block->getContent());
+      $editor = & new Editor('block_content', $block->getContent(FALSE));
       $block_content = $editor->get();
       $form->addTplTag('BLOCK_CONTENT', $block_content);
       $form->addTplTag('BLOCK_CONTENT_LABEL', PHPWS_Form::makeLabel('block_content',_('Content')));
@@ -174,26 +174,6 @@ class Block_Admin {
     return TRUE;
   }
 
-  function _getListAction(&$block){
-    $vars['block_id'] = $block->getId();
-
-    $vars['action'] = 'edit';
-    $links[] = PHPWS_Text::secureLink(_('Edit'), 'block', $vars);
-
-    $vars['action'] = 'store';
-    $links[] = PHPWS_Text::secureLink(_('Store'), 'block', $vars);
-
-    $vars['action'] = 'copy';
-    $links[] = PHPWS_Text::secureLink(_('Copy'), 'block', $vars);
-
-    $vars['action'] = 'delete';
-    $confirm_vars['QUESTION'] = _('Are you sure you want to permanently delete this block?');
-    $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('block', $vars, TRUE);
-    $confirm_vars['LINK'] = _('Delete');
-    $links[] = Layout::getJavascript('confirm', $confirm_vars);
-
-    return implode(' | ', $links);
-  }
 
   function blockList()
   {
@@ -212,9 +192,8 @@ class Block_Admin {
     $pager->setLink($link);
     $pager->addToggle('class="toggle1"');
     $pager->addToggle('class="toggle2"');
-    $pager->addTags($pageTags);
-    $pager->setMethod('content', 'summarize');
-    $pager->addRowTag('action', 'Block_Admin', '_getListAction');
+    $pager->addPageTags($pageTags);
+    $pager->addRowTags('getTpl');
     
     $content = $pager->get();
 

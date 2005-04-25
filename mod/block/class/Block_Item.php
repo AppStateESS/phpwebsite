@@ -42,7 +42,16 @@ class Block_Item {
 
   function setContent($content)
   {
-    $this->content = PHPWS_Text::prepare($content);
+    $this->content = PHPWS_Text::parseInput($content);
+  }
+
+  function getContent($format=TRUE)
+  {
+    if ($format) {
+      return PHPWS_Text::parseOutput($this->content);
+    } else {
+      return $this->content;
+    }
   }
 
   function getKey()
@@ -57,12 +66,7 @@ class Block_Item {
   }
 
   function summarize(){
-    return substr(strip_tags($this->getContent()), 0, 40);
-  }
-
-  function getContent()
-  {
-    return PHPWS_Text::parseEncoded($this->content);
+    return substr(strip_tags($this->getContent(FALSE)), 0, 40);
   }
 
   function init()
@@ -124,11 +128,36 @@ class Block_Item {
 
     $link['block_id'] = $this->id;
     $template = array('TITLE'   => $this->getTitle(),
-		      'CONTENT' => PHPWS_Text::parseTag($this->getContent()),
+		      'CONTENT' => $this->getContent(),
 		      'OPT'     => $opt
 		      );
     
     return PHPWS_Template::process($template, 'block', 'sample.tpl');
+  }
+
+  function getTpl()
+  {
+    $vars['block_id'] = $this->getId();
+
+    $vars['action'] = 'edit';
+    $links[] = PHPWS_Text::secureLink(_('Edit'), 'block', $vars);
+
+    $vars['action'] = 'store';
+    $links[] = PHPWS_Text::secureLink(_('Store'), 'block', $vars);
+
+    $vars['action'] = 'copy';
+    $links[] = PHPWS_Text::secureLink(_('Copy'), 'block', $vars);
+
+    $vars['action'] = 'delete';
+    $confirm_vars['QUESTION'] = _('Are you sure you want to permanently delete this block?');
+    $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('block', $vars, TRUE);
+    $confirm_vars['LINK'] = _('Delete');
+    $links[] = Layout::getJavascript('confirm', $confirm_vars);
+
+    $template['ACTION'] = implode(' | ', $links);
+    $template['CONTENT'] = $this->summarize();
+
+    return $template;
   }
 
 }
