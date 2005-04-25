@@ -1,5 +1,5 @@
 <div class="notes">
-  <div class="box">
+  <div class="box padded">
   <h1>{TITLE}</h1>
     {COUNT_LABEL}
     <ul>
