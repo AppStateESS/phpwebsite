@@ -359,12 +359,12 @@ class Layout_Admin{
 
 
   function postHeader(){
-    $_SESSION['Layout_Settings']->header = PHPWS_Text::prepare($_POST['header']);
+    $_SESSION['Layout_Settings']->header = PHPWS_Text::parseInput($_POST['header']);
     return $_SESSION['Layout_Settings']->saveSettings();
   }
 
   function postFooter(){
-    $_SESSION['Layout_Settings']->footer = PHPWS_Text::prepare($_POST['footer']);
+    $_SESSION['Layout_Settings']->footer = PHPWS_Text::parseInput($_POST['footer']);
     return $_SESSION['Layout_Settings']->saveSettings();
   }
 

@@ -310,11 +310,11 @@ class Layout {
   }
 
   function getFooter(){
-    return PHPWS_Text::parseEncoded($_SESSION['Layout_Settings']->footer);
+    return PHPWS_Text::parseOutput($_SESSION['Layout_Settings']->footer);
   }
 
   function getHeader(){
-    return PHPWS_Text::parseEncoded($_SESSION['Layout_Settings']->header);
+    return PHPWS_Text::parseOutput($_SESSION['Layout_Settings']->header);
   }
 
   function getJavascript($directory, $data=NULL){
