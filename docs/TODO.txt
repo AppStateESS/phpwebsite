@@ -55,3 +55,7 @@ Add module styles to templates (ie class="module-name")
 Core
 ---------------
 Caching needs a per item clear
+
+Code
+----------------
+Check for unnecessary preg_replace - switch with str_replace
