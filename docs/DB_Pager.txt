@@ -134,6 +134,23 @@ to call the function from the object directly. If you want to call a
 static function outside of the row object, then read on.
 
 
+Plugging in Page Tags
+--------------------------------------------------------------------
+If you want to add extra dynamic information to your list template,
+you will need to use the addPAgeTags function. In the below example, I
+need to translate the column headers, so I am plugging them into
+addTags.
+
+$tags['PAGE_LABEL'] = _("Page");
+$tags['TITLE']      = _("Title");
+$tags['FILENAME']   = _("Filename");
+$tags['MODULE']     = _("Module");
+$tags['SIZE']       = _("Size");
+$tags['ACTION']     = _("Action");
+
+$pager->addPageTags($tags);
+
+
 Plugging in Special Row Tags
 --------------------------------------------------------------------
 If you want to plug in special tags per row, then you can do so using
@@ -209,28 +226,6 @@ add:
 $pager->setSearch("filename");
 
 Then all you need to do is add the SEARCH tag into your template.
-
-
-Plugging in Page Tags
---------------------------------------------------------------------
-If you want to add extra dynamic information to your list template,
-you will need to use the addPAgeTags function. In the below example, I
-need to translate the column headers, so I am plugging them into
-addTags.
-
-$tags['PAGE_LABEL'] = _("Page");
-$tags['TITLE']      = _("Title");
-$tags['FILENAME']   = _("Filename");
-$tags['MODULE']     = _("Module");
-$tags['SIZE']       = _("Size");
-$tags['ACTION']     = _("Action");
-
-$pager->addPageTags($tags);
-
-Plugging in Row Tags
---------------------------------------------------------------------
-Like page tags, you may want individual static tags per row. Use
-addRowTags for this in the same way as page tags.
 
 
 Setting up your template
