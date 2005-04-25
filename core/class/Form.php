@@ -1128,9 +1128,6 @@ class Form_TextArea extends Form_Element{
 
   function get(){
     $value = $this->getValue();
-    $value = htmlspecialchars($value, ENT_NOQUOTES);
-    $value = str_replace('&#x0024;', '&', $value);
-    $value = str_replace('&amp;#39;', '\'', $value);
     
     if (ord(substr($value, 0, 1)) == 13)
       $value = "\n" . $value;
