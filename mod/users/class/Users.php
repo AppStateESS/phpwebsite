@@ -678,8 +678,14 @@ class PHPWS_User {
   function getUserTpl()
   { 
     if ($this->isActive()) {
+      $linkVar['command'] = 'deactivateUser';
+      $links[] = PHPWS_Text::secureLink(_('Deactivate'), 'users', $linkVar);
+
       $template['ACTIVE'] =  _('Yes');
     } else {
+      $linkVar['command'] = 'activateUser';
+      $links[] = PHPWS_Text::secureLink(_('Activate'), 'users', $linkVar);
+
       $template['ACTIVE'] = _('No');
     }
 
@@ -693,7 +699,7 @@ class PHPWS_User {
 
     $template['EMAIL'] = $this->getEmail(TRUE, TRUE);
 
-
+    
     $linkVar['action'] = 'admin';
     $linkVar['user_id'] = $this->id;
 
@@ -713,15 +719,6 @@ class PHPWS_User {
     if (!$this->isDeity() && ($this->id != Current_User::getId())) {
       $links[] = Layout::getJavascript('confirm', $jsvar);
     }
-
-    if ($this->active){
-      $linkVar['command'] = 'deactivateUser';
-      $links[] = PHPWS_Text::secureLink(_('Deactivate'), 'users', $linkVar);
-    } else {
-      $linkVar['command'] = 'activateUser';
-      $links[] = PHPWS_Text::secureLink(_('Activate'), 'users', $linkVar);
-    }
-
 
     $template['ACTIONS'] = implode(' | ', $links);
 
