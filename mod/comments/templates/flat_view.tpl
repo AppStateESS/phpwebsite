@@ -1,6 +1,6 @@
 <div class="comments">
-<div class="bgcolor1 padded">{NEW_POST_LINK}</div>
-<div>{MESSAGE}</div>
+<div>{NEW_POST_LINK}</div>
+<div>{EMPTY_MESSAGE}</div>
 <!-- BEGIN listrows -->
 <div class="box">
   <div class="bgcolor1 padded">
@@ -13,12 +13,17 @@
     </span>
   </div>
   <p class="padded">{ENTRY}</p>
-  <!-- BEGIN edit-reason --><div class="smaller error padded">
-  {EDIT_AUTHOR_LABEL}: {EDIT_AUTHOR}<br />
-  <!-- BEGIN reason -->{EDIT_REASON_LABEL}: {EDIT_REASON}<!-- END reason -->
-  </div><!-- END edit-reason -->
+  <!-- BEGIN edit-info --><div class="smaller error padded">
+  {EDIT_AUTHOR_LABEL}: {EDIT_AUTHOR}
+  <!-- BEGIN reason --><br />{EDIT_REASON_LABEL}: {EDIT_REASON}<!-- END reason -->
+  </div><!-- END edit-info -->
   <div class="align-right padded"><!-- BEGIN edit-link -->{EDIT_LINK}
   | <!-- END edit-link --> {REPLY_LINK}</div>
 </div>
 <!-- END listrows -->
+</div>
+<div class="align-center">
+  <b>{PAGE_LABEL}</b><br />
+  {PAGES}<br />
+  {LIMITS}
 </div>
