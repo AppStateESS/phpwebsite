@@ -302,37 +302,6 @@ class Blog_Admin {
     return PHPWS_Template::process($template, 'blog', 'edit.tpl');
   }
 
-  function getListAction(&$blog){
-    $link['action'] = 'admin';
-    $link['blog_id'] = $blog->getId();
-
-    if (Current_User::allow('blog', 'edit_blog', $blog->getId())){
-      $link['command'] = 'edit';
-      $list[] = PHPWS_Text::secureLink(_('Edit'), 'blog', $link);
-    }
-    
-    if (Current_User::allow('blog', 'delete_blog')){
-      $link['command'] = 'delete';
-      $confirm_vars['QUESTION'] = _('Are you sure you want to permanently delete this blog entry?');
-      $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('blog', $link, TRUE);
-      $confirm_vars['LINK'] = _('Delete');
-      $list[] = Layout::getJavascript('confirm', $confirm_vars);
-    }
-
-    if (Current_User::isUnrestricted('blog')){
-      $link['command'] = 'restore';
-      $list[] = PHPWS_Text::secureLink(_('Restore'), 'blog', $link);
-    }
-
-    if (isset($list))
-      return implode(' | ', $list);
-    else
-      return _('No action');
-  }
-
-  function getListEntry(&$blog){
-    return substr(strip_tags($blog->getEntry(TRUE)), 0, 30) . ' . . .';
-  }
 
   function entry_list(){
     PHPWS_Core::initCoreClass('DBPager.php');
@@ -348,11 +317,9 @@ class Blog_Admin {
     $pager->setLink('index.php?module=blog&amp;action=admin&amp;authkey=' . Current_User::getAuthKey());
     $pager->addToggle('class="toggle1"');
     $pager->addToggle('class="toggle2"');
-    $pager->setMethod('date', 'getFormatedDate');
-    $pager->addTags($pageTags);
+    $pager->addRowTags('getPagerTags');
+    $pager->addPageTags($pageTags);
     $pager->setSearch('title');
-    $pager->addRowTag('entry', 'Blog_Admin', 'getListEntry');
-    $pager->addRowTag('action', 'Blog_Admin', 'getListAction');
     $content = $pager->get();
     return $content;
   }

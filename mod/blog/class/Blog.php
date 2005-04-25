@@ -37,7 +37,7 @@ class Blog {
   function getEntry($print=FALSE)
   {
     if ($print) {
-      return PHPWS_Text::parseEncoded($this->entry);
+      return PHPWS_Text::parseOutput($this->entry);
     }
     else
       return $this->entry;
@@ -118,18 +118,6 @@ class Blog {
     return new Key('blog', 'entry', $this->id);
   }
 
-  function viewCommentsLink()
-  {
-    $comments = $this->makeThread();
-    $comment_count = $comments->countComments();
-    
-    if (empty($comment_count)) {
-      $link = _('No comments');
-    } else {
-      $link = sprintf(_('%d comments'), $comment_count);
-    }
-    return PHPWS_Text::rewriteLink($link, 'blog', 'view_comments', $this->getId());
-  }
 
   function createCommentLink()
   {
@@ -153,13 +141,19 @@ class Blog {
       $vars['blog_id'] = $this->getId();
       $vars['action']  = 'admin';
       $vars['command'] = 'edit';
-      $links[] = PHPWS_Text::secureLink(_('Edit'), 'blog', $vars);
+      $template['EDIT_LINK'] = PHPWS_Text::secureLink(_('Edit'), 'blog', $vars);
     }
 
     $comments = $this->makeThread();
 
     if ($limited) {
-      $links[] = $this->viewCommentsLink();
+      $link = $comments->countComments(TRUE);
+      $template['COMMENT_LINK'] = PHPWS_Text::rewriteLink($link, 'blog', 'view_comments', $this->getId());
+      $last_poster = $comments->getLastPoster();
+      if (!empty($last_poster)) {
+	$template['LAST_POSTER_LABEL'] = _('Last poster');
+	$template['LAST_POSTER'] = $last_poster;
+      }
     } elseif ($this->id) {
       $template['COMMENTS'] = $comments->getAll();
       $related = & new Related;
@@ -180,12 +174,49 @@ class Blog {
     $template['POSTED_ON'] = _('Posted on');
     $template['AUTHOR'] = $this->getAuthor();
     
-    if (isset($links)) {
-      $template['LINKS'] = implode(' | ' , $links);
-    }
-
     return PHPWS_Template::process($template, 'blog', 'view.tpl');
   }
+
+  function getPagerTags()
+  {
+    $template['DATE'] = $this->getFormatedDate();
+    $template['ENTRY'] = $this->getListEntry();
+    $template['ACTION'] = $this->getListAction();
+    return $template;
+  }
+
+  function getListAction(){
+    $link['action'] = 'admin';
+    $link['blog_id'] = $this->getId();
+
+    if (Current_User::allow('blog', 'edit_blog', $this->getId())){
+      $link['command'] = 'edit';
+      $list[] = PHPWS_Text::secureLink(_('Edit'), 'blog', $link);
+    }
+    
+    if (Current_User::allow('blog', 'delete_blog')){
+      $link['command'] = 'delete';
+      $confirm_vars['QUESTION'] = _('Are you sure you want to permanently delete this blog entry?');
+      $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('blog', $link, TRUE);
+      $confirm_vars['LINK'] = _('Delete');
+      $list[] = Layout::getJavascript('confirm', $confirm_vars);
+    }
+
+    if (Current_User::isUnrestricted('blog')){
+      $link['command'] = 'restore';
+      $list[] = PHPWS_Text::secureLink(_('Restore'), 'blog', $link);
+    }
+
+    if (isset($list))
+      return implode(' | ', $list);
+    else
+      return _('No action');
+  }
+
+  function getListEntry(){
+    return substr(strip_tags($this->getEntry(TRUE)), 0, 30) . ' . . .';
+  }
+
 
   function kill()
   {

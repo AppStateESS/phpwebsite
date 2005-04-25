@@ -1,24 +1,23 @@
 <div class="blog">
-<div class="box">
-  <h1>{TITLE}</h1>
-  <h3 class="bgcolor1 padded">{POSTED_BY} {AUTHOR}</h3>
-  <!-- BEGIN categories -->
-  <div class="bgcolor2 padded">
-  {CATEGORIES}
-  </div>
-  <!-- END categories -->
-  <div class="padded">
-    <div class="content">{ENTRY}</div>
-    <div class="padded" style="position : relative; height : 1em">
-    <div class="admin-links" style="position : absolute; left : 0;
-    width : 50%">{LINKS}</div>
-    <div class="align-right" style="position : absolute; right : 0; width : 50%;">{DATE}</div>
+  <div class="box">
+    <h1>{TITLE}</h1>
+    <h3>{POSTED_BY} {AUTHOR}</h3>
+    <h3>{POSTED_ON} {DATE}</h3>
+    <!-- BEGIN categories -->
+    <div class="bgcolor2 padded">{CATEGORIES}</div>
+    <!-- END categories -->
+    <div class="box-content">
+      {ENTRY}<br />{EDIT_LINK}
+      <!-- BEGIN comment-info -->
+      <div class="padded border-top">
+      {COMMENT_LINK}
+      <!-- BEGIN last-poster -->- {LAST_POSTER_LABEL}:
+      {LAST_POSTER}<!-- END last-poster -->
+      </div>
+      <!-- END comment-info -->
+      <!-- BEGIN comments -->
+      {COMMENTS}
+      <!-- END comments -->
     </div>
-    <!-- BEGIN comments -->
-    <div class="border-top padded">
-      <div class="padded">{COMMENTS}</div>
-    </div>
-    <!-- END comments -->
   </div>
-</div>
 </div>
