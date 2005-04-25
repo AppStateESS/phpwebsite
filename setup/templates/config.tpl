@@ -135,20 +135,6 @@ define('DEFAULT_EDITOR_TOOL', '');
 /* Error logging presets */
 define('PHPWS_LOG_ERRORS', TRUE);
 
-/*********************** TEXT SETTINGS *************************/
-/**
- * These are the default tags that phpWebSite will allow from
- * form entries. If a tag is NOT on this list, it will be stripped
- * from the entry.
- */
-
-define('PHPWS_ALLOWED_TAGS', '
-<b><a><i><u><ul><ol><li>
-<table><tr><td><dd><dt><dl>
-<p><br><div><span><blockquote>
-<th><tt><img><pre><hr>
-');
-
 
 /******************* ALLOWED IMAGES TYPES *********************/
 
@@ -201,21 +187,6 @@ define('CACHE_DIRECTORY', '/tmp/');
 
 define('MOD_REWRITE_ENABLED', FALSE);
 
-/******************* RELATIVE ADDRESSING ***********************
- * The parseInput function the Text class will remove urls
- * and replace them with relative addresses if this option is TRUE
- * For example:
- * <a href='http://www.mysite.com/index.php?'>Home</a>
- * <img src='http://www.mysite.com/images/mymod/candy.jpg' />
- * will become
- * <a href='./index.php?'>Home</a>
- * <img src='./images/mymod/candy.jpg' />
- *
- * If for some reason you don't want this to happen, change to
- * FALSE
- */
-
-define('MAKE_ADDRESSES_RELATIVE', TRUE);
 
 /******************* Compatibility Mode *************************
  * If you are using modules created prior to 1.0.0, this needs
