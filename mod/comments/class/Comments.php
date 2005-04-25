@@ -88,8 +88,10 @@ class Comments {
     }
 
     if ($cm_item->id) {
-      if (isset($_POST['edit_reason'])) {
+      if (!empty($_POST['edit_reason'])) {
 	$cm_item->setEditReason($_POST['edit_reason']);
+      } else {
+	$cm_item->edit_reason = NULL;
       }
     }
 
@@ -133,14 +135,12 @@ class Comments {
     } else {
       $form->setValue('cm_subject', $c_item->getSubject());
     }
-    
+
     $form->addTextArea('cm_entry', $c_item->getEntry(FALSE));
     $form->setLabel('cm_entry', _('Comment'));
     $form->setCols('cm_entry', 50);
     $form->setRows('cm_entry', 10);
-
     $form->addSubmit(_('Post Comment'));
-
     $template = $form->getTemplate();
     $template['BACK_LINK'] = $thread->getSourceUrl(TRUE);
 
