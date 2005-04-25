@@ -80,10 +80,8 @@ form {
 	margin-right : 1%;
 }
 
-#content {
+#main-content {
 	margin-left : 18%;
-	border-with
-	
 }
 
 #content h1, h2 {
@@ -143,6 +141,8 @@ h3 {
 	font-size :  105%;
 }
 
+
+
 th {
 	font-weight : bold;
 	font-family : "Trebuchet MS", Verdana, serif;
@@ -153,10 +153,17 @@ tr, td {
 	vertical-align : top;
 }
 
-div.box {
+.box {
 	margin-bottom : 10px;
 }
 
+.box-content {
+	padding : 8px;
+}
+
+.box h1, h2, h3 {
+     padding : 0 3px 0 3px;
+}
 
 input {
 	font-size : 9pt;

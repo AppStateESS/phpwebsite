@@ -5,9 +5,8 @@
      <div id="notes-list">{NOTES_REMINDER}</div>
    </div>
    <div id="gutter"></div>
-   <div id="content">
-     <!-- BEGIN header --><div id="header">{LAYOUT_HEADER}</div><!--
-   END header -->
+   <div id="main-content">
+     <!-- BEGIN header --><div id="header">{LAYOUT_HEADER}</div><!-- END header -->
      {BODY}
      <div id="bottom">{BOTTOM}</div>
    </div>
