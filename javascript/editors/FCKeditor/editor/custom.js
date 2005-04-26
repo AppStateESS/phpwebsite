@@ -1,5 +1,8 @@
 // Spellcheck needs configuration so removed
 // Form line removed because this is not the place for it
+// Removing 'FontFormat','FontName','FontSize' 'TextColor','BGColor',
+// and 'Style' as they interfere with the cursor keys.
+
 
 FCKConfig.ToolbarSets["phpws"] = [
 	['NewPage','Preview'],
@@ -11,10 +14,7 @@ FCKConfig.ToolbarSets["phpws"] = [
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
 	'/',
 	['Table', 'Link','Unlink','Anchor'],
-	['TextColor','BGColor'],
-	['Image','Table','Rule','Smiley','SpecialChar'],
-	['Style','FontFormat','FontName'],
-	['FontSize', '-', 'Source', 'About']
+	['Image','Table','Rule','Smiley','SpecialChar', '-', 'Source']
 ] ;
 
 FCKConfig.LinkBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Connector=connectors/php/connector.php' ;
