@@ -541,11 +541,13 @@ class PHPWS_Text {
   /**
    * Parses bbcode
    *
-   * This is a direct copy of corzblog's (http://corz.org/) blog code.
-   * Compared to Pear's bbcode parser, it is easier to use and edit.
+   * This is a direct copy of corzblog's (http://corz.org/) bb parsing
+   * code. Compared to Pear's bbcode parser, it is easier to use and
+   * edit.
    * It has been edited slightly to work specifically with phpWebSite.
-   *
-   *
+   * 
+   * @author (or at corz.org
+   * @modified Matt McNaney <matt at tux dot appstate dot edu>
    */
   function bb2html($bb2html, $title) {
     global  $insert_link, $effin_casinos, $spammer_preview;
