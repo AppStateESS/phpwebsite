@@ -19,7 +19,7 @@ define('PHPWS_ALLOWED_TAGS', '
 <b><a><i><u><ul><ol><li>
 <table><tr><td><dd><dt><dl>
 <p><br><div><span><blockquote>
-<th><tt><img><pre><hr>
+<th><tt><img><pre><hr><h1><h2><h3><h4>
 ');
 
 /******************* RELATIVE ADDRESSING ***********************
@@ -43,7 +43,10 @@ define('MAKE_ADDRESSES_RELATIVE', TRUE);
 // Set whether you want to allow bbcode to get parsed by default.
 define('ALLOW_BB_CODE', TRUE);
 // If TRUE, then 'smilies' will be parsed. The above MUST be TRUE.
-define('ALLOW_SMILIES', TRUE);
+define('ALLOW_BB_SMILIES', TRUE);
+
+// If TRUE, users can post with the [img] tag
+define('ALLOW_BB_IMAGES', TRUE);
 
 
 /******************* Profanity Filter ********************
