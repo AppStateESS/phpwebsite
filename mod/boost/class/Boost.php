@@ -405,7 +405,7 @@ class PHPWS_Boost {
     if (!is_dir($homeDir . '/images/mod/')){
       $content[] = _('Creating module image directory.');
       $this->addLog($mod->getTitle(), _('Created directory') . ' $homeDir/images/mod/');
-      mkdir('$homeDir/images/mod');
+      mkdir($homeDir . '/images/mod');
     }
 
     if ($mod->isFileDir()){
