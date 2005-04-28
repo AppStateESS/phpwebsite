@@ -1,4 +1,10 @@
 <?php
+/**
+ * The blog object class.
+ *
+ * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ * $Id$
+ */
 
 class Blog {
   var $id         = NULL;
@@ -31,7 +37,7 @@ class Blog {
 
   function setEntry($entry)
   {
-    $this->entry = PHPWS_Text::prepare($entry);
+    $this->entry = PHPWS_Text::parseInput($entry);
   }
 
   function getEntry($print=FALSE)
@@ -149,6 +155,7 @@ class Blog {
     if ($limited) {
       $link = $comments->countComments(TRUE);
       $template['COMMENT_LINK'] = PHPWS_Text::rewriteLink($link, 'blog', 'view_comments', $this->getId());
+      
       $last_poster = $comments->getLastPoster();
       if (!empty($last_poster)) {
 	$template['LAST_POSTER_LABEL'] = _('Last poster');
