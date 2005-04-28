@@ -844,7 +844,6 @@ class PHPWS_DB {
       break;
 
     case 'count':
-      PHPWS_DB::logDB($sql);
       $result = $this->select('row', $sql);
       if (PEAR::isError($result)){
 	return $result;
