@@ -259,12 +259,12 @@ class Blog_Admin {
       $form->addSubmit('submit', _('Add Entry'));
 
     if (Editor::willWork()){
-      $editor = & new Editor('entry', $blog->getEntry(TRUE));
+      $editor = & new Editor('entry', $blog->getEntry());
       $entry = $editor->get();
       $form->addTplTag('ENTRY', $entry);
       $form->addTplTag('ENTRY_LABEL', PHPWS_Form::makeLabel('entry',_('Entry')));
     } else {
-      $form->addTextArea('entry', $blog->getEntry(TRUE));
+      $form->addTextArea('entry', $blog->getEntry());
       $form->setRows('entry', '10');
       $form->setWidth('entry', '80%');
       $form->setLabel('entry', _('Entry'));
