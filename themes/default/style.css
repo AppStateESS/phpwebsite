@@ -12,6 +12,10 @@ q {
    font-size : 90%;
 }
 
+p {
+  margin : 2px;
+}
+
 .b {
    font-weight : bold;
 }
