@@ -1,5 +1,6 @@
+<br />
 <div class="comments">
-<div>{NEW_POST_LINK}</div>
+<div class="bgcolor1 padded">{NEW_POST_LINK}</div>
 <div>{EMPTY_MESSAGE}</div>
 <!-- BEGIN listrows -->
 <div class="box">
