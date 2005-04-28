@@ -8,7 +8,7 @@
  * @version $Id$
  * @author  Matthew McNaney <matt at tux dot appstate dot edu>
  * @author  Adam Morton
- * @author  Steven Levin <steven@NOSPAM.tux.appstate.edu>
+ * @author  Steven Levin
  * @author  Don Seiler <don@NOSPAM.seiler.us>
  * @package Core
  */
@@ -103,16 +103,37 @@ class PHPWS_Text {
       $text = PHPWS_Text::profanityFilter($text);
     }
       
-    if ($this->use_breaker) {
-      $text = PHPWS_Text::breaker($text);
-    }
-      
     if ($this->use_strip_tags) {
       $text = PHPWS_Text::strip_tags($text, $this->_allowed_tags);
     }
 
+    $text = PHPWS_Text::encodeXHTML($text);
+
+    if ($this->use_breaker) {
+      $text = PHPWS_Text::breaker($text);
+    }
+
     return $text;
   }
+
+
+  function encodeXHTML($text){
+    $xhtml['\$']   = '&#x24;';
+    $xhtml['<br>'] = '<br />';
+    $xhtml['™']    = '&trade;';
+    $xhtml['•']    = '&bull;';
+    $xhtml['°']    = '&deg;';
+    $xhtml['©']    = '&copy;';
+    $xhtml['®']    = '&reg;';
+    $xhtml['…']    = '&hellip;';
+    $xhtml['\'']    = '&#39;';
+    $text = strtr($text, $xhtml);
+    $text = preg_replace('/&(?!\w+;)(?!#)/U', '&amp;\\1', $text);
+
+    return $text;
+  }
+
+
 
   function getDB()
   {
@@ -165,76 +186,55 @@ class PHPWS_Text {
   }// END FUNC sentence()
 
 
+
   /**
-   * Adds breaks to text where newlines exist
-   * 
-   * This function will ONLY add a break if the current break is not preceded
-   * by certain tags (see below). This will prevent breaks in tables etc.
-   * Make sure you enter the tags in regular expression form.
+   * This is a replacement of the old breaker function
+   * Looking for something faster and cleaner.
    *
-   * @author Matt McNaney <matt at tux dot appstate dot edu>
-   * @param  string $text    Text you wish breaked
-   * @return string $content Formatted text
-   * @access public
+   * Also, used logic from cor's (see bb2html code below) function
+   * to parse the <pre> tags.
+   *
+   * @author Matthew McNaney <matt at tux dot appstate dot edu>
    */
-  function breaker($text){
-    if (!is_string($text)) exit ('breaker() was not sent a string');
+  function breaker($text)
+  {
+    $do_not_break = array('/(<table.*>)\n/iU',
+			  '/(<tr.*>)\n/iU',
+			  '/(<\/tr>)\n/i',
+			  '/(<\/td>)\n/i',
+			  '/(<\/th>)\n/i',
+			  '/(<\/li>)\n/i',
+			  '/(<\/p>)\n/i',
+			  '/(<br \/>)\n/i',
+			  '/(<\/dd>)\n/i',
+			  '/(<\/dt>)\n/i',
+			  '/(<\/h\d>)\n/i',
+			  );
 
-    $text_array = PHPWS_Text::sentence(trim($text));
-
-    if (count($text_array) == 1)
-      return $text . "\n";
-
-    $lines = count($text_array);
-    $endings = array ('<br \/>',
-		      '<br>',
-		      '<img .*>',
-		      '<\/?p.*>',
-		      '<\/?area.*>',
-		      '<\/?map.*>',
-		      '<\/?li.*>',
-		      '<\/?ol.*>',
-		      '<\/?ul.*>',
-		      '<\/?dl.*>',
-		      '<\/?dt.*>',
-		      '<\/?dd.*>',
-		      '<\/?table.*>',
-		      '<\/?th.*>',
-		      '<\/?tr.*>',
-		      '<\/?td.*>',
-		      '<\/?h..*>');
-
-    $search_string = implode('|', $endings);
-
-    $count = 0;
-    $content = NULL;
-    $preFlag = FALSE;
-
-    foreach ($text_array as $sentence){
-      if(!$preFlag) {
-	if(preg_match('/<pre>\$/iU', trim($sentence))) {
-	  $preFlag = TRUE;
-	  $content[] = $sentence."\n";
-	  continue;
-	}
-	if (!preg_match("/($search_string)$/iU" , trim($sentence))) $content[] = $sentence."<br />\n";
-	else $content[] = $sentence."\n";
-      } else if(preg_match("/<\/pre>\$/iU", trim($sentence))) {
-	$preFlag = FALSE;
-	$content[] = $sentence."\n";
-	continue;
-      } else {
-	$content[] = $sentence."\n";
-      }
+    $pre = array();
+    $i=0;
+    while ($pre_str = stristr($text,'<pre>')) {
+      $pre_str = substr($pre_str,0,strpos($pre_str,'</pre>')+6);
+      $text = str_replace($pre_str, "***pre_string***$i", $text);
+      $pre[$i] = str_replace("\r\n","\n",$pre_str);
+      $i++;
     }
 
-    return implode('', $content);
-  }// END FUNC breaker()
+    $text = str_replace("\r\n", "\n", $text);
 
+    $text = preg_replace($do_not_break, '\\1', $text); 
+    $text = nl2br($text);
+    $cp = count($pre)-1;
+    for($i=0;$i <= $cp;$i++) {
+      $text = str_replace("***pre_string***$i", '<pre>'.substr($pre[$i],5,-6).'</pre>', $text);
+    }
+
+    return $text;
+  }
 
   function parseInput($text, $encode=TRUE){
     if ($encode) {
-      $text = PHPWS_Text::encodeXHTML($text);
+      $text = htmlentities($text, ENT_QUOTES);
     }
     if (MAKE_ADDRESSES_RELATIVE) {
       PHPWS_Text::makeRelative($text);
@@ -242,31 +242,9 @@ class PHPWS_Text {
     return trim($text);
   }
 
-  function XHTMLArray(){
-    $xhtml["\$"] = '&#x0024;';
-    $xhtml['<br>'] = '<br />';
-    
-    return $xhtml;
-  }
-
-  function encodeXHTML($text){
-    $xhtml = PHPWS_Text::XHTMLArray();
-    $text = strtr($text, $xhtml);
-    $text = preg_replace("/&(?!\w+;)(?!#)/U", "&amp;\\1", $text);
-    $text = htmlentities($text, ENT_QUOTES);
-    return $text;
-  }
-
-  function textareaDecode($text){
-    $text = str_replace('<br />', '', $text);
-    return $text;
-  }
-
   /**
    * Prepares text for display
    *
-   * This function replaces the functionality of the 'parse' and appends
-   * the breaker function.
    * Should be used after retrieving data from the database
    *
    * @author                       Matthew McNaney <matt at tux dot appstate dot edu>
@@ -313,8 +291,7 @@ class PHPWS_Text {
     break;
 
     case 'number':
-    if (preg_match("/^[\d]+$/",$userEntry)) return TRUE;
-    else return FALSE;
+      return is_numeric($userEntry);
     break;
 
     case 'url':
@@ -357,7 +334,9 @@ class PHPWS_Text {
     }
   }
 
-
+  /**
+   * Returns a module link with the authkey attached
+   */
   function secureLink($subject, $module=NULL, $getVars=NULL, $target=NULL, $title=NULL){
     if (Current_User::isLogged()) {
       $getVars['authkey'] = Current_User::getAuthKey();
@@ -401,8 +380,7 @@ class PHPWS_Text {
   /**
    * Allows a quick link function for phpWebSite modules to the index.php.
    * 
-   * A replacement for the clunky function link. This is for modules accessing
-   * local information ONLY. It adds the hub web address and index.php automatically.
+   * For local links ONLY. It adds the hub web address and index.php automatically.
    * You supply the name of the module and the variables.
    *
    * @author Matthew McNaney <matt at tux dot appstate dot edu>
@@ -442,11 +420,12 @@ class PHPWS_Text {
    * @access public
    */
   function checkLink($link, $ssl=FALSE){
-    if (!stristr($link, "://")){
-      if ($ssl)
-	return "https://".$link;
-      else
-	return "http://".$link;
+    if (!stristr($link, '://')) {
+      if ($ssl) {
+	return 'https://'.$link;
+      } else {
+	return 'http://'.$link;
+      }
     }
     else return $link;
   }// END FUNC checkLink()
@@ -541,17 +520,14 @@ class PHPWS_Text {
   /**
    * Parses bbcode
    *
-   * This is a direct copy of corzblog's (http://corz.org/) bb parsing
+   * This is a copy of corzblog's (http://corz.org/) bb parsing
    * code. Compared to Pear's bbcode parser, it is easier to use and
-   * edit.
-   * It has been edited slightly to work specifically with phpWebSite.
+   * edit. It has been altered to work specifically with phpWebSite.
    * 
    * @author (or at corz.org
    * @modified Matt McNaney <matt at tux dot appstate dot edu>
    */
   function bb2html($bb2html, $title) {
-    global  $insert_link, $effin_casinos, $spammer_preview;
-
     /*	pre-formatted text (even bbcode inside [pre] text will remain untouched, as it should be)
 		there may be multiple <pre> blocks, so we grab them all and create an array	*/
     $pre = array(); $i=0;
@@ -562,20 +538,6 @@ class PHPWS_Text {
       $i++;
     }
 
-	
-    // oh dem pesky casinos...
-    if($effin_casinos == true) {
-      if(stristr($bb2html, 'casino')) {
-	$bb2html = preg_replace("/\[url(.*)\](.*)\[\/url\]/i",
-				"[url=\"http://$insert_link\" title=\"hahahah\!\"]\$2[/url]", $bb2html);
-			
-	//buggers!
-	$bb2html = preg_replace("/<a (.*)>(.*)<\/a>/",
-				"[url=\"http://$insert_link\" title=\"hahahah\!\"]\$2[/url]", $bb2html);
-      }
-    }
-
-	
     // now the bbcode proper..
 	
     // grab any *real* square brackets first, store em
@@ -584,8 +546,8 @@ class PHPWS_Text {
 	
     // news headline block
     $bb2html = str_replace('[news]', 
-			   '<table width="20%" border="0" align="right"><tr><td align="center"><span class="news"><b><big>', $bb2html);
-    $bb2html = str_replace('[/news]', '</big></b></span></td></tr></table>', $bb2html);
+			   '<table width="20%" border="0" align="right"><tr><td align="center"><span class="news b bigger">', $bb2html);
+    $bb2html = str_replace('[/news]', '</span></td></tr></table>', $bb2html);
 	
     // references - we need to create the whole string first, for the str_replace
     $r1 = '<a href="#refs-'.$title.'" title="'.$title.'"><font class="ref"><sup>';
@@ -602,23 +564,23 @@ class PHPWS_Text {
 	
     // ordinary transformations..
     // we rely on the browser producing \r\n (DOS) carriage returns, as per spec
-    $bb2html = str_replace("\r",'<br>', $bb2html);	// the \n remains, makes the raw html readable
+    //    $bb2html = str_replace("\r",'<br />', $bb2html);	// the \n remains, makes the raw html readable
     $bb2html = str_replace('[b]', '<b>', $bb2html);
     $bb2html = str_replace('[/b]', '</b>', $bb2html);
     $bb2html = str_replace('[i]', '<i>', $bb2html);
     $bb2html = str_replace('[/i]', '</i>', $bb2html);
     $bb2html = str_replace('[u]', '<u>', $bb2html);
     $bb2html = str_replace('[/u]', '</u>', $bb2html);
-    $bb2html = str_replace('[big]', '<big>', $bb2html);
-    $bb2html = str_replace('[/big]', '</big>', $bb2html);
-    $bb2html = str_replace('[sm]', '<small>', $bb2html);
-    $bb2html = str_replace('[/sm]', '</small>', $bb2html);
+    $bb2html = str_replace('[big]', '<span class="bigger">', $bb2html);
+    $bb2html = str_replace('[/big]', '</span>', $bb2html);
+    $bb2html = str_replace('[sm]', '<span class="smaller">', $bb2html);
+    $bb2html = str_replace('[/sm]', '</span>', $bb2html);
 	
 	
     // tables (couldn't resist this, too handy)
-    $bb2html = str_replace('[t]', '<table width="100%" border=0 cellspacing=0 cellpadding=0>', $bb2html);	
-    $bb2html = str_replace('[bt]', '<table width="100%" border=1 cellspacing=0 cellpadding=3>', $bb2html);
-    $bb2html = str_replace('[st]', '<table width="100%" border=0 cellspacing=3 cellpadding=3>', $bb2html);	
+    $bb2html = str_replace('[t]', '<table width="100%" border="0" cellspacing="0" cellpadding="0">', $bb2html);	
+    $bb2html = str_replace('[bt]', '<table width="100%" border="1" cellspacing="0" cellpadding="3">', $bb2html);
+    $bb2html = str_replace('[st]', '<table width="100%" border="0" cellspacing="3" cellpadding="3">', $bb2html);	
     $bb2html = str_replace('[/t]', '</table>', $bb2html);
     $bb2html = str_replace('[c]', '<td valign=top>', $bb2html);	// cell data
     $bb2html = str_replace('[/c]', '</td>', $bb2html);
@@ -630,15 +592,16 @@ class PHPWS_Text {
     $bb2html = str_replace('[list]', '<ul>', $bb2html);
     $bb2html = str_replace('[/list]', '</ul>', $bb2html);
 	
-    // smilies (just starting these, *ahem*) ..
-    
-    if (ALLOW_SMILIES) {
+    if (ALLOW_BB_SMILIES) {
       $bb2html = PHPWS_Text::getSmilie($bb2html);
     }
 
     // anchors and stuff..
-    $bb2html = str_replace('[img]', '<img border="0" src="', $bb2html);
-    $bb2html = str_replace('[/img]', '" alt="an image">', $bb2html);
+    if (ALLOW_BB_IMAGES) {
+      $bb2html = str_replace('[img]', '<img border="0" src="', $bb2html);
+      $bb2html = str_replace('[/img]', '" alt="an image" />', $bb2html);
+    }
+
     $bb2html = str_replace('[url=', '<a target="_blank" href=', $bb2html);
     $bb2html = str_replace('[/url]', '</a>', $bb2html);
     // Added for phpwebsite
@@ -648,14 +611,13 @@ class PHPWS_Text {
     $bb2html = str_replace('[/quote]', '</blockquote>', $bb2html);
 
     // code
-    $bb2html = str_replace('[code]', '<div class
-="simcode">', $bb2html);
+    $bb2html = str_replace('[code]', '<div class="simcode">', $bb2html);
     $bb2html = str_replace('[coderz]', '<div class="code">', $bb2html);
     $bb2html = str_replace('[/code]', '</div>', $bb2html);
     $bb2html = str_replace('[/coderz]', '</div>', $bb2html); // you can complete either way, it's all [/code]
 	
     // divisions..
-    $bb2html = str_replace('[hr]', '<hr size=1 width="70%" align=center>', $bb2html);
+    $bb2html = str_replace('[hr]', '<hr />', $bb2html);
     $bb2html = str_replace('[block]', '<blockquote>', $bb2html);
     $bb2html = str_replace('[/block]', '</blockquote>', $bb2html);
 	
@@ -669,15 +631,8 @@ class PHPWS_Text {
 	
     // special characters (html entity encoding) ..
     $bb2html = str_replace('[sp]', '&nbsp;', $bb2html);
-    $bb2html = str_replace('±', '&plusmn;', $bb2html);
-    $bb2html = str_replace('™', '&trade;', $bb2html);
-    $bb2html = str_replace('•', '&bull;', $bb2html);
-    $bb2html = str_replace('°', '&deg;', $bb2html);
     $bb2html = str_replace('[<]', '&lt;', $bb2html);
     $bb2html = str_replace('[>]', '&gt;', $bb2html);
-    $bb2html = str_replace('©', '&copy;', $bb2html);
-    $bb2html = str_replace('®', '&reg;', $bb2html);
-    $bb2html = str_replace('…', '&hellip;', $bb2html);
 	
     // for URL's..
     $bb2html = str_replace(']', ' >', $bb2html);	
@@ -691,16 +646,8 @@ class PHPWS_Text {
     for($i=0;$i <= $cp;$i++) {
       $bb2html = str_replace("***pre_string***$i", '<pre>'.substr($pre[$i],5,-6).'</pre>', $bb2html);
     }
-	
-    // prevent some idiot running arbitary php commands on our web server
-    $bb2html = preg_replace("/<\?(.*)\?>/i", "<b>script-kiddie prank: \\1</b>", $bb2html);
-	
-    // slash me!
-    if (get_magic_quotes_gpc()) {
-      return stripslashes($bb2html);
-    } else {
-      return ($bb2html);
-    }
+
+    return $bb2html;
   }/* end function bb2html($bb2html, $title) */
 
 }//END CLASS CLS_text
