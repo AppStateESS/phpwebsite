@@ -407,6 +407,8 @@ class Layout {
       $metatags = array_merge($metatags, $GLOBALS['extra_meta_tags']);
     }
 
+    $metatags[] = '<meta  content="text/html;  charset=UTF-8"  http-equiv="Content-Type">';
+
     $robot = Layout::getMetaRobot();
     $metatags[] = '<meta name="robots" content="' . $robot . '" />';
 
