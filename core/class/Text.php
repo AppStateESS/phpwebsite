@@ -118,14 +118,15 @@ class PHPWS_Text {
 
 
   function encodeXHTML($text){
-    $xhtml['\$']   = '&#x24;';
-    $xhtml['<br>'] = '<br />';
     $xhtml['™']    = '&trade;';
     $xhtml['•']    = '&bull;';
     $xhtml['°']    = '&deg;';
     $xhtml['©']    = '&copy;';
     $xhtml['®']    = '&reg;';
     $xhtml['…']    = '&hellip;';
+
+    $xhtml['\$']   = '&#x24;';
+    $xhtml['<br>'] = '<br />';
     $xhtml['\'']    = '&#39;';
     $text = strtr($text, $xhtml);
     $text = preg_replace('/&(?!\w+;)(?!#)/U', '&amp;\\1', $text);
@@ -133,12 +134,6 @@ class PHPWS_Text {
     return $text;
   }
 
-
-
-  function getDB()
-  {
-    return PHPWS_Text::parseInput($text);
-  }
 
   function strip_tags($text, $allowed_tags) {
     return strip_tags($text, $allowed_tags);
@@ -209,6 +204,7 @@ class PHPWS_Text {
 			  '/(<\/dd>)\n/i',
 			  '/(<\/dt>)\n/i',
 			  '/(<\/h\d>)\n/i',
+			  '/(<blockquote>)\n/i',			  
 			  );
 
     $pre = array();
@@ -234,7 +230,7 @@ class PHPWS_Text {
 
   function parseInput($text, $encode=TRUE){
     if ($encode) {
-      $text = htmlentities($text, ENT_QUOTES);
+      $text = htmlentities($text, ENT_QUOTES, 'UTF-8');
     }
     if (MAKE_ADDRESSES_RELATIVE) {
       PHPWS_Text::makeRelative($text);
@@ -546,14 +542,14 @@ class PHPWS_Text {
 	
     // news headline block
     $bb2html = str_replace('[news]', 
-			   '<table width="20%" border="0" align="right"><tr><td align="center"><span class="news b bigger">', $bb2html);
+			   '<table width="20%" border="0" align="right"><tr><td align="center"><span class="news">', $bb2html);
     $bb2html = str_replace('[/news]', '</span></td></tr></table>', $bb2html);
 	
     // references - we need to create the whole string first, for the str_replace
     $r1 = '<a href="#refs-'.$title.'" title="'.$title.'"><font class="ref"><sup>';
     $bb2html = str_replace('[ref]', $r1 , $bb2html);
     $r2 = '<p id="refs-'.$title.'"></p>
-<font class="ref"><b><u><a title="back to the text" href="javascript:history.go(-1)">references:</a></u><br><br>1: </b></font><font class="reftext">';
+<font class="ref"><b><u><a title="back to the text" href="javascript:history.go(-1)">references:</a></u><br /><br />1: </b></font><font class="reftext">';
     $bb2html = str_replace('[reftxt1]', $r2 , $bb2html);
     $bb2html = str_replace('[reftxt2]', '<font class="ref"><b>2: </b></font><font class="reftext">', $bb2html);
     $bb2html = str_replace('[reftxt3]', '<font class="ref"><b>3: </b></font><font class="reftext">', $bb2html);
@@ -600,13 +596,14 @@ class PHPWS_Text {
     if (ALLOW_BB_IMAGES) {
       $bb2html = str_replace('[img]', '<img border="0" src="', $bb2html);
       $bb2html = str_replace('[/img]', '" alt="an image" />', $bb2html);
+    } else {
+      $bb2html = str_replace('[img]', '[' . _('No Images') . ']', $bb2html);
+      $bb2html = str_replace('[/img]', '[/' . _('No Images') . ']', $bb2html);
     }
 
-    $bb2html = str_replace('[url=', '<a target="_blank" href=', $bb2html);
-    $bb2html = str_replace('[/url]', '</a>', $bb2html);
-    // Added for phpwebsite
-    $bb2html = preg_replace('/\[quote=([\w\s\.]+)\]/', '<blockquote><b>\\1 ' . _('said') . ':</b><br />', $bb2html);
 
+    $bb2html = preg_replace('/\[url="(.*)"\](.*)\[\/url\]/Ui', '<a target="_blank" href="\\1">\\2</a>', $bb2html);
+    $bb2html = preg_replace('/\[quote="(.*)"\]/Ui', '<blockquote><h3>\\1 ' . _('wrote') . ':</h3>', $bb2html);
     $bb2html = str_replace('[quote]', '<blockquote>', $bb2html);
     $bb2html = str_replace('[/quote]', '</blockquote>', $bb2html);
 
@@ -633,10 +630,9 @@ class PHPWS_Text {
     $bb2html = str_replace('[sp]', '&nbsp;', $bb2html);
     $bb2html = str_replace('[<]', '&lt;', $bb2html);
     $bb2html = str_replace('[>]', '&gt;', $bb2html);
-	
-    // for URL's..
-    $bb2html = str_replace(']', ' >', $bb2html);	
-	
+
+    //spoiler
+    $bb2html = preg_replace('/\[spoiler\](.*)\[\/spoiler\]/Ui', _('Spoiler') . ':<br /><span class="spoiler">\\1</span>', $bb2html);
     // get back those square brackets..
     $bb2html = str_replace('**$@$**', '[', $bb2html);
     $bb2html = str_replace('**@^@**', ']', $bb2html);
