@@ -162,7 +162,7 @@ class Blog {
 	$template['LAST_POSTER'] = $last_poster;
       }
     } elseif ($this->id) {
-      $template['COMMENTS'] = $comments->getAll();
+      $template['COMMENTS'] = $comments->view();
       $related = & new Related;
       $related->setKey($key);
       $related->setUrl($this->getViewLink(TRUE));
