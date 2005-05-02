@@ -46,7 +46,7 @@ define('ALLOW_BB_CODE', TRUE);
 define('ALLOW_BB_SMILIES', TRUE);
 
 // If TRUE, users can post with the [img] tag
-define('ALLOW_BB_IMAGES', TRUE);
+define('ALLOW_BB_IMAGES', FALSE);
 
 
 /******************* Profanity Filter ********************
