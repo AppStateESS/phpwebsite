@@ -7,10 +7,6 @@
  * @version $Id$
  */
 
-define('THREADED_VIEW', 1);
-define('NESTED_VIEW',   2);
-define('FLAT_VIEW',     3);
-
 // This will be set by config and cookie later
 define('CURRENT_VIEW_MODE', 3);
 
@@ -25,6 +21,11 @@ class Comments {
     $thread->setSourceUrl($source_url);
     $thread->buildThread();
     return $thread;
+  }
+
+  function adminAction($command)
+  {
+
   }
 
   function userAction($command)
@@ -63,7 +64,13 @@ class Comments {
 	  '</a>';
       }
       break;
+
+    case 'view_comment':
+      $title = 'Post here?';
+      $content[] = Comments::viewComment($_REQUEST['cm_id']);
+      break;
     }
+
 
     $template['TITLE'] = $title;
     $template['CONTENT'] = implode('<br />', $content);
@@ -175,6 +182,17 @@ class Comments {
     }
   }
 
+  function viewComment($cm_id)
+  {
+    $comment = & new Comment_Item($cm_id);
+
+    $tpl = $comment->getTpl();
+    $thread = & new Comment_Thread($comment->getThreadId());
+    $tpl['CHILDREN'] = $thread->view($comment->getId());
+    $content = PHPWS_Template::process($tpl, 'comments', 'view_one.tpl');
+    return $content;
+    
+  }
 }
 
 ?>
