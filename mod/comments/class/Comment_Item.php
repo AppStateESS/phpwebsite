@@ -90,6 +90,10 @@ class Comment_Item {
     $this->thread_id = (int)$thread_id;
   }
 
+  function getThreadId()
+  {
+    return $this->thread_id;
+  }
 
   function setParent($parent)
   {
@@ -224,7 +228,10 @@ class Comment_Item {
     $template['CREATE_TIME']   = $this->getCreateTime();
     $template['REPLY_LINK']    = $this->replyLink();
     $template['EDIT_LINK']     = $this->editLink();
+    $template['DELETE_LINK']   = $this->deleteLink();
+    $template['VIEW_LINK']     = $this->viewLink();
     if (isset($this->edit_author)) {
+      $template['EDIT_LABEL']        = _('Edited');
       $template['EDIT_AUTHOR']       = $this->getEditAuthor();
       $template['EDIT_AUTHOR_LABEL'] = _('Edited by');
       $template['EDIT_TIME_LABEL']   = _('Edited on');
@@ -240,7 +247,6 @@ class Comment_Item {
     if (Current_User::allow('comments')) {
       $template['IP_ADDRESS'] = $this->getIp();
     }
-
     return $template;
   }
 
@@ -283,6 +289,21 @@ class Comment_Item {
     }
   }
 
+  function deleteLink()
+  {
+    if (Current_User::allow('comments', 'delete_comments')) {
+      $vars['QUESTION'] = _('Are you sure you want to delete this comment?');
+      $vars['ADDRESS'] = 'index.php?module=comments&amp;thread_id=' . $this->thread_id
+	. '&amp;cm_id=' . $this->getId() . '&amp;admin_action=delete_comment&amp;authkey='
+	. Current_User::getAuthKey();
+      $vars['LINK'] = _('Delete');
+      return Layout::getJavascript('confirm', $vars);
+    } else {
+      return NULL;
+    }
+
+  }
+
   function replyLink()
   {
     $vars['user_action']   = 'post_comment';
@@ -290,6 +311,15 @@ class Comment_Item {
     $vars['cm_parent']     = $this->getId();
 
     return PHPWS_Text::moduleLink(_('Reply'), 'comments', $vars);
+  }
+
+  function viewLink()
+  {
+    $vars['user_action']   = 'view_comment';
+    //    $vars['thread_id']     = $this->thread_id;
+    $vars['cm_id']     = $this->getId();
+
+    return '#' . PHPWS_Text::moduleLink($this->id, 'comments', $vars);
   }
 
 }
