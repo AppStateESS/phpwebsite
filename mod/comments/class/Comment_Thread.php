@@ -163,41 +163,24 @@ class Comment_Thread {
     return $db->saveObject($this);
   }
 
-  function flatView()
+  function view()
   {
     PHPWS_Core::initCoreClass('DBPager.php');
 
     $page_tags['NEW_POST_LINK'] = $this->postLink();
     $pager = & new DBPager('comments_items', 'Comment_Item');
     $pager->setModule('comments');
-    $pager->setTemplate('flat_view.tpl');
+    $pager->setTemplate('view.tpl');
     $pager->setLink($this->source_url);
     $pager->addPageTags($page_tags);
     $pager->addRowTags('getTpl');
+    if (!empty($parent_id)) {
+      $pager->addWhere('parent', (int)$parent_id);
+    }
     $pager->addWhere('thread_id', $this->id);
     $pager->setLimitList(array(10, 20, 50));
     $pager->setEmptyMessage(_('No comments'));
     $content = $pager->get();
-    return $content;
-  }
-
-  function getAll()
-  {
-
-    switch (CURRENT_VIEW_MODE) {
-    case THREADED_VIEW:
-      $content = $this->threadedView();
-      break;
-	
-    case NESTED_VIEW:
-      $content = $this->nestedView();
-      break;
-	
-    case FLAT_VIEW:
-      $content = $this->flatView();
-      break;
-    }
-
     return $content;
   }
 
