@@ -16,6 +16,11 @@ p {
   margin : 2px;
 }
 
+blockquote {
+   border-top : 1px solid #fff;
+   border-bottom : 1px solid #fff;
+}
+
 .b {
    font-weight : bold;
 }
@@ -191,6 +196,10 @@ table.form-table .label {
 	margin-bottom : 5px;
 }
 
+.spoiler {
+	 background-color : black;
+	 color : black;
+}
 
 .error {
        color : #cf2626;
