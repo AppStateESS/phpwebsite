@@ -86,7 +86,8 @@ class Blog {
 
   function &makeThread()
   {
-    return Comments::makeThread($this->getKey());
+    return Comments::makeThread($this->getKey(),
+				'index.php?module=blog&action=view_comments&id=' . $this->id);
   }
 
   function save()
