@@ -173,8 +173,24 @@ class PHPWS_Form {
     return $this->add($name, 'check', $value);
   }
 
-  function addHidden($name, $value=NULL){
-    return $this->add($name, 'hidden', $value);
+  function addHidden($name, $value=NULL)
+  {
+    if (is_array($name)) {
+      return $this->duplicate($name, 'hidden');
+    } else {
+      return $this->add($name, 'hidden', $value);
+    }
+  }
+
+  function duplicate($dup, $type)
+  {
+    foreach ($dup as $name=>$value) {
+      $result = $this->add($name, $type, $value);
+      if (PEAR::isError($result)) {
+	return $result;
+      }
+    }
+    return TRUE;
   }
 
   /**
@@ -190,15 +206,6 @@ class PHPWS_Form {
    * @param mixed  value The default value of the form element
    */
   function add($name, $type=NULL, $value=NULL){
-    if (is_array($name) && ($type != 'select' || $type != 'multiple')) {
-      foreach ($name as $key=>$value) {
-	$result = $this->add($key, $type, $value);
-	if (PEAR::isError($result)) {
-	  return $result;
-	}
-      }
-      return TRUE;
-    }
     if (preg_match('/[^\[\]\w]+/i', $name)) {
       return PHPWS_Error::get(PHPWS_FORM_BAD_NAME, 'core', 'PHPWS_Form::add', array($name));
     }
