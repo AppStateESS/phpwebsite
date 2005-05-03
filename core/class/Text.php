@@ -646,6 +646,13 @@ class PHPWS_Text {
     return $bb2html;
   }/* end function bb2html($bb2html, $title) */
 
+  function getGetValues()
+  {
+    $url = parse_url($_SERVER['REQUEST_URI']);
+    parse_str($url['query'], $output);
+    return $output;
+  }
+
 }//END CLASS CLS_text
 
 
