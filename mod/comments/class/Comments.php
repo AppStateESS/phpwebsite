@@ -14,7 +14,7 @@ PHPWS_Core::initModClass('comments', 'Comment_Thread.php');
 
 class Comments {
 
-  function &makeThread($key, $source_url=NULL)
+  function &makeThread($key, $source_url)
   {
     $thread = & new Comment_Thread;
     $thread->setKey($key);

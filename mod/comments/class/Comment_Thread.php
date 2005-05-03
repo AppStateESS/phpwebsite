@@ -114,20 +114,16 @@ class Comment_Thread {
     return $this->id;
   }
 
-  function setSourceUrl($link=NULL)
+  function setSourceUrl($link)
   {
-    if (isset($link)) {
-      $link = str_replace('&amp;', '&', $link);
-      $this->source_url = stristr($link, 'index.php?');
-    } else {
-      $this->source_url = $_SERVER['argv'][0];
-    }
+    $link = str_replace('&amp;', '&', $link);
+    $this->source_url = stristr($link, 'index.php?');
   }
 
   function buildSourceValues()
   {
     $url = parse_url($this->source_url);
-    parse_str($url['path'], $output);
+    parse_str($url['query'], $output);
     $this->_source_values = $output;
   }
 
@@ -267,23 +263,14 @@ class Comment_Thread {
     $page_tags = $form->getTemplate();
     $page_tags['NEW_POST_LINK'] = $this->postLink();
 
-
     $pager->setModule('comments');
     $pager->setTemplate('view.tpl');
     $pager->setLink($this->source_url);
     $pager->addPageTags($page_tags);
     $pager->addRowTags('getTpl');
-
-
-
-
     $pager->setLimitList(array(10, 20, 50));
     $pager->setEmptyMessage(_('No comments'));
     $content = $pager->get();
-    /*
-    echo gmmktime();
-    echo    PHPWS_DB::lastQuery();
-    */
     return $content;
   }
 
