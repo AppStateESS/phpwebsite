@@ -14,11 +14,12 @@ PHPWS_Core::initModClass('comments', 'Comment_Thread.php');
 
 class Comments {
 
-  function &makeThread($key, $source_url)
+  function &makeThread($key, $source_url=NULL)
   {
     $thread = & new Comment_Thread;
     $thread->setKey($key);
     $thread->setSourceUrl($source_url);
+    $thread->buildSourceValues();
     $thread->buildThread();
     return $thread;
   }
