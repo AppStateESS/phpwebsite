@@ -77,6 +77,8 @@ class PHPWS_Form {
   var $tagReplace = array();
 
   var $allowFormName = FALSE;
+  
+  var $use_auth_key = TRUE;
 
   /**
    * Constructor for class
@@ -84,6 +86,11 @@ class PHPWS_Form {
   function PHPWS_Form($id=NULL){
     $this->id = $id;
     $this->reset();
+  }
+
+  function noAuthKey()
+  {
+    $this->use_auth_key = FALSE;
   }
 
   function reset(){
@@ -150,11 +157,11 @@ class PHPWS_Form {
     return $this->add($name, 'multiple', $value);
   }
 
-  function addRadio($name, $value){
+  function addRadio($name, $value=NULL){
     return $this->add($name, 'radio', $value);
   }
 
-  function addRadioButton($name, $value){
+  function addRadioButton($name, $value=NULL){
     return $this->add($name, 'radio', $value);
   }
 
@@ -166,7 +173,7 @@ class PHPWS_Form {
     return $this->add($name, 'check', $value);
   }
 
-  function addHidden($name, $value){
+  function addHidden($name, $value=NULL){
     return $this->add($name, 'hidden', $value);
   }
 
@@ -183,8 +190,18 @@ class PHPWS_Form {
    * @param mixed  value The default value of the form element
    */
   function add($name, $type=NULL, $value=NULL){
-    if (preg_match('/[^\[\]\w]+/i', $name))
+    if (is_array($name) && ($type != 'select' || $type != 'multiple')) {
+      foreach ($name as $key=>$value) {
+	$result = $this->add($key, $type, $value);
+	if (PEAR::isError($result)) {
+	  return $result;
+	}
+      }
+      return TRUE;
+    }
+    if (preg_match('/[^\[\]\w]+/i', $name)) {
       return PHPWS_Error::get(PHPWS_FORM_BAD_NAME, 'core', 'PHPWS_Form::add', array($name));
+    }
 
     $result = PHPWS_Form::createElement($name, $type, $value);
 
@@ -757,8 +774,9 @@ class PHPWS_Form {
     if ($helperTags)
       $template['START_FORM'] = $this->getStart();
 
-    if (Current_User::isLogged())
+    if (Current_User::isLogged() && $this->use_auth_key) {
       $this->addHidden('authkey', Current_User::getAuthKey());
+    }
 
     foreach ($this->_elements as $elementName=>$element){
       $multiple = FALSE;
