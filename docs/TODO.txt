@@ -44,7 +44,7 @@ system track a user's comments
 
 Search panel per user
 
-create different views
+Allow developer to pick template
 
 Layout
 ---------------
