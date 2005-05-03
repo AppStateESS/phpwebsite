@@ -152,6 +152,12 @@ class DBPager {
 
   }
 
+  function setOrder($column, $direction)
+  {
+    $this->orderby =  preg_replace('/\W/', '', $column);
+    $this->orderby_dir = preg_replace('/\W/', '', $direction);
+  }
+
   function setDefaultLimit($limit) {
     if (empty($this->limit))
       $this->limit = (int)$limit;
