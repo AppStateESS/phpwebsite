@@ -1,8 +1,9 @@
 <br />
 <div class="comments">
-<div class="bgcolor1 padded">{NEW_POST_LINK}</div>
+<div class="bgcolor1 padded">{START_FORM}<b>{PAGE_LABEL}:</b> {PAGES} | {NEW_POST_LINK} {TIME_PERIOD}{ORDER}{SUBMIT}{END_FORM}</div>
 <div>{EMPTY_MESSAGE}</div>
 <!-- BEGIN listrows -->
+
 <div class="box">
   <div class="bgcolor1 padded">
     <h3>{SUBJECT_LABEL}: {SUBJECT}</h3>
@@ -26,7 +27,7 @@
 <!-- END listrows -->
 </div>
 <div class="align-center">
-  <b>{PAGE_LABEL}</b><br />
+  <b>{PAGE_LABEL}:</b>
   {PAGES}<br />
   {LIMITS}
 </div>
