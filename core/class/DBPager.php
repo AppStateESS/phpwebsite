@@ -287,8 +287,9 @@ class DBPager {
     if ($this->limit > 0)
       $this->db->setLimit($this->getLimit());
 
-    if (isset($this->orderby))
+    if (isset($this->orderby)) {
       $this->db->addOrder($this->orderby . ' ' . $this->orderby_dir);
+    }
 
     $result = $this->db->getObjects($this->class);
 
@@ -299,7 +300,6 @@ class DBPager {
   }
 
   function getPageLinks(){
-
     if ($this->total_pages < 1) {
       $current_page = $total_pages = 1;
     } else {
@@ -320,11 +320,15 @@ class DBPager {
       $paddingPoint = $limitList[] = $this->total_pages - 1;
       $limitList[] = $this->total_pages;
     }
+
     $values = $this->getLinkValues();
 
     if ($current_page != 1){
-      $values['page'] = 'page=' . ($this->current_page - 1);
-      $pages[] = '<a href="' . $this->link . '&amp;' . implode('&amp;', $values) . '">' . $this->page_turner_left . "</a>\n";
+      $values['page'] = $this->current_page - 1;
+      foreach ($values as $key => $value) {
+	$link_pairs1[] = "$key=$value";
+      }
+      $pages[] = '<a href="' . $this->link . '&amp;' . implode('&amp;', $link_pairs1) . '">' . $this->page_turner_left . "</a>\n";
     }
 
     for ($i=1; $i <= $total_pages; $i++){
@@ -346,10 +350,15 @@ class DBPager {
 	$recock = TRUE;
 
 
-      $values['page'] = "page=$i";
+      $values['page'] = $i;
 
-      if ($this->current_page != $i)
-	$pages[] = '<a href="' . $this->link . '&amp;' . implode('&amp;', $values) . "\">$i</a>\n";
+      if ($this->current_page != $i) {
+	$link_pairs2 = array();
+	foreach ($values as $key => $value) {
+	  $link_pairs2[] = "$key=$value";
+	}
+	$pages[] = '<a href="' . $this->link . '&amp;' . implode('&amp;', $link_pairs2) . "\">$i</a>\n";
+      }
       else
 	$pages[] = $i;
 
@@ -364,8 +373,11 @@ class DBPager {
     }
 
     if ($this->current_page != $this->total_pages){
-      $values['page'] = 'page=' . ($this->current_page + 1);
-      $pages[] = '<a href="' . $this->link . '&amp;' . implode('&amp;', $values) . '">' . $this->page_turner_right . "</a>\n";
+      $values['page'] = $this->current_page + 1;
+	foreach ($values as $key => $value) {
+	  $link_pairs3[] = "$key=$value";
+	}
+      $pages[] = '<a href="' . $this->link . '&amp;' . implode('&amp;', $link_pairs3) . '">' . $this->page_turner_right . "</a>\n";
     }
 
     return implode(' ', $pages);
@@ -403,32 +415,48 @@ class DBPager {
   }
 
   function getLinkValues(){
+    if (isset($GLOBALS['DBPager_Link_Values'])) {
+      return $GLOBALS['DBPager_Link_Values'];
+    }
+
     if (empty($this->limit)) {
       $this->limit = DBPAGER_DEFAULT_LIMIT;
     }
 
-    $values['page'] = 'page=' . $this->current_page;
-    $values['limit'] = 'limit=' . $this->limit;
+    $values['page'] = $this->current_page;
+    $values['limit'] = $this->limit;
 
     if (isset($this->search))
-      $values['search'] = 'search=' . $this->search;
+      $values['search'] = $this->search;
 
     if (isset($this->orderby)){
-      $values['orderby'] = 'orderby=' . $this->orderby;
+      $values['orderby'] = $this->orderby;
       if (isset($this->orderby_dir))
-	$values['orderby_dir'] = 'orderby_dir=' . $this->orderby_dir;
+	$values['orderby_dir'] = $this->orderby_dir;
     }
 
+    $url = parse_url($this->link);
+    parse_str(str_replace('&amp;', '&', $url['query']), $output);
+    $extra = PHPWS_Text::getGetValues();
+    $diff = array_diff_assoc($extra, $output);
+    $diff = array_diff_assoc($diff, $values);
+    $values = array_merge($diff, $values);
+    $GLOBALS['DBPager_Link_Values'] = $values;
     return $values;
   }
 
+
   function getLimitList(){
-    foreach ($this->limitList as $limit){
-      $values = $this->getLinkValues();
-      $values['limit'] = "limit=$limit";
-      $links[] = '<a href="' . $this->link . '&amp;' . implode('&amp;', $values) . '">' . $limit . '</a>';
+    $values = $this->getLinkValues();
+    unset($values['limit']);
+    foreach ($values as $key => $value) {
+      $link_pairs[] = "$key=$value";
     }
 
+    foreach ($this->limitList as $limit){
+      $link_pairs['a'] = "limit=$limit";
+      $links[] = '<a href="' . $this->link . '&amp;' . implode('&amp;', $link_pairs) . '">' . $limit . '</a>';
+    }
     return implode(' ', $links);
   }
 
@@ -567,11 +595,7 @@ class DBPager {
     if (!isset($this->template))
       return PHPWS_Error::get(DBPAGER_TEMPLATE_NOT_SET, 'core', 'DBPager::get()');
 
-  
-
-
     $rows = $this->getPageRows();
-
 
     if (isset($this->toggles))
       $max_tog = count($this->toggles);
