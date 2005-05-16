@@ -6,7 +6,6 @@ CREATE TABLE comments_items (
   subject varchar(100) NOT NULL default '',
   entry text NOT NULL,
   author_id int NOT NULL default '0',
-  author_name varchar(50) NOT NULL default '',
   edit_author varchar(50) default NULL,
   create_time int NOT NULL default '0',
   edit_time int NOT NULL default '0',
@@ -20,5 +19,6 @@ CREATE TABLE comments_threads (
   item_name varchar(40) NOT NULL default '',
   item_id int NOT NULL default '0',
   source_url varchar(255) NOT NULL default '',
+  total_comments int NOT NULL default '0',
   PRIMARY KEY  (id)
 );

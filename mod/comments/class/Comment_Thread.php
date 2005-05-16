@@ -18,6 +18,7 @@ class Comment_Thread {
   var $item_name      = NULL;
   var $item_id        = NULL;
   var $source_url     = NULL;
+  var $total_comments = 0;
   var $_source_values = NULL;
   var $_key           = NULL;
   var $_comments      = NULL;
@@ -48,19 +49,16 @@ class Comment_Thread {
 
   function countComments($formatted=FALSE)
   {
-    $db = & new PHPWS_DB('comments_items');
-    $db->addWhere('thread_id', $this->id);
-    $count =  $db->count();
     if ($formatted) {
-      if (empty($count)) {
+      if (empty($this->total_comments)) {
 	return _('No comments');
-      } elseif ($count == 1) {
+      } elseif ($this->total_comments == 1) {
 	return _('1 comment');
       } else {
-	return sprintf(_('%s comments'), $count);
+	return sprintf(_('%s comments'), $this->total_comments);
       }
     } else {
-      return $count;
+      return $this->total_comments;
     }
   }
 
@@ -290,6 +288,12 @@ class Comment_Thread {
     return $comment_list;
   }
 
+  function increase($thread_id)
+  {
+    $sql = 'UPDATE comments_threads SET total_comments=total_comments+1 
+WHERE id=' . (int)$thread_id;
+    return PHPWS_DB::query($sql, TRUE);
+  }
 }
 
 ?>

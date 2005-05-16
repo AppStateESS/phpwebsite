@@ -70,6 +70,10 @@ class Comments {
       $title = 'Post here?';
       $content[] = Comments::viewComment($_REQUEST['cm_id']);
       break;
+
+    case 'delete_comment':
+
+      break;
     }
 
 

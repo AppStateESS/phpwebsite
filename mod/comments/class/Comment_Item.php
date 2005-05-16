@@ -29,9 +29,6 @@ class Comment_Item {
   // Author's user id
   var $author_id   = 0;
 
-  // Author (display name) of comment writer
-  var $author_name = NULL;
-
   // IP address of poster
   var $author_ip   = NULL;
 
@@ -132,17 +129,10 @@ class Comment_Item {
   function stampAuthor()
   {
     if (Current_User::isLogged()) {
-      $this->author_name = Current_User::getDisplayName();PHPWS_Core::initCoreClass("DBPager.php");
       $this->author_id = Current_User::getId();
     } else {
-      $this->author_name = DEFAULT_ANONYMOUS_TITLE;
       $this->author_id = 0;
     }
-  }
-
-  function getAuthorName()
-  {
-    return $this->author_name;
   }
 
   function getAuthorId()
@@ -221,7 +211,7 @@ class Comment_Item {
     $template['SUBJECT_LABEL'] = _('Subject');
     $template['ENTRY']         = $this->getEntry(TRUE);
     $template['ENTRY_LABEL']   = _('Comment');
-    $template['AUTHOR']        = $this->getAuthorName();
+    $template['AUTHOR']        = 'fix it';
     $template['AUTHOR_LABEL']  = _('Author');
     $template['POSTED_BY']     = _('Posted by');
     $template['POSTED_ON']     = _('Posted on');
@@ -269,10 +259,17 @@ class Comment_Item {
 
     if ((bool)$this->id) {
       $this->stampEditor();
+      $increase_count = FALSE;
+    } else {
+      $increase_count = TRUE;
     }
 
     $db = & new PHPWS_DB('comments_items');
-    return $db->saveObject($this);
+    $result = $db->saveObject($this);
+    if (!PEAR::isError($result) && $increase_count) {
+      Comment_Thread::increase($this->thread_id);
+    }
+    return $result;
   }
 
   function editLink()

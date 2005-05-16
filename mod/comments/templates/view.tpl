@@ -1,6 +1,8 @@
 <br />
 <div class="comments">
-<div class="bgcolor1 padded">{START_FORM}<b>{PAGE_LABEL}:</b> {PAGES} | {NEW_POST_LINK} {TIME_PERIOD}{ORDER}{SUBMIT}{END_FORM}</div>
+<div class="bgcolor1 padded">
+{START_FORM}<!-- BEGIN page-select --><b>{PAGE_LABEL}:</b> {PAGES}&nbsp;|&nbsp;
+<!-- END page-select -->{NEW_POST_LINK} {TIME_PERIOD}{ORDER}{SUBMIT}{END_FORM}</div>
 <div>{EMPTY_MESSAGE}</div>
 <!-- BEGIN listrows -->
 
@@ -26,8 +28,10 @@
 </div>
 <!-- END listrows -->
 </div>
+<!-- BEGIN page-select2 -->
 <div class="align-center">
   <b>{PAGE_LABEL}:</b>
   {PAGES}<br />
   {LIMITS}
 </div>
+<!-- END page-select2 -->

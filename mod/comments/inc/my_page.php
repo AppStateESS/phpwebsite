@@ -1,7 +1,8 @@
 <?php
 
 function my_page(){
-  return "some comment options will go here";
+  PHPWS_Core::initModClass('comments', 'My_Page.php');
+  return Comments_My_Page::main();
 }
 
 ?>
