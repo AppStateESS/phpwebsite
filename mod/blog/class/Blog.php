@@ -44,9 +44,9 @@ class Blog {
   {
     if ($print) {
       return PHPWS_Text::parseOutput($this->entry);
-    }
-    else
+    } else {
       return $this->entry;
+    }
   }
 
   function getAuthor()
@@ -219,7 +219,7 @@ class Blog {
   }
 
   function getListEntry(){
-    return substr(strip_tags($this->getEntry(TRUE)), 0, 30) . ' . . .';
+    return substr(strip_tags(str_replace('<br />', ' ', $this->getEntry(TRUE))), 0, 30) . ' . . .';
   }
 
 
