@@ -116,6 +116,31 @@ class PHPWS_Text {
     return $text;
   }
 
+  /**
+   * Cleans up MSWord smart quotes
+   * Gleaned from:
+   *  http://us4.php.net/manual/en/function.htmlentities.php
+   *
+   * @author wwb at 3dwargamer dot net
+   */
+  function CleanupSmartQuotes($text)
+  {
+    $badwordchars=array(
+			chr(145),
+			chr(146),
+			chr(147),
+			chr(148),
+			chr(151)
+			);
+    $fixedwordchars=array(
+			  "'",
+			  "'",
+			  '&quot;',
+			  '&quot;',
+			  '&mdash;'
+			  );
+    return str_replace($badwordchars,$fixedwordchars,$text);
+  }
 
   function encodeXHTML($text){
     $xhtml['™']    = '&trade;';
@@ -229,6 +254,9 @@ class PHPWS_Text {
   }
 
   function parseInput($text, $encode=TRUE){
+    $text = trim($text);
+
+    $text = PHPWS_Text::CleanupSmartQuotes($text);
     if ($encode) {
       $text = htmlentities($text, ENT_QUOTES, 'UTF-8');
     }
@@ -649,6 +677,11 @@ class PHPWS_Text {
   function getGetValues()
   {
     $url = parse_url($_SERVER['REQUEST_URI']);
+
+    if (empty($url['query'])) {
+      return NULL;
+    }
+
     parse_str($url['query'], $output);
     return $output;
   }
