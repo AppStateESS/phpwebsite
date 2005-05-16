@@ -258,17 +258,11 @@ class Blog_Admin {
     } else
       $form->addSubmit('submit', _('Add Entry'));
 
-    if (Editor::willWork()){
-      $editor = & new Editor('entry', $blog->getEntry());
-      $entry = $editor->get();
-      $form->addTplTag('ENTRY', $entry);
-      $form->addTplTag('ENTRY_LABEL', PHPWS_Form::makeLabel('entry',_('Entry')));
-    } else {
-      $form->addTextArea('entry', $blog->getEntry());
-      $form->setRows('entry', '10');
-      $form->setWidth('entry', '80%');
-      $form->setLabel('entry', _('Entry'));
-    }
+    $form->addTextArea('entry', $blog->getEntry());
+    $form->useEditor('entry');
+    $form->setRows('entry', '10');
+    $form->setWidth('entry', '80%');
+    $form->setLabel('entry', _('Entry'));
 
     $form->addText('title', $blog->title);
     $form->setSize('title', 40);
