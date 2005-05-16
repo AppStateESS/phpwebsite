@@ -435,12 +435,22 @@ class DBPager {
 	$values['orderby_dir'] = $this->orderby_dir;
     }
 
+    // pull get values from link setting
     $url = parse_url($this->link);
     parse_str(str_replace('&amp;', '&', $url['query']), $output);
+
+    // pull any extra values in current url
     $extra = PHPWS_Text::getGetValues();
-    $diff = array_diff_assoc($extra, $output);
-    $diff = array_diff_assoc($diff, $values);
-    $values = array_merge($diff, $values);
+
+    // if extra values exist, add them to the values array
+    // ignore matches in the output and other values
+    if (!empty($extra)) {
+      $diff = array_diff_assoc($extra, $output);
+      $diff = array_diff_assoc($diff, $values);
+      $values = array_merge($diff, $values);
+    }
+
+    $values = array_merge($output, $values);
     $GLOBALS['DBPager_Link_Values'] = $values;
     return $values;
   }
