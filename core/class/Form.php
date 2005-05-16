@@ -234,6 +234,22 @@ class PHPWS_Form {
     return TRUE;
   }
 
+  function useEditor($name, $value=TRUE)
+  {
+    if (!$this->testName($name))
+      return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setExtra', array($name));
+
+    foreach ($this->_elements[$name] as $key=>$element){
+      if ($this->_elements[$name][$key]->type != 'textarea') {
+	break;
+      }
+      $result = $this->_elements[$name][$key]->_use_editor = $value;
+      if (PEAR::isError($result))
+	return $result;
+    }
+  }
+
+
   function setId($name, $id){
     if (!$this->testName($name))
       return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setExtra', array($name));
@@ -1108,10 +1124,11 @@ class Form_Password extends Form_Element {
 }
 
 class Form_TextArea extends Form_Element{
-  var $type = 'textarea';
+  var $type        = 'textarea';
   var $rows        = DFLT_ROWS;
   var $cols        = DFLT_COLS;
   var $height      = NULL;
+  var $_use_editor = FALSE;
 
   function setRows($rows){
     if (!is_numeric($rows) || $rows < 1 || $rows > 100)
@@ -1152,6 +1169,11 @@ class Form_TextArea extends Form_Element{
   }
 
   function get(){
+    if ($this->_use_editor && Editor::willWork()) {
+      $editor = & new Editor($this->name, $this->value);
+      return $editor->get();
+    }
+    
     $value = $this->getValue();
     
     if (ord(substr($value, 0, 1)) == 13)
