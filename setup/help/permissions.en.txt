@@ -10,6 +10,8 @@ If you are running Apache under Linux/Unix you have two options:
    installation, I would use:
    chown -R apache.apache directoryName/
 
+   The "-R" makes it work recursively.
+
 2) If you can't log in as root, a less secure way is:
    chmod -R 777 directoryName/
 
@@ -29,3 +31,7 @@ phpwebsite/config/
 
 Make sure to restrict the permissions on those directories after done with
 your installation.
+
+Note: You may be asking "Why doesn't phpWebSite do this for me?"
+phpWebSite can call chown and chmod, but php itself would need
+directory permissions. You do not want php to be root or directory owner.
