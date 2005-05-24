@@ -18,9 +18,13 @@ class PHPWS_Error {
 
   function &get($value, $module, $funcName=NULL, $extraInfo=NULL){
     $errorFile = PHPWS_Core::getConfigFile($module, 'error.php');
+    if (empty($module)) {
+      return PHPWS_Error::get(PHPWS_NO_MODULE, 'core', 'PHPWS_Error::get', 'Value: ' . $value . ', Function: ' . $funcName);
+    }
 
-    if (!($errorFile))
+    if (!($errorFile)) {
       return PHPWS_Error::get(PHPWS_NO_ERROR_FILE, 'core', 'PHPWS_Error::get', 'Module: ' . $module);
+    }
 
     include $errorFile;
     if (!isset($errors))
@@ -60,10 +64,12 @@ class PHPWS_Error {
     if ((bool)PHPWS_LOG_ERRORS == FALSE)
       return;
 
-    if (!PEAR::isError($value)) 
+    if (!PEAR::isError($value)) {
       $error = &PHPWS_Error::get($value, $module, $funcName, $extraInfo);
-    else
-      $error = $value;
+    }
+    else {
+      $error = &$value;
+    }
 
     $final = PHPWS_Error::printError($error);
 
