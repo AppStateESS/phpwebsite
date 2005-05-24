@@ -1,13 +1,13 @@
-<br />
 <div class="comments">
 <div class="bgcolor1 padded">
 {START_FORM}<!-- BEGIN page-select --><b>{PAGE_LABEL}:</b> {PAGES}&nbsp;|&nbsp;
-<!-- END page-select -->{NEW_POST_LINK} {TIME_PERIOD}{ORDER}{SUBMIT}{END_FORM}</div>
-<div>{EMPTY_MESSAGE}</div>
+<!-- END page-select -->{NEW_POST_LINK}
+{TIME_PERIOD}{ORDER}{SUBMIT}{END_FORM}
+</div>
+<div class="padded">{EMPTY_MESSAGE}</div>
 <!-- BEGIN listrows -->
-
 <div class="box">
-  <div class="bgcolor1 padded">
+  <div class="box-title">
     <h3>{SUBJECT_LABEL}: {SUBJECT}</h3>
     <span class="b i smaller">{POSTED_BY}: {AUTHOR_NAME} -
     {CREATE_TIME} ({VIEW_LINK})
