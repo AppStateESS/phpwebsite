@@ -11,6 +11,7 @@
 define('CURRENT_VIEW_MODE', 3);
 
 PHPWS_Core::initModClass('comments', 'Comment_Thread.php');
+PHPWS_Core::initModClass('comments', 'Comment_User.php');
 
 class Comments {
 
@@ -22,6 +23,35 @@ class Comments {
     $thread->buildSourceValues();
     $thread->buildThread();
     return $thread;
+  }
+
+  function &getCommentUser($user_id)
+  {
+
+    if (isset($GLOBALS['Comment_Users'][$user_id])) {
+      return $GLOBALS['Comment_Users'][$user_id];
+    }
+
+    $GLOBALS['Comment_Users'][$user_id] = & new Comment_User($user_id);
+    return $GLOBALS['Comment_Users'][$user_id];
+  }
+
+  function updateCommentUser($user_id)
+  {
+    if (empty($user_id)) {
+      return;
+    }
+
+    $user = Comments::getCommentUser($user_id);
+
+    if (!empty($user->user_id)) {
+      $user->increaseCommentsMade();
+      return $user->save();
+    } else {
+      $user->loadAll();
+      $user->increaseCommentsMade();
+      return $user->save(TRUE);
+    }
   }
 
   function adminAction($command)
@@ -196,7 +226,6 @@ class Comments {
     $tpl['CHILDREN'] = $thread->view($comment->getId());
     $content = PHPWS_Template::process($tpl, 'comments', 'view_one.tpl');
     return $content;
-    
   }
 }
 

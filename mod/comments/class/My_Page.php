@@ -13,12 +13,13 @@ class Comments_My_Page {
     
     switch ($command) {
     case 'main':
-      $content[] = 'whatever';
+      $title = "MAIN!";
+      $content = 'whatever';
       break;
       
     }
 
-    return implode('<br />', $content);
+    return Layout::boxUp($title, $content);
   }
 
   function editOptions()
@@ -31,6 +32,9 @@ class Comments_My_Page {
     $hidden['tab']    = 'comments';
     $form->addHidden($hidden);
     $form->addText('signature', $comment_user->getSignature());
+
+    $template = $form->getTemplate();
+    
   }
 
 }

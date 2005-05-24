@@ -19,6 +19,7 @@ class Comment_Thread {
   var $item_id        = NULL;
   var $source_url     = NULL;
   var $total_comments = 0;
+  var $last_poster    = NULL;
   var $_source_values = NULL;
   var $_key           = NULL;
   var $_comments      = NULL;
@@ -40,7 +41,7 @@ class Comment_Thread {
     $db = & new PHPWS_DB('comments_threads');
     $db->addWhere('id', $this->id);
     $result = $db->loadObject($this);
-    if (PHPWS_Error::log($result)) {
+    if (PEAR::isError($result)) {
       PHPWS_Error::log($result);
       $this->_error = $result->getMessage();
     }
@@ -64,13 +65,7 @@ class Comment_Thread {
 
   function getLastPoster()
   {
-    $db = & new PHPWS_DB('comments_items');
-    $db->addWhere('thread_id', $this->id);
-    $db->setLimit(1);
-    $db->addOrder('create_time DESC');
-    $db->addColumn('author_name');
-    $result = $db->select('one');
-    return $result;
+    return $this->last_poster;
   }
 
   /**
@@ -268,8 +263,38 @@ class Comment_Thread {
     $pager->addRowTags('getTpl');
     $pager->setLimitList(array(10, 20, 50));
     $pager->setEmptyMessage(_('No comments'));
+    $pager->initialize();
+    $rows = $pager->getObjects();
+    if (!empty($rows)) {
+      $this->_createUserList($rows);
+    }
+
     $content = $pager->get();
     return $content;
+  }
+
+  function _createUserList($comment_list)
+  {
+    $author_list = array();
+    foreach ($comment_list as $comment) {
+      $author_id = &$comment->author_id;
+      if ($author_id == 0 || in_array($author_id, $author_list)) {
+	continue;
+      }
+
+      $author_list[] = $author_id;
+    }
+
+    $db = & new PHPWS_DB('comments_users');
+    $db->addWhere('user_id', $author_list);
+    $db->setIndexBy('user_id');
+    $result = $db->getObjects('comment_user');
+    if (PEAR::isError($result)) {
+      PHPWS_Error::log($result);
+      $result = NULL;
+    }
+    $GLOBALS['Comment_Users'] = $result;
+    $GLOBALS['Comment_Users'][0] = & new Comment_User(0);
   }
 
   function getItemTemplates($comments)
@@ -288,12 +313,17 @@ class Comment_Thread {
     return $comment_list;
   }
 
-  function increase($thread_id)
+  function increaseCount()
   {
-    $sql = 'UPDATE comments_threads SET total_comments=total_comments+1 
-WHERE id=' . (int)$thread_id;
-    return PHPWS_DB::query($sql, TRUE);
+    $this->total_comments++;
   }
+
+  function postLastUser($author_id)
+  {
+    $author = & new Comment_User($author_id);
+    $this->last_poster = $author->display_name;
+  }
+
 }
 
 ?>

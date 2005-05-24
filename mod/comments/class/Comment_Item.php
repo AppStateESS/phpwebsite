@@ -12,40 +12,40 @@ PHPWS_Core::configRequireOnce('comments', 'config.php');
 
 class Comment_Item {
   // Id number of comment
-  var $id          = 0;
+  var $id           = 0;
 
   // Id of thread
-  var $thread_id   = 0;
+  var $thread_id    = 0;
 
   // Id of comment this comment is a child of
-  var $parent      = 0;
+  var $parent       = 0;
 
   // Subject of comment
-  var $subject     = NULL;
+  var $subject      = NULL;
 
   // Content of comment
-  var $entry       = NULL;
+  var $entry        = NULL;
 
   // Author's user id
-  var $author_id   = 0;
+  var $author_id    = 0;
 
   // IP address of poster
-  var $author_ip   = NULL;
+  var $author_ip    = NULL;
 
   // Date comment was created
-  var $create_time = 0;
+  var $create_time  = 0;
 
   // Date comment was edited
-  var $edit_time   = 0;
+  var $edit_time    = 0;
 
   // Reason comment was edited
-  var $edit_reason = NULL;
+  var $edit_reason  = NULL;
 
   // Name of person who edited the comment
-  var $edit_author = NULL;
+  var $edit_author  = NULL;
 
   // Error encountered when processing object
-  var $_error      = NULL;
+  var $_error       = NULL;
 
   function Comment_Item($id=NULL)
   {
@@ -130,6 +130,12 @@ class Comment_Item {
   {
     if (Current_User::isLogged()) {
       $this->author_id = Current_User::getId();
+      $result = Comments::updateCommentUser($this->author_id);
+
+      if (PEAR::isError($result)) {
+	PHPWS_Error::log($result);
+	return FALSE;
+      }
     } else {
       $this->author_id = 0;
     }
@@ -207,11 +213,19 @@ class Comment_Item {
 
   function getTpl()
   {
+    if (!empty($GLOBALS['Comment_Users'])) {
+      $author = $GLOBALS['Comment_Users'][$this->author_id];
+    } else {
+      $author = & new Comment_User(0);
+    }
+
+    $author_info = $author->getTpl();
+
     $template['SUBJECT']       = $this->getSubject(TRUE);
     $template['SUBJECT_LABEL'] = _('Subject');
     $template['ENTRY']         = $this->getEntry(TRUE);
     $template['ENTRY_LABEL']   = _('Comment');
-    $template['AUTHOR']        = 'fix it';
+
     $template['AUTHOR_LABEL']  = _('Author');
     $template['POSTED_BY']     = _('Posted by');
     $template['POSTED_ON']     = _('Posted on');
@@ -237,6 +251,9 @@ class Comment_Item {
     if (Current_User::allow('comments')) {
       $template['IP_ADDRESS'] = $this->getIp();
     }
+
+    $template = array_merge($author_info, $template);
+
     return $template;
   }
 
@@ -252,9 +269,9 @@ class Comment_Item {
       $this->stampCreateTime();
     }
 
-    if (empty($this->author)) {
-      $this->stampAuthor();
+    if (empty($this->id)) {
       $this->stampIP();
+      $this->stampAuthor();
     }
 
     if ((bool)$this->id) {
@@ -267,7 +284,10 @@ class Comment_Item {
     $db = & new PHPWS_DB('comments_items');
     $result = $db->saveObject($this);
     if (!PEAR::isError($result) && $increase_count) {
-      Comment_Thread::increase($this->thread_id);
+      $thread = & new Comment_Thread($this->thread_id);
+      $thread->increaseCount();
+      $thread->postLastUser($this->author_id);
+      $thread->save();
     }
     return $result;
   }

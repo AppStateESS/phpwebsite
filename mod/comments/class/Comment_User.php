@@ -18,19 +18,25 @@ class Comment_User {
   var $contact_email = NULL;
   var $website       = NULL;
   var $location      = NULL;
-  var $locked        = NULL;
+  var $locked        = 0;
   var $_error        = NULL;
 
   function Comment_User($user_id=NULL)
   {
-    if (empty($user_id)) {
+    if (is_null($user_id)) {
+      return;
+    } elseif ((int)$user_id == 0) {
+      $this->loadAnonymous();
       return;
     }
 
     $this->user_id = (int)$user_id;
     $result = $this->init();
     if (PEAR::isError($result)) {
+      $this->user_id = NULL;
       $this->_error = $result;
+    } elseif (empty($result)) {
+      $this->user_id = NULL;
     }
   }
 
@@ -41,9 +47,26 @@ class Comment_User {
     return $db->loadObject($this);
   }
 
+  function loadAnonymous()
+  {
+    $this->display_name = DEFAULT_ANONYMOUS_TITLE;
+  }
+
   function getUserId()
   {
     return $this->user_id;
+  }
+
+  function loadAll()
+  {
+    $this->loadUserId();
+    $this->loadDisplayName();
+    $this->loadJoinedDate();
+  }
+
+  function loadUserId()
+  {
+    $this->user_id = Current_User::getId();
   }
 
   function loadDisplayName()
@@ -56,7 +79,7 @@ class Comment_User {
     $this->signature = PHPWS_Text::parseInput(strip_tags($sig));
   }
 
-  function getSignature($format=FALSE)
+  function getSignature()
   {
     return $this->signature;
   }
@@ -76,10 +99,20 @@ class Comment_User {
   function loadJoinedDate($date=NULL)
   {
     if (!isset($date)) {
-      $this->joined_date = gmmktime();
+      $this->joined_date = Current_User::getCreatedDate();
     } else {
       $this->joined_date = $date;
     }
+  }
+
+  function getJoinedDate($format=FALSE)
+  {
+    if ($format) {
+      return strftime(COMMENT_DATE_FORMAT, $this->joined_date);
+    } else {
+      return $this->joined_date;
+    }
+    
   }
 
   function setPicture($picture_url)
@@ -129,6 +162,18 @@ class Comment_User {
     $this->website = strip_tags($website);
   }
 
+  function getWebsite($format=FALSE)
+  {
+    if ($format && isset($this->website)) {
+      return sprintf('<a href="%s" title="%s">%s</a>',
+		     $this->website,
+		     sprintf(_('%s\'s Website'), $this->display_name),
+		     _('Website'));
+    } else {
+      return $this->website;
+    }
+  }
+
   function setLocation($location)
   {
     $this->location = strip_tags($location);
@@ -144,10 +189,18 @@ class Comment_User {
     $this->locked = 0;
   }
 
-  function save()
+  function save($new=FALSE)
   {
     $db = & new PHPWS_DB('comments_users');
+    if (!$new) {
+      $db->addWhere('user_id', $this->user_id);
+    }
     return $db->saveObject($this);
+  }
+
+  function add()
+  {
+
   }
 
   function kill()
@@ -156,6 +209,58 @@ class Comment_User {
     $db->addWhere('user_id', $this->user_id);
     return $db->delete();
   }
+
+  function hasError()
+  {
+    return isset($this->_error);
+  }
+
+  function getError()
+  {
+    return $this->_error;
+  }
+
+  function logError()
+  {
+    if (PEAR::isError($this->_error)) {
+      PHPWS_Error::log($this->_error);
+    }
+  }
+
+  function getTpl()
+  {
+    $template['AUTHOR_NAME']   = $this->display_name;
+    $template['COMMENTS_MADE'] = $this->comments_made;
+
+
+    if (isset($this->signature)) {
+      $template['SIGNATURE'] = $this->signature;
+    }
+
+    if (!empty($this->joined_date)) {
+      $template['JOINED_DATE'] = $this->getJoinedDate(TRUE);
+      $template['JOINED_DATE_LABEL'] = _('Joined');
+    }
+
+    if (isset($this->picture)) {
+      $template['PICTURE'] = $this->picture;
+    }
+
+    if (isset($this->contact_email)) {
+      $template['CONTACT_EMAIL'] = $this->getContactEmail(TRUE);
+    }
+    
+    if (isset($this->website)) {
+      $template['WEBSITE'] = $this->getWebsite(TRUE);
+    }
+
+    if (isset($this->location)) {
+      $template['LOCATION'] = $this->location;
+      $template['LOCATION_LABEL'] = _('Location');
+    }
+    return $template;
+  }
+
 }
 
 ?>
