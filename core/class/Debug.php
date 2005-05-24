@@ -19,7 +19,7 @@ class PHPWS_Debug {
       break;
       
     case 'array':
-      return PHPWS_Debug::testArray($value);
+      return 'Array' . PHPWS_Debug::testArray($value);
       break;
 
     case 'boolean':
@@ -105,7 +105,7 @@ class PHPWS_Debug {
   function testArray($arrayVar, $displayTags=1) {
     if(is_array($arrayVar)) {
       if(count($arrayVar)) {
-        $info = 
+        $info =  
 '<table cellpadding="3" border="1">
 <tr>
 <td><b>KEY</b></td>
