@@ -79,8 +79,9 @@ class PHPWS_DB {
   }
 
   function touchDB(){
-    if (!PHPWS_DB::isConnected())
+    if (!PHPWS_DB::isConnected()) {
       PHPWS_DB::loadDB();
+    }
   }
 
   function isConnected(){
@@ -94,11 +95,11 @@ class PHPWS_DB {
     if (PHPWS_DB::isConnected())
       PHPWS_DB::disconnect();
 
-    if (isset($dsn))
+    if (isset($dsn)) {
       $GLOBALS['PEAR_DB'] = DB::connect($dsn);
-    else
+    } else {
       $GLOBALS['PEAR_DB'] = DB::connect(PHPWS_DSN);
-
+    }
 
     if (PEAR::isError($GLOBALS['PEAR_DB'])){
       PHPWS_Error::log($GLOBALS['PEAR_DB']);
@@ -312,7 +313,7 @@ class PHPWS_DB {
       $operator = strtoupper($operator);
     }
 
-    if (is_array($value)){
+    if (is_array($value)) {
       if (empty($operator)) {
 	$operator = 'IN';
       }
@@ -340,7 +341,7 @@ class PHPWS_DB {
     if (!PHPWS_DB::allowed($column))
       return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::addWhere', $column);
 
-    if (is_array($value)) {
+    if (is_array($value) && !empty($value)) {
       foreach ($value as $temp_val) {
 	$temp_val = $GLOBALS['PEAR_DB']->escapeSimple($temp_val);
 	$new_value_list[] = $temp_val;
@@ -1258,7 +1259,7 @@ class PHPWS_DB {
     if (PEAR::isError($variables))
       return $variables;
     elseif (empty($variables))
-      return FALSE;
+      return NULL;
 
     return PHPWS_Core::plugObject($object, $variables);
   }
