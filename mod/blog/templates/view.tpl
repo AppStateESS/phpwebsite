@@ -1,8 +1,10 @@
 <div class="blog">
   <div class="box">
+    <div class="box-title">
     <h1>{TITLE}</h1>
     <h3>{POSTED_BY} {AUTHOR}</h3>
     <h3>{POSTED_ON} {DATE}</h3>
+    </div>
     <!-- BEGIN categories -->
     <div class="bgcolor2 padded">{CATEGORIES}</div>
     <!-- END categories -->
@@ -16,7 +18,7 @@
       </div>
       <!-- END comment-info -->
       <!-- BEGIN comments -->
-      {COMMENTS}
+      <div class="padded">{COMMENTS}</div>
       <!-- END comments -->
     </div>
   </div>
