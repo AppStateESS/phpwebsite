@@ -1,15 +1,20 @@
 <?php
+/**
+ *
+ * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ * @version $Id$ 
+ */
 
-PHPWS_Core::initModClass("controlpanel", "Panel.php");
+PHPWS_Core::initModClass('controlpanel', 'Panel.php');
 
 class PHPWS_ControlPanel {
 
   function display($content=NULL, $imbed = TRUE){
-    Layout::addStyle("controlpanel");
+    Layout::addStyle('controlpanel');
 
     $panel = new PHPWS_Panel('controlpanel');
 
-    if (!isset($_SESSION['Control_Panel_Tabs'])){
+    if (1 || !isset($_SESSION['Control_Panel_Tabs'])){
       PHPWS_ControlPanel::loadTabs($panel);
     }
     else {
@@ -22,7 +27,7 @@ class PHPWS_ControlPanel {
     $checkTabs = $panel->getTabs();
 
     if (empty($checkTabs)){
-      PHPWS_Error::log(CP_NO_TABS, "controlpanel", "display");
+      PHPWS_Error::log(CP_NO_TABS, 'controlpanel', 'display');
       PHPWS_ControlPanel::makeDefaultTabs();
       PHPWS_ControlPanel::reset();
       PHPWS_Core::errorPage();
@@ -39,7 +44,7 @@ class PHPWS_ControlPanel {
     }
 
     foreach ($checkTabs as $tab){
-      if ($tab->getItemname() == "controlpanel" &&
+      if ($tab->getItemname() == 'controlpanel' &&
 	  in_array($tab->getId(), $tabList) &&
 	  (!isset($links) || !in_array($tab->getId(), $links))
 	  ) {
@@ -56,7 +61,7 @@ class PHPWS_ControlPanel {
 	foreach ($allLinks[$panel->getCurrentTab()] as $id => $link)
 	  $content[] = $link->view();
 	
-	$panel->setContent(implode("", $content));
+	$panel->setContent(implode('', $content));
       }
     } else
       $panel->setContent($content);
@@ -65,14 +70,14 @@ class PHPWS_ControlPanel {
       return _('An error occurred while accessing the Control Panel.');
     }
     $tab = $panel->tabs[$panel->getCurrentTab()];
-    $link = str_replace("&amp;", "&",$tab->getLink(FALSE)) . "&tab=" . $tab->getId();
-    $current_link = ereg_replace($_SERVER['PHP_SELF'] . "\?", "", $_SERVER['REQUEST_URI']);
+    $link = str_replace('&amp;', '&', $tab->getLink(FALSE)) . '&tab=' . $tab->getId();
+    $current_link = ereg_replace($_SERVER['PHP_SELF'] . '\?', '', $_SERVER['REQUEST_URI']);
 
     // Headers to the tab's link if it is not a control panel
     // link tab. 
     if (isset($_REQUEST['command']) &&
-	$_REQUEST['command'] == "panel_view" &&
-	!preg_match("/controlpanel/", $link) &&
+	$_REQUEST['command'] == 'panel_view' &&
+	!preg_match('/controlpanel/', $link) &&
 	$link != $current_link
 	){
       PHPWS_Core::reroute($link);
@@ -84,10 +89,10 @@ class PHPWS_ControlPanel {
   }
 
   function loadTabs(&$panel){
-    $DB = new PHPWS_DB("controlpanel_tab");
-    $DB->addOrder("tab_order");
-    $DB->setIndexBy("id");
-    $result = $DB->getObjects("PHPWS_Panel_Tab");
+    $DB = new PHPWS_DB('controlpanel_tab');
+    $DB->addOrder('tab_order');
+    $DB->setIndexBy('id');
+    $result = $DB->getObjects('PHPWS_Panel_Tab');
 
     if (PEAR::isError($result)){
       PHPWS_Error::log($result);
@@ -98,10 +103,10 @@ class PHPWS_ControlPanel {
   }
 
   function getAllTabs(){
-    $db = & new PHPWS_DB("controlpanel_tab");
-    $db->setIndexBy("id");
-    $db->addOrder("tab_order");
-    return $db->getObjects("PHPWS_Panel_Tab");
+    $db = & new PHPWS_DB('controlpanel_tab');
+    $db->setIndexBy('id');
+    $db->addOrder('tab_order');
+    return $db->getObjects('PHPWS_Panel_Tab');
   }
 
   function getAllLinks(){
@@ -113,11 +118,11 @@ class PHPWS_ControlPanel {
       return $_SESSION['CP_All_links'];
     }
 
-    $DB = new PHPWS_DB("controlpanel_link");
-    $DB->addOrder("tab");
-    $DB->addOrder("link_order");
-    $DB->setIndexBy("id");
-    $result = $DB->getObjects("PHPWS_Panel_Link");
+    $DB = new PHPWS_DB('controlpanel_link');
+    $DB->addOrder('tab');
+    $DB->addOrder('link_order');
+    $DB->setIndexBy('id');
+    $result = $DB->getObjects('PHPWS_Panel_Link');
     
     foreach ($result as $link){
       if (!$link->isRestricted() || Current_User::allow($link->getItemName())) {
@@ -142,15 +147,15 @@ class PHPWS_ControlPanel {
       $newTab->setId($tab['id']);
       $newTab->setTitle($tab['title']);
       $newTab->setLink($tab['link']);
-      $newTab->setItemname("controlpanel");
+      $newTab->setItemname('controlpanel');
       $newTab->save();
 
-      if ($tab['id'] == "unsorted")
+      if ($tab['id'] == 'unsorted')
 	$defaultId = $newTab->getId();
     }
 
-    $db = & new PHPWS_DB("controlpanel_link");
-    $result = $db->getObjects("PHPWS_Panel_Link");
+    $db = & new PHPWS_DB('controlpanel_link');
+    $result = $db->getObjects('PHPWS_Panel_Link');
 
     $count = 1;
 
@@ -163,7 +168,7 @@ class PHPWS_ControlPanel {
   }
 
   function getDefaultTabs(){
-    include PHPWS_Core::getConfigFile("controlpanel", "controlpanel.php");
+    include PHPWS_Core::getConfigFile('controlpanel', 'controlpanel.php');
     return $tabs;
   }
 

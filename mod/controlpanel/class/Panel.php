@@ -1,5 +1,11 @@
 <?php
-include_once PHPWS_SOURCE_DIR . "mod/controlpanel/conf/config.php";
+
+/**
+ * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ * @version $Id$
+ */
+
+include_once PHPWS_SOURCE_DIR . 'mod/controlpanel/conf/config.php';
 
 class PHPWS_Panel{
   var $itemname = NULL;
@@ -19,15 +25,17 @@ class PHPWS_Panel{
       $tab = new PHPWS_Panel_Tab;
       $tab->setId($id);
 
-      if (!isset($info['title']))
-	return PHPWS_Error::get(CP_MISSING_TITLE, "controlpanel", "quickSetTabs");
-      else
+      if (!isset($info['title'])) {
+	return PHPWS_Error::get(CP_MISSING_TITLE, 'controlpanel', 'quickSetTabs');
+      } else {
 	$tab->setTitle($info['title']);
+      }
 
-      if (!isset($info['link']))
-	return PHPWS_Error::get(CP_MISSING_LINK, "controlpanel", "quickSetTabs");
-      else
+      if (!isset($info['link'])) {
+	return PHPWS_Error::get(CP_MISSING_LINK, 'controlpanel', 'quickSetTabs');
+      } else {
 	$tab->setLink($info['link'], $secure);
+      }
 
       if (!isset($info['itemname']))
 	$tab->setItemname($this->itemname);
@@ -41,8 +49,9 @@ class PHPWS_Panel{
 
 
   function setTabs($tabs){
-    if (!is_array($tabs))
-      return PHPWS_Error::get("CP_BAD_TABS", "controlpanel", "setTabs");
+    if (!is_array($tabs)) {
+      return PHPWS_Error::get(CP_BAD_TABS, 'controlpanel', 'setTabs');
+    }
       
     $this->tabs = $tabs;
   }
@@ -112,7 +121,7 @@ class PHPWS_Panel{
   }
 
   function getFirstTab(){
-    PHPWS_Core::initModClass("controlpanel", "Tab.php");
+    PHPWS_Core::initModClass('controlpanel', 'Tab.php');
     $result = NULL;
 
     $tabs = $this->getTabs();
@@ -151,16 +160,16 @@ class PHPWS_Panel{
     foreach ($tabs as $id=>$tab){
       $tpl['TITLE'] = $tab->getLink();
       if ($id == $currentTab){
-	$tpl['STATUS'] = "class=\"active\"";
-	$tpl['ACTIVE'] = " ";
+	$tpl['STATUS'] = 'class="active"';
+	$tpl['ACTIVE'] = ' ';
       }
       else {
-	$tpl['STATUS'] = "class=\"inactive\"";
-	$tpl['INACTIVE'] = " ";
+	$tpl['STATUS'] = 'class="inactive"';
+	$tpl['INACTIVE'] = ' ';
       }
-      $tplObj->setCurrentBlock("tabs");
+      $tplObj->setCurrentBlock('tabs');
       $tplObj->setData($tpl);
-      $tplObj->parseCurrentBlock("tabs");
+      $tplObj->parseCurrentBlock('tabs');
     }
 
     $template['CONTENT'] = $content;
