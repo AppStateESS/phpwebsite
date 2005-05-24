@@ -166,13 +166,15 @@ tr, td {
 	margin-bottom : 10px;
 }
 
+.box-title {
+	padding : 8px;
+
+}
+
 .box-content {
 	padding : 8px;
 }
 
-.box h1, h2, h3 {
-     padding : 0 3px 0 3px;
-}
 
 input {
 	font-size : 9pt;

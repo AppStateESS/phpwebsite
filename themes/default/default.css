@@ -8,14 +8,6 @@ body {
 	background-color: #ADB583;
 }
 
-#main-content h1 {
-	background-color : #DEE2BD;
-}
-
-#main-content h2 {
-	background-color : #EDF4D1;
-}
-
 
 #header {
 	background-color : #ADB583;
@@ -68,7 +60,7 @@ div.box a:hover, div.box a:active {
 	color: #42443A;
 }
 
-div.box h1, h3 {
+.box-title {
 	background-color : #DEE2BD;
 }
 

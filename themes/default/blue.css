@@ -9,19 +9,9 @@ body {
 }
 
 
-#main-content h1 {
-	background-color : #fff;
-}
-
-#main-content h2 {
-	background-color : #EDF4D1;
-}
-
-
 #header {
 	background-color : #ADB583;
 }
-
 
 
 a:link, a:visited {
