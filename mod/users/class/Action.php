@@ -288,7 +288,6 @@ class User_Action {
     default:
       $title = 'Warning';
       $content = 'Unknown command';
-      test($_REQUEST);
       break;
     }
 
