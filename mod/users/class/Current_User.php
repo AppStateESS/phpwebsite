@@ -105,6 +105,11 @@ class Current_User {
   function giveItemPermission($module, $item_id, $itemname){
     return Users_Permission::giveItemPermission(Current_User::getId(), $module, $item_id, $itemname);
   }
+
+  function getCreatedDate()
+  {
+    return $_SESSION['User']->created;
+  }
 }
 
 ?>
