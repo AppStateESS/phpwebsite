@@ -13,10 +13,7 @@ class My_Page {
 
     $panel = & My_Page::cpanel();
 
-    if (isset($_REQUEST['tab']) && $_REQUEST['tab'] != 'my_page')
-      $module = preg_replace('/\W/', '', $_REQUEST['tab']);
-    else
-      $module = 'users';
+    $module = $panel->getCurrentTab();
 
     if (!$this->moduleIsRegistered($module)){
       Layout::add(_('This module is not registered with My Page'));
@@ -24,7 +21,7 @@ class My_Page {
     }
 
     $content = My_Page::userOption($module);
-    
+
     $panel->setContent($content);
     Layout::add(PHPWS_ControlPanel::display($panel->display()));
   }
