@@ -40,19 +40,19 @@ class Setup{
       Setup::databaseConfig($content);
     else {
       $configDir = Setup::getConfigSet('source_dir') . 'config/core/';
-      if (is_file($configDir . 'config.php')){
-	$content[] = _('Your configuration file already exists.') . '<br />'
-	  . _('Remove the following file and refresh to continue:') . '<br />'
-	  . '<pre>' . $configDir . 'config.php</pre>';
+      if (is_file($configDir . 'config.php')) {
+	$content[] = _('Your configuration file already exists.');
+	$content[] = _('Remove the following file and refresh to continue:');
+	$content[] = '<pre>' . $configDir . 'config.php</pre>';
       }
       elseif (Setup::writeConfigFile()){
 	PHPWS_Core::killSession('configSettings');
-	$content[] = _('Your configuration file was written successfully!') . '<br /><br />';
-	$content[] = '<a href="index.php?step=2">' . _('Move on to Step 2') . '</a><br />';
+	$content[] = _('Your configuration file was written successfully!') . '<br />';
+	$content[] = '<a href="index.php?step=2">' . _('Move on to Step 2') . '</a>';
       } else {
-	$content[] = _('Your configuration file could not be written into the following directory:') . '<br />';
+	$content[] = _('Your configuration file could not be written into the following directory:');
 	$content[] = "<pre>$configDir</pre>";
-	$content[] = _('Please check your directory permissions and try again.') . '<br />';
+	$content[] = _('Please check your directory permissions and try again.');
 	$content[] = '<a href="help/permissions.' . DEFAULT_LANGUAGE . '.txt">' . _('Permission Help') . '</a>';
       }
     }
@@ -109,20 +109,20 @@ class Setup{
     if (!empty($_POST['dbuser']))
       Setup::setConfigSet('dbuser', $_POST['dbuser']);
     else {
-      $content[] = _('Missing a database user name.') . '<br />';
+      $content[] = _('Missing a database user name.');
       $check = FALSE;
     }
 
     if (!empty($_POST['dbpass']))
       Setup::setConfigSet('dbpass', $_POST['dbpass']);
     elseif (empty($currentPW)) {
-      $content[] = _('Missing a database password.') . '<br />';
+      $content[] = _('Missing a database password.');
       $check = FALSE;
     }
 
     /*
     if (!empty($_POST['dbhost']))
-      $content[] = _('Notice: Missing a host reference.') . '<br />';
+      $content[] = _('Notice: Missing a host reference.');
     */
 
     Setup::setConfigSet('dbhost', $_POST['dbhost']);
@@ -130,7 +130,7 @@ class Setup{
     if (!empty($_POST['dbname']))
       Setup::setConfigSet('dbname', $_POST['dbname']);
     else {
-      $content[] = _('Missing a database name.') . '<br />';
+      $content[] = _('Missing a database name.');
       $check = FALSE;
     }
 
@@ -138,8 +138,8 @@ class Setup{
       if (preg_match('/^([a-z])+([a-z0-9_]*)$/i', $_POST['dbprefix']))
 	Setup::setConfigSet('dbprefix', $_POST['dbprefix']);
       else {
-	$content[] = _('The Table Prefix may only consist of letters, numbers, and the underscore character.') . '<br />';
-	$content[] = _('It also may not begin with a number.') . '<br />';
+	$content[] = _('The Table Prefix may only consist of letters, numbers, and the underscore character.');
+	$content[] = _('It also may not begin with a number.');
 	$check = FALSE;
       }
     }
@@ -160,13 +160,13 @@ class Setup{
       return TRUE;
     }
     elseif ($checkConnection == -1) {
-      $content[] = _('PhpWebSite was able to connect but the database itself does not exist.') . '<br />';
-      $content[] = '<a href="index.php?step=1a">' . _('Do you want phpWebSite to create the database?') . '</a>' . '<br />';
-      $content[] = _('If not, you will need to create the database yourself and return to the setup.') . '<br />';
+      $content[] = _('PhpWebSite was able to connect but the database itself does not exist.');
+      $content[] = '<a href="index.php?step=1a">' . _('Do you want phpWebSite to create the database?') . '</a>';
+      $content[] = _('If not, you will need to create the database yourself and return to the setup.');
       return FALSE;
     }
     else {
-      $content[] = _('Unable to connect to the database with the information provided.') . '<br />';
+      $content[] = _('Unable to connect to the database with the information provided.');
       $content[] = '<a href="help/database.' . DEFAULT_LANGUAGE . '.txt" target="index">' . _('Database Help') . '</a>';
       return FALSE;
     }
@@ -180,7 +180,7 @@ class Setup{
 
     if (PEAR::isError($db)) {
       PHPWS_Error::log($db);
-      $content[] = _('Unable to connect.') . '<br />';
+      $content[] = _('Unable to connect.');
       $content[] = _('Check your configuration settings.');
       return FALSE;
     }
@@ -189,7 +189,7 @@ class Setup{
     if (PEAR::isError($result)) {
       test($db);
       PHPWS_Error::log($db);
-      $content[] = _('Unable to create the database.') . '<br />';
+      $content[] = _('Unable to create the database.');
       $content[] = _('You will need to create it manually and rerun the setup.');
       return FALSE;
     }
@@ -198,7 +198,7 @@ class Setup{
     Setup::setConfigSet('dsn', $dsn);
     $_SESSION['configSettings']['database'] = TRUE;
 
-    $content[] = _('The database creation succeeded!') . '<br />';
+    $content[] = _('The database creation succeeded!');
     $content[] = '<a href="index.php?step=1">' . _('You can now finish the creation of your config file.') . '</a>';
 
   }
@@ -409,21 +409,17 @@ class Setup{
 
     if (isset($dirExist)){
       $content[] = _('The following directories need to be created:');
-      $content[] = '<pre>' . implode('<br />', $dirExist) . '</pre>';
-      $content[] = '<br />';
+      $content[] = '<pre>' . implode("\n", $dirExist) . '</pre>';
       $errorDir = FALSE;
     }
       
     if (isset($writableDir)){
       $content[] = _('The following directories are not writable:');
-      $content[] = '<pre>' . implode('<br />', $writableDir) . '</pre>';
+      $content[] = '<pre>' . implode("\n", $writableDir) . '</pre>';
+      $content[] = _('You will need to change the permissions.') . '<br />';
       $content[] = '<a href="help/permissions.' . DEFAULT_LANGUAGE . '.txt">' . _('Permission Help') . '</a>';
-      $content[] = '<br />';
       $errorDir = FALSE;
     }
-
-    if (!$errorDir)
-      $content[] = '<br />' . _('Please make these changes and return.') . '<br />';
 
     return $errorDir;
   }
@@ -435,7 +431,7 @@ class Setup{
       $title = _('phpWebSite 1.0.0 Alpha Setup');
 
     $setupData['TITLE'] = $title;
-    $setupData['MAIN_CONTENT'] = implode('', $content);
+    $setupData['MAIN_CONTENT'] = implode('<br />', $content);
     $tpl->setData($setupData);
     return $tpl->get();
   }
@@ -458,8 +454,9 @@ class Setup{
   function welcome(&$content){
     unset($_SESSION['Boost']);
     $step = 1;
-    if (Setup::configExists())
+    if (Setup::configExists()) {
       $step = 2;
+    }
 
     $content[] = '<b>Welcome to the phpWebSite 1.0.0 Alpha Installation</b><br />';
     $content[] = ''
