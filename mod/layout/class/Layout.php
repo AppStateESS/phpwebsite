@@ -88,6 +88,13 @@ class Layout {
     $GLOBALS['Layout_Onload'][] = $onload;
   }
 
+  function boxUp($title, $content)
+  {
+    $box['TITLE'] = $title;
+    $box['CONTENT'] = $content;
+    return PHPWS_Template::process($box, 'layout', 'box.tpl');
+  }
+
   function addStyle($module, $filename=NULL){
     if (isset($GLOBALS['Style'][$module]))
       return;
@@ -389,6 +396,7 @@ class Layout {
     // Say it loud
     $metatags[] = '<meta name="generator" content="phpWebSite" />';
 
+    $metatags[] = '<meta content="text/html; charset=UTF-8"  http-equiv="Content-Type">';
     if (!empty($author))
       $metatags[] = '<meta name="author" content="' . $meta_author . '" />';
     else
@@ -403,14 +411,12 @@ class Layout {
     if (!empty($meta_owner))
       $metatags[] = '<meta name="owner" content="' . $meta_owner . '" />';
 
+    $robot = Layout::getMetaRobot();
+    $metatags[] = '<meta name="robots" content="' . $robot . '" />';
+
     if (isset($GLOBALS['extra_meta_tags']) && is_array($GLOBALS['extra_meta_tags'])) {
       $metatags = array_merge($metatags, $GLOBALS['extra_meta_tags']);
     }
-
-    $metatags[] = '<meta  content="text/html;  charset=UTF-8"  http-equiv="Content-Type">';
-
-    $robot = Layout::getMetaRobot();
-    $metatags[] = '<meta name="robots" content="' . $robot . '" />';
 
     return implode("\n", $metatags);
   }
