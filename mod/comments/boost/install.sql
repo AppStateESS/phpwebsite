@@ -20,5 +20,6 @@ CREATE TABLE comments_threads (
   item_id int NOT NULL default '0',
   source_url varchar(255) NOT NULL default '',
   total_comments int NOT NULL default '0',
+  last_poster varchar(40) default NULL,
   PRIMARY KEY  (id)
 );
