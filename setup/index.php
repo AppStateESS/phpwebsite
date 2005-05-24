@@ -27,10 +27,11 @@ $content = array();
 $setup = & new Setup;
 $title = 'phpWebSite 1.0.0 - ';
 
-if (!$setup->checkSession($content) || !isset($_REQUEST['step']))
+if (!$setup->checkSession($content) || !isset($_REQUEST['step'])) {
   $step = 0;
-else
-$step = $_REQUEST['step'];
+} else {
+  $step = $_REQUEST['step'];
+}
 
 if (!$setup->checkDirectories($content)){
   $title .= _('Directory Permissions');
