@@ -257,6 +257,10 @@ class DBPager {
     return $result;
   }
 
+  function getObjects()
+  {
+    return $this->object_rows;
+  }
 
   /**
    * Pulls the appropiate rows from the data base.
@@ -293,10 +297,12 @@ class DBPager {
 
     $result = $this->db->getObjects($this->class);
 
-    if (PEAR::isError($result))
+    if (PEAR::isError($result)) {
       return $result;
+    }
 
     $this->object_rows = &$result;
+    return TRUE;
   }
 
   function getPageLinks(){
@@ -594,10 +600,13 @@ class DBPager {
 
   function get(){
     $template = array();
-    $result = $this->initialize();
 
-    if (PEAR::isError($result))
-      return $result;
+    if (empty($this->object_rows)) {
+      $result = $this->initialize();
+      if (PEAR::isError($result)) {
+	return $result;
+      }
+    }
 
     if (!isset($this->module))
       return PHPWS_Error::get(DBPAGER_MODULE_NOT_SET, 'core', 'DBPager::get()');
