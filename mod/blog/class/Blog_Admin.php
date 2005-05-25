@@ -12,10 +12,11 @@ class Blog_Admin {
     $panel = & Blog_Admin::cpanel();
     PHPWS_Core::initModClass('version', 'Version.php');
 
-    if (isset($_REQUEST['command']))
+    if (isset($_REQUEST['command'])) {
       $command = $_REQUEST['command'];
-    else
+    } else {
       $command = $panel->getCurrentTab();
+    }
 
     if (isset($_REQUEST['blog_id'])) {
       $blog = & new Blog((int)$_REQUEST['blog_id']);

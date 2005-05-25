@@ -19,20 +19,23 @@ class Blog {
     if (isset($id)){
       $this->id = (int)$id;
       $result = $this->init();
-      if (PEAR::isError($result))
+      if (PEAR::isError($result)) {
 	PHPWS_Error::log($result);
+      }
     }
   }
 
   function init()
   {
-    if (!isset($this->id))
+    if (!isset($this->id)) {
       return FALSE;
+    }
 
     $db = & new PHPWS_DB('blog_entries');
     $result = $db->loadObject($this);
-    if (PEAR::isError($result))
+    if (PEAR::isError($result)) {
       return $result;
+    }
   }
 
   function setEntry($entry)
