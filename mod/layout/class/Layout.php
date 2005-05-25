@@ -327,7 +327,7 @@ class Layout {
     $defaultfile = './javascript/' . $directory . '/default.php';
 
     if (is_file($defaultfile)) {
-      require_once $defaultfile;
+	require $defaultfile;	
     }
 
     if (isset($default)){
