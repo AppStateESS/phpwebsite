@@ -1,6 +1,6 @@
 <?php
-require_once "HTML/Template/Sigma.php";
-require_once "config/core/template.php";
+require_once 'HTML/Template/Sigma.php';
+require_once 'config/core/template.php';
 
 /**
  * Controls templates
@@ -34,17 +34,18 @@ class PHPWS_Template extends HTML_Template_Sigma {
   }
 
   function getTplDir($module){
-    if (!class_exists("Layout"))
+    if (!class_exists('Layout')) {
       return PHPWS_SOURCE_DIR . "mod/$module/templates/";    
+    }
     
     $theme = Layout::getThemeDir();
-    return $theme . "templates/" . $module . "/";
+    return $theme . 'templates/' . $module . "/";
   }
 
   function setCache(){
     if (!PHPWS_Template::allowSigmaCache() ||
-	!defined("CACHE_DIRECTORY")        ||
-	!defined("CACHE_LIFETIME")         ||
+	!defined('CACHE_DIRECTORY')        ||
+	!defined('CACHE_LIFETIME')         ||
 	!is_writable(CACHE_DIRECTORY)
 	)
       return;
@@ -53,10 +54,43 @@ class PHPWS_Template extends HTML_Template_Sigma {
   }
 
   function allowSigmaCache(){
-    if (defined("ALLOW_SIGMA_CACHE"))
+    if (defined('ALLOW_SIGMA_CACHE'))
       return ALLOW_SIGMA_CACHE;
     else
       return FALSE;
+  }
+
+  /**
+   * Lists the template files in a directory.
+   * Can be called statically. 
+   */
+  function listTemplates($module, $directory=NULL)
+  {
+    $theme_dir = PHPWS_Template::getTplDir($module) . $directory;
+    $local_dir = sprintf('./templates/%s/', $module) . $directory;
+    $module_dir = sprintf('./mod/%s/templates/', $module) . $directory;
+
+    if (FORCE_THEME_TEMPLATES && is_dir($theme_dir)) {
+      $tpl_dir = &$theme_dir;
+    } elseif (FORCE_MOD_TEMPLATES && is_dir($module_dir)) {
+      $tpl_dir = &$module_dir;
+    } elseif (is_dir($local_dir)) {
+      $tpl_dir = &$local_dir;
+    } else {
+      return NULL;
+    }
+
+    if(!$result = scandir($tpl_dir)) {
+      return NULL;
+    }
+
+    foreach ($result as $file) {
+      if (!preg_match('/(^\.)|(~$)/iU', $file) && preg_match('/\.tpl$/i', $file)) {
+	$file_list[$file] = $file;
+      }
+    }
+
+    return $file_list;
   }
 
   function setFile($file, $strict=FALSE){
@@ -67,16 +101,16 @@ class PHPWS_Template extends HTML_Template_Sigma {
     } else {
       $altFile = PHPWS_Template::getTplDir($module) . $file;
 
-      if (PEAR::isError($altFile))
+      if (PEAR::isError($altFile)) {
 	return $altFile;
+      }
 
-      if (FORCE_THEME_TEMPLATES || is_file($altFile))
+      if (FORCE_THEME_TEMPLATES || is_file($altFile)) {
 	$result = $this->loadTemplatefile($altFile);
-      elseif (FORCE_MOD_TEMPLATES){
+      } elseif (FORCE_MOD_TEMPLATES) {
 	$file = PHPWS_SOURCE_DIR . "mod/$module/templates/$file";
 	$result = $this->loadTemplatefile($file);
-      }
-      else {
+      } else {
 	$file = "templates/$module/$file";
 	$result = $this->loadTemplatefile($file);
       }
@@ -127,7 +161,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
     $tpl = & new PHPWS_Template($module, $file);
 
     if (PEAR::isError($tpl->error)){
-      return _("Template error.");
+      return _('Template error.');
     }
 
     foreach ($template as $key => $value) {
