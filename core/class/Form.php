@@ -194,6 +194,14 @@ class PHPWS_Form {
   }
 
   /**
+   * Removes an element from the form
+   */
+  function dropElement($name)
+  {
+    unset($this->_elements[$name]);
+  }
+
+  /**
    * Adds a form element to the class
    *
    * The type and value parameters are optional, though it is a timesaver.
@@ -478,14 +486,21 @@ class PHPWS_Form {
    * @param string name Name of element to set the type
    * @param string size Size to make the element
    */
-  function setSize($name, $size){
+  function setSize($name, $size, $maxsize=NULL){
     if (!$this->testName($name))
       return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setSize', array($name));
 
     foreach ($this->_elements[$name] as $key=>$element){
-      $result = $this->_elements[$name][$key]->setSize($size);
-      if (PEAR::isError($result))
+      $result = $this->_elements[$name][$key]->setSize((int)$size);
+      if (PEAR::isError($result)) {
 	return $result;
+      }
+      if (!empty($maxsize)) {
+	$result = $this->_elements[$name][$key]->setMaxSize((int)$maxsize);
+      }
+      if (PEAR::isError($result)) {
+	return $result;
+      }
     }
     return TRUE;
   }
