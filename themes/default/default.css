@@ -45,10 +45,6 @@ th {
 	background-color : #DFE3BA;
 }
 
-div.box {
-	background-color : #CBCEAC;
-}
-
 #sidepanel div.box {
 	border : white 2px solid;
 }
@@ -63,6 +59,7 @@ div.box a:hover, div.box a:active {
 .box-title {
 	background-color : #DEE2BD;
 }
+
 
 .bgcolor1 {
 	background-color : #DEE2BD;
