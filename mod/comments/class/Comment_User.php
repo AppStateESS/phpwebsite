@@ -150,10 +150,10 @@ class Comment_User {
   {
     if ($format) {
       return '<a href="mailto:' . 
-	PHPWS_Text::htmlEncodeText($this->email_address) . 
+	PHPWS_Text::htmlEncodeText($this->contact_email) . 
 	'" />' . $this->display_name . '</a>';
     } else {
-      return $this->email_address;
+      return $this->contact_email;
     }
   }
 

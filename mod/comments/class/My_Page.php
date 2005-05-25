@@ -13,13 +13,15 @@ class Comments_My_Page {
     
     switch ($command) {
     case 'main':
-      $title = "MAIN!";
-      $content = 'whatever';
+      $title = _('Comment Settings');
+      $content = Comments_My_Page::editOptions();
       break;
       
     }
 
-    return Layout::boxUp($title, $content);
+    $box['TITLE'] = &$title;
+    $box['CONTENT'] = &$content;
+    return PHPWS_Template::process($box, 'comments', 'my_page.tpl');
   }
 
   function editOptions()
@@ -32,9 +34,19 @@ class Comments_My_Page {
     $hidden['tab']    = 'comments';
     $form->addHidden($hidden);
     $form->addText('signature', $comment_user->getSignature());
+    $form->setSize('signature', 60);
+    $form->setMaxSize('signature', 254);
+    $form->setLabel('signature', _('Signature'));
+    $form->addText('picture', $comment_user->getPicture());
+    $form->setLabel('picture', _('Picture'));
+    $form->setSize('picture', 60);
+    $form->addText('contact_email', $comment_user->getContactEmail());
+    $form->setLabel('contact_email', _('Contact Email'));
+    $form->setSize('contact_email', 40);
+    $form->addSubmit(_('Update'));
 
     $template = $form->getTemplate();
-    
+    return PHPWS_Template::process($template, 'comments', 'user_settings.tpl');
   }
 
 }
