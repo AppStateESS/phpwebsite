@@ -8,11 +8,12 @@
  */
 
 class PHPWS_Panel_Tab {
-  var $id          = NULL;
-  var $title       = NULL;
-  var $link        = NULL;
-  var $tab_order   = NULL;
-  var $itemname    = NULL;
+  var $id           = NULL;
+  var $title        = NULL;
+  var $link         = NULL;
+  var $tab_order    = NULL;
+  var $itemname     = NULL;
+  var $_secure      = TRUE;
 
   function PHPWS_Panel_Tab($id=NULL) {
 
@@ -46,7 +47,7 @@ class PHPWS_Panel_Tab {
       return $this->title;
   }
 
-  function setLink($link, $secure=TRUE){
+  function setLink($link){
     $this->link = $link;
   }
 
@@ -54,7 +55,14 @@ class PHPWS_Panel_Tab {
     if ($addTitle){
       $title = $this->getTitle();
       $link = $this->getLink(FALSE);
-      return sprintf('<a href="%s&amp;tab=%s">%s</a>', $link, $this->getId(), $title);
+      if ($this->_secure) {
+	$authkey = Current_User::getAuthKey();
+	return sprintf('<a href="%s&amp;tab=%s&amp;authkey=%s">%s</a>',
+		     $link, $this->getId(), $authkey, $title);
+      } else {
+	return sprintf('<a href="%s&amp;tab=%s">%s</a>',
+		       $link, $this->getId(), $title);
+      }
     } else {
       return $this->link;
     }
@@ -88,6 +96,16 @@ class PHPWS_Panel_Tab {
 
   function getItemname(){
     return $this->itemname;
+  }
+
+  function disableSecure()
+  {
+    $this->_secure = FALSE;
+  }
+
+  function enableSecure()
+  {
+    $this->_secure = TRUE;
   }
 
   function save(){

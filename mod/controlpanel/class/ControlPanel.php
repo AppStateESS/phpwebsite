@@ -13,6 +13,7 @@ class PHPWS_ControlPanel {
     Layout::addStyle('controlpanel');
 
     $panel = new PHPWS_Panel('controlpanel');
+    $panel->disableSecure();
 
     if (1 || !isset($_SESSION['Control_Panel_Tabs'])){
       PHPWS_ControlPanel::loadTabs($panel);
@@ -23,12 +24,12 @@ class PHPWS_ControlPanel {
 
     $allLinks = PHPWS_ControlPanel::getAllLinks();
 
-
     $checkTabs = $panel->getTabs();
 
     if (empty($checkTabs)){
       PHPWS_Error::log(CP_NO_TABS, 'controlpanel', 'display');
       PHPWS_ControlPanel::makeDefaultTabs();
+;
       PHPWS_ControlPanel::reset();
       PHPWS_Core::errorPage();
       exit();

@@ -8,18 +8,29 @@
 include_once PHPWS_SOURCE_DIR . 'mod/controlpanel/conf/config.php';
 
 class PHPWS_Panel{
-  var $itemname = NULL;
-  var $tabs     = NULL;
-  var $content  = NULL;
-  var $module   = NULL;
-  var $panel    = NULL;
+  var $itemname     = NULL;
+  var $tabs         = NULL;
+  var $content      = NULL;
+  var $module       = NULL;
+  var $panel        = NULL;
+  var $_secure      = TRUE;
 
   function PHPWS_Panel($itemname=NULL){
     if (isset($itemname))
       $this->setItemname($itemname);
   }
 
-  function quickSetTabs($tabs, $secure=TRUE){
+  function disableSecure()
+  {
+    $this->_secure = FALSE;
+  }
+
+  function enableSecure()
+  {
+    $this->_secure = TRUE;
+  }
+
+  function quickSetTabs($tabs){
     $count = 1;
     foreach ($tabs as $id=>$info){
       $tab = new PHPWS_Panel_Tab;
@@ -34,7 +45,7 @@ class PHPWS_Panel{
       if (!isset($info['link'])) {
 	return PHPWS_Error::get(CP_MISSING_LINK, 'controlpanel', 'quickSetTabs');
       } else {
-	$tab->setLink($info['link'], $secure);
+	$tab->setLink($info['link']);
       }
 
       if (!isset($info['itemname']))
@@ -158,6 +169,11 @@ class PHPWS_Panel{
       return $tplObj;
 
     foreach ($tabs as $id=>$tab){
+      if ($this->_secure) {
+	$tab->enableSecure();
+      } else {
+	$tab->disableSecure();
+      }
       $tpl['TITLE'] = $tab->getLink();
       if ($id == $currentTab){
 	$tpl['STATUS'] = 'class="active"';
