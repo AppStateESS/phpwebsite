@@ -88,13 +88,6 @@ class Layout {
     $GLOBALS['Layout_Onload'][] = $onload;
   }
 
-  function boxUp($title, $content)
-  {
-    $box['TITLE'] = $title;
-    $box['CONTENT'] = $content;
-    return PHPWS_Template::process($box, 'layout', 'box.tpl');
-  }
-
   function addStyle($module, $filename=NULL){
     if (isset($GLOBALS['Style'][$module]))
       return;
