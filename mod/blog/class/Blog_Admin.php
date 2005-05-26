@@ -346,6 +346,7 @@ class Blog_Admin {
       $version = & new Version('blog_entries');
     }
 
+    // User is restricted, save a version instead
     if (Current_User::isRestricted('blog')) {
       $result = Blog_Admin::saveVersion($blog, $version, FALSE);
       
@@ -420,6 +421,10 @@ class Blog_Admin {
     PHPWS_Core::initModClass('categories', 'Category_Item.php');
     if (empty($blog->date)) {
       $blog->date = mktime();
+    }
+
+    if (empty($blog->author)) {
+      $blog->author = Current_User::getDisplayName();
     }
 
     $version->setSource($blog);
