@@ -200,6 +200,11 @@ class Version {
       return $version_db->update();
     } else {
       $result = $version_db->insert();
+      if (PEAR::isError($result)) {
+	$this->_error = $result;
+	PHPWS_Error::log($result);
+	return FALSE;
+      }
       $this->id = $result;
     }
     return TRUE;
@@ -350,8 +355,9 @@ class Version {
   }
 
   function authorizeCreator($module, $itemname=NULL){
-    if (empty($this->source_id))
+    if (empty($this->source_id)) {
       return FALSE;
+    }
     return Users_Permission::giveItemPermission($this->getCreator(), $module, $this->source_id, $itemname);
   }
 
