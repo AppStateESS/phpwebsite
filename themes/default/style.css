@@ -180,6 +180,25 @@ input {
 	font-size : 9pt;
 }
 
+table {
+      width : 100%;
+
+}
+
+table.border {
+     border-collapse : collapse;
+     border-width : 1px;
+     border-style : solid;
+     border-color : black;
+}
+
+table.border td, th {
+     border-collapse : collapse;
+     border-width : 1px;
+     border-style : solid;
+     border-color : black;
+}
+
 table.form-table {
         width : 100%;
 }
