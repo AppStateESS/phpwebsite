@@ -1,4 +1,13 @@
 <?php
+/**
+ * Manages administrative functions including the creation and editing
+ * of blog entries.
+ *
+ * @version $Id$
+ * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ */
+
+
 PHPWS_Core::initModClass('blog', 'Blog_Form.php');
 
 class Blog_Admin {
@@ -66,7 +75,7 @@ class Blog_Admin {
 
     case 'approval':
       $title = _('Blog Entries Awaiting Approval');
-      $approval = & new Version_Approval('blog_entries');
+      $approval = & new Version_Approval('blog', 'blog_entries');
       $approval->setEditUrl('index.php?module=blog&amp;action=admin&amp;command=edit_unapproved');
       $approval->setViewUrl('index.php?module=blog&amp;action=admin&amp;command=view_version');
       $approval->setApproveUrl('index.php?module=blog&amp;action=admin&amp;command=approve_item');
@@ -77,7 +86,6 @@ class Blog_Admin {
       break;
 
     case 'approve_item':
-      echo 'wtf';
       if (Current_User::isRestricted('blog')) {
 	Current_User::disallow('Attempted to approve an entry as a restricted user.');
 	return;
@@ -91,6 +99,7 @@ class Blog_Admin {
 	$title = _('Sorry');
 	$content = _('An error occurred when saving your version.');
       } else {
+	$version->authorizeCreator('blog');
 	$title = _('Blog entry approved.');
 	$content = _('Returning you to the approval list.');
 	Layout::metaRoute('index.php?module=blog&amp;action=admin&amp;tab=approval&amp;authkey='
