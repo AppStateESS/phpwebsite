@@ -1,9 +1,9 @@
 <?php
 $proper_name  = 'Version';
-$version      = '0.0.1';
+$version      = '0.0.2';
 $register     = FALSE;
 $unregister   = FALSE;
-$import_sql   = TRUE;
+$import_sql   = FALSE;
 $image_dir    = FALSE;
 $file_dir     = FALSE;
 $version_http = 'http://phpwebsite.appstate.edu/test/update.ini';

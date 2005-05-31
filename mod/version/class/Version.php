@@ -7,6 +7,8 @@
  * @package Core
  */
 
+PHPWS_Core::initModClass('version', 'Approval.php');
+
 define('VERSION_TABLE_SUFFIX', '_version');
 
 /* Error messages */
@@ -26,7 +28,10 @@ class Version {
   var $vr_editor      = 0;
   var $vr_create_date = 0;
   var $vr_edit_date   = 0;
+
+  // number in queue of versions
   var $vr_number      = 0;
+
   var $vr_current     = 0;
   var $vr_approved    = 0;
   var $vr_locked      = 0;
@@ -107,9 +112,11 @@ class Version {
     }
   }
 
-  function getSource(){
+  function getSource($include_id=TRUE){
     $data = $this->source_data;
-    $data['id'] = $this->source_id;
+    if ($include_id) {
+      $data['id'] = $this->source_id;
+    }
     return $data;
   }
 
@@ -140,11 +147,14 @@ class Version {
     return $this->source_id;
   }
 
+  
   function save(){
     $source_db = & new PHPWS_DB($this->source_table);
     $version_db = & new PHPWS_DB($this->version_table);
-    if (empty($this->source_data))
+
+    if (empty($this->source_data)) {
       return PHPWS_Error::get(VERSION_MISSING_SOURCE, 'version', 'save');
+    }
 
     if (empty($this->id)) {
       $this->vr_creator = Current_User::getId();
@@ -155,8 +165,9 @@ class Version {
       $this->vr_edit_date = mktime();
     }
 
-    if (empty($this->vr_number))
+    if (empty($this->vr_number)) {
       $this->vr_number = $this->_getVersionNumber();
+    }
 
     if ($this->vr_approved || empty($this->source_id)) {
       $this->vr_current = 1;
@@ -166,7 +177,7 @@ class Version {
 
     foreach ($this->source_data as $col_name => $col_val) {
       if ($col_name == 'id') {
-	$version_db->addValue('source_id', (int)$col_val);
+	continue;
       } else {
 	if (!$version_db->isTableColumn($col_name)) {
 	  if($source_db->isTableColumn($col_name)) {
@@ -178,11 +189,32 @@ class Version {
 	    continue;
 	  }
 	}
-
 	$version_db->addValue($col_name, $col_val);
       }
     }
 
+    // Save the source first
+    if ($this->vr_approved) {
+      $source_db->addValue($this->getSource(FALSE));
+      if(!$this->source_id) {
+	$result = $source_db->insert();
+	if (PEAR::isError($result)) {
+	  $this->_error = $result;
+	  return $result;
+	} else {
+	  $this->source_id = $result;
+	}
+      } else {
+	$source_db->addWhere('id', $this->source_id);
+	$result = $source_db->update();
+	if (PEAR::isError($result)) {
+	  $this->_error = $result;
+	  return $result;
+	}
+      }
+    }
+
+    $version_db->addValue('source_id',      $this->source_id);
     $version_db->addValue('vr_creator',     $this->vr_creator);
     $version_db->addValue('vr_editor',      $this->vr_editor);
     $version_db->addValue('vr_create_date', $this->vr_create_date);
@@ -358,6 +390,7 @@ class Version {
     if (empty($this->source_id)) {
       return FALSE;
     }
+
     return Users_Permission::giveItemPermission($this->getCreator(), $module, $this->source_id, $itemname);
   }
 
@@ -417,18 +450,11 @@ class Version {
     return $this->save();
   }
 
-  function &createApproval()
-  {
-    PHPWS_Core::initModClass('version', 'Approval.php');
-    $approval = & new Version_Approval;
-    $approval->setVersionId($this->id);
-    $approval->setTable($this->source_table);
-    return $approval;
-  }
 
   /**
-   *
+   * In use?
    */
+  /*
   function checkApproval()
   {
     PHPWS_Core::initModClass('notes', 'Notes.php');
@@ -449,11 +475,13 @@ class Version {
 
     $_SESSION['Approval_Checked'] = 1;    
   }
-
+  */
   
   /**
    * Pulls a list of unapproved notices
+   * delete if not in use
    */
+  /*
   function getUnapprovedNotices()
   {
     // Check the user's access to each module
@@ -471,8 +499,7 @@ class Version {
 
     return $db->getObjects('Version_Approval');
   }
-
-  
+  */
 }
 
 ?>
