@@ -8,6 +8,7 @@
  */
 
 class Version_Approval {
+  var $module         = NULL;
   var $source_table   = NULL;
   var $version_table  = NULL;
   var $view_url       = NULL;
@@ -20,9 +21,15 @@ class Version_Approval {
 			      'vr_current', 'vr_approved', 'vr_locked');
   
 
-  function Version_Approval($table)
+  function Version_Approval($module, $table)
   {
+    $this->setModule($module);
     $this->setSourceTable($table);
+  }
+
+  function setModule($module)
+  {
+    $this->module = $module;
   }
 
   function setSourceTable($table)
@@ -110,15 +117,17 @@ users.id=' . $this->version_table . '.vr_creator';
 	$row_tpl['COLUMN_' . $count] = $app_item[$show_tag];
       }
 
-      $links[] = sprintf('<a href="%s">%s</a>',
-			 $this->approve_url . '&amp;version_id=' . $app_item['id'] .
-			 '&amp;authkey=' . Current_User::getAuthKey(),
-			 _('Approve'));
-
-      $links[] = sprintf('<a href="%s">%s</a>',
-			 $this->disapprove_url . '&amp;version_id=' . $app_item['id'] .
-			 '&amp;authkey=' . Current_User::getAuthKey(),
-			 _('Disapprove'));
+      if (!Current_User::isRestricted($this->module)) {
+	$links[] = sprintf('<a href="%s">%s</a>',
+			   $this->approve_url . '&amp;version_id=' . $app_item['id'] .
+			   '&amp;authkey=' . Current_User::getAuthKey(),
+			   _('Approve'));
+	
+	$links[] = sprintf('<a href="%s">%s</a>',
+			   $this->disapprove_url . '&amp;version_id=' . $app_item['id'] .
+			   '&amp;authkey=' . Current_User::getAuthKey(),
+			   _('Disapprove'));
+      }
 
 
       if (isset($this->view_url)) {
