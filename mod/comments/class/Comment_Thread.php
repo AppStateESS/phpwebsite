@@ -264,7 +264,7 @@ class Comment_Thread {
     $pager->setLimitList(array(10, 20, 50));
     $pager->setEmptyMessage(_('No comments'));
     $pager->initialize();
-    $rows = $pager->getObjects();
+    $rows = $pager->getRows();
     if (!empty($rows)) {
       $this->_createUserList($rows);
     }
