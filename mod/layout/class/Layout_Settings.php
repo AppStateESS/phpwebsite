@@ -121,7 +121,7 @@ class Layout_Settings {
 
   function loadSettings(){
     $db = new PHPWS_DB('layout_config');
-    $result = $db->loadObject($this);
+    $result = $db->loadObject($this, FALSE);
 
     if (PEAR::isError($result)){
       PHPWS_Error::log($result);
