@@ -56,14 +56,17 @@ class PHPWS_DB {
   }
   
   function addDB($db){
-    if (!is_object($db))
+    if (!is_object($db)) {
       return PHPWS_Error::get(PHPWS_DB_NOT_OBJECT, 'core', 'PHPWS_DB::addJoin', gettype($db));
+    }
 
-    if (strtoupper(get_class($db)) != 'PHPWS_DB')
+    if (strtoupper(get_class($db)) != 'PHPWS_DB') {
       return PHPWS_Error::get(PHPWS_WRONG_CLASS, 'core', 'PHPWS_DB::addJoin', get_class($db));
+    }
 
-    if (empty($db->table))
+    if (empty($db->table)) {
       return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::addJoin');
+    }
 
     $this->_DB[$db->table] = $db;
   }
@@ -480,9 +483,11 @@ class PHPWS_DB {
     $this->_distinct = FALSE;
   }
 
-  function addColumn($column, $distinct=FALSE){
-    if (!PHPWS_DB::allowed($column))
+  function addColumn($column, $distinct=FALSE)
+  {
+    if (!PHPWS_DB::allowed($column)) {
       return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::addColumn', $column);
+    }
 
     if ((bool)$distinct == TRUE)
       $column = 'DISTINCT ' .  $column;
@@ -675,8 +680,13 @@ class PHPWS_DB {
     $values = $this->getAllValues();
     $where = $this->getWhere(TRUE);
 
-    foreach ($values as $index=>$data)
+    if (empty($values)) {
+      return PHPWS_Error::get(PHPWS_DB_NO_VALUES, 'core', 'PHPWS_DB::update');
+    }
+
+    foreach ($values as $index=>$data) {
       $columns[] = $index . ' = ' . PHPWS_DB::dbReady($data);
+    }
 
     $query = "UPDATE $table SET " . implode(', ', $columns) ." $where";
     $result = PHPWS_DB::query($query);
@@ -706,10 +716,11 @@ class PHPWS_DB {
   function getSelectSQL($type){
     $columnList = $this->getColumn();
 
-    if (isset($columnList))
+    if (isset($columnList)) {
       PHPWS_DB::addTableNames($columnList, $this->table);
+    }
       
-    if (!empty($this->_DB)){
+    if (!empty($this->_DB)) {
       $tables[] = $this->getTable();
       foreach ($this->_DB as $altDB){
 	$tables[] = $altDB->getTable();
@@ -776,6 +787,9 @@ class PHPWS_DB {
 
     if (!isset($sql)){
       $sql_array = $this->getSelectSQL($type);
+      if (PEAR::isError($sql_array)) {
+	return $sql_array;
+      }
       extract($sql_array);
 
       if ($type == 'count') {
@@ -872,16 +886,28 @@ class PHPWS_DB {
     }
   }
 
-  function getRow($sql){
-    return $this->select('row', $sql);
+  function getRow($sql)
+  {
+    $db = & new PHPWS_DB;
+    return $db->select('row', $sql);
   }
 
-  function getCol($sql){
-    return $this->select('col', $sql);
+  function getCol($sql)
+  {
+    $db = & new PHPWS_DB;
+    return $db->select('col', $sql);
   }
 
-  function getAll($sql){
-    return $this->select('all', $sql);
+  function getAll($sql)
+  {
+    $db = & new PHPWS_DB;
+    return $db->select('all', $sql);
+  }
+
+  function getAssoc($sql)
+  {
+    $db = & new PHPWS_DB;
+    return $db->select('assoc', $sql);
   }
 
   function _indexBy($sql, $indexby, $colMode=FALSE){
@@ -957,11 +983,13 @@ class PHPWS_DB {
 
   function addTableColumn($column, $parameter, $after=NULL, $indexed=FALSE){
     $table = $this->getTable();
-    if (!$table)
+    if (!$table) {
       return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::addColumn');
+    }
 
-    if (!PHPWS_DB::allowed($column))
+    if (!PHPWS_DB::allowed($column)) {
       return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::addTableColumn', $column);
+    }
 
     if (isset($after)){
       if (strtolower($after) == 'first')
@@ -1234,35 +1262,50 @@ class PHPWS_DB {
    * @access public
    */
   function dbReady($value=NULL) {
-    if (is_array($value) || is_object($value))
+    if (is_array($value) || is_object($value)) {
       return PHPWS_DB::dbReady(serialize($value));
-    elseif (is_string($value))
+    } elseif (is_string($value)) {
       return "'" . $GLOBALS['PEAR_DB']->escapeSimple($value) . "'";
-    elseif (is_null($value))
+    } elseif (is_null($value)) {
       return 'NULL';
-    elseif (is_bool($value))
+    } elseif (is_bool($value)) {
       return ($value ? 1 : 0);
-    else
+    } else {
       return $value;
+    }
   }// END FUNC dbReady()
 
-  function loadObject(&$object){
-    if (!is_object($object))
+  /**
+   * @author Matt McNaney <matt at tux dot appstate dot edu>
+   * @param  object $object        Object variable filled with result.
+   * @param  object $require_where If TRUE, require a where parameter or
+   *                               have the id set
+   * @return boolean               Returns TRUE if plugObject is successful
+   * @access public
+   */
+  function loadObject(&$object, $require_where=TRUE){
+    if (!is_object($object)) {
       return PHPWS_Error::get(PHPWS_DB_NOT_OBJECT, 'core', 'PHPWS_DB::loadObject');
+    }
 
-    if (!empty($object->id)) {
+    if ($require_where && empty($object->id) && empty($this->where)) {
+      return PHPWS_Error::get(PHPWS_DB_NO_ID, 'core', 'PHPWS_DB::loadObject');
+    }
+
+    if ($require_where && empty($this->where)) {
       $this->addWhere('id', $object->id);
     }
 
     $variables = $this->select('row');
 
-    if (PEAR::isError($variables))
+    if (PEAR::isError($variables)) {
       return $variables;
-    elseif (empty($variables))
+    } elseif (empty($variables)) {
       return NULL;
+    }
 
     return PHPWS_Core::plugObject($object, $variables);
-  }
+  }// END FUNC loadObject
 
   /**
    * Creates an array of objects contructed from the submitted
