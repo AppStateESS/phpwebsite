@@ -29,6 +29,7 @@ $errors[PHPWS_DB_NO_VARIABLES]       = _('Class does not contain variables.');
 $errors[PHPWS_DB_NO_WHERE]           = _('Function was expecting a "where" parameter.');
 $errors[PHPWS_DB_NO_JOIN_DB]         = _('Join database does not exist.');
 $errors[PHPWS_DB_NO_TABLE]           = _('Table does not exist.');
+$errors[PHPWS_DB_NO_ID]              = _('loadObject expected the object to have an id or where clause.');
 
 
 // List.php 200 - 299
@@ -98,6 +99,7 @@ $errors[PHPWS_TEXT_NOT_STRING]        = _('Function expected a string variable.'
 $errors[DBPAGER_NO_TOTAL_PAGES]       = _('No pages found.');
 $errors[DBPAGER_MODULE_NOT_SET]       = _('Module was not set.');
 $errors[DBPAGER_TEMPLATE_NOT_SET]     = _('Template was not set.');
+$errors[DBPAGER_NO_TABLE]             = _('Table is blank');
 
 // Editor.php 1200 - 1299
 $errors[EDITOR_MISSING_FILE]          = _('Unable to find the specified editor type.');

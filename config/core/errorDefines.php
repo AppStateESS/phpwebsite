@@ -31,6 +31,7 @@ define('PHPWS_DB_NO_VARIABLES',       -107);
 define('PHPWS_DB_NO_WHERE',           -108);
 define('PHPWS_DB_NO_JOIN_DB',         -109);
 define('PHPWS_DB_NO_TABLE',           -110);
+define('PHPWS_DB_NO_ID',              -111);
 
 
 /************* List.php *****************/
@@ -104,6 +105,7 @@ define('PHPWS_TEXT_NOT_STRING',       -1000);
 define('DBPAGER_NO_TOTAL_PAGES',      -1100);
 define('DBPAGER_MODULE_NOT_SET',      -1101);
 define('DBPAGER_TEMPLATE_NOT_SET',    -1102);
+define('DBPAGER_NO_TABLE',            -1103);
 
 /************** Editor.php ****************/
 define('EDITOR_MISSING_FILE',         -1200);
