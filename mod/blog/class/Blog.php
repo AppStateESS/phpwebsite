@@ -16,12 +16,14 @@ class Blog {
 
   function Blog($id=NULL)
   {
-    if (isset($id)){
-      $this->id = (int)$id;
-      $result = $this->init();
-      if (PEAR::isError($result)) {
-	PHPWS_Error::log($result);
-      }
+    if (empty($id)) {
+      return;
+    }
+
+    $this->id = (int)$id;
+    $result = $this->init();
+    if (PEAR::isError($result)) {
+      PHPWS_Error::log($result);
     }
   }
 
@@ -223,6 +225,72 @@ class Blog {
 
   function getListEntry(){
     return substr(strip_tags(str_replace('<br />', ' ', $this->getEntry(TRUE))), 0, 30) . ' . . .';
+  }
+
+  function post_entry()
+  {
+    if (!Current_User::authorized('blog', 'edit_blog')) {
+      Current_User::disallow();
+      return FALSE;
+    }
+
+    if (empty($_POST['title'])) {
+      return array(_('Missing title.'));
+    } else {
+      $this->title = strip_tags($_POST['title']);
+    }
+
+    $this->setEntry($_POST['entry']);
+
+    if (isset($_POST['viewable'])) {
+      $this->restricted = (int)$_POST['viewable'];
+    } else {
+      $this->restricted = 0;
+    }
+
+    if (isset($_REQUEST['version_id'])) {
+      $version = & new Version('blog_entries', $_REQUEST['version_id']);
+    }
+    else {
+      $version = & new Version('blog_entries');
+    }
+
+    if (empty($this->author)) {
+      $this->author = Current_User::getDisplayName();
+    }
+
+    if (empty($this->date)) {
+      $this->date = mktime();
+    }
+
+    $version->setSource($this);
+
+    // User is restricted, everything is unapproved
+    // from them
+    if (Current_User::isRestricted('blog')) {
+      $version->setApproved(FALSE);
+    } else {
+      // User is unrestricted
+      if ($version->id) {
+	// A version is getting approved
+	if(isset($_POST['approve_entry'])) {
+	  $version->setApproved(TRUE);
+	} else {
+	  $version->setApproved(FALSE);
+	}
+      } else {
+	// A regular blog from a unrestricted user
+	// needs saving.
+	$version->setApproved(TRUE);
+      }
+    }
+
+    $result = $version->save();
+    if (PEAR::isError($result)) {
+      return FALSE;
+    }
+
+    return TRUE;
   }
 
 
