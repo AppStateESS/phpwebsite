@@ -22,14 +22,9 @@ class DBPager {
   var $class = NULL;
 
   /**
-   * The current rows to display.
-   */
-  var $current_rows = NULL;
-
-  /**
    * Object rows pulled from DB
    */
-  var $object_rows = NULL;
+  var $display_rows = NULL;
 
   /**
    * Name of the module using list
@@ -117,23 +112,23 @@ class DBPager {
 
   var $error;
 
-  function DBPager($table, $class){
+  function DBPager($table, $class=NULL){
+    if (empty($table)) {
+      $this->error = PHPWS_Error::get(DBPAGER_NO_TABLE, 'core', 'DB_Pager::DBPager');
+      return;
+    }
     $this->db = & new PHPWS_DB($table);
     if (PEAR::isError($this->db)){
       $this->error = $this->db;
       $this->db = NULL;
     }
 
-    if (class_exists($class))
+    if (class_exists($class)) {
       $this->class = $class;
-    else {
-      $this->error = PHPWS_Error::get(PHPWS_CLASS_NOT_EXIST, 'core', 'DB_Pager::DBPager', $class);
-      PHPWS_Error::log($this->error);
-      return;
+      $this->_methods = get_class_methods($class);
+      $this->_classVars = array_keys(get_class_vars($class));
     }
 
-    $this->_methods = get_class_methods($class);
-    $this->_classVars = array_keys(get_class_vars($class));
 
     if (isset($_REQUEST['page']))
       $this->current_page = (int)$_REQUEST['page'];
@@ -204,8 +199,16 @@ class DBPager {
     $this->template = $template;
   }
 
+  /**
+   * Allows the developer to add extra or processes row tags
+   * 
+   */
   function addRowTags()
   {
+    if (empty($this->class)) {
+      return FALSE;
+    }
+
     if (func_num_args() < 1) {
       return FALSE;
     }
@@ -252,14 +255,17 @@ class DBPager {
   }
 
   function getTotalRows(){
+    if (isset($this->error)) {
+      return;
+    }
     $result = $this->db->select('count');
     $this->db->resetColumns();
     return $result;
   }
 
-  function getObjects()
+  function getRows()
   {
-    return $this->object_rows;
+    return $this->display_rows;
   }
 
   /**
@@ -269,6 +275,9 @@ class DBPager {
    * the data it gets into the object.
    */
   function initialize(){
+    if (isset($this->error)) {
+      return $this->error;
+    }
     if (empty($this->limit)) {
       $this->limit = DBPAGER_DEFAULT_LIMIT;
     }
@@ -279,9 +288,10 @@ class DBPager {
     }
 
     $count = $this->getTotalRows();
-
-    if (PEAR::isError($count))
+    
+    if (PEAR::isError($count)) {
       return $count;
+    }
 
     $this->total_rows = &$count;
     $this->total_pages = ceil($this->total_rows / $this->limit);
@@ -295,13 +305,17 @@ class DBPager {
       $this->db->addOrder($this->orderby . ' ' . $this->orderby_dir);
     }
 
-    $result = $this->db->getObjects($this->class);
+    if (empty($this->class)) {
+      $result = $this->db->select();
+    } else {
+      $result = $this->db->getObjects($this->class);
+    }
 
     if (PEAR::isError($result)) {
       return $result;
     }
 
-    $this->object_rows = &$result;
+    $this->display_rows = &$result;
     return TRUE;
   }
 
@@ -480,32 +494,40 @@ class DBPager {
   function getPageRows(){
     $count = 0;
 
-    if (!isset($this->object_rows))
+    if (!isset($this->display_rows)) {
       return NULL;
+    }
 
-    foreach ($this->object_rows as $object){
-      if (isset($this->runMethods)){
-	foreach ($this->runMethods as $run_function)
-	  $object->{$run_function}();
+    foreach ($this->display_rows as $disp_row){
+      if (isset($this->class) && isset($this->runMethods)){
+	foreach ($this->runMethods as $run_function) {
+	  $disp_row->{$run_function}();
+	}
       }
 
-      foreach ($this->_classVars as $varname) {
-	$template[$count][strtoupper($varname)] = $object->{$varname};
-      }
+      if (isset($this->class)) {
+	foreach ($this->_classVars as $varname) {
+	  $template[$count][strtoupper($varname)] = $disp_row->{$varname};
+	}
+	if (!empty($this->row_tags)) {
+	  extract($this->row_tags);
+	  if (!in_array(strtolower($method), $this->_methods)) {
+	    continue;
+	  }
 
-      if (!empty($this->row_tags)) {
-	extract($this->row_tags);
-	if (!in_array(strtolower($method), $this->_methods)) {
-	  continue;
+	  if (empty($variable)) {
+	    $row_result = $disp_row->{$method}();
+	  } else {
+	    $row_result = call_user_func_array(array(&$disp_row, $method), $variable);
+	  }
+
+	  $template[$count] = array_merge($template[$count], $row_result);
 	}
 
-	if (empty($variable)) {
-	  $row_result = $object->{$method}();
-	} else {
-	  $row_result = call_user_func_array(array(&$object, $method), $variable);
+      } else {
+	foreach ($disp_row as $key => $value) {
+	  $template[$count][strtoupper($key)] = $value;
 	}
-
-	$template[$count] = array_merge($template[$count], $row_result);
       }
 
       $count++;
@@ -601,7 +623,7 @@ class DBPager {
   function get(){
     $template = array();
 
-    if (empty($this->object_rows)) {
+    if (empty($this->display_rows)) {
       $result = $this->initialize();
       if (PEAR::isError($result)) {
 	return $result;
@@ -616,8 +638,9 @@ class DBPager {
 
     $rows = $this->getPageRows();
 
-    if (isset($this->toggles))
+    if (isset($this->toggles)) {
       $max_tog = count($this->toggles);
+    }
 
     $count = 0;
     if (isset($rows)){
