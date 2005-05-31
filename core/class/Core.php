@@ -300,11 +300,13 @@ class PHPWS_Core {
     $conf = array('mode' => LOG_PERMISSION, 'timeFormat' => LOG_TIME_FORMAT);
     $log  = &Log::singleton('file', PHPWS_LOG_DIRECTORY . $filename, $type, $conf, PEAR_LOG_NOTICE);
 
-    if (get_class($log) == 'log_file'){
-      $log->log($message, PEAR_LOG_NOTICE);
-      $log->close();
+    if (PEAR::isError($log)) {
+      return;
     }
 
+
+    $log->log($message, PEAR_LOG_NOTICE);
+    $log->close();
   }
 
   function errorPage(){
