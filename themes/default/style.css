@@ -180,11 +180,6 @@ input {
 	font-size : 9pt;
 }
 
-table {
-      width : 100%;
-
-}
-
 table.border {
      border-collapse : collapse;
      border-width : 1px;
