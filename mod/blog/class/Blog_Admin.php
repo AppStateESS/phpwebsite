@@ -76,13 +76,32 @@ class Blog_Admin {
     case 'approval':
       $title = _('Blog Entries Awaiting Approval');
       $approval = & new Version_Approval('blog', 'blog_entries');
-      $approval->setEditUrl('index.php?module=blog&amp;action=admin&amp;command=edit_unapproved');
-      $approval->setViewUrl('index.php?module=blog&amp;action=admin&amp;command=view_version');
-      $approval->setApproveUrl('index.php?module=blog&amp;action=admin&amp;command=approve_item');
-      $approval->setDisapproveUrl('index.php?module=blog&amp;action=admin&amp;command=disapprove');
+      $approval->setEditUrl('index.php?module=blog&amp;action=admin&amp;command=edit_unapproved&amp;authkey=' . Current_User::getAuthKey());
+      $approval->setViewUrl('index.php?module=blog&amp;action=admin&amp;command=view_version&amp;authkey=' . Current_User::getAuthKey());
+      $approval->setApproveUrl('index.php?module=blog&amp;action=admin&amp;command=approve_item&amp;authkey=' . Current_User::getAuthKey());
+      $approval->setDisapproveUrl('index.php?module=blog&amp;action=admin&amp;command=disapprove_item&amp;authkey=' . Current_User::getAuthKey());
 
       $approval->setColumns('title', 'entry');
       $content = $approval->getList();
+      break;
+
+    case 'disapprove_item':
+      if (Current_User::isRestricted('blog')) {
+	Current_User::disallow('Attempted to disapprove an entry as a restricted user.');
+	return;
+      }
+      $version = & new Version('blog_entries', $_REQUEST['version_id']);
+      $result = $version->kill();
+      if (PEAR::isError($result)) {
+	PHPWS_Error::log($result);
+	$title = _('Error');
+	$content = _('A problem occurred when trying to disapprove this entry.');
+      } else {
+	$title = _('Blog entry disapproved.');
+	$content = _('Returning you to the approval list.');
+      }
+      Layout::metaRoute('index.php?module=blog&amp;action=admin&amp;tab=approval&amp;authkey='
+			  . Current_User::getAuthKey());
       break;
 
     case 'approve_item':
@@ -128,7 +147,7 @@ class Blog_Admin {
     case 'delete':
       $title = _('Blog Archive');
       $message = _('Blog entry deleted.');
-      $blog->kill();
+      $result = $blog->kill();
       $content = Blog_Admin::entry_list();
       break;
 
