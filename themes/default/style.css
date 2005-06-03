@@ -187,7 +187,7 @@ table.border {
      border-color : black;
 }
 
-table.border td, th {
+table.border  th {
      border-collapse : collapse;
      border-width : 1px;
      border-style : solid;
