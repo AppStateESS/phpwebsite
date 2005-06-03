@@ -408,7 +408,30 @@ class Version {
 
     $db = & new PHPWS_DB($this->version_table);
     $db->addWhere('id', $this->id);
-    return $db->delete();
+    $result = $db->delete();
+    if (PEAR::isError($result)) {
+      return $result;
+    }
+    $db->resetWhere();
+    $db->addWhere('source_id', $this->source_id);
+    $db->addOrder('vr_number');
+    $db->addColumn('id');
+    $reindex_list = $db->select();
+    if (empty($reindex_list) || PEAR::isError($reindex_list)) {
+      return $reindex_list;
+    }
+
+    $count = 1;
+    foreach ($reindex_list as $version) {
+      $db->reset();
+      $db->addWhere('id', $version['id']);
+      $db->addValue('vr_number', $count);
+      $result = $db->update();
+      if (PEAR::isError($result)) {
+	return $result;
+      }
+      $count++;
+    }
   }
 
   function getBackupList(){
