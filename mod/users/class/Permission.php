@@ -17,8 +17,9 @@ class Users_Permission {
   }
 
   function allowedItem($module, $item_id, $itemname=NULL){
-    if (!isset($itemname))
+    if (!isset($itemname)) {
       $itemname = $module;
+    }
 
     // Get the permission level for the group
     $permissionLvl = $this->getPermissionLevel($module);
@@ -66,7 +67,6 @@ class Users_Permission {
 	}
 
 	$allow = $this->permissions[$module]['permissions'][$subpermission];
-
 	if ((bool)$allow){
 	  if (isset($item_id)){
 	    // subpermission is set as is item id
