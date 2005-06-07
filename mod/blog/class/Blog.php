@@ -146,7 +146,7 @@ class Blog {
     $template['DATE']  = $this->getFormatedDate();
     $template['ENTRY'] = PHPWS_Text::parseTag($this->getEntry(TRUE));
 
-    if ($edit && Current_User::allow('blog', 'edit_blog', $this->getId())){
+    if ($edit && Current_User::allow('blog', 'edit_blog', $this->getId(), 'entry')){
       $vars['blog_id'] = $this->getId();
       $vars['action']  = 'admin';
       $vars['command'] = 'edit';
@@ -199,7 +199,7 @@ class Blog {
     $link['action'] = 'admin';
     $link['blog_id'] = $this->getId();
 
-    if (Current_User::allow('blog', 'edit_blog', $this->getId())){
+    if (Current_User::allow('blog', 'edit_blog', $this->getId(), 'entry')){
       $link['command'] = 'edit';
       $list[] = PHPWS_Text::secureLink(_('Edit'), 'blog', $link);
     }
@@ -259,7 +259,7 @@ class Blog {
       $this->author = Current_User::getDisplayName();
     }
 
-    if (empty($this->date)) {
+    if (empty($this->id)) {
       $this->date = mktime();
     }
 
@@ -282,6 +282,9 @@ class Blog {
 	// A regular blog from a unrestricted user
 	// needs saving.
 	$version->setApproved(TRUE);
+      }
+      if ($this->id) {
+	PHPWS_User::savePermissions($this->getKey());
       }
     }
 
