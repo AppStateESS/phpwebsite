@@ -311,6 +311,12 @@ class Category_Item {
       $db->addValue('version_id', 0);
     }
   }
+
+  function getTplTags()
+  {
+    $tpl['TITLE'] = $this->getLink(TRUE);
+    return $tpl;
+  }
 }
 
 ?>

@@ -58,12 +58,14 @@ class Categories_Action{
 	$direction = (isset($category->id)) ? 'list' : 'new';
 
 	$result = $category->save();
-	if (PEAR::isError($result)){
+	if (PEAR::isError($result)) {
 	  PHPWS_Error::log($result);
 	  $content[] = Categories_Action::affirm(_('Unable to save category.') . ' ' .  _('Please contact your administrator.'), $direction);
 	}
-	else
+	else {
 	  $content[] = Categories_Action::affirm(_('Category saved successfully.'), $direction);
+	  Layout::metaRoute('index.php?module=categories&amp;action=admin&amp;subaction=' . $direction . '&amp;authkey=' . Current_User::getAuthKey());
+	}
       }
 
       break;
@@ -257,12 +259,10 @@ class Categories_Action{
     $pager->setDefaultLimit(10);
     $pager->setTemplate('category_list.tpl');
     $pager->setLink('index.php?module=categories&amp;action=admin&amp;tab=list');
-    $pager->addTags($pageTags);
+    $pager->addPageTags($pageTags);
     $pager->addToggle('class="toggle1"');
     $pager->addToggle('class="toggle2"');
-    $pager->setMethod('description', 'getDescription');
-    $pager->setMethod('parent', 'getParentTitle');
-    $pager->addRowTag('action', 'Categories_Action', 'getListAction');
+    $pager->addRowTags('getRowTags');
     $content = $pager->get();
 
     if (empty($content)) {
@@ -271,28 +271,6 @@ class Categories_Action{
     else {
       return $content;
     }
-  }
-
-  function getListAction($category){
-    $vars['module']      = 'categories';
-    $vars['action']      = 'admin';
-    $vars['category_id'] = $category->getId();
-
-    $vars['subaction'] = 'edit';
-    $links[] = PHPWS_Text::secureLink(_('Edit'), 'categories', $vars);
-
-    if (javascriptEnabled()){
-      $js_vars['QUESTION'] = _('Are you sure you want to delete this category?');
-      $js_vars['ADDRESS']  = 'index.php?module=categories&amp;action=admin&amp;subaction=deleteCategory&amp;category_id=' . $category->getId() . '&amp;authkey=' . Current_User::getAuthKey();
-      $js_vars['LINK']     = _('Delete');
-      $links[] = Layout::getJavascript('confirm', $js_vars);
-    } else {
-      $vars['subaction'] = 'delete';
-      $links[] = PHPWS_Text::moduleLink(_('Delete'), 'categories', $vars);
-    }
-
-    return implode(' | ', $links);
-    
   }
 
   function viewCategory($id=NULL, $module=NULL) {
@@ -369,10 +347,10 @@ class Categories_Action{
     $pager->setDefaultLimit(10);
     $pager->setTemplate('category_item_list.tpl');
     $pager->setLink('index.php?module=categories&amp;action=view&amp;id=' . $category->getId());
-    $pager->addTags($pageTags);
+    $pager->addPageTags($pageTags);
     $pager->addToggle('class="toggle1"');
     $pager->addToggle('class="toggle2"');
-    $pager->setMethod('title', 'getLink', TRUE);
+    $pager->addRowTags('getTplTags');
     $content = $pager->get();
 
     if (empty($content)) {

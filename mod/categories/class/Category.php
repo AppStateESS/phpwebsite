@@ -62,11 +62,11 @@ class Category{
   }
 
   function setDescription($description){
-    $this->description = PHPWS_Text::prepare($description);
+    $this->description = PHPWS_Text::parseInput($description);
   }
 
   function getDescription(){
-    return PHPWS_Text::parseEncoded($this->description);
+    return PHPWS_Text::parseOutput($this->description);
   }
 
   function setParent($parent){
@@ -184,6 +184,32 @@ class Category{
     }
     $list = array_reverse($list, TRUE);
     return $list;
+  }
+
+  function getRowTags()
+  {
+    $vars['module']      = 'categories';
+    $vars['action']      = 'admin';
+    $vars['category_id'] = $this->getId();
+
+    $vars['subaction'] = 'edit';
+    $links[] = PHPWS_Text::secureLink(_('Edit'), 'categories', $vars);
+
+    if (javascriptEnabled()){
+      $js_vars['QUESTION'] = _('Are you sure you want to delete this category?');
+      $js_vars['ADDRESS']  = 'index.php?module=categories&amp;action=admin&amp;subaction=deleteCategory&amp;category_id=' . $this->getId() . '&amp;authkey=' . Current_User::getAuthKey();
+      $js_vars['LINK']     = _('Delete');
+      $links[] = Layout::getJavascript('confirm', $js_vars);
+    } else {
+      $vars['subaction'] = 'delete';
+      $links[] = PHPWS_Text::moduleLink(_('Delete'), 'categories', $vars);
+    }
+
+    $tpl['ACTION'] = implode(' | ', $links);
+    $tpl['DESCRIPTION'] = $this->getDescription();
+    $tpl['PARENT'] = $this->getParentTitle();
+
+    return $tpl;
   }
 }
 
