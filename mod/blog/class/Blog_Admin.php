@@ -37,7 +37,7 @@ class Blog_Admin {
     switch ($command){
     case 'edit':
       $panel->setCurrentTab('list');;
-      if (!Current_User::authorized('blog', 'edit_blog', $_REQUEST['blog_id'])){
+      if (!Current_User::authorized('blog', 'edit_blog', $_REQUEST['blog_id'], 'entry')){
 	Current_User::disallow(_('User tried to edit a blog.'));
 	return;
       }
@@ -118,11 +118,19 @@ class Blog_Admin {
 	$title = _('Sorry');
 	$content = _('An error occurred when saving your version.');
       } else {
-	$version->authorizeCreator('blog');
+	PHPWS_Core::initModClass('categories', 'Category_Item.php');
+	$category_item = & new Category_Item('blog');
+	$category_item->setVersionId($version->getId());
+	$category_item->setItemId($version->getSourceId());
+	$category_item->saveVersion();
+
+	$version->authorizeCreator('blog', 'entry');
 	$title = _('Blog entry approved.');
 	$content = _('Returning you to the approval list.');
+	/*
 	Layout::metaRoute('index.php?module=blog&amp;action=admin&amp;tab=approval&amp;authkey='
 			  . Current_User::getAuthKey());
+	*/
       }
       break;
 
