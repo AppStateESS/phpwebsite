@@ -229,6 +229,8 @@ class Blog {
 
   function post_entry()
   {
+    $set_permissions = FALSE;
+
     if (!Current_User::authorized('blog', 'edit_blog')) {
       Current_User::disallow();
       return FALSE;
@@ -282,9 +284,7 @@ class Blog {
 	// A regular blog from a unrestricted user
 	// needs saving.
 	$version->setApproved(TRUE);
-      }
-      if ($this->id) {
-	PHPWS_User::savePermissions($this->getKey());
+	$set_permissions = TRUE;
       }
     }
 
@@ -293,15 +293,19 @@ class Blog {
       return FALSE;
     }
 
+    $this->id = $version->getSourceId();
+
+    if ($set_permissions) {
+      PHPWS_User::savePermissions($this->getKey());
+    }
+
+
     PHPWS_Core::initModClass('categories', 'Category_Item.php');
 
     $category_item = & new Category_Item('blog');
-
     $category_item->setItemId($this->id);
     $category_item->setVersionId($version->id);
-
     $category_item->setApproved($version->isApproved());
-
     $category_item->setTitle($this->getTitle());
     $category_item->setLink($this->getViewLink(TRUE));
     $category_item->savePost();
