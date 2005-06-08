@@ -60,27 +60,32 @@ class PHPWS_Template extends HTML_Template_Sigma {
       return FALSE;
   }
 
-  /**
-   * Lists the template files in a directory.
-   * Can be called statically. 
-   */
-  function listTemplates($module, $directory=NULL)
+  function getTemplateDirectory($module, $directory=NULL)
   {
     $theme_dir = PHPWS_Template::getTplDir($module) . $directory;
     $local_dir = sprintf('./templates/%s/', $module) . $directory;
     $module_dir = sprintf('./mod/%s/templates/', $module) . $directory;
 
     if (FORCE_THEME_TEMPLATES && is_dir($theme_dir)) {
-      $tpl_dir = &$theme_dir;
+      return $theme_dir;
     } elseif (FORCE_MOD_TEMPLATES && is_dir($module_dir)) {
-      $tpl_dir = &$module_dir;
+      return $module_dir;
     } elseif (is_dir($local_dir)) {
-      $tpl_dir = &$local_dir;
+      return $local_dir;
     } else {
       return NULL;
     }
+  }
 
-    if(!$result = scandir($tpl_dir)) {
+  /**
+   * Lists the template files in a directory.
+   * Can be called statically. 
+   */
+  function listTemplates($module, $directory=NULL)
+  {
+    $tpl_dir = PHPWS_Template::getTemplateDirectory($module, $directory);
+
+    if (!$result = scandir($tpl_dir)) {
       return NULL;
     }
 
