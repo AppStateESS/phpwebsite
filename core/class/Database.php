@@ -616,12 +616,11 @@ class PHPWS_DB {
     $query =  PHPWS_DB::lastQuery();
     $process = strtolower(substr($query, 0, strpos($query, ' ')));
 
-    if ($process == 'select'){
-      $rows = $GLOBALS['PEAR_DB']->num_rows; 
-      return array_pop($rows);
+    if ($process == 'select') {
+      return FALSE;
     }
-    else
-      return $GLOBALS['PEAR_DB']->affectedRows();
+
+    return $GLOBALS['PEAR_DB']->affectedRows();
   }
 
   function reset(){
