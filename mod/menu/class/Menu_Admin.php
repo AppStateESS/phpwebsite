@@ -11,6 +11,8 @@ class Menu_Admin {
 
   function main()
   {
+    $title = $content = NULL;
+
     PHPWS_Core::initModClass('menu', 'Menu_Item.php');
 
     if (!Current_User::allow('menu')){
@@ -38,6 +40,47 @@ class Menu_Admin {
       $content = Menu_Admin::editMenu($menu);
       break;
 
+    case 'edit_menu':
+      $title = _('Update Menu');
+      $content = Menu_Admin::editMenu($menu);
+      break;
+
+    case 'list':
+      $title = ('Menu List');
+      $content = Menu_Admin::menuList();
+      break;
+
+    case 'post_menu':
+      $updating = (bool)$menu->id;
+      $post_result = $menu->post();
+      if (is_array($post_result)) {
+	$tpl['MESSAGE'] = implode('<br />', $post_result);
+	$title = _('Create New Menu');
+	$content = Menu_Admin::editMenu($menu);
+      } else {
+	$title = _('Menu saved!');
+	if ($updating) {
+	  $content = _('Returning you to menu list.');
+	  $tab = 'list';
+	} else {
+	  $content = _('Returning you to menu creation.');
+	  $tab = 'new';
+	}
+	Layout::metaRoute('index.php?module=menu&amp;tab='
+			  . $tab
+			  . '&amp;authkey=' . Current_User::getAuthKey());
+      }
+      break;
+
+    case 'pin_all':
+      $menu->pin_all = (int)$_GET['hook'];
+      $menu->save();
+      $title = _('Menu saved!');
+      $content = _('Returning you to menu list.');
+      Layout::metaRoute('index.php?module=menu&amp;tab=list&amp;authkey=' . Current_User::getAuthKey());
+      break;
+
+      
     } // end command switch
 
     $tpl['TITLE'] = $title;
@@ -99,7 +142,22 @@ class Menu_Admin {
 
     $template = $form->getTemplate();
     return PHPWS_Template::process($template, 'menu', 'menu_form.tpl');
-    
+  }
+
+  function menuList()
+  {
+    $page_tags['TITLE'] = _('Title');
+    $page_tags['ACTION'] = _('Action');
+
+    PHPWS_Core::initCoreClass('DBPager.php');
+    $pager = & new DBPager('menus', 'Menu_Item');
+    $pager->setModule('menu');
+    $pager->addPageTags($page_tags);
+    $pager->setTemplate('admin/menu_list.tpl');
+    $pager->setLink('index.php?module=menu&amp;tab=list');
+    $pager->addRowTags('getRowTags');
+    $content = $pager->get();
+    return $content;
   }
 
 }
