@@ -1,9 +1,9 @@
 <table cellpadding="4" cellspacing="1" width="100%">
   <tr>
-    <th><b>{TITLE}</b> {TITLE_SORT}</th>
-    <th><b>{ENTRY}</b></th>
-    <th><b>{DATE}</b> {DATE_SORT}</th>
-    <th><b>{ACTION}</b></th>
+    <th>{TITLE} {TITLE_SORT}</th>
+    <th>{ENTRY}</th>
+    <th>{DATE} {DATE_SORT}</th>
+    <th>{ACTION}</th>
   </tr>
 <!-- BEGIN listrows -->
   <tr {TOGGLE}>
