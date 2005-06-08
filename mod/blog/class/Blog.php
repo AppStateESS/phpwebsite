@@ -293,6 +293,19 @@ class Blog {
       return FALSE;
     }
 
+    PHPWS_Core::initModClass('categories', 'Category_Item.php');
+
+    $category_item = & new Category_Item('blog');
+
+    $category_item->setItemId($this->id);
+    $category_item->setVersionId($version->id);
+
+    $category_item->setApproved($version->isApproved());
+
+    $category_item->setTitle($this->getTitle());
+    $category_item->setLink($this->getViewLink(TRUE));
+    $category_item->savePost();
+
     return TRUE;
   }
 
