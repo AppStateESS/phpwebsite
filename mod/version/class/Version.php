@@ -197,6 +197,7 @@ class Version {
     if ($this->vr_approved) {
       $source_db->addValue($this->getSource(FALSE));
       if(!$this->source_id) {
+	// this version is a newly approved item
 	$result = $source_db->insert();
 	if (PEAR::isError($result)) {
 	  $this->_error = $result;
@@ -239,6 +240,7 @@ class Version {
       }
       $this->id = $result;
     }
+    
     return TRUE;
   }
 
