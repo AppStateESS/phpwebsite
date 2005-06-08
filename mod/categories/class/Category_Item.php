@@ -170,31 +170,31 @@ class Category_Item {
     return $db->delete();
   }
 
+
   function saveVersion(){
     if (empty($this->item_id) && empty($this->version_id)) {
-      return PHPWS_Error::get();
+      return FALSE;
     }
 
     $db = & new PHPWS_DB('category_items');
     $db->addWhere('version_id', (int)$this->version_id);
+    $db->addWhere('item_id',    $this->item_id);
     $db->addWhere('module',     $this->module);
     $db->addWhere('item_name',  $this->item_name);
-    $db->addColumn('cat_id');
+    $result = $db->select();
+    $this->clearItem();
 
-    $result = $db->select('col');
-    $db->delete();
-
-    foreach ($result as $cat_id){
-      $this->cat_id = $cat_id;
-      
-      $result = $this->_save();
-
+    foreach ($result as $row) {
+      $db->reset();
+      $row['version_id'] = 0;
+      $db->addValue($row);
+      $result = $db->insert();
       if (PEAR::isError($result)) {
-	return $result;
+	PHPWS_Error::log($result);
+	return FALSE;
       }
     }
 
-    return TRUE;
   }
 
   function _testVars(){
@@ -233,7 +233,7 @@ class Category_Item {
     if (!$this->_testVars() || (empty($this->cat_id) && $save_uncategorized == FALSE)) {
       return PHPWS_Error::get(CAT_ITEM_MISSING_VAL, 'categories', 'Category_Item::save');
     }
-	
+
     if ($this->version_id > 0 && $this->_approved && !empty($this->item_id)) {
       $this->version_id = 0;
       $this->clearItem();
@@ -266,10 +266,7 @@ class Category_Item {
       }
     }
 
-    //    $multiple->setWidth('100%');
-
     return $multiple->get();
-
   }
 
   function getCategoryItemIds(){
