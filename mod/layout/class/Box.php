@@ -79,15 +79,17 @@ class Layout_Box {
     $db->addWhere('theme', $this->theme);
     $result = $db->select('one');
 
-    if (PEAR::isError($result))
+    if (PEAR::isError($result)) {
       return $result;
-    elseif (!empty($result) && $result != $this->id)
+    } elseif (!empty($result) && $result != $this->id) {
       return FALSE;
+    }
 
     $db->reset();
 
-    if (!isset($this->box_order))
+    if (!isset($this->box_order)) {
       $this->box_order = $this->nextBox();
+    }
 
     if (!isset($this->active))
       $this->active = 1;
@@ -176,10 +178,11 @@ class Layout_Box {
     $DB->addWhere('theme_var', $this->getThemeVar());
     $DB->addColumn('box_order');
     $max = $DB->select('max');
-    if (isset($max))
+    if (isset($max)) {
       return $max + 1;
-    else
+    } else {
       return 1;
+    }
   }
 
   function kill(){
