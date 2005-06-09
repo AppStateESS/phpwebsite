@@ -210,6 +210,10 @@ class Layout {
     }
   }
 
+  /**
+   * Main function controlling the display of data passed
+   * to layout
+   */
   function display(){
     $themeVarList = array();
 
@@ -226,6 +230,7 @@ class Layout {
     $contentList = Layout::getBoxContent();
     // if content list is blank
     // 404 error?
+
 
     foreach ($contentList as $module=>$content){
       foreach ($content as $contentVar=>$template){
@@ -650,6 +655,25 @@ class Layout {
     $result = PHPWS_Template::process($template, "layout", "header.tpl");
 
     return $result;
+  }
+
+  function purgeBox($content_var)
+  {
+    $db = & new PHPWS_DB('layout_box');
+    $db->addWhere('content_var', $content_var);
+    $result = $db->getObjects('Layout_Box');
+    if (PEAR::isError($result)) {
+      return $result;
+    }
+
+    foreach ($result as $box) {
+      $check = $box->kill();
+      if (PEAR::isError($check)) {
+	return $check;
+      }
+    }
+
+    return TRUE;
   }
 
   function blank($content){
