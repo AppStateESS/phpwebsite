@@ -836,13 +836,7 @@ class PHPWS_DB {
     case 'min':
     case 'max':
       PHPWS_DB::logDB($sql);
-      $result = $GLOBALS['PEAR_DB']->query($sql);
-      if (DB::isError($result))
-	return $result;
-      elseif ($result && $this->affectedRows()){
-	$result->fetchInto($row);
-	return array_shift($row);
-      }
+      return $GLOBALS['PEAR_DB']->getOne($sql, NULL, $mode);
       break;
 
     case 'one':
