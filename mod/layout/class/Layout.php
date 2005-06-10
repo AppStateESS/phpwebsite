@@ -46,37 +46,6 @@ class Layout {
     Layout::_loadBox($text, $module, $content_var);
   }
 
-  /**
-   * hold works _like_ add. The difference is that 'add' receives
-   * processed content. 'hold' on the other hand receives preprocessed
-   * information. When Layout prepares the data for display, it will 
-   * go through and use PHPWS_Template to put the values into the
-   * template_file. The advantage of this is that a developer can add
-   * template values as different modules get processed. If the dev
-   * had just used layout's add function, they wouldn't be able to 
-   * alter what was displayed.
-   *
-   * @author  Matt McNaney <matt at tux dot appstate dot edu>
-   */
-  function hold($values, $template_file, $module, $content_var=NULL)
-  {
-    if (!is_array($values)) {
-      return FALSE;
-    }
-
-    if (!isset($content_var)) {
-      $content_var = DEFAULT_CONTENT_VAR;
-    }
-
-    if (!isset($GLOBALS['Layout_Held'][$module][$content_var]['values'])) {
-      $GLOBALS['Layout_Held'][$module][$content_var]['values'] = $values;
-    } else {
-      $global_values = & $GLOBALS['Layout_Held'][$module][$content_var]['values'];
-      $global_values = array_merge($global_values, $values);
-    }
-
-    $GLOBALS['Layout_Held'][$module][$content_var]['template'] = $template_file;
-  }
 
   function _loadBox($text, $module, $contentVar)
   {
