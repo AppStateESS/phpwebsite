@@ -232,7 +232,7 @@ class Related {
 
 
   function load(){
-    if (!isset($this->id)){
+    if (!isset($this->id)) {
       $db = & new PHPWS_DB('related_main');
       $db->addWhere('module', $this->_key->getModule());
       $db->addWhere('item_id', $this->_key->getItemId());
@@ -245,31 +245,36 @@ class Related {
     }
   }
 
-  function show($allowEdit=TRUE){
+  function show($key, $title, $url, $allowEdit=TRUE){
     PHPWS_Core::initCoreClass('Module.php');
     Layout::addStyle('related');
+    
+    $related = & new Related;
+    $related->setKey($key);
+    $related->setTitle($title);
+    $related->setUrl($url);
 
-    $this->load();
+    $related->load();
     if (!Current_User::allow('related') || (bool)$allowEdit == FALSE)
       $mode = 'view';
     elseif (Related_Action::isBanked())
       $mode = 'edit';
-    elseif (isset($this->id))
+    elseif (isset($related->id))
       $mode = 'view';
     else
       $mode = 'create';
 
     switch ($mode){
     case 'create':
-      $body = Related_Action::create($this);
+      $body = Related_Action::create($related);
       break;
 
     case 'edit':
-      $body = Related_Action::edit($this);
+      $body = Related_Action::edit($related);
       break;
 
     case 'view':
-      $body = Related_Action::view($this);
+      $body = Related_Action::view($related);
       break;
     }
 
