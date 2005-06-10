@@ -28,6 +28,7 @@ class PHPWS_DB {
   var $qwhere      = NULL;
   var $indexby     = NULL;
   var $groupby     = NULL;
+  var $sql         = NULL;
   var $_allColumns = NULL;
   var $_columnInfo = NULL;
   var $_DB         = array();
@@ -54,7 +55,15 @@ class PHPWS_DB {
     }
     $this->_sql = & new PHPWS_SQL;
   }
-  
+
+  /**
+   * Lets you enter a raw select query
+   */ 
+  function setSQLQuery($sql)
+  {
+    $this->sql = $sql;
+  }
+
   function addDB($db){
     if (!is_object($db)) {
       return PHPWS_Error::get(PHPWS_DB_NOT_OBJECT, 'core', 'PHPWS_DB::addJoin', gettype($db));
@@ -776,7 +785,13 @@ class PHPWS_DB {
     return $sql;
   }
 
-  function select($type=NULL, $sql=NULL){
+  function select($type=NULL, $sql=NULL)
+  {
+    if (empty($sql)) {
+      if (!empty($this->sql)) {
+	$sql = & $this->sql;
+      }
+    }
     PHPWS_DB::touchDB();
     if (isset($type))
       $type = strtolower($type);
@@ -806,8 +821,9 @@ class PHPWS_DB {
       }
 
       $sql = "SELECT $columns FROM $table $where $groupby $order $limit";
-    } else
+    } else {
       $mode = DB_FETCHMODE_ASSOC;
+    }
 
     // assoc does odd things if the resultant return is two items or less
     // not sure why it is coded that way. Use the default instead
