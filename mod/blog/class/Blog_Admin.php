@@ -127,10 +127,8 @@ class Blog_Admin {
 	$version->authorizeCreator('blog', 'entry');
 	$title = _('Blog entry approved.');
 	$content = _('Returning you to the approval list.');
-	/*
 	Layout::metaRoute('index.php?module=blog&amp;action=admin&amp;tab=approval&amp;authkey='
 			  . Current_User::getAuthKey());
-	*/
       }
       break;
 
