@@ -269,7 +269,6 @@ class Layout {
 
   function processHeld()
   {
-    test($GLOBALS['Layout_Held']);
     if (empty($GLOBALS['Layout_Held'])) {
       return;
     }
