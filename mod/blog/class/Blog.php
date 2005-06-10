@@ -138,6 +138,7 @@ class Blog {
 
   function view($edit=TRUE, $limited=TRUE)
   {
+    PHPWS_Core::initModClass('menu', 'Menu.php');
     PHPWS_Core::initModClass('comments', 'Comments.php');
     $key = $this->getKey();
 
@@ -166,13 +167,12 @@ class Blog {
       }
     } elseif ($this->id) {
       $template['COMMENTS'] = $comments->view();
-      $related = & new Related;
-      $related->setKey($key);
-      $related->setUrl($this->getViewLink(TRUE));
-      $related->setTitle($this->getTitle(TRUE));
-      $related->show();
+      $title = $this->getTitle(TRUE);
+      $url = $this->getViewLink(TRUE);
 
       Block::show($key);
+      Menu::show($key, $title, $url);
+      Related::show($key, $title, $url);
     }
 
     $result = Categories::getSimpleLinks('blog', $this->id);
