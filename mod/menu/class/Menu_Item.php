@@ -5,15 +5,14 @@
  * @version $Id$
  */
 
+PHPWS_Core::initModClass('menu', 'Menu_Link.php');
+
 class Menu_Item {
   var $id         = 0;
   var $title      = NULL;
   var $template   = NULL;
-  var $module     = NULL;
-  var $item_name  = NULL;
-  var $item_id    = 0;
   var $pin_all    = 0;
-  var $_error     =  NULL;
+  var $_error     = NULL;
 
   function Menu_Item($id=NULL)
   {
@@ -125,21 +124,42 @@ class Menu_Item {
 
   function kill()
   {
-
     Layout::purgeBox('menu_' . $id);
   }
 
-  function view()
+  function addLink($title, $url)
   {
+    $link = & new Menu_Link;
+    $link->setTitle($title);
+    $link->setUrl($url);
+    $link->setMenuId($this->id);
+       return $link->save();
+  }
 
+  function loadLink($title, $url)
+  {
+    $_SESSION['Last_Link'][$this->id]['title'] = strip_tags(trim($title));
+    $_SESSION['Last_Link'][$this->id]['url']   = $url;
+  }
+
+  function view($title=NULL, $url=NULL)
+  {
     $tpl['TITLE'] = $this->title;
     $tpl['LINKS'] = $this->getLinks();
 
     $file = 'menu_layout/' . $this->template;
-    $content = PHPWS_Template::process($tpl, 'menu', $file);
 
     $content_var = 'menu_' . $this->id;
-    Layout::add($content, 'menu', $content_var);
+
+    if (isset($title) && isset($url)) {
+      $this->loadLink($title, $url);
+      $vars['command'] = 'add_link';
+      $vars['menu_id'] = $this->id;
+      $tpl['ADD_LINK'] = PHPWS_Text::secureLink(_('Add'), 'menu', $vars);
+    }
+
+    $content = PHPWS_Template::process($tpl, 'menu', $file, $content_var);
+    Layout::set($content, 'menu', $content_var);
   }
 
 }

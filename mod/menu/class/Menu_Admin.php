@@ -50,6 +50,16 @@ class Menu_Admin {
       $content = Menu_Admin::menuList();
       break;
 
+    case 'add_link':
+      $result = Menu_Admin::addLink($menu);
+      if ($result) {
+	PHPWS_Core::goBack();
+      } else {
+	$title = _('Error');
+	$content = _('There was a problem saving your link.');
+      }
+      break;
+
     case 'post_menu':
       $updating = (bool)$menu->id;
       $post_result = $menu->post();
@@ -91,6 +101,32 @@ class Menu_Admin {
     Layout::add(PHPWS_ControlPanel::display($panel->display()));
   }
 
+
+  function addLink(&$menu)
+  {
+
+    $link = Menu_Admin::getLastLink($menu->id);
+
+    if (empty($link)) {
+      return FALSE;
+    }
+
+    $result = $menu->addLink($link['title'], $link['url']);
+    if (PEAR::isError($result)) {
+      PHPWS_Error::log($result);
+      return FALSE;
+    }
+
+    return TRUE;
+  }
+
+  function getLastLink($menu_id)
+  {
+    if(isset($_SESSION['Last_Link'][$menu_id])) {
+      return $_SESSION['Last_Link'][$menu_id];
+    }
+    
+  }
 
   function &cpanel()
   {
