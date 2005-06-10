@@ -7,6 +7,7 @@ else {
   ini_set('include_path', '.:./lib/pear/');
 }
 
+define('SITE_HASH', 'temporary');
 define('PHPWS_SOURCE_DIR', './');
 define('PHPWS_LOG_DIRECTORY', './logs/');
 define('LOG_PERMISSION', 0644);
