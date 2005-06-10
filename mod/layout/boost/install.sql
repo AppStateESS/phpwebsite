@@ -4,7 +4,6 @@ theme CHAR(40) NOT NULL,
 content_var CHAR(40),
 module CHAR(40),
 theme_var CHAR(40),
-template CHAR(40),
 box_order SMALLINT NOT NULL, 
 active SMALLINT NOT NULL);
 
