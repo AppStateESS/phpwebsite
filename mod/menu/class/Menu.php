@@ -14,7 +14,7 @@ class Menu {
     Menu_Admin::main();
   }
 
-  function showPinned($title=NULL, $url=NULL)
+  function showPinned($key=NULL, $title=NULL, $url=NULL)
   {
     PHPWS_Core::initModClass('menu', 'Menu_Item.php');
     $db = & new PHPWS_DB('menus');
@@ -29,14 +29,14 @@ class Menu {
     $GLOBALS['Pinned_Menus'] = $result;
 
     foreach ($result as $menu) {
-      $menu->view($title, $url);
+      $menu->view($key, $title, $url);
     }
   }
 
   function show($key, $title=NULL, $url=NULL)
   {
     if (isset($title) && isset($url)) {
-      Menu::showPinned($title, $url);
+      Menu::showPinned($key, $title, $url);
     }
     
     $tb1 = PHPWS_DB::getPrefix() . 'menus';

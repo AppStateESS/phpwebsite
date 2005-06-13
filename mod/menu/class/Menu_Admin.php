@@ -51,7 +51,13 @@ class Menu_Admin {
       break;
 
     case 'add_link':
-      $result = Menu_Admin::addLink($menu);
+      if (!isset($_REQUEST['parent'])) {
+	$parent = 0;
+      } else {
+	$parent = $_REQUEST['parent'];
+      }
+
+      $result = Menu_Admin::addLink($menu, $parent);
       if ($result) {
 	PHPWS_Core::goBack();
       } else {
@@ -102,16 +108,15 @@ class Menu_Admin {
   }
 
 
-  function addLink(&$menu)
+  function addLink(&$menu, $parent=0)
   {
-
     $link = Menu_Admin::getLastLink($menu->id);
 
     if (empty($link)) {
       return FALSE;
     }
 
-    $result = $menu->addLink($link['title'], $link['url']);
+    $result = $menu->addLink($link['key'], $link['title'], $link['url'], $parent);
     if (PEAR::isError($result)) {
       PHPWS_Error::log($result);
       return FALSE;
@@ -125,7 +130,6 @@ class Menu_Admin {
     if(isset($_SESSION['Last_Link'][$menu_id])) {
       return $_SESSION['Last_Link'][$menu_id];
     }
-    
   }
 
   function &cpanel()

@@ -12,6 +12,7 @@ class Menu_Item {
   var $title      = NULL;
   var $template   = NULL;
   var $pin_all    = 0;
+  var $_db        = NULL;
   var $_error     = NULL;
 
   function Menu_Item($id=NULL)
@@ -22,9 +23,19 @@ class Menu_Item {
 
     $this->id = (int)$id;
     $result = $this->init();
+    $this->resetdb();
     if (PEAR::isError($result)) {
       $this->_error = $result;
       PHPWS_Error::log($result);
+    }
+  }
+
+  function resetdb()
+  {
+    if (isset($this->_db)) {
+      $this->_db->reset();
+    } else {
+      $this->_db = & new PHPWS_DB('menus');
     }
   }
 
@@ -34,8 +45,8 @@ class Menu_Item {
       return FALSE;
     }
 
-    $db = & new PHPWS_DB('menus');
-    $result = $db->loadObject($this);
+    $this->resetdb();
+    $result = $this->_db->loadObject($this);
     if (PEAR::isError($result)) {
       return $result;
     }
@@ -89,15 +100,57 @@ class Menu_Item {
     if (empty($this->title)) {
       return FALSE;
     }
-    $db = & new PHPWS_DB('menus');
-    return $db->saveObject($this);
+
+    $this->resetdb();
+    return $this->_db->saveObject($this);
   }
 
-  function getLinks()
+  function displayLinks($edit=FALSE)
   {
-    $content = NULL;
-    return $content;
+    $all_links = $this->getLinks();
+
+    if (empty($all_links)) {
+      return NULL;
+    }
+
+    foreach ($all_links as $link) {
+      $link_list[] = $link->view($edit);
+    }
+
+    return implode("\n", $link_list);
   }
+
+  function getLinks($parent=0, $active_only=TRUE)
+  {
+    $final = NULL;
+    if (isset($GLOBALS['MENU_LINKS'][$this->id])) {
+      return $GLOBALS['MENU_LINKS'][$this->id];
+    }
+
+    if (!$this->id) {
+      return NULL;
+    }
+
+    $db = & new PHPWS_DB('menu_links');
+    $db->addWhere('menu_id', $this->id);
+    if ($active_only) {
+      $db->addWhere('active', 1);
+    }
+    $db->addWhere('parent', $parent);
+    $db->addOrder('link_order');
+    $db->setIndexBy('id');
+    $result = $db->getObjects('menu_link');
+
+    foreach ($result as $link) {
+      $link->loadChildren();
+      $final[$link->id] = $link;
+    }
+    $GLOBALS['MENU_LINKS'][$this->id] = $final;
+
+    return $final;
+  }
+
+
 
   function getRowTags()
   {
@@ -127,36 +180,42 @@ class Menu_Item {
     Layout::purgeBox('menu_' . $id);
   }
 
-  function addLink($title, $url)
+  function addLink($key, $title, $url, $parent=0)
   {
     $link = & new Menu_Link;
+    $link->setParent($parent);
+    $link->setKey($key);
     $link->setTitle($title);
     $link->setUrl($url);
     $link->setMenuId($this->id);
-       return $link->save();
+    return $link->save();
   }
 
-  function loadLink($title, $url)
+  function loadLink($key, $title, $url)
   {
     $_SESSION['Last_Link'][$this->id]['title'] = strip_tags(trim($title));
     $_SESSION['Last_Link'][$this->id]['url']   = $url;
+    $_SESSION['Last_Link'][$this->id]['key']   = $key;
+    
   }
 
-  function view($title=NULL, $url=NULL)
+  function view($key=NULL, $title=NULL, $url=NULL)
   {
-    $tpl['TITLE'] = $this->title;
-    $tpl['LINKS'] = $this->getLinks();
-
+    $edit = FALSE;
     $file = 'menu_layout/' . $this->template;
-
     $content_var = 'menu_' . $this->id;
 
-    if (isset($title) && isset($url)) {
-      $this->loadLink($title, $url);
+    if ( Current_User::allow('menu') &&
+	 (isset($title) && isset($url) && isset($key)) ) {
+      $this->loadLink($key, $title, $url);
       $vars['command'] = 'add_link';
       $vars['menu_id'] = $this->id;
       $tpl['ADD_LINK'] = PHPWS_Text::secureLink(_('Add'), 'menu', $vars);
+      $edit = TRUE;
     }
+
+    $tpl['TITLE'] = $this->title;
+    $tpl['LINKS'] = $this->displayLinks($edit);
 
     $content = PHPWS_Template::process($tpl, 'menu', $file, $content_var);
     Layout::set($content, 'menu', $content_var);
