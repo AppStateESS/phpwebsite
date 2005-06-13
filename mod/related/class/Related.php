@@ -53,7 +53,8 @@ class Related {
 
   function setKey($key)
   {
-    $this->_key = $key;
+    $key->plugKey($this);
+    $key->_key = $key;
   }
 
   function getKey($key)
@@ -62,15 +63,15 @@ class Related {
   }
 
   function getItemId(){
-    return $this->_key->getItemId();
+    return $this->item_id;
   }
 
   function getModule(){
-    return $this->_key->getModule();
+    return $this->module;
   }
 
   function getItemName(){
-    return $this->_key->getItemName();
+    return $this->item_name;
   }
 
   function setTitle($title){
@@ -234,9 +235,9 @@ class Related {
   function load(){
     if (!isset($this->id)) {
       $db = & new PHPWS_DB('related_main');
-      $db->addWhere('module', $this->_key->getModule());
-      $db->addWhere('item_id', $this->_key->getItemId());
-      $db->addWhere('item_name', $this->_key->getItemName(TRUE));
+      $db->addWhere('module', $this->getModule());
+      $db->addWhere('item_id', $this->getItemId());
+      $db->addWhere('item_name', $this->getItemName(TRUE));
       $result = $db->loadObject($this);
       if (PEAR::isError($result))
 	return $result;
@@ -289,11 +290,6 @@ class Related {
 
   function save(){
     $db = & new PHPWS_DB('related_main');
-    
-    $this->module    = $this->_key->getModule();
-    $this->item_id   = $this->_key->getItemId();
-    $this->item_name = $this->_key->getItemName();
-
     $result = $db->saveObject($this);
 
     if (PEAR::isError($result))
