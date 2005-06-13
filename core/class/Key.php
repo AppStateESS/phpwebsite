@@ -19,6 +19,13 @@ class Key {
     return md5($this->module . $this->item_id . $item_name);
   }
 
+  function plugKey(&$object)
+  {
+    $object->module    = $this->module;
+    $object->item_name = $this->item_name;
+    $object->item_id   = $this->item_id;
+  }
+
   function getModule()
   {
     return $this->module;
