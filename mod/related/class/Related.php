@@ -14,7 +14,6 @@ class Related {
   var $url       = NULL;
   var $active    = TRUE;
   var $friends   = NULL;
-  var $_key      = NULL;
   var $_banked   = FALSE;
   var $_current  = NULL;
 
@@ -38,7 +37,6 @@ class Related {
     if (PEAR::isError($result))
       return $result;
 
-    $this->_key = & new Key($this->module, $this->item_name, $this->item_id);
   }
 
   function setId($id)
@@ -54,12 +52,6 @@ class Related {
   function setKey($key)
   {
     $key->plugKey($this);
-    $key->_key = $key;
-  }
-
-  function getKey($key)
-  {
-    return $this->_key;
   }
 
   function getItemId(){
@@ -144,7 +136,13 @@ class Related {
   }
 
   function isSame($object){
-    return $this->_key->isEqual($object->_key);
+    if ($this->module == $object->module &&
+	$this->item_name == $object->item_name &&
+	$this->item_id == $object->item_id) {
+      return TRUE;
+    } else {
+      return FALSE;
+    }
   }
 
   function isFriend($checkObj){
