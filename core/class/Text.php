@@ -159,22 +159,6 @@ class PHPWS_Text {
     return $text;
   }
 
-  function getEncode($url)
-  {
-    $search_string  = array('/&/', '/\//', '/\./', '/\s/');
-    $replace_string = array(':amp:', ':slash:', ':period:', ':space:');
-
-    return preg_replace($search_string, $replace_string, trim($url));
-  }
-
-  function getDecode($url)
-  {
-    $search_string  = array('/:amp:/', '/:slash:/', '/:period:/', ':space:');
-    $replace_string = array('&', '/', '.', ' ');
-    return preg_replace($search_string, $replace_string, $url);
-  }
-
-
   function strip_tags($text, $allowed_tags) {
     return strip_tags($text, $allowed_tags);
   }
