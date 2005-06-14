@@ -762,4 +762,10 @@ class Layout {
     exit();
   }
 }
+
+function javascript($directory, $data=NULL)
+{
+  return Layout::getJavascript($directory, $data);
+}
+
 ?>
