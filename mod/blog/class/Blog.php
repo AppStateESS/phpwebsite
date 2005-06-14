@@ -113,9 +113,9 @@ class Blog {
   function getViewLink($bare=FALSE){
     if ($bare) {
       if (MOD_REWRITE_ENABLED) {
-	return './blog/view_comments/' . $this->id;
+	return 'blog/view_comments/' . $this->id;
       } else {
-	return './index.php?module=blog&amp;action=view_comments&amp;id=' . $this->id;
+	return 'index.php?module=blog&amp;action=view_comments&amp;id=' . $this->id;
       }
     } else {
       return PHPWS_Text::rewriteLink(_('View'), 'blog', 'view', $this->getId());
