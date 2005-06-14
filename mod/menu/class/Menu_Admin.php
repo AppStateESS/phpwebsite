@@ -96,7 +96,6 @@ class Menu_Admin {
       Layout::metaRoute('index.php?module=menu&amp;tab=list&amp;authkey=' . Current_User::getAuthKey());
       break;
 
-      
     } // end command switch
 
     $tpl['TITLE'] = $title;
@@ -110,13 +109,15 @@ class Menu_Admin {
 
   function addLink(&$menu, $parent=0)
   {
-    $link = Menu_Admin::getLastLink($menu->id);
 
-    if (empty($link)) {
+    if (empty($_REQUEST['title']) || empty($_REQUEST['url'])) {
       return FALSE;
     }
 
-    $result = $menu->addLink($link['key'], $link['title'], $link['url'], $parent);
+    $title = urldecode($_REQUEST['title']);
+    $url = urldecode($_REQUEST['url']);
+
+    $result = $menu->addLink($title, $url, $parent);
     if (PEAR::isError($result)) {
       PHPWS_Error::log($result);
       return FALSE;
@@ -125,12 +126,6 @@ class Menu_Admin {
     return TRUE;
   }
 
-  function getLastLink($menu_id)
-  {
-    if(isset($_SESSION['Last_Link'][$menu_id])) {
-      return $_SESSION['Last_Link'][$menu_id];
-    }
-  }
 
   function &cpanel()
   {

@@ -5,9 +5,6 @@ define('MENU_MISSING_INFO', 1);
 class Menu_Link {
   var $id         = 0;
   var $menu_id    = 0;
-  var $module     = NULL;
-  var $item_name  = NULL;
-  var $item_id    = 0;
   var $title      = NULL;
   var $url        = NULL;
   var $parent     = 0;
@@ -67,13 +64,13 @@ class Menu_Link {
     if ($local) {
       PHPWS_Text::makeRelative($url);
     }
-
-    $this->url = trim($url);
+    $this->url = str_replace('&amp;', '&', trim($url));
+    $this->url = preg_replace('/&?authkey=\w{32}/', '', $this->url);
   }
 
-  function setKey($key)
+  function getUrl()
   {
-    $key->plugKey($this);
+    return str_replace('&', '&amp;', $this->url);
   }
 
   function setMenuId($id)
@@ -109,21 +106,19 @@ class Menu_Link {
     return $db->saveObject($this);
   }
 
-  function view($edit=FALSE)
+  function view()
   {
-    $link = sprintf('<a href="%s" title="%s">%s</a>', $this->url, $this->title, $this->title);
+    $link = sprintf('<a href="%s" title="%s">%s</a>', $this->getUrl(), $this->title, $this->title);
 
-    if ($edit && Current_User::allow('menu')) {
-      $vars['command'] = 'add_link';
-      $vars['menu_id'] = $this->menu_id;
-      $vars['parent']  = $this->id;
-      $template['ADD_LINK'] = PHPWS_Text::secureLink(_('Add'), 'menu', $vars);
+    if ( Current_User::allow('menu') ) {
+      $template['ADD_LINK'] = Menu::getAddLink($this->menu_id, $this->id);
     }
+
 
     $template['LINK'] = $link;
     if (!empty($this->_children)) {
       foreach ($this->_children as $kid) {
-	$sublinks[] = $kid->view($edit);
+	$sublinks[] = $kid->view();
       }
       $template['SUBLINK'] = implode("\n", $sublinks);
     }

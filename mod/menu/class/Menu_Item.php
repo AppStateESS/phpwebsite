@@ -180,38 +180,25 @@ class Menu_Item {
     Layout::purgeBox('menu_' . $id);
   }
 
-  function addLink($key, $title, $url, $parent=0)
+  function addLink($title, $url, $parent=0)
   {
     $link = & new Menu_Link;
     $link->setParent($parent);
-    $link->setKey($key);
     $link->setTitle($title);
     $link->setUrl($url);
     $link->setMenuId($this->id);
     return $link->save();
   }
 
-  function loadLink($key, $title, $url)
-  {
-    $_SESSION['Last_Link'][$this->id]['title'] = strip_tags(trim($title));
-    $_SESSION['Last_Link'][$this->id]['url']   = $url;
-    $_SESSION['Last_Link'][$this->id]['key']   = $key;
-    
-  }
 
-  function view($key=NULL, $title=NULL, $url=NULL)
+  function view()
   {
     $edit = FALSE;
     $file = 'menu_layout/' . $this->template;
     $content_var = 'menu_' . $this->id;
 
-    if ( Current_User::allow('menu') &&
-	 (isset($title) && isset($url) && isset($key)) ) {
-      $this->loadLink($key, $title, $url);
-      $vars['command'] = 'add_link';
-      $vars['menu_id'] = $this->id;
-      $tpl['ADD_LINK'] = PHPWS_Text::secureLink(_('Add'), 'menu', $vars);
-      $edit = TRUE;
+    if ( Current_User::allow('menu') ) {
+      $tpl['ADD_LINK'] = Menu::getAddLink($this->id);
     }
 
     $tpl['TITLE'] = $this->title;
