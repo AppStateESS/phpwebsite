@@ -1489,7 +1489,7 @@ class PHPWS_DB_Where {
 
     function setValue($value)
     {
-        if (strstr($value, '.')) {
+        if (is_string($value) && strstr($value, '.')) {
             $this->join = TRUE;
         }
         $this->value = $value;
