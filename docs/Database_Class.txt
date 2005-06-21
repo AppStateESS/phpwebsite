@@ -169,23 +169,80 @@ Grouping conditionals allow proper ordering:
 
 Where the id is greater than 3 and less than 6 OR
 the name starts with the letter 'L'
-$db->addWhere('id',    3,  '>',    NULL, 'idgroup');
-$db->addWhere('id',    6,  '<',    'or', 'idgroup');
-$db->addWhere('name', 'L', 'like', 'or', 'namegroup');
+$db->addWhere('id',    3,  '>'); 
+$db->addWhere('id',    6,  '<');// AND is the default operator
+
+$db->addWhere('name', 'L%', 'like', NULL, 'namegroup');
+// since the above is the only item in the group, the operator is 
+// not important
+ 
+$db->setGroupConj('namegroup', 'or');
+// the default is AND, so I user setGroupConj to change to or
+
 
 Kind of complicated but it would look like this if you wrote the
 query.
 
-select * from mytable where (id > 3 AND id < 6) OR (name LIKE 'L%');
+SELECT mytable.*
+FROM mytable
+WHERE ( mytable.id > '3' AND mytable.id < '6' )
+OR ( mytable.name LIKE 'L%' )
 
-You also have the option of sending your own where string to the
+
+You also have the option of sending your own 'where' string to the
 object using setQWhere():
 
-$db->setQWhere("(id > 3 AND id < 6) OR (name LIKE 'L%'");
+// the conj defaults to 'AND' so you can leave it blank if you wish
+$conj = 'or'; 
+
+$db->setQWhere("(id > 3 AND id < 6) OR (name LIKE 'L%'", $conj);
 
 You can use this function if having problems using the addWhere
 function.
 
+
+Joining table Queries
+
+By default, the database works on one table. You may however retrieve
+the results using more than one.
+
+For example, say I want to get the last name of someone whose first
+name is 'Ted' in table1 and who is over 30 years old in table2. I want
+to also make sure the id columns from table1 and table2 match.
+
+$db = & new PHPWS_DB('table1');
+$db->addColumn('lastname');
+
+
+$db->addWhere('firstname', 'Ted');
+// notice I put the table name in the column parameter
+$db->addWhere('table2.age', '30', '>');
+$db->addWhere('table2.id', 'table1.id');
+
+$result = $db->select();
+
+This is the equivalent of:
+
+SELECT table1.lastname FROM table1, table2
+WHERE ( table1.firstname = 'ted' AND
+        table2.age > '30' AND
+        table2.id = table1.id 
+      )
+
+Note that when you use extra tables, the do NOT show results by
+default. If you want to see the results joined together, you need to
+use addColumn like so:
+
+$db->addColumn('table2.age');
+
+Which is equivalent to:
+SELECT table1.lastname, table2.age FROM table1, table2
+WHERE ( table1.firstname = 'Ted' AND
+        table2.age > '30' AND
+	table2.id = table1.id 
+      )
+
+Use 'table2.*' to get all the column results.
 
 Ordering
 If we wanted to select in a certain order we use the addOrder
