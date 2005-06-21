@@ -8,135 +8,133 @@
 
 class Menu {
 
-  function admin()
-  {
-    PHPWS_Core::initModClass('menu', 'Menu_Admin.php');
-    Menu_Admin::main();
-  }
-
-  function showPinned()
-  {
-    PHPWS_Core::initModClass('menu', 'Menu_Item.php');
-    $db = & new PHPWS_DB('menus');
-    $db->addWhere('pin_all', 1);
-    $result = $db->getObjects('Menu_Item');
-
-    if (PEAR::isError($result)) {
-      PHPWS_Error::log($result);
-      return;
+    function admin()
+    {
+        PHPWS_Core::initModClass('menu', 'Menu_Admin.php');
+        Menu_Admin::main();
     }
 
-    $GLOBALS['Pinned_Menus'] = $result;
+    function showPinned()
+    {
+        PHPWS_Core::initModClass('menu', 'Menu_Item.php');
+        $db = & new PHPWS_DB('menus');
+        $db->addWhere('pin_all', 1);
+        $result = $db->getObjects('Menu_Item');
 
-    foreach ($result as $menu) {
-      $menu->view();
-    }
-  }
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            return;
+        }
 
-  function show($key, $title=NULL, $url=NULL)
-  {
-    if (!empty($title) || !empty($url)) {
-      Menu::readyLink($title, $url);
-    }
-   
-    $tb1 = PHPWS_DB::getPrefix() . 'menus';
-    $tb2 = PHPWS_DB::getPrefix() . 'menu_assoc';
+        $GLOBALS['Pinned_Menus'] = $result;
 
-    $sql = "SELECT $tb1.* FROM $tb1, $tb2 WHERE $tb2.module='" 
-      . $key->getModule() . "' AND $tb2.item_name='" . $key->getItemName() . "'
-AND $tb2.item_id='" . $key->getItemId() . "' AND $tb2.menu_id=$tb1.id AND $tb1.pin_all='0'";
-
-    $db = & new PHPWS_DB;
-    $db->setSQLQuery($sql);
-    $result = $db->getObjects('menu_item');
-
-    if (empty($result) || PEAR::isError($result)) {
-      return $result;
+        foreach ($result as $menu) {
+            $menu->view();
+        }
     }
 
-    foreach ($result as $menu) {
-      $menu->view();
-    }
-  }
+    function show($key, $title=NULL, $url=NULL)
+    {
+        PHPWS_Core::initModClass('menu', 'Menu_Item.php');
+        if (!empty($title) || !empty($url)) {
+            Menu::readyLink($title, $url);
+        }
 
-  function getAddLink($menu_id, $parent_id=NULL)
-  {
-    $direct_link = FALSE;
+        $db = & new PHPWS_DB('menus');
+        $db->addWhere('menu_assoc.module', $key->getModule());
+        $db->addWhere('menu_assoc.item_name', $key->getItemName());
+        $db->addWhere('menu_assoc.item_id', $key->getItemId());
+        $db->addWhere('id', 'menu_assoc.id');
+        $db->addWhere('pin_all', 0);
+        $result = $db->getObjects('menu_item');
 
-    if (empty($GLOBALS['Menu_Ready_Link'])) {
-      $title = NULL;
-      $url = Menu::grabUrl();
-    } else {
-      if (empty($GLOBALS['Menu_Ready_Link']['title'])) {
-	$title = NULL;
-      } else {
-	$title = $GLOBALS['Menu_Ready_Link']['title'];
-      }
+        if (empty($result) || PEAR::isError($result)) {
+            return $result;
+        }
 
-      if (!empty($GLOBALS['Menu_Ready_Link']['url'])) {
-	$url = str_replace('&amp;', '&', $GLOBALS['Menu_Ready_Link']['url']);
-      } else {
-	$url = Menu::grabUrl();
-      }
+        foreach ($result as $menu) {
+            $menu->view();
+        }
     }
 
-    $vars['command'] = 'add_link';
-    $vars['menu_id'] = $menu_id;
-    if (!empty($parent_id)) {
-      $vars['parent'] = $parent_id;
-    } else {
-      $vars['parent'] = 0;
-    }
+    function getAddLink($menu_id, $parent_id=NULL)
+    {
+        $direct_link = FALSE;
+
+        if (empty($GLOBALS['Menu_Ready_Link'])) {
+            $title = NULL;
+            $url = Menu::grabUrl();
+        } else {
+            if (empty($GLOBALS['Menu_Ready_Link']['title'])) {
+                $title = NULL;
+            } else {
+                $title = $GLOBALS['Menu_Ready_Link']['title'];
+            }
+
+            if (!empty($GLOBALS['Menu_Ready_Link']['url'])) {
+                $url = str_replace('&amp;', '&', $GLOBALS['Menu_Ready_Link']['url']);
+            } else {
+                $url = Menu::grabUrl();
+            }
+        }
+
+        $vars['command'] = 'add_link';
+        $vars['menu_id'] = $menu_id;
+        if (!empty($parent_id)) {
+            $vars['parent'] = $parent_id;
+        } else {
+            $vars['parent'] = 0;
+        }
 
 
-    if (!empty($title)) {
-      $vars['title'] = urlencode($title);
-      $direct_link = TRUE;
-    }
+        if (!empty($title)) {
+            $vars['title'] = urlencode($title);
+            $direct_link = TRUE;
+        }
     
-    if (!empty($url)) {
-      $vars['url'] = urlencode($url);
+        if (!empty($url)) {
+            $vars['url'] = urlencode($url);
+        }
+
+        if ($direct_link) {
+            return PHPWS_Text::secureLink(_('Add'), 'menu', $vars);
+        } else {
+            $js['question']   = _('Enter link title');
+            $js['address']    = PHPWS_Text::linkAddress('menu', $vars, TRUE);
+            $js['link']       = _('Add');
+            $js['value_name'] = 'title';
+            return javascript('prompt', $js);
+        }
     }
 
-    if ($direct_link) {
-      return PHPWS_Text::secureLink(_('Add'), 'menu', $vars);
-    } else {
-      $js['question']   = _('Enter link title');
-      $js['address']    = PHPWS_Text::linkAddress('menu', $vars, TRUE);
-      $js['link']       = _('Add');
-      $js['value_name'] = 'title';
-      return javascript('prompt', $js);
-    }
-  }
+    function grabUrl()
+    {
+        static $url = NULL;
 
-  function grabUrl()
-  {
-    static $url = NULL;
+        if (!empty($url)) {
+            return $url;
+        }
 
-    if (!empty($url)) {
-      return $url;
-    }
+        $get_values = PHPWS_Text::getGetValues();
+        if (!empty($get_values)) {
+            unset($get_values['authkey']);
+        } else {
+            return 'index.php';
+        }
 
-    $get_values = PHPWS_Text::getGetValues();
-    if (!empty($get_values)) {
-      unset($get_values['authkey']);
-    } else {
-      return 'index.php';
+        foreach ($get_values as $key => $value) {
+            $new_link[] = "$key=$value";
+        }
+
+        return  'index.php?' . implode('&', $new_link);
     }
 
-    foreach ($get_values as $key => $value) {
-      $new_link[] = "$key=$value";
+
+    function readyLink($title=NULL, $url=NULL)
+    {
+        $GLOBALS['Menu_Ready_Link']['title'] = $title;
+        $GLOBALS['Menu_Ready_Link']['url']   = $url;
     }
-
-    return  'index.php?' . implode('&', $new_link);
-  }
-
-
-  function readyLink($title=NULL, $url=NULL)
-  {
-    $GLOBALS['Menu_Ready_Link']['title'] = $title;
-    $GLOBALS['Menu_Ready_Link']['url']   = $url;
-  }
 
 }
 
