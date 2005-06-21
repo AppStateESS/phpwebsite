@@ -75,7 +75,7 @@ class Blog_Admin {
 
     case 'approval':
       $title = _('Blog Entries Awaiting Approval');
-      $approval = & new Version_Approval('blog', 'blog_entries');
+      $approval = & new Version_Approval('blog', 'blog_entries', 'blog', 'approvalTags');
       $approval->setEditUrl('index.php?module=blog&amp;action=admin&amp;command=edit_unapproved&amp;authkey=' . Current_User::getAuthKey());
       $approval->setViewUrl('index.php?module=blog&amp;action=admin&amp;command=view_version&amp;authkey=' . Current_User::getAuthKey());
       $approval->setApproveUrl('index.php?module=blog&amp;action=admin&amp;command=approve_item&amp;authkey=' . Current_User::getAuthKey());
