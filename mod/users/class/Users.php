@@ -654,14 +654,14 @@ class PHPWS_User {
         Users_Permission::savePermissions($key);
     }
 
-    function assignPermissions($module, $item_id=NULL)
+    function assignPermissions($module, $item_id=NULL, $format=TRUE)
     {
         if (!PHPWS_Core::moduleExists($module)) {
             return PHPWS_Error::get(PHPWS_NO_MOD_FOUND, 'core', __CLASS__ . '::' . __FUNCTION__);
         }
 
         PHPWS_Core::initModClass('users', 'Permission.php');
-        return Users_Permission::assignPermissions($module, $item_id);
+        return Users_Permission::assignPermissions($module, $item_id, $format);
     }
 
     function getPermissionLevel($module)

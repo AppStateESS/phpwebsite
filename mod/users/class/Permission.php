@@ -311,30 +311,49 @@ class Users_Permission {
         return $db->insert();
     }
 
-    function assignPermissions($module, $item_id=NULL){
-        if ((int)Current_User::getPermissionLevel($module) < UNRESTRICTED_PERMISSION)
+    function assignPermissions($module, $item_id=NULL, $format=TRUE)
+    {
+        if ((int)Current_User::getPermissionLevel($module) < UNRESTRICTED_PERMISSION) {
             return array('ASSIGNED_GROUPS_TITLE'=>NULL, 'ASSIGNED_GROUPS'=>NULL);
+        }
 
         $content = NULL;
         $groups = Users_Permission::_getPartial($module);
 
         if (PEAR::isError($groups)){
             PHPWS_Error::log($groups);
-            $text['ASSIGNED_GROUPS_TITLE'] = _('Error');
-            $text['ASSIGNED_GROUPS'] = _('An error occurred when accessing the permission system.');
+            if ($format) {
+                $text['ASSIGNED_GROUPS_TITLE'] = _('Error');
+                $text['ASSIGNED_GROUPS'] = _('An error occurred when accessing the permission system.');
+                return $text;
+            } else {
+                return $groups;
+            }
         } elseif (empty($groups)){
-            $text['ASSIGNED_GROUPS_TITLE'] = _('Group Permissions');
-            $text['ASSIGNED_GROUPS'] = _('No groups found.');
+            if ($format) {
+                $text['ASSIGNED_GROUPS_TITLE'] = _('Group Permissions');
+                $text['ASSIGNED_GROUPS'] = _('No groups found.');
+                return $text;
+            } else {
+                return NULL;
+            }
         } else {
-            $text = Users_Permission::_listAssigned($module, $groups, $item_id);
+            if ($format) {
+                $text = Users_Permission::_listAssigned($module, $groups, $item_id);
+                if (PEAR::isError($text)){
+                    PHPWS_Error::log($text);
+                    unset($text);
+                    $text['ASSIGNED_GROUPS_TITLE'] = _('Error');
+                    $text['ASSIGNED_GROUPS'] = _('An error occurred when accessing the permission system.');
+                } else {
+                    return $text;
+                }
+            } else {
+                return Users_Permission::getGroupList($groups);
+            }
+
         }
 
-        if (PEAR::isError($text)){
-            PHPWS_Error::log($text);
-            unset($text);
-            $text['ASSIGNED_GROUPS_TITLE'] = _('Error');
-            $text['ASSIGNED_GROUPS'] = _('An error occurred when accessing the permission system.');
-        }
 
         return $text;
     }
@@ -357,7 +376,8 @@ class Users_Permission {
         return $result;
     }
 
-    function _listAssigned($module, $groups, $item_id=NULL){
+    function getGroupList($groups)
+    {
         PHPWS_Core::initModClass('users', 'Group.php');
 
         $db = & new PHPWS_DB('users_groups');
@@ -367,8 +387,22 @@ class Users_Permission {
 
         $result = $db->getObjects('PHPWS_Group');
 
-        foreach ($result as $group)
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        foreach ($result as $group) {
             $inputs[$group->getId()] = $group->getName();
+        }
+        return $inputs;
+    }
+
+    function _listAssigned($module, $groups, $item_id=NULL){
+        $inputs = Users_Permission::getGroupList($groups);
+
+        if (PEAR::isError($inputs)) {
+            return $inputs;
+        }
 
         $form = & new PHPWS_Form;
         $form->addMultiple('assigned_groups', $inputs);
@@ -377,9 +411,8 @@ class Users_Permission {
         $form->setWidth('assigned_groups', '200px');
 
         if (isset($item_id)){
-            $itemTable = Users_Permission::getItemPermissionTableName($module);
-            $db->reset();
-            $db->setTable($itemTable);
+            $item_table = Users_Permission::getItemPermissionTableName($module);
+            $db = & new PHPWS_DB($item_table);
             $db->addWhere('item_id', (int)$item_id);
             $db->addColumn ('group_id');
             $result = $db->select('col');
