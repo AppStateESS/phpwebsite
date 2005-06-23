@@ -82,16 +82,17 @@ Open the list and make sure the file list looks correct. Now run
 xgettext against it. Make sure you run the list from where it was
 created. If you don't the file locations will be incorrect.
 
-xgettext -n -L C --keyword=_ -f translate_list.txt
-
+xgettext -n --language=PHP --keyword=_ -f translate_list.txt
 
 A couple of switches were added here:
 
--n   : puts line numbers next to the translations
--L C : tells xgettext that we are parsing a C file. Were aren't but
-       doing this avoids error messages.
--f   : tell xgettext to get the file names from our translate_list.txt
-       file
+-n              : puts line numbers next to the translations
+--language= PHP : tells xgettext that we are parsing a php
+                  file. Gettext can usually detect but might as well
+                  force.
+ 
+ -f             : tell xgettext to get the file names from our translate_list.txt
+                  file
 
 Once your messages.po file is created successfully, we need to create
 a home for it. Go into your module directory. Now make the following
