@@ -142,6 +142,44 @@ class PHPWS_DB {
             return NULL;
     }
 
+    function inDatabase($table, $column=NULL)
+    {
+        PHPWS_DB::touchDB();
+        static $database_info = NULL;
+
+        $column = trim($column);
+        $answer = FALSE;
+
+        if (!empty($database_info[$table])) {
+            if (empty($column)) {
+                return TRUE;
+            } else {
+                return in_array($column, $database_info[$table]);
+            }
+        }
+
+        $result = $GLOBALS['PEAR_DB']->tableInfo(strip_tags($table));
+        if (PEAR::isError($result)) {
+            if ($result->getCode() == DB_ERROR_NEED_MORE_DATA) {
+                return FALSE;
+            } else {
+                return $result;
+            }
+        }
+
+        foreach ($result as $colInfo) {
+            $list_columns[] = $colInfo['name'];
+
+            if ($colInfo['name'] == $column) {
+                $answer = TRUE;
+            }
+        }
+
+        $database_info[$table] = $list_columns;
+
+        return $answer;
+    }
+
     function getTableColumns($fullInfo=FALSE){
         if (isset($this->_allColumns) && $fullInfo == FALSE) {
             return $this->_allColumns;
@@ -163,17 +201,19 @@ class PHPWS_DB {
             $this->_allColumns[] = $colInfo['name'];
         }
 
-        if ($fullInfo == TRUE)
+        if ($fullInfo == TRUE) {
             return $this->_columnInfo;
-        else
+        } else {
             return $this->_allColumns;
+        }
     }
 
     function isTableColumn($columnName){
         $columns = $this->getTableColumns();
 
-        if (PEAR::isError($columns))
+        if (PEAR::isError($columns)) {
             return $columns;
+        }
 
         return in_array($columnName, $columns);
     }
@@ -377,19 +417,38 @@ class PHPWS_DB {
             }
         }
 
-        if (strstr($column, '.')) {
-            list($table, $column) = explode('.', $column);
-            $where->setTable($table);
-            $this->addTable($table);
-        } else {
-            
-            $where->setTable($this->tables[0]);
-        }
+        $source_table = $this->tables[0];
+
+	if (is_string($column)) {
+            if (substr_count($column, '.') == 1) {
+                list($join_table, $join_column) = explode('.', $column);
+                if (PHPWS_DB::inDatabase($join_table, $join_column)) {
+                    $column = &$join_column;
+                    $source_table = $join_table;
+                    $where->setTable($join_table);
+                    $this->addTable($join_table);
+                }
+            }
+	}
+
+        $where->setColumn($column);
+        $where->setTable($source_table);
+
+	if (is_string($value)) {
+            if (substr_count($value, '.') == 1) {
+                list($join_table, $join_column) = explode('.', $value);
+                if (PHPWS_DB::inDatabase($join_table, $join_column)) {
+                    $where->setJoin(TRUE);
+                    $this->addTable($join_table);
+                }
+            }
+	}
+
+        $where->setValue($value);
 
         $where->setConj($conj);
-        $where->setColumn($column);
         $where->setOperator($operator);
-        $where->setValue($value);
+
 
         if (isset($group)) {
             $this->where[$group]['values'][] = $where;
@@ -1500,16 +1559,6 @@ class PHPWS_DB_Where {
 
     function setValue($value)
     {
-	if (is_string($value)) {
-            $period_count = substr_count($value, '.');
-            if ($period_count == 1) {
-                list($table_name, $nullit) = explode('.', $value);
-                if (PHPWS_DB::isTable($table_name)) {
-                    $this->join = TRUE;
-                }
-            }
-	}
-        
         $this->value = $value;
     }
 
@@ -1531,9 +1580,7 @@ class PHPWS_DB_Where {
     function getValue()
     {
         $value = $this->value;
-        if (isset($this->join_table)) {
-            return $this->join_table . '.' . $this->value;
-        }
+
         if (is_array($value)) {
             switch ($this->operator){
             case 'IN':
