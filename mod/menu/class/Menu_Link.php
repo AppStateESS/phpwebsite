@@ -146,8 +146,6 @@ class Menu_Link {
             $template['ADMIN'] = MENU_LINK_ADMIN;
         }
 
-        Layout::loadModuleJavascript('menu', 'delete_confirm.js', $vars);
-
         if ($this->parent == 0 ||
             (isset($GLOBALS['Menu_Current_Parent']) && in_array($this->parent, $GLOBALS['Menu_Current_Parent']))) {
             $template['STATUS'] = 'show-link';

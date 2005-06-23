@@ -68,6 +68,9 @@ class Menu {
     function getAddLink($menu_id, $parent_id=NULL)
     {
         PHPWS_Core::configRequireOnce('menu', 'config.php');
+        if (isset($_REQUEST['authkey'])) {
+            return NULL;
+        }
         $direct_link = FALSE;
 
         if (empty($GLOBALS['Menu_Ready_Link'])) {
