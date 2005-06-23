@@ -20,6 +20,7 @@ class Blog_Admin {
 
     $previous_version = $title = $message = $content = NULL;
     $panel = & Blog_Admin::cpanel();
+    $panel->enableSecure();
     PHPWS_Core::initModClass('version', 'Version.php');
 
     if (isset($_REQUEST['command'])) {
