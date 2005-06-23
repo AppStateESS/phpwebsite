@@ -219,6 +219,10 @@ $db->addWhere('firstname', 'Ted');
 $db->addWhere('table2.age', '30', '>');
 $db->addWhere('table2.id', 'table1.id');
 
+// You can also use addJoinWhere if there is a problem
+// with the Database class detecting the value in the above
+
+
 $result = $db->select();
 
 This is the equivalent of:
