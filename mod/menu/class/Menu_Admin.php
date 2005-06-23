@@ -45,6 +45,17 @@ class Menu_Admin {
             $content = Menu_Admin::editMenu($menu);
             break;
 
+        case 'edit_link_title':
+            $result = Menu_Admin::editLinkTitle($_REQUEST['link_id'], $_REQUEST['link_title']);
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                $title = _('Sorry');
+                $content = _('A problem occurred when saving your link.');
+            } else {
+                PHPWS_Core::goBack();
+            }
+            break;
+
         case 'delete_link':
             Menu::deleteLink($_REQUEST['link_id']);
             PHPWS_Core::goBack();
@@ -193,6 +204,20 @@ class Menu_Admin {
 
     }
 
+    function editLinkTitle($link_id, $title)
+    {
+        if (empty($title)) {
+            return TRUE;
+        }
+
+        $link = & new Menu_Link($link_id);
+        if (empty($link->_error)) {
+            $link->setTitle($title);
+            return $link->save();
+        } else {
+            return $link->_error;
+        }
+    }
 
     function menuList()
     {
