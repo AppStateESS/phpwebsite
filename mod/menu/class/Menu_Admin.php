@@ -129,12 +129,11 @@ class Menu_Admin {
 
     function addLink(&$menu, $parent=0)
     {
-
-        if (empty($_REQUEST['title']) || empty($_REQUEST['url'])) {
+        if (empty($_REQUEST['link_title']) || empty($_REQUEST['url'])) {
             return FALSE;
         }
 
-        $title = urldecode($_REQUEST['title']);
+        $title = urldecode($_REQUEST['link_title']);
         $url = urldecode($_REQUEST['url']);
 
         $result = $menu->addLink($title, $url, $parent);

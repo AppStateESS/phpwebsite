@@ -105,7 +105,7 @@ class Menu {
         }
     
         if (!empty($url)) {
-            $vars['url'] = urlencode($url);
+            $vars['url'] = urlencode(urlencode($url));
         }
 
         if ($direct_link) {
