@@ -312,9 +312,15 @@ class PHPWS_DB {
         return $this->groupBy;
     }
 
-    function addWhere($column, $value=NULL, $operator=NULL, $conj=NULL, $group=NULL)
+    function addJoinWhere($column, $value=NULL, $operator=NULL, $conj=NULL, $group=NULL)
+    {
+        return $this->addWhere($column, $value, $operator, $conj, $group, TRUE);
+    }
+
+    function addWhere($column, $value=NULL, $operator=NULL, $conj=NULL, $group=NULL, $join=FALSE)
     {
         $where = & new PHPWS_DB_Where;
+        $where->setJoin($join);
         $operator = strtoupper($operator);
         if (is_array($column)) {
             foreach ($column as $new_column => $new_value) {
@@ -1487,11 +1493,23 @@ class PHPWS_DB_Where {
         $this->operator = $operator;
     }
 
+    function setJoin($join)
+    {
+        $this->join = (bool)$join;
+    }
+
     function setValue($value)
     {
-        if (is_string($value) && strstr($value, '.')) {
-            $this->join = TRUE;
-        }
+	if (is_string($value)) {
+            $period_count = substr_count($value, '.');
+            if ($period_count == 1) {
+                list($table_name, $nullit) = explode('.', $value);
+                if (PHPWS_DB::isTable($table_name)) {
+                    $this->join = TRUE;
+                }
+            }
+	}
+        
         $this->value = $value;
     }
 
