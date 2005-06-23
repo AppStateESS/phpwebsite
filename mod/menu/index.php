@@ -5,7 +5,8 @@
  * @version $Id$
  */
 
-if (!Current_User::authorized('menu')) {
+
+if (isset($_REQUEST['command']) && !Current_User::allow('menu')) {
   Current_User::disallow();
 }
 

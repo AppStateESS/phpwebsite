@@ -88,6 +88,10 @@ class Menu_Admin {
             break;
 
         case 'post_menu':
+            if (!Current_User::authorized('menu')) {
+                Current_User::disallow();
+                return;
+            }
             $updating = (bool)$menu->id;
             $post_result = $menu->post();
             if (is_array($post_result)) {
@@ -179,6 +183,10 @@ class Menu_Admin {
         } else {
             $form->addSubmit('submit', _('Create'));
         }
+
+        $form->addCheck('pin_all', 1);
+        $form->setMatch('pin_all', $menu->pin_all);
+        $form->setLabel('pin_all', _('Pin to all pages'));
 
         $form->addText('title', $menu->title);
         $form->setLabel('title', _('Title'));

@@ -43,10 +43,12 @@ class Menu {
         }
 
         $db = & new PHPWS_DB('menus');
+
         $db->addWhere('menu_assoc.module', $key->getModule());
         $db->addWhere('menu_assoc.item_name', $key->getItemName());
         $db->addWhere('menu_assoc.item_id', $key->getItemId());
-        $db->addWhere('id', 'menu_assoc.id');
+        $db->addWhere('id', 'menu_assoc.menu_id');
+
         $db->addWhere('pin_all', 0);
         $result = $db->getObjects('menu_item');
 
