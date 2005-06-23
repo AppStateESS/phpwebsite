@@ -221,3 +221,12 @@ table.form-table .label {
        color : #cf2626;
        font-weight : bold;
 }
+
+div.menu-link {
+padding : 5px 0 0 0;
+}
+
+
+div.menu-link div.menu-link {
+padding-left : 8px;
+}

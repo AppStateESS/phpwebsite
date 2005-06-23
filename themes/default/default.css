@@ -69,6 +69,12 @@ div.box a:hover, div.box a:active {
 	background-color : #EDF4D1;
 }
 
+.bgcolor3 {
+	background-color : #ADB583;
+}
+
+
+
 input {
 color: #000;
 background: #ADB583;
@@ -150,4 +156,30 @@ color: black;
 background-color : #CBCEAC;
 color: black;
 }
+
+div.menu-link a {
+font-weight : bold;
+text-decoration : none;
+}
+
+div.menu-link {
+background-color : #CBCEAC;
+border-top : white 2px solid;
+padding : 5px;
+}
+
+div.sub-link div.menu-link {
+padding-left : 8px;
+background-color : #EDF4D1;
+}
+
+div.menu-link:hover {
+background-color : #ADB583;
+}
+
+div.sub-link div.menu-link:hover {
+background-color : #ADB583;
+}
+
+
 
