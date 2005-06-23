@@ -13,7 +13,7 @@ class PHPWS_Panel{
   var $content      = NULL;
   var $module       = NULL;
   var $panel        = NULL;
-  var $_secure      = TRUE;
+  var $_secure      = FALSE;
 
   function PHPWS_Panel($itemname=NULL){
     if (isset($itemname))
