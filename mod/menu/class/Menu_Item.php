@@ -163,12 +163,16 @@ class Menu_Item {
 
     $vars['command'] = 'pin_all';
     if ($this->pin_all == 0) {
-      $link_title = _('Pin All');
+      $link_title = _('Pin');
       $vars['hook'] = 1;
     } else {
-      $link_title = _('Unpin All');
+      $link_title = _('Unpin');
       $vars['hook'] = 0;
     }
+    $links[] = PHPWS_Text::secureLink($link_title, 'menu', $vars);
+
+    $vars['command'] = 'edit_links';
+    $link_title = _('Links');
     $links[] = PHPWS_Text::secureLink($link_title, 'menu', $vars);
 
     $tpl['ACTION'] = implode(' | ', $links);

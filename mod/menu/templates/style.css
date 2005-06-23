@@ -1,0 +1,19 @@
+.menu-admin div.menu-link-pop {
+display : none;
+}
+
+.menu-admin:hover div.menu-link-pop {
+display : block;
+position : absolute;
+margin : 0;
+border : solid 1px black;
+background-color : #d7d7d7;
+}
+
+.show-link {
+display : block;
+}
+
+.hide-link {
+display : none;
+}

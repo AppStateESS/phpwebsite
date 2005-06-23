@@ -16,6 +16,7 @@ class Menu {
 
     function showPinned()
     {
+        Layout::addStyle('menu');
         PHPWS_Core::initModClass('menu', 'Menu_Item.php');
         $db = & new PHPWS_DB('menus');
         $db->addWhere('pin_all', 1);
@@ -35,6 +36,7 @@ class Menu {
 
     function show($key, $title=NULL, $url=NULL)
     {
+        Layout::addStyle('menu');
         PHPWS_Core::initModClass('menu', 'Menu_Item.php');
         if (!empty($title) || !empty($url)) {
             Menu::readyLink($title, $url);
@@ -57,8 +59,15 @@ class Menu {
         }
     }
 
+    function atLink($url)
+    {
+        $compare = Menu::grabUrl();
+        return $url == $compare;
+    }
+
     function getAddLink($menu_id, $parent_id=NULL)
     {
+        PHPWS_Core::configRequireOnce('menu', 'config.php');
         $direct_link = FALSE;
 
         if (empty($GLOBALS['Menu_Ready_Link'])) {
@@ -97,11 +106,11 @@ class Menu {
         }
 
         if ($direct_link) {
-            return PHPWS_Text::secureLink(_('Add'), 'menu', $vars);
+            return PHPWS_Text::secureLink(MENU_LINK_ADD, 'menu', $vars);
         } else {
             $js['question']   = _('Enter link title');
             $js['address']    = PHPWS_Text::linkAddress('menu', $vars, TRUE);
-            $js['link']       = _('Add');
+            $js['link']       = MENU_LINK_ADD;
             $js['value_name'] = 'title';
             return javascript('prompt', $js);
         }
@@ -129,11 +138,21 @@ class Menu {
         return  'index.php?' . implode('&', $new_link);
     }
 
+    function deleteLink($link_id)
+    {
+        $link = & new Menu_Link($link_id);
+        return $link->delete();
+    }
 
     function readyLink($title=NULL, $url=NULL)
     {
         $GLOBALS['Menu_Ready_Link']['title'] = $title;
         $GLOBALS['Menu_Ready_Link']['url']   = $url;
+    }
+
+    function isAdminMode()
+    {
+        return TRUE;
     }
 
 }
