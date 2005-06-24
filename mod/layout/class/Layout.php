@@ -636,7 +636,7 @@ class Layout {
     if (!isset($contentVar))
       $contentVar = DEFAULT_CONTENT_VAR;
 
-    $GLOBALS['Layout'][$module] = NULL;
+    $GLOBALS['Layout'][$module][$contentVar] = NULL;
     Layout::add($text, $module, $contentVar);
   }
 
