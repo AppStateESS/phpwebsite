@@ -125,7 +125,7 @@ class Menu_Item {
         }
 
         foreach ($all_links as $link) {
-            $link_list[] = $link->view($edit);
+            $link_list[] = $link->view();
         }
 
         return implode("\n", $link_list);
@@ -212,7 +212,7 @@ class Menu_Item {
         $file = 'menu_layout/' . $this->template;
         $content_var = 'menu_' . $this->id;
 
-        if ( Current_User::allow('menu') ) {
+        if (Menu::isAdminMode() && Current_User::allow('menu') ) {
             $tpl['ADD_LINK'] = Menu::getAddLink($this->id);
         }
 

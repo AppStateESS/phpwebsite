@@ -40,6 +40,33 @@ class Menu_Admin {
             $content = Menu_Admin::editMenu($menu);
             break;
 
+
+        case 'enable_admin_mode':
+        case 'disable_admin_mode':
+            if (Current_User::authorized('menu')) {
+                if ($command == 'enable_admin_mode') {
+                    $_SESSION['Menu_Admin_Mode'] = TRUE;
+                } else {
+                    unset($_SESSION['Menu_Admin_Mode']);
+                }
+            }
+        case 'settings':
+            $title = _('Menu Settings');
+            $content = Menu_Admin::settings();
+            break;
+
+        case 'move_link_up':
+            $link = & new Menu_Link($_REQUEST['link_id']);
+            $link->moveUp();
+            PHPWS_Core::goBack();
+            break;
+
+        case 'move_link_down':
+            $link = & new Menu_Link($_REQUEST['link_id']);
+            $link->moveDown();
+            PHPWS_Core::goBack();
+            break;
+
         case 'edit_menu':
             $title = _('Update Menu');
             $content = Menu_Admin::editMenu($menu);
@@ -68,12 +95,12 @@ class Menu_Admin {
 
         case 'add_link':
             if (!isset($_REQUEST['parent'])) {
-                $parent = 0;
+                $parent_id = 0;
             } else {
-                $parent = $_REQUEST['parent'];
+                $parent_id = $_REQUEST['parent'];
             }
 
-            $result = Menu_Admin::addLink($menu, $parent);
+            $result = Menu_Admin::addLink($menu, $parent_id);
             if ($result) {
                 PHPWS_Core::goBack();
             } else {
@@ -164,7 +191,10 @@ class Menu_Admin {
         $listCommand = array ('title'=>_('List'), 'link'=> $listLink);
         $tabs['list'] = $listCommand;
 
-        $panel = & new PHPWS_Panel('categories');
+        $adminCommand = array('title' => _('Settings'), 'link' => 'index.php?module=menu');
+        $tabs['settings'] = $adminCommand;
+
+        $panel = & new PHPWS_Panel('menu');
         $panel->quickSetTabs($tabs);
 
         $panel->setModule('menu');
@@ -240,6 +270,24 @@ class Menu_Admin {
         $pager->addRowTags('getRowTags');
         $content = $pager->get();
         return $content;
+    }
+
+
+    function settings()
+    {
+
+        
+        if (!isset($_SESSION['Menu_Admin_Mode'])) {
+            $vars['command'] = 'enable_admin_mode';
+            $tpl['ADMIN_LINK'] = PHPWS_Text::secureLink(_('Enable Administration Mode'),
+                                                        'menu', $vars);
+        } else {
+            $vars['command'] = 'disable_admin_mode';
+            $tpl['ADMIN_LINK'] = PHPWS_Text::secureLink(_('Disable Administration Mode'),
+                                                        'menu', $vars);
+        }
+
+        return PHPWS_Template::process($tpl, 'menu', 'admin/settings.tpl');
     }
 
 }

@@ -102,7 +102,7 @@ class Menu {
 
 
         if (!empty($title)) {
-            $vars['title'] = urlencode($title);
+            $vars['link_title'] = urlencode($title);
             $direct_link = TRUE;
         }
     
@@ -116,7 +116,7 @@ class Menu {
             $js['question']   = _('Enter link title');
             $js['address']    = PHPWS_Text::linkAddress('menu', $vars, TRUE);
             $js['link']       = MENU_LINK_ADD;
-            $js['value_name'] = 'title';
+            $js['value_name'] = 'link_title';
             return javascript('prompt', $js);
         }
     }
@@ -157,7 +157,7 @@ class Menu {
 
     function isAdminMode()
     {
-        return TRUE;
+        return isset($_SESSION['Menu_Admin_Mode']);
     }
 
 }
