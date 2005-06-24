@@ -558,8 +558,12 @@ class PHPWS_DB {
         $this->_distinct = FALSE;
     }
 
-    function addColumn($column, $distinct=FALSE)
+    function addColumn($column, $distinct=FALSE, $max_min=NULL)
     {
+        if (!in_array(strtolower($max_min), array('max', 'min'))) {
+            $max_min = NULL;
+        }
+
         $table = $this->tables[0];
         if (strstr($column, '.')) {
             list($table, $column) = explode('.', $column);
@@ -573,6 +577,7 @@ class PHPWS_DB {
         $col['table']    = $table;
         $col['name']     = $column;
         $col['distinct'] = $distinct;
+        $col['max_min']  = $max_min;
 
         $this->columns[] = $col;
     }
@@ -595,7 +600,11 @@ class PHPWS_DB {
                     } else {
                         $dist = NULL;
                     }
-                    $columns[] = "$dist$table.$name";
+                    if ($max_min) {
+                        $columns[] = $dist . strtoupper($max_min) . "($table.$name)";
+                    } else {
+                        $columns[] = "$dist$table.$name";
+                    }
                 }
                 return implode(', ', $columns);
             }
@@ -847,8 +856,9 @@ class PHPWS_DB {
             }
         }
         PHPWS_DB::touchDB();
-        if (isset($type))
+        if (isset($type)) {
             $type = strtolower($type);
+        }
 
         $mode = $this->getMode();
         $indexby = $this->getIndexBy();
@@ -910,10 +920,6 @@ class PHPWS_DB {
 
         case 'min':
         case 'max':
-            PHPWS_DB::logDB($sql);
-            return $GLOBALS['PEAR_DB']->getOne($sql, NULL, $mode);
-            break;
-
         case 'one':
             PHPWS_DB::logDB($sql);
             $value = $GLOBALS['PEAR_DB']->getOne($sql, NULL, $mode);
