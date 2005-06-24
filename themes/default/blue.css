@@ -143,3 +143,42 @@ background-color : #CBCEAC;
 color: black;
 }
 
+div.menu-link {
+border-top : white 2px solid;
+margin : 0;
+padding : 0;
+}
+
+
+div.menu-link a {
+font-weight : bold;
+text-decoration : none;
+}
+
+div.menu-link {
+background-color : white;
+}
+
+div.link-level-1 {
+padding : 5px;
+background-color : #A9BBEF;
+}
+
+div.link-level-2 {
+padding : 5px;
+padding-left : 1em;
+background-color : #CFD8F2;
+}
+
+div.link-level-3 {
+padding : 5px;
+padding-left : 2em;
+background-color : #D5DEF9;
+}
+
+div.link-level-1:hover,
+div.link-level-2:hover,
+div.link-level-3:hover {
+background-color : transparent;
+}
+
