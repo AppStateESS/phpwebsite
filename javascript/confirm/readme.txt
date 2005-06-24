@@ -10,3 +10,6 @@ $js_variables['ADDRESS'] = 'index.php?module=mymod&amp;command=delete_it';
 $js_variables['LINK']     = 'Delete This';
 
 $link = Layout::getJavascript('confirm', $js_variables);
+
+----------------------------------------------------------------
+Make sure to run addslashes() on your variables!

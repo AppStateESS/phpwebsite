@@ -7,3 +7,7 @@ $vars['value_name'] = 'new_name';
 $vars['link']       = 'Click on me to name this';
 
 echo javascript('prompt', $vars);
+
+
+----------------------------------------------------------------
+Make sure to run addslashes() on your variables!
