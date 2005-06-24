@@ -1,6 +1,6 @@
 <script type="text/javascript">
 //<![CDATA[
-function show_prompt(question, address, answer) {
+function show_prompt(question, address, answer, prompt_var) {
     var prompt_result = prompt(question, answer);
     var error_message = '{error_message}';
 
@@ -9,7 +9,7 @@ function show_prompt(question, address, answer) {
 	return;
     }
 
-    address = address + '&{value_name}=' + encode(prompt_result);
+    address = address + '&' + prompt_var + '=' + encode(prompt_result);
     location.href = address;
 }
 

@@ -1,1 +1,1 @@
-<a href="javascript:show_prompt('{question}', '{address}', '{answer}')">{link}</a>
+<a href="javascript:show_prompt('{question}', '{address}', '{answer}', '{value_name}')">{link}</a>
