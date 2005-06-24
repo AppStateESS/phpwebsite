@@ -186,7 +186,7 @@ class Menu_Link {
             $vars['link_id'] = $this->id;
 
             $vars['command'] = 'delete_link';
-            $js['QUESTION'] = _('Are you sure you want to delete this link: ' . $this->title);
+            $js['QUESTION'] = _('Are you sure you want to delete this link: ' . addslashes($this->title));
             $js['ADDRESS'] = PHPWS_Text::linkAddress('menu', $vars, TRUE);
             $js['LINK'] = MENU_LINK_DELETE;
             $template['DELETE_LINK'] = javascript('confirm', $js);
@@ -194,7 +194,7 @@ class Menu_Link {
             $vars['command'] = 'edit_link_title';
             $prompt_js['question'] = _('Type the new title for this link.');
             $prompt_js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE);
-            $prompt_js['answer'] = $this->title;
+            $prompt_js['answer'] = addslashes($this->title);
             $prompt_js['value_name'] = 'link_title';
             $prompt_js['link']       = MENU_LINK_EDIT;
             $template['EDIT_LINK'] = javascript('prompt', $prompt_js);
