@@ -17,10 +17,12 @@ class Version_Approval {
     var $disapprove_url = NULL;
     var $class_name     = NULL;
     var $alt_method     = NULL;
+    var $where          = NULL;
     var $columns        = array();
     var $standard       = array('id', 'source_id', 'vr_creator', 'vr_editor',
                                 'vr_create_date', 'vr_edit_date', 'vr_number',
                                 'vr_current', 'vr_approved', 'vr_locked');
+    var $_db            = NULL;
   
 
     function Version_Approval($module, $table, $class_name=NULL, $alt_method=NULL)
@@ -34,6 +36,8 @@ class Version_Approval {
                 $this->setAltMethod($alt_method);
             }
         }
+        $this->_db = & new PHPWS_DB($this->version_table);
+
     }
 
 
@@ -47,6 +51,12 @@ class Version_Approval {
         $this->source_table = $table;
         $this->version_table = $this->source_table . VERSION_TABLE_SUFFIX;
     }
+
+    function addWhere($column, $value=NULL, $operator=NULL, $conj=NULL, $group=NULL, $join=FALSE)
+    {
+        return $this->_db->addWhere($column, $value, $operator, $conj, $group, $join);
+    }
+
 
     function setApproveUrl($approve_url)
     {
@@ -89,15 +99,13 @@ class Version_Approval {
             return FALSE;
         }
     
-        $vtable = &$this->version_table;
+        $this->_db->addColumn('*');
+        $this->_db->addColumn('users.username');
+        $this->_db->addWhere('vr_approved', 0);
+        $this->_db->addWhere('vr_creator', 'users.id');
 
-        $db = & new PHPWS_DB('users');
-        $db->addColumn('username');
-        $db->addColumn("$vtable.*");
-        $db->addWhere("$vtable.vr_approved", 0);
-        $db->addWhere('id', "$vtable.vr_creator");
+        $result = $this->_db->select();
 
-        $result = $db->select();
         if (PEAR::isError($result)) {
             return $result;
         }
