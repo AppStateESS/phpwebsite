@@ -352,12 +352,14 @@ class PHPWS_DB {
         return $this->groupBy;
     }
 
-    function addJoinWhere($column, $value=NULL, $operator=NULL, $conj=NULL, $group=NULL)
+    function addJoinWhere($column, $value=NULL, $operator=NULL,
+                          $conj=NULL, $group=NULL)
     {
         return $this->addWhere($column, $value, $operator, $conj, $group, TRUE);
     }
 
-    function addWhere($column, $value=NULL, $operator=NULL, $conj=NULL, $group=NULL, $join=FALSE)
+    function addWhere($column, $value=NULL, $operator=NULL, $conj=NULL,
+                      $group=NULL, $join=FALSE)
     {
         $where = & new PHPWS_DB_Where;
         $where->setJoin($join);
