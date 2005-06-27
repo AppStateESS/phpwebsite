@@ -236,6 +236,8 @@ WHERE ( table1.firstname = 'ted' AND
 Note that when you use extra tables, the do NOT show results by
 default. If you want to see the results joined together, you need to
 use addColumn like so:
+(see addColumn below for more information)
+
 
 $db->addColumn('table2.age');
 
@@ -247,6 +249,8 @@ WHERE ( table1.firstname = 'Ted' AND
       )
 
 Use 'table2.*' to get all the column results.
+
+
 
 Ordering
 If we wanted to select in a certain order we use the addOrder
@@ -266,7 +270,7 @@ Normally, the select function will grab all the columns from a
 table. You may not want this. If this is the case then you need to
 specify which columns to grab using the addColumn function.
 
-$db->addColumn(column_name, distinct, count);
+$db->addColumn(column_name, distinct, max_min);
 
 So if I wanted to only receive the 'name' column in my result:
 $db->addColumn('name');
@@ -283,13 +287,18 @@ $db->addColumn('name', TRUE);
 then I will not see the name 'Chris' twice. Distinct defaults
 to FALSE.
 
-If I want to count the number of rows in a table:
-$db->addColumn('name', FALSE, TRUE);
+If I want the maximum amount of a column (in this case the name last
+in the alphabet)
+$db->addColumn('name', FALSE, 'max');
 
-Number of distinct rows:
-$db->addColumn('name', TRUE, TRUE);
+Minimum would be:
+$db->addColumn('name', FALSE, 'min');
 
-Note that you must enter a column name for both count and distinct.
+Note that when you do not set any columns, a select query will default
+to a 'get all' query or in sql terms 'SELECT * FROM table_name'
+As soon as you set a column, the database object will NO LONGER call
+'*', this includes adding a column from a joined table.
+
 
 Limiting results
 
