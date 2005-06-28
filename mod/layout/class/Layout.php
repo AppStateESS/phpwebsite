@@ -452,7 +452,7 @@ class Layout {
     // Say it loud
     $metatags[] = '<meta name="generator" content="phpWebSite" />';
 
-    $metatags[] = '<meta content="text/html; charset=UTF-8"  http-equiv="Content-Type">';
+    $metatags[] = '<meta content="text/html; charset=UTF-8"  http-equiv="Content-Type" />';
     if (!empty($author))
       $metatags[] = '<meta name="author" content="' . $meta_author . '" />';
     else
