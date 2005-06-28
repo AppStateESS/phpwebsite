@@ -5,6 +5,17 @@
  * against user submissions.
  */
 
+/**
+ * stripslashes_deep is from aderyn (gmail.com) on php.net
+ */
+if (get_magic_quotes_gpc())
+{
+   $_GET    = array_map('stripslashes_deep', $_GET);
+   $_POST  = array_map('stripslashes_deep', $_POST);
+   $_COOKIE = array_map('stripslashes_deep', $_COOKIE);
+}
+
+
 /* Security against those with register globals = on */
 if (ini_get('register_globals')) {
   ini_set('register_globals', FALSE);
@@ -37,5 +48,11 @@ function cleanArray(&$clean) {
   }
   return;
 }
+
+function stripslashes_deep($value)
+{
+   return (is_array($value) ? array_map('stripslashes_deep', $value) : stripslashes($value));
+}
+
 
 ?>
