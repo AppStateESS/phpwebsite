@@ -943,6 +943,10 @@ class PHPWS_DB {
                 return $result;
             }
 
+            if (empty($result)) {
+                return 0;
+            }
+
             if (count($result) > 1) {
                 return $result;
             }
