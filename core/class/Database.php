@@ -767,9 +767,9 @@ class PHPWS_DB {
 
         $idColumn = $this->getIndex();
 
-        if (PEAR::isError($idColumn))
+        if (PEAR::isError($idColumn)) {
             return $idColumn;
-        elseif(isset($idColumn)) {
+        } elseif(isset($idColumn)) {
             $maxID = $GLOBALS['PEAR_DB']->nextId($table);
             $values[$idColumn] = $maxID;
         }
@@ -780,12 +780,14 @@ class PHPWS_DB {
         }
 
         $query = 'INSERT INTO ' . $table . ' (' . implode(', ', $columns) . ') VALUES (' . implode(', ', $set) . ')';
+
         $result = PHPWS_DB::query($query);
 
-        if (DB::isError($result))
+        if (DB::isError($result)) {
             return $result;
-        else
+        } else {
             return $maxID;
+        }
     }
 
     function update(){
@@ -940,11 +942,13 @@ class PHPWS_DB {
             if (PEAR::isError($result)){
                 return $result;
             }
+
             if (count($result) > 1) {
                 return $result;
             }
             else {
-                return $result[0]['COUNT(*)'];
+                list(, $count_val) = each($result[0]);
+                return $count_val;
             }
             break;
 
@@ -1249,7 +1253,7 @@ class PHPWS_DB {
     function export($structure=TRUE, $contents=TRUE){
         PHPWS_DB::touchDB();
 
-        if ($structure == TRUE){      
+        if ($structure == TRUE) {
             $columns =  $GLOBALS['PEAR_DB']->tableInfo($this->table);
 
             $column_info = $this->parseColumns($columns);
