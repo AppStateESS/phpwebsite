@@ -61,8 +61,9 @@ class PHPWS_Error {
   }
 
   function log($value, $module=NULL, $funcName=NULL, $extraInfo=NULL){
-    if ((bool)PHPWS_LOG_ERRORS == FALSE)
-      return;
+      if ((bool)PHPWS_LOG_ERRORS == FALSE) {
+          return;
+      }
 
     if (!PEAR::isError($value)) {
       $error = &PHPWS_Error::get($value, $module, $funcName, $extraInfo);
