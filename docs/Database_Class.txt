@@ -177,7 +177,7 @@ $db->addWhere('name', 'L%', 'like', NULL, 'namegroup');
 // not important
  
 $db->setGroupConj('namegroup', 'or');
-// the default is AND, so I user setGroupConj to change to or
+// the default is AND, so I user setGroupConj to change to OR
 
 
 Kind of complicated but it would look like this if you wrote the
