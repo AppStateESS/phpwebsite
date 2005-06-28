@@ -60,7 +60,7 @@ class Comments {
       case 'delete_comment':
           $comment = & new Comment_Item($_REQUEST['cm_id']);
           $comment->delete();
-          //          PHPWS_Core::goBack();
+          PHPWS_Core::goBack();
           break;
       }
   }
