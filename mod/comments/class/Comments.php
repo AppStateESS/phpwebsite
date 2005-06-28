@@ -56,7 +56,13 @@ class Comments {
 
   function adminAction($command)
   {
-
+      switch ($command) {
+      case 'delete_comment':
+          $comment = & new Comment_Item($_REQUEST['cm_id']);
+          $comment->delete();
+          //          PHPWS_Core::goBack();
+          break;
+      }
   }
 
   function userAction($command)

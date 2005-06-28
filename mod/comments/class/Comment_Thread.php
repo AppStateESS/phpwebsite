@@ -319,6 +319,11 @@ class Comment_Thread {
         $this->total_comments++;
     }
 
+    function decreaseCount()
+    {
+        $this->total_comments--;
+    }
+
     function postLastUser($author_id)
     {
         $author = & new Comment_User($author_id);
