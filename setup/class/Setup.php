@@ -337,8 +337,7 @@ class Setup{
 
     $formTpl['DBHOST_LBL'] = _('Host Specification');
     $formTpl['DBHOST_DEF'] = _('If your database is on the same server as your phpWebSite installation, leave this as &#x22;localhost&#x22;.')
-      . '<br />' . _('Otherwise, enter the ip or dns to the database server.') .
-        '<br />' . _('Note: for PostgresSQL, leave this blank');
+        . '<br />' . _('Otherwise, enter the ip or dns to the database server.');
 
     $formTpl['DBPORT_LBL'] = _('Host Specification Port');
     $formTpl['DBPORT_DEF'] = _('If your host specification requires access via a specific port, enter it here.');
