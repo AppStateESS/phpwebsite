@@ -337,7 +337,8 @@ class Setup{
 
     $formTpl['DBHOST_LBL'] = _('Host Specification');
     $formTpl['DBHOST_DEF'] = _('If your database is on the same server as your phpWebSite installation, leave this as &#x22;localhost&#x22;.')
-      . '<br />' . _('Otherwise, enter the ip or dns to the database server.');
+      . '<br />' . _('Otherwise, enter the ip or dns to the database server.') .
+        '<br />' . _('Note: for PostgresSQL, leave this blank');
 
     $formTpl['DBPORT_LBL'] = _('Host Specification Port');
     $formTpl['DBPORT_DEF'] = _('If your host specification requires access via a specific port, enter it here.');
@@ -521,6 +522,12 @@ class Setup{
     $content[] = '<hr />';
     $content[] = _('Installation of phpWebSite is complete.') . '<br />';
     $content[] = _('If you experienced any error messages, check your error.log file.') . '<br />';
+    if (CHECK_DIRECTORY_PERMISSIONS) {
+        $content[] = _('Check Directory Permissions is enabled so be sure to secure your config and templates directories!');
+        $content[] = _('If you do not change it now, your next page will be an error screen.');
+    } else {
+        $content[] = _('After you finish installing your modules in Boost, you should make your config and template directories non-writable.');
+    }
     $content[] = '<a href="../index.php">' . _('Go to my new website!') . '</a>' . '<br />';
 
   }
