@@ -95,8 +95,9 @@ class Version {
 
     function init()
     {
-        if (!PHPWS_DB::isTable($this->source_table))
+        if (!PHPWS_DB::isTable($this->source_table)) {
             return PHPWS_Error::get(VERSION_NO_TABLE, 'version', 'init', $this->source_table);
+        }
 
         $result = $this->_initVersionTable();
         if (PEAR::isError($result)) {
@@ -182,7 +183,7 @@ class Version {
                 if (!$version_db->isTableColumn($col_name)) {
                     if($source_db->isTableColumn($col_name)) {
                         $result = $this->_copyVersionColumn($col_name);
-                        if (PEAR::isError($result)){
+                        if (PEAR::isError($result)) {
                             return $result;
                         }
                     } else {
@@ -261,8 +262,9 @@ class Version {
         $result = $version_db->addWhere('vr_approved', 0);
         $result = $version_db->select();
 
-        if (PEAR::isError($result) || empty($result))
+        if (PEAR::isError($result) || empty($result)) {
             return $result;
+        }
     
         foreach ($result as $row) {
             $version = & new Version($this->source_table);
@@ -274,7 +276,7 @@ class Version {
     }
 
     function _plugInVersion($data){
-        if (!is_array($data)){
+        if (!is_array($data)) {
             return FALSE;
         }
         PHPWS_Core::plugObject($this, $data);
@@ -289,17 +291,19 @@ class Version {
         $version_db = & new PHPWS_DB($this->version_table);
 
         $col_info = $source_db->getColumnInfo($col_name, TRUE);
-        if (isset($col_info['index']))
+        if (isset($col_info['index'])) {
             $index = TRUE;
-        else
+        } else {
             $index = FALSE;
+        }
 
         return $version_db->addTableColumn($col_name, $col_info['parameters'], NULL, $index);
     }
 
     function _getVersionNumber(){
-        if (empty($this->source_id))
+        if (empty($this->source_id)) {
             return 1;
+        }
         $version_db = & new PHPWS_DB($this->version_table);
 
         $version_db->addWhere('source_id', $this->source_id);
@@ -320,8 +324,9 @@ class Version {
         $version_db = & new PHPWS_DB($this->version_table);
         $version_db->addWhere('id', $this->id);
         $row = $version_db->select('row');
-        if (PEAR::isError($row))
+        if (PEAR::isError($row)) {
             return $row;
+        }
 
         $this->_plugInVersion($row);
     }
@@ -329,11 +334,12 @@ class Version {
     function _initVersionTable()
     {
         $this->version_table = $this->source_table . VERSION_TABLE_SUFFIX;
-        if (!PHPWS_DB::isTable($this->version_table)){
+        if (!PHPWS_DB::isTable($this->version_table)) {
             $result = Version::_buildVersionTable();
 
-            if (PEAR::isError($result))
+            if (PEAR::isError($result)) {
                 return $result;
+            }
         }
 
         return TRUE;
@@ -345,20 +351,22 @@ class Version {
 
         foreach ($allColumns as $editCol){
             $newColumns[] = $editCol;
-            if ($editCol['name'] == 'id')
+            if ($editCol['name'] == 'id') {
                 $newColumns[] = array('table' => $this->version_table,
                                       'name'  => 'source_id',
                                       'type'  => 'int',
                                       'flags' => 'NOT NULL'
                                       );
+            }
         }
 
         $parsed_columns = $source_db->parseColumns($newColumns);
         $columns = $parsed_columns['parameters'];
 
         $result = PHPWS_Core::getConfigFile('version', 'config.php');
-        if (PEAR::isError($result))
+        if (PEAR::isError($result)) {
             return $result;
+        }
 
         include $result;
         foreach ($version_columns as $verCol) {
@@ -368,11 +376,13 @@ class Version {
         $sql = 'CREATE TABLE ' . $this->version_table . ' (' . implode(', ', $columns) . ')';
 
         $result = PHPWS_DB::query($sql);
-        if (PEAR::isError($result))
+        if (PEAR::isError($result)) {
             return $result;
+        }
 
-        if (isset($parsed_columns['index']))
+        if (isset($parsed_columns['index'])) {
             return PHPWS_DB::query($parsed_columns['index']);
+        }
     }
 
     function loadObject(&$object){
@@ -437,8 +447,9 @@ class Version {
     }
 
     function getBackupList(){
-        if (empty($this->source_id))
+        if (empty($this->source_id)) {
             return FALSE;
+        }
 
         $db = & new PHPWS_DB($this->version_table);
         $db->addWhere('source_id', $this->source_id);
@@ -447,8 +458,9 @@ class Version {
         $db->addOrder('vr_number desc');
         $result = $db->select();
 
-        if (empty($result))
+        if (empty($result)) {
             return NULL;
+        }
 
         foreach ($result as $row){
             $version = & new Version($this->source_table);
@@ -465,8 +477,9 @@ class Version {
         $data = $this->getSource();
         $db->addValue($data);
         $result = $db->update();
-        if (PEAR::isError($result))
+        if (PEAR::isError($result)) {
             return $result;
+        }
 
         unset($this->id);
         $this->setSource($data);
@@ -474,57 +487,6 @@ class Version {
         $this->vr_number = $this->_getVersionNumber();
         return $this->save();
     }
-
-
-    /**
-     * In use?
-     */
-    /*
-  function checkApproval()
-  {
-    PHPWS_Core::initModClass('notes', 'Notes.php');
-
-    if (isset($_SESSION['Approval_Checked']) ||
-        !Current_User::isLogged()) {
-      return;
-    }
-
-    PHPWS_Core::initModClass('version', 'Approval.php');
-    $unapproved_list = Version::getUnapprovedNotices();
-
-    if (!empty($unapproved_list)) {
-      foreach ($unapproved_list as $unapproved) {
-        $result = Notes::add(_('Approval') . ': ' . $unapproved->getInfo(), _('This item needs approval.'));
-      }
-    }
-
-    $_SESSION['Approval_Checked'] = 1;    
-  }
-    */
-  
-    /**
-     * Pulls a list of unapproved notices
-     * delete if not in use
-     */
-    /*
-  function getUnapprovedNotices()
-  {
-  // Check the user's access to each module
-    $module_list = PHPWS_Core::getModules(TRUE, TRUE);
-    foreach ($module_list as $mod) {
-      if (Current_User::isUnrestricted($mod)) {
-        $final_list[] = $mod;
-      }
-    }
-
-    $db = & new PHPWS_DB('version_approval');
-    foreach ($final_list as $module_title) {
-      $db->addWhere('module', $module_title, NULL, 'OR');
-    }
-
-    return $db->getObjects('Version_Approval');
-  }
-    */
 }
 
 ?>
