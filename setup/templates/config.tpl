@@ -44,14 +44,23 @@ define('CORE_COOKIE_TIMEOUT', 2592000);
  * config/
  * templates/
  * 
- * These directories are made writable during installations but
- * need not be at any other time.
+ * These directories are made writable during installations and
+ * updates but need not be at any other time.
+ *
+ * This can become a headache but enabling it will increase security
  */
 
-// FOR NOW, this will be FALSE. MUST BE TRUE on Release
 define('CHECK_DIRECTORY_PERMISSIONS', FALSE);
 
 /********************** Logging Settings **********************/
+
+/**
+ * Error logging presets
+ * If you cannot secure your log directory, this should be changed
+ * to FALSE
+ */
+define('PHPWS_LOG_ERRORS', TRUE);
+
 
 /**
  * Directory where logs will be written
@@ -63,7 +72,7 @@ define('PHPWS_LOG_DIRECTORY', './logs/');
  * to the logs directory.
  * This MUST be 4 digits and without quotation marks.
  */
-define('LOG_PERMISSION', 0644);
+define('LOG_PERMISSION', 0600);
 
 /**
  *  The time format for each log entry
@@ -115,7 +124,7 @@ define('DEFAULT_LANGUAGE', 'en-us');
  * Assigns a css style to the toggle element in list
  */
 
-define('PHPWS_LIST_TOGGLE_CLASS', ' class=\'bg-light\'');
+define('PHPWS_LIST_TOGGLE_CLASS', ' class=\'bgcolor1\'');
 
 /************************ EDITOR *******************************/
 /*
@@ -126,14 +135,6 @@ define('PHPWS_LIST_TOGGLE_CLASS', ' class=\'bg-light\'');
  */
 define('USE_WYSIWYG_EDITOR', FALSE);
 define('DEFAULT_EDITOR_TOOL', '');
-
-/*********************** ERROR DEFINITIONS *********************/
-/**
- * You shouldn't ever have to alter these.
- */
-
-/* Error logging presets */
-define('PHPWS_LOG_ERRORS', TRUE);
 
 
 /******************* ALLOWED IMAGES TYPES *********************/
