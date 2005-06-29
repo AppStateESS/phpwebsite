@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<dependency>
+  <module>
+    <title>menu</title>
+    <properName>Menu Manager</properName>
+    <version>0.0.1</version>
+    <url>http://phpwebsite.appstate.edu/module_info/menu.html</url>
+  </module>
+  <module>
+    <title>related</title>
+    <properName>Related</properName>
+    <version>0.0.1</version>
+    <url>http://phpwebsite.appstate.edu/module_info/related.html</url>
+  </module>
+</dependency>

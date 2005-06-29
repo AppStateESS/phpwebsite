@@ -9,4 +9,5 @@ $file_dir     = FALSE;
 $version_http = 'http://phpwebsite.appstate.edu/updates/blog.ini';
 $about        = TRUE;
 $priority     = 50;
+$dependency   = TRUE;
 ?>
