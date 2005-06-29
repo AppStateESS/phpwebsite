@@ -407,7 +407,7 @@ class PHPWS_DB {
                 return TRUE;
             }
         } else {
-            if (empty($value) || strtoupper($value) == 'NULL') {
+            if (is_null($value) || strtoupper($value) == 'NULL') {
                 if (empty($operator) || ( $operator != 'IS NOT' && $operator != '!=')) {
                     $operator = 'IS';
                 } else {
