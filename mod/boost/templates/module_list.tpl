@@ -1,8 +1,14 @@
+<table width="100%" cellpadding="4">
+<tr>
+  <th>{TITLE_LABEL}</th>
+  <th>{COMMAND_LABEL}</th>
+  <th>{ABOUT_LABEL}</th>
+</tr>
 <!-- BEGIN mod-row -->
-<div class="mod-row{ROW}">
-<span class="mod-title">{TITLE}</span>
-<span class="mod-command">{COMMAND}</span>
-<!-- BEGIN uninstall --><span class="mod-uninstall">{UNINSTALL}</span><!-- END uninstall -->
-<span class="mod-about">{ABOUT}</span>
-</div>
+<tr class="bgcolor{ROW}">
+  <td>{TITLE}</td>
+  <td>{COMMAND} {UNINSTALL}</td>
+  <td>{ABOUT}</td>
+</tr>
 <!-- END mod-row -->
+</table>
