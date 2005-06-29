@@ -1,7 +1,7 @@
 <?php
 
-$proper_name  = "Related";
-$version      = "0.0.1";
+$proper_name  = 'Related';
+$version      = '0.0.1';
 $register     = FALSE;
 $unregister   = FALSE;
 $import_sql   = TRUE;
