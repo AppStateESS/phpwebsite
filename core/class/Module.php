@@ -328,14 +328,15 @@ class PHPWS_Module {
             return FALSE;
         }
 
-        foreach ($dep_list as $mod_title => $stats) {
-            $module = & new PHPWS_Module($mod_title, FALSE);
+        foreach ($dep_list['MODULE'] as $stats) {
+            extract($stats);
+            $module = & new PHPWS_Module($TITLE, FALSE);
 
             if (!$module->isInstalled()) {
                 return FALSE;
             }
 
-            if (version_compare($stats['VERSION'], $module->getVersion(), '<')) {
+            if (version_compare($VERSION, $module->getVersion(), '>')) {
                 return FALSE;
             }
         }
@@ -350,25 +351,8 @@ class PHPWS_Module {
             return NULL;
         }
 
-        $list = PHPWS_Text::xml2php($file);
-        $dep_list = $list[0]['value'];
-        foreach ($dep_list as $info) {
-            foreach ($info as $mod) {
-                $title = NULL;
-                $module = array();
-                foreach ($mod as $mod_info) {
-                    extract($mod_info);
-                    if ($tag == 'TITLE') {
-                        $title = $value;
-                        continue;
-                    }
-                    $module[$tag] = $value;
-                }
-                if (isset($title)) {
-                    $module_list[$title] = $module;
-                }
-            }
-        }
+        $dep_list = PHPWS_Text::xml2php($file, 1);
+        $module_list = PHPWS_Text::tagXML($dep_list);
         return $module_list;
     }
 }
