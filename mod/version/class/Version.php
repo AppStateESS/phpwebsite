@@ -335,7 +335,7 @@ class Version {
     {
         $this->version_table = $this->source_table . VERSION_TABLE_SUFFIX;
         if (!PHPWS_DB::isTable($this->version_table)) {
-            $result = Version::_buildVersionTable();
+            $result = $this->_buildVersionTable();
 
             if (PEAR::isError($result)) {
                 return $result;
