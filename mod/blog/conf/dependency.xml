@@ -12,4 +12,16 @@
     <version>0.0.1</version>
     <url>http://phpwebsite.appstate.edu/module_info/related.html</url>
   </module>
+  <module>
+    <title>comments</title>
+    <properName>Comments</properName>
+    <version>0.0.1</version>
+    <url>http://phpwebsite.appstate.edu/module_info/comments.html</url>
+  </module>
+  <module>
+    <title>categories</title>
+    <properName>Categories</properName>
+    <version>2.0.1</version>
+    <url>http://phpwebsite.appstate.edu/module_info/categories.html</url>
+  </module>
 </dependency>

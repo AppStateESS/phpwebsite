@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<update_infomation>
+  <module>
+    <title>Blog</title>
+    <changes>
+    Imaginary bugs fixed!
+    Some other stuff!
+    </changes>
+    <version>0.0.4</version>
+    <md5sum>5094547b67b5e90e7ab2d240a1829314</md5sum>
+    <download>http://localhost/update/blog_0_0_4.tgz</download>
+  </module>
+</update_information>
