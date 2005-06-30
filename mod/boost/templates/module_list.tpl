@@ -7,7 +7,9 @@
 <!-- BEGIN mod-row -->
 <tr class="bgcolor{ROW}">
   <td>{TITLE}</td>
-  <td>{COMMAND} {UNINSTALL}</td>
+  <td>{COMMAND} 
+  <!-- BEGIN uninstall -->&nbsp;|&nbsp;&nbsp;{UNINSTALL}<!-- END uninstall -->
+  </td>
   <td>{ABOUT}</td>
 </tr>
 <!-- END mod-row -->

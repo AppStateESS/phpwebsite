@@ -385,7 +385,7 @@ class PHPWS_Boost {
             $configDest   = $homeDir . '/config/' . $mod->getTitle() . '/';
             if ($overwrite == TRUE || !is_dir($configDest)){
                 $content[] = _('Copying configuration files.');
-                $this->addLog($mod->getTitle(), sprintf(_('Copying directory %1\$s to %2\$s'), $configSource, $configDest));
+                $this->addLog($mod->getTitle(), sprintf(_("Copying directory %1\$s to %2\$s"), $configSource, $configDest));
                 PHPWS_File::recursiveFileCopy($configSource, $configDest);
                 chdir($homeDir);
             }
@@ -396,7 +396,7 @@ class PHPWS_Boost {
             $templateDest   = $homeDir . '/templates/' . $mod->getTitle() . '/';
             if ($overwrite == TRUE || !is_dir($templateDest)){
                 $content[] = _('Copying template files.');
-                $this->addLog($mod->getTitle(), sprintf(_('Copying directory %1\$s to %2\$s'), $templateSource, $templateDest));
+                $this->addLog($mod->getTitle(), sprintf(_("Copying directory %1\$s to %2\$s"), $templateSource, $templateDest));
                 PHPWS_File::recursiveFileCopy($templateSource, $templateDest);
                 chdir($homeDir);
             }
@@ -429,7 +429,7 @@ class PHPWS_Boost {
         $modSource = $mod->getDirectory() . 'img/';
         if (is_dir($modSource)){
             $modImage = $homeDir . '/images/mod/' . $mod->getTitle() . '/';
-            $this->addLog($mod->getTitle(), sprintf(_('Copying directory %1\$s to %2\$s'), $modSource, $modImage));
+            $this->addLog($mod->getTitle(), sprintf(_("Copying directory %1\$s to %2\$s"), $modSource, $modImage));
 
             $content[] = _('Copying source image directory for module.');
      
@@ -623,7 +623,7 @@ class PHPWS_Boost {
             $content[] = PHPWS_Error::log($result);
         } elseif ($result == TRUE){
             PHPWS_Boost::setRegistered($register_to_mod->getTitle(), $register_mod->getTitle());
-            $content[] = sprintf(_('%1\$s successfully registered to %2\$s.'), $register_mod->getProperName(TRUE), $register_to_mod->getProperName(TRUE));
+            $content[] = sprintf(_("%1\$s successfully registered to %2\$s."), $register_mod->getProperName(TRUE), $register_to_mod->getProperName(TRUE));
         }
         return TRUE;
     }
@@ -653,7 +653,7 @@ class PHPWS_Boost {
             PHPWS_Boost::addLog($register_mod->getTitle(), $result->getMessage());
         } elseif ($result == TRUE){
             PHPWS_Boost::unsetRegistered($unregister_from_mod->getTitle(), $register_mod->getTitle());
-            $content[] = sprintf(_('%1\$s successfully unregistered from %2\$s.'), $register_mod->getProperName(TRUE), $unregister_from_mod->getProperName(TRUE));
+            $content[] = sprintf(_("%1\$s successfully unregistered from %2\$s."), $register_mod->getProperName(TRUE), $unregister_from_mod->getProperName(TRUE));
         }
     }
 
@@ -744,7 +744,7 @@ class PHPWS_Boost {
     function aboutView($module){
         PHPWS_Core::initCoreClass('Module.php');
         $mod = & new PHPWS_Module($module);
-        $file = $mod->getDirectory() . 'conf/about.html';
+        $file = $mod->getDirectory() . 'boost/about.html';
 
         if (is_file($file)) {
             include $file;
