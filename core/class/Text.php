@@ -694,18 +694,14 @@ class PHPWS_Text {
      * @modified lorecarra at postino dot it
      * @modified Matt McNaney <matt at tux dot appstate dot edu>
      */
-    function xml2php($file) {
+    function xml2php($file, $level = 0) {
         $xml_parser = xml_parser_create();
-        if (!($fp = fopen($file, 'r'))) {
-            xml_parser_free($xml_parser);
-            return FALSE;
-        }
-        $contents = fread($fp, filesize($file));
-        fclose($fp);
+        $contents = file_get_contents($file);
         xml_parse_into_struct($xml_parser, $contents, $arr_vals);
         xml_parser_free($xml_parser);
-    
-        return PHPWS_Text::_orderXML($arr_vals);
+        $result = PHPWS_Text::_orderXML($arr_vals);
+
+        return getXMLLevel($result, $level);
     }
   
 
@@ -716,6 +712,9 @@ class PHPWS_Text {
      * @author Matt McNaney <matt at tux dot appstate dot edu>
      */
     function _orderXML(&$arr_vals) {
+        if (empty($arr_vals)) {
+            return NULL;
+        }
         while (@$xml_val = array_shift($arr_vals)) {
             extract($xml_val);
             if ($type == 'close') {
@@ -732,9 +731,37 @@ class PHPWS_Text {
         return $new_val;
     }
 
+    function tagXML($arr_vals)
+    {
+        if (empty($arr_vals)) {
+            return NULL;
+        }
 
-}//END CLASS CLS_text
+        foreach ($arr_vals as $tag) {
+            if (is_array($tag['value'])) {
+                $new_arr[$tag['tag']][] = PHPWS_Text::tagXML($tag['value']);
+            } else {
+                $new_arr[$tag['tag']] = $tag['value'];
+            }
+        }
+        return $new_arr;
+    }
 
+
+}//END CLASS PHPWS_Text
+
+
+function getXMLLevel($xml, $level)
+{
+    if ($level < 1) {
+        return $xml;
+    } else {
+        $sub = $xml[0]['value'];
+        $level--;
+        return getXMLLevel($sub, $level);
+    }
+
+}
 
 function getEmbedded($stuff){
     $module = $stuff[1];
