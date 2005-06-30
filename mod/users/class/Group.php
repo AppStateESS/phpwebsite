@@ -8,256 +8,279 @@
  */
 
 class PHPWS_Group {
-  var $id           = NULL;
-  var $name         = NULL;
-  var $user_id      = 0;
-  var $active       = FALSE;
-  var $_members     = NULL;
-  var $_permissions = NULL;
-  var $_groups      = NULL;
-  var $_error       = NULL;
+    var $id           = NULL;
+    var $name         = NULL;
+    var $user_id      = 0;
+    var $active       = FALSE;
+    var $_members     = NULL;
+    var $_permissions = NULL;
+    var $_groups      = NULL;
+    var $_error       = NULL;
   
-  function PHPWS_Group($id=NULL, $loadGroups=TRUE){
-    if (isset($id)){
-      $this->setId($id);
-      $result = $this->init();
-      if (PEAR::isError($result)){
-	$this->_error = $result;
-	return;
-      }
-      $this->loadMembers();
-      if ($loadGroups == TRUE)
-	$this->loadGroups();
+    function PHPWS_Group($id=NULL, $loadGroups=TRUE)
+    {
+        if (isset($id)){
+            $this->setId($id);
+            $result = $this->init();
+            if (PEAR::isError($result)){
+                $this->_error = $result;
+                return;
+            }
+            $this->loadMembers();
+            if ($loadGroups == TRUE)
+                $this->loadGroups();
+        }
     }
-  }
 
-  function init(){
-    $db = & new PHPWS_DB('users_groups');
-    return $db->loadObject($this);
-  }
-
-  function setId($id){
-    $this->id = (int)$id;
-  }
-
-  function getId(){
-    return $this->id;
-  }
-
-  function setActive($active){
-    $this->active = (bool)$active;
-  }
-
-  function isActive(){
-    return (bool)$this->active;
-  }
-
-  function loadGroups(){
-    $DB = & new PHPWS_DB('users_members');
-    $DB->addWhere('member_id', $this->getId());
-    $DB->addColumn('group_id');
-    $result = $DB->select('col');
-
-    if (PEAR::isError($result)){
-      PHPWS_Error::log($result);
-      return;
+    function init()
+    {
+        $db = & new PHPWS_DB('users_groups');
+        return $db->loadObject($this);
     }
+
+    function setId($id)
+    {
+        $this->id = (int)$id;
+    }
+
+    function getId()
+    {
+        return $this->id;
+    }
+
+    function setActive($active)
+    {
+        $this->active = (bool)$active;
+    }
+
+    function isActive()
+    {
+        return (bool)$this->active;
+    }
+
+    function loadGroups()
+    {
+        $DB = & new PHPWS_DB('users_members');
+        $DB->addWhere('member_id', $this->getId());
+        $DB->addColumn('group_id');
+        $result = $DB->select('col');
+
+        if (PEAR::isError($result)){
+            PHPWS_Error::log($result);
+            return;
+        }
     
-    $this->setGroups($result);
-  }
-
-  function setGroups($groups){
-    $this->_groups = $groups;
-  }
-
-  function getGroups(){
-    return $this->_groups;
-  }
-
-  function loadMembers(){
-    $db = & new PHPWS_DB('users_members');
-    $db->addWhere('group_id', $this->getId());
-    $db->addColumn('member_id');
-    $result = $db->select('col');
-    $this->setMembers($result);
-  }
-
-  function setName($name, $test=FALSE){
-    if ($test == TRUE){
-      if (empty($name) || preg_match('/[^\w\s]+/', $name))
-	return PHPWS_Error::get(USER_ERR_BAD_GROUP_NAME, 'users', 'setName');
-
-      if (strlen($name) < GROUPNAME_LENGTH)
-	return PHPWS_Error::get(USER_ERR_BAD_GROUP_NAME, 'users', 'setName');
-
-      $db = & new PHPWS_DB('users_groups');
-      $db->addWhere('name', $name);
-      $db->addWhere('id', $this->id, '!=');
-      $result = $db->select('one');
-      if (isset($result)){
-	if(PEAR::isError($result))
-	  return $result;
-	else
-	  return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, 'users', 'setName');
-      } else {
-	$this->name = $name;
-	return TRUE;
-      }
-    } else {
-      $this->name = $name;
-      return TRUE;
+        $this->setGroups($result);
     }
-  }
 
-  function getName(){
-    return $this->name;
-  }
-
-  function setUserId($id){
-    $this->user_id = $id;
-  }
-
-  function getUserId(){
-    return $this->user_id;
-  }
-
-  function setMembers($members){
-    $this->_members = $members;
-  }
-
-  function dropMember($member){
-    if (!is_array($this->_members))
-      return;
-
-    $key = array_search($member, $this->_members);
-    unset($this->_members[$key]);
-  }
-
-  function dropAllMembers(){
-    $db = & new PHPWS_DB('users_members');
-    $db->addWhere('group_id', $this->getId());
-    return $db->delete();
-  }
-
-  function addMember($member, $test=FALSE){
-    if ($test == TRUE){
-      $db = & new PHPWS_DB('users_groups');
-      $db->addWhere('id', $member);
-      $result = $db->select('one');
-      if (isset($result)){
-	if(PEAR::isError($result))
-	  return $result;
-	else
-	  return PHPWS_Error::get(USER_ERR_GROUP_DNE, 'users', 'addMember');
-      } else {
-	$this->_members[] = $member;
-	return TRUE;
-      }
-
-      $result = $db->select('one');
-    } else
-      $this->_members[] = $member;
-  }
-
-  function getMembers(){
-    return $this->_members;
-  }
-
-  function save(){
-    $db = & new PHPWS_DB('users_groups');
-
-    $result = $db->saveObject($this);
-    $members = $this->getMembers();
-
-    if (isset($members)){
-      $this->dropAllMembers();
-      $db = & new PHPWS_DB('users_members');
-      foreach($members as $member){
-	$db->addValue('group_id', $this->getId());
-	$db->addValue('member_id', $member);
-	$db->insert();
-	$db->resetValues();
-      }
+    function setGroups($groups)
+    {
+        $this->_groups = $groups;
     }
-  }
 
-  function kill()
-  {
-    $db = & new PHPWS_DB('users_groups');
-    $db->addWhere('id', $this->id);
-    $db->delete();
-    $this->dropAllMembers();
-  }
+    function getGroups()
+    {
+        return $this->_groups;
+    }
 
-  function allow($itemName, $permission=NULL, $item_id=NULL, $itemname=NULL){
-    PHPWS_Core::initModClass('users', 'Permission.php');
+    function loadMembers()
+    {
+        $db = & new PHPWS_DB('users_members');
+        $db->addWhere('group_id', $this->getId());
+        $db->addColumn('member_id');
+        $result = $db->select('col');
+        $this->setMembers($result);
+    }
 
-    if (!isset($this->_permission))
-      $this->loadPermissions();
+    function setName($name, $test=FALSE)
+    {
+        if ($test == TRUE){
+            if (empty($name) || preg_match('/[^\w\s]+/', $name))
+                return PHPWS_Error::get(USER_ERR_BAD_GROUP_NAME, 'users', 'setName');
 
-    return $this->_permission->allow($itemName, $permission, $item_id, $itemname);
-  }
+            if (strlen($name) < GROUPNAME_LENGTH)
+                return PHPWS_Error::get(USER_ERR_BAD_GROUP_NAME, 'users', 'setName');
 
-  function getPermissionLevel($module){
-    PHPWS_Core::initModClass('users', 'Permission.php');
+            $db = & new PHPWS_DB('users_groups');
+            $db->addWhere('name', $name);
+            $db->addWhere('id', $this->id, '!=');
+            $result = $db->select('one');
+            if (isset($result)){
+                if(PEAR::isError($result))
+                    return $result;
+                else
+                    return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, 'users', 'setName');
+            } else {
+                $this->name = $name;
+                return TRUE;
+            }
+        } else {
+            $this->name = $name;
+            return TRUE;
+        }
+    }
 
-    if (!isset($this->_permission))
-      $this->loadPermissions();
+    function getName()
+    {
+        return $this->name;
+    }
 
-    return $this->_permission->getPermissionLevel($module);
-  }
+    function setUserId($id)
+    {
+        $this->user_id = $id;
+    }
 
-  function loadPermissions($loadAll=TRUE){
-    if ($loadAll && isset($this->_groups))
-      $groups = $this->_groups;
+    function getUserId()
+    {
+        return $this->user_id;
+    }
 
-    $groups[] = $this->getId();
-    $this->_permission = & new Users_Permission($groups);
-  }
+    function setMembers($members)
+    {
+        $this->_members = $members;
+    }
 
-  function getTplTags()
-  {
-    $this->loadMembers();
-    $id = $this->id;
+    function dropMember($member)
+    {
+        if (!is_array($this->_members))
+            return;
 
-    $linkVar['action'] = "admin";
-    $linkVar['group_id'] = $id;
+        $key = array_search($member, $this->_members);
+        unset($this->_members[$key]);
+    }
 
-    $linkVar['command'] = "edit_group";
-    $links[] = PHPWS_Text::secureLink(_("Edit"), "users", $linkVar, NULL, _("Edit Group"));
+    function dropAllMembers()
+    {
+        $db = & new PHPWS_DB('users_members');
+        $db->addWhere('group_id', $this->getId());
+        return $db->delete();
+    }
 
-    $linkVar['command'] = "setGroupPermissions";
-    $links[] = PHPWS_Text::secureLink(_("Permissions"), "users", $linkVar);
+    function addMember($member, $test=FALSE)
+    {
+        if ($test == TRUE){
+            $db = & new PHPWS_DB('users_groups');
+            $db->addWhere('id', $member);
+            $result = $db->select('one');
+            if (isset($result)){
+                if(PEAR::isError($result))
+                    return $result;
+                else
+                    return PHPWS_Error::get(USER_ERR_GROUP_DNE, 'users', 'addMember');
+            } else {
+                $this->_members[] = $member;
+                return TRUE;
+            }
 
-    $linkVar['command'] = "manageMembers";
-    $links[] = PHPWS_Text::secureLink(_("Members"), "users", $linkVar);
+            $result = $db->select('one');
+        } else
+            $this->_members[] = $member;
+    }
+
+    function getMembers()
+    {
+        return $this->_members;
+    }
+
+    function save()
+    {
+        $db = & new PHPWS_DB('users_groups');
+
+        $result = $db->saveObject($this);
+        $members = $this->getMembers();
+
+        if (isset($members)){
+            $this->dropAllMembers();
+            $db = & new PHPWS_DB('users_members');
+            foreach($members as $member){
+                $db->addValue('group_id', $this->getId());
+                $db->addValue('member_id', $member);
+                $db->insert();
+                $db->resetValues();
+            }
+        }
+    }
+
+    function kill()
+    {
+        $db = & new PHPWS_DB('users_groups');
+        $db->addWhere('id', $this->id);
+        $db->delete();
+        $this->dropAllMembers();
+    }
+
+    function allow($itemName, $permission=NULL, $item_id=NULL, $itemname=NULL)
+    {
+        PHPWS_Core::initModClass('users', 'Permission.php');
+
+        if (!isset($this->_permission))
+            $this->loadPermissions();
+
+        return $this->_permission->allow($itemName, $permission, $item_id, $itemname);
+    }
+
+    function getPermissionLevel($module)
+    {
+        PHPWS_Core::initModClass('users', 'Permission.php');
+
+        if (!isset($this->_permission))
+            $this->loadPermissions();
+
+        return $this->_permission->getPermissionLevel($module);
+    }
+
+    function loadPermissions($loadAll=TRUE)
+    {
+        if ($loadAll && isset($this->_groups))
+            $groups = $this->_groups;
+
+        $groups[] = $this->getId();
+        $this->_permission = & new Users_Permission($groups);
+    }
+
+    function getTplTags()
+    {
+        $this->loadMembers();
+        $id = $this->id;
+
+        $linkVar['action'] = "admin";
+        $linkVar['group_id'] = $id;
+
+        $linkVar['command'] = "edit_group";
+        $links[] = PHPWS_Text::secureLink(_("Edit"), "users", $linkVar, NULL, _("Edit Group"));
+
+        $linkVar['command'] = "setGroupPermissions";
+        $links[] = PHPWS_Text::secureLink(_("Permissions"), "users", $linkVar);
+
+        $linkVar['command'] = "manageMembers";
+        $links[] = PHPWS_Text::secureLink(_("Members"), "users", $linkVar);
     
-    if ($this->active){
-      $linkVar['command'] = "deactivateGroup";
-      $links[] = PHPWS_Text::moduleLink(_("Deactivate"), "groups", $linkVar);
-    } else {
-      $linkVar['command'] = "activateGroup";
-      $links[] = PHPWS_Text::moduleLink(_("Activate"), "groups", $linkVar);
-    }
+        if ($this->active){
+            $linkVar['command'] = "deactivateGroup";
+            $links[] = PHPWS_Text::moduleLink(_("Deactivate"), "groups", $linkVar);
+        } else {
+            $linkVar['command'] = "activateGroup";
+            $links[] = PHPWS_Text::moduleLink(_("Activate"), "groups", $linkVar);
+        }
     
-    $linkVar['command'] = 'remove_group';
-    $removelink['ADDRESS'] = PHPWS_Text::linkAddress('users', $linkVar, TRUE);
-    $removelink['QUESTION'] = _('Are you SURE you want to remove this group?');
-    $removelink['LINK'] = _('Remove');
-    $links[] = Layout::getJavascript('confirm', $removelink);
+        $linkVar['command'] = 'remove_group';
+        $removelink['ADDRESS'] = PHPWS_Text::linkAddress('users', $linkVar, TRUE);
+        $removelink['QUESTION'] = _('Are you SURE you want to remove this group?');
+        $removelink['LINK'] = _('Remove');
+        $links[] = Layout::getJavascript('confirm', $removelink);
 
-    $template['ACTIONS'] = implode(" | ", $links);
+        $template['ACTIONS'] = implode(" | ", $links);
     
-    $members = $this->getMembers();
+        $members = $this->getMembers();
 
-    if (isset($members)) {
-      $template['MEMBERS'] = count($members);
+        if (isset($members)) {
+            $template['MEMBERS'] = count($members);
+        }
+        else {
+            $template['MEMBERS'] = 0;
+        }
+        return $template;
     }
-    else {
-      $template['MEMBERS'] = 0;
-    }
-    return $template;
-  }
 
 }
 

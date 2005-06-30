@@ -12,11 +12,13 @@ class Users_Permission {
     var $permissions = NULL;
     var $groups      = NULL;
   
-    function Users_Permission($groups=NULL){
+    function Users_Permission($groups=NULL)
+    {
         $this->groups = $groups;
     }
 
-    function allowedItem($module, $item_id, $itemname=NULL){
+    function allowedItem($module, $item_id, $itemname=NULL)
+    {
         if (!isset($itemname)) {
             $itemname = $module;
         }
@@ -47,7 +49,8 @@ class Users_Permission {
         }
     }
 
-    function allow($module, $subpermission=NULL, $item_id=NULL, $itemname=NULL){
+    function allow($module, $subpermission=NULL, $item_id=NULL, $itemname=NULL)
+    {
         // If permissions object is not set, load it
         if (!isset($this->permissions[$module])){
             $result = Users_Permission::loadPermission($module, $this->permissions);
@@ -93,7 +96,8 @@ class Users_Permission {
         }
     }
 
-    function getPermissionLevel($module){
+    function getPermissionLevel($module)
+    {
         if (!isset($this->permissions[$module])){
             $result = Users_Permission::loadPermission($module, $this->permissions);
             if (PEAR::isError($result)) {
@@ -104,7 +108,8 @@ class Users_Permission {
         return $this->permissions[$module]['permission_level'];
     }
 
-    function loadPermission($module, &$permissions){
+    function loadPermission($module, &$permissions)
+    {
         $groups = $this->groups;
 
         $permTable = Users_Permission::getPermissionTableName($module);
@@ -176,7 +181,8 @@ class Users_Permission {
         return TRUE;
     }
 
-    function removePermissions($module){
+    function removePermissions($module)
+    {
         $tableName = Users_Permission::getPermissionTableName($module);
         $itemTableName = Users_Permission::getItemPermissionTableName($module);
 
@@ -203,7 +209,8 @@ class Users_Permission {
         return TRUE;
     }
 
-    function createPermissions($module){
+    function createPermissions($module)
+    {
         $permissions = NULL;
         $file = PHPWS_Core::getConfigFile($module, 'permission.php');
 
@@ -231,7 +238,8 @@ class Users_Permission {
         return TRUE;
     }
 
-    function createPermissionTable($module, $permissions=NULL){
+    function createPermissionTable($module, $permissions=NULL)
+    {
         $tableName = Users_Permission::getPermissionTableName($module);
         $columnSetting = 'smallint NOT NULL default \'0\'';
 
@@ -252,7 +260,8 @@ class Users_Permission {
         return $DB->createTable();
     }
 
-    function createItemPermissionTable($module, $itemNames=NULL){
+    function createItemPermissionTable($module, $itemNames=NULL)
+    {
         $tableName = Users_Permission::getItemPermissionTableName($module);
 
         if (PHPWS_DB::isTable($tableName))
@@ -266,15 +275,18 @@ class Users_Permission {
         return $DB->createTable();
     }
 
-    function getPermissionTableName($module){
+    function getPermissionTableName($module)
+    {
         return implode('', array($module, '_permissions'));    
     }
 
-    function getItemPermissionTableName($module){
+    function getItemPermissionTableName($module)
+    {
         return implode('', array($module, '_item_permissions'));
     }
 
-    function setPermissions($group_id, $module, $level, $subpermissions=NULL){
+    function setPermissions($group_id, $module, $level, $subpermissions=NULL)
+    {
         $tableName = Users_Permission::getPermissionTableName($module);
         if (!PHPWS_DB::isTable($tableName))
             return;
@@ -358,7 +370,8 @@ class Users_Permission {
         return $text;
     }
 
-    function _getPartial($module){
+    function _getPartial($module)
+    {
         $itemTable = Users_Permission::getItemPermissionTableName($module);
         $permTable = Users_Permission::getPermissionTableName($module);
 
@@ -397,7 +410,8 @@ class Users_Permission {
         return $inputs;
     }
 
-    function _listAssigned($module, $groups, $item_id=NULL){
+    function _listAssigned($module, $groups, $item_id=NULL)
+    {
         $inputs = Users_Permission::getGroupList($groups);
 
         if (PEAR::isError($inputs)) {
@@ -430,7 +444,8 @@ class Users_Permission {
     }
 
 
-    function savePermissions($key){
+    function savePermissions($key)
+    {
         $table = Users_Permission::getItemPermissionTableName($key->module);
         $db = & new PHPWS_DB($table);
         $db->addWhere('item_id', $key->item_id);
@@ -450,7 +465,8 @@ class Users_Permission {
         }
     }
 
-    function clearItemPermissions($module, $group_id){
+    function clearItemPermissions($module, $group_id)
+    {
         $itemTable = Users_Permission::getItemPermissionTableName($module);
         if (PHPWS_DB::isTable($itemTable)){
             $db = & new PHPWS_DB($itemTable);

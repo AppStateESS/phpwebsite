@@ -15,7 +15,8 @@ define('APPROVE_SIGNUP', 3);
 
 class User_Form {
 
-    function logBox($logged=TRUE){
+    function logBox($logged=TRUE)
+    {
         translate('users');
 
         if (Current_User::isLogged()){
@@ -30,7 +31,8 @@ class User_Form {
     }
 
 
-    function loggedIn(){
+    function loggedIn()
+    {
         translate('users');
         PHPWS_Core::initCoreClass('Text.php');
         $template['GREETING'] = _('Hello');
@@ -49,7 +51,8 @@ class User_Form {
         return PHPWS_Template::process($template, 'users', 'usermenus/' . $usermenu);
     }
 
-    function loggedOut(){
+    function loggedOut()
+    {
         translate('users');
 
         if (isset($_REQUEST['block_username']))
@@ -80,7 +83,8 @@ class User_Form {
         return PHPWS_Template::process($template, 'users', 'usermenus/' . $usermenu);
     }
 
-    function setPermissions($id){
+    function setPermissions($id)
+    {
         $group = & new PHPWS_Group($id, FALSE);
 
         $modules = PHPWS_Core::getModules();
@@ -178,7 +182,8 @@ class User_Form {
         return $template;
     }
 
-    function manageUsers(){
+    function manageUsers()
+    {
         PHPWS_Core::initCoreClass('DBPager.php');
 
         $pageTags['USERNAME_LABEL'] = _('Username');
@@ -201,7 +206,8 @@ class User_Form {
     }
 
 
-    function manageGroups(){
+    function manageGroups()
+    {
         PHPWS_Core::initCoreClass('DBPager.php');
 
         $pageTags['GROUPNAME'] = _('Group Name');
@@ -221,7 +227,8 @@ class User_Form {
         return $pager->get();
     }
 
-    function manageMembers(&$group){
+    function manageMembers(&$group)
+    {
         $form = & new PHPWS_Form('memberList');
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'admin');
@@ -274,7 +281,8 @@ class User_Form {
     }
 
 
-    function getMemberList(&$group){
+    function getMemberList(&$group)
+    {
         PHPWS_Core::initCoreClass("Pager.php");
         $content = NULL;
 
@@ -324,7 +332,8 @@ class User_Form {
         return $content;
     }
 
-    function userForm(&$user, $message=NULL){
+    function userForm(&$user, $message=NULL)
+    {
         translate('users');
 
         $form = & new PHPWS_Form;
@@ -362,7 +371,8 @@ class User_Form {
         return PHPWS_Template::process($template, 'users', 'forms/userForm.tpl');
     }
 
-    function deify(&$user){
+    function deify(&$user)
+    {
         if (!$_SESSION['User']->isDeity() || ($user->getId() == $_SESSION['User']->getId())){
             $content[] = _('Only another deity can create a deity.');
         } else {
@@ -381,7 +391,8 @@ class User_Form {
         return implode('<br />', $content);
     }
 
-    function mortalize(&$user){
+    function mortalize(&$user)
+    {
         if (!$_SESSION['User']->isDeity()) {
             $content[] = _('Only another deity can create a mortal.');
         }
@@ -400,7 +411,8 @@ class User_Form {
         return implode('<br />', $content);
     }
 
-    function groupForm(&$group){
+    function groupForm(&$group)
+    {
         translate('users');
 
         $form = & new PHPWS_Form('groupForm');
@@ -424,7 +436,8 @@ class User_Form {
         return $content;
     }
 
-    function memberForm(){
+    function memberForm()
+    {
         $form->add('add_member', 'textfield');
         $form->add('new_member_submit', 'submit', _('Add'));
     
@@ -443,7 +456,8 @@ class User_Form {
 
     }
 
-    function memberListForm($group){
+    function memberListForm($group)
+    {
         $members = $group->getMembers();
         if (!isset($members))
             return _('None found');
@@ -476,7 +490,8 @@ class User_Form {
     }
 
 
-    function getLikeGroups($name, &$group){
+    function getLikeGroups($name, &$group)
+    {
         $db = & new PHPWS_DB('users_groups');
         $name = preg_replace('/[^\w]/', '', $name);
         $db->addWhere('name', "%$name%", 'LIKE');
@@ -526,7 +541,8 @@ class User_Form {
         return $content;
     }
 
-    function authorizationSetup(){
+    function authorizationSetup()
+    {
         $values['DROP_Q'] = _('Are you sure you want to drop this authorization script?');
 
         Layout::loadModuleJavascript('users', 'authorize.js', $values);
@@ -605,7 +621,8 @@ class User_Form {
         return $content;
     }
 
-    function settings(){
+    function settings()
+    {
         PHPWS_Core::initModClass('help', 'Help.php');
 
         $content = array();
