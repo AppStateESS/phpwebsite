@@ -95,6 +95,10 @@ class Version_Approval {
 
     function getList($restrict_approval=TRUE)
     {
+        if (!PHPWS_DB::isTable($this->version_table)) {
+            return _('No items for approval.');
+        }
+
         if (empty($this->approve_url) || empty($this->disapprove_url)) {
             return FALSE;
         }
