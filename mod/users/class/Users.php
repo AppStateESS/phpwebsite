@@ -621,8 +621,9 @@ class PHPWS_User {
     {
         if ($loadAll == TRUE){
             $groups = &$this->getGroups();
-        } else
+        } else {
             $groups[] = $this->getUserGroup();
+        }
 
         $this->_permission = & new Users_Permission($groups);
     }
@@ -651,7 +652,7 @@ class PHPWS_User {
         }
       
         PHPWS_Core::initModClass('users', 'Permission.php');
-        Users_Permission::savePermissions($key);
+        return Users_Permission::savePermissions($key);
     }
 
     function assignPermissions($module, $item_id=NULL, $format=TRUE)
