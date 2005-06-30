@@ -93,7 +93,7 @@ class Version_Approval {
         $this->alt_method = $alt_method;
     }
 
-    function getList()
+    function getList($restrict_approval=TRUE)
     {
         if (empty($this->approve_url) || empty($this->disapprove_url)) {
             return FALSE;
@@ -162,7 +162,7 @@ class Version_Approval {
                 }
             }
 
-            if (!Current_User::isRestricted($this->module)) {
+            if (!$restrict_approval || !Current_User::isRestricted($this->module)) {
                 $links[] = sprintf('<a href="%s">%s</a>',
                                    $this->approve_url . '&amp;version_id=' . $app_item['id'] .
                                    '&amp;authkey=' . Current_User::getAuthKey(),
