@@ -1,12 +1,12 @@
 <?php
 
-/**
- * Contains forms for users and demographics
- *
- * @version $Id$
- * @author  Matt McNaney <matt at tux dot appstate dot edu>
- * @package Core
- */
+  /**
+   * Contains forms for users and demographics
+   *
+   * @version $Id$
+   * @author  Matt McNaney <matt at tux dot appstate dot edu>
+   * @package Core
+   */
 PHPWS_Core::initCoreClass('Form.php');
 
 define('AUTO_SIGNUP',    1);
@@ -511,7 +511,7 @@ class User_Form {
             PHPWS_Error::log($result);
             return NULL;
         } elseif (!isset($result))
-            return NULL;
+              return NULL;
 
         $tpl = & new PHPWS_Template('users');
         $tpl->setFile('forms/likeGroups.tpl');
@@ -541,6 +541,9 @@ class User_Form {
         return $content;
     }
 
+    /**
+     *  Form for adding and choosing default authorization scripts
+     */
     function authorizationSetup()
     {
         $values['DROP_Q'] = _('Are you sure you want to drop this authorization script?');
@@ -579,14 +582,10 @@ class User_Form {
         $template = $form->getTemplate();
 
         $template['AUTH_LIST_LABEL'] = _('Authorization Scripts');
-        $template['DEFAULT_LABEL'] = _('Default');
-        $template['DISPLAY_LABEL'] = _('Display Name');
-        $template['FILENAME_LABEL'] = _('Script Filename');
-        $template['ACTION_LABEL'] = _('Action');
-
-        $tpl = new PHPWS_Template('users');
-        $tpl->setFile('forms/authorization.tpl');
-        $tpl->setData($template);
+        $template['DEFAULT_LABEL']   = _('Default');
+        $template['DISPLAY_LABEL']   = _('Display Name');
+        $template['FILENAME_LABEL']  = _('Script Filename');
+        $template['ACTION_LABEL']    = _('Action');
 
         $default_authorization = PHPWS_User::getUserSetting('default_authorization');
 
@@ -607,18 +606,15 @@ class User_Form {
             $getVars['command'] = 'editScript';
             $links[2] = PHPWS_Text::secureLink(_('Edit'), 'users', $getVars);
 
-            $row['CHECK'] = '<input type="radio" name="default_authorization" value="$id" $checked />';
+            $row['CHECK'] = sprintf('<input type="radio" name="default_authorization" value="$id" %s />', $checked);
             $row['DISPLAY_NAME'] = $display_name;
             $row['FILENAME'] = $filename;
             $row['ACTION'] = implode(' | ', $links);
       
-            $tpl->setCurrentBlock('auth-rows');
-            $tpl->setData($row);
-            $tpl->parseCurrentBlock();
+            $template['auth-rows'][] = $row;
         }
 
-        $content = $tpl->get();
-        return $content;
+        return PHPWS_Template::process($template, 'users', 'forms/authorization.tpl');
     }
 
     function settings()
