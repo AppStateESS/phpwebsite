@@ -38,7 +38,7 @@ define('SESSION_NAME', md5(SITE_HASH . $_SERVER['REMOTE_ADDR']));
 
 if (!checkUserInput($_SERVER['REQUEST_URI']) || !checkUserInput($_REQUEST)) {
     Security::log(_('Attempted cross-site scripting attack.'));
-    PHPWS_Core::errorPage(404);
+    PHPWS_Core::errorPage('400');
 }
 
 function checkUserInput($check)
