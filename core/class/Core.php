@@ -316,6 +316,10 @@ class PHPWS_Core {
             include 'config/core/400.html';
             break;
 
+        case '403':
+            include 'config/core/403.html';
+            break;
+
         case '404':
             include 'config/core/404.html';
             break;
