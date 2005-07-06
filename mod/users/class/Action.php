@@ -14,7 +14,7 @@ class User_Action {
         $message = $content = NULL;
 
         if (!Current_User::authorized('users')) {
-            PHPWS_User::disallow(_('User tried to perform an Users admin function.'));
+            PHPWS_User::disallow(_('Tried to perform an admin function in Users.'));
             return;
         }
 
@@ -289,8 +289,7 @@ class User_Action {
             break;
 
         default:
-            $title = 'Warning';
-            $content = 'Unknown command';
+            PHPWS_Core::errorPage('404');
             break;
         }
 
@@ -499,6 +498,10 @@ class User_Action {
         case 'logout':
             PHPWS_Core::killAllSessions();
             PHPWS_Core::home();
+            break;
+
+        default:
+            PHPWS_Core::errorPage('404');
             break;
         }
 

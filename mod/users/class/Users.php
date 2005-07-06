@@ -599,14 +599,11 @@ class PHPWS_User {
 
     function disallow($message=NULL)
     {
-        $template['TITLE'] = _('Sorry');
-        $template['CONTENT']  = ('You do not have permission for this action.');
-        $content = PHPWS_Template::process($template, 'users', 'disallow.tpl');
-        Layout::add($content);
-
-        if (isset($message)){
-            Security::log($message);
+        if (!isset($message)){
+            $message = _('Improper permission level for action requested.');
         }
+        Security::log($message);
+        PHPWS_Core::errorPage('403');
     }
 
 
