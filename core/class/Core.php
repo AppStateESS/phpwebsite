@@ -312,7 +312,10 @@ class PHPWS_Core {
 
     function errorPage($code=NULL) {
         switch ($code) {
-        case 404:
+        case '400':
+            include 'config/core/400.html';
+            break;
+
         case '404':
             include 'config/core/404.html';
             break;
