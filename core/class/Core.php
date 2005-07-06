@@ -310,8 +310,17 @@ class PHPWS_Core {
         $log->close();
     }
 
-    function errorPage(){
-        include 'config/core/error_page.html';
+    function errorPage($code=NULL) {
+        switch ($code) {
+        case 404:
+        case '404':
+            include 'config/core/404.html';
+            break;
+
+        default:
+            include 'config/core/error_page.html';
+            break;
+        }
         exit();
     }
 

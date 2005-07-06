@@ -1,7 +1,19 @@
 <?php
 
+/**
+ * Class containing all user information
+ *
+ * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ * @version $Id$
+ */
+
 PHPWS_Core::initModClass('users', 'Permission.php');
 PHPWS_Core::configRequireOnce('users', 'config.php');
+
+if (!defined('ALLOWED_USERNAME_CHARACTERS')) {
+    define('ALLOWED_USERNAME_CHARACTERS'. '\w');
+}
+
 
 class PHPWS_User {
     var $id            = NULL;
@@ -136,7 +148,7 @@ class PHPWS_User {
 
     function setUsername($username)
     {
-        if (empty($username) || preg_match('/\W+/', $username)) {
+        if (empty($username) || preg_match('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/', $username)) {
             return PHPWS_Error::get(USER_ERR_BAD_USERNAME, 'users',
                                     'setUsername', $username);
         }
@@ -381,7 +393,7 @@ class PHPWS_User {
 
     function verifyAuthKey()
     {
-        if (!isset($_REQUEST['authkey']) || $_REQUEST['authkey'] != $this->getAuthKey())
+        if (!isset($_REQUEST['authkey']) || $_REQUEST['authkey'] !== $this->getAuthKey())
             return FALSE;
 
         return TRUE;
@@ -389,8 +401,9 @@ class PHPWS_User {
 
     function deityAllow()
     {
-        if (!$this->verifyAuthKey() || !$this->isDeity())
+        if (!$this->verifyAuthKey() || !$this->isDeity()) {
             return FALSE;
+        }
         return TRUE;
     }
 
@@ -415,7 +428,7 @@ class PHPWS_User {
     }
 
     /**
-     * Crutch function for versions prior to 0.9.4
+     * Crutch function for versions prior to 0.x
      */
     function allow_access($itemName, $subpermission=NULL, $item_id=NULL)
     {
@@ -592,7 +605,6 @@ class PHPWS_User {
         Layout::add($content);
 
         if (isset($message)){
-            PHPWS_Core::initModClass('security', 'Security.php');
             Security::log($message);
         }
     }

@@ -353,6 +353,7 @@ class PHPWS_Module {
 
         $dep_list = PHPWS_Text::xml2php($file, 1);
         $module_list = PHPWS_Text::tagXML($dep_list);
+
         return $module_list;
     }
 }

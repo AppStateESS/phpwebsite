@@ -26,6 +26,13 @@ define('FULL_PERM_NAME', _('Unrestricted'));
 define('PART_PERM_NAME', _('Restricted'));
 define('NO_PERM_NAME', _('None'));
 
+/**
+ * reg exp characters to strip from username default is '\w'
+ * or only alphanumeric characters or an underline
+ */
+define('ALLOWED_USERNAME_CHARACTERS', '\w');
+
+
 // Enter the minimum character
 // count allowed for each
 define('PASSWORD_LENGTH', 5);

@@ -12,6 +12,7 @@ class Boost_Action {
         }
 
         $full_xml_array = PHPWS_Text::xml2php($file, 2);
+
         if (empty($full_xml_array)) {
             return _('Update check file not found.');
         }

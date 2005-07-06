@@ -8,12 +8,12 @@
  * @version $Id$
  */
 
-/*
+
 // uncomment this section and the one at the end to 
 // measure speed and memory usage
 list($usec, $sec) = explode(' ', microtime());
 $site_start_time = ((float)$usec + (float)$sec);
-*/
+
 
 // For extra security, consider changing AUTO_ROUTE to FALSE
 // after installation
@@ -37,8 +37,8 @@ error_reporting (E_ALL);
 
 ob_start();
 
-require_once PHPWS_SOURCE_DIR . 'inc/Security.php';
 require_once PHPWS_SOURCE_DIR . 'core/class/Init.php';
+require_once PHPWS_SOURCE_DIR . 'inc/Security.php';
 
 PHPWS_Core::checkSecurity();
 PHPWS_Core::initializeModules();
@@ -61,7 +61,7 @@ if (isset($_REQUEST['reset'])) {
     PHPWS_Core::killAllSessions();
 }
 
-/*
+
 list($usec, $sec) = explode(' ', microtime());
 $site_end_time = ((float)$usec + (float)$sec);
 
@@ -70,5 +70,5 @@ $execute_time = round( ($site_end_time - $site_start_time), 3);
 $url = (explode('/', $_SERVER['PHP_SELF']));
 
 echo "$memory_used mb / $execute_time secs";
-*/
+
 ?>

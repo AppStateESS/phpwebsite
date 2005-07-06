@@ -828,6 +828,7 @@ class PHPWS_Form {
 	    $this->_elements[$name][] = $elements;
     }
 
+
     /**
      * Returns all the elements of a form in a template array
      *
@@ -850,17 +851,20 @@ class PHPWS_Form {
     {
 	translate('core');
 
-	if (count($this->_elements) < 1)
+	if (count($this->_elements) < 1) {
 	    return PHPWS_Error::get(PHPWS_FORM_NO_ELEMENTS, 'core', 'PHPWS_Form::getTemplate');
+        }
 
-	if (!is_null($template) && !is_array($template))
+	if (!is_null($template) && !is_array($template)) {
 	    return PHPWS_Error::get(PHPWS_FORM_NO_TEMPLATE, 'core', 'PHPWS_Form::getTemplate');
+        }
 
-
-	if ($helperTags)
+	if ($helperTags) {
 	    $template['START_FORM'] = $this->getStart();
+        }
 
-	if (Current_User::isLogged() && $this->use_auth_key) {
+	if (class_exists('Current_User') &&
+            Current_User::isLogged() && $this->use_auth_key) {
 	    $this->addHidden('authkey', Current_User::getAuthKey());
 	}
 
@@ -883,15 +887,17 @@ class PHPWS_Form {
 
 		$tagName = $subElement->getTag();
 
-		if ($multiple)
+		if ($multiple) {
 		    $tagName .= "_$count";
-
-		$template[$tagName] = $subElement->get();
+                }
 
 		$label = $subElement->getLabel(TRUE);
 
-		if (isset($label))
+		if (isset($label)) {
 		    $template[$tagName . '_LABEL'] = $label;
+                }
+
+		$template[$tagName] = $subElement->get();
 
 		$count++;
 	    }
@@ -901,14 +907,16 @@ class PHPWS_Form {
 	    $template['END_FORM'] = "</form>\n";
 	}
 
-	if (isset($this->_template))
+	if (isset($this->_template)) {
 	    $template = array_merge($this->_template, $template);
+        }
 
 
-	if ($phpws == TRUE)
+	if ($phpws == TRUE) {
 	    return $template;
-	else
+        } else {
 	    return implode("\n", $template);
+        }
     }
 
     

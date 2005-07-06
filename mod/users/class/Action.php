@@ -7,14 +7,13 @@
  * @package Core
  */
 
-
 class User_Action {
 
     function adminAction(){
         PHPWS_Core::initModClass('users', 'Group.php');
         $message = $content = NULL;
 
-        if (!Current_User::authorized('users')){
+        if (!Current_User::authorized('users')) {
             PHPWS_User::disallow(_('User tried to perform an Users admin function.'));
             return;
         }
@@ -449,10 +448,10 @@ class User_Action {
 
         switch ($command){
         case 'loginBox':
-            if (!Current_User::isLogged()){
-                if (!User_Action::loginUser($_POST['block_username'], $_POST['block_password']))
+            if (!Current_User::isLogged()) {
+                if (!User_Action::loginUser($_POST['block_username'], $_POST['block_password'])) {
                     User_Action::badLogin();
-                else {
+                } else {
                     Current_User::getLogin();
                     PHPWS_Core::goBack();
                 }
@@ -575,12 +574,13 @@ class User_Action {
 
 
     function loginUser($username, $password){
+        $username = preg_replace('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/', '', $username);
         $createUser = FALSE;
         // First check if they are currently a user in local system
         $user = & new PHPWS_User;
 
         $db = & new PHPWS_DB('users');
-        $db->addWhere('username', strtolower(preg_replace('/\W/', '', $username)));
+        $db->addWhere('username', strtolower($username));
         $result = $db->loadObject($user);
 
         if (PEAR::isError($result)){

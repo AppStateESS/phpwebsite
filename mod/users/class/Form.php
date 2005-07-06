@@ -138,8 +138,7 @@ class User_Form {
 
         if (isset($item_permissions) && $item_permissions == TRUE) {
             $permSet[RESTRICTED_PERMISSION] = PART_PERM_NAME;
-        }
-        else {
+        } else {
             unset($permSet[RESTRICTED_PERMISSION]);
         }
 
@@ -376,7 +375,6 @@ class User_Form {
         if (!$_SESSION['User']->isDeity() || ($user->getId() == $_SESSION['User']->getId())){
             $content[] = _('Only another deity can create a deity.');
         } else {
-            // CHANGE TO SECURELINK!!
             $content[] = _('Are you certain you want this user to have complete control of this web site?');
 
             $values['user']      = $user->getId();
