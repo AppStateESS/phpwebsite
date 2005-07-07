@@ -5,6 +5,47 @@ body {
 	font-family : Arial, Helvetica, sans-serif;
 }
 
+a:link, a:visited {
+	text-decoration: underline;
+}
+
+a:hover, a:active {
+	text-decoration: none;
+}
+
+h1, h2, h3 {
+	font-family: "Trebuchet MS", Verdana, serif;	
+	margin: 0;
+	padding : 0;
+	border : 0;
+	font-weight : bold;
+	
+}
+
+h1 {
+	font-size :  115%;
+}
+
+h2 {
+	font-size :  110%;
+}
+
+h3 {
+	font-size :  105%;
+}
+
+
+
+th {
+	font-weight : bold;
+	font-family : "Trebuchet MS", Verdana, serif;
+	text-align : left;
+}
+
+tr, td {
+	vertical-align : top;
+}
+
 q {
    display : block;
    width : 75%;
@@ -16,10 +57,38 @@ p {
   margin : 2px;
 }
 
+img {
+    border-style : none;
+}
+
+form {
+     margin : 0;
+     padding : 0;
+}
+
 blockquote {
    border-top : 1px solid #fff;
    border-bottom : 1px solid #fff;
 }
+
+input {
+	font-size : 9pt;
+}
+
+table.border {
+     border-collapse : collapse;
+     border-width : 1px;
+     border-style : solid;
+     border-color : black;
+}
+
+table.border  th {
+     border-collapse : collapse;
+     border-width : 1px;
+     border-style : solid;
+     border-color : black;
+}
+
 
 .b {
    font-weight : bold;
@@ -45,14 +114,6 @@ blockquote {
 	margin : 5px;
 }
 
-img {
-    border-style : none;
-}
-
-form {
-     margin : 0;
-     padding : 0;
-}
 
 .align-left {
      text-align : left;
@@ -70,6 +131,32 @@ form {
      border-top-width : 1px;
      border-top-style : solid;
 }
+
+.spoiler {
+	 background-color : black;
+	 color : black;
+}
+
+.error {
+       color : #cf2626;
+       font-weight : bold;
+}
+
+
+table.form-table {
+        margin : 4px;
+}
+
+table.form-table td {
+	padding : 4px;
+}
+
+table.form-table .label {
+	margin-right : 20px;
+}
+
+
+/* --------- Layout and positioning ------------ */
 
 #gutter {
 	float : left;
@@ -121,46 +208,7 @@ form {
 }
 
 
-a:link, a:visited {
-	text-decoration: underline;
-}
-
-a:hover, a:active {
-	text-decoration: none;
-}
-
-h1, h2, h3 {
-	font-family: "Trebuchet MS", Verdana, serif;	
-	margin: 0;
-	padding : 0;
-	border : 0;
-	font-weight : bold;
-	
-}
-
-h1 {
-	font-size :  115%;
-}
-
-h2 {
-	font-size :  110%;
-}
-
-h3 {
-	font-size :  105%;
-}
-
-
-
-th {
-	font-weight : bold;
-	font-family : "Trebuchet MS", Verdana, serif;
-	text-align : left;
-}
-
-tr, td {
-	vertical-align : top;
-}
+/* ---------------- Box definitions -------------- */
 
 .box {
 	margin-bottom : 10px;
@@ -175,36 +223,7 @@ tr, td {
 	padding : 8px;
 }
 
-
-input {
-	font-size : 9pt;
-}
-
-table.border {
-     border-collapse : collapse;
-     border-width : 1px;
-     border-style : solid;
-     border-color : black;
-}
-
-table.border  th {
-     border-collapse : collapse;
-     border-width : 1px;
-     border-style : solid;
-     border-color : black;
-}
-
-table.form-table {
-        width : 100%;
-}
-
-table.form-table td {
-	padding : 5px;
-}
-
-table.form-table .label {
-	margin-right : 20px;
-}
+/*--------------- Module settings -----------------*/
 
 #user-menu {
 	padding : 2px 4px 2px 0;
@@ -212,21 +231,20 @@ table.form-table .label {
 	margin-bottom : 5px;
 }
 
-.spoiler {
-	 background-color : black;
-	 color : black;
-}
-
-.error {
-       color : #cf2626;
-       font-weight : bold;
-}
 
 div.menu-link {
 padding : 5px 0 0 0;
 }
 
+div.move-box select {
+font-size : 9pt;
+}
 
 div.menu-link div.menu-link {
 padding-left : 8px;
+}
+
+div.block-embedded {
+width : 150px;
+margin : 4px;                   
 }

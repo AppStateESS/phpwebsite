@@ -56,6 +56,11 @@ div.box a:hover, div.box a:active {
 	color: #42443A;
 }
 
+.box {
+        background-color : #CBCEAC;
+}
+
+
 .box-title {
 	background-color : #DEE2BD;
 }
@@ -106,7 +111,6 @@ color : black;
 }
 
 div.blog div.box {
-background-color : #CBCEAC;
 border : 2px white solid;
 }
 
