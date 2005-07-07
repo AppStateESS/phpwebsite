@@ -44,7 +44,7 @@ if (!checkUserInput($_SERVER['REQUEST_URI']) || !checkUserInput($_REQUEST)) {
 function checkUserInput($check)
 {
     $scripting = '/(%3C|<|&lt;|&#60;)\s*(script|\?)/iU';
-    $ascii_chars = '/%([0-2]\d|3[0-1]|\d\D)/';
+    $ascii_chars = '/%(0|1)(\d|[a-f])/i';
 
     if (is_array($check)) {
         foreach ($check as $check_val) {
