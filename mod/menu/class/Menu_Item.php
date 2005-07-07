@@ -214,6 +214,9 @@ class Menu_Item {
 
         if (Menu::isAdminMode() && Current_User::allow('menu') ) {
             $tpl['ADD_LINK'] = Menu::getAddLink($this->id);
+            $vars['command'] = 'disable_admin_mode';
+            $vars['return'] = 1;
+            $tpl['OFF_LINK'] = PHPWS_Text::moduleLink(MENU_ADMIN_OFF, 'menu', $vars);
         }
 
         $tpl['TITLE'] = $this->title;

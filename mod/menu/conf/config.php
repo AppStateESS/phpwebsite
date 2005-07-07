@@ -14,5 +14,7 @@ define('MENU_LINK_DOWN', sprintf('<img src="./images/mod/menu/gtk-go-down.png" t
 
 define('MENU_LINK_ADMIN', sprintf('<img src="./images/mod/menu/foo.png" title="%s"/>', _('Admin')));
 
+define('MENU_ADMIN_OFF', _('Admin Mode Off'));
+
 translate();
 ?>

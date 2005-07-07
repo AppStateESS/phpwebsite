@@ -40,15 +40,15 @@ class Menu_Admin {
             $content = Menu_Admin::editMenu($menu);
             break;
 
-
         case 'enable_admin_mode':
         case 'disable_admin_mode':
-            if (Current_User::authorized('menu')) {
-                if ($command == 'enable_admin_mode') {
-                    $_SESSION['Menu_Admin_Mode'] = TRUE;
-                } else {
-                    unset($_SESSION['Menu_Admin_Mode']);
-                }
+            if ($command == 'enable_admin_mode') {
+                $_SESSION['Menu_Admin_Mode'] = TRUE;
+            } else {
+                unset($_SESSION['Menu_Admin_Mode']);
+            }
+            if (isset($_REQUEST['return'])) {
+                PHPWS_Core::goBack();
             }
         case 'settings':
             $title = _('Menu Settings');
