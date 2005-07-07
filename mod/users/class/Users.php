@@ -294,11 +294,13 @@ class PHPWS_User {
     {
         $this->email = $email;
 
-        if (!PHPWS_Text::isValidInput($email, 'email'))
+        if (!PHPWS_Text::isValidInput($email, 'email')) {
             return PHPWS_Error::get(USER_ERR_BAD_EMAIL, 'users', 'setEmail');
+        }
 
-        if ($this->isDuplicateEmail())
+        if ($this->isDuplicateEmail()) {
             return PHPWS_Error::get(USER_ERR_DUP_EMAIL, 'users', 'setEmail');
+        }
 
         return TRUE;
     }

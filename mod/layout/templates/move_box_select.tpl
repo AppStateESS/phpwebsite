@@ -1,3 +1,3 @@
 {START_FORM}
-<div class="move-box">{up}&nbsp;{BOX_DEST}{MOVE}{down}</div>
+<div class="move-box">{BOX_DEST}{MOVE}</div>
 {END_FORM}
