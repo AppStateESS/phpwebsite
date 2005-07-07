@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Controls the content "boxes" for sections of content
+ * in Layout.
+ *
+ * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ * @version $Id$
+ */
+
+
 class Layout_Box {
     var $id          = NULL;
     var $theme       = NULL; 
@@ -105,8 +114,9 @@ class Layout_Box {
         $db->setIndexBy('box_order');
         $boxes = $db->getObjects('Layout_Box');
 
-        if (!isset($boxes))
+        if (!isset($boxes)) {
             return;
+        }
 
         $db->addColumn('box_order', NULL, 'min');
         $max = $db->select('one');
@@ -176,8 +186,8 @@ class Layout_Box {
         $DB = new PHPWS_DB('layout_box');
         $DB->addWhere('theme', $this->getTheme());
         $DB->addWhere('theme_var', $this->getThemeVar());
-        $DB->addColumn('box_order');
-        $max = $DB->select('max');
+        $DB->addColumn('box_order', NULL, 'max');
+        $max = $DB->select('one');
         if (isset($max)) {
             return $max + 1;
         } else {
