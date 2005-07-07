@@ -3,7 +3,7 @@
 <!-- BEGIN options -->
 <div style="float : right">{OPT}</div>
 <!-- END options -->
-	<h3>{TITLE}</h3>
-	<div class="padded">{CONTENT}</div>
+	<h3 class="box-title">{TITLE}</h3>
+	<div class="box-content">{CONTENT}</div>
 </div>
 </div>
