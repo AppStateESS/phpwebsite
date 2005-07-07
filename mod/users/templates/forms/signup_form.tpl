@@ -1,7 +1,7 @@
 {START_FORM}
 <table class="form-table">
   <tr>
-    <td>{USERNAME_LABEL}
+    <td class="label">{USERNAME_LABEL}
     </td>
     <td>{USERNAME}
     <!-- BEGIN username-error -->
