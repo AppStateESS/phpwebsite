@@ -318,7 +318,7 @@ class PHPWS_Text {
             break;
 
         case 'url':
-            if (preg_match("/^(http(s){0,1}:\/\/)[_a-z0-9-]+(\.[_a-z0-9-]+|\/)/i", $userEntry)) return TRUE;
+            if (preg_match("/^(http(s){0,1}:\/\/)[\w-]+(\.[\w-]+|\/)/i", $userEntry)) return TRUE;
             else return FALSE;
             break;
 
@@ -779,9 +779,11 @@ function getEmbedded($stuff){
     require_once $filename;
 
     $funcName = $values[0];
+
     if (!function_exists($funcName)) {
         return NULL;
     }
+
     unset($values[0]);
     return $funcName($values);
 }
