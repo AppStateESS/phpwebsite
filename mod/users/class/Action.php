@@ -3,17 +3,18 @@
  * Controls results from forms and administration functions
  *
  * @version $Id$
- * @author  Matt McNaney <matt at tux dot appstate dot edu>
+ * @author  Matt McNaney <mcnaney at gmail dot com>
  * @package Core
  */
 
 class User_Action {
 
-    function adminAction(){
+    function adminAction()
+    {
         PHPWS_Core::initModClass('users', 'Group.php');
         $message = $content = NULL;
 
-        if (!Current_User::authorized('users')) {
+        if (!Current_User::allow('users')) {
             PHPWS_User::disallow(_('Tried to perform an admin function in Users.'));
             return;
         }
@@ -70,19 +71,15 @@ class User_Action {
             break;
 
         case 'authorization':
-            $title = _('Authorization');
-            $content = User_Form::authorizationSetup();
-            break;
-
-        case 'dropAuthScript':
-            if (isset($_REQUEST['script_id']))
-                User_Action::dropAuthorization($_REQUEST['script_id']);
-            $content = User_Form::authorizationSetup();
-            break;
-
         case 'postAuthorization':
-            User_Action::postAuthorization();
-            $message = _('Authorization updated.');
+        case 'dropAuthScript':
+            if ($command == 'dropAuthScript' && isset($_REQUEST['script_id'])) {
+                User_Action::dropAuthorization($_REQUEST['script_id']);
+            } elseif ($command == 'postAuthorization') {
+                User_Action::postAuthorization();
+                $message = _('Authorization updated.');
+            }
+            $title = _('Authorization');
             $content = User_Form::authorizationSetup();
             break;
 
@@ -305,7 +302,8 @@ class User_Action {
 
     }
 
-    function postMembers(){
+    function postMembers()
+    {
         //    test($_REQUEST);
     }
 
@@ -374,7 +372,8 @@ class User_Action {
 
     }
 
-    function postUser(&$user, $set_username=TRUE){
+    function postUser(&$user, $set_username=TRUE)
+    {
         if ($set_username){
             $result = $user->setUsername($_POST['username']);
             if (PEAR::isError($result)) {
@@ -412,7 +411,8 @@ class User_Action {
             return TRUE;
     }
 
-    function &cpanel(){
+    function &cpanel()
+    {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=users&amp;action=admin';
 
@@ -439,7 +439,8 @@ class User_Action {
     }
 
 
-    function userAction(){
+    function userAction()
+    {
         if (isset($_REQUEST['command']))
             $command = $_REQUEST['command'];
         else
@@ -560,7 +561,8 @@ class User_Action {
         }
     }
 
-    function postPermission(){
+    function postPermission()
+    {
         PHPWS_Core::initModClass('users', 'Permission.php');
 
         extract($_POST);
@@ -576,7 +578,8 @@ class User_Action {
     }
 
 
-    function loginUser($username, $password){
+    function loginUser($username, $password)
+    {
         $username = preg_replace('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/', '', $username);
         $createUser = FALSE;
         // First check if they are currently a user in local system
@@ -636,7 +639,8 @@ class User_Action {
     }
 
 
-    function postGroup(&$group, $showLikeGroups=FALSE){
+    function postGroup(&$group, $showLikeGroups=FALSE)
+    {
         $result = $group->setName($_POST['groupname'], TRUE);
         if (PEAR::isError($result))
             return $result;
@@ -644,7 +648,8 @@ class User_Action {
         return TRUE;
     }
 
-    function authorize($authorize, $username, $password){
+    function authorize($authorize, $username, $password)
+    {
         $db = & new PHPWS_DB('users_auth_scripts');
         $db->setIndexBy('id');
         $result = $db->select();
@@ -675,11 +680,13 @@ class User_Action {
     }
 
 
-    function badLogin(){
+    function badLogin()
+    {
         Layout::add(_('Username and password refused.'), 'users', 'User_Main');
     }
 
-    function getGroups($mode=NULL){
+    function getGroups($mode=NULL)
+    {
         PHPWS_Core::initModClass('users', 'Group.php');
 
         $db = & new PHPWS_DB('users_groups');
@@ -695,7 +702,8 @@ class User_Action {
         return $db->select('col');
     }
 
-    function update_settings(){
+    function update_settings()
+    {
         if (!Current_User::authorized('users', 'settings')) {
             Current_User::disallow();
             return;
@@ -716,7 +724,8 @@ class User_Action {
         return $db->update();
     }
 
-    function getAuthorizationList(){
+    function getAuthorizationList()
+    {
         $db = & new PHPWS_DB('users_auth_scripts');
         $db->addOrder('display_name');
         $result = $db->select();
@@ -729,7 +738,8 @@ class User_Action {
         return $result;
     }
 
-    function postAuthorization(){
+    function postAuthorization()
+    {
         if (isset($_POST['add_script'])){
             if (!isset($_POST['file_list'])) {
                 return FALSE;
@@ -759,13 +769,17 @@ class User_Action {
             $db = & new PHPWS_DB('users_config');
             $db->addValue('default_authorization', (int)$_POST['default_authorization']);
             $result = $db->update();
-            if (PEAR::isError($result))
+
+            if (PEAR::isError($result)) {
                 return $result;
+            }
+            PHPWS_User::resetUserSettings();
         }
         return TRUE;
     }
 
-    function dropAuthorization($script_id){
+    function dropAuthorization($script_id)
+    {
         $db = & new PHPWS_DB('users_auth_scripts');
         $db->addWhere('id', (int)$script_id);
         return $db->delete();

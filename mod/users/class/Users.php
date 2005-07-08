@@ -3,7 +3,7 @@
 /**
  * Class containing all user information
  *
- * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
 
@@ -615,6 +615,11 @@ class PHPWS_User {
         return $DB->select('row');
     }
 
+    function resetUserSettings()
+    {
+        unset($GLOBALS['User_Settings']);
+    }
+
     function getUserSetting($setting, $refresh=FALSE)
     {
         if (!isset($GLOBALS['User_Settings']) || $refresh == TRUE){
@@ -622,8 +627,9 @@ class PHPWS_User {
             $GLOBALS['User_Settings'] = PHPWS_User::getSettings();
         }
 
-        if (PEAR::isError($GLOBALS['User_Settings']))
+        if (PEAR::isError($GLOBALS['User_Settings'])) {
             return $GLOBALS['User_Settings'];
+        }
 
         return $GLOBALS['User_Settings'][$setting];
     }

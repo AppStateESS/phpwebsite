@@ -595,17 +595,18 @@ class User_Form {
             else
                 $checked = NULL;
 
-            $getVars['module'] = 'users';
-            $getVars['action'] = 'admin';
+            $getVars['module']  = 'users';
+            $getVars['action']  = 'admin';
             $getVars['command'] = 'dropScript';
 
-            if ($filename != 'local.php' && $filename != 'global.php')
-                $links[1] = '<a href="javascript:void(0)" onclick="drop($id)">Drop</a>';
+            if ($filename != 'local.php' && $filename != 'global.php') {
+                $links[1] = sprintf('<a href="javascript:void(0)" onclick="drop(%s)">Drop</a>', $id);
+            }
 
             $getVars['command'] = 'editScript';
             $links[2] = PHPWS_Text::secureLink(_('Edit'), 'users', $getVars);
 
-            $row['CHECK'] = sprintf('<input type="radio" name="default_authorization" value="$id" %s />', $checked);
+            $row['CHECK'] = sprintf('<input type="radio" name="default_authorization" value="%s" %s />', $id, $checked);
             $row['DISPLAY_NAME'] = $display_name;
             $row['FILENAME'] = $filename;
             $row['ACTION'] = implode(' | ', $links);
