@@ -12,7 +12,7 @@ CREATE TABLE controlpanel_link (
  active SMALLINT NOT NULL,
  label CHAR(50) NULL,	
  itemname CHAR(50) NOT NULL,
- restricted SMALLINT NOT NULL,
+ restricted SMALLINT NOT NULL default 0,
  url TEXT,
  description TEXT,
  image CHAR(255),

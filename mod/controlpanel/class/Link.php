@@ -1,19 +1,26 @@
 <?php
+/**
+ * Class to control the link icons in the Control Panel
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 class PHPWS_Panel_Link {
-    var $id;
-    var $label;
-    var $active;
-    var $module;
-    var $itemname;
-    var $restricted;
-    var $tab;
-    var $url;
-    var $description;
-    var $image;
-    var $link_order;
+    var $id          = 0;
+    var $label       = NULL;
+    var $active      = 1;
+    var $module      = NULL;
+    var $itemname    = NULL;
+    var $restricted  = 0;
+    var $tab         = NULL;
+    var $url         = NULL;
+    var $description = NULL;
+    var $image       = NULL;
+    var $link_order  = 1;
 
-    function PHPWS_Panel_Link($id=NULL){
+    function PHPWS_Panel_Link($id=NULL)
+    {
         if (!isset($id))
             return;
 
@@ -22,91 +29,124 @@ class PHPWS_Panel_Link {
             PHPWS_Error::log($result);
     }
 
-    function init($id){
+    function init($id)
+    {
         $db = & new PHPWS_DB('controlpanel_link');
         $result = $db->loadObject($this);
-        if (PEAR::isError($result))
+        if (PEAR::isError($result)) {
             return $result;
+        }
     }
 
-    function setId($id){
+    function setId($id)
+    {
         $this->id = (int)$id;
     }
 
-    function getId(){
+    function getId()
+    {
         return $this->id;
     }
 
-    function setTab($tab){
+    function setTab($tab)
+    {
         $this->tab = $tab;
     }
 
-    function getTab(){
+    function getTab()
+    {
         return $this->tab;
     }
 
-    function setActive($active){
+    function setActive($active)
+    {
         $this->active = (bool)$active;
     }
 
-    function getActive(){
+    function getActive()
+    {
         return $this->active;
     }
 
-    function setLabel($label){
+    function setLabel($label)
+    {
         $this->label = $label;
     }
 
-    function getLabel(){
+    function getLabel()
+    {
         return $this->label;
     }
 
 
-    function getDescription(){
+    function getDescription()
+    {
         return $this->description;
     }
 
-    function setDescription($description){
+    function setDescription($description)
+    {
         $this->description = $description;
     }
 
 
-    function setImage($image){
+    function setImage($image)
+    {
         $this->image = $image;
     }
 
-    function getImage($tag=FALSE, $linkable=FALSE){
-        if ($tag == FALSE)
+    function getImage($tag=FALSE, $linkable=FALSE)
+    {
+        if ($tag == FALSE) {
             return $this->image;
+        }
+
+        if ($this->restricted) {
+            $authkey = '&amp;authkey=' . Current_User::getAuthKey();
+        } else {
+            $authkey = NULL;
+        }
 
         $image = sprintf('<img src="%s" border="0" alt="%s"/>', $this->image, $this->getLabel());
 
         if ($linkable == TRUE) {
-            $image = sprintf('<a href="%s&amp;authkey=%s">%s</a>', $this->url, Current_User::getAuthKey(), $image);
+            $image = sprintf('<a href="%s%s">%s</a>', $this->url, $authkey, $image);
         }
 
         return $image;
     }
 
-    function setUrl($url){
+    function setUrl($url)
+    {
         $this->url = $url;
     }
   
-    function getUrl($tag=FALSE){
+    function getUrl($tag=FALSE)
+    {
+        if ($this->restricted) {
+            $authkey = '&amp;authkey=' . Current_User::getAuthKey();
+        } else {
+            $authkey = NULL;
+        }
+
+
         if ($tag) {
-            return sprintf('<a href="%s&amp;authkey=%s">%s</a>', $this->url, Current_User::getAuthKey(), $this->getLabel());
+            return sprintf('<a href="%s%s">%s</a>', $this->url, $authkey, $this->getLabel());
         }
         else
             return $this->url;
     }
 
-    function setLinkOrder($order){
+    function setLinkOrder($order)
+    {
         $this->link_order = (int)$order;
     }
 
-    function getLinkOrder(){
-        if (isset($this->link_order))
+    function getLinkOrder()
+    {
+        if (isset($this->link_order)) {
             return $this->link_order;
+        }
 
         $DB = @ new PHPWS_DB('controlpanel_link');
         $DB->addWhere('tab', $this->getTab());
@@ -123,31 +163,38 @@ class PHPWS_Panel_Link {
     }
 
 
-    function setModule($module){
+    function setModule($module)
+    {
         $this->module = $module;
     }
 
-    function getModule(){
+    function getModule()
+    {
         return $this->module;
     }
 
-    function setItemName($itemname){
+    function setItemName($itemname)
+    {
         $this->itemname = $itemname;
     }
 
-    function getItemName(){
+    function getItemName()
+    {
         return $this->itemname;
     }
 
-    function isRestricted(){
+    function isRestricted()
+    {
         return (bool)$this->restricted;
     }
 
-    function setRestricted($restrict){
+    function setRestricted($restrict)
+    {
         $this->restricted = $restrict;
     }
 
-    function save(){
+    function save()
+    {
         $db = & new PHPWS_DB('controlpanel_link');
         $this->link_order = $this->getLinkOrder();
 
@@ -155,7 +202,8 @@ class PHPWS_Panel_Link {
         return $result;
     }
 
-    function view(){
+    function view()
+    {
         $tpl['IMAGE']       = $this->getImage(TRUE, TRUE);
         $tpl['NAME']        = $this->getUrl(TRUE);
         $tpl['DESCRIPTION'] = $this->getDescription();
@@ -167,7 +215,8 @@ class PHPWS_Panel_Link {
      * Moves the tab 'up' the order, which is actually a lower
      * order number
      */ 
-    function moveUp(){
+    function moveUp()
+    {
         $db = & new PHPWS_DB('controlpanel_link');
         $db->setIndexBy('link_order');
         $db->addOrder('link_order');
@@ -192,7 +241,8 @@ class PHPWS_Panel_Link {
         }
     }
 
-    function moveDown(){
+    function moveDown()
+    {
         $db = & new PHPWS_DB('controlpanel_link');
         $db->setIndexBy('link_order');
         $db->addOrder('link_order');
@@ -219,7 +269,8 @@ class PHPWS_Panel_Link {
 
   
 
-    function kill(){
+    function kill()
+    {
         $db = & new PHPWS_DB('controlpanel_link');
         $db->addWhere('id', $this->getId());
         $result = $db->delete();
