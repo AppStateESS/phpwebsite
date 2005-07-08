@@ -26,7 +26,9 @@ class Menu {
             PHPWS_Error::log($result);
             return;
         }
-
+        if (empty($result)) {
+            return NULL;
+        }
         $GLOBALS['Pinned_Menus'] = $result;
 
         foreach ($result as $menu) {
