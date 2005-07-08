@@ -12,7 +12,7 @@ class PHPWS_Panel_Link {
     var $active      = 1;
     var $module      = NULL;
     var $itemname    = NULL;
-    var $restricted  = 0;
+    var $restricted  = TRUE;
     var $tab         = NULL;
     var $url         = NULL;
     var $description = NULL;
