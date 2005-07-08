@@ -3,7 +3,7 @@
  * Class contains module information
  *
  * @version $Id$
- * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 class PHPWS_Module {
     var $title         = NULL;
@@ -278,9 +278,9 @@ class PHPWS_Module {
         $db->addWhere('title', $this->getTitle());
         $db->delete();
         $db->resetWhere();
-        if (!$this->getProperName())
+        if (!$this->getProperName()) {
             $this->setProperName($this->getProperName(TRUE));
-
+        }
         return $db->saveObject($this);
     }
 
