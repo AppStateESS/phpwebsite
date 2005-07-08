@@ -22,6 +22,10 @@ function version_unregister($module, &$content)
     }
 
     foreach ($uninstall_sql as $sql) {
+        if (!stristr($sql, 'drop')) {
+            continue;
+        }
+
         $table_name = PHPWS_DB::extractTableName($sql);
 
         if (empty($table_name)) {
