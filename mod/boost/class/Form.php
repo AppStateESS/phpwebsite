@@ -79,8 +79,13 @@ class Boost_Form {
                 }
 
                 if ($mod->needsUpdate()){
-                    $link_title = _('Update');
-                    $link_command['action'] = 'update';
+                    if ($mod->checkDependency()) {
+                        $link_title = _('Update');
+                        $link_command['action'] = 'update';
+                    } else {
+                        $link_title = _('Missing dependency');
+                        $link_command['action'] = 'show_dependency';
+                    }
                 } else {
                     $version_check = $mod->getVersionHttp();
           
