@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<dependency>
+  <module>
+    <title>boost</title>
+    <properName>Boost</properName>
+    <version>1.6.1</version>
+    <url>http://phpwebsite.appstate.edu/module_info/boost.html</url>
+  </module>
+</dependency>
