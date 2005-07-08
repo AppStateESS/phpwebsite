@@ -701,6 +701,11 @@ class Layout {
             . '" />';
     }
 
+    function getPageTitle()
+    {
+        return $_SESSION['Layout_Settings']->getPageTitle();
+    }
+
     function addPageTitle($title)
     {
         $GLOBALS['Layout_Page_Title_Add'][] = $title;
