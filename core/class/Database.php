@@ -246,6 +246,7 @@ class PHPWS_DB {
             PHPWS_DB::touchDB();
             $tables = PHPWS_DB::listTables();
         }
+
         return in_array(PHPWS_DB::getPrefix() . $tableName, $tables);
     }
 
@@ -1302,15 +1303,19 @@ class PHPWS_DB {
 
     function extractTableName($sql_value){
         $temp = explode(' ', trim($sql_value));
-
-        if (!is_array($temp))
+        
+        if (!is_array($temp)) {
             return NULL;
-
+        }
         foreach ($temp as $whatever){
             if (empty($whatever)) {
                 continue;
             }
             $format[] = $whatever;
+        }
+
+        if (empty($format)) {
+            return NULL;
         }
 
         switch (trim(strtolower($format[0]))) {
