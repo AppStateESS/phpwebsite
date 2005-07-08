@@ -636,7 +636,7 @@ class Layout {
 
     function styleLink($link, $header=FALSE)
     {
-        // NEED TO CHCEK if using xml-stylesheet
+        // NEED TO CHECK if using xml-stylesheet
         extract($link);
 
         if (!empty($title))
