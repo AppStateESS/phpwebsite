@@ -118,51 +118,69 @@ border : 2px white solid;
 }
 
 /*--------------- Control Panel ---------------*/
-
 .frame {
-background-color: #CBCEAC;
-border-color : #90996E; 
+         background-color: #CBCEAC;
+         border : 2px solid #90996E;
+         margin-top : -2px;
 }
 
 .backgrd {
-border-left-color: #90996E;
-border-top-color: #90996E;
-background-color : #ebedd1;
+         border-left: 2px solid #90996E;
+         border-top: 2px solid #90996E;
+         height: 100%;
+}
+
+.backgrd:after {
+         display: block;
+         content: "";
+         height: 0;
+         clear: both;
 }
 
 .tabmenu li {
-border-color: #90996E;
+         border-top: 2px solid #90996E;
+         border-left: 2px solid #90996E;
+         border-right: 2px solid #90996E;
+         margin-right: 2px;
 }
 
 .tabmenu li.inactive {
-background-color : #DEDFBA;
-color : #49493D;
+         background-color : #DEDFBA;
+         color : #49493D;
 }
 
 .tabmenu li.active {
-background-color : #CBCEAC;
-color : #49493D;
+         background-color : #CBCEAC;
+         color : #49493D;
 }
 
 .tabmenu li.active a:visited {
-color: #49493D;
+         text-decoration: none;
+         color: #49493D;
 }
 
 .tabmenu li.inactive a:link {
-color: #49493D;
+         text-decoration: none;
+         color: #49493D;
 }
 
 .tabmenu li.inactive a:visited {
-color: #49493D;
+         text-decoration: none;
+         color: #49493D;
 }
 
 .tabmenu li.inactive a:hover {
-color: black;
+         text-decoration: none;
+         color: black;
 }
 
 .tabmenu li.inactive:hover {
-background-color : #CBCEAC;
-color: black;
+   background-color : #CBCEAC;
+   color: black;
+}
+
+div.link {
+   font-size : .9em;
 }
 
 
@@ -171,7 +189,6 @@ border-top : white 2px solid;
 margin : 0;
 padding : 0;
 }
-
 
 div.menu-link a {
 font-weight : bold;
