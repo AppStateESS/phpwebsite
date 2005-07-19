@@ -24,6 +24,8 @@ to give more permissions to themselves than they currently have.
 Have a mechanism for other modules to perform processes when a user is
 deleted.
 
+Authorization assigns the external method to locally created users. Fix.
+
 
 Notes
 ------------
