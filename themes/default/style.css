@@ -151,7 +151,8 @@ table.form-table td {
 	padding : 4px;
 }
 
-table.form-table .label {
+table.form-table td.label {
+        font-weight : bold;
 	margin-right : 20px;
 }
 
