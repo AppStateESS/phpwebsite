@@ -30,6 +30,7 @@
 
 define('FORM_ID_IDENTIFIER', 'f');
 PHPWS_Core::configRequireOnce('core', 'formConfig.php', TRUE);
+PHPWS_Core::initCoreClass('Editor.php');
 
 class PHPWS_Form {
     var $id = NULL;
