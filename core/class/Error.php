@@ -2,93 +2,96 @@
 
 class PHPWS_Error {
 
-  /**
-   * This is a crutch function for 0.x compatibility
-   */
-  function PHPWS_Error($module, $funcName, $message)
-  {
-    $error = $module . ' - ' . $funcName . ' - ' . $message;
-    return PEAR::raiseError($message, 1, NULL, NULL, $error);
-  }
-
-
-  function isError($item){
-    return PEAR::isError($item);
-  }
-
-  function &get($value, $module, $funcName=NULL, $extraInfo=NULL){
-    $errorFile = PHPWS_Core::getConfigFile($module, 'error.php');
-    if (empty($module)) {
-      return PHPWS_Error::get(PHPWS_NO_MODULE, 'core', 'PHPWS_Error::get', 'Value: ' . $value . ', Function: ' . $funcName);
+    /**
+     * This is a crutch function for 0.x compatibility
+     */
+    function PHPWS_Error($module, $funcName, $message)
+    {
+        $error = $module . ' - ' . $funcName . ' - ' . $message;
+        return PEAR::raiseError($message, 1, NULL, NULL, $error);
     }
 
-    if (!($errorFile)) {
-      return PHPWS_Error::get(PHPWS_NO_ERROR_FILE, 'core', 'PHPWS_Error::get', 'Module: ' . $module);
+
+    function isError($item){
+        return PEAR::isError($item);
     }
 
-    include $errorFile;
-    if (!isset($errors))
-      return FALSE;
+    function &get($value, $module, $funcName=NULL, $extraInfo=NULL){
+        $errorFile = PHPWS_Core::getConfigFile($module, 'error.php');
+        if (empty($module)) {
+            return PHPWS_Error::get(PHPWS_NO_MODULE, 'core', 'PHPWS_Error::get', 'Value: ' . $value . ', Function: ' . $funcName);
+        }
 
-    if (PEAR::isError($value))
-      $value = $value->getCode();
+        if (!($errorFile)) {
+            return PHPWS_Error::get(PHPWS_NO_ERROR_FILE, 'core', 'PHPWS_Error::get', 'Module: ' . $module);
+        }
 
-    if ($module != 'core')
-      $fullError[] = $module;
-    else
-      $fullError[] = 'Core';
+        include $errorFile;
+        if (!isset($errors))
+            return FALSE;
 
-    if (isset($funcName))
-      $fullError[] = " - $funcName()";
+        if (PEAR::isError($value))
+            $value = $value->getCode();
 
-    if (isset($errors[$value]))
-      $message = $errors[$value];
-    else
-      $message = $errors[PHPWS_UNKNOWN];
+        if ($module != 'core') {
+            $fullError[] = $module;
+        } else {
+            $fullError[] = 'Core';
+        }
 
-    $fullError[] = ' - ' . $message;
+        if (isset($funcName)) {
+            $fullError[] = " - $funcName()";
+        }
 
-    if (isset($extraInfo)){
-      if (is_array($extraInfo))
-	$message = vsprintf($message, $extraInfo);
-      else
-	$fullError[] = ' [' . $extraInfo . ']';
+        if (isset($errors[$value])) {
+            $message = $errors[$value];
+        } else {
+            $message = _('Unknown error code.');
+        }
+
+        $fullError[] = ' - ' . $message;
+
+        if (isset($extraInfo)){
+            if (is_array($extraInfo))
+                $message = vsprintf($message, $extraInfo);
+            else
+                $fullError[] = ' [' . $extraInfo . ']';
+        }
+
+        $error = &PEAR::raiseError($message, $value, NULL, NULL, implode('', $fullError));
+
+        return $error;
     }
 
-    $error = &PEAR::raiseError($message, $value, NULL, NULL, implode('', $fullError));
+    function log($value, $module=NULL, $funcName=NULL, $extraInfo=NULL){
+        if ((bool)PHPWS_LOG_ERRORS == FALSE) {
+            return;
+        }
 
-    return $error;
-  }
+        if (!PEAR::isError($value)) {
+            $error = &PHPWS_Error::get($value, $module, $funcName, $extraInfo);
+        }
+        else {
+            $error = &$value;
+        }
 
-  function log($value, $module=NULL, $funcName=NULL, $extraInfo=NULL){
-      if ((bool)PHPWS_LOG_ERRORS == FALSE) {
-          return;
-      }
+        $final = PHPWS_Error::printError($error);
 
-    if (!PEAR::isError($value)) {
-      $error = &PHPWS_Error::get($value, $module, $funcName, $extraInfo);
+        PHPWS_Core::log($final, 'error.log', _('Error'));
     }
-    else {
-      $error = &$value;
-    }
-
-    $final = PHPWS_Error::printError($error);
-
-    PHPWS_Core::log($final, 'error.log', _('Error'));
-  }
 
 
-  function printError($error){
-    $code  = $error->getcode();
-    $message = $error->getuserinfo();
+    function printError($error){
+        $code  = $error->getcode();
+        $message = $error->getuserinfo();
     
-    if (!isset($message))
-      $message = $error->getmessage();
+        if (!isset($message))
+            $message = $error->getmessage();
     
-    $final = '[' . $code . "] $message"; 
+        $final = '[' . $code . "] $message"; 
 
-    return $final;
-  }
+        return $final;
+    }
 
 }
 
