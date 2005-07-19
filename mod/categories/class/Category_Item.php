@@ -140,6 +140,10 @@ class Category_Item {
       $this->clearVersion();
     }
 
+    if (empty($categories)) {
+        return FALSE;
+    }
+
     foreach ($categories as $cat_id){
       $this->cat_id = $cat_id;
       $result = $this->_save($save_uncategorized);
