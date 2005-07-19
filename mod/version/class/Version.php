@@ -115,10 +115,17 @@ class Version {
 
     function getSource($include_id=TRUE){
         $data = $this->source_data;
-        if ($include_id) {
-            $data['id'] = $this->source_id;
+        foreach ($data as $key => $value) {
+            if (substr($key, 0, 1) == '_') {
+                continue;
+            }
+            $source[$key] = $value;
         }
-        return $data;
+        if ($include_id) {
+            $source['id'] = $this->source_id;
+        }
+
+        return $source;
     }
 
     function setSource($source_data){
@@ -236,8 +243,7 @@ class Version {
             $result = $version_db->insert();
             if (PEAR::isError($result)) {
                 $this->_error = $result;
-                PHPWS_Error::log($result);
-                return FALSE;
+                return $result;
             }
             $this->id = $result;
         }
