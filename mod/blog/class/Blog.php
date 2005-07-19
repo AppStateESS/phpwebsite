@@ -238,6 +238,10 @@ class Blog {
             return FALSE;
         }
 
+        if (!isset($_POST['blog_id']) && PHPWS_Core::isPosted()) {
+            return TRUE;
+        }
+
         if (empty($_POST['title'])) {
             return array(_('Missing title.'));
         } else {
@@ -252,7 +256,7 @@ class Blog {
             $this->restricted = 0;
         }
 
-        if (isset($_REQUEST['version_id'])) {
+        if (isset($_POST['version_id'])) {
             $version = & new Version('blog_entries', $_REQUEST['version_id']);
         }
         else {
