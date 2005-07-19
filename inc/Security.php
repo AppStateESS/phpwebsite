@@ -11,9 +11,17 @@
  */
 if (get_magic_quotes_gpc())
 {
-    $_GET    = array_map('stripslashes_deep', $_GET);
-    $_POST  = array_map('stripslashes_deep', $_POST);
-    $_COOKIE = array_map('stripslashes_deep', $_COOKIE);
+    if (!empty($_REQUEST)) {
+        $_REQUEST  = array_map('stripslashes_deep', $_REQUEST);
+        if (!empty($_GET)) {
+            $_GET      = array_map('stripslashes_deep', $_GET);
+        }
+        
+        if (!empty($_POST)) {
+            $_POST     = array_map('stripslashes_deep', $_POST);
+        }
+    }
+    $_COOKIE   = array_map('stripslashes_deep', $_COOKIE);
 }
 
 
