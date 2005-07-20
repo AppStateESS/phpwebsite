@@ -2,6 +2,7 @@
 // Form line removed because this is not the place for it
 // Removing 'FontFormat','FontName','FontSize' 'TextColor','BGColor',
 // and 'Style' as they interfere with the cursor keys.
+// Removed 'Image' as well, may put it back later
 
 
 FCKConfig.ToolbarSets["phpws"] = [
@@ -14,7 +15,7 @@ FCKConfig.ToolbarSets["phpws"] = [
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
 	'/',
 	['Table', 'Link','Unlink','Anchor'],
-	['Image','Table','Rule','Smiley','SpecialChar', '-', 'Source']
+	['Rule','Smiley','SpecialChar', '-', 'Source']
 ] ;
 
 FCKConfig.LinkBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Connector=connectors/php/connector.php' ;
