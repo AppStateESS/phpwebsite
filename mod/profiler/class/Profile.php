@@ -11,6 +11,7 @@ define('PFL_STUDENT', 1);
 define('PFL_FACULTY', 2);
 define('PFL_STAFF',   3);
 
+PHPWS_Core::configRequireOnce('profiler', 'config.php');
 
 // Error defines
 define('PFL_PROFILE_NOT_FOUND', 1);
@@ -39,7 +40,6 @@ class Profile {
         $this->setId($id);
         $result = $this->init();
         if (PEAR::isError($result)) {
-            test($result);
             $this->_error = $result;
             return FALSE;
         }
@@ -51,7 +51,7 @@ class Profile {
         if (isset($this->_db)) {
             $this->_db->reset();
         } else {
-            $this->_db = & new PHPWS_DB('menus');
+            $this->_db = & new PHPWS_DB('profiles');
         }
     }
 
@@ -94,6 +94,16 @@ class Profile {
         $this->fullstory = PHPWS_Text::parseInput($fullstory);
     }
 
+    function setProfileType($profile_type)
+    {
+        $this->profile_type = (int)$profile_type;
+    }
+
+    function setSubmitDate()
+    {
+        $this->submit_date = mktime();
+    }
+
     function getFullstory($formatted=TRUE)
     {
         if ($formatted) {
@@ -103,10 +113,30 @@ class Profile {
         }
     }
 
+    function getProfileType()
+    {
+        switch ($this->profile_type) {
+        case PFL_STUDENT:
+            return _('Student');
+            break;
+        case PFL_FACULTY:
+            return _('Faculty');
+            break;
+        case PFL_STAFF:
+            return _('Staff');
+            break;
+
+        default:
+            return _('Profile not set.');
+            break;
+        }
+    }
+
     function init()
     {
         $this->resetdb();
         $result = $this->_db->loadObject($this);
+
         if (PEAR::isError($result)) {
             return $result;
         } elseif (empty($result)) {
@@ -118,6 +148,7 @@ class Profile {
 
     function postProfile()
     {
+        
         PHPWS_Core::initModClass('version', 'Version.php');
 
         if (!Current_User::authorized('profiler')) {
@@ -140,9 +171,13 @@ class Profile {
         }
 
         $this->setLastName($_POST['lastname']);
-
         $this->setCaption($_POST['caption']);
         $this->setFullStory($_POST['fullstory']);
+        $this->setProfileType($_POST['profile_type']);
+        if (empty($this->submitted_date)) {
+            $this->setSubmitDate();
+        }
+
 
         if (empty($this->contributor)) {
             $this->contributor = Current_User::getUsername();
@@ -150,8 +185,7 @@ class Profile {
 
         if (isset($_REQUEST['version_id'])) {
             $version = & new Version('profiles', $_REQUEST['version_id']);
-        }
-        else {
+        } else {
             $version = & new Version('profiles');
         }
 
@@ -179,7 +213,28 @@ class Profile {
         return TRUE;
     }
 
+    function getProfileTags()
+    {
+        $tpl['PROFILE_TYPE'] = $this->getProfileType();
 
+        $vars['profile_id'] = $this->id;
+        $vars['command'] = 'edit';
+        $links[] = PHPWS_Text::secureLink(_('Edit'), 'profiler', $vars);
+
+        $tpl['SUBMIT_DATE'] = strftime(PRF_SUBMIT_DATE_FORMAT, $this->submit_date);
+
+        if (Current_User::allow('profiler', 'delete_profiles')){
+            $vars['command'] = 'delete';
+            $confirm_vars['QUESTION'] = _('Are you sure you want to permanently delete this profile?');
+            $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('profiler', $vars, TRUE);
+            $confirm_vars['LINK'] = _('Delete');
+            $links[] = Layout::getJavascript('confirm', $confirm_vars);
+        }
+
+        $tpl['ACTION'] = implode(' | ', $links);
+        return $tpl;
+    }
+    
 }
 
 

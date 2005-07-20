@@ -54,6 +54,29 @@ class Profile_Forms {
 
     }
 
+    function profileList()
+    {
+        PHPWS_Core::initCoreClass('DBPager.php');
+
+        $pageTags['LASTNAME']     = _('Last Name');
+        $pageTags['FIRSTNAME']    = _('First Name');
+        $pageTags['PROFILE_TYPE'] = _('Type');
+        $pageTags['SUBMIT_DATE']  = _('Submission Date');
+        $pageTags['ACTION']       = _('Action');
+
+        $pager = & new DBPager('profiles', 'Profile');
+        $pager->setModule('profiler');
+        $pager->setTemplate('forms/list.tpl');
+        $pager->setLink('index.php?module=profiler');
+        $pager->addToggle('class="toggle1"');
+        $pager->addToggle('class="toggle2"');
+        $pager->addRowTags('getProfileTags');
+        $pager->addPageTags($pageTags);
+        $pager->setSearch('lastname', 'firstname');
+        $content = $pager->get();
+        return $content;
+    }
+
 }
 
 

@@ -43,8 +43,15 @@ class Profiler {
             $content = Profile_Forms::edit($profile);
             break;
 
+        case 'list':
+            $title = _('Current Profiles');
+            $content = Profile_Forms::profileList();
+            break;
+
         case 'post_profile':
-            $profile = & new Profile;
+            if (!isset($profile)) {
+                $profile = & new Profile;
+            }
             $result = $profile->postProfile();
             if (is_array($result)) {
                 if ($profile->id) {
