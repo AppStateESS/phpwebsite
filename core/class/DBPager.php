@@ -45,7 +45,7 @@ class DBPager {
      */  
     var $_methods = NULL;
 
-    var $_classVars = NULL;
+    var $_class_vars = NULL;
 
     var $page_tags = NULL;
 
@@ -126,9 +126,16 @@ class DBPager {
         if (class_exists($class)) {
             $this->class = $class;
             $this->_methods = get_class_methods($class);
-            $this->_classVars = array_keys(get_class_vars($class));
-        }
 
+            // Remove hidden variables from class variable list
+            $class_var_list = array_keys(get_class_vars($class));
+            foreach ($class_var_list as $key => $varname) {
+                if (substr($varname, 0, 1) == '_') {
+                    unset($class_var_list[$key]);
+                }
+            }
+            $this->_class_vars = $class_var_list;
+        }
 
         if (isset($_REQUEST['page']))
             $this->current_page = (int)$_REQUEST['page'];
@@ -405,11 +412,12 @@ class DBPager {
     }
 
     function getSortButtons(&$template){
-        foreach ($this->_classVars as $varname){
+        foreach ($this->_class_vars as $varname){
+            $vars = array();
             $values = $this->getLinkValues();
             $buttonname = $varname . '_SORT';
 
-            $values['orderby'] = 'orderby=$varname';
+            $values['orderby'] = $varname;
 
             if ($this->orderby == $varname){
                 if ($this->orderby_dir == 'desc'){
@@ -425,10 +433,14 @@ class DBPager {
 
             } else {
                 $button = '<img src="images/core/list/sort_none.png" border="0" />';
-                $values['orderby_dir'] = 'orderby_dir=asc';
+                $values['orderby_dir'] = 'asc';
             }
 
-            $link = '<a href="' . $this->link . '&amp;' . implode('&amp;', $values) . '">' . $button . '</a>';
+            foreach ($values as $key=>$value) {
+                $vars[] = "$key=$value";
+            }
+
+            $link = '<a href="' . $this->link . '&amp;' . implode('&amp;', $vars) . '">' . $button . '</a>';
 
             $template[strtoupper($buttonname)] = $link;
         }
@@ -507,7 +519,7 @@ class DBPager {
             }
 
             if (isset($this->class)) {
-                foreach ($this->_classVars as $varname) {
+                foreach ($this->_class_vars as $varname) {
                     $template[$count][strtoupper($varname)] = $disp_row->{$varname};
                 }
                 if (!empty($this->row_tags)) {
@@ -651,8 +663,9 @@ class DBPager {
                     $rowitem['TOGGLE'] = $this->toggles[$count];
                     $count++;
           
-                    if ($count >= $max_tog)
+                    if ($count >= $max_tog) {
                         $count = 0;
+                    }
                 } else {
                     $rowitem['TOGGLE'] = NULL;
                 }
@@ -666,7 +679,8 @@ class DBPager {
         }
 
         DBPager::plugPageTags($template);
-        $this->final_template = $template;
+        $this->final_template = &$template;
+        //        test($template);
         return PHPWS_Template::process($template, $this->module, $this->template);
     }
 
