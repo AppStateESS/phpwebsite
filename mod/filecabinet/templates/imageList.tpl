@@ -16,6 +16,7 @@
   </tr>
 <!-- END listrows -->
 </table>
+{EMPTY_MESSAGE}
 <div style="text-align : center">
 {TOTAL_ROWS}<br />
 {PAGE_LABEL} {PAGES}<br />
