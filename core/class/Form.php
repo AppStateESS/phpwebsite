@@ -1321,14 +1321,20 @@ class Form_Select extends Form_Element {
 	    . $this->getId(TRUE)
 	    . $this->getClass(TRUE)
 	    . $this->getData() . '>';
+
 	if (empty($this->value)) {
 	    return NULL;
 	}
+
 	foreach($this->value as $value=>$label){
-	    if ($this->isMatch($value))
+            if (!is_string($value)) {
+                continue;
+            }
+	    if ($this->isMatch($value)) {
 		$content[] = sprintf('<option value="%s" selected="selected">%s</option>', $value, $label);
-	    else
+            } else {
 		$content[] = sprintf('<option value="%s">%s</option>', $value, $label);
+            }
 	}
 	$content[] = '</select>';
 
