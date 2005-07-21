@@ -78,7 +78,7 @@ $errors[PHPWS_FILE_DELETE_DENIED]     = _('Unable to delete file.');
 $errors[PHPWS_DIR_DELETE_DENIED]      = _('Unable to delete directory.');
 $errors[PHPWS_DIR_NOT_WRITABLE]       = _('Directory is not writable.');
 $errors[PHPWS_FILE_CANT_READ]         = _('Cannot read file.');
-$errors[PHPWS_FILE_NO_FILES]          = _('_FILES array not present.');
+$errors[PHPWS_FILE_NO_FILES]          = _('Variable name not found in_FILES array.');
 $errors[PHPWS_FILE_DIR_NONWRITE]      = _('Unable to save file in selected directory.');
 $errors[PHPWS_FILE_NO_TMP]            = _('Upload directory not set in file object.');
 
