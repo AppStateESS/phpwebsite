@@ -1024,8 +1024,9 @@ class PHPWS_Form {
 
 	$selectList = PHPWS_Form::_imageSelectArray($module, $current);
 
-	if (PEAR::isError($selectList))
+	if (PEAR::isError($selectList)) {
 	    return $selectList;
+        }
 
 	$this->addFile($name . '_file');
 	$this->addText($name . '_title');
@@ -1327,7 +1328,8 @@ class Form_Select extends Form_Element {
 	}
 
 	foreach($this->value as $value=>$label){
-            if (!is_string($value)) {
+
+            if (!is_string($value) && !is_numeric($value)) {
                 continue;
             }
 	    if ($this->isMatch($value)) {
