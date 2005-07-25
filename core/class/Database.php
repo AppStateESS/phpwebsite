@@ -129,14 +129,16 @@ class PHPWS_DB {
     }
 
     function getColumnInfo($col_name, $parsed=FALSE){
-        if (!isset($this->_columnInfo))
+        if (!isset($this->_columnInfo)) {
             $this->getTableColumns();
+        }
 
         if (isset($this->_columnInfo[$col_name])) {
-            if ($parsed == TRUE)
+            if ($parsed == TRUE) {
                 return $this->parsePearCol($this->_columnInfo[$col_name], TRUE);
-            else
+            } else {
                 return $this->_columnInfo[$col_name];
+            }
         }
         else
             return NULL;
@@ -628,11 +630,11 @@ class PHPWS_DB {
     function addOrder($order){
         if (is_array($order)){
             foreach ($order as $value){
-                $this->order[] = preg_replace('/[^\w\s]/', '', $value);
+                $this->order[] = preg_replace('/[^\w\s.]/', '', $value);
             }
+        } else {
+            $this->order[] = preg_replace('/[^\w\s.]/', '', $order);
         }
-        else
-            $this->order[] = preg_replace('/[^\w\s]/', '', $order);
     }
 
     function getOrder($dbReady=FALSE){
@@ -964,8 +966,9 @@ class PHPWS_DB {
             if (PEAR::isError($result))
                 return $result;
 
-            if (isset($indexby))
+            if (isset($indexby)) {
                 return PHPWS_DB::_indexBy($result, $indexby);
+            }
 
             return $result;
             break;
@@ -990,6 +993,12 @@ class PHPWS_DB {
         return $db->select('all', $sql);
     }
 
+    function getOne($sql)
+    {
+        $db = & new PHPWS_DB;
+        return $db->select('one', $sql);
+    }
+
     function getAssoc($sql)
     {
         $db = & new PHPWS_DB;
@@ -997,19 +1006,35 @@ class PHPWS_DB {
     }
 
     function _indexBy($sql, $indexby, $colMode=FALSE){
-        if (!is_array($sql))
+        $rows = array();
+
+        if (!is_array($sql)) {
             return $sql;
+        }
         $stacked = FALSE;
 
         foreach ($sql as $item){
-            if (!isset($item[(string)$indexby]))
+            if (!isset($item[(string)$indexby])) {
                 return $sql;
+            }
 
-            if ($colMode){
+            if ($colMode) {
                 $col = $this->getColumn();
-                PHPWS_DB::_expandIndex($rows, $item[$indexby], $item[$col[0]], $stacked);
-            } else
+
+                $value = $item[$indexby];
+                unset($item[$indexby]);
+                foreach ($col as $key=>$col_test) {
+                    if ($col_test['name'] == $indexby) {
+                        unset($col[$key]);
+                        break;
+                    }
+                }
+
+                $column = array_pop($col);
+                PHPWS_DB::_expandIndex($rows, $value, $item[$column['name']], $stacked);
+            } else {
                 PHPWS_DB::_expandIndex($rows, $item[$indexby], $item, $stacked);
+            }
         }
 
         return $rows;
