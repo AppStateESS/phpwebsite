@@ -371,15 +371,22 @@ class Layout {
         return PHPWS_Text::parseOutput($_SESSION['Layout_Settings']->header);
     }
 
-    function getJavascript($directory, $data=NULL)
+    function getJavascript($directory, $data=NULL, $base=NULL)
     {
-        if (isset($data) && !is_array($data))
+        if (isset($data) && !is_array($data)) {
             return PHPWS_Error::get();
+        }
+
+        if (!empty($base)) {
+            if (!preg_match('/\/$/', $base)) {
+                $base .= '/';
+            }
+        }
 
         PHPWS_CORE::initCoreClass('File.php');
-        $headfile    = './javascript/' . $directory . '/head.js';
-        $bodyfile    = './javascript/' . $directory . '/body.js';
-        $defaultfile = './javascript/' . $directory . '/default.php';
+        $headfile    = $base . 'javascript/' . $directory . '/head.js';
+        $bodyfile    = $base . 'javascript/' . $directory . '/body.js';
+        $defaultfile = $base . 'javascript/' . $directory . '/default.php';
 
         if (is_file($defaultfile)) {
             require $defaultfile;       
@@ -485,8 +492,9 @@ class Layout {
 
     function getOnLoad()
     {
-        if (!isset($GLOBALS['Layout_Onload']))
+        if (!isset($GLOBALS['Layout_Onload'])) {
             return NULL;
+        }
 
         return 'onload="' . implode(' ', $GLOBALS['Layout_Onload']) . '"';
     }
@@ -521,30 +529,35 @@ class Layout {
 
     function loadJavascriptFile($filename, $index, $data=NULL)
     {
-        if (!is_file($filename))
+        if (!is_file($filename)) {
             return FALSE;
+        }
     
-        if (isset($data)){
+        if (isset($data)) {
             $tpl = new PHPWS_Template;
             $tpl->setFile($filename, TRUE);
             $tpl->setData($data);
             $result = $tpl->get();
-            if (!empty($result))
+            if (!empty($result)) {
                 Layout::addJSHeader($result, $index);
-            else
+            } else {
                 Layout::addJSHeader(file_get_contents($filename), $index);
-        } else
+            }
+        } else {
             Layout::addJSHeader(file_get_contents($filename), $index);
+        }
     }
 
-    function loadModuleJavascript($module, $filename, $data=NULL)
+    function getModuleJavascript($module, $script_name, $data=NULL)
     {
-        $directory = PHPWS_SOURCE_DIR . "mod/$module/javascript/$filename";
+        $base = PHPWS_SOURCE_DIR . "mod/$module";
+        $dir_check = "/javascript/$script_name";
 
-        if (!is_file($directory))
+        if (!is_dir($base . $dir_check)) {
             return FALSE;
+        }
       
-        return Layout::loadJavascriptFile($directory, $module, $data);
+        return Layout::getJavascript($script_name,$data, $base);
     }
 
 
@@ -773,8 +786,9 @@ class Layout {
         $menu['up'] = _('Move Up');
         $menu['down'] = _('Move Down');
         foreach ($themeVars as $var){
-            if ($box->theme_var == $var)
+            if ($box->theme_var == $var) {
                 continue;
+            }
             $menu[$var] = _('Move to') . ' ' . $var;
         }
 
