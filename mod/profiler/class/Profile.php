@@ -148,7 +148,7 @@ class Profile {
 
     function postProfile()
     {
-        
+        PHPWS_Core::initCoreClass('Image.php');
         PHPWS_Core::initModClass('version', 'Version.php');
 
         if (!Current_User::authorized('profiler')) {
@@ -174,10 +174,54 @@ class Profile {
         $this->setCaption($_POST['caption']);
         $this->setFullStory($_POST['fullstory']);
         $this->setProfileType($_POST['profile_type']);
+
+
+        // Save full photo
+        $full_photo = & new PHPWS_Image;
+        $full_photo->setModule('profiler');
+        $result = $full_photo->importPost('full_photo', TRUE);
+
+        if ($result) {
+            if (is_array($result)) {
+                foreach ($result as $img_error) {
+                    $error[] = sprintf(_('Photo image error - %s'), $img_error->getMessage());
+                }
+            } else {
+                $result = $full_photo->save();
+                if (PEAR::isError($result)) {
+                    PHPWS_Error::log($result);
+                    $error[] = _('There was a problem saving photo.');
+                } else {
+                    $this->full_photo = $full_photo->getId();
+                }
+            }
+        }
+
+        // Save thumbnail
+        $thumbnail = & new PHPWS_Image;
+        $thumbnail->setModule('profiler');
+        $result = $thumbnail->importPost('thumbnail', TRUE);
+
+        if ($result) {
+            if (is_array($result)) {
+                foreach ($result as $img_error) {
+                    $error[] = sprintf(_('Thumbnail image error - %s'), $img_error->getMessage());
+                }
+            } else {
+                $result = $thumbnail->save();
+                if (PEAR::isError($result)) {
+                    PHPWS_Error::log($result);
+                    $error[] = _('There was a problem saving the thumbnail.');
+                } else {
+                    $this->thumbnail = $thumbnail->getId();
+                }
+            }
+        }
+
+
         if (empty($this->submitted_date)) {
             $this->setSubmitDate();
         }
-
 
         if (empty($this->contributor)) {
             $this->contributor = Current_User::getUsername();

@@ -24,6 +24,22 @@
     <td class="label">{KEYWORDS_LABEL}</td>
     <td>{KEYWORDS}</td>
   </tr>
+<!-- 
+  <tr>
+    <td class="label">{FULL_PHOTO_FILE_LABEL}{HELP}</td>
+    <td>{FULL_PHOTO_FILE}{FULL_PHOTO_SELECT}</td>
+  </tr>
+  <tr>
+    <td class="label">{THUMBNAIL_FILE_LABEL}</td>
+    <td>{THUMBNAIL_FILE}</td>
+  </tr>
+-->
+  <tr>
+    <td class="label">{FULL_PHOTO_FILE_LABEL}</td>
+    <td>{FULL_PHOTO}</td>
+  </tr>
 </table>
+
 {SUBMIT}
 {END_FORM}
+{TEST}

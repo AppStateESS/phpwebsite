@@ -6,6 +6,11 @@
  * @version $Id$
  */
 
+define('MAX_PHOTO_WIDTH', 640);
+define('MAX_PHOTO_HEIGHT', 480);
+define('PR_TN_WIDTH', 100);
+define('PR_TN_HEIGHT', 200);
+
 class Profile_Forms {
 
     function &default_form()
@@ -18,6 +23,8 @@ class Profile_Forms {
 
     function edit($profile)
     {
+        PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
+
         $profile_types = array(PFL_STUDENT => 'Student',
                                PFL_FACULTY => 'Faculty',
                                PFL_STAFF   => 'Staff');
@@ -36,10 +43,16 @@ class Profile_Forms {
 
         $form->addTextArea('caption', $profile->getCaption());
         $form->setLabel('caption', _('Caption'));
-        
+
         $form->addSelect('profile_type', $profile_types);
         $form->setMatch('profile_type', $profile->profile_type);
         $form->setLabel('profile_type', _('Profile type'));
+
+        $form->addImage('full_photo', 'profiler');
+        $form->setLabel('full_photo_file', _('Photo'));
+
+        $form->addImage('thumbnail', 'profiler');
+        $form->setLabel('thumbnail_file', _('Thumbnail'));
 
         if ($profile->id) {
             $form->addHidden('profile_id', $profile->id);
@@ -48,8 +61,24 @@ class Profile_Forms {
             $form->addSubmit('submit', _('Create profile'));
         }
 
-        $template = $form->getTemplate();
+        $image_id = NULL;
 
+        $template = $form->getTemplate();
+        $manager = & new FC_Image_Manager;
+        $manager->setModule('profiler');
+        // using default module directory
+        //        $manager->setDirectory();
+        $manager->setImageId($image_id);
+        $manager->setItemName('full_photo');
+        $manager->setMaxWidth(MAX_PHOTO_WIDTH);
+        $manager->setMaxHeight(MAX_PHOTO_HEIGHT);
+        $manager->setTNWidth(PR_TN_WIDTH);
+        $manager->setTNHeight(PR_TN_HEIGHT);
+
+        
+        $template['FULL_PHOTO'] = $manager->get();
+
+        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         return PHPWS_Template::process($template, 'profiler', 'forms/edit.tpl');
 
     }
@@ -78,6 +107,5 @@ class Profile_Forms {
     }
 
 }
-
 
 ?>

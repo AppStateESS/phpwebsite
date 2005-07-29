@@ -99,7 +99,6 @@ class Profiler {
         return $panel;
     }
 
-
 }
 
 ?>
