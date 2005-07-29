@@ -49,6 +49,11 @@ class File_Common {
         return $this->id;
     }
 
+    function getErrors()
+    {
+        return $this->_errors;
+    }
+
     function setDirectory($directory)
     {
         if (!preg_match('/\/$/', $directory)) {
@@ -64,7 +69,7 @@ class File_Common {
 
     function setFilename($filename)
     {
-        $this->filename = $filename;
+        $this->filename = preg_replace('/\s/', '_', $filename);
     }
 
     function getFilename()
@@ -185,14 +190,16 @@ class File_Common {
 
     function getFILES($varName)
     {
+
         if (!$this->fileIsSet($varName)) {
-            return PHPWS_Error::get(PHPWS_FILE_NO_FILES, 'core', 'PHPWS_File::getFILES');
+            return FALSE;
         }
 
         $this->filename = preg_replace('/[^\w\.]/', '_', $_FILES[$varName]['name']);
         $this->setSize($_FILES[$varName]['size']);
         $this->setTmpName($_FILES[$varName]['tmp_name']);
         $this->setType($_FILES[$varName]['type']);
+        return TRUE;
     }
 
     function write()
