@@ -1,198 +1,309 @@
 <?php
 
-define("DEFAULT_CABINET_LIST", "image");
+/**
+ * Main class for the File Cabinet
+ *
+ * File Cabinet is meant (for those devs that utilize it)
+ * as a central place to administrate all the files uploaded to the site.
+ *
+ * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ * @version $Id$
+ */
+
+define('DEFAULT_CABINET_LIST', 'image');
 
 class Cabinet_Action {
 
-  function admin(){
-    PHPWS_Core::initCoreClass("Image.php");
-    if (!Current_User::allow("filecabinet")){
-      Current_User::disallow();
-      return;
-    }
+    function admin()
+    {
+        if (!Current_User::allow('filecabinet')) {
+            Current_User::disallow();
+        }
+        PHPWS_Core::initCoreClass('Image.php');
+        if (!Current_User::allow('filecabinet')){
+            Current_User::disallow();
+            return;
+        }
 
-    $content = $message = $title = NULL;
-    $panel = & Cabinet_Action::cpanel();
+        $content = $message = $title = NULL;
+        $panel = & Cabinet_Action::cpanel();
 
-    if (isset($_REQUEST['tab']))
-      $action = $_REQUEST['tab'];
-    elseif (isset($_REQUEST['action']))
-      $action = $_REQUEST['action'];
-    else
-      $action = "main";
+        if (isset($_REQUEST['action'])) {
+            $action = $_REQUEST['action'];
+        } else {
+            $action = $panel->getCurrentTab();
+        }
 
-    switch ($action){
-    case "main":
-    case "image":
-      $title = _("Manage Images");
-      $content = Cabinet_Action::manager("image");
-      break;
+        if (isset($_REQUEST['image_id'])) {
+            $file = & new PHPWS_Image($_REQUEST['image_id']);
+        } elseif (isset($_REQUEST['document_id'])) {
+            $file = & new PHPWS_Document($_REQUEST['document_id']);
+        }
 
-    case "document":
-      $title = _("Manage Documents");
-      $content = Cabinet_Action::manager("document");
-      break;
+        switch ($action) {
+        case 'new':
+            $file = & new File_Common;
+            $title = _('Create New Image or Document');
+            $content = Cabinet_action::edit($file);
+            break;
 
-    case "editImage":
-      if (!isset($_REQUEST['image_id'])){
-	$title = _("Manage Images");
-	$content = Cabinet_Action::manager("image");
-	break;
-      }
-      $image = & new PHPWS_Image((int)$_REQUEST['image_id']);
-      $title = _("Edit Image");
-      $content = Cabinet_Action::editImage($image);
-      break;
+        case 'main':
+        case 'image':
+            $title = _('Manage Images');
+            $content = Cabinet_Action::manager('image');
+            break;
 
-    case "copyImage":
-      if (!isset($_REQUEST['image_id'])){
-	$title = _("Manage Images");
-	$content = Cabinet_Action::manager("image");
-	break;
-      }
+        case 'document':
+            $title = _('Manage Documents');
+            $content = Cabinet_Action::manager('document');
+            break;
 
-      $image = & new PHPWS_Image((int)$_REQUEST['image_id']);
-      Clipboard::copy($image->getTitle(), $image->getTag());
-      $title = _("Manage Images");
-      $content = Cabinet_Action::manager("image");
+        case 'editImage':
+            if (!isset($_REQUEST['image_id'])){
+                $title = _('Manage Images');
+                $content = Cabinet_Action::manager('image');
+                break;
+            }
+            $image = & new PHPWS_Image((int)$_REQUEST['image_id']);
+            $title = _('Edit Image');
+            $content = Cabinet_Action::editImage($image);
+            break;
 
-      break;
+        case 'copyImage':
+            if (!isset($_REQUEST['image_id'])){
+                $title = _('Manage Images');
+                $content = Cabinet_Action::manager('image');
+                break;
+            }
 
-    case "delete":
-      break;
+            $image = & new PHPWS_Image((int)$_REQUEST['image_id']);
+            Clipboard::copy($image->getTitle(), $image->getTag());
+            $title = _('Manage Images');
+            $content = Cabinet_Action::manager('image');
 
-    case "uploadImage":
-      if (!PHPWS_Core::isPosted())
-	$result = Cabinet_Action::uploadImage();
-      $message = _("Image uploaded!");
-      $content = Cabinet_Action::manager($panel->getCurrentTab());
-      break;
+            break;
 
-    default:
-      exit($action);
-    }
+        case 'delete':
+            break;
+
+        case 'image_manager':
+
+            break;
+
+        case 'post_image':
+            $image = & new PHPWS_Image;
+            $file = Cabinet_Action::createFile();
+            $result = Cabinet_Action::postImage($file);
+            if ($result == FALSE) {
+                $title = _('Error');
+                $content = _('There was a problem saving your image.');
+                Layout::metaRoute('index.php?module=filecabinet');
+            } elseif (is_array($result)) {
+                $file->_errors = $result;
+                $content = Cabinet_Action::edit($file);
+            } else {
+                $title = _('Success!');
+                $content = _('File saved successfully.');
+                Layout::metaRoute('index.php?module=filecabinet');
+            }
+            break;
+
+        case 'post_image_close':
+            PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
+            if (isset($_REQUEST['image_id'])) {
+                $manager = & new FC_Image_Manager($_REQUEST['image_id']);
+            } else {
+                $manager = & new FC_Image_Manager;
+            }
+            $result = Cabinet_Action::postImage($manager->image);
+            if ($result == FALSE) {
+                $manager->errorPost();
+            } elseif (is_array($result)) {
+                $manager->image->_errors = $result;
+                Layout::nakedDisplay($manager->edit());
+            } else {
+                $result = $manager->createThumbnail();
+                $manager->postJavascript();
+            }
+            break;
+
+        case 'uploadImage':
+            if (!PHPWS_Core::isPosted())
+                $result = Cabinet_Action::uploadImage();
+            $message = _('Image uploaded!');
+            $content = Cabinet_Action::manager($panel->getCurrentTab());
+            break;
+
+        case 'upload_form':
+            PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
+            $manager = & new FC_Image_Manager;
+            $manager->loadReqValues();
+            Layout::nakedDisplay($manager->edit());
+            break;
+
+        default:
+            exit($action);
+        }
     
-    $template['TITLE']   = $title;
-    $template['MESSAGE'] = $message;
-    $template['CONTENT'] = $content;
+        $template['TITLE']   = $title;
+        $template['MESSAGE'] = $message;
+        $template['CONTENT'] = $content;
 
-    $main = PHPWS_Template::process($template, "filecabinet", "main.tpl");
+        $main = PHPWS_Template::process($template, 'filecabinet', 'main.tpl');
 
-    $panel->setContent($main);
-    $finalPanel = $panel->display();
-    Layout::add(PHPWS_ControlPanel::display($finalPanel));
-  }
-
-  function &cpanel(){
-    PHPWS_Core::initModClass("controlpanel", "Panel.php");
-    $imageLink = "index.php?module=filecabinet";
-    $imageCommand = array ("title"=>_("Images"), "link"=> $imageLink);
-	
-    $documentLink = "index.php?module=filecabinet";
-    $documentCommand = array ("title"=>_("Documents"), "link"=> $documentLink);
-
-    $tabs['image'] = $imageCommand;
-    $tabs['document'] = $documentCommand;
-
-    $panel = & new PHPWS_Panel("filecabinet");
-    $panel->quickSetTabs($tabs);
-
-    $panel->setModule("filecabinet");
-    return $panel;
-  }
-
-  function listAction($image){
-    $vars['image_id'] = $image->getId();
-    $vars['action'] = "editImage";
-    $links[] = PHPWS_Text::secureLink(_("Edit"), "filecabinet", $vars);
-    $vars['action'] = "deleteImage";
-    $links[] = PHPWS_Text::secureLink(_("Delete"), "filecabinet", $vars);
-    $vars['action'] = "copyImage";
-    $links[] = PHPWS_Text::moduleLink(_("Copy"), "filecabinet", $vars);
-
-    return implode(" | ", $links);
-  }
-
-  function imageManager(){
-      $pager = & new DBPager("images", "PHPWS_Image");
-      $pager->setModule("filecabinet");
-      $pager->setTemplate("imageList.tpl");
-      $pager->setLink("index.php?module=filecabinet&amp;action=main&amp;tab=image&amp;authkey=" . Current_User::getAuthKey());
-
-      $pager->setMethod("title", "getJSView");
-      $pager->addRowTag("action", "Cabinet_Action", "listAction");
-
-      $pager->addToggle("class=\"toggle1\"");
-      $pager->addToggle("class=\"toggle2\"");
-      $pager->addToggle("class=\"toggle3\"");
-
-      $tags['TITLE']      = _("Title");
-      $tags['FILENAME']   = _("Filename");
-      $tags['MODULE']     = _("Module");
-      $tags['SIZE']       = _("Size");
-      $tags['ACTION']     = _("Action");
-
-      $pager->addTags($tags);
-
-      $result = $pager->get();
-
-      if (empty($result))
-	return _("No items found.");
-
-      return $result;
-  }
-
-  function manager($type){
-    PHPWS_Core::initCoreClass("DBPager.php");
-    PHPWS_Core::initCoreClass("Image.php");
-
-    $form = & new PHPWS_Form;
-    $form->addHidden("module", "filecabinet");
-    $form->addFile("upload");
-
-    if ($type == "image"){
-      $form->addHidden("action", "uploadImage");
-      $form->setTitle("upload", _("Upload Image"));
-      $form->addSubmit("upload_go", _("Upload Image"));
-      $form->addTplTag('CONTENT', Cabinet_Action::imageManager());
+        $panel->setContent($main);
+        $finalPanel = $panel->display();
+        Layout::add(PHPWS_ControlPanel::display($finalPanel));
     }
 
-    $template = $form->getTemplate();
-    $content = PHPWS_Template::process($template, "filecabinet", "manager.tpl");
-    return $content;
-  }
+    function &cpanel()
+    {
+        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        $link = 'index.php?module=filecabinet';
 
-  function uploadImage(){
-    $image = & new PHPWS_Image;
-    $result = $image->importPost("upload");
+        $new_command      = array('title' => _('New'), 'link' => $link);
+        $image_command    = array('title'=>_('Images'), 'link'=> $link);
+        $document_command = array('title'=>_('Documents'), 'link'=> $link);
 
-    if (PEAR::isError($result))
-      return $result;
-    else {
-      $image->directory = "filecabinet/images/";
-      $image->module = _("Not Specified");
-      return $image->save();
+        $tabs['new']      = $new_command;
+        $tabs['image']    = $image_command;
+        $tabs['document'] = $document_command;
+
+        $panel = & new PHPWS_Panel('filecabinet');
+        $panel->quickSetTabs($tabs);
+
+        $panel->setModule('filecabinet');
+        return $panel;
     }
-  }
 
-  function editImage(&$image){
-    $form = & new PHPWS_Form;
-    $form->addHidden("module", "filecabinet");
-    $form->addHidden("action", "postImage");
-    $form->addHidden("image_id", $image->getId());
 
-    $file_data[] = "<b>" . _("Filename") . "</b> : " . $image->getFilename();
-    $file_data[] = "<b>" . _("Directory") . "</b> : ./images/" . $image->getDirectory();
-    $file_data[] = "<b>" . _("Image Type") . "</b> : " . $image->getType();
-    $file_data[] = "<b>" . _("Width") . "</b> : " . $image->getWidth() . "px";
-    $file_data[] = "<b>" . _("Height") . "</b> : " . $image->getHeight() . "px";
-    $form->addTplTag("FILE_INFO_LABEL", _("Image Information"));
-    $form->addTplTag("FILE_INFO", implode("<br />", $file_data));
-    $form->addTplTag("IMAGE_VIEW", $image->getTag());
+    function imageManager()
+    {
+        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        $pager = & new DBPager('images', 'FC_Image');
+        $pager->setModule('filecabinet');
+        $pager->setTemplate('imageList.tpl');
+        $pager->setLink('index.php?module=filecabinet&amp;tab=image&amp;authkey=' . Current_User::getAuthKey());
+        $pager->addRowTags('getRowTags');
+        $pager->addToggle('class="toggle1"');
+        $pager->addToggle('class="toggle2"');
 
-    $template = $form->getTemplate();
-    return PHPWS_Template::process($template, "filecabinet", "editImage.tpl");
-  }
+        $tags['TITLE']      = _('Title');
+        $tags['FILENAME']   = _('Filename');
+        $tags['MODULE']     = _('Module');
+        $tags['SIZE']       = _('Size');
+        $tags['ACTION']     = _('Action');
+
+        $pager->addPageTags($tags);
+
+        $result = $pager->get();
+
+        if (empty($result)) {
+            return _('No items found.');
+        }
+
+        return $result;
+    }
+
+    function manager($type)
+    {
+        PHPWS_Core::initCoreClass('DBPager.php');
+
+        if ($type == 'image'){
+            return Cabinet_Action::imageManager();
+        }
+    }
+
+    function edit($file=NULL, $set_module=FALSE)
+    {
+        if (!$set_module) {
+            $mod_list = PHPWS_Core::getModules();
+
+            if (empty($mod_list)) {
+                return;
+            }
+
+            if (empty($file->module)) {
+                $file->module = 'filecabinet';
+            }
+        }
+
+        foreach ($mod_list as $mod_info) {
+            extract($mod_info);
+            $select_list[$title] = $proper_name;
+        }
+
+        $form = & new PHPWS_Form;
+        $form->addHidden('module', 'filecabinet');
+
+        if ($file->directory) {
+            $form->addHidden('directory', urlencode($file->directory));
+        }
+
+        if (!$set_module) {
+            $form->addHidden('action', 'post_image');
+            $form->addSelect('mod_title', $select_list);
+            $form->setLabel('mod_title', _('Module Directory'));
+            $form->setMatch('mod_title', $file->module);
+        } else {
+            $form->addHidden('action',    'post_image_close');
+            $form->addHidden('mod_title', $file->module);
+            $form->addHidden('itemname',  $file->itemname);
+        }
+
+        $form->addFile('file_name');
+        $form->setSize('file_name', 30);
+        
+        if ($file->getClassType() == 'image') {
+            $form->setLabel('file_name', _('Image location'));
+        } else {
+            $form->setLabel('file_name', _('Document location'));
+        }
+
+        $form->addText('title', $file->title);
+        $form->setSize('title', 40);
+        $form->setLabel('title', _('Title'));
+
+        $form->addTextArea('description', $file->description);
+        //        $form->useEditor('description', FALSE);
+        $form->setLabel('description', _('Description'));
+
+        if (isset($file->id)) {
+            $form->addSubmit(_('Update'));
+        } else {
+            $form->addSubmit(_('Upload'));
+        }
+        $template = $form->getTemplate();
+
+        $errors = $file->getErrors();
+        if (!empty($errors)) {
+            foreach ($errors as $err) {
+                $message[] = array('ERROR' => $err->getMessage());
+            }
+            $template['errors'] = $message;
+        }
+
+        return PHPWS_Template::process($template, 'filecabinet', 'edit.tpl');
+    }
+
+    function postImage(&$image)
+    {
+        $errors = $image->importPost('file_name');
+        $image->setTitle($_POST['title']);
+        $image->setDescription($_POST['description']);
+        $image->setModule($_POST['mod_title']);
+
+        if (is_array($errors)) {
+            return $errors;
+        } elseif(empty($errors)) {
+            return FALSE;
+        } else {
+            $result = $image->save();
+            return $result;
+        }
+    }
+
+
 }
 
 
