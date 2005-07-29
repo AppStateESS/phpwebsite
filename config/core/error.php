@@ -86,10 +86,11 @@ $errors[PHPWS_FILE_NO_TMP]            = _('Upload directory not set in file obje
 $errors[PHPWS_FILENAME_NOT_SET]       = _('Filename not set.');
 $errors[PHPWS_DIRECTORY_NOT_SET]      = _('Directory not set.');
 $errors[PHPWS_BOUND_FAILED]           = _('There was a problem loading the image file.');
-$errors[PHPWS_IMG_SIZE]               = _('Image was larger than %dK size limit.');
-$errors[PHPWS_IMG_WIDTH]              = _('Image width was larger than %d pixel limit.');
-$errors[PHPWS_IMG_HEIGHT]             = _('Image height was larger than %d pixel limit.');
+$errors[PHPWS_IMG_SIZE]               = _('Image was %dK making it larger than %dK size limit.');
+$errors[PHPWS_IMG_WIDTH]              = _('Image width was %spx, making it larger than %d pixel limit.');
+$errors[PHPWS_IMG_HEIGHT]             = _('Image height was %spx, making it larger than %d pixel limit.');
 $errors[PHPWS_IMG_WRONG_TYPE]         = _('Unacceptable image type.');
+$errors[PHPWS_IMG_NOT_FOUND]          = _('Image not found');
 
 
 // Text.php 1000-1099

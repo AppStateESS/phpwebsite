@@ -95,6 +95,7 @@ define('PHPWS_IMG_SIZE',              -903);
 define('PHPWS_IMG_HEIGHT',            -904);
 define('PHPWS_IMG_WIDTH',             -905);
 define('PHPWS_IMG_WRONG_TYPE',        -906);
+define('PHPWS_IMG_NOT_FOUND',         -907);
 
 
 
