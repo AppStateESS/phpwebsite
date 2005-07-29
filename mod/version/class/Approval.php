@@ -168,13 +168,11 @@ class Version_Approval {
 
             if (!$restrict_approval || !Current_User::isRestricted($this->module)) {
                 $links[] = sprintf('<a href="%s">%s</a>',
-                                   $this->approve_url . '&amp;version_id=' . $app_item['id'] .
-                                   '&amp;authkey=' . Current_User::getAuthKey(),
+                                   $this->approve_url . '&amp;version_id=' . $app_item['id'],
                                    _('Approve'));
         
                 $links[] = sprintf('<a href="%s">%s</a>',
-                                   $this->disapprove_url . '&amp;version_id=' . $app_item['id'] .
-                                   '&amp;authkey=' . Current_User::getAuthKey(),
+                                   $this->disapprove_url . '&amp;version_id=' . $app_item['id'],
                                    _('Disapprove'));
             }
 
