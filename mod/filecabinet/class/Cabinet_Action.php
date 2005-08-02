@@ -94,7 +94,8 @@ class Cabinet_Action {
             $image = & new PHPWS_Image;
             $file = Cabinet_Action::createFile();
             $result = Cabinet_Action::postImage($file);
-            if ($result == FALSE) {
+            if (PEAR::isError($result)) {
+                PEAR::log($result);
                 $title = _('Error');
                 $content = _('There was a problem saving your image.');
                 Layout::metaRoute('index.php?module=filecabinet');
@@ -110,21 +111,29 @@ class Cabinet_Action {
 
         case 'post_image_close':
             PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
+            
             if (isset($_REQUEST['image_id'])) {
                 $manager = & new FC_Image_Manager($_REQUEST['image_id']);
             } else {
                 $manager = & new FC_Image_Manager;
             }
-            $result = Cabinet_Action::postImage($manager->image);
-            if ($result == FALSE) {
+            $manager->loadReqValues();
+
+            $result = $manager->postImage($manager->image);
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
                 $manager->errorPost();
             } elseif (is_array($result)) {
                 $manager->image->_errors = $result;
                 Layout::nakedDisplay($manager->edit());
             } else {
                 $result = $manager->createThumbnail();
-                $manager->postJavascript();
+                $manager->postJavascript($result);
             }
+            break;
+
+        case 'get_image_xml':
+            Cabinet_Action::getImageXML($_REQUEST['id']);
             break;
 
         case 'uploadImage':
@@ -141,6 +150,12 @@ class Cabinet_Action {
             Layout::nakedDisplay($manager->edit());
             break;
 
+        case 'pick_image':
+            PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
+            $manager = & new FC_Image_Manager;
+            $manager->loadReqValues();
+            Layout::nakedDisplay($manager->pick());
+
         default:
             exit($action);
         }
@@ -154,6 +169,16 @@ class Cabinet_Action {
         $panel->setContent($main);
         $finalPanel = $panel->display();
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
+    }
+
+    function getImageXML($image_id)
+    {
+        $image = & new PHPWS_Image($image_id);
+        $src = $image->getFullDirectory();
+
+        header("Content-type: text/xml");
+        echo '<?xml version="1.0" ?>' . $image->getXML();
+        exit(); 
     }
 
     function &cpanel()
@@ -293,10 +318,8 @@ class Cabinet_Action {
         $image->setDescription($_POST['description']);
         $image->setModule($_POST['mod_title']);
 
-        if (is_array($errors)) {
+        if (is_array($errors) || PEAR::isError($errors)) {
             return $errors;
-        } elseif(empty($errors)) {
-            return FALSE;
         } else {
             $result = $image->save();
             return $result;

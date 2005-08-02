@@ -10,6 +10,10 @@ define('FC_VIEW_MARGIN_HEIGHT', 100);
 define('FC_UPLOAD_WIDTH', 450);
 define('FC_UPLOAD_HEIGHT', 300);
 
+define('FC_MANAGER_WIDTH', 640);
+define('FC_MANAGER_HEIGHT', 480);
+
+
 define('FC_NONE_IMAGE', 
        sprintf('<img src="images/mod/filecabinet/none.png" width="32" height="32" title="%s" alt="%s" border="0" />',
                _('None'), _('None')));
@@ -18,11 +22,8 @@ class FC_Image_Manager {
     var $itemname       = NULL;
     var $image          = NULL;
     var $thumbnail      = NULL;
-    var $max_width      = MAX_IMAGE_WIDTH;
-    var $max_height     = MAX_IMAGE_HEIGHT;
     var $tn_width       = MAX_TN_IMAGE_WIDTH;
     var $tn_height      = MAX_TN_IMAGE_HEIGHT;
-    var $max_size       = MAX_IMAGE_SIZE;
     var $_error         = NULL;
 
     function FC_Image_Manager($image_id=NULL)
@@ -68,12 +69,18 @@ class FC_Image_Manager {
 
     function setMaxWidth($width)
     {
-        $this->max_width = (int)$width;
+        $this->image->setMaxWidth($width);
     }
+
 
     function setMaxHeight($height)
     {
-        $this->max_height = (int)$height;
+        $this->image->setMaxHeight($height);
+    }
+
+    function setMaxSize($size)
+    {
+        $this->image->setMaxSize($size);
     }
 
     function setTNWidth($width)
@@ -85,7 +92,6 @@ class FC_Image_Manager {
     {
         $this->tn_height = (int)$height;
     }
-
 
     function get()
     {
@@ -107,13 +113,15 @@ class FC_Image_Manager {
         if ($this->image->id) {
             $vars['image_id'] = $this->image->id;
             $vars['action'] = 'change';
-            $tpl['CHANGE_CURRENT'] = $this->getChangeLink();
-            $tpl['CURRENT']        = $this->getViewLink();
-            $tpl['CLEAR_IMAGE']    = $this->getClearLink();
+
+            $tpl['CURRENT']     = $this->getViewLink();
+            $tpl['CLEAR_IMAGE'] = $this->getClearLink();
         } else {
             $tpl['CURRENT'] = FC_NONE_IMAGE;
         }
 
+        $tpl['PICK_IMAGE']  = $this->getChangeLink();
+        $tpl['ITEMNAME'] = $this->itemname;
         $tpl['UPLOAD_NEW'] = $this->getUploadLink(FALSE);
 
         return PHPWS_Template::process($tpl, 'filecabinet', 'manager/javascript.tpl');
@@ -152,9 +160,23 @@ class FC_Image_Manager {
         return javascript('open_window', $vars);
     }
 
+    function noThumbnail()
+    {
+        return sprintf('<img title="%s" alt="%s" src="images/mod/filecabinet/no_thumbnail.png" />',
+                       _('No thumbnail'), _('No thumbnail'));
+    }
+
     function getChangeLink()
     {
-        
+        $link_vars['action']    = 'pick_image';
+        $link_vars['mod_title'] = $this->image->module;
+        $link_vars['itemname']  = $this->itemname;
+   
+        $vars['address'] = PHPWS_Text::linkAddress('filecabinet', $link_vars);
+        $vars['width']   = FC_MANAGER_WIDTH;
+        $vars['height']  = FC_MANAGER_HEIGHT;
+        $vars['label']   = _('Pick image');
+        return javascript('open_window', $vars);
     }
 
     function getUploadLink($use_image=TRUE)
@@ -164,12 +186,17 @@ class FC_Image_Manager {
         if ($use_image) {
             $vars['label']   = FC_NONE_IMAGE;
         } else {
-            $vars['label']   = _('Upload Image');
+            $vars['label']   = _('Upload image');
         }
         $link_vars['action']    = 'upload_form';
         $link_vars['mod_title'] = $this->image->module;
         $link_vars['itemname']  = $this->itemname;
-        $link_vars['directory'] = urlencode($this->image->directory);
+        $link_vars['ms']        = $this->image->_max_size;
+        $link_vars['mw']        = $this->image->_max_width;
+        $link_vars['mh']        = $this->image->_max_height;
+        if (isset($this->image->directory)) {
+            $link_vars['directory'] = urlencode($this->image->directory);
+        }
         $vars['address'] = PHPWS_Text::linkAddress('filecabinet', $link_vars);
         return Layout::getJavascript('open_window', $vars);
     }
@@ -178,15 +205,21 @@ class FC_Image_Manager {
         exit(_('An error occurred when trying to save your image.'));
     }
 
-    function postJavascript()
+    function postJavascript($check=TRUE)
     {
         $vars = array();
-        $vars['image_link'] = addslashes($this->getViewLink());
+        if ($check) {
+            $vars['image_link'] = addslashes($this->getViewLink());
+        } else {
+            $vars['image_link'] = addslashes($this->noThumbnail());
+        }
+
         $vars['hidden'] = addslashes(sprintf('<input type="hidden" name="%s_id" value="%s" />', 
                                              $this->itemname,
                                              $this->image->id)
                                      );
-        echo Layout::getModuleJavascript('filecabinet', 'post_file', $vars);
+        $vars['itemname'] = $this->itemname;
+        echo javascript('post_file', $vars);
         exit();
     }
 
@@ -196,11 +229,27 @@ class FC_Image_Manager {
 
     }
 
+    function postImage()
+    {
+        $errors = $this->image->importPost('file_name');
+        $this->image->setTitle($_POST['title']);
+        $this->image->setDescription($_POST['description']);
+
+        if (is_array($errors) || PEAR::isError($errors)) {
+            return $errors;
+        } else {
+            $result = $this->image->save();
+            return $result;
+        }
+    }
+
 
     function edit()
     {
         $form = & new PHPWS_Form;
         $form->addHidden('module', 'filecabinet');
+
+        $session_index = md5($this->image->module . $this->itemname);
 
         if ($this->image->directory) {
             $form->addHidden('directory', urlencode($this->image->directory));
@@ -209,7 +258,10 @@ class FC_Image_Manager {
         $form->addHidden('action',    'post_image_close');
         $form->addHidden('mod_title', $this->image->module);
         $form->addHidden('itemname',  $this->itemname);
-        
+        $form->addHidden('ms',        $this->image->_max_size);
+        $form->addHidden('mh',        $this->image->_max_height);
+        $form->addHidden('mw',        $this->image->_max_width);
+
         $form->addFile('file_name');
         $form->setSize('file_name', 30);
         
@@ -239,16 +291,57 @@ class FC_Image_Manager {
             $template['errors'] = $message;
         }
 
+        $template['MAX_SIZE_LABEL']   = _('Maximum file size');
+        $template['MAX_WIDTH_LABEL']  = _('Maximum width');
+        $template['MAX_HEIGHT_LABEL'] = _('Maximum height');
+        $template['MAX_SIZE']         = $this->image->_max_size;
+        $template['MAX_WIDTH']        = $this->image->_max_width;
+        $template['MAX_HEIGHT']       = $this->image->_max_height;
+
         return PHPWS_Template::process($template, 'filecabinet', 'edit.tpl');
     }
 
+    function pick()
+    {
+
+        $db = & new PHPWS_DB('images');
+        $db->addWhere('thumbnail_source', 0, '>');
+        $db->addWhere('module', $this->image->module);
+        $db->setIndexBy('thumbnail_source');
+        $thumbnails = $db->getObjects('PHPWS_Image');
+
+        foreach ($thumbnails as $tn) {
+            $tpl['thumbnail-list'][] = array('THUMBNAIL' => $tn->getTag(),
+                                             'ID'        => $tn->thumbnail_source);
+        }
+
+        $tpl['IMAGE_INFO'] = javascript('pick_image');
+
+        $content = PHPWS_Template::process($tpl, 'filecabinet', 'manager/pick.tpl');
+        return $content;
+        test($thumbnails);
+        test($source_images);
+    }
+
+
     function loadReqValues()
     {
-        if ($_REQUEST['directory']) {
+        if (isset($_REQUEST['directory'])) {
             $this->setDirectory(urldecode($_REQUEST['directory']));
         }
         $this->setModule($_REQUEST['mod_title']);
         $this->setItemName($_REQUEST['itemname']);
+        if (isset($_REQUEST['ms'])) {
+            $this->setMaxSize($_REQUEST['ms']);
+        }
+
+        if (isset($_REQUEST['mh'])) {
+            $this->setMaxHeight($_REQUEST['mh']);
+        }
+
+        if (isset($_REQUEST['mw'])) {
+            $this->setMaxWidth($_REQUEST['mw']);
+        }
     }
 
     /**
@@ -257,6 +350,9 @@ class FC_Image_Manager {
     function createThumbnail()
     {
         $src_img   = &$this->image;
+        if ($src_img->type == 'image/gif') {
+            return FALSE;
+        }
         $thumbnail = &$this->thumbnail;
 
         $thumbnail->directory        = $src_img->directory;
