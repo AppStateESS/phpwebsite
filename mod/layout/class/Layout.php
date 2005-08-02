@@ -534,10 +534,7 @@ class Layout {
         }
     
         if (isset($data)) {
-            $tpl = new PHPWS_Template;
-            $tpl->setFile($filename, TRUE);
-            $tpl->setData($data);
-            $result = $tpl->get();
+            $result = PHPWS_Template::process($data, 'layout', $filename,TRUE);
             if (!empty($result)) {
                 Layout::addJSHeader($result, $index);
             } else {
