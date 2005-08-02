@@ -151,8 +151,9 @@ class PHPWS_Template extends HTML_Template_Sigma {
             return NULL;
         }
 
-        foreach($data as $tag=>$content)
+        foreach($data as $tag=>$content) {
             $this->setVariable($tag, $content);
+        }
     }
 
     function getLastTplFile()
@@ -160,7 +161,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
         return $this->getfile($this->lastTemplatefile);
     }
 
-    function process($template, $module, $file)
+    function process($template, $module, $file, $strict=FALSE)
     {
         if (!is_array($template)) {
             return PHPWS_Error::log(PHPWS_VAR_TYPE, 'core', 
@@ -172,8 +173,13 @@ class PHPWS_Template extends HTML_Template_Sigma {
             PHPWS_Error::log($template);
             return NULL;
         }
-      
-        $tpl = & new PHPWS_Template($module, $file);
+
+        if ($strict) {
+            $tpl = & new PHPWS_Template;
+            $tpl->setFile($file, TRUE);
+        } else {
+            $tpl = & new PHPWS_Template($module, $file);
+        }
 
         if (PEAR::isError($tpl->error)){
             return _('Template error.');
