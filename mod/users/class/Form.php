@@ -545,10 +545,6 @@ class User_Form {
      */
     function authorizationSetup()
     {
-        $values['DROP_Q'] = _('Are you sure you want to drop this authorization script?');
-
-        Layout::loadModuleJavascript('users', 'authorize.js', $values);
-
         $template = array();
         PHPWS_Core::initCoreClass('File.php');
 
@@ -600,7 +596,10 @@ class User_Form {
             $getVars['command'] = 'dropScript';
 
             if ($filename != 'local.php' && $filename != 'global.php') {
-                $links[1] = sprintf('<a href="javascript:void(0)" onclick="drop(%s)">Drop</a>', $id);
+                $vars['QUESTION'] = _('Are you sure you want to drop this authorization script?');
+                $vars['ADDRESS'] = 'index.php?module=users&action=admin&command=dropAuthScript&script_id=' . $id;
+                $vars['LINK'] = _('Drop');
+                $links[1] = javascript('confirm', $vars);
             }
 
             $getVars['command'] = 'editScript';
