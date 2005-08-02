@@ -13,6 +13,7 @@
 PHPWS_Core::initCoreClass("File_Common.php");
 
 class PHPWS_doc extends File_Common {
+    var $_max_size        = MAX_DOC_SIZE;
 
     function setType($type){
         $this->type = $type;
@@ -49,6 +50,7 @@ class PHPWS_doc extends File_Common {
         $result = $this->checkBounds();
         return $result;
     }
+
 
     function setBounds($path=NULL){
         if (empty($path))
