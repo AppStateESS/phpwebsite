@@ -16,6 +16,7 @@ class File_Common {
     var $description = NULL;
     var $size        = NULL;
     var $module      = NULL;
+    var $_max_size   = 0;
     var $_errors     = array();
     var $_tmp_name   = NULL;
     var $_classtype  = NULL;
@@ -97,14 +98,23 @@ class File_Common {
         return $this->_tmp_name;
     }
 
+    function setMaxSize($max_size)
+    {
+        $this->_max_size = (int)$max_size;
+    }
+
     function setTitle($title)
     {
         $this->title = $title;
     }
 
-    function getTitle()
+    function getTitle($format=FALSE)
     {
-        return $this->title;
+        if ($format) {
+            return str_replace("'", "\'", $this->title);
+        } else {
+            return $this->title;
+        }
     }
 
     function setDescription($description)
@@ -112,9 +122,13 @@ class File_Common {
         $this->description = $description;
     }
 
-    function getDescription()
+    function getDescription($format=FALSE)
     {
-        return $this->description;
+        if ($format) {
+            return PHPWS_Text::parseOutput($this->description);
+        } else {
+            return $this->description;
+        }
     }
 
     function setModule($module)
@@ -162,7 +176,7 @@ class File_Common {
         }
 
         if (!isset($type)) {
-            $type = $this->getType();
+            $type = $this->type;
         }
 
         return in_array($type, $typeList);
@@ -170,17 +184,11 @@ class File_Common {
 
     function allowSize($size=NULL)
     {
-        if ($this->_classtype == 'doc') {
-            $limit = MAX_DOC_SIZE;
-        } else {
-            $limit = MAX_IMAGE_SIZE;
-        }
-
         if (!isset($size)) {
             $size = $this->getSize();
         }
 
-        return ($size <= $limit) ? TRUE : FALSE;
+        return ($size <= $this->_max_size && $size <= ABSOLUTE_UPLOAD_LIMIT) ? TRUE : FALSE;
     }
 
     function fileIsSet($varName)
