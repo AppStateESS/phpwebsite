@@ -951,9 +951,8 @@ class PHPWS_DB {
             }
 
             if (count($result) > 1) {
-                return $result;
-            }
-            else {
+                return count($result);
+            } else {
                 list(, $count_val) = each($result[0]);
                 return $count_val;
             }
