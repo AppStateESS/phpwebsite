@@ -136,6 +136,14 @@ define('PHPWS_LIST_TOGGLE_CLASS', ' class=\'bgcolor1\'');
 define('USE_WYSIWYG_EDITOR', FALSE);
 define('DEFAULT_EDITOR_TOOL', '');
 
+/******************* ABSOLUTE LIMIT ***************************/
+/**
+ * This the absolute upload limit in bytes. No matter what the code or
+ * module says the user can upload, this amount, if checked, will trump
+ * it.
+ * This should be set reasonably high. The default is ~5mb
+ */ 
+define('ABSOLUTE_UPLOAD_LIMIT', '5000000');
 
 /******************* ALLOWED IMAGES TYPES *********************/
 
