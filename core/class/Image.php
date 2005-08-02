@@ -18,8 +18,12 @@ class PHPWS_Image extends File_Common{
     var $alt              = NULL;
     var $border           = 0;
     var $thumbnail_source = 0;
+    var $_max_size        = MAX_IMAGE_SIZE;
+    var $_max_width       = MAX_IMAGE_WIDTH;
+    var $_max_height      = MAX_IMAGE_HEIGHT;
 
-    function PHPWS_Image($id=NULL){
+    function PHPWS_Image($id=NULL)
+    {
         $this->_classtype = 'image';
         if (empty($id))
             return;
@@ -33,7 +37,8 @@ class PHPWS_Image extends File_Common{
         }
     }
 
-    function getTag(){
+    function getTag()
+    {
         $tag[] = '<img';
 
         $path = $this->getPath();
@@ -42,14 +47,15 @@ class PHPWS_Image extends File_Common{
         $tag[] = 'src="'    . $path . '"';
         $tag[] = 'alt="'    . $this->getAlt(TRUE)   . '"';
         $tag[] = 'title="'  . $this->getTitle(TRUE) . '"';
-        $tag[] = 'width="'  . $this->getWidth()     . '"';
-        $tag[] = 'height="' . $this->getHeight()    . '"';
-        $tag[] = 'border="' . $this->getBorder()    . '"';
+        $tag[] = 'width="'  . $this->width     . '"';
+        $tag[] = 'height="' . $this->height    . '"';
+        $tag[] = 'border="' . $this->border    . '"';
         $tag[] = '/>';
         return implode(' ', $tag);
     }
 
-    function getLink($newTarget=FALSE){
+    function getLink($newTarget=FALSE)
+    {
         $tag[] = '<a href="';
         $tag[] = $this->getPath();
         $tag[] = '"';
@@ -63,7 +69,8 @@ class PHPWS_Image extends File_Common{
         return implode('', $tag);
     }
 
-    function getJSView(){
+    function getJSView()
+    {
         $values['address'] = $this->getPath();
         $values['label']   = $this->getTitle();
         $values['width'] = $this->getWidth();
@@ -71,7 +78,8 @@ class PHPWS_Image extends File_Common{
         return Layout::getJavascript('open_window', $values);
     }
 
-    function setType($type){
+    function setType($type)
+    {
         if (is_numeric($type)) {
             $new_type = image_type_to_mime_type($type);
             $this->type = $new_type;
@@ -80,28 +88,18 @@ class PHPWS_Image extends File_Common{
         }
     }
 
-    function getType(){
-        return $this->type;
-    }
-  
-
-    function setWidth($width){
+    function setWidth($width)
+    {
         $this->width = $width;
     }
 
-    function getWidth(){
-        return $this->width;
-    }
-
-    function setHeight($height){
+    function setHeight($height)
+    {
         $this->height = $height;
     }
 
-    function getHeight(){
-        return $this->height;
-    }
-
-    function setBounds($path=NULL){
+    function setBounds($path=NULL)
+    {
         if (empty($path)) {
             $path = $this->getPath();
         }
@@ -121,24 +119,32 @@ class PHPWS_Image extends File_Common{
         return TRUE;
     }
 
-    function setAlt($alt){
+    function setAlt($alt)
+    {
         $this->alt = $alt;
     }
 
-    function getAlt($check=FALSE){
+    function getAlt($check=FALSE)
+    {
         if ((bool)$check && empty($this->alt) && isset($this->title))
             return $this->title;
 
         return $this->alt;
     }
 
-
-    function setBorder($border){
-        $this->border = $border;
+    function setMaxWidth($width)
+    {
+        $this->_max_width = (int)$width;
     }
 
-    function getBorder(){
-        return $this->border;
+    function setMaxHeight($height)
+    {
+        $this->_max_height = (int)$height;
+    }
+
+    function setBorder($border)
+    {
+        $this->border = $border;
     }
 
     function getFullDirectory()
@@ -149,24 +155,28 @@ class PHPWS_Image extends File_Common{
         return sprintf('images/%s%s', $this->directory, $this->filename);
     }
 
-    function allowWidth($imagewidth=NULL){
-        if (!isset($imagewidth))
-            $imagewidth = $this->getWidth();
+    function allowWidth($imagewidth=NULL)
+    {
+        if (!isset($imagewidth)) {
+            $imagewidth = &$this->width;
+        }
 
-        return ($imagewidth <= MAX_IMAGE_WIDTH) ? TRUE : FALSE;
+        return ($imagewidth <= $this->_max_width) ? TRUE : FALSE;
     }
 
-    function allowHeight($imageheight=NULL){
+    function allowHeight($imageheight=NULL)
+    {
         if (!isset($imageheight))
-            $imageheight = $this->getHeight();
+            $imageheight = &$this->height;
 
-        return ($imageheight <= MAX_IMAGE_HEIGHT) ? TRUE : FALSE;
+        return ($imageheight <= $this->_max_height) ? TRUE : FALSE;
     }
 
 
-    function checkBounds(){
+    function checkBounds()
+    {
         if (!$this->allowSize()) {
-            $errors[] = PHPWS_Error::get(PHPWS_IMG_SIZE, 'core', 'PHPWS_Image::checkBounds', array($this->getSize(), MAX_IMAGE_SIZE));
+            $errors[] = PHPWS_Error::get(PHPWS_IMG_SIZE, 'core', 'PHPWS_Image::checkBounds', array($this->getSize(), $this->_max_size));
         }
 
         if (!$this->allowType()) {
@@ -174,11 +184,11 @@ class PHPWS_Image extends File_Common{
         }
 
         if (!$this->allowWidth()) {
-            $errors[] = PHPWS_Error::get(PHPWS_IMG_WIDTH, 'core', 'PHPWS_image::checkBounds', array($this->getWidth(), MAX_IMAGE_WIDTH));
+            $errors[] = PHPWS_Error::get(PHPWS_IMG_WIDTH, 'core', 'PHPWS_image::checkBounds', array($this->width, $this->_max_width));
         }
 
         if (!$this->allowHeight()) {
-            $errors[] = PHPWS_Error::get(PHPWS_IMG_HEIGHT, 'core', 'PHPWS_image::checkBounds', array($this->getHeight(), MAX_IMAGE_HEIGHT));
+            $errors[] = PHPWS_Error::get(PHPWS_IMG_HEIGHT, 'core', 'PHPWS_image::checkBounds', array($this->height, $this->_max_height));
         }
 
         if (isset($errors)) {
@@ -188,23 +198,30 @@ class PHPWS_Image extends File_Common{
         }
     }
 
-    function importPost($varName, $form_suffix=FALSE){
+    function importPost($varName, $form_suffix=FALSE)
+    {
         if ($form_suffix) {
             $varName .= '_file';
         }
 
         $result = $this->getFILES($varName);
 
-        if (PEAR::isError($result) || !$result) {
+        if (PEAR::isError($result)) {
             return $result;
+        } elseif (!$result) {
+            return PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, 'core', 'PHPWS_Image::importPost');
         }
 
         $this->setBounds($this->getTmpName());
-        $result = $this->checkBounds();
-        return $result;
+        return $this->checkBounds();
     }
 
-    function save($no_dupes=TRUE, $write=TRUE){
+    function save($no_dupes=TRUE, $write=TRUE)
+    {
+        if (empty($this->directory)) {
+            $this->directory = $this->module . '/';
+        }
+
         if (empty($this->alt)) {
             if (empty($this->title)) {
                 $this->title = $this->filename;
@@ -240,6 +257,7 @@ class PHPWS_Image extends File_Common{
         return $db->saveObject($this);
     }
  
+
     function isImage($type)
     {
         $imageTypes = array('image/jpeg',
@@ -252,6 +270,20 @@ class PHPWS_Image extends File_Common{
 
         return in_array(trim($type), $imageTypes);
     }
+
+    function getXML()
+    {
+        $content[] = '<image>';
+        $content[] = '<src>' . $this->getFullDirectory() . '</src>';
+        $content[] = '<width>' . $this->width . '</width>';
+        $content[] = '<height>' . $this->height . '</height>';
+        $content[] = '<title>' . $this->getTitle() . '</title>';
+        $content[] = '<alt>' . $this->getAlt() . '</alt>';
+        $content[] = '<desc>' . $this->getDescription(TRUE) . '</desc>';
+        $content[] = '</image>';
+        return implode("\n", $content);
+    }
+
 
 }
 
