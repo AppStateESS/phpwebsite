@@ -125,10 +125,11 @@ function checkJavascript(){
 }
 
 function javascriptEnabled(){
-    if (!isset($_SESSION['Javascript_Enabled']))
+    if (!isset($_SESSION['Javascript_Enabled'])) {
         return NULL;
-    else
+    } else {
         return $_SESSION['Javascript_Enabled'];
+    }
 }
 
 function loadBrowserInformation(){

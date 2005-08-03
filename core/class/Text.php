@@ -394,8 +394,9 @@ class PHPWS_Text {
                 $vars[] = $var_name . '=' . $value;
         }
     
-        if (isset($vars))
+        if (isset($vars)) {
             $link[] = implode('&amp;', $vars);
+        }
 
         return implode('', $link);
     }
