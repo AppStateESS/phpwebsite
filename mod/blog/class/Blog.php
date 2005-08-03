@@ -170,8 +170,14 @@ class Blog {
             $title = $this->getTitle(TRUE);
             $url = $this->getViewLink(TRUE);
 
-            Block::show($key);
-            Menu::show($key, $title, $url);
+            if (class_exists('Block')) {
+                Block::show($key);
+            }
+
+            if (class_exists('Menu')) {
+                Menu::show($key, $title, $url);
+            }
+
             Related::show($key, $title, $url);
         }
 
