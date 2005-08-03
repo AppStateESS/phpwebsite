@@ -418,12 +418,23 @@ class PHPWS_Boost {
             $homeDir = getcwd();
 
         $configSource = $mod->getDirectory() . 'conf/';
-        if (is_dir($configSource)){
+        if (is_dir($configSource)) {
             $configDest   = $homeDir . '/config/' . $mod->getTitle() . '/';
             if ($overwrite == TRUE || !is_dir($configDest)){
                 $content[] = _('Copying configuration files.');
                 $this->addLog($mod->getTitle(), sprintf(_("Copying directory %1\$s to %2\$s"), $configSource, $configDest));
                 PHPWS_File::recursiveFileCopy($configSource, $configDest);
+                chdir($homeDir);
+            }
+        }
+
+        $javascriptSource = $mod->getDirectory() . 'javascript/';
+        if (is_dir($javascriptSource)) {
+            $javascriptDest   = $homeDir . '/javascript/modules/' . $mod->getTitle() . '/';
+            if ($overwrite == TRUE || !is_dir($javascriptDest)){
+                $content[] = _('Copying javascript directories.');
+                $this->addLog($mod->getTitle(), sprintf(_("Copying directory %1\$s to %2\$s"), $javascriptSource, $javascriptDest));
+                PHPWS_File::recursiveFileCopy($javascriptSource, $javascriptDest);
                 chdir($homeDir);
             }
         }
@@ -471,10 +482,11 @@ class PHPWS_Boost {
             $content[] = _('Copying source image directory for module.');
      
             $result = PHPWS_File::recursiveFileCopy($modSource, $modImage);
-            if ($result)
+            if ($result) {
                 $content[] = _('Source image directory copied successfully.');
-            else
+            } else {
                 $content[] = _('Source image directory failed to copy.');
+            }
             chdir($homeDir);
         }
     }
@@ -488,36 +500,49 @@ class PHPWS_Boost {
         $configDir = $homeDir. '/config/' . $mod->getTitle() . '/';
         if (is_dir($configDir)) {
             $this->addLog($mod->getTitle(), sprintf(_('Removing directory %s'), $configDir));
-            if(!PHPWS_File::rmdir($configDir))
+            if(!PHPWS_File::rmdir($configDir)) {
                 $this->addLog($mod->getTitle(), sprintf(_('Unable to remove directory %s'), $configDir));
+            }
+        }
+
+        $javascriptDir = $homeDir. '/javascript/' . $mod->getTitle() . '/';
+        if (is_dir($javascriptDir)) {
+            $this->addLog($mod->getTitle(), sprintf(_('Removing directory %s'), $javascriptDir));
+            if(!PHPWS_File::rmdir($javascriptDir)) {
+                $this->addLog($mod->getTitle(), sprintf(_('Unable to remove directory %s'), $javascriptDir));
+            }
         }
 
         $templateDir = $homeDir . '/templates/' . $mod->getTitle() . '/';
         if (is_dir($templateDir)) {
             $this->addLog($mod->getTitle(), sprintf(_('Removing directory %s'), $templateDir));
-            if(!PHPWS_File::rmdir($templateDir))
+            if(!PHPWS_File::rmdir($templateDir)) {
                 $this->addLog($mod->getTitle(), sprintf(_('Unable to remove directory %s'), $templateDir));
+            }
         }
 
         $imageDir = $homeDir . '/images/' . $mod->getTitle() . '/';
         if (is_dir($imageDir)) {
             $this->addLog($mod->getTitle(), sprintf(_('Removing directory %s'), $imageDir));
-            if(!PHPWS_File::rmdir($imageDir))
+            if(!PHPWS_File::rmdir($imageDir)) {
                 $this->addLog($mod->getTitle(), sprintf(_('Unable to remove directory %s'), $imageDir));
+            }
         }
 
         $fileDir = $homeDir . '/files/' . $mod->getTitle() . '/';
         if (is_dir($fileDir)) {
             $this->addLog($mod->getTitle(), sprintf(_('Removing directory %s'), $fileDir));
-            if(!PHPWS_File::rmdir($fileDir))
+            if(!PHPWS_File::rmdir($fileDir)) {
                 $this->addLog($mod->getTitle(), sprintf(_('Unable to remove directory %s'), $fileDir));
+            }
         }
 
         $imageModDir = $homeDir . '/images/mod/' . $mod->getTitle() . '/';
         if (is_dir($imageModDir)) {
             $this->addLog($mod->getTitle(), sprintf(_('Removing directory %s'), $imageModDir));
-            if(!PHPWS_File::rmdir($imageModDir))
+            if(!PHPWS_File::rmdir($imageModDir)) {
                 $this->addLog($mod->getTitle(), sprintf(_('Unable to remove directory %s'), $imageModDir));
+            }
         }
     
     }
