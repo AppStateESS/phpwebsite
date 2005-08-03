@@ -221,7 +221,7 @@ class FC_Image_Manager {
 
 
         $vars['itemname'] = $this->itemname;
-        echo javascript('post_file', $vars);
+        echo javascript('modules/filecabinet/post_file', $vars);
         exit();
     }
 
@@ -239,7 +239,7 @@ class FC_Image_Manager {
                                              $this->image->id)
                                      );
         $vars['itemname'] = $this->itemname;
-        echo javascript('post_file', $vars);
+        echo javascript('modules/filecabinet/post_file', $vars);
         exit();
     }
 
@@ -349,7 +349,7 @@ class FC_Image_Manager {
         $link_vars['itemname']  = $this->itemname;
         $js_vars['pick_link'] = str_replace('&amp;', '&', PHPWS_Text::linkAddress('filecabinet', $link_vars) . '&image_id=');
 
-        $tpl['IMAGE_INFO'] = javascript('pick_image', $js_vars);
+        $tpl['IMAGE_INFO'] = javascript('modules/filecabinet/pick_image', $js_vars);
 
         $content = PHPWS_Template::process($tpl, 'filecabinet', 'manager/pick.tpl');
         return $content;
