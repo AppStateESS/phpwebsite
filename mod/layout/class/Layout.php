@@ -117,7 +117,7 @@ class Layout {
         $cssFile['tag'] = $module;
         $cssFile['import'] = TRUE;
 
-        $templateLoc = "./templates/$module/$filename";
+        $templateLoc = "templates/$module/$filename";
 
         if (FORCE_MOD_TEMPLATES || !is_file($templateLoc))
             $cssFile['file'] = PHPWS_SOURCE_HTTP . "mod/$module/templates/$filename";
@@ -127,7 +127,7 @@ class Layout {
         if (is_file($cssFile['file']))
             Layout::addToStyleList($cssFile);
     
-        $themeFile['file']   = './' . PHPWS_Template::getTplDir($module) . $filename;
+        $themeFile['file']   = PHPWS_Template::getTplDir($module) . $filename;
         $themeFile['import'] = TRUE;
 
         if (is_file($themeFile['file'])){
