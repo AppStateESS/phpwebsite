@@ -36,10 +36,8 @@
 -->
   <tr>
     <td class="label">{FULL_PHOTO_FILE_LABEL}</td>
-    <td>{FULL_PHOTO}</td>
+    <td><div style="height : {HEIGHT}">{FULL_PHOTO}</div></td>
   </tr>
 </table>
-
 {SUBMIT}
 {END_FORM}
-{TEST}

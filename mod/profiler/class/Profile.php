@@ -175,49 +175,52 @@ class Profile {
         $this->setFullStory($_POST['fullstory']);
         $this->setProfileType($_POST['profile_type']);
 
+        if (!empty($_FILES)) {
 
-        // Save full photo
-        $full_photo = & new PHPWS_Image;
-        $full_photo->setModule('profiler');
-        $result = $full_photo->importPost('full_photo', TRUE);
+            // Save full photo
+            $full_photo = & new PHPWS_Image;
+            $full_photo->setModule('profiler');
+            $result = $full_photo->importPost('full_photo', TRUE);
 
-        if ($result) {
-            if (is_array($result)) {
-                foreach ($result as $img_error) {
-                    $error[] = sprintf(_('Photo image error - %s'), $img_error->getMessage());
-                }
-            } else {
-                $result = $full_photo->save();
-                if (PEAR::isError($result)) {
-                    PHPWS_Error::log($result);
-                    $error[] = _('There was a problem saving photo.');
+            if ($result) {
+                if (is_array($result)) {
+                    foreach ($result as $img_error) {
+                        $error[] = sprintf(_('Photo image error - %s'), $img_error->getMessage());
+                    }
                 } else {
-                    $this->full_photo = $full_photo->getId();
+                    $result = $full_photo->save();
+                    if (PEAR::isError($result)) {
+                        PHPWS_Error::log($result);
+                        $error[] = _('There was a problem saving photo.');
+                    } else {
+                        $this->full_photo = $full_photo->getId();
+                    }
                 }
             }
-        }
 
-        // Save thumbnail
-        $thumbnail = & new PHPWS_Image;
-        $thumbnail->setModule('profiler');
-        $result = $thumbnail->importPost('thumbnail', TRUE);
+            // Save thumbnail
+            $thumbnail = & new PHPWS_Image;
+            $thumbnail->setModule('profiler');
+            $result = $thumbnail->importPost('thumbnail', TRUE);
 
-        if ($result) {
-            if (is_array($result)) {
-                foreach ($result as $img_error) {
-                    $error[] = sprintf(_('Thumbnail image error - %s'), $img_error->getMessage());
-                }
-            } else {
-                $result = $thumbnail->save();
-                if (PEAR::isError($result)) {
-                    PHPWS_Error::log($result);
-                    $error[] = _('There was a problem saving the thumbnail.');
+            if ($result) {
+                if (is_array($result)) {
+                    foreach ($result as $img_error) {
+                        $error[] = sprintf(_('Thumbnail image error - %s'), $img_error->getMessage());
+                    }
                 } else {
-                    $this->thumbnail = $thumbnail->getId();
+                    $result = $thumbnail->save();
+                    if (PEAR::isError($result)) {
+                        PHPWS_Error::log($result);
+                        $error[] = _('There was a problem saving the thumbnail.');
+                    } else {
+                        $this->thumbnail = $thumbnail->getId();
+                    }
                 }
             }
+        } elseif (isset($_POST['full_photo_id'])) {
+            $this->full_photo = (int)$_POST['full_photo_id'];
         }
-
 
         if (empty($this->submitted_date)) {
             $this->setSubmitDate();
