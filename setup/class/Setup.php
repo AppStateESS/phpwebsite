@@ -399,6 +399,7 @@ class Setup{
     $directory[] = Setup::getSourceDir() . 'templates/';
     $directory[] = Setup::getSourceDir() . 'files/';
     $directory[] = Setup::getSourceDir() . 'logs/';
+    $directory[] = Setup::getSourceDir() . 'javascript/modules/';
 
     foreach ($directory as $id=>$check){
       if (!is_dir($check))
