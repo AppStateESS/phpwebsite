@@ -109,6 +109,17 @@ class Cabinet_Action {
             }
             break;
 
+        case 'post_pick':
+            PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
+            
+            if (isset($_REQUEST['image_id'])) {
+                $manager = & new FC_Image_Manager($_REQUEST['image_id']);
+            }
+            $manager->loadReqValues();
+
+            $manager->postPick();
+            break;
+
         case 'post_image_close':
             PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
             
@@ -128,7 +139,7 @@ class Cabinet_Action {
                 Layout::nakedDisplay($manager->edit());
             } else {
                 $result = $manager->createThumbnail();
-                $manager->postJavascript($result);
+                $manager->postUpload($result);
             }
             break;
 
@@ -152,7 +163,11 @@ class Cabinet_Action {
 
         case 'pick_image':
             PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
-            $manager = & new FC_Image_Manager;
+            if (isset($_REQUEST['current'])) {
+                $manager = & new FC_Image_Manager((int)$_REQUEST['current']);
+            } else {
+                $manager = & new FC_Image_Manager;
+            }
             $manager->loadReqValues();
             Layout::nakedDisplay($manager->pick());
 

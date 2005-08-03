@@ -1,9 +1,12 @@
 <script type="text/javascript">
 
 var requester = null;
+var image_id = 0;
 
-function showImage(image_id)
+function showImage(id)
 {
+    image_id = id;
+
     if (requester != null && requester.readyState != 0 && requester.readyState != 4) {
             requester.abort();
     }
@@ -46,10 +49,15 @@ function show_image()
     image_title  =requester.responseXML.getElementsByTagName('title')[0].firstChild.nodeValue;
     image_alt  =requester.responseXML.getElementsByTagName('alt')[0].firstChild.nodeValue;
     image_desc  =requester.responseXML.getElementsByTagName('desc')[0].firstChild.nodeValue;
-    
+
+    //    document.getElementById('image-details').style.display = 'block';
 
     image_tag = '<img src="' + image_src + '" width="' + image_width +'" height="' + image_height + '" title="' + image_title + '" alt="' + image_alt + '" />';
     document.getElementById('image-tag').innerHTML = image_tag;
+    document.getElementById('image-desc').innerHTML = image_desc;
+    document.getElementById('image-title').innerHTML = image_title;
+
+    document.getElementById('pick-link').href = '{pick_link}' + image_id;
 }
 
 </script>

@@ -1,8 +1,8 @@
 <?php
 
 // Move this
-define('MAX_TN_IMAGE_WIDTH', 100);
-define('MAX_TN_IMAGE_HEIGHT', 100);
+define('MAX_TN_IMAGE_WIDTH', 50);
+define('MAX_TN_IMAGE_HEIGHT', 50);
 
 define('FC_VIEW_MARGIN_WIDTH', 20);
 define('FC_VIEW_MARGIN_HEIGHT', 100);
@@ -33,7 +33,7 @@ class FC_Image_Manager {
             $this->thumbnail = & new PHPWS_Image;
             return;
         }
-
+        
         $this->image = & new PHPWS_Image((int)$image_id);
         $this->loadThumbnail();
         
@@ -59,7 +59,7 @@ class FC_Image_Manager {
 
     function setImageId($image_id)
     {
-        $this->image->id = (int)$image_id;
+        $this->image = & new PHPWS_Image($image_id);
     }
 
     function setItemName($itemname)
@@ -171,6 +171,7 @@ class FC_Image_Manager {
         $link_vars['action']    = 'pick_image';
         $link_vars['mod_title'] = $this->image->module;
         $link_vars['itemname']  = $this->itemname;
+        $link_vars['current']   = $this->image->id;
    
         $vars['address'] = PHPWS_Text::linkAddress('filecabinet', $link_vars);
         $vars['width']   = FC_MANAGER_WIDTH;
@@ -181,6 +182,7 @@ class FC_Image_Manager {
 
     function getUploadLink($use_image=TRUE)
     {
+        //        test($this);
         $vars['width']   = FC_UPLOAD_WIDTH;
         $vars['height']  = FC_UPLOAD_HEIGHT;
         if ($use_image) {
@@ -194,6 +196,8 @@ class FC_Image_Manager {
         $link_vars['ms']        = $this->image->_max_size;
         $link_vars['mw']        = $this->image->_max_width;
         $link_vars['mh']        = $this->image->_max_height;
+        $link_vars['tnw']       = $this->tn_width;
+        $link_vars['tnh']       = $this->tn_height;
         if (isset($this->image->directory)) {
             $link_vars['directory'] = urlencode($this->image->directory);
         }
@@ -205,7 +209,23 @@ class FC_Image_Manager {
         exit(_('An error occurred when trying to save your image.'));
     }
 
-    function postJavascript($check=TRUE)
+    function postPick()
+    {
+        $vars = array();
+        $vars['image_link'] = addslashes($this->getViewLink());
+
+        $vars['hidden'] = addslashes(sprintf('<input type="hidden" name="%s_id" value="%s" />', 
+                                             $this->itemname,
+                                             $this->image->id)
+                                     );
+
+
+        $vars['itemname'] = $this->itemname;
+        echo javascript('post_file', $vars);
+        exit();
+    }
+
+    function postUpload($check=TRUE)
     {
         $vars = array();
         if ($check) {
@@ -261,6 +281,8 @@ class FC_Image_Manager {
         $form->addHidden('ms',        $this->image->_max_size);
         $form->addHidden('mh',        $this->image->_max_height);
         $form->addHidden('mw',        $this->image->_max_width);
+        $form->addHidden('tnw',       $this->tn_width);
+        $form->addHidden('tnh',       $this->tn_height);
 
         $form->addFile('file_name');
         $form->setSize('file_name', 30);
@@ -315,12 +337,22 @@ class FC_Image_Manager {
                                              'ID'        => $tn->thumbnail_source);
         }
 
-        $tpl['IMAGE_INFO'] = javascript('pick_image');
+        $js_vars['title_label']   = _('Title');
+        $js_vars['desc_label']    = _('Description');
+        $js_vars['link_label']    = _('Pick this image');
+        $js_vars['current_image'] = $this->image->getTag();
+        $js_vars['image_title']   = $this->image->getTitle();
+        $js_vars['image_desc']    = $this->image->getDescription();
+
+        $link_vars['action']    = 'post_pick';
+        $link_vars['mod_title'] = $this->image->module;
+        $link_vars['itemname']  = $this->itemname;
+        $js_vars['pick_link'] = str_replace('&amp;', '&', PHPWS_Text::linkAddress('filecabinet', $link_vars) . '&image_id=');
+
+        $tpl['IMAGE_INFO'] = javascript('pick_image', $js_vars);
 
         $content = PHPWS_Template::process($tpl, 'filecabinet', 'manager/pick.tpl');
         return $content;
-        test($thumbnails);
-        test($source_images);
     }
 
 
@@ -341,6 +373,14 @@ class FC_Image_Manager {
 
         if (isset($_REQUEST['mw'])) {
             $this->setMaxWidth($_REQUEST['mw']);
+        }
+
+        if (isset($_REQUEST['tnw'])) {
+            $this->setTNWidth($_REQUEST['tnw']);
+        }
+
+        if (isset($_REQUEST['tnh'])) {
+            $this->setTNHeight($_REQUEST['tnh']);
         }
     }
 
