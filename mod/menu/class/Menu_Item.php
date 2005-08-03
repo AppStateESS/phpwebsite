@@ -225,7 +225,7 @@ class Menu_Item {
         $tpl['TITLE'] = $this->title;
         $tpl['LINKS'] = $this->displayLinks($edit);
 
-        $content = PHPWS_Template::process($tpl, 'menu', $file, $content_var);
+        $content = PHPWS_Template::process($tpl, 'menu', $file);
         Layout::set($content, 'menu', $content_var);
     }
 
