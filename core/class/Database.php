@@ -369,7 +369,7 @@ class PHPWS_DB {
         $operator = strtoupper($operator);
         if (is_array($column)) {
             foreach ($column as $new_column => $new_value) {
-                $result = $this->addWhere($new_column, $new_value);
+                $result = $this->addWhere($new_column, $new_value, $operator, $conj, $group);
                 if (PEAR::isError($result)) {
                     return $result;
                 }
