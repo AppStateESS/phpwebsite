@@ -239,7 +239,10 @@ class Blog {
     {
         $set_permissions = FALSE;
 
-        if (!Current_User::authorized('blog', 'edit_blog')) {
+        if ($this->id && !Current_User::authorized('blog', 'edit_blog')) {
+            Current_User::disallow();
+            return FALSE;
+        } elseif (empty($this->id) && !Current_User::authorized('blog')) {
             Current_User::disallow();
             return FALSE;
         }
