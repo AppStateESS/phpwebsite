@@ -118,6 +118,7 @@ class DBPager {
             return;
         }
         $this->db = & new PHPWS_DB($table);
+        $this->db->setDistinct(TRUE);
         if (PEAR::isError($this->db)){
             $this->error = $this->db;
             $this->db = NULL;
@@ -265,7 +266,7 @@ class DBPager {
         if (isset($this->error)) {
             return;
         }
-        $this->db->setDistinct(TRUE);
+
         $result = $this->db->select('count');
         $this->db->resetColumns();
         return $result;
