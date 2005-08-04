@@ -8,7 +8,7 @@ define('FC_VIEW_MARGIN_WIDTH', 20);
 define('FC_VIEW_MARGIN_HEIGHT', 100);
 
 define('FC_UPLOAD_WIDTH', 450);
-define('FC_UPLOAD_HEIGHT', 300);
+define('FC_UPLOAD_HEIGHT', 350);
 
 define('FC_MANAGER_WIDTH', 640);
 define('FC_MANAGER_HEIGHT', 480);
@@ -116,13 +116,15 @@ class FC_Image_Manager {
 
             $tpl['CURRENT']     = $this->getViewLink();
             $tpl['CLEAR_IMAGE'] = $this->getClearLink();
+            $tpl['CHANGE_TN']  = $this->getThumbnailLink();
         } else {
             $tpl['CURRENT'] = FC_NONE_IMAGE;
         }
 
-        $tpl['PICK_IMAGE']  = $this->getChangeLink();
-        $tpl['ITEMNAME'] = $this->itemname;
+        $tpl['PICK_IMAGE'] = $this->getChangeLink();
+        $tpl['ITEMNAME']   = $this->itemname;
         $tpl['UPLOAD_NEW'] = $this->getUploadLink(FALSE);
+
 
         return PHPWS_Template::process($tpl, 'filecabinet', 'manager/javascript.tpl');
     }
@@ -139,6 +141,27 @@ class FC_Image_Manager {
 
         $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
+    }
+
+    function getClearLink()
+    {
+        return '<a href="#">Clear Image</a>';
+    }
+
+
+
+    function getThumbnailLink()
+    {
+        $link_vars['action']    = 'change_thumbnail';
+        $link_vars['mod_title'] = $this->image->module;
+        $link_vars['itemname']  = $this->itemname;
+        $link_vars['current']   = $this->image->id;
+   
+        $vars['address'] = PHPWS_Text::linkAddress('filecabinet', $link_vars);
+        $vars['width']   = FC_UPLOAD_WIDTH;
+        $vars['height']  = FC_UPLOAD_HEIGHT;
+        $vars['label']   = _('Change Thumbnail');
+        return javascript('open_window', $vars);
     }
 
     function getViewLink($bare_link=TRUE)
@@ -182,7 +205,6 @@ class FC_Image_Manager {
 
     function getUploadLink($use_image=TRUE)
     {
-        //        test($this);
         $vars['width']   = FC_UPLOAD_WIDTH;
         $vars['height']  = FC_UPLOAD_HEIGHT;
         if ($use_image) {
@@ -244,11 +266,6 @@ class FC_Image_Manager {
     }
 
 
-    function getClearLink()
-    {
-
-    }
-
     function postImage()
     {
         $errors = $this->image->importPost('file_name');
@@ -286,6 +303,7 @@ class FC_Image_Manager {
 
         $form->addFile('file_name');
         $form->setSize('file_name', 30);
+        $form->setMaxFileSize($this->image->_max_size);
         
         $form->setLabel('file_name', _('Image location'));
 
@@ -332,6 +350,10 @@ class FC_Image_Manager {
         $db->setIndexBy('thumbnail_source');
         $thumbnails = $db->getObjects('PHPWS_Image');
 
+        if (empty($thumbnails)) {
+            return _('No images found.');
+
+        }
         foreach ($thumbnails as $tn) {
             $tpl['thumbnail-list'][] = array('THUMBNAIL' => $tn->getTag(),
                                              'ID'        => $tn->thumbnail_source);
