@@ -2,6 +2,7 @@
 
 /*************************** FORM ****************************/
 /* These are the default values for various form elements */
+
 // default number of rows in a textarea
 define("DFLT_ROWS", 5);
 
@@ -19,5 +20,15 @@ define("DFLT_MAX_SIZE", 255);
 // default number of rows to show in a multiple select
 define("DFLT_MAX_SELECT", 4);
 
+/**
+ * If this is turned on, forms will add MAX_FILE_SIZE
+ * restrictions as a hidden variable. This can prevent
+ * large uploads. HOWEVER, if a file goes above the
+ * max size, you will receive a system warning. So, you will 
+ * need to make sure display_errors is Off.
+ */
+define('FORM_USE_FILE_RESTRICTIONS', FALSE);
+
+define('FORM_MAX_FILE_SIZE', 5000000);
 
 ?>
