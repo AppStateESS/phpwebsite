@@ -52,10 +52,11 @@ class PHPWS_Error {
         $fullError[] = ' - ' . $message;
 
         if (isset($extraInfo)){
-            if (is_array($extraInfo))
+            if (is_array($extraInfo)) {
                 $message = vsprintf($message, $extraInfo);
-            else
+            } else {
                 $fullError[] = ' [' . $extraInfo . ']';
+            }
         }
 
         $error = &PEAR::raiseError($message, $value, NULL, NULL, implode('', $fullError));
