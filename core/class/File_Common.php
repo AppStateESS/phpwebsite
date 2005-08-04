@@ -198,9 +198,15 @@ class File_Common {
 
     function getFILES($varName)
     {
-
         if (!$this->fileIsSet($varName)) {
             return FALSE;
+        }
+
+        if (isset($_FILES[$varName]['error']) && 
+            ( $_FILES[$varName]['error'] == UPLOAD_ERR_INI_SIZE ||
+              $_FILES[$varName]['error'] == UPLOAD_ERR_FORM_SIZE)
+            ) {
+            return PHPWS_Error::get(PHPWS_FILE_SIZE, 'core', 'File_Common::getFiles');
         }
 
         $this->filename = preg_replace('/[^\w\.]/', '_', $_FILES[$varName]['name']);

@@ -175,6 +175,8 @@ class PHPWS_Image extends File_Common{
 
     function checkBounds()
     {
+        // This should not be necessary as the form should
+        // contain MAX_FILE_SIZE
         if (!$this->allowSize()) {
             $errors[] = PHPWS_Error::get(PHPWS_IMG_SIZE, 'core', 'PHPWS_Image::checkBounds', array($this->getSize(), $this->_max_size));
         }
