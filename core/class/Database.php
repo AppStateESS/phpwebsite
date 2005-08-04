@@ -32,7 +32,7 @@ class PHPWS_DB {
     var $_columnInfo = NULL;
     var $_lock       = FALSE;
     var $_sql        = NULL;
-    var $_distinct   = TRUE;
+    var $_distinct   = FALSE;
 
     function PHPWS_DB($table=NULL){
         PHPWS_DB::touchDB();
@@ -556,11 +556,12 @@ class PHPWS_DB {
     }
 
     function isDistinct(){
-        $this->_distinct = TRUE;
+        return (bool)$this->_distinct;
     }
 
-    function notDistinct(){
-        $this->_distinct = FALSE;
+    function setDistinct($distinct=TRUE)
+    {
+        $this->_distinct = (bool)$distinct;
     }
 
     function addColumn($column, $distinct=FALSE, $max_min=NULL)
@@ -596,7 +597,11 @@ class PHPWS_DB {
     function getColumn($format=FALSE){
         if ($format) {
             if (empty($this->columns)) {
-                return $this->tables[0] . '.*';
+                if ($this->isDistinct()) {
+                    return 'DISTINCT ' . $this->tables[0] . '.*';
+                } else {
+                    return $this->tables[0] . '.*';
+                }
             } else {
                 foreach ($this->columns as $col) {
                     extract($col);
@@ -638,13 +643,15 @@ class PHPWS_DB {
     }
 
     function getOrder($dbReady=FALSE){
-        if (!count($this->order))
+        if (!count($this->order)) {
             return NULL;
+        }
 
-        if ($dbReady)
+        if ($dbReady) {
             return 'ORDER BY ' . implode(', ', $this->order);
-        else
+        } else {
             return $this->order;
+        }
     }
 
     function resetOrder(){
@@ -667,8 +674,9 @@ class PHPWS_DB {
     }
 
     function getValue($column){
-        if (!count($this->values) || !isset($this->values[$column]))
+        if (!count($this->values) || !isset($this->values[$column])) {
             return NULL;
+        }
 
         return $this->values[$column];
     }
@@ -678,8 +686,9 @@ class PHPWS_DB {
     }
 
     function getAllValues(){
-        if (!isset($this->values) || !count($this->values))
+        if (!isset($this->values) || !count($this->values)) {
             return NULL;
+        }
 
         return $this->values;
     }
@@ -882,7 +891,11 @@ class PHPWS_DB {
 
             if ($type == 'count') {
                 if (empty($columns)) {
-                    $columns = 'COUNT(*)';
+                    if ($this->isDistinct()) {
+                        $columns = 'DISTINCT COUNT(*)';
+                    } else {
+                        $columns = 'COUNT(*)';
+                    }
                 } else {
                     $add_group = $columns;
                     $columns .= ', COUNT(*)';   
@@ -893,9 +906,11 @@ class PHPWS_DB {
                     }
                 }
             }
+
             if (!empty($where)) {
                 $where = 'WHERE ' . $where;
             }
+
             $sql = "SELECT $columns FROM $table $where $groupby $order $limit";
         } else {
             $mode = DB_FETCHMODE_ASSOC;
