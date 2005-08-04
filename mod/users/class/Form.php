@@ -61,6 +61,7 @@ class User_Form {
             $username = NULL;
 
         $form = & new PHPWS_Form('User_Login');
+        $form->turnOffAutocomplete();
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'user');
         $form->addHidden('command', 'loginBox');
