@@ -28,6 +28,15 @@ class Boost_Form {
         PHPWS_Core::initCoreClass('Module.php');
         PHPWS_Core::initCoreClass('Text.php');
         PHPWS_Core::initCoreClass('File.php');
+        PHPWS_Core::initModClass('boost', 'Boost.php');
+
+        $allow_update = TRUE;
+
+        $dir_content = array();
+        if (!PHPWS_Boost::checkDirectories($dir_content)) {
+            $tpl['DIRECTORIES'] = implode('<br />', $dir_content);
+            $allow_update = FALSE;
+        }
 
         $core_mods      = PHPWS_Core::coreModList();
         $dir_mods       = PHPWS_File::readDirectory(PHPWS_SOURCE_DIR . 'mod/', TRUE);
@@ -73,12 +82,12 @@ class Boost_Form {
                     $link_command['action'] = 'show_dependency';
                 }
             } else {
-                if ($type != 'core_mods'){
+                if ($type != 'core_mods') {
                     $uninstallVars = array('opmod'=>$title, 'action'=>'uninstall');
                     $template['UNINSTALL'] = PHPWS_Text::secureLink(_('Uninstall'), 'boost', $uninstallVars);
                 }
 
-                if ($mod->needsUpdate()){
+                if ($mod->needsUpdate()) {
                     if ($mod->checkDependency()) {
                         $link_title = _('Update');
                         $link_command['action'] = 'update';
@@ -103,7 +112,7 @@ class Boost_Form {
                 $template['ABOUT'] = Layout::getJavascript('open_window', $aboutView);
             }
 
-            if (isset($link_command['action'])){
+            if (isset($link_command['action']) && $allow_update){
                 $template['COMMAND'] = PHPWS_Text::secureLink($link_title, 'boost', $link_command);
             } else
                 $template['COMMAND'] = $link_title;
@@ -115,10 +124,7 @@ class Boost_Form {
    
         $result = PHPWS_Template::process($tpl, 'boost', 'module_list.tpl');
         return $result;
-    
     }
-
-
 }
 
 ?>

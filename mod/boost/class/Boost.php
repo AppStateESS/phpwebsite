@@ -829,6 +829,55 @@ class PHPWS_Boost {
         }
         exit();
     }
+
+    /**
+     * Copy of the setup function of the same name
+     * This one also checks the write and read capabilities of
+     * the log files.
+     */
+    function checkDirectories(&$content)
+    {
+        $errorDir = TRUE;
+        $directory[] = 'config/';
+        $directory[] = 'images/';
+        $directory[] = 'templates/';
+        $directory[] = 'files/';
+        $directory[] = 'logs/';
+        $directory[] = 'javascript/modules/';
+
+        foreach ($directory as $id=>$check){
+            if (!is_dir($check)) {
+                $dirExist[] = $check;
+            } elseif (!is_writable($check)) {
+                $writableDir[] = $check;
+            }
+        }
+
+        if (isset($dirExist)){
+            $content[] = _('The following directories need to be created:');
+            $content[] = '<pre>' . implode("\n", $dirExist) . '</pre>';
+            $errorDir = FALSE;
+        }
+
+        if (isset($writableDir)){
+            $content[] = _('The following directories are not writable:');
+            $content[] = '<pre>' . implode("\n", $writableDir) . '</pre>';
+            $content[] = _('You will need to change the permissions.') . '<br />';
+            $content[] = '<a href="setup/help/permissions.' . DEFAULT_LANGUAGE . '.txt">' . _('Permission Help') . '</a>';
+            $errorDir = FALSE;
+        }
+
+        $files = array('boost.log', 'error.log', 'security.log');
+        foreach ($files as $log_name) {
+            if (!is_readable('logs/' . $log_name) || !is_writable('logs/' . $log_name)) {
+                $content[] = sprintf(_('Your log/%s file must be readable and writable.'), $log_name);
+                $errorDir = FALSE;
+            }
+        }
+
+        return $errorDir;
+    }
+
 }
 
 ?>
