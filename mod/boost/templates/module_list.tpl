@@ -1,3 +1,4 @@
+{DIRECTORIES}
 <table width="100%" cellpadding="4">
 <tr>
   <th>{TITLE_LABEL}</th>
