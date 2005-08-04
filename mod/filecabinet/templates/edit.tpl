@@ -7,7 +7,7 @@
 </ul>
 <!-- END error-list -->
 
-<table class="form-table" width="100%">
+<table class="form-table">
   <tr>
     <td class="label">{FILE_NAME_LABEL}</td><td>{FILE_NAME}</td>
   </tr>
