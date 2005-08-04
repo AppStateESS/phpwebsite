@@ -37,6 +37,7 @@ CREATE TABLE images (
   width smallint NOT NULL default '0',
   height smallint NOT NULL default '0',
   alt varchar(255) NOT NULL default '',
+  thumbnail_source int NOT NULL default '0',
   module varchar(40) default NULL,
   PRIMARY KEY  (id)
 );
