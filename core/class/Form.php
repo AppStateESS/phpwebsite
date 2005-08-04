@@ -28,9 +28,7 @@
  *
  */
 
-define('FORM_ID_IDENTIFIER', 'f');
 PHPWS_Core::configRequireOnce('core', 'formConfig.php', TRUE);
-PHPWS_Core::initCoreClass('Editor.php');
 
 class PHPWS_Form {
     var $id = NULL;
@@ -81,13 +79,43 @@ class PHPWS_Form {
   
     var $use_auth_key = TRUE;
 
+    var $_autocomplete = TRUE;
+
+    var $max_file_size = 0;
+
+    var $_multipart = FALSE;
+
     /**
      * Constructor for class
      */
     function PHPWS_Form($id=NULL)
     {
+        if (!defined('ABSOLUTE_UPLOAD_LIMIT')) {
+            $this->max_file_size = FORM_MAX_FILE_SIZE;
+        } else {
+            $this->max_file_size = ABSOLUTE_UPLOAD_LIMIT;
+        }
+
 	$this->id = $id;
 	$this->reset();
+    }
+
+    function setMaxFileSize($file_size)
+    {
+        if ($file_size <= 1) {
+            return;
+        }
+        $this->max_file_size = (int)$file_size;
+    }
+
+    function turnOffAutocomplete()
+    {
+        $this->_autocomplete = FALSE;
+    }
+
+    function turnOnAutocomplete()
+    {
+        $this->_autocomplete = TRUE;
     }
 
     function noAuthKey()
@@ -730,6 +758,7 @@ class PHPWS_Form {
 	    break;
 
 	case 'file':
+            $this->_multipart = TRUE;
 	    $this->_encode = ' enctype="multipart/form-data"';
 	    return new Form_File($name);
 	    break;
@@ -862,6 +891,9 @@ class PHPWS_Form {
 
 	if ($helperTags) {
 	    $template['START_FORM'] = $this->getStart();
+            if (FORM_USE_FILE_RESTRICTIONS && $this->_multipart) {
+                $template['START_FORM'] .= sprintf('<input type="hidden" name="MAX_FILE_SIZE" value="%d" />', $this->max_file_size) . "\n";
+            }
         }
 
 	if (class_exists('Current_User') &&
@@ -945,12 +977,19 @@ class PHPWS_Form {
 		$formName = 'name="' . $this->id . '" id="' . $this->id . '" ';
 	    else
 		$formName = 'id="' . $this->id . '" ';
-	}
-	else
+	} else {
 	    $formName = NULL;
+        }
 
-	if (isset($this->_action))
-	    return '<form ' . $formName . 'action="' . $this->_action . '" ' . $this->getMethod(TRUE) . $this->_encode . ">\n";
+        if (!$this->_autocomplete) {
+            $autocomplete = 'autocomplete="off" ';
+        } else {
+            $autocomplete = NULL;
+        }
+
+	if (isset($this->_action)) {
+	    return '<form ' . $autocomplete . $formName . 'action="' . $this->_action . '" ' . $this->getMethod(TRUE) . $this->_encode . ">\n";
+        }
     }
 
     function _imageSelectArray($module, $current)
@@ -1276,6 +1315,7 @@ class Form_TextArea extends Form_Element {
 
     function get()
     {
+        PHPWS_Core::initCoreClass('Editor.php');
 	if ($this->_use_editor && Editor::willWork()) {
 	    $editor = & new Editor($this->name, $this->value);
 	    return $editor->get();
