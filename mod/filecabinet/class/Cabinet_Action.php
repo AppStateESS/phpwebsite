@@ -132,8 +132,13 @@ class Cabinet_Action {
 
             $result = $manager->postImage($manager->image);
             if (PEAR::isError($result)) {
-                PHPWS_Error::log($result);
-                $manager->errorPost();
+                if ($result->code == PHPWS_FILE_SIZE) {
+                    $manager->image->_errors = array($result);
+                    Layout::nakedDisplay($manager->edit());
+                } else {
+                    PHPWS_Error::log($result);
+                    $manager->errorPost();
+                }
             } elseif (is_array($result)) {
                 $manager->image->_errors = $result;
                 Layout::nakedDisplay($manager->edit());
