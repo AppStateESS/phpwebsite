@@ -265,7 +265,7 @@ class DBPager {
         if (isset($this->error)) {
             return;
         }
-
+        $this->db->setDistinct(TRUE);
         $result = $this->db->select('count');
         $this->db->resetColumns();
         return $result;
@@ -291,8 +291,9 @@ class DBPager {
         }
 
         if (!empty($this->search) && isset($this->searchColumn)){
-            foreach ($this->searchColumn as $column_name)
+            foreach ($this->searchColumn as $column_name) {
                 $this->addWhere($column_name, $this->search, 'REGEXP', 'OR');
+            }
         }
 
         $count = $this->getTotalRows();
@@ -680,7 +681,7 @@ class DBPager {
 
         DBPager::plugPageTags($template);
         $this->final_template = &$template;
-        //        test($template);
+
         return PHPWS_Template::process($template, $this->module, $this->template);
     }
 
