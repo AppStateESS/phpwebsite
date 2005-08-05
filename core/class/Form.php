@@ -742,34 +742,41 @@ class PHPWS_Form {
 	switch ($type){
 	case 'text':
 	case 'textfield':
-	    return new Form_TextField($name, $value);
+            $obj = new Form_TextField($name, $value);
+	    return $obj;
 	    break;
       
 	case 'textarea':
-	    return new Form_TextArea($name, $value);
+            $obj = new Form_TextArea($name, $value);
+	    return $obj;
 	    break;
 
 	case 'submit':
-	    return new Form_Submit($name, $value);
+            $obj = new Form_Submit($name, $value);
+	    return $obj;
 	    break;
 
 	case 'password':
-	    return new Form_Password($name, $value);
+            $obj = new Form_Password($name, $value);
+	    return $obj;
 	    break;
 
 	case 'file':
             $this->_multipart = TRUE;
 	    $this->_encode = ' enctype="multipart/form-data"';
-	    return new Form_File($name);
+            $obj = new Form_File($name);
+	    return $obj;
 	    break;
       
 	case 'select':
 	case 'dropbox':
-	    return new Form_Select($name, $value);
+            $obj = new Form_Select($name, $value);
+	    return $obj;
 	    break;
 
 	case 'multiple':
-	    return new Form_Multiple($name, $value);
+            $obj = new Form_Multiple($name, $value);
+	    return $obj;
 	    break;
 
 	case 'radio':
@@ -778,22 +785,28 @@ class PHPWS_Form {
 		foreach ($value as $sub)
 		    $radio[] = new Form_RadioButton($name, $sub);
 		return $radio;
-	    } else
-		return new Form_RadioButton($name, $value);
+	    } else {
+                $obj = new Form_RadioButton($name, $value);
+		return $obj;
+            }
 	    break;
 
 	case 'check':
 	case 'checkbox':
 	    if (is_array($value)){
-		foreach ($value as $sub)
+		foreach ($value as $sub) {
 		    $check[] = new Form_Checkbox($name, $sub);
+                }
 		return $check;
-	    } else
-		return new Form_Checkbox($name, $value);
+	    } else {
+                $obj = new Form_Checkbox($name, $value);
+		return $obj;
+            }
 	    break;
 
 	case 'hidden':
-	    return new Form_Hidden($name, $value);
+            $obj = new Form_Hidden($name, $value);
+	    return $obj;
 	    break;
 
 	default:
@@ -1523,8 +1536,9 @@ class Form_Element {
     function Form_Element($name, $value=NULL)
     {
 	$this->setName($name);
-	if (isset($value))
+	if (isset($value)) {
 	    $this->setValue($value);
+        }
     }
 
     function setTitle($title)
