@@ -411,6 +411,7 @@ class FC_Image_Manager {
      */ 
     function createThumbnail()
     {
+        PHPWS_Core::initCoreClass('File.php');
         $src_img   = &$this->image;
         if ($src_img->type == 'image/gif') {
             return FALSE;
