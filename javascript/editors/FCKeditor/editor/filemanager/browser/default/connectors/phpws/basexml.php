@@ -33,8 +33,9 @@ function SetXmlHeaders()
 	header( 'Content-Type:text/xml; charset=utf-8' ) ;
 }
 
-function CreateXmlHeader( $command, $resourceType, $currentFolder )
+function CreateXmlHeader( $command, $resourceType, $currentFolder, $subdir=NULL )
 {
+
 	SetXmlHeaders() ;
 	
 	// Create the XML document header.
@@ -54,7 +55,7 @@ function CreateXmlHeader( $command, $resourceType, $currentFolder )
         $address[] = $_SERVER['HTTP_HOST'];
         $address[] = dirname($_SERVER['PHP_SELF']);
         $url = implode('', $address) . '/';
-        $url = preg_replace('/\/javascript\/editors.*/', '', $url) . '/images';
+        $url = preg_replace('/\/javascript\/editors.*/', '', $url) . '/images' . $subdir;
 	
 	// Add the current folder node.
 	//echo '<CurrentFolder path="' . ConvertToXmlAttribute( $currentFolder ) . '" url="' . ConvertToXmlAttribute( GetUrlFromPath( $resourceType, $currentFolder ) ) . '" />' ;

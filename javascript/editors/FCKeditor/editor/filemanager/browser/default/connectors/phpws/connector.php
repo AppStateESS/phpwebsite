@@ -25,7 +25,7 @@ include('basexml.php') ;
 include('commands.php') ;
 
 if ( !$Config['Enabled'] )
-	SendError( 1, 'This connector is disabled. Please check the "editor/filemanager/browser/default/connectors/php/config.php" file' ) ;
+	SendError( 1, 'This connector is disabled. Please check the "editor/filemanager/browser/default/connectors/phpws/config.php" file' ) ;
 
 // Get the "UserFiles" path.
 $GLOBALS["UserFilesPath"] = '' ;
@@ -76,7 +76,14 @@ function DoResponse()
 		return ;
 	}
 
-	CreateXmlHeader( $sCommand, $sResourceType, $sCurrentFolder ) ;
+        if (!empty($_REQUEST['module'])) {
+            $subdir = '/' . preg_replace('/\W/', '', $_REQUEST['module']);
+        } else {
+            $subdir = NULL;
+        }
+
+
+	CreateXmlHeader( $sCommand, $sResourceType, $sCurrentFolder, $subdir ) ;
 
 	// Execute the required command.
 	switch ( $sCommand )
