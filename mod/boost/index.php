@@ -50,6 +50,12 @@ switch ($_REQUEST['action']){
      $content[] = Boost_Action::showDependency($_REQUEST['opmod']);
      break;
 
+ case 'show_depended_upon':
+     echo 'wtf';
+     PHPWS_Core::initModClass('boost', 'Action.php');
+     $content[] = Boost_Action::showDependedUpon($_REQUEST['opmod']);
+     break;
+
 }// End area switch
 
 $boostPanel->setContent(implode('', $content));
