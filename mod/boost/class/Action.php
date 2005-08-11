@@ -2,7 +2,8 @@
 
 class Boost_Action {
 
-    function checkupdate($mod_title){
+    function checkupdate($mod_title)
+    {
         PHPWS_Core::initCoreClass('Module.php');
         $module = & new PHPWS_Module($mod_title);
 
@@ -23,7 +24,7 @@ class Boost_Action {
         $template['STABLE_VERSION_LABEL'] = _('Current stable version');
         $template['STABLE_VERSION'] = $version_info['VERSION'];
 
-        if (version_compare($version_info['VERSION'], $module->getVersion(), '>')){
+        if (version_compare($version_info['VERSION'], $module->getVersion(), '>')) {
             $template['UPDATE_AVAILABLE'] = _('An update is available!') . '<br />';
             $template['UPDATE_PATH_LABEL'] = _('Download here');
             $template['UPDATE_PATH'] = '<a href="' . $version_info['DOWNLOAD'] . '">' . $version_info['DOWNLOAD'] . '</a>';
@@ -39,7 +40,8 @@ class Boost_Action {
         return PHPWS_Template::process($template, 'boost', 'check_update.tpl');
     }
 
-    function installModule($module_title){
+    function installModule($module_title)
+    {
         PHPWS_Core::initModClass('boost', 'Boost.php');
     
         $boost = new PHPWS_Boost;
@@ -47,7 +49,8 @@ class Boost_Action {
         return $boost->install();
     }
 
-    function uninstallModule($module_title){
+    function uninstallModule($module_title)
+    {
         PHPWS_Core::initModClass('boost', 'Boost.php');
     
         $boost = new PHPWS_Boost;
@@ -58,7 +61,8 @@ class Boost_Action {
         return $content;
     }
 
-    function updateModule($module_title){
+    function updateModule($module_title)
+    {
         PHPWS_Core::initModClass('boost', 'Boost.php');
         $boost = new PHPWS_Boost;
         $boost->loadModules(array($module_title), FALSE);
@@ -66,7 +70,15 @@ class Boost_Action {
         return $content;
     }
 
-    function showDependency($base_module_title) {
+    function showDependedUpon($base_mod)
+    {
+        PHPWS_Core::initCoreClass('Module.php');
+        $module = & new PHPWS_Module($base_mod);
+        $dependents = $module->isDependedUpon();
+    }
+
+    function showDependency($base_module_title)
+    {
         PHPWS_Core::initCoreClass('Module.php');
         $module = & new PHPWS_Module($base_module_title);
         $depend = $module->getDependencies();
