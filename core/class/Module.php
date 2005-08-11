@@ -281,19 +281,97 @@ class PHPWS_Module {
         if (!$this->getProperName()) {
             $this->setProperName($this->getProperName(TRUE));
         }
-        return $db->saveObject($this);
+        $result = $db->saveObject($this);
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        return $this->saveDependencies();
     }
 
-    function isInstalled()
+    function saveDependencies()
     {
+        if (!$this->_dependency) {
+            return TRUE;
+        }
+
+        $db = & new PHPWS_DB('dependencies');
+        $db->addWhere('source_mod', $this->title);
+        $db->delete();
+        $db->reset();
+
+        $dep_list = $this->getDependencies();
+
+        if (empty($dep_list)) {
+            return NULL;
+        }
+
+        foreach ($dep_list['MODULE'] as $stats) {
+            $db->addValue('source_mod', $this->title);
+            $db->addValue('depended_on', $stats['TITLE']);
+            $db->addValue('version', $stats['VERSION']);
+            $result = $db->insert();
+
+            if (PEAR::isError($result)) {
+                return $result;
+            }
+        }
+    }
+
+    function isDependedUpon()
+    {
+        static $depend_list = array();
+
+        if (!empty($depend_list) &&
+            isset($depend_list[$this->title])) {
+            return $depend_list[$this->title];
+        }
+        
+        $db = & new PHPWS_DB('dependencies');
+        $db->addWhere('depended_on', $this->title);
+        $db->addColumn('source_mod');
+        $result = $db->select('col');
+
+        if (empty($result)) {
+            return $depend_list[$this->title] = FALSE;
+        } else {
+            return $depend_list[$this->title] = $result;
+        }
+            
+    }
+
+    function isInstalled($title=NULL)
+    {
+        static $module_list = array();
+
+        if (empty($title)) {
+            if (isset($this->title)) {
+                $title = &$this->title;
+            } else {
+                return NULL;
+            }
+        }
+
+        if (!empty($module_list) && isset($module_list[$title])) {
+            return $module_list[$title];
+        }
+
         $db = & new PHPWS_DB('modules');
-        $db->addWhere('title', $this->getTitle());
-        $result = $db->select('row');
+        $db->addWhere('title', $title);
+        $db->addColumn('title');
+        $result = $db->select('one');
         if (PEAR::isError($result)){
             PHPWS_Error::log($result);
             return FALSE;
-        } else
-            return isset($result);
+        } else {
+            if (isset($result)) {
+                $module_list[$title] = TRUE;
+                return TRUE;
+            } else {
+                $module_list[$title] = FALSE;
+                return FALSE;
+            }
+        }
     }
 
     function needsUpdate()
@@ -343,6 +421,7 @@ class PHPWS_Module {
 
         return TRUE;
     }
+
 
     function getDependencies()
     {
