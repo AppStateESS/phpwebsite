@@ -83,8 +83,15 @@ class Boost_Form {
                 }
             } else {
                 if ($type != 'core_mods') {
-                    $uninstallVars = array('opmod'=>$title, 'action'=>'uninstall');
-                    $template['UNINSTALL'] = PHPWS_Text::secureLink(_('Uninstall'), 'boost', $uninstallVars);
+                    if ($dependents = $mod->isDependedUpon()) {
+                        test($dependents);
+                        $link_command['action'] = 'show_depended_upon';
+                        $depend_warning = sprintf(_('This module is depended upon by: %s'), implode(', ', $dependents));
+                        $template['UNINSTALL'] = PHPWS_Text::secureLink(_('Depended upon'), 'boost', $link_command, NULL, $depend_warning);
+                    } else {
+                        $uninstallVars = array('opmod'=>$title, 'action'=>'uninstall');
+                        $template['UNINSTALL'] = PHPWS_Text::secureLink(_('Uninstall'), 'boost', $uninstallVars);
+                    }
                 }
 
                 if ($mod->needsUpdate()) {
