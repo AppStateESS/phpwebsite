@@ -869,8 +869,8 @@ class PHPWS_Boost {
 
         $files = array('boost.log', 'error.log', 'security.log');
         foreach ($files as $log_name) {
-            if (!is_readable('logs/' . $log_name) || !is_writable('logs/' . $log_name)) {
-                $content[] = sprintf(_('Your log/%s file must be readable and writable.'), $log_name);
+            if (is_file('logs/' . $log_name) && (!is_readable('logs/' . $log_name) || !is_writable('logs/' . $log_name))) {
+                $content[] = sprintf(_('Your logs/%s file must be readable and writable.'), $log_name);
                 $errorDir = FALSE;
             }
         }
