@@ -132,7 +132,9 @@ function javascriptEnabled(){
     }
 }
 
-function loadBrowserInformation(){
+function loadBrowserInformation()
+{
+    require('core/class/Debug.php');
     $agent = $_SERVER['HTTP_USER_AGENT'];
     $agentVars = explode(' ', $agent);
 
@@ -208,8 +210,16 @@ function loadBrowserInformation(){
                 else
                     $program = _('Unknown');
             } else {
-                if (isset($newVars[8]))
-                    $program = explode('/', $newVars[8]);
+                if (isset($newVars[8])){
+                    if ($newVars[8] == 'Red') {
+                        $program[0] = 'Red Hat';
+                        $program[1] = str_replace('Hat/', '', $newVars[9]);
+                    } elseif (strstr('/', $newVars[8])) {
+                        $program = explode('/', $newVars[8]);
+                    } else {
+                        $program[0] = $program[1] = 'Unknown';
+                    }
+                }
                 elseif (isset($newVars[7]))
                     $program = explode('/', $newVars[7]);
                 else
@@ -225,6 +235,8 @@ function loadBrowserInformation(){
     }// End engine switch
 
     $browser['platform'] = $platform;
+
+
     $browser['browser'] = $program[0];
     $browser['browser_version'] = $program[1];
 
