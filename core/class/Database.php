@@ -1181,6 +1181,7 @@ class PHPWS_DB {
 
         $prefix = PHPWS_DB::getPrefix();
         $sqlArray = PHPWS_Text::sentence($text);
+        $error = FALSE;
 
         foreach ($sqlArray as $sqlRow){
             if (empty($sqlRow) || preg_match("/^[^\w\d\s\\(\)]/i", $sqlRow))
@@ -1200,23 +1201,22 @@ class PHPWS_DB {
                 PHPWS_DB::homogenize($query);
 
                 $result = PHPWS_DB::query($query);
-                if (DB::isError($result))
-                    $errors[] = $result;
+                if (DB::isError($result)) {
+                    if ($report_errors) {
+                        return $result;
+                    } else {
+                        PHPWS_Error::log($result);
+                        $error = TRUE;
+                    }
+                }
             }
         }
 
-        if (isset($errors)) {
-            if ($report_errors) {
-                return $errors;
-            } else {
-                foreach ($errors as $_error){
-                    PHPWS_Error::log($_error);
-                }
-                return FALSE;
-            }
-        }
-        else
+        if ($error) {
+            return FALSE;
+        } else {
             return TRUE;
+        }
     }
 
 
