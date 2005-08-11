@@ -741,6 +741,7 @@ class Layout {
         $template['CONTENT']    = $content;
         $template['ONLOAD']     = Layout::getOnLoad();
         $template['BASE']       = Layout::getBase();
+
         $result = PHPWS_Template::process($template, "layout", "header.tpl");
 
         return $result;
@@ -763,12 +764,6 @@ class Layout {
         }
 
         return TRUE;
-    }
-
-    function blank($content)
-    {
-        echo Layout::wrap($content);
-        exit();
     }
 
     /**
