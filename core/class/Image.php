@@ -25,8 +25,9 @@ class PHPWS_Image extends File_Common{
     function PHPWS_Image($id=NULL)
     {
         $this->_classtype = 'image';
-        if (empty($id))
+        if (empty($id)) {
             return;
+        }
     
         $this->setId((int)$id);
         $result = $this->init();
@@ -42,8 +43,9 @@ class PHPWS_Image extends File_Common{
         $tag[] = '<img';
 
         $path = $this->getPath();
-        if (PEAR::isError($path))
+        if (PEAR::isError($path)) {
             return $path;
+        }
         $tag[] = 'src="'    . $path . '"';
         $tag[] = 'alt="'    . $this->getAlt(TRUE)   . '"';
         $tag[] = 'title="'  . $this->getTitle(TRUE) . '"';
@@ -59,8 +61,9 @@ class PHPWS_Image extends File_Common{
         $tag[] = '<a href="';
         $tag[] = $this->getPath();
         $tag[] = '"';
-        if ($newTarget)
+        if ($newTarget) {
             $tag[] = ' target="_blank"';
+        }
 
         $tag[] = '>';
         $tag[] = $this->getTitle();
@@ -126,8 +129,9 @@ class PHPWS_Image extends File_Common{
 
     function getAlt($check=FALSE)
     {
-        if ((bool)$check && empty($this->alt) && isset($this->title))
+        if ((bool)$check && empty($this->alt) && isset($this->title)) {
             return $this->title;
+        }
 
         return $this->alt;
     }
@@ -166,8 +170,9 @@ class PHPWS_Image extends File_Common{
 
     function allowHeight($imageheight=NULL)
     {
-        if (!isset($imageheight))
+        if (!isset($imageheight)) {
             $imageheight = &$this->height;
+        }
 
         return ($imageheight <= $this->_max_height) ? TRUE : FALSE;
     }
