@@ -1,6 +1,6 @@
 <?php
 $proper_name = 'Boost';
-$version = '1.6.1';
+$version = '1.7.0';
 $register = TRUE;
 $import_sql = FALSE;
 $image_dir = FALSE;
