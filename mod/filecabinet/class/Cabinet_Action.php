@@ -35,7 +35,7 @@ class Cabinet_Action {
         }
 
         if (isset($_REQUEST['image_id'])) {
-            $file = & new PHPWS_Image($_REQUEST['image_id']);
+            $image = & new PHPWS_Image($_REQUEST['image_id']);
         } elseif (isset($_REQUEST['document_id'])) {
             $file = & new PHPWS_Document($_REQUEST['document_id']);
         }
@@ -83,6 +83,7 @@ class Cabinet_Action {
 
             break;
 
+            /*
         case 'delete':
             break;
 
@@ -108,15 +109,14 @@ class Cabinet_Action {
                 Layout::metaRoute('index.php?module=filecabinet');
             }
             break;
-
+            */
         case 'post_pick':
             PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
-            
+
             if (isset($_REQUEST['image_id'])) {
                 $manager = & new FC_Image_Manager($_REQUEST['image_id']);
             }
             $manager->loadReqValues();
-
             $manager->postPick();
             break;
 
@@ -166,7 +166,7 @@ class Cabinet_Action {
             Layout::nakedDisplay($manager->edit());
             break;
 
-        case 'pick_image':
+        case 'edit_image':
             PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
             if (isset($_REQUEST['current'])) {
                 $manager = & new FC_Image_Manager((int)$_REQUEST['current']);
@@ -174,7 +174,12 @@ class Cabinet_Action {
                 $manager = & new FC_Image_Manager;
             }
             $manager->loadReqValues();
-            Layout::nakedDisplay($manager->pick());
+            Layout::nakedDisplay($manager->editImage());
+            break;
+
+        case 'view_image':
+            Layout::nakedDisplay(Cabinet_Action::viewImage($image));
+            break;
 
         default:
             exit($action);
@@ -224,7 +229,7 @@ class Cabinet_Action {
 
     function imageManager()
     {
-        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        //        PHPWS_Core::initModClass('filecabinet', 'Image.php');
         $pager = & new DBPager('images', 'FC_Image');
         $pager->setModule('filecabinet');
         $pager->setTemplate('imageList.tpl');
@@ -346,6 +351,16 @@ class Cabinet_Action {
         }
     }
 
+    function viewImage($image)
+    {
+        $template['TITLE'] = $image->title;
+        $template['DESCRIPTION']  = $image->description;
+        $template['IMAGE'] = $image->getTag();
+        $template['CLOSE'] = _('Close window');
+
+        $content = PHPWS_Template::process($template, 'filecabinet', 'view.tpl');
+        Layout::nakedDisplay($content);
+    }
 
 }
 

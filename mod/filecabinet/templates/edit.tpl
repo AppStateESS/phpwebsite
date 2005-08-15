@@ -23,7 +23,7 @@
     <td class="label">{DESCRIPTION_LABEL}</td><td>{DESCRIPTION}</td>
   </tr>
 </table>
-{SUBMIT}
+{SUBMIT} {CANCEL}
 {END_FORM}
 <br />
 {MAX_SIZE_LABEL}: {MAX_SIZE}K<br />
