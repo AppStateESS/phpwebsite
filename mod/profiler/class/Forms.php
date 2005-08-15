@@ -8,8 +8,6 @@
 
 define('MAX_PHOTO_WIDTH', 640);
 define('MAX_PHOTO_HEIGHT', 480);
-define('PR_TN_WIDTH', 200);
-define('PR_TN_HEIGHT', 200);
 define('PR_MAX_FILE_SIZE', 60000);
 
 class Profile_Forms {
@@ -74,12 +72,12 @@ class Profile_Forms {
         
         $manager->setMaxWidth(MAX_PHOTO_WIDTH);
         $manager->setMaxHeight(MAX_PHOTO_HEIGHT);
-        $manager->setTNWidth(PR_TN_WIDTH);
         $manager->setMaxSize(PR_MAX_FILE_SIZE);
-        $manager->setTNHeight(PR_TN_HEIGHT);
+
+        //        $manager->setTNWidth(PR_TN_WIDTH);
+        //        $manager->setTNHeight(PR_TN_HEIGHT);
        
         $template['FULL_PHOTO'] = $manager->get();
-        $template['HEIGHT'] = PR_TN_HEIGHT . 'px';
         PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         return PHPWS_Template::process($template, 'profiler', 'forms/edit.tpl');
 
