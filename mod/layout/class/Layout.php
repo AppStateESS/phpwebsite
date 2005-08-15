@@ -405,17 +405,10 @@ class Layout {
 
         if (is_file($bodyfile)){
             if (isset($data)){
-                $tpl = new PHPWS_Template;
-                $tpl->setFile($bodyfile, TRUE);
-                $tpl->setData($data);
-        
-                $result = $tpl->get();
-                if (!empty($result))
-                    return $result;
-                else
-                    return file_get_contents($bodyfile);
-            } else
+                return PHPWS_Template::process($data, 'layout', $bodyfile, TRUE);
+            } else {
                 return file_get_contents($bodyfile);
+            }
         }
 
     }
@@ -534,7 +527,8 @@ class Layout {
         }
     
         if (isset($data)) {
-            $result = PHPWS_Template::process($data, 'layout', $filename,TRUE);
+            $result = PHPWS_Template::process($data, 'layout', $filename, TRUE);
+
             if (!empty($result)) {
                 Layout::addJSHeader($result, $index);
             } else {
