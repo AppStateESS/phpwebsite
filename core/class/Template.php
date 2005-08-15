@@ -17,6 +17,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
     var $module           = NULL;
     var $error            = NULL;
     var $lastTemplatefile = NULL;
+    var $error            = NULL;
 
     function PHPWS_Template($module=NULL, $file=NULL)
     {
@@ -152,7 +153,10 @@ class PHPWS_Template extends HTML_Template_Sigma {
         }
 
         foreach($data as $tag=>$content) {
-            $this->setVariable($tag, $content);
+            if ( (is_string($tag) || is_numeric($tag)) &&
+                 (is_string($content) || is_numeric($content)) ) {
+                $this->setVariable($tag, $content);
+            }
         }
     }
 
