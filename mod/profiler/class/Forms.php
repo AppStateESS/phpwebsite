@@ -47,12 +47,6 @@ class Profile_Forms {
         $form->setMatch('profile_type', $profile->profile_type);
         $form->setLabel('profile_type', _('Profile type'));
 
-        $form->addImage('full_photo', 'profiler');
-        $form->setLabel('full_photo_file', _('Photo'));
-
-        $form->addImage('thumbnail', 'profiler');
-        $form->setLabel('thumbnail_file', _('Thumbnail'));
-
         if ($profile->id) {
             $form->addHidden('profile_id', $profile->id);
             $form->addSubmit('submit', _('Update profile'));
@@ -63,21 +57,33 @@ class Profile_Forms {
 
         $template = $form->getTemplate();
 
-        $manager = & new FC_Image_Manager($profile->full_photo);
-
-        $manager->setModule('profiler');
-        // using default module directory
-        //        $manager->setDirectory();
-        $manager->setItemName('full_photo');
-        
+        $manager = & new FC_Image_Manager();
+        $manager->setModule('profiler');        
         $manager->setMaxWidth(MAX_PHOTO_WIDTH);
         $manager->setMaxHeight(MAX_PHOTO_HEIGHT);
         $manager->setMaxSize(PR_MAX_FILE_SIZE);
 
-        //        $manager->setTNWidth(PR_TN_WIDTH);
-        //        $manager->setTNHeight(PR_TN_HEIGHT);
-       
-        $template['FULL_PHOTO'] = $manager->get();
+        $manager->loadImage($profile->photo_large);
+
+        $manager->setItemName('photo_large');
+        $template['PHOTO_LARGE'] = $manager->get();
+        
+        $manager->loadImage($profile->photo_medium);
+        $manager->setModule('profiler');
+        $manager->setItemName('photo_medium');
+        $template['PHOTO_MEDIUM'] = $manager->get();
+
+        $manager->loadImage($profile->photo_small);
+        $manager->setModule('profiler');
+        $manager->setItemName('photo_small');
+        $template['PHOTO_SMALL'] = $manager->get();
+
+
+        $template['PHOTO_LARGE_LABEL'] = _('Large photo');
+        $template['PHOTO_MEDIUM_LABEL'] = _('Medium photo');
+        $template['PHOTO_SMALL_LABEL'] = _('Small photo');
+        
+        
         PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         return PHPWS_Template::process($template, 'profiler', 'forms/edit.tpl');
 
