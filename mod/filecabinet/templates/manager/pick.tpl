@@ -2,10 +2,22 @@
 div.thumbnail {
 float: left;
 margin : 10px;
-height : 100px;
+height : 102px;
+width  : 80px;
 position : relative;
 border : 1px gray solid;
-padding : 2px;
+}
+
+div.image-info {
+width : 80px;
+position : absolute;
+bottom : 0px;
+background-color : white;
+}
+
+div.image-info img {
+margin-left : 2px;
+margin-top  : 2px;
 }
 
 #buttons {
@@ -19,10 +31,12 @@ background-color : white;
 </style>
 <div class="bgcolor2 padded"><h1>{TITLE}</h1></div>
 <!-- BEGIN thumbnail-list -->
-
   <div class='thumbnail'>
-    <span id="image-{TN_ID}" onclick="highlight('{TN_ID}', '{ID}');">{THUMBNAIL}</span>
-  <div style="position : absolute; bottom : 0px;"><a class="smaller" href="javascript:show_image('{ID}', '{TN_ID}', {WIDTH}, {HEIGHT});">{VIEW}</a></div>
+    <span  id="image-{TN_ID}" onclick="highlight('{TN_ID}', '{ID}');">{THUMBNAIL}</span>
+  <div class="image-info">
+  <a class="smaller" href="javascript:show_image('{ID}', '{TN_ID}', {WIDTH}, {HEIGHT});">{VIEW}</a>
+  <span class="smaller"> {WIDTH} x {HEIGHT} </span>
+</div>
   </div>
 <!-- END thumbnail-list -->
 

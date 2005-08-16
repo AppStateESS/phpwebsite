@@ -13,15 +13,15 @@ define('FC_UPLOAD_HEIGHT', 350);
 define('FC_MANAGER_WIDTH', 640);
 define('FC_MANAGER_HEIGHT', 480);
 
+define('FC_NONE_IMAGE_SRC', 'images/mod/filecabinet/none.png');
 
-define('FC_NONE_IMAGE', 
-       sprintf('<img src="images/mod/filecabinet/none.png" width="100" height="100" title="%s" alt="%s" border="0" />',
-               _('None'), _('None')));
+PHPWS_Core::initCoreClass('Image.php');
 
 class FC_Image_Manager {
     var $itemname       = NULL;
     var $image          = NULL;
     var $thumbnail      = NULL;
+    var $module         = NULL;
     var $tn_width       = MAX_TN_IMAGE_WIDTH;
     var $tn_height      = MAX_TN_IMAGE_HEIGHT;
     var $_error         = NULL;
@@ -33,14 +33,25 @@ class FC_Image_Manager {
             $this->thumbnail = & new PHPWS_Image;
             return;
         }
-        
+     
+        $this->loadImage($image_id);
+    }
+
+    function loadImage($image_id)
+    {
+        if (!$image_id) {
+            $this->image = & new PHPWS_Image;
+            $this->thumbnail = & new PHPWS_Image;
+            return;
+        }
+
         $this->image = & new PHPWS_Image((int)$image_id);
         $this->loadThumbnail();
-        
     }
 
     function setModule($module)
     {
+        $this->module = $module;
         $this->image->module = $module;
     }
 
@@ -107,13 +118,20 @@ class FC_Image_Manager {
         return NULL;
     }
 
+    function noImage()
+    {
+        return sprintf('<img src="%s" width="%s" height="%s" title="%s" alt="%s" />',
+                             FC_NONE_IMAGE_SRC, MAX_TN_IMAGE_WIDTH, 
+                             MAX_TN_IMAGE_HEIGHT, _('No image'), _('No image')
+                             );
+    }
 
     function javascript()
     {
         if ($this->image->id) {
-            $label = $this->image->getTag();
+            $label = $this->thumbnail->getTag();
         } else {
-            $label = FC_NONE_IMAGE;
+            $label = $this->noImage();
         }
 
         $link_vars = $this->getSettings();
@@ -126,29 +144,10 @@ class FC_Image_Manager {
         $vars['label']   = $label;
 
         $tpl['IMAGE'] = javascript('open_window', $vars);
-        $tpl['HIDDEN'] = '<input type="hidden" name="image_id" value="0" />';
+        $tpl['HIDDEN'] = sprintf('<input type="hidden" name="%s" value="%s" />', $this->itemname, $this->image->id);
         $tpl['ITEMNAME'] = $this->itemname;
+        $tpl['CLEAR_IMAGE'] = $this->getClearLink();
         return PHPWS_Template::process($tpl, 'filecabinet', 'manager/javascript.tpl');
-
-        /*
-        if ($this->image->id) {
-            $vars['image_id'] = $this->image->id;
-            $vars['action'] = 'change';
-
-            $tpl['CURRENT']     = $this->getViewLink();
-            $tpl['CLEAR_IMAGE'] = $this->getClearLink();
-            $tpl['CHANGE_TN']  = $this->getThumbnailLink();
-        } else {
-            $tpl['CURRENT'] = FC_NONE_IMAGE;
-        }
-
-        $tpl['PICK_IMAGE'] = $this->getChangeLink();
-        $tpl['ITEMNAME']   = $this->itemname;
-        $tpl['UPLOAD_NEW'] = $this->getUploadLink(FALSE);
-
-
-        return PHPWS_Template::process($tpl, 'filecabinet', 'manager/javascript.tpl');
-        */
     }
 
     function getRowTags()
@@ -167,7 +166,14 @@ class FC_Image_Manager {
 
     function getClearLink()
     {
-        return '<a href="#">Clear Image</a>';
+        $js_vars['src']      = FC_NONE_IMAGE_SRC;
+        $js_vars['width']    = MAX_TN_IMAGE_WIDTH;
+        $js_vars['height']   = MAX_TN_IMAGE_HEIGHT;
+        $js_vars['title']    = $js_vars['alt'] = _('No image');
+        $js_vars['itemname'] = $this->itemname;
+        $js_vars['label']    = _('Clear image');
+
+        return javascript('modules/filecabinet/clear_image', $js_vars);
     }
 
 
@@ -175,7 +181,7 @@ class FC_Image_Manager {
     function getThumbnailLink()
     {
         $link_vars['action']    = 'change_thumbnail';
-        $link_vars['mod_title'] = $this->image->module;
+        $link_vars['mod_title'] = $this->module;
         $link_vars['itemname']  = $this->itemname;
         $link_vars['current']   = $this->image->id;
    
@@ -212,23 +218,7 @@ class FC_Image_Manager {
                        _('No thumbnail'), _('No thumbnail'));
     }
 
-    /*
-    function getChangeLink()
-    {
-        $link_vars['action']    = 'pick_image';
-        $link_vars['mod_title'] = $this->image->module;
-        $link_vars['itemname']  = $this->itemname;
-        $link_vars['current']   = $this->image->id;
    
-        $vars['address'] = PHPWS_Text::linkAddress('filecabinet', $link_vars);
-        $vars['width']   = FC_MANAGER_WIDTH;
-        $vars['height']  = FC_MANAGER_HEIGHT;
-        $vars['label']   = _('Pick image');
-        return javascript('open_window', $vars);
-    }
-    */
-
-    
     function getUploadLink($use_image=TRUE)
     {
         $link_vars = $this->getSettings();
@@ -247,32 +237,12 @@ class FC_Image_Manager {
     function postPick()
     {
 
-        /*
-        $vars = array();
-
-        $link_vars = $this->getSettings();
-        $link_vars['action']    = 'edit_image';
-        $link_vars['current']   = $this->image->id;
-   
-        $vars['address'] = PHPWS_Text::linkAddress('filecabinet', $link_vars);
-        $vars['width']   = FC_MANAGER_WIDTH;
-        $vars['height']  = FC_MANAGER_HEIGHT;
-        $vars['label']   = addslashes($this->thumbnail->getTag());
-
-        $js_vars['image_link'] = str_replace("'", "\'", javascript('open_window', $vars));
-        //        $js_vars['image_link'] = 
-        $js_vars['itemname'] = $this->itemname;
-        $js_vars['hidden'] = addslashes(sprintf('<input type="hidden" name="%s_id" value="%s" />', 
-                                             $this->itemname,
-                                             $this->image->id)
-                                     );
-
-        */
         $js_vars['itemname'] = $this->itemname;
         $js_vars['src'] = $this->thumbnail->getPath();
         $js_vars['width'] = $this->thumbnail->width;
         $js_vars['height'] = $this->thumbnail->height;
-        $js_vars['title'] = $this->thumbnail->title;
+        $js_vars['title'] = $this->thumbnail->getTitle();
+        $js_vars['alt']   = $this->thumbnail->getAlt();
         $js_vars['image_id'] = $this->image->id;
 
         echo javascript('modules/filecabinet/post_file', $js_vars);
@@ -309,14 +279,14 @@ class FC_Image_Manager {
         $form = & new PHPWS_Form;
         $form->addHidden('module', 'filecabinet');
 
-        $session_index = md5($this->image->module . $this->itemname);
+        $session_index = md5($this->module . $this->itemname);
 
         if ($this->image->directory) {
             $form->addHidden('directory', urlencode($this->image->directory));
         }
         
         $form->addHidden('action',    'post_image_close');
-        $form->addHidden('mod_title', $this->image->module);
+        $form->addHidden('mod_title', $this->module);
         $form->addHidden('itemname',  $this->itemname);
         $form->addHidden('ms',        $this->image->_max_size);
         $form->addHidden('mh',        $this->image->_max_height);
@@ -373,12 +343,13 @@ class FC_Image_Manager {
 
         $db = & new PHPWS_DB('images');
         $db->addWhere('thumbnail_source', 0, '>');
-        $db->addWhere('module', $this->image->module);
+        $db->addWhere('type', 'image/gif', NULL, 'or');
+        $db->addWhere('module', $this->module);
         $db->setIndexBy('thumbnail_source');
         $thumbnails = $db->getObjects('PHPWS_Image');
 
         $db->reset();
-        $db->addWhere('module', $this->image->module);
+        $db->addWhere('module', $this->module);
         $db->addWhere('thumbnail_source', 0);
         $db->setIndexBy('id');
         $source_images = $db->getObjects('PHPWS_Image');
@@ -387,15 +358,30 @@ class FC_Image_Manager {
             $tpl['thumbnail-list'][] = array('THUMBNAIL' => _('No images found.'));
         } else {
             foreach ($thumbnails as $tn) {
-                $tpl['thumbnail-list'][] = array('THUMBNAIL' => $tn->getTag(),
-                                                 'TN_ID'     => $tn->id,
-                                                 'ID'        => $tn->thumbnail_source,
-                                                 'ITEMNAME'  => $this->itemname,
-                                                 'MOD_TITLE' => $this->image->module,
-                                                 'WIDTH'     => $source_images[$tn->thumbnail_source]->width,
-                                                 'HEIGHT'    => $source_images[$tn->thumbnail_source]->height,
-                                                 'VIEW'      => sprintf('<img src="images/mod/filecabinet/viewmag+.png" width="16" height="16" title="%s" />', _('View full image'))
-                                                 );
+                if ($tn->type == 'image/gif') {
+                    $tpl['thumbnail-list'][] = array('THUMBNAIL' => sprintf('<img src="images/mod/filecabinet/no_tn.png" width="48" height="48" title="%s" alt="%s" />',
+                                                                            _('No thumbnails for gifs'),
+                                                                            _('No thumbnails for gifs')),
+                                                     'TN_ID'     => $tn->id,
+                                                     'ID'        => $tn->id,
+                                                     'ITEMNAME'  => $this->itemname,
+                                                     'MOD_TITLE' => $this->module,
+                                                     'WIDTH'     => $tn->width,
+                                                     'HEIGHT'    => $tn->height,
+                                                     'VIEW'      => sprintf('<img src="images/mod/filecabinet/viewmag+.png" width="16" height="16" title="%s" />', _('View full image'))
+                                                     );
+
+                } else {
+                    $tpl['thumbnail-list'][] = array('THUMBNAIL' => $tn->getTag(),
+                                                     'TN_ID'     => $tn->id,
+                                                     'ID'        => $tn->thumbnail_source,
+                                                     'ITEMNAME'  => $this->itemname,
+                                                     'MOD_TITLE' => $this->module,
+                                                     'WIDTH'     => $source_images[$tn->thumbnail_source]->width,
+                                                     'HEIGHT'    => $source_images[$tn->thumbnail_source]->height,
+                                                     'VIEW'      => sprintf('<img src="images/mod/filecabinet/viewmag+.png" width="16" height="16" title="%s" />', _('View full image'))
+                                                     );
+                }
             }
         }
 
@@ -414,7 +400,7 @@ class FC_Image_Manager {
 
         $link_vars['image_warning'] = _('Choose a image first.');
         $link_vars['action']    = 'post_pick';
-        $link_vars['mod_title'] = $this->image->module;
+        $link_vars['mod_title'] = $this->module;
         $link_vars['itemname']  = $this->itemname;
 
         javascript('modules/filecabinet/pick_image', $js_vars);
@@ -532,7 +518,7 @@ class FC_Image_Manager {
     function getSettings()
     {
         $vars['itemname']      = $this->itemname;
-        $vars['mod_title']     = $this->image->module;
+        $vars['mod_title']     = $this->module;
         $vars['ms']            = $this->image->_max_size;
         $vars['mw']            = $this->image->_max_width;
         $vars['mh']            = $this->image->_max_height;

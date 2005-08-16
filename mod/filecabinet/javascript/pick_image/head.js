@@ -55,7 +55,7 @@ function highlight(tn_id, image_id) {
     current_image = image_id;
     
     span = document.getElementById('image-' + tn_id).parentNode;
-    span.setAttribute('style', 'background-color : gray');
+    span.setAttribute('style', 'border : 1px solid orange; background-color : orange;');
     current_tn = tn_id;
 }
 
