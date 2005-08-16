@@ -229,8 +229,7 @@ class Cabinet_Action {
 
     function imageManager()
     {
-        //        PHPWS_Core::initModClass('filecabinet', 'Image.php');
-        $pager = & new DBPager('images', 'FC_Image');
+        $pager = & new DBPager('images', 'PHPWS_Image');
         $pager->setModule('filecabinet');
         $pager->setTemplate('imageList.tpl');
         $pager->setLink('index.php?module=filecabinet&amp;tab=image&amp;authkey=' . Current_User::getAuthKey());
