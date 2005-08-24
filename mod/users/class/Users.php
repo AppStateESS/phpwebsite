@@ -179,10 +179,11 @@ class PHPWS_User {
     }
 
     function setPassword($password, $hashPass=TRUE){
-        if ($hashPass)
-            $this->_password = md5($password);
-        else
+        if ($hashPass) {
+            $this->_password = md5($this->username . $password);
+        } else {
             $this->_password = $password;
+        }
     }
 
     function checkPassword($pass1, $pass2){
