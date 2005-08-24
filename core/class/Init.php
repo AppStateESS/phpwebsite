@@ -134,8 +134,15 @@ function javascriptEnabled(){
 
 function loadBrowserInformation()
 {
+    if (!isset($_SERVER['HTTP_USER_AGENT'])) {
+        $GLOBALS['browser_info'] = NULL;
+        return;
+
+    }
+
     require('core/class/Debug.php');
     $agent = $_SERVER['HTTP_USER_AGENT'];
+
     $agentVars = explode(' ', $agent);
 
     foreach ($agentVars as $agent){
