@@ -56,6 +56,52 @@ class Profile {
         }
     }
 
+    function display($template_name)
+    {
+        $images = $this->loadImages();
+        
+        $template_name = preg_replace('/\W/', '', $template_name);
+
+        $template['FIRST_NAME'] = $this->firstname;
+        $template['LAST_NAME'] = $this->lastname;
+        if (!empty($images['small'])) {
+            $template['PHOTO_SMALL'] = $images['small']->getTag(TRUE);
+        }
+
+        if (!empty($images['medium'])) {
+            $template['PHOTO_MEDIUM'] = $images['medium']->getTag(TRUE);
+        }
+
+        if (!empty($images['large'])) {
+            $template['PHOTO_LARGE'] = $images['large']->getTag(TRUE);
+        }
+
+        $template['FULLSTORY'] = $this->getFullstory();
+        $template['CAPTION'] = $this->getCaption();
+
+        return PHPWS_Template::process($template, 'profiler', 'views/' . $template_name . '.tpl');
+    }
+
+    function loadImages()
+    {
+        PHPWS_Core::initCoreClass('Image.php');
+        $images['small'] = $images['medium'] = $images['large'] = NULL;
+
+        if ($this->photo_small) {
+            $images['small'] = & new PHPWS_Image($this->photo_small);
+        }
+
+        if ($this->photo_medium) {
+            $images['medium'] = & new PHPWS_Image($this->photo_medium);
+        }
+ 
+        if ($this->photo_large) {
+            $images['large'] = & new PHPWS_Image($this->photo_large);
+        }
+
+        return $images;
+    }
+
     function setId($id)
     {
         $this->id = (int)$id;

@@ -9,6 +9,48 @@
 PHPWS_Core::initModClass('profiler', 'Profile.php');
 
 class Profiler {
+    function user()
+    {
+        $content = NULL;
+
+        if (empty($_REQUEST['command'])) {
+            PHPWS_Core::errorPage('404');
+        }
+
+        switch ($_REQUEST['command']) {
+        case 'random_profile':
+            if (!isset($_REQUEST['type']) || !isset($_REQUEST['template'])) {
+                PHPWS_Core::errorPage('404');
+            }
+            $content = Profiler::pullRandomProfile($_REQUEST['type'], $_REQUEST['template']);
+            echo $content;
+            exit();
+            break;
+        }
+
+        return $content;
+        exit();
+    }
+
+    function pullRandomProfile($type, $template)
+    {
+        if (!is_numeric($type)) {
+            PHPWS_Core::errorPage('404');
+        }
+        $db = & new PHPWS_DB('profiles');
+        $db->addWhere('profile_type', $type);
+        $db->addOrder('RAND()');
+        $db->setLimit(1);
+        $profile = & new Profile;
+        $result = $db->loadObject($profile);
+
+        if (empty($result)) {
+            return _('Please create a profile in this category.');
+        }
+
+        return $profile->display($template);
+    }
+
 
     function admin()
     {
