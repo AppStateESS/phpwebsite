@@ -631,14 +631,25 @@ class PHPWS_DB {
         return $this->indexby;
     }
 
+    /**
+     * Allows you to add an order or an array of orders to
+     * a db query
+     *
+     * sending random or rand with or without the () will query random
+     * element
+     */
 
     function addOrder($order){
         if (is_array($order)){
-            foreach ($order as $value){
-                $this->order[] = preg_replace('/[^\w\s.]/', '', $value);
+            foreach ($order as $value) {
+                $this->addOrder($value);
             }
         } else {
-            $this->order[] = preg_replace('/[^\w\s.]/', '', $order);
+            if (preg_match('/(random|rand)(\(\))?/i', $order)) {
+                $this->order[] = PHPWS_SQL::randomOrder();
+            } else {
+                $this->order[] = preg_replace('/[^\w\s.]/', '', $order);
+            }
         }
     }
 
