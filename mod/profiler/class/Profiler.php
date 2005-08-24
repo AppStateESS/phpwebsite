@@ -13,11 +13,11 @@ class Profiler {
     {
         $content = NULL;
 
-        if (empty($_REQUEST['command'])) {
+        if (empty($_REQUEST['user_cmd'])) {
             PHPWS_Core::errorPage('404');
         }
 
-        switch ($_REQUEST['command']) {
+        switch ($_REQUEST['user_cmd']) {
         case 'random_profile':
             if (!isset($_REQUEST['type']) || !isset($_REQUEST['template'])) {
                 PHPWS_Core::errorPage('404');
