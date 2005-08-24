@@ -1,57 +1,71 @@
 <?php
 
+/**
+ * Mysql specific library
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
+
 class PHPWS_SQL {
 
-  function export(&$info){
-    switch ($info['type']){
-    case "int":
-      if (!isset($info['len']) || $info['len'] > 6)
-	$setting = "INT";
-      else
-	$setting = "SMALLINT";
-      break;
+    function export(&$info){
+        switch ($info['type']){
+        case "int":
+            if (!isset($info['len']) || $info['len'] > 6)
+                $setting = "INT";
+            else
+                $setting = "SMALLINT";
+            break;
     
-    case "blob":
-      $setting = "TEXT";
-      $info['flags'] = NULL;
-      break;
+        case "blob":
+            $setting = "TEXT";
+            $info['flags'] = NULL;
+            break;
     
-    case "string":
-      $setting = "CHAR(" . $info['len'] . ")";
-      break;
+        case "string":
+            $setting = "CHAR(" . $info['len'] . ")";
+            break;
     
-    case "date":
-      $setting = "DATE";
-      break;
+        case "date":
+            $setting = "DATE";
+            break;
     
-    case "real":
-      $setting = "FLOAT";
-      break;
+        case "real":
+            $setting = "FLOAT";
+            break;
     
-    case "timestamp":
-      $setting = "TIMESTAMP";
-      $info['flags'] = NULL;
-      break;
+        case "timestamp":
+            $setting = "TIMESTAMP";
+            $info['flags'] = NULL;
+            break;
 
+        }
+
+        return $setting;
     }
 
-    return $setting;
-  }
 
-
-  function getLimit($limit){
-    $sql[] = "LIMIT " . $limit['total'];
+    function getLimit($limit){
+        $sql[] = "LIMIT " . $limit['total'];
     
-    if (isset($limit['offset'])) {
-      $sql[] = ", " . $limit['offset'];
+        if (isset($limit['offset'])) {
+            $sql[] = ", " . $limit['offset'];
+        }
+
+        return implode(" ", $sql);
     }
 
-    return implode(" ", $sql);
-  }
+    
 
-  function readyImport(&$query){
-    return;
-  }
+    function readyImport(&$query){
+        return;
+    }
+
+    function randomOrder()
+    {
+        return 'rand()';
+    }
 }
 
 ?>

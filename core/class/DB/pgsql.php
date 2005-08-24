@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Postgres specific library
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
+
 class PHPWS_SQL {
 
     function export(&$info){
@@ -93,6 +100,11 @@ class PHPWS_SQL {
                         $tableName, 'id', $tableName);
             */
         }
+    }
+
+    function randomOrder()
+    {
+        return 'random()';
     }
 
 }
