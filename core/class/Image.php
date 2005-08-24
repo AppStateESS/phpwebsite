@@ -38,11 +38,11 @@ class PHPWS_Image extends File_Common{
         }
     }
 
-    function getTag()
+    function getTag($full_path=FALSE)
     {
         $tag[] = '<img';
 
-        $path = $this->getPath();
+        $path = $this->getPath($full_path);
         if (PEAR::isError($path)) {
             return $path;
         }
@@ -54,6 +54,24 @@ class PHPWS_Image extends File_Common{
         $tag[] = 'border="' . $this->border    . '"';
         $tag[] = '/>';
         return implode(' ', $tag);
+    }
+
+    function getPath($full_path=FALSE)
+    {
+        if (empty($this->filename)) {
+            return PHPWS_Error::get(PHPWS_FILENAME_NOT_SET, 'core', 'File_Common::getPath');
+        }
+
+        if (empty($this->directory)) {
+            return PHPWS_Error::get(PHPWS_DIRECTORY_NOT_SET, 'core', 'File_Common::getPath');
+        }
+
+        if ($full_path) {
+            $path = PHPWS_Core::getHomeHttp();
+        } else {
+            $path = './';
+        }
+        return $path . 'images/' . $this->getDirectory() . $this->getFilename();
     }
 
     function getLink($newTarget=FALSE)

@@ -154,18 +154,6 @@ class File_Common {
         return $this->_classtype;
     }
 
-    function getPath()
-    {
-        if (empty($this->filename)) {
-            return PHPWS_Error::get(PHPWS_FILENAME_NOT_SET, 'core', 'File_Common::getPath');
-        }
-
-        if (empty($this->directory)) {
-            return PHPWS_Error::get(PHPWS_DIRECTORY_NOT_SET, 'core', 'File_Common::getPath');
-        }
-
-        return './images/' . $this->getDirectory() . $this->getFilename();
-    }
 
     function allowType($type=NULL)
     {
