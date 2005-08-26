@@ -56,7 +56,7 @@ class PHPWS_Image extends File_Common{
         return implode(' ', $tag);
     }
 
-    function getPath($full_path=FALSE)
+    function getPath($full_path=FALSE, $path_type='http')
     {
         if (empty($this->filename)) {
             return PHPWS_Error::get(PHPWS_FILENAME_NOT_SET, 'core', 'File_Common::getPath');
@@ -67,7 +67,11 @@ class PHPWS_Image extends File_Common{
         }
 
         if ($full_path) {
-            $path = PHPWS_Core::getHomeHttp();
+            if ($path_type == 'http') {
+                $path = PHPWS_Core::getHomeHttp();
+            } else {
+                $path = PHPWS_Core::getHomeDir();
+            }
         } else {
             $path = './';
         }
@@ -294,6 +298,38 @@ class PHPWS_Image extends File_Common{
                             'image/wbmp');
 
         return in_array(trim($type), $imageTypes);
+    }
+
+    function delete($delete_thumbnail=TRUE)
+    {
+        $db = & new PHPWS_DB('images');
+        $db->addWhere('id', $this->id);
+        $result = $db->delete();
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+        
+        $path = $this->getPath();
+        if (PEAR::isError($path)) {
+            return $path;
+        }
+
+        unlink($path);
+
+        if ($this->thumbnail_source != $this->id) {
+            $tn = & new PHPWS_Image;
+            $db->reset();
+            $db->addWhere('thumbnail_source', $this->id);
+            $result = $db->loadObject($tn);
+            if (empty($result)) {
+                return TRUE;
+            } elseif (PEAR::isError($result)) {
+                return $result;
+            }
+            return $tn->delete(FALSE);
+        }
+
+        return TRUE;
     }
 
     function getXML()
