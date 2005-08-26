@@ -31,6 +31,7 @@ class Notes {
 
     if (empty($result)) {
       $_SESSION['No_Notes'] = 1;
+      return;
     }
 
     $total_notes = count($result);
