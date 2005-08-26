@@ -8,6 +8,8 @@ if (!empty($_REQUEST['module'])) {
     $connector = NULL;
 }
 
+$home_dir = substr($_SERVER['SCRIPT_FILENAME'], 0, strpos($_SERVER['SCRIPT_FILENAME'], 'javascript/editors/')) 
+     . 'images/' . $subdir;
 
 ?>
 
@@ -30,8 +32,7 @@ FCKConfig.ToolbarSets["phpws"] = [
 	['Rule','Smiley','SpecialChar', '-', 'Source']
 ] ;
 
-server_path = '../../../../../../../../../images/<?php echo $subdir ?>';
+server_path = '<?php echo $home_dir ?>';
 
 FCKConfig.LinkBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Connector=connectors/phpws/connector.php' ;
-//FCKConfig.ImageBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Connector=connectors/phpws/connector.php&Type=Image&ServerPath=' + server_path ;
 FCKConfig.ImageBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Image&ServerPath=' + server_path + '&Connector=connectors/phpws/connector.php<?php echo $connector ?>';
