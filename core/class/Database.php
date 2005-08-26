@@ -189,7 +189,7 @@ class PHPWS_DB {
             return $this->_columnInfo;
         }
 
-        $table = & $this->getTable();
+        $table = $this->getTable();
         if (!isset($table)) {
             return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::isTableColumn');
         }
