@@ -110,6 +110,18 @@ class Cabinet_Action {
             }
             break;
             */
+
+        case 'delete_pick':
+            $result = $image->delete();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+            }
+            PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
+            $manager = & new FC_Image_Manager;
+            $manager->loadReqValues();
+            Layout::nakedDisplay($manager->editImage(TRUE));
+            break;
+
         case 'post_pick':
             PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
 
