@@ -257,9 +257,10 @@ class PHPWS_File {
     /**
      * Creates a thumbnail of a jpeg or png image.
      *
-     * @author   Jeremy Agee <jagee@NOSPAM.tux.appstate.edu>
-     * @modified Adam Morton <adam@NOSPAM.tux.appstate.edu>
-     * @modified Steven Levin <steven@NOSPAM.tux.appstate.edu>
+     * @author   Jeremy Agee
+     * @modified Adam Morton
+     * @modified Steven Levin
+     * @modified Matthew McNaney <mcnaney at gmail dot com>
      * @param    string  $fileName          The file name of the image you want thumbnailed.
      * @param    string  $directory         Path to the file you want thumbnailed
      * @param    string  $tndirectory       The path to where the new thumbnail file is stored
@@ -286,15 +287,20 @@ class PHPWS_File {
         $thumbnailWidth = round($scale * $imageInfo[0]);
         $thumbnailHeight = round($scale * $imageInfo[1]);
         $thumbnailImage = NULL;
-        if(PHPWS_File::chkgd2())
+        if(PHPWS_File::chkgd2()) {
             $thumbnailImage = ImageCreateTrueColor($thumbnailWidth, $thumbnailHeight);
-        else
+            imageAlphaBlending($thumbnailImage, false);
+            imageSaveAlpha($thumbnailImage, true);
+        } else {
             $thumbnailImage = ImageCreate($thumbnailWidth, $thumbnailHeight);
+        }
   
-        if ($imageInfo[2] == 2) {
-            $fullImage = ImageCreateFromJPEG($image);
+        if ($imageInfo[2] == 1) {
+            $fullImage = imagecreatefromgif($image);
+        } elseif ($imageInfo[2] == 2) {
+            $fullImage = imagecreatefromjpeg($image);
         } elseif ($imageInfo[2] == 3) {
-            $fullImage = ImageCreateFromPNG($image);
+            $fullImage = imagecreatefrompng($image);
         }
   
         ImageCopyResized($thumbnailImage, $fullImage, 0, 0, 0, 0, $thumbnailWidth, $thumbnailHeight, ImageSX($fullImage), ImageSY($fullImage));
@@ -302,7 +308,10 @@ class PHPWS_File {
 
         $thumbnailFileName = explode('.', $fileName);
 
-        if ($imageInfo[2] == 2) {
+        if ($imageInfo[2] == 1) {
+            $thumbnailFileName = $thumbnailFileName[0] . "_tn.gif";
+            imagegif($thumbnailImage, $tndirectory . $thumbnailFileName);
+        } elseif ($imageInfo[2] == 2) {
             $thumbnailFileName = $thumbnailFileName[0] . "_tn.jpg";
             imagejpeg($thumbnailImage, $tndirectory . $thumbnailFileName);
         } elseif ($imageInfo[2] == 3) {
