@@ -38,7 +38,9 @@ class Profiler {
             PHPWS_Core::errorPage('404');
         }
         $db = & new PHPWS_DB('profiles');
-        $db->addWhere('profile_type', $type);
+        if ($type) {
+            $db->addWhere('profile_type', $type);
+        }
         $db->addOrder('RAND()');
         $db->setLimit(1);
         $profile = & new Profile;
