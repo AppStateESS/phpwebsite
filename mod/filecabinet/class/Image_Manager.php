@@ -314,8 +314,6 @@ class FC_Image_Manager {
             $form->addSubmit(_('Upload'));
         }
 
-
-
         $template = $form->getTemplate();
 
         $template['CANCEL'] = sprintf('<input type="button" value="%s" onclick="javascript:window.close()" />', _('Cancel'));
