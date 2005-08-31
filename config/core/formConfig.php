@@ -1,4 +1,8 @@
 <?php
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 /*************************** FORM ****************************/
 /* These are the default values for various form elements */
@@ -20,6 +24,10 @@ define("DFLT_MAX_SIZE", 255);
 // default number of rows to show in a multiple select
 define("DFLT_MAX_SELECT", 4);
 
+// To comply with XHTML, fieldsets are set to forms
+define('FORM_DEFAULT_FIELDSET', FALSE);
+define('FORM_GENERIC_LEGEND', _('Form'));
+
 /**
  * If this is turned on, forms will add MAX_FILE_SIZE
  * restrictions as a hidden variable. This can prevent
@@ -30,5 +38,7 @@ define("DFLT_MAX_SELECT", 4);
 define('FORM_USE_FILE_RESTRICTIONS', FALSE);
 
 define('FORM_MAX_FILE_SIZE', 5000000);
+
+
 
 ?>
