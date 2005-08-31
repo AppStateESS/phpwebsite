@@ -238,15 +238,16 @@ Read the user documentation for more information on item permission
 names.
 
 
-Dropping an Version
+Flushing Old Versions
 ---------------------------------------------------------------------
-If you want to remove a version (unapproved or otherwise) you can just
-call the kill function like so:
+If you want to remove all previous versions (unapproved or otherwise)
+you can just call the "flush" function like so:
 
-$version = & new Version("my_mod_table", $version_id);
-$version->kill();
+Version::flush("my_mod_table", $item_id);
 
-It will be removed from the database forever (be careful!).
+All previous versions will be removed from the database forever (be
+careful!).
+
 
 
 Restoring a Version
