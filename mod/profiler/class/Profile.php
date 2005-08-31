@@ -203,9 +203,6 @@ class Profile {
             return FALSE;
         }
 
-        if (!isset($_POST['profile_id']) && PHPWS_Core::isPosted()) {
-            return TRUE;
-        }
 
         if (empty($_POST['firstname'])) {
             $error[] = _('Please enter a first name.');
@@ -285,7 +282,20 @@ class Profile {
         $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
     }
-    
+  
+    function delete()
+    {
+        PHPWS_Core::initModClass('version', 'Version.php');
+        $this->resetdb();
+        $this->_db->addWhere('id', $this->id);
+        $result = $this->_db->delete();
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        return Version::flush('profiles', $this->id);
+    }
+  
 }
 
 

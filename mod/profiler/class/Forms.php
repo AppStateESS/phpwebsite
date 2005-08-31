@@ -57,26 +57,10 @@ class Profile_Forms {
 
         $template = $form->getTemplate();
 
-        $manager = & new FC_Image_Manager();
-        $manager->setModule('profiler');        
-        $manager->setMaxWidth(MAX_PHOTO_WIDTH);
-        $manager->setMaxHeight(MAX_PHOTO_HEIGHT);
-        $manager->setMaxSize(PR_MAX_FILE_SIZE);
 
-        $manager->loadImage($profile->photo_large);
-
-        $manager->setItemName('photo_large');
-        $template['PHOTO_LARGE'] = $manager->get();
-        
-        $manager->loadImage($profile->photo_medium);
-        $manager->setModule('profiler');
-        $manager->setItemName('photo_medium');
-        $template['PHOTO_MEDIUM'] = $manager->get();
-
-        $manager->loadImage($profile->photo_small);
-        $manager->setModule('profiler');
-        $manager->setItemName('photo_small');
-        $template['PHOTO_SMALL'] = $manager->get();
+        $template['PHOTO_LARGE'] = Profile_Forms::getManager($profile->photo_large, 'photo_large');
+        $template['PHOTO_MEDIUM'] = Profile_Forms::getManager($profile->photo_medium, 'photo_medium');
+        $template['PHOTO_SMALL'] = Profile_Forms::getManager($profile->photo_small, 'photo_small');
 
 
         $template['PHOTO_LARGE_LABEL'] = _('Large photo');
@@ -87,6 +71,18 @@ class Profile_Forms {
         PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         return PHPWS_Template::process($template, 'profiler', 'forms/edit.tpl');
 
+    }
+
+    function getManager($image_id, $image_name)
+    {
+        $manager = & new FC_Image_Manager($image_id);
+        $manager->setMaxWidth(MAX_PHOTO_WIDTH);
+        $manager->setMaxHeight(MAX_PHOTO_HEIGHT);
+        $manager->setMaxSize(PR_MAX_FILE_SIZE);
+        $manager->setModule('profiler');
+        $manager->setItemname($image_name);
+
+        return $manager->get();
     }
 
     function profileList()
@@ -110,6 +106,31 @@ class Profile_Forms {
         $pager->setSearch('lastname', 'firstname');
         $content = $pager->get();
         return $content;
+    }
+
+    function settings()
+    {
+        $settings['profile_number'] = 3;
+        $settings['profile_sidebar'] = 1;
+
+        $form = & new PHPWS_Form;
+        $form->setLegend(_('Profiler Settings'));
+        $form->addHidden('module', 'profiler');
+        $form->addHidden('command', 'save_settings');
+
+        $form->addSelect('profile_number', array(1, 2, 3, 4));
+        $form->reindexValue('profile_number');
+        $form->setMatch('profile_number', $settings['profile_number']);
+        $form->setLabel('profile_number', _('Number of profiles'));
+
+        $form->addCheckbox('profile_sidebar', 1);
+        $form->setMatch('profile_sidebar', $settings['profile_sidebar']);
+        $form->setLabel('profile_sidebar', _('Enable profile sidebar'));
+
+        $form->addSubmit(_('Save settings'));
+
+        $template = $form->getTemplate();
+        return PHPWS_Template::process($template, 'profiler', 'forms/settings.tpl');
     }
 
 }

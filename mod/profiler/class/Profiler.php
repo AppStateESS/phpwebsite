@@ -56,6 +56,8 @@ class Profiler {
 
     function admin()
     {
+        $title = $content = $message = NULL;
+
         if (!Current_User::allow('profiler')) {
             Current_User::disallow();
         }
@@ -73,6 +75,9 @@ class Profiler {
 
         if (isset($_REQUEST['profile_id'])) {
             $profile = & new Profile($_REQUEST['profile_id']);
+            if (PEAR::isError($profile->_error)) {
+                PHPWS_Core::errorPage(404);
+            }
         }
 
         switch ($command) {
@@ -87,12 +92,25 @@ class Profiler {
             $content = Profile_Forms::edit($profile);
             break;
 
+        case 'delete':
+            if (!Current_User::authorized('profiler', 'delete_profiles')) {
+                Current_User::disallow();
+                break;
+            } else {
+                $profile->delete();
+            }
         case 'list':
             $title = _('Current Profiles');
             $content = Profile_Forms::profileList();
             break;
 
         case 'post_profile':
+            if (!isset($_POST['profile_id']) && PHPWS_Core::isPosted()) {
+                $title = _('You recently posted this identical profile.');
+                $content = _('Ignoring the repeat.');
+                break;
+            }
+
             if (!isset($profile)) {
                 $profile = & new Profile;
             }
@@ -115,6 +133,11 @@ class Profiler {
             }
             break;
 
+        case 'settings':
+            $title = _('Settings');
+            $content = Profile_Forms::settings();
+            break;
+
         } // End of command switch
 
         $tpl['CONTENT'] = $content;
@@ -134,6 +157,7 @@ class Profiler {
 
         $tabs['new']      = array ('title'=>_('New'), 'link'=> $link);
         $tabs['list']     = array ('title'=>_('List'), 'link'=> $link);
+        $tabs['settings'] = array ('title'=>_('Settings'), 'link'=> $link);
         $tabs['approval'] = array ('title'=>_('Approval'), 'link'=> $link);
 
         $panel = & new PHPWS_Panel('profiler');
