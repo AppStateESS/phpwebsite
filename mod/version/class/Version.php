@@ -156,7 +156,8 @@ class Version {
     }
 
   
-    function save(){
+    function save()
+    {
         $source_db = & new PHPWS_DB($this->source_table);
         $version_db = & new PHPWS_DB($this->version_table);
 
@@ -420,16 +421,20 @@ class Version {
         return $db->delete();
     }
 
-    function kill(){
-        if (empty($this->id))
+    function kill()
+    {
+        if (empty($this->id)) {
             return FALSE;
+        }
 
         $db = & new PHPWS_DB($this->version_table);
         $db->addWhere('id', $this->id);
         $result = $db->delete();
+
         if (PEAR::isError($result)) {
             return $result;
         }
+
         $db->resetWhere();
         $db->addWhere('source_id', $this->source_id);
         $db->addOrder('vr_number');
@@ -450,6 +455,7 @@ class Version {
             }
             $count++;
         }
+        return TRUE;
     }
 
     function getBackupList(){
