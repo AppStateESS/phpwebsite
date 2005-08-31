@@ -148,26 +148,28 @@ class User_Form {
 
         $permCheck = $group->getPermissionLevel($mod['title']);
 
-        foreach ($permSet as $key => $value){
-            $form = & new PHPWS_Form;
-            $name = 'module_permission[' . $mod['title'] .']';
-            $result = $form->addRadio($name, $key);
-            $form->setMatch($name, $permCheck);
-            $form->setLabel($name, $value);
-            $radio = $form->get($name, TRUE);
-            $template['PERMISSION_' . $key] = $radio['elements'][0] . $radio['labels'][0];
-        }
+        $form = & new PHPWS_Form;
+        $name = 'module_permission[' . $mod['title'] .']';
+        $form->addRadio($name, array_keys($permSet));
+        $form->setLabel($name, $permSet);
+        $form->setMatch($name, $permCheck);
+        $radio = $form->get($name, TRUE);
 
+        foreach ($radio['elements'] as $key=>$val) {
+            $template['PERMISSION_' . $key] = $val . $radio['labels'][$key];
+        }
 
         if (isset($permissions)){
             foreach ($permissions as $permName => $permProper){
                 $form = & new PHPWS_Form;
                 $name = 'sub_permission[' . $mod['title'] . '][' . $permName . ']';
                 $form->addCheckBox($name, 1);
-                if ($group->allow($mod['title'], $permName))
+                if ($group->allow($mod['title'], $permName)) {
                     $subcheck = 1;
-                else
+                } else {
                     $subcheck = 0;
+                }
+
                 $form->setMatch($name, $subcheck);
                 $form->setLabel($name, $permProper);
 
