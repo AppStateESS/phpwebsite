@@ -569,6 +569,10 @@ class DBPager {
         if (!javascriptEnabled())
             $form->addSubmit('go', _('Go'));
         $template = $form->getTemplate();
+        if (PEAR::isError($template)) {
+            PHPWS_Error::log($template);
+            return NULL;
+        }
         return implode("\n", $template);
     }
 
@@ -580,6 +584,10 @@ class DBPager {
         $form->addText('search', $this->search);
         $form->setLabel('search', _('Search'));
         $template = $form->getTemplate();
+        if (PEAR::isError($template)) {
+            PHPWS_Error::log($template);
+            return NULL;
+        }
         return implode("\n", $template);
     }
 
