@@ -338,18 +338,6 @@ class PHPWS_Form {
     }
 
 
-    function setId($name, $id)
-    {
-	if (!$this->testName($name))
-	    return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setExtra', array($name));
-
-	foreach ($this->_elements[$name] as $key=>$element){
-	    $result = $this->_elements[$name][$key]->setId($id);
-	    if (PEAR::isError($result))
-		return $result;
-	}
-    }
-
     function setValue($name, $value)
     {
 	if (!$this->testName($name))
