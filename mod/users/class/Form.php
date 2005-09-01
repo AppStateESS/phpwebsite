@@ -71,7 +71,6 @@ class User_Form {
 
         $form->setLabel('block_username', _('Username'));
         $form->setLabel('block_password', _('Password'));
-        $form->setId('block_username', 'username');
     
         $template = $form->getTemplate();
 
