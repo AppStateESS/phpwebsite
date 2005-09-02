@@ -110,21 +110,16 @@ class Profile_Forms {
 
     function settings()
     {
-        $settings['profile_number'] = 3;
-        $settings['profile_sidebar'] = 1;
-
-        $form = & new PHPWS_Form;
-        $form->setLegend(_('Profiler Settings'));
-        $form->addHidden('module', 'profiler');
+        $form = Profile_Forms::default_form();
         $form->addHidden('command', 'save_settings');
 
         $form->addSelect('profile_number', array(1, 2, 3, 4));
         $form->reindexValue('profile_number');
-        $form->setMatch('profile_number', $settings['profile_number']);
+        $form->setMatch('profile_number', PHPWS_Settings::get('profiler', 'profile_number'));
         $form->setLabel('profile_number', _('Number of profiles'));
 
         $form->addCheckbox('profile_sidebar', 1);
-        $form->setMatch('profile_sidebar', $settings['profile_sidebar']);
+        $form->setMatch('profile_sidebar', PHPWS_Settings::get('profiler', 'profile_sidebar'));
         $form->setLabel('profile_sidebar', _('Enable profile sidebar'));
 
         $form->addSubmit(_('Save settings'));

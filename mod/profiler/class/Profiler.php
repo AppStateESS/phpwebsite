@@ -138,6 +138,22 @@ class Profiler {
             $content = Profile_Forms::settings();
             break;
 
+        case 'save_settings':
+            if (!Current_User::authorized('profiler')) {
+                Current_User::disallow();
+            }
+
+            $result = Profiler::saveSettings();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                $title = _('Uh oh');
+                $content = _('There was a problem saving your settings.');
+            } else {
+                $title = _('Setting saved');
+                $content = PHPWS_Text::secureLink(_('Go back to the Settings page.'), 'profiler');
+            }
+            break;
+
         } // End of command switch
 
         $tpl['CONTENT'] = $content;
@@ -165,6 +181,16 @@ class Profiler {
         $panel->setModule('profiler');
 
         return $panel;
+    }
+
+    function saveSettings()
+    {
+        PHPWS_Settings::set('profiler', 'profile_sidebar',
+                            (int)$_POST['profile_sidebar']);
+        PHPWS_Settings::set('profiler', 'profile_number',
+                            (int)$_POST['profile_number']);
+
+        return PHPWS_Settings::save('profiler');
     }
 
 }
