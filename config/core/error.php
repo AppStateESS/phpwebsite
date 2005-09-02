@@ -107,4 +107,7 @@ $errors[DBPAGER_NO_TABLE]             = _('Table is blank');
 // Editor.php 1200 - 1299
 $errors[EDITOR_MISSING_FILE]          = _('Unable to find the specified editor type.');
 
+// Settings.php 1300 - 1399
+$errors[SETTINGS_MISSING_FILE]        = _('Unable to find your module\'s settings.php file.');
+
 ?>

@@ -111,4 +111,7 @@ define('DBPAGER_NO_TABLE',            -1103);
 
 /************** Editor.php ****************/
 define('EDITOR_MISSING_FILE',         -1200);
+
+/************** Settings.php **************/
+define('SETTINGS_MISSING_FILE',       -1300);
 ?>
