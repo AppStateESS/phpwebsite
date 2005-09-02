@@ -39,6 +39,7 @@ require_once PHPWS_Core::getConfigFile('core', 'errorDefines.php');
 
 /***** PHPWS Classes ****/
 PHPWS_Core::initCoreClass('Database.php');
+PHPWS_Core::initCoreClass('Settings.php');
 PHPWS_Core::initCoreClass('Text.php');
 PHPWS_Core::initCoreClass('Item.php');
 PHPWS_Core::initCoreClass('Debug.php');
