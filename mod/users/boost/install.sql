@@ -1,12 +1,3 @@
-CREATE TABLE users_config (
-  default_authorization smallint NOT NULL default '1',
-  new_user_method smallint NOT NULL default '0',
-  user_menu varchar(40) NOT NULL default '',
-  graphic_confirm smallint NOT NULL default '0'
-);
-
-INSERT INTO users_config VALUES (1, 2, 'top.tpl', 0);
-
 CREATE TABLE users_groups (
  id INT NOT NULL PRIMARY KEY,
  active SMALLINT NOT NULL,
