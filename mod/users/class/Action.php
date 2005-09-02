@@ -708,20 +708,21 @@ class User_Action {
             Current_User::disallow();
             return;
         }
-        $db = & new PHPWS_DB('users_config');
 
         if (is_numeric($_POST['user_signup'])) {
-            $db->addValue('new_user_method', (int)$_POST['user_signup']);
+            $settings['new_user_method'] = (int)$_POST['user_signup'];
         }
 
         if (isset($_POST['graphic_confirm'])) {
-            $db->addValue('graphic_confirm', 1);
+            $settings['graphic_confirm'] = 1;
         } else {
-            $db->addValue('graphic_confirm', 0);
+            $settings['graphic_confirm'] = 0;
         }
-        $db->addValue('user_menu', $_POST['user_menu']);
 
-        return $db->update();
+        $settings['user_menu'] = $_POST['user_menu'];
+        
+        PHPWS_Settings::set('users', $settings);
+        PHPWS_Settings::save('users');
     }
 
     function getAuthorizationList()

@@ -623,6 +623,8 @@ class PHPWS_User {
 
     function getUserSetting($setting, $refresh=FALSE)
     {
+        return PHPWS_Settings::get('users', $setting);
+        /*
         if (!isset($GLOBALS['User_Settings']) || $refresh == TRUE){
             unset($GLOBALS['User_Settings']);
             $GLOBALS['User_Settings'] = PHPWS_User::getSettings();
@@ -633,6 +635,7 @@ class PHPWS_User {
         }
 
         return $GLOBALS['User_Settings'][$setting];
+        */
     }
 
     function loadPermissions($loadAll=TRUE)
