@@ -47,3 +47,13 @@ CREATE TABLE dependencies (
   depended_on varchar(40) NOT NULL default '',
   version varchar(20) NOT NULL default ''
 );
+
+CREATE TABLE mod_settings (
+ module varchar(40) NOT NULL,
+ setting_name varchar(30) NOT NULL,
+ setting_type smallint NOT NULL default '4',
+ small_num smallint NULL,
+ large_num int NULL,
+ small_char varchar(100) NULL,
+ large_char text
+);
