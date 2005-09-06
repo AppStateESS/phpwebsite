@@ -267,7 +267,7 @@ class PHPWS_Image extends File_Common{
 
         $db = & new PHPWS_DB('images');
 
-        if ((bool)$no_dupes) {
+        if ((bool)$no_dupes && empty($this->id)) {
             $db->addWhere('filename',  $this->filename);
             $db->addWhere('directory', $this->directory);
             $db->addWhere('module',    $this->module);
@@ -282,7 +282,6 @@ class PHPWS_Image extends File_Common{
 
             $db->reset();
         }
-
         return $db->saveObject($this);
     }
  
