@@ -51,7 +51,6 @@ switch ($_REQUEST['action']){
      break;
 
  case 'show_depended_upon':
-     echo 'wtf';
      PHPWS_Core::initModClass('boost', 'Action.php');
      $content[] = Boost_Action::showDependedUpon($_REQUEST['opmod']);
      break;
