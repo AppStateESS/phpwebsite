@@ -7,10 +7,6 @@
  * @version $Id$
  */
 
-define('PFL_STUDENT', 1);
-define('PFL_FACULTY', 2);
-define('PFL_STAFF',   3);
-
 PHPWS_Core::configRequireOnce('profiler', 'config.php');
 
 // Error defines
@@ -58,6 +54,8 @@ class Profile {
 
     function display($template_name)
     {
+        Layout::addStyle('profiler');
+        
         $images = $this->loadImages();
         
         $template_name = preg_replace('/\W/', '', $template_name);
@@ -78,6 +76,10 @@ class Profile {
 
         $template['FULLSTORY'] = $this->getFullstory();
         $template['CAPTION'] = $this->getCaption();
+
+        $template['READ_MORE'] = sprintf('<a href="%s">%s</a>', 
+                                         PHPWS_Core::getHomeHttp() . 'index.php?module=profiler&amp;user_cmd=view_profile&amp;id=' . $this->id,
+                                         _('Read more. . .'));
 
         return PHPWS_Template::process($template, 'profiler', 'views/' . $template_name . '.tpl');
     }
