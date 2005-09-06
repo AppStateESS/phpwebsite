@@ -1,0 +1,23 @@
+div.profile-small {
+  border : 1px solid black;
+  margin : 3px 2px 3px 2px;
+  padding : 3px;
+  background-color : white;
+  width : 100px;
+}
+
+div.profile-large {
+  border : 1px solid black;
+  margin : 3px 2px 3px 2px;
+  padding : 3px;
+  background-color : white;
+}
+
+div.profile-caption {
+font-size : 10pt;
+}
+
+div.profile-name {
+font-weight : bold;
+background-color : #d4d4d4;
+}
