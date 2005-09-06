@@ -238,11 +238,11 @@ class FC_Image_Manager {
     {
 
         $js_vars['itemname'] = $this->itemname;
-        $js_vars['src'] = $this->thumbnail->getPath();
-        $js_vars['width'] = $this->thumbnail->width;
-        $js_vars['height'] = $this->thumbnail->height;
-        $js_vars['title'] = $this->thumbnail->getTitle();
-        $js_vars['alt']   = $this->thumbnail->getAlt();
+        $js_vars['src']      = $this->thumbnail->getPath();
+        $js_vars['width']    = $this->thumbnail->width;
+        $js_vars['height']   = $this->thumbnail->height;
+        $js_vars['title']    = addslashes($this->thumbnail->getTitle());
+        $js_vars['alt']      = addslashes($this->thumbnail->getAlt());
         $js_vars['image_id'] = $this->image->id;
 
         echo javascript('modules/filecabinet/post_file', $js_vars);
