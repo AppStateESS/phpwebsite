@@ -22,8 +22,7 @@ class User_Form {
         if (Current_User::isLogged()){
             $username = Current_User::getUsername();
             return User_Form::loggedIn();
-        }
-        else {
+        } else {
             return User_Form::loggedOut();
         }
 
@@ -55,10 +54,11 @@ class User_Form {
     {
         translate('users');
 
-        if (isset($_REQUEST['block_username']))
+        if (isset($_REQUEST['block_username'])) {
             $username = $_REQUEST['block_username'];
-        else
+        } else {
             $username = NULL;
+        }
 
         $form = & new PHPWS_Form('User_Login');
         $form->turnOffAutocomplete();
