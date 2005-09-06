@@ -111,7 +111,7 @@ class File_Common {
     function getTitle($format=FALSE)
     {
         if ($format) {
-            return str_replace("'", "\'", $this->title);
+            return str_replace("'", "&apos;", $this->title);
         } else {
             return $this->title;
         }
