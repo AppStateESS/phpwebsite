@@ -353,7 +353,8 @@ class FC_Image_Manager {
 
         $db->reset();
         $db->addWhere('module', $this->mod_title);
-        $db->addWhere('thumbnail_source', 0);
+        $db->addWhere('thumbnail_source', 0, '=', 'and', 1);
+        $db->addWhere('thumbnail_source', 'images.id', '=', 'or', 1);
         $db->setIndexBy('id');
         $source_images = $db->getObjects('PHPWS_Image');
 
@@ -372,9 +373,6 @@ class FC_Image_Manager {
                                                  );
             }
         }
-
-
-        //$js_vars['link_label']    = _('Pick this image');
 
         if ($this->image->id) {
             $js_vars['current_image'] = $this->image->getTag();
@@ -453,8 +451,7 @@ class FC_Image_Manager {
         if ( ($src_img->width < $this->tn_width) &&
              ($src_img->height < $this->tn_height) ) {
             $src_img->thumbnail_source = $src_img->id;
-            $src_img->save(TRUE, FALSE);
-            return TRUE;
+            return $src_img->save(TRUE, FALSE);
         } else {
             if($src_img->width > $src_img->height) {
                 $scale = $this->tn_width / $src_img->width;
