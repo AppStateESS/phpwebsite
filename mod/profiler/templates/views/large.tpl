@@ -1,11 +1,13 @@
-<div class="profile-small">
+<div class="profile-large">
     <div class="profile-name">
     {FIRST_NAME} {LAST_NAME}
     </div>
-    <div class="profile-photo-large">
+    <table><tr><td>
+    <span class="profile-photo-large">
     {PHOTO_LARGE}
-    </div>
+    </span></td><td>
     <div class="profile-fullstory">
     {FULLSTORY}
     </div>
+</td></tr></table>
 </div>

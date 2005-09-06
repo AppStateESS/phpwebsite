@@ -1,4 +1,4 @@
-<div class="profile-small">
+<div class="profile-medium">
     <div class="profile-name">
     {FIRST_NAME} {LAST_NAME}
     </div>

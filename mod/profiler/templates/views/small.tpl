@@ -8,4 +8,5 @@
     <div class="profile-caption">
     {CAPTION}
     </div>
+    {READ_MORE}
 </div>
