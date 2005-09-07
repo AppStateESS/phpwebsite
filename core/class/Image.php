@@ -98,8 +98,8 @@ class PHPWS_Image extends File_Common{
     {
         $values['address'] = $this->getPath();
         $values['label']   = $this->getTitle();
-        $values['width'] = $this->getWidth();
-        $values['height'] = $this->getHeight();
+        $values['width'] = $this->width;
+        $values['height'] = $this->height;
         return Layout::getJavascript('open_window', $values);
     }
 
