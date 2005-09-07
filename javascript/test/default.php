@@ -1,3 +1,0 @@
-<?php
-Layout::addOnLoad("testJS();");
-?>
