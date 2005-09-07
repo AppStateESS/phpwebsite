@@ -79,6 +79,11 @@ class DBPager {
 
     var $orderby_dir = NULL;
 
+    /**
+     * DBpager will derive the link from the url
+     * If it has problems or you just want to force the link,
+     * then you can set the link
+     */
     var $link = NULL;
 
     var $search = NULL;
@@ -138,20 +143,25 @@ class DBPager {
             $this->_class_vars = $class_var_list;
         }
 
-        if (isset($_REQUEST['page']))
+        if (isset($_REQUEST['page'])) {
             $this->current_page = (int)$_REQUEST['page'];
+        }
 
-        if (isset($_REQUEST['limit']) && $_REQUEST['limit'] > 0)
+        if (isset($_REQUEST['limit']) && $_REQUEST['limit'] > 0) {
             $this->limit = (int)$_REQUEST['limit'];
+        }
 
-        if (isset($_REQUEST['orderby']))
+        if (isset($_REQUEST['orderby'])) {
             $this->orderby = preg_replace('/\W/', '', $_REQUEST['orderby']);
+        }
 
-        if (isset($_REQUEST['orderby_dir']))
+        if (isset($_REQUEST['orderby_dir'])) {
             $this->orderby_dir = preg_replace('/\W/', '', $_REQUEST['orderby_dir']);
+        }
 
-        if (isset($_REQUEST['search']) && !empty($_REQUEST['search']))
+        if (isset($_REQUEST['search']) && !empty($_REQUEST['search'])) {
             $this->search = preg_replace('/\W/', '', $_REQUEST['search']);
+        }
 
     }
 
@@ -358,7 +368,7 @@ class DBPager {
             foreach ($values as $key => $value) {
                 $link_pairs1[] = "$key=$value";
             }
-            $pages[] = '<a href="' . $this->link . '&amp;' . implode('&amp;', $link_pairs1) . '">' . $this->page_turner_left . "</a>\n";
+            $pages[] = '<a href="index.php?' . implode('&amp;', $link_pairs1) . '">' . $this->page_turner_left . "</a>\n";
         }
 
         for ($i=1; $i <= $total_pages; $i++){
@@ -388,7 +398,7 @@ class DBPager {
                 foreach ($values as $key => $value) {
                     $link_pairs2[] = "$key=$value";
                 }
-                $pages[] = '<a href="' . $this->link . '&amp;' . implode('&amp;', $link_pairs2) . "\">$i</a>\n";
+                $pages[] = '<a href="index.php?' . implode('&amp;', $link_pairs2) . "\">$i</a>\n";
             } else {
                 $pages[] = $i;
             }
@@ -408,7 +418,7 @@ class DBPager {
             foreach ($values as $key => $value) {
                 $link_pairs3[] = "$key=$value";
             }
-            $pages[] = '<a href="' . $this->link . '&amp;' . implode('&amp;', $link_pairs3) . '">' . $this->page_turner_right . "</a>\n";
+            $pages[] = '<a href="index.php?' . implode('&amp;', $link_pairs3) . '">' . $this->page_turner_right . "</a>\n";
         }
 
         return implode(' ', $pages);
@@ -427,11 +437,11 @@ class DBPager {
                     unset($values['orderby_dir']);
                     $button = '<img src="images/core/list/up_pointer.png" border="0" />';
                 } elseif ($this->orderby_dir =="asc") {
-                    $values['orderby_dir'] = 'orderby_dir=desc';
+                    $values['orderby_dir'] = 'desc';
                     $button = '<img src="images/core/list/down_pointer.png" border="0" />';
                 } else {
                     $button = '<img src="images/core/list/sort_none.png" border="0" />';
-                    $values['orderby_dir'] = 'orderby_dir=asc';
+                    $values['orderby_dir'] = 'asc';
                 }
 
             } else {
@@ -443,7 +453,7 @@ class DBPager {
                 $vars[] = "$key=$value";
             }
 
-            $link = '<a href="' . $this->link . '&amp;' . implode('&amp;', $vars) . '">' . $button . '</a>';
+            $link = '<a href="index.php?' . implode('&amp;', $vars) . '">' . $button . '</a>';
 
             $template[strtoupper($buttonname)] = $link;
         }
@@ -473,8 +483,12 @@ class DBPager {
         }
 
         // pull get values from link setting
-        $url = parse_url($this->link);
-        parse_str(str_replace('&amp;', '&', $url['query']), $output);
+        if (!empty($this->link)) {
+            $url = parse_url($this->link);
+            parse_str(str_replace('&amp;', '&', $url['query']), $output);
+        } else {
+            $output = array();
+        }
 
         
         // pull any extra values in current url
@@ -528,10 +542,12 @@ class DBPager {
                 foreach ($this->_class_vars as $varname) {
                     $template[$count][strtoupper($varname)] = $disp_row->{$varname};
                 }
+
                 if (!empty($this->row_tags)) {
+
                     extract($this->row_tags);
                     if (!in_array(strtolower($method), $this->_methods)) {
-                        continue;
+                        return PHPWS_Error::get(DBPAGER_NO_METHOD, 'core', 'DBPager::getPageRows', $this->class . ':' . $method);
                     }
 
                     if (empty($variable)) {
@@ -667,6 +683,10 @@ class DBPager {
         }
 
         $rows = $this->getPageRows();
+
+        if (PEAR::isError($rows)) {
+            return $rows;
+        }
 
         if (isset($this->toggles)) {
             $max_tog = count($this->toggles);
