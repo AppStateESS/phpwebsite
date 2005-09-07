@@ -12,7 +12,7 @@
 
 PHPWS_Core::initCoreClass("File_Common.php");
 
-class PHPWS_doc extends File_Common {
+class PHPWS_Document extends File_Common {
     var $_max_size        = MAX_DOC_SIZE;
 
     function setType($type){
