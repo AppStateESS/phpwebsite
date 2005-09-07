@@ -1,6 +1,7 @@
 <script type="text/javascript">
 //<![CDATA[
-function testJS(){
+
+window.onload = function() {
   document.cookie = "js_check=1";
 }
 //]]>
