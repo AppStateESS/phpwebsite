@@ -686,14 +686,18 @@ class PHPWS_Form {
      */
     function setMatch($name, $match, $optionMatch=FALSE)
     {
-	if (!$this->testName($name))
+	if (!$this->testName($name)) {
 	    return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setMatch', array($name));
+        }
 
-
-	if ($this->types[$name] == 'multiple' && !is_array($match))
+	if ($this->types[$name] == 'multiple' && !is_array($match)) {
 	    return PHPWS_Error::get(PHPWS_FORM_WRONG_ELMT_TYPE, 'core', 'PHPWS_Form::reindexValue');
+        }
 
 	foreach ($this->_elements[$name] as $key=>$element){
+            if ($this->_elements[$name][$key]->type == 'hidden') {
+                continue;
+            }
 	    $result = $this->_elements[$name][$key]->setMatch($match);
 	    if (PEAR::isError($result))
 		return $result;
@@ -1387,21 +1391,25 @@ class Form_TextArea extends Form_Element {
     
 	$value = $this->getValue();
     
-	if (ord(substr($value, 0, 1)) == 13)
+	if (ord(substr($value, 0, 1)) == 13) {
 	    $value = "\n" . $value;
+        }
 
-	if (isset($this->width))
+	if (isset($this->width)) {
 	    $style[] = 'width : ' . $this->width;
-	else
+        } else {
 	    $dimensions[] = $this->getCols(TRUE);
+        }
 
-	if (isset($this->height))
+	if (isset($this->height)) {
 	    $style[] = 'height : ' . $this->height;
-	else
+        } else {
 	    $dimensions[] = $this->getRows(TRUE);
+        }
 
-	if (isset($style))
+	if (isset($style)) {
 	    $dimensions[] = 'style="' . implode('; ', $style) . '"';
+        }
 
 	return '<textarea '
 	    . $this->getName(TRUE) 
