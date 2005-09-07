@@ -103,20 +103,19 @@ function initLanguage(){
     loadLanguageDefaults($locale);
 }
 
-function checkJavascript(){
-    if (!isset($_SESSION['Javascript_Check'])){
+function checkJavascript()
+{
+    if (!isset($_SESSION['Javascript_Check'])) {
         $_SESSION['Javascript_Check'] = TRUE;
         Layout::getJavascript('test');
     } else {
         if (isset($_SESSION['Javascript_Enabled'])) {
             $GLOBALS['browser_info']['javascript'] = $_SESSION['Javascript_Enabled'];
-        }
-        else {
+        } else {
             if (isset($_COOKIE['js_check'])){
                 $_SESSION['Javascript_Enabled'] = TRUE;
                 $GLOBALS['browser_info']['javascript'] = TRUE;
-            }
-            else {
+            } else {
                 $_SESSION['Javascript_Enabled'] = FALSE;
                 $GLOBALS['browser_info']['javascript'] = FALSE;
             }
@@ -125,7 +124,8 @@ function checkJavascript(){
     }
 }
 
-function javascriptEnabled(){
+function javascriptEnabled()
+{
     if (!isset($_SESSION['Javascript_Enabled'])) {
         return NULL;
     } else {
