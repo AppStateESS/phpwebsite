@@ -12,6 +12,8 @@
 
 define('DEFAULT_CABINET_LIST', 'image');
 
+PHPWS_Core::initModClass('filecabinet', 'Forms.php');
+
 class Cabinet_Action {
 
     function admin()
@@ -37,31 +39,36 @@ class Cabinet_Action {
         if (isset($_REQUEST['image_id'])) {
             $image = & new PHPWS_Image($_REQUEST['image_id']);
         } elseif (isset($_REQUEST['document_id'])) {
-            $file = & new PHPWS_Document($_REQUEST['document_id']);
+            $document = & new PHPWS_Document($_REQUEST['document_id']);
         }
 
         switch ($action) {
-        case 'new':
-            $file = & new File_Common;
+        case 'new_document':
+            $document = & new PHPWS_Document;
             $title = _('Create New Image or Document');
-            $content = Cabinet_action::edit($file);
+            $content = Cabinet_action::editDocument($document);
             break;
+
+        case 'new_image':
+            $image = & new PHPWS_Image;
+            $title = _('Create New Image');
+            $content = Cabinet_Form::editImage($image);
 
         case 'main':
         case 'image':
             $title = _('Manage Images');
-            $content = Cabinet_Action::manager('image');
+            $content = Cabinet_Form::imageManager('image');
             break;
 
         case 'document':
             $title = _('Manage Documents');
-            $content = Cabinet_Action::manager('document');
+            $content = Cabinet_Form::documentManager('document');
             break;
 
         case 'editImage':
             if (!isset($_REQUEST['image_id'])){
                 $title = _('Manage Images');
-                $content = Cabinet_Action::manager('image');
+                $content = Cabinet_Form::imageManager();
                 break;
             }
             $image = & new PHPWS_Image((int)$_REQUEST['image_id']);
@@ -72,14 +79,14 @@ class Cabinet_Action {
         case 'copyImage':
             if (!isset($_REQUEST['image_id'])){
                 $title = _('Manage Images');
-                $content = Cabinet_Action::manager('image');
+                $content = Cabinet_Form::imageManager('image');
                 break;
             }
 
             $image = & new PHPWS_Image((int)$_REQUEST['image_id']);
             Clipboard::copy($image->getTitle(), $image->getTag());
             $title = _('Manage Images');
-            $content = Cabinet_Action::manager('image');
+            $content = Cabinet_Form::imageManager('image');
 
             break;
 
@@ -168,7 +175,7 @@ class Cabinet_Action {
             if (!PHPWS_Core::isPosted())
                 $result = Cabinet_Action::uploadImage();
             $message = _('Image uploaded!');
-            $content = Cabinet_Action::manager($panel->getCurrentTab());
+            $content = Cabinet_Form::imageManager();
             break;
 
         case 'upload_form':
@@ -223,11 +230,9 @@ class Cabinet_Action {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=filecabinet';
 
-        $new_command      = array('title' => _('New'), 'link' => $link);
         $image_command    = array('title'=>_('Images'), 'link'=> $link);
         $document_command = array('title'=>_('Documents'), 'link'=> $link);
 
-        $tabs['new']      = $new_command;
         $tabs['image']    = $image_command;
         $tabs['document'] = $document_command;
 
@@ -239,41 +244,6 @@ class Cabinet_Action {
     }
 
 
-    function imageManager()
-    {
-        $pager = & new DBPager('images', 'PHPWS_Image');
-        $pager->setModule('filecabinet');
-        $pager->setTemplate('imageList.tpl');
-        $pager->setLink('index.php?module=filecabinet&amp;tab=image&amp;authkey=' . Current_User::getAuthKey());
-        $pager->addRowTags('getRowTags');
-        $pager->addToggle('class="toggle1"');
-        $pager->addToggle('class="toggle2"');
-
-        $tags['TITLE']      = _('Title');
-        $tags['FILENAME']   = _('Filename');
-        $tags['MODULE']     = _('Module');
-        $tags['SIZE']       = _('Size');
-        $tags['ACTION']     = _('Action');
-
-        $pager->addPageTags($tags);
-
-        $result = $pager->get();
-
-        if (empty($result)) {
-            return _('No items found.');
-        }
-
-        return $result;
-    }
-
-    function manager($type)
-    {
-        PHPWS_Core::initCoreClass('DBPager.php');
-
-        if ($type == 'image'){
-            return Cabinet_Action::imageManager();
-        }
-    }
 
     function edit($file=NULL, $set_module=FALSE)
     {
