@@ -376,8 +376,9 @@ class DBPager {
                 }
                 continue;
             }
-            if (isset($padding1))
+            if (isset($padding1)) {
                 $recock = TRUE;
+            }
 
 
             $values['page'] = $i;
@@ -388,9 +389,9 @@ class DBPager {
                     $link_pairs2[] = "$key=$value";
                 }
                 $pages[] = '<a href="' . $this->link . '&amp;' . implode('&amp;', $link_pairs2) . "\">$i</a>\n";
-            }
-            else
+            } else {
                 $pages[] = $i;
+            }
 
             if ( $limit_pages &&
                  !isset($padding2) &&
@@ -461,10 +462,11 @@ class DBPager {
         $values['page'] = $this->current_page;
         $values['limit'] = $this->limit;
 
-        if (isset($this->search))
+        if (isset($this->search)) {
             $values['search'] = $this->search;
+        }
 
-        if (isset($this->orderby)){
+        if (isset($this->orderby)) {
             $values['orderby'] = $this->orderby;
             if (isset($this->orderby_dir))
                 $values['orderby_dir'] = $this->orderby_dir;
@@ -474,6 +476,7 @@ class DBPager {
         $url = parse_url($this->link);
         parse_str(str_replace('&amp;', '&', $url['query']), $output);
 
+        
         // pull any extra values in current url
         $extra = PHPWS_Text::getGetValues();
 
@@ -500,8 +503,9 @@ class DBPager {
 
         foreach ($this->limitList as $limit){
             $link_pairs['a'] = "limit=$limit";
-            $links[] = '<a href="' . $this->link . '&amp;' . implode('&amp;', $link_pairs) . '">' . $limit . '</a>';
+            $links[] = '<a href="index.php?' . implode('&amp;', $link_pairs) . '">' . $limit . '</a>';
         }
+
         return implode(' ', $links);
     }
 
@@ -643,7 +647,8 @@ class DBPager {
 
     }
 
-    function get(){
+    function get()
+    {
         $template = array();
 
         if (empty($this->display_rows)) {
@@ -653,11 +658,13 @@ class DBPager {
             }
         }
 
-        if (!isset($this->module))
+        if (!isset($this->module)) {
             return PHPWS_Error::get(DBPAGER_MODULE_NOT_SET, 'core', 'DBPager::get()');
+        }
 
-        if (!isset($this->template))
+        if (!isset($this->template)) {
             return PHPWS_Error::get(DBPAGER_TEMPLATE_NOT_SET, 'core', 'DBPager::get()');
+        }
 
         $rows = $this->getPageRows();
 
@@ -666,7 +673,7 @@ class DBPager {
         }
 
         $count = 0;
-        if (isset($rows)){
+        if (isset($rows)) {
             $this->_getNavigation($template);
             foreach ($rows as $rowitem){
                 if (isset($max_tog)) {
