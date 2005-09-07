@@ -142,7 +142,6 @@ class User_Action {
         case 'postMembers':
             $title = _('Manage Members') . ' : ' . $group->getName();
             $content = User_Form::manageMembers($group);
-
             $result = User_Action::postMembers();
             break;
 
@@ -192,19 +191,32 @@ class User_Action {
             break;      
 
         case 'postUser':
+            if (isset($_POST['user_id'])) {
+                if (!Current_User::authorized('users', 'edit_users')){
+                    PHPWS_User::disallow();
+                    return;
+                } elseif (!Current_User::authorized('users')){
+                    PHPWS_User::disallow();
+                    return;
+                }
+            }
+
             $result = User_Action::postUser($user);
 
             if ($result === TRUE){
                 $user->setActive(TRUE);
                 $user->save();
-                if (isset($_POST['user_id']))
-                    $message = _('User updated.');
-                else
-                    $message = _('User created.');
-        
                 $panel->setCurrentTab('manage_users');
-                $title = _('Manage Users');
-                $content = User_Form::manageUsers();
+
+                if (isset($_POST['user_id'])) {
+                    $title = _('Manage Users');
+                    $message = _('User updated.');
+                    $content = User_Form::manageUsers();
+                } else {
+                    $message = _('User created.');
+                    $title = _('Set User Permissions') . ' : ' . $user->getUsername();
+                    $content = User_Form::setPermissions($user->getUserGroup());
+                }
             } else {
                 $message = implode('<br />', $result);
                 if (isset($_POST['user_id']))
