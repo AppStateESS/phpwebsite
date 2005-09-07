@@ -108,6 +108,11 @@ class PHPWS_Form {
     }
 
 
+    function setId($id)
+    {
+        $this->id = $id;
+    }
+
     function useFieldset($fieldset)
     {
         $this->use_fieldset = (bool)$fieldset;
@@ -1029,10 +1034,11 @@ class PHPWS_Form {
 	    $this->_action = 'index.php';
 
 	if (isset($this->id)){
-	    if ($this->allowFormName)
+	    if ($this->allowFormName) {
 		$formName = 'name="' . $this->id . '" id="' . $this->id . '" ';
-	    else
+            } else {
 		$formName = 'id="' . $this->id . '" ';
+            }
 	} else {
 	    $formName = NULL;
         }
