@@ -93,6 +93,16 @@ class Version_Approval {
         $this->alt_method = $alt_method;
     }
 
+    function get()
+    {
+        $this->_db->addColumn('*');
+        $this->_db->addColumn('users.username');
+        $this->_db->addWhere('vr_approved', 0);
+        $this->_db->addWhere('vr_creator', 'users.id');
+
+        return $this->_db->select();
+    }
+
     function getList($restrict_approval=TRUE)
     {
         if (!PHPWS_DB::isTable($this->version_table)) {
@@ -103,12 +113,8 @@ class Version_Approval {
             return FALSE;
         }
     
-        $this->_db->addColumn('*');
-        $this->_db->addColumn('users.username');
-        $this->_db->addWhere('vr_approved', 0);
-        $this->_db->addWhere('vr_creator', 'users.id');
+        $result = $this->get();
 
-        $result = $this->_db->select();
 
         if (PEAR::isError($result)) {
             return $result;
