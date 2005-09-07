@@ -129,6 +129,17 @@ class Current_User {
     {
         return $_SESSION['User']->created;
     }
+
+    function javascriptEnabled()
+    {
+        if (isset($_SESSION['Javascript_Enabled'])) {
+            return $_SESSION['Javascript_Enabled'];
+        } elseif (isset($GLOBALS['browser_info']['javascript'])) {
+            return $GLOBALS['browser_info']['javascript'];
+        } else {
+            return FALSE;
+        }
+    }
 }
 
 ?>
