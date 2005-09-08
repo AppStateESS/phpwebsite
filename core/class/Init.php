@@ -126,10 +126,12 @@ function checkJavascript()
 
 function javascriptEnabled()
 {
-    if (!isset($_SESSION['Javascript_Enabled'])) {
-        return NULL;
-    } else {
+    if (isset($_SESSION['Javascript_Enabled'])) {
         return $_SESSION['Javascript_Enabled'];
+    } elseif (isset($GLOBALS['browser_info']['javascript'])) {
+        return $GLOBALS['browser_info']['javascript'];
+    } else {
+        checkJavascript();
     }
 }
 
@@ -265,13 +267,13 @@ function loadLanguageDefaults($language){
 
     if (is_file($rootDir . $language . '.php')){
         require_once $rootDir . $language . '.php';
-    }
-    else {
+    } else {
         $rootLanguage = explode('_', $language);
-        if (is_file($rootDir . $rootLanguage . '_default.php'))
+        if (is_file($rootDir . $rootLanguage . '_default.php')) {
             require_once $rootDir . $rootLanguage . '_default.php';
-        else
+        } else {
             require_once $rootDir . 'default.php';
+        }
     }
 }
 
