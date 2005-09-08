@@ -1,4 +1,11 @@
 <?php
+/**
+ * Config file for template class
+ *
+ * @author Matt McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
+
 
 /*********************** TEMPLATES *****************************/
 /**
@@ -10,7 +17,7 @@
  * setting this to TRUE will save a file check.
  */
 
-define("FORCE_THEME_TEMPLATES", FALSE);
+define('FORCE_THEME_TEMPLATES', FALSE);
 
 /**
  * phpWebSite uses templates from the templates directory by default.
@@ -22,7 +29,7 @@ define("FORCE_THEME_TEMPLATES", FALSE);
  * this is the case.
  */
 
-define("FORCE_MOD_TEMPLATES", TRUE);
+define('FORCE_MOD_TEMPLATES', TRUE);
 
 /**
  * Normally, if the the Pear template class can't fill in at least one
@@ -32,7 +39,7 @@ define("FORCE_MOD_TEMPLATES", TRUE);
  * testing code.
  */
 
-define("RETURN_BLANK_TEMPLATES", TRUE);
+define('RETURN_BLANK_TEMPLATES', TRUE);
 
 /**
  * If you want template to prefix the templates it is using with an
@@ -41,5 +48,5 @@ define("RETURN_BLANK_TEMPLATES", TRUE);
  * as it reveals your installation path.
  */
 
-define("LABEL_TEMPLATES", FALSE);
+define('LABEL_TEMPLATES', FALSE);
 ?>
