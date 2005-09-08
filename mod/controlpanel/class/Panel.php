@@ -152,23 +152,20 @@ class PHPWS_Panel{
     $module     = $this->getModule();
     $content    = $this->getContent();
 
-    if (!isset($module))
+    if (!isset($module)) {
       $module = 'controlpanel';
+    }
 
-    if (!isset($panel))
+    if (!isset($panel)) {
       $panel = CP_DEFAULT_PANEL;
+    }
 
     if (!is_file(PHPWS_Template::getTplDir($module) . $panel)){
       $module = 'controlpanel';
       $panel = CP_DEFAULT_PANEL;
     }
 
-    $tplObj = & new PHPWS_Template($module, $panel);
-
-    if (PEAR::isError($tplObj))
-      return $tplObj;
-
-    foreach ($tabs as $id=>$tab){
+    foreach ($tabs as $id=>$tab) {
       if ($this->_secure) {
 	$tab->enableSecure();
       } else {
@@ -183,16 +180,11 @@ class PHPWS_Panel{
 	$tpl['STATUS'] = 'class="inactive"';
 	$tpl['INACTIVE'] = ' ';
       }
-      $tplObj->setCurrentBlock('tabs');
-      $tplObj->setData($tpl);
-      $tplObj->parseCurrentBlock('tabs');
+      $template['tabs'][] = $tpl;
     }
 
     $template['CONTENT'] = $content;
-
-    $tplObj->setData($template);
-    $result = $tplObj->get();
-    return $result;
+    return PHPWS_Template::process($template, $module, $panel);
   }
 
 
