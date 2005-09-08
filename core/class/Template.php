@@ -130,9 +130,9 @@ class PHPWS_Template extends HTML_Template_Sigma {
         if ($result) {
             $this->lastTemplatefile = $file;
             return $result;
-        }
-        else 
+        } else {
             return $this->err[0];
+        }
     }
 
     function setModule($module)
@@ -202,9 +202,8 @@ class PHPWS_Template extends HTML_Template_Sigma {
             unset($template[$key]);
         }
 
-
         $tpl->setData($template);
-
+        
         $result = $tpl->get();
 
         if (PEAR::isError($result)) {
@@ -214,14 +213,15 @@ class PHPWS_Template extends HTML_Template_Sigma {
         if (LABEL_TEMPLATES == TRUE){
             $start = "\n<!-- START TPL: " . $tpl->lastTemplatefile . " -->\n";
             $end = "\n<!-- END TPL: " . $tpl->lastTemplatefile . " -->\n";
-        }
-        else
+        } else {
             $start = $end = NULL;
+        }
 
-        if (!isset($result) && RETURN_BLANK_TEMPLATES)
+        if (!isset($result) && RETURN_BLANK_TEMPLATES) {
             return $start . $tpl->getLastTplFile() . $end;
-        else
+        } else {
             return $start . $result . $end;
+        }
     }
 
     function processTemplate($template, $module, $file, $defaultTpl=TRUE)
