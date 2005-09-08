@@ -90,34 +90,6 @@ class Cabinet_Action {
 
             break;
 
-            /*
-        case 'delete':
-            break;
-
-        case 'image_manager':
-
-            break;
-
-        case 'post_image':
-            $image = & new PHPWS_Image;
-            $file = Cabinet_Action::createFile();
-            $result = Cabinet_Action::postImage($file);
-            if (PEAR::isError($result)) {
-                PEAR::log($result);
-                $title = _('Error');
-                $content = _('There was a problem saving your image.');
-                Layout::metaRoute('index.php?module=filecabinet');
-            } elseif (is_array($result)) {
-                $file->_errors = $result;
-                $content = Cabinet_Action::edit($file);
-            } else {
-                $title = _('Success!');
-                $content = _('File saved successfully.');
-                Layout::metaRoute('index.php?module=filecabinet');
-            }
-            break;
-            */
-
         case 'delete_pick':
             $result = $image->delete();
             if (PEAR::isError($result)) {
@@ -138,6 +110,7 @@ class Cabinet_Action {
             $manager->loadReqValues();
             $manager->postPick();
             break;
+
 
         case 'post_image_close':
             PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
@@ -183,6 +156,11 @@ class Cabinet_Action {
             $manager = & new FC_Image_Manager;
             $manager->loadReqValues();
             Layout::nakedDisplay($manager->edit());
+            break;
+
+        case 'admin_edit_image':
+            $title = _('Edit Image');
+            $content = Cabinet_Form::edit_image($image);
             break;
 
         case 'edit_image':
@@ -241,80 +219,6 @@ class Cabinet_Action {
 
         $panel->setModule('filecabinet');
         return $panel;
-    }
-
-
-
-    function edit($file=NULL, $set_module=FALSE)
-    {
-        if (!$set_module) {
-            $mod_list = PHPWS_Core::getModules();
-
-            if (empty($mod_list)) {
-                return;
-            }
-
-            if (empty($file->module)) {
-                $file->module = 'filecabinet';
-            }
-        }
-
-        foreach ($mod_list as $mod_info) {
-            extract($mod_info);
-            $select_list[$title] = $proper_name;
-        }
-
-        $form = & new PHPWS_Form;
-        $form->addHidden('module', 'filecabinet');
-
-        if ($file->directory) {
-            $form->addHidden('directory', urlencode($file->directory));
-        }
-
-        if (!$set_module) {
-            $form->addHidden('action', 'post_image');
-            $form->addSelect('mod_title', $select_list);
-            $form->setLabel('mod_title', _('Module Directory'));
-            $form->setMatch('mod_title', $file->module);
-        } else {
-            $form->addHidden('action',    'post_image_close');
-            $form->addHidden('mod_title', $file->module);
-            $form->addHidden('itemname',  $file->itemname);
-        }
-
-        $form->addFile('file_name');
-        $form->setSize('file_name', 30);
-        
-        if ($file->getClassType() == 'image') {
-            $form->setLabel('file_name', _('Image location'));
-        } else {
-            $form->setLabel('file_name', _('Document location'));
-        }
-
-        $form->addText('title', $file->title);
-        $form->setSize('title', 40);
-        $form->setLabel('title', _('Title'));
-
-        $form->addTextArea('description', $file->description);
-        //        $form->useEditor('description', FALSE);
-        $form->setLabel('description', _('Description'));
-
-        if (isset($file->id)) {
-            $form->addSubmit(_('Update'));
-        } else {
-            $form->addSubmit(_('Upload'));
-        }
-        $template = $form->getTemplate();
-
-        $errors = $file->getErrors();
-        if (!empty($errors)) {
-            foreach ($errors as $err) {
-                $message[] = array('ERROR' => $err->getMessage());
-            }
-            $template['errors'] = $message;
-        }
-
-        return PHPWS_Template::process($template, 'filecabinet', 'edit.tpl');
     }
 
     function postImage(&$image)

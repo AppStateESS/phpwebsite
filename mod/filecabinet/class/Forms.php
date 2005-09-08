@@ -32,7 +32,7 @@ class Cabinet_Form {
         $form->addHidden($values);
         $form->addSelect('mod_title', array('all'=> _('All'), 'profiler'=>'profiler'));
 
-        if (Current_User::javascriptEnabled()) {
+        if (javascriptEnabled()) {
             $form->setExtra('mod_title', 'onchange="javascript:this.form.submit();"');
         } else {
             $form->addSubmit(_('Go'));
@@ -85,8 +85,71 @@ class Cabinet_Form {
         }
 
         return $result;
-        
     }
+
+    function edit_image(&$image)
+    {
+        $form = & new PHPWS_Form;
+        $form->addHidden('module', 'filecabinet');
+
+        if ($image->directory) {
+            $form->addHidden('directory', urlencode($image->directory));
+        }
+
+        $form->addHidden('action', 'admin_post_image');
+        $form->setLabel('mod_title', _('Module Directory'));
+        $form->setMatch('mod_title', $image->module);
+
+        $form->addFile('file_name');
+        $form->setSize('file_name', 30);
+        
+        if ($image->getClassType() == 'image') {
+            $form->setLabel('file_name', _('Image location'));
+        } else {
+            $form->setLabel('file_name', _('Document location'));
+        }
+
+        $form->addText('title', $image->title);
+        $form->setSize('title', 40);
+        $form->setLabel('title', _('Title'));
+
+        $form->addText('alt', $image->alt);
+        $form->setSize('alt', 40);
+        $form->setLabel('alt', _('Alternate text'));
+
+        $form->addTextArea('description', $image->description);
+        //        $form->useEditor('description', FALSE);
+        $form->setLabel('description', _('Description'));
+
+        if (isset($image->id)) {
+            $form->addSubmit(_('Update'));
+        } else {
+            $form->addSubmit(_('Upload'));
+        }
+        $template = $form->getTemplate();
+
+        $errors = $image->getErrors();
+        if (!empty($errors)) {
+            foreach ($errors as $err) {
+                $message[] = array('ERROR' => $err->getMessage());
+            }
+            $template['errors'] = $message;
+        }
+
+        $template['CURRENT_IMAGE_LABEL'] = _('Current image');
+        $template['CURRENT_IMAGE']       = $image->getJSView(TRUE);
+        $template['MAX_SIZE_LABEL']      = _('Maximum file size');
+        $template['MAX_SIZE']            = $image->_max_size;
+        $template['MAX_WIDTH_LABEL']     = _('Maximum width');
+        $template['MAX_WIDTH']           = $image->_max_width;
+        $template['MAX_HEIGHT_LABEL']    = _('Maximum height');
+        $template['MAX_HEIGHT']          = $image->_max_height;
+
+        return PHPWS_Template::process($template, 'filecabinet', 'edit.tpl');
+
+    }
+
+
 
 }
 
@@ -95,7 +158,7 @@ PHPWS_Core::initCoreClass('Image.php');
 class FC_Image extends PHPWS_Image {
     function getRowTags()
     {
-        $vars['action'] = 'edit_image';
+        $vars['action'] = 'admin_edit_image';
         $vars['image_id'] = $this->id;
         $links[] = PHPWS_Text::secureLink(_('Edit'), 'filecabinet', $vars);
         $tpl['ACTION'] = implode(' | ', $links);
