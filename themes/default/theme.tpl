@@ -1,3 +1,12 @@
+{XML}{XML_STYLE}{DOCTYPE}{XHTML}
+<head>
+{BASE}
+<title>{PAGE_TITLE}</title>
+{METATAGS}
+{JAVASCRIPT}
+{STYLE}
+</head>
+<body>
 <div id="container">
    <div id="user-menu">{USERS_LOGIN_BOX}</div>
    <div id="sidepanel">
@@ -12,3 +21,5 @@
    </div>
    <div id="footer">{LAYOUT_FOOTER}</div>
 </div>
+</body>
+</html>
