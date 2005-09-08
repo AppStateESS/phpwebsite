@@ -141,6 +141,7 @@ border : 2px white solid;
          border-top: 2px solid #90996E;
          border-left: 2px solid #90996E;
          border-right: 2px solid #90996E;
+         border-bottom : 0px;
          margin-right: 2px;
 }
 
