@@ -101,11 +101,6 @@ class Layout {
         $GLOBALS['Layout_JS'][$index]['head'] = $script;
     }
 
-    function addOnLoad($onload)
-    {
-        $GLOBALS['Layout_Onload'][] = $onload;
-    }
-
     function addStyle($module, $filename=NULL)
     {
         if (isset($GLOBALS['Style'][$module]))
@@ -245,8 +240,6 @@ class Layout {
     function display()
     {
         Layout::processHeld();
-
-
         $themeVarList = array();
 
         $header = Layout::getHeader();
@@ -290,27 +283,26 @@ class Layout {
                 ksort($unsortedLayout[$theme_var]);
                 $bodyLayout[strtoupper($theme_var)] = implode('', $unsortedLayout[$theme_var]);
             }
-        } else {
-            $bodyLayout[] = implode('<br />', $unsortedLayout[$theme_var]);
-        }
 
-        // Load body of theme 
-        $finalTheme = &Layout::loadTheme(Layout::getCurrentTheme(), $bodyLayout);
+            Layout::loadHeaderTags($bodyLayout);
 
-        if (PEAR::isError($finalTheme)) {
-            $content = implode('', $bodyLayout);
-        } else {
-            $content = $finalTheme->get();
-            if (LABEL_TEMPLATES) {
-                $content = "\n<!-- START TPL: " . $finalTheme->lastTemplatefile . " -->\n"
-                    . $content
-                    . "\n<!-- END TPL: " . $finalTheme->lastTemplatefile . " -->\n";
+            $finalTheme = &Layout::loadTheme(Layout::getCurrentTheme(), $bodyLayout);
+
+            if (PEAR::isError($finalTheme)) {
+                $content = implode('', $bodyLayout);
+            } else {
+                $content = $finalTheme->get();
+                if (LABEL_TEMPLATES) {
+                    $content = "\n<!-- START TPL: " . $finalTheme->lastTemplatefile . " -->\n"
+                        . $content
+                        . "\n<!-- END TPL: " . $finalTheme->lastTemplatefile . " -->\n";
+                }
             }
+        } else {
+            $plain = implode('<br />', $unsortedLayout[$theme_var]);
+            $content =  Layout::wrap($plain);
         }
-
-        $fullpage = Layout::wrap($content);
-
-        return $fullpage;
+        return $content;
     }
 
     function getBox($module, $contentVar)
@@ -374,7 +366,7 @@ class Layout {
     function getJavascript($directory, $data=NULL, $base=NULL)
     {
         if (isset($data) && !is_array($data)) {
-            return PHPWS_Error::get();
+            return;
         }
 
         if (!empty($base)) {
@@ -483,14 +475,6 @@ class Layout {
             $time . '; url=' . $address . '" />';
     }
 
-    function getOnLoad()
-    {
-        if (!isset($GLOBALS['Layout_Onload'])) {
-            return NULL;
-        }
-
-        return 'onload="' . implode(' ', $GLOBALS['Layout_Onload']) . '"';
-    }
 
     function getStyleLinks($header=FALSE)
     {
@@ -512,7 +496,7 @@ class Layout {
     {
         Layout::checkSettings();
         $themeDir = Layout::getTheme();
-        return "./themes/" . $themeDir . "/";
+        return './themes/' . $themeDir . '/';
     }
 
     function isMoveBox()
@@ -522,10 +506,11 @@ class Layout {
 
     function loadJavascriptFile($filename, $index, $data=NULL)
     {
+
         if (!is_file($filename)) {
             return FALSE;
         }
-    
+
         if (isset($data)) {
             $result = PHPWS_Template::process($data, 'layout', $filename, TRUE);
 
@@ -604,7 +589,7 @@ class Layout {
             return $result;
         }
 
-        $template['THEME_DIRECTORY'] = './themes/' . $theme . '/';
+        $template['THEME_DIRECTORY'] = 'themes/' . $theme . '/';
         $tpl->setData($template);
         return $tpl;
     }
@@ -649,17 +634,19 @@ class Layout {
             $cssTitle = NULL;
 
         if ($header == TRUE){
-            if (isset($alternate) && $alternate == TRUE)
-                return "<?xml-stylesheet alternate=\"yes\" $cssTitle  href=\"$file\" type=\"text/css\"?>";
-            else
-                return "<?xml-stylesheet $cssTitle href=\"$file\" type=\"text/css\"?>";
+            if (isset($alternate) && $alternate == TRUE) {
+                return sprintf('<?xml-stylesheet alternate="yes" %s href="%s" type="text/css"?>', $cssTitle, $file);
+            } else {
+                return sprintf('<?xml-stylesheet %s href="%s" type="text/css"?>', $cssTitle, $file);
+            }
         } else {
-            if ($import == TRUE)
-                return "<style type=\"text/css\"> @import url(\"$file\"); </style>";
-            elseif (isset($alternate) && $alternate == TRUE)
-                return "<link rel=\"alternate stylesheet\" $cssTitle href=\"$file\" type=\"text/css\" />";
-            else
-                return "<link rel=\"stylesheet\" $cssTitle href=\"$file\" type=\"text/css\" />";
+            if ($import == TRUE) {
+                return sprintf('<style type="text/css"> @import url("%s"); </style>', $file);
+            } elseif (isset($alternate) && $alternate == TRUE) {
+                return sprintf('<link rel="alternate stylesheet" %s href="%s" type="text/css" />', $cssTitle, $file);
+            } else {
+                return sprintf('<link rel="stylesheet" %s href="%s" type="text/css" />', $cssTitle, $file);
+            }
         }
     }
 
@@ -715,10 +702,8 @@ class Layout {
         $GLOBALS['Layout_Page_Title_Add'][] = $title;
     }
 
-    /**
-     * Wraps the content with the layout header
-     */
-    function wrap($content)
+
+    function loadHeaderTags(&$template)
     {
         $theme = Layout::getCurrentTheme();
         if (isset($GLOBALS['Layout_JS'])){
@@ -732,10 +717,16 @@ class Layout {
         Layout::submitHeaders($theme, $template);
         $template['METATAGS']   = Layout::getMetaTags();
         $template['PAGE_TITLE'] = $_SESSION['Layout_Settings']->getPageTitle();
-        $template['CONTENT']    = $content;
-        $template['ONLOAD']     = Layout::getOnLoad();
         $template['BASE']       = Layout::getBase();
+   }
 
+    /**
+     * Wraps the content with the layout header
+     */
+    function wrap($content)
+    {
+        $template['CONTENT']    = $content;
+        Layout::loadHeaderTags($template);
         $result = PHPWS_Template::process($template, "layout", "header.tpl");
 
         return $result;
