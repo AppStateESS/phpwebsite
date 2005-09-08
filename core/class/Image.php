@@ -56,6 +56,20 @@ class PHPWS_Image extends File_Common{
         return implode(' ', $tag);
     }
 
+    function &getThumbnail()
+    {
+        if ($this->thumbnail_source == $this->id) {
+            return $this;
+        }
+
+        $thumbnail = & new PHPWS_Image;
+        $db = & new PHPWS_DB('images');
+        $db->addWhere('thumbnail_source', $this->id);
+        $db->loadObject($thumbnail);
+        return $thumbnail;
+
+    }
+
     function getPath($full_path=FALSE, $path_type='http')
     {
         if (empty($this->filename)) {
@@ -94,12 +108,20 @@ class PHPWS_Image extends File_Common{
         return implode('', $tag);
     }
 
-    function getJSView()
+    function getJSView($thumbnail=FALSE)
     {
+        if ($thumbnail) {
+            $oThumbnail = $this->getThumbnail();
+            $tag = $oThumbnail->getTag();
+            $values['label'] = $tag;
+        } else {
+            $values['label'] = $this->getTitle();
+        }
+
         $values['address'] = $this->getPath();
-        $values['label']   = $this->getTitle();
-        $values['width'] = $this->width;
-        $values['height'] = $this->height;
+        $values['width'] = $this->width + 20;
+        $values['height'] = $this->height + 20;
+
         return Layout::getJavascript('open_window', $values);
     }
 
