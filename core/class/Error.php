@@ -59,7 +59,7 @@ class PHPWS_Error {
             }
         }
 
-        $error = &PEAR::raiseError($message, $value, NULL, NULL, implode('', $fullError));
+        $error = PEAR::raiseError($message, $value, NULL, NULL, implode('', $fullError));
 
         return $error;
     }
