@@ -21,6 +21,7 @@ class PHPWS_Image extends File_Common{
     var $_max_size        = MAX_IMAGE_SIZE;
     var $_max_width       = MAX_IMAGE_WIDTH;
     var $_max_height      = MAX_IMAGE_HEIGHT;
+    var $_classtype       = 'image';
 
     function PHPWS_Image($id=NULL)
     {
@@ -68,28 +69,6 @@ class PHPWS_Image extends File_Common{
         $db->loadObject($thumbnail);
         return $thumbnail;
 
-    }
-
-    function getPath($full_path=FALSE, $path_type='http')
-    {
-        if (empty($this->filename)) {
-            return PHPWS_Error::get(PHPWS_FILENAME_NOT_SET, 'core', 'File_Common::getPath');
-        }
-
-        if (empty($this->directory)) {
-            return PHPWS_Error::get(PHPWS_DIRECTORY_NOT_SET, 'core', 'File_Common::getPath');
-        }
-
-        if ($full_path) {
-            if ($path_type == 'http') {
-                $path = PHPWS_Core::getHomeHttp();
-            } else {
-                $path = PHPWS_Core::getHomeDir();
-            }
-        } else {
-            $path = './';
-        }
-        return $path . 'images/' . $this->getDirectory() . $this->getFilename();
     }
 
     function getLink($newTarget=FALSE)
@@ -249,23 +228,6 @@ class PHPWS_Image extends File_Common{
         }
     }
 
-    function importPost($varName, $form_suffix=FALSE)
-    {
-        if ($form_suffix) {
-            $varName .= '_file';
-        }
-
-        $result = $this->getFILES($varName);
-
-        if (PEAR::isError($result)) {
-            return $result;
-        } elseif (!$result) {
-            return PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, 'core', 'PHPWS_Image::importPost');
-        }
-
-        $this->setBounds($this->getTmpName());
-        return $this->checkBounds();
-    }
 
     function save($no_dupes=TRUE, $write=TRUE)
     {

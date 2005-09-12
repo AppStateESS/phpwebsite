@@ -10,10 +10,11 @@
  * @version $Id$
  */
 
-PHPWS_Core::initCoreClass("File_Common.php");
+PHPWS_Core::initCoreClass('File_Common.php');
 
 class PHPWS_Document extends File_Common {
-    var $_max_size        = MAX_DOC_SIZE;
+    var $_max_size        = MAX_DOCUMENT_SIZE;
+    var $_classtype       = 'document';
 
     function setType($type){
         $this->type = $type;
@@ -27,19 +28,6 @@ class PHPWS_Document extends File_Common {
         return $this->title;
     }
 
-    function checkBounds(){
-        if (!$this->allowSize())
-            $errors[] = PHPWS_Error::get(PHPWS_IMG_SIZE, "core", "PHPWS_doc::checkBounds", array($this->getSize()));
-
-        if (!$this->allowType())
-            $errors[] = PHPWS_Error::get(PHPWS_IMG_WRONG_TYPE, "core", "PHPWS_doc::checkBounds");
-
-        if (isset($errors))
-            return $errors;
-        else
-            return TRUE;
-    }
-
 
     function loadUpload($varName){
         $result = $this->getFILES($varName);
@@ -51,15 +39,31 @@ class PHPWS_Document extends File_Common {
         return $result;
     }
 
+    function checkBounds(){
+        if (!$this->allowSize()) {
+            $errors[] = PHPWS_Error::get(PHPWS_DOCUMENT_SIZE, 'core', 'PHPWS_Document::checkBounds', array($this->getSize(), MAX_DOCUMENT_SIZE));
+        }
+
+        if (!$this->allowType()) {
+            $errors[] = PHPWS_Error::get(PHPWS_DOCUMENT_WRONG_TYPE, 'core', 'PHPWS_Document::checkBounds');
+        }
+
+        if (isset($errors)) {
+            return $errors;
+        } else {
+            return TRUE;
+        }
+    }
 
     function setBounds($path=NULL){
-        if (empty($path))
+        if (empty($path)) {
             $path = $this->getPath();
+        }
 
         $size = @filesize($path);
-
-        if (empty($size))
-            return PHPWS_Error::get(PHPWS_BOUND_FAILED, "core", "PHPWS_doc::setBounds", $path);
+        if (empty($size)) {
+            return PHPWS_Error::get(PHPWS_BOUND_FAILED, 'core', 'PHPWS_Document::setBounds', $path);
+        }
 
         $this->setSize($size);
 
@@ -68,6 +72,50 @@ class PHPWS_Document extends File_Common {
         $this->setType($type);
     }
 
+    function getIconView()
+    {
+        return 'icon!';
+    }
+
+    function save($no_dupes=TRUE, $write=TRUE)
+    {
+        if (empty($this->directory)) {
+            $this->directory = $this->module . '/';
+        }
+
+        if (empty($this->alt)) {
+            if (empty($this->title)) {
+                $this->title = $this->filename;
+            }
+        }
+
+        if ($write) {
+            $result = $this->write();
+            if (PEAR::isError($result)) {
+                return $result;
+            }
+        }
+
+        $db = & new PHPWS_DB('documents');
+
+        if ((bool)$no_dupes && empty($this->id)) {
+            $db->addWhere('filename',  $this->filename);
+            $db->addWhere('directory', $this->directory);
+            $db->addWhere('module',    $this->module);
+            $db->addColumn('id');
+            $result = $db->select('one');
+            if (PEAR::isError($result)) {
+                return $result;
+            } elseif (isset($result) && is_numeric($result)) {
+                $this->id = $result;
+                return TRUE;
+            }
+
+            $db->reset();
+        }
+
+        return $db->saveObject($this);
+    }
 
 }
 
