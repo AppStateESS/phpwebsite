@@ -67,10 +67,7 @@ class Profile_Forms {
         $template['PHOTO_MEDIUM_LABEL'] = _('Medium photo');
         $template['PHOTO_SMALL_LABEL'] = _('Small photo');
         
-        
-        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         return PHPWS_Template::process($template, 'profiler', 'forms/edit.tpl');
-
     }
 
     function getManager($image_id, $image_name)
