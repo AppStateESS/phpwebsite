@@ -1,5 +1,8 @@
 <?php
 
+PHPWS_Core::initCoreClass('Image.php');
+PHPWS_Core::initCoreClass('Document.php');
+
 class Cabinet_Form {
     function imageManager()
     {
@@ -7,7 +10,6 @@ class Cabinet_Form {
         $pager = & new DBPager('images', 'FC_Image');
         $pager->setModule('filecabinet');
         $pager->setTemplate('imageList.tpl');
-        //        $pager->setLink('index.php?module=filecabinet&amp;tab=image&amp;authkey=' . Current_User::getAuthKey());
         $pager->addRowTags('getRowTags');
         $pager->addToggle('class="toggle1"');
         $pager->addToggle('class="toggle2"');
@@ -61,33 +63,86 @@ class Cabinet_Form {
     function documentManager()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
-        $pager = & new DBPager('documents', 'PHPWS_Document');
+        $pager = & new DBPager('documents', 'FC_Document');
         $pager->setModule('filecabinet');
         $pager->setTemplate('documentList.tpl');
-        //        $pager->setLink('index.php?module=filecabinet&amp;tab=document&amp;authkey=' . Current_User::getAuthKey());
         $pager->addRowTags('getRowTags');
         $pager->addToggle('class="toggle1"');
         $pager->addToggle('class="toggle2"');
 
-        $tags['TITLE']      = _('Title');
-        $tags['FILENAME']   = _('Filename');
-        $tags['DOC_TYPE']   = _('Document Type');
-        $tags['MODULE']     = _('Module');
-        $tags['SIZE']       = _('Size');
-        $tags['ACTION']     = _('Action');
+        $tags['TITLE']        = _('Title');
+        $tags['FILENAME']     = _('Filename');
+        $tags['DOC_TYPE']     = _('Document Type');
+        $tags['MODULE']       = _('Module');
+        $tags['SIZE']         = _('Size');
+        $tags['ACTION']       = _('Action');
+
+        $tags['NEW_DOCUMENT'] = PHPWS_Text::secureLink(_('Upload document'), 'filecabinet',
+                                                       array('action'=>'new_document'));
+        
 
         $pager->addPageTags($tags);
 
         $result = $pager->get();
 
         if (empty($result)) {
-            return _('No items found.');
+            return _('No documents found.');
         }
 
         return $result;
     }
 
-    function edit_image(&$image)
+    function editDocument(&$document)
+    {
+        $form = & new PHPWS_FORM;
+        $form->addHidden('module', 'filecabinet');
+
+        if ($document->directory) {
+            $form->addHidden('directory', urlencode($document->directory));
+        }
+
+        $form->addHidden('action', 'admin_post_document');
+        $form->setLabel('mod_title', _('Module Directory'));
+        $form->setMatch('mod_title', $document->module);
+
+        $form->addFile('file_name');
+        $form->setSize('file_name', 30);
+        $form->setLabel('file_name', _('Document location'));
+
+        $form->addText('title', $document->title);
+        $form->setSize('title', 40);
+        $form->setLabel('title', _('Title'));
+
+        $form->addTextArea('description', $document->description);
+        $form->setLabel('description', _('Description'));
+
+        if (isset($document->id)) {
+            $form->addSubmit(_('Update'));
+        } else {
+            $form->addSubmit(_('Upload'));
+        }
+        $template = $form->getTemplate();
+
+        $errors = $document->getErrors();
+        if (!empty($errors)) {
+            foreach ($errors as $err) {
+                $message[] = array('ERROR' => $err->getMessage());
+            }
+            $template['errors'] = $message;
+        }
+
+        if ($document->id) {
+            $template['CURRENT_DOCUMENT_LABEL'] = _('Current document');
+            $template['CURRENT_DOCUMENT']       = $document->getIconView();
+        }
+        $template['MAX_SIZE_LABEL'] = _('Maximum file size');
+        $template['MAX_SIZE']       = $document->getMaxSize(TRUE);
+
+        return PHPWS_Template::process($template, 'filecabinet', 'document_edit.tpl');
+
+    }
+
+    function editImage(&$image)
     {
         $form = & new PHPWS_Form;
         $form->addHidden('module', 'filecabinet');
@@ -103,11 +158,7 @@ class Cabinet_Form {
         $form->addFile('file_name');
         $form->setSize('file_name', 30);
         
-        if ($image->getClassType() == 'image') {
-            $form->setLabel('file_name', _('Image location'));
-        } else {
-            $form->setLabel('file_name', _('Document location'));
-        }
+        $form->setLabel('file_name', _('Image location'));
 
         $form->addText('title', $image->title);
         $form->setSize('title', 40);
@@ -118,7 +169,6 @@ class Cabinet_Form {
         $form->setLabel('alt', _('Alternate text'));
 
         $form->addTextArea('description', $image->description);
-        //        $form->useEditor('description', FALSE);
         $form->setLabel('description', _('Description'));
 
         if (isset($image->id)) {
@@ -139,21 +189,19 @@ class Cabinet_Form {
         $template['CURRENT_IMAGE_LABEL'] = _('Current image');
         $template['CURRENT_IMAGE']       = $image->getJSView(TRUE);
         $template['MAX_SIZE_LABEL']      = _('Maximum file size');
-        $template['MAX_SIZE']            = $image->_max_size;
+        $template['MAX_SIZE']            = $image->getMaxSize(TRUE);
         $template['MAX_WIDTH_LABEL']     = _('Maximum width');
         $template['MAX_WIDTH']           = $image->_max_width;
         $template['MAX_HEIGHT_LABEL']    = _('Maximum height');
         $template['MAX_HEIGHT']          = $image->_max_height;
 
-        return PHPWS_Template::process($template, 'filecabinet', 'edit.tpl');
+        return PHPWS_Template::process($template, 'filecabinet', 'edit_image.tpl');
 
     }
 
 
 
 }
-
-PHPWS_Core::initCoreClass('Image.php');
 
 class FC_Image extends PHPWS_Image {
     function getRowTags()
@@ -162,9 +210,24 @@ class FC_Image extends PHPWS_Image {
         $vars['image_id'] = $this->id;
         $links[] = PHPWS_Text::secureLink(_('Edit'), 'filecabinet', $vars);
         $tpl['ACTION'] = implode(' | ', $links);
+        $tpl['SIZE'] = $this->getSize(TRUE);
         return $tpl;
     }
-
 }
+
+
+class FC_Document extends PHPWS_Document {
+    function getRowTags()
+    {
+        $vars['action'] = 'admin_edit_document';
+        $vars['document_id'] = $this->id;
+        $links[] = PHPWS_Text::secureLink(_('Edit'), 'filecabinet', $vars);
+        $tpl['ACTION'] = implode(' | ', $links);
+        $tpl['SIZE'] = $this->getSize(TRUE);
+
+        return $tpl;
+    }
+}
+
 
 ?>

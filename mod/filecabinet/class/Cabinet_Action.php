@@ -18,10 +18,9 @@ class Cabinet_Action {
 
     function admin()
     {
-        if (!Current_User::allow('filecabinet')) {
-            Current_User::disallow();
-        }
         PHPWS_Core::initCoreClass('Image.php');
+        PHPWS_Core::initCoreClass('Document.php');
+
         if (!Current_User::allow('filecabinet')){
             Current_User::disallow();
             return;
@@ -44,14 +43,15 @@ class Cabinet_Action {
 
         switch ($action) {
         case 'new_document':
+            PHPWS_Core::initModClass('filecabinet', 'Forms.php');
             $document = & new PHPWS_Document;
-            $title = _('Create New Image or Document');
-            $content = Cabinet_action::editDocument($document);
+            $title = _('Upload new document');
+            $content = Cabinet_Form::editDocument($document);
             break;
 
         case 'new_image':
             $image = & new PHPWS_Image;
-            $title = _('Create New Image');
+            $title = _('Upload new image');
             $content = Cabinet_Form::editImage($image);
 
         case 'main':
@@ -62,7 +62,7 @@ class Cabinet_Action {
 
         case 'document':
             $title = _('Manage Documents');
-            $content = Cabinet_Form::documentManager('document');
+            $content = Cabinet_Form::documentManager();
             break;
 
         case 'editImage':
@@ -163,6 +163,32 @@ class Cabinet_Action {
             $content = Cabinet_Form::edit_image($image);
             break;
 
+        case 'admin_post_document':
+            if (!PHPWS_Core::isPosted()) {
+                if (!isset($document)) {
+                    $document = & new PHPWS_Document;
+                }
+                $result = Cabinet_Action::postDocument($document);
+                if (PEAR::isError($result)) {
+                    PHPWS_Error::log($result);
+                    $title = _('Sorry');
+                    $content = _('An error occurred while saving your document.') . '<br />'
+                        . _('Please check your logs.');
+                    break;
+                } elseif (is_array($result)) {
+                    $document->_errors = $result;
+                    $title = _('Upload new document');
+                    $content = Cabinet_Form::editDocument($document);
+                    break;
+                } else {
+                    $message = _('Document saved successfully.');
+                }
+            }
+            $title = _('Manage Documents');
+            $content = Cabinet_Form::documentManager();
+
+            break;
+
         case 'edit_image':
             PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
             if (isset($_REQUEST['current'])) {
@@ -224,14 +250,23 @@ class Cabinet_Action {
     function postImage(&$image)
     {
         $errors = $image->importPost('file_name');
-        $image->setTitle($_POST['title']);
-        $image->setDescription($_POST['description']);
-        $image->setModule($_POST['mod_title']);
 
         if (is_array($errors) || PEAR::isError($errors)) {
             return $errors;
         } else {
             $result = $image->save();
+            return $result;
+        }
+    }
+
+    function postDocument(&$document)
+    {
+        $errors = $document->importPost('file_name');
+
+        if (is_array($errors) || PEAR::isError($errors)) {
+            return $errors;
+        } else {
+            $result = $document->save();
             return $result;
         }
     }
