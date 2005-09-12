@@ -14,7 +14,7 @@
     <td>{TITLE}</td>
     <td>{FILENAME}</td>
     <td>{MODULE}</td>
-    <td>{SIZE}K</td>
+    <td>{SIZE}</td>
     <td>{ACTION}</td>   
   </tr>
 <!-- END listrows -->

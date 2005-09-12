@@ -1,3 +1,4 @@
+{NEW_DOCUMENT}
 <table cellpadding="6" cellspacing="1" width="100%">
   <tr>
     <th width="20%">{TITLE}&nbsp;{TITLE_SORT}</th>
@@ -13,7 +14,7 @@
     <td>{FILENAME}</td>
     <td>{DOC_TYPE}</td>
     <td>{MODULE}</td>
-    <td>{SIZE}K</td>
+    <td>{SIZE}</td>
     <td>{ACTION}</td>   
   </tr>
 <!-- END listrows -->
