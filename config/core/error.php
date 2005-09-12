@@ -83,7 +83,7 @@ $errors[PHPWS_FILE_DIR_NONWRITE]      = _('Unable to save file in selected direc
 $errors[PHPWS_FILE_NO_TMP]            = _('Upload directory not set in file object.');
 $errors[PHPWS_FILE_SIZE]              = _('Upload file size is larger than allowed.');
 
-// Image.php 900 - 999
+// Image.php and Document.php 900 - 999
 $errors[PHPWS_FILENAME_NOT_SET]       = _('Filename not set.');
 $errors[PHPWS_DIRECTORY_NOT_SET]      = _('Directory not set.');
 $errors[PHPWS_BOUND_FAILED]           = _('There was a problem loading the image file.');
@@ -92,6 +92,8 @@ $errors[PHPWS_IMG_WIDTH]              = _('Image width was %spx, making it large
 $errors[PHPWS_IMG_HEIGHT]             = _('Image height was %spx, making it larger than %d pixel limit.');
 $errors[PHPWS_IMG_WRONG_TYPE]         = _('Unacceptable image type.');
 $errors[PHPWS_IMG_NOT_FOUND]          = _('Image not found');
+$errors[PHPWS_DOCUMENT_SIZE]          = _('Document was %sK making it larger than %sK size limit.');
+$errors[PHPWS_DOCUMENT_WRONG_TYPE]    = _('Unacceptable document type.');
 
 
 

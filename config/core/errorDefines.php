@@ -88,7 +88,7 @@ define('PHPWS_FILE_NO_TMP',           -807);
 define('PHPWS_FILE_SIZE',             -808);
 
 
-/*************** Image.php ****************/
+/******** Image.php & Document.php ********/
 define('PHPWS_FILENAME_NOT_SET',      -900);
 define('PHPWS_DIRECTORY_NOT_SET',     -901);
 define('PHPWS_BOUND_FAILED',          -902);
@@ -97,6 +97,8 @@ define('PHPWS_IMG_HEIGHT',            -904);
 define('PHPWS_IMG_WIDTH',             -905);
 define('PHPWS_IMG_WRONG_TYPE',        -906);
 define('PHPWS_IMG_NOT_FOUND',         -907);
+define('PHPWS_DOCUMENT_SIZE',         -908);
+define('PHPWS_DOCUMENT_WRONG_TYPE',   -909);
 
 
 
