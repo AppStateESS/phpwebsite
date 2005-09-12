@@ -12,7 +12,7 @@ class My_Page {
             return _('The is a problem with My Page.');
         }
 
-        $panel = & My_Page::cpanel();
+        $panel = My_Page::cpanel();
 
         $module = $panel->getCurrentTab();
 

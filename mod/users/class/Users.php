@@ -641,7 +641,7 @@ class PHPWS_User {
     function loadPermissions($loadAll=TRUE)
     {
         if ($loadAll == TRUE){
-            $groups = &$this->getGroups();
+            $groups = $this->getGroups();
         } else {
             $groups[] = $this->getUserGroup();
         }
