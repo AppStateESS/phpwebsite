@@ -247,7 +247,7 @@ class Profiler {
         Profiler::_sidebar($faculty);
     }
 
-    function &_sidebar($list)
+    function _sidebar($list)
     {
         if (PEAR::isError($list)) {
             PHPWS_Error::log($list, 'profiler', 'Profiler::_sidebar');
