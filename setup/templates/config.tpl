@@ -145,20 +145,22 @@ define('DEFAULT_EDITOR_TOOL', '');
  */ 
 define('ABSOLUTE_UPLOAD_LIMIT', '5000000');
 
-/******************* ALLOWED IMAGES TYPES *********************/
 
-$allowedImageTypes = array('image/jpeg',
-			   'image/jpg',
-			   'image/pjpeg',
-			   'image/png',
-			   'image/x-png',
-			   'image/gif',
-			   'image/wbmp');
+/**
+ * To keep this file a little tidier, file and image types are listed
+ * in the file_types.php file. Make sure you know how to edit
+ * arrays before altering the file.
+ */ 
+include 'config/core/file_types.php';
 
-define('ALLOWED_IMAGE_TYPES', serialize($allowedImageTypes));
+/******************* IMAGES SETTINGS **************************/
 define('MAX_IMAGE_SIZE', 50000);
 define('MAX_IMAGE_WIDTH', 800);
 define('MAX_IMAGE_HEIGHT', 600);
+
+/******************* DOCUMENT SETTINGS *************************/
+define('MAX_DOCUMENT_SIZE', 5000000);
+
 
 /******************** CACHING **********************************/
 /**
