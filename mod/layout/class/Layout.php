@@ -258,6 +258,7 @@ class Layout {
 
         foreach ($contentList as $module=>$content) {
             foreach ($content as $contentVar=>$template){
+
                 if(!($theme_var = $_SESSION['Layout_Settings']->getBoxThemeVar($module, $contentVar))) {
                     $theme_var = DEFAULT_THEME_VAR;
                 }
@@ -271,6 +272,7 @@ class Layout {
                 if (empty($order)) {
                     $order = MAX_ORDER_VALUE;
                 }
+
                 if (isset($unsortedLayout[$theme_var][$order])) {
                     PHPWS_Error::log(LAYOUT_BOX_ORDER_BROKEN, 'layout', 'Layout::display', $theme_var);
                 }
@@ -278,7 +280,7 @@ class Layout {
             }
         }
 
-        if (isset($themeVarList)){
+        if (isset($themeVarList)) {
             foreach ($themeVarList as $theme_var){
                 ksort($unsortedLayout[$theme_var]);
                 $bodyLayout[strtoupper($theme_var)] = implode('', $unsortedLayout[$theme_var]);
@@ -496,7 +498,7 @@ class Layout {
     {
         Layout::checkSettings();
         $themeDir = Layout::getTheme();
-        return './themes/' . $themeDir . '/';
+        return 'themes/' . $themeDir . '/';
     }
 
     function isMoveBox()

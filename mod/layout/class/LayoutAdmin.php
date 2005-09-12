@@ -38,7 +38,7 @@ class Layout_Admin{
 
         case 'confirmThemeChange':
             $title = _('Themes');
-            if (isset($_POST['confirm'])){
+            if (isset($_POST['confirm'])) {
                 Layout_Admin::changeTheme($_POST['theme']);
                 $template['MESSAGE'] = _('Theme settings updated.');
             } else {
@@ -103,13 +103,16 @@ class Layout_Admin{
             break;
 
         case 'postTheme':
-            if ($_POST['default_theme'] != $_SESSION['Layout_Settings']->current_theme){
+            if ($_POST['default_theme'] != $_SESSION['Layout_Settings']->current_theme) {
                 Layout::resetBoxes();
                 $title = _('Confirm Theme Change');
                 $content[] = _('If you are happy with the change, click the appropiate button.');
                 $content[] = _('Failure to respond in ten seconds, reverts phpWebSite to the default theme.');
                 $content[] = Layout_Admin::confirmThemeChange();
                 $_SESSION['Layout_Settings']->current_theme = $_POST['default_theme'];
+                $_SESSION['Layout_Settings']->loadSettings();
+                $_SESSION['Layout_Settings']->loadContentVars();
+                $_SESSION['Layout_Settings']->loadBoxes();
             } else {
                 $title = _('Themes');
                 $content[] = Layout_Admin::adminThemes();
@@ -364,10 +367,6 @@ class Layout_Admin{
         $db = & new PHPWS_DB('layout_config');
         $db->addValue($values);
         $db->update();
-    }
-
-    function postTheme(){
-        echo 'post';
     }
 
     function saveBoxSettings(){

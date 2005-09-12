@@ -11,13 +11,13 @@ PHPWS_Core::initModClass('layout', 'Box.php');
 
 class Layout_Settings {
     var $current_theme    = NULL;
-    var $default_theme          = NULL;
-    var $userAllow      = 0;
+    var $default_theme    = NULL;
+    var $userAllow        = 0;
     var $page_title       = NULL;
-    var $meta_keywords          = NULL;
+    var $meta_keywords    = NULL;
     var $meta_description = NULL;
-    var $meta_robots    = NULL;
-    var $meta_owner     = NULL;
+    var $meta_robots      = NULL;
+    var $meta_owner       = NULL;
     var $meta_author      = NULL;
     var $meta_content     = NULL;
     var $header           = NULL;
@@ -46,17 +46,19 @@ class Layout_Settings {
     }
 
     function getBoxThemeVar($module, $contentVar){
-        if (isset($this->_boxes[$module][$contentVar]))
+        if (isset($this->_boxes[$module][$contentVar])) {
             return $this->_boxes[$module][$contentVar]->getThemeVar();
-        else
+        } else {
             return FALSE;
+        }
     }
 
     function getBoxOrder($module, $contentVar){
-        if (isset($this->_boxes[$module][$contentVar]))
+        if (isset($this->_boxes[$module][$contentVar])) {
             return $this->_boxes[$module][$contentVar]->getBoxOrder();
-        else
+        } else {
             return FALSE;
+        }
     }
 
     function getPageTitle()
@@ -136,8 +138,9 @@ class Layout_Settings {
             PHPWS_Core::errorPage();
         }
 
-        if (empty($this->current_theme))
+        if (empty($this->current_theme)) {
             $this->current_theme = $this->default_theme;
+        }
 
         $themeInit = './themes/' . $this->current_theme . '/theme.ini';
 
@@ -146,13 +149,15 @@ class Layout_Settings {
             $this->loadBoxSettings($themeVars);
             $this->loadStyleSheets($themeVars);
         } else {
-            exit('missing theme.ini');
+            exit('Missing theme.ini');
         }
 
 
     }
 
     function loadStyleSheets($themeVars) {
+        $this->_default_css = $this->_persistant_css = $this->_alternate_css = NULL;
+
         extract($themeVars);
 
         if (!isset($persistant_style_sheet) && !isset($default_style_sheet)) {
