@@ -25,9 +25,11 @@ class PHPWS_Document extends File_Common {
         $this->setId((int)$id);
         $result = $this->init();
         if (PEAR::isError($result)) {
+            $this->id = NULL;
             $this->_errors[] = $result;
         } elseif (empty($result)) {
-            return PHPWS_Error::get(PHPWS_IMG_NOT_FOUND, 'core', 'PHPWS_Document');
+            $this->id = NULL;
+            $this->_errors[] = PHPWS_Error::get(PHPWS_DOCUMENT_NOT_FOUND, 'core', 'PHPWS_Document');
         }
     }
 
@@ -90,6 +92,13 @@ class PHPWS_Document extends File_Common {
     function getIconView()
     {
         return 'icon!';
+    }
+
+    function getDownloadLink()
+    {
+        return sprintf('<a href="%s" title="%s">%s</a>', 
+                       $this->getPath(), $this->getDescription(),
+                       $this->getTitle());
     }
 
     function save($no_dupes=TRUE, $write=TRUE)
