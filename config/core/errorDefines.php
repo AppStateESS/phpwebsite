@@ -99,6 +99,7 @@ define('PHPWS_IMG_WRONG_TYPE',        -906);
 define('PHPWS_IMG_NOT_FOUND',         -907);
 define('PHPWS_DOCUMENT_SIZE',         -908);
 define('PHPWS_DOCUMENT_WRONG_TYPE',   -909);
+define('PHPWS_DOCUMENT_NOT_FOUND',    -910);
 
 
 
