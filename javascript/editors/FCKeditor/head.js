@@ -4,7 +4,7 @@
 window.onload = FCKinit;
 function FCKinit()
 {
-    var oFCKeditor = new FCKeditor( '{NAME}' , 600, 300, "phpws") ;
+    var oFCKeditor = new FCKeditor( '{NAME}' , 500, 300, "phpws") ;
     oFCKeditor.BasePath = './javascript/editors/FCKeditor/';
     oFCKeditor.Config["CustomConfigurationsPath"] = 'custom.php?module={module}';
     oFCKeditor.ReplaceTextarea() ;
