@@ -42,7 +42,7 @@ class Clipboard
         $clip =  sprintf('<textarea cols="35" rows="4">%s</textarea>', $clip);
    
         $template['TITLE'] = _('Clipboard');
-        $template['DIRECTIONS'] = _('Highlight the text below and paste it into the text box.');
+        $template['DIRECTIONS'] = _('Copy the text below and paste it into the text box.');
         $template['CONTENT'] = $clip;
     
         $button = _('Close Window');
@@ -78,6 +78,7 @@ class Clipboard
             $content[] = Layout::getJavascript('open_window', $data) . ' ' . $drop;
         }
 
+        unset($clipVars['key']);
         $clipVars['action'] = 'clear';
         $template['CLEAR'] = PHPWS_Text::moduleLink(_('Clear'), 'clipboard', $clipVars);
         $template['LINKS'] = implode('<br />', $content);
