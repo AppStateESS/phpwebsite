@@ -16,6 +16,21 @@ class PHPWS_Document extends File_Common {
     var $_max_size        = MAX_DOCUMENT_SIZE;
     var $_classtype       = 'document';
 
+    function PHPWS_Document($id=NULL)
+    {
+        if (empty($id)) {
+            return;
+        }
+        
+        $this->setId((int)$id);
+        $result = $this->init();
+        if (PEAR::isError($result)) {
+            $this->_errors[] = $result;
+        } elseif (empty($result)) {
+            return PHPWS_Error::get(PHPWS_IMG_NOT_FOUND, 'core', 'PHPWS_Document');
+        }
+    }
+
     function setType($type){
         $this->type = $type;
     }
