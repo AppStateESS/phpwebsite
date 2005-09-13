@@ -79,7 +79,7 @@ class Block_Item {
     }
 
     function summarize(){
-        return substr(strip_tags($this->getContent(FALSE)), 0, 40);
+        return substr(strip_tags($this->getContent(TRUE)), 0, 40);
     }
 
     function init()
