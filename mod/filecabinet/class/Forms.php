@@ -158,10 +158,13 @@ class Cabinet_Form {
         $form->setLabel('description', _('Description'));
 
         if (isset($document->id)) {
-            $form->addSubmit(_('Update'));
+            $form->addSubmit('submit', _('Update'));
         } else {
-            $form->addSubmit(_('Upload'));
+            $form->addSubmit('submit', _('Upload'));
         }
+
+        $form->setExtra('submit', 'onclick="this.style.display=\'none\'"');
+
         $template = $form->getTemplate();
 
         $errors = $document->getErrors();
