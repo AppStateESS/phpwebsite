@@ -35,8 +35,9 @@ define('FORM_GENERIC_LEGEND', _('Form'));
  * max size, you will receive a system warning. So, you will 
  * need to make sure display_errors is Off.
  */
-define('FORM_USE_FILE_RESTRICTIONS', FALSE);
+define('FORM_USE_FILE_RESTRICTIONS', TRUE);
 
+// Form will use the below only if ABSOLUTE_UPLOAD_LIMIT is not defined
 define('FORM_MAX_FILE_SIZE', 5000000);
 
 
