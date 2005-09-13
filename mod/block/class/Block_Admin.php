@@ -90,8 +90,10 @@ class Block_Admin {
             break;
 
         case 'postBlock':
-            Block_Admin::postBlock($block);
-            $result = $block->save();
+            if (!PHPWS_Core::isPosted()) {
+                Block_Admin::postBlock($block);
+                $result = $block->save();
+            }
 
             $message = _('Block saved.');
             $title = _('Block list');
