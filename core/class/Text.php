@@ -104,7 +104,7 @@ class PHPWS_Text {
         }
       
         if ($this->use_strip_tags) {
-            $text = PHPWS_Text::strip_tags($text, $this->_allowed_tags);
+            $text = strip_tags($text, $this->_allowed_tags);
         }
 
         $text = PHPWS_Text::encodeXHTML($text);
@@ -157,10 +157,6 @@ class PHPWS_Text {
         $text = preg_replace('/&(?!\w+;)(?!#)/U', '&amp;\\1', $text);
 
         return $text;
-    }
-
-    function strip_tags($text, $allowed_tags) {
-        return strip_tags($text, $allowed_tags);
     }
 
   
@@ -489,14 +485,18 @@ class PHPWS_Text {
         $text = str_replace($address, "./", $text);
     }
 
-    function parseTag($text)
+    /**
+     * Parses text for SmartTags
+     */
+    function parseTag($text, $allowed_mods=NULL)
     {
         if (!isset($GLOBALS['embedded_tags'])) {
             return $text;
         }
 
-        foreach ($GLOBALS['embedded_tags'] as $module => $function_names) {
-            foreach ($function_names as $funcName) {
+        foreach ($GLOBALS['embedded_tags'] as $module => $ignore) {
+            if (empty($allowed_mods) || (is_array($allowed_mods) &&
+                in_array($module, $allowed_mods))) {
                 $search = "\[($module):([\w\s:\.\?\!]*)\]";
                 $text = preg_replace_callback("/$search/Ui", 'getEmbedded', $text);
             }
@@ -505,9 +505,16 @@ class PHPWS_Text {
         return $text;
     }
 
-    function addTag($module, $function_name)
+    function addTag($module, $function_names)
     {
-        $GLOBALS['embedded_tags'][$module][] = $function_name;
+        if (is_string($function_names)) {
+            $GLOBALS['embedded_tags'][$module][] = $function_names;
+        } elseif (is_array($function_names)) {
+            $GLOBALS['embedded_tags'][$module] = $function_names;
+        } else {
+            return FALSE;
+        }
+        return TRUE;
     }
 
     /**
@@ -764,28 +771,39 @@ function getXMLLevel($xml, $level)
 
 }
 
-function getEmbedded($stuff){
+function getEmbedded($stuff)
+{
+    unset($stuff[0]);
     $module = $stuff[1];
-    $values = explode(':', $stuff[2]);
+    unset($stuff[1]);
+
+    $parameters = explode(':', $stuff[2]);
 
     if (!isset($GLOBALS['embedded_tags'][$module])) {
         return;
     }
 
-    $filename = PHPWS_SOURCE_DIR . 'mod/' . $module . '/inc/parse.php';
-    if (!is_file($filename)) {
-        return;
+    if (count($GLOBALS['embedded_tags'][$module]) == 1 && 
+        $parameters[0] != $GLOBALS['embedded_tags'][$module][0]) {
+        $function_name = $GLOBALS['embedded_tags'][$module][0];
+    } else {
+        if (empty($parameters) || empty($parameters[0])) {
+            return NULL;
+        } else {
+            $function_name = $parameters[0];
+            unset($parameters[0]);
+        }
     }
 
-    require_once $filename;
 
-    $funcName = $values[0];
-
-    if (!function_exists($funcName)) {
+    if (!in_array($function_name, $GLOBALS['embedded_tags'][$module])) {
         return NULL;
     }
 
-    unset($values[0]);
-    return $funcName($values);
+    if (!function_exists($function_name)) {
+        return NULL;
+    }
+
+    return call_user_func_array($function_name, $parameters);
 }
 ?>
