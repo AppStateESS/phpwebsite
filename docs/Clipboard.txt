@@ -1,0 +1,19 @@
+Clipboard
+by Matthew McNaney
+
+
+Introduction
+----------------------------------------------------------
+Clipboard is a really basic module. It allows you to copy text and
+paste it somewhere else in the module.
+
+Now you may be asking, "but I can just do that via the browser."
+Quite true, but how many times have you 1) overwrote your copy buffer
+before you got to the destination, 2) had to instruct someone to copy
+and paste an html tag, 3) had someone copy and paste the wrong
+information.
+
+Basically, for advanced users, this may be unnecessary. However, if
+you want people to paste EXACT information, want to move specific code
+(SmartTags for example) without having to explain what to highlight,
+or just make something easier, Clipboard can help.

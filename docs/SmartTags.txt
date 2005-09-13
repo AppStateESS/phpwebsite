@@ -1,0 +1,148 @@
+SmartTags
+by Matthew McNaney
+
+
+Introduction
+------------------------------------------------------------------------
+SmartTags are BB style tags that trigger certain actions within a
+module. They are formatted with square brackets (e.g. []) and contain
+the module name plus commands or variables. By plugging them into your
+text you create shortcuts to module functionality.
+
+SmartTags also can help prevent poor user formatting. For example, say
+a user needed to copy a graph into their article. Your module may
+produce a link like:
+
+<img src="index.php?module=graph&cmd=get&width=300&height=200&id=213" />
+
+One mistake in that link could break the graph. Taking out the quote
+could ruin the page layout. SmartTag could reduce the above to:
+
+[graph:300:200:213]
+
+There is less chance of corruption and if improperly formatted it
+would be easy to spot: unlike an html tag.
+
+
+Creating a parse file
+------------------------------------------------------------------------
+I'll be using Block as an example.
+
+First we need to register a function with Block. In Block's init.php
+file I use the addTag function:
+
+PHPWS_Text::addTag('block', 'viewBlock');
+
+This tells the core that my module (block) is using SmartTags. I am
+also telling the core that I am only using the function (viewBlock). I
+will get into using multiple functions in a bit.
+
+Once registered, a tag can be parsed. Here is the SmartTag for Block:
+
+[block:3]
+
+The variables in the square brackets are divided by colons. The first
+variable is the name of the module (very important). The second
+variable is either a) the name of the function, or b) the first
+variable to be sent to the function.
+
+When I registered block above, I set one default function. I could
+also set a default function with:
+
+PHPWS_Text::addTag('block', array('viewBlock'));
+
+Since I am only calling "viewBlock" there is no need to add it to every
+SmartTag. However, if I had different SmartTag functions in a module,
+I would need to register them all like so:
+
+PHPWS_Text::addTag('block', array('viewBlock', 'hide_block', 'something_else');
+
+and my actual tag would look like this:
+
+[block:viewBlock:1]
+
+or
+
+[block:hide_block:3]
+
+If you don't set a default function, the second variable must be the
+name of your function. SmartTags will also ignore any function call
+that has not been specifically registered by your module. So if I
+called:
+
+[block:another_modules_function:3]
+
+nothing would happen.
+
+Functions
+----------------------------------------------------------------------
+All that is left to to make sure that my function (viewBlock in our
+example) exists.
+
+For the Block module, a parse.php file was created and required in
+Block's init.php file.
+
+Here is the function:
+
+function viewBlock($block_id) {
+    $block = new Block_Item((int)$block_id);
+    if (empty($block->id)) {
+        return NULL;
+    }
+    $template['BLOCK'] = $block->view(FALSE, FALSE);
+    return PHPWS_Template::process($template, 'block', 'embedded.tpl');
+}
+
+The first parameter is $block_id. I expect that variable as it is the
+first variable after the module (and function name if in the
+SmartTag).
+
+Tbhe function loads the block and returns the display result. That
+result then shows up where the SmartTag was inserted. If something
+goes wrong, then I just return NULL.
+
+
+Parsing the tags
+--------------------------------------------------------------------
+Display of your tag is the last component. If the module does not
+specifically parse for the SmartTags, then they will just show in
+their raw form.
+
+To support SmartTags you just need to call
+PHPWS_Text::parseTag($text);
+
+For example:
+
+$text = PHPWS_Text::parseTag($text);
+$template['CONTENT'] = PHPWS_Text::parseOutput($text);
+
+Notice I call parseOutput AFTER parseTag. parseOutput will strip
+BB-encoded tags that it does not recognize. Since SmartTags are in
+this format, they would be removed before they could be parsed.
+
+
+Controlling the modules allowed
+-------------------------------------------------------------------
+By default, parseTag will parse any tag entered. If you want to
+restrict which modules parseTag allowed, you can send them in an array
+to the second parameter like so:
+
+$module_list[] = 'my_module';
+$module_list[] = 'other_module';
+
+PHPWS_Text::parseTag($text, $module_list);
+
+
+
+Final notes
+--------------------------------------------------------------------
+If you plan on using SmartTags, you may want to read up on the
+Clipboard module. It supplies an easy way for users to plug the tags
+into their content.
+
+Also, be careful with SmartTags. If the SmartTag could display
+sensitive data, make sure you are checking user permissions before you
+display them. Also, in many cases you can probably avoid giving
+general anonymous users any access to SmartTags. If you do, consider
+limiting their access to specific modules.
+
