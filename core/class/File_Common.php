@@ -45,6 +45,17 @@ class File_Common {
         $this->id = (int)$id;
     }
 
+    function logErrors()
+    {
+        if (empty($this->_errors) || !is_array($this->_errors)) {
+            return;
+        }
+
+        foreach ($this->_errors as $error) {
+            PHPWS_Error::log($error);
+        }
+    }
+
     function importPost($var_name) {
         $this->setTitle($_POST['title']);
         $this->setDescription($_POST['description']);
