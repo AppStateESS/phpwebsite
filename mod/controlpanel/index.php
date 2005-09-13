@@ -1,4 +1,8 @@
 <?php
+if (!defined('PHPWS_SOURCE_DIR')) {
+    include '../../config/core/404.html';
+    exit();
+}
 
 if (isset($_GET['cp_image_toggle'])){
   PHPWS_ControlPanel_Tab::toggleImage($_GET['tab']);

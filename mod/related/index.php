@@ -1,4 +1,8 @@
 <?php
+if (!defined('PHPWS_SOURCE_DIR')) {
+    include '../../config/core/404.html';
+    exit();
+}
 
 if (!defined("PHPWS_SOURCE_DIR") || !isset($_REQUEST['action'])){
   return NULL;
