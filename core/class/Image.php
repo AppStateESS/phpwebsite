@@ -25,7 +25,6 @@ class PHPWS_Image extends File_Common{
 
     function PHPWS_Image($id=NULL)
     {
-        $this->_classtype = 'image';
         if (empty($id)) {
             return;
         }
