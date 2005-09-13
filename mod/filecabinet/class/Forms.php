@@ -32,7 +32,12 @@ class Cabinet_Form {
         unset($values['mod_title']);
 
         $form->addHidden($values);
-        $form->addSelect('mod_title', array('all'=> _('All'), 'profiler'=>'profiler'));
+        $mods = PHPWS_Core::getModules(TRUE, TRUE);
+        $module_list['all'] = _('All');
+        foreach ($mods as $mod_title) {
+            $module_list[$mod_title] = $mod_title;
+        }
+        $form->addSelect('mod_title', $module_list);
 
         if (javascriptEnabled()) {
             $form->setExtra('mod_title', 'onchange="javascript:this.form.submit();"');
@@ -70,12 +75,48 @@ class Cabinet_Form {
         $pager->addToggle('class="toggle1"');
         $pager->addToggle('class="toggle2"');
 
-        $tags['TITLE']        = _('Title');
-        $tags['FILENAME']     = _('Filename');
-        $tags['DOC_TYPE']     = _('Document Type');
-        $tags['MODULE']       = _('Module');
-        $tags['SIZE']         = _('Size');
-        $tags['ACTION']       = _('Action');
+        // Pick module
+        $form = & new PHPWS_Form;
+        $form->setMethod('get');
+        $values = $pager->getLinkValues();
+
+        unset($values['authkey']);
+
+        if (isset($values['mod_title']) && $values['mod_title'] != 'all') {
+            $current_mod = $values['mod_title'];
+            $pager->addWhere('module', $current_mod, '=', 'and', 1);
+        } else {
+            $current_mod = NULL;
+        }
+
+        unset($values['mod_title']);
+
+        $form->addHidden($values);
+        $mods = PHPWS_Core::getModules(TRUE, TRUE);
+        $module_list['all'] = _('All');
+        foreach ($mods as $mod_title) {
+            $module_list[$mod_title] = $mod_title;
+        }
+        
+        $form->addSelect('mod_title', $module_list);
+
+
+        if (javascriptEnabled()) {
+            $form->setExtra('mod_title', 'onchange="javascript:this.form.submit();"');
+        } else {
+            $form->addSubmit(_('Go'));
+        }
+        $form->setMatch('mod_title', $current_mod);
+
+        $tags = $form->getTemplate();
+
+
+        $tags['TITLE']    = _('Title');
+        $tags['FILENAME'] = _('Filename');
+        $tags['TYPE']     = _('Document Type');
+        $tags['MODULE']   = _('Module');
+        $tags['SIZE']     = _('Size');
+        $tags['ACTION']   = _('Action');
 
         $tags['NEW_DOCUMENT'] = PHPWS_Text::secureLink(_('Upload document'), 'filecabinet',
                                                        array('action'=>'new_document'));
@@ -209,6 +250,7 @@ class FC_Image extends PHPWS_Image {
         $vars['action'] = 'admin_edit_image';
         $vars['image_id'] = $this->id;
         $links[] = PHPWS_Text::secureLink(_('Edit'), 'filecabinet', $vars);
+
         $tpl['ACTION'] = implode(' | ', $links);
         $tpl['SIZE'] = $this->getSize(TRUE);
         return $tpl;
@@ -219,9 +261,14 @@ class FC_Image extends PHPWS_Image {
 class FC_Document extends PHPWS_Document {
     function getRowTags()
     {
-        $vars['action'] = 'admin_edit_document';
         $vars['document_id'] = $this->id;
+
+        $vars['action'] = 'admin_edit_document';
         $links[] = PHPWS_Text::secureLink(_('Edit'), 'filecabinet', $vars);
+
+        $vars['action'] = 'clip_document';
+        $links[] = PHPWS_Text::moduleLink(_('Clip'), 'filecabinet', $vars);
+
         $tpl['ACTION'] = implode(' | ', $links);
         $tpl['SIZE'] = $this->getSize(TRUE);
 

@@ -60,6 +60,10 @@ class Cabinet_Action {
             $content = Cabinet_Form::imageManager('image');
             break;
 
+        case 'clip_document':
+            if ($document->id) {
+                Clipboard::copy($document->getTitle(), '[filecabinet:doc:' . $document->id . ']');
+            }
         case 'document':
             $title = _('Manage Documents');
             $content = Cabinet_Form::documentManager();
