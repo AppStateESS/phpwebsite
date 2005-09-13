@@ -84,7 +84,7 @@ Block's init.php file.
 
 Here is the function:
 
-function viewBlock($block_id) {
+function block_view($block_id) {
     $block = new Block_Item((int)$block_id);
     if (empty($block->id)) {
         return NULL;
@@ -92,6 +92,10 @@ function viewBlock($block_id) {
     $template['BLOCK'] = $block->view(FALSE, FALSE);
     return PHPWS_Template::process($template, 'block', 'embedded.tpl');
 }
+
+Note the function name. To try and avoid duplicate function names and prevent
+long smart tag function names, the module title and an underline are
+prefixed to the function name.
 
 The first parameter is $block_id. I expect that variable as it is the
 first variable after the module (and function name if in the

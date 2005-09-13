@@ -800,6 +800,8 @@ function getEmbedded($stuff)
         return NULL;
     }
 
+    $function_name = $module . '_' . $function_name;
+
     if (!function_exists($function_name)) {
         return NULL;
     }
