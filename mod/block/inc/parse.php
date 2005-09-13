@@ -1,6 +1,6 @@
 <?php
 
-function viewBlock($block_id) {
+function block_view($block_id) {
     $block = new Block_Item((int)$block_id);
     if (empty($block->id)) {
         return NULL;
