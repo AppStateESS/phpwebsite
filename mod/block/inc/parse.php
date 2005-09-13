@@ -1,11 +1,12 @@
 <?php
 
-PHPWS_Core::initModClass('block', 'Block_Item.php');
-
-function viewBlock($values) {
-  $block = new Block_Item($values[1]);
-  $template['BLOCK'] = $block->view(FALSE, FALSE);
-  return PHPWS_Template::process($template, 'block', 'embedded.tpl');
+function viewBlock($block_id) {
+    $block = new Block_Item((int)$block_id);
+    if (empty($block->id)) {
+        return NULL;
+    }
+    $template['BLOCK'] = $block->view(FALSE, FALSE);
+    return PHPWS_Template::process($template, 'block', 'embedded.tpl');
 }
 
 ?>
