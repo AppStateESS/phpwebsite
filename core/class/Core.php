@@ -257,6 +257,11 @@ class PHPWS_Core {
         return $file;
     }
 
+    function requireConfig($module, $file, $exitOnError=TRUE)
+    {
+        return PHPWS_Core::configRequireOnce($module, $file, $exitOnError);
+    }
+
     /**
      * Loads a config file. If missing, shows error page
      */
