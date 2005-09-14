@@ -1824,28 +1824,35 @@ class Form_Element {
 
     function getData()
     {
-	if (isset($this->style))
+	if (isset($this->style)) {
 	    $extra[] = $this->getStyle(TRUE);
+        }
 
-	if (isset($this->class))
+	if (isset($this->class)) {
 	    $extra[] = $this->getClass(TRUE);
+        }
 
-	if (isset($this->extra))
+	if (isset($this->extra)) {
 	    $extra[] = $this->getExtra();
+        }
 
-	if (isset($this->size))
+	if (isset($this->size)) {
 	    $extra[] = $this->getSize(TRUE);
+        }
 
-	if (isset($this->maxsize))
+	if (isset($this->maxsize)) {
 	    $extra[] = $this->getMaxSize(TRUE);
+        }
 
-	if (isset($this->tab))
+	if (isset($this->tab)) {
 	    $extra[] = $this->getTab(TRUE);
+        }
 
-	if (isset($extra))
+	if (isset($extra)) {
 	    return implode('', $extra);
-	else
+        } else {
 	    return NULL;
+        }
     }
 
     function setTag($tag)
