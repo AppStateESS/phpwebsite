@@ -33,9 +33,9 @@ Getting Started
 --------------------------------------------------------------------
 You will need to require the DB Pager class:
 
-PHPWS_Core::initCoreClass("DBPager.php");
+PHPWS_Core::initCoreClass('DBPager.php');
 or
-require_once "core/class/DBPager.php";
+require_once PHPWS_SOURCE_DIR . 'core/class/DBPager.php';
 
 You will also need to require the 'working class'. This is the object
 that is going to hold your row data. I will be using File Cabinet as an
@@ -276,13 +276,15 @@ The PAGE_LABEL tag is from the Page Tags section.
 
 Here is a full list of the navigation and information tags.
 
-TOTAL_ROWS  : lists the current page within the total number of pages
-PAGE_LABEL  : translated text that says "Page"
-PAGES       : listing of pages with page 'turners' on each end
-PAGE_DROP   : a drop select box for selecting a specific page
-LIMIT_LABEL : translated text that says "Limit"
-LIMITS      : a small list of limit options
-SEARCH      : a search box (see Adding Search above)
+TOTAL_ROWS    : lists the current page within the total number of pages
+PAGE_LABEL    : translated text that says "Page"
+PAGES         : listing of pages with page 'turners' on each end
+PAGE_DROP     : a drop select box for selecting a specific page
+LIMIT_LABEL   : translated text that says "Limit"
+LIMITS        : a small list of limit options
+SEARCH        : a search box (see Adding Search above)
+EMPTY_MESSAGE : if no rows are found, 'No rows found' will appear here
+                {You can set this message with $pager->setEmptyMessage($message)
 
 
 
