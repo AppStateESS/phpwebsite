@@ -1,65 +1,50 @@
 <?php
 
 /**
- * Contains functions for older versions of php
+ * Loads functions that may be incompatible with older versions of php
  *
  * @author Matthew McNaney <matt at tux dot appstate dot edu>
  * @version $Id$
  */
 
-if (!function_exists('file_get_contents')){
-    function file_get_contents($filename){
-        if (!is_file($filename))
-            return FALSE;
+$function_list = array('file_get_contents',
+                       'file_put_contents',
+                       'mime_content_type',
+                       'html_entity_decode',
+                       'scandir'
+                       );
 
-        $fd = @fopen($filename, 'rb');
-    
-        if ($fd){
-            $data = trim(fread ($fd, filesize ($filename)));
-            fclose ($fd);
-            return $data;
-        } else
-            return FALSE;
-    }
-}
+loadFunction($function_list);
 
-if (!function_exists('file_put_contents')){
-    function file_put_contents($filename, $content, $flags = 0) {
-        if (!($file = @fopen($filename, ($flags & 1) ? 'a' : 'w'))) {
-            return false;
+// Copy of PEAR's Compat function
+function loadFunction($function)
+{
+    // Recursiveness
+    if (is_array($function)) {
+        $res = array();
+        foreach ($function as $singlefunc) {
+            $res[$singlefunc] = loadFunction($singlefunc);
         }
-        $n = fwrite($file, $content);
-        fclose($file);
-        return $n ? $n : false;
+
+        return $res;
     }
+
+    // Load function
+    if (!function_exists($function)) {
+        // edited for phpwebsite
+        $file = sprintf(PHPWS_SOURCE_DIR . 'lib/pear/Compat/Function/%s.php', $function);
+
+        if ((@include_once $file) !== false) {
+            return true;
+        }
+    }
+
+    return false;
+
+
 }
 
-if (!function_exists ('mime_content_type')) {
-    function mime_content_type ($file) {
-        return exec ('file -bi ' . escapeshellcmd($file));
-    }
-}
 
-// Taken from php.net
-// Written by dave at codexweb dot co dot za
-// Edited by Matthew McNaney
-if (!function_exists('html_entity_decode')) {
-    if (!defined('ENT_COMPAT')) define('ENT_COMPAT', 1);
-    if (!defined('ENT_NOQUOTES')) define('ENT_NOQUOTES', 4);
-    if (!defined('ENT_QUOTES')) define('ENT_QUOTES', 2);
 
-    function html_entity_decode ($string, $opt = ENT_COMPAT) {
-
-        $trans_tbl = get_html_translation_table (HTML_ENTITIES);
-        $trans_tbl = array_flip ($trans_tbl);
-
-        if ($opt == 2)
-            $trans_tbl['&#039;'] = $trans_tbl['&apos;'] = "'";
-
-        if ($opt == 4)
-            unset($trans_tbl['&quot;']);
-        return strtr ($string, $trans_tbl);
-    }
-}
 
 ?>
