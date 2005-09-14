@@ -30,7 +30,7 @@ then your database table needs to look like:
 
 name |  address  |  city
 
-If you variables differ, then your source data should be an array, you
+If your variables differ, then your source data should be an array. You
 can then load the values however you wish.
 
 The variable/table column "id" is _required_. Version expects to find
@@ -77,12 +77,12 @@ Saving a version
 There are two states for a version: approved and unapproved.
 When an approved version is saved, it is added to the version
 table. This is like making a backup.
-An unapproved version, is added to the version table, but it isn't
+An unapproved version is added to the version table, but it isn't
 made active until it is approved by an administrator (more on that
 later).
 
 If you simply wanted to start saving versions or backups of items,
-then you want to save an approved version. First the version to 'approved'.
+then you want to save an approved version. Set the version to 'approved'.
 
 $version->setApproved(TRUE);
 
