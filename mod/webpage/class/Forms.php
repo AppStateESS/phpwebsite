@@ -8,7 +8,35 @@
 
 class Webpage_Forms {
 
-    function edit(&$volume)
+    function pagePanel($volume)
+    {
+        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        $link['link'] = 'index.php?module=webpage&wp_admin=edit_webpage&volume_id=' . $volume->id;
+        $link['title'] = _('Header');
+        $tabs['header'] = $link;
+
+        if (!empty($volume->_pages)) {
+            foreach ($volume->_pages as $page_id => $page) {
+                $link['title'] = sprintf(_('Page %s'), $page->page_number);
+                $link['link'] = 'index.php?module=webpage&volume_id=' . $volume->id . '&wp_admin=edit_webpage&page_id=' . $page_id . '&volume_id=' . $volume->id;
+                $tabs['page_' . $page->page_number] = $link;
+            }
+        }
+
+        if ($volume->id) {
+            $link['link'] = 'index.php?module=webpage&volume_id=' . $volume->id;
+            $link['title'] = _('Add Page');
+            $tabs['add_page'] = $link;
+        }
+
+        $panel = & new PHPWS_Panel('wp_edit_page');
+        $panel->quickSetTabs($tabs);
+
+        $panel->setModule('webpage');
+        return $panel;
+    }
+
+    function editHeader(&$volume)
     {
         $form = & new PHPWS_Form;
         $form->addHidden('module', 'webpage');
@@ -16,14 +44,14 @@ class Webpage_Forms {
 
         if ($volume->id) {
             $form->addHidden('volume_id', $volume->id);
-            $form->addSubmit(_('Update webpage'));
+            $form->addSubmit(_('Update header'));
         } else {
-            $form->addSubmit(_('Create webpage'));
+            $form->addSubmit(_('Create header'));
         }
 
         $form->addText('title', $volume->title);
-        $form->setLabel('title', _('Volume title'));
-        $form->setSize('title', 40);
+        $form->setLabel('title', _('Webpage title'));
+        $form->setSize('title', 50);
 
         $form->addTextArea('summary', $volume->getSummary());
         $form->useEditor('summary');
@@ -31,14 +59,41 @@ class Webpage_Forms {
 
         $form->addSelect('template', $volume->getTemplateList());
         $form->setMatch ('template', $volume->template);
-        $form->setLabel('template', _('Volume template'));
+        $form->setLabel('template', _('Header template'));
 
         $template = $form->getTemplate();
         return PHPWS_Template::process($template, 'webpage', 'forms/edit.tpl');
     }
 
-    function edit_pages(&$volume, $current_page=1)
+
+    function editPage(&$page)
     {
+        $form = & new PHPWS_Form;
+        $form->addHidden('module', 'webpage');
+        $form->addHidden('wp_admin', 'post_page');
+        $form->addHidden('volume_id', $page->volume_id);
+
+        if ($page->id) {
+            $form->addHidden('page_id', $page->id);
+            $form->addSubmit(_('Add new page'));
+        } else {
+            $form->addSubmit(_('Update page'));
+        }
+
+        $form->addText('title', $page->title);
+        $form->setLabel('title', _('Title'));
+        $form->setSize('title', 50);
+
+        $form->addTextArea('content', $page->getContent());
+        $form->useEditor('content');
+        $form->setLabel('content', _('Content'));
+
+        $form->addSelect('template', $page->getTemplateList());
+        $form->setMatch ('template', $page->template);
+        $form->setLabel('template', _('Webpage template'));
+        $template = $form->getTemplate();
+
+        return PHPWS_Template::process($template, 'webpage', 'forms/edit_page.tpl');
 
     }
 

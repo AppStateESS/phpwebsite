@@ -6,6 +6,7 @@
  * @version $Id$
  */
 PHPWS_Core::requireConfig('webpage', 'config.php');
+PHPWS_Core::initModClass('webpage', 'Page.php');
 
 if (!defined('WP_VOLUME_DATE_FORMAT')) {
     define('WP_VOLUME_DATE_FORMAT', '%c'); 
@@ -22,6 +23,8 @@ class Webpage_Volume {
     var $template      = NULL;
     var $frontpage     = FALSE;
     var $_current_page = 1;
+    // array of pages indexed by order, value is id
+    var $_pages        = NULL;
     var $_error        = NULL;
     var $_db           = NULL;
 
@@ -33,6 +36,7 @@ class Webpage_Volume {
 
         $this->id = (int)$id;
         $this->init();
+        $this->loadPages();
     }
 
     function resetDB()
@@ -40,12 +44,31 @@ class Webpage_Volume {
         if (empty($this->_db)) {
             $this->_db = & new PHPWS_DB('webpage_volume');
         } else {
-            $this->_db->reset;
+            $this->_db->reset();
+        }
+    }
+
+    function loadPages()
+    {
+        $db = & new PHPWS_DB('webpage_page');
+        $db->addWhere('volume_id', $this->id);
+        $db->setIndexBy('id');
+        $db->addOrder('page_number');
+        $result = $db->getObjects('Webpage_Page');
+
+        if (!empty($result)) {
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                return;
+            } else {
+                $this->_pages = $result;
+            }
         }
     }
 
     function init()
     {
+        $this->resetDB();
         $result = $this->_db->loadObject($this);
         if (PEAR::isError($result)) {
             $this->_error = $result;
@@ -94,9 +117,9 @@ class Webpage_Volume {
     function getTemplateDirectory()
     {
         if (FORCE_MOD_TEMPLATES) {
-            $directory = PHPWS_SOURCE_DIR . 'mod/webpage/templates/volume/';
+            $directory = PHPWS_SOURCE_DIR . 'mod/webpage/templates/header/';
         } else {
-            $directory = 'templates/webpage/volume/';
+            $directory = 'templates/webpage/header/';
         }
         return $directory;
     }
@@ -111,9 +134,7 @@ class Webpage_Volume {
         }
 
         foreach ($files as $key => $f_name) {
-            if ($f_name == '.' || $f_name == '..' || preg_match('/~$/i', $f_name)) {
-                continue;
-            } else {
+            if (preg_match('/\.tpl$/i', $f_name)) {
                 $file_list[$f_name] = $f_name;
             }
         }
@@ -124,8 +145,13 @@ class Webpage_Volume {
         }
     }
 
+
     function post()
     {
+        if (PHPWS_Core::isPosted()) {
+            return TRUE;
+        }
+
         if (empty($_POST['title'])) {
             $errors[] = _('Missing page title');
         } else {
@@ -159,10 +185,13 @@ class Webpage_Volume {
 
     function rowTags()
     {
+        $vars['volume_id'] = $this->id;
+        $vars['wp_admin'] = 'edit_webpage';
+        $links[] = PHPWS_Text::moduleLink(_('Edit'), 'webpage', $vars);
+
         $tpl['DATE_CREATED'] = $this->getDateCreated();
         $tpl['DATE_UPDATED'] = $this->getDateUpdated();
-        $tpl['ACTION']       = 'action stuff';
-
+        $tpl['ACTION']       = implode(' | ', $links);
         return $tpl;
     }
 
@@ -189,6 +218,43 @@ class Webpage_Volume {
 
         return $result;
     }
+
+    function &getPagebyNumber($page_number)
+    {
+        if ($page_number == 1) {
+            return current($this->_pages);
+        } else {
+            for($i=1; $i < $page_number; $i++) {
+                $page = next($this->_pages);
+            }
+            return $page;
+        }
+    }
+
+    function &getPagebyId($page_id)
+    {
+        if (!isset($this->_pages[(int)$page_id])) {
+            return NULL;
+        }
+        return $this->_pages[(int)$page_id];
+    }
+
+    function viewHeader()
+    {
+        $template['TITLE'] = $this->title;
+        $template['SUMMARY'] = $this->getSummary();
+        
+        if (!is_file($this->getTemplateDirectory() . $this->template)) {
+            return implode('<br />', $template);
+        }
+
+        if (Current_User::allow('webpage', 'edit_page', $this->id)) {
+            $template['EDIT_HEADER'] = PHPWS_Text::moduleLink(_('Edit header'), 'webpage', array('wp_admin'=>'edit_header',
+                                                                                   'volume_id' => $this->id));
+        }
+        return PHPWS_Template::process($template, 'webpage', 'header/' . $this->template);
+    }
+
 }
 
 ?>
