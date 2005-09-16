@@ -105,7 +105,9 @@ function initLanguage(){
 
 function checkJavascript()
 {
-    if (!isset($_SESSION['Javascript_Check'])) {
+
+    if (!isset($_SESSION['Javascript_Enabled']) &&
+        !isset($_SESSION['Javascript_Check'])) {
         $_SESSION['Javascript_Check'] = TRUE;
         Layout::getJavascript('test');
     } else {
@@ -120,6 +122,7 @@ function checkJavascript()
                 $GLOBALS['browser_info']['javascript'] = FALSE;
             }
             setcookie ('js_check', '', time() - 3600);
+            unset($_SESSION['Javascript_Check']);
         }
     }
 }
