@@ -16,5 +16,6 @@ CREATE TABLE webpage_page (
   volume_id int NOT NULL default '0',
   content text NOT NULL,
   page_number smallint NOT NULL default '0',
-  template varchar(40) NOT NULL default ''
+  template varchar(40) NOT NULL default '',
+  PRIMARY KEY  (id)
 );
