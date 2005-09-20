@@ -108,7 +108,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
         $module = $this->getModule();
         $this->setCache();
         if ($strict == TRUE) {
-            $result = $this->loadTemplatefile($file);
+            $result = $this->loadTemplateFile($file);
         } else {
             $altFile = PHPWS_Template::getTplDir($module) . $file;
 
@@ -117,13 +117,13 @@ class PHPWS_Template extends HTML_Template_Sigma {
             }
 
             if (FORCE_THEME_TEMPLATES || is_file($altFile)) {
-                $result = $this->loadTemplatefile($altFile);
+                $result = $this->loadTemplateFile($altFile);
             } elseif (FORCE_MOD_TEMPLATES) {
                 $file = PHPWS_SOURCE_DIR . "mod/$module/templates/$file";
-                $result = $this->loadTemplatefile($file);
+                $result = $this->loadTemplateFile($file);
             } else {
                 $file = "templates/$module/$file";
-                $result = $this->loadTemplatefile($file);
+                $result = $this->loadTemplateFile($file);
             }
         }
 
@@ -173,6 +173,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
                                     'template=' . gettype($template));
             return NULL;
         }
+
         if (PEAR::isError($template)){
             PHPWS_Error::log($template);
             return NULL;
@@ -190,7 +191,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
         }
 
         foreach ($template as $key => $value) {
-            if (!is_array($value)) {
+            if (!is_array($value) || !isset($tpl->_blocks[$key])) {
                 continue;
             }
 
