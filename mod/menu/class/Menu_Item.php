@@ -211,15 +211,23 @@ class Menu_Item {
 
     function view()
     {
+        PHPWS_Core::requireConfig('menu', 'config.php');
+
         $edit = FALSE;
         $file = 'menu_layout/' . $this->template;
         $content_var = 'menu_' . $this->id;
 
-        if (Menu::isAdminMode() && Current_User::allow('menu') ) {
-            $tpl['ADD_LINK'] = Menu::getAddLink($this->id);
-            $vars['command'] = 'disable_admin_mode';
-            $vars['return'] = 1;
-            $tpl['OFF_LINK'] = PHPWS_Text::moduleLink(MENU_ADMIN_OFF, 'menu', $vars);
+        if (Current_User::allow('menu')) {
+            if (Menu::isAdminMode()) {
+                $tpl['ADD_LINK'] = Menu::getAddLink($this->id);
+                $vars['command'] = 'disable_admin_mode';
+                $vars['return'] = 1;
+                $tpl['ADMIN_LINK'] = PHPWS_Text::moduleLink(MENU_ADMIN_OFF, 'menu', $vars);
+            } else {
+                $vars['command'] = 'enable_admin_mode';
+                $vars['return'] = 1;
+                $tpl['ADMIN_LINK'] = PHPWS_Text::moduleLink(MENU_ADMIN_ON, 'menu', $vars);
+            }
         }
 
         $tpl['TITLE'] = $this->title;
