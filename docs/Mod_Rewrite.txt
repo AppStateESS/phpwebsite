@@ -1,4 +1,6 @@
 Using Mod_Rewrite with phpWebSite
+by Matthew McNaney
+---------------------------------------------------------------------
 
 When writing a module, you may find that some of your links are
 getting rather complicated.
@@ -11,7 +13,7 @@ http://www.mysite.com/index.php?module=article&action=view&id=5312
 
 Using mod_rewrite functionality, you could change that link to:
 
-http://www.mysite.com/article/view/5312
+http://www.mysite.com/article5312.html
 
 This is more straight forward, easier for search engines to index, and
 much easier to explain over the phone. PhpWebSite can help you achieve
@@ -36,11 +38,11 @@ removing the pound sign (#) in front of each line.
 
 Finally, you will need to configure phpWebSite to use mod_rewrite. Go
 into your config/core/config.php file and change the define to:
-define("USE_MOD_REWRITE", TRUE);
+define("MOD_REWRITE_ENABLED", TRUE);
 
 Your site should be ready to use mod_rewrite now.
 
-Making you Module use mod_rewrite
+Making your Module use mod_rewrite
 
 The rewrite function is very basic. All it facilitates are simple user
 accessible commands. You won't be accessing administrative
@@ -53,33 +55,34 @@ module. Let's look at our previous example:
 http://www.mysite.com/article/view/5312
 
 When this is sent to phpWebSite, it is going to go to the article
-module and tell it that it wants to 'view' article 5312. It will rewrite
+module and tell it that it wants to view article 5312. It will rewrite
 the address to:
 
-http://www.mysite.com/index.php?module=article&action=view&id=5312
+http://www.mysite.com/index.php?module=article&id=5312
 
-You are sending three bits of information:
+You are sending two bits of information:
 1) what module you are using,
-2) what your 'action' is going to be, and
-3) what the id should be used.
+2) what the id should be used.
 
-In may index.php file, I may have something like the following.
+Since I am only using the mod_rewrite to view items, my index file
+assumes that if it only getting an id then this must be a user viewing
+a file.
 
-if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'view'){
+In my index.php file, I may have something like the following.
+
+if (isset($_REQUEST['id']){
   $article = & new Article($_REQUEST['id']);
   $article->view();
 }
 
-You can change the 'action' value for each user process that you wish
-to allow.
 
 Keep in mind however that not everyone will use mod_rewrite, so you
 should plan accordingly.
 
-if (USE_MOD_REWRITE == TRUE)
-   $link = "article/view/$id";
+if (MOD_REWRITE_ENABLED == TRUE)
+   $link = 'article' . $id . '.html';
 else
-   $link = "index.php?module=article&action=view&id=5312";
+   $link = "index.php?module=article&id=5312";
 
 
 One more quick note. When phpWebSite uses mod_rewrite, it has to make
