@@ -64,7 +64,7 @@ class Layout_Settings {
     function getPageTitle()
     {
         if (isset($GLOBALS['Layout_Page_Title_Add'])) {
-            return $this->page_title . PAGE_TITLE_DIVIDER . implode(PAGE_TITLE_DIVIDER, $GLOBALS['Layout_Page_Title_Add']);
+            return implode(PAGE_TITLE_DIVIDER, $GLOBALS['Layout_Page_Title_Add']) . PAGE_TITLE_DIVIDER . $this->page_title;
         } else {
             return $this->page_title;
         }
