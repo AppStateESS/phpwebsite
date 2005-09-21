@@ -59,6 +59,7 @@ class Webpage_Admin {
         case 'edit_webpage':
         case 'edit_page':
         case 'add_page':
+        case 'edit_header':
             $pagePanel = Webpage_Forms::pagePanel($volume);
         }
 
@@ -98,8 +99,39 @@ class Webpage_Admin {
             $content = Webpage_Forms::editPage($page);
             break;
 
+        case 'edit_header':
+            $title = sprintf(_('Edit header: %s'), $volume->title);
+            $content = Webpage_Forms::editHeader($volume);
+            break;
+
+        case 'post_header':
+            $result = $volume->post();
+            if (is_array($result)) {
+                $title = sprintf(_('Edit header page: %s'), $volume->title);
+                $content = Webpage_Forms::editHeader($volume);
+                $message = implode('<br />', $result);
+            } elseif (PEAR::isError($result)) {
+                $title = _('Sorry');
+                $content = _('An error occurred. Please check your logs.');
+                PHPWS_Error::log($result);
+            } else {
+                PHPWS_Core::initModClass('webpage', 'Forms.php');
+                $result = $volume->save();
+                if (PEAR::isError($result)) {
+                    $title = _('Sorry');
+                    $content = _('An error occurred. Please check your logs.');
+                    PHPWS_Error::log($result);
+                } else {
+                    $title = sprintf(_('Administrate page: %s'), $volume->title);
+                    $message = _('Header saved successfully!');
+                    $pagePanel = Webpage_Forms::pagePanel($volume);
+                    $content = $volume->viewHeader();
+                }
+            }
+            break;
 
         case 'post_page':
+            $title = sprintf(_('Administrate page: %s'), $volume->title);
             $result = $page->post();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
@@ -117,6 +149,15 @@ class Webpage_Admin {
                     $message = _('An error occurred while saving your page. Please check the error log.');
                     $content = $page->view();
                 }
+                if (isset($_POST['force_template'])) {
+                    $force_result = $volume->forceTemplate($page->template);
+
+                    if (PEAR::isError($force_result)) {
+                        PHPWS_Error::log($force_result);
+                        $message = _('An error occurred when trying to force the page templates.');
+                    }
+                }
+
                 $volume->loadPages();
                 $pagePanel = Webpage_Forms::pagePanel($volume);
                 $pagePanel->setCurrentTab('page_' . $page->page_number);
@@ -131,6 +172,8 @@ class Webpage_Admin {
             $content = Webpage_Forms::wp_list();
             break;
 
+        default:
+            exit($command);
         }
 
         // Sticks inside the panel
@@ -140,6 +183,8 @@ class Webpage_Admin {
         case 'edit_page':
         case 'add_page':
         case 'post_page':
+        case 'edit_header':
+        case 'post_header':
             $pagePanel->setContent($content);
             $content = $pagePanel->display();
         }
@@ -159,10 +204,6 @@ class Webpage_Admin {
         PHPWS_Core::initModClass('webpage', 'Forms.php');
         $title = $content = $message = NULL;
 
-
-
-        echo "adminforms $command<br />";
-
         switch ($command) {
         case 'new':
             break;
@@ -172,10 +213,6 @@ class Webpage_Admin {
             $content = Webpage_Forms::edit($volume);
             break;
 
-        case 'edit_header':
-            $title = sprintf(_('Edit: %s'), $volume->title);
-            $content = Webpage_Forms::edit($volume, 'edit_header');
-            break;
 
         case 'list':
             $title = _('Webpage List');
@@ -206,35 +243,6 @@ class Webpage_Admin {
                                            _('You have previously created or updated a Web Page volume on this page.'));
         }
 
-        $result = $volume->post();
-        if (is_array($result)) {
-            if ($volume->id) {
-                $title = _('Update Header');
-            } else {
-                $title = _('Create Header');
-            }
-
-            $content = Webpage_Forms::editHeader($volume);
-            $message = implode('<br />', $result);
-        } elseif (PEAR::isError($result)) {
-            $title = _('Sorry');
-            $content = _('An error occurred. Please check your logs.');
-            PHPWS_Error::log($result);
-        } else {
-            PHPWS_Core::initModClass('webpage', 'Forms.php');
-            $result = $volume->save();
-            if (PEAR::isError($result)) {
-                $title = _('Sorry');
-                $content = _('An error occurred. Please check your logs.');
-                PHPWS_Error::log($result);
-            } else {
-                $title = sprintf(_('Edit: %s'), $volume->title);
-                $message = _('Header saved successfully!');
-                $content = Webpage_Forms::edit($volume);
-            }
-        }
-
-        return Webpage_Admin::template($title, $content, $message);
     }
 
     function postPage()

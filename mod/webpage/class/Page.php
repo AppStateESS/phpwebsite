@@ -16,6 +16,7 @@ class Webpage_Page {
     var $template    = NULL;
     var $_error      = NULL;
     var $_db         = NULL;
+    var $_volume     = NULL;
 
     function Webpage_Page($id=NULL)
     {
@@ -44,6 +45,11 @@ class Webpage_Page {
             $this->_error = $result;
             return;
         }
+
+        if (empty($this->_volume)) {
+            $this->_volume = & new Webpage_Volume($this->volume_id);
+        }
+
     }
 
     function setTitle($title)
@@ -133,15 +139,11 @@ class Webpage_Page {
         }
     }
 
-    function view()
+    function getTplTags()
     {
         $template['TITLE'] = $this->title;
         $template['CONTENT'] = $this->getContent();
-        $template['PAGE'] = $this->page_number;
-
-        if (!is_file($this->getTemplateDirectory() . $this->template)) {
-            return implode('<br />', $template);
-        }
+        $template['CURRENT_PAGE'] = $this->page_number;
 
         if (Current_User::allow('webpage', 'edit_page', $this->id)) {
             $template['EDIT_PAGE'] = PHPWS_Text::moduleLink(_('Edit page'),
@@ -150,9 +152,46 @@ class Webpage_Page {
                                                                              'volume_id' => $this->volume_id));
         }
 
+        if (!empty($this->_volume)) {
+            $header_tags = $this->_volume->getTplTags();
+            $template = array_merge($template, $header_tags);
+        }
+
+        return $template;
+    }
+
+    function getPageLink($verbose=FALSE)
+    {
+        $id = $this->_volume->id;
+        $page = (int)$this->page_number;
+
+        if ($verbose) {
+            $address = $this->page_number . ' ' . $this->title;
+        } else {
+            $address = $this->page_number;
+        }
+
+        return PHPWS_Text::rewriteLink($address, 'webpage', $id, $page);
+    }
+
+    function getPageUrl()
+    {
+        if (MOD_REWRITE_ENABLED) {
+            return sprintf('webpage/id/%s/page/%s', $this->volume_id, $this->page_number);
+        } else {
+            return sprintf('index.php?module=webpage&amp;id=%s&amp;page=%s', $this->volume_id, $this->page_number);
+        }
+    }
+
+    function view()
+    {
+        $template = $this->getTplTags();
+
+        if (!is_file($this->getTemplateDirectory() . $this->template)) {
+            return implode('<br />', $template);
+        }
 
         return PHPWS_Template::process($template, 'webpage', 'page/' . $this->template);
-
     }
 
     function save()

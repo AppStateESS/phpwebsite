@@ -9,7 +9,10 @@
     <td class="form-label">{CONTENT_LABEL}</td><td>{CONTENT}</td>
   </tr>
   <tr>
-    <td class="form-label">{TEMPLATE_LABEL}</td><td>{TEMPLATE}</td>
+    <td class="form-label">{TEMPLATE_LABEL}</td>
+    <td>{TEMPLATE}<br />
+    {FORCE_TEMPLATE} {FORCE_TEMPLATE_LABEL}
+    </td>
   </tr>
 </table>
 {SUBMIT}  

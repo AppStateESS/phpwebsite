@@ -20,8 +20,9 @@ class Webpage_Volume {
     var $date_updated  = 0;
     var $created_user  = NULL;
     var $updated_user  = NULL;
-    var $template      = NULL;
+    var $active        = 1;
     var $frontpage     = FALSE;
+    var $restricted    = 0;
     var $_current_page = 1;
     // array of pages indexed by order, value is id
     var $_pages        = NULL;
@@ -61,7 +62,10 @@ class Webpage_Volume {
                 PHPWS_Error::log($result);
                 return;
             } else {
-                $this->_pages = $result;
+                foreach ($result as $key => $page) {
+                    $page->_volume = &$this;
+                    $this->_pages[$key] = $page;
+                }
             }
         }
     }
@@ -74,6 +78,16 @@ class Webpage_Volume {
             $this->_error = $result;
             return;
         }
+    }
+
+    function isActive()
+    {
+        return (bool)$this->active;
+    }
+
+    function isRestricted()
+    {
+        return (bool)$this->restricted;
     }
 
     function getDateCreated($format=NULL)
@@ -104,47 +118,11 @@ class Webpage_Volume {
         $this->summary = PHPWS_Text::parseInput($summary);
     }
 
-    function setTemplate($template)
-    {
-        $this->template = strip_tags($template);
-    }
 
     function getSummary()
     {
         return PHPWS_Text::parseOutput($this->summary);
     }
-
-    function getTemplateDirectory()
-    {
-        if (FORCE_MOD_TEMPLATES) {
-            $directory = PHPWS_SOURCE_DIR . 'mod/webpage/templates/header/';
-        } else {
-            $directory = 'templates/webpage/header/';
-        }
-        return $directory;
-    }
-
-    function getTemplateList()
-    {
-        $directory = $this->getTemplateDirectory();
-
-        $files = scandir($directory);
-        if (empty($files)) {
-            return NULL;
-        }
-
-        foreach ($files as $key => $f_name) {
-            if (preg_match('/\.tpl$/i', $f_name)) {
-                $file_list[$f_name] = $f_name;
-            }
-        }
-        if (!isset($file_list)) {
-            return NULL;
-        } else {
-            return $file_list;
-        }
-    }
-
 
     function post()
     {
@@ -164,12 +142,6 @@ class Webpage_Volume {
             $this->setSummary($_POST['summary']);
         }
 
-        if (empty($_POST['template'])) {
-            return PHPWS_Error(WP_MISSING_TEMPLATE, 'webpage', 'Volume::post');
-        }
-
-        $this->setTemplate($_POST['template']);
-
         if (isset($errors)) {
             return $errors;
         } else {
@@ -177,10 +149,26 @@ class Webpage_Volume {
         }
     }
 
-    function checkTemplate()
+    function getViewLink()
     {
-        $directory = $this->getTemplateDirectory() . $this->template;
-        return is_file($directory);
+        return PHPWS_Text::rewriteLink(_('View'), 'webpage', $this->id);
+    }
+
+    function &getCurrentPage()
+    {
+        return $this->getPagebyNumber($this->_current_page);
+    }
+
+    function getPageLink()
+    {
+        $page = $this->getCurrentPage();
+        return $page->getPageLink();
+    }
+
+    function getPageUrl()
+    {
+        $page = $this->getCurrentPage();
+        return $page->getPageUrl();
     }
 
     function rowTags()
@@ -189,6 +177,9 @@ class Webpage_Volume {
         $vars['wp_admin'] = 'edit_webpage';
         $links[] = PHPWS_Text::moduleLink(_('Edit'), 'webpage', $vars);
 
+        $links[] = $this->getViewLink();
+
+        
         $tpl['DATE_CREATED'] = $this->getDateCreated();
         $tpl['DATE_UPDATED'] = $this->getDateUpdated();
         $tpl['ACTION']       = implode(' | ', $links);
@@ -199,10 +190,6 @@ class Webpage_Volume {
     {
         if (empty($this->title)) {
             return PHPWS_Error::get(WP_TPL_TITLE_MISSING, 'webpages', 'Volume::save');
-        }
-
-        if (!$this->checkTemplate()) {
-            return PHPWS_Error::get(WP_TPL_FILE_MISSING, 'webpages', 'Volume::save');
         }
 
         $this->updated_user = Current_User::getUsername();
@@ -221,11 +208,18 @@ class Webpage_Volume {
 
     function &getPagebyNumber($page_number)
     {
-        if ($page_number == 1) {
-            return current($this->_pages);
-        } else {
-            for($i=1; $i < $page_number; $i++) {
-                $page = next($this->_pages);
+        $page_number = (int)$page_number;
+
+        if (empty($page_number) || empty($this->_pages)) {
+            return NULL;
+        }
+
+        $i = 1;
+
+        foreach ($this->_pages as $id => $page) {
+            if ($page_number != $i) {
+                $i++;
+                continue;
             }
             return $page;
         }
@@ -239,20 +233,99 @@ class Webpage_Volume {
         return $this->_pages[(int)$page_id];
     }
 
-    function viewHeader()
-    {
-        $template['TITLE'] = $this->title;
-        $template['SUMMARY'] = $this->getSummary();
-        
-        if (!is_file($this->getTemplateDirectory() . $this->template)) {
-            return implode('<br />', $template);
-        }
 
+    function getTplTags($page_links=TRUE)
+    {
+        $template['PAGE_TITLE'] = $this->title;
+        $template['SUMMARY'] = $this->getSummary();
+
+        if ($page_links && count($this->_pages) > 1) {
+            foreach ($this->_pages as $key => $page) {
+                if ($this->_current_page == $page->page_number) {
+                    $brief_link[] = $page->page_number;
+                    $template['verbose-link'][] = array('VLINK' => $page->page_number . ' ' . $page->title);
+                } else {
+                    $brief_link[] = $page->getPageLink();
+                    $template['verbose-link'][] = array('VLINK' => $page->getPageLink(TRUE));
+                }
+            }
+
+            if ($this->_current_page > 1) {
+                $page = $this->_current_page - 1;
+                $template['PAGE_LEFT'] = PHPWS_Text::rewriteLink(WP_PAGE_LEFT, 'webpage', $this->id, $page);
+            } 
+
+            if ($this->_current_page < count($this->_pages)) {
+                $page = $this->_current_page + 1;
+                $template['PAGE_RIGHT'] = PHPWS_Text::rewriteLink(WP_PAGE_RIGHT, 'webpage', $this->id, $page);
+            }
+
+           
+            $template['BRIEF_PAGE_LINKS'] = implode('&nbsp;', $brief_link);
+            $template['PAGE_LABEL'] = _('Page');
+        }
+        
         if (Current_User::allow('webpage', 'edit_page', $this->id)) {
             $template['EDIT_HEADER'] = PHPWS_Text::moduleLink(_('Edit header'), 'webpage', array('wp_admin'=>'edit_header',
                                                                                    'volume_id' => $this->id));
         }
-        return PHPWS_Template::process($template, 'webpage', 'header/' . $this->template);
+        return $template;
+    }
+
+    function viewHeader()
+    {
+        $template = $this->getTplTags(FALSE);
+        return PHPWS_Template::process($template, 'webpage', 'header.tpl');
+    }
+
+    function forceTemplate($template)
+    {
+        $template_dir = Webpage_Page::getTemplateDirectory();
+
+        if (empty($this->id) || !is_file($template_dir . $template)) {
+            return FALSE;
+        }
+
+        $db = & new PHPWS_DB('webpage_page');
+        $db->addValue('template', $template);
+        $db->addWhere('volume_id', $this->id);
+        return $db->update();
+    }
+    
+    function view($page=NULL)
+    {
+        Layout::addStyle('webpage');
+        if ($this->isRestricted() && !Current_User::allow('webpage', 'view_page', $this->id)) {
+            PHPWS_Error::errorPage(403);
+        }
+
+        Layout::addPageTitle($this->title);
+
+        if (!empty($page)) {
+            $this->_current_page = (int)$page;
+        }
+        /*
+            $oPage = $this->getPagebyNumber($page);
+        } else {
+            $oPage = $this->getPagebyNumber(1);
+        }
+        */
+        if (!empty($this->_pages)) {
+            $oPage = $this->getCurrentPage();
+            if (!is_object($oPage)) {
+                exit('major fucking error');
+            }
+            $content = $oPage->view();
+        } else {
+            $content = _('Page is not complete.');
+        }
+        return $content;
+    }
+
+    function &getKey()
+    {
+        return new Key('webpage', 'volume', $this->id);
+        // . '.' . $this->_current_page
     }
 
 }

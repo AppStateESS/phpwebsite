@@ -6,7 +6,8 @@ CREATE TABLE webpage_volume (
   date_updated int NOT NULL default '0',
   created_user varchar(40) NOT NULL default '',
   updated_user varchar(40) NOT NULL default '',
-  template varchar(50) NOT NULL default '',
+  active smallint NOT NULL default '0',
+  restricted smallint NOT NULL default '0',
   frontpage smallint NOT NULL default '0',
   PRIMARY KEY  (id)
 );

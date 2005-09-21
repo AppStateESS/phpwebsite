@@ -1,6 +1,9 @@
 <?php
 
-define('WP_VOLUME_DATE_FORMAT', '%H:%M, %e %b, %Y'); 
+define('WP_VOLUME_DATE_FORMAT', '%R, %e %b, %Y'); 
+
+define('WP_PAGE_LEFT', '&lt;');
+define('WP_PAGE_RIGHT', '&gt;');
 
 // Error messages
 define('WP_MISSING_TEMPLATE', 1);

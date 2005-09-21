@@ -4,9 +4,11 @@
     <h2>{TITLE}</h2>
     {CONTENT}
     <!-- BEGIN page-listing -->
-    <div class="page-links">{PAGE_LABEL}<br />
-      <span>{PAGE_LEFT}</span> {BRIEF_PAGE_LINKS}
-      <span>{PAGE_RIGHT}</span>
+    <hr />
+    <div class="page-links">
+    <!-- BEGIN verbose-link -->
+    {VLINK}<br />
+    <!-- END verbose-link -->
     </div>
     <!-- END page-listing -->
     <!-- BEGIN edit-page -->

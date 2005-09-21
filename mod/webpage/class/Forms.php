@@ -40,7 +40,7 @@ class Webpage_Forms {
     {
         $form = & new PHPWS_Form;
         $form->addHidden('module', 'webpage');
-        $form->addHidden('wp_admin', 'post_volume');
+        $form->addHidden('wp_admin', 'post_header');
 
         if ($volume->id) {
             $form->addHidden('volume_id', $volume->id);
@@ -56,10 +56,6 @@ class Webpage_Forms {
         $form->addTextArea('summary', $volume->getSummary());
         $form->useEditor('summary');
         $form->setLabel('summary', _('Summary'));
-
-        $form->addSelect('template', $volume->getTemplateList());
-        $form->setMatch ('template', $volume->template);
-        $form->setLabel('template', _('Header template'));
 
         $template = $form->getTemplate();
         return PHPWS_Template::process($template, 'webpage', 'forms/edit.tpl');
@@ -90,7 +86,11 @@ class Webpage_Forms {
 
         $form->addSelect('template', $page->getTemplateList());
         $form->setMatch ('template', $page->template);
-        $form->setLabel('template', _('Webpage template'));
+        $form->setLabel('template', _('Page template'));
+
+        $form->addCheck('force_template', 1);
+        $form->setLabel('force_template', _('Force all pages to use this template'));
+        
         $template = $form->getTemplate();
 
         return PHPWS_Template::process($template, 'webpage', 'forms/edit_page.tpl');
