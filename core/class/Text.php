@@ -336,19 +336,27 @@ class PHPWS_Text {
     }// END FUNC isValidInput()
 
     /**
-     * Returns a rewritable link
+     * Creates a mod_rewrite link that can be parsed by Apache
      *
-     * MOD_REWRITE_ENABLED must be true and mod_rewrite must be enabled
-     * in Apache
      */
-    function rewriteLink($subject, $module, $action, $id=NULL){
+    function rewriteLink($subject, $module, $id, $page=NULL)
+    {
+        if (!is_numeric($id) || (isset($page) && !is_numeric($page))) {
+            return NULL;
+        }
+
         if ((bool)MOD_REWRITE_ENABLED == FALSE) {
-            return PHPWS_Text::moduleLink($subject, $module, array('action' => $action, 'id' => $id));
+            $vars['id'] = (int)$id;
+            if ($page) {
+                $vars['page'] = (int)$id;
+            }
+
+            return PHPWS_Text::moduleLink($subject, $module, $vars);
         } else {
-            if (!isset($id)) {
-                return sprintf('<a href="%s/%s">%s</a>', $module, $action, $subject);
+            if ($page) {
+                return sprintf('<a href="%s%d_%d.html">%s</a>', $module, $id, $page, $subject);
             } else {
-                return sprintf('<a href="%s/%s/%s">%s</a>', $module, $action, $id, $subject);
+                return sprintf('<a href="%s%d.html">%s</a>', $module, $id, $subject);
             }
         }
     }
