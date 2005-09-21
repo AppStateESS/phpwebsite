@@ -103,11 +103,18 @@ class Layout {
 
     function addStyle($module, $filename=NULL)
     {
-        if (isset($GLOBALS['Style'][$module]))
-            return;
+        if (!LAYOUT_ALLOW_STYLE_LINKS) {
+            return NULL;
+        }
 
-        if (!isset($filename))
+
+        if (isset($GLOBALS['Style'][$module])) {
+            return;
+        }
+
+        if (!isset($filename)) {
             $filename = 'style.css';
+        }
 
         $cssFile['tag'] = $module;
         $cssFile['import'] = TRUE;
@@ -480,11 +487,13 @@ class Layout {
 
     function getStyleLinks($header=FALSE)
     {
-        if (!isset($GLOBALS['Style']))
+        if (!isset($GLOBALS['Style'])) {
             Layout::addToStyleList(Layout::getTheme() . "/style.css");
+        }
 
-        foreach ($GLOBALS['Style'] as $link)
+        foreach ($GLOBALS['Style'] as $link) {
             $links[] = Layout::styleLink($link, $header);
+        }
 
         return implode("\n", $links);
     }
