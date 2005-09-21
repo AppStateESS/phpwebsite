@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<dependency>
+    <title>categories</title>
+    <properName>Categories</properName>
+    <version>2.0.1</version>
+    <url>http://phpwebsite.appstate.edu/module_info/categories.html</url>
+  </module>
+</dependency>
