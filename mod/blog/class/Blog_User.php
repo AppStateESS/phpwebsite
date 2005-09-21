@@ -12,7 +12,13 @@ class Blog_User {
       $blog = & new Blog();
     }
 
-    switch ($_REQUEST['action']) {
+    if (!isset($_REQUEST['action'])) {
+        $action = 'view_comments';
+    } else {
+        $action = $_REQUEST['action'];
+    }
+
+    switch ($action) {
     case 'view_comments':
       $content = $blog->view(TRUE, FALSE);
       break;
@@ -24,6 +30,10 @@ class Blog_User {
     case 'save_comment':
       $content = Blog_User::postComment($blog);
       break;
+
+    default:
+        PHPWS_Core::errorPage(404);
+        break;
     }
 
     Layout::add($content);

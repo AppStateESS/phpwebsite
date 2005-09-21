@@ -113,12 +113,12 @@ class Blog {
     function getViewLink($bare=FALSE){
         if ($bare) {
             if (MOD_REWRITE_ENABLED) {
-                return 'blog/view_comments/' . $this->id;
+                return 'blog' . $this->id . '.html';
             } else {
                 return 'index.php?module=blog&amp;action=view_comments&amp;id=' . $this->id;
             }
         } else {
-            return PHPWS_Text::rewriteLink(_('View'), 'blog', 'view', $this->getId());
+            return PHPWS_Text::rewriteLink(_('View'), 'blog', $this->id);
         }
     }
 
@@ -158,7 +158,7 @@ class Blog {
 
         if ($limited) {
             $link = $comments->countComments(TRUE);
-            $template['COMMENT_LINK'] = PHPWS_Text::rewriteLink($link, 'blog', 'view_comments', $this->getId());
+            $template['COMMENT_LINK'] = PHPWS_Text::rewriteLink($link, 'blog', $this->id);
       
             $last_poster = $comments->getLastPoster();
             if (!empty($last_poster)) {
