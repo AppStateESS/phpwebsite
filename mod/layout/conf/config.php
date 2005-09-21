@@ -19,6 +19,9 @@ define('MAX_ORDER_VALUE', 99999);
 define('PAGE_TITLE_DIVIDER', ' - ');
 
 
+// If FALSE, module style sheets will not be loaded
+define('LAYOUT_ALLOW_STYLE_LINKS', TRUE);
+
 define('DISPLAY_ERROR_MESSAGE', $display_error_message);
 
 
