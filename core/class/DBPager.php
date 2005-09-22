@@ -697,11 +697,20 @@ class DBPager {
             $this->_getNavigation($template);
             foreach ($rows as $rowitem){
                 if (isset($max_tog)) {
-                    $rowitem['TOGGLE'] = $this->toggles[$count];
-                    $count++;
-          
-                    if ($count >= $max_tog) {
-                        $count = 0;
+                    if ($max_tog == 1) {
+                        if ($count % 2) {
+                            $rowitem['TOGGLE'] = $this->toggles[0];
+                        } else {
+                            $rowitem['TOGGLE'] = NULL;
+                        }
+                        $count++;
+                    } else {
+                        $rowitem['TOGGLE'] = $this->toggles[$count];
+                        $count++;
+                        
+                        if ($count >= $max_tog) {
+                            $count = 0;
+                        }
                     }
                 } else {
                     $rowitem['TOGGLE'] = NULL;
