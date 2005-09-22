@@ -112,32 +112,10 @@ this function as to Database. You can set groups, set AND or OR, and
 use less/greater-than.
 
 
-Using Alternate Methods
---------------------------------------------------------------------
-By default, the Pager just echoes an object's variables. For example,
-normally the image title would go into my template like so:
-
-$template_row['TITLE'] = $image->title;
-
-However, in File Cabinet, I wanted to use the Image class' getJSView
-function instead. So, I tell the pager that I want to substitute that
-function for the variable like so:
-
-$pager->setMethod("title", "getJSView");
-
-So now the template would look like:
-
-$template_row['TITLE'] = $image->getJSView();
-
-Remember that if you use the setMethod function, pager will always try
-to call the function from the object directly. If you want to call a
-static function outside of the row object, then read on.
-
-
 Plugging in Page Tags
 --------------------------------------------------------------------
 If you want to add extra dynamic information to your list template,
-you will need to use the addPAgeTags function. In the below example, I
+you will need to use the addPageTags function. In the below example, I
 need to translate the column headers, so I am plugging them into
 addTags.
 
