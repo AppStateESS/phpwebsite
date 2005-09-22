@@ -257,7 +257,7 @@ class PHPWS_Core {
         return $file;
     }
 
-    function requireConfig($module, $file, $exitOnError=TRUE)
+    function requireConfig($module, $file=NULL, $exitOnError=TRUE)
     {
         return PHPWS_Core::configRequireOnce($module, $file, $exitOnError);
     }
@@ -265,7 +265,11 @@ class PHPWS_Core {
     /**
      * Loads a config file. If missing, shows error page
      */
-    function configRequireOnce($module, $file, $exitOnError=TRUE){
+    function configRequireOnce($module, $file=NULL, $exitOnError=TRUE)
+    {
+        if (empty($file)) {
+            $file = 'config.php';
+        }
         $config_file = PHPWS_Core::getConfigFile($module, $file);
 
         if (empty($config_file) || !$config_file) {
@@ -429,17 +433,35 @@ class PHPWS_Core {
         return TRUE;
     }
 
-    function getHomeDir(){
+    function getHomeDir()
+    {
         $address[] = $_SERVER['DOCUMENT_ROOT'];
         $address[] = dirname($_SERVER['PHP_SELF']);
         return implode('', $address) . '/';
     }
 
-    function getHomeHttp(){
+    function getHomeHttp()
+    {
         $address[] = PHPWS_Core::getHttp();
         $address[] = $_SERVER['HTTP_HOST'];
         $address[] = dirname($_SERVER['PHP_SELF']);
         return implode('', $address) . '/';
+    }
+
+    function getCurrentUrl($relative=TRUE)
+    {
+        if (!$relative) {
+            $address[] = PHPWS_Core::getHomeHttp();
+        } 
+
+        $address[] = str_ireplace(dirname($_SERVER['PHP_SELF']) . '/', '', $_SERVER['PHP_SELF']);
+
+        if (isset($_SERVER['QUERY_STRING'])) {
+            $address[] = '?';
+            $address[] = $_SERVER['QUERY_STRING'];
+        }
+
+        return implode('', $address);
     }
 
 }// End of core class
