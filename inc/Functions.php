@@ -11,7 +11,8 @@ $function_list = array('file_get_contents',
                        'file_put_contents',
                        'mime_content_type',
                        'html_entity_decode',
-                       'scandir'
+                       'scandir',
+                       'str_ireplace'
                        );
 
 loadFunction($function_list);
