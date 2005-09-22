@@ -140,6 +140,7 @@ class Blog {
     {
         PHPWS_Core::initModClass('menu', 'Menu.php');
         PHPWS_Core::initModClass('comments', 'Comments.php');
+        PHPWS_Core::initModClass('access', 'Access.php');
         $key = $this->getKey();
 
         PHPWS_Core::initModClass('categories', 'Categories.php');
@@ -172,6 +173,10 @@ class Blog {
 
             if (class_exists('Block')) {
                 Block::show($key);
+            }
+
+            if (class_exists('Access')) {
+                Access::shortcut();
             }
 
             if (class_exists('Menu')) {
