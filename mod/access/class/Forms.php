@@ -21,8 +21,14 @@ class Access_Forms {
         $form->addSubmit(_('Go'));
         $page_tags = $form->getTemplate();
 
-        $sc_vars['command'] = 'enable_shortcut';
-        $page_tags['ADD_SHORTCUT']  = PHPWS_Text::secureLink(_('Add Shortcut'), 'access', $sc_vars);
+
+        if (isset($_SESSION['Access_Shortcut_Enabled'])) {
+            $sc_vars['command'] = 'disable_shortcut';
+            $page_tags['SHORTCUT_LINK']  = PHPWS_Text::secureLink(_('Turn off Shortcuts'), 'access', $sc_vars);
+        } else {
+            $sc_vars['command'] = 'enable_shortcut';
+            $page_tags['SHORTCUT_LINK']  = PHPWS_Text::secureLink(_('Enable Shortcuts'), 'access', $sc_vars);
+        }
         $page_tags['KEYWORD_LABEL'] = _('Keywords');
         $page_tags['URL_LABEL']     = _('Url');
         $page_tags['ACTION_LABEL']        = _('Action');
@@ -34,7 +40,7 @@ class Access_Forms {
         return $content;
     }
 
-    function rewrite()
+    function administrator()
     {
         if (!MOD_REWRITE_ENABLED) {
             $content[] = _('You do not have mod rewrite enabled.');
@@ -49,6 +55,8 @@ class Access_Forms {
 
         $form = & new PHPWS_Form;
         $form->addHidden('module', 'access');
+        $form->addHidden('command', 'post_admin');
+
 
         $form->addCheckbox('rewrite_engine', 1);
         $form->setLabel('rewrite_engine', _('Rewrite engine on'));
@@ -62,12 +70,66 @@ class Access_Forms {
             $form->setMatch('shortcuts_enabled', 1);
         }
 
+        $form->addCheckBox('allow_file_update', 1);
+        $form->setLabel('allow_file_update', _('Allow file update'));
+        if (PHPWS_Settings::get('access', 'allow_file_update')) {
+            $form->setMatch('allow_file_update', 1);
+        }
 
+
+        $form->addSubmit(_('Save settings'));
         $template = $form->getTemplate();
-        return PHPWS_Template::process($template, 'access', 'forms/rewrite.tpl');
 
+        $template['MOD_REWRITE_LABEL'] = _('Mod Rewrite Options');
+        $template['HTACCESS_LABEL'] = _('.htaccess File Options');
+
+        return PHPWS_Template::process($template, 'access', 'forms/administrator.tpl');
     }
 
+
+    function updateFile()
+    {
+        PHPWS_Core::initModClass('access', 'Allow_Deny.php');
+        PHPWS_Core::initModClass('access', 'Shortcut.php');
+
+        $allow_denys = Access::getAllowDeny();
+        
+        if (PEAR::isError($allow_denys)) {
+            PHPWS_Error::log($allow_denys);
+            $template['DENY_MESSAGE'] = $template['ALLOW_MESSAGE'] = _('An error occurred when accessing allow and deny records.');
+        } elseif (empty($allow_denys)) {
+            $template['DENY_MESSAGE'] = $template['ALLOW_MESSAGE'] = _('No allows or denys found.');
+        } else {
+            foreach ($allow_denys as $oAllowDeny) {
+                if ($oAllowDeny->allow) {
+                    $template['allow_rows'][]  = array('ALLOW_IP' => $oAllowDeny->ip_address);
+                } else {
+                    $template['deny_rows'][]  = array('DENY_IP' => $oAllowDeny->ip_address);
+                }
+            }
+        }
+
+        $template['ALLOW_LABEL'] = _('Allowed IPs');
+        $template['DENY_LABEL'] = _('Denied IPs');
+
+        $shortcuts = Access::getShortcuts();
+
+        if (PEAR::isError($shortcuts)) {
+            PHPWS_Error::log($shortcuts);
+            $template['SHORTCUT_MESSAGE'] = _('An error occurred when accessing shortcut records.');
+        } elseif (empty($shortcuts)) {
+            $template['SHORTCUT_MESSAGE'] = _('No shortcuts found.');
+        } else {
+            foreach ($shortcuts as $s_cut) {
+                $template['shortcuts'][]  = array('KEYWORD' => $s_cut->keyword, 'URL' => $s_cut->getRewrite());
+            }
+        }
+
+        $template['SHORTCUT_LABEL'] = _('Shortcuts');
+
+        return PHPWS_Template::process($template, 'access', 'forms/update_file.tpl');
+        
+    }
 
     function shortcut_menu()
     {
@@ -80,7 +142,8 @@ class Access_Forms {
         $instruction = _('Type keyword here');
         $form->addText('keyword', $instruction);
         $form->setExtra('keyword', 'onclick="this.value=\'\'"');
-        $form->addSubmit(_('Go'));
+        $form->addSubmit('go', _('Go'));
+        $form->addSubmit('off', _('Turn off Shortcuts'));
         $tpl = $form->getTemplate();
 
         $tpl['TITLE'] = _('Shortcuts');
