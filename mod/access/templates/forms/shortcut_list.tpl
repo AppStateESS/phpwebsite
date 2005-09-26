@@ -1,4 +1,4 @@
-{ADD_SHORTCUT}
+{SHORTCUT_LINK}
 {START_FORM}
 <table width="100%" cellpadding="3">
   <tr>
