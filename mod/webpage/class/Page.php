@@ -33,7 +33,7 @@ class Webpage_Page {
         if (empty($this->_db)) {
             $this->_db = & new PHPWS_DB('webpage_page');
         } else {
-            $this->_db->reset;
+            $this->_db->reset();
         }
     }
 
