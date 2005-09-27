@@ -1,1 +1,1 @@
-<a href="#" onclick="CheckAll()">{TOGGLE}</a>
+<input type="button" value="{check_label}" onclick="CheckAll(this, this.form['{checkbox_name}']);" />
