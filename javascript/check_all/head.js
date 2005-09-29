@@ -8,11 +8,19 @@ function CheckAll(button, shortcut) {
         checked[shortcut.name] = 0;
     }
 
-    for (var i = 0; i < shortcut.length; i++) {
+    if (shortcut[0]) {
+        for (var i = 0; i < shortcut.length; i++) {
+            if (checked[shortcut.name] == 0) {
+                shortcut[i].checked = 'checked';
+            } else {
+                shortcut[i].checked = '';
+            }
+        }
+    } else {
         if (checked[shortcut.name] == 0) {
-            shortcut[i].checked = 'checked';
+            shortcut.checked = 'checked';
         } else {
-            shortcut[i].checked = '';
+            shortcut.checked = '';
         }
     }
 
