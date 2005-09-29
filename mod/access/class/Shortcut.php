@@ -6,7 +6,7 @@ class Access_Shortcut {
     var $id       = 0;
     var $keyword  = NULL;
     var $url      = NULL;
-    var $accepted = 0;
+    var $active   = 0;
     var $_error   = NULL;
 
     function Access_Shortcut($id=0)
@@ -41,7 +41,6 @@ class Access_Shortcut {
         if (PEAR::isError($result) || $result == FALSE) {
             return $result;
         }
-
 
         $this->setUrl(urldecode($_POST['url']));
         return TRUE;
@@ -92,10 +91,10 @@ class Access_Shortcut {
         $tags[] = PHPWS_Text::secureLink(_('Edit'), 'access', $link_vars);
 
         $template['URL'] = sprintf('<a href="%s">%s</a>', $this->url, $this->url);
-        if ($this->accepted) {
-            $template['ACCEPTED'] = _('Yes');
+        if ($this->active) {
+            $template['ACTIVE'] = _('Yes');
         } else {
-            $template['ACCEPTED'] = _('No');
+            $template['ACTIVE'] = _('No');
         }
 
         $template['ACTION'] = implode(' | ', $tags);
@@ -115,7 +114,7 @@ class Access_Shortcut {
         }
 
         if (PHPWS_Settings::get('access', 'allow_file_update')) {
-            $this->accepted = 1;
+            $this->active = 1;
         }
 
         $db = & new PHPWS_DB('access_shortcuts');

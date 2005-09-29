@@ -4,6 +4,11 @@ class Access_Forms {
 
     function shortcuts()
     {
+        if (!Current_User::allow('access')) {
+            Current_User::disallow();
+            return;
+        }
+
         PHPWS_Core::initModClass('access', 'Shortcut.php');
         PHPWS_Core::initCoreClass('DBPager.php');
         $pager = & new DBPager('access_shortcuts', 'Access_Shortcut');
@@ -19,15 +24,14 @@ class Access_Forms {
 
         $options['none'] = '';
         if (Current_User::allow('access', 'admin_options')) {
-            $options['accept'] = _('Accept');
-            $options['unaccept'] = _('');
+            $options['active'] = _('Activate');
+            $options['deactive'] = _('Deactivate');
         }
 
         $options['delete'] = _('Delete');
         $form->addSelect('list_action', $options);
 
         $page_tags = $form->getTemplate();
-
 
         if (isset($_SESSION['Access_Shortcut_Enabled'])) {
             $sc_vars['command'] = 'disable_shortcut';
@@ -39,7 +43,7 @@ class Access_Forms {
 
         $page_tags['KEYWORD_LABEL']  = _('Keywords');
         $page_tags['URL_LABEL']      = _('Url');
-        $page_tags['ACCEPTED_LABEL'] = _('Accepted?');
+        $page_tags['ACTIVE_LABEL'] = _('Active?');
         $page_tags['ACTION_LABEL']   = _('Action');
         $page_tags['CHECK_ALL_SHORTCUTS'] = javascript('check_all', array('checkbox_name' => 'shortcut[]'));
         $js_vars['value']        = _('Go');
@@ -57,6 +61,10 @@ class Access_Forms {
 
     function administrator()
     {
+        if (!Current_User::allow('access', 'admin_options')) {
+            Current_User::disallow();
+            return;
+        }
         if (!MOD_REWRITE_ENABLED) {
             $content[] = _('You do not have mod rewrite enabled.');
             $content[] = _('Open your config/core/config.php file in a text editor.');
@@ -104,6 +112,11 @@ class Access_Forms {
 
     function updateFile()
     {
+        if (!Current_User::allow('access', 'admin_options')) {
+            Current_User::disallow();
+            return;
+        }
+
         $form = & new PHPWS_Form;
         $form->addHidden('module', 'access');
         $form->addHidden('command', 'post_update_file');
@@ -119,6 +132,13 @@ class Access_Forms {
 
     function denyAllowForm()
     {
+        if (!Current_User::allow('access', 'admin_options')) {
+            Current_User::disallow();
+            return;
+        }
+
+        PHPWS_Core::initModClass('access', 'Allow_Deny.php');
+
         $form = & new PHPWS_Form;
         $form->addHidden('module', 'access');
         $form->addHidden('command', 'post_deny_allow');
@@ -127,6 +147,86 @@ class Access_Forms {
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
         }
+
+        $form->addText('allow_address');
+        $form->addText('deny_address');
+        $form->addSubmit('add_allow_address', _('Add allowed IP'));
+        $form->addSubmit('add_deny_address', _('Add denied IP'));
+
+        $db = & new PHPWS_DB('access_allow_deny');
+        $result = $db->getObjects('Access_Allow_Deny');
+
+        $options['none'] = '';
+        $options['active'] = _('Activate');
+        $options['deactive'] = _('Deactivate');
+        $options['delete'] = _('Delete');
+
+        $form->addSelect('allow_action', $options);
+        $form->addSelect('deny_action', $options);
+
+
+        $template = $form->getTemplate();
+
+        $js_vars['value']        = _('Go');
+        $js_vars['action_match'] = 'delete';
+        $js_vars['message']      = _('Are you sure you want to delete the checked ips?');
+
+        $js_vars['select_id']    = 'allow_action';
+        $template['ALLOW_ACTION_SUBMIT'] = javascript('select_confirm', $js_vars);
+
+        $js_vars['select_id']    = 'deny_action';
+        $template['DENY_ACTION_SUBMIT'] = javascript('select_confirm', $js_vars);
+
+
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            return _('An error occurred when trying to access the allowed and denied ip records. Please check your logs.');
+        } elseif (empty($result)) {
+            $template['DENY_MESSAGE']  = _('No denied ip addresses found.');
+            $template['ALLOW_MESSAGE'] = _('No allowed ip addresses found.');
+        } else {
+            foreach ($result as $allow_deny) {
+                $action = 'Edit';
+                if ($allow_deny->active) {
+                    $active = _('Yes');
+                } else {
+                    $active = _('No');
+                }
+
+                if ($allow_deny->allow_or_deny) {
+                    $check = sprintf('<input type="checkbox" name="allows[]" value="%s" />', $allow_deny->id);
+                    $template['allow_rows'][] = array('ALLOW_CHECK'      => $check,
+                                                      'ALLOW_IP_ADDRESS' => $allow_deny->ip_address,
+                                                      'ALLOW_ACTIVE'     => $active,
+                                                      'ALLOW_ACTION'     => $action);
+                } else {
+                    $check = sprintf('<input type="checkbox" name="denys[]" value="%s" />', $allow_deny->id);
+                    $template['deny_rows'][] = array('DENY_CHECK'      => $check,
+                                                     'DENY_IP_ADDRESS' => $allow_deny->ip_address,
+                                                     'DENY_ACTIVE'     => $active,
+                                                     'DENY_ACTION'     => $action);
+                }
+            }
+
+            if (empty($template['allow_rows'])) {
+                $template['ALLOW_MESSAGE'] = _('No allowed ip addresses found.');
+            }
+
+            if (empty($template['deny_rows'])) {
+                $template['DENY_MESSAGE'] = _('No denied ip addresses found.');
+            }
+        }
+
+        $template['CHECK_ALL_ALLOW'] = javascript('check_all', array('checkbox_name' => 'allows[]'));
+        $template['CHECK_ALL_DENY'] = javascript('check_all', array('checkbox_name' => 'denys[]'));
+        $template['ACTIVE_LABEL']     = _('Active?');
+        $template['ALLOW_TITLE']      = _('Allowed IPs');
+        $template['DENY_TITLE']       = _('Denied IPs');
+        $template['ACTION_LABEL']     = _('Action');
+        $template['IP_ADDRESS_LABEL'] = _('IP Address');
+
+        return PHPWS_Template::process($template, 'access', 'forms/allow_deny.tpl');
+
     }
 
     function shortcut_menu()

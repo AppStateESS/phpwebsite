@@ -25,6 +25,7 @@ class Access {
             $command = $panel->getCurrentTab();
         }
 
+
         // If the command is empty, that means no tabs were set
         // In this case, an admin with full rights needs to log in
         if (empty($command)) {
@@ -37,10 +38,22 @@ class Access {
                 Access::sendMessage(_('Settings saved.'), 'admin');
                 break;
 
+
             case 'admin':
                 PHPWS_Core::initModClass('access', 'Forms.php');
                 $title = _('Administrator');
                 $content = Access_Forms::administrator();
+                break;
+
+            case 'post_deny_allow':
+                $result = Access::postDenyAllow();
+                if ($result == FALSE) {
+                    Access::sendMessage(_('IP address was not formatted correctly.'), 'deny_allow');
+                } elseif (PEAR::isError($result)) {
+                    PHPWS_Error::log($result);
+                    Access::sendMessage(_('An error occurred.') . ' ' . _('Please check your logs.'), 'deny_allow');
+                }
+                Access::sendMessage(NULL, 'deny_allow');
                 break;
 
             case 'deny_allow':
@@ -49,6 +62,15 @@ class Access {
                 $content = Access_Forms::denyAllowForm();
                 break;
 
+            case 'delete_shortcut':
+                PHPWS_Core::initModClass('access', 'Shortcut.php');
+                $shortcut = & new Access_Shortcut($_REQUEST['shortcut_id']);
+                if (empty($shortcut->_error) && $shortcut->id) {
+                    $shortcut->delete();
+                }
+                Access::sendMessage(_('Shortcut deleted'), 'shortcuts');
+                break;
+                
             case 'disable_shortcut':
                 unset($_SESSION['Access_Shortcut_Enabled']);
                 $message = _('Shortcuts disabled.');
@@ -78,7 +100,7 @@ class Access {
                 $message = NULL;
                 $result = Access::postShortcutList();
                 if (PEAR::isError($result)) {
-                    $message = _('An error occurred. Please check your logs.');
+                    $message = _('An error occurred.') . ' ' . _('Please check your logs.');
                 }
                 Access::sendMessage($message, 'shortcuts');
                 break;
@@ -145,7 +167,7 @@ class Access {
             } else {
                 $content[] = _('Access has saved your shortcut.');
                 $content[] = _('An administrator will need to approve it before it is functional.');
-                $content[] = _('When accepted, you will be able to use the following link:');
+                $content[] = _('When active, you will be able to use the following link:');
                 $content[] = $shortcut->getRewrite(TRUE, FALSE);
             }
         }
@@ -254,20 +276,18 @@ class Access {
             $tabs['shortcuts'] = $link;
         }
 
-        if (Current_User::allow('access', 'deny_allow') && Access::check_htaccess()) {
-            $link['title'] = _('Deny/Allow');
-            $tabs['deny_allow'] = $link;
-        }
-
         if (Current_User::allow('access', 'admin_options')) {
+            if (Access::check_htaccess()) {
+                $link['title'] = _('Deny/Allow');
+                $tabs['deny_allow'] = $link;
+            }
+
             $link['title'] = _('Administrator');
             $tabs['admin'] = $link;
 
             $link['title'] = _('Update');
             $tabs['update'] = $link;
-
         }
-
  
         $panel = & new PHPWS_Panel('access_panel');
         $panel->enableSecure();
@@ -306,13 +326,13 @@ class Access {
         return $db->getObjects('Access_Allow_Deny');
     }
 
-    function getShortcuts($accepted_only=FALSE)
+    function getShortcuts($active_only=FALSE)
     {
         PHPWS_Core::initModClass('access', 'Shortcut.php');
         $db = & new PHPWS_DB('access_shortcuts');
         $db->addOrder('keyword');
-        if ($accepted_only) {
-            $db->addWhere('accepted', 1);
+        if ($active_only) {
+            $db->addWhere('active', 1);
         }
         return $db->getObjects('Access_Shortcut');
     }
@@ -336,6 +356,11 @@ class Access {
 
     function postShortcutList()
     {
+        if (!Current_User::authorized('access')) {
+            Current_User::disallow();
+            exit();
+        }
+
         if ($_POST['list_action'] == 'none' || empty($_POST['shortcut'])) {
             return NULL;
         }
@@ -344,26 +369,102 @@ class Access {
         $db = & new PHPWS_DB('access_shortcuts');
         $db->addWhere('id', $_POST['shortcut']);
 
-        if ($_POST['list_action'] == 'accept') {
-            $db->addWhere('accepted', 0);
+        switch ($_POST['list_action']) {
+        case 'active':
+            $db->addValue('active', 1);
+            return $db->update();
+            break;
+            
+        case 'deactive':
+            $db->addValue('active', 0);
+            return $db->update();
+            break;
+            
+        case 'delete':
+            return $db->delete();
+            break;
+        }
+    }
+
+    function postDenyAllow()
+    {
+        if (!Current_User::authorized('access', 'admin_options')) {
+            Current_User::disallow();
+            exit();
         }
 
-        $result = $db->getObjects('Access_Shortcut');
+        PHPWS_Core::initModClass('access', 'Allow_Deny.php');
 
-        if (PEAR::isError($result)) {
-            return $result;
-        } elseif (!empty($result)) {
-            foreach ($result as $sc) {
-                if ($_POST['list_action'] == 'accept') {
-                    $sc->accepted = 1;
-                    $result = $sc->save();
-                } elseif ($_POST['list_action'] == 'delete') {
-                    $result = $sc->delete();
-                }
+        if (isset($_POST['add_allow_address']) && !empty($_POST['allow_address'])) {
+            $allow = & new Access_Allow_Deny;
+            $result = $allow->setIpAddress($_POST['allow_address']);
+            if (!$result) {
+                return $result;
+            }
+            $allow->allow_or_deny = 1;
+            $allow->active = 1;
+            return $allow->save();
+        }
 
-                if (PEAR::isError($result)) {
-                    return $result;
-                }
+        if (isset($_POST['add_deny_address']) && !empty($_POST['deny_address'])) {
+            $deny = & new Access_Allow_Deny;
+            $result = $deny->setIpAddress($_POST['deny_address']);
+            if (!$result) {
+                return $result;
+            }
+            $deny->allow_or_deny = 0;
+            $deny->active = 1;
+            return $deny->save();
+        }
+
+        if (isset($_POST['allow_action']) &&
+            $_POST['allow_action'] != 'none' &&
+            !empty($_POST['allows'])) {
+            $db = & new PHPWS_DB('access_allow_deny');
+
+            // just in case something goes wrong
+            $db->addWhere('allow_or_deny', 1);
+            $db->addWhere('id', $_POST['allows']);
+
+            switch ($_POST['allow_action']) {
+            case 'active':
+                $db->addValue('active', 1);
+                return $db->update();
+                break;      
+          
+            case 'deactive':
+                $db->addValue('active', 0);
+                return $db->update();
+                break;
+
+            case 'delete':
+                return $db->delete();
+                break;
+            }
+        }
+
+        if (isset($_POST['deny_action']) &&
+            $_POST['deny_action'] != 'none' &&
+            !empty($_POST['denys'])) {
+            $db = & new PHPWS_DB('access_allow_deny');
+            // just in case something goes wrong
+            $db->addWhere('allow_or_deny', 0);
+            $db->addWhere('id', $_POST['denys']);
+
+            switch ($_POST['deny_action']) {
+            case 'active':
+                $db->addValue('active', 1);
+                return $db->update();
+                break;      
+          
+            case 'deactive':
+                $db->addValue('active', 0);
+                return $db->update();
+                break;
+
+            case 'delete':
+                return $db->delete();
+                break;
             }
         }
 
