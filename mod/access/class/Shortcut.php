@@ -3,10 +3,11 @@
 PHPWS_Core::requireConfig('access');
 
 class Access_Shortcut {
-    var $id      = 0;
-    var $keyword = NULL;
-    var $url     = NULL;
-    var $_error  = NULL;
+    var $id       = 0;
+    var $keyword  = NULL;
+    var $url      = NULL;
+    var $accepted = 0;
+    var $_error   = NULL;
 
     function Access_Shortcut($id=0)
     {
@@ -91,6 +92,11 @@ class Access_Shortcut {
         $tags[] = PHPWS_Text::secureLink(_('Edit'), 'access', $link_vars);
 
         $template['URL'] = sprintf('<a href="%s">%s</a>', $this->url, $this->url);
+        if ($this->accepted) {
+            $template['ACCEPTED'] = _('Yes');
+        } else {
+            $template['ACCEPTED'] = _('No');
+        }
 
         $template['ACTION'] = implode(' | ', $tags);
         $template['CHECKBOX'] = sprintf('<input type="checkbox" name="shortcut[]" value="%s" />', $this->id);
@@ -108,11 +114,15 @@ class Access_Shortcut {
             return PHPWS_Error::get(SHORTCUT_MISSING_URL, 'access', 'Shortcut::save');
         }
 
+        if (PHPWS_Settings::get('access', 'allow_file_update')) {
+            $this->accepted = 1;
+        }
+
         $db = & new PHPWS_DB('access_shortcuts');
         return $db->saveObject($this);
     }
 
-    function getRewrite($full=FALSE)
+    function getRewrite($full=FALSE, $linkable=TRUE)
     {
         if ($full) {
             $address[] = PHPWS_Core::getHomeHttp();
@@ -120,7 +130,23 @@ class Access_Shortcut {
         $address[] = $this->keyword . '.html';
 
         $url = implode('', $address);
-        return sprintf('<a href="%s">%s</a>', $url, $url);
+        if ($linkable) {
+            return sprintf('<a href="%s">%s</a>', $url, $url);
+        } else {
+            return $url;
+        }
+    }
+
+    function getHtaccess()
+    {
+        return sprintf('RewriteRule ^%s.(html|htm)$ %s [L]', $this->keyword, $this->url);
+    }
+    
+    function delete()
+    {
+        $db = & new PHPWS_DB('access_shortcuts');
+        $db->addWhere('id', $this->id);
+        return $db->delete();
     }
 
 }

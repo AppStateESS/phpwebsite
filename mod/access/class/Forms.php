@@ -16,9 +16,16 @@ class Access_Forms {
         $form->addHidden('module', 'access');
         $form->addHidden('command', 'post_shortcut_list');
 
-        $options['delete_shortcut'] = _('Delete');
+
+        $options['none'] = '';
+        if (Current_User::allow('access', 'admin_options')) {
+            $options['accept'] = _('Accept');
+            $options['unaccept'] = _('');
+        }
+
+        $options['delete'] = _('Delete');
         $form->addSelect('list_action', $options);
-        $form->addSubmit(_('Go'));
+
         $page_tags = $form->getTemplate();
 
 
@@ -29,9 +36,17 @@ class Access_Forms {
             $sc_vars['command'] = 'enable_shortcut';
             $page_tags['SHORTCUT_LINK']  = PHPWS_Text::secureLink(_('Enable Shortcuts'), 'access', $sc_vars);
         }
-        $page_tags['KEYWORD_LABEL'] = _('Keywords');
-        $page_tags['URL_LABEL']     = _('Url');
-        $page_tags['ACTION_LABEL']        = _('Action');
+
+        $page_tags['KEYWORD_LABEL']  = _('Keywords');
+        $page_tags['URL_LABEL']      = _('Url');
+        $page_tags['ACCEPTED_LABEL'] = _('Accepted?');
+        $page_tags['ACTION_LABEL']   = _('Action');
+        $page_tags['CHECK_ALL_SHORTCUTS'] = javascript('check_all', array('checkbox_name' => 'shortcut[]'));
+        $js_vars['value']        = _('Go');
+        $js_vars['select_id']    = 'list_action';
+        $js_vars['action_match'] = 'delete';
+        $js_vars['message']      = _('Are you sure you want to delete the checked shortcuts?');
+        $page_tags['SUBMIT'] = javascript('select_confirm', $js_vars);
 
         $pager->addPageTags($page_tags);
         $pager->addRowTags('rowTags');
@@ -89,46 +104,29 @@ class Access_Forms {
 
     function updateFile()
     {
-        PHPWS_Core::initModClass('access', 'Allow_Deny.php');
-        PHPWS_Core::initModClass('access', 'Shortcut.php');
+        $form = & new PHPWS_Form;
+        $form->addHidden('module', 'access');
+        $form->addHidden('command', 'post_update_file');
+        $form->addSubmit(_('Write .htaccess file'));
+        $template = $form->getTemplate();
 
-        $allow_denys = Access::getAllowDeny();
-        
-        if (PEAR::isError($allow_denys)) {
-            PHPWS_Error::log($allow_denys);
-            $template['DENY_MESSAGE'] = $template['ALLOW_MESSAGE'] = _('An error occurred when accessing allow and deny records.');
-        } elseif (empty($allow_denys)) {
-            $template['DENY_MESSAGE'] = $template['ALLOW_MESSAGE'] = _('No allows or denys found.');
-        } else {
-            foreach ($allow_denys as $oAllowDeny) {
-                if ($oAllowDeny->allow) {
-                    $template['allow_rows'][]  = array('ALLOW_IP' => $oAllowDeny->ip_address);
-                } else {
-                    $template['deny_rows'][]  = array('DENY_IP' => $oAllowDeny->ip_address);
-                }
-            }
-        }
-
-        $template['ALLOW_LABEL'] = _('Allowed IPs');
-        $template['DENY_LABEL'] = _('Denied IPs');
-
-        $shortcuts = Access::getShortcuts();
-
-        if (PEAR::isError($shortcuts)) {
-            PHPWS_Error::log($shortcuts);
-            $template['SHORTCUT_MESSAGE'] = _('An error occurred when accessing shortcut records.');
-        } elseif (empty($shortcuts)) {
-            $template['SHORTCUT_MESSAGE'] = _('No shortcuts found.');
-        } else {
-            foreach ($shortcuts as $s_cut) {
-                $template['shortcuts'][]  = array('KEYWORD' => $s_cut->keyword, 'URL' => $s_cut->getRewrite());
-            }
-        }
-
-        $template['SHORTCUT_LABEL'] = _('Shortcuts');
+        $template['INFO'] = _('Your .htaccess file will contain the below:');
+        $template['HTACCESS'] = Access::getRewrite();
 
         return PHPWS_Template::process($template, 'access', 'forms/update_file.tpl');
         
+    }
+
+    function denyAllowForm()
+    {
+        $form = & new PHPWS_Form;
+        $form->addHidden('module', 'access');
+        $form->addHidden('command', 'post_deny_allow');
+
+        $result = Access::getAllowDeny();
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+        }
     }
 
     function shortcut_menu()
