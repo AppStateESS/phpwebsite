@@ -1,6 +1,8 @@
 <script type="text/javascript">
 //<![CDATA[
 
+// by Matt McNaney <mcnaney at gmail dot com>
+
 var checked = new Array();
 
 function CheckAll(button, shortcut) {
