@@ -1560,7 +1560,7 @@ class PHPWS_DB {
     function getObjects($className)
     {
         if (!class_exists($className)) {
-            return PHPWS_Error::get(PHPWS_CLASS_NOT_EXIST, 'core', 'PHPWS_DB::getObjects');
+            return PHPWS_Error::get(PHPWS_CLASS_NOT_EXIST, 'core', 'PHPWS_DB::getObjects', $className);
         }
 
         $items = NULL;
