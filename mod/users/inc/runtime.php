@@ -1,6 +1,4 @@
 <?php
-PHPWS_Settings::load('users');
-
 if (!class_exists("PHPWS_User")){
   return;
 }
