@@ -130,6 +130,11 @@ class Current_User {
         return $_SESSION['User']->created;
     }
 
+    function getIP()
+    {
+        return $_SERVER['REMOTE_ADDR'];
+    }
+
 }
 
 ?>
