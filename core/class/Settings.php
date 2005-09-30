@@ -29,11 +29,15 @@ class PHPWS_Settings {
      */
     function is_set($module, $setting=NULL)
     {
-        if (!isset($_SESSION['PHPWS_Settings'])) {
-            $_SESSION['PHPWS_Settings'] = array();
+        if (!isset($_SESSION['PHPWS_Settings'][$module])) {
+            $result = PHPWS_Settings::load($module);
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                return FALSE;
+            }
         }
 
-        if (isset($_SESSION['PHPWS_Settings'][$module])) {
+        if (is_array($_SESSION['PHPWS_Settings'][$module])) {
             if (empty($setting)) {
                 return TRUE;
             } elseif (isset($_SESSION['PHPWS_Settings'][$module][$setting])) {
@@ -83,14 +87,7 @@ class PHPWS_Settings {
             }
             return TRUE;
         }
-        /*
-        if (isset($_SESSION['PHPWS_Settings'][$module][$setting]) &&
-            !is_array($_SESSION['PHPWS_Settings'][$module][$setting])) {
-            if (!empty($_SESSION['PHPWS_Settings'][$module][$setting])) {
-                $_SESSION['PHPWS_Settings'][$module][$setting][] = $_SESSION['PHPWS_Settings'][$module][$setting];
-            }
-        }
-        */
+
         $_SESSION['PHPWS_Settings'][$module][$setting][] = $value;
     }
 
@@ -116,6 +113,7 @@ class PHPWS_Settings {
             $db->addValue('module', $module);
             $db->addValue('setting_name', $key);
             $db->addValue('setting_type', $type);
+
             switch( $type ) {
             case 1:
                 $db->addValue('small_num', $value);
@@ -149,53 +147,43 @@ class PHPWS_Settings {
     /**
      * Loads the settings into the session
      */
-    function load($module, $reset=FALSE)
+    function load($module)
     {
-        if ($reset) {
-            unset($_SESSION['PHPWS_Settings'][$module]);
+        $default = PHPWS_Settings::loadConfig($module);
+        if (!$default) {
+            $_SESSION['PHPWS_Settings'][$module] = 1;
+            return PHPWS_Error::get(SETTINGS_MISSING_FILE, 'core', 'PHPWS_Settings::load', $module);
         }
-
-        if (PHPWS_Settings::is_set($module)) {
-            return TRUE;
-        }
-
+        
+        include $default;
+        PHPWS_Settings::set($module, $settings);
 
         $db = & new PHPWS_DB('mod_settings');
         $db->addWhere('module', $module);
         $result = $db->select();
         if (PEAR::isError($result)) {
             return $result;
-        }
-
-        if (empty($result)) {
-            $default = PHPWS_Settings::loadConfig($module);
-            if (!$default) {
-                return PHPWS_Error::get(SETTINGS_MISSING_FILE, 'core',
-                                        'PHPWS_Settings::load', $module);
-            }
-
-            include $default;
-            PHPWS_Settings::set($module, $settings);
+        } elseif (empty($result)) {
             PHPWS_Settings::save($module);
-            return TRUE;
-        }
+        } else {
+            foreach ($result as $key => $value) {
+                switch ($value['setting_type']) {
+                case 1:
+                    $setval = $value['small_num'];
+                    break;
+                case 2:
+                    $setval = $value['large_num'];
+                    break;
+                case 3:
+                    $setval = $value['small_char'];
+                    break;
+                case 4:
+                    $setval = $value['large_char'];
+                    break;
+                }
 
-        foreach ($result as $key => $value) {
-            switch ($value['setting_type']) {
-            case 1:
-                $setval = $value['small_num'];
-                break;
-            case 2:
-                $setval = $value['large_num'];
-                break;
-            case 3:
-                $setval = $value['small_char'];
-                break;
-            case 4:
-                $setval = $value['large_char'];
-                break;
+                PHPWS_Settings::set($module, $value['setting_name'], $setval);
             }
-            PHPWS_Settings::set($module, $value['setting_name'], $setval);
         }
         return TRUE;
     }
