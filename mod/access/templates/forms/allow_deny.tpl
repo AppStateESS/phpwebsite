@@ -9,6 +9,11 @@
     <th width="10%">{ACTIVE_LABEL}</th>
     <th width="15%">{ACTION_LABEL}</th>
   </tr>
+<!-- BEGIN allow-all -->
+  <tr>
+    <th colspan="4" style="text-align : center">{ALLOW_ALL_MESSAGE}</th>
+  </tr>
+<!-- END allow-all -->
 <!-- BEGIN allow_rows -->
   <tr>
     <td>{ALLOW_CHECK}</td>
@@ -33,6 +38,11 @@
     <th width="10%">{ACTIVE_LABEL}</th>
     <th width="15%">{ACTION_LABEL}</th>
   </tr>
+<!-- BEGIN deny-all -->
+  <tr>
+    <th colspan="4" style="text-align : center">{DENY_ALL_MESSAGE}</th>
+  </tr>
+<!-- END deny-all -->
 <!-- BEGIN deny_rows -->
   <tr>
     <td>{DENY_CHECK}</td>

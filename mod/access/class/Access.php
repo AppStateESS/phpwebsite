@@ -1,7 +1,5 @@
 <?php
 
-PHPWS_Settings::load('access');
-
 PHPWS_Core::requireConfig('access');
 
 class Access {
@@ -48,7 +46,7 @@ class Access {
             case 'post_deny_allow':
                 $result = Access::postDenyAllow();
                 if ($result == FALSE) {
-                    Access::sendMessage(_('IP address was not formatted correctly.'), 'deny_allow');
+                    Access::sendMessage(_('IP address was not formatted correctly or not allowed.'), 'deny_allow');
                 } elseif (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
                     Access::sendMessage(_('An error occurred.') . ' ' . _('Please check your logs.'), 'deny_allow');
@@ -202,6 +200,83 @@ class Access {
         return is_writable('.htaccess');
     }
 
+    function getAllowDenyList()
+    {
+        $content = array();
+        PHPWS_Core::initModClass('access', 'Allow_Deny.php');
+
+        $deny_all = PHPWS_Settings::get('access', 'deny_all');
+        $allow_all = PHPWS_Settings::get('access', 'allow_all');
+
+        $deny_str = $allow_str = NULL;
+
+        if ($deny_all && $allow_all) {
+            return NULL;
+        } elseif ($deny_all) {
+            $deny_str = "Deny from all";
+        } elseif ($allow_all) {
+            $allow_str = "Allow from all";
+        }
+
+        $db = & new PHPWS_DB('access_allow_deny');
+        $db->addWhere('active', 1);
+
+        if ($deny_all) {
+            $db->addWhere('allow_or_deny', 1);
+        } elseif ($allow_all) {
+            $db->addWhere('allow_or_deny', 0);
+        }
+
+        $result = $db->getObjects('Access_Allow_Deny');
+
+        if ($deny_all) {
+            $content[] = 'Order Deny,Allow';
+            $content[] = $deny_str;
+            $content[] = 'Allow from 127.0.0.1';
+            $content[] = 'Allow from ' . Current_User::getIP();
+
+            if (!empty($result)) {
+                foreach ($result as $ad) {
+                    $content[] = 'Allow from ' . $ad->ip_address;
+                }
+            }
+
+        } elseif ($allow_all) {
+            $content[] = 'Order Allow,Deny';
+            $content[] = $allow_str;
+
+            if (!empty($result)) {
+                foreach ($result as $ad) {
+                    $content[] = 'Deny from ' . $ad->ip_address;
+                }
+            }
+
+        } else {
+            if (!empty($result)) {
+                $content[] = 'Order Deny,Allow';
+                foreach ($result as $ad) {
+                    if ($ad->allow_or_deny) {
+                        $allows[] = 'Allow from ' . $ad->ip_address;
+                    } else {
+                        $denys[] = 'Deny from ' . $ad->ip_address;
+                    }
+                }
+
+                if (!empty($denys)) {
+                    $content[] = implode("\n", $denys);
+                }
+
+                if (!empty($allows)) {
+                    $content[] = implode("\n", $allows);
+                }
+
+            }
+        }
+        
+        return implode("\n", $content) . "\n\n";
+
+    }
+
     function writeAccess()
     {
         if (!PHPWS_Settings::get('access', 'allow_file_update') && 
@@ -209,8 +284,6 @@ class Access {
             Current_User::disallow();
             exit();
         }
-
-        $content =  Access::getRewrite() . "\n";
 
         if (!is_writable('files/access/')) {
             PHPWS_Error::log(ACCESS_FILES_DIR, 'access', 'Access::writeAccess'); 
@@ -228,7 +301,10 @@ class Access {
         }
 
 
-        $result = @file_put_contents('.htaccess', $content);
+        $allow_deny = Access::getAllowDenyList() . "\n";
+        $rewrite =  Access::getRewrite() . "\n";
+
+        $result = @file_put_contents('.htaccess', $allow_deny . $rewrite);
         if (!$result) {
             PHPWS_Error::log(ACCESS_HTACCESS_WRITE, 'access', 'Access::writeAccess'); 
             return FALSE;
@@ -397,71 +473,87 @@ class Access {
 
         if (isset($_POST['add_allow_address']) && !empty($_POST['allow_address'])) {
             $allow = & new Access_Allow_Deny;
+            $allow->allow_or_deny = 1;
             $result = $allow->setIpAddress($_POST['allow_address']);
             if (!$result) {
                 return $result;
             }
-            $allow->allow_or_deny = 1;
+
             $allow->active = 1;
             return $allow->save();
         }
 
         if (isset($_POST['add_deny_address']) && !empty($_POST['deny_address'])) {
             $deny = & new Access_Allow_Deny;
+            $deny->allow_or_deny = 0;
             $result = $deny->setIpAddress($_POST['deny_address']);
             if (!$result) {
                 return $result;
             }
-            $deny->allow_or_deny = 0;
+
             $deny->active = 1;
             return $deny->save();
         }
 
-        if (isset($_POST['allow_action']) &&
-            $_POST['allow_action'] != 'none' &&
-            !empty($_POST['allows'])) {
-            $db = & new PHPWS_DB('access_allow_deny');
+        if (isset($_POST['allow_action']) && $_POST['allow_action'] != 'none') {
+            if ($_POST['allow_action'] == 'allow_all') {
+                if (PHPWS_Settings::get('access', 'allow_all')) {
+                    PHPWS_Settings::set('access', 'allow_all', 0);
+                } else {
+                    PHPWS_Settings::set('access', 'allow_all', 1);
+                }
+                PHPWS_Settings::save('access');
+                return TRUE;
+            } elseif (!empty($_POST['allows'])) {
+                $db = & new PHPWS_DB('access_allow_deny');
 
-            // just in case something goes wrong
-            $db->addWhere('allow_or_deny', 1);
-            $db->addWhere('id', $_POST['allows']);
+                // just in case something goes wrong
+                $db->addWhere('allow_or_deny', 1);
+                $db->addWhere('id', $_POST['allows']);
 
-            switch ($_POST['allow_action']) {
-            case 'active':
-                $db->addValue('active', 1);
-                return $db->update();
-                break;      
+                switch ($_POST['allow_action']) {
+                case 'active':
+                    $db->addValue('active', 1);
+                    return $db->update();
+                    break;      
           
-            case 'deactive':
-                $db->addValue('active', 0);
-                return $db->update();
-                break;
+                case 'deactive':
+                    $db->addValue('active', 0);
+                    return $db->update();
+                    break;
 
-            case 'delete':
-                return $db->delete();
-                break;
+                case 'delete':
+                    return $db->delete();
+                    break;
+                }
             }
         }
 
-        if (isset($_POST['deny_action']) &&
-            $_POST['deny_action'] != 'none' &&
-            !empty($_POST['denys'])) {
+        if ($_POST['deny_action'] == 'deny_all') {
+            if (PHPWS_Settings::get('access', 'deny_all')) {
+                PHPWS_Settings::set('access', 'deny_all', 0);
+            } else {
+                PHPWS_Settings::set('access', 'deny_all', 1);
+            }
+            PHPWS_Settings::save('access');
+            return TRUE;
+        } elseif (!empty($_POST['denys'])) {
             $db = & new PHPWS_DB('access_allow_deny');
             // just in case something goes wrong
             $db->addWhere('allow_or_deny', 0);
             $db->addWhere('id', $_POST['denys']);
-
+            
             switch ($_POST['deny_action']) {
             case 'active':
                 $db->addValue('active', 1);
                 return $db->update();
                 break;      
-          
+                
             case 'deactive':
                 $db->addValue('active', 0);
                 return $db->update();
                 break;
-
+                
             case 'delete':
                 return $db->delete();
                 break;

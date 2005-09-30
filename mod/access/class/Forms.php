@@ -124,7 +124,10 @@ class Access_Forms {
         $template = $form->getTemplate();
 
         $template['INFO'] = _('Your .htaccess file will contain the below:');
-        $template['HTACCESS'] = Access::getRewrite();
+
+        $allow_deny = Access::getAllowDenyList();
+        $template['HTACCESS'] = $allow_deny;
+        $template['HTACCESS'] .= Access::getRewrite();
 
         return PHPWS_Template::process($template, 'access', 'forms/update_file.tpl');
         
@@ -156,16 +159,41 @@ class Access_Forms {
         $db = & new PHPWS_DB('access_allow_deny');
         $result = $db->getObjects('Access_Allow_Deny');
 
-        $options['none'] = '';
-        $options['active'] = _('Activate');
-        $options['deactive'] = _('Deactivate');
-        $options['delete'] = _('Delete');
+        $options['none']      = '';
+        $options['active']    = _('Activate');
+        $options['deactive']  = _('Deactivate');
+        $options['delete']    = _('Delete');
+
+        if (PHPWS_Settings::get('access', 'allow_all')) {
+            $allow_all = TRUE;
+            $options['allow_all'] = _('Do not allow all');
+        } else {
+            $allow_all = FALSE;
+            $options['allow_all'] = _('Allow all');
+        }
 
         $form->addSelect('allow_action', $options);
+
+        unset($options['allow_all']);
+
+        if (PHPWS_Settings::get('access', 'deny_all')) {
+            $deny_all = TRUE;
+            $options['deny_all'] = _('Do not deny all');
+        } else {
+            $deny_all = FALSE;
+            $options['deny_all'] = _('Deny all');
+        }
         $form->addSelect('deny_action', $options);
 
-
         $template = $form->getTemplate();
+
+        if ($allow_all) {
+            $template['ALLOW_ALL_MESSAGE'] = _('You have "Allow all" enabled. All rows below will be ignored.');
+        }
+
+        if ($deny_all) {
+            $template['DENY_ALL_MESSAGE'] = _('You have "Deny all" enabled. All rows below will be ignored.');
+        }
 
         $js_vars['value']        = _('Go');
         $js_vars['action_match'] = 'delete';
