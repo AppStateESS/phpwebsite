@@ -304,21 +304,18 @@ class Webpage_Volume {
         if (!empty($page)) {
             $this->_current_page = (int)$page;
         }
-        /*
-            $oPage = $this->getPagebyNumber($page);
-        } else {
-            $oPage = $this->getPagebyNumber(1);
-        }
-        */
+
         if (!empty($this->_pages)) {
             $oPage = $this->getCurrentPage();
             if (!is_object($oPage)) {
-                exit('major fucking error');
+                exit('major error');
             }
             $content = $oPage->view();
+
         } else {
             $content = _('Page is not complete.');
         }
+
         return $content;
     }
 

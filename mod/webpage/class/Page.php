@@ -177,7 +177,7 @@ class Webpage_Page {
     function getPageUrl()
     {
         if (MOD_REWRITE_ENABLED) {
-            return sprintf('webpage/id/%s/page/%s', $this->volume_id, $this->page_number);
+            return sprintf('webpage%s_%s.html', $this->volume_id, $this->page_number);
         } else {
             return sprintf('index.php?module=webpage&amp;id=%s&amp;page=%s', $this->volume_id, $this->page_number);
         }
