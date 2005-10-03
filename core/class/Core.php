@@ -448,15 +448,22 @@ class PHPWS_Core {
         return implode('', $address) . '/';
     }
 
-    function getCurrentUrl($relative=TRUE)
+    function getCurrentUrl($relative=TRUE, $use_redirect=TRUE)
     {
         if (!$relative) {
             $address[] = PHPWS_Core::getHomeHttp();
         } 
 
+        if (isset($_SERVER['REDIRECT_URL']) && $use_redirect) {
+            $address[] = str_ireplace(dirname($_SERVER['PHP_SELF']) . '/', '', $_SERVER['REDIRECT_URL']);
+            return implode('', $address);
+        } else {
+            $url = $_SERVER['PHP_SELF'];
+        }
+
         $address[] = str_ireplace(dirname($_SERVER['PHP_SELF']) . '/', '', $_SERVER['PHP_SELF']);
 
-        if (isset($_SERVER['QUERY_STRING'])) {
+        if (!empty($_SERVER['QUERY_STRING'])) {
             $address[] = '?';
             $address[] = $_SERVER['QUERY_STRING'];
         }
