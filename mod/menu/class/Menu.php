@@ -13,7 +13,11 @@ class Menu {
         PHPWS_Core::initModClass('menu', 'Menu_Admin.php');
         Menu_Admin::main();
     }
-
+    
+    /**
+     * Grabs all the menus pinned to every page and displays
+     * them.
+     */
     function showPinned()
     {
         Layout::addStyle('menu');
@@ -26,32 +30,41 @@ class Menu {
             PHPWS_Error::log($result);
             return;
         }
+
         if (empty($result)) {
             return NULL;
         }
+
         $GLOBALS['Pinned_Menus'] = $result;
 
         foreach ($result as $menu) {
             $menu->view();
         }
     }
-
+    
+    /**
+     * Function called by mod developer to add their
+     * link or to just show the menu on that item
+     */
     function show($key, $title=NULL, $url=NULL)
     {
         Layout::addStyle('menu');
         PHPWS_Core::initModClass('menu', 'Menu_Item.php');
+
+        // transfers the item information to enable link creation
         if (!empty($title) || !empty($url)) {
-            Menu::readyLink($title, $url);
+            Menu::readyLink($key, $title, $url);
         }
 
         $db = & new PHPWS_DB('menus');
+        $db->addWhere('url', $url);
 
-        $db->addWhere('menu_assoc.module', $key->getModule());
+        $db->addWhere('menu_assoc.module',    $key->getModule());
         $db->addWhere('menu_assoc.item_name', $key->getItemName());
-        $db->addWhere('menu_assoc.item_id', $key->getItemId());
-        $db->addWhere('id', 'menu_assoc.menu_id');
-
+        $db->addWhere('menu_assoc.item_id',   $key->getItemId());
+        $db->addWhere('id',                   'menu_assoc.menu_id');
         $db->addWhere('pin_all', 0);
+
         $result = $db->getObjects('menu_item');
 
         if (empty($result) || PEAR::isError($result)) {
@@ -65,7 +78,7 @@ class Menu {
 
     function atLink($url)
     {
-        $compare = Menu::grabUrl();
+        $compare =  PHPWS_Core::getCurrentUrl();
         return $url == $compare;
     }
 
@@ -79,7 +92,7 @@ class Menu {
 
         if (empty($GLOBALS['Menu_Ready_Link'])) {
             $title = NULL;
-            $url = Menu::grabUrl();
+            $url = PHPWS_Core::getCurrentUrl();
         } else {
             if (empty($GLOBALS['Menu_Ready_Link']['title'])) {
                 $title = NULL;
@@ -90,7 +103,7 @@ class Menu {
             if (!empty($GLOBALS['Menu_Ready_Link']['url'])) {
                 $url = str_replace('&amp;', '&', $GLOBALS['Menu_Ready_Link']['url']);
             } else {
-                $url = Menu::grabUrl();
+                $url = PHPWS_Core::getCurrentUrl();
             }
         }
 
@@ -123,36 +136,19 @@ class Menu {
         }
     }
 
-    function grabUrl()
-    {
-        static $url = NULL;
-
-        if (!empty($url)) {
-            return $url;
-        }
-
-        $get_values = PHPWS_Text::getGetValues();
-        if (!empty($get_values)) {
-            unset($get_values['authkey']);
-        } else {
-            return 'index.php';
-        }
-
-        foreach ($get_values as $key => $value) {
-            $new_link[] = "$key=$value";
-        }
-
-        return  'index.php?' . implode('&', $new_link);
-    }
-
     function deleteLink($link_id)
     {
         $link = & new Menu_Link($link_id);
         return $link->delete();
     }
 
-    function readyLink($title=NULL, $url=NULL)
+    /**
+     * Holds the current item/page information in order
+     * to add a link later.
+     */
+    function readyLink($key, $title=NULL, $url=NULL)
     {
+        $GLOBALS['Menu_Ready_Link']['key']   = $key;
         $GLOBALS['Menu_Ready_Link']['title'] = $title;
         $GLOBALS['Menu_Ready_Link']['url']   = $url;
     }

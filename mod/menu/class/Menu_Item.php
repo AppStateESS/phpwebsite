@@ -116,6 +116,9 @@ class Menu_Item {
         return $this->_db->saveObject($this);
     }
 
+    /**
+     * Returns all the links in a menu for display
+     */
     function displayLinks($edit=FALSE)
     {
         $all_links = $this->getLinks();
@@ -131,9 +134,14 @@ class Menu_Item {
         return implode("\n", $link_list);
     }
 
+    /**
+     * Returns the menu link objects associated to a menu
+     */
     function getLinks($parent=0, $active_only=TRUE)
     {
         $final = NULL;
+
+        // If we have been here already, return the data
         if (isset($GLOBALS['MENU_LINKS'][$this->id])) {
             return $GLOBALS['MENU_LINKS'][$this->id];
         }
@@ -144,9 +152,11 @@ class Menu_Item {
 
         $db = & new PHPWS_DB('menu_links');
         $db->addWhere('menu_id', $this->id);
+
         if ($active_only) {
             $db->addWhere('active', 1);
         }
+
         $db->addWhere('parent', $parent);
         $db->addOrder('link_order');
         $db->setIndexBy('id');
@@ -155,10 +165,12 @@ class Menu_Item {
         if (empty($result)) {
             return NULL;
         }
+
         foreach ($result as $link) {
             $link->loadChildren();
             $final[$link->id] = $link;
         }
+
         $GLOBALS['MENU_LINKS'][$this->id] = $final;
 
         return $final;
@@ -208,7 +220,9 @@ class Menu_Item {
         return $link->save();
     }
 
-
+    /**
+     * Returns a menu and its links for display
+     */
     function view()
     {
         PHPWS_Core::requireConfig('menu', 'config.php');

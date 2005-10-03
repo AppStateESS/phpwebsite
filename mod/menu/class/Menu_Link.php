@@ -44,6 +44,9 @@ class Menu_Link {
         return $this->_db;
     }
 
+    /**
+     * Grabs all the child links under the current link
+     */
     function loadChildren()
     {
         $db = $this->getDB();
@@ -144,11 +147,21 @@ class Menu_Link {
         static $current_parent = array();
         static $current_page = 0;
 
-        if (Menu::atLink($this->url)) {
-            $current_parent[] = $this->id;
-            $current_page = $this->id;
+        if ($current_page < 1) {
+            $child_current = $this->childIsCurrent();
+            if ($child_current) {
+                $current_parent[] = $this->id;
+                $current_page = $child_current;
+            } elseif (Menu::atLink($this->url)) {
+                $current_page = $this->id;
+            }
         }
 
+        if ($current_page == $this->id) {
+                $current_parent[] = $this->id;
+                $template['CURRENT_LINK'] = 'id="current-link"';
+        }
+ 
         if ($this->id == $current_page ||
             $this->parent == 0         ||
             in_array($this->parent, $current_parent)) {
@@ -166,16 +179,33 @@ class Menu_Link {
                         $sublinks[] = $kid_link;
                     }
                 }
+
                 if (!empty($sublinks)) {
                     $template['SUBLINK'] = implode("\n", $sublinks);
                 }
             }
+
             $template['LEVEL'] = $level;
 
             return PHPWS_Template::process($template, 'menu', 'links/link.tpl');
         } else {
             return NULL;
         }
+    }
+
+    function childIsCurrent()
+    {
+        if (empty($this->_children)) {
+            return 0;
+        }
+
+        foreach ($this->_children as $child) {
+            if (Menu::atLink($child->url)) {
+                return $child->id;
+            }
+        }
+        return 0;
+
     }
 
     function _loadAdminLinks(&$template)
