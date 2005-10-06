@@ -1,5 +1,14 @@
+Order Deny,Allow
+Deny from 123
+Deny from 123.123.10
+Allow from 152.10.115.30
+
+
 RewriteEngine On
 Options +FollowSymlinks
 
+RewriteRule ^Darren.(html|htm)$ index.php?module=blog&id=1 [L]
+RewriteRule ^Hotdog.(html|htm)$ index.php?module=blog&id=1 [L]
 RewriteRule ^([a-z]+)([0-9]+).html$ index.php?module=$1&id=$2 [L]
 RewriteRule ^([a-z]+)([0-9]+)_([0-9]+).html$ index.php?module=$1&id=$2&page=$3 [L]
+

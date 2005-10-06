@@ -40,7 +40,7 @@ if (!$setup->checkDirectories($content)){
 
 switch ($step){
  case '0':
-   $title .=  'Alpha Setup';
+   $title .=  'Beta Setup';
    $setup->welcome($content);
    break;
 

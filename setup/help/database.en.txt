@@ -1,16 +1,21 @@
 Database Assistance
 
-Have you created a database? If not, log in to your database and do
-so (example: CREATE DATABASE phpwebsite094). We recommend you invest
-in a web enabled database tool. We use phpMyAdmin for MySQL and
-phpPgAdmin for Postgres. Both are excellent web administration tools.
+PhpWebSite will attempt to create a database. If you do not get an
+attempt prompt however you may need to create it yourself. Log in to
+your database and create the database like so:
+
+CREATE DATABASE phpwebsite
+
+We recommend you invest in a web enabled database tool. We use
+phpMyAdmin for MySQL and phpPgAdmin for Postgres. Both are excellent
+web administration tools.
 
 Make sure your database is running. It seems like a simple thing but
 the service may be inactive.
 
 Next check that your database type you choose matches the database
-service running on your server. The fastest way (on Unix) is to run a
-grep on services. For example, here is grep on MySQL.
+service running on your server. You could try running a grep on
+services. For example, here is grep on MySQL.
 
 ps -aux | grep mysql
 
