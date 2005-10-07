@@ -46,22 +46,22 @@ class Menu {
      * Function called by mod developer to add their
      * link or to just show the menu on that item
      */
-    function show($key, $title=NULL, $url=NULL)
+    function show()
     {
+        $key = Key::getCurrent();
+        if (empty($key) || empty($key->title) || empty($key->url)) {
+            return;
+        }
+
         Layout::addStyle('menu');
         PHPWS_Core::initModClass('menu', 'Menu_Item.php');
 
-        // transfers the item information to enable link creation
-        if (!empty($title) || !empty($url)) {
-            Menu::readyLink($key, $title, $url);
-        }
-
         $db = & new PHPWS_DB('menus');
-        $db->addWhere('url', $url);
+        $db->addWhere('url', $key->url);
 
-        $db->addWhere('menu_assoc.module',    $key->getModule());
-        $db->addWhere('menu_assoc.item_name', $key->getItemName());
-        $db->addWhere('menu_assoc.item_id',   $key->getItemId());
+        $db->addWhere('menu_assoc.module',    $key->module);
+        $db->addWhere('menu_assoc.item_name', $key->item_name);
+        $db->addWhere('menu_assoc.item_id',   $key->item_id);
         $db->addWhere('id',                   'menu_assoc.menu_id');
         $db->addWhere('pin_all', 0);
 
@@ -85,26 +85,23 @@ class Menu {
     function getAddLink($menu_id, $parent_id=NULL)
     {
         PHPWS_Core::configRequireOnce('menu', 'config.php');
-        if (isset($_REQUEST['authkey'])) {
+        $key = Key::getCurrent();
+
+        if (empty($key) || $key->isAdmin()) {
             return NULL;
         }
+
+        $title = NULL;
+        $url = PHPWS_Core::getCurrentUrl();
+
         $direct_link = FALSE;
 
-        if (empty($GLOBALS['Menu_Ready_Link'])) {
-            $title = NULL;
-            $url = PHPWS_Core::getCurrentUrl();
-        } else {
-            if (empty($GLOBALS['Menu_Ready_Link']['title'])) {
-                $title = NULL;
-            } else {
-                $title = $GLOBALS['Menu_Ready_Link']['title'];
-            }
-
-            if (!empty($GLOBALS['Menu_Ready_Link']['url'])) {
-                $url = str_replace('&amp;', '&', $GLOBALS['Menu_Ready_Link']['url']);
-            } else {
-                $url = PHPWS_Core::getCurrentUrl();
-            }
+        if (!empty($key->title)) {
+            $title = $key->title;
+        }
+        
+        if (!empty($key->url)) {
+            $url = $key->url;
         }
 
         $vars['command'] = 'add_link';
@@ -142,16 +139,6 @@ class Menu {
         return $link->delete();
     }
 
-    /**
-     * Holds the current item/page information in order
-     * to add a link later.
-     */
-    function readyLink($key, $title=NULL, $url=NULL)
-    {
-        $GLOBALS['Menu_Ready_Link']['key']   = $key;
-        $GLOBALS['Menu_Ready_Link']['title'] = $title;
-        $GLOBALS['Menu_Ready_Link']['url']   = $url;
-    }
 
     function isAdminMode()
     {

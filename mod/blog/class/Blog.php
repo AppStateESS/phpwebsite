@@ -69,11 +69,6 @@ class Blog {
         $this->title = strip_tags($title);
     }
 
-    function getTitle($print=FALSE)
-    {
-        return $this->title;
-    }
-
     function getFormatedDate($type=BLOG_VIEW_DATE_FORMAT)
     {
         return strftime($type, $this->date);
@@ -124,7 +119,10 @@ class Blog {
 
     function &getKey()
     {
-        return new Key('blog', 'entry', $this->id);
+        $key =  new Key('blog', 'entry', $this->id);
+        $key->setTitle($this->title);
+        $key->setUrl($this->getViewLink(TRUE));
+        return $key;
     }
 
 
@@ -144,7 +142,7 @@ class Blog {
         $key = $this->getKey();
 
         PHPWS_Core::initModClass('categories', 'Categories.php');
-        $template['TITLE'] = $this->getTitle(TRUE);
+        $template['TITLE'] = $this->title;
         $template['DATE']  = $this->getFormatedDate();
         $template['ENTRY'] = PHPWS_Text::parseTag($this->getEntry(TRUE));
 
@@ -168,22 +166,7 @@ class Blog {
             }
         } elseif ($this->id) {
             $template['COMMENTS'] = $comments->view();
-            $title = $this->getTitle(TRUE);
-            $url = $this->getViewLink(TRUE);
-
-            if (class_exists('Block')) {
-                Block::show($key);
-            }
-
-            if (class_exists('Access')) {
-                Access::shortcut();
-            }
-
-            if (class_exists('Menu')) {
-                Menu::show($key, $title, $url);
-            }
-
-            Related::show($key, $title, $url);
+            $key->flag();
         }
 
         $result = Categories::getSimpleLinks('blog', $this->id);
@@ -326,7 +309,7 @@ class Blog {
         $category_item->setItemId($this->id);
         $category_item->setVersionId($version->id);
         $category_item->setApproved($version->isApproved());
-        $category_item->setTitle($this->getTitle());
+        $category_item->setTitle($this->title);
         $category_item->setLink($this->getViewLink(TRUE));
         $category_item->savePost();
 
@@ -336,7 +319,7 @@ class Blog {
     function approvalTags()
     {
         $tags[0]['title'] = _('Title');
-        $tags[0]['data'] = $this->getTitle();
+        $tags[0]['data'] = $this->title;
 
         $tags[1]['title'] = _('Entry');
         $tags[1]['data'] = $this->getEntry();
