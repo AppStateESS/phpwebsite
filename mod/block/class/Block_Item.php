@@ -155,8 +155,8 @@ class Block_Item {
         $vars['action'] = 'edit';
         $links[] = PHPWS_Text::secureLink(_('Edit'), 'block', $vars);
 
-        $vars['action'] = 'store';
-        $links[] = PHPWS_Text::secureLink(_('Store'), 'block', $vars);
+        $vars['action'] = 'clip';
+        $links[] = PHPWS_Text::secureLink(_('Clip'), 'block', $vars);
 
         $vars['action'] = 'copy';
         $links[] = PHPWS_Text::secureLink(_('Copy'), 'block', $vars);
