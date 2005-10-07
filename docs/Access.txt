@@ -1,0 +1,12 @@
+Access Module
+by Matthew McNaney
+
+Introduction
+-------------------------------------------------------
+The Access module allows you to manage your .htaccess file, a local
+custimization file for Apache.
+
+Access is for basic configurations ONLY. If you have complex commands
+in your .htaccess file, you may want to steer clear of the Access
+module.
+
