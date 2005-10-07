@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Administrative forms for the Access module
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
+
+
 class Access_Forms {
 
     function shortcuts()

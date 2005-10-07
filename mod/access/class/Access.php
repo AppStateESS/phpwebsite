@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Main administrative control class for Access
+ *
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
+
 PHPWS_Core::requireConfig('access');
 
 class Access {
