@@ -71,9 +71,9 @@ class Webpage_Forms {
 
         if ($page->id) {
             $form->addHidden('page_id', $page->id);
-            $form->addSubmit(_('Add new page'));
-        } else {
             $form->addSubmit(_('Update page'));
+        } else {
+            $form->addSubmit(_('Add new page'));
         }
 
         $form->addText('title', $page->title);

@@ -32,13 +32,6 @@ class Webpage_User {
             @$page = $_REQUEST['page'];
             Layout::add($volume->view($page));
             PHPWS_Core::initModClass('menu', 'Menu.php');
-            if (class_exists('Menu')) {
-                $key = $volume->getKey();
-                $title = $volume->title;
-                $url = $volume->getPageUrl();
-                Menu::show($key, $title, $url);
-            }
-
             break;
 
         default:

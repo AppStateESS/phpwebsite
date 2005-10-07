@@ -74,11 +74,11 @@ class Webpage_Admin {
             $title = sprintf(_('Administrate page: %s'), $volume->title);
             if ($page->id) {
                 $pagePanel->setCurrentTab('page_' . $page->page_number);
-                $content = $page->view();
+                $content = $page->view(TRUE);
             } elseif (stristr($pagePanel->getCurrentTab(), 'page_')) {
                 $page = $volume->getPagebyNumber(substr($pagePanel->getCurrentTab(), 5));
                 if ($page) {
-                    $content = $page->view();
+                    $content = $page->view(TRUE);
                 } else {
                     $content = $volume->viewHeader();
                 }
@@ -198,37 +198,6 @@ class Webpage_Admin {
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
     }
         
-
-    function adminForms($command) {
-
-        PHPWS_Core::initModClass('webpage', 'Forms.php');
-        $title = $content = $message = NULL;
-
-        switch ($command) {
-        case 'new':
-            break;
-
-        case 'edit_webpage':
-            $title = sprintf(_('Edit: %s'), $volume->title);
-            $content = Webpage_Forms::edit($volume);
-            break;
-
-
-        case 'list':
-            $title = _('Webpage List');
-            $content = Webpage_Forms::wp_list();
-            break;
-
-        case 'add_page':
-            $page_no = count($volume->_pages) + 1;
-            $title = sprintf(_('Create page %s'), $page_no);
-            $content = Webpage_Forms::edit($volume, 'add_page');
-            break;
-        }
-
-        return Webpage_Admin::template($title, $content, $message);
-    }
-
     function postVolume()
     {
 

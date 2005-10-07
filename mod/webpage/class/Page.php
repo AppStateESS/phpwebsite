@@ -139,7 +139,7 @@ class Webpage_Page {
         }
     }
 
-    function getTplTags()
+    function getTplTags($admin=FALSE)
     {
         $template['TITLE'] = $this->title;
         $template['CONTENT'] = $this->getContent();
@@ -153,7 +153,7 @@ class Webpage_Page {
         }
 
         if (!empty($this->_volume)) {
-            $header_tags = $this->_volume->getTplTags();
+            $header_tags = $this->_volume->getTplTags(!$admin);
             $template = array_merge($template, $header_tags);
         }
 
@@ -183,12 +183,31 @@ class Webpage_Page {
         }
     }
 
-    function view()
+    function flagKey()
     {
-        $template = $this->getTplTags();
+        $key = & new Key('webpage', 'page', $this->id);
+        if (empty($this->title)) {
+            if (isset($this->_volume)) {
+                $key->setTitle($this->_volume->title);
+            }
+        } else {
+            $key->setTitle($this->title);
+        }
+
+        $key->setUrl($this->getPageUrl());
+        $key->flag();
+    }
+
+    function view($admin=FALSE)
+    {
+        $template = $this->getTplTags($admin);
 
         if (!is_file($this->getTemplateDirectory() . $this->template)) {
             return implode('<br />', $template);
+        }
+
+        if (!$admin) {
+            $this->flagKey();
         }
 
         return PHPWS_Template::process($template, 'webpage', 'page/' . $this->template);

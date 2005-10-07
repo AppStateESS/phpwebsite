@@ -156,7 +156,8 @@ class Webpage_Volume {
 
     function &getCurrentPage()
     {
-        return $this->getPagebyNumber($this->_current_page);
+        $page = $this->getPagebyNumber($this->_current_page);
+        return $page;
     }
 
     function getPageLink()
@@ -168,7 +169,11 @@ class Webpage_Volume {
     function getPageUrl()
     {
         $page = $this->getCurrentPage();
-        return $page->getPageUrl();
+        if ($page) {
+            return $page->getPageUrl();
+        } else {
+            return NULL;
+        }
     }
 
     function rowTags()
@@ -208,6 +213,10 @@ class Webpage_Volume {
 
     function &getPagebyNumber($page_number)
     {
+        if (!$page_number) {
+            return NULL;
+        }
+
         $page_number = (int)$page_number;
 
         if (empty($page_number) || empty($this->_pages)) {
@@ -318,13 +327,6 @@ class Webpage_Volume {
 
         return $content;
     }
-
-    function &getKey()
-    {
-        return new Key('webpage', 'volume', $this->id);
-        // . '.' . $this->_current_page
-    }
-
 }
 
 ?>
