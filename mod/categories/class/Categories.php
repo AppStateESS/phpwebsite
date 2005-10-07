@@ -19,10 +19,9 @@ class Categories{
      */
     function getCategoryList($module)
     {
+        Layout::addStyle('categories');
         $result = Categories::getCategories();
-
         $list = Categories::_makeLink($result, $module);
-        Layout::addStyle("categories");
         return $list;
     }
 
@@ -31,19 +30,12 @@ class Categories{
      */
     function _makeLink($list, $module)
     {
-        $tpl = & new PHPWS_Template("categories");
-        $tpl->setFile("simple_list.tpl");
-
         $vars['action'] = 'view';
 
         if (!empty($module)) {
             $vars['ref_mod'] = $module;
-            $db = & new PHPWS_DB("category_items");
+            $db = & new PHPWS_DB('category_items');
         }
-
-        $tpl->setCurrentBlock("link_row");
-
-
 
         foreach ($list as $category){
             if (!empty($module)) {
@@ -60,24 +52,23 @@ class Categories{
 
             $title = $category->title . $items;
 
-            $link = PHPWS_Text::moduleLink($title, "categories", $vars);
+            $link = PHPWS_Text::moduleLink($title, 'categories', $vars);
 
             if (!empty($category->children)) {
                 $link .= Categories::_makeLink($category->children, $module);
             }
 
-            $tpl->setData(array("LINK" => $link));
-            $tpl->parseCurrentBlock();
+            $template['link_row'][] = array('LINK' => $link);
         }
 
-        $links = $tpl->get();
+        $links = PHPWS_Template::process($template, 'categories', 'simple_list.tpl');
         return $links;
     }
 
     function initList($list)
     {
         foreach ($list as $cat){
-            $cat->loadIcon();
+            //            $cat->loadIcon();
             $cat->loadChildren();
             $children[$cat->id] = $cat;
         }
@@ -223,7 +214,6 @@ class Categories{
 
         $top_level = Categories::getTopLevel();
 
-
         $tpl = & new PHPWS_Template('categories');
         $tpl->setFile('list.tpl');
 
@@ -295,13 +285,13 @@ class Categories{
         $vars['action'] = 'view';
         $vars['id'] = $category->getId();
 
-        $tpl = & new PHPWS_Template("categories");
+        $tpl = & new PHPWS_Template('categories');
         $tpl->setFile('module_list.tpl');
 
         $tpl->setCurrentBlock('module-row');
         foreach ($module_list as $mod_key => $module){
             $vars['ref_mod'] = $mod_key;
-            $link['MODULE_ROW'] = PHPWS_Text::moduleLink($module, "categories", $vars);
+            $link['MODULE_ROW'] = PHPWS_Text::moduleLink($module, 'categories', $vars);
             $tpl->setData($link);
             $tpl->parseCurrentBlock();
         }
@@ -311,8 +301,8 @@ class Categories{
 
     function removeModule($module)
     {
-        $db = & new PHPWS_DB("category_items");
-        $db->addWhere("module", $module);
+        $db = & new PHPWS_DB('category_items');
+        $db->addWhere('module', $module);
         $db->delete();
     }
 

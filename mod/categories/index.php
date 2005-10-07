@@ -13,10 +13,9 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 PHPWS_Core::initModClass('categories', 'Action.php');
 PHPWS_Core::initModClass('categories', 'Categories.php');
 
-if ($_REQUEST['action'] == 'admin'){
+if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'admin'){
   Categories_Action::admin();
-}
-else {
+} else {
   Categories_Action::user();
 }
 

@@ -17,18 +17,8 @@
     <td>{CAT_DESCRIPTION}</td>
   </tr>
   <tr>
-    <td><b>{IMAGE_LABEL}:</b></td>
-    <td>{IMAGE_FILE}<br />
-	<b>{IMAGE_TITLE_LABEL}</b>: {IMAGE_TITLE}<br />
-	{IMAGE_SELECT}
-	<!-- BEGIN image-error -->
-	<div class="cat-error">{IMAGE_ERROR}</div>
-	<!-- END image-error -->
-	<!-- BEGIN current-image -->
-	<br />
-	<span style="font-size : .9em"><b>{CURRENT_IMG_LABEL}:</b> {CURRENT_IMG}</span>
-	<!-- END current-image -->
-    </td>
+    <td><b>{ICON_LABEL}:</b></td>
+    <td>{ICON}</td>
   </tr>
 </table>
 <br />

@@ -10,7 +10,7 @@
 PHPWS_CORE::configRequireOnce('categories', 'config.php');
 PHPWS_Core::initModClass('categories', 'Category.php');
 
-class Categories_Action{
+class Categories_Action {
 
     function admin()
     {
@@ -18,6 +18,9 @@ class Categories_Action{
             Current_User::disallow(_('You are not authorized to administrate categories.'));
             return;
         }
+
+        $message = Categories_Action::getMessage();
+
         $content = array();
         $panel = & Categories_Action::cpanel();
 
@@ -66,17 +69,16 @@ class Categories_Action{
             if (is_array($result)) {
                 $content[] = Categories_Action::edit($category, $result);
             } else {
-                $direction = (isset($category->id)) ? 'list' : 'new';
-
                 $result = $category->save();
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
-                    $content[] = Categories_Action::affirm(_('Unable to save category.') . ' ' .  _('Please contact your administrator.'), $direction);
+                    $message = _('Unable to save category.') . ' ' .  _('Please contact your administrator.');
                 }
                 else {
-                    $content[] = Categories_Action::affirm(_('Category saved successfully.'), $direction);
-                    Layout::metaRoute('index.php?module=categories&amp;action=admin&amp;subaction=' . $direction . '&amp;authkey=' . Current_User::getAuthKey());
+                    $message = _('Category saved successfully.');
                 }
+
+                Categories_Action::sendMessage($message, 'list');
             }
 
             break;
@@ -84,6 +86,7 @@ class Categories_Action{
 
         $template['TITLE']   = $title;
         $template['CONTENT'] = implode('', $content);
+        $template['MESSAGE'] = $message;
 
         $final = PHPWS_Template::process($template, 'categories', 'menu.tpl');
 
@@ -92,10 +95,34 @@ class Categories_Action{
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
     }
 
+    function sendMessage($message, $command)
+    {
+        $_SESSION['Category_message'] = $message;
+        PHPWS_Core::reroute(sprintf('index.php?module=categories&action=admin&subaction=%s&authkey=%s', $command, Current_User::getAuthKey()));
+        exit();
+    }
+
+    function getMessage()
+    {
+        $message = NULL;
+        if (isset($_SESSION['Category_message'])) {
+            $message = $_SESSION['Category_message'];
+        }
+        unset($_SESSION['Category_message']);
+        return $message;
+    }
+
+
+
     function user()
     {
         $mod = $id = NULL;
-        $action = & $_REQUEST['action'];
+        if (isset($_REQUEST['action'])) {
+            $action = $_REQUEST['action'];
+        } else {
+            $action = 'view';
+        }
+
         switch ($action) {
         case 'view':
             if (isset($_REQUEST['id'])) {
@@ -113,18 +140,6 @@ class Categories_Action{
         Layout::add($content);
     }
 
-    function affirm($content, $return)
-    {
-        $template['CONTENT'] = $content;
-
-        $value['action'] = 'admin';
-        $value['subaction'] = $return;
-        $template['LINK'] = PHPWS_Text::secureLink('Continue', 'categories', $value);
-
-        return PHPWS_Template::process($template, 'categories', 'affirm.tpl');
-    }
-
-
     function postCategory(&$category)
     {
         PHPWS_Core::initCoreClass('File.php');
@@ -137,26 +152,18 @@ class Categories_Action{
 
         if (!empty($_POST['cat_description'])) {
             $description = $_POST['cat_description'];
-
             $category->setDescription($description);
         }
 
         $category->setParent((int)$_POST['parent']);
 
-        $image = PHPWS_Form::postImage('image', 'categories');
-
-        if (PEAR::isError($image)) {
-            PHPWS_Error::log($image);
-            $errors['image'] = _('There was a problem saving your image to the server.');
-        } elseif (is_array($image)) {
-            foreach ($image as $message)
-                $messages[] = $message->getMessage();
-
-            $errors['image'] = implode('<br />', $messages);
-        } elseif (get_class($image) == 'phpws_image') {
-            $category->setIcon($image);
+        if ($_POST['icon']) {
+            $category->icon = (int)$_POST['icon'];
+        } else {
+            $category->icon = 0;
         }
-    
+
+
         if (isset($errors)) {
             return $errors;
         } else {
@@ -181,7 +188,7 @@ class Categories_Action{
 
         $panel = & new PHPWS_Panel('categories');
         $panel->quickSetTabs($tabs);
-
+        $panel->enableSecure();
         $panel->setModule('categories');
         $panel->setPanel('panel.tpl');
         return $panel;
@@ -230,18 +237,14 @@ class Categories_Action{
         $form->setsize('title', 40);
         $form->setLabel('title', _('Title'));
 
-        if (Editor::willWork()) {
-            $editor = & new Editor('htmlarea', 'cat_description', $category->getDescription());
-            $description = $editor->get();
-            $form->addTplTag('CAT_DESCRIPTION', $description);
-            $form->addTplTag('CAT_DESCRIPTION_LABEL', _('Description'));
-        } else {
-            $form->addTextArea('cat_description', $category->getDescription());
-            $form->setRows('cat_description', '10');
-            $form->setWidth('cat_description', '80%');
-            $form->setLabel('cat_description', _('Description'));
-        }
+        $form->addTextArea('cat_description', $category->getDescription());
+        $form->useEditor('cat_description');
+        $form->setRows('cat_description', '10');
+        $form->setWidth('cat_description', '80%');
+        $form->setLabel('cat_description', _('Description'));
 
+
+        /*
         $form->addTplTag('IMAGE_TITLE_LABEL', _('Icon Title'));
 
         if (isset($errors['image'])) {
@@ -255,19 +258,36 @@ class Categories_Action{
             $form->add('current_image', 'hidden', $image->getId());
             $template['CURRENT_IMG_LABEL'] = _('Current Icon');
             $template['CURRENT_IMG'] = $image->getTitle();
-        }
-        else
+        } else {
             $image_id = NULL;
+        }
 
         $result = $form->addImage('image', 'categories', $image_id);
-
+        */
         $template['IMAGE_LABEL'] = _('Icon');
+
+        $template['ICON_LABEL'] = _('Current Icon');
+        $template['ICON'] = Categories_Action::getManager($category->icon, 'icon');
 
         $form->mergeTemplate($template);
         $final_template = $form->getTemplate();
 
         return PHPWS_Template::process($final_template, 'categories', 'forms/edit.tpl');
     }
+
+    function getManager($image_id, $image_name)
+    {
+        PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
+        $manager = & new FC_Image_Manager($image_id);
+        $manager->setMaxWidth(CAT_MAX_ICON_WIDTH);
+        $manager->setMaxHeight(CAT_MAX_ICON_HEIGHT);
+        $manager->setMaxSize(CAT_MAX_ICON_SIZE);
+        $manager->setModule('categories');
+        $manager->setItemname($image_name);
+
+        return $manager->get();
+    }
+
 
     function category_list()
     {
@@ -296,6 +316,9 @@ class Categories_Action{
         }
     }
 
+    /**
+     * The main view page for categories
+     */
     function viewCategory($id=NULL, $module=NULL) 
     {
         $category = NULL;
@@ -322,8 +345,7 @@ class Categories_Action{
         $template['FAMILY'] = $family_list;
         $template['CONTENT'] = &$content;
 
-        $content = PHPWS_Template::process($template, 'categories', 'view_categories.tpl');
-        return $content;
+        return  PHPWS_Template::process($template, 'categories', 'view_categories.tpl');
     }
 
 
@@ -343,6 +365,7 @@ class Categories_Action{
         } else {
             $mod_list[0] = _('All Modules');
         }
+
 
         $form = & new PHPWS_Form;
         $form->setMethod('get');

@@ -45,7 +45,7 @@ class Category{
             return $result;
         }
 
-        $this->loadIcon();
+        //        $this->loadIcon();
         $this->loadChildren();
     }
 
@@ -111,16 +111,14 @@ class Category{
     {
         $this->icon = $icon;
 
+        /*
         if (is_numeric($icon)) {
             $this->loadIcon();
         }
+        */
     }
 
-    function getIcon()
-    {
-        return $this->icon;
-    }
-
+    /*
     function loadIcon()
     {
         PHPWS_Core::initCoreClass('Image.php');
@@ -128,6 +126,7 @@ class Category{
             $this->icon = new PHPWS_Image($this->icon);
         }
     }
+    */
 
     function loadChildren()
     {
@@ -160,16 +159,16 @@ class Category{
     function save()
     {
         $db = & new PHPWS_DB('categories');
-
+        /*
         if (isset($this->icon)) {
             $tmpIcon = $this->icon;
             $this->icon = $this->icon->getId();
         } else {
             $tmpIcon = NULL;
         }
-
+        */
         $result = $db->saveObject($this);
-        $this->icon = $tmpIcon;
+        //        $this->icon = $tmpIcon;
         return $result;
     }
 
@@ -226,7 +225,8 @@ class Category{
 
         if (javascriptEnabled()) {
             $js_vars['QUESTION'] = _('Are you sure you want to delete this category?');
-            $js_vars['ADDRESS']  = 'index.php?module=categories&amp;action=admin&amp;subaction=deleteCategory&amp;category_id=' . $this->getId() . '&amp;authkey=' . Current_User::getAuthKey();
+            $js_vars['ADDRESS']  = 'index.php?module=categories&amp;action=admin&amp;subaction=deleteCategory&amp;category_id=' . 
+                $this->getId() . '&amp;authkey=' . Current_User::getAuthKey();
             $js_vars['LINK']     = _('Delete');
             $links[] = Layout::getJavascript('confirm', $js_vars);
         } else {
