@@ -10,207 +10,236 @@
 PHPWS_Core::configRequireOnce('categories', 'config.php');
 
 class Category{
-  var $id          = NULL;
-  var $title       = NULL;
-  var $description = NULL;
-  var $parent      = NULL;
-  var $icon        = NULL;
-  var $children    = NULL;
+    var $id          = NULL;
+    var $title       = NULL;
+    var $description = NULL;
+    var $parent      = NULL;
+    var $icon        = NULL;
+    var $children    = NULL;
 
 
-  function Category($id=NULL){
-    if (!isset($id)) {
-      return;
-    } elseif ($id == 0) {
-      $this->id     = 0;
-      $this->title  = DEFAULT_UNCATEGORIZED_TITLE;
-      $this->icon   = DEFAULT_UNCATEGORIZED_ICON;
-      $this->parent = 0;
-      return;
+    function Category($id=NULL)
+    {
+        if (!isset($id)) {
+            return;
+        } elseif ($id == 0) {
+            $this->id     = 0;
+            $this->title  = DEFAULT_UNCATEGORIZED_TITLE;
+            $this->icon   = DEFAULT_UNCATEGORIZED_ICON;
+            $this->parent = 0;
+            return;
+        }
+
+        $this->setId($id);
+        $result = $this->init();
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+        }
     }
-
-    $this->setId($id);
-    $result = $this->init();
-    if (PEAR::isError($result))
-      PHPWS_Error::log($result);
-  }
   
-  function init(){
-    $db = & new PHPWS_DB('categories');
-    $result = $db->loadObject($this);
-    if (PEAR::isError($result))
-      return $result;
+    function init()
+    {
+        $db = & new PHPWS_DB('categories');
+        $result = $db->loadObject($this);
+        if (PEAR::isError($result)) {
+            return $result;
+        }
 
-    $this->loadIcon();
-    $this->loadChildren();
-  }
-
-  function setId($id){
-    $this->id = (int)$id;
-  }
-
-  function getId(){
-    return $this->id;
-  }
-
-  function setTitle($title){
-    $this->title = strip_tags($title);
-  }
-
-  function getTitle(){
-    return $this->title;
-  }
-
-  function setDescription($description){
-    $this->description = PHPWS_Text::parseInput($description);
-  }
-
-  function getDescription(){
-    return PHPWS_Text::parseOutput($this->description);
-  }
-
-  function setParent($parent){
-    $this->parent = (int)$parent;
-  }
-
-  function getParent(){
-    return $this->parent;
-  }
-
-  function getParentTitle(){
-    static $parentTitle = array();
-
-    if ($this->parent == 0) {
-      return _('Top Level');
+        $this->loadIcon();
+        $this->loadChildren();
     }
 
-    if (isset($parentTitle[$this->parent]))
-      return $parentTitle[$this->parent];
-
-    $parent = & new Category($this->parent);
-    $parentTitle[$parent->id] = $parent->title;
-
-    return $parent->title;
-  }
-
-  function setIcon($icon){
-    $this->icon = $icon;
-
-    if (is_numeric($icon))
-      $this->loadIcon();
-  }
-
-  function getIcon(){
-    return $this->icon;
-  }
-
-  function loadIcon(){
-    PHPWS_Core::initCoreClass('Image.php');
-    if (!empty($this->icon))
-      $this->icon = new PHPWS_Image($this->icon);
-  }
-
-  function loadChildren(){
-    if ($this->id == 0) {
-      return;
-    }
-    $db = & new PHPWS_DB('categories');
-    $db->addWhere('parent', $this->id);
-    $db->addOrder('title');
-    $result = $db->getObjects('Category');
-    if (empty($result)) {
-      $this->children = NULL;
-      return;
+    function setId($id)
+    {
+        $this->id = (int)$id;
     }
 
-    $this->children = Categories::initList($result);
-  }
+    function getId()
+    {
+        return $this->id;
+    }
 
-  function setThumbnail($thumbnail){
-    $this->thumbnail = $thumbnail;
-  }
+    function setTitle($title)
+    {
+        $this->title = strip_tags($title);
+    }
 
-  function getThumbnail(){
-    return $this->thumbnail;
-  }
+    function getTitle()
+    {
+        return $this->title;
+    }
+
+    function setDescription($description)
+    {
+        $this->description = PHPWS_Text::parseInput($description);
+    }
+
+    function getDescription()
+    {
+        return PHPWS_Text::parseOutput($this->description);
+    }
+
+    function setParent($parent)
+    {
+        $this->parent = (int)$parent;
+    }
+
+    function getParent()
+    {
+        return $this->parent;
+    }
+
+    function getParentTitle()
+    {
+        static $parentTitle = array();
+
+        if ($this->parent == 0) {
+            return _('Top Level');
+        }
+
+        if (isset($parentTitle[$this->parent])) {
+            return $parentTitle[$this->parent];
+        }
+
+        $parent = & new Category($this->parent);
+        $parentTitle[$parent->id] = $parent->title;
+
+        return $parent->title;
+    }
+
+    function setIcon($icon)
+    {
+        $this->icon = $icon;
+
+        if (is_numeric($icon)) {
+            $this->loadIcon();
+        }
+    }
+
+    function getIcon()
+    {
+        return $this->icon;
+    }
+
+    function loadIcon()
+    {
+        PHPWS_Core::initCoreClass('Image.php');
+        if (!empty($this->icon)) {
+            $this->icon = new PHPWS_Image($this->icon);
+        }
+    }
+
+    function loadChildren()
+    {
+        if ($this->id == 0) {
+            return;
+        }
+
+        $db = & new PHPWS_DB('categories');
+        $db->addWhere('parent', $this->id);
+        $db->addOrder('title');
+        $result = $db->getObjects('Category');
+        if (empty($result)) {
+            $this->children = NULL;
+            return;
+        }
+
+        $this->children = Categories::initList($result);
+    }
+
+    function setThumbnail($thumbnail)
+    {
+        $this->thumbnail = $thumbnail;
+    }
+
+    function getThumbnail()
+    {
+        return $this->thumbnail;
+    }
   
-  function save(){
-    $db = & new PHPWS_DB('categories');
+    function save()
+    {
+        $db = & new PHPWS_DB('categories');
 
-    if (isset($this->icon)) {
-      $tmpIcon = $this->icon;
-      $this->icon = $this->icon->getId();
-    } else {
-      $tmpIcon = NULL;
+        if (isset($this->icon)) {
+            $tmpIcon = $this->icon;
+            $this->icon = $this->icon->getId();
+        } else {
+            $tmpIcon = NULL;
+        }
+
+        $result = $db->saveObject($this);
+        $this->icon = $tmpIcon;
+        return $result;
     }
 
-    $result = $db->saveObject($this);
-    $this->icon = $tmpIcon;
-    return $result;
-  }
-
-  function kill(){
-    if (empty($this->id))
-      return FALSE;
-    $db = & new PHPWS_DB('categories');
-    $db->addWhere('id', $this->id);
-    return $db->delete();
-  }
-
-  function getViewLink($module=NULL){
-    if (isset($module)) {
-      $vars['action']  = 'view';
-      $vars['id']      = $this->id;
-      $vars['ref_mod'] = $module;
-      return PHPWS_Text::moduleLink($this->title, 'categories', $vars);
-    } else {
-      return PHPWS_Text::rewriteLink($this->title, 'categories', 'view', $this->id);
-    }
-  }
-
-  function _addParent(&$list, $parent){
-    $cat = & new Category($parent);
-    $list[$cat->id] = $cat;
-    if ($cat->parent != 0) {
-      $cat->_addParent($list, $cat->parent);
-    }
-  }
-
-  function getFamily(){
-    $list = array();
-    $list[$this->id] = $this;
-    if ($this->parent != 0) {
-      $this->_addParent($list, $this->parent);
-    }
-    $list = array_reverse($list, TRUE);
-    return $list;
-  }
-
-  function getRowTags()
-  {
-    $vars['module']      = 'categories';
-    $vars['action']      = 'admin';
-    $vars['category_id'] = $this->getId();
-
-    $vars['subaction'] = 'edit';
-    $links[] = PHPWS_Text::secureLink(_('Edit'), 'categories', $vars);
-
-    if (javascriptEnabled()){
-      $js_vars['QUESTION'] = _('Are you sure you want to delete this category?');
-      $js_vars['ADDRESS']  = 'index.php?module=categories&amp;action=admin&amp;subaction=deleteCategory&amp;category_id=' . $this->getId() . '&amp;authkey=' . Current_User::getAuthKey();
-      $js_vars['LINK']     = _('Delete');
-      $links[] = Layout::getJavascript('confirm', $js_vars);
-    } else {
-      $vars['subaction'] = 'delete';
-      $links[] = PHPWS_Text::moduleLink(_('Delete'), 'categories', $vars);
+    function kill()
+    {
+        if (empty($this->id)) {
+            return FALSE;
+        }
+        $db = & new PHPWS_DB('categories');
+        $db->addWhere('id', $this->id);
+        return $db->delete();
     }
 
-    $tpl['ACTION'] = implode(' | ', $links);
-    $tpl['DESCRIPTION'] = $this->getDescription();
-    $tpl['PARENT'] = $this->getParentTitle();
+    function getViewLink($module=NULL)
+    {
+        if (isset($module)) {
+            $vars['action']  = 'view';
+            $vars['id']      = $this->id;
+            $vars['ref_mod'] = $module;
+            return PHPWS_Text::moduleLink($this->title, 'categories', $vars);
+        } else {
+            return PHPWS_Text::rewriteLink($this->title, 'categories', 'view', $this->id);
+        }
+    }
 
-    return $tpl;
-  }
+    function _addParent(&$list, $parent)
+    {
+        $cat = & new Category($parent);
+        $list[$cat->id] = $cat;
+        if ($cat->parent != 0) {
+            $cat->_addParent($list, $cat->parent);
+        }
+    }
+
+    function getFamily()
+    {
+        $list = array();
+        $list[$this->id] = $this;
+        if ($this->parent != 0) {
+            $this->_addParent($list, $this->parent);
+        }
+        $list = array_reverse($list, TRUE);
+        return $list;
+    }
+
+    function getRowTags()
+    {
+        $vars['module']      = 'categories';
+        $vars['action']      = 'admin';
+        $vars['category_id'] = $this->getId();
+
+        $vars['subaction'] = 'edit';
+        $links[] = PHPWS_Text::secureLink(_('Edit'), 'categories', $vars);
+
+        if (javascriptEnabled()) {
+            $js_vars['QUESTION'] = _('Are you sure you want to delete this category?');
+            $js_vars['ADDRESS']  = 'index.php?module=categories&amp;action=admin&amp;subaction=deleteCategory&amp;category_id=' . $this->getId() . '&amp;authkey=' . Current_User::getAuthKey();
+            $js_vars['LINK']     = _('Delete');
+            $links[] = Layout::getJavascript('confirm', $js_vars);
+        } else {
+            $vars['subaction'] = 'delete';
+            $links[] = PHPWS_Text::moduleLink(_('Delete'), 'categories', $vars);
+        }
+
+        $tpl['ACTION'] = implode(' | ', $links);
+        $tpl['DESCRIPTION'] = $this->getDescription();
+        $tpl['PARENT'] = $this->getParentTitle();
+
+        return $tpl;
+    }
 }
 
 ?>
