@@ -1,24 +1,57 @@
 <?php
 
 /**
- * Small class to help modules with module keys
+ * Small class to help modules plug in features from other modules
  *
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
 
+if (!isset($_REQUEST['module'])) {
+    $GLOBALS['PHPWS_Key'] = Key::getHomeKey();
+} else {
+    $GLOBALS['PHPWS_Key'] = NULL;
+}
+
 class Key {
     var $module       = NULL;
     var $item_id      = NULL;
     var $item_name    = NULL;
+    var $title        = NULL;
+    var $url          = NULL;
+    var $_mod_values  = NULL;
     var $_table       = NULL;
     var $_column_name = NULL;
+    var $_admin       = FALSE;
   
     function Key($module, $item_name, $item_id)
     {
-        $this->module  = $module;
+        $this->module    = $module;
         $this->item_name = $item_name;
-        $this->item_id = $item_id;
+        $this->item_id   = $item_id;
+        if (isset($_REQUEST['authkey'])) {
+            $this->_admin = TRUE;
+        }
+    }
+
+    function isAdmin()
+    {
+        return $this->_admin;
+    }
+
+    function setAdmin($admin)
+    {
+        $this->_admin = (bool)$admin;
+    }
+
+    function setTitle($title)
+    {
+        $this->title     = strip_tags($title);
+    }
+
+    function setUrl($url)
+    {
+        $this->url = strip_tags($url);
     }
 
     function getHash()
@@ -88,12 +121,29 @@ class Key {
         }
     }
 
+    function isHomeKey()
+    {
+        return ($this->module == 'home' ? TRUE : FALSE);
+    }
+
     function &getHomeKey()
     {
         $key = & new Key('home', 'homepage', '1');
+        $key->setTitle(_('Home'));
+        $key->setUrl('index.php');
         return $key;
     }
 
+
+    function flag()
+    {
+        $GLOBALS['PHPWS_Key'] = $this;
+    }
+
+    function &getCurrent()
+    {
+        return $GLOBALS['PHPWS_Key'];
+    }
 
 }
 
