@@ -72,11 +72,11 @@ class Block_Admin {
             $content = Block_Admin::edit($block);
             break;
 
-        case 'store':
-            Block_Admin::storeBlock($block);
+        case 'clip':
+            Block_Admin::clipBlock($block);
             $title = _('Block list');
             $content = Block_Admin::blockList();
-            $message = _('Block stored.');
+            $message = _('Block clipped.');
             break;
 
         case 'remove':
@@ -210,16 +210,16 @@ class Block_Admin {
         return $content;
     }
 
-    function storeBlock(&$block)
+    function clipBlock(&$block)
     {
-        $_SESSION['Stored_Blocks'][$block->getID()] = $block;
+        $_SESSION['Clipped_Blocks'][$block->getID()] = $block;
     }
   
     function pinBlock()
     {
         $block_id = (int)$_GET['block_id'];
 
-        unset($_SESSION['Stored_Blocks'][$block_id]);
+        unset($_SESSION['Clipped_Blocks'][$block_id]);
 
         $values['block_id'] = $block_id;
         $values['module']   = $_GET['mod'];
