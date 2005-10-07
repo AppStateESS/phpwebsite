@@ -11,23 +11,27 @@ PHPWS_Core::initModClass('block', 'Block_Item.php');
 
 class Block {
 
-    function show($key)
+    function show()
     {
+        $key = Key::getCurrent();
+        if (empty($key)) {
+            return;
+        }
         Block::showBlocks($key);
 
-        if (isset($_SESSION['Stored_Blocks'])) {
-            Block::viewStoredBlocks($key);
+        if (isset($_SESSION['Clipped_Blocks'])) {
+            Block::viewClippedBlocks($key);
         }
   
     }
 
-    function viewStoredBlocks($key)
+    function viewClippedBlocks($key)
     {
-        if (!isset($_SESSION['Stored_Blocks'])) {
+        if (!isset($_SESSION['Clipped_Blocks'])) {
             return FALSE;
         }
 
-        $block_list = &$_SESSION['Stored_Blocks'];
+        $block_list = &$_SESSION['Clipped_Blocks'];
         if (empty($block_list)) {
             return NULL;
         }
