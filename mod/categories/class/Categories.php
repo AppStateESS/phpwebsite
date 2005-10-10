@@ -32,21 +32,22 @@ class Categories{
     {
         $vars['action'] = 'view';
 
+        $db = & new PHPWS_DB('category_items');
+
         if (!empty($module)) {
             $vars['ref_mod'] = $module;
-            $db = & new PHPWS_DB('category_items');
         }
 
         foreach ($list as $category){
+            $db->addWhere('cat_id', $category->id);
+
             if (!empty($module)) {
                 $db->addWhere('module', $module);
-                $db->addWhere('cat_id', $category->id);
-                list($count) = $db->select('count');
-                $db->resetWhere();
-                $items = ' - ' . $count['count'] . ' ' . _('item(s)');
-            } else {
-                $items = NULL;
             }
+
+            list($count) = $db->select('count');
+            $db->resetWhere();
+            $items = ' - ' . $count['count'] . ' ' . _('item(s)');
 
             $vars['id'] = $category->id;
 
@@ -217,10 +218,12 @@ class Categories{
         $tpl = & new PHPWS_Template('categories');
         $tpl->setFile('list.tpl');
 
-        foreach ($top_level as $top_cats) {
-            $tpl->setCurrentBlock('child-row');
-            $tpl->setData(array('CHILD' => $top_cats->getViewLink($module)));
-            $tpl->parseCurrentBlock();
+        if (!empty($top_level)) {
+            foreach ($top_level as $top_cats) {
+                $tpl->setCurrentBlock('child-row');
+                $tpl->setData(array('CHILD' => $top_cats->getViewLink($module)));
+                $tpl->parseCurrentBlock();
+            }
         }
 
         $vars['action'] = 'view';
@@ -260,17 +263,18 @@ class Categories{
         $db = & new PHPWS_DB('category_items');
         $db->addColumn('module');
         $db->addWhere('cat_id' , (int)$cat_id);
+        $db->addGroupBy('module');
         $result = $db->select('count');
 
         if (empty($result)) {
             return NULL;
         }
 
-        $module = & new PHPWS_Module($result['module']);
-
-        $mod_list[$module->getTitle()] = $module->getProperName() 
-            . ' - ' . $result['COUNT(*)'] . ' ' . _('item(s)');
-    
+        foreach ($result as $aMod) {
+            $module = & new PHPWS_Module($aMod['module']);
+            $mod_list[$module->getTitle()] = $module->getProperName() 
+                . ' - ' . $aMod['count'] . ' ' . _('item(s)');
+        }
         return $mod_list;
     }
 
