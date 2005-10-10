@@ -18,7 +18,7 @@ class Category_Item {
     var $module       = NULL;
     var $item_name    = NULL;
     var $title        = NULL;
-    var $link         = NULL;
+    var $url          = NULL;
     var $_approved    = TRUE;
 
     function Category_Item($module=NULL, $item_name=NULL)
@@ -105,18 +105,18 @@ class Category_Item {
         return $this->title;
     }
 
-    function setLink($link)
+    function setUrl($url)
     {
-        PHPWS_Text::makeRelative($link);
-        $this->link = $link;
+        PHPWS_Text::makeRelative($url);
+        $this->url = $url;
     }
 
-    function getLink($html=FALSE)
+    function getUrl($html=FALSE)
     {
         if ($html == TRUE) {
-            return sprintf('<a href="%s">%s</a>', $this->link, $this->title);
+            return sprintf('<a href="%s">%s</a>', $this->url, $this->title);
         } else {
-            return $this->link;
+            return $this->url;
         }
     }
 
@@ -204,7 +204,7 @@ class Category_Item {
     function _testVars(){
         if ( empty($this->module) || empty($this->item_name) ||
              ( !isset($this->item_id) && !isset($this->version_id) ) ||
-             empty($this->title)     || empty($this->link) )
+             empty($this->title)     || empty($this->url) )
             {
                 return FALSE;
             } else {
@@ -313,7 +313,7 @@ class Category_Item {
 
     function getTplTags()
     {
-        $tpl['TITLE'] = $this->getLink(TRUE);
+        $tpl['TITLE'] = $this->getUrl(TRUE);
         return $tpl;
     }
 }
