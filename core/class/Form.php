@@ -1519,7 +1519,6 @@ class Form_Multiple extends Form_Element {
 
     function get()
     {
-        
         $content[] = '<select ' . $this->getName(TRUE) . 'multiple="multiple" ' 
             . $this->getData()
             . $this->getWidth(TRUE)
@@ -1766,7 +1765,11 @@ class Form_Element {
     function getName($formMode=FALSE)
     {
         if ($this->isArray) {
-            $name = $this->name . '[' . $this->key . ']';
+            if ($this->type == 'multiple') {
+                $name = $this->name . '[]';
+            } else {
+                $name = $this->name . '[' . $this->key . ']';
+            }
         } else {
             $name = $this->name;
         }
