@@ -321,18 +321,24 @@ class Categories_Action {
      */
     function viewCategory($id=NULL, $module=NULL) 
     {
-        $category = NULL;
+        $oMod = $category = NULL;
+
+        if (!empty($module)) {
+            PHPWS_Core::initCoreClass('Module.php');
+            $oMod = & new PHPWS_Module($module);
+        }
 
         if (!isset($id)) {
             $content = Categories::getCategoryList($module);
             $template['TITLE'] = _('All Categories');
+            if ($oMod) {
+                $template['TITLE'] .= ' - ' . $oMod->getProperName();
+            }
         } else {
             $category = & new Category((int)$id);
       
             if (isset($module) && $module != '0') {
-                PHPWS_Core::initCoreClass('Module.php');
-                $mod = & new PHPWS_Module($module);
-                $template['TITLE'] = _('Module') . ':' . $mod->getProperName();
+                $template['TITLE'] = _('Module') . ':' . $oMod->getProperName();
                 $content = Categories_Action::getAllItems($category, $module);
             } else {
                 $template['TITLE'] = _('Module Listing');
@@ -360,10 +366,11 @@ class Categories_Action {
         $pageTags['TITLE_LABEL'] = _('Item Title');
 
         $mod_list = Categories::getModuleListing($category->getId());    
+
         if (!empty($mod_list)) {
-            array_unshift($mod_list, _('All Modules'));
+            array_unshift($mod_list, _('All'));
         } else {
-            $mod_list[0] = _('All Modules');
+            $mod_list[0] = _('All');
         }
 
 
