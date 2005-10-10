@@ -329,10 +329,11 @@ class PHPWS_DB {
             return $columns;
         }
     
-        foreach ($columns as $colInfo)
+        foreach ($columns as $colInfo) {
             if ($colInfo['name'] == 'id' && preg_match('/primary/', $colInfo['flags']) && preg_match('/int/', $colInfo['type'])) {
                 return $colInfo['name'];
             }
+        }
 
         return NULL;
     }
@@ -367,6 +368,10 @@ class PHPWS_DB {
     function addGroupBy($group_by)
     {
         if (PHPWS_DB::allowed($group_by)) {
+            if (!strstr($group_by, '.')) {
+                $group_by = $this->tables[0] . '.' . $group_by;
+            }
+
             $this->groupBy[] = $group_by;
         }
     }
@@ -436,7 +441,7 @@ class PHPWS_DB {
                 return TRUE;
             }
         } else {
-            if (is_null($value) || strtoupper($value) == 'NULL') {
+            if (is_null($value) || (is_string($value) && strtoupper($value) == 'NULL')) {
                 if (empty($operator) || ( $operator != 'IS NOT' && $operator != '!=')) {
                     $operator = 'IS';
                 } else {
@@ -690,7 +695,7 @@ class PHPWS_DB {
 
     function getOrder($dbReady=FALSE)
     {
-        if (!count($this->order)) {
+        if (empty($this->order)) {
             return NULL;
         }
 
@@ -726,7 +731,7 @@ class PHPWS_DB {
 
     function getValue($column)
     {
-        if (!count($this->values) || !isset($this->values[$column])) {
+        if (empty($this->values) || !isset($this->values[$column])) {
             return NULL;
         }
 
@@ -740,7 +745,7 @@ class PHPWS_DB {
 
     function getAllValues()
     {
-        if (!isset($this->values) || !count($this->values)) {
+        if (!isset($this->values) || empty($this->values)) {
             return NULL;
         }
 
@@ -968,11 +973,10 @@ class PHPWS_DB {
                 } else {
                     $add_group = $columns;
                     $columns .= ', COUNT(*)';   
+
                     if (empty($groupby)) {
                         $groupby = "GROUP BY $add_group";
-                    } else {
-                        $groupby .= ", $addgroup";
-                    }
+                    } 
                 }
             }
 
@@ -1034,6 +1038,12 @@ class PHPWS_DB {
 
             if (empty($result)) {
                 return 0;
+            }
+
+            // If a column is set, the result is returned to be
+            // parsed by the function caller
+            if (!empty($this->columns)) {
+                return $result;
             }
 
             if (count($result) > 1) {
