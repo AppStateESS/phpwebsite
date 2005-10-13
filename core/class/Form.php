@@ -872,7 +872,8 @@ class PHPWS_Form {
             break;
 
         default:
-            return PHPWS_Error::get(PHPWS_FORM_UNKNOWN_TYPE, 'core', 'PHPWS_Form::createElement');
+            $error = PHPWS_Error::get(PHPWS_FORM_UNKNOWN_TYPE, 'core', 'PHPWS_Form::createElement');
+            return $error;
             break;
         }
 
