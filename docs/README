@@ -1,0 +1,60 @@
+All core files and modules will have instructions within this
+directory. User documentation is currently absent.
+
+Access - instructions on using shortcuts and the access module (not complete)
+
+bbcode - tells you how to use bbcode in phpwebsite
+
+Cache_Lite - instructions on how to cache content
+
+Categories - instructions on how to use categories (currently
+out-of-date)
+
+Clipboard - instructions for using the clipboard module (not complete)
+
+Database_Class - developer directions for using the Database class
+(needs updating but fairly sound)
+
+DB_Pager - instructions on creating pages of data via database
+interaction
+
+Developer_Rules - rules to follow for creating phpwebsite modules
+
+Editor - instructions on using the wysiwyg editors in your
+installation (out of date)
+
+Image - information on the image class (out of date)
+
+INSTALL - very brief explanation on how to get started installing
+phpwebsite. Should the need arise, it will be expanded upon.
+
+Known_Errors - these are errors that may escape phpwebsite's ability
+to filter them. If something is really going wrong, it should be
+listed here. Pretty scarce info at this point.
+
+Language - Tells you how to develop i18n code.
+
+LICENSE - Our license, read it, learn it, live it.
+
+Mod_Rewrite - explains how mod_rewrite works. Apache required
+
+Module_Development - a horribly out of date file on creating
+modules. Will be updated
+
+Related - info on the Related module. Out of date
+
+SmartTags - Explains how smarttags work and how to use them
+
+Template - Basic explanation of how templates work in phpwebsite
+
+test.php.text - allows you to test code with the basic core running
+
+TODO - stuff we need to do. out of date
+
+Using_Javascript - instructions on using the javascript function in
+your code
+
+Version - developer instructions for using versioning in your
+modules. Can be scary. Write your module first then come back to it.
+
+WYSIWYG - condensed version of Editor.txt

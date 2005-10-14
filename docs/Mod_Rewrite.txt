@@ -52,7 +52,7 @@ be viewed by the general public have no need to use rewrite.
 You will need a way to 'catch' the request for viewing an item in your
 module. Let's look at our previous example:
 
-http://www.mysite.com/article/view/5312
+http://www.mysite.com/article5312.html
 
 When this is sent to phpWebSite, it is going to go to the article
 module and tell it that it wants to view article 5312. It will rewrite

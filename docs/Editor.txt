@@ -12,6 +12,8 @@ PhpWebSite ships with the following wysiwyg editors ready for use:
 
 Htmlarea (project discontinued)
 FCKeditor
+TinyMCE
+
 
 
 Plugging in a Supported Editor

@@ -1,0 +1,20 @@
+First pick an editor. PhpWebSite supports the following:
+
+FCKeditor - http://www.fckeditor.net/
+TinyMCE   - http://tinymce.moxiecode.com/
+HtmlArea  - http://www.htmlarea.com/ (discontinued)
+
+Get the tarball/zip and decompress them into the appropiate
+javascript/editor directory.
+
+To enable the wysiwyg editor go into your config/core/config.php file
+and look for:
+
+define('USE_WYSIWYG_EDITOR', FALSE);
+define('DEFAULT_EDITOR_TOOL', '');
+
+Set the first define to TRUE.
+Set the second define to the name of the directory where your wysiwyg
+is untarred/unzipped.
+
+For more information, please read Editor.txt.

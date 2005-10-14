@@ -3,14 +3,14 @@
 
 2) Sessions should be hidden from the module developer. If your module is
    accessible by other developers, let them access information by using
-   an instanced method. Keep track of your sessions separately. 0.9.3
+   an instanced method. Keep track of your sessions separately. 0.9 - 0.10
    used this far too often.
 
 3) Module developers should also not need to know the name of your
    GLOBAL variables.
 
 4) Use the error class functionality. It makes it easier to debug your code.
-   Do not all ANY errors to be seen by the user. Deal with them internally
+   Do not allow most errors to be seen by the user. Deal with them internally
    by logging the errors and/or serving a non specific message to the user.
 
 5) When making a database dump, make it generic. For example, KEY doesn't work
@@ -23,8 +23,9 @@
 
 7) Always parse user submitted information. Don't let bad information
    make it to the database query. If it does and it returns a negative
-   result, recover gracefully.
+   result, recover gracefully. Let me repeat, parse ALL user
+   data. Every GET, every POST.
 
 8) Use the database class when you can. It has security measures built
    in. If you use a straight query, you are expected to scour any user
-   data that makes it to the query string.
+   data that makes it to the query string. Very important.
