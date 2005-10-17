@@ -357,10 +357,10 @@ class PHPWS_Core {
         }
     }
 
-    function checkSecurity(){
-        if (CHECK_DIRECTORY_PERMISSIONS == TRUE &&
-            !isset($_SESSION['SECURE'])) {
-            if (is_writable('./config/') || is_writable('./templates/')) {
+    function checkSecurity()
+    {
+        if (CHECK_DIRECTORY_PERMISSIONS == TRUE) {
+            if (is_writable('./config/') || is_writable('./templates/') || is_writable('./javascript/modules/')) {
                 PHPWS_Error::log(PHPWS_DIR_NOT_SECURE, 'core');
                 PHPWS_Core::errorPage();
             }
