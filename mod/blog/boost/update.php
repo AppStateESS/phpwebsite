@@ -4,7 +4,7 @@ function blog_update(&$content, $currentVersion)
 {
   switch ($currentVersion) {
   case version_compare($currentVersion, '0.0.3', '<'):
-    $result = blog_update_003($content);
+    $result = blog_update_003();
     if (PEAR::isError($result)) {
       return $result;
     }
@@ -15,7 +15,7 @@ function blog_update(&$content, $currentVersion)
 }
 
 
-function blog_update_003(&$content)
+function blog_update_003()
 {
   $filename = PHPWS_SOURCE_DIR . 'mod/blog/boost/update_0_0_3.sql';
   $db = & new PHPWS_DB;
