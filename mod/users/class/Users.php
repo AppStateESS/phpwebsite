@@ -668,6 +668,10 @@ class PHPWS_User {
 
     function savePermissions($key)
     {
+        if (!is_object($key) || strtolower(get_class($key) == 'key')) {
+            return FALSE;
+        }
+
         if (!PHPWS_Core::moduleExists($key->module)) {
             return PHPWS_Error::get(PHPWS_NO_MOD_FOUND, 'core', __CLASS__ . '::' . __FUNCTION__);
         }
