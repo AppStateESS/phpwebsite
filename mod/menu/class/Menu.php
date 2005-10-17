@@ -87,21 +87,8 @@ class Menu {
         PHPWS_Core::configRequireOnce('menu', 'config.php');
         $key = Key::getCurrent();
 
-        if (empty($key) || $key->isAdmin()) {
+        if (empty($key)) {
             return NULL;
-        }
-
-        $title = NULL;
-        $url = PHPWS_Core::getCurrentUrl();
-
-        $direct_link = FALSE;
-
-        if (!empty($key->title)) {
-            $title = $key->title;
-        }
-        
-        if (!empty($key->url)) {
-            $url = $key->url;
         }
 
         $vars['command'] = 'add_link';
@@ -111,18 +98,9 @@ class Menu {
         } else {
             $vars['parent'] = 0;
         }
+        $vars['key_id'] = $key->id;
 
-
-        if (!empty($title)) {
-            $vars['link_title'] = urlencode($title);
-            $direct_link = TRUE;
-        }
-    
-        if (!empty($url)) {
-            $vars['url'] = urlencode(urlencode($url));
-        }
-
-        if ($direct_link) {
+        if (!empty($key->title)) {
             return PHPWS_Text::secureLink(MENU_LINK_ADD, 'menu', $vars);
         } else {
             $js['question']   = _('Enter link title');
