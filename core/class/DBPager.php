@@ -143,6 +143,8 @@ class DBPager {
             $this->_class_vars = $class_var_list;
         }
 
+        $this->loadLink();
+
         if (isset($_REQUEST['page'])) {
             $this->current_page = (int)$_REQUEST['page'];
         }
@@ -163,6 +165,11 @@ class DBPager {
             $this->search = preg_replace('/\W/', '', $_REQUEST['search']);
         }
 
+    }
+
+    function loadLink()
+    {
+        $this->link = PHPWS_Core::getCurrentUrl(TRUE, FALSE);
     }
 
     function setOrder($column, $direction)
@@ -209,6 +216,16 @@ class DBPager {
         $this->link = $link;
     }
 
+    function getLinkQuery()
+    {
+        return substr(strstr($this->link, '?'), 1);
+    }
+
+    function getLinkBase()
+    {
+        return str_replace(strstr($this->link, '?'), '', $this->link);
+    }
+
     function setModule($module){
         $this->module = $module;
     }
@@ -232,6 +249,10 @@ class DBPager {
         }
 
         $method = func_get_arg(0);
+
+        if (version_compare(phpversion(), '5.0.0',  '<')) {
+            $method = strtolower($method);
+        }
 
         if (func_num_args() > 1) {
             $variables = func_get_args();
@@ -368,7 +389,11 @@ class DBPager {
             foreach ($values as $key => $value) {
                 $link_pairs1[] = "$key=$value";
             }
-            $pages[] = '<a href="index.php?' . implode('&amp;', $link_pairs1) . '">' . $this->page_turner_left . "</a>\n";
+
+            $pages[] = sprintf("<a href=\"%s?%s\">%s</a>\n",
+                               $this->link,
+                               implode('&amp;', $link_pairs1),
+                               $this->page_turner_left);
         }
 
         for ($i=1; $i <= $total_pages; $i++){
@@ -398,7 +423,7 @@ class DBPager {
                 foreach ($values as $key => $value) {
                     $link_pairs2[] = "$key=$value";
                 }
-                $pages[] = '<a href="index.php?' . implode('&amp;', $link_pairs2) . "\">$i</a>\n";
+                $pages[] = sprintf('<a href="%s?%s">%s</a>', $this->getLinkBase(), implode('&amp;', $link_pairs2), $i) . "\n";
             } else {
                 $pages[] = $i;
             }
@@ -418,7 +443,9 @@ class DBPager {
             foreach ($values as $key => $value) {
                 $link_pairs3[] = "$key=$value";
             }
-            $pages[] = '<a href="index.php?' . implode('&amp;', $link_pairs3) . '">' . $this->page_turner_right . "</a>\n";
+            $pages[] = sprintf('<a href="%s?%s">%s</a>', $this->getLinkBase(),
+                               implode('&amp;', $link_pairs3),
+                               $this->page_turner_right) . "\n";
         }
 
         return implode(' ', $pages);
@@ -453,14 +480,16 @@ class DBPager {
                 $vars[] = "$key=$value";
             }
 
-            $link = '<a href="index.php?' . implode('&amp;', $vars) . '">' . $button . '</a>';
+            $link = sprintf('<a href="%s?%s">%s</a>', $this->getLinkBase(), implode('&amp;', $vars), $button);
 
             $template[strtoupper($buttonname)] = $link;
         }
         return $template;
     }
 
-    function getLinkValues(){
+    function getLinkValues()
+    {
+        $output = NULL;
         if (isset($GLOBALS['DBPager_Link_Values'])) {
             return $GLOBALS['DBPager_Link_Values'];
         }
@@ -485,24 +514,30 @@ class DBPager {
         // pull get values from link setting
         if (!empty($this->link)) {
             $url = parse_url($this->link);
-            parse_str(str_replace('&amp;', '&', $url['query']), $output);
-        } else {
-            $output = array();
+            if (isset($url['query'])) {
+                parse_str(str_replace('&amp;', '&', $url['query']), $output);
+            }
         }
 
-        
         // pull any extra values in current url
         $extra = PHPWS_Text::getGetValues();
 
         // if extra values exist, add them to the values array
         // ignore matches in the output and other values
         if (!empty($extra)) {
-            $diff = array_diff_assoc($extra, $output);
+            if ($output) {
+                $diff = array_diff_assoc($extra, $output);
+            } else {
+                $diff = $extra;
+            }
             $diff = array_diff_assoc($diff, $values);
             $values = array_merge($diff, $values);
         }
 
-        $values = array_merge($output, $values);
+        if ($output) {
+            $values = array_merge($output, $values);
+        }
+
         $GLOBALS['DBPager_Link_Values'] = $values;
         return $values;
     }
@@ -517,7 +552,7 @@ class DBPager {
 
         foreach ($this->limitList as $limit){
             $link_pairs['a'] = "limit=$limit";
-            $links[] = '<a href="index.php?' . implode('&amp;', $link_pairs) . '">' . $limit . '</a>';
+            $links[] = sprintf('<a href="%s?%s">%s</a>', $this->getLinkBase(), implode('&amp;', $link_pairs), $limit);
         }
 
         return implode(' ', $links);
@@ -544,16 +579,14 @@ class DBPager {
                 }
 
                 if (!empty($this->row_tags)) {
-
-                    extract($this->row_tags);
-                    if (!in_array(strtolower($method), $this->_methods)) {
-                        return PHPWS_Error::get(DBPAGER_NO_METHOD, 'core', 'DBPager::getPageRows', $this->class . ':' . $method);
+                    if (!in_array($this->row_tags['method'], $this->_methods)) {
+                        return PHPWS_Error::get(DBPAGER_NO_METHOD, 'core', 'DBPager::getPageRows', $this->class . ':' . $this->row_tags['method']);
                     }
 
-                    if (empty($variable)) {
-                        $row_result = $disp_row->{$method}();
+                    if (empty($this->row_tags['variable'])) {
+                        $row_result = $disp_row->{$this->row_tags['method']}();
                     } else {
-                        $row_result = call_user_func_array(array(&$disp_row, $method), $variable);
+                        $row_result = call_user_func_array(array(&$disp_row, $this->row_tags['method']), $this->row_tags['variable']);
                     }
 
                     $template[$count] = array_merge($template[$count], $row_result);
@@ -616,21 +649,28 @@ class DBPager {
             $this->limit = DBPAGER_DEFAULT_LIMIT;
         }
 
-        $link = str_replace('index.php?', '', $this->link);
+        $link = $this->getLinkQuery();
+
+        if (empty($link)) {
+            return;
+        }
+
         $link_list = explode('&', html_entity_decode($link));
-        foreach ($link_list as $var){
+        foreach ($link_list as $var) {
             if (empty($var)) {
                 continue;
             }
             $i = explode('=', $var);
-            if ($i[0] == 'authkey')
+            if ($i[0] == 'authkey') {
                 continue;
+            }
             $form->addHidden($i[0], $i[1]);
         }
 
         $form->addHidden('limit', $this->limit);
-        if ($addSearch == TRUE && isset($this->search))
+        if ($addSearch == TRUE && isset($this->search)) {
             $form->addHidden('search', $this->search);
+        }
     }
 
     function _getNavigation(&$template)
