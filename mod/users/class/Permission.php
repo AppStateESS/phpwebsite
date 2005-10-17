@@ -466,8 +466,14 @@ class Users_Permission {
     }
 
 
-    function savePermissions($key)
+    function savePermissions($key_id)
     {
+        if (strtolower(get_class($key_id)) == 'key') {
+            $key = &$key_id;
+        } else {
+            $key = & new Key($key_id);
+        }
+
         $table = Users_Permission::getItemPermissionTableName($key->module);
         $db = & new PHPWS_DB($table);
         $db->addWhere('item_id', $key->item_id);
