@@ -5,14 +5,15 @@ define('MENU_MISSING_INFO', 1);
 class Menu_Link {
     var $id         = 0;
     var $menu_id    = 0;
+    var $key_id     = 0;
     var $title      = NULL;
-    var $url        = NULL;
     var $parent     = 0;
     var $active     = 1;
     var $link_order = 1;
     var $_error     = NULL;
     var $_children  = NULL;
     var $_db        = NULL;
+    var $_key       = NULL;
 
     function Menu_Link($id=NULL)
     {
@@ -33,6 +34,7 @@ class Menu_Link {
         $db = & new PHPWS_DB('menu_links');
         $db->loadObject($this);
         $this->loadChildren();
+        $this->loadKey();
     }
 
     function &getDB()
@@ -42,6 +44,11 @@ class Menu_Link {
         }
         $this->_db->reset();
         return $this->_db;
+    }
+
+    function loadKey()
+    {
+        $this->_key = & new Key($this->key_id);
     }
 
     /**
@@ -66,6 +73,11 @@ class Menu_Link {
     function setParent($parent)
     {
         $this->parent = (int)$parent;
+    }
+
+    function setKeyId($key_id)
+    {
+        $this->key_id = (int)$key_id;
     }
 
     function setTitle($title)
@@ -93,18 +105,10 @@ class Menu_Link {
         }
     }
 
-    function setUrl($url, $local=TRUE)
-    {
-        if ($local) {
-            PHPWS_Text::makeRelative($url);
-        }
-        $this->url = str_replace('&amp;', '&', trim($url));
-        $this->url = preg_replace('/&?authkey=\w{32}/', '', $this->url);
-    }
 
     function getUrl()
     {
-        return str_replace('&', '&amp;', $this->url);
+        return $this->_key->url;
     }
 
     function setMenuId($id)
@@ -130,7 +134,7 @@ class Menu_Link {
 
     function save()
     {
-        if (empty($this->menu_id) || empty($this->title) || empty($this->url)) {
+        if (empty($this->menu_id) || empty($this->title) || empty($this->_key->url)) {
             return PHPWS_Error::get(MENU_MISSING_INFO, 'menu', 'Menu_Link::save');
         }
 
@@ -147,12 +151,14 @@ class Menu_Link {
         static $current_parent = array();
         static $current_page = 0;
 
+        $current_key = Key::getCurrent();
+
         if ($current_page < 1) {
-            $child_current = $this->childIsCurrent();
+            $child_current = $this->childIsCurrent($current_key);
             if ($child_current) {
                 $current_parent[] = $this->id;
                 $current_page = $child_current;
-            } elseif (Menu::atLink($this->url)) {
+            } elseif ($current_key->id == $this->key_id) {
                 $current_page = $this->id;
             }
         }
@@ -193,14 +199,14 @@ class Menu_Link {
         }
     }
 
-    function childIsCurrent()
+    function childIsCurrent(&$current_key)
     {
         if (empty($this->_children)) {
             return 0;
         }
 
         foreach ($this->_children as $child) {
-            if (Menu::atLink($child->url)) {
+            if ($child->key_id == $current_key->id) {
                 return $child->id;
             }
         }
