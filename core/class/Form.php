@@ -976,6 +976,7 @@ class PHPWS_Form {
             } else {
                 $template['START_FORM'] .= "<div>\n";
             }
+
             if (FORM_USE_FILE_RESTRICTIONS && $this->_multipart) {
                 $template['START_FORM'] .= sprintf('<input type="hidden" name="MAX_FILE_SIZE" value="%d" />', $this->max_file_size) . "\n";
             }
@@ -997,7 +998,7 @@ class PHPWS_Form {
             foreach ($element as $subElement){
                 if ($this->types[$elementName] == 'hidden') {
                     if ($helperTags) {
-                        $template['START_FORM'] .= $subElement->get();
+                        $template['START_FORM'] .= $subElement->get() . "\n";
                     } else {
                         $hidden_vars[] = $subElement->get();
                     }
