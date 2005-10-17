@@ -153,9 +153,11 @@ class Menu_Item {
         $db = & new PHPWS_DB('menu_links');
         $db->addWhere('menu_id', $this->id);
 
+        /*
         if ($active_only) {
             $db->addWhere('active', 1);
         }
+        */
 
         $db->addWhere('parent', $parent);
         $db->addOrder('link_order');
@@ -167,6 +169,7 @@ class Menu_Item {
         }
 
         foreach ($result as $link) {
+            $link->loadKey();
             $link->loadChildren();
             $final[$link->id] = $link;
         }
@@ -196,10 +199,17 @@ class Menu_Item {
             $vars['hook'] = 0;
         }
         $links[] = PHPWS_Text::secureLink($link_title, 'menu', $vars);
+        unset($vars['hook']);
 
         $vars['command'] = 'edit_links';
         $link_title = _('Links');
         $links[] = PHPWS_Text::secureLink($link_title, 'menu', $vars);
+
+        $vars['command'] = 'delete_menu';
+        $js['QUESTION'] = _('Are you sure you want to delete this menu and all its links.');
+        $js['ADDRESS']  = PHPWS_Text::linkAddress('menu', $vars, TRUE);
+        $js['LINK'] = _('Delete');
+        $links[] = javascript('confirm', $js);
 
         $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
@@ -207,16 +217,30 @@ class Menu_Item {
 
     function kill()
     {
-        Layout::purgeBox('menu_' . $id);
+        $db = & new PHPWS_DB('menu_assoc');
+        $db->addWhere('menu_id', $this->id);
+        $db->delete();
+
+        $db->setTable('menu_links');
+        $db->delete();
+
+        $db->setTable('menus');
+        $db->reset();
+        $db->addWhere('id', $this->id);
+        $db->delete();
+
+        Layout::purgeBox('menu_' . $this->id);
     }
 
-    function addLink($title, $url, $parent=0)
+    function addLink($key_id, $parent=0)
     {
+        $key = & new Key($key_id);
         $link = & new Menu_Link;
-        $link->setParent($parent);
-        $link->setTitle($title);
-        $link->setUrl($url);
         $link->setMenuId($this->id);
+        $link->setKeyId($key->id);
+        $link->loadKey();
+        $link->setTitle($key->title);
+        $link->setParent($parent);
         return $link->save();
     }
 
