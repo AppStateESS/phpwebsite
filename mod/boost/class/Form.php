@@ -57,6 +57,11 @@ class Boost_Form {
         $tpl['TITLE_LABEL'] = _('Module Title');
         $tpl['COMMAND_LABEL'] = ('Commands');
         $tpl['ABOUT_LABEL'] = _('More information');
+        
+        if ($type == 'core_mods' && Current_User::isDeity() && DEITIES_CAN_UNINSTALL) {
+            $tpl['WARNING'] = _('WARNING: Only deities can uninstall core modules. Doing so may corrupt your installation!');
+        }
+
 
         $count = 0;
         foreach ($modList as $title) {
@@ -82,14 +87,17 @@ class Boost_Form {
                     $link_command['action'] = 'show_dependency';
                 }
             } else {
-                if ($type != 'core_mods') {
+                if ($type != 'core_mods' || Current_User::isDeity() && DEITIES_CAN_UNINSTALL) {
                     if ($dependents = $mod->isDependedUpon()) {
                         $link_command['action'] = 'show_depended_upon';
                         $depend_warning = sprintf(_('This module is depended upon by: %s'), implode(', ', $dependents));
                         $template['UNINSTALL'] = PHPWS_Text::secureLink(_('Depended upon'), 'boost', $link_command, NULL, $depend_warning);
                     } else {
                         $uninstallVars = array('opmod'=>$title, 'action'=>'uninstall');
-                        $template['UNINSTALL'] = PHPWS_Text::secureLink(_('Uninstall'), 'boost', $uninstallVars);
+                        $js['QUESTION'] = _('Are you sure you want to uninstall this module? All data will be deleted.');
+                        $js['ADDRESS'] = PHPWS_Text::linkAddress('boost', $uninstallVars, TRUE);
+                        $js['LINK'] = _('Uninstall');
+                        $template['UNINSTALL'] = javascript('confirm', $js);
                     }
                 }
 

@@ -1,5 +1,9 @@
 <?php
 
+  // If TRUE, then deities can uninstall core modules
+  // Be careful with this, you can kill your site
+define('DEITIES_CAN_UNINSTALL', FALSE);
+
 /********** Error Codes ***************/
 define('BOOST_ERR_NOT_MODULE',       -1);
 define('BOOST_ERR_NO_INSTALLSQL',    -2);
