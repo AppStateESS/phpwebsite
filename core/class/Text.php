@@ -194,8 +194,9 @@ class PHPWS_Text {
      * @access public
      */
     function sentence($text, $stripNewlines = FALSE){
-        if (!is_string($text))
+        if (!is_string($text)) {
             return PHPWS_Error::get(PHPWS_TEXT_NOT_STRING, 'core', 'PHPWS_Text::sentence');
+        }
 
         return preg_split("/\r\n|\n/", $text);
     }// END FUNC sentence()
@@ -691,13 +692,18 @@ class PHPWS_Text {
 
     function getGetValues()
     {
-        $url = parse_url($_SERVER['REQUEST_URI']);
+        if (isset($_SERVER['REDIRECT_QUERY_STRING'])) {
+            $query = $_SERVER['REDIRECT_QUERY_STRING'];
+        } else {
+            $url = parse_url($_SERVER['REQUEST_URI']);
+            extract($url);
+        }
 
-        if (empty($url['query'])) {
+        if (empty($query)) {
             return NULL;
         }
 
-        parse_str($url['query'], $output);
+        parse_str($query, $output);
         return $output;
     }
 
