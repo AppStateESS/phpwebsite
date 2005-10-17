@@ -22,7 +22,7 @@ margin-top  : 2px;
 
 #buttons {
 position : absolute;
-bottom : 0px;
+bottom : 4px;
 width : 100%;
 background-color : white;
 }
