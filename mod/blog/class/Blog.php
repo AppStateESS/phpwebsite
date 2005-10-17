@@ -8,11 +8,13 @@
 
 class Blog {
     var $id         = NULL;
+    var $key_id     = 0;
     var $title      = NULL;
     var $entry      = NULL;
     var $author     = NULL;
     var $date       = NULL;
     var $restricted = 0;
+    var $_error     = NULL;
 
     function Blog($id=NULL)
     {
@@ -37,6 +39,8 @@ class Blog {
         $result = $db->loadObject($this);
         if (PEAR::isError($result)) {
             return $result;
+        } elseif (!$result) {
+            $this->id = NULL;
         }
     }
 
@@ -84,13 +88,6 @@ class Blog {
         return $this->restricted;
     }
 
-    function &makeThread()
-    {
-        $thread = Comments::makeThread($this->getKey(),
-                                    'index.php?module=blog&action=view_comments&id=' . $this->id);
-        return $thread;
-    }
-
     function save()
     {
         $db = & new PHPWS_DB('blog_entries');
@@ -106,6 +103,17 @@ class Blog {
         return $result;
     }
 
+    function createKey()
+    {
+        $key = & new Key;
+        $key->setModule('blog');
+        $key->setItemId($this->id);
+        $key->setUrl($this->getViewLink(TRUE));
+        $key->setTitle($this->title);
+        $key->save();
+        $this->key_id = $key->id;
+    }
+
     function getViewLink($bare=FALSE){
         if ($bare) {
             if (MOD_REWRITE_ENABLED) {
@@ -118,15 +126,6 @@ class Blog {
         }
     }
 
-    function &getKey()
-    {
-        $key =  new Key('blog', 'entry', $this->id);
-        $key->setTitle($this->title);
-        $key->setUrl($this->getViewLink(TRUE));
-        return $key;
-    }
-
-
     function createCommentLink()
     {
         $vars['action'] = 'make_comment';
@@ -137,12 +136,14 @@ class Blog {
 
     function view($edit=TRUE, $limited=TRUE)
     {
-        PHPWS_Core::initModClass('menu', 'Menu.php');
-        PHPWS_Core::initModClass('comments', 'Comments.php');
-        PHPWS_Core::initModClass('access', 'Access.php');
-        $key = $this->getKey();
+        if (!$this->id) {
+            PHPWS_Core::errorPage(404);
+        }
 
-        PHPWS_Core::initModClass('categories', 'Categories.php');
+        PHPWS_Core::initModClass('comments', 'Comments.php');
+        $key = new Key($this->key_id);
+
+        //        PHPWS_Core::initModClass('categories', 'Categories.php');
         $template['TITLE'] = $this->title;
         $template['DATE']  = $this->getFormatedDate();
         $template['ENTRY'] = PHPWS_Text::parseTag($this->getEntry(TRUE));
@@ -154,13 +155,14 @@ class Blog {
             $template['EDIT_LINK'] = PHPWS_Text::secureLink(_('Edit'), 'blog', $vars);
         }
 
-        $comments = $this->makeThread();
+        $comments = Comments::getThread($key);
 
         if ($limited) {
             $link = $comments->countComments(TRUE);
             $template['COMMENT_LINK'] = PHPWS_Text::rewriteLink($link, 'blog', $this->id);
-      
+            
             $last_poster = $comments->getLastPoster();
+
             if (!empty($last_poster)) {
                 $template['LAST_POSTER_LABEL'] = _('Last poster');
                 $template['LAST_POSTER'] = $last_poster;
@@ -169,12 +171,12 @@ class Blog {
             $template['COMMENTS'] = $comments->view();
             $key->flag();
         }
-
+        /*
         $result = Categories::getSimpleLinks('blog', $this->id);
         if (!empty($result)) {
             $template['CATEGORIES'] = implode(', ', $result);
         }
-
+        */
         $template['POSTED_BY'] = _('Posted by');
         $template['POSTED_ON'] = _('Posted on');
         $template['AUTHOR'] = $this->getAuthor();
@@ -299,21 +301,26 @@ class Blog {
 
         $this->id = $version->getSourceId();
 
-        if ($set_permissions) {
-            PHPWS_User::savePermissions($this->getKey());
+        if ($this->id && empty($this->key_id)) {
+            $this->createKey();
+            $this->save();
         }
 
+        if ($version->isApproved() && $set_permissions) {
+            $key = & new Key($this->key_id);
+            PHPWS_User::savePermissions($key);
+        }
 
         PHPWS_Core::initModClass('categories', 'Category_Item.php');
-
+        /*
         $category_item = & new Category_Item('blog');
         $category_item->setItemId($this->id);
         $category_item->setVersionId($version->id);
         $category_item->setApproved($version->isApproved());
         $category_item->setTitle($this->title);
-        $category_item->setLink($this->getViewLink(TRUE));
+        $category_item->setUrl($this->getViewLink(TRUE));
         $category_item->savePost();
-
+        */
         return TRUE;
     }
 
@@ -331,6 +338,7 @@ class Blog {
 
     function kill()
     {
+        Key::drop($this->key_id);
         PHPWS_Core::initModClass('version', 'Version.php');
         Version::flush('blog_entries', $this->id);
         $db = & new PHPWS_DB('blog_entries');
