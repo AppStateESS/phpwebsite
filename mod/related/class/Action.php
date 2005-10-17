@@ -19,14 +19,13 @@ class Related_Action {
 
         $template['INSTRUCTIONS'] = implode('<br />', $instructions);
 
-        Related_Action::newBank($related);
+        $vars['action'] = 'start';
+        $vars['key'] = $related->key_id;
 
-        $template['LINK'] = '<a href="index.php?module=related&amp;action=start">' . 
-            _('Build Related') . '</a>';
-
+        $template['LINK'] = PHPWS_Text::secureLink(_('Build Related'), 'related', $vars);
         $template['TITLE'] = $related->getUrl(TRUE);
 
-        $module = & new PHPWS_Module($related->getModule());
+        $module = & new PHPWS_Module($related->_key->module);
         $template['MODULE'] = $module->getProperName(TRUE);
 
         return PHPWS_Template::process($template, 'related', 'create.tpl');
@@ -35,8 +34,6 @@ class Related_Action {
     function edit(&$current)
     {
         PHPWS_Core::initCoreClass('Module.php');
-        $tpl = new PHPWS_Template('related');
-        $result = $tpl->setFile('edit.tpl');
 
         $related = & Related_Action::getBank();
         $template['TITLE_LBL'] = _('Title');
@@ -54,7 +51,7 @@ class Related_Action {
 
         $template['EDIT'] = $edit;
 
-        if (!$related->isSame($current) && !$related->isFriend($current)){
+        if ($related->key_id != $current->key_id && !$related->isFriend($current)){
             $template['ADD_LINK'] = '<a href="index.php?module=related&amp;action=add">'
                 . _('Add item') . '</a>';
 
@@ -65,9 +62,7 @@ class Related_Action {
         
                 if (is_array($extra_friends)){
                     foreach ($extra_friends as $key=>$friend_item){
-                        $tpl->setCurrentBlock('extra_list');
-                        $tpl->setData(array('EXTRA_NAME'=>$friend_item));
-                        $tpl->parseCurrentBlock();
+                        $template['extra_list'][] = array('EXTRA_NAME'=>$friend_item);
                     }
                 }
             }
@@ -78,7 +73,7 @@ class Related_Action {
 
         Related_Action::setCurrent($current);
 
-        $module = & new PHPWS_Module($related->getModule());
+        $module = & new PHPWS_Module($related->_key->module);
         $template['MODULE'] = $module->getProperName(TRUE);
 
         if ($related->hasFriends()){
@@ -93,23 +88,18 @@ class Related_Action {
                     $down = '<a href="index.php?module=related&amp;action=down&amp;pos=' . $key . '"><img src="images/mod/related/down.png"/></a>';
                     $remove = '<a href="index.php?module=related&amp;action=remove&amp;pos=' . $key . '"><img src="images/mod/related/remove.png"/></a>';
 
-
-                    $tpl->setCurrentBlock('friend_list');
-                    $tpl->setData(array('FRIEND_NAME'=>$friend_item,
-                                        'UP'=>$up,
-                                        'DOWN'=>$down,
-                                        'REMOVE'=>$remove
-                                        ));
-                    $tpl->parseCurrentBlock();
+                    $template['friend_list'][] = array('FRIEND_NAME'=>$friend_item,
+                                                       'UP'=>$up,
+                                                       'DOWN'=>$down,
+                                                       'REMOVE'=>$remove
+                                                       );
                 }
             }
-        } else
+        } else {
             $template['FRIEND_NAME'] = _('View other items to add them to the list.');
+        }
 
-
-        $tpl->setData($template);
-
-        return $tpl->get();
+        return PHPWS_Template::process($template, 'related', 'edit.tpl');
     }
 
 
@@ -149,17 +139,23 @@ class Related_Action {
         $_SESSION['Related_Bank'] = $related;
     }
 
+
     function setCurrent(&$friend)
     {
         unset($_SESSION['Current__Friend']);
         $_SESSION['Current_Friend'] = $friend;
     }
 
+    function setBank($related)
+    {
+        $_SESSION['Related_Bank'] = $related;
+    }
 
     function &getBank()
     {
         return $_SESSION['Related_Bank'];
     }
+
 
     function isBanked()
     {
@@ -184,11 +180,10 @@ class Related_Action {
 
     function start()
     {
-        if (!isset($_SESSION['Related_Bank']))
-            return _('Bank not created.');
-
-        $related = & Related_Action::getBank();
+        $related = & new Related;
+        $related->setKey($_REQUEST['key']);
         $related->setBanked(TRUE);
+        Related_Action::setBank($related);
         PHPWS_Core::reroute($related->getUrl());
     }
 
@@ -201,11 +196,13 @@ class Related_Action {
 
     function add()
     {
-        if (!isset($_SESSION['Related_Bank']))
+        if (!isset($_SESSION['Related_Bank'])) {
             return _('Bank not created.');
+        }
 
-        if (!isset($_SESSION['Current_Friend']))
+        if (!isset($_SESSION['Current_Friend'])) {
             return _('Friend not created.');
+        }
 
         $related = & $_SESSION['Related_Bank'];
         $friend = & $_SESSION['Current_Friend'];

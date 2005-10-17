@@ -14,26 +14,25 @@ PHPWS_Core::initModClass('related', 'Action.php');
 class Related {
 
     var $id        = NULL;
-    var $item_id   = NULL;
-    var $module    = NULL;
-    var $item_name = NULL;
+    var $key_id    = NULL;
     var $title     = NULL;
-    var $url       = NULL;
-    var $active    = TRUE;
     var $friends   = NULL;
     var $_banked   = FALSE;
     var $_current  = NULL;
+    var $_key      = NULL;
 
 
     function Related($id=NULL)
     {
-        if (empty($id))
+        if (empty($id)) {
             return;
+        }
 
         $this->setId($id);
         $result = $this->init();
-        if (PEAR::isError($result))
+        if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
+        }
     }
 
     function init()
@@ -41,8 +40,13 @@ class Related {
         $db = & new PHPWS_DB('related_main');
         $result = $db->loadObject($this);
 
-        if (PEAR::isError($result))
+        if (PEAR::isError($result)) {
             return $result;
+        } elseif (!$result) {
+            $this->id = NULL;
+        } else {
+            $this->_key = & new Key($this->key_id);
+        }
 
     }
 
@@ -58,19 +62,18 @@ class Related {
 
     function setKey($key)
     {
-        $key->plugKey($this);
-    }
+        if (Key::isKey($key)) {
+            $this->_key = $key;
+            $this->key_id = $key->id;
+        } elseif (is_numeric($key)) {
+            $this->key_id = $key;
+            $this->_key = & new Key($this->key_id);
+        }
 
-    function getItemId(){
-        return $this->item_id;
-    }
+        if (empty($this->title)) {
+            $this->title = $this->_key->title;
+        }
 
-    function getModule(){
-        return $this->module;
-    }
-
-    function getItemName(){
-        return $this->item_name;
     }
 
     function setTitle($title){
@@ -81,16 +84,13 @@ class Related {
         return $this->title;
     }
 
-    function setUrl($url){
-        $this->url = $url;
-    }
-
-    function getUrl($clickable=FALSE){
+    function getUrl($clickable=FALSE)
+    {
         if ($clickable) {
-            return sprintf('<a href="%s">%s</a>', $this->url, $this->title);
+            return sprintf('<a href="%s">%s</a>', $this->_key->url, $this->title);
         }
         else {
-            return $this->url;
+            return $this->_key->url;
         }
     }
 
@@ -134,30 +134,24 @@ class Related {
         $db->addColumn('friend_id');
         $result = $db->select('col');
 
-        if (PEAR::isError($result) || empty($result))
+        if (PEAR::isError($result) || empty($result)) {
             return $result;
-
-        foreach ($result as $id)
-            $this->friends[] = & new Related($id);
-
-    }
-
-    function isSame($object){
-        if ($this->module == $object->module &&
-            $this->item_name == $object->item_name &&
-            $this->item_id == $object->item_id) {
-            return TRUE;
-        } else {
-            return FALSE;
         }
+
+        foreach ($result as $id) {
+            $this->friends[] = & new Related($id);
+        }
+
     }
+
 
     function isFriend($checkObj){
-        if (empty($this->friends))
+        if (empty($this->friends)) {
             return FALSE;
+        }
 
-        foreach ($this->friends as $friend){
-            if($friend->isSame($checkObj)) {
+        foreach ($this->friends as $friend) {
+            if($friend->key_id == $checkObj->key_id) {
                 return TRUE;
             }
         }
@@ -240,12 +234,11 @@ class Related {
     function load(){
         if (!isset($this->id)) {
             $db = & new PHPWS_DB('related_main');
-            $db->addWhere('module', $this->getModule());
-            $db->addWhere('item_id', $this->getItemId());
-            $db->addWhere('item_name', $this->getItemName(TRUE));
+            $db->addWhere('key_id', $this->key_id);
             $result = $db->loadObject($this);
-            if (PEAR::isError($result))
+            if (PEAR::isError($result)) {
                 return $result;
+            }
 
             $this->loadFriends();
         }
@@ -264,18 +257,20 @@ class Related {
     
         $related = & new Related;
         $related->setKey($key);
-        $related->setTitle($key->title);
-        $related->setUrl($key->url);
-
         $related->load();
-        if (!Current_User::allow('related') || (bool)$allowEdit == FALSE)
+
+        if (!Current_User::allow('related') || (bool)$allowEdit == FALSE) {
             $mode = 'view';
-        elseif (Related_Action::isBanked())
+        }
+        elseif (Related_Action::isBanked()) {
             $mode = 'edit';
-        elseif (isset($related->id))
+        }
+        elseif (isset($related->id)) {
             $mode = 'view';
-        else
+        }
+        else {
             $mode = 'create';
+        }
 
         switch ($mode){
         case 'create':
