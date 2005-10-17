@@ -14,111 +14,122 @@ if (!isset($_REQUEST['module'])) {
 }
 
 class Key {
+    var $id           = 0;
     var $module       = NULL;
-    var $item_id      = NULL;
     var $item_name    = NULL;
+    var $item_id      = NULL;
     var $title        = NULL;
     var $url          = NULL;
-    var $_mod_values  = NULL;
-    var $_table       = NULL;
-    var $_column_name = NULL;
-    var $_admin       = FALSE;
+    var $active       = 1;
+    var $restricted   = 0;
+    var $_error       = NULL;
   
-    function Key($module, $item_name, $item_id)
+    function Key($id=NULL)
     {
-        $this->module    = $module;
-        $this->item_name = $item_name;
-        $this->item_id   = $item_id;
-        if (isset($_REQUEST['authkey'])) {
-            $this->_admin = TRUE;
+        if ($id == 0) {
+            $this->module = $this->item_name = 'home';
+            $this->item_id = 0;
+            $this->setTitle(_('Home'));
+            $this->setUrl('index.php');
+            return;
+        }
+
+        if (empty($id)) {
+            return NULL;
+        }
+
+        $this->id = (int)$id;
+        $result = $this->init();
+        if (PEAR::isError($result)) {
+            $this->error = $result;
         }
     }
 
-    function isAdmin()
+    function isKey($key)
     {
-        return $this->_admin;
+        if (is_object($key) && strtolower(get_class($key)) == 'key') {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
 
-    function setAdmin($admin)
+
+    function init()
     {
-        $this->_admin = (bool)$admin;
+        $db = & new PHPWS_DB('phpws_key');
+        return $db->loadObject($this);
+    }
+
+    function save()
+    {
+        if (empty($this->module) ||
+            empty($this->item_id)
+            ) {
+            return false;
+        }
+
+        if (empty($this->item_name)) {
+            $this->item_name = $this->module;
+        }
+
+        $db = & new PHPWS_DB('phpws_key');
+        $result = $db->saveObject($this);
+        if (PEAR::isError($result)) {
+            $this->_error = $result;
+            return $result;
+        }
+        return TRUE;
+    }
+
+    function setModule($module)
+    {
+        $this->module = $module;
+    }
+
+    function setItemName($item_name)
+    {
+        $this->item_name = $item_name;
+    }
+
+    function setItemId($item_id)
+    {
+        $this->item_id = $item_id;
     }
 
     function setTitle($title)
     {
-        $this->title     = strip_tags($title);
+        $this->title = strip_tags($title);
     }
 
-    function setUrl($url)
+    function setUrl($url, $local=TRUE)
     {
-        $this->url = strip_tags($url);
-    }
-
-    function getHash()
-    {
-        return md5($this->module . $this->item_id . $item_name);
-    }
-
-    function plugKey(&$object)
-    {
-        $object->module    = $this->module;
-        $object->item_name = $this->item_name;
-        $object->item_id   = $this->item_id;
-    }
-
-    function getModule()
-    {
-        return $this->module;
-    }
-
-    function getItemId()
-    {
-        return $this->item_id;
-    }
-
-    function getItemName()
-    {
-        return $this->item_name;
-    }
-
-    function setColumnName($column_name)
-    {
-        $this->_column_name = $column_name;
-    }
-
-    function setTable($table)
-    {
-        $this->_table = $table;
-    }
-
-    function isEqual($key)
-    {
-        if ($key->module    == $this->module    &&
-            $key->item_name == $this->item_name &&
-            $key->item_id   == $this->item_id
-            )
-            return TRUE;
-        else
-            return FALSE;
-    }
-  
-    function getMatches($all_columns=FALSE)
-    {
-        if (!isset($this->_table) || !isset($this->_column_name)) {
-            // error here
-            return NULL;
+        if ($local) {
+            PHPWS_Text::makeRelative($url);
         }
-  
-        $db = & new PHPWS_DB($this->_table);
-        $db->addWhere('module',   $this->module);
-        $db->addWhere('itemname', $this->item_name);
-        $db->addWhere('item_id',  $this->item_id);
-        if ($all_columns) {
-            return $db->select();
+        $this->url = str_replace('&amp;', '&', trim($url));
+        $this->url = preg_replace('/&?authkey=\w{32}/', '', $this->url);
+    }
+
+    /*
+    function getUrl($basic=FALSE)
+    {
+        if ($basic && $this->rewrite) {
+            $url = preg_replace('/(\w+)(\d+)(_\d+)/Ui', '', $this->url);
         } else {
-            $db->addColumn($this->_column_name);
-            return $db->select('col');
+            return $this->url;
         }
+    }
+    */
+
+    function isActive()
+    {
+        return (bool)$this->active;
+    }
+
+    function isRestricted()
+    {
+        return (bool)$this->restricted;
     }
 
     function isHomeKey()
@@ -128,23 +139,34 @@ class Key {
 
     function &getHomeKey()
     {
-        $key = & new Key('home', 'homepage', '1');
-        $key->setTitle(_('Home'));
-        $key->setUrl('index.php');
+        $key = & new Key(0);
         return $key;
     }
 
-
     function flag()
     {
-        $GLOBALS['PHPWS_Key'] = $this;
+        $GLOBALS['Current_Flag'] = &$this;
     }
 
-    function &getCurrent()
+    function drop($key_id)
     {
-        return $GLOBALS['PHPWS_Key'];
+        $db = & new PHPWS_DB('phpws_key');
+        $db->addWhere('id', (int)$key_id);
+        return $db->delete();
     }
 
+    function getCurrent()
+    {
+        if (!isset($GLOBALS['Current_Flag'])) {
+            if (isset($_REQUEST['module'])) {
+                return NULL;
+            } else {
+                return Key::getHomeKey();
+            }
+        } else {
+            return $GLOBALS['Current_Flag'];
+        }
+    }
 }
 
 ?>
