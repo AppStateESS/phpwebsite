@@ -15,12 +15,28 @@ PHPWS_Core::initModClass('comments', 'Comment_User.php');
 
 class Comments {
 
-    function &makeThread($key, $source_url)
+    function &getThread($key=NULL)
     {
+        if (empty($key)) {
+            $key = Key::getCurrent();
+        }
+
+        if (empty($key) || $key->isHomeKey()) {
+            return NULL;
+        }
+
         $thread = & new Comment_Thread;
-        $thread->setKey($key);
-        $thread->setSourceUrl($source_url);
-        $thread->buildSourceValues();
+
+        if (!Key::isKey($key)) {
+            if (is_numeric($key)) {
+                $key = & new Key((int)$key);
+            } else {
+                return NULL;
+            }
+        }
+
+        $thread->key_id = $key->id;
+        $thread->_key = $key;
         $thread->buildThread();
         return $thread;
     }
@@ -80,6 +96,11 @@ class Comments {
             break;
 
         case 'save_comment':
+            if (PHPWS_Core::isPosted()) {
+                PHPWS_Core::reroute($thread->_key->url);
+                exit();
+            }
+
             if (!isset($thread)) {
                 $title = _('Error');
                 $content[] = _('Missing thread information.');
@@ -93,10 +114,10 @@ class Comments {
                 $content[] = _('A problem occurred when trying to save your comment.');
                 $content[] = _('Please try again later.');
             } else {
-                Layout::metaRoute($thread->source_url);
+                Layout::metaRoute($thread->_key->url);
                 $title = _('Comment saved successfully!');
                 $content[] = _('You will be returned to the source page in a moment.');
-                $content[] = '<a href="' . $thread->source_url . '">' . 
+                $content[] = '<a href="' . $thread->_key->url . '">' . 
                     _('Otherwise you may return immediately by clicking here.') .
                     '</a>';
             }

@@ -14,13 +14,10 @@ define('NO_COMMENTS_FOUND', 'none');
 
 class Comment_Thread {
     var $id             = 0;
-    var $module         = NULL;
-    var $item_name      = NULL;
     var $item_id        = NULL;
-    var $source_url     = NULL;
+    var $key_id         = NULL;
     var $total_comments = 0;
     var $last_poster    = NULL;
-    var $_source_values = NULL;
     var $_key           = NULL;
     var $_comments      = NULL;
     var $_error         = NULL;
@@ -45,7 +42,8 @@ class Comment_Thread {
             PHPWS_Error::log($result);
             $this->_error = $result->getMessage();
         }
-        $this->buildSourceValues();
+
+        $this->loadKey();
     }
 
     function countComments($formatted=FALSE)
@@ -63,6 +61,11 @@ class Comment_Thread {
         }
     }
 
+    function loadKey()
+    {
+        $this->_key = & new Key($this->key_id);
+    }
+
     function getLastPoster()
     {
         return $this->last_poster;
@@ -77,9 +80,7 @@ class Comment_Thread {
     function buildThread()
     {
         $db = & new PHPWS_DB('comments_threads');
-        $db->addWhere('module', $this->module);
-        $db->addWhere('item_name', $this->item_name);
-        $db->addWhere('item_id', $this->item_id);
+        $db->addWhere('key_id', $this->key_id);
         $result = $db->loadObject($this);
 
         if (PEAR::isError($result)) {
@@ -114,33 +115,18 @@ class Comment_Thread {
         $this->source_url = stristr($link, 'index.php?');
     }
 
-    function buildSourceValues()
-    {
-        $url = parse_url($this->source_url);
-        parse_str($url['query'], $output);
-        $this->_source_values = $output;
-    }
-
-    function getSourceValues()
-    {
-        return $this->_source_values;
-    }
-
     function getSourceUrl($full=FALSE)
     {
         if ($full==TRUE) {
-            return '<a href="' . $this->source_url . '">' . _('Go Back') . '</a>';
+            return '<a href="' . $this->_key->url . '">' . _('Go back') . '</a>';
         } else {
-            return htmlentities($this->source_url, ENT_QUOTES);
+            return htmlentities($this->_key->url, ENT_QUOTES);
         }
     }
 
     function setKey($key)
     {
         $this->_key = $key;
-        $this->setModule($key->getModule());
-        $this->setItemName($key->getItemName());
-        $this->setItemId($key->getItemId());
     }
 
     function setModule($module)
@@ -250,16 +236,15 @@ class Comment_Thread {
         }
 
         $form->noAuthKey();
-        $form->addHidden($this->getSourceValues());
         $form->addSubmit(_('Go'));
         $form->setMethod('get');
+        $form->addHidden('key_id', $this->key_id);
 
         $page_tags = $form->getTemplate();
         $page_tags['NEW_POST_LINK'] = $this->postLink();
 
         $pager->setModule('comments');
         $pager->setTemplate('view.tpl');
-        $pager->setLink($this->source_url);
         $pager->addPageTags($page_tags);
         $pager->addRowTags('getTpl');
         $pager->setLimitList(array(10, 20, 50));
