@@ -297,6 +297,7 @@ class PHPWS_Boost {
                 $this->setStatus($title, BOOST_DONE);
                 $this->removeDirectories($mod, $content);
                 $this->unregisterModule($mod, $content);
+                $this->removeDependencies($mod);
                 $content[] = '<hr />';
                 $content[] = _('Finished uninstalling module!');
                 break;
@@ -319,6 +320,13 @@ class PHPWS_Boost {
 
         }
         return implode('<br />', $content);    
+    }
+
+    function removeDependencies($mod)
+    {
+        $db = & new PHPWS_DB('dependencies');
+        $db->addWhere('source_mod', $mod->title);
+        $db->delete();
     }
 
     function onUninstall($mod, &$uninstallCnt)
@@ -460,6 +468,7 @@ class PHPWS_Boost {
         }
 
         if (!is_dir($homeDir . '/images/mod/')) {
+            
             $content[] = _('Creating module image directory.');
             $this->addLog($mod->getTitle(), _('Created directory') . ' $homeDir/images/mod/');
             mkdir($homeDir . '/images/mod');
