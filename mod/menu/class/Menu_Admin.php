@@ -11,7 +11,7 @@ class Menu_Admin {
 
     function main()
     {
-        $title = $content = NULL;
+        $title = $content = $message = NULL;
 
         PHPWS_Core::initModClass('menu', 'Menu_Item.php');
 
@@ -38,6 +38,11 @@ class Menu_Admin {
         case 'new':
             $title = _('Create New Menu');
             $content = Menu_Admin::editMenu($menu);
+            break;
+
+        case 'delete_menu':
+            $menu->kill();
+            Menu_Admin::sendMessage(_('Menu deleted.'), 'list');
             break;
 
         case 'enable_admin_mode':
@@ -100,7 +105,7 @@ class Menu_Admin {
                 $parent_id = $_REQUEST['parent'];
             }
 
-            $result = Menu_Admin::addLink($menu, $parent_id);
+            $result = Menu_Admin::addLink($menu, $_REQUEST['key_id'], $parent_id);
             if ($result) {
                 PHPWS_Core::goBack();
             } else {
@@ -126,17 +131,7 @@ class Menu_Admin {
                 $title = _('Create New Menu');
                 $content = Menu_Admin::editMenu($menu);
             } else {
-                $title = _('Menu saved!');
-                if ($updating) {
-                    $content = _('Returning you to menu list.');
-                    $tab = 'list';
-                } else {
-                    $content = _('Returning you to menu creation.');
-                    $tab = 'new';
-                }
-                Layout::metaRoute('index.php?module=menu&amp;tab='
-                                  . $tab
-                                  . '&amp;authkey=' . Current_User::getAuthKey());
+                Menu_Admin::sendMessage(_('Menu saved'), 'list');
             }
             break;
 
@@ -149,8 +144,9 @@ class Menu_Admin {
 
         } // end command switch
 
-        $tpl['TITLE'] = $title;
+        $tpl['TITLE']   = $title;
         $tpl['CONTENT'] = $content;
+        $tpl['MESSAGE'] = $message;
 
         $final_content = PHPWS_Template::process($tpl, 'menu', 'main.tpl');
         $panel->setContent($final_content);
@@ -158,16 +154,26 @@ class Menu_Admin {
     }
 
 
-    function addLink(&$menu, $parent=0)
+    function sendMessage($message, $command)
     {
-        if (empty($_REQUEST['link_title']) || empty($_REQUEST['url'])) {
-            return FALSE;
+        $_SESSION['Menu_message'] = $message;
+        PHPWS_Core::reroute(sprintf('index.php?module=menu&command=%s&authkey=%s', $command, Current_User::getAuthKey()));
+        exit();
+    }
+
+    function getMessage()
+    {
+        $message = NULL;
+        if (isset($_SESSION['Menu_message'])) {
+            $message = $_SESSION['Menu_message'];
         }
+        unset($_SESSION['Menu_message']);
+        return $message;
+    }
 
-        $title = urldecode($_REQUEST['link_title']);
-        $url = urldecode($_REQUEST['url']);
-
-        $result = $menu->addLink($title, $url, $parent);
+    function addLink(&$menu, $key_id, $parent=0)
+    {
+        $result = $menu->addLink($key_id, $parent);
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             return FALSE;
@@ -236,10 +242,6 @@ class Menu_Admin {
         return PHPWS_Template::process($template, 'menu', 'menu_form.tpl');
     }
 
-    function editLinks(&$menu)
-    {
-
-    }
 
     function editLinkTitle($link_id, $title)
     {
@@ -275,8 +277,6 @@ class Menu_Admin {
 
     function settings()
     {
-
-        
         if (!isset($_SESSION['Menu_Admin_Mode'])) {
             $vars['command'] = 'enable_admin_mode';
             $tpl['ADMIN_LINK'] = PHPWS_Text::secureLink(_('Enable Administration Mode'),
