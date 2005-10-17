@@ -433,6 +433,10 @@ class PHPWS_Module {
         $dep_list = PHPWS_Text::xml2php($file, 1);
         $module_list = PHPWS_Text::tagXML($dep_list);
 
+        if (!isset($module_list['MODULE'])) {
+            return NULL;
+        }
+
         return $module_list;
     }
 }
