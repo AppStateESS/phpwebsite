@@ -15,10 +15,7 @@ CREATE TABLE comments_items (
 
 CREATE TABLE comments_threads (
   id int NOT NULL default '0',
-  module varchar(40) NOT NULL default '',
-  item_name varchar(40) NOT NULL default '',
-  item_id int NOT NULL default '0',
-  source_url varchar(255) NOT NULL default '',
+  key_id int NOT NULL default '0',
   total_comments int NOT NULL default '0',
   last_poster varchar(40) default NULL,
   PRIMARY KEY  (id)
