@@ -12,8 +12,9 @@ PHPWS_Core::initModClass('blog', 'Blog_Form.php');
 
 class Blog_Admin {
 
-    function main(){
-        if (!Current_User::authorized('blog')){
+    function main()
+    {
+        if (!Current_User::authorized('blog')) {
             Current_User::disallow(_('User attempted access to Blog administration.'));
             return;
         }
@@ -37,8 +38,8 @@ class Blog_Admin {
 
         switch ($command){
         case 'edit':
-            $panel->setCurrentTab('list');;
-            if (!Current_User::authorized('blog', 'edit_blog', $_REQUEST['blog_id'], 'entry')){
+            $panel->setCurrentTab('list');
+            if (!Current_User::authorized('blog', 'edit_blog', $_REQUEST['blog_id'], 'entry')) {
                 Current_User::disallow(_('User tried to edit a blog.'));
                 return;
             }
@@ -134,7 +135,7 @@ class Blog_Admin {
             break;
 
         case 'edit_unapproved':
-            if (!Current_User::authorized('blog', 'edit_blog')){
+            if (!Current_User::authorized('blog', 'edit_blog')) {
                 Current_User::disallow(_('Tried to edit an unapproved item.'));
                 return;
             }
@@ -261,7 +262,8 @@ class Blog_Admin {
     }
 
 
-    function entry_list(){
+    function entry_list()
+    {
         PHPWS_Core::initCoreClass('DBPager.php');
 
         $pageTags['TITLE']  = _('Title');
@@ -272,7 +274,6 @@ class Blog_Admin {
         $pager = & new DBPager('blog_entries', 'Blog');
         $pager->setModule('blog');
         $pager->setTemplate('list.tpl');
-        $pager->setLink('index.php?module=blog&amp;action=admin&amp;authkey=' . Current_User::getAuthKey());
         $pager->addToggle('class="toggle1"');
         $pager->addToggle('class="toggle2"');
         $pager->addRowTags('getPagerTags');
@@ -314,10 +315,12 @@ class Blog_Admin {
         }
         foreach ($version_list as $backup_id => $backup){
             $count++;
-            if ($count%2)
+            if ($count%2) {
                 $template['TOGGLE'] = 'class="toggle1"';
-            else
+            }
+            else {
                 $template['TOGGLE'] = 'class="toggle2"';
+            }
 
             $blog = & new Blog;
             $backup->loadObject($blog);
@@ -343,12 +346,14 @@ class Blog_Admin {
         return PHPWS_Template::processTemplate($tpl, 'blog', 'version.tpl');
     }
   
-    function restoreBlog($version_id) {
+    function restoreBlog($version_id)
+    {
         $version = & new Version('blog_entries', $version_id);
         $version->restore();
     }
 
-    function removePrevBlog($version_id){
+    function removePrevBlog($version_id)
+    {
         $version = & new Version('blog_entries', $version_id);
         $version->kill();
     }
