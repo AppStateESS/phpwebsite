@@ -57,3 +57,16 @@ CREATE TABLE mod_settings (
  small_char varchar(100) NULL,
  large_char text
 );
+
+CREATE TABLE phpws_key (
+    id INT NOT NULL,
+    module varchar(40) NOT NULL,
+    item_name char(40) NOT NULL,
+    item_id INT NOT NULL,
+    title varchar(255),
+    url varchar(255),
+    active smallint NOT NULL default '1',
+    restricted smallint NOT NULL default '0',
+    PRIMARY KEY (id)
+);
+
