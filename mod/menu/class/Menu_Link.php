@@ -65,6 +65,7 @@ class Menu_Link {
         }
 
         foreach ($result as $link) {
+            $link->loadKey();
             $link->loadChildren();
             $this->_children[$link->id] = $link;
         }
@@ -272,7 +273,6 @@ class Menu_Link {
 
     function moveUp()
     {
-
         if ($this->link_order == 1) {
             $this->link_order = $this->_getOrder();
             $this->save();
@@ -287,6 +287,7 @@ class Menu_Link {
         $db->addWhere('parent', $this->parent);
         $db->addWhere('link_order', $this->link_order - 1);
         $db->loadObject($above);
+        $above->loadKey();
 
         $above->link_order = $this->link_order;
         $this->link_order--;
@@ -296,6 +297,7 @@ class Menu_Link {
             return $result;
         }
 
+        $this->save();
         return $this->save();
     }
 
@@ -316,6 +318,7 @@ class Menu_Link {
         $db->addWhere('parent', $this->parent);
         $db->addWhere('link_order', $this->link_order + 1);
         $db->loadObject($below);
+        $below->loadKey();
 
         $below->link_order = $this->link_order;
         $this->link_order++;
