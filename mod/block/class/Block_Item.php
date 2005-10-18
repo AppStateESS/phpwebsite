@@ -116,21 +116,15 @@ class Block_Item {
     function view($pin_mode=FALSE, $admin_icon=TRUE)
     {
         if (!empty($this->_pin_key) && $pin_mode) {
-            $link['action']   = 'pin';
+            $link['action']   = 'lock';
             $link['block_id'] = $this->id;
-            $link['mod']   = $this->_pin_key->getModule();
-            $link['item']  = $this->_pin_key->getItemId();
-            $link['itname'] = $this->_pin_key->getItemName();
+            $link['key_id'] = $this->_pin_key->id;
             $img = '<img src="./images/mod/block/pin.png" />';
             $opt = PHPWS_Text::secureLink($img, 'block', $link);
         } elseif (!empty($this->_pin_key) && Current_User::allow('block') && $admin_icon) {
             $js_var['ADDRESS'] = 'index.php?module=block&amp;action=remove'
                 . '&amp;block_id=' . $this->id
-                . '&amp;mod=' . $this->_pin_key->getModule()
-                . '&amp;item=' . $this->_pin_key->getItemId()
-                . '&amp;itname=' . $this->_pin_key->getItemName()
-                . '&amp;authkey=' . Current_User::getAuthKey();
-        
+                . '&amp;key_id=' . $this->_pin_key->id;        
             $js_var['QUESTION'] = _('Are you sure you want to remove this block from this page?');
             $js_var['LINK'] = '<img src="./images/mod/block/remove.png" />';
         
@@ -148,6 +142,15 @@ class Block_Item {
         return PHPWS_Template::process($template, 'block', 'sample.tpl');
     }
 
+    function isPinned()
+    {
+        if (!isset($_SESSION['Pinned_Blocks'])) {
+            return FALSE;
+        }
+
+        return isset($_SESSION['Pinned_Blocks'][$this->id]);
+    }
+
     function getTpl()
     {
         $vars['block_id'] = $this->getId();
@@ -155,8 +158,13 @@ class Block_Item {
         $vars['action'] = 'edit';
         $links[] = PHPWS_Text::secureLink(_('Edit'), 'block', $vars);
 
-        $vars['action'] = 'clip';
-        $links[] = PHPWS_Text::secureLink(_('Clip'), 'block', $vars);
+        if ($this->isPinned()) {
+            $vars['action'] = 'unpin';
+            $links[] = PHPWS_Text::secureLink(_('Unpin'), 'block', $vars);
+        } else {
+            $vars['action'] = 'pin';
+            $links[] = PHPWS_Text::secureLink(_('Pin'), 'block', $vars);
+        }
 
         $vars['action'] = 'copy';
         $links[] = PHPWS_Text::secureLink(_('Copy'), 'block', $vars);

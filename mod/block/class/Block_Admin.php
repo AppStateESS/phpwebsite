@@ -48,6 +48,9 @@ class Block_Admin {
 
     function route($action)
     {
+        $title = $content = NULL;
+        $message = Block_Admin::getMessage();
+
         if (isset($_REQUEST['block_id'])) {
             $block = & new Block_Item($_REQUEST['block_id']);
         } else {
@@ -62,9 +65,7 @@ class Block_Admin {
 
         case 'delete':
             $block->kill();
-            $title = _('Block list');
-            $content = Block_Admin::blockList();
-            $message = _('Block deleted.');
+            Block_Admin::sendMessage(_('Block deleted.'), 'list');
             break;
 
         case 'edit':
@@ -72,11 +73,14 @@ class Block_Admin {
             $content = Block_Admin::edit($block);
             break;
 
-        case 'clip':
-            Block_Admin::clipBlock($block);
-            $title = _('Block list');
-            $content = Block_Admin::blockList();
-            $message = _('Block clipped.');
+        case 'pin':
+            Block_Admin::pinBlock($block);
+            Block_Admin::sendMessage(_('Block pinned'), 'list');
+            break;
+
+        case 'unpin':
+            unset($_SESSION['Pinned_Blocks']);
+            Block_Admin::sendMessage(_('Block unpinned'), 'list');
             break;
 
         case 'remove':
@@ -94,14 +98,14 @@ class Block_Admin {
                 Block_Admin::postBlock($block);
                 $result = $block->save();
             }
-
-            $message = _('Block saved.');
-            $title = _('Block list');
-            $content = Block_Admin::blockList();
+            Block_Admin::sendMessage(_('Block saved'), 'list');
             break;
 
-        case 'pin':
-            Block_Admin::pinBlock();
+        case 'lock':
+            $result = Block_Admin::lockBlock();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+            }
             PHPWS_Core::goBack();
             break;
 
@@ -120,6 +124,23 @@ class Block_Admin {
         return PHPWS_Template::process($template, 'block', 'admin.tpl');
     }
 
+    function sendMessage($message, $command)
+    {
+        $_SESSION['block_message'] = $message;
+        PHPWS_Core::reroute(PHPWS_Text::linkAddress('block', array('action'=>$command), TRUE));
+    }
+
+    function getMessage()
+    {
+        if (isset($_SESSION['block_message'])) {
+            $message = $_SESSION['block_message'];
+            unset($_SESSION['block_message']);
+            return $message;
+        }
+
+        return NULL;
+    }
+
     function removeBlock()
     {
         if (!isset($_GET['mod']) ||
@@ -131,9 +152,7 @@ class Block_Admin {
 
         $db = & new PHPWS_DB('block_pinned');
         $db->addWhere('block_id', $_GET['block_id']);
-        $db->addWhere('module', $_GET['mod']);
-        $db->addWhere('item_id', $_GET['item']);
-        $db->addWhere('itemname', $_GET['itname']);
+        $db->addWhere('key_id', $_GET['block_id']);
         $result = $db->delete();
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
@@ -159,17 +178,12 @@ class Block_Admin {
             $form->addSubmit('submit', _('Update Current Block'));
         }
 
-        if (Editor::willWork()){
-            $editor = & new Editor('block_content', $block->getContent(FALSE));
-            $block_content = $editor->get();
-            $form->addTplTag('BLOCK_CONTENT', $block_content);
-            $form->addTplTag('BLOCK_CONTENT_LABEL', PHPWS_Form::makeLabel('block_content',_('Content')));
-        } else {
-            $form->addTextArea('block_content', $block->getContent());
-            $form->setRows('block_content', '10');
-            $form->setWidth('block_content', '80%');
-            $form->setLabel('block_content', _('Entry'));
-        }
+        $form->addTextArea('block_content', $block->getContent());
+        $form->setRows('block_content', '10');
+        $form->setWidth('block_content', '80%');
+        $form->setLabel('block_content', _('Entry'));
+        $form->useEditor('block_content');
+
 
         $template = $form->getTemplate();
 
@@ -192,16 +206,10 @@ class Block_Admin {
         $pageTags['TITLE']   = _('Title');
         $pageTags['CONTENT'] = _('Content');
         $pageTags['ACTION']  = _('Action');
-
-        $link = 'index.php?module=block&amp;action=list&amp;authkey='
-            . Current_User::getAuthKey();
-
         $pager = & new DBPager('block', 'Block_Item');
         $pager->setModule('block');
         $pager->setTemplate('list.tpl');
-        $pager->setLink($link);
-        $pager->addToggle('class="toggle1"');
-        $pager->addToggle('class="toggle2"');
+        $pager->addToggle('class="bgcolor1"');
         $pager->addPageTags($pageTags);
         $pager->addRowTags('getTpl');
     
@@ -210,32 +218,33 @@ class Block_Admin {
         return $content;
     }
 
-    function clipBlock(&$block)
+  
+    function pinBlock(&$block)
     {
-        $_SESSION['Clipped_Blocks'][$block->getID()] = $block;
+        $_SESSION['Pinned_Blocks'][$block->getID()] = $block;
     }
   
-    function pinBlock()
+
+    function lockBlock()
     {
         $block_id = (int)$_GET['block_id'];
+        $key_id = (int)$_GET['key_id'];
 
-        unset($_SESSION['Clipped_Blocks'][$block_id]);
+        unset($_SESSION['Pinned_Blocks'][$block_id]);
 
         $values['block_id'] = $block_id;
-        $values['module']   = $_GET['mod'];
-        $values['item_id']  = $_GET['item'];
-        $values['itemname'] = $_GET['itname'];
+        $values['key_id']   = $key_id;
 
         $db = & new PHPWS_DB('block_pinned');
         $db->addWhere($values);
         $result = $db->delete();
         $db->addValue($values);
-        $result = $db->insert();
+        return $db->insert();
     }
   
     function copyBlock(&$block)
     {
-        Clipboard::copy($block->getTitle(), $block->getTag());
+        Pinboard::copy($block->getTitle(), $block->getTag());
     }
 }
 ?>

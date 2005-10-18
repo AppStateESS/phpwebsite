@@ -14,24 +14,25 @@ class Block {
     function show()
     {
         $key = Key::getCurrent();
+
         if (empty($key)) {
             return;
         }
         Block::showBlocks($key);
 
-        if (isset($_SESSION['Clipped_Blocks'])) {
-            Block::viewClippedBlocks($key);
+        if (isset($_SESSION['Pinned_Blocks'])) {
+            Block::viewPinnedBlocks($key);
         }
   
     }
 
-    function viewClippedBlocks($key)
+    function viewPinnedBlocks($key)
     {
-        if (!isset($_SESSION['Clipped_Blocks'])) {
+        if (!isset($_SESSION['Pinned_Blocks'])) {
             return FALSE;
         }
 
-        $block_list = &$_SESSION['Clipped_Blocks'];
+        $block_list = &$_SESSION['Pinned_Blocks'];
         if (empty($block_list)) {
             return NULL;
         }
@@ -55,12 +56,18 @@ class Block {
 
     function showBlocks($key)
     {
-        $key->setTable('block_pinned');
-        $key->setColumnName('block_id');
-        $result = $key->getMatches();
+        $db = & new PHPWS_DB('block_pinned');
+        $db->addColumn ('block_id');
+        $db->addWhere('key_id', $key->id);
+        $result = $db->select('col');
+
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            return NULL;
+        }
 
         if (empty($result)) {
-            return;
+            return NULL;
         }
 
         foreach ($result as $block_id) {
