@@ -26,7 +26,7 @@ class Key {
   
     function Key($id=NULL)
     {
-        if ($id == 0) {
+        if ($id == 0 || $id == '0') {
             $this->module = $this->item_name = 'home';
             $this->item_id = 0;
             $this->setTitle(_('Home'));
@@ -68,7 +68,7 @@ class Key {
             ) {
             return false;
         }
-
+        
         if (empty($this->item_name)) {
             $this->item_name = $this->module;
         }
@@ -111,17 +111,6 @@ class Key {
         $this->url = preg_replace('/&?authkey=\w{32}/', '', $this->url);
     }
 
-    /*
-    function getUrl($basic=FALSE)
-    {
-        if ($basic && $this->rewrite) {
-            $url = preg_replace('/(\w+)(\d+)(_\d+)/Ui', '', $this->url);
-        } else {
-            return $this->url;
-        }
-    }
-    */
-
     function isActive()
     {
         return (bool)$this->active;
@@ -150,8 +139,18 @@ class Key {
 
     function drop($key_id)
     {
+        $key = & new Key($key_id);
+        return $key->delete();
+    }
+
+    function delete()
+    {
         $db = & new PHPWS_DB('phpws_key');
-        $db->addWhere('id', (int)$key_id);
+        $db->addWhere('id', (int)$this->id);
+        $db->addWhere('module', $this->module, '=', 'AND', 1);
+        $db->addWhere('item_name', $this->item_name, '=', 'AND', 1);
+        $db->addWhere('item_id', $this->item_id, '=', 'AND', 1);
+        $db->setGroupConj(1, 'OR');
         return $db->delete();
     }
 
