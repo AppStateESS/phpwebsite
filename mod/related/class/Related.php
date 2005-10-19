@@ -55,11 +55,6 @@ class Related {
         $this->id = (int)$id;
     }
 
-    function getId()
-    {
-        return $this->id;
-    }
-
     function setKey($key)
     {
         if (Key::isKey($key)) {
@@ -78,10 +73,6 @@ class Related {
 
     function setTitle($title){
         $this->title = preg_replace('/[^' . ALLOWED_TITLE_CHARS . ']/', '', strip_tags($title));
-    }
-
-    function getTitle(){
-        return $this->title;
     }
 
     function getUrl($clickable=FALSE)
@@ -107,10 +98,6 @@ class Related {
         $this->friends = $friends;
     }
 
-    function getFriends(){
-        return $this->friends;
-    }
-
     function addFriend($friend){
         $this->friends[] = $friend;
     }
@@ -125,8 +112,9 @@ class Related {
 
 
     function loadFriends(){
-        if (!isset($this->id))
+        if (!isset($this->id)) {
             return NULL;
+        }
 
         $db = & new PHPWS_DB('related_friends');
         $db->addWhere('source_id', $this->id);
@@ -159,9 +147,19 @@ class Related {
         return FALSE;
     }
 
-    function hasFriends(){
-        return !empty($this->friends);
+    function listFriends()
+    {
+        if (empty($this->friends)) {
+            return NULL;
+        }
+
+        foreach ($this->friends as $friend) {
+            $list[] = $friend->getURL(TRUE);
+        }
+
+        return $list;
     }
+
 
     function moveFriendUp($position){
         if (empty($this->friends))

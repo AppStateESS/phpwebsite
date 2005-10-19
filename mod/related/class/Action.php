@@ -40,10 +40,10 @@ class Related_Action {
         $template['MODULE_LBL'] = _('Module');
         $template['TITLE'] = $related->getUrl(TRUE);
 
-        $id = $related->getId();
+        $id = $related->id;
 
         $js['QUESTION'] = _('What do you want the title to be?');
-        $js['TITLE']    = $related->getTitle();
+        $js['TITLE']    = $related->title;
         $js['LINK']     = '<img src="images/mod/related/edit.png"/>';
         $js['ALLOWED']  = ALLOWED_TITLE_CHARS;
 
@@ -51,16 +51,16 @@ class Related_Action {
 
         $template['EDIT'] = $edit;
 
-        if ($related->key_id != $current->key_id && !$related->isFriend($current)){
+        if ($related->key_id != $current->key_id && !$related->isFriend($current)) {
             $template['ADD_LINK'] = '<a href="index.php?module=related&amp;action=add">'
                 . _('Add item') . '</a>';
 
 
-            if ($current->hasFriends()){
-                $extra_friends = Related_Action::listFriends($current);
+            if (!empty($current->friends)) {
+                $extra_friends = $current->listFriends();
                 $template['EXTRA_INSTRUCTIONS'] = _('This item is related to the following:');
         
-                if (is_array($extra_friends)){
+                if (is_array($extra_friends)) {
                     foreach ($extra_friends as $key=>$friend_item){
                         $template['extra_list'][] = array('EXTRA_NAME'=>$friend_item);
                     }
@@ -76,13 +76,13 @@ class Related_Action {
         $module = & new PHPWS_Module($related->_key->module);
         $template['MODULE'] = $module->getProperName(TRUE);
 
-        if ($related->hasFriends()){
+        if (!empty($related->friends)) {
             $template['SAVE_LINK'] = '<a href="index.php?module=related&amp;action=save">'
                 . _('Save') . '</a>';
 
-            $friends = Related_Action::listFriends($related);
+            $friends = $related->listFriends();
 
-            if (is_array($friends)){
+            if (is_array($friends)) {
                 foreach ($friends as $key=>$friend_item){
                     $up = '<a href="index.php?module=related&amp;action=up&amp;pos=' . $key . '"><img src="images/mod/related/up.png"/></a>';
                     $down = '<a href="index.php?module=related&amp;action=down&amp;pos=' . $key . '"><img src="images/mod/related/down.png"/></a>';
@@ -105,7 +105,7 @@ class Related_Action {
 
     function view(&$related)
     {
-        $friends = Related_Action::listFriends($related);
+        $friends = $related->listFriends();
 
         if (!is_array($friends)) {
             return $friends;
@@ -118,7 +118,7 @@ class Related_Action {
 
         if (Current_User::allow('related')) {
             $linkvars = array('action' => 'edit',
-                              'id'     => $related->getId()
+                              'id'     => $related->id
                               );
             $template['EDIT_LINK'] = PHPWS_Text::moduleLink(_('Edit'), 'related', $linkvars);
         }
@@ -166,17 +166,6 @@ class Related_Action {
         }
     }
 
-    function listFriends($related)
-    {
-        $friends = $related->getFriends();
-        if (empty($friends))
-            return NULL;
-
-        foreach ($friends as $friend)
-            $list[] = $friend->getURL(TRUE);
-
-        return $list;
-    }
 
     function start()
     {
@@ -209,10 +198,10 @@ class Related_Action {
 
         $related->addFriend($friend);
 
-        if ($friend->hasFriends()){
-            $friendlist = $friend->getFriends();
-            foreach ($friendlist as $extra_friend)
+        if (!empty($friend->friends)) {
+            foreach ($friend->friends as $extra_friend) {
                 $related->addFriend($extra_friend);
+            }
         }
 
         PHPWS_Core::reroute($friend->getUrl());
@@ -220,11 +209,13 @@ class Related_Action {
 
     function up()
     {
-        if (!isset($_SESSION['Related_Bank']))
+        if (!isset($_SESSION['Related_Bank'])) {
             return _('Bank not created.');
+        }
 
-        if (!isset($_REQUEST['pos']))
+        if (!isset($_REQUEST['pos'])) {
             return _('Missing position.');
+        }
 
         $_SESSION['Related_Bank']->moveFriendUp($_REQUEST['pos']);
         PHPWS_Core::reroute($_SESSION['Current_Friend']->getUrl());
@@ -232,11 +223,13 @@ class Related_Action {
 
     function down()
     {
-        if (!isset($_SESSION['Related_Bank']))
+        if (!isset($_SESSION['Related_Bank'])) {
             return _('Bank not created.');
+        }
 
-        if (!isset($_REQUEST['pos']))
+        if (!isset($_REQUEST['pos'])) {
             return _('Missing position.');
+        }
 
         $_SESSION['Related_Bank']->moveFriendDown($_REQUEST['pos']);
         PHPWS_Core::reroute($_SESSION['Current_Friend']->getUrl());
@@ -244,11 +237,13 @@ class Related_Action {
 
     function remove()
     {
-        if (!isset($_SESSION['Related_Bank']))
+        if (!isset($_SESSION['Related_Bank'])) {
             return _('Bank not created.');
+        }
 
-        if (!isset($_REQUEST['pos']))
+        if (!isset($_REQUEST['pos'])) {
             return _('Missing position.');
+        }
 
         $_SESSION['Related_Bank']->removeFriend($_REQUEST['pos']);
         PHPWS_Core::reroute($_SESSION['Current_Friend']->getUrl());
@@ -256,12 +251,13 @@ class Related_Action {
 
     function save()
     {
-        if (!isset($_SESSION['Related_Bank']))
+        if (!isset($_SESSION['Related_Bank'])) {
             return _('Bank not created.');
+        }
 
         $result = $_SESSION['Related_Bank']->save();
 
-        if (PEAR::isError($result)){
+        if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             Layout::add(_('The Related module encountered a database error.'));
             return;
@@ -279,7 +275,7 @@ class Related_Action {
         $form = & new PHPWS_Form;
         $form->add('module', 'hidden', 'related');
         $form->add('action', 'hidden', 'postTitle');
-        $form->add('title', 'text', $related->getTitle());
+        $form->add('title', 'text', $related->title);
         $form->setSize('title', '30');
         $form->add('submit', 'submit', 'Update');
 
@@ -293,7 +289,7 @@ class Related_Action {
 
     function postTitle()
     {
-        if ($_REQUEST['new_title'] != 'null'){
+        if ($_REQUEST['new_title'] != 'null') {
             $related = & $_SESSION['Related_Bank'];
             $related->setTitle($_REQUEST['new_title']);
         }
