@@ -982,8 +982,10 @@ class PHPWS_Form {
             }
         }
 
+
         if (class_exists('Current_User') &&
             Current_User::isLogged() && $this->use_auth_key) {
+            unset($this->_elements['authkey']);
             $this->addHidden('authkey', Current_User::getAuthKey());
         }
 
