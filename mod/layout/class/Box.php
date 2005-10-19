@@ -18,7 +18,8 @@ class Layout_Box {
     var $box_order   = NULL;
     var $active      = NULL;
 
-    function Layout_Box($id=NULL){
+    function Layout_Box($id=NULL)
+    {
         if (!isset($id))
             return;
 
@@ -28,60 +29,74 @@ class Layout_Box {
             PHPWS_Error::log($result);
     }
 
-    function init(){
+    function init()
+    {
         $DB = new PHPWS_DB('layout_box');
         return $DB->loadObject($this);
     }
 
-    function setID($id){
+    function setID($id)
+    {
         $this->id = (int)$id;
     }
 
-    function getID(){
+    function getID()
+    {
         return $this->id;
     }
 
-    function setTheme($theme){
+    function setTheme($theme)
+    {
         $this->theme = $theme;
     }
 
-    function setContentVar($content_var){
+    function setContentVar($content_var)
+    {
         $this->content_var = $content_var;
     }
 
-    function setModule($module){
+    function setModule($module)
+    {
         $this->module = $module;
     }
 
-    function setThemeVar($theme_var){
+    function setThemeVar($theme_var)
+    {
         $this->theme_var = $theme_var;
     }
 
-    function getTheme(){
+    function getTheme()
+    {
         return $this->theme;
     }
 
-    function getContentVar(){
+    function getContentVar()
+    {
         return $this->content_var;
     }
 
-    function getModule(){
+    function getModule()
+    {
         return $this->module;
     }
 
-    function getThemeVar(){
+    function getThemeVar()
+    {
         return $this->theme_var;
     }
 
-    function getBoxOrder(){
+    function getBoxOrder()
+    {
         return $this->box_order;
     }
 
-    function setBoxOrder($order){
+    function setBoxOrder($order)
+    {
         $this->box_order = $order;
     }
 
-    function save(){
+    function save()
+    {
         $db = new PHPWS_DB('layout_box');
         $db->addWhere('module', $this->module);
         $db->addWhere('content_var', $this->content_var);
@@ -100,71 +115,97 @@ class Layout_Box {
             $this->box_order = $this->nextBox();
         }
 
-        if (!isset($this->active))
+        if (!isset($this->active)) {
             $this->active = 1;
+        }
 
         return $db->saveObject($this);
     }
 
-    function moveUp(){
-        $db = & new PHPWS_DB('layout_box');
-        $db->addWhere('id', $this->getID(), '!=');
-        $db->addWhere('theme', $this->getTheme());
-        $db->addWhere('theme_var', $this->getThemeVar());
-        $db->setIndexBy('box_order');
-        $boxes = $db->getObjects('Layout_Box');
+    function move($dest)
+    {
+        if ($dest != 'move_box_up'   &&
+            $dest != 'move_box_down' &&
+            $dest != 'move_box_top'  &&
+            $dest != 'move_box_bottom') {
 
-        if (!isset($boxes)) {
+            $themeVar = $this->theme_var;
+            $this->setThemeVar($_POST['box_dest']);
+            $this->setBoxOrder(NULL);
+            $this->save();
+            $this->reorderBoxes($this->theme, $themeVar);
             return;
         }
 
-        $db->addColumn('box_order', NULL, 'min');
-        $max = $db->select('one');
-        $oldOrder = $this->getBoxOrder();
-        $newOrder = $oldOrder - 1;
 
-        if ($oldOrder == 1){
-            $this->setBoxOrder($max + 1);
-            $this->save();
-        }
-        else {
-            $this->setBoxOrder($newOrder);
-            $this->save();
-            $boxes[$newOrder]->setBoxOrder($oldOrder);
-            $boxes[$newOrder]->save();
-        }
-    }
-
-    function moveDown(){
         $db = & new PHPWS_DB('layout_box');
-        $db->addWhere('id', $this->getID(), '!=');
-        $db->addWhere('theme', $this->getTheme());
-        $db->addWhere('theme_var', $this->getThemeVar());
+        $db->addWhere('id', $this->id, '!=');
+        $db->addWhere('theme', $this->theme);
+        $db->addWhere('theme_var', $this->theme_var);
+        $db->addOrder('box_order');
         $db->setIndexBy('box_order');
         $boxes = $db->getObjects('Layout_Box');
 
-        if (!isset($boxes))
-            return;
-
-        $db->addColumn('box_order');
-        $max = $db->select('max');
-        $oldOrder = $this->getBoxOrder();
-        $newOrder = $oldOrder + 1;
-
-        if ($oldOrder == ($max + 1)){
-            $this->setBoxOrder(0);
-            $this->save();
+        if (empty($boxes)) {
+            return NULL;
         }
-        else {
-            $this->setBoxOrder($newOrder);
-            $this->save();
-            $boxes[$newOrder]->setBoxOrder($oldOrder);
-            $boxes[$newOrder]->save();
+
+        if (PEAR::isError($boxes)) {
+            PHPWS_Error::log($boxes);
+            return NULL;
         }
+
+        switch ($dest) {
+        case 'move_box_up':
+            if ($this->box_order == 1) {
+                $this->move('bottom');
+                return;
+            } else {
+                $this->box_order--;
+                $this->save();
+                $boxes[$this->box_order]->box_order++;
+                $boxes[$this->box_order]->save();
+                return;
+            }
+            break;
+            
+        case 'move_box_down':
+            if ($this->box_order == (count($boxes) + 1)) {
+                $this->move('top');
+                return;
+            } else {
+                $this->box_order++;
+                $this->save();
+                $boxes[$this->box_order]->box_order--;
+                $boxes[$this->box_order]->save();
+                return;
+            }
+            break;
+
+        case 'move_box_top':
+            $this->box_order = 1;
+            $this->save();
+            $count = 2;
+            break;
+
+        case 'mobe_box_bottom':
+            $this->box_order = count($boxes) + 1;
+            $this->save();
+            $count = 1;
+            break;
+        }
+        
+        foreach ($boxes as $box) {
+            $box->box_order = $count;
+            $box->save();
+            $count++;
+        }
+
     }
 
 
-    function reorderBoxes($theme, $themeVar){
+    function reorderBoxes($theme, $themeVar)
+    {
         $db = & new PHPWS_DB('layout_box');
         $db->addWhere('theme', $theme);
         $db->addWhere('theme_var', $themeVar);
@@ -182,10 +223,11 @@ class Layout_Box {
         }
     }
 
-    function nextBox(){
+    function nextBox()
+    {
         $DB = new PHPWS_DB('layout_box');
-        $DB->addWhere('theme', $this->getTheme());
-        $DB->addWhere('theme_var', $this->getThemeVar());
+        $DB->addWhere('theme', $this->theme);
+        $DB->addWhere('theme_var', $this->theme_var);
         $DB->addColumn('box_order', NULL, 'max');
         $max = $DB->select('one');
         if (isset($max)) {
@@ -195,7 +237,8 @@ class Layout_Box {
         }
     }
 
-    function kill(){
+    function kill()
+    {
         $theme_var = $this->getThemeVar();
         $theme = $this->getTheme();
 
