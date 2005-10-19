@@ -5,7 +5,7 @@ define('MENU_MISSING_INFO', 1);
 class Menu_Link {
     var $id         = 0;
     var $menu_id    = 0;
-    var $key_id     = 0;
+    var $key_id     = -1;
     var $title      = NULL;
     var $parent     = 0;
     var $active     = 1;
@@ -135,7 +135,7 @@ class Menu_Link {
 
     function save()
     {
-        if (empty($this->menu_id) || empty($this->title) || empty($this->_key->url)) {
+        if (empty($this->menu_id) || empty($this->title) || ($this->key_id <= 0) ) {
             return PHPWS_Error::get(MENU_MISSING_INFO, 'menu', 'Menu_Link::save');
         }
 
@@ -154,7 +154,7 @@ class Menu_Link {
 
         $current_key = Key::getCurrent();
 
-        if ($current_page < 1) {
+        if (!empty($current_key) && $current_page < 1) {
             $child_current = $this->childIsCurrent($current_key);
             if ($child_current) {
                 $current_parent[] = $this->id;
@@ -287,7 +287,6 @@ class Menu_Link {
         $db->addWhere('parent', $this->parent);
         $db->addWhere('link_order', $this->link_order - 1);
         $db->loadObject($above);
-        $above->loadKey();
 
         $above->link_order = $this->link_order;
         $this->link_order--;
@@ -318,7 +317,6 @@ class Menu_Link {
         $db->addWhere('parent', $this->parent);
         $db->addWhere('link_order', $this->link_order + 1);
         $db->loadObject($below);
-        $below->loadKey();
 
         $below->link_order = $this->link_order;
         $this->link_order++;
