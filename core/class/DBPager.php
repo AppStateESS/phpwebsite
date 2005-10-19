@@ -145,7 +145,9 @@ class DBPager {
 
         $this->loadLink();
 
-        if (isset($_REQUEST['page'])) {
+        if (isset($_REQUEST['change_page'])) {
+            $this->current_page = (int)$_REQUEST['change_page'];
+        } elseif (isset($_REQUEST['page'])) {
             $this->current_page = (int)$_REQUEST['page'];
         }
 
@@ -391,7 +393,7 @@ class DBPager {
             }
 
             $pages[] = sprintf("<a href=\"%s?%s\">%s</a>\n",
-                               $this->link,
+                               $this->getLinkBase(),
                                implode('&amp;', $link_pairs1),
                                $this->page_turner_left);
         }
@@ -521,7 +523,7 @@ class DBPager {
 
         // pull any extra values in current url
         $extra = PHPWS_Text::getGetValues();
-
+        
         // if extra values exist, add them to the values array
         // ignore matches in the output and other values
         if (!empty($extra)) {
@@ -537,6 +539,9 @@ class DBPager {
         if ($output) {
             $values = array_merge($output, $values);
         }
+
+        // prevents a doubling of the value in the page form
+        unset($values['change_page']);
 
         $GLOBALS['DBPager_Link_Values'] = $values;
         return $values;
@@ -608,20 +613,31 @@ class DBPager {
         if (empty($this->total_pages)) {
             $page_list[1] = 1;
         } else {
-            for ($i = 1; $i <= $this->total_pages; $i++)
+            for ($i = 1; $i <= $this->total_pages; $i++) {
                 $page_list[$i] = $i;
+            }
         }
 
         $form = & new PHPWS_Form('page_list');
         $form->setMethod('get');
-        $this->_setHiddenVars($form);
-        $form->addSelect('page', $page_list);
-        $form->setExtra('page', 'onchange="this.form.submit()"');
-        if (isset($_REQUEST['page']))
-            $form->setMatch('page', (int)$_REQUEST['page']);
-        if (!javascriptEnabled())
+        $values = $this->getLinkValues();
+        $form->addHidden($values);
+        $form->addSelect('change_page', $page_list);
+        $form->setExtra('change_page', 'onchange="this.form.submit()"');
+
+        /*
+        if (isset($_REQUEST['page'])) {
+            $form->setMatch('change_page', (int)$_REQUEST['page']);
+        }
+        */
+        $form->setMatch('change_page', $this->current_page);
+
+        if (!javascriptEnabled()) {
             $form->addSubmit('go', _('Go'));
+        }
+
         $template = $form->getTemplate();
+
         if (PEAR::isError($template)) {
             PHPWS_Error::log($template);
             return NULL;
@@ -633,6 +649,8 @@ class DBPager {
     function getSearchBox(){
         $form = & new PHPWS_Form('search_list');
         $form->setMethod('get');
+        $values = $this->getLinkValues();
+        $form->addHidden($values);
         $this->_setHiddenVars($form, FALSE);
         $form->addText('search', $this->search);
         $form->setLabel('search', _('Search'));
@@ -642,35 +660,6 @@ class DBPager {
             return NULL;
         }
         return implode("\n", $template);
-    }
-
-    function _setHiddenVars(&$form, $addSearch=TRUE){
-        if (empty($this->limit)) {
-            $this->limit = DBPAGER_DEFAULT_LIMIT;
-        }
-
-        $link = $this->getLinkQuery();
-
-        if (empty($link)) {
-            return;
-        }
-
-        $link_list = explode('&', html_entity_decode($link));
-        foreach ($link_list as $var) {
-            if (empty($var)) {
-                continue;
-            }
-            $i = explode('=', $var);
-            if ($i[0] == 'authkey') {
-                continue;
-            }
-            $form->addHidden($i[0], $i[1]);
-        }
-
-        $form->addHidden('limit', $this->limit);
-        if ($addSearch == TRUE && isset($this->search)) {
-            $form->addHidden('search', $this->search);
-        }
     }
 
     function _getNavigation(&$template)
