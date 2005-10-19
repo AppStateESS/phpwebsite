@@ -651,7 +651,6 @@ class DBPager {
         $form->setMethod('get');
         $values = $this->getLinkValues();
         $form->addHidden($values);
-        $this->_setHiddenVars($form, FALSE);
         $form->addText('search', $this->search);
         $form->setLabel('search', _('Search'));
         $template = $form->getTemplate();
