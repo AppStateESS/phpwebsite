@@ -34,8 +34,9 @@ class My_Page {
         $db->addColumn('mod_title');
         $result = $db->select('col');
 
-        if (PEAR::isError($result))
+        if (PEAR::isError($result)) {
             return $result;
+        }
 
         foreach ($result as $mod_title)
             $this->modules[$mod_title] = & new PHPWS_Module($mod_title);
@@ -85,10 +86,11 @@ class My_Page {
 
     function registerMyPage($mod_title)
     {
-        $filename = sprintf('mod/%s/inc/my_page.php', $mod_title);
+        $filename = sprintf('%s/mod/%s/inc/my_page.php', PHPWS_SOURCE_DIR, $mod_title);
 
-        if (!is_file($filename))
+        if (!is_file($filename)) {
             return FALSE;
+        }
 
         $db = & new PHPWS_DB('users_my_page_mods');
         $db->addValue('mod_title', $mod_title);

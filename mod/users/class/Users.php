@@ -463,27 +463,33 @@ class PHPWS_User {
         if (PEAR::isError($result))
             return $result;
 
-        if ($result == TRUE)
+        if ($result == TRUE) {
             return PHPWS_Error::get(USER_ERR_DUP_EMAIL, 'users', 'save');
+        }
 
         $result = $this->isDuplicateGroup($this->username, $this->id);
-        if (PEAR::isError($result))
+        if (PEAR::isError($result)) {
             return $result;
+        }
 
-        if ($result == TRUE)
+        if ($result == TRUE) {
             return PHPWS_Error::get(USER_ERR_DUP_GROUPNAME, 'users', 'save');
+        }
 
         if (empty($this->display_name)) {
             $this->display_name = $this->username;
         }
 
-        if (!isset($this->authorize))
+        if (!isset($this->authorize)) {
             $this->authorize = $this->getUserSetting('default_authorization');
+        }
 
-        if ($newUser == TRUE)
+        if ($newUser == TRUE) {
             $this->created = mktime();
-        else
+        }
+        else {
             $this->updated = mktime();
+        }
 
         $db = & new PHPWS_DB('users');
         $result = $db->saveObject($this);
@@ -493,7 +499,7 @@ class PHPWS_User {
             return PHPWS_Error::get(USER_ERR_USER_NOT_SAVED, 'users', 'save');
         }
 
-        if ($this->authorize > 0 && !$this->isLogged()){
+        if ($this->authorize > 0) {
             if ($this->authorize == LOCAL_AUTHORIZATION) {
                 $this->saveLocalAuthorization();
             }
@@ -502,10 +508,12 @@ class PHPWS_User {
             }
         }
 
-        if ($newUser)
+        if ($newUser) {
             return $this->createGroup();
-        else
+        }
+        else {
             return $this->updateGroup();
+        }
     }
 
 

@@ -417,10 +417,12 @@ class User_Action {
         }
     
 
-        if (isset($error))
+        if (isset($error)) {
             return $error;
-        else
+        }
+        else {
             return TRUE;
+        }
     }
 
     function &cpanel()
