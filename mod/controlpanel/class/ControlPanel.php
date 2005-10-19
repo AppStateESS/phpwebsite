@@ -231,7 +231,6 @@ class PHPWS_ControlPanel {
                 if (is_string($info['image'])) {
                     $modlink->setImage(sprintf('images/mod/%s/%s', $module, $info['image']));
                 } elseif(is_array($info['image'])) {
-                    $template['UNINSTALL'] = PHPWS_Text::secureLink(_('Uninstall'), 'boost', $uninstallVars);
                     $modlink->setImage(sprintf('images/mod/%s/%s', $module, $info['image']['name']));
                 }
 
