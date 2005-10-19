@@ -15,7 +15,6 @@ class Webpage_Page {
     var $page_number = NULL;
     var $template    = NULL;
     var $_error      = NULL;
-    var $_db         = NULL;
     var $_volume     = NULL;
 
     function Webpage_Page($id=NULL)
@@ -28,28 +27,24 @@ class Webpage_Page {
         $this->init();
     }
 
-    function resetDB()
-    {
-        if (empty($this->_db)) {
-            $this->_db = & new PHPWS_DB('webpage_page');
-        } else {
-            $this->_db->reset();
-        }
-    }
-
     function init()
     {
-        $this->resetDB();
-        $result = $this->_db->loadObject($this);
+        $db = & new PHPWS_DB('webpage_page');
+        $result = $db->loadObject($this);
         if (PEAR::isError($result)) {
             $this->_error = $result;
             return;
         }
 
         if (empty($this->_volume)) {
-            $this->_volume = & new Webpage_Volume($this->volume_id);
+            $this->loadVolume();
         }
 
+    }
+
+    function loadVolume()
+    {
+        $this->_volume = & new Webpage_Volume($this->volume_id);
     }
 
     function setTitle($title)
@@ -156,7 +151,6 @@ class Webpage_Page {
             $header_tags = $this->_volume->getTplTags(!$admin);
             $template = array_merge($template, $header_tags);
         }
-
         return $template;
     }
 
@@ -183,21 +177,6 @@ class Webpage_Page {
         }
     }
 
-    function flagKey()
-    {
-        $key = & new Key('webpage', 'page', $this->id);
-        if (empty($this->title)) {
-            if (isset($this->_volume)) {
-                $key->setTitle($this->_volume->title);
-            }
-        } else {
-            $key->setTitle($this->title);
-        }
-
-        $key->setUrl($this->getPageUrl());
-        $key->flag();
-    }
-
     function view($admin=FALSE)
     {
         $template = $this->getTplTags($admin);
@@ -206,11 +185,14 @@ class Webpage_Page {
             return implode('<br />', $template);
         }
 
-        if (!$admin) {
-            $this->flagKey();
-        }
-
         return PHPWS_Template::process($template, 'webpage', 'page/' . $this->template);
+    }
+
+    function delete()
+    {
+        $db = & new PHPWS_DB('webpage_page');
+        $db->addWhere('id', $this->id);
+        return $db->delete();
     }
 
     function save()
@@ -229,15 +211,12 @@ class Webpage_Page {
             return PHPWS_Error::get(WP_TPL_FILE_MISSING, 'webpages', 'Webpage_Page::save');
         }
 
-        $this->resetDB();
-
         if (empty($this->page_number)) {
             $this->page_number = count($volume->_pages) + 1;
         }
 
-
-
-        $result = $this->_db->saveObject($this);
+        $db = & new PHPWS_DB('webpage_page');
+        $result = $db->saveObject($this);
         return $result;
     }
 

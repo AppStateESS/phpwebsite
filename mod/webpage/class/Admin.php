@@ -50,6 +50,7 @@ class Webpage_Admin {
         } else {
             $page = & new Webpage_Page;
             $page->volume_id = $volume->id;
+            $page->_volume = $volume;
         }
 
         // Determines if page panel needs creating
@@ -60,12 +61,15 @@ class Webpage_Admin {
         case 'edit_page':
         case 'add_page':
         case 'edit_header':
+        case 'post_header':
+        case 'post_page':
             $pagePanel = Webpage_Forms::pagePanel($volume);
         }
 
         switch ($command) {
             // web page admin
         case 'new':
+            $pagePanel->setCurrentTab('header');
             $title = _('Create header');
             $content = Webpage_Forms::editHeader($volume);
             break;
@@ -105,6 +109,16 @@ class Webpage_Admin {
             break;
 
         case 'post_header':
+
+            if (PHPWS_Core::isPosted()) {
+                if ($volume->id) {
+                    PHPWS_Core::reroute('index.php?module=webpage&wp_admin=edit_webpage&volume_id=' . $volume->id);
+                } else {
+                    PHPWS_Core::reroute('index.php?module=webpage&tab=new');
+                }
+                break;
+            }
+
             $result = $volume->post();
             if (is_array($result)) {
                 $title = sprintf(_('Edit header page: %s'), $volume->title);
@@ -172,6 +186,20 @@ class Webpage_Admin {
             $content = Webpage_Forms::wp_list();
             break;
 
+        case 'delete_webpage':
+            if (!Current_User::authorized('webpage', 'delete_page')) {
+                Current_User::disallow();
+            }
+            $result = $volume->delete();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                $title = _('Error');
+                $content = _('A problem occurred when trying to delete your webpage.');
+            } else {
+                PHPWS_Core::goBack();
+            }
+            break;
+
         default:
             exit($command);
         }
@@ -198,22 +226,7 @@ class Webpage_Admin {
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
     }
         
-    function postVolume()
-    {
-
-        if (isset($_POST['volume_id'])) {
-            $volume = & new Webpage_Volume($_POST['volume_id']);
-        } else {
-            $volume = & new Webpage_Volume;
-        }
-
-        if (PHPWS_Core::isPosted() && empty($volume->id)) {
-            return Webpage_Admin::template(_('Repeat post'),
-                                           _('You have previously created or updated a Web Page volume on this page.'));
-        }
-
-    }
-
+    /*
     function postPage()
     {
         if (PHPWS_Core::isPosted()) {
@@ -257,6 +270,8 @@ class Webpage_Admin {
         }
         return Webpage_Admin::template($title, $content, $message);
     }
+
+    */
 
     function template($title, $content, $message=NULL)
     {

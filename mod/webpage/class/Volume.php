@@ -14,6 +14,7 @@ if (!defined('WP_VOLUME_DATE_FORMAT')) {
 
 class Webpage_Volume {
     var $id            = 0;
+    var $key_id        = 0;
     var $title         = NULL;
     var $summary       = NULL;
     var $date_created  = 0;
@@ -126,10 +127,6 @@ class Webpage_Volume {
 
     function post()
     {
-        if (PHPWS_Core::isPosted()) {
-            return TRUE;
-        }
-
         if (empty($_POST['title'])) {
             $errors[] = _('Missing page title');
         } else {
@@ -149,9 +146,17 @@ class Webpage_Volume {
         }
     }
 
-    function getViewLink()
+    function getViewLink($base=FALSE)
     {
-        return PHPWS_Text::rewriteLink(_('View'), 'webpage', $this->id);
+        if ($base) {
+            if (MOD_REWRITE_ENABLED) {
+                return sprintf('webpage%s.html', $this->id);
+            } else {
+                return 'index.php?module=webpage&amp;page=' . $this->id;
+            }
+        } else {
+            return PHPWS_Text::rewriteLink(_('View'), 'webpage', $this->id);
+        }
     }
 
     function &getCurrentPage()
@@ -184,6 +189,12 @@ class Webpage_Volume {
 
         $links[] = $this->getViewLink();
 
+        $vars['wp_admin'] = 'delete_webpage';
+        $js_vars['QUESTION'] = sprintf(_('Are you sure you want to delete %s and all its pages?'),
+                                       $this->title);
+        $js_vars['ADDRESS'] = PHPWS_Text::linkAddress('webpage', $vars, TRUE);
+        $js_vars['LINK'] = _('Delete');
+        $links[] = javascript('confirm', $js_vars);
         
         $tpl['DATE_CREATED'] = $this->getDateCreated();
         $tpl['DATE_UPDATED'] = $this->getDateUpdated();
@@ -191,11 +202,34 @@ class Webpage_Volume {
         return $tpl;
     }
 
+    function delete()
+    {
+        $pagedb = & new PHPWS_DB('webpage_page');
+        $pagedb->addWhere('volume_id', $this->id);
+        $result = $pagedb->delete();
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+        
+        Key::drop($this->key_id);
+
+        $this->resetDB();
+        $this->_db->addWhere('id', $this->id);
+        return $this->_db->delete();
+    }
+
     function save()
     {
+        if (empty($this->id)) {
+            $new_vol = TRUE;
+        } else {
+            $new_vol = FALSE;
+        }
+
         if (empty($this->title)) {
             return PHPWS_Error::get(WP_TPL_TITLE_MISSING, 'webpages', 'Volume::save');
         }
+
 
         $this->updated_user = Current_User::getUsername();
         $this->date_updated = mktime();
@@ -208,8 +242,42 @@ class Webpage_Volume {
 
         $result = $this->_db->saveObject($this);
 
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        $this->saveKey();
+
+        if ($new_vol) {
+            $result = $this->_db->saveObject($this);
+        }
+        
         return $result;
     }
+
+    function createKey()
+    {
+
+    }
+
+    function saveKey()
+    {
+        if ($this->key_id) {
+            $key = & new Key($this->key_id);
+        } else {
+            $key = & new Key;
+            $key->setModule('webpage');
+            $key->setItemName('volume');
+            $key->setItemId($this->id);
+        }
+
+        $key->setTitle($this->title);
+        $key->setUrl($this->getViewLink(TRUE));
+
+        $result = $key->save();
+        $this->key_id = $key->id;
+    }
+
 
     function &getPagebyNumber($page_number)
     {
@@ -262,11 +330,13 @@ class Webpage_Volume {
             if ($this->_current_page > 1) {
                 $page = $this->_current_page - 1;
                 $template['PAGE_LEFT'] = PHPWS_Text::rewriteLink(WP_PAGE_LEFT, 'webpage', $this->id, $page);
+                $template['PREVIOUS_PAGE']  = PHPWS_Text::rewriteLink(WP_PREVIOUS_PAGE, 'webpage', $this->id, $page);
             } 
 
             if ($this->_current_page < count($this->_pages)) {
                 $page = $this->_current_page + 1;
                 $template['PAGE_RIGHT'] = PHPWS_Text::rewriteLink(WP_PAGE_RIGHT, 'webpage', $this->id, $page);
+                $template['NEXT_PAGE']  = PHPWS_Text::rewriteLink(WP_NEXT_PAGE, 'webpage', $this->id, $page);
             }
 
            
@@ -325,8 +395,17 @@ class Webpage_Volume {
             $content = _('Page is not complete.');
         }
 
+        $this->flagKey();
         return $content;
     }
+
+    function flagKey()
+    {
+        $key = & new Key($this->key_id);
+        $key->flag();
+    }
+
+
 }
 
 ?>
