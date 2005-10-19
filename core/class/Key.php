@@ -14,7 +14,9 @@ if (!isset($_REQUEST['module'])) {
 }
 
 class Key {
-    var $id           = 0;
+    // The default is -1 because 0 is reserved for
+    // the home page
+    var $id           = -1;
     var $module       = NULL;
     var $item_name    = NULL;
     var $item_id      = NULL;
@@ -24,9 +26,15 @@ class Key {
     var $restricted   = 0;
     var $_error       = NULL;
   
-    function Key($id=NULL)
+    function Key($id=-1)
     {
-        if ($id == 0 || $id == '0') {
+
+        if ($id < 0) {
+            return NULL;
+        }
+
+        if ((int)$id == 0) {
+            $this->id = 0;
             $this->module = $this->item_name = 'home';
             $this->item_id = 0;
             $this->setTitle(_('Home'));
@@ -34,9 +42,6 @@ class Key {
             return;
         }
 
-        if (empty($id)) {
-            return NULL;
-        }
 
         $this->id = (int)$id;
         $result = $this->init();
@@ -63,13 +68,18 @@ class Key {
 
     function save()
     {
+        // No need to save Home keys
+        if ($this->id < 0) {
+            return TRUE;
+        }
+
         if (empty($this->module) ||
             empty($this->item_id)
             ) {
             return false;
         }
         
-        if (empty($this->item_name)) {
+        if (empty($this->item_name) || $this->item_name == 'home') {
             $this->item_name = $this->module;
         }
 
@@ -128,8 +138,10 @@ class Key {
 
     function &getHomeKey()
     {
-        $key = & new Key(0);
-        return $key;
+        if (!isset($GLOBALS['Home_Key'])) {
+            $GLOBALS['Home_Key'] = & new Key(0);
+        }
+        return $GLOBALS['Home_Key'];
     }
 
     function flag()
