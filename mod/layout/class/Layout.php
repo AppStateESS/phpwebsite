@@ -357,7 +357,11 @@ class Layout {
                 }
                 if (Layout::isMoveBox()) {
                     $box = Layout::getBox($module, $contentVar);
-                    $contentList[] = Layout::moveBoxesTag($box);
+                    // the _MAIN content variable will return an empty box
+                    // This is the BODY tag which cannot be moved
+                    if (!empty($box)) {
+                        $contentList[] = Layout::moveBoxesTag($box);
+                    }
                 }
                 $list[$module][$contentVar] = implode('', $contentList);
             }
@@ -787,8 +791,10 @@ class Layout {
 
         $themeVars = $_SESSION['Layout_Settings']->getThemeVariables();
 
-        $menu['up'] = _('Move Up');
-        $menu['down'] = _('Move Down');
+        $menu['move_box_top'] = _('Move to top');
+        $menu['move_box_up'] = _('Move up');
+        $menu['move_box_down'] = _('Move down');
+        $menu['move_box_bottom'] = _('Move to bottom');
         foreach ($themeVars as $var){
             if ($box->theme_var == $var) {
                 continue;
