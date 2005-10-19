@@ -13,15 +13,19 @@ define('DEFAULT_LAYOUT_TAB', 'boxes');
 
 class Layout_Admin{
 
-    function admin(){
+    function admin()
+    {
+
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $content = NULL;
         $panel = Layout_Admin::adminPanel();
 
-        if (isset($_REQUEST['command']))
+        if (isset($_REQUEST['command'])) {
             $command = $_REQUEST['command'];
-        else
+        }
+        else {
             $command = $panel->getCurrentTab();
+        }
 
         switch ($command){
         case 'boxes':
@@ -89,8 +93,9 @@ class Layout_Admin{
 
         case 'moveBox':
             $result = Layout_Admin::moveBox();
-            if ($result === TRUE)
+            if ($result === TRUE) {
                 PHPWS_Core::reroute($_SERVER['HTTP_REFERER']);
+            }
             break;
 
         case 'postMeta':
@@ -311,18 +316,7 @@ class Layout_Admin{
     function moveBox(){
         PHPWS_Core::initModClass('layout', 'Box.php');
         $box = new Layout_Box($_POST['box_source']);
-
-        $currentThemeVar = $box->getThemeVar();
-
-        if ($_POST['box_dest'] == 'up')
-            $box->moveUp();
-        elseif ($_POST['box_dest'] == 'down')
-            $box->moveDown();
-        else {
-            $box->setThemeVar($_POST['box_dest']);
-            $box->setBoxOrder(NULL);
-            $result = $box->save();
-        }
+        $result = $box->move($_POST['box_dest']);
 
         if (PEAR::isError($result)){
             PHPWS_Error::log($result);
@@ -330,8 +324,8 @@ class Layout_Admin{
             return;
         }
 
-        Layout_Box::reorderBoxes($box->getTheme(), $currentThemeVar);
         Layout::resetBoxes();
+
         return TRUE;
     }
 
@@ -370,10 +364,12 @@ class Layout_Admin{
     }
 
     function saveBoxSettings(){
-        if ($_REQUEST['move_boxes'] == 1)
+        if ($_REQUEST['move_boxes'] == 1) {
             Layout::moveBoxes(TRUE);
-        else
+        }
+        else {
             Layout::moveBoxes(FALSE);
+        }
     }
 
 
