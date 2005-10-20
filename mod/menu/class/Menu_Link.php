@@ -5,7 +5,7 @@ define('MENU_MISSING_INFO', 1);
 class Menu_Link {
     var $id         = 0;
     var $menu_id    = 0;
-    var $key_id     = -1;
+    var $key_id     = NULL;
     var $title      = NULL;
     var $parent     = 0;
     var $active     = 1;
@@ -135,7 +135,7 @@ class Menu_Link {
 
     function save()
     {
-        if (empty($this->menu_id) || empty($this->title) || ($this->key_id <= 0) ) {
+        if (empty($this->menu_id) || empty($this->title) || !isset($this->key_id) ) {
             return PHPWS_Error::get(MENU_MISSING_INFO, 'menu', 'Menu_Link::save');
         }
 
@@ -150,27 +150,24 @@ class Menu_Link {
     function view($level='1')
     {
         static $current_parent = array();
-        static $current_page = 0;
+        $current_link = FALSE;
 
         $current_key = Key::getCurrent();
 
-        if (!empty($current_key) && $current_page < 1) {
-            $child_current = $this->childIsCurrent($current_key);
-            if ($child_current) {
+        if (!empty($current_key)) {
+            if ($this->childIsCurrent($current_key)) {
                 $current_parent[] = $this->id;
-                $current_page = $child_current;
-            } elseif ($current_key->id == $this->key_id) {
-                $current_page = $this->id;
+            }
+
+            if ($current_key->id == $this->key_id) {
+                $current_link = TRUE;
+                $current_parent[] = $this->id;
+                $template['CURRENT_LINK'] = MENU_CURRENT_LINK_STYLE;
             }
         }
 
-        if ($current_page == $this->id) {
-                $current_parent[] = $this->id;
-                $template['CURRENT_LINK'] = 'id="current-link"';
-        }
  
-        if ($this->id == $current_page ||
-            $this->parent == 0         ||
+        if ($current_link || $this->parent == 0         ||
             in_array($this->parent, $current_parent)) {
 
             PHPWS_Core::configRequireOnce('menu', 'config.php');
@@ -193,27 +190,27 @@ class Menu_Link {
             }
 
             $template['LEVEL'] = $level;
-
             return PHPWS_Template::process($template, 'menu', 'links/link.tpl');
         } else {
             return NULL;
         }
     }
 
+
     function childIsCurrent(&$current_key)
     {
         if (empty($this->_children)) {
-            return 0;
+            return FALSE;
         }
 
         foreach ($this->_children as $child) {
             if ($child->key_id == $current_key->id) {
-                return $child->id;
+                return TRUE;
             }
         }
-        return 0;
-
+        return FALSE;
     }
+
 
     function _loadAdminLinks(&$template)
     {

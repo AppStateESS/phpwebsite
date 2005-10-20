@@ -73,7 +73,6 @@ class Menu_Item {
 
     function getTemplateList()
     {
-        require_once 'Compat/Function/scandir.php';
         $result = PHPWS_Template::listTemplates('menu', 'menu_layout');
         return $result;
     }
@@ -151,13 +150,13 @@ class Menu_Item {
         }
 
         $db = & new PHPWS_DB('menu_links');
-        $db->addWhere('menu_id', $this->id);
+        $db->setDistinct(1);
 
-        /*
-        if ($active_only) {
-            $db->addWhere('active', 1);
+        if (!Current_User::isLogged()) {
+            Key::addRestrictWhere($db);
         }
-        */
+
+        $db->addWhere('menu_id', $this->id);
 
         $db->addWhere('parent', $parent);
         $db->addOrder('link_order');
@@ -170,6 +169,9 @@ class Menu_Item {
 
         foreach ($result as $link) {
             $link->loadKey();
+            if (!$link->_key->isActive()) {
+                continue;
+            }
             $link->loadChildren();
             $final[$link->id] = $link;
         }

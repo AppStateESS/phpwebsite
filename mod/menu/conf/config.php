@@ -1,5 +1,7 @@
 <?php
 
+define('MENU_CURRENT_LINK_STYLE', 'current-link');
+
 translate('menu');
 
 define('MENU_LINK_ADD', sprintf('<img src="./images/mod/menu/gtk-add.png" title="%s"/>', _('Add Link')));
