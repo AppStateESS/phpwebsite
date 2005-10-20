@@ -154,9 +154,14 @@ class Related {
         }
 
         foreach ($this->friends as $friend) {
-            $list[] = $friend->getURL(TRUE);
+            if ($friend->_key->allowView()) {
+                $list[] = $friend->getURL(TRUE);
+            }
         }
 
+        if (empty($list)) {
+            return NULL;
+        }
         return $list;
     }
 
