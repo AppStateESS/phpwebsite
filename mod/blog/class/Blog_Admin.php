@@ -19,7 +19,9 @@ class Blog_Admin {
             return;
         }
 
-        $previous_version = $title = $message = $content = NULL;
+        $previous_version = $title = $content = NULL;
+        $message = Blog_Admin::getForward();
+
         $panel = Blog_Admin::cpanel();
         $panel->enableSecure();
         PHPWS_Core::initModClass('version', 'Version.php');
@@ -59,14 +61,14 @@ class Blog_Admin {
 
                 if (Current_User::isRestricted('blog')) {
                     $message = _('This version has not been approved.');
-                    $content = Blog_Admin::edit($unapproved_blog, $version->getId());
+                    $content = Blog_Form::edit($unapproved_blog, $version->getId());
                 } else {
                     $link = _('A version of this entry is awaiting approval.');
                     $linkVar['action']     = 'admin';
                     $linkVar['command']    = 'editUnapproved';
                     $linkVar['version_id'] = $approval_id;
                     $message = PHPWS_Text::secureLink($link, 'blog', $linkVar);
-                    $content = Blog_Admin::edit($blog);
+                    $content = Blog_Form::edit($blog);
                 }
         
             } else {
@@ -96,14 +98,10 @@ class Blog_Admin {
             $result = $version->kill();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
-                $title = _('Error');
-                $content = _('A problem occurred when trying to disapprove this entry.');
+                Blog_Admin::setForward(_('A problem occurred when trying to disapprove this entry.'), 'approval');
             } else {
-                $title = _('Blog entry disapproved.');
-                $content = _('Returning you to the approval list.');
+                Blog_Admin::setForward(_('Blog entry disapproved.'), 'approval');
             }
-            Layout::metaRoute('index.php?module=blog&amp;action=admin&amp;tab=approval&amp;authkey='
-                              . Current_User::getAuthKey());
             break;
 
         case 'approve_item':
@@ -117,8 +115,7 @@ class Blog_Admin {
             $result = $version->save();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
-                $title = _('Sorry');
-                $content = _('An error occurred when saving your version.');
+                Blog_Admin::setForward(_('An error occurred when saving your version.'), 'approval');
             } else {
                 PHPWS_Core::initModClass('categories', 'Category_Item.php');
                 $category_item = & new Category_Item('blog');
@@ -127,10 +124,7 @@ class Blog_Admin {
                 $category_item->saveVersion();
 
                 $version->authorizeCreator('blog', 'entry');
-                $title = _('Blog entry approved.');
-                $content = _('Returning you to the approval list.');
-                Layout::metaRoute('index.php?module=blog&amp;action=admin&amp;tab=approval&amp;authkey='
-                                  . Current_User::getAuthKey());
+                Blog_Admin::setForward(_('Blog entry approved.'), 'approval');
             }
             break;
 
@@ -153,10 +147,8 @@ class Blog_Admin {
             break;
 
         case 'delete':
-            $title = _('Blog Archive');
-            $message = _('Blog entry deleted.');
             $result = $blog->kill();
-            $content = Blog_Admin::entry_list();
+            Blog_Admin::setForward(_('Blog entry deleted.'), 'list');
             break;
 
         case 'list':
@@ -176,9 +168,7 @@ class Blog_Admin {
             }
         
             Blog_Admin::restoreBlog($_REQUEST['version_id']);
-            $title = _('Blog Archive');
-            $message = _('Blog entry restored.');
-            $content = Blog_Admin::entry_list();
+            Blog_Admin::setForward(_('Blog entry restored.'), 'list');
             break;
 
         case 'removePrevBlog':
@@ -188,9 +178,7 @@ class Blog_Admin {
             }
       
             Blog_Admin::removePrevBlog($_REQUEST['version_id']);
-            $title = _('Blog Restore');
-            $message = _('Blog entry removed.');
-            $content = Blog_Admin::restoreVersionList($blog);
+            Blog_Admin::setForward(_('Blog entry removed.'), 'restore');
             break;
 
         case 'postEntry':
@@ -203,21 +191,20 @@ class Blog_Admin {
             $link_back = PHPWS_Text::linkAddress('blog', array('action' => 'admin', 'tab'=>'list'), TRUE);
 
             if ($result == FALSE) {
-                $content = _('An error occurred when trying to save your entry. Please check your logs.');
-                Layout::metaRoute($link_back);
+                $message = _('An error occurred when trying to save your entry. Please check your logs.');
+                Blog_Admin::setForward($message);
             } elseif (is_array($result)) {
                 $message = implode('<br />', $result);
                 if (empty($blog->id)) {
                     $panel->setCurrentTab('new');
                 }
-                $content = Blog_Admin::edit($blog);
+                $content = Blog_Form::edit($blog);
             } else {
                 if (Current_User::isRestricted('blog')) {
-                    $content = _('Your entry is being held for approval.');
+                    Blog_Admin::setForward(_('Your entry is being held for approval.'), 'list');
                 } else {
-                    $content = _('Entry saved successfully.');
+                    Blog_Admin::setForward(_('Entry saved successfully.'), 'list');
                 }
-                Layout::metaRoute($link_back);
             }
 
             break;
@@ -232,6 +219,24 @@ class Blog_Admin {
         $finalPanel = $panel->display();
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
 
+    }
+
+    function setForward($message, $command)
+    {
+        $_SESSION['Blog_Forward'] = $message;
+        $link = PHPWS_Text::linkAddress('blog', array('action'=>'admin', 'command' => $command), TRUE);
+        PHPWS_Core::reroute($link);
+    }
+
+    function getForward()
+    {
+        if (!isset($_SESSION['Blog_Forward'])) {
+            return NULL;
+        }
+
+        $message = $_SESSION['Blog_Forward'];
+        unset($_SESSION['Blog_Forward']);
+        return $message;
     }
 
     function &cpanel()
