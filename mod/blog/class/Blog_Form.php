@@ -2,19 +2,13 @@
 class Blog_Form {
   function edit(&$blog, $version_id=NULL)
   {
-    PHPWS_Core::initCoreClass('Editor.php');
-    PHPWS_Core::initModClass('categories', 'Category_Item.php');
     $form = & new PHPWS_Form;
     $form->addHidden('module', 'blog');
     $form->addHidden('action', 'admin');
     $form->addHidden('command', 'postEntry');
 
-    $cat_item = & new Category_Item('blog');
-    $cat_item->setItemId($blog->id);
-    
     if (isset($version_id)) {
       $form->addHidden('version_id', $version_id);
-      $cat_item->setVersionId($version_id);
       if (Current_User::isUnrestricted('blog')) {
 	$form->addSubmit('approve_entry', _('Save Changes and Approve'));
       }
@@ -51,10 +45,6 @@ class Blog_Form {
     }
 
     $template = $form->getTemplate();
-
-    $template['CATEGORIES_LABEL']    = _('Category');
-    $template['CATEGORIES']          = $cat_item->getForm();
-
 
     if (Current_User::isUnrestricted('blog') && empty($version_id)){
       $assign = PHPWS_User::assignPermissions('blog', $blog->getId());
