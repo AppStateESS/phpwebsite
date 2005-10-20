@@ -227,6 +227,6 @@ div.link-level-3:hover {
 background-color : transparent;
 }
 
-#current-link {
+div.current-link {
    background-color : #ADB583;
 }
