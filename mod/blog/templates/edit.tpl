@@ -20,10 +20,6 @@
       {VIEWABLE_3} {VIEWABLE_3_LABEL}
     </td>
   </tr>
-  <tr>
-    <td><span class="label">{CATEGORIES_LABEL}</span></td>
-    <td>{CATEGORIES}</td>
-  </tr>
 </table>
 {SUBMIT} {APPROVE_ENTRY}
 {END_FORM}
