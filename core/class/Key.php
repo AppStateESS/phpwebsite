@@ -14,22 +14,28 @@ if (!isset($_REQUEST['module'])) {
 }
 
 class Key {
-    // The default is -1 because 0 is reserved for
-    // the home page
-    var $id           = -1;
-    var $module       = NULL;
-    var $item_name    = NULL;
-    var $item_id      = NULL;
-    var $title        = NULL;
-    var $url          = NULL;
-    var $active       = 1;
-    var $restricted   = 0;
-    var $_error       = NULL;
+    var $id            = 0;
+    var $module        = NULL;
+    var $item_name     = NULL;
+    var $item_id       = NULL;
+    var $title         = NULL;
+    var $url           = NULL;
+    var $active        = 1;
+
+    // if TRUE/1 then only logged in users will access
+    var $restricted    = 0;
+
+    // contains permission allow name for viewing
+    var $view_permission = NULL;
+
+    // contains permission allow name for editing
+    var $edit_permission = NULL;
+    var $_error        = NULL;
   
-    function Key($id=-1)
+    function Key($id=NULL)
     {
 
-        if ($id < 0) {
+        if (!isset($id)) {
             return NULL;
         }
 
@@ -59,6 +65,61 @@ class Key {
         }
     }
 
+    function setRestricted($restrict)
+    {
+        $this->restricted = (int)$restrict;
+    }
+
+    // restricted means that only logged users can access
+    function isRestricted()
+    {
+        return (bool)$this->restricted;
+    }
+
+    function setViewPermission($permission)
+    {
+        if (empty($permission)) {
+            $this->view_permission = NULL;
+        } else {
+            $this->restricted = 1;
+            $this->view_permission = strip_tags($permission);
+        }
+    }
+
+    function setEditPermission($permission)
+    {
+        if (empty($permission)) {
+            $this->edit_permission = NULL;
+        } else {
+            $this->edit_permission = strip_tags($permission);
+        }
+    }
+
+    function allowView()
+    {
+        if (!$this->restricted) {
+            return TRUE;
+        } else {
+            if (empty($this->view_permissions)) {
+                return Current_User::isLogged();
+            } else {
+                return Current_User::allow($this->module, $this->view_permission,
+                                           $this->item_id, $this->item_name);                
+            }
+        }
+
+        return TRUE;
+    }
+
+    function allowEdit()
+    {
+        if (empty($this->edit_permission)) {
+            return TRUE;
+        }
+
+        return Current_User::allow($this->module, $this->edit_permission,
+                                   $this->item_id, $this->item_name);
+    }
 
     function init()
     {
@@ -69,12 +130,11 @@ class Key {
     function save()
     {
         // No need to save Home keys
-        if ($this->id < 0) {
+        if ($this->isHomeKey()) {
             return TRUE;
         }
 
-        if (empty($this->module) ||
-            empty($this->item_id)
+        if (empty($this->module) || empty($this->item_id)
             ) {
             return false;
         }
@@ -126,11 +186,6 @@ class Key {
         return (bool)$this->active;
     }
 
-    function isRestricted()
-    {
-        return (bool)$this->restricted;
-    }
-
     function isHomeKey()
     {
         return ($this->module == 'home' ? TRUE : FALSE);
@@ -147,6 +202,17 @@ class Key {
     function flag()
     {
         $GLOBALS['Current_Flag'] = &$this;
+    }
+
+    /**
+     * A little kludge code that adds a where clause for 
+     * restricted users to your database query
+     */
+    function addRestrictWhere(&$db)
+    {
+        $db->addWhere('key_id', 0, NULL, NULL, 1);
+        $db->addWhere('key_id', 'phpws_key.id', NULL, 'OR', 1);
+        $db->addWhere('phpws_key.restricted', '1', '!=', 'AND', 1);
     }
 
     function drop($key_id)
