@@ -103,11 +103,29 @@ class Blog {
         return $result;
     }
 
-    function createKey()
+    function saveKey()
     {
-        $key = & new Key;
-        $key->setModule('blog');
-        $key->setItemId($this->id);
+        if (empty($this->key_id)) {
+            $key = & new Key;
+            $key->setModule('blog');
+            $key->setItemId($this->id);
+        } else {
+            $key = & new Key($this->key_id);
+        }
+
+        $key->setEditPermission('edit_blog');
+
+        if ($this->restricted) {
+            $key->setRestricted(1);
+            if ($this->restricted == 2) {
+                $key->setViewPermission('view_blog');
+            } else {
+                $key->setViewPermission(NULL);
+            }
+        } else {
+            $key->setRestricted(0);
+        }
+
         $key->setUrl($this->getViewLink(TRUE));
         $key->setTitle($this->title);
         $key->save();
@@ -301,8 +319,8 @@ class Blog {
 
         $this->id = $version->getSourceId();
 
-        if ($this->id && empty($this->key_id)) {
-            $this->createKey();
+        if ($this->id) {
+            $this->saveKey();
             $this->save();
         }
 
