@@ -14,9 +14,75 @@ PHPWS_Core::initModClass('categories', 'Category.php');
 define('CAT_LINK_DIVIDERS', '&gt;&gt;');
 
 class Categories{
+
+    function show()
+    {
+        $remove_list = $content = NULL;
+
+        $key = Key::getCurrent();
+
+        if (empty($key) || $key->isHomeKey()) {
+            return;
+        }
+
+        $add_list = Categories::getCategories('list');
+
+        if (empty($add_list)) {
+            return;
+        }
+
+        $current_cat_ids = Categories::getCurrent($key->id);
+
+        if (!empty($current_cat_ids)) {
+            foreach ($add_list as $cat_id => $cat) {
+                if (in_array($cat_id, $current_cat_ids)) {
+                    $remove_list[$cat_id] = $cat;
+                    unset($add_list[$cat_id]);
+                }
+            }
+        }
+
+        $form = & new PHPWS_Form('category_list');
+        $form->addHidden('module', 'categories');
+        $form->addHidden('action', 'admin');
+        $form->addHidden('subaction', 'post_item');
+        $form->addHidden('key_id', $key->id);
+
+        if (!empty($add_list)) {
+            $form->addSelect('add_category', $add_list);
+            $form->addSubmit('add', _('Add category'));
+        } else {
+            $form->addTplTag('ADD_CATEGORY', _('All categories assigned.'));
+        }
+        
+        if (empty($remove_list)) {
+            $form->addTplTag('REMOVE_CATEGORY', _('No categories assigned.'));
+        } else {
+            $form->addSelect('remove_category', $remove_list);
+            $form->addSubmit('remove', _('Remove category'));
+        }
+
+        $template = $form->getTemplate();
+        
+        
+        if ($key->allowEdit()) {
+            $template['CONTENT'] = 'test';
+        }
+
+        $template['CAT_TITLE'] = _('Categorize');
+        $template['ITEM_TITLE'] = $key->title;
+            
+        $content = PHPWS_Template::process($template, 'categories', 'menu_bar.tpl');
+
+        if (!empty($content)) {
+            Layout::add($content, 'categories', 'Admin_Menu');
+        }
+    }
+
     /**
-     * Returns a list of category links
+     * Returns a list of category links for a specific module
      */
+
     function getCategoryList($module)
     {
         Layout::addStyle('categories');
@@ -32,22 +98,28 @@ class Categories{
     {
         $vars['action'] = 'view';
 
-        $db = & new PHPWS_DB('category_items');
+        $db = & new PHPWS_DB('phpws_key');
 
         if (!empty($module)) {
             $vars['ref_mod'] = $module;
         }
 
-        foreach ($list as $category){
-            $db->addWhere('cat_id', $category->id);
+        foreach ($list as $category) {
+            $db->addWhere('id', 'category_items.key_id');
+            $db->addWhere('category_items.cat_id', $category->id);
 
             if (!empty($module)) {
                 $db->addWhere('module', $module);
             }
 
-            list($count) = $db->select('count');
+            $result = $db->select('count');
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                return NULL;
+            }
             $db->resetWhere();
-            $items = ' - ' . $count['count'] . ' ' . _('item(s)');
+            $count = (int)$result;
+            $items = ' - ' . $count . ' ' . _('item(s)');
 
             $vars['id'] = $category->id;
 
@@ -66,36 +138,13 @@ class Categories{
         return $links;
     }
 
-    function initList($list)
+
+    function _getItemsCategories($key)
     {
-        foreach ($list as $cat){
-            //            $cat->loadIcon();
-            $cat->loadChildren();
-            $children[$cat->id] = $cat;
-        }
-        return $children;
-    }
-
-
-    function _getItemsCategories($module, $item_id, $item_name)
-    {
-        PHPWS_Core::initModClass('categories', 'Category_Item.php');
-        if (empty($module) || empty($item_id)) {
-            return NULL;
-        }
-
-        $cat = & new Category_Item($module, $item_name);
-        $cat->setItemId($item_id);
-        $cat_list = $cat->getCategoryItemIds();
-
-        if (empty($cat_list)) {
-            return NULL;
-        }
-
         $db = & new PHPWS_DB('categories');
-        $db->addWhere('id', $cat_list);
+        $db->addWhere('category_items.key_id', $key->id);
+        $db->addWhere('id', 'category_items.cat_id');
         $cat_result = $db->getObjects('Category');
-
         return $cat_result;
     }
 
@@ -104,16 +153,24 @@ class Categories{
      *
      * @author Matthew McNaney
      */
-    function getSimpleLinks($module, $item_id, $item_name=NULL)
+    function getSimpleLinks($key=NULL)
     {
-        $cat_result = Categories::_getItemsCategories($module, $item_id, $item_name);
+        if (empty($key)) {
+            $key = Key::getCurrent();
+        }
+
+        if (!$key->id) {
+            return NULL;
+        }
+
+        $cat_result = Categories::_getItemsCategories($key);
 
         if (empty($cat_result)) {
             return NULL;
         }
 
         foreach ($cat_result as $cat){
-            $link[] = $cat->getViewLink($module);
+            $link[] = $cat->getViewLink($key->module);
         }
 
         return $link;
@@ -131,6 +188,18 @@ class Categories{
         }
 
         return implode(' ' . CAT_LINK_DIVIDERS . ' ', array_reverse($link));
+    }
+
+
+    /**
+     * Retrieves current categories for a key id
+     */
+    function getCurrent($key_id)
+    {
+        $db = & new PHPWS_DB('category_items');
+        $db->addWhere('key_id', (int)$key_id);
+        $db->addColumn('cat_id');
+        return $db->select('col');
     }
 
 
@@ -173,6 +242,17 @@ class Categories{
 
         return $result;
     }
+
+    function initList($list)
+    {
+        foreach ($list as $cat){
+            //            $cat->loadIcon();
+            $cat->loadChildren();
+            $children[$cat->id] = $cat;
+        }
+        return $children;
+    }
+
 
     function _buildList($list, $drop=NULL)
     {
@@ -261,20 +341,22 @@ class Categories{
     {
         PHPWS_Core::initCoreClass('Module.php');
         $db = & new PHPWS_DB('category_items');
-        $db->addColumn('module');
         $db->addWhere('cat_id' , (int)$cat_id);
-        $db->addGroupBy('module');
-        $result = $db->select('count');
+        $db->addColumn('key_id');
+        $result = $db->select('col');
 
         if (empty($result)) {
             return NULL;
         }
 
-        foreach ($result as $aMod) {
-            $module = & new PHPWS_Module($aMod['module']);
-            $mod_list[$module->getTitle()] = $module->getProperName() 
-                . ' - ' . $aMod['count'] . ' ' . _('item(s)');
+        $count = count($result);
+
+        foreach ($result as $key_id) {
+            $key = & new Key($key_id);
+            $module = & new PHPWS_Module($key->module);
+            $mod_list[$module->getTitle()] = sprintf(_('%s - %s item(s)'), $module->getProperName(), $count);
         }
+
         return $mod_list;
     }
 
@@ -295,12 +377,10 @@ class Categories{
         $tpl->setCurrentBlock('module-row');
         foreach ($module_list as $mod_key => $module){
             $vars['ref_mod'] = $mod_key;
-            $link['MODULE_ROW'] = PHPWS_Text::moduleLink($module, 'categories', $vars);
-            $tpl->setData($link);
-            $tpl->parseCurrentBlock();
+            $template['module-row'][] = array('MODULE_ROW' => PHPWS_Text::moduleLink($module, 'categories', $vars));
         }
 
-        return $tpl->get();
+        return PHPWS_Template::process($template, 'categories', 'module_list.tpl');
     }
 
     function removeModule($module)

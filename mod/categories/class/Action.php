@@ -37,6 +37,11 @@ class Categories_Action {
         }
 
         switch ($subaction) {
+        case 'post_item':
+            Categories_Action::postItem();
+            PHPWS_Core::goBack();
+            break;
+
         case 'deleteCategory':
             Categories::delete($category);
             $title = _('Manage Categories');
@@ -111,7 +116,6 @@ class Categories_Action {
         unset($_SESSION['Category_message']);
         return $message;
     }
-
 
 
     function user()
@@ -226,7 +230,7 @@ class Categories_Action {
         }
 
 
-        $form->add('parent', 'select', $category_list);
+        $form->addSelect('parent', $category_list);
         $form->setMatch('parent', $category->getParent());
         $form->setLabel('parent', _('Parent'));
 
@@ -243,27 +247,6 @@ class Categories_Action {
         $form->setWidth('cat_description', '80%');
         $form->setLabel('cat_description', _('Description'));
 
-
-        /*
-        $form->addTplTag('IMAGE_TITLE_LABEL', _('Icon Title'));
-
-        if (isset($errors['image'])) {
-            $template['IMAGE_ERROR'] = $errors['image'];
-        }
-
-        $image = $category->getIcon();
-
-        if (!empty($image)) {
-            $image_id = $image->getId();
-            $form->add('current_image', 'hidden', $image->getId());
-            $template['CURRENT_IMG_LABEL'] = _('Current Icon');
-            $template['CURRENT_IMG'] = $image->getTitle();
-        } else {
-            $image_id = NULL;
-        }
-
-        $result = $form->addImage('image', 'categories', $image_id);
-        */
         $template['IMAGE_LABEL'] = _('Icon');
 
         $template['ICON_LABEL'] = _('Current Icon');
@@ -301,10 +284,8 @@ class Categories_Action {
         $pager->setModule('categories');
         $pager->setDefaultLimit(10);
         $pager->setTemplate('category_list.tpl');
-        $pager->setLink('index.php?module=categories&amp;action=admin&amp;tab=list');
         $pager->addPageTags($pageTags);
-        $pager->addToggle('class="toggle1"');
-        $pager->addToggle('class="toggle2"');
+        $pager->addToggle('class="bgcolor1"');
         $pager->addRowTags('getRowTags');
         $content = $pager->get();
 
@@ -336,9 +317,8 @@ class Categories_Action {
             }
         } else {
             $category = & new Category((int)$id);
-      
             if (isset($module) && $module != '0') {
-                $template['TITLE'] = _('Module') . ':' . $oMod->getProperName();
+                $template['TITLE'] = sprintf(_('Module: %s'), $oMod->getProperName());
                 $content = Categories_Action::getAllItems($category, $module);
             } else {
                 $template['TITLE'] = _('Module Listing');
@@ -385,26 +365,23 @@ class Categories_Action {
             $form->setMatch('ref_mod', $_REQUEST['ref_mod']);
         }
 
-        $form->addSubmit("submit", _('View Module'));
+        $form->addSubmit('submit', _('View Module'));
 
         $form_tpl = $form->getTemplate();
 
         $pageTags['MODULE_LIST'] = implode('', $form_tpl);
 
-        $pager = & new DBPager('category_items', 'Category_Item');
-        $pager->addWhere('cat_id', $category->id);
-        $pager->addWhere('version_id', 0);
-
+        $pager = & new DBPager('phpws_key', 'Key');
+        $pager->addWhere('id', 'category_items.key_id');
+        $pager->addWhere('category_items.cat_id', $category->id);
         if (isset($module)) {
             $pager->addWhere('module', $module);
         }
         $pager->setModule('categories');
         $pager->setDefaultLimit(10);
         $pager->setTemplate('category_item_list.tpl');
-        $pager->setLink('index.php?module=categories&amp;action=view&amp;id=' . $category->getId());
         $pager->addPageTags($pageTags);
-        $pager->addToggle('class="toggle1"');
-        $pager->addToggle('class="toggle2"');
+        $pager->addToggle('class="bgcolor1"');
         $pager->addRowTags('getTplTags');
         $content = $pager->get();
 
@@ -416,6 +393,33 @@ class Categories_Action {
         }
     }
 
+    function addCategoryItem($cat_id, $key_id)
+    {
+        $db = & new PHPWS_DB('category_items');
+        $db->addValue('cat_id', (int)$cat_id);
+        $db->addValue('key_id', (int)$key_id);
+        return $db->insert();
+    }
+
+    function removeCategoryItem($cat_id, $key_id)
+    {
+        $db = & new PHPWS_DB('category_items');
+        $db->addWhere('cat_id', (int)$cat_id);
+        $db->addWhere('key_id', (int)$key_id);
+        return $db->delete();
+    }
+
+    function postItem()
+    {
+        if (isset($_POST['add']) && isset($_POST['add_category'])) {
+            Categories_Action::addCategoryItem($_POST['add_category'], $_POST['key_id']);
+        } elseif (isset($_POST['remove']) && isset($_POST['remove_category'])) {
+            Categories_Action::removeCategoryItem($_POST['remove_category'], $_POST['key_id']);
+        }
+
+        
+
+    }
 
 }
 
