@@ -12,7 +12,8 @@ $function_list = array('file_get_contents',
                        'mime_content_type',
                        'html_entity_decode',
                        'scandir',
-                       'str_ireplace'
+                       'str_ireplace',
+                       'array_diff_key'
                        );
 
 loadFunction($function_list);
