@@ -1,7 +1,7 @@
 <h3>{TITLE_LABEL}&#160;{TITLE_SORT}</h3>
 
 <!-- BEGIN listrows -->
-<div style="padding : 5px" {TOGGLE}>{TITLE}</div>
+<div style="padding : 5px" {TOGGLE}>{URL}</div>
 <!-- END listrows -->
 
 <br />
