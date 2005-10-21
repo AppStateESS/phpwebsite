@@ -249,3 +249,7 @@ div.block-embedded {
 width : 150px;
 margin : 4px;                   
 }
+
+div.category-menu-bar {
+  margin  : 3px 0 3px 0;             
+}
