@@ -161,7 +161,6 @@ class Blog {
         PHPWS_Core::initModClass('comments', 'Comments.php');
         $key = new Key($this->key_id);
 
-        //        PHPWS_Core::initModClass('categories', 'Categories.php');
         $template['TITLE'] = $this->title;
         $template['DATE']  = $this->getFormatedDate();
         $template['ENTRY'] = PHPWS_Text::parseTag($this->getEntry(TRUE));
@@ -189,12 +188,12 @@ class Blog {
             $template['COMMENTS'] = $comments->view();
             $key->flag();
         }
-        /*
-        $result = Categories::getSimpleLinks('blog', $this->id);
+
+        $result = Categories::getSimpleLinks($key);
         if (!empty($result)) {
             $template['CATEGORIES'] = implode(', ', $result);
         }
-        */
+
         $template['POSTED_BY'] = _('Posted by');
         $template['POSTED_ON'] = _('Posted on');
         $template['AUTHOR'] = $this->getAuthor();
