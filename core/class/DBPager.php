@@ -594,7 +594,9 @@ class DBPager {
                         $row_result = call_user_func_array(array(&$disp_row, $this->row_tags['method']), $this->row_tags['variable']);
                     }
 
-                    $template[$count] = array_merge($template[$count], $row_result);
+                    if (!empty($row_result)) {
+                        $template[$count] = array_merge($template[$count], $row_result);
+                    }
                 }
 
             } else {
