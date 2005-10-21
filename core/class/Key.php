@@ -14,13 +14,13 @@ if (!isset($_REQUEST['module'])) {
 }
 
 class Key {
-    var $id            = 0;
-    var $module        = NULL;
-    var $item_name     = NULL;
-    var $item_id       = NULL;
-    var $title         = NULL;
-    var $url           = NULL;
-    var $active        = 1;
+    var $id              = 0;
+    var $module          = NULL;
+    var $item_name       = NULL;
+    var $item_id         = NULL;
+    var $title           = NULL;
+    var $url             = NULL;
+    var $active          = 1;
 
     // if TRUE/1 then only logged in users will access
     var $restricted    = 0;
@@ -63,6 +63,14 @@ class Key {
         } else {
             return FALSE;
         }
+    }
+
+    /**
+     * returns the url in a link
+     */
+    function getUrl()
+    {
+        return sprintf('<a href="%s">%s</a>', $this->url, $this->title);
     }
 
     function setRestricted($restrict)
@@ -219,6 +227,16 @@ class Key {
     {
         $key = & new Key($key_id);
         return $key->delete();
+    }
+
+    function getTplTags()
+    {
+        $tpl['ID']      = $this->id;
+        $tpl['MODULE']  = $this->module;
+        $tpl['ITEM_ID'] = $this->item_id;
+        $tpl['TITLE']   = $this->title;
+        $tpl['URL']     = $this->getUrl();
+        return $tpl;
     }
 
     function delete()
