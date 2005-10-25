@@ -227,7 +227,7 @@ function loadBrowserInformation()
                     if ($newVars[8] == 'Red') {
                         $program[0] = 'Red Hat';
                         $program[1] = str_replace('Hat/', '', $newVars[9]);
-                    } elseif (strstr('/', $newVars[8])) {
+                    } elseif (strpos('/', $newVars[8])) {
                         $program = explode('/', $newVars[8]);
                     } else {
                         $program[0] = $program[1] = 'Unknown';
