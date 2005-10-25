@@ -27,7 +27,7 @@ class PHPWS_Module {
 
     function PHPWS_Module($title=NULL, $file=TRUE)
     {
-        if (isset($title)){
+        if (isset($title)) {
             $this->setTitle($title);
             $this->init($file);
         }
@@ -50,7 +50,7 @@ class PHPWS_Module {
 
         include $result;
     
-        if (isset($mod_title)){
+        if (isset($mod_title)) {
             $this->pre94 = TRUE;
             $proper_name = $mod_pname;
             if (!isset($active)|| $active == 'on') {
@@ -151,10 +151,12 @@ class PHPWS_Module {
 
     function getProperName($useTitle=FALSE)
     {
-        if (!isset($this->proper_name) && $useTitle == TRUE)
+        if (!isset($this->proper_name) && $useTitle == TRUE) {
             return ucwords(str_replace('_', ' ', $this->getTitle()));
-        else
+        }
+        else {
             return $this->proper_name;
+        }
     }
 
     function setPriority($priority)
@@ -360,7 +362,7 @@ class PHPWS_Module {
         $db->addWhere('title', $title);
         $db->addColumn('title');
         $result = $db->select('one');
-        if (PEAR::isError($result)){
+        if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             return FALSE;
         } else {
@@ -379,7 +381,7 @@ class PHPWS_Module {
         $db = & new PHPWS_DB('modules');
         $db->addWhere('title', $this->getTitle());
         $result = $db->select('row');
-        if (PEAR::isError($result)){
+        if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             return FALSE;
         }
