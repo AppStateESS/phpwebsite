@@ -13,7 +13,7 @@
  * @param    string   path            The path to directory to be read
  * @param    boolean  directoriesOnly If TRUE, return directory names only
  * @param    boolean  filesOnly       If TRUE, return file names only
- * @param    boolean  recursive       If TRUE, readDirectory will recurse through the given directory and all directories "beneath" it.
+ * @param    boolean  recursive       If TRUE, readDirectory will recurse through the given directory and all directories 'beneath' it.
  * @param    array    extensions      An array containing file extensions of files you wish to have returned.
  * @param    boolean  appendPath      Whether or not to append the full path to all entries returned
  * @return   array    directory       An array containing the names of directories and/or files in the specified directory.
@@ -36,15 +36,15 @@ class PHPWS_File {
         $dir = dir($path);
         while ($file = $dir->read()){
             $fullpath = $path . $file;
-            if ($directoriesOnly && !$filesOnly && @is_dir($fullpath) && $file != "." && $file != ".." && $file != "CVS") {
+            if ($directoriesOnly && !$filesOnly && @is_dir($fullpath) && $file != '.' && $file != '..' && $file != 'CVS') {
                 if($appendPath) {
                     $directory[] = $fullpath;
                 } else {
                     $directory[] = $file;
                 }
-            } elseif (!$directoriesOnly && $filesOnly && !is_dir($path . $file) && $file != "CVS" && $file != "." && $file != "..") {
+            } elseif (!$directoriesOnly && $filesOnly && !is_dir($path . $file) && $file != 'CVS' && $file != '.' && $file != '..') {
                 if (is_array($extensions) && count($extensions) > 0) {
-                    $extTest = explode(".", $file);
+                    $extTest = explode('.', $file);
                     if (in_array($extTest[1], $extensions)) {
                         if ($appendPath) {
                             $directory[] = $fullpath;
@@ -57,9 +57,9 @@ class PHPWS_File {
                 } else {
                     $directory[] = $file;
                 }
-            } elseif (!$directoriesOnly && !$filesOnly && $file != "." && $file != ".." && $file != "CVS") {
+            } elseif (!$directoriesOnly && !$filesOnly && $file != '.' && $file != '..' && $file != 'CVS') {
                 if (!is_dir($path . $file) && is_array($extensions) && count($extensions) > 0) {
-                    $extTest = explode(".", $file);
+                    $extTest = explode('.', $file);
                     if (in_array($extTest[1], $extensions)) {
                         if ($appendPath) {
                             $directory[] = $fullpath;
@@ -80,8 +80,8 @@ class PHPWS_File {
                 }
             }
 
-            if ($recursive && is_dir($fullpath) && $file != "CVS" && $file != "." && $file != "..") {
-                $directory = array_merge($directory, PHPWS_File::readDirectory($fullpath . "/", $directoriesOnly, $filesOnly, $recursive, $extensions, $appendPath));
+            if ($recursive && is_dir($fullpath) && $file != 'CVS' && $file != '.' && $file != '..') {
+                $directory = array_merge($directory, PHPWS_File::readDirectory($fullpath . '/', $directoriesOnly, $filesOnly, $recursive, $extensions, $appendPath));
             }
         }
         $dir->close();
@@ -110,14 +110,14 @@ class PHPWS_File {
         if (!is_dir($toPath)) {
             $result = @mkdir($toPath, 0755);
             if (!$result) {
-                PHPWS_Error::log(PHPWS_DIR_CANT_CREATE, "core", "PHPWS_File::recursiveFileCopy", $toPath);
+                PHPWS_Error::log(PHPWS_DIR_CANT_CREATE, 'core', 'PHPWS_File::recursiveFileCopy', $toPath);
                 return FALSE;
             }
         }
         else {
             $result = is_writable($toPath);
             if (!$result) {
-                PHPWS_Error::log(PHPWS_DIR_NOT_WRITABLE, "core", "PHPWS_File::recursiveFileCopy", $toPath);
+                PHPWS_Error::log(PHPWS_DIR_NOT_WRITABLE, 'core', 'PHPWS_File::recursiveFileCopy', $toPath);
                 return FALSE;
             }
         }
@@ -126,9 +126,9 @@ class PHPWS_File {
             chdir($fromPath);
             $handle = opendir('.');
             while (($file = readdir($handle)) !== FALSE) {
-                if (($file != ".") && ($file != "..") && ($file != "CVS")) {
+                if (($file != '.') && ($file != '..') && ($file != 'CVS')) {
                     if (is_dir($file)) {
-                        PHPWS_File::recursiveFileCopy ($fromPath . $file . "/", $toPath . $file."/");
+                        PHPWS_File::recursiveFileCopy ($fromPath . $file . '/', $toPath . $file.'/');
                         chdir($fromPath);
                     }
                     if (is_file($file)) {
@@ -167,7 +167,7 @@ class PHPWS_File {
      * This function comes from php.net by jacob@keystreams.com.
      *
      * Example Usage:
-     * $copy = fileCopy("/path/to/original.file", "/path/to/", "destination.file", 1, 1);
+     * $copy = fileCopy('/path/to/original.file', '/path/to/', 'destination.file', 1, 1);
      *
      * @author   jacob@NOSPAM.keystreams.com <jacob@NOSPAM.keystreams.com>
      * @modified Adam Morton <adam@NOSPAM.tux.appstate.edu>
@@ -182,15 +182,15 @@ class PHPWS_File {
     function fileCopy($file_origin, $destination_directory, $file_destination, $overwrite, $fatal) 
     {
         if ($fatal) {
-            $fp = @fopen($file_origin, "rb");
+            $fp = @fopen($file_origin, 'rb');
 
             if (!$fp) {
-                return PHPWS_Error::get(PHPWS_FILE_CANT_READ, "core", "PHPWS_File::fileCopy", $file_origin);
+                return PHPWS_Error::get(PHPWS_FILE_CANT_READ, 'core', 'PHPWS_File::fileCopy', $file_origin);
             }
       
             $dir_check = @is_writable($destination_directory);
             if (!$dir_check) {
-                return PHPWS_Error::get(PHPWS_DIR_NOT_WRITABLE, "core", "PHPWS_File::fileCopy", $destination_directory);
+                return PHPWS_Error::get(PHPWS_DIR_NOT_WRITABLE, 'core', 'PHPWS_File::fileCopy', $destination_directory);
             }
       
             $dest_file_exists = file_exists($destination_directory . $file_destination);
@@ -199,7 +199,7 @@ class PHPWS_File {
                 if ($overwrite) {
                     $fp = @is_writable($destination_directory . $file_destination);
                     if (!$fp) {
-                        return PHPWS_Error::get(PHPWS_DIR_NOT_WRITABLE, "core", "PHPWS_File::fileCopy", $destination_directory);
+                        return PHPWS_Error::get(PHPWS_DIR_NOT_WRITABLE, 'core', 'PHPWS_File::fileCopy', $destination_directory);
                     }
 
                     if ($copy_file = @copy($file_origin, $destination_directory . $file_destination)) {
@@ -309,13 +309,13 @@ class PHPWS_File {
         $thumbnailFileName = explode('.', $fileName);
 
         if ($imageInfo[2] == 1) {
-            $thumbnailFileName = $thumbnailFileName[0] . "_tn.gif";
+            $thumbnailFileName = $thumbnailFileName[0] . '_tn.gif';
             imagegif($thumbnailImage, $tndirectory . $thumbnailFileName);
         } elseif ($imageInfo[2] == 2) {
-            $thumbnailFileName = $thumbnailFileName[0] . "_tn.jpg";
+            $thumbnailFileName = $thumbnailFileName[0] . '_tn.jpg';
             imagejpeg($thumbnailImage, $tndirectory . $thumbnailFileName);
         } elseif ($imageInfo[2] == 3) {
-            $thumbnailFileName = $thumbnailFileName[0] . "_tn.png";
+            $thumbnailFileName = $thumbnailFileName[0] . '_tn.png';
             imagepng($thumbnailImage, $tndirectory . $thumbnailFileName);
         }
 
@@ -327,14 +327,14 @@ class PHPWS_File {
         if(is_dir($dir)) {
             $handle = opendir($dir);
             while($file = readdir($handle)) {
-                if($file == "." || $file == "..") {
+                if($file == '.' || $file == '..') {
                     continue;
                 } elseif(is_dir($dir . $file)) {
                     PHPWS_File::rmdir($dir . $file);
                 } elseif(is_file($dir . $file)) {
                     $result = @unlink($dir . $file);
                     if (!$result) {
-                        PHPWS_Error::log(PHPWS_FILE_DELETE_DENIED, "core", "PHPWS_File::rmdir", $dir . $file);
+                        PHPWS_Error::log(PHPWS_FILE_DELETE_DENIED, 'core', 'PHPWS_File::rmdir', $dir . $file);
                         return FALSE;
                     }
                 }
@@ -342,7 +342,7 @@ class PHPWS_File {
             closedir($handle);
             $result = @rmdir($dir);
             if (!$result) {
-                PHPWS_Error::log(PHPWS_DIR_DELETE_DENIED, "core", "PHPWS_File::rmdir", $dir);
+                PHPWS_Error::log(PHPWS_DIR_DELETE_DENIED, 'core', 'PHPWS_File::rmdir', $dir);
                 return FALSE;
             }
 
@@ -355,9 +355,9 @@ class PHPWS_File {
 
     function chkgd2()
     {
-        if(function_exists("gd_info")) {
+        if(function_exists('gd_info')) {
             $gdver = gd_info();
-            if(strstr($gdver["GD Version"], "1.") != FALSE) {
+            if(strpos($gdver['GD Version'], '1.') != FALSE) {
                 return FALSE;
             } else {
                 return TRUE;
@@ -368,15 +368,17 @@ class PHPWS_File {
             $phpinfo=ob_get_contents();
             ob_end_clean();
             $phpinfo=strip_tags($phpinfo);
-            $phpinfo=stristr($phpinfo,"gd version");
-            $phpinfo=stristr($phpinfo,"version");
-            $end=strpos($phpinfo," ");
+            $phpinfo=stristr($phpinfo,'gd version');
+            $phpinfo=stristr($phpinfo,'version');
+            $end=strpos($phpinfo,' ');
             $phpinfo=substr($phpinfo,0,$end);
             $phpinfo=substr($phpinfo,7);
-            if(version_compare("2.0", "$phpinfo")==1)
+            if(version_compare('2.0', $phpinfo) == 1) {
                 return FALSE;
-            else
+            }
+            else {
                 return TRUE;
+            }
         }
     }// END FUNC chkgd2()
 }
