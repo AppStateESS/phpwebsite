@@ -25,6 +25,10 @@ class Categories{
             return;
         }
 
+        if (!$key->allowEdit()) {
+            return NULL;
+        }
+
         $add_list = Categories::getCategories('list');
 
         if (empty($add_list)) {
