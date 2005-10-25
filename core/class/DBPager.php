@@ -693,7 +693,7 @@ class DBPager {
 
     }
 
-    function get()
+    function get($return_blank_results=TRUE)
     {
         $template = array();
 
@@ -750,6 +750,8 @@ class DBPager {
             }
       
             $this->getSortButtons($template);
+        } elseif(!$return_blank_results) {
+            return NULL;
         } else {
             $template['EMPTY_MESSAGE'] = $this->empty_message;
         }
