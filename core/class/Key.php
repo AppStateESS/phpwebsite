@@ -30,6 +30,7 @@ class Key {
 
     // contains permission allow name for editing
     var $edit_permission = NULL;
+
     var $_error        = NULL;
   
     function Key($id=NULL)
@@ -231,8 +232,10 @@ class Key {
 
     function getTplTags()
     {
+        $module_names = PHPWS_Core::getModuleNames();
+
         $tpl['ID']      = $this->id;
-        $tpl['MODULE']  = $this->module;
+        $tpl['MODULE']  = $module_names[$this->module];
         $tpl['ITEM_ID'] = $this->item_id;
         $tpl['TITLE']   = $this->title;
         $tpl['URL']     = $this->getUrl();
@@ -262,6 +265,19 @@ class Key {
             return $GLOBALS['Current_Flag'];
         }
     }
+
+    function modulesInUse()
+    {
+        $db = & new PHPWS_DB('phpws_key');
+        $db->addColumn('module', TRUE);
+        $db->addColumn('modules.proper_name');
+        $db->addWhere('module', 'modules.title');
+        $db->addOrder('phpws_key.module');
+        $db->setIndexBy('module');
+        $db->setDistinct(true);
+        return $db->select('col');
+    }
+
 }
 
 ?>
