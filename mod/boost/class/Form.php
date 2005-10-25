@@ -62,7 +62,7 @@ class Boost_Form {
             $tpl['WARNING'] = _('WARNING: Only deities can uninstall core modules. Doing so may corrupt your installation!');
         }
 
-
+        sort($modList);
         $count = 0;
         foreach ($modList as $title) {
             $template = $link_command = NULL;
