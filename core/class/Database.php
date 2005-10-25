@@ -368,7 +368,7 @@ class PHPWS_DB {
     function addGroupBy($group_by)
     {
         if (PHPWS_DB::allowed($group_by)) {
-            if (!strstr($group_by, '.')) {
+            if (!strpos($group_by, '.')) {
                 $group_by = $this->tables[0] . '.' . $group_by;
             }
 
@@ -395,6 +395,7 @@ class PHPWS_DB {
 
     function addWhere($column, $value=NULL, $operator=NULL, $conj=NULL, $group=NULL, $join=FALSE)
     {
+
         $where = & new PHPWS_DB_Where;
         $where->setJoin($join);
         $operator = strtoupper($operator);
@@ -607,7 +608,7 @@ class PHPWS_DB {
         }
 
         $table = $this->tables[0];
-        if (strstr($column, '.')) {
+        if (strpos($column, '.')) {
             list($table, $column) = explode('.', $column);
             $this->addTable($table);
         }
@@ -685,10 +686,17 @@ class PHPWS_DB {
                 $this->addOrder($value);
             }
         } else {
+            $order = preg_replace('/[^\w\s\.]/', '', $order);
+
             if (preg_match('/(random|rand)(\(\))?/i', $order)) {
                 $this->order[] = PHPWS_SQL::randomOrder();
             } else {
-                $this->order[] = preg_replace('/[^\w\s.]/', '', $order);
+                if (strpos($order, '.')) {
+                    list($table, $new_order) = explode('.', $order);
+                    $this->order[] = array('table' => $table, 'column' => $new_order);
+                } else {
+                    $this->order[] = array('table' => $this->tables[0], 'column' => $order);
+                }
             }
         }
     }
@@ -700,7 +708,10 @@ class PHPWS_DB {
         }
 
         if ($dbReady) {
-            return 'ORDER BY ' . implode(', ', $this->order);
+            foreach ($this->order as $aOrder) {
+                $order_list[] = $aOrder['table'] . '.' . $aOrder['column'];
+            }
+            return 'ORDER BY ' . implode(', ', $order_list);
         } else {
             return $this->order;
         }
