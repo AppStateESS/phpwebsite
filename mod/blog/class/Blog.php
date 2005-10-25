@@ -100,6 +100,16 @@ class Blog {
         }
 
         $result = $db->saveObject($this);
+
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        $search = & new Search($this->key_id);
+        $search->addKeywords($this->title);
+        $search->addKeywords($this->entry);
+        $result = $search->save();
+
         return $result;
     }
 
@@ -160,6 +170,10 @@ class Blog {
 
         PHPWS_Core::initModClass('comments', 'Comments.php');
         $key = new Key($this->key_id);
+
+        if (!$key->allowView()) {
+            return _('Sorry you do not have permission to view this blog entry.');
+        }
 
         $template['TITLE'] = $this->title;
         $template['DATE']  = $this->getFormatedDate();
