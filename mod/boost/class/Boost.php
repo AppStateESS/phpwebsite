@@ -298,6 +298,7 @@ class PHPWS_Boost {
                 $this->removeDirectories($mod, $content);
                 $this->unregisterModule($mod, $content);
                 $this->removeDependencies($mod);
+                $this->removeKeys($mod);
                 $content[] = '<hr />';
                 $content[] = _('Finished uninstalling module!');
                 break;
@@ -306,6 +307,8 @@ class PHPWS_Boost {
                 $this->setStatus($title, BOOST_DONE);
                 $this->removeDirectories($mod, $content);
                 $this->unregisterModule($mod, $content);
+                $this->removeDependencies($mod);
+                $this->removeKeys($mod);
             }
             elseif ($result === FALSE) {
                 $this->setStatus($title, BOOST_PENDING);
@@ -327,6 +330,13 @@ class PHPWS_Boost {
         $db = & new PHPWS_DB('dependencies');
         $db->addWhere('source_mod', $mod->title);
         $db->delete();
+    }
+
+    function removeKeys($mod)
+    {
+        $db = & new PHPWS_DB('phpws_key');
+        $db->addWhere('module', $mod->title);
+        return $db->delete();
     }
 
     function onUninstall($mod, &$uninstallCnt)
