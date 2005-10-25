@@ -17,7 +17,8 @@ $core_modules = array('users',
                       'version',
                       'clipboard',
                       'notes',
-                      'comments'
+                      'comments',
+                      'search'
                       );
 
 
