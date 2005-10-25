@@ -24,7 +24,7 @@ class Access_Allow_Deny {
 
         $ip_length = strlen((string)$ip_address);
 
-        if (strstr($ip_address, '.')) {
+        if (strpos($ip_address, '.')) {
             $ip_list = explode('.', $ip_address);
         } elseif ($ip_length % 3) {
             return FALSE;
