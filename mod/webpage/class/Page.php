@@ -217,6 +217,11 @@ class Webpage_Page {
 
         $db = & new PHPWS_DB('webpage_page');
         $result = $db->saveObject($this);
+        if (!PEAR::isError($result)) {
+            $search = & new Search($volume->key_id);
+            $search->addKeywords($this->title . ' ' .$this->content);
+            $sResult = $search->save();
+        }
         return $result;
     }
 
