@@ -1,6 +1,6 @@
 <table width="100%" cellpadding="4">
   <tr>
-    <th>{URL_LABEL} {URL_SORT}</th>
+    <th>{TITLE_LABEL} {TITLE_SORT}</th>
     <th>{MODULE_LABEL} {MODULE_SORT}</th>
 <!-- BEGIN listrows -->
   <tr {TOGGLE}>
