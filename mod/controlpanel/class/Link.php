@@ -156,7 +156,7 @@ class PHPWS_Panel_Link {
 
         $DB = @ new PHPWS_DB('controlpanel_link');
         $DB->addWhere('tab', $this->getTab());
-        $DB->addColumn('link_order', NULL, 'max');
+        $DB->addColumn('link_order', 'max');
         $max = $DB->select('one');
     
         if (PEAR::isError($max))

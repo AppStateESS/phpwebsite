@@ -78,7 +78,7 @@ class PHPWS_Panel_Tab {
             return $this->tab_order;
 
         $DB = & new PHPWS_DB('controlpanel_tab');
-        $DB->addColumn('tab_order', NULL, 'max');
+        $DB->addColumn('tab_order', 'max');
         $max = $DB->select('one');
     
         if (PEAR::isError($max))
@@ -121,7 +121,7 @@ class PHPWS_Panel_Tab {
         $db = & new PHPWS_DB('controlpanel_tab');
         $db->addWhere('theme', $this->getTheme());
         $db->addWhere('theme_var', $this->getThemeVar());
-        $db->addColumn('box_order', NULL, 'max');
+        $db->addColumn('box_order', 'max');
         $max = $db->select('one');
         if (isset($max))
             return $max + 1;
