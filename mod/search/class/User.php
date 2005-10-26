@@ -113,6 +113,7 @@ class Search_User {
         $pager = & new DBPager('phpws_key', 'Key');
         $pager->setModule('search');
         $pager->setTemplate('search_results.tpl');
+        $pager->addToggle('class="bgcolor1"');
         $pager->addRowTags('getTplTags');
         $pager->addPageTags($pageTags);
 
