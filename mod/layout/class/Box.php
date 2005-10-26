@@ -228,7 +228,7 @@ class Layout_Box {
         $DB = new PHPWS_DB('layout_box');
         $DB->addWhere('theme', $this->theme);
         $DB->addWhere('theme_var', $this->theme_var);
-        $DB->addColumn('box_order', NULL, 'max');
+        $DB->addColumn('box_order', 'max');
         $max = $DB->select('one');
         if (isset($max)) {
             return $max + 1;
