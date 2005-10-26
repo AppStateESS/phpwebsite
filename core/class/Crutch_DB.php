@@ -97,7 +97,7 @@ class oldDB{
 
     function sqlMaxValue($table, $column){
         $db = & new PHPWS_DB($table);
-        $db->addColumn($column, NULL, 'max');
+        $db->addColumn($column, 'max');
 
         $result = $db->select('one');
     }
