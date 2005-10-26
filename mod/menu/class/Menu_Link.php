@@ -122,7 +122,7 @@ class Menu_Link {
         $db = $this->getDB();
         $db->addWhere('menu_id', $this->menu_id);
         $db->addWhere('parent', $this->parent);
-        $db->addColumn('link_order', FALSE, 'max');
+        $db->addColumn('link_order', 'max');
         $current_order = $db->select('one');
         if (empty($current_order)) {
             $current_order = 1;
