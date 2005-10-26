@@ -1,7 +1,7 @@
-<h3>{TITLE_LABEL}&#160;{TITLE_SORT}</h3>
+<div class="bgcolor2 padded"><h3>{TITLE_LABEL}&#160;{TITLE_SORT}</h3></div>
 
 <!-- BEGIN listrows -->
-<div style="padding : 5px" {TOGGLE}>{URL}</div>
+<div style="padding : 5px" {TOGGLE}>{URL}<br >{SUMMARY}</div>
 <!-- END listrows -->
 
 <br />
