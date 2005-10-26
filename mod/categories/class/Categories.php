@@ -117,6 +117,7 @@ class Categories{
             }
 
             $result = $db->select('count');
+
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
                 return NULL;
@@ -347,18 +348,25 @@ class Categories{
         $db = & new PHPWS_DB('category_items');
         $db->addWhere('cat_id' , (int)$cat_id);
         $db->addColumn('key_id');
-        $result = $db->select('col');
 
+        $result = $db->select('col');
         if (empty($result)) {
             return NULL;
         }
 
-        $count = count($result);
+        $mod_names = PHPWS_Core::getModuleNames();
 
         foreach ($result as $key_id) {
             $key = & new Key($key_id);
-            $module = & new PHPWS_Module($key->module);
-            $mod_list[$module->getTitle()] = sprintf(_('%s - %s item(s)'), $module->getProperName(), $count);
+            if (!isset($mod_count[$key->module])) {
+                $mod_count[$key->module] = 1;
+            } else {
+                $mod_count[$key->module]++;
+            }
+        }
+
+        foreach ($mod_count as $mod_title => $items) {
+            $mod_list[$mod_title] = sprintf(_('%s - %s item(s)'), $mod_names[$mod_title], $mod_count[$mod_title]);
         }
 
         return $mod_list;
