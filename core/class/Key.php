@@ -19,6 +19,7 @@ class Key {
     var $item_name       = NULL;
     var $item_id         = NULL;
     var $title           = NULL;
+    var $summary         = NULL;
     var $url             = NULL;
     var $active          = 1;
 
@@ -174,11 +175,18 @@ class Key {
     function setItemId($item_id)
     {
         $this->item_id = $item_id;
+
     }
 
     function setTitle($title)
     {
         $this->title = strip_tags($title);
+    }
+
+    function setSummary($summary)
+    {
+        $summary = preg_replace('/(<|&lt;|\[).*(>|&gt;|\])/sUi', ' ', $summary);
+        $this->summary = $summary;
     }
 
     function setUrl($url, $local=TRUE)
@@ -239,6 +247,7 @@ class Key {
         $tpl['ITEM_ID'] = $this->item_id;
         $tpl['TITLE']   = $this->title;
         $tpl['URL']     = $this->getUrl();
+        $tpl['SUMMARY'] = $this->summary;
         return $tpl;
     }
 
@@ -269,7 +278,7 @@ class Key {
     function modulesInUse()
     {
         $db = & new PHPWS_DB('phpws_key');
-        $db->addColumn('module', TRUE);
+        $db->addColumn('module');
         $db->addColumn('modules.proper_name');
         $db->addWhere('module', 'modules.title');
         $db->addOrder('phpws_key.module');
