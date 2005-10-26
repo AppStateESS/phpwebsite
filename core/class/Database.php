@@ -601,7 +601,7 @@ class PHPWS_DB {
         $this->_distinct = (bool)$distinct;
     }
 
-    function addColumn($column, $distinct=FALSE, $max_min=NULL)
+    function addColumn($column, $max_min=NULL)
     {
         if (!in_array(strtolower($max_min), array('max', 'min'))) {
             $max_min = NULL;
@@ -619,7 +619,6 @@ class PHPWS_DB {
 
         $col['table']    = $table;
         $col['name']     = $column;
-        $col['distinct'] = $distinct;
         $col['max_min']  = $max_min;
 
         $this->columns[] = $col;
@@ -635,23 +634,14 @@ class PHPWS_DB {
     {
         if ($format) {
             if (empty($this->columns)) {
-                if ($this->isDistinct()) {
-                    return 'DISTINCT ' . $this->tables[0] . '.*';
-                } else {
-                    return $this->tables[0] . '.*';
-                }
+                return $this->tables[0] . '.*';
             } else {
                 foreach ($this->columns as $col) {
                     extract($col);
-                    if ($distinct) {
-                        $dist = 'DISTINCT ';
-                    } else {
-                        $dist = NULL;
-                    }
                     if ($max_min) {
-                        $columns[] = $dist . strtoupper($max_min) . "($table.$name)";
+                        $columns[] = strtoupper($max_min) . "($table.$name)";
                     } else {
-                        $columns[] = "$dist$table.$name";
+                        $columns[] = "$table.$name";
                     }
                 }
                 return implode(', ', $columns);
@@ -976,11 +966,7 @@ class PHPWS_DB {
 
             if ($type == 'count') {
                 if (empty($columns)) {
-                    if ($this->isDistinct()) {
-                        $columns = 'DISTINCT COUNT(*)';
-                    } else {
-                        $columns = 'COUNT(*)';
-                    }
+                    $columns = 'COUNT(*)';
                 } else {
                     $add_group = $columns;
                     $columns .= ', COUNT(*)';   
@@ -995,7 +981,14 @@ class PHPWS_DB {
                 $where = 'WHERE ' . $where;
             }
 
-            $sql = "SELECT $columns FROM $table $where $groupby $order $limit";
+            if ($this->isDistinct()) {
+                $distinct = 'DISTINCT';
+            } else {
+                $distinct = NULL;
+            }
+                
+
+            $sql = "SELECT $distinct $columns FROM $table $where $groupby $order $limit";
         } else {
             $mode = DB_FETCHMODE_ASSOC;
         }
