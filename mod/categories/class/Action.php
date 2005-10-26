@@ -318,7 +318,7 @@ class Categories_Action {
         } else {
             $category = & new Category((int)$id);
             if (isset($module) && $module != '0') {
-                $template['TITLE'] = sprintf(_('Module: %s'), $oMod->getProperName());
+                $template['TITLE'] = sprintf(_('Module listing for %s'), $oMod->getProperName());
                 $content = Categories_Action::getAllItems($category, $module);
             } else {
                 $template['TITLE'] = _('Module Listing');
@@ -381,7 +381,7 @@ class Categories_Action {
         $pager->setDefaultLimit(10);
         $pager->setTemplate('category_item_list.tpl');
         $pager->addPageTags($pageTags);
-        $pager->addToggle('class="bgcolor1"');
+        $pager->addToggle('class="bgcolor2"');
         $pager->addRowTags('getTplTags');
         $content = $pager->get();
 
