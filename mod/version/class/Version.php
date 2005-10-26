@@ -314,7 +314,7 @@ class Version {
         $version_db = & new PHPWS_DB($this->version_table);
 
         $version_db->addWhere('source_id', $this->source_id);
-        $version_db->addColumn('vr_number', NULL, 'max');
+        $version_db->addColumn('vr_number', 'max');
         $current_version = $version_db->select('one');
         if (empty($current_version)) {
             $current_version = 1;
