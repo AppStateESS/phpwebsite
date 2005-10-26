@@ -80,7 +80,6 @@ class Search {
             $this->keywords = $keyword_list;
         }
         $this->keywords = array_unique($this->keywords);
-        test($this->keywords);
     }
 
     function filterWords($text)
