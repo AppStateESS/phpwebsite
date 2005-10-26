@@ -33,13 +33,23 @@ class Search_User {
 
     function searchBox()
     {
-        //        PHPWS_Core::requireConfig('search');
+        PHPWS_Core::requireConfig('search');
+
+
+        if (SEARCH_DEFAULT) {
+            $onclick = sprintf('onclick="if(this.value == \'%s\')this.value = \'\';"',
+                               SEARCH_DEFAULT);
+        }
+
 
         $form = & new PHPWS_Form('search_box');
         $form->setMethod('get');
         $form->addHidden('module', 'search');
         $form->addHidden('user', 'search');
-        $form->addText('search');
+        $form->addText('search', SEARCH_DEFAULT);
+        if (isset($onclick)) {
+            $form->setExtra('search', $onclick);
+        }
         $form->addSubmit('go', _('Search'));
 
         $result = Key::modulesInUse();
@@ -66,9 +76,9 @@ class Search_User {
             $form->setMatch('mod_title', $_REQUEST['mod_title']);
         }
 
-
         $template = $form->getTemplate();
-        
+
+        $template['SEARCH_LABEL'] = _('Search');        
         $content = PHPWS_Template::process($template, 'search', 'search_box.tpl');
         Layout::add($content, 'search', 'search_box');
     }
@@ -106,7 +116,7 @@ class Search_User {
 
         $pageTags = array();
         $pageTags['MODULE_LABEL'] = _('Module');
-        $pageTags['URL_LABEL']    = _('Url');
+        $pageTags['TITLE_LABEL']    = _('Title');
 
 
         PHPWS_Core::initCoreClass('DBPager.php');
