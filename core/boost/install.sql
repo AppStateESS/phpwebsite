@@ -59,16 +59,16 @@ CREATE TABLE mod_settings (
 );
 
 CREATE TABLE phpws_key (
-    id INT NOT NULL,
-    module varchar(40) NOT NULL,
-    item_name char(40) NOT NULL,
-    item_id INT NOT NULL,
-    title varchar(255),
-    url varchar(255),
-    active smallint NOT NULL default '1',
-    restricted smallint NOT NULL default '0',
-    view_permission varchar(30) default NULL,
-    edit_permission varchar(30) default NULL,
-    PRIMARY KEY (id)
+  id int NOT NULL default '0',
+  module varchar(40) NOT NULL default '',
+  item_name varchar(40) NOT NULL default '',
+  item_id int NOT NULL default '0',
+  title varchar(255) default NULL,
+  summary varchar(255) default NULL,
+  url varchar(255) default NULL,
+  active smallint NOT NULL default '1',
+  restricted smallint NOT NULL default '0',
+  view_permission varchar(30) default NULL,
+  edit_permission varchar(30) default NULL,
+  PRIMARY KEY  (id)
 );
-
