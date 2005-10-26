@@ -992,6 +992,7 @@ official
 often
 oh
 oil
+ok
 old
 older
 on
@@ -1414,6 +1415,7 @@ struggle
 student
 studies
 study
+stuff
 sturdy
 style
 subject
