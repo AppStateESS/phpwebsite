@@ -138,6 +138,7 @@ class Blog {
 
         $key->setUrl($this->getViewLink(TRUE));
         $key->setTitle($this->title);
+        $key->setSummary($this->entry);
         $key->save();
         $this->key_id = $key->id;
     }
