@@ -272,6 +272,7 @@ class Webpage_Volume {
         }
 
         $key->setTitle($this->title);
+        $key->setSummary($this->summary);
         $key->setUrl($this->getViewLink(TRUE));
 
         $result = $key->save();
