@@ -3,9 +3,9 @@
     <th>{URL_LABEL} {URL_SORT}</th>
     <th>{MODULE_LABEL} {MODULE_SORT}</th>
 <!-- BEGIN listrows -->
-  <tr>
-    <td>{URL}</td>
-    <td>{MODULE}</td>
+  <tr {TOGGLE}>
+    <td width="80%">{URL}<br />{SUMMARY}</td>
+    <td width="20%">{MODULE}</td>
   </tr>
 <!-- END listrows -->
 </table>
