@@ -6,6 +6,7 @@
  * @version $Id$
  */
 
+
 class Menu {
 
     function admin()
@@ -79,7 +80,7 @@ class Menu {
 
     function getAddLink($menu_id, $parent_id=NULL)
     {
-        PHPWS_Core::configRequireOnce('menu', 'config.php');
+
         $key = Key::getCurrent();
 
         if (empty($key)) {

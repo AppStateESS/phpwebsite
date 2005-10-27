@@ -1,4 +1,10 @@
 <?php
+  /**
+   * Class for individual menu links
+   *
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
+   */
 
 define('MENU_MISSING_INFO', 1);
 
@@ -169,8 +175,6 @@ class Menu_Link {
  
         if ($current_link || $this->parent == 0         ||
             in_array($this->parent, $current_parent)) {
-
-            PHPWS_Core::configRequireOnce('menu', 'config.php');
 
             $link = sprintf('<a href="%s" title="%s">%s</a>', $this->getUrl(), $this->title, $this->title);
 

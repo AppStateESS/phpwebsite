@@ -251,8 +251,6 @@ class Menu_Item {
      */
     function view()
     {
-        PHPWS_Core::requireConfig('menu', 'config.php');
-
         $edit = FALSE;
         $file = 'menu_layout/' . $this->template;
         $content_var = 'menu_' . $this->id;
