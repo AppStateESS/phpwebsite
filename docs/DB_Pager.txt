@@ -75,11 +75,11 @@ $pager->setTemplate("imageList.tpl");
 
 
 Link:
-Finally, you will need to set the link address. Pager appends its view
-information on the end of this link. It will look something like the
-following:
+Pager will check the current url for the correct link. If for some
+reason it is having problems, you can set the link manually.
 
 $pager->setLink("index.php?module=filecabinet&amp;action=main&amp;tab=image");
+
 
 With these parameters set, the pager is ready to get started. It will
 pull a number of rows (based on the page limit) from the specified
