@@ -1,6 +1,2 @@
-<div class="comments">
-<div class="box">
-  <h1 class="box-title">{TITLE}</h1>
-  <div class="box-content">{CONTENT}</div>
-</div>
-</div>
+<div class="panel-title"><h1>{TITLE}</h1></div>
+<div class="panel-content">{CONTENT}</div>
