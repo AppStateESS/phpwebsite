@@ -24,7 +24,10 @@ class Key {
     var $active          = 1;
 
     // if TRUE/1 then only logged in users will access
-    var $restricted    = 0;
+    var $restricted      = 0;
+
+    var $create_date     = 0;
+    var $update_date     = 0;
 
     // contains permission allow name for viewing
     var $view_permission = NULL;
@@ -152,6 +155,12 @@ class Key {
         if (empty($this->item_name) || $this->item_name == 'home') {
             $this->item_name = $this->module;
         }
+
+        if (empty($this->create_date)) {
+            $this->create_date = mktime();
+        }
+
+        $this->update_date = mktime();
 
         $db = & new PHPWS_DB('phpws_key');
         $result = $db->saveObject($this);
