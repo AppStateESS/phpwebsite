@@ -68,6 +68,8 @@ CREATE TABLE phpws_key (
   url varchar(255) default NULL,
   active smallint NOT NULL default '1',
   restricted smallint NOT NULL default '0',
+  create_date int NOT NULL default '0',
+  update_date int NOT NULL default '0',
   view_permission varchar(30) default NULL,
   edit_permission varchar(30) default NULL,
   PRIMARY KEY  (id)
