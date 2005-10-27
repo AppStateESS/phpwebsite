@@ -7,6 +7,7 @@
    * @version $Id$
    */
 
+PHPWS_Core::requireConfig('search');
 class Search_User {
 
     function main()
@@ -19,9 +20,6 @@ class Search_User {
 
         switch ($command) {
         case 'search':
-            if (empty($_REQUEST['search'])) {
-                PHPWS_Core::goBack();
-            }
             Search_User::searchPost();
             break;
 
@@ -33,38 +31,24 @@ class Search_User {
 
     function searchBox()
     {
-        PHPWS_Core::requireConfig('search');
-
-
         if (SEARCH_DEFAULT) {
             $onclick = sprintf('onclick="if(this.value == \'%s\')this.value = \'\';"',
                                SEARCH_DEFAULT);
         }
-
 
         $form = & new PHPWS_Form('search_box');
         $form->setMethod('get');
         $form->addHidden('module', 'search');
         $form->addHidden('user', 'search');
         $form->addText('search', SEARCH_DEFAULT);
+        $form->setLabel('search', _('Search'));
+
         if (isset($onclick)) {
             $form->setExtra('search', $onclick);
         }
         $form->addSubmit('go', _('Search'));
 
-        $result = Key::modulesInUse();
-
-        if (PEAR::isError($result)) {
-            PHPWS_Error::log($result);
-            $result = NULL;
-        }
-
-
-        $mod_list = array('all'=> _('All modules'));
-
-        if (!empty($result)) {
-            $mod_list = array_merge($mod_list, $result);
-        }
+        $mod_list = Search_User::getModList();
 
         $form->addSelect('mod_title', $mod_list);
         
@@ -78,21 +62,118 @@ class Search_User {
 
         $template = $form->getTemplate();
 
-        $template['SEARCH_LABEL'] = _('Search');        
         $content = PHPWS_Template::process($template, 'search', 'search_box.tpl');
         Layout::add($content, 'search', 'search_box');
     }
 
+    function getModList()
+    {
+        $result = Key::modulesInUse();
+
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $result = NULL;
+        }
+
+        $mod_list = array('all'=> _('All modules'));
+
+        if (!empty($result)) {
+            $mod_list = array_merge($mod_list, $result);
+        }
+
+        return $mod_list;
+    }
+
+    function sendToAlternate($alternate, $search_phrase)
+    {
+        $file = PHPWS_Core::getConfigFile('search', 'alternate.php');
+        if (!$file) {
+            PHPWS_Core::errorPage();
+            exit();
+        }
+
+        include($file);
+
+        if (!isset($alternate_search_engine) || !is_array($alternate_search_engine) ||
+            !isset($alternate_search_engine[$alternate])) {
+            PHPWS_Core::errorPage();
+            exit();
+        }
+
+        $gosite = &$alternate_search_engine[$alternate];
+
+        $query_string = str_replace(' ', '+', $search_phrase);
+
+        $site = urlencode(PHPWS_Core::getHomeHttp(FALSE, FALSE, FALSE));
+        $site = 'appstate.edu';
+        $url = sprintf($gosite['url'], $query_string, $site);
+
+        header('location: ' . $url);
+        exit();
+    }
+
     function searchPost()
     {
-        $search_phrase = strip_tags($_REQUEST['search']);
+        $search_phrase = Search::filterWords($_REQUEST['search']);
+
+        if (isset($_REQUEST['alternate']) && $_REQUEST['alternate'] != 'local') {
+            Search_User::sendToAlternate($_REQUEST['alternate'], $search_phrase);
+            exit();
+        }
+
+        $form = & new PHPWS_Form('search_box');
+        $form->setMethod('get');
+        $form->addHidden('module', 'search');
+        $form->addHidden('user', 'search');
+        $form->addSubmit(_('Search'));
+        $form->addText('search', $search_phrase);
+        $form->setSize('search', 40);
+        $form->setLabel('search', _('Search for:'));
+
+        $form->addCheck('exact_only', 1);
+        $form->setLabel('exact_only', _('Exact matches only'));
+        if (isset($_REQUEST['exact_only'])) {
+            $exact_match = TRUE;
+            $form->setMatch('exact_only', 1);
+        } else {
+            $exact_match = FALSE;
+        }
+
+        $mod_list = Search_User::getModList();
+        $form->addSelect('mod_title', $mod_list);
+        $form->setLabel('mod_title', _('Module list'));
+        if (isset($_REQUEST['mod_title'])) {
+            $form->setMatch('mod_title', $_REQUEST['mod_title']); 
+        }
+
+        $file = PHPWS_Core::getConfigFile('search', 'alternate.php');
+        if ($file) {
+            include($file);
+            
+            if (!empty($alternate_search_engine) && is_array($alternate_search_engine)) {
+                $alternate_sites['local'] = _('Local');
+                foreach ($alternate_search_engine as $title=>$altSite) {
+                    $alternate_sites[$title] = $altSite['title'];
+                }
+
+                $form->addRadio('alternate', array_keys($alternate_sites));
+                $form->setLabel('alternate', $alternate_sites);
+                $form->setMatch('alternate', 'local');
+            }
+        }
+        
+        $template = $form->getTemplate();
+
         if (isset($_REQUEST['mod_title']) && $_REQUEST['mod_title'] != 'all') {
             $module = preg_replace('/\W/', '', $_REQUEST['mod_title']);
         } else {
             $module = NULL;
         }
 
-        $result = Search_User::getResults($search_phrase, $module);
+        $template['SEARCH_LOCATION'] = _('Search location');
+        $template['ADVANCED_LABEL'] = _('Advanced Search');
+
+        $result = Search_User::getResults($search_phrase, $module, $exact_match);
 
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
@@ -110,9 +191,9 @@ class Search_User {
         Layout::add($content);
     }
 
-    function getResults($phrase, $module=NULL)
+    function getResults($phrase, $module=NULL, $exact_match=FALSE)
     {
-        PHPWS_Core::requireConfig('search');
+        PHPWS_Core::initModClass('search', 'Stats.php');
 
         $pageTags = array();
         $pageTags['MODULE_LABEL'] = _('Module');
@@ -153,10 +234,20 @@ class Search_User {
                 continue;
             }
 
-            $pager->addWhere('search.keywords', "%$keyword%", 'like', 'or', 1);
+            if ($exact_match) {
+                $keyword = "%$keyword %";
+            } else {
+                $keyword = "%$keyword%";
+            }
+
+            $pager->addWhere('search.keywords', $keyword, 'like', 'or', 1);
         }
         $pager->db->setGroupConj(1, 'AND');
-        return $pager->get(FALSE);
+        $result =  $pager->get(FALSE);
+
+        Search_Stats::record($words, $pager->total_rows, $exact_match);
+
+        return $result;
     }
 
 

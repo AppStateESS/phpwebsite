@@ -88,8 +88,9 @@ class Search {
         $text = preg_replace('/(<|&lt;).*(>|&gt;)/sUi', ' ', $text);
 
         $text = strtolower($text);
-        $text = strip_tags($text);
+        $text = preg_replace('/[^\w\-\s]/', '', $text);
         $text = preg_replace('/(-{2,}|\/)/U', ' ', $text);
+
         return $text;
     }
 
@@ -105,7 +106,7 @@ class Search {
         $file_name = 'wordlist.en.txt';
 
         // Removes trademark/registered, contractions, and website suffix
-        $text = preg_replace('/\d|(n\'t|\'([sd]|ll|re|ve))|\.(com|edu|net|org)|\(tm\)|\(r\)|[^\w\-\s]/', '', $text);
+        $text = preg_replace('/\d|(n\'t|\'([sd]|ll|re|ve))|\.(com|edu|net|org)|\(tm\)|\(r\)/', '', $text);
 
         $config_file = PHPWS_Core::getConfigFile('search', $file_name);
         $common_words = file($config_file);
