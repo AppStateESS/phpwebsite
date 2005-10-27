@@ -1,5 +1,6 @@
-<div class="box">
-  <h1 class="box-title">{TITLE}</h1>
-  <!-- BEGIN message --><h3>{MESSAGE}</h3}<!-- END message -->
-  <div class="box-content">{CONTENT}</div>
+<div class="paenl-title"><h1>{TITLE}</h1></div>
+<div class="panel-content">
+<!-- BEGIN message --><h3>{MESSAGE}</h3}<!-- END message -->
+{CONTENT}
 </div>
+
