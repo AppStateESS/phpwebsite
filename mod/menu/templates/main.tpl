@@ -1,5 +1,5 @@
-<div class="box">
-  <h1 class="box-title">{TITLE}</h1>
-  <span class="error">{MESSAGE}</span>
-  <div class="box-content">{CONTENT}</div>
+<div class="panel-title"><h1>{TITLE}</h1></div>
+<div class="panel-content">
+<span class="error">{MESSAGE}</span>
+{CONTENT}
 </div>
