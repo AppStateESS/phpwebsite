@@ -104,11 +104,11 @@ cursor : pointer;
 }
 
 
-#user-menu {
+#top-menu {
 	background-color : #DEE2BD;
 }
 
-#user-menu a:hover{
+#top-menu a:hover{
 background-color : #ADB583;
 color : black;
 }
@@ -233,4 +233,10 @@ div.current-link {
 
 div.category-menu-bar {
    background-color : #DEE2BD;
+}
+
+div.panel-title {
+   background-color : #DEE2BD;
+   padding : 4px;
+   margin-bottom : 10px;
 }

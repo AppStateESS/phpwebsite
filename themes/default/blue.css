@@ -61,11 +61,11 @@ div.box a:hover, div.box a:active {
 	background-color : #bbc9ef;
 }
 
-#user-menu {
+#top-menu {
 	background-color : #fff;
 }
 
-#user-menu a:hover{
+#top-menu a:hover{
 background-color : #ADB583;
 color : black;
 }
@@ -184,4 +184,10 @@ background-color : transparent;
 
 div.current-link {
    background-color : #4A77BB;
+}
+
+div.panel-title {
+   background-color : #bbc9ef;
+   padding : 4px;
+   margin-bottom : 10px;
 }

@@ -226,10 +226,16 @@ table.form-table td.label {
 
 /*--------------- Module settings -----------------*/
 
-#user-menu {
-	padding : 2px 4px 2px 0;
+#top-menu {
+	padding : 5px 5px 8px 5px;
 	text-align : right;
 	margin-bottom : 5px;
+}
+
+#search-box {
+    float : left;
+    padding : 0;
+    margin : 0;
 }
 
 
