@@ -163,10 +163,15 @@ class DBPager {
             $this->orderby_dir = preg_replace('/\W/', '', $_REQUEST['orderby_dir']);
         }
 
-        if (isset($_REQUEST['search']) && !empty($_REQUEST['search'])) {
+        if (isset($_REQUEST['current_search'])) {
+            if (!empty($_REQUEST['current_search'])) {
+                $this->search = preg_replace('/\W/', '', $_REQUEST['current_search']);
+            } else {
+                $this->search = NULL;
+            }
+        } elseif (isset($_REQUEST['search'])) {
             $this->search = preg_replace('/\W/', '', $_REQUEST['search']);
         }
-
     }
 
     function loadLink()
@@ -188,9 +193,11 @@ class DBPager {
     function setSearch(){
         $col_list = func_get_args();
 
-        foreach ($col_list as $column)
-            if (ctype_alnum($column) && $this->db->isTableColumn($column))
+        foreach ($col_list as $column) {
+            if (ctype_alnum($column) && $this->db->isTableColumn($column)) {
                 $this->searchColumn[] = $column;
+            }
+        }
     }
 
     function setPageTurnerLeft($turner){
@@ -503,8 +510,10 @@ class DBPager {
         $values['page'] = $this->current_page;
         $values['limit'] = $this->limit;
 
-        if (isset($this->search)) {
+        if (!empty($this->search)) {
             $values['search'] = $this->search;
+        } else {
+            $values['search'] = NULL;
         }
 
         if (isset($this->orderby)) {
@@ -523,7 +532,7 @@ class DBPager {
 
         // pull any extra values in current url
         $extra = PHPWS_Text::getGetValues();
-        
+
         // if extra values exist, add them to the values array
         // ignore matches in the output and other values
         if (!empty($extra)) {
@@ -532,6 +541,7 @@ class DBPager {
             } else {
                 $diff = $extra;
             }
+
             $diff = array_diff_assoc($diff, $values);
             $values = array_merge($diff, $values);
         }
@@ -542,8 +552,11 @@ class DBPager {
 
         // prevents a doubling of the value in the page form
         unset($values['change_page']);
+        unset($values['current_search']);
+
 
         $GLOBALS['DBPager_Link_Values'] = $values;
+
         return $values;
     }
 
@@ -653,8 +666,8 @@ class DBPager {
         $form->setMethod('get');
         $values = $this->getLinkValues();
         $form->addHidden($values);
-        $form->addText('search', $this->search);
-        $form->setLabel('search', _('Search'));
+        $form->addText('current_search', $this->search);
+        $form->setLabel('current_search', _('Search'));
         $template = $form->getTemplate();
         if (PEAR::isError($template)) {
             PHPWS_Error::log($template);
