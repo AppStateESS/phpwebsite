@@ -272,8 +272,12 @@ class PHPWS_Core {
         $GLOBALS['PHPWS_Current_Mod'] = $module;
     }
 
-    function getConfigFile($module, $file)
+    function getConfigFile($module, $file=NULL)
     {
+        if (empty($file)) {
+            $file = 'config.php';
+        }
+
         $file = preg_replace('/[^\-\w\.\\\\\/]/', '', $file);
         $module = preg_replace('/[^\w\.]/', '', $module);
 
@@ -289,9 +293,10 @@ class PHPWS_Core {
         if (!is_file($file) || FORCE_MOD_CONFIG) {
             if (!is_file($altfile)) {
                 return FALSE;
-            }
-            else
+            } 
+            else {
                 $file = $altfile;
+            }
         }
 
         return $file;
@@ -488,12 +493,22 @@ class PHPWS_Core {
         return implode('', $address) . '/';
     }
 
-    function getHomeHttp()
+    function getHomeHttp($with_http=TRUE, $with_directory=TRUE, $with_slash=TRUE)
     {
-        $address[] = PHPWS_Core::getHttp();
+        if ($with_http) {
+            $address[] = PHPWS_Core::getHttp();
+        }
         $address[] = $_SERVER['HTTP_HOST'];
-        $address[] = dirname($_SERVER['PHP_SELF']);
-        return implode('', $address) . '/';
+
+        if ($with_directory) {
+            $address[] = dirname($_SERVER['PHP_SELF']);
+        }
+
+        $url = implode('', $address);
+        if ($with_slash) {
+            $url .= '/';
+        }
+        return $url;
     }
 
     function getCurrentUrl($relative=TRUE, $use_redirect=TRUE)
