@@ -1,3 +1,4 @@
+<div id="user-login">
 <!-- BEGIN login-form -->
 {START_FORM}
 {BLOCK_USERNAME_LABEL}<br />{BLOCK_USERNAME}<br />
@@ -22,3 +23,4 @@
 {MODULES}<br />
 <hr />
 {LOGOUT}
+</div>

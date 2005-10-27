@@ -1,3 +1,4 @@
+<div id="user-login">
 <!-- BEGIN login-form -->
 {START_FORM}
 <!-- BEGIN links -->
@@ -12,3 +13,4 @@
 <!-- BEGIN user-panel -->
 {HOME_USER_PANEL}&nbsp;&nbsp;{MODULES}&nbsp;&nbsp;{LOGOUT}
 <!-- END user-panel -->
+</div>
