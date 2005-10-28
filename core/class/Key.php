@@ -35,7 +35,9 @@ class Key {
     // contains permission allow name for editing
     var $edit_permission = NULL;
 
-    var $_error        = NULL;
+    var $times_viewed    = 0;
+
+    var $_error          = NULL;
   
     function Key($id=NULL)
     {
@@ -294,6 +296,17 @@ class Key {
         $db->setIndexBy('module');
         $db->setDistinct(true);
         return $db->select('col');
+    }
+
+    function viewed()
+    {
+        if (!$this->id || $this->isHomeKey()) {
+            return;
+        }
+
+        $db = & new PHPWS_DB('phpws_key');
+        $db->addWhere('id', $this->id);
+        return $db->incrementColumn('times_viewed');
     }
 
 }
