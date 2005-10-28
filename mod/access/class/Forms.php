@@ -275,7 +275,7 @@ class Access_Forms {
         $form->addHidden('command', 'post_shortcut');
         $instruction = _('Type keyword here');
         $form->addText('keyword', $instruction);
-        $form->setExtra('keyword', 'onclick="this.value=\'\'"');
+        $form->setExtra('keyword', sprintf('onclick="if (this.value == \'%s\') {this.value=\'\'}"', $instruction));
         $form->addSubmit('go', _('Go'));
         $form->addSubmit('off', _('Turn off Shortcuts'));
         $tpl = $form->getTemplate();
