@@ -71,7 +71,15 @@ class Access {
                 PHPWS_Core::initModClass('access', 'Shortcut.php');
                 $shortcut = & new Access_Shortcut($_REQUEST['shortcut_id']);
                 if (empty($shortcut->_error) && $shortcut->id) {
-                    $shortcut->delete();
+                    $result = $shortcut->delete();
+                    if (PEAR::isError($result)) {
+                        Access::sendMessage(_('An error occurred when deleting your shortcut.'), 'shortcuts');
+                    } elseif (PHPWS_Settings::get('access', 'allow_file_update')) {
+                        $result = Access::writeAccess();
+                        if (PEAR::isError($result)) {
+                            Access::sendMessage(_('An error occurred when updating your .htaccess file.'), 'shortcuts');
+                        }
+                    }
                 }
                 Access::sendMessage(_('Shortcut deleted'), 'shortcuts');
                 break;
@@ -455,18 +463,27 @@ class Access {
         switch ($_POST['list_action']) {
         case 'active':
             $db->addValue('active', 1);
-            return $db->update();
+            $result = $db->update();
             break;
             
         case 'deactive':
             $db->addValue('active', 0);
-            return $db->update();
+            $result = $db->update();
             break;
             
         case 'delete':
-            return $db->delete();
+            $result = $db->delete();
             break;
         }
+
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        if (PHPWS_Settings::get('access', 'allow_file_update')) {
+            return Access::writeAccess();
+        }
+
     }
 
     function postDenyAllow()
