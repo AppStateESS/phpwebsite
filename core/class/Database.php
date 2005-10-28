@@ -699,7 +699,12 @@ class PHPWS_DB {
 
         if ($dbReady) {
             foreach ($this->order as $aOrder) {
-                $order_list[] = $aOrder['table'] . '.' . $aOrder['column'];
+                if (is_array($aOrder)) {
+                    $order_list[] = $aOrder['table'] . '.' . $aOrder['column'];
+                } else {
+                    // for random orders
+                    $order_list[] = $aOrder;
+                }
             }
             return 'ORDER BY ' . implode(', ', $order_list);
         } else {
@@ -1153,6 +1158,42 @@ class PHPWS_DB {
         } else {
             $rows[$index] = $item;
         }
+    }
+
+    /**
+     * increases the value of a table column
+     */
+    function incrementColumn($column_name, $amount=1)
+    {
+        $amount = (int)$amount;
+
+        $table = $this->getTable();
+        if (!$table) {
+            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::incrementColumn');
+        }
+
+        $where = $this->getWhere(TRUE);
+        if (!empty($where)) {
+            $where = 'WHERE ' . $where;
+        }
+
+        $query = "UPDATE $table SET $column_name = $column_name + $amount $where";
+        $result = PHPWS_DB::query($query);
+
+        if (DB::isError($result)) {
+            return $result;
+        } else {
+            return TRUE;
+        }
+    }
+
+    /**
+     * reduces the value of a table column
+     */
+
+    function reduceColumn($column_name, $amount=1)
+    {
+        return $this->incrementColumn($column_name, ($amount * -1));
     }
 
 
