@@ -27,12 +27,17 @@ width : 100%;
 background-color : white;
 }
 
+div.tn-image-block {
+ background-repeat : no-repeat;
+ height : 100%
+}
 
 </style>
+
 <div class="bgcolor2 padded"><h1>{TITLE}</h1></div>
 <!-- BEGIN thumbnail-list -->
-<div class='thumbnail'>
-  <span  id="image-{TN_ID}" onclick="highlight('{TN_ID}', '{ID}');">{THUMBNAIL}</span>
+<div class="thumbnail">
+  <div class="tn-image-block" id="image-{TN_ID}" style="background-image : url('{THUMBNAIL}');" onclick="highlight('{TN_ID}','{ID}')">&nbsp;</div>
   <div class="image-info">
     <a class="smaller" href="javascript:show_image('{ID}', '{TN_ID}', {WIDTH}, {HEIGHT});">{VIEW}</a>
     <span class="smaller"> {WIDTH} x {HEIGHT} </span>

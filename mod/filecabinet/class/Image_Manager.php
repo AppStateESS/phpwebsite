@@ -342,7 +342,6 @@ class FC_Image_Manager {
         if ($clear_opener) {
             $this->getClearLink();
             javascript('onload', array('function' => "clear_image('" . $this->itemname . "')"));
-            
         }
 
         $db = & new PHPWS_DB('images');
@@ -362,7 +361,7 @@ class FC_Image_Manager {
             $tpl['MESSAGE'] = _('No images found.');
         } else {
             foreach ($thumbnails as $tn) {
-                $tpl['thumbnail-list'][] = array('THUMBNAIL' => $tn->getTag(),
+                $tpl['thumbnail-list'][] = array('THUMBNAIL' => $tn->getPath(),
                                                  'TN_ID'     => $tn->id,
                                                  'ID'        => $tn->thumbnail_source,
                                                  'ITEMNAME'  => $this->itemname,
