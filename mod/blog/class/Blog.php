@@ -202,6 +202,7 @@ class Blog {
         } elseif ($this->id) {
             $template['COMMENTS'] = $comments->view();
             $key->flag();
+            $key->viewed();
         }
 
         $result = Categories::getSimpleLinks($key);
