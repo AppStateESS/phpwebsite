@@ -95,10 +95,6 @@ class PHPWS_SQL {
             $query = preg_replace('/primary key/i', '', $query);
 
             $query = preg_replace('/\);/', ', PRIMARY KEY (id));', $query);
-            /*
-      $query .= sprintf('CREATE UNIQUE INDEX %s_%s ON %s (id);',
-                        $tableName, 'id', $tableName);
-            */
         }
     }
 
