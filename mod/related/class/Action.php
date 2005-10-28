@@ -42,12 +42,13 @@ class Related_Action {
 
         $id = $related->id;
 
-        $js['QUESTION'] = _('What do you want the title to be?');
-        $js['TITLE']    = $related->title;
-        $js['LINK']     = '<img src="images/mod/related/edit.png"/>';
-        $js['ALLOWED']  = ALLOWED_TITLE_CHARS;
+        $js['question'] = _('What do you want the title to be?');
+        $js['address'] = 'index.php?module=related&action=postTitle';
+        $js['answer'] = $related->title;
+        $js['value_name'] = 'new_title';
+        $js['link'] = '<img src="images/mod/related/edit.png"/>';
 
-        $edit = Layout::getJavascript('related_title_change', $js);
+        $edit = javascript('prompt', $js);
 
         $template['EDIT'] = $edit;
 
