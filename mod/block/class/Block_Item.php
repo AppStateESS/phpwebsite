@@ -122,9 +122,10 @@ class Block_Item {
             $img = '<img src="./images/mod/block/pin.png" />';
             $opt = PHPWS_Text::secureLink($img, 'block', $link);
         } elseif (!empty($this->_pin_key) && Current_User::allow('block') && $admin_icon) {
-            $js_var['ADDRESS'] = 'index.php?module=block&amp;action=remove'
-                . '&amp;block_id=' . $this->id
-                . '&amp;key_id=' . $this->_pin_key->id;        
+            $vars['action'] = 'remove';
+            $vars['block_id'] = $this->id;
+            $vars['key_id'] = $this->_pin_key->id;
+            $js_var['ADDRESS'] = PHPWS_Text::linkAddress('block', $vars, TRUE);
             $js_var['QUESTION'] = _('Are you sure you want to remove this block from this page?');
             $js_var['LINK'] = '<img src="./images/mod/block/remove.png" />';
         

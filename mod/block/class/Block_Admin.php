@@ -143,17 +143,16 @@ class Block_Admin {
 
     function removeBlock()
     {
-        if (!isset($_GET['mod']) ||
-            !isset($_GET['item']) ||
-            !isset($_GET['itname']) ||
-            !isset($_GET['block_id'])
-            )
+        if (!isset($_GET['key_id']) || !isset($_GET['block_id'])) {
             return;
+        }
+
 
         $db = & new PHPWS_DB('block_pinned');
         $db->addWhere('block_id', $_GET['block_id']);
-        $db->addWhere('key_id', $_GET['block_id']);
+        $db->addWhere('key_id', $_GET['key_id']);
         $result = $db->delete();
+
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
         }
