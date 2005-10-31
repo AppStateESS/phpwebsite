@@ -45,7 +45,7 @@ Getting Started
 ---------------------------------------------------------------------
 Version is not a static class. You will need to instantiate it.
 
-$version = & new Version("source_table");
+$version = & new Version('source_table');
 
 The "source_table" is the database table you use to store your source
 data.
@@ -115,7 +115,12 @@ want. You will need to check for its existence first.
 
 Create your version as normal:
 $version = & new Version("my_mod_table");
+
+// $my_mod_item is the ORIGINAL item object
+// we aren't editing it, but we need it to grab the unapproved
+// item
 $version->setSource($my_mod_item);
+
 
 Now call the 'isWaitingApproval' function:
 
