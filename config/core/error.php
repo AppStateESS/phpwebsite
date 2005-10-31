@@ -114,4 +114,7 @@ $errors[EDITOR_MISSING_FILE]          = _('Unable to find the specified editor t
 // Settings.php 1300 - 1399
 $errors[SETTINGS_MISSING_FILE]        = _('Unable to find your module\'s settings.php file.');
 
+// Key.php 1400 - 1499
+$errors[KEY_NOT_FOUND]                = _('Key not found.');
+
 ?>

@@ -118,4 +118,8 @@ define('EDITOR_MISSING_FILE',         -1200);
 
 /************** Settings.php **************/
 define('SETTINGS_MISSING_FILE',       -1300);
+
+/**************  Key.php  *****************/
+define('KEY_NOT_FOUND',               -1400);
+
 ?>
