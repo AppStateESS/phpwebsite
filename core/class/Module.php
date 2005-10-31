@@ -117,7 +117,7 @@ class PHPWS_Module {
 
     function init($file=TRUE)
     {
-        $title = $this->getTitle();
+        $title = $this->title;
 
         $this->setDirectory(PHPWS_SOURCE_DIR . "mod/$title/");
 
@@ -139,11 +139,6 @@ class PHPWS_Module {
         $this->title = trim($title);
     }
 
-    function getTitle()
-    {
-        return $this->title;
-    }
-
     function setProperName($name)
     {
         $this->proper_name = $name;
@@ -152,7 +147,7 @@ class PHPWS_Module {
     function getProperName($useTitle=FALSE)
     {
         if (!isset($this->proper_name) && $useTitle == TRUE) {
-            return ucwords(str_replace('_', ' ', $this->getTitle()));
+            return ucwords(str_replace('_', ' ', $this->title));
         }
         else {
             return $this->proper_name;
@@ -277,7 +272,7 @@ class PHPWS_Module {
     function save()
     {
         $db = new PHPWS_DB('modules');
-        $db->addWhere('title', $this->getTitle());
+        $db->addWhere('title', $this->title);
         $db->delete();
         $db->resetWhere();
         if (!$this->getProperName()) {
@@ -379,7 +374,7 @@ class PHPWS_Module {
     function needsUpdate()
     {
         $db = & new PHPWS_DB('modules');
-        $db->addWhere('title', $this->getTitle());
+        $db->addWhere('title', $this->title);
         $result = $db->select('row');
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
