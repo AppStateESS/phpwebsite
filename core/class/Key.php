@@ -57,10 +57,7 @@ class Key {
 
 
         $this->id = (int)$id;
-        $result = $this->init();
-        if (PEAR::isError($result)) {
-            $this->error = $result;
-        }
+        $this->init();
     }
 
     function isKey($key)
@@ -139,7 +136,16 @@ class Key {
     function init()
     {
         $db = & new PHPWS_DB('phpws_key');
-        return $db->loadObject($this);
+
+        $result = $db->loadObject($this);
+
+        if (PEAR::isError($result)) {
+            $this->_error = $result;
+        } elseif (empty($result)) {
+            $this->_error = PHPWS_Error::get(KEY_NOT_FOUND, 'core', 'Key::init', $this->id);
+            $this->id = NULL;
+        }
+        return $result;
     }
 
     function save()
