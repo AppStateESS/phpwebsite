@@ -157,7 +157,21 @@ class PHPWS_ControlPanel {
             return NULL;
         }
 
-        include_once($cpFile);
+        $modSource = PHPWS_SOURCE_DIR . 'mod/' . $module . '/img';
+        $modImage = PHPWS_HOME_DIR . 'images/mod/' . $module;
+        if (is_dir($modSource) && !is_dir($modImage)) {
+            PHPWS_Core::initCoreClass('File.php');
+            $content[] = _('Copying source image directory for module.');
+            
+            $result = PHPWS_File::recursiveFileCopy($modSource, $modImage);
+            if ($result) {
+                $content[] = _('Source image directory copied successfully.');
+            } else {
+                $content[] = _('Source image directory failed to copy.');
+            }
+        }
+
+        include $cpFile;
 
         if (isset($tabs) && is_array($tabs)) {
             foreach ($tabs as $info){
@@ -200,7 +214,7 @@ class PHPWS_ControlPanel {
         } else {
             PHPWS_Boost::addLog($module, _('No Control Panel tabs found.'));
         }
-
+        
         if (isset($link) && is_array($link)) {
             $db = new PHPWS_DB('controlpanel_tab');
             foreach ($link as $info){
@@ -258,8 +272,9 @@ class PHPWS_ControlPanel {
                 $db->resetWhere();
             }
             $content[] = sprintf(_('Control Panel links created for %s.'), $module);
-        } else
+        } else {
             PHPWS_Boost::addLog($module, _('No Control Panel links found.'));
+        }
 
         PHPWS_ControlPanel::reset();
         return TRUE;
