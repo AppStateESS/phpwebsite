@@ -121,7 +121,7 @@ class Boost_Form {
             }
 
             if ($mod->isAbout()){
-                $address = 'index.php?module=boost&amp;action=aboutView&amp;aboutmod=' . $mod->getTitle();
+                $address = 'index.php?module=boost&amp;action=aboutView&amp;aboutmod=' . $mod->title;
                 $aboutView = array('label'=>_('About'), 'address'=>$address);
                 $template['ABOUT'] = Layout::getJavascript('open_window', $aboutView);
             }
