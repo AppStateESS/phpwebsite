@@ -54,7 +54,7 @@ class My_Page {
 
         foreach ($this->modules as $module){
             $link = 'index.php?module=users&amp;action=user';
-            $tabs[$module->getTitle()] = array('title'=>$module->getProperName(), 'link'=>$link);
+            $tabs[$module->title] = array('title'=>$module->getProperName(), 'link'=>$link);
         }
 
         $panel = & new PHPWS_Panel('users');
