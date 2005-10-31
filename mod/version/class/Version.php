@@ -237,9 +237,15 @@ class Version {
             $this->_clearCurrents();
         }
 
+
         if (!empty($this->id)) {
             $version_db->addWhere('id', $this->id);
-            return $version_db->update();
+            $result = $version_db->update();
+            if (PEAR::isError($result)) {
+                $this->_error = $result;
+                return $result;
+            }
+            $version->cleanupVersions();
         } else {
             $result = $version_db->insert();
             if (PEAR::isError($result)) {
@@ -247,9 +253,34 @@ class Version {
                 return $result;
             }
             $this->id = $result;
+            $this->cleanupVersions();
         }
-    
         return TRUE;
+    }
+
+    function cleanupVersions()
+    {
+        $saved_version =  PHPWS_Settings::get('version', 'saved_versions');
+
+        if ($saved_version <= 0) {
+            return;
+        }
+
+        $db = & new PHPWS_DB($this->version_table);
+        $db->addWhere('source_id', $this->source_id);
+        $db->addColumn('vr_number', 'max');
+        $last_number = $db->select('one');
+
+        if (PEAR::isError($last_number)) {
+            PHPWS_Error::log($last_number);
+            return;
+        }
+
+        $last_number = $last_number - (int)$saved_version;
+
+        $db->resetColumns();
+        $db->addWhere('vr_number', $last_number, '<=');
+        return $db->delete();
     }
 
     function _clearCurrents(){
@@ -370,7 +401,7 @@ class Version {
         $parsed_columns = $source_db->parseColumns($newColumns);
         $columns = $parsed_columns['parameters'];
 
-        $result = PHPWS_Core::getConfigFile('version', 'config.php');
+        $result = PHPWS_Core::getConfigFile('version', 'columns.php');
         if (PEAR::isError($result)) {
             return $result;
         }
