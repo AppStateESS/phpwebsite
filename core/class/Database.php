@@ -33,6 +33,7 @@ class PHPWS_DB {
     var $_lock       = FALSE;
     var $_sql        = NULL;
     var $_distinct   = FALSE;
+    var $_test_mode  = FALSE;
 
     function PHPWS_DB($table=NULL)
     {
@@ -81,6 +82,11 @@ class PHPWS_DB {
         }
     }
 
+    function setTestMode($mode=TRUE)
+    {
+        $this->_test_mode = (bool)$mode;
+    }
+
     function isConnected()
     {
         if (isset($GLOBALS['PEAR_DB'])) {
@@ -127,6 +133,10 @@ class PHPWS_DB {
 
     function query($sql, $prefix=FALSE)
     {
+        if ($this->_test_mode) {
+            exit($sql);
+        }
+
         PHPWS_DB::touchDB();
         if ($prefix == TRUE) {
             $sql = PHPWS_DB::prefixTable($sql);
@@ -1214,14 +1224,20 @@ class PHPWS_DB {
     }
   
 
-    function dropTable()
+    function dropTable($check_existence=TRUE)
     {
+        $if_exists = NULL;
+
         $table = $this->getTable();
         if (!$table) {
             return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::dropTable');
         }
 
-        $sql = "DROP TABLE $table";
+        if ($check_existence) {
+            $if_exists = 'IF EXISTS';
+        }
+
+        $sql = "DROP TABLE $if_exists $table";
 
         return PHPWS_DB::query($sql);
     }
