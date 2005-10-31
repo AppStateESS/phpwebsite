@@ -9,7 +9,7 @@ like a normal submit button.
 Example Code
 ---------------------------------------------------
 $js_vars['value']        = _('Go');
-$js_vars['select_id']    = 'list_action';
+$js_vars['select_id']    = 'list_action'; // the name of your select input
 $js_vars['action_match'] = 'delete';
 $js_vars['message']      = _('Are you sure you want to delete the checked items?');
 
