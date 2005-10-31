@@ -65,7 +65,7 @@ class Blog_Admin {
                 } else {
                     $link = _('A version of this entry is awaiting approval.');
                     $linkVar['action']     = 'admin';
-                    $linkVar['command']    = 'editUnapproved';
+                    $linkVar['command']    = 'edit_unapproved';
                     $linkVar['version_id'] = $approval_id;
                     $message = PHPWS_Text::secureLink($link, 'blog', $linkVar);
                     $content = Blog_Form::edit($blog);
@@ -157,7 +157,7 @@ class Blog_Admin {
             break;
 
         case 'restore':
-            $title = _('Blog Restore') . ' : ' . $blog->getTitle();
+            $title = _('Blog Restore') . ' : ' . $blog->title;
             $content = Blog_Admin::restoreVersionList($blog);
             break;
 
