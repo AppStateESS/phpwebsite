@@ -41,9 +41,9 @@ mysql_connect('localhost', 'database_user', 'database_password');
 Other databases have different connect commands. Check php's
 documentation for more details.
 
-The 'localhost' would be the database server location if it were not
-installed locally. The user and password are your database's user name
-and password respectively.
+The 'localhost' refers to a local database server installation. This
+would be an ip or dns address otherwise. The user and password are
+your database's user name and password respectively.
 
 Point your browser at this file. If you get an error message, then php
 can't connect.
