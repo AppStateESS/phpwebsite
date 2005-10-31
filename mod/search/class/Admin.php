@@ -31,6 +31,25 @@ class Search_Admin {
             $template = Search_Admin::keyword();
             break;
 
+        case 'delete_keyword':
+            if (!Current_User::authorized('search')) {
+                Current_User::disallow();
+            }
+
+            if (!empty($_REQUEST['keyword'])) {
+                $db = & new PHPWS_DB('search_stats');
+                if (is_array($_POST['keyword'])) {
+                    foreach ($_POST['keyword'] as $kw) {
+                        $db->addWhere('keyword', $kw);
+                    }
+                } else {
+                    $db->addWhere('keyword', $_REQUEST['keyword']);
+                }
+                $result = $db->delete();
+            }
+            PHPWS_Core::goBack();
+            break;
+
         }
 
         $final = PHPWS_Template::process($template, 'search', 'main.tpl');
@@ -53,7 +72,8 @@ class Search_Admin {
         $pager->setTemplate('pager.tpl');
         $pager->addRowTags('getTplTags');
 
-        $options['delete'] = _('Delete');
+	$options['keyword'] = '';
+        $options['delete_keyword'] = _('Delete');
 
         // if entered in search box, remove
         $options['add_ignore'] = _('Ignore');
@@ -62,12 +82,20 @@ class Search_Admin {
         $options['add_parse_word'] = _('Grab');
 
         $form = & new PHPWS_Form;
+        $form->setMethod('get');
         $form->addHidden('module', 'search');
         $form->addHidden('command', 'admin');
         $form->addSelect('action', $options);
-        $form->addSubmit('submit', _('Go'));
+
         $template = $form->getTemplate();
 
+        $js_vars['value'] = _('Go');
+        $js_vars['select_id'] = 'action';
+        $js_vars['action_match'] = 'delete_keyword';
+        $js_vars['message'] = _('Are you sure you want to delete the checked item(s)?');
+
+        $template['SUBMIT'] = javascript('select_confirm', $js_vars);
+        
         $template['CHECK_ALL'] = javascript('check_all', array('checkbox_name' => 'keyword[]'));
         $template['KEYWORD_LABEL'] = _('Keyword');
         $template['SUCCESS_LABEL'] = _('Success');
