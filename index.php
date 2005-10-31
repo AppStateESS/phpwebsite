@@ -10,8 +10,10 @@
 
 // uncomment this section and the one at the end to 
 // measure speed and memory usage
+  /*
 list($usec, $sec) = explode(' ', microtime());
 $site_start_time = ((float)$usec + (float)$sec);
+  */
 
 
 // For extra security, consider changing AUTO_ROUTE to FALSE
@@ -61,6 +63,7 @@ if (isset($_REQUEST['reset'])) {
     PHPWS_Core::killAllSessions();
 }
 
+/*
 list($usec, $sec) = explode(' ', microtime());
 $site_end_time = ((float)$usec + (float)$sec);
 
@@ -72,5 +75,5 @@ echo "$memory_used mb / $execute_time secs";
 echo '<hr /><span style="font-size : 80%">';
 test($_REQUEST);
 echo '</span>';
-
+*/
 ?>
