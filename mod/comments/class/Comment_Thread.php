@@ -14,7 +14,6 @@ define('NO_COMMENTS_FOUND', 'none');
 
 class Comment_Thread {
     var $id             = 0;
-    var $item_id        = NULL;
     var $key_id         = NULL;
     var $total_comments = 0;
     var $last_poster    = NULL;
@@ -128,22 +127,6 @@ class Comment_Thread {
     {
         $this->_key = $key;
     }
-
-    function setModule($module)
-    {
-        $this->module = $module;
-    }
-
-    function setItemName($item_name)
-    {
-        $this->item_name = $item_name;
-    }
-
-    function setItemId($item_id)
-    {
-        $this->item_id = (int)$item_id;
-    }
-
 
     function postLink()
     {
