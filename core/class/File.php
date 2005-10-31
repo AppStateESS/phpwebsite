@@ -93,56 +93,58 @@ class PHPWS_File {
         }
     }// END FUNC readDirectory()
 
-
     /**
-     * Recursively copies files from one directory ($fromPath) to another ($toPath)
+     * Recursively copies files from one directory to another.
      *
-     * @author   junk@NOSPAM.steti.com <junk@NOSPAM.steti.com>
-     * @modified Matt McNaney <matt@NOSPAM.tux.appstate.edu>
-     * @modified Adam Morton <adam@NOSPAM.tux.appstate.edu>
-     * @param    string  $fromPath The path where the files to be copied reside
-     * @param    string  $toPath   The path to copy the files to
-     * @return   boolean TRUE on success and FALSE on failure
-     * @access   public
+     * @author Matthew McNaney <mcnaney at gmail dot com>
      */
-    function recursiveFileCopy ($fromPath, $toPath) 
-    {
-        if (!is_dir($toPath)) {
-            $result = @mkdir($toPath, 0755);
-            if (!$result) {
+    function copy_directory($source_directory, $dest_directory) {
+        if (preg_match('/\/?/', $source_directory)) {
+            $source_directory .= '/';
+        }
+
+        if (preg_match('/\/?/', $dest_directory)) {
+            $dest_directory .= '/';
+        }
+
+        if (!is_dir($dest_directory)) {
+            if(!@mkdir($dest_directory)) {
                 PHPWS_Error::log(PHPWS_DIR_CANT_CREATE, 'core', 'PHPWS_File::recursiveFileCopy', $toPath);
                 return FALSE;
             }
         }
-        else {
-            $result = is_writable($toPath);
-            if (!$result) {
-                PHPWS_Error::log(PHPWS_DIR_NOT_WRITABLE, 'core', 'PHPWS_File::recursiveFileCopy', $toPath);
-                return FALSE;
+
+        $source_files = scandir($source_directory);
+        if (empty($source_files)) {
+            return TRUE;
+        }
+
+        foreach ($source_files as $file_name) {
+            if ($file_name == '.' || $file_name == '..' || $file_name == 'CVS') {
+                continue;
+            }
+
+            if (is_file($source_directory . $file_name)) {
+                if (!is_writable($dest_directory)) {
+                    PHPWS_Error::log(PHPWS_DIR_NOT_WRITABLE, 'core', 'PHPWS_File::recursiveFileCopy', $toPath);
+                    return FALSE;
+                }
+                if (!@copy($source_directory . $file_name, $dest_directory . $file_name)) {
+                    return FALSE;
+                }
+            }  elseif (is_dir($source_directory . $file_name)) {
+                if(!PHPWS_File::copy_directory($source_directory . $file_name . '/', $dest_directory . $file_name . '/')) {
+                    return FALSE;
+                }
             }
         }
 
-        if (is_dir($fromPath)) {
-            chdir($fromPath);
-            $handle = opendir('.');
-            while (($file = readdir($handle)) !== FALSE) {
-                if (($file != '.') && ($file != '..') && ($file != 'CVS')) {
-                    if (is_dir($file)) {
-                        PHPWS_File::recursiveFileCopy ($fromPath . $file . '/', $toPath . $file.'/');
-                        chdir($fromPath);
-                    }
-                    if (is_file($file)) {
-                        @copy($fromPath . $file, $toPath . $file);
-                    }
-                }
-            }
-            closedir($handle);
-            return TRUE;
-        } else
-            return FALSE;
+        return TRUE;
+    }
 
-    }// END FUNC recursiveFileCopy()
-
+    function recursiveFileCopy($source_dir, $dest_dir) {
+        return PHPWS_File::copy_directory($source_dir, $dest_dir);
+    }
 
     function writeFile($filename, $text, $allowOverwrite=FALSE, $errorReport=FALSE)
     {
