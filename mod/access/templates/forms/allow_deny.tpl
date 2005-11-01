@@ -11,7 +11,7 @@
   </tr>
 <!-- BEGIN allow-all -->
   <tr>
-    <th colspan="4" style="text-align : center">{ALLOW_ALL_MESSAGE}</th>
+    <th colspan="4" class="align-center">{ALLOW_ALL_MESSAGE}</th>
   </tr>
 <!-- END allow-all -->
 <!-- BEGIN allow_rows -->
@@ -40,7 +40,7 @@
   </tr>
 <!-- BEGIN deny-all -->
   <tr>
-    <th colspan="4" style="text-align : center">{DENY_ALL_MESSAGE}</th>
+    <th colspan="4" class="align-center">{DENY_ALL_MESSAGE}</th>
   </tr>
 <!-- END deny-all -->
 <!-- BEGIN deny_rows -->
