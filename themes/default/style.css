@@ -110,6 +110,10 @@ table.border  th {
 	padding : 5px;
 }
 
+.bordered {
+        border : 1px solid black;
+}
+
 .margined {
 	margin : 5px;
 }
