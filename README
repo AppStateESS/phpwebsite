@@ -11,3 +11,16 @@ Although Fallout supports wysiwyg tools, you will need to download
 them separately.
 
 Please read ./docs/WYSIWYG for details.
+
+After installation you will need to install some content modules.
+
+Login and go to the Administration tab.
+Click on Boost.
+Click on Other Modules
+Install any of the modules included. We recommend you try them all.
+If you are installing from CVS, the following modules are not
+complete:
+Skeleton
+Profiler
+
+The Links module is unusable for now.
