@@ -243,7 +243,7 @@ class Block_Admin {
   
     function copyBlock(&$block)
     {
-        Pinboard::copy($block->getTitle(), $block->getTag());
+        Clipboard::copy($block->getTitle(), $block->getTag());
     }
 }
 ?>
