@@ -349,7 +349,7 @@ class PHPWS_Text {
         if ((bool)MOD_REWRITE_ENABLED == FALSE) {
             $vars['id'] = (int)$id;
             if ($page) {
-                $vars['page'] = (int)$id;
+                $vars['page'] = (int)$page;
             }
 
             return PHPWS_Text::moduleLink($subject, $module, $vars);
