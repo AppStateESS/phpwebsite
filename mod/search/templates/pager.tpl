@@ -23,11 +23,11 @@
   </tr>
 <!-- END listrows -->
 </table>
-<div class="bgcolor2 padded">{ACTION} {SUBMIT} {CHECK_ALL}</div>
+<div class="bgcolor2 padded">{COMMAND} {SUBMIT} {CHECK_ALL}</div>
 
 
 {END_FORM}
-<div style="text-align : center">
+<div class="align-center">
 <p>{PAGE_LABEL} {PAGES} {PAGE_DROP}</p>
 <p>{LIMIT_LABEL} {LIMITS}</p>
 <p>{SEARCH}</p>

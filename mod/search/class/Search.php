@@ -36,8 +36,11 @@ class Search {
 
     function loadKeywords()
     {
-        $words = explode(' ', trim($this->keywords));
-        $this->keywords = &$words;
+        if (!empty($this->keywords)) {
+            $words = explode(' ', trim($this->keywords));
+            $this->keywords = &$words;
+        }
+
     }
 
     function setKey($key)
@@ -65,21 +68,24 @@ class Search {
             $parse_text = $this->filterWords($keywords);
         }            
 
+        echo str_replace(' ', '.', $parse_text);
         // removes extra spaces
         $parse_text = preg_replace('/\s{2,}/', ' ', $parse_text);
 
-        $keyword_list = explode(' ', $parse_text);
+        $keyword_list = explode(' ', trim($parse_text));
         if (empty($keyword_list)) {
             return FALSE;
         }
-        
+
         $current_keywords = $this->keywords;
-        if (is_array($current_keywords)) {
+
+        if (is_array($current_keywords) && !empty($current_keywords)) {
             $this->keywords = array_merge($current_keywords, $keyword_list);
         } else {
             $this->keywords = $keyword_list;
         }
         $this->keywords = array_unique($this->keywords);
+
     }
 
     function filterWords($text)
@@ -99,7 +105,7 @@ class Search {
         if (empty($text)) {
             return;
         }
-        
+
         $text = $this->filterWords($text);
 
         // temporary. this will probably be from the database
@@ -122,6 +128,14 @@ class Search {
         return $text;
     }
 
+    function removeKeyword($keyword)
+    {
+        $key = array_search($keyword, $this->keywords);
+
+        if ($key !== FALSE) {
+            unset($this->keywords[$key]);
+        }
+    }
 
     function save()
     {

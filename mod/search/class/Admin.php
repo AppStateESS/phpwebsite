@@ -18,8 +18,8 @@ class Search_Admin {
 
         $panel = Search_Admin::cpanel();
 
-        if (isset($_REQUEST['action'])) {
-            $command = $_REQUEST['action'];
+        if (isset($_REQUEST['command'])) {
+            $command = $_REQUEST['command'];
         } elseif (isset($_REQUEST['tab'])) {
             $command = $_REQUEST['tab'];
         } else {
@@ -27,15 +27,28 @@ class Search_Admin {
         }
 
         switch ($command) {
+        case 'delete_keyword':
+        case 'add_keyword':
+        case 'remove_searchword':
+            if (!Current_User::authorized('search')) {
+                Current_User::disallow();
+            }
+            
+            break;
+        }
+        
+        switch ($command) {
         case 'keyword':
             $template = Search_Admin::keyword();
             break;
 
-        case 'delete_keyword':
-            if (!Current_User::authorized('search')) {
-                Current_User::disallow();
-            }
+        case 'close_admin':
+            unset($_SESSION['Search_Add_Words']);
+            unset($_SESSION['Search_Admin']);
+            PHPWS_Core::goBack();
+            break;
 
+        case 'delete_keyword':
             if (!empty($_REQUEST['keyword'])) {
                 $db = & new PHPWS_DB('search_stats');
                 if (is_array($_POST['keyword'])) {
@@ -50,13 +63,157 @@ class Search_Admin {
             PHPWS_Core::goBack();
             break;
 
+        case 'add_parse_word':
+            if (!isset($_REQUEST['keyword'])) {
+                PHPWS_Core::goBack();
+            }
+            Search_Admin::addParseWord($_REQUEST['keyword']);
+            Search_Admin::sendMessage(_('Keywords added to admin menu.'), 'keyword');
+            break;
+
+        case 'drop_keyword':
+            if (isset($_SESSION['Search_Add_Words'])) {
+                $array_key = array_search($_REQUEST['kw'], $_SESSION['Search_Add_Words']);
+                if ($array_key !==  FALSE) {
+                    unset($_SESSION['Search_Add_Words'][$array_key]);
+                }
+            }
+            PHPWS_Core::goBack();
+            break;
+
+
+        case 'add_keyword':
+            if (!isset($_GET['kw']) || !isset($_GET['key_id'])) {
+                PHPWS_Core::goBack();
+            }
+
+            Search_Admin::addKeyword($_GET['kw'], $_GET['key_id']);
+            PHPWS_Core::goBack();
+            break;
+
+        case 'remove_searchword':
+            if (!isset($_GET['kw']) || !isset($_GET['key_id'])) {
+                PHPWS_Core::goBack();
+            }
+
+            Search_Admin::removeSearchword($_GET['kw'], $_GET['key_id']);
+            PHPWS_Core::goBack();
+            break;
+
         }
+
+        $template['MESSAGE'] = Search_Admin::getMessage();
 
         $final = PHPWS_Template::process($template, 'search', 'main.tpl');
 
         $panel->setContent($final);
         $finalPanel = $panel->display();
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
+    }
+
+    function removeSearchword($keyword, $key_id)
+    {
+        $search = & new Search((int)$key_id);
+        if ($search->_error) {
+            PHPWS_Error::log($search->_error);
+            return;
+        }
+
+        $search->removeKeyword($keyword);
+        return $search->save();
+    }
+
+    function addKeyword($keyword, $key_id)
+    {
+        $search = & new Search((int)$key_id);
+        if ($search->_error) {
+            PHPWS_Error::log($search->_error);
+            return;
+        }
+
+        $search->addKeywords($keyword, FALSE);
+        return $search->save();
+    }
+
+    function sendMessage($message, $command)
+    {
+        $_SESSION['Search_Message'] = $message;
+        PHPWS_Core::reroute('index.php?module=search&command=' . $command);
+    }
+
+    function getMessage()
+    {
+        if (!isset($_SESSION['Search_Message'])) {
+            return NULL;
+        }
+        $message = $_SESSION['Search_Message'];
+        unset($_SESSION['Search_Message']);
+        return $message;
+    }
+
+    function addParseWord($words)
+    {
+        if (!isset($_SESSION['Search_Add_Words'])) {
+            $_SESSION['Search_Add_Words'] = $words;
+        } else {
+            $_SESSION['Search_Add_Words'] = array_merge($_SESSION['Search_Add_Words'], $words);
+        }
+        $_SESSION['Search_Add_Words'] = array_unique($_SESSION['Search_Add_Words']);
+        $_SESSION['Search_Admin'] = TRUE;
+    }
+
+    function miniAdmin()
+    {
+        $key = Key::getCurrent();
+
+        if (empty($key) || $key->isHomeKey() || isset($key->_error)) {
+            $on_page = FALSE;
+        } else {
+            $on_page = TRUE;
+        }
+
+        if ($on_page) {
+            $search = & new Search($key);
+            if ($search->keywords) {
+                foreach ($search->keywords as $keyword) {
+                    $vars['key_id'] = $key->id;
+                    $link['WORD'] = $vars['kw'] = $keyword;
+                    $vars['command'] = 'remove_searchword';
+                    $link['DROP_LINK'] = PHPWS_Text::secureLink(_('Drop'), 'search', $vars);
+                    $tpl['current-words'][] = $link;
+                }
+            }
+            $tpl['CURRENT_TITLE'] = _('Current keywords');
+        }
+
+
+        if (isset($_SESSION['Search_Add_Words'])) {
+            foreach ($_SESSION['Search_Add_Words'] as $keyword) {
+                $link = $vars = NULL;
+                $link['WORD'] = $vars['kw'] = $keyword;
+                $vars['command'] = 'drop_keyword';
+                $link['DROP_LINK'] = PHPWS_Text::secureLink(_('Drop'), 'search', $vars);
+                
+                if ($on_page) {
+                    if (!in_array($keyword, $search->keywords)) {
+                        $vars['key_id'] = $key->id;
+                        $vars['command'] = 'add_keyword';
+                        $link['ADD_LINK'] = PHPWS_Text::secureLink(_('Add'), 'search', $vars);
+                    }
+                }
+                
+                $tpl['add-words'][] = $link;
+            }
+            $tpl['BANK_TITLE'] = _('Clipped words');
+        }
+
+        $tpl['TITLE'] = _('Search Admin');
+
+        $tpl['CLOSE_LINK'] = PHPWS_Text::secureLink(_('Close'), 'search', array('module'=>'search', 'command'=>'close_admin'));
+
+        $content = PHPWS_Template::process($tpl, 'search', 'mini_menu.tpl');
+
+        Layout::add($content, 'search', 'admin_box');
     }
 
     function keyword()
@@ -79,19 +236,18 @@ class Search_Admin {
         $options['add_ignore'] = _('Ignore');
 
         // remember word to add to items
-        $options['add_parse_word'] = _('Grab');
+        $options['add_parse_word'] = _('Clip word');
 
         $form = & new PHPWS_Form;
         $form->setMethod('get');
         $form->addHidden('module', 'search');
-        $form->addHidden('command', 'admin');
-        $form->addSelect('action', $options);
+        $form->addSelect('command', $options);
 
         $template = $form->getTemplate();
 
         $js_vars['value'] = _('Go');
-        $js_vars['select_id'] = 'action';
-        $js_vars['action_match'] = 'delete_keyword';
+        $js_vars['select_id'] = 'command';
+        $js_vars['command_match'] = 'delete_keyword';
         $js_vars['message'] = _('Are you sure you want to delete the checked item(s)?');
 
         $template['SUBMIT'] = javascript('select_confirm', $js_vars);
@@ -116,7 +272,7 @@ class Search_Admin {
     function &cpanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
-        $link = 'index.php?module=search&amp;command=admin';
+        $link = 'index.php?module=search';
         $tab['keyword'] = array ('title'=>_('Keywords'), 'link'=> $link);
 
         $panel = & new PHPWS_Panel('search');
