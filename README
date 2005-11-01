@@ -1,0 +1,13 @@
+Fallout comes with its own set of Pear files. Most of the time you
+should just use the included files.
+
+To untar them:
+
+tar zxf fallout_pear.tgz
+
+They should be unzipped/untarred into the appropiate directories.
+
+Although Fallout supports wysiwyg tools, you will need to download
+them separately.
+
+Please read ./docs/WYSIWYG for details.
