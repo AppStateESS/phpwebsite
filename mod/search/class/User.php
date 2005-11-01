@@ -105,7 +105,6 @@ class Search_User {
         $query_string = str_replace(' ', '+', $search_phrase);
 
         $site = urlencode(PHPWS_Core::getHomeHttp(FALSE, FALSE, FALSE));
-        $site = 'appstate.edu';
         $url = sprintf($gosite['url'], $query_string, $site);
 
         header('location: ' . $url);
