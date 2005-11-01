@@ -1,5 +1,6 @@
 CREATE TABLE webpage_volume (
   id int NOT NULL default '0',
+  key_id int NOT NULL default '0',
   title varchar(255) NOT NULL default '',
   summary text,
   date_created int NOT NULL default '0',
