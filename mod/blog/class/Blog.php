@@ -228,6 +228,7 @@ class Blog {
 
     function getPagerTags()
     {
+        $template['TITLE'] = sprintf('<a href="%s">%s</a>', $this->getViewLink(TRUE), $this->title);
         $template['DATE'] = $this->getFormatedDate();
         $template['ENTRY'] = $this->getListEntry();
         $template['ACTION'] = $this->getListAction();
