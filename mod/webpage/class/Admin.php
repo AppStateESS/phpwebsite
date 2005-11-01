@@ -145,6 +145,7 @@ class Webpage_Admin {
             break;
 
         case 'post_page':
+
             $title = sprintf(_('Administrate page: %s'), $volume->title);
             $result = $page->post();
             if (PEAR::isError($result)) {
@@ -158,11 +159,13 @@ class Webpage_Admin {
                 $content = WebpageForms::editPage($page);
             } else {
                 $result = $page->save();
+
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
                     $message = _('An error occurred while saving your page. Please check the error log.');
                     $content = $page->view();
                 }
+
                 if (isset($_POST['force_template'])) {
                     $force_result = $volume->forceTemplate($page->template);
 
@@ -225,53 +228,6 @@ class Webpage_Admin {
         $finalPanel = $panel->display();
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
     }
-        
-    /*
-    function postPage()
-    {
-        if (PHPWS_Core::isPosted()) {
-            return Webpage_Admin::template(_('Repeat post'),
-                                           _('You have previously created or updated this web page.'));
-        }
-
-        if (isset($_POST['volume_id'])) {
-            $volume = & new Webpage_Volume($_POST['volume_id']);
-        } else {
-            exit('Missing volume id. need better error message');
-        }
-
-        if (isset($_POST['page_id'])) {
-            $page = & new Webpage_Page($_POST['page_id']);
-        } else {
-            $page = & new Webpage_Page;
-        }
-
-        $result = $page->post();
-        if (is_array($result)) {
-            $title = _('Update Web Page');
-            $content = Webpage_Forms::editPage($volume, $page);
-            $message = implode('<br />', $result);
-        } elseif (PEAR::isError($result)) {
-            $title = _('Sorry');
-            $content = _('An error occurred. Please check your logs.');
-            PHPWS_Error::log($result);
-        } else {
-            PHPWS_Core::initModClass('webpage', 'Forms.php');
-            $result = $page->save();
-            if (PEAR::isError($result)) {
-                $title = _('Sorry');
-                $content = _('An error occurred. Please check your logs.');
-                PHPWS_Error::log($result);
-            } else {
-                $title = sprintf(_('Edit: %s'), $volume->title);
-                $message = _('Page saved successfully!');
-                $content = Webpage_Forms::edit($volume, 'page', $page->page_number);
-            }
-        }
-        return Webpage_Admin::template($title, $content, $message);
-    }
-
-    */
 
     function template($title, $content, $message=NULL)
     {
