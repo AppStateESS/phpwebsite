@@ -20,7 +20,7 @@ Click on Other Modules
 Install any of the modules included. We recommend you try them all.
 If you are installing from CVS, the following modules are not
 complete:
-Skeleton
-Profiler
+Skeleton - don't recommend installation
+Profiler - can be installed but not finished
 
-The Links module is unusable for now.
+The Links module is unusable for now. Don't install it.
