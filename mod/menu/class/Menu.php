@@ -49,6 +49,8 @@ class Menu {
      */
     function show()
     {
+        $seen = array();
+
         $key = Key::getCurrent();
         if (empty($key) || empty($key->title) || empty($key->url)) {
             return;
@@ -61,15 +63,27 @@ class Menu {
         $db->addWhere('menu_assoc.key_id', $key->id);
         $db->addWhere('id', 'menu_assoc.menu_id');
 
-        $result = $db->getObjects('menu_item');
+        $result = $db->getObjects('Menu_Item');
 
-        if (empty($result) || PEAR::isError($result)) {
-            return $result;
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+        } elseif (!empty($result)) {
+            foreach ($result as $menu) {
+                $seen[] = $menu->id;
+                $menu->view();
+            }
         }
 
-        foreach ($result as $menu) {
-            $menu->view();
+        if (isset($_SESSION['Menu_Clip'])) {
+            foreach ($_SESSION['Menu_Clip'] as $menu_id) {
+                if (in_array($menu_id, $seen)) {
+                    continue;
+                }
+                $menu = & new Menu_Item($menu_id);
+                $menu->view(true);
+            }
         }
+
     }
 
     function atLink($url)
@@ -80,7 +94,6 @@ class Menu {
 
     function getAddLink($menu_id, $parent_id=NULL)
     {
-
         $key = Key::getCurrent();
 
         if (empty($key)) {
@@ -105,6 +118,26 @@ class Menu {
             $js['value_name'] = 'link_title';
             return javascript('prompt', $js);
         }
+    }
+
+    function getUnpinLink($menu_id, $key_id, $pin_all=0)
+    {
+        $vars['command'] = 'unpin_menu';
+        $vars['menu_id'] = $menu_id;
+        if ($key_id >= 0) {
+            $vars['key_id'] = $key_id;
+        }
+        $vars['pin_all'] = $pin_all;
+
+        if ($pin_all) {
+            $js['QUESTION']   = _('Are you sure you want to unpin this menu from all pages?');
+        } else {
+            $js['QUESTION']   = _('Are you sure you want to unpin this menu from this page?');
+        }
+        $js['ADDRESS']    = PHPWS_Text::linkAddress('menu', $vars, TRUE);
+        $js['LINK']       = MENU_UNPIN;
+        
+        return javascript('confirm', $js);
     }
 
     function deleteLink($link_id)

@@ -94,8 +94,19 @@ class Menu_Admin {
             break;
 
         case 'list':
+            $panel->setCurrentTab('list');
             $title = ('Menu List');
             $content = Menu_Admin::menuList();
+            break;
+
+        case 'unclip':
+            unset($_SESSION['Menu_Clip'][$_GET['menu_id']]);
+            PHPWS_Core::goBack();
+            break;
+
+        case 'clip':
+            $_SESSION['Menu_Clip'][$_GET['menu_id']] = $_GET['menu_id'];
+            PHPWS_Core::goBack();
             break;
 
         case 'add_link':
@@ -114,11 +125,6 @@ class Menu_Admin {
             }
             break;
 
-        case 'edit_links':
-            $title = sprintf(_('Edit Links: %s'), $menu->title);
-            $content = Menu_Admin::editLinks($menu);
-            break;
-
         case 'post_menu':
             if (!Current_User::authorized('menu')) {
                 Current_User::disallow();
@@ -133,6 +139,16 @@ class Menu_Admin {
             } else {
                 Menu_Admin::sendMessage(_('Menu saved'), 'list');
             }
+            break;
+
+        case 'unpin_menu':
+            Menu_Admin::unpinMenu($menu);
+            PHPWS_Core::goBack();
+            break;
+
+        case 'pin_menu':
+            Menu_Admin::pinMenu();
+            PHPWS_Core::goBack();
             break;
 
         case 'pin_all':
@@ -159,6 +175,44 @@ class Menu_Admin {
         $_SESSION['Menu_message'] = $message;
         PHPWS_Core::reroute(sprintf('index.php?module=menu&command=%s&authkey=%s', $command, Current_User::getAuthKey()));
         exit();
+    }
+
+    function pinMenu()
+    {
+        if (!isset($_REQUEST['key_id']) || !isset($_REQUEST['menu_id'])) {
+            return;
+        }
+
+        $menu_id = &$_REQUEST['menu_id'];
+        $key_id = &$_REQUEST['key_id'];
+
+        $db = & new PHPWS_DB('menu_assoc');
+        $db->addWhere('menu_id', $menu_id);
+        $db->addWhere('key_id', $key_id);
+        $db->delete();
+
+        $db->addValue('menu_id', $menu_id);
+        $db->addValue('key_id', $key_id);
+        return $db->insert();
+    }
+
+    function unpinMenu(&$menu)
+    {
+        if (!isset($_REQUEST['key_id']) || !isset($_REQUEST['pin_all'])) {
+            return;
+        }
+
+        if ($_REQUEST['pin_all']) {
+            $menu->pin_all = 0;
+            return $menu->save();
+        } else {
+            echo 'wtf';
+            $db = & new PHPWS_DB('menu_assoc');
+            $db->addWhere('menu_id', $menu->id);
+            $db->addWhere('key_id', $_REQUEST['key_id']);
+            return $db->delete();
+        }
+
     }
 
     function getMessage()

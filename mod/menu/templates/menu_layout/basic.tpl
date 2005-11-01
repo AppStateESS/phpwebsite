@@ -1,5 +1,5 @@
 <div class="box">
-  <h1 class="box-title">{ADD_LINK} {TITLE}</h1>
+  <div  class="box-title">{CLIP}<h1>{ADD_LINK} {TITLE}</h1></div>
   <div id="menu-links">{LINKS}</div>
 <div align="center">{ADMIN_LINK}</div>
 </div>

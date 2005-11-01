@@ -52,6 +52,7 @@ class Menu_Item {
         }
     }
 
+
     function setTitle($title)
     {
         $this->title = strip_tags($title);
@@ -67,9 +68,6 @@ class Menu_Item {
         $this->pin_all = (bool)$pin;
     }
     
-    function getTemplate($full_directory=FALSE)
-    {
-    }
 
     function getTemplateList()
     {
@@ -189,8 +187,14 @@ class Menu_Item {
         $vars['command'] = 'edit_menu';
         $links[] = PHPWS_Text::secureLink(_('Edit'), 'menu', $vars);
 
-        $vars['command'] = 'clip';
-        $links[] = PHPWS_Text::secureLink(_('Clip'), 'menu', $vars);
+        if (!isset($_SESSION['Menu_Clip']) || 
+            !isset($_SESSION['Menu_Clip'][$this->id])) {
+            $vars['command'] = 'clip';
+            $links[] = PHPWS_Text::secureLink(_('Clip'), 'menu', $vars);
+        } else {
+            $vars['command'] = 'unclip';
+            $links[] = PHPWS_Text::secureLink(_('Unclip'), 'menu', $vars);
+        }
 
         $vars['command'] = 'pin_all';
         if ($this->pin_all == 0) {
@@ -202,10 +206,6 @@ class Menu_Item {
         }
         $links[] = PHPWS_Text::secureLink($link_title, 'menu', $vars);
         unset($vars['hook']);
-
-        $vars['command'] = 'edit_links';
-        $link_title = _('Links');
-        $links[] = PHPWS_Text::secureLink($link_title, 'menu', $vars);
 
         $vars['command'] = 'delete_menu';
         $js['QUESTION'] = _('Are you sure you want to delete this menu and all its links.');
@@ -249,15 +249,22 @@ class Menu_Item {
     /**
      * Returns a menu and its links for display
      */
-    function view()
+    function view($pin_mode=FALSE)
     {
+        $key = Key::getCurrent();
+
         $edit = FALSE;
         $file = 'menu_layout/' . $this->template;
         $content_var = 'menu_' . $this->id;
 
-        if (Current_User::allow('menu')) {
+        if (!$pin_mode && Current_User::allow('menu')) {
             if (Menu::isAdminMode()) {
                 $tpl['ADD_LINK'] = Menu::getAddLink($this->id);
+                if (!empty($key)) {
+                    $tpl['CLIP'] = Menu::getUnpinLink($this->id, $key->id, $this->pin_all);
+                } else {
+                    $tpl['CLIP'] = Menu::getUnpinLink($this->id, -1, $this->pin_all);
+                }
                 $vars['command'] = 'disable_admin_mode';
                 $vars['return'] = 1;
                 $tpl['ADMIN_LINK'] = PHPWS_Text::moduleLink(MENU_ADMIN_OFF, 'menu', $vars);
@@ -270,6 +277,17 @@ class Menu_Item {
 
         $tpl['TITLE'] = $this->title;
         $tpl['LINKS'] = $this->displayLinks($edit);
+
+        if ($pin_mode &&
+            Current_User::allow('menu') && 
+            isset($_SESSION['Menu_Clip']) && 
+            isset($_SESSION['Menu_Clip'][$this->id])) {
+
+            $pinvars['command'] = 'pin_menu';
+            $pinvars['key_id'] = $key->id;
+            $pinvars['menu_id'] = $this->id;
+            $tpl['CLIP'] = PHPWS_Text::secureLink(MENU_PIN, 'menu', $pinvars);
+        }
 
         $content = PHPWS_Template::process($tpl, 'menu', $file);
         Layout::set($content, 'menu', $content_var);

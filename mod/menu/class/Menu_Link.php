@@ -16,6 +16,7 @@ class Menu_Link {
     var $parent     = 0;
     var $active     = 1;
     var $link_order = 1;
+    var $_menu      = NULL;
     var $_error     = NULL;
     var $_children  = NULL;
     var $_db        = NULL;
