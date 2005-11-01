@@ -68,7 +68,6 @@ class Search {
             $parse_text = $this->filterWords($keywords);
         }            
 
-        echo str_replace(' ', '.', $parse_text);
         // removes extra spaces
         $parse_text = preg_replace('/\s{2,}/', ' ', $parse_text);
 
