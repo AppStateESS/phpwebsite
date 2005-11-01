@@ -114,12 +114,7 @@ class Comments {
                 $content[] = _('A problem occurred when trying to save your comment.');
                 $content[] = _('Please try again later.');
             } else {
-                Layout::metaRoute($thread->_key->url);
-                $title = _('Comment saved successfully!');
-                $content[] = _('You will be returned to the source page in a moment.');
-                $content[] = '<a href="' . $thread->_key->url . '">' . 
-                    _('Otherwise you may return immediately by clicking here.') .
-                    '</a>';
+                PHPWS_Core::reroute($thread->_key->url);
             }
             break;
 
