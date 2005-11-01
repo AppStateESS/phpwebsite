@@ -11,6 +11,7 @@ else {
   require_once './setup/preconfig.php';
 }
 
+require_once './inc/Functions.php';
 require_once './core/class/Init.php';
 include_once './setup/config.php';
 require_once './setup/class/Setup.php';
