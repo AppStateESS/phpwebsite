@@ -24,3 +24,18 @@ Skeleton - don't recommend installation
 Profiler - can be installed but not finished
 
 The Links module is unusable for now. Don't install it.
+
+Remember after you install to restrict your directory permissions.
+
+files/
+images/
+logs/
+^ Should be writable to by apache.
+
+javascript/modules/
+templates/
+config/
+^ Should be writable ONLY during module installs/updates/uninstalls
+
+logs/ should NOT be world readable
+setup/ should be moved or made unreadable AFTER an installation
