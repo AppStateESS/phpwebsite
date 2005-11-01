@@ -152,7 +152,7 @@ class Webpage_Volume {
             if (MOD_REWRITE_ENABLED) {
                 return sprintf('webpage%s.html', $this->id);
             } else {
-                return 'index.php?module=webpage&amp;page=' . $this->id;
+                return 'index.php?module=webpage&amp;id=' . $this->id;
             }
         } else {
             return PHPWS_Text::rewriteLink(_('View'), 'webpage', $this->id);
@@ -344,7 +344,7 @@ class Webpage_Volume {
             $template['BRIEF_PAGE_LINKS'] = implode('&nbsp;', $brief_link);
             $template['PAGE_LABEL'] = _('Page');
         }
-        
+
         if (Current_User::allow('webpage', 'edit_page', $this->id)) {
             $template['EDIT_HEADER'] = PHPWS_Text::moduleLink(_('Edit header'), 'webpage', array('wp_admin'=>'edit_header',
                                                                                    'volume_id' => $this->id));
