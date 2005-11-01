@@ -2,7 +2,7 @@
   <div class="box-title"><h1>{PAGE_TITLE}</h1>{EDIT_HEADER}</div>
   <div class="box-content">
     <h2>{TITLE}</h2>
-    {CONTENT}
+    <div class="webpage-content">{CONTENT}</div>
     <!-- BEGIN page-listing -->
     <div class="page-links">{PAGE_LABEL}<br />
       <span>{PAGE_LEFT}</span> {BRIEF_PAGE_LINKS}
