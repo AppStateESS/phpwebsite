@@ -1,2 +1,2 @@
 <p>{LINKS}</p>
-<div style="text-align : center">{CLEAR}</div>
+<div class="align-center">{CLEAR}</div>

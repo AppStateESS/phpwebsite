@@ -8,7 +8,7 @@
     <table width="100%">
       <tr>
         <td>{PREVIOUS_PAGE}</td>
-        <td style="text-align : right">{NEXT_PAGE}</td>
+        <td class="align-right">{NEXT_PAGE}</td>
       </tr>
     </table>
     <!-- END page-listing -->

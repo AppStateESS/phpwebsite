@@ -10,5 +10,5 @@
 </td>
 </tr>
 </table>
-<div style="text-align : center">{UPDATE}</div>
+<div class="align-center">{UPDATE}</div>
 </div>
