@@ -1,5 +1,9 @@
 <?php
 
+
+  // if TRUE then only deities can access boost
+define('DEITY_ACCESS_ONLY', FALSE);
+
   // If TRUE, then deities can uninstall core modules
   // Be careful with this, you can kill your site
 define('DEITIES_CAN_UNINSTALL', FALSE);
