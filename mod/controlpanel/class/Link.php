@@ -23,12 +23,13 @@ class PHPWS_Panel_Link {
         if (!isset($id))
             return;
 
-        $result = $this->init($id);
+        $this->setId($id);
+        $result = $this->init();
         if (PEAR::isError($result))
             PHPWS_Error::log($result);
     }
 
-    function init($id)
+    function init()
     {
         $db = & new PHPWS_DB('controlpanel_link');
         $result = $db->loadObject($this);
@@ -205,6 +206,7 @@ class PHPWS_Panel_Link {
     {
         $db = & new PHPWS_DB('controlpanel_link');
         $db->setIndexBy('link_order');
+        $db->addWhere('tab', $this->tab);
         $db->addOrder('link_order');
         $allLinks = $db->getObjects('PHPWS_Panel_Link');
 
@@ -231,8 +233,10 @@ class PHPWS_Panel_Link {
     {
         $db = & new PHPWS_DB('controlpanel_link');
         $db->setIndexBy('link_order');
+        $db->addWhere('tab', $this->tab);
         $db->addOrder('link_order');
         $allLinks = $db->getObjects('PHPWS_Panel_Link');
+
         $number_of_links = count($allLinks);
 
         $current_order = $this->getLinkOrder();
