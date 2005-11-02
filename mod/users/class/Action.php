@@ -19,6 +19,7 @@ class User_Action {
             return;
         }
 
+        $message = User_Action::getMessage();
         $panel = & User_Action::cpanel();
         $panel->enableSecure();
     
@@ -44,6 +45,7 @@ class User_Action {
             /** Form cases **/
             /** User Forms **/
         case 'new_user':
+            $panel->setCurrentTab('new_user');
             $title = _('Create User');
             $content = User_Form::userForm($user);
             break;
@@ -90,7 +92,6 @@ class User_Action {
             }
 
             PHPWS_Core::initModClass('users', 'Group.php');
-            $user = & new PHPWS_User($_REQUEST['user_id']);
             $title = _('Set User Permissions') . ' : ' . $user->getUsername();
             $content = User_Form::setPermissions($user->getUserGroup());
             break;
@@ -128,6 +129,7 @@ class User_Action {
             break;
 
         case 'manage_groups':
+            $panel->setCurrentTab('manage_groups');
             PHPWS_Core::killSession('Last_Member_Search');
             $title = _('Manage Groups');
             $content = User_Form::manageGroups();
@@ -142,7 +144,6 @@ class User_Action {
         case 'postMembers':
             $title = _('Manage Members') . ' : ' . $group->getName();
             $content = User_Form::manageMembers($group);
-            $result = User_Action::postMembers();
             break;
 
             /************************* End Group Forms *******************/
@@ -162,12 +163,10 @@ class User_Action {
                 if ($_GET['authorize'] == 1 && Current_User::isDeity()){
                     $user->setDeity(TRUE);
                     $user->save();
-                    $message = _('User deified.');
-                    $content = User_Form::manageUsers();
+                    User_Action::sendMessage(_('User deified.'), 'manage_users');
                     break;
                 } else {
-                    $message = _('User remains a lowly mortal.');
-                    $content = User_Form::manageUsers();
+                    User_Action::sendMessage(_('User remains a lowly mortal.'), 'manage_users');
                     break;
                 }
             } else
@@ -192,10 +191,7 @@ class User_Action {
 
         case 'postUser':
             if (isset($_POST['user_id'])) {
-                if (!Current_User::authorized('users', 'edit_users')){
-                    PHPWS_User::disallow();
-                    return;
-                } elseif (!Current_User::authorized('users')){
+                if (!Current_User::authorized('users', 'edit_users')) {
                     PHPWS_User::disallow();
                     return;
                 }
@@ -209,20 +205,20 @@ class User_Action {
                 $panel->setCurrentTab('manage_users');
 
                 if (isset($_POST['user_id'])) {
-                    $title = _('Manage Users');
-                    $message = _('User updated.');
-                    $content = User_Form::manageUsers();
+                    User_Action::sendMessage(_('User updated.'), 'manage_users');
+                } elseif (Current_User::allow('users', 'edit_permissions')) {
+                    User_Action::sendMessage(_('User created.'), 'setUserPermissions&user_id=' . $user->id);
                 } else {
-                    $message = _('User created.');
-                    $title = _('Set User Permissions') . ' : ' . $user->getUsername();
-                    $content = User_Form::setPermissions($user->getUserGroup());
+                    User_Action::sendMessage(_('User created.'), 'new_user');
                 }
             } else {
                 $message = implode('<br />', $result);
-                if (isset($_POST['user_id']))
+                if (isset($_POST['user_id'])) {
                     $title = _('Edit User');
-                else
+                }
+                else {
                     $title = _('Create User');
+                }
 
                 $content = User_Form::userForm($user);
             }
@@ -230,16 +226,7 @@ class User_Action {
 
         case 'postPermission':
             User_Action::postPermission();
-            $message = _('Permissions updated');
-            $current_tab = $panel->getCurrentTab();
-            if ($current_tab == 'manage_users'){
-                $title = _('Manage Users');
-                $content = User_Form::manageUsers();
-            } else {
-                $title = _('Manage Groups');
-                $content = User_Form::manageGroups();
-            }
-
+            User_Action::sendMessage(_('Permissions updated'), $panel->getCurrentTab());
             break;
 
         case 'postGroup':
@@ -256,14 +243,14 @@ class User_Action {
                 $content = User_form::groupForm($group);
             } else {
                 $result = $group->save();
-                if (PEAR::isError($result)){
+
+                if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
                     $message = _('An error occurred when trying to save the group.');
-                } else
+                } else {
                     $message = _('Group created.');
-
-                $title = _('Manage Groups');
-                $content = User_Form::manageGroups();
+                }
+                User_Action::sendMessage($message, 'manage_groups');
             }
             break;
 
@@ -277,8 +264,7 @@ class User_Action {
             $group->addMember($_REQUEST['member']);
             $group->save();
             unset($_SESSION['Last_Member_Search']);
-            $title = _('Manage Members') . ' : ' . $group->getName();
-            $content = User_Form::manageMembers($group);
+            User_Action::sendMessage(_('Member added.'), 'manageMembers&group_id=' . $group->id);
             break;
 
         case 'dropMember':
@@ -286,8 +272,7 @@ class User_Action {
             $group->dropMember($_REQUEST['member']);
             $group->save();
             unset($_SESSION['Last_Member_Search']);
-            $title = _('Manage Members') . ' : ' . $group->getName();
-            $content = User_Form::manageMembers($group);
+            User_Action::sendMessage(_('Member removed.'), 'manageMembers&group_id=' . $group->id);
             break;
 
         case 'update_settings':
@@ -314,9 +299,21 @@ class User_Action {
 
     }
 
-    function postMembers()
+    function getMessage()
     {
-        //    test($_REQUEST);
+        if (!isset($_SESSION['User_Admin_Message'])) {
+            return NULL;
+        }
+        $message = $_SESSION['User_Admin_Message'];
+        unset($_SESSION['User_Admin_Message']);
+        return $message;
+    }
+
+    function sendMessage($message, $command)
+    {
+        $_SESSION['User_Admin_Message'] = $message;
+        PHPWS_Core::reroute('index.php?module=users&action=admin&command='
+                            . $command . '&authkey=' . Current_User::getAuthKey());
     }
 
     /**
