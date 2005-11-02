@@ -85,15 +85,15 @@ class CP_Action {
 
     foreach ($tabs as $tab_obj){
       $taction = array();
-      if (isset($links[$tab_obj->getId()])){
-	if (count($links[$tab_obj->getId()]) > 1)
+      if (isset($links[$tab_obj->id])){
+	if (count($links[$tab_obj->id]) > 1)
 	  $move_links = TRUE;
 	else
 	  $move_links = FALSE;
-	foreach ($links[$tab_obj->getId()] as $link_obj){
+	foreach ($links[$tab_obj->id] as $link_obj){
 	  $laction = array();
 	  if ($move_links){
-	    $lvalues['link_id'] = $link_obj->getId();
+	    $lvalues['link_id'] = $link_obj->id;
 	    $lvalues['command'] = 'link_up';
 	    $laction[] = PHPWS_Text::moduleLink($up_link, 'controlpanel', $lvalues);
 	  
@@ -108,7 +108,7 @@ class CP_Action {
       }
 
       if ($move_tabs){
-	$tvalues['tab_id'] = $tab_obj->getId();
+	$tvalues['tab_id'] = $tab_obj->id;
 	$tvalues['command'] = 'tab_up';
 	$taction[] = PHPWS_Text::secureLink($up_tab, 'controlpanel', $tvalues);
 	
