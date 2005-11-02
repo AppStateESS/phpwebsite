@@ -10,7 +10,6 @@ class PHPWS_Panel_Link {
     var $id          = 0;
     var $label       = NULL;
     var $active      = 1;
-    var $module      = NULL;
     var $itemname    = NULL;
     var $restricted  = TRUE;
     var $tab         = NULL;
@@ -166,17 +165,6 @@ class PHPWS_Panel_Link {
             return $max + 1;
         else
             return 1;
-    }
-
-
-    function setModule($module)
-    {
-        $this->module = $module;
-    }
-
-    function getModule()
-    {
-        return $this->module;
     }
 
     function setItemName($itemname)
