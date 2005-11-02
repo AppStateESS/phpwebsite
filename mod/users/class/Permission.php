@@ -51,6 +51,7 @@ class Users_Permission {
 
     function allow($module, $subpermission=NULL, $item_id=NULL, $itemname=NULL)
     {
+
         // If permissions object is not set, load it
         if (!isset($this->permissions[$module])) {
             $result = Users_Permission::loadPermission($module, $this->permissions);
@@ -62,7 +63,6 @@ class Users_Permission {
         if ($this->getPermissionLevel($module) == NO_PERMISSION) {
             return FALSE;
         }
-
         if(!empty($this->permissions[$module]['permissions'])) {
             if (isset($subpermission)) {
                 if (!isset($this->permissions[$module]['permissions'][$subpermission])) {
@@ -92,6 +92,8 @@ class Users_Permission {
                     return TRUE;
                 }
             }
+        } elseif (empty($subpermission)) {
+            return TRUE;
         } else {
             return FALSE;
         }
