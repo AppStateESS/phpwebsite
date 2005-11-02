@@ -5,7 +5,19 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-if (!Current_User::isDeity() || !isset($_REQUEST['action'])) return;
+PHPWS_Core::requireConfig('boost');
+
+if (DEITY_ACCESS_ONLY && !Current_User::isDeity()) {
+    Current_User::disallow();
+ }
+
+if (!Current_User::allow('boost')) {
+    Current_User::disallow();
+ }
+
+if (!isset($_REQUEST['action'])) {
+    PHPWS_Core::errorPage(404);
+ }
 
 $content = array();
 PHPWS_Core::initModClass('boost', 'Form.php');
