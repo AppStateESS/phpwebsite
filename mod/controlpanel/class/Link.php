@@ -16,7 +16,7 @@ class PHPWS_Panel_Link {
     var $url         = NULL;
     var $description = NULL;
     var $image       = NULL;
-    var $link_order  = 1;
+    var $link_order  = NULL;
 
     function PHPWS_Panel_Link($id=NULL)
     {
@@ -42,19 +42,9 @@ class PHPWS_Panel_Link {
         $this->id = (int)$id;
     }
 
-    function getId()
-    {
-        return $this->id;
-    }
-
     function setTab($tab)
     {
         $this->tab = $tab;
-    }
-
-    function getTab()
-    {
-        return $this->tab;
     }
 
     function setActive($active)
@@ -153,18 +143,21 @@ class PHPWS_Panel_Link {
             return $this->link_order;
         }
 
-        $DB = @ new PHPWS_DB('controlpanel_link');
-        $DB->addWhere('tab', $this->getTab());
-        $DB->addColumn('link_order', 'max');
-        $max = $DB->select('one');
+        $db = & new PHPWS_DB('controlpanel_link');
+        $db->addWhere('tab', $this->tab);
+        $db->addColumn('link_order', 'max');
+        $max = $db->select('one');
     
-        if (PEAR::isError($max))
+        if (PEAR::isError($max)) {
             return $max;
+        }
 
-        if (isset($max))
+        if (isset($max)) {
             return $max + 1;
-        else
+        }
+        else {
             return 1;
+        }
     }
 
     function setItemName($itemname)
@@ -191,7 +184,6 @@ class PHPWS_Panel_Link {
     {
         $db = & new PHPWS_DB('controlpanel_link');
         $this->link_order = $this->getLinkOrder();
-
         $result = $db->saveObject($this);
         return $result;
     }
@@ -266,15 +258,13 @@ class PHPWS_Panel_Link {
     function kill()
     {
         $db = & new PHPWS_DB('controlpanel_link');
-        $db->addWhere('id', $this->getId());
+        $db->addWhere('id', $this->id);
         $result = $db->delete();
         if (PEAR::isError($result))
             return $result;
 
-        $tab = $this->getTab();
-    
         $db->reset();
-        $db->addWhere('tab', $tab);
+        $db->addWhere('tab', $this->tab);
         $db->addOrder('link_order');
         $result = $db->getObjects('PHPWS_Panel_Link');
 

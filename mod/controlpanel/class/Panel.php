@@ -142,7 +142,7 @@ class PHPWS_Panel{
 
         if (isset($tabs)){
             $tab = array_shift($tabs);
-            $result = $tab->getId();
+            $result = $tab->id;
         }
         return $result;
     }

@@ -48,8 +48,8 @@ class PHPWS_ControlPanel {
 
         foreach ($checkTabs as $tab){
             if ($tab->getItemname() == 'controlpanel' &&
-                in_array($tab->getId(), $tabList) &&
-                (!isset($links) || !in_array($tab->getId(), $links))
+                in_array($tab->id, $tabList) &&
+                (!isset($links) || !in_array($tab->id, $links))
                 ) {
                 $panel->dropTab($tab->id);
             }
@@ -73,7 +73,7 @@ class PHPWS_ControlPanel {
             return _('An error occurred while accessing the Control Panel.');
         }
         $tab = $panel->tabs[$panel->getCurrentTab()];
-        $link = str_replace('&amp;', '&', $tab->getLink(FALSE)) . '&tab=' . $tab->getId();
+        $link = str_replace('&amp;', '&', $tab->getLink(FALSE)) . '&tab=' . $tab->id;
         $current_link = ereg_replace($_SERVER['PHP_SELF'] . '\?', '', $_SERVER['REQUEST_URI']);
 
         // Headers to the tab's link if it is not a control panel
@@ -133,7 +133,7 @@ class PHPWS_ControlPanel {
 
         foreach ($result as $link){
             if (!$link->isRestricted() || Current_User::allow($link->itemname)) {
-                $allLinks[$link->getTab()][] = $link;
+                $allLinks[$link->tab][] = $link;
             }
         }
 
@@ -295,8 +295,9 @@ class PHPWS_ControlPanel {
             $newTab->setItemname('controlpanel');
             $newTab->save();
 
-            if ($tab['id'] == 'unsorted')
-                $defaultId = $newTab->getId();
+            if ($tab['id'] == 'unsorted') {
+                $defaultId = $newTab->id;
+            }
         }
 
         $db = & new PHPWS_DB('controlpanel_link');

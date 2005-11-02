@@ -16,7 +16,6 @@ class PHPWS_Panel_Tab {
     var $_secure      = TRUE;
 
     function PHPWS_Panel_Tab($id=NULL) {
-
         if(isset($id)) {
             $this->setId($id);
             $this->init();
@@ -30,10 +29,6 @@ class PHPWS_Panel_Tab {
     function init(){
         $DB = new PHPWS_DB('controlpanel_tab');
         $DB->loadObject($this);
-    }
-
-    function getId(){
-        return $this->id;
     }
 
     function setTitle($title){
@@ -58,10 +53,10 @@ class PHPWS_Panel_Tab {
             if ($this->_secure) {
                 $authkey = Current_User::getAuthKey();
                 return sprintf('<a href="%s&amp;tab=%s&amp;authkey=%s">%s</a>',
-                               $link, $this->getId(), $authkey, $title);
+                               $link, $this->id, $authkey, $title);
             } else {
                 return sprintf('<a href="%s&amp;tab=%s">%s</a>',
-                               $link, $this->getId(), $title);
+                               $link, $this->id, $title);
             }
         } else {
             return $this->link;
