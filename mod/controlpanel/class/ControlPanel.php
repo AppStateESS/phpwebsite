@@ -38,8 +38,9 @@ class PHPWS_ControlPanel {
 
         $defaultTabs = PHPWS_ControlPanel::getDefaultTabs();
 
-        foreach ($defaultTabs as $tempTab)
+        foreach ($defaultTabs as $tempTab) {
             $tabList[] = $tempTab['id'];
+        }
 
         if (!empty($allLinks)) {
             $links = array_keys($allLinks);
@@ -119,6 +120,7 @@ class PHPWS_ControlPanel {
 
         // This session prevents the DB query and link
         // creation from being repeated.
+
         if (isset($_SESSION['CP_All_links'])) {
             return $_SESSION['CP_All_links'];
         }
@@ -128,13 +130,13 @@ class PHPWS_ControlPanel {
         $DB->addOrder('link_order');
         $DB->setIndexBy('id');
         $result = $DB->getObjects('PHPWS_Panel_Link');
-    
+
         foreach ($result as $link){
-            if (!$link->isRestricted() || Current_User::allow($link->getItemName())) {
+            if (!$link->isRestricted() || Current_User::allow($link->itemname)) {
                 $allLinks[$link->getTab()][] = $link;
             }
         }
-    
+
         $_SESSION['CP_All_links'] = $allLinks;
         return $_SESSION['CP_All_links'];
     }
