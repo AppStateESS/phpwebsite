@@ -688,14 +688,28 @@ class PHPWS_User {
         return Users_Permission::savePermissions($key);
     }
 
-    function assignPermissions($module, $item_id=NULL, $format=TRUE)
+    function getAllGroups()
     {
-        if (!PHPWS_Core::moduleExists($module)) {
-            return PHPWS_Error::get(PHPWS_NO_MOD_FOUND, 'core', __CLASS__ . '::' . __FUNCTION__);
-        }
+        PHPWS_Core::initModClass('users', 'Action.php');
+        return User_Action::getGroups('group');
+    }
 
-        PHPWS_Core::initModClass('users', 'Permission.php');
-        return Users_Permission::assignPermissions($module, $item_id, $format);
+    function editPermissions(&$form, &$key) {
+        PHPWS_Core::initModClass('users', 'Form.php');
+        return User_Form::editPermissions($form, $key);
+    }
+
+    function viewPermissions(&$form, &$key) {
+        PHPWS_Core::initModClass('users', 'Form.php');
+        return User_Form::viewPermissions($form, $key);
+    }
+
+    function saveEditPermissions(&$key) {
+        return Users_Permission::saveEditPermissions($key);
+    }
+
+    function saveViewPermissions(&$key) {
+        return Users_Permission::saveViewPermissions($key);
     }
 
     function getPermissionLevel($module)
