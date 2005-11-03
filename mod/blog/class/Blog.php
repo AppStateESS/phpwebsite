@@ -13,7 +13,6 @@ class Blog {
     var $entry      = NULL;
     var $author     = NULL;
     var $date       = NULL;
-    var $restricted = 0;
     var $_error     = NULL;
 
     function Blog($id=NULL)
@@ -78,16 +77,6 @@ class Blog {
         return strftime($type, $this->date);
     }
 
-    function isRestricted()
-    {
-        return (bool)$this->restricted;
-    }
-
-    function getRestricted()
-    {
-        return $this->restricted;
-    }
-
     function save()
     {
         $db = & new PHPWS_DB('blog_entries');
@@ -124,28 +113,18 @@ class Blog {
             }
         }
 
+        $key->postViewPermissions();
+
         $key->setModule('blog');
         $key->setItemName('entry');
         $key->setItemId($this->id);
-
         $key->setEditPermission('edit_blog');
-
-        if ($this->restricted) {
-            $key->setRestricted(1);
-            if ($this->restricted == 2) {
-                $key->setViewPermission('view_blog');
-            } else {
-                $key->setViewPermission(NULL);
-            }
-        } else {
-            $key->setRestricted(0);
-        }
-
         $key->setUrl($this->getViewLink(TRUE));
         $key->setTitle($this->title);
         $key->setSummary($this->entry);
         $key->save();
         $this->key_id = $key->id;
+        return $key;
     }
 
     function getViewLink($bare=FALSE){
@@ -291,12 +270,6 @@ class Blog {
 
         $this->setEntry($_POST['entry']);
 
-        if (isset($_POST['viewable'])) {
-            $this->restricted = (int)$_POST['viewable'];
-        } else {
-            $this->restricted = 0;
-        }
-
         if (isset($_POST['version_id'])) {
             $version = & new Version('blog_entries', $_REQUEST['version_id']);
         }
@@ -342,14 +315,17 @@ class Blog {
 
         $this->id = $version->getSourceId();
 
-        if ($version->isApproved() && $this->id) {
-            $this->saveKey();
-            $this->save();
-        }
+        if ($version->isApproved()) {
+            if ($this->id) {
+                $key = $this->saveKey();
 
-        if ($version->isApproved() && $set_permissions) {
-            $key = & new Key($this->key_id);
-            $result = PHPWS_User::savePermissions($key);
+                if ($set_permissions) {
+                    PHPWS_User::saveEditPermissions($key);
+                }
+
+                $this->save();
+            }
+            
         }
 
         return TRUE;
