@@ -1008,6 +1008,10 @@ class PHPWS_DB {
             $mode = DB_FETCHMODE_ASSOC;
         }
 
+        if ($this->_test_mode) {
+            exit($sql);
+        }
+
         // assoc does odd things if the resultant return is two items or less
         // not sure why it is coded that way. Use the default instead
 
