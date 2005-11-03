@@ -7,6 +7,9 @@
  * @version $Id$
  */
 
+define('KEY_LOGGED_RESTRICTED', 1);
+define('KEY_GROUP_RESTRICTED', 2);
+
 if (!isset($_REQUEST['module'])) {
     $GLOBALS['PHPWS_Key'] = Key::getHomeKey();
 } else {
@@ -23,20 +26,20 @@ class Key {
     var $url             = NULL;
     var $active          = 1;
 
-    // if TRUE/1 then only logged in users will access
+    // if KEY_LOGGED_RESTRICTED, then only logged in users will access
+    // if KEY_GROUP_RESTRICTED, user must be in group list
     var $restricted      = 0;
 
     var $create_date     = 0;
     var $update_date     = 0;
-
-    // contains permission allow name for viewing
-    var $view_permission = NULL;
 
     // contains permission allow name for editing
     var $edit_permission = NULL;
 
     var $times_viewed    = 0;
 
+    // groups allowed to view
+    var $_view_groups    = NULL;
     var $_error          = NULL;
   
     function Key($id=NULL)
@@ -77,25 +80,35 @@ class Key {
         return sprintf('<a href="%s">%s</a>', $this->url, $this->title);
     }
 
-    function setRestricted($restrict)
+    function restrictToLogged()
     {
-        $this->restricted = (int)$restrict;
+        $this->restricted = KEY_LOGGED_RESTRICTED;
+    }
+
+    function restrictToGroups($groups=NULL)
+    {
+        if (!is_array($groups)) {
+            return FALSE;
+        }
+        $this->restricted = KEY_GROUP_RESTRICTED;
+        if (!empty($groups)) {
+            return $this->setViewGroups($groups);
+        }
+    }
+
+    function setViewGroups($groups)
+    {
+        foreach ($groups as $group_id) {
+            if (is_numeric($group_id)) {
+                $this->_view_groups[] = (int)$group_id;
+            }
+        }
     }
 
     // restricted means that only logged users can access
     function isRestricted()
     {
         return (bool)$this->restricted;
-    }
-
-    function setViewPermission($permission)
-    {
-        if (empty($permission)) {
-            $this->view_permission = NULL;
-        } else {
-            $this->restricted = 1;
-            $this->view_permission = strip_tags($permission);
-        }
     }
 
     function setEditPermission($permission)
@@ -107,16 +120,40 @@ class Key {
         }
     }
 
+    function getViewGroups()
+    {
+        if (!isset($this->_view_groups)) {
+            $db = & new PHPWS_DB('phpws_key_view');
+            $db->addWhere('key_id', $this->id);
+            $db->addColumn('group_id');
+            $result = $db->select('col');
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                return array();
+            }
+            $this->_view_groups = $result;
+        }
+        return $this->_view_groups;
+    }
+
     function allowView()
     {
         if (!$this->restricted) {
             return TRUE;
         } else {
-            if (empty($this->view_permissions)) {
+            if ($this->restricted == KEY_LOGGED_RESTRICTED) {
                 return Current_User::isLogged();
-            } else {
-                return Current_User::allow($this->module, $this->view_permission,
-                                           $this->item_id, $this->item_name);                
+            } elseif ($this->restricted == KEY_GROUP_RESTRICTED) {
+                if (Current_User::allow($this->module)) {
+                    return TRUE;
+                } else {
+                    $user_groups = Current_User::getGroups();
+                    if (empty($user_groups)) {
+                        return false;
+                    } else {
+                        return in_array($user_groups, $this->getViewGroups());
+                    }
+                }
             }
         }
 
@@ -148,6 +185,17 @@ class Key {
         return $result;
     }
 
+    function postViewPermissions()
+    {
+        if (isset($_POST['view_permission'])) {
+            $this->restricted = (int)$_POST['view_permission'];
+            
+            if ($this->restricted == 2 && isset($_POST['view_groups']) && is_array($_POST['view_groups'])) {
+                $this->_view_groups = $_POST['view_groups'];
+            }
+        }
+    }
+
     function save()
     {
         // No need to save Home keys
@@ -176,6 +224,31 @@ class Key {
             $this->_error = $result;
             return $result;
         }
+
+        $db = & new PHPWS_DB('phpws_key_view');
+        $db->addWhere('key_id', $this->id);
+        $result = $db->delete();
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+        
+        // we don't care if restricted is 0 because everyone can view
+        // we don't care if it is 1 either because just checking log
+        // status covers it
+
+        if ($this->restricted == 2) {
+            if (!empty($this->_view_groups) && is_array($this->_view_groups)) {
+                $db->reset();
+
+                foreach ($this->_view_groups as $group_id) {
+                    $db->resetValues();
+                    $db->addValue('key_id', $this->id);
+                    $db->addValue('group_id', $group_id);
+                    $db->insert();
+                }
+            }
+        }
+
         return TRUE;
     }
 
@@ -314,7 +387,6 @@ class Key {
         $db->addWhere('id', $this->id);
         return $db->incrementColumn('times_viewed');
     }
-
 }
 
 ?>
