@@ -7,13 +7,60 @@
    * @author  Matt McNaney <matt at tux dot appstate dot edu>
    * @package Core
    */
-PHPWS_Core::initCoreClass('Form.php');
-
 define('AUTO_SIGNUP',    1);
 define('CONFIRM_SIGNUP', 2);
 define('APPROVE_SIGNUP', 3);
 
+PHPWS_Core::initCoreClass('Form.php');
+
+
 class User_Form {
+
+    function editPermissions(&$form, &$key)
+    {
+        $groups = Users_Permission::getRestrictedGroups($key, TRUE);
+
+        if (empty($groups)) {
+            $form->addTplTag('EDIT_GROUPS_LABEL', _('Allow group edit'));
+            $form->addTplTag('EDIT_GROUPS', _('No edit restricted groups.'));
+            return TRUE;
+        }
+
+        $item_groups = Users_Permission::getItemGroups($key);
+
+        $form->addMultiple('edit_groups', $groups);
+        $form->setLabel('edit_groups', _('Allow group edit'));
+        $form->setSize('edit_groups', 5);
+        $form->setMatch('edit_groups', $item_groups);
+    }
+
+    /**
+     * View permissions:
+     * 0 - Everyone can view
+     * 1 - only logged in users can view
+     * 2 - only certain groups many view
+     */
+    function viewPermissions(&$form, &$key)
+    {
+        $groups = Users_Permission::getRestrictedGroups($key);
+
+        if (empty($groups)) {
+            $form->addTplTag('VIEW_GROUPS_LABEL', _('Allow group view'));
+            $form->addTplTag('VIEW_GROUPS', _('No restricted groups.'));
+            return TRUE;
+        }
+
+        $form->addRadio('view_permission', array(0, 1, 2));
+        $form->setLabel('view_permission', array(_('All visitors'),
+                                                 _('Logged visitors'),
+                                                 _('Specific group(s)')));
+        $form->setMatch('view_permission', $key->restricted);
+
+        $form->addMultiple('view_groups', $groups);
+        $form->setLabel('view_groups', _('Allow group view'));
+        $form->setSize('view_groups', 5);
+        $form->setMatch('view_groups', $key->getViewGroups());
+    }
 
     function logBox($logged=TRUE)
     {
@@ -420,7 +467,7 @@ class User_Form {
         $members = $group->getMembers();
 
         if ($group->getId() > 0){
-            $form->addHidden('groupId', $group->getId());
+            $form->addHidden('group_id', $group->getId());
             $form->addSubmit('submit', _('Update Group'));
         } else
             $form->addSubmit('submit', _('Add Group'));
