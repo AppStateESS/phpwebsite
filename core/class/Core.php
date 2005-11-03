@@ -511,6 +511,30 @@ class PHPWS_Core {
         return $url;
     }
 
+    /**
+     * I am tired of writing this over and over with the php
+     * version differences.
+     *
+     * Returns true if the object is of the entered class.
+     * The class name must be lower case. If it isn't well you should 
+     * have known PHP 5 was going to change the rules, on get_class
+     * shouldn't have ya? In other words, My_Class and my_class are 
+     * the same as far as this function is concerned.
+     * Mix up your class names.
+     */
+    function isClass(&$object, $class_name)
+    {
+        if (!is_object($object)) {
+            return FALSE;
+        }
+
+        if (strtolower(get_class($object)) == strtolower($class_name)) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
     function getCurrentUrl($relative=TRUE, $use_redirect=TRUE)
     {
         if (!$relative) {
