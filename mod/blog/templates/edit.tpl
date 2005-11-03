@@ -13,13 +13,19 @@
     <td>{ASSIGNED_GROUPS}</td>
   </tr>
   <tr>
-    <td><span class="label">{VIEWABLE_MAIN_LABEL}</span></td>
-    <td>
-      {VIEWABLE_1} {VIEWABLE_1_LABEL}<br />
-      {VIEWABLE_2} {VIEWABLE_2_LABEL}<br />
-      {VIEWABLE_3} {VIEWABLE_3_LABEL}
+  <tr>
+    <td>{EDIT_GROUPS_LABEL}</td><td>{EDIT_GROUPS}</td>
+  </tr>
+  <tr>
+    <td>{VIEW_GROUPS_LABEL}
+    <ul class="no-bullet">
+    <li>{VIEW_PERMISSION_1} {VIEW_PERMISSION_1_LABEL}</li>
+    <li>{VIEW_PERMISSION_2} {VIEW_PERMISSION_2_LABEL}</li>
+    <li>{VIEW_PERMISSION_3} {VIEW_PERMISSION_3_LABEL}</li>
+    </ul>
     </td>
+    <td>{VIEW_GROUPS}</td>
   </tr>
 </table>
-{SUBMIT} {APPROVE_ENTRY}
+{SUBMIT}
 {END_FORM}
