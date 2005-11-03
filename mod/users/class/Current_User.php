@@ -1,4 +1,13 @@
 <?php
+  /**
+   * The Current_User class is a shortcut to the Users class.
+   * When using the Current_User you are acting on the user currently
+   * logged into the system. Current_User is actually pathing through
+   * the current user session.
+   *
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
+   */
 
 class Current_User {
 
