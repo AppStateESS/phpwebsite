@@ -98,6 +98,12 @@ table.border  th {
    font-style : italize;
 }
 
+.no-bullet {
+   list-style-type : none;
+   margin-left : 0;
+   padding-left : 0;
+}
+
 .larger {
 	font-size : 110%;
 }
