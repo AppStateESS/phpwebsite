@@ -66,6 +66,10 @@ class User_Action {
             break;      
 
         case 'deleteUser':
+            if (!Current_User::authorized('users', 'delete_users')) {
+                Current_User::disallow();
+                return;
+            }
             $user->kill();
             $title = _('Manage Users');
             $content = User_Form::manageUsers();
@@ -75,6 +79,11 @@ class User_Action {
         case 'authorization':
         case 'postAuthorization':
         case 'dropAuthScript':
+            if (!Current_User::authorized('users', 'settings')) {
+                Current_User::disallow();
+                return;
+            }
+
             if ($command == 'dropAuthScript' && isset($_REQUEST['script_id'])) {
                 User_Action::dropAuthorization($_REQUEST['script_id']);
             } elseif ($command == 'postAuthorization') {
@@ -142,6 +151,11 @@ class User_Action {
             break;
 
         case 'postMembers':
+            if (!Current_User::authorized('users', 'add_edit_groups')) {
+                Current_User::disallow();
+                return;
+            }
+
             $title = _('Manage Members') . ' : ' . $group->getName();
             $content = User_Form::manageMembers($group);
             break;
@@ -150,6 +164,11 @@ class User_Action {
 
             /************************* Misc Forms ************************/
         case 'settings':
+            if (!Current_User::authorized('users', 'settings')) {
+                Current_User::disallow();
+                return;
+            }
+
             $title = _('Settings');
             $content = User_Form::settings();
             break;
@@ -158,6 +177,10 @@ class User_Action {
 
             /** Action cases **/
         case 'deify':
+            if (!Current_User::isDeity()) {
+                Current_User::disallow();
+                return;
+            }
             $user = & new PHPWS_User($_REQUEST['user']);
             if (isset($_GET['authorize'])){
                 if ($_GET['authorize'] == 1 && Current_User::isDeity()){
@@ -174,6 +197,11 @@ class User_Action {
             break;      
 
         case 'mortalize':
+            if (!Current_User::isDeity()) {
+                Current_User::disallow();
+                return;
+            }
+
             $user = & new PHPWS_User($_REQUEST['user']);
             if (isset($_GET['authorize'])){
                 if ($_GET['authorize'] == 1 && Current_User::isDeity()){
@@ -192,6 +220,12 @@ class User_Action {
         case 'postUser':
             if (isset($_POST['user_id'])) {
                 if (!Current_User::authorized('users', 'edit_users')) {
+                    PHPWS_User::disallow();
+                    return;
+                }
+            } else {
+                // posting new user
+                if (!Current_User::authorized('users')) {
                     PHPWS_User::disallow();
                     return;
                 }
@@ -225,17 +259,22 @@ class User_Action {
             break;
 
         case 'postPermission':
+            if (!Current_User::authorized('users', 'edit_permissions')) {
+                PHPWS_User::disallow();
+                return;
+            }
             User_Action::postPermission();
             User_Action::sendMessage(_('Permissions updated'), $panel->getCurrentTab());
             break;
 
         case 'postGroup':
+            if (!Current_User::authorized('users', 'add_edit_groups')) {
+                PHPWS_User::disallow();
+                return;
+            }
+
             PHPWS_Core::initModClass('users', 'Group.php');
-            $id = (isset($_REQUEST['groupId']) ? (int)$_REQUEST['groupId'] : NULL);
-
-            $group = & new PHPWS_Group($id);
             $result = User_Action::postGroup($group);
-
 
             if (PEAR::isError($result)){
                 $message = $result->getMessage();
@@ -254,12 +293,13 @@ class User_Action {
             }
             break;
 
-        case 'setActiveDemographics':
-            User_Form::setActiveDemographics();
-            $content = User_Form::demographics('Demographics updated');
-            break;
 
         case 'addMember':
+            if (!Current_User::authorized('users', 'add_edit_groups')) {
+                PHPWS_User::disallow();
+                return;
+            }
+
             PHPWS_Core::initModClass('users', 'Group.php');
             $group->addMember($_REQUEST['member']);
             $group->save();
@@ -268,6 +308,11 @@ class User_Action {
             break;
 
         case 'dropMember':
+            if (!Current_User::authorized('users', 'add_edit_groups')) {
+                PHPWS_User::disallow();
+                return;
+            }
+
             PHPWS_Core::initModClass('users', 'Group.php');
             $group->dropMember($_REQUEST['member']);
             $group->save();
@@ -276,6 +321,11 @@ class User_Action {
             break;
 
         case 'update_settings':
+            if (!Current_User::authorized('users', 'settings')) {
+                PHPWS_User::disallow();
+                return;
+            }
+
             $result = User_Action::update_settings();
             $title = _('Settings');
             $message = _('User settings updated.');
@@ -437,10 +487,10 @@ class User_Action {
             $tabs['manage_groups'] = array('title'=>_('Manage Groups'), 'link'=>$link);
         }
 
-        $tabs['authorization'] = array('title'=>_('Authorization'), 'link'=>$link);
-
-        if (Current_User::allow('users', 'settings'))
+        if (Current_User::allow('users', 'settings')) {
+            $tabs['authorization'] = array('title'=>_('Authorization'), 'link'=>$link);
             $tabs['settings'] = array('title'=>_('Settings'), 'link'=>$link);
+        }
 
         $panel = & new PHPWS_Panel('user_user_panel');
         $panel->quickSetTabs($tabs);
@@ -696,21 +746,34 @@ class User_Action {
         Layout::add(_('Username and password refused.'), 'users', 'User_Main');
     }
 
-    function getGroups($mode=NULL)
+    function getGroups($mode=NULL, $group_list)
     {
+        if (isset($GLOBALS['User_Group_List'])) {
+            return $GLOBALS['User_Group_List'];
+        }
+
         PHPWS_Core::initModClass('users', 'Group.php');
 
         $db = & new PHPWS_DB('users_groups');
-        if ($mode == 'users')
+        if ($mode == 'users') {
             $db->addWhere('user_id', 0, '>');
-        elseif ($mode == 'group')
+        }
+        elseif ($mode == 'group') {
             $db->addWhere('user_id', 0);
+        }
 
         $db->addOrder('name');
         $db->setIndexBy('id');
+        $db->addColumn('id');
         $db->addColumn('name');
 
-        return $db->select('col');
+        $result = $db->select('col');
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        $GLOBALS['User_Group_List'] = $result;
+        return $result;
     }
 
     function update_settings()
