@@ -71,7 +71,12 @@ CREATE TABLE phpws_key (
   create_date int NOT NULL default '0',
   update_date int NOT NULL default '0',
   times_viewed int NOT NULL default '0',
-  view_permission varchar(30) default NULL,
   edit_permission varchar(30) default NULL,
   PRIMARY KEY  (id)
 );
+
+CREATE TABLE phpws_key_view (
+  key_id int(11) NOT NULL default '0',
+  group_id int(11) NOT NULL default '0'
+);
+
