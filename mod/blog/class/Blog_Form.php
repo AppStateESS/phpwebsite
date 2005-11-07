@@ -40,11 +40,6 @@ class Blog_Form {
         $form->setSize('title', 40);
         $form->setLabel('title', _('Title'));
 
-        if (Current_User::isUnrestricted('blog') && empty($version_id)) {
-            PHPWS_User::editPermissions($form, $key);
-            PHPWS_User::viewPermissions($form, $key);
-        }
-
         $template = $form->getTemplate();
 
         return PHPWS_Template::process($template, 'blog', 'edit.tpl');
