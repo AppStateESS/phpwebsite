@@ -27,9 +27,10 @@ a:hover, a:active {
 }
 
 
-h1, h2, h3 {
+h1, h2, h3, h1 a:link, h1 a:visited {
 	color: #A03E19;
 }
+
 
 .toggle1 {
 	background-color : #EDF4D1;
@@ -240,3 +241,4 @@ div.panel-title {
    padding : 4px;
    margin-bottom : 10px;
 }
+
