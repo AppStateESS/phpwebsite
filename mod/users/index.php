@@ -21,6 +21,10 @@ switch ($_REQUEST['action']){
  case 'admin':
    User_Action::adminAction();
    break;
+
+ case 'permission':
+     User_Action::permission();
+     break;
 }// End area switch
 
 ?>
