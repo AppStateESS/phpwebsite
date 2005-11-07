@@ -2,8 +2,7 @@
 
 $use_permissions = TRUE;
 
-$permissions['view_blog']   = _('View blog');
-$permissions['edit_blog']   = _('Edit blogs');
+$permissions['edit_blog']   = _('Edit blog');
 $permissions['delete_blog'] = _('Delete blog');
 
 $item_permissions = TRUE;
