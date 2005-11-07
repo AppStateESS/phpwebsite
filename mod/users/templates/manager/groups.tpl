@@ -13,6 +13,7 @@
   </tr>
   <!-- END listrows -->
 </table>
+{EMPTY_MESSAGE}
 {DEFAULT_SUBMIT}
 <br />
 <!-- BEGIN navigation -->
