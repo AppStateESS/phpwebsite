@@ -60,7 +60,10 @@ class User_Action {
             break;
 
         case 'editUser':
-            $title = _('Edit User');
+            $vars['command'] = 'setUserPermissions';
+            $vars['action'] = 'admin';
+            $vars['user_id'] = $user->id;
+            $title = _('Edit User') . ' | ' . PHPWS_Text::secureLink(_('Permissions'), 'users', $vars);
             $user = & new PHPWS_User($_REQUEST['user_id']);
             $content = User_Form::userForm($user);
             break;      
@@ -101,7 +104,11 @@ class User_Action {
             }
 
             PHPWS_Core::initModClass('users', 'Group.php');
-            $title = _('Set User Permissions') . ' : ' . $user->getUsername();
+            $vars['command'] = 'editUser';
+            $vars['action'] = 'admin';
+            $vars['user_id'] = $user->id;
+
+            $title = PHPWS_Text::secureLink(_('Edit User'), 'users', $vars) . ' | ' . _('Set User Permissions') . ' : ' . $user->getUsername();
             $content = User_Form::setPermissions($user->getUserGroup());
             break;
 
@@ -346,8 +353,36 @@ class User_Action {
         $panel->setContent($final);
 
         Layout::add(PHPWS_ControlPanel::display($panel->display()));
-
     }
+
+    function permission()
+    {
+        if (!isset($_REQUEST['key_id'])) {
+            return;
+        }
+
+        $key = & new Key((int)$_REQUEST['key_id']);
+
+        if (!Key::checkKey($key, FALSE)) {
+            return;
+        }
+
+        // View permissions must be first to allow error checking
+        // Edit will add its list to the view
+        Users_Permission::postViewPermissions($key);
+        Users_Permission::postEditPermissions($key);
+
+        $result = $key->save();
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $_SESSION['Permission_Message'] = _('An error occurred.');
+        } else {
+            $_SESSION['Permission_Message'] = _('Permissions updated.');
+        }
+
+        PHPWS_Core::goBack();
+    }
+
 
     function getMessage()
     {

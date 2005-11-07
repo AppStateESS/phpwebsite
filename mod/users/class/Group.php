@@ -243,24 +243,24 @@ class PHPWS_Group {
         $this->loadMembers();
         $id = $this->id;
 
-        $linkVar['action'] = "admin";
+        $linkVar['action'] = 'admin';
         $linkVar['group_id'] = $id;
 
-        $linkVar['command'] = "edit_group";
-        $links[] = PHPWS_Text::secureLink(_("Edit"), "users", $linkVar, NULL, _("Edit Group"));
+        $linkVar['command'] = 'edit_group';
+        $links[] = PHPWS_Text::secureLink(_('Edit'), 'users', $linkVar, NULL, _('Edit Group'));
 
-        $linkVar['command'] = "setGroupPermissions";
-        $links[] = PHPWS_Text::secureLink(_("Permissions"), "users", $linkVar);
+        $linkVar['command'] = 'setGroupPermissions';
+        $links[] = PHPWS_Text::secureLink(_('Permissions'), 'users', $linkVar);
 
-        $linkVar['command'] = "manageMembers";
-        $links[] = PHPWS_Text::secureLink(_("Members"), "users", $linkVar);
+        $linkVar['command'] = 'manageMembers';
+        $links[] = PHPWS_Text::secureLink(_('Members'), 'users', $linkVar);
     
         if ($this->active){
-            $linkVar['command'] = "deactivateGroup";
-            $links[] = PHPWS_Text::moduleLink(_("Deactivate"), "groups", $linkVar);
+            $linkVar['command'] = 'deactivateGroup';
+            $links[] = PHPWS_Text::moduleLink(_('Deactivate'), 'groups', $linkVar);
         } else {
-            $linkVar['command'] = "activateGroup";
-            $links[] = PHPWS_Text::moduleLink(_("Activate"), "groups", $linkVar);
+            $linkVar['command'] = 'activateGroup';
+            $links[] = PHPWS_Text::moduleLink(_('Activate'), 'groups', $linkVar);
         }
     
         $linkVar['command'] = 'remove_group';
@@ -269,7 +269,7 @@ class PHPWS_Group {
         $removelink['LINK'] = _('Remove');
         $links[] = Layout::getJavascript('confirm', $removelink);
 
-        $template['ACTIONS'] = implode(" | ", $links);
+        $template['ACTIONS'] = implode(' | ', $links);
     
         $members = $this->getMembers();
 

@@ -417,16 +417,19 @@ class PHPWS_User {
 
     function allow($module, $subpermission=NULL, $item_id=NULL, $itemname=NULL, $verify=FALSE)
     {
-        if (!$this->isLogged()) {
+        if (!$this->isLogged() || !isset($this->_permission)) {
             return FALSE;
         }
-        if ($verify && !$this->verifyAuthKey())
+
+        if ($verify && !$this->verifyAuthKey()) {
             return FALSE;
+        }
+
+        if ($this->isDeity()) {
+            return TRUE;
+        }
 
         PHPWS_Core::initModClass('users', 'Permission.php');
-        if ($this->isDeity())
-            return TRUE;
-
         return $this->_permission->allow($module, $subpermission, $item_id, $itemname);
     }
 
@@ -694,23 +697,6 @@ class PHPWS_User {
         return User_Action::getGroups('group');
     }
 
-    function editPermissions(&$form, &$key) {
-        PHPWS_Core::initModClass('users', 'Form.php');
-        return User_Form::editPermissions($form, $key);
-    }
-
-    function viewPermissions(&$form, &$key) {
-        PHPWS_Core::initModClass('users', 'Form.php');
-        return User_Form::viewPermissions($form, $key);
-    }
-
-    function saveEditPermissions(&$key) {
-        return Users_Permission::saveEditPermissions($key);
-    }
-
-    function saveViewPermissions(&$key) {
-        return Users_Permission::saveViewPermissions($key);
-    }
 
     function getPermissionLevel($module)
     {
@@ -719,8 +705,9 @@ class PHPWS_User {
 
         PHPWS_Core::initModClass('users', 'Permission.php');
 
-        if (!isset($this->_permission))
+        if (!isset($this->_permission)) {
             $this->loadPermissions();
+        }
 
         return $this->_permission->getPermissionLevel($module);
     }
@@ -753,7 +740,7 @@ class PHPWS_User {
         $linkVar['action'] = 'admin';
         $linkVar['user_id'] = $this->id;
 
-        $jsvar['QUESTION'] = sprintf(_('Are you certain you want to delete the user &quot;%s&quot; permanently?'),
+        $jsvar['QUESTION'] = sprintf(_('Are you certain you want to delete the user "%s" permanently?'),
                                      $this->getUsername());
         $jsvar['ADDRESS']  = 'index.php?module=users&amp;action=admin&amp;command=deleteUser&amp;user_id='
             . $this->id . '&amp;authkey=' . Current_User::getAuthKey();

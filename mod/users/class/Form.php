@@ -16,6 +16,7 @@ PHPWS_Core::initCoreClass('Form.php');
 
 class User_Form {
 
+    /*
     function editPermissions(&$form, &$key)
     {
         $groups = Users_Permission::getRestrictedGroups($key, TRUE);
@@ -33,13 +34,14 @@ class User_Form {
         $form->setSize('edit_groups', 5);
         $form->setMatch('edit_groups', $item_groups);
     }
-
+    */
     /**
      * View permissions:
      * 0 - Everyone can view
      * 1 - only logged in users can view
      * 2 - only certain groups many view
      */
+    /*
     function viewPermissions(&$form, &$key)
     {
         $groups = Users_Permission::getRestrictedGroups($key);
@@ -61,7 +63,7 @@ class User_Form {
         $form->setSize('view_groups', 5);
         $form->setMatch('view_groups', $key->getViewGroups());
     }
-
+    */
     function logBox($logged=TRUE)
     {
         translate('users');
@@ -792,6 +794,104 @@ class User_Form {
             return '<img src="' . $directory . $filename . '" />';
         }
     }
+
+
+    function permissionMenu(&$key)
+    {
+        $edit_groups = Users_Permission::getRestrictedGroups($key, TRUE);
+        $view_groups = Users_Permission::getRestrictedGroups($key);
+
+
+        $view_matches = $key->getViewGroups();
+        $edit_matches = $key->getEditGroups();
+
+        $edit_select = User_Form::_createMultiple($edit_groups, 'edit_groups', $edit_matches);
+        $view_select = User_Form::_createMultiple($view_groups, 'view_groups', $view_matches);
+
+        $form = & new PHPWS_Form;
+        $form->addHidden('module', 'users');
+        $form->addHidden('action', 'permission');
+        $form->addHidden('key_id', $key->id);
+        $form->addRadio('view_permission', array(0, 1, 2));
+        $form->setLabel('view_permission', array(_('All visitors'),
+                                                 _('Logged visitors'),
+                                                 _('Specific group(s)')));
+        $form->setMatch('view_permission', $key->restricted);
+        $form->addSubmit(_('Save permissions'));
+
+        $tpl = $form->getTemplate();
+
+        $tpl['TITLE'] = _('Permissions');
+
+        $tpl['EDIT_SELECT_LABEL'] = _('Edit restrictions');
+        $tpl['VIEW_SELECT_LABEL'] = _('View restrictions');
+
+        if ($edit_select) {
+            $tpl['EDIT_SELECT'] = $edit_select;
+        } else {
+            $tpl['EDIT_SELECT'] = _('No restricted edit groups found.');
+        }
+
+        if ($view_select) {
+            $tpl['VIEW_SELECT'] = $view_select;
+        } else {
+            $tpl['VIEW_SELECT'] = _('No restricted groups found.');
+        }
+
+        if (isset($_SESSION['Permission_Message'])) {
+            $tpl['MESSAGE'] = $_SESSION['Permission_Message'];
+            unset($_SESSION['Permission_Message']);
+        }
+
+        $content = PHPWS_Template::process($tpl, 'users', 'forms/permission_menu.tpl');
+
+        Layout::add($content, 'users', 'permissions');
+    }
+
+    function _createMultiple($group_list, $name, $matches) {
+        if (!is_array($matches)) {
+            $matches = NULL;
+        }
+        foreach ($group_list as $group) {
+            if ($matches && in_array($group['id'], $matches)) {
+                $match = 'selected="selected"';
+            } else {
+                $match = NULL;
+            }
+
+            if ($group['user_id']) {
+                $users[] = sprintf('<option value="%s" %s>%s</option>', $group['id'], $match, $group['name']);
+            } else {
+                $groups[] = sprintf('<option value="%s" %s>%s</option>', $group['id'], $match, $group['name']);
+            }
+        }
+
+        if (isset($groups)) {
+            $select[] = sprintf('<optgroup label="%s">', _('Groups'));
+            $select[] = implode("\n", $groups);
+            $select[] = '</optgroup>';
+        }
+
+        if (isset($users)) {
+            $select[] = sprintf('<optgroup label="%s">', _('Users'));
+            $select[] = implode("\n", $users);
+            $select[] = '</optgroup>';
+        }
+
+        if (isset($select)) {
+            if ( (count($users) + count($groups)) > 5) {
+                $limit = 'size="5"';
+            } else {
+                $limit = NULL;
+            }
+            return sprintf('<select %s multiple="multiple" id="%s" name="%s[]">%s</select>',
+                           $limit, $name, $name, implode("\n", $select));
+        } else {
+            return NULL;
+        }
+        
+    }
+
 }
 
 ?>

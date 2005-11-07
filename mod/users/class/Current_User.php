@@ -84,8 +84,13 @@ class Current_User {
 
     function isUnrestricted($module)
     {
-        if (Current_User::isDeity())
+        if (Current_User::isDeity()) {
             return TRUE;
+        }
+        if (empty($module)) {
+            return FALSE;
+        }
+
         $level = $_SESSION['User']->getPermissionLevel($module);
         return $level == UNRESTRICTED_PERMISSION ? TRUE : FALSE;
     }
@@ -143,6 +148,29 @@ class Current_User {
     {
         return $_SERVER['REMOTE_ADDR'];
     }
+
+    function getGroups()
+    {
+        if (empty($_SESSION['User']->_groups)) {
+            return NULL;
+        }
+        return $_SESSION['User']->_groups;
+    }
+
+    function permissionMenu()
+    {
+        $key = Key::getCurrent();
+        if (empty($key) || $key->isHomeKey() || empty($key->edit_permission)) {
+            return;
+        }
+
+        if (Current_User::isUnrestricted($key->module) && 
+            Current_User::allow($key->module, $key->edit_permission)) {
+            User_Form::permissionMenu($key);
+        }
+
+    }
+
 
 }
 
