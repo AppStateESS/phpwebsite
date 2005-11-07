@@ -112,8 +112,17 @@ table.border  th {
 	font-size : 90%;
 }
 
+.smaller option, optgroup {
+	font-size : 90%;
+}
+
+
 .padded {
 	padding : 5px;
+}
+
+select[multiple="multiple"] {
+	padding : 1px 2px 1px 2px;
 }
 
 .bordered {
