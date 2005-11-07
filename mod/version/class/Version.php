@@ -436,12 +436,8 @@ class Version {
         return $db->select('one');
     }
 
-    function authorizeCreator($module, $itemname=NULL){
-        if (empty($this->source_id)) {
-            return FALSE;
-        }
-
-        return Users_Permission::giveItemPermission($this->getCreator(), $module, $this->source_id, $itemname);
+    function authorizeCreator(&$key){
+        return Users_Permission::giveItemPermission($this->getCreator(), $key);
     }
 
     function flush($table, $item_id)
