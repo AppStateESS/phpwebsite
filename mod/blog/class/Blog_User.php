@@ -69,10 +69,7 @@ class Blog_User {
         $db->setLimit($limit);
         $db->addOrder('date desc');
 
-        if (!Current_User::isLogged()) {
-            $db->addWhere('key_id', 'phpws_key.id');
-            $db->addWhere('phpws_key.restricted', 0);
-        }
+        Key::restrictView($db, 'blog');
 
         $result = $db->getObjects('Blog');
 
@@ -81,13 +78,6 @@ class Blog_User {
         }
     
         foreach ($result as $blog) {
-            echo 'have it check for group before';
-            /*
-            if ($blog->getRestricted() == 2 &&
-                !Current_User::allow('blog', 'view_blog', $blog->getId(), 'entry')) {
-                continue;
-            }
-            */
             $view = $blog->view();
             if (!empty($view)) {
                 $list[] = $view;
