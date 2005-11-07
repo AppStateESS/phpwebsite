@@ -113,8 +113,6 @@ class Blog {
             }
         }
 
-        $key->postViewPermissions();
-
         $key->setModule('blog');
         $key->setItemName('entry');
         $key->setItemId($this->id);
@@ -315,17 +313,9 @@ class Blog {
 
         $this->id = $version->getSourceId();
 
-        if ($version->isApproved()) {
-            if ($this->id) {
-                $key = $this->saveKey();
-
-                if ($set_permissions) {
-                    PHPWS_User::saveEditPermissions($key);
-                }
-
-                $this->save();
-            }
-            
+        if ($version->isApproved() && $this->id) {
+            $key = $this->saveKey();
+            $this->save();
         }
 
         return TRUE;
