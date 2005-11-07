@@ -367,6 +367,11 @@ class User_Action {
             return;
         }
 
+        if (Current_User::isRestricted($key->module) ||
+            !$key->allowEdit()) {
+            Current_User::disallow();
+        }
+
         // View permissions must be first to allow error checking
         // Edit will add its list to the view
         Users_Permission::postViewPermissions($key);
