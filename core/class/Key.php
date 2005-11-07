@@ -40,6 +40,7 @@ class Key {
 
     // groups allowed to view
     var $_view_groups    = NULL;
+    var $_edit_groups    = NULL;
     var $_error          = NULL;
   
     function Key($id=NULL)
@@ -127,6 +128,7 @@ class Key {
             $db->addWhere('key_id', $this->id);
             $db->addColumn('group_id');
             $result = $db->select('col');
+
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
                 return array();
@@ -135,6 +137,23 @@ class Key {
         }
         return $this->_view_groups;
     }
+
+    function getEditGroups()
+    {
+        if (!isset($this->_edit_groups)) {
+            $db = & new PHPWS_DB('phpws_key_edit');
+            $db->addWhere('key_id', $this->id);
+            $db->addColumn('group_id');
+            $result = $db->select('col');
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                return array();
+            }
+            $this->_edit_groups = $result;
+        }
+        return $this->_edit_groups;
+    }
+
 
     function allowView()
     {
@@ -185,17 +204,6 @@ class Key {
         return $result;
     }
 
-    function postViewPermissions()
-    {
-        if (isset($_POST['view_permission'])) {
-            $this->restricted = (int)$_POST['view_permission'];
-            
-            if ($this->restricted == 2 && isset($_POST['view_groups']) && is_array($_POST['view_groups'])) {
-                $this->_view_groups = $_POST['view_groups'];
-            }
-        }
-    }
-
     function save()
     {
         // No need to save Home keys
@@ -225,9 +233,16 @@ class Key {
             return $result;
         }
 
-        $db = & new PHPWS_DB('phpws_key_view');
-        $db->addWhere('key_id', $this->id);
-        $result = $db->delete();
+        $view_db = & new PHPWS_DB('phpws_key_view');
+        $view_db->addWhere('key_id', $this->id);
+        $result = $view_db->delete();
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        $edit_db = & new PHPWS_DB('phpws_key_edit');
+        $edit_db->addWhere('key_id', $this->id);
+        $result = $edit_db->delete();
         if (PEAR::isError($result)) {
             return $result;
         }
@@ -238,14 +253,27 @@ class Key {
 
         if ($this->restricted == 2) {
             if (!empty($this->_view_groups) && is_array($this->_view_groups)) {
-                $db->reset();
+                $view_db->reset();
+
+                $this->_view_groups = array_unique($this->_view_groups);
 
                 foreach ($this->_view_groups as $group_id) {
-                    $db->resetValues();
-                    $db->addValue('key_id', $this->id);
-                    $db->addValue('group_id', $group_id);
-                    $db->insert();
+                    $view_db->resetValues();
+                    $view_db->addValue('key_id', $this->id);
+                    $view_db->addValue('group_id', $group_id);
+                    $view_db->insert();
                 }
+            }
+        }
+
+        if (!empty($this->_edit_groups) && is_array($this->_edit_groups)) {
+            $edit_db->reset();
+            $this->_edit_groups = array_unique($this->_edit_groups);
+            foreach ($this->_edit_groups as $group_id) {
+                $edit_db->resetValues();
+                $edit_db->addValue('key_id', $this->id);
+                $edit_db->addValue('group_id', $group_id);
+                $edit_db->insert();
             }
         }
 
@@ -365,6 +393,37 @@ class Key {
         }
     }
 
+    function restrictView(&$db, $module)
+    {
+        if (Current_User::isDeity()) {
+            return;
+        }
+
+        if (!Current_User::isLogged()) {
+            $db->addWhere('phpws_key.restricted', 0);
+            $db->addWhere('key_id', 'phpws_key.id');
+            return;
+        } elseif (Current_User::isUnrestricted($module)) {
+            return;
+        } else {
+            $db->setDistinct(1);
+            $groups = Current_User::getGroups();
+            if (empty($groups)) {
+                return;
+            }
+
+            $db->addWhere('key_id', 'phpws_key.id');
+
+            $db->addWhere('phpws_key.restricted', 1, '<=', NULL, 'key_group');
+            $db->addWhere('phpws_key.restricted', 2, '=', 'or', 'key_group');
+            $db->addWhere('phpws_key.id', 'phpws_key_view.key_id', '=', 'AND', 'key_group');
+            $db->addWhere('phpws_key_view.group_id', $groups, 'in', 'AND', 'key_group');
+
+            $db->setGroupConj('key_group', 'and');
+        }
+    }
+
+
     function modulesInUse()
     {
         $db = & new PHPWS_DB('phpws_key');
@@ -386,6 +445,24 @@ class Key {
         $db = & new PHPWS_DB('phpws_key');
         $db->addWhere('id', $this->id);
         return $db->incrementColumn('times_viewed');
+    }
+
+    function checkKey(&$key, $allow_home_key=TRUE) {
+        if ( empty($key) || isset($key->_error) ) {
+            return FALSE;
+        }
+
+        if (!$allow_home_key) {
+            if ($key->isHomeKey()) {
+                return FALSE;
+            }
+
+            if (!$key->id) {
+                return FALSE;
+            }
+        }
+
+        return TRUE;
     }
 }
 
