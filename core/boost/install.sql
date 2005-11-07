@@ -52,10 +52,10 @@ CREATE TABLE mod_settings (
  module varchar(40) NOT NULL,
  setting_name varchar(30) NOT NULL,
  setting_type smallint NOT NULL default '4',
- small_num smallint NULL,
- large_num int NULL,
+ small_num smallint NOT NULL default '0',
+ large_num int NOT NULL default '0',
  small_char varchar(100) NULL,
- large_char text
+ large_char text NULL
 );
 
 CREATE TABLE phpws_key (
@@ -80,3 +80,7 @@ CREATE TABLE phpws_key_view (
   group_id int(11) NOT NULL default '0'
 );
 
+CREATE TABLE phpws_key_edit (
+  key_id int(11) NOT NULL default '0',
+  group_id int(11) NOT NULL default '0'
+);
