@@ -150,15 +150,6 @@ class Block_Admin {
         return NULL;
     }
 
-    function setPermissions(&$block)
-    {
-        $key = & new Key($block->key_id);
-        $tpl['VIEW_FORM'] = Current_User::getPermissionForm($key);
-        $tpl['TITLE'] = _('Set Permissions');
-        $content = PHPWS_Template::process($tpl, 'block', 'view_permission.tpl');
-        Layout::nakedDisplay($content);   
-    }
-
     function removeBlock()
     {
         if (!isset($_GET['key_id']) || !isset($_GET['block_id'])) {

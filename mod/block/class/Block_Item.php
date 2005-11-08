@@ -202,9 +202,7 @@ class Block_Item {
         }
 
         if (Current_User::isUnrestricted('block')) {
-            $js_vars['address'] = sprintf('index.php?module=block&action=permissions&block_id=%s&authkey=%s',$this->id, Current_User::getAuthKey());
-            $js_vars['label'] = _('Permissions');
-            $links[] = javascript('open_window', $js_vars);
+            $links[] = Current_User::popupPermission($this->key_id);
         }
 
 
