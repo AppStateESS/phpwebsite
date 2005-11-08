@@ -371,13 +371,36 @@ class Key {
 
     function delete()
     {
+        $all_is_well = TRUE;
         $db = & new PHPWS_DB('phpws_key');
-        $db->addWhere('id', (int)$this->id);
-        $db->addWhere('module', $this->module, '=', 'AND', 1);
-        $db->addWhere('item_name', $this->item_name, '=', 'AND', 1);
-        $db->addWhere('item_id', $this->item_id, '=', 'AND', 1);
-        $db->setGroupConj(1, 'OR');
-        return $db->delete();
+        $db->addWhere('id', $this->id);
+        $result = $db->delete();
+
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $all_is_well = FALSE;
+        }
+
+        $db->reset();
+        $db->setTable('phpws_key_edit');
+        $db->addWhere('key_id', $this->id);
+        $result = $db->delete();
+
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $all_is_well = FALSE;
+        }
+        
+        $db->reset();
+        $db->setTable('phpws_key_view');
+        $db->addWhere('key_id', $this->id);
+        $result = $db->delete();
+
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $all_is_well = FALSE;
+        }
+        return $all_is_well;
     }
 
     function getCurrent()
