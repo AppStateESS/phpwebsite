@@ -56,10 +56,11 @@ class Block {
 
     function showBlocks($key)
     {
-        $db = & new PHPWS_DB('block_pinned');
-        $db->addColumn ('block_id');
-        $db->addWhere('key_id', $key->id);
-        $result = $db->select('col');
+        $db = & new PHPWS_DB('block');
+        $db->addWhere('block_pinned.key_id', $key->id);
+        $db->addWhere('id', 'block_pinned.block_id');
+        Key::restrictView($db, 'block');
+        $result = $db->getObjects('Block_Item');
 
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
@@ -70,11 +71,10 @@ class Block {
             return NULL;
         }
 
-        foreach ($result as $block_id) {
-            $block = & new Block_Item($block_id);
+        foreach ($result as $block) {
             $block->setPinKey($key);
             Layout::add($block->view(), 'block', $block->getContentVar());
-            $GLOBALS['Current_Blocks'][$block_id] = TRUE;
+            $GLOBALS['Current_Blocks'][$block->id] = TRUE;
         }
 
     }

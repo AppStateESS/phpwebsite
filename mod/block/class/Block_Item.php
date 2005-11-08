@@ -8,6 +8,7 @@
 
 class Block_Item {
     var $id        = 0;
+    var $key_id    = 0;
     var $title     = NULL;
     var $content   = NULL;
     var $_pin_key  = NULL;
@@ -92,10 +93,41 @@ class Block_Item {
         return $db->loadObject($this);
     }
 
-    function save()
+    function save($save_key=TRUE)
     {
         $db = & new PHPWS_DB('block');
-        return $db->saveObject($this);
+        $result = $db->saveObject($this);
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        if ($save_key) {
+            $this->saveKey();
+        }
+    }
+
+    function saveKey()
+    {
+        if (empty($this->key_id)) {
+            $key = & new Key;
+            $key->module = $key->item_name = 'block';
+            $key->item_id = $this->id;
+        } else {
+            $key = & new Key($this->key_id);
+        }
+
+        $key->edit_permission = 'edit_block';
+        $key->title = $this->title;
+        $result = $key->save();
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        if (empty($this->key_id)) {
+            $this->key_id = $key->id;
+            $this->save(FALSE);
+        }
+        
     }
 
     function clearPins()
@@ -156,8 +188,10 @@ class Block_Item {
     {
         $vars['block_id'] = $this->getId();
 
-        $vars['action'] = 'edit';
-        $links[] = PHPWS_Text::secureLink(_('Edit'), 'block', $vars);
+        if (Current_User::allow('block', 'edit_block', $this->id)) {
+            $vars['action'] = 'edit';
+            $links[] = PHPWS_Text::secureLink(_('Edit'), 'block', $vars);
+        }
 
         if ($this->isPinned()) {
             $vars['action'] = 'unpin';
@@ -167,14 +201,23 @@ class Block_Item {
             $links[] = PHPWS_Text::secureLink(_('Pin'), 'block', $vars);
         }
 
+        if (Current_User::isUnrestricted('block')) {
+            $js_vars['address'] = sprintf('index.php?module=block&action=permissions&block_id=%s&authkey=%s',$this->id, Current_User::getAuthKey());
+            $js_vars['label'] = _('Permissions');
+            $links[] = javascript('open_window', $js_vars);
+        }
+
+
         $vars['action'] = 'copy';
         $links[] = PHPWS_Text::secureLink(_('Copy'), 'block', $vars);
 
-        $vars['action'] = 'delete';
-        $confirm_vars['QUESTION'] = _('Are you sure you want to permanently delete this block?');
-        $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('block', $vars, TRUE);
-        $confirm_vars['LINK'] = _('Delete');
-        $links[] = Layout::getJavascript('confirm', $confirm_vars);
+        if (Current_User::allow('block', 'delete_block')) {
+            $vars['action'] = 'delete';
+            $confirm_vars['QUESTION'] = _('Are you sure you want to permanently delete this block?');
+            $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('block', $vars, TRUE);
+            $confirm_vars['LINK'] = _('Delete');
+            $links[] = javascript('confirm', $confirm_vars);
+        }
 
         $template['ACTION'] = implode(' | ', $links);
         $template['CONTENT'] = $this->summarize();

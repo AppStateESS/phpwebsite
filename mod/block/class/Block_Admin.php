@@ -11,6 +11,11 @@ class Block_Admin {
 
     function action()
     {
+        if (!Current_User::allow('block')) {
+            Current_User::disallow();
+            return;
+        }
+
         $panel = & Block_Admin::cpanel();
         if (isset($_REQUEST['action'])) {
             $action = $_REQUEST['action'];
@@ -62,6 +67,10 @@ class Block_Admin {
             $title = _('New Block');
             $content = Block_Admin::edit($block);
             break;
+
+        case 'permissions':
+            Block_Admin::setPermissions($block);
+            exit();
 
         case 'delete':
             $block->kill();
@@ -141,12 +150,20 @@ class Block_Admin {
         return NULL;
     }
 
+    function setPermissions(&$block)
+    {
+        $key = & new Key($block->key_id);
+        $tpl['VIEW_FORM'] = Current_User::getPermissionForm($key);
+        $tpl['TITLE'] = _('Set Permissions');
+        $content = PHPWS_Template::process($tpl, 'block', 'view_permission.tpl');
+        Layout::nakedDisplay($content);   
+    }
+
     function removeBlock()
     {
         if (!isset($_GET['key_id']) || !isset($_GET['block_id'])) {
             return;
         }
-
 
         $db = & new PHPWS_DB('block_pinned');
         $db->addWhere('block_id', $_GET['block_id']);
