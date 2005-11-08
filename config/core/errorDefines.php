@@ -121,5 +121,5 @@ define('SETTINGS_MISSING_FILE',       -1300);
 
 /**************  Key.php  *****************/
 define('KEY_NOT_FOUND',               -1400);
-
+define('KEY_PERM_COLUMN_MISSING',     -1401);
 ?>

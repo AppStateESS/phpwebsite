@@ -116,5 +116,5 @@ $errors[SETTINGS_MISSING_FILE]        = _('Unable to find your module\'s setting
 
 // Key.php 1400 - 1499
 $errors[KEY_NOT_FOUND]                = _('Key not found.');
-
+$errors[KEY_PERM_COLUMN_MISSING]      = _('Edit permission column does not exist.'); 
 ?>
