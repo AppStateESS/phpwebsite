@@ -166,11 +166,18 @@ class Current_User {
 
         if (Current_User::isUnrestricted($key->module) && 
             Current_User::allow($key->module, $key->edit_permission)) {
-            User_Form::permissionMenu($key);
+            $tpl = User_Form::permissionMenu($key);
+            $content = PHPWS_Template::process($tpl, 'users', 'forms/permission_menu.tpl');
+            Layout::add($content, 'users', 'permissions');
         }
-
     }
 
+    function popupPermission($key_id)
+    {
+        $js_vars['address'] = sprintf('index.php?module=users&action=popup_permission&key_id=%s&authkey=%s',$key_id, Current_User::getAuthKey());
+        $js_vars['label'] = _('Permission');
+        return javascript('open_window', $js_vars);
+    }
 
 }
 

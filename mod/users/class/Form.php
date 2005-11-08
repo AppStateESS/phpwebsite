@@ -15,55 +15,6 @@ PHPWS_Core::initCoreClass('Form.php');
 
 
 class User_Form {
-
-    /*
-    function editPermissions(&$form, &$key)
-    {
-        $groups = Users_Permission::getRestrictedGroups($key, TRUE);
-
-        if (empty($groups)) {
-            $form->addTplTag('EDIT_GROUPS_LABEL', _('Allow group edit'));
-            $form->addTplTag('EDIT_GROUPS', _('No edit restricted groups.'));
-            return TRUE;
-        }
-
-        $item_groups = Users_Permission::getItemGroups($key);
-
-        $form->addMultiple('edit_groups', $groups);
-        $form->setLabel('edit_groups', _('Allow group edit'));
-        $form->setSize('edit_groups', 5);
-        $form->setMatch('edit_groups', $item_groups);
-    }
-    */
-    /**
-     * View permissions:
-     * 0 - Everyone can view
-     * 1 - only logged in users can view
-     * 2 - only certain groups many view
-     */
-    /*
-    function viewPermissions(&$form, &$key)
-    {
-        $groups = Users_Permission::getRestrictedGroups($key);
-
-        if (empty($groups)) {
-            $form->addTplTag('VIEW_GROUPS_LABEL', _('Allow group view'));
-            $form->addTplTag('VIEW_GROUPS', _('No restricted groups.'));
-            return TRUE;
-        }
-
-        $form->addRadio('view_permission', array(0, 1, 2));
-        $form->setLabel('view_permission', array(_('All visitors'),
-                                                 _('Logged visitors'),
-                                                 _('Specific group(s)')));
-        $form->setMatch('view_permission', $key->restricted);
-
-        $form->addMultiple('view_groups', $groups);
-        $form->setLabel('view_groups', _('Allow group view'));
-        $form->setSize('view_groups', 5);
-        $form->setMatch('view_groups', $key->getViewGroups());
-    }
-    */
     function logBox($logged=TRUE)
     {
         translate('users');
@@ -146,8 +97,9 @@ class User_Form {
 
         foreach ($modules as $mod){
             $mod_template = User_Form::modulePermission($mod, $group);
-            if ($mod_template == false)
+            if ($mod_template == false) {
                 continue;
+            }
 
             $tpl->setCurrentBlock('module');
             $tpl->setData($mod_template);
@@ -210,6 +162,7 @@ class User_Form {
         if (isset($permissions)){
             foreach ($permissions as $permName => $permProper){
                 $form = & new PHPWS_Form;
+
                 $name = 'sub_permission[' . $mod['title'] . '][' . $permName . ']';
                 $form->addCheckBox($name, 1);
                 if ($group->allow($mod['title'], $permName)) {
@@ -796,11 +749,22 @@ class User_Form {
     }
 
 
-    function permissionMenu(&$key)
+    function _getNonUserGroups()
+    {
+        $db = & new PHPWS_DB('users_groups');
+        $db->addOrder('name');
+        $db->addWhere('user_id', 0);
+        return $db->select();
+    }
+
+
+    /**
+     * Creates the permission menu template
+     */
+    function permissionMenu(&$key, $popbox=FALSE)
     {
         $edit_groups = Users_Permission::getRestrictedGroups($key, TRUE);
-        $view_groups = Users_Permission::getRestrictedGroups($key);
-
+        $view_groups = User_Form::_getNonUserGroups();
 
         $view_matches = $key->getViewGroups();
         $edit_matches = $key->getEditGroups();
@@ -818,6 +782,10 @@ class User_Form {
                                                  _('Specific group(s)')));
         $form->setMatch('view_permission', $key->restricted);
         $form->addSubmit(_('Save permissions'));
+
+        if ($popbox) {
+            $form->addHidden('popbox', 1);
+        }
 
         $tpl = $form->getTemplate();
 
@@ -838,17 +806,21 @@ class User_Form {
             $tpl['VIEW_SELECT'] = _('No restricted groups found.');
         }
 
+        if ($popbox) {
+            $tpl['CANCEL'] = sprintf('<input type="button" value="%s" onclick="window.close()" />', _('Cancel'));
+        }
+
         if (isset($_SESSION['Permission_Message'])) {
             $tpl['MESSAGE'] = $_SESSION['Permission_Message'];
             unset($_SESSION['Permission_Message']);
         }
-
-        $content = PHPWS_Template::process($tpl, 'users', 'forms/permission_menu.tpl');
-
-        Layout::add($content, 'users', 'permissions');
+        return $tpl;
     }
 
     function _createMultiple($group_list, $name, $matches) {
+        if (empty($group_list)) {
+            return NULL;
+        }
         if (!is_array($matches)) {
             $matches = NULL;
         }
@@ -870,22 +842,22 @@ class User_Form {
             $select[] = sprintf('<optgroup label="%s">', _('Groups'));
             $select[] = implode("\n", $groups);
             $select[] = '</optgroup>';
+        } else {
+            $groups = array();
         }
 
         if (isset($users)) {
             $select[] = sprintf('<optgroup label="%s">', _('Users'));
             $select[] = implode("\n", $users);
             $select[] = '</optgroup>';
+        } else {
+            $users = array();
         }
 
+
         if (isset($select)) {
-            if ( (count($users) + count($groups)) > 5) {
-                $limit = 'size="5"';
-            } else {
-                $limit = NULL;
-            }
-            return sprintf('<select %s multiple="multiple" id="%s" name="%s[]">%s</select>',
-                           $limit, $name, $name, implode("\n", $select));
+            return sprintf('<select size="5" multiple="multiple" id="%s" name="%s[]">%s</select>',
+                           $name, $name, implode("\n", $select));
         } else {
             return NULL;
         }

@@ -735,7 +735,6 @@ class PHPWS_User {
         }
 
         $template['EMAIL'] = $this->getEmail(TRUE, TRUE);
-
     
         $linkVar['action'] = 'admin';
         $linkVar['user_id'] = $this->id;
@@ -762,6 +761,11 @@ class PHPWS_User {
         return $template;
     }
 
+
+    function registerPermissions($module)
+    {
+        return Users_Permission::registerPermissions($module);
+    }
 }
 
 ?>

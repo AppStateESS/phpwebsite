@@ -25,6 +25,11 @@ switch ($_REQUEST['action']){
  case 'permission':
      User_Action::permission();
      break;
+
+ case 'popup_permission':
+     User_Action::popupPermission();
+     break;
+
 }// End area switch
 
 ?>

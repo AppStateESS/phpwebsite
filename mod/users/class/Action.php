@@ -355,6 +355,38 @@ class User_Action {
         Layout::add(PHPWS_ControlPanel::display($panel->display()));
     }
 
+    function popupPermission()
+    {
+        if (!isset($_REQUEST['key_id'])) {
+            PHPWS_Core::goBack();
+        }
+
+        $key = & new Key((int)$_REQUEST['key_id']);
+
+        if (!Key::checkKey($key, FALSE)) {
+            return;
+        }
+
+        if (Current_User::isRestricted($key->module) ||
+            !$key->allowEdit()) {
+            Current_User::disallow();
+        }
+
+        $content = User_Action::getPermissionForm($key);
+        Layout::nakedDisplay($content);
+    }
+
+    function getPermissionForm(&$key)
+    {
+        if (Current_User::isUnrestricted($key->module) && 
+            Current_User::allow($key->module, $key->edit_permission)) {
+            $tpl = User_Form::permissionMenu($key, TRUE);
+
+            return PHPWS_Template::process($tpl, 'users', 'forms/permission_pop.tpl');
+        }
+    }
+
+
     function permission()
     {
         if (!isset($_REQUEST['key_id'])) {
@@ -385,7 +417,11 @@ class User_Action {
             $_SESSION['Permission_Message'] = _('Permissions updated.');
         }
 
-        PHPWS_Core::goBack();
+        if (isset($_POST['popbox'])) {
+            javascript('onload', array('function' => 'window.close()'));
+        } else {
+            PHPWS_Core::goBack();
+        }
     }
 
 

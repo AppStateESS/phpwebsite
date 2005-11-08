@@ -17,6 +17,45 @@ class Users_Permission {
         $this->groups = $groups;
     }
 
+    function registerPermissions($module, &$content)
+    {
+        $tableName = Users_Permission::getPermissionTableName($module);
+        if (!PHPWS_DB::isTable($tableName)) {
+            return Users_Permission::createPermissions($module);
+        }
+
+        $file = PHPWS_Core::getConfigFile($module, 'permission.php');
+        
+        if ($file == FALSE) {
+            return NULL;
+        }
+
+        include_once $file;
+
+        if (!isset($permissions) || !is_array($permissions)) {
+            return TRUE;
+        }
+
+        $db = & new PHPWS_DB($tableName);
+        $columns = $db->getTableColumns();
+
+
+        $columnSetting = 'smallint NOT NULL default \'0\'';
+        foreach ($permissions as $perm_name => $perm_proper) {
+            if (in_array($perm_name, $columns)) {
+                continue;
+            }
+            $result = $db->addTableColumn($perm_name, $columnSetting);
+            if (PEAR::isError($result)) {
+                $content[] = sprintf(_('Could not create "%s" permission column.'), $perm_name);
+                PHPWS_Error::log($result);
+            } else {
+                $content[] = sprintf(_('"%s" permission column created.'), $perm_name);
+            }
+        }
+        return TRUE;
+    }
+
     function allowedItem($module, $item_id, $itemname=NULL)
     {
         if (!isset($itemname)) {
@@ -305,7 +344,6 @@ class Users_Permission {
         return $db->insert();
     }
 
-
     /**
      * Returns all non-user groups that have restricted item permissions
      * for a specific module
@@ -331,7 +369,12 @@ class Users_Permission {
         $db->addWhere('id', "$permTable.group_id");
         $db->addWhere("$permTable.permission_level", RESTRICTED_PERMISSION);
 
+        $test_db = & new PHPWS_DB($permTable);
+
         if ($edit_rights) {
+            if (!$test_db->isTableColumn($key->edit_permission)) {
+                return PHPWS_Error::get(KEY_PERM_COLUMN_MISSING, 'users', 'Users_Permission::getRestrictedGroups', $key->edit_permission);
+            }
             $db->addWhere($permTable . '.' . $key->edit_permission, 1);
         }
         
