@@ -209,12 +209,14 @@ class PHPWS_DB {
             return $this->_columnInfo;
         }
 
-        $table = $this->getTable();
+        $table = $this->tables[0];
+
         if (!isset($table)) {
-            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::isTableColumn');
+            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::getTableColumns');
         }
 
         $columns =  $GLOBALS['PEAR_DB']->tableInfo($table);
+
         if (PEAR::isError($columns)) {
             return $columns;
         }
