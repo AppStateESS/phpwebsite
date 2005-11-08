@@ -142,7 +142,18 @@ class Block_Item {
         $this->clearPins();
         $db = & new PHPWS_DB('block');
         $db->addWhere('id', $this->id);
-        $db->delete();
+
+        $result = $db->delete();
+
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+        }
+
+        $key = & new Key($this->key_id);
+        $result = $key->delete();
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+        }
     }
 
     function view($pin_mode=FALSE, $admin_icon=TRUE)
