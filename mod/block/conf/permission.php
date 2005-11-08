@@ -2,9 +2,8 @@
 
 $use_permissions = TRUE;
 
-$permissions['view'] = _('View block');
-$permissions['delete'] = _('Delete block');
-
+$permissions['edit_block'] = _('Edit block');
+$permissions['delete_block'] = _('Delete block');
 
 $item_permissions = TRUE;
 

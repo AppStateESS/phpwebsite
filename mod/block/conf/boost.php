@@ -1,13 +1,13 @@
 <?php
 
-$proper_name  = "Block";
-$version      = "0.0.1";
+$proper_name  = 'Block';
+$version      = '0.0.2';
 $register     = FALSE;
 $unregister   = FALSE;
 $import_sql   = TRUE;
 $image_dir    = TRUE;
 $file_dir     = FALSE;
-$version_http = "http://phpwebsite.appstate.edu/test/update.ini";
+$version_http = 'http://phpwebsite.appstate.edu/block/update.ini';
 $about        = FALSE;
 $priority     = 50;
 
