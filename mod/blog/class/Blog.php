@@ -335,12 +335,22 @@ class Blog {
 
     function kill()
     {
+        $all_is_well = TRUE;
         Key::drop($this->key_id);
         PHPWS_Core::initModClass('version', 'Version.php');
         Version::flush('blog_entries', $this->id);
         $db = & new PHPWS_DB('blog_entries');
         $db->addWhere('id', $this->id);
-        return $db->delete();
+        $result = $db->delete();
+
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $all_is_well = FALSE;
+        }
+
+        $key = & new Key($this->key_id);
+        $key->delete();
+        return $all_is_well;
     }
 }
 
