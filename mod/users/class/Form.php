@@ -803,7 +803,7 @@ class User_Form {
         if ($view_select) {
             $tpl['VIEW_SELECT'] = $view_select;
         } else {
-            $tpl['VIEW_SELECT'] = _('No restricted groups found.');
+            $tpl['VIEW_SELECT'] = _('No groups found.');
         }
 
         if ($popbox) {
