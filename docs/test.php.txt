@@ -4,7 +4,6 @@
 
 header('Content-Type: text/html; charset=UTF-8');
 include 'config/core/config.php';
-require_once 'core/class/Debug.php';
 require_once 'core/class/Init.php';
 
 PHPWS_Core::initCoreClass('Database.php');
