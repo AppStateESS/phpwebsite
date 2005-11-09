@@ -342,22 +342,26 @@ class PHPWS_Text {
      */
     function rewriteLink($subject, $module, $id, $page=NULL)
     {
-        if (!is_numeric($id) || (isset($page) && !is_numeric($page))) {
+        if ( preg_match('/\W/', $module) ||
+             preg_match('/\W/', $id) ||
+             (!empty($page) && preg_match('/\W/', $page))
+             ) {
             return NULL;
         }
+            
 
         if ((bool)MOD_REWRITE_ENABLED == FALSE) {
-            $vars['id'] = (int)$id;
+            $vars['id'] = $id;
             if ($page) {
-                $vars['page'] = (int)$page;
+                $vars['page'] = $page;
             }
 
             return PHPWS_Text::moduleLink($subject, $module, $vars);
         } else {
             if ($page) {
-                return sprintf('<a href="%s%d_%d.html">%s</a>', $module, $id, $page, $subject);
+                return sprintf('<a href="%s/%s/%s">%s</a>', $module, $id, $page, $subject);
             } else {
-                return sprintf('<a href="%s%d.html">%s</a>', $module, $id, $subject);
+                return sprintf('<a href="%s/%s">%s</a>', $module, $id, $subject);
             }
         }
     }
@@ -378,7 +382,7 @@ class PHPWS_Text {
      *
      * @author Matthew McNaney <matt at tux dot appstate dot edu>
      */
-    function linkAddress($module=NULL, $getVars=NULL, $secure=FALSE, $add_base=FALSE){
+    function linkAddress($module=NULL, $getVars=NULL, $secure=FALSE, $add_base=FALSE, $convert_amp=TRUE){
         if (Current_User::isLogged() && $secure) {
             $getVars['authkey'] = Current_User::getAuthKey();
         }
@@ -399,8 +403,14 @@ class PHPWS_Text {
                 $vars[] = $var_name . '=' . $value;
         }
     
+        if ($convert_amp) {
+            $amp = '&amp;';
+        } else {
+            $amp = '&';
+        }
+
         if (isset($vars)) {
-            $link[] = implode('&amp;', $vars);
+            $link[] = implode($amp, $vars);
         }
 
         return implode('', $link);
@@ -491,7 +501,7 @@ class PHPWS_Text {
 
     function makeRelative(&$text){
         $address = addslashes(PHPWS_Core::getHomeHttp());
-        $text = str_replace($address, "./", $text);
+        $text = str_replace($address, './', $text);
     }
 
     /**
