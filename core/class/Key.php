@@ -17,7 +17,9 @@ if (!isset($_REQUEST['module'])) {
 }
 
 class Key {
-    var $id              = 0;
+    // if the id is 0 (zero) then this is a _dummy_ key
+    // dummy keys are not saved
+    var $id              = NULL;
     var $module          = NULL;
     var $item_name       = NULL;
     var $item_id         = NULL;
@@ -38,27 +40,19 @@ class Key {
 
     var $times_viewed    = 0;
 
+
     // groups allowed to view
     var $_view_groups    = NULL;
+    // groups allowed to edit
     var $_edit_groups    = NULL;
+
     var $_error          = NULL;
   
     function Key($id=NULL)
     {
-
-        if (!isset($id)) {
+        if (empty($id)) {
             return NULL;
         }
-
-        if ((int)$id == 0) {
-            $this->id = 0;
-            $this->module = $this->item_name = 'home';
-            $this->item_id = 0;
-            $this->setTitle(_('Home'));
-            $this->setUrl('index.php');
-            return;
-        }
-
 
         $this->id = (int)$id;
         $this->init();
@@ -201,18 +195,18 @@ class Key {
             $this->_error = PHPWS_Error::get(KEY_NOT_FOUND, 'core', 'Key::init', $this->id);
             $this->id = NULL;
         }
+
         return $result;
     }
 
     function save()
     {
-        // No need to save Home keys
-        if ($this->isHomeKey()) {
+        // No need to save dummy keys
+        if ($this->id === 0) {
             return TRUE;
         }
 
-        if (empty($this->module) || empty($this->item_id)
-            ) {
+        if (empty($this->module) || empty($this->item_id)) {
             return false;
         }
         
@@ -329,13 +323,23 @@ class Key {
     function &getHomeKey()
     {
         if (!isset($GLOBALS['Home_Key'])) {
-            $GLOBALS['Home_Key'] = & new Key(0);
+            $key = & new Key;
+            $key->id = 0;
+            $key->module = $key->item_name = 'home';
+            $key->item_id = 0;
+            $key->setTitle(_('Home'));
+            $key->setUrl('index.php');
+
+            $GLOBALS['Home_Key'] = $key;
         }
         return $GLOBALS['Home_Key'];
     }
 
     function flag()
     {
+        if (!isset($this->id)) {
+            $this->id = 0;
+        }
         $GLOBALS['Current_Flag'] = &$this;
     }
 
@@ -486,6 +490,19 @@ class Key {
         }
 
         return TRUE;
+    }
+
+    function isDummy($allow_home=FALSE)
+    {
+        if ($this->id === 0) {
+            if ($this->isHomeKey() && $allow_home) {
+                return FALSE;
+            } else {
+                return TRUE;
+            }
+        } else {
+            return FALSE;
+        }
     }
 }
 
