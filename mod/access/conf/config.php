@@ -8,8 +8,6 @@ define('ACCESS_FILES_DIR',         5);
 define('ACCESS_HTACCESS_WRITE',    6);
 define('ACCESS_HTACCESS_MISSING',  7);
 
-define('DEFAULT_REWRITE_1', 'RewriteRule ^([a-z]+)([0-9]+).html$ index.php?module=$1&id=$2 [L]');
-define('DEFAULT_REWRITE_2', 'RewriteRule ^([a-z]+)([0-9]+)_([0-9]+).html$ index.php?module=$1&id=$2&page=$3 [L]');
-
-
+define('DEFAULT_REWRITE_1', 'RewriteRule ^([a-z0-9]+)/([a-z0-9]+)/?$ index.php?module=$1&id=$2 [L,NC]');
+define('DEFAULT_REWRITE_2', 'RewriteRule ^([a-z0-9]+)/([a-z0-9]+)/([a-z0-9]+)/?$ index.php?module=$1&id=$2&page=$3 [L,NC]');
 ?>
