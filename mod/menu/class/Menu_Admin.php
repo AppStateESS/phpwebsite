@@ -22,10 +22,12 @@ class Menu_Admin {
 
         $panel = & Menu_Admin::cpanel();
 
-        if (isset($_REQUEST['command']))
+        if (isset($_REQUEST['command'])) {
             $command = $_REQUEST['command'];
-        else
+        }
+        else {
             $command = $panel->getCurrentTab();
+        }
 
         if (isset($_REQUEST['menu_id'])) {
             $menu = & new Menu_Item((int)$_REQUEST['menu_id']);
@@ -110,13 +112,23 @@ class Menu_Admin {
             break;
 
         case 'add_link':
+            if (PHPWS_Core::isPosted()) {
+                PHPWS_Core::goBack();
+            }
             if (!isset($_REQUEST['parent'])) {
                 $parent_id = 0;
             } else {
                 $parent_id = $_REQUEST['parent'];
             }
 
-            $result = Menu_Admin::addLink($menu, $_REQUEST['key_id'], $parent_id);
+            if (isset($_REQUEST['key_id'])) {
+                $result = Menu_Admin::addLink($menu, $_REQUEST['key_id'], $parent_id);
+            } elseif (isset($_REQUEST['url'])) {
+                $result = Menu_Admin::addRawLink($menu, $_REQUEST['link_title'], $_REQUEST['url'], $parent_id);
+            } else {
+                PHPWS_Core::goBack();
+            }
+
             if ($result) {
                 PHPWS_Core::goBack();
             } else {
@@ -206,7 +218,6 @@ class Menu_Admin {
             $menu->pin_all = 0;
             return $menu->save();
         } else {
-            echo 'wtf';
             $db = & new PHPWS_DB('menu_assoc');
             $db->addWhere('menu_id', $menu->id);
             $db->addWhere('key_id', $_REQUEST['key_id']);
@@ -228,6 +239,18 @@ class Menu_Admin {
     function addLink(&$menu, $key_id, $parent=0)
     {
         $result = $menu->addLink($key_id, $parent);
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            return FALSE;
+        }
+
+        return TRUE;
+    }
+
+
+    function addRawLink(&$menu, $title, $url, $parent=0)
+    {
+        $result = $menu->addRawLink($title, $url, $parent);
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             return FALSE;

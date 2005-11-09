@@ -155,10 +155,14 @@ class Menu_Item {
         }
 
         $db->addWhere('menu_id', $this->id);
-
         $db->addWhere('parent', $parent);
+        $db->addWhere('key_id', 0, '=', 'or', 1);
+        $db->addWhere('phpws_key.active', 1, '=', 'or', 1);
+        $db->addWhere('key_id', 'phpws_key.id', '=', 'and', 1);
         $db->addOrder('link_order');
+
         $db->setIndexBy('id');
+        //        $db->setTestMode();
         $result = $db->getObjects('menu_link');
 
         if (empty($result)) {
@@ -166,10 +170,6 @@ class Menu_Item {
         }
 
         foreach ($result as $link) {
-            $link->loadKey();
-            if (!$link->_key->isActive()) {
-                continue;
-            }
             $link->loadChildren();
             $final[$link->id] = $link;
         }
@@ -234,15 +234,33 @@ class Menu_Item {
         Layout::purgeBox('menu_' . $this->id);
     }
 
+    function addRawLink($title, $url, $parent=0)
+    {
+        if (empty($title) || empty($url)) {
+            return FALSE;
+        }
+
+        $link = & new Menu_Link;
+        $link->key_id = 0;
+        $link->setMenuId($this->id);
+        $link->setTitle($title);
+        $link->setUrl(urldecode($url));
+        $link->setParent($parent);
+
+        return $link->save();
+    }
+
     function addLink($key_id, $parent=0)
     {
         $key = & new Key($key_id);
         $link = & new Menu_Link;
+
         $link->setMenuId($this->id);
         $link->setKeyId($key->id);
-        $link->loadKey();
         $link->setTitle($key->title);
+        $link->setUrl($key->url);
         $link->setParent($parent);
+
         return $link->save();
     }
 
@@ -253,18 +271,24 @@ class Menu_Item {
     {
         $key = Key::getCurrent();
 
+        if ($pin_mode && $key->isDummy(true)) {
+            return;
+        }
+
         $edit = FALSE;
         $file = 'menu_layout/' . $this->template;
         $content_var = 'menu_' . $this->id;
 
-        if (!$pin_mode && Current_User::allow('menu')) {
+        if ( !$pin_mode && Current_User::allow('menu') ) {
             if (Menu::isAdminMode()) {
                 $tpl['ADD_LINK'] = Menu::getAddLink($this->id);
+
                 if (!empty($key)) {
                     $tpl['CLIP'] = Menu::getUnpinLink($this->id, $key->id, $this->pin_all);
                 } else {
                     $tpl['CLIP'] = Menu::getUnpinLink($this->id, -1, $this->pin_all);
                 }
+
                 $vars['command'] = 'disable_admin_mode';
                 $vars['return'] = 1;
                 $tpl['ADMIN_LINK'] = PHPWS_Text::moduleLink(MENU_ADMIN_OFF, 'menu', $vars);

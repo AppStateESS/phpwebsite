@@ -13,6 +13,7 @@ class Menu_Link {
     var $menu_id    = 0;
     var $key_id     = NULL;
     var $title      = NULL;
+    var $url        = NULL;
     var $parent     = 0;
     var $active     = 1;
     var $link_order = 1;
@@ -41,7 +42,6 @@ class Menu_Link {
         $db = & new PHPWS_DB('menu_links');
         $db->loadObject($this);
         $this->loadChildren();
-        $this->loadKey();
     }
 
     function &getDB()
@@ -51,11 +51,6 @@ class Menu_Link {
         }
         $this->_db->reset();
         return $this->_db;
-    }
-
-    function loadKey()
-    {
-        $this->_key = & new Key($this->key_id);
     }
 
     /**
@@ -72,7 +67,6 @@ class Menu_Link {
         }
 
         foreach ($result as $link) {
-            $link->loadKey();
             $link->loadChildren();
             $this->_children[$link->id] = $link;
         }
@@ -92,6 +86,22 @@ class Menu_Link {
     {
         $this->title = strip_tags(trim($title));
     }
+
+    function setUrl($url, $local=TRUE)
+    {
+        if ($local) {
+            PHPWS_Text::makeRelative($url);
+        }
+        $this->url = str_replace('&amp;', '&', trim($url));
+        $this->url = preg_replace('/&?authkey=\w{32}/', '', $url);
+        echo $this->url;
+    }
+
+    function getUrl()
+    {
+        return sprintf('<a href="%s">%s</a>', str_replace('&', '&amp;', $this->url), $this->title);
+    }
+
 
     function resetOrder()
     {
@@ -113,11 +123,6 @@ class Menu_Link {
         }
     }
 
-
-    function getUrl()
-    {
-        return $this->_key->url;
-    }
 
     function setMenuId($id)
     {
@@ -142,7 +147,8 @@ class Menu_Link {
 
     function save()
     {
-        if (empty($this->menu_id) || empty($this->title) || !isset($this->key_id) ) {
+        if (empty($this->menu_id) || empty($this->title) || 
+            empty($this->url) || !isset($this->key_id) ) {
             return PHPWS_Error::get(MENU_MISSING_INFO, 'menu', 'Menu_Link::save');
         }
 
@@ -166,7 +172,7 @@ class Menu_Link {
                 $current_parent[] = $this->id;
             }
 
-            if ($current_key->id == $this->key_id) {
+            if ( (!$current_key->isDummy() && $current_key->id == $this->key_id) || ($current_key->url == $this->url) ) {
                 $current_link = TRUE;
                 $current_parent[] = $this->id;
                 $template['CURRENT_LINK'] = MENU_CURRENT_LINK_STYLE;
@@ -177,7 +183,7 @@ class Menu_Link {
         if ($current_link || $this->parent == 0         ||
             in_array($this->parent, $current_parent)) {
 
-            $link = sprintf('<a href="%s" title="%s">%s</a>', $this->getUrl(), $this->title, $this->title);
+            $link = sprintf('<a href="%s" title="%s">%s</a>', $this->url, $this->title, $this->title);
 
             $this->_loadAdminLinks($template);
 
@@ -209,7 +215,7 @@ class Menu_Link {
         }
 
         foreach ($this->_children as $child) {
-            if ($child->key_id == $current_key->id) {
+            if ( ($current_key->id !== 0 && $child->key_id == $current_key->id) || ($child->url == $current_key->url) ){
                 return TRUE;
             }
         }

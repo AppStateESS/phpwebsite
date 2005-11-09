@@ -95,6 +95,9 @@ class Menu {
     function getAddLink($menu_id, $parent_id=NULL)
     {
         $key = Key::getCurrent();
+        if (empty($key->url)) {
+            return NULL;
+        }
 
         if (empty($key)) {
             return NULL;
@@ -107,13 +110,18 @@ class Menu {
         } else {
             $vars['parent'] = 0;
         }
-        $vars['key_id'] = $key->id;
+
+        if ($key->id) {
+            $vars['key_id'] = $key->id;
+        } else {
+            $vars['url'] = urlencode(urlencode($key->url));
+        }
 
         if (!empty($key->title)) {
             return PHPWS_Text::secureLink(MENU_LINK_ADD, 'menu', $vars);
         } else {
             $js['question']   = _('Enter link title');
-            $js['address']    = PHPWS_Text::linkAddress('menu', $vars, TRUE);
+            $js['address']    = PHPWS_Text::linkAddress('menu', $vars, TRUE, FALSE, FALSE);
             $js['link']       = MENU_LINK_ADD;
             $js['value_name'] = 'link_title';
             return javascript('prompt', $js);
