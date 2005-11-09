@@ -115,8 +115,9 @@ class Current_User {
 
     function isLogged()
     {
-        if (!isset($_SESSION['User']))
+        if (!isset($_SESSION['User'])) {
             return FALSE;
+        }
 
         return $_SESSION['User']->isLogged();
     }
@@ -160,7 +161,7 @@ class Current_User {
     function permissionMenu()
     {
         $key = Key::getCurrent();
-        if (empty($key) || $key->isHomeKey() || empty($key->edit_permission)) {
+        if (empty($key) || $key->isDummy() || empty($key->edit_permission)) {
             return;
         }
 
