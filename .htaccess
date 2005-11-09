@@ -1,6 +1,5 @@
 RewriteEngine On
 Options +FollowSymlinks
 
-RewriteRule ^([a-z]+)([0-9]+).html$ index.php?module=$1&id=$2 [L]
-RewriteRule ^([a-z]+)([0-9]+)_([0-9]+).html$ index.php?module=$1&id=$2&page=$3 [L]
-
+RewriteRule ^([a-z0-9]+)/([a-z0-9]+)/?$ index.php?module=$1&id=$2 [L,NC]
+RewriteRule ^([a-z0-9]+)/([a-z0-9]+)/([a-z0-9]+)/?$ index.php?module=$1&id=$2&page=$3 [L,NC]
