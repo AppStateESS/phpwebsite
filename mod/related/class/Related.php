@@ -254,7 +254,7 @@ class Related {
 
         $key = Key::getCurrent();
 
-        if (empty($key) || $key->isHomeKey() || empty($key->title) || empty($key->url)) {
+        if (empty($key) || $key->isDummy() || empty($key->title) || empty($key->url)) {
             return NULL;
         }
     

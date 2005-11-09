@@ -54,7 +54,7 @@ class Search_User {
         
         $key = Key::getCurrent();
 
-        if (!empty($key) && !$key->isHomeKey()) {
+        if (!empty($key) && !$key->isDummy()) {
             $form->setMatch('mod_title', $key->module);
         } elseif (isset($_REQUEST['mod_title'])) {
             $form->setMatch('mod_title', $_REQUEST['mod_title']);

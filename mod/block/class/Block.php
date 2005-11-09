@@ -15,7 +15,7 @@ class Block {
     {
         $key = Key::getCurrent();
 
-        if (empty($key)) {
+        if (empty($key) || $key->isDummy(true)) {
             return;
         }
         Block::showBlocks($key);
