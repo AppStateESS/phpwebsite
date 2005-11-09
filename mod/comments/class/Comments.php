@@ -21,7 +21,7 @@ class Comments {
             $key = Key::getCurrent();
         }
 
-        if (empty($key) || $key->isHomeKey() || PEAR::isError($key->_error)) {
+        if (empty($key) || $key->isDummy() || PEAR::isError($key->_error)) {
             return NULL;
         }
 

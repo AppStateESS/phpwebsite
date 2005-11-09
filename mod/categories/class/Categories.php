@@ -21,7 +21,7 @@ class Categories{
 
         $key = Key::getCurrent();
 
-        if (empty($key) || $key->isHomeKey()) {
+        if (empty($key) || $key->isDummy()) {
             return;
         }
 
