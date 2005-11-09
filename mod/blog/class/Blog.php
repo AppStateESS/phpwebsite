@@ -128,7 +128,7 @@ class Blog {
     function getViewLink($bare=FALSE){
         if ($bare) {
             if (MOD_REWRITE_ENABLED) {
-                return 'blog' . $this->id . '.html';
+                return 'blog/' . $this->id;
             } else {
                 return 'index.php?module=blog&amp;action=view_comments&amp;id=' . $this->id;
             }
