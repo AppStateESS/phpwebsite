@@ -126,7 +126,7 @@ class Access_Shortcut {
         if ($full) {
             $address[] = PHPWS_Core::getHomeHttp();
         }
-        $address[] = $this->keyword . '.html';
+        $address[] = $this->keyword;
 
         $url = implode('', $address);
         if ($linkable) {
@@ -138,7 +138,7 @@ class Access_Shortcut {
 
     function getHtaccess()
     {
-        return sprintf('RewriteRule ^%s.(html|htm)$ %s [L]', $this->keyword, $this->url);
+        return sprintf('RewriteRule ^%s$ %s [L]', $this->keyword, $this->url);
     }
     
     function delete()
