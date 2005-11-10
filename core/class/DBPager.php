@@ -163,14 +163,14 @@ class DBPager {
             $this->orderby_dir = preg_replace('/\W/', '', $_REQUEST['orderby_dir']);
         }
 
-        if (isset($_REQUEST['current_search'])) {
-            if (!empty($_REQUEST['current_search'])) {
-                $this->search = preg_replace('/\W/', '', $_REQUEST['current_search']);
+        if (isset($_REQUEST['pager_c_search'])) {
+            if (!empty($_REQUEST['pager_c_search'])) {
+                $this->search = preg_replace('/\W/', '', $_REQUEST['pager_c_search']);
             } else {
                 $this->search = NULL;
             }
-        } elseif (isset($_REQUEST['search'])) {
-            $this->search = preg_replace('/\W/', '', $_REQUEST['search']);
+        } elseif (isset($_REQUEST['pager_search'])) {
+            $this->search = preg_replace('/\W/', '', $_REQUEST['pager_search']);
         }
     }
 
@@ -511,9 +511,9 @@ class DBPager {
         $values['limit'] = $this->limit;
 
         if (!empty($this->search)) {
-            $values['search'] = $this->search;
+            $values['pager_search'] = $this->search;
         } else {
-            $values['search'] = NULL;
+            $values['pager_search'] = NULL;
         }
 
         if (isset($this->orderby)) {
@@ -532,6 +532,7 @@ class DBPager {
 
         // pull any extra values in current url
         $extra = PHPWS_Text::getGetValues();
+        $extra = preg_replace('/\s/', '+', $extra);
 
         // if extra values exist, add them to the values array
         // ignore matches in the output and other values
@@ -543,6 +544,7 @@ class DBPager {
             }
 
             $diff = array_diff_assoc($diff, $values);
+
             $values = array_merge($diff, $values);
         }
 
@@ -552,8 +554,7 @@ class DBPager {
 
         // prevents a doubling of the value in the page form
         unset($values['change_page']);
-        unset($values['current_search']);
-
+        unset($values['pager_c_search']);
 
         $GLOBALS['DBPager_Link_Values'] = $values;
 
@@ -666,8 +667,8 @@ class DBPager {
         $form->setMethod('get');
         $values = $this->getLinkValues();
         $form->addHidden($values);
-        $form->addText('current_search', $this->search);
-        $form->setLabel('current_search', _('Search'));
+        $form->addText('pager_c_search', $this->search);
+        $form->setLabel('pager_c_search', _('Search'));
         $template = $form->getTemplate();
         if (PEAR::isError($template)) {
             PHPWS_Error::log($template);
