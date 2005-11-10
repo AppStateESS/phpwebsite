@@ -92,10 +92,21 @@ class PHPWS_Debug {
     function testObject($objVar, $displayTags=1)
     {
         if(is_object($objVar)) {
+            $test_recursion = md5(serialize($objVar));
+            
+            if (isset($GLOBALS['Test_Recursion'])) {
+                if (in_array($test_recursion, $GLOBALS['Test_Recursion'])) {
+                    return _('Recursive object:') . ' ' . get_class($objVar);
+                }
+            }
+            
+            $GLOBALS['Test_Recursion'][]  = $test_recursion;
+
             $objectInfo = (get_object_vars($objVar));
             return '<b>' . _('Class Name') . ':</b> ' . get_class($objVar) .
                 PHPWS_Debug::testArray($objectInfo, $displayTags);
         }
+
         if (gettype($objVar) != 'object') {
             return sprintf(_('PHPWS_Debug: testObject received a/an %s variable, not an object.'), gettype($objVar)) . '<br />';
         } else {
@@ -117,6 +128,16 @@ class PHPWS_Debug {
      */
     function testArray($arrayVar, $displayTags=1) 
     {
+        $test_recursion = md5(serialize($arrayVar));
+
+        if (isset($GLOBALS['Test_Recursion'])) {
+            if (in_array($test_recursion, $GLOBALS['Test_Recursion'])) {
+                return _('Recursive array');
+            }
+        }
+
+        $GLOBALS['Test_Recursion'][]  = $test_recursion;
+
         translate('core');
         if(is_array($arrayVar)) {
             if(count($arrayVar)) {
@@ -151,7 +172,7 @@ class PHPWS_Debug {
                 $info[] = '</table>';
                 return implode("\n", $info);
             } else {
-                return 'Array contained no values.';
+                return _('Array contained no values.');
             }
         } else {
             return 'PHPWS_Debug: testArray received a/an ' . gettype($arrayVar) . ' variable, not an array.<br />';
