@@ -22,7 +22,7 @@ class Webpage_Admin {
     {
         $title = 'Missing title';
         $content = 'Missing content';
-        $message = NULL;
+        $message = Webpage_Admin::getMessage();
 
         if (!Current_User::allow('webpage')) {
             Current_User::disallow();
@@ -60,10 +60,17 @@ class Webpage_Admin {
         case 'edit_webpage':
         case 'edit_page':
         case 'add_page':
+        case 'drop_page':
         case 'edit_header':
         case 'post_header':
         case 'post_page':
+            if ( ( $volume->id && !Current_User::authorized('webpage', 'edit_page', $volume->id) ) ||
+                 ( !Current_User::authorized('webpage', 'edit_page') ) ) {
+                Current_User::disallow();
+            }
+
             $pagePanel = Webpage_Forms::pagePanel($volume);
+            $pagePanel->enableSecure();
         }
 
         switch ($command) {
@@ -92,6 +99,15 @@ class Webpage_Admin {
             }
             break;
 
+        case 'delete_page':
+            if (!isset($_REQUEST['page_id'])) {
+                PHPWS_Core::errorPage('404');
+            }
+            $volume->dropPage((int)$_REQUEST['page_id']);
+            Webpage_Admin::sendMessage(_('Page removed.'),
+                                       'edit_webpage&tab=header&volume_id=' . $volume->id);
+            break;
+
         case 'edit_page':
             $pagePanel->setCurrentTab('page_' . $page->page_number);
             $title = sprintf(_('Edit Page %s'),$page->page_number);
@@ -109,12 +125,12 @@ class Webpage_Admin {
             break;
 
         case 'post_header':
-
             if (PHPWS_Core::isPosted()) {
                 if ($volume->id) {
-                    PHPWS_Core::reroute('index.php?module=webpage&wp_admin=edit_webpage&volume_id=' . $volume->id);
+                    Webpage_Admin::sendMessage(_('Ignoring repeat post.'),
+                                               'edit_webpage&tab=header&volume_id=' . $volume->id);
                 } else {
-                    PHPWS_Core::reroute('index.php?module=webpage&tab=new');
+                    Webpage_Admin::sendMessage(_('Ignoring repeat post.'), 'new');
                 }
                 break;
             }
@@ -125,33 +141,30 @@ class Webpage_Admin {
                 $content = Webpage_Forms::editHeader($volume);
                 $message = implode('<br />', $result);
             } elseif (PEAR::isError($result)) {
-                $title = _('Sorry');
-                $content = _('An error occurred. Please check your logs.');
                 PHPWS_Error::log($result);
+                Webpage_Admin::sendMessage(_('An error occurred. Please check your logs.'), 'list');
             } else {
                 PHPWS_Core::initModClass('webpage', 'Forms.php');
                 $result = $volume->save();
                 if (PEAR::isError($result)) {
-                    $title = _('Sorry');
-                    $content = _('An error occurred. Please check your logs.');
                     PHPWS_Error::log($result);
+                    Webpage_Admin::sendMessage(_('An error occurred. Please check your logs.'), 'list');
                 } else {
-                    $title = sprintf(_('Administrate page: %s'), $volume->title);
-                    $message = _('Header saved successfully!');
-                    $pagePanel = Webpage_Forms::pagePanel($volume);
-                    $content = $volume->viewHeader();
+                    Webpage_Admin::sendMessage(_('Header saved successfully.'), 
+                                               'edit_webpage&tab=header&volume_id=' . $volume->id);
                 }
             }
             break;
 
         case 'post_page':
-
             $title = sprintf(_('Administrate page: %s'), $volume->title);
             $result = $page->post();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
-                $message = _('An error occurred while saving your page. Please check the error log.');
-                $content = $page->view();
+                Webpage_Admin::sendMessage(_('An error occurred while saving your page. Please check the error log.'),
+                                           sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s',
+                                                   $page->page_number, $volume->id, $page->id));
+                
                 break;
             } elseif (is_array($result)) {
                 $title = sprintf(_('Edit Page %s'),$page->page_number);
@@ -162,24 +175,22 @@ class Webpage_Admin {
 
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
-                    $message = _('An error occurred while saving your page. Please check the error log.');
-                    $content = $page->view();
+                    Webpage_Admin::sendMessage(_('An error occurred while saving your page. Please check the error log.'),
+                                               sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s',
+                                                       $page->page_number, $volume->id, $page->id));
                 }
 
-                if (isset($_POST['force_template'])) {
+                if ( isset($_POST['force_template']) ) {
                     $force_result = $volume->forceTemplate($page->template);
 
                     if (PEAR::isError($force_result)) {
                         PHPWS_Error::log($force_result);
-                        $message = _('An error occurred when trying to force the page templates.');
+                        Webpage_Admin::sendMessage(_('Error: Unable to force template.'), sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s',
+                                                                                                  $page->page_number, $volume->id, $page->id));
                     }
                 }
-
-                $volume->loadPages();
-                $pagePanel = Webpage_Forms::pagePanel($volume);
-                $pagePanel->setCurrentTab('page_' . $page->page_number);
-                $message = _('Page saved successfully.');
-                $content = $page->view();
+                    Webpage_Admin::sendMessage(_('Page saved successfully.'), sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s',
+                                                                                      $page->page_number, $volume->id, $page->id));
             }
             break;
             // end web page admin cases
@@ -227,6 +238,25 @@ class Webpage_Admin {
         $panel->setContent($final);
         $finalPanel = $panel->display();
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
+    }
+
+    function sendMessage($message, $command)
+    {
+        $_SESSION['Webpage_Message'] = $message;
+        $url = sprintf('index.php?module=webpage&wp_admin=%s&authkey=%s',
+                       $command, Current_User::getAuthkey());
+        PHPWS_Core::reroute($url);
+    }
+
+    function getMessage()
+    {
+        if (!isset($_SESSION['Webpage_Message'])) {
+            return NULL;
+        }
+
+        $message = $_SESSION['Webpage_Message'];
+        unset($_SESSION['Webpage_Message']);
+        return $message;
     }
 
     function template($title, $content, $message=NULL)
