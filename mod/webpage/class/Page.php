@@ -141,11 +141,23 @@ class Webpage_Page {
         $template['CURRENT_PAGE'] = $this->page_number;
 
         if (Current_User::allow('webpage', 'edit_page', $this->id)) {
-            $template['EDIT_PAGE'] = PHPWS_Text::moduleLink(_('Edit page'),
-                                                            'webpage', array('wp_admin'  => 'edit_page',
-                                                                             'page_id'   => $this->id,
-                                                                             'volume_id' => $this->volume_id));
+            $vars = array('wp_admin'  => 'edit_page',
+                          'page_id'   => $this->id,
+                          'volume_id' => $this->volume_id);
+
+            $links[] = PHPWS_Text::secureLink(_('Edit'), 'webpage', $vars);
+
+            if ($admin) {
+                $jsvar['QUESTION'] = _('Are you sure you want to remove this page?');
+                $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&wp_admin=delete_page&page_id=%s&volume_id=%s&authkey=%s',
+                                            $this->id, $this->volume_id, Current_User::getAuthKey());
+                $jsvar['LINK'] = ('Delete');
+
+                $links[] = javascript('confirm', $jsvar);
+            }
         }
+
+        $template['ADMIN_LINKS'] = implode(' | ', $links);
 
         if (!empty($this->_volume)) {
             $header_tags = $this->_volume->getTplTags(!$admin);
@@ -171,7 +183,7 @@ class Webpage_Page {
     function getPageUrl()
     {
         if (MOD_REWRITE_ENABLED) {
-            return sprintf('webpage%s_%s.html', $this->volume_id, $this->page_number);
+            return sprintf('webpage/%s/%s', $this->volume_id, $this->page_number);
         } else {
             return sprintf('index.php?module=webpage&amp;id=%s&amp;page=%s', $this->volume_id, $this->page_number);
         }
@@ -184,7 +196,7 @@ class Webpage_Page {
         if (!is_file($this->getTemplateDirectory() . $this->template)) {
             return implode('<br />', $template);
         }
-
+        $this->_volume->flagKey();
         return PHPWS_Template::process($template, 'webpage', 'page/' . $this->template);
     }
 
@@ -217,6 +229,7 @@ class Webpage_Page {
 
         $db = & new PHPWS_DB('webpage_page');
         $result = $db->saveObject($this);
+
         if (!PEAR::isError($result)) {
             $search = & new Search($volume->key_id);
             $search->addKeywords($this->title . ' ' .$this->content);

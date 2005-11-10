@@ -26,6 +26,7 @@ class Webpage_Volume {
     var $restricted    = 0;
     var $_current_page = 1;
     // array of pages indexed by order, value is id
+    var $_key          = NULL;
     var $_pages        = NULL;
     var $_error        = NULL;
     var $_db           = NULL;
@@ -150,7 +151,7 @@ class Webpage_Volume {
     {
         if ($base) {
             if (MOD_REWRITE_ENABLED) {
-                return sprintf('webpage%s.html', $this->id);
+                return sprintf('webpage/%s', $this->id);
             } else {
                 return 'index.php?module=webpage&amp;id=' . $this->id;
             }
@@ -185,7 +186,7 @@ class Webpage_Volume {
     {
         $vars['volume_id'] = $this->id;
         $vars['wp_admin'] = 'edit_webpage';
-        $links[] = PHPWS_Text::moduleLink(_('Edit'), 'webpage', $vars);
+        $links[] = PHPWS_Text::secureLink(_('Edit'), 'webpage', $vars);
 
         $links[] = $this->getViewLink();
 
@@ -347,13 +348,14 @@ class Webpage_Volume {
 
         if (Current_User::allow('webpage', 'edit_page', $this->id)) {
             $template['EDIT_HEADER'] = PHPWS_Text::moduleLink(_('Edit header'), 'webpage', array('wp_admin'=>'edit_header',
-                                                                                   'volume_id' => $this->id));
+                                                                                                 'volume_id' => $this->id));
         }
         return $template;
     }
 
     function viewHeader()
     {
+        $this->flagKey();
         $template = $this->getTplTags(FALSE);
         return PHPWS_Template::process($template, 'webpage', 'header.tpl');
     }
@@ -402,10 +404,28 @@ class Webpage_Volume {
 
     function flagKey()
     {
-        $key = & new Key($this->key_id);
-        $key->flag();
+        if (empty($this->_key)) {
+            $this->_key = & new Key($this->key_id);
+        }
+        $this->_key->flag();
     }
 
+    function dropPage($page_id)
+    {
+        if (!isset($this->_pages[$page_id])) {
+            return TRUE;
+        }
+
+        $this->_pages[$page_id]->delete();
+        unset($this->_pages[$page_id]);
+
+        $count = 1;
+        foreach ($this->_pages as $id => $page) {
+            $page->page_number = $count;
+            $page->save();
+            $count++;
+        }
+    }
 
 }
 
