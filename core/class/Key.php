@@ -426,6 +426,9 @@ class Key {
             return;
         }
 
+        $db->setDistinct(1);
+
+        $db->addWhere('phpws_key.active', 1);
         if (!Current_User::isLogged()) {
             $db->addWhere('phpws_key.restricted', 0);
             $db->addWhere('key_id', 'phpws_key.id');
@@ -433,7 +436,6 @@ class Key {
         } elseif (Current_User::isUnrestricted($module)) {
             return;
         } else {
-            $db->setDistinct(1);
             $groups = Current_User::getGroups();
             if (empty($groups)) {
                 return;
