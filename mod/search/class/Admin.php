@@ -30,16 +30,20 @@ class Search_Admin {
         case 'delete_keyword':
         case 'add_keyword':
         case 'remove_searchword':
+        case 'add_ignore':
             if (!Current_User::authorized('search')) {
                 Current_User::disallow();
             }
-            
             break;
         }
         
         switch ($command) {
         case 'keyword':
             $template = Search_Admin::keyword();
+            break;
+
+        case 'ignore':
+            $template = Search_Admin::ignore();
             break;
 
         case 'close_admin':
@@ -97,6 +101,22 @@ class Search_Admin {
             }
 
             Search_Admin::removeSearchword($_GET['kw'], $_GET['key_id']);
+            PHPWS_Core::goBack();
+            break;
+
+        case 'add_ignore':
+            if (!isset($_GET['keyword'])) {
+                PHPWS_Core::goBack();
+            }
+            Search_Admin::setIgnore($_GET['keyword'], 1);
+            PHPWS_Core::goBack();
+            break;
+
+        case 'remove_ignore':
+            if (!isset($_GET['keyword'])) {
+                PHPWS_Core::goBack();
+            }
+            Search_Admin::setIgnore($_GET['keyword'], 0);
             PHPWS_Core::goBack();
             break;
 
@@ -262,18 +282,78 @@ class Search_Admin {
         $pager->addPageTags($template);
         $pager->addToggle('class="bgcolor1"');
         $pager->setSearch('keyword');
+        $pager->addWhere('ignored', 0);
         
         $tpl['CONTENT'] = $pager->get();
         
         return $tpl;
     }
-    
+
+
+    function ignore()
+    {
+        PHPWS_Core::initCoreClass('DBPager.php');
+
+        $tpl['TITLE'] = _('Ignored');
+
+        PHPWS_Core::initModClass('search', 'Stats.php');
+
+        $pager = & new DBPager('search_stats', 'Search_Stats');
+        $pager->setModule('search');
+        $pager->setTemplate('ignore.tpl');
+        $pager->addRowTags('getTplTags');
+
+	$options['keyword'] = '';
+        $options['delete_keyword'] = _('Delete');
+
+        // if entered in search box, remove
+        $options['remove_ignore'] = _('Allow');
+
+        $form = & new PHPWS_Form;
+        $form->setMethod('get');
+        $form->addHidden('module', 'search');
+        $form->addSelect('command', $options);
+
+        $template = $form->getTemplate();
+
+        $js_vars['value'] = _('Go');
+        $js_vars['select_id'] = 'command';
+        $js_vars['command_match'] = 'delete_keyword';
+        $js_vars['message'] = _('Are you sure you want to delete the checked item(s)?');
+
+        $template['SUBMIT'] = javascript('select_confirm', $js_vars);
+        
+        $template['CHECK_ALL'] = javascript('check_all', array('checkbox_name' => 'keyword[]'));
+        $template['KEYWORD_LABEL'] = _('Keyword');
+        $template['TOTAL_QUERY_LABEL'] = _('Total queries');
+        $template['LAST_CALL_DATE_LABEL'] = _('Last called');
+        $pager->addPageTags($template);
+        $pager->addToggle('class="bgcolor1"');
+        $pager->setSearch('keyword');
+        $pager->addWhere('ignored', 1);
+        $tpl['CONTENT'] = $pager->get();
+
+        return $tpl;
+
+    }
+  
+    function setIgnore($kw_list, $ignore)
+    {
+        if (!is_array($kw_list)) {
+            return FALSE;
+        }
+        $db = & new PHPWS_DB('search_stats');
+        $db->addWhere('keyword', $kw_list);
+        $db->addValue('ignored', (int)$ignore);
+        return $db->update();
+    }
     
     function &cpanel()
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=search';
         $tab['keyword'] = array ('title'=>_('Keywords'), 'link'=> $link);
+        $tab['ignore'] = array ('title'=>_('Ignore'), 'link'=> $link);
 
         $panel = & new PHPWS_Panel('search');
         $panel->quickSetTabs($tab);

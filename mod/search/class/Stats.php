@@ -77,7 +77,7 @@ class Search_Stats {
         $db = & new PHPWS_DB('search_stats');
         $this->keyword = trim($this->keyword);
         if (!$insert) {
-              $db->addWhere('keyword', $this->keyword);
+            $db->addWhere('keyword', $this->keyword);
         }
 
         return $db->saveObject($this);

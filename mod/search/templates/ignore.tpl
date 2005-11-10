@@ -5,20 +5,14 @@
   <tr>
     <th width="1%">&nbsp;</th>
     <th>{KEYWORD_LABEL} {KEYWORD_SORT}</th>
-    <th>{SUCCESS_LABEL} {QUERY_SUCCESS_SORT}</th>
-    <th>{FAILURE_LABEL} {QUERY_FAILURE_SORT}</th>
-    <th>{MIXED_LABEL} {MIXED_QUERY_SORT}</th>
-    <th>{HIGHEST_RESULT_LABEL} {HIGHEST_RESULT_SORT}</th>
+    <th>{TOTAL_QUERY_LABEL} {TOTAL_QUERY}</th>
     <th>{LAST_CALL_DATE_LABEL} {LAST_CALLED_SORT}</th>
   </tr>
 <!-- BEGIN listrows -->
   <tr {TOGGLE}>
     <td>{CHECKBOX}</td>
     <td>{KEYWORD}</td>
-    <td>{QUERY_SUCCESS}</td>
-    <td>{QUERY_FAILURE}</td>
-    <td>{MIXED_QUERY}</td>
-    <td>{HIGHEST_RESULT}</td>
+    <td>{TOTAL_QUERY}</td>
     <td>{LAST_CALLED}</td>
   </tr>
 <!-- END listrows -->

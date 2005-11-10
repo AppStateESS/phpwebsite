@@ -190,6 +190,14 @@ class Search_User {
         Layout::add($content);
     }
 
+    function getIgnore()
+    {
+        $db = & new PHPWS_DB('search_stats');
+        $db->addWhere('ignored', 1);
+        $db->addColumn('keyword');
+        return $db->select('col');
+    }
+
     function getResults($phrase, $module=NULL, $exact_match=FALSE)
     {
         PHPWS_Core::initModClass('search', 'Stats.php');
@@ -198,6 +206,30 @@ class Search_User {
         $pageTags['MODULE_LABEL'] = _('Module');
         $pageTags['TITLE_LABEL']    = _('Title');
 
+        $ignore = Search_User::getIgnore();
+        if (PEAR::isError($ignore)) {
+            PHPWS_Error::log($ignore);
+            $ignore = NULL;
+        }
+
+        if (empty($phrase)) {
+            return FALSE;
+        }
+        $words = explode(' ', $phrase);
+
+        if (!empty($ignore)) {
+            $words_removed = array_intersect($words, $ignore);
+
+            if (!empty($words_removed)) {
+                $pageTags['REMOVED_LABEL'] = _('The following search words were ignored');
+                $pageTags['IGNORED_WORDS'] = implode(' ', $words_removed);
+            }
+        }
+
+
+        if (empty($words)) {
+            return FALSE;
+        }
 
         PHPWS_Core::initCoreClass('DBPager.php');
         $pager = & new DBPager('phpws_key', 'Key');
@@ -207,25 +239,17 @@ class Search_User {
         $pager->addRowTags('getTplTags');
         $pager->addPageTags($pageTags);
 
-        if (empty($phrase)) {
-            return FALSE;
-        }
-        $words = explode(' ', $phrase);
-
-        if (empty($words)) {
-            return FALSE;
-        }
 
         if ($module) {
             $pager->addWhere('phpws_key.module', $module);
         }
 
         $pager->addWhere('search.key_id', 'phpws_key.id');
-        $pager->addWhere('active', 1);
-        $pager->addWhere('view_permission', 'null');
-
-        if (!Current_User::isLogged()) {
-            $pager->addWhere('restricted', 0);
+        $pager->addWhere('phpws_key.active', 1);
+        if (Current_User::isLogged()) {
+            $pager->addWhere('phpws_key.restricted', 1, '<=');
+        } else {
+            $pager->addWhere('phpws_key.restricted', 0);
         }
 
         foreach ($words as $keyword) {
@@ -242,7 +266,7 @@ class Search_User {
             $pager->addWhere('search.keywords', $keyword, 'like', 'or', 1);
         }
         $pager->db->setGroupConj(1, 'AND');
-        $result =  $pager->get(FALSE);
+        $result = $pager->get(FALSE);
 
         Search_Stats::record($words, $pager->total_rows, $exact_match);
 

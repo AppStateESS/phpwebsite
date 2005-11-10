@@ -10,6 +10,8 @@
 <!-- END listrows -->
 </table>
 <hr />
+<!-- BEGIN ignored --><div class="smaller"><i>{REMOVED_LABEL}:</i> {IGNORED_WORDS}</div><!-- END ignored -->
+<br />
 {TOTAL_ROWS}<br /><br />
 {PAGE_LABEL} {PAGES}<br />
 {LIMIT_LABEL} {LIMITS}
