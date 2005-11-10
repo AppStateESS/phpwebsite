@@ -3,6 +3,7 @@ CREATE TABLE menu_links (
   menu_id int NOT NULL default '0',
   key_id int NOT NULL default '0',
   title varchar(50) NOT NULL default '',
+  url varchar(255) NOT NULL default '',
   parent int NOT NULL default '0',
   link_order smallint NOT NULL default '0',
   PRIMARY KEY  (id)
