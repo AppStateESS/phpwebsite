@@ -112,9 +112,6 @@ class Menu_Admin {
             break;
 
         case 'add_link':
-            if (PHPWS_Core::isPosted()) {
-                PHPWS_Core::goBack();
-            }
             if (!isset($_REQUEST['parent'])) {
                 $parent_id = 0;
             } else {
