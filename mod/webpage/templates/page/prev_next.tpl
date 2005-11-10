@@ -13,7 +13,7 @@
     </table>
     <!-- END page-listing -->
     <!-- BEGIN edit-page -->
-    <p>{EDIT_PAGE}</p>
+    <p>{ADMIN_LINKS}</p>
     <!-- END edit-page -->
   </div>
 </div>

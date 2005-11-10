@@ -12,7 +12,7 @@
     </div>
     <!-- END page-listing -->
     <!-- BEGIN edit-page -->
-    <div align="right">{EDIT_PAGE}</div>
+    <div align="right">{ADMIN_LINKS}</div>
     <!-- END edit-page -->
   </div>
 </div>
