@@ -74,7 +74,7 @@ class Blog_User {
         $result = $db->getObjects('Blog');
 
         if (empty($result)) {
-            return ('No blog entries found.');
+            return NULL;
         }
     
         foreach ($result as $blog) {
