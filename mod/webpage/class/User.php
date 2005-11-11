@@ -29,6 +29,10 @@ class Webpage_User {
             }
 
             $volume = & new Webpage_Volume($_REQUEST['id']);
+            $volume->loadKey();
+            if (!$volume->_key->allowView()) {
+                PHPWS_Core::errorPage(404);
+            }
             @$page = $_REQUEST['page'];
             Layout::add($volume->view($page));
             PHPWS_Core::initModClass('menu', 'Menu.php');
@@ -53,6 +57,7 @@ class Webpage_User {
         $db->addWhere('frontpage', 1);
         Key::restrictView($db, 'webpage');
         $result = $db->getObjects('Webpage_Volume');
+
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             return NULL;

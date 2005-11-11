@@ -64,6 +64,8 @@ class Webpage_Admin {
         case 'edit_header':
         case 'post_header':
         case 'post_page':
+        case 'activate':
+        case 'deactivate':
             if ( ( $volume->id && !Current_User::authorized('webpage', 'edit_page', $volume->id) ) ||
                  ( !Current_User::authorized('webpage', 'edit_page') ) ) {
                 Current_User::disallow();
@@ -229,8 +231,22 @@ class Webpage_Admin {
             }
             break;
 
+        case 'activate':
+            if (isset($_POST['webpage'])) {
+                Webpage_Admin::setActive($_POST['webpage'], 1);
+            }
+            PHPWS_Core::goBack();
+            break;
+
+        case 'deactivate':
+            if (isset($_POST['webpage'])) {
+                Webpage_Admin::setActive($_POST['webpage'], 0);
+            }
+            PHPWS_Core::goBack();
+            break;
+
         default:
-            exit($command);
+            PHPWS_Core::errorPage('404');
         }
 
         // Sticks inside the panel
@@ -313,7 +329,18 @@ class Webpage_Admin {
         $db->addWhere('id', $pages);
         $db->addValue('frontpage', (int)$move_val);
         return $db->update();
+    }
 
+    function setActive($pages, $active)
+    {
+        $db = & new PHPWS_DB('phpws_key');
+        $db->addWhere('module', 'webpage');
+        $db->addWhere('item_id', $pages);
+        $db->addValue('active', (int)$active);
+        $result = $db->update();
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+        }
     }
 
 }

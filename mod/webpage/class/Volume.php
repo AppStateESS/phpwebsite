@@ -372,6 +372,12 @@ class Webpage_Volume {
     
     function view($page=NULL)
     {
+        $this->loadKey();
+
+        if (!$this->_key->allowView()) {
+            return NULL;
+        }
+
         Layout::addStyle('webpage');
         Layout::addPageTitle($this->title);
 
@@ -402,10 +408,15 @@ class Webpage_Volume {
             return;
         }
 
+        $this->loadKey();
+        $this->_key->flag();
+    }
+
+    function loadKey()
+    {
         if (empty($this->_key)) {
             $this->_key = & new Key($this->key_id);
         }
-        $this->_key->flag();
     }
 
     function dropPage($page_id)
