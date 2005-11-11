@@ -155,9 +155,8 @@ class Webpage_Page {
 
                 $links[] = javascript('confirm', $jsvar);
             }
+            $template['ADMIN_LINKS'] = implode(' | ', $links);
         }
-
-        $template['ADMIN_LINKS'] = implode(' | ', $links);
 
         if (!empty($this->_volume)) {
             $header_tags = $this->_volume->getTplTags(!$admin);
@@ -196,7 +195,9 @@ class Webpage_Page {
         if (!is_file($this->getTemplateDirectory() . $this->template)) {
             return implode('<br />', $template);
         }
+
         $this->_volume->flagKey();
+
         return PHPWS_Template::process($template, 'webpage', 'page/' . $this->template);
     }
 

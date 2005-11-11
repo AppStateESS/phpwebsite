@@ -21,9 +21,7 @@ class Webpage_Volume {
     var $date_updated  = 0;
     var $created_user  = NULL;
     var $updated_user  = NULL;
-    var $active        = 1;
     var $frontpage     = FALSE;
-    var $restricted    = 0;
     var $_current_page = 1;
     // array of pages indexed by order, value is id
     var $_key          = NULL;
@@ -82,15 +80,6 @@ class Webpage_Volume {
         }
     }
 
-    function isActive()
-    {
-        return (bool)$this->active;
-    }
-
-    function isRestricted()
-    {
-        return (bool)$this->restricted;
-    }
 
     function getDateCreated($format=NULL)
     {
@@ -190,16 +179,26 @@ class Webpage_Volume {
 
         $links[] = $this->getViewLink();
 
+        /*
         $vars['wp_admin'] = 'delete_webpage';
         $js_vars['QUESTION'] = sprintf(_('Are you sure you want to delete %s and all its pages?'),
                                        $this->title);
         $js_vars['ADDRESS'] = PHPWS_Text::linkAddress('webpage', $vars, TRUE);
         $js_vars['LINK'] = _('Delete');
         $links[] = javascript('confirm', $js_vars);
-        
+        */
+
         $tpl['DATE_CREATED'] = $this->getDateCreated();
         $tpl['DATE_UPDATED'] = $this->getDateUpdated();
         $tpl['ACTION']       = implode(' | ', $links);
+
+        $tpl['CHECKBOX'] = sprintf('<input type="checkbox" name="webpage[]" id="webpage" value="%s" />', $this->id);
+
+        if ($this->frontpage) {
+            $tpl['FRONTPAGE'] = _('Yes');
+        } else {
+            $tpl['FRONTPAGE'] = _('No');
+        }
         return $tpl;
     }
 
@@ -254,11 +253,6 @@ class Webpage_Volume {
         }
         
         return $result;
-    }
-
-    function createKey()
-    {
-
     }
 
     function saveKey()
@@ -355,7 +349,9 @@ class Webpage_Volume {
 
     function viewHeader()
     {
-        $this->flagKey();
+        if (!$this->frontpage) {
+            $this->flagKey();
+        }
         $template = $this->getTplTags(FALSE);
         return PHPWS_Template::process($template, 'webpage', 'header.tpl');
     }
@@ -377,10 +373,6 @@ class Webpage_Volume {
     function view($page=NULL)
     {
         Layout::addStyle('webpage');
-        if ($this->isRestricted() && !Current_User::allow('webpage', 'view_page', $this->id)) {
-            PHPWS_Error::errorPage(403);
-        }
-
         Layout::addPageTitle($this->title);
 
         if (!empty($page)) {
@@ -404,6 +396,12 @@ class Webpage_Volume {
 
     function flagKey()
     {
+        if ($this->frontpage) {
+            $key = Key::getHomeKey();
+            $key->flag();
+            return;
+        }
+
         if (empty($this->_key)) {
             $this->_key = & new Key($this->key_id);
         }

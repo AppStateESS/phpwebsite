@@ -40,6 +40,33 @@ class Webpage_User {
         }
 
     }
+
+    function showFrontPage()
+    {
+        if (isset($_REQUEST['module'])) {
+            return NULL;
+        }
+
+        PHPWS_Core::initModClass('webpage', 'Volume.php');
+
+        $db = & new PHPWS_DB('webpage_volume');
+        $db->addWhere('frontpage', 1);
+        Key::restrictView($db, 'webpage');
+        $result = $db->getObjects('Webpage_Volume');
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            return NULL;
+        }
+
+        if (empty($result)) {
+            return NULL;
+        }
+
+        foreach ($result as $volume) {
+            $volume->loadPages();
+            Layout::add($volume->view(), 'webpage', 'page_view', TRUE);
+        }
+    }
 }
 
 
