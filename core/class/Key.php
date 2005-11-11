@@ -343,17 +343,6 @@ class Key {
         $GLOBALS['Current_Flag'] = &$this;
     }
 
-    /**
-     * A little kludge code that adds a where clause for 
-     * restricted users to your database query
-     */
-    function addRestrictWhere(&$db)
-    {
-        $db->addWhere('key_id', 0, NULL, NULL, 1);
-        $db->addWhere('key_id', 'phpws_key.id', NULL, 'OR', 1);
-        $db->addWhere('phpws_key.restricted', '1', '!=', 'AND', 1);
-    }
-
     function drop($key_id)
     {
         $key = & new Key($key_id);
