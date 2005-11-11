@@ -148,17 +148,13 @@ class Menu_Item {
         }
 
         $db = & new PHPWS_DB('menu_links');
-        $db->setDistinct(1);
+        Key::restrictView($db, 'menu');
 
-        if (!Current_User::isLogged()) {
-            Key::addRestrictWhere($db);
-        }
 
         $db->addWhere('menu_id', $this->id);
         $db->addWhere('parent', $parent);
-        $db->addWhere('key_id', 0, '=', 'or', 1);
-        $db->addWhere('phpws_key.active', 1, '=', 'or', 1);
-        $db->addWhere('key_id', 'phpws_key.id', '=', 'and', 1);
+
+        $db->addWhere('key_id', 0, '=', 'or');
         $db->addOrder('link_order');
 
         $db->setIndexBy('id');
