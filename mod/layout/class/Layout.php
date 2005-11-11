@@ -25,7 +25,7 @@ class Layout {
      *
      * @author Matt McNaney <matt at tux dot appstate dot edu>
      */
-    function add($text, $module=NULL, $content_var=NULL)
+    function add($text, $module=NULL, $content_var=NULL, $default_body=FALSE)
     {
         if (!is_string($text)) {
             return;
@@ -36,7 +36,12 @@ class Layout {
 
         if (isset($module) && isset($content_var)) {
             if (!$_SESSION['Layout_Settings']->isContentVar($content_var)) {
-                Layout::addBox($content_var, $module);
+                if ($default_body) {
+                    $theme_var = DEFAULT_THEME_VAR;
+                } else {
+                    $theme_var = NULL;
+                }
+                Layout::addBox($content_var, $module, $theme_var);
             }
         } else {
             $module = 'layout';
