@@ -200,6 +200,21 @@ class Webpage_Admin {
             $content = Webpage_Forms::wp_list();
             break;
 
+        case 'move_to_frontpage':
+            if (isset($_POST['webpage'])) {
+                Webpage_Admin::setFrontPage($_POST['webpage'], 1);
+            }
+            PHPWS_Core::goBack();
+            break;
+
+        case 'move_off_frontpage':
+            if (isset($_POST['webpage'])) {
+                Webpage_Admin::setFrontPage($_POST['webpage'], 0);
+            }
+            PHPWS_Core::goBack();
+            break;
+            
+
         case 'delete_webpage':
             if (!Current_User::authorized('webpage', 'delete_page')) {
                 Current_User::disallow();
@@ -288,7 +303,18 @@ class Webpage_Admin {
         return $panel;
     }
 
+    function setFrontPage($pages, $move_val)
+    {
+        if (!is_array($pages)) {
+            return;
+        }
 
+        $db = & new PHPWS_DB('webpage_volume');
+        $db->addWhere('id', $pages);
+        $db->addValue('frontpage', (int)$move_val);
+        return $db->update();
+
+    }
 
 }
 
