@@ -99,12 +99,34 @@ class Webpage_Forms {
 
     function wp_list()
     {
+
+        $select_op[] = '';
+        $select_op['delete_wp']          = _('Delete');
+        $select_op['move_to_frontpage']  = _('Move to frontpage');
+        $select_op['move_off_frontpage'] = _('Move off frontpage');
+        $select_op['activate']           = _('Activate');
+        $select_op['deactivate']         = _('Deactivate');
+
+        $form = & new PHPWS_Form;
+        $form->addHidden('module', 'webpage');
+        $form->addSelect('wp_admin', $select_op);
+        $tags = $form->getTemplate();
+
         $tags['TITLE_LABEL']        = _('Title');
         $tags['DATE_CREATED_LABEL'] = _('Created on');
         $tags['DATE_UPDATED_LABEL'] = _('Updated on');
         $tags['CREATED_USER_LABEL'] = _('Created by');
         $tags['UPDATED_USER_LABEL'] = _('Updated by');
+        $tags['FRONTPAGE_LABEL']    = _('Front page');
         $tags['ACTION_LABEL']       = _('Action');
+        $tags['CHECK_ALL'] = javascript('check_all', array('checkbox_name' => 'webpage[]'));
+
+        $js['value']        = _('Go');
+        $js['select_id']    = 'wp_admin';
+        $js['action_match'] = 'delete_wp';
+        $js['message']      = _('Are you sure you want to delete the checked web pages?');
+
+        $tags['SUBMIT'] = javascript('select_confirm', $js);
 
         PHPWS_Core::initCoreClass('DBPager.php');
         $pager = & new DBPager('webpage_volume', 'Webpage_Volume');
