@@ -5,9 +5,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-
-
-if ( isset($_REQUEST['command']) && Current_User::allow('rss')) {
+if ( ( isset($_REQUEST['command']) || isset($_REQUEST['tab']) ) && Current_User::allow('rss')) {
     PHPWS_Core::initModClass('rss', 'Admin.php');
     RSS_Admin::main();
  }
