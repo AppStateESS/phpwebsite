@@ -188,7 +188,7 @@ class Layout_Box {
             $count = 2;
             break;
 
-        case 'mobe_box_bottom':
+        case 'move_box_bottom':
             $this->box_order = count($boxes) + 1;
             $this->save();
             $count = 1;
