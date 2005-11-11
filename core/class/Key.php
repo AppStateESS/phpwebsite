@@ -151,6 +151,14 @@ class Key {
 
     function allowView()
     {
+
+        if (Current_User::allow($this->module, $this->edit_permission,
+                                      $this->item_id, $this->item_name)) {
+            return TRUE;
+        } elseif (!$this->active) {
+            return FALSE;
+        }
+
         if (!$this->restricted) {
             return TRUE;
         } else {
