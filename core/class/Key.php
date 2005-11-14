@@ -503,6 +503,25 @@ class Key {
             return FALSE;
         }
     }
+
+    function blockPopup($module)
+    {
+        $GLOBALS['Key_Blocked_Popups'][] = $module;
+    }
+
+    function isBlocked($module)
+    {
+        if (empty($module) ||
+            !is_string($module) ||
+            !isset($GLOBALS['Key_Blocked_Popups']) ||
+            !is_array($GLOBALS['Key_Blocked_Popups'])) {
+            return FALSE;
+        }
+
+        return in_array($module, $GLOBALS['Key_Blocked_Popups']);
+    }
+
+
 }
 
 ?>
