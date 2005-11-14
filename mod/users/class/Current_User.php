@@ -165,18 +165,39 @@ class Current_User {
             return;
         }
 
+        /*
         if (Current_User::isUnrestricted($key->module) && 
             Current_User::allow($key->module, $key->edit_permission)) {
-            $tpl = User_Form::permissionMenu($key);
-            $content = PHPWS_Template::process($tpl, 'users', 'forms/permission_menu.tpl');
-            Layout::add($content, 'users', 'permissions');
+        }
+        */
+
+        if (Current_User::isUnrestricted($key->module) && 
+            Current_User::allow($key->module, $key->edit_permission)) {
+
+            if (!javascriptEnabled()) {
+                $tpl = User_Form::permissionMenu($key);
+                $content = PHPWS_Template::process($tpl, 'users', 'forms/permission_menu.tpl');
+                Layout::add($content, 'users', 'permissions');
+            } else {
+                $links[] = Current_User::popupPermission($key->id, sprintf(_('Set permissions'), $key->title));
+                MiniAdmin::add('users', $links);
+            }
         }
     }
 
-    function popupPermission($key_id)
+    function popupPermission($key_id, $label=NULL)
     {
+        if (empty($label)) {
+            $js_vars['label'] = _('Permission');
+        } else {
+            $js_vars['label'] = strip_tags($label);
+        }
+
+        $js_vars['width'] = 350;
+        $js_vars['height'] = 325;
+
         $js_vars['address'] = sprintf('index.php?module=users&action=popup_permission&key_id=%s&authkey=%s',$key_id, Current_User::getAuthKey());
-        $js_vars['label'] = _('Permission');
+
         return javascript('open_window', $js_vars);
     }
 

@@ -410,16 +410,19 @@ class User_Action {
         Users_Permission::postEditPermissions($key);
 
         $result = $key->save();
-        if (PEAR::isError($result)) {
-            PHPWS_Error::log($result);
-            $_SESSION['Permission_Message'] = _('An error occurred.');
-        } else {
-            $_SESSION['Permission_Message'] = _('Permissions updated.');
-        }
 
         if (isset($_POST['popbox'])) {
-            javascript('onload', array('function' => 'window.close()'));
+            $tpl['TITLE'] = _('Permissions saved.');
+            $tpl['BUTTON'] = sprintf('<input type="button" name="close_window" value="%s" onclick="window.close()" />', _('Close window'));
+            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'users', 'close.tpl'));
         } else {
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                $_SESSION['Permission_Message'] = _('An error occurred.');
+            } else {
+                $_SESSION['Permission_Message'] = _('Permissions updated.');
+            }
+
             PHPWS_Core::goBack();
         }
     }
