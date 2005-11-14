@@ -151,6 +151,10 @@ class PHPWS_Template extends HTML_Template_Sigma {
             return NULL;
         }
 
+        if (!is_array($data) || empty($data)) {
+            return NULL;
+        }
+
         foreach($data as $tag=>$content) {
             if ( (is_string($tag) || is_numeric($tag)) &&
                  (is_string($content) || is_numeric($content)) ) {
