@@ -46,6 +46,12 @@ tr, td {
 	vertical-align : top;
 }
 
+ul {
+       margin : 0;
+       padding : 0;
+       padding-left : 8px;
+}
+
 q {
    display : block;
    width : 75%;
@@ -100,8 +106,6 @@ table.border  th {
 
 .no-bullet {
    list-style-type : none;
-   margin-left : 0;
-   padding-left : 0;
 }
 
 .larger {
