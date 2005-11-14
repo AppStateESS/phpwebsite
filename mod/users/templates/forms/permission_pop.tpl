@@ -18,11 +18,10 @@
       </td>
     </tr>
   </table>
-  <hr />
   <h3>{EDIT_SELECT_LABEL}</h3>
   <div class="smaller">{EDIT_SELECT}</div>
   <hr />
-  <div class="align-center">{SUBMIT}<br />{CANCEL}</div>
+  {SUBMIT} {CANCEL}
   {END_FORM}
   </div>
 </div>
