@@ -85,8 +85,16 @@ class Blog_User {
         }
 
         $content = implode('', $list);
+
         if (!Current_User::allow('blog')) {
             PHPWS_Cache::save($key, $content);
+        } elseif (Current_User::allow('blog', 'edit_blog')) {
+            $vars['action'] = 'admin';
+            $vars['tab'] = 'list';
+            $link[] = PHPWS_Text::secureLink(_('Edit blogs'), 'blog', $vars);
+            $vars['tab'] = 'new';
+            $link[] = PHPWS_Text::secureLink(_('Add new blog'), 'blog', $vars);
+            MiniAdmin::add('blog', $link);
         }
 
         return $content;

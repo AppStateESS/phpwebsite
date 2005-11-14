@@ -166,7 +166,11 @@ class Blog {
             $vars['blog_id'] = $this->getId();
             $vars['action']  = 'admin';
             $vars['command'] = 'edit';
-            $template['EDIT_LINK'] = PHPWS_Text::secureLink(_('Edit'), 'blog', $vars);
+            if ($limited) {
+                $template['EDIT_LINK'] = PHPWS_Text::secureLink(_('Edit'), 'blog', $vars);
+            } else {
+                MiniAdmin::add('blog', array(PHPWS_Text::secureLink(_('Edit blog'), 'blog', $vars)));
+            }
         }
 
         $comments = Comments::getThread($key);
