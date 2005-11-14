@@ -24,7 +24,7 @@ class MiniAdmin {
             }
         }
 
-        $content = PHPWS_Template::process($tpl, 'users', 'forms/mini_admin.tpl');
+        $content = PHPWS_Template::process($tpl, 'miniadmin', 'mini_admin.tpl');
         Layout::add($content, 'users', 'mini_admin');
     }
 }
