@@ -59,6 +59,7 @@ class Categories_Action {
             break;
 
         case 'list':
+            $panel->setCurrentTab('list');
             $title = _('Manage Categories');
             $content[] = Categories_Action::category_list();
             break;
@@ -66,6 +67,15 @@ class Categories_Action {
         case 'new':
             $title = _('Add Category');
             $content[] = Categories_Action::edit($category);
+            break;
+
+        case 'set_item_category':
+            $popup = Categories_Action::categoryPopup();
+            if ($popup) {
+                Layout::nakedDisplay($popup);
+            } else {
+                PHPWS_Core::errorPage('404');
+            }
             break;
 
         case 'postCategory':
@@ -416,10 +426,15 @@ class Categories_Action {
         } elseif (isset($_POST['remove']) && isset($_POST['remove_category'])) {
             Categories_Action::removeCategoryItem($_POST['remove_category'], $_POST['key_id']);
         }
-
-        
-
     }
+
+    function categoryPopup()
+    {
+        $key = & new Key((int)$_REQUEST['key_id']);
+        $content = Categories::showForm($key, TRUE);
+        return $content;
+    }
+
 
 }
 

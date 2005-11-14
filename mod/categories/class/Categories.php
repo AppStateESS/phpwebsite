@@ -17,6 +17,9 @@ class Categories{
 
     function show()
     {
+        if (!Current_User::allow('categories')) {
+            return;
+        }
         $remove_list = $content = NULL;
 
         $key = Key::getCurrent();
@@ -29,6 +32,29 @@ class Categories{
             return NULL;
         }
 
+        if (javascriptEnabled()) {
+            $js_vars['label'] = _('Categorize');
+            $js_vars['width'] = 640;
+            $js_vars['height'] = 300;
+
+            $vars['action'] = 'admin';
+            $vars['subaction'] = 'set_item_category';
+            $vars['key_id'] = $key->id;
+
+            $js_vars['address'] = PHPWS_Text::linkAddress('categories', $vars, TRUE);
+            $link = javascript('open_window', $js_vars);
+            MiniAdmin::add('categories', $link);
+        } else {
+            $content = Categories::showForm($key);
+            if (!empty($content)) {
+                Layout::add($content, 'categories', 'Admin_Menu');
+            }
+        }
+    }
+
+
+    function showForm(&$key, $popup=FALSE)
+    {
         $add_list = Categories::getCategories('list');
 
         if (empty($add_list)) {
@@ -75,12 +101,17 @@ class Categories{
 
         $template['CAT_TITLE'] = _('Categorize');
         $template['ITEM_TITLE'] = $key->title;
-            
-        $content = PHPWS_Template::process($template, 'categories', 'menu_bar.tpl');
 
-        if (!empty($content)) {
-            Layout::add($content, 'categories', 'Admin_Menu');
+        if ($popup) {
+            $template['CLOSE'] = sprintf('<input type="button" value="%s" onclick="opener.location.href=\'%s\'; window.close();" />',
+                                         _('Save and close'), $key->url);
+            $template['AVAILABLE'] = _('Available categories');
+            $template['CURRENT'] = _('Currently assigned');
+            $content = PHPWS_Template::process($template, 'categories', 'popup_menu.tpl');
+        } else {
+            $content = PHPWS_Template::process($template, 'categories', 'menu_bar.tpl');
         }
+        return $content;
     }
 
     /**
