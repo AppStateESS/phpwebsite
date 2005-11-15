@@ -190,7 +190,6 @@ class Blog {
                 $template['COMMENTS'] = $comments->view();
             }
             $key->flag();
-            $key->viewed();
         }
 
         $result = Categories::getSimpleLinks($key);
