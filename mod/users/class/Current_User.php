@@ -161,15 +161,10 @@ class Current_User {
     function permissionMenu()
     {
         $key = Key::getCurrent();
+
         if (empty($key) || $key->isDummy() || empty($key->edit_permission)) {
             return;
         }
-
-        /*
-        if (Current_User::isUnrestricted($key->module) && 
-            Current_User::allow($key->module, $key->edit_permission)) {
-        }
-        */
 
         if (Current_User::isUnrestricted($key->module) && 
             Current_User::allow($key->module, $key->edit_permission)) {
