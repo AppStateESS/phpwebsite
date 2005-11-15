@@ -250,7 +250,6 @@ class Related {
     function show($allowEdit=TRUE)
     {
         PHPWS_Core::initCoreClass('Module.php');
-        Layout::addStyle('related');
 
         $key = Key::getCurrent();
 

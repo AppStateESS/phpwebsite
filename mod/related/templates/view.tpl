@@ -7,9 +7,9 @@
     <!-- END friend_list -->
     <!-- BEGIN link -->
     <br />
-    <div class="link">
-    {EDIT_LINK}
-    </div>
+
+    <div class="align-center bgcolor2">{EDIT_LINK}</div>
+
 <!-- END link -->
   </div>
 </div>
