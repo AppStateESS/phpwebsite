@@ -35,7 +35,7 @@ class Categories{
         if (javascriptEnabled()) {
             $js_vars['label'] = _('Categorize');
             $js_vars['width'] = 640;
-            $js_vars['height'] = 300;
+            $js_vars['height'] = 200;
 
             $vars['action'] = 'admin';
             $vars['subaction'] = 'set_item_category';
