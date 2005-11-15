@@ -1,4 +1,8 @@
 <?php
+  /**
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
+   */
 
   // Destroy unused sessions
 if (PHPWS_Core::getCurrentModule() != 'users'){
