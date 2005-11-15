@@ -5,14 +5,14 @@
    * @version $Id$
    */
 
-  // The maximum amount of feeds to show regardless
+  // The default maximum amount of feeds to show regardless
   // of age
-define('RSS_SERVE_LIMIT_DEFAULT', 10);
+define('RSS_SERVE_LIMIT', 10);
 
-// the maximum age in seconds a feed should be released
-define('RSS_AGE_LIMIT', );
+// the default maximum age in days a feed should be released
+define('RSS_AGE_LIMIT', 7);
 
-// the number of seconds the cache should be refreshed
-define('RSS_CACHE_TIMEOUT', );
+// the default number of seconds the cache should be refreshed
+define('RSS_CACHE_TIMEOUT', 3600);
 
 ?>
