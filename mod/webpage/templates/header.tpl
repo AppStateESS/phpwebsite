@@ -3,5 +3,5 @@
   <div>{SUMMARY}</div>
 </div>
 <!-- BEGIN header-edit -->
-<div align="right">{EDIT_HEADER}</div>
+<div class="align-right">{EDIT_HEADER}</div>
 <!-- END header-edit -->
