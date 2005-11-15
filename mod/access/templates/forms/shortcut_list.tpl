@@ -19,6 +19,6 @@
 <!-- END listrows -->
 </table>
 {CHECK_ALL_SHORTCUTS}
-<div align="right">{LIST_ACTION} {SUBMIT}</div>
+<div class="align-center">{LIST_ACTION} {SUBMIT}</div>
 {END_FORM}
 {EMPTY_MESSAGE}

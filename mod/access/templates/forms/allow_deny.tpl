@@ -1,7 +1,7 @@
 {START_FORM}
 
 <h2>{ALLOW_TITLE}</h2>
-<div align="right">{ALLOW_ADDRESS} {ADD_ALLOW_ADDRESS}</div>
+<div class="align-center">{ALLOW_ADDRESS} {ADD_ALLOW_ADDRESS}</div>
 <table cellpadding="4" width="100%">
   <tr>
     <th width="2%">&nbsp;</th>
@@ -24,13 +24,13 @@
 <!-- END allow_rows -->
 </table>
 {CHECK_ALL_ALLOW}
-<div align="right">{ALLOW_ACTION} {ALLOW_ACTION_SUBMIT}</div>
+<div class="align-center">{ALLOW_ACTION} {ALLOW_ACTION_SUBMIT}</div>
 {ALLOW_MESSAGE}
 
 <hr style="margin : 20px 0 20px 0;" />
 
 <h2>{DENY_TITLE}</h2>
-<div align="right">{DENY_ADDRESS} {ADD_DENY_ADDRESS}</div>
+<div class="align-center">{DENY_ADDRESS} {ADD_DENY_ADDRESS}</div>
 <table cellpadding="4" width="100%">
   <tr>
     <th width="2%">&nbsp;</th>
@@ -53,7 +53,7 @@
 <!-- END deny_rows -->
 </table>
 {CHECK_ALL_DENY}
-<div align="right">{DENY_ACTION} {DENY_ACTION_SUBMIT}</div>
+<div class="align-center">{DENY_ACTION} {DENY_ACTION_SUBMIT}</div>
 {DENY_MESSAGE}
 
 
