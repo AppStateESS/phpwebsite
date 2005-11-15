@@ -348,6 +348,7 @@ class Key {
         if (!isset($this->id)) {
             $this->id = 0;
         }
+        $this->viewed();
         $GLOBALS['Current_Flag'] = &$this;
     }
 
@@ -468,6 +469,12 @@ class Key {
             return;
         }
 
+        if ( isset($_SESSION['Key_Views']) &&
+             in_array($this->id, $_SESSION['Key_Views']) ) {
+            return;
+        }
+
+        $_SESSION['Key_Views'][] = $this->id;
         $db = & new PHPWS_DB('phpws_key');
         $db->addWhere('id', $this->id);
         return $db->incrementColumn('times_viewed');
