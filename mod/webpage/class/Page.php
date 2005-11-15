@@ -155,6 +155,7 @@ class Webpage_Page {
 
                 $links[] = javascript('confirm', $jsvar);
             }
+
             $template['ADMIN_LINKS'] = implode(' | ', $links);
         }
 
@@ -197,6 +198,20 @@ class Webpage_Page {
         }
 
         $this->_volume->flagKey();
+
+        if (Current_User::allow('webpage', 'edit_page', $this->id)) {
+            $vars = array('wp_admin'  => 'edit_page',
+                          'page_id'   => $this->id,
+                          'volume_id' => $this->volume_id);
+
+            $links[] = PHPWS_Text::secureLink(_('Edit web page'), 'webpage', $vars);
+
+            $vars['wp_admin'] = 'edit_header';
+            $links[] = PHPWS_Text::secureLink(_('Edit page header'), 'webpage', $vars);
+            $links[] = PHPWS_Text::secureLink(_('View page list'), 'webpage', array('tab' => 'list'));
+
+            MiniAdmin::add('webpage', $links);
+        }
 
         return PHPWS_Template::process($template, 'webpage', 'page/' . $this->template);
     }
