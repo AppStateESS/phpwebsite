@@ -264,6 +264,7 @@ class Webpage_Volume {
             $key->setModule('webpage');
             $key->setItemName('volume');
             $key->setItemId($this->id);
+            $key->setEditPermission('edit_page');
         }
 
         $key->setTitle($this->title);
@@ -341,7 +342,7 @@ class Webpage_Volume {
         }
 
         if (Current_User::allow('webpage', 'edit_page', $this->id)) {
-            $template['EDIT_HEADER'] = PHPWS_Text::moduleLink(_('Edit header'), 'webpage', array('wp_admin'=>'edit_header',
+            $template['EDIT_HEADER'] = PHPWS_Text::secureLink(_('Edit header'), 'webpage', array('wp_admin'=>'edit_header',
                                                                                                  'volume_id' => $this->id));
         }
         return $template;
@@ -407,7 +408,6 @@ class Webpage_Volume {
             $key->flag();
             return;
         }
-
         $this->loadKey();
         $this->_key->flag();
     }
