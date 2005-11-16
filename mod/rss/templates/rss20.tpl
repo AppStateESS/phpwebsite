@@ -2,9 +2,9 @@
 <rss version="2.0">
 
 <channel>
-  <title>{CHANNEL_TITLE}</title>
-  <link>{CHANNEL_ADDRESS}</link>
-  <description>{CHANNEL_DESCRIPTION}</description>
+  <title>{TITLE}</title>
+  <link>{ADDRESS}</link>
+  <description>{DESCRIPTION}</description>
   <language>{LANGUAGE}</language>
 
   <lastBuildDate>{LAST_BUILD_DATE}</lastBuildDate>
@@ -13,9 +13,10 @@
   <managingEditor>{MANAGING_EDITOR}</managingEditor>
   <webMaster>{WEBMASTER}</webMaster>
   <copyright>{COPYRIGHT}</copyright>
-  <pubDate>{PUB_DATE}</pubDate>
+
   <!-- BEGIN category --><category>{CATEGORY}</category><!-- END category -->
   <!-- BEGIN items -->
+  
   <item>
     <title>{ITEM_TITLE}</title>
     <link>{ITEM_LINK}</link>
@@ -25,10 +26,11 @@
     <comments>{ITEM_COMMENTS}</comments>
     <enclosure>{ITEM_ENCLOSURE}</enclosure>
     <pubDate>{ITEM_PUBDATE}</pubDate>
-    <guid>{ITEM_GUID}</guid>
-    <source>{ITEM_SOURCE}</source>
+    <guid isPermaLink="true">{ITEM_GUID}</guid>
+
   </item>
-  <!-- END items -->
+
+<!-- END items -->
 </channel>
 
 </rss>
