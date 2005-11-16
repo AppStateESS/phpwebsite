@@ -9,6 +9,9 @@ class RSS_Admin {
 
     function main()
     {
+        $message = RSS_Admin::getMessage();
+        PHPWS_Core::initModClass('rss', 'Channel.php');
+
         if (!Current_User::allow('rss')) {
             Current_User::disallow();
         }
@@ -23,11 +26,38 @@ class RSS_Admin {
             $command = $panel->getCurrentTab();
         }
 
+        if (isset($_REQUEST['channel_id'])) {
+            $channel = & new RSS_Channel($_REQUEST['channel_id']);
+        } else {
+            $channel = & new RSS_Channel;
+        }
+
         switch ($command) {
-        case 'export':
-            $tpl = RSS_Admin::admin();
+        case 'channels':
+            $tpl = RSS_Admin::channels();
+            break;
+
+        case 'edit_channel':
+            $tpl = RSS_Admin::editChannel($channel);
+            break;
+
+        case 'post_channel':
+            $result = $channel->post();
+            if (is_array($result)) {
+                $message = implode('<br />', $result);
+                $tpl = RSS_Admin::editChannel($channel);
+            } else {
+                $result = $channel->save();
+                if (PEAR::isError($result)) {
+                    RSS_Admin::sendMessage(_('An error occurred when saving your channel.'), 'channels');
+                } else {
+                    RSS_Admin::sendMessage(_('Channel saved.'), 'channels');
+                }
+            }
             break;
         }
+
+        $tpl['MESSAGE'] = $message;
 
         $content = PHPWS_Template::process($tpl, 'rss', 'main.tpl');
 
@@ -37,13 +67,32 @@ class RSS_Admin {
     }
 
 
+    function sendMessage($message, $command)
+    {
+        $_SESSION['RSS_Message'] = $message;
+
+        PHPWS_Core::reroute(sprintf('index.php?module=rss&command=%s&authkey=%s',
+                                    $command, Current_User::getAuthKey()));
+
+    }
+
+    function getMessage()
+    {
+        if (!isset($_SESSION['RSS_Message'])) {
+            return NULL;
+        }
+
+        $message = $_SESSION['RSS_Message'];
+        unset($_SESSION['RSS_Message']);
+        return $message;
+    }
+
     function &adminPanel()
     {
-
         $opt['link'] = 'index.php?module=rss';
 
-        $opt['title'] = _('Export'); 
-        $tab['export'] = $opt;
+        $opt['title'] = _('Channels'); 
+        $tab['channels'] = $opt;
 
         $opt['title'] = _('Import');
         $tab['import'] = $opt;
@@ -53,78 +102,73 @@ class RSS_Admin {
         return $panel;
     }
 
-    function admin()
+    function editChannel(&$channel)
     {
-        PHPWS_Core::initModClass('rss', 'Feed.php');
+        $form = & new PHPWS_Form;
+        $form->addHidden('module', 'rss');
+        $form->addHidden('command', 'post_channel');
+        $form->addSubmit(_('Save Channel'));
 
-        $final_tpl['TITLE'] = _('Administrate RSS Feeds');
-        $db = & new PHPWS_DB('modules');
-        $db->setDistinct(TRUE);
-        $db->addWhere('title', 'phpws_key.module');
-        $db->addWhere('phpws_key.url', null, 'is not');
-        $db->addColumn('title');
-        $db->addColumn('proper_name');
-        $db->setIndexBy('title');
-        $modules = $db->select('col');
-
-        if (empty($modules)) {
-            $tpl['CONTENT'] = _('No keys available for feeds. Come back after you have created some content.');
-            return $tpl;
+        if ($channel->id) {
+            $form->addHidden('channel_id', $channel->id);
         }
 
-        $db->reset();
-        $db->setTable('rssfeeds');
-        $rssfeeds = $db->getObjects('RSS_Feed');
+        $form->addText('title', $channel->title);
+        $form->setLabel('title', _('Title'));
 
-        if (empty($rssfeeds)) {
-            $rssfeeds = RSS_Admin::createFeeds(array_keys($modules));
-        }
+        $form->addTextArea('description', $channel->description);
+        $form->setLabel('description', _('Description'));
 
-        if (empty($rssfeeds)) {
-            $tpl['CONTENT'] = _('An error occurred trying to create or access your feeds. Please check your error logs.');
-            return $tpl;
-        }
-
-        foreach ($rssfeeds as $feed) {
-            $rowtpl['MODULE']         = $feed->module;
-            $rowtpl['TIMES_ACCESSED'] = $feed->times_accessed;
-            $rowtpl['ACTIONS']        = 'nothing';
-            if ($feed->active) {
-                $rowtpl['ACTIVE']     = _('Yes');
-            } else {
-                $rowtpl['ACTIVE']     = _('No');
-            }
-            $template['feed-list'][]  = $rowtpl;
-        }
-
-        $template['ACTIVE_LABEL']         = _('Active');
-        $template['MODULE_LABEL']         = _('Module');
-        $template['TIMES_ACCESSED_LABEL'] = _('Times Accessed');
-        $template['ACTION_LABEL']         = _('Action');
+        $formtpl = $form->getTemplate();
         
-        $content = PHPWS_Template::process($template, 'rss', 'rssfeeds.tpl');
-        $final_tpl['CONTENT'] = $content;
+        $tpl['CONTENT'] = PHPWS_Template::processTemplate($formtpl, 'rss', 'channel_form.tpl');
+
+        $tpl['TITLE'] = _('Edit channel');
+
+        return $tpl;
+
+    }
+
+    function channels()
+    {
+        PHPWS_Core::initModClass('rss', 'Channel.php');
+        $final_tpl['TITLE'] = _('Administrate RSS Feeds');
+
+        $db = & new PHPWS_DB('rss_channel');
+        $db->addOrder('title');
+        $channels = $db->getObjects('RSS_Channel');
+        
+        if (empty($channels)) {
+            $final_tpl['CONTENT'] = _('No channels have been registered.');
+            return $final_tpl;
+        } elseif (PEAR::isError($channels)) {
+            PHPWS_Error::log($channels);
+            $final_tpl['CONTENT'] = _('An error occurred when trying to access your RSS channels.');
+            return $final_tpl;
+        }
+
+        foreach ($channels as $oChannel) {
+            $row['TITLE'] = $oChannel->title;
+            $row['ACTION'] = implode(' | ', $oChannel->getActionLinks());
+            if ($oChannel->active) {
+                $row['ACTIVE'] = _('Yes');
+            } else {
+                $row['ACTIVE'] = _('No');
+            }
+
+            $tpl['channels'][] = $row;
+        }
+
+        $tpl['TITLE_LABEL']  = _('Title');
+        $tpl['ACTIVE_LABEL'] = _('Active');
+        $tpl['ACTION_LABEL'] = _('Action');
+
+
+        $final_tpl['CONTENT'] = PHPWS_Template::process($tpl, 'rss', 'channel_list.tpl');
 
         return $final_tpl;
     }
 
-    function createFeeds($modules)
-    {
-        $feeds = NULL;
-        foreach ($modules as $mod) {
-            $feed = & new RSS_Feed;
-            $feed->module = $mod;
-            $result = $feed->save(TRUE);
-
-            if (PEAR::isError($result)) {
-                PHPWS_Error::log($result);
-            } else {
-                $feeds[] = $feed;
-            }
-        }
-
-        return $feeds;
-    }
 }
 
 ?>
