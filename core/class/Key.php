@@ -35,6 +35,9 @@ class Key {
     var $create_date     = 0;
     var $update_date     = 0;
 
+    var $creator         = NULL;
+    var $updater         = NULL;
+
     // contains permission allow name for editing
     var $edit_permission = NULL;
 
@@ -70,9 +73,23 @@ class Key {
     /**
      * returns the url in a link
      */
-    function getUrl()
+    function getUrl($full_path=FALSE)
     {
-        return sprintf('<a href="%s">%s</a>', $this->url, $this->title);
+        if ($full_path) {
+            return sprintf('<a href="%s%s">%s</a>', PHPWS_Core::getHomeHttp(), $this->url, $this->title);
+        } else {
+            return sprintf('<a href="%s">%s</a>', $this->url, $this->title);
+        }
+    }
+
+    function getCreateDate($format = '%c')
+    {
+        return strftime($format, $this->create_date);
+    }
+
+    function getUpdateDate($format = '%c')
+    {
+        return strftime($format, $this->update_date);
     }
 
     function restrictToLogged()
@@ -223,10 +240,16 @@ class Key {
         }
 
         if (empty($this->create_date)) {
-            $this->create_date = mktime();
+            $this->create_date = gmmktime();
         }
 
-        $this->update_date = mktime();
+        if (empty($this->creator)) {
+            $this->creator = Current_User::getDisplayName();
+        }
+
+        $this->updater = Current_User::getDisplayName();
+
+        $this->update_date = gmmktime();
 
         $db = & new PHPWS_DB('phpws_key');
         $result = $db->saveObject($this);
@@ -368,6 +391,8 @@ class Key {
         $tpl['TITLE']   = $this->title;
         $tpl['URL']     = $this->getUrl();
         $tpl['SUMMARY'] = $this->summary;
+        $tpl['CREATOR'] = $this->creator;
+        $tpl['UPDATER'] = $this->updater;
         return $tpl;
     }
 
