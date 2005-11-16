@@ -15,6 +15,15 @@ function blog_update(&$content, $currentVersion)
         }
         $content[] = '+ added the author column';
         break;
+
+    case version_compare($currentVersion, '0.0.4', '<'):
+        $result = blog_update_004($content);
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+        $content[] = '+ registered to rss';
+        break;
+
     }
     return TRUE;
 }
@@ -26,4 +35,13 @@ function blog_update_003()
     $db = & new PHPWS_DB;
     return $db->importFile($filename);
 }
+
+
+function blog_update_004(&$content)
+{
+    PHPWS_Core::initModClass('rss', 'RSS.php');
+    return RSS::registerModule('blog', $content);
+}
+
+
 ?>
