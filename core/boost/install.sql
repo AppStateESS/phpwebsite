@@ -70,6 +70,8 @@ CREATE TABLE phpws_key (
   restricted smallint NOT NULL default '0',
   create_date int NOT NULL default '0',
   update_date int NOT NULL default '0',
+  creator varchar(60) default NULL,
+  updater varchar(60) default NULL,
   times_viewed int NOT NULL default '0',
   edit_permission varchar(30) default NULL,
   PRIMARY KEY  (id)
