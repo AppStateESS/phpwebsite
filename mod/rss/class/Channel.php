@@ -80,6 +80,10 @@ class RSS_Channel {
         return $links;
     }
 
+    function getAddress()
+    {
+        return 'index.php?module=rss&amp;mod_title=' . $this->module;
+    }
 
     function loadFeeds()
     {
@@ -87,6 +91,9 @@ class RSS_Channel {
         $db->addWhere('active', 1);
         $db->addWhere('restricted', 0);
         $db->addOrder('create_date desc');
+        // rss limit is 15
+        $db->setLimit('15');
+
         $result = $db->getObjects('Key');
 
         if (PEAR::isError($result)) {
@@ -102,39 +109,58 @@ class RSS_Channel {
 
     function view()
     {
+        $home_http = PHPWS_Core::getHomeHttp();
+
         $tpl = & new PHPWS_Template('rss');
-        $tpl->setFile('rss20.tpl');
+        $tpl->setFile('rss10.tpl');
         
-        $channel_data['TITLE'] = $this->title;
-        $channel_data['ADDRESS'] = PHPWS_Core::getHomeHttp();
-        $channel_data['DESCRIPTION'] = $this->description;
-        $channel_data['LANGUAGE'] = 'en-us'; // change later
+        $channel_data['CHANNEL_TITLE']       = $this->title;
+        $channel_data['CHANNEL_ADDRESS']     = $this->getAddress();
+        $channel_data['HOME_ADDRESS']        = $home_http;
+        $channel_data['CHANNEL_DESCRIPTION'] = $this->description;
+        $channel_data['LANGUAGE']            = 'en-us'; // change later
+        $channel_data['SEARCH_LINK'] = sprintf('%sindex.php?module=search&amp;mod_title=%s&amp;user=search',
+                                               $home_http, $this->module);
+        $channel_data['SEARCH_DESCRIPTION'] = sprintf('Search in %s', $this->title);
+        $channel_data['SEARCH_NAME'] = 'search';
+
         //        $channel_data['LAST_BUILD_DATE'] = $this->last_build_date;
 
         foreach ($this->_feeds as $key) {
+            $itemTpl = NULL;
+            $itemTpl['ITEM_LINK']         = $home_http . $key->url;
+
+            $tpl->setCurrentBlock('item-about');
+            $tpl->setData($itemTpl);
+            $tpl->parseCurrentBlock();
+
             $itemTpl['ITEM_TITLE']        = $key->title;
-            $itemTpl['ITEM_GUID']         = PHPWS_Core::getHomeHttp() . $key->url;
-            $itemTpl['ITEM_LINK']         = PHPWS_Core::getHomeHttp() . $key->url;
+            $itemTpl['ITEM_GUID']         = $home_http . $key->url;
+            $itemTpl['ITEM_LINK']         = $home_http . $key->url;
+            $itemTpl['ITEM_SOURCE']       = sprintf('%sindex.php?module=rss&amp;mod_title=%s', $home_http, $this->module);
+
             $itemTpl['ITEM_DESCRIPTION']  = $key->summary;
             $itemTpl['ITEM_AUTHOR']       = $key->creator;
             $itemTpl['ITEM_PUBDATE']      = $key->getCreateDate('%a, %d %b %Y %T GMT');
-            $itemTpl['ITEM_SOURCE']       = PHPWS_Core::getHomeHttp() . 'index.php?module=rss&mod_title=' . $this->module;
+
+            $itemTpl['ITEM_DC_DATE']      = $key->getCreateDate('%Y-%m-%dT%H:%M');
+            $itemTpl['ITEM_DC_TYPE']      = 'Text'; //pull from db later
+            $itemTpl['ITEM_DC_CREATOR']   = $key->creator;
+
             $itemTpl['ITEM_SOURCE_TITLE'] = $this->title;
 
-            $tpl->setCurrentBlock('items');
+            $tpl->setCurrentBlock('item-listing');
             $tpl->setData($itemTpl);
             $tpl->parseCurrentBlock();
         }
 
         $tpl->setData($channel_data);
         $content = $tpl->get();
-
-        echo $content;
+        return $content;
+        //        echo preg_replace('/.*(<\?xml)/Ui', '\\1', $content);
         exit();
     }
 
 }
 
 ?>
-
-

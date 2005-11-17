@@ -60,7 +60,6 @@ class RSS {
     function viewChannel($module)
     {
         PHPWS_Core::initModClass('rss', 'Channel.php');
-
         $channel = & new RSS_Channel;
         $db = & new PHPWS_DB('rss_channel');
         $db->addWhere('module', $module);
@@ -71,9 +70,8 @@ class RSS {
         }
 
         $channel->loadFeeds();
-
-        $channel->view();
-
+        echo $channel->view();
+        exit();
     }
 
 }
