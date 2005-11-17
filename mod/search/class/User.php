@@ -113,7 +113,11 @@ class Search_User {
 
     function searchPost()
     {
-        $search_phrase = Search::filterWords($_REQUEST['search']);
+        if (!isset($_REQUEST['search'])) {
+            $search_phrase = NULL;
+        } else {
+            $search_phrase = Search::filterWords($_REQUEST['search']);
+        }
 
         if (isset($_REQUEST['alternate']) && $_REQUEST['alternate'] != 'local') {
             Search_User::sendToAlternate($_REQUEST['alternate'], $search_phrase);
