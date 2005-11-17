@@ -113,19 +113,16 @@ class Menu {
 
         if ($key->id) {
             $vars['key_id'] = $key->id;
-        } else {
-            $vars['url'] = urlencode(urlencode($key->url));
-        }
-
-        if (!empty($key->title)) {
             return PHPWS_Text::secureLink(MENU_LINK_ADD, 'menu', $vars);
         } else {
+            $vars['url'] = urlencode(urlencode($key->url));
             $js['question']   = _('Enter link title');
             $js['address']    = PHPWS_Text::linkAddress('menu', $vars, TRUE, FALSE, FALSE);
             $js['link']       = MENU_LINK_ADD;
             $js['value_name'] = 'link_title';
             return javascript('prompt', $js);
         }
+
     }
 
     function getUnpinLink($menu_id, $key_id, $pin_all=0)
