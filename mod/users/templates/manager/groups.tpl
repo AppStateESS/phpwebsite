@@ -17,6 +17,6 @@
 {DEFAULT_SUBMIT}
 <br />
 <!-- BEGIN navigation -->
-<div align="center">{NAV_BACKWARD}&#160;{NAV_SECTIONS}&#160;{NAV_FORWARD}<br />{NAV_LIMITS}</div>
+<div class="align-center">{NAV_BACKWARD}&#160;{NAV_SECTIONS}&#160;{NAV_FORWARD}<br />{NAV_LIMITS}</div>
 <!-- END navigation -->
 {SEARCH_LABEL}{SEARCH}

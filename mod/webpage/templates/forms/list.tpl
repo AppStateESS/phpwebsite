@@ -27,7 +27,7 @@
 {EMPTY_MESSAGE}
 <!-- BEGIN navigate -->
 <hr />
-<div align="center">
+<div class="align-center">
 {PAGE_LABEL} {PAGES}<br />
 {LIMIT_LABEL} {LIMITS}<br /><br />
 {SEARCH}

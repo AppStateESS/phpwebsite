@@ -12,7 +12,7 @@
   </tr>
 <!-- BEGIN auth-rows -->
   <tr>
-    <td align="center">{CHECK}</td>
+    <td class="align-center">{CHECK}</td>
     <td>{DISPLAY_NAME}</td>
     <td>{FILENAME}</td>
     <td>{ACTION}</td>
