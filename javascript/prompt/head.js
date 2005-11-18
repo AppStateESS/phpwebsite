@@ -2,10 +2,8 @@
 //<![CDATA[
 function show_prompt(question, address, answer, prompt_var) {
     var prompt_result = prompt(question, answer);
-    var error_message = '{error_message}';
 
     if (prompt_result == null || prompt_result == "") {
-	alert(error_message);
 	return;
     }
 
