@@ -115,12 +115,18 @@ class Menu {
             $vars['key_id'] = $key->id;
             return PHPWS_Text::secureLink(MENU_LINK_ADD, 'menu', $vars);
         } else {
-            $vars['url'] = urlencode(urlencode($key->url));
-            $js['question']   = _('Enter link title');
-            $js['address']    = PHPWS_Text::linkAddress('menu', $vars, TRUE, FALSE, FALSE);
-            $js['link']       = MENU_LINK_ADD;
-            $js['value_name'] = 'link_title';
-            return javascript('prompt', $js);
+            if (empty($key->title)) {
+                $vars['url'] = urlencode(urlencode($key->url));
+                $js['question']   = _('Enter link title');
+                $js['address']    = PHPWS_Text::linkAddress('menu', $vars, TRUE, FALSE, FALSE);
+                $js['link']       = MENU_LINK_ADD;
+                $js['value_name'] = 'link_title';
+                return javascript('prompt', $js);
+            } else {
+                $vars['link_title'] = urlencode($key->title);
+                $vars['url']   = urlencode($key->url);
+                return PHPWS_Text::secureLink(MENU_LINK_ADD, 'menu', $vars);
+            }
         }
 
     }
