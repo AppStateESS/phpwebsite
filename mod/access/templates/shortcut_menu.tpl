@@ -3,7 +3,7 @@
   <div class="box-content">
   {START_FORM}
   {KEYWORD} {GO}<hr />
-  <div align="center">{OFF}</div>
+  <div class="align-center">{OFF}</div>
   {END_FORM}
   </div>
 </div>
