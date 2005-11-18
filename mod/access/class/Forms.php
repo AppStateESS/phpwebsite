@@ -54,8 +54,9 @@ class Access_Forms {
         $page_tags['ACTIVE_LABEL'] = _('Active?');
         $page_tags['ACTION_LABEL']   = _('Action');
         $page_tags['CHECK_ALL_SHORTCUTS'] = javascript('check_all', array('checkbox_name' => 'shortcut[]'));
+
         $js_vars['value']        = _('Go');
-        $js_vars['select_id']    = 'list_action';
+        $js_vars['select_id']    = $form-getId('list_action');
         $js_vars['action_match'] = 'delete';
         $js_vars['message']      = _('Are you sure you want to delete the checked shortcuts?');
         $page_tags['SUBMIT'] = javascript('select_confirm', $js_vars);
