@@ -222,21 +222,10 @@ class Users_Permission {
     function removePermissions($module)
     {
         $tableName = Users_Permission::getPermissionTableName($module);
-        $itemTableName = Users_Permission::getItemPermissionTableName($module);
 
-        $DB = & new PHPWS_DB($tableName);
+        $db = & new PHPWS_DB($tableName);
 
-        $result = $DB->dropTable();
-        if (PEAR::isError($result)) {
-            $errors[] = $result;
-        }
-
-        $result = $DB->setTable($itemTableName);
-        if (PEAR::isError($result)) {
-            $errors[] = $result;
-        }
-
-        $result = $DB->dropTable();
+        $result = $db->dropTable();
         if (PEAR::isError($result)) {
             $errors[] = $result;
         }
