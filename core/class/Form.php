@@ -31,7 +31,7 @@
 PHPWS_Core::configRequireOnce('core', 'formConfig.php', TRUE);
 
 class PHPWS_Form {
-    var $id = NULL;
+    var $id = 'phpws_form';
   
     /**
      * Array of form elements
@@ -103,15 +103,18 @@ class PHPWS_Form {
             $this->max_file_size = ABSOLUTE_UPLOAD_LIMIT;
         }
 
-        $this->id = $id;
+        if (isset($id)) {
+            $this->id = $id;
+        }
         $this->reset();
     }
 
 
-    function setId($id)
+    function setFormId($id)
     {
         $this->id = $id;
     }
+
 
     function useFieldset($fieldset)
     {
@@ -159,7 +162,7 @@ class PHPWS_Form {
         $this->allowFormName = TRUE;
     }
 
-    function getId()
+    function getFormId()
     {
         return $this->id;
     }
@@ -301,6 +304,8 @@ class PHPWS_Form {
                 if ($type != 'radio') {
                     $element->isArray = TRUE;
                 }
+                $element->_form = &$this;
+                $element->setId();
 
                 $this->_elements[$name][$element->value] = $element;
                 $this->_elements[$name][$element->value]->key = $element->value;
@@ -310,6 +315,8 @@ class PHPWS_Form {
                 $this->_elements[$name][0]->isArray = TRUE;
                 $result->isArray = TRUE;
             }
+            $result->_form = &$this;
+            $result->setId();
             $this->_elements[$name][] = $result;
 
             $current_key = $this->getKey($name);
@@ -393,6 +400,7 @@ class PHPWS_Form {
         return sprintf('<label for="%s">%s</label>', $name, $label);
     }
 
+
     function setLabel($name, $label=NULL)
     {
         if (!$this->testName($name))
@@ -413,6 +421,18 @@ class PHPWS_Form {
             if (PEAR::isError($result)) {
                 return $result;
             }
+        }
+    }
+
+    function getId($name)
+    {
+        if (count($this->_elements[$name]) > 1) {
+            foreach ($this->_elements[$name] as $element) {
+                $ids[] = $element->id;
+            }
+            return $ids;
+        } else {
+            return $this->_elements[$name][0]->id;
         }
     }
 
@@ -757,13 +777,15 @@ class PHPWS_Form {
      */
     function setMaxSize($name, $maxsize)
     {
-        if (!$this->testName($name))
+        if (!$this->testName($name)) {
             return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setMaxSize', array($name));
+        }
 
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setMaxSize($maxsize);
-            if (PEAR::isError($result))
+            if (PEAR::isError($result)) {
                 return $result;
+            }
         }
         return TRUE;
     }
@@ -774,13 +796,16 @@ class PHPWS_Form {
      */
     function mergeTemplate($template)
     {
-        if (!is_array($template))
+        if (!is_array($template)) {
             return;
+        }
 
-        if (!isset($this->_template))
+        if (!isset($this->_template)) {
             $this->_template = $template;
-        else
+        }
+        else {
             $this->_template = array_merge($this->_template, $template);
+        }
     }
 
     /**
@@ -1116,7 +1141,7 @@ class PHPWS_Form {
 
             $subdir = array_pop($dividedDir);
 
-            $imageList[$subdir]['links'][$image->getId()] = $image->getTitle()
+            $imageList[$subdir]['links'][$image->id] = $image->getTitle()
                 . ' [' . $image->getFileName() . ']';
 
             if (!empty($dividedDir))
@@ -1643,6 +1668,7 @@ class Form_Element {
     var $label       = NULL;
     var $id          = NULL;
     var $title       = NULL;
+    var $_form       = NULL;
   
     function Form_Element($name, $value=NULL)
     {
@@ -1740,7 +1766,7 @@ class Form_Element {
                 }
 
                 if ($tagMode) {
-                    return PHPWS_Form::makeLabel($this->getId(), $label);
+                    return PHPWS_Form::makeLabel($this->id, $label);
                 } else {
                     return $label;
                 }
@@ -1757,16 +1783,16 @@ class Form_Element {
         $this->name = preg_replace('/[^\[\]\w]/', '', $name);
     }
 
-    function getId()
+    function setId()
     {
         $id = $this->getName();
         if ($this->type == 'radio') {
             $id .= '[' . $this->key . ']';
         }
-        return $id;
+        $this->id = $this->_form->id . '_' . $id;
     }
 
-    function getName($formMode=FALSE)
+    function getName($formMode=FALSE, $show_id=TRUE)
     {
         if ($this->isArray) {
             if ($this->type == 'multiple') {
@@ -1779,8 +1805,10 @@ class Form_Element {
         }
        
         if ($formMode) {
-            $id = $this->getId();
-            return sprintf('name="%s" id="%s" ', $name, $id);
+            if ($show_id) {
+                $id = $this->id;
+                return sprintf('name="%s" id="%s" ', $name, $id);
+            }
         } else {
             return $name;
         }
