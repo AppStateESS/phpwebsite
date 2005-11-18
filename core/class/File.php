@@ -36,13 +36,13 @@ class PHPWS_File {
         $dir = dir($path);
         while ($file = $dir->read()){
             $fullpath = $path . $file;
-            if ($directoriesOnly && !$filesOnly && @is_dir($fullpath) && $file != '.' && $file != '..' && $file != 'CVS') {
+            if ($directoriesOnly && !$filesOnly && @is_dir($fullpath) && !preg_match('/~$/', $file) && $file != '.' && $file != '..' && $file != 'CVS') {
                 if($appendPath) {
                     $directory[] = $fullpath;
                 } else {
                     $directory[] = $file;
                 }
-            } elseif (!$directoriesOnly && $filesOnly && !is_dir($path . $file) && $file != 'CVS' && $file != '.' && $file != '..') {
+            } elseif (!$directoriesOnly && $filesOnly && !is_dir($path . $file) && !preg_match('/~$/', $file) && $file != 'CVS' && $file != '.' && $file != '..') {
                 if (is_array($extensions) && count($extensions) > 0) {
                     $extTest = explode('.', $file);
                     if (in_array($extTest[1], $extensions)) {
