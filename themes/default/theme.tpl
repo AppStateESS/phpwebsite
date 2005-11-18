@@ -8,7 +8,8 @@
 </head>
 <body>
 <div id="container">
-   <div id="top-menu">{SEARCH_SEARCH_BOX} {USERS_LOGIN_BOX}</div>
+   <!-- BEGIN top_menu --><div id="top-menu">{SEARCH_SEARCH_BOX}
+   {USERS_LOGIN_BOX}<div style="clear:both"></div></div><!-- END top_menu -->
    <div class="category-menu-bar">{CATEGORIES_ADMIN_MENU}</div>
    <div id="sidepanel">
      {DEFAULT}
