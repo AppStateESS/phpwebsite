@@ -230,7 +230,6 @@ class Search_User {
             }
         }
 
-
         if (empty($words)) {
             return FALSE;
         }
@@ -250,10 +249,13 @@ class Search_User {
 
         $pager->addWhere('search.key_id', 'phpws_key.id');
         $pager->addWhere('phpws_key.active', 1);
-        if (Current_User::isLogged()) {
-            $pager->addWhere('phpws_key.restricted', 1, '<=');
-        } else {
-            $pager->addWhere('phpws_key.restricted', 0);
+
+        if (!Current_User::isDeity()) {
+            if (Current_User::isLogged()) {
+                $pager->addWhere('phpws_key.restricted', 1, '<=');
+            } else {
+                $pager->addWhere('phpws_key.restricted', 0);
+            }
         }
 
         foreach ($words as $keyword) {
