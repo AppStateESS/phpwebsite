@@ -334,7 +334,16 @@ class PHPWS_Boost {
 
     function removeKeys($mod)
     {
-        $db = & new PHPWS_DB('phpws_key');
+        $db = & new PHPWS_DB('phpws_key_edit');
+        $db->addWhere('key_id', 'phpws_key.id');
+        $db->addWhere('phpws_key.module', $mod->title);
+        $db->delete();
+
+        $db->setTable('phpws_key_view');
+        $db->delete();
+
+        $db->reset();
+        $db->setTable('phpws_key');
         $db->addWhere('module', $mod->title);
         return $db->delete();
     }
