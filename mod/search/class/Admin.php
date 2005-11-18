@@ -258,7 +258,7 @@ class Search_Admin {
         // remember word to add to items
         $options['add_parse_word'] = _('Clip word');
 
-        $form = & new PHPWS_Form;
+        $form = & new PHPWS_Form('keywords');
         $form->setMethod('get');
         $form->addHidden('module', 'search');
         $form->addSelect('command', $options);
@@ -266,10 +266,9 @@ class Search_Admin {
         $template = $form->getTemplate();
 
         $js_vars['value'] = _('Go');
-        $js_vars['select_id'] = 'command';
+        $js_vars['select_id'] = $form->getId('command');
         $js_vars['command_match'] = 'delete_keyword';
         $js_vars['message'] = _('Are you sure you want to delete the checked item(s)?');
-
         $template['SUBMIT'] = javascript('select_confirm', $js_vars);
         
         $template['CHECK_ALL'] = javascript('check_all', array('checkbox_name' => 'keyword[]'));
