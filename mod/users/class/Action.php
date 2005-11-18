@@ -586,18 +586,20 @@ class User_Action {
         else
             $command = 'my_page';
 
-        switch ($command){
-        case 'loginBox':
+        switch ($command) {
+        case 'login':
             if (!Current_User::isLogged()) {
-                if (!User_Action::loginUser($_POST['block_username'], $_POST['block_password'])) {
-                    User_Action::badLogin();
+                if (!User_Action::loginUser($_POST['phpws_username'], $_POST['phpws_password'])) {
+                    $title = _('Login page');
+                    $message = _('Username and password combination not found.');
+                    $content = User_Form::loginPage();
                 } else {
                     Current_User::getLogin();
                     PHPWS_Core::goBack();
                 }
             }
             break;
-      
+
         case 'my_page':
             PHPWS_Core::initModClass('users', 'My_Page.php');
             $my_page = & new My_Page;
@@ -641,9 +643,21 @@ class User_Action {
             PHPWS_Core::home();
             break;
 
+        case 'login_page':
+            if (Current_User::isLogged()) {
+                PHPWS_Core::home();
+            }
+            $title = _('Login Page');
+            $content = User_Form::loginPage();
+            break;
+
         default:
             PHPWS_Core::errorPage('404');
             break;
+        }
+
+        if (isset($message)) {
+            $tag['MESSAGE'] = $message;
         }
 
         if (isset($title)) {
@@ -655,7 +669,7 @@ class User_Action {
         }
       
         if (isset($tag)) {
-            $final = PHPWS_Template::process($tag, 'users', 'main.tpl');
+            $final = PHPWS_Template::process($tag, 'users', 'user_main.tpl');
             Layout::add($final);
         }
     }
@@ -822,6 +836,7 @@ class User_Action {
 
     function badLogin()
     {
+        
         Layout::add(_('Username and password refused.'), 'users', 'User_Main');
     }
 
@@ -864,6 +879,12 @@ class User_Action {
 
         if (is_numeric($_POST['user_signup'])) {
             $settings['new_user_method'] = (int)$_POST['user_signup'];
+        }
+
+        if (isset($_POST['hide_login'])) {
+            $settings['hide_login'] = 1;
+        } else {
+            $settings['hide_login'] = 0;
         }
 
         if (isset($_POST['graphic_confirm'])) {

@@ -48,7 +48,9 @@ class Current_User {
     {
         PHPWS_Core::initModClass('users', 'Form.php');
         $login = User_Form::logBox();
-        Layout::set($login, 'users', 'login_box', FALSE);
+        if (!empty($login)) {
+            Layout::set($login, 'users', 'login_box', FALSE);
+        }
     }
 
     function isDeity()

@@ -23,7 +23,11 @@ class User_Form {
             $username = Current_User::getUsername();
             return User_Form::loggedIn();
         } else {
-            return User_Form::loggedOut();
+            if (PHPWS_Settings::get('users', 'hide_login')) {
+                return NULL;
+            } else {
+                return User_Form::loggedOut();
+            }
         }
 
         return $form;
@@ -54,23 +58,22 @@ class User_Form {
     {
         translate('users');
 
-        if (isset($_REQUEST['block_username'])) {
-            $username = $_REQUEST['block_username'];
+        if (isset($_REQUEST['phpws_username'])) {
+            $username = $_REQUEST['phpws_username'];
         } else {
             $username = NULL;
         }
 
         $form = & new PHPWS_Form('User_Login');
-        $form->turnOffAutocomplete();
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'user');
-        $form->addHidden('command', 'loginBox');
-        $form->addText('block_username', $username);
-        $form->addPassword('block_password');
+        $form->addHidden('command', 'login');
+        $form->addText('phpws_username', $username);
+        $form->addPassword('phpws_password');
         $form->addSubmit('submit', LOGIN_BUTTON);
 
-        $form->setLabel('block_username', _('Username'));
-        $form->setLabel('block_password', _('Password'));
+        $form->setLabel('phpws_username', _('Username'));
+        $form->setLabel('phpws_password', _('Password'));
     
         $template = $form->getTemplate();
 
@@ -566,7 +569,11 @@ class User_Form {
 
         $file_list = PHPWS_File::readDirectory(PHPWS_SOURCE_DIR . 'mod/users/scripts/', FALSE, TRUE, FALSE, array('php'));
 
-        $remaining_files = array_diff($file_list, $file_compare);
+        if (!empty($file_list)) {
+            $remaining_files = array_diff($file_list, $file_compare);
+        } else {
+            $remaining_files = NULL;
+        }
 
         if (empty($remaining_files))
             $template['FILE_LIST'] = _('No new scripts found');
@@ -652,6 +659,7 @@ class User_Form {
         }
 
         // Replace below with a directory read
+        $menu_options['none']        = _('None');
         $menu_options['Default.tpl'] = 'Default.tpl';
         $menu_options['top.tpl']     = 'top.tpl';
 
@@ -659,6 +667,10 @@ class User_Form {
         $form->setMatch('user_menu', PHPWS_User::getUserSetting('user_menu'));
         $form->setLabel('user_menu', _('User Menu'));
 
+        $form->addCheckBox('hide_login', 1);
+        $form->setMatch('hide_login', PHPWS_Settings::get('users', 'hide_login'));
+        $form->setLabel('hide_login', _('Hide?'));
+        $form->addTplTag('HIDE_LOGIN_DESC', _('Hide login box'));
 
         $template = $form->getTemplate();
 
@@ -746,6 +758,32 @@ class User_Form {
             $_SESSION['USER_CONFIRM_PHRASE'] = $phrase;
             return '<img src="' . $directory . $filename . '" />';
         }
+    }
+
+    function loginPage()
+    {
+
+        if (isset($_REQUEST['phpws_username'])) {
+            $username = $_REQUEST['phpws_username'];
+        } else {
+            $username = NULL;
+        }
+
+        $form = & new PHPWS_Form('User_Login');
+        $form->addHidden('module', 'users');
+        $form->addHidden('action', 'user');
+        $form->addHidden('command', 'login');
+        $form->addText('phpws_username', $username);
+        $form->addPassword('phpws_password');
+        $form->addSubmit('submit', LOGIN_BUTTON);
+
+        $form->setLabel('phpws_username', _('Username'));
+        $form->setLabel('phpws_password', _('Password'));
+
+        $template = $form->getTemplate();
+
+        $content = PHPWS_Template::process($template, 'users', 'forms/login_form.tpl');
+        return $content;
     }
 
 

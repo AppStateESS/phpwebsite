@@ -1,13 +1,13 @@
 <div id="user-login">
 <!-- BEGIN login-form -->
 {START_FORM}
-{BLOCK_USERNAME_LABEL}<br />{BLOCK_USERNAME}<br />
-{BLOCK_PASSWORD_LABEL}<br />{BLOCK_PASSWORD}<br />
+{PHPWS_USERNAME_LABEL}<br />{PHPWS_USERNAME}<br />
+{PHPWS_PASSWORD_LABEL}<br />{PHPWS_PASSWORD}<br />
 {SUBMIT}<br />
 {END_FORM}
 <!-- BEGIN links -->
 <hr />
-<div align="center">
+<div class="align-center">
 <!-- BEGIN signup -->
 <span class="smalltext">{NEW_ACCOUNT}</span>
 <br />

@@ -22,6 +22,12 @@
     <td>{USER_MENU}
     </td>
   </tr>
+  <tr>
+    <td><span class="label">{HIDE_LOGIN_DESC}</span>
+    </td>
+    <td>{HIDE_LOGIN} {HIDE_LOGIN_LABEL}
+    </td>
+  </tr>
 </table>
 <br />
 {SUBMIT}
