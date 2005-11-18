@@ -94,12 +94,11 @@ class Menu_Link {
         }
         $this->url = str_replace('&amp;', '&', trim($url));
         $this->url = preg_replace('/&?authkey=\w{32}/', '', $url);
-        echo $this->url;
     }
 
     function getUrl()
     {
-        return sprintf('<a href="%s">%s</a>', str_replace('&', '&amp;', $this->url), $this->title);
+        return sprintf('<a href="%s" title="%s">%s</a>', str_replace('&', '&amp;', $this->url), $this->title, $this->title);
     }
 
 
@@ -183,7 +182,7 @@ class Menu_Link {
         if ($current_link || $this->parent == 0         ||
             in_array($this->parent, $current_parent)) {
 
-            $link = sprintf('<a href="%s" title="%s">%s</a>', $this->url, $this->title, $this->title);
+            $link = $this->getUrl();
 
             $this->_loadAdminLinks($template);
 
