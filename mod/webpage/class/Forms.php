@@ -122,7 +122,7 @@ class Webpage_Forms {
         $tags['CHECK_ALL'] = javascript('check_all', array('checkbox_name' => 'webpage[]'));
 
         $js['value']        = _('Go');
-        $js['select_id']    = 'wp_admin';
+        $js['select_id']    = $form->getId('wp_admin');
         $js['action_match'] = 'delete_wp';
         $js['message']      = _('Are you sure you want to delete the checked web pages?');
 
