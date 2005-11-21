@@ -407,7 +407,6 @@ class PHPWS_DB {
 
     function addWhere($column, $value=NULL, $operator=NULL, $conj=NULL, $group=NULL, $join=FALSE)
     {
-
         $where = & new PHPWS_DB_Where;
         $where->setJoin($join);
         $operator = strtoupper($operator);
@@ -1796,7 +1795,7 @@ class PHPWS_DB_Where {
 
     function setColumn($column)
     {
-        $this->columns = $column;
+        $this->column = $column;
     }
 
     function setOperator($operator)
@@ -1871,7 +1870,7 @@ class PHPWS_DB_Where {
 
     function get()
     {
-        $column = $this->table . '.' . $this->columns;
+        $column = $this->table . '.' . $this->column;
         $value = $this->getValue();
         $operator = &$this->operator;
         return sprintf('%s %s %s', $column, $operator, $value);
