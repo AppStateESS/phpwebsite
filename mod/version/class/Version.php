@@ -248,6 +248,7 @@ class Version {
             $version->cleanupVersions();
         } else {
             $result = $version_db->insert();
+            
             if (PEAR::isError($result)) {
                 $this->_error = $result;
                 return $result;
@@ -260,6 +261,9 @@ class Version {
 
     function cleanupVersions()
     {
+        if ($this->source_id == 0) {
+            return TRUE;
+        }
         $saved_version =  PHPWS_Settings::get('version', 'saved_versions');
 
         if ($saved_version <= 0) {
@@ -346,6 +350,7 @@ class Version {
 
         $version_db->addWhere('source_id', $this->source_id);
         $version_db->addColumn('vr_number', 'max');
+        
         $current_version = $version_db->select('one');
         if (empty($current_version)) {
             $current_version = 1;
