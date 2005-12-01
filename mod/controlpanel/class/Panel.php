@@ -5,7 +5,8 @@
  * @version $Id$
  */
 
-include_once PHPWS_SOURCE_DIR . 'mod/controlpanel/conf/config.php';
+PHPWS_Core::requireConfig('controlpanel');
+PHPWS_Core::initModClass('controlpanel', 'Tab.php');
 
 class PHPWS_Panel{
     var $itemname     = NULL;
