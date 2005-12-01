@@ -14,6 +14,10 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     define('PHPWS_SOURCE_DIR', './');
 }
 
+if (!defined('PHPWS_HOME_DIR')) {
+    define('PHPWS_HOME_DIR', './');
+}
+
 if (!defined('PHPWS_SOURCE_HTTP')) {
     define('PHPWS_SOURCE_HTTP', './');
 }
@@ -146,7 +150,7 @@ function loadBrowserInformation()
 
     }
 
-    require('core/class/Debug.php');
+    require(PHPWS_SOURCE_DIR . 'core/class/Debug.php');
     $agent = $_SERVER['HTTP_USER_AGENT'];
 
     $agentVars = explode(' ', $agent);
@@ -266,7 +270,7 @@ function getBrowserLanguage(){
 
 
 function loadLanguageDefaults($language){
-    $rootDir = 'config/core/i18n/';
+    $rootDir = PHPWS_HOME_DIR . 'config/core/i18n/';
 
     if (is_file($rootDir . $language . '.php')){
         require_once $rootDir . $language . '.php';
