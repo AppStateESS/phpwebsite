@@ -236,8 +236,9 @@ class PHPWS_Core {
             $directory = implode('/', $dirArray);
       
             $location = $http . $_SERVER['HTTP_HOST'] . $directory . $address;
-        } else
+        } else {
             $location = &$address;
+        }
 
         $location = preg_replace('/&amp;/', '&', $location);
         header('Location: ' . $location);
@@ -378,19 +379,19 @@ class PHPWS_Core {
     {
         switch ($code) {
         case '400':
-            include 'config/core/400.html';
+            include PHPWS_HOME_DIR . 'config/core/400.html';
             break;
 
         case '403':
-            include 'config/core/403.html';
+            include PHPWS_HOME_DIR . 'config/core/403.html';
             break;
 
         case '404':
-            include 'config/core/404.html';
+            include PHPWS_HOME_DIR . 'config/core/404.html';
             break;
 
         default:
-            include 'config/core/error_page.html';
+            include PHPWS_HOME_DIR . 'config/core/error_page.html';
             break;
         }
         exit();
