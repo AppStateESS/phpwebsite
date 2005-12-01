@@ -10,6 +10,7 @@
 
 PHPWS_Core::initModClass('layout', 'Layout_Settings.php');
 PHPWS_Core::initCoreClass('Template.php');
+PHPWS_Core::requireConfig('layout');
 
 class Layout {
 
