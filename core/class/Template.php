@@ -1,6 +1,6 @@
 <?php
 require_once 'HTML/Template/Sigma.php';
-require_once 'config/core/template.php';
+require_once PHPWS_HOME_DIR . 'config/core/template.php';
 
 /**
  * Controls templates
@@ -36,12 +36,16 @@ class PHPWS_Template extends HTML_Template_Sigma {
 
     function getTplDir($module)
     {
+        if ($module == 'core') {
+            return PHPWS_HOME_DIR . 'templates/core/';
+        }
+
         if (!class_exists('Layout')) {
-            return PHPWS_SOURCE_DIR . "mod/$module/templates/";    
+            return PHPWS_SOURCE_DIR . "mod/$module/templates/";
         }
     
         $theme = Layout::getThemeDir();
-        return $theme . 'templates/' . $module . "/";
+        return sprintf('%stemplates/%s/', $theme, $module);
     }
 
     function setCache()
