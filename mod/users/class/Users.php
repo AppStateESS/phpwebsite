@@ -8,12 +8,12 @@
  */
 
 PHPWS_Core::initModClass('users', 'Permission.php');
-PHPWS_Core::configRequireOnce('users', 'config.php');
+PHPWS_Core::requireConfig('users');
+PHPWS_Core::requireConfig('users', 'errorDefines.php');
 
 if (!defined('ALLOWED_USERNAME_CHARACTERS')) {
     define('ALLOWED_USERNAME_CHARACTERS'. '\w');
 }
-
 
 class PHPWS_User {
     var $id            = NULL;
@@ -635,18 +635,6 @@ class PHPWS_User {
     function getUserSetting($setting, $refresh=FALSE)
     {
         return PHPWS_Settings::get('users', $setting);
-        /*
-        if (!isset($GLOBALS['User_Settings']) || $refresh == TRUE){
-            unset($GLOBALS['User_Settings']);
-            $GLOBALS['User_Settings'] = PHPWS_User::getSettings();
-        }
-
-        if (PEAR::isError($GLOBALS['User_Settings'])) {
-            return $GLOBALS['User_Settings'];
-        }
-
-        return $GLOBALS['User_Settings'][$setting];
-        */
     }
 
     function loadPermissions($loadAll=TRUE)

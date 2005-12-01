@@ -7,6 +7,8 @@
  * @package Core
  */
 
+PHPWS_Core::requireConfig('users', 'errorDefines.php');
+
 class User_Action {
 
     function adminAction()
@@ -731,65 +733,10 @@ class User_Action {
         }
     }
 
-
+    // Moved to Current User
     function loginUser($username, $password)
     {
-        $username = preg_replace('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/', '', $username);
-        $createUser = FALSE;
-        // First check if they are currently a user in local system
-        $user = & new PHPWS_User;
-
-        $db = & new PHPWS_DB('users');
-        $db->addWhere('username', strtolower($username));
-        $result = $db->loadObject($user);
-
-        if (PEAR::isError($result)){
-            PHPWS_Error::log($result);
-            return FALSE;
-        }
-
-        // if result is blank then check against the default authorization
-        if ($result == FALSE){
-            $authorize = PHPWS_User::getUserSetting('default_authorization');
-            $createUser = TRUE;
-        }
-        else
-            $authorize = $user->getAuthorize();
-
-        if (empty($authorize))
-            return FALSE;
-
-        $result = User_Action::authorize($authorize, $username, $password);
-
-        if (PEAR::isError($result)){
-            PHPWS_Error::log($result);
-            return FALSE;
-        }
-
-        if ($result == TRUE){
-            if ($createUser == TRUE){
-                $result = $user->setUsername($username);
-
-                if (PEAR::isError($result)){
-                    PHPWS_Error::log($result);
-                    return FALSE;
-                }
-
-                $user->setAuthorize($authorize);
-                $user->setActive(TRUE);
-                $user->setApproved(TRUE);
-
-                if (function_exists('post_authorize'))
-                    post_authorize($user);
-
-                $user->save();
-            }
-
-            $user->login();
-            $_SESSION['User'] = $user;
-            return TRUE;
-        } else
-            return FALSE;
+        return Current_User::loginUser($username, $password);
     }
 
 
@@ -802,35 +749,10 @@ class User_Action {
         return TRUE;
     }
 
+    // Moved ot Current User
     function authorize($authorize, $username, $password)
     {
-        $db = & new PHPWS_DB('users_auth_scripts');
-        $db->setIndexBy('id');
-        $result = $db->select();
-
-        if (empty($result))
-            return FALSE;
-
-        if (isset($result[$authorize])){
-            extract($result[$authorize]);
-            $file = 'mod/users/scripts/' . $filename;
-            if(!is_file($file)){
-                PHPWS_Error::log(USER_ERR_MISSING_AUTH, 'users', 'authorize', $file);
-                return FALSE;
-            }
-
-            include $file;
-            if (function_exists('authorize')){
-                $result = authorize($username, $password);
-                return $result;
-            } else {
-                PHPWS_Error::log(USER_ERR_MISSING_AUTH, 'users', 'authorize');
-                return FALSE;
-            }
-        } else
-            return FALSE;
-
-        return $result;
+        return Current_User::authorize($authorize, $username, $password);
     }
 
 
