@@ -18,6 +18,7 @@ class Setup{
             $_SESSION['configSettings']['general']  = FALSE;
             $_SESSION['configSettings']['database'] = FALSE;
             Setup::setConfigSet('source_dir', Setup::getSourceDir());
+            Setup::setConfigSet('home_dir', Setup::getSourceDir());
             Setup::setConfigSet('site_hash', md5(rand()));
             Setup::setConfigSet('dbname', DEFAULT_DBNAME);
             Setup::setConfigSet('dbuser', DEFAULT_DBUSER);
@@ -69,8 +70,9 @@ class Setup{
         require_once 'File.php';
 
         $location = Setup::getConfigSet('source_dir') . 'config/core/';
-        if (!is_writable($location))
+        if (!is_writable($location)) {
             return FALSE;
+        }
 
         $tpl = & new PHPWS_Template;
         $tpl->setFile('setup/templates/config.tpl', TRUE);
@@ -91,8 +93,9 @@ class Setup{
             $content[] = _('Unable to locate the source directory:') . ' ' . $source_dir;
             $check = FALSE;
         }
-        else
+        else {
             Setup::setConfigSet('source_dir', $source_dir);
+        }
 
 
         Setup::setConfigSet('LINUX_PEAR', '//');
