@@ -6,6 +6,7 @@
  * is. This is important to branches.
  */
 define('PHPWS_SOURCE_DIR', '{source_dir}');
+define('PHPWS_HOME_DIR', '{home_dir}');
 
 /**
  * Your site hash defines your site identity. It is used
@@ -65,7 +66,7 @@ define('PHPWS_LOG_ERRORS', TRUE);
 /**
  * Directory where logs will be written
  */
-define('PHPWS_LOG_DIRECTORY', './logs/');
+define('PHPWS_LOG_DIRECTORY', PHPWS_HOME_DIR . 'logs/');
 
 /**
  * Determines the permissions given to log files when written
@@ -151,7 +152,7 @@ define('ABSOLUTE_UPLOAD_LIMIT', '5000000');
  * in the file_types.php file. Make sure you know how to edit
  * arrays before altering the file.
  */ 
-include 'config/core/file_types.php';
+include PHPWS_HOME_DIR . 'config/core/file_types.php';
 
 /******************* IMAGES SETTINGS **************************/
 define('MAX_IMAGE_SIZE', 50000);
