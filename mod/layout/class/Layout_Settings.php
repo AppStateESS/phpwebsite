@@ -142,14 +142,15 @@ class Layout_Settings {
             $this->current_theme = $this->default_theme;
         }
 
-        $themeInit = './themes/' . $this->current_theme . '/theme.ini';
+        $themeInit = PHPWS_HOME_DIR . 'themes/' . $this->current_theme . '/theme.ini';
 
         if (is_file($themeInit)){
             $themeVars = parse_ini_file($themeInit, TRUE);
             $this->loadBoxSettings($themeVars);
             $this->loadStyleSheets($themeVars);
         } else {
-            exit('Missing theme.ini');
+            PHPWS_Error::log(LAYOUT_INI_FILE, 'layout', 'Layout_Settings::loadSettings', $themeInit);
+            PHPWS_Core::errorPage();
         }
 
 
