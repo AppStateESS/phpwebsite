@@ -6,7 +6,8 @@ CREATE TABLE modules (
 	version CHAR(20) NOT NULL, 
 	register SMALLINT NOT NULL,
 	unregister SMALLINT NOT NULL,
-	pre94 SMALLINT NOT NULL
+	pre94 SMALLINT NOT NULL,
+        PRIMARY KEY (title)
 	);
 
 CREATE TABLE registered ( 
