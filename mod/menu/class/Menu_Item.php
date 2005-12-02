@@ -1,7 +1,7 @@
 <?php
 /**
  * Object class for a menu
- * @author Matthew McNaney <matt at tux dot appstate dot edu>
+ * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
 
@@ -148,17 +148,15 @@ class Menu_Item {
         }
 
         $db = & new PHPWS_DB('menu_links');
+        $db->addWhere('menu_id', $this->id, NULL, NULL, 1);
+        $db->addWhere('parent', $parent, NULL, NULL, 1);
+
         Key::restrictView($db, 'menu');
-
-
-        $db->addWhere('menu_id', $this->id);
-        $db->addWhere('parent', $parent);
-
-        $db->addWhere('key_id', 0, '=', 'or');
         $db->addOrder('link_order');
 
         $db->setIndexBy('id');
-        //        $db->setTestMode();
+
+        //$db->setTestMode();
         $result = $db->getObjects('menu_link');
 
         if (empty($result)) {
@@ -278,6 +276,7 @@ class Menu_Item {
         if ( !$pin_mode && Current_User::allow('menu') ) {
             if (Menu::isAdminMode()) {
                 $tpl['ADD_LINK'] = Menu::getAddLink($this->id);
+                $tpl['ADD_OFFSITE_LINK'] = Menu::getOffsiteLink($this->id);
 
                 if (!empty($key)) {
                     $tpl['CLIP'] = Menu::getUnpinLink($this->id, $key->id, $this->pin_all);
