@@ -3,7 +3,7 @@
 /**
  * Contains the forms and administrative option for Menu
  *
- * @author Matthew McNaney <matt at tux dot appstate dot edu
+ * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
 
@@ -131,6 +131,34 @@ class Menu_Admin {
             } else {
                 $title = _('Error');
                 $content = _('There was a problem saving your link.');
+            }
+            break;
+
+        case 'add_offsite_link':
+            $link = & new Menu_Link;
+            $link->parent = $_REQUEST['parent_id'];
+            Menu_Admin::offsiteLink($menu, $link);
+            break;
+
+        case 'edit_offsite_link':
+            $link = & new Menu_Link($_REQUEST['link_id']);
+            Menu_Admin::offsiteLink($menu, $link);
+            break;
+
+        case 'post_offsite_link':
+            if (isset($_REQUEST['link_id'])) {
+                $link = & new Menu_Link($_REQUEST['link_id']);
+            } else {
+                $link = & new Menu_Link;
+            }
+
+            $result = Menu_Admin::postOffsiteLink($link);
+            if (is_array($result)) {
+                Menu_Admin::offsiteLink($menu, $link, $result);
+            } else {
+                $link->save();
+                javascript('onload', array('function'=>'opener.window.location.reload(); window.close()'));
+                Layout::nakedDisplay('');
             }
             break;
 
@@ -364,6 +392,68 @@ class Menu_Admin {
         return PHPWS_Template::process($tpl, 'menu', 'admin/settings.tpl');
     }
 
+    function offsiteLink($menu, $link, $errors=NULL)
+    {
+        $form = & new PHPWS_Form('offsite_link');
+        if ($link->id) {
+            $form->addHidden('link_id', $link->id);
+        }
+
+        $form->addHidden('module', 'menu');
+        $form->addHidden('command', 'post_offsite_link');
+        $form->addHidden('menu_id', $menu->id);
+        $form->addHidden('parent_id', $link->parent);
+        $form->addText('title', $link->title);
+        $form->setLabel('title', _('Title'));
+        if (MENU_TITLE_LIMIT > 0) {
+            $form->setSize('title', MENU_TITLE_LIMIT);
+            $form->setMaxSize('title', MENU_TITLE_LIMIT);
+        }
+
+        $form->addText('url', $link->url);
+        $form->setLabel('url', _('Url'));
+        $form->setSize('url', 50);
+
+        $form->addSubmit(_('Save link'));
+
+        $template = $form->getTemplate();
+
+        $template['FORM_TITLE'] = _('Create Link');
+
+        if ($errors) {
+            $template['ERRORS'] = implode('<br />', $errors);
+        }
+
+        $content = PHPWS_Template::process($template, 'menu', 'admin/offsite.tpl');
+
+        Layout::nakedDisplay($content);
+    }
+
+    function postOffsiteLink(&$link)
+    {
+        if (empty($_POST['title'])) {
+            $error[] = _('Missing title.');
+        } else {
+            $link->setTitle($_POST['title']);
+        }
+
+        if (empty($_POST['url'])) {
+            $error[] = _('Missing url.');
+        } else {
+            $link->setUrl($_POST['url'], FALSE);
+        }
+
+        $link->key_id = 0;
+        $link->menu_id =  $_POST['menu_id'];
+        $link->parent = $_POST['parent_id'];
+
+        if (isset($error)) {
+            return $error;
+        } else {
+            return TRUE;
+        }
+    }
+    
 }
 
 ?>
