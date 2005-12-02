@@ -2,7 +2,7 @@
 /**
  * Main functionality class for Menu module
  *
- * @author Matthew McNaney <matt at tux dot appstate dot edu
+ * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
 
@@ -62,7 +62,6 @@ class Menu {
         $db = & new PHPWS_DB('menus');
         $db->addWhere('menu_assoc.key_id', $key->id);
         $db->addWhere('id', 'menu_assoc.menu_id');
-
         $result = $db->getObjects('Menu_Item');
 
         if (PEAR::isError($result)) {
@@ -90,6 +89,18 @@ class Menu {
     {
         $compare =  PHPWS_Core::getCurrentUrl();
         return $url == $compare;
+    }
+
+    function getOffsiteLink($menu_id, $parent_id=0)
+    {
+        $vars['command']   = 'add_offsite_link';
+        $vars['menu_id']   = $menu_id;
+        $vars['parent_id'] = $parent_id;
+
+        $js['link_title'] = _('Add offsite link');
+        $js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE, FALSE, FALSE);
+        $js['label'] = MENU_LINK_ADD_OFFSITE;
+        return javascript('open_window', $js);
     }
 
     function getAddLink($menu_id, $parent_id=NULL)
