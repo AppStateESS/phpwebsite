@@ -73,6 +73,11 @@ class Blog_User {
 
         $result = $db->getObjects('Blog');
 
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            return NULL;
+        }
+
         if (empty($result)) {
             return NULL;
         }
