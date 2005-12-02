@@ -34,6 +34,7 @@ class PHPWS_DB {
     var $_sql        = NULL;
     var $_distinct   = FALSE;
     var $_test_mode  = FALSE;
+    var $_join       = NULL;
 
     function PHPWS_DB($table=NULL)
     {
@@ -74,6 +75,7 @@ class PHPWS_DB {
     {
 
     }
+
 
     function touchDB()
     {
@@ -350,12 +352,57 @@ class PHPWS_DB {
         return NULL;
     }
 
+    function getJoin($prefix=TRUE)
+    {
+        
+        $join = & $this->_join;
+
+        if ($prefix) {
+            $join['table1'] = PHPWS_DB::getPrefix() . $join['table1'];
+            $join['table2'] = PHPWS_DB::getPrefix() . $join['table2'];
+        }
+
+        switch ($join['type']) {
+        case 'left':
+            $statement = sprintf('%s LEFT JOIN %s ON %s.%s=%s.%s',
+                                   $join['table1'], $join['table2'],
+                                   $join['table1'], $join['col1'],
+                                   $join['table2'], $join['col2']);
+            
+            break;
+            
+        case 'right':
+            $statement = sprintf('%s RIGHT JOIN %s ON %s.%s=%s.%s',
+                                   $join['table1'], $join['table2'],
+                                   $join['table1'], $join['col1'],
+                                   $join['table2'], $join['col2']);
+            break;
+            
+        }
+
+        return $statement;
+    }
+
     function getTable($format=TRUE, $prefix=TRUE)
     {
         if ($format == TRUE) {
             if ($prefix == TRUE) {
                 array_walk($this->tables, '_add_tbl_prefix', PHPWS_DB::getPrefix());
             }
+
+            if (isset($this->_join)) {
+                $join = $this->getJoin($prefix);
+                foreach ($this->tables as $table) {
+                    if ($this->_join['table1'] == $table || 
+                        $this->_join['table2'] == $table) {
+                        continue;
+                    }
+
+                    $join .= ', ' . $table;
+                }
+                return $join;
+            }
+
             return implode(', ', $this->tables);
         } else {
             return $this->tables;
@@ -400,9 +447,17 @@ class PHPWS_DB {
         return $this->groupBy;
     }
 
-    function addJoinWhere($column, $value=NULL, $operator=NULL, $conj=NULL, $group=NULL)
+    /**
+     * Allows you to join two tables with a left or right parameter
+     * 
+     */
+    function setJoin($type, $table1, $col1, $table2, $col2)
     {
-        return $this->addWhere($column, $value, $operator, $conj, $group, TRUE);
+        $this->_join = array('type'   => $type,
+                             'table1' => $table1,
+                             'table2' => $table2,
+                             'col1'   => $col1,
+                             'col2'   => $col2);
     }
 
     function addWhere($column, $value=NULL, $operator=NULL, $conj=NULL, $group=NULL, $join=FALSE)
@@ -545,11 +600,10 @@ class PHPWS_DB {
 
         if (empty($this->where)) {
             if (isset($this->qwhere)) {
-                return $this->qwhere['conj'] . ' (' . $this->qwhere['where'] .')';
+                return ' (' . $this->qwhere['where'] .')';
             }
             return NULL;
         }
-
         $startMain = FALSE;
         if ($dbReady) {
             foreach ($this->where as $group_name => $groups) {
@@ -1861,11 +1915,14 @@ class PHPWS_DB_Where {
             return $value;
         }
 
+        // If this is not a joined where, return the escaped value
         if (!$this->join && $value != 'NULL') {
             return sprintf('\'%s\'', $value);
+        } else {
+            // This is a joined value, return table.value
+            return $value;
         }
 
-        return $value;
     }
 
     function get()
