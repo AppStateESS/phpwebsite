@@ -85,13 +85,19 @@ class Menu_Link {
     function setTitle($title)
     {
         $this->title = strip_tags(trim($title));
+        if (MENU_TITLE_LIMIT > 0 && strlen($this->title) > MENU_TITLE_LIMIT) {
+            $this->title = substr($this->title, 0, MENU_TITLE_LIMIT);
+        }
     }
 
     function setUrl($url, $local=TRUE)
     {
         if ($local) {
             PHPWS_Text::makeRelative($url);
+        } else {
+            $url = PHPWS_Text::checkLink($url);
         }
+
         $this->url = str_replace('&amp;', '&', trim($url));
         $this->url = preg_replace('/&?authkey=\w{32}/', '', $url);
     }
@@ -226,6 +232,7 @@ class Menu_Link {
     {
         if ( empty($_POST) && Menu::isAdminMode() && Current_User::allow('menu') ) {
             $template['ADD_LINK'] = Menu::getAddLink($this->menu_id, $this->id);
+            $template['ADD_OFFSITE_LINK'] = Menu::getOffsiteLink($this->menu_id, $this->id);
             
             $vars['link_id'] = $this->id;
 
