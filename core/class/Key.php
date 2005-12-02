@@ -132,35 +132,45 @@ class Key {
         }
     }
 
+    function loadViewGroups()
+    {
+        $db = & new PHPWS_DB('phpws_key_view');
+        $db->addWhere('key_id', $this->id);
+        $db->addColumn('group_id');
+        $result = $db->select('col');
+        
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            return array();
+        }
+        $this->_view_groups = $result;
+    }
+
     function getViewGroups()
     {
         if (!isset($this->_view_groups)) {
-            $db = & new PHPWS_DB('phpws_key_view');
-            $db->addWhere('key_id', $this->id);
-            $db->addColumn('group_id');
-            $result = $db->select('col');
-
-            if (PEAR::isError($result)) {
-                PHPWS_Error::log($result);
-                return array();
-            }
-            $this->_view_groups = $result;
+            $this->loadViewGroups();
         }
         return $this->_view_groups;
+    }
+
+    function loadEditGroups()
+    {
+        $db = & new PHPWS_DB('phpws_key_edit');
+        $db->addWhere('key_id', $this->id);
+        $db->addColumn('group_id');
+        $result = $db->select('col');
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            return array();
+        }
+        $this->_edit_groups = $result;
     }
 
     function getEditGroups()
     {
         if (!isset($this->_edit_groups)) {
-            $db = & new PHPWS_DB('phpws_key_edit');
-            $db->addWhere('key_id', $this->id);
-            $db->addColumn('group_id');
-            $result = $db->select('col');
-            if (PEAR::isError($result)) {
-                PHPWS_Error::log($result);
-                return array();
-            }
-            $this->_edit_groups = $result;
+            $this->loadEditGroups();
         }
         return $this->_edit_groups;
     }
@@ -168,7 +178,6 @@ class Key {
 
     function allowView()
     {
-
         if (Current_User::allow($this->module, $this->edit_permission,
                                       $this->item_id, $this->item_name)) {
             return TRUE;
@@ -189,7 +198,7 @@ class Key {
                     if (empty($user_groups)) {
                         return false;
                     } else {
-                        return in_array($user_groups, $this->getViewGroups());
+                        return (bool)array_intersect($user_groups, $this->getViewGroups());
                     }
                 }
             }
@@ -451,10 +460,12 @@ class Key {
 
         $db->setDistinct(1);
 
-        $db->addWhere('phpws_key.active', 1);
+        $orig_table = $db->tables[0];
+
         if (!Current_User::isLogged()) {
-            $db->addWhere('phpws_key.restricted', 0);
-            $db->addWhere('key_id', 'phpws_key.id');
+            $qwhere = sprintf(' (%s.key_id=0) OR ( phpws_key.active=1 AND phpws_key.restricted=0 ) ', $orig_table);
+            $db->setQWhere($qwhere);
+            $db->setJoin('left', $db->tables[0], 'key_id', 'phpws_key', 'id');
             return;
         } elseif (Current_User::isUnrestricted($module)) {
             return;
@@ -464,14 +475,28 @@ class Key {
                 return;
             }
 
-            $db->addWhere('key_id', 'phpws_key.id');
+            $db->setJoin('left', $db->tables[0], 'key_id', 'phpws_key', 'id');
+            $db->addTable('phpws_key_view');
 
-            $db->addWhere('phpws_key.restricted', 1, '<=', NULL, 'key_group');
-            $db->addWhere('phpws_key.restricted', 2, '=', 'or', 'key_group');
-            $db->addWhere('phpws_key.id', 'phpws_key_view.key_id', '=', 'AND', 'key_group');
-            $db->addWhere('phpws_key_view.group_id', $groups, 'in', 'AND', 'key_group');
+            $query = '
+ %s.key_id = 0
+  OR
+ ( 
+   phpws_key.active = \'1\' AND 
+   (
+     ( phpws_key.restricted <= \'1\')
+     OR 
+     ( phpws_key.restricted = \'2\'
+       AND 
+       phpws_key.id = phpws_key_view.key_id
+       AND 
+       phpws_key_view.group_id IN (%s) )
+   )
+ )';
 
-            $db->setGroupConj('key_group', 'and');
+            $qwhere = sprintf($query, $orig_table, implode(', ', $groups));
+            $db->setQWhere($qwhere);
+            return;
         }
     }
 
