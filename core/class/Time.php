@@ -2,14 +2,20 @@
 
 class PHPWS_Time {
 
-    function getUTCTime()
+    function getUTCTime($time=0)
     {
-        return mktime() - (SERVER_TIME_ZONE * 3600);
+        return PHPWS_Time::convertServerTime(mktime());
     }
 
-    function convertUTCTime($utc_time, $tz)
+    function getUserTZ()
     {
-        return $utc_time + ($tz * 3600);
+        $user_tz = PHPWS_Cookie::read('user_tz');
+
+        if (empty($user_tz)) {
+            return SERVER_TIME_ZONE;
+        } else {
+            return $user_tz;
+        }
     }
 
     function getServerTime($utc_time)
@@ -19,14 +25,25 @@ class PHPWS_Time {
 
     function getUserTime($utc_time)
     {
-        $user_tz = PHPWS_Cookie::read('user_tz');
-
-        if ( empty($user_tz) ) {
-            return PHPWS_Time::getServerTime($utc_time);
-        } else {
-            return PHPWS_Time::convertUTCTime($utc_time, $user_tz);
-        }
+        $user_tz = PHPWS_Time::getUserTZ();
+        return PHPWS_Time::convertUTCTime($utc_time, $user_tz);
     }
+
+    function convertUTCTime($time, $tz)
+    {
+        return $time + ($tz * 3600);
+    }
+
+    function convertServerTime($time)
+    {
+        return PHPWS_Time::convertUTCTime($time, -SERVER_TIME_ZONE);
+    }
+
+    function convertUserTime($time)
+    {
+        return PHPWS_Time::convertUTCTime($time, -PHPWS_Time::getUserTZ());
+    }
+
 }
 
 ?>
