@@ -37,6 +37,17 @@ define('PHPWS_DSN', '{dsn}');
  */
 define('CORE_COOKIE_TIMEOUT', 2592000);
 
+
+/********************** Server Time Zone **********************/
+/**
+ * This is the time zone of the web server relative to the UTC
+ * For example, East Coast Standard Daylight is -4
+ * Central European Daylight Time is 2 (the plus is not needed)
+ */
+
+define('SERVER_TIME_ZONE', {server_tz});
+
+
 /********************** Security Settings *********************/
 /**
  * If CHECK_DIRECTORY_PERMISSIONS is TRUE the phpwebsite WILL
