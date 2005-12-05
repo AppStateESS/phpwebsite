@@ -245,7 +245,7 @@ class Version {
                 $this->_error = $result;
                 return $result;
             }
-            $version->cleanupVersions();
+            $this->cleanupVersions();
         } else {
             $result = $version_db->insert();
             
