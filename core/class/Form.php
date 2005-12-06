@@ -1036,12 +1036,8 @@ class PHPWS_Form {
             }
         }
 
-
-        if (class_exists('Current_User') &&
-            Current_User::isLogged() && $this->use_auth_key) {
-            unset($this->_elements['authkey']);
-            $this->addHidden('authkey', Current_User::getAuthKey());
-        }
+        unset($this->_elements['authkey']);
+        $this->addHidden('authkey', Current_User::getAuthKey());
 
         foreach ($this->_elements as $elementName=>$element){
             $multiple = FALSE;
@@ -1078,7 +1074,6 @@ class PHPWS_Form {
                 $count++;
             }
         }      
-
 
         if ($helperTags) {
             if (isset($this->_action)) {
