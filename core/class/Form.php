@@ -1564,6 +1564,7 @@ class Form_Select extends Form_Element {
             if (!is_string($value) && !is_numeric($value)) {
                 continue;
             }
+
             if ($this->isMatch($value)) {
                 $content[] = sprintf('<option value="%s" selected="selected">%s</option>', $value, $label);
             } else {
@@ -1586,7 +1587,7 @@ class Form_Select extends Form_Element {
             return FALSE;
         }
 
-        return ($this->match == $match) ? TRUE : FALSE;
+        return ((string)$this->match == (string)$match) ? TRUE : FALSE;
     }
 
 }
@@ -1651,7 +1652,7 @@ class Form_CheckBox extends Form_Element {
 
     function getMatch()
     {
-        if ($this->match == $this->getValue()) {
+        if ((string)$this->match == (string)$this->value) {
             return 'checked="checked"';
         }
         else {
@@ -1686,7 +1687,7 @@ class Form_RadioButton extends Form_Element {
 
     function getMatch()
     {
-        if ($this->match == $this->getValue()) {
+        if ((string)$this->match == (string)$this->value) {
             return 'checked="checked"';
         }
         else {
@@ -1866,7 +1867,7 @@ class Form_Element {
         } else {
             $name = $this->name;
         }
-       
+
         if ($formMode) {
             if ($show_id) {
                 $id = $this->id;
@@ -1891,8 +1892,9 @@ class Form_Element {
                 return NULL;
             }
         }
-        else
+        else {
             return $this->value;
+        }
     }
 
     function setClass($css_class)
