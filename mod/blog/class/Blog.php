@@ -72,16 +72,21 @@ class Blog {
         $this->title = strip_tags($title);
     }
 
-    function getFormatedDate($type=BLOG_VIEW_DATE_FORMAT)
+    function getLocalDate($type=BLOG_VIEW_DATE_FORMAT)
     {
-        return strftime($type, $this->date);
+        return strftime($type, PHPWS_Time::getUserTime($this->date));
+    }
+
+    function getServerDate($type=BLOG_VIEW_DATE_FORMAT)
+    {
+        return strftime($type, PHPWS_Time::getServerTime($this->date));
     }
 
     function save()
     {
         $db = & new PHPWS_DB('blog_entries');
         if (empty($this->id)) {
-            $this->date = mktime();
+            $this->date = PHPWS_Time::getUTCTime();
         }
 
         if (empty($this->author)) {
@@ -159,7 +164,7 @@ class Blog {
         }
 
         $template['TITLE'] = $this->title;
-        $template['DATE']  = $this->getFormatedDate();
+        $template['LOCAL_DATE']  = $this->getLocalDate();
         $template['ENTRY'] = PHPWS_Text::parseTag($this->getEntry(TRUE));
 
         if ($edit && Current_User::allow('blog', 'edit_blog', $this->getId(), 'entry')){
@@ -209,7 +214,7 @@ class Blog {
     function getPagerTags()
     {
         $template['TITLE'] = sprintf('<a href="%s">%s</a>', $this->getViewLink(TRUE), $this->title);
-        $template['DATE'] = $this->getFormatedDate();
+        $template['DATE'] = $this->getServerDate();
         $template['ENTRY'] = $this->getListEntry();
         $template['ACTION'] = $this->getListAction();
         return $template;
@@ -250,7 +255,7 @@ class Blog {
     function post_entry()
     {
         $set_permissions = FALSE;
-
+        
         if ($this->id && !Current_User::authorized('blog', 'edit_blog')) {
             Current_User::disallow();
             return FALSE;
@@ -269,6 +274,10 @@ class Blog {
             $this->title = strip_tags($_POST['title']);
         }
 
+        if (empty($this->id)) {
+            $this->date = PHPWS_Time::getUTCTime();
+        }
+
         $this->setEntry($_POST['entry']);
 
         if (isset($_POST['version_id'])) {
@@ -280,10 +289,6 @@ class Blog {
 
         if (empty($this->author)) {
             $this->author = Current_User::getDisplayName();
-        }
-
-        if (empty($this->id)) {
-            $this->date = mktime();
         }
 
         $version->setSource($this);
@@ -311,6 +316,7 @@ class Blog {
 
         $result = $version->save();
         if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
             return FALSE;
         }
 
