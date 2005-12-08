@@ -1,0 +1,34 @@
+div.minical {
+  width : 100%;
+}
+
+div.minical table {
+  width : 100%;
+  border-collapse : collapse;
+  border-width : 1px;
+  border-style : solid;
+  border-color : #A03E19;;
+}
+
+div.minical table td {
+  width : 11%;
+  border-collapse : collapse;
+  border-width : 1px;
+  border-style : solid;
+  border-color : #A03E19;;
+  text-align : center;
+}
+
+td.minical-day-empty {
+  background-color : #ADB583;
+}
+
+td.minical-day-current {
+  background-color : #A03E19;
+  color : white;
+}
+
+td.minical-day-normal {
+  background-color : #DEE2BD;
+}
+
