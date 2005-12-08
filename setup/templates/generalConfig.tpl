@@ -3,7 +3,7 @@
 <div id="message">{MESSAGE}</div>
 <div id="config-form">
   <div class="config-item">
-    <div class="label">{SOURCE_DIR_LBL}</div>
+    <div class="label">{SOURCE_DIR_LABEL}</div>
     <div class="definition">{SOURCE_DIR_DEF}</div>
     <div class="form-item">
       {SOURCE_DIR}
@@ -11,7 +11,7 @@
   </div>
  
   <div class="config-item">
-    <div class="label">{SITE_HASH_LBL}</div>
+    <div class="label">{SITE_HASH_LABEL}</div>
     <div class="definition">{SITE_HASH_DEF}</div>
     <div class="form-item">
       {SITE_HASH}
@@ -19,13 +19,12 @@
   </div>
 
   <div class="config-item">
-    <div class="label">{PEAR_LBL}</div>
+    <div class="label">{PEAR_LABEL}</div>
     <div class="definition">{PEAR_DEF}</div>
     <div class="form-item">
       {PEAR}
     </div>
   </div>
-
 {SUBMIT}
 </div>
 {END_FORM}
