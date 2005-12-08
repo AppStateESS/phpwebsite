@@ -27,7 +27,7 @@ $key = 'myModsContent';
 
 $content = PHPWS_Cache::get($key);
 
-if (!empty($content)) {
+if (empty($content)) {
   $content = getContentTheHardWay();
   PHPWS_Cache::save($key, $content);
 }
