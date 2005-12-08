@@ -11,33 +11,44 @@ class PHPWS_Time {
      * Returns the UTC Unix time based on the server's tz
      * settings
      */
-    function getUTCTime($time=0)
+    function getUTCTime()
     {
-        return PHPWS_Time::convertServerTime(mktime());
+        return PHPWS_Time::convertUTCTime(mktime(), (int)date('O') / 100, TRUE);
     }
+
 
     function getServerTZ()
     {
         static $server_tz = NULL;
 
         if (!isset($server_tz)) {
-            
             if (defined('SERVER_TIME_ZONE')) {
                 $tz = SERVER_TIME_ZONE;
+
+                if (!defined('SERVER_USE_DST') || !SERVER_USE_DST) {
+                    $dst = 0;
+                } else {
+                    $dst = date('I');
+                }
+
             } else {
                 $tz = (int)date('O') / 100;
-            }
-            
-            if (!defined('SERVER_USE_DST') || !SERVER_USE_DST) {
                 $dst = 0;
-            } else {
-                $dst = date('I');
             }
-            
+
             $server_tz = $tz + $dst;
         }
         
         return $server_tz;
+    }
+
+    function mkservertime()
+    {
+        if (!defined('SERVER_TIME_ZONE')) {
+            return mktime();
+        } else {
+            return PHPWS_Time::getServerTime(PHPWS_Time::getUTCTime());
+        }
     }
 
     /**
@@ -53,9 +64,10 @@ class PHPWS_Time {
         } else {
             $user_dst = PHPWS_Cookie::read('user_dst');
             if (!isset($user_dst)) {
-                $user_dst = 0;
+                return $user_tz;
+            } else {
+                return $user_tz + date('I');
             }
-            return $user_tz + $user_dst;
         }
     }
 
