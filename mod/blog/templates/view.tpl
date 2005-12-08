@@ -3,7 +3,7 @@
     <div class="box-title">
     <h1>{TITLE}</h1>
     <h3>{POSTED_BY} {AUTHOR}</h3>
-    <h3>{POSTED_ON} {DATE}</h3>
+    <h3>{POSTED_ON} {LOCAL_DATE}</h3>
     </div>
     <!-- BEGIN categories -->
     <div class="bgcolor2 padded">{CATEGORIES}</div>
