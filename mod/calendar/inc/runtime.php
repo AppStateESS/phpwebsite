@@ -4,7 +4,7 @@
    * @version $Id$
    */
 
-$Calendar = & new Calendar;
-$Calendar->view->miniMonth();
+$Calendar = & new PHPWS_Calendar;
+Layout::add($Calendar->view->miniMonth(), 'calendar', 'minimonth');
 
 ?>

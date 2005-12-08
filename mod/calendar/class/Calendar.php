@@ -9,15 +9,16 @@
 
 PHPWS_Core::initModClass('calendar', 'View.php');
 
-class Calendar {
+class PHPWS_Calendar {
     var $view = NULL;
     var $today = 0;
     var $month = NULL;
 
-    function Calendar() {
+    function PHPWS_Calendar() {
         $this->view = & new Calendar_View;
         $this->view->oCal = & $this;
-        $this->today = gmmktime();
+        // using server time
+        $this->today = PHPWS_Time::mkservertime();
     }
 
     /**
@@ -36,9 +37,12 @@ class Calendar {
         
     }
 
-    function getMonth($date)
+    function &getMonth($date)
     {
-
+        require_once 'Calendar/Month/Weekdays.php';
+        $month = & new Calendar_Month_Weekdays(date('Y', $date), date('m', $date));
+        $month->build();
+        return $month;
     }
 
     function checkDate($date)
