@@ -54,7 +54,6 @@ define('CORE_COOKIE_TIMEOUT', 2592000);
 
 define('CHECK_DIRECTORY_PERMISSIONS', FALSE);
 
-
 /************************ Time Zone **************************/
 /**
  * If SERVER_TIME_ZONE is commented out, phpWebSite will use the
@@ -63,13 +62,15 @@ define('CHECK_DIRECTORY_PERMISSIONS', FALSE);
  * setting -12 to 14. Half hours should be set with decimals (e.g.
  * 3:30 = 3.5
  *
- * SERVER_USE_DST indicates whether your server uses Daylight
- * Savings Time. Set to 1 for yes, or 0 for now. Commenting it out
+ * if SERVER_TIME_ZONE is set then SERVER_USE_DST indicates whether
+ * your server uses Daylight Savings Time.
+ * Set to 1 for yes, or 0 for now. Commenting it out
  * sets it to zero
  */
 
-//define('SERVER_TIME_ZONE', 0);
-define('SERVER_USE_DST', 1);
+//define('SERVER_TIME_ZONE', -4);
+//define('SERVER_USE_DST', 1);
+
 
 
 /********************** Logging Settings **********************/
