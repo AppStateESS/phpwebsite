@@ -1,0 +1,94 @@
+Setting Class
+by Matthew McNaney
+---------------------------------------------------------
+
+Introduction
+------------
+The settings class is a basic mechanism for storing system
+variables. It prevents having to make a single row table for each
+module you develop which just contains your module's settings.
+
+
+Installation
+------------
+The PHPWS_Settings class requires one thing: a settings.php
+file. Create the file under the directory:
+
+mod/your_module/conf/
+
+This is the file the class will check if no settings have been made
+yet. Think of it as a defaults file.
+
+The file should look like so:
+
+<?php
+
+$settings = array('name_of_setting' => 'value_of_default_setting');
+
+?>
+
+
+Add additional settings to the array as you see fit.
+
+
+Getting a setting
+-----------------
+Simply call 
+
+$result = PHPWS_Settings::get('module_name', 'name_of_setting');
+
+In this case, $result would be 'value_of_default_setting'.
+
+You may also get all the current settings in an array by leaving out
+the name of the setting:
+
+$result = PHPWS_Settings::get('module_name');
+
+The $result would be:
+
+array ['name_of_setting'] => 'value_of_default_setting';
+
+
+
+Setting a value
+----------------
+Once you start setting values (and saving them), the new values will
+overwrite the default values.
+
+Setting them is as easy as getting them:
+
+PHPWS_Settings::set('module_name', 'name_of_setting', 'new_value');
+
+The new settings will not be permanent until you save them however:
+
+PHPWS_Settings::save('module_name');
+
+Now if we run get again:
+
+$result = PHPWS_Settings::get('module_name', 'name_of_setting');
+
+the result would be 'new_value'.
+
+
+Final notes
+----------------
+You can store almost any value though I would NOT recommend storing an
+object.
+
+If you are storing an array, you have the option to append to a
+setting.
+For example,
+
+$color_list = array ('orange', 'blue', 'red');
+
+foreach ($color_list as $color) {
+    PHPWS_Settings::append('my_mod', 'colors', $color);
+}
+
+Be warned that if you try to append a setting that is not empty or not
+already an array, append will fail and return FALSE.
+
+
+Conclusion
+----------------
+That's all folks!
