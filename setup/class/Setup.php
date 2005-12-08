@@ -42,10 +42,12 @@ class Setup{
             }
         }
 
-        if ($_SESSION['configSettings']['general'] == FALSE)
+        if ($_SESSION['configSettings']['general'] == FALSE) {
             Setup::generalConfig($content);
-        elseif ($_SESSION['configSettings']['database'] == FALSE)
+        }
+        elseif ($_SESSION['configSettings']['database'] == FALSE) {
             Setup::databaseConfig($content);
+        }
         else {
             $configDir = Setup::getConfigSet('source_dir') . 'config/core/';
             if (is_file($configDir . 'config.php')) {
@@ -280,24 +282,22 @@ class Setup{
     }
 
     function generalConfig(&$content){
+
         $form = & new PHPWS_Form('generalConfig');
         $site_hash  = Setup::getConfigSet('site_hash');
+
         $source_dir = Setup::getConfigSet('source_dir');
         $pear_select = array('local' =>_('Use Pear files included with phpWebSite (recommended).'),
                              'system'=>_('Use server\'s Pear library files (not recommended).')
                              );
-
         //    $content[] = _('To get started, we need to create your config file.');
 
-        $formTpl['SOURCE_DIR_LBL'] = _('Source Directory');
         $formTpl['SOURCE_DIR_DEF'] = _('This is the directory where phpWebSite is installed.');
 
-        $formTpl['SITE_HASH_LBL'] = _('Site Hash');
         $formTpl['SITE_HASH_DEF'] = _('The character string below differentiates your site from others on the same server.') . '<br />'
             . _('The example is randomly generated.') . ' '
             . _('You may change it if you wish.');
 
-        $formTpl['PEAR_LBL'] = _('Pear Configuration');
         $formTpl['PEAR_DEF'] = _('phpWebSite uses the Pear library extensively.') . '<br />'
             . _('We suggest you use the library files included with phpWebSite.');
 
@@ -305,16 +305,20 @@ class Setup{
         $form->setSize('source_dir', 50);
         $form->add('step',   'hidden', '1');
         $form->add('action', 'hidden', 'postGeneralConfig');
+        $form->setLabel('source_dir', _('Source Directory')); 
 
         $form->add('site_hash', 'textfield', $site_hash);
         $form->setSize('site_hash', 40);
+        $form->setLabel('site_hash', _('Site Hash'));
 
         $form->add('pear', 'select', $pear_select);
         $form->setMatch('pear', 'local');
+        $form->setLabel('pear', _('Pear Configuration'));
 
         $form->addSubmit('submit', _('Continue'));
 
         $form->mergeTemplate($formTpl);
+
         $content[] = Setup::createForm($form, 'generalConfig.tpl');
     }
 
@@ -391,6 +395,7 @@ class Setup{
         $tpl = & new PHPWS_Template;
         $tpl->setFile("setup/templates/$tplFile", TRUE);
         $tpl->setData($template);
+
         return $tpl->get();
     }
 
