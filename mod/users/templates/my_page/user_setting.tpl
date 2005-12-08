@@ -1,7 +1,7 @@
 {START_FORM}
 <table class="form-table">
   <tr>
-    <td><span class="label">{DISPLAY_NAME_LABEL}</span></td>
+    <td class="label">{DISPLAY_NAME_LABEL}</td>
     <td>{DISPLAY_NAME}</td>
   </tr>
   <!-- BEGIN display-error -->
@@ -9,18 +9,27 @@
   <!-- END display-error -->
   <!-- BEGIN password-change -->
   <tr>
-    <td><span class="label">{PASSWORD1_LABEL}</span></td><td>{PASSWORD1}&nbsp;{PASSWORD2}</td>
+    <td class="label">{PASSWORD1_LABEL}</td><td>{PASSWORD1}&nbsp;{PASSWORD2}</td>
   </tr>
   <!-- BEGIN password-error -->
   <tr><td colspan="2"><span class="error-message">{PASSWORD_ERROR}</span></td></tr>
   <!-- END password-error -->
   <!-- END password-change -->
-  <tr class="bg-light">
-    <td><span class="label">{EMAIL_LABEL}</span></td><td>{EMAIL}</td>
+  <tr>
+    <td class="label">{EMAIL_LABEL}</td>
+    <td>{EMAIL}</td>
   </tr>
   <!-- BEGIN email-error -->
   <tr><td colspan="2"><span class="error-message">{EMAIL_ERROR}</span></td></tr>
   <!-- END email-error -->
+  <tr>
+    <td class="label"><label for="timezone">{TIMEZONE_LABEL}</td>
+    <td>{TIMEZONE}</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>{DST} {DST_LABEL}</td>
+  </tr>
 </table>
 {SUBMIT}
 {END_FORM}
