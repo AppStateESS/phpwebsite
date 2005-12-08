@@ -8,5 +8,6 @@ $default['resizable'] = 'yes';
 $default['width'] = '400';
 $default['height'] = '300';
 $default['titlebar'] = 'no';
+$default['link_title'] = '';
 
 ?>
