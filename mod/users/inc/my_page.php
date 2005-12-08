@@ -26,6 +26,8 @@ function my_page()
         break;
 
     case 'postUser':
+        User_Settings::setTZ();
+        
         $result = User_Action::postUser($user, FALSE);
 
         if (is_array($result)) {
@@ -80,8 +82,46 @@ class User_Settings {
         $form->setSize('email', 40);
         $form->setLabel('email', _('Email Address'));
 
-        if (isset($tpl))
+        if (isset($tpl)) {
             $form->mergeTemplate($tpl);
+        }
+
+        $tz_list = PHPWS_Time::getTZList();
+
+
+        $option[] = sprintf('<option value="0">%s</option>',_('-- Use site timezone --'));
+
+
+        foreach ($tz_list as $tz) {
+            if (!empty($tz['codes'])) {
+                $timezones[$tz['id']] = sprintf('%s : %s', $tz['id'], $tz['codes'][0]);
+            } elseif (!empty($tz['city'])) {
+                $timezones[$tz['id']] = sprintf('%s : %s', $tz['id'], $tz['city'][0]);
+            } else {
+                $timezones[$tz['id']] = $tz['id'];
+            }
+            
+        }
+
+        if (isset($_REQUEST['timezone'])) {
+            $user_tz = $_REQUEST['timezone'];
+        } else {
+            $user_tz = PHPWS_Cookie::read('user_tz');
+        }
+
+        $form->addSelect('timezone', $timezones);
+        $form->setLabel('timezone', _('Time Zone'));
+        $form->setMatch('timezone', $user_tz);
+
+        if (isset($_REQUEST['dst'])) {
+            $dst = $_REQUEST['dst'];
+        } else {
+            $dst = PHPWS_Cookie::read('user_dst');
+        }
+
+        $form->addCheckbox('dst', 1);
+        $form->setMatch('dst', $dst);
+        $form->setLabel('dst', _('Use Daylight Savings Time'));
 
         $form->addHidden('userId', $user->getId());
         $form->addSubmit('submit', _('Update my information'));
@@ -89,11 +129,34 @@ class User_Settings {
         $template = $form->getTemplate();
 
         if (isset($message)){
-            foreach ($message as $tag=>$error)
+            foreach ($message as $tag=>$error) {
                 $template[$tag] = $error;
+            }
         }
 
         return PHPWS_Template::process($template, 'users', 'my_page/user_setting.tpl');
+    }
+
+    function setTZ()
+    {
+        if (preg_match('/[^0-9\-]/', $_POST['timezone'])) {
+            return;
+        }
+
+        if (isset($_POST['dst'])){
+            PHPWS_Cookie::write('user_dst', 1);
+        } else {
+            PHPWS_Cookie::delete('user_dst');
+        }
+
+        
+
+        if ($_POST['timezone'] == '0') {
+            PHPWS_Cookie::delete('user_tz');
+        } else {
+            PHPWS_Cookie::write('user_tz', $_POST['timezone']);
+        }
+
     }
 }
 
