@@ -83,12 +83,19 @@ class PHPWS_Settings {
     {
         if (is_array($setting)) {
             foreach ($setting as $key => $subval) {
-                PHPWS_Settings::append($module, $key, $subval);
+                $result = PHPWS_Settings::append($module, $key, $subval);
+                if (!$result) {
+                    return FALSE;
+                }
             }
             return TRUE;
+        } elseif ( isset($_SESSION['PHPWS_Settings'][$module][$setting]) &&
+                   !is_array($_SESSION['PHPWS_Settings'][$module][$setting])) {
+            return FALSE;
         }
 
         $_SESSION['PHPWS_Settings'][$module][$setting][] = $value;
+        return TRUE;
     }
 
     /**
