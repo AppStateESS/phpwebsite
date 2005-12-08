@@ -10,30 +10,60 @@
 class Calendar_View {
     var $oCal = NULL;
 
-    function miniMonth($date=0)
+    function month_grid($type='mini', $month=NULL, $year=NULL)
     {
+        if ($type != 'mini' && $type != 'full') {
+            PHPWS_Core::errorPage('404');
+        }
+        
         if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
             Layout::addStyle('calendar');
         }
 
-        $date = $this->oCal->checkDate($date);
-        $oMonth = $this->oCal->getMonth($date);
+        $oMonth = $this->oCal->getMonth($month, $year);
+        $date = $oMonth->thisMonth(TRUE);
 
+        // Check cache
+        $cache_key = sprintf('%s_%s_%s', $type, $oMonth->month, $oMonth->year);
+        $content = PHPWS_Cache::get($cache_key);
+        if (!empty($content)) {
+            return $content;
+        }
+
+        // Cache empty, make month
 
         $oTpl = & new PHPWS_Template('calendar');
-        $oTpl->setFile('view/month/mini.tpl');
+        $oTpl->setFile(sprintf('view/month/%s.tpl', $type));
+
+        $day_count = 0;
+
+        while($day = $oMonth->fetch()) {
+            $day_count++;
+            $oTpl->setCurrentBlock('calendar-weekdays');
+            $wData['FULL_WEEKDAY'] = strftime('%A', $day->thisDay(TRUE));
+            $wData['ABRV_WEEKDAY'] = strftime('%a', $day->thisDay(TRUE));
+            $wData['LETTER_WEEKDAY'] = substr($wData['ABRV_WEEKDAY'], 0, 1);
+            $oTpl->setData($wData);
+            $oTpl->parseCurrentBlock();
+
+            if ($day->last) {
+                break;
+            }
+        }
+
+        reset($oMonth->children);
 
         while($day = $oMonth->fetch()) {
             $data['DAY'] = $day->day;
 
             if ($day->empty) {
-                $data['CLASS'] = 'minical-day-empty';
+                $data['CLASS'] = 'day-empty';
             } elseif ( $day->month == date('m', $this->oCal->today) &&
                        $day->day == date('d', $this->oCal->today)
                        ) {
-                $data['CLASS'] = 'minical-day-current';
+                $data['CLASS'] = 'day-current';
             } else {
-                $data['CLASS'] = 'minical-day-normal';
+                $data['CLASS'] = 'day-normal';
             }
 
             $oTpl->setCurrentBlock('calendar-col');
@@ -47,14 +77,19 @@ class Calendar_View {
             }
         }
 
-        $template['FULL_MONTH_NAME'] = strftime('%B', $date);
-        $template['PARTIAL_MONTH_NAME'] = strftime('%b', $date);
+        $vars['month'] = $oMonth->month;
+        $vars['year'] = $oMonth->year;
+        $vars['view'] = 'full';
+        $template['FULL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%B', $date), 'calendar', $vars);
+        $template['PARTIAL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%b', $date), 'calendar', $vars);
 
         $template['FULL_YEAR'] = strftime('%Y', $date);
         $template['PARTIAL_YEAR'] = strftime('%y', $date);
 
         $oTpl->setData($template);
-        return $oTpl->get();
+        $content = $oTpl->get();
+        PHPWS_Cache::save($cache_key, $content);
+        return $content;
     }
 
 }

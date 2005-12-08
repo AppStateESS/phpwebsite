@@ -1,8 +1,12 @@
-div.minical {
+div.month-view-mini {
   width : 100%;
 }
 
-div.minical table {
+div.month-view-full {
+  width : 100%;
+}
+
+div.month-view-full table {
   width : 100%;
   border-collapse : collapse;
   border-width : 1px;
@@ -10,7 +14,33 @@ div.minical table {
   border-color : #A03E19;;
 }
 
-div.minical table td {
+div.month-view-full table td {
+  width : 11%;
+  border-collapse : collapse;
+  border-width : 1px;
+  border-style : solid;
+  border-color : #A03E19;
+  text-align : left;
+  padding : 3px;
+  height : 100px;
+}
+
+div.month-view-full table th {
+  background-color : #A03E19;
+  color : white;
+  text-align : center;
+}
+
+
+div.month-view-mini table {
+  width : 100%;
+  border-collapse : collapse;
+  border-width : 1px;
+  border-style : solid;
+  border-color : #A03E19;
+}
+
+div.month-view-mini table td {
   width : 11%;
   border-collapse : collapse;
   border-width : 1px;
@@ -19,16 +49,22 @@ div.minical table td {
   text-align : center;
 }
 
-td.minical-day-empty {
+div.month-view-mini table th {
+  background-color : #A03E19;
+  color : white;
+  text-align : center;
+}
+
+td.day-empty {
   background-color : #ADB583;
 }
 
-td.minical-day-current {
+td.day-current {
   background-color : #A03E19;
   color : white;
 }
 
-td.minical-day-normal {
+td.day-normal {
   background-color : #DEE2BD;
 }
 

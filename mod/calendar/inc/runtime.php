@@ -5,6 +5,6 @@
    */
 
 $Calendar = & new PHPWS_Calendar;
-Layout::add($Calendar->view->miniMonth(), 'calendar', 'minimonth');
+Layout::add($Calendar->view->month_grid('mini'), 'calendar', 'minimonth');
 
 ?>

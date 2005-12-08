@@ -26,7 +26,14 @@ class PHPWS_Calendar {
      */
     function user()
     {
-        
+        if (isset($_REQUEST['view'])) {
+            switch ($_REQUEST['view']) {
+            case 'full':
+                Layout::add($this->view->month_grid('full', $_REQUEST['month'], $_REQUEST['year']));
+                break;
+            }
+        }
+
     }
 
     /**
@@ -37,12 +44,20 @@ class PHPWS_Calendar {
         
     }
 
-    function &getMonth($date)
+    function &getMonth($month=NULL, $year=NULL)
     {
         require_once 'Calendar/Month/Weekdays.php';
-        $month = & new Calendar_Month_Weekdays(date('Y', $date), date('m', $date));
-        $month->build();
-        return $month;
+        if (!isset($month)) {
+            $month = date('m');
+        }
+
+        if (!isset($year)) {
+            $year = date('Y');
+        }
+
+        $oMonth = & new Calendar_Month_Weekdays($year, $month, PHPWS_Settings::get('calendar', 'starting_day'));
+        $oMonth->build();
+        return $oMonth;
     }
 
     function checkDate($date)
