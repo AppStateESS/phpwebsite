@@ -249,7 +249,7 @@ class Key {
         }
 
         if (empty($this->create_date)) {
-            $this->create_date = gmmktime();
+            $this->create_date = PHPWS_Time::getUTCTime();
         }
 
         if (empty($this->creator)) {
@@ -258,7 +258,7 @@ class Key {
 
         $this->updater = Current_User::getDisplayName();
 
-        $this->update_date = gmmktime();
+        $this->update_date = PHPWS_Time::getUTCTime();
 
         $db = & new PHPWS_DB('phpws_key');
         $result = $db->saveObject($this);
