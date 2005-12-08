@@ -88,10 +88,7 @@ class User_Settings {
 
         $tz_list = PHPWS_Time::getTZList();
 
-
-        $option[] = sprintf('<option value="0">%s</option>',_('-- Use site timezone --'));
-
-
+        $timezones['server'] = _('-- Use server\'s time zone --');
         foreach ($tz_list as $tz) {
             if (!empty($tz['codes'])) {
                 $timezones[$tz['id']] = sprintf('%s : %s', $tz['id'], $tz['codes'][0]);
@@ -113,7 +110,7 @@ class User_Settings {
         $form->setLabel('timezone', _('Time Zone'));
         $form->setMatch('timezone', $user_tz);
 
-        if (isset($_REQUEST['dst'])) {
+        if (isset($_REQUEST['dst']) && $_REQUEST['timezone'] != 'server') {
             $dst = $_REQUEST['dst'];
         } else {
             $dst = PHPWS_Cookie::read('user_dst');
@@ -139,24 +136,24 @@ class User_Settings {
 
     function setTZ()
     {
-        if (preg_match('/[^0-9\-]/', $_POST['timezone'])) {
+        if ($_POST['timezone'] != 'server' && preg_match('/[^0-9\-]/', $_POST['timezone'])) {
             return;
         }
+        
+        if ($_POST['timezone'] == 'server') {
+            PHPWS_Cookie::delete('user_tz');
+            PHPWS_Cookie::delete('user_dst');
+            return;
+        } else {
+            PHPWS_Cookie::write('user_tz', $_POST['timezone']);
+        }
+
 
         if (isset($_POST['dst'])){
             PHPWS_Cookie::write('user_dst', 1);
         } else {
             PHPWS_Cookie::delete('user_dst');
         }
-
-        
-
-        if ($_POST['timezone'] == '0') {
-            PHPWS_Cookie::delete('user_tz');
-        } else {
-            PHPWS_Cookie::write('user_tz', $_POST['timezone']);
-        }
-
     }
 }
 
