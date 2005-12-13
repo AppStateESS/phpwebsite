@@ -1,7 +1,7 @@
 DB Pager Documentation by Matthew McNaney
 ------------------------------------------------------------------
 
-Before version 0.9.4, PhpWebSite had some great paging tools. There
+Before version 1.0.0, PhpWebSite had some great paging tools. There
 were just two little details that were troublesome.
 
 1) Often you would need to session the class. This created a bit of
@@ -41,13 +41,13 @@ You will also need to require the 'working class'. This is the object
 that is going to hold your row data. I will be using File Cabinet as an
 example:
 
-PHPWS_Core::initCoreClass("Image.php");
+PHPWS_Core::initCoreClass('Image.php');
 
 The File Cabinet uses the image and document class extensively.
 
 Now I need to make my pager object:
 
-$pager = & new DBPager("images", "PHPWS_Image");
+$pager = & new DBPager('images', 'PHPWS_Image');
 
 The 'images' variable refers to what table to access. The second
 parameter 'PHPWS_Image' is the class to construct from the table
@@ -62,7 +62,7 @@ function properly: the module, the template, and the link.
 Module:
 The module that is using the pager. Use the setModule function:
 
-$pager->setModule("filecabinet");
+$pager->setModule('filecabinet');
 
 
 Template:
@@ -71,14 +71,14 @@ below for template setup information). Use the the setTemplate
 function and supply the path below your module's template directory
 (just like using PHPWS_Template::process):
 
-$pager->setTemplate("imageList.tpl");
+$pager->setTemplate('imageList.tpl');
 
 
 Link:
 Pager will check the current url for the correct link. If for some
 reason it is having problems, you can set the link manually.
 
-$pager->setLink("index.php?module=filecabinet&amp;action=main&amp;tab=image");
+$pager->setLink('index.php?module=filecabinet&amp;action=main&amp;tab=image');
 
 
 With these parameters set, the pager is ready to get started. It will
@@ -104,7 +104,7 @@ If you want to set restrictions on the table data, you can use the
 addWhere function. This function works just like the Database class
 function of the same name.
 
-$pager->addWhere("type", "image/jpeg");
+$pager->addWhere('type', 'image/jpeg');
 
 If I entered these parameters, then the pager would only pull the rows
 where the 'type' was equal to 'image/jpeg'. The same rules apply to
@@ -119,12 +119,12 @@ you will need to use the addPageTags function. In the below example, I
 need to translate the column headers, so I am plugging them into
 addTags.
 
-$tags['PAGE_LABEL'] = _("Page");
-$tags['TITLE']      = _("Title");
-$tags['FILENAME']   = _("Filename");
-$tags['MODULE']     = _("Module");
-$tags['SIZE']       = _("Size");
-$tags['ACTION']     = _("Action");
+$tags['PAGE_LABEL'] = _('Page');
+$tags['TITLE']      = _('Title');
+$tags['FILENAME']   = _('Filename');
+$tags['MODULE']     = _('Module');
+$tags['SIZE']       = _('Size');
+$tags['ACTION']     = _('Action');
 
 $pager->addPageTags($tags);
 
@@ -181,15 +181,15 @@ match information across the page. To combat this, you need to use the
 addToggle function. Here is how you could add red, white, and blue
 stripes to your list.
 
-$pager->addToggle("style=\"background-color : red\"");
-$pager->addToggle("style=\"background-color : white\"");
-$pager->addToggle("style=\"background-color : blue\"");
+$pager->addToggle('style="background-color : red"');
+$pager->addToggle('style="background-color : white"');
+$pager->addToggle('style="background-color : blue"');
 
 The pager will alternate between each toggle color as it displays the
 rows (2). I recommend, however, that you use toggle css classes.
 
-$pager->addToggle("class=\"toggle1\"");
-$pager->addToggle("class=\"toggle2\"");
+$pager->addToggle('class="toggle1"');
+$pager->addToggle('class="toggle2"');
 
 These are supported in several default themes.
 
@@ -197,11 +197,11 @@ These are supported in several default themes.
 Adding Search
 --------------------------------------------------------------------
 You can easily add a search text box to your pager.
-$pager->setSearch("search_column");
+$pager->setSearch('search_column');
 
 So if I wanted to search among the db table column 'filename' I would
 add:
-$pager->setSearch("filename");
+$pager->setSearch('filename');
 
 Then all you need to do is add the SEARCH tag into your template.
 
