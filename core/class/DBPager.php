@@ -122,6 +122,7 @@ class DBPager {
             $this->error = PHPWS_Error::get(DBPAGER_NO_TABLE, 'core', 'DB_Pager::DBPager');
             return;
         }
+
         $this->db = & new PHPWS_DB($table);
         $this->db->setDistinct(TRUE);
         if (PEAR::isError($this->db)){
@@ -307,8 +308,18 @@ class DBPager {
             return;
         }
 
-        $result = $this->db->select('count');
-        $this->db->resetColumns();
+        if (count($this->db->tables) > 1) {
+            $this->db->_distinct = FALSE;
+            $columns = $this->db->columns;
+            $this->db->columns = NULL;
+            $result = $this->db->select('count');
+            $this->db->columns = $columns;
+            $this->db->_distinct = TRUE;
+        } else {
+            $result = $this->db->select('count');
+        }
+
+        //        $this->db->resetColumns();
         return $result;
     }
 
@@ -338,18 +349,21 @@ class DBPager {
         }
 
         $count = $this->getTotalRows();
-    
+        
         if (PEAR::isError($count)) {
             return $count;
         }
 
         $this->total_rows = &$count;
         $this->total_pages = ceil($this->total_rows / $this->limit);
-        if ($this->current_page > $this->total_pages)
-            $this->current_page = $this->total_pages;
 
-        if ($this->limit > 0)
+        if ($this->current_page > $this->total_pages) {
+            $this->current_page = $this->total_pages;
+        }
+
+        if ($this->limit > 0) {
             $this->db->setLimit($this->getLimit());
+        }
 
         if (isset($this->orderby)) {
             $this->db->addOrder($this->orderby . ' ' . $this->orderby_dir);
@@ -360,7 +374,7 @@ class DBPager {
         } else {
             $result = $this->db->getObjects($this->class);
         }
-
+        
         if (PEAR::isError($result)) {
             return $result;
         }
@@ -461,6 +475,9 @@ class DBPager {
     }
 
     function getSortButtons(&$template){
+        if (empty($this->_class_vars)) {
+            return NULL;
+        }
         foreach ($this->_class_vars as $varname){
             $vars = array();
             $values = $this->getLinkValues();
