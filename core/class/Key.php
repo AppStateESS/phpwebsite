@@ -452,6 +452,14 @@ class Key {
         }
     }
 
+
+    /**
+     * added limitations to a select query to only pull rows that
+     * the user is allowed to see
+     *
+     * The user module MUST be active for this function to work.
+     * This Key function cannot be called without it.
+     */
     function restrictView(&$db, $module)
     {
         if (Current_User::isDeity()) {
@@ -500,6 +508,63 @@ class Key {
         }
     }
 
+
+    /**
+     * Adds limits to a db select query to only pull items the user 
+     * has permissions to view
+     * 
+     * Note that BEFORE this is called, the developer should check whether
+     * the user has ANY rights to edit items in the first place.
+     * In other words, if Current_User::allow('module', 'edit_permission') == FALSE
+     * then they shouldn't even use this function. If it is used anyway, a forced negative
+     * will be added (i.e. where 1 = 0);
+     */
+
+    function restrictEdit(&$db, $module, $edit_permission)
+    {
+        if (Current_User::isDeity()) {
+            return;
+        }
+
+        if (!Current_User::allow($module, $edit_permission)) {
+            $db->setQWhere('1=0');
+            return;
+        }
+
+        // If the current user has unrestricted rights to edit the item
+        // linked to this key, no further restrictions are necessary
+        if ( Current_User::isUnrestricted($module) ) {
+            return;
+        } else {
+            $db->setDistinct(1);
+
+            $orig_table = $db->tables[0];
+
+            $groups = Current_User::getGroups();
+
+            if (empty($groups)) {
+                $db->setQWhere('1=0');
+                return;
+            }
+
+            $db->setJoin('left', $db->tables[0], 'key_id', 'phpws_key', 'id');
+            $db->addTable('phpws_key_edit');
+
+            $query = '
+ %s.key_id = 0
+  OR
+ ( 
+     phpws_key.id = phpws_key_edit.key_id
+     AND 
+     phpws_key_edit.group_id IN (%s)
+ )';
+
+            $qwhere = sprintf($query, $orig_table, implode(', ', $groups));
+            $db->setQWhere($qwhere);
+            return;
+        }
+        
+    }
 
     function modulesInUse()
     {
