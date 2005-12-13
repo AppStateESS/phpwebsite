@@ -98,6 +98,8 @@ class Layout {
         }
     }
 
+    // Index is the name of the javascript header
+    // prevents repeated scripts
     function addJSHeader($script, $index=NULL)
     {
         static $index_count = 0;
@@ -467,6 +469,7 @@ class Layout {
         // Say it loud
         $metatags[] = '<meta name="generator" content="phpWebSite" />';
 
+
         $metatags[] = '<meta content="text/html; charset=UTF-8"  http-equiv="Content-Type" />';
         if (!empty($author)) {
             $metatags[] = '<meta name="author" content="' . $meta_author . '" />';
@@ -504,8 +507,7 @@ class Layout {
 
         $time = (int)$time;
 
-        $GLOBALS['extra_meta_tags'][] = '<meta http-equiv="refresh" content="' .
-            $time . '; url=' . $address . '" />';
+        $GLOBALS['extra_meta_tags'][] = sprintf('<meta http-equiv="refresh" content="%s; url=%s" />', $time, $address);
     }
 
 
@@ -539,6 +541,8 @@ class Layout {
         return $_SESSION['Layout_Settings']->isMoveBox();
     }
 
+    // Loads a javascript file into the header of the theme
+    // index is the name of javascript. prevents repeats
     function loadJavascriptFile($filename, $index, $data=NULL)
     {
         if (!is_file($filename)) {
