@@ -42,6 +42,22 @@ class PHPWS_Time {
         return $server_tz;
     }
 
+    function getTimeArray($time=0)
+    {
+        if (!$time) {
+            $time = PHPWS_Time::mkservertime();
+        }
+
+        $aTime['m'] = (int)strftime('%m', $time);
+        $aTime['d'] = (int)strftime('%e', $time);
+        $aTime['y'] = (int)strftime('%Y', $time);
+        $aTime['h'] = (int)strftime('%H', $time);
+        $aTime['i'] = (int)strftime('%M', $time);
+        $aTime['u'] = $time;
+
+        return $aTime;
+    }
+
     function mkservertime()
     {
         if (!defined('SERVER_TIME_ZONE')) {
