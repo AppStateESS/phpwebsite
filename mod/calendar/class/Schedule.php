@@ -9,18 +9,30 @@
    */
 
 class Calendar_Schedule {
-    var $id           = 0;
-    var $key_id       = 0;
-    var $user_id      = 0;
-    var $title        = NULL;
-    var $summary      = NULL; 
-    var $public       = 0;
+    var $id       = 0;
+    var $key_id   = 0;
+    var $user_id  = 0;
+    var $title    = NULL;
+    var $summary  = NULL; 
+    var $public   = 0;
+    var $events   = NULL;
+
+    // hour the day view will start
+    var $day_view_start = 0;
+
+    // hour the day view will end
+    var $day_view_end   = 0;
+
+    // when viewing a week or month, day the week
+    // starts (0 - Sun, 1 - Mon, etc.)
+    var $start_week     = 0;
+
     var $display_name = NULL;
 
     // parent calendar object
     var $calendar     = NULL;
-    // view object for displaying calendars
-    var $view         = NULL;
+
+    var $_error       = NULL;
     
     function Calendar_Schedule($id=NULL)
     {
@@ -34,7 +46,15 @@ class Calendar_Schedule {
 
     function init()
     {
+        if (!$this->id) {
+            return;
+        }
 
+        $db = & new PHPWS_DB('calendar_schedule');
+        $result = $db->loadObject($this);
+        if (PEAR::isError($result)) {
+            $this->_error = $result;
+        }
     }
 
     function setTitle($title)
@@ -66,6 +86,12 @@ class Calendar_Schedule {
             $new_key = FALSE;
         }
 
+        if ($this->day_view_start >= $this->day_view_end) {
+
+            $this->day_view_start = PHPWS_Settings::get('calendar', 'default_day_start');
+            $this->day_view_end = PHPWS_Settings::get('calendar', 'default_day_end');
+        }
+
         $result = $db->saveObject($this);
 
         if (PEAR::isError($result)) {
@@ -77,6 +103,7 @@ class Calendar_Schedule {
             return $result;
         }
 
+
         if ($new_key) {
             $db->saveObject($this);
         }
@@ -85,6 +112,21 @@ class Calendar_Schedule {
     function getViewLink()
     {
         return sprintf('<a href="#">%s</a>', $this->title);
+    }
+
+    function addEventLink()
+    {
+        if (javascriptEnabled()) {
+            $vars['address'] = sprintf('index.php?module=calendar&aop=create_event_js&schedule_id=%s',
+                                       $this->id);
+            $var['link_title'] = $vars['label'] = _('Add event');
+            return javascript('open_window', $vars);
+        } else {
+            return PHPWS_Text::moduleLink(_('Add event'), 'calendar',
+                                          array('aop'         => 'create_event',
+                                                'schedule_id' => $this->id)
+                                          );
+        }
     }
 
     function saveKey()
@@ -110,35 +152,18 @@ class Calendar_Schedule {
         return $result;
     }
 
-    function loadView()
+    function loadEvents()
     {
-        $this->view = & new Calendar_View;
-        $this->view->schedule = & $this;
-    }
-
-    function view()
-    {
-        $this->loadView();
-        return $this->view->month_grid('full');
-    }
-
-    function &getMonth($month=NULL, $year=NULL)
-    {
-        require_once 'Calendar/Month/Weekdays.php';
-        if (!isset($month)) {
-            $month = date('m');
+        $db = & new PHPWS_DB('calendar_events');
+        $db->addWhere('calendar_schedule_to_event.schedule_id', $this->id);
+        $result = $db->getObjects('Calendar_Event');
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            return;
         }
 
-        if (!isset($year)) {
-            $year = date('Y');
-        }
-
-        $oMonth = & new Calendar_Month_Weekdays($year, $month, PHPWS_Settings::get('calendar', 'starting_day'));
-        $oMonth->build();
-        return $oMonth;
+        $this->events = & $result;
     }
-
-
 }
 
 ?>

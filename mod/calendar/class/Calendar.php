@@ -8,17 +8,40 @@
    */
 
 PHPWS_Core::initModClass('calendar', 'View.php');
+PHPWS_Core::requireConfig('calendar');
+
+if (!defined('CALENDAR_MONTH_LISTING')) {
+    define('CALENDAR_MONTH_LISTING', '%B');
+ }
+
 
 class PHPWS_Calendar {
-    var $view = NULL;
-    var $today = 0;
-    var $month = NULL;
+    var $today    = NULL;
+    var $month    = NULL;
+    // object for controlling user requests
+    var $user     = NULL;
+
+    // object controlling administrative requests
+    var $admin    = NULL;
+
+    // view object for displaying calendars
+    var $view         = NULL;
 
     function PHPWS_Calendar() {
-        $this->view = & new Calendar_View;
-        $this->view->oCal = & $this;
         // using server time
         $this->today = PHPWS_Time::mkservertime();
+    }
+
+
+    function loadSchedule()
+    {
+        PHPWS_Core::initModClass('calendar', 'Schedule.php');
+        if (isset($_REQUEST['schedule_id'])) {
+            $this->schedule = & new Calendar_Schedule($_REQUEST['schedule_id']);
+        } else {
+            $this->schedule = & new Calendar_Schedule;
+        }
+        $this->schedule->calendar = & $this;
     }
 
     /**
@@ -27,13 +50,14 @@ class PHPWS_Calendar {
     function user()
     {
         if (isset($_REQUEST['view'])) {
-            switch ($_REQUEST['view']) {
-            case 'full':
-                Layout::add($this->view->month_grid('full', $_REQUEST['month'], $_REQUEST['year']));
-                break;
-            }
+            $this->loadView();
+            $this->view->main();
+        } elseif (isset($_REQUEST['uop'])) {
+            PHPWS_Core::initModClass('calendar', 'User.php');
+            $this->user = & new Calendar_User;
+            $this->user->calendar = & $this;
+            $this->user->main();
         }
-
     }
 
     /**
@@ -41,9 +65,29 @@ class PHPWS_Calendar {
      */
     function admin()
     {
-        
+        PHPWS_Core::initModClass('calendar', 'Admin.php');
+        $Calendar->admin = & new Calendar_Admin;
+        $Calendar->admin->calendar = & $this;
+        $Calendar->admin->main();
     }
 
+
+    function checkDate($date)
+    {
+        if ( empty($date) || $date < gmmktime(0,0,0, 1, 1, 1970)) {
+            $date = & $this->today;
+        }
+
+        return $date;
+    }
+
+    function loadView()
+    {
+        $this->view = & new Calendar_View;
+        $this->view->calendar = & $this;
+    }
+
+    
     function &getMonth($month=NULL, $year=NULL)
     {
         require_once 'Calendar/Month/Weekdays.php';
@@ -60,15 +104,47 @@ class PHPWS_Calendar {
         return $oMonth;
     }
 
-    function checkDate($date)
+    // Checks the user cookie for a hour format
+    function userHourFormat()
     {
-        if ( empty($date) || $date < gmmktime(0,0,0, 1, 1, 1970)) {
-            $date = & $this->today;
-        }
+        $hour_format = PHPWS_Cookie::read('calendar', 'hour_format');
 
-        return $date;
+        if (empty($hour_format)) {
+            return PHPWS_Settings::get('calendar', 'default_hour_format');
+        } else {
+            return $hour_format;
+        }
     }
 
+    function getMonthArray()
+    {
+        for ($i=1; $i < 13; $i++) {
+            $months[$i] = strftime(CALENDAR_MONTH_LISTING, $i);
+        }
+
+        return $months;
+    }
+
+    function getDayArray()
+    {
+        for ($i=1; $i < 32; $i++) {
+            $days[$i] = $i;
+        }
+
+        return $days;
+    }
+
+    function getYearArray()
+    {
+        $year_start = (int)date('Y') - 2;
+        $year_end = $year_start + 11;
+        
+        for ($i = $year_start; $i < $year_end; $i++) {
+            $years[$i] = $i;
+        }
+
+        return $years;
+    }
 }
 
 ?>

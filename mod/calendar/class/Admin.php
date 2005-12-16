@@ -7,11 +7,13 @@
    * @version $Id$
    */
 
+
 class Calendar_Admin {
     // parent variable
     var $calendar    = NULL;
     var $schedule    = NULL;
     var $errors      = NULL;
+    var $event       = NULL;
 
 
     function main()
@@ -33,7 +35,7 @@ class Calendar_Admin {
         case 'main':
         case 'my_calendar':
             $content = $this->myCalendar();
-            $title = $this->calendar->schedule->title;
+            $title = _('My Calendar');
             break;
 
         case 'create_schedule':
@@ -71,6 +73,16 @@ class Calendar_Admin {
             $title = _('Calendars');
             $content = $this->calendarListing();
             break;
+
+        case 'create_event_js':
+            $result = $this->loadEvent();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                PHPWS_Core::errorPage();
+            }
+            $content = $this->createEventJS();
+            Layout::nakedDisplay($content);
+            exit();
         }
 
         $tpl['CONTENT'] = $content;
@@ -83,6 +95,20 @@ class Calendar_Admin {
         Layout::add(PHPWS_ControlPanel::display($panel->display()));
     }
 
+    function loadEvent()
+    {
+        PHPWS_Core::initModClass('calendar', 'Event.php');
+        if (isset($_REQUEST['event_id'])) {
+            $this->event = & new Calendar_Event($_REQUEST['event_id']);
+        } else {
+            $this->event = & new Calendar_Event;
+        }
+        if ($this->event->_error) {
+            return $this->event->_error;
+        } else {
+            return TRUE;
+        }
+    }
 
     function &getPanel()
     {
@@ -145,7 +171,8 @@ class Calendar_Admin {
         $this->calendar->loadSchedule();
 
         if (!PHPWS_Settings::get('calendar', 'personal_calendars')) {
-            return _('Personal calendars are disabled.');
+            return array('title' => _('Sorry'),
+                         'content' => _('Personal calendars are disabled.'));
         }
 
         PHPWS_Core::initModClass('calendar', 'Schedule.php');
@@ -162,7 +189,8 @@ class Calendar_Admin {
             $this->sendMessage(_('Currently there aren\'t any calendars. Please make one.'), 'create_schedule');
         }
 
-        return $this->calendar->schedule->view();
+        $this->calendar->loadView();
+        return $this->calendar->view->day();
     }
 
 
@@ -267,6 +295,60 @@ class Calendar_Admin {
         return TRUE;
     }
 
+    function createEventJS()
+    {
+        $form = & new PHPWS_Form('event-form');
+        $form->addHidden('module', 'calendar');
+        $form->addHidden('aop', 'post_event');
+        // is this needed?
+        //        $form->addHidden('schedule_id', $this->calendar->schedule->id);
+        $form->addText('title', $this->event->title);
+        $form->setLabel('title', _('Title'));
+
+        $form->addText('summary', $this->event->getSummary());
+        $form->setLabel('summary', _('Summary'));
+
+        $this->dateForm('start', $this->event->start_time, $form);
+
+        $tpl = $form->getTemplate();
+        test($tpl);
+        return PHPWS_Template::process($tpl, 'calendar', 'admin/forms/edit_event.tpl');
+    }
+
+    function dateForm($name, $match, &$form) {
+        static $month = NULL;
+        static $day = NULL;
+        static $year = NULL;
+
+        if (!$match) {
+            $match = mktime();
+        }
+        
+        if (!$month) {
+            $months = $this->calendar->getMonthArray();
+        }
+
+        if (!$day) {
+            $days = $this->calendar->getDayArray();
+        }
+
+        if (!$year) {
+            $years = $this->calendar->getYearArray();
+        }
+
+        $month_match = date('m', $match);
+        $day_match = date('d', $match);
+        $year_match = date('Y', $match);
+
+        $form->addSelect($name . '_month', $months);
+        $form->setMatch($name . '_month', $month_match);
+
+        $form->addSelect($name . '_day', $days);
+        $form->setMatch($name . '_day', $day_match);
+
+        $form->addSelect($name . '_year', $years);
+        $form->setMatch($name . '_year', $year_match);
+    }
 }
 
 

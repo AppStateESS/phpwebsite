@@ -8,7 +8,16 @@
    */
 
 class Calendar_View {
-    var $oCal = NULL;
+    var $calendar = NULL;
+
+    function main()
+    {
+        switch ($_REQUEST['view']) {
+        case 'full':
+            Layout::add($this->view->month_grid('full', $_REQUEST['month'], $_REQUEST['year']));
+            break;
+        }
+    }
 
     function month_grid($type='mini', $month=NULL, $year=NULL)
     {
@@ -20,7 +29,7 @@ class Calendar_View {
             Layout::addStyle('calendar');
         }
 
-        $oMonth = $this->oCal->getMonth($month, $year);
+        $oMonth = $this->calendar->getMonth($month, $year);
         $date = $oMonth->thisMonth(TRUE);
 
         // Check cache
@@ -58,8 +67,8 @@ class Calendar_View {
 
             if ($day->empty) {
                 $data['CLASS'] = 'day-empty';
-            } elseif ( $day->month == date('m', $this->oCal->today) &&
-                       $day->day == date('d', $this->oCal->today)
+            } elseif ( $day->month == date('m', $this->calendar->today) &&
+                       $day->day == date('d', $this->calendar->today)
                        ) {
                 $data['CLASS'] = 'day-current';
             } else {
@@ -92,6 +101,40 @@ class Calendar_View {
         return $content;
     }
 
+    function day($year=NULL, $month=NULL, $day=NULL)
+    {
+        if (empty($year) || $year < 1970) {
+            $aDate = PHPWS_Time::getTimeArray();
+            $uDate = &$aDate['u'];
+            $month = &$aDate['m'];
+            $year  = &$aDate['y'];
+            $day   = &$aDate['d'];
+        } else {
+            $uDate = mktime(0,0,0, $month, $day, $year);
+        }
+
+        if (Current_User::allow('calendar', 'edit_schedule', $this->calendar->schedule->id) ||
+            ( PHPWS_Settings::get('calendar', 'personal_calendars') && 
+              $this->calendar->schedule->user_id == Current_User::getId()
+              )
+            ) {
+            $template['ADD_EVENT'] = $this->calendar->schedule->addEventLink();
+        }
+        $template['TITLE'] = $this->calendar->schedule->title;
+        $template['DATE'] = strftime(CALENDAR_DAY_FORMAT, $uDate);
+
+        $start_date = mktime(0,0,0, $month, $day, $year);
+        $end_date = mktime(23,59,59, $month, $day, $year);
+
+        $this->calendar->schedule->loadEvents();
+        $events = & $this->calendar->schedule->events;
+
+        if (empty($events)) {
+            $template['MESSAGE'] = _('No events planned for this day.');
+        }
+
+        return PHPWS_Template::process($template, 'calendar', 'view/day/day.tpl');
+    }
 }
 
 
