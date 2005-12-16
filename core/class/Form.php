@@ -1037,7 +1037,9 @@ class PHPWS_Form {
         }
 
         unset($this->_elements['authkey']);
-        $this->addHidden('authkey', Current_User::getAuthKey());
+        if (class_exists('Current_User')) {
+            $this->addHidden('authkey', Current_User::getAuthKey());
+        }
 
         foreach ($this->_elements as $elementName=>$element){
             $multiple = FALSE;
