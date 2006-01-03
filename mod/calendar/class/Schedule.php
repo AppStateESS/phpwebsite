@@ -119,7 +119,9 @@ class Calendar_Schedule {
         if (javascriptEnabled()) {
             $vars['address'] = sprintf('index.php?module=calendar&aop=create_event_js&schedule_id=%s',
                                        $this->id);
-            $var['link_title'] = $vars['label'] = _('Add event');
+            $vars['link_title'] = $vars['label'] = _('Add event');
+            $vars['width'] = 640;
+            $vars['height'] = 400;
             return javascript('open_window', $vars);
         } else {
             return PHPWS_Text::moduleLink(_('Add event'), 'calendar',

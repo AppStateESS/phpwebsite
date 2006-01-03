@@ -304,14 +304,24 @@ class Calendar_Admin {
         //        $form->addHidden('schedule_id', $this->calendar->schedule->id);
         $form->addText('title', $this->event->title);
         $form->setLabel('title', _('Title'));
+        $form->setSize('title', 60);
 
-        $form->addText('summary', $this->event->getSummary());
+        $form->addTextArea('summary', $this->event->getSummary());
         $form->setLabel('summary', _('Summary'));
+        $form->useEditor('summary');
 
-        $this->dateForm('start', $this->event->start_time, $form);
+        $form->addText('start_date', $this->event->getStartTime('%Y/%m/%d'));
+        $form->addText('end_date', $this->event->getEndTime('%Y/%m/%d'));
 
         $tpl = $form->getTemplate();
-        test($tpl);
+
+        $js_vars['date_name'] = 'start_date';
+        $tpl['START_CAL'] = javascript('js_calendar', $js_vars);
+
+        $js_vars['date_name'] = 'end_date';
+        $tpl['END_CAL'] = javascript('js_calendar', $js_vars);
+
+
         return PHPWS_Template::process($tpl, 'calendar', 'admin/forms/edit_event.tpl');
     }
 

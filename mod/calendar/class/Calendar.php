@@ -119,7 +119,12 @@ class PHPWS_Calendar {
     function getMonthArray()
     {
         for ($i=1; $i < 13; $i++) {
-            $months[$i] = strftime(CALENDAR_MONTH_LISTING, $i);
+            if ($i < 10) {
+                $value = '0' . $i;
+            } else {
+                $value = &$i;
+            }
+            $months[$value] = strftime(CALENDAR_MONTH_LISTING, mktime(0,0,0,$i));
         }
 
         return $months;
@@ -128,7 +133,13 @@ class PHPWS_Calendar {
     function getDayArray()
     {
         for ($i=1; $i < 32; $i++) {
-            $days[$i] = $i;
+            if ($i < 10) {
+                $value = '0' . $i;
+            } else {
+                $value = &$i;
+            }
+
+            $days[$value] = $i;
         }
 
         return $days;

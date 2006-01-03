@@ -28,6 +28,8 @@ class Calendar_Event {
     function Calendar_Event($id=NULL)
     {
         if (!$id) {
+            $this->start_time = mktime();
+            $this->end_time = mktime();
             return;
         }
 
@@ -60,6 +62,16 @@ class Calendar_Event {
     function setSummary($summary)
     {
         $this->summary = PHPWS_Text::parseInput($summary);
+    }
+
+    function getStartTime($format='%c')
+    {
+        return strftime($format, $this->start_time);
+    }
+
+    function getEndTime($format='%c')
+    {
+        return strftime($format, $this->end_time);
     }
 
     function getSummary()
