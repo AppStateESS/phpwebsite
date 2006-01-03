@@ -2,3 +2,17 @@ $values['address'] = "index.php?module=mymod&amp;action=view_in_small_window";
 $values['label'] = 'Click on me to open window';
 
 echo javascript('open_window', $values);
+
+Other variables
+----------------
+Default listed first
+
+toolbar    = no/yes
+menubar    = no/yes
+location   = no/yes
+scrollbars = yes/no
+resizable  = yes/no
+width      = 400
+height     = 300
+titlebar   = no/yes
+link_title = ''
