@@ -5,7 +5,9 @@
    * @version $Id$
    */
 
-PHPWS_Core::initModClass('webpage', 'User.php');
-Webpage_User::showFrontPage();
+if (!isset($_REQUEST['module']) || $_REQUEST['module'] == 'webpage') {
+    PHPWS_Core::initModClass('webpage', 'User.php');
+    Webpage_User::showFrontPage();
+ }
 
 ?>
