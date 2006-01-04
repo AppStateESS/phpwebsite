@@ -297,7 +297,7 @@ class Calendar_Admin {
 
     function createEventJS()
     {
-        $form = & new PHPWS_Form('event-form');
+        $form = & new PHPWS_Form('event_form');
         $form->addHidden('module', 'calendar');
         $form->addHidden('aop', 'post_event');
         // is this needed?
@@ -311,7 +311,36 @@ class Calendar_Admin {
         $form->useEditor('summary');
 
         $form->addText('start_date', $this->event->getStartTime('%Y/%m/%d'));
+        $form->setLabel('start_date', _('Start time'));
+        $form->setExtra('start_date', 'onblur="check_start_date()"');
+
         $form->addText('end_date', $this->event->getEndTime('%Y/%m/%d'));
+        $form->setLabel('end_date', _('End time'));
+        $form->setExtra('end_date', 'onblur="check_end_date()"');
+
+        $form->addButton('close', _('Cancel'));
+        $form->setExtra('close', 'onclick="window.close()"');
+
+        $this->timeForm('start_time', $this->event->start_time, $form);
+        $this->timeForm('end_time', $this->event->end_time, $form);
+        $form->setExtra('start_time_hour', 'onchange="check_start_date()"');
+        $form->setExtra('end_time_hour', 'onchange="check_end_date()"');
+
+        $event_types[] = 1;
+        $event_labels[1] = _('Normal');
+        $event_types[] = 2;
+        $event_labels[2] = _('All day');
+        $event_types[] = 3;
+        $event_labels[3] = _('Starts at');
+        $event_types[] = 4;
+        $event_labels[4] = _('Deadline');
+
+        $form->addRadio('event_type', $event_types);
+        $form->setLabel('event_type', $event_labels);
+        $form->setExtra('event_type', 'onchange="alter_date(this)"');
+
+        $form->setMatch('event_type', $this->event->event_type);
+        $form->addTplTag('EVENT_TYPE_LABEL', _('Event type'));
 
         $tpl = $form->getTemplate();
 
@@ -321,8 +350,29 @@ class Calendar_Admin {
         $js_vars['date_name'] = 'end_date';
         $tpl['END_CAL'] = javascript('js_calendar', $js_vars);
 
-
         return PHPWS_Template::process($tpl, 'calendar', 'admin/forms/edit_event.tpl');
+    }
+
+    function timeForm($name, $match, &$form)
+    {
+        static $hours = NULL;
+        static $minutes = NULL;
+
+        if (empty($hours)) {
+            for ($i = 0; $i < 24; $i++) {
+                $hours[$i] = strftime(CALENDAR_TIME_FORM_FORMAT, mktime($i));
+            }
+        }
+
+        $form->addSelect($name . '_hour', $hours);
+
+
+        if (empty($minutes)) {
+            for ($i = 0; $i < 60; $i += CALENDAR_TIME_MINUTE_INC) {
+                $minutes[$i] = strftime('%M', mktime(1,$i));
+            }
+        }
+        $form->addSelect($name . '_minute', $minutes);
     }
 
     function dateForm($name, $match, &$form) {

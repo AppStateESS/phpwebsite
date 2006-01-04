@@ -16,6 +16,7 @@ class Calendar_Event {
     var $key_id     = 0;
     var $title      = NULL;
     var $summary    = NULL;
+    var $event_type = 1;   // 1 normal, 2 all day, 3 starts at, 4 deadline
     var $start_time = 0;
     var $end_time   = 0;
     var $post_start = 0;   // date to show on calendar, 0 means immediately
