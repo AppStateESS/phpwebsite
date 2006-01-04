@@ -90,6 +90,69 @@ class Calendar_Event {
 
     }
 
+    function postEvent()
+    {
+        if (empty($_POST['title'])) {
+            $errors[] = _('You must give your event a title.');
+        } else {
+            $this->setTitle($_POST['title']);
+        }
+
+        $this->setSummary($_POST['summary']);
+
+        $start_date_array = explode('/', $_POST['start_date']);
+        $end_date_array = explode('/', $_POST['end_date']);
+
+        $start_time_hour = &$_POST['start_time_hour'];
+        $start_time_minute = &$_POST['start_time_minute'];
+        $end_time_hour = &$_POST['end_time_hour'];
+        $end_time_minute = &$_POST['end_time_minute'];
+
+        switch ($_POST['event_type']) {
+        case '1':
+            $startTime = mktime($start_time_hour, $start_time_minute, 0,
+                                $start_date_array[1], $start_date_array[2], $start_date_array[0]);
+            $endTime   = mktime($end_time_hour, $end_time_minute, 0,
+                                $end_date_array[1], $end_date_array[2], $end_date_array[0]);
+
+            break;
+
+        case '2':
+            $startTime = mktime(0, 0, 0,
+                                $start_date_array[1], $start_date_array[2], $start_date_array[0]);
+            $endTime   = mktime(23, 59, 59,
+                                $end_date_array[1], $end_date_array[2], $end_date_array[0]);
+            break;
+
+        case '3':
+            $startTime = mktime($start_time_hour, $start_time_minute, 0,
+                                $start_date_array[1], $start_date_array[2], $start_date_array[0]);
+            $endTime   = mktime(23, 59, 59,
+                                $end_date_array[1], $end_date_array[2], $end_date_array[0]);
+            break;
+
+        case '4':
+            $startTime = mktime(0, 0, 0,
+                                $start_date_array[1], $start_date_array[2], $start_date_array[0]);
+            $endTime   = mktime($end_time_hour, $end_time_minute, 0,
+                                $end_date_array[1], $end_date_array[2], $end_date_array[0]);
+            break;
+
+        }
+
+        $this->start_time = $startTime;
+        $this->end_time   = $endTime;
+
+        $this->event_type = (int)$_POST['event_type'];
+
+        if (isset($errors)) {
+            return $errors;
+        } else {
+            return TRUE;
+        }
+    }
+
+
 }
 
 ?>

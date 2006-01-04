@@ -38,30 +38,29 @@ function check_end_date() {
 }
 
 function alter_date(event_type) {
-  start_row = document.getElementById('start-time-row');
-  end_row = document.getElementById('end-time-row');
+  start_time_display = document.getElementById('start-time');
+  end_time_display = document.getElementById('end-time');
 
   switch(event_type.value) {
      case '1':
-       start_row.style.display = 'table-row';
-       end_row.style.display = 'table-row';
+       start_time_display.style.display = '';
+       end_time_display.style.display = '';
      break;
 
      case '2':
-       start_row.style.display = 'none';
-       end_row.style.display = 'none';
+       start_time_display.style.display = 'none';
+       end_time_display.style.display = 'none';
      break;
 
      case '3':
-       start_row.style.display = 'none';
-       end_row.style.display = 'table-row';
+       start_time_display.style.display = '';
+       end_time_display.style.display = 'none';
      break;
 
      case '4':
-       start_row.style.display = 'table-row';
-       end_row.style.display = 'none';
+       start_time_display.style.display = 'none';
+       end_time_display.style.display = '';
      break;
-
   }
   
 }
@@ -90,30 +89,15 @@ function alter_date(event_type) {
       {EVENT_TYPE_4} {EVENT_TYPE_4_LABEL}
     </td>
   </tr>
-  <tr id="start-time-row" style="display:table-row">
+  <tr>
     <td class="label">{START_DATE_LABEL}<br /><span style="font-weight:normal" class="smaller">YYYY/MM/DD</td>
-    <td>{START_DATE} {START_CAL} {START_TIME_HOUR}:{START_TIME_MINUTE}</span></td>
+    <td>{START_DATE} {START_CAL} <span id="start-time">{START_TIME_HOUR}:{START_TIME_MINUTE}</span></td>
   </tr>
-  <tr id="end-time-row" style="display:table-row">
+  <tr>
     <td class="label">{END_DATE_LABEL}<br /><span style="font-weight:normal" class="smaller">YYYY/MM/DD</span></td>
-    <td>{END_DATE} {END_CAL} {END_TIME_HOUR}:{END_TIME_MINUTE}</td>
-  </tr>
-  <tr>
-    <td class="label"></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td class="label"></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td class="label"></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td class="label"></td>
-    <td></td>
+    <td>{END_DATE} {END_CAL} <span id="end-time">{END_TIME_HOUR}:{END_TIME_MINUTE}</span></td>
   </tr>
 </table>
-{CLOSE}
+{SUBMIT}
+<div class="align-right">{CLOSE}</div>
 {END_FORM}

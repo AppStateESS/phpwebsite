@@ -17,4 +17,8 @@ define('CALENDAR_TIME_FORM_FORMAT', '%l %p');
 
 define('CALENDAR_TIME_MINUTE_INC', 15);
 
+// Controls the dimensions of the event editor popup
+define('CALENDAR_EVENT_WIDTH', 700);
+define('CALENDAR_EVENT_HEIGHT', 650);
+
 ?>

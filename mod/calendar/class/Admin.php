@@ -74,13 +74,19 @@ class Calendar_Admin {
             $content = $this->calendarListing();
             break;
 
+        case 'post_event_js':
+            $this->loadEvent();
+            $result = $this->event->postEvent();
+            test($_POST,1);
+            break;
+
         case 'create_event_js':
             $result = $this->loadEvent();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
                 PHPWS_Core::errorPage();
             }
-            $content = $this->createEventJS();
+            $content = $this->editEventJS();
             Layout::nakedDisplay($content);
             exit();
         }
@@ -295,11 +301,19 @@ class Calendar_Admin {
         return TRUE;
     }
 
-    function createEventJS()
+    /**
+     * The javascript popup window for creating an event
+     */
+    function editEventJS()
     {
         $form = & new PHPWS_Form('event_form');
+
+        if ($this->event->id) {
+            $form->addHidden('event_id', $this->event->id);
+        }
+
         $form->addHidden('module', 'calendar');
-        $form->addHidden('aop', 'post_event');
+        $form->addHidden('aop', 'post_event_js');
         // is this needed?
         //        $form->addHidden('schedule_id', $this->calendar->schedule->id);
         $form->addText('title', $this->event->title);
@@ -341,6 +355,8 @@ class Calendar_Admin {
 
         $form->setMatch('event_type', $this->event->event_type);
         $form->addTplTag('EVENT_TYPE_LABEL', _('Event type'));
+
+        $form->addSubmit(_('Save event'));
 
         $tpl = $form->getTemplate();
 
@@ -409,6 +425,7 @@ class Calendar_Admin {
         $form->addSelect($name . '_year', $years);
         $form->setMatch($name . '_year', $year_match);
     }
+
 }
 
 

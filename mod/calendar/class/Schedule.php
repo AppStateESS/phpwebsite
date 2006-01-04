@@ -120,8 +120,8 @@ class Calendar_Schedule {
             $vars['address'] = sprintf('index.php?module=calendar&aop=create_event_js&schedule_id=%s',
                                        $this->id);
             $vars['link_title'] = $vars['label'] = _('Add event');
-            $vars['width'] = 800;
-            $vars['height'] = 600;
+            $vars['width'] = CALENDAR_EVENT_WIDTH;
+            $vars['height'] = CALENDAR_EVENT_HEIGHT;
             return javascript('open_window', $vars);
         } else {
             return PHPWS_Text::moduleLink(_('Add event'), 'calendar',
