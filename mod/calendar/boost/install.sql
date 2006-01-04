@@ -3,6 +3,7 @@ CREATE TABLE calendar_events (
   key_id int NOT NULL default '0',
   title varchar(60) NOT NULL default '',
   summary text,
+  event_type smallint NOT NULL default '0',
   start_time int NOT NULL default '0',
   end_time int NOT NULL default '0',
   post_start int NOT NULL default '0',
