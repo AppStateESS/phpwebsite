@@ -209,6 +209,15 @@ class PHPWS_Form {
         return $this->add($name, 'submit', $value);
     }
 
+    function addButton($name, $value=NULL)
+    {
+        if (empty($value)) {
+            $value = $name;
+            $name = 'button';
+        }
+        return $this->add($name, 'button', $value);
+    }
+
     function addPassword($name, $value=NULL)
     {
         return $this->add($name, 'password', $value);
@@ -413,7 +422,7 @@ class PHPWS_Form {
         }
 
         foreach ($this->_elements[$name] as $key=>$element){
-            if (is_array($label)) {
+            if (is_array($label) && isset($label[$key])) {
                 $result = $this->_elements[$name][$key]->setLabel($label[$key]);
             }
             else {
@@ -864,6 +873,12 @@ class PHPWS_Form {
             $obj = new Form_Submit($name, $value);
             return $obj;
             break;
+
+        case 'button':
+            $obj = new Form_Button($name, $value);
+            return $obj;
+            break;
+            
 
         case 'password':
             $obj = new Form_Password($name, $value);
@@ -1386,6 +1401,24 @@ class Form_Submit extends Form_Element {
 
 }
 
+class Form_Button extends Form_Element {
+    var $type = 'button';
+
+    function get()
+    {
+        
+        return '<input type="button" '
+            . $this->getName(TRUE) 
+            . $this->getValue(TRUE) 
+            . $this->getDisabled()
+            . $this->getReadOnly()
+            . $this->getWidth(TRUE)
+            . $this->getClass(TRUE)
+            . $this->getData() . ' />';
+    }
+
+}
+
 class Form_Hidden extends Form_Element {
     var $type = 'hidden';
 
@@ -1826,7 +1859,11 @@ class Form_Element {
 
                     $key = $GLOBALS['form_label_repeats'][$this->name];
 
-                    $label = $this->label[$key];
+                    if (isset($this->label[$key])) {
+                        $label = $this->label[$key];
+                    } else {
+                        $label = NULL;
+                    }
                 } else {
                     $label = $this->label;
                 }
