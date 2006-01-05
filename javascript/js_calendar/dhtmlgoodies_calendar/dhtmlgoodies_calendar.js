@@ -722,6 +722,25 @@ function initCalendar()
 
 function displayCalendar(inputField,format,buttonObj)
 {
+    if (!inputField.value.match(/\d{4}\/\d{2}\/\d{2}/)) {
+        var d = new Date();
+
+        currentMonth = d.getMonth() + 1;
+        currentYear = d.getFullYear();
+        currentDay = d.getDay() + 1; 
+
+        if (currentMonth < 10) {
+            currentMonth = '0'+currentMonth;
+        }
+
+        if (currentDay < 10) {
+            currentDay = '0'+currentDay;
+        }
+        inputField.value = currentYear + '/' + currentMonth + '/' + currentDay;
+        alert('YYYY/MM/DD');
+        return;
+    }
+
 	if(inputField.value.length==format.length){
 		var monthPos = format.indexOf('mm');
 		currentMonth = inputField.value.substr(monthPos,2)/1 -1;	
