@@ -82,7 +82,9 @@ class Calendar_Event {
 
     function save()
     {
-        
+        $db = & new PHPWS_DB('calendar_events');
+        $result = $db->saveObject($this);
+        return $result;
     }
 
     function saveKey()
@@ -100,8 +102,11 @@ class Calendar_Event {
 
         $this->setSummary($_POST['summary']);
 
-        $start_date_array = explode('/', $_POST['start_date']);
-        $end_date_array = explode('/', $_POST['end_date']);
+        $start_date = & $_POST['start_date'];
+        $end_date = & $_POST['end_date'];
+
+        $start_date_array = explode('/', $start_date);
+        $end_date_array = explode('/', $start_date);
 
         $start_time_hour = &$_POST['start_time_hour'];
         $start_time_minute = &$_POST['start_time_minute'];
@@ -114,7 +119,9 @@ class Calendar_Event {
                                 $start_date_array[1], $start_date_array[2], $start_date_array[0]);
             $endTime   = mktime($end_time_hour, $end_time_minute, 0,
                                 $end_date_array[1], $end_date_array[2], $end_date_array[0]);
-
+            if ($startTime >= $endTime) {
+                $errors[] = _('The end time must be after the start time.');
+            }
             break;
 
         case '2':
@@ -146,7 +153,8 @@ class Calendar_Event {
         $this->event_type = (int)$_POST['event_type'];
 
         if (isset($errors)) {
-            return $errors;
+            $this->_error = &$errors;
+            return FALSE;
         } else {
             return TRUE;
         }

@@ -68,7 +68,7 @@ function alter_date(event_type) {
 //]]>
 </script>
 
-
+<!-- BEGIN error --><h2 class="error">{ERROR}</h2><!-- END error -->
 
 {START_FORM}
 <table class="form-table" width="98%">

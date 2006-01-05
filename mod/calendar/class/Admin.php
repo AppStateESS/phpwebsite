@@ -77,7 +77,16 @@ class Calendar_Admin {
         case 'post_event_js':
             $this->loadEvent();
             $result = $this->event->postEvent();
-            test($_POST,1);
+            if (!$result) {
+                $content = $this->editEventJS();
+                Layout::nakedDisplay($content);
+                exit();
+            } else {
+                $this->event->save();
+                echo javascript('close_refresh');
+                exit();
+            }
+
             break;
 
         case 'create_event_js':
@@ -330,7 +339,7 @@ class Calendar_Admin {
 
         $form->addText('end_date', $this->event->getEndTime('%Y/%m/%d'));
         $form->setLabel('end_date', _('End time'));
-        $form->setExtra('end_date', 'onblur="check_end_date()"');
+        $form->setExtra('end_date', 'onblur="check_end_date()" onfocus="check_start_date()"');
 
         $form->addButton('close', _('Cancel'));
         $form->setExtra('close', 'onclick="window.close()"');
@@ -366,6 +375,10 @@ class Calendar_Admin {
         $js_vars['date_name'] = 'end_date';
         $tpl['END_CAL'] = javascript('js_calendar', $js_vars);
 
+        if (isset($this->event->_error)) {
+            $tpl['ERROR'] = implode('<br />', $this->event->_error);
+        }
+
         return PHPWS_Template::process($tpl, 'calendar', 'admin/forms/edit_event.tpl');
     }
 
@@ -381,7 +394,7 @@ class Calendar_Admin {
         }
 
         $form->addSelect($name . '_hour', $hours);
-
+        $form->setMatch($name . '_hour', (int)strftime('%H', $match));
 
         if (empty($minutes)) {
             for ($i = 0; $i < 60; $i += CALENDAR_TIME_MINUTE_INC) {
@@ -389,6 +402,7 @@ class Calendar_Admin {
             }
         }
         $form->addSelect($name . '_minute', $minutes);
+        $form->setMatch($name . '_minute', (int)strftime('%M', $match));
     }
 
     function dateForm($name, $match, &$form) {
