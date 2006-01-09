@@ -105,13 +105,28 @@ class Calendar_View {
     {
         if (empty($year) || $year < 1970) {
             $aDate = PHPWS_Time::getTimeArray();
-            $uDate = &$aDate['u'];
-            $month = &$aDate['m'];
-            $year  = &$aDate['y'];
-            $day   = &$aDate['d'];
-        } else {
-            $uDate = mktime(0,0,0, $month, $day, $year);
+
+            if (isset($_REQUEST['y'])) {
+                $year = $_REQUEST['y'];
+            } else {
+                $year  = &$aDate['y'];
+            }
+
+            if (isset($_REQUEST['m'])) {
+                $month = $_REQUEST['m'];
+            } else {
+                $month = &$aDate['m'];
+            }
+
+            if (isset($_REQUEST['d'])) {
+                $day = $_REQUEST['d'];
+            } else {
+                $day   = &$aDate['d'];
+            }
+
         }
+
+        $uDate = mktime(0,0,0, $month, $day, $year);
 
         if (Current_User::allow('calendar', 'edit_schedule', $this->calendar->schedule->id) ||
             ( PHPWS_Settings::get('calendar', 'personal_calendars') && 
@@ -122,6 +137,14 @@ class Calendar_View {
         }
         $template['TITLE'] = $this->calendar->schedule->title;
         $template['DATE'] = strftime(CALENDAR_DAY_FORMAT, $uDate);
+
+        $js['month'] = $month;
+        $js['day'] = $day;
+        $js['year'] = $year;
+        $js['url'] = 'index.php?module=calendar&aop=main';
+        $js['type'] = 'pick';
+        $template['PICK'] = javascript('js_calendar', $js);
+
 
         $start_date = mktime(0,0,0, $month, $day, $year);
         $end_date = mktime(23,59,59, $month, $day, $year);
