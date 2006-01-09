@@ -1,1 +1,1 @@
-<img src='./javascript/js_calendar/images/calendar.png' onclick="displayCalendarSelectBox(document.forms[0].{date_name}_year,document.forms[0].{date_name}_month,document.forms[0].{date_name}_day,this)" />
+<img src='./javascript/js_calendar/images/calendar.png' onmouseover="this.style.cursor='pointer'" onclick="displayCalendarSelectBox(document.forms[0].{date_name}_year,document.forms[0].{date_name}_month,document.forms[0].{date_name}_day,this)" />
