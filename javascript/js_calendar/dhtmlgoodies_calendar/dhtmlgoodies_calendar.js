@@ -351,10 +351,10 @@ function highlightSelect()
 {
 	if(this.className=='selectBox'){
 		this.className = 'selectBoxOver';	
-		this.getElementsByTagName('IMG')[0].src = 'images/down_over.gif';
+		this.getElementsByTagName('IMG')[0].src = 'javascript/js_calendar/images/down_over.gif';
 	}else{
 		this.className = 'selectBox';	
-		this.getElementsByTagName('IMG')[0].src = 'images/down.gif';			
+		this.getElementsByTagName('IMG')[0].src = 'javascript/js_calendar/images/down.gif';			
 	}
 	
 }
@@ -362,20 +362,20 @@ function highlightSelect()
 function highlightArrow()
 {
 	if(this.src.indexOf('over')>=0){
-		if(this.src.indexOf('left')>=0)this.src = 'images/left.gif';	
-		if(this.src.indexOf('right')>=0)this.src = 'images/right.gif';				
+		if(this.src.indexOf('left')>=0)this.src = 'javascript/js_calendar/images/left.gif';	
+		if(this.src.indexOf('right')>=0)this.src = 'javascript/js_calendar/images/right.gif';				
 	}else{
-		if(this.src.indexOf('left')>=0)this.src = 'images/left_over.gif';	
-		if(this.src.indexOf('right')>=0)this.src = 'images/right_over.gif';	
+		if(this.src.indexOf('left')>=0)this.src = 'javascript/js_calendar/images/left_over.gif';	
+		if(this.src.indexOf('right')>=0)this.src = 'javascript/js_calendar/images/right_over.gif';	
 	}
 }
 
 function highlightClose()
 {
 	if(this.src.indexOf('over')>=0){
-		this.src = 'images/close.gif';
+		this.src = 'javascript/js_calendar/images/close.gif';
 	}else{
-		this.src = 'images/close_over.gif';	
+		this.src = 'javascript/js_calendar/images/close_over.gif';	
 	}	
 
 }
@@ -403,7 +403,7 @@ function writeTopBar()
 	var leftDiv = document.createElement('DIV');
 	leftDiv.style.marginRight = '1px';
 	var img = document.createElement('IMG');
-	img.src = 'images/left.gif';
+	img.src = 'javascript/js_calendar/images/left.gif';
 	img.onmouseover = highlightArrow;
 	img.onclick = switchMonth;
 	img.onmouseout = highlightArrow;
@@ -415,7 +415,7 @@ function writeTopBar()
 	var rightDiv = document.createElement('DIV');
 	rightDiv.style.marginRight = '1px';
 	var img = document.createElement('IMG');
-	img.src = 'images/right.gif';
+	img.src = 'javascript/js_calendar/images/right.gif';
 	img.onclick = switchMonth;
 	img.onmouseover = highlightArrow;
 	img.onmouseout = highlightArrow;
@@ -436,7 +436,7 @@ function writeTopBar()
 	monthDiv.appendChild(span);
 
 	var img = document.createElement('IMG');
-	img.src = 'images/down.gif';
+	img.src = 'javascript/js_calendar/images/down.gif';
 	img.style.position = 'absolute';
 	img.style.right = '0px';
 	monthDiv.appendChild(img);
@@ -468,7 +468,7 @@ function writeTopBar()
 	topBar.appendChild(yearDiv);
 	
 	var img = document.createElement('IMG');
-	img.src = 'images/down.gif';
+	img.src = 'javascript/js_calendar/images/down.gif';
 	yearDiv.appendChild(img);
 	yearDiv.className = 'selectBox';
 	
@@ -488,10 +488,12 @@ function writeTopBar()
 	
 		
 	var img = document.createElement('IMG');
-	img.src = 'images/close.gif';
+	img.src = 'javascript/js_calendar/images/close.gif';
 	img.style.styleFloat = 'right';
+
 	img.onmouseover = highlightClose;
 	img.onmouseout = highlightClose;
+
 	img.onclick = closeCalendar;
 	topBar.appendChild(img);
 	if(!document.all){
@@ -809,7 +811,7 @@ function displayCalendar(inputField,format,buttonObj)
 	if(!calendarDiv){
 		initCalendar();			
 	}else{
-		writeCalendarContent();
+            writeCalendarContent();
 	}			
 	returnFormat = format;
 	returnDateTo = inputField;
