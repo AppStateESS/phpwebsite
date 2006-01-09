@@ -126,14 +126,16 @@ class Calendar_View {
 
         }
 
-        $uDate = mktime(0,0,0, $month, $day, $year);
+        $uDate = mktime(0, 0, 0, $month, $day, $year);
+        $uDateEnd = mktime(23, 59, 0, $month, $day, $year);
+        $now = mktime(date('G'),(int)date('i') , 0, $month, $day, $year);
 
         if (Current_User::allow('calendar', 'edit_schedule', $this->calendar->schedule->id) ||
             ( PHPWS_Settings::get('calendar', 'personal_calendars') && 
               $this->calendar->schedule->user_id == Current_User::getId()
               )
             ) {
-            $template['ADD_EVENT'] = $this->calendar->schedule->addEventLink();
+            $template['ADD_EVENT'] = $this->calendar->schedule->addEventLink($now);
         }
         $template['TITLE'] = $this->calendar->schedule->title;
         $template['DATE'] = strftime(CALENDAR_DAY_FORMAT, $uDate);
@@ -149,7 +151,7 @@ class Calendar_View {
         $start_date = mktime(0,0,0, $month, $day, $year);
         $end_date = mktime(23,59,59, $month, $day, $year);
 
-        $this->calendar->schedule->loadEvents();
+        $this->calendar->schedule->loadEvents($uDate, $uDateEnd);
         $events = & $this->calendar->schedule->events;
 
         if (empty($events)) {

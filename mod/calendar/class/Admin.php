@@ -321,6 +321,12 @@ class Calendar_Admin {
             $form->addHidden('event_id', $this->event->id);
         }
 
+        if ($_REQUEST['date'] && !$this->event->id) {
+            $this->event->start_time = $_REQUEST['date'];
+            $this->event->end_time = $_REQUEST['date'];
+        }
+
+
         $form->addHidden('module', 'calendar');
         $form->addHidden('aop', 'post_event_js');
         // is this needed?
@@ -346,6 +352,7 @@ class Calendar_Admin {
 
         $this->timeForm('start_time', $this->event->start_time, $form);
         $this->timeForm('end_time', $this->event->end_time, $form);
+
         $form->setExtra('start_time_hour', 'onchange="check_start_date()"');
         $form->setExtra('end_time_hour', 'onchange="check_end_date()"');
 
@@ -393,6 +400,9 @@ class Calendar_Admin {
             }
         }
 
+        $minute_match = (int)strftime('%M', $match);
+        $minute_match -= $minute_match % CALENDAR_TIME_MINUTE_INC;
+
         $form->addSelect($name . '_hour', $hours);
         $form->setMatch($name . '_hour', (int)strftime('%H', $match));
 
@@ -402,7 +412,7 @@ class Calendar_Admin {
             }
         }
         $form->addSelect($name . '_minute', $minutes);
-        $form->setMatch($name . '_minute', (int)strftime('%M', $match));
+        $form->setMatch($name . '_minute', $minute_match);
     }
 
     function dateForm($name, $match, &$form) {

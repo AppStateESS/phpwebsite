@@ -12,18 +12,19 @@
    */
 
 class Calendar_Event {
-    var $id         = 0;
-    var $key_id     = 0;
-    var $title      = NULL;
-    var $summary    = NULL;
-    var $event_type = 1;   // 1 normal, 2 all day, 3 starts at, 4 deadline
-    var $start_time = 0;
-    var $end_time   = 0;
-    var $post_start = 0;   // date to show on calendar, 0 means immediately
-    var $post_end   = 0;   // date to remove from calendar, 0 means never
-    var $public     = 0;   // 1 means event is viewable by public
-    var $sticky     = 0;   // 1 means this event will always show in a shortened listing
-    var $_error     = NULL;
+    var $id           = 0;
+    var $key_id       = 0;
+    var $title        = NULL;
+    var $summary      = NULL;
+    var $event_type   = 1;   // 1 normal, 2 all day, 3 starts at, 4 deadline
+    var $start_time   = 0;
+    var $end_time     = 0;
+    var $post_start   = 0;   // date to show on calendar, 0 means immediately
+    var $post_end     = 0;   // date to remove from calendar, 0 means never
+    var $public       = 0;   // 1 means event is viewable by public
+    var $sticky       = 0;   // 1 means this event will always show in a shortened listing
+    var $_schedule_id = 0;   // This current schedule using this event
+    var $_error       = NULL;
 
 
     function Calendar_Event($id=NULL)
@@ -84,7 +85,26 @@ class Calendar_Event {
     {
         $db = & new PHPWS_DB('calendar_events');
         $result = $db->saveObject($this);
-        return $result;
+        if (PEAR::isError($result)) {
+            return $result;
+        } elseif ($this->_schedule_id) {
+            $db->reset();
+            $db->setTable('calendar_schedule_to_event');
+            $db->addWhere('schedule_id', $this->_schedule_id);
+            $db->addWhere('event_id', $this->id);
+            $result = $db->getOne();
+            if (PEAR::isError($result)) {
+                return $result;
+            } elseif (empty($result)) {
+                $db->reset();
+                $db->setValue('schedule_id', $this->_schedule_id);
+                $db->setValue('event_id', $this->id);
+                return $db->insert();
+            }
+            return TRUE;
+        } else {
+            return TRUE;
+        }
     }
 
     function saveKey()

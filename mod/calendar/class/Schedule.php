@@ -114,11 +114,15 @@ class Calendar_Schedule {
         return sprintf('<a href="#">%s</a>', $this->title);
     }
 
-    function addEventLink()
+    function addEventLink($default_date=NULL)
     {
+        if (!isset($default_date)) {
+            $default_date = PHPWS_Time::mkservertime();
+        }
+
         if (javascriptEnabled()) {
-            $vars['address'] = sprintf('index.php?module=calendar&aop=create_event_js&schedule_id=%s',
-                                       $this->id);
+            $vars['address'] = sprintf('index.php?module=calendar&aop=create_event_js&schedule_id=%s&date=%s',
+                                       $this->id, $default_date);
             $vars['link_title'] = $vars['label'] = _('Add event');
             $vars['width'] = CALENDAR_EVENT_WIDTH;
             $vars['height'] = CALENDAR_EVENT_HEIGHT;
@@ -126,7 +130,8 @@ class Calendar_Schedule {
         } else {
             return PHPWS_Text::moduleLink(_('Add event'), 'calendar',
                                           array('aop'         => 'create_event',
-                                                'schedule_id' => $this->id)
+                                                'schedule_id' => $this->id,
+                                                'date'        => $default_date)
                                           );
         }
     }
@@ -154,11 +159,34 @@ class Calendar_Schedule {
         return $result;
     }
 
-    function loadEvents()
+
+    function loadEvents($start_search=NULL, $end_search=NULL)
     {
+        PHPWS_Core::initModClass('calendar', 'Event.php');
+        if (!isset($start_search)) {
+            $start_search = mktime(0,0,0,1,1,1970);
+        }
+
+        if (!isset($end_search)) {
+            // if this line is a problem, you need to upgrade
+            $end_search = mktime(0,0,0,1,1,2050);
+        }
+
         $db = & new PHPWS_DB('calendar_events');
+
         $db->addWhere('calendar_schedule_to_event.schedule_id', $this->id);
+        $db->addWhere('id', 'calendar_schedule_to_event.event_id');
+
+        $db->addWhere('start_time', $start_search, '>=', NULL, 1);
+        $db->addWhere('start_time', $end_search,   '<',  'AND', 1);
+
+        $db->addWhere('end_time', $end_search,   '<=', 'NULL', 2);
+        $db->addWhere('end_time', $start_search, '>', 'AND', 2);
+
+        $db->setGroupConj(2, 'OR');
+
         $result = $db->getObjects('Calendar_Event');
+
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             return;
