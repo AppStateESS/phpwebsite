@@ -27,10 +27,12 @@ class PHPWS_DB {
     var $qwhere      = NULL;
     var $indexby     = NULL;
     var $groupby     = NULL;
+    // This variable holds a sql query string
     var $sql         = NULL;
     var $_allColumns = NULL;
     var $_columnInfo = NULL;
     var $_lock       = FALSE;
+    // holds the PEAR DB object
     var $_sql        = NULL;
     var $_distinct   = FALSE;
     var $_test_mode  = FALSE;
