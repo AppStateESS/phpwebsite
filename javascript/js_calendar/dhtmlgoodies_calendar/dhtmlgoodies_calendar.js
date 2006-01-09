@@ -17,8 +17,18 @@ www.dhtmlgoodies.com
 Alf Magne Kalleland
 
 */
+
+     /**
+        Notice:
+        Some changes where made to this script to work specifically with phpWebSite.
+        Any additions have been noted in the code.
+      */
+
+var pickroute = 0;
+var phpws_url = '';
+
 var languageCode = 'en';	// Possible values: 	en,ge,no,nl,es,pt-br,fr	
-							// en = english, ge = german, no = norwegian,nl = dutch, es = spanish, pt-br = portuguese, fr = french
+
 							
 var calendar_offsetTop = 0;		// Offset - calendar placement - You probably have to modify this value if you're not using a strict doctype
 var calendar_offsetLeft = 0;	// Offset - calendar placement - You probably have to modify this value if you're not using a strict doctype
@@ -379,8 +389,6 @@ function closeCalendar(){
 	if(iframeObj)iframeObj.style.display='none';
 	if(activeSelectBoxMonth)activeSelectBoxMonth.className='';
 	if(activeSelectBoxYear)activeSelectBoxYear.className='';
-	
-
 }
 
 function writeTopBar()
@@ -599,7 +607,15 @@ function pickDate()
 	if(month<10)month = '0' + month;
 	var day = this.innerHTML;
 	if(day/1<10)day = '0' + day;
-	if(returnFormat){
+
+        // pickroute added specifically for phpwebsite
+        if (pickroute) {
+            month = month - 0;
+            day = day - 0;
+            currentYear = currentYear - 0;
+            url = phpws_url + '&m=' + month + '&d=' + day + '&y=' + currentYear;
+            window.location.href = url;
+        } else if(returnFormat){
 		returnFormat = returnFormat.replace('dd',day);
 		returnFormat = returnFormat.replace('mm',month);
 		returnFormat = returnFormat.replace('yyyy',currentYear);
@@ -717,6 +733,37 @@ function initCalendar()
 
 
 		
+}
+
+/* This code is specific to phpWebsite and was written by
+ * Matthew McNaney
+ */
+function displayCalendarPick(month, day, year, url, buttonObj)
+{
+    phpws_url = url;
+    pickroute = 1;
+    currentYear = inputYear = year;
+    currentDay = inputDay = day;
+    currentMonth = inputMonth = month - 1;
+
+	if(!calendarDiv){
+		initCalendar();			
+	}else{
+		writeCalendarContent();
+	}			
+        //	returnFormat = format;
+	returnDateTo = new Object();
+        returnDateTo.value = '';
+	positionCalendar(buttonObj);
+	calendarDiv.style.visibility = 'visible';	
+	calendarDiv.style.display = 'block';	
+	if(iframeObj){
+		iframeObj.style.display = '';
+		iframeObj.style.height = '140px';
+		iframeObj.style.width = '195px';
+	}
+	updateYearDiv();
+	updateMonthDiv();
 }
 
 
