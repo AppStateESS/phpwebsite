@@ -13,7 +13,7 @@ if ( !isset($data['type']) ||
  }
 
 if ($data['type'] == 'select') {
-    $bodyfile = $base . 'javascript/' . $directory . '/body2.js';
+    $bodyfile = $base . 'javascript/js_calendar/body2.js';
  }
 
 if ($data['type'] == 'pick') {
@@ -29,7 +29,7 @@ if ($data['type'] == 'pick') {
         $data['year'] = date('d');
     }
 
-    $bodyfile = $base . 'javascript/' . $directory . '/body3.js';
+    $bodyfile = $base . 'javascript/js_calendar/body3.js';
  }
 
 ?>
