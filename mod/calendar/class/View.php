@@ -140,6 +140,7 @@ class Calendar_View {
         $template['TITLE'] = $this->calendar->schedule->title;
         $template['DATE'] = strftime(CALENDAR_DAY_FORMAT, $uDate);
 
+
         $js['month'] = $month;
         $js['day'] = $day;
         $js['year'] = $year;
@@ -156,6 +157,27 @@ class Calendar_View {
 
         if (empty($events)) {
             $template['MESSAGE'] = _('No events planned for this day.');
+        } else {
+            foreach ($events as $oEvent) {
+                $links = array();
+                if (Current_User::allow('calendar', 'edit_event', $oEvent->id)) {
+                    $links[] = $oEvent->removeLink($this->calendar->schedule->id);
+                    $links[] = $oEvent->editLink();
+                }
+                
+                if (Current_User::allow('calendar', 'delete_event', $oEvent->id)) {
+                    $links[] = $oEvent->deleteLink();
+                }
+
+                if (!empty($links)) {
+                    $details['LINKS'] = implode(' | ', $links);
+                }
+
+                $details['TITLE']   = $oEvent->title;
+                $details['SUMMARY'] = $oEvent->getSummary();
+                $details['TIME']    = $oEvent->getTime();
+                $template['calendar_events'][] = $details;
+            }
         }
 
         return PHPWS_Template::process($template, 'calendar', 'view/day/day.tpl');

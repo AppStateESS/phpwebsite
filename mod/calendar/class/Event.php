@@ -76,6 +76,35 @@ class Calendar_Event {
         return strftime($format, $this->end_time);
     }
 
+    /**
+     * Returns a formated time for printing
+     */
+    function getTime()
+    {
+        switch ($this->event_type) {
+        case 1:
+            $sTime = sprintf('%s - %s', 
+                             strftime(CALENDAR_TIME_LIST_FORMAT, $this->start_time),
+                             strftime(CALENDAR_TIME_LIST_FORMAT, $this->end_time)
+                             );
+            break;
+
+        case 2:
+            $sTime = _('All day event');
+            break;
+
+        case 3:
+            $sTime = sprintf(_('Event starts at %s.'), strftime(CALENDAR_TIME_LIST_FORMAT, $this->start_time));
+            break;
+
+        case 4:
+            $sTime = sprintf(_('Event deadline at %s.'),  strftime(CALENDAR_TIME_LIST_FORMAT, $this->end_time));
+            break;
+        }
+
+        return $sTime;
+    }
+
     function getSummary()
     {
         return PHPWS_Text::parseOutput($this->summary);
@@ -92,13 +121,13 @@ class Calendar_Event {
             $db->setTable('calendar_schedule_to_event');
             $db->addWhere('schedule_id', $this->_schedule_id);
             $db->addWhere('event_id', $this->id);
-            $result = $db->getOne();
+            $result = $db->select('one');
             if (PEAR::isError($result)) {
                 return $result;
             } elseif (empty($result)) {
                 $db->reset();
-                $db->setValue('schedule_id', $this->_schedule_id);
-                $db->setValue('event_id', $this->id);
+                $db->addValue('schedule_id', $this->_schedule_id);
+                $db->addValue('event_id', $this->id);
                 return $db->insert();
             }
             return TRUE;
@@ -170,6 +199,10 @@ class Calendar_Event {
         $this->start_time = $startTime;
         $this->end_time   = $endTime;
 
+        if (isset($_POST['schedule_id'])) {
+            $this->_schedule_id = (int)$_POST['schedule_id'];
+        }
+
         $this->event_type = (int)$_POST['event_type'];
 
         if (isset($errors)) {
@@ -180,6 +213,60 @@ class Calendar_Event {
         }
     }
 
+    function editLink()
+    {
+        if (javascriptEnabled()) {
+            $vars['address'] = sprintf('index.php?module=calendar&aop=edit_event_js&event_id=%s',
+                                       $this->id);
+            $vars['link_title'] = $vars['label'] = _('Edit');
+            $vars['width'] = CALENDAR_EVENT_WIDTH;
+            $vars['height'] = CALENDAR_EVENT_HEIGHT;
+            return javascript('open_window', $vars);
+        } else {
+            return PHPWS_Text::moduleLink(_('Edit'), 'calendar',
+                                          array('aop'         => 'create_event',
+                                                'schedule_id' => $this->id,
+                                                'date'        => $default_date)
+                                          );
+        }
+    }
+
+    function removeLink($schedule_id)
+    {
+        if (javascriptEnabled()) {
+            $vars['QUESTION'] = _('Are you sure you want to remove this event from this calendars?');
+            $vars['ADDRESS'] = sprintf('index.php?module=calendar&aop=remove_event&schedule_id=%s&event_id=%s',
+                                       $schedule_id, $this->id);
+            $vars['LINK']    = _('Remove');
+            return javascript('confirm', $vars);
+        } else {
+            return PHPWS_Text::moduleLink(_('Remove'), 'calendar',
+                                          array('aop'         => 'remove_event',
+                                                'schedule_id' => $schedule_id,
+                                                'event_id'    => $this->id
+                                                )
+                                          );
+        }
+
+    }
+
+    function deleteLink()
+    {
+        if (javascriptEnabled()) {
+            $vars['QUESTION'] = _('Are you sure you want to permanently delete this event from all calendars?');
+            $vars['ADDRESS'] = sprintf('index.php?module=calendar&aop=delete_event&event_id=%s',
+                                       $this->id);
+            $vars['LINK']    = _('Delete');
+            return javascript('confirm', $vars);
+        } else {
+            return PHPWS_Text::moduleLink(_('Delete'), 'calendar',
+                                          array('aop'         => 'delete_event',
+                                                'event_id'    => $this->id
+                                                )
+                                          );
+        }
+
+    }
 
 }
 

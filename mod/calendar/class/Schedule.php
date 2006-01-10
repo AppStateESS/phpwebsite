@@ -136,6 +136,7 @@ class Calendar_Schedule {
         }
     }
 
+
     function saveKey()
     {
         if (empty($this->key_id)) {
@@ -173,6 +174,7 @@ class Calendar_Schedule {
         }
 
         $db = & new PHPWS_DB('calendar_events');
+        $db->setDistinct(TRUE);
 
         $db->addWhere('calendar_schedule_to_event.schedule_id', $this->id);
         $db->addWhere('id', 'calendar_schedule_to_event.event_id');
@@ -184,6 +186,7 @@ class Calendar_Schedule {
         $db->addWhere('end_time', $start_search, '>', 'AND', 2);
 
         $db->setGroupConj(2, 'OR');
+        $db->addOrder('start_time');
 
         $result = $db->getObjects('Calendar_Event');
 

@@ -14,8 +14,9 @@ define('CALENDAR_MONTH_LISTING', '%B');
 // %l %p = 1 PM
 // %h    = 13
 define('CALENDAR_TIME_FORM_FORMAT', '%l %p');
-
 define('CALENDAR_TIME_MINUTE_INC', 15);
+
+define('CALENDAR_TIME_LIST_FORMAT', '%l:%M %P');
 
 // Controls the dimensions of the event editor popup
 define('CALENDAR_EVENT_WIDTH', 700);

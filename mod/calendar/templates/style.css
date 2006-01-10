@@ -67,3 +67,7 @@ td.day-current {
 td.day-normal {
   background-color : #DEE2BD;
 }
+
+.calendar-event {
+  padding : 5px;
+}

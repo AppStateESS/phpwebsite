@@ -76,20 +76,23 @@ class Calendar_Admin {
 
         case 'post_event_js':
             $this->loadEvent();
+
             $result = $this->event->postEvent();
             if (!$result) {
+                $this->calendar->loadSchedule();
                 $content = $this->editEventJS();
                 Layout::nakedDisplay($content);
-                exit();
             } else {
-                $this->event->save();
-                echo javascript('close_refresh');
-                exit();
+                $result = $this->event->save();
+                $content = javascript('alert', array('content' => _('Event saved successfully.')));
+                javascript('close_refresh', array('timeout'=> .5));
+                Layout::nakedDisplay($content);
             }
 
             break;
 
         case 'create_event_js':
+            $this->calendar->loadSchedule();
             $result = $this->loadEvent();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
@@ -321,7 +324,7 @@ class Calendar_Admin {
             $form->addHidden('event_id', $this->event->id);
         }
 
-        if ($_REQUEST['date'] && !$this->event->id) {
+        if (isset($_REQUEST['date']) && !$this->event->id) {
             $this->event->start_time = $_REQUEST['date'];
             $this->event->end_time = $_REQUEST['date'];
         }
@@ -329,8 +332,7 @@ class Calendar_Admin {
 
         $form->addHidden('module', 'calendar');
         $form->addHidden('aop', 'post_event_js');
-        // is this needed?
-        //        $form->addHidden('schedule_id', $this->calendar->schedule->id);
+        $form->addHidden('schedule_id', $this->calendar->schedule->id);
         $form->addText('title', $this->event->title);
         $form->setLabel('title', _('Title'));
         $form->setSize('title', 60);
