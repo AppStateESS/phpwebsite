@@ -187,6 +187,7 @@ class Calendar_Schedule {
 
         $db->setGroupConj(2, 'OR');
         $db->addOrder('start_time');
+        $db->addOrder('end_time desc');
 
         $result = $db->getObjects('Calendar_Event');
 

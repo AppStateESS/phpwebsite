@@ -155,11 +155,22 @@ class Calendar_View {
         $this->calendar->schedule->loadEvents($uDate, $uDateEnd);
         $events = & $this->calendar->schedule->events;
 
+        $tpl = & new PHPWS_Template('calendar');
+        $tpl->setFile('view/day/day.tpl');
+
         if (empty($events)) {
             $template['MESSAGE'] = _('No events planned for this day.');
         } else {
+            $hour_list = array();
             foreach ($events as $oEvent) {
-                $links = array();
+                $details = $links = array();
+
+                if ($oEvent->event_type == 2) {
+                    $hour = 'a';
+                } else {
+                    $hour = (int)$oEvent->getStartTime('%H');
+                }
+
                 if (Current_User::allow('calendar', 'edit_event', $oEvent->id)) {
                     $links[] = $oEvent->removeLink($this->calendar->schedule->id);
                     $links[] = $oEvent->editLink();
@@ -176,10 +187,19 @@ class Calendar_View {
                 $details['TITLE']   = $oEvent->title;
                 $details['SUMMARY'] = $oEvent->getSummary();
                 $details['TIME']    = $oEvent->getTime();
+
+                if (!isset($hour_list[$hour])) {
+                    $hour_list[$hour] = 1;
+                    if ($oEvent->event_type == 2) {
+                        $details['HOUR']    = _('All day');
+                    } else {
+                        $details['HOUR']    = strftime('%l %p', $oEvent->start_time);
+                    }
+                }
+
                 $template['calendar_events'][] = $details;
             }
         }
-
         return PHPWS_Template::process($template, 'calendar', 'view/day/day.tpl');
     }
 }
