@@ -22,7 +22,7 @@ class Calendar_Admin {
         $message = $this->getMessage();
 
         $panel = $this->getPanel();
-        
+
         if (isset($_REQUEST['aop'])) {
             $command = $_REQUEST['aop'];
         } elseif (isset($_REQUEST['tab'])) {
@@ -30,7 +30,7 @@ class Calendar_Admin {
         } else {
             $command = $panel->getCurrentTab();
         }
-
+        
         switch ($command) {
         case 'main':
         case 'my_calendar':
@@ -171,15 +171,19 @@ class Calendar_Admin {
         $page_tags['TITLE_LABEL']   = _('Title');
         $page_tags['SUMMARY_LABEL'] = _('Summary');
         $page_tags['PUBLIC_LABEL']  = _('Public');
-        $page_tags['DISPLAY_NAME_LABEL']    = _('User');
+        $page_tags['DISPLAY_NAME_LABEL'] = _('User');
 
         $pager = & new DBPager('calendar_schedule', 'Calendar_Schedule');
         $pager->setModule('calendar');
         $pager->setTemplate('admin/calendars.tpl');
         $pager->addPageTags($page_tags);
+        $pager->db->addWhere('user_id', 'users.id');
+        $pager->db->addColumn('users.display_name');
+        $pager->db->addColumn('*');
         $pager->initialize();
 
         $content = $pager->get();
+
         return $content;
     }
 
