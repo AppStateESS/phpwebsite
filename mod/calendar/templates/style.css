@@ -71,3 +71,19 @@ td.day-normal {
 .calendar-event {
   padding : 5px;
 }
+
+.full {
+      background-color : red;
+}
+
+.empty {
+      background-color : white;
+}
+
+#calendar-glance {
+      background-color : white;
+      float : right;
+      width : 100px;
+      text-align : center;
+      border : 1px black solid;
+}
