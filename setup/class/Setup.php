@@ -132,11 +132,6 @@ class Setup{
             $check = FALSE;
         }
 
-        /*
-    if (!empty($_POST['dbhost']))
-      $content[] = _('Notice: Missing a host reference.');
-        */
-
         Setup::setConfigSet('dbhost', $_POST['dbhost']);
 
         if (!empty($_POST['dbname']))
@@ -160,11 +155,13 @@ class Setup{
         Setup::setConfigSet('dbport', $_POST['dbport']);
 
 
-        if (!$check)
+        if (!$check) {
             return FALSE;
+        }
 
-        if (CHECK_DB_CONNECTION == FALSE)
+        if (CHECK_DB_CONNECTION == FALSE) {
             return TRUE;
+        }
 
         $checkConnection = Setup::testDBConnect();
 
@@ -290,7 +287,6 @@ class Setup{
         $pear_select = array('local' =>_('Use Pear files included with phpWebSite (recommended).'),
                              'system'=>_('Use server\'s Pear library files (not recommended).')
                              );
-        //    $content[] = _('To get started, we need to create your config file.');
 
         $formTpl['SOURCE_DIR_DEF'] = _('This is the directory where phpWebSite is installed.');
 
@@ -411,6 +407,7 @@ class Setup{
         $errorDir = TRUE;
         $directory[] = Setup::getSourceDir() . 'config/';
         $directory[] = Setup::getSourceDir() . 'images/';
+        $directory[] = Setup::getSourceDir() . 'images/mod/';
         $directory[] = Setup::getSourceDir() . 'templates/';
         $directory[] = Setup::getSourceDir() . 'files/';
         $directory[] = Setup::getSourceDir() . 'logs/';
