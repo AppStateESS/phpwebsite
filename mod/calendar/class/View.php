@@ -163,42 +163,67 @@ class Calendar_View {
         } else {
             $hour_list = array();
             foreach ($events as $oEvent) {
-                $details = $links = array();
-
-                if ($oEvent->event_type == 2) {
-                    $hour = 'a';
-                } else {
-                    $hour = (int)$oEvent->getStartTime('%H');
-                }
-
-                if (Current_User::allow('calendar', 'edit_event', $oEvent->id)) {
-                    $links[] = $oEvent->removeLink($this->calendar->schedule->id);
-                    $links[] = $oEvent->editLink();
-                }
-                
-                if (Current_User::allow('calendar', 'delete_event', $oEvent->id)) {
-                    $links[] = $oEvent->deleteLink();
-                }
-
-                if (!empty($links)) {
-                    $details['LINKS'] = implode(' | ', $links);
-                }
-
-                $details['TITLE']   = $oEvent->title;
-                $details['SUMMARY'] = $oEvent->getSummary();
-                $details['TIME']    = $oEvent->getTime();
-
-                if (!isset($hour_list[$hour])) {
-                    $hour_list[$hour] = 1;
-                    if ($oEvent->event_type == 2) {
-                        $details['HOUR']    = _('All day');
-                    } else {
-                        $details['HOUR']    = strftime('%l %p', $oEvent->start_time);
+                switch ($oEvent->event_type) {
+                case '1':
+                    if ($oEvent->block) {
+                        $block_time = ceil( ($oEvent->end_time - $oEvent->start_time) / 3600);
+                        $block_hour = strftime('%H', $oEvent->start_time);
+                        $blocked[$block_hour] = 1;
+                        if ($block_time > 1) {
+                            for ($i = 1; $i < $block_time; $i++) {
+                                $blocked[$block_hour + $i] = 1;
+                            }
+                        }
                     }
-                }
+                case '3':
+                    $newList[strftime('%H', $oEvent->start_time)][] = $oEvent;
+                    break;
 
-                $template['calendar_events'][] = $details;
+                case '2':
+                    $newList[-1][] = $oEvent;
+                    break;
+
+                case '4':
+                    $newList[strftime('%H', $oEvent->end_time)][] = $oEvent;
+                    break;
+                }
             }
+            ksort($newList);
+
+            foreach ($newList as $hour => $events) {
+                foreach ($events as $oEvent) {
+                    $details = $links = array();
+
+                    if (Current_User::allow('calendar', 'edit_event', $oEvent->id)) {
+                        $links[] = $oEvent->removeLink($this->calendar->schedule->id);
+                        $links[] = $oEvent->editLink();
+                    }
+                
+                    if (Current_User::allow('calendar', 'delete_event', $oEvent->id)) {
+                        $links[] = $oEvent->deleteLink();
+                    }
+
+                    if (!empty($links)) {
+                        $details['LINKS'] = implode(' | ', $links);
+                    }
+
+                    $details['TITLE']   = $oEvent->title;
+                    $details['SUMMARY'] = $oEvent->getSummary();
+                    $details['TIME']    = $oEvent->getTime();
+
+                    if (!isset($hour_list[$hour])) {
+                        $hour_list[$hour] = 1;
+                        if ($hour == -1) {
+                            $details['HOUR']    = _('All day');
+                        } else {
+                            $details['HOUR']    = strftime('%l %p', mktime($hour));
+                        }
+                    }
+
+                    $template['calendar_events'][] = $details;
+                }
+            }
+
         }
         return PHPWS_Template::process($template, 'calendar', 'view/day/day.tpl');
     }
