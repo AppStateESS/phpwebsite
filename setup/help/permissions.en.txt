@@ -22,16 +22,19 @@ should remain writable:
 
 phpwebsite/images/
 phpwebsite/files/
+phpwebsite/logs/
 
 These two directories need to be writable only during a phpwebsite or module
 install:
 
 phpwebsite/templates/
 phpwebsite/config/
+phpwebsite/javascript/modules/
 
 Make sure to restrict the permissions on those directories after done with
 your installation.
 
 Note: You may be asking "Why doesn't phpWebSite do this for me?"
 phpWebSite can call chown and chmod, but php itself would need
-directory permissions. You do not want php to be root or directory owner.
+directory permissions. You do not want php to be root or the directory
+owner.
