@@ -6,8 +6,14 @@
 
 chdir('../');
 if (!is_file('lib/pear/DB.php')) {
-    exit(_('Unable to locate your pear library files.'));
- }
+
+    echo _('Unable to locate your pear library files.');
+    echo '<br />';
+    echo _('Untar fallout_pear.tgz in your phpwebsite installation directory.');
+    echo '<br />';
+    echo '<pre>tar zxf fallout_pear.tgz</pre>';
+    exit();
+}
 
 if (isset($_REQUEST['step']) && $_REQUEST['step'] > 1) {
     require_once './config/core/config.php';
