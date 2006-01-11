@@ -91,6 +91,17 @@ class Calendar_Admin {
 
             break;
 
+        case 'edit_event_js':
+            $this->calendar->loadSchedule();
+            $result = $this->loadEvent();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                PHPWS_Core::errorPage();
+            }
+            $content = $this->editEventJS();
+            Layout::nakedDisplay($content);
+            break;
+
         case 'create_event_js':
             $this->calendar->loadSchedule();
             $result = $this->loadEvent();
@@ -341,7 +352,7 @@ class Calendar_Admin {
         $form->setLabel('title', _('Title'));
         $form->setSize('title', 60);
 
-        $form->addTextArea('summary', $this->event->getSummary());
+        $form->addTextArea('summary', $this->event->summary);
         $form->setLabel('summary', _('Summary'));
         $form->useEditor('summary');
 
