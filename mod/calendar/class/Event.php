@@ -172,6 +172,12 @@ class Calendar_Event {
             if ($startTime >= $endTime) {
                 $errors[] = _('The end time must be after the start time.');
             }
+            //defaulting to 1 for testing purposes
+            if (1 || isset($_POST['block'])) {
+                $this->block = 1;
+            } else {
+                $this->block = 0;
+            }
             break;
 
         case '2':
