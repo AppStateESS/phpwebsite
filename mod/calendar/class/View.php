@@ -126,9 +126,9 @@ class Calendar_View {
 
         }
 
-        $uDate = mktime(0, 0, 0, $month, $day, $year);
+        $uDate    = mktime(0, 0, 0, $month, $day, $year);
         $uDateEnd = mktime(23, 59, 0, $month, $day, $year);
-        $now = mktime(date('G'),(int)date('i') , 0, $month, $day, $year);
+        $now      = mktime(date('G'),(int)date('i') , 0, $month, $day, $year);
 
         if (Current_User::allow('calendar', 'edit_schedule', $this->calendar->schedule->id) ||
             ( PHPWS_Settings::get('calendar', 'personal_calendars') && 
@@ -150,7 +150,7 @@ class Calendar_View {
 
 
         $start_date = mktime(0,0,0, $month, $day, $year);
-        $end_date = mktime(23,59,59, $month, $day, $year);
+        $end_date   = mktime(23,59,59, $month, $day, $year);
 
         $this->calendar->schedule->loadEvents($uDate, $uDateEnd);
         $events = & $this->calendar->schedule->events;
@@ -225,6 +225,17 @@ class Calendar_View {
             }
 
         }
+
+        for ($j=8; $j < 18; $j++) {
+            if (isset($blocked[$j])) {
+                $block_class = 'full';
+            } else {
+                $block_class = 'free';
+            }
+            $template['glance_rows'][] = array('GLANCE_HOUR' => strftime('%l %p', mktime($j)),
+                                               'BLOCK_CLASS' => $block_class);
+        }
+
         return PHPWS_Template::process($template, 'calendar', 'view/day/day.tpl');
     }
 }
