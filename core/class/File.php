@@ -109,7 +109,7 @@ class PHPWS_File {
 
         if (!is_dir($dest_directory)) {
             if(!@mkdir($dest_directory)) {
-                PHPWS_Error::log(PHPWS_DIR_CANT_CREATE, 'core', 'PHPWS_File::recursiveFileCopy', $toPath);
+                PHPWS_Error::log(PHPWS_DIR_CANT_CREATE, 'core', 'PHPWS_File::recursiveFileCopy', $dest_directory);
                 return FALSE;
             }
         }
