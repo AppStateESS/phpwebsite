@@ -1,8 +1,8 @@
 CREATE TABLE calendar_events (
   id int NOT NULL default '0',
   key_id int NOT NULL default '0',
-  title varchar(60) collate utf8_unicode_ci NOT NULL default '',
-  summary text collate utf8_unicode_ci,
+  title varchar(60) NOT NULL default '',
+  summary text,
   event_type smallint NOT NULL default '0',
   start_time int NOT NULL default '0',
   end_time int NOT NULL default '0',
@@ -14,6 +14,16 @@ CREATE TABLE calendar_events (
   PRIMARY KEY  (id)
 );
 
+CREATE TABLE calendar_schedule (
+  id int NOT NULL default '0',
+  key_id int NOT NULL default '0',
+  user_id int NOT NULL default '0',
+  title varchar(60) NOT NULL default '',
+  summary text,
+  public smallint NOT NULL default '0',
+  PRIMARY KEY (id)
+);
+
 CREATE TABLE calendar_owner (
   id int NOT NULL default '0',
   group_id int NOT NULL default '0',
@@ -21,4 +31,9 @@ CREATE TABLE calendar_owner (
   email varchar(255) NOT NULL default '',
   public smallint NOT NULL default '0',
   PRIMARY KEY  (id)
+);
+
+CREATE TABLE calendar_schedule_to_event (
+  schedule_id int NOT NULL default '0',
+  event_id int NOT NULL default '0'
 );
