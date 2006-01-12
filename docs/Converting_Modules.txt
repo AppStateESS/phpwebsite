@@ -1,0 +1,296 @@
+Converting Old Modules
+----------------------------------
+
+Introduction
+----------------------------------
+Three years ago when starting phpWebSite 1.0, the thought was that it
+should be totally completely backward compatible. In the beginning, it
+was backward compatible but eventually the features in phpWebSite
+outgrew the previous version.
+
+A decision had to be made. Do we want to limit the features of 1.x to
+allow full compatibility? I tried to balance them instead. Old modules
+will work in 1.0, but they require some modification.
+
+I have tried to keep the amount of changes to a minimum: I have to
+make them in all my modules as well.
+
+This document was written while converting PhotoAlbum. This module may
+be rewritten down the road, but for now if just needs to _work_. While
+working, I will go over what changes were made to make it functional
+again.
+
+
+Installing the module
+----------------------------------
+Boost has been written to install modules written before 1.x. So you
+should be able to get your module recognized in phpWebSite, you will
+just need to get it working again.
+
+
+What we see
+----------------------------------
+Layout has changed a great deal from 0.x.
+1) it doesn't make the developer use GLOBALS
+2) it doesn't need a layout.php config file
+3) it has a default setting for putting content in the BODY tag
+4) the Default theme is no longer required 
+5) there are no _boxes_ anymore
+
+As a result of these changes, Layout is faster, easier to use, and
+avoids some of the pitfalls of the old software (i.e. missing boxes,
+extra boxes, etc.)
+
+In order to get your module showing up again, you need to open up your
+layout.php file in the module's conf directory.
+
+In PhotoAlbum, I find out that the content variable is "CNT_photoalbum"
+and the transfer variable is "body".
+
+With this information I can search for the CNT_photoalbum string.
+
+After a quick search I found:
+$GLOBALS['CNT_photoalbum']['content'] = "<h3>$title</h3>$content";
+$GLOBALS['CNT_photoalbum']['title'] = $_SESSION['translate']->it("Photo Album") . ":&#160;" . $_SESSION['PHPWS_AlbumManager']->album->getLabel();
+$GLOBALS['CNT_photoalbum']['content'] .= $this->_view();
+
+This is bad because the html formatting is in the code but we'll
+ignore it for now. There is also a $_SESSION['translate'] in
+there. We'll come back to that as well.
+
+For now let's fix it to work with layout.
+$template['TITLE']   = $_SESSION['translate']->it("Photo Album") . ":&#160;" . $_SESSION['PHPWS_AlbumManager']->album->getLabel();
+$template['CONTENT'] = "<h3>$title</h3>$content";
+$template['CONTENT'] .= $this->_view();
+      
+$finalContent = PHPWS_Template::process($template, 'layout', 'box.tpl');
+Layout::add($finalContent);
+
+The 'template' lines are just substitutions for the previous code.
+The finalContent portion needs a little explanation. Remember change
+number five (no boxes). The old phpWebSite expected these box
+templates to display the info. Since these are not used anymore, we
+use a substitution, Layout's own box.tpl. It is basic but functional.
+If you really wanted to, you can create your own box template and use
+it instead.
+
+Now we pass the complete text to Layout via the add function. Look
+back at the information from the layout.php config file. Notice that
+the transfer variable is "body". This is fortunate as Layout uses that
+as the default tag to print content. Body is always the main content
+area of a theme. So I can use:
+Layout::add($finalContent);
+
+If PhotoAlbum had a side box or a transfer variable that was NOT body,
+I would use the following instead:
+Layout::add($finalContent, 'photoalbum', 'CNT_photoalbum');
+
+Notice we don't use the transfer variable at all. We can recycle the
+content variable as the place holder. The content variable name in 1.x
+just makes sure that the data ends up in the same place. So if had
+some data going to our CNT_photoalbum two times we could use:
+Layout::add($finalContent, 'photoalbum', 'CNT_photoalbum');
+Layout::add($someOtherContent, 'photoalbum', 'CNT_photoalbum');
+
+Using the same word makes sure that it appears in the same place. As
+such,
+Layout::add($finalContent);
+Layout::add($someOtherContent);
+
+would append the content in the "body" tag.
+
+Now I just search for CNT_photoalbum in the index.php file and all the
+classes, create the template array, pass it through the template class
+to Layout's default box.tpl and put the result into the 'add'
+function.
+
+Once you are done with this process you should start seeing
+your basic module screens appearing again.
+
+Translation
+-----------------------------------
+Previous to 1.x, phpWebSite used its own translation class. This was
+clunky. 1.x uses 'po' files (see Language.txt for more information).
+
+Since the language module is no longer used, you should remove the old
+functions calls. You module will still function, but no one outside
+your native tongue will be able to use your module.
+
+Prepare for a search and replace. We need to change:
+$_SESSION['translate']->it('Hello World');
+
+to
+
+_('Hello World');
+
+I think you will find, this is much easier to type as well :)
+
+Rhe quickest way to fix this is to replace
+
+$_SESSION["translate"]->it("
+to
+ _("
+
+Make sure to try other searches such as:
+
+$_SESSION['translate']->it("  to  _("
+$_SESSION["translate"]->it('  to  _('  
+$_SESSION["translate"]->it("  to  _("
+
+Notice the quote difference: very important.
+
+After you have changed all these translations, you will need to
+perform one last search and replace. The old translation system used
+[var1], [var2], etc. to fill in values into the string. PO files don't
+do that. So search for "[var" and add the 'sprintf' function.
+
+Here is an example:
+$message = _("The Photo Album [var1] was successfully saved.", "<b><i>" . $this->getLabel() . "</i></b>") . "<br />\n";
+
+change this to:
+$message = sprintf(_('The Photo Album %s was successfully saved.'), '<b><i>' . $this->getLabel() . '</i></b>') . "<br />\n";
+
+If you don't fix these first, you will get syntax errors.
+
+
+
+Working out the bugs
+---------------------------------------
+If you module is now showing up, the next step is cleaning up the
+bugs. These should be pretty easy to spot as you click on forms and
+links. Below are some changes to make your software function properly
+again.
+
+
+Checking for Javascript
+--------------------------------------
+The old way of checking to see if the user was using javascript was to
+query the user session:
+
+if($_SESSION['OBJ_user']->js_on) {
+   doSomething();
+}
+
+In 1.x use javascriptEnabled()
+
+if(javascriptEnabled()) {
+   doSomething();
+}
+
+
+WYSIWYG
+-----------------------------------
+The old javascript wysiwyg (what you see is what you get) interface
+was... just awful let's face it.
+
+You should allow users to access the new available interfaces. Look
+for something like the following:
+
+$tags['ALBUM_EXT'] = PHPWS_WizardBag::js_insert("wysiwyg",
+                   "PHPWS_Album_edit", "Album_ext") . $tags['ALBUM_EXT'];
+
+To fix this, first thing I do is go edit the template (editAlbum.tpl
+for this module) and remove the ALBUM_EXT tag. We won't be needing it.
+
+Then I find the code that makes the text box:
+$form->add("Album_ext", "textarea", $this->_blurb1);
+
+Now I just add the following:
+$form->useEditor('Album_ext');
+
+You may have to check the text going into the text area but otherwise
+it should be fine.
+
+
+Error Class
+-----------------------------------
+The error class has changed.
+
+One of the major changes is that you can log your errors. This makes
+the 'debug' option of the old error class obsolete. Errors dump a user
+to an error page. You must plan for errors and guide the user out
+gracefully.
+
+As such, when an error occurs, make sure your code logs the error and
+continues.
+
+The new Error class is based on the PEAR error class. The old one was
+written specifically for phpWebSite.
+
+To change over, you need to look for instances where the old error
+object was created. Here is an example from photoalbum.
+
+      if(!is_dir(PHOTOALBUM_DIR . $this->getId() . "/")) {
+	PHPWS_File::makeDir(PHOTOALBUM_DIR . $this->getId() . "/");
+	if(!is_dir(PHOTOALBUM_DIR . $this->getId() . "/")) {
+	  $message = $_SESSION['translate']->it("The photo album image directory could not be created.");
+	  $error = new PHPWS_Error("photoalbum", "PHPWS_Album::_save()", $message, "continue", PHOTOALBUM_DEBUG_MODE);
+	  $error->message("CNT_photoalbum");
+	  
+	  $_REQUEST['PHPWS_Album_op'] = "edit";
+	  $this->action();
+	  return;
+	}
+      }
+
+
+      $message = $_SESSION['translate']->it("The Photo Album [var1] was successfully saved.", "<b><i>" . $this->getLabel() . "</i></b>") . "<br />\n";
+      $_SESSION['PHPWS_AlbumManager']->message = new PHPWS_Message($message, "CNT_photoalbum");
+
+      $_REQUEST['PHPWS_Album_op'] = "view";
+      $this->action();
+
+Here are my changes.
+      $directory = PHOTOALBUM_DIR . $this->getId() . "/";
+
+      if(!@mkdir($directory)) {
+           $message = _('The photo album image directory could not be created.');
+           PHPWS_Error::log(PHOTOALBUM_NO_DIRECTORY, 'photoalbum', 'PHPWS_Album::_save', $directory);
+           $_REQUEST['PHPWS_Album_op'] = "edit";
+      } else {
+           $message = sprintf(_("The Photo Album %s was successfully saved."), "<b><i>" . $this->getLabel() . "</i></b>") . "<br />\n";
+           $_REQUEST['PHPWS_Album_op'] = "view";
+      }
+
+      $_SESSION['PHPWS_AlbumManager']->message = new PHPWS_Message($message, "CNT_photoalbum");
+
+      $this->action();
+
+First, a few code changes. mkdir does the job of PHPWS_File::makeDir
+and I don't need to check its existence after making it, I just catch
+the result of mkdir. I also put the directory into a variable so I am
+not concatenating the variables more than once.
+
+Now if the directory creation fails I am logging the error in the
+PHPWS_Error class. It then prints the failure message and goes
+back to the edit screen. If it succeeds, it prints the success message
+and goes to the view screen.
+
+The message will be recorded in the log via the
+PHOTOALBUM_NO_DIRECTORY assignment. If you are unfamiliar with how the
+Error class works, please read the Error.txt documentation.
+
+
+Adding Keys
+-----------------------------------
+There are some modules that will not work with your module unless you
+give them 'keys'.
+
+The phpWebSite key class cross indexes all content within your
+site. This allows modules to "see" your content and help you organize
+it. Fortunately, it isn't really hard to add this functionality to
+your module.
+
+First, remove calls to modules that now depend on keys. Categories is
+one of those modules. In pre-1.x, to categorize an item, you had to
+insert a FatCat select box into your form. Categories doesn't work
+like that. So look for places that call Fatcat, and yank them out.
+
+
+
+Other things I changed
+------------------------------------
+Here are some odds and end of things I changed in PhotoAlbum.
+
+PHPWS_Album checks for an error when it sets the id. Not needed as
+long as it isn't zero.
