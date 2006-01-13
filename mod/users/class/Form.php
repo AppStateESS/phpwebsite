@@ -802,6 +802,11 @@ class User_Form {
     function permissionMenu(&$key, $popbox=FALSE)
     {
         $edit_groups = Users_Permission::getRestrictedGroups($key, TRUE);
+        if (PEAR::isError($edit_groups)) {
+            PHPWS_Error::log($edit_groups);
+            $tpl['MESSAGE'] = $edit_groups->getMessage();
+            return $tpl;
+        }
         $view_groups = User_Form::_getNonUserGroups();
 
         $view_matches = $key->getViewGroups();
@@ -862,6 +867,7 @@ class User_Form {
         if (!is_array($matches)) {
             $matches = NULL;
         }
+
         foreach ($group_list as $group) {
             if ($matches && in_array($group['id'], $matches)) {
                 $match = 'selected="selected"';
