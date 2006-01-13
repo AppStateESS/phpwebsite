@@ -1,14 +1,17 @@
 <?php
 
 class PHPWS_Error {
+    // Array used for old error calls from pre 1.x
+    var $crutch_info = NULL;
 
     /**
      * This is a crutch function for 0.x compatibility
      */
     function PHPWS_Error($module, $funcName, $message)
     {
-        $error = $module . ' - ' . $funcName . ' - ' . $message;
-        return PEAR::raiseError($message, 1, NULL, NULL, $error);
+        $this->crutch_info['module']  = $module;
+        $this->crutch_info['func']    = $funcName;
+        $this->crutch_info['message'] = $message;
     }
 
 
@@ -30,8 +33,9 @@ class PHPWS_Error {
         if (!isset($errors))
             return FALSE;
 
-        if (PEAR::isError($value))
+        if (PEAR::isError($value)) {
             $value = $value->getCode();
+        }
 
         if ($module != 'core') {
             $fullError[] = $module;
@@ -86,14 +90,28 @@ class PHPWS_Error {
         $code  = $error->getcode();
         $message = $error->getuserinfo();
     
-        if (!isset($message))
+        if (!isset($message)) {
             $message = $error->getmessage();
+        }
     
-        $final = '[' . $code . "] $message"; 
+        $final = '[' . $code . '] ' . $message;
 
         return $final;
     }
 
+    function message()
+    {
+        if (empty($this->crutch_info)) {
+            return;
+        }
+        $template['TITLE'] = _('Error');
+        $template['WARNING'] = sprintf(_('The following error occurred in the %s module\'s %s function.'), $this->crutch_info['module'],
+                                       $this->crutch_info['func']); 
+        $template['MESSAGE'] = $this->crutch_info['message'];
+
+        $content = PHPWS_Template::process($this->crutch_info, 'core', 'old_error.tpl');
+        Layout::add($content);
+    }
 }
 
 ?>
