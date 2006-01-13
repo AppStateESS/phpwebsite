@@ -103,6 +103,17 @@ class PHPWS_Image extends File_Common{
         return Layout::getJavascript('open_window', $values);
     }
 
+    function allowType($type=NULL)
+    {
+        $typeList = unserialize(ALLOWED_IMAGE_TYPES);
+        if (!isset($type)) {
+            $type = $this->type;
+        }
+        
+        return in_array($type, $typeList);
+    }
+
+
     function setType($type)
     {
         if (is_numeric($type)) {

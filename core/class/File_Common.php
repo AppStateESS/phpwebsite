@@ -214,20 +214,6 @@ class File_Common {
     }
 
 
-    function allowType($type=NULL)
-    {
-        if ($this->_classtype == 'document') {
-            $typeList = unserialize(ALLOWED_DOCUMENT_TYPES);
-        } else {
-            $typeList = unserialize(ALLOWED_IMAGE_TYPES);
-        }
-
-        if (!isset($type)) {
-            $type = $this->type;
-        }
-
-        return in_array($type, $typeList);
-    }
 
     function allowSize($size=NULL)
     {

@@ -45,6 +45,17 @@ class PHPWS_Document extends File_Common {
         return $this->title;
     }
 
+    function allowType($type=NULL)
+    {
+        $typeList = unserialize(ALLOWED_DOCUMENT_TYPES);
+
+        if (!isset($type)) {
+            $type = $this->type;
+        }
+
+        return in_array($type, $typeList);
+    }
+
 
     function loadUpload($varName){
         $result = $this->getFILES($varName);
