@@ -137,7 +137,7 @@ class PHPWS_DB {
 
     function query($sql, $prefix=FALSE)
     {
-        if ($this->_test_mode) {
+        if (!empty($this->_test_mode)) {
             exit($sql);
         }
 
@@ -1078,7 +1078,7 @@ class PHPWS_DB {
             break;
 
         case 'col':
-            if (empty($this->columns)) {
+            if (empty($sql) && empty($this->columns)) {
                 return PHPWS_Error::get(PHPWS_DB_NO_COLUMN_SET, 'core', 'PHPWS_DB::select');
             }
 
@@ -1750,6 +1750,7 @@ class PHPWS_DB {
         }
         else {
             $result = $this->insert();
+
             if (is_numeric($result)) {
                 if (array_key_exists('id', $object_vars)) {
                     $object->id = (int)$result;
