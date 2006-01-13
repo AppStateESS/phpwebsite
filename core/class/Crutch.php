@@ -49,13 +49,7 @@ class Fatcat {
 
     function showSelect($module_id=NULL, $mode="multiple", $rows = NULL, $module_title=NULL, $purge=FALSE, $setSticky=TRUE)
     {
-        PHPWS_Core::initModClass('categories', 'Category_Item.php');
-        if (empty($module_title)) {
-            $module_title = PHPWS_Core::getCurrentModule();
-        }
-        $cat_item = & new Category_Item($module_title);
-        $cat_item->setItemId($module_id);
-        return $cat_item->getForm();
+        return _('Update your module to use keys.');
     }
 
     function purge($id, $module)
