@@ -4,9 +4,9 @@ Converting Old Modules
 Introduction
 ----------------------------------
 Three years ago when starting phpWebSite 1.0, the thought was that it
-should be totally completely backward compatible. In the beginning, it
-was backward compatible but eventually the features in phpWebSite
-outgrew the previous version.
+should be totally completely backward compatible. In the beginning of
+development, it was, but eventually the features in phpWebSite outgrew
+the previous version.
 
 A decision had to be made. Do we want to limit the features of 1.x to
 allow full compatibility? I tried to balance them instead. Old modules
@@ -27,6 +27,41 @@ Boost has been written to install modules written before 1.x. So you
 should be able to get your module recognized in phpWebSite, you will
 just need to get it working again.
 
+One change you should make to your module before installing it is to
+update the permissions file. Before, permissions were kept in a file
+named module_rights.txt. It is in the conf/ directory. For PhotoAlbum,
+it looks like this: 
+
+add_album::Add Album
+edit_album::Album Settings
+add_photo::Add Photo
+edit_photo::Edit Photo
+delete_photo::Delete Photo
+delete_album::Delete Album
+
+We are going to create a new file named permission.php and save it in
+the conf/ directory. Here is what it looks like:
+
+<?php
+
+$use_permissions = TRUE;
+
+$permissions['add_album']    = _('Add album');
+$permissions['edit_album']   = _('Edit album');
+$permissions['add_photo']    = _('Add photo');
+$permissions['edit_photo']   = _('Edit photo');
+$permissions['delete_album'] = _('Delete album');
+$permissions['delete_photo'] = _('Delete photo');
+
+//$item_permissions = TRUE;
+?>
+
+You will notice that I commented out item_permissions. We will get to
+that later. For now, keep it out or comment that line out. Modules
+from the old phpWebSite did not use item permissions.
+
+Once you create the permissions file, you can delete the
+module_rights.txt file.
 
 What we see
 ----------------------------------
@@ -240,6 +275,9 @@ object was created. Here is an example from photoalbum.
       $_REQUEST['PHPWS_Album_op'] = "view";
       $this->action();
 
+Now this code WILL work in 1.x. however I suggest you upgrade it to
+the new format.
+
 Here are my changes.
       $directory = PHOTOALBUM_DIR . $this->getId() . "/";
 
@@ -285,6 +323,90 @@ First, remove calls to modules that now depend on keys. Categories is
 one of those modules. In pre-1.x, to categorize an item, you had to
 insert a FatCat select box into your form. Categories doesn't work
 like that. So look for places that call Fatcat, and yank them out.
+
+Next, you need to add a key_id column to the item you want to index. I
+_could_ index the individual photos however I think I would prefer to
+index the albums.
+
+So I add a column to mod_photoalbum_albums:
+ALTER TABLE mod_photoalbum_albums ADD key_id INT NOT NULL AFTER id;
+
+Make sure to update your install.sql file (not with the above of
+course, add the column to your create table).
+
+
+I also create a new variable in the album class:
+var $_key_id = 0;
+
+Note that this module is using the Item class which expects an
+underline before the variable name. You need to do this, or it won't
+work correctly.
+
+Next I need to create a key for each album. Since I want to create the
+key after the item is saved, I look for the save function in the Album
+class. Once there, I add my key creation function:
+
+$this->saveKey();
+
+My key creation function looks like so:
+
+    function saveKey()
+    {
+        $update_album = FALSE;
+
+        if (empty($this->_key_id)) {
+            $key = & new Key;
+            $update_album = TRUE;
+        } else {
+            $key = & new Key($this->_key_id);
+            if (PEAR::isError($key->_error)) {
+                $key = & new Key;
+                $update_album = TRUE;
+            }
+        }
+
+        $link = sprintf('index.php?module=photoalbum&PHPWS_Album_op=view&PHPWS_Album_id=%s', $this->_id);
+
+        $key->setModule('photoalbum');
+        $key->setItemName('album');
+        $key->setItemId($this->_id);
+        $key->setEditPermission('edit_album');
+        $key->setUrl($link);
+        $key->setTitle($this->_label);
+        $key->setSummary($this->_blurb0);
+        $result = $key->save();
+
+        $this->_key_id = $key->id;
+
+        if ($update_album) {
+            $this->commit();
+        }
+        return $key;
+    }
+
+
+First I check for the existance of the key_id. If it is 0, we make a
+new key. Next I set all the relevant key information (see the Key
+documentation for more information).
+Next I save the key, set the key_id in the object, and, if this is a
+new key, update the album object.
+
+Serving the Key
+------------------------------------
+We are halfway done with updating the key! Once your key is saved with
+your item, you need to 'flag' it.
+
+Go to that item's 'view' function. For PhotoAlbum the function is
+'_view'.
+
+Get the key id and instantiate a new key object:
+$key = & new Key($this->_key_id);
+
+Now flag it:
+$key->flag();
+
+Once the key raises its flag, all the modules that are looking for it
+will now be accessible.
 
 
 File types
