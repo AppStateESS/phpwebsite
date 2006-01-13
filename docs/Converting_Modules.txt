@@ -287,6 +287,17 @@ insert a FatCat select box into your form. Categories doesn't work
 like that. So look for places that call Fatcat, and yank them out.
 
 
+File types
+------------------------------------
+All file types (documents and images) are now kept in
+config/core/file_types.php.
+
+You can check if an image is allowed by using:
+PHPWS_Image::allowType($filetype);
+
+For other documents use:
+PHPWS_Document::allowType($filetype);
+
 
 Other things I changed
 ------------------------------------
@@ -294,3 +305,9 @@ Here are some odds and end of things I changed in PhotoAlbum.
 
 PHPWS_Album checks for an error when it sets the id. Not needed as
 long as it isn't zero.
+
+I changed many the double quotes (") to single quotes (') where
+possible. Double quotes require the text between to be parsed whereas
+single quotes do not. This saves a wee bit of time.
+
+Removed the tab characters and substituted 4 spaces per.
