@@ -175,7 +175,7 @@ class PHPWS_Item {
    */
   function commit($set=TRUE, $extras=NULL) {
     if($set) {
-      if(isset($this->_id)) {
+      if(!empty($this->_id)) {
 	$this->setUpdated();
 	$this->setEditor();
       } else {
@@ -188,9 +188,10 @@ class PHPWS_Item {
     }
 
     $db = & new PHPWS_DB($this->_table);
-    if (isset($this->_id)) {
+    if (!empty($this->_id)) {
       $db->addWhere('id', $this->_id);
     }
+
     return $db->saveObject($this, TRUE);
   } // END FUNC commit
 
@@ -258,13 +259,8 @@ class PHPWS_Item {
    * @return boolean TRUE on success and pear error on failure.
    * @access public
    */
-  function setId($id = NULL) {
-    if($id) {
-      $this->_id = $id;
-    } else {
-      $error = 'No ID was passed in PHPWS_Item::setId().';
-      return PEAR::raiseError($error);
-    }
+  function setId($id) {
+      $this->_id = (int)$id;
   } // END FUNC setId
 
   /**
@@ -347,6 +343,27 @@ class PHPWS_Item {
     }
   } // END FUNC setIp
 
+
+  /**
+   * Sets the textual label for this item.
+   *
+   * Makes sure the label is a valid string and does not contain php or
+   * unallowed html tags.
+   *
+   * @param  string  $label The string to set this item's label to.
+   * @return boolean TRUE on success and PHPWS_Error on failure.
+   * @access public
+   */
+  function setLabel($label = NULL) {
+    if($label) {
+      $this->_label = PHPWS_Text::parseInput($label);
+    } else {
+      $error = "No label was requested.";
+      return new PHPWS_Error("core", "PHPWS_Item::setLabel()", $error);
+    }
+  } // END FUNC set_label
+
+
   /**
    * Sets the created date for this item.
    *
@@ -386,17 +403,27 @@ class PHPWS_Item {
     }
 
     return TRUE;
-  } // END FUNC setHidden
-
+  }
   /**
-   * Sets the approved flag for this item.
+   * Sets the hidden flag for this item.
    *
    * Makes sure the $flag passed in is a valid boolean variable.
    *
-   * @param  boolean $flag A boolean TRUE or FALSE designating whether or not this item is approved.
+   * @param  boolean $flag A boolean TRUE or FALSE designating whether or not this item is hidden.
    * @return boolean TRUE
    * @access public
    */
+  function setHidden($flag = TRUE) {
+    if($flag) {
+      $this->_hidden = 1;
+    } else {
+      $this->_hidden = 0;
+    }
+
+    return TRUE;
+  } // END FUNC set_hidden
+
+
   function setApproved($flag = TRUE) {
     if($flag) {
       $this->_approved = 1;
@@ -562,6 +589,18 @@ class PHPWS_Item {
    * @return boolean TRUE if hidden FALSE if not hidden.
    * @access public
    */
+  function isHidden() {
+    if(isset($this->_hidden)) return $this->_hidden;
+    else return NULL;
+  } // END FUNC isHidden
+
+
+  /**
+   * Returns TRUE if this item is hidden and FALSE if it is not.
+   *
+   * @return boolean TRUE if hidden FALSE if not hidden.
+   * @access public
+   */
   function isActive() {
     if(isset($this->_active) && $this->_active)
       return TRUE;
@@ -581,6 +620,29 @@ class PHPWS_Item {
     else
       return FALSE;
   } // END FUNC isApproved
+
+  function set($name, $value) {
+    $vars = get_object_vars($this);
+    $pri = "_{$name}";
+    $pub = "{$name}";
+    if(array_key_exists($pri, $vars)) {
+      $this->$pri = $value;
+    } else if(array_key_exists($pub, $vars)) {
+      $this->$pub = $value;
+    }
+  }
+
+  function get($name) {
+    $vars = get_object_vars($this);
+    $pri = "_{$name}";
+    $pub = "{$name}";
+    if(array_key_exists($pri, $vars)) {
+      return $this->$pri;
+    } else if(array_key_exists($pub, $vars)) {
+      return $this->$pub;
+    } 
+  }
+
 
   function debug(){
     return phpws_debug::testobject($this);
