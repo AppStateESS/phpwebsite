@@ -383,5 +383,26 @@ class PHPWS_File {
             }
         }
     }// END FUNC chkgd2()
+
+    /**
+     * Format a file name to be safe
+     * Based on pear.php.net HTTP_Upload_File::nameToSafe()
+     *
+     * @modified Shaun Murray <shaun@NOSPAM.aegisdesign.co.uk>
+     * @param    string $file   The string file name
+     * @param    int    $maxlen Maximun permited string lenght
+     * @return   string Formatted file name
+     */
+    function nameToSafe($name, $maxlen=250)
+    {
+        $noalpha = 'ÁÉÍÓÚÝáéíóúýÂÊÎÔÛâêîôûÀÈÌÒÙàèìòùÄËÏÖÜäëïöüÿÃãÕõÅåÑñÇç@°ºª';
+        $alpha   = 'AEIOUYaeiouyAEIOUaeiouAEIOUaeiouAEIOUaeiouyAaOoAaNnCcaooa';
+
+        $name = substr($name, 0, $maxlen);
+        $name = strtr($name, $noalpha, $alpha);
+        // not permitted chars are replaced with "_"
+        return preg_replace('/[^\w\.]/i', '_', $name);
+    }
+
 }
 ?>
