@@ -22,6 +22,33 @@
 
 
 class PHPWS_File {
+    /**
+     * return array of directories
+     * @author Matthew McNaney <mcnaney at gmail dot com>
+     */
+    function listDirectories($root_dir)
+    {
+        if (!is_dir($root_dir)) {
+            return FALSE;
+        }
+
+        $listing = scandir($root_dir);
+
+        if (empty($listing)) {
+            return FALSE;
+        }
+
+        foreach ($listing as $directory) {
+            if ($directory == '.' || $directory == '..' || !is_dir($root_dir . $directory)) {
+                continue;
+            }
+
+            $directories[] = $directory;
+        }
+        return $directories;
+    }
+
+
     function readDirectory($path, $directoriesOnly=FALSE, $filesOnly=FALSE, $recursive=FALSE, $extensions=array(), $appendPath=FALSE)
     {
         if($directoriesOnly && $filesOnly) {
