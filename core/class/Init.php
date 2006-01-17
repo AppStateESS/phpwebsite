@@ -100,10 +100,12 @@ function initLanguage(){
             $locale = setlocale(LC_ALL, DEFAULT_LANGUAGE);
     }
 
-    if ($locale != FALSE)
+    if ($locale != FALSE) {
         define('CURRENT_LANGUAGE', $locale);
-    else
+    }
+    else {
         define('CURRENT_LANGUAGE', DEFAULT_LANGUAGE);
+    }
 
     loadLanguageDefaults($locale);
 }
@@ -263,10 +265,12 @@ function loadBrowserInformation()
 
 
 function getBrowserLanguage(){
-    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']))
+    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
         return explode(',', preg_replace("/(;q=\d\.*\d*)/", '', $_SERVER['HTTP_ACCEPT_LANGUAGE']));
-    else
+    }
+    else {
         return array(DEFAULT_LANGUAGE);
+    }
 }
 
 
@@ -317,5 +321,9 @@ function translate($module=NULL){
     }
 }
 
+function translateFile($filename)
+{
+    return CURRENT_LANGUAGE . '_' . $filename;
+}
 
 ?>
