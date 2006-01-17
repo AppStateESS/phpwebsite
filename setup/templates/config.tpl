@@ -38,6 +38,16 @@ define('PHPWS_DSN', '{dsn}');
 define('CORE_COOKIE_TIMEOUT', 2592000);
 
 
+/************************ Memory Setting **********************/
+/* There is a chance that your installation may require more
+ * memory than is alloted in your php.ini file. If ini_set
+ * is allowed, you can uncomment and set the line before to
+ * expand the memory capacity.
+ * 
+ */
+//ini_set('memory_limit', '10M');
+
+
 /********************** Security Settings *********************/
 /**
  * If CHECK_DIRECTORY_PERMISSIONS is TRUE the phpwebsite WILL
