@@ -25,6 +25,19 @@ class Convert {
             }
             break;
 
+        case 'convert':
+            $this->convertPackage($_REQUEST['package']);
+            break;
+
+        case 'make_connection':
+            if ($this->checkConnection()) {
+
+            } else {
+                $this->establishConnection(_('Unable to log in to the database. Please check your settings.'));
+            }
+
+            break;
+
         case 'default':
             $this->main();
             break;
@@ -33,9 +46,38 @@ class Convert {
     }
 
 
-    function main()
+
+    function checkConnection()
+    {
+        $dbtype = $_POST['type'];
+        $dbuser = $_POST['username'];
+        $dbpass = $_POST['password'];
+        if (!isset($_POST['host'])) {
+            $dbhost = 'localhost';
+        } else {
+            $dbhost = $_POST['host'];
+        }
+
+        $dbport = $_POST['port'];
+
+        $dsn =  $dbtype . '://' . $dbuser . ':' . $dbpass . '@' . $dbhost;
+        if (!empty($dbport)) {
+            $dsn .= ':' . $dbport;
+        }
+        $db = & DB::connect($dsn);
+
+        if (PEAR::isError($db)) {
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+
+    }
+
+    function showPackages()
     {
         PHPWS_Core::initCoreClass('File.php');
+
         $predir = 'convert/modules/';
 
         $directories = PHPWS_File::listDirectories($predir);
@@ -49,22 +91,108 @@ class Convert {
             $filename = translateFile('info.ini');
             $info_file = $predir . $mod_dir . '/' . $filename;
             if (is_file($info_file)) {
-                $template['convert_mods'][] = $this->convertLinkTpl($info_file);
+                $template['convert_mods'][] = $this->convertLinkTpl($info_file, $mod_dir);
             }
         }
 
         $template['TITLE_LABEL'] = _('Title');
         $template['DESCRIPTION_LABEL'] = _('Description');
 
-
         $content = PHPWS_Template::process($template, '', 'convert/templates/list.tpl', TRUE);
+        $this->show($content);
+
+    }
+
+
+    function main()
+    {
+        if (!isset($_SESSION['OTHER_DATABASE'])) {
+            $this->establishConnection();
+        } else {
+            $this->showPackages();
+        }
+    }
+
+    function establishConnection($message=NULL)
+    {
+
+        $username = $type = $port = $password = $name = NULL;
+
+        if (isset($_POST['name'])) {
+            $name = $_POST['name'];
+        }
+
+        if (isset($_POST['username'])) {
+            $name = $_POST['username'];
+        }
+
+        if (isset($_POST['password'])) {
+            $password = $_POST['password'];
+        }
+
+        if (isset($_POST['type'])) {
+            $type = $_POST['type'];
+        }
+
+        if (isset($_POST['host'])) {
+            $host = $_POST['host'];
+        } else {
+            $host = 'localhost';
+        }
+
+        if (isset($_POST['port'])) {
+            $port = $_POST['port'];
+        }
+
+        $db_list = array ('mysql' =>'MySQL',
+                          'ibase' =>'InterBase',
+                          'mssql' =>'Microsoft SQL Server',
+                          'msql'  =>'Mini SQL',
+                          'oci8'  =>'Oracle 7/8/8i',
+                          'odbc'  =>'ODBC',
+                          'pgsql' =>'PostgreSQL',
+                          'sybase'=>'SyBase',
+                          'fbsql' =>'FrontBase',
+                          'ifx'   =>'Informix');
+
+        $form = & new PHPWS_Form;
+        $form->addHidden('command', 'make_connection');
+        
+        $form->addSelect('type', $db_list);
+        $form->setMatch('type', $type);
+        $form->setLabel('type', _('Type'));
+
+        $form->addText('db_name', $name);
+        $form->setLabel('db_name', _('Database name'));
+
+        $form->addText('username', $username);
+        $form->setLabel('username', _('User name'));
+
+        $form->addPassword('password', $password);
+        $form->setLabel('password', _('Password'));
+
+        $form->addText('host', $host);
+        $form->setLabel('host', _('Host'));
+
+        $form->addText('port', $port);
+        $form->setLabel('port', _('Port'));
+        $form->addSubmit(_('Connect'));
+        $template = $form->getTemplate();
+
+        $template['DIRECTIONS'] = _('Please enter the connect information for the database you wish to convert from.');
+        if (isset($message)) {
+            $template['MESSAGE'] = $message;
+        }
+
+        $content = PHPWS_Template::process($template, '', 'convert/templates/database.tpl', TRUE);
+
         $this->show($content);
     }
 
-    function convertLinkTpl($info_file)
+    function convertLinkTpl($info_file, $mod_dir)
     {
         $convert_info = parse_ini_file($info_file);
-        $link = '<a href="#">Test</a>';
+        $link = sprintf('<a href="index.php?command=convert&amp;package=%s">%s</a>', $mod_dir, _('Convert!'));
         $tpl['TITLE'] = $convert_info['title'];
         $tpl['DESCRIPTION'] = $convert_info['description'];
         $tpl['LINK']    = $link;
@@ -102,7 +230,7 @@ class Convert {
         return FALSE;
     }
 
-    function loginForm()
+    function loginForm($message=NULL)
     {
         if (isset($_REQUEST['phpws_username'])) {
             $username = $_REQUEST['phpws_username'];
@@ -120,10 +248,19 @@ class Convert {
         $form->setLabel('phpws_password', _('Password'));
     
         $template = $form->getTemplate();
+        if (isset($message)) {
+            $template['MESSAGE'] = $message;
+        }
 
         $content = PHPWS_Template::process($template, '', 'convert/templates/login.tpl', TRUE);
 
         $this->show($content);
+    }
+
+    function convertPackage($package)
+    {
+
+        $this->show($package);
     }
 
 }
