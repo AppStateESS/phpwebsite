@@ -100,7 +100,7 @@ class PHPWS_DB {
         }
     }
 
-    function loadDB($dsn=NULL)
+    function loadDB($dsn=NULL, $show_error=TRUE)
     {
         if (PHPWS_DB::isConnected()) {
             PHPWS_DB::disconnect();
@@ -112,9 +112,14 @@ class PHPWS_DB {
             $GLOBALS['PEAR_DB'] = DB::connect(PHPWS_DSN);
         }
 
+        
         if (PEAR::isError($GLOBALS['PEAR_DB'])){
             PHPWS_Error::log($GLOBALS['PEAR_DB']);
-            PHPWS_Core::errorPage();
+            if ($show_error) {
+                PHPWS_Core::errorPage();
+            } else {
+                return FALSE;
+            }
         }
 
         if (defined(TABLE_PREFIX)) {
