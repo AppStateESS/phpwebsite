@@ -196,7 +196,6 @@ class Setup{
 
         $result = $db->query('CREATE DATABASE ' . Setup::getConfigSet('dbname'));
         if (PEAR::isError($result)) {
-            test($db);
             PHPWS_Error::log($db);
             $content[] = _('Unable to create the database.');
             $content[] = _('You will need to create it manually and rerun the setup.');
