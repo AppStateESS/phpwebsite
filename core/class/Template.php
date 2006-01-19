@@ -34,6 +34,10 @@ class PHPWS_Template extends HTML_Template_Sigma {
         }
     }
 
+    /**
+     * Grabs the THEME template directory unless layout is not
+     * operational
+     */
     function getTplDir($module)
     {
         if ($module == 'core') {
@@ -43,7 +47,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
         if (!class_exists('Layout')) {
             return PHPWS_SOURCE_DIR . "mod/$module/templates/";
         }
-    
+
         $theme = Layout::getThemeDir();
         return sprintf('%stemplates/%s/', $theme, $module);
     }
@@ -68,6 +72,10 @@ class PHPWS_Template extends HTML_Template_Sigma {
             return FALSE;
     }
 
+    /**
+     * returns the expected template directory based on settings in 
+     * the template.php config file and the existence of files
+     */
     function getTemplateDirectory($module, $directory=NULL)
     {
         $theme_dir  = PHPWS_Template::getTplDir($module) . $directory;
