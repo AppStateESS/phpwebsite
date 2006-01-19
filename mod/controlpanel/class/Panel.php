@@ -164,7 +164,7 @@ class PHPWS_Panel{
             $panel = CP_DEFAULT_PANEL;
         }
 
-        if (!is_file(PHPWS_Template::getTplDir($module) . $panel)){
+        if (!is_file(PHPWS_Template::getTemplateDirectory($module) . $panel)){
             $module = 'controlpanel';
             $panel = CP_DEFAULT_PANEL;
         }
