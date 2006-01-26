@@ -357,6 +357,7 @@ class User_Form {
 
         $form->addHidden('module', 'users');
         $form->addText('username', $user->getUsername());
+        $form->addText('display_name', $user->display_name);
         $form->addPassword('password1');
         $form->addPassword('password2');
         $form->addText('email', $user->getEmail());
@@ -364,6 +365,7 @@ class User_Form {
 
         $form->setLabel('email', _('Email Address'));
         $form->setLabel('username', _('Username'));
+        $form->setLabel('display_name', _('Display name'));
         $form->setLabel('password1', _('Password'));
 
         if (isset($tpl))
