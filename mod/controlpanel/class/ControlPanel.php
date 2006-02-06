@@ -116,6 +116,7 @@ class PHPWS_ControlPanel {
 
     function getAllLinks()
     {
+        PHPWS_Core::initModClass('controlpanel', 'Link.php');
         $allLinks = NULL;
 
         // This session prevents the DB query and link
