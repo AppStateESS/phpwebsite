@@ -276,13 +276,39 @@ class Convert {
     {
         $filename = sprintf('convert/modules/%s/convert.php', $package);
         if (!is_file($filename)) {
-            echo 'not a convert file';
+            $this->show(_('Not a convert file.'));
+            return;
         }
             
         include $filename;
         $result = convert();
 
         $this->show($result);
+    }
+
+    function removeConvert($name)
+    {
+        $db = & new PHPWS_DB('converted');
+        $db->addWhere('convert_name', $name);
+        return $db->delete();
+    }
+
+    function addConvert($name)
+    {
+        $db = & new PHPWS_DB('converted');
+        $db->addValue('convert_name', $name);
+        return $db->insert();
+    }
+
+    function isConverted($name) {
+        $db = & new PHPWS_DB('converted');
+        $db->addWhere('convert_name', $name);
+        $result = $db->select();
+        if (PEAR::isError($result)) {
+            return $result;
+        } else  {
+            return !empty($result);
+        }
     }
 
 }
