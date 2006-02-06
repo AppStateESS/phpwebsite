@@ -1027,7 +1027,7 @@ class PHPWS_DB {
             }
         }
         PHPWS_DB::touchDB();
-        if (isset($type)) {
+        if (isset($type) && is_string($type)) {
             $type = strtolower($type);
         }
 
