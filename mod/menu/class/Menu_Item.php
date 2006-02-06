@@ -156,7 +156,6 @@ class Menu_Item {
 
         $db->setIndexBy('id');
 
-        //$db->setTestMode();
         $result = $db->getObjects('menu_link');
 
         if (empty($result)) {
