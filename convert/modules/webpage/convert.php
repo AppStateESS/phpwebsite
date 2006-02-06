@@ -2,6 +2,10 @@
 
 function convert()
 {
+    if (Convert::isConverted('webpage')) {
+        return _('Web pages have already been converted.');
+    }
+
 
     $db = Convert::getSourceDB('mod_pagemaster_pages');
     
@@ -18,7 +22,7 @@ function convert()
     }
    
     if (!$batch->load()) {
-        $content[] = 'Batch previously run.';
+        $content[] = _('Batch previously run.');
     } else {
         $result = runBatch($db, $batch);
     }
@@ -37,6 +41,7 @@ function convert()
         $content[] =  $batch->continueLink();
     } else {
         $batch->clear();
+        Convert::addConvert('webpage');
         $content[] =  _('All done!');
         $content[] = '<a href="index.php">' . _('Go back to main menu.') . '</a>';
     }
@@ -81,13 +86,26 @@ function convertPage($page)
     $val['updated_user'] = $page['updated_username'];
     $val['frontpage']    = (int)$page['mainpage'];
 
+    $key = & new Key;
+    $key->setItemId($val['id']);
+    $key->setModule('webpage');
+    $key->setItemName('volume');
+    $key->setEditPermission('edit_page');
+    $key->setTitle($val['title']);
+
+    $url = 'index.php?module=webpage&amp;id=' . $val['id'];
+
+    $key->setUrl($url);
+    $result = $key->save();
+    $val['key_id'] = $key->id;
+
+
     $db->addValue($val);
     $result = $db->insert(FALSE);
     
     if (PEAR::isError($result)) {
         return FALSE;
     }
-    $db->disconnect();
 
     convertSection($page['section_order'], $val['id'], $val['title']);
 }
