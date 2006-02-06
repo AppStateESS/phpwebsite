@@ -67,7 +67,7 @@ function &getBatch(&$db)
     $batch = & new Batches('convert_fatcat');
     $total_categories = $db->count();
     $batch->setTotalItems($total_categories);
-    $batch->setBatchSet(8);
+    $batch->setBatchSet(10);
     return $batch;
 }
 
