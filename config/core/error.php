@@ -15,6 +15,7 @@ $errors[PHPWS_DIR_CANT_CREATE]       = _('Unable to create file directory.');
 $errors[PHPWS_WRONG_CLASS]           = _('Unknown or incorrect class.');
 $errors[PHPWS_UNKNOWN_MODULE]        = _('Unknown module.');
 $errors[PHPWS_CLASS_VARS]            = _('Unable to derive class variables.');
+$errors[PHPWS_NO_FUNCTION]           = _('Function name not found.');
 
 // Database.php 100 - 199
 $errors[PHPWS_DB_ERROR_TABLE]        = _('Table name not set.');
@@ -117,4 +118,7 @@ $errors[SETTINGS_MISSING_FILE]        = _('Unable to find your module\'s setting
 // Key.php 1400 - 1499
 $errors[KEY_NOT_FOUND]                = _('Key not found.');
 $errors[KEY_PERM_COLUMN_MISSING]      = _('Edit permission column does not exist.'); 
+
+// Batch.php 1500-1599
+
 ?>

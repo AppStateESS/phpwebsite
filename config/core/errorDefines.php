@@ -16,6 +16,7 @@ define('PHPWS_DIR_CANT_CREATE',      -11);
 define('PHPWS_WRONG_CLASS',          -12);
 define('PHPWS_UNKNOWN_MODULE',       -13);
 define('PHPWS_CLASS_VARS',           -14);
+define('PHPWS_NO_FUNCTION',          -15);
 
 /*********** Database.php ***************/
 
