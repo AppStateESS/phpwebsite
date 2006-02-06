@@ -469,6 +469,7 @@ class PHPWS_DB {
 
     function addWhere($column, $value=NULL, $operator=NULL, $conj=NULL, $group=NULL, $join=FALSE)
     {
+        PHPWS_DB::touchDB();
         $where = & new PHPWS_DB_Where;
         $where->setJoin($join);
         $operator = strtoupper($operator);
@@ -911,7 +912,7 @@ class PHPWS_DB {
         return $GLOBALS['PEAR_DB']->last_query;
     }
 
-    function insert()
+    function insert($auto_index=TRUE)
     {
         $maxID = TRUE;
         $table = $this->getTable();
@@ -925,13 +926,15 @@ class PHPWS_DB {
             return PHPWS_Error::get(PHPWS_DB_NO_VALUES, 'core', 'PHPWS_DB::insert');
         }
 
-        $idColumn = $this->getIndex();
+        if ($auto_index) {
+            $idColumn = $this->getIndex();
 
-        if (PEAR::isError($idColumn)) {
-            return $idColumn;
-        } elseif(isset($idColumn)) {
-            $maxID = $GLOBALS['PEAR_DB']->nextId($table);
-            $values[$idColumn] = $maxID;
+            if (PEAR::isError($idColumn)) {
+                return $idColumn;
+            } elseif(isset($idColumn)) {
+                $maxID = $GLOBALS['PEAR_DB']->nextId($table);
+                $values[$idColumn] = $maxID;
+            }
         }
 
         foreach ($values as $index=>$entry){
@@ -1390,6 +1393,7 @@ class PHPWS_DB {
     {
         if (PHPWS_DB::isConnected()) {
             $GLOBALS['PEAR_DB']->disconnect();
+            unset($GLOBALS['PEAR_DB']);
         }
     }
 
