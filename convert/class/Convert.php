@@ -205,7 +205,12 @@ class Convert {
     function convertLinkTpl($info_file, $mod_dir)
     {
         $convert_info = parse_ini_file($info_file);
-        $link = sprintf('<a href="index.php?command=convert&amp;package=%s">%s</a>', $mod_dir, _('Convert!'));
+        if (isset($convert_info['convert']) && Convert::isConverted($convert_info['convert'])) {
+            $link = _('Converted');
+        } else {
+            $link = sprintf('<a href="index.php?command=convert&amp;package=%s">%s</a>', $mod_dir, _('Convert!'));
+        }
+
         $tpl['TITLE'] = $convert_info['title'];
         $tpl['DESCRIPTION'] = $convert_info['description'];
         $tpl['LINK']    = $link;
