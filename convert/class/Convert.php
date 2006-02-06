@@ -31,7 +31,7 @@ class Convert {
 
         case 'make_connection':
             if ($this->checkConnection()) {
-
+                $this->main();
             } else {
                 $this->establishConnection(_('Unable to log in to the database. Please check your settings.'));
             }
@@ -58,20 +58,33 @@ class Convert {
             $dbhost = $_POST['host'];
         }
 
+        $dbname = $_POST['db_name'];
         $dbport = $_POST['port'];
 
-        $dsn =  $dbtype . '://' . $dbuser . ':' . $dbpass . '@' . $dbhost;
+        $dsn =  $dbtype . '://' . $dbuser . ':' . $dbpass . '@' . $dbhost . '/' . $dbname;
         if (!empty($dbport)) {
             $dsn .= ':' . $dbport;
         }
+
         $db = & DB::connect($dsn);
 
         if (PEAR::isError($db)) {
             return FALSE;
         } else {
+            $_SESSION['OTHER_DATABASE'] = $dsn;
             return TRUE;
         }
 
+    }
+
+    function &getSourceDB($table)
+    {
+        $dsn = $_SESSION['OTHER_DATABASE'];
+
+        $db = & new PHPWS_DB($table);
+        $db->loadDB($dsn);
+        $db->setTable($table);
+        return $db;
     }
 
     function showPackages()
@@ -204,8 +217,10 @@ class Convert {
             $title = _('phpWebSite 1.0.0 Convert');
         }
 
-        $setupData['TITLE']   = $title;
-        $setupData['CONTENT'] = $content;
+        $setupData['MAIN_LINK'] = sprintf('<a href="index.php?command=default">%s</a>', _('Main page'));
+
+        $setupData['TITLE']     = $title;
+        $setupData['CONTENT']   = $content;
         echo PHPWS_Template::process($setupData, '', 'convert/templates/convert.tpl', TRUE);
     }
 
@@ -259,8 +274,15 @@ class Convert {
 
     function convertPackage($package)
     {
+        $filename = sprintf('convert/modules/%s/convert.php', $package);
+        if (!is_file($filename)) {
+            echo 'not a convert file';
+        }
+            
+        include $filename;
+        $result = convert();
 
-        $this->show($package);
+        $this->show($result);
     }
 
 }
