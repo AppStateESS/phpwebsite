@@ -30,6 +30,7 @@ class Webpage_Admin {
         }
 
         $panel = Webpage_admin::cpanel();
+        $panel->enableSecure();
 
         if (isset($_REQUEST['wp_admin'])) {
             $command = $_REQUEST['wp_admin'];
