@@ -147,6 +147,7 @@ function convertLink($link) {
 
 function processUrl(&$val, $link)
 {
+    $link = str_replace('&amp;', '&', $link);
     if (preg_match('/PAGE_id=\d+$/U', $link)) {
         $id = (int) preg_replace('/.+PAGE_id=(\d+)$/U', '\\1', $link);
         if ($id > 0) {
