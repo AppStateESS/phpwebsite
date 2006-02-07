@@ -280,6 +280,11 @@ class Convert {
     function convertPackage($package)
     {
         $filename = sprintf('convert/modules/%s/convert.php', $package);
+        $info = translateFile('info.ini');
+        $info_file = sprintf('convert/modules/%s/%s', $package, $info);
+        $convert_info = parse_ini_file($info_file);
+
+
         if (!is_file($filename)) {
             $this->show(_('Not a convert file.'));
             return;
@@ -288,7 +293,7 @@ class Convert {
         include $filename;
         $result = convert();
 
-        $this->show($result);
+        $this->show($result, $convert_info['title']);
     }
 
     function removeConvert($name)
