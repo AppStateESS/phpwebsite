@@ -1,7 +1,20 @@
 <?php
 
+  /**
+   * Convertion file for Web Pages module
+   *
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
+   */
+
 function convert()
 {
+    if (!Convert::isConverted('webpage') && !isset($_GET['ignore_webpages'])) {
+        $content[] = _('If you are using web pages, you should convert them BEFORE menus.');
+        $content[] = sprintf('<a href="index.php?command=convert&amp;package=menu&amp;ignore_webpages=1">%s</a>', _('Click to continue anyway.'));
+        $content[] = _('Otherwise, click on the "Main page" link above.');
+        return implode('<br />', $content);
+    }
     if (!Convert::isConverted('menus')) {
         return convertMenu();
     } elseif (!Convert::isConverted('menu_links')) {
@@ -125,11 +138,35 @@ function convertLink($link) {
         $val['parent'] = 0;
     }
     $val['title']      = $link['menu_item_title'];
-    $val['url']        = $link['menu_item_url'];
+    processUrl($val, $link['menu_item_url']);
     $val['link_order'] = $link['menu_item_order'];
 
     $db->addValue($val);
     return $db->insert(FALSE);
+}
+
+function processUrl(&$val, $link)
+{
+    if (preg_match('/PAGE_id=\d+$/U', $link)) {
+        $id = (int) preg_replace('/.+PAGE_id=(\d+)$/U', '\\1', $link);
+        if ($id > 0) {
+            $db = & new PHPWS_DB('phpws_key');
+            $db->addWhere('module', 'webpage');
+            $db->addWhere('item_name', 'volume');
+            $db->addWhere('item_id', $id);
+            $db->addColumn('id');
+            $key_id = $db->select('one');
+            if (PEAR::isError($key_id)) {
+                PHPWS_Error::log($key_id);
+            } else {
+                $val['key_id'] = $key_id;
+                $val['url']    = 'index.php?module=webpage&id=' . $id;
+            }
+        }
+    } else {
+        $val['url']    = $link;
+        $val['key_id'] = 0;
+    }
 }
 
 ?>
