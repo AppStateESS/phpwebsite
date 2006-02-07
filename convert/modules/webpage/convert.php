@@ -130,10 +130,8 @@ function saveSections($sections, $volume_id, $title)
     foreach ($sections as $sec) {
         $val['id']          = $sec['id'];
         $val['volume_id']   = $volume_id;
-        if (empty($sec['title'])) {
-            $val['title']   = sprintf(_('%s - Page %s'), $title, $pages);
-        } else {
-            $val['title']   = $sec['title'];
+        if (!empty($sec['title'])) {
+            $val['title']   = strip_tags($sec['title']);
         }
         $val['content']     = $sec['text'];
         $val['page_number'] = $pages;
