@@ -51,7 +51,7 @@ class Webpage_Admin {
         } else {
             $page = & new Webpage_Page;
             $page->volume_id = $volume->id;
-            $page->_volume = $volume;
+            $page->_volume = &$volume;
         }
 
         // Determines if page panel needs creating
@@ -100,6 +100,15 @@ class Webpage_Admin {
             } else {
                 $content = $volume->viewHeader();
             }
+            break;
+
+        case 'join_page':
+            if (!isset($_REQUEST['page_id'])) {
+                PHPWS_Core::errorPage('404');
+            }
+            $volume->joinPage((int)$_REQUEST['page_id']);
+            Webpage_Admin::sendMessage( _('Page joined.'),
+                                       sprintf('edit_webpage&tab=page_%s&volume_id=%s', $page->page_number, $volume->id) );
             break;
 
         case 'delete_page':
@@ -161,6 +170,7 @@ class Webpage_Admin {
 
         case 'post_page':
             $title = sprintf(_('Administrate page: %s'), $volume->title);
+
             $result = $page->post();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);

@@ -419,6 +419,34 @@ class Webpage_Volume {
         }
     }
 
+    function joinPage($page_id)
+    {
+        if (!isset($this->_pages[$page_id])) {
+            return TRUE;
+        } else {
+            $source = $this->_pages[$page_id];
+        }
+
+        foreach ($this->_pages as $id => $page) {
+            if ($id == $page_id) {
+                break;
+            }
+        }
+        
+        $next_page = current($this->_pages);
+
+        $source->content .= '&lt;br /&gt;&lt;h2&gt;' . $next_page->title . '&lt;/h2&gt;' . $next_page->content;
+        $source->save();
+        $result = $next_page->delete();
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+        unset($this->_pages[$next_page->id]);
+    }
+
     function dropPage($page_id)
     {
         if (!isset($this->_pages[$page_id])) {

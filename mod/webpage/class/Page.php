@@ -154,6 +154,16 @@ class Webpage_Page {
                 $jsvar['LINK'] = ('Delete');
 
                 $links[] = javascript('confirm', $jsvar);
+
+                if($this->page_number < count($this->_volume->_pages)) {
+                    $jsvar['QUESTION'] = _('Are you sure you want to join this page to the next?');
+                    $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&wp_admin=join_page&page_id=%s&volume_id=%s&authkey=%s',
+                                                $this->id, $this->volume_id, Current_User::getAuthKey());
+                    $jsvar['LINK'] = ('Join next');
+                    
+                    $links[] = javascript('confirm', $jsvar);
+                }
+
             }
 
             $template['ADMIN_LINKS'] = implode(' | ', $links);
@@ -220,7 +230,26 @@ class Webpage_Page {
     {
         $db = & new PHPWS_DB('webpage_page');
         $db->addWhere('id', $this->id);
-        return $db->delete();
+
+        $result = $db->delete();
+
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        $db->reset();
+        $sql = sprintf('UPDATE webpage_page 
+                        SET page_number = page_number - 1 
+                        WHERE volume_id = %s 
+                        AND page_number > %s',
+                       $this->volume_id, $this->page_number);
+
+        $result = $db->query($sql);
+        if (PEAR::isError($result)) {
+            return $result;
+        } else {
+            return TRUE;
+        }
     }
 
     function save()
