@@ -9,12 +9,13 @@
 
 function convert()
 {
-    if (!Convert::isConverted('webpage') && !isset($_GET['ignore_webpages'])) {
-        $content[] = _('If you are using web pages, you should convert them BEFORE menus.');
-        $content[] = sprintf('<a href="index.php?command=convert&amp;package=menu&amp;ignore_webpages=1">%s</a>', _('Click to continue anyway.'));
+    if (!Convert::isConverted('webpage') && !isset($_GET['ignore'])) {
+        $content[] = _('Any content modules using Menu Manager should be converted BEFORE continuing..');
+        $content[] = sprintf('<a href="index.php?command=convert&amp;package=menu&amp;ignore=1">%s</a>', _('Click to continue anyway.'));
         $content[] = _('Otherwise, click on the "Main page" link above.');
         return implode('<br />', $content);
     }
+
     if (!Convert::isConverted('menus')) {
         return convertMenu();
     } elseif (!Convert::isConverted('menu_links')) {
