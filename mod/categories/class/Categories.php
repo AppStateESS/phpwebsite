@@ -373,11 +373,13 @@ class Categories{
         return $content;
     }
 
-    function getModuleListing($cat_id)
+    function getModuleListing($cat_id=NULL)
     {
         PHPWS_Core::initCoreClass('Module.php');
         $db = & new PHPWS_DB('category_items');
-        $db->addWhere('cat_id' , (int)$cat_id);
+        if (isset($cat_id)) {
+            $db->addWhere('cat_id' , (int)$cat_id);
+        }
         $db->addColumn('key_id');
 
         $result = $db->select('col');

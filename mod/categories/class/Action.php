@@ -317,7 +317,7 @@ class Categories_Action {
         if (!empty($module)) {
             PHPWS_Core::initCoreClass('Module.php');
             $oMod = & new PHPWS_Module($module);
-        }
+        } 
 
         if (!isset($id)) {
             $content = Categories::getCategoryList($module);
@@ -335,6 +335,13 @@ class Categories_Action {
                 $content = Categories::listModuleItems($category);
             }
         }
+        if (isset($category)) {
+            $subtpl = Categories_Action::moduleSelect($category->getId());
+        } else {
+            $subtpl = Categories_Action::moduleSelect();
+        }
+
+        $template = array_merge($subtpl, $template);
 
         $family_list = Categories::cookieCrumb($category, $module);
 
@@ -345,6 +352,45 @@ class Categories_Action {
     }
 
 
+    function moduleSelect($category=NULL)
+    {
+        $db = & new PHPWS_DB('category_items');
+
+        if (isset($category)) {
+            $db->addWhere('cat_id', $category);
+            $mod_list = Categories::getModuleListing($category);
+        } else {
+            $mod_list = Categories::getModuleListing();
+        }
+
+        $all_no = $db->count();
+
+        if (!empty($mod_list)) {
+            array_unshift($mod_list, sprintf(_('All - %s items'), $all_no));
+        } else {
+            $mod_list[0] = sprintf(_('All - %s items'), $all_no);
+        }
+
+        $form = & new PHPWS_Form;
+        $form->setMethod('get');
+        $form->addHidden('module', 'categories');
+        $form->addHidden('action', 'view');
+
+        if ($category) {
+            $form->addHidden('id', $category);
+        }
+
+        $form->addSelect('ref_mod', $mod_list);
+
+        if (isset($_REQUEST['ref_mod'])) {
+            $form->setMatch('ref_mod', $_REQUEST['ref_mod']);
+        }
+
+        $form->addSubmit('submit', _('View Module'));
+
+        return $form->getTemplate();
+    }
+
     /**
      * Listing of all items within a category
      */
@@ -354,32 +400,7 @@ class Categories_Action {
         PHPWS_Core::initCoreClass('DBPager.php');
 
         $pageTags['TITLE_LABEL'] = _('Item Title');
-
-        $mod_list = Categories::getModuleListing($category->getId());    
-
-        if (!empty($mod_list)) {
-            array_unshift($mod_list, _('All'));
-        } else {
-            $mod_list[0] = _('All');
-        }
-
-
-        $form = & new PHPWS_Form;
-        $form->setMethod('get');
-        $form->addHidden('module', 'categories');
-        $form->addHidden('action', 'view');
-        $form->addHidden('id', $category->getId());
-        $form->addSelect('ref_mod', $mod_list);
-
-        if (isset($_REQUEST['ref_mod'])) {
-            $form->setMatch('ref_mod', $_REQUEST['ref_mod']);
-        }
-
-        $form->addSubmit('submit', _('View Module'));
-
-        $form_tpl = $form->getTemplate();
-
-        $pageTags['MODULE_LIST'] = implode('', $form_tpl);
+        $pageTags['CREATE_DATE_LABEL'] = _('Creation date');
 
         $pager = & new DBPager('phpws_key', 'Key');
         $pager->addWhere('id', 'category_items.key_id');
@@ -393,6 +414,7 @@ class Categories_Action {
         $pager->addPageTags($pageTags);
         $pager->addToggle('class="bgcolor2"');
         $pager->addRowTags('getTplTags');
+        $pager->setSearch('title');
         $content = $pager->get();
 
         if (empty($content)) {
@@ -434,8 +456,6 @@ class Categories_Action {
         $content = Categories::showForm($key, TRUE);
         return $content;
     }
-
-
 }
 
 ?>
