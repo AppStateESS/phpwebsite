@@ -1,5 +1,12 @@
 <?php
 
+  /**
+   * Convertion file for Webpage module
+   *
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
+   */
+
 function convert()
 {
     if (Convert::isConverted('webpage')) {
@@ -25,11 +32,10 @@ function convert()
         $content[] = _('Batch previously run.');
     } else {
         $result = runBatch($db, $batch);
-    }
-
-    if (is_array($result)) {
-        $content[] = _('Some errors occurred when trying to convert the following pages:');
-        $content[] = '<ul><li>' . implode('</li><li>', $result) . '</li></ul>';
+        if (is_array($result)) {
+            $content[] = _('Some errors occurred when trying to convert the following pages:');
+            $content[] = '<ul><li>' . implode('</li><li>', $result) . '</li></ul>';
+        }
     }
 
     $content[] = sprintf('%s&#37; done<br>', $batch->percentDone());
@@ -40,6 +46,7 @@ function convert()
     if (!$batch->isFinished()) {
         $content[] =  $batch->continueLink();
     } else {
+        createSeqTables();
         $batch->clear();
         Convert::addConvert('webpage');
         $content[] =  _('All done!');
@@ -155,6 +162,15 @@ function saveSections($sections, $volume_id, $title)
         $db->reset();
     }
     $db->disconnect();
+}
+
+function createSeqTables()
+{
+    $db1 = new PHPWS_DB('webpage_volume');
+    $result = $db1->updateSequenceTable();
+
+    $db2 = new PHPWS_DB('webpage_page');
+    $result = $db2->updateSequenceTable();
 }
 
 ?>

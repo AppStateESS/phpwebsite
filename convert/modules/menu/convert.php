@@ -1,7 +1,7 @@
 <?php
 
   /**
-   * Convertion file for Web Pages module
+   * Conversion file for Menu module
    *
    * @author Matthew McNaney <mcnaney at gmail dot com>
    * @version $Id$
@@ -98,6 +98,7 @@ function convertLinks()
     if (!$batch->isFinished()) {
         $content[] =  $batch->continueLink();
     } else {
+        createSeqTables();
         $batch->clear();
         $content[] =  _('Finished converting links.');
         $content[] = '<a href="index.php">' . _('Go back to main menu.') . '</a>';
@@ -169,6 +170,16 @@ function processUrl(&$val, $link)
         $val['url']    = $link;
         $val['key_id'] = 0;
     }
+}
+
+function createSeqTables()
+{
+    $db1 = new PHPWS_DB('menu_links');
+    $result = $db1->updateSequenceTable();
+
+    $db2 = new PHPWS_DB('menus');
+    $result = $db2->updateSequenceTable();
+
 }
 
 ?>

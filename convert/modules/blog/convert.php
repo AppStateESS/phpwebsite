@@ -1,5 +1,14 @@
 <?php
 
+  /**
+   * Blog conversion file
+   *
+   * Transfers announcement modules items to blog
+   *
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
+   */
+
 function convert()
 {
     if (Convert::isConverted('blog')) {
@@ -38,6 +47,7 @@ function convert()
     if (!$batch->isFinished()) {
         $content[] =  $batch->continueLink();
     } else {
+        createSeqTable();
         $batch->clear();
         Convert::addConvert('blog');
         $content[] =  _('All done!');
@@ -120,5 +130,12 @@ function convertAnnouncement($entry)
     }
 
 }
+
+function createSeqTable()
+{
+    $db = new PHPWS_DB('blog_entries');
+    $result = $db->updateSequenceTable();
+}
+
 
 ?>

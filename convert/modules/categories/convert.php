@@ -1,5 +1,14 @@
 <?php
 
+  /**
+   * Category conversion file
+   *
+   * Transfers fatcat stuff to categories
+   *
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
+   */
+
 function convert()
 {
 
@@ -69,9 +78,9 @@ function convertItems()
 
     $batch = & new Batches('convert_category_items');
     $total_items = $db->count();
-    echo $total_items;
+
     $batch->setTotalItems($total_items);
-    $batch->setBatchSet(20);
+    $batch->setBatchSet(30);
 
     if (isset($_REQUEST['reset_batch'])) {
         $batch->clear();
