@@ -1846,18 +1846,26 @@ class PHPWS_DB {
 
     function updateSequenceTable()
     {
-        $seq_table = $this->getTable() . '_seq';
-
-        if (!$this->isTable($seq_table)) {
-            $GLOBALS['PEAR_DB']->nextId($this->getTable());
-        }
-
         $this->addColumn('id', 'max');
 
         $max_id = $this->select('one');
-        $seq = & new PHPWS_DB($seq_table);
-        $seq->addValue('id', $max_id);
-        return $seq->update();
+
+        if (PEAR::isError($max_id)) {
+            return $max_id;
+        }
+
+        if ($max_id > 0) {
+            $seq_table = $this->getTable() . '_seq';
+            if (!$this->isTable($seq_table)) {
+                $GLOBALS['PEAR_DB']->nextId($this->getTable());
+            }
+
+            $seq = & new PHPWS_DB($seq_table);
+            $seq->addValue('id', $max_id);
+            return $seq->update();
+        }
+
+        return TRUE;
     }
 }
 
