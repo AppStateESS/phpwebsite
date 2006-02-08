@@ -394,14 +394,16 @@ class Key {
     {
         $module_names = PHPWS_Core::getModuleNames();
 
-        $tpl['ID']      = $this->id;
-        $tpl['MODULE']  = $module_names[$this->module];
-        $tpl['ITEM_ID'] = $this->item_id;
-        $tpl['TITLE']   = $this->title;
-        $tpl['URL']     = $this->getUrl();
-        $tpl['SUMMARY'] = $this->summary;
-        $tpl['CREATOR'] = $this->creator;
-        $tpl['UPDATER'] = $this->updater;
+        $tpl['ID']          = $this->id;
+        $tpl['MODULE']      = $module_names[$this->module];
+        $tpl['ITEM_ID']     = $this->item_id;
+        $tpl['TITLE']       = $this->title;
+        $tpl['URL']         = $this->getUrl();
+        $tpl['SUMMARY']     = $this->summary;
+        $tpl['CREATOR']     = $this->creator;
+        $tpl['UPDATER']     = $this->updater;
+        $tpl['CREATE_DATE'] = $this->getCreateDate();
+        $tpl['UPDATE_DATE'] = $this->getUpdateDate();
         return $tpl;
     }
 
