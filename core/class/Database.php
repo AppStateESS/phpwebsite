@@ -140,7 +140,7 @@ class PHPWS_DB {
         PHPWS_Core::log($sql, 'db.log');
     }
 
-    function query($sql, $prefix=FALSE)
+    function query($sql, $prefix=TRUE)
     {
         if (!empty($this->_test_mode)) {
             exit($sql);
@@ -1844,6 +1844,21 @@ class PHPWS_DB {
         return $sql;
     }
 
+    function updateSequenceTable()
+    {
+        $seq_table = $this->getTable() . '_seq';
+
+        if (!$this->isTable($seq_table)) {
+            $GLOBALS['PEAR_DB']->nextId($this->getTable());
+        }
+
+        $this->addColumn('id', 'max');
+
+        $max_id = $this->select('one');
+        $seq = & new PHPWS_DB($seq_table);
+        $seq->addValue('id', $max_id);
+        return $seq->update();
+    }
 }
 
 class PHPWS_DB_Where {
@@ -1891,6 +1906,7 @@ class PHPWS_DB_Where {
     {
         $this->table = $table;
     }
+    
 
     function setConj($conj)
     {
@@ -1944,7 +1960,6 @@ class PHPWS_DB_Where {
         $operator = &$this->operator;
         return sprintf('%s %s %s', $column, $operator, $value);
     }
-
 }
 
 
