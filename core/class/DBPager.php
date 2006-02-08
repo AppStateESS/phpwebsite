@@ -344,7 +344,7 @@ class DBPager {
 
         if (!empty($this->search) && isset($this->searchColumn)){
             foreach ($this->searchColumn as $column_name) {
-                $this->addWhere($column_name, $this->search, 'REGEXP', 'OR');
+                $this->addWhere($column_name, $this->search, 'REGEXP');
             }
         }
 
