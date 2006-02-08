@@ -89,6 +89,19 @@ function convertAnnouncement($entry)
     $val['author']  = $entry['userCreated'];
     $val['date']    = strtotime($entry['dateCreated']);
 
+    if (!empty($entry['image'])) {
+        $image = unserialize($entry['image']);
+        if (is_array($image) && isset($image['name'])) {
+            $image_link = sprintf('<img src="%s" width="%s" height="%s" alt="%s" title="%s" />',
+                                  'images/blog/' . $image['name'],
+                                  $image['width'],
+                                  $image['height'],
+                                  $image['alt'],
+                                  $image['alt']);
+            $val['entry'] .= $image_link;
+        }
+    }
+
     $key = & new Key;
     $key->setItemId($val['id']);
     $key->setModule('blog');
