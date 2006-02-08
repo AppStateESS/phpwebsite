@@ -1,8 +1,17 @@
-<div class="bgcolor2 padded"><h3>{TITLE_LABEL}&#160;{TITLE_SORT}</h3></div>
-
+<table cellpadding="2" width="100%">
+  <tr>
+    <th>{TITLE_LABEL}&#160;{TITLE_SORT}</th>
+    <th>{CREATE_DATE_LABEL}&#160;{CREATE_DATE_SORT}</th>
+  </tr>
 <!-- BEGIN listrows -->
-<div style="padding : 5px" {TOGGLE}>{URL}<br >{SUMMARY}</div>
+   <tr {TOGGLE}>
+     <td>{URL}
+         <br >{SUMMARY}
+     </td>
+     <td>{CREATE_DATE}</td>
+   </tr>
 <!-- END listrows -->
+</table>
 
 <br />
 <div class="align-center">
@@ -13,4 +22,3 @@
 <div class="align-right">
 {SEARCH}
 </div>
-{MODULE_LIST}
