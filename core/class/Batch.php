@@ -114,7 +114,7 @@ class Batches {
     function getAddress()
     {
         $url = PHPWS_Core::getCurrentUrl();
-        $url = preg_replace('/&batch=\d+/Ui', '', $url);
+        $url = preg_replace('/&batch=\d+$/Ui', '', $url);
         $new_url = $url . '&amp;batch=' . $this->current_batch;
 
         return $new_url;
@@ -127,6 +127,7 @@ class Batches {
         }
 
         $url = $this->getAddress();
+
         return sprintf('<a href="%s">%s</a>', $url, $continue_link);
     }
 
