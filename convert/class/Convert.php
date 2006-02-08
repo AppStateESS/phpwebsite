@@ -282,6 +282,10 @@ class Convert {
         $filename = sprintf('convert/modules/%s/convert.php', $package);
         $info = translateFile('info.ini');
         $info_file = sprintf('convert/modules/%s/%s', $package, $info);
+        if (!is_file($info_file)) {
+            $this->show(sprintf(_('Could not find info file. File : %s'), $info_file), _('Error'));
+            return;
+        }
         $convert_info = parse_ini_file($info_file);
 
 
