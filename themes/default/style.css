@@ -271,6 +271,15 @@ table.form-table td.label {
     margin : 0;
 }
 
+img.float-left {
+    float : left;
+    margin-right : 10px;
+}
+
+img.float-right {
+    float : right;
+    margin-left : 10px;
+}
 
 div.menu-link {
 padding : 5px 0 0 0;
@@ -291,4 +300,8 @@ margin : 4px;
 
 div.category-menu-bar {
   margin  : 3px 0 3px 0;             
+}
+
+ul.simple-cat-list {
+   margin-left : 10px;
 }
