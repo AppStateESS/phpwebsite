@@ -219,6 +219,7 @@ class Search_User {
         if (empty($phrase)) {
             return FALSE;
         }
+
         $words = explode(' ', $phrase);
 
         if (!empty($ignore)) {
@@ -227,6 +228,10 @@ class Search_User {
             if (!empty($words_removed)) {
                 $pageTags['REMOVED_LABEL'] = _('The following search words were ignored');
                 $pageTags['IGNORED_WORDS'] = implode(' ', $words_removed);
+                foreach ($words_removed as $remove) {
+                    $key = array_search($remove, $words);
+                    unset($words[$key]);
+                }
             }
         }
 
@@ -241,7 +246,6 @@ class Search_User {
         $pager->addToggle('class="bgcolor1"');
         $pager->addRowTags('getTplTags');
         $pager->addPageTags($pageTags);
-
 
         if ($module) {
             $pager->addWhere('phpws_key.module', $module);
@@ -271,8 +275,10 @@ class Search_User {
 
             $pager->addWhere('search.keywords', $keyword, 'like', 'or', 1);
         }
+        $pager->setEmptyMessage(_('Nothing found'));
         $pager->db->setGroupConj(1, 'AND');
-        $result = $pager->get(FALSE);
+        
+        $result = $pager->get();
 
         Search_Stats::record($words, $pager->total_rows, $exact_match);
 
