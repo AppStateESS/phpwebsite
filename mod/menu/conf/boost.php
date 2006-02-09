@@ -1,6 +1,6 @@
 <?php
 $proper_name  = 'Menu';
-$version      = '0.0.1';
+$version      = '0.0.2';
 $register     = FALSE; // You could also leave this blank
 $unregister   = TRUE; // Ditto
 $import_sql   = TRUE;
