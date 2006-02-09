@@ -1,4 +1,11 @@
 <?php
+  /**
+   * boost install file for users
+   *
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
+   */
+
 
 function users_install(&$content, $branchInstall=FALSE){
   PHPWS_Core::initModClass('users', 'Users.php');
