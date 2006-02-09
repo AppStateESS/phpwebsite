@@ -135,6 +135,7 @@ class Webpage_Forms {
         $pager->setLink('index.php?module=webpage&amp;tab=list');
         $pager->addPageTags($tags);
         $pager->addRowTags('rowTags');
+        $pager->addToggle(' ');
         $pager->setSearch('title');
 
         $content = $pager->get();
