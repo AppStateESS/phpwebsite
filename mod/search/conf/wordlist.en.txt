@@ -295,6 +295,7 @@ confidence
 connection
 consider
 considerable
+consist
 constant
 construction
 contact
@@ -487,6 +488,7 @@ existence
 expand
 expansive
 expect
+expectation
 experience
 experiment
 explain
@@ -982,6 +984,7 @@ observe
 obtain
 obvious
 occasion
+occasional
 occurred
 of
 off
@@ -1077,6 +1080,7 @@ please
 pleasure
 plenty
 plus
+pm
 poem
 poet
 poetry
@@ -1593,13 +1597,12 @@ watch
 water
 way
 we
-well
-were
 weapon
 weather
 week
 weight
 well
+well-run
 went
 were
 west
