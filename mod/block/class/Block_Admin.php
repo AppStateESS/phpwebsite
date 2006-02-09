@@ -68,10 +68,6 @@ class Block_Admin {
             $content = Block_Admin::edit($block);
             break;
 
-        case 'permissions':
-            Block_Admin::setPermissions($block);
-            exit();
-
         case 'delete':
             $block->kill();
             Block_Admin::sendMessage(_('Block deleted.'), 'list');
