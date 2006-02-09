@@ -15,7 +15,7 @@ class User_Action {
     {
         PHPWS_Core::initModClass('users', 'Group.php');
         $message = $content = NULL;
-
+        
         if (!Current_User::allow('users')) {
             PHPWS_User::disallow(_('Tried to perform an admin function in Users.'));
             return;
@@ -359,6 +359,7 @@ class User_Action {
 
     function popupPermission()
     {
+
         if (!isset($_REQUEST['key_id'])) {
             PHPWS_Core::goBack();
         }
@@ -366,6 +367,7 @@ class User_Action {
         $key = & new Key((int)$_REQUEST['key_id']);
 
         if (!Key::checkKey($key, FALSE)) {
+            PHPWS_Core::errorPage();
             return;
         }
 
