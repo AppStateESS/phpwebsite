@@ -180,7 +180,7 @@ class Webpage_Volume {
         $links[] = $this->getViewLink();
 
         /*
-        $vars['wp_admin'] = 'delete_webpage';
+        $vars['wp_admin'] = 'delete_wp';
         $js_vars['QUESTION'] = sprintf(_('Are you sure you want to delete %s and all its pages?'),
                                        $this->title);
         $js_vars['ADDRESS'] = PHPWS_Text::linkAddress('webpage', $vars, TRUE);
@@ -207,10 +207,11 @@ class Webpage_Volume {
         $pagedb = & new PHPWS_DB('webpage_page');
         $pagedb->addWhere('volume_id', $this->id);
         $result = $pagedb->delete();
+
         if (PEAR::isError($result)) {
             return $result;
         }
-        
+
         Key::drop($this->key_id);
 
         $this->resetDB();
@@ -345,6 +346,13 @@ class Webpage_Volume {
             $template['EDIT_HEADER'] = PHPWS_Text::secureLink(_('Edit header'), 'webpage', array('wp_admin'=>'edit_header',
                                                                                                  'volume_id' => $this->id));
         }
+
+
+        $result = Categories::getSimpleLinks($this->key_id);
+        if (!empty($result)) {
+            $template['CATEGORIES'] = implode(', ', $result);
+        }
+
         return $template;
     }
 
