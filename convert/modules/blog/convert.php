@@ -9,6 +9,8 @@
    * @version $Id$
    */
 
+PHPWS_Core::initModClass('search', 'Search.php');
+
 function convert()
 {
     if (Convert::isConverted('blog')) {
@@ -124,6 +126,12 @@ function convertAnnouncement($entry)
 
     $db->addValue($val);
     $result = $db->insert(FALSE);
+
+    $search = & new Search($key->id);
+    $search->addKeywords($val['entry']);
+    $search->addKeywords($val['title']);
+    $search->save();
+
 
     if (PEAR::isError($result)) {
         PHPWS_Error::log($result);

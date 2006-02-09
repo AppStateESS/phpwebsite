@@ -37,7 +37,7 @@ function convertCategories()
     $batch = & new Batches('convert_categories');
     $total_categories = $db->count();
     $batch->setTotalItems($total_categories);
-    $batch->setBatchSet(20);
+    $batch->setBatchSet(30);
 
     if (isset($_REQUEST['reset_batch'])) {
         $batch->clear();

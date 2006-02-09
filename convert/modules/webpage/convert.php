@@ -7,6 +7,8 @@
    * @version $Id$
    */
 
+PHPWS_Core::initModClass('search', 'Search.php');
+
 function convert()
 {
     if (Convert::isConverted('webpage')) {
@@ -114,10 +116,10 @@ function convertPage($page)
         return FALSE;
     }
 
-    convertSection($page['section_order'], $val['id'], $val['title']);
+    convertSection($page['section_order'], $val['id'], $val['title'], $key->id);
 }
 
-function convertSection($section_order, $volume_id, $title)
+function convertSection($section_order, $volume_id, $title, $key_id)
 {
     $section_order = unserialize($section_order);
 
@@ -127,14 +129,15 @@ function convertSection($section_order, $volume_id, $title)
     $sections = $db->select();
     $db->disconnect();
 
-    saveSections($sections, $volume_id, $title);
+    saveSections($sections, $volume_id, $title, $key_id);
 }
 
-function saveSections($sections, $volume_id, $title)
+function saveSections($sections, $volume_id, $title, $key_id)
 {
     $db = & new PHPWS_DB('webpage_page');
     $pages = 1;
     foreach ($sections as $sec) {
+        
         $val['id']          = $sec['id'];
         $val['volume_id']   = $volume_id;
         if (!empty($sec['title'])) {
@@ -159,6 +162,12 @@ function saveSections($sections, $volume_id, $title)
         $pages++;
         $db->addValue($val);
         $result = $db->insert(FALSE);
+        $search = & new Search($key_id);
+        $search->addKeywords($val['content']);
+        if (isset($val['title'])) {
+            $search->addKeywords($val['title']);
+        }
+        $search->save();
         $db->reset();
     }
     $db->disconnect();
