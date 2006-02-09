@@ -1,3 +1,4 @@
+<!-- BEGIN search-found -->
 <table width="100%" cellpadding="4">
   <tr>
     <th>{TITLE_LABEL} {TITLE_SORT}</th>
@@ -9,6 +10,8 @@
   </tr>
 <!-- END listrows -->
 </table>
+<!-- END search-found -->
+{EMPTY_MESSAGE}
 <hr />
 <!-- BEGIN ignored --><div class="smaller"><i>{REMOVED_LABEL}:</i> {IGNORED_WORDS}</div><!-- END ignored -->
 <br />
