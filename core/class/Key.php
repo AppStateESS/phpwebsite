@@ -414,6 +414,8 @@ class Key {
         $db->addWhere('id', $this->id);
         $result = $db->delete();
 
+        $this->unregister();
+
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             $all_is_well = FALSE;
@@ -470,12 +472,12 @@ class Key {
 
         $db->setDistinct(1);
 
-        $orig_table = $db->tables[0];
+        $source_table = $db->tables[0];
 
         if (!Current_User::isLogged()) {
-            $qwhere = sprintf(' (%s.key_id=0) OR ( phpws_key.active=1 AND phpws_key.restricted=0 ) ', $orig_table);
+            $qwhere = sprintf(' (%s.key_id=0) OR ( phpws_key.active=1 AND phpws_key.restricted=0 ) ', $source_table);
             $db->setQWhere($qwhere);
-            $db->setJoin('left', $db->tables[0], 'key_id', 'phpws_key', 'id');
+            $db->setJoin('left', $source_table, 'key_id', 'phpws_key', 'id');
             return;
         } elseif (Current_User::isUnrestricted($module)) {
             return;
@@ -485,7 +487,7 @@ class Key {
                 return;
             }
 
-            $db->setJoin('left', $db->tables[0], 'key_id', 'phpws_key', 'id');
+            $db->setJoin('left', $source_table, 'key_id', 'phpws_key', 'id');
             $db->addTable('phpws_key_view');
 
             $query = '
@@ -504,7 +506,7 @@ class Key {
    )
  )';
 
-            $qwhere = sprintf($query, $orig_table, implode(', ', $groups));
+            $qwhere = sprintf($query, $source_table, implode(', ', $groups));
             $db->setQWhere($qwhere);
             return;
         }
@@ -549,7 +551,7 @@ class Key {
                 return;
             }
 
-            $db->setJoin('left', $db->tables[0], 'key_id', 'phpws_key', 'id');
+            $db->setJoin('left', $orig_table, 'key_id', 'phpws_key', 'id');
             $db->addTable('phpws_key_edit');
 
             $query = '
@@ -645,6 +647,44 @@ class Key {
         return in_array($module, $GLOBALS['Key_Blocked_Popups']);
     }
 
+    function unregister()
+    {
+        $db = & new PHPWS_DB('phpws_key_register');
+        $db->addColumn('module');
+        $result = $db->select('col');
+        if (empty($result)) {
+            return TRUE;
+        }
+
+        foreach ($result as $module) {
+            $filename = sprintf('%smod/%s/inc/key.php', PHPWS_SOURCE_DIR, $module);
+            if (!is_file($filename)) {
+                return FALSE;
+            }
+
+            require $filename;
+
+            $func_name = $module . '_unregister';
+            if (!function_exists($func_name)) {
+                return FALSE;
+            }
+            return $func_name($this);
+        }
+    }
+
+    function registerModule($module)
+    {
+        $db = & new PHPWS_DB('phpws_key_register');
+        $db->addValue('module', $module);
+        return $db->insert();
+    }
+
+    function unregisterModule($module)
+    {
+        $db = & new PHPWS_DB('phpws_key_register');
+        $db->addWhere('module', $module);
+        return $db->delete();
+    }
 
 }
 
