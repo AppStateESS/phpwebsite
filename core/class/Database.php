@@ -1311,6 +1311,19 @@ class PHPWS_DB {
         return PHPWS_DB::query($sql);
     }
 
+    function truncateTable()
+    {
+        $table = $this->getTable();
+        if(!$table) {
+            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::truncateTable()');
+        }
+
+        $sql = "TRUNCATE TABLE $table";
+
+        return PHPWS_DB::query($sql);
+    }
+
+
     function createTable()
     {
         $table = $this->getTable();
