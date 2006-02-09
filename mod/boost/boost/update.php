@@ -19,7 +19,16 @@ function boost_update(&$content, $currentVersion)
         $db = & new PHPWS_DB;
         return $db->importFile($filename);
         break;
+
+    case version_compare($currentVersion, '1.7.1', '<'):
+        $content[] = 'Add converted table.';
+        $content[] = 'Add Key registration table.';
+        $filename = PHPWS_SOURCE_DIR . 'mod/boost/boost/update_1_7_1.sql';
+        $db = & new PHPWS_DB;
+        return $db->importFile($filename);
+        break;
     }
+
     return TRUE;
 }
 

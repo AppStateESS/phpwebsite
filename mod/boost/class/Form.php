@@ -103,6 +103,9 @@ class Boost_Form {
 
                 if ($mod->needsUpdate()) {
                     if ($mod->checkDependency()) {
+                        if ($title == 'boost') {
+                            $tpl['WARNING'] = _('Boost requires updating! You should do so before any other module!');
+                        }
                         $link_title = _('Update');
                         $link_command['action'] = 'update';
                     } else {

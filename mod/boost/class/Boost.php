@@ -616,6 +616,11 @@ class PHPWS_Boost {
 
             $selfResult = $this->registerSelfToOthers($module, $content);
         }
+        $filename = sprintf('%smod/%s/inc/key.php', PHPWS_SOURCE_DIR, $module->title);
+        if (is_file($filename)) {
+            $content[] = _('Registered to Key.');
+            Key::registerModule($module->title);
+        }
 
         $content[] = '<br />';
         return $result;
@@ -643,6 +648,12 @@ class PHPWS_Boost {
 
             $selfResult = $this->unregisterSelfToOthers($module, $content);
             $result = $this->unregisterAll($module);
+        }
+
+        $filename = sprintf('%smod/%s/inc/key.php', PHPWS_SOURCE_DIR, $module->title);
+        if (is_file($filename)) {
+            $content[] = _('Unregistered from Key.');
+            Key::unregisterModule($module->title);
         }
     
         return $result;
