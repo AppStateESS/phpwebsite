@@ -187,12 +187,19 @@ class Categories{
     /**
      * Returns an array of category links applicable to the item
      *
+     * If show_uncategorized is FALSE, then an uncategorized item
+     * will not return the uncategorized category link.
+     *
      * @author Matthew McNaney
      */
-    function getSimpleLinks($key=NULL)
+    function getSimpleLinks($key=NULL, $show_uncategorized=FALSE)
     {
+        $link = NULL;
+
         if (empty($key)) {
             $key = Key::getCurrent();
+        } elseif (is_numeric($key)) {
+            $key = & new Key($key);
         }
 
         if (!$key->id) {
@@ -206,6 +213,9 @@ class Categories{
         }
 
         foreach ($cat_result as $cat){
+            if (!$cat->id && !$show_uncategorized) {
+                continue;
+            }
             $link[] = $cat->getViewLink($key->module);
         }
 
