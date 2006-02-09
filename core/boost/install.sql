@@ -87,3 +87,11 @@ CREATE TABLE phpws_key_edit (
   key_id int(11) NOT NULL default '0',
   group_id int(11) NOT NULL default '0'
 );
+
+CREATE TABLE phpws_key_register (
+  module varchar(40) NOT NULL default ''
+);
+
+CREATE TABLE converted (
+  convert_name varchar(30) NOT NULL default ''
+);
