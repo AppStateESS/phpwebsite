@@ -392,6 +392,9 @@ class PHPWS_DB {
 
     function getTable($format=TRUE, $prefix=TRUE)
     {
+        if (empty($this->tables)) {
+            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::getTable');
+        }
         if ($format == TRUE) {
             if ($prefix == TRUE) {
                 array_walk($this->tables, '_add_tbl_prefix', PHPWS_DB::getPrefix());
