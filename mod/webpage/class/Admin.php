@@ -227,12 +227,15 @@ class Webpage_Admin {
             PHPWS_Core::goBack();
             break;
             
-
-        case 'delete_webpage':
+            
+        case 'delete_wp':
+            // deletes an entire volume, coming from list page
             if (!Current_User::authorized('webpage', 'delete_page')) {
                 Current_User::disallow();
+                return;
             }
-            $result = $volume->delete();
+
+            $result = Webpage_Admin::deleteWebpages();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
                 $title = _('Error');
@@ -240,6 +243,7 @@ class Webpage_Admin {
             } else {
                 PHPWS_Core::goBack();
             }
+
             break;
 
         case 'activate':
@@ -354,6 +358,24 @@ class Webpage_Admin {
         }
     }
 
+
+    function deleteWebpages()
+    {
+        @$webpage = $_REQUEST['webpage'];
+
+        if (empty($webpage) || !is_array($webpage)) {
+            return;
+        }
+
+        foreach ($webpage as $wp) {
+            $volume = & new Webpage_Volume($wp);
+            $result = $volume->delete();
+            if (PEAR::isError($result)) {
+                return $result;
+            }
+        }
+        return TRUE;
+    }
 }
 
 ?>
