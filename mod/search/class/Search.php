@@ -90,7 +90,7 @@ class Search {
     {
         // can't use strip_tags because we need the spaces
         $text = preg_replace('/(<|&lt;).*(>|&gt;)/sUi', ' ', $text);
-
+        $text = str_replace(' - ', ' ', $text);
         $text = strtolower($text);
         $text = preg_replace('/[^\w\-\s]/', '', $text);
         $text = preg_replace('/(-{2,}|\/)/U', ' ', $text);
