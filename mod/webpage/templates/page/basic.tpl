@@ -1,5 +1,9 @@
 <div class="box">
-  <div class="box-title"><h1>{PAGE_TITLE}</h1>{EDIT_HEADER}</div>
+  <div class="box-title">
+    <h1>{PAGE_TITLE}</h1>
+    <!-- BEGIN cat  --><div class="page-category">{CATEGORIES}</div><!-- END cat -->
+    <!-- BEGIN header --><div style="text-align : right">{EDIT_HEADER}</div><!-- END header -->
+  </div>
   <div class="box-content">
     <h2>{TITLE}</h2>
     <div class="webpage-content">{CONTENT}</div>
