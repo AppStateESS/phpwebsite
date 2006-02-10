@@ -649,6 +649,7 @@ class Key {
 
     function unregister()
     {
+        $success = TRUE;
         $db = & new PHPWS_DB('phpws_key_register');
         $db->addColumn('module');
         $result = $db->select('col');
@@ -658,6 +659,7 @@ class Key {
 
         foreach ($result as $module) {
             $filename = sprintf('%smod/%s/inc/key.php', PHPWS_SOURCE_DIR, $module);
+
             if (!is_file($filename)) {
                 return FALSE;
             }
@@ -668,8 +670,14 @@ class Key {
             if (!function_exists($func_name)) {
                 return FALSE;
             }
-            return $func_name($this);
+
+            $result = $func_name($this);
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                $success = FALSE;
+            }
         }
+        return $success;
     }
 
     function registerModule($module)
