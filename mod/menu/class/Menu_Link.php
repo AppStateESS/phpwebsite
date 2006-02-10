@@ -262,27 +262,17 @@ class Menu_Link {
     function delete($save_links=FALSE)
     {
         $db = $this->getDB();
-        $db->addWhere('parent', $this->id);
-        $result = $db->getObjects('Menu_Link');
-        if (PEAR::isError($result)) {
-            return $result;
-        }
-            
-        $db->reset();
         $db->addWhere('id', $this->id);
         $db->delete();
+        $db->reset();
 
-        if (!empty($result)) {
-            foreach ($result as $link) {
-                if ($save_links) {
-                    $link->setParent($this->parent);
-                    $link->save();
-                } else {
-                    $link->delete();
-                }
-            }
+        $db->addWhere('parent', $this->id);
+        if ($save_links) {
+            $db->addValue('parent', $this->parent);
+            return $db->update();
+        } else {
+            return $db->delete();
         }
-        
     }
 
     function moveUp()
