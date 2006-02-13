@@ -3,7 +3,7 @@
   <tr>
     <th>{TITLE_LABEL} {TITLE_SORT}</th>
     <th>{SUMMARY_LABEL}</th>
-    <th>{DISPLAY_NAME_LABEL} {DISPLAY_NAME_SORT}</th>
+    <th>{DISPLAY_NAME_LABEL}</th>
     <th>{PUBLIC_LABEL} {PUBLIC_SORT}</th>
     <th>{ADMIN_LABEL}</th>
   </tr>
