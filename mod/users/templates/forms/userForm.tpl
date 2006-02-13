@@ -10,6 +10,9 @@
   <!-- BEGIN username-error -->
   <tr><td class="user-error" colspan="2">{USERNAME_ERROR}</td></tr>
   <!-- END username-error -->
+  <tr class="bg-light">
+    <td><b>{DISPLAY_NAME_LABEL}</b></td><td>{DISPLAY_NAME}</td>
+  </tr>
   <tr>
     <td><b>{PASSWORD1_LABEL}</b></td><td>{PASSWORD1}&nbsp;{PASSWORD2}</td>
   </tr>
