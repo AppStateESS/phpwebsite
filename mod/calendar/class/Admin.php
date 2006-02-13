@@ -39,13 +39,35 @@ class Calendar_Admin {
             break;
 
         case 'create_schedule':
-            if (!Current_User::allow('calendar', 'create_schedule')) {
+            if (!Current_User::authorized('calendar', 'create_schedule')) {
                 Current_User::disallow();
             }
             $panel->setCurrentTab('calendars');
             $this->calendar->loadSchedule();
             $title = _('Create Calendar');
             $content = $this->editSchedule();
+            break;
+
+        case 'edit_schedule':
+            if (!Current_User::authorized('calendar', 'edit_schedule')) {
+                Current_User::disallow();
+            }
+            $panel->setCurrentTab('calendars');
+            $this->calendar->loadSchedule();
+            $title = _('Update Calendar');
+            $content = $this->editSchedule();
+            break;
+
+        case 'delete_schedule':
+            $this->calendar->loadSchedule();
+            $result = $this->calendar->schedule->delete();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                $message = _('An error occurred. Please check your logs.');
+            } else {
+                $message = _('Calendar deleted.');
+            }
+            $this->sendMessage($message, 'calendars');
             break;
 
         case 'post_schedule':
@@ -58,9 +80,9 @@ class Calendar_Admin {
                 $result = $this->calendar->schedule->save();
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
-                    $this->sendMessage(_('There was a problem saving your calendar.', 'calendars'));
+                    $this->sendMessage(_('There was a problem saving your calendar.'), 'calendars');
                 } else {
-                    $this->sendMessage(_('Calendar saved successfully.', 'calendars'));
+                    $this->sendMessage(_('Calendar saved successfully.'), 'calendars');
                 }
             }
             break;
@@ -179,15 +201,19 @@ class Calendar_Admin {
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('calendar', 'Schedule.php');
 
-        $page_tags['TITLE_LABEL']   = _('Title');
-        $page_tags['SUMMARY_LABEL'] = _('Summary');
-        $page_tags['PUBLIC_LABEL']  = _('Public');
+        $page_tags['TITLE_LABEL']        = _('Title');
+        $page_tags['SUMMARY_LABEL']      = _('Summary');
+        $page_tags['PUBLIC_LABEL']       = _('Public');
         $page_tags['DISPLAY_NAME_LABEL'] = _('User');
+        $page_tags['ADD_CALENDAR']       = PHPWS_Text::secureLink(_('Create calendar'), 'calendar',
+                                                                  array('aop'=>'create_schedule'));
+        $page_tags['ADMIN_LABEL']        = _('Options');
 
         $pager = & new DBPager('calendar_schedule', 'Calendar_Schedule');
         $pager->setModule('calendar');
         $pager->setTemplate('admin/calendars.tpl');
         $pager->addPageTags($page_tags);
+        $pager->addRowTags('rowTags');
         $pager->db->addWhere('user_id', 'users.id');
         $pager->db->addColumn('users.display_name');
         $pager->db->addColumn('*');

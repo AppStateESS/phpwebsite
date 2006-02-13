@@ -9,29 +9,98 @@
    */
 
 class Calendar_Schedule {
-    var $id       = 0;
-    var $key_id   = 0;
-    var $user_id  = 0;
-    var $title    = NULL;
-    var $summary  = NULL; 
-    var $public   = 0;
-    var $events   = NULL;
+    /**
+     * primary id of schedule
+     * @access public
+     * @var integer
+     */
+    var $id           = 0;
 
-    // hour the day view will start
+    /**
+     * id of key associated to schedule
+     * @access public
+     * @var integer
+     */
+    var $key_id       = 0;
+
+    /**
+     * id of user assigned to this schedule
+     * 0 = no user
+     * @access public
+     * @var integer
+     */
+    var $user_id      = 0;
+
+    /**
+     * name of schedule
+     * @access public
+     * @var string
+     */
+    var $title        = NULL;
+
+    /**
+     * short summary of function of schedule
+     * @access public
+     * @var string
+     */
+    var $summary      = NULL; 
+
+    /**
+     * indicator of public status
+     * 0 = private, 1 = viewable to public
+     * @access public
+     * @var integer
+     */
+    var $public       = 0;
+
+    /**
+     * list of events associated to this schedule
+     * @access private
+     * @var array
+     */
+    var $events       = NULL;
+
+    /**
+     * date/time of last update
+     * @access public
+     * @var integer
+     */
+    var $last_updates = 0;
+
+    /**
+     * hour the day view will start
+     * @access private
+     * @var integer
+     */
     var $day_view_start = 0;
 
-    // hour the day view will end
+    /**
+     * hour the day view will end
+     * @access private
+     * @var integer
+     */
     var $day_view_end   = 0;
 
-    // when viewing a week or month, day the week
-    // starts (0 - Sun, 1 - Mon, etc.)
+    /**
+     * when viewing a week or month, day the week
+     * starts (0 - Sun, 1 - Mon, etc.)
+     * @access private
+     * @var integer
+     */
     var $start_week     = 0;
 
-    var $display_name = NULL;
-
-    // parent calendar object
+    /**
+     * parent calendar object
+     * @access private
+     * @var object
+     */
     var $calendar     = NULL;
 
+    /**
+     * holds current error
+     * @access private
+     * @var object
+     */
     var $_error       = NULL;
     
     function Calendar_Schedule($id=NULL)
@@ -77,6 +146,12 @@ class Calendar_Schedule {
         $this->user_id = (int)$user_id;
     }
 
+    function delete()
+    {
+        $db = & new PHPWS_DB('calendar_schedule');
+        $db->addWhere('id', $this->id);
+    }
+
     function save()
     {
         $db = & new PHPWS_DB('calendar_schedule');
@@ -92,6 +167,8 @@ class Calendar_Schedule {
             $this->day_view_end = PHPWS_Settings::get('calendar', 'default_day_end');
         }
 
+        $this->last_updated = PHPWS_Time::getUTCTime();
+
         $result = $db->saveObject($this);
 
         if (PEAR::isError($result)) {
@@ -102,7 +179,6 @@ class Calendar_Schedule {
         if (PEAR::isError($result)) {
             return $result;
         }
-
 
         if ($new_key) {
             $db->saveObject($this);
@@ -197,6 +273,23 @@ class Calendar_Schedule {
         }
 
         $this->events = & $result;
+    }
+
+    function rowTags()
+    {
+        $links[] = PHPWS_Text::secureLink(_('Edit'), 'calendar',
+                                          array('aop'=>'edit_schedule',
+                                                'schedule_id'=>$this->id));
+        $js['QUESTION'] = _('Are you sure you want to delete this calendar?');
+        if (!$this->public) {
+            $js['QUESTION'] .= ' ' . _('All private, exclusive events will be deleted.');
+        }
+        $js['ADDRESS']  = sprintf('index.php?module=calendar&amp;aop=delete_schedule&amp;schedule_id=%s&amp;authkey=%s',
+                                  $this->id, Current_User::getAuthKey());
+        $js['LINK']     = _('Delete');
+        $links[] = javascript('confirm', $js);
+        $tags['ADMIN'] = implode(' | ', $links);
+        return $tags;
     }
 }
 
