@@ -102,6 +102,8 @@ class Calendar_Schedule {
      * @var object
      */
     var $_error       = NULL;
+
+    var $display_name = NULL;
     
     function Calendar_Schedule($id=NULL)
     {
@@ -277,10 +279,14 @@ class Calendar_Schedule {
 
     function rowTags()
     {
-        $links[] = PHPWS_Text::secureLink(_('Edit'), 'calendar',
+        if (Current_User::allow('calendar', 'edit_schedule', $this->id)) {
+            $links[] = $this->addEventLink();
+        } 
+
+        $links[] = PHPWS_Text::moduleLink(_('Edit'), 'calendar',
                                           array('aop'=>'edit_schedule',
                                                 'schedule_id'=>$this->id));
-        $js['QUESTION'] = _('Are you sure you want to delete this calendar?');
+            $js['QUESTION'] = _('Are you sure you want to delete this calendar?');
         if (!$this->public) {
             $js['QUESTION'] .= ' ' . _('All private, exclusive events will be deleted.');
         }
@@ -288,7 +294,27 @@ class Calendar_Schedule {
                                   $this->id, Current_User::getAuthKey());
         $js['LINK']     = _('Delete');
         $links[] = javascript('confirm', $js);
+
         $tags['ADMIN'] = implode(' | ', $links);
+
+        if ($this->public) {
+            $jspub['ADDRESS']  = PHPWS_Text::linkAddress('calendar', array('schedule_id'=>$this->id, 'aop'=>'make_private'), TRUE);
+            $jspub['QUESTION'] = _('Making this calendar private hides it from other users.\\nAre you sure you want to continue?');
+            $jspub['LINK']     = _('Yes');
+            $tags['PUBLIC'] = javascript('confirm', $jspub);
+        } else {
+            $jspub['ADDRESS']  = PHPWS_Text::linkAddress('calendar', array('schedule_id'=>$this->id, 'aop'=>'make_public'), TRUE);
+            $jspub['QUESTION'] = _("Making this calendar public reveals it to other users.\\nAre you sure you want to continue?");
+            $jspub['LINK']     = _('No');
+            $tags['PUBLIC'] = javascript('confirm', $jspub);
+        }
+
+        if (empty($this->display_name)) {
+            $tags['DISPLAY_NAME'] = _('N/A');
+        } else {
+            $tags['DISPLAY_NAME'] = $this->display_name;
+        }
+
         return $tags;
     }
 }

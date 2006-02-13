@@ -11,7 +11,7 @@
 class Calendar_Admin {
     // parent variable
     var $calendar    = NULL;
-    var $schedule    = NULL;
+    //    var $schedule    = NULL;
     var $errors      = NULL;
     var $event       = NULL;
 
@@ -30,31 +30,40 @@ class Calendar_Admin {
         } else {
             $command = $panel->getCurrentTab();
         }
+
+        switch ($command) {
+        case 'post_schedule':
+        case 'delete_schedule':
+        case 'post_event_js':
+            if (!Current_User::authorized('calendar', 'create_schedule')) {
+                Current_User::disallow();
+            }
+        }
         
         switch ($command) {
-        case 'main':
-        case 'my_calendar':
-            $content = $this->myCalendar();
-            $title = _('My Calendar');
+        case 'calendars':
+            $title = _('Calendars');
+            $content = $this->calendarListing();
             break;
 
+        case 'create_event_js':
+            $this->calendar->loadSchedule();
+            $result = $this->loadEvent();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                PHPWS_Core::errorPage();
+            }
+            $content = $this->editEventJS();
+            Layout::nakedDisplay($content);
+            exit();
+
         case 'create_schedule':
-            if (!Current_User::authorized('calendar', 'create_schedule')) {
+            if (!Current_User::allow('calendar', 'create_schedule')) {
                 Current_User::disallow();
             }
             $panel->setCurrentTab('calendars');
             $this->calendar->loadSchedule();
             $title = _('Create Calendar');
-            $content = $this->editSchedule();
-            break;
-
-        case 'edit_schedule':
-            if (!Current_User::authorized('calendar', 'edit_schedule')) {
-                Current_User::disallow();
-            }
-            $panel->setCurrentTab('calendars');
-            $this->calendar->loadSchedule();
-            $title = _('Update Calendar');
             $content = $this->editSchedule();
             break;
 
@@ -68,6 +77,51 @@ class Calendar_Admin {
                 $message = _('Calendar deleted.');
             }
             $this->sendMessage($message, 'calendars');
+            break;
+
+        case 'edit_event_js':
+            $this->calendar->loadSchedule();
+            $result = $this->loadEvent();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                PHPWS_Core::errorPage();
+            }
+            $content = $this->editEventJS();
+            Layout::nakedDisplay($content);
+            break;
+
+        case 'edit_schedule':
+            if (!Current_User::authorized('calendar', 'edit_schedule')) {
+                Current_User::disallow();
+            }
+            $panel->setCurrentTab('calendars');
+            $this->calendar->loadSchedule();
+            $title = _('Update Calendar');
+            $content = $this->editSchedule();
+            break;
+
+        case 'main':
+        case 'my_calendar':
+            $panel->setCurrentTab('my_calendar');
+            $content = $this->myCalendar();
+            $title = _('My Calendar');
+            break;
+
+        case 'post_event_js':
+            $this->loadEvent();
+
+            $result = $this->event->postEvent();
+            if (!$result) {
+                $this->calendar->loadSchedule();
+                $content = $this->editEventJS();
+                Layout::nakedDisplay($content);
+            } else {
+                $result = $this->event->save();
+                $content = javascript('alert', array('content' => _('Event saved successfully.')));
+                javascript('close_refresh', array('timeout'=> .5));
+                Layout::nakedDisplay($content);
+            }
+
             break;
 
         case 'post_schedule':
@@ -90,51 +144,7 @@ class Calendar_Admin {
         case 'events':
 
             break;
-
-        case 'calendars':
-            $title = _('Calendars');
-            $content = $this->calendarListing();
-            break;
-
-        case 'post_event_js':
-            $this->loadEvent();
-
-            $result = $this->event->postEvent();
-            if (!$result) {
-                $this->calendar->loadSchedule();
-                $content = $this->editEventJS();
-                Layout::nakedDisplay($content);
-            } else {
-                $result = $this->event->save();
-                $content = javascript('alert', array('content' => _('Event saved successfully.')));
-                javascript('close_refresh', array('timeout'=> .5));
-                Layout::nakedDisplay($content);
-            }
-
-            break;
-
-        case 'edit_event_js':
-            $this->calendar->loadSchedule();
-            $result = $this->loadEvent();
-            if (PEAR::isError($result)) {
-                PHPWS_Error::log($result);
-                PHPWS_Core::errorPage();
-            }
-            $content = $this->editEventJS();
-            Layout::nakedDisplay($content);
-            break;
-
-        case 'create_event_js':
-            $this->calendar->loadSchedule();
-            $result = $this->loadEvent();
-            if (PEAR::isError($result)) {
-                PHPWS_Error::log($result);
-                PHPWS_Core::errorPage();
-            }
-            $content = $this->editEventJS();
-            Layout::nakedDisplay($content);
-            exit();
-        }
+        } // End of admin switch
 
         $tpl['CONTENT'] = $content;
         $tpl['TITLE']   = $title;
@@ -214,13 +224,16 @@ class Calendar_Admin {
         $pager->setTemplate('admin/calendars.tpl');
         $pager->addPageTags($page_tags);
         $pager->addRowTags('rowTags');
-        $pager->db->addWhere('user_id', 'users.id');
-        $pager->db->addColumn('users.display_name');
+        $pager->db->addWhere('user_id', 0);
+        $pager->db->addWhere('user_id', 'users.id', '=', 'or');
         $pager->db->addColumn('*');
+        $pager->db->addColumn('users.display_name');
+        $pager->db->setJoin('left', 'calendar_schedule', 'user_id', 'users', 'id');
+
         $pager->initialize();
-
+ 
         $content = $pager->get();
-
+        
         return $content;
     }
 
