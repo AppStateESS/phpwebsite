@@ -694,6 +694,14 @@ class Key {
         return $db->delete();
     }
 
+    function getAllIds($module)
+    {
+        $db = & new PHPWS_DB('phpws_key');
+        $db->addColumn('id');
+        $db->addWhere('module', $module);
+        return $db->select('col');
+    }
+
 }
 
 ?>
