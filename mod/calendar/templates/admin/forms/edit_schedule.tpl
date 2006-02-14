@@ -2,10 +2,10 @@
 <table class="form-table">
 <!-- BEGIN schedule-type -->
   <tr>
-    <td class="label">{SCHEDULE_TYPE_LABEL}</td>
+    <td class="label">{SCHEDULE_TYPE}</td>
     <td>
-      {SCHEDULE_TYPE_1} {SCHEDULE_TYPE_1_LABEL}<br />
-      {SCHEDULE_TYPE_2} {SCHEDULE_TYPE_2_LABEL}
+      {PUBLIC_1} {PUBLIC_1_LABEL}<br />
+      {PUBLIC_2} {PUBLIC_2_LABEL}
     </td>
   </tr>
 <!-- END schedule-type -->
