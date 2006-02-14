@@ -206,6 +206,28 @@ class Comment_Item {
 	return $this->edit_author;
     }
 
+    function getAuthorName()
+    {
+        static $author_list;
+        $author_id = &$this->author_id;
+        if (!$author_id) {
+            return _('Anonymous');
+        } else {
+            if (!isset($author_list[$author_id])) {
+                $user = & new PHPWS_User($author_id);
+                if (empty($user->display_name)) {
+                    $author_list[$author_id] = _('Unknown');
+                    return _('Unknown');
+
+                }
+                $author_list[$author_id] = $user->display_name;
+                return $user->display_name;
+            } else {
+                return $author_list[$author_id];
+            }
+        }
+    }
+
     function getError()
     {
 	return $this->_error;
@@ -234,6 +256,12 @@ class Comment_Item {
 	$template['EDIT_LINK']	   = $this->editLink();
 	$template['DELETE_LINK']   = $this->deleteLink();
 	$template['VIEW_LINK']	   = $this->viewLink();
+        if ($this->parent) {
+            $template['RESPONSE_LABEL']  = _('In response to');
+            $template['RESPONSE_NUMBER'] = $this->responseNumber();
+            $template['RESPONSE_NAME']   = $this->responseAuthor();
+        }
+
 	if (isset($this->edit_author)) {
 	    $template['EDIT_LABEL']	   = _('Edited');
 	    $template['EDIT_AUTHOR']	   = $this->getEditAuthor();
@@ -332,9 +360,9 @@ class Comment_Item {
     function viewLink()
     {
 	$vars['user_action']   = 'view_comment';
-	$vars['cm_id']	   = $this->getId();
+	$vars['cm_id']	   = $this->id;
 
-	return '#' . PHPWS_Text::moduleLink($this->id, 'comments', $vars);
+	return PHPWS_Text::moduleLink($this->id, 'comments', $vars);
     }
 
     function delete()
@@ -346,6 +374,23 @@ class Comment_Item {
 
         $thread->decreaseCount();
         $thread->save();
+    }
+
+    function responseNumber()
+    {
+	$vars['user_action']   = 'view_comment';
+	$vars['cm_id']	   = $this->parent;
+
+	return PHPWS_Text::moduleLink($this->parent, 'comments', $vars);
+    }
+
+    function responseAuthor()
+    {
+        $comment = & new Comment_Item($this->parent);
+	$vars['user_action']   = 'view_comment';
+	$vars['cm_id']	   = $comment->id;
+
+	return PHPWS_Text::moduleLink($comment->getAuthorName(), 'comments', $vars);
     }
 
 }

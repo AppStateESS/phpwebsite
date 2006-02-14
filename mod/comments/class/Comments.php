@@ -83,6 +83,7 @@ class Comments {
 
     function userAction($command)
     {
+        $title = NULL;
         if (isset($_REQUEST['thread_id'])) {
             $thread = & new Comment_Thread($_REQUEST['thread_id']);
         } else {
@@ -119,8 +120,11 @@ class Comments {
             break;
 
         case 'view_comment':
-            $title = 'Post here?';
-            $content[] = Comments::viewComment($_REQUEST['cm_id']);
+            $comment = & new Comment_Item($_REQUEST['cm_id']);
+            $thread = & new Comment_Thread($comment->thread_id);
+            $key = & new Key($thread->key_id);
+            $title = sprintf(_('Comment from: %s'), $key->getUrl());
+            $content[] = Comments::viewComment($comment);
             break;
 
         case 'delete_comment':
@@ -215,8 +219,18 @@ class Comments {
 
     function unregister($module)
     {
+        $ids = Key::getAllIds($module);
+        if (PEAR::isError($ids)) {
+            PHPWS_Error::log($ids);
+            return FALSE;
+        }
+
+        if (empty($ids)) {
+            return TRUE;
+        }
+
         $db = & new PHPWS_DB('comments_threads');
-        $db->addWhere('module', $module);
+        $db->addWhere('key_id', $ids, 'in');
         $db->addColumn('id');
         $id_list = $db->select('col');
         if (empty($id_list)) {
@@ -227,22 +241,25 @@ class Comments {
         }
 
         $db2 = & new PHPWS_DB('comments_items');
-        foreach ($id_list as $id) {
-            $db2->addWhere('thread_id', $id, NULL, 'OR');
-        }
+        $db2->addWhere('thread_id', $id_list, 'in');
         $result = $db2->delete();
         if (PEAR::isError($result)) {
             PHPWS_Error::log($id_list);
             return FALSE;
         } else {
+            $db->reset();
+            $db->addWhere('key_id', $ids, 'in');
+            $result = $db->delete();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($id_list);
+                return FALSE;
+            }
             return TRUE;
         }
     }
 
-    function viewComment($cm_id)
+    function viewComment($comment)
     {
-        $comment = & new Comment_Item($cm_id);
-
         $tpl = $comment->getTpl();
         $thread = & new Comment_Thread($comment->getThreadId());
         $tpl['CHILDREN'] = $thread->view($comment->getId());

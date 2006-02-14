@@ -141,6 +141,27 @@ class Comment_Thread {
         return $db->saveObject($this);
     }
 
+    function delete()
+    {
+        $db = & new PHPWS_DB('comments_items');
+        $db->addWhere('thread_id', $this->id);
+        $item_result = $db->delete();
+
+        if (PEAR::isError($item_result)) {
+            return $item_result;
+        }
+
+        $db = & new PHPWS_DB('comments_threads');
+        $db->addWhere('id', $this->id);
+        $thread_result = $db->delete();
+
+        if (PEAR::isError($thread_result)) {
+            return $thread_result;
+        }
+
+        return TRUE;
+    }
+
     function _getTimePeriod()
     {
         switch ($_GET['time_period']) {
@@ -163,7 +184,7 @@ class Comment_Thread {
 
     }
 
-    function view()
+    function view($parent_id=0)
     {
         PHPWS_Core::initCoreClass('DBPager.php');
 
