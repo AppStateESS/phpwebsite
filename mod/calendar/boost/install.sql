@@ -8,7 +8,7 @@ CREATE TABLE calendar_events (
   end_time int NOT NULL default '0',
   post_start int NOT NULL default '0',
   post_end int NOT NULL default '0',
-  public smallint NOT NULL default '0',
+  public_event smallint NOT NULL default '0',
   block smallint NOT NULL default '0',
   sticky smallint NOT NULL default '0',
   PRIMARY KEY  (id)
@@ -20,16 +20,14 @@ CREATE TABLE calendar_schedule (
   user_id int NOT NULL default '0',
   title varchar(60) NOT NULL default '',
   summary text,
-  public smallint NOT NULL default '0',
+  public_schedule smallint NOT NULL default '0',
   PRIMARY KEY (id)
 );
 
-CREATE TABLE calendar_owner (
+CREATE TABLE calendar_notice (
   id int NOT NULL default '0',
-  group_id int NOT NULL default '0',
-  title varchar(60) NOT NULL default '',
+  user_id int NOT NULL default '0',
   email varchar(255) NOT NULL default '',
-  public smallint NOT NULL default '0',
   PRIMARY KEY  (id)
 );
 
