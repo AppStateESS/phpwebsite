@@ -14,14 +14,14 @@ class Calendar_Schedule {
      * @access public
      * @var integer
      */
-    var $id           = 0;
+    var $id = 0;
 
     /**
      * id of key associated to schedule
      * @access public
      * @var integer
      */
-    var $key_id       = 0;
+    var $key_id = 0;
 
     /**
      * id of user assigned to this schedule
@@ -29,21 +29,21 @@ class Calendar_Schedule {
      * @access public
      * @var integer
      */
-    var $user_id      = 0;
+    var $user_id = 0;
 
     /**
      * name of schedule
      * @access public
      * @var string
      */
-    var $title        = NULL;
+    var $title = NULL;
 
     /**
      * short summary of function of schedule
      * @access public
      * @var string
      */
-    var $summary      = NULL; 
+    var $summary = NULL; 
 
     /**
      * indicator of public status
@@ -51,14 +51,14 @@ class Calendar_Schedule {
      * @access public
      * @var integer
      */
-    var $public       = 0;
+    var $public_schedule = 0;
 
     /**
      * list of events associated to this schedule
      * @access private
      * @var array
      */
-    var $events       = NULL;
+    var $events = NULL;
 
     /**
      * date/time of last update
@@ -79,7 +79,7 @@ class Calendar_Schedule {
      * @access private
      * @var integer
      */
-    var $day_view_end   = 0;
+    var $day_view_end = 0;
 
     /**
      * when viewing a week or month, day the week
@@ -87,21 +87,21 @@ class Calendar_Schedule {
      * @access private
      * @var integer
      */
-    var $start_week     = 0;
+    var $start_week = 0;
 
     /**
      * parent calendar object
      * @access private
      * @var object
      */
-    var $calendar     = NULL;
+    var $calendar = NULL;
 
     /**
      * holds current error
      * @access private
      * @var object
      */
-    var $_error       = NULL;
+    var $_error = NULL;
 
     var $display_name = NULL;
     
