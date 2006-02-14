@@ -14,6 +14,7 @@
     <!-- BEGIN ip-address -->
     ({IP_ADDRESS})
     <!-- END ip-address -->
+    <!-- BEGIN response --><br /> {RESPONSE_LABEL} {RESPONSE_NAME}<!--END response -->
     <!-- BEGIN edit-time --><br />{EDIT_TIME_LABEL}: {EDIT_TIME}<!-- END edit-time -->
     </span>
   </div>
