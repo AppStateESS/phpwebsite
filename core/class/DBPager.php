@@ -182,8 +182,11 @@ class DBPager {
 
     function setOrder($column, $direction)
     {
-        $this->orderby =  preg_replace('/\W/', '', $column);
-        $this->orderby_dir = preg_replace('/\W/', '', $direction);
+        $this->orderby =  preg_replace('/[^\w\.]/', '', $column);
+        if (!preg_match('/asc|desc/i', $direction)) {
+            $direction = 'asc';
+        }
+        $this->orderby_dir = $direction;
     }
 
     function setDefaultLimit($limit) {
