@@ -139,6 +139,8 @@ class PHPWS_Core {
             $modFile = PHPWS_SOURCE_DIR . 'mod/' . $_REQUEST['module'] . '/index.php';
             if (is_file($modFile)) {
                 include $modFile;
+            } else {
+                PHPWS_Core::errorPage('404');
             }
         }
     }
