@@ -2,7 +2,7 @@
 <table class="form-table">
 <!-- BEGIN schedule-type -->
   <tr>
-    <td class="label">{SCHEDULE_TYPE}</td>
+    <td class="label">{PUBLIC_LABEL}</td>
     <td>
       {PUBLIC_1} {PUBLIC_1_LABEL}<br />
       {PUBLIC_2} {PUBLIC_2_LABEL}

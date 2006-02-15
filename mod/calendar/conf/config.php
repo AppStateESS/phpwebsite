@@ -4,9 +4,11 @@
    * @version $Id$
    */
 
+  // choices here are month_list, month_grid, day, and week
+define('DEFAULT_CALENDAR_VIEW', 'day');
+
   // Please read http://www.php.net/manual/en/function.strftime.php
   // before changing these values
-
 define('CALENDAR_DAY_FORMAT', '%B %e, %Y');
 
 define('CALENDAR_MONTH_LISTING', '%B');
@@ -21,5 +23,6 @@ define('CALENDAR_TIME_LIST_FORMAT', '%l:%M %P');
 // Controls the dimensions of the event editor popup
 define('CALENDAR_EVENT_WIDTH', 700);
 define('CALENDAR_EVENT_HEIGHT', 650);
+
 
 ?>

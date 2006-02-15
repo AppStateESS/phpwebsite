@@ -18,6 +18,11 @@ class Calendar_Admin {
 
     function main()
     {
+        if (!Current_User::allow('calendar')) {
+            Current_User::disallow();
+            return;
+        }
+
         $title = $content = NULL;
         $message = $this->getMessage();
 
@@ -31,21 +36,12 @@ class Calendar_Admin {
             $command = $panel->getCurrentTab();
         }
 
-        switch ($command) {
-        case 'post_schedule':
-        case 'delete_schedule':
-        case 'post_event_js':
-            if (!Current_User::authorized('calendar', 'create_schedule')) {
-                Current_User::disallow();
-            }
+        if (!$this->checkAuthorized($command)) {
+            Current_User::disallow();
         }
-        
-        switch ($command) {
-        case 'schedules':
-            $title = _('Schedules');
-            $content = $this->scheduleListing();
-            break;
 
+
+        switch ($command) {
         case 'create_event_js':
             $this->calendar->loadSchedule();
             $result = $this->loadEvent();
@@ -56,6 +52,14 @@ class Calendar_Admin {
             $content = $this->editEventJS();
             Layout::nakedDisplay($content);
             exit();
+
+        case 'create_personal_schedule':
+            $panel->setCurrentTab('my_schedule');
+            $this->calendar->loadSchedule();
+            $title = _('Create Personal Schedule');
+            $content = $this->editSchedule(TRUE);
+            break;
+
 
         case 'create_schedule':
             if (!Current_User::allow('calendar', 'create_schedule')) {
@@ -68,7 +72,6 @@ class Calendar_Admin {
             break;
 
         case 'delete_schedule':
-            $this->calendar->loadSchedule();
             $result = $this->calendar->schedule->delete();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
@@ -91,7 +94,7 @@ class Calendar_Admin {
             break;
 
         case 'edit_schedule':
-            if (!Current_User::authorized('calendar', 'edit_schedule')) {
+            if (!Current_User::allow('calendar', 'edit_schedule')) {
                 Current_User::disallow();
             }
             $panel->setCurrentTab('schedules');
@@ -101,18 +104,27 @@ class Calendar_Admin {
             break;
 
         case 'main':
+            if (Current_User::allow('calendar', 'edit_public')) {
+                $panel->setCurrentTab('schedules');
+                $title = _('Schedules');
+                $content = $this->scheduleListing();
+            } else {
+                $panel->setCurrentTab('my_schedule');
+                $content = $this->mySchedule();
+                $title = _('My Schedule');
+            }
+            break;
+
         case 'my_schedule':
             $panel->setCurrentTab('my_schedule');
-            $content = $this->myCalendar();
+            $content = $this->mySchedule();
             $title = _('My Schedule');
             break;
 
         case 'post_event_js':
-            $this->loadEvent();
 
             $result = $this->event->postEvent();
             if (!$result) {
-                $this->calendar->loadSchedule();
                 $content = $this->editEventJS();
                 Layout::nakedDisplay($content);
             } else {
@@ -125,12 +137,7 @@ class Calendar_Admin {
             break;
 
         case 'post_schedule':
-            $this->calendar->loadSchedule();
-            $this->postSchedule();
-            if (!empty($this->errors)) {
-                $message = implode('<br />', $this->errors);
-                $this->editSchedule();
-            } else {
+            if ($this->calendar->schedule->post()) {
                 $result = $this->calendar->schedule->save();
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
@@ -138,11 +145,15 @@ class Calendar_Admin {
                 } else {
                     $this->sendMessage(_('Schedule saved successfully.'), 'schedules');
                 }
+            } else {
+                $message = implode('<br />', $this->calendar->schedule->_error);
+                $this->editSchedule();
             }
             break;
 
-        case 'events':
-
+        case 'schedules':
+            $title = _('Schedules');
+            $content = $this->scheduleListing();
             break;
         } // End of admin switch
 
@@ -154,6 +165,71 @@ class Calendar_Admin {
 
         $panel->setContent($final);
         Layout::add(PHPWS_ControlPanel::display($panel->display()));
+    }
+
+
+    /**
+     * Checks commands that alter the database for authenticity
+     */
+    function checkAuthorized($command)
+    {
+        $this->calendar->loadSchedule();
+        if (!($schedule_id = $this->calendar->schedule->id)) {
+            $schedule_id = NULL;
+        }
+
+        $public = $this->calendar->schedule->public_schedule;
+
+        switch ($command) {
+        case 'delete_schedule':
+            if (Current_User::authorized('calendar', 'delete_schedule')) {
+                return TRUE;
+            }
+            break;
+
+        case 'post_schedule':
+            if ( $public && ( Current_User::authorized('calendar', 'edit_public', $schedule_id) ) ) {
+                // user has permission to create/edit public calendars
+                return TRUE;
+            } elseif (!$public) {
+                // a private schedule
+                if ( !$schedule_id ) {
+                    // a new schedule
+                    if ( ( isset($_REQUEST['user_id']) && $_REQUEST['user_id'] == Current_User::getId() ) || 
+                         Current_User::authorized('calendar', 'edit_private') ) {
+                        // either this is a new personal private schedule or the user is allowed to post private schedules
+                        return TRUE;
+                    } elseif ( Current_User::authorized('calendar', 'edit_private', $schedule_id) ){
+                        // user has permissions to create/edit private schedules
+                        return TRUE;
+                    }
+                }
+            }
+
+            break;
+
+        case 'post_event_js':
+            $this->loadEvent();
+
+            // An event can be posted if the schedule is public and the current user has rights
+            // to edit this public calendar
+            if ( $public && ( Current_User::authorized('calendar', 'edit_public', $schedule_id) ) ) {
+                return TRUE;
+            } 
+            // This event can be posted if the schedule is private and it belongs to the current user
+            // or the user has permission to edit private calendars
+            elseif ( !$public && ( $this->calendar->schedule->user_id == Current_User::getId() ||
+                                   Current_User::authorized('calendar', 'edit_private', $schedule_id) ) ) {
+                return TRUE;
+            }
+
+            break;
+
+        default:
+            return TRUE;
+        } // end command switch
+
+        return FALSE;
     }
 
     function loadEvent()
@@ -177,15 +253,17 @@ class Calendar_Admin {
 
         $link = 'index.php?module=calendar';
 
-        if ( PHPWS_Settings::get('calendar', 'personal_schedules') ||
-             Current_User::allow('calendar', 'edit_schedules') ) {
-            $tabs['my_schedule'] = array('title' => _('My Schedule'), 'link' => $link);
-        }
+        $tabs['my_schedule'] = array('title' => _('My Schedule'), 'link' => $link);
 
         $tabs['events']      = array('title' => _('Events'), 'link' => $link);
-        if (Current_User::allow('calendar', 
-        $tabs['schedules']   = array('title' => _('Schedules'), 'link' => $link);
-        $tabs['settings']    = array('title' => _('Settings'), 'link' => $link);
+        if (Current_User::allow('calendar', 'edit_public') ||
+            Current_User::allow('calendar', 'edit_private')) {
+            $tabs['schedules']   = array('title' => _('Schedules'), 'link' => $link);
+        }
+
+        if (Current_User::allow('calendar', 'settings')) {
+            $tabs['settings']    = array('title' => _('Settings'), 'link' => $link);
+        }
 
         $panel->quickSetTabs($tabs);
         return $panel;
@@ -217,7 +295,7 @@ class Calendar_Admin {
         $page_tags['SUMMARY_LABEL']      = _('Summary');
         $page_tags['PUBLIC_LABEL']       = _('Public');
         $page_tags['DISPLAY_NAME_LABEL'] = _('User');
-        $page_tags['ADD_CALENDAR']       = PHPWS_Text::secureLink(_('Create calendar'), 'calendar',
+        $page_tags['ADD_CALENDAR']       = PHPWS_Text::secureLink(_('Create schedule'), 'calendar',
                                                                   array('aop'=>'create_schedule'));
         $page_tags['ADMIN_LABEL']        = _('Options');
 
@@ -226,6 +304,7 @@ class Calendar_Admin {
         $pager->setTemplate('admin/calendars.tpl');
         $pager->addPageTags($page_tags);
         $pager->addRowTags('rowTags');
+        $pager->setEmptyMessage(_('No schedules have been created.'));
         $pager->db->addWhere('user_id', 0);
         $pager->db->addWhere('user_id', 'users.id', '=', 'or');
         $pager->db->addColumn('*');
@@ -240,81 +319,62 @@ class Calendar_Admin {
     }
 
 
-    function myCalendar()
+    function mySchedule()
     {
-        $this->calendar->loadSchedule();
-
         if (!PHPWS_Settings::get('calendar', 'personal_schedules')) {
             return array('title' => _('Sorry'),
                          'content' => _('Personal schedules are disabled.'));
         }
 
-        PHPWS_Core::initModClass('calendar', 'Schedule.php');
-        $db = & new PHPWS_DB('calendar_schedule');
-        $db->addWhere('user_id', Current_User::getId());
-
-        $result = $db->loadObject($this->calendar->schedule);
+        $result = $this->calendar->loadSchedule(TRUE);
 
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             $this->sendMessage(_('An error occurred when accessing the schedules.'));
             return NULL;
         } elseif (!$result) {
-            $this->sendMessage(_('Currently there aren\'t any schedules. Please make one.'), 'create_schedule');
+            $this->sendMessage(_('You currently do not have a personal schedule. Please create one.'), 'create_personal_schedule');
         }
 
-        $this->calendar->loadView();
-        return $this->calendar->view->day();
+        return $this->calendar->view();
     }
 
 
-    function editSchedule()
+    function editSchedule($personal=FALSE)
     {
-        $form = & new PHPWS_Form;
         $schedule = &$this->calendar->schedule;
+
+        $form = & new PHPWS_Form;
+
         // Checks need to be made on new calendars
-        // When a calendar is editted, its type is unchanging
-        if (empty($schedule->id)) {
-            $schedule->title = Current_User::getDisplayName();
-            // Check to see if the user already has a personal
-            // calendar
-            $db = & new PHPWS_DB('calendar_schedule');
-            $db->addWhere('user_id', Current_User::getId());
-            $result = $db->select();
-            if (!empty($result)) {
-                $has_personal_calendar = TRUE;
-            } else {
-                $has_personal_calendar = FALSE;
+        // When a calendar is edited, its type is unchanging
+
+        if ($personal) {
+            if (!PHPWS_Settings::get('calendar', 'personal_schedules')) {
+                return _('Personal schedules are disabled.');
             }
 
-            $form->addTplTag('SCHEDULE_TYPE', _('Schedule Type'));
-
-            if (PHPWS_Settings::get('calendar', 'personal_schedules')) {
-                // User can create new calendars as well as their own
-                // personal calendar
-                if (Current_User::allow('calendar', 'create_public')) {
-                    $form->addRadio('public', array('0'=>'0','1'=>'1'));
-                    $form->setMatch('public', $schedule->public_schedule);
-                    $form->setLabel('public', array(_('Private'), _('Public')));
-                    $form->addHidden('user_id', Current_User::getId());
-                } else {
-                    // The user already has a personal schedule and they can't create new ones
-                    if ($has_personal_calendar) {
-                        return _('You already have a personal schedule and you do not have rights to create a new one.');
-                    }
-                    // User can only create a personal calendar
-                    $form->addHidden('public', 0);
-                    $form->addHidden('user_id', Current_User::getId());
+            if (empty($schedule->id)) {
+                $schedule->title = Current_User::getDisplayName();
+                // Check to see if the user already has a personal
+                // calendar
+                $db = & new PHPWS_DB('calendar_schedule');
+                $db->addWhere('user_id', Current_User::getId());
+                $db->addColumn('id');
+                $result = $db->select('one');
+                if (!empty($result)) {
+                    $this->calendar->schedule = & new Calendar_Schedule($result);
                 }
-            } elseif (!Current_User::allow('calendar', 'create_schedule')){
-                return _('Personal schedules are disabled and you do not have the ability to create new public schedules.');
-            } else {
-                $form->addHidden('schedule_type', 'other');
+                $form->addHidden('user_id', Current_User::getId());
             }
-        }  elseif ($schedule->user_id) {
-            $form->addHidden('user_id', $schedule->user_id);
+        }
+
+        if (Current_User::allow('calendar', 'edit_public')) {
+            $form->addRadio('public', array('0'=>'0','1'=>'1'));
+            $form->setMatch('public', $schedule->public_schedule);
+            $form->setLabel('public', array(_('Private'), _('Public')));
         } else {
-            $form->addHidden('user_id', 0);
+            $form->addHidden('public', 0);
         }
 
         $form->addHidden('module', 'calendar');
@@ -332,38 +392,11 @@ class Calendar_Admin {
 
         $tpl = $form->getTemplate();
 
+        $tpl['PUBLIC_LABEL'] = _('Availability');
+
         $content = PHPWS_Template::process($tpl, 'calendar', 'admin/forms/edit_schedule.tpl');
 
         return $content;
-    }
-
-    function postSchedule()
-    {
-        if (empty($_POST['title'])) {
-            $this->errors[] = _('You must give your calendar a title.');
-        } else {
-            $this->calendar->schedule->setTitle($_POST['title']);
-        }
-
-        $this->calendar->schedule->setSummary($_POST['summary']);
-
-        if (isset($_POST['public'])) {
-            if ($_POST['schedule_type'] == 'personal') {
-                $this->calendar->schedule->setUserID($_POST['user_id']);
-            } else {
-                $this->calendar->schedule->user_id = 0;
-            }
-        } else {
-            $this->calendar->schedule->setUserID($_POST['user_id']);
-        }
-
-        if (isset($_POST['public'])) {
-            $this->calendar->schedule->public_schedule = 1;
-        } else {
-            $this->calendar->schedule->public_schedule = 0;
-        }
-
-        return TRUE;
     }
 
     /**

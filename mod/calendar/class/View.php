@@ -130,6 +130,9 @@ class Calendar_View {
         $uDateEnd = mktime(23, 59, 0, $month, $day, $year);
         $now      = mktime(date('G'),(int)date('i') , 0, $month, $day, $year);
 
+        /*
+         // need to replace the below
+
         if (Current_User::allow('calendar', 'edit_schedule', $this->calendar->schedule->id) ||
             ( PHPWS_Settings::get('calendar', 'personal_calendars') && 
               $this->calendar->schedule->user_id == Current_User::getId()
@@ -137,6 +140,8 @@ class Calendar_View {
             ) {
             $template['ADD_EVENT'] = $this->calendar->schedule->addEventLink($now);
         }
+        */
+
         $template['TITLE'] = $this->calendar->schedule->title;
         $template['DATE'] = strftime(CALENDAR_DAY_FORMAT, $uDate);
 
@@ -144,7 +149,7 @@ class Calendar_View {
         $js['month'] = $month;
         $js['day'] = $day;
         $js['year'] = $year;
-        $js['url'] = 'index.php?module=calendar&aop=main';
+        $js['url'] = $this->getUrl();
         $js['type'] = 'pick';
         $template['PICK'] = javascript('js_calendar', $js);
 
@@ -237,6 +242,22 @@ class Calendar_View {
         }
 
         return PHPWS_Template::process($template, 'calendar', 'view/day/day.tpl');
+    }
+
+    function getUrl()
+    {
+        $getVars = PHPWS_Text::getGetValues();
+        $address[] = 'index.php?';
+        unset($getVars['m']);
+        unset($getVars['d']);
+        unset($getVars['y']);
+        foreach ($getVars as $key=>$value) {
+            $newvars[] = "$key=$value";
+        }
+
+        $address[] = implode('&amp;', $newvars);
+
+        return implode('', $address);
     }
 }
 

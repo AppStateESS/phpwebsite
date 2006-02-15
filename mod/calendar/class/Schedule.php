@@ -152,7 +152,38 @@ class Calendar_Schedule {
     {
         $db = & new PHPWS_DB('calendar_schedule');
         $db->addWhere('id', $this->id);
+        $result = $db->delete();
+
+        
     }
+
+    function post()
+    {
+        if (empty($_POST['title'])) {
+            $this->_error = _('You must give your calendar a title.');
+        } else {
+            $this->setTitle($_POST['title']);
+        }
+
+        $this->setSummary($_POST['summary']);
+
+        if (isset($_POST['user_id'])) {
+            $this->user_id = (int)$_POST['user_id'];
+        }
+
+        if (isset($_POST['public']) && $_POST['public']) {
+            $this->public_schedule = 1;
+        } else {
+            $this->public_schedule = 0;
+        }
+
+        if (isset($this->_error)) {
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
+
 
     function save()
     {
@@ -189,7 +220,8 @@ class Calendar_Schedule {
 
     function getViewLink()
     {
-        return sprintf('<a href="#">%s</a>', $this->title);
+        $vars['schedule_id'] = $this->id;
+        return PHPWS_Text::moduleLink($this->title, 'calendar', $vars);
     }
 
     function addEventLink($default_date=NULL)
@@ -213,7 +245,26 @@ class Calendar_Schedule {
                                           );
         }
     }
+    
+    /**
+     * Normally just key->allowView would suffice but we have to 
+     * consider private calendars as well
+     */
+    function allowView()
+    {
+        if ($this->user_id && $this->user_id == Current_User::getId()) {
+            return TRUE;
+        }
 
+        $key = $this->getKey();
+        return $key->allowView();
+    }
+
+    function getKey()
+    {
+        $key = & new Key($this->key_id);
+        return $key;
+    }
 
     function saveKey()
     {
@@ -229,7 +280,11 @@ class Calendar_Schedule {
         $key->setModule('calendar');
         $key->setItemName('schedule');
         $key->setItemId($this->id);
-        $key->setEditPermission('edit_schedule');
+        if ($this->public) {
+            $key->setEditPermission('edit_public');
+        } else {
+            $key->setEditPermission('edit_private');
+        }
         $key->setUrl($this->getViewLink(TRUE));
         $key->setTitle($this->title);
         $key->setSummary($this->summary);
@@ -287,7 +342,7 @@ class Calendar_Schedule {
                                           array('aop'=>'edit_schedule',
                                                 'schedule_id'=>$this->id));
             $js['QUESTION'] = _('Are you sure you want to delete this calendar?');
-        if (!$this->public) {
+        if (!$this->public_schedule) {
             $js['QUESTION'] .= ' ' . _('All private, exclusive events will be deleted.');
         }
         $js['ADDRESS']  = sprintf('index.php?module=calendar&amp;aop=delete_schedule&amp;schedule_id=%s&amp;authkey=%s',
@@ -297,16 +352,16 @@ class Calendar_Schedule {
 
         $tags['ADMIN'] = implode(' | ', $links);
 
-        if ($this->public) {
+        if ($this->public_schedule) {
             $jspub['ADDRESS']  = PHPWS_Text::linkAddress('calendar', array('schedule_id'=>$this->id, 'aop'=>'make_private'), TRUE);
             $jspub['QUESTION'] = _('Making this calendar private hides it from other users.\\nAre you sure you want to continue?');
             $jspub['LINK']     = _('Yes');
-            $tags['PUBLIC'] = javascript('confirm', $jspub);
+            $tags['PUBLIC_SCHEDULE'] = javascript('confirm', $jspub);
         } else {
             $jspub['ADDRESS']  = PHPWS_Text::linkAddress('calendar', array('schedule_id'=>$this->id, 'aop'=>'make_public'), TRUE);
             $jspub['QUESTION'] = _("Making this calendar public reveals it to other users.\\nAre you sure you want to continue?");
             $jspub['LINK']     = _('No');
-            $tags['PUBLIC'] = javascript('confirm', $jspub);
+            $tags['PUBLIC_SCHEDULE'] = javascript('confirm', $jspub);
         }
 
         if (empty($this->display_name)) {
@@ -314,6 +369,8 @@ class Calendar_Schedule {
         } else {
             $tags['DISPLAY_NAME'] = $this->display_name;
         }
+
+        $tags['TITLE'] = $this->getViewLink();
 
         return $tags;
     }
