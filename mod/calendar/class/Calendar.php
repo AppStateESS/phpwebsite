@@ -125,7 +125,7 @@ class PHPWS_Calendar {
         }
 
         if ($current_view == 'month_grid') {
-            $links[] = _('Month list');
+            $links[] = _('Month grid');
         } else {
             $vars['view'] = 'month_grid';
             $links[] = PHPWS_Text::moduleLink(_('Month grid'), 'calendar', $vars);

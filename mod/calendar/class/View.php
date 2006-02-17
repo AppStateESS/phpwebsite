@@ -9,6 +9,10 @@
 
 class Calendar_View {
     var $calendar = NULL;
+    /**
+     * pointer to events
+     */
+    var $event_sort = NULL;
 
     function main()
     {
@@ -21,6 +25,20 @@ class Calendar_View {
 
     function month_grid($type='mini', $month=NULL, $year=NULL)
     {
+        if (empty($month)) {
+            $month = date('m');
+        }
+
+        if (empty($year)) {
+            $year = date('Y');
+        }
+
+        $startdate = mktime(0,0,0, $month, 1, $year);
+        $enddate = mktime(23, 59, 59, $month + 1, 0, $year);
+        if (isset($this->calendar->schedule) ){
+            $this->calendar->schedule->loadEvents($startdate, $enddate);
+        }
+        $this->sortEvents();
         if ($type != 'mini' && $type != 'full') {
             PHPWS_Core::errorPage('404');
         }
@@ -33,12 +51,14 @@ class Calendar_View {
         $date = $oMonth->thisMonth(TRUE);
 
         // Check cache
-        $cache_key = sprintf('%s_%s_%s', $type, $oMonth->month, $oMonth->year);
+        //        $cache_key = sprintf('%s_%s_%s', $type, $oMonth->month, $oMonth->year);
+
+        /*
         $content = PHPWS_Cache::get($cache_key);
         if (!empty($content)) {
             return $content;
         }
-
+        */
         // Cache empty, make month
 
         $oTpl = & new PHPWS_Template('calendar');
@@ -62,9 +82,16 @@ class Calendar_View {
 
         reset($oMonth->children);
 
+
         while($day = $oMonth->fetch()) {
             $data['DAY'] = $day->day;
 
+            if (isset($this->event_sort[$year][$month][$day->day])) {
+                $no_of_events = count($this->event_sort[$year][$month][$day->day]);
+            } else {
+                $no_of_events = 0;
+            }
+            
             if ($day->empty) {
                 $data['CLASS'] = 'day-empty';
             } elseif ( $day->month == date('m', $this->calendar->today) &&
@@ -74,6 +101,8 @@ class Calendar_View {
             } else {
                 $data['CLASS'] = 'day-normal';
             }
+
+            $data['COUNT'] = sprintf('%s event(s)', $no_of_events);
 
             $oTpl->setCurrentBlock('calendar-col');
             $oTpl->setData($data);
@@ -86,8 +115,8 @@ class Calendar_View {
             }
         }
 
-        $vars['month'] = $oMonth->month;
-        $vars['year'] = $oMonth->year;
+        $vars['month'] = $month;
+        $vars['year'] = $year;
         $vars['view'] = 'full';
         $template['FULL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%B', $date), 'calendar', $vars);
         $template['PARTIAL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%b', $date), 'calendar', $vars);
@@ -97,7 +126,7 @@ class Calendar_View {
 
         $oTpl->setData($template);
         $content = $oTpl->get();
-        PHPWS_Cache::save($cache_key, $content);
+        //        PHPWS_Cache::save($cache_key, $content);
         return $content;
     }
 
@@ -242,6 +271,21 @@ class Calendar_View {
         }
 
         return PHPWS_Template::process($template, 'calendar', 'view/day/day.tpl');
+    }
+
+    function sortEvents()
+    {
+        if (empty($this->calendar->schedule->events)) {
+            return;
+        }
+
+        $events = & $this->calendar->schedule->events;
+        foreach ($events as $key => $event) {
+            $year = date('Y', $event->start_time);
+            $month = date('m', $event->start_time);
+            $day = date('d', $event->start_time);
+            $this->event_sort[$year][$month][$day][] = & $this->calendar->schedule->events[$key];
+        }
     }
 
     function getUrl()

@@ -155,6 +155,11 @@ class Calendar_Admin {
             $title = _('Schedules');
             $content = $this->scheduleListing();
             break;
+
+        case 'settings':
+            $title = _('Settings');
+            $content = $this->settings();
+            break;
         } // End of admin switch
 
         $tpl['CONTENT'] = $content;
@@ -536,6 +541,65 @@ class Calendar_Admin {
 
         $form->addSelect($name . '_year', $years);
         $form->setMatch($name . '_year', $year_match);
+    }
+
+    function settings()
+    {
+        $info_panel = PHPWS_Settings::get('calendar', 'info_panel');
+
+        $form = & new PHPWS_Form('calendar_settings');
+        $form->addHidden('module', 'calendar');
+        $form->addHidden('aop', 'post_settings');
+
+        $db = & new PHPWS_DB('calendar_schedule');
+        $db->addWhere('public_schedule', 1);
+        $db->addColumn('id');
+        $db->addColumn('title');
+        $db->setIndexBy('id');
+        $calendar_list = $db->select('col');
+        if (PEAR::isError($calendar_list)) {
+            PHPWS_Error::log($calendar_list);
+            return _('There was an error when trying to access your calendars. Check your logs.');
+        }
+
+        // Using October 2006 because the first day was Sunday
+        for($i=0; $i<7; $i++) {
+            $days[$i] = strftime('%A', mktime(0,0,0,10,$i+1,2006));
+        }
+
+        $mini_select[0] = _('None');
+        if (!empty($calendar_list)) {
+            $mini_select = array_merge($mini_select, $calendar_list);
+        }
+
+        $form->addSelect('info_panel', $mini_select);
+        $form->setMatch('info_panel', $info_panel);
+        $form->setLabel('info_panel', _('Information panel'));
+
+        $form->addSelect('starting_day', $days);
+        $form->setMatch('starting_day', PHPWS_Settings::get('calendar', 'starting_day'));
+        $form->setLabel('starting_day', _('Week start'));
+
+        $form->addRadio('personal_schedules', array(0,1));
+        $form->setLabel('personal_schedules', array(_('Off'), _('On')));
+        $form->setMatch('personal_schedules', PHPWS_Settings::get('calendar', 'personal_schedules'));
+
+        $am = strftime('%p', mktime(10));
+        $pm = strftime('%p', mktime(16));
+
+        $form->addSelect('hour_format', array('g'=>"9:00$am - 3:00$pm",
+                                              'G'=>"9:00 - 15:00",
+                                              'h'=>"09:00$am - 03:00$pm",
+                                              'H'=>'09:00 - 15:00'));
+        $form->setMatch('hour_format', PHPWS_Settings::get('calendar', 'default_hour_format'));
+        $form->setLabel('hour_format', _('Hour format'));
+        
+        $form->addSubmit(_('Save'));
+        $template = $form->getTemplate();
+        $template['PERSONAL'] = _('Personal schedules');
+
+        return PHPWS_Template::process($template, 'calendar', 'admin/forms/settings.tpl');
+
     }
 
 }

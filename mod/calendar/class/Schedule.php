@@ -330,6 +330,7 @@ class Calendar_Schedule {
         }
 
         $this->events = & $result;
+        return TRUE;
     }
 
     function rowTags()
