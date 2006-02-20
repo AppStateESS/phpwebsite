@@ -486,15 +486,15 @@ class Key {
             if (empty($groups)) {
                 return;
             }
-
-            $db->setJoin('left', $source_table, 'key_id', 'phpws_key', 'id');
+            $db->setJoin('left', 'phpws_key', 'id', 'phpws_key_view', 'key_id');
             $db->addTable('phpws_key_view');
 
             $query = '
  %s.key_id = 0
   OR
  ( 
-   phpws_key.active = \'1\' AND 
+   ( phpws_key.active = \'1\' AND %s.key_id=phpws_key.id )
+   AND
    (
      ( phpws_key.restricted <= \'1\')
      OR 
@@ -506,7 +506,7 @@ class Key {
    )
  )';
 
-            $qwhere = sprintf($query, $source_table, implode(', ', $groups));
+            $qwhere = sprintf($query, $source_table, $source_table, implode(', ', $groups));
             $db->setQWhere($qwhere);
             return;
         }
