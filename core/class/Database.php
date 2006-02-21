@@ -1536,11 +1536,11 @@ class PHPWS_DB {
         foreach ($query_list as $command) {
             if (preg_match ('/(smallint|int)\s/', $command)) {
                 if(!preg_match('/\sdefault/i', $command)) {
-                    $command = preg_replace('/int/', 'int default 0', $command);
+                    $command = preg_replace('/ int /', ' int default 0 ', $command);
                 }
 
                 if(!preg_match('/\snull/', $command)) {
-                    $command = preg_replace('/int/', 'int not null', $command);
+                    $command = preg_replace('/ int /', ' int not null ', $command);
                 }
 
             }
