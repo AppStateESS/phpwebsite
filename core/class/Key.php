@@ -469,15 +469,16 @@ class Key {
         if (Current_User::isDeity()) {
             return;
         }
-
         $db->setDistinct(1);
 
         $source_table = $db->tables[0];
 
         if (!Current_User::isLogged()) {
-            $qwhere = sprintf(' (%s.key_id=0) OR ( phpws_key.active=1 AND phpws_key.restricted=0 ) ', $source_table);
-            $db->setQWhere($qwhere);
-            $db->setJoin('left', $source_table, 'key_id', 'phpws_key', 'id');
+            $db->addWhere('key_id', 0);
+            $db->addWhere('phpws_key.active',     1, NULL, NULL, 'key_1');
+            $db->addWhere('phpws_key.restricted', 0, NULL, NULL, 'key_1');
+            $db->setGroupConj('key_1', 'or');
+            $db->addJoin('left', $source_table, 'phpws_key', 'key_id', 'id');
             return;
         } elseif (Current_User::isUnrestricted($module)) {
             return;
@@ -486,28 +487,17 @@ class Key {
             if (empty($groups)) {
                 return;
             }
-            $db->setJoin('left', 'phpws_key', 'id', 'phpws_key_view', 'key_id');
-            $db->addTable('phpws_key_view');
-
-            $query = '
- %s.key_id = 0
-  OR
- ( 
-   ( phpws_key.active = \'1\' AND %s.key_id=phpws_key.id )
-   AND
-   (
-     ( phpws_key.restricted <= \'1\')
-     OR 
-     ( phpws_key.restricted = \'2\'
-       AND 
-       phpws_key.id = phpws_key_view.key_id
-       AND 
-       phpws_key_view.group_id IN (%s) )
-   )
- )';
-
-            $qwhere = sprintf($query, $source_table, $source_table, implode(', ', $groups));
-            $db->setQWhere($qwhere);
+            $db->addJoin('left', $source_table, 'phpws_key', 'key_id', 'id');
+            $db->addJoin('left', 'phpws_key', 'phpws_key_view', 'id', 'key_id');
+            $db->addWhere('key_id', 0);
+            $db->addWhere('phpws_key.restricted', 2, '<=', NULL, 'key_1');
+            $db->addWhere('phpws_key_view.group_id', $groups, 'in', NULL, 'key_1');
+            $db->setGroupConj('key_1', 'or');
+            $db->addWhere('phpws_key.restricted', 1, '<=', NULL, 'key_2');
+            $db->addWhere('phpws_key.active', 1, NULL, NULL, 'key_3');
+            $db->setGroupConj('key_3', 'or');
+            $db->groupIn('key_1', 'key_2');
+            $db->groupIn('key_2', 'key_3');
             return;
         }
     }
@@ -530,6 +520,8 @@ class Key {
             return;
         }
 
+        // if the user has now rights for the module or subpermissions,
+        // then we just stymie the whole query
         if (!Current_User::allow($module, $edit_permission)) {
             $db->setQWhere('1=0');
             return;
@@ -541,30 +533,21 @@ class Key {
             return;
         } else {
             $db->setDistinct(1);
-
-            $orig_table = $db->tables[0];
+            $source_table = $db->tables[0];
 
             $groups = Current_User::getGroups();
-
+            // if the current user is not in any groups (unlikely)
+            // then fail
             if (empty($groups)) {
                 $db->setQWhere('1=0');
                 return;
             }
 
-            $db->setJoin('left', $orig_table, 'key_id', 'phpws_key', 'id');
-            $db->addTable('phpws_key_edit');
-
-            $query = '
- %s.key_id = 0
-  OR
- ( 
-     phpws_key.id = phpws_key_edit.key_id
-     AND 
-     phpws_key_edit.group_id IN (%s)
- )';
-
-            $qwhere = sprintf($query, $orig_table, implode(', ', $groups));
-            $db->setQWhere($qwhere);
+            $db->setJoin('left', $source_table, 'key_id', 'phpws_key', 'id');
+            $db->addWhere('key_id', 0);
+            $db->addWhere('phpws_key.id', 'phpws_key_edit.key_id', NULL, NULL, 'key_1');
+            $db->addWhere('phpws_key_edit.group_id', $groups, 'in', NULL, 'key_1');
+            $db->setGroupConj('key_1', 'or');
             return;
         }
         
