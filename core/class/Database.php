@@ -27,6 +27,10 @@ class PHPWS_DB {
     var $qwhere      = NULL;
     var $indexby     = NULL;
     var $groupby     = NULL;
+    /**
+     * allows you to group together where queries
+     */
+    var $group_in    = array();
     // This variable holds a sql query string
     var $sql         = NULL;
     var $_allColumns = NULL;
@@ -37,6 +41,8 @@ class PHPWS_DB {
     var $_distinct   = FALSE;
     var $_test_mode  = FALSE;
     var $_join       = NULL;
+    var $_join_tables = NULL;
+
 
     function PHPWS_DB($table=NULL)
     {
@@ -309,6 +315,18 @@ class PHPWS_DB {
         return $GLOBALS['PEAR_DB']->prefix;
     }
 
+    function addJoin($join_type, $join_from, $join_to, $join_on_1=NULL, $join_on_2=NULL)
+    {
+        if (!preg_match('/left|right/i', $join_type)) {
+            return FALSE;
+        }
+        $this->_join_tables[] = array('join_type' => $join_type,
+                                      'join_from' => $join_from,
+                                      'join_to'   => $join_to,
+                                      'join_on_1' => $join_on_1,
+                                      'join_on_2' => $join_on_2);
+    }
+
     function addTable($table)
     {
         if (is_array($table)) {
@@ -330,6 +348,7 @@ class PHPWS_DB {
     function setTable($table)
     {
         $this->tables = array();
+        $this->_join_tables = NULL;
         return $this->addTable($table);
     }
 
@@ -359,35 +378,62 @@ class PHPWS_DB {
         return NULL;
     }
 
-    function getJoin($prefix=TRUE)
+    function _getJoinOn($join_on_1, $join_on_2, $table1, $table2) {
+        if (empty($join_on_1) || empty($join_on_2)) {
+            return NULL;
+        }
+
+        if (is_array($join_on_1) && is_array($join_on_2)) {
+            foreach ($join_on_1 as $key => $value) {
+                $retVal[] = sprintf('%s.%s = %s.%s',
+                                    $table1, $value,
+                                    $table2, $join_on_2[$key]);
+            }
+            return implode(' AND ', $retVal);
+        } else {
+            return sprintf('%s.%s = %s.%s',
+                           $table1, $join_on_1,
+                           $table2, $join_on_2);
+        }
+    }
+
+    function getJoin()
     {
-        
-        $join = & $this->_join;
-
-        if ($prefix) {
-            $join['table1'] = PHPWS_DB::getPrefix() . $join['table1'];
-            $join['table2'] = PHPWS_DB::getPrefix() . $join['table2'];
+        if (empty($this->_join_tables)) {
+            return NULL;
         }
 
-        switch ($join['type']) {
-        case 'left':
-            $statement = sprintf('%s LEFT JOIN %s ON %s.%s=%s.%s',
-                                   $join['table1'], $join['table2'],
-                                   $join['table1'], $join['col1'],
-                                   $join['table2'], $join['col2']);
+        $join_info['tables'] = array();
+
+        foreach ($this->_join_tables as $join_array) {
+            extract($join_array);
+
+           
+            $join_to = $this->getPrefix() . $join_to;
             
-            break;
-            
-        case 'right':
-            $statement = sprintf('%s RIGHT JOIN %s ON %s.%s=%s.%s',
-                                   $join['table1'], $join['table2'],
-                                   $join['table1'], $join['col1'],
-                                   $join['table2'], $join['col2']);
-            break;
-            
+            if ($result = $this->_getJoinOn($join_on_1, $join_on_2, $join_from, $join_to)) {
+                $join_on = 'ON ' . $result;
+            }
+
+            if (in_array($join_from, $join_info['tables'])) {
+                $allJoin[] = sprintf('%s %s %s',
+                                     strtoupper($join_type) . ' JOIN',
+                                     $this->getPrefix() . $join_to,
+                                     $join_on);
+            } else {
+                $allJoin[] = sprintf('%s %s %s %s',
+                                     $this->getPrefix() . $join_from,
+                                     strtoupper($join_type) . ' JOIN',
+                                     $this->getPrefix() . $join_to,
+                                     $join_on);
+            }
+            $join_info['tables'][] = $join_from;
+            $join_info['tables'][] = $join_to;
         }
 
-        return $statement;
+        $join_info['join'] = implode(' ', $allJoin);
+
+        return $join_info;
     }
 
     function getTable($format=TRUE, $prefix=TRUE)
@@ -396,24 +442,19 @@ class PHPWS_DB {
             return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::getTable');
         }
         if ($format == TRUE) {
-            if ($prefix == TRUE) {
-                array_walk($this->tables, '_add_tbl_prefix', PHPWS_DB::getPrefix());
-            }
+            $join_info = $this->getJoin();
 
-            if (isset($this->_join)) {
-                $join = $this->getJoin($prefix);
-                foreach ($this->tables as $table) {
-                    if ($this->_join['table1'] == $table || 
-                        $this->_join['table2'] == $table) {
-                        continue;
-                    }
-
-                    $join .= ', ' . $table;
+            foreach ($this->tables as $table) {
+                if ($join_info && in_array($table, $join_info['tables'])) {
+                    continue;
                 }
-                return $join;
+                $table_list[] = $this->getPrefix() . $table;
             }
 
-            return implode(', ', $this->tables);
+            if ($join_info) {
+                $table_list[] = $join_info['join'];
+            }
+            return implode(',', $table_list);
         } else {
             return $this->tables;
         }
@@ -457,18 +498,11 @@ class PHPWS_DB {
         return $this->groupBy;
     }
 
-    /**
-     * Allows you to join two tables with a left or right parameter
-     * 
-     */
-    function setJoin($type, $table1, $col1, $table2, $col2)
+    function groupIn($sub, $main)
     {
-        $this->_join = array('type'   => $type,
-                             'table1' => $table1,
-                             'table2' => $table2,
-                             'col1'   => $col1,
-                             'col2'   => $col2);
+        $this->group_in[$sub] = $main;
     }
+
 
     function addWhere($column, $value=NULL, $operator=NULL, $conj=NULL, $group=NULL, $join=FALSE)
     {
@@ -617,35 +651,55 @@ class PHPWS_DB {
         }
         $startMain = FALSE;
         if ($dbReady) {
+            $inside = array();
             foreach ($this->where as $group_name => $groups) {
-
+                $hold = NULL;
+                $subsql = array();
                 if (!isset($groups['values'])) {
                     continue;
                 }
+
+                if (isset($this->group_in[$group_name])) {
+                    $hold = $this->group_in[$group_name];
+                }
+
+
                 $startSub = FALSE;
+
 
                 if ($startMain == TRUE) {
                     if (empty($groups['conj'])) {
-                        $sql[] = ' AND ';
+                        $subsql[] = ' AND ';
                     } else {
-                        $sql[] = $groups['conj'];
+                        $subsql[] = $groups['conj'];
                     }
                 }
-                $sql[] = '(';
-
-
+                $subsql[] = '(';
+                
+                
                 foreach ($groups['values'] as $whereVal){
                     if ($startSub == TRUE) {
-                        $sql[] = $whereVal->conj;
+                        $subsql[] = $whereVal->conj;
                     }
-                    $sql[] = $whereVal->get();
+                    $subsql[] = $whereVal->get();
                     $startSub = TRUE;
                 }
 
-                $sql[] = ')';
-                $startMain = TRUE;
+                if (isset($inside[$group_name])) {
+                    $subsql[] = implode('+', $inside[$group_name]);
+                }
+                
+                $subsql[] = ')';
 
+                if (!empty($hold)) {
+                    $inside[$hold][$group_name] = implode(' ', $subsql);
+                } else {
+                    $sql[] = implode(' ', $subsql);
+                }
+
+                $startMain = TRUE;
             }
+
 
             if (isset($this->qwhere)) {
                 $sql[] = $this->qwhere['conj'] . ' (' . $this->qwhere['where'] . ')';
