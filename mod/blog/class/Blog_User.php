@@ -55,7 +55,7 @@ class Blog_User {
     }
 
     function show(){
-        $key = 'front blog page';
+        $key = BLOG_CACHE_KEY;
 
         if (!Current_User::isLogged()    &&
             !Current_User::allow('blog') &&

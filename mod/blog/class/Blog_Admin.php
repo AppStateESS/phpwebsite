@@ -147,6 +147,7 @@ class Blog_Admin {
             break;
 
         case 'delete':
+            PHPWS_Cache::remove(BLOG_CACHE_KEY);
             $result = $blog->kill();
             Blog_Admin::setForward(_('Blog entry deleted.'), 'list');
             break;
@@ -166,7 +167,7 @@ class Blog_Admin {
                 Current_User::disallow();
                 return;
             }
-        
+            PHPWS_Cache::remove(BLOG_CACHE_KEY);
             Blog_Admin::restoreBlog($_REQUEST['version_id']);
             Blog_Admin::setForward(_('Blog entry restored.'), 'list');
             break;
