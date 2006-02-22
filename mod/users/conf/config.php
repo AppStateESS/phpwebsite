@@ -1,4 +1,8 @@
 <?php
+  /**
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
+   */ 
 
 define('BAD_PASSWORDS',
        serialize(array('pass',
@@ -29,6 +33,7 @@ define('NO_PERM_NAME', _('None'));
 /**
  * reg exp characters to strip from username default is '\w'
  * or only alphanumeric characters or an underline
+ * read up about regular expressions before editting
  */
 define('ALLOWED_USERNAME_CHARACTERS', '\w');
 
