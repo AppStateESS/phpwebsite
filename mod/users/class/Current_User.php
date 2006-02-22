@@ -200,14 +200,19 @@ class Current_User {
         return javascript('open_window', $js_vars);
     }
 
+    /**
+     * Logs in a user dependant on their authorization setting
+     */
 
     function loginUser($username, $password)
     {
-        $username = preg_replace('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/', '', $username);
-        $createUser = FALSE;
-        // First check if they are currently a user in local system
-        $user = & new PHPWS_User;
+        if (preg_match('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/', $username)) {
+            return FALSE;
+        }
 
+        $createUser = FALSE;
+        // First check if they are currently a user
+        $user = & new PHPWS_User;
         $db = & new PHPWS_DB('users');
         $db->addWhere('username', strtolower($username));
         $result = $db->loadObject($user);
@@ -230,7 +235,7 @@ class Current_User {
             return FALSE;
         }
 
-        $result = Current_User::authorize($authorize, $username, $password);
+        $result = Current_User::authorize($authorize, $user, $password);
 
         if (PEAR::isError($result)){
             PHPWS_Error::log($result);
@@ -239,6 +244,7 @@ class Current_User {
 
         if ($result == TRUE){
             if ($createUser == TRUE){
+                echo 'createUser == TRUE<br>';
                 $result = $user->setUsername($username);
 
                 if (PEAR::isError($result)){
@@ -264,7 +270,7 @@ class Current_User {
             return FALSE;
     }
 
-    function authorize($authorize, $username, $password)
+    function authorize($authorize, &$user, $password)
     {
         $db = & new PHPWS_DB('users_auth_scripts');
         $db->setIndexBy('id');
@@ -284,14 +290,15 @@ class Current_User {
 
             include $file;
             if (function_exists('authorize')){
-                $result = authorize($username, $password);
+                $result = authorize($user, $password);
                 return $result;
             } else {
                 PHPWS_Error::log(USER_ERR_MISSING_AUTH, 'users', 'authorize');
                 return FALSE;
             }
-        } else
+        } else {
             return FALSE;
+        }
 
         return $result;
     }

@@ -546,6 +546,11 @@ class User_Action {
             $error['EMAIL_ERROR'] = $result->getMessage();
         }
     
+        if (Current_User::isLogged() &&
+            Current_User::allow('users', 'settings') &&
+            isset($_POST['authorize'])) {
+            $user->setAuthorize($_POST['authorize']);
+        }
 
         if (isset($error)) {
             return $error;

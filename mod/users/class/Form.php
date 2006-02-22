@@ -19,7 +19,7 @@ class User_Form {
     {
         translate('users');
 
-        if (Current_User::isLogged()){
+        if (Current_User::isLogged()) {
             $username = Current_User::getUsername();
             return User_Form::loggedIn();
         } else {
@@ -130,13 +130,15 @@ class User_Form {
         $file = PHPWS_Core::getConfigFile($mod['title'], 'permission.php');
         $template = NULL;
 
-        if ($file == FALSE)
+        if ($file == FALSE) {
             return $file;
+        }
 
         include $file;
 
-        if (!isset($use_permissions) || $use_permissions == FALSE)
+        if (!isset($use_permissions) || $use_permissions == FALSE) {
             return;
+        }
 
         $permSet[NO_PERMISSION]              = NO_PERM_NAME;
         $permSet[UNRESTRICTED_PERMISSION]    = FULL_PERM_NAME;
@@ -162,7 +164,7 @@ class User_Form {
             $template['PERMISSION_' . $key] = $val . $radio['labels'][$key];
         }
 
-        if (isset($permissions)){
+        if (isset($permissions)) {
             foreach ($permissions as $permName => $permProper){
                 $form = & new PHPWS_Form;
 
@@ -248,16 +250,17 @@ class User_Form {
         $template['NAME_LABEL'] = _('Group name');
         $template['GROUPNAME'] = $group->getName();
 
-        if (isset($_POST['search_member'])){
+        if (isset($_POST['search_member'])) {
             $_SESSION['Last_Member_Search'] = preg_replace('/[\W]+/', '', $_POST['search_member']);
             $db = & new PHPWS_DB('users_groups');
             $db->addWhere('name', $_SESSION['Last_Member_Search']);
             $db->addColumn('id');
             $result = $db->select('one');
 
-            if (isset($result)){
-                if (PEAR::isError($result))
+            if (isset($result)) {
+                if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
+                }
                 else {
                     $group->addMember($result);
                     $group->save();
@@ -267,7 +270,7 @@ class User_Form {
             }
         }
 
-        if (isset($_SESSION['Last_Member_Search'])){
+        if (isset($_SESSION['Last_Member_Search'])) {
             $result = User_Form::getLikeGroups($_SESSION['Last_Member_Search'], $group);
             if (isset($result)) {
                 $template['LIKE_GROUPS'] = $result;
@@ -312,10 +315,12 @@ class User_Form {
                 $count++;
                 $vars['member'] = $item['id'];
                 $action = PHPWS_Text::secureLink(_('Drop'), 'users', $vars, NULL, _('Drop this member from the group.'));
-                if ($count % 2)
+                if ($count % 2) {
                     $template['STYLE'] = 'class="bg-light"';
-                else
+                }
+                else {
                     $template['STYLE'] = NULL;
+                }
                 $template['NAME'] = $item['name'];
                 $template['ACTION'] = $action;
 
@@ -329,10 +334,11 @@ class User_Form {
             $content = $pager->getData();
         }
 
-        if (!isset($content))
+        if (!isset($content)) {
             $content = _('No members.');
+        }
 
-        if (PEAR::isError($content)){
+        if (PEAR::isError($content)) {
             PHPWS_Error::log($content);
             return $content->getMessage();
         }
@@ -345,17 +351,32 @@ class User_Form {
 
         $form = & new PHPWS_Form;
 
-        if ($user->getId() > 0){
+        if ($user->getId() > 0) {
             $form->addHidden('user_id', $user->getId());
             $form->addSubmit('submit', _('Update User'));
-        } else
+        } else {
             $form->addSubmit('submit', _('Add User'));
-
+        }
 
         $form->addHidden('action', 'admin');
         $form->addHidden('command', 'postUser');
-
         $form->addHidden('module', 'users');
+
+        if (Current_User::allow('users', 'settings')) {
+            $db = & new PHPWS_DB('users_auth_scripts');
+            $db->setIndexBy('id');
+            $db->addColumn('id');
+            $db->addColumn('display_name');
+            $result = $db->select('col');
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+            } else {
+                $form->addSelect('authorize', $result);
+                $form->setMatch('authorize', $user->authorize);
+                $form->setLabel('authorize', _('Authorization'));
+            }
+        }
+
         $form->addText('username', $user->getUsername());
         $form->addText('display_name', $user->display_name);
         $form->addPassword('password1');
@@ -368,11 +389,12 @@ class User_Form {
         $form->setLabel('display_name', _('Display name'));
         $form->setLabel('password1', _('Password'));
 
-        if (isset($tpl))
+        if (isset($tpl)) {
             $form->mergeTemplate($tpl);
+        }
 
         $template = $form->getTemplate();
-        if (isset($message)){
+        if (isset($message)) {
             foreach ($message as $tag=>$error)
                 $template[strtoupper($tag) . '_ERROR'] = $error;
         }
@@ -382,7 +404,7 @@ class User_Form {
 
     function deify(&$user)
     {
-        if (!$_SESSION['User']->isDeity() || ($user->getId() == $_SESSION['User']->getId())){
+        if (!$_SESSION['User']->isDeity() || ($user->getId() == $_SESSION['User']->getId())) {
             $content[] = _('Only another deity can create a deity.');
         } else {
             $content[] = _('Are you certain you want this user to have complete control of this web site?');
@@ -426,7 +448,7 @@ class User_Form {
         $form = & new PHPWS_Form('groupForm');
         $members = $group->getMembers();
 
-        if ($group->getId() > 0){
+        if ($group->getId() > 0) {
             $form->addHidden('group_id', $group->getId());
             $form->addSubmit('submit', _('Update Group'));
         } else
@@ -453,7 +475,7 @@ class User_Form {
         $template['ADD_MEMBER_LBL'] = _('Add Member');
         $template['CURRENT_MEMBERS_LBL'] = _('Current Members');
 
-        if (isset($_POST['new_member_submit']) && !empty($_POST['add_member'])){
+        if (isset($_POST['new_member_submit']) && !empty($_POST['add_member'])) {
             $result = User_Form::getLikeGroups($_POST['add_member'], $group);
             if (isset($result)) {
                 $template['LIKE_GROUPS'] = $result;
@@ -467,8 +489,9 @@ class User_Form {
     function memberListForm($group)
     {
         $members = $group->getMembers();
-        if (!isset($members))
+        if (!isset($members)) {
             return _('None found');
+        }
 
         $db = & new PHPWS_DB('users_groups');
         foreach ($members as $id)
@@ -488,8 +511,9 @@ class User_Form {
             $count++;
             $tpl->setCurrentBlock('row');
             $tpl->setData(array('NAME'=>$group->getName(), 'DROP'=>$dropbutton));
-            if ($count%2)
+            if ($count%2) {
                 $tpl->setData(array('STYLE' => 'class="bg-light"'));
+            }
             $tpl->parseCurrentBlock();
         }
 
@@ -504,22 +528,24 @@ class User_Form {
         $name = preg_replace('/[^\w]/', '', $name);
         $db->addWhere('name', "%$name%", 'LIKE');
 
-        if (!is_null($group->getName()))
+        if (!is_null($group->getName())) {
             $db->addWhere('name', $group->getName(), '!=');
+        }
 
         $members = $group->getMembers();
-        if (isset($members)){
+        if (isset($members)) {
             foreach ($members as $id)
                 $db->addWhere('id', $id, '!=');
         }
         $db->setIndexBy('id');
         $result = $db->getObjects('PHPWS_Group');
 
-        if (PEAR::isError($result)){
+        if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             return NULL;
-        } elseif (!isset($result))
+        } elseif (!isset($result)) {
               return NULL;
+        }
 
         $tpl = & new PHPWS_Template('users');
         $tpl->setFile('forms/likeGroups.tpl');
@@ -530,9 +556,11 @@ class User_Form {
         $vars['group_id'] = $group->getId();
 
         foreach ($result as $member){
-            if (isset($members))
-                if (in_array($member->getId(), $members))
+            if (isset($members)) {
+                if (in_array($member->getId(), $members)) {
                     continue;
+                }
+            }
 
             $vars['member'] = $member->getId();
             $link = PHPWS_Text::secureLink( _('Add'), 'users', $vars, NULL, _('Add this user to this group.'));
@@ -540,8 +568,9 @@ class User_Form {
             $count++;
             $tpl->setCurrentBlock('row');
             $tpl->setData(array('NAME'=>$member->getName(), 'ADD'=>$link));
-            if ($count%2)
+            if ($count%2) {
                 $tpl->setData(array('STYLE' => 'class="bg-light"'));
+            }
             $tpl->parseCurrentBlock();
         }
 
@@ -577,8 +606,9 @@ class User_Form {
             $remaining_files = NULL;
         }
 
-        if (empty($remaining_files))
+        if (empty($remaining_files)) {
             $template['FILE_LIST'] = _('No new scripts found');
+        }
         else {
             $form->addSelect('file_list', $remaining_files);
             $form->reindexValue('file_list');
@@ -599,10 +629,12 @@ class User_Form {
 
         foreach ($auth_list as $authorize){
             extract($authorize);
-            if ($default_authorization == $id)
+            if ($default_authorization == $id) {
                 $checked = 'checked="checked"';
-            else
+            }
+            else {
                 $checked = NULL;
+            }
 
             $getVars['module']  = 'users';
             $getVars['action']  = 'admin';
@@ -727,7 +759,7 @@ class User_Form {
  
         $template = $form->getTemplate();
 
-        if (isset($message)){
+        if (isset($message)) {
             foreach ($message as $tag=>$error)
                 $template[$tag] = $error;
         }

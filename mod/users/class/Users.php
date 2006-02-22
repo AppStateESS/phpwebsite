@@ -20,7 +20,7 @@ class PHPWS_User {
     var $username      = NULL;
     var $deity         = FALSE;
     var $active        = TRUE;
-    var $authorize     = NULL;
+    var $authorize     = 0;
     var $last_logged   = 0;
     var $log_count     = 0;
     var $created       = 0;
