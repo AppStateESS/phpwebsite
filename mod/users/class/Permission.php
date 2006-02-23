@@ -223,9 +223,7 @@ class Users_Permission {
     {
         $tableName = Users_Permission::getPermissionTableName($module);
 
-        $db = & new PHPWS_DB($tableName);
-
-        $result = $db->dropTable();
+        $result = PHPWS_DB::dropTable($tableName);
         if (PEAR::isError($result)) {
             $errors[] = $result;
         }
