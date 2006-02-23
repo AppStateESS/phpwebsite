@@ -314,7 +314,7 @@ class Calendar_Admin {
         $pager->db->addWhere('user_id', 'users.id', '=', 'or');
         $pager->db->addColumn('*');
         $pager->db->addColumn('users.display_name');
-        $pager->db->setJoin('left', 'calendar_schedule', 'user_id', 'users', 'id');
+        $pager->db->addJoin('left', 'calendar_schedule', 'users', 'user_id', 'id');
 
         $pager->initialize();
  
@@ -327,8 +327,7 @@ class Calendar_Admin {
     function mySchedule()
     {
         if (!PHPWS_Settings::get('calendar', 'personal_schedules')) {
-            return array('title' => _('Sorry'),
-                         'content' => _('Personal schedules are disabled.'));
+            return _('Sorry, personal schedules are disabled.');
         }
 
         $result = $this->calendar->loadSchedule(TRUE);
