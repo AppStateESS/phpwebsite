@@ -277,17 +277,22 @@ class PHPWS_Boost {
             $content[] = '<b>' . _('Uninstalling') . ' - ' . $mod->getProperName() .'</b>';
 
             if ($this->getStatus($title) == BOOST_START && $mod->isImportSQL()) {
-                $content[] = _('Importing SQL uninstall file.');
-                $result = PHPWS_Boost::importSQL($mod->getDirectory() . 'boost/uninstall.sql');
-
-                if (PEAR::isError($result)) {
-                    PHPWS_Error::log($result);
-
-                    $content[] = _('An import error occurred.');
-                    $content[] = _('Check your logs for more information.');
-                    return implode('<br />', $content);
+                $uninstall_file = $mod->getDirectory() . 'boost/uninstall.sql';
+                if (!is_file($uninstall_file)) {
+                    $content[] = _('Uninstall SQL not found.');
                 } else {
-                    $content[] = _('Import successful.');
+                    $content[] = _('Importing SQL uninstall file.');
+                    $result = PHPWS_Boost::importSQL($uninstall_file);
+                    
+                    if (PEAR::isError($result)) {
+                        PHPWS_Error::log($result);
+                        
+                        $content[] = _('An import error occurred.');
+                        $content[] = _('Check your logs for more information.');
+                        return implode('<br />', $content);
+                    } else {
+                        $content[] = _('Import successful.');
+                    }
                 }
             }
 
