@@ -23,6 +23,46 @@ class Calendar_View {
         }
     }
 
+    function viewLinks($current_view)
+    {
+        $vars = PHPWS_Text::getGetValues();
+        unset($vars['module']);
+
+        $vars['schedule_id'] = $this->calendar->schedule->id;
+        
+        if ($current_view == 'month_list') {
+            $links[] = _('Month list');
+        } else {
+            $vars['view'] = 'month_list';
+            $links[] = PHPWS_Text::moduleLink(_('Month list'), 'calendar', $vars);
+        }
+
+        if ($current_view == 'month_grid') {
+            $links[] = _('Month grid');
+        } else {
+            $vars['view'] = 'month_grid';
+            $links[] = PHPWS_Text::moduleLink(_('Month grid'), 'calendar', $vars);
+        }
+
+        if ($current_view == 'week') {
+            $links[] = _('Week');
+        } else {
+            $vars['view'] = 'week';
+            $links[] = PHPWS_Text::moduleLink(_('Week'), 'calendar', $vars);
+        }
+
+        if ($current_view == 'day') {
+            $links[] = _('Day');
+        } else {
+            $vars['view'] = 'day';
+            $links[] = PHPWS_Text::moduleLink(_('Day'), 'calendar', $vars);
+        }
+        
+        return implode(' | ', $links);
+
+    }
+
+
     function month_grid($type='mini', $month=NULL, $year=NULL)
     {
         if (empty($month)) {
@@ -130,34 +170,22 @@ class Calendar_View {
         return $content;
     }
 
-    function day($year=NULL, $month=NULL, $day=NULL)
+    function day()
     {
-        if (empty($year) || $year < 1970) {
-            $aDate = PHPWS_Time::getTimeArray();
+        $uDate    = mktime(0, 0, 0, $this->calendar->month, $this->calendar->day, $this->calendar->year);
+        $uDateEnd = $uDate + 82800 + 3540 + 59; // 23 hours, 59 minutes, 59 seconds later
 
-            if (isset($_REQUEST['y'])) {
-                $year = $_REQUEST['y'];
-            } else {
-                $year  = &$aDate['y'];
-            }
+        $template['VIEW_LINKS'] = $this->viewLinks('day');
 
-            if (isset($_REQUEST['m'])) {
-                $month = $_REQUEST['m'];
-            } else {
-                $month = &$aDate['m'];
-            }
+        $template['TITLE'] = $this->calendar->schedule->title;
+        $template['DATE'] = strftime(CALENDAR_DAY_FORMAT, $uDate);
 
-            if (isset($_REQUEST['d'])) {
-                $day = $_REQUEST['d'];
-            } else {
-                $day   = &$aDate['d'];
-            }
-
-        }
-
-        $uDate    = mktime(0, 0, 0, $month, $day, $year);
-        $uDateEnd = mktime(23, 59, 0, $month, $day, $year);
-        $now      = mktime(date('G'),(int)date('i') , 0, $month, $day, $year);
+        $js['month'] = $this->calendar->month;
+        $js['day']   = $this->calendar->day;
+        $js['year']  = $this->calendar->year;
+        $js['url']   = $this->getUrl();
+        $js['type']  = 'pick';
+        $template['PICK'] = javascript('js_calendar', $js);
 
         /*
          // need to replace the below
@@ -170,21 +198,6 @@ class Calendar_View {
             $template['ADD_EVENT'] = $this->calendar->schedule->addEventLink($now);
         }
         */
-
-        $template['TITLE'] = $this->calendar->schedule->title;
-        $template['DATE'] = strftime(CALENDAR_DAY_FORMAT, $uDate);
-
-
-        $js['month'] = $month;
-        $js['day'] = $day;
-        $js['year'] = $year;
-        $js['url'] = $this->getUrl();
-        $js['type'] = 'pick';
-        $template['PICK'] = javascript('js_calendar', $js);
-
-
-        $start_date = mktime(0,0,0, $month, $day, $year);
-        $end_date   = mktime(23,59,59, $month, $day, $year);
 
         $this->calendar->schedule->loadEvents($uDate, $uDateEnd);
         $events = & $this->calendar->schedule->events;
