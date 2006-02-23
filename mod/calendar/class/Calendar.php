@@ -16,8 +16,13 @@ if (!defined('CALENDAR_MONTH_LISTING')) {
 
 
 class PHPWS_Calendar {
-    var $today    = NULL;
-    var $month    = NULL;
+    var $today        = 0;
+    var $month        = 0;
+    var $day          = 0;
+    var $year         = 0;
+    var $request_date = 0;
+    var $current_view = DEFAULT_CALENDAR_VIEW;
+
     // object for controlling user requests
     var $user     = NULL;
 
@@ -29,9 +34,64 @@ class PHPWS_Calendar {
 
     function PHPWS_Calendar() {
         // using server time
-        $this->today = PHPWS_Time::mkservertime();
+        $this->loadToday();
+        $this->loadRequestDate();
+        $this->loadCurrentView();
     }
 
+    function loadCurrentView()
+    {
+        if (isset($_REQUEST['view'])) {
+            $this->current_view = $_REQUEST['view'];
+        }
+    }
+
+    /**
+     * Loads todays unix time and date info 
+     */
+    function loadToday()
+    {
+        $atime = PHPWS_Time::getTimeArray();
+        $this->today        = &$atime['u'];
+        $this->request_date = $this->today;
+        $this->month        = &$atime['m'];
+        $this->day          = &$atime['d'];
+        $this->year         = &$atime['y'];
+    }
+
+    /**
+     * Loads the date requested by user
+     */
+    function loadRequestDate()
+    {
+        $change = FALSE;
+
+        if (isset($_REQUEST['y'])) {
+            $this->year = (int)$_REQUEST['y'];
+            $change = TRUE;
+        }
+
+        if (isset($_REQUEST['m'])) {
+            $this->month = (int)$_REQUEST['m'];
+            $change = TRUE;
+        }
+
+        if (isset($_REQUEST['d'])) {
+            $this->day = (int)$_REQUEST['d'];
+            $change = TRUE;
+        }
+
+        if ($change) {
+            $this->request_date = PHPWS_Time::convertServerTime(mktime(0,0,0, $this->month, $this->day, $this->year));
+            if ($this->request_date < mktime(0,0,0,1,1,1970)) {
+                $this->loadToday();
+            } else {
+                $this->month = date('m', $this->request_date);
+                $this->day   = date('d', $this->request_date);
+                $this->year  = date('Y', $this->request_date);
+            }
+        }
+    }
 
     function loadSchedule($personal=FALSE)
     {
@@ -68,7 +128,6 @@ class PHPWS_Calendar {
             $this->user->main();
         */
 
-
         if (isset($_REQUEST['schedule_id'])) {
             $this->loadSchedule();
             if (!$this->schedule->allowView()) {
@@ -85,14 +144,7 @@ class PHPWS_Calendar {
         switch ($command) {
             
         case 'view':
-            $this->loadView();
-            if (isset($_REQUEST['view'])) {
-                $mode = $_REQUEST['view'];
-            } else {
-                $mode = DEFAULT_CALENDAR_VIEW;
-            }
-            $title = $this->viewLinks($mode);
-            $content = $this->view($mode);
+            $content = $this->view();
             break;
         }
 
@@ -102,70 +154,30 @@ class PHPWS_Calendar {
         Layout::add($final);
     }
 
-    function viewLinks($current_view)
-    {
-        $vars['schedule_id'] = $this->schedule->id;
-        if (isset($_REQUEST['m'])) {
-            $vars['m'] = &$_REQUEST['m'];
-        }
 
-        if (isset($_REQUEST['d'])) {
-            $vars['d'] = &$_REQUEST['d'];
-        }
-
-        if (isset($_REQUEST['y'])) {
-            $vars['y'] = &$_REQUEST['y'];
-        }
-
-        if ($current_view == 'month_list') {
-            $links[] = _('Month list');
-        } else {
-            $vars['view'] = 'month_list';
-            $links[] = PHPWS_Text::moduleLink(_('Month list'), 'calendar', $vars);
-        }
-
-        if ($current_view == 'month_grid') {
-            $links[] = _('Month grid');
-        } else {
-            $vars['view'] = 'month_grid';
-            $links[] = PHPWS_Text::moduleLink(_('Month grid'), 'calendar', $vars);
-        }
-
-        if ($current_view == 'week') {
-            $links[] = _('Week');
-        } else {
-            $vars['view'] = 'week';
-            $links[] = PHPWS_Text::moduleLink(_('Week'), 'calendar', $vars);
-        }
-
-        if ($current_view == 'day') {
-            $links[] = _('Day');
-        } else {
-            $vars['view'] = 'day';
-            $links[] = PHPWS_Text::moduleLink(_('Day'), 'calendar', $vars);
-        }
-        
-        return implode(' | ', $links);
-
-    }
-
-    function view($mode=NULL)
+    function view()
     {
         $this->loadView();
 
-        if (!isset($mode)) {
-            $mode = 'day';
-        }
-
-        switch ($mode) {
+        switch ($this->current_view) {
         case 'day':
-            return $this->view->day();
+            $content = $this->view->day();
             break;
             
         case 'month_grid':
-            return $this->view->month_grid('full');
+            $content = $this->view->month_grid('full');
+            break;
+
+        case 'month_list':
+            $content = $this->view->month_list();
+            break;
+
+        case 'week':
+            $content = $this->view->week();
             break;
         }
+
+        return $content;
     }
 
 
