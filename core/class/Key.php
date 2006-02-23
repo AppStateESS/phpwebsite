@@ -543,7 +543,7 @@ class Key {
                 return;
             }
 
-            $db->setJoin('left', $source_table, 'key_id', 'phpws_key', 'id');
+            $db->addJoin('left', $source_table, 'phpws_key', 'key_id', 'id');
             $db->addWhere('key_id', 0);
             $db->addWhere('phpws_key.id', 'phpws_key_edit.key_id', NULL, NULL, 'key_1');
             $db->addWhere('phpws_key_edit.group_id', $groups, 'in', NULL, 'key_1');
