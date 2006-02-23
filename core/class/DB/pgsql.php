@@ -93,7 +93,7 @@ class PHPWS_SQL {
             $tableName = PHPWS_DB::extractTableName($query);
 
             $query = preg_replace('/primary key/i', '', $query);
-
+            $query = preg_replace('/if exists /i', '', $query);
             $query = preg_replace('/\);/', ', PRIMARY KEY (id));', $query);
         }
     }
