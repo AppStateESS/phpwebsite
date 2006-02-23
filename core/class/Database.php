@@ -148,7 +148,7 @@ class PHPWS_DB {
 
     function query($sql, $prefix=TRUE)
     {
-        if (!empty($this->_test_mode)) {
+        if (isset($this) && !empty($this->_test_mode)) {
             exit($sql);
         }
 
@@ -731,7 +731,7 @@ class PHPWS_DB {
         $this->_distinct = (bool)$distinct;
     }
 
-    function addColumn($column, $max_min=NULL)
+    function addColumn($column, $max_min=NULL, $as=NULL)
     {
         if (!in_array(strtolower($max_min), array('max', 'min'))) {
             $max_min = NULL;
@@ -743,6 +743,12 @@ class PHPWS_DB {
             $this->addTable($table);
         }
 
+        if (!empty($as)) {
+            if (!PHPWS_DB::allowed($as)) {
+                return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::addColumn', $as);
+            }
+        }
+
         if (!PHPWS_DB::allowed($column)) {
             return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::addColumn', $column);
         }
@@ -750,6 +756,9 @@ class PHPWS_DB {
         $col['table']    = $table;
         $col['name']     = $column;
         $col['max_min']  = $max_min;
+        if ($column != '*') {
+            $col['as']       = $as;
+        }
 
         $this->columns[] = $col;
     }
@@ -771,7 +780,11 @@ class PHPWS_DB {
                     if ($max_min) {
                         $columns[] = strtoupper($max_min) . "($table.$name)";
                     } else {
-                        $columns[] = "$table.$name";
+                        if (!empty($as)) {
+                            $columns[] = "$table.$name AS $as";
+                        } else {
+                            $columns[] = "$table.$name";
+                        }
                     }
                 }
                 return implode(', ', $columns);
@@ -1349,23 +1362,33 @@ class PHPWS_DB {
         return PHPWS_DB::query($sql);
     }
   
-
-    function dropTable($check_existence=TRUE)
+    /**
+     * Static call only
+     * check_existence - of table
+     * sequence_table  - if true, drop sequence table as well
+     */
+    function dropTable($table, $check_existence=TRUE, $sequence_table=TRUE)
     {
-        $if_exists = NULL;
+        $table = PHPWS_DB::getPrefix() . $table;
 
-        $table = $this->getTable();
-        if (!$table) {
-            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::dropTable');
+        // was using IF EXISTS but not cross compatible
+        if ($check_existence && !PHPWS_DB::isTable($table)) {
+            return TRUE;
         }
 
-        if ($check_existence) {
-            $if_exists = 'IF EXISTS';
+        $result = PHPWS_DB::query("DROP TABLE $table");
+        if (PEAR::isError($result)) {
+            return $result;
         }
-
-        $sql = "DROP TABLE $if_exists $table";
-
-        return PHPWS_DB::query($sql);
+        
+        if ($sequence_table && PHPWS_DB::isTable($table . '_seq')) {
+            $result = PHPWS_DB::query("DROP TABLE $table");
+            if (PEAR::isError($result)) {
+                return $result;
+            }
+        }
+        
+        return TRUE;
     }
 
     function truncateTable()
