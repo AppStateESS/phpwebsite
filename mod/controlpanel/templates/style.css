@@ -114,7 +114,7 @@ float : left;
 position : relative;
 width : 150px;
 height : 90px;
-text-align : top;
+vertical-align : top;
 display : inline;
 }
 
