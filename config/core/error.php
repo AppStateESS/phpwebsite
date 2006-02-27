@@ -95,7 +95,8 @@ $errors[PHPWS_IMG_WRONG_TYPE]         = _('Unacceptable image type.');
 $errors[PHPWS_IMG_NOT_FOUND]          = _('Image not found');
 $errors[PHPWS_DOCUMENT_SIZE]          = _('Document was %sK making it larger than %sK size limit.');
 $errors[PHPWS_DOCUMENT_WRONG_TYPE]    = _('Unacceptable document type.');
-$errors[PHPWS_DOCUMENT_NOT_FOUND]    =  _('Document not found.');
+$errors[PHPWS_DOCUMENT_NOT_FOUND]     = _('Document not found.');
+$errors[PHPWS_NO_UPLOAD]              = _('File not uploaded.');
 
 
 
