@@ -1,7 +1,7 @@
 {START_FORM}
-<table width="100%" cellpadding="4" cellspacing="0">
+<table width="100%" cellpadding="4" cellspacing="0" class="form-table">
   <tr>
-    <td><b>{DEFAULT_THEME_LABEL}</b></td>
+    <td class="label" width="20%">{DEFAULT_THEME_LABEL}</td>
     <td>{DEFAULT_THEME}</td>
   </tr>
 </table>
