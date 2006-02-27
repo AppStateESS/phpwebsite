@@ -110,7 +110,7 @@ class PHPWS_Image extends File_Common {
     {
         $typeList = unserialize(ALLOWED_IMAGE_TYPES);
         if (!isset($type)) {
-            $type = $this->type;
+            $type = $this->file_type;
         }
         
         return in_array($type, $typeList);
@@ -121,9 +121,9 @@ class PHPWS_Image extends File_Common {
     {
         if (is_numeric($type)) {
             $new_type = image_type_to_mime_type($type);
-            $this->type = $new_type;
+            $this->file_type = $new_type;
         } else {
-            $this->type = $type;
+            $this->file_type = $type;
         }
     }
 
@@ -189,10 +189,10 @@ class PHPWS_Image extends File_Common {
 
     function getFullDirectory()
     {
-        if (empty($this->directory)) {
-            $this->directory = $this->module . '/';
+        if (empty($this->file_directory)) {
+            $this->file_directory = $this->module . '/';
         }
-        return sprintf('images/%s%s', $this->directory, $this->filename);
+        return sprintf('images/%s%s', $this->file_directory, $this->file_name);
     }
 
     function allowWidth($imagewidth=NULL)
@@ -244,13 +244,13 @@ class PHPWS_Image extends File_Common {
 
     function save($no_dupes=TRUE, $write=TRUE)
     {
-        if (empty($this->directory)) {
-            $this->directory = $this->module . '/';
+        if (empty($this->file_directory)) {
+            $this->file_directory = $this->module . '/';
         }
 
         if (empty($this->alt)) {
             if (empty($this->title)) {
-                $this->title = $this->filename;
+                $this->title = $this->file_name;
             }
             $this->alt = $this->title;
         }
@@ -265,8 +265,8 @@ class PHPWS_Image extends File_Common {
         $db = & new PHPWS_DB('images');
 
         if ((bool)$no_dupes && empty($this->id)) {
-            $db->addWhere('filename',  $this->filename);
-            $db->addWhere('directory', $this->directory);
+            $db->addWhere('filename',  $this->file_name);
+            $db->addWhere('directory', $this->file_directory);
             $db->addWhere('module',    $this->module);
             $db->addColumn('id');
             $result = $db->select('one');
