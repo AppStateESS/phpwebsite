@@ -421,6 +421,12 @@ class PHPWS_Core {
 
     function coreModList()
     {
+        static $core_modules = NULL;
+
+        if (is_array($core_modules)) {
+            return $core_modules;
+        }
+
         $file = PHPWS_Core::getConfigFile('core', 'core_modules.php');
         if (PEAR::isError($file)) {
             return $file;
