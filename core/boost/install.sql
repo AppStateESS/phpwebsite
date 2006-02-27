@@ -15,33 +15,6 @@ CREATE TABLE registered (
 	registered CHAR(40) NOT NULL
 	);
 
-CREATE TABLE documents (
-  id int NOT NULL default '0',
-  filename varchar(50) NOT NULL default '',
-  directory varchar(150) NOT NULL default '',
-  type varchar(30) NOT NULL default '',
-  title varchar(255) NOT NULL default '',
-  description text NOT NULL,
-  size int NOT NULL default '0',
-  module varchar(40) default NULL,
-  PRIMARY KEY  (id)
-);
-
-CREATE TABLE images (
-  id int NOT NULL default '0',
-  filename varchar(50) NOT NULL default '',
-  directory varchar(150) NOT NULL default '',
-  type varchar(30) NOT NULL default '',
-  title varchar(255) NOT NULL default '',
-  description text,
-  size int NOT NULL default '0',
-  width smallint NOT NULL default '0',
-  height smallint NOT NULL default '0',
-  alt varchar(255) NOT NULL default '',
-  thumbnail_source int NOT NULL default '0',
-  module varchar(40) default NULL,
-  PRIMARY KEY  (id)
-);
 
 CREATE TABLE dependencies (
   source_mod varchar(40) NOT NULL default '',
