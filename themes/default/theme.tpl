@@ -12,6 +12,7 @@
    {USERS_LOGIN_BOX}<div style="clear:both"></div></div><!-- END top_menu -->
    <div class="category-menu-bar">{CATEGORIES_ADMIN_MENU}</div>
    <div id="sidepanel">
+     {MENU_MENU_1}
      {DEFAULT}
      <div id="notes-list">{NOTES_REMINDER}</div>
    </div>
