@@ -67,8 +67,9 @@ class Current_User {
 
     function getAuthKey()
     {
-        if (!isset($_SESSION['User']))
+        if (!isset($_SESSION['User'])) {
             return NULL;
+        }
         return $_SESSION['User']->getAuthKey();
     }
 
