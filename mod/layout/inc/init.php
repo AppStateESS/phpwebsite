@@ -1,10 +1,11 @@
 <?php
 
-$includeFile = PHPWS_Core::getConfigFile("layout", "config.php");
+  /**
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
+   */
 
-if (PEAR::isError($includeFile)) PHPWS_Error::log($includeFile);
-else include_once $includeFile;
-
-PHPWS_CORE::initModClass("layout", "Layout.php");
+PHPWS_Core::requireConfig('layout', 'config.php');
+PHPWS_Core::initModClass('layout', 'Layout.php');
 
 ?>
