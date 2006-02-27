@@ -179,7 +179,15 @@ class Layout {
         }
     }
 
-    function nakedDisplay($content)
+    /**
+     * Displays content passed to it disregarding all other information
+     * passed to it.
+     *
+     * This is a good function to use for a popup window. The display
+     * retains style sheet information.
+     *
+     */
+    function nakedDisplay($content=NULL)
     {
         Layout::disableRobots();
         echo (Layout::wrap($content));
