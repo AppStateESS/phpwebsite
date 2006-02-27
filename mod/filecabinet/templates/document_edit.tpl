@@ -2,7 +2,7 @@
 <!-- BEGIN error-list -->
 <ul>
 <!-- BEGIN errors -->
-<li class="error-text">{ERROR}</li>
+<li class="error">{ERROR}</li>
 <!-- END errors -->
 </ul>
 <!-- END error-list -->
@@ -13,6 +13,9 @@
   </tr>
   <tr>
     <td class="label">{FILE_NAME_LABEL}</td><td>{FILE_NAME}</td>
+  </tr>
+  <tr>
+    <td class="label">{DIRECTORY_LABEL}</td><td>{DIRECTORY}</td>
   </tr>
   <tr>
     <td class="label">{TITLE_LABEL}</td><td>{TITLE}</td>

@@ -1,6 +1,3 @@
-{START_FORM}
-{MOD_TITLE}{SUBMIT}
-{END_FORM}
 {NEW_DOCUMENT}
 <table cellpadding="6" cellspacing="1" width="100%">
   <tr>
