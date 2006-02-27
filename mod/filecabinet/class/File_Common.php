@@ -10,14 +10,15 @@
 PHPWS_Core::requireConfig('filecabinet', 'errorDefines.php');
 
 class File_Common {
-    var $id          = NULL;
-    var $filename    = NULL;
-    var $directory   = NULL;
-    var $ext         = NULL;
-    var $type        = NULL;
-    var $title       = NULL;
-    var $description = NULL;
-    var $size        = NULL;
+    var $id             = 0;
+    var $key_id         = 0;
+    var $file_name      = NULL;
+    var $file_directory = NULL;
+    var $ext            = NULL;
+    var $file_type      = NULL;
+    var $title          = NULL;
+    var $description    = NULL;
+    var $size           = NULL;
 
     /**
      * PEAR upload object
@@ -60,7 +61,7 @@ class File_Common {
             ( $_FILES[$var_name]['error'] == UPLOAD_ERR_INI_SIZE ||
               $_FILES[$var_name]['error'] == UPLOAD_ERR_FORM_SIZE)
             ) {
-            $this->_errors[] =  PHPWS_Error::get(FC_FILE_SIZE, 'filecabinet', 'File_Common::getFiles');
+            $this->_errors[] =  PHPWS_Error::get(PHPWS_FILE_SIZE, 'core', 'File_Common::getFiles');
             return FALSE;
         }
 
@@ -77,11 +78,11 @@ class File_Common {
             $file_vars = $this->_upload->getProp();
 
             $this->setFilename($file_vars['real']);
-            $this->_upload->setName($this->filename);
+            $this->_upload->setName($this->file_name);
 
             $this->setSize($file_vars['size']);
 
-            $this->type = $file_vars['type'];
+            $this->file_type = $file_vars['type'];
             $this->ext  = $file_vars['ext'];
 
             if (!$this->allowSize()) {
@@ -122,13 +123,13 @@ class File_Common {
         if (!preg_match('/\/$/', $directory)) {
             $directory .= '/';
         }
-        $this->directory = $directory;
+        $this->file_directory = $directory;
     }
 
 
     function setFilename($filename)
     {
-        $this->filename = preg_replace('/\s/', '_', $filename);
+        $this->file_name = preg_replace('/\s/', '_', $filename);
     }
 
     function setSize($size)
@@ -201,7 +202,7 @@ class File_Common {
     // rewrite
     function write()
     {
-        $moved = $this->_upload->moveTo($this->directory);
+        $moved = $this->_upload->moveTo($this->file_directory);
         if (!PEAR::isError($moved)) {
             return $moved;
         }
@@ -209,21 +210,14 @@ class File_Common {
         return TRUE;
     }
 
-    // rewrite
     function getPath($full_path=FALSE, $path_type='http')
     {
-        if (empty($this->filename)) {
+        if (empty($this->file_name)) {
             return PHPWS_Error::get(FC_FILENAME_NOT_SET, 'filecabinet', 'File_Common::getPath');
         }
 
-        if (empty($this->directory)) {
+        if (empty($this->file_directory)) {
             return PHPWS_Error::get(FC_DIRECTORY_NOT_SET, 'filecabinet', 'File_Common::getPath');
-        }
-
-        if ($this->_classtype == 'document') {
-            $root = 'files/';
-        } else {
-            $root = 'images/';
         }
 
         if ($full_path) {
@@ -242,7 +236,7 @@ class File_Common {
     function allowType($type=NULL)
     {
         if (!isset($type)) {
-            $type = $this->type;
+            $type = $this->file_type;
         }
         return in_array($type, $this->_allowed_types);
     }

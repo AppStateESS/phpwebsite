@@ -123,12 +123,12 @@ class PHPWS_Document extends File_Common {
 
     function save($no_dupes=TRUE, $write=TRUE)
     {
-        if (empty($this->directory)) {
+        if (empty($this->file_directory)) {
             return FALSE;
         }
 
         if (empty($this->title)) {
-            $this->title = $this->filename;
+            $this->title = $this->file_name;
         }
 
         if ($write) {
@@ -141,8 +141,8 @@ class PHPWS_Document extends File_Common {
         $db = & new PHPWS_DB('documents');
 
         if ((bool)$no_dupes && empty($this->id)) {
-            $db->addWhere('filename',  $this->filename);
-            $db->addWhere('directory', $this->directory);
+            $db->addWhere('file_name',  $this->file_name);
+            $db->addWhere('file_directory', $this->file_directory);
             $db->addColumn('id');
             $result = $db->select('one');
             if (PEAR::isError($result)) {
@@ -155,7 +155,47 @@ class PHPWS_Document extends File_Common {
             $db->reset();
         }
 
-        return $db->saveObject($this);
+        $result = $db->saveObject($this);
+
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        $key = $this->saveKey();
+        if (PEAR::isError($key)) {
+            return $key;
+        }
+
+        if (!$this->key_id) {
+            $this->key_id = $key->id;
+            return $db->saveObject($this);
+        }
+
+        return TRUE;
+    }
+
+    function &saveKey()
+    {
+        if (empty($this->key_id)) {
+            $key = & new Key;
+        } else {
+            $key = & new Key($this->key_id);
+            if (PEAR::isError($key->_error)) {
+                $key = & new Key;
+            }
+        }
+
+        $key->setModule('filecabinet');
+        $key->setItemName('document');
+        $key->setItemId($this->id);
+        $key->setEditPermission('edit_document');
+        $key->setUrl($this->getViewLink());
+        $key->setTitle($this->title);
+        $key->setSummary($this->description);
+
+        $result = $key->save();
+
+        return $key;
     }
 
     function delete()
@@ -164,7 +204,7 @@ class PHPWS_Document extends File_Common {
             return FALSE;
         }
 
-        $file_dir = $this->directory . $this->filename;
+        $file_dir = $this->file_directory . $this->file_name;
 
         // if the file is not there, we want to continue anyway
         if (is_file($file_dir)) {
@@ -177,6 +217,50 @@ class PHPWS_Document extends File_Common {
         $db->addWhere('id', $this->id);
         return $db->delete();
     }
+
+    function getRowTags()
+    {
+        $vars['document_id'] = $this->id;
+
+        $vars['action'] = 'admin_edit_document';
+        $links[] = PHPWS_Text::secureLink(_('Edit'), 'filecabinet', $vars);
+
+        $vars['action'] = 'clip_document';
+        $links[] = PHPWS_Text::moduleLink(_('Clip'), 'filecabinet', $vars);
+
+        $vars['action'] = 'delete_document';
+        $js['QUESTION'] = _('Are you sure you want to delete this document?');
+        $js['LINK'] = _('Delete');
+        $js['ADDRESS'] = PHPWS_Text::linkAddress('filecabinet', $vars, TRUE);
+        $links[] = javascript('confirm', $js);
+
+        $tpl['FILE_NAME'] = $this->getViewLink(TRUE, TRUE);
+
+        $tpl['ACTION'] = implode(' | ', $links);
+        $tpl['SIZE'] = $this->getSize(TRUE);
+
+        return $tpl;
+    }
+
+    function getViewLink($format=FALSE, $use_filename=FALSE)
+    {
+        if (MOD_REWRITE_ENABLED) {
+            $link = 'filecabinet/' . $this->id;
+        } else {
+            $link = sprintf('index.php?module=filecabinet&amp;id=' . $this->id);
+        }
+
+        if ($format) {
+            if ($use_filename) {
+                return sprintf('<a href="%s">%s</a>', $link, $this->file_name);
+            } else {
+                return sprintf('<a href="%s">%s</a>', $link, $this->title);
+            }
+        } else {
+            return $link;
+        }
+    }
+
 }
 
 ?>
