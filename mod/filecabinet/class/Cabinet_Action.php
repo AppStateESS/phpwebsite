@@ -70,17 +70,15 @@ class Cabinet_Action {
             break;
 
         case 'delete_document':
-            if (1||!PHPWS_Core::isPosted()) {
-                if (!$document->id || !Current_User::authorized('filecabinet', 'delete', $document->id)) {
-                    Current_User::disallow();
-                }
-                $result = $document->delete();
-                if (PEAR::isError($result)) {
-                    PHPWS_Error::log($result);
-                    $message = _('An error occurred when trying to delete a document.');
-                } else {
-                    $message = _('Document deleted.');
-                }
+            if (!$document->id || !Current_User::authorized('filecabinet', 'delete', $document->id)) {
+                Current_User::disallow();
+            }
+            $result = $document->delete();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                $message = _('An error occurred when trying to delete a document.');
+            } else {
+                $message = _('Document deleted.');
             }
 
             $title = _('Manage Documents');
@@ -219,18 +217,17 @@ class Cabinet_Action {
             break;
 
         case 'js_post_document':
-            if (1){
-            //            if (!PHPWS_Core::isPosted()) {
+
+            if (!PHPWS_Core::isPosted()) {
                 if (!isset($document)) {
                     $document = & new PHPWS_Document;
                 }
-
                 if (!Cabinet_Action::postDocument($document)) {
                     $tpl['CONTENT'] = Cabinet_Form::editDocument($document, TRUE);
                     $tpl['TITLE']   = _('Document');
                     Layout::nakedDisplay(PHPWS_Template::process($tpl, 'filecabinet', 'main.tpl'));
                 } else {
-                    javascript('close_refresh');
+                    javascript('close_refresh', array('location'=>'index.php?module=filecabinet&tab=document'));
                     Layout::nakedDisplay();
                 }
             } else {
@@ -356,7 +353,7 @@ class Cabinet_Action {
             return FALSE;
         }
 
-        $result = $document->save();
+        return $document->save();
     }
 
     function viewImage($image)
@@ -403,6 +400,25 @@ class Cabinet_Action {
         return $content;
     }
 
+    function download($id)
+    {
+        $document = & new PHPWS_Document($id);
+        if (!empty($document->_errors)) {
+            foreach ($this->_errors as $err) {
+                PHPWS_Error::log($err);
+            }
+            Layout::add(_('Sorry but this file is inaccessible at this time.'));
+            return;
+        }
+
+        $key = & new Key($document->key_id);
+        if (!$key->allowView()) {
+            Current_User::disallow(sprintf(_('Attempted to download: %s'), $document->getPath()));
+            Layout::add(_('You are not allowed access to this file.'));
+            return;
+        }
+        test($key);
+    }
 
 }
 
