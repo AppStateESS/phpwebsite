@@ -1,7 +1,7 @@
 <?php
 
-PHPWS_Core::initCoreClass('Image.php');
-PHPWS_Core::initCoreClass('Document.php');
+PHPWS_Core::initModClass('filecabinet', 'Image.php');
+PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
 class Cabinet_Form {
     function imageManager()
@@ -16,37 +16,6 @@ class Cabinet_Form {
         $pager->addWhere('thumbnail_source', 0);
         $pager->addWhere('thumbnail_source', 'images.id', '=', 'or');
 
-        $form = & new PHPWS_Form;
-        $form->setMethod('get');
-        $values = $pager->getLinkValues();
-
-        unset($values['authkey']);
-
-        if (isset($values['mod_title']) && $values['mod_title'] != 'all') {
-            $current_mod = $values['mod_title'];
-            $pager->addWhere('module', $current_mod, '=', 'and', 1);
-        } else {
-            $current_mod = NULL;
-        }
-
-        unset($values['mod_title']);
-
-        $form->addHidden($values);
-        $mods = PHPWS_Core::getModules(TRUE, TRUE);
-        $module_list['all'] = _('All');
-        foreach ($mods as $mod_title) {
-            $module_list[$mod_title] = $mod_title;
-        }
-        $form->addSelect('mod_title', $module_list);
-
-        if (javascriptEnabled()) {
-            $form->setExtra('mod_title', 'onchange="javascript:this.form.submit();"');
-        } else {
-            $form->addSubmit(_('Go'));
-        }
-        $form->setMatch('mod_title', $current_mod);
-
-        $tags = $form->getTemplate();
 
         $tags['TITLE']      = _('Title');
         $tags['FILENAME']   = _('Filename');
@@ -75,42 +44,6 @@ class Cabinet_Form {
         $pager->addToggle('class="toggle1"');
         $pager->addToggle('class="toggle2"');
 
-        // Pick module
-        $form = & new PHPWS_Form;
-        $form->setMethod('get');
-        $values = $pager->getLinkValues();
-
-        unset($values['authkey']);
-
-        if (isset($values['mod_title']) && $values['mod_title'] != 'all') {
-            $current_mod = $values['mod_title'];
-            $pager->addWhere('module', $current_mod, '=', 'and', 1);
-        } else {
-            $current_mod = NULL;
-        }
-
-        unset($values['mod_title']);
-
-        $form->addHidden($values);
-        $mods = PHPWS_Core::getModules(TRUE, TRUE);
-        $module_list['all'] = _('All');
-        foreach ($mods as $mod_title) {
-            $module_list[$mod_title] = $mod_title;
-        }
-        
-        $form->addSelect('mod_title', $module_list);
-
-
-        if (javascriptEnabled()) {
-            $form->setExtra('mod_title', 'onchange="javascript:this.form.submit();"');
-        } else {
-            $form->addSubmit(_('Go'));
-        }
-        $form->setMatch('mod_title', $current_mod);
-
-        $tags = $form->getTemplate();
-
-
         $tags['TITLE']    = _('Title');
         $tags['FILENAME'] = _('Filename');
         $tags['TYPE']     = _('Document Type');
@@ -118,8 +51,16 @@ class Cabinet_Form {
         $tags['SIZE']     = _('Size');
         $tags['ACTION']   = _('Action');
 
-        $tags['NEW_DOCUMENT'] = PHPWS_Text::secureLink(_('Upload document'), 'filecabinet',
-                                                       array('action'=>'new_document'));
+        if (javascriptEnabled()) {
+            $js['address'] = 'index.php?module=filecabinet&action=doc_upload&authkey=' . Current_User::getAuthkey();
+            $js['label'] = _('Upload document');
+            $js['width'] = 550;
+            $js['height'] = 350;
+            $tags['NEW_DOCUMENT'] = javascript('open_window', $js);
+        } else {
+            $tags['NEW_DOCUMENT'] = PHPWS_Text::secureLink(_('Upload document'), 'filecabinet',
+                                                           array('action'=>'new_document'));
+        }
         
 
         $pager->addPageTags($tags);
@@ -133,26 +74,51 @@ class Cabinet_Form {
         return $result;
     }
 
-    function editDocument(&$document)
+    function settings()
     {
         $form = & new PHPWS_FORM;
         $form->addHidden('module', 'filecabinet');
+        $form->addHidden('action', 'save_settings');
+        $form->addText('base_doc_directory', PHPWS_Settings::get('filecabinet', 'base_doc_directory'));
+        $form->setSize('base_doc_directory', '50');
+        $form->addSubmit(_('Save settings'));
+        $form->setLabel('base_doc_directory', _('Base document directory'));
+        $tpl = $form->getTemplate();
+        return PHPWS_Template::process($tpl, 'filecabinet', 'settings.tpl');
+    }
+
+    function editDocument(&$document, $js_form=FALSE)
+    {
+        PHPWS_Core::initCoreClass('File.php');
+
+        $form = & new PHPWS_FORM;
+        $form->addHidden('module', 'filecabinet');
+
+        $doc_directories = Cabinet_Action::getDocDirectories();
 
         if ($document->directory) {
             $form->addHidden('directory', urlencode($document->directory));
         }
 
-        $form->addHidden('action', 'admin_post_document');
-        $form->setLabel('mod_title', _('Module Directory'));
-        $form->setMatch('mod_title', $document->module);
+
+        if ($js_form) {
+            $form->addHidden('action', 'js_post_document');
+        } else {
+            $form->addHidden('action', 'admin_post_document');
+        }
 
         $form->addFile('file_name');
         $form->setSize('file_name', 30);
         $form->setLabel('file_name', _('Document location'));
 
+        $form->addSelect('directory', $doc_directories);
+        $form->setMatch('directory', $document->directory);
+        $form->setLabel('directory', _('Save directory'));
+
         $form->addText('title', $document->title);
         $form->setSize('title', 40);
         $form->setLabel('title', _('Title'));
+
 
         $form->addTextArea('description', $document->description);
         $form->setLabel('description', _('Description'));
@@ -161,6 +127,11 @@ class Cabinet_Form {
             $form->addSubmit('submit', _('Update'));
         } else {
             $form->addSubmit('submit', _('Upload'));
+        }
+
+        if ($js_form) {
+            $form->addButton('cancel', _('Cancel'));
+            $form->setExtra('cancel', 'onclick="window.close()"');
         }
 
         $form->setExtra('submit', 'onclick="this.style.display=\'none\'"');
@@ -271,6 +242,12 @@ class FC_Document extends PHPWS_Document {
 
         $vars['action'] = 'clip_document';
         $links[] = PHPWS_Text::moduleLink(_('Clip'), 'filecabinet', $vars);
+
+        $vars['action'] = 'delete_document';
+        $js['QUESTION'] = _('Are you sure you want to delete this document?');
+        $js['LINK'] = _('Delete');
+        $js['ADDRESS'] = PHPWS_Text::linkAddress('filecabinet', $vars, TRUE);
+        $links[] = javascript('confirm', $js);
 
         $tpl['ACTION'] = implode(' | ', $links);
         $tpl['SIZE'] = $this->getSize(TRUE);

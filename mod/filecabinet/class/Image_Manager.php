@@ -15,8 +15,6 @@ define('FC_MANAGER_HEIGHT', 480);
 
 define('FC_NONE_IMAGE_SRC', 'images/mod/filecabinet/none.png');
 
-PHPWS_Core::initCoreClass('Image.php');
-
 class FC_Image_Manager {
     var $itemname       = NULL;
     var $image          = NULL;

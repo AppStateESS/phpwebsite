@@ -13,13 +13,13 @@
 define('DEFAULT_CABINET_LIST', 'image');
 
 PHPWS_Core::initModClass('filecabinet', 'Forms.php');
+PHPWS_Core::initModClass('filecabinet', 'Image.php');
+PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
 class Cabinet_Action {
 
     function admin()
     {
-        PHPWS_Core::initCoreClass('Image.php');
-        PHPWS_Core::initCoreClass('Document.php');
 
         if (!Current_User::allow('filecabinet')){
             Current_User::disallow();
@@ -65,6 +65,24 @@ class Cabinet_Action {
                 Clipboard::copy($document->getTitle(), '[filecabinet:doc:' . $document->id . ']');
             }
         case 'document':
+            $title = _('Manage Documents');
+            $content = Cabinet_Form::documentManager();
+            break;
+
+        case 'delete_document':
+            if (1||!PHPWS_Core::isPosted()) {
+                if (!$document->id || !Current_User::authorized('filecabinet', 'delete', $document->id)) {
+                    Current_User::disallow();
+                }
+                $result = $document->delete();
+                if (PEAR::isError($result)) {
+                    PHPWS_Error::log($result);
+                    $message = _('An error occurred when trying to delete a document.');
+                } else {
+                    $message = _('Document deleted.');
+                }
+            }
+
             $title = _('Manage Documents');
             $content = Cabinet_Form::documentManager();
             break;
@@ -144,6 +162,14 @@ class Cabinet_Action {
             }
             break;
 
+        case 'doc_upload':
+            if (!Current_User::authorized('filecabinet')) {
+                Current_User::disallow();
+            }
+            $content = Cabinet_Action::documentUpload();
+            Layout::nakedDisplay($content);
+            break;
+
         case 'get_image_xml':
             Cabinet_Action::getImageXML($_REQUEST['id']);
             break;
@@ -190,7 +216,26 @@ class Cabinet_Action {
             }
             $title = _('Manage Documents');
             $content = Cabinet_Form::documentManager();
+            break;
 
+        case 'js_post_document':
+            if (1){
+            //            if (!PHPWS_Core::isPosted()) {
+                if (!isset($document)) {
+                    $document = & new PHPWS_Document;
+                }
+
+                if (!Cabinet_Action::postDocument($document)) {
+                    $tpl['CONTENT'] = Cabinet_Form::editDocument($document, TRUE);
+                    $tpl['TITLE']   = _('Document');
+                    Layout::nakedDisplay(PHPWS_Template::process($tpl, 'filecabinet', 'main.tpl'));
+                } else {
+                    javascript('close_refresh');
+                    Layout::nakedDisplay();
+                }
+            } else {
+                exit('repeat post?');
+            }
             break;
 
         case 'edit_image':
@@ -208,6 +253,28 @@ class Cabinet_Action {
             Layout::nakedDisplay(Cabinet_Action::viewImage($image));
             break;
 
+        case 'setting':
+            $title   = _('Settings');
+            $content = Cabinet_Form::settings();
+            break;
+
+        case 'save_settings':
+            if (!Current_User::isDeity()) {
+                Current_User::disallow();
+            }
+            $result = Cabinet_Action::saveSettings();
+            if (is_array($result)) {
+                $message = implode('<br />', $result);
+            } else {
+                $message = _('Settings saved.');
+            }
+
+            $title = _('Settings');
+            $content = Cabinet_Form::settings();
+
+            break;
+
+
         default:
             exit($action);
         }
@@ -221,6 +288,23 @@ class Cabinet_Action {
         $panel->setContent($main);
         $finalPanel = $panel->display();
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
+    }
+
+    function saveSettings()
+    {
+        if (empty($_POST['base_doc_directory'])) {
+            $errors[] = _('Default document directory may not be blank');
+        } elseif (!is_writable($_POST['base_doc_directory'])) {
+            $errors[] = _('Unable to write to entered directory.');
+        }
+
+        if (isset($errors)) {
+            return $errors;
+        } else {
+            PHPWS_Settings::set('filecabinet', 'base_doc_directory', $_POST['base_doc_directory']);
+            PHPWS_Settings::save('filecabinet');
+            return TRUE;
+        }
     }
 
     function getImageXML($image_id)
@@ -243,6 +327,9 @@ class Cabinet_Action {
 
         $tabs['image']    = $image_command;
         $tabs['document'] = $document_command;
+        if (Current_User::isDeity()) {
+            $tabs['setting']  = array('title'=> _('Settings'), 'link' => $link);
+        }
 
         $panel = & new PHPWS_Panel('filecabinet');
         $panel->quickSetTabs($tabs);
@@ -265,14 +352,11 @@ class Cabinet_Action {
 
     function postDocument(&$document)
     {
-        $errors = $document->importPost('file_name');
-
-        if (is_array($errors) || PEAR::isError($errors)) {
-            return $errors;
-        } else {
-            $result = $document->save();
-            return $result;
+        if (!$document->importPost('file_name')) {
+            return FALSE;
         }
+
+        $result = $document->save();
     }
 
     function viewImage($image)
@@ -285,6 +369,40 @@ class Cabinet_Action {
         $content = PHPWS_Template::process($template, 'filecabinet', 'view.tpl');
         Layout::nakedDisplay($content);
     }
+
+    function getDocDirectories()
+    {
+        $doc_dir = PHPWS_Settings::get('filecabinet', 'base_doc_directory');
+
+        $directories = PHPWS_File::listDirectories($doc_dir,TRUE,TRUE);
+
+        if (empty($directories)) {
+            return array('default' => '/');
+        } else {
+            $search = preg_quote($doc_dir, '/');
+            $new_list[$doc_dir] = '/';
+            foreach ($directories as $dir) {
+                if (is_writable($dir)) {
+                    $edit_dir = preg_replace('/^' . $search . '/', '', $dir);
+                    $new_list[$dir] = $edit_dir;
+                }
+            }
+
+        }
+
+        return $new_list;
+    }
+
+    function documentUpload()
+    {
+        $content = NULL;
+        $document = & new PHPWS_Document;
+
+        $content = Cabinet_Form::editDocument($document, TRUE);
+
+        return $content;
+    }
+
 
 }
 
