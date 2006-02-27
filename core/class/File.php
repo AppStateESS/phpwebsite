@@ -26,8 +26,14 @@ class PHPWS_File {
      * return array of directories
      * @author Matthew McNaney <mcnaney at gmail dot com>
      */
-    function listDirectories($root_dir)
+    function listDirectories($root_dir, $with_root=FALSE, $recursive=FALSE)
     {
+        $directories = NULL;
+
+        if (!preg_match('/\/$/', $root_dir)) {
+            $root_dir .= '/';
+        }
+
         if (!is_dir($root_dir)) {
             return FALSE;
         }
@@ -39,12 +45,28 @@ class PHPWS_File {
         }
 
         foreach ($listing as $directory) {
-            if ($directory == '.' || $directory == '..' || !is_dir($root_dir . $directory)) {
+            $full_dir = $root_dir . $directory;
+            if ($directory == '.' || $directory == '..' || !is_dir($full_dir)) {
                 continue;
             }
 
-            $directories[] = $directory;
+
+            if ($with_root) {
+                $directories[] = $full_dir;
+            } else {
+                $directories[] = $directory;
+            }
+
+            if ($with_root && $recursive) {
+                $subdir = PHPWS_File::listDirectories($full_dir,TRUE,TRUE);
+                if ($with_root) {
+                    if (!empty($subdir)) {
+                        $directories = array_merge($directories, $subdir);
+                    }
+                }
+            }
         }
+
         return $directories;
     }
 
