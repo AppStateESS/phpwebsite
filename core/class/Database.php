@@ -620,6 +620,7 @@ class PHPWS_DB {
                          'LIKE',
                          'REGEXP',
                          'IN',
+                         'NOT IN',
                          'BETWEEN',
                          'IS',
                          'IS NOT');
