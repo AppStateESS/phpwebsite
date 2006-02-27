@@ -36,8 +36,13 @@ class Layout_Admin{
         case 'changeBoxSettings':
             Layout_Admin::saveBoxSettings();
             $title = _('Adjust Boxes');
-            $template['MESSAGE'] = _('Settings changed');
+            $template['MESSAGE'] = _('Settings changed.');
             $content[] = Layout_Admin::boxesForm();
+            if ($_REQUEST['reset_boxes']) {
+                unset($_SESSION['Layout_Settings']);
+                PHPWS_Core::reroute('index.php?module=layout&action=admin&authkey=' . Current_User::getAuthKey());
+            }
+
             break;
 
         case 'confirmThemeChange':
@@ -192,6 +197,12 @@ class Layout_Admin{
         } else {
             $form->setMatch('move_boxes', 0);
         }
+
+
+        $form->addRadio('reset_boxes', array(0,1));
+        $form->setLabel('reset_boxes', array(_('No'), _('Yes')));
+        $form->setMatch('reset_boxes', 0);
+        $form->addTplTag('RESET_LABEL', _('Reset boxes'));
 
         $form->addSubmit('submit', _('Change Settings'));
 
@@ -370,6 +381,11 @@ class Layout_Admin{
         else {
             Layout::moveBoxes(FALSE);
         }
+
+        if ($_REQUEST['reset_boxes'] == '1') {
+            Layout::resetDefaultBoxes();
+        }
+
     }
 
 

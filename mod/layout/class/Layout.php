@@ -648,6 +648,18 @@ class Layout {
         $_SESSION['Layout_Settings']->loadBoxes();
     }
 
+    function resetDefaultBoxes()
+    {
+        $db = & new PHPWS_DB('layout_box');
+        $db->addWhere('theme', Layout::getDefaultTheme());
+        $result = $db->delete();
+
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+        }
+    }
+
+
     /**
      * Unlike the add function, which appends a content variable's
      * data, set OVERWRITES the current values
