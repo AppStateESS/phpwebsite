@@ -18,8 +18,7 @@ class Cabinet_Form {
 
 
         $tags['TITLE']      = _('Title');
-        $tags['FILENAME']   = _('Filename');
-        $tags['MODULE']     = _('Module');
+        $tags['FILE_NAME']   = _('Filename');
         $tags['SIZE']       = _('Size');
         $tags['ACTION']     = _('Action');
 
@@ -37,19 +36,18 @@ class Cabinet_Form {
     function documentManager()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
-        $pager = & new DBPager('documents', 'FC_Document');
+        $pager = & new DBPager('documents', 'PHPWS_Document');
         $pager->setModule('filecabinet');
         $pager->setTemplate('documentList.tpl');
         $pager->addRowTags('getRowTags');
         $pager->addToggle('class="toggle1"');
         $pager->addToggle('class="toggle2"');
 
-        $tags['TITLE']    = _('Title');
-        $tags['FILENAME'] = _('Filename');
-        $tags['TYPE']     = _('Document Type');
-        $tags['MODULE']   = _('Module');
-        $tags['SIZE']     = _('Size');
-        $tags['ACTION']   = _('Action');
+        $tags['TITLE']     = _('Title');
+        $tags['FILE_NAME'] = _('File name');
+        $tags['FILE_TYPE'] = _('File type');
+        $tags['SIZE']      = _('Size');
+        $tags['ACTION']    = _('Action');
 
         if (javascriptEnabled()) {
             $js['address'] = 'index.php?module=filecabinet&action=doc_upload&authkey=' . Current_User::getAuthkey();
@@ -96,8 +94,8 @@ class Cabinet_Form {
 
         $doc_directories = Cabinet_Action::getDocDirectories();
 
-        if ($document->directory) {
-            $form->addHidden('directory', urlencode($document->directory));
+        if ($document->file_directory) {
+            $form->addHidden('directory', urlencode($document->file_directory));
         }
 
 
@@ -112,7 +110,7 @@ class Cabinet_Form {
         $form->setLabel('file_name', _('Document location'));
 
         $form->addSelect('directory', $doc_directories);
-        $form->setMatch('directory', $document->directory);
+        $form->setMatch('directory', $document->file_directory);
         $form->setLabel('directory', _('Save directory'));
 
         $form->addText('title', $document->title);
@@ -162,8 +160,8 @@ class Cabinet_Form {
         $form = & new PHPWS_Form;
         $form->addHidden('module', 'filecabinet');
 
-        if ($image->directory) {
-            $form->addHidden('directory', urlencode($image->directory));
+        if ($image->file_directory) {
+            $form->addHidden('directory', urlencode($image->file_directory));
         }
 
         $form->addHidden('action', 'admin_post_image');
@@ -227,31 +225,7 @@ class FC_Image extends PHPWS_Image {
 
         $tpl['ACTION'] = implode(' | ', $links);
         $tpl['SIZE'] = $this->getSize(TRUE);
-        return $tpl;
-    }
-}
-
-
-class FC_Document extends PHPWS_Document {
-    function getRowTags()
-    {
-        $vars['document_id'] = $this->id;
-
-        $vars['action'] = 'admin_edit_document';
-        $links[] = PHPWS_Text::secureLink(_('Edit'), 'filecabinet', $vars);
-
-        $vars['action'] = 'clip_document';
-        $links[] = PHPWS_Text::moduleLink(_('Clip'), 'filecabinet', $vars);
-
-        $vars['action'] = 'delete_document';
-        $js['QUESTION'] = _('Are you sure you want to delete this document?');
-        $js['LINK'] = _('Delete');
-        $js['ADDRESS'] = PHPWS_Text::linkAddress('filecabinet', $vars, TRUE);
-        $links[] = javascript('confirm', $js);
-
-        $tpl['ACTION'] = implode(' | ', $links);
-        $tpl['SIZE'] = $this->getSize(TRUE);
-
+        $tpl['FILE_NAME'] = $this->getViewLink(TRUE, TRUE);
         return $tpl;
     }
 }
