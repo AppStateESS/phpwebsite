@@ -1144,6 +1144,10 @@ class PHPWS_Form {
             $this->_action = 'index.php';
         }
 
+        if ($this->_multipart) {
+            $this->_action .= '?check_overpost=1';
+        }
+        
         if (isset($this->id)) {
             if ($this->allowFormName) {
                 $formName = 'name="' . $this->id . '" id="' . $this->id . '" ';
@@ -1160,9 +1164,7 @@ class PHPWS_Form {
             $autocomplete = NULL;
         }
 
-        if (isset($this->_action)) {
-            return '<form class="phpws-form" ' . $autocomplete . $formName . 'action="' . $this->_action . '" ' . $this->getMethod(TRUE) . $this->_encode . '>';
-        }
+        return '<form class="phpws-form" ' . $autocomplete . $formName . 'action="' . $this->_action . '" ' . $this->getMethod(TRUE) . $this->_encode . '>';
     }
 
     function _imageSelectArray($module, $current)
