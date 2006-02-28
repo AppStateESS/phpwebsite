@@ -9,19 +9,20 @@
 
 <table class="form-table">
   <tr>
-    <td class="label">{CURRENT_DOCUMENT_LABEL}</td><td>{CURRENT_DOCUMENT}</td>
+    <td>{CURRENT_DOCUMENT_LABEL}</td><td>{CURRENT_DOCUMENT_ICON} 
+{CURRENT_DOCUMENT_FILE}</td>
   </tr>
   <tr>
-    <td class="label">{FILE_NAME_LABEL}</td><td>{FILE_NAME}</td>
+    <td>{FILE_NAME_LABEL}</td><td>{FILE_NAME}</td>
   </tr>
   <tr>
-    <td class="label">{DIRECTORY_LABEL}</td><td>{DIRECTORY}</td>
+    <td>{DIRECTORY_LABEL}</td><td>{DIRECTORY}</td>
   </tr>
   <tr>
-    <td class="label">{TITLE_LABEL}</td><td>{TITLE}</td>
+    <td>{TITLE_LABEL}</td><td>{TITLE}</td>
   </tr>
   <tr>
-    <td class="label">{DESCRIPTION_LABEL}</td><td>{DESCRIPTION}</td>
+    <td>{DESCRIPTION_LABEL}</td><td>{DESCRIPTION}</td>
   </tr>
 </table>
 {SUBMIT} {CANCEL}
