@@ -20,7 +20,6 @@ class Cabinet_Action {
 
     function admin()
     {
-
         if (!Current_User::allow('filecabinet')){
             Current_User::disallow();
             return;
@@ -160,11 +159,14 @@ class Cabinet_Action {
             }
             break;
 
-        case 'doc_upload':
+        case 'document_edit':
             if (!Current_User::authorized('filecabinet')) {
                 Current_User::disallow();
             }
-            $content = Cabinet_Action::documentUpload();
+            if (!isset($document)) {
+                $document = & new PHPWS_Document;
+            }
+            $content = Cabinet_Action::documentUpload($document);
             Layout::nakedDisplay($content);
             break;
 
@@ -173,8 +175,9 @@ class Cabinet_Action {
             break;
 
         case 'uploadImage':
-            if (!PHPWS_Core::isPosted())
+            if (!PHPWS_Core::isPosted()) {
                 $result = Cabinet_Action::uploadImage();
+            }
             $message = _('Image uploaded!');
             $content = Cabinet_Form::imageManager();
             break;
@@ -189,6 +192,22 @@ class Cabinet_Action {
         case 'admin_edit_image':
             $title = _('Edit Image');
             $content = Cabinet_Form::edit_image($image);
+            break;
+
+        case 'js_doc_edit':
+            if (!Current_User::authorized('filecabinet')) {
+                Current_User::disallow();
+            }
+            $content = Cabinet_Action::documentUpload();
+            Layout::nakedDisplay($content);
+            break;
+
+        case 'admin_edit_document':
+            if (!Current_User::allow('filecabinet', 'edit_document', $document->id)) {
+                Current_User::disallow();
+            }
+            $content = Cabinet_Action::editDocument($document);
+            Layout::nakedDisplay($content);
             break;
 
         case 'admin_post_document':
@@ -217,7 +236,6 @@ class Cabinet_Action {
             break;
 
         case 'js_post_document':
-
             if (!PHPWS_Core::isPosted()) {
                 if (!isset($document)) {
                     $document = & new PHPWS_Document;
@@ -390,14 +408,9 @@ class Cabinet_Action {
         return $new_list;
     }
 
-    function documentUpload()
+    function documentUpload(&$document)
     {
-        $content = NULL;
-        $document = & new PHPWS_Document;
-
-        $content = Cabinet_Form::editDocument($document, TRUE);
-
-        return $content;
+        return Cabinet_Form::editDocument($document, TRUE);
     }
 
     function download($id)

@@ -109,7 +109,22 @@ class PHPWS_Document extends File_Common {
 
     function getIconView()
     {
-        return 'icon!';
+        static $icon_list =NULL;
+
+        if (empty($icon_list)) {
+            $file = PHPWS_Core::getConfigFile('filecabinet', 'icons.php');
+            if (!$file) {
+                return '<img src="./images/mod/filecabinet/icons/document.png" />';
+            } else {
+                include $file;
+            }
+        }
+
+        if (!@$graphic = $icon_list[$this->ext]) {
+            return '<img src="./images/mod/filecabinet/icons/document.png" />';
+        } else {
+            return sprintf('<img src="./images/mod/filecabinet/icons/%s" />', $graphic);
+        }
     }
 
     
@@ -222,8 +237,16 @@ class PHPWS_Document extends File_Common {
     {
         $vars['document_id'] = $this->id;
 
-        $vars['action'] = 'admin_edit_document';
-        $links[] = PHPWS_Text::secureLink(_('Edit'), 'filecabinet', $vars);
+        if (javascriptEnabled()) {
+            $js['address'] = sprintf('index.php?module=filecabinet&action=document_edit&document_id=%s&authkey=%s', $this->id, Current_User::getAuthkey());
+            $js['label'] = _('Edit');
+            $js['width'] = 550;
+            $js['height'] = 350;
+            $links[] = javascript('open_window', $js);
+        } else {
+            $vars['action'] = 'admin_edit_document';
+            $links[] = PHPWS_Text::secureLink(_('Edit'), 'filecabinet', $vars);
+        }
 
         $vars['action'] = 'clip_document';
         $links[] = PHPWS_Text::moduleLink(_('Clip'), 'filecabinet', $vars);

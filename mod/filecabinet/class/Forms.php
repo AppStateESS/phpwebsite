@@ -50,7 +50,7 @@ class Cabinet_Form {
         $tags['ACTION']    = _('Action');
 
         if (javascriptEnabled()) {
-            $js['address'] = 'index.php?module=filecabinet&action=doc_upload&authkey=' . Current_User::getAuthkey();
+            $js['address'] = 'index.php?module=filecabinet&action=document_edit&authkey=' . Current_User::getAuthkey();
             $js['label'] = _('Upload document');
             $js['width'] = 550;
             $js['height'] = 350;
@@ -146,7 +146,8 @@ class Cabinet_Form {
 
         if ($document->id) {
             $template['CURRENT_DOCUMENT_LABEL'] = _('Current document');
-            $template['CURRENT_DOCUMENT']       = $document->getIconView();
+            $template['CURRENT_DOCUMENT_ICON']  = $document->getIconView();
+            $template['CURRENT_DOCUMENT_FILE']  = $document->file_name;
         }
         $template['MAX_SIZE_LABEL'] = _('Maximum file size');
         $template['MAX_SIZE']       = $document->getMaxSize(TRUE);
