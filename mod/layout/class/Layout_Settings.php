@@ -32,7 +32,7 @@ class Layout_Settings {
     var $_move_box        = FALSE;
     var $_theme_variables = NULL;
     var $_default_box     = NULL;
-    var $_persistant_css  = NULL;
+    var $_persistent_css  = NULL;
     var $_default_css     = NULL;
     var $_alternate_css   = NULL;
 
@@ -157,17 +157,17 @@ class Layout_Settings {
     }
 
     function loadStyleSheets($themeVars) {
-        $this->_default_css = $this->_persistant_css = $this->_alternate_css = NULL;
+        $this->_default_css = $this->_persistent_css = $this->_alternate_css = NULL;
 
         extract($themeVars);
 
-        if (!isset($persistant_style_sheet) && !isset($default_style_sheet)) {
-            $this->_persistant_css = array('file' => 'style.css');
+        if (!isset($persistent_style_sheet) && !isset($default_style_sheet)) {
+            $this->_persistent_css = array('file' => 'style.css');
             return;
         }
 
-        if (isset($persistant_style_sheet)) {
-            $this->_persistant_css = array('file' => $persistant_style_sheet['file']);
+        if (isset($persistent_style_sheet)) {
+            $this->_persistent_css = array('file' => $persistent_style_sheet['file']);
         }
     
         if (isset($default_style_sheet)) {
@@ -217,7 +217,7 @@ class Layout_Settings {
         unset($vars['_move_box']);
         unset($vars['_theme_variables']);
         unset($vars['_default_box']);
-        unset($vars['_persistant_css']);
+        unset($vars['_persistent_css']);
         unset($vars['_default_css']);
         unset($vars['_alternate_css']);
         unset($vars['current_theme']);

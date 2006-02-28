@@ -587,12 +587,12 @@ class Layout {
     {
         $directory = Layout::getThemeDir();
 
-        $persistant = $_SESSION['Layout_Settings']->_persistant_css;
+        $persistent = $_SESSION['Layout_Settings']->_persistent_css;
         $default    = $_SESSION['Layout_Settings']->_default_css;
         $alternate  = $_SESSION['Layout_Settings']->_alternate_css;
 
-        if (!empty($persistant)) {
-            Layout::addToStyleList(array('file'=>$directory . $persistant['file'],
+        if (!empty($persistent)) {
+            Layout::addToStyleList(array('file'=>$directory . $persistent['file'],
                                          'import' => TRUE));
         } else {
             Layout::addToStyleList(Layout::getTheme() . 'style.css');
