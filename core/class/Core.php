@@ -392,6 +392,10 @@ class PHPWS_Core {
             include PHPWS_HOME_DIR . 'config/core/404.html';
             break;
 
+        case 'overpost':
+            include PHPWS_HOME_DIR . 'config/core/overpost.html';
+            break;
+
         default:
             include PHPWS_HOME_DIR . 'config/core/error_page.html';
             break;
@@ -407,6 +411,18 @@ class PHPWS_Core {
         } else {
             return FALSE;
         }
+    }
+
+    function checkOverPost()
+    {
+        if (!isset($_GET['check_overpost'])) {
+            return TRUE;
+        } elseif (empty($_POST)) {
+            Security::log(_('User tried to post a file beyond server limits.'));
+            PHPWS_Core::errorPage('overpost');
+        }
+
+        return TRUE;
     }
 
     function checkSecurity()
