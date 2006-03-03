@@ -522,7 +522,7 @@ class Layout {
     function getStyleLinks($header=FALSE)
     {
         if (!isset($GLOBALS['Style'])) {
-            Layout::addToStyleList(Layout::getTheme() . "/style.css");
+            return TRUE;
         }
 
         foreach ($GLOBALS['Style'] as $link) {
@@ -582,40 +582,6 @@ class Layout {
         return Layout::getJavascript($script_name,$data, $base);
     }
 
-
-    function importStyleSheets()
-    {
-        $directory = Layout::getThemeDir();
-
-        $persistent = $_SESSION['Layout_Settings']->_persistent_css;
-        $default    = $_SESSION['Layout_Settings']->_default_css;
-        $alternate  = $_SESSION['Layout_Settings']->_alternate_css;
-
-        if (!empty($persistent)) {
-            Layout::addToStyleList(array('file'=>$directory . $persistent['file'],
-                                         'import' => TRUE));
-        } else {
-            Layout::addToStyleList(Layout::getTheme() . 'style.css');
-        }
-
-        if (!empty($default) && (isset($default['file']) && isset($default['title']))) {
-            Layout::addToStyleList(array('file'=>$directory . $default['file'],
-                                         'title'=>$default['title'])
-                                   );
-        }
-      
-        if (!empty($alternate) && is_array($alternate)) {
-            foreach ($alternate as $altStyle){
-                if (isset($altStyle['file']) && isset($altStyle['title'])) {
-                    Layout::addToStyleList(array('file'=>$directory . $altStyle['file'],
-                                                 'title'=>$altStyle['title'],
-                                                 'alternate'=>TRUE
-                                                 )
-                                           );
-                }
-            }
-        }
-    }
 
     /**
      * Inserts the content data into the current theme
@@ -774,7 +740,6 @@ class Layout {
             $template['JAVASCRIPT'] = implode("\n", $jsHead);
         }
 
-        Layout::importStyleSheets();
         Layout::submitHeaders($theme, $template);
         $template['METATAGS']   = Layout::getMetaTags();
         $template['PAGE_TITLE'] = $_SESSION['Layout_Settings']->getPageTitle();

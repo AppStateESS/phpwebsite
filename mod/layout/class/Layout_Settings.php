@@ -32,11 +32,6 @@ class Layout_Settings {
     var $_move_box        = FALSE;
     var $_theme_variables = NULL;
     var $_default_box     = NULL;
-    var $_persistent_css  = NULL;
-    var $_default_css     = NULL;
-    var $_alternate_css   = NULL;
-
-
 
     function Layout_Settings(){
         $this->loadSettings();
@@ -147,7 +142,6 @@ class Layout_Settings {
         if (is_file($themeInit)){
             $themeVars = parse_ini_file($themeInit, TRUE);
             $this->loadBoxSettings($themeVars);
-            $this->loadStyleSheets($themeVars);
         } else {
             PHPWS_Error::log(LAYOUT_INI_FILE, 'layout', 'Layout_Settings::loadSettings', $themeInit);
             PHPWS_Core::errorPage();
@@ -156,52 +150,10 @@ class Layout_Settings {
 
     }
 
-    function loadStyleSheets($themeVars) {
-        $this->_default_css = $this->_persistent_css = $this->_alternate_css = NULL;
-
-        extract($themeVars);
-
-        if (!isset($persistent_style_sheet) && !isset($default_style_sheet)) {
-            $this->_persistent_css = array('file' => 'style.css');
-            return;
-        }
-
-        if (isset($persistent_style_sheet)) {
-            $this->_persistent_css = array('file' => $persistent_style_sheet['file']);
-        }
-    
-        if (isset($default_style_sheet)) {
-            $this->_default_css = array('file' => $default_style_sheet['file'],
-                                        'title' => $default_style_sheet['title']);
-        }
-   
-        for ($i = 1; 1; $i++) {
-            $filename = 'alternate_style_sheet_' . $i;
-            if (!isset($$filename)) {
-                break;
-            }
-
-            $this->_alternate_css[] = array('file' => ${$filename}['file'],
-                                            'title' => ${$filename}['title']);
-        }
-    }
-
     function loadBoxSettings($themeVars) {
         $theme_variables[] = DEFAULT_THEME_VAR;
         $theme_variables[] = DEFAULT_BOX_VAR;
 
-        if (isset($themeVars['box_settings'])) {
-            if (isset($themeVars['box_settings']['default_box'])) {
-                $default_box = $themeVars['box_settings']['default_box'];
-        
-                if (is_file('themes/' . $this->current_theme . '/boxstyles/' . $default_box)) {
-                    $this->_default_box = $default_box;
-                } else {
-                    $this->_default_box = 'box.tpl';
-                }
-            }
-        }
-    
         if (isset($themeVars['theme_variables'])) {
             $theme_variables = array_merge($theme_variables, $themeVars['theme_variables']);
         }
@@ -217,9 +169,6 @@ class Layout_Settings {
         unset($vars['_move_box']);
         unset($vars['_theme_variables']);
         unset($vars['_default_box']);
-        unset($vars['_persistent_css']);
-        unset($vars['_default_css']);
-        unset($vars['_alternate_css']);
         unset($vars['current_theme']);
         $db->addValue($vars);
         return $db->update();
