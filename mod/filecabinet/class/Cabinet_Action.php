@@ -415,6 +415,8 @@ class Cabinet_Action {
 
     function download($id)
     {
+        require_once 'HTTP/Download.php';
+
         $document = & new PHPWS_Document($id);
         if (!empty($document->_errors)) {
             foreach ($this->_errors as $err) {
@@ -430,6 +432,10 @@ class Cabinet_Action {
             Layout::add(_('You are not allowed access to this file.'));
             return;
         }
+
+        $dl = & new HTTP_Download;
+        $dl->setFile($document->getPath());
+        echo $document->getPath();
         test($key);
     }
 

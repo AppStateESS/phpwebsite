@@ -210,7 +210,7 @@ class File_Common {
         return TRUE;
     }
 
-    function getPath($full_path=FALSE, $path_type='http')
+    function getPath()
     {
         if (empty($this->file_name)) {
             return PHPWS_Error::get(FC_FILENAME_NOT_SET, 'filecabinet', 'File_Common::getPath');
@@ -220,17 +220,7 @@ class File_Common {
             return PHPWS_Error::get(FC_DIRECTORY_NOT_SET, 'filecabinet', 'File_Common::getPath');
         }
 
-        if ($full_path) {
-            if ($path_type == 'http') {
-                $path = PHPWS_Core::getHomeHttp();
-            } else {
-                $path = PHPWS_Core::getHomeDir();
-            }
-        } else {
-            $path = './';
-        }
-
-        return $path . $root . $this->getDirectory() . $this->getFilename();
+        return $this->file_directory . $this->file_name;
     }
 
     function allowType($type=NULL)
