@@ -9,7 +9,7 @@ PHPWS_Core::initModClass('controlpanel', 'Panel.php');
 
 class PHPWS_ControlPanel {
 
-    function display($content=NULL, $imbed = TRUE)
+    function display($content=NULL)
     {
         Layout::addStyle('controlpanel');
 
@@ -60,14 +60,16 @@ class PHPWS_ControlPanel {
         }
 
         if (!isset($content)){
-            if (isset($allLinks[$panel->getCurrentTab()])){
-                foreach ($allLinks[$panel->getCurrentTab()] as $id => $link)
-                    $content[] = $link->view();
-        
-                $panel->setContent(implode('', $content));
+            if (isset($allLinks[$panel->getCurrentTab()])) {
+                foreach ($allLinks[$panel->getCurrentTab()] as $id => $link) {
+                    $link_content[] = $link->view();
+                }
+                $link_content = PHPWS_Template::process(array('LINKS' => implode('', $link_content)), 'controlpanel', 'links.tpl');
+                $panel->setContent($link_content);
             }
-        } else
+        } else {
             $panel->setContent($content);
+        }
 
         if (!isset($panel->tabs[$panel->getCurrentTab()])) {
             return _('An error occurred while accessing the Control Panel.');
@@ -88,7 +90,7 @@ class PHPWS_ControlPanel {
 
 
         $_SESSION['Control_Panel_Tabs'] = $panel->getTabs();
-        return $panel->display($imbed);
+        return $panel->display();
     }
 
     function loadTabs(&$panel)
