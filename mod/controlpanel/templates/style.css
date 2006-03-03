@@ -1,130 +1,91 @@
-/*------------- CONTROL PANEL ------------------*/
-
-/*-------------- Main Menu -----------*/
-
-.tab-title {
-font-weight : bold;
-background-color : #E8E9EA;
+/* ---------- Containers ----------- */
+div.controlpanel {
+    padding : 10px;
 }
+
+.frame {
+    margin : 3px 5px 0px 0px;
+    background-color: #BFBFBF;
+    padding: 5px;
+    border : 2px solid black;
+    display : table;
+    width : 98%;
+}
+
+
+.frame .backgrd {
+    margin : 0px;
+    background-color : white;
+    padding : 2px 3px 2px 5px;
+    border-left : 2px solid #696969;
+    border-top : 2px solid #696969;
+}
+
 
 /*--------------- Tabs ---------------*/
-.tabmenu {
-  width : 95%;
-  padding : 3px;
-  margin-bottom : 1px;
-  margin-left : -2px;
-}
-
 .tabmenu li {
-  display: inline;
-  list-style-type: none;
-  border-width : 2px;
-  border-style : solid;
-  border-color : black;
-  font-weight: bold;
+    padding: 5px 5px 4px 5px;
+    display: inline;
+    list-style-type: none;
+    border : 2px solid black;
+    font-size: 0.8em;
+    margin-right : 4px;
+
 }
 
 
 .tabmenu li.active {
-  color : white;
-  background-color : #575757;
-  font-size: 0.8em;
-  padding: 5px 5px 4px 5px;
-  border-bottom : none;
+    color : white;
+    background-color : #BFBFBF;
+    border-bottom : none;
+    z-index : 2;
+    padding-bottom : 6px;
+}
+
+.tabmenu li.active a:link,
+.tabmenu li.active a:visited  {
+    text-decoration: none;
+    color : black;
 }
 
 .tabmenu li.inactive {
-  background-color : #d7d7d7;
-  font-size: 0.8em;
-  padding: 5px 5px 2px 5px;
+    background-color : #E9E9E9;
 }
 
 .tabmenu li.inactive:hover {
-  background: #696969;
-  color: white;
+    background: #F0F0F0;
+    color: white;
 }
 
 
-.tabmenu li.active a:link { 
-	text-decoration: none;
-	color: white;
-}
-
-.tabmenu li.active a:visited { 
-	text-decoration: none; 
-	color: white;
-}
-
-.tabmenu li.active a:hover { 
-	text-decoration: none; 
-	color: gray;
-}
-
-.tabmenu li.inactive a:link { 
-	text-decoration: none; 
-	color: black;
-}
-
+.tabmenu li.inactive a:link,
 .tabmenu li.inactive a:visited { 
-	text-decoration: none; 
-	color: black;
+    text-decoration: none; 
+    color: black;
 }
 
-.tabmenu li.inactive a:hover { 
-	text-decoration: none; 
-	color: white;
-}
-
-
-
-/*-------------- Content -----------------*/
-
-.frame {
-  margin-left : 1px;
-  margin-top : -2px;
-  display : table;
-  width : 97%;
-  background-color: #575757;
-  height: auto;
-  padding: 5px;
-  border-width : 2px;
-  border-style : solid;
-  border-color : black;
-}
-
-.backgrd {
-  background-color : white;
-  padding : 5px;
-  border-left-width : 2px;
-  border-top-width : 2px;
-  border-left-style : solid;
-  border-top-style : solid;
-  border-left-color : #696969;
-  border-top-color : #696969;
-  height : 100%;
-}
 
 /*--------------- Links -----------------*/
 
 div.link {
-font-size : .8em;
-margin : 5px;
-padding : 5px;
-float : left;
-position : relative;
-width : 150px;
-height : 90px;
-vertical-align : top;
-display : inline;
+    font-size : .8em;
+    margin : 5px;
+    padding : 5px;
+    float : left;
+    width : 150px;
+    height : 90px;
+    display : inline;
 }
 
 div.link img {
-float : left;
-margin-right : .5em;
-margin-bottom : 20%;
+    float : left;
+    margin-right : .5em;
+    margin-bottom : 20%;
+    display : inline;
 }
 
 div.link a{
- font-size : .9em;
- font-weight : bold;
+    font-size : .9em;
+    font-weight : bold;
 }
+
