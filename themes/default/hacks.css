@@ -1,0 +1,5 @@
+/* --------------- IE Hacks ------------- */
+
+img.float-left img.float-right {
+    display : inline;
+}
