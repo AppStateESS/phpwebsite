@@ -57,6 +57,7 @@ class File_Common {
             $this->setDirectory($this->getDefaultDirectory());
         }
 
+        // UPLOAD defines come from PEAR lib/pear/Compat/Constant/UPLOAD_ERR.php
         if (isset($_FILES[$var_name]['error']) && 
             ( $_FILES[$var_name]['error'] == UPLOAD_ERR_INI_SIZE ||
               $_FILES[$var_name]['error'] == UPLOAD_ERR_FORM_SIZE)
@@ -65,10 +66,11 @@ class File_Common {
             return FALSE;
         }
 
+
         // need to get language
         $oUpload = new HTTP_Upload('en');
-        
         $this->_upload = $oUpload->getFiles($var_name);
+
         if (PEAR::isError($this->_upload)) {
             $this->_errors[] = $this->_upload();
             return FALSE;
@@ -103,6 +105,10 @@ class File_Common {
                 return FALSE;
             }
         } elseif ($this->_upload->isMissing()) {
+            if ($this->id) {
+                // if the document id is set, we assume they are just updating other information
+                return TRUE;
+            }
             $this->_errors[] = PHPWS_Error::get(FC_NO_UPLOAD, 'filecabinet', 'File_Common::importPost');
             return FALSE;
         } elseif ($this->_upload->isError()) {
