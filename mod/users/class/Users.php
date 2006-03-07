@@ -86,6 +86,9 @@ class PHPWS_User {
 
     function isDuplicateDisplayName($display_name, $id=NULL)
     {
+        if (empty($display_name)) {
+            return FALSE;
+        }
         $DB = & new PHPWS_DB('users');
         $DB->addWhere('display_name', $display_name);
         if (!empty($id)) {
@@ -93,10 +96,11 @@ class PHPWS_User {
         }
 
         $result = $DB->select('one');
-        if (PEAR::isError($result))
+        if (PEAR::isError($result)) {
             return $result;
-        else
+        } else {
             return (bool)$result;
+        }
     }
 
     function isDuplicateUsername($username, $id=NULL)
@@ -445,10 +449,12 @@ class PHPWS_User {
     {
         PHPWS_Core::initModClass('users', 'Group.php');
 
-        if (!isset($this->id))
+        if (!isset($this->id)) {
             $newUser = TRUE;
-        else
+        }
+        else {
             $newUser = FALSE;
+        }
 
         $result = ($this->isDuplicateUsername($this->username, $this->id) ||
                    $this->isDuplicateDisplayName($this->username, $this->id) ||
