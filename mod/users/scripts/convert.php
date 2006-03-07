@@ -29,6 +29,7 @@ function authorize(&$user, $password)
     $db->addWhere('username', strtolower($user->username));
     $db->addWhere('password', md5($password));
     $result = $db->select('one');
+
     if (PEAR::isError($result) || !$result) {
         return $result;
     }
@@ -36,14 +37,19 @@ function authorize(&$user, $password)
     $db2 = & new PHPWS_DB('users');
     $db2->addWhere('username', strtolower($user->username));
     $result = $db2->loadObject($user);
-    $user->setPassword($password);
-    $user->authorize = LOCAL_AUTHORIZATION;
 
     if (PEAR::isError($result)) {
         return $result;
     }
-    $db->delete();
-    return TRUE;
+
+    $user->setPassword($password);
+    $user->authorize = LOCAL_AUTHORIZATION;
+    $result = $user->save();
+    if (PEAR::isError($result)) {
+        return $result;
+    }
+
+    return $db->delete();
 }
 
 
