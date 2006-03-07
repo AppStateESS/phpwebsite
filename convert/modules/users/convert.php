@@ -87,7 +87,7 @@ function beginConverting()
     }
 
     $batch->setTotalItems($total_users);
-    $batch->setBatchSet(5);
+    $batch->setBatchSet(10);
 
     if (isset($_REQUEST['reset_batch'])) {
         $batch->clear();
@@ -97,7 +97,9 @@ function beginConverting()
     if (!$batch->load()) {
         $content[] = _('Batch previously run.');
     } else {
-        $result = runBatch($db, $batch);
+        if(!runBatch($db, $batch)) {
+            $content[] = _('Some errors occurred when trying to convert some users.');
+        }
     }
 
     $content[] = sprintf('%s&#37; done<br>', $batch->percentDone());
@@ -109,9 +111,9 @@ function beginConverting()
     } else {
         // delete?
         unset($_SESSION['users_convert_init']);
-        //        createSeqTable();
+        createSeqTable();
         $batch->clear();
-        //        Convert::addConvert('users');
+        Convert::addConvert('users');
         $content[] =  _('All done!');
         $content[] = _('Please note that the user with an index of 1 was ignored by the conversion.');
         $content[] = _('If the first user on your old site is not you, then you will need to recreate them.');
@@ -129,37 +131,56 @@ function runBatch(&$db, &$batch)
     $result = $db->select();
     $db->disconnect();
 
+    $username = strtolower(Current_User::getUsername());
+
     initialize();
     if (empty($result)) {
         return NULL;
     } else {
+        $db = & new PHPWS_DB('users');
         foreach ($result as $oldUser) {
-            if ($oldUser['user_id'] == 1) {
+            if ($oldUser['user_id'] == 1 ||
+                strtolower($oldUser['username']) == $username) {
                 continue;
             }
-            $result = convertUser($oldUser);
+            $db->reset();
+            $result = convertUser($db, $oldUser);
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                $errors = TRUE;
+            }
         }
     }
 
-    return TRUE;
+    if (isset($errors)) {
+        return FALSE;
+    } else {
+        return TRUE;
+    }
 }
 
-function convertUser($oldUser) {
-    test($oldUser);
-    $db = & new PHPWS_DB('mod_users');
-
+function convertUser(&$db, $oldUser) {
     $val['id']          = $oldUser['user_id'];
+    $val['display_name']= 
     $val['username']    = $oldUser['username'];
-    $val['created'] = 
+    $val['created']     = 
     $val['last_logged'] = $oldUser['last_on'];
     $val['email']       = $oldUser['email'];
     $val['deity']       = $oldUser['deity'];
     $val['updated']     = mktime();
     $val['log_count']   = $oldUser['log_sess'];
     $val['authorize']   = $_SESSION['users_convert_init'];
-    test($val);
-
-
+    $db->addValue($val);
+    
+    $result = $db->insert(FALSE);
+    if (PEAR::isError($result)) {
+        return $result;
+    }
+    
+    $convert = & new PHPWS_DB('users_conversion');
+    $convert->addValue('username', $val['username']);
+    $convert->addValue('password', $oldUser['password']);
+    return $convert->insert(FALSE);
 }
 
 function initialize()
@@ -167,8 +188,9 @@ function initialize()
     if (isset($_SESSION['users_convert_init'])) {
         return;
     }
-    $db = & new PHPWS_DB('users_conversion');
-    if (!$db->isTable('users_conversion')) {
+
+    if (!PHPWS_DB::isTable('users_conversion')) {
+        $db = & new PHPWS_DB('users_conversion');
         $db->addValue('username', 'varchar(50) NOT NULL');
         $db->addValue('password', 'char(32) NOT NULL');
         $db->createTable();
@@ -182,7 +204,24 @@ function initialize()
             PHPWS_Core::errorPage();
         }
         $_SESSION['users_convert_init'] = $id;
+    } else {
+        $db = & new PHPWS_DB('users_auth_scripts');
+        $db->addWhere('filename', 'convert.php');
+        $db->addColumn('id');
+        $id = $db->select('one');
+        if (PEAR::isError($id)) {
+            PHPWS_Error::log($id);
+            PHPWS_Core::errorPage();
+        }
+        $_SESSION['users_convert_init'] = $id;
     }
 }
+
+function createSeqTable()
+{
+    $db = new PHPWS_DB('users');
+    $result = $db->updateSequenceTable();
+}
+
 
 ?>
