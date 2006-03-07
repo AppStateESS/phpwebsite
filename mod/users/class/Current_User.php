@@ -20,6 +20,11 @@ class Current_User {
         Current_User::updateLastLogged();
         Current_User::getLogin();
     }
+
+    function &getUserObj()
+    {
+        return $_SESSION['User'];
+    }
   
     function allow($module, $subpermission=NULL, $item_id=NULL, $itemname=NULL)
     {
@@ -116,6 +121,11 @@ class Current_User {
     function getDisplayName()
     {
         return $_SESSION['User']->getDisplayName();
+    }
+
+    function getEmail($html=FALSE,$showAddress=FALSE)
+    {
+        return $_SESSION['User']->getEmail($html,$showAddress);
     }
 
     function isLogged()
