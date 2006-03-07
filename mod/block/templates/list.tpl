@@ -1,8 +1,8 @@
 <table cellpadding="4" cellspacing="1" width="100%">
   <tr>
-    <th><b>{TITLE}</b> {TITLE_SORT}</th>
-    <th><b>{CONTENT}</b></th>
-    <th><b>{ACTION}</b></th>
+    <th>{TITLE} {TITLE_SORT}</th>
+    <th>{CONTENT}</th>
+    <th>{ACTION}</th>
   </tr>
 <!-- BEGIN listrows -->
   <tr {TOGGLE}>
