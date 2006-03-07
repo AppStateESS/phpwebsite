@@ -3,22 +3,22 @@ div.controlpanel {
     padding : 10px;
 }
 
+
 .frame {
     margin : 3px 5px 0px 0px;
     background-color: #BFBFBF;
     padding: 5px;
     border : 2px solid black;
-    display : table;
     width : 98%;
+    overflow : auto;
 }
 
-
-.frame .backgrd {
-    margin : 0px;
+.backgrd {
     background-color : white;
     padding : 2px 3px 2px 5px;
     border-left : 2px solid #696969;
     border-top : 2px solid #696969;
+    overflow : auto;
 }
 
 
