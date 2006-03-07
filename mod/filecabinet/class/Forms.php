@@ -122,6 +122,7 @@ class Cabinet_Form {
         $form->setLabel('description', _('Description'));
 
         if (isset($document->id)) {
+            $form->addHidden('document_id', $document->id);
             $form->addSubmit('submit', _('Update'));
         } else {
             $form->addSubmit('submit', _('Upload'));
