@@ -9,7 +9,6 @@ div.controlpanel {
     padding: 5px;
     border : 2px solid black;
     width : 98%;
-    overflow : auto;
 }
 
 
@@ -25,6 +24,7 @@ div.controlpanel {
 
 
 /*--------------- Tabs ---------------*/
+
 .tabmenu li {
     padding: 5px 5px 4px 5px;
     display: inline;
