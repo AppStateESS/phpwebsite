@@ -1,5 +1,5 @@
 {START_FORM}
-<b>{SEARCH_MEMBER_LABEL}:</b><br />
+<strong>{SEARCH_MEMBER_LABEL}:</strong><br />
 {SEARCH_MEMBER}{ADD_MEMBER}{SEARCH}
 <table border="0" width="100%">
   <tr>

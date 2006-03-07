@@ -9,7 +9,7 @@
 
 <table class="form-table">
   <tr>
-    <td>{CURRENT_DOCUMENT_LABEL}</td><td>{CURRENT_DOCUMENT_ICON} 
+    <td><strong>{CURRENT_DOCUMENT_LABEL}</strong></td><td>{CURRENT_DOCUMENT_ICON} 
 {CURRENT_DOCUMENT_FILE}</td>
   </tr>
   <tr>

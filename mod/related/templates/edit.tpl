@@ -2,9 +2,9 @@
 {JAVASCRIPT}
 <div class="box">
   <div id="related-bank">
-    <b>{TITLE_LBL}:</b><br />
+    <strong>{TITLE_LBL}:</strong><br />
     {TITLE}&nbsp;{EDIT}<br />
-    <b>{MODULE_LBL}:</b>
+    <strong>{MODULE_LBL}:</strong>
     {MODULE}<br />
     <!-- BEGIN link -->
     <div class="link">

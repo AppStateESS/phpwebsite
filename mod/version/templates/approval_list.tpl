@@ -2,8 +2,8 @@
 <!-- BEGIN approval-rows -->
 <div class="padded bordered bgcolor2">
 <div>
-<b>{CREATE_DATE_LABEL}:</b> {CREATE_DATE}<br />
-<b>{AUTHOR_LABEL}:</b> {AUTHOR}<br />
+<strong>{CREATE_DATE_LABEL}:</strong> {CREATE_DATE}<br />
+<strong>{AUTHOR_LABEL}:</strong> {AUTHOR}<br />
 </div>
 <div>{LINKS}</div>
 </div>

@@ -9,19 +9,19 @@
 
 <table class="form-table">
   <tr>
-    <td class="label">{CURRENT_IMAGE_LABEL}</td><td>{CURRENT_IMAGE}</td>
+    <td><strong>{CURRENT_IMAGE_LABEL}</strong></td><td>{CURRENT_IMAGE}</td>
   </tr>
   <tr>
-    <td class="label">{FILE_NAME_LABEL}</td><td>{FILE_NAME}</td>
+    <td>{FILE_NAME_LABEL}</td><td>{FILE_NAME}</td>
   </tr>
   <tr>
-    <td class="label">{TITLE_LABEL}</td><td>{TITLE}</td>
+    <td>{TITLE_LABEL}</td><td>{TITLE}</td>
   </tr>
   <tr>
-    <td class="label">{ALT_LABEL}</td><td>{ALT}</td>
+    <td>{ALT_LABEL}</td><td>{ALT}</td>
   </tr>
   <tr>
-    <td class="label">{DESCRIPTION_LABEL}</td><td>{DESCRIPTION}</td>
+    <td>{DESCRIPTION_LABEL}</td><td>{DESCRIPTION}</td>
   </tr>
 </table>
 {SUBMIT} {CANCEL}

@@ -1,6 +1,6 @@
 <div class="comments">
 <div class="bgcolor1 padded">
-{START_FORM}<!-- BEGIN page-select --><b>{PAGE_LABEL}:</b> {PAGES}&nbsp;|&nbsp;
+{START_FORM}<!-- BEGIN page-select --><strong>{PAGE_LABEL}:</strong> {PAGES}&nbsp;|&nbsp;
 <!-- END page-select -->{NEW_POST_LINK}
 {TIME_PERIOD}{ORDER}{SUBMIT}{END_FORM}
 </div>
@@ -31,7 +31,7 @@
 </div>
 <!-- BEGIN page-select2 -->
 <div class="align-center">
-  <b>{PAGE_LABEL}:</b>
+  <strong>{PAGE_LABEL}:</strong>
   {PAGES}<br />
   {LIMITS}
 </div>

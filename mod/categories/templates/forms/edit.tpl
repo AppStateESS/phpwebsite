@@ -1,11 +1,11 @@
 {START_FORM}
 <table border="0" width="100%" cellpadding="4" cellspacing="4">
   <tr>
-    <td width="15%"><b>{PARENT_LABEL}:</b></td>
+    <td width="15%"><strong>{PARENT_LABEL}:</strong></td>
     <td>{PARENT}</td>
   </tr>
   <tr>
-    <td><b>{TITLE_LABEL}:</b></td>
+    <td><strong>{TITLE_LABEL}:</strong></td>
     <td>{TITLE}
 	<!-- BEGIN title-error -->
 	<div class="cat-error">{TITLE_ERROR}</div>
@@ -13,11 +13,11 @@
     </td>
   </tr>
   <tr>
-    <td><b>{CAT_DESCRIPTION_LABEL}:</b></td>
+    <td><strong>{CAT_DESCRIPTION_LABEL}:</strong></td>
     <td>{CAT_DESCRIPTION}</td>
   </tr>
   <tr>
-    <td><b>{ICON_LABEL}:</b></td>
+    <td><strong>{ICON_LABEL}:</strong></td>
     <td>{ICON}</td>
   </tr>
 </table>

@@ -1,5 +1,5 @@
 {DIRECTORIES}
-<b>{WARNING}</b>
+<strong>{WARNING}</strong>
 <table width="100%" cellpadding="4">
 <tr>
   <th>{TITLE_LABEL}</th>

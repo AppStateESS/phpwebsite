@@ -1,9 +1,9 @@
 <div class="related">
   <div class="box">
     <div class="padded">
-      <b>{TITLE_LBL}:</b>
+      <strong>{TITLE_LBL}:</strong>
       {TITLE}<br />
-      <b>{MODULE_LBL}:</b>
+      <strong>{MODULE_LBL}:</strong>
       {MODULE}
     </div>
     <div class="bgcolor1 padded align-center">{LINK}</div>
