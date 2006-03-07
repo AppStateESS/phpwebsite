@@ -7,8 +7,7 @@
 {STYLE}
 
 </head>
-<body {ONLOAD}>
-
+<body>
 {CONTENT}
 </body>
 </html>
