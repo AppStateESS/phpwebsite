@@ -61,7 +61,7 @@ class Cabinet_Action {
 
         case 'clip_document':
             if ($document->id) {
-                Clipboard::copy($document->getTitle(), '[filecabinet:doc:' . $document->id . ']');
+                Clipboard::copy($document->title, '[filecabinet:doc:' . $document->id . ']');
             }
         case 'document':
             $title = _('Manage Documents');
@@ -240,6 +240,7 @@ class Cabinet_Action {
                 if (!isset($document)) {
                     $document = & new PHPWS_Document;
                 }
+
                 if (!Cabinet_Action::postDocument($document)) {
                     $tpl['CONTENT'] = Cabinet_Form::editDocument($document, TRUE);
                     $tpl['TITLE']   = _('Document');
@@ -435,8 +436,10 @@ class Cabinet_Action {
 
         $dl = & new HTTP_Download;
         $dl->setFile($document->getPath());
-        echo $document->getPath();
-        test($key);
+        $dl->setContentDisposition(HTTP_DOWNLOAD_ATTACHMENT, $document->filename);
+        $dl->setContentType($document->file_type);
+        $dl->send();
+        exit();
     }
 
 }

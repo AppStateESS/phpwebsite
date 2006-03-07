@@ -128,14 +128,6 @@ class PHPWS_Document extends File_Common {
     }
 
     
-    function getDownloadLink()
-    {
-        return 'fix getDownload Link';
-        return sprintf('<a href="%s" title="%s">%s</a>', 
-                       $this->getPath(), $this->getDescription(),
-                       $this->getTitle());
-    }
-
     function save($no_dupes=TRUE, $write=TRUE)
     {
         if (empty($this->file_directory)) {
@@ -275,9 +267,9 @@ class PHPWS_Document extends File_Common {
 
         if ($format) {
             if ($use_filename) {
-                return sprintf('<a href="%s">%s</a>', $link, $this->file_name);
+                return sprintf('<a href="%s" title="%s">%s</a>', $link, $this->title, $this->file_name);
             } else {
-                return sprintf('<a href="%s">%s</a>', $link, $this->title);
+                return sprintf('<a href="%s" title="%s">%s</a>', $link, $this->description, $this->title);
             }
         } else {
             return $link;
