@@ -1,0 +1,37 @@
+Adding search to your module
+By Matthew McNaney <mcnaney at gmail dot com>
+----------------------------------------------------
+
+
+Introduction
+-------------------------------------------------------------------
+Adding search to your mod is really simple. All that is required is
+usage of the Key class. If your module isn't using Key, then you will
+need to build in your own search capabilities.
+
+
+The search object
+-------------------------------------------------------------------
+To begin, you need to create a search object:
+
+$search = & new Search($key_id);
+
+The key_id variable is the id to the key indexed to your content item.
+
+Next you need to filter some content through the search object. The
+search object will attempt to filter out search keywords.
+
+$search->addKeywords($content);
+
+You could also add your element's title, location, address, etc. just
+by calling addKeywords again:
+
+$search->addKeywords($title);
+
+Once you are finished filtering keywords, just save the search object.
+
+$search->save();
+
+The result of the save function will either be true or an error
+object.
+
