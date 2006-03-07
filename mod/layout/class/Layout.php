@@ -187,10 +187,10 @@ class Layout {
      * retains style sheet information.
      *
      */
-    function nakedDisplay($content=NULL)
+    function nakedDisplay($content=NULL, $title=NULL)
     {
         Layout::disableRobots();
-        echo (Layout::wrap($content));
+        echo Layout::wrap($content, $title);
         exit();
     }
 
@@ -733,6 +733,7 @@ class Layout {
     function loadHeaderTags(&$template)
     {
         $theme = Layout::getCurrentTheme();
+
         if (isset($GLOBALS['Layout_JS'])) {
             foreach ($GLOBALS['Layout_JS'] as $script=>$javascript)
                 $jsHead[] = $javascript['head'];
@@ -749,11 +750,21 @@ class Layout {
     /**
      * Wraps the content with the layout header
      */
-    function wrap($content)
+    function wrap($content, $title=NULL)
     {
-        $template['CONTENT']    = $content;
+        $template['CONTENT'] = $content;
         Layout::loadHeaderTags($template);
-        $result = PHPWS_Template::process($template, "layout", "header.tpl");
+        $empty_tpl = sprintf('themes/%s/blank.tpl', Layout::getCurrentTheme());
+
+        if (isset($title)) {
+            $template['PAGE_TITLE'] = strip_tags($title);
+        }
+
+        if (is_file($empty_tpl)) {
+            $result = PHPWS_Template::process($template, 'layout', $empty_tpl, TRUE);
+        } else {
+            $result = PHPWS_Template::process($template, 'layout', 'header.tpl');
+        }
 
         return $result;
     }
