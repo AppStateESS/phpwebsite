@@ -16,6 +16,13 @@ function convert()
         return implode('<br />', $content);
     }
 
+    $mod_list = PHPWS_Core::installModList();
+
+    if (!in_array('menu', $mod_list)) {
+        return _('Menu is not installed.');
+    }
+
+
     if (!Convert::isConverted('menus')) {
         return convertMenu();
     } elseif (!Convert::isConverted('menu_links')) {

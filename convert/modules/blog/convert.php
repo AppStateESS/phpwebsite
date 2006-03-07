@@ -17,6 +17,12 @@ function convert()
         return _('Blog has already been converted.');
     }
 
+    $mod_list = PHPWS_Core::installModList();
+
+    if (!in_array('blog', $mod_list)) {
+        return _('Blog is not installed.');
+    }
+
     $db = Convert::getSourceDB('mod_announce');
     $db->addWhere('approved', 1);
 

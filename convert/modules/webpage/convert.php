@@ -15,6 +15,12 @@ function convert()
         return _('Web pages have already been converted.');
     }
 
+    $mod_list = PHPWS_Core::installModList();
+
+    if (!in_array('webpage', $mod_list)) {
+        return _('Web Page is not installed.');
+    }
+
 
     $db = Convert::getSourceDB('mod_pagemaster_pages');
     
