@@ -80,6 +80,14 @@ class DBPager {
     var $orderby_dir = NULL;
 
     /**
+     * If set, then this order will be used if no other
+     * orders are selected
+     */ 
+    var $default_order = NULL;
+
+    var $default_order_dir = 'asc';
+
+    /**
      * DBpager will derive the link from the url
      * If it has problems or you just want to force the link,
      * then you can set the link
@@ -187,6 +195,19 @@ class DBPager {
             $direction = 'asc';
         }
         $this->orderby_dir = $direction;
+    }
+
+    function setDefaultOrder($default_order, $direction='asc')
+    {
+        if (preg_match('/\W/', $default_order)) {
+            return FALSE;
+        }
+        $this->default_order = $default_order;
+        if ($direction != 'asc' && $direction != 'desc') {
+            return FALSE;
+        }
+        $this->default_order_dir = $direction;
+        return TRUE;
     }
 
     function setDefaultLimit($limit) {
@@ -370,6 +391,8 @@ class DBPager {
 
         if (isset($this->orderby)) {
             $this->db->addOrder($this->orderby . ' ' . $this->orderby_dir);
+        } elseif (isset($this->default_order)) {
+            $this->db->addOrder($this->default_order . ' ' . $this->default_order_dir);
         }
 
         if (empty($this->class)) {
