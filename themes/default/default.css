@@ -63,8 +63,6 @@ h1, h2, h3, h1 a:link, h1 a:visited {
 }
 
 
-
-
 th {
     color: #A03E19;
     background-color : #EDF4D1;
@@ -83,16 +81,14 @@ th {
 
 /* -------- Form color ---------- */
 
-input {
+input, textarea {
     color: #000;
     background: #ADB583;
     border: #000 solid 1px;
 }
 
-textarea {
-    color: #000;
-    background: #ADB583;
-    border: #000 solid 1px;
+input:focus, textarea:focus {
+background-color : #EDEFDB;
 }
 
 input[type="submit"] {

@@ -32,20 +32,26 @@ h1, h2, h3 {
     padding : 0;
 }
 
+/* ---------- Tags ---------- */
+
+strong {
+    font-weight : bold;
+}
+
 q {
-   display : block;
-   padding : 5px;
-   font-size : 90%;
+    display : block;
+    padding : 5px;
+    font-size : 90%;
 }
 
 ul {
-       margin : 0;
-       padding : 0;
-       padding-left : 8px;
+    margin : 0;
+    padding : 0;
+    padding-left : 8px;
 }
 
 p {
-  margin : 2px;
+    margin : 2px;
 }
 
 img {
@@ -63,8 +69,8 @@ img.float-right {
 }
 
 blockquote {
-   border-top : 1px solid #fff;
-   border-bottom : 1px solid #fff;
+    border-top : 1px solid #fff;
+    border-bottom : 1px solid #fff;
 }
 
 
@@ -76,13 +82,14 @@ form {
      padding : 0;
 }
 
-input {
-        font-size : 9pt;
+input, textarea {
+    font-family : sans-serif;
+    font-size : 9pt;
+    padding : 2px;
 }
 
-
 select[multiple="multiple"] {
-        padding : 1px 2px 1px 2px;
+    padding : 1px 2px 1px 2px;
 }
 
 .no-bullet {
