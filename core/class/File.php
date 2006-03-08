@@ -34,7 +34,7 @@ class PHPWS_File {
             $root_dir .= '/';
         }
 
-        if (!is_dir($root_dir)) {
+        if (!is_dir($root_dir) || !is_readable($root_dir)) {
             return FALSE;
         }
 
