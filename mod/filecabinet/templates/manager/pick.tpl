@@ -1,35 +1,33 @@
 <style>
 div.thumbnail {
-float: left;
-margin : 10px;
-height : 102px;
-width  : 80px;
-position : relative;
-border : 1px gray solid;
+    float   : left;
+    margin  : 10px;
+    height  : 102px;
+    width   : 80px;
+    border  : 1px gray solid;
+    display : inline;
 }
 
 div.image-info {
-width : 80px;
-position : absolute;
-bottom : 0px;
-background-color : white;
+    width : 80px;
+    position : absolute;
+    bottom : 0px;
+    background-color : white;
 }
 
 div.image-info img {
-margin-left : 2px;
-margin-top  : 2px;
+    margin-left : 2px;
+    margin-top  : 2px;
 }
 
 #buttons {
-position : absolute;
-bottom : 4px;
-width : 100%;
-background-color : white;
+    position : absolute;
+    bottom : 4px;
+    background-color : white;
 }
 
 div.tn-image-block {
- background-repeat : no-repeat;
- height : 100%
+     background-repeat : no-repeat;
 }
 
 </style>

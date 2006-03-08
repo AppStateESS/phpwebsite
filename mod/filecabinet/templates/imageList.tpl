@@ -1,16 +1,17 @@
+{UPLOAD}
 <table cellpadding="6" cellspacing="1" width="100%">
   <tr>
-    <th width="25%">{TITLE}&nbsp;{TITLE_SORT}</th>
-    <th width="25%">{FILENAME}&nbsp;{FILENAME_SORT}</th>
-    <th width="15%">{MODULE}&nbsp;{MODULE_SORT}</th>
-    <th width="10%">{SIZE}&nbsp;{SIZE_SORT}</th>
-    <th width="20%">{ACTION}</th>
+    <th width="25%">{THUMBNAIL}</th>
+    <th width="20%">{TITLE}&nbsp;{TITLE_SORT}</th>
+    <th width="20%">{FILE_NAME}&nbsp;{FILE_NAME_SORT}</th>
+    <th width="20%">{SIZE}&nbsp;{SIZE_SORT}</th>
+    <th width="15%">{ACTION}</th>
   </tr>
 <!-- BEGIN listrows -->
   <tr {TOGGLE}>
+    <td>{THUMBNAIL}</td>
     <td>{TITLE}</td>
-    <td>{FILENAME}</td>
-    <td>{MODULE}</td>
+    <td>{FILE_NAME}</td>
     <td>{SIZE}</td>
     <td>{ACTION}</td>   
   </tr>
