@@ -7,20 +7,25 @@ class Cabinet_Form {
     function imageManager()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
-        $pager = & new DBPager('images', 'FC_Image');
+        PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
+
+
+        $pager = & new DBPager('images', 'PHPWS_Image');
         $pager->setModule('filecabinet');
         $pager->setTemplate('imageList.tpl');
         $pager->addRowTags('getRowTags');
         $pager->addToggle('class="toggle1"');
-        $pager->addToggle('class="toggle2"');
         $pager->addWhere('thumbnail_source', 0);
         $pager->addWhere('thumbnail_source', 'images.id', '=', 'or');
+        $pager->setDefaultLimit(10);
 
-
-        $tags['TITLE']      = _('Title');
-        $tags['FILE_NAME']   = _('Filename');
-        $tags['SIZE']       = _('Size');
-        $tags['ACTION']     = _('Action');
+        $tags['THUMBNAIL'] = _('Thumbnail');
+        $tags['TITLE']     = _('Title');
+        $tags['FILE_NAME'] = _('File name');
+        $tags['SIZE']      = _('Size');
+        $tags['ACTION']    = _('Action');
+        $manager = & new FC_Image_Manager;
+        $tags['UPLOAD']    = $manager->getUploadLink();
 
         $pager->addPageTags($tags);
 
@@ -77,10 +82,16 @@ class Cabinet_Form {
         $form = & new PHPWS_FORM;
         $form->addHidden('module', 'filecabinet');
         $form->addHidden('action', 'save_settings');
+
         $form->addText('base_doc_directory', PHPWS_Settings::get('filecabinet', 'base_doc_directory'));
         $form->setSize('base_doc_directory', '50');
-        $form->addSubmit(_('Save settings'));
         $form->setLabel('base_doc_directory', _('Base document directory'));
+
+        $form->addText('base_img_directory', PHPWS_Settings::get('filecabinet', 'base_img_directory'));
+        $form->setSize('base_img_directory', '50');
+        $form->setLabel('base_img_directory', _('Base image directory'));
+
+        $form->addSubmit(_('Save settings'));
         $tpl = $form->getTemplate();
         return PHPWS_Template::process($tpl, 'filecabinet', 'settings.tpl');
     }
@@ -157,14 +168,24 @@ class Cabinet_Form {
 
     }
 
-    function editImage(&$image)
+    /*
+    function editImage(&$image, $js_form=FALSE)
     {
         $form = & new PHPWS_Form;
         $form->addHidden('module', 'filecabinet');
 
+        $img_directories = Cabinet_Action::getImgDirectories();
+
         if ($image->file_directory) {
             $form->addHidden('directory', urlencode($image->file_directory));
         }
+
+        if ($js_form) {
+            $form->addHidden('action', 'js_post_document');
+        } else {
+            $form->addHidden('action', 'admin_post_document');
+        }
+
 
         $form->addHidden('action', 'admin_post_image');
         $form->setLabel('mod_title', _('Module Directory'));
@@ -172,8 +193,11 @@ class Cabinet_Form {
 
         $form->addFile('file_name');
         $form->setSize('file_name', 30);
-        
         $form->setLabel('file_name', _('Image location'));
+
+        $form->addSelect('directory', $img_directories);
+        $form->setMatch('directory', $image->file_directory);
+        $form->setLabel('directory', _('Save directory'));
 
         $form->addText('title', $image->title);
         $form->setSize('title', 40);
@@ -210,27 +234,12 @@ class Cabinet_Form {
         $template['MAX_HEIGHT_LABEL']    = _('Maximum height');
         $template['MAX_HEIGHT']          = $image->_max_height;
 
-        return PHPWS_Template::process($template, 'filecabinet', 'edit_image.tpl');
+        return PHPWS_Template::process($template, 'filecabinet', 'image_edit.tpl');
 
     }
-
+    */
 
 
 }
-
-class FC_Image extends PHPWS_Image {
-    function getRowTags()
-    {
-        $vars['action'] = 'admin_edit_image';
-        $vars['image_id'] = $this->id;
-        $links[] = PHPWS_Text::secureLink(_('Edit'), 'filecabinet', $vars);
-
-        $tpl['ACTION'] = implode(' | ', $links);
-        $tpl['SIZE'] = $this->getSize(TRUE);
-        $tpl['FILE_NAME'] = $this->getViewLink(TRUE, TRUE);
-        return $tpl;
-    }
-}
-
 
 ?>

@@ -22,6 +22,7 @@ class PHPWS_Image extends File_Common {
     var $_max_width       = MAX_IMAGE_WIDTH;
     var $_max_height      = MAX_IMAGE_HEIGHT;
     var $_classtype       = 'image';
+    var $_thumbnail_dir   = NULL;
 
     function PHPWS_Image($id=NULL)
     {
@@ -41,17 +42,23 @@ class PHPWS_Image extends File_Common {
         }
     }
 
-    function getTag($full_path=FALSE)
+    function init()
+    {
+        if (!isset($this->id)) {
+            return FALSE;
+        }
+
+        $db = & new PHPWS_DB('images');
+        return $db->loadObject($this);
+    }
+
+    function getTag()
     {
         $tag[] = '<img';
 
-        $path = $this->getPath($full_path);
-        if (PEAR::isError($path)) {
-            return $path;
-        }
-        $tag[] = 'src="'    . $path . '"';
+        $tag[] = 'src="'    . $this->getPath() . '"';
         $tag[] = 'alt="'    . $this->getAlt(TRUE)   . '"';
-        $tag[] = 'title="'  . $this->getTitle(TRUE) . '"';
+        $tag[] = 'title="'  . $this->title . '"';
         $tag[] = 'width="'  . $this->width     . '"';
         $tag[] = 'height="' . $this->height    . '"';
         $tag[] = 'border="' . $this->border    . '"';
@@ -83,7 +90,7 @@ class PHPWS_Image extends File_Common {
         }
 
         $tag[] = '>';
-        $tag[] = $this->getTitle();
+        $tag[] = $this->title;
         $tag[] = '</a>';
 
         return implode('', $tag);
@@ -96,7 +103,7 @@ class PHPWS_Image extends File_Common {
             $tag = $oThumbnail->getTag();
             $values['label'] = $tag;
         } else {
-            $values['label'] = $this->getTitle();
+            $values['label'] = $this->title;
         }
 
         $values['address'] = $this->getPath();
@@ -187,12 +194,23 @@ class PHPWS_Image extends File_Common {
         $this->border = $border;
     }
 
+    function getPath()
+    {
+        $directory = str_replace(PHPWS_HOME_DIR, './', $this->file_directory);
+        return sprintf('%s%s', $directory, $this->file_name);
+    }
+
     function getFullDirectory()
     {
         if (empty($this->file_directory)) {
-            $this->file_directory = $this->module . '/';
+            return NULL;
         }
-        return sprintf('images/%s%s', $this->file_directory, $this->file_name);
+        return sprintf('%s%s', $this->file_directory, $this->file_name);
+    }
+
+    function getDefaultDirectory()
+    {
+        return PHPWS_Settings::get('filecabinet', 'base_img_directory');
     }
 
     function allowWidth($imagewidth=NULL)
@@ -214,28 +232,10 @@ class PHPWS_Image extends File_Common {
     }
 
 
-    function checkBounds()
+    function allowDimensions()
     {
-        // This should not be necessary as the form should
-        // contain MAX_FILE_SIZE
-        if (!$this->allowSize()) {
-            $errors[] = PHPWS_Error::get(FC_IMG_SIZE, 'filecabinet', 'PHPWS_Image::checkBounds', array($this->getSize(), $this->_max_size));
-        }
-
-        if (!$this->allowType()) {
-            $errors[] = PHPWS_Error::get(FC_IMG_WRONG_TYPE, 'filecabinet', 'PHPWS_image::checkBounds');
-        }
-
-        if (!$this->allowWidth()) {
-            $errors[] = PHPWS_Error::get(FC_IMG_WIDTH, 'filecabinet', 'PHPWS_image::checkBounds', array($this->width, $this->_max_width));
-        }
-
-        if (!$this->allowHeight()) {
-            $errors[] = PHPWS_Error::get(FC_IMG_HEIGHT, 'filecabinet', 'PHPWS_image::checkBounds', array($this->height, $this->_max_height));
-        }
-
-        if (isset($errors)) {
-            return $errors;
+        if (!$this->allowWidth() || !$this->allowHeight()) {
+            return FALSE;
         } else {
             return TRUE;
         }
@@ -245,7 +245,7 @@ class PHPWS_Image extends File_Common {
     function save($no_dupes=TRUE, $write=TRUE)
     {
         if (empty($this->file_directory)) {
-            $this->file_directory = $this->module . '/';
+            $this->file_directory = $this->getDefaultDirectory();
         }
 
         if (empty($this->alt)) {
@@ -265,9 +265,8 @@ class PHPWS_Image extends File_Common {
         $db = & new PHPWS_DB('images');
 
         if ((bool)$no_dupes && empty($this->id)) {
-            $db->addWhere('filename',  $this->file_name);
-            $db->addWhere('directory', $this->file_directory);
-            $db->addWhere('module',    $this->module);
+            $db->addWhere('file_name',  $this->file_name);
+            $db->addWhere('file_directory', $this->file_directory);
             $db->addColumn('id');
             $result = $db->select('one');
             if (PEAR::isError($result)) {
@@ -305,7 +304,8 @@ class PHPWS_Image extends File_Common {
             return $result;
         }
         
-        $path = $this->getPath();
+        $path = $this->getFullDirectory();
+
         if (PEAR::isError($path)) {
             return $path;
         }
@@ -331,21 +331,43 @@ class PHPWS_Image extends File_Common {
     function getXML()
     {
         $content[] = '<image>';
-        $content[] = '<src>' . $this->getFullDirectory() . '</src>';
+        $content[] = '<src>' . $this->getPath() . '</src>';
         $content[] = '<width>' . $this->width . '</width>';
         $content[] = '<height>' . $this->height . '</height>';
-        $content[] = '<title>' . $this->getTitle() . '</title>';
+        $content[] = '<title>' . $this->title . '</title>';
         $content[] = '<alt>' . $this->getAlt() . '</alt>';
         $content[] = '<desc>' . $this->getDescription(TRUE) . '</desc>';
         $content[] = '</image>';
         return implode("\n", $content);
     }
 
+
     function loadAllowedTypes()
     {
         $this->_allowed_types = unserialize(ALLOWED_IMAGE_TYPES);
     }
 
+    function getRowTags()
+    {
+        $vars['action'] = 'admin_edit_image';
+        $vars['image_id'] = $this->id;
+        $links[] = PHPWS_Text::secureLink(_('Edit'), 'filecabinet', $vars);
+
+        $vars['action'] = 'admin_delete_image';
+        $vars['image_id'] = $this->id;
+        $js['QUESTION'] = _('Are you sure you want to delete this image?');
+        $js['ADDRESS']  = PHPWS_Text::linkAddress('filecabinet', $vars, true);
+        $js['LINK']     = _('Delete');
+        $links[] = javascript('confirm', $js);
+
+        $tpl['ACTION'] = implode(' | ', $links);
+        $tpl['SIZE'] = $this->getSize(TRUE);
+        $tpl['FILE_NAME'] = $this->file_name;
+        $tpl['THUMBNAIL'] = $this->getJSView(TRUE);
+        $tpl['TITLE']     = $this->title;
+
+        return $tpl;
+    }
 
 }
 

@@ -150,8 +150,7 @@ class Cabinet_Action {
                     PHPWS_Error::log($result);
                     $manager->errorPost();
                 }
-            } elseif (is_array($result)) {
-                $manager->image->_errors = $result;
+            } elseif (!$result) {
                 Layout::nakedDisplay($manager->edit());
             } else {
                 $result = $manager->createThumbnail();
@@ -192,6 +191,12 @@ class Cabinet_Action {
         case 'admin_edit_image':
             $title = _('Edit Image');
             $content = Cabinet_Form::edit_image($image);
+            break;
+
+        case 'admin_delete_image':
+            $image->delete();
+            $title = _('Manage Images');
+            $content = Cabinet_Form::imageManager('image');
             break;
 
         case 'js_doc_edit':
@@ -310,14 +315,29 @@ class Cabinet_Action {
     {
         if (empty($_POST['base_doc_directory'])) {
             $errors[] = _('Default document directory may not be blank');
+        } elseif (!is_dir($_POST['base_doc_directory'])) {
+            $errors[] = _('Document directory does not exist.');
         } elseif (!is_writable($_POST['base_doc_directory'])) {
-            $errors[] = _('Unable to write to entered directory.');
+            $errors[] = _('Unable to write to document directory.');
+        } elseif (!is_readable($_POST['base_doc_directory'])) {
+            $errors[] = _('Unable to read document directory.');
+        }
+
+        if (empty($_POST['base_img_directory'])) {
+            $errors[] = _('Default image directory may not be blank');
+        } elseif (!is_dir($_POST['base_img_directory'])) {
+            $errors[] = _('Image directory does not exist.');
+        } elseif (!is_writable($_POST['base_img_directory'])) {
+            $errors[] = _('Unable to write to image directory.');
+        } elseif (!is_readable($_POST['base_img_directory'])) {
+            $errors[] = _('Unable to read image directory.');
         }
 
         if (isset($errors)) {
             return $errors;
         } else {
             PHPWS_Settings::set('filecabinet', 'base_doc_directory', $_POST['base_doc_directory']);
+            PHPWS_Settings::set('filecabinet', 'base_img_directory', $_POST['base_img_directory']);
             PHPWS_Settings::save('filecabinet');
             return TRUE;
         }
@@ -393,10 +413,34 @@ class Cabinet_Action {
         $directories = PHPWS_File::listDirectories($doc_dir,TRUE,TRUE);
 
         if (empty($directories)) {
-            return array('default' => '/');
+            return array('default' =>  _('[default]'));
         } else {
             $search = preg_quote($doc_dir, '/');
             $new_list[$doc_dir] = '/';
+            foreach ($directories as $dir) {
+                if (is_writable($dir)) {
+                    $edit_dir = preg_replace('/^' . $search . '/', '', $dir);
+                    $new_list[$dir] = $edit_dir;
+                }
+            }
+
+        }
+
+        return $new_list;
+    }
+
+    function getImgDirectories()
+    {
+        PHPWS_Core::initCoreClass('File.php');
+        $img_dir = PHPWS_Settings::get('filecabinet', 'base_img_directory');
+
+        $directories = PHPWS_File::listDirectories($img_dir,TRUE,TRUE);
+
+        if (empty($directories)) {
+            return array('default' =>  _('[default]'));
+        } else {
+            $search = preg_quote($img_dir, '/');
+            $new_list[$img_dir] = _('[default]');
             foreach ($directories as $dir) {
                 if (is_writable($dir)) {
                     $edit_dir = preg_replace('/^' . $search . '/', '', $dir);
