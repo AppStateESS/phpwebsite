@@ -52,6 +52,7 @@ class Cabinet_Action {
             $image = & new PHPWS_Image;
             $title = _('Upload new image');
             $content = Cabinet_Form::editImage($image);
+            break;
 
         case 'main':
         case 'image':
@@ -106,7 +107,6 @@ class Cabinet_Action {
             Clipboard::copy($image->getTitle(), $image->getTag());
             $title = _('Manage Images');
             $content = Cabinet_Form::imageManager('image');
-
             break;
 
         case 'delete_pick':
@@ -141,7 +141,7 @@ class Cabinet_Action {
             }
             $manager->loadReqValues();
 
-            $result = $manager->postImage($manager->image);
+            $result = $manager->postImage();
             if (PEAR::isError($result)) {
                 if ($result->code == PHPWS_FILE_SIZE) {
                     $manager->image->_errors = array($result);
