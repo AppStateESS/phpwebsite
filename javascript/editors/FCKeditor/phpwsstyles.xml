@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+ * File Name: phpwsstyles.xml
+ * This is a custom style file for phpWebSite. It is based on
+ * fckstyles.xml by Frederico Caldeira Knabben (fredck@fckeditor.net)
+ * 
+ * File Authors:
+ * 		Matthew McNaney <mcnaney at gmail dot com>
+-->
+<Styles>
+	<Style name="Image on Left" element="img">
+		<Attribute name="class" value="float-left" />
+	</Style>
+	<Style name="Image on Right" element="img">
+		<Attribute name="class" value="float-right" />
+	</Style>
+	<Style name="Smaller" element="span">
+		<Attribute name="class" value="smaller" />
+	</Style>
+	<Style name="Larger" element="span">
+		<Attribute name="class" value="larger" />
+	</Style>
+</Styles>
