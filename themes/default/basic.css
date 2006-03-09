@@ -73,7 +73,15 @@ blockquote {
     border-bottom : 1px solid #fff;
 }
 
+fieldset {
+    margin : 10px;
+    padding : 10px;
+}
 
+legend {
+    font-style : italic;
+    font-size : 110%;
+}
 
 /* ----------- Form styles ----------- */
 
