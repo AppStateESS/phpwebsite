@@ -15,7 +15,7 @@ div.controlpanel {
 .frame .backgrd {
     margin : 0px;
     background-color : white;
-    padding : 2px 3px 2px 5px;
+    padding : 5px;
     border-left : 2px solid #696969;
     border-top : 2px solid #696969;
     overflow : auto;
