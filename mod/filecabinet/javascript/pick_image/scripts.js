@@ -34,7 +34,7 @@ function highlight(tn_id, image_id) {
     current_image = image_id;
     
     span = document.getElementById('image-' + tn_id).parentNode;
-    span.setAttribute('style', 'border : 1px solid orange; background-color : orange;');
+    span.setAttribute('style', 'border : 2px solid red;');
     current_tn = tn_id;
 }
 
@@ -43,7 +43,7 @@ function removehighlight(tn_id) {
         return;
     }
     span = document.getElementById('image-' + tn_id).parentNode;
-    span.setAttribute('style', '');
+    span.setAttribute('style', 'border : 2px solid transparent');
 
 }
 

@@ -1,5 +1,5 @@
 <script type="text/javascript">
-var requester = null;
+
 var image_id  = 0;
 var mod_title = '{mod_title}';
 var current_image = 0;

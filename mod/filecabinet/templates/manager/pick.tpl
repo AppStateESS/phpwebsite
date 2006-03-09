@@ -1,29 +1,18 @@
 <style>
-div.thumbnail {
-    float   : left;
-    margin  : 10px;
-    height  : 102px;
-    width   : 80px;
-    border  : 1px gray solid;
-    display : inline;
-}
 
 div.image-info {
+    float : left;
     width : 80px;
-    position : absolute;
-    bottom : 0px;
     background-color : white;
-}
-
-div.image-info img {
-    margin-left : 2px;
-    margin-top  : 2px;
+    display : inline;
+    margin : 10px 10px 0px 0px;
 }
 
 #buttons {
     position : absolute;
     bottom : 4px;
-    background-color : white;
+    z-index : 2;
+    padding : 2px;
 }
 
 div.tn-image-block {
@@ -34,13 +23,13 @@ div.tn-image-block {
 
 <div class="bgcolor2 padded"><h1>{TITLE}</h1></div>
 <!-- BEGIN thumbnail-list -->
-<div class="thumbnail">
-  <div class="tn-image-block" id="image-{TN_ID}" style="background-image : url('{THUMBNAIL}');" onclick="highlight('{TN_ID}','{ID}')">&nbsp;</div>
-  <div class="image-info">
-    <a class="smaller" href="javascript:show_image('{ID}', '{TN_ID}', {WIDTH}, {HEIGHT});">{VIEW}</a>
-    <span class="smaller"> {WIDTH} x {HEIGHT} </span>
-  </div>
+
+<div class="image-info" style="border : 2px solid transparent" onclick="highlight('{TN_ID}','{ID}')">
+   <img src="{THUMBNAIL}" id="image-{TN_ID}"  />
+   <a class="smaller" href="javascript:show_image('{ID}', '{TN_ID}', {POP_WIDTH}, {POP_HEIGHT});">{VIEW}</a>
+   <span class="smaller"> {WIDTH} x {HEIGHT} </span>
 </div>
+
 <!-- END thumbnail-list -->
 {MESSAGE}
 <div style="clear : both"> </div>
@@ -48,7 +37,5 @@ div.tn-image-block {
 <input type="button" name="upload" value="{UPLOAD}" onclick="upload_new('{UPLOAD_LINK}')" />
 <input type="button" name="delete" value="{DELETE}" onclick="delete_pick()" />
 <input type="button" name="ok" value="{OK}" onclick="post_pick('{MOD_TITLE}', '{ITEMNAME}')" />
-<input type="button" name="cancel" value="{CANCEL}" onclick="cancel()"
-/>
-
+<input type="button" name="cancel" value="{CANCEL}" onclick="cancel()" />
 </div>
