@@ -192,6 +192,7 @@ class Layout_Admin{
         $form->addHidden('action', 'admin');
         $form->addHidden('command', 'changeBoxSettings');
         $form->addRadio('move_boxes',  array(0, 1));
+        $form->setLabel('move_boxes', array(_('Disable'), _('Enable')));
         if (Layout::isMoveBox()) {
             $form->setMatch('move_boxes', 1);
         } else {
@@ -200,17 +201,15 @@ class Layout_Admin{
 
 
         $form->addRadio('reset_boxes', array(0,1));
-        $form->setLabel('reset_boxes', array(_('No'), _('Yes')));
+        $form->setLabel('reset_boxes', array(_('Don\'t reset'), _('Reset boxes')));
         $form->setMatch('reset_boxes', 0);
-        $form->addTplTag('RESET_LABEL', _('Reset boxes'));
 
         $form->addSubmit('submit', _('Change Settings'));
 
         $template = $form->getTemplate();
+        $template['RESET_LEGEND'] = _('Reset boxes');
+        $template['MOVE_LEGEND'] = _('Box positioning');
 
-        $template['MOVE_BOX_LABEL'] = _('Adjust Site Layout');
-        $template['MOVE_BOXES_ON']  = _('On');
-        $template['MOVE_BOXES_OFF']  = _('Off');
         return PHPWS_Template::process($template, 'layout', 'BoxControl.tpl');
     }
 
@@ -311,10 +310,10 @@ class Layout_Admin{
         $form->setLabel('meta_description', _('Description'));
         $form->addCheckBox('index', 1);
         $form->setMatch('index', $index);
-        $form->setLabel('index', _('Allow Indexing'));
+        $form->setLabel('index', _('Allow indexing'));
         $form->addCheckBox('follow', 1);
         $form->setMatch('follow', $follow);
-        $form->setLabel('follow', _('Allow Link Following'));
+        $form->setLabel('follow', _('Allow link following'));
 
         $form->addSubmit('submit', _('Update'));
 
