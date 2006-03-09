@@ -306,7 +306,7 @@ class PHPWS_Image extends File_Common {
         
         $path = $this->getFullDirectory();
 
-        if (PEAR::isError($path)) {
+        if (PEAR::isError($path) || empty($path)) {
             return $path;
         }
 
