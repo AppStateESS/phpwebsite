@@ -1,4 +1,8 @@
 <?php
+  /**
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
+   */
 
 if (!empty($_REQUEST['module'])) {
     $subdir = preg_replace('/\W/', '', $_REQUEST['module']) . '/';
@@ -13,10 +17,9 @@ $home_dir = substr($_SERVER['SCRIPT_FILENAME'], 0, strpos($_SERVER['SCRIPT_FILEN
 
 ?>
 
-// Spellcheck needs configuration so removed
 // Form line removed because this is not the place for it
-// Removing 'FontFormat','FontName','FontSize' 'TextColor','BGColor',
-// and 'Style' as they interfere with the cursor keys.
+// Removed 'FontFormat','FontName','FontSize', 'TextColor', and 'BGColor'
+// because they lead to garish markup.
 
 
 FCKConfig.ToolbarSets["phpws"] = [
@@ -29,10 +32,22 @@ FCKConfig.ToolbarSets["phpws"] = [
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
 	'/',
 	['Image', 'Table', 'Link','Unlink','Anchor'],
-	['Rule','Smiley','SpecialChar', '-', 'Source']
+	['SpellCheck', 'Rule','Smiley','SpecialChar', '-', 'Source', 'Style']
 ] ;
+
+/**
+ * Paste the below into the ToolbarSets above to "expand" your choices
+ *
+
+, '/',
+['FontFormat','FontName','FontSize', 'TextColor','BGColor', 'Style']
+
+*
+**/
 
 server_path = '<?php echo $home_dir ?>';
 
 FCKConfig.LinkBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Connector=connectors/phpws/connector.php' ;
 FCKConfig.ImageBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Image&ServerPath=' + server_path + '&Connector=connectors/phpws/connector.php<?php echo $connector ?>';
+FCKConfig.SpellChecker = 'SpellerPages' ;
+FCKConfig.StylesXmlPath		= FCKConfig.EditorPath + 'phpwsstyles.xml' ;
