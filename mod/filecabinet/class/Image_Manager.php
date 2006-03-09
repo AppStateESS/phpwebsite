@@ -15,6 +15,8 @@ define('FC_MANAGER_HEIGHT', 480);
 
 define('FC_NONE_IMAGE_SRC', 'images/mod/filecabinet/none.png');
 
+PHPWS_Core::initModClass('filecabinet', 'Image.php');
+
 class FC_Image_Manager {
     var $image          = NULL;
     var $mod_title      = NULL;
@@ -248,14 +250,14 @@ class FC_Image_Manager {
 
     function postPick()
     {
-
-        $js_vars['itemname'] = $this->itemname;
-        $js_vars['src']      = $this->thumbnail->getPath();
-        $js_vars['width']    = $this->thumbnail->width;
-        $js_vars['height']   = $this->thumbnail->height;
-        $js_vars['title']    = addslashes($this->thumbnail->getTitle());
-        $js_vars['alt']      = addslashes($this->thumbnail->getAlt());
-        $js_vars['image_id'] = $this->image->id;
+        $js_vars['mod_title'] = $this->mod_title;
+        $js_vars['itemname']  = $this->itemname;
+        $js_vars['src']       = $this->thumbnail->getPath();
+        $js_vars['width']     = $this->thumbnail->width;
+        $js_vars['height']    = $this->thumbnail->height;
+        $js_vars['title']     = addslashes($this->thumbnail->title);
+        $js_vars['alt']       = addslashes($this->thumbnail->getAlt());
+        $js_vars['image_id']  = $this->image->id;
 
         echo javascript('modules/filecabinet/post_file', $js_vars);
         exit();
@@ -372,13 +374,19 @@ class FC_Image_Manager {
             $tpl['MESSAGE'] = _('No images found.');
         } else {
             foreach ($thumbnails as $tn) {
+                $source_img = & $source_images[$tn->thumbnail_source];
+                $desc_total = strlen($source_img->description);
+                $added_height = floor(($desc_total / 10 ) + 40);
+
                 $tpl['thumbnail-list'][] = array('THUMBNAIL' => $tn->getPath(),
                                                  'TN_ID'     => $tn->id,
                                                  'ID'        => $tn->thumbnail_source,
                                                  'ITEMNAME'  => $this->itemname,
                                                  'MOD_TITLE' => $this->mod_title,
-                                                 'WIDTH'     => $source_images[$tn->thumbnail_source]->width,
-                                                 'HEIGHT'    => $source_images[$tn->thumbnail_source]->height,
+                                                 'WIDTH'     => $source_img->width,
+                                                 'HEIGHT'    => $source_img->height,
+                                                 'POP_WIDTH'     => $source_img->width + 40,
+                                                 'POP_HEIGHT'    => $source_img->height + $added_height,
                                                  'VIEW'      => sprintf('<img src="images/mod/filecabinet/viewmag+.png" width="16" height="16" title="%s" />', _('View full image'))
                                                  );
             }
@@ -419,6 +427,15 @@ class FC_Image_Manager {
         if (isset($_REQUEST['directory'])) {
             $this->setDirectory(urldecode($_REQUEST['directory']));
         }
+
+        if (isset($_REQUEST['itemname'])) {
+            $this->setItemname($_REQUEST['itemname']);
+        }
+
+        if (isset($_REQUEST['mod_title'])) {
+            $this->setModule($_REQUEST['mod_title']);
+        }
+       
 
         if (isset($_REQUEST['ms'])) {
             $this->setMaxSize($_REQUEST['ms']);
