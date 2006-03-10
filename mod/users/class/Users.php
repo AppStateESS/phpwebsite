@@ -595,26 +595,29 @@ class PHPWS_User {
             PHPWS_Error::log($result);
             $this->kill();
             return PHPWS_Error::get(USER_ERROR, 'users', 'updateGroup');
-        } else
+        } else {
             return TRUE;
+        }
     }
 
 
     function getUserGroup()
     {
-        if (isset($this->_user_group))
+        if (isset($this->_user_group)) {
             return $this->_user_group;
+        }
 
         $db = & new PHPWS_DB('users_groups');
         $db->addWhere('user_id', $this->getId());
         $db->addColumn('id');
         $result = $db->select('one');
-        if (PEAR::isError($result))
+        if (PEAR::isError($result)) {
             return $result;
-        elseif (!isset($result))
+        } elseif (!isset($result)) {
             return PHPWS_Error::get(USER_ERR_MISSING_GROUP, 'users', 'getUserGroup');
-        else
+        } else {
             return $result;
+        }
     }
 
     function disallow($message=NULL)
