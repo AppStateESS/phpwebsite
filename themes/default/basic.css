@@ -178,7 +178,7 @@ table.form-table label {
     margin-bottom : 10px;
 }
 
-.box-title, .box-content {
+.box-title, .box-content, .box-footer {
     padding : 8px;
 
 }
