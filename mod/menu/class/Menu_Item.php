@@ -119,13 +119,14 @@ class Menu_Item {
     function displayLinks($edit=FALSE)
     {
         $all_links = $this->getLinks();
-
         if (empty($all_links)) {
             return NULL;
         }
 
         foreach ($all_links as $link) {
-            $link_list[] = $link->view();
+            if($i = $link->view()) {
+                $link_list[] = $i;
+            }
         }
 
         return implode("\n", $link_list);
@@ -308,6 +309,7 @@ class Menu_Item {
         }
 
         $content = PHPWS_Template::process($tpl, 'menu', $file);
+
         Layout::set($content, 'menu', $content_var);
     }
 
