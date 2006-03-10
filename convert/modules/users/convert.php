@@ -177,6 +177,16 @@ function convertUser(&$db, $oldUser) {
         return $result;
     }
     
+    $db->reset();
+    $db->setTable('users_groups');
+    $db->addValue('active', 1);
+    $db->addValue('name', $val['username']);
+    $db->addValue('user_id', $val['id']);
+    $result = $db->insert();
+    if (PEAR::isError($result)) {
+        return $result;
+    }
+
     $convert = & new PHPWS_DB('users_conversion');
     $convert->addValue('username', $val['username']);
     $convert->addValue('password', $oldUser['password']);
