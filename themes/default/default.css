@@ -57,9 +57,18 @@ a:hover, a:active {
 }
 
 
-h1, h2, h3, h1 a:link, h1 a:visited {
+h1, h2, h3 {
     color: #A03E19;
+
+}
+
+h1 a {
+    color : inherit;
     text-decoration : none;
+}
+
+h1 a:hover {
+    color : #CB572D;
 }
 
 
