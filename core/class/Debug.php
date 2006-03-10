@@ -10,17 +10,17 @@
 
 class PHPWS_Debug {
 
-    function test($value)
+    function test($value, $show_recursive=FALSE)
     {
         if (empty($value))
             return 'NULL';
         switch(gettype($value)){
         case 'object':
-            return PHPWS_Debug::testObject($value);
+            return PHPWS_Debug::testObject($value, 1, $show_recursive);
             break;
       
         case 'array':
-            return 'Array' . PHPWS_Debug::testArray($value);
+            return 'Array' . PHPWS_Debug::testArray($value, 1, $show_recursive);
             break;
 
         case 'boolean':
@@ -89,22 +89,24 @@ class PHPWS_Debug {
      * @param bool $displayTags whether or not to show html tags
      * @return string table of object variables
      */
-    function testObject($objVar, $displayTags=1)
+    function testObject($objVar, $displayTags=TRUE, $show_recursive=FALSE)
     {
         if(is_object($objVar)) {
             $test_recursion = md5(serialize($objVar));
             
-            if (isset($GLOBALS['Test_Recursion'])) {
+            if ($show_recursive && isset($GLOBALS['Test_Recursion'])) {
                 if (in_array($test_recursion, $GLOBALS['Test_Recursion'])) {
                     return _('Recursive object:') . ' ' . get_class($objVar);
                 }
             }
-            
-            $GLOBALS['Test_Recursion'][]  = $test_recursion;
+
+            if (!$show_recursive) {
+                $GLOBALS['Test_Recursion'][]  = $test_recursion;
+            }
 
             $objectInfo = (get_object_vars($objVar));
             return '<b>' . _('Class Name') . ':</b> ' . get_class($objVar) .
-                PHPWS_Debug::testArray($objectInfo, $displayTags);
+                PHPWS_Debug::testArray($objectInfo, $displayTags, $show_recursive);
         }
 
         if (gettype($objVar) != 'object') {
@@ -126,17 +128,19 @@ class PHPWS_Debug {
      * @param bool $displayTags whether or not to show html tags
      * @return string table with contents of array 
      */
-    function testArray($arrayVar, $displayTags=1) 
+    function testArray($arrayVar, $displayTags=TRUE, $show_recursive=FALSE) 
     {
         $test_recursion = md5(serialize($arrayVar));
 
-        if (isset($GLOBALS['Test_Recursion'])) {
+        if (!$show_recursive && isset($GLOBALS['Test_Recursion'])) {
             if (in_array($test_recursion, $GLOBALS['Test_Recursion'])) {
                 return _('Recursive array');
             }
         }
 
-        $GLOBALS['Test_Recursion'][]  = $test_recursion;
+        if (!$show_recursive) {
+            $GLOBALS['Test_Recursion'][]  = $test_recursion;
+        }
 
         translate('core');
         if(is_array($arrayVar)) {
@@ -150,9 +154,9 @@ class PHPWS_Debug {
 
                 foreach($arrayVar as $key => $value) {
                     if(is_array($value)) {
-                        $value = PHPWS_Debug::testArray($value, $displayTags);
+                        $value = PHPWS_Debug::testArray($value, $displayTags, $show_recursive);
                     } else if(is_object($value)) {
-                        $value = PHPWS_Debug::testObject($value, $displayTags);
+                        $value = PHPWS_Debug::testObject($value, $displayTags, $show_recursive);
                     } else if($displayTags && is_string($value)) {
                         $value = htmlspecialchars($value);
                     } else if($value !== NULL) {
@@ -181,9 +185,9 @@ class PHPWS_Debug {
 
 } // END CLASS PHPWS_Debug
 
-function test($value, $exitAfter=FALSE)
+function test($value, $exitAfter=FALSE, $show_recursive=FALSE)
 {
-    echo PHPWS_Debug::test($value);
+    echo PHPWS_Debug::test($value, $show_recursive);
     if ($exitAfter) {
         exit();
     }
