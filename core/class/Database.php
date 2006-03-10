@@ -640,9 +640,14 @@ class PHPWS_DB {
         $this->qwhere['conj']  = $conj;
     }
 
+
+    /**
+     * Grabs the where variables from the object and creates a sql query
+     */
     function getWhere($dbReady=FALSE)
     {
-        $where = NULL;
+        $sql = array();
+        $ignore_list = $where = NULL;
 
         if (empty($this->where)) {
             if (isset($this->qwhere)) {
@@ -652,7 +657,6 @@ class PHPWS_DB {
         }
         $startMain = FALSE;
         if ($dbReady) {
-            $inside = array();
             foreach ($this->where as $group_name => $groups) {
                 $hold = NULL;
                 $subsql = array();
@@ -660,25 +664,9 @@ class PHPWS_DB {
                     continue;
                 }
 
-                if (isset($this->group_in[$group_name])) {
-                    $hold = $this->group_in[$group_name];
-                }
-
-
                 $startSub = FALSE;
 
-
-                if ($startMain == TRUE) {
-                    if (empty($groups['conj'])) {
-                        $subsql[] = ' AND ';
-                    } else {
-                        $subsql[] = $groups['conj'];
-                    }
-                }
-                $subsql[] = '(';
-                
-                
-                foreach ($groups['values'] as $whereVal){
+                foreach ($groups['values'] as $whereVal) {
                     if ($startSub == TRUE) {
                         $subsql[] = $whereVal->conj;
                     }
@@ -686,26 +674,27 @@ class PHPWS_DB {
                     $startSub = TRUE;
                 }
 
-                if (isset($inside[$group_name])) {
-                    $subsql[] = implode('+', $inside[$group_name]);
-                }
+                $where_list[$group_name]['group_sql'] = $subsql;
                 
-                $subsql[] = ')';
-
-                if (!empty($hold)) {
-                    $inside[$hold][$group_name] = implode(' ', $subsql);
+                if (@$conj = $groups['conj']) {
+                    $where_list[$group_name]['group_conj'] = $conj;
                 } else {
-                    $sql[] = implode(' ', $subsql);
+                    $where_list[$group_name]['group_conj'] = 'AND';
                 }
 
-                $startMain = TRUE;
+                if (@$search_key = array_search($group_name, $this->group_in, true)) {
+                    $where_list[$search_key]['group_in'][$group_name] = &$where_list[$group_name];
+                    $ignore_list[$group_name] = TRUE;
+                }
             }
 
+            $start_main = FALSE;
+
+            $sql[] = $this->_buildGroup($where_list, $ignore_list, TRUE);
 
             if (isset($this->qwhere)) {
                 $sql[] = $this->qwhere['conj'] . ' (' . $this->qwhere['where'] . ')';
             }
-
 
             if (isset($sql)) {
                 $where = implode(' ', $sql);
@@ -715,6 +704,42 @@ class PHPWS_DB {
         } else {
             return $this->where;
         }
+    }
+
+    /**
+     * Handles the imbedding of where groups
+     */
+    function _buildGroup($where_list, $ignore_list=NULL, $first=FALSE) {
+        if (!$ignore_list) {
+            $ignore_list = array();
+        }
+        
+
+        foreach ($where_list as $group_name => $group_info) {
+            if (isset($ignore_list[$group_name])) {
+                continue;
+            }
+            extract($group_info);
+
+            if (!$first) {
+                $sql[] = $group_conj;
+            } else {
+                $first=FALSE;
+            }
+
+            if (!empty($group_in)) {
+                $sql[] = '( ( ' . implode(' ', $group_sql) . ' )';
+                $result = $this->_buildGroup($group_in);
+                if ($result) {
+                    $sql[] = $result;
+                }
+                $sql[] = ' )';
+            } else {
+                $sql[] = '( ' . implode(' ', $group_sql) . ' )';
+            }
+        }
+
+        return implode (' ', $sql);
     }
 
     function resetWhere()
