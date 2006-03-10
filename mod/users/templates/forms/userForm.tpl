@@ -3,27 +3,27 @@
 <hr />
 <!-- END message -->
 {START_FORM}
-<table class="form-table" cellspacing="0" cellpadding="4" width="100%">
+<table class="form-table" cellspacing="0" cellpadding="4">
   <tr>
-    <td class="label">{AUTHORIZE_LABEL}</td><td>{AUTHORIZE}</td>
+    <td>{AUTHORIZE_LABEL}</td><td>{AUTHORIZE}</td>
   </tr>
   <tr>
-    <td class="label">{USERNAME_LABEL}</td><td>{USERNAME}</td>
+    <td>{USERNAME_LABEL}</td><td>{USERNAME}</td>
   </tr>
   <!-- BEGIN username-error -->
   <tr><td class="user-error" colspan="2">{USERNAME_ERROR}</td></tr>
   <!-- END username-error -->
   <tr>
-    <td class="label">{DISPLAY_NAME_LABEL}</td><td>{DISPLAY_NAME}</td>
+    <td>{DISPLAY_NAME_LABEL}</td><td>{DISPLAY_NAME}</td>
   </tr>
   <tr>
-    <td class="label">{PASSWORD1_LABEL}</td><td>{PASSWORD1}&nbsp;{PASSWORD2}</td>
+    <td>{PASSWORD1_LABEL}</td><td>{PASSWORD1}&nbsp;{PASSWORD2}</td>
   </tr>
   <!-- BEGIN password-error -->
   <tr><td class="user-error" colspan="2">{PASSWORD_ERROR}</td></tr>
   <!-- END password-error -->
   <tr>
-    <td class="label">{EMAIL_LABEL}</td><td>{EMAIL}</td>
+    <td>{EMAIL_LABEL}</td><td>{EMAIL}</td>
   </tr>
   <!-- BEGIN email-error -->
   <tr><td class="user-error" colspan="2">{EMAIL_ERROR}</td></tr>
