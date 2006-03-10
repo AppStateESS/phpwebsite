@@ -474,10 +474,12 @@ class Key {
         $source_table = $db->tables[0];
 
         if (!Current_User::isLogged()) {
-            $db->addWhere('key_id', 0);
-            $db->addWhere('phpws_key.active',     1, NULL, NULL, 'key_1');
-            $db->addWhere('phpws_key.restricted', 0, NULL, NULL, 'key_1');
-            $db->setGroupConj('key_1', 'or');
+            $db->addWhere('key_id',               0, NULL, NULL, 'key_1');
+            $db->addWhere('phpws_key.active',     1, NULL, NULL, 'key_2');
+            $db->addWhere('phpws_key.restricted', 0, NULL, NULL, 'key_2');
+            $db->setGroupConj('key_1', 'and');
+            $db->setGroupConj('key_2', 'or');
+            $db->groupIn('key_1', 'key_2');
             $db->addJoin('left', $source_table, 'phpws_key', 'key_id', 'id');
             return;
         } elseif (Current_User::isUnrestricted($module)) {
