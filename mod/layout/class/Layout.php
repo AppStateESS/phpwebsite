@@ -805,7 +805,7 @@ class Layout {
             if ($box->theme_var == $var) {
                 continue;
             }
-            $menu[$var] = _('Move to') . ' ' . $var;
+            $menu[$var] = _('Send to') . ' ' . $var;
         }
 
         $form = new PHPWS_Form;
