@@ -1,0 +1,23 @@
+MiniAdmin
+by Matthew McNaney
+----------------------------------------------
+
+MiniAdmin is a very small module that allows you to collect
+administrative menu options in one place.
+
+It is really simple to use.
+
+$link = '<a href="index.php?module=my_module&do=all">Do All!</a>';
+MiniAdmin::add('my_module', $link);
+
+That's all! MiniAdmin will list that link along with other
+administrative links.
+
+You do not want to use MiniAdmin indiscrimately. MiniAdmin doesn't
+know why you are sending it a link. It is up to you to check the
+user's permissions, what page the user is currently viewing, etc. For
+example, the Categorize and Permissions link only appear when a
+specific keyed item is getting viewed. The Edit blogs link only
+appears when all the blogs are getting viewed. None of the links
+appear if the user doesn't have the permissions to administrate those
+options.
