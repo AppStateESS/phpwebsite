@@ -16,7 +16,7 @@ class PHPWS_ControlPanel {
         $panel = new PHPWS_Panel('controlpanel');
         $panel->disableSecure();
 
-        if (1 || !isset($_SESSION['Control_Panel_Tabs'])){
+        if (!isset($_SESSION['Control_Panel_Tabs'])){
             PHPWS_ControlPanel::loadTabs($panel);
         }
         else {
@@ -59,11 +59,12 @@ class PHPWS_ControlPanel {
             return _('No tabs available in the Control Panel.');
         }
 
-        if (!isset($content)){
+        if (!isset($content) && PHPWS_Core::getCurrentModule() == 'controlpanel') {
             if (isset($allLinks[$panel->getCurrentTab()])) {
                 foreach ($allLinks[$panel->getCurrentTab()] as $id => $link) {
                     $link_content[] = $link->view();
                 }
+
                 $link_content = PHPWS_Template::process(array('LINKS' => implode('', $link_content)), 'controlpanel', 'links.tpl');
                 $panel->setContent($link_content);
             }
