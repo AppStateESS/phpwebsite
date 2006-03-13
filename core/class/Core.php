@@ -12,6 +12,9 @@
 
 class PHPWS_Core {
 
+    /**
+     * Loads each module's /inc/init.php file
+     */
     function initializeModules()
     {
         if (!$moduleList = PHPWS_Core::getModules()) {
@@ -45,6 +48,9 @@ class PHPWS_Core {
         }
     }
 
+    /**
+     * Loads each module's inc/close.php file
+     */
     function closeModules()
     {
         if (!isset($GLOBALS['Modules'])) {
@@ -64,7 +70,9 @@ class PHPWS_Core {
         }
     }
 
-
+    /**
+     * Gets all the modules from the module table
+     */
     function getModules($active=TRUE, $just_title=FALSE)
     {
         $DB = & new PHPWS_DB('modules');
@@ -81,6 +89,12 @@ class PHPWS_Core {
         }
     }
 
+    /**
+     * Returns an associative array of all the modules in the
+     * module table
+     * Array is indexed with the module title. The value of each
+     * row is the module's proper name
+     */
     function &getModuleNames()
     {
         if (isset($GLOBALS['Core_Module_Names'])) {
@@ -102,6 +116,10 @@ class PHPWS_Core {
         return $GLOBALS['Core_Module_Names'];
     }
 
+
+    /**
+     * Loads each module's inc/runtime.php file
+     */
     function runtimeModules()
     {
         if (!isset($GLOBALS['Modules'])) {
@@ -131,7 +149,9 @@ class PHPWS_Core {
         }
     }
 
-
+    /**
+     * Loads the index.php file of the currently selected module
+     */
     function runCurrentModule()
     {
         if (isset($_REQUEST['module'])) {
@@ -145,7 +165,10 @@ class PHPWS_Core {
         }
     }
 
-
+    /**
+     * Requires a module's class file once
+     * Returns TRUE is successful, FALSE otherwise
+     */
     function initModClass($module, $file)
     {
         $classFile = PHPWS_SOURCE_DIR . 'mod/' . $module . '/class/' . $file;
@@ -159,6 +182,11 @@ class PHPWS_Core {
         }
     }
 
+
+    /**
+     * Requires a core class file once
+     * Returns TRUE is successful, FALSE otherwise
+     */
     function initCoreClass($file)
     {
         $classFile = PHPWS_SOURCE_DIR . 'core/class/' . $file;
@@ -172,6 +200,11 @@ class PHPWS_Core {
         }
     }
 
+
+    /**
+     * Sets the last form post made to the website. 
+     * Works with isPosted
+     */
     function setLastPost()
     {
         if (!PHPWS_Core::isPosted()) {
@@ -183,6 +216,10 @@ class PHPWS_Core {
         }
     }
 
+    /**
+     * Makes a post key to track past posts
+     * Works with setLastPost and isPosted
+     */
     function _getPostKey()
     {
         $key = serialize($_POST);
@@ -197,6 +234,11 @@ class PHPWS_Core {
         return md5($key);
     }
 
+    /**
+     * Checks to see if the currently post is in the LastPost
+     * session. If so, it returns TRUE. Function can be used to 
+     * prevent double posts.
+     */
     function isPosted()
     {
         if (!isset($_SESSION['PHPWS_LastPost']) || !isset($_POST)) {
@@ -206,16 +248,25 @@ class PHPWS_Core {
         return in_array($key, $_SESSION['PHPWS_LastPost']);
     }
  
+    /**
+     * Returns the user browser to the referer (last web page)
+     */
     function goBack()
     {
         PHPWS_Core::reroute($_SERVER['HTTP_REFERER']);
     }
 
+    /**
+     * Sends the user to the home page (index.php)
+     */
     function home()
     {
         PHPWS_Core::reroute();
     }
 
+    /**
+     * Returns a url prefix dependent on the security
+     */ 
     function getHttp()
     {
         if ( isset($_SERVER['HTTPS']) &&
@@ -226,6 +277,10 @@ class PHPWS_Core {
         }
     }
 
+    /**
+     * Sends a location header based on the relative link passed
+     * to the function.
+     */
     function reroute($address=NULL)
     {
         if (!preg_match('/^http/', $address)) {
@@ -247,12 +302,18 @@ class PHPWS_Core {
         exit();
     }
 
+    /**
+     * Kills a current page session
+     */
     function killSession($sess_name)
     {
         $_SESSION[$sess_name] = NULL;
         unset($_SESSION[$sess_name]);
     }
 
+    /**
+     * Kills all sessions currently loaded
+     */
     function killAllSessions()
     {
         $_SESSION = array();
@@ -260,21 +321,34 @@ class PHPWS_Core {
         session_destroy();
     }// END FUNC killAllSessions()
 
+    /**
+     * Returns TRUE is a module is installed, FALSE otherwise
+     */
     function moduleExists($module)
     {
         return isset($GLOBALS['Modules'][$module]);
     }
 
+    /**
+     * Returns the currently active module
+     */
     function getCurrentModule()
     {
         return $GLOBALS['PHPWS_Current_Mod'];
     }
 
+    /**
+     * Sets the currently active module
+     */
     function setCurrentModule($module)
     {
         $GLOBALS['PHPWS_Current_Mod'] = $module;
     }
 
+    /**
+     * Retrieves a module's config file path. If the file
+     * does not exist, it returns FALSE instead.
+     */
     function getConfigFile($module, $file=NULL)
     {
         if (empty($file)) {
@@ -305,13 +379,17 @@ class PHPWS_Core {
         return $file;
     }
 
+
+    /**
+     * Pseudoname of configRequireOnce
+     */
     function requireConfig($module, $file=NULL, $exitOnError=TRUE)
     {
         return PHPWS_Core::configRequireOnce($module, $file, $exitOnError);
     }
 
     /**
-     * Loads a config file. If missing, shows error page
+     * Loads a config file via a require. If missing, shows error page.
      */
     function configRequireOnce($module, $file=NULL, $exitOnError=TRUE)
     {
@@ -334,7 +412,10 @@ class PHPWS_Core {
 
         return TRUE;
     }
-    
+
+    /**
+     * Loads the core class as a fake module
+     */
     function &loadAsMod()
     {
         PHPWS_Core::initCoreClass('Module.php');
@@ -357,6 +438,9 @@ class PHPWS_Core {
         return $core;
     }
 
+    /**
+     * Uses the Pear log class to write a log file to the logs directory
+     */
     function log($message, $filename, $type=NULL)
     {
         require_once 'Log.php';
@@ -377,6 +461,9 @@ class PHPWS_Core {
         $log->close();
     }
 
+    /**
+     * Routes the user to a HTML file. File depends on code passed to it.
+     */
     function errorPage($code=NULL)
     {
         switch ($code) {
@@ -403,6 +490,9 @@ class PHPWS_Core {
         exit();
     }
 
+    /**
+     * Returns true if server OS is Windows
+     */
     function isWindows()
     {
         if (isset($_SERVER['WINDIR']) ||
@@ -413,6 +503,11 @@ class PHPWS_Core {
         }
     }
 
+    /**
+     * If a file is posted beyond php's posting limits, it will drop the
+     * POST without an error message. checkOverPost sends the user to an 
+     * overpost error page.
+     */
     function checkOverPost()
     {
         if (!isset($_GET['check_overpost'])) {
@@ -425,6 +520,11 @@ class PHPWS_Core {
         return TRUE;
     }
 
+    /**
+     * If security is enabled, phpwebsite will check the specific directories
+     * to make sure they are not writable. These directories are often made writable
+     * when a module is updated or installed
+     */
     function checkSecurity()
     {
         if (CHECK_DIRECTORY_PERMISSIONS == TRUE) {
@@ -435,6 +535,9 @@ class PHPWS_Core {
         }
     }
 
+    /**
+     * Returns an array of the core modules. Set from the core_modules.php file.
+     */
     function coreModList()
     {
         static $core_modules = NULL;
@@ -452,6 +555,9 @@ class PHPWS_Core {
         return $core_modules;
     }
 
+    /**
+     * Returns an array of all installed modules
+     */
     function installModList()
     {
         $db = & new PHPWS_DB('modules');
@@ -459,6 +565,10 @@ class PHPWS_Core {
         return $db->select('col');
     }
 
+    /**
+     * Returns an array with containing all the values of
+     * the passed object.
+     */
     function stripObjValues($object)
     {
         $className = get_class($object);
@@ -479,7 +589,10 @@ class PHPWS_Core {
         return $var_array;
     }
  
-
+    /**
+     * Plugs an array of $variables into the $object. The associative array
+     * keys must be identical to the object's variable names.
+     */
     function plugObject(&$object, $variables)
     {
         $className = get_class($object);
@@ -511,6 +624,9 @@ class PHPWS_Core {
         return TRUE;
     }
 
+    /**
+     * Returns the installation's home directory
+     */
     function getHomeDir()
     {
         $address[] = $_SERVER['DOCUMENT_ROOT'];
@@ -518,6 +634,9 @@ class PHPWS_Core {
         return implode('', $address) . '/';
     }
 
+    /**
+     * Returns the installations url address
+     */
     function getHomeHttp($with_http=TRUE, $with_directory=TRUE, $with_slash=TRUE)
     {
         if ($with_http) {
@@ -560,6 +679,9 @@ class PHPWS_Core {
         }
     }
 
+    /**
+     * Returns the url of the current page
+     */
     function getCurrentUrl($relative=TRUE, $use_redirect=TRUE)
     {
         if (!$relative) {
