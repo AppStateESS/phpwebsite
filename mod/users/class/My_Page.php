@@ -42,8 +42,9 @@ class My_Page {
             return $result;
         }
 
-        foreach ($result as $mod_title)
+        foreach ($result as $mod_title) {
             $this->modules[$mod_title] = & new PHPWS_Module($mod_title);
+        }
     }
 
     function moduleIsRegistered($module)
@@ -90,6 +91,10 @@ class My_Page {
 
     function registerMyPage($mod_title)
     {
+        if (!PHPWS_Core::moduleExists($mod_title)) {
+            return FALSE;
+        }
+
         $filename = sprintf('%s/mod/%s/inc/my_page.php', PHPWS_SOURCE_DIR, $mod_title);
 
         if (!is_file($filename)) {
