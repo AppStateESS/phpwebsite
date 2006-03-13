@@ -62,22 +62,14 @@ class Calendar_View {
 
     }
 
-
-    function month_grid($type='mini')
+    function mini_month()
     {
-        $month = $this->calendar->month;
-        $year  = $this->calendar->year;
+        $month = &$this->calendar->month;
+        $year  = &$this->calendar->year;
 
         $startdate = mktime(0,0,0, $month, 1, $year);
         $enddate = mktime(23, 59, 59, $month + 1, 0, $year);
-        if (isset($this->calendar->schedule) ){
-            $this->calendar->schedule->loadEvents($startdate, $enddate);
-        }
-        $this->sortEvents();
-        if ($type != 'mini' && $type != 'full') {
-            PHPWS_Core::errorPage('404');
-        }
-        
+
         if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
             Layout::addStyle('calendar');
         }
@@ -85,20 +77,29 @@ class Calendar_View {
         $oMonth = $this->calendar->getMonth($month, $year);
         $date = $oMonth->thisMonth(TRUE);
 
-        // Check cache
-        //        $cache_key = sprintf('%s_%s_%s', $type, $oMonth->month, $oMonth->year);
-
-        /*
-        $content = PHPWS_Cache::get($cache_key);
-        if (!empty($content)) {
-            return $content;
-        }
-        */
-        // Cache empty, make month
-
         $oTpl = & new PHPWS_Template('calendar');
-        $oTpl->setFile(sprintf('view/month/%s.tpl', $type));
+        $oTpl->setFile(sprintf('view/month/mini.tpl', $type));
 
+        $wData = $this->_weekday($oMonth, $oTpl, $wData);
+        reset($oMonth->children);
+        $this->_month_days($oMonth, $oTpl, $wData);
+
+        $vars['month'] = $month;
+        $vars['year'] = $year;
+        $vars['view'] = 'full';
+        $template['FULL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%B', $date), 'calendar', $vars);
+        $template['PARTIAL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%b', $date), 'calendar', $vars);
+        $template['FULL_YEAR'] = strftime('%Y', $date);
+        $template['PARTIAL_YEAR'] = strftime('%y', $date);
+
+        $oTpl->setData($template);
+        $content = $oTpl->get();
+        //        PHPWS_Cache::save($cache_key, $content);
+        return $content;
+    }
+
+    function _weekday(&$oMonth, &$oTpl, &$wData)
+    {
         $day_count = 0;
 
         while($day = $oMonth->fetch()) {
@@ -115,8 +116,12 @@ class Calendar_View {
             }
         }
 
-        reset($oMonth->children);
+    }
 
+    function _month_days(&$oMonth, &$oTpl, &$wData)
+    {
+        $month = &$this->calendar->month;
+        $year  = &$this->calendar->year;
 
         while($day = $oMonth->fetch()) {
             $data['DAY'] = $day->day;
@@ -149,6 +154,44 @@ class Calendar_View {
                 $oTpl->parseCurrentBlock();
             }
         }
+    }
+
+    function month_grid()
+    {
+        $month = &$this->calendar->month;
+        $year  = &$this->calendar->year;
+
+        $startdate = mktime(0,0,0, $month, 1, $year);
+        $enddate = mktime(23, 59, 59, $month + 1, 0, $year);
+        if (isset($this->calendar->schedule) ){
+            $this->calendar->schedule->loadEvents($startdate, $enddate);
+        }
+        $this->sortEvents();
+        
+        if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
+            Layout::addStyle('calendar');
+        }
+
+        $oMonth = $this->calendar->getMonth($month, $year);
+        $date = $oMonth->thisMonth(TRUE);
+
+        // Check cache
+        //        $cache_key = sprintf('%s_%s_%s', $type, $oMonth->month, $oMonth->year);
+
+        /*
+        $content = PHPWS_Cache::get($cache_key);
+        if (!empty($content)) {
+            return $content;
+        }
+        */
+        // Cache empty, make month
+
+        $oTpl = & new PHPWS_Template('calendar');
+        $oTpl->setFile('view/month/full.tpl');
+
+        $this->_weekday($oMonth, $oTpl, $wData);
+        reset($oMonth->children);
+        $this->_month_days($oMonth, $oTpl, $wData);
 
         $vars['month'] = $month;
         $vars['year'] = $year;
@@ -156,9 +199,7 @@ class Calendar_View {
         $template['FULL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%B', $date), 'calendar', $vars);
         $template['PARTIAL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%b', $date), 'calendar', $vars);
 
-        if ($type != 'mini') {
-            $template['TITLE'] = $this->calendar->schedule->title;
-        }
+        $template['TITLE'] = $this->calendar->schedule->title;
         $template['PICK'] = $this->getPick();
         $template['FULL_YEAR'] = strftime('%Y', $date);
         $template['PARTIAL_YEAR'] = strftime('%y', $date);

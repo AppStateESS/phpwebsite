@@ -12,7 +12,7 @@ if (empty($lil_calendar)) {
     // This needs to load the default public calendar
     // or maybe the personal one?
     $Calendar->loadView();
-    $lil_calendar = $Calendar->view->month_grid('mini');
+    $lil_calendar = $Calendar->view->mini_month();
 
     PHPWS_Cache::save($cal_key, $lil_calendar);
 
