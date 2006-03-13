@@ -63,15 +63,10 @@ class Calendar_View {
     }
 
 
-    function month_grid($type='mini', $month=NULL, $year=NULL)
+    function month_grid($type='mini')
     {
-        if (empty($month)) {
-            $month = date('m');
-        }
-
-        if (empty($year)) {
-            $year = date('Y');
-        }
+        $month = $this->calendar->month;
+        $year  = $this->calendar->year;
 
         $startdate = mktime(0,0,0, $month, 1, $year);
         $enddate = mktime(23, 59, 59, $month + 1, 0, $year);
@@ -161,6 +156,10 @@ class Calendar_View {
         $template['FULL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%B', $date), 'calendar', $vars);
         $template['PARTIAL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%b', $date), 'calendar', $vars);
 
+        if ($type != 'mini') {
+            $template['TITLE'] = $this->calendar->schedule->title;
+        }
+        $template['PICK'] = $this->getPick();
         $template['FULL_YEAR'] = strftime('%Y', $date);
         $template['PARTIAL_YEAR'] = strftime('%y', $date);
 
@@ -168,6 +167,16 @@ class Calendar_View {
         $content = $oTpl->get();
         //        PHPWS_Cache::save($cache_key, $content);
         return $content;
+    }
+
+    function getPick()
+    {
+        $js['month'] = $this->calendar->month;
+        $js['day']   = $this->calendar->day;
+        $js['year']  = $this->calendar->year;
+        $js['url']   = $this->getUrl();
+        $js['type']  = 'pick';
+        return javascript('js_calendar', $js);
     }
 
     function day()
@@ -180,12 +189,8 @@ class Calendar_View {
         $template['TITLE'] = $this->calendar->schedule->title;
         $template['DATE'] = strftime(CALENDAR_DAY_FORMAT, $uDate);
 
-        $js['month'] = $this->calendar->month;
-        $js['day']   = $this->calendar->day;
-        $js['year']  = $this->calendar->year;
-        $js['url']   = $this->getUrl();
-        $js['type']  = 'pick';
-        $template['PICK'] = javascript('js_calendar', $js);
+        $template['PICK'] = $this->getPick();
+
 
         /*
          // need to replace the below
