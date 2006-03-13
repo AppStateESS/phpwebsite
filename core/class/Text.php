@@ -547,7 +547,7 @@ class PHPWS_Text {
             $search = &$GLOBALS['Smilie_Search']['code'];
             $replace = &$GLOBALS['Smilie_Search']['img'];
         } else {
-            $results = file_get_contents(PHPWS_HOME_DIR . './config/core/smiles.pak');
+            $results = file_get_contents(PHPWS_HOME_DIR . 'config/core/smiles.pak');
             if (empty($results)) {
                 return $bbcode;
             }
@@ -556,8 +556,9 @@ class PHPWS_Text {
                 $icon = explode('=+:', $row);
         
                 $search[] = '@' . preg_quote($icon[2]) . '@';
-                $replace[] = '<img src="' . PHPWS_HOME_DIR . '/images/core/smilies/'
-                    . $icon[0] . '" title="' . $icon[1]. '" />';
+                $replace[] = sprintf('<img src="%simages/core/smilies/%s" title="%s" />',
+                                     PHPWS_HOME_HTTP, $icon[0], $icon[1]);
+
             }
             $GLOBALS['Smilie_Search']['code'] = $search;
             $GLOBALS['Smilie_Search']['img'] = $replace;
