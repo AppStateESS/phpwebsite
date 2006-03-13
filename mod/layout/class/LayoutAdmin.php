@@ -1,13 +1,13 @@
 <?php
 
-/**
- * This class handles the administrative functionality
- * for layout. Changing themes, meta tags, etc. is handled
- * here.
- *
- * @author Matthew McNaney <matt at tux dot appstate.edu dot>
- * @version $Id$
- */
+  /**
+   * This class handles the administrative functionality
+   * for layout. Changing themes, meta tags, etc. is handled
+   * here.
+   *
+   * @author Matthew McNaney <matt at tux dot appstate.edu dot>
+   * @version $Id$
+   */
 
 define('DEFAULT_LAYOUT_TAB', 'boxes');
 
@@ -31,6 +31,11 @@ class Layout_Admin{
         case 'boxes':
             $title = _('Adjust Boxes');
             $content[] = Layout_Admin::boxesForm();
+            break;
+
+        case 'turn_off_box_move':
+            Layout::moveBoxes(FALSE);
+            PHPWS_Core::goBack();
             break;
 
         case 'changeBoxSettings':
@@ -149,7 +154,8 @@ class Layout_Admin{
     }
 
 
-    function &adminPanel(){
+    function &adminPanel()
+    {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=layout&amp;action=admin';
 
@@ -158,13 +164,14 @@ class Layout_Admin{
         $tabs['theme']     = array('title'=>_('Themes'),    'link'=>$link);
         $tabs['header']    = array('title'=>_('Header'),    'link'=>$link);
         $tabs['footer']    = array('title'=>_('Footer'),    'link'=>$link);
-
+        
         $panel = & new PHPWS_Panel('layout');
         $panel->quickSetTabs($tabs);
         return $panel;
     }
 
-    function adminThemes(){
+    function adminThemes()
+    {
         $form = & new PHPWS_Form('themes');
         $form->addHidden('module', 'layout');
         $form->addHidden('action', 'admin');
@@ -186,7 +193,8 @@ class Layout_Admin{
         return PHPWS_Template::process($template, 'layout', 'themes.tpl');
     }
 
-    function boxesForm(){
+    function boxesForm()
+    {
         $form = & new PHPWS_Form('boxes');
         $form->addHidden('module', 'layout');
         $form->addHidden('action', 'admin');
@@ -214,13 +222,15 @@ class Layout_Admin{
     }
 
 
-    function changeTheme($theme){
+    function changeTheme($theme)
+    {
         $_SESSION['Layout_Settings']->default_theme = $theme;
         $_SESSION['Layout_Settings']->saveSettings();
         Layout::reset();
     }
 
-    function confirmThemeChange(){
+    function confirmThemeChange()
+    {
         Layout::reset();
         $form = & new PHPWS_Form('confirmThemeChange');
         $form->addHidden('module', 'layout');
@@ -234,7 +244,8 @@ class Layout_Admin{
         return $form->getMerge();
     }
 
-    function editFooter(){
+    function editFooter()
+    {
         PHPWS_Core::initCoreClass('Editor.php');
         $form = & new PHPWS_Form('edit_header');
         $form->addHidden('module', 'layout');
@@ -260,7 +271,8 @@ class Layout_Admin{
     }
 
 
-    function editHeader(){
+    function editHeader()
+    {
         PHPWS_Core::initCoreClass('Editor.php');
         $form = & new PHPWS_Form('edit_header');
         $form->addHidden('module', 'layout');
@@ -286,12 +298,14 @@ class Layout_Admin{
     
     }
 
-    function getThemeList(){
+    function getThemeList()
+    {
         PHPWS_Core::initCoreClass('File.php');
         return PHPWS_File::readDirectory('themes/', 1);
     }
 
-    function metaForm(){
+    function metaForm()
+    {
         extract($_SESSION['Layout_Settings']->getMetaTags());
 
         $index = substr($meta_robots, 0, 1);
@@ -323,7 +337,11 @@ class Layout_Admin{
         return PHPWS_Template::process($template, 'layout', 'metatags.tpl');
     }
 
-    function moveBox(){
+    /**
+     * Receives the post results of the box change form.
+     */
+    function moveBox()
+    {
         PHPWS_Core::initModClass('layout', 'Box.php');
         $box = new Layout_Box($_POST['box_source']);
         $result = $box->move($_POST['box_dest']);
@@ -339,17 +357,20 @@ class Layout_Admin{
         return TRUE;
     }
 
-    function postHeader(){
+    function postHeader()
+    {
         $_SESSION['Layout_Settings']->header = PHPWS_Text::parseInput($_POST['header']);
         return $_SESSION['Layout_Settings']->saveSettings();
     }
 
-    function postFooter(){
+    function postFooter()
+    {
         $_SESSION['Layout_Settings']->footer = PHPWS_Text::parseInput($_POST['footer']);
         return $_SESSION['Layout_Settings']->saveSettings();
     }
 
-    function postMeta(){
+    function postMeta()
+    {
         extract($_POST);
     
         $values['page_title'] = strip_tags($page_title);
@@ -373,7 +394,8 @@ class Layout_Admin{
         $db->update();
     }
 
-    function saveBoxSettings(){
+    function saveBoxSettings()
+    {
         if ($_REQUEST['move_boxes'] == 1) {
             Layout::moveBoxes(TRUE);
         }
@@ -384,10 +406,7 @@ class Layout_Admin{
         if ($_REQUEST['reset_boxes'] == '1') {
             Layout::resetDefaultBoxes();
         }
-
     }
-
-
 }
 
 ?>
