@@ -587,13 +587,18 @@ class User_Action {
         return $panel;
     }
 
-
+    /**
+     * Controller of user requests. Based on the command request variable
+     * defaults to my_page 
+     */
     function userAction()
     {
-        if (isset($_REQUEST['command']))
+        if (isset($_REQUEST['command'])) {
             $command = $_REQUEST['command'];
-        else
+        }
+        else {
             $command = 'my_page';
+        }
 
         switch ($command) {
         case 'login':
