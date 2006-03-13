@@ -70,15 +70,31 @@ class Comments {
         }
     }
 
+
+    /**
+     * Authorization checked in index.php
+     */
     function adminAction($command)
     {
+        $content = NULL;
         switch ($command) {
         case 'delete_comment':
             $comment = & new Comment_Item($_REQUEST['cm_id']);
             $comment->delete();
             PHPWS_Core::goBack();
+            return;
+            break;
+            
+        case 'admin_menu':
+            $content = Comments::settingsForm();
+            break;
+
+        case 'post_settings':
+            $content = Comments::postSettings();
             break;
         }
+
+        Layout::add(PHPWS_ControlPanel::display($content));
     }
 
     function userAction($command)
@@ -265,6 +281,75 @@ class Comments {
         $tpl['CHILDREN'] = $thread->view($comment->getId());
         $content = PHPWS_Template::process($tpl, 'comments', 'view_one.tpl');
         return $content;
+    }
+
+    function postSettings()
+    {
+        if (@$_POST['allow_signatures']) {
+            $settings['allow_signatures'] = 1;
+        } else {
+            $settings['allow_signatures'] = 0;
+        }
+
+        if (@$_POST['allow_image_signatures']) {
+            $settings['allow_image_signatures'] = 1;
+        } else {
+            $settings['allow_image_signatures'] = 0;
+        }
+ 
+        if (@$_POST['allow_avatars']) {
+            $settings['allow_avatars'] = 1;
+        } else {
+            $settings['allow_avatars'] = 0;
+        }
+
+        if (@$_POST['local_avatars']) {
+            $settings['local_avatars'] = 1;
+        } else {
+            $settings['local_avatars'] = 0;
+        }
+
+        PHPWS_Settings::set('comments', $settings);
+        PHPWS_Settings::save('comments');
+
+        $content[] = _('Settings saved.');
+        $vars['admin_action'] = 'admin_menu';
+        $content[] = PHPWS_Text::secureLink(_('Go back to settings...'), 'comments', $vars);
+        return implode('<br /><br />', $content);
+    }
+
+    function settingsForm()
+    {
+        $settings = PHPWS_Settings::get('comments');
+
+        $form = & new PHPWS_Form('comments');
+        $form->addHidden('module', 'comments');
+        $form->addHidden('admin_action', 'post_settings');
+
+        $form->addCheck('allow_signatures', 1);
+        $form->setLabel('allow_signatures', _('Allow user signatures'));
+        $form->setMatch('allow_signatures', $settings['allow_signatures']);
+                        
+
+        $form->addCheck('allow_image_signatures', 1);
+        $form->setLabel('allow_image_signatures', _('Allow images in signatures'));
+        $form->setMatch('allow_image_signatures', $settings['allow_image_signatures']);
+
+        $form->addCheck('allow_avatars', 1);
+        $form->setLabel('allow_avatars', _('Allow user avatars'));
+        $form->setMatch('allow_avatars', $settings['allow_avatars']);
+
+        $form->addCheck('local_avatars', 1);
+        $form->setLabel('local_avatars', _('Save avatars locally'));
+        $form->setMatch('local_avatars', $settings['local_avatars']);
+
+        $form->addSubmit(_('Save'));
+
+        $tpl = $form->getTemplate();
+
+        $tpl['TITLE'] = _('Comment settings');
+        
+        return PHPWS_Template::process($tpl, 'comments', 'settings_form.tpl');
     }
 }
 
