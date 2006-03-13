@@ -28,8 +28,9 @@ function users_register($module, &$content){
         PHPWS_Boost::addLog('users', _('A problem occurred when trying to register this module to My Page.'));
         $content[] = _('A problem occurred when trying to register this module to My Page.');
         return FALSE;
-    } elseif ($result != FALSE)
+    } elseif ($result != FALSE) {
           $content[] = _('My Page registered to Users module.');
+    }
 
     return TRUE;
 }
