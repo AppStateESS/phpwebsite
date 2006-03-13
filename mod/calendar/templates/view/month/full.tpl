@@ -10,7 +10,7 @@
     <!-- BEGIN calendar-row -->
       <tr>
       {CAL_ROW}
-      <!-- BEGIN calendar-col --><td class="{CLASS}">{DAY}<div>{COUNT}</div></td><!-- END calendar-col -->
+      <!-- BEGIN calendar-col --><td class="{CLASS}"><div class="cal-day">{DAY}</div><div class="cal-events">{COUNT}</div></td><!-- END calendar-col -->
       </tr>
     <!-- END calendar-row -->
     </table>

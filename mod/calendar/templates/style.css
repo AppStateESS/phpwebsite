@@ -68,6 +68,16 @@ td.day-normal {
   background-color : #DEE2BD;
 }
 
+div.cal-day {
+    position : relative;
+    top : -30px;
+}
+
+div.cal-events {
+    position : relative;
+    top : -10px;
+}
+
 .calendar-event {
   padding : 5px;
 }
