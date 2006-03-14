@@ -78,7 +78,7 @@ class Calendar_View {
         $date = $oMonth->thisMonth(TRUE);
 
         $oTpl = & new PHPWS_Template('calendar');
-        $oTpl->setFile(sprintf('view/month/mini.tpl', $type));
+        $oTpl->setFile('view/month/mini.tpl');
 
         $wData = $this->_weekday($oMonth, $oTpl, $wData);
         reset($oMonth->children);

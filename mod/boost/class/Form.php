@@ -57,6 +57,7 @@ class Boost_Form {
         $tpl['TITLE_LABEL'] = _('Module Title');
         $tpl['COMMAND_LABEL'] = ('Commands');
         $tpl['ABOUT_LABEL'] = _('More information');
+        $tpl['VERSION_LABEL'] = _('Current version');
         
         if ($type == 'core_mods' && Current_User::isDeity() && DEITIES_CAN_UNINSTALL) {
             $tpl['WARNING'] = _('WARNING: Only deities can uninstall core modules. Doing so may corrupt your installation!');
@@ -76,6 +77,7 @@ class Boost_Form {
                 $proper_name = $title;
             }
 
+            $template['VERSION'] = $mod->version;
             $template['TITLE'] = $proper_name;
             $template['ROW'] = ($count % 2) + 1;
             if (!$mod->isInstalled()){

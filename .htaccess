@@ -1,5 +1,11 @@
+Order Allow,Deny
+Allow from all
+
+
 RewriteEngine On
 Options +FollowSymlinks
 
+RewriteRule ^only_tommy$ blog/5 [L]
 RewriteRule ^([a-z0-9]+)/([a-z0-9]+)/?$ index.php?module=$1&id=$2 [L,NC]
 RewriteRule ^([a-z0-9]+)/([a-z0-9]+)/([a-z0-9]+)/?$ index.php?module=$1&id=$2&page=$3 [L,NC]
+
