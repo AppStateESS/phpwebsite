@@ -48,14 +48,25 @@ class File_Common {
     {
         require 'HTTP/Upload.php';
 
-        $this->setTitle($_POST['title']);
-        $this->setDescription($_POST['description']);
+        if (isset($_POST['title'])) {
+            $this->setTitle($_POST['title']);
+        } else {
+            $this->title = NULL;
+        }
+
+        if (isset($_POST['description'])) {
+            $this->setDescription($_POST['description']);
+        } else {
+            $this->description = NULL;
+        }
 
         if (isset($_POST['directory'])) {
             $directory =  str_ireplace('%2f', '/', $_POST['directory']);
             $this->setDirectory($directory);
         } else {
-            $this->setDirectory($this->getDefaultDirectory());
+            if (empty($this->file_directory)) {
+                $this->setDirectory($this->getDefaultDirectory());
+            }
         }
 
         // UPLOAD defines come from PEAR lib/pear/Compat/Constant/UPLOAD_ERR.php
@@ -146,7 +157,7 @@ class File_Common {
 
     function setFilename($filename)
     {
-        $this->file_name = preg_replace('/\s/', '_', $filename);
+        $this->file_name = preg_replace('/[^\w\s\.]/', '_', $filename);
     }
 
     function setSize($size)
@@ -216,9 +227,13 @@ class File_Common {
         return ($size <= $this->_max_size && $size <= ABSOLUTE_UPLOAD_LIMIT) ? TRUE : FALSE;
     }
 
-    // rewrite
+
+    /**
+     * Writes the file to the server
+     */
     function write()
     {
+        $this->_upload->setName($this->file_name);
         $moved = $this->_upload->moveTo($this->file_directory);
         if (!PEAR::isError($moved)) {
             return $moved;
@@ -227,7 +242,12 @@ class File_Common {
         return TRUE;
     }
 
-    function getPath()
+    /**
+     * Returns the directory path of the file
+     * If relative is TRUE, a path relative to the installation
+     * directory is returned.
+     */
+    function getPath($relative=TRUE)
     {
         if (empty($this->file_name)) {
             return PHPWS_Error::get(FC_FILENAME_NOT_SET, 'filecabinet', 'File_Common::getPath');
@@ -237,7 +257,12 @@ class File_Common {
             return PHPWS_Error::get(FC_DIRECTORY_NOT_SET, 'filecabinet', 'File_Common::getPath');
         }
 
-        return $this->file_directory . $this->file_name;
+        if ($relative) {
+            $directory = str_replace(PHPWS_HOME_DIR, './', $this->file_directory);
+            return sprintf('%s%s', $directory, $this->file_name);
+        } else {
+            return $this->file_directory . $this->file_name;
+        }
     }
 
     function allowType($type=NULL)

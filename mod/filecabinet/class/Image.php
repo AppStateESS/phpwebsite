@@ -144,6 +144,8 @@ class PHPWS_Image extends File_Common {
         $this->height = $height;
     }
 
+    /*
+     // don't think this is used anymore
     function setBounds($path=NULL)
     {
         if (empty($path)) {
@@ -164,6 +166,7 @@ class PHPWS_Image extends File_Common {
         $this->setType($bound[2]);
         return TRUE;
     }
+    */
 
     function setAlt($alt)
     {
@@ -192,12 +195,6 @@ class PHPWS_Image extends File_Common {
     function setBorder($border)
     {
         $this->border = $border;
-    }
-
-    function getPath()
-    {
-        $directory = str_replace(PHPWS_HOME_DIR, './', $this->file_directory);
-        return sprintf('%s%s', $directory, $this->file_name);
     }
 
     function getFullDirectory()
@@ -328,10 +325,18 @@ class PHPWS_Image extends File_Common {
         return TRUE;
     }
 
+    /**
+     * Returns the full url (http://etc/imagename.gif) of the image
+     */
+    function getUrl()
+    {
+        return PHPWS_Core::getHomeHttp() . $this->getPath();
+    }
+
     function getXML()
     {
         $content[] = '<image>';
-        $content[] = '<src>' . $this->getPath() . '</src>';
+        $content[] = '<src>' . $this->getUrl() . '</src>';
         $content[] = '<width>' . $this->width . '</width>';
         $content[] = '<height>' . $this->height . '</height>';
         $content[] = '<title>' . $this->title . '</title>';
