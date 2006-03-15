@@ -390,6 +390,7 @@ class PHPWS_Core {
 
     /**
      * Loads a config file via a require. If missing, shows error page.
+     * If file is NULL, function assumes 'config.php'
      */
     function configRequireOnce($module, $file=NULL, $exitOnError=TRUE)
     {
