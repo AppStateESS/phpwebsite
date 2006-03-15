@@ -10,53 +10,51 @@ class Comments_My_Page {
     } else {
       $command = 'main';
     }
-    
+   
+    $message = Comments_My_Page::getMessage();
+ 
     switch ($command) {
     case 'main':
       $title = _('Comment Settings');
-      $content = Comments_My_Page::editOptions();
+      $C_User = & new Comment_User(Current_User::getId());
+      $content = Comments_My_Page::editOptions($C_User);
       break;
 
     case 'save_options':
-        Comments_My_Page::saveOptions();
+        $C_User = & new Comment_User(Current_User::getId());
+        $result = $C_User->saveOptions();
+        if (is_array($result)) {
+            $message = implode('<br />', $result);
+            $title = _('Comment Settings');
+            $content = Comments_My_Page::editOptions($C_User);
+        } else {
+            Comments_My_Page::sendMessage(_('Settings saved.'));
+        }
         break;
-      
     }
 
     $box['TITLE'] = &$title;
     $box['CONTENT'] = &$content;
+    if (isset($message)) {
+        $box['MESSAGE'] = &$message;
+    }
     return PHPWS_Template::process($box, 'comments', 'my_page.tpl');
   }
 
-  function saveOptions()
+  function sendMessage($message, $command=NULL)
   {
-      if (PHPWS_Settings::get('comments', 'allow_image_signatures')) {
-          $signature = trim(strip_tags($_POST['signature'], '<img>'));
-      } else {
-          if (preg_match('/<img/', $_POST['signature'])) {
-              $errors[] = _('Image signatures not allowed.');
-          }
-          $signature = trim(strip_tags($_POST['signature']));
-      }
+      $_SESSION['Comment_Message'] = $message;
+      PHPWS_Core::reroute('index.php?module=users&action=user&tab=comments');
+  }
 
-      if (empty($signature)) {
-          $val['signature'] = NULL;
-      } else {
-          $val['signature'] = $signature;
+  function getMessage()
+  {
+      if (!isset($_SESSION['Comment_Message'])) {
+          return NULL;
       }
-      
-      if (empty($_POST['picture'])) {
-          $val['picture'] = NULL;
-      } else {
-          $image_info = @getimagesize($_POST['picture']);
-          if (!$image_info) {
-              $errors[] = _('Could not access image url.');
-          }
-      }
-
-      
-
-      test($val);
+      $message = $_SESSION['Comment_Message'];
+      unset($_SESSION['Comment_Message']);
+      return $message;
   }
 
   function editOptions()
@@ -76,20 +74,20 @@ class Comments_My_Page {
     $form->setLabel('signature', _('Signature'));
     if (PHPWS_Settings::get('comments', 'allow_avatars')) {
         if (PHPWS_Settings::get('comments', 'local_avatars')) {
-            $form->addFile('local_pic', $comment_user->getPicture()); 
+            $form->addFile('picture'); 
         } else {
-            $form->addText('remove_pic', $comment_user->getPicture());
+            $form->addText('picture', $comment_user->getPicture());
+            $form->setSize('picture', 60);
         }
+        $form->setLabel('picture', _('Picture'));
     }
 
-    $form->setLabel('picture', _('Picture'));
-    $form->setSize('picture', 60);
     $form->addText('contact_email', $comment_user->getContactEmail());
     $form->setLabel('contact_email', _('Contact Email'));
     $form->setSize('contact_email', 40);
     $form->addSubmit(_('Update'));
-
     $template = $form->getTemplate();
+
     return PHPWS_Template::process($template, 'comments', 'user_settings.tpl');
   }
 

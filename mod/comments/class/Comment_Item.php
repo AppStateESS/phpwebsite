@@ -170,6 +170,11 @@ class Comment_Item {
 	}
     }
 
+    function getRelativeTime()
+    {
+        return PHPWS_Time::relativeTime($this->create_time, COMMENT_DATE_FORMAT);
+    }
+
     function stampEditor()
     {
 	$this->edit_author = Current_User::getDisplayName();
@@ -235,6 +240,7 @@ class Comment_Item {
 
     function getTpl()
     {
+        translate('comments');
 	if (!empty($GLOBALS['Comment_Users'])) {
 	    $author = $GLOBALS['Comment_Users'][$this->author_id];
 	} else {
@@ -243,19 +249,21 @@ class Comment_Item {
 
 	$author_info = $author->getTpl();
 
-	$template['SUBJECT']	   = $this->getSubject(TRUE);
 	$template['SUBJECT_LABEL'] = _('Subject');
-	$template['ENTRY']	   = $this->getEntry(TRUE);
 	$template['ENTRY_LABEL']   = _('Comment');
-
 	$template['AUTHOR_LABEL']  = _('Author');
 	$template['POSTED_BY']	   = _('Posted by');
 	$template['POSTED_ON']	   = _('Posted on');
+
+	$template['SUBJECT']	   = $this->getSubject(TRUE);
+	$template['ENTRY']	   = $this->getEntry(TRUE);
 	$template['CREATE_TIME']   = $this->getCreateTime();
+        $template['RELATIVE_CREATE'] = $this->getRelativeTime(TRUE);
 	$template['REPLY_LINK']	   = $this->replyLink();
 	$template['EDIT_LINK']	   = $this->editLink();
 	$template['DELETE_LINK']   = $this->deleteLink();
 	$template['VIEW_LINK']	   = $this->viewLink();
+
         if ($this->parent) {
             $template['RESPONSE_LABEL']  = _('In response to');
             $template['RESPONSE_NUMBER'] = $this->responseNumber();
@@ -281,7 +289,7 @@ class Comment_Item {
 	}
 
 	$template = array_merge($author_info, $template);
-
+        translate();
 	return $template;
     }
 

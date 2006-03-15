@@ -186,6 +186,7 @@ class Comment_Thread {
 
     function view($parent_id=0)
     {
+        Layout::addStyle('comments');
         PHPWS_Core::initCoreClass('DBPager.php');
 
         $time_period = array('all'    => _('All'),
@@ -248,7 +249,7 @@ class Comment_Thread {
         $page_tags['NEW_POST_LINK'] = $this->postLink();
 
         $pager->setModule('comments');
-        $pager->setTemplate('view.tpl');
+        $pager->setTemplate(COMMENT_VIEW_TEMPLATE);
         $pager->addPageTags($page_tags);
         $pager->addRowTags('getTpl');
         $pager->setLimitList(array(10, 20, 50));

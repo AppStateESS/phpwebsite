@@ -279,7 +279,7 @@ class Comments {
         $tpl = $comment->getTpl();
         $thread = & new Comment_Thread($comment->getThreadId());
         $tpl['CHILDREN'] = $thread->view($comment->getId());
-        $content = PHPWS_Template::process($tpl, 'comments', 'view_one.tpl');
+        $content = PHPWS_Template::process($tpl, 'comments', COMMENT_VIEW_ONE_TPL);
         return $content;
     }
 
