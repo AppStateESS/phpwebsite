@@ -1,0 +1,46 @@
+.comments .page-select {
+    padding : 5px;
+}
+
+.comments subject {
+
+}
+
+.comments posted-info {
+    font-size : .8em;
+}
+
+
+.comments .entry {
+    padding : 5px;
+    margin-bottom : 5px;
+}
+
+.comments .edit-info {
+
+    font-size : .8em;
+}
+
+.comments .admin-links {
+    text-align : right;
+}
+
+.comments .author-info {
+    width : 160px;
+    padding : 4px;
+}
+
+.comments .comment-body {
+    padding : 5px;
+}
+
+.comments .comment-table {
+    border : 2px solid white;
+    margin-bottom : 10px;
+    width : 98%;
+}
+
+.comments .signature {
+    padding-top : 6px;
+    border-top : 1px white solid;
+}
