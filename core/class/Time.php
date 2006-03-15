@@ -134,6 +134,52 @@ class PHPWS_Time {
     }
 
 
+    /**
+     * Relative time calculation
+     *
+     * @author René C. Kiesler <http://www.kiesler.at/>
+     * @modified Matthew McNaney <mcnaney at gmail dot com>
+     * @date   2006-02-03
+     *
+     */
+    function relativeTime($timestamp='%c') {
+        translate('core');
+        $rel   = time() - $timestamp;
+        $mins  = floor($rel / 60);
+        $hours = floor($mins / 60);
+        $days  = floor($hours / 24);
+        $weeks = floor($days/ 7);
+      
+      
+        if    ($mins < 2) {
+            return _('a heartbeat ago');
+        }
+        elseif($mins < 60) {
+            return sprintf(_('%s mins ago'), $mins);
+        }
+        elseif($hours==1) {
+            return _('1 hour ago');
+        }
+        elseif($hours< 24) {
+            return _('%s hours ago', $hours);
+        }
+        elseif($days ==1) {
+            return _('1 day ago');
+        }
+        elseif($days < 7) {
+            return sprintf(_('%s days ago'), $days);
+        }
+        elseif($weeks==1) {
+            return _('1 week ago');
+        }
+        elseif($weeks< 4) {
+            return sprintf(_('%s weeks ago'), $weeks);
+        }
+        else {
+            return strftime($format, $timestamp);
+        }
+        
+    }
 }
 
 ?>
