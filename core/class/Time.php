@@ -142,7 +142,7 @@ class PHPWS_Time {
      * @date   2006-02-03
      *
      */
-    function relativeTime($timestamp='%c') {
+    function relativeTime($timestamp, $format='%c') {
         translate('core');
         $rel   = time() - $timestamp;
         $mins  = floor($rel / 60);
