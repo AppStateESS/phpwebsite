@@ -153,11 +153,11 @@ table.form-table label {
 }
 
 .smaller {
-   font-size : smaller;
+   font-size : .7em;
 }
 
 .larger {
-   font-size : larger;
+   font-size : 1em;
 }
 
 .align-center {
