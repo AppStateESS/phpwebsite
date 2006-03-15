@@ -57,8 +57,15 @@ class PHPWS_User {
         $db = & new PHPWS_DB('users');
         $result = $db->loadObject($this);
 
-        if (PEAR::isError($result))
+
+        if (PEAR::isError($result)) {
             return $result;
+        }
+
+        if (!$result) {
+            $this->id = 0;
+            return FALSE;
+        }
 
         $this->loadUserGroups();
         $this->loadPermissions();
