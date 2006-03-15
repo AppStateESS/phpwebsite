@@ -58,55 +58,6 @@ class PHPWS_Document extends File_Common {
         return $db->loadObject($this);
     }
 
-
-    /*
-    function loadUpload($varName){
-        $result = $this->getFILES($varName);
-
-        if (PEAR::isError($result))
-            return $result;
-
-        $result = $this->checkBounds();
-        return $result;
-    }
-    */
-    /*
-    function checkBounds(){
-        if (!$this->allowSize()) {
-            $errors[] = PHPWS_Error::get(PHPWS_DOCUMENT_SIZE, 'filecabinet', 'PHPWS_Document::checkBounds', array($this->getSize(), MAX_DOCUMENT_SIZE));
-        }
-
-        if (!$this->allowType()) {
-            $errors[] = PHPWS_Error::get(PHPWS_DOCUMENT_WRONG_TYPE, 'filecabinet', 'PHPWS_Document::checkBounds');
-        }
-
-        if (isset($errors)) {
-            return $errors;
-        } else {
-            return TRUE;
-        }
-    }
-
-
-    function setBounds($path=NULL){
-        if (empty($path)) {
-            $path = $this->getPath();
-        }
-
-        $size = @filesize($path);
-        if (empty($size)) {
-            return PHPWS_Error::get(FC_BOUND_FAILED, 'filecabinet', 'PHPWS_Document::setBounds', $path);
-        }
-
-        $this->setSize($size);
-
-        $type = mime_content_type($path);
-
-        $this->setType($type);
-    }
-
-    */
-
     function getIconView()
     {
         static $icon_list =NULL;
@@ -255,6 +206,14 @@ class PHPWS_Document extends File_Common {
         $tpl['SIZE'] = $this->getSize(TRUE);
 
         return $tpl;
+    }
+
+    /**
+     * Returns the full url that allows you to download the file
+     */
+    function getUrl()
+    {
+        return PHPWS_Core::getHomeHttp() . $this->getViewLink();
     }
 
     function getViewLink($format=FALSE, $use_filename=FALSE)
