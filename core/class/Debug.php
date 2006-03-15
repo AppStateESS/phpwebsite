@@ -144,7 +144,7 @@ class PHPWS_Debug {
 
         translate('core');
         if(is_array($arrayVar)) {
-            if(count($arrayVar)) {
+            if(!empty($arrayVar)) {
                 $info[] =  
 '<table cellpadding="3" border="1">
   <tr>
