@@ -1,4 +1,4 @@
-<table cellpadding="4" cellspacing="1" width="100%">
+<table cellpadding="4" cellspacing="1" width="98%">
   <tr>
     <th>{TITLE} {TITLE_SORT}</th>
     <th>{ENTRY}</th>
