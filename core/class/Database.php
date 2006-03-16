@@ -36,7 +36,8 @@ class PHPWS_DB {
     var $_allColumns = NULL;
     var $_columnInfo = NULL;
     var $_lock       = FALSE;
-    // holds the PEAR DB object
+
+    // contains the database specific factory class
     var $_sql        = NULL;
     var $_distinct   = FALSE;
     var $_test_mode  = FALSE;
@@ -174,8 +175,9 @@ class PHPWS_DB {
                 return $this->_columnInfo[$col_name];
             }
         }
-        else
+        else {
             return NULL;
+        }
     }
 
     function inDatabase($table, $column=NULL)
@@ -1447,6 +1449,24 @@ class PHPWS_DB {
         return PHPWS_DB::query($sql);
     }
 
+    /**
+     * Renames a table column
+     * Because databases disagree on their commands to change column
+     * names, this function requires different factory files.
+     */
+    function renameTableColumn($old_name, $new_name)
+    {
+        $table = $this->getTable();
+        if (!$table) {
+            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::addColumn');
+        }
+
+        $specs = $this->getColumnInfo($old_name, TRUE);
+        $sql = $this->_sql->renameColumn($table, $old_name, $new_name, $specs);
+        return $this->query($sql);
+    }
+
+
     function addTableColumn($column, $parameter, $after=NULL, $indexed=FALSE)
     {
         $table = $this->getTable();
@@ -1902,7 +1922,7 @@ class PHPWS_DB {
         $reserved = array('ADD', 'ALL', 'ALTER', 'ANALYZE', 'AND', 'AS', 'ASC', 'AUTO_INCREMENT', 'BDB',
                           'BERKELEYDB', 'BETWEEN', 'BIGINT', 'BINARY', 'BLOB', 'BOTH', 'BTREE', 'BY', 'CASCADE',
                           'CASE', 'CHANGE', 'CHAR', 'CHARACTER', 'COLLATE', 'COLUMN', 'COLUMNS', 'CONSTRAINT', 'CREATE',
-                          'CROSS', 'CURRENT_DATE', 'CURRENT_TIME', 'CURRENT_TIMESTAMP', 'DATABASE', 'DATABASES',
+                          'CROSS', 'CURRENT_DATE', 'CURRENT_TIME', 'CURRENT_TIMESTAMP', 'DATABASE', 'DATABASES', 'DATE',
                           'DAY_HOUR', 'DAY_MINUTE', 'DAY_SECOND', 'DEC', 'DECIMAL', 'DEFAULT',
                           'DELAYED', 'DELETE', 'DESC', 'DESCRIBE', 'DISTINCT', 'DISTINCTROW',
                           'DOUBLE', 'DROP', 'ELSE', 'ENCLOSED', 'ERRORS', 'ESCAPED', 'EXISTS', 'EXPLAIN', 'FALSE', 'FIELDS',
