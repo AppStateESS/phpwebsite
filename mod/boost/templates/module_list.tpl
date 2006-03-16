@@ -1,6 +1,6 @@
 {DIRECTORIES}
 <strong>{WARNING}</strong>
-<table width="100%" cellpadding="4">
+<table width="99%" cellpadding="4">
 <tr>
   <th>{TITLE_LABEL}</th>
   <th>{VERSION_LABEL}</th>
