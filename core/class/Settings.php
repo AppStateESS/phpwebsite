@@ -16,9 +16,9 @@ class PHPWS_Settings {
     function get($module, $setting=NULL)
     {
         if (empty($setting) && PHPWS_Settings::is_set($module)) {
-            return $_SESSION['PHPWS_Settings'][$module];
+            return $GLOBALS['PHPWS_Settings'][$module];
         } elseif (PHPWS_Settings::is_set($module, $setting)) {
-            return $_SESSION['PHPWS_Settings'][$module][$setting];
+            return $GLOBALS['PHPWS_Settings'][$module][$setting];
         } else {
             return FALSE;
         }
@@ -29,7 +29,7 @@ class PHPWS_Settings {
      */
     function is_set($module, $setting=NULL)
     {
-        if (!isset($_SESSION['PHPWS_Settings'][$module])) {
+        if (!isset($GLOBALS['PHPWS_Settings'][$module])) {
             $result = PHPWS_Settings::load($module);
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
@@ -37,10 +37,10 @@ class PHPWS_Settings {
             }
         }
 
-        if (is_array($_SESSION['PHPWS_Settings'][$module])) {
+        if (is_array($GLOBALS['PHPWS_Settings'][$module])) {
             if (empty($setting)) {
                 return TRUE;
-            } elseif (isset($_SESSION['PHPWS_Settings'][$module][$setting])) {
+            } elseif (isset($GLOBALS['PHPWS_Settings'][$module][$setting])) {
                 return TRUE;
             } else {
                 return FALSE;
@@ -55,7 +55,7 @@ class PHPWS_Settings {
         if (!PHPWS_Settings::is_set($module, $setting)) {
             return FALSE;
         }
-        return in_array($value, $_SESSION['PHPWS_Settings'][$module][$setting]);
+        return in_array($value, $GLOBALS['PHPWS_Settings'][$module][$setting]);
 
     }
 
@@ -75,7 +75,7 @@ class PHPWS_Settings {
             return TRUE;
         }
 
-        $_SESSION['PHPWS_Settings'][$module][$setting] = $value;
+        $GLOBALS['PHPWS_Settings'][$module][$setting] = $value;
         return TRUE;
     }
 
@@ -89,12 +89,12 @@ class PHPWS_Settings {
                 }
             }
             return TRUE;
-        } elseif ( isset($_SESSION['PHPWS_Settings'][$module][$setting]) &&
-                   !is_array($_SESSION['PHPWS_Settings'][$module][$setting])) {
+        } elseif ( isset($GLOBALS['PHPWS_Settings'][$module][$setting]) &&
+                   !is_array($GLOBALS['PHPWS_Settings'][$module][$setting])) {
             return FALSE;
         }
 
-        $_SESSION['PHPWS_Settings'][$module][$setting][] = $value;
+        $GLOBALS['PHPWS_Settings'][$module][$setting][] = $value;
         return TRUE;
     }
 
@@ -112,7 +112,7 @@ class PHPWS_Settings {
         $db->delete();
         $db->reset();
 
-        foreach ($_SESSION['PHPWS_Settings'][$module] as $key => $value) {
+        foreach ($GLOBALS['PHPWS_Settings'][$module] as $key => $value) {
             if (empty($key)) {
                 continue;
             }
@@ -153,24 +153,24 @@ class PHPWS_Settings {
 
     /**
      * Loads the settings into the session
+     * 
      */
     function load($module)
     {
-        $default = PHPWS_Settings::loadConfig($module);
-        if (!$default) {
-            $_SESSION['PHPWS_Settings'][$module] = 1;
-            return PHPWS_Error::get(SETTINGS_MISSING_FILE, 'core', 'PHPWS_Settings::load', $module);
-        }
-        
-        include $default;
-        PHPWS_Settings::set($module, $settings);
-
         $db = & new PHPWS_DB('mod_settings');
         $db->addWhere('module', $module);
         $result = $db->select();
         if (PEAR::isError($result)) {
             return $result;
         } elseif (empty($result)) {
+            $default = PHPWS_Settings::loadConfig($module);
+            if (!$default) {
+                $GLOBALS['PHPWS_Settings'][$module] = 1;
+                return PHPWS_Error::get(SETTINGS_MISSING_FILE, 'core', 'PHPWS_Settings::load', $module);
+            }
+            
+            include $default;
+            PHPWS_Settings::set($module, $settings);
             PHPWS_Settings::save($module);
         } else {
             foreach ($result as $key => $value) {
