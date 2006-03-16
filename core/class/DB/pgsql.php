@@ -66,6 +66,14 @@ class PHPWS_SQL {
         return $setting;
     }
 
+    function renameColumn($table, $column_name, $new_name, $specs)
+    {
+        $sql = sprintf('ALTER TABLE %s RENAME COLUMN %s TO %s',
+                       $table, $column_name, $new_name);
+        return $sql;
+    }
+
+
     function getLimit($limit){
         $sql[] = 'LIMIT';
 
