@@ -86,7 +86,7 @@ class Profile {
 
     function loadImages()
     {
-        PHPWS_Core::initCoreClass('Image.php');
+        PHPWS_Core::initModClass('filecabinet', 'Image.php');
         $images['small'] = $images['medium'] = $images['large'] = NULL;
 
         if ($this->photo_small) {
@@ -197,7 +197,7 @@ class Profile {
 
     function postProfile()
     {
-        PHPWS_Core::initCoreClass('Image.php');
+        PHPWS_Core::initModClass('filecabinet', 'Image.php');
         PHPWS_Core::initModClass('version', 'Version.php');
 
         if (!Current_User::authorized('profiler')) {
