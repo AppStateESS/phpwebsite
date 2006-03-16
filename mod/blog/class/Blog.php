@@ -7,19 +7,22 @@
  */
 
 class Blog {
-    var $id          = NULL;
-    var $key_id      = 0;
-    var $title       = NULL;
-    var $entry       = NULL;
-    var $author      = NULL;
-    var $create_date = NULL;
-    var $_error      = NULL;
+    var $id             = NULL;
+    var $key_id         = 0;
+    var $title          = NULL;
+    var $entry          = NULL;
+    var $author         = NULL;
+    var $create_date    = NULL;
+    var $allow_comments = 0;
+    var $_error         = NULL;
 
     function Blog($id=NULL)
     {
         if (empty($id)) {
+            $this->allow_comments = PHPWS_Settings::get('blog', 'allow_comments');
             return;
         }
+
 
         $this->id = (int)$id;
         $result = $this->init();
@@ -163,7 +166,7 @@ class Blog {
             return _('Sorry you do not have permission to view this blog entry.');
         }
 
-        $template['TITLE'] = $this->title;
+        $template['TITLE'] = PHPWS_Text::rewriteLink($this->title, 'blog', $this->id);
         $template['LOCAL_DATE']  = $this->getLocalDate();
         $template['ENTRY'] = PHPWS_Text::parseTag($this->getEntry(TRUE));
 
@@ -178,25 +181,32 @@ class Blog {
             }
         }
 
-        $comments = Comments::getThread($key);
+        if ($this->allow_comments) {
+            $comments = Comments::getThread($key);
+           
+           if ($limited && !empty($comments)) {
+                $link = $comments->countComments(TRUE);
+                $template['COMMENT_LINK'] = PHPWS_Text::rewriteLink($link, 'blog', $this->id);
+                
+                $last_poster = $comments->getLastPoster();
+                
+                if (!empty($last_poster)) {
+                    $template['LAST_POSTER_LABEL'] = _('Last poster');
+                    $template['LAST_POSTER'] = $last_poster;
+                }
+            } elseif ($this->id) {
+                if ($comments) {
+                    $template['COMMENTS'] = $comments->view();
+                }
 
-        if ($limited && !empty($comments)) {
-            $link = $comments->countComments(TRUE);
-            $template['COMMENT_LINK'] = PHPWS_Text::rewriteLink($link, 'blog', $this->id);
-            
-            $last_poster = $comments->getLastPoster();
-
-            if (!empty($last_poster)) {
-                $template['LAST_POSTER_LABEL'] = _('Last poster');
-                $template['LAST_POSTER'] = $last_poster;
+                $key->flag();
             }
-        } elseif ($this->id) {
-            if ($comments) {
-                $template['COMMENTS'] = $comments->view();
-            }
-            $key->flag();
+        } else {
+           if (!$limited) {
+               $key->flag();
+           }
         }
-
+        
         $result = Categories::getSimpleLinks($key);
         if (!empty($result)) {
             $template['CATEGORIES'] = implode(', ', $result);
@@ -279,6 +289,12 @@ class Blog {
         }
 
         $this->setEntry($_POST['entry']);
+
+        if (isset($_POST['allow_comments'])) {
+            $this->allow_comments = 1;
+        } else {
+            $this->allow_comments = 0;
+        }
 
         if (isset($_POST['version_id'])) {
             $version = & new Version('blog_entries', $_REQUEST['version_id']);

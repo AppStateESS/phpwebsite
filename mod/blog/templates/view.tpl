@@ -9,7 +9,7 @@
     <div class="bgcolor2 padded">{CATEGORIES}</div>
     <!-- END categories -->
     <div class="box-content">
-      {ENTRY}<br />{EDIT_LINK}
+      {ENTRY}
       <!-- BEGIN comment-info -->
       <div class="padded border-top">
       {COMMENT_LINK}
@@ -18,7 +18,7 @@
       </div>
       <!-- END comment-info -->
       <!-- BEGIN comments -->
-      <div class="padded">{COMMENTS}</div>
+      <div class="comments-link">{COMMENTS}</div>
       <!-- END comments -->
     </div>
   </div>

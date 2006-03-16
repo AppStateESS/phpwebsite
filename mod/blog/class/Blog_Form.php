@@ -39,6 +39,11 @@ class Blog_Form {
         $form->setSize('title', 40);
         $form->setLabel('title', _('Title'));
 
+        $form->addCheck('allow_comments', 1);
+        $form->setLabeL('allow_comments', _('Allow comments'));
+        $form->setMatch('allow_comments', $blog->allow_comments);
+        
+
         $template = $form->getTemplate();
 
         return PHPWS_Template::process($template, 'blog', 'edit.tpl');
