@@ -7,13 +7,13 @@
  */
 
 class Blog {
-    var $id         = NULL;
-    var $key_id     = 0;
-    var $title      = NULL;
-    var $entry      = NULL;
-    var $author     = NULL;
-    var $date       = NULL;
-    var $_error     = NULL;
+    var $id          = NULL;
+    var $key_id      = 0;
+    var $title       = NULL;
+    var $entry       = NULL;
+    var $author      = NULL;
+    var $create_date = NULL;
+    var $_error      = NULL;
 
     function Blog($id=NULL)
     {
@@ -74,19 +74,19 @@ class Blog {
 
     function getLocalDate($type=BLOG_VIEW_DATE_FORMAT)
     {
-        return strftime($type, PHPWS_Time::getUserTime($this->date));
+        return strftime($type, PHPWS_Time::getUserTime($this->create_date));
     }
 
     function getServerDate($type=BLOG_VIEW_DATE_FORMAT)
     {
-        return strftime($type, PHPWS_Time::getServerTime($this->date));
+        return strftime($type, PHPWS_Time::getServerTime($this->create_date));
     }
 
     function save()
     {
         $db = & new PHPWS_DB('blog_entries');
         if (empty($this->id)) {
-            $this->date = PHPWS_Time::getUTCTime();
+            $this->create_date = PHPWS_Time::getUTCTime();
         }
 
         if (empty($this->author)) {
@@ -275,7 +275,7 @@ class Blog {
         }
 
         if (empty($this->id)) {
-            $this->date = PHPWS_Time::getUTCTime();
+            $this->create_date = PHPWS_Time::getUTCTime();
         }
 
         $this->setEntry($_POST['entry']);

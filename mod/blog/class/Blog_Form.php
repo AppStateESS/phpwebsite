@@ -35,7 +35,6 @@ class Blog_Form {
         $form->setRows('entry', '10');
         $form->setWidth('entry', '80%');
         $form->setLabel('entry', _('Entry'));
-
         $form->addText('title', $blog->title);
         $form->setSize('title', 40);
         $form->setLabel('title', _('Title'));

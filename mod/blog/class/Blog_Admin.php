@@ -285,7 +285,7 @@ class Blog_Admin {
         $pager->addRowTags('getPagerTags');
         $pager->addPageTags($pageTags);
         $pager->setSearch('title');
-        $pager->setDefaultOrder('date', 'desc');
+        $pager->setDefaultOrder('create_date', 'desc');
         $content = $pager->get();
         return $content;
     }

@@ -67,7 +67,7 @@ class Blog_User {
 
         $db = & new PHPWS_DB('blog_entries');
         $db->setLimit($limit);
-        $db->addOrder('date desc');
+        $db->addOrder('create_date desc');
 
         Key::restrictView($db, 'blog');
 
