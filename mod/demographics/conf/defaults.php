@@ -22,14 +22,16 @@
    */
 
   /* ----- Personal information ----- */
-$fields['first_name']['limit'] = 40;
-$fields['middle_name']['limit'] = 40;
-$fields['last_name']['limit'] = 40;
+$fields['courtesy_title']['limit'] = 20; // Mr. Mrs. Dr. Professor, Senator
+$fields['honorific']['limit']      = 20; // Esquire, the Third, the Barbarian
+$fields['first_name']['limit']     = 40;
+$fields['middle_name']['limit']    = 40;
+$fields['last_name']['limit']      = 40;
 $fields['middle_initial']['limit'] = 1;
 
 // wouldn't suggest asking for this but left here for
 // completeness sake
-$fields['social_security']['limit'] = 9;
+$fields['social_security']['limit'] = 12;
 
 // one character (m)ale, (f)emale or (o)ther/(t)rans
 $fields['sex']['limit'] = 1;
@@ -49,9 +51,9 @@ $fields['contact_email']['limit']   = 30;
 $fields['website']['limit']         = 60;
 $fields['aim_id']['limit']          = 20; // AOL messenger
 $fields['icq_id']['limit']          = 20; // ICQ messenger
-$fields['msm_id']['limit']          = 20; // Microsoft messenger
+$fields['msn_id']['limit']          = 20; // Microsoft messenger
+$fields['jabber_id']['limit']       = 20; // Jabber
 $fields['irc']['limit']             = 50; // IRC server and channel
-
 
 /* ----- Addresses ----- */
 $fields['mailing_address_1']['limit']   = 50;
@@ -59,6 +61,7 @@ $fields['mailing_address_2']['limit']   = 50;
 $fields['mailing_address_3']['limit']   = 50;
 $fields['mailing_city']['limit']        = 20;
 $fields['mailing_state']['limit']       = 20;
+$fields['mailing_province']['limit']    = 20;
 $fields['mailing_county']['limit']      = 20;
 $fields['mailing_country']['limit']     = 30;
 $fields['mailing_zip_code']['limit']    = 10;
@@ -69,6 +72,7 @@ $fields['business_address_2']['limit']   = 50;
 $fields['business_address_3']['limit']   = 50;
 $fields['business_city']['limit']        = 20;
 $fields['business_state']['limit']       = 20;
+$fields['business_province']['limit']    = 20;
 $fields['business_county']['limit']      = 20;
 $fields['business_country']['limit']     = 30;
 $fields['business_zip_code']['limit']    = 10;
@@ -81,6 +85,7 @@ $fields['permanent_address_2']['limit']   = 50;
 $fields['permanent_address_3']['limit']   = 50;
 $fields['permanent_city']['limit']        = 20;
 $fields['permanent_state']['limit']       = 20;
+$fields['permanent_province']['limit']    = 20;
 $fields['permanent_county']['limit']      = 20;
 $fields['permanent_country']['limit']     = 30;
 $fields['permanent_zip_code']['limit']    = 10;
