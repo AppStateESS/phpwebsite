@@ -34,6 +34,23 @@ h3 {
 
 /* ---------- Tags ---------- */
 
+code {
+    white-space: pre-wrap;       /* css-3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    border: 1px solid #C0C0C0;
+    display: block;
+    overflow:auto;
+    background-color : white;
+    height : 200px;
+}
+
+pre {
+    font-size : 1.1em;
+}
+
 strong {
     font-weight : bold;
 }
