@@ -20,6 +20,7 @@ define('PHPWS_ALLOWED_TAGS', '
 <table><tr><td><dd><dt><dl>
 <p><br><div><span><blockquote>
 <th><tt><img><pre><hr><h1><h2><h3><h4>
+<fieldset><legend>
 ');
 
 /******************* RELATIVE ADDRESSING ***********************
@@ -48,6 +49,8 @@ define('ALLOW_BB_SMILIES', TRUE);
 // If TRUE, users can post with the [img] tag
 define('ALLOW_BB_IMAGES', FALSE);
 
+// Either "fieldset" or "blockquote"
+define('BBCODE_QUOTE_TYPE', 'fieldset');
 
 /******************* Profanity Filter ********************
  *
