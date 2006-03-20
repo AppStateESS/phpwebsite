@@ -673,11 +673,8 @@ class PHPWS_Text {
         }
  
         // code
-        $bb2html = str_replace('[code]', '<div class="simcode">', $bb2html);
-        $bb2html = str_replace('[coderz]', '<div class="code">', $bb2html);
-        $bb2html = str_replace('[/code]', '</div>', $bb2html);
-        $bb2html = str_replace('[/coderz]', '</div>', $bb2html); // you can complete either way, it's all [/code]
-        
+        $bb2html = preg_replace('/\[code\](.*)\[\/code\]/Uies', "'<code>' . htmlentities('\\1') . '</code>'", $bb2html);
+
         // divisions..
         $bb2html = str_replace('[hr]', '<hr />', $bb2html);
         $bb2html = str_replace('[block]', '<blockquote>', $bb2html);
