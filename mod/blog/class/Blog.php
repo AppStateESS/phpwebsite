@@ -259,7 +259,7 @@ class Blog {
     }
 
     function getListEntry(){
-        return substr(strip_tags(str_replace('<br />', ' ', $this->getEntry(TRUE))), 0, 30) . ' . . .';
+        return substr(ltrim(strip_tags(str_replace('<br />', ' ', $this->getEntry(TRUE)))), 0, 30);
     }
 
     function post_entry()
