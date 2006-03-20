@@ -13,6 +13,10 @@
  * @package Core
  */
 
+if (!defined('PHPWS_HOME_HTTP')) {
+    define('PHPWS_HOME_HTTP', './');
+ }
+
 PHPWS_Core::configRequireOnce('core', 'text_settings.php');
 
 class PHPWS_Text {
@@ -219,17 +223,19 @@ class PHPWS_Text {
     function breaker($text)
     {
         $do_not_break = array('/(<table.*>)\n/iU',
+                              '/(<tbody.*>)\n/iU',
+                              '/(<\/tbody.*>)\n/iU',
                               '/(<tr.*>)\n/iU',
-                              '/(<\/tr>)\n/i',
-                              '/(<\/td>)\n/i',
-                              '/(<\/th>)\n/i',
-                              '/(<\/li>)\n/i',
-                              '/(<\/p>)\n/i',
-                              '/(<br \/>)\n/i',
-                              '/(<\/dd>)\n/i',
-                              '/(<\/dt>)\n/i',
-                              '/(<\/h\d>)\n/i',
-                              '/(<blockquote>)\n/i',                      
+                              '/(<\/tr>)\n/iU',
+                              '/(<\/td>)\n/iU',
+                              '/(<\/th>)\n/iU',
+                              '/(<\/li>)\n/iU',
+                              '/(<\/p>)\n/iU',
+                              '/(<br \/>)\n/iU',
+                              '/(<\/dd>)\n/iU',
+                              '/(<\/dt>)\n/iU',
+                              '/(<\/h\d>)\n/iU',
+                              '/(<blockquote>)\n/iU',                      
                               );
 
         $pre = array();
@@ -245,6 +251,7 @@ class PHPWS_Text {
 
         $text = preg_replace($do_not_break, '\\1', $text); 
         $text = nl2br($text);
+
         $cp = count($pre)-1;
         for($i=0;$i <= $cp;$i++) {
             $text = str_replace("***pre_string***$i", '<pre>'.substr($pre[$i],5,-6).'</pre>', $text);
