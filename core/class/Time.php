@@ -161,7 +161,7 @@ class PHPWS_Time {
             return _('1 hour ago');
         }
         elseif($hours< 24) {
-            return _('%s hours ago', $hours);
+            return sprintf(_('%s hours ago'), $hours);
         }
         elseif($days ==1) {
             return _('1 day ago');
