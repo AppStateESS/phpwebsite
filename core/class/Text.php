@@ -122,21 +122,25 @@ class PHPWS_Text {
      *  http://us4.php.net/manual/en/function.htmlentities.php
      *
      * @author wwb at 3dwargamer dot net
+     * @modified Matthew McNaney
      */
     function CleanupSmartQuotes($text)
     {
         $badwordchars=array(
+                            chr(239).chr(191).chr(189),
                             chr(145),
                             chr(146),
                             chr(147),
                             chr(148),
+                            chr(150),
                             chr(151)
                             );
-        $fixedwordchars=array(
+        $fixedwordchars=array("'",
                               "'",
                               "'",
                               '&quot;',
                               '&quot;',
+                              '-',
                               '&mdash;'
                               );
         return str_replace($badwordchars,$fixedwordchars,$text);
@@ -658,10 +662,16 @@ class PHPWS_Text {
 
 
         $bb2html = preg_replace('/\[url="(.*)"\](.*)\[\/url\]/Ui', '<a target="_blank" href="\\1">\\2</a>', $bb2html);
-        $bb2html = preg_replace('/\[quote="(.*)"\]/Ui', '<blockquote><h3>\\1 ' . _('wrote') . ':</h3>', $bb2html);
-        $bb2html = str_replace('[quote]', '<blockquote>', $bb2html);
-        $bb2html = str_replace('[/quote]', '</blockquote>', $bb2html);
-
+        
+        if (BBCODE_QUOTE_TYPE == 'fieldset') {
+            $bb2html = preg_replace(array('/\[quote="(.*)"\]/isU', '/\[quote(?!=".*").*\]/isU', '/\[\/quote\]/isU'),
+                                    array('<fieldset class="quote">&#013;<legend>' . _('\1 wrote') . ':</legend>&#013;\2', '<fieldset>&#013;', '</fieldset>&#013;'), $bb2html);
+        } elseif (BBCODE_QUOTE_TYPE == 'blockquote') {
+            $bb2html = preg_replace('/\[quote="(.*)"\]/Ui', '<blockquote class="quote"><h3>' . _('\1 wrote') . ':</h3>', $bb2html);
+            $bb2html = str_replace('[quote]', '<blockquote class="quote">', $bb2html);
+            $bb2html = str_replace('[/quote]', '</blockquote>', $bb2html);
+        }
+ 
         // code
         $bb2html = str_replace('[code]', '<div class="simcode">', $bb2html);
         $bb2html = str_replace('[coderz]', '<div class="code">', $bb2html);
