@@ -119,6 +119,17 @@ th {
 
 
 /* ---------- Classes ---------- */
+
+fieldset.quote {
+    border : 1px solid black;
+}
+
+fieldset.quote legend {
+    font-style : italic;
+    font-weight : normal;
+    font-size : inherit;
+}
+
 .spoiler {
     background-color : black;
     color : black;
