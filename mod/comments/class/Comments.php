@@ -220,7 +220,14 @@ class Comments {
             $form->setValue('cm_subject', $c_item->getSubject());
         }
 
-        $form->addTextArea('cm_entry', $c_item->getEntry(FALSE));
+
+        if (!$c_item->id && isset($c_parent)) {
+            $entry_text = $c_parent->getEntry(FALSE, TRUE) . "\n\n" . $c_item->getEntry(FALSE);
+        } else {
+            $entry_text = $c_item->getEntry(FALSE);
+        }
+
+        $form->addTextArea('cm_entry', $entry_text);
         $form->setLabel('cm_entry', _('Comment'));
         $form->setCols('cm_entry', 50);
         $form->setRows('cm_entry', 10);

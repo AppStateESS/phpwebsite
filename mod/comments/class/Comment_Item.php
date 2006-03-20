@@ -117,13 +117,19 @@ class Comment_Item {
 	$this->entry = PHPWS_Text::parseInput($entry);
     }
 
-    function getEntry($format=TRUE)
+    function getEntry($format=TRUE, $quoted=FALSE)
     {
 	if ($format) {
-	    return PHPWS_Text::parseOutput($this->entry);
+	    $entry =  PHPWS_Text::parseOutput($this->entry);
 	} else {
-	    return $this->entry;
+	    $entry =  $this->entry;
 	}
+
+        if ($quoted) {
+            return sprintf('[quote="%s"]%s[/quote]', $this->getAuthorName(), trim($entry));
+        } else {
+            return $entry;
+        }
     }
 
     function stampAuthor()
@@ -139,11 +145,6 @@ class Comment_Item {
 	} else {
 	    $this->author_id = 0;
 	}
-    }
-
-    function getAuthorId()
-    {
-	return $this->author_id;
     }
 
     function stampIP()
