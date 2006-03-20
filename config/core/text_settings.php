@@ -17,7 +17,7 @@
 
 define('PHPWS_ALLOWED_TAGS', '
 <b><a><i><u><ul><ol><li>
-<table><tr><td><dd><dt><dl>
+<table><tr><td><tbody><dd><dt><dl>
 <p><br><div><span><blockquote>
 <th><tt><img><pre><hr><h1><h2><h3><h4>
 <fieldset><legend><code>
