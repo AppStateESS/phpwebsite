@@ -122,4 +122,7 @@ $errors[KEY_PERM_COLUMN_MISSING]      = _('Edit permission column does not exist
 
 // Batch.php 1500-1599
 
+// Cookie.php 1600-1699
+$errors[COOKIE_SET_FAILED]            = _('Failed to write cookie.');
+
 ?>
