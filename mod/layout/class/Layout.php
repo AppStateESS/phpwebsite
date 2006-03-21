@@ -117,7 +117,6 @@ class Layout {
             return NULL;
         }
 
-
         if (isset($GLOBALS['Style'][$module])) {
             return;
         }
@@ -591,33 +590,6 @@ class Layout {
                 Layout::addToStyleList($css);
             }
         }
-        
-        /** delete me
-        if (!empty($persistent)) { 	 
-            Layout::addToStyleList(array('file'=>$directory . $persistent['file'], 	 
-                                         'import' => TRUE)); 	 
-        } else { 	 
-            Layout::addToStyleList(Layout::getTheme() . '/style.css'); 	 
-        } 	 
-  	 
-        if (!empty($default) && (isset($default['file']) && isset($default['title']))) { 	 
-            Layout::addToStyleList(array('file'=>$directory . $default['file'], 	 
-                                         'title'=>$default['title']) 	 
-                                   ); 	 
-        } 	 
-  	 
-        if (!empty($alternate) && is_array($alternate)) { 	 
-            foreach ($alternate as $altStyle){ 	 
-                if (isset($altStyle['file']) && isset($altStyle['title'])) { 	 
-                    Layout::addToStyleList(array('file'     => $directory . $altStyle['file'], 	 
-                                                 'title'    => $altStyle['title'], 	 
-                                                 'alternate'=> TRUE 	 
-                                                 ) 	 
-                                           ); 	 
-                } 	 
-            } 	 
-        } 	 
-        */
     }
 
 
@@ -703,6 +675,7 @@ class Layout {
         } else {
             $media_tag = NULL;
         }
+
 
         if ($header == TRUE) {
             if (isset($alternate) && $alternate == TRUE) {
@@ -866,6 +839,22 @@ class Layout {
         return PHPWS_Template::process($template, 'layout', 'move_box_select.tpl');
     }
 
+    function getAlternateStyles()
+    {
+        $settings = &$_SESSION['Layout_Settings'];
+
+        if (!isset($settings->_style_sheets)) {
+            return NULL;
+        }
+
+        foreach ($settings->_style_sheets as $css) {
+            if (@$css['title']) {
+                $sheets[$css['file']] = $css['title'];
+            }
+        }
+
+        return $sheets;
+    }
 
 }
 

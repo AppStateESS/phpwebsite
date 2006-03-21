@@ -165,10 +165,24 @@ class Layout_Settings {
     function loadStyleSheets($themeVars)
     {
         $directory = sprintf('themes/%s/', $this->current_theme);
+
+        @$cookie = PHPWS_Cookie::read('layout_style');
+
         for ($i = 1; $i < 20; $i++) {
             if (isset($themeVars['style_sheet_' . $i])) {
                 $style = &$themeVars['style_sheet_' . $i];
                 $style['file'] = $directory . $style['file'];
+
+                if ($cookie) {
+                    if (isset($style['title'])) {
+                        if ($cookie == $style['file']) {
+                            $style['alternate'] = FALSE;
+                        } else {
+                            $style['alternate'] = TRUE;
+                        }
+                    }
+                }
+
                 $this->_style_sheets[] = $style;
             } else {
                 break;
