@@ -32,15 +32,18 @@ class Layout_Settings {
     var $_move_box        = FALSE;
     var $_theme_variables = NULL;
     var $_default_box     = NULL;
+    var $_style_sheets    = NULL;
 
-    function Layout_Settings(){
+    function Layout_Settings()
+    {
         $this->loadSettings();
         $this->loadContentVars();
         $this->loadBoxes();
         $GLOBALS['Layout_Robots'] = $this->meta_robots;
     }
 
-    function getBoxThemeVar($module, $contentVar){
+    function getBoxThemeVar($module, $contentVar)
+    {
         if (isset($this->_boxes[$module][$contentVar])) {
             return $this->_boxes[$module][$contentVar]->getThemeVar();
         } else {
@@ -48,7 +51,8 @@ class Layout_Settings {
         }
     }
 
-    function getBoxOrder($module, $contentVar){
+    function getBoxOrder($module, $contentVar)
+    {
         if (isset($this->_boxes[$module][$contentVar])) {
             return $this->_boxes[$module][$contentVar]->getBoxOrder();
         } else {
@@ -65,11 +69,13 @@ class Layout_Settings {
         }
     }
 
-    function getContentVars(){
+    function getContentVars()
+    {
         return $this->_contentVars();
     }
 
-    function getMetaTags(){
+    function getMetaTags()
+    {
         $meta['meta_author']      = $this->meta_author;
         $meta['meta_keywords']    = $this->meta_keywords;
         $meta['meta_description'] = $this->meta_description;
@@ -80,11 +86,13 @@ class Layout_Settings {
         return $meta;
     }
 
-    function getThemeVariables(){
+    function getThemeVariables()
+    {
         return $this->_theme_variables;
     }
 
-    function isContentVar($contentVar){
+    function isContentVar($contentVar)
+    {
         return in_array($contentVar, $this->_contentVars);
     }
 
@@ -93,7 +101,8 @@ class Layout_Settings {
         return (bool)$this->_move_box;
     }
   
-    function loadBoxes(){
+    function loadBoxes()
+    {
         $theme = $this->current_theme;
         $db = new PHPWS_db('layout_box');
         $db->addWhere('theme', $theme);
@@ -107,7 +116,8 @@ class Layout_Settings {
     }
 
 
-    function loadContentVars(){
+    function loadContentVars()
+    {
         $db = new PHPWS_db('layout_box');
         $db->addWhere('theme', $this->current_theme);
         $db->addColumn('content_var');
@@ -124,7 +134,8 @@ class Layout_Settings {
         $this->_contentVars = $result;
     }
 
-    function loadSettings(){
+    function loadSettings()
+    {
         $db = new PHPWS_DB('layout_config');
         $result = $db->loadObject($this, FALSE);
 
@@ -142,6 +153,7 @@ class Layout_Settings {
         if (is_file($themeInit)){
             $themeVars = parse_ini_file($themeInit, TRUE);
             $this->loadBoxSettings($themeVars);
+            $this->loadStyleSheets($themeVars);
         } else {
             PHPWS_Error::log(LAYOUT_INI_FILE, 'layout', 'Layout_Settings::loadSettings', $themeInit);
             PHPWS_Core::errorPage();
@@ -150,7 +162,23 @@ class Layout_Settings {
 
     }
 
-    function loadBoxSettings($themeVars) {
+    function loadStyleSheets($themeVars)
+    {
+        $directory = sprintf('themes/%s/', $this->current_theme);
+        for ($i = 1; $i < 20; $i++) {
+            if (isset($themeVars['style_sheet_' . $i])) {
+                $style = &$themeVars['style_sheet_' . $i];
+                $style['file'] = $directory . $style['file'];
+                $this->_style_sheets[] = $style;
+            } else {
+                break;
+            }
+        }
+    }
+
+
+    function loadBoxSettings($themeVars)
+    {
         $theme_variables[] = DEFAULT_THEME_VAR;
         $theme_variables[] = DEFAULT_BOX_VAR;
 
@@ -160,7 +188,8 @@ class Layout_Settings {
         $this->_theme_variables = $theme_variables;
     }
 
-    function saveSettings(){
+    function saveSettings()
+    {
         $db = & new PHPWS_DB('layout_config');
         $vars = PHPWS_Core::stripObjValues($this);
         unset($vars['_contentVars']);
@@ -170,6 +199,7 @@ class Layout_Settings {
         unset($vars['_theme_variables']);
         unset($vars['_default_box']);
         unset($vars['current_theme']);
+        
         $db->addValue($vars);
         return $db->update();
     }

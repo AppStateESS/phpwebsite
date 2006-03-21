@@ -159,6 +159,7 @@ class Layout {
         $title     = NULL;
         $import    = FALSE;
         $tag       = NULL;
+        $media     = NULL;
 
         if (!is_array($value)) {
             $file = $value;
@@ -166,10 +167,11 @@ class Layout {
             extract($value);
         }
 
-        $style = array('file'      =>$file,
-                       'import'    =>$import,
-                       'alternate' =>$alternate,
-                       'title'     =>$title
+        $style = array('file'      => $file,
+                       'import'    => $import,
+                       'alternate' => $alternate,
+                       'title'     => $title,
+                       'media'     => $media
                        );
 
         if (isset($tag)) {
@@ -582,6 +584,42 @@ class Layout {
         return Layout::getJavascript($script_name,$data, $base);
     }
 
+    function importStyleSheets() 	 
+    { 	 
+        if (isset($_SESSION['Layout_Settings']->_style_sheets)) {
+            foreach ($_SESSION['Layout_Settings']->_style_sheets as $css) {
+                Layout::addToStyleList($css);
+            }
+        }
+        
+        /** delete me
+        if (!empty($persistent)) { 	 
+            Layout::addToStyleList(array('file'=>$directory . $persistent['file'], 	 
+                                         'import' => TRUE)); 	 
+        } else { 	 
+            Layout::addToStyleList(Layout::getTheme() . '/style.css'); 	 
+        } 	 
+  	 
+        if (!empty($default) && (isset($default['file']) && isset($default['title']))) { 	 
+            Layout::addToStyleList(array('file'=>$directory . $default['file'], 	 
+                                         'title'=>$default['title']) 	 
+                                   ); 	 
+        } 	 
+  	 
+        if (!empty($alternate) && is_array($alternate)) { 	 
+            foreach ($alternate as $altStyle){ 	 
+                if (isset($altStyle['file']) && isset($altStyle['title'])) { 	 
+                    Layout::addToStyleList(array('file'     => $directory . $altStyle['file'], 	 
+                                                 'title'    => $altStyle['title'], 	 
+                                                 'alternate'=> TRUE 	 
+                                                 ) 	 
+                                           ); 	 
+                } 	 
+            } 	 
+        } 	 
+        */
+    }
+
 
     /**
      * Inserts the content data into the current theme
@@ -660,6 +698,12 @@ class Layout {
             $cssTitle = NULL;
         }
 
+        if (!empty($media)) {
+            $media_tag = sprintf('media="%s"', $media);
+        } else {
+            $media_tag = NULL;
+        }
+
         if ($header == TRUE) {
             if (isset($alternate) && $alternate == TRUE) {
                 return sprintf('<?xml-stylesheet alternate="yes" %s href="%s" type="text/css"?>', $cssTitle, $file);
@@ -668,11 +712,11 @@ class Layout {
             }
         } else {
             if ($import == TRUE) {
-                return sprintf('<style type="text/css"> @import url("%s"); </style>', $file);
+                return sprintf('<style type="text/css"> @import url("%s"); %s</style>', $file, $media);
             } elseif (isset($alternate) && $alternate == TRUE) {
-                return sprintf('<link rel="alternate stylesheet" %s href="%s" type="text/css" />', $cssTitle, $file);
+                return sprintf('<link rel="alternate stylesheet" %s href="%s" type="text/css" %s />', $cssTitle, $file, $media_tag);
             } else {
-                return sprintf('<link rel="stylesheet" %s href="%s" type="text/css" />', $cssTitle, $file);
+                return sprintf('<link rel="stylesheet" %s href="%s" type="text/css" %s />', $cssTitle, $file, $media_tag);
             }
         }
     }
@@ -741,6 +785,7 @@ class Layout {
             $template['JAVASCRIPT'] = implode("\n", $jsHead);
         }
 
+        Layout::importStyleSheets();
         Layout::submitHeaders($theme, $template);
         $template['METATAGS']   = Layout::getMetaTags();
         $template['PAGE_TITLE'] = $_SESSION['Layout_Settings']->getPageTitle();
