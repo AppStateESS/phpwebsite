@@ -27,7 +27,11 @@ class My_Page {
 
         $content = My_Page::userOption($module);
 
-        $panel->setContent($content);
+        if (PEAR::isError($content)) {
+            $panel->setContent($content->getMessage());
+        } else {
+            $panel->setContent($content);
+        }
         Layout::add(PHPWS_ControlPanel::display($panel->display()));
     }
 
@@ -82,8 +86,9 @@ class My_Page {
         }
 
         include $final_file;
-        if (!function_exists('my_page'))
-            exit('Missing my page in userOption My_Page.php');
+        if (!function_exists('my_page')) {
+            return PHPWS_Error::get(USER_MISSING_MY_PAGE, 'users', 'My_Page::userOption', $module_title);
+        }
 
         $content = my_page();
         return $content;
@@ -104,6 +109,13 @@ class My_Page {
         $db = & new PHPWS_DB('users_my_page_mods');
         $db->addValue('mod_title', $mod_title);
         return $db->insert();
+    }
+
+    function addHidden(&$form, $module)
+    {
+        $form->addHidden('module', 'users');
+        $form->addHidden('action', 'user');
+        $form->addHidden('tab', $module);
     }
 }
 

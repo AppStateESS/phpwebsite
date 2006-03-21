@@ -34,4 +34,7 @@ define('USER_ERR_FAIL_ON_SUBPERM', -40);
 /* Authorization errors */
 define('USER_ERR_MISSING_AUTH',    -50);
 
+/* My Page errors */
+define('USER_MISSING_MY_PAGE',     -60);
+
 ?>

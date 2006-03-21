@@ -26,7 +26,8 @@ $errors = array(
 		USER_ERR_BAD_EMAIL        => _('User\'s email address is missing or malformed.'),
 		USER_ERR_MISSING_AUTH     => _('Missing authorization script.'),
 		USER_ERR_FONT_MISSING     => _('Unable to find font file for graphic confirmation.'),
-		USER_ERR_WRITE_CONFIRM    => _('Unable to write confirmation graphic to server.')
+		USER_ERR_WRITE_CONFIRM    => _('Unable to write confirmation graphic to server.'),
+                USER_MISSING_MY_PAGE      => _('Missing my_page function.')
 		);
 
 ?>
