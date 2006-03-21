@@ -124,6 +124,16 @@ div.blog div.box {
     border : 2px white solid;
 }
 
+div.blog div.read-more {
+    border-top : 1px solid white;
+    margin-top : 5px;
+}
+
+div.category-links {
+    padding : 4px;
+    background-color : #EDF4D1;
+}
+
 /*--------------- Control Panel ---------------*/
 
 .frame {
