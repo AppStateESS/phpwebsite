@@ -6,12 +6,12 @@
     <h3>{POSTED_ON} {LOCAL_DATE}</h3>
     </div>
     <!-- BEGIN categories -->
-    <div class="bgcolor2 padded">{CATEGORIES}</div>
+    <div class="category-links">{CATEGORIES}</div>
     <!-- END categories -->
     <div class="box-content">
       {ENTRY}
       <!-- BEGIN comment-info -->
-      <div class="padded border-top">
+      <div class="read-more">
       {COMMENT_LINK}
       <!-- BEGIN last-poster -->- {LAST_POSTER_LABEL}:
       {LAST_POSTER}<!-- END last-poster -->
