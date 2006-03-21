@@ -17,7 +17,7 @@ class PHPWS_Cookie {
         }
         $cookie_index = sprintf('%s[%s]', COOKIE_HASH, $name);
         if (!setcookie($cookie_index, $value, $time)) {
-            exit('error');
+            return PHPWS_Error::get(COOKIE_SET_FAILED, 'core', 'PHPWS_Cookie::write');
         }
     }
 
@@ -36,8 +36,6 @@ class PHPWS_Cookie {
         setcookie($cookie_index, '', time() - 3600);
         unset($_COOKIE[COOKIE_HASH][$name]);
     }
-
-
 }
 
 ?>
