@@ -9,11 +9,10 @@
    * Module field files should be structured just like this file.
    * Each field can have the following charactistics
    * 
-   *    type  - either character, smallint, integer or boolean. if not set, 
+   *    type  - either text, smallint (use for boolean), or integer. if not set, 
    *            defaults to char
-   *    limit - maximum characters allowed. Defaults to 100. 255 is the maximum
-   *            limits. (Some databases go over this, some don't)
-   *            Ignored if type is boolean.
+   *    limit - maximum characters allowed. 255 is the the maximum (Some databases
+   *            go over this, some don't) Ignored if type is boolean.
    *
    * The index of the array is the label for the field
    *
@@ -29,20 +28,27 @@ $fields['middle_name']['limit']    = 40;
 $fields['last_name']['limit']      = 40;
 $fields['middle_initial']['limit'] = 1;
 
+// Business information
+$fields['position_title']['limit'] = 40;
+$fields['department']['limit']     = 40;
+
+
 // wouldn't suggest asking for this but left here for
 // completeness sake
 $fields['social_security']['limit'] = 12;
 
-// one character (m)ale, (f)emale or (o)ther/(t)rans
+// one character (m)ale, (f)emale or (o)ther
 $fields['sex']['limit'] = 1;
 $fields['age']['type'] = 'smallint';
 $fields['birthday']['type'] = 'smallint'; // format YYYYMMDD
 
 /* ----- Contact information ----- */
 $fields['day_phone']['limit']     = 20;
+$fields['day_phone_ext']['limit'] = 10;
 $fields['evening_phone']['limit'] = 20;
 $fields['fax_number']['limit']    = 20;
 $fields['mobile_phone']['limit']  = 20;
+$fields['pager_number']['limit']  = 20;
 
 
 /* ----- Internet infomation ----- */
@@ -54,6 +60,7 @@ $fields['icq_id']['limit']          = 20; // ICQ messenger
 $fields['msn_id']['limit']          = 20; // Microsoft messenger
 $fields['jabber_id']['limit']       = 20; // Jabber
 $fields['irc']['limit']             = 50; // IRC server and channel
+$fields['google_chat']['limit']     = 50; // Google chat
 
 /* ----- Addresses ----- */
 $fields['mailing_address_1']['limit']   = 50;

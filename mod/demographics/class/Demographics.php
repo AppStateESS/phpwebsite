@@ -4,6 +4,8 @@
    * @version $Id$
    */
 
+define('DEMOGRAPHICS_DEFAULT_LIMIT', 255);
+
 class Demographics {
 
     /**
@@ -23,18 +25,48 @@ class Demographics {
     /**
      * Returns the fields currently used in demographics
      */
-    function getFields()
+    function &getFields()
     {
-        
+        $db = & new PHPWS_DB('demographics');
+        $columns = $db->getTableColumns();
+        return $columns;
+    }
+
+    // returns default demographic fields
+    function &getDefaultFields()
+    {
+        static $fields;
+        if (empty($fields)) {
+            $file = PHPWS_Core::getConfigFile('demographics', 'defaults.php');
+            if (empty($file)) {
+                // default file error
+                return NULL;
+            }
+            include $file;
+        }
+
+        return $fields;
     }
 
     /**
-     * Creates a new field (column) for demographics
+     * Returns TRUE if the field is one of Demographic's default
+     * fields.
      */
-    function createField($name)
+    function isDefaultField($field_name)
     {
-
+        $fields = Demographics::getDefaultFields();
+        return isset($fields[$field_name]);
     }
+
+    /**
+     * Returns the stats for Demographics default field
+     */
+    function getDefaultStats($field_name)
+    {
+        $fields = Demographics::getDefaultFields();
+        return $fields[$field_name];
+    }
+
 
     /**
      * Registers a module to demographics on install
@@ -51,13 +83,98 @@ class Demographics {
 
         include $file;
 
-        if (!isset($fields)) {
-            return FALSE;
+        if (isset($fields) && is_array($fields)) {
+            foreach ($fields as $field_name => $stats) {
+                Demographics::registerField($field_name, $stats);
+            }
         }
-        
-        foreach ($fields as $field) {
 
+        if (isset($default) && is_array($default)) {
+            foreach ($default as $field_name) {
+                Demographics::registerDefaultField($field_name);
+            }
         }
+
+
+        
+    }
+
+    /**
+     * Registers a new field to the system
+     */
+    function registerField($field_name, $stats)
+    {
+        $current_fields = Demographics::getFields();
+
+        // if the registered field is not already created, continue
+        if (!in_array($field_name, $current_fields)) {
+            // If the field is a default field, override whatever stats were sent
+            if (Demographics::isDefaultField($field_name)) {
+                $stats = Demographics::getDefaultStats($field_name);
+                Demographics::createField($field_name, $stats);
+            } elseif (!empty($stats)) {
+                Demographics::createField($field_name, $stats);
+            }
+        }
+
+        return TRUE;
+    }
+
+    /**
+     * Registers one of Demographic's default fields
+     */
+    function registerDefaultField($field_name)
+    {
+        $current_fields = Demographics::getFields();
+
+        // if the registered field is not already created, continue
+        if (!in_array($field_name, $current_fields)) {
+            if (Demographics::isDefaultField($field_name)) {
+                $stats = Demographics::getDefaultStats($field_name);
+                Demographics::createField($field_name, $stats);
+            }
+        }
+        return TRUE;
+    }
+
+    /**
+     * Creates a new field (column) for demographics
+     */
+    function createField($field_name, $stats)
+    {
+        $stat_types = array('text', 'smallint', 'integer');
+
+        if (!isset($stats['type']) || in_array($stats['type'], $stat_types)) {
+            $type = 'text';
+        } else {
+            $type = &$stats['type'];
+        }
+
+        if ($type == 'text') {
+            if (isset($stats['limit'])) {
+                $limit = (int)$stats['limit'];
+            } else {
+                $limit = DEMOGRAPHICS_DEFAULT_LIMIT;
+            }
+        }
+
+        switch ($type) {
+        case 'text':
+            $parameter = sprintf('varchar(%s) default NULL', $limit);
+            break;
+
+        case 'boolean':
+        case 'smallint':
+            $parameter = 'smallint NOT NULL default=\'0\'';
+            break;
+
+        case 'integer':
+            $parameter = 'smallint NOT NULL default=\'0\'';
+            break;
+        }
+
+        $db = & new PHPWS_DB('demographics');
+        return $db->addTableColumn($field_name, $parameter);
     }
 
     /**
