@@ -33,6 +33,7 @@ class Layout_Settings {
     var $_theme_variables = NULL;
     var $_default_box     = NULL;
     var $_style_sheets    = NULL;
+    var $_extra_styles    = NULL;
 
     function Layout_Settings()
     {
@@ -187,6 +188,9 @@ class Layout_Settings {
             } else {
                 break;
             }
+        }
+        if (isset($themeVars['extra_styles'])) {
+            $this->_extra_styles = &$themeVars['extra_styles'];
         }
     }
 

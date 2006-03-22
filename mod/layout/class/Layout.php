@@ -111,6 +111,22 @@ class Layout {
         $GLOBALS['Layout_JS'][$index]['head'] = $script;
     }
 
+    function extraStyle($filename)
+    {
+        $styles = Layout::getExtraStyles();
+        if (!isset($styles[$filename])) {
+            return;
+        }
+
+        $link['file'] = Layout::getThemeDir() . $filename;
+        $link['import'] = FALSE;
+
+        $GLOBALS['Extra_Style'] = $link;
+    }
+
+    /**
+     * Adds a module's style sheet to the style sheet list
+     */
     function addStyle($module, $filename=NULL)
     {
         if (!LAYOUT_ALLOW_STYLE_LINKS) {
@@ -530,6 +546,10 @@ class Layout {
             $links[] = Layout::styleLink($link, $header);
         }
 
+        if (isset($GLOBALS['Extra_Style'])) {
+            $links[] = Layout::styleLink($GLOBALS['Extra_Style'], $header);
+        }
+
         return implode("\n", $links);
     }
 
@@ -685,7 +705,7 @@ class Layout {
             }
         } else {
             if ($import == TRUE) {
-                return sprintf('<style type="text/css"> @import url("%s"); %s</style>', $file, $media);
+                return sprintf('<style type="text/css"> @import url("%s"); %s</style>', $file, $media_tag);
             } elseif (isset($alternate) && $alternate == TRUE) {
                 return sprintf('<link rel="alternate stylesheet" %s href="%s" type="text/css" %s />', $cssTitle, $file, $media_tag);
             } else {
@@ -839,6 +859,9 @@ class Layout {
         return PHPWS_Template::process($template, 'layout', 'move_box_select.tpl');
     }
 
+    /**
+     * Returns an array of alternate style sheets for the current theme
+     */
     function getAlternateStyles()
     {
         $settings = &$_SESSION['Layout_Settings'];
@@ -855,6 +878,12 @@ class Layout {
 
         return $sheets;
     }
+
+    function getExtraStyles()
+    {
+        return $_SESSION['Layout_Settings']->_extra_styles;
+    }
+
 
 }
 
