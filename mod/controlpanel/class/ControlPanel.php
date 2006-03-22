@@ -160,7 +160,7 @@ class PHPWS_ControlPanel {
 
         if ($cpFile == FALSE){
             PHPWS_Boost::addLog($module, _('No Control Panel file found.'));
-            return NULL;
+            return FALSE;
         }
 
         $modSource = PHPWS_SOURCE_DIR . 'mod/' . $module . '/img';
