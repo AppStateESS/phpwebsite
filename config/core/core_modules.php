@@ -17,9 +17,10 @@ $core_modules = array('users',
                       'version',
                       'clipboard',
                       'notes',
+                      'demographics',
                       'comments',
                       'search',
-                      'miniadmin'
+                      'miniadmin',
                       );
 
 
