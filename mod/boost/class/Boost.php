@@ -52,6 +52,14 @@ class PHPWS_Boost {
         return TRUE;
     }
 
+    function getRegisteredModules($module)
+    {
+        $db = & new PHPWS_DB('modules');
+        $db->addWhere('registered.module', $module->title);
+        $db->addWhere('title', 'registered.registered');
+        return $db->getObjects('PHPWS_Module');
+    }
+
     function getInstalledModules()
     {
         $db = & new PHPWS_DB('modules');
@@ -169,6 +177,8 @@ class PHPWS_Boost {
             else {
                 $content[] = _('Installation complete!');
             }
+        } elseif($continue) {
+            $content[] = _('Installation complete!');
         }
     
         return implode('<br />', $content);    
@@ -697,6 +707,7 @@ class PHPWS_Boost {
         $db->addWhere('registered', $registered);
         $db->addWhere('module', $module);
         $result = $db->delete();
+
         if (PEAR::isError($result)) {
             return $result;
         } else {
@@ -726,7 +737,6 @@ class PHPWS_Boost {
     function registerModToMod($register_to_mod, $register_mod, &$content)
     {
         $registerFile = $register_to_mod->getDirectory() . 'boost/register.php';
-
         if (!is_file($registerFile)) {
             return PHPWS_Error::get(BOOST_NO_REGISTER_FILE, 'boost', 'registerModToMod', $registerFile);
         }
@@ -843,10 +853,12 @@ class PHPWS_Boost {
     {
         $content[] = _('Unregistering other modules from this module.');
 
-        $modules = PHPWS_Boost::getInstalledModules();
+        $modules = PHPWS_Boost::getRegisteredModules($module);
 
-        if (!is_array($modules)) {
-            return;
+        if (PEAR::isError($modules)) {
+            return $modules;
+        } elseif (empty($modules) || !is_array($modules)) {
+            return TRUE;
         }
 
         foreach ($modules as $register_mod){
