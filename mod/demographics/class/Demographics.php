@@ -11,15 +11,17 @@ class Demographics {
     /**
      * Pulls a user's demographic information
      */
-    function &getUser($user_id)
+    function &getUser($user_id, $create_new=TRUE)
     {
-        $demo_user = & new Demographics_User($user_id);
+        $demo_user = & new Demographics_User($user_id, $create_new);
         if ($demo_user->_error) {
             return $demo_user->_error;
         } elseif (!$demo_user->user_id) {
             // return "no user" error here
             return NULL;
         }
+
+        return $demo_user;
     }
 
     /**
@@ -194,7 +196,7 @@ class Demographics_User {
     var $_demographics = NULL;
     var $_error = NULL;
 
-    function Demographics_User($user_id=0) {
+    function Demographics_User($user_id=0, $create_new=TRUE) {
         if (!$user_id) {
             return;
         }
@@ -205,12 +207,61 @@ class Demographics_User {
         if (PEAR::isError($result)) {
             $this->_error = $result;
         }
-        if (empty($result)) {
-            
-        }
+
         $this->user_id = (int)$user_id;
-        $this->user_info = $result;
+        if (empty($result) && $create_new) {
+
+            $column_info = $db->getTableColumns(TRUE);
+            unset($column_info['user_id']);
+
+            foreach ($column_info as $colname => $colval) {
+                if ($colval['type'] == 'string') {
+                    $this->user_info[$colname] = NULL;
+                } else {
+                    $this->user_info[$colname] = 0;
+                }
+            }
+            $result = $this->create($user_id);
+
+            if (PEAR::isError($result)) {
+                $this->_error = $result;
+                return;
+            }
+
+        } else {
+            $this->user_info = $result;
+        }
     }
+
+    /**
+     * Creates a new user demographic entry
+     */
+    function create($user_id)
+    {
+        if (!$user_id) {
+            return FALSE;
+        }
+
+        $db = & new PHPWS_DB('demographics');
+        $db->addValue($this->user_info);
+        $db->addValue('user_id', (int)$user_id);
+        return $db->insert();
+    }
+
+    /**
+     * Updates a current user demographic
+     */
+    function update()
+    {
+        if (!$this->user_id) {
+            return FALSE;
+        }
+        $db = & new PHPWS_DB('demographics');
+        $db->addValue($this->user_info);
+        $db->addWhere('user_id', (int)$this->user_id);
+        return $db->update();
+    }
+
 }
 
 
