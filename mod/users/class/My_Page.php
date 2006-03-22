@@ -12,8 +12,12 @@ class My_Page {
         $result = $this->init();
 
         if (PEAR::isError($result)){
-            log($result);
-            return _('The is a problem with My Page.');
+            PHPWS_Error::log($result);
+            Layout::add(PHPWS_ControlPanel::display(_('The is a problem with My Page.')));
+            return;
+        } elseif (!$result) {
+            Layout::add(PHPWS_ControlPanel::display(_('No modules are registered to My Page.')));
+            return;
         }
 
         $panel = My_Page::cpanel();
@@ -46,9 +50,14 @@ class My_Page {
             return $result;
         }
 
-        foreach ($result as $mod_title) {
-            $this->modules[$mod_title] = & new PHPWS_Module($mod_title);
+        if ($result) {
+            foreach ($result as $mod_title) {
+                $this->modules[$mod_title] = & new PHPWS_Module($mod_title);
+            }
+        } else {
+            return FALSE;
         }
+        return TRUE;
     }
 
     function moduleIsRegistered($module)
@@ -96,12 +105,7 @@ class My_Page {
 
     function registerMyPage($mod_title)
     {
-        if (!PHPWS_Core::moduleExists($mod_title)) {
-            return FALSE;
-        }
-
-        $filename = sprintf('%s/mod/%s/inc/my_page.php', PHPWS_SOURCE_DIR, $mod_title);
-
+        $filename = sprintf('%smod/%s/inc/my_page.php', PHPWS_SOURCE_DIR, $mod_title);
         if (!is_file($filename)) {
             return FALSE;
         }

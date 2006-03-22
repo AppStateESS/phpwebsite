@@ -7,15 +7,17 @@
 function users_unregister($module, &$content){
     PHPWS_Core::initModClass('users', 'Permission.php');
 
-    $content[] = _('Removing permissions table.');
-    if (Users_Permission::removePermissions($module)){
+    $result = Users_Permission::removePermissions($module);
+
+    if (PEAR::isError($result)) {
+        $content[] = _('Permissions table not removed successfully.');        
+        return FALSE;
+    } elseif ($result) {
         $content[] = _('Permissions table removed successfully.');
         return TRUE;
     }
-    else {
-        $content[] = _('Permissions table not removed successfully.');
-        return FALSE;
-    }
+    
+    return TRUE;
 }
 
 
