@@ -77,7 +77,8 @@ class Demographics {
     {
         $file = PHPWS_Core::getConfigFile($module, 'demographics.php');
 
-        if (!$file) {
+        if (!is_file($file)) {
+            PHPWS_Boost::addLog($module, _('No demographics file found.'));
             return FALSE;
         }
 
@@ -92,11 +93,10 @@ class Demographics {
         if (isset($default) && is_array($default)) {
             foreach ($default as $field_name) {
                 Demographics::registerDefaultField($field_name);
+                PHPWS_Boost::addLog($module, sprintf(_('%s demographic field registered.'), $field_name));
             }
         }
-
-
-        
+        return TRUE;
     }
 
     /**
