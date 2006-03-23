@@ -117,11 +117,13 @@ class Blog_Admin {
                 PHPWS_Error::log($result);
                 Blog_Admin::setForward(_('An error occurred when saving your version.'), 'approval');
             } else {
-                PHPWS_Core::initModClass('categories', 'Category_Item.php');
+                /*
+                 // Delete once sure not needed
                 $category_item = & new Category_Item('blog');
                 $category_item->setVersionId($version->getId());
                 $category_item->setItemId($version->getSourceId());
                 $category_item->saveVersion();
+                */
 
                 $version->authorizeCreator('blog', 'entry');
                 Blog_Admin::setForward(_('Blog entry approved.'), 'approval');
