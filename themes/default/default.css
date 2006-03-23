@@ -5,14 +5,10 @@ body {
 
 /* ---------- Block colors ----------- */
 
-#container {
+#container, #header {
     background-color: #ADB583;
 }
 
-
-#header {
-    background-color : #ADB583;
-}
 
 #sidepanel div.box {
     border : white 2px solid;
