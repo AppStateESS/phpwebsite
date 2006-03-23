@@ -1,0 +1,433 @@
+phpWebSite Key Class by Matthew McNaney
+----------------------------------------------
+
+Version 0.1 23-March-2006
+First edition
+
+
+phpWebSite 1.x uses a special core class named Key. Its main purpose
+is to index all the content entered into the software. When a module
+flags (or reveals) an item's key, all modules are aware of this item
+without having to know anything about the module itself.
+
+The advantages of this system are:
+- modules that assist in site navigation aren't required to access
+  content modules directly,
+- content modules don't need to dependency checks on the modules that
+  access their key,
+- administration options can be context sensitive
+- content can be edited without having to warn other modules
+- content can be deleted and other modules can respond without having
+  to know about the module.
+
+I realize the above may not fully explain what the Key does. In order
+to fully understand the Key class, it is best to get into how to use
+it.
+
+Note: I will be referring to component of content as an "item". Don't
+confuse this with the Item class used in older versions of
+phpWebsite. Although, if it helps, you can think of the Key object as
+similiar to Item object.
+
+Key's variables
+-----------------------------------------------
+Here is the information a key contains:
+
+id              - A unique id integer
+
+module          - the title of the module using this key
+
+item_name       - the name of the item using the key
+
+item_id         - the id of the item
+
+title           - the Key's/Item's title
+
+summary         - a short description of the item
+
+url             - the item's url. should take a user directly to a
+                  view of said item
+
+active          - 1 if active, 0 if not
+
+restricted      - indicates who can view this Key. More on this later
+
+create_date     - unix timestamp that key was created
+
+update_date     - unix timestamp the key was last updated
+
+creator         - username of item creator
+
+updater         - username of last person to update the key
+
+times_viewed    - a count of times a key's item has been viewed
+
+edit_permission - the specific permission that allows edit rights to
+                  the item
+
+
+Creating a Key
+--------------------------------------
+The best place to create your key is when your module is saving your
+item. After your item is saved and you have an item id, you can create
+a key for it. Make sure you have a key_id column for your item. While
+you could pull an item's key based on the module, itemname, and
+item_id information, storing the key_id is simplier and faster (the
+key's id is indexed).
+
+I am going to use the Blog module for my example code.
+
+
+function saveKey()
+{
+    // If the key_id on my item has not been set, I create
+    // a new key object
+
+    if (empty($this->key_id)) {
+       $key = & new Key;
+    } else {
+
+       // My key_id is set, so I am going to construct my key
+       // using this id.
+
+       $key = & new Key($this->key_id);
+
+       // if there is a problem pulling the key, the _error
+       // variable will contain the problem
+
+       if (PEAR::isError($key->_error)) {
+           $key = & new Key;
+       }
+    }
+
+    // Now I set the various variables corresponding to my content
+    // item.
+
+    $key->setModule('blog'); // the module I am in
+
+    // a module may have multiple content items. We therefore set an
+    // item name for the item. If we don't set the item name, the Key
+    // class sets the module title as the item name.
+
+    $key->setItemName('entry');
+
+    // Again, we set the item's id when we create the key. This is why
+    // you save the item before creating the key.
+    $key->setItemId($this->id);
+
+    // I will explain why this is important later
+    $key->setEditPermission('edit_blog');
+
+    // the getViewLink function in blog just returns the url address
+    // to the view function. Note that if you have mod_rewrite enabled
+    // (and plan on leaving it enabled), it is perfectly ok to send
+    // the shortened version of the link
+    $key->setUrl($this->getViewLink(TRUE));
+
+    // Note that the title will be stripped of ALL tags. HTML formatting
+    // the title is not allowed for reasons that will be apparent later
+    $key->setTitle($this->title);
+
+    // The summary setting removes tags as well, including tags
+    // converted after PHPWS_Text::parseInput
+    $key->setSummary($this->entry);
+
+    // Now we call the save function
+    $key->save();
+
+    // if the save went fine, it now has an id. Blog puts the id
+    // into its settings and returns the key object
+    $this->key_id = $key->id;
+    return $key;
+}
+
+After the key is saved successfully I will either update the Blog item
+with the new key_id or, if the Blog was just getting updated, continue
+on.
+
+
+Flagging the Key
+---------------------------------------------
+Now that our item has a key, we can "flag" the key. This means,
+metaphorically, that the key is raising its flag to the rest of the
+modules. When other modules see the flag, they know a key is active
+and can act upon it.
+
+Blog flags its key when viewed alone. It DOES NOT raise the flag on
+the main view page. Multiple flags confuse other modules. There can
+only be one flag up at a time. This may sound restrictive, but take my
+word for it that it is not.
+
+Raising the flag is easy. First, construct your key:
+
+$key = & Key($key_id);
+
+then
+
+$key->flag();
+
+That is all. Blog doesn't care about other module keys. If your module
+is like Blog and all it needs is to interface with other phpWebSite
+modules, you may skip to Permissions to find out how the Users module
+uses the Key class to determine who can view and edit your items.
+The next section explains how other modules utilize flagged keys.
+
+
+Using Flagged Keys
+-----------------------------------------------
+Several core modules in phpWebSite look for flagged keys. Users
+(mentioned earlier) looks for flags to set item permissions. The Menu
+module looks for Key flags to let you create a menu link to your
+item. For our example, I will be looking at how Categories uses the
+Key flag.
+
+First, a module has to grab the current flagged key:
+
+$key = Key::getCurrent();
+
+If the $key is NULL, then there aren't any keys flagged at the
+moment.
+
+The key could also be a "dummy" key. There are two types of
+dummy keys. One key is created by a module that doesn't coorespond to
+content. In other words, the module is using the key class but wants
+to indicate to other modules that they should not use it.
+
+The other type of dummy key is the "home" key. When you go to
+phpWebSite's home page, a dummy key raises a "home" flag. Some modules
+may want to index this information. Menu, for example, will create a
+link to your home page by using this key.
+
+The home key is NOT saved in the key table. The previous dummy key
+example may or may not depending on how the module is using it.
+
+Categories doesn't want to use any dummy key. It doesn't want to
+categorize the home page, nor content that doesn't want to be
+categorized. So, Categories checks the key with isDummy
+
+if ($key->isDummy()) {
+   return NULL;
+}
+
+The isDummy function takes one parameter which is defaulted to
+FALSE.
+
+If you call the following however:
+
+$key->isDummy(TRUE);
+
+And it is a home key, then isDummy will return FALSE. In other words,
+isDummy lets a home key lose its Dummy status.
+
+You can also check to see if the key is just a home key:
+
+$key->isHomeKey();
+
+This returns TRUE if the key is from the home page.
+
+You may also use the checkKey function:
+
+Key::checkKey($key, TRUE);
+
+This statically called function will return FALSE if:
+- The key is empty
+- The key has an error associated to it
+- It is a dummy key
+
+Unlike isDummy however, checkKey will return TRUE if the key is a home
+key and the second param. Keep that in mind.
+
+
+Whose Key is this?
+---------------------------------------
+Just because the key is flagged may not mean you want to act on
+it. For example, Categories doesn't let you assign a category to an
+item you don't have permission to edit. So, it checks to see if the
+current user has edit rights.
+
+if (!$key->allowEdit()) {
+    return NULL;
+}
+
+If you remember back to the edit_permission variable, the allowEdit
+function uses this to make sure the current user has the right to
+alter this item. If allowEdit returns FALSE, Categories leaves the
+function. If the user does have edit rights, categories allows the
+user to continue.
+
+Your module may also not want to act on a key that the current user is
+not allowed to see. To check that condition, call allowView:
+
+if (!$key->allowView()) {
+   // don't display anything
+   return;
+}
+
+Note: See restrictView and restrictEdit below for an alternative to
+the above functions.
+
+Once Categories has gotten past the its various checks, it creates a
+MiniAdmin link that allows the user to categorize the item. This link
+contains the functional call and the key id.
+
+Categories stores the key_id's associated to the assigned
+categories. When these categories are viewed, it pulls keys
+cross-referenced to this list.
+
+The list itself displays the title and summary of the key.
+The title is actually a link to the item, which I can access via the
+getUrl function:
+
+// pass this function TRUE to get a full path (http://site.com/index.php...)
+$title = $key->getUrl();
+
+The summary is accessed directly:
+
+$summary = $key->summary;
+
+Some other functions I can call for display are:
+
+$key->getCreateDate($format); // $format uses strftime formatting,
+                              // default is %c
+
+$key->getUpdateDate($format); // ditto
+
+
+You could also call getTplTags to get all of this information in an
+associative array. You can drop this array into a
+PHPWS_Template::process function if you want.
+
+$template = $key->getTplTags()
+$content = PHPWS_Template::process($template, 'my_mod', 'key_list.tpl');
+
+
+Restricting Views and Edit via the database
+----------------------------------------
+One problem with using allowEdit and allowView, is that you have to
+pull the keys first then test each one. This is wasteful.
+
+In Blog, the first page lists all the blog entries viewable by the
+current user. We want to avoid blog entries from anonymous users that
+are not tagged as viewable by everyone. We also want to avoid display
+to members outside a specific group. Fortunately, there is one
+function that helps do all this for us: restrictView.
+
+RestrictView is a little more complicated than some of the functions
+above. It works by added information to our current database query.
+
+Here is how blog pulls all the relevant blog entries:
+
+$db = & new PHPWS_DB('blog_entries');
+$db->setLimit($limit);
+$db->addOrder('create_date desc');
+
+Note: read the document on the database class if this is confusing.
+
+We construct a new DB object. Blog only shows a certain amount of
+entries on the first page, so we add that limit. Finally, we add the
+order of newest to oldest. All that is needed is the view
+restrictions.
+
+Key::restrictView($db, 'blog');
+
+Restrict view will then add where conditions depending on the
+permission level of the current user.
+
+If the current user is anonymous (i.e. isn't logged in), Then it will
+only pull blog entries that are not restricted in any way.
+
+If the user is logged in, it will pull the above plus any entries
+assigned to a user's group.
+
+If the user has permissions for that module or is a deity, the query
+will be untouched to allow all entries to be pulled.
+
+Once I call restrictView, I can perform my select, which, in Blog's
+case, is a getObjects call:
+
+$result = $db->getObjects('Blog');
+
+My $result variable would contain my entries, an error object if there
+was a problem, or NULL if no entries could be found that matched our
+conditions.
+
+
+If you want to restrict items based on edit permissions, you can call
+the restrictEdit function. It works much like restrictView:
+
+Key::restrictEdit($db, 'module_name', 'edit_permission');
+
+This would only return items the current user was allowed to edit.
+
+
+Utilizing Keys in Different Ways
+--------------------------------------------
+Remember I said that Blog didn't have to be aware of Categories to
+work with it? It doesn't, but in Blog's case, it is aware of
+Categories and it uses its key to access category information:
+
+$result = Categories::getSimpleLinks($key);
+
+This Categories function returns a listing of all the categories
+currently associated to Blog's key. This is kind of a reverse
+request. Blog is just asking the Categories module to return
+information it has on itself. This request is made easier with key as
+a common index point.
+
+
+Registering your Key
+--------------------------------------
+If your module uses other module keys, it is a good idea to register
+your module to the Key when installed. Registering is simple. Create a
+key.php file in your module's inc directory. It will be noticed by
+Boost when you install. 
+
+Note: You may also call it directly
+      Key::registerModule('module_title');
+
+Registering allows easy clean-up when a key is removed.
+
+For example, say a Blog entry is deleted along with its key. Menu
+needs to be aware of this occurrence. After registering, Menu is sent
+the currently deleted key. Menu receives this key in the key.php via
+its unregister function.
+
+This is what Menu's key.php looks like:
+
+function menu_unregister(&$key)
+{
+
+    PHPWS_Core::initModClass('menu', 'Menu_Link.php');
+
+    if (empty($key) || empty($key->id)) {
+        return FALSE;
+    }
+
+    $link = &  new Menu_Link;
+
+    $db = & new PHPWS_DB('menu_links');
+    $db->addWhere('key_id', $key->id);
+    $db->loadObject($link);
+    $db->reset();
+    $link->_db = &$db;
+    $result = $link->delete(TRUE);
+    if (PEAR::isError($result)) {
+        PHPWS_Error::log($result);
+    }
+
+}
+
+First notice the function name, "menu_unregister". The naming format
+for your unregister function is "modulename" + "_" + "unregister".
+
+This function expects a key object. Once it receives it, Menu will
+delete all the links corresponding to this key.
+
+
+
+Conclusion
+-------------------------------------
+Hopefully this will give you some insight on how the Key object
+works. The better you understand it, the more accessible and powerful
+your module will become.
+
