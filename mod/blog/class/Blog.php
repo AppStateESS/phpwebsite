@@ -1,10 +1,10 @@
 <?php
-/**
- * The blog object class.
- *
- * @author Matthew McNaney <matt at tux dot appstate dot edu>
- * $Id$
- */
+  /**
+   * The blog object class.
+   *
+   * @author Matthew McNaney <matt at tux dot appstate dot edu>
+   * $Id$
+   */
 
 class Blog {
     var $id             = NULL;
@@ -184,7 +184,7 @@ class Blog {
         if ($this->allow_comments) {
             $comments = Comments::getThread($key);
            
-           if ($limited && !empty($comments)) {
+            if ($limited && !empty($comments)) {
                 $link = $comments->countComments(TRUE);
                 $template['COMMENT_LINK'] = PHPWS_Text::rewriteLink($link, 'blog', $this->id);
                 
@@ -198,13 +198,12 @@ class Blog {
                 if ($comments) {
                     $template['COMMENTS'] = $comments->view();
                 }
-
                 $key->flag();
             }
         } else {
-           if (!$limited) {
-               $key->flag();
-           }
+            if (!$limited) {
+                $key->flag();
+            }
         }
         
         $result = Categories::getSimpleLinks($key);
