@@ -1,0 +1,59 @@
+My Page by Matthew McNaney
+-------------------------------------
+
+My Page is special user setting page within the Users module. You can
+get to it by clicking on the My Page tab under your control panel.
+
+Tabs under My Page are only for generic user settings. ANY user would
+have access to these settings.
+
+
+Registering your module
+------------------------------------
+This is simple. You just need to create a my_page.php file in your
+module's inc/ directory. When you module installs, the User module
+will see it an register your module. If you want to add a My Page tab
+later, you can call:
+My_Page::registerMyPage('module_title');
+
+
+Contents of your My Page file
+------------------------------------
+You need to have one function call in your my_page.php file.
+
+function my_page()
+{
+    return "My module's My Page content.";
+}
+
+When your module's tab is accessed, My_Page will call the my_page
+function and print the results. Whether you continue to add
+functionality in this file or within your module's classes is up to
+you.
+
+
+Operating in My Page
+-----------------------------------
+Remember that you are not inside YOUR module. You are in a subset of
+the user's module. Therefore, when you are creating a form or a link
+that works inside My Page, it has to contain certain variables.
+
+module = users
+action = user
+tab = your module tab
+
+This shouldn't be that hard to remember as the data will be in your
+address bar when accessing your My Page tab.
+
+When creating forms, you need to have these variables as hidden
+variables. You may either add these manually or you can send a form
+object to My_Page::addHidden. For example:
+
+$form = & new PHPWS_Form('my_mod_info');
+My_Page::addHidden($form);
+
+$form->addText('birthday');
+...
+
+Users uses a variable named "command". If you try to create a GET or
+POST variable named "command", phpWebSite will return a 404 error.

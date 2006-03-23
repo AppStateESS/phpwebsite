@@ -1,0 +1,35 @@
+Cookie Class by Matthew McNaney
+-------------------------------
+
+The phpWebSite cookie class write and reads cookies under one
+index. It is really simple to use.
+
+Writing a cookie
+-----------------
+PHPWS_Cookie::write('name_of_var', 'value_of_var' [,'time_out']);
+
+Example: saving a user's name
+
+PHPWS_Cookie::write('users_name', 'Matt');
+
+The time_out value is optional. It defaults to one year.
+
+
+Reading a cookie
+------------------
+PHPWS_Cookie::read('name_of_var');
+
+Example:
+echo 'Welcome back ' . PHPWS_Cookie('users_name');
+
+Read returns NULL if the cookie is not set.
+
+Deleting a cookie
+-------------------
+PHPWS_Cookie::delete('name_of_var');
+
+Example:
+
+echo 'Sorry you are leaving us ' . PHPWS_Cookie::read('users_name');
+PHPWS_Cookie::delete('users_name');
+

@@ -1,0 +1,4 @@
+
+
+info_type : The variable data type. Can be text, bool, or int. Default is text.
+limit     : When the type is 'text',
