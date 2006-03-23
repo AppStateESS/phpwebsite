@@ -38,6 +38,14 @@ class Layout_Admin{
             PHPWS_Core::goBack();
             break;
 
+        case 'post_style_change':
+            $result = Layout_Admin::postStyleChange();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+            }
+            javascript('close_refresh');
+            break;
+
         case 'changeBoxSettings':
             Layout_Admin::saveBoxSettings();
             $title = _('Adjust Boxes');
@@ -138,6 +146,15 @@ class Layout_Admin{
             $title = _('Themes');
             $content[] = Layout_Admin::adminThemes();
             break;
+
+        case 'js_style_change':
+            $content = Layout_Admin::jsStyleChange();
+            if (empty($content)) {
+                echo $content;
+                //                javascript('close_refresh');
+            }
+            Layout::nakedDisplay($content, _('Change CSS'));
+            break;
         }
 
         $template['TITLE']   = $title;
@@ -151,6 +168,47 @@ class Layout_Admin{
         $panel->setContent($final);
 
         Layout::add(PHPWS_ControlPanel::display($panel->display()));
+    }
+
+    function jsStyleChange()
+    {
+        $styles = Layout::getExtraStyles();
+
+        if (empty($styles) || !isset($_REQUEST['key_id'])) {
+            exit('wtf');
+            return FALSE;
+        }
+
+        $styles[0] = _('-- Use default style --');
+        ksort($styles, SORT_NUMERIC);
+
+        $key_id = (int)$_REQUEST['key_id'];
+
+        $current_style = Layout::getKeyStyle($key_id);
+
+        if (empty($current_style)) {
+            $current_style = 0;
+        }
+
+        $form = & new PHPWS_Form('change_styles');
+        $form->addHidden('module', 'layout');
+        $form->addHidden('action', 'admin');
+        $form->addHidden('command', 'post_style_change');
+        $form->addHidden('key_id', $key_id);
+        
+        $form->addSelect('style', $styles);
+        $form->setLabel('style', _('Style sheet'));
+        $form->setMatch('style', $current_style);
+        $form->addSubmit(_('Save'));
+
+        $form->addButton('cancel', _('Cancel'));
+        $form->setExtra('cancel', 'onclick="window.close()"');
+
+        $template = $form->getTemplate();
+
+        $template['TITLE'] = _('Change CSS');
+        
+        return PHPWS_Template::process($template, 'layout', 'style_change.tpl');
     }
 
 
@@ -355,6 +413,25 @@ class Layout_Admin{
         Layout::resetBoxes();
 
         return TRUE;
+    }
+
+    function postStyleChange()
+    {
+        Layout::reset();
+        if (!isset($_POST['style']) || !isset($_POST['key_id']) ) {
+            return;
+        }
+
+        $db = & new PHPWS_DB('layout_styles');
+        $db->addWhere('key_id', (int)$_POST['key_id']);
+        $db->delete();
+        $db->reset();
+        if ($_POST['style'] != '0') {
+            $db->addValue('key_id', (int)$_POST['key_id']);
+            $db->addValue('style', $_POST['style']);
+            $result = $db->insert();
+            
+        }
     }
 
     function postHeader()

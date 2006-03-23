@@ -1,7 +1,12 @@
 <?php
-$proper_name = "Layout";
+  /**
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
+   */
+
+$proper_name = 'Layout';
 $unregister  = TRUE;
-$version     = "2.0.1";
+$version     = '2.1.0';
 $import_sql  = TRUE;
 $image_dir   = TRUE;
 $file_dir    = FALSE;

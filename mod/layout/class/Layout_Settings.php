@@ -34,6 +34,7 @@ class Layout_Settings {
     var $_default_box     = NULL;
     var $_style_sheets    = NULL;
     var $_extra_styles    = NULL;
+    var $_key_styles      = NULL;
 
     function Layout_Settings()
     {
@@ -210,16 +211,35 @@ class Layout_Settings {
     {
         $db = & new PHPWS_DB('layout_config');
         $vars = PHPWS_Core::stripObjValues($this);
+        unset($vars['current_theme']);
         unset($vars['_contentVars']);
         unset($vars['_boxes']);
         unset($vars['_box_order']);
         unset($vars['_move_box']);
         unset($vars['_theme_variables']);
         unset($vars['_default_box']);
-        unset($vars['current_theme']);
+        unset($vars['_style_sheets']);
+        unset($vars['_extra_styles']);
+        unset($vars['_key_styles']);
         
         $db->addValue($vars);
         return $db->update();
+    }
+
+    function loadKeyStyle($key_id)
+    {
+        $db = & new PHPWS_DB('layout_styles');
+        $db->addWhere('key_id', (int)$key_id);
+        $db->addColumn('style');
+        $result = $db->select('one');
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $this->_key_styles[$key_id] = NULL;
+            return FALSE;
+        }
+
+        $this->_key_styles[$key_id] = $result;
+        return TRUE;
     }
 
 }

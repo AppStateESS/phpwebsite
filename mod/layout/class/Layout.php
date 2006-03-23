@@ -679,6 +679,36 @@ class Layout {
         Layout::add($text, $module, $contentVar);
     }
 
+    function styleChangeLink()
+    {
+        if (!Layout::getExtraStyles()) {
+            return NULL;
+        }
+
+        $key = Key::getCurrent();
+        if (!Key::checkKey($key)) {
+            return NULL;
+        }
+
+        if (javascriptEnabled()) {
+            $js_vars['label'] = _('Change style');
+            $js_vars['width'] = 400;
+            $js_vars['height'] = 200;
+
+            $vars['action'] = 'admin';
+            $vars['command'] = 'js_style_change';
+            $vars['key_id'] = $key->id;
+
+            $js_vars['address'] = PHPWS_Text::linkAddress('layout', $vars, TRUE);
+            $link = javascript('open_window', $js_vars);
+
+            MiniAdmin::add('layout', $link);
+            // MiniAdmin runs get before layout and runtime won't work
+            // with flagged keys 
+            MiniAdmin::get();
+        }
+    }
+
     function styleLink($link, $header=FALSE)
     {
         // NEED TO CHECK if using xml-stylesheet
@@ -879,11 +909,32 @@ class Layout {
         return $sheets;
     }
 
+    function getKeyStyle($key_id)
+    {
+        if (!isset($_SESSION['Layout_Settings']->_key_styles[$key_id])) {
+            $_SESSION['Layout_Settings']->loadKeyStyle($key_id);
+        }
+
+        return $_SESSION['Layout_Settings']->_key_styles[$key_id];
+    }
+
     function getExtraStyles()
     {
         return $_SESSION['Layout_Settings']->_extra_styles;
     }
 
+
+    function showKeyStyle()
+    {
+        $key = Key::getCurrent();
+        if (!Key::checkKey($key)) {
+            return NULL;
+        }
+
+        if (@$style = Layout::getKeyStyle($key->id)) {
+            Layout::extraStyle($style);
+        }
+    }
 
 }
 
