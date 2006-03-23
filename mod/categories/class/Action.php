@@ -396,7 +396,6 @@ class Categories_Action {
      */
     function getAllItems(&$category, $module) 
     {
-        PHPWS_Core::initModClass('categories', 'Category_Item.php');
         PHPWS_Core::initCoreClass('DBPager.php');
 
         $pageTags['TITLE_LABEL'] = _('Item Title');
