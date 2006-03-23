@@ -355,6 +355,9 @@ class Key {
         return (bool)$this->active;
     }
 
+    /**
+     * Returns TRUE, if the key is from the home page
+     */
     function isHomeKey()
     {
         return ($this->module == 'home' ? TRUE : FALSE);
@@ -522,7 +525,7 @@ class Key {
             return;
         }
 
-        // if the user has now rights for the module or subpermissions,
+        // if the user doesn't have rights for the module or subpermissions,
         // then we just stymie the whole query
         if (!Current_User::allow($module, $edit_permission)) {
             $db->setQWhere('1=0');
@@ -584,6 +587,9 @@ class Key {
         return $db->incrementColumn('times_viewed');
     }
 
+    /**
+     * A set of checks on a key to see if it is usable for content indexing
+     */
     function checkKey(&$key, $allow_home_key=TRUE) {
         if ( empty($key) || isset($key->_error) ) {
             return FALSE;
