@@ -1410,7 +1410,7 @@ class PHPWS_DB {
         }
         
         if ($sequence_table && PHPWS_DB::isTable($table . '_seq')) {
-            $result = PHPWS_DB::query("DROP TABLE $table");
+            $result = PHPWS_DB::query("DROP TABLE $table" . "_seq");
             if (PEAR::isError($result)) {
                 return $result;
             }
