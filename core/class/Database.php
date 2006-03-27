@@ -299,7 +299,7 @@ class PHPWS_DB {
     function listTables()
     {
         PHPWS_DB::touchDB();
-        return $GLOBALS['PEAR_DB']->getlistOf('tables');
+        return PHPWS_SQL::listTables();
     }
 
     function listDatabases()
@@ -1399,6 +1399,9 @@ class PHPWS_DB {
      */
     function dropTable($table, $check_existence=TRUE, $sequence_table=TRUE)
     {
+<<<<<<< Database.php
+        return PHPWS_SQL::dropTable($table, $check_existence, $sequence_table);
+=======
         $table = PHPWS_DB::getPrefix() . $table;
 
         // was using IF EXISTS but not cross compatible
@@ -1419,6 +1422,7 @@ class PHPWS_DB {
         }
         
         return TRUE;
+>>>>>>> 1.120
     }
 
     function truncateTable()

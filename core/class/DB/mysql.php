@@ -63,8 +63,6 @@ class PHPWS_SQL {
         return implode(' ', $sql);
     }
 
-    
-
     function readyImport(&$query){
         return;
     }
@@ -72,6 +70,36 @@ class PHPWS_SQL {
     function randomOrder()
     {
         return 'rand()';
+    }
+
+    function dropTable($table, $check_existence = TRUE, $sequence_table = TRUE)
+    {
+        $table = PHPWS_DB::getPrefix() . $table;
+
+        // was using IF EXISTS but not cross compatible
+        if ($check_existence && !PHPWS_DB::isTable($table)) {
+            return TRUE;
+        }
+
+        $result = PHPWS_DB::query("DROP TABLE $table");
+
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        if ($sequence_table && PHPWS_DB::isTable($table . '_seq')) {
+            $result = PHPWS_DB::query("DROP TABLE $table" . "_seq");
+            if (PEAR::isError($result)) {
+                return $result;
+            }
+        }
+
+        return TRUE;
+    }
+
+    function listTables()
+    {
+        return $GLOBALS['PEAR_DB']->getlistOf('tables');
     }
 }
 
