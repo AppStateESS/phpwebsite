@@ -56,14 +56,6 @@ class PHPWS_DB {
             }
         }
         $this->setMode('assoc');
-        $type = $GLOBALS['PEAR_DB']->dbsyntax;
-
-        $result = PHPWS_Core::initCoreClass('DB/' . $type .'.php');
-        if ($result == FALSE) {
-            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'PHPWS_DB::PHPWS_DB', 
-                             PHPWS_SOURCE_DIR . 'core/class/DB/' . $type . '.php');
-            PHPWS_Core::errorPage();
-        }
         $this->_sql = & new PHPWS_SQL;
     }
 
@@ -89,7 +81,7 @@ class PHPWS_DB {
     function touchDB()
     {
         if (!PHPWS_DB::isConnected()) {
-            PHPWS_DB::loadDB();
+            return PHPWS_DB::loadDB();
         }
     }
 
@@ -117,9 +109,9 @@ class PHPWS_DB {
             $GLOBALS['PEAR_DB'] = DB::connect($dsn);
         } else {
             $GLOBALS['PEAR_DB'] = DB::connect(PHPWS_DSN);
+
         }
 
-        
         if (PEAR::isError($GLOBALS['PEAR_DB'])){
             PHPWS_Error::log($GLOBALS['PEAR_DB']);
             if ($show_error) {
@@ -128,6 +120,16 @@ class PHPWS_DB {
                 return FALSE;
             }
         }
+
+        // Load the factory files
+        $type = $GLOBALS['PEAR_DB']->dbsyntax;
+        $result = PHPWS_Core::initCoreClass('DB/' . $type .'.php');
+        if ($result == FALSE) {
+            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'PHPWS_DB::loadDB', 
+                             PHPWS_SOURCE_DIR . 'core/class/DB/' . $type . '.php');
+            PHPWS_Core::errorPage();
+        }
+        
 
         if (defined(TABLE_PREFIX)) {
             PHPWS_DB::setPrefix(TABLE_PREFIX);
@@ -1399,30 +1401,7 @@ class PHPWS_DB {
      */
     function dropTable($table, $check_existence=TRUE, $sequence_table=TRUE)
     {
-<<<<<<< Database.php
         return PHPWS_SQL::dropTable($table, $check_existence, $sequence_table);
-=======
-        $table = PHPWS_DB::getPrefix() . $table;
-
-        // was using IF EXISTS but not cross compatible
-        if ($check_existence && !PHPWS_DB::isTable($table)) {
-            return TRUE;
-        }
-
-        $result = PHPWS_DB::query("DROP TABLE $table");
-        if (PEAR::isError($result)) {
-            return $result;
-        }
-        
-        if ($sequence_table && PHPWS_DB::isTable($table . '_seq')) {
-            $result = PHPWS_DB::query("DROP TABLE $table" . '_seq');
-            if (PEAR::isError($result)) {
-                return $result;
-            }
-        }
-        
-        return TRUE;
->>>>>>> 1.120
     }
 
     function truncateTable()
