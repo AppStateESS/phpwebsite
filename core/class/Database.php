@@ -298,11 +298,13 @@ class PHPWS_DB {
 
     function listTables()
     {
+        PHPWS_DB::touchDB();
         return $GLOBALS['PEAR_DB']->getlistOf('tables');
     }
 
     function listDatabases()
     {
+        PHPWS_DB::touchDB();
         return $GLOBALS['PEAR_DB']->getlistOf('databases');
     }
 
@@ -1410,7 +1412,7 @@ class PHPWS_DB {
         }
         
         if ($sequence_table && PHPWS_DB::isTable($table . '_seq')) {
-            $result = PHPWS_DB::query("DROP TABLE $table" . "_seq");
+            $result = PHPWS_DB::query("DROP TABLE $table" . '_seq');
             if (PEAR::isError($result)) {
                 return $result;
             }
