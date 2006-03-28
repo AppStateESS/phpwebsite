@@ -12,11 +12,12 @@ PHPWS_Core::initModClass('version', 'Approval.php');
 define('VERSION_TABLE_SUFFIX', '_version');
 
 /* Error messages */
-define('VERSION_MISSING_ID',     -1);
-define('VERSION_NO_TABLE',       -2);
-define('VERSION_NOT_MODULE',     -3);
-define('VERSION_WRONG_SET_VAR',  -4);
-define('VERSION_MISSING_SOURCE', -5);
+define('VERSION_MISSING_ID',      -1);
+define('VERSION_NO_TABLE',        -2);
+define('VERSION_NOT_MODULE',      -3);
+define('VERSION_WRONG_SET_VAR',   -4);
+define('VERSION_MISSING_SOURCE',  -5);
+define('VERSION_DEFAULT_MISSING', -6);
 
 class Version {
     var $id             = 0;
@@ -406,12 +407,13 @@ class Version {
         $parsed_columns = $source_db->parseColumns($newColumns);
         $columns = $parsed_columns['parameters'];
 
-        $result = PHPWS_Core::getConfigFile('version', 'columns.php');
-        if (PEAR::isError($result)) {
-            return $result;
+        $filename = PHPWS_SOURCE_DIR . 'mod/version/inc/columns.php') 
+
+        if (!is_file($filename)) {
+            return PHPWS_Error::get(VERSION_DEFAULT_MISSING, 'version', 'Version::_buildVersionTable');
         }
 
-        include $result;
+        include $filename;
         foreach ($version_columns as $verCol) {
             $columns[] = $verCol['name'] . ' ' . $verCol['sql'];
         }
