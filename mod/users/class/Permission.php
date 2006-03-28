@@ -24,9 +24,9 @@ class Users_Permission {
             return Users_Permission::createPermissions($module);
         }
 
-        $file = PHPWS_Core::getConfigFile($module, 'permission.php');
-        
-        if ($file == FALSE) {
+        $file = sprintf('%smod/%s/boost/permission.php', PHPWS_SOURCE_DIR,
+                        $module);
+        if (!is_file($file)) {
             return NULL;
         }
 
@@ -237,9 +237,9 @@ class Users_Permission {
     function createPermissions($module)
     {
         $permissions = NULL;
-        $file = PHPWS_Core::getConfigFile($module, 'permission.php');
-
-        if ($file == FALSE) {
+        $file = sprintf('%smod/%s/boost/permission.php', PHPWS_SOURCE_DIR,
+                        $module);
+        if (!is_file($file)) {
             return NULL;
         }
 

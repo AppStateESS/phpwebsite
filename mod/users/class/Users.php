@@ -9,7 +9,8 @@
 
 PHPWS_Core::initModClass('users', 'Permission.php');
 PHPWS_Core::requireConfig('users');
-PHPWS_Core::requireConfig('users', 'errorDefines.php');
+require_once PHPWS_SOURCE_DIR . 'mod/users/inc/errorDefines.php';
+
 
 if (!defined('ALLOWED_USERNAME_CHARACTERS')) {
     define('ALLOWED_USERNAME_CHARACTERS'. '\w');

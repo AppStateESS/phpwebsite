@@ -7,7 +7,7 @@
  * @package Core
  */
 
-PHPWS_Core::requireConfig('users', 'errorDefines.php');
+require_once PHPWS_SOURCE_DIR . 'mod/users/inc/errorDefines.php';
 
 class User_Action {
 
