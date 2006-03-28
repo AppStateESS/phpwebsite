@@ -1,4 +1,48 @@
+Demographics Module
+by Matthew McNaney
+---------------------------------------------------
 
+Version 1.0
+First draft. Demographics is still a fledgling module. For now, I will
+cover the basic functionality. The hooks into the User authentication
+are not in the first version.
+
+
+Introduction
+--------------------------------------------------
+The Demographics module prevents the replication of user information
+across several modules.
+
+
+Registering your Module
+--------------------------------------------------
+When your module is installed, Demographics will look for a file named
+"demographics.php" in your module's conf directory. The file should
+appear like the following example from Comments:
+
+
+
+
+
+Creating a Demographics User Object
+--------------------------------------------------
+User information is accessed via the Demographics_User class.
+
+PHPWS_Core::initModClass('demographics', 'Demographics_User.php');
+
+The Demographics User does not stand alone. You need to extend it:
+
+class my_object extends Demographics_User {
+...
+}
+
+Once extended, you select which demographic fields you are going to
+access by declaring them as object vars:
+
+class my_object extends Demographics_User {
+    var $first_name;
+
+}
 
 info_type : The variable data type. Can be text, bool, or int. Default is text.
 limit     : When the type is 'text',
