@@ -7,7 +7,7 @@
 
 
 PHPWS_Core::configRequireOnce('users', 'config.php', TRUE);
-PHPWS_Core::configRequireOnce('users', 'errorDefines.php', TRUE);
+require_once PHPWS_SOURCE_DIR . 'mod/users/inc/errorDefines.php';
 PHPWS_Core::configRequireOnce('users', 'tags.php');
 
 PHPWS_Core::initModClass('users', 'Users.php');
