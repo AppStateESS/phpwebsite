@@ -1,5 +1,10 @@
 <?php
 
+  /**
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
+   */
+
 translate('users');
 $errors = array(
 		USER_ERROR                => _('Unknown error.'),
