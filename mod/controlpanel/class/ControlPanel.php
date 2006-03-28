@@ -156,9 +156,9 @@ class PHPWS_ControlPanel {
         PHPWS_Core::initModClass('controlpanel', 'Tab.php');
         PHPWS_Core::initModClass('controlpanel', 'Link.php');
 
-        $cpFile = PHPWS_Core::getConfigFile($module, 'controlpanel.php');
+        $cpFile = sprintf('%smod/%s/boost/controlpanel.php', PHPWS_SOURCE_DIR, $module);
 
-        if ($cpFile == FALSE){
+        if (!is_file($cpFile)){
             PHPWS_Boost::addLog($module, _('No Control Panel file found.'));
             return FALSE;
         }
@@ -319,7 +319,7 @@ class PHPWS_ControlPanel {
 
     function getDefaultTabs()
     {
-        include PHPWS_Core::getConfigFile('controlpanel', 'controlpanel.php');
+        include PHPWS_SOURCE_DIR . 'mod/controlpanel/boost/controlpanel.php';
         return $tabs;
     }
 
