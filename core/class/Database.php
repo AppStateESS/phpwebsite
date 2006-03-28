@@ -1400,6 +1400,7 @@ class PHPWS_DB {
      */
     function dropTable($table, $check_existence=TRUE, $sequence_table=TRUE)
     {
+        PHPWS_DB::touchDB();
         $table = PHPWS_DB::getPrefix() . $table;
 
         // was using IF EXISTS but not cross compatible
