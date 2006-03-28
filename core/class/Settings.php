@@ -147,8 +147,12 @@ class PHPWS_Settings {
 
     function loadConfig($module)
     {
-        $result = PHPWS_Core::getConfigFile($module, 'settings.php');
-        return $result;
+        $filename = sprintf('%smod/%s/inc/settings.php', PHPWS_SOURCE_DIR, $module);
+        if (is_file($filename)) {
+            return $filename;
+        } else {
+            return NULL;
+        }
     }
 
     /**
