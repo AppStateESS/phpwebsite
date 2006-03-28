@@ -42,13 +42,14 @@ class PHPWS_Module {
 
     function initByFile()
     {
-        $result = PHPWS_Core::getConfigFile($this->title, 'boost.php');
-        if (empty($result)) {
+        $filename = sprintf('%smod/%s/boost/boost.php', PHPWS_SOURCE_DIR, $this->title);
+
+        if (!is_file($filename)) {
             $this->fullMod = FALSE;
-            return $result;
+            return NULL;
         }
 
-        include $result;
+        include $filename;
     
         if (isset($mod_title)) {
             $this->pre94 = TRUE;
@@ -422,7 +423,7 @@ class PHPWS_Module {
 
     function getDependencies()
     {
-        $file = $this->getDirectory() . 'conf/dependency.xml';
+        $file = $this->getDirectory() . 'boost/dependency.xml';
         if (!is_file($file)) {
             return NULL;
         }
