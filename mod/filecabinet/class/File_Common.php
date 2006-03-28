@@ -131,10 +131,11 @@ class File_Common {
                 // if the document id is set, we assume they are just updating other information
                 return TRUE;
             }
-            $this->_errors[] = PHPWS_Error::get(FC_NO_UPLOAD, 'filecabinet', 'File_Common::importPost');
+            // If there wasn't a file uploaded, we return a FALSE without an error.
+            // This will allow to check for a false and continue on if the error array is empty
             return FALSE;
         } elseif ($this->_upload->isError()) {
-            $error[] = $this->_upload->getMessage();
+            $this->_errors[] = $this->_upload->getMessage();
             return FALSE;
         }
 
