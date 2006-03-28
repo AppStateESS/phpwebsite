@@ -4,7 +4,7 @@
    * @version $Id$
    */
 
-PHPWS_Core::requireConfig('demographics', 'errorDefines.php');
+require_once PHPWS_SOURCE_DIR . 'mod/demographics/inc/errorDefines.php';
 PHPWS_Core::initModClass('demographics', 'Demographics_User.php');
 define('DEMOGRAPHICS_DEFAULT_LIMIT', 255);
 
@@ -41,8 +41,9 @@ class Demographics {
     {
         static $fields;
         if (empty($fields)) {
-            $file = PHPWS_Core::getConfigFile('demographics', 'defaults.php');
-            if (empty($file)) {
+            $file = PHPWS_SOURCE_DIR . 'mod/demographics/inc/defaults.php';
+
+            if (!is_file($file)) {
                 // default file error
                 return NULL;
             }
@@ -79,7 +80,8 @@ class Demographics {
      */
     function register($module)
     {
-        $file = PHPWS_Core::getConfigFile($module, 'demographics.php');
+        
+        $file = sprintf('%smod/%s/boost/demographics.php', PHPWS_SOURCE_DIR, $module);
 
         if (!is_file($file)) {
             PHPWS_Boost::addLog($module, _('No demographics file found.'));
