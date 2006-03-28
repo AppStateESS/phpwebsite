@@ -301,7 +301,7 @@ class PHPWS_DB {
     function listTables()
     {
         PHPWS_DB::touchDB();
-        return PHPWS_SQL::listTables();
+        return $GLOBALS['PEAR_DB']->getlistOf('tables');
     }
 
     function listDatabases()
@@ -309,7 +309,6 @@ class PHPWS_DB {
         PHPWS_DB::touchDB();
         return $GLOBALS['PEAR_DB']->getlistOf('databases');
     }
-
 
     function setPrefix($prefix)
     {
@@ -1401,7 +1400,32 @@ class PHPWS_DB {
      */
     function dropTable($table, $check_existence=TRUE, $sequence_table=TRUE)
     {
-        return PHPWS_SQL::dropTable($table, $check_existence, $sequence_table);
+        $table = PHPWS_DB::getPrefix() . $table;
+
+        // was using IF EXISTS but not cross compatible
+        if ($check_existence && !PHPWS_DB::isTable($table)) {
+            return TRUE;
+        }
+
+        $result = PHPWS_DB::query("DROP TABLE $table");
+
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        if ($sequence_table && PHPWS_DB::isSequence($table)) {
+            $result = PHPWS_SQL::dropSequence($table . '_seq');
+            if (PEAR::isError($result)) {
+                return $result;
+            }
+        }
+
+        return TRUE;
+    }
+
+    function isSequence($table)
+    {
+        return is_numeric($GLOBALS['PEAR_DB']->nextId($table));
     }
 
     function truncateTable()
