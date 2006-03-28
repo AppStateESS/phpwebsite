@@ -8,7 +8,7 @@
  * @package categories
  */
 
-PHPWS_Core::configRequireOnce('categories', 'errorDefines.php');
+require_once PHPWS_SOURCE_DIR . 'mod/categories/inc/errorDefines.php';
 PHPWS_Core::initModClass('categories', 'Category.php');
 
 define('CAT_LINK_DIVIDERS', '&gt;&gt;');
