@@ -4,6 +4,8 @@
    * @version $Id$
    */
 
+PHPWS_Core::requireConfig('demographics', 'errorDefines.php');
+PHPWS_Core::initModClass('demographics', 'Demographics_User.php');
 define('DEMOGRAPHICS_DEFAULT_LIMIT', 255);
 
 class Demographics {
@@ -122,6 +124,19 @@ class Demographics {
         return TRUE;
     }
 
+    function unregisterField($field_name)
+    {
+        $current_fields = Demographics::getFields();
+
+        // if the registered field is not created, return
+        if (!in_array($field_name, $current_fields)) {
+            return TRUE;
+        }
+
+        $db = & new PHPWS_DB('demographics');
+        return $db->dropTableColumn($field_name);
+    }
+
     /**
      * Registers one of Demographic's default fields
      */
@@ -185,84 +200,26 @@ class Demographics {
      */
     function unregister($module)
     {
+        $file = PHPWS_Core::getConfigFile($module, 'demographics.php');
 
+        if (!is_file($file)) {
+            PHPWS_Boost::addLog($module, _('No demographics file found.'));
+            return FALSE;
+        }
+
+        include $file;
+
+        if (isset($fields) && is_array($fields)) {
+            foreach ($fields as $field_name => $stats) {
+                Demographics::unregisterField($field_name);
+            }
+        }
+
+        return TRUE;
     }
 
 }
 
-class Demographics_User {
-    var $user_id = 0;
-    var $user_info = array();
-    var $_demographics = NULL;
-    var $_error = NULL;
-
-    function Demographics_User($user_id=0, $create_new=TRUE) {
-        if (!$user_id) {
-            return;
-        }
-
-        $db = & new PHPWS_DB('demographics');
-        $db->addWhere('user_id', (int)$user_id);
-        $result = $db->select();
-        if (PEAR::isError($result)) {
-            $this->_error = $result;
-        }
-
-        $this->user_id = (int)$user_id;
-        if (empty($result) && $create_new) {
-
-            $column_info = $db->getTableColumns(TRUE);
-            unset($column_info['user_id']);
-
-            foreach ($column_info as $colname => $colval) {
-                if ($colval['type'] == 'string') {
-                    $this->user_info[$colname] = NULL;
-                } else {
-                    $this->user_info[$colname] = 0;
-                }
-            }
-            $result = $this->create($user_id);
-
-            if (PEAR::isError($result)) {
-                $this->_error = $result;
-                return;
-            }
-
-        } else {
-            $this->user_info = $result;
-        }
-    }
-
-    /**
-     * Creates a new user demographic entry
-     */
-    function create($user_id)
-    {
-        if (!$user_id) {
-            return FALSE;
-        }
-
-        $db = & new PHPWS_DB('demographics');
-        $db->addValue($this->user_info);
-        $db->addValue('user_id', (int)$user_id);
-        return $db->insert();
-    }
-
-    /**
-     * Updates a current user demographic
-     */
-    function update()
-    {
-        if (!$this->user_id) {
-            return FALSE;
-        }
-        $db = & new PHPWS_DB('demographics');
-        $db->addValue($this->user_info);
-        $db->addWhere('user_id', (int)$this->user_id);
-        return $db->update();
-    }
-
-}
 
 
 ?>

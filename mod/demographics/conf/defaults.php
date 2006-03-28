@@ -28,11 +28,6 @@ $fields['middle_name']['limit']    = 40;
 $fields['last_name']['limit']      = 40;
 $fields['middle_initial']['limit'] = 1;
 
-// Business information
-$fields['position_title']['limit'] = 40;
-$fields['department']['limit']     = 40;
-
-
 // wouldn't suggest asking for this but left here for
 // completeness sake
 $fields['social_security']['limit'] = 12;
@@ -49,7 +44,6 @@ $fields['evening_phone']['limit'] = 20;
 $fields['fax_number']['limit']    = 20;
 $fields['mobile_phone']['limit']  = 20;
 $fields['pager_number']['limit']  = 20;
-
 
 /* ----- Internet infomation ----- */
 $fields['permanent_email']['limit'] = 30;
@@ -97,5 +91,14 @@ $fields['permanent_county']['limit']      = 20;
 $fields['permanent_country']['limit']     = 30;
 $fields['permanent_zip_code']['limit']    = 10;
 $fields['permanent_postal_code']['limit'] = 10;
+
+// Miscellaneous information
+$fields['longitude']['type']       = 'integer';
+$fields['latitude']['type']        = 'integer';
+$fields['location']['limit']       = 50; // generic description of where they are
+$fields['department']['limit']     = 40;
+$fields['division']['limit']       = 40;
+$fields['position_title']['limit'] = 40;
+
 
 ?>
