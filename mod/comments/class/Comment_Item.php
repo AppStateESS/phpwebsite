@@ -242,8 +242,9 @@ class Comment_Item {
     function getTpl()
     {
         translate('comments');
+
 	if (!empty($GLOBALS['Comment_Users'])) {
-	    $author = $GLOBALS['Comment_Users'][$this->author_id];
+            $author = & new Comment_User($this->author_id);
 	} else {
 	    $author = & new Comment_User(0);
 	}

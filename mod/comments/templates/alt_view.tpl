@@ -13,7 +13,7 @@
         <tr>
             <td class="author-info bgcolor1" valign="top">
                <h2>{AUTHOR_NAME} <!-- BEGIN ip -->- {IP_ADDRESS}<!-- END ip --></h2>
-               {PICTURE}
+               {AVATAR}
             </td>
             <td class="comment-body">
                 <h2>{SUBJECT}</h2>

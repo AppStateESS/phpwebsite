@@ -24,12 +24,7 @@ CREATE TABLE comments_threads (
 CREATE TABLE comments_users (
   user_id int NOT NULL default '0',
   display_name varchar(50) NOT NULL default '',
-  signature varchar(255) default NULL,
   comments_made int NOT NULL default '0',
   joined_date int NOT NULL default '0',
-  picture varchar(255) default NULL,
-  contact_email varchar(255) default NULL,
-  website varchar(255) default NULL,
-  location varchar(128) default NULL,
   locked smallint(6) NOT NULL default '0'
 );

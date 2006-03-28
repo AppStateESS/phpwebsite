@@ -43,12 +43,16 @@ class Comments {
 
     function &getCommentUser($user_id)
     {
-
         if (isset($GLOBALS['Comment_Users'][$user_id])) {
             return $GLOBALS['Comment_Users'][$user_id];
         }
 
-        $GLOBALS['Comment_Users'][$user_id] = & new Comment_User($user_id);
+        $user = & new Comment_User($user_id);
+        if ($user->isNew()) {
+            $result = $user->saveUser();
+        }
+
+        $GLOBALS['Comment_Users'][$user_id] = &$user;
         return $GLOBALS['Comment_Users'][$user_id];
     }
 
@@ -59,14 +63,9 @@ class Comments {
         }
 
         $user = Comments::getCommentUser($user_id);
-
+        test($user);
         if (!empty($user->user_id)) {
-            $user->increaseCommentsMade();
-            return $user->save();
-        } else {
-            $user->loadAll();
-            $user->increaseCommentsMade();
-            return $user->save(TRUE);
+            $user->bumpCommentsMade();
         }
     }
 

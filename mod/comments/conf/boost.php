@@ -1,6 +1,6 @@
 <?php
 $proper_name  = 'Comments';
-$version      = '0.0.3';
+$version      = '0.1.0';
 $unregister   = TRUE;
 $import_sql   = TRUE;
 $image_dir    = TRUE;

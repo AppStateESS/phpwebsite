@@ -7,86 +7,40 @@
    * @version $Id$
    */
 PHPWS_Core::requireConfig('comments');
+PHPWS_Core::initModClass('demographics', 'Demographics.php');
 
-class Comment_User {
+class Comment_User extends Demographics_User {
 
-    var $user_id       = NULL;
     var $display_name  = NULL;
     var $signature     = NULL;
     var $comments_made = 0;
     var $joined_date   = 0;
-    var $picture       = NULL;
+    var $avatar        = NULL;
     var $contact_email = NULL;
     var $website       = NULL;
     var $location      = NULL;
     var $locked        = 0;
-    var $_error        = NULL;
+
+    // using a second table with demographics
+    var $_table        = 'comments_users';
+
 
     function Comment_User($user_id=NULL)
     {
-        if (is_null($user_id)) {
-            return;
-        } elseif ((int)$user_id == 0) {
+        if ($user_id == 0) {
             $this->loadAnonymous();
             return;
         }
-
         $this->user_id = (int)$user_id;
-        $result = $this->init();
-        if (PEAR::isError($result)) {
-            $this->user_id = NULL;
-            $this->_error = $result;
-        } elseif (empty($result)) {
-            if (!$this->createNewUser()) {
-                $this->user_id = NULL;
-            }
-        }
+        $this->load();
     }
 
-    function init()
-    {
-        $db = & new PHPWS_DB('comments_users');
-        $db->addWhere('user_id', $this->user_id);
-        return $db->loadObject($this);
-    }
-
-    function createNewUser()
-    {
-        $user = & new PHPWS_User($this->user_id);
-        if (!$user->id) {
-            return FALSE;
-        }
-
-        $this->display_name = $user->display_name;
-        return $this->save(TRUE);
-    }
 
     function loadAnonymous()
     {
         $this->display_name = DEFAULT_ANONYMOUS_TITLE;
     }
 
-    function getUserId()
-    {
-        return $this->user_id;
-    }
-
-    function loadAll()
-    {
-        $this->loadUserId();
-        $this->loadDisplayName();
-        $this->loadJoinedDate();
-    }
-
-    function loadUserId()
-    {
-        $this->user_id = Current_User::getId();
-    }
-
-    function loadDisplayName()
-    {
-        $this->display_name = Current_User::getDisplayName();
-    }
 
     function setSignature($sig)
     {
@@ -112,17 +66,16 @@ class Comment_User {
         return $this->signature;
     }
 
-    function increaseCommentsMade()
+    function bumpCommentsMade()
     {
-        $this->comments_made++;
+        if (!$this->user_id) {
+            return;
+        }
+
+        $db = & new PHPWS_DB($this->_table);
+        $result = $db->incrementColumn('comments_made');
     }
 
-    function decreaseCommentsMade()
-    {
-        if ($this->comments_made > 0) {
-            $this->comments_made--;
-        }
-    }
 
     function loadJoinedDate($date=NULL)
     {
@@ -143,28 +96,21 @@ class Comment_User {
     
     }
 
-    function setPicture($picture_url)
+    function setAvatar($avatar_url)
     {
-        $dimensions = @getimagesize($picture_url);
-        if (!$dimensions) {
-            return FALSE;
-        }
-        test($dimensions);
-        // test dimension of graphic
-        if (1) {
-            $this->picture = $picture_url;
-            return TRUE;
-        } else {
-            return FALSE;
-        }
+        $this->avatar = $avatar_url;
     }
 
-    function getPicture($format=TRUE)
+    function getAvatar($format=TRUE)
     {
-        if (empty($this->picture)) {
+        if (empty($this->avatar)) {
             return NULL;
         }
-        return sprintf('<img src="%s" />', $this->picture);
+        if ($format) {
+            return sprintf('<img src="%s" />', $this->avatar);
+        } else {
+            return $this->avatar;
+        }
     }
 
     function setContactEmail($email_address)
@@ -180,9 +126,7 @@ class Comment_User {
     function getContactEmail($format=FALSE)
     {
         if ($format) {
-            return '<a href="mailto:' . 
-                PHPWS_Text::htmlEncodeText($this->contact_email) . 
-                '" />' . $this->display_name . '</a>';
+            return '<a href="mailto:' . $this->contact_email . '" />' . $this->display_name . '</a>';
         } else {
             return $this->contact_email;
         }
@@ -220,25 +164,10 @@ class Comment_User {
         $this->locked = 0;
     }
 
-    function save($new=FALSE)
-    {
-        $db = & new PHPWS_DB('comments_users');
-        if (!$new) {
-            $db->addWhere('user_id', $this->user_id);
-        }
-        return $db->saveObject($this);
-    }
-
-    function add()
-    {
-
-    }
 
     function kill()
     {
-        $db = & new PHPWS_DB('comments_users');
-        $db->addWhere('user_id', $this->user_id);
-        return $db->delete();
+        return $this->delete();
     }
 
     function hasError()
@@ -263,9 +192,10 @@ class Comment_User {
         $template['AUTHOR_NAME']   = $this->display_name;
         $template['COMMENTS_MADE'] = $this->comments_made;
 
+        $signature = $this->getSignature();
 
-        if (isset($this->signature)) {
-            $template['SIGNATURE'] = $this->signature;
+        if (!empty($signature)) {
+            $template['SIGNATURE'] = $signature;
         }
 
         if (!empty($this->joined_date)) {
@@ -273,8 +203,8 @@ class Comment_User {
             $template['JOINED_DATE_LABEL'] = _('Joined');
         }
 
-        if (isset($this->picture)) {
-            $template['PICTURE'] = $this->getPicture();
+        if (isset($this->avatar)) {
+            $template['AVATAR'] = $this->getAvatar();
         }
 
         if (isset($this->contact_email)) {
@@ -297,12 +227,14 @@ class Comment_User {
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
         if (PHPWS_Settings::get('comments', 'allow_signatures')) {
             $this->setSignature($_POST['signature']);
-        }
-     
-        if (empty($_POST['picture'])) {
-            $val['picture'] = NULL;
         } else {
-            $image_info = @getimagesize($_POST['picture']);
+            $this->signature = NULL;
+        }
+
+        if (empty($_POST['avatar'])) {
+            $val['avatar'] = NULL;
+        } else {
+            $image_info = @getimagesize($_POST['avatar']);
             if (!$image_info) {
                 $errors[] = _('Could not access image url.');
             }
@@ -315,9 +247,11 @@ class Comment_User {
                 $image->setMaxWidth(COMMENT_MAX_AVATAR_WIDTH);
                 $image->setMaxHeight(COMMENT_MAX_AVATAR_HEIGHT);
                 
-                if (!$image->importPost('picture')) {
-                    foreach ($image->_errors as $oError) {
-                        $errors[] = $oError->getMessage();
+                if (!$image->importPost('avatar')) {
+                    if (isset($image->_errors)) {
+                        foreach ($image->_errors as $oError) {
+                            $errors[] = $oError->getMessage();
+                        }
                     }
                 } else {
                     $result = $image->write();
@@ -325,22 +259,49 @@ class Comment_User {
                         PHPWS_Error::log($result);
                         $errors[] = array(_('There was a problem saving your image.'));
                     } else {
-                        $this->picture = $image->getPath();
+                        $this->setAvatar($image->getPath());
                     }
                 }
             } else {
-                $result = $this->testAvatar(trim($_POST['picture']));
+                if ($this->testAvatar(trim($_POST['avatar']))) {
+                    $this->setAvatar($_POST['avatar']);
+                }
+            }
+        } else {
+            $this->avatar = NULL;
+        }
+
+        // need some error checking here
+        if (empty($_POST['contact_email'])) {
+            $this->contact_email = NULL;
+        } else {
+            if (!$this->setContactEmail($_POST['contact_email'])) {
+                $errors[] = _('Your contact email is formatted improperly.');
             }
         }
 
         if (isset($errors)) {
             return $errors;
         } else {
-            $this->save();
+            $this->saveUser();
             return TRUE;
         }
     }
 
+    function saveUser()
+    {
+        if ($this->isNew()) {
+            $user = & new PHPWS_User($this->user_id);
+            $this->display_name = $user->getDisplayName();
+        }
+        return $this->save();
+    }
+
+    /**
+     * Tests an image's url to see if it is the correct file type,
+     * dimensions, etc.
+     */
+    // Not finished
     function testAvatar($url)
     {
         $test = @getimagesize($url);
@@ -348,7 +309,7 @@ class Comment_User {
             return FALSE;
         }
 
-        test($test);
+        return TRUE;
     }
 
 }

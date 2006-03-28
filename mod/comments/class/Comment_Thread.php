@@ -276,16 +276,16 @@ class Comment_Thread {
             $author_list[] = $author_id;
         }
 
-        $db = & new PHPWS_DB('comments_users');
+        $db = & new PHPWS_DB('demographics');
         $db->addWhere('user_id', $author_list);
         $db->setIndexBy('user_id');
-        $result = $db->getObjects('comment_user');
+        $result = $db->select();
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             $result = NULL;
         }
         $GLOBALS['Comment_Users'] = $result;
-        $GLOBALS['Comment_Users'][0] = & new Comment_User(0);
+        //        $GLOBALS['Comment_Users'][0] = & new Comment_User(0);
     }
 
     function getItemTemplates($comments)

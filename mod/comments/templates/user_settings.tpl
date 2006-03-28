@@ -4,7 +4,11 @@
     <td class="label">{SIGNATURE_LABEL}</td><td>{SIGNATURE}</td>
   </tr>
   <tr>
-    <td class="label">{PICTURE_LABEL}</td><td>{PICTURE}</td>
+    <td class="label">{AVATAR_LABEL}</td><td>{AVATAR}</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>{CURRENT_AVATAR}</td>
   </tr>
   <tr>
     <td class="label">{CONTACT_EMAIL_LABEL}</td><td>{CONTACT_EMAIL}</td>
