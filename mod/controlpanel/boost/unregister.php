@@ -12,10 +12,11 @@ function controlpanel_unregister($module, &$content)
     PHPWS_Core::initModClass('controlpanel', 'Link.php');
 
     $itemnameList = array();
-    $cpFile = PHPWS_Core::getConfigFile($module, 'controlpanel.php');
-
-    if (is_object($cpFile) || !is_file($cpFile)) {
-        return TRUE;
+    $cpFile = sprintf('%smod/%s/boost/controlpanel.php', PHPWS_SOURCE_DIR, $module);
+    
+    if (!is_file($cpFile)){
+        PHPWS_Boost::addLog($module, _('No Control Panel file found for unregisteration.'));
+        return FALSE;
     }
 
     include_once($cpFile);
