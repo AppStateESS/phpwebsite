@@ -5,9 +5,6 @@
 {METATAGS}
 {JAVASCRIPT}
 {STYLE}
-<style type="text/css"> @import url("themes/default/style.css"); </style>
-<link rel="stylesheet" href="themes/default/default.css" type="text/css" />
-<link rel="alternate stylesheet" title="Blue" href="themes/default/blue.css" type="text/css" />
 
 <style>
 body {
