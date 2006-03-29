@@ -12,6 +12,7 @@ $settings = array('use_calendar_style' => 1,
                   'default_day_start'  => 8,
                   'default_day_end'    => 18,
                   'default_hour_format'=> 'g',
+                  'display_mini'       => 2,
                   'info_panel'         => 0);
 
 ?>

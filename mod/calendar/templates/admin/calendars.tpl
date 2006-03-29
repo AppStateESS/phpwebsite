@@ -1,5 +1,5 @@
 {ADD_CALENDAR}
-<table width="100%">
+<table width="99%">
   <tr>
     <th>{TITLE_LABEL} {TITLE_SORT}</th>
     <th>{SUMMARY_LABEL}</th>

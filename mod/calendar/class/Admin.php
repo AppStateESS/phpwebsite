@@ -82,6 +82,11 @@ class Calendar_Admin {
             $this->sendMessage($message, 'schedules');
             break;
 
+        case 'post_settings':
+            $this->saveSettings();
+            $this->sendMessage(_('Settings saved'), 'settings');
+            break;
+
         case 'edit_event_js':
             $this->calendar->loadSchedule();
             $result = $this->loadEvent();
@@ -272,6 +277,19 @@ class Calendar_Admin {
 
         $panel->quickSetTabs($tabs);
         return $panel;
+    }
+
+    /**
+     * Saves the settings posted from the settings page
+     */
+    function saveSettings()
+    {
+        PHPWS_Settings::set('calendar', 'info_panel',         $_POST['info_panel']);
+        PHPWS_Settings::set('calendar', 'starting_day',       $_POST['starting_day']);
+        PHPWS_Settings::set('calendar', 'personal_schedules', $_POST['personal_schedules']);
+        PHPWS_Settings::set('calendar', 'hour_format',        $_POST['hour_format']);
+        PHPWS_Settings::set('calendar', 'display_mini',       $_POST['display_mini']);
+        PHPWS_Settings::save('calendar');
     }
 
     function sendMessage($message, $command)
@@ -592,9 +610,19 @@ class Calendar_Admin {
                                               'H'=>'09:00 - 15:00'));
         $form->setMatch('hour_format', PHPWS_Settings::get('calendar', 'default_hour_format'));
         $form->setLabel('hour_format', _('Hour format'));
-        
+
+        $form->addRadio('display_mini', array(1 => MINI_CAL_NO_SHOW,
+                                              2 => MINI_CAL_SHOW_FRONT,
+                                              3 => MINI_CAL_SHOW_ALWAYS));
+        $form->setLabel('display_mini', array(1 =>_('Never show'),
+                                              2 =>_('Show on front page only'),
+                                              3 =>_('Show always')));
+        $form->setMatch('display_mini', PHPWS_Settings::get('calendar', 'display_mini'));
+
         $form->addSubmit(_('Save'));
+        
         $template = $form->getTemplate();
+        $template['DISPLAY_MINI_LABEL'] = _('Mini Calendar display');
         $template['PERSONAL'] = _('Personal schedules');
 
         return PHPWS_Template::process($template, 'calendar', 'admin/forms/settings.tpl');

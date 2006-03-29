@@ -14,6 +14,10 @@ if (!defined('CALENDAR_MONTH_LISTING')) {
     define('CALENDAR_MONTH_LISTING', '%B');
  }
 
+define('MINI_CAL_NO_SHOW', 1);
+define('MINI_CAL_SHOW_FRONT', 2);
+define('MINI_CAL_SHOW_ALWAYS', 3);
+
 
 class PHPWS_Calendar {
     var $today        = 0;
