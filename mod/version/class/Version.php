@@ -492,6 +492,14 @@ class Version {
         return TRUE;
     }
 
+    function saveKey($key_id)
+    {
+        $db = & new PHPWS_DB($this->version_table);
+        $db->addWhere('id', $this->id);
+        $db->addValue('key_id', (int)$key_id);
+        return $db->update();
+    }
+
     function getBackupList(){
         if (empty($this->source_id)) {
             return FALSE;
