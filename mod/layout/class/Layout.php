@@ -679,8 +679,14 @@ class Layout {
         Layout::add($text, $module, $contentVar);
     }
 
-    function styleChangeLink()
+    function miniLinks()
     {
+        if (Layout::isMoveBox()) {
+            $vars['action']  = 'admin';
+            $vars['command'] = 'turn_off_box_move';
+            $links[] = PHPWS_Text::moduleLink(_('Box move off'), 'layout', $vars);
+        }
+
         if (!Layout::getExtraStyles()) {
             return NULL;
         }
@@ -700,13 +706,14 @@ class Layout {
             $vars['key_id'] = $key->id;
 
             $js_vars['address'] = PHPWS_Text::linkAddress('layout', $vars, TRUE);
-            $link = javascript('open_window', $js_vars);
-
-            MiniAdmin::add('layout', $link);
-            // MiniAdmin runs get before layout and runtime won't work
-            // with flagged keys 
-            MiniAdmin::get();
+            $links[] = javascript('open_window', $js_vars);
         }
+
+        MiniAdmin::add('layout', $links);
+
+        // MiniAdmin runs get before layout and runtime won't work
+        // with flagged keys 
+        MiniAdmin::get();
     }
 
     function styleLink($link, $header=FALSE)

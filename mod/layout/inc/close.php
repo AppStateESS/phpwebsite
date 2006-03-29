@@ -10,7 +10,7 @@ if (isset($GLOBALS['pre094_modules'])) {
  }
 
 if (Current_User::allow('layout')) {
-    Layout::styleChangeLink();
+    Layout::miniLinks();
  }
 
 Layout::showKeyStyle();
