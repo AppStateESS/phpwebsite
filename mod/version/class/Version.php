@@ -407,7 +407,7 @@ class Version {
         $parsed_columns = $source_db->parseColumns($newColumns);
         $columns = $parsed_columns['parameters'];
 
-        $filename = PHPWS_SOURCE_DIR . 'mod/version/inc/columns.php') 
+        $filename = PHPWS_SOURCE_DIR . 'mod/version/inc/columns.php'; 
 
         if (!is_file($filename)) {
             return PHPWS_Error::get(VERSION_DEFAULT_MISSING, 'version', 'Version::_buildVersionTable');
