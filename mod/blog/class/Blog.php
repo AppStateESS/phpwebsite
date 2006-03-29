@@ -160,6 +160,7 @@ class Blog {
         }
 
         PHPWS_Core::initModClass('comments', 'Comments.php');
+
         $key = new Key($this->key_id);
 
         if (!$key->allowView()) {
@@ -340,6 +341,7 @@ class Blog {
         if ($version->isApproved() && $this->id) {
             $key = $this->saveKey();
             $this->save();
+            $version->saveKey($key->id);
         }
 
         return TRUE;
