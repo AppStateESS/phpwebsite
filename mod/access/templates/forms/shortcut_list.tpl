@@ -1,4 +1,3 @@
-{SHORTCUT_LINK}
 {START_FORM}
 <table width="100%" cellpadding="3">
   <tr>
@@ -18,7 +17,7 @@
   </tr>
 <!-- END listrows -->
 </table>
+<!-- BEGIN empty --><div class="align-center">{EMPTY_MESSAGE}</div><!-- END empty -->
 {CHECK_ALL_SHORTCUTS}
 <div class="align-center">{LIST_ACTION} {SUBMIT}</div>
 {END_FORM}
-{EMPTY_MESSAGE}

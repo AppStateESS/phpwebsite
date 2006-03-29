@@ -84,20 +84,12 @@ class Access {
                 Access::sendMessage(_('Shortcut deleted'), 'shortcuts');
                 break;
                 
-            case 'disable_shortcut':
-                unset($_SESSION['Access_Shortcut_Enabled']);
-                $message = _('Shortcuts disabled.');
             case 'shortcuts':
                 PHPWS_Core::initModClass('access', 'Forms.php');
                 $title = _('Shortcuts');
                 $content = Access_Forms::shortcuts();
                 break;
 
-            case 'enable_shortcut':
-                $title = _('Shortcut menu enabled!');
-                $content = _('To create a shortcut, browse to a Shortcut enabled page.');
-                $_SESSION['Access_Shortcut_Enabled'] = TRUE;
-                break;
 
             case 'post_update_file':
                 $result = Access::writeAccess();
@@ -124,25 +116,32 @@ class Access {
                 $content = Access_Forms::updateFile();
                 break;
 
+            case 'edit_shortcut':
+                PHPWS_Core::initModClass('access', 'Forms.php');
+                $content = Access_Forms::shortcut_menu();
+                Layout::nakedDisplay($content);
+                exit();
+                break;
+
             case 'post_shortcut':
-                if (isset($_POST['off'])) {
-                    unset($_SESSION['Access_Shortcut_Enabled']);
-                    PHPWS_Core::goBack();
-                    exit();
-                }
                 PHPWS_Core::initModClass('access', 'Shortcut.php');
-                $title = _('Adding Shortcut');
+
                 $shortcut = & new Access_Shortcut;
                 $result = $shortcut->postShortcut();
+                $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" />', _('Close window'));
                 if (PEAR::isError($result)) {
-                    $content = _('An error occurred:') . '<br />' . $result->getMessage() . '<br />';
-                    $content .= sprintf('<a href="%s">%s</a>', $_SERVER['HTTP_REFERER'], _('Return to previous page.'));
+                    $tpl['TITLE'] = _('An error occurred:') . '<br />' . $result->getMessage() . '<br />';
+                    $tpl['CONTENT']  = sprintf('<a href="%s">%s</a>', $_SERVER['HTTP_REFERER'], _('Return to previous page.'));
+                    $content = PHPWS_Template::process($tpl, 'access', 'box.tpl');
                 } elseif ($result == FALSE) {
-                    $content = _('A serious error occurred. Please check your error.log.') . '<br />';
-                    $content .= sprintf('<a href="%s">%s</a>', $_SERVER['HTTP_REFERER'], _('Return to previous page.'));
+                    $tpl['TITLE'] = _('A serious error occurred. Please check your error.log.') . '<br />';
+                    $tpl['CONTENT'] = sprintf('<a href="%s">%s</a>', $_SERVER['HTTP_REFERER'], _('Return to previous page.'));
+                    $content = PHPWS_Template::process($tpl, 'access', 'box.tpl');
                 } else {
                     $content = Access::saveShortcut($shortcut);
                 }
+
+                Layout::nakedDisplay($content);
                 break;
 
             }
@@ -161,30 +160,32 @@ class Access {
 
     function saveShortcut(&$shortcut)
     {
+        $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" />', _('Close window'));
         $result = $shortcut->save();
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             $content[] = _('A serious error occurred. Please check your error.log.');
-            $content[] = sprintf('<a href="%s">%s</a>', $_SERVER['HTTP_REFERER'], _('Return to previous page.'));
+
         } else {
             if (PHPWS_Settings::get('access', 'allow_file_update')) {
                 $result = Access::writeAccess();
                 if (!$result) {
-                    $content[] = _('An error occurred. Please check your error.log.');
-                    $content[] = sprintf('<a href="%s">%s</a>', $_SERVER['HTTP_REFERER'], _('Return to previous page.'));
+                    $tpl['TITLE'] = _('An error occurred.');
+                    $content[] =  _('Please check your error.log.');
                 } else {
-                    $content[] = _('Shortcut saved successfully!');
-                    $content[] = _('You can now reference this page with this following link:');
-                    $content[] = $shortcut->getRewrite(TRUE);
+                    $tpl['TITLE'] = _('Access has saved your shortcut.');
+                    $content[] = _('You can access this item with the following link:');
+                    $content[] = $shortcut->getRewrite(TRUE, FALSE);
                 }
             } else {
-                $content[] = _('Access has saved your shortcut.');
+                $tpl['TITLE'] = _('Access has saved your shortcut.');
                 $content[] = _('An administrator will need to approve it before it is functional.');
                 $content[] = _('When active, you will be able to use the following link:');
                 $content[] = $shortcut->getRewrite(TRUE, FALSE);
             }
         }
-        return implode('<br />', $content);
+        $tpl['CONTENT'] = implode('<br />', $content);
+        return PHPWS_Template::process($tpl, 'access', 'box.tpl');
     }
 
     function saveAdmin()
@@ -292,6 +293,10 @@ class Access {
 
     }
 
+    /**
+     * Checks several factors to determine if the user can write
+     * the .htaccess file
+     */
     function writeAccess()
     {
         if (!PHPWS_Settings::get('access', 'allow_file_update') && 
@@ -329,14 +334,16 @@ class Access {
     }
 
 
-    function shortcut()
+    function shortcut(&$key)
     {
-        if (!isset($_SESSION['Access_Shortcut_Enabled'])) {
-            return;
-        }
-
-        PHPWS_Core::initModClass('access', 'Forms.php');
-        Access_Forms::shortcut_menu();
+        $vars['command'] = 'edit_shortcut';
+        $vars['key_id']  = $key->id; 
+        $link = PHPWS_Text::linkAddress('access', $vars, TRUE);
+        $js_vars['address'] = $link;
+        $js_vars['label'] = _('Shortcut');
+        $js_vars['height'] = '200';
+        $js_link = javascript('open_window', $js_vars);
+        MiniAdmin::add('access', $js_link);
     }
 
 

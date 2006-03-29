@@ -41,14 +41,6 @@ class Access_Forms {
 
         $page_tags = $form->getTemplate();
 
-        if (isset($_SESSION['Access_Shortcut_Enabled'])) {
-            $sc_vars['command'] = 'disable_shortcut';
-            $page_tags['SHORTCUT_LINK']  = PHPWS_Text::secureLink(_('Turn off Shortcuts'), 'access', $sc_vars);
-        } else {
-            $sc_vars['command'] = 'enable_shortcut';
-            $page_tags['SHORTCUT_LINK']  = PHPWS_Text::secureLink(_('Enable Shortcuts'), 'access', $sc_vars);
-        }
-
         $page_tags['KEYWORD_LABEL']  = _('Keywords');
         $page_tags['URL_LABEL']      = _('Url');
         $page_tags['ACTIVE_LABEL'] = _('Active?');
@@ -56,7 +48,7 @@ class Access_Forms {
         $page_tags['CHECK_ALL_SHORTCUTS'] = javascript('check_all', array('checkbox_name' => 'shortcut[]'));
 
         $js_vars['value']        = _('Go');
-        $js_vars['select_id']    = $form-getId('list_action');
+        $js_vars['select_id']    = $form->getId('list_action');
         $js_vars['action_match'] = 'delete';
         $js_vars['message']      = _('Are you sure you want to delete the checked shortcuts?');
         $page_tags['SUBMIT'] = javascript('select_confirm', $js_vars);
@@ -268,22 +260,24 @@ class Access_Forms {
 
     function shortcut_menu()
     {
-        $url = urlencode(PHPWS_Core::getCurrentUrl());
+        if (!@$key_id = $_REQUEST['key_id']) {
+            javascript('close_window');
+        }
 
         $form = & new PHPWS_Form('shortcut_menu');
         $form->addHidden('module', 'access');
-        $form->addHidden('url', $url);
         $form->addHidden('command', 'post_shortcut');
+        $form->addHidden('key_id', $key_id);
         $instruction = _('Type keyword here');
         $form->addText('keyword', $instruction);
         $form->setExtra('keyword', sprintf('onclick="if (this.value == \'%s\') {this.value=\'\'}"', $instruction));
         $form->addSubmit('go', _('Go'));
-        $form->addSubmit('off', _('Turn off Shortcuts'));
         $tpl = $form->getTemplate();
 
         $tpl['TITLE'] = _('Shortcuts');
+        $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close();" />', _('Cancel'));
         $content = PHPWS_Template::process($tpl, 'access', 'shortcut_menu.tpl');
-        Layout::add($content, 'access', 'shortcut_menu');
+        return $content;
     }
 
 

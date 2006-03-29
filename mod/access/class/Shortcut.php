@@ -33,8 +33,9 @@ class Access_Shortcut {
         if (!isset($_POST['keyword'])) {
             return PHPWS_Error::get(SHORTCUT_MISSING_KEYWORD, 'access', 'Shortcut::postShortcut');
         }
-        if (!isset($_POST['url'])) {
-            return PHPWS_Error::get(SHORTCUT_MISSING_URL, 'access', 'Shortcut::postShortcut');
+
+        if (!isset($_POST['key_id'])) {
+            return PHPWS_Error::get(SHORTCUT_MISSING_KEY, 'access', 'Shortcut::postShortcut');
         }
         
         $result = $this->setKeyword($_POST['keyword']);
@@ -42,7 +43,8 @@ class Access_Shortcut {
             return $result;
         }
 
-        $this->setUrl(urldecode($_POST['url']));
+        $key = & new Key((int)$_POST['key_id']);
+        $this->setUrl($key->url);
         return TRUE;
     }
 
