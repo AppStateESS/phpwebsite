@@ -248,6 +248,15 @@ class PHPWS_Core {
         return in_array($key, $_SESSION['PHPWS_LastPost']);
     }
  
+    function atHome()
+    {
+        if (empty($_SERVER['QUERY_STRING']) && $_SERVER['REQUEST_METHOD'] == 'GET') {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
     /**
      * Returns the user browser to the referer (last web page)
      */
