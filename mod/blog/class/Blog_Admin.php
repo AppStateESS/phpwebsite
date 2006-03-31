@@ -246,11 +246,11 @@ class Blog_Admin {
         $approvalLink = 'index.php?module=blog&amp;action=admin';
         $approvalCommand = array ('title'=>_('Approval'), 'link'=> $approvalLink);
 
-        $tabs['new'] = $newCommand;
+        $tabs['new'] = &$newCommand;
 
         if (Current_User::allow('blog', 'edit_blog')) {
-            $tabs['list'] = $listCommand;
-            $tabs['approval'] = $approvalCommand;
+            $tabs['list'] = &$listCommand;
+            $tabs['approval'] = &$approvalCommand;
         }
 
         $panel = & new PHPWS_Panel('blog');
