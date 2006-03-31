@@ -709,6 +709,10 @@ class Layout {
             $links[] = javascript('open_window', $js_vars);
         }
 
+        if (!isset($links)) {
+            return;
+        }
+
         MiniAdmin::add('layout', $links);
 
         // MiniAdmin runs get before layout and runtime won't work
