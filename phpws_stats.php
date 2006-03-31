@@ -62,7 +62,7 @@ function show_stats()
     }
 
     if(show_request) {
-        echo _('Request') . ' ';
+        echo '<hr / >' . _('Request') . ' ';
         test($_REQUEST);
     }
 }
