@@ -127,7 +127,11 @@ class User_Form {
 
     function modulePermission($mod, &$group)
     {
-        $file = PHPWS_Core::getConfigFile($mod['title'], 'permission.php');
+        $file = PHPWS_SOURCE_DIR . 'mod/' . $mod['title'] . '/boost/permission.php';
+        if (!is_file($file)) {
+            return FALSE;
+        }
+
         $template = NULL;
 
         if ($file == FALSE) {
