@@ -744,7 +744,7 @@ class PHPWS_User {
         $linkVar['action'] = 'admin';
         $linkVar['user_id'] = $this->id;
 
-        $jsvar['QUESTION'] = sprintf(_('Are you certain you want to delete the user "%s" permanently?'),
+        $jsvar['QUESTION'] = sprintf(_('Are you certain you want to delete the user &quot;%s&quot; permanently?'),
                                      $this->getUsername());
         $jsvar['ADDRESS']  = 'index.php?module=users&amp;action=admin&amp;command=deleteUser&amp;user_id='
             . $this->id . '&amp;authkey=' . Current_User::getAuthKey();
