@@ -91,7 +91,7 @@ class PHPWS_Form {
     var $use_fieldset = FORM_DEFAULT_FIELDSET;
 
     var $legend = FORM_GENERIC_LEGEND;
-    
+
     /**
      * Constructor for class
      */
@@ -115,7 +115,7 @@ class PHPWS_Form {
         $this->id = $id;
     }
 
-
+ 
     function useFieldset($fieldset)
     {
         $this->use_fieldset = (bool)$fieldset;
@@ -173,11 +173,6 @@ class PHPWS_Form {
             return;
         }
         $this->_method = $method;
-    }
-
-    function setTemplateFile($file)
-    {
-        $this->templateFile = $file;
     }
 
     function addText($name, $value=NULL)
