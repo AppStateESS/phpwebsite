@@ -23,8 +23,13 @@
 
 class PHPWS_File {
     /**
-     * return array of directories
+     * Returns an array of directories
+     * 
+     * Is called recursively is recursive is TRUE.
+     *
+     * @param boolean with_root If true, return results prefixed with the root dir
      * @author Matthew McNaney <mcnaney at gmail dot com>
+     * @return array directories Array of directories if successful, NULL if nothing found
      */
     function listDirectories($root_dir, $with_root=FALSE, $recursive=FALSE)
     {
@@ -49,7 +54,6 @@ class PHPWS_File {
             if ($directory == '.' || $directory == '..' || !is_dir($full_dir)) {
                 continue;
             }
-
 
             if ($with_root) {
                 $directories[] = $full_dir;
