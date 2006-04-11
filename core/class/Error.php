@@ -74,7 +74,7 @@ class PHPWS_Error {
         }
 
         if (!PEAR::isError($value)) {
-            $error = &PHPWS_Error::get($value, $module, $funcName, $extraInfo);
+            $error = PHPWS_Error::get($value, $module, $funcName, $extraInfo);
         }
         else {
             $error = &$value;
