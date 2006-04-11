@@ -7,7 +7,7 @@
 class Branch {
     var $id          = NULL;
     var $branch_name = NULL;
-    var $directory   = NULL;
+    var $directory   = NULL; // saved WITHOUT final forward slash (/)
     var $url         = NULL;
     var $hash        = NULL;
 
@@ -27,8 +27,45 @@ class Branch {
         $db = & new PHPWS_DB('branch_sites');
         $db->loadObject($this);
     }
+   
     
-    
+    function save()
+    {
+        $this->directory = preg_replace('/\/$/', '', $this->directory);
+        $db = & new PHPWS_DB('branch_sites');
+        return $db->saveObject($this);
+    }
+
+    function createDirectoryStructure()
+    {
+        if (!mkdir($this->directory . 'config/')) {
+            return FALSE;
+        }
+        
+        if (!mkdir($this->directory . 'files/')) {
+            return FALSE;
+        }
+
+        if (!mkdir($this->directory . 'images/')) {
+            return FALSE;
+        }
+
+        if (!mkdir($this->directory . 'javascript/')) {
+            return FALSE;
+        }
+
+        if (!mkdir($this->directory . 'templates/')) {
+            return FALSE;
+        }
+
+        if (!mkdir($this->directory . 'logs/')) {
+            return FALSE;
+        }
+
+        return TRUE;
+
+    }
+
 }
 
 ?>
