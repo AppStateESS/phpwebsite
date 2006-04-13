@@ -15,7 +15,6 @@ define('BOOST_NEW',      0);
 define('BOOST_START',    1);
 define('BOOST_PENDING',  2);
 define('BOOST_DONE',     3);
-define('PRE094_SUCCESS', 4);
 
 class PHPWS_Boost {
     var $modules       = NULL;
@@ -98,8 +97,9 @@ class PHPWS_Boost {
         return isset($this->modules);
     }
 
-    function install($inBoost=TRUE)
+    function install($inBoost=TRUE, $inBranch=FALSE, $home_dir=NULL)
     {
+        $continue = FALSE;
         $content = array();
         if (!$this->isModules()) {
             return PHPWS_Error::get(BOOST_NO_MODULES_SET, 'boost', 'install');
@@ -125,30 +125,29 @@ class PHPWS_Boost {
                 $db = & new PHPWS_DB;
                 $result = $db->importFile($mod->getDirectory() . 'boost/install.sql');
 
-                if (is_array($result)) {
-                    foreach ($result as $error)
-                        PHPWS_Error::log($error);
-
+                if (PEAR::isError($result)) {
+                    PHPWS_Error::log($result);
+                    $this->addLog($title, _('Database import failed.'));
                     $content[] = _('An import error occurred.');
                     $content[] = _('Check your logs for more information.');
                     return implode('<br />', $content);
-                    return;
-                } else
+                } else {
                     $content[] = _('Import successful.');
+                }
             }
 
             $result = $this->onInstall($mod, $content);
 
             if ($result === TRUE) {
                 $this->setStatus($title, BOOST_DONE);
-                $this->createDirectories($mod, $content);
+                $this->createDirectories($mod, $content, $home_dir);
                 $this->registerModule($mod, $content);
                 $continue = TRUE;
                 break;
             } elseif ($result === -1) {
                 // No installation file (install.php) was found.
                 $this->setStatus($title, BOOST_DONE);
-                $this->createDirectories($mod, $content);
+                $this->createDirectories($mod, $content, $home_dir);
                 $this->registerModule($mod, $content);
                 $continue = TRUE;
                 break;
@@ -171,10 +170,14 @@ class PHPWS_Boost {
 
         if ($continue && $last_mod->title != $title) {
             // inBoost checks to see if we are in the Setup program
-            if ($inBoost == FALSE) {
+
+            if ($inBranch) {
+                $branchvars['command'] = 'core_module_installation';
+                $branchvars['branch_id'] = $_REQUEST['branch_id'];
+                $content[] = PHPWS_Text::secureLink(_('Continue installation...'), 'branch', $branchvars);
+            } elseif ($inBoost == FALSE) {
                 $content[] = '<a href="index.php?step=3">' . _('Continue installation...') . '</a>';
-            }
-            else {
+            } else {
                 $content[] = _('Installation complete!');
             }
         } elseif($continue) {
@@ -196,22 +199,6 @@ class PHPWS_Boost {
 
         if ($this->getStatus($mod->title) == BOOST_START) {
             $this->setStatus($mod->title, BOOST_PENDING);
-        }
-
-        /**
-         * If module was before 094, install differently
-         */
-        if ($mod->isPre94()) {
-            PHPWS_Core::initCoreClass('Crutch.php');
-            PHPWS_Crutch::startSessions();
-            $content = NULL;
-            include_once($onInstallFile);
-            $installCnt[] = $content;
-            if ($status) {
-                return TRUE;
-            } else {
-                return PHPWS_Error::get(BOOST_FAILED_PRE94_INSTALL, 'boost', 'install');
-            }
         }
 
         include_once($onInstallFile);
@@ -237,22 +224,6 @@ class PHPWS_Boost {
 
         if ($this->getStatus($mod->title) == BOOST_START) {
             $this->setStatus($mod->title, BOOST_PENDING);
-        }
-
-        /**
-         * If module was before 094, update differently
-         */
-        if ($mod->isPre94()) {
-            PHPWS_Core::initCoreClass('Crutch.php');
-            PHPWS_Crutch::startSessions();
-            $content = NULL;
-            include_once($onUpdateFile);
-            $updateCnt[] = $content;
-            if ($status) {
-                return TRUE;
-            } else {
-                return PHPWS_Error::get(BOOST_FAILED_PRE94_UPDATE, 'boost', 'PHPWS_Boost::update');
-            }
         }
 
         include_once($onUpdateFile);
@@ -375,18 +346,6 @@ class PHPWS_Boost {
 
         if ($this->getStatus($mod->title) == BOOST_START) {
             $this->setStatus($mod->title, BOOST_PENDING);
-        }
-
-        /**
-         * If module was before 094, install differently
-         */
-        if ($mod->isPre94()) {
-            PHPWS_Core::initCoreClass('Crutch.php');
-            PHPWS_Crutch::startSessions();
-            $content = NULL;
-            include_once($onUninstallFile);
-            $uninstallCnt[] = $content;
-            return $status;
         }
 
         include_once($onUninstallFile);
