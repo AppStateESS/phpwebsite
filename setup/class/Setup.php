@@ -14,7 +14,7 @@ class Setup{
     }
 
     function initConfigSet(){
-        if (!isset($_SESSION['configSettings'])){
+        if (!isset($_SESSION['configSettings'])) {
             $_SESSION['configSettings']['general']  = FALSE;
             $_SESSION['configSettings']['database'] = FALSE;
             Setup::setConfigSet('source_dir', Setup::getSourceDir());
@@ -32,13 +32,15 @@ class Setup{
     function createConfig(&$content){
         Setup::initConfigSet();
 
-        if (isset($_POST['action'])){
-            if ($_POST['action'] == 'postGeneralConfig'){
-                if (Setup::postGeneralConfig($content))
+        if (isset($_POST['action'])) {
+            if ($_POST['action'] == 'postGeneralConfig') {
+                if (Setup::postGeneralConfig($content)) {
                     $_SESSION['configSettings']['general'] = TRUE;
-            } elseif ($_POST['action'] == 'postDatabaseConfig'){
-                if (Setup::postDatabaseConfig($content))
+                }
+            } elseif ($_POST['action'] == 'postDatabaseConfig') {
+                if (Setup::postDatabaseConfig($content)) {
                     $_SESSION['configSettings']['database'] = TRUE;
+                }
             }
         }
 
@@ -55,7 +57,7 @@ class Setup{
                 $content[] = _('Remove the following file and refresh to continue:');
                 $content[] = '<pre>' . $configDir . 'config.php</pre>';
             }
-            elseif (Setup::writeConfigFile()){
+            elseif (Setup::writeConfigFile()) {
                 PHPWS_Core::killSession('configSettings');
                 $content[] = _('Your configuration file was written successfully!') . '<br />';
                 $content[] = '<a href="index.php?step=2">' . _('Move on to Step 2') . '</a>';
@@ -88,10 +90,11 @@ class Setup{
         $check = TRUE;
         $source_dir = $_POST['source_dir'];
 
-        if (!preg_match('/\/$/', $source_dir))
+        if (!preg_match('/\/$/', $source_dir)) {
             $source_dir = $source_dir . '/';
+        }
 
-        if (!is_dir($source_dir)){
+        if (!is_dir($source_dir)) {
             $content[] = _('Unable to locate the source directory:') . ' ' . $source_dir;
             $check = FALSE;
         }
@@ -103,11 +106,12 @@ class Setup{
         Setup::setConfigSet('LINUX_PEAR', '//');
         Setup::setConfigSet('WINDOWS_PEAR', '//');
 
-        if ($_POST['pear'] == 'local'){
-            if (PHPWS_Core::isWindows())
+        if ($_POST['pear'] == 'local') {
+            if (PHPWS_Core::isWindows()) {
                 Setup::setConfigSet('WINDOWS_PEAR', NULL);
-            else
+            } else {
                 Setup::setConfigSet('LINUX_PEAR', NULL);
+            }
         }
 
         Setup::setConfigSet('site_hash', $_POST['site_hash']);
@@ -118,33 +122,33 @@ class Setup{
         $check = TRUE;
         $currentPW = Setup::getConfigSet('dbpass');
 
-        if (!empty($_POST['dbuser']))
+        if (!empty($_POST['dbuser'])) {
             Setup::setConfigSet('dbuser', $_POST['dbuser']);
-        else {
+        } else {
             $content[] = _('Missing a database user name.');
             $check = FALSE;
         }
 
-        if (!empty($_POST['dbpass']))
+        if (!empty($_POST['dbpass'])) {
             Setup::setConfigSet('dbpass', $_POST['dbpass']);
-        elseif (empty($currentPW)) {
+        } elseif (empty($currentPW)) {
             $content[] = _('Missing a database password.');
             $check = FALSE;
         }
 
         Setup::setConfigSet('dbhost', $_POST['dbhost']);
 
-        if (!empty($_POST['dbname']))
+        if (!empty($_POST['dbname'])) {
             Setup::setConfigSet('dbname', $_POST['dbname']);
-        else {
+        } else {
             $content[] = _('Missing a database name.');
             $check = FALSE;
         }
 
-        if (!empty($_POST['dbprefix'])){
-            if (preg_match('/^([a-z])+([a-z0-9_]*)$/i', $_POST['dbprefix']))
+        if (!empty($_POST['dbprefix'])) {
+            if (preg_match('/^([a-z])+([a-z0-9_]*)$/i', $_POST['dbprefix'])) {
                 Setup::setConfigSet('dbprefix', $_POST['dbprefix']);
-            else {
+            } else {
                 $content[] = _('The Table Prefix may only consist of letters, numbers, and the underscore character.');
                 $content[] = _('It also may not begin with a number.');
                 $check = FALSE;
@@ -220,8 +224,9 @@ class Setup{
         $dbname = Setup::getConfigSet('dbname');
 
         $dsn =  $dbtype . '://' . $dbuser . ':' . $dbpass . '@' . $dbhost;
-        if (!empty($dbport))
+        if (!empty($dbport)) {
             $dsn .= ':' . $dbport;
+        }
 
         switch ($mode){
         case 1:
@@ -239,7 +244,7 @@ class Setup{
         $dsn = Setup::getDSN(1);
         $connection = DB::connect($dsn);
 
-        if (PEAR::isError($connection)){
+        if (PEAR::isError($connection)) {
             PHPWS_Error::log($connection);
             return 0;
         }
@@ -271,8 +276,9 @@ class Setup{
     }
 
     function getConfigSet($setting){
-        if (!isset($_SESSION['configSettings']) || !isset($_SESSION['configSettings'][$setting]))
+        if (!isset($_SESSION['configSettings']) || !isset($_SESSION['configSettings'][$setting])) {
             return NULL;
+        }
 
         return $_SESSION['configSettings'][$setting];
     }
@@ -412,20 +418,21 @@ class Setup{
         $directory[] = Setup::getSourceDir() . 'logs/';
         $directory[] = Setup::getSourceDir() . 'javascript/modules/';
 
-        foreach ($directory as $id=>$check){
-            if (!is_dir($check))
+        foreach ($directory as $id=>$check) {
+            if (!is_dir($check)) {
                 $dirExist[] = $check;
-            elseif (!is_writable($check))
+            } elseif (!is_writable($check)) {
                 $writableDir[] = $check;
+            }
         }
 
-        if (isset($dirExist)){
+        if (isset($dirExist)) {
             $content[] = _('The following directories need to be created:');
             $content[] = '<pre>' . implode("\n", $dirExist) . '</pre>';
             $errorDir = FALSE;
         }
       
-        if (isset($writableDir)){
+        if (isset($writableDir)) {
             $content[] = _('The following directories are not writable:');
             $content[] = '<pre>' . implode("\n", $writableDir) . '</pre>';
             $content[] = _('You will need to change the permissions.') . '<br />';
@@ -439,8 +446,9 @@ class Setup{
     function show($content, $title=NULL){
         $tpl = & new PHPWS_Template;
         $tpl->setFile('setup/templates/setup.tpl', TRUE);
-        if (!isset($title))
+        if (!isset($title)) {
             $title = _('phpWebSite 1.0.0 Beta Setup');
+        }
 
         $setupData['TITLE'] = $title;
         $setupData['MAIN_CONTENT'] = implode('<br />', $content);
@@ -449,10 +457,10 @@ class Setup{
     }
 
     function checkSession(&$content){
-        if (!isset($_SESSION['sessionCheck'])){
+        if (!isset($_SESSION['sessionCheck'])) {
             $_SESSION['sessionCheck'] = TRUE;
 
-            if (isset($_REQUEST['check'])){
+            if (isset($_REQUEST['check'])) {
                 $content[] = _('There is a problem with your sessions.') . '<br />';
                 $content[] = _('phpWebSite depends on sessions to move data between pages.') . '<br />';
                 $content[] = PHPWS_Text::link('help/sessions.' . DEFAULT_LANGUAGE . '.txt', _('Sessions Help'), NULL, 'index');
@@ -483,7 +491,7 @@ class Setup{
         $db = & new PHPWS_DB;
         $result = $db->import($installSQL);
 
-        if (is_array($result)){
+        if (is_array($result)) {
             foreach ($result as $error)
                 PHPWS_Error::log($error);
             $content[] = _('Some errors occurred while creating the core database tables.') . '<br />';
@@ -491,7 +499,7 @@ class Setup{
             return;
         }
 
-        if ($result == TRUE){
+        if ($result == TRUE) {
             $content[] = _('Core installation successful.') . '<br /><br />';
             $content[] = '<a href="index.php?step=3">' . _('Continue to Module Installation') . '</a>';
         }
@@ -500,7 +508,7 @@ class Setup{
     function installModules(&$content){
         $modules = PHPWS_Core::coreModList();
 
-        if (!isset($_SESSION['Boost'])){
+        if (!isset($_SESSION['Boost'])) {
             $_SESSION['Boost'] = new PHPWS_Boost;
             $_SESSION['Boost']->loadModules($modules);
         }
@@ -515,10 +523,11 @@ class Setup{
             $content[] =  $result;
         }
 
-        if ($_SESSION['Boost']->isFinished())
+        if ($_SESSION['Boost']->isFinished()) {
             return TRUE;
-        else
+        } else {
             return FALSE;
+        }
     }
 
     function finish(&$content){
