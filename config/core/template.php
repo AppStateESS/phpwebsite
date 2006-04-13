@@ -29,7 +29,7 @@ define('FORCE_THEME_TEMPLATES', FALSE);
  * this is the case.
  */
 
-define('FORCE_MOD_TEMPLATES', TRUE);
+define('FORCE_MOD_TEMPLATES', FALSE);
 
 /**
  * Normally, if the the Pear template class can't fill in at least one
