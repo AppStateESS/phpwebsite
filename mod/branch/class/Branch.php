@@ -36,29 +36,45 @@ class Branch {
         return $db->saveObject($this);
     }
 
-    function createDirectoryStructure()
+    function createDirectories()
     {
-        if (!mkdir($this->directory . 'config/')) {
+        if (!mkdir($this->directory . '/config/')) {
+            return FALSE;
+        }
+
+        if (!mkdir($this->directory . '/config/core/')) {
             return FALSE;
         }
         
-        if (!mkdir($this->directory . 'files/')) {
+        if (!mkdir($this->directory . '/files/')) {
             return FALSE;
         }
 
-        if (!mkdir($this->directory . 'images/')) {
+        if (!mkdir($this->directory . '/images/')) {
             return FALSE;
         }
 
-        if (!mkdir($this->directory . 'javascript/')) {
+        if (!mkdir($this->directory . '/images/core/')) {
             return FALSE;
         }
 
-        if (!mkdir($this->directory . 'templates/')) {
+        if (!mkdir($this->directory . '/javascript/')) {
             return FALSE;
         }
 
-        if (!mkdir($this->directory . 'logs/')) {
+        if (!mkdir($this->directory . '/javascript/modules')) {
+            return FALSE;
+        }
+
+        if (!mkdir($this->directory . '/templates/')) {
+            return FALSE;
+        }
+
+        if (!mkdir($this->directory . '/themes/')) {
+            return FALSE;
+        }
+
+        if (!mkdir($this->directory . '/logs/')) {
             return FALSE;
         }
 

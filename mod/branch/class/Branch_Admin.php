@@ -37,8 +37,7 @@ class Branch_Admin {
     var $dbport      = NULL;
     var $dbtype      = NULL;
 
-    // working dsn
-    var $dsn         = NULL;
+    var $dsn         = NULL; // full dsn
 
     var $create_step = 1;
 
@@ -62,7 +61,13 @@ class Branch_Admin {
         }
 
         if (isset($_SESSION['branch_dsn'])) {
-            $this->dsn = $_SESSION['branch_dsn'];
+            $dsn = &$_SESSION['branch_dsn'];
+            $this->dbname = $dsn['dbname'];
+            $this->dbuser = $dsn['dbuser'];
+            $this->dbpass = $dsn['dbpass'];
+            $this->dbhost = $dsn['dbhost'];
+            $this->dbport = $dsn['dbport'];
+            $this->dbtype = $dsn['dbtype'];
         }
 
         if (isset($_REQUEST['branch_id'])) {
@@ -140,15 +145,125 @@ class Branch_Admin {
                     $this->content = $result->getMessage();
                     return;
                 }
-                $this->setCreateStep(3);
-                $this->message[] = _('Branch created successfully.');
-                $this->moduleInstallForm();
+
+                if ($this->branch->createDirectories()) {
+                    $this->setCreateStep(3);
+                    $this->title = _('Create branch directories');
+                    $this->message[] = _('Branch created successfully.');
+                    $vars['command'] = 'install_branch_core';
+                    $vars['branch_id'] = $this->branch->id;
+                    $this->content = PHPWS_Text::secureLink(_('Continue to install branch core'), 'branch', $vars); 
+                } else {
+                    $this->title = _('Unable to create branch directories.');
+                    $this->content = _('Sorry, but Branch failed to make the proper directories.');
+                }
             }
             break;
+
+        case 'install_branch_core':
+            $this->install_branch_core();
+            break;
+
+        case 'core_module_installation':
+            $result =  $this->core_module_installation();
+            if ($result) {
+                echo 'done with core modules';
+            }
+            break;
+
         }// end of the command switch
 
     }
 
+    function install_branch_core()
+    {
+        PHPWS_Core::initCoreClass('File.php');
+        $content = array();
+
+        $this->title = _('Install branch core');
+        $dsn = $this->getDSN();
+        if (empty($dsn)) {
+            $this->content[] = _('Unable to get database connect information. Please try again.');
+            return FALSE;
+        }
+
+        if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'themes/', $this->branch->directory . '/themes/')) {
+            $this->content[] = _('Failed to copy theme files to branch.');
+            return FALSE;
+        } else {
+            $this->content[] = _('Copied themes to branch.');
+        }
+
+        if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'images/core/', $this->branch->directory . '/images/core/')) {
+            $this->content[] = _('Failed to copy core images to branch.');
+            return FALSE;
+        } else {
+            $this->content[] = _('Copied core images.');
+        }
+
+
+        if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'config/core/', $this->branch->directory . '/config/core/')) {
+            $this->content[] = _('Failed to copy core config files to branch.');
+            return FALSE;
+        } else {
+            $this->content[] = _('Copied config files to branch.');
+            @unlink($this->branch->directory . '/config.php');
+        }
+
+
+        $stats = sprintf('<?php include \'%sphpws_stats.php\' ?>', PHPWS_SOURCE_DIR);
+        $index_file = sprintf('include \'%sindex.php\'; ?>', PHPWS_SOURCE_DIR);
+        file_put_contents($this->branch->directory . '/phpws_stats.php', $stats);
+        file_put_contents($this->branch->directory . '/index.php', $index_file);
+        
+        if (!$this->copy_config()) {
+            $this->content[] = _('Failed to create config.php file in the branch.');
+            return FALSE;
+        } else {
+            $this->content[] = _('Config file created successfully.');
+        }
+
+        $result = $this->create_core();
+
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $this->content[] = _('Core SQL import failed.');
+            return FALSE;
+        } else {
+            $this->content[] = _('Core SQL import successful.');
+        }
+        $link = _('Core installed successfully. Continue to core module installation.');
+        $vars['command']   = 'core_module_installation';
+        $vars['branch_id'] = $this->branch->id;
+        $this->content[] = PHPWS_Text::secureLink($link, 'branch', $vars);
+        return TRUE;
+    }
+
+    function create_core()
+    {
+        $db = & new PHPWS_DB;
+        $loaddb = $db->loadDB($this->getDSN());
+        if (PEAR::isError($loaddb)) {
+            return $loaddb;
+        }
+        $result = $db->importFile(PHPWS_SOURCE_DIR . 'core/boost/install.sql');
+        $db->disconnect();
+        return $result;
+    }
+
+    function copy_config()
+    {
+        $template['source_dir']   = PHPWS_SOURCE_DIR;
+        $template['home_dir']     = $this->branch->directory . '/';
+        $template['site_hash']    = $this->branch->hash;
+        $template['dsn']          = $this->getDSN();
+        $template['WINDOWS_PEAR'] = '//';
+        $file_content = PHPWS_Template::process($template, 'branch', 'config.tpl');
+
+        $file_directory = $this->branch->directory . '/config/core/config.php';
+        
+        return @file_put_contents($file_directory, $file_content);
+    }
 
     function post_basic()
     {
@@ -190,19 +305,46 @@ class Branch_Admin {
             $this->message[] = _('Enter your site\'s url address.');
             $result = FALSE;
         } else {
-            $this->branch->branch_name = $_POST['url'];
+            $this->branch->url = $_POST['url'];
         }
 
+        if (empty($_POST['hash'])) {
+            $this->message[] = _('Your branch site must have a hash.');
+            $result = FALSE;
+        } else {
+            $this->branch->hash = $_POST['hash'];
+        }
 
         return $result;
     }
 
 
-    function moduleInstallForm()
+    function core_module_installation()
     {
-        $this->title = _('Branch module installation.');
-        $this->content = _('');
-        test($_POST);
+        if (!isset($_SESSION['Boost'])){
+            $modules = PHPWS_Core::coreModList();
+            $_SESSION['Boost'] = new PHPWS_Boost;
+            $_SESSION['Boost']->loadModules($modules);
+        }
+
+        PHPWS_DB::loadDB($this->getDSN());
+
+        $this->title = _('Installing core modules');
+
+        $result = $_SESSION['Boost']->install(FALSE, TRUE, $this->branch->directory . '/');
+
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $this->content[] = _('An error occurred while trying to install your modules.') 
+                . ' ' . _('Please check your error logs and try again.');
+            return TRUE;
+        } else {
+            $this->content[] = $result;
+        }
+
+        PHPWS_DB::disconnect();
+
+        return $_SESSION['Boost']->isFinished();
     }
 
     /**
@@ -220,7 +362,12 @@ class Branch_Admin {
      */
     function saveDSN()
     {
-        $_SESSION['branch_dsn'] = $this->getDSN();
+        $_SESSION['branch_dsn'] = array('dbtype' => $this->dbtype,
+                                        'dbuser' => $this->dbuser,
+                                        'dbpass' => $this->dbpass,
+                                        'dbhost' => $this->dbhost,
+                                        'dbport' => $this->dbport,
+                                        'dbname' => $this->dbname);
     }
 
     /**
@@ -228,23 +375,24 @@ class Branch_Admin {
      * the dsn line from variables in the object. If the variables are not
      * set, it returns NULL
      */
-    function &getDSN()
+    function &getDSN($dbname=TRUE)
     {
-        if (isset($this->dsn)) {
-            return $this->dsn;
-        } elseif (isset($this->dbuser)) {
-
-            $this->dsn =  sprintf('%s://%s:%s@%s',
+        if (isset($this->dbuser)) {
+            $dsn =  sprintf('%s://%s:%s@%s',
                             $this->dbtype,
                             $this->dbuser,
                             $this->dbpass,
                             $this->dbhost);
             
             if ($this->dbport) {
-                $this->dsn .= ':' . $this->dbport;
+                $dsn .= ':' . $this->dbport;
+            }
+
+            if ($dbname) {
+                $dsn .= '/' . $this->dbname;
             }
             
-            return $this->dsn;
+            return $dsn;
         } else {
             return NULL;
         }
@@ -279,7 +427,12 @@ class Branch_Admin {
         if ($this->message) {
             $template['MESSAGE'] = implode('<br />', $this->message);
         }
-        $template['CONTENT'] = $this->content;
+
+        if (is_array($this->content)) {
+            $template['CONTENT'] = implode('<br />', $this->content);
+        } else {
+            $template['CONTENT'] = $this->content;
+        }
         $content = PHPWS_Template::process($template, 'branch', 'main.tpl');
         
         $this->panel->setContent($content);
@@ -293,6 +446,7 @@ class Branch_Admin {
     {
         unset($_SESSION['branch_create_step']);
         unset($_SESSION['branch_dsn']);
+        unset($_SESSION['Boost']);
         $this->create_step = 1;
     }
 
@@ -536,7 +690,7 @@ class Branch_Admin {
      */
     function createDB()
     {
-        $dsn = $this->getDSN();
+        $dsn = $this->getDSN(FALSE);
         if (empty($dsn)) {
             return FALSE;
         }
