@@ -147,14 +147,12 @@ class Layout {
         $templateLoc = "templates/$module/$filename";
 
         if (FORCE_MOD_TEMPLATES || !is_file($templateLoc)) {
-            $cssFile['file'] = PHPWS_SOURCE_HTTP . "mod/$module/templates/$filename";
+            $cssFile['file'] = "./mod/$module/templates/$filename";
         } else {
             $cssFile['file'] = $templateLoc;
         }
 
-        if (is_file($cssFile['file'])) {
-            Layout::addToStyleList($cssFile);
-        }
+        Layout::addToStyleList($cssFile);
     
         $themeFile['file']   = PHPWS_Template::getTplDir($module) . $filename;
         $themeFile['import'] = TRUE;
