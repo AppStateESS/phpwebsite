@@ -18,10 +18,6 @@ if (!defined('PHPWS_HOME_DIR')) {
     define('PHPWS_HOME_DIR', './');
 }
 
-if (!defined('PHPWS_SOURCE_HTTP')) {
-    define('PHPWS_SOURCE_HTTP', './');
-}
-
 /* Initialize language settings */
 if (!function_exists('bindtextdomain')){
     define('PHPWS_TRANSLATION', FALSE);
