@@ -173,7 +173,9 @@ class PHPWS_File {
         }
 
         foreach ($source_files as $file_name) {
-            if ($file_name == '.' || $file_name == '..' || $file_name == 'CVS') {
+            // ignore directories, cvs, and backups
+            if ($file_name == '.' || $file_name == '..' || $file_name == 'CVS'
+                || preg_match('/~$/', $file_name)) {
                 continue;
             }
 
