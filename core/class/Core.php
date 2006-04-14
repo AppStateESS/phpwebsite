@@ -689,6 +689,19 @@ class PHPWS_Core {
         return implode('', $address);
     }
 
+    function checkBranch()
+    {
+        if (str_ireplace('index.php', '', $_SERVER['SCRIPT_FILENAME']) == PHPWS_SOURCE_DIR) {
+            return TRUE;
+        } else {
+            if (!PHPWS_Core::initModClass('branch', 'Branch.php')) {
+                return FALSE;
+            }
+
+            return Branch::checkCurrentBranch();
+        }
+    }
+
 }// End of core class
 
 ?>
