@@ -15,8 +15,8 @@
         <td>{URL}</td>
     </tr>
     <tr>
-        <td>{HASH_LABEL}</td>
-        <td>{HASH}</td>
+        <td>{SITE_HASH_LABEL}</td>
+        <td>{SITE_HASH}</td>
     </tr>
 </table>
 {SUBMIT}
