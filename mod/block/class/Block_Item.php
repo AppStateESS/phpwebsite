@@ -158,25 +158,27 @@ class Block_Item {
 
     function view($pin_mode=FALSE, $admin_icon=TRUE)
     {
-        if (!empty($this->_pin_key) && $pin_mode) {
-            $link['action']   = 'lock';
-            $link['block_id'] = $this->id;
-            $link['key_id'] = $this->_pin_key->id;
-            $img = '<img src="./images/mod/block/pin.png" />';
-            $opt = PHPWS_Text::secureLink($img, 'block', $link);
-        } elseif (!empty($this->_pin_key) && Current_User::allow('block') && $admin_icon) {
-            $vars['action'] = 'remove';
-            $vars['block_id'] = $this->id;
-            $vars['key_id'] = $this->_pin_key->id;
-            $js_var['ADDRESS'] = PHPWS_Text::linkAddress('block', $vars, TRUE);
-            $js_var['QUESTION'] = _('Are you sure you want to remove this block from this page?');
-            $js_var['LINK'] = '<img src="./images/mod/block/remove.png" />';
-        
-            $opt = Layout::getJavascript('confirm', $js_var);
-        } else {
-            $opt = NULL;
-        }
+        $opt = NULL;
 
+        if (Current_User::allow('block')) {
+            if (!empty($this->_pin_key) && $pin_mode) {
+                $link['action']   = 'lock';
+                $link['block_id'] = $this->id;
+                $link['key_id'] = $this->_pin_key->id;
+                $img = '<img src="./images/mod/block/pin.png" />';
+                $opt = PHPWS_Text::secureLink($img, 'block', $link);
+            } elseif (!empty($this->_pin_key) && $admin_icon) {
+                $vars['action'] = 'remove';
+                $vars['block_id'] = $this->id;
+                $vars['key_id'] = $this->_pin_key->id;
+                $js_var['ADDRESS'] = PHPWS_Text::linkAddress('block', $vars, TRUE);
+                $js_var['QUESTION'] = _('Are you sure you want to remove this block from this page?');
+                $js_var['LINK'] = '<img src="./images/mod/block/remove.png" />';
+        
+                $opt = Layout::getJavascript('confirm', $js_var);
+            }
+        }
+        
         $link['block_id'] = $this->id;
         $template = array('TITLE'   => $this->getTitle(),
                           'CONTENT' => $this->getContent(),

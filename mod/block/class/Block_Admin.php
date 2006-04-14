@@ -106,8 +106,21 @@ class Block_Admin {
             Block_Admin::sendMessage(_('Block saved'), 'list');
             break;
 
+        case 'postJSBlock':
+            if (!PHPWS_Core::isPosted()) {
+                Block_Admin::postBlock($block);
+                $result = $block->save();
+                if (PEAR::isError($result)) {
+                    PHPWS_Error::log($result);
+                } elseif (isset($_REQUEST['key_id'])) {
+                    Block_Admin::lockBlock($block->id, $_REQUEST['key_id']);
+                }
+            }
+            javascript('close_refresh');
+            break;
+
         case 'lock':
-            $result = Block_Admin::lockBlock();
+            $result = Block_Admin::lockBlock($_GET['block_id'], $_GET['key_id']);
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
             }
@@ -117,6 +130,13 @@ class Block_Admin {
         case 'list':
             $title = _('Block list');
             $content = Block_Admin::blockList();
+            break;
+
+        case 'js_block_edit':
+            $template['TITLE'] = _('New Block');
+            $template['CONTENT'] = Block_Admin::edit($block, TRUE);
+            $content = PHPWS_Template::process($template, 'block', 'admin.tpl');
+            Layout::nakedDisplay($content);
             break;
         }
 
@@ -163,12 +183,22 @@ class Block_Admin {
 
     }
 
-    function edit(&$block)
+    function edit(&$block, $js=FALSE)
     {
         PHPWS_Core::initCoreClass('Editor.php');
         $form = & new PHPWS_Form;
         $form->addHidden('module', 'block');
-        $form->addHidden('action', 'postBlock');
+
+        if ($js) {
+            $form->addHidden('action', 'postJSBlock');
+            if (isset($_REQUEST['key_id'])) {
+                $form->addHidden('key_id', (int)$_REQUEST['key_id']);
+            }
+            $form->addButton('cancel', _('Cancel'));
+            $form->setExtra('cancel', 'onclick="window.close()"');
+        } else {
+            $form->addHidden('action', 'postBlock');
+        }
 
         $form->addText('title', $block->getTitle());
         $form->setLabel('title', _('Title'));
@@ -181,12 +211,12 @@ class Block_Admin {
             $form->addSubmit('submit', _('Update Current Block'));
         }
 
+
         $form->addTextArea('block_content', $block->getContent());
         $form->setRows('block_content', '10');
         $form->setWidth('block_content', '80%');
         $form->setLabel('block_content', _('Entry'));
         $form->useEditor('block_content');
-
 
         $template = $form->getTemplate();
 
@@ -228,10 +258,10 @@ class Block_Admin {
     }
   
 
-    function lockBlock()
+    function lockBlock($block_id, $key_id)
     {
-        $block_id = (int)$_GET['block_id'];
-        $key_id = (int)$_GET['key_id'];
+        $block_id = (int)$block_id;
+        $key_id = (int)$key_id;
 
         unset($_SESSION['Pinned_Blocks'][$block_id]);
 

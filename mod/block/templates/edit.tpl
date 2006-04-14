@@ -1,17 +1,14 @@
 {START_FORM}
-<table class="form_table">
+<table class="form-table" width="99%">
   <tr>
-    <td class="label">{TITLE_LABEL}</td>
-    <td class="element">{TITLE}</td>
+    <td>{TITLE_LABEL}</td>
+    <td>{TITLE}</td>
   </tr>
   <tr>
-    <td class="label">{BLOCK_CONTENT_LABEL}</td>
-    <td class="element">{BLOCK_CONTENT}</td>
-  </tr>
-  <tr>
-    <td class="label">{MODULE_LABEL}</td>
-    <td class="element">{MODULE}</td>
+    <td>{BLOCK_CONTENT_LABEL}</td>
+    <td>{BLOCK_CONTENT}</td>
   </tr>
 </table>
 {SUBMIT}
 {END_FORM}
+<div class="align-center">{CANCEL}</div>
