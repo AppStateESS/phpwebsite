@@ -8,7 +8,7 @@ module. This document covers the latter.
 
 
 Quick Tab Setup
-
+------------------------------------------------------------
 Your 'tabs' are what allow the user to navigate through your
 module. The content contained within the tab (usually a word or set of
 words) are links that take the user to another portion of your
@@ -69,7 +69,7 @@ easier to rely on the tab name however.
 
 
 Creating the Panel Object
-
+------------------------------------------------------------
 Now you need to create a panel object. First require the Panel.php
 class in Control Panel. The easier way to do this is:
 
@@ -109,8 +109,9 @@ our panel like so:
 
 $panel->setContent($content);
 
-Displaying the Panel
 
+Displaying the Panel
+------------------------------------------------------------
 Once the tabs and content are set, you are ready to display them.
 
 $finalPanel = $panel->display();
@@ -131,6 +132,14 @@ Control Panel would then look in mod/myModule/templates/myPanel.tpl
 for an alternate template file. If you wish to do this, I recommend
 you copy the panel.tpl file from the controlpanel/templates/ directory
 to get started.
+
+
+Security
+------------------------------------------------------------
+By default, panels do not include authorization keys in the link.
+If you want it to, call enableSecure();
+
+$pager->enableSecure();
 
 
 Tips:
