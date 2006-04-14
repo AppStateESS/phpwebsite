@@ -69,7 +69,7 @@ class Calendar_View {
 
         $startdate = mktime(0,0,0, $month, 1, $year);
         $enddate = mktime(23, 59, 59, $month + 1, 0, $year);
-
+        
         if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
             Layout::addStyle('calendar');
         }
@@ -222,6 +222,10 @@ class Calendar_View {
 
     function day()
     {
+        if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
+            Layout::addStyle('calendar');
+        }
+
         $uDate    = mktime(0, 0, 0, $this->calendar->month, $this->calendar->day, $this->calendar->year);
         $uDateEnd = $uDate + 82800 + 3540 + 59; // 23 hours, 59 minutes, 59 seconds later
 
@@ -233,17 +237,14 @@ class Calendar_View {
         $template['PICK'] = $this->getPick();
 
 
-        /*
-         // need to replace the below
-
         if (Current_User::allow('calendar', 'edit_schedule', $this->calendar->schedule->id) ||
             ( PHPWS_Settings::get('calendar', 'personal_calendars') && 
               $this->calendar->schedule->user_id == Current_User::getId()
               )
             ) {
-            $template['ADD_EVENT'] = $this->calendar->schedule->addEventLink($now);
+            MiniAdmin::add('calendar', $this->calendar->schedule->addEventLink($this->calendar->today));
         }
-        */
+        
 
         $this->calendar->schedule->loadEvents($uDate, $uDateEnd);
         $events = & $this->calendar->schedule->events;
