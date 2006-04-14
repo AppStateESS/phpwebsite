@@ -27,8 +27,8 @@ function layout_install(&$content, $branchInstall=FALSE)
             $tpl['ERROR'] = $error;
         }
     } else {
-        $page_title = strip_tags($_POST['page_title']);
-        $default_theme = $_POST['theme'];
+        $page_title = 'My phpWebSite';
+        $default_theme = 'default';
     }
 
     PHPWS_Core::initCoreClass('File.php');
