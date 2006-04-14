@@ -235,7 +235,7 @@ This statically called function will return FALSE if:
 - It is a dummy key
 
 Unlike isDummy however, checkKey will return TRUE if the key is a home
-key and the second param. Keep that in mind.
+key and the second parameter is TRUE. Keep that in mind.
 
 
 Whose Key is this?
