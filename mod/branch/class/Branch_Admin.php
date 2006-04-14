@@ -4,13 +4,13 @@
    * @version $Id$
    */
 
-PHPWS_Core::initModClass('branch', 'Branch.php');
-
 define('BRANCH_NO_CONNECTION',       1);
 define('BRANCH_CONNECT_NO_DB',       2);
 define('BRANCH_CONNECT_WITH_TABLES', 3);
 define('BRANCH_CONNECT_SUCCESS',     4);
 define('BRANCH_CONNECT_BAD_DB',      5);
+
+PHPWS_Core::initModClass('branch', 'Branch.php');
 
 class Branch_Admin {
     // Contains the panel object
@@ -80,6 +80,9 @@ class Branch_Admin {
 
     function main()
     {
+        if (!Current_User::authorized('branch')) {
+            Current_User::disallow();
+        }
         $content = NULL;
         // Create the admin panel
         $this->cpanel();
@@ -103,7 +106,7 @@ class Branch_Admin {
 
         switch ($command) {
         case 'new':
-            $this->resetCreate();
+            $this->resetAdmin();
             $this->edit_db();
             break;
 
@@ -167,7 +170,8 @@ class Branch_Admin {
         case 'core_module_installation':
             $result =  $this->core_module_installation();
             if ($result) {
-                echo 'done with core modules';
+                $this->content[] = _('All done!');
+                $this->resetAdmin();
             }
             break;
 
@@ -187,14 +191,14 @@ class Branch_Admin {
             return FALSE;
         }
 
-        if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'themes/', $this->branch->directory . '/themes/')) {
+        if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'themes/', $this->branch->directory . 'themes/')) {
             $this->content[] = _('Failed to copy theme files to branch.');
             return FALSE;
         } else {
             $this->content[] = _('Copied themes to branch.');
         }
 
-        if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'images/core/', $this->branch->directory . '/images/core/')) {
+        if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'images/core/', $this->branch->directory . 'images/core/')) {
             $this->content[] = _('Failed to copy core images to branch.');
             return FALSE;
         } else {
@@ -202,19 +206,19 @@ class Branch_Admin {
         }
 
 
-        if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'config/core/', $this->branch->directory . '/config/core/')) {
+        if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'config/core/', $this->branch->directory . 'config/core/')) {
             $this->content[] = _('Failed to copy core config files to branch.');
             return FALSE;
         } else {
             $this->content[] = _('Copied config files to branch.');
-            @unlink($this->branch->directory . '/config.php');
+            @unlink($this->branch->directory . 'config.php');
         }
 
 
         $stats = sprintf('<?php include \'%sphpws_stats.php\' ?>', PHPWS_SOURCE_DIR);
-        $index_file = sprintf('include \'%sindex.php\'; ?>', PHPWS_SOURCE_DIR);
-        file_put_contents($this->branch->directory . '/phpws_stats.php', $stats);
-        file_put_contents($this->branch->directory . '/index.php', $index_file);
+        $index_file = sprintf('<?php include \'%sindex.php\'; ?>', PHPWS_SOURCE_DIR);
+        file_put_contents($this->branch->directory . 'phpws_stats.php', $stats);
+        file_put_contents($this->branch->directory . 'index.php', $index_file);
         
         if (!$this->copy_config()) {
             $this->content[] = _('Failed to create config.php file in the branch.');
@@ -254,13 +258,13 @@ class Branch_Admin {
     function copy_config()
     {
         $template['source_dir']   = PHPWS_SOURCE_DIR;
-        $template['home_dir']     = $this->branch->directory . '/';
-        $template['site_hash']    = $this->branch->hash;
+        $template['home_dir']     = $this->branch->directory;
+        $template['site_hash']    = $this->branch->site_hash;
         $template['dsn']          = $this->getDSN();
         $template['WINDOWS_PEAR'] = '//';
         $file_content = PHPWS_Template::process($template, 'branch', 'config.tpl');
 
-        $file_directory = $this->branch->directory . '/config/core/config.php';
+        $file_directory = $this->branch->directory . 'config/core/config.php';
         
         return @file_put_contents($file_directory, $file_content);
     }
@@ -270,12 +274,21 @@ class Branch_Admin {
         PHPWS_Core::initCoreClass('File.php');
         $result = TRUE;
 
+        if (empty($this->branch->dbname) && isset($this->dbname)) {
+            $this->branch->dbname = $this->dbname;
+        }
+
         $this->branch->directory = $_POST['directory'];
-        $this->branch->directory = preg_replace('/\/$/', '', $this->branch->directory);
+        if (!preg_match('/\/$/', $this->branch->directory)) {
+            $this->branch->directory .= '/';
+        }
 
         if (!is_dir($this->branch->directory)) {
             $this->message[] = _('Branch directory does not exist.');
             $directory = explode('/', $this->branch->directory);
+            // removes item after the /
+            array_pop($directory);
+            // removes the last directory
             array_pop($directory);
             $write_dir = implode('/', $directory);
             if (is_writable($write_dir)) {
@@ -308,11 +321,11 @@ class Branch_Admin {
             $this->branch->url = $_POST['url'];
         }
 
-        if (empty($_POST['hash'])) {
-            $this->message[] = _('Your branch site must have a hash.');
+        if (empty($_POST['site_hash'])) {
+            $this->message[] = _('Your branch site must have a site_hash.');
             $result = FALSE;
         } else {
-            $this->branch->hash = $_POST['hash'];
+            $this->branch->site_hash = $_POST['site_hash'];
         }
 
         return $result;
@@ -331,7 +344,7 @@ class Branch_Admin {
 
         $this->title = _('Installing core modules');
 
-        $result = $_SESSION['Boost']->install(FALSE, TRUE, $this->branch->directory . '/');
+        $result = $_SESSION['Boost']->install(FALSE, TRUE, $this->branch->directory);
 
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
@@ -413,7 +426,7 @@ class Branch_Admin {
 
             $panel = & new PHPWS_Panel('branch');
             $panel->quickSetTabs($tabs);
-
+            $panel->enableSecure();
             $panel->setModule('branch');
             $this->panel = &$panel;
     }
@@ -442,12 +455,12 @@ class Branch_Admin {
     /**
      * resets the branch creation process
      */
-    function resetCreate()
+    function resetAdmin()
     {
         unset($_SESSION['branch_create_step']);
         unset($_SESSION['branch_dsn']);
         unset($_SESSION['Boost']);
-        $this->create_step = 1;
+        $this->Branch_Admin();
     }
 
 
@@ -532,9 +545,9 @@ class Branch_Admin {
         $form->setSize('url', 50);
         $form->setLabel('url', _('URL'));
 
-        $form->addText('hash', $branch->hash);
-        $form->setSize('hash', 40);
-        $form->setLabel('hash', _('ID hash'));
+        $form->addText('site_hash', $branch->site_hash);
+        $form->setSize('site_hash', 40);
+        $form->setLabel('site_hash', _('ID hash'));
         $template = $form->getTemplate();
         $template['BRANCH_LEGEND'] = _('Branch specifications');
         $this->content = PHPWS_Template::process($template, 'branch', 'edit_basic.tpl');
@@ -715,7 +728,20 @@ class Branch_Admin {
      */
     function listBranches()
     {
+        $page_tags['BRANCH_NAME_LABEL'] = _('Branch name');
+        $page_tags['DIRECTORY_LABEL']   = _('Directory');
+        $page_tags['URL_LABEL']         = _('Url');
+        $page_tags['ACTION_LABEL']      = _('Action');
 
+        PHPWS_Core::initCoreClass('DBPager.php');
+        $pager = & new DBPager('branch_sites', 'Branch');
+        $pager->setModule('branch');
+        $pager->setTemplate('branch_list.tpl');
+        $pager->addPageTags($page_tags);
+        $pager->addToggle('class="toggle1"');
+        $pager->addRowTags('getTpl');
+        $this->title = _('Branch List');
+        $this->content = $pager->get();
     }
 
     /**
