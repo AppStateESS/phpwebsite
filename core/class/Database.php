@@ -1183,7 +1183,7 @@ class PHPWS_DB {
 
         switch ($type){
         case 'assoc':
-            return PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getAssoc($sql, NULL,NULL, $mode), $type);
+            return $GLOBALS['PEAR_DB']->getAssoc($sql, NULL,NULL, $mode);
             break;
 
         case 'col':
@@ -1193,7 +1193,7 @@ class PHPWS_DB {
 
             if (isset($indexby)) {
                 PHPWS_DB::logDB($sql);
-                $result = PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getAll($sql, NULL, $mode), $type);
+                $result = $GLOBALS['PEAR_DB']->getAll($sql, NULL, $mode);
                 if (PEAR::isError($result)) {
                     return $result;
                 }
@@ -1201,7 +1201,7 @@ class PHPWS_DB {
                 return PHPWS_DB::_indexBy($result, $indexby, TRUE);
             }
             PHPWS_DB::logDB($sql);
-            return PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getCol($sql), $type);
+            return $GLOBALS['PEAR_DB']->getCol($sql);
             break;
 
         case 'min':
@@ -1209,13 +1209,12 @@ class PHPWS_DB {
         case 'one':
             PHPWS_DB::logDB($sql);
             $value = $GLOBALS['PEAR_DB']->getOne($sql, NULL, $mode);
-            db_trim($value);
             return $value;
             break;
 
         case 'row':
             PHPWS_DB::logDB($sql);
-            return PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getRow($sql, array(), $mode), $type);
+            return $GLOBALS['PEAR_DB']->getRow($sql, array(), $mode);
             break;
 
         case 'count':
@@ -1246,7 +1245,7 @@ class PHPWS_DB {
         case 'all':
         default:
             PHPWS_DB::logDB($sql);
-            $result = PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getAll($sql, NULL, $mode), $type);
+            $result = $GLOBALS['PEAR_DB']->getAll($sql, NULL, $mode);
             if (PEAR::isError($result)) {
                 return $result;
             }
@@ -1964,9 +1963,16 @@ class PHPWS_DB {
     }
 
 
+    /**
+     * Not sure what function this served.
+     * Hiding it for now and removing its calls
+     * look in Database.php,v 1.124 if it needs to return
+     /*
 
+     /*
     function autoTrim($sql, $type)
     {
+        return $sql;
         if (PEAR::isError($sql) || !is_array($sql)) {
             return $sql;
         }
@@ -1991,6 +1997,7 @@ class PHPWS_DB {
 
         return $sql;
     }
+    */
 
     function updateSequenceTable()
     {
@@ -2119,6 +2126,10 @@ class PHPWS_DB_Where {
 }
 
 
+/**
+ * See autoTrim for information
+ */
+/*
 function db_trim(&$value)
 {
     if (PEAR::isError($value) || !isset($value)) {
@@ -2129,9 +2140,10 @@ function db_trim(&$value)
         array_walk($value, 'db_trim');
         return;
     }
-
+    
     $value = rtrim($value);
 }
+*/
 
 function _add_tbl_prefix(&$val, $keynull, $prefix)
 {
