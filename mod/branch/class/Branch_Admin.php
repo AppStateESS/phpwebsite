@@ -80,9 +80,6 @@ class Branch_Admin {
 
     function main()
     {
-        if (!Current_User::authorized('branch')) {
-            Current_User::disallow();
-        }
         $content = NULL;
         // Create the admin panel
         $this->cpanel();
@@ -137,7 +134,20 @@ class Branch_Admin {
             }
             break;
 
+        case 'edit_branch':
+            $this->edit_basic();
+            break;
+
+        case 'branch_modules':
+            $this->edit_modules();
+            break;
+
         case 'post_basic':
+            if (!$this->branch->id) {
+                $new_branch = true;
+            } else {
+                $new_branch = false;
+            }
             if (!$this->post_basic()) {
                 $this->edit_basic();
             } else {
@@ -149,16 +159,20 @@ class Branch_Admin {
                     return;
                 }
 
-                if ($this->branch->createDirectories()) {
-                    $this->setCreateStep(3);
-                    $this->title = _('Create branch directories');
-                    $this->message[] = _('Branch created successfully.');
-                    $vars['command'] = 'install_branch_core';
-                    $vars['branch_id'] = $this->branch->id;
-                    $this->content = PHPWS_Text::secureLink(_('Continue to install branch core'), 'branch', $vars); 
+                if ($new_branch) {
+                    if ($this->branch->createDirectories()) {
+                        $this->setCreateStep(3);
+                        $this->title = _('Create branch directories');
+                        $this->message[] = _('Branch created successfully.');
+                        $vars['command'] = 'install_branch_core';
+                        $vars['branch_id'] = $this->branch->id;
+                        $this->content = PHPWS_Text::secureLink(_('Continue to install branch core'), 'branch', $vars); 
+                    } else {
+                        $this->title = _('Unable to create branch directories.');
+                        $this->content = _('Sorry, but Branch failed to make the proper directories.');
+                    }
                 } else {
-                    $this->title = _('Unable to create branch directories.');
-                    $this->content = _('Sorry, but Branch failed to make the proper directories.');
+                    $this->listBranches();
                 }
             }
             break;
@@ -291,18 +305,22 @@ class Branch_Admin {
             // removes the last directory
             array_pop($directory);
             $write_dir = implode('/', $directory);
-            if (is_writable($write_dir)) {
-                if(@mkdir($this->branch->directory)) {
-                    $this->message[] = _('Directory creation successful.');
+
+            // only writes directory on new branches
+            if (!$this->branch->id) {
+                if (is_writable($write_dir)) {
+                    if(@mkdir($this->branch->directory)) {
+                        $this->message[] = _('Directory creation successful.');
+                    } else {
+                        $this->message[] = _('Unable to create the directory. You will need to create it manually.');
+                        $result = FALSE;
+                    }
                 } else {
                     $this->message[] = _('Unable to create the directory. You will need to create it manually.');
                     $result = FALSE;
                 }
-            } else {
-                $this->message[] = _('Unable to create the directory. You will need to create it manually.');
-                $result = FALSE;
             }
-        } elseif(PHPWS_File::listDirectories($this->branch->directory)) {
+        } elseif(!$this->branch->id && PHPWS_File::listDirectories($this->branch->directory)) {
                 $this->message[] = _('Directory exists but already contains files.');
                 $result = FALSE;
         }
@@ -310,8 +328,9 @@ class Branch_Admin {
         if (empty($_POST['branch_name'])) {
             $this->message[] = _('You must name your branch.');
             $result = FALSE;
-        } else {
-            $this->branch->branch_name = $_POST['branch_name'];
+        } elseif (!$this->branch->setBranchName($_POST['branch_name'])) {
+                $this->message[] = _('You may not use that branch name.');
+                $result = FALSE;
         }
 
         if (empty($_POST['url'])) {
@@ -724,6 +743,36 @@ class Branch_Admin {
     }
 
     /**
+     * Form that allows the hub admin determine which modules a 
+     * branch can install.
+     */
+    function edit_modules()
+    {
+        PHPWS_Core::initCoreClass('File.php');
+        $this->title = sprintf(_('Module access for "%s"'), $this->branch->branch_name);
+
+        $content   = NULL;
+        $dir_mods  = PHPWS_File::readDirectory(PHPWS_SOURCE_DIR . 'mod/', TRUE);
+        $core_mods = PHPWS_Core::coreModList();
+
+        foreach ($core_mods as $core_title){
+            unset($dir_mods[array_search($core_title, $dir_mods)]);
+        }
+
+        unset($dir_mods[array_search('branch', $dir_mods)]);
+        sort($dir_mods);
+        $form = & new PHPWS_Form('module_list');
+                $form->useRowRepeat();
+        $form->addCheck('module_name', $dir_mods);
+        $form->setLabel('module_name', $dir_mods);
+
+        $template = $form->getTemplate();
+
+        $content = PHPWS_Template::process($template, 'branch', 'module_list.tpl');
+        $this->content = $content;
+    }
+
+    /**
      * Lists the branches on the system
      */
     function listBranches()
@@ -744,13 +793,6 @@ class Branch_Admin {
         $this->content = $pager->get();
     }
 
-    /**
-     * Form to decide which modules to install
-     */
-    function edit_modules()
-    {
-
-    }
 }
 
 ?>

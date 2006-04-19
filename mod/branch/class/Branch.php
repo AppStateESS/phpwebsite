@@ -26,9 +26,29 @@ class Branch {
     function init()
     {
         $db = & new PHPWS_DB('branch_sites');
-        $db->loadObject($this);
+        $result = $db->loadObject($this);
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            return $result;
+        }
     }
-   
+
+    function setBranchName($branch_name)
+    {
+        $this->branch_name = $branch_name;
+        $db = & new PHPWS_DB('branch_sites');
+        $db->addWhere('branch_name', $branch_name);
+        $db->addWhere('id', $this->id, '!=');
+        $result = $db->select();
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            return FALSE;
+        } elseif ($result) {
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
     
     function save()
     {
@@ -95,9 +115,30 @@ class Branch {
         return TRUE;
     }
 
+    /**
+     * Returns an associative array for the branch list page
+     */
     function getTpl()
     {
         $tpl['URL'] = $this->getUrl();
+
+        $links[] = PHPWS_Text::secureLink(_('Edit'), 'branch', 
+                                          array('command'=>'edit_branch', 'branch_id'=>$this->id));
+
+        $js['question'] = _('Removing this branch will make it inaccessible.\n
+The database and files will remain behind.\n
+If you are sure you want to remove the branch, type the branch name:');
+        $js['address'] = sprintf('index.php?module=branch&command=remove_branch&branch_id=%s&authkey=%s', $this->id, Current_User::getAuthKey());
+        $js['value_name'] = 'branch_name';
+        $js['link'] = _('Remove');
+
+        $links[] = javascript('prompt', $js);
+
+        $links[] = PHPWS_Text::secureLink(_('Modules'), 'branch',
+                                          array('command'=>'branch_modules', 'branch_id'=>$this->id));
+
+        $tpl['ACTION'] = implode(' | ', $links);
+
         return $tpl;
     }
 
