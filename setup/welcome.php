@@ -7,8 +7,6 @@ It has been redesigned and coded from the ground up.</p>
 <p>We have added MANY new features to phpWebSite to benefit users and developers alike.
 Please be aware, however, that the version you are installing now is incomplete.
 <ul>
-<li> It is not yet 100% compatible with the 0.x series of phpWebSite.</li>
-<li> We have not written the Branch module.</li>
 <li> Some functionality may be missing.</li>
 <li> Bugs may abound.</li>
 <li> Language translation has not been tested.</li>
