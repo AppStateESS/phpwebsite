@@ -4,7 +4,7 @@
  *
  * This class is stand alone. You must construct an object within your
  * function to get it to work:
- * $form = new PHPWS_Form;
+ * $form = & new PHPWS_Form;
  *
  * This class allows you to easily create a form and then fetch elements of
  * that form. It also allows you to export a template of the form that you
@@ -93,6 +93,13 @@ class PHPWS_Form {
     var $legend = FORM_GENERIC_LEGEND;
 
     /**
+     * If true, then getTemplate will print multiple valued elements
+     * using the sigma template multi row format
+     */
+    var $row_repeat = FALSE;
+    
+
+    /**
      * Constructor for class
      */
     function PHPWS_Form($id=NULL)
@@ -147,6 +154,14 @@ class PHPWS_Form {
     function noAuthKey()
     {
         $this->use_auth_key = FALSE;
+    }
+
+    /**
+     * Uses the template row repeat method on multiple elements
+     */
+    function useRowRepeat()
+    {
+        $this->row_repeat = TRUE;
     }
 
     function reset()
@@ -309,11 +324,12 @@ class PHPWS_Form {
                 if ($type != 'radio') {
                     $element->isArray = TRUE;
                 }
+                
                 $element->_form = &$this;
-                $element->setId();
 
                 $this->_elements[$name][$element->value] = $element;
                 $this->_elements[$name][$element->value]->key = $element->value;
+                $this->_elements[$name][$element->value]->setId();
             }
         } else {
             if (isset($this->_elements[$name])) {
@@ -321,11 +337,11 @@ class PHPWS_Form {
                 $result->isArray = TRUE;
             }
             $result->_form = &$this;
-            $result->setId();
             $this->_elements[$name][] = $result;
 
             $current_key = $this->getKey($name);
             $this->_elements[$name][$current_key]->key = $current_key;
+            $this->_elements[$name][$current_key]->setId();
         }
 
         $this->types[$name] = $type;
@@ -855,46 +871,46 @@ class PHPWS_Form {
         switch ($type){
         case 'text':
         case 'textfield':
-            $obj = new Form_TextField($name, $value);
+            $obj = & new Form_TextField($name, $value);
             return $obj;
             break;
       
         case 'textarea':
-            $obj = new Form_TextArea($name, $value);
+            $obj = & new Form_TextArea($name, $value);
             return $obj;
             break;
 
         case 'submit':
-            $obj = new Form_Submit($name, $value);
+            $obj = & new Form_Submit($name, $value);
             return $obj;
             break;
 
         case 'button':
-            $obj = new Form_Button($name, $value);
+            $obj = & new Form_Button($name, $value);
             return $obj;
             break;
             
 
         case 'password':
-            $obj = new Form_Password($name, $value);
+            $obj = & new Form_Password($name, $value);
             return $obj;
             break;
 
         case 'file':
             $this->_multipart = TRUE;
             $this->_encode = ' enctype="multipart/form-data"';
-            $obj = new Form_File($name);
+            $obj = & new Form_File($name);
             return $obj;
             break;
       
         case 'select':
         case 'dropbox':
-            $obj = new Form_Select($name, $value);
+            $obj = & new Form_Select($name, $value);
             return $obj;
             break;
 
         case 'multiple':
-            $obj = new Form_Multiple($name, $value);
+            $obj = & new Form_Multiple($name, $value);
             return $obj;
             break;
 
@@ -908,7 +924,7 @@ class PHPWS_Form {
                 }
                 return $allRadio;
             } else {
-                $obj = new Form_RadioButton($name, $value);
+                $obj = & new Form_RadioButton($name, $value);
                 return $obj;
             }
             break;
@@ -916,18 +932,21 @@ class PHPWS_Form {
         case 'check':
         case 'checkbox':
             if (is_array($value)) {
+                $check_count=0;
                 foreach ($value as $sub) {
-                    $check[] = new Form_Checkbox($name, $sub);
+                    $check[$check_count] = & new Form_Checkbox($name, $sub);
+                    $check[$check_count]->place = $check_count;
+                    $check_count++;
                 }
                 return $check;
             } else {
-                $obj = new Form_Checkbox($name, $value);
+                $obj = & new Form_Checkbox($name, $value);
                 return $obj;
             }
             break;
 
         case 'hidden':
-            $obj = new Form_Hidden($name, $value);
+            $obj = & new Form_Hidden($name, $value);
             return $obj;
             break;
 
@@ -1056,12 +1075,15 @@ class PHPWS_Form {
         foreach ($this->_elements as $elementName=>$element){
             $multiple = FALSE;
             $count = 1;
+            $mult_count = 0;
 
             if (count($element) > 1) {
                 $multiple = TRUE;
             }
 
             foreach ($element as $subElement){
+                $subtpl = array();
+
                 if ($this->types[$elementName] == 'hidden') {
                     if ($helperTags) {
                         $template['START_FORM'] .= $subElement->get() . "\n";
@@ -1072,19 +1094,26 @@ class PHPWS_Form {
                 }
 
                 $tagName = $subElement->getTag();
+                $label = $subElement->getLabel(TRUE);
+
+                if ($this->row_repeat && $multiple) {
+                    if (!empty($label)) {
+                        $subtpl[$tagName . '_LABEL'] = $label;
+                    }
+                    $subtpl[$tagName] = $subElement->get();
+                    $template[strtolower($tagName) . '_repeat'][] = $subtpl;
+                    continue;
+                }
 
                 if ($multiple) {
                     $tagName .= "_$count";
                 }
-
-                $label = $subElement->getLabel(TRUE);
-
-                if (isset($label)) {
+                
+                if (!empty($label)) {
                     $template[$tagName . '_LABEL'] = $label;
                 }
 
                 $template[$tagName] = $subElement->get();
-
                 $count++;
             }
         }      
@@ -1675,7 +1704,7 @@ class Form_Multiple extends Form_Element {
 
 
 
-class Form_CheckBox extends Form_Element {
+class Form_Checkbox extends Form_Element {
     var $match = FALSE;
     var $type  = 'checkbox';
 
@@ -1763,6 +1792,10 @@ class Form_Element {
     var $id          = NULL;
     var $title       = NULL;
     var $_form       = NULL;
+
+    // When multiple values are sent to an element, this variable
+    // stores the position for labels and titles
+    var $place       = 0;
   
     function Form_Element($name, $value=NULL)
     {
@@ -1810,15 +1843,7 @@ class Form_Element {
         if ($formMode) {
             if (isset($this->title)) {
                 if (is_array($this->title)) {
-                    if (isset($GLOBALS['form_title_repeats'][$this->name])) {
-                        $GLOBALS['form_title_repeats'][$this->name]++;
-                    }
-                    else {
-                        $GLOBALS['form_title_repeats'][$this->name] = 0;
-                    }
-
-                    $key = $GLOBALS['form_title_repeats'][$this->name];
-
+                    $key = $this->place;
                     $title = $this->title[$key];
                 } else {
                     $title = $this->title;
@@ -1850,14 +1875,7 @@ class Form_Element {
         if ($formMode) {
             if (isset($this->label)) {
                 if (is_array($this->label)) {
-                    if (isset($GLOBALS['form_label_repeats'][$this->name])) {
-                        $GLOBALS['form_label_repeats'][$this->name]++;
-                    } else {
-                        $GLOBALS['form_label_repeats'][$this->name] = 0;
-                    }
-
-                    $key = $GLOBALS['form_label_repeats'][$this->name];
-
+                    $key = $this->place;
                     if (isset($this->label[$key])) {
                         $label = $this->label[$key];
                     } else {
@@ -1888,9 +1906,11 @@ class Form_Element {
     function setId()
     {
         $id = $this->getName();
+
         if ($this->type == 'radio') {
             $id .= '[' . $this->key . ']';
         }
+
         $this->id = $this->_form->id . '_' . $id;
     }
 
