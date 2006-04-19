@@ -1577,7 +1577,6 @@ class PHPWS_DB {
                     $query = str_replace($tableName, $prefix . $tableName, $query);
                 }
                 $sqlCommand = array();
-
                 PHPWS_DB::homogenize($query);
 
                 $result = PHPWS_DB::query($query);
@@ -1616,7 +1615,7 @@ class PHPWS_DB {
                     $command = preg_replace('/ int /i', ' int default 0 ', $command);
                 }
 
-                if(!preg_match('/\snull/', $command)) {
+                if(!preg_match('/\snull/i', $command)) {
                     $command = preg_replace('/ int /i', ' int not null ', $command);
                 }
 
