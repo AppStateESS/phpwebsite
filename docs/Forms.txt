@@ -1,0 +1,768 @@
+Form Class by Matthew McNaney
+-------------------------------
+
+
+Version History
+-------------------------------
+0.1 First draft April 20, 2006
+
+
+Introduction
+------------------------------
+
+The PHPWS_Form class assists developers in the creation and display of
+web forms.
+
+Forms are made up of elements (text areas, check boxes, radio buttons,
+etc.). After constructing a form object, you add these elements and
+their properties individually. You complete can then complete the
+process calling the getTemplate function. The result can then be sent
+to phpWebSite's Template class for display.
+
+
+
+Getting Started
+------------------------------
+First construct a form object.
+
+$form = & new PHPWS_Form('form_name');
+
+The 'form_name' is not required but you may need it should you have
+multiple forms on a single page. The default name is 'phpws_form'.
+
+
+Adding Elements
+------------------------------
+Each element is added using the 'add' function. If you developed for
+phpWebSite versions 0.10.x and under, this may be familiar:
+
+$form->add('name_of_element', 'type_of_element', 'value_of_element');
+
+In phpWebSite 1.x and higher, you may find it easier to use the
+element type add functions instead.
+
+Here are the element types:
+
+text | textfield
+textarea
+submit
+button
+password
+file
+select | dropbox
+multiple
+radio | radiobutton
+check | checkbox
+hidden
+
+Here are the element type add functions
+addText | addTextField
+addTextarea
+addSubmit
+addButton
+addPassword
+addFile
+addSelect | addDropbox
+addMultiple
+addRadio | addRadioButton
+addCheck | addCheckBox
+addHidden
+
+With the element type functions, you just need the element name and
+value.
+
+Element Description
+--------------------------------------------
+The following is a description of each element, how it's value is
+used, and an example of how it would display. Please note that for
+clarity and brevity, some attributes are not shown in the examples.
+
+
+text | text field 
+Creates an single-line input type "text". The text field displays the
+value as the default text.
+
+// <input type="text" name="pet" value="dog" />
+$form->addText('pet', 'dog'); 
+
+
+textarea
+Creates a multiple-line "textarea" input. The text area displays the
+value as the default text.
+
+// <textarea name="pet_story">Type story here...</textarea>
+$form->addTextarea('pet_story', 'Type story here...'); 
+
+
+submit
+Creates an input type "submit" button. This button submits the form it
+is contained within. The value displays on the button face and is
+passed to the form when clicked.
+
+// <input type="submit" name="create_report" value="Create report" />
+$form->addSubmit('create_report', 'Create report');
+
+Most of the time, a form only has _one_ submit button. As such, this
+function lets you only enter one parameter. If you do so, the name of
+the submit button becomes simply 'submit'.
+
+// <input type="submit" name="submit" value="Create report" />
+$form->addSubmit('Create report');
+
+The above ONLY works with "addSubmit" NOT with the "add" function.
+
+
+
+button
+Creates an input type "button". Value displays on the button
+face. Clicking the button does not submit the form.
+
+// <input type="button" name="check_all" value="Check all boxes" />
+$form->addButton('check_all', 'Check all boxes');
+
+Button works like submit in regards to only needing one parameter. The
+default name for the button however is "button" not "submit". Like
+submit you MUST use "addButton" and not the "add" function.
+
+
+
+password
+Creates an input type "password". The value displays as hidden
+characters (usually "*******") in the password text box. The password
+itself IS viewable in the HTML source.
+
+//<input type="password" name="user_password" value="" />
+$form->addPassword('user_password');
+
+Note: as a security measure, the password will NOT display by default
+unless the allowValue function is called like so:
+
+//<input type="password" name="user_password" value="qwerty" />
+$form->addPassword('user_password', 'qwerty');
+$form->allowValue('user_password');
+
+
+
+file
+Creates a text field and Browse button for the uploading of client
+files. Value is ignored.
+// <input type="file" name="upload" value="" />
+$form->addFile('upload');
+
+
+select | dropbox
+Creates a drop-down selector. Only one selection may be made per
+element, unlike the multiple element described below. The value passed
+to this element must be an array. Each row in the array, is an
+option. The array row's key is used as the option's "value". The
+element displays an array row's value as the option's content.
+
+Example:
+$sex = array('m' => 'Male', 'f' => 'Female');
+$form->addSelect('sex', $sex);
+
+Displays:
+<select name="sex">
+  <option value="m">Male</option>
+  <option value="f">Female</option>
+</select>
+
+
+multiple
+Creates a multiple select drop-down. As the name implies, the user may
+choose multiple items in the list. Other than this difference, the
+parameters and functionality is identical to the "select" element.
+
+Example:
+$toppings = array('pr' => 'Pepperoni', 'm' => 'Mushrooms', 'yuck' => 'Anchovies');
+$form->addMultiple('toppings', $toppings);
+
+Displays:
+<select name="toppings" multiple="multiple">
+  <option value="pr">Pepperoni</option>
+  <option value="m">Mushrooms</option>
+  <option value="yuck">Anchovies</option>
+</select>
+
+"select" and "multiple" also handle matches differently. See the
+"Setting Matches" information later in this document.
+
+
+radio | radiobutton
+Creates an input type "radio" selector. Like the "multiple" element,
+the radio value is an array. Unlike "multiple", the array is not
+associative. The key of each array row is irrelevant, only the value
+is used.
+
+$beverage = array('pepsi', 'milk', 'h2o');
+$form->addRadio('beverage', $beverage);
+
+Displays:
+<input type="radio" name="beverage" value="pepsi" />
+<input type="radio" name="beverage" value="milk" />
+<input type="radio" name="beverage" value="h20" />
+
+Note: if you were looking at this in a browser, it would like this
+(with the zero representing a radio button):
+
+0 0 0
+
+To get this:
+
+0 Pepsi
+0 Milk
+0 Water
+
+You would need to set the button's label (and add breaks in the
+template). That is covered in the "Setting Labels" section.
+
+
+check | checkbox
+Creates an input type "checkbox".
+
+// <input type="checkbox" name="married" value="yes" />
+$form->addCheck('married', 'yes');
+
+Unlike other elements, this element can receive either a string as a
+value (the most common occurence) OR an array.
+
+Use an array value for multiple checkboxes within the same element
+name:
+
+$foods = array('fried_chicken', 'pizza', 'ice_cream', 'hot_dogs', 'clams');
+$form->addCheck('favorite_foods', $foods);
+
+Displays:
+
+<input type="checkbox" name="favorite_foods[fried_chicken]" value="fried_chicken" />
+<input type="checkbox" name="favorite_foods[pizza]" value="pizza" />
+<input type="checkbox" name="favorite_foods[ice_cream]" value="ice_cream" />
+<input type="checkbox" name="favorite_foods[hot_dogs]" value="hot_dogs" />
+<input type="checkbox" name="favorite_foods[clams]" value="clams" />
+
+If you use an array value, make sure to use a standard array (not
+associative) with natural key progression (i.e. 0,1,2,3, etc.). The form class may get
+confused otherwise.
+
+Note: Like the radio button above, you need to set the labels for the
+text next to the check box.
+
+
+
+hidden
+Creates an input of type "hidden".
+
+// <input type="hidden" name="current_id" value="4" />
+$form->addHidden('current_id', 4);
+
+Hidden inputs do not actually display in your form but are passed on
+when submitted.
+
+
+Setting Labels (and the element Title)
+----------------------------------------
+Without labels, users won't know what they should be typing,
+selecting, or checking. Labels identify an elements function. Setting
+labels in not required, but using the "setLabel" is quite useful for a
+few reasons.
+
+First, setLabels links the descriptive text to the id of the
+element. This direct link enables extra browser usability. For
+example, you can click a checkbox's label as well as the check box 
+itself to select it.
+
+Second, you can translate the label outside of the template.
+
+There are other reasons you will find on your own (code readibility,
+repeating template rows, etc.).
+
+Setting a label is simple. Just use the name of your element and the
+label text.
+
+$form->addText('username');
+$form->setLabel('username', 'Enter your username');
+
+This will display:
+<label for="phpws_form_username">Enter your username</label>
+<input type="text" name="username" id="phpws_form_username" title="Enter your username" value="" />
+
+Notice the "for" attribute: phpws_form_username. Now look at the
+input's id. They are the same. This is the linking I refered to
+earlier.
+
+The id value is a combination of the form (remember the default form name is
+'phpws_form') and the element's name.
+
+Also notice the text input's title attribute. Normally if we did not
+set the label, the title would be the element's name. The title will
+usually appear when a user mouses over the input element. You can set
+the title yourself by using the setTitle function.
+
+$form->setTitle('username', 'The username field');
+
+You would then get the below instead: 
+<input type="text" name="username" id="phpws_form_username"
+    title="The username field" value="" />
+
+
+To add labels to multi-valued elements, just set the label with an
+array:
+
+$foods = array('fried_chicken', 'pizza', 'ice_cream', 'hot_dogs', 'clams');
+$food_labels = array('Fried Chicken', 'Gooey Pizza', 'Ice Cream', 'Foot Long Hot Dogs', 'Fried Clams');
+$form->addCheck('favorite_foods', $foods);
+$form->setLabel('favorite_foods', $food_labels);
+
+The order of the label array must match the value order.
+
+Here is an example of radio button labels:
+
+$beverage = array('pepsi', 'milk', 'h2o');
+$bev_label = array('Pepsi', 'Milk', 'Water');
+$form->addRadio('beverage', $beverage);
+$form->setLabel('beverage', $bev_label);
+
+Single and multiple select elements do not need multiple labels. One
+label defines the whole select element.
+
+
+
+Matching elements
+---------------------------------------------
+When using check boxes, radio buttons, and selects (multiple and
+single) you often need to set default values. In PHPWS_Form, this is
+done with the "setMatch" function.
+
+Single matches
+Check boxes with one value, radio buttons, and single selects use one
+value for matching. Here are some examples using earlier samples:
+
+Check boxes
+
+$form->addCheck('married', 'yes');
+$form->setMatch('married', 'yes');
+
+Displays
+<input type="checkbox" name="married" value="yes" checked="checked" />
+
+
+Single select
+
+$sex = array('m' => 'Male', 'f' => 'Female');
+$form->addSelect('sex', $sex);
+$form->setMatch('sex', 'm');
+
+Displays
+<select name="sex">
+   <option value="m" selected="selected">Male</option>
+   <option value="f">Female</option>
+</select>
+
+
+Radio buttons
+
+$beverage = array('pepsi', 'milk', 'h2o');
+$form->addRadio('beverage', $beverage);
+$form->setMatch('beverage', 'milk');
+
+<input type="radio" name="beverage" value="pepsi" />
+<input type="radio" name="beverage" value="milk" checked="checked" />
+<input type="radio" name="beverage" value="h2o" />
+
+
+Multiple Matches
+Multiple check boxes and multiple selects use an array for matching.
+
+Check boxes
+
+$foods      = array('fried_chicken', 'pizza', 'ice_cream', 'hot_dogs', 'clams');
+$food_match = array('pizza', 'clams');
+$form->addCheck('favorite_foods', $foods);
+$form->setMatch('favorite_foods', $food_match);
+
+<input type="checkbox" name="favorite_foods[fried_chicken]" value="fried_chicken" />
+<input type="checkbox" name="favorite_foods[pizza]" value="pizza" checked="checked" />
+<input type="checkbox" name="favorite_foods[ice_cream]" value="ice_cream" />
+<input type="checkbox" name="favorite_foods[hot_dogs]" value="hot_dogs" />
+<input type="checkbox" name="favorite_foods[clams]" value="clams" checked="checked" />
+
+
+Multiple select
+
+$toppings = array('pr' => 'Pepperoni', 'm' => 'Mushrooms', 'yuck' => 'Anchovies');
+$top_match = array('m', 'yuck');
+$form->addMultiple('toppings', $toppings);
+$form->setMatch('toppings', $top_match);
+
+<select name="toppings[]" multiple="multiple">
+   <option value="pr">Pepperoni</option>
+   <option value="m" selected="selected">Mushrooms</option>
+   <option value="yuck" selected="selected">Anchovies</option>
+</select>
+
+
+
+Creating your template
+---------------------------------------
+Once you have plugged in all your form elements, you can call the
+"getTemplate" function.
+
+$template = $form->getTemplate();
+
+The template variable is an associative array. To get your final form
+content, you just need to send it to PHPWS_Template:
+
+$content = PHPWS_Template::process($template, 'my_module_title',
+                                   'template_file.tpl');
+
+
+You can now display the result of the process function.
+
+If you are unsure how templates work in phpWebSite, please read
+template.txt in the docs directory.
+
+Now you are ready to create your form template.
+
+Two tags frame your template module: START_FORM and
+END_FORM. All other form tags should appear between these two tags.
+
+The other form tags are derived from your form element names. For
+example:
+
+$form->addHidden('command', 'save_pet');
+$form->addText('pet');
+
+To display this text field we just need to add a "pet" tag.
+
+{START_FORM}
+
+{PET}
+
+{END_FORM}
+
+Notice that all the tags are capitalized. This is done
+automatically. Make sure you don't have two form elements named the
+same with only differences in case. (e.g. my_variable vs. My_Variable:
+MY_VARIABLE will be the tag).
+
+Notice that we do not have a tag for the "command" hidden element. All
+hidden elements are included in the START_FORM tag. Since they are
+never seen, there is no reason to have tags in the template for hidden
+variables.
+
+Now lets add a label:
+
+$form->setLabel('pet', "Your pet's name");
+
+We just need to append the form tag with "_LABEL":
+
+{START_FORM}
+
+{PET_LABEL}<br />
+{PET}
+
+{END_FORM}
+
+Simple enough. 
+
+The templating gets a little more complicated when you have multiple
+valued elements.
+
+Let's look at our radio buttons example:
+
+$beverage = array('pepsi', 'milk', 'h2o');
+$bev_label = array('Pepsi', 'Milk', 'Water');
+$form->addRadio('beverage', $beverage);
+$form->setMatch('beverage', 'milk');
+$form->setLabel('beverage', $bev_label);
+
+Here is the example setup:
+
+{START_FORM}
+
+<ul style="list-style : none">
+<li>{BEVERAGE_1} {BEVERAGE_1_LABEL}</li>
+
+<li>{BEVERAGE_2} {BEVERAGE_2_LABEL}</li>
+
+<li>{BEVERAGE_3} {BEVERAGE_3_LABEL}</li>
+</ul>
+
+{END_FORM}
+
+This will display as:
+
+ 0 Pepsi
+ 0 Milk
+ 0 Water
+
+Follow the above format for the multiple check box example as well.
+
+
+Repeating Rows
+----------------------------------------
+There is another way to display multiple elements. You can use
+repeating template rows.
+
+Using the above beverage example, let's add the useRowRepeat function:
+
+$form->useRowRepeat();
+
+Now since we are familiar with row repeats (you're not? go: template.txt),
+then this is what our new template looks like:
+
+{START_FORM}
+
+<ul style="list-style : none">
+
+<!-- BEGIN beverage_repeat -->
+<li>{BEVERAGE} {BEVERAGE_LABEL}</li>
+<!-- END beverage_repeat -->
+
+</ul>
+
+{END_FORM}
+
+The display results will look identical. Using repeating rows is nice
+because:
+- you don't have to bother with the number suffixes
+- your template is cleaner and easier to read
+- the number of elements you add to the form can be dynamic.
+
+The last point is important. If our module allowed the admin to add
+new beverages, the template example would not work. After the third
+beverage, nothing would display. We don't have that problem with
+repeating rows.
+
+
+Are we there yet?
+--------------------------------------
+If you have read this far, you know enough to start using the form
+class. Go to it. The rest of this document covers the auxillary
+commands and functions. Read on to unlock the full power of the Form
+class! Ok it isn't that impressive, but it does contain some helpful
+information.
+
+
+Auth Keys
+--------------------------------------
+Every form automatically adds a hidden variable named "authkey". This
+allows you use the Current_User::authorized() function.
+
+
+WYSIWYG
+--------------------------------------
+Beyond mentioning its existence, we won't discuss the old WYSIWYG in
+phpWebSite 0.10.x. The capabilities in 1.x are far more advanced.
+
+Note: Before learning to use the editor, you may want to make sure it
+is installed. Please read docs/Editor.php.
+
+Once you have your preferred editor installed, you can access it
+within your form.
+
+The editor only works with text areas obviously. To enable it, in your
+text area, you just need to call the useEditor function.
+
+$form->addTextarea('my_life_story');
+$form->useEditor('my_life_story');
+
+BEWARE: the editors included with phpWebSite _assume_ you are only
+using them for administrative functions. Untrusted users should get a
+plain text area to prevent excessive markup.
+
+
+
+Web Standards, Tabs and Fieldsets
+-----------------------------------------
+The form class attempts to make all your forms XHTML compliant. Labels
+are a major portion of compliance. getTemplate also adds a <div> tag
+around your elements to prevent problems with parent - child
+relationships.
+
+If you ever have been without a mouse, you probably know how to tab
+through a form. Sometimes the tab order is not really intuitive. You
+can set this order yourself.
+
+$form->setTab('beverage', 1);
+$form->setTab('favorite_foods', 2);
+
+
+The second parameter determines the tab order. The element's creation
+order is irrelevant. Make sure you don't use the same number twice.
+
+Another way to make your forms more compliant, especially on pages
+with more than one form, is the use of fieldsets. To automatically
+wrap a fieldset around your form call this function:
+
+$form->useFieldset();
+
+The default parameter is true but you have to call the function to
+have the fieldset appear. Send false to disable it.
+
+The fieldset replaces the div tag mentioned above.
+
+
+To add a legend to the fieldset use setLegend:
+
+$form->setLegend('Dinner Form');
+
+Using setLegend automatically turns on the fieldset.
+
+
+Disable and Read Only Elements
+-----------------------------------------
+You can set elements to disable and readonly status. Here are the
+differences via the W3C
+(http://www.w3.org/TR/html4/interact/forms.html#h-17.12)
+
+
+   * Disabled controls do not receive focus.
+   * Disabled controls are skipped in tabbing navigation.
+   * Disabled controls cannot be successful.
+
+   * Read-only elements receive focus but cannot be modified by the user.
+   * Read-only elements are included in tabbing navigation.
+   * Read-only elements may be successful.
+
+The functions are setDisabled and setReadOnly respectively.
+
+$form->addText('example');
+
+$form->setDisabled('example' [,true]);
+or
+$form->setReadOnly('example' [,true]);
+
+The second parameter turns the condition on (true) or off (false). The
+default parameter is TRUE.
+
+
+Adding Tags
+-----------------------------------------------
+Before passing a form template to a template file, you may want to add
+extra tags. These could consist of titles, instructions, etc. If want
+to add the tags before getTemplate is called, use addTplTag:
+
+$form->addTplTag('TITLE', 'Your Dinner Menu Form');
+$form->addTplTag('INSTRUCTIONS', 'Please fill out the following form.');
+
+You could also add the tags post getTemplate:
+
+$template = $form->getTemplate();
+$template['TITLE'] = 'Your Dinner Menu Form';
+$template['INSTRUCTIONS'] = 'Please fill out the following form.';
+
+You can also merge a template array into the form's:
+
+$merge['TITLE'] = 'Your Dinner Menu Form';
+$merge['INSTRUCTIONS'] = 'Please fill out the following form.';
+
+$form->mergeTemplate($merge);
+
+
+
+Adding "Extra" Information
+-------------------------------------------------
+If you need to add javascript, class definitions, or some other
+attribute to an element, use the setExtra function:
+
+$form->addButton('cancel', 'Cancel');
+$form->setExtra('cancel', 'onclick="window.close()"');
+
+$form->addText('pet');
+$form->setExtra('pet', 'class="pet-name"');
+
+
+Dimensions
+-------------------------------------------------
+Oftentimes you want to control the display text fields and text
+areas. There are a few functions that will help you with this.
+
+Sometimes you want to limit the size or maximum amount of characters
+in a text field. There are two functions for each limit:
+
+$form->addText('pet');
+
+// The text field will display 50 characters wide
+$form->setSize('pet', 50); 
+
+// The text field will only allow 12 characters to be typed
+$form->setSize('phone', 12); 
+
+You can set the column and row numbers for text areas like so:
+
+$form->addTextarea('life_story');
+$form->setRows('life_story', 10);
+$form->setCols('life_story', 40);
+
+Note: Keep in mind, these values are ignored when you use the WYSIWYG
+editor
+
+You could also use inline styles (which you shouldn't do but sometimes
+it is necessary) with text fields and areas with the setWidth and
+setHeight functions:
+
+$form->addText('pet');
+$form->setWidth('98%');
+$form->setHeight('2em');
+
+If you want to use CSS and classes to stylize a specific element, you
+can use the setClass function:
+
+$form->addTextArea('life_story');
+$form->setClass('life_story', 'pink-border');
+
+
+Changing Tag Names
+------------------------------------------------
+As stated earlier, template tags reflect the element name. If for some
+reason you want to use a different tag name, change it using setTag:
+
+$form->addText($something_dynamic);
+$form->setTag($something_dynamic, 'first_tag');
+
+
+Setting the Action and Method
+------------------------------------------------
+The form class assumes you want to post to the index.php file. If for
+some reason you do not, use setAction to change the file name:
+
+$form->setAction('password_check.php');
+
+The form class also assumes you want to use the "post" method on
+submission. If you want use the "get" method instead, call setMethod:
+
+$form->setMethod('get');
+
+to change back:
+
+$form->setMethod('post');
+
+Don't worry about the encode method. Form will automatically set it if
+an addFile function is called.
+
+
+Getting one element
+-------------------------------------------------
+If you want to grab the output for just one element without calling
+getTemplate, use the "get" function:
+
+$pet_text_field = $form->get('pet', [,FALSE]);
+
+This would return the input tag for the pet text field. The second
+parameter defaults to FALSE. If you send TRUE, you will receive an
+array of elements. The 'elements' key contains the input tags. The
+'labels' key contains the labels for those elements.
+
+
+
+Conclusion
+--------------------------------------------------
+Hopefully you will find the PHPWS_Form class helpful. Remember: you
+don't have to use this class to create forms. You can create them
+directly in your code or templates if you want. Personally, I find the
+Forms class invaluable.
+
+
+If you have any questions or comments about this document, please
+contact me at mcnaney at gmail dot com.
