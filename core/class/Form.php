@@ -38,7 +38,7 @@ class PHPWS_Form {
      * @var    array
      * @access private
      */
-    var $_elements = NULL;
+    var $_elements = array();
 
     /**
      * Directory destination of submitted form.
@@ -123,13 +123,14 @@ class PHPWS_Form {
     }
 
  
-    function useFieldset($fieldset)
+    function useFieldset($fieldset=TRUE)
     {
         $this->use_fieldset = (bool)$fieldset;
     }
 
     function setLegend($legend)
     {
+        $this->use_fieldset = TRUE;
         $this->legend = strip_tags($legend);
     }
 
@@ -141,6 +142,12 @@ class PHPWS_Form {
         $this->max_file_size = (int)$file_size;
     }
 
+    /**
+     * Some browsers will not try to autocomplete a text field
+     * when auto complete is turned off. This can be useful for
+     * user signup if you don't want the users name saved. Again,
+     * you are at the whim of the browser's settings.
+     */
     function turnOffAutocomplete()
     {
         $this->_autocomplete = FALSE;
@@ -386,7 +393,11 @@ class PHPWS_Form {
             }
         }
     }
+    
 
+    /**
+     * Sets an element's disabled status
+     */
     function setDisabled($name, $value=TRUE)
     {
         if (!$this->testName($name)) {
@@ -401,6 +412,9 @@ class PHPWS_Form {
         }
     }
 
+    /**
+     * Sets an element's readonly status
+     */
     function setReadOnly($name, $value=TRUE)
     {
         if (!$this->testName($name)) {
@@ -1265,79 +1279,7 @@ class PHPWS_Form {
         return $selectList;
     }
   
-    function addImage($name, $module, $current=NULL)
-    {
-        PHPWS_Core::initCoreClass('Image.php');
 
-        $selectList = PHPWS_Form::_imageSelectArray($module, $current);
-
-        if (PEAR::isError($selectList)) {
-            return $selectList;
-        }
-
-        $this->addFile($name . '_file');
-        $this->addText($name . '_title');
-
-        if (isset($selectList)) {
-            $selectInput[] = sprintf('<select name="%s_select" id="%s">', $name, $name);
-            $selectInput[] = implode("\n", $selectList);
-            $selectInput[] = '</select>';
-            $template[strtoupper($name) . '_SELECT'] = implode("\n", $selectInput);
-            $this->mergeTemplate($template);
-        }
-    }
-
-
-    function postImage($name, $module, $directory=NULL)
-    {
-        PHPWS_Core::initCoreClass('Image.php');
-        $image = & new PHPWS_Image;
-
-        $uploadName = $name . '_file';
-        $titleName  = $name . '_title';
-        $selectName = $name . '_select';
-
-        if ($image->fileIsSet($uploadName)) {
-            $result = $image->importPost($uploadName);
-      
-            if (PEAR::isError($result) || is_array($result)) {
-                return $result;
-            }
-      
-            $image->setModule($module);
-
-            if (isset($directory)) {
-                $image->setDirectory($directory);
-            }
-            else {
-                $image->setDirectory($module);
-            }
-
-            if (!empty($_POST[$titleName])) {
-                $image->setTitle($_POST[$titleName]);
-                $image->setAlt($_POST[$titleName]);
-            } else {
-                $image->setTitle($image->getFilename());
-                $image->setAlt($image->getFilename());
-            }
-
-            $result = $image->save();
-      
-            if (PEAR::isError($result)) {
-                return $result;
-            }
-            else {
-                return $image;
-            }
-
-        } elseif (isset($_POST[$selectName])) {
-            $image->setId($_POST[$selectName]);
-            $image->init();
-            return $image;
-        } else {
-            return NULL;
-        }
-    }
 
     function formTextField($name, $value, $size=30, $maxsize=255, $label=NULL)
     {
@@ -1668,7 +1610,7 @@ class Form_Multiple extends Form_Element {
             . $this->getDisabled()
             . $this->getClass(TRUE)
             . '>';
-        foreach($this->value as $value=>$label){
+        foreach($this->value as $value=>$label) {
             if ($this->isMatch($value)) {
                 $content[] = sprintf('<option value="%s" selected="selected">%s</option>', $value, $label);
             }
@@ -1715,6 +1657,10 @@ class Form_Checkbox extends Form_Element {
 
     function getMatch()
     {
+        if (is_array($this->match) && in_array($this->value, $this->match)) {
+            return 'checked="checked"';
+        }
+
         if ((string)$this->match == (string)$this->value) {
             return 'checked="checked"';
         }
