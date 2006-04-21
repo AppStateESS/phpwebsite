@@ -1,39 +1,31 @@
 <script type="text/javascript">
 //<![CDATA[
 
-// by Matt McNaney <mcnaney at gmail dot com>
-
-var checked = new Array();
+/**
+ * @version $Id$
+ * @author Matt McNaney <mcnaney at gmail dot com>
+ */
+var checked_status = false;
 
 function CheckAll(button, shortcut) {
-    if(undefined == checked[shortcut.name]) {
-        checked[shortcut.name] = 0;
-    }
-
-    if (shortcut[0]) {
-        for (var i = 0; i < shortcut.length; i++) {
-            if (checked[shortcut.name] == 0) {
-                shortcut[i].checked = 'checked';
+    var myregexp = new RegExp(shortcut);
+    for (i=0; checkbox = button.form.elements[i]; i++) {
+        if (myregexp.test(checkbox.name) && checkbox.type=='checkbox') {
+            if (checked_status) {
+                checkbox.checked = '';
             } else {
-                shortcut[i].checked = '';
+                checkbox.checked = 'checked';
             }
         }
-    } else {
-        if (checked[shortcut.name] == 0) {
-            shortcut.checked = 'checked';
-        } else {
-            shortcut.checked = '';
-        }
     }
-
-    if (checked[shortcut.name] == 0) {
-        button.value = '{uncheck_label}';
-        checked[shortcut.name] = 1;
-    } else {
+    if (checked_status) {
         button.value = '{check_label}';
-        checked[shortcut.name] = 0;
+
+    } else {
+        button.value = '{uncheck_label}';
     }
 
+    checked_status = !checked_status;
 }
 
 //]]>
