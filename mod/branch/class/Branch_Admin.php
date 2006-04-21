@@ -142,6 +142,15 @@ class Branch_Admin {
             $this->edit_modules();
             break;
 
+        case 'save_branch_modules':
+            if ($this->saveBranchModules()) {
+                $this->message = _('Module list saved successfully.');
+            } else {
+                $this->message = _('An error occurred when trying to save the module list.');
+            }
+            $this->edit_modules();
+            break;
+
         case 'post_basic':
             if (!$this->branch->id) {
                 $new_branch = true;
@@ -457,7 +466,11 @@ class Branch_Admin {
     {
         $template['TITLE']   = $this->title;
         if ($this->message) {
-            $template['MESSAGE'] = implode('<br />', $this->message);
+            if (is_array($this->message)) {
+                $template['MESSAGE'] = implode('<br />', $this->message);
+            } else {
+                $template['MESSAGE'] = $this->message;
+            }
         }
 
         if (is_array($this->content)) {
@@ -752,21 +765,44 @@ class Branch_Admin {
         $this->title = sprintf(_('Module access for "%s"'), $this->branch->branch_name);
 
         $content   = NULL;
-        $dir_mods  = PHPWS_File::readDirectory(PHPWS_SOURCE_DIR . 'mod/', TRUE);
-        $core_mods = PHPWS_Core::coreModList();
 
-        foreach ($core_mods as $core_title){
-            unset($dir_mods[array_search($core_title, $dir_mods)]);
+        $core_mods = PHPWS_Core::coreModList();
+        $all_mods = PHPWS_File::readDirectory(PHPWS_SOURCE_DIR . 'mod/', TRUE);
+        $all_mods = array_diff($all_mods, $core_mods);
+
+        foreach ($all_mods as $key => $module) {
+            if (is_file(PHPWS_SOURCE_DIR . 'mod/' . $module . '/boost/boost.php')) {
+                $dir_mods[] = $module;
+            }
         }
+
+        $db = & new PHPWS_DB('branch_mod_limit');
+        $db->addWhere('branch_id', $this->branch->id);
+        $db->addColumn('module_name');
+        $branch_mods = $db->select('col');
 
         unset($dir_mods[array_search('branch', $dir_mods)]);
         sort($dir_mods);
         $form = & new PHPWS_Form('module_list');
-                $form->useRowRepeat();
+        $form->useRowRepeat();
+
+        $form->addHidden('module', 'branch');
+        $form->addHidden('command', 'save_branch_modules');
+        $form->addHidden('branch_id', $this->branch->id);
+
         $form->addCheck('module_name', $dir_mods);
         $form->setLabel('module_name', $dir_mods);
+        if (!empty($branch_mods)) {
+            $form->setMatch('module_name', $branch_mods);
+        }
+
+        $form->addSubmit('submit', _('Save'));
+
+        $form->addTplTag('CHECK_ALL', javascript('check_all', array('checkbox_name' => 'module_name')));
 
         $template = $form->getTemplate();
+
+        $template['DIRECTIONS'] = _('Unchecked modules cannot be installed on this branch.');
 
         $content = PHPWS_Template::process($template, 'branch', 'module_list.tpl');
         $this->content = $content;
@@ -791,6 +827,30 @@ class Branch_Admin {
         $pager->addRowTags('getTpl');
         $this->title = _('Branch List');
         $this->content = $pager->get();
+    }
+
+    function saveBranchModules()
+    {
+        $db = & new PHPWS_DB('branch_mod_limit');
+        $db->addWhere('branch_id', (int)$_POST['branch_id']);
+        $db->delete();
+        $db->reset();
+
+        if (empty($_POST['module_name']) || !is_array($_POST['module_name'])) {
+            return;
+        }
+        
+        foreach ($_POST['module_name'] as $module) {
+            $db->addValue('branch_id', (int)$_POST['branch_id']);
+            $db->addValue('module_name', $module);
+            $result = $db->insert();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                return FALSE;
+            }
+            $db->reset();
+        }
+        return TRUE;
     }
 
 }

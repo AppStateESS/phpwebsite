@@ -166,28 +166,20 @@ If you are sure you want to remove the branch, type the branch name:');
     function checkCurrentBranch()
     {
         if (isset($_SESSION['Approved_Branch'])) {
-            return $_SESSION['Approved_Branch'];
+            return (bool)$_SESSION['Approved_Branch'];
         }
-        
-        $dsn = Branch::getHubDSN();
 
-        if (empty($dsn)) {
+        $connection = Branch::getHubDB();
+
+        if (!$connection) {
             $_SESSION['Approved_Branch'] = FALSE;
             return FALSE;
         }
 
-        $connection = DB::connect($dsn);
-
-        if (PEAR::isError($connection)) {
-            PHPWS_Error::log($connection);
-            $_SESSION['Approved_Branch'] = FALSE;
-            return FALSE;
-        }
-
-        $sql = sprintf('SELECT branch_sites.* FROM branch_sites WHERE site_hash=\'%s\' AND directory=\'%s\'',
+        $sql = sprintf('SELECT branch_sites.id FROM branch_sites WHERE site_hash=\'%s\' AND directory=\'%s\'',
                        SITE_HASH, PHPWS_HOME_DIR);
 
-        $result = $connection->getRow($sql, NULL, DB_FETCHMODE_ASSOC);
+        $result = $connection->getOne($sql, NULL, DB_FETCHMODE_ASSOC);
         if (PEAR::isError($result)) {
             PHPWS_Error::log($connection);
             $_SESSION['Approved_Branch'] = FALSE;
@@ -196,10 +188,61 @@ If you are sure you want to remove the branch, type the branch name:');
             $_SESSION['Approved_Branch'] = FALSE;
             return FALSE;
         } else {
-            $_SESSION['Approved_Branch'] = TRUE;
+            $_SESSION['Approved_Branch'] = $result;
             return TRUE;
-
         }
+    }
+
+    function getHubDB()
+    {
+        $dsn = Branch::getHubDSN();
+
+        if (empty($dsn)) {
+            return FALSE;
+        }
+
+        $connection = DB::connect($dsn);
+
+        if (PEAR::isError($connection)) {
+            PHPWS_Error::log($connection);
+            return FALSE;
+        }
+        return $connection;
+    }
+
+    function getCurrent()
+    {
+        if (!isset($_SESSION['Approved_Branch'])) {
+            return FALSE;
+        } else {
+            return $_SESSION['Approved_Branch'];
+        }
+    }
+
+    function getBranchMods()
+    {
+        $branch_id = Branch::getCurrent();
+        if (!$branch_id) {
+            return NULL;
+        }
+
+        $db = Branch::getHubDB();
+
+        if (!$db) {
+            return NULL;
+        }
+
+        $sql = sprintf('SELECT module_name FROM branch_mod_limit WHERE branch_id=\'%s\'', $branch_id);
+
+        $result = $db->getCol($sql);
+
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            return NULL;
+        } else {
+            return $result;
+        }
+        $db->disconnect();
     }
 }
 
