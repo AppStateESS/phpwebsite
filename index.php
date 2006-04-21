@@ -41,12 +41,13 @@ require_once PHPWS_SOURCE_DIR . 'inc/Security.php';
 
 PHPWS_Core::checkSecurity();
 PHPWS_Core::initializeModules();
-if (!PHPWS_Core::checkBranch()) {
-    PHPWS_Core::errorPage();
- }
 
 session_name(SESSION_NAME);
 session_start();
+
+if (!PHPWS_Core::checkBranch()) {
+    PHPWS_Core::errorPage();
+}
 
 checkJavascript();
 
