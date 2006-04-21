@@ -744,7 +744,7 @@ class Layout {
             }
         } else {
             if ($import == TRUE) {
-                return sprintf('<style type="text/css"> @import url("%s"); %s</style>', $file, $media_tag);
+                return sprintf('<style type="text/css"> @import url("%s") %s;</style>', $file, $media);
             } elseif (isset($alternate) && $alternate == TRUE) {
                 return sprintf('<link rel="alternate stylesheet" %s href="%s" type="text/css" %s />', $cssTitle, $file, $media_tag);
             } else {
