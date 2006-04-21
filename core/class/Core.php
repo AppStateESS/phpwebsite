@@ -689,17 +689,33 @@ class PHPWS_Core {
         return implode('', $address);
     }
 
+    /**
+     * Returns TRUE if the site is a hub or if the site is
+     * an allowed branch. If FALSE is returned, the index file 
+     * drops the user to an error page. Also sets the Is_Branch GLOBAL
+     */
     function checkBranch()
     {
         if (str_ireplace('index.php', '', $_SERVER['SCRIPT_FILENAME']) == PHPWS_SOURCE_DIR) {
+            $GLOBALS['Is_Branch'] = FALSE;
             return TRUE;
         } else {
             if (!PHPWS_Core::initModClass('branch', 'Branch.php')) {
                 return FALSE;
             }
 
-            return Branch::checkCurrentBranch();
+            if (Branch::checkCurrentBranch()) {
+                $GLOBALS['Is_Branch'] = TRUE;
+                return TRUE;
+            } else {
+                return FALSE;
+            }
         }
+    }
+
+    function isBranch()
+    {
+        return $GLOBALS['Is_Branch'];
     }
 
 }// End of core class
