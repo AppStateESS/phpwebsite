@@ -5,7 +5,7 @@
    */
 
 $proper_name  = 'Branch';
-$version      = '0.0.1';
+$version      = '0.1.0';
 $import_sql   = TRUE;
 $version_http = 'http://phpwebsite.appstate.edu/updates/branch.xml';
 $about        = FALSE;
