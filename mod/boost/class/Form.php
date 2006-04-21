@@ -39,11 +39,23 @@ class Boost_Form {
         }
 
         $core_mods      = PHPWS_Core::coreModList();
-        $dir_mods       = PHPWS_File::readDirectory(PHPWS_SOURCE_DIR . 'mod/', TRUE);
         $installed_mods = PHPWS_Core::installModList();
 
-        foreach ($core_mods as $core_title){
-            unset($dir_mods[array_search($core_title, $dir_mods)]);
+        if (PHPWS_Core::isBranch()) {
+            $branch_mods = Branch::getBranchMods();
+            if (empty($branch_mods)) {
+                $dir_mods = array();
+            } else {
+                $dir_mods = $branch_mods;
+            }
+        } else {
+            $all_mods = PHPWS_File::readDirectory(PHPWS_SOURCE_DIR . 'mod/', TRUE);
+            $all_mods = array_diff($all_mods, $core_mods);
+            foreach ($all_mods as $key=> $module) {
+                if (is_file(PHPWS_SOURCE_DIR . 'mod/' . $module . '/boost/boost.php')) {
+                    $dir_mods[] = $module;
+                }
+            }
         }
 
         if ($type == 'core_mods'){
@@ -61,6 +73,10 @@ class Boost_Form {
         
         if ($type == 'core_mods' && Current_User::isDeity() && DEITIES_CAN_UNINSTALL) {
             $tpl['WARNING'] = _('WARNING: Only deities can uninstall core modules. Doing so may corrupt your installation!');
+        }
+
+        if (empty($modList)) {
+            return _('No modules available.');
         }
 
         sort($modList);
