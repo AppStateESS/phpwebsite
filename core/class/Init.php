@@ -344,6 +344,7 @@ function translate($module=NULL)
             return NULL;
         }
 
+        bindtextdomain('messages', $directory);
         textdomain('messages');
         $GLOBALS['last_gettext'] = $directory;
     }
