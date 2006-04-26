@@ -56,6 +56,8 @@ and it was translated with the ranking portion first, then your
 sentence would get scrambled.
 
 
+Creating Translation Files
+-------------------------------------------
 First we need to create a 'po' file. This file is simply a text file
 that is later compiled into a 'mo' file. The 'mo' file is read by php
 to exchange what you originally wrote into another language.
@@ -94,7 +96,7 @@ A couple of switches were added here:
  -f             : tell xgettext to get the file names from our translate_list.txt
                   file
 
-Once your messages.po file is created successfully, we need to create
+Once your messages.po (or source.po) file is created successfully, we need to create
 a home for it. Go into your module directory. Now make the following
 directory:
 
@@ -108,8 +110,8 @@ locale/en_US/LC_MESSAGES/
 
 Now copy your messages file to that directory.
 
-Congratulations, you have done the bare miniumum to make your module
-internationally compatible!
+Congratulations, you have just made your module internationally
+compatible!
 
 
 Translating the your module
@@ -144,6 +146,16 @@ msgfmt messages.po
 
 The 'msgfmt' program will create a message.mo file. Put this file in
 the proper locale directory and phpWebSite is ready to be translated.
+
+
+Updating Language Files
+---------------------------------------------------------------------
+Use msgmerge like so:
+
+msgmerge old_messages_file.po messages.po --output-file=new_messages_file.po
+
+Translations will then be made on the new_messages_file and then
+complied. The compiled .mo file must still be named message.mo.
 
 
 Making sure your module translates
