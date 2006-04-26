@@ -59,6 +59,13 @@ if (!defined('USE_ROOT_CONFIG')) {
     define('USE_ROOT_CONFIG', FALSE);
 }
 
+function setLanguage($language)
+{
+    putenv("LANG=$language");
+    putenv("LANGUAGE=$language");
+    return setlocale(LC_ALL, $language);
+}
+
 /**
  * Initializes language 
  * Be aware this is called BEFORE the Core class
@@ -77,9 +84,10 @@ function initLanguage()
     if (isset($_COOKIE['phpws_default_language'])){
         $language = $_COOKIE['phpws_default_language'];
 
-        $locale = setlocale(LC_ALL, $language);
+        $locale = setLanguage($language);
+
         if ($locale == FALSE) {
-            $locale = setlocale(LC_ALL, DEFAULT_LANGUAGE);
+            $locale = setLanguage(DEFAULT_LANGUAGE);
         }
     } else {
         $userLang = getBrowserLanguage();
@@ -96,7 +104,7 @@ function initLanguage()
                 }
 
                 foreach ($test as $langTest){
-                    if (setlocale(LC_ALL, $langTest)) {
+                    if (setLanguage($langTest)) {
                         $locale_found = TRUE;
                         $locale = $langTest;
                         setcookie('phpws_default_language', $locale, CORE_COOKIE_TIMEOUT);
@@ -110,7 +118,7 @@ function initLanguage()
         }
 
         if ($locale_found == FALSE) {
-            $locale = setlocale(LC_ALL, DEFAULT_LANGUAGE);
+            $locale = setLanguage(DEFAULT_LANGUAGE);
         }
     }
 
