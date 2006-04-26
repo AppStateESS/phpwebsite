@@ -1,0 +1,1033 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-04-25 15:06-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: config/core/error.php:4
+msgid "Unknown Error."
+msgstr ""
+
+#: config/core/error.php:5
+msgid "File not found."
+msgstr ""
+
+#: config/core/error.php:6 config/core/error.php:43
+msgid "Class does not exist."
+msgstr ""
+
+#: config/core/error.php:7 config/core/error.php:80
+msgid "Directory is not writable."
+msgstr ""
+
+#: config/core/error.php:8
+msgid "Wrong variable type."
+msgstr ""
+
+#: config/core/error.php:9
+msgid "Improperly formated text."
+msgstr ""
+
+#: config/core/error.php:10
+msgid "Invalid value."
+msgstr ""
+
+#: config/core/error.php:11
+msgid "No active modules installed."
+msgstr ""
+
+#: config/core/error.php:12
+msgid "Wrong data type."
+msgstr ""
+
+#: config/core/error.php:13
+msgid "Directories are not secure."
+msgstr ""
+
+#: config/core/error.php:14
+msgid "Unable to create file directory."
+msgstr ""
+
+#: config/core/error.php:15
+msgid "Unknown or incorrect class."
+msgstr ""
+
+#: config/core/error.php:16
+msgid "Unknown module."
+msgstr ""
+
+#: config/core/error.php:17
+msgid "Unable to derive class variables."
+msgstr ""
+
+#: config/core/error.php:18
+msgid "Function name not found."
+msgstr ""
+
+#: config/core/error.php:21
+msgid "Table name not set."
+msgstr ""
+
+#: config/core/error.php:22
+msgid "No values were set before the query"
+msgstr ""
+
+#: config/core/error.php:23
+msgid "No variables in object."
+msgstr ""
+
+#: config/core/error.php:24
+msgid "Not an acceptable operator."
+msgstr ""
+
+#: config/core/error.php:25
+msgid "Improper table name."
+msgstr ""
+
+#: config/core/error.php:26
+msgid "Improper column name."
+msgstr ""
+
+#: config/core/error.php:27
+msgid "Missing column to select."
+msgstr ""
+
+#: config/core/error.php:28
+msgid "Expecting an object variable."
+msgstr ""
+
+#: config/core/error.php:29
+msgid "Class does not contain variables."
+msgstr ""
+
+#: config/core/error.php:30
+msgid "Function was expecting a \"where\" parameter."
+msgstr ""
+
+#: config/core/error.php:31
+msgid "Join database does not exist."
+msgstr ""
+
+#: config/core/error.php:32
+msgid "Table does not exist."
+msgstr ""
+
+#: config/core/error.php:33
+msgid "loadObject expected the object to have an id or where clause."
+msgstr ""
+
+#: config/core/error.php:37
+msgid "Module not set."
+msgstr ""
+
+#: config/core/error.php:38
+msgid "Class not set."
+msgstr ""
+
+#: config/core/error.php:39
+msgid "Table not set."
+msgstr ""
+
+#: config/core/error.php:40
+msgid "List columns not set."
+msgstr ""
+
+#: config/core/error.php:41
+msgid "Name not set."
+msgstr ""
+
+#: config/core/error.php:42
+msgid "Op not set."
+msgstr ""
+
+#: config/core/error.php:44
+msgid "No items passed."
+msgstr ""
+
+#: config/core/error.php:45
+msgid "Database columns not set."
+msgstr ""
+
+#: config/core/error.php:49
+#, php-format
+msgid "You may not use \"%s\" as a form element name."
+msgstr ""
+
+#: config/core/error.php:50
+#, php-format
+msgid "Unable to find element \"%s\"."
+msgstr ""
+
+#: config/core/error.php:51
+msgid "Input type not set."
+msgstr ""
+
+#: config/core/error.php:52
+msgid "Wrong element type for procedure."
+msgstr ""
+
+#: config/core/error.php:53
+msgid "Can not change name. Already in use."
+msgstr ""
+
+#: config/core/error.php:54
+msgid "No form elements have been created."
+msgstr ""
+
+#: config/core/error.php:55
+msgid "The submitted template is not an array."
+msgstr ""
+
+#: config/core/error.php:56
+msgid "File not found in _FILES array."
+msgstr ""
+
+#: config/core/error.php:57
+msgid "Unrecognized form type."
+msgstr ""
+
+#: config/core/error.php:58
+msgid "Match for must be an array for a multiple input."
+msgstr ""
+
+#: config/core/error.php:62
+msgid "Id and table not set."
+msgstr ""
+
+#: config/core/error.php:63
+msgid "No result returned from database."
+msgstr ""
+
+#: config/core/error.php:66
+msgid "Module not found in the database."
+msgstr ""
+
+#: config/core/error.php:69
+msgid "No error message file found."
+msgstr ""
+
+#: config/core/error.php:70
+msgid "Blank module title sent to get function."
+msgstr ""
+
+#: config/core/error.php:73
+msgid "Help option not found in help configuration file."
+msgstr ""
+
+#: config/core/error.php:76
+msgid "PHPWS_File received an unknown construct."
+msgstr ""
+
+#: config/core/error.php:77
+msgid "Class not found."
+msgstr ""
+
+#: config/core/error.php:78
+msgid "Unable to delete file."
+msgstr ""
+
+#: config/core/error.php:79
+msgid "Unable to delete directory."
+msgstr ""
+
+#: config/core/error.php:81
+msgid "Cannot read file."
+msgstr ""
+
+#: config/core/error.php:82
+msgid "Variable name not found in_FILES array."
+msgstr ""
+
+#: config/core/error.php:83
+msgid "Unable to save file in selected directory."
+msgstr ""
+
+#: config/core/error.php:84
+msgid "Upload directory not set in file object."
+msgstr ""
+
+#: config/core/error.php:85
+msgid "Upload file size is larger than allowed."
+msgstr ""
+
+#: config/core/error.php:88
+msgid "Filename not set."
+msgstr ""
+
+#: config/core/error.php:89
+msgid "Directory not set."
+msgstr ""
+
+#: config/core/error.php:90
+msgid "There was a problem loading the image file."
+msgstr ""
+
+#: config/core/error.php:91
+#, php-format
+msgid "Image was %sK making it larger than %sK size limit."
+msgstr ""
+
+#: config/core/error.php:92
+#, php-format
+msgid "Image width was %spx, making it larger than %d pixel limit."
+msgstr ""
+
+#: config/core/error.php:93
+#, php-format
+msgid "Image height was %spx, making it larger than %d pixel limit."
+msgstr ""
+
+#: config/core/error.php:94
+msgid "Unacceptable image type."
+msgstr ""
+
+#: config/core/error.php:95
+msgid "Image not found"
+msgstr ""
+
+#: config/core/error.php:96
+#, php-format
+msgid "Document was %sK making it larger than %sK size limit."
+msgstr ""
+
+#: config/core/error.php:97
+msgid "Unacceptable document type."
+msgstr ""
+
+#: config/core/error.php:98
+msgid "Document not found."
+msgstr ""
+
+#: config/core/error.php:99
+msgid "File not uploaded."
+msgstr ""
+
+#: config/core/error.php:104
+msgid "Function expected a string variable."
+msgstr ""
+
+#: config/core/error.php:107
+msgid "No pages found."
+msgstr ""
+
+#: config/core/error.php:108
+msgid "Module was not set."
+msgstr ""
+
+#: config/core/error.php:109
+msgid "Template was not set."
+msgstr ""
+
+#: config/core/error.php:110
+msgid "Table is blank"
+msgstr ""
+
+#: config/core/error.php:111
+msgid "Method does not exist in specified class."
+msgstr ""
+
+#: config/core/error.php:114
+msgid "Unable to find the specified editor type."
+msgstr ""
+
+#: config/core/error.php:117
+msgid "Unable to find your module's settings.php file."
+msgstr ""
+
+#: config/core/error.php:120
+msgid "Key not found."
+msgstr ""
+
+#: config/core/error.php:121
+msgid "Edit permission column does not exist."
+msgstr ""
+
+#: config/core/error.php:126
+msgid "Failed to write cookie."
+msgstr ""
+
+#: config/core/formConfig.php:29
+msgid "Form"
+msgstr ""
+
+#: core/class/DB/pgsql.php:63
+msgid "Unknown column type:"
+msgstr ""
+
+#: core/class/Batch.php:126 setup/class/Setup.php:319
+#: setup/class/Setup.php:390
+msgid "Continue"
+msgstr ""
+
+#: core/class/Core.php:500
+msgid "User tried to post a file beyond server limits."
+msgstr ""
+
+#: core/class/Crutch.php:52
+msgid "Update your module to use keys."
+msgstr ""
+
+#: core/class/DBPager.php:5
+msgid "No rows found."
+msgstr ""
+
+#: core/class/DBPager.php:695 core/class/Manager.php:674
+msgid "Go"
+msgstr ""
+
+#: core/class/DBPager.php:714
+msgid "Search"
+msgstr ""
+
+#: core/class/DBPager.php:741
+msgid "Page"
+msgstr ""
+
+#: core/class/DBPager.php:742
+msgid "Limit"
+msgstr ""
+
+#: core/class/DBPager.php:744
+msgid "of"
+msgstr ""
+
+#: core/class/Database.php:1877
+msgid "Type"
+msgstr ""
+
+#: core/class/Database.php:2051
+msgid "DB Operator:"
+msgstr ""
+
+#: core/class/Debug.php:99
+msgid "Recursive object:"
+msgstr ""
+
+#: core/class/Debug.php:108
+msgid "Class Name"
+msgstr ""
+
+#: core/class/Debug.php:113
+#, php-format
+msgid "PHPWS_Debug: testObject received a/an %s variable, not an object."
+msgstr ""
+
+#: core/class/Debug.php:115 core/class/Debug.php:200
+msgid ""
+"This is an incomplete object. If this is a sessioned object, make sure to "
+"declare the class before the variable."
+msgstr ""
+
+#: core/class/Debug.php:137
+msgid "Recursive array"
+msgstr ""
+
+#: core/class/Debug.php:151
+msgid "KEY"
+msgstr ""
+
+#: core/class/Debug.php:152
+msgid "VALUE"
+msgstr ""
+
+#: core/class/Debug.php:179
+msgid "Array contained no values."
+msgstr ""
+
+#: core/class/Debug.php:202
+#, php-format
+msgid "Variable is a %s, not an object."
+msgstr ""
+
+#: core/class/Error.php:53
+msgid "Unknown error code."
+msgstr ""
+
+#: core/class/Error.php:85 core/class/Error.php:107
+msgid "Error"
+msgstr ""
+
+#: core/class/Error.php:108
+#, php-format
+msgid "The following error occurred in the %s module's %s function."
+msgstr ""
+
+#: core/class/Form.php:1242 core/class/Form.php:1245
+msgid "No image"
+msgstr ""
+
+#: core/class/Form.php:1250 core/class/Form.php:1257
+msgid "Main"
+msgstr ""
+
+#: core/class/Init.php:227 core/class/Init.php:242 core/class/Init.php:250
+msgid "Unknown"
+msgstr ""
+
+#: core/class/Key.php:373
+msgid "Home"
+msgstr ""
+
+#: core/class/Security.php:16
+msgid "Unknown user"
+msgstr ""
+
+#: core/class/Security.php:22
+#, php-format
+msgid "Coming from: %s"
+msgstr ""
+
+#: core/class/Security.php:25
+msgid "Unknown source"
+msgstr ""
+
+#: core/class/Security.php:30
+msgid "Warning"
+msgstr ""
+
+#: core/class/Template.php:206
+msgid "Template error."
+msgstr ""
+
+#: core/class/Text.php:666 core/class/Text.php:667
+msgid "No Images"
+msgstr ""
+
+#: core/class/Text.php:675 core/class/Text.php:677
+msgid "\\1 wrote"
+msgstr ""
+
+#: core/class/Text.php:704
+msgid "Spoiler"
+msgstr ""
+
+#: core/class/Time.php:155
+msgid "a heartbeat ago"
+msgstr ""
+
+#: core/class/Time.php:158
+#, php-format
+msgid "%s mins ago"
+msgstr ""
+
+#: core/class/Time.php:161
+msgid "1 hour ago"
+msgstr ""
+
+#: core/class/Time.php:164
+#, php-format
+msgid "%s hours ago"
+msgstr ""
+
+#: core/class/Time.php:167
+msgid "1 day ago"
+msgstr ""
+
+#: core/class/Time.php:170
+#, php-format
+msgid "%s days ago"
+msgstr ""
+
+#: core/class/Time.php:173
+msgid "1 week ago"
+msgstr ""
+
+#: core/class/Time.php:176
+#, php-format
+msgid "%s weeks ago"
+msgstr ""
+
+#: core/class/Manager.php:292
+msgid "Manager cannot initialize, the module was not set."
+msgstr ""
+
+#: core/class/Manager.php:299
+msgid "Manager configuration file not found for module: [var1]"
+msgstr ""
+
+#: core/class/Manager.php:307 core/class/Manager.php:339
+msgid "Manager configuration file is an improper format."
+msgstr ""
+
+#: core/class/Manager.php:377
+msgid "Manager was not fully initialized to get a list."
+msgstr ""
+
+#: core/class/Manager.php:601
+msgid "Hidden"
+msgstr ""
+
+#: core/class/Manager.php:603
+msgid "Visible"
+msgstr ""
+
+#: core/class/Manager.php:611
+msgid "Approved"
+msgstr ""
+
+#: core/class/Manager.php:613
+msgid "Unapproved"
+msgstr ""
+
+#: core/class/Manager.php:688
+msgid "No items for the current list."
+msgstr ""
+
+#: inc/Security.php:48
+msgid "Attempted cross-site scripting attack."
+msgstr ""
+
+#: javascript/check_all/default.php:8
+msgid "Uncheck all"
+msgstr ""
+
+#: javascript/check_all/default.php:9
+msgid "Check all"
+msgstr ""
+
+#: javascript/editors/htmlarea/default.php:13
+msgid "Insert HTML"
+msgstr ""
+
+#: javascript/editors/htmlarea/default.php:14
+msgid "Highlight Text"
+msgstr ""
+
+#: javascript/prompt/default.php:3
+msgid "Change to"
+msgstr ""
+
+#: javascript/swapper/default.php:31
+msgid "Add"
+msgstr ""
+
+#: javascript/swapper/default.php:33
+msgid "Remove"
+msgstr ""
+
+#: phpws_stats.php:42
+#, php-format
+msgid "Execution time: %s seconds."
+msgstr ""
+
+#: phpws_stats.php:52
+msgid "Declared classes:"
+msgstr ""
+
+#: phpws_stats.php:57
+msgid "Current sessions:"
+msgstr ""
+
+#: phpws_stats.php:65
+msgid "Request"
+msgstr ""
+
+#: setup/class/Setup.php:56
+msgid "Your configuration file already exists."
+msgstr ""
+
+#: setup/class/Setup.php:57
+msgid "Remove the following file and refresh to continue:"
+msgstr ""
+
+#: setup/class/Setup.php:62
+msgid "Your configuration file was written successfully!"
+msgstr ""
+
+#: setup/class/Setup.php:63
+msgid "Move on to Step 2"
+msgstr ""
+
+#: setup/class/Setup.php:65
+msgid ""
+"Your configuration file could not be written into the following directory:"
+msgstr ""
+
+#: setup/class/Setup.php:67
+msgid "Please check your directory permissions and try again."
+msgstr ""
+
+#: setup/class/Setup.php:68 setup/class/Setup.php:439
+msgid "Permission Help"
+msgstr ""
+
+#: setup/class/Setup.php:98
+msgid "Unable to locate the source directory:"
+msgstr ""
+
+#: setup/class/Setup.php:128
+msgid "Missing a database user name."
+msgstr ""
+
+#: setup/class/Setup.php:135
+msgid "Missing a database password."
+msgstr ""
+
+#: setup/class/Setup.php:144
+msgid "Missing a database name."
+msgstr ""
+
+#: setup/class/Setup.php:152
+msgid ""
+"The Table Prefix may only consist of letters, numbers, and the underscore "
+"character."
+msgstr ""
+
+#: setup/class/Setup.php:153
+msgid "It also may not begin with a number."
+msgstr ""
+
+#: setup/class/Setup.php:176
+msgid "PhpWebSite was able to connect but the database itself does not exist."
+msgstr ""
+
+#: setup/class/Setup.php:177
+msgid "Do you want phpWebSite to create the database?"
+msgstr ""
+
+#: setup/class/Setup.php:178
+msgid ""
+"If not, you will need to create the database yourself and return to the "
+"setup."
+msgstr ""
+
+#: setup/class/Setup.php:182
+msgid "Unable to connect to the database with the information provided."
+msgstr ""
+
+#: setup/class/Setup.php:183
+msgid "Database Help"
+msgstr ""
+
+#: setup/class/Setup.php:196
+msgid "Unable to connect."
+msgstr ""
+
+#: setup/class/Setup.php:197
+msgid "Check your configuration settings."
+msgstr ""
+
+#: setup/class/Setup.php:204
+msgid "Unable to create the database."
+msgstr ""
+
+#: setup/class/Setup.php:205
+msgid "You will need to create it manually and rerun the setup."
+msgstr ""
+
+#: setup/class/Setup.php:213
+msgid "The database creation succeeded!"
+msgstr ""
+
+#: setup/class/Setup.php:214
+msgid "You can now finish the creation of your config file."
+msgstr ""
+
+#: setup/class/Setup.php:292
+msgid "Use Pear files included with phpWebSite (recommended)."
+msgstr ""
+
+#: setup/class/Setup.php:293
+msgid "Use server's Pear library files (not recommended)."
+msgstr ""
+
+#: setup/class/Setup.php:296
+msgid "This is the directory where phpWebSite is installed."
+msgstr ""
+
+#: setup/class/Setup.php:298
+msgid ""
+"The character string below differentiates your site from others on the same "
+"server."
+msgstr ""
+
+#: setup/class/Setup.php:299
+msgid "The example is randomly generated."
+msgstr ""
+
+#: setup/class/Setup.php:300
+msgid "You may change it if you wish."
+msgstr ""
+
+#: setup/class/Setup.php:302
+msgid "phpWebSite uses the Pear library extensively."
+msgstr ""
+
+#: setup/class/Setup.php:303
+msgid "We suggest you use the library files included with phpWebSite."
+msgstr ""
+
+#: setup/class/Setup.php:309
+msgid "Source Directory"
+msgstr ""
+
+#: setup/class/Setup.php:313
+msgid "Site Hash"
+msgstr ""
+
+#: setup/class/Setup.php:317
+msgid "Pear Configuration"
+msgstr ""
+
+#: setup/class/Setup.php:343
+msgid "Database Type"
+msgstr ""
+
+#: setup/class/Setup.php:344
+msgid ""
+"phpWebSite supports several databases. Choose the type your server currently "
+"is running."
+msgstr ""
+
+#: setup/class/Setup.php:346
+msgid "Database User"
+msgstr ""
+
+#: setup/class/Setup.php:347
+msgid "This is the user name that phpWebSite will use to access its database."
+msgstr ""
+
+#: setup/class/Setup.php:348
+msgid ""
+"Note: it is a good idea to give each phpWebSite installation its own user."
+msgstr ""
+
+#: setup/class/Setup.php:350
+msgid "Database Password"
+msgstr ""
+
+#: setup/class/Setup.php:351
+msgid "Enter the database's user password here."
+msgstr ""
+
+#: setup/class/Setup.php:353
+msgid "Host Specification"
+msgstr ""
+
+#: setup/class/Setup.php:354
+msgid ""
+"If your database is on the same server as your phpWebSite installation, "
+"leave this as &#x22;localhost&#x22;."
+msgstr ""
+
+#: setup/class/Setup.php:355
+msgid "Otherwise, enter the ip or dns to the database server."
+msgstr ""
+
+#: setup/class/Setup.php:357
+msgid "Host Specification Port"
+msgstr ""
+
+#: setup/class/Setup.php:358
+msgid ""
+"If your host specification requires access via a specific port, enter it "
+"here."
+msgstr ""
+
+#: setup/class/Setup.php:360
+msgid "Database Name"
+msgstr ""
+
+#: setup/class/Setup.php:361
+msgid "The database's name into which you are installing phpWebSite."
+msgstr ""
+
+#: setup/class/Setup.php:362
+msgid ""
+"Note: if you have not made this database yet, you should do so before "
+"continuing."
+msgstr ""
+
+#: setup/class/Setup.php:364
+msgid "Table Prefix"
+msgstr ""
+
+#: setup/class/Setup.php:365
+msgid ""
+"If phpWebSite is sharing a database with another application, we suggest you "
+"give the tables a prefix."
+msgstr ""
+
+#: setup/class/Setup.php:430
+msgid "The following directories need to be created:"
+msgstr ""
+
+#: setup/class/Setup.php:436
+msgid "The following directories are not writable:"
+msgstr ""
+
+#: setup/class/Setup.php:438
+msgid "You will need to change the permissions."
+msgstr ""
+
+#: setup/class/Setup.php:450
+msgid "phpWebSite 1.0.0 Beta Setup"
+msgstr ""
+
+#: setup/class/Setup.php:464
+msgid "There is a problem with your sessions."
+msgstr ""
+
+#: setup/class/Setup.php:465
+msgid "phpWebSite depends on sessions to move data between pages."
+msgstr ""
+
+#: setup/class/Setup.php:466
+msgid "Sessions Help"
+msgstr ""
+
+#: setup/class/Setup.php:483
+msgid "Begin Installation"
+msgstr ""
+
+#: setup/class/Setup.php:489
+msgid "Importing core database file."
+msgstr ""
+
+#: setup/class/Setup.php:497
+msgid "Some errors occurred while creating the core database tables."
+msgstr ""
+
+#: setup/class/Setup.php:498
+msgid "Please check your error log file."
+msgstr ""
+
+#: setup/class/Setup.php:503
+msgid "Core installation successful."
+msgstr ""
+
+#: setup/class/Setup.php:504
+msgid "Continue to Module Installation"
+msgstr ""
+
+#: setup/class/Setup.php:519
+msgid "An error occurred while trying to install your modules."
+msgstr ""
+
+#: setup/class/Setup.php:520
+msgid "Please check your error logs and try again."
+msgstr ""
+
+#: setup/class/Setup.php:535
+msgid "Installation of phpWebSite is complete."
+msgstr ""
+
+#: setup/class/Setup.php:536
+msgid "If you experienced any error messages, check your error.log file."
+msgstr ""
+
+#: setup/class/Setup.php:538
+msgid ""
+"Check Directory Permissions is enabled so be sure to secure your config and "
+"templates directories!"
+msgstr ""
+
+#: setup/class/Setup.php:539
+msgid "If you do not change it now, your next page will be an error screen."
+msgstr ""
+
+#: setup/class/Setup.php:541
+msgid ""
+"After you finish installing your modules in Boost, you should make your "
+"config and template directories non-writable."
+msgstr ""
+
+#: setup/class/Setup.php:543
+msgid "Go to my new website!"
+msgstr ""
+
+#: setup/index.php:10
+msgid "Unable to locate your pear library files."
+msgstr ""
+
+#: setup/index.php:12
+msgid "Untar fallout_pear.tgz in your phpwebsite installation directory."
+msgstr ""
+
+#: setup/index.php:49
+msgid "Directory Permissions"
+msgstr ""
+
+#: setup/index.php:60
+msgid "Create Config File"
+msgstr ""
+
+#: setup/index.php:65
+msgid "Create Database"
+msgstr ""
+
+#: setup/index.php:70
+msgid "Create Core"
+msgstr ""
+
+#: setup/index.php:75
+msgid "Install Modules"
+msgstr ""
+
+#: setup/manager.php:14
+msgid "Your core config.php file is missing. Please create one and return."
+msgstr ""
+
+#: setup/manager.php:56
+msgid "Login to Site Manager"
+msgstr ""
+
+#: setup/manager.php:62
+msgid "Login page"
+msgstr ""
+
+#: setup/manager.php:63
+msgid "Username and password combination not found."
+msgstr ""
+
+#: setup/manager.php:67
+msgid "You must be a deity to run Site Manager."
+msgstr ""
+
+#: setup/manager.php:75
+msgid "Main Menu"
+msgstr ""
+
+#: setup/manager.php:104
+msgid "Username"
+msgstr ""
+
+#: setup/manager.php:106
+msgid "Password"
+msgstr ""
+
+#: setup/manager.php:107
+msgid "Log in"
+msgstr ""
+
+#: setup/manager.php:110
+msgid "Please login"
+msgstr ""
+
+#: setup/manager.php:123
+msgid "Uninstall"
+msgstr ""
+
+#: setup/manager.php:128
+msgid "Installed modules"
+msgstr ""
+
+#: setup/manager.php:129
+msgid "Module title"
+msgstr ""
+
+#: setup/manager.php:130
+msgid "Action"
+msgstr ""
