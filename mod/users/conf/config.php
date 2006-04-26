@@ -4,6 +4,7 @@
    * @version $Id$
    */ 
 
+translate('users');
 define('BAD_PASSWORDS',
        serialize(array('pass',
 		       'password',
@@ -62,7 +63,5 @@ define('GC_HEIGHT', 70);
 define('LOCAL_AUTHORIZATION', 1);
 define('GLOBAL_AUTHORIZATION', 2);
 
-
-
-
+translate();
 ?>
