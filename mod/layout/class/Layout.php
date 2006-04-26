@@ -945,7 +945,41 @@ class Layout {
         }
     }
 
+    function checkJavascript()
+    {
+        if (!isset($_SESSION['Javascript_Enabled']) &&
+            !isset($_SESSION['Javascript_Check'])) {
+            $_SESSION['Javascript_Check'] = TRUE;
+            Layout::getJavascript('test');
+        } else {
+            if (isset($_SESSION['Javascript_Enabled'])) {
+                $GLOBALS['browser_info']['javascript'] = $_SESSION['Javascript_Enabled'];
+            } else {
+                if (isset($_COOKIE['js_check'])){
+                    $_SESSION['Javascript_Enabled'] = TRUE;
+                    $GLOBALS['browser_info']['javascript'] = TRUE;
+                } else {
+                    $_SESSION['Javascript_Enabled'] = FALSE;
+                    $GLOBALS['browser_info']['javascript'] = FALSE;
+                }
+                setcookie ('js_check', '', time() - 3600);
+                unset($_SESSION['Javascript_Check']);
+            }
+        }
+    }
 }
+
+function javascriptEnabled()
+{
+    if (isset($_SESSION['Javascript_Enabled'])) {
+        return $_SESSION['Javascript_Enabled'];
+    } elseif (isset($GLOBALS['browser_info']['javascript'])) {
+        return $GLOBALS['browser_info']['javascript'];
+    } else {
+        Layout::checkJavascript();
+    }
+}
+
 
 function javascript($directory, $data=NULL)
 {

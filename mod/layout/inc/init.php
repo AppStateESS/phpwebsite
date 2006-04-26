@@ -8,4 +8,6 @@
 PHPWS_Core::requireConfig('layout', 'config.php');
 PHPWS_Core::initModClass('layout', 'Layout.php');
 
+Layout::checkJavascript();
+
 ?>
