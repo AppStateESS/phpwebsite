@@ -49,8 +49,6 @@ if (!PHPWS_Core::checkBranch()) {
     PHPWS_Core::errorPage();
 }
 
-checkJavascript();
-
 PHPWS_Core::runtimeModules();
 PHPWS_Core::checkOverpost();
 PHPWS_Core::runCurrentModule();
