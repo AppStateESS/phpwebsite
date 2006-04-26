@@ -11,6 +11,9 @@ define('DEFAULT_CALENDAR_VIEW', 'day');
   // before changing these values
 define('CALENDAR_DAY_FORMAT', '%B %e, %Y');
 
+// 0 Sunday, 1 Monday, etc.
+define('CALENDAR_START_DAY', 0);
+
 define('CALENDAR_MONTH_LISTING', '%B');
 
 // %l %p = 1 PM
