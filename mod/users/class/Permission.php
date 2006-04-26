@@ -195,6 +195,8 @@ class Users_Permission {
      
             if (!isset($permissionLevel) || $permissionLevel < $permission['permission_level']) {
                 $permissionLevel = $permission['permission_level'];
+            } else {
+                $permissionLevel = NO_PERMISSION;
             }
 
             unset($permission['permission_level']);
