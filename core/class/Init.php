@@ -38,6 +38,7 @@ require_once PHPWS_SOURCE_DIR . 'core/class/Core.php';
 require_once PHPWS_Core::getConfigFile('core', 'errorDefines.php');
 
 /***** PHPWS Classes ****/
+
 PHPWS_Core::initCoreClass('Database.php');
 PHPWS_Core::initCoreClass('Time.php');
 PHPWS_Core::initCoreClass('Settings.php');
@@ -59,18 +60,23 @@ if (!defined('USE_ROOT_CONFIG')) {
 }
 
 /* Initializes language */
-function initLanguage(){
-    if (!defined('DEFAULT_LANGUAGE'))
+function initLanguage()
+{
+    if (!defined('DEFAULT_LANGUAGE')) {
         define('DEFAULT_LANGUAGE', 'en');
+    }
 
-    if (!defined('CORE_COOKIE_TIMEOUT'))
+    if (!defined('CORE_COOKIE_TIMEOUT')) {
         define('CORE_COOKIE_TIMEOUT', 3600);
+    }
 
     if (isset($_COOKIE['phpws_default_language'])){
         $language = $_COOKIE['phpws_default_language'];
+
         $locale = setlocale(LC_ALL, $language);
-        if ($locale == FALSE)
+        if ($locale == FALSE) {
             $locale = setlocale(LC_ALL, DEFAULT_LANGUAGE);
+        }
     } else {
         $userLang = getBrowserLanguage();
         $locale_found = FALSE;
@@ -82,7 +88,7 @@ function initLanguage(){
                 $test[3] = $test[2] . '_' . strtoupper($test[2]);
 
                 foreach ($test as $langTest){
-                    if (setlocale(LC_ALL, $langTest)){
+                    if (setlocale(LC_ALL, $langTest)) {
                         $locale_found = TRUE;
                         $locale = $langTest;
                         setcookie('phpws_default_language', $locale, CORE_COOKIE_TIMEOUT);
@@ -92,8 +98,9 @@ function initLanguage(){
             }
         }
 
-        if ($locale_found == FALSE)
+        if ($locale_found == FALSE) {
             $locale = setlocale(LC_ALL, DEFAULT_LANGUAGE);
+        }
     }
 
     if ($locale != FALSE) {
@@ -108,7 +115,6 @@ function initLanguage(){
 
 function checkJavascript()
 {
-
     if (!isset($_SESSION['Javascript_Enabled']) &&
         !isset($_SESSION['Javascript_Check'])) {
         $_SESSION['Javascript_Check'] = TRUE;
@@ -149,9 +155,7 @@ function loadBrowserInformation()
 
     }
 
-    require(PHPWS_SOURCE_DIR . 'core/class/Debug.php');
     $agent = $_SERVER['HTTP_USER_AGENT'];
-
     $agentVars = explode(' ', $agent);
 
     foreach ($agentVars as $agent){
@@ -173,6 +177,7 @@ function loadBrowserInformation()
             else
                 $platform .= ' ' . $newVars[2] . ' ' . $newVars[3];
         }
+        $browser['locale'] = $newVars[5];
         break;
 
     case 'Mozilla':
@@ -208,8 +213,10 @@ function loadBrowserInformation()
                 $platformCheck = 1;
                 $program[0] = 'Opera';
                 $program[1] = $newVars[6];
-            } else 
+            } else {
+                $browser['locale'] = $newVars[5];
                 $platformCheck = 3;
+            }
 
             $platform = $newVars[$platformCheck];
 
@@ -230,7 +237,7 @@ function loadBrowserInformation()
                     if ($newVars[8] == 'Red') {
                         $program[0] = 'Red Hat';
                         $program[1] = str_replace('Hat/', '', $newVars[9]);
-                    } elseif (strpos('/', $newVars[8])) {
+                    } elseif (strpos($newVars[8], '/')) {
                         $program = explode('/', $newVars[8]);
                     } else {
                         $program[0] = $program[1] = 'Unknown';
@@ -255,12 +262,12 @@ function loadBrowserInformation()
 
     $browser['browser'] = $program[0];
     $browser['browser_version'] = $program[1];
-
     $GLOBALS['browser_info'] = &$browser;
 }
 
 
-function getBrowserLanguage(){
+function getBrowserLanguage()
+{
     if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
         return explode(',', preg_replace("/(;q=\d\.*\d*)/", '', $_SERVER['HTTP_ACCEPT_LANGUAGE']));
     }
@@ -270,7 +277,8 @@ function getBrowserLanguage(){
 }
 
 
-function loadLanguageDefaults($language){
+function loadLanguageDefaults($language)
+{
     $rootDir = PHPWS_HOME_DIR . 'config/core/i18n/';
 
     if (is_file($rootDir . $language . '.php')){
@@ -285,11 +293,13 @@ function loadLanguageDefaults($language){
     }
 }
 
-function doubleLanguage($language){
+function doubleLanguage($language)
+{
     return $language . '_' . strtoupper($language);
 }
 
-function translate($module=NULL){
+function translate($module=NULL)
+{
     if (empty($module)) {
         if (isset($GLOBALS['last_gettext'])) {
             $directory = &$GLOBALS['last_gettext'];
@@ -302,7 +312,7 @@ function translate($module=NULL){
         }
     } else {
         if (!defined('PHPWS_TRANSLATION') || !PHPWS_TRANSLATION) {
-            return;
+            return NULL;
         }
     
         if ($module == 'core') {
@@ -311,7 +321,10 @@ function translate($module=NULL){
             $directory = PHPWS_SOURCE_DIR . "mod/$module/locale";
         }
 
-        bindtextdomain('messages', $directory);
+        if (!is_dir($directory)) {
+            return NULL;
+        }
+
         textdomain('messages');
         $GLOBALS['last_gettext'] = $directory;
     }
