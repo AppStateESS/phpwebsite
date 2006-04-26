@@ -562,6 +562,7 @@ class User_Action {
 
     function &cpanel()
     {
+        translate('users');
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=users&amp;action=admin';
 
