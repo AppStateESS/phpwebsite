@@ -1183,7 +1183,7 @@ class PHPWS_DB {
 
         switch ($type){
         case 'assoc':
-            return $GLOBALS['PEAR_DB']->getAssoc($sql, NULL,NULL, $mode);
+            return PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getAssoc($sql, NULL,NULL, $mode), $type);
             break;
 
         case 'col':
@@ -1193,7 +1193,7 @@ class PHPWS_DB {
 
             if (isset($indexby)) {
                 PHPWS_DB::logDB($sql);
-                $result = $GLOBALS['PEAR_DB']->getAll($sql, NULL, $mode);
+                $result = PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getAll($sql, NULL, $mode), $type);
                 if (PEAR::isError($result)) {
                     return $result;
                 }
@@ -1201,7 +1201,7 @@ class PHPWS_DB {
                 return PHPWS_DB::_indexBy($result, $indexby, TRUE);
             }
             PHPWS_DB::logDB($sql);
-            return $GLOBALS['PEAR_DB']->getCol($sql);
+            return PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getCol($sql), $type);
             break;
 
         case 'min':
@@ -1209,12 +1209,13 @@ class PHPWS_DB {
         case 'one':
             PHPWS_DB::logDB($sql);
             $value = $GLOBALS['PEAR_DB']->getOne($sql, NULL, $mode);
+            db_trim($value);
             return $value;
             break;
 
         case 'row':
             PHPWS_DB::logDB($sql);
-            return $GLOBALS['PEAR_DB']->getRow($sql, array(), $mode);
+            return PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getRow($sql, array(), $mode), $type);
             break;
 
         case 'count':
@@ -1245,7 +1246,7 @@ class PHPWS_DB {
         case 'all':
         default:
             PHPWS_DB::logDB($sql);
-            $result = $GLOBALS['PEAR_DB']->getAll($sql, NULL, $mode);
+            $result = PHPWS_DB::autoTrim($GLOBALS['PEAR_DB']->getAll($sql, NULL, $mode), $type);
             if (PEAR::isError($result)) {
                 return $result;
             }
@@ -1577,6 +1578,7 @@ class PHPWS_DB {
                     $query = str_replace($tableName, $prefix . $tableName, $query);
                 }
                 $sqlCommand = array();
+
                 PHPWS_DB::homogenize($query);
 
                 $result = PHPWS_DB::query($query);
@@ -1963,15 +1965,12 @@ class PHPWS_DB {
 
 
     /**
-     * Not sure what function this served.
-     * Hiding it for now and removing its calls
-     * look in Database.php,v 1.124 if it needs to return
-     /*
+     * Postgres adds an extra space on the end of select results.
+     * autoTrim removes it.
+     */
 
-     /*
     function autoTrim($sql, $type)
     {
-        return $sql;
         if (PEAR::isError($sql) || !is_array($sql)) {
             return $sql;
         }
@@ -1996,7 +1995,6 @@ class PHPWS_DB {
 
         return $sql;
     }
-    */
 
     function updateSequenceTable()
     {
@@ -2128,7 +2126,7 @@ class PHPWS_DB_Where {
 /**
  * See autoTrim for information
  */
-/*
+
 function db_trim(&$value)
 {
     if (PEAR::isError($value) || !isset($value)) {
@@ -2142,7 +2140,7 @@ function db_trim(&$value)
     
     $value = rtrim($value);
 }
-*/
+
 
 function _add_tbl_prefix(&$val, $keynull, $prefix)
 {
