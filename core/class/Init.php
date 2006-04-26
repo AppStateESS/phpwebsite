@@ -59,7 +59,11 @@ if (!defined('USE_ROOT_CONFIG')) {
     define('USE_ROOT_CONFIG', FALSE);
 }
 
-/* Initializes language */
+/**
+ * Initializes language 
+ * Be aware this is called BEFORE the Core class
+ * is established.
+ */
 function initLanguage()
 {
     if (!defined('DEFAULT_LANGUAGE')) {
@@ -82,10 +86,14 @@ function initLanguage()
         $locale_found = FALSE;
 
         if ($userLang[0] != DEFAULT_LANGUAGE){
-            foreach ($userLang as $language){
+            foreach ($userLang as $language) {
                 $test[1] = $language;
                 $test[2] = substr($language, 0, 2);
                 $test[3] = $test[2] . '_' . strtoupper($test[2]);
+                if (strpos($language, '-')) {
+                    $test4 =  explode('-', $language);
+                    $test[4] = $test4[0] . '_' . strtoupper($test4[1]);
+                }
 
                 foreach ($test as $langTest){
                     if (setlocale(LC_ALL, $langTest)) {
@@ -94,6 +102,9 @@ function initLanguage()
                         setcookie('phpws_default_language', $locale, CORE_COOKIE_TIMEOUT);
                         break;
                     }
+                }
+                if ($locale_found) {
+                    break;
                 }
             }
         }
