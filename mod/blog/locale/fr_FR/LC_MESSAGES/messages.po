@@ -1,0 +1,241 @@
+# translation of phpwebsite.
+# Copyright (C) 2006 THE phpwebsite'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the phpwebsite package.
+# <>, 2006.
+# , fuzzy
+#  <>, 2006.
+# 
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: phpwebsite 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-04-26 08:19-0400\n"
+"PO-Revision-Date: 2006-04-26 08:33-0400\n"
+"Last-Translator: Matthew McNaney <mcnaney at gmail dot com>\n"
+"Language-Team: Redneck\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit"
+
+#: boost/controlpanel.php:3
+msgid "Blog"
+msgstr "Blog"
+
+#: boost/controlpanel.php:6
+msgid "Post current thoughts, happenings, and discussions."
+msgstr "Bellyache about junk goin on."
+
+#: boost/permission.php:5 class/Blog.php:181
+msgid "Edit blog"
+msgstr "Edit blog"
+
+#: boost/permission.php:6
+msgid "Delete blog"
+msgstr "Git ridda blog"
+
+#: boost/uninstall.php:13
+msgid "Blog tables removed."
+msgstr "Blog tables removed."
+
+#: class/Blog.php:144
+msgid "View"
+msgstr "Look at"
+
+#: class/Blog.php:152
+msgid "Make Comment"
+msgstr "Whatca gotta say fer yerself?"
+
+#: class/Blog.php:167
+msgid "Sorry you do not have permission to view this blog entry."
+msgstr "Gitonouttahere!"
+
+#: class/Blog.php:179 class/Blog.php:239
+msgid "Edit"
+msgstr "Edit"
+
+#: class/Blog.php:195
+msgid "Last poster"
+msgstr "Last knowitall"
+
+#: class/Blog.php:215
+msgid "Posted by"
+msgstr "Writ by"
+
+#: class/Blog.php:216
+msgid "Posted on"
+msgstr "Writ on"
+
+#: class/Blog.php:244
+msgid "Are you sure you want to permanently delete this blog entry?"
+msgstr "You sure you wanna dump this here entry?"
+
+#: class/Blog.php:246
+msgid "Delete"
+msgstr "Git ridda"
+
+#: class/Blog.php:252 class/Blog_Admin.php:334
+msgid "Restore"
+msgstr "Git back"
+
+#: class/Blog.php:258
+msgid "No action"
+msgstr "Don't do nuthin"
+
+#: class/Blog.php:282
+msgid "Missing title."
+msgstr "Gotta title it"
+
+#: class/Blog.php:352 class/Blog_Admin.php:269 class/Blog_Form.php:40
+msgid "Title"
+msgstr "Title"
+
+#: class/Blog.php:355 class/Blog_Admin.php:270 class/Blog_Form.php:37
+msgid "Entry"
+msgstr "Entry"
+
+#: class/Blog_Admin.php:18
+msgid "User attempted access to Blog administration."
+msgstr "User attempted access to Blog administration."
+
+#: class/Blog_Admin.php:45
+msgid "User tried to edit a blog."
+msgstr "Guy tried to change my blog"
+
+#: class/Blog_Admin.php:49
+msgid "Update Blog Entry"
+msgstr "Make Blog Shiny"
+
+#: class/Blog_Admin.php:63
+msgid "This version has not been approved."
+msgstr "This version ain't approved."
+
+#: class/Blog_Admin.php:66
+msgid "A version of this entry is awaiting approval."
+msgstr "There's a version a-waitin."
+
+#: class/Blog_Admin.php:81
+msgid "Blog Entries Awaiting Approval"
+msgstr "These here waitin approval"
+
+#: class/Blog_Admin.php:101
+msgid "A problem occurred when trying to disapprove this entry."
+msgstr "A problem occurred when trying to disapprove this entry."
+
+#: class/Blog_Admin.php:103
+msgid "Blog entry disapproved."
+msgstr "Naw, don't like that entry"
+
+#: class/Blog_Admin.php:118
+msgid "An error occurred when saving your version."
+msgstr "Done tore up on ya when saving."
+
+#: class/Blog_Admin.php:121
+msgid "Blog entry approved."
+msgstr "Entry is alright"
+
+#: class/Blog_Admin.php:127
+msgid "Tried to edit an unapproved item."
+msgstr "Tried to edit an unapproved item."
+
+#: class/Blog_Admin.php:134
+msgid "Update Unapproved Blog Entry"
+msgstr "Update Unapproved Blog Entry"
+
+#: class/Blog_Admin.php:139
+msgid "New Blog Entry"
+msgstr "Cry About Something Else"
+
+#: class/Blog_Admin.php:146
+msgid "Blog entry deleted."
+msgstr "Got ridda it"
+
+#: class/Blog_Admin.php:150 class/Blog_Admin.php:180
+msgid "Blog Archive"
+msgstr "Old crap"
+
+#: class/Blog_Admin.php:155
+msgid "Blog Restore"
+msgstr "Git that Blog Back"
+
+#: class/Blog_Admin.php:166
+msgid "Blog entry restored."
+msgstr "Got Blog Back."
+
+#: class/Blog_Admin.php:176
+msgid "Blog entry removed."
+msgstr "Got ridda blog."
+
+#: class/Blog_Admin.php:189
+msgid ""
+"An error occurred when trying to save your entry. Please check your logs."
+msgstr "Done tore up when saving blog. Better check under the hood."
+
+#: class/Blog_Admin.php:199
+msgid "Your entry is being held for approval."
+msgstr "I'll think about it. Git outta here."
+
+#: class/Blog_Admin.php:201
+msgid "Entry saved successfully."
+msgstr "Saved this here entry."
+
+#: class/Blog_Admin.php:241
+msgid "New"
+msgstr "New"
+
+#: class/Blog_Admin.php:244
+msgid "List"
+msgstr "List"
+
+#: class/Blog_Admin.php:247
+msgid "Approval"
+msgstr "Approval"
+
+#: class/Blog_Admin.php:271
+msgid "Creation Date"
+msgstr "Birth Date"
+
+#: class/Blog_Admin.php:272
+msgid "Action"
+msgstr "Do sumptin"
+
+#: class/Blog_Admin.php:314
+msgid "No backups of this blog entry exist."
+msgstr "Ain't no backup here, man."
+
+#: class/Blog_Admin.php:339
+msgid "Are you sure you want to purge this backup copy?"
+msgstr "You sure you wanna flush this here copy?"
+
+#: class/Blog_Admin.php:341
+msgid "Remove"
+msgstr "Git ridda"
+
+#: class/Blog_Admin.php:346
+msgid "Choose the blog entry you want to restore."
+msgstr "Which you want again?"
+
+#: class/Blog_Form.php:23
+msgid "Save Changes and Approve"
+msgstr "Save Changes and Let Her Rip"
+
+#: class/Blog_Form.php:29
+msgid "Update Entry"
+msgstr "Make Shiny"
+
+#: class/Blog_Form.php:31
+msgid "Add Entry"
+msgstr "Add Entry"
+
+#: class/Blog_Form.php:43
+msgid "Allow comments"
+msgstr "Allow comments"
+
+#: class/Blog_User.php:99
+msgid "Edit blogs"
+msgstr "Edit blogs"
+
+#: class/Blog_User.php:101
+msgid "Add new blog"
+msgstr "Add new blog"
+
