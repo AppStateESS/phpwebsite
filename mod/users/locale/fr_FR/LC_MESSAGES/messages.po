@@ -1,0 +1,863 @@
+# translation of PACKAGE.
+# Copyright (C) 2006 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# <>, 2006.
+# , fuzzy
+# 
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-04-26 08:40-0400\n"
+"PO-Revision-Date: 2006-04-26 09:23-0400\n"
+"Last-Translator:  <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit"
+
+#: boost/controlpanel.php:3
+msgid "My Page"
+msgstr "My Page"
+
+#: boost/controlpanel.php:8
+msgid "User Administration"
+msgstr "User Adminustashun"
+
+#: boost/controlpanel.php:11
+msgid "Lets you create and edit users and groups."
+msgstr "Add buddies and groups ah buddies."
+
+#: boost/install.php:22
+msgid "Could not access hub database."
+msgstr "Could not access hub database."
+
+#: boost/install.php:26
+msgid "Could not find any hub deities."
+msgstr "Could not find any hub deities."
+
+#: boost/install.php:39 boost/install.php:43
+msgid ""
+"Error: Missing login information for a deity user. Cannot copy to branch."
+msgstr ""
+"Error: Missing login information for a deity user. Cannot copy to branch."
+
+#: boost/install.php:50
+msgid "Unable to copy deity login to branch."
+msgstr "Unable to copy deity login to branch."
+
+#: boost/install.php:62
+msgid "Unable to copy deity users to branch."
+msgstr "Unable to copy deity users to branch."
+
+#: boost/install.php:67
+msgid "Deity users copied to branch."
+msgstr "Deity users copied to branch."
+
+#: boost/install.php:71 boost/install.php:96
+msgid "Local"
+msgstr "Local"
+
+#: boost/install.php:94
+msgid "User created successfully."
+msgstr "User created successfully."
+
+#: boost/install.php:104
+msgid "Please create a user to administrate the site."
+msgstr "Please create a user to administrate the site."
+
+#: boost/install.php:133 class/Form.php:75 class/Form.php:202
+#: class/Form.php:392 class/Form.php:729 class/Form.php:818
+msgid "Username"
+msgstr "CB Handle"
+
+#: boost/install.php:134 class/Form.php:76 class/Form.php:394
+#: class/Form.php:736 class/Form.php:819 inc/my_page.php:75 inc/my_page.php:77
+msgid "Password"
+msgstr "Secrit Wurd"
+
+#: boost/install.php:135 class/Form.php:203
+msgid "Email"
+msgstr "Electric Letter"
+
+#: boost/install.php:137 class/Form.php:362
+msgid "Add User"
+msgstr "Add Folk"
+
+#: boost/permission.php:10
+msgid "Edit Users"
+msgstr "Edit Folk"
+
+#: boost/permission.php:11
+msgid "Delete Users"
+msgstr "Git ridda Folk"
+
+#: boost/permission.php:12
+msgid "Add / Edit Groups"
+msgstr "Add r' Edit Family"
+
+#: boost/permission.php:13
+msgid "Delete Groups"
+msgstr "Git ridda Family"
+
+#: boost/permission.php:14
+msgid "Edit Permissions"
+msgstr "Edit Stuff Ya Can Do"
+
+#: boost/permission.php:18
+msgid "Authorization/Settings"
+msgstr "Authorization/Settings"
+
+#: boost/register.php:17 boost/register.php:18
+msgid "Permissions file not found."
+msgstr "Permissions file not found."
+
+#: boost/register.php:21
+msgid "Permissions table not created successfully."
+msgstr "Permissions table not created successfully."
+
+#: boost/register.php:25
+msgid "Permissions table created successfully."
+msgstr "Permissions table created successfully."
+
+#: boost/register.php:30 boost/register.php:31
+msgid "A problem occurred when trying to register this module to My Page."
+msgstr "A problem occurred when trying to register this module to My Page."
+
+#: boost/register.php:34
+msgid "My Page registered to Users module."
+msgstr "My Page registered to Users module."
+
+#: boost/unregister.php:13
+msgid "Permissions table not removed successfully."
+msgstr "Permissions table not removed successfully."
+
+#: boost/unregister.php:16
+msgid "Permissions table removed successfully."
+msgstr "Permissions table removed successfully."
+
+#: class/Action.php:20
+msgid "Tried to perform an admin function in Users."
+msgstr "Somebody tried to do suptin they ain't allowed ta"
+
+#: class/Action.php:51 class/Action.php:263
+msgid "Create User"
+msgstr "Make Folk"
+
+#: class/Action.php:56 class/Action.php:79 class/Action.php:571
+msgid "Manage Users"
+msgstr "Manage Folk"
+
+#: class/Action.php:68 class/Action.php:113 class/Action.php:260
+msgid "Edit User"
+msgstr "Change Folk"
+
+#: class/Action.php:68 class/Form.php:873 class/Group.php:253
+#: class/Users.php:758
+msgid "Permissions"
+msgstr "What Ya Kin Do"
+
+#: class/Action.php:81
+msgid "User deleted."
+msgstr "Folk sent packin."
+
+#: class/Action.php:96
+msgid "Authorization updated."
+msgstr "Authorization updated."
+
+#: class/Action.php:98 class/Action.php:579 class/Form.php:380
+msgid "Authorization"
+msgstr "Authorization"
+
+#: class/Action.php:113
+msgid "Set User Permissions"
+msgstr "Let Folks Do Stuff"
+
+#: class/Action.php:128
+msgid "Set Group Permissions"
+msgstr "Let Family's Do Stuff"
+
+#: class/Action.php:134 class/Action.php:290
+msgid "Create Group"
+msgstr "Create Family"
+
+#: class/Action.php:139 class/Action.php:290 class/Group.php:250
+msgid "Edit Group"
+msgstr "Edit Family"
+
+#: class/Action.php:145 class/Action.php:152 class/Action.php:575
+msgid "Manage Groups"
+msgstr "Take care a Family"
+
+#: class/Action.php:158 class/Action.php:168
+msgid "Manage Members"
+msgstr "Manage Cousins"
+
+#: class/Action.php:181 class/Action.php:339 class/Action.php:580
+msgid "Settings"
+msgstr "Settings"
+
+#: class/Action.php:198
+msgid "User deified."
+msgstr "User's crap don't stink."
+
+#: class/Action.php:201
+msgid "User remains a lowly mortal."
+msgstr "Feller ain't no better than us."
+
+#: class/Action.php:219
+msgid "User transformed into a lowly mortal."
+msgstr "Feller ain't no better than us."
+
+#: class/Action.php:222
+msgid "User remains a deity."
+msgstr "User all high n mighty."
+
+#: class/Action.php:251
+msgid "User updated."
+msgstr "Folk updated."
+
+#: class/Action.php:253 class/Action.php:255
+msgid "User created."
+msgstr "Folk created."
+
+#: class/Action.php:276
+msgid "Permissions updated"
+msgstr "Stuff they can do updated."
+
+#: class/Action.php:297
+msgid "An error occurred when trying to save the group."
+msgstr "Stuff tore up when saving the group."
+
+#: class/Action.php:299
+msgid "Group created."
+msgstr "Family created."
+
+#: class/Action.php:316
+msgid "Member added."
+msgstr "Family member added."
+
+#: class/Action.php:329
+msgid "Member removed."
+msgstr "Family member sent packin."
+
+#: class/Action.php:340 inc/my_page.php:39
+msgid "User settings updated."
+msgstr "User settings updated."
+
+#: class/Action.php:419
+msgid "Permissions saved."
+msgstr "Stuff ya can do saved."
+
+#: class/Action.php:420
+msgid "Close window"
+msgstr "Close window, you raised in a barn?"
+
+#: class/Action.php:425
+msgid "An error occurred."
+msgstr "Aw man this ain't good."
+
+#: class/Action.php:427
+msgid "Permissions updated."
+msgstr "Stuff ya can do updated."
+
+#: class/Action.php:461
+msgid "Please try another user name."
+msgstr "That's ma cousin's name. Try sumpthin else."
+
+#: class/Action.php:478
+msgid "Missing an email address."
+msgstr "Gotta know where to send that electric letter thing."
+
+#: class/Action.php:482
+msgid "This email address cannot be used."
+msgstr "What the hell kinna address is that?"
+
+#: class/Action.php:487
+msgid "Confirmation phrase is not correct."
+msgstr "That ain't the right confirmation."
+
+#: class/Action.php:568
+msgid "New User"
+msgstr "New Folk"
+
+#: class/Action.php:574
+msgid "New Group"
+msgstr "New Family"
+
+#: class/Action.php:607
+msgid "Login page"
+msgstr "Login page"
+
+#: class/Action.php:608
+msgid "Username and password combination not found."
+msgstr "I don't who ya think ya are, but I ain't hearda ya."
+
+#: class/Action.php:624 class/Action.php:638
+msgid "New Account Sign-up"
+msgstr "Join Our Clan"
+
+#: class/Action.php:626
+msgid "You already have an account."
+msgstr "Already got an account here."
+
+#: class/Action.php:631
+msgid "Sorry, we are not accepting new users at this time."
+msgstr "Sorry, ya ain't welcome here right now."
+
+#: class/Action.php:641
+msgid "New user signup not allowed."
+msgstr "We don't take kindly to your type."
+
+#: class/Action.php:664
+msgid "Login Page"
+msgstr "Login Page"
+
+#: class/Action.php:698
+msgid "Account created successfully!"
+msgstr "Come on in partner!"
+
+#: class/Action.php:699
+msgid "You will return to the home page in five seconds."
+msgstr "Heading home in a few."
+
+#: class/Action.php:700
+msgid "Click here if you are not redirected."
+msgstr "Click here if you are not redirected."
+
+#: class/Action.php:703
+msgid ""
+"An error occurred when trying to create your account. Please try again later."
+msgstr "Got tore up trying to create your account. Try later."
+
+#: class/Action.php:774
+msgid "Username and password refused."
+msgstr "Never heard of ya."
+
+#: class/Current_User.php:192
+#, php-format
+msgid "Set permissions"
+msgstr "Set stuff ya can do"
+
+#: class/Current_User.php:201
+msgid "Permission"
+msgstr "Stuff ya can do"
+
+#: class/Form.php:41
+msgid "Hello"
+msgstr "Hiya"
+
+#: class/Form.php:44
+msgid "Control Panel"
+msgstr "Control Panel"
+
+#: class/Form.php:47
+msgid "Log Out"
+msgstr "Git!"
+
+#: class/Form.php:50 class/Form.php:83
+msgid "Home"
+msgstr "Home"
+
+#: class/Form.php:117
+msgid "Update"
+msgstr "Update"
+
+#: class/Form.php:204
+msgid "Last Logged"
+msgstr "Last Stunk up the place"
+
+#: class/Form.php:205
+msgid "Active"
+msgstr "Active"
+
+#: class/Form.php:206 class/Form.php:229
+msgid "Actions"
+msgstr "Stuff ya can do"
+
+#: class/Form.php:226 class/Form.php:466
+msgid "Group Name"
+msgstr "Family Name"
+
+#: class/Form.php:228 class/Group.php:256
+msgid "Members"
+msgstr "Family Members"
+
+#: class/Form.php:251 class/Form.php:479
+msgid "Add Member"
+msgstr "Add Member"
+
+#: class/Form.php:252 class/Form.php:476 class/Form.php:570
+msgid "Add"
+msgstr "Add"
+
+#: class/Form.php:254
+msgid "Group name"
+msgstr "Family name"
+
+#: class/Form.php:281 class/Form.php:283
+msgid "Member not found."
+msgstr "Member not found."
+
+#: class/Form.php:281
+msgid "Closest matches below."
+msgstr "Matches as far as I can tell"
+
+#: class/Form.php:283 class/Form.php:488
+msgid "No matches found."
+msgstr "Ain't noone here by that name"
+
+#: class/Form.php:288 class/Form.php:480
+msgid "Current Members"
+msgstr "Current Members"
+
+#: class/Form.php:321 class/Form.php:513 class/Form.php:650
+msgid "Drop"
+msgstr ""
+
+#: class/Form.php:321
+msgid "Drop this member from the group."
+msgstr "Drop fella or gal from family"
+
+#: class/Form.php:342
+msgid "No members."
+msgstr "No members."
+
+#: class/Form.php:360
+msgid "Update User"
+msgstr "Update Folk"
+
+#: class/Form.php:391 class/Form.php:744 inc/my_page.php:83
+msgid "Email Address"
+msgstr "Electric Letter Address"
+
+#: class/Form.php:393
+msgid "Display name"
+msgstr "What we call ya"
+
+#: class/Form.php:412
+msgid "Only another deity can create a deity."
+msgstr "Gotta be the man to make the man."
+
+#: class/Form.php:414
+msgid ""
+"Are you certain you want this user to have complete control of this web site?"
+msgstr "You sure you want this fella to be top dog?"
+
+#: class/Form.php:420
+msgid "Yes, make them a deity."
+msgstr "Ya, let's do it."
+
+#: class/Form.php:422
+msgid "No, leave them as a mortal."
+msgstr "Ah hell no."
+
+#: class/Form.php:431
+msgid "Only another deity can create a mortal."
+msgstr "You ain't got the stones to do this."
+
+#: class/Form.php:434
+msgid "A deity can not make themselves mortal."
+msgstr "You asked fer the position, gotta live with it."
+
+#: class/Form.php:441
+msgid "Yes, make them a mortal."
+msgstr "Ya, make them like regular folk."
+
+#: class/Form.php:443
+msgid "No, leave them as a deity."
+msgstr "Naw, live them all high and mighty."
+
+#: class/Form.php:457
+msgid "Update Group"
+msgstr "Update Family"
+
+#: class/Form.php:459
+msgid "Add Group"
+msgstr "Add Family"
+
+#: class/Form.php:486
+msgid "Members found."
+msgstr "Members found."
+
+#: class/Form.php:497
+msgid "None found"
+msgstr "Ain't none here"
+
+#: class/Form.php:570
+msgid "Add this user to this group."
+msgstr "Add folk to family"
+
+#: class/Form.php:614
+msgid "No new scripts found"
+msgstr "Ain't no scripts here"
+
+#: class/Form.php:619
+msgid "Add Script File"
+msgstr "Add Script File"
+
+#: class/Form.php:623
+msgid "Update Default"
+msgstr "Update Default"
+
+#: class/Form.php:626
+msgid "Authorization Scripts"
+msgstr "Authorization Scripts"
+
+#: class/Form.php:627
+msgid "Default"
+msgstr "Default"
+
+#: class/Form.php:628 inc/my_page.php:65 inc/my_page.php:67
+msgid "Display Name"
+msgstr "What We Call Em"
+
+#: class/Form.php:629
+msgid "Script Filename"
+msgstr "Script Filename"
+
+#: class/Form.php:630
+msgid "Action"
+msgstr "Action"
+
+#: class/Form.php:648
+msgid "Are you sure you want to drop this authorization script?"
+msgstr "You sure you wanna drop this here file?"
+
+#: class/Form.php:655 class/Group.php:250 class/Users.php:755
+msgid "Edit"
+msgstr "Fix"
+
+#: class/Form.php:678
+msgid "Update Settings"
+msgstr "Update Settings"
+
+#: class/Form.php:681
+msgid "Not allowed"
+msgstr "Ain't happenin"
+
+#: class/Form.php:682
+msgid "Immediate"
+msgstr "Immediate"
+
+#: class/Form.php:683
+msgid "Email Verification"
+msgstr "Email Verification"
+
+#: class/Form.php:684
+msgid "Approval with Email Verification"
+msgstr "Let em in after Email Check"
+
+#: class/Form.php:688
+msgid "User Signup Mode"
+msgstr "User Signup Mode"
+
+#: class/Form.php:691
+msgid "Graphic Authenticator"
+msgstr "Crazy Picture Authenticator"
+
+#: class/Form.php:695
+msgid "Use graphic authentication?"
+msgstr "Use Crazy Picture?"
+
+#: class/Form.php:700 conf/config.php:31
+msgid "None"
+msgstr "Ain't None"
+
+#: class/Form.php:706
+msgid "User Menu"
+msgstr "User Menu"
+
+#: class/Form.php:710
+msgid "Hide?"
+msgstr "Hide?"
+
+#: class/Form.php:711
+msgid "Hide login box"
+msgstr "Hide login box"
+
+#: class/Form.php:740
+msgid "Confirm"
+msgstr "Confirm"
+
+#: class/Form.php:748
+msgid "Confirm text"
+msgstr "Confirm text"
+
+#: class/Form.php:751
+msgid "Please type the word seen in the image."
+msgstr "Please type the word in this here crazy picture."
+
+#: class/Form.php:757
+msgid "Confirm Graphic"
+msgstr "Confirm Crazy Picture"
+
+#: class/Form.php:762
+msgid "Sign up"
+msgstr "Sign up"
+
+#: class/Form.php:861
+msgid "All visitors"
+msgstr "All visitors"
+
+#: class/Form.php:862
+msgid "Logged visitors"
+msgstr "Logged visitors"
+
+#: class/Form.php:863
+msgid "Specific group(s)"
+msgstr "Specific Family(s)"
+
+#: class/Form.php:865
+msgid "Save permissions"
+msgstr "Save permissions"
+
+#: class/Form.php:875
+msgid "Edit restrictions"
+msgstr "Edit restrictions"
+
+#: class/Form.php:876
+msgid "View restrictions"
+msgstr "Look at restictions"
+
+#: class/Form.php:881
+msgid "No restricted edit groups found."
+msgstr "No restricted edit groups found."
+
+#: class/Form.php:887
+msgid "No groups found."
+msgstr "No families found."
+
+#: class/Form.php:891
+msgid "Cancel"
+msgstr "Naw son"
+
+#: class/Form.php:924
+msgid "Groups"
+msgstr "Families"
+
+#: class/Form.php:932
+msgid "Users"
+msgstr "Folk"
+
+#: class/Group.php:260 class/Users.php:724
+msgid "Deactivate"
+msgstr "Turn it off"
+
+#: class/Group.php:263 class/Users.php:729
+msgid "Activate"
+msgstr "Turn it on"
+
+#: class/Group.php:268
+msgid "Are you SURE you want to remove this group?"
+msgstr "You sure you wanna git ridda this family?"
+
+#: class/Group.php:269
+msgid "Remove"
+msgstr "Git ridda"
+
+#: class/My_Page.php:16
+msgid "The is a problem with My Page."
+msgstr "The is a problem with My Page."
+
+#: class/My_Page.php:19
+msgid "No modules are registered to My Page."
+msgstr "No modules are registered to My Page."
+
+#: class/My_Page.php:28
+msgid "This module is not registered with My Page"
+msgstr "This module is not registered with My Page"
+
+#: class/My_Page.php:94
+msgid "There was a problem with this module's My Page file."
+msgstr "There was a problem with this module's My Page file."
+
+#: class/Permission.php:50
+#, php-format
+msgid "Could not create \"%s\" permission column."
+msgstr "Could not create \"%s\" permission column."
+
+#: class/Permission.php:53
+#, php-format
+msgid "\"%s\" permission column created."
+msgstr "\"%s\" permission column created."
+
+#: class/Users.php:634
+msgid "Improper permission level for action requested."
+msgstr "Improper permission level for action requested."
+
+#: class/Users.php:726
+msgid "Yes"
+msgstr "Ya"
+
+#: class/Users.php:731
+msgid "No"
+msgstr "Naw"
+
+#: class/Users.php:737
+msgid "Never"
+msgstr "Ain't gonna happen"
+
+#: class/Users.php:747
+#, php-format
+msgid "Are you certain you want to delete the user &quot;%s&quot; permanently?"
+msgstr "Are you certain you want to delete the user &quot;%s&quot; permanently?"
+
+#: class/Users.php:751
+msgid "Delete"
+msgstr "Gitta ridda"
+
+#: conf/config.php:29
+msgid "Unrestricted"
+msgstr "Unrestricted"
+
+#: conf/config.php:30
+msgid "Restricted"
+msgstr "Restricted"
+
+#: conf/config.php:48
+msgid "Login"
+msgstr "Login"
+
+#: conf/config.php:49
+msgid "Want to join?"
+msgstr "Pull up a chair"
+
+#: conf/error.php:10
+msgid "Unknown error."
+msgstr "What the hell?"
+
+#: conf/error.php:11
+msgid "User name already in use."
+msgstr "Naw already got someone named that here."
+
+#: conf/error.php:12
+msgid "Email address already in use."
+msgstr "Naw that someone folk's address"
+
+#: conf/error.php:13
+msgid "A group with this name already exists."
+msgstr "Nah, that name's spoken for."
+
+#: conf/error.php:14
+msgid "Permission table name already exists."
+msgstr "Permission table name already exists."
+
+#: conf/error.php:15
+msgid "Permission table not found."
+msgstr "Permission table not found."
+
+#: conf/error.php:16
+msgid "Module's permission file is missing."
+msgstr "Can't find that there permission file."
+
+#: conf/error.php:17
+msgid "Module's item permission file is missing."
+msgstr "Module's item permission file is missing."
+
+#: conf/error.php:18
+msgid "Username is improperly formatted."
+msgstr "Can't use that handle son."
+
+#: conf/error.php:19
+msgid "Display name is improperly formatted."
+msgstr "I ain't callin ya that."
+
+#: conf/error.php:20
+msgid "Passwords do not match."
+msgstr "Type that password agin."
+
+#: conf/error.php:21
+#, php-format
+msgid "Password must be at least %s characters in length."
+msgstr "Password too short."
+
+#: conf/error.php:22
+msgid "Password is too easy to guess."
+msgstr "Knew it fore ya said it. Try another password."
+
+#: conf/error.php:23
+msgid "Module does not exist."
+msgstr "Ain't no module named that."
+
+#: conf/error.php:24
+msgid "Invalid variable name."
+msgstr "Invalid variable name."
+
+#: conf/error.php:25
+msgid "Unable to save user information."
+msgstr "Unable to save user information."
+
+#: conf/error.php:26
+msgid "Improperly formatted group name."
+msgstr "Can't call family by that name."
+
+#: conf/error.php:27
+msgid "Group does not exist."
+msgstr "Ain't no family named that."
+
+#: conf/error.php:28
+msgid "User is missing their permission group"
+msgstr "User is missing their permission group"
+
+#: conf/error.php:29
+msgid "Module tried to detect a non-existant permission."
+msgstr "Module tried to detect a non-existant permission."
+
+#: conf/error.php:30
+msgid "User's email address is missing."
+msgstr "Feller ain't got an electric letter address."
+
+#: conf/error.php:31
+msgid "User's email address is missing or malformed."
+msgstr "Feller gotta strange electric letter address."
+
+#: conf/error.php:32
+msgid "Missing authorization script."
+msgstr "Missing authorization script."
+
+#: conf/error.php:33
+msgid "Unable to find font file for graphic confirmation."
+msgstr "Unable to find font file for graphic confirmation."
+
+#: conf/error.php:34
+msgid "Unable to write confirmation graphic to server."
+msgstr "Unable to write confirmation graphic to server."
+
+#: conf/error.php:35
+msgid "Missing my_page function."
+msgstr "Missing my_page function."
+
+#: inc/my_page.php:21
+msgid "Change my Settings"
+msgstr "Change my Settings"
+
+#: inc/my_page.php:74
+msgid "Password confirm"
+msgstr "Password confirm"
+
+#: inc/my_page.php:78
+msgid "Why can't I change my password?"
+msgstr "Why can't I change my password?"
+
+#: inc/my_page.php:91
+msgid "-- Use server's time zone --"
+msgstr "-- Use server's time zone --"
+
+#: inc/my_page.php:110
+msgid "Time Zone"
+msgstr "Time Zone"
+
+#: inc/my_page.php:121
+msgid "Use Daylight Savings Time"
+msgstr "Use Daylight Savings Time"
+
+#: inc/my_page.php:124
+msgid "Update my information"
+msgstr "Update my information"
+
+#: inc/parse.php:6
+msgid "New user signup is currently disabled."
+msgstr "New user signup is currently disabled."
+
