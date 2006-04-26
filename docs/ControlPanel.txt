@@ -85,6 +85,7 @@ Control Panel to keep them separate. Your panel name should not be
 identical to your module name.
 
 Setting the Tabs
+-------------------------------------------------------------
 Put the tabs in the panel like so:
 
 $panel->quickSetTabs($tabs);
@@ -101,8 +102,13 @@ getCurrentTab function:
 
 $current_tab = $panel->getCurrentTab();
 
-Setting the Content
+If you want to force a specific tab use setcurrentTab, like so:
 
+$panel->setCurrentTab('main_menu');
+
+
+Setting the Content
+-----------------------------------------------------------
 You can see from the examples above that we are piping the results of
 the tab choice into a $content variable. We will put that content into
 our panel like so:
@@ -121,7 +127,7 @@ Layout::add($finalPanel);
 
 
 Changing the Look of your Control Panel
-
+-------------------------------------------------------------
 Control Panel uses its own templates by default. You can change this
 behavior by setting the module and panel template.
 
