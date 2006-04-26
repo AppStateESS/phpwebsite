@@ -157,6 +157,7 @@ class Calendar_Admin {
             break;
 
         case 'schedules':
+            $panel->setCurrentTab('schedules');
             $title = _('Schedules');
             $content = $this->scheduleListing();
             break;

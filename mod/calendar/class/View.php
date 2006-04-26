@@ -29,6 +29,10 @@ class Calendar_View {
         unset($vars['module']);
 
         $vars['schedule_id'] = $this->calendar->schedule->id;
+        $vars['m'] = $this->calendar->month;
+        $vars['d'] = $this->calendar->day;
+        $vars['y'] = $this->calendar->year;
+
         
         if ($current_view == 'month_list') {
             $links[] = _('Month list');
@@ -331,6 +335,14 @@ class Calendar_View {
         }
 
         return PHPWS_Template::process($template, 'calendar', 'view/day/day.tpl');
+    }
+
+    function week()
+    {
+        if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
+            Layout::addStyle('calendar');
+        }
+        echo date('Ymd', $this->calendar->request_date);
     }
 
     function sortEvents()
