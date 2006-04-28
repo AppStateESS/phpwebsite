@@ -449,6 +449,10 @@ class Categories_Action {
         }
     }
 
+    /**
+     * Returns the category popup form for assigning items to 
+     * categories
+     */
     function categoryPopup()
     {
         $key = & new Key((int)$_REQUEST['key_id']);
