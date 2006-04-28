@@ -1401,13 +1401,13 @@ class PHPWS_DB {
     function dropTable($table, $check_existence=TRUE, $sequence_table=TRUE)
     {
         PHPWS_DB::touchDB();
-        $table = PHPWS_DB::getPrefix() . $table;
 
         // was using IF EXISTS but not cross compatible
         if ($check_existence && !PHPWS_DB::isTable($table)) {
             return TRUE;
         }
 
+        $table = PHPWS_DB::getPrefix() . $table;
         $result = PHPWS_DB::query("DROP TABLE $table");
 
         if (PEAR::isError($result)) {
@@ -1963,6 +1963,16 @@ class PHPWS_DB {
         return TRUE;
     }
 
+    /**
+     * Crutch function from old database
+     */
+    function sqlFriendlyName($name) {
+        if (!PHPWS_DB::allowed($name)) {
+            return FALSE;
+        }
+
+        return preg_replace('/\W/', '', $name);
+    }
 
     /**
      * Postgres adds an extra space on the end of select results.
