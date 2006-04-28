@@ -1650,7 +1650,7 @@ class Form_Checkbox extends Form_Element {
     var $match = FALSE;
     var $type  = 'checkbox';
 
-    function setMatch($match=TRUE)
+    function setMatch($match)
     {
         $this->match = $match;
     }
@@ -1689,7 +1689,7 @@ class Form_RadioButton extends Form_Element {
     var $type  = 'radio';
     var $match = FALSE;
 
-    function setMatch($match=TRUE)
+    function setMatch($match)
     {
         $this->match = $match;
     }
