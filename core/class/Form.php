@@ -1316,6 +1316,11 @@ class PHPWS_Form {
         return CrutchForm::formSelect($name, $opt_array, $match, $ignore_index, $match_to_value, $onchange, $label);
     }
 
+    function formMultipleSelect($name, $opt_array, $match = NULL, $ignore_index = FALSE, $match_to_value = FALSE, $onchange = NULL, $label = NULL)
+    {
+        return CrutchForm::formMultipleSelect($name, $opt_array, $match, $ignore_index, $match_to_value, $onchange, $label);
+    }
+
     function formHidden($name, $value=NULL)
     {
         return CrutchForm::formHidden($name, $value);
