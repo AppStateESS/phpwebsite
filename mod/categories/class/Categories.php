@@ -58,7 +58,7 @@ class Categories{
         $add_list = Categories::getCategories('list');
 
         if (empty($add_list)) {
-            return;
+            return _('You need to add some categories first.');
         }
 
         $current_cat_ids = Categories::getCurrent($key->id);
