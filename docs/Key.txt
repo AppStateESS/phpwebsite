@@ -423,6 +423,21 @@ for your unregister function is "modulename" + "_" + "unregister".
 This function expects a key object. Once it receives it, Menu will
 delete all the links corresponding to this key.
 
+Deleting a Key
+-------------------------------------
+When your item is deleted, you should obviously remove your key as
+well.
+You can either construct your items key and call delete, like so:
+
+$key = new Key($obj->key_id);
+$key->delete();
+
+Or you can call the drop function statically:
+
+Key::drop($obj->key_id);
+
+Either will do the trick and make sure that other modules don't refer
+to your item again.
 
 
 Conclusion
