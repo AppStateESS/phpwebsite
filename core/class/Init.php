@@ -4,7 +4,6 @@
  * Init initializes phpWebSite. It does the following:
  * - sets the language settings and contains the 'translate function'
  * - starts most the vital core classes
- * - contains basic functions for checking javascript status
  *
  * @author Matthew McNaney <matt at tux dot appstate dot edu>
  * @version $Id$
