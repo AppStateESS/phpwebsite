@@ -1,5 +1,12 @@
 <?php
 
+  /**
+   * Used to load DHTML editors. Plugin files must be available.
+   *
+   * @version $Id$
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   */
+
 PHPWS_Core::initCoreClass('File.php');
 
 class Editor {
@@ -93,11 +100,12 @@ class Editor {
         if (USE_WYSIWYG_EDITOR == FALSE) {
             return FALSE;
         }
-        extract($GLOBALS['browser_info']);
 
-        if (!isset($javascript) || $javascript == FALSE) {
+        if (!javascriptEnabled()) {
             return FALSE;
         }
+
+        extract($GLOBALS['browser_info']);
 
         if ($browser == 'Opera') {
             return FALSE;
@@ -106,6 +114,7 @@ class Editor {
         if ($engine == 'Mozilla' &&
             ( ($engine_version >= '5.0') || ($browser == 'MSIE' && $browser_version > '5.5') )
             ) {
+
             return TRUE;
         }
 
