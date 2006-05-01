@@ -900,7 +900,7 @@ class PHPWS_Boost {
             $content[] = _('The following directories are not writable:');
             $content[] = '<pre>' . implode("\n", $writableDir) . '</pre>';
             $content[] = _('You will need to change the permissions.') . '<br />';
-            $content[] = '<a href="setup/help/permissions.' . DEFAULT_LANGUAGE . '.txt">' . _('Permission Help') . '</a>';
+            $content[] = '<a href="setup/help/permissions.' . DEFAULT_LANGUAGE . '.txt">' . _('Permission Help') . '</a><br />';
             $errorDir = FALSE;
         }
 
@@ -913,6 +913,84 @@ class PHPWS_Boost {
         }
 
         return $errorDir;
+    }
+
+    /**
+     * Receives an array of file locations. Updates
+     * the local files and backs up the older version.
+     */
+    function updateFiles($file_array, $module)
+    {
+        if (!is_array($file_array)) {
+            return FALSE;
+        }
+
+        foreach ($file_array as $filename) {
+            $filename = preg_replace('/^\/{1}/', '', $filename);
+            $aFiles = explode('/', $filename);
+            $source_root = $aFiles[0];
+            $source_filename = array_pop($aFiles);
+
+            switch ($source_root) {
+            case 'templates':
+                $local_root = sprintf('./templates/%s/', $module);
+                break;
+
+            case 'conf':
+                $local_root = sprintf('./config/%s/', $module);               
+                break;
+
+            case 'img':
+                $local_root = sprintf('./images/mod/%s/', $module);
+                break;
+
+            case 'javascript':
+                $local_root = sprintf('./javascript/modules/%s/', $module);
+                break;
+
+            default:
+                continue;
+                break;
+            }
+
+            $source_file = sprintf('%smod/%s/%s', PHPWS_SOURCE_DIR, $module, $filename);
+            $local_file = sprintf('%s%s', $local_root, $source_filename);
+
+            if (!is_file($source_file)) {
+                continue;
+            }
+
+            if (is_file($local_file)) {
+                if (!PHPWS_Boost::backupFile($local_file)) {
+                    return PHPWS_Error::get(BOOST_FAILED_BACKUP, 'boost', 'PHPWS_Boost::updateFiles');
+                }
+            }
+
+            $result = copy($source_file, $local_file);
+            if (!$result) {
+                return PHPWS_Error::get(BOOST_FAILED_LOCAL_COPY, 'boost', 'PHPWS_Boost::updateFiles');
+            }
+        }
+        return TRUE;
+    }
+
+    /**
+     * Backs up a file by removing the extension, padding the word
+     * 'backup' then putting the ext back.
+     */
+    function backupFile($filename)
+    {
+        $aFile = explode('/', $filename);
+        $file_alone = array_pop($aFile);
+
+        $aFile_alone = explode('.', $file_alone);
+        $file_ext = array_pop($aFile_alone);
+        $new_file_ext = 'backup.' . $file_ext;
+
+        $aFile_alone[] = $new_file_ext;
+
+        $new_filename = implode('/', $aFile) . '/' . implode('.', $aFile_alone);
+        return copy($filename, $new_filename);
     }
 
 }
