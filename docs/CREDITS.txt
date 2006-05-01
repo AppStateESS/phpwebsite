@@ -1,0 +1,100 @@
+--------------------------------------------------------------------------
+phpWebSite
+Copyright (c) 2003-2006 Web Technology Group, Appalachian State University
+--------------------------------------------------------------------------
+
+phpWebsite 1.x is a fully functional Content Managment System.
+PHP, MYSQL/Postgresql, and the PEAR libraries were used in its
+development.
+
+Version History:
+0.7.x  First fork of phpNuke
+0.8.x  Broad changes to phpNuke
+0.9.x  Completely rewritten. Nuke code removed
+0.10.x Same core but new default modules, themes, features and bug
+       fixes
+1.x    Core and core modules rewritten again for new functionality and
+       ease-of-use issues
+
+
+--------------------------------------------------------------------------
+Developers:
+--------------------------------------------------------------------------
+
+Matt McNaney (mcnaney at gmail dot com)
+Darren Greene (dg49379 at tux dot appstate dot edu)
+Kevin Wilcox (kevin at tux dot appstate dot edu)
+Jeremy Booker
+Jeff Tickle
+
+Prior to 1.x
+----------------
+Steven Levin
+Adam Morton
+Jeremy Agee
+Mike Wilson
+Ryan Cowan
+
+--------------------------------------------------------------------------
+The phpWebSite team would also like to thank the following projects:
+--------------------------------------------------------------------------
+
+PHP
+http://www.php.net
+
+MySQL
+http://www.mysql.com
+
+Postgresql
+http://www.postgresql.org/
+
+phpMyAdmin
+http://www.phpmyadmin.net/home_page/
+
+phpPgAdmin
+http://phppgadmin.sourceforge.net/
+
+Horde
+http://horde.org
+
+PEAR
+http://pear.php.net
+
+Apache
+http://www.apache.org
+
+SourceForge
+http://sourceforge.net
+
+Hotscripts
+http://www.hotscripts.com/
+
+--------------------------------------------------------------------------
+The phpWebSite team would also like to thank the following people in
+alphabetical order for their contributions and support:
+--------------------------------------------------------------------------
+
+Scott Baer
+Dr. Greg Blimling
+Fridtjof Busse
+Wendall Cada
+Eloi George/aDarkling
+Bobby Kennedy/fatman
+Rene Kiesler/rck
+Greg Meiste/blindman1344
+Shaun Murray/singletrack
+Ken Nordquist/kenphused
+Mike Noyes/mhnoyes
+Paivi/spiggy
+Andrew Patterson/inuitart
+Kenneth Poulsen/KennethP
+Michael Rasmussen/TechElephant
+Sharon Renshaw/Sharondippity
+Don Seiler/rizzo
+Geoff Staples
+Richard Sumilang
+Pete Wachs
+Paul van Voorst
+
+And all those who have contributed to phpWebSite. Thanks for your
+support even though we are neglectful parents =)
