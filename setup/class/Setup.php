@@ -416,12 +416,19 @@ class Setup{
 
     function getSourceDir()
     {
-        $dir = explode(DIRECTORY_SEPARATOR, $_SERVER['SCRIPT_FILENAME']);
-        for ($i=0; $i < 2; $i++) {
-            array_pop($dir);
+        static $directory;
+
+        if (empty($directory)) {
+            $dir = explode(DIRECTORY_SEPARATOR, $_SERVER['SCRIPT_FILENAME']);
+            
+            for ($i=0; $i < 2; $i++) {
+                array_pop($dir);
+            }
+            
+            $directory = implode(DIRECTORY_SEPARATOR, $dir) . DIRECTORY_SEPARATOR;
         }
 
-        return implode(DIRECTORY_SEPARATOR, $dir) . DIRECTORY_SEPARATOR;
+        return $directory;
     }
 
     function checkDirectories(&$content)
