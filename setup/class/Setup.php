@@ -9,11 +9,13 @@
 
 class Setup{
 
-    function configExists(){
+    function configExists()
+    {
         return is_file('config/core/config.php');
     }
 
-    function initConfigSet(){
+    function initConfigSet()
+    {
         if (!isset($_SESSION['configSettings'])) {
             $_SESSION['configSettings']['general']  = FALSE;
             $_SESSION['configSettings']['database'] = FALSE;
@@ -29,7 +31,8 @@ class Setup{
     }
 
 
-    function createConfig(&$content){
+    function createConfig(&$content)
+    {
         Setup::initConfigSet();
 
         if (isset($_POST['action'])) {
@@ -70,7 +73,8 @@ class Setup{
         }
     }
 
-    function writeConfigFile(){
+    function writeConfigFile()
+    {
         require_once 'File.php';
 
         $location = Setup::getConfigSet('source_dir') . 'config/core/';
@@ -86,7 +90,8 @@ class Setup{
         return File::write($location . 'config.php', $configFile, FILE_MODE_WRITE);
     }
 
-    function postGeneralConfig(&$content){
+    function postGeneralConfig(&$content)
+    {
         $check = TRUE;
         $source_dir = $_POST['source_dir'];
 
@@ -118,7 +123,8 @@ class Setup{
         return $check;
     }
 
-    function postDatabaseConfig(&$content){
+    function postDatabaseConfig(&$content)
+    {
         $check = TRUE;
         $currentPW = Setup::getConfigSet('dbpass');
 
@@ -187,7 +193,8 @@ class Setup{
     }
 
 
-    function createDatabase(&$content){
+    function createDatabase(&$content)
+    {
         $dsn = Setup::getDSN(1);
         $db = & DB::connect($dsn);
 
@@ -215,7 +222,8 @@ class Setup{
 
     }
 
-    function getDSN($mode){
+    function getDSN($mode)
+    {
         $dbtype = Setup::getConfigSet('dbtype');
         $dbuser = Setup::getConfigSet('dbuser');
         $dbpass = Setup::getConfigSet('dbpass');
@@ -240,7 +248,8 @@ class Setup{
         }
     }
 
-    function testDBConnect(){
+    function testDBConnect()
+    {
         $dsn = Setup::getDSN(1);
         $connection = DB::connect($dsn);
 
@@ -271,11 +280,13 @@ class Setup{
 
     }
 
-    function setConfigSet($setting, $value){
+    function setConfigSet($setting, $value)
+    {
         $_SESSION['configSettings'][$setting] = $value;
     }
 
-    function getConfigSet($setting){
+    function getConfigSet($setting)
+    {
         if (!isset($_SESSION['configSettings']) || !isset($_SESSION['configSettings'][$setting])) {
             return NULL;
         }
@@ -283,7 +294,8 @@ class Setup{
         return $_SESSION['configSettings'][$setting];
     }
 
-    function generalConfig(&$content){
+    function generalConfig(&$content)
+    {
 
         $form = & new PHPWS_Form('generalConfig');
         $site_hash  = Setup::getConfigSet('site_hash');
@@ -324,7 +336,8 @@ class Setup{
     }
 
 
-    function databaseConfig(&$content){
+    function databaseConfig(&$content)
+    {
         $form = & new PHPWS_Form('databaseConfig');
         $form->add('step',   'hidden', '1');
         $form->add('action', 'hidden', 'postDatabaseConfig');
@@ -391,7 +404,8 @@ class Setup{
         $content[] = Setup::createForm($form, 'databaseConfig.tpl');
     }
 
-    function createForm($form, $tplFile){
+    function createForm($form, $tplFile)
+    {
         $template = $form->getTemplate();
         $tpl = & new PHPWS_Template;
         $tpl->setFile("setup/templates/$tplFile", TRUE);
@@ -400,15 +414,18 @@ class Setup{
         return $tpl->get();
     }
 
-    function getSourceDir(){
-        $dir = explode(DIRECTORY_SEPARATOR, __FILE__);
-        for ($i=0; $i < 3; $i++)
+    function getSourceDir()
+    {
+        $dir = explode(DIRECTORY_SEPARATOR, $_SERVER['SCRIPT_FILENAME']);
+        for ($i=0; $i < 2; $i++) {
             array_pop($dir);
+        }
 
         return implode(DIRECTORY_SEPARATOR, $dir) . DIRECTORY_SEPARATOR;
     }
 
-    function checkDirectories(&$content){
+    function checkDirectories(&$content)
+    {
         $errorDir = TRUE;
         $directory[] = Setup::getSourceDir() . 'config/';
         $directory[] = Setup::getSourceDir() . 'images/';
@@ -443,7 +460,8 @@ class Setup{
         return $errorDir;
     }
 
-    function show($content, $title=NULL){
+    function show($content, $title=NULL)
+    {
         $tpl = & new PHPWS_Template;
         $tpl->setFile('setup/templates/setup.tpl', TRUE);
         if (!isset($title)) {
@@ -456,7 +474,8 @@ class Setup{
         return $tpl->get();
     }
 
-    function checkSession(&$content){
+    function checkSession(&$content)
+    {
         if (!isset($_SESSION['sessionCheck'])) {
             $_SESSION['sessionCheck'] = TRUE;
 
@@ -471,7 +490,8 @@ class Setup{
         return TRUE;
     }
 
-    function welcome(&$content){
+    function welcome(&$content)
+    {
         unset($_SESSION['Boost']);
         $step = 1;
         if (Setup::configExists()) {
@@ -484,7 +504,8 @@ class Setup{
         return;
     }
 
-    function createCore(&$content){
+    function createCore(&$content)
+    {
         require_once('File.php');
         $content[] = _('Importing core database file.') . '<br />';
         $installSQL = File::readAll('core/boost/install.sql');
@@ -505,7 +526,8 @@ class Setup{
         }
     }
 
-    function installModules(&$content){
+    function installModules(&$content)
+    {
         $modules = PHPWS_Core::coreModList();
 
         if (!isset($_SESSION['Boost'])) {
@@ -530,7 +552,8 @@ class Setup{
         }
     }
 
-    function finish(&$content){
+    function finish(&$content)
+    {
         $content[] = '<hr />';
         $content[] = _('Installation of phpWebSite is complete.') . '<br />';
         $content[] = _('If you experienced any error messages, check your error.log file.') . '<br />';
