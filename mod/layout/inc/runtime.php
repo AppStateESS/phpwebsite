@@ -4,6 +4,7 @@
    * @version $Id$
    */
 
+Layout::checkJavascript();
 Layout::checkSettings();
 
 ?>
