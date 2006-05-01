@@ -945,17 +945,19 @@ class Layout {
         }
     }
 
+    /**
+     * Checks user's browser for javascript condition
+     */
     function checkJavascript()
     {
-        if (!isset($_SESSION['Javascript_Enabled']) &&
-            !isset($_SESSION['Javascript_Check'])) {
+        if (!isset($_SESSION['Javascript_Enabled']) && !isset($_SESSION['Javascript_Check'])) {
             $_SESSION['Javascript_Check'] = TRUE;
             Layout::getJavascript('test');
         } else {
             if (isset($_SESSION['Javascript_Enabled'])) {
                 $GLOBALS['browser_info']['javascript'] = $_SESSION['Javascript_Enabled'];
             } else {
-                if (isset($_COOKIE['js_check'])){
+                if (isset($_COOKIE['js_check'])) {
                     $_SESSION['Javascript_Enabled'] = TRUE;
                     $GLOBALS['browser_info']['javascript'] = TRUE;
                 } else {
