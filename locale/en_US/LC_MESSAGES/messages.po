@@ -953,7 +953,7 @@ msgid "Unable to locate your pear library files."
 msgstr ""
 
 #: setup/index.php:12
-msgid "Untar fallout_pear.tgz in your phpwebsite installation directory."
+msgid "Untar pear.tgz in your phpwebsite installation directory."
 msgstr ""
 
 #: setup/index.php:49
