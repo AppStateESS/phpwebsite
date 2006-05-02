@@ -125,7 +125,7 @@ define('MAX_POST_TRACK', 10);
  * core to only grab mod configuration files, set the below
  * to TRUE.
  */
-define('FORCE_MOD_CONFIG', TRUE);
+define('FORCE_MOD_CONFIG', FALSE);
 
 /********************** PEAR SETTINGS **************************/
 
