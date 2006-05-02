@@ -11,7 +11,7 @@ if (!is_file('lib/pear/DB.php')) {
     echo '<br />';
     echo _('Untar fallout_pear.tgz in your phpwebsite installation directory.');
     echo '<br />';
-    echo '<pre>tar zxf fallout_pear.tgz</pre>';
+    echo '<pre>tar zxf pear.tgz</pre>';
     exit();
 }
 
