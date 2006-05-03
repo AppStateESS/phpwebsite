@@ -36,7 +36,10 @@ class Key {
     var $update_date     = 0;
 
     var $creator         = NULL;
+    var $creator_id      = 0;
+
     var $updater         = NULL;
+    var $updater_id      = 0;
 
     // contains permission allow name for editing
     var $edit_permission = NULL;
@@ -254,9 +257,11 @@ class Key {
 
         if (empty($this->creator)) {
             $this->creator = Current_User::getDisplayName();
+            $this->creator_id = Current_User::getId();
         }
 
         $this->updater = Current_User::getDisplayName();
+        $this->updater_id = Current_User::getId();
 
         $this->update_date = PHPWS_Time::getUTCTime();
 
