@@ -1475,7 +1475,6 @@ class PHPWS_DB {
         if (is_array($column)) {
             foreach ($column as $col) {
                 if (!$this->isTableColumn($col)) {
-                    echo "$table does not contain $col";
                     return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::createTableIndex');
                 }
             }
