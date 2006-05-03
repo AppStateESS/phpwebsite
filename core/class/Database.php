@@ -220,6 +220,9 @@ class PHPWS_DB {
         return $answer;
     }
 
+    /**
+     * Gets information on all the columns in the current table
+     */
     function getTableColumns($fullInfo=FALSE)
     {
         if (isset($this->_allColumns) && $fullInfo == FALSE) {
@@ -252,6 +255,10 @@ class PHPWS_DB {
         }
     }
 
+    /**
+     * Returns true is the columnName is contained in the
+     * current table
+     */
     function isTableColumn($columnName)
     {
         $columns = $this->getTableColumns();
@@ -354,6 +361,8 @@ class PHPWS_DB {
     {
         $this->tables = array();
         $this->_join_tables = NULL;
+        $this->_columnInfo = NULL;
+        $this->_allColumns = NULL;
         return $this->addTable($table);
     }
 
@@ -1439,6 +1448,52 @@ class PHPWS_DB {
         $sql = "TRUNCATE TABLE $table";
 
         return PHPWS_DB::query($sql);
+    }
+
+    function dropTableIndex($name=NULL)
+    {
+        $table = $this->getTable();
+        if (!$table) {
+            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::dropTableIndex');
+        }
+     
+        if (empty($name)) {
+            $name = $table;
+        }
+
+        $sql = sprintf('DROP INDEX %s ON %s', $name, $table);
+        return $this->query($sql);
+    }
+
+    function createTableIndex($column, $name=NULL)
+    {
+        $table = $this->getTable();
+        if (!$table) {
+            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::createTableIndex');
+        }
+
+        if (is_array($column)) {
+            foreach ($column as $col) {
+                if (!$this->isTableColumn($col)) {
+                    echo "$table does not contain $col";
+                    return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::createTableIndex');
+                }
+            }
+            $column = implode(',', $column);
+        } else {
+            if (!$this->isTableColumn($column)) {
+                echo "$table does not contain $column";
+                return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::createTableIndex');
+            }
+        }
+
+        if (empty($name)) {
+            $name = $table;
+        }
+
+        $sql = sprintf('CREATE INDEX %s ON %s (%s)', $name, $table, $column);
+
+        return $this->query($sql);
     }
 
 
