@@ -31,6 +31,8 @@ CREATE TABLE mod_settings (
  large_char text NULL
 );
 
+CREATE INDEX mod_settings ON mod_settings (module, setting_name);
+
 CREATE TABLE phpws_key (
   id int NOT NULL default '0',
   module varchar(40) NOT NULL default '',
@@ -44,21 +46,30 @@ CREATE TABLE phpws_key (
   create_date int NOT NULL default '0',
   update_date int NOT NULL default '0',
   creator varchar(60) default NULL,
+  creator_id int NOT NULL default '0',
   updater varchar(60) default NULL,
+  updater_id int NOT NULL default '0',
   times_viewed int NOT NULL default '0',
   edit_permission varchar(30) default NULL,
   PRIMARY KEY  (id)
 );
+
+CREATE INDEX phpws_key on phpws_key (restricted, active, module, create_date, update_date);
 
 CREATE TABLE phpws_key_view (
   key_id int(11) NOT NULL default '0',
   group_id int(11) NOT NULL default '0'
 );
 
+CREATE INDEX phpws_key_view on phpws_key_view (key_id);
+
 CREATE TABLE phpws_key_edit (
   key_id int(11) NOT NULL default '0',
   group_id int(11) NOT NULL default '0'
 );
+
+CREATE INDEX phpws_key_edit on phpws_key_edit (key_id);
+
 
 CREATE TABLE phpws_key_register (
   module varchar(40) NOT NULL default ''
