@@ -9,7 +9,9 @@
 
 class Search {
     var $key_id   = 0;
+    var $module   = NULL;
     var $keywords = NULL;
+    var $created  = 0;
     var $_error   = NULL;
     
     function Search($key=NULL)
@@ -146,6 +148,8 @@ class Search {
         $db->reset();
 
         $db->addValue('key_id', $this->key_id);
+        $db->addValue('module', $this->module);
+        $db->addValue('created', $this->create_date);
         if (is_array($this->keywords)) {
             $keywords = implode(' ', $this->keywords);
         } else {

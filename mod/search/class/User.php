@@ -248,7 +248,7 @@ class Search_User {
         $pager->addPageTags($pageTags);
 
         if ($module) {
-            $pager->addWhere('phpws_key.module', $module);
+            $pager->addWhere('search.module', $module);
         }
 
         $pager->addWhere('search.key_id', 'phpws_key.id');
@@ -268,9 +268,9 @@ class Search_User {
             }
 
             if ($exact_match) {
-                $keyword = "%$keyword %";
+                $keyword = "$keyword %";
             } else {
-                $keyword = "%$keyword%";
+                $keyword = "$keyword%";
             }
 
             $pager->addWhere('search.keywords', $keyword, 'like', 'or', 1);
