@@ -1,6 +1,11 @@
 <?php
+
+  /**
+   * @version $Id$
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   */
 $proper_name  = 'Search';
-$version      = '0.0.3';
+$version      = '0.1.0';
 $register     = FALSE;
 $unregister   = TRUE;
 $import_sql   = TRUE;

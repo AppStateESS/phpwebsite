@@ -1,9 +1,11 @@
 CREATE TABLE search (
   key_id int NOT NULL default '0',
+  module char(40) NOT NULL,
+  created int NOT NULL default '0',
   keywords text NOT NULL
 );
 
-CREATE INDEX search_index on search (key_id);
+CREATE INDEX search_index on search (key_id, module, created);
 
 CREATE TABLE search_stats (
   keyword varchar(50) NOT NULL default '',
