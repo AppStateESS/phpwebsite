@@ -405,7 +405,7 @@ class Categories_Action {
         $pager->addWhere('id', 'category_items.key_id');
         $pager->addWhere('category_items.cat_id', $category->id);
         if (isset($module)) {
-            $pager->addWhere('module', $module);
+            $pager->addWhere('category_items.module', $module);
         }
         $pager->setModule('categories');
         $pager->setDefaultLimit(10);
@@ -429,6 +429,8 @@ class Categories_Action {
         $db = & new PHPWS_DB('category_items');
         $db->addValue('cat_id', (int)$cat_id);
         $db->addValue('key_id', (int)$key_id);
+        $key = & new Key((int)$key_id);
+        $db->addValue('module', $key->module);
         return $db->insert();
     }
 

@@ -9,5 +9,8 @@ CREATE TABLE categories (
 
 CREATE TABLE category_items (
   cat_id int NOT NULL default '0',
-  key_id int NOT NULL default '0'
+  key_id int NOT NULL default '0',
+  module char(40) NOT NULL
 );
+
+CREATE INDEX category_items on category_items(cat_id, module);
