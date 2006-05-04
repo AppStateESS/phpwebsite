@@ -120,6 +120,13 @@ class PHPWS_SQL {
 
         return TRUE;
     }
+
+
+    function dropTableIndex($name, $table=NULL)
+    {
+     	return sprintf('DROP INDEX %s', $name);
+    }
+
 }
 
 ?>

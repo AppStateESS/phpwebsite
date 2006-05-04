@@ -81,6 +81,12 @@ class PHPWS_SQL {
 
         return TRUE;
     }
+
+
+    function dropTableIndex($name, $table)
+    {
+        return sprintf('DROP INDEX %s ON %s', $name, $name);
+    }
 }
 
 ?>
