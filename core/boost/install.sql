@@ -54,21 +54,21 @@ CREATE TABLE phpws_key (
   PRIMARY KEY  (id)
 );
 
-CREATE INDEX phpws_key on phpws_key (restricted, active, module, create_date, update_date);
+CREATE INDEX phpwskey_idx on phpws_key (restricted, active, module, create_date, update_date);
 
 CREATE TABLE phpws_key_view (
   key_id int(11) NOT NULL default '0',
   group_id int(11) NOT NULL default '0'
 );
 
-CREATE INDEX phpws_key_view on phpws_key_view (key_id);
+CREATE INDEX phpwskeyview_idx on phpws_key_view (key_id);
 
 CREATE TABLE phpws_key_edit (
   key_id int(11) NOT NULL default '0',
   group_id int(11) NOT NULL default '0'
 );
 
-CREATE INDEX phpws_key_edit on phpws_key_edit (key_id);
+CREATE INDEX phpwskeyedit_idx on phpws_key_edit (key_id);
 
 
 CREATE TABLE phpws_key_register (

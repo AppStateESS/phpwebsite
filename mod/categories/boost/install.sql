@@ -13,4 +13,4 @@ CREATE TABLE category_items (
   module char(40) NOT NULL
 );
 
-CREATE INDEX category_items on category_items(cat_id, module);
+CREATE INDEX categoryitems_idx on category_items(cat_id, module);
