@@ -1458,10 +1458,9 @@ class PHPWS_DB {
         }
      
         if (empty($name)) {
-            $name = $table;
+            $name = str_replace('_', '', $table) . '_idx';
         }
-
-        $sql = sprintf('DROP INDEX %s ON %s', $name, $table);
+	$sql = $this->_sql->dropTableIndex($name, $table);
         return $this->query($sql);
     }
 
@@ -1487,7 +1486,7 @@ class PHPWS_DB {
         }
 
         if (empty($name)) {
-            $name = $table;
+            $name = str_replace('_', '', $table) . '_idx';
         }
 
         $sql = sprintf('CREATE INDEX %s ON %s (%s)', $name, $table, $column);
