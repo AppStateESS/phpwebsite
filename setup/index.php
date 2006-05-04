@@ -5,8 +5,11 @@
    */
 
 chdir('../');
-if (!is_file('lib/pear/DB.php')) {
+// Uncomment this line if having problems installing in Windows
+//ini_set('include_path', '.;.\\lib\\pear\\');
+require_once 'core/class/Init.php';
 
+if (!is_file('lib/pear/DB.php')) {
     echo _('Unable to locate your pear library files.');
     echo '<br />';
     echo _('Untar fallout_pear.tgz in your phpwebsite installation directory.');
