@@ -95,8 +95,8 @@ class Setup{
         $check = TRUE;
         $source_dir = $_POST['source_dir'];
 
-        if (!preg_match('/\/$/', $source_dir)) {
-            $source_dir = $source_dir . '/';
+        if (!preg_match('/' . preg_quote(DIRECTORY_SEPARATOR) . '$/', $source_dir)) {
+            $source_dir = $source_dir . DIRECTORY_SEPARATOR;
         }
 
         if (!is_dir($source_dir)) {
@@ -105,8 +105,8 @@ class Setup{
         }
         else {
             Setup::setConfigSet('source_dir', $source_dir);
+	    Setup::setConfigSet('home_dir', $source_dir);
         }
-
 
         Setup::setConfigSet('LINUX_PEAR', '//');
         Setup::setConfigSet('WINDOWS_PEAR', '//');
@@ -427,7 +427,6 @@ class Setup{
             
             $directory = implode(DIRECTORY_SEPARATOR, $dir) . DIRECTORY_SEPARATOR;
         }
-
         return $directory;
     }
 
