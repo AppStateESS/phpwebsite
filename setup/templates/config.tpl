@@ -96,7 +96,7 @@ define('PHPWS_LOG_ERRORS', TRUE);
 /**
  * Directory where logs will be written
  */
-define('PHPWS_LOG_DIRECTORY', PHPWS_HOME_DIR . 'logs/');
+define('PHPWS_LOG_DIRECTORY', 'logs/');
 
 /**
  * Determines the permissions given to log files when written
@@ -155,7 +155,7 @@ define('DEFAULT_LANGUAGE', 'en-us');
  * Assigns a css style to the toggle element in list
  */
 
-define('PHPWS_LIST_TOGGLE_CLASS', ' class=\'bgcolor1\'');
+define('PHPWS_LIST_TOGGLE_CLASS', ' class="bgcolor1"');
 
 /************************ EDITOR *******************************/
 /*
@@ -182,7 +182,7 @@ define('ABSOLUTE_UPLOAD_LIMIT', '5000000');
  * in the file_types.php file. Make sure you know how to edit
  * arrays before altering the file.
  */ 
-include PHPWS_HOME_DIR . 'config/core/file_types.php';
+include 'config/core/file_types.php';
 
 /******************* IMAGES SETTINGS **************************/
 define('MAX_IMAGE_SIZE', 50000);
