@@ -1,5 +1,5 @@
 {START_FORM}
-<table width="100%" cellpadding="3">
+<table width="99%" cellpadding="3">
   <tr>
     <th width="3%">&nbsp;</th>
     <th width="30%">{KEYWORD_LABEL} {KEYWORD_SORT}</th>

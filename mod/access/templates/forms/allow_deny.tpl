@@ -2,7 +2,7 @@
 
 <h2>{ALLOW_TITLE}</h2>
 <div class="align-center">{ALLOW_ADDRESS} {ADD_ALLOW_ADDRESS}</div>
-<table cellpadding="4" width="100%">
+<table cellpadding="4" width="99%">
   <tr>
     <th width="2%">&nbsp;</th>
     <th>{IP_ADDRESS_LABEL}</th>
@@ -31,7 +31,7 @@
 
 <h2>{DENY_TITLE}</h2>
 <div class="align-center">{DENY_ADDRESS} {ADD_DENY_ADDRESS}</div>
-<table cellpadding="4" width="100%">
+<table cellpadding="4" width="99%">
   <tr>
     <th width="2%">&nbsp;</th>
     <th>{IP_ADDRESS_LABEL}</th>

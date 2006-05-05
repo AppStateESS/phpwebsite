@@ -1,5 +1,5 @@
 {START_FORM}
-<table class="form-table" width="100%">
+<table class="form-table" width="99%">
   <th colspan="2">{MOD_REWRITE_LABEL}</th>
   <tr>
     <td>{REWRITE_ENGINE_LABEL}</td>
