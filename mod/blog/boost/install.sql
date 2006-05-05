@@ -8,3 +8,5 @@ create_date INT NOT NULL ,
 allow_comments SMALLINT NOT NULL default'0',
 PRIMARY KEY ( id )
 );
+
+CREATE INDEX blogentries_idx on blog_entries(key_id);

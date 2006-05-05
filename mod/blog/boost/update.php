@@ -14,7 +14,6 @@ function blog_update(&$content, $currentVersion)
             return $result;
         }
         $content[] = '+ added the author column';
-        break;
 
     case version_compare($currentVersion, '0.0.4', '<'):
         $result = blog_update_004($content);
@@ -22,7 +21,6 @@ function blog_update(&$content, $currentVersion)
             return $result;
         }
         $content[] = '+ registered to rss';
-        break;
 
     case version_compare($currentVersion, '0.0.5', '<'):
         $result = blog_update_005($content);
@@ -31,8 +29,13 @@ function blog_update(&$content, $currentVersion)
         }
         $content[] = '+ changed date column to create_date';
         $content[] = '+ added ability to turn comments on or off';
-        break;
 
+    case version_compare($currentVersion, '0.1.0', '<'):
+        $result = blog_update_010($content);
+        if (!$result) {
+            return FALSE;
+        }
+        $content[] = '+ Indexed the key_id column.';
     }
     return TRUE;
 }
@@ -64,6 +67,18 @@ function blog_update_005(&$content)
     $result2 = $db->addTableColumn('allow_comments', 'SMALLINT NOT NULL');
     if (PEAR::isError($result2)) {
         return $result2;
+    }
+    return TRUE;
+}
+
+function blog_update_010(&$content)
+{
+    $db = & new PHPWS_DB('blog_entries');
+    $result = $db->createTableIndex('key_id');
+    if (PEAR::isError($result)) {
+        PHPWS_Error::log($result);
+        $content[] = 'Unable to create new index on blog_entries table.';
+        return FALSE;
     }
     return TRUE;
 }
