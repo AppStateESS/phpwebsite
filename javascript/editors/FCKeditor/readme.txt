@@ -25,7 +25,8 @@ You should be able to remove any other files and folders.
 The custom.php allows you to change the default options for
 FCKeditor. It must reside in the editor directory.
 
-Make sure to read spellcheck_readme.txt to enable the spellchecker.
+***  Make sure to read spellcheck_readme.txt ***
+***        to enable the spellchecker.       ***
 
 The word 'content' is restricted. Do not use it as the name of
 your text area.
