@@ -1464,6 +1464,13 @@ class PHPWS_DB {
         return $this->query($sql);
     }
 
+    /**
+     * Creates an index on a table. column variable can be a string or
+     * an array of strings representing column names.
+     * The name of the index is optional. The function will create one based
+     * on the table name. Setting your index name might be a smart thing to do
+     * in case you ever need to DROP it.
+     */
     function createTableIndex($column, $name=NULL)
     {
         $table = $this->getTable();
@@ -1480,7 +1487,6 @@ class PHPWS_DB {
             $column = implode(',', $column);
         } else {
             if (!$this->isTableColumn($column)) {
-                echo "$table does not contain $column";
                 return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::createTableIndex');
             }
         }
