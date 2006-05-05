@@ -94,8 +94,8 @@ class Setup{
     {
         $check = TRUE;
         $source_dir = $_POST['source_dir'];
-
-        if (!preg_match('/' . preg_quote(DIRECTORY_SEPARATOR) . '$/', $source_dir)) {
+        $match = sprintf('/%s$/', preg_quote(DIRECTORY_SEPARATOR, '/'));
+        if (!preg_match($match, $source_dir)) {
             $source_dir = $source_dir . DIRECTORY_SEPARATOR;
         }
 
