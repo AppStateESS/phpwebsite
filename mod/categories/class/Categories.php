@@ -58,7 +58,9 @@ class Categories{
         $add_list = Categories::getCategories('list');
 
         if (empty($add_list)) {
-            return _('You need to add some categories first.');
+            $content =  _('You need to add some categories first.');
+            $content.= '<br /><a href="#" onclick="window.close()">' . _('Close window') . '</a>';
+            return $content;
         }
 
         $current_cat_ids = Categories::getCurrent($key->id);
@@ -390,29 +392,37 @@ class Categories{
         if (isset($cat_id)) {
             $db->addWhere('cat_id' , (int)$cat_id);
         }
+        
         $db->addColumn('key_id');
+        $db->addColumn('phpws_key.module');
 
-        $result = $db->select('col');
+        Key::restrictView($db);
+
+        $result = $db->select();
+
         if (empty($result)) {
             return NULL;
         }
 
         $mod_names = PHPWS_Core::getModuleNames();
 
-        foreach ($result as $key_id) {
-            $key = & new Key($key_id);
-            if (!isset($mod_count[$key->module])) {
-                $mod_count[$key->module] = 1;
+        foreach ($result as $keys) {
+            extract($keys);
+            if (!isset($mod_count[$module])) {
+                $mod_count[$module] = 1;
             } else {
-                $mod_count[$key->module]++;
+                $mod_count[$module]++;
             }
         }
 
-        foreach ($mod_count as $mod_title => $items) {
-            $mod_list[$mod_title] = sprintf(_('%s - %s item(s)'), $mod_names[$mod_title], $mod_count[$mod_title]);
+        if (!empty($mod_count)) {
+            foreach ($mod_count as $mod_title => $items) {
+                $mod_list[$mod_title] = sprintf(_('%s - %s item(s)'), $mod_names[$mod_title], $mod_count[$mod_title]);
+            }
+            return $mod_list;
+        } else {
+            return NULL;
         }
-
-        return $mod_list;
     }
 
     function listModuleItems(&$category)

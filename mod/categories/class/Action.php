@@ -331,7 +331,7 @@ class Categories_Action {
                 $template['TITLE'] = sprintf(_('Module listing for %s'), $oMod->getProperName());
                 $content = Categories_Action::getAllItems($category, $module);
             } else {
-                $template['TITLE'] = _('Module Listing');
+                $template['TITLE'] = _('Module listing');
                 $content = Categories::listModuleItems($category);
             }
         }
@@ -361,6 +361,12 @@ class Categories_Action {
             $mod_list = Categories::getModuleListing($category);
         } else {
             $mod_list = Categories::getModuleListing();
+        }
+
+        $db->addWhere('key_id', 'phpws_key.id');
+        $db->addWhere('phpws_key.active', 1);
+        if (!Current_User::isLogged()) {
+            $db->addWhere('phpws_key.restricted', 0);
         }
 
         $all_no = $db->count();
@@ -403,10 +409,17 @@ class Categories_Action {
 
         $pager = & new DBPager('phpws_key', 'Key');
         $pager->addWhere('id', 'category_items.key_id');
+        $pager->addWhere('active', 1);
         $pager->addWhere('category_items.cat_id', $category->id);
+
+        if (!Current_User::isLogged()) {
+            $pager->addWhere('restricted', 0);
+        }
+
         if (isset($module)) {
             $pager->addWhere('category_items.module', $module);
         }
+
         $pager->setModule('categories');
         $pager->setDefaultLimit(10);
         $pager->setTemplate('category_item_list.tpl');
