@@ -473,8 +473,7 @@ class Cabinet_Action {
 
         $key = & new Key($document->key_id);
         if (!$key->allowView()) {
-            Current_User::disallow(sprintf(_('Attempted to download: %s'), $document->getPath()));
-            Layout::add(_('You are not allowed access to this file.'));
+            Layout::add(_('Sorry, you are not allowed access to this file.'));
             return;
         }
 
