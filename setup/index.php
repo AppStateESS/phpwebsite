@@ -5,14 +5,16 @@
    */
 
 chdir('../');
-// Uncomment this line if having problems installing in Windows
-//ini_set('include_path', '.;.\\lib\\pear\\');
-require_once 'core/class/Init.php';
+if (isWindows()) {
+    ini_set('include_path', '.;.\\lib\\pear\\');
+ } else {
+    ini_set('include_path', '.:./lib/pear/');
+ }
 
 if (!is_file('lib/pear/DB.php')) {
-    echo _('Unable to locate your pear library files.');
+    echo 'Unable to locate your pear library files.';
     echo '<br />';
-    echo _('Untar pear.tgz in your phpwebsite installation directory.');
+    echo 'Untar pear.tgz in your phpwebsite installation directory.';
     echo '<br />';
     echo '<pre>tar zxf pear.tgz</pre>';
     exit();
@@ -84,4 +86,18 @@ switch ($step){
  }
 
 echo Setup::show($content, $title);
+
+/**
+ * Returns true if server OS is Windows
+ */
+function isWindows()
+{
+    if (isset($_SERVER['WINDIR']) ||
+        preg_match('/(microsoft|win32)/i', $_SERVER['SERVER_SOFTWARE'])) {
+        return TRUE;
+    } else {
+            return FALSE;
+    }
+}
+
 ?>
