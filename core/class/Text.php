@@ -743,7 +743,10 @@ class PHPWS_Text {
      */
     function xml2php($file, $level = 0) {
         $xml_parser = xml_parser_create();
-        $contents = file_get_contents($file);
+        $contents = @file_get_contents($file);
+        if (!$contents) {
+            return FALSE;
+        }
         xml_parse_into_struct($xml_parser, $contents, $arr_vals);
         xml_parser_free($xml_parser);
         $result = PHPWS_Text::_orderXML($arr_vals);
