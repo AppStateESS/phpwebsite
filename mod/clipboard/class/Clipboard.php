@@ -75,6 +75,7 @@ class Clipboard
             $drop = PHPWS_Text::moduleLink(CLIPBOARD_DROP_LINK, 'clipboard', $clipVars);
             $data['address'] = 'index.php?module=clipboard&action=showclip&key=' . $key;
             $data['label'] = $component->title;
+            $data['height'] = 200;
             $content[] = Layout::getJavascript('open_window', $data) . ' ' . $drop;
         }
 
