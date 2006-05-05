@@ -1,6 +1,11 @@
 <?php
 
-require('Cache/Lite.php');
+  /**
+   * @version $Id$
+   * @author Matthew McNaney <mcnaney gmail dot com>
+   */
+
+require_once 'Cache/Lite.php';
 
 class PHPWS_Cache {
 
