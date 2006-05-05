@@ -191,6 +191,8 @@ class PHPWS_Document extends File_Common {
             $links[] = PHPWS_Text::secureLink(_('Edit'), 'filecabinet', $vars);
         }
 
+        $links[] = Current_User::popupPermission($this->key_id);
+
         $vars['action'] = 'clip_document';
         $links[] = PHPWS_Text::moduleLink(_('Clip'), 'filecabinet', $vars);
 
