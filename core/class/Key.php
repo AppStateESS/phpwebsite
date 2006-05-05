@@ -471,26 +471,33 @@ class Key {
      *
      * The user module MUST be active for this function to work.
      * This Key function cannot be called without it.
+     *
+     * If a specific module is used, sending the module
+     * title helps speed the query. If you don't know the module
+     * (make sure check module permissions in your script instead)
      */
-    function restrictView(&$db, $module)
+    function restrictView(&$db, $module=NULL)
     {
+        $db->addWhere('phpws_key.active', 1, NULL, NULL, 'active');
+
         if (Current_User::isDeity()) {
+            $db->addWhere('key_id', 'phpws_key.id');
             return;
         }
-        $db->setDistinct(1);
+        //        $db->setDistinct(1);
 
         $source_table = $db->tables[0];
 
         if (!Current_User::isLogged()) {
             $db->addWhere('key_id',               0, NULL, NULL, 'key_1');
-            $db->addWhere('phpws_key.active',     1, NULL, NULL, 'key_2');
             $db->addWhere('phpws_key.restricted', 0, NULL, NULL, 'key_2');
             $db->setGroupConj('key_1', 'and');
             $db->setGroupConj('key_2', 'or');
             $db->groupIn('key_1', 'key_2');
             $db->addJoin('left', $source_table, 'phpws_key', 'key_id', 'id');
             return;
-        } elseif (Current_User::isUnrestricted($module)) {
+        } elseif (isset($module) && Current_User::isUnrestricted($module)) {
+            $db->addWhere('key_id', 'phpws_key.id');
             return;
         } else {
             $groups = Current_User::getGroups();
@@ -499,15 +506,14 @@ class Key {
             }
             $db->addJoin('left', $source_table, 'phpws_key', 'key_id', 'id');
             $db->addJoin('left', 'phpws_key', 'phpws_key_view', 'id', 'key_id');
-            $db->addWhere('key_id', 0);
-            $db->addWhere('phpws_key.restricted', 2, '<=', NULL, 'key_1');
-            $db->addWhere('phpws_key_view.group_id', $groups, 'in', NULL, 'key_1');
-            $db->setGroupConj('key_1', 'or');
-            $db->addWhere('phpws_key.restricted', 1, '<=', NULL, 'key_2');
-            $db->addWhere('phpws_key.active', 1, NULL, NULL, 'key_3');
-            $db->setGroupConj('key_3', 'or');
-            $db->groupIn('key_1', 'key_2');
-            $db->groupIn('key_2', 'key_3');
+            $db->addWhere('key_id', 0, '=', NULL, 'empty_key');
+            $db->addWhere('phpws_key.restricted', 1, '<=', NULL, 'logged_users');
+            $db->addWhere('phpws_key.restricted', 2, '=', NULL, 'restricted');
+            $db->addWhere('phpws_key_view.group_id', $groups, 'in', NULL, 'restricted');
+            $db->setGroupConj('restricted', 'or');
+            $db->setGroupConj('logged_users', 'or');
+            $db->groupIn('logged_users', 'restricted');
+            $db->groupIn('empty_key', 'logged_users');
             return;
         }
     }
