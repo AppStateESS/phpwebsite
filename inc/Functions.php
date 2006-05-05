@@ -34,7 +34,7 @@ function loadFunction($function)
     // Load function
     if (!function_exists($function)) {
         // edited for phpwebsite
-        $file = sprintf(PHPWS_SOURCE_DIR . 'lib/pear/Compat/Function/%s.php', $function);
+        $file = sprintf('Compat/Function/%s.php', $function);
 
         if ((@include_once $file) !== false) {
             return true;
