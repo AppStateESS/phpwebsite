@@ -43,7 +43,7 @@ class User_Action {
             $group = & new PHPWS_Group;
         }
 
-        switch ($command){
+        switch ($command) {
             /** Form cases **/
             /** User Forms **/
         case 'new_user':
@@ -737,8 +737,9 @@ class User_Action {
         extract($_POST);
     
         // Error here
-        if (!isset($group_id))
+        if (!isset($group_id)) {
             return FALSE;
+        }
 
         foreach ($module_permission as $mod_title=>$permission){
             $subpermission = isset($sub_permission[$mod_title]) ? $sub_permission[$mod_title] : NULL;
