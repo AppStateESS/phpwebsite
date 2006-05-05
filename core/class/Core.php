@@ -9,6 +9,9 @@
  * @package Core
  */
 
+if (!defined('FORCE_MOD_CONFIG')) {
+    define('FORCE_MOD_CONFIG', TRUE);
+ }
 
 class PHPWS_Core {
 
