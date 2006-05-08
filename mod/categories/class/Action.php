@@ -363,12 +363,7 @@ class Categories_Action {
             $mod_list = Categories::getModuleListing();
         }
 
-        $db->addWhere('key_id', 'phpws_key.id');
-        $db->addWhere('phpws_key.active', 1);
-        if (!Current_User::isLogged()) {
-            $db->addWhere('phpws_key.restricted', 0);
-        }
-
+        Key::restrictView($db, IGNORE_MODULE);
         $all_no = $db->count();
 
         if (!empty($mod_list)) {
