@@ -16,6 +16,8 @@ if (!isset($_REQUEST['module'])) {
     $GLOBALS['PHPWS_Key'] = NULL;
 }
 
+define('IGNORE_MODULE', '_ignore_module_');
+
 class Key {
     // if the id is 0 (zero) then this is a _dummy_ key
     // dummy keys are not saved
@@ -472,15 +474,16 @@ class Key {
      * The user module MUST be active for this function to work.
      * This Key function cannot be called without it.
      *
-     * If a specific module is used, sending the module
-     * title helps speed the query. If you don't know the module
-     * (make sure check module permissions in your script instead)
+     * Module is required, however you can force skipping by sending
+     * IGNORE_MODULE as the module variable.
      */
-    function restrictView(&$db, $module=NULL)
+    function restrictView(&$db, $module)
     {
         $db->addWhere('phpws_key.active', 1, NULL, NULL, 'active');
 
-        if (Current_User::isDeity()) {
+        if ( Current_User::isDeity() || 
+             ( $module != IGNORE_MODULE && Current_User::isUnrestricted($module) )
+             ) {
             $db->addWhere('key_id', 'phpws_key.id');
             return;
         }
@@ -496,18 +499,20 @@ class Key {
             $db->groupIn('key_1', 'key_2');
             $db->addJoin('left', $source_table, 'phpws_key', 'key_id', 'id');
             return;
-        } elseif (isset($module) && Current_User::isUnrestricted($module)) {
-            $db->addWhere('key_id', 'phpws_key.id');
-            return;
         } else {
             $groups = Current_User::getGroups();
+
             if (empty($groups)) {
                 return;
             }
             $db->addJoin('left', $source_table, 'phpws_key', 'key_id', 'id');
             $db->addJoin('left', 'phpws_key', 'phpws_key_view', 'id', 'key_id');
             $db->addWhere('key_id', 0, '=', NULL, 'empty_key');
+
+            // if key only has a level 1 restriction, a logged user can view it
             $db->addWhere('phpws_key.restricted', 1, '<=', NULL, 'logged_users');
+
+            // at level 2, the user must be in a group given view permissions
             $db->addWhere('phpws_key.restricted', 2, '=', NULL, 'restricted');
             $db->addWhere('phpws_key_view.group_id', $groups, 'in', NULL, 'restricted');
             $db->setGroupConj('restricted', 'or');
@@ -666,7 +671,7 @@ class Key {
                 return FALSE;
             }
 
-            require $filename;
+            require_once $filename;
 
             $func_name = $module . '_unregister';
             if (!function_exists($func_name)) {
