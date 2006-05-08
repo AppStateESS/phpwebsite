@@ -1,3 +1,4 @@
+<div class="align-right">{LINKS}</div>
 {START_FORM}
 {UPDATE}
 <!-- BEGIN module -->

@@ -2,6 +2,7 @@
 <span class="smalltext">{MESSAGE}</span>
 <hr />
 <!-- END message -->
+<div class="align-right">{LINKS}</div>
 {START_FORM}
 <table class="form-table" cellspacing="0" cellpadding="4">
   <tr>

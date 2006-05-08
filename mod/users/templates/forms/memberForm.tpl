@@ -1,4 +1,5 @@
 {START_FORM}
+<div class="align-right">{LINKS}</div>
 <strong>{SEARCH_MEMBER_LABEL}:</strong><br />
 {SEARCH_MEMBER}{ADD_MEMBER}{SEARCH}
 <table border="0" width="100%">

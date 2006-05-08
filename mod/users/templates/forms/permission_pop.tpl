@@ -1,3 +1,28 @@
+<script type="text/javascript">
+//<![CDATA[
+window.onload = function() {
+     view_groups = document.getElementById('view_groups');
+     for (i = 0; i < 3; i++) {
+         current_radio = document.getElementById('choose_permissions_view_permission[' + i + ']');
+         if (current_radio.checked) {
+             hideSelect(current_radio.value);
+             return;
+         }
+     }
+}
+
+function hideSelect(radio_value)
+{
+    if (radio_value != '2') {
+        view_groups.disabled = 'disabled';
+    } else {
+        view_groups.disabled = '';
+    }
+
+}
+//]]>
+</script>
+
 <div class="box">
   <div class="box-title"><h1>{TITLE}<h1></div>
   <!-- BEGIN message --><div class="padded"><h3>{MESSAGE}</h3></div><!-- END message -->
