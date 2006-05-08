@@ -62,10 +62,7 @@ class User_Action {
             break;
 
         case 'editUser':
-            $vars['command'] = 'setUserPermissions';
-            $vars['action'] = 'admin';
-            $vars['user_id'] = $user->id;
-            $title = _('Edit User') . ' | ' . PHPWS_Text::secureLink(_('Permissions'), 'users', $vars);
+            $title = _('Edit User');
             $user = & new PHPWS_User($_REQUEST['user_id']);
             $content = User_Form::userForm($user);
             break;      
@@ -106,11 +103,7 @@ class User_Action {
             }
 
             PHPWS_Core::initModClass('users', 'Group.php');
-            $vars['command'] = 'editUser';
-            $vars['action'] = 'admin';
-            $vars['user_id'] = $user->id;
-
-            $title = PHPWS_Text::secureLink(_('Edit User'), 'users', $vars) . ' | ' . _('Set User Permissions') . ' : ' . $user->getUsername();
+            $title = _('Set User Permissions') . ' : ' . $user->getUsername();
             $content = User_Form::setPermissions($user->getUserGroup());
             break;
 

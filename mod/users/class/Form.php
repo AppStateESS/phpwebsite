@@ -117,8 +117,27 @@ class User_Form {
         $form->addSubmit('update', _('Update'));
         $template = $form->getTemplate();
 
-        $tpl->setData($template);
+        $vars['action']   = 'admin';
+        if (!$group->user_id) {
 
+            $vars['group_id'] = $group->id;
+            $vars['command']  = 'manageMembers';
+            $links[] = PHPWS_Text::secureLink(_('Members'), 'users', $vars);
+            
+            $vars['command']  = 'edit_group';
+            $links[] = PHPWS_Text::secureLink(_('Edit'), 'users', $vars);
+            
+
+        } else {
+            $vars['user_id'] = $group->user_id;
+            $vars['command'] = 'editUser';
+            $links[] = PHPWS_Text::secureLink(_('Edit'), 'users', $vars);
+        }
+
+        $template['LINKS'] = implode(' | ', $links);
+
+        $tpl->setData($template);
+        
         $content = $tpl->get();
 
         return $content;
@@ -285,6 +304,16 @@ class User_Form {
 
         $template = $form->getTemplate(TRUE, TRUE, $template);
 
+        $vars['action']   = 'admin';
+        $vars['group_id'] = $group->id;
+        $vars['command']  = 'edit_group';
+        $links[] = PHPWS_Text::secureLink(_('Edit'), 'users', $vars);
+
+        $vars['command'] = 'setGroupPermissions';
+        $links[] = PHPWS_Text::secureLink(_('Permissions'), 'users', $vars);
+
+        $template['LINKS'] = implode(' | ', $links);
+
         $template['CURRENT_MEMBERS_LBL'] = _('Current Members');
         $template['CURRENT_MEMBERS'] = User_Form::getMemberList($group);
 
@@ -398,6 +427,21 @@ class User_Form {
         }
 
         $template = $form->getTemplate();
+
+        $vars['action'] = 'admin';
+        $vars['user_id'] = $user->id;
+
+        /*
+        $vars['command'] = 'editUser';
+        $links[] = PHPWS_Text::secureLink(_('Edit'), 'users', $vars);
+        */
+
+        $vars['command'] = 'setUserPermissions';
+        $links[] = PHPWS_Text::secureLink(_('Permissions'), 'users', $vars);
+
+
+        $template['LINKS'] = implode(' | ', $links);
+
         if (isset($message)) {
             foreach ($message as $tag=>$error)
                 $template[strtoupper($tag) . '_ERROR'] = $error;
@@ -465,6 +509,16 @@ class User_Form {
         $form->addText('groupname', $group->getName());
         $form->setLabel('groupname', _('Group Name'));
         $template = $form->getTemplate();
+
+        $vars['action']   = 'admin';
+        $vars['group_id'] = $group->id;
+        $vars['command']  = 'manageMembers';
+        $links[] = PHPWS_Text::secureLink(_('Members'), 'users', $vars);
+
+        $vars['command'] = 'setGroupPermissions';
+        $links[] = PHPWS_Text::secureLink(_('Permissions'), 'users', $vars);
+
+        $template['LINKS'] = implode(' | ', $links);
 
         $content = PHPWS_Template::process($template, 'users', 'forms/groupForm.tpl');
         return $content;
@@ -853,11 +907,12 @@ class User_Form {
         $edit_select = User_Form::_createMultiple($edit_groups, 'edit_groups', $edit_matches);
         $view_select = User_Form::_createMultiple($view_groups, 'view_groups', $view_matches);
 
-        $form = & new PHPWS_Form;
+        $form = & new PHPWS_Form('choose_permissions');
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'permission');
         $form->addHidden('key_id', $key->id);
         $form->addRadio('view_permission', array(0, 1, 2));
+        $form->setExtra('view_permission', 'onchange="hideSelect(this.value)"');
         $form->setLabel('view_permission', array(_('All visitors'),
                                                  _('Logged visitors'),
                                                  _('Specific group(s)')));
