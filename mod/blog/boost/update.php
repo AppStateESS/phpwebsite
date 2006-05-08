@@ -36,6 +36,15 @@ function blog_update(&$content, $currentVersion)
             return FALSE;
         }
         $content[] = '+ Indexed the key_id column.';
+
+    case version_compare($currentVersion, '0.1.1', '<'):
+        $files[] = 'templates/version_view.tpl';
+        $result = PHPWS_Boost::updateFiles($files, 'blog');
+        if (!$result) {
+            $content[] = 'Failed to add template file locally.';
+            return FALSE;
+        }
+        $content[] = 'Fixed view version functionality.';
     }
     return TRUE;
 }
