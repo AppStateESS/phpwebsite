@@ -80,10 +80,20 @@ class Blog_Admin {
         case 'approval':
             $title = _('Blog Entries Awaiting Approval');
             $approval = & new Version_Approval('blog', 'blog_entries', 'blog', 'approvalTags');
-            $approval->setEditUrl('index.php?module=blog&amp;action=admin&amp;command=edit_unapproved&amp;authkey=' . Current_User::getAuthKey());
-            $approval->setViewUrl('index.php?module=blog&amp;action=admin&amp;command=view_version&amp;authkey=' . Current_User::getAuthKey());
-            $approval->setApproveUrl('index.php?module=blog&amp;action=admin&amp;command=approve_item&amp;authkey=' . Current_User::getAuthKey());
-            $approval->setDisapproveUrl('index.php?module=blog&amp;action=admin&amp;command=disapprove_item&amp;authkey=' . Current_User::getAuthKey());
+
+            $vars['action'] = 'admin';
+
+            $vars['command'] = 'edit_unapproved';
+            $approval->setEditUrl(PHPWS_Text::linkAddress('blog', $vars, TRUE));
+
+            $vars['command'] = 'view_version';
+            $approval->setViewUrl(PHPWS_Text::linkAddress('blog', $vars, TRUE));
+
+            $vars['command'] = 'approve_item';
+            $approval->setApproveUrl(PHPWS_Text::linkAddress('blog', $vars, TRUE));
+
+            $vars['command'] = 'disapprove_item';
+            $approval->setDisapproveUrl(PHPWS_Text::linkAddress('blog', $vars, TRUE));
 
             $approval->setColumns('title', 'entry');
             $content = $approval->getList();
@@ -117,7 +127,8 @@ class Blog_Admin {
                 PHPWS_Error::log($result);
                 Blog_Admin::setForward(_('An error occurred when saving your version.'), 'approval');
             } else {
-                $version->authorizeCreator('blog', 'entry');
+                $key = & new Key($version->source_data['key_id']);
+                $version->authorizeCreator($key);
                 Blog_Admin::setForward(_('Blog entry approved.'), 'approval');
             }
             break;
@@ -201,7 +212,11 @@ class Blog_Admin {
                     Blog_Admin::setForward(_('Entry saved successfully.'), 'list');
                 }
             }
+            break;
 
+        case 'view_version':
+            $title = _('View version');
+            $content = Blog_Admin::viewVersion($_REQUEST['version_id']);
             break;
         }
 
@@ -214,6 +229,33 @@ class Blog_Admin {
         $finalPanel = $panel->display();
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
 
+    }
+
+    function viewVersion($version_id)
+    {
+        $version = & new Version('blog_entries', (int)$_REQUEST['version_id']);
+        $blog = & new Blog;
+        $version->loadObject($blog);
+
+        $vars['action'] = 'admin';
+        $vars['version_id'] = $version->id;
+        $vars['command'] = 'edit_unapproved';
+        $options[] = PHPWS_Text::secureLink(_('Edit'), 'blog', $vars);
+
+        if (!$version->vr_approved && Current_User::isUnrestricted('blog')) {
+            $vars['command'] = 'approve_item';
+            $options[] = PHPWS_Text::secureLink(_('Approve'), 'blog', $vars);
+
+            $vars['command'] = 'disapprove_item';
+            $options[] = PHPWS_Text::secureLink(_('Disapprove'), 'blog', $vars);
+        }
+
+        $vars['command'] = 'approval';
+        $options[] = PHPWS_Text::secureLink(_('Approval list'), 'blog', $vars);
+
+        $template['OPTIONS'] = implode(' | ', $options);
+        $template['VIEW'] = $blog->view();
+        return PHPWS_Template::process($template, 'blog', 'version_view.tpl');
     }
 
     function setForward($message, $command)
