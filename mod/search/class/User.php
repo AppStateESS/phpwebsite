@@ -268,18 +268,17 @@ class Search_User {
             }
 
             if ($exact_match) {
-                $keyword = "$keyword %";
+                $keyword = "%$keyword %";
             } else {
-                $keyword = "$keyword%";
+                $keyword = "%$keyword%";
             }
 
             $pager->addWhere('search.keywords', $keyword, 'like', 'or', 1);
         }
         $pager->setEmptyMessage(_('Nothing found'));
         $pager->db->setGroupConj(1, 'AND');
-        
         $result = $pager->get();
-
+        
         Search_Stats::record($words, $pager->total_rows, $exact_match);
 
         return $result;

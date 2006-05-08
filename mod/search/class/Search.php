@@ -147,9 +147,11 @@ class Search {
         $db->delete();
         $db->reset();
 
-        $db->addValue('key_id', $this->key_id);
-        $db->addValue('module', $this->module);
-        $db->addValue('created', $this->create_date);
+        $key = & new Key($this->key_id);
+
+        $db->addValue('key_id', $key->id);
+        $db->addValue('module', $key->module);
+        $db->addValue('created', $key->create_date);
         if (is_array($this->keywords)) {
             $keywords = implode(' ', $this->keywords);
         } else {
