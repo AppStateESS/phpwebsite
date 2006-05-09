@@ -12,8 +12,9 @@ class PHPWS_Debug {
 
     function test($value, $show_recursive=FALSE)
     {
-        if (empty($value))
-            return 'NULL';
+        if (empty($value)) {
+            return '<pre>NULL</pre>';
+        }
         switch(gettype($value)){
         case 'object':
             return PHPWS_Debug::testObject($value, 1, $show_recursive);
@@ -24,13 +25,16 @@ class PHPWS_Debug {
             break;
 
         case 'boolean':
-            if ($value)
+            if ($value) {
                 return 'TRUE';
-            else
+            }
+            else {
                 return 'FALSE';
+            }
 
         case 'string':
-            return preg_replace("/\n/", "\\\\n", htmlspecialchars($value)) . '<br />';
+        case 'integer':
+            return '<pre>' . preg_replace("/\n/", "\\\\n", htmlspecialchars($value)) . '</pre>';
             break;
 
         default:
