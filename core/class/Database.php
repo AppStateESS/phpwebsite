@@ -512,9 +512,17 @@ class PHPWS_DB {
         return $this->groupBy;
     }
 
+    /**
+     * Puts the first group label into the second
+     */
     function groupIn($sub, $main)
     {
+        $group_names = array_keys($this->where);
+        if (!in_array($sub, $group_names) || !in_array($main, $group_names)) {
+            return FALSE;
+        }
         $this->group_in[$sub] = $main;
+        return TRUE;
     }
 
 
@@ -698,14 +706,13 @@ class PHPWS_DB {
 
                 if (@$search_key = array_search($group_name, $this->group_in, true)) {
                     $where_list[$search_key]['group_in'][$group_name] = &$where_list[$group_name];
-                    $ignore_list[$group_name] = TRUE;
                 }
             }
 
             $start_main = FALSE;
 
             $sql[] = $this->_buildGroup($where_list, $ignore_list, TRUE);
-
+            
             if (isset($this->qwhere)) {
                 $sql[] = $this->qwhere['conj'] . ' (' . $this->qwhere['where'] . ')';
             }
@@ -723,16 +730,16 @@ class PHPWS_DB {
     /**
      * Handles the imbedding of where groups
      */
-    function _buildGroup($where_list, $ignore_list=NULL, $first=FALSE) {
+    function _buildGroup($where_list, &$ignore_list, $first=FALSE) {
         if (!$ignore_list) {
             $ignore_list = array();
-        }
-        
+        } 
 
         foreach ($where_list as $group_name => $group_info) {
             if (isset($ignore_list[$group_name])) {
                 continue;
             }
+            $ignore_list[$group_name] = TRUE;
             extract($group_info);
 
             if (!$first) {
@@ -743,7 +750,7 @@ class PHPWS_DB {
 
             if (!empty($group_in)) {
                 $sql[] = '( ( ' . implode(' ', $group_sql) . ' )';
-                $result = $this->_buildGroup($group_in);
+                $result = $this->_buildGroup($group_in, $ignore_list);
                 if ($result) {
                     $sql[] = $result;
                 }
@@ -752,8 +759,9 @@ class PHPWS_DB {
                 $sql[] = '( ' . implode(' ', $group_sql) . ' )';
             }
         }
-
-        return implode (' ', $sql);
+        if (!empty($sql)) {
+            return implode (' ', $sql);
+        }
     }
 
     function resetWhere()
