@@ -394,10 +394,10 @@ class Categories{
         }
         
         $db->addColumn('key_id');
-        $db->addColumn('phpws_key.module');
+        $db->addColumn('module');
 
         Key::restrictView($db);
-
+        
         $result = $db->select();
 
         if (empty($result)) {

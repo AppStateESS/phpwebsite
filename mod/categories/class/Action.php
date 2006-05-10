@@ -363,7 +363,7 @@ class Categories_Action {
             $mod_list = Categories::getModuleListing();
         }
 
-        Key::restrictView($db, IGNORE_MODULE);
+        Key::restrictView($db);
         $all_no = $db->count();
 
         if (!empty($mod_list)) {
@@ -403,18 +403,10 @@ class Categories_Action {
         $pageTags['CREATE_DATE_LABEL'] = _('Creation date');
 
         $pager = & new DBPager('phpws_key', 'Key');
-        $pager->addWhere('id', 'category_items.key_id');
-        $pager->addWhere('active', 1);
         $pager->addWhere('category_items.cat_id', $category->id);
-
-        if (!Current_User::isLogged()) {
-            $pager->addWhere('restricted', 0);
-        }
-
-        if (isset($module)) {
-            $pager->addWhere('category_items.module', $module);
-        }
-
+        $pager->addWhere('category_items.module', $module);
+        
+        Key::restrictView($pager->db, $module);
         $pager->setModule('categories');
         $pager->setDefaultLimit(10);
         $pager->setTemplate('category_item_list.tpl');
