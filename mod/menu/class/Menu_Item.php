@@ -152,11 +152,10 @@ class Menu_Item {
         $db->addWhere('menu_id', $this->id, NULL, NULL, 1);
         $db->addWhere('parent', $parent, NULL, NULL, 1);
 
-        Key::restrictView($db, 'menu');
+        Key::restrictView($db);
         $db->addOrder('link_order');
 
         $db->setIndexBy('id');
-
         $result = $db->getObjects('menu_link');
 
         if (empty($result)) {
