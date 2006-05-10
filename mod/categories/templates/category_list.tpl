@@ -1,4 +1,4 @@
-<table cellpadding="4" cellspacing="1" width="100%">
+<table cellpadding="4" cellspacing="1" width="99%">
   <tr>
     <th>{TITLE_LABEL}&#160;{TITLE_SORT}</th>
     <th>{PARENT_LABEL}&#160;{PARENT_SORT}</th>

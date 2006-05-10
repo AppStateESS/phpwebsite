@@ -1,4 +1,4 @@
-<table cellpadding="2" width="100%">
+<table cellpadding="2" width="99%">
   <tr>
     <th>{TITLE_LABEL}&#160;{TITLE_SORT}</th>
     <th>{CREATE_DATE_LABEL}&#160;{CREATE_DATE_SORT}</th>

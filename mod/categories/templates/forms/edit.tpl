@@ -1,5 +1,5 @@
 {START_FORM}
-<table border="0" width="100%" cellpadding="4" cellspacing="4">
+<table border="0" width="99%" cellpadding="4" cellspacing="4">
   <tr>
     <td width="15%"><strong>{PARENT_LABEL}:</strong></td>
     <td>{PARENT}</td>
