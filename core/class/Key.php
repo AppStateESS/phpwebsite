@@ -16,8 +16,6 @@ if (!isset($_REQUEST['module'])) {
     $GLOBALS['PHPWS_Key'] = NULL;
 }
 
-define('IGNORE_MODULE', '_ignore_module_');
-
 class Key {
     // if the id is 0 (zero) then this is a _dummy_ key
     // dummy keys are not saved
@@ -469,56 +467,90 @@ class Key {
 
     /**
      * added limitations to a select query to only pull rows that
-     * the user is allowed to see
+     * the user is allowed to see. This function does does not works alone.
+     * it requires a database object to already be started.
      *
      * The user module MUST be active for this function to work.
      * This Key function cannot be called without it.
      *
-     * Module is required, however you can force skipping by sending
-     * IGNORE_MODULE as the module variable.
+     * If the user is a deity or an unrestricted user, no change will be made
+     * to your db object.
+     *
      */
-    function restrictView(&$db, $module)
+    function restrictView(&$db, $module=NULL)
     {
-        $db->addWhere('phpws_key.active', 1, NULL, NULL, 'active');
-
-        if ( Current_User::isDeity() || 
-             ( $module != IGNORE_MODULE && Current_User::isUnrestricted($module) )
-             ) {
-            $db->addWhere('key_id', 'phpws_key.id');
-            return;
-        }
-        //        $db->setDistinct(1);
-
         $source_table = $db->tables[0];
 
-        if (!Current_User::isLogged()) {
-            $db->addWhere('key_id',               0, NULL, NULL, 'key_1');
-            $db->addWhere('phpws_key.restricted', 0, NULL, NULL, 'key_2');
-            $db->setGroupConj('key_1', 'and');
-            $db->setGroupConj('key_2', 'or');
-            $db->groupIn('key_1', 'key_2');
+        if ($source_table == 'phpws_key') {
+            $source_table = $db->tables[1];
+            $key_table = TRUE;
+        } else {
+            $key_table = FALSE;
+        }
+
+        if (!$key_table) {
+            $db->addWhere('key_id', 0, NULL, NULL, 'empty_key');
+        } else {
+            $db->addWhere($source_table . '.key_id', '0', NULL, NULL, 'empty_key');
+        }
+
+        $db->addWhere('phpws_key.active', 1, NULL, NULL, 'active');
+
+        $db->groupIn('empty_key', 'active');
+        $db->setGroupConj('active', 'or');
+
+        if (!$key_table) {
             $db->addJoin('left', $source_table, 'phpws_key', 'key_id', 'id');
+        } else {
+            $db->addJoin('left', 'phpws_key', $source_table, 'id', 'key_id');
+        }
+
+
+        if ( Current_User::isDeity() || 
+             (isset($module) && Current_User::isUnrestricted($module) )
+             ) {
+            return;
+        } 
+
+
+        if (!Current_User::isLogged()) {
+            $db->addWhere('phpws_key.restricted', 0, NULL, 'and', 'active');
             return;
         } else {
             $groups = Current_User::getGroups();
-
             if (empty($groups)) {
                 return;
             }
-            $db->addJoin('left', $source_table, 'phpws_key', 'key_id', 'id');
-            $db->addJoin('left', 'phpws_key', 'phpws_key_view', 'id', 'key_id');
-            $db->addWhere('key_id', 0, '=', NULL, 'empty_key');
 
+            $db->addJoin('left', 'phpws_key', 'phpws_key_view', 'id', 'key_id');
+            
             // if key only has a level 1 restriction, a logged user can view it
-            $db->addWhere('phpws_key.restricted', 1, '<=', NULL, 'logged_users');
+            $db->addWhere('phpws_key.restricted', 1, '<=', NULL, 'restrict_1');
 
             // at level 2, the user must be in a group given view permissions
-            $db->addWhere('phpws_key.restricted', 2, '=', NULL, 'restricted');
-            $db->addWhere('phpws_key_view.group_id', $groups, 'in', NULL, 'restricted');
-            $db->setGroupConj('restricted', 'or');
-            $db->setGroupConj('logged_users', 'or');
-            $db->groupIn('logged_users', 'restricted');
-            $db->groupIn('empty_key', 'logged_users');
+            $db->addWhere('phpws_key.restricted', 2, '=', NULL, 'restrict_2');
+
+            $db->addWhere('phpws_key_view.group_id', $groups, 'in', NULL, 'restrict_2');
+
+            if (empty($module)) {
+                $levels = Current_User::getUnrestrictedLevels();
+                if (!empty($levels)) {
+                    $db->addWhere('phpws_key.module', $levels, NULL, NULL, 'permission');
+                    $db->groupIn('active', 'permission');
+                    $db->groupIn('permission', 'restrict_1');
+                    $db->setGroupConj('restrict_1', 'or');
+                } else {
+                    $db->groupIn('active', 'restrict_1');
+                }
+            } else {
+                $db->groupIn('active', 'restrict_1');
+            }
+
+
+            $db->setGroupConj('restrict_2', 'or');
+            $db->setGroupConj('active', 'or');
+            $db->groupIn('restrict_1', 'restrict_2');
+
             return;
         }
     }
