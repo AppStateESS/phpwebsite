@@ -9,7 +9,7 @@ Please be aware, however, that the version you are installing now is incomplete.
 <ul>
 <li> Some functionality may be missing.</li>
 <li> Bugs may abound.</li>
-<li> Language translation has not been tested.</li>
+<li> Language translation has not been thoroughly tested.</li>
 </ul>
 </p>
 
