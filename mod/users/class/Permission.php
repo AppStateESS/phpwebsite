@@ -11,6 +11,7 @@
 class Users_Permission {
     var $permissions = NULL;
     var $groups      = NULL;
+    var $levels      = NULL;
   
     function Users_Permission($groups=NULL)
     {
@@ -90,7 +91,6 @@ class Users_Permission {
 
     function allow($module, $subpermission=NULL, $item_id=NULL, $itemname=NULL)
     {
-
         // If permissions object is not set, load it
         if (!isset($this->permissions[$module])) {
             $result = Users_Permission::loadPermission($module, $this->permissions);
@@ -217,7 +217,7 @@ class Users_Permission {
         }
         $permissions[$module]['permission_level'] = $permissionLevel;
         $permissions[$module]['permissions']      = $permissionSet;
-
+        $this->levels[$module] = $permissionLevel;
         return TRUE;
     }
 

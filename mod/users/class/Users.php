@@ -702,11 +702,23 @@ class PHPWS_User {
         return User_Action::getGroups('group');
     }
 
+    function getUnrestrictedLevels()
+    {
+        if (!isset($this->_permission)) {
+            $this->loadPermissions();
+        }
+
+        if (!empty($this->_permission->levels)) {
+            return array_keys($this->_permission->levels, UNRESTRICTED_PERMISSION);
+        }
+    }
+
 
     function getPermissionLevel($module)
     {
-        if ($this->isDeity())
+        if ($this->isDeity()) {
             return UNRESTRICTED_PERMISSION;
+        }
 
         PHPWS_Core::initModClass('users', 'Permission.php');
 

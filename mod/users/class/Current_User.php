@@ -83,10 +83,16 @@ class Current_User {
         return $_SESSION['User']->verifyAuthKey();
     }
 
+    function getUnrestrictedLevels()
+    {
+        return $_SESSION['User']->getUnrestrictedLevels();
+    }
+
     function isRestricted($module)
     {
-        if (Current_User::isDeity())
+        if (Current_User::isDeity()) {
             return FALSE;
+        }
      
         $level = $_SESSION['User']->getPermissionLevel($module);
         return $level == RESTRICTED_PERMISSION ? TRUE : FALSE;
