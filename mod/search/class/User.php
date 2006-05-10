@@ -247,21 +247,6 @@ class Search_User {
         $pager->addRowTags('getTplTags');
         $pager->addPageTags($pageTags);
 
-        if ($module) {
-            $pager->addWhere('search.module', $module);
-        }
-
-        $pager->addWhere('search.key_id', 'phpws_key.id');
-        $pager->addWhere('phpws_key.active', 1);
-
-        if (!Current_User::isDeity()) {
-            if (Current_User::isLogged()) {
-                $pager->addWhere('phpws_key.restricted', 1, '<=');
-            } else {
-                $pager->addWhere('phpws_key.restricted', 0);
-            }
-        }
-
         foreach ($words as $keyword) {
             if (strlen($keyword) < SEARCH_MIN_WORD_LENGTH) {
                 continue;
@@ -275,10 +260,19 @@ class Search_User {
 
             $pager->addWhere('search.keywords', $keyword, 'like', 'or', 1);
         }
+
         $pager->setEmptyMessage(_('Nothing found'));
         $pager->db->setGroupConj(1, 'AND');
+
+        if ($module) {
+            $pager->addWhere('search.module', $module);
+            Key::restrictView($pager->db, $module);
+        } else {
+            Key::restrictView($pager->db);
+        }
+
         $result = $pager->get();
-        
+
         Search_Stats::record($words, $pager->total_rows, $exact_match);
 
         return $result;
