@@ -31,6 +31,8 @@ CREATE TABLE user_authorization (
   password CHAR(32) NOT NULL default ''
 );
 
+CREATE INDEX userauthorization_idx on user_signup (username, password);
+
 CREATE TABLE users_auth_scripts (
   id smallint NOT NULL default '0',
   display_name varchar(40) NOT NULL default '',
@@ -41,3 +43,11 @@ CREATE TABLE users_auth_scripts (
 CREATE TABLE users_my_page_mods (
   mod_title varchar(40) NOT NULL default ''
 );
+
+CREATE TABLE users_signup (
+  authkey char(32) NOT NULL default '',
+  user_id int NOT NULL default '0',
+  deadline int NOT NULL default '0'
+);
+
+CREATE INDEX userssignup_idx on user_signup (authkey);
