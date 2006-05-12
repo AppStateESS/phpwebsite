@@ -17,7 +17,7 @@ function users_update(&$content, $currentVersion)
             return $result;
         }
         $content[] = '+ added ability to pick a default user menu.';
-        $content[] = '+ added graphi confirmation option';
+        $content[] = '+ added graphic confirmation option';
         $content[] = '- dropped default_group column';
 
     case version_compare($currentVersion, '2.0.3', '<'):
@@ -34,6 +34,15 @@ function users_update(&$content, $currentVersion)
         }
 
         $content[] = '+ Added extra administrative links for managing groups and users.';
+
+    case version_compare($currentVersion, '2.0.4', '<'):
+        $filename = PHPWS_SOURCE_DIR . 'mod/users/boost/update_2_0_4.sql';
+        $db = & new PHPWS_DB;
+        $result = $db->importFile($filename);
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+        $content[] = '+ Created user signup authorization table.';
     }
 
     return TRUE;
@@ -42,7 +51,6 @@ function users_update(&$content, $currentVersion)
 function users_update_202(&$content)
 {
     $filename = PHPWS_SOURCE_DIR . 'mod/users/boost/update_2_0_2.sql';
-    $db = & new PHPWS_DB;
     return $db->importFile($filename);
 }
 

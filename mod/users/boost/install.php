@@ -90,8 +90,11 @@ function users_install(&$content)
             if (PEAR::isError($result)) {
                 return $result;
             }
-            
+
+            PHPWS_Settings::set('users', array('site_contact' => $user->getEmail()));
+            PHPWS_Settings::save('users');
             $content[] = _('User created successfully.');
+            $content[] = _('User\'s email used as contact email address.');
             $db = & new PHPWS_DB('users_auth_scripts');
             $db->addValue('display_name', _('Local'));
             $db->addValue('filename', 'local.php');
