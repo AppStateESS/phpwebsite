@@ -31,7 +31,7 @@
  * $mail->setReplyTo($reply_to);
  * $mail->addCarbonCopy($carbon);
  * $mail->addBlindCopy($blind);
- * $mail->setMessage($message);
+ * $mail->setMessageBody($message);
  * $result = $mail->send();
  *
  * result will either be TRUE or a Pear error object
@@ -119,7 +119,7 @@ class PHPWS_Mail {
         }
     }
 
-    function setMessage($message_body)
+    function setMessageBody($message_body)
     {
         $this->message_body = $message_body;
     }
