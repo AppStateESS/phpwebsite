@@ -39,6 +39,11 @@ define('NO_PERM_NAME', _('None'));
 define('ALLOWED_USERNAME_CHARACTERS', '\w');
 
 
+/**
+ * number of hours new users are able to confirm their account
+ */
+define('NEW_SIGNUP_WINDOW', 48);
+
 // Enter the minimum character
 // count allowed for each
 define('PASSWORD_LENGTH', 5);
@@ -49,11 +54,13 @@ define('GROUPNAME_LENGTH', 4);
 define('LOGIN_BUTTON', _('Login'));
 define('USER_SIGNUP_QUESTION', _('Want to join?'));
 
-
+// phpWebSite uses Pear's graphic confirmation class
+// You must set the correct font path and file for it to 
+// function 
 define('ENABLE_GRAPHIC_CONFIRMATION', TRUE);
 define('GC_FONT_SIZE', 22);
-define('GC_FONT_PATH', '/usr/X11R6/lib/X11/fonts/TTF/');
-define('GC_FONT_FILE', 'luxisb.ttf');
+define('GC_FONT_PATH', '/usr/share/fonts/bitstream-vera/');
+define('GC_FONT_FILE', 'Vera.ttf');
 define('GC_WIDTH', 200);
 define('GC_HEIGHT', 70);
 
