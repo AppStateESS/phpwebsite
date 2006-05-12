@@ -32,7 +32,10 @@ $errors = array(
 		USER_ERR_MISSING_AUTH     => _('Missing authorization script.'),
 		USER_ERR_FONT_MISSING     => _('Unable to find font file for graphic confirmation.'),
 		USER_ERR_WRITE_CONFIRM    => _('Unable to write confirmation graphic to server.'),
-                USER_MISSING_MY_PAGE      => _('Missing my_page function.')
+                USER_MISSING_MY_PAGE      => _('Missing my_page function.'),
+                USER_BAD_CHARACTERS       => _('Mistyped username.'),
+                USER_AUTH_MISSING         => _('There is a problem with your authentication method. Contact the site administrator.'),
+                USER_NOT_APPROVED         => _('Your user account has not been approved yet. Make sure you have responded to your authentication email.'),
+                USER_NOT_ACTIVE           => _('Your account has been deactivated. You will need to contact a site administrator to have it reactivated.')
 		);
-
 ?>
