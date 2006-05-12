@@ -432,7 +432,7 @@ class PHPWS_Form {
 
     function makeLabel($name, $label)
     {
-        return sprintf('<label for="%s">%s</label>', $name, $label);
+        return sprintf('<label class="%s-label" for="%s">%s</label>', $this->type, $name, $label);
     }
 
 
