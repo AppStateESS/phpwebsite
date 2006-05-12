@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
+
 /* Errors */
 define('USER_ERROR',               -1);
 define('USER_ERR_DUP_USERNAME',    -2);
@@ -36,5 +42,11 @@ define('USER_ERR_MISSING_AUTH',    -50);
 
 /* My Page errors */
 define('USER_MISSING_MY_PAGE',     -60);
+
+/* Login errors */
+define('USER_BAD_CHARACTERS',      'L1');
+define('USER_AUTH_MISSING',        'L2');
+define('USER_NOT_APPROVED',        'L3');
+define('USER_NOT_ACTIVE',          'L4');
 
 ?>
