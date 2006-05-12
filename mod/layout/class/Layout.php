@@ -795,9 +795,9 @@ class Layout {
             . '" />';
     }
 
-    function getPageTitle()
+    function getPageTitle($only_root=FALSE)
     {
-        return $_SESSION['Layout_Settings']->getPageTitle();
+        return $_SESSION['Layout_Settings']->getPageTitle($only_root);
     }
 
     function addPageTitle($title)
