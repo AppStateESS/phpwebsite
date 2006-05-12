@@ -166,7 +166,14 @@ table.form-table td {
 table.form-table label {
     font-weight : bold;
     margin-right : 20px;
+    color : black;
 }
+
+
+table.form-table label.radio-label {
+    font-weight : normal;
+}
+
 
 .clear {
     clear : both;
