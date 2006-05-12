@@ -62,9 +62,9 @@ class Layout_Settings {
         }
     }
 
-    function getPageTitle()
+    function getPageTitle($only_root=FALSE)
     {
-        if (isset($GLOBALS['Layout_Page_Title_Add'])) {
+        if (isset($GLOBALS['Layout_Page_Title_Add']) && !$only_root) {
             return implode(PAGE_TITLE_DIVIDER, $GLOBALS['Layout_Page_Title_Add']) . PAGE_TITLE_DIVIDER . $this->page_title;
         } else {
             return $this->page_title;
