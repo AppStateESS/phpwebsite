@@ -1,8 +1,16 @@
 {START_FORM}
 <table class="form-table">
   <tr>
-    <td><span class="label">{USER_SIGNUP_LABEL}</span>
+    <td>{SITE_CONTACT_LABEL}</td>
+    <td>{SITE_CONTACT}</td>
+  </tr>
+  <tr>
+    <td>{HIDE_LOGIN_LABEL}</td>
+    <td>{HIDE_LOGIN} {AFFIRM}
     </td>
+  </tr>
+  <tr>
+    <td><strong>{USER_SIGNUP_LABEL}</strong></td>
     <td>
         {USER_SIGNUP_1} {USER_SIGNUP_1_LABEL}<br />
         {USER_SIGNUP_2} {USER_SIGNUP_2_LABEL}<br />
@@ -11,21 +19,13 @@
     </td>
   </tr>
   <tr>
-    <td><span class="label">{GRAPHIC_CONFIRM_DESC}</span>
-    </td>
-    <td>{GRAPHIC_CONFIRM} {GRAPHIC_CONFIRM_LABEL}
+    <td>{GRAPHIC_CONFIRM_LABEL}</td>
+    <td>{GRAPHIC_CONFIRM} {AFFIRM}
     </td>
   </tr>
   <tr>
-    <td><span class="label">{USER_MENU_LABEL}</span>
-    </td>
+    <td>{USER_MENU_LABEL}</td>
     <td>{USER_MENU}
-    </td>
-  </tr>
-  <tr>
-    <td><span class="label">{HIDE_LOGIN_DESC}</span>
-    </td>
-    <td>{HIDE_LOGIN} {HIDE_LOGIN_LABEL}
     </td>
   </tr>
 </table>
