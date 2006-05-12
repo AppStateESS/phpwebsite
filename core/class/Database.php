@@ -1518,8 +1518,9 @@ class PHPWS_DB {
 
         $values = $this->getAllValues();
 
-        foreach ($values as $column=>$value)
+        foreach ($values as $column=>$value) {
             $parameters[] = $column . ' ' . $value;
+        }
 
 
         $sql = "CREATE TABLE $table ( " . implode(', ', $parameters) . ' )';
@@ -1613,6 +1614,11 @@ class PHPWS_DB {
         }
     }
 
+    /**
+     * Imports a SQL dump file into the database.
+     * This function can not be called statically.
+     */
+
     function importFile($filename)
     {
         if (!is_file($filename)) {
@@ -1622,11 +1628,15 @@ class PHPWS_DB {
         return $this->import($data);
     }
 
+    /**
+     * Imports a SQL dump into the database.
+     * This function can not be called statically.
+     */
     function import($text, $report_errors=TRUE)
     {
-        PHPWS_DB::touchDB();
+        $this->touchDB();
 
-        $prefix = PHPWS_DB::getPrefix();
+        $prefix = $this->getPrefix();
         $sqlArray = PHPWS_Text::sentence($text);
         $error = FALSE;
 
@@ -1646,9 +1656,9 @@ class PHPWS_DB {
                 }
                 $sqlCommand = array();
 
-                PHPWS_DB::homogenize($query);
+                $this->homogenize($query);
 
-                $result = PHPWS_DB::query($query);
+                $result = $this->query($query);
                 if (DB::isError($result)) {
                     if ($report_errors) {
                         return $result;
