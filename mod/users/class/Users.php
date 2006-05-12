@@ -21,11 +21,13 @@ class PHPWS_User {
     var $username      = NULL;
     var $deity         = FALSE;
     var $active        = TRUE;
+    // method of authorizing the user
     var $authorize     = 0;
     var $last_logged   = 0;
     var $log_count     = 0;
     var $created       = 0;
     var $updated       = 0;
+    // if true, they have been approved to log in
     var $approved      = FALSE;
     var $email         = NULL;
     var $display_name  = NULL;
@@ -328,8 +330,9 @@ class PHPWS_User {
                 return sprintf('<a href="mailto:%s">%s</a>', $this->email, $this->getDisplayName());
             }
         }
-        else
+        else {
             return $this->email;
+        }
     }
 
     function setDisplayName($name)
@@ -358,18 +361,19 @@ class PHPWS_User {
 
     function getDisplayName()
     {
-        if (empty($this->display_name))
+        if (empty($this->display_name)) {
             return $this->username;
-        else
+        } else {
             return $this->display_name;
+        }
     }
 
     function loadUserGroups()
     {
         $group = $this->getUserGroup();
         if (PEAR::isError($group)){
-            echo $group->getMessage();
-            return;
+            PHPWS_Error::log($group);
+            return FALSE;
         }
 
         $this->_user_group = $groupList[] = $group;
@@ -380,14 +384,15 @@ class PHPWS_User {
         $result = $DB->select('col');
 
         if (PEAR::isError($group)){
-            echo $group->getMessage();
-            return;
+            PHPWS_Error::log($group);
+            return FALSE;
         }
     
         if (is_array($result))
             $groupList = array_merge($result, $groupList);
 
         $this->setGroups($groupList);
+        return TRUE;
     }
 
 
@@ -677,6 +682,15 @@ class PHPWS_User {
             return $result;
         }
     
+        if ($this->authorize == LOCAL_AUTHORIZATION) {
+            $db2 = & new PHPWS_DB('user_authorization');
+            $db2->addWhere('username', $this->username);
+            $result = $db2->delete();
+            if (PEAR::isError($result)) {
+                return $result;
+            }
+        }
+        
         $user_group = & new PHPWS_Group($this->getUserGroup());
         $user_group->kill();
     

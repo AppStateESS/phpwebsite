@@ -9,10 +9,10 @@
    */
 define('AUTO_SIGNUP',    1);
 define('CONFIRM_SIGNUP', 2);
-define('APPROVE_SIGNUP', 3);
+// Needs addition
+//define('APPROVE_SIGNUP', 3);
 
 PHPWS_Core::initCoreClass('Form.php');
-
 
 class User_Form {
     function logBox($logged=TRUE)
@@ -731,22 +731,35 @@ class User_Form {
         $form->addHidden('command', 'update_settings');
         $form->addSubmit('submit',_('Update Settings'));
 
-        $signup_modes = array(0, AUTO_SIGNUP, CONFIRM_SIGNUP, APPROVE_SIGNUP);
+        $form->addText('site_contact', PHPWS_User::getUserSetting('site_contact'));
+        $form->setLabel('site_contact', _('Site contact email'));
+        $form->setSize('site_contact', 40);
+
+        $signup_modes = array(0, AUTO_SIGNUP, CONFIRM_SIGNUP);
+
+        $signup_labels = array(_('Not allowed'),
+                               _('Immediate'),
+                               _('Email Verification')
+                               );
+
+        /*
+         // Add later
         $signup_labels = array(_('Not allowed'),
                                _('Immediate'),
                                _('Email Verification'),
                                _('Approval with Email Verification')
                                );
+        $signup_modes = array(0, AUTO_SIGNUP, CONFIRM_SIGNUP, APPROVE_SIGNUP);
+        */
+
         $form->addRadio('user_signup', $signup_modes);
         $form->setLabel('user_signup', $signup_labels);
         $form->addTplTag('USER_SIGNUP_LABEL', _('User Signup Mode'));
         $form->setMatch('user_signup', PHPWS_User::getUserSetting('new_user_method'));
 
-        $form->addTplTag('GRAPHIC_CONFIRM_DESC', _('Graphic Authenticator'));
-
         if (function_exists('gd_info')) {
             $form->addCheckbox('graphic_confirm');
-            $form->setLabel('graphic_confirm', _('Use graphic authentication?'));
+            $form->setLabel('graphic_confirm', _('Use graphic authentication'));
             $form->setMatch('graphic_confirm', PHPWS_User::getUserSetting('graphic_confirm'));
         }
 
@@ -761,8 +774,8 @@ class User_Form {
 
         $form->addCheckBox('hide_login', 1);
         $form->setMatch('hide_login', PHPWS_Settings::get('users', 'hide_login'));
-        $form->setLabel('hide_login', _('Hide?'));
-        $form->addTplTag('HIDE_LOGIN_DESC', _('Hide login box'));
+        $form->setLabel('hide_login', _('Hide login box'));
+        $form->addTplTag('AFFIRM', _('Yes'));
 
         $template = $form->getTemplate();
 
@@ -784,15 +797,13 @@ class User_Form {
 
         $new_user_method =  PHPWS_User::getUserSetting('new_user_method');
 
-        if ($new_user_method == AUTO_SIGNUP) {
-            $form->addPassword('password1', $user->getPassword());
-            $form->allowValue('password1');
-            $form->setLabel('password1', _('Password'));
-
-            $form->addPassword('password2', $user->getPassword());
-            $form->allowValue('password2');
-            $form->setLabel('password2', _('Confirm'));
-        }
+        $form->addPassword('password1', $user->getPassword());
+        $form->allowValue('password1');
+        $form->setLabel('password1', _('Password'));
+        
+        $form->addPassword('password2', $user->getPassword());
+        $form->allowValue('password2');
+        $form->setLabel('password2', _('Confirm'));
 
         $form->addText('email', $user->getEmail());
         $form->setLabel('email', _('Email Address'));
@@ -802,11 +813,12 @@ class User_Form {
         $form->setLabel('confirm_phrase', _('Confirm text'));
  
         if (PHPWS_User::getUserSetting('graphic_confirm') && function_exists('gd_info')) {
-            $form->addTplTag('CONFIRM_INSTRUCTIONS', _('Please type the word seen in the image.'));
+
             $result = User_Form::confirmGraphic();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
             } else {
+                $form->addTplTag('CONFIRM_INSTRUCTIONS', _('Please type the word seen in the image.'));
                 $form->addText('confirm_graphic');
                 $form->setLabel('confirm_graphic', _('Confirm Graphic'));
                 $form->addTplTag('GRAPHIC', $result);
@@ -831,7 +843,7 @@ class User_Form {
         require_once 'Text/CAPTCHA.php';
 
         if (!is_file(GC_FONT_PATH . GC_FONT_FILE)) {
-            return PHPWS_Error::get(USER_ERR_FRONT_MISSING, 'users', 'User_Form::confirmGraphic', GC_FONT_PATH . GC_FONT_FILE);
+            return PHPWS_Error::get(USER_ERR_FONT_MISSING, 'users', 'User_Form::confirmGraphic', GC_FONT_PATH . GC_FONT_FILE);
         }
 
         $cap = Text_CAPTCHA::factory('Image');

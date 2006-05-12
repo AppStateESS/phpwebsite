@@ -327,11 +327,15 @@ class User_Action {
                 PHPWS_User::disallow();
                 return;
             }
+            $title = _('Settings');
 
             $result = User_Action::update_settings();
-            $title = _('Settings');
-            $message = _('User settings updated.');
-            $content = User_Form::settings();
+            if ($result === TRUE) {
+                $message = _('User settings updated.');
+            } else {
+                $message = $result;
+            }
+                $content = User_Form::settings();
             break;
 
         default:
@@ -454,18 +458,18 @@ class User_Action {
             $error['USERNAME_ERROR'] = _('Please try another user name.');
         }
 
-        if ($new_user_method == AUTO_SIGNUP) {
-            if (!$user->isUser() || (!empty($_POST['password1']) || !empty($_POST['password2']))){
-                $result = $user->checkPassword($_POST['password1'], $_POST['password2']);
-        
-                if (PEAR::isError($result)) {
-                    $error['PASSWORD_ERROR'] = $result->getMessage();
-                }
-                else {
-                    $user->setPassword($_POST['password1'], FALSE);
-                }
+
+        if (!$user->isUser() || (!empty($_POST['password1']) || !empty($_POST['password2']))){
+            $result = $user->checkPassword($_POST['password1'], $_POST['password2']);
+            
+            if (PEAR::isError($result)) {
+                $error['PASSWORD_ERROR'] = $result->getMessage();
+            }
+            else {
+                $user->setPassword($_POST['password1'], FALSE);
             }
         }
+
 
         if (empty($_POST['email'])) {
             $error['EMAIL_ERROR'] = _('Missing an email address.');
@@ -597,10 +601,19 @@ class User_Action {
         switch ($command) {
         case 'login':
             if (!Current_User::isLogged()) {
-                if (!User_Action::loginUser($_POST['phpws_username'], $_POST['phpws_password'])) {
+                $result = User_Action::loginUser($_POST['phpws_username'], $_POST['phpws_password']);
+                if (!$result) {
                     $title = _('Login page');
                     $message = _('Username and password combination not found.');
                     $content = User_Form::loginPage();
+                } elseif(PEAR::isError($result)) {
+                    if (preg_match('/L\d/', $result->code)) {
+                        $title = _('Sorry');
+                        $content = $result->getMessage();
+                    } else {
+                        PHPWS_Error::log($result);
+                        $message = _('A problem occurred when accessing user information. Please try again later.');
+                    }
                 } else {
                     Current_User::getLogin();
                     PHPWS_Core::goBack();
@@ -659,6 +672,21 @@ class User_Action {
             $content = User_Form::loginPage();
             break;
 
+        case 'confirm_user':
+            if (Current_User::isLogged()) {
+                PHPWS_Core::home();
+            }
+            if (User_Action::confirmUser()) {
+                $title = _('Welcome!');
+                $content = _('Your account has been successfully activated. Please log in.');
+            } else {
+                $title = _('Sorry');
+                $content = _('This authentication does not exist.<br />
+ If you did not log in within the time frame specified in your email, please apply for another account.');
+            }
+            User_Action::cleanUpConfirm();
+            break;
+
         default:
             PHPWS_Core::errorPage('404');
             break;
@@ -682,10 +710,54 @@ class User_Action {
         }
     }
 
+    function confirmUser()
+    {
+        $hash = $_GET['hash'];
+        if (preg_match('/\W/', $hash)) {
+            PHPWS_Core::errorPage('400');
+            Security::log(sprintf(_('User tried to send bad hash (%s) to confirm user.'), $hash));
+        }
+        $db = & new PHPWS_DB('users_signup');
+        $db->addWhere('authkey', $hash);
+        $row = $db->select('row');
+
+        if (PEAR::isError($row)) {
+            PHPWS_Error::log($row);
+            return FALSE;
+        } elseif (empty($row)) {
+            return FALSE;
+        } else {
+            $user_id = &$row['user_id'];
+            $user = & new PHPWS_User($user_id);
+
+            // If the deadline has not yet passed, approve the user, save, and return true
+            if ($row['deadline'] > PHPWS_Time::mkservertime()) {
+                $db->delete();
+                $user->approved = 1;
+                $user->save();
+                return TRUE;
+            } else {
+                // If the deadline has passed, delete the user and return false.
+                $user->delete();
+                return FALSE;
+            }
+        }
+
+    }
+
+    function cleanUpConfirm()
+    {
+        $db = & new PHPWS_DB('users_signup');
+        $db->addWhere('deadline', PHPWS_Time::mkservertime(), '<');
+        $result = $db->delete();
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+        }
+    }
+
     function successfulSignup($user)
     {
-
-        switch (PHPWS_Users::getUserSetting('new_user_method')) {
+        switch (PHPWS_User::getUserSetting('new_user_method')) {
         case AUTO_SIGNUP:
             $result = User_Action::saveNewUser($user, TRUE);
             if ($result) {
@@ -699,28 +771,89 @@ class User_Action {
             break;
 
         case CONFIRM_SIGNUP:
-            $result = User_Action::saveNewUser($user, TRUE);
-            $content[] = _();
+            if (User_Action::saveNewUser($user, FALSE)) {
+                if(User_Action::confirmEmail($user)) {
+                    $content[] = _('User created successfully. Check your email for your login information.');
+                } else {
+                    $result = $user->kill();
+                    if (PEAR::isError($result)) {
+                        PHPWS_Error::log($result);
+                    }
+                    $content[] = _('There was problem creating your acccount. Check back later.');
+                }
+            } else {
+                $content[] = _('There was problem creating your acccount. Check back later.');
+            }
         }
 
         return implode('<br />', $content);
 
     }
 
+    function confirmEmail($user)
+    {
+        $site_contact = PHPWS_User::getUserSetting('site_contact');
+        $authkey = User_Action::_createSignupConfirmation($user->id);
+        if (!$authkey) {
+            return FALSE;
+        }
+
+        $message = User_Action::_getSignupMessage($authkey);
+
+        PHPWS_Core::initCoreClass('Mail.php');
+        $mail = & new PHPWS_Mail;
+        $mail->addSendTo($user->email);
+        $mail->setSubject(_('Confirmation email'));
+        $mail->setFrom($site_contact);
+        $mail->setMessageBody($message);
+
+        return $mail->send();
+    }
+
+    function _getSignupMessage($authkey)
+    {
+        $http = PHPWS_Core::getHomeHttp();
+
+        $template['LINK'] = sprintf('%sindex.php?module=users&action=user&command=confirm_user&hash=%s',
+                                    $http, $authkey);
+
+        $template['HOURS'] = NEW_SIGNUP_WINDOW;
+        $template['SITE_NAME'] = Layout::getPageTitle(TRUE);
+
+        return PHPWS_Template::process($template, 'users', 'confirm/confirm.en-us.tpl');
+    }
+
+    function _createSignupConfirmation($user_id)
+    {
+        $deadline = PHPWS_Time::mkservertime() + (3600 * NEW_SIGNUP_WINDOW);
+        $authkey = md5($deadline . $user_id);
+
+        $db = & new PHPWS_DB('users_signup');
+        $db->addValue('authkey', $authkey);
+        $db->addValue('user_id', $user_id);
+        $db->addValue('deadline', $deadline);
+        $result = $db->insert();
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            return FALSE;
+        } else {
+            return $authkey;
+        }
+    }
+
     function saveNewUser(&$user, $approved)
     {
-        $user->setPassword($user->getPassword());
         $user->setApproved($approved);
         $result = $user->save();
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             return FALSE;
-        } else {
+        } elseif ($approved) {
             $user->login();
             $_SESSION['User'] = $user;
             Current_User::getLogin();
-            return TRUE;
         }
+        return TRUE;
     }
 
     function postPermission()
@@ -801,9 +934,18 @@ class User_Action {
 
     function update_settings()
     {
+        $error = NULL;
+
         if (!Current_User::authorized('users', 'settings')) {
             Current_User::disallow();
             return;
+        }
+
+        $settings['site_contact'] = $_POST['site_contact'];
+        if (!isset($_POST['site_contact'])) {
+            $error = _('You need to set a site contact address.');
+        } elseif (!PHPWS_Text::isValidInput($_POST['site_contact'], 'email')) {
+            $error = _('Please enter a valid email address as a site contact.');
         }
 
         if (is_numeric($_POST['user_signup'])) {
@@ -823,9 +965,14 @@ class User_Action {
         }
 
         $settings['user_menu'] = $_POST['user_menu'];
-        
-        PHPWS_Settings::set('users', $settings);
-        PHPWS_Settings::save('users');
+
+        PHPWS_Settings::set('users', $settings);        
+        if ($error) {
+            return $error;
+        } else {
+            PHPWS_Settings::save('users');
+            return TRUE;
+        }
     }
 
     function getAuthorizationList()

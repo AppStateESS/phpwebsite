@@ -224,7 +224,7 @@ class Current_User {
     function loginUser($username, $password)
     {
         if (preg_match('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/', $username)) {
-            return FALSE;
+            return PHPWS_Error::get(USER_BAD_CHARACTERS, 'users', 'Current_User::loginUser');
         }
 
         $createUser = FALSE;
@@ -234,39 +234,37 @@ class Current_User {
         $db->addWhere('username', strtolower($username));
         $result = $db->loadObject($user);
 
-        if (PEAR::isError($result)){
-            PHPWS_Error::log($result);
-            return FALSE;
+        if (PEAR::isError($result)) {
+            return $result;
         }
 
         // if result is blank then check against the default authorization
         if ($result == FALSE){
             $authorize = PHPWS_User::getUserSetting('default_authorization');
             $createUser = TRUE;
-        }
-        else {
+        } else {
+            if (!$user->approved) {
+                return PHPWS_Error::get(USER_NOT_APPROVED, 'users', 'Current_User::loginUser');
+            }
             $authorize = $user->getAuthorize();
         }
 
         if (empty($authorize)) {
-            return FALSE;
+            return PHPWS_Error::get(USER_AUTH_MISSING, 'users', 'Current_User::loginUser');
         }
 
         $result = Current_User::authorize($authorize, $user, $password);
 
         if (PEAR::isError($result)){
-            PHPWS_Error::log($result);
-            return FALSE;
+            return $result;
         }
 
         if ($result == TRUE){
             if ($createUser == TRUE){
-                echo 'createUser == TRUE<br>';
                 $result = $user->setUsername($username);
 
                 if (PEAR::isError($result)){
-                    PHPWS_Error::log($result);
-                    return FALSE;
+                    return $result;
                 }
 
                 $user->setAuthorize($authorize);
