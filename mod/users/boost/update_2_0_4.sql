@@ -4,4 +4,4 @@ CREATE TABLE users_signup (
   deadline int NOT NULL default '0'
 );
 
-CREATE INDEX userssignup_idx on user_authorization (username, password);
+CREATE INDEX userssignup_idx on users_signup (authkey);

@@ -31,7 +31,7 @@ CREATE TABLE user_authorization (
   password CHAR(32) NOT NULL default ''
 );
 
-CREATE INDEX userauthorization_idx on user_signup (username, password);
+CREATE INDEX userauthorization_idx on user_authorization (username, password);
 
 CREATE TABLE users_auth_scripts (
   id smallint NOT NULL default '0',

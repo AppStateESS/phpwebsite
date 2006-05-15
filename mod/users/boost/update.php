@@ -36,6 +36,13 @@ function users_update(&$content, $currentVersion)
         $content[] = '+ Added extra administrative links for managing groups and users.';
 
     case version_compare($currentVersion, '2.0.4', '<'):
+        if (!PHPWS_Boost::updateFiles(array('conf/config.php'), 'users')) {
+            $content[] = 'Failed to update config.php file.';
+            return FALSE;
+        }
+
+        $content[] = '+ Added new definition to User\'s config.php file.';
+        
         $filename = PHPWS_SOURCE_DIR . 'mod/users/boost/update_2_0_4.sql';
         $db = & new PHPWS_DB;
         $result = $db->importFile($filename);
