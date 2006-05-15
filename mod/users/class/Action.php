@@ -237,6 +237,7 @@ class User_Action {
 
             if ($result === TRUE){
                 $user->setActive(TRUE);
+                $user->setApproved(TRUE);
                 $user->save();
                 $panel->setCurrentTab('manage_users');
 
@@ -469,7 +470,6 @@ class User_Action {
                 $user->setPassword($_POST['password1'], FALSE);
             }
         }
-
 
         if (empty($_POST['email'])) {
             $error['EMAIL_ERROR'] = _('Missing an email address.');
@@ -843,6 +843,7 @@ class User_Action {
 
     function saveNewUser(&$user, $approved)
     {
+        $user->setPassword($user->_password);
         $user->setApproved($approved);
         $result = $user->save();
         if (PEAR::isError($result)) {
