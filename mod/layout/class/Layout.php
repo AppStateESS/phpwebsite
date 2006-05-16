@@ -685,16 +685,11 @@ class Layout {
             $links[] = PHPWS_Text::moduleLink(_('Box move off'), 'layout', $vars);
         }
 
-        if (!Layout::getExtraStyles()) {
-            return NULL;
-        }
 
         $key = Key::getCurrent();
-        if (!Key::checkKey($key)) {
-            return NULL;
-        }
-
-        if (javascriptEnabled()) {
+        if (javascriptEnabled() && Layout::getExtraStyles() &&
+            Key::checkKey($key)) {
+            
             $js_vars['label'] = _('Change style');
             $js_vars['width'] = 400;
             $js_vars['height'] = 200;
