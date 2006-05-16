@@ -163,14 +163,14 @@ table.form-table td {
     vertical-align : top;
 }
 
-table.form-table label {
+label {
     font-weight : bold;
     margin-right : 20px;
     color : black;
 }
 
 
-table.form-table label.radio-label {
+label.radio-label {
     font-weight : normal;
 }
 
