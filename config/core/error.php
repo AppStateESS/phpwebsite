@@ -31,6 +31,7 @@ $errors[PHPWS_DB_NO_WHERE]           = _('Function was expecting a "where" param
 $errors[PHPWS_DB_NO_JOIN_DB]         = _('Join database does not exist.');
 $errors[PHPWS_DB_NO_TABLE]           = _('Table does not exist.');
 $errors[PHPWS_DB_NO_ID]              = _('loadObject expected the object to have an id or where clause.');
+$errors[PHPWS_DB_EMPTY_SELECT]       = _('Select returned an empty result.');
 
 
 // List.php 200 - 299

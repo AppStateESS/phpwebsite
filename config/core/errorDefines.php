@@ -33,6 +33,7 @@ define('PHPWS_DB_NO_WHERE',           -108);
 define('PHPWS_DB_NO_JOIN_DB',         -109);
 define('PHPWS_DB_NO_TABLE',           -110);
 define('PHPWS_DB_NO_ID',              -111);
+define('PHPWS_DB_EMPTY_SELECT',       -112);
 
 
 /************* List.php *****************/
