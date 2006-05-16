@@ -150,7 +150,7 @@ class Layout_Settings {
             $this->current_theme = $this->default_theme;
         }
 
-        $themeInit = PHPWS_HOME_DIR . 'themes/' . $this->current_theme . '/theme.ini';
+        $themeInit = 'themes/' . $this->current_theme . '/theme.ini';
 
         if (is_file($themeInit)){
             $themeVars = parse_ini_file($themeInit, TRUE);
@@ -166,8 +166,9 @@ class Layout_Settings {
 
     function loadStyleSheets($themeVars)
     {
+        $this->_extra_styles = NULL;
+        $this->_style_sheets = NULL;
         $directory = sprintf('themes/%s/', $this->current_theme);
-
         @$cookie = PHPWS_Cookie::read('layout_style');
 
         for ($i = 1; $i < 20; $i++) {
