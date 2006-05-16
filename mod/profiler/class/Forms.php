@@ -24,9 +24,14 @@ class Profile_Forms {
     {
         PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
 
-        $profile_types = array(PFL_STUDENT => 'Student',
-                               PFL_FACULTY => 'Faculty',
-                               PFL_STAFF   => 'Staff');
+        $div = & new PHPWS_DB('profiler_division');
+        $div->addWhere('show_sidebar', 1);
+        $div->addOrder('title');
+        $div->addColumn('id');
+        $div->addColumn('title');
+        $div->setIndexBy('id');
+        $profile_types = $div->select('col');
+
         $form = Profile_Forms::default_form();
         $form->addHidden('command', 'post_profile');
 
@@ -93,15 +98,18 @@ class Profile_Forms {
         $pageTags['ACTION']       = _('Action');
 
         $pager = & new DBPager('profiles', 'Profile');
+        $pager->db->addColumn('profiles.*');
+        $pager->db->addColumn('profiler_division.title', NULL, 'division_title');
+        $pager->db->addWhere('profile_type', 'profiler_division.id');
         $pager->setModule('profiler');
         $pager->setTemplate('forms/list.tpl');
-        $pager->setLink('index.php?module=profiler');
         $pager->addToggle('class="toggle1"');
         $pager->addToggle('class="toggle2"');
         $pager->addRowTags('getProfileTags');
         $pager->addPageTags($pageTags);
         $pager->setSearch('lastname', 'firstname');
         $content = $pager->get();
+
         return $content;
     }
 
@@ -125,6 +133,56 @@ class Profile_Forms {
         return PHPWS_Template::process($template, 'profiler', 'forms/settings.tpl');
     }
 
+    function divisionList()
+    {
+        PHPWS_Core::initCoreClass('DBPager.php');
+        PHPWS_Core::initModClass('profiler', 'Division.php');
+
+        $js_vars['height']  = '200';
+        $js_vars['address'] = 'index.php?module=profiler&amp;command=edit_division&authkey=' . Current_User::getAuthKey();
+        $js_vars['label']   = _('Add division');
+        $pageTags['ADD_LINK'] = javascript('open_window', $js_vars);
+
+        $pageTags['TITLE_LABEL']  = _('Title');
+        $pageTags['ACTION_LABEL'] = _('Action');
+
+        $pager = & new DBPager('profiler_division', 'Profiler_Division');
+        $pager->setModule('profiler');
+        $pager->setTemplate('forms/division_list.tpl');
+        $pager->addToggle('class="toggle1"');
+        $pager->addRowTags('getTags');
+        $pager->addPageTags($pageTags);
+        return $pager->get();
+    }
+
+    function editDivision(&$division, $error=FALSE)
+    {
+        $form = & new PHPWS_Form('division');
+        $form->addHidden('module', 'profiler');
+        $form->addHidden('command', 'update_division');
+
+        if ($division->id) {
+            $form->addHidden('division_id', $division->id);
+            $form->addTplTag('PAGE_TITLE', _('Update Division'));
+        } else {
+            $form->addTplTag('PAGE_TITLE', _('Create Division'));
+        }
+
+        $form->addSubmit(_('Save'));
+        $form->addText('title', $division->title);
+        $form->setLabel('title', _('Division title'));
+
+        $form->addButton('close', _('Cancel'));
+        $form->setExtra('close', 'onclick="window.close()"');
+
+        $template = $form->getTemplate();
+        if ($error) {
+            $template['ERROR'] = _('Your title is empty or already in use. Enter another.');
+        }
+        return PHPWS_Template::process($template, 'profiler', 'forms/division_edit.tpl');
+    }
+
 }
+
 
 ?>

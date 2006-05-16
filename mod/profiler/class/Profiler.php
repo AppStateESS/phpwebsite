@@ -6,12 +6,9 @@
  * @version $Id$
  */
 
-define('PFL_STUDENT', 1);
-define('PFL_FACULTY', 2);
-define('PFL_STAFF',   3);
-
 
 PHPWS_Core::initModClass('profiler', 'Profile.php');
+PHPWS_Core::initModClass('profiler', 'Division');
 
 class Profiler {
     function user()
@@ -76,7 +73,7 @@ class Profiler {
     {
         $title = $content = $message = NULL;
 
-        if (!Current_User::allow('profiler')) {
+        if (!Current_User::authorized('profiler')) {
             Current_User::disallow();
         }
 
@@ -120,6 +117,56 @@ class Profiler {
         case 'list':
             $title = _('Current Profiles');
             $content = Profile_Forms::profileList();
+            break;
+
+        case 'division':
+            $title = _('Divisions');
+            $content = Profile_Forms::divisionList();
+            break;
+
+        case 'edit_division':
+            PHPWS_Core::initModClass('profiler', 'Division.php');
+            if (isset($_REQUEST['division_id'])) {
+                $division = & new Profiler_Division((int)$_REQUEST['division_id']);
+            } else {
+                $division = & new Profiler_Division;
+            }
+
+            if ($division->error) {
+                PHPWS_Error::log($division->error);
+                $content = _('There is a problem with this Profiler division.');
+                return;
+            }
+
+            $content = Profile_Forms::editDivision($division);
+            Layout::nakedDisplay($content);
+            break;
+
+        case 'update_division':
+            PHPWS_Core::initModClass('profiler', 'Division.php');            
+            if (isset($_REQUEST['division_id'])) {
+                $division = & new Profiler_Division((int)$_REQUEST['division_id']);
+            } else {
+                $division = & new Profiler_Division;
+            }
+
+            if ($division->error) {
+                PHPWS_Error::log($division->error);
+                $content = _('There is a problem with this Profiler division.');
+                return;
+            }
+
+            if (!$division->post()) {
+                $content = Profile_Forms::editDivision($division, true);
+                Layout::nakedDisplay($content);
+            } else {
+                $result = $division->save();
+                if (PEAR::isError($result)) {
+                    PHPWS_Error::log($result);
+                }
+                javascript('close_refresh');
+            }
+            
             break;
 
         case 'post_profile':
@@ -189,10 +236,11 @@ class Profiler {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=profiler';
 
-        $tabs['new']      = array ('title'=>_('New'), 'link'=> $link);
-        $tabs['list']     = array ('title'=>_('List'), 'link'=> $link);
-        $tabs['settings'] = array ('title'=>_('Settings'), 'link'=> $link);
-        $tabs['approval'] = array ('title'=>_('Approval'), 'link'=> $link);
+        $tabs['new']       = array ('title'=> _('New'), 'link'=> $link);
+        $tabs['list']      = array ('title'=> _('List'), 'link'=> $link);
+        $tabs['division'] = array ('title'=> _('Division'), 'link'=>$link);
+        $tabs['settings']  = array ('title'=> _('Settings'), 'link'=> $link);
+        //        $tabs['approval']  = array ('title'=> _('Approval'), 'link'=> $link);
 
         $panel = & new PHPWS_Panel('profiler');
         $panel->quickSetTabs($tabs);
@@ -214,6 +262,7 @@ class Profiler {
         return PHPWS_Settings::save('profiler');
     }
 
+
     /**
      * Pulls up the sidebar profiles
      *
@@ -222,29 +271,32 @@ class Profiler {
      */
     function view()
     {
-
         if (!PHPWS_Settings::get('profiler', 'profile_sidebar')) {
+            return;
+        }
+
+        $div = & new PHPWS_DB('profiler_division');
+        $div->addWhere('show_sidebar', 1);
+        $div->addOrder('id');
+        $div->addColumn('id');
+        $result = $div->select('col');
+        
+        if (empty($result)) {
             return;
         }
 
         $limit = PHPWS_Settings::get('profiler', 'profile_number');
         $db = & new PHPWS_DB('profiles');
-        $db->addOrder('random');
-        $db->setLimit($limit);
 
-        $db->addWhere('profile_type', PFL_STUDENT);
-        $student = $db->getObjects('Profile');
-        Profiler::_sidebar($student);
+        foreach ($result as $id) {
+            $db->addOrder('random');
+            $db->setLimit($limit);
 
-        $db->resetWhere();
-        $db->addWhere('profile_type', PFL_STAFF);
-        $staff = $db->getObjects('Profile');
-        Profiler::_sidebar($staff);
-
-        $db->resetWhere();
-        $db->addWhere('profile_type', PFL_FACULTY);
-        $faculty = $db->getObjects('Profile');
-        Profiler::_sidebar($faculty);
+            $db->addWhere('profile_type', $id);
+            $student = $db->getObjects('Profile');
+            Profiler::_sidebar($student);
+            $db->reset();
+        }
     }
 
     function _sidebar($list)

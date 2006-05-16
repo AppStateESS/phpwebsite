@@ -27,6 +27,7 @@ class Profile {
     var $contributor   = NULL;  // Name of contributor
     var $_error        = NULL;  // Error object holder
     var $_db           = NULL;  // Database object
+    var $division_title = NULL;
 
     function Profile($id=NULL)
     {
@@ -63,6 +64,7 @@ class Profile {
         $template['FIRST_NAME'] = $this->firstname;
         $template['LAST_NAME'] = $this->lastname;
         if (!empty($images['small'])) {
+            $image = & $images['small'];
             $template['PHOTO_SMALL'] = $images['small']->getTag(TRUE);
         }
 
@@ -164,20 +166,22 @@ class Profile {
 
     function getProfileType()
     {
-        switch ($this->profile_type) {
-        case PFL_STUDENT:
-            return _('Student');
-            break;
-        case PFL_FACULTY:
-            return _('Faculty');
-            break;
-        case PFL_STAFF:
-            return _('Staff');
-            break;
+        static $all_profiles = array();
 
-        default:
+        if (empty($all_profiles)) {
+            $div = & new PHPWS_DB('profiler_division');
+            $div->addWhere('show_sidebar', 1);
+            $div->addOrder('title');
+            $div->addColumn('id');
+            $div->addColumn('title');
+            $div->setIndexBy('id');
+            $all_profiles = $div->select('col');
+        }
+
+        if (isset($all_profiles[$this->profile_type])) {
+            return $all_profiles[$this->profile_type];
+        } else {
             return _('Profile not set.');
-            break;
         }
     }
 
@@ -265,7 +269,8 @@ class Profile {
 
     function getProfileTags()
     {
-        $tpl['PROFILE_TYPE'] = $this->getProfileType();
+        //        $tpl['PROFILE_TYPE'] = $this->getProfileType();
+        $tpl['PROFILE_TYPE'] = $this->division_title;
 
         $vars['profile_id'] = $this->id;
         $vars['command'] = 'edit';
