@@ -266,6 +266,36 @@ EMPTY_MESSAGE : if no rows are found, 'No rows found' will appear here
 
 
 
+Advanced Usage
+--------------------------------------------------------------------
+The pager object has uses a database object in the ->db
+variable. Normally, you never need alter it, however there may be a
+time when you want to mold the pager output.
+
+One instance where I play with the database object is when I want to
+include a column from another table.
+
+For example, lets say that I have a category column in my main
+table. This integer column references the id of another table. We want
+the category title in that table.
+
+// Ask for the title from the category_table and retrieve it as
+// cat_title.
+$pager->db->addColumn('category_table.title', NULL, 'cat_title');
+
+// When you add a column, the database class assumes you want only
+// that column. So we include a splat (*) as a column on the main
+// table as well.
+$pager->db->addColumn('main_table.*');
+
+// Here is the where join
+$pager->db->addWhere('main_table.category_id', 'category_table.id');
+
+Now when pager pulls with will create a cat_title variable for each
+row. Make sure that if you are using item classes with the pager that
+you create a variable to hold the extra column.
+
+
 Conclusion
 --------------------------------------------------------------------
 I hope you find the DB Pager class useful. If you have questions,
