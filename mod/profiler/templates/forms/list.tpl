@@ -1,4 +1,4 @@
-<table cellpadding="4" cellspacing="1" width="100%">
+<table cellpadding="4" cellspacing="1" width="99%">
   <tr>
     <th>{LASTNAME} {LASTNAME_SORT}</th>
     <th>{FIRSTNAME} {FIRSTNAME_SORT}</th>

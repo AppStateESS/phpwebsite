@@ -1,5 +1,4 @@
 div.profile-small {
-  border : 1px solid black;
   margin : 3px 2px 3px 2px;
   padding : 3px;
   background-color : white;
@@ -7,7 +6,6 @@ div.profile-small {
 }
 
 div.profile-large {
-  border : 1px solid black;
   margin : 3px 2px 3px 2px;
   padding : 3px;
   background-color : white;
