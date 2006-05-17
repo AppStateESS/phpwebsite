@@ -1,0 +1,284 @@
+Theme Creation in phpWebSite 1.0
+by Matthew McNaney
+
+
+Version 1.0
+----------------
+Original version
+
+
+
+Introduction
+---------------------------------------------------------------------
+PhpWebSite 1.0 uses a template system for theme creation. If you are
+familiar with the previous version of the software, you should be
+right at home. You can probably skip the first couple of
+sections. Newcomers should continue. It is assumed you know how to
+create a page using just HTML encoding.
+
+
+Templates
+--------------------------------------------------------------------
+As mentioned in the introduction, you need to be familiar with our
+templating system. Templates contain an HTML framework with content
+"tags." PhpWebSite fills in these tags with dynamic information.
+
+Here is an example of a template:
+
+<h1>Today's Top Stories</h1>
+<p>{STORIES}</p>
+
+"STORIES" is our tag and they will always be surrounded by curly
+brackets - {}
+
+When PhpWebSite sees these brackets, it will check to see if it has
+some information named STORIES. If so, it will copy the data into the
+tag.
+
+For theme design, that is enough to get you started. If you want more
+information on templates, please read the template.txt file contained
+in this directory.
+
+
+Setting up your theme
+--------------------------------------------------------------------
+All themes should be saved in the "themes" directory. Your theme name
+forms the theme directory's name. Let's look at the
+default theme. Open up your phpwebsite/themes/default/
+directory. Two files in this directory form the foundation to your
+theme. "theme.ini" contains information about your theme. "theme.tpl"
+is the theme template. Your theme will not display without both of
+these files.
+
+
+theme.tpl
+--------------------------------------------------------------------
+This is our theme's template file. Take a look at the default
+theme.tpl file. Let's view the tags in our template.
+
+These tags need to written above your opening <head> HTML tag.
+
+{XML}{XML_STYLE}{DOCTYPE}{XHTML}
+Each of these tags assists in defining your page. Make sure they are
+above the <head> html tag of your theme. You do not need a <html>
+html tag. These tags will take care of it.
+
+
+The following tags should appear between your HTML <head> tags.
+
+{BASE}
+Required by style sheets. Leave it in.
+
+{PAGE_TITLE}
+This tag sits between the <title> html tags. You don't have to use it,
+however phpWebSite uses it to dynamically entitle pages. Making it
+static will obviously defeat this ability.
+
+{METATAGS}
+Your meta tag settings in the Layout module appear in this tag. You
+should leave it.
+
+{JAVASCRIPT}
+Various Javascript routines appear in this tag. Make sure to include
+it.
+
+{STYLE}
+PhpWebSite can perform some neat tricks with your theme's style
+sheets. Make sure to include this tag. You may add extra style
+information before or after if you wish.
+
+
+That covers the header tags. Next we will go over the tags that should
+appear between the <body> HTML tags.
+
+{BODY}
+Your site's main content will appear in this tag. As such, it is a
+required tag.
+
+{DEFAULT}
+Any content that does not appear in the BODY tag, appears
+here. DEFAULT usually receives short content, administration menus,
+advertising, etc. It is also required.
+
+
+Module tags
+---------------------------------------------------------------------
+
+That is the end of the required tags. If you are looking at the
+default theme.tpl file, you should notice tags like MENU_MENU_1,
+SEARCH_SEARCH_BOX, USERS_LOGIN_BOX, etc. These are module specific
+tags. They are not required, but very useful.
+
+When a module developer creates a content "box" that doesn't appear in
+the {BODY} tag, they give it a content variable name. This specific
+name, allows you to move the box around your page via Layout.
+
+As a theme developer, you may want to secure this content in a
+specific area.
+
+For example, lets look at the search box. If left to its own devices,
+when the search form is sent to the theme, it will look for its
+special parking spot. If it doesn't see one, it appears inside the
+DEFAULT tag. So, if we have a special area we wish it to appear in, we
+have to create a module tag. The name of the tag is composed of the
+name of the module, an underline, plus the content variable name.
+
+module name  +  underline  +  content variable
+-----------     ---------     ------------------
+  search     +      _      +     search_box
+
+So the search theme tag is named "search_search_box". We just
+capitalize the name, surround with curly braces 
+
+{SEARCH_SEARCH_BOX}
+
+and place our default search box tag into our theme.
+
+
+Extra tags
+---------------------------------------------------------------------
+If you want to add more content areas to your theme, just create other
+tags with whatever you want to name them:
+{HEADER}
+{BOTTOM}
+{RIGHT_COLUMN}
+
+As long as they are registered in the theme.ini file (covered next),
+you can move content into them using Layout.
+
+
+theme.ini
+--------------------------------------------------------------------
+PhpWebSite looks to this file for information about your theme.tpl
+file. Look at the default theme's theme.ini as an example.
+
+Information sections are entitled with square bracketed titles.
+
+[theme_variables]
+The most important setting. Whenever you add a content tag to your
+theme, it MUST be registered here. If it isn't, then phpWebSite
+doesn't know they exist in your theme. You don't need to register the
+BODY or DEFAULT tags as they are assumed to exist.
+
+Starting at zero (0), number each tag name sequentially. 
+
+[theme_variables]
+0 = LAYOUT_HEADER
+1 = LAYOUT_FOOTER
+2 = BOTTOM
+(etc.)
+
+The remaining setting cover the style sheet definitions. The theme.ini
+file contains comments explaining each setting but we will go over
+them here as well.
+
+You can have as many style sheet definitions as you want. Just number
+them sequentially (style_sheet_n)
+
+Look at the theme.ini file's first style sheet - [style_sheet_1]
+There are three settings - file, import, and media.
+
+file
+----
+Required.
+
+The style sheet file name. This file name is relative to the
+current theme directory. So if your style sheet was in
+themes/my_theme/css/style.css, you would set file = css/style.css 
+
+
+
+import
+------
+Not required. Defaults to FALSE
+
+If true, phpwebsite will import this file instead of linking it:
+
+<style type="text/css">@import url('themes/my_theme/style.css');</style>
+                               vs.
+<link rel="stylesheet" href="themes/my_theme/syle.css" type="text/css" />
+
+
+
+media 
+-----
+Not required. 
+Choices are: all, aural, braille, embossed, handheld, print,
+             projection, screen, tty, tv 
+
+A list of media devices, separated by commas, which determine the
+style sheet's availability. Remember, if you don't use "screen", the
+style sheet won't be used when displaying your theme in a web browser.
+
+
+
+title
+-----
+Required alone for preferred style sheet, and with alternate setting
+for alternate style sheets.
+
+If you are using alternate style sheets, you need to give the style
+sheet a title. If this style sheet is the "preferred" style sheet,
+then only set the title. If this is an alternate to the preferred
+style sheet, then set the alternate setting to true (see below).
+
+
+alternate
+---------
+Required for non-preferred, alternate style sheets. Default is FALSE.
+
+Setting this value to "true" indicates this is an alternate style
+sheet.
+
+
+Extra Styles
+--------------------------------------------------------------------
+Sometimes, the site administrator may want to use a specific style
+sheet for a certain page. You can indicate these alternate files with
+the [extra_styles] section. The default theme has two:
+
+[extra_styles]
+bigfont.css = Big Chief Font
+green.css = Emerald City
+
+When a specific page sets an alternate style sheet, phpWebsite appends
+the file to the list of current style sheets.
+
+
+Alternate templates (Advanced)
+--------------------------------------------------------------------
+Modules use templates as well. The results of these templates are
+piped into the theme. Sometimes, a specific module's template may not
+fit your specifications. You can force phpWebSite to use a copy of
+your version of the template instead.
+
+First, find the template you want to change. The easiest way to do so
+is go into the config/core/template.php file and change the
+LABEL_TEMPLATES value to TRUE. Make sure you change this back to FALSE
+when finished.
+
+Refresh the page and look at the source. You should see comments like:
+
+<!-- START TPL: templates/usermenus/top.tpl -->
+
+(content here)
+
+<!-- END TPL: templates/usermenus/top.tpl -->
+
+Look for the area you want to change and note the file name.
+
+There are two ways you can change this template. First, you can go
+edit the template directly. The second option is to create a copy in
+your theme. The second method is best used when you plan on sharing
+your theme.
+
+Using the above example, I just need to recreate the directory
+structure in my theme.
+
+Example:
+phpwebsite/themes/my_theme/templates/usermenus
+
+Now I make a copy of the top.tpl file in the usermenus
+directory. That's all there is to it. Now if I make changes to the
+template, they will be reflected in my theme.
+
