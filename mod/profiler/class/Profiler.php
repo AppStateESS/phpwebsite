@@ -38,6 +38,13 @@ class Profiler {
                 PHPWS_Error::log($profile->_error);
                 PHPWS_Core::errorPage(404);
             }
+
+            if (Current_User::allow('profiler')) {
+                $vars['command']    = 'edit';
+                $vars['profile_id'] = $profile->id;
+                $link = PHPWS_Text::secureLink(_('Edit profile'), 'profiler', $vars);
+                MiniAdmin::add('profiler', $link);
+            }
             
             Layout::add($profile->display('large'));
             Profiler::view();

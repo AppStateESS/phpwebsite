@@ -99,7 +99,7 @@ class Profile_Forms {
 
         $pager = & new DBPager('profiles', 'Profile');
         $pager->db->addColumn('profiles.*');
-        $pager->db->addColumn('profiler_division.title', NULL, 'division_title');
+        $pager->db->addColumn('profiler_division.title', NULL, '_division_title');
         $pager->db->addWhere('profile_type', 'profiler_division.id');
         $pager->setModule('profiler');
         $pager->setTemplate('forms/list.tpl');

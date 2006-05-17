@@ -27,7 +27,7 @@ class Profile {
     var $contributor   = NULL;  // Name of contributor
     var $_error        = NULL;  // Error object holder
     var $_db           = NULL;  // Database object
-    var $division_title = NULL;
+    var $_division_title = NULL;
 
     function Profile($id=NULL)
     {
@@ -56,7 +56,7 @@ class Profile {
     function display($template_name)
     {
         Layout::addStyle('profiler');
-        
+
         $images = $this->loadImages();
         
         $template_name = preg_replace('/\W/', '', $template_name);
@@ -118,12 +118,12 @@ class Profile {
 
     function setFirstName($firstname)
     {
-        $this->firstname = preg_replace('/\W/', '', trim($firstname));
+        $this->firstname = preg_replace('/[^\w\s]/', '', trim($firstname));
     }
 
     function setLastName($lastname)
     {
-        $this->lastname = preg_replace('/\W/', '', trim($lastname));
+        $this->lastname = preg_replace('/^\w\s/', '', trim($lastname));
     }
 
     function setCaption($caption)
@@ -270,7 +270,7 @@ class Profile {
     function getProfileTags()
     {
         //        $tpl['PROFILE_TYPE'] = $this->getProfileType();
-        $tpl['PROFILE_TYPE'] = $this->division_title;
+        $tpl['PROFILE_TYPE'] = $this->_division_title;
 
         $vars['profile_id'] = $this->id;
         $vars['command'] = 'edit';
