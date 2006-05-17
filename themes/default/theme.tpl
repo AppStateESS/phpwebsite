@@ -5,9 +5,9 @@
 {METATAGS}
 {JAVASCRIPT}
 {STYLE}
-
 </head>
 <body>
+{LAYOUT_HEADER}
 <div id="container">
    <div id="top-menu">{SEARCH_SEARCH_BOX}{USERS_LOGIN_BOX}</div>
    <div id="sidepanel">
