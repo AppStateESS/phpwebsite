@@ -579,6 +579,8 @@ class PHPWS_Core {
     /**
      * Plugs an array of $variables into the $object. The associative array
      * keys must be identical to the object's variable names.
+     *
+     * 5/17/06 Removed the code that prevent private variables from loading.
      */
     function plugObject(&$object, $variables)
     {
@@ -596,10 +598,6 @@ class PHPWS_Core {
 
         foreach($classVars as $key => $value) {
             $column = $key;
-            if($column[0] == '_') {
-                $column = substr($column, 1, strlen($column));
-            }
-      
             if(isset($variables[$column])) {
                 if (preg_match('/^[aO]:\d+:/', $variables[$column])) {
                     $object->$key = unserialize($variables[$column]);
