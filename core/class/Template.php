@@ -129,6 +129,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
 
             if (FORCE_THEME_TEMPLATES || is_file($altFile)) {
                 $result = $this->loadTemplateFile($altFile);
+                $file = $altFile;
             } elseif (FORCE_MOD_TEMPLATES) {
                 $file = PHPWS_SOURCE_DIR . "mod/$module/templates/$file";
                 $result = $this->loadTemplateFile($file);
@@ -175,10 +176,6 @@ class PHPWS_Template extends HTML_Template_Sigma {
         }
     }
 
-    function getLastTplFile()
-    {
-        return $this->getfile($this->lastTemplatefile);
-    }
 
     function process($template, $module, $file, $strict=FALSE)
     {
@@ -235,7 +232,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
         }
 
         if (!isset($result) && RETURN_BLANK_TEMPLATES) {
-            return $start . $tpl->getLastTplFile() . $end;
+            return $start . $tpl->lastTemplatefile . $end;
         } else {
             return $start . $result . $end;
         }
