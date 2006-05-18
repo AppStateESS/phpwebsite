@@ -8,7 +8,7 @@
 
 
 PHPWS_Core::initModClass('profiler', 'Profile.php');
-PHPWS_Core::initModClass('profiler', 'Division');
+PHPWS_Core::initModClass('profiler', 'Division.php');
 
 class Profiler {
     function user()
