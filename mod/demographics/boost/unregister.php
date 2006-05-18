@@ -10,7 +10,7 @@
 
 function demographics_unregister($module, &$content)
 {
-    return TRUE;
+    return FALSE;
 }
 
 ?>
