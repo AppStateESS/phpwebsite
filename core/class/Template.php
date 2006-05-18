@@ -114,33 +114,40 @@ class PHPWS_Template extends HTML_Template_Sigma {
         return $file_list;
     }
 
+    /**
+     * Sets the template file specified. Function decides which file to use based
+     * on template.php settings and file availability
+     */
     function setFile($file, $strict=FALSE)
     {
         $module = $this->getModule();
         $this->setCache();
         if ($strict == TRUE) {
             $result = $this->loadTemplateFile($file);
+            $used_tpl = &$file;
         } else {
-            $altFile = PHPWS_Template::getTplDir($module) . $file;
+            $theme_tpl    = PHPWS_Template::getTplDir($module) . $file;
+            $mod_tpl      = PHPWS_SOURCE_DIR . "mod/$module/templates/$file";
+            $template_tpl = "templates/$module/$file";
 
-            if (PEAR::isError($altFile)) {
-                return $altFile;
+            if (PEAR::isError($theme_tpl)) {
+                return $theme_tpl;
             }
 
-            if (FORCE_THEME_TEMPLATES || is_file($altFile)) {
-                $result = $this->loadTemplateFile($altFile);
-                $file = $altFile;
-            } elseif (FORCE_MOD_TEMPLATES) {
-                $file = PHPWS_SOURCE_DIR . "mod/$module/templates/$file";
-                $result = $this->loadTemplateFile($file);
+            if ( FORCE_THEME_TEMPLATES || is_file($theme_tpl) ) {
+                $result = $this->loadTemplateFile($theme_tpl);
+                $used_tpl = &$theme_tpl;
+            } elseif ( FORCE_MOD_TEMPLATES || !is_file($template_tpl) ) {
+                $result = $this->loadTemplateFile($mod_tpl);
+                $used_tpl = &$mod_tpl;
             } else {
-                $file = "templates/$module/$file";
-                $result = $this->loadTemplateFile($file);
+                $result = $this->loadTemplateFile($template_tpl);
+                $used_tpl = &$template_tpl;
             }
         }
 
         if ($result) {
-            $this->lastTemplatefile = $file;
+            $this->lastTemplatefile = $used_tpl;
             return $result;
         } else {
             return $this->err[0];
