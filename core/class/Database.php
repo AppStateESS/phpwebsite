@@ -1625,7 +1625,7 @@ class PHPWS_DB {
             return PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, 'core', 'PHPWS_DB::importFile');
         }
         $data = file_get_contents($filename);
-        return $this->import($data);
+        return PHPWS_DB::import($data);
     }
 
     /**
@@ -1634,9 +1634,12 @@ class PHPWS_DB {
      */
     function import($text, $report_errors=TRUE)
     {
-        $this->touchDB();
+        PHPWS_DB::touchDB();
 
-        $prefix = $this->getPrefix();
+        // first_import makes sure at least one query was completed
+        // successfully
+        $first_import = FALSE;
+        $prefix = PHPWS_DB::getPrefix();
         $sqlArray = PHPWS_Text::sentence($text);
         $error = FALSE;
 
@@ -1656,9 +1659,10 @@ class PHPWS_DB {
                 }
                 $sqlCommand = array();
 
-                $this->homogenize($query);
+                PHPWS_DB::homogenize($query);
 
-                $result = $this->query($query);
+                $result = PHPWS_DB::query($query);
+
                 if (DB::isError($result)) {
                     if ($report_errors) {
                         return $result;
@@ -1667,6 +1671,16 @@ class PHPWS_DB {
                         $error = TRUE;
                     }
                 }
+                $first_import = TRUE;
+            }
+        }
+
+        if (!$first_import) {
+            if ($report_errors) {
+                return PHPWS_Error::get(PHPWS_DB_IMPORT_FAILED, 'core', 'PHPWS_DB::import');
+            } else {
+                PHPWS_Error::log(PHPWS_DB_IMPORT_FAILED, 'core', 'PHPWS_DB::import');
+                $error = TRUE;                    
             }
         }
 
@@ -1706,7 +1720,7 @@ class PHPWS_DB {
 
         $query = implode(',', $newlist);
 
-        $this->_sql->readyImport($query);
+        PHPWS_SQL::readyImport($query);
     }
 
 
