@@ -34,6 +34,7 @@ define('PHPWS_DB_NO_JOIN_DB',         -109);
 define('PHPWS_DB_NO_TABLE',           -110);
 define('PHPWS_DB_NO_ID',              -111);
 define('PHPWS_DB_EMPTY_SELECT',       -112);
+define('PHPWS_DB_IMPORT_FAILED',      -113);
 
 
 /************* List.php *****************/
