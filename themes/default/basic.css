@@ -163,7 +163,7 @@ table.form-table td {
     vertical-align : top;
 }
 
-label {
+.form-table label {
     font-weight : bold;
     margin-right : 20px;
     color : black;
