@@ -1,9 +1,14 @@
 <?php
+
   /**
    * @version $Id$
    * @author Matthew McNaney <mcnaney at gmail dot com>
    */
 
-$use_permissions = TRUE;
+function rss_uninstall()
+{
+    PHPWS_DB::dropTable('rss_channel');
+    return TRUE;
+}
 
 ?>

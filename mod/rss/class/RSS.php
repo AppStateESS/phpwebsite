@@ -13,7 +13,7 @@ class RSS {
         if ($reg_file == FALSE){
             $content[] = _('No RSS file found.');
             PHPWS_Boost::addLog($module, _('No RSS file found.'));
-            return TRUE;
+            return FALSE;
         }
 
         PHPWS_Core::initModClass('rss', 'Channel.php');

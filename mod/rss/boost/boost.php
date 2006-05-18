@@ -1,11 +1,17 @@
 <?php
+  /**
+   * @version $Id$
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   */
+
 $proper_name  = 'RSSFeeds';
 $version      = '0.0.1';
 $import_sql   = TRUE;
-$image_dir    = FALSE;
+$image_dir    = TRUE;
 $file_dir     = FALSE;
-$unregister   = TRUE;
-$version_http = 'http://phpwebsite.appstate.edu/updates/rss.xml';
+$register     = TRUE;
+$unregister   = FALSE;
+$version_http = 'http://phpwebsite.appstate.edu/downloads/modules/rss/check.xml';
 $about        = TRUE;
 $priority     = 50;
 $dependency   = FALSE;

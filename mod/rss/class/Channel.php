@@ -9,14 +9,14 @@ class RSS_Channel {
     var $id              = 0;
     var $module          = NULL;
     var $title           = NULL;
-    var $link            = NULL;
+    //    var $link            = NULL;
     var $description     = NULL;
     var $pub_date        = 0;
     var $last_build_date = 0;
-    var $category        = NULL;
+    //    var $category        = NULL;
     var $ttl             = 0;
-    var $image           = 0;
-    var $text_input      = NULL;
+    var $image_id        = 0;
+    //    var $text_input      = NULL;
     var $active          = 1;
 
     var $_feeds          = NULL;
@@ -88,8 +88,7 @@ class RSS_Channel {
     function loadFeeds()
     {
         $db = & new PHPWS_DB('phpws_key');
-        $db->addWhere('active', 1);
-        $db->addWhere('restricted', 0);
+        Key::restrictView($db);
         $db->addOrder('create_date desc');
         // rss limit is 15
         $db->setLimit('15');
