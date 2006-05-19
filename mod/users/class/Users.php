@@ -337,7 +337,12 @@ class PHPWS_User {
 
     function setDisplayName($name)
     {
-        if (empty($name) || preg_match('/[^\w\s]/', $name)) {
+        if (empty($name)) {
+            $this->display_name = $this->username;
+            return TRUE;
+        }
+
+        if (preg_match('/[^\w\s]/', $name)) {
             return PHPWS_Error::get(USER_ERR_BAD_DISPLAY_NAME, 'users',
                                     'setUsername', $name);
         }
