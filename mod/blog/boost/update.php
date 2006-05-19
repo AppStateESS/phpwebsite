@@ -45,7 +45,48 @@ function blog_update(&$content, $currentVersion)
             return FALSE;
         }
         $content[] = 'Fixed view version functionality.';
+
+    case version_compare($currentVersion, '0.2.0', '<'):
+        $db = & new PHPWS_DB('blog_entries');
+        $result = $db->addTableColumn('author_id', 'int NOT NULL default \'0\'', 'entry');
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $content[] = 'Unable to create column on blog_entries table.';
+            return FALSE;
+        }
+        $result = $db->addTableColumn('approved', 'int NOT NULL default \'0\'');
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $content[] = 'Unable to create column on blog_entries table.';
+            return FALSE;
+        }
+
+        $db->addValue('approved', 1);
+        $result = $db->update();
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $content[] = 'Unable to update blog_entries table.';
+            return FALSE;
+        }
+
+        $db->reset();
+
+        $db->setDistinct(1);
+        $db->addJoin('left', 'blog_entries', 'users', 'author', 'username');
+        $db->addColumn('author');
+        $db->addColumn('users.id', NULL, 'author_id');
+        $result = $db->select();
+        if (!empty($result)) {
+            $db->reset();
+            foreach ($result as $user) {
+                $db->addWhere('author', $user['author']);
+                $db->addValue('author_id', $user['author_id']);
+                $db->update();
+                $db->reset();
+            }
+        }
     }
+    $content[] = 'Updated blog to use new version code.';
     return TRUE;
 }
 
