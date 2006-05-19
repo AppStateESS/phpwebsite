@@ -98,6 +98,15 @@ class Current_User {
         return $level == RESTRICTED_PERMISSION ? TRUE : FALSE;
     }
 
+    /**
+     * @param id integer
+     * @return True, if current user's id equals the parameter
+     */
+    function isUser($id)
+    {
+        return ($_SESSION['User']->id == $id) ? TRUE : FALSE;
+    }
+
     function isUnrestricted($module)
     {
         if (Current_User::isDeity()) {
