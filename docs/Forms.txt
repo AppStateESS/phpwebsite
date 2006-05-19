@@ -765,4 +765,4 @@ Forms class invaluable.
 
 
 If you have any questions or comments about this document, please
-contact me at mcnaney at gmail dot com.
+contact me at phpwebsite at tux dot appstate dot edu.

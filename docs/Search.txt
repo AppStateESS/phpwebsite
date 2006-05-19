@@ -1,5 +1,5 @@
 Adding search to your module
-By Matthew McNaney <mcnaney at gmail dot com>
+By Matthew McNaney <phpwebsite at tux dot appstate dot edu>
 ----------------------------------------------------
 
 
