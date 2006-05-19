@@ -16,7 +16,7 @@ class Version_Approval {
     var $approve_url    = NULL;
     var $disapprove_url = NULL;
     var $class_name     = NULL;
-    var $alt_method     = NULL;
+    var $view_method    = NULL;
     var $where          = NULL;
     var $columns        = array();
     var $standard       = array('id', 'source_id', 'vr_creator', 'vr_editor',
@@ -25,19 +25,18 @@ class Version_Approval {
     var $_db            = NULL;
   
 
-    function Version_Approval($module, $table, $class_name=NULL, $alt_method=NULL)
+    function Version_Approval($module, $table, $class_name=NULL, $view_method=NULL)
     {
         $this->setModule($module);
         $this->setSourceTable($table);
         if (class_exists($class_name)) {
             $methods = get_class_methods($class_name);
-            if (in_array(strtolower($alt_method), $methods)) {
+            if (in_array(strtolower($view_method), $methods)) {
                 $this->setClass($class_name);
-                $this->setAltMethod($alt_method);
+                $this->setViewMethod($view_method);
             }
         }
         $this->_db = & new PHPWS_DB($this->version_table);
-
     }
 
 
@@ -88,9 +87,9 @@ class Version_Approval {
         $this->class_name = $class_name;
     }
 
-    function setAltMethod($alt_method)
+    function setViewMethod($view_method)
     {
-        $this->alt_method = $alt_method;
+        $this->view_method = $view_method;
     }
 
     function get()
@@ -144,26 +143,22 @@ class Version_Approval {
 
             $count = 0;
 
-            if (!empty($this->class_name) && !empty($this->alt_method)) {
+            if (!empty($this->class_name) && !empty($this->view_method)) {
                 $temp_obj = & new $this->class_name;
                 PHPWS_Core::plugObject($temp_obj, $app_item);
 
-                $result = $temp_obj->{$this->alt_method}();
+                $result = $temp_obj->{$this->view_method}();
 
                 if (PEAR::isError($result)) {
                     return $result;
-                } elseif (empty($result) || !is_array($result)) {
+                } elseif (empty($result)) {
                     continue;
                 }
 
-                foreach ($result as $row) {
-                    $count++;
-                    
-                    $row_tpl['COLUMN_LABEL_' . $count] = $row['title'];
-                    $row_tpl['COLUMN_' . $count] = $row['data'];
-                }
-
+                $template_file = 'alternate_view.tpl';
+                $row_tpl['ALT_VIEW'] = $result;
             } else {
+                $template_file = 'approval_list.tpl';
                 foreach ($show_cols as $show_tag) {
                     $count++;
                     
@@ -193,13 +188,15 @@ class Version_Approval {
                                    $this->edit_url . '&amp;version_id=' . $app_item['id'], _('Edit'));
             }
 
-            $row_tpl['LINKS'] = implode(' | ', $links);
+            if (!empty($links)) {
+                $row_tpl['LINKS'] = implode(' | ', $links);
+            }
 
             $template['approval-rows'][$temp_count] = $row_tpl;
             $temp_count++;
         }
 
-        return PHPWS_Template::process($template, 'version', 'approval_list.tpl');
+        return PHPWS_Template::process($template, 'version', $template_file);
     }
 
 }

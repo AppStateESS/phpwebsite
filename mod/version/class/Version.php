@@ -170,10 +170,9 @@ class Version {
             $this->vr_creator = Current_User::getId();
             $this->vr_create_date = mktime();
         }
-        else {
-            $this->vr_editor = Current_User::getId();
-            $this->vr_edit_date = mktime();
-        }
+
+        $this->vr_editor = Current_User::getId();
+        $this->vr_edit_date = mktime();
 
         if (empty($this->vr_number)) {
             $this->vr_number = $this->_getVersionNumber();
@@ -203,28 +202,6 @@ class Version {
             }
         }
 
-        // Save the source first
-        if ($this->vr_approved) {
-            $source_db->addValue($this->getSource(FALSE));
-            if(!$this->source_id) {
-                // this version is a newly approved item
-                $result = $source_db->insert();
-                if (PEAR::isError($result)) {
-                    $this->_error = $result;
-                    return $result;
-                } else {
-                    $this->source_id = $result;
-                }
-            } else {
-                $source_db->addWhere('id', $this->source_id);
-                $result = $source_db->update();
-                if (PEAR::isError($result)) {
-                    $this->_error = $result;
-                    return $result;
-                }
-            }
-        }
-
         $version_db->addValue('source_id',      $this->source_id);
         $version_db->addValue('vr_creator',     $this->vr_creator);
         $version_db->addValue('vr_editor',      $this->vr_editor);
@@ -238,6 +215,20 @@ class Version {
             $this->_clearCurrents();
         }
 
+        // if there is already an unapproved version, we just
+        // want to update, not insert
+        if (!$version_db->vr_approved) {
+            $id = $this->isWaitingApproval();
+            if ($id) {
+                if (PEAR::isError($id)) {
+                    return $id;
+                } else {
+                    $this->id = $id;
+                }
+            }
+            $version_db->resetWhere();
+        }
+        
 
         if (!empty($this->id)) {
             $version_db->addWhere('id', $this->id);
@@ -260,10 +251,11 @@ class Version {
         return TRUE;
     }
 
+
     function cleanupVersions()
     {
-        if ($this->source_id == 0) {
-            return TRUE;
+        if (!$this->vr_approved) {
+            return;
         }
         $saved_version =  PHPWS_Settings::get('version', 'saved_versions');
 
@@ -293,6 +285,16 @@ class Version {
         $db->addWhere('source_id', $this->source_id);
         $db->addValue('vr_current', 0);
         $db->update();
+    }
+
+    /**
+     * Returns the number of unapproved items
+     */
+    function countUnapproved()
+    {
+        $version_db = & new PHPWS_DB($this->version_table);
+        $version_db->addWhere('vr_approved', 0);
+        return $version_db->count();
     }
 
     function getUnapproved($restrict=FALSE){
@@ -455,7 +457,11 @@ class Version {
         return $db->delete();
     }
 
-    function kill()
+    /**
+     * Removes a version from the version table. It will also remove
+     * the source item if this is the first version
+     */
+    function delete($clean_up=TRUE)
     {
         if (empty($this->id)) {
             return FALSE;
@@ -467,6 +473,16 @@ class Version {
 
         if (PEAR::isError($result)) {
             return $result;
+        }
+
+        // If this is the first version, kill the source
+        if ($clean_up && !$this->vr_number == 1) {
+            $source = & new PHPWS_DB($this->source_table);
+            $source->addWhere('id', $this->source_id);
+            $result = $source->delete();
+            if (PEAR::isError($result)) {
+                return $result;
+            }
         }
 
         $db->resetWhere();
@@ -492,44 +508,12 @@ class Version {
         return TRUE;
     }
 
-    function saveKey($key_id)
-    {
-        $db = & new PHPWS_DB($this->version_table);
-        $db->addWhere('id', $this->id);
-        $db->addValue('key_id', (int)$key_id);
-        return $db->update();
-    }
-
-    function getBackupList(){
-        if (empty($this->source_id)) {
-            return FALSE;
-        }
-
-        $db = & new PHPWS_DB($this->version_table);
-        $db->addWhere('source_id', $this->source_id);
-        $db->addWhere('vr_approved', 1);
-        $db->addWhere('vr_current', 0);
-        $db->addOrder('vr_number desc');
-        $result = $db->select();
-
-        if (empty($result)) {
-            return NULL;
-        }
-
-        foreach ($result as $row){
-            $version = & new Version($this->source_table);
-            $version->_plugInVersion($row);
-            $backup_list[$row['id']] = $version;
-        }
-    
-        return $backup_list;
-    }
-
     function restore(){
         $db = & new PHPWS_DB($this->source_table);
         $db->addWhere('id', $this->source_id);
         $data = $this->getSource();
         $db->addValue($data);
+
         $result = $db->update();
         if (PEAR::isError($result)) {
             return $result;
