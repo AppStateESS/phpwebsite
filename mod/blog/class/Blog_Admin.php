@@ -41,7 +41,8 @@ class Blog_Admin {
         switch ($command){
         case 'edit':
             $panel->setCurrentTab('list');
-            if (!Current_User::authorized('blog', 'edit_blog', $_REQUEST['blog_id'], 'entry')) {
+            if ( !Current_User::isUser($blog->author_id) && 
+                 !Current_User::authorized('blog', 'edit_blog', $_REQUEST['blog_id'], 'entry')) {
                 Current_User::disallow(_('User tried to edit a blog.'));
                 return;
             }
@@ -61,7 +62,7 @@ class Blog_Admin {
 
                 if (Current_User::isRestricted('blog')) {
                     $message = _('This version has not been approved.');
-                    $content = Blog_Form::edit($unapproved_blog, $version->getId());
+                    $content = Blog_Form::edit($unapproved_blog, $version->id);
                 } else {
                     $link = _('A version of this entry is awaiting approval.');
                     $linkVar['action']     = 'admin';
@@ -79,7 +80,7 @@ class Blog_Admin {
 
         case 'approval':
             $title = _('Blog Entries Awaiting Approval');
-            $approval = & new Version_Approval('blog', 'blog_entries', 'blog', 'approvalTags');
+            $approval = & new Version_Approval('blog', 'blog_entries', 'blog', 'brief_view');
 
             $vars['action'] = 'admin';
 
@@ -95,7 +96,6 @@ class Blog_Admin {
             $vars['command'] = 'disapprove_item';
             $approval->setDisapproveUrl(PHPWS_Text::linkAddress('blog', $vars, TRUE));
 
-            $approval->setColumns('title', 'entry');
             $content = $approval->getList();
             break;
 
@@ -105,7 +105,7 @@ class Blog_Admin {
                 return;
             }
             $version = & new Version('blog_entries', $_REQUEST['version_id']);
-            $result = $version->kill();
+            $result = $version->delete();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
                 Blog_Admin::setForward(_('A problem occurred when trying to disapprove this entry.'), 'approval');
@@ -121,6 +121,10 @@ class Blog_Admin {
             }
 
             $version = & new Version('blog_entries', $_REQUEST['version_id']);
+            $version->loadObject($blog);
+            $blog->approved = 1;
+            $blog->save();
+            $version->setSource($blog);
             $version->setApproved(TRUE);
             $result = $version->save();
             if (PEAR::isError($result)) {
@@ -153,7 +157,7 @@ class Blog_Admin {
 
         case 'delete':
             PHPWS_Cache::remove(BLOG_CACHE_KEY);
-            $result = $blog->kill();
+            $result = $blog->delete();
             Blog_Admin::setForward(_('Blog entry deleted.'), 'list');
             break;
 
@@ -183,8 +187,10 @@ class Blog_Admin {
                 return;
             }
       
+            $blog_id = &$_REQUEST['blog_id'];
+
             Blog_Admin::removePrevBlog($_REQUEST['version_id']);
-            Blog_Admin::setForward(_('Blog entry removed.'), 'restore');
+            Blog_Admin::setForward(_('Blog entry removed.'), 'restore&blog_id=' . $blog_id);
             break;
 
         case 'postEntry':
@@ -196,17 +202,21 @@ class Blog_Admin {
 
             $link_back = PHPWS_Text::linkAddress('blog', array('action' => 'admin', 'tab'=>'list'), TRUE);
 
-            if ($result == FALSE) {
-                $message = _('An error occurred when trying to save your entry. Please check your logs.');
-                Blog_Admin::setForward($message);
-            } elseif (is_array($result)) {
+            if (is_array($result)) {
                 $message = implode('<br />', $result);
                 if (empty($blog->id)) {
                     $panel->setCurrentTab('new');
                 }
                 $content = Blog_Form::edit($blog);
             } else {
-                if (Current_User::isRestricted('blog')) {
+                $result = $blog->save();
+                if (PEAR::isError($result)) {
+                    $message = _('An error occurred when trying to save your entry. Please check your logs.');
+                    PHPWS_Error::log($result);
+                    Blog_Admin::setForward($message);
+                } 
+
+                if (!$blog->approved) {
                     Blog_Admin::setForward(_('Your entry is being held for approval.'), 'list');
                 } else {
                     Blog_Admin::setForward(_('Entry saved successfully.'), 'list');
@@ -254,7 +264,7 @@ class Blog_Admin {
         $options[] = PHPWS_Text::secureLink(_('Approval list'), 'blog', $vars);
 
         $template['OPTIONS'] = implode(' | ', $options);
-        $template['VIEW'] = $blog->view();
+        $template['VIEW'] = $blog->approval_view();
         return PHPWS_Template::process($template, 'blog', 'version_view.tpl');
     }
 
@@ -278,6 +288,7 @@ class Blog_Admin {
 
     function &cpanel()
     {
+        PHPWS_Core::initModClass('version', 'Version.php');
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $newLink = 'index.php?module=blog&amp;action=admin';
         $newCommand = array ('title'=>_('New'), 'link'=> $newLink);
@@ -285,8 +296,11 @@ class Blog_Admin {
         $listLink = 'index.php?module=blog&amp;action=admin';
         $listCommand = array ('title'=>_('List'), 'link'=> $listLink);
 
+        $version = & new Version('blog_entries');
+        $unapproved = $version->countUnapproved();
+
         $approvalLink = 'index.php?module=blog&amp;action=admin';
-        $approvalCommand = array ('title'=>_('Approval'), 'link'=> $approvalLink);
+        $approvalCommand = array ('title'=>sprintf(_('Approval (%s)'), $unapproved), 'link'=> $approvalLink);
 
         $tabs['new'] = &$newCommand;
 
@@ -328,65 +342,37 @@ class Blog_Admin {
 
     function _loadCategory(&$cat_item, &$blog, $version=NULL)
     {
-        $cat_item->setItemId($blog->getId());
+        $cat_item->setItemId($blog->id);
         $cat_item->setTitle($blog->getTitle() . ' - ' . $blog->getFormatedDate());
         if (MOD_REWRITE_ENABLED) {
-            $link = 'blog/view/' . $blog->getId();
+            $link = 'blog/view/' . $blog->id;
         } else {
-            $link = 'index.php?module=blog&amp;action=view&amp;id=' . $blog->getId();
+            $link = 'index.php?module=blog&amp;action=view&amp;id=' . $blog->id;
         }
     
         $cat_item->setLink($link);
 
         if (isset($version)) {
-            $cat_item->setVersionId($version->getId());
+            $cat_item->setVersionId($version->id);
         }
     }
 
     function restoreVersionList(&$blog)
     {
-        $version = & new Version('blog_entries');
-        $version->setSource($blog);
-        $version_list = $version->getBackupList();
-
-        $count = 0;
-
+        PHPWS_Core::initModClass('version', 'Restore.php');
         $vars['action'] = 'admin';
-        if (empty($version_list)) {
-            $tpl['INSTRUCTION'] = _('No backups of this blog entry exist.');
-            return PHPWS_Template::processTemplate($tpl, 'blog', 'version.tpl');
-        }
-        foreach ($version_list as $backup_id => $backup){
-            $count++;
-            if ($count%2) {
-                $template['TOGGLE'] = 'class="toggle1"';
-            }
-            else {
-                $template['TOGGLE'] = 'class="toggle2"';
-            }
+        $vars['command'] = 'restorePrevBlog';
+        $vars['blog_id'] = $blog->id;
+        $restore_link = PHPWS_Text::linkAddress('blog', $vars, TRUE);
 
-            $blog = & new Blog;
-            $backup->loadObject($blog);
+        $vars['command'] = 'removePrevBlog';
+        $remove_link = PHPWS_Text::linkAddress('blog', $vars, TRUE);
 
-            $vars['version_id'] = $backup->getId();
-            $template['CREATED'] = $backup->getCreationDate(TRUE);
-            $template['BLOG'] = $blog->view(FALSE);
-
-            $vars['command'] = 'restorePrevBlog';
-            $template['RESTORE_LINK'] = PHPWS_Text::secureLink(_('Restore'), 'blog', $vars);
-
-            if (Current_User::isDeity()) {
-                $vars['command'] = 'removePrevBlog';
-                $vars['blog_id'] = $blog->getId();
-                $confirm['QUESTION'] = _('Are you sure you want to purge this backup copy?');
-                $confirm['ADDRESS'] = PHPWS_Text::linkAddress('blog', $vars, TRUE);
-                $confirm['LINK'] = _('Remove');
-                $template['REMOVE_LINK'] = Layout::getJavascript('confirm', $confirm);
-            }
-            $tpl['repeat_row'][] = $template;
-        }
-        $tpl['INSTRUCTION'] = _('Choose the blog entry you want to restore.');
-        return PHPWS_Template::processTemplate($tpl, 'blog', 'version.tpl');
+        $restore = & new Version_Restore('blog', 'blog_entries', $blog->id, 'blog', 'brief_view');
+        $restore->setRestoreUrl($restore_link);
+        $restore->setRemoveUrl($remove_link);
+        $result = $restore->getList();
+        return $result;
     }
   
     function restoreBlog($version_id)
@@ -398,7 +384,7 @@ class Blog_Admin {
     function removePrevBlog($version_id)
     {
         $version = & new Version('blog_entries', $version_id);
-        $version->kill();
+        $version->delete();
     }
 }
 

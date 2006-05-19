@@ -11,6 +11,7 @@ class Blog {
     var $key_id         = 0;
     var $title          = NULL;
     var $entry          = NULL;
+    var $author_id      = 0;
     var $author         = NULL;
     var $create_date    = NULL;
     var $allow_comments = 0;
@@ -60,15 +61,6 @@ class Blog {
         }
     }
 
-    function getAuthor()
-    {
-        return $this->author;
-    }
-
-    function getId()
-    {
-        return $this->id;
-    }
 
     function setTitle($title)
     {
@@ -90,24 +82,40 @@ class Blog {
         $db = & new PHPWS_DB('blog_entries');
         if (empty($this->id)) {
             $this->create_date = PHPWS_Time::getUTCTime();
-        }
-
-        if (empty($this->author)) {
+            $this->author_id = Current_User::getId();
             $this->author = Current_User::getDisplayName();
         }
 
-        $result = $db->saveObject($this);
+        $version = & new Version('blog_entries');
+
+        if ($this->approved || !$this->id) {
+            $result = $db->saveObject($this);
+        }
 
         if (PEAR::isError($result)) {
             return $result;
         }
 
-        $search = & new Search($this->key_id);
-        $search->addKeywords($this->title);
-        $search->addKeywords($this->entry);
-        $result = $search->save();
+        $version->setSource($this);
+        $version->setApproved($this->approved);
+        $version->save();
 
-        return $result;
+        if ($this->approved) {
+            $update = (!$this->key_id) ? TRUE : FALSE;
+
+            $this->saveKey();
+            if ($update) {
+                $db->saveObject($this);
+            }
+            $search = & new Search($this->key_id);
+            $search->addKeywords($this->title);
+            $search->addKeywords($this->entry);
+            $result = $search->save();
+            return $result;
+        }
+
+        return TRUE;
+
     }
 
     function saveKey()
@@ -148,8 +156,25 @@ class Blog {
     function createCommentLink()
     {
         $vars['action'] = 'make_comment';
-        $vars['blog_id'] = $this->getId();
+        $vars['blog_id'] = $this->id;
         return PHPWS_Text::moduleLink(_('Make Comment'), 'blog', $vars);
+    }
+
+    function brief_view()
+    {
+        $template['TITLE'] = $this->title;
+        $template['LOCAL_DATE']  = $this->getLocalDate();
+        $template['ENTRY'] = PHPWS_Text::parseTag($this->getEntry(TRUE));
+
+        if (!empty($result)) {
+            $template['CATEGORIES'] = implode(', ', $result);
+        }
+
+        $template['POSTED_BY'] = _('Posted by');
+        $template['POSTED_ON'] = _('Posted on');
+        $template['AUTHOR'] = $this->author;
+    
+        return PHPWS_Template::process($template, 'blog', 'view.tpl');
     }
 
 
@@ -171,8 +196,11 @@ class Blog {
         $template['LOCAL_DATE']  = $this->getLocalDate();
         $template['ENTRY'] = PHPWS_Text::parseTag($this->getEntry(TRUE));
 
-        if ($edit && Current_User::allow('blog', 'edit_blog', $this->getId(), 'entry')){
-            $vars['blog_id'] = $this->getId();
+        if ( $edit && 
+             ( Current_User::allow('blog', 'edit_blog', $this->id, 'entry') ||
+               $this->author_id == Current_User::getId())
+             ) {
+            $vars['blog_id'] = $this->id;
             $vars['action']  = 'admin';
             $vars['command'] = 'edit';
             if ($limited) {
@@ -214,7 +242,7 @@ class Blog {
 
         $template['POSTED_BY'] = _('Posted by');
         $template['POSTED_ON'] = _('Posted on');
-        $template['AUTHOR'] = $this->getAuthor();
+        $template['AUTHOR'] = $this->author;
     
         return PHPWS_Template::process($template, 'blog', 'view.tpl');
     }
@@ -232,9 +260,10 @@ class Blog {
 
     function getListAction(){
         $link['action'] = 'admin';
-        $link['blog_id'] = $this->getId();
+        $link['blog_id'] = $this->id;
 
-        if (Current_User::allow('blog', 'edit_blog', $this->id, 'entry')){
+        if (Current_User::getId() == $this->author_id || 
+            Current_User::allow('blog', 'edit_blog', $this->id, 'entry')){
             $link['command'] = 'edit';
             $list[] = PHPWS_Text::secureLink(_('Edit'), 'blog', $link);
         }
@@ -296,70 +325,20 @@ class Blog {
             $this->allow_comments = 0;
         }
 
-        if (isset($_POST['version_id'])) {
-            $version = & new Version('blog_entries', $_REQUEST['version_id']);
-        }
-        else {
-            $version = & new Version('blog_entries');
-        }
-
         if (empty($this->author)) {
             $this->author = Current_User::getDisplayName();
         }
 
-        $version->setSource($this);
-
-        // User is restricted, everything is unapproved
-        // from them
-        if (Current_User::isRestricted('blog')) {
-            $version->setApproved(FALSE);
+        if (isset($_POST['version_id']) || Current_User::isRestricted('blog')) {
+            $this->approved = 0;
         } else {
-            // User is unrestricted
-            if ($version->id) {
-                // A version is getting approved
-                if(isset($_POST['approve_entry'])) {
-                    $version->setApproved(TRUE);
-                } else {
-                    $version->setApproved(FALSE);
-                }
-            } else {
-                // A regular blog from a unrestricted user
-                // needs saving.
-                $version->setApproved(TRUE);
-                $set_permissions = TRUE;
-            }
-        }
-
-        $result = $version->save();
-        if (PEAR::isError($result)) {
-            PHPWS_Error::log($result);
-            return FALSE;
-        }
-
-        $this->id = $version->getSourceId();
-
-        if ($version->isApproved() && $this->id) {
-            $key = $this->saveKey();
-            $this->save();
-            $version->saveKey($key->id);
+            $this->approved = 1;
         }
 
         return TRUE;
     }
 
-    function approvalTags()
-    {
-        $tags[0]['title'] = _('Title');
-        $tags[0]['data'] = $this->title;
-
-        $tags[1]['title'] = _('Entry');
-        $tags[1]['data'] = $this->getEntry();
-
-        return $tags;
-    }
-
-
-    function kill()
+    function delete()
     {
         $all_is_well = TRUE;
         Key::drop($this->key_id);
