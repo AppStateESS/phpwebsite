@@ -81,6 +81,7 @@ class User_Action {
         case 'authorization':
         case 'postAuthorization':
         case 'dropAuthScript':
+
             if (!Current_User::authorized('users', 'settings')) {
                 Current_User::disallow();
                 return;
@@ -94,6 +95,11 @@ class User_Action {
             }
             $title = _('Authorization');
             $content = User_Form::authorizationSetup();
+            break;
+
+        case 'editScript':
+            $title = _('Edit Authorization Script');
+            // no reason to edit scripts yet
             break;
 
         case 'setUserPermissions':

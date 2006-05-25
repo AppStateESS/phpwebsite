@@ -686,6 +686,7 @@ class User_Form {
         $default_authorization = PHPWS_User::getUserSetting('default_authorization');
 
         foreach ($auth_list as $authorize){
+            $links = array();
             extract($authorize);
             if ($default_authorization == $id) {
                 $checked = 'checked="checked"';
@@ -700,18 +701,23 @@ class User_Form {
 
             if ($filename != 'local.php' && $filename != 'global.php') {
                 $vars['QUESTION'] = _('Are you sure you want to drop this authorization script?');
-                $vars['ADDRESS'] = 'index.php?module=users&action=admin&command=dropAuthScript&script_id=' . $id;
+                $vars['ADDRESS'] = sprintf('index.php?module=users&action=admin&command=dropAuthScript&script_id=%s&authkey=%s', $id, Current_User::getAuthKey());
                 $vars['LINK'] = _('Drop');
                 $links[1] = javascript('confirm', $vars);
             }
 
             $getVars['command'] = 'editScript';
-            $links[2] = PHPWS_Text::secureLink(_('Edit'), 'users', $getVars);
+            // May enable this later. No need for an edit link right now.
+            //            $links[2] = PHPWS_Text::secureLink(_('Edit'), 'users', $getVars);
 
             $row['CHECK'] = sprintf('<input type="radio" name="default_authorization" value="%s" %s />', $id, $checked);
             $row['DISPLAY_NAME'] = $display_name;
             $row['FILENAME'] = $filename;
-            $row['ACTION'] = implode(' | ', $links);
+            if (!empty($links)) {
+                $row['ACTION'] = implode(' | ', $links);
+            } else {
+                $row['ACTION'] = _('None');
+            }
       
             $template['auth-rows'][] = $row;
         }
