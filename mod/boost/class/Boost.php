@@ -337,7 +337,7 @@ class PHPWS_Boost {
     function onUninstall($mod, &$uninstallCnt)
     {
         $onUninstallFile = $mod->getDirectory() . 'boost/uninstall.php';
-        $installFunction = $mod->title . '_uninstall';
+        $uninstallFunction = $mod->title . '_uninstall';
         if (!is_file($onUninstallFile)) {
             $uninstallCnt[] = _('Uninstall file not found.');
             $this->addLog($mod->title, _('No uninstall file found.'));
@@ -350,10 +350,13 @@ class PHPWS_Boost {
 
         include_once($onUninstallFile);
 
-        if (function_exists($installFunction)) {
+        if (function_exists($uninstallFunction)) {
             $uninstallCnt[] = _('Processing uninstall file.');
-            return $installFunction($uninstallCnt);
+            return $uninstallFunction($uninstallCnt);
         } else {
+            $this->addLog($mod->title, 
+                          sprintf(_('Uninstall function "%s" was not found.'), 
+                                  $uninstallFunction));
             return TRUE;
         }
     }
