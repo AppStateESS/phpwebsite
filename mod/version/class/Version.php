@@ -217,7 +217,7 @@ class Version {
 
         // if there is already an unapproved version, we just
         // want to update, not insert
-        if (!$version_db->vr_approved) {
+        if (!$this->vr_approved) {
             $id = $this->isWaitingApproval();
             if ($id) {
                 if (PEAR::isError($id)) {
