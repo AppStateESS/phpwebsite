@@ -13,20 +13,22 @@ PHPWS_Core::configRequireOnce('profiler', 'config.php');
 define('PFL_PROFILE_NOT_FOUND', 1);
 
 class Profile {
-    var $id            = 0;
-    var $firstname     = NULL;
-    var $lastname      = NULL;
-    var $photo_large   = 0;     // Id to the photo
-    var $photo_medium  = 0;     // Id to the photo
-    var $photo_small   = 0;     // Id to the photo
-    var $fullstory     = NULL;  // Complete prose to profile
-    var $caption       = NULL;  // Abbreviated intro to the profile
-    var $profile_type  = 0;     // Profile type number, see defines above
-    var $keywords      = NULL;  // Searchable words to find a profile
-    var $submit_date   = 0;     // Date of profile creation
-    var $contributor   = NULL;  // Name of contributor
-    var $_error        = NULL;  // Error object holder
-    var $_db           = NULL;  // Database object
+    var $id              = 0;
+    var $firstname       = NULL;
+    var $lastname        = NULL;
+    var $photo_large     = 0;     // Id to the photo
+    var $photo_medium    = 0;     // Id to the photo
+    var $photo_small     = 0;     // Id to the photo
+    var $fullstory       = NULL;  // Complete prose to profile
+    var $caption         = NULL;  // Abbreviated intro to the profile
+    var $profile_type    = 0;     // Profile type number, see defines above
+    var $keywords        = NULL;  // Searchable words to find a profile
+    var $submit_date     = 0;     // Date of profile creation
+    var $contributor     = NULL;  // Name of contributor
+    var $contributor_id  = 0;
+    var $approved        = 0;
+    var $_error          = NULL;  // Error object holder
+    var $_db             = NULL;  // Database object
     var $_division_title = NULL;
 
     function Profile($id=NULL)
@@ -202,7 +204,6 @@ class Profile {
     function postProfile()
     {
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
-        PHPWS_Core::initModClass('version', 'Version.php');
 
         if (!Current_User::authorized('profiler')) {
             Current_User::disallow();
@@ -233,38 +234,24 @@ class Profile {
             $this->setSubmitDate();
         }
 
-        if (empty($this->contributor)) {
+        if (empty($this->contributor_id)) {
+            $this->contributor_id = Current_User::getId();
             $this->contributor = Current_User::getUsername();
         }
 
-        if (isset($_REQUEST['version_id'])) {
-            $version = & new Version('profiles', $_REQUEST['version_id']);
+        if (isset($_POST['version_id'])) {
+            $this->approved = 0;
+        } elseif (Current_User::isRestricted('profiler')) {
+            $this->approved = 0;
         } else {
-            $version = & new Version('profiles');
+            $this->approved = 1;
         }
 
         if (isset($error)) {
             return $error;
-        }
-
-        $version->setSource($this);
-        // User is restricted, everything is unapproved
-        // from them
-        if (Current_User::isRestricted('profiler')) {
-            $version->setApproved(FALSE);
         } else {
-            $version->setApproved(TRUE);
+            return TRUE;
         }
-
-        $result = $version->save();
-
-        if (PEAR::isError($result)) {
-            PHPWS_Error::log($result);
-            return FALSE;
-        }
-
-        $this->id = $version->getSourceId();
-        return TRUE;
     }
 
     function getProfileTags()
@@ -301,6 +288,24 @@ class Profile {
         }
 
         return Version::flush('profiles', $this->id);
+    }
+
+    function save()
+    {
+        PHPWS_Core::initModClass('version', 'Version.php');
+
+        if ($this->approved || !$this->id) {
+            $this->resetdb();
+            $result = $this->_db->saveObject($this);
+            if (PEAR::isError($result)) {
+                return $result;
+            }
+        }
+
+        $version = & new Version('profiles');
+        $version->setSource($this);
+        $version->setApproved($this->approved);
+        return $version->save();
     }
   
 }

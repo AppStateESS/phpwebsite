@@ -187,6 +187,7 @@ class Profiler {
                 $profile = & new Profile;
             }
             $result = $profile->postProfile();
+
             if (is_array($result)) {
                 if ($profile->id) {
                     $title = _('Update Profile');
@@ -195,13 +196,21 @@ class Profiler {
                 }
                 $message = implode('<br />', $result);
                 $content = Profile_Forms::edit($profile);
-            } elseif ($result == FALSE) {
-                $title = _('Sorry');
-                $content = _('An error occurred when saving your profile.');
             } else {
-                $title = _('Success');
-                $content = _('Profile saved successfully.');
-                Layout::metaRoute('index.php?module=profiler');
+                $result = $profile->save();
+                if (PEAR::isError($result)) {
+                    PHPWS_Error::log($result);
+                    $title = _('Sorry');
+                    $content = _('An error occurred when saving your profile.');
+                } else {
+                    $title = _('Success');
+                    if ($profile->approved) {
+                        $content = _('Profile saved successfully.');
+                    } else {
+                        $content = _('Profile saved for approval.');
+                    }
+                    Layout::metaRoute('index.php?module=profiler&authkey=' . Current_User::getAuthKey());
+                }
             }
             break;
 

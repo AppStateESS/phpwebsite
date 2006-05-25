@@ -7,10 +7,10 @@
    * @version $Id$
    */
 
-function profiles_uninstall(&$content)
+function profiler_uninstall(&$content)
 {
     PHPWS_DB::dropTable('profiles');
-
+    PHPWS_DB::dropTable('profiler_division');
     $content[] = _('Profiles table removed.');
     return TRUE;
 }

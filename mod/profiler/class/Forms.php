@@ -32,6 +32,11 @@ class Profile_Forms {
         $div->setIndexBy('id');
         $profile_types = $div->select('col');
 
+        if (empty($profile_types)) {
+            $vars['tab'] = 'division';
+            return PHPWS_Text::secureLink(_('Please make a profile division type first.'), 'profiler', $vars);
+        }
+
         $form = Profile_Forms::default_form();
         $form->addHidden('command', 'post_profile');
 
