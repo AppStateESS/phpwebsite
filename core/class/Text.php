@@ -378,6 +378,17 @@ class PHPWS_Text {
     }
 
     /**
+     * Creates a link to the previous referer
+     */
+    function backLink($title=NULL)
+    {
+        if (empty($title)) {
+            $title = _('Return to previous page.');
+        }
+        return sprintf('<a href="%s">%s</a>', $_SERVER['HTTP_REFERER'], $title);
+    }
+
+    /**
      * Returns a module link with the authkey attached
      */
     function secureLink($subject, $module=NULL, $getVars=NULL, $target=NULL, $title=NULL){
