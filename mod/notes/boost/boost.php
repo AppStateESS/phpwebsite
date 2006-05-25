@@ -1,4 +1,8 @@
 <?php
+  /**
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
+   */
 $proper_name  = 'Notes';
 $version      = '0.0.1';
 $register     = FALSE;
@@ -6,7 +10,7 @@ $unregister   = FALSE;
 $import_sql   = TRUE;
 $image_dir    = FALSE;
 $file_dir     = FALSE;
-$version_http = 'http://phpwebsite.appstate.edu/test/update.ini';
+$version_http = 'http://phpwebsite.appstate.edu/downloads/modules/notes/check.xml';
 $about        = FALSE;
 $priority     = 50;
 

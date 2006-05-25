@@ -1,12 +1,17 @@
 <?php
+  /**
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
+   */
+
 $proper_name  = 'Menu';
 $version      = '0.0.2';
-$register     = FALSE; // You could also leave this blank
-$unregister   = TRUE; // Ditto
+$register     = FALSE;
+$unregister   = TRUE;
 $import_sql   = TRUE;
 $image_dir    = FALSE;
 $file_dir     = FALSE;
-$version_http = 'http://phpwebsite.appstate.edu/updates/menu.ini';
+$version_http = 'http://phpwebsite.appstate.edu/downloads/modules/menu/check.xml';
 $about        = TRUE;
 $priority     = 50;
 

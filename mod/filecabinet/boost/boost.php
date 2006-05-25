@@ -11,7 +11,7 @@ $unregister   = FALSE;
 $import_sql   = TRUE;
 $image_dir    = TRUE;
 $file_dir     = TRUE;
-$version_http = 'http://phpwebsite.appstate.edu/test/update.ini';
+$version_http = 'http://phpwebsite.appstate.edu/downloads/modules/filecabinet/check.xml';
 $about        = FALSE;
 $priority     = 50;
 

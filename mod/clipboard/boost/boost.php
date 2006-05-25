@@ -13,7 +13,7 @@ $unregister   = FALSE;
 $import_sql   = FALSE;
 $image_dir    = FALSE;
 $file_dir     = FALSE;
-$version_http = 'http://phpwebsite.appstate.edu/test/update.ini';
+$version_http = 'http://phpwebsite.appstate.edu/downloads/modules/clipboard/check.xml';
 $about        = FALSE;
 $priority     = 50;
 

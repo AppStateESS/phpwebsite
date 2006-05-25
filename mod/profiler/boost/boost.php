@@ -7,8 +7,9 @@
 
 $proper_name  = 'Profiler';
 $version      = '0.1.0';
-$register     = FALSE; // You could also leave this blank
-$unregister   = FALSE; // Ditto
+$version_http = 'http://phpwebsite.appstate.edu/downloads/modules/profiler/check.xml';
+$register     = FALSE;
+$unregister   = FALSE;
 $import_sql   = TRUE;
 $image_dir    = TRUE;
 $file_dir     = FALSE;

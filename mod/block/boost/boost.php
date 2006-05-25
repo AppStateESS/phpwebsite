@@ -12,7 +12,7 @@ $unregister   = FALSE;
 $import_sql   = TRUE;
 $image_dir    = TRUE;
 $file_dir     = FALSE;
-$version_http = 'http://phpwebsite.appstate.edu/block/update.ini';
+$version_http = 'http://phpwebsite.appstate.edu/downloads/modules/block/check.xml';
 $about        = FALSE;
 $priority     = 50;
 
