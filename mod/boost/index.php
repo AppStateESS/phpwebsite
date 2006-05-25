@@ -33,6 +33,7 @@ switch ($_REQUEST['action']){
 
  case 'check':
      PHPWS_Core::initModClass('boost', 'Action.php');
+     $content[] = PHPWS_Text::backLink(_('Return to Boost')) . '<br />';
      $content[] = Boost_Action::checkupdate($_REQUEST['opmod']);
      break;
 
@@ -42,6 +43,7 @@ switch ($_REQUEST['action']){
      break;
 
  case 'install':
+     $content[] = PHPWS_Text::backLink(_('Return to Boost')) . '<br />';
      PHPWS_Core::initModClass('boost', 'Action.php');
      $result = Boost_Action::installModule($_REQUEST['opmod']);
      if (PEAR::isError($result)) {
@@ -55,10 +57,12 @@ switch ($_REQUEST['action']){
 
  case 'uninstall':
      PHPWS_Core::initModClass('boost', 'Action.php');
+     $content[] = PHPWS_Text::backLink(_('Return to Boost')) . '<br />';
      $content[] = Boost_Action::uninstallModule($_REQUEST['opmod']);
      break;
 
  case 'update':
+     $content[] = PHPWS_Text::backLink(_('Return to Boost')) . '<br />';
      PHPWS_Core::initModClass('boost', 'Action.php');
      $content[] = Boost_Action::updateModule($_REQUEST['opmod']);
      break;
