@@ -142,6 +142,12 @@ class Webpage_Forms {
 
         return $content;
     }
+
+    function approval()
+    {
+        return 'hi';
+    }
+
 }
 
 ?>

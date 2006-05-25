@@ -102,6 +102,11 @@ class Webpage_Admin {
             }
             break;
 
+        case 'approve':
+            $title = _('Web Page Approval');
+            $content = Webpage_Forms::approval();
+            break;
+
         case 'join_page':
             if (!isset($_REQUEST['page_id'])) {
                 PHPWS_Core::errorPage('404');

@@ -221,6 +221,7 @@ class Webpage_Volume {
 
     function save()
     {
+        PHPWS_Core::initModClass('version', 'Version.php');
         if (empty($this->id)) {
             $new_vol = TRUE;
         } else {
@@ -239,6 +240,36 @@ class Webpage_Volume {
             $this->date_created = mktime();
         }
 
+        if (Current_User::isRestricted('webpage')) {
+            $approved = FALSE;
+        } else {
+            $approved = TRUE;
+        }
+
+        $version = & new Version('webpage_volume');
+        $version->setSource($this);
+        $version->setApproved($approved);
+        $result = $version->save();
+
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        if ($approved) {
+            if (empty($this->key_id)) {
+                $update = TRUE;
+            } else {
+                $update = FALSE;
+            }
+        
+            $this->saveKey();
+            if ($update) {
+                $version->setSource($this);
+                $version->save();
+            }
+        }
+
+        /*
         $this->resetDB();
 
         $result = $this->_db->saveObject($this);
@@ -254,6 +285,7 @@ class Webpage_Volume {
         }
         
         return $result;
+        */
     }
 
     function saveKey()
