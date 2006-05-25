@@ -38,6 +38,13 @@ If you are going to use the approval functionality, I suggest two
 columns on your items table - one to store the item's creator's id and
 an approval flag.
 
+The creator id will let you check if the current user is the original
+author. Usually you want to give this person access to an item
+regardless of group id settings.
+
+The approval column makes it easier to ignore unapproved items when
+building lists.
+
 To use the approval functionality, you should familiarize yourself
 with item permissioning under the User module: the basics of which
 will be covered in this documentation.
@@ -208,7 +215,7 @@ Now we just save our version.
 
 Saving a version
 ---------------------------------------------------------------------
-When an approved version is saved, it like making a backup. You can
+When an approved version is saved, it is like making a backup. You can
 restore these backups later if you wish.
 
 An unapproved version isn't made active until it is approved by an
@@ -238,6 +245,7 @@ $version = & new Version('my_item_table');
 $version->setSource($my_item);
 $version->setApproved($my_item->approved);
 $version->save();
+
 
 Here is what we have accomplished:
 1) If the user is restricted and
@@ -448,7 +456,8 @@ you can just call the "flush" function like so:
 Version::flush('my_mod_table', $item_id);
 
 All previous versions will be removed from the database forever (be
-careful!).
+careful!). You should perform a flush after permanently deleting a
+version's source.
 
 
 Conclusion
