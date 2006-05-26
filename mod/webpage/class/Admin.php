@@ -67,6 +67,7 @@ class Webpage_Admin {
         case 'post_page':
         case 'activate':
         case 'deactivate':
+        case 'approval_view':
             if ( ( $volume->id 
                    && ( !Current_User::isUser($volume->create_user_id) && !Current_User::authorized('webpage', 'edit_page', $volume->id) ) )
                  || ( !Current_User::authorized('webpage', 'edit_page') ) ) {
@@ -124,6 +125,14 @@ class Webpage_Admin {
             $volume->dropPage((int)$_REQUEST['page_id']);
             Webpage_Admin::sendMessage(_('Page removed.'),
                                        'edit_webpage&tab=header&volume_id=' . $volume->id);
+            break;
+
+        case 'approval_view':
+            $title = _('Approval view');
+            if (!isset($_REQUEST['version_id'])) {
+                PHPWS_Core::errorPage('404');
+            }
+            $content = Webpage_Admin::approvalView($_REQUEST['version_id']);
             break;
 
         case 'edit_page':
@@ -364,6 +373,39 @@ class Webpage_Admin {
         }
     }
 
+    function approvalView($version_id)
+    {
+        PHPWS_Core::initModClass('version', 'Version.php');
+        $volume = & new Webpage_Volume;
+        $version = & new Version('webpage_volume', (int)$version_id);
+        $version->loadObject($volume);
+
+        $volume->loadPages();
+
+        $approval = & new Version_Approval('webpage', 'webpage_page', 'Webpage_Page');
+        $approval->_db->addOrder('page_number');
+        $pages = $approval->get(TRUE);
+
+        $template['PAGE_TITLE'] = $volume->title;
+        $template['SUMMARY']    = $volume->getSummary();
+        $template['SUMMARY_LABEL'] = _('Summary');
+
+        if (!empty($pages)) {
+            foreach ($pages as $wp) {
+                $page = & new Webpage_Page;
+                $wp['id'] = $wp['source_id'];
+                PHPWS_Core::plugObject($page, $wp);
+                $subtpl = $page->getTplTags(FALSE, FALSE);
+                $subtpl['PAGE_NUMBER_LABEL'] = _('Page');
+                $template['multiple'][] = $subtpl;
+            }
+            $template['PAGE_MESSAGE'] = _('You will only see the pages that were altered.');
+        } else {
+            $template['PAGE_MESSAGE'] = _('No pages are included in the approval.');
+        }
+
+        return PHPWS_Template::process($template, 'webpage', 'approval_view.tpl');
+    }
 
     function deleteWebpages()
     {

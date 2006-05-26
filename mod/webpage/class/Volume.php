@@ -438,7 +438,7 @@ class Webpage_Volume {
         return $content;
     }
 
-    function showAllPages()
+    function showAllPages($admin=FALSE)
     {
         $template = $this->getTplTags(FALSE);
         foreach ($this->_pages as $page) {
@@ -511,6 +511,12 @@ class Webpage_Volume {
         }
     }
 
+    function approval_view()
+    {
+        $template['TITLE'] = $this->title;
+        $template['SUMMARY'] = $this->getSummary();
+        return PHPWS_Template::process($template, 'webpage', 'approval_list.tpl');
+    }
 }
 
 ?>

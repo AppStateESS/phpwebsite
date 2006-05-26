@@ -145,7 +145,14 @@ class Webpage_Forms {
 
     function approval()
     {
-        return 'hi';
+        PHPWS_Core::initModClass('version', 'Version.php');
+        $approval = & new Version_Approval('webpage', 'webpage_volume', 'Webpage_Volume', 'approval_view');
+        $approval->setEditUrl('index.php');
+        $approval->setViewUrl('index.php?module=webpage&amp;wp_admin=approval_view&amp;authkey=' . Current_User::getAuthKey());
+        $approval->setApproveUrl('index.php');
+        $approval->setDisapproveUrl('index.php');
+
+        return $approval->getList();
     }
 
 }
