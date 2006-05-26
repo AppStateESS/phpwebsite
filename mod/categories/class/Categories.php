@@ -197,14 +197,13 @@ class Categories{
     function getSimpleLinks($key=NULL, $show_uncategorized=FALSE)
     {
         $link = NULL;
-
         if (empty($key)) {
             $key = Key::getCurrent();
         } elseif (is_numeric($key)) {
             $key = & new Key($key);
         }
 
-        if (!$key->id) {
+        if (!Key::checkKey($key, FALSE)) {
             return NULL;
         }
 
