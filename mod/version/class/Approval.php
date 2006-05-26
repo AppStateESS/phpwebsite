@@ -31,8 +31,8 @@ class Version_Approval {
         $this->setSourceTable($table);
         if (class_exists($class_name)) {
             $methods = get_class_methods($class_name);
+            $this->setClass($class_name);
             if (in_array(strtolower($view_method), $methods)) {
-                $this->setClass($class_name);
                 $this->setViewMethod($view_method);
             }
         }
