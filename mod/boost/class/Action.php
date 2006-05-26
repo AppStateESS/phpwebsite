@@ -75,6 +75,20 @@ class Boost_Action {
         PHPWS_Core::initCoreClass('Module.php');
         $module = & new PHPWS_Module($base_mod);
         $dependents = $module->isDependedUpon();
+        if (empty($dependents)) {
+            return _('This module does not have dependents.');
+        }
+
+        $template['TITLE'] = sprintf(_('%s Dependencies'), $module->getProperName());
+
+        $content[] = _('The following modules depend on this module to function:');
+        foreach ($dependents as $mod) {
+            $dep_module = & new PHPWS_Module($mod);
+            $content[] = $dep_module->getProperName();
+        }
+        
+        $template['CONTENT'] = implode('<br />', $content);
+        return PHPWS_Template::process($template, 'boost', 'main.tpl');
     }
 
     function showDependency($base_module_title)
@@ -109,7 +123,7 @@ class Boost_Action {
                 $pass = FALSE;
             }
 
-            $tpl['URL'] = sprintf('<a href="%s">%s</a>', $module['URL'], _('More info'));
+            $tpl['URL'] = sprintf('<a href="%s" target="_blank">%s</a>', $module['URL'], _('More info'));
 
             if ($pass) {
                 $tpl['STATUS_GOOD'] = _('Passed!');

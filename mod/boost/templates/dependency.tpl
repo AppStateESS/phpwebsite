@@ -1,5 +1,5 @@
 <h1>{TITLE}</h1>
-<table cellpadding="4" width="100%">
+<table cellpadding="4" width="99%">
   <tr>
     <th>{MODULE_NAME_LABEL}</th>
     <th>{VERSION_NEEDED_LABEL}</th>
