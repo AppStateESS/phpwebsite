@@ -440,10 +440,12 @@ class Webpage_Volume {
 
     function showAllPages()
     {
+        $template = $this->getTplTags(FALSE);
         foreach ($this->_pages as $page) {
-            $content[] = $page->view(FALSE, TRUE);
+            $template['multiple'][] = $page->getTplTags(FALSE, FALSE);
         }
-        return implode('', $content);
+
+        return PHPWS_Template::process($template, 'webpage', 'multiple/default.tpl');
     }
 
     function flagKey()

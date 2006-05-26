@@ -142,7 +142,14 @@ class Webpage_Page {
         }
     }
 
-    function getTplTags($admin=FALSE)
+    function viewBasic()
+    {
+        $template['TITLE'] = $this->title;
+        $template['CONTENT'] = $this->getContent();
+        
+    }
+
+    function getTplTags($admin=FALSE, $include_header=TRUE)
     {
         $template['TITLE'] = $this->title;
         $template['CONTENT'] = $this->getContent();
@@ -177,7 +184,7 @@ class Webpage_Page {
             $template['ADMIN_LINKS'] = implode(' | ', $links);
         }
 
-        if (!empty($this->_volume)) {
+        if (!empty($this->_volume) && $include_header) {
             $header_tags = $this->_volume->getTplTags(!$admin);
             $template = array_merge($template, $header_tags);
         }
@@ -214,8 +221,7 @@ class Webpage_Page {
         if (!is_file($this->getTemplateDirectory() . $this->template)) {
             return implode('<br />', $template);
         }
-
-        
+       
         $this->_volume->flagKey();
         
         if (Current_User::allow('webpage', 'edit_page', $this->id)) {
