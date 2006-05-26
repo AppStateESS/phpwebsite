@@ -14,6 +14,7 @@ class Webpage_Page {
     var $content     = NULL;
     var $page_number = NULL;
     var $template    = NULL;
+    var $approved    = 0;
     var $_error      = NULL;
     var $_volume     = NULL;
 
@@ -127,6 +128,13 @@ class Webpage_Page {
 
         $this->template = strip_tags($_POST['template']);
 
+        if (isset($_POST['page_version_id']) || Current_User::isRestricted('webpage')) {
+            $this->approved = 0;
+        } else {
+            $this->approved = 1;
+        }
+
+
         if (isset($errors)) {
             return $errors;
         } else {
@@ -207,20 +215,21 @@ class Webpage_Page {
             return implode('<br />', $template);
         }
 
+        
         $this->_volume->flagKey();
-
+        
         if (Current_User::allow('webpage', 'edit_page', $this->id)) {
             $vars = array('wp_admin'  => 'edit_page',
                           'page_id'   => $this->id,
                           'volume_id' => $this->volume_id);
-
+            
             $links[] = PHPWS_Text::secureLink(_('Edit web page'), 'webpage', $vars);
-
+            
             $vars['wp_admin'] = 'edit_header';
             $links[] = PHPWS_Text::secureLink(_('Edit page header'), 'webpage', $vars);
             $links[] = PHPWS_Text::secureLink(_('View page list'), 'webpage', array('tab' => 'list'));
-
-            MiniAdmin::add('webpage', $links);
+            
+                MiniAdmin::add('webpage', $links);
         }
 
         return PHPWS_Template::process($template, 'webpage', 'page/' . $this->template);
@@ -254,6 +263,7 @@ class Webpage_Page {
 
     function save()
     {
+        PHPWS_Core::initModClass('version', 'Version.php');        
         if (empty($this->volume_id)) {
             return FALSE;
         }
@@ -272,15 +282,24 @@ class Webpage_Page {
             $this->page_number = count($volume->_pages) + 1;
         }
 
-        $db = & new PHPWS_DB('webpage_page');
-        $result = $db->saveObject($this);
+        if ($this->approved || !$this->id) {
+            $db = & new PHPWS_DB('webpage_page');
+            $result = $db->saveObject($this);
+            if (PEAR::isError($result)) {
+                return $result;
+            }
+        }
 
-        if (!PEAR::isError($result)) {
+        if ($this->approved) {
             $search = & new Search($volume->key_id);
             $search->addKeywords($this->title . ' ' .$this->content);
             $sResult = $search->save();
         }
-        return $result;
+
+        $version = & new Version('webpage_page');
+        $version->setSource($this);
+        $version->setApproved($this->approved);
+        return $version->save();
     }
 
 }

@@ -20,8 +20,8 @@ class Webpage_Admin {
      */
     function main()
     {
-        $title = 'Missing title';
-        $content = 'Missing content';
+        $title = NULL;
+        $content = NULL;
         $message = Webpage_Admin::getMessage();
 
         if (!Current_User::allow('webpage')) {
@@ -67,8 +67,9 @@ class Webpage_Admin {
         case 'post_page':
         case 'activate':
         case 'deactivate':
-            if ( ( $volume->id && !Current_User::authorized('webpage', 'edit_page', $volume->id) ) ||
-                 ( !Current_User::authorized('webpage', 'edit_page') ) ) {
+            if ( ( $volume->id 
+                   && ( !Current_User::isUser($volume->create_user_id) && !Current_User::authorized('webpage', 'edit_page', $volume->id) ) )
+                 || ( !Current_User::authorized('webpage', 'edit_page') ) ) {
                 Current_User::disallow();
             }
 

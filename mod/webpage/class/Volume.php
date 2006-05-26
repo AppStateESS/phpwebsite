@@ -13,21 +13,24 @@ if (!defined('WP_VOLUME_DATE_FORMAT')) {
 }
 
 class Webpage_Volume {
-    var $id            = 0;
-    var $key_id        = 0;
-    var $title         = NULL;
-    var $summary       = NULL;
-    var $date_created  = 0;
-    var $date_updated  = 0;
-    var $created_user  = NULL;
-    var $updated_user  = NULL;
-    var $frontpage     = FALSE;
-    var $_current_page = 1;
+    var $id             = 0;
+    var $key_id         = 0;
+    var $title          = NULL;
+    var $summary        = NULL;
+    var $date_created   = 0;
+    var $date_updated   = 0;
+    var $create_user_id = 0;
+    var $created_user   = NULL;
+    var $update_user_id = 0;
+    var $updated_user   = NULL;
+    var $frontpage      = FALSE;
+    var $approved       = 0;
+    var $_current_page  = 1;
     // array of pages indexed by order, value is id
-    var $_key          = NULL;
-    var $_pages        = NULL;
-    var $_error        = NULL;
-    var $_db           = NULL;
+    var $_key           = NULL;
+    var $_pages         = NULL;
+    var $_error         = NULL;
+    var $_db            = NULL;
 
     function Webpage_Volume($id=NULL)
     {
@@ -127,6 +130,12 @@ class Webpage_Volume {
             $this->summary = NULL;
         } else {
             $this->setSummary($_POST['summary']);
+        }
+
+        if (isset($_POST['volume_version_id']) || Current_User::isRestricted('webpage')) {
+            $this->approved = 0;
+        } else {
+            $this->approved = 1;
         }
 
         if (isset($errors)) {
@@ -232,60 +241,45 @@ class Webpage_Volume {
             return PHPWS_Error::get(WP_TPL_TITLE_MISSING, 'webpages', 'Volume::save');
         }
 
-
+        $this->update_user_id = Current_User::getId();
         $this->updated_user = Current_User::getUsername();
         $this->date_updated = mktime();
         if (!$this->id) {
+            $this->create_user_id = Current_User::getId();
             $this->created_user = Current_User::getUsername();
             $this->date_created = mktime();
         }
 
-        if (Current_User::isRestricted('webpage')) {
-            $approved = FALSE;
-        } else {
-            $approved = TRUE;
+
+        if ($this->approved || !$this->id) {
+            $this->resetDB();
+            $result = $this->_db->saveObject($this);
+            if (PEAR::isError($result)) {
+                return $result;
+            }
         }
+
+        if ($this->approved) {
+            $update = (!$this->key_id) ? TRUE : FALSE;
+
+            $this->saveKey();
+            if ($update) {
+                $this->_db->saveObject($this);
+            }
+            $search = & new Search($this->key_id);
+            $search->addKeywords($this->title);
+            $search->addKeywords($this->summary);
+            $result = $search->save();
+            if (PEAR::isError($result)) {
+                return $result;
+            }
+        }
+
 
         $version = & new Version('webpage_volume');
         $version->setSource($this);
-        $version->setApproved($approved);
-        $result = $version->save();
-
-        if (PEAR::isError($result)) {
-            return $result;
-        }
-
-        if ($approved) {
-            if (empty($this->key_id)) {
-                $update = TRUE;
-            } else {
-                $update = FALSE;
-            }
-        
-            $this->saveKey();
-            if ($update) {
-                $version->setSource($this);
-                $version->save();
-            }
-        }
-
-        /*
-        $this->resetDB();
-
-        $result = $this->_db->saveObject($this);
-
-        if (PEAR::isError($result)) {
-            return $result;
-        }
-
-        $this->saveKey();
-
-        if ($new_vol) {
-            $result = $this->_db->saveObject($this);
-        }
-        
-        return $result;
-        */
+        $version->setApproved($this->approved);
+        return $version->save();
     }
 
     function saveKey()
@@ -427,18 +421,29 @@ class Webpage_Volume {
         }
 
         if (!empty($this->_pages)) {
-            $oPage = $this->getCurrentPage();
-            if (!is_object($oPage)) {
-                exit('major error');
+            if ($page == 'all') {
+                $content = $this->showAllPages();
+            } else {
+                $oPage = $this->getCurrentPage();
+                if (!is_object($oPage)) {
+                    exit('major error');
+                }
+                $content = $oPage->view();
             }
-            $content = $oPage->view();
-
         } else {
             $content = _('Page is not complete.');
         }
 
         $this->flagKey();
         return $content;
+    }
+
+    function showAllPages()
+    {
+        foreach ($this->_pages as $page) {
+            $content[] = $page->view(FALSE, TRUE);
+        }
+        return implode('', $content);
     }
 
     function flagKey()

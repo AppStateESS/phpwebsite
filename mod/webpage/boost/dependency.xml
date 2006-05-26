@@ -4,18 +4,18 @@
     <title>menu</title>
     <properName>Menu Manager</properName>
     <version>0.0.1</version>
-    <url>http://phpwebsite.appstate.edu/module_info/menu.html</url>
+    <url>http://phpwebsite.appstate.edu/menu</url>
   </module>
   <module>
     <title>related</title>
     <properName>Related</properName>
     <version>0.0.1</version>
-    <url>http://phpwebsite.appstate.edu/module_info/related.html</url>
+    <url>http://phpwebsite.appstate.edu/related</url>
   </module>
   <module>
     <title>categories</title>
     <properName>Categories</properName>
     <version>2.0.1</version>
-    <url>http://phpwebsite.appstate.edu/module_info/categories.html</url>
+    <url>http://phpwebsite.appstate.edu/categories</url>
   </module>
 </dependency>
