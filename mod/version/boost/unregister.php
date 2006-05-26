@@ -9,20 +9,20 @@
 
 function version_unregister($module, &$content)
 {
-    $uninstall_file = PHPWS_SOURCE_DIR . 'mod/' . $module . '/boost/uninstall.sql';
+    $install_file = PHPWS_SOURCE_DIR . 'mod/' . $module . '/boost/install.sql';
 
-    if (!is_file($uninstall_file)) {
+    if (!is_file($install_file)) {
         return;
     }
 
-    $uninstall_sql = file($uninstall_file);
+    $install_sql = file($install_file);
 
-    if (empty($uninstall_file)) {
+    if (empty($install_file)) {
         return;
     }
 
-    foreach ($uninstall_sql as $sql) {
-        if (!stristr($sql, 'drop')) {
+    foreach ($install_sql as $sql) {
+        if (!preg_match('/^create /i', $sql)) {
             continue;
         }
 
