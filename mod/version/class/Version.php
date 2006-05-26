@@ -508,6 +508,10 @@ class Version {
         return TRUE;
     }
 
+
+    /**
+     * Replaces a current version with an older version
+     */
     function restore(){
         $db = & new PHPWS_DB($this->source_table);
         $db->addWhere('id', $this->source_id);

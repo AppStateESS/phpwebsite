@@ -10,6 +10,8 @@
 class Version_Admin {
     function main()
     {
+        $message = $title = $content = NULL;
+
         if (isset($_REQUEST['command'])) {
             $command = $_REQUEST['command'];
         } else {
@@ -18,19 +20,25 @@ class Version_Admin {
 
         switch ($command) {
         case 'settings':
+            $title = _('Version settings');
             $content = Version_Admin::settings();
             break;
 
         case 'post_setting':
             PHPWS_Settings::set('version', 'saved_versions', $_REQUEST['saved_versions']);
             PHPWS_Settings::save('version');
+            $title = _('Version settings');
+            $message = _('Settings saved.');
             $content = Version_Admin::settings();
             break;
             
         }
 
-        Layout::add($content);
+        $template['TITLE']   = $title;
+        $template['CONTENT'] = $content;
+        $template['MESSAGE'] = $message;
 
+        Layout::add(PHPWS_ControlPanel::display(PHPWS_Template::process($template, 'version', 'main.tpl')));
     }
 
 
