@@ -96,10 +96,6 @@ class Blog {
             return $result;
         }
 
-        $version->setSource($this);
-        $version->setApproved($this->approved);
-        $version->save();
-
         if ($this->approved) {
             $update = (!$this->key_id) ? TRUE : FALSE;
 
@@ -111,11 +107,15 @@ class Blog {
             $search->addKeywords($this->title);
             $search->addKeywords($this->entry);
             $result = $search->save();
-            return $result;
+            if (PEAR::isError($result)) {
+                return $result;
+            }
         }
 
-        return TRUE;
 
+        $version->setSource($this);
+        $version->setApproved($this->approved);
+        return $version->save();
     }
 
     function saveKey()
