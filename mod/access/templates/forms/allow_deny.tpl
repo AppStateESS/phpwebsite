@@ -1,5 +1,4 @@
 {START_FORM}
-
 <h2>{ALLOW_TITLE}</h2>
 <div class="align-center">{ALLOW_ADDRESS} {ADD_ALLOW_ADDRESS}</div>
 <table cellpadding="4" width="99%">
@@ -55,6 +54,5 @@
 {CHECK_ALL_DENY}
 <div class="align-center">{DENY_ACTION} {DENY_ACTION_SUBMIT}</div>
 {DENY_MESSAGE}
-
-
 {END_FORM}
+<p class="align-center"><strong>{WARNING}</strong></p>

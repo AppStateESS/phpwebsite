@@ -143,7 +143,7 @@ class Access_Forms {
 
         PHPWS_Core::initModClass('access', 'Allow_Deny.php');
 
-        $form = & new PHPWS_Form;
+        $form = & new PHPWS_Form('allow_deny');
         $form->addHidden('module', 'access');
         $form->addHidden('command', 'post_deny_allow');
 
@@ -200,10 +200,10 @@ class Access_Forms {
         $js_vars['action_match'] = 'delete';
         $js_vars['message']      = _('Are you sure you want to delete the checked ips?');
 
-        $js_vars['select_id']    = 'allow_action';
+        $js_vars['select_id']    = 'allow_deny_allow_action';
         $template['ALLOW_ACTION_SUBMIT'] = javascript('select_confirm', $js_vars);
 
-        $js_vars['select_id']    = 'deny_action';
+        $js_vars['select_id']    = 'allow_deny_deny_action';
         $template['DENY_ACTION_SUBMIT'] = javascript('select_confirm', $js_vars);
 
 
@@ -215,7 +215,7 @@ class Access_Forms {
             $template['ALLOW_MESSAGE'] = _('No allowed ip addresses found.');
         } else {
             foreach ($result as $allow_deny) {
-                $action = 'Edit';
+                $action = PHPWS_Text::secureLink(_('Delete'), 'access', array('ad_id'=>$allow_deny->id, 'command'=>'delete_allow_deny'));
                 if ($allow_deny->active) {
                     $active = _('Yes');
                 } else {
@@ -246,16 +246,17 @@ class Access_Forms {
             }
         }
 
-        $template['CHECK_ALL_ALLOW'] = javascript('check_all', array('checkbox_name' => 'allows[]'));
-        $template['CHECK_ALL_DENY'] = javascript('check_all', array('checkbox_name' => 'denys[]'));
+        $template['CHECK_ALL_ALLOW'] = javascript('check_all', array('checkbox_name' => 'allows'));
+        $template['CHECK_ALL_DENY'] = javascript('check_all', array('checkbox_name' => 'denys'));
         $template['ACTIVE_LABEL']     = _('Active?');
         $template['ALLOW_TITLE']      = _('Allowed IPs');
         $template['DENY_TITLE']       = _('Denied IPs');
         $template['ACTION_LABEL']     = _('Action');
         $template['IP_ADDRESS_LABEL'] = _('IP Address');
+        $template['WARNING']          = _('Remember to "Update" your access file when finished changing IP rules.');
+
 
         return PHPWS_Template::process($template, 'access', 'forms/allow_deny.tpl');
-
     }
 
     function shortcut_menu()

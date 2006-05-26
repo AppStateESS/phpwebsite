@@ -1,11 +1,33 @@
 <?php
 
+  /**
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
+   */
+
 class Access_Allow_Deny {
     var $id            = 0;
     var $ip_address    = NULL;
     var $allow_or_deny = 0; // 0 deny | 1 allow
     var $active        = 0;
     var $_db           = NULL;
+
+    function Access_Allow_Deny($id=0)
+    {
+        if (empty($id)) {
+            return;
+        }
+
+        $this->id = (int)$id;
+        $result = $this->init();
+    }
+
+    function init()
+    {
+        $this->resetDB();
+        $this->_db->addWhere('id', $this->id);
+        return $this->_db->loadObject($this);
+    }
 
     function resetDB()
     {
@@ -88,6 +110,13 @@ class Access_Allow_Deny {
     {
         $this->resetDB();
         return $this->_db->saveObject($this);
+    }
+
+    function delete()
+    {
+        $this->resetDB();
+        $this->_db->addWhere('id', $this->id);
+        return $this->_db->delete();
     }
 
 }

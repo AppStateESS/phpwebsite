@@ -61,6 +61,13 @@ class Access {
                 Access::sendMessage(NULL, 'deny_allow');
                 break;
 
+            case 'delete_allow_deny':
+                PHPWS_Core::initModClass('access', 'Allow_Deny.php');
+                $allow_deny = & new Access_Allow_Deny($_GET['ad_id']);
+                $allow_deny->delete();
+                Access::sendMessage(_('IP address deleted.'), 'deny_allow');
+                break;
+
             case 'deny_allow':
                 PHPWS_Core::initModClass('access', 'Forms.php');
                 $title = _('Denys and Allows');
