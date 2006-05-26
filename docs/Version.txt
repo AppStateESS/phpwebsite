@@ -434,7 +434,7 @@ $content = $restore->getList();
 Layout::add($content);
 
 
-Restoring or Removing Version
+Restoring or Removing a Version
 -----------------------------------------------------------------------
 Like approval, check to make sure the user has the proper
 permissions. Now the easy part:
