@@ -92,14 +92,34 @@ class Version_Approval {
         $this->view_method = $view_method;
     }
 
-    function get()
+
+    /**
+     * Returns an array of unapproved versions. Mainly used privately
+     * within class but may be called publically.
+     */
+    function get($obj_mode=TRUE)
     {
         $this->_db->addColumn('*');
         $this->_db->addColumn('users.username');
         $this->_db->addWhere('vr_approved', 0);
         $this->_db->addWhere('vr_creator', 'users.id');
 
-        return $this->_db->select();
+        $result = $this->_db->select();
+
+        if ($obj_mode) {
+            if (PEAR::isError($result) || empty($result)) {
+                return $result;
+            }
+
+            foreach ($result as $ver_arr) {
+                $version = & new Version($this->source_table);
+                $version->_plugInVersion($ver_arr);
+                $listing[$version->id] = $version;
+            }
+            return $listing;
+        } else {
+            return $result;
+        }
     }
 
     function getList($restrict_approval=TRUE)
@@ -112,7 +132,7 @@ class Version_Approval {
             return FALSE;
         }
     
-        $result = $this->get();
+        $result = $this->get(FALSE);
 
 
         if (PEAR::isError($result)) {
