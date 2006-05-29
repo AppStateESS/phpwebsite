@@ -57,7 +57,7 @@ if (!$setup->checkDirectories($content)){
 
 switch ($step){
  case '0':
-     $title .=  'Beta Setup';
+     $title .=  _('Site Setup');
      $setup->welcome($content);
      break;
 
