@@ -88,6 +88,12 @@ class Current_User {
         return $_SESSION['User']->getUnrestrictedLevels();
     }
 
+    /**
+     * Returns true if the user is restricted. Note that false will be
+     * returned on unrestricted users AND users who do not have module
+     * permission. User permission must be checked separately.
+     * You may want to use !isUnrestricted instead.
+     */
     function isRestricted($module)
     {
         if (Current_User::isDeity()) {
@@ -99,7 +105,7 @@ class Current_User {
     }
 
     /**
-     * @param id integer
+     * @param integer id
      * @return True, if current user's id equals the parameter
      */
     function isUser($id)
@@ -107,12 +113,21 @@ class Current_User {
         return ($_SESSION['User']->id == $id) ? TRUE : FALSE;
     }
 
+    /**
+     * Returns true is the user has unrestricted access to a module.
+     * Unlike isRestricted, user must be logged in and have module access
+     */
     function isUnrestricted($module)
     {
         if (Current_User::isDeity()) {
             return TRUE;
         }
+
         if (empty($module)) {
+            return FALSE;
+        }
+
+        if (!Current_User::allow($module)) {
             return FALSE;
         }
 
