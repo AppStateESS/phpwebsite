@@ -401,8 +401,14 @@ class PHPWS_Text {
 
     /**
      * Makes the index string for moduleLink. Can also be called alone
+     * User module must be in use.
      *
      * @author Matthew McNaney <matt at tux dot appstate dot edu>
+     * @param string  module      Name of module for link
+     * @param array   getVars     Associative array of get values
+     * @param boolean secure      If true, adds authkey to link
+     * @param boolean add_base    If true, add the site url to the address
+     * @param boolean convert_amp If true, use "&amp;" instead of "&"
      */
     function linkAddress($module=NULL, $getVars=NULL, $secure=FALSE, $add_base=FALSE, $convert_amp=TRUE){
         if (Current_User::isLogged() && $secure) {
