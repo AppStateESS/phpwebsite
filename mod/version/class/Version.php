@@ -430,9 +430,10 @@ class Version {
             return $result;
         }
 
-        if (isset($parsed_columns['index'])) {
-            return PHPWS_DB::query($parsed_columns['index']);
-        }
+        $db = & new PHPWS_DB($this->version_table);
+        $db->createTableIndex('source_id');
+
+        return TRUE;
     }
 
     /**
