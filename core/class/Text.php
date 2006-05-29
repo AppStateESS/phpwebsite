@@ -1,17 +1,17 @@
 <?php
-/**
- * Controls the text parsing and profanity controls for phpWebSite
- * Also contains extra HTML utilities
- *
- * See config/core/text_settings.php for configuration options
- * 
- * @version $Id$
- * @author  Matthew McNaney <matt at tux dot appstate dot edu>
- * @author  Adam Morton
- * @author  Steven Levin
- * @author  Don Seiler <don@NOSPAM.seiler.us>
- * @package Core
- */
+  /**
+   * Controls the text parsing and profanity controls for phpWebSite
+   * Also contains extra HTML utilities
+   *
+   * See config/core/text_settings.php for configuration options
+   * 
+   * @version $Id$
+   * @author  Matthew McNaney <matt at tux dot appstate dot edu>
+   * @author  Adam Morton
+   * @author  Steven Levin
+   * @author  Don Seiler <don@NOSPAM.seiler.us>
+   * @package Core
+   */
 
 if (!defined('PHPWS_HOME_HTTP')) {
     define('PHPWS_HOME_HTTP', './');
@@ -543,7 +543,7 @@ class PHPWS_Text {
 
         foreach ($GLOBALS['embedded_tags'] as $module => $ignore) {
             if (empty($allowed_mods) || (is_array($allowed_mods) &&
-                in_array($module, $allowed_mods))) {
+                                         in_array($module, $allowed_mods))) {
                 $search = "\[($module):([\w\s:\.\?\!]*)\]";
                 $text = preg_replace_callback("/$search/Ui", 'getEmbedded', $text);
             }
@@ -606,9 +606,10 @@ class PHPWS_Text {
      * @author (or at corz.org
      * @modified Matt McNaney <matt at tux dot appstate dot edu>
      */
-    function bb2html($bb2html, $title) {
+    function bb2html($bb2html, $title)
+    {
         /*      pre-formatted text (even bbcode inside [pre] text will remain untouched, as it should be)
-                there may be multiple <pre> blocks, so we grab them all and create an array     */
+         there may be multiple <pre> blocks, so we grab them all and create an array     */
         $pre = array(); $i=0;
         while ($pre_str = stristr($bb2html,'[pre]')) {
             $pre_str = substr($pre_str,0,strpos($pre_str,'[/pre]')+6);
@@ -730,14 +731,19 @@ class PHPWS_Text {
         }
 
         return $bb2html;
-    }/* end function bb2html($bb2html, $title) */
+    }
+    /* end function bb2html($bb2html, $title) */
 
-    function getGetValues()
+    function getGetValues($address=NULL)
     {
-        if (isset($_SERVER['REDIRECT_QUERY_STRING'])) {
+        if (empty($address) && isset($_SERVER['REDIRECT_QUERY_STRING'])) {
             $query = $_SERVER['REDIRECT_QUERY_STRING'];
         } else {
-            $url = parse_url($_SERVER['REQUEST_URI']);
+            if (empty($address)) {
+                $address = $_SERVER['REQUEST_URI'];
+            }
+
+            $url = parse_url($address);
             extract($url);
         }
 
