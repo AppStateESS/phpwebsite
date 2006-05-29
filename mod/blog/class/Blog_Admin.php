@@ -100,7 +100,7 @@ class Blog_Admin {
             break;
 
         case 'disapprove_item':
-            if (Current_User::isRestricted('blog')) {
+            if (!Current_User::isUnrestricted('blog')) {
                 Current_User::disallow('Attempted to disapprove an entry as a restricted user.');
                 return;
             }
@@ -115,7 +115,7 @@ class Blog_Admin {
             break;
 
         case 'approve_item':
-            if (Current_User::isRestricted('blog')) {
+            if (!Current_User::isUnrestricted('blog')) {
                 Current_User::disallow('Attempted to approve an entry as a restricted user.');
                 return;
             }
