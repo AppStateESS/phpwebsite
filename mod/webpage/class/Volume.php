@@ -52,10 +52,27 @@ class Webpage_Volume {
         }
     }
 
+    function loadApprovalPages()
+    {
+        $this->loadPages();
+        $approval = & new Version_Approval('webpage', 'webpage_page', 'Webpage_Page');
+        $approval->_db->addOrder('page_number');
+        $pages = $approval->get();
+        if (!empty($pages)) {
+            foreach ($pages as $version) {
+                $page = & new Webpage_Page;
+                $page->_volume = &$this;
+                $version->loadObject($page);
+                $this->_pages[$page->id] = $page;
+            }
+        }
+    }
+
     function loadPages()
     {
         $db = & new PHPWS_DB('webpage_page');
         $db->addWhere('volume_id', $this->id);
+        $db->addWhere('approved', 1);
         $db->setIndexBy('id');
         $db->addOrder('page_number');
         $result = $db->getObjects('Webpage_Page');
@@ -221,11 +238,22 @@ class Webpage_Volume {
             return $result;
         }
 
+        $page_version = & new PHPWS_DB('webpage_page_version');
+        $page_version->addWhere('volume_id', $this->id);
+        $page_version->delete();
+
         Key::drop($this->key_id);
 
         $this->resetDB();
         $this->_db->addWhere('id', $this->id);
-        return $this->_db->delete();
+        $result = $this->_db->delete();
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        Version::flush('webpage_volume', $this->id);
+        
+        return TRUE;
     }
 
     function save()
@@ -262,7 +290,7 @@ class Webpage_Volume {
         if ($this->approved) {
             $update = (!$this->key_id) ? TRUE : FALSE;
 
-            $this->saveKey();
+            $key = $this->saveKey();
             if ($update) {
                 $this->_db->saveObject($this);
             }
@@ -275,10 +303,13 @@ class Webpage_Volume {
             }
         }
 
-
         $version = & new Version('webpage_volume');
         $version->setSource($this);
         $version->setApproved($this->approved);
+        if ($this->approved) {
+            $version->authorizeCreator($key);
+        }
+
         return $version->save();
     }
 
@@ -300,6 +331,7 @@ class Webpage_Volume {
 
         $result = $key->save();
         $this->key_id = $key->id;
+        return $key;
     }
 
 
@@ -335,7 +367,7 @@ class Webpage_Volume {
     }
 
 
-    function getTplTags($page_links=TRUE)
+    function getTplTags($page_links=TRUE, $version=0)
     {
         $template['PAGE_TITLE'] = $this->title;
         $template['SUMMARY'] = $this->getSummary();
@@ -368,9 +400,14 @@ class Webpage_Volume {
             $template['PAGE_LABEL'] = _('Page');
         }
 
-        if (Current_User::allow('webpage', 'edit_page', $this->id)) {
-            $template['EDIT_HEADER'] = PHPWS_Text::secureLink(_('Edit header'), 'webpage', array('wp_admin'=>'edit_header',
-                                                                                                 'volume_id' => $this->id));
+        if ( Current_User::isUser($this->create_user_id) || 
+             Current_User::allow('webpage', 'edit_page', $this->id)) {
+            $vars['wp_admin'] = 'edit_header';
+            $vars['volume_id'] = $this->id;
+            if ($version) {
+                $vars['version_id'] = $version;
+            }
+            $template['EDIT_HEADER'] = PHPWS_Text::secureLink(_('Edit header'), 'webpage', $vars);
         }
 
 
@@ -382,12 +419,12 @@ class Webpage_Volume {
         return $template;
     }
 
-    function viewHeader()
+    function viewHeader($version=0)
     {
         if (!$this->frontpage) {
             $this->flagKey();
         }
-        $template = $this->getTplTags(FALSE);
+        $template = $this->getTplTags(FALSE, $version);
         return PHPWS_Template::process($template, 'webpage', 'header.tpl');
     }
 

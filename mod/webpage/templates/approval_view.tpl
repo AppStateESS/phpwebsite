@@ -1,3 +1,4 @@
+<div>{LINKS}</div>
 <div class="box">
   <div class="box-title">
     <h1>{PAGE_TITLE}</h1>

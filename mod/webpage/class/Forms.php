@@ -8,23 +8,34 @@
 
 class Webpage_Forms {
 
-    function pagePanel($volume)
+    function pagePanel($volume, $version_id=0)
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link['link'] = 'index.php?module=webpage&wp_admin=edit_webpage&volume_id=' . $volume->id;
+        if ($version_id) {
+            $link['link'] .= '&version_id=' . $version_id;
+        }
+
         $link['title'] = _('Header');
         $tabs['header'] = $link;
 
         if (!empty($volume->_pages)) {
             foreach ($volume->_pages as $page_id => $page) {
                 $link['title'] = sprintf(_('Page %s'), $page->page_number);
-                $link['link'] = 'index.php?module=webpage&volume_id=' . $volume->id . '&wp_admin=edit_webpage&page_id=' . $page_id . '&volume_id=' . $volume->id;
+                $link['link'] = sprintf('index.php?module=webpage&wp_admin=edit_webpage&page_id=%s&volume_id=%s', $page_id, $volume->id);
+                if ($version_id) {
+                    $link['link'] .= '&version_id=' . $version_id;
+                }
                 $tabs['page_' . $page->page_number] = $link;
             }
         }
 
         if ($volume->id) {
             $link['link'] = 'index.php?module=webpage&volume_id=' . $volume->id;
+            if ($version_id) {
+                $link['link'] .= '&version_id=' . $version_id;
+            }
+
             $link['title'] = _('Add Page');
             $tabs['add_page'] = $link;
         }
@@ -36,7 +47,7 @@ class Webpage_Forms {
         return $panel;
     }
 
-    function editHeader(&$volume)
+    function editHeader(&$volume, &$version)
     {
         $form = & new PHPWS_Form;
         $form->addHidden('module', 'webpage');
@@ -49,11 +60,15 @@ class Webpage_Forms {
             $form->addSubmit(_('Create header'));
         }
 
+        if (!empty($version)) {
+            $form->addHidden('version_id', $version->id);
+        }
+
         $form->addText('title', $volume->title);
         $form->setLabel('title', _('Webpage title'));
         $form->setSize('title', 50);
 
-        $form->addTextArea('summary', $volume->getSummary());
+        $form->addTextArea('summary', $volume->summary);
         $form->useEditor('summary');
         $form->setLabel('summary', _('Summary'));
 
@@ -62,7 +77,7 @@ class Webpage_Forms {
     }
 
 
-    function editPage(&$page)
+    function editPage(&$page, &$version)
     {
         $form = & new PHPWS_Form;
         $form->addHidden('module', 'webpage');
@@ -76,11 +91,15 @@ class Webpage_Forms {
             $form->addSubmit(_('Add new page'));
         }
 
+        if (!empty($version)) {
+            $form->addHidden('version_id', $version->id);
+        }
+
         $form->addText('title', $page->title);
         $form->setLabel('title', _('Title'));
         $form->setSize('title', 50);
 
-        $form->addTextArea('content', $page->getContent());
+        $form->addTextArea('content', $page->content);
         $form->useEditor('content');
         $form->setLabel('content', _('Content'));
 
@@ -119,7 +138,7 @@ class Webpage_Forms {
         $tags['UPDATED_USER_LABEL'] = _('Updated by');
         $tags['FRONTPAGE_LABEL']    = _('Front page');
         $tags['ACTION_LABEL']       = _('Action');
-        $tags['CHECK_ALL'] = javascript('check_all', array('checkbox_name' => 'webpage[]'));
+        $tags['CHECK_ALL'] = javascript('check_all', array('checkbox_name' => 'webpage'));
 
         $js['value']        = _('Go');
         $js['select_id']    = $form->getId('wp_admin');
@@ -137,6 +156,7 @@ class Webpage_Forms {
         $pager->addRowTags('rowTags');
         $pager->addToggle(' ');
         $pager->setSearch('title');
+        $pager->addWhere('approved', 1);
 
         $content = $pager->get();
 
@@ -146,11 +166,19 @@ class Webpage_Forms {
     function approval()
     {
         PHPWS_Core::initModClass('version', 'Version.php');
+
         $approval = & new Version_Approval('webpage', 'webpage_volume', 'Webpage_Volume', 'approval_view');
-        $approval->setEditUrl('index.php');
-        $approval->setViewUrl('index.php?module=webpage&amp;wp_admin=approval_view&amp;authkey=' . Current_User::getAuthKey());
-        $approval->setApproveUrl('index.php');
-        $approval->setDisapproveUrl('index.php');
+        $vars['wp_admin'] = 'edit_webpage';
+        $approval->setEditUrl(PHPWS_Text::linkAddress('webpage', $vars, TRUE));
+
+        $vars['wp_admin'] = 'approval_view';
+        $approval->setViewUrl(PHPWS_Text::linkAddress('webpage', $vars, TRUE));
+
+        $vars['wp_admin'] = 'approve_webpage';
+        $approval->setApproveUrl(PHPWS_Text::linkAddress('webpage', $vars, TRUE));
+
+        $vars['wp_admin'] = 'disapprove_webpage';
+        $approval->setDisapproveUrl(PHPWS_Text::linkAddress('webpage', $vars, TRUE));
 
         return $approval->getList();
     }

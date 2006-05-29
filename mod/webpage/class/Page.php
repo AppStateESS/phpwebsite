@@ -149,27 +149,32 @@ class Webpage_Page {
         
     }
 
-    function getTplTags($admin=FALSE, $include_header=TRUE)
+    function getTplTags($admin=FALSE, $include_header=TRUE, $version=0)
     {
         $template['TITLE'] = $this->title;
         $template['CONTENT'] = $this->getContent();
         $template['CURRENT_PAGE'] = $this->page_number;
 
-        if (Current_User::allow('webpage', 'edit_page', $this->id)) {
+        if ( Current_User::isUser($this->_volume->create_user_id)
+             || Current_User::allow('webpage', 'edit_page', $this->id) ) {
             $vars = array('wp_admin'  => 'edit_page',
                           'page_id'   => $this->id,
                           'volume_id' => $this->volume_id);
+            if ($version) {
+                $vars['version_id'] = $version;
+            }
 
             $links[] = PHPWS_Text::secureLink(_('Edit'), 'webpage', $vars);
 
             if ($admin) {
-                $jsvar['QUESTION'] = _('Are you sure you want to remove this page?');
-                $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&wp_admin=delete_page&page_id=%s&volume_id=%s&authkey=%s',
-                                            $this->id, $this->volume_id, Current_User::getAuthKey());
-                $jsvar['LINK'] = ('Delete');
-
-                $links[] = javascript('confirm', $jsvar);
-
+                if (Current_User::allow('webpage', 'delete_page')) {
+                    $jsvar['QUESTION'] = _('Are you sure you want to remove this page?');
+                    $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&wp_admin=delete_page&page_id=%s&volume_id=%s&authkey=%s',
+                                                $this->id, $this->volume_id, Current_User::getAuthKey());
+                    $jsvar['LINK'] = ('Delete');
+                    
+                    $links[] = javascript('confirm', $jsvar);
+                }
                 if($this->page_number < count($this->_volume->_pages)) {
                     $jsvar['QUESTION'] = _('Are you sure you want to join this page to the next?');
                     $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&wp_admin=join_page&page_id=%s&volume_id=%s&authkey=%s',
@@ -185,7 +190,7 @@ class Webpage_Page {
         }
 
         if (!empty($this->_volume) && $include_header) {
-            $header_tags = $this->_volume->getTplTags(!$admin);
+            $header_tags = $this->_volume->getTplTags(!$admin, $version);
             $template = array_merge($template, $header_tags);
         }
         return $template;
@@ -214,9 +219,9 @@ class Webpage_Page {
         }
     }
 
-    function view($admin=FALSE)
+    function view($admin=FALSE, $version_id=0)
     {
-        $template = $this->getTplTags($admin);
+        $template = $this->getTplTags($admin, TRUE, $version_id);
 
         if (!is_file($this->getTemplateDirectory() . $this->template)) {
             return implode('<br />', $template);
@@ -224,10 +229,14 @@ class Webpage_Page {
        
         $this->_volume->flagKey();
         
-        if (Current_User::allow('webpage', 'edit_page', $this->id)) {
+        if ( Current_User::isUser($this->_volume->create_user_id) || 
+             Current_User::allow('webpage', 'edit_page', $this->id) ) {
             $vars = array('wp_admin'  => 'edit_page',
                           'page_id'   => $this->id,
                           'volume_id' => $this->volume_id);
+            if ($version_id) {
+                $vars['version_id'] = $version_id;
+            }
             
             $links[] = PHPWS_Text::secureLink(_('Edit web page'), 'webpage', $vars);
             
@@ -235,7 +244,7 @@ class Webpage_Page {
             $links[] = PHPWS_Text::secureLink(_('Edit page header'), 'webpage', $vars);
             $links[] = PHPWS_Text::secureLink(_('View page list'), 'webpage', array('tab' => 'list'));
             
-                MiniAdmin::add('webpage', $links);
+            MiniAdmin::add('webpage', $links);
         }
 
         return PHPWS_Template::process($template, 'webpage', 'page/' . $this->template);
@@ -300,6 +309,11 @@ class Webpage_Page {
             $search = & new Search($volume->key_id);
             $search->addKeywords($this->title . ' ' .$this->content);
             $sResult = $search->save();
+        } else {
+            $vol_version = & new Version('webpage_volume');
+            $vol_version->setSource($volume);
+            $vol_version->setApproved(FALSE);
+            $vol_version->save();
         }
 
         $version = & new Version('webpage_page');

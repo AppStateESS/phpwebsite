@@ -46,6 +46,16 @@ class Webpage_Admin {
             $volume = & new Webpage_Volume;
         }
 
+        if (!empty($_REQUEST['version_id'])) {
+            $version = & new Version('webpage_volume', (int)$_REQUEST['version_id']);
+            $version->loadObject($volume);
+            $volume->loadApprovalPages();
+            $version_id = $version->id;
+        } else {
+            $version_id = 0;
+            $version = NULL;
+        }
+
         if (isset($_REQUEST['page_id'])) {
             $page = $volume->getPagebyId($_REQUEST['page_id']);
         } else {
@@ -53,6 +63,7 @@ class Webpage_Admin {
             $page->volume_id = $volume->id;
             $page->_volume = &$volume;
         }
+
 
         // Determines if page panel needs creating
         // also see panel commands below switch to add content
@@ -74,7 +85,7 @@ class Webpage_Admin {
                 Current_User::disallow();
             }
 
-            $pagePanel = Webpage_Forms::pagePanel($volume);
+            $pagePanel = Webpage_Forms::pagePanel($volume, $version_id);
             $pagePanel->enableSecure();
         }
 
@@ -83,24 +94,25 @@ class Webpage_Admin {
         case 'new':
             $pagePanel->setCurrentTab('header');
             $title = _('Create header');
-            $content = Webpage_Forms::editHeader($volume);
+            $content = Webpage_Forms::editHeader($volume, $version);
             break;
 
         case 'edit_webpage':
             $title = sprintf(_('Administrate page: %s'), $volume->title);
             if ($page->id) {
                 $pagePanel->setCurrentTab('page_' . $page->page_number);
-                $content = $page->view(TRUE);
+                $content = $page->view(TRUE, $version_id);
             } elseif (stristr($pagePanel->getCurrentTab(), 'page_')) {
                 $page = $volume->getPagebyNumber(substr($pagePanel->getCurrentTab(), 5));
+
                 if ($page) {
-                    $content = $page->view(TRUE);
+                    $content = $page->view(TRUE, $version_id);
                 } else {
-                    $content = $volume->viewHeader();
+                    $content = $volume->viewHeader($version_id);
                 }
 
             } else {
-                $content = $volume->viewHeader();
+                $content = $volume->viewHeader($version_id);
             }
             break;
 
@@ -132,23 +144,35 @@ class Webpage_Admin {
             if (!isset($_REQUEST['version_id'])) {
                 PHPWS_Core::errorPage('404');
             }
-            $content = Webpage_Admin::approvalView($_REQUEST['version_id']);
+            $content = Webpage_Admin::approvalView($volume, $version);
+            break;
+
+        case 'approve_webpage':
+            if (!Current_User::isUnRestricted('webpage')) {
+                Current_User::disallow(_('Attempted to approve a webpage.'));
+                return;
+            }
+            if (Webpage_Admin::approveWebpage()) {
+                Webpage_Admin::sendMessage(_('Web page approved.'),'approve');
+            } else {
+                Webpage_Admin::sendMessage(_('A problem occurred when trying to approve a web page.'),'approve');
+            }
             break;
 
         case 'edit_page':
             $pagePanel->setCurrentTab('page_' . $page->page_number);
             $title = sprintf(_('Edit Page %s'),$page->page_number);
-            $content = Webpage_Forms::editPage($page);
+            $content = Webpage_Forms::editPage($page, $version);
             break;
 
         case 'add_page':
             $title = sprintf(_('Add page: %s'), $volume->title);
-            $content = Webpage_Forms::editPage($page);
+            $content = Webpage_Forms::editPage($page, $version);
             break;
 
         case 'edit_header':
             $title = sprintf(_('Edit header: %s'), $volume->title);
-            $content = Webpage_Forms::editHeader($volume);
+            $content = Webpage_Forms::editHeader($volume, $version);
             break;
 
         case 'post_header':
@@ -165,7 +189,7 @@ class Webpage_Admin {
             $result = $volume->post();
             if (is_array($result)) {
                 $title = sprintf(_('Edit header page: %s'), $volume->title);
-                $content = Webpage_Forms::editHeader($volume);
+                $content = Webpage_Forms::editHeader($volume, $version);
                 $message = implode('<br />', $result);
             } elseif (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
@@ -190,22 +214,21 @@ class Webpage_Admin {
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
                 Webpage_Admin::sendMessage(_('An error occurred while saving your page. Please check the error log.'),
-                                           sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s',
-                                                   $page->page_number, $volume->id, $page->id));
+                                           sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s&version_id=%s',
+                                                   $page->page_number, $volume->id, $page->id, $version_id));
                 
                 break;
             } elseif (is_array($result)) {
                 $title = sprintf(_('Edit Page %s'),$page->page_number);
                 $message = implode('<br />', $result);
-                $content = WebpageForms::editPage($page);
+                $content = WebpageForms::editPage($page, $version);
             } else {
                 $result = $page->save();
-
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
                     Webpage_Admin::sendMessage(_('An error occurred while saving your page. Please check the error log.'),
-                                               sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s',
-                                                       $page->page_number, $volume->id, $page->id));
+                                               sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s&version_id=%s',
+                                                       $page->page_number, $volume->id, $page->id, $version_id));
                 }
 
                 if ( isset($_POST['force_template']) ) {
@@ -213,12 +236,19 @@ class Webpage_Admin {
 
                     if (PEAR::isError($force_result)) {
                         PHPWS_Error::log($force_result);
-                        Webpage_Admin::sendMessage(_('Error: Unable to force template.'), sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s',
-                                                                                                  $page->page_number, $volume->id, $page->id));
+                        Webpage_Admin::sendMessage(_('Error: Unable to force template.'),
+                                                   sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s&version_id=%s',
+                                                           $page->page_number, $volume->id, $page->id, $version_id));
                     }
                 }
-                    Webpage_Admin::sendMessage(_('Page saved successfully.'), sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s',
-                                                                                      $page->page_number, $volume->id, $page->id));
+                if ($version_id) {
+                    $message = _('Page held for approval.');
+                } else {
+                    $message = _('Page saved successfully.');
+                }
+                Webpage_Admin::sendMessage($message,
+                                           sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s&version_id=%s',
+                                                   $page->page_number, $volume->id, $page->id, $version_id));
             }
             break;
             // end web page admin cases
@@ -330,6 +360,7 @@ class Webpage_Admin {
 
     function &cpanel()
     {
+        PHPWS_Core::initModClass('version', 'Version.php');
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link['link'] = 'index.php?module=webpage';
 
@@ -339,7 +370,10 @@ class Webpage_Admin {
         $link['title'] = _('List');
         $tabs['list'] = $link;
 
-        $link['title'] = _('Approval');
+        $version = & new Version('webpage_volume');
+        $unapproved = $version->countUnapproved();
+
+        $link['title'] = sprintf(_('Approval(%s)'), $unapproved);
         $tabs['approve'] = $link;
 
         $panel = & new PHPWS_Panel('wp_main_panel');
@@ -373,37 +407,46 @@ class Webpage_Admin {
         }
     }
 
-    function approvalView($version_id)
+    function approvalView(&$volume, &$version)
     {
-        PHPWS_Core::initModClass('version', 'Version.php');
-        $volume = & new Webpage_Volume;
-        $version = & new Version('webpage_volume', (int)$version_id);
-        $version->loadObject($volume);
-
-        $volume->loadPages();
-
         $approval = & new Version_Approval('webpage', 'webpage_page', 'Webpage_Page');
         $approval->_db->addOrder('page_number');
-        $pages = $approval->get(TRUE);
+        $pages = $approval->get();
 
         $template['PAGE_TITLE'] = $volume->title;
         $template['SUMMARY']    = $volume->getSummary();
         $template['SUMMARY_LABEL'] = _('Summary');
 
-        if (!empty($pages)) {
-            foreach ($pages as $wp) {
-                $page = & new Webpage_Page;
-                $wp['id'] = $wp['source_id'];
-                PHPWS_Core::plugObject($page, $wp);
-                $subtpl = $page->getTplTags(FALSE, FALSE);
+        if (!empty($volume->_pages)) {
+            foreach ($volume->_pages as $page) {
+                $subtpl = $page->getTplTags(FALSE, FALSE, $version->id);
                 $subtpl['PAGE_NUMBER_LABEL'] = _('Page');
                 $template['multiple'][] = $subtpl;
             }
-            $template['PAGE_MESSAGE'] = _('You will only see the pages that were altered.');
         } else {
-            $template['PAGE_MESSAGE'] = _('No pages are included in the approval.');
+            $template['PAGE_MESSAGE'] = _('No pages have been created.');
         }
 
+        $vars['wp_admin'] = 'approve';
+        $options[] = PHPWS_Text::secureLink(_('Approval list'), 'webpage', $vars);
+
+        $vars['version_id'] = $version->id;
+        $vars['volume_id']  = $volume->id;
+
+        $vars['wp_admin']   = 'edit_webpage';
+        $options[] = PHPWS_Text::secureLink(_('Edit'), 'webpage', $vars);
+
+        if (!$version->vr_approved && Current_User::isUnrestricted('webpage')) {
+            $vars['wp_admin']   = 'approve_webpage';
+
+            $options[] = PHPWS_Text::secureLink(_('Approve'), 'webpage', $vars);
+
+            $vars['wp_admin'] = 'disapprove_webpage';
+            $options[] = PHPWS_Text::secureLink(_('Disapprove'), 'webpage', $vars);
+        }
+
+
+        $template['LINKS'] = implode(' | ', $options);
         return PHPWS_Template::process($template, 'webpage', 'approval_view.tpl');
     }
 
@@ -421,6 +464,53 @@ class Webpage_Admin {
             if (PEAR::isError($result)) {
                 return $result;
             }
+        }
+        return TRUE;
+    }
+
+    function approveWebpage()
+    {
+        $version = & new Version('webpage_volume', $_GET['version_id']);
+        $volume = & new Webpage_Volume;
+        $version->loadObject($volume);
+        $pages = & new Version_Approval('webpage', 'webpage_page');
+        $pages->addWhere('volume_id', $volume->id);
+        $unapproved_pages = $pages->get(TRUE);
+
+        if (!empty($unapproved_pages)) {
+            foreach ($unapproved_pages as $pageVer) {
+                $pageObj = & new Webpage_Page;
+                $pageVer->loadObject($pageObj);
+                $pageObj->approved = 1;
+                $result = $pageObj->save();
+                if (PEAR::isError($result)) {
+                    PHPWS_Error::log($result);
+                    return FALSE;
+                }
+                $pageVer->setSource($pageObj);
+                $pageVer->setApproved(TRUE);
+                $result = $pageVer->save();
+                if (PEAR::isError($result)) {
+                    PHPWS_Error::log($result);
+                    return FALSE;
+                }
+            }
+        }
+
+        $volume->approved = 1;
+        $result = $volume->save();
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            return FALSE;
+        }
+
+
+        $version->setSource($volume);
+        $version->setApproved(TRUE);
+        $result = $version->save();
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            return FALSE;
         }
         return TRUE;
     }
