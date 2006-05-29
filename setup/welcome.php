@@ -5,8 +5,8 @@ $content[] = '<b>Welcome to the phpWebSite 1.0.0 (also called "Fallout") Release
 It has been redesigned and coded from the ground up.</p>
 
 <p>We have added MANY new features to phpWebSite to benefit users and developers alike.<br />
-We are hoping to receive bug reports from those interested in the software. Please report any problems to Sourceforge:<br />
-https://sourceforge.net/projects/phpwebsite<br />
+We are hoping to receive bug reports from those interested in the software.<br />Please report any problems to Sourceforge:<br />
+<a href="https://sourceforge.net/projects/phpwebsite" target="_blank">https://sourceforge.net/projects/phpwebsite</a>
 </p>';
 
 $content[] = '<p>If you have questions about its functioning and API, please visit '
