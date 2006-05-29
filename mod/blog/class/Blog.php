@@ -15,6 +15,7 @@ class Blog {
     var $author         = NULL;
     var $create_date    = NULL;
     var $allow_comments = 0;
+    var $approved       = 0;
     var $_error         = NULL;
 
     function Blog($id=NULL)
