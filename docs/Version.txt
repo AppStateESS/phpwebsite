@@ -338,7 +338,7 @@ the process after those links are clicked.
 First of all, make sure you are checking the permissions of the user
 who clicked those links.
 
-if (Current_User::isRestricted('my_mod')) {
+if (!Current_User::isUnrestricted('my_mod')) {
     Current_User::disallow('Attempted to approve an item.');
     return;
 }
@@ -394,6 +394,66 @@ is deleted, you don't want to delete the only version of an item. If
 you must then call delete with FALSE as a parameter like so:
 
 $version->delete(FALSE);
+
+
+Creator Permission
+-------------------------------------------------------------------
+After approving a new item, you may want to give the creator
+permission to edit their item. As long as the item has a key, this is
+simple. 
+
+$key = & new Key($my_item->key_id);
+$version->authorizeCreator($key);
+
+The authorizeCreator function will grab the creator id from the
+version and give item level permissions based on the key data.
+
+You should only call this authorizeCreator after an item has been
+approved. You won't save a key until afterwards.
+
+You may want to give a creator access to your item before it is
+approved. In that case, you should just check the current user against
+the creator. 
+
+if (Current_User::isUser($my_item->creator_id)) {
+   let_user_see_edit_link();
+}
+
+This is why we recommend you store the creator id with your item.
+
+If you are working on the version, you could also do this:
+
+if (Current_User::isUser($version->getCreator())) {
+   let_user_see_edit_link();
+}
+
+
+
+Accessing Unapproved Versions Externally
+--------------------------------------------------------------------
+Usually, the preceding information should be enough to allow version
+approval. There may be a time when you need to access unapproved
+versions on your own.
+
+To grab a list of unapproved versions, create your approval object:
+$approval = & new Version_Approval('my_mod', 'my_mod_subtable');
+
+If you want to add a conditional to your query, use addWhere (see
+Database.txt for more information on the Database class). For example,
+say we need versions related to a parent object with an id of 5:
+
+$approval->addWhere('parent_id', 5);
+
+Now only versions with parent_id 5 will be pulled from the version
+table.
+
+Finally we call our get function:
+
+$subversions = $approval->get();
+
+Our "subversions" variable should have an array of unapproved
+versions. If "subversions" is NULL, then no results were found.
+
 
 
 Restore List
