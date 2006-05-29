@@ -111,6 +111,10 @@ class Comments {
             $content[] = Comments::form($thread);
             break;
 
+        case 'change_view':
+            Comments::changeView();
+            break;
+
         case 'save_comment':
             if (PHPWS_Core::isPosted()) {
                 PHPWS_Core::reroute($thread->_key->url);
@@ -153,6 +157,24 @@ class Comments {
 
         Layout::add(PHPWS_Template::process($template, 'comments', 'main.tpl'));
 
+    }
+
+    function changeView()
+    {
+        $getValues = PHPWS_Text::getGetValues();
+        $referer = PHPWS_Text::getGetValues($_SERVER['HTTP_REFERER']);
+
+        $referer['time_period'] = $getValues['time_period'];
+        $referer['order'] = $getValues['order'];
+
+        foreach ($referer as $key=>$value) {
+            $url[] = $key . '=' . $value;
+        }
+        
+        $link = 'index.php?' . implode('&', $url);
+        PHPWS_Core::reroute($link);
+        
+        return;
     }
   
     function saveComment(&$thread)

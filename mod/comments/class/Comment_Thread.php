@@ -195,15 +195,23 @@ class Comment_Thread {
                              'week'   => _('This week'),
                              'month'  => _('This month')
                              );
-
+        /*
+         // Not sure what "- Top" was supposed to do. Keep it in for now
         $order_list = array('old_all'  => _('Oldest first'),
                             'new_all'  => _('Newest first'),
                             'old_base' => _('Oldest first - Top'),
                             'new_base' => _('Newest first - Top')
                             );
+        */
+
+        $order_list = array('old_all'  => _('Oldest first'),
+                            'new_all'  => _('Newest first'));
+
 
         $pager = & new DBPager('comments_items', 'Comment_Item');
         $form = & new PHPWS_Form;
+        $form->addHidden('module', 'comments');
+        $form->addHidden('user_action', 'change_view');
         $form->addSelect('time_period', $time_period);
         $form->addSelect('order', $order_list);
 
@@ -228,7 +236,7 @@ class Comment_Thread {
             case 'old_all':
                 $pager->setOrder('create_time', 'asc');
                 break;
-
+                /*
             case 'new_base':
                 $pager->setOrder('create_time', 'desc');
                 break;
@@ -236,6 +244,7 @@ class Comment_Thread {
             case 'old_base':
                 $pager->setOrder('create_time', 'asc');
                 break;
+                */
             }
             $form->setMatch('order', $_GET['order']);
         }
@@ -243,7 +252,6 @@ class Comment_Thread {
         $form->noAuthKey();
         $form->addSubmit(_('Go'));
         $form->setMethod('get');
-        $form->addHidden('key_id', $this->key_id);
 
         $page_tags = $form->getTemplate();
         $page_tags['NEW_POST_LINK'] = $this->postLink();
