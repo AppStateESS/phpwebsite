@@ -115,6 +115,9 @@ class Version {
     }
 
     function getSource($include_id=TRUE){
+        if (empty($this->source_data)) {
+            return NULL;
+        }
         $data = $this->source_data;
         foreach ($data as $key => $value) {
             if (substr($key, 0, 1) == '_') {
@@ -432,9 +435,18 @@ class Version {
         }
     }
 
+    /**
+     * Plugs the source variables into the object reference.
+     * If the source data is empty
+     * @returns true upon success, false is source is empty
+     */
     function loadObject(&$object){
         $data = $this->getSource();
+        if (!$data) {
+            return FALSE;
+        }
         PHPWS_Core::plugObject($object, $data);
+        return TRUE;
     }
 
     function isWaitingApproval(){
