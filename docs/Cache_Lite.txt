@@ -29,7 +29,12 @@ $content = PHPWS_Cache::get($key);
 
 if (empty($content)) {
   $content = getContentTheHardWay();
-  PHPWS_Cache::save($key, $content);
+
+  $lifetime = 86400; // number of seconds until cache refresh
+                     // default is set in CACHE_LIFETIME in the
+                     // config/core/config.php file
+
+  PHPWS_Cache::save($key, $content, $lifetime);
 }
  
 Layout::add($content);
