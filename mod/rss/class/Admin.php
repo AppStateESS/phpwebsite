@@ -55,6 +55,15 @@ class RSS_Admin {
                 }
             }
             break;
+
+        case 'import':
+            $tpl['TITLE'] = 'Sorry';
+            $tpl['CONTENT'] = 'This section has not been written yet.';
+            break;
+
+        default:
+            PHPWS_Core::errorPage('404');
+            break;
         }
 
         $tpl['MESSAGE'] = $message;

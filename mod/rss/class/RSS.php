@@ -7,11 +7,11 @@
 
 class RSS {
 
-    function registerModule($module, $content)
+    function registerModule($module, &$content)
     {
         $reg_file = PHPWS_Core::getConfigFile($module, 'rss.php');
+
         if ($reg_file == FALSE){
-            $content[] = _('No RSS file found.');
             PHPWS_Boost::addLog($module, _('No RSS file found.'));
             return FALSE;
         }
@@ -52,7 +52,7 @@ class RSS {
             $content[] = _('An error occurred registering to RSS module.');
             return NULL;
         } else {
-            $content[] = _('RSS registration successful.');
+            $content[] = sprintf(_('RSS registration to %s module successful.'), $oModule->proper_name);
             return TRUE;
         }
     }
@@ -70,8 +70,28 @@ class RSS {
         }
 
         $channel->loadFeeds();
+
+        header('Content-type: text/xml');
+        header(sprintf('Content-Disposition: inline; filename="feed%s.xml"', time()));
         echo $channel->view();
         exit();
+    }
+
+    function showIcon(&$key)
+    {
+        PHPWS_Core::initModClass('rss', 'Channel.php');
+        $channel = & new RSS_Channel;
+        $db = & new PHPWS_DB('rss_channel');
+        $db->addWhere('module', $key->module);
+        $db->loadObject($channel);
+
+        if (empty($channel->id) || $channel->_error) {
+            return FALSE;
+        }
+
+        Layout::addLink(sprintf('<link rel="alternate" type="application/rss+xml" title="%s" href="%s" />',
+                                $channel->title, $channel->getAddress(FALSE)));
+
     }
 
 }

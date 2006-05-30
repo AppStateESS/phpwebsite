@@ -80,15 +80,21 @@ class RSS_Channel {
         return $links;
     }
 
-    function getAddress()
+    function getAddress($include_http=TRUE)
     {
-        return 'index.php?module=rss&amp;mod_title=' . $this->module;
+        if ($include_http) {
+            return PHPWS_Core::getHomeHttp() . 'index.php?module=rss&amp;mod_title=' . $this->module;
+        } else {
+            return 'index.php?module=rss&amp;mod_title=' . $this->module;
+        }
     }
 
     function loadFeeds()
     {
         $db = & new PHPWS_DB('phpws_key');
-        Key::restrictView($db);
+        $db->addWhere('module', $this->module);
+        $db->addWhere('restricted', 0);
+
         $db->addOrder('create_date desc');
         // rss limit is 15
         $db->setLimit('15');
@@ -106,8 +112,19 @@ class RSS_Channel {
 
     }
 
+    /**
+     * Returns a RSS feed. Cached result is returned if exists.
+     */
     function view()
     {
+        PHPWS_Core::requireConfig('rss');
+        $cache_key = $this->module . '_cache_key';
+        $content = PHPWS_Cache::get($cache_key);
+
+        if (!empty($content)) {
+            return $content;
+        }
+
         $home_http = PHPWS_Core::getHomeHttp();
 
         $tpl = & new PHPWS_Template('rss');
@@ -127,15 +144,15 @@ class RSS_Channel {
 
         foreach ($this->_feeds as $key) {
             $itemTpl = NULL;
-            $itemTpl['ITEM_LINK']         = $home_http . $key->url;
+            $itemTpl['ITEM_LINK']         = $home_http .  preg_replace('/&(?!amp;)/', '&amp;', $key->url);
 
             $tpl->setCurrentBlock('item-about');
             $tpl->setData($itemTpl);
             $tpl->parseCurrentBlock();
 
             $itemTpl['ITEM_TITLE']        = $key->title;
-            $itemTpl['ITEM_GUID']         = $home_http . $key->url;
-            $itemTpl['ITEM_LINK']         = $home_http . $key->url;
+            $itemTpl['ITEM_GUID']         = $home_http . preg_replace('/&(?!amp;)/', '&amp;', $key->url);
+            $itemTpl['ITEM_LINK']         = $home_http . preg_replace('/&(?!amp;)/', '&amp;', $key->url);
             $itemTpl['ITEM_SOURCE']       = sprintf('%sindex.php?module=rss&amp;mod_title=%s', $home_http, $this->module);
 
             $itemTpl['ITEM_DESCRIPTION']  = $key->summary;
@@ -155,9 +172,8 @@ class RSS_Channel {
 
         $tpl->setData($channel_data);
         $content = $tpl->get();
+        PHPWS_Cache::save($cache_key, $content, RSS_CACHE_TIMEOUT);
         return $content;
-        //        echo preg_replace('/.*(<\?xml)/Ui', '\\1', $content);
-        exit();
     }
 
 }

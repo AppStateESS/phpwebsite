@@ -1,4 +1,4 @@
-<table width="100%" cellpadding="4">
+<table class="form-table" width="98%" cellpadding="4">
   <tr>
     <th>{TITLE_LABEL}</th>
     <th>{ACTIVE_LABEL}</th>
