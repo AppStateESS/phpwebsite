@@ -194,6 +194,9 @@ function loadBrowserInformation()
             break;
 
         case '5.0':
+            if (!isset($newVars[5])) {
+                break;
+            }
             if ($newVars[5] == 'Opera'){
                 $platformCheck = 1;
                 $program[0] = 'Opera';
@@ -202,7 +205,7 @@ function loadBrowserInformation()
                 $browser['locale'] = $newVars[5];
                 $platformCheck = 3;
             }
-
+            
             $platform = $newVars[$platformCheck];
 
             if ($platform == 'Windows'){
@@ -242,12 +245,15 @@ function loadBrowserInformation()
         $program[0] = $program[1] = $platform = $browser['engine_version'] = $browser['engine'] = _('Unknown');
     }// End engine switch
 
-    $browser['platform'] = $platform;
+    if (isset($platform)) {
+        $browser['platform'] = $platform;
+    }
 
-
-    $browser['browser'] = $program[0];
-    $browser['browser_version'] = $program[1];
-    $GLOBALS['browser_info'] = &$browser;
+    if (isset($program)) {
+        $browser['browser'] = $program[0];
+        $browser['browser_version'] = $program[1];
+        $GLOBALS['browser_info'] = &$browser;
+    }
 }
 
 
