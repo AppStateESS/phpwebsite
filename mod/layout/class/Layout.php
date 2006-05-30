@@ -124,6 +124,11 @@ class Layout {
         $GLOBALS['Extra_Style'] = $link;
     }
 
+    function addLink($link)
+    {
+        $GLOBALS['Layout_Links'][] = $link;
+    }
+
     /**
      * Adds a module's style sheet to the style sheet list
      */
@@ -814,6 +819,9 @@ class Layout {
 
         Layout::importStyleSheets();
         Layout::submitHeaders($theme, $template);
+        if (!empty($GLOBALS['Layout_Links'])) {
+            $template['STYLE'] .= "\n" . implode("\n", $GLOBALS['Layout_Links']);
+        }
         $template['METATAGS']   = Layout::getMetaTags();
         $template['PAGE_TITLE'] = $_SESSION['Layout_Settings']->getPageTitle();
         $template['BASE']       = Layout::getBase();
