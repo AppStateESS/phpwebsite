@@ -756,7 +756,10 @@ class PHPWS_Boost {
         }
     }
 
-
+    /**
+     * Registered the installed module to other modules already present
+     *
+     */
     function registerSelfToOthers($module, &$content)
     {
         $content[] = _('Registering this module to other modules.');
@@ -794,7 +797,9 @@ class PHPWS_Boost {
         }
     }
 
-
+    /**
+     * Registers other modules to the module currently getting installed.
+     */
     function registerOthersToSelf($module, &$content)
     {
         $content[] = _('Registering other modules to this module.');
@@ -833,6 +838,7 @@ class PHPWS_Boost {
     {
         $db = & new PHPWS_DB('registered');
         $db->addWhere('registered', $module->title);
+        $db->addWhere('module', $module->title, '=', 'or');
         return $db->delete();
     }
 
