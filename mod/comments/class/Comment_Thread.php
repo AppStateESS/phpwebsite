@@ -228,26 +228,22 @@ class Comment_Thread {
         $pager->addWhere('thread_id', $this->id);
 
         if (isset($_GET['order'])) {
-            switch ($_GET['order']) {
-            case 'new_all':
-                $pager->setOrder('create_time', 'desc');
-                break;
-
-            case 'old_all':
-                $pager->setOrder('create_time', 'asc');
-                break;
-                /*
-            case 'new_base':
-                $pager->setOrder('create_time', 'desc');
-                break;
-
-            case 'old_base':
-                $pager->setOrder('create_time', 'asc');
-                break;
-                */
-            }
-            $form->setMatch('order', $_GET['order']);
+            $default_order = &$_GET['order'];
+        } else {
+            $default_order = PHPWS_Settings::get('comments', 'default_order');
         }
+
+        switch ($default_order) {
+        case 'new_all':
+            $pager->setOrder('create_time', 'desc');
+            break;
+            
+        case 'old_all':
+            $pager->setOrder('create_time', 'asc');
+            break;
+        }
+        $form->setMatch('order', $default_order);
+
 
         $form->noAuthKey();
         $form->addSubmit(_('Go'));

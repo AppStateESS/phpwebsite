@@ -313,6 +313,8 @@ class Comments {
 
     function postSettings()
     {
+        $settings['default_order'] = $_POST['order'];
+
         if (@$_POST['allow_signatures']) {
             $settings['allow_signatures'] = 1;
         } else {
@@ -370,6 +372,13 @@ class Comments {
         $form->addCheck('local_avatars', 1);
         $form->setLabel('local_avatars', _('Save avatars locally'));
         $form->setMatch('local_avatars', $settings['local_avatars']);
+
+        $order_list = array('old_all'  => _('Oldest first'),
+                            'new_all'  => _('Newest first'));
+
+        $form->addSelect('order', $order_list);
+        $form->setMatch('order', PHPWS_Settings::get('comments', 'default_order'));
+        $form->setLabel('order', _('Default order'));
 
         $form->addSubmit(_('Save'));
 

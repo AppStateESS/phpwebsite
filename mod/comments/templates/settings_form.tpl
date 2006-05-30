@@ -2,6 +2,10 @@
 <div class="box-title"><h1>{TITLE}</h1></div>
 <table class="form-table">
   <tr>
+    <td>{ORDER_LABEL}</td>
+    <td>{ORDER}</td>
+  </tr>
+  <tr>
     <td>{ALLOW_SIGNATURES_LABEL}</td>
     <td>{ALLOW_SIGNATURES}</td>
   </tr>

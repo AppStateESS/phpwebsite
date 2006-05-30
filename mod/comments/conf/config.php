@@ -18,10 +18,10 @@ define('COMMENT_MAX_AVATAR_HEIGHT', 150);
  * There is alternate set of templates for comments
  * The alternate set uses avatar images.
  */
-//define('COMMENT_VIEW_TEMPLATE', 'alt_view.tpl');
-//define('COMMENT_VIEW_ONE_TPL', 'alt_view_one.tpl');
+define('COMMENT_VIEW_TEMPLATE', 'alt_view.tpl');
+define('COMMENT_VIEW_ONE_TPL', 'alt_view_one.tpl');
 
-define('COMMENT_VIEW_TEMPLATE', 'view.tpl');
-define('COMMENT_VIEW_ONE_TPL', 'view_one.tpl');
+//define('COMMENT_VIEW_TEMPLATE', 'view.tpl');
+//define('COMMENT_VIEW_ONE_TPL', 'view_one.tpl');
 
 ?>
