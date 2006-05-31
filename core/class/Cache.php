@@ -49,7 +49,8 @@ class PHPWS_Cache {
         return $cache->remove(md5($key));
     }
 
-    function clearCache(){
+    function clearCache()
+    {
         $cache = & PHPWS_Cache::initCache();
         $cache->clean();
     }
