@@ -118,14 +118,17 @@ class RSS_Feed {
         return $tpl;
     }
 
-    function loadParser()
+    function loadParser($use_cache=TRUE)
     {
         if (empty($this->address)) {
             return FALSE;
         }
 
-        $cache_key = $this->address;
-        $data = PHPWS_Cache::get($cache_key);
+        if ($use_cache) {
+            $cache_key = $this->address;
+            $data = PHPWS_Cache::get($cache_key);
+        }
+
         if (!empty($data)) {
             $this->mapped = unserialize($data);
             return TRUE;
@@ -141,7 +144,9 @@ class RSS_Feed {
             }
             
             $this->mapData();
-            PHPWS_Cache::save($cache_key, serialize($this->mapped), $this->refresh_time);
+            if ($use_cache) {
+                PHPWS_Cache::save($cache_key, serialize($this->mapped), $this->refresh_time);
+            }
         }
         return TRUE;
     }
@@ -169,7 +174,7 @@ class RSS_Feed {
 
         $this->setAddress($_POST['address']);
 
-        if (!$this->loadParser()) {
+        if (!$this->loadParser(FALSE)) {
             $error[] = _('Invalid feed address.');
         }
 
@@ -336,7 +341,8 @@ class RSS_Feed {
         } else {
             $version = '1.0';
         }
-        
+        echo $version;
+
         $section = &$this->_parser->data[0]['child'];
 
         foreach ($section as $sec_key => $sec_value) {

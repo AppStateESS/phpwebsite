@@ -53,7 +53,7 @@ class RSS_Admin {
                 Layout::nakedDisplay(PHPWS_Template::process($tpl, 'rss', 'main.tpl'));
                 exit();
             } else {
-                $feed->save();
+                $result = $feed->save();
                 javascript('close_refresh');
             }
             break;
