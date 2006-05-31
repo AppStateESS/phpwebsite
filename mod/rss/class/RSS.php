@@ -57,6 +57,24 @@ class RSS {
         }
     }
 
+    function showFeeds()
+    {
+        PHPWS_Core::initModClass('rss', 'Feed.php');
+        $db = & new PHPWS_DB('rss_feeds');
+
+        $db->addWhere('display', 1);
+        $result = $db->getObjects('RSS_Feed');
+        if (empty($result)) {
+            return;
+        }
+
+        foreach ($result as $feed) {
+            $listing[] = $feed->view();
+        }
+
+        Layout::add(implode('', $listing), 'rss', 'feeds');
+    }
+
     function viewChannel($module)
     {
         PHPWS_Core::initModClass('rss', 'Channel.php');

@@ -10,6 +10,7 @@ class RSS_Admin {
     function main()
     {
         $message = RSS_Admin::getMessage();
+        PHPWS_Core::initModClass('rss', 'Feed.php');
         PHPWS_Core::initModClass('rss', 'Channel.php');
 
         if (!Current_User::allow('rss')) {
@@ -32,9 +33,29 @@ class RSS_Admin {
             $channel = & new RSS_Channel;
         }
 
+        if (isset($_REQUEST['feed_id'])) {
+            $feed = & new RSS_Feed($_REQUEST['feed_id']);
+        } else {
+            $feed = & new RSS_Feed;
+        }
+
+
         switch ($command) {
         case 'channels':
             $tpl = RSS_Admin::channels();
+            break;
+
+        case 'save_feed':
+            $result = $feed->post();
+            if (is_array($result)) {
+                $tpl = RSS_Admin::editFeed($feed);
+                $tpl['MESSAGE'] = implode('<br />', $result);
+                Layout::nakedDisplay(PHPWS_Template::process($tpl, 'rss', 'main.tpl'));
+                exit();
+            } else {
+                $feed->save();
+                javascript('close_refresh');
+            }
             break;
 
         case 'edit_channel':
@@ -56,9 +77,39 @@ class RSS_Admin {
             }
             break;
 
+        case 'reset_feed':
+            $feed->reset();
         case 'import':
-            $tpl['TITLE'] = 'Sorry';
-            $tpl['CONTENT'] = 'This section has not been written yet.';
+            $tpl = RSS_Admin::import();
+            break;
+
+        case 'turn_on_display':
+            $feed->display = 1;
+            $feed->save();
+            $tpl = RSS_Admin::import();
+            break;
+
+        case 'turn_off_display':
+            $feed->display = 0;
+            $feed->save();
+            $tpl = RSS_Admin::import();
+            break;
+
+        case 'add_feed':
+            $tpl = RSS_Admin::editFeed($feed);
+            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'rss', 'main.tpl'));
+            exit();
+            break;
+
+        case 'edit_feed':
+            $tpl = RSS_Admin::editFeed($feed);
+            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'rss', 'main.tpl'));
+            exit();
+            break;
+
+        case 'delete_feed':
+            $feed->delete();
+            $tpl = RSS_Admin::import();
             break;
 
         default:
@@ -171,6 +222,7 @@ class RSS_Admin {
         $tpl['TITLE_LABEL']  = _('Title');
         $tpl['ACTIVE_LABEL'] = _('Active');
         $tpl['ACTION_LABEL'] = _('Action');
+        $tpl['LIMIT_LABEL']  = _('Limit');
 
 
         $final_tpl['CONTENT'] = PHPWS_Template::process($tpl, 'rss', 'channel_list.tpl');
@@ -178,6 +230,77 @@ class RSS_Admin {
         return $final_tpl;
     }
 
+    function editFeed(&$feed)
+    {
+        $form = & new PHPWS_Form;
+        if ($feed->id) {
+            $form->addHidden('feed_id', $feed->id);
+        }
+        $form->addHidden('module', 'rss');
+        $form->addHidden('command', 'save_feed');
+
+        $form->addText('address', $feed->address);
+        $form->setLabel('address', _('Address'));
+        $form->setSize('address', '40');
+
+        $form->addText('title', $feed->title);
+        $form->setLabel('title', _('Title'));
+        $form->setSize('title', '40');
+
+        $form->addSubmit('submit', _('Save'));
+        
+        $form->addButton('cancel', _('Cancel'));
+        $form->setExtra('cancel', 'onclick="window.close()"');
+
+        $form->addText('item_limit', $feed->item_limit);
+        $form->setSize('item_limit', 2);
+        $form->setLabel('item_limit', _('Item limit'));
+
+        $form->addText('refresh_time', $feed->refresh_time);
+        $form->setSize('refresh_time', 5);
+        $form->setLabel('refresh_time', _('Refresh time'));
+
+        $template = $form->getTemplate();
+        
+        $template['TITLE_WARNING'] = _('Feed title will be used if left empty');
+        $template['REFRESH_WARNING'] = _('In seconds');
+
+        $content = PHPWS_Template::process($template, 'rss', 'add_feed.tpl');
+
+
+        $tpl['TITLE'] = _('Add Feed');
+        $tpl['CONTENT'] = $content;
+        return $tpl;
+    }
+
+    function import()
+    {
+        PHPWS_Core::initCoreClass('DBPager.php');
+        PHPWS_Core::initModClass('rss', 'Feed.php');
+        $content = NULL;
+        
+        $vars['address'] = 'index.php?module=rss&command=add_feed';
+        $vars['label'] = _('Add feed');
+        $vars['height'] = '280';
+        $template['ADD_LINK'] = javascript('open_window', $vars);
+
+        $template['TITLE_LABEL']   = _('Title');
+        $template['ADDRESS_LABEL'] = _('Address');
+        $template['DISPLAY_LABEL'] = _('Display?');
+        $template['ACTION_LABEL']  = _('Action');
+        $template['REFRESH_TIME_LABEL'] = _('Refresh feed');
+
+        $pager = & new DBPager('rss_feeds', 'RSS_Feed');
+        $pager->setModule('rss');
+        $pager->setTemplate('admin_feeds.tpl');
+        $pager->addPageTags($template);
+        $pager->addRowTags('pagerTags');
+        $content = $pager->get();
+
+        $tpl['TITLE'] = _('Import RSS Feeds');
+        $tpl['CONTENT'] = $content;
+        return $tpl;
+    }
 }
 
 ?>

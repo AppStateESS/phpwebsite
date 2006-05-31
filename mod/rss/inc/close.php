@@ -5,7 +5,7 @@
    */
 $key = Key::getCurrent();
 
-if ($key->isDummy() || $key->restricted) {
+if (empty($key) || $key->isDummy() || $key->restricted) {
     return;
  }
 
