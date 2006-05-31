@@ -25,4 +25,6 @@ define('RSS_FEED_REFRESH', 3600);
 // absolute max amount of feeds an admin may set for a feed
 define('RSS_MAX_FEED', 50);
 
+define('RSS_SHORT_DESC_SIZE', 70);
+
 ?>

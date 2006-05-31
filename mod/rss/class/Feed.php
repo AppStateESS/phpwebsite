@@ -226,6 +226,9 @@ class RSS_Feed {
         return $db->delete();
     }
 
+    /**
+     * Displays the feed
+     */
     function view()
     {
         if (!$this->loadParser()) {
@@ -237,6 +240,12 @@ class RSS_Feed {
                     if ($count >= $this->item_limit) {
                         break;
                     }
+                    if (strlen($item_data['DESCRIPTION']) > RSS_SHORT_DESC_SIZE) {
+                        $item_data['SHORT_DESCRIPTION'] = substr($item_data['DESCRIPTION'], 0, RSS_SHORT_DESC_SIZE) . '...';
+                    } else {
+                        $item_data['SHORT_DESCRIPTION'] = &$item_data['DESCRIPTION'];
+                    }
+
                     $tpl['item_list'][] = $item_data;
                     $count++;
                 }
@@ -261,7 +270,7 @@ class RSS_Feed {
             $tpl['FEED_TITLE'] = &$this->title;
         }
                                          
-        $content = PHPWS_Template::process($tpl, 'rss', 'view_rss.tpl');
+        $content = PHPWS_Template::process($tpl, 'rss', 'feeds/view_rss.tpl');
 
         return $content;
     }
@@ -341,7 +350,6 @@ class RSS_Feed {
         } else {
             $version = '1.0';
         }
-        echo $version;
 
         $section = &$this->_parser->data[0]['child'];
 
