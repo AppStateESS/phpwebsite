@@ -11,3 +11,15 @@ active smallint NOT NULL default '1',
 PRIMARY KEY ( id )
 );
 
+
+CREATE TABLE rss_feeds (
+  id int NOT NULL default '0',
+  title varchar(100) NOT NULL default '',
+  address varchar(255) NOT NULL default '',
+  display smallint NOT NULL default '0',
+  refresh_time smallint NOT NULL default '0',
+  item_limit smallint NOT NULL default '0',
+  PRIMARY KEY  (id)
+);
+
+
