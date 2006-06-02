@@ -1,7 +1,6 @@
 Fallout comes with its own set of Pear files. Most of the time you
-should just use the included files. The files should be included with
-distribution. If you encountering problems, you can untar them
-yourself: 
+should just use the files included with distribution. If you
+encountering problems, you can untar them yourself: 
 
 tar zxf pear.tgz
 
