@@ -19,5 +19,6 @@ define('FC_DOCUMENT_NOT_FOUND',    -110);
 define('FC_NO_UPLOAD',             -111);
 define('FC_COULD_NOT_DELETE',      -112);
 define('FC_IMAGE_DIMENSION',       -113);
+define('FC_IMAGE_MOVE',            -114);
 
 ?>

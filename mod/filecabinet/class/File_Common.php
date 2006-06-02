@@ -10,22 +10,23 @@
 require_once PHPWS_SOURCE_DIR . 'mod/filecabinet/inc/errorDefines.php';
 
 class File_Common {
-    var $id             = 0;
-    var $key_id         = 0;
-    var $file_name      = NULL;
-    var $file_directory = NULL;
-    var $ext            = NULL;
-    var $file_type      = NULL;
-    var $title          = NULL;
-    var $description    = NULL;
-    var $size           = NULL;
+    var $id              = 0;
+    var $key_id          = 0;
+    var $file_name       = NULL;
+    var $file_directory  = NULL;
+    var $ext             = NULL;
+    var $file_type       = NULL;
+    var $title           = NULL;
+    var $description     = NULL;
+    var $size            = NULL;
 
     /**
      * PEAR upload object
      */
-    var $_upload        = NULL;
-    var $_errors        = array();
-    var $_allowed_types = NULL;
+    var $_upload         = NULL;
+    var $_errors         = array();
+    var $_allowed_types  = NULL;
+    var $_move_directory = NULL;
 
 
     function setId($id)
@@ -48,10 +49,18 @@ class File_Common {
     {
         require 'HTTP/Upload.php';
 
+        // Store current directory in case they are moving the document
+        // or image
+        $current_directory = $this->file_directory;
+
         if (isset($_POST['title'])) {
             $this->setTitle($_POST['title']);
         } else {
             $this->title = NULL;
+        }
+
+        if (isset($_POST['alt'])) {
+            $this->setAlt($_POST['alt']);
         }
 
         if (isset($_POST['description'])) {
@@ -107,7 +116,7 @@ class File_Common {
                 }
                 return FALSE;
             }
-            
+
             if (!$this->allowType()) {
                 if ($this->_classtype == 'document') {
                     $this->_errors[] = PHPWS_Error::get(FC_DOCUMENT_WRONG_TYPE, 'filecabinet', 'PHPWS_Document::importPost');
@@ -118,7 +127,6 @@ class File_Common {
             }
 
             if ($this->_classtype == 'image') {
-
                 list($this->width, $this->height, $image_type, $image_attr) = getimagesize($this->_upload->upload['tmp_name']);
 
                 if(!$this->allowDimensions()) {
@@ -128,9 +136,14 @@ class File_Common {
 
         } elseif ($this->_upload->isMissing()) {
             if ($this->id) {
+                if ($current_directory != $this->file_directory) {
+                    $this->_move_directory = & $current_directory;
+                }
+
                 // if the document id is set, we assume they are just updating other information
                 return TRUE;
             }
+
             // If there wasn't a file uploaded, we return a FALSE without an error.
             // This will allow to check for a false and continue on if the error array is empty
             return FALSE;
@@ -275,6 +288,22 @@ class File_Common {
         return in_array($type, $this->_allowed_types);
     }
 
+    /**
+     * Substitute for rename
+     * from php.net
+     * @author ddoyle [at] canadalawbook [dot] ca
+     */
+    function move_file($oldfile, $newfile)
+    {
+        if (!@rename($oldfile,$newfile)) {
+            if (@copy ($oldfile,$newfile)) {
+                unlink($oldfile);
+                return TRUE;
+            }
+            return FALSE;
+        }
+        return TRUE;
+    }
 }
 
 ?>

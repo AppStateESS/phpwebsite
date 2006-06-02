@@ -279,18 +279,22 @@ class FC_Image_Manager {
 
         $img_directories = Cabinet_Action::getImgDirectories();
 
+        /*
         if ($this->image->file_directory) {
             $form->addHidden('directory', urlencode($this->image->file_directory));
         }
-        
+        */
+
         $form->addHidden('action',    'post_image_close');
-        $form->addHidden('mod_title', $this->mod_title);
-        $form->addHidden('itemname',  $this->itemname);
         $form->addHidden('ms',        $this->image->_max_size);
         $form->addHidden('mh',        $this->image->_max_height);
         $form->addHidden('mw',        $this->image->_max_width);
         $form->addHidden('tnw',       $this->tn_width);
         $form->addHidden('tnh',       $this->tn_height);
+        if ($this->image->id) {
+            $form->addHidden('image_id', $this->image->id);
+        }
+
 
         $form->addFile('file_name');
         $form->setSize('file_name', 30);
@@ -301,6 +305,10 @@ class FC_Image_Manager {
         $form->addText('title', $this->image->title);
         $form->setSize('title', 40);
         $form->setLabel('title', _('Title'));
+
+        $form->addText('alt', $this->image->alt);
+        $form->setSize('alt', 40);
+        $form->setLabel('alt', _('Alternate text'));
 
         $form->addTextArea('description', $this->image->description);
         $form->setLabel('description', _('Description'));
@@ -328,6 +336,10 @@ class FC_Image_Manager {
             $template['errors'] = $message;
         }
 
+        if ($this->image->id) {
+            $template['CURRENT_IMAGE_LABEL'] = _('Current image');
+            $template['CURRENT_IMAGE']       = $this->image->getJSView(TRUE);
+        }
         $template['MAX_SIZE_LABEL']   = _('Maximum file size');
         $template['MAX_WIDTH_LABEL']  = _('Maximum width');
         $template['MAX_HEIGHT_LABEL'] = _('Maximum height');

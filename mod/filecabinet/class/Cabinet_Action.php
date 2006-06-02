@@ -48,12 +48,6 @@ class Cabinet_Action {
             $content = Cabinet_Form::editDocument($document);
             break;
 
-        case 'new_image':
-            $image = & new PHPWS_Image;
-            $title = _('Upload new image');
-            $content = Cabinet_Form::editImage($image);
-            break;
-
         case 'main':
         case 'image':
             $title = _('Manage Images');
@@ -83,17 +77,6 @@ class Cabinet_Action {
 
             $title = _('Manage Documents');
             $content = Cabinet_Form::documentManager();
-            break;
-
-        case 'editImage':
-            if (!isset($_REQUEST['image_id'])){
-                $title = _('Manage Images');
-                $content = Cabinet_Form::imageManager();
-                break;
-            }
-            $image = & new PHPWS_Image((int)$_REQUEST['image_id']);
-            $title = _('Edit Image');
-            $content = Cabinet_Action::editImage($image);
             break;
 
         case 'copyImage':
@@ -140,8 +123,9 @@ class Cabinet_Action {
                 $manager = & new FC_Image_Manager;
             }
             $manager->loadReqValues();
-
+            
             $result = $manager->postImage();
+
             if (PEAR::isError($result)) {
                 if ($result->code == PHPWS_FILE_SIZE) {
                     $manager->image->_errors = array($result);
@@ -153,7 +137,10 @@ class Cabinet_Action {
             } elseif (!$result) {
                 Layout::nakedDisplay($manager->edit());
             } else {
-                $result = $manager->createThumbnail();
+                // if the upload is not missing, create a thumbnail
+                if (!$manager->image->_upload->isMissing()) {
+                    $result = $manager->createThumbnail();
+                }
                 $manager->postUpload($result);
             }
             break;
@@ -189,8 +176,10 @@ class Cabinet_Action {
             break;
 
         case 'admin_edit_image':
+            PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
             $title = _('Edit Image');
-            $content = Cabinet_Form::edit_image($image);
+            $manager = & new FC_Image_Manager($_REQUEST['image_id']);
+            Layout::nakedDisplay($manager->edit());
             break;
 
         case 'admin_delete_image':
@@ -213,6 +202,9 @@ class Cabinet_Action {
             }
             $content = Cabinet_Action::editDocument($document);
             Layout::nakedDisplay($content);
+            break;
+
+        case 'admin_post_image':
             break;
 
         case 'admin_post_document':
@@ -374,17 +366,6 @@ class Cabinet_Action {
         return $panel;
     }
 
-    function postImage(&$image)
-    {
-        $errors = $image->importPost('file_name');
-
-        if (is_array($errors) || PEAR::isError($errors)) {
-            return $errors;
-        } else {
-            $result = $image->save();
-            return $result;
-        }
-    }
 
     function postDocument(&$document)
     {
@@ -444,7 +425,7 @@ class Cabinet_Action {
             foreach ($directories as $dir) {
                 if (is_writable($dir)) {
                     $edit_dir = preg_replace('/^' . $search . '/', '', $dir);
-                    $new_list[$dir] = $edit_dir;
+                    $new_list[$dir . '/'] = $edit_dir;
                 }
             }
 

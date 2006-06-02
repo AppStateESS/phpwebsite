@@ -144,33 +144,10 @@ class PHPWS_Image extends File_Common {
         $this->height = $height;
     }
 
-    /*
-     // don't think this is used anymore
-    function setBounds($path=NULL)
-    {
-        if (empty($path)) {
-            $path = $this->getPath();
-        }
-
-        $bound = @getimagesize($path);
-
-        if (!is_array($bound)) {
-            return PHPWS_Error::get(FC_BOUND_FAILED, 'filecabinet',
-                                    'PHPWS_image::setBounds', $this->getPath());
-        }
-
-        $size = @filesize($path);
-        $this->setSize($size);
-        $this->setWidth($bound[0]);
-        $this->setHeight($bound[1]);
-        $this->setType($bound[2]);
-        return TRUE;
-    }
-    */
 
     function setAlt($alt)
     {
-        $this->alt = $alt;
+        $this->alt = strip_tags($alt);
     }
 
     function getAlt($check=FALSE)
@@ -275,6 +252,27 @@ class PHPWS_Image extends File_Common {
 
             $db->reset();
         }
+
+        /**
+         * If the directory was changed but a new image was not, then we
+         * copy the image and its thumbnail to the new directory
+         */
+        if ($this->_move_directory && !$this->thumbnail_source) {
+            if (!$this->move_file($this->_move_directory . $this->file_name,
+                                  $this->file_directory . $this->file_name)) {
+                return PHPWS_Error::get(FC_IMAGE_MOVE, 'filecabinet', 'PHPWS_Image::save', $this->file_directory);
+            } else {
+                $thumbnail = $this->getThumbnail();
+                if (!empty($thumbnail) && $thumbnail->id != $this->id) {
+                    if (!$this->move_file($this->_move_directory . $thumbnail->file_name, $this->file_directory . $thumbnail->file_name)) {
+                        return PHPWS_Error::get(FC_IMAGE_MOVE, 'filecabinet', 'PHPWS_Image::save', $thumbnail->file_directory);
+                    } else {
+                        $thumbnail->setDirectory($this->file_directory);
+                        $thumbnail->save(TRUE, FALSE);
+                    }
+                }
+            }
+        }
         return $db->saveObject($this);
     }
  
@@ -307,7 +305,9 @@ class PHPWS_Image extends File_Common {
             return $path;
         }
 
-        unlink($path);
+        if (!@unlink($path)) {
+            PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'PHPWS_Image::delete', $path);
+        }
 
         if ($this->thumbnail_source != $this->id) {
             $tn = & new PHPWS_Image;
@@ -354,9 +354,11 @@ class PHPWS_Image extends File_Common {
 
     function getRowTags()
     {
-        $vars['action'] = 'admin_edit_image';
-        $vars['image_id'] = $this->id;
-        $links[] = PHPWS_Text::secureLink(_('Edit'), 'filecabinet', $vars);
+        $jsvars['width'] = 550;
+        $jsvars['height'] = 480;
+        $jsvars['address'] = sprintf('index.php?module=filecabinet&amp;action=admin_edit_image&amp;image_id=%s&amp;authkey=%s', $this->id, Current_User::getAuthKey());
+        $jsvars['label'] = _('Edit');
+        $links[] = javascript('open_window', $jsvars);
 
         $vars['action'] = 'admin_delete_image';
         $vars['image_id'] = $this->id;
