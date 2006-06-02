@@ -82,7 +82,7 @@ class PHPWS_Error {
 
         $final = PHPWS_Error::printError($error);
 
-        PHPWS_Core::log(escapeshellcmd($final), 'error.log', _('Error'));
+        PHPWS_Core::log($final, 'error.log', _('Error'));
     }
 
 
