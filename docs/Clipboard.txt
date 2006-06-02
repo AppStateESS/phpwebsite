@@ -17,3 +17,19 @@ Basically, for advanced users, this may be unnecessary. However, if
 you want people to paste EXACT information, want to move specific code
 (SmartTags for example) without having to explain what to highlight,
 or just make something easier, Clipboard can help.
+
+
+Copying
+-----------------------------------------------------------
+Lets say you wanted to clip a name to the clipboard:
+
+$title = 'That name you wanted to copy';
+$name = 'Joe Shmoe';
+
+Clipboard::copy($title, $name);
+
+There you are done.
+
+The Clipboard box will appear on all the pages. Just click the title
+(That name you wanted to copy) and a box will pop up with a text
+field with what ever you passed the copy function - Joe Shmoe.
