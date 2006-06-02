@@ -327,11 +327,16 @@ class Categories_Action {
             }
         } else {
             $category = & new Category((int)$id);
+            $template['CATEGORY_DESCRIPTION'] = $category->getDescription();
+            if ($category->icon) {
+                $icon = $category->getIcon();
+                $template['CATEGORY_ICON'] = $icon->getTag();
+            }
             if (isset($module) && $module != '0') {
-                $template['TITLE'] = sprintf(_('Module listing for %s'), $oMod->getProperName());
+                $template['TITLE'] = sprintf(_('%s: Module listing for %s'), $category->title, $oMod->getProperName());
                 $content = Categories_Action::getAllItems($category, $module);
             } else {
-                $template['TITLE'] = _('Module listing');
+                $template['TITLE'] = sprintf(_('%s: Module listing'), $category->title);
                 $content = Categories::listModuleItems($category);
             }
         }

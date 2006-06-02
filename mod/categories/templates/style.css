@@ -1,4 +1,7 @@
-
+        
+div.category-tabs {
+   margin-bottom : 60px;
+}
 
 ul.link-list {
   padding : 0;
@@ -9,12 +12,6 @@ ul.link-list li {
 }
 
 /* -------- View Categories --------- */
-#category-item-list {
-  display : block;		    
-  padding : 4px;
-  margin : 5px;
-  border : 1px black solid;
-}
 
 #cookie-menu {
 margin-bottom : 10px;
@@ -37,12 +34,15 @@ padding: 0px;
 list-style-type: none;
 }
 
-ul#navlist li { float: left;}
+ul#navlist li { 
+    float: left;
+    display : inline;
+}
 
 ul#navlist li a
 {
-color: #ffffff;
-background-color: #000000;
+//color: #ffffff;
+//background-color: #000000;
 padding: 3px;
 border: 1px #ffffff outset;
 }

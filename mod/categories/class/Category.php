@@ -45,7 +45,6 @@ class Category{
             return $result;
         }
 
-        //        $this->loadIcon();
         $this->loadChildren();
     }
 
@@ -111,22 +110,20 @@ class Category{
     {
         $this->icon = $icon;
 
-        /*
         if (is_numeric($icon)) {
             $this->loadIcon();
         }
-        */
     }
 
-    /*
-    function loadIcon()
+    /**
+     * Returns the icon as an image object
+     */
+
+    function &getIcon()
     {
-        PHPWS_Core::initCoreClass('Image.php');
-        if (!empty($this->icon)) {
-            $this->icon = new PHPWS_Image($this->icon);
-        }
+        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        return new PHPWS_Image($this->icon);
     }
-    */
 
     function loadChildren()
     {
@@ -146,29 +143,10 @@ class Category{
         $this->children = Categories::initList($result);
     }
 
-    function setThumbnail($thumbnail)
-    {
-        $this->thumbnail = $thumbnail;
-    }
-
-    function getThumbnail()
-    {
-        return $this->thumbnail;
-    }
-  
     function save()
     {
         $db = & new PHPWS_DB('categories');
-        /*
-        if (isset($this->icon)) {
-            $tmpIcon = $this->icon;
-            $this->icon = $this->icon->getId();
-        } else {
-            $tmpIcon = NULL;
-        }
-        */
         $result = $db->saveObject($this);
-        //        $this->icon = $tmpIcon;
         return $result;
     }
 
@@ -237,6 +215,7 @@ class Category{
         $tpl['ACTION'] = implode(' | ', $links);
         $tpl['DESCRIPTION'] = $this->getDescription();
         $tpl['PARENT'] = $this->getParentTitle();
+        $tpl['TITLE'] = $this->getViewLink();
 
         return $tpl;
     }
