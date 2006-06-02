@@ -260,12 +260,12 @@ class PHPWS_Image extends File_Common {
         if ($this->_move_directory && !$this->thumbnail_source) {
             if (!$this->move_file($this->_move_directory . $this->file_name,
                                   $this->file_directory . $this->file_name)) {
-                return PHPWS_Error::get(FC_IMAGE_MOVE, 'filecabinet', 'PHPWS_Image::save', $this->file_directory);
+                return PHPWS_Error::get(FC_FILE_MOVE, 'filecabinet', 'PHPWS_Image::save', $this->file_directory);
             } else {
                 $thumbnail = $this->getThumbnail();
                 if (!empty($thumbnail) && $thumbnail->id != $this->id) {
                     if (!$this->move_file($this->_move_directory . $thumbnail->file_name, $this->file_directory . $thumbnail->file_name)) {
-                        return PHPWS_Error::get(FC_IMAGE_MOVE, 'filecabinet', 'PHPWS_Image::save', $thumbnail->file_directory);
+                        return PHPWS_Error::get(FC_FILE_MOVE, 'filecabinet', 'PHPWS_Image::save', $thumbnail->file_directory);
                     } else {
                         $thumbnail->setDirectory($this->file_directory);
                         $thumbnail->save(TRUE, FALSE);
@@ -354,6 +354,10 @@ class PHPWS_Image extends File_Common {
 
     function getRowTags()
     {
+        $links[] = PHPWS_Text::secureLink(_('Clip'), 'filecabinet',
+                                          array('action'=>'clip_image',
+                                                'image_id' => $this->id));
+
         $jsvars['width'] = 550;
         $jsvars['height'] = 480;
         $jsvars['address'] = sprintf('index.php?module=filecabinet&amp;action=admin_edit_image&amp;image_id=%s&amp;authkey=%s', $this->id, Current_User::getAuthKey());

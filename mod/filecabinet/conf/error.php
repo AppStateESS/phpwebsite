@@ -19,6 +19,6 @@ $errors[FC_DOCUMENT_NOT_FOUND]     = _('Document not found.');
 $errors[FC_NO_UPLOAD]              = _('File not uploaded.');
 $errors[FC_COULD_NOT_DELETE]       = _('Could not delete file.');
 $errors[FC_IMAGE_DIMENSION]        = _('Image is %spx x %spx, the maximum dimensions are %spx x %spx.');
-$errors[FC_IMAGE_MOVE]             = _('Unable to move the file to its new directory.');
+$errors[FC_FILE_MOVE]             = _('Unable to move the file to its new directory.');
 
 ?>

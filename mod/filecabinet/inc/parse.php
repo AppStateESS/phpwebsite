@@ -11,6 +11,15 @@ function filecabinet_document($file_type, $document_id)
         }
 
         return $document->getViewLink(TRUE);
+    } elseif ($file_type == 'image') {
+        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        $image = & new PHPWS_Image((int)$document_id);
+
+        if (empty($image->id)) {
+            $image->logErrors();
+            return NULL;
+        }
+        return $image->getTag();
     }
 }
 

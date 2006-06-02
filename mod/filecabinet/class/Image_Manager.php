@@ -244,7 +244,7 @@ class FC_Image_Manager {
         $js_vars['title']     = addslashes($this->thumbnail->title);
         $js_vars['alt']       = addslashes($this->thumbnail->getAlt());
         $js_vars['image_id']  = $this->image->id;
-
+        
         echo javascript('modules/filecabinet/post_file', $js_vars);
         exit();
     }
@@ -254,8 +254,8 @@ class FC_Image_Manager {
         $link_vars['action']    = 'edit_image';
         $link_vars['current']   = $this->image->id;
         $vars['address'] = PHPWS_Text::linkAddress('filecabinet', $link_vars);
-        echo javascript('modules/filecabinet/post_upload', $vars);
-        exit();
+        javascript('close_refresh', $vars);
+        Layout::nakedDisplay();
     }
 
 

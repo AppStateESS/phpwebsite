@@ -48,6 +48,8 @@ class Cabinet_Action {
             $content = Cabinet_Form::editDocument($document);
             break;
 
+        case 'clip_image':
+            Clipboard::copy($image->title, '[filecabinet:image:' . $image->id . ']');
         case 'main':
         case 'image':
             $title = _('Manage Images');
@@ -202,9 +204,6 @@ class Cabinet_Action {
             }
             $content = Cabinet_Action::editDocument($document);
             Layout::nakedDisplay($content);
-            break;
-
-        case 'admin_post_image':
             break;
 
         case 'admin_post_document':

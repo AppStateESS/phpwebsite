@@ -105,11 +105,6 @@ class Cabinet_Form {
 
         $doc_directories = Cabinet_Action::getDocDirectories();
 
-        if ($document->file_directory) {
-            $form->addHidden('directory', urlencode($document->file_directory));
-        }
-
-
         if ($js_form) {
             $form->addHidden('action', 'js_post_document');
         } else {

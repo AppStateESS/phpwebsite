@@ -124,6 +124,13 @@ class PHPWS_Document extends File_Common {
             return $key;
         }
 
+        if ($this->_move_directory) {
+            if (!$this->move_file($this->_move_directory . $this->file_name,
+                                  $this->file_directory . $this->file_name)) {
+                return PHPWS_Error::get(FC_FILE_MOVE, 'filecabinet', 'PHPWS_Image::save', $this->file_directory);
+            }
+        }
+
         if (!$this->key_id) {
             $this->key_id = $key->id;
             return $db->saveObject($this);
@@ -184,7 +191,7 @@ class PHPWS_Document extends File_Common {
             $js['address'] = sprintf('index.php?module=filecabinet&action=document_edit&document_id=%s&authkey=%s', $this->id, Current_User::getAuthkey());
             $js['label'] = _('Edit');
             $js['width'] = 550;
-            $js['height'] = 350;
+            $js['height'] = 430;
             $links[] = javascript('open_window', $js);
         } else {
             $vars['action'] = 'admin_edit_document';
@@ -236,7 +243,7 @@ class PHPWS_Document extends File_Common {
             return $link;
         }
     }
-
+    
 }
 
 ?>
