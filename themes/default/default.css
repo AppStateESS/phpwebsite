@@ -238,3 +238,11 @@ div.panel-title {
     margin-bottom : 10px;
 }
 
+ul#navlist li a {
+background-color : #ADB583;
+color : black;
+}
+
+div.category-info {
+   margin-bottom : 10px;                  
+}
