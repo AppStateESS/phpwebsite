@@ -518,9 +518,8 @@ class Setup{
         $db = & new PHPWS_DB;
         $result = $db->import($installSQL);
 
-        if (is_array($result)) {
-            foreach ($result as $error)
-                PHPWS_Error::log($error);
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
             $content[] = _('Some errors occurred while creating the core database tables.') . '<br />';
             $content[] = _('Please check your error log file.') . '<br />';
             return;
