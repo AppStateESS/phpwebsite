@@ -31,7 +31,7 @@ CREATE TABLE mod_settings (
  large_char text NULL
 );
 
-CREATE INDEX mod_settings ON mod_settings (module, setting_name);
+CREATE INDEX modsettings_idx ON mod_settings (module, setting_name);
 
 CREATE TABLE phpws_key (
   id int NOT NULL default '0',
