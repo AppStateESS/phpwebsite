@@ -1,0 +1,59 @@
+Permissioning in phpWebSite 1.x by Matthew McNaney
+----------------------------------------------------------------------
+
+Version 1.0 First draft
+
+
+Introduction
+----------------------------------------------------------------------
+When designing a complex module for phpWebSite, a need arises to limit
+accessibility. Only certain users should edit items. A smaller section
+could delete those items.
+
+phpWebSite's Users module assists developers in this task.
+
+This document covers two aspects of permissioning - the developer's
+and the administrators. If you are not a developer, you may skip down
+to the section "Administering Users."
+
+
+User Session
+----------------------------------------------------------------------
+phpWebSite's previous version necessitated use of the OBJ_user
+session. The current version operates with a user session, however
+developers will not access it directly. Instead, coders call
+static methods within the Current_User class. Problems with retaining
+a logged status after installation frequently indicate session
+problems.
+
+
+Deity
+----------------------------------------------------------------------
+Those familiar with the previous version of phpWebSite recognize this
+term. A "Deity" in phpWebSite refers to a user with ultimate
+power. The site opens very module and action to this users.
+
+The first user created during installation is a deity. Only a deity
+create or destroy another deity account. Deities
+
+
+Unrestricted vs Restricted
+
+User vs Group
+
+allow user
+
+authorized 
+
+Authorization key
+
+Key class
+
+restrictView
+
+restrictEdit
+
+allowView
+
+allowEdit
+
