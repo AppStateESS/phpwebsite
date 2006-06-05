@@ -116,6 +116,15 @@ class PHPWS_Form {
         $this->reset();
     }
 
+    function setEncode($encode=TRUE)
+    {
+        if ($encode) {
+            $this->_encode = ' enctype="multipart/form-data"';
+        } else {
+            $this->_encode = FALSE;
+        }
+            
+    }
 
     function setFormId($id)
     {
