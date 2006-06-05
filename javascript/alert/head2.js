@@ -1,7 +1,9 @@
 <script type="text/javascript">
 //<![CDATA[
 
-function notice(alert_text)
+     var alert_text = '{content}';
+
+window.onload = function()
 {
     if (alert_text == '') {
         return;
