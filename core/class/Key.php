@@ -7,8 +7,9 @@
  * @version $Id$
  */
 
+define('KEY_NOT_RESTRICTED',    0);
 define('KEY_LOGGED_RESTRICTED', 1);
-define('KEY_GROUP_RESTRICTED', 2);
+define('KEY_GROUP_RESTRICTED',  2);
 
 if (!isset($_REQUEST['module'])) {
     $GLOBALS['PHPWS_Key'] = Key::getHomeKey();
@@ -287,10 +288,10 @@ class Key {
         }
         
         // we don't care if restricted is 0 because everyone can view
-        // we don't care if it is 1 either because just checking log
-        // status covers it
+        // we don't care if it is KEY_LOGGED_RESTRICTED either because
+        // just checking log status covers it
 
-        if ($this->restricted == 2) {
+        if ($this->restricted == KEY_GROUP_RESTRICTED) {
             if (!empty($this->_view_groups) && is_array($this->_view_groups)) {
                 $view_db->reset();
 
