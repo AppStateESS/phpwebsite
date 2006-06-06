@@ -563,6 +563,8 @@ class PHPWS_Manager {
                     $object = new $this->_class($item);
                     $className = get_class($object);
                     $classMethods = get_class_methods($className);
+                    @array_walk($classMethods, 'manager_lower_methods');
+
                     $objectVars = get_object_vars($object);
 
                     if(is_array($objectVars)) {
@@ -634,6 +636,7 @@ class PHPWS_Manager {
                         }
                     } else {
                         $method = 'get' . $listColumn;
+
                         if(is_object($object) && in_array($method, $classMethods)) {
                             $rowTags[$column] = $object->$method();
                         } else {
@@ -1184,5 +1187,10 @@ class PHPWS_Manager {
     }// END FUNC managerAction()
 
 }// END CLASS PHPWS_Manager
+
+function manager_lower_methods(&$item, $key)
+{
+    $item = strtolower($item);
+}
 
 ?>
