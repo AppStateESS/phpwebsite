@@ -153,6 +153,12 @@ class PHPWS_Item {
                 return PHPWS_Error::get(PHPWS_ITEM_NO_RESULT, 'core', 'PHPWS_Item::init');
             } else {
                 foreach ($itemResult as $key => $value) {
+                    if (preg_match('/^[oa]:\d/i', $value)) {
+                        $new_val = unserialize($value);
+                        if (is_array($new_val) || is_object($new_val)) {
+                            $value = $new_val;
+                        }
+                    }
                     $this->{'_' . $key} = $value;
                 }
             }
