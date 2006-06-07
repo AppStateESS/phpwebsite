@@ -1,5 +1,15 @@
 <?php
 
+  /**
+   * Assists developers with converting old modules
+   *
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
+   */
+
+  // Must not be below 1
+define('GRAPH_MULTIPLIER', 2);
+
 class Convert {
     function action()
     {
@@ -226,6 +236,10 @@ class Convert {
             $title = _('phpWebSite 1.0.0 Convert');
         }
 
+        if (isset($GLOBALS['Convert_Forward'])) {
+            $setupData['METATAG'] = $GLOBALS['Convert_Forward'];
+        }
+
         $setupData['MAIN_LINK'] = sprintf('<a href="index.php?command=default">%s</a>', _('Main page'));
 
         $setupData['TITLE']     = $title;
@@ -233,6 +247,27 @@ class Convert {
         echo PHPWS_Template::process($setupData, '', 'convert/templates/convert.tpl', TRUE);
     }
 
+    function getGraph($percentage)
+    {
+        $percentage = ceil($percentage);
+        if ($percentage < 100) {
+            $template['please_wait'] = _('Please wait...');
+            $template['wait_graphic'] = '<img src="images/ajax-loader.gif" />';
+        } else {
+            $percentage = 100;
+        }
+        $template['percentage'] = $percentage . '%';
+        $template['total_width'] = floor(100 * GRAPH_MULTIPLIER);
+        $template['progress_width'] = floor($percentage * GRAPH_MULTIPLIER);
+        return PHPWS_Template::process($template, '', 'convert/templates/graph.tpl', TRUE);
+    }
+
+
+    function forward($address)
+    {
+        $tag = sprintf('<meta http-equiv="refresh" content="1;url=%s">', $address);
+        $GLOBALS['Convert_Forward'] = $tag;
+    }
 
     function login()
     {
