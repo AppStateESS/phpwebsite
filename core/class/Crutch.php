@@ -20,8 +20,24 @@
 if (!defined('TABLE_PREFIX')) {
     define('TABLE_PREFIX', NULL);
  }
+
+if (!defined('PHPWS_DAY_START')) {
+    define('PHPWS_DAY_START', 0);
+ }
+if (!defined('PHPWS_TIME_DIFF')) {
+    define('PHPWS_TIME_DIFF', 0);
+ }
+if (!defined('PHPWS_DATE_FORMAT')) {
+    define('PHPWS_DATE_FORMAT', 'm-d-Y');
+ }
+if (!defined('PHPWS_TIME_FORMAT')) {
+    define('PHPWS_TIME_FORMAT', 'g:ia');
+ }
+
+
 define('PHPWS_TBL_PREFIX', TABLE_PREFIX);
 define('CRUTCH_MODULE_ACTIVE', TRUE);
+
 PHPWS_Core::initCoreClass('WizardBag.php');
 PHPWS_Core::initCoreClass('Crutch_Form.php');
 PHPWS_Core::initCoreClass('Crutch_DB.php');
