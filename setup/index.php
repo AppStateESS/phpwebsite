@@ -21,7 +21,12 @@ if (!is_file('lib/pear/DB.php')) {
 }
 
 if (isset($_REQUEST['step']) && $_REQUEST['step'] > 1) {
-    require_once './config/core/config.php';
+    if (!is_file('./config/core/config.php')) {
+        header('location: index.php');
+        exit();
+    } else {
+        require_once './config/core/config.php';
+    }
  }
  else {
      require_once './setup/preconfig.php';
