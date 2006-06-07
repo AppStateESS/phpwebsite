@@ -322,9 +322,12 @@ function translate($module=NULL)
     }
 }
 
+/**
+ * adds a locale prefix to a title name
+ */
 function translateFile($filename)
 {
-    return CURRENT_LANGUAGE . '_' . $filename;
+    return strtolower(CURRENT_LANGUAGE . '_' . $filename);
 }
 
 ?>
