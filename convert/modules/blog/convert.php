@@ -34,7 +34,7 @@ function convert()
     }
 
     $batch->setTotalItems($total_entries);
-    $batch->setBatchSet(20);
+    $batch->setBatchSet(10);
 
     if (isset($_REQUEST['reset_batch'])) {
         $batch->clear();
@@ -100,14 +100,16 @@ function convertAnnouncement($entry)
     $val['id']      = $entry['id'];
     $val['title']   = strip_tags($entry['subject']);
     $val['entry']   = $entry['summary'];
+
     if (!empty($entry['body'])) {
         $val['entry'] .= '<br /><br />' . $entry['body'];
     }
 
     $val['author']  = $entry['userCreated'];
-    $val['date']    = strtotime($entry['dateCreated']);
+    $val['create_date']    = strtotime($entry['dateCreated']);
+    $val['approved']       = $entry['approved'];
 
-    if (!empty($entry['image'])) {
+    if (!empty($entry['image']) && $entry['image'] != 'Array') {
         $image = unserialize($entry['image']);
         if (is_array($image) && isset($image['name'])) {
             $image_link = sprintf('<img src="%s" width="%s" height="%s" alt="%s" title="%s" />',
