@@ -103,6 +103,7 @@ class Convert {
         foreach ($directories as $mod_dir) {
             $filename = translateFile('info.ini');
             $info_file = $predir . $mod_dir . '/' . $filename;
+
             if (is_file($info_file)) {
                 $template['convert_mods'][] = $this->convertLinkTpl($info_file, $mod_dir);
             }
@@ -110,6 +111,9 @@ class Convert {
 
         $template['TITLE_LABEL'] = _('Title');
         $template['DESCRIPTION_LABEL'] = _('Description');
+        if (empty($template['convert_mods'])) {
+            $template['MESSAGE'] = _('There aren\'t any conversion files in the convert/modules directory.');
+        }
 
         $content = PHPWS_Template::process($template, '', 'convert/templates/list.tpl', TRUE);
         $this->show($content);
