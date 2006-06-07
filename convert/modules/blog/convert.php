@@ -9,6 +9,10 @@
    * @version $Id$
    */
 
+  // number of blogs to convert at a time. lower this number if you are having
+  // memory or timeout errors
+define('BLOG_BATCH', 15);
+
 PHPWS_Core::initModClass('search', 'Search.php');
 
 function convert()
@@ -34,7 +38,7 @@ function convert()
     }
 
     $batch->setTotalItems($total_entries);
-    $batch->setBatchSet(10);
+    $batch->setBatchSet(BLOG_BATCH);
 
     if (isset($_REQUEST['reset_batch'])) {
         $batch->clear();
@@ -47,13 +51,16 @@ function convert()
         $result = runBatch($db, $batch);
     }
 
-    $content[] = sprintf('%s&#37; done<br>', $batch->percentDone());
+    $percent = $batch->percentDone();
+
+    $content[] = Convert::getGraph($percent);
+    //    $content[] = sprintf('%s&#37; done<br>', $batch->percentDone());
 
     $batch->completeBatch();
-
     
     if (!$batch->isFinished()) {
-        $content[] =  $batch->continueLink();
+        Convert::forward($batch->getAddress());
+        //        $content[] =  $batch->continueLink();
     } else {
         createSeqTable();
         $batch->clear();
@@ -96,6 +103,10 @@ function runBatch(&$db, &$batch)
 function convertAnnouncement($entry)
 {
     $db = & new PHPWS_DB('blog_entries');
+    if (!$entry['approved']) {
+        continue;
+    }
+
 
     $val['id']      = $entry['id'];
     $val['title']   = strip_tags($entry['subject']);

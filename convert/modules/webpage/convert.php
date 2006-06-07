@@ -43,16 +43,20 @@ function convert()
         if (is_array($result)) {
             $content[] = _('Some errors occurred when trying to convert the following pages:');
             $content[] = '<ul><li>' . implode('</li><li>', $result) . '</li></ul>';
+            return implode('<br />', $content);
         }
     }
 
-    $content[] = sprintf('%s&#37; done<br>', $batch->percentDone());
+    $percent = $batch->percentDone();
+    $content[] = Convert::getGraph($percent);
+    //    $content[] = sprintf('%s&#37; done<br>', $batch->percentDone());
 
     $batch->completeBatch();
 
     
     if (!$batch->isFinished()) {
-        $content[] =  $batch->continueLink();
+        Convert::forward($batch->getAddress());
+        //        $content[] =  $batch->continueLink();
     } else {
         createSeqTables();
         $batch->clear();
@@ -143,7 +147,10 @@ function saveSections($sections, $volume_id, $title, $key_id)
     $db = & new PHPWS_DB('webpage_page');
     $pages = 1;
     foreach ($sections as $sec) {
-        
+        if (!$sec['approved']) {
+            continue;
+        }
+        $val['approved']    = 1;
         $val['id']          = $sec['id'];
         $val['volume_id']   = $volume_id;
         if (!empty($sec['title'])) {
