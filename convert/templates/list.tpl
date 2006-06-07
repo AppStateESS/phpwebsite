@@ -12,3 +12,4 @@
   </tr>
 <!-- END convert_mods -->
 </table>
+{MESSAGE}
