@@ -93,7 +93,7 @@ input, textarea {
 }
 
 input:focus, textarea:focus {
-background-color : #EDEFDB;
+    background-color : #EDEFDB;
 }
 
 input[type="submit"] {
@@ -213,9 +213,9 @@ div.link-level-2 {
 }
 
 div.link-level-3 {
-padding : 5px;
-padding-left : 2em;
-background-color : #F1F4CC;
+    padding : 5px;
+    padding-left : 2em;
+    background-color : #F1F4CC;
 }
 
 div.link-level-1:hover,
@@ -239,8 +239,8 @@ div.panel-title {
 }
 
 ul#navlist li a {
-background-color : #ADB583;
-color : black;
+    background-color : #ADB583;
+    color : black;
 }
 
 div.category-info {

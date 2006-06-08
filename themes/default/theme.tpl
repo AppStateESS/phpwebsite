@@ -5,6 +5,9 @@
 {METATAGS}
 {JAVASCRIPT}
 {STYLE}
+<!--[if IE 6]>
+  <link rel="stylesheet" type="text/css" href="themes/default/hacks.css" />
+<![endif]-->
 </head>
 <body>
 {LAYOUT_HEADER}

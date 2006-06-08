@@ -1,4 +1,4 @@
-/* --------------- CSS Hacks ------------- */
+/* --------------- IE CSS Hacks ------------- */
 
 img.float-left, img.float-right {
     display : inline;
@@ -11,3 +11,20 @@ code {
     white-space: -o-pre-wrap;    /* Opera 7 */
     word-wrap: break-word;       /* Internet Explorer 5.5+ */
 }
+
+body {
+   width : 99%;
+}
+
+div.controlpanel div.frame {
+    background-color : white;
+}
+
+div.controlpanel div.frame div.backgrd {
+    border : none;
+}
+
+#top-menu, #user-login {
+    height : 1%;
+}
+
