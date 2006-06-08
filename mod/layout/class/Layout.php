@@ -720,6 +720,16 @@ class Layout {
 
     function styleLink($link, $header=FALSE)
     {
+        $browser = getBrowserInfo('browser');
+        $version = getBrowserInfo('browser_version');
+
+        // *sigh* not worth the hassle to conform to IE
+        if ($browser == 'MSIE' && $version == '6.0') {
+            $can_import = FALSE;
+        } else {
+            $can_import = TRUE;
+        }
+
         // NEED TO CHECK if using xml-stylesheet
         extract($link);
 
@@ -743,7 +753,7 @@ class Layout {
                 return sprintf('<?xml-stylesheet %s href="%s" type="text/css"?>', $cssTitle, $file);
             }
         } else {
-            if ($import == TRUE) {
+            if ($import == TRUE && $can_import) {
                 return sprintf('<style type="text/css"> @import url("%s") %s;</style>', $file, $media);
             } elseif (isset($alternate) && $alternate == TRUE) {
                 return sprintf('<link rel="alternate stylesheet" %s href="%s" type="text/css" %s />', $cssTitle, $file, $media_tag);
