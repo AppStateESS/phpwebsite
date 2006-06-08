@@ -132,54 +132,63 @@ div.category-links {
 
 /*--------------- Control Panel ---------------*/
 
-.frame {
+div.frame {
     background-color: #CBCEAC;
     border-color : #90996E;
 }
 
-.backgrd {
+div.backgrd {
     border-color: #90996E;
 }
 
-.tabmenu li {
-    border-color: #90996E;
+ul.tabmenu {
+   line-spacing : 0px;
+   line-height : 0px;
+   margin-top : 10px;
+   margin-bottom : 12px;
 }
 
-.tabmenu li.inactive {
+ul.tabmenu li {
+    border-color: #90996E;
+    border-bottom : none;
+}
+
+ul.tabmenu li.inactive {
     background-color : #DEDFBA;
     color : #49493D;
 }
 
-.tabmenu li.active {
+ul.tabmenu li.active {
     background-color : #CBCEAC;
     color : #49493D;
 }
 
-.tabmenu li.active a:visited {
+ul.tabmenu li.active a:visited {
     text-decoration: none;
     color: #49493D;
 }
 
-.tabmenu li.inactive a:link {
+ul.tabmenu li.inactive a:link {
     text-decoration: none;
     color: #49493D;
 }
 
-.tabmenu li.inactive a:visited {
+ul.tabmenu li.inactive a:visited {
     text-decoration: none;
     color: #49493D;
 }
 
-.tabmenu li.inactive a:hover {
+ul.tabmenu li.inactive a:hover {
     text-decoration: none;
     color: black;
 }
 
-.tabmenu li.inactive:hover {
+ul.tabmenu li.inactive:hover {
     background-color : #CBCEAC;
     color: black;
 }
 
+/*--------------- End Control Panel ---------------*/
 
 div.menu-link {
     border-top : white 2px solid;
