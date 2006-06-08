@@ -330,4 +330,17 @@ function translateFile($filename)
     return strtolower(CURRENT_LANGUAGE . '_' . $filename);
 }
 
+function &getBrowserInfo($parameter=NULL)
+{
+    if (!isset($GLOBALS['browser_info'])) {
+        return NULL;
+    } else {
+        if (empty($parameter)) {
+            return $GLOBALS['browser_info'];
+        } else {
+            return @$GLOBALS['browser_info'][$parameter];
+        }
+    }
+}
+
 ?>
