@@ -78,6 +78,29 @@ class User_Action {
             $message = _('User deleted.');
             break;
 
+        case 'deify_user':
+            if (!Current_User::authorized('users') ||
+                !Current_User::isDeity()) {
+                Current_User::disallow();
+                return;
+            }
+            $user->deity = 1;
+            $user->save();
+            PHPWS_Core::goBack();
+            break;
+
+        case 'mortalize_user':
+            if (!Current_User::authorized('users') ||
+                !Current_User::isDeity()) {
+                Current_User::disallow();
+                return;
+            }
+            $user->deity = 0;
+            $user->save();
+            PHPWS_Core::goBack();
+            break;
+
+
         case 'authorization':
         case 'postAuthorization':
         case 'dropAuthScript':

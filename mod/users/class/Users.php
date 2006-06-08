@@ -750,6 +750,23 @@ class PHPWS_User {
 
     function getUserTpl()
     { 
+        // Don't let a deity change their deity status
+        // Don't let non-deities change status
+
+        if (Current_User::isDeity() && !Current_User::isUser($this->id)) {
+            if ($this->isDeity()) {
+                $dvars['QUESTION'] = _('Are you sure you want to remove deity status?');
+                $dvars['ADDRESS']  = PHPWS_Text::linkAddress('users', array('action'=>'admin', 'command'=>'mortalize_user', 'user_id'=>$this->id), 1);
+                $dvars['LINK']     = _('Deity');
+                $links[] = javascript('confirm', $dvars);
+            } else {
+                $dvars['QUESTION'] = _('Are you sure you want to deify this user?');
+                $dvars['ADDRESS']  = PHPWS_Text::linkAddress('users', array('action'=>'admin', 'command'=>'deify_user', 'user_id'=>$this->id), 1);
+                $dvars['LINK']     = _('Mortal');
+                $links[] = javascript('confirm', $dvars);
+            }
+        }
+
         if ($this->isActive()) {
             $linkVar['command'] = 'deactivateUser';
             $links[] = PHPWS_Text::secureLink(_('Deactivate'), 'users', $linkVar);
@@ -793,6 +810,10 @@ class PHPWS_User {
         }
 
         $template['ACTIONS'] = implode(' | ', $links);
+
+        if ($this->deity && !Current_User::isDeity()) {
+            unset($template['ACTIONS']);
+        }
 
         return $template;
     }
