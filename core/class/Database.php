@@ -1556,14 +1556,15 @@ class PHPWS_DB {
             return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::addTableColumn', $column);
         }
 
-        if (isset($after)) {
+        if (DB_USE_AFTER && isset($after)) {
             if (strtolower($after) == 'first') {
                 $location = 'FIRST';
             } else {
                 $location = "AFTER $after";
             }
-        } else
+        } else {
             $location = NULL;
+        }
 
         $sql = "ALTER TABLE $table ADD $column $parameter $location";
 

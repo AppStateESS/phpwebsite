@@ -7,6 +7,8 @@
  * @version $Id$
  */
 
+define ('DB_USE_AFTER', TRUE);
+
 class PHPWS_SQL {
 
     function export(&$info){
