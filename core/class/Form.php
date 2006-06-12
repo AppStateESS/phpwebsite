@@ -940,9 +940,10 @@ class PHPWS_Form {
         case 'radio':
         case 'radiobutton':
             if (is_array($value)) {
-                foreach ($value as $sub) {
+                foreach ($value as $key=>$sub) {
                     $radio = & new Form_RadioButton($name, $sub);
                     $radio->key = $sub;
+                    $radio->place = $key;
                     $allRadio[$sub] = $radio;
                 }
                 return $allRadio;
