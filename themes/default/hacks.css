@@ -19,3 +19,16 @@ div.controlpanel div.frame div.backgrd {
 #top-menu, #user-login {
     height : 1%;
 }
+
+.menu-admin span.menu-link-pop {
+    padding : 0px;
+    display : inline;
+    position : relative;
+    margin : 0px;
+    border : none;
+    background-color : transparent;
+}
+
+.menu-admin-link {
+    display : none;
+}
