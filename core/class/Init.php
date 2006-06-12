@@ -330,6 +330,15 @@ function translateFile($filename)
     return strtolower(CURRENT_LANGUAGE . '_' . $filename);
 }
 
+/**
+ * get information about user's browser
+ *
+ * browser
+ * browser_version
+ * engine
+ * engine_version
+ * locale 
+ */
 function &getBrowserInfo($parameter=NULL)
 {
     if (!isset($GLOBALS['browser_info'])) {
