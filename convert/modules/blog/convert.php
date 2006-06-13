@@ -13,6 +13,10 @@
   // memory or timeout errors
 define('BLOG_BATCH', 15);
 
+// Must be in YYYY-MM-DD format.
+// If you want to convert all your announcements, leave this line commented out.
+//define('IGNORE_BEFORE', '2006-01-01');
+
 PHPWS_Core::initModClass('search', 'Search.php');
 
 function convert()
@@ -27,51 +31,71 @@ function convert()
         return _('Blog is not installed.');
     }
 
-    $db = Convert::getSourceDB('mod_announce');
-    $db->addWhere('approved', 1);
+    if (!isset($_REQUEST['mode'])) {
+        $content[] = _('You may convert to different ways.');
+        $content[] = sprintf('<a href="%s">%s</a>', 'index.php?command=convert&package=blog&mode=manual',
+                             _('Manual mode requires you to click through the conversion process.'));
+        $content[] = sprintf('<a href="%s">%s</a>', 'index.php?command=convert&package=blog&mode=auto',
+                             _('Automatic mode converts the data without your interaction.'));
 
-    $batch = & new Batches('convert_blog');
+        $content[] = ' ';
+        $content[] = _('If you encounter problems, you should use manual mode.');
+        $content[] = _('Conversion will begin as soon as you make your choice.');
 
-    $total_entries = $db->count();
-    if ($total_entries < 1) {
-        return _('No announcements to convert.');
-    }
-
-    $batch->setTotalItems($total_entries);
-    $batch->setBatchSet(BLOG_BATCH);
-
-    if (isset($_REQUEST['reset_batch'])) {
-        $batch->clear();
-    }
- 
-
-    if (!$batch->load()) {
-        $content[] = _('Batch previously run.');
+        return implode('<br />', $content);
     } else {
-        $result = runBatch($db, $batch);
-    }
+        if ($_REQUEST['mode'] == 'auto') {
+            $show_wait = TRUE;
+        } else {
+            $show_wait = FALSE;
+        }
+        $db = Convert::getSourceDB('mod_announce');
+        $db->addWhere('approved', 1);
 
-    $percent = $batch->percentDone();
+        if (defined('IGNORE_BEFORE')) {
+            $db->addWhere('dateCreated', IGNORE_BEFORE, '>=');
+        }
 
-    $content[] = Convert::getGraph($percent);
-    //    $content[] = sprintf('%s&#37; done<br>', $batch->percentDone());
+        $batch = & new Batches('convert_blog');
 
-    $batch->completeBatch();
+        $total_entries = $db->count();
+        if ($total_entries < 1) {
+            return _('No announcements to convert.');
+        }
+
+        $batch->setTotalItems($total_entries);
+        $batch->setBatchSet(BLOG_BATCH);
+
+        if (isset($_REQUEST['reset_batch'])) {
+            $batch->clear();
+        }
+
+        if (!$batch->load()) {
+            $content[] = _('Batch previously run.');
+        } else {
+            $result = runBatch($db, $batch);
+        }
+
+        $percent = $batch->percentDone();
+        $content[] = Convert::getGraph($percent, $show_wait);
+        $batch->completeBatch();
     
-    if (!$batch->isFinished()) {
-        Convert::forward($batch->getAddress());
-        //        $content[] =  $batch->continueLink();
-    } else {
-        createSeqTable();
-        $batch->clear();
-        Convert::addConvert('blog');
-        $content[] =  _('All done!');
-        $content[] = '<a href="index.php">' . _('Go back to main menu.') . '</a>';
-    }
+        if (!$batch->isFinished()) {
+            if ($_REQUEST['mode'] == 'manual') {
+                $content[] =  $batch->continueLink();                
+            } else {
+                Convert::forward($batch->getAddress());
+            }
+        } else {
+            createSeqTable();
+            $batch->clear();
+            Convert::addConvert('blog');
+            $content[] =  _('All done!');
+            $content[] = '<a href="index.php">' . _('Go back to main menu.') . '</a>';
+        }
     
-    return implode('<br />', $content);
-
-
+        return implode('<br />', $content);
+    }
 }
 
 function runBatch(&$db, &$batch)
@@ -151,7 +175,6 @@ function convertAnnouncement($entry)
     $search->addKeywords($val['title']);
     $search->save();
 
-
     if (PEAR::isError($result)) {
         PHPWS_Error::log($result);
     }
@@ -161,8 +184,6 @@ function convertAnnouncement($entry)
 function createSeqTable()
 {
     $db = new PHPWS_DB('blog_entries');
-    $result = $db->updateSequenceTable();
+    return $db->updateSequenceTable();
 }
-
-
 ?>
