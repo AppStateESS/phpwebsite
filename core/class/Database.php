@@ -1544,7 +1544,14 @@ class PHPWS_DB {
         return $this->query($sql);
     }
 
-
+    /**
+     * Adds a column to the database table
+     *
+     * @param string  column    Name of column to add
+     * @param string  parameter Specifics of table column
+     * @param string  after     If supported, add column after this column
+     * @param boolean indexed   Create an index on the column if true
+     */
     function addTableColumn($column, $parameter, $after=NULL, $indexed=FALSE)
     {
         $table = $this->getTable();
