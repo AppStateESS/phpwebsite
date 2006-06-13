@@ -150,7 +150,7 @@ class Convert {
         }
 
         if (isset($_POST['username'])) {
-            $name = $_POST['username'];
+            $username = $_POST['username'];
         }
 
         if (isset($_POST['password'])) {
@@ -247,15 +247,18 @@ class Convert {
         echo PHPWS_Template::process($setupData, '', 'convert/templates/convert.tpl', TRUE);
     }
 
-    function getGraph($percentage)
+    function getGraph($percentage, $show_wait=TRUE)
     {
         $percentage = ceil($percentage);
         if ($percentage < 100) {
-            $template['please_wait'] = _('Please wait...');
-            $template['wait_graphic'] = '<img src="images/ajax-loader.gif" />';
+            if ($show_wait) {
+                $template['please_wait'] = _('Please wait...');
+                $template['wait_graphic'] = '<img src="images/ajax-loader.gif" />';
+            }
         } else {
             $percentage = 100;
         }
+
         $template['percentage'] = $percentage . '%';
         $template['total_width'] = floor(100 * GRAPH_MULTIPLIER);
         $template['progress_width'] = floor($percentage * GRAPH_MULTIPLIER);
