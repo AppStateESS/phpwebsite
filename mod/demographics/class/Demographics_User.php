@@ -25,13 +25,15 @@ class Demographics_User {
 
         if (isset($this->_table)) {
             $db = & new PHPWS_DB($this->_table);
+            $db->addJoin('left', $this->_table, 'demographics', 'user_id', 'user_id');
             $db->addColumn($this->_table . '.*');
             $db->addColumn('demographics.*');
         } else {
             $db = & new PHPWS_DB('demographics');
         }
 
-        $db->addWhere('user_id', (int)$this->user_id);        
+        $db->addWhere('user_id', (int)$this->user_id);
+
         $result = $db->loadObject($this);
         if (PEAR::isError($result)) {
             $this->_error = $result;
