@@ -1,8 +1,7 @@
 Conversion from Announcements to Blog
 -------------------------------------
 This conversion copies 0.10.x announcements into the Blog
-module. Currently comments are NOT converted. This may change in the
-future.
+module.
 
 There are two defines you should be aware of in the convert.php file.
 
