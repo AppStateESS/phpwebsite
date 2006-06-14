@@ -162,11 +162,14 @@ class PHPWS_Text {
         $xhtml['<br>'] = '<br />';
         $xhtml['\'']    = '&#39;';
         $text = strtr($text, $xhtml);
-        $text = preg_replace('/&(?!\w+;)(?!#)/U', '&amp;\\1', $text);
-
+        $text = PHPWS_Text::fixAmpersand($text);
         return $text;
     }
 
+    function fixAmpersand($text)
+    {
+        return preg_replace('/&(?!\w+;)(?!#)/U', '&amp;\\1', $text);
+    }
   
     /**
      * Removes profanity from a text string
@@ -575,17 +578,20 @@ class PHPWS_Text {
             $search = &$GLOBALS['Smilie_Search']['code'];
             $replace = &$GLOBALS['Smilie_Search']['img'];
         } else {
-            $results = file_get_contents(PHPWS_HOME_DIR . 'config/core/smiles.pak');
+            $results = trim(file_get_contents('config/core/smiles.pak'));
             if (empty($results)) {
                 return $bbcode;
             }
             $smiles = explode("\n", $results);
-            foreach ($smiles as $row){
+            foreach ($smiles as $row) {
                 $icon = explode('=+:', $row);
-        
+                
+                if (count($icon) < 3) {
+                    continue;
+                }
                 $search[] = '@' . preg_quote($icon[2]) . '@';
-                $replace[] = sprintf('<img src="%simages/core/smilies/%s" title="%s" />',
-                                     PHPWS_HOME_HTTP, $icon[0], $icon[1]);
+                $replace[] = sprintf('<img src="images/core/smilies/%s" title="%s" alt="%s" />',
+                                     $icon[0], $icon[1], $icon[1]);
 
             }
             $GLOBALS['Smilie_Search']['code'] = $search;
