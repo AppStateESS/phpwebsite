@@ -78,7 +78,7 @@ class Related {
     function getUrl($clickable=FALSE)
     {
         if ($clickable) {
-            return sprintf('<a href="%s">%s</a>', $this->_key->url, $this->title);
+            return sprintf('<a href="%s">%s</a>', PHPWS_Text::fixAmpersand($this->_key->url), $this->title);
         }
         else {
             return $this->_key->url;
