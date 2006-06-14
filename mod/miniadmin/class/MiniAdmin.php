@@ -35,7 +35,7 @@ class MiniAdmin {
         foreach ($GLOBALS['MiniAdmin'] as $module => $links) {
             foreach ($links as $link) {
                 $oTpl->setCurrentBlock('links');
-                $oTpl->setData(array('ADMIN_LINK' => $link));
+                $oTpl->setData(array('ADMIN_LINK' => PHPWS_Text::fixAmpersand($link)));
                 $oTpl->parseCurrentBlock();
             }
             $oTpl->setCurrentBlock('module');
