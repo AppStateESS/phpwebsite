@@ -11,11 +11,16 @@
 
   // number of blogs to convert at a time. lower this number if you are having
   // memory or timeout errors
-define('BLOG_BATCH', 15);
+define('BLOG_BATCH', 10);
 
 // Must be in YYYY-MM-DD format.
 // If you want to convert all your announcements, leave this line commented out.
 //define('IGNORE_BEFORE', '2006-01-01');
+
+
+// If you do not want to convert comments, set this to false
+define('CONVERT_COMMENTS', TRUE);
+
 
 PHPWS_Core::initModClass('search', 'Search.php');
 
@@ -92,6 +97,7 @@ function convert()
             Convert::addConvert('blog');
             $content[] =  _('All done!');
             $content[] = '<a href="index.php">' . _('Go back to main menu.') . '</a>';
+            unset($_SESSION['Authors']);
         }
     
         return implode('<br />', $content);
@@ -131,7 +137,6 @@ function convertAnnouncement($entry)
         continue;
     }
 
-
     $val['id']      = $entry['id'];
     $val['title']   = strip_tags($entry['subject']);
     $val['entry']   = $entry['summary'];
@@ -143,6 +148,7 @@ function convertAnnouncement($entry)
     $val['author']  = $entry['userCreated'];
     $val['create_date']    = strtotime($entry['dateCreated']);
     $val['approved']       = $entry['approved'];
+    $val['allow_comments'] = $entry['comments'];
 
     if (!empty($entry['image']) && $entry['image'] != 'Array') {
         $image = unserialize($entry['image']);
@@ -179,6 +185,18 @@ function convertAnnouncement($entry)
         PHPWS_Error::log($result);
     }
 
+    if (CONVERT_COMMENTS && $val['allow_comments']) {
+        $cm_db = Convert::getSourceDB('mod_comments_data');
+        $cm_db->addWhere('module', 'announce');
+        $cm_db->addWhere('itemId', $val['id']);
+        $comment_list = $cm_db->select();
+
+        $cm_db->disconnect();
+        if (!empty($comment_list)) {
+            convertComments($comment_list, $val['key_id']);
+        }
+    }
+
 }
 
 function createSeqTable()
@@ -186,4 +204,94 @@ function createSeqTable()
     $db = new PHPWS_DB('blog_entries');
     return $db->updateSequenceTable();
 }
+
+function convertComments($comments, $key_id)
+{
+    $db = & new PHPWS_DB('comments_threads');
+    $db->addValue('key_id', $key_id);
+    $thread_id = $db->insert();
+
+    if (PEAR::isError($thread_id)) {
+        PHPWS_Error::log($thread_id);
+        return;
+    } elseif (!$thread_id) {
+        return;
+    }
+
+    $db2 = & new PHPWS_DB('comments_items');
+    $count = 0;
+    
+    foreach ($comments as $comment) {
+        $author_id = buildAuthor($comment['author']);
+
+        $count++;
+        $val = array();
+        $val['id']          = &$comment['cid'];
+        $val['thread_id']   = &$thread_id;
+        $val['parent']      = (int)$comment['pid'];
+        $val['author_ip']   = &$comment['authorIp'];
+        $val['author_id']   = $author_id;
+        $val['subject']     = &$comment['subject'];
+        $val['entry']       = &$comment['comment'];
+        $val['edit_author'] = &$comment['editor'];
+        $val['create_time'] = strtotime($comment['postDate']);
+        if ($comment['editDate'] != '0000-00-00 00:00:00') {
+            $val['edit_time']   = strtotime($comment['editDate']);
+            $val['edit_reason'] = &$comment['editReason'];
+        }
+        $db2->addValue($val);
+
+        $result = $db2->insert(false);
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+        }
+        $db2->reset();
+    }
+
+    $db2->updateSequenceTable();
+
+    $db->reset();
+    $db->addWhere('id', $thread_id);
+    $db->addValue('total_comments', $count);
+    $db->update();
+}
+
+function buildAuthor($username)
+{
+    $db = Convert::getSourceDB('mod_users');
+    $db->addWhere('username', $username);
+    $db->addColumn('user_id');
+    $user_id = $db->select('one');
+    $db->disconnect();
+
+    if ($user_id == 1) {
+        return FALSE;
+    }
+
+    if (!$user_id || PEAR::isError($user_id)) {
+        return FALSE;
+    }
+
+    $db2 = & new PHPWS_DB('comments_users');
+    if (isset($_SESSION['Authors']) && in_array($user_id, $_SESSION['Authors'])) {
+        $db2->addWhere('user_id', $user_id);
+        $db2->incrementColumn('comments_made');
+        return $user_id;
+    }
+
+
+    $db2->addValue('user_id', $user_id);
+    $db2->addValue('display_name', $username);
+    $db2->addValue('comments_made', 1);
+    $db2->addValue('joined_date', mktime());
+    $db2->insert();
+
+    $db3 = & new PHPWS_DB('demographics');
+    $db3->addValue('user_id', $user_id);
+    $db3->insert();
+
+    $_SESSION['Authors'][] = $user_id;
+    return $user_id;
+}
+
 ?>
