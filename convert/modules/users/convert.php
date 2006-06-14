@@ -9,6 +9,9 @@
    * @version $Id$
    */
 
+  // number of users to convert
+define('BATCH_SET', 20);
+
 function convert()
 {
     $content = array();
@@ -65,62 +68,88 @@ function startOptions()
 
 function beginConverting()
 {
-    $db = Convert::getSourceDB('mod_users');
+    if (!isset($_REQUEST['mode'])) {
+        $content[] = _('You may convert to different ways.');
+        $content[] = sprintf('<a href="%s">%s</a>', 
+                             sprintf('index.php?command=convert&package=users&stage=2&convert_who=%s&mode=manual', $_REQUEST['convert_who']),
+                             _('Manual mode requires you to click through the conversion process.'));
+        $content[] = sprintf('<a href="%s">%s</a>',
+                             sprintf('index.php?command=convert&package=users&stage=2&convert_who=%s&mode=auto', $_REQUEST['convert_who']),
+                             _('Automatic mode converts the data without your interaction.'));
 
-    switch ($_REQUEST['convert_who']) {
-    case 'month':
-        $sixmonths = mktime(0,0,0, date('m')-6, date('d'), date('Y')); 
-        $db->addWhere('last_on', $sixmonths, '>=');
-        break;
+        $content[] = ' ';
+        $content[] = _('If you encounter problems, you should use manual mode.');
+        $content[] = _('Conversion will begin as soon as you make your choice.');
 
-    case 'year':
-        $year = mktime(0,0,0, date('m'), date('d'), date('Y')-1); 
-        $db->addWhere('last_on', $year, '>=');
-        break;
-    }
-
-    $batch = & new Batches('convert_users');
-
-    $total_users = $db->count();
-    if ($total_users < 1) {
-        return _('No users to convert.');
-    }
-
-    $batch->setTotalItems($total_users);
-    $batch->setBatchSet(10);
-
-    if (isset($_REQUEST['reset_batch'])) {
-        $batch->clear();
-    }
-
-
-    if (!$batch->load()) {
-        $content[] = _('Batch previously run.');
+        return implode('<br />', $content);
     } else {
-        if(!runBatch($db, $batch)) {
-            $content[] = _('Some errors occurred when trying to convert some users.');
+        if ($_REQUEST['mode'] == 'auto') {
+            $show_wait = TRUE;
+        } else {
+            $show_wait = FALSE;
         }
-    }
 
-    $content[] = sprintf('%s&#37; done<br>', $batch->percentDone());
+        $db = Convert::getSourceDB('mod_users');
 
-    $batch->completeBatch();
+        switch ($_REQUEST['convert_who']) {
+        case 'month':
+            $sixmonths = mktime(0,0,0, date('m')-6, date('d'), date('Y')); 
+            $db->addWhere('last_on', $sixmonths, '>=');
+            break;
 
-    if (!$batch->isFinished()) {
-        $content[] =  $batch->continueLink();
-    } else {
-        // delete?
-        unset($_SESSION['users_convert_init']);
-        createSeqTable();
-        $batch->clear();
-        Convert::addConvert('users');
-        $content[] =  _('All done!');
-        $content[] = _('Please note that the user with an index of 1 was ignored by the conversion.');
-        $content[] = _('If the first user on your old site is not you, then you will need to recreate them.');
-        $content[] = '<a href="index.php">' . _('Go back to main menu.') . '</a>';
-    }
+        case 'year':
+            $year = mktime(0,0,0, date('m'), date('d'), date('Y')-1); 
+            $db->addWhere('last_on', $year, '>=');
+            break;
+        }
+
+        $batch = & new Batches('convert_users');
+
+        $total_users = $db->count();
+        if ($total_users < 1) {
+            return _('No users to convert.');
+        }
+
+        $batch->setTotalItems($total_users);
+        $batch->setBatchSet(BATCH_SET);
+
+        if (isset($_REQUEST['reset_batch'])) {
+            $batch->clear();
+        }
+
+
+        if (!$batch->load()) {
+            $content[] = _('Batch previously run.');
+        } else {
+            if(!runBatch($db, $batch)) {
+                $content[] = _('Some errors occurred when trying to convert some users.');
+            }
+        }
+
+        $percent = $batch->percentDone();
+        $content[] = Convert::getGraph($percent, $show_wait);
+        $batch->completeBatch();
+
+        if (!$batch->isFinished()) {
+            if ($_REQUEST['mode'] == 'manual') {
+                $content[] =  $batch->continueLink();                
+            } else {
+                Convert::forward($batch->getAddress());
+            }
+        } else {
+            // delete?
+            unset($_SESSION['users_convert_init']);
+            createSeqTable();
+            $batch->clear();
+            Convert::addConvert('users');
+            $content[] =  _('All done!');
+            $content[] = _('Please note that the user with an index of 1 was ignored by the conversion.');
+            $content[] = _('If the first user on your old site is not you, then you will need to recreate them.');
+            $content[] = '<a href="index.php">' . _('Go back to main menu.') . '</a>';
+        }
     
-    return implode('<br />', $content);
+        return implode('<br />', $content);
+    }
 }
 
 function runBatch(&$db, &$batch)
@@ -137,14 +166,12 @@ function runBatch(&$db, &$batch)
     if (empty($result)) {
         return NULL;
     } else {
-        $db = & new PHPWS_DB('users');
         foreach ($result as $oldUser) {
             if ($oldUser['user_id'] == 1 ||
                 strtolower($oldUser['username']) == $username) {
                 continue;
             }
-            $db->reset();
-            $result = convertUser($db, $oldUser);
+            $result = convertUser($oldUser);
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
                 $errors = TRUE;
@@ -159,17 +186,16 @@ function runBatch(&$db, &$batch)
     }
 }
 
-function convertUser(&$db, $oldUser) {
-    $val['id']          = $oldUser['user_id'];
-    $val['display_name']= 
-    $val['username']    = $oldUser['username'];
-    $val['created']     = 
-    $val['last_logged'] = $oldUser['last_on'];
-    $val['email']       = $oldUser['email'];
-    $val['deity']       = $oldUser['deity'];
-    $val['updated']     = mktime();
-    $val['log_count']   = $oldUser['log_sess'];
-    $val['authorize']   = $_SESSION['users_convert_init'];
+function convertUser($oldUser) {
+    $db = & new PHPWS_DB('users');
+    $val['id']           = $oldUser['user_id'];
+    $val['display_name'] = $val['username']     = $oldUser['username'];
+    $val['created']      = $val['last_logged']  = $oldUser['last_on'];
+    $val['email']        = $oldUser['email'];
+    $val['deity']        = $oldUser['deity'];
+    $val['updated']      = mktime();
+    $val['log_count']    = $oldUser['log_sess'];
+    $val['authorize']    = $_SESSION['users_convert_init'];
     $db->addValue($val);
     
     $result = $db->insert(FALSE);
@@ -182,6 +208,7 @@ function convertUser(&$db, $oldUser) {
     $db->addValue('active', 1);
     $db->addValue('name', $val['username']);
     $db->addValue('user_id', $val['id']);
+
     $result = $db->insert();
     if (PEAR::isError($result)) {
         return $result;
