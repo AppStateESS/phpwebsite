@@ -1,5 +1,5 @@
 <div class="box">
-  <div class="box-title"><h1>{TITLE}<h1></div>
+  <div class="box-title"><h1>{TITLE}</h1></div>
   <!-- BEGIN message --><div class="padded"><h3>{MESSAGE}</h3></div><!-- END message -->
   <div class="box-content">
   {START_FORM}
