@@ -1868,8 +1868,9 @@ class Form_Element {
     {
         $id = $this->getName();
 
+        // changed 6/14/06
         if ($this->type == 'radio') {
-            $id .= '[' . $this->key . ']';
+            $id .= '_' . $this->key;
         }
 
         $this->id = $this->_form->id . '_' . $id;
