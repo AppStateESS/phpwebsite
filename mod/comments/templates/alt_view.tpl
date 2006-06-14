@@ -6,7 +6,7 @@
     </div>
     <div class="padded">{EMPTY_MESSAGE}</div>
     <!-- BEGIN listrows -->
-    <table class="comment-table {COMMENT_LEVEL}">
+    <table class="comment-table">
         <tr>
             <td colspan="2" class="bgcolor3 smaller padded" >{RELATIVE_CREATE}
                 <!-- BEGIN response --> - {RESPONSE_LABEL} {RESPONSE_NAME}<!-- END response -->
@@ -24,7 +24,7 @@
                 <!-- END edit-info -->
                 <div class="admin-links"><!-- BEGIN edit-link -->{EDIT_LINK}
                     <!-- BEGIN delete-link -->| {DELETE_LINK}<!-- END delete-link -->
-                    | <!-- END edit-link --> {REPLY_LINK}
+                    | <!-- END edit-link --> {REPLY_LINK} | {QUOTE_LINK}
                 </div>
             </td>
          </tr>
