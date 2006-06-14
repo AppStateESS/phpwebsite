@@ -109,7 +109,6 @@ class PHPWS_DB {
             $GLOBALS['PEAR_DB'] = DB::connect($dsn);
         } else {
             $GLOBALS['PEAR_DB'] = DB::connect(PHPWS_DSN);
-
         }
 
         if (PEAR::isError($GLOBALS['PEAR_DB'])){
@@ -324,6 +323,7 @@ class PHPWS_DB {
 
     function getPrefix()
     {
+        PHPWS_DB::touchDB();
         return $GLOBALS['PEAR_DB']->prefix;
     }
 
@@ -422,7 +422,6 @@ class PHPWS_DB {
         foreach ($this->_join_tables as $join_array) {
             extract($join_array);
 
-           
             $join_to = $this->getPrefix() . $join_to;
             
             if ($result = $this->_getJoinOn($join_on_1, $join_on_2, $join_from, $join_to)) {
@@ -1267,7 +1266,7 @@ class PHPWS_DB {
             if (PEAR::isError($result)) {
                 return $result;
             }
-            
+
             if (isset($indexby)) {
                 return PHPWS_DB::_indexBy($result, $indexby);
             }
@@ -1952,6 +1951,7 @@ class PHPWS_DB {
         }
 
         $items = NULL;
+        
         $result = $this->select();
 
         if (PEAR::isError($result) || !isset($result)) {
@@ -1961,12 +1961,7 @@ class PHPWS_DB {
         foreach ($result as $indexby => $itemResult){
             $genClass = & new $className;
             PHPWS_Core::plugObject($genClass, $itemResult);
-
-            if (isset($indexby)) {
-                $items[$indexby] = $genClass;
-            } else {
-                $items[] = $genClass;
-            }
+            $items[$indexby] = $genClass;
         }
 
         return $items;
