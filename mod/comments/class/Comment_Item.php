@@ -212,26 +212,23 @@ class Comment_Item {
 	return $this->edit_author;
     }
 
+    function getAuthor()
+    {
+	if (!empty($GLOBALS['Comment_Users'])) {
+            $author = @$GLOBALS['Comment_Users'][$this->author_id];
+        }
+        
+        if (empty($author)) {
+            $author = & new Comment_User($this->author_id);
+        }
+
+        return $author;
+    }
+
     function getAuthorName()
     {
-        static $author_list;
-        $author_id = &$this->author_id;
-        if (!$author_id) {
-            return _('Anonymous');
-        } else {
-            if (!isset($author_list[$author_id])) {
-                $user = & new PHPWS_User($author_id);
-                if (empty($user->display_name)) {
-                    $author_list[$author_id] = _('Unknown');
-                    return _('Unknown');
-
-                }
-                $author_list[$author_id] = $user->display_name;
-                return $user->display_name;
-            } else {
-                return $author_list[$author_id];
-            }
-        }
+        $author = $this->getAuthor();
+        return $author->display_name;
     }
 
     function getError()
@@ -243,13 +240,8 @@ class Comment_Item {
     {
         translate('comments');
 
-	if (!empty($GLOBALS['Comment_Users'])) {
-            $author = @$GLOBALS['Comment_Users'][$this->author_id];
-        }
-        
-        if (empty($author)) {
-            $author = & new Comment_User($this->author_id);
-        }
+        $author = $this->getAuthor();
+
 
 	$author_info = $author->getTpl();
 
@@ -263,7 +255,8 @@ class Comment_Item {
 	$template['ENTRY']	     = $this->getEntry(TRUE);
 	$template['CREATE_TIME']     = $this->getCreateTime();
         $template['RELATIVE_CREATE'] = $this->getRelativeTime(TRUE);
-	$template['REPLY_LINK']	     = $this->replyLink();
+	$template['QUOTE_LINK']	     = $this->quoteLink();
+        $template['REPLY_LINK']      = $this->replyLink();
 	$template['EDIT_LINK']	     = $this->editLink();
 	$template['DELETE_LINK']     = $this->deleteLink();
 	$template['VIEW_LINK']	     = $this->viewLink();
@@ -363,11 +356,19 @@ class Comment_Item {
 
     }
 
-    function replyLink()
+    function quoteLink()
     {
 	$vars['user_action']   = 'post_comment';
 	$vars['thread_id']     = $this->thread_id;
 	$vars['cm_parent']     = $this->getId();
+
+	return PHPWS_Text::moduleLink(_('Quote'), 'comments', $vars);
+    }
+
+    function replyLink()
+    {
+	$vars['user_action']   = 'post_comment';
+	$vars['thread_id']     = $this->thread_id;
 
 	return PHPWS_Text::moduleLink(_('Reply'), 'comments', $vars);
     }
