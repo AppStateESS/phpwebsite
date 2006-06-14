@@ -6,7 +6,7 @@
     </div>
     <div class="padded">{EMPTY_MESSAGE}</div>
     <!-- BEGIN listrows -->
-    <table class="comment-table">
+    <table class="comment-table {COMMENT_LEVEL}">
         <tr>
             <td colspan="2" class="bgcolor3 smaller padded" >{RELATIVE_CREATE}
                 <!-- BEGIN response --> - {RESPONSE_LABEL} {RESPONSE_NAME}<!-- END response -->

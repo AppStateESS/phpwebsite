@@ -244,10 +244,12 @@ class Comment_Item {
         translate('comments');
 
 	if (!empty($GLOBALS['Comment_Users'])) {
+            $author = @$GLOBALS['Comment_Users'][$this->author_id];
+        }
+        
+        if (empty($author)) {
             $author = & new Comment_User($this->author_id);
-	} else {
-	    $author = & new Comment_User(0);
-	}
+        }
 
 	$author_info = $author->getTpl();
 
@@ -257,14 +259,14 @@ class Comment_Item {
 	$template['POSTED_BY']	   = _('Posted by');
 	$template['POSTED_ON']	   = _('Posted on');
 
-	$template['SUBJECT']	   = $this->getSubject(TRUE);
-	$template['ENTRY']	   = $this->getEntry(TRUE);
-	$template['CREATE_TIME']   = $this->getCreateTime();
+	$template['SUBJECT']	     = $this->getSubject(TRUE);
+	$template['ENTRY']	     = $this->getEntry(TRUE);
+	$template['CREATE_TIME']     = $this->getCreateTime();
         $template['RELATIVE_CREATE'] = $this->getRelativeTime(TRUE);
-	$template['REPLY_LINK']	   = $this->replyLink();
-	$template['EDIT_LINK']	   = $this->editLink();
-	$template['DELETE_LINK']   = $this->deleteLink();
-	$template['VIEW_LINK']	   = $this->viewLink();
+	$template['REPLY_LINK']	     = $this->replyLink();
+	$template['EDIT_LINK']	     = $this->editLink();
+	$template['DELETE_LINK']     = $this->deleteLink();
+	$template['VIEW_LINK']	     = $this->viewLink();
 
         if ($this->parent) {
             $template['RESPONSE_LABEL']  = _('In response to');
@@ -272,24 +274,27 @@ class Comment_Item {
             $template['RESPONSE_NAME']   = $this->responseAuthor();
         }
 
-	if (isset($this->edit_author)) {
+	if ($this->edit_time) {
 	    $template['EDIT_LABEL']	   = _('Edited');
 	    $template['EDIT_AUTHOR']	   = $this->getEditAuthor();
 	    $template['EDIT_AUTHOR_LABEL'] = _('Edited by');
 	    $template['EDIT_TIME_LABEL']   = _('Edited on');
 	    $template['EDIT_TIME']	   = $this->getEditTime();
-	    if (isset($this->edit_reason)) {
+	    if (!empty($this->edit_reason)) {
 		$template['EDIT_REASON']       = $this->getEditReason();
 		$template['EDIT_REASON_LABEL'] = _('Reason');
-	    }
+	    } else {
+                $template['EDIT_REASON'] = NULL;
+            }
 	} else {
-	    $template['EDIT_TIME'] = NULL;
-	}
+            $template['EDIT_TIME'] = NULL;
+            $template['EDIT_REASON'] = NULL;
+            $template['EDIT_AUTHOR'] = NULL;
+        }
 
 	if (Current_User::allow('comments')) {
 	    $template['IP_ADDRESS'] = $this->getIp();
 	}
-
 	$template = array_merge($author_info, $template);
         translate();
 	return $template;
@@ -398,8 +403,7 @@ class Comment_Item {
     {
         $comment = & new Comment_Item($this->parent);
 	$vars['user_action']   = 'view_comment';
-	$vars['cm_id']	   = $comment->id;
-
+	$vars['cm_id']	       = $comment->id;
 	return PHPWS_Text::moduleLink($comment->getAuthorName(), 'comments', $vars);
     }
 
