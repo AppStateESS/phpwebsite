@@ -220,6 +220,33 @@ class Demographics {
         return TRUE;
     }
 
+    function getList($ids, $table=NULL, $class_name=NULL)
+    {
+        if (!is_array($ids)) {
+            return FALSE;
+        }
+
+        if (isset($table)) {
+            $db = & new PHPWS_DB($table);
+            $db->setDistinct(true);
+            $db->addJoin('left', $table, 'demographics', 'user_id', 'user_id');
+            $db->addColumn($table . '.*');
+            $db->addColumn('demographics.*');
+        } else {
+            $db = & new PHPWS_DB('demographics');
+        }
+
+        $db->addWhere('user_id', $ids);
+        $db->setIndexBy('user_id');
+
+        if ($class_name) {
+            return $db->getObjects($class_name);
+        } else {
+            return $db->select();
+        }
+
+    }
+    
 }
 
 
