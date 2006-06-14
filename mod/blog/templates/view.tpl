@@ -18,7 +18,7 @@
       </div>
       <!-- END comment-info -->
       <!-- BEGIN comments -->
-      <div class="comments-link">{COMMENTS}</div>
+      {COMMENTS}
       <!-- END comments -->
     </div>
   </div>
