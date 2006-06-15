@@ -266,6 +266,8 @@ class PHPWS_Text {
     function parseInput($text, $encode=TRUE){
         $text = trim($text);
 
+        $text = preg_replace('/<br \/>|<br>/', "\n", $text);
+
         $text = PHPWS_Text::CleanupSmartQuotes($text);
         if ($encode) {
             $text = htmlentities($text, ENT_QUOTES, 'UTF-8');
