@@ -17,6 +17,7 @@ class Comment_Thread {
     var $key_id         = NULL;
     var $total_comments = 0;
     var $last_poster    = NULL;
+    var $allow_anon     = 0;
     var $_key           = NULL;
     var $_comments      = NULL;
     var $_error         = NULL;
@@ -43,6 +44,11 @@ class Comment_Thread {
         }
 
         $this->loadKey();
+    }
+
+    function allowAnonymous($anon)
+    {
+        $this->allow_anon = (int)(bool)$anon;
     }
 
     function countComments($formatted=FALSE)
@@ -186,6 +192,10 @@ class Comment_Thread {
 
     function view($parent_id=0)
     {
+        if (Current_User::allow('comments')) {
+            $this->miniAdmin();
+        }
+
         Layout::addStyle('comments');
         PHPWS_Core::initCoreClass('DBPager.php');
 
@@ -195,14 +205,6 @@ class Comment_Thread {
                              'week'   => _('This week'),
                              'month'  => _('This month')
                              );
-        /*
-         // Not sure what "- Top" was supposed to do. Keep it in for now
-        $order_list = array('old_all'  => _('Oldest first'),
-                            'new_all'  => _('Newest first'),
-                            'old_base' => _('Oldest first - Top'),
-                            'new_base' => _('Newest first - Top')
-                            );
-        */
 
         $order_list = array('old_all'  => _('Oldest first'),
                             'new_all'  => _('Newest first'));
@@ -244,7 +246,6 @@ class Comment_Thread {
         }
         $form->setMatch('order', $default_order);
 
-
         $form->noAuthKey();
         $form->addSubmit(_('Go'));
         $form->setMethod('get');
@@ -255,7 +256,7 @@ class Comment_Thread {
         $pager->setModule('comments');
         $pager->setTemplate(COMMENT_VIEW_TEMPLATE);
         $pager->addPageTags($page_tags);
-        $pager->addRowTags('getTpl');
+        $pager->addRowTags('getTpl', $this->allow_anon);
         $pager->setLimitList(array(10, 20, 50));
         $pager->setEmptyMessage(_('No comments'));
         $pager->initialize();
@@ -291,22 +292,6 @@ class Comment_Thread {
         return TRUE;
     }
 
-    function getItemTemplates($comments)
-    {
-        foreach ($comments as $cm_item) {
-            $tpl = $cm_item->getTpl();
-            $tpl['REPLY_LINK'] = $this->replyLink($cm_item);
-            if ( ( ($cm_item->getAuthorId() > 0) 
-                   && (Current_User::getId() == $cm_item->getAuthorId()) )
-                 || Current_User::allow('comments')) {
-                $tpl['EDIT_LINK'] = $this->editLink($cm_item);
-            }
-            $comment_list[] = $tpl;
-        }
-
-        return $comment_list;
-    }
-
     function increaseCount()
     {
         $this->total_comments++;
@@ -321,6 +306,20 @@ class Comment_Thread {
     {
         $author = & new Comment_User($author_id);
         $this->last_poster = $author->display_name;
+    }
+
+    function miniAdmin()
+    {
+        $vars['thread_id'] = $this->id;
+        if ($this->allow_anon) {
+            $vars['admin_action'] = 'disable_anon_posting';
+            $link = PHPWS_Text::secureLink(_('Disable anonymous posting'), 'comments', $vars);
+        } else {
+            $vars['admin_action'] = 'enable_anon_posting';
+            $link = PHPWS_Text::secureLink(_('Enable anonymous posting'), 'comments', $vars);
+        }
+
+        MiniAdmin::add('comments', $link);
     }
 
 }

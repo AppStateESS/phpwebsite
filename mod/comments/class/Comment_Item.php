@@ -236,12 +236,21 @@ class Comment_Item {
 	return $this->_error;
     }
 
-    function getTpl()
+    function getTpl($allow_anon)
     {
         translate('comments');
 
         $author = $this->getAuthor();
 
+        /**
+         * If anonymous users are allowed to post or
+         * the current user is logged in
+         */
+        if ($allow_anon || Current_User::isLogged()) {
+            $can_post = true;
+        } else {
+            $can_post = false;
+        }
 
 	$author_info = $author->getTpl();
 
@@ -255,8 +264,10 @@ class Comment_Item {
 	$template['ENTRY']	     = $this->getEntry(TRUE);
 	$template['CREATE_TIME']     = $this->getCreateTime();
         $template['RELATIVE_CREATE'] = $this->getRelativeTime(TRUE);
-	$template['QUOTE_LINK']	     = $this->quoteLink();
-        $template['REPLY_LINK']      = $this->replyLink();
+        if ($can_post) {
+            $template['QUOTE_LINK']	     = $this->quoteLink();
+            $template['REPLY_LINK']      = $this->replyLink();
+        }
 	$template['EDIT_LINK']	     = $this->editLink();
 	$template['DELETE_LINK']     = $this->deleteLink();
 	$template['VIEW_LINK']	     = $this->viewLink();
@@ -378,7 +389,7 @@ class Comment_Item {
 	$vars['user_action']   = 'view_comment';
 	$vars['cm_id']	   = $this->id;
 
-	return PHPWS_Text::moduleLink($this->id, 'comments', $vars);
+	return PHPWS_Text::moduleLink($this->getSubject(TRUE), 'comments', $vars);
     }
 
     function delete()

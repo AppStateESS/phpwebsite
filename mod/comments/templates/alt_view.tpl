@@ -16,7 +16,7 @@
                {AVATAR}
             </td>
             <td class="comment-body">
-                <h2>{SUBJECT}</h2>
+                <h2>{VIEW_LINK}</h2>
                 <div class="entry" style="border-top : 1px gray dotted">{ENTRY}</div>
                 <!-- BEGIN signature --><div class="signature">{SIGNATURE}</div><!-- END signature -->
                 <!-- BEGIN edit-info --><p class="edit-info">{EDIT_LABEL}: {EDIT_AUTHOR} ({EDIT_TIME})
@@ -24,7 +24,8 @@
                 <!-- END edit-info -->
                 <div class="admin-links"><!-- BEGIN edit-link -->{EDIT_LINK}
                     <!-- BEGIN delete-link -->| {DELETE_LINK}<!-- END delete-link -->
-                    | <!-- END edit-link --> {REPLY_LINK} | {QUOTE_LINK}
+                    | <!-- END edit-link -->
+                    <!-- BEGIN post -->{REPLY_LINK} | {QUOTE_LINK}<!-- END post -->
                 </div>
             </td>
          </tr>

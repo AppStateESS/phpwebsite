@@ -15,7 +15,8 @@
         <!-- END edit-info -->
         <div class="admin-links"><!-- BEGIN edit-link -->{EDIT_LINK}
             <!-- BEGIN delete-link -->| {DELETE_LINK}<!-- END delete-link -->
-            | <!-- END edit-link --> {REPLY_LINK} | {QUOTE_LINK}
+            | <!-- END edit-link -->
+            <!-- BEGIN post -->{REPLY_LINK} | {QUOTE_LINK}<!-- END post -->
         </div>
     </div>
 </div>

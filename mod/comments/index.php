@@ -20,6 +20,10 @@ if (isset($_REQUEST['user_action'])) {
   Comments::userAction($_REQUEST['user_action']);
 } elseif (isset($_REQUEST['admin_action']) && Current_User::authorized('comments')) {
   Comments::adminAction($_REQUEST['admin_action']);
-}
+} elseif (isset($_REQUEST['cm_id'])) {
+    Comments::userAction('view_comment');
+} else {
+    PHPWS_Core::errorPage('404');
+ }
 
 ?>

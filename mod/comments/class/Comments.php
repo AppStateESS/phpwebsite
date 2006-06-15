@@ -21,12 +21,6 @@ class Comments {
             $key = Key::getCurrent();
         }
 
-        if (empty($key) || $key->isDummy() || PEAR::isError($key->_error)) {
-            return NULL;
-        }
-
-        $thread = & new Comment_Thread;
-
         if (!Key::isKey($key)) {
             if (is_numeric($key)) {
                 $key = & new Key((int)$key);
@@ -34,6 +28,12 @@ class Comments {
                 return NULL;
             }
         }
+
+        if ( empty($key) || $key->isDummy() || PEAR::isError($key->_error) ) {
+            return NULL;
+        }
+
+        $thread = & new Comment_Thread;
 
         $thread->key_id = $key->id;
         $thread->_key = $key;
@@ -90,6 +90,28 @@ class Comments {
 
         case 'post_settings':
             $content = Comments::postSettings();
+            break;
+
+        case 'disable_anon_posting':
+            $db = & new PHPWS_DB('comments_threads');
+            $db->addWhere('id', (int)$_REQUEST['thread_id']);
+            $db->addValue('allow_anon', 0);
+            $result = $db->update();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+            }
+            PHPWS_Core::goBack();
+            break;
+
+        case 'enable_anon_posting':
+            $db = & new PHPWS_DB('comments_threads');
+            $db->addWhere('id', (int)$_REQUEST['thread_id']);
+            $db->addValue('allow_anon', 1);
+            $result = $db->update();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+            }
+            PHPWS_Core::goBack();
             break;
         }
 
@@ -304,8 +326,8 @@ class Comments {
 
     function viewComment($comment)
     {
-        $tpl = $comment->getTpl();
         $thread = & new Comment_Thread($comment->getThreadId());
+        $tpl = $comment->getTpl($thread->allow_anon);
         $tpl['CHILDREN'] = $thread->view($comment->getId());
         $content = PHPWS_Template::process($tpl, 'comments', COMMENT_VIEW_ONE_TPL);
         return $content;
@@ -388,6 +410,7 @@ class Comments {
         
         return PHPWS_Template::process($tpl, 'comments', 'settings_form.tpl');
     }
+
 }
 
 ?>
