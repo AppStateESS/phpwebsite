@@ -51,7 +51,7 @@ class Editor {
     function get()
     {
         $formData['NAME'] = $this->name;
-        $formData['VALUE'] = $this->data;
+        $formData['VALUE'] = PHPWS_Text::breaker($this->data);
         return Layout::getJavascript('editors/' . $this->type, $formData);
     }
 
