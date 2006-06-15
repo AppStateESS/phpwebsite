@@ -17,6 +17,7 @@ class Blog {
     var $allow_comments = 0;
     var $approved       = 0;
     var $_error         = NULL;
+    var $allow_anon     = 0;
 
     function Blog($id=NULL)
     {
@@ -104,6 +105,11 @@ class Blog {
             if ($update) {
                 $db->saveObject($this);
             }
+            PHPWS_Core::initModClass('comments', 'Comments.php');
+            $thread = Comments::getThread($this->key_id);
+            $thread->allowAnonymous($this->allow_anon);
+            $thread->save();
+
             $search = & new Search($this->key_id);
             $search->addKeywords($this->title);
             $search->addKeywords($this->entry);
@@ -152,13 +158,6 @@ class Blog {
         } else {
             return PHPWS_Text::rewriteLink(_('View'), 'blog', $this->id);
         }
-    }
-
-    function createCommentLink()
-    {
-        $vars['action'] = 'make_comment';
-        $vars['blog_id'] = $this->id;
-        return PHPWS_Text::moduleLink(_('Make Comment'), 'blog', $vars);
     }
 
     function brief_view()
@@ -324,6 +323,12 @@ class Blog {
             $this->allow_comments = 1;
         } else {
             $this->allow_comments = 0;
+        }
+
+        if (isset($_POST['allow_anon'])) {
+            $this->allow_anon = 1;
+        } else {
+            $this->allow_anon = 0;
         }
 
         if (empty($this->author)) {

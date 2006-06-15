@@ -29,29 +29,12 @@ class Blog_User {
             $content = $blog->view(TRUE, FALSE);
             break;
 
-        case 'make_comment':
-            $content = Blog_User::makeComment($blog);
-            break;
-
-        case 'save_comment':
-            $content = Blog_User::postComment($blog);
-            break;
-
         default:
             PHPWS_Core::errorPage(404);
             break;
         }
 
         Layout::add($content);
-    }
-
-
-    function makeComment(&$blog)
-    {
-        PHPWS_Core::initModClass('comments', 'Comments.php');
-
-        $thread = $blog->makeThread();
-        $thread->form();
     }
 
     function show(){

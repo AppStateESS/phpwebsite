@@ -193,7 +193,7 @@ class Blog_Admin {
             Blog_Admin::setForward(_('Blog entry removed.'), 'restore&blog_id=' . $blog_id);
             break;
 
-        case 'postEntry':
+        case 'post_entry':
             $title = _('Blog Archive');
 
             $panel->setCurrentTab('list');

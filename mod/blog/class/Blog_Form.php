@@ -10,12 +10,10 @@ PHPWS_Core::initCoreClass('Form.php');
 class Blog_Form {
     function edit(&$blog, $version_id=NULL)
     {
-        $key = & new Key($blog->key_id);
-
         $form = & new PHPWS_Form;
         $form->addHidden('module', 'blog');
         $form->addHidden('action', 'admin');
-        $form->addHidden('command', 'postEntry');
+        $form->addHidden('command', 'post_entry');
 
         if (isset($version_id)) {
             $form->addHidden('version_id', $version_id);
@@ -27,13 +25,14 @@ class Blog_Form {
         if (isset($blog->id) || isset($version_id)){
             $form->addHidden('blog_id', $blog->id);
             $form->addSubmit('submit', _('Update Entry'));
-        } else
+        } else {
             $form->addSubmit('submit', _('Add Entry'));
+        }
 
         $form->addTextArea('entry', $blog->getEntry());
         $form->useEditor('entry');
         $form->setRows('entry', '10');
-        $form->setWidth('entry', '80%');
+        $form->setCols('entry', '60');
         $form->setLabel('entry', _('Entry'));
         $form->addText('title', $blog->title);
         $form->setSize('title', 40);
@@ -42,7 +41,14 @@ class Blog_Form {
         $form->addCheck('allow_comments', 1);
         $form->setLabeL('allow_comments', _('Allow comments'));
         $form->setMatch('allow_comments', $blog->allow_comments);
-        
+
+        $form->addCheck('allow_anon', 1);
+        $form->setLabeL('allow_anon', _('Allow anonymous comments'));
+        if ($blog->id) {
+            PHPWS_Core::initModClass('comments', 'Comments.php');
+            $thread = Comments::getThread($blog->key_id);
+            $form->setMatch('allow_anon', $thread->allow_anon);
+        }
 
         $template = $form->getTemplate();
 
