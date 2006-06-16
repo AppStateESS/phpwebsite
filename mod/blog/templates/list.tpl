@@ -2,7 +2,7 @@
   <tr>
     <th>{TITLE} {TITLE_SORT}</th>
     <th>{ENTRY}</th>
-    <th>{DATE} {DATE_SORT}</th>
+    <th>{DATE} {CREATE_DATE_SORT}</th>
     <th>{ACTION}</th>
   </tr>
 <!-- BEGIN listrows -->
