@@ -101,7 +101,10 @@ class Webpage_Forms {
 
         $form->addTextArea('content', $page->content);
         $form->useEditor('content');
+        $form->setRows('content', 20);
+        $form->setCols('content', 90);
         $form->setLabel('content', _('Content'));
+
 
         $form->addSelect('template', $page->getTemplateList());
         $form->setMatch ('template', $page->template);
@@ -118,7 +121,6 @@ class Webpage_Forms {
 
     function wp_list()
     {
-
         $select_op[] = '';
         $select_op['delete_wp']          = _('Delete');
         $select_op['move_to_frontpage']  = _('Move to frontpage');
