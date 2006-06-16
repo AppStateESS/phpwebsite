@@ -130,6 +130,12 @@ class Webpage_Admin {
                                        sprintf('edit_webpage&tab=page_%s&volume_id=%s', $page->page_number, $volume->id) );
             break;
 
+        case 'join_all_pages':
+            $volume->joinAllPages();
+            Webpage_Admin::sendMessage( _('Pages joined.'),
+                                        sprintf('edit_webpage&tab=page_1&volume_id=%s', $volume->id) );
+            break;
+
         case 'delete_page':
             if (!isset($_REQUEST['page_id'])) {
                 PHPWS_Core::errorPage('404');

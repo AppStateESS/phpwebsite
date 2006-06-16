@@ -169,7 +169,7 @@ class Webpage_Page {
             if ($admin) {
                 if (Current_User::allow('webpage', 'delete_page')) {
                     $jsvar['QUESTION'] = _('Are you sure you want to remove this page?');
-                    $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&wp_admin=delete_page&page_id=%s&volume_id=%s&authkey=%s',
+                    $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=delete_page&amp;page_id=%s&amp;volume_id=%s&amp;authkey=%s',
                                                 $this->id, $this->volume_id, Current_User::getAuthKey());
                     $jsvar['LINK'] = ('Delete');
                     
@@ -177,10 +177,15 @@ class Webpage_Page {
                 }
                 if($this->page_number < count($this->_volume->_pages)) {
                     $jsvar['QUESTION'] = _('Are you sure you want to join this page to the next?');
-                    $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&wp_admin=join_page&page_id=%s&volume_id=%s&authkey=%s',
+                    $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=join_page&amp;page_id=%s&amp;volume_id=%s&amp;authkey=%s',
                                                 $this->id, $this->volume_id, Current_User::getAuthKey());
                     $jsvar['LINK'] = ('Join next');
-                    
+                    $links[] = javascript('confirm', $jsvar);
+
+                    $jsvar['QUESTION'] = _('Are you sure you want to join ALL the pages into just one page? Warning: You will lose all page backups!');
+                    $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=join_all_pages&amp;volume_id=%s&amp;authkey=%s',
+                                                $this->volume_id, Current_User::getAuthKey());
+                    $jsvar['LINK'] = ('Join all');
                     $links[] = javascript('confirm', $jsvar);
                 }
 

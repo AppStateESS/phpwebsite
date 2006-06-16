@@ -503,6 +503,23 @@ class Webpage_Volume {
         }
     }
 
+    function joinAllPages()
+    {
+        foreach ($this->_pages as $page) {
+            if (!isset($first_page)) {
+                $first_page = $page;
+                $all_content[] = $page->content;
+                continue;
+            }
+
+            $all_content[] = '<h2>' . $page->title . '</h2>' . $page->content;
+            $page->delete();
+        }
+        
+        $first_page->content = implode("\n", $all_content);
+        $first_page->save();
+    }
+
     function joinPage($page_id)
     {
         if (!isset($this->_pages[$page_id])) {

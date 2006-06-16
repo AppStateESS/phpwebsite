@@ -55,6 +55,7 @@ class Webpage_User {
 
         $db = & new PHPWS_DB('webpage_volume');
         $db->addWhere('frontpage', 1);
+        $db->addWhere('approved', 1);
         Key::restrictView($db, 'webpage');
         $result = $db->getObjects('Webpage_Volume');
 
