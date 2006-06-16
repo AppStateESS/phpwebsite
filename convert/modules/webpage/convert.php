@@ -104,6 +104,7 @@ function convertPage($page)
     $val['created_user'] = $page['created_username'];
     $val['updated_user'] = $page['updated_username'];
     $val['frontpage']    = (int)$page['mainpage'];
+    $val['approved']     = 1;
 
     $key = & new Key;
     $key->setItemId($val['id']);
@@ -147,9 +148,6 @@ function saveSections($sections, $volume_id, $title, $key_id)
     $db = & new PHPWS_DB('webpage_page');
     $pages = 1;
     foreach ($sections as $sec) {
-        if (!$sec['approved']) {
-            continue;
-        }
         $val['approved']    = 1;
         $val['id']          = $sec['id'];
         $val['volume_id']   = $volume_id;
