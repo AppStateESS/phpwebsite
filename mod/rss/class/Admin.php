@@ -9,6 +9,7 @@ class RSS_Admin {
 
     function main()
     {
+        $tpl['MESSAGE'] = NULL;
         $message = RSS_Admin::getMessage();
         PHPWS_Core::initModClass('rss', 'Feed.php');
         PHPWS_Core::initModClass('rss', 'Channel.php');
@@ -117,7 +118,9 @@ class RSS_Admin {
             break;
         }
 
-        $tpl['MESSAGE'] = $message;
+        if (!empty($message)) {
+            $tpl['MESSAGE'] = $message;
+        }
 
         $content = PHPWS_Template::process($tpl, 'rss', 'main.tpl');
 
@@ -267,7 +270,6 @@ class RSS_Admin {
 
         $content = PHPWS_Template::process($template, 'rss', 'add_feed.tpl');
 
-
         $tpl['TITLE'] = _('Add Feed');
         $tpl['CONTENT'] = $content;
         return $tpl;
@@ -275,6 +277,14 @@ class RSS_Admin {
 
     function import()
     {
+        PHPWS_Core::requireConfig('rss');
+        
+        if (!ini_get('allow_url_fopen')) {
+            $tpl['TITLE'] = _('Sorry');
+            $tpl['CONTENT'] = _('You must enable allow_url_fopen in your php.ini file.');
+            return $tpl;
+        }
+        
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('rss', 'Feed.php');
         $content = NULL;
@@ -299,6 +309,10 @@ class RSS_Admin {
 
         $tpl['TITLE'] = _('Import RSS Feeds');
         $tpl['CONTENT'] = $content;
+        if (!defined('ALLOW_CACHE_LITE') || !ALLOW_CACHE_LITE) {
+            $tpl['MESSAGE'] = _('Please enable Cache Lite in your config/core/config.php file.');
+        }
+
         return $tpl;
     }
 }

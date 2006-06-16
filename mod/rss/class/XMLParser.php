@@ -40,14 +40,14 @@ class XMLParser {
   
     function parse($xml_file)
     {
-        if (!($fp = @fopen($xml_file, 'r'))) {
+        $file_contents = @file($xml_file);
+
+        if (empty($file_contents)) {
             return PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, 'core', 'XMLParser:parse', $xml_file);
         }
 
-        $bytes_to_parse = 512;
-        
-        while ($data = fread($fp, $bytes_to_parse)) {
-            $parse = xml_parse($this->xml, $data, feof($fp));
+        foreach ($file_contents as $data) {
+            $parse = xml_parse($this->xml, $data);
             if (!$parse) {
                 die(sprintf("XML error: %s at line %d",
                             xml_error_string(xml_get_error_code($this->xml)),
