@@ -22,8 +22,8 @@ You should be able to remove any other files and folders.
 
 --> DO NOT remove the license.txt file. <--
 
-The custom.php allows you to change the default options for
-FCKeditor. It must reside in the editor directory.
+The "custom.php" file in the editor directory allows you to change the
+default options for FCKeditor.
 
 ***  Make sure to read spellcheck_readme.txt ***
 ***        to enable the spellchecker.       ***
