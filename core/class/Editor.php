@@ -77,7 +77,7 @@ class Editor {
 
     function setData($data)
     {
-        $this->data = $data;
+        $this->data = html_entity_decode($data, ENT_QUOTES);
     }
 
     function setName($name)

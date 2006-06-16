@@ -1526,9 +1526,13 @@ class Form_TextArea extends Form_Element {
             $editor = & new Editor($this->name, $this->value);
             return $editor->get();
         }
-    
+
         $value = $this->getValue();
-    
+
+        $value = html_entity_decode($value, ENT_QUOTES);
+        
+        $value = preg_replace('/<br\s?\/?>(\r\n)?/', "\n", $value);
+
         if (ord(substr($value, 0, 1)) == 13) {
             $value = "\n" . $value;
         }
