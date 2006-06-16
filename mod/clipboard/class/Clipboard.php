@@ -30,7 +30,7 @@ class Clipboard
 
         case 'clear':
             unset($_SESSION['Clipboard']);
-            PHPWS_Core::reroute($_SERVER['HTTP_REFERER']);
+            PHPWS_Core::goBack();
             break;
         }
 
@@ -63,7 +63,6 @@ class Clipboard
             Clipboard::clear();
             return NULL;
         }
-      
 
         $data['width'] = '280';
         $data['height'] = '150';
