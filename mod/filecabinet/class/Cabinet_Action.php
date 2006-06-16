@@ -50,6 +50,9 @@ class Cabinet_Action {
 
         case 'clip_image':
             Clipboard::copy($image->title, '[filecabinet:image:' . $image->id . ']');
+            PHPWS_Core::reroute(PHPWS_Text::linkAddress('filecabinet', array('tab' => 'image')));
+            break;
+
         case 'main':
         case 'image':
             $title = _('Manage Images');
