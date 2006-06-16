@@ -1,1 +1,1 @@
-<a href="javascript:notice('{content}')">{label}</a>
+<a href="#" onclick="javascript:notice('{content}'); return false">{label}</a>
