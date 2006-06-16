@@ -215,7 +215,7 @@ define('MAX_DOCUMENT_SIZE', 5000000);
  * /tmp/. The directory MUST have a forward slash (/) on the end.
  */
 
-define('ALLOW_CACHE_LITE', FALSE);
+define('ALLOW_CACHE_LITE', TRUE);
 define('ALLOW_SIGMA_CACHE', TRUE);
 define('CACHE_LIFETIME', 3600);
 define('CACHE_DIRECTORY', '/tmp/');
