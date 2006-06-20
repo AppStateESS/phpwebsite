@@ -130,19 +130,22 @@ class PHPWS_Text {
      */
     function CleanupSmartQuotes($text)
     {
+        
         $badwordchars=array(
+                            chr(226).chr(128).chr(157),
                             chr(239).chr(191).chr(189),
                             chr(145),
-                            chr(146).chr(161).chr(201),
                             chr(146),
                             chr(147),
                             chr(148),
                             chr(150),
                             chr(151)
                             );
-        $fixedwordchars=array("'",
-                              "'",
+
+        $fixedwordchars=array(
                               '&#34;',
+                              "'",
+                              "'",
                               "'",
                               '&#34;',
                               '&#34;',
@@ -709,7 +712,7 @@ class PHPWS_Text {
         }
  
         // code
-        $bb2html = preg_replace('/\[code\](.*)\[\/code\]/Uies', "'<code>' . htmlentities('\\1') . '</code>'", $bb2html);
+        $bb2html = preg_replace('/\[code\](.*)\[\/code\]/Uies', "'<code>' . stripslashes(htmlentities('\\1')) . '</code>'", $bb2html);
 
         // divisions..
         $bb2html = str_replace('[hr]', '<hr />', $bb2html);
