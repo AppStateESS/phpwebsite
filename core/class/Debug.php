@@ -34,7 +34,7 @@ class PHPWS_Debug {
 
         case 'string':
         case 'integer':
-            return '<pre>' . preg_replace("/\n/", "\\\\n", htmlspecialchars($value)) . '</pre>';
+            return '<pre>' . preg_replace('/\n|(\r\n)/', '\n', htmlspecialchars($value)) . '</pre>';
             break;
 
         default:
