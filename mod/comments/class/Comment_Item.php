@@ -114,6 +114,7 @@ class Comment_Item {
 
     function setEntry($entry)
     {
+        $entry = strip_tags($entry);
 	$this->entry = PHPWS_Text::parseInput($entry);
     }
 
