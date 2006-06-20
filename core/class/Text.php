@@ -133,6 +133,7 @@ class PHPWS_Text {
         $badwordchars=array(
                             chr(239).chr(191).chr(189),
                             chr(145),
+                            chr(146).chr(161).chr(201),
                             chr(146),
                             chr(147),
                             chr(148),
@@ -141,9 +142,10 @@ class PHPWS_Text {
                             );
         $fixedwordchars=array("'",
                               "'",
+                              '&#34;',
                               "'",
-                              '&quot;',
-                              '&quot;',
+                              '&#34;',
+                              '&#34;',
                               '-',
                               '&mdash;'
                               );
