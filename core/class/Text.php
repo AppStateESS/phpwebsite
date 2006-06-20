@@ -697,7 +697,7 @@ class PHPWS_Text {
         }
 
 
-        $bb2html = preg_replace('/\[url="(.*)"\](.*)\[\/url\]/Ui', '<a target="_blank" href="\\1">\\2</a>', $bb2html);
+        $bb2html = preg_replace('/\[url=([\w:\/\.\-&=\s\?]+)\](.*)\[\/url\]/Ui', '<a target="_blank" href="\\1">\\2</a>', $bb2html);
         
         if (BBCODE_QUOTE_TYPE == 'fieldset') {
             $bb2html = preg_replace(array('/\[quote="(.*)"\]/isU', '/\[quote(?!=".*").*\]/isU', '/\[\/quote\]/isU'),
