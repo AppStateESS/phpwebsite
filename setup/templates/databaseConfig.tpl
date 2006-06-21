@@ -36,13 +36,6 @@
     <div class="definition">{DBPORT_DEF}</div>
     <div class="form-item">{DBPORT}</div>
   </div>
-
-  <div class="config-item">
-    <div class="label">{DBPREFIX_LBL}</div>
-    <div class="definition">{DBPREFIX_DEF}</div>
-    <div class="form-item">{DBPREFIX}</div>
-  </div>
-
  {DEFAULT_SUBMIT}
 </div>
 

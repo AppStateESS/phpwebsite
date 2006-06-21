@@ -151,16 +151,6 @@ class Setup{
             $check = FALSE;
         }
 
-        if (!empty($_POST['dbprefix'])) {
-            if (preg_match('/^([a-z])+([a-z0-9_]*)$/i', $_POST['dbprefix'])) {
-                Setup::setConfigSet('dbprefix', $_POST['dbprefix']);
-            } else {
-                $content[] = _('The Table Prefix may only consist of letters, numbers, and the underscore character.');
-                $content[] = _('It also may not begin with a number.');
-                $check = FALSE;
-            }
-        }
-
         Setup::setConfigSet('dbtype', $_POST['dbtype']);
         Setup::setConfigSet('dbport', $_POST['dbport']);
 
@@ -177,6 +167,10 @@ class Setup{
 
         if ($checkConnection == 1) {
             return TRUE;
+        } elseif ($checkConnection == 2) {
+            $content[] = _('PhpWebSite was able to connect, but the database already contained tables.');
+            $_SESSION['configSettings']['database'] = FALSE;
+            return FALSE;
         }
         elseif ($checkConnection == -1) {
             $content[] = _('PhpWebSite was able to connect but the database itself does not exist.');
@@ -274,6 +268,11 @@ class Setup{
                 }
             }
 
+            $tables = $result->getlistOf('tables');
+            if (count($tables)) {
+                return 2;
+            }
+            
             Setup::setConfigSet('dsn', $dsn);
             return 1;
         }
@@ -374,9 +373,6 @@ class Setup{
         $formTpl['DBNAME_DEF'] = _('The database\'s name into which you are installing phpWebSite.')
             . '<br /><i>' . _('Note: if you have not made this database yet, you should do so before continuing.') . '</i>';
 
-        $formTpl['DBPREFIX_LBL'] = _('Table Prefix');
-        $formTpl['DBPREFIX_DEF'] = _('If phpWebSite is sharing a database with another application, we suggest you give the tables a prefix.');
-
         $form->addSelect('dbtype', $databases);
         $form->setMatch('dbtype', Setup::getConfigSet('dbtype'));
 
@@ -395,9 +391,6 @@ class Setup{
 
         $form->addText('dbname', Setup::getConfigSet('dbname'));
         $form->setSize('dbname', 20);
-
-        $form->addText('dbprefix', Setup::getConfigSet('dbprefix'));
-        $form->setSize('dbprefix', 20);
 
         $form->mergeTemplate($formTpl);
         $form->addSubmit('default_submit', _('Continue'));
@@ -514,9 +507,9 @@ class Setup{
     {
         require_once('File.php');
         $content[] = _('Importing core database file.') . '<br />';
-        $installSQL = File::readAll('core/boost/install.sql');
+
         $db = & new PHPWS_DB;
-        $result = $db->import($installSQL);
+        $result = $db->importFile('core/boost/install.sql');
 
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
