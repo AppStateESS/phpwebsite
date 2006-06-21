@@ -347,7 +347,7 @@ function &getBrowserInfo($parameter=NULL)
         if (empty($parameter)) {
             return $GLOBALS['browser_info'];
         } else {
-            return @$GLOBALS['browser_info'][$parameter];
+            return $GLOBALS['browser_info'][$parameter];
         }
     }
 }
