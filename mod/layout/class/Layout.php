@@ -8,6 +8,7 @@
  * @package Core
  */
 
+
 PHPWS_Core::initModClass('layout', 'Layout_Settings.php');
 PHPWS_Core::initCoreClass('Template.php');
 PHPWS_Core::requireConfig('layout');
@@ -765,6 +766,14 @@ class Layout {
 
     function submitHeaders($theme, &$template)
     {
+        if (!defined('CURRENT_LANGUAGE')) {
+            if (defined('DEFAULT_LANGUAGE')) {
+                define('CURRENT_LANGUAGE', DEFAULT_LANGUAGE);
+            } else {
+                define('CURRENT_LANGUAGE', 'en_us');
+            }
+        }
+
         $testing = true;
 
         if($testing == FALSE && stristr($_SERVER['HTTP_ACCEPT'],'application/xhtml+xml')){
