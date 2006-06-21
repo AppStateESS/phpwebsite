@@ -168,8 +168,9 @@ class PHPWS_Calendar {
             $content = $this->view->day();
             break;
             
+        case 'full':
         case 'month_grid':
-            $content = $this->view->month_grid('full');
+            $content = $this->view->month_grid();
             break;
 
         case 'month_list':
@@ -212,6 +213,56 @@ class PHPWS_Calendar {
         $this->view->calendar = & $this;
     }
 
+
+    function getPublicCalendars()
+    {
+        $db = & new PHPWS_DB('calendar_schedule');
+        $db->addWhere('public_schedule', 1);
+        $db->addColumn('id');
+        return $db->select('col');
+    }
+
+    function getEvents($start_search=NULL, $end_search=NULL, $schedules=NULL) {
+        PHPWS_Core::initModClass('calendar', 'Event.php');
+        if (!isset($start_search)) {
+            $start_search = mktime(0,0,0,1,1,1970);
+        } 
+
+        if (!isset($end_search)) {
+            // if this line is a problem, you need to upgrade
+            $end_search = mktime(0,0,0,1,1,2050);
+        }
+
+        $db = & new PHPWS_DB('calendar_events');
+        $db->setDistinct(TRUE);
+
+        if (!empty($schedules)) {
+            $db->addWhere('calendar_schedule_to_event.schedule_id', $schedules, NULL, NULL, 'schedule');
+            $db->addWhere('id', 'calendar_schedule_to_event.event_id', NULL, NULL, 'schedule');
+        }
+
+        $db->addWhere('start_time', $start_search, '>=', NULL, 'start');
+        $db->addWhere('start_time', $end_search,   '<',  'AND', 'start');
+
+        $db->addWhere('end_time', $end_search,   '<=', 'NULL', 'end');
+        $db->addWhere('end_time', $start_search, '>', 'AND', 'end');
+
+        $db->setGroupConj('end', 'OR');
+
+        $db->groupIn('start', 'end');
+
+        $db->addOrder('start_time');
+        $db->addOrder('end_time desc');
+        
+        $result = $db->getObjects('Calendar_Event');
+
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            return NULL;
+        }
+
+        return $result;
+    }
     
     function &getMonth($month=NULL, $year=NULL)
     {

@@ -296,38 +296,7 @@ class Calendar_Schedule {
 
     function loadEvents($start_search=NULL, $end_search=NULL)
     {
-        PHPWS_Core::initModClass('calendar', 'Event.php');
-        if (!isset($start_search)) {
-            $start_search = mktime(0,0,0,1,1,1970);
-        }
-
-        if (!isset($end_search)) {
-            // if this line is a problem, you need to upgrade
-            $end_search = mktime(0,0,0,1,1,2050);
-        }
-
-        $db = & new PHPWS_DB('calendar_events');
-        $db->setDistinct(TRUE);
-
-        $db->addWhere('calendar_schedule_to_event.schedule_id', $this->id);
-        $db->addWhere('id', 'calendar_schedule_to_event.event_id');
-
-        $db->addWhere('start_time', $start_search, '>=', NULL, 1);
-        $db->addWhere('start_time', $end_search,   '<',  'AND', 1);
-
-        $db->addWhere('end_time', $end_search,   '<=', 'NULL', 2);
-        $db->addWhere('end_time', $start_search, '>', 'AND', 2);
-
-        $db->setGroupConj(2, 'OR');
-        $db->addOrder('start_time');
-        $db->addOrder('end_time desc');
-
-        $result = $db->getObjects('Calendar_Event');
-
-        if (PEAR::isError($result)) {
-            PHPWS_Error::log($result);
-            return;
-        }
+        $result = Calendar::getEvents($start_search, $end_search, $this->id);
 
         $this->events = & $result;
         return TRUE;
