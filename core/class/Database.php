@@ -129,13 +129,6 @@ class PHPWS_DB {
             PHPWS_Core::errorPage();
         }
         
-
-        if (defined(TABLE_PREFIX)) {
-            PHPWS_DB::setPrefix(TABLE_PREFIX);
-        } else {
-            PHPWS_DB::setPrefix(NULL);
-        }
-
         return TRUE;
     }
 
@@ -148,17 +141,13 @@ class PHPWS_DB {
         PHPWS_Core::log($sql, 'db.log');
     }
 
-    function query($sql, $prefix=TRUE)
+    function query($sql)
     {
         if (isset($this) && !empty($this->_test_mode)) {
             exit($sql);
         }
 
         PHPWS_DB::touchDB();
-        if ($prefix == TRUE) {
-            $sql = PHPWS_DB::prefixTable($sql);
-        }
-
         PHPWS_DB::logDB($sql);
         return $GLOBALS['PEAR_DB']->query($sql);
     }
@@ -301,7 +290,7 @@ class PHPWS_DB {
             $tables = PHPWS_DB::listTables();
         }
 
-        return in_array(PHPWS_DB::getPrefix() . $tableName, $tables);
+        return in_array($tableName, $tables);
     }
 
     function listTables()
@@ -314,17 +303,6 @@ class PHPWS_DB {
     {
         PHPWS_DB::touchDB();
         return $GLOBALS['PEAR_DB']->getlistOf('databases');
-    }
-
-    function setPrefix($prefix)
-    {
-        $GLOBALS['PEAR_DB']->prefix = $prefix;
-    }
-
-    function getPrefix()
-    {
-        PHPWS_DB::touchDB();
-        return $GLOBALS['PEAR_DB']->prefix;
     }
 
     function addJoin($join_type, $join_from, $join_to, $join_on_1=NULL, $join_on_2=NULL)
@@ -422,8 +400,6 @@ class PHPWS_DB {
         foreach ($this->_join_tables as $join_array) {
             extract($join_array);
 
-            $join_to = $this->getPrefix() . $join_to;
-            
             if ($result = $this->_getJoinOn($join_on_1, $join_on_2, $join_from, $join_to)) {
                 $join_on = 'ON ' . $result;
             }
@@ -431,13 +407,13 @@ class PHPWS_DB {
             if (in_array($join_from, $join_info['tables'])) {
                 $allJoin[] = sprintf('%s %s %s',
                                      strtoupper($join_type) . ' JOIN',
-                                     $this->getPrefix() . $join_to,
+                                     $join_to,
                                      $join_on);
             } else {
                 $allJoin[] = sprintf('%s %s %s %s',
-                                     $this->getPrefix() . $join_from,
+                                     $join_from,
                                      strtoupper($join_type) . ' JOIN',
-                                     $this->getPrefix() . $join_to,
+                                     $join_to,
                                      $join_on);
             }
             $join_info['tables'][] = $join_from;
@@ -449,7 +425,7 @@ class PHPWS_DB {
         return $join_info;
     }
 
-    function getTable($format=TRUE, $prefix=TRUE)
+    function getTable($format=TRUE)
     {
         if (empty($this->tables)) {
             return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::getTable');
@@ -461,7 +437,7 @@ class PHPWS_DB {
                 if ($join_info && in_array($table, $join_info['tables'])) {
                     continue;
                 }
-                $table_list[] = $this->getPrefix() . $table;
+                $table_list[] = $table;
             }
 
             if ($join_info) {
@@ -1423,7 +1399,6 @@ class PHPWS_DB {
             return TRUE;
         }
 
-        $table = PHPWS_DB::getPrefix() . $table;
         $result = PHPWS_DB::query("DROP TABLE $table");
 
         if (PEAR::isError($result)) {
@@ -1646,7 +1621,7 @@ class PHPWS_DB {
         // first_import makes sure at least one query was completed
         // successfully
         $first_import = FALSE;
-        $prefix = PHPWS_DB::getPrefix();
+
         $sqlArray = PHPWS_Text::sentence($text);
         $error = FALSE;
 
@@ -1660,10 +1635,6 @@ class PHPWS_DB {
             if (preg_match("/;$/", $sqlRow)) {
                 $query = implode(' ', $sqlCommand);
 
-                if (isset($prefix)) {
-                    $tableName = PHPWS_DB::extractTableName($query);
-                    $query = str_replace($tableName, $prefix . $tableName, $query);
-                }
                 $sqlCommand = array();
 
                 PHPWS_DB::homogenize($query);
@@ -1787,10 +1758,6 @@ class PHPWS_DB {
             $column_info = $this->parseColumns($columns);
             $index = $this->getIndex();
 
-            if ($prefix = PHPWS_DB::getPrefix()) {
-                $tableName = str_replace('', $prefix, $tableName);
-            }
-
             $sql[] = "CREATE TABLE $tableName ( " .  implode(', ', $column_info['parameters']) .' );';
             if (isset($column_info['index'])) {
                 $sql = array_merge($sql, $column_info['index']);
@@ -1820,12 +1787,6 @@ class PHPWS_DB {
     function quote($text)
     {
         return $GLOBALS['PEAR_DB']->quote($text);
-    }
-
-    function prefixTable($sql)
-    {
-        $tablename = PHPWS_DB::extractTableName($sql);
-        return str_replace($tablename, PHPWS_DB::getPrefix() . $tablename, $sql);
     }
 
     function extractTableName($sql_value)
@@ -2243,12 +2204,6 @@ function db_trim(&$value)
     }
     
     $value = rtrim($value);
-}
-
-
-function _add_tbl_prefix(&$val, $keynull, $prefix)
-{
-    $val = $prefix . $val;
 }
 
 ?>
