@@ -7,6 +7,12 @@
  * @version $Id$
  */
 
+if (strstr($_SERVER['SCRIPT_FILENAME'], '\\')) {
+    define('DIRECTORY_SLASH', '\\');
+} else {
+    define('DIRECTORY_SLASH', '/');
+}
+
 class Setup{
 
     function configExists()
@@ -86,7 +92,6 @@ class Setup{
         $tpl->setFile('setup/templates/config.tpl', TRUE);
         $tpl->setData($_SESSION['configSettings']);
         $configFile = $tpl->get();
-
         return File::write($location . 'config.php', $configFile, FILE_MODE_WRITE);
     }
 
@@ -94,9 +99,9 @@ class Setup{
     {
         $check = TRUE;
         $source_dir = $_POST['source_dir'];
-        $match = sprintf('/%s$/', preg_quote(DIRECTORY_SEPARATOR, '/'));
+        $match = sprintf('/%s$/', preg_quote(DIRECTORY_SLASH, '/'));
         if (!preg_match($match, $source_dir)) {
-            $source_dir = $source_dir . DIRECTORY_SEPARATOR;
+            $source_dir = $source_dir . DIRECTORY_SLASH;
         }
 
         if (!is_dir($source_dir)) {
@@ -412,13 +417,13 @@ class Setup{
         static $directory;
 
         if (empty($directory)) {
-            $dir = explode(DIRECTORY_SEPARATOR, $_SERVER['SCRIPT_FILENAME']);
-            
+            $dir = explode(DIRECTORY_SLASH, $_SERVER['SCRIPT_FILENAME']);
+		
             for ($i=0; $i < 2; $i++) {
                 array_pop($dir);
             }
             
-            $directory = implode(DIRECTORY_SEPARATOR, $dir) . DIRECTORY_SEPARATOR;
+            $directory = implode(DIRECTORY_SLASH, $dir) . DIRECTORY_SLASH;
         }
         return $directory;
     }
