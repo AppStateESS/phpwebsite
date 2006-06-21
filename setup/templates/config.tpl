@@ -15,14 +15,6 @@ define('PHPWS_HOME_DIR', '{home_dir}');
 define('SITE_HASH', '{site_hash}');
 
 /**
- * Some people are not blessed with the ability to just have
- * more than one database on their server. If you are one of
- * those people, you will need to attach a table prefix to 
- * each installation.
- */
-define('TABLE_PREFIX', '{dbprefix}');
-
-/**
  * This is you database information. The format is as follows:
  * 'db_type://dbuser:dbpassword@dbhost/dbname'
  * This format must be exact.
@@ -218,7 +210,7 @@ define('MAX_DOCUMENT_SIZE', 5000000);
 define('ALLOW_CACHE_LITE', TRUE);
 define('ALLOW_SIGMA_CACHE', TRUE);
 define('CACHE_LIFETIME', 3600);
-define('CACHE_DIRECTORY', '/tmp/');
+define('CACHE_DIRECTORY', '{cache_directory}');
 
 /******************** MOD_REWRITE *******************************/
 /**
