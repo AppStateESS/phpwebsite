@@ -314,7 +314,13 @@ class FC_Image_Manager {
         $form->setLabel('description', _('Description'));
 
         $form->addSelect('directory', $img_directories);
-        $form->setMatch('directory', $this->image->file_directory);
+
+        if ($this->image->file_directory) {
+            $form->setMatch('directory', $this->image->file_directory);
+        } elseif (isset($_REQUEST['mod_title'])) {
+            $image_directory = PHPWS_HOME_DIR . 'images/' . $_REQUEST['mod_title'] . '/';
+            $form->setMatch('directory', $image_directory);
+        }
         $form->setLabel('directory', _('Save directory'));
 
 
