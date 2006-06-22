@@ -49,6 +49,8 @@ class Profile_Forms {
         $form->addTextArea('fullstory', $profile->getFullstory());
         $form->setLabel('fullstory', _('Full story'));
         $form->useEditor('fullstory');
+        $form->setCols('fullstory', 50);
+        $form->setRows('fullstory', 10);
 
         $form->addTextArea('caption', $profile->getCaption());
         $form->setLabel('caption', _('Caption'));
