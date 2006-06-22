@@ -5,7 +5,16 @@ class Boost_Action {
     function checkupdate($mod_title)
     {
         PHPWS_Core::initCoreClass('Module.php');
-        $module = & new PHPWS_Module($mod_title);
+        if ($mod_title == 'core') {
+            $module = & new PHPWS_Module;
+            $core_info = PHPWS_Core::getVersionInfo();
+            $module->title = 'core';
+            $module->proper_name  = $core_info['proper_name'];
+            $module->version      = $core_info['version'];
+            $module->version_http = $core_info['version_http'];
+        } else {
+            $module = & new PHPWS_Module($mod_title);
+        }
 
         $file = $module->getVersionHttp();
         if (empty($file)) {
@@ -25,6 +34,8 @@ class Boost_Action {
         $template['STABLE_VERSION'] = $version_info['VERSION'];
 
         if (version_compare($version_info['VERSION'], $module->getVersion(), '>')) {
+            $template['CHANGES_LABEL'] = _('Changes');
+            $template['CHANGES'] = PHPWS_Text::parseOutput($version_info['CHANGES']);
             $template['UPDATE_AVAILABLE'] = _('An update is available!') . '<br />';
             $template['UPDATE_PATH_LABEL'] = _('Download here');
             $template['UPDATE_PATH'] = '<a href="' . $version_info['DOWNLOAD'] . '">' . $version_info['DOWNLOAD'] . '</a>';

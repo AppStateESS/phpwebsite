@@ -15,8 +15,12 @@
 <p class="b">
 {UPDATE_PATH_LABEL}: {UPDATE_PATH}
 </p>
-
+<hr />
+<h2>{CHANGES_LABEL}</h2>
+<p>{CHANGES}</p>
+<hr />
+<h2>{MD5_LABEL}</h2>
 <p>
-{MD5_LABEL}: {MD5}
+{MD5}
 </p>
 <!-- END update -->

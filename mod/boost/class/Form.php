@@ -1,4 +1,9 @@
 <?php
+  /**
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
+   */
+
 
 class Boost_Form {
 
@@ -61,6 +66,18 @@ class Boost_Form {
         if ($type == 'core_mods'){
             $allowUninstall = FALSE;
             $modList = $core_mods;
+            
+            $core = PHPWS_Core::getVersionInfo();
+
+            $link_title = _('Check');
+            $link_command['action'] = 'check';
+            $link_command['opmod'] = 'core';
+            $template['VERSION'] = $core['version'];
+            $template['TITLE']   = $core['proper_name'];
+            $template['COMMAND'] = PHPWS_Text::secureLink(_('Check'), 'boost', $link_command);
+            $template['ROW']     = 1;
+            $tpl['mod-row'][] = $template;
+
         } else {
             $allowUninstall = TRUE;
             $modList = $dir_mods;
@@ -80,7 +97,7 @@ class Boost_Form {
         }
 
         sort($modList);
-        $count = 0;
+        $count = 1;
         foreach ($modList as $title) {
             $template = $link_command = NULL;
             $link_command['opmod'] = $title;
