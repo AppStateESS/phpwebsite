@@ -664,6 +664,16 @@ class PHPWS_Core {
         }
     }
 
+    function getVersionInfo()
+    {
+        $file = PHPWS_SOURCE_DIR . 'core/boost/boost.php';
+        include $file;
+        return array('proper_name'  => $proper_name,
+                     'version'      => $version,
+                     'version_http' => $version_http);
+    }
+
+
     /**
      * Returns the url of the current page
      */
