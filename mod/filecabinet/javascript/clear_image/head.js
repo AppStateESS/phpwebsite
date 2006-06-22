@@ -3,8 +3,7 @@
 
     function clear_image(itemname) {
         image = document.getElementById(itemname + '-current-image').childNodes[0].firstChild;
-        hidden = document.getElementById(itemname + '-current-image').childNodes[1];
-        
+        hidden = document.getElementById(itemname + '-current-image').childNodes[2];
         image.src = '{src}';
         image.width = {width};
         image.height = {height};
