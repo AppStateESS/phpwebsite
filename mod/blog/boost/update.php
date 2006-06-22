@@ -85,8 +85,12 @@ function blog_update(&$content, $currentVersion)
                 $db->reset();
             }
         }
+
+    case version_compare($currentVersion, '0.2.5', '<'):
+        if (!blog_update_025($content)) {
+            return false;
+        }
     }
-    $content[] = 'Updated blog to use new version code.';
     return TRUE;
 }
 
@@ -133,5 +137,21 @@ function blog_update_010(&$content)
     return TRUE;
 }
 
+function blog_update_025(&$content)
+{
+    $files[] = 'templates/list.tpl';
+    $files[] = 'templates/edit.tpl';
+    $files[] = 'templates/view.tpl';
+
+    if (PHPWS_Boost::updateFiles($files, 'blog')) {
+        $content[] = 'The following template files were successfully copied locally:';
+        $content[] = implode('<br />', $files);
+        $content[] = '<br />';
+        return true;
+    } else {
+        $content[] = 'Blog update was unable to copy its updated template files locally.';
+        return false;
+    }
+}
 
 ?>

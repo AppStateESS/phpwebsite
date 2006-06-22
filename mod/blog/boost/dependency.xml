@@ -1,21 +1,9 @@
 <?xml version="1.0"?>
 <dependency>
   <module>
-    <title>related</title>
-    <properName>Related</properName>
-    <version>0.0.1</version>
-    <url>http://phpwebsite.appstate.edu/module_info/related.html</url>
-  </module>
-  <module>
     <title>comments</title>
     <properName>Comments</properName>
-    <version>0.0.1</version>
+    <version>0.2.5</version>
     <url>http://phpwebsite.appstate.edu/module_info/comments.html</url>
-  </module>
-  <module>
-    <title>categories</title>
-    <properName>Categories</properName>
-    <version>2.0.1</version>
-    <url>http://phpwebsite.appstate.edu/module_info/categories.html</url>
   </module>
 </dependency>
