@@ -30,7 +30,15 @@ function comments_update(&$content, $currentVersion)
 
     case version_compare($currentVersion, '0.2.0', '<'):
         $content[] = '+ Added anonymous tag.';
-        $result = comments_update_020($content);
+        if(!comments_update_020($content)) {
+            return FALSE;
+        }
+
+    case version_compare($currentVersion, '0.2.5', '<'):
+        $content[] = '+ Added quote next to reply tags. Template update.';
+        if (!comments_update_025($content)) {
+            return FALSE;
+        }
     }
             
     return TRUE;
@@ -93,6 +101,21 @@ function comments_update_020(&$content) {
         $content[] = 'There was a problem adding the allow_anon column.';
         return false;
     }
+    return true;
+}
+
+function comments_update_025(&$content) {
+    $files[] = 'templates/alt_view.tpl';
+    $files[] = 'templates/alt_view_one.tpl';
+    $files[] = 'templates/view.tpl';
+    $files[] = 'templates/view_one.tpl';
+    $files[] = 'templates/style.css';
+    $result = PHPWS_Boost::updateFiles($files, 'comments');
+    if (!$result) {
+        $content[] = 'Failed to copy template files locally.';
+        return false;
+    }
+    
     return true;
 }
 

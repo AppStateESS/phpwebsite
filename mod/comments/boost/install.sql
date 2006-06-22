@@ -18,6 +18,7 @@ CREATE TABLE comments_threads (
   key_id int NOT NULL default '0',
   total_comments int NOT NULL default '0',
   last_poster varchar(40) default NULL,
+  allow_anon smallint NOT NULL default '0',
   PRIMARY KEY  (id)
 );
 
