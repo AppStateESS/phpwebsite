@@ -937,8 +937,8 @@ class PHPWS_Boost {
         foreach ($file_array as $filename) {
             $filename = preg_replace('/^\/{1}/', '', $filename);
             $aFiles = explode('/', $filename);
-            $source_root = $aFiles[0];
-            $source_filename = array_pop($aFiles);
+            $source_root = array_shift($aFiles);
+            $source_filename = implode('/', $aFiles);
 
             switch ($source_root) {
             case 'templates':
