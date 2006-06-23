@@ -1,4 +1,9 @@
 <?php
+  /**
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
+   */
+
 if (!defined('PHPWS_SOURCE_DIR')) {
     include '../../config/core/404.html';
     exit();
