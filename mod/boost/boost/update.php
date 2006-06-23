@@ -8,35 +8,6 @@
 function boost_update(&$content, $currentVersion)
 {
     switch ($currentVersion) {
-    case version_compare($currentVersion, '1.6.1', '<'):
-        $content[] = '+ Boost wasn\'t updating modules if there wasn\'t an update.php file.';
-        $content[] = '+ Dependencies now checked during update.';
-
-    case version_compare($currentVersion, '1.7.0', '<'):
-        $content[] = '+ Adding dependency table for core.';
-        $filename = PHPWS_SOURCE_DIR . 'mod/boost/boost/update_1_7_0.sql';
-        $db = & new PHPWS_DB;
-        return $db->importFile($filename);
-
-    case version_compare($currentVersion, '1.7.1', '<'):
-        $content[] = 'Add converted table.';
-        $content[] = 'Add Key registration table.';
-        $filename = PHPWS_SOURCE_DIR . 'mod/boost/boost/update_1_7_1.sql';
-        $db = & new PHPWS_DB;
-        return $db->importFile($filename);
-
-    case version_compare($currentVersion, '1.8.0', '<'):
-        $content[] = 'Added error messages.';
-        $result = PHPWS_Boost::updateFiles(array('conf/error.php'), 'boost');
-        if (!$result) {
-            $content[] = _('Failed to update local files.');
-            return FALSE;
-        } elseif (PEAR::isError($result)) {
-            PHPWS_Error::log($result);
-            $content[] = _('Failed to update local files. Check your log.');
-        } else {
-            $content[] = _('Files updated successfully.');
-        }
 
     case version_compare($currentVersion, '1.8.1', '<'):
         $db = & new PHPWS_DB('phpws_key');
@@ -89,6 +60,17 @@ function boost_update(&$content, $currentVersion)
             return FALSE;
         }
         $content[] = 'Added index to mod_settings.';
+
+    case version_compare($currentVersion, '1.8.5', '<'):
+        $files = array();
+        $files[] = 'templates/check_update.tpl';
+        if (!PHPWS_Boost::updateFiles($files, 'boost')) {
+            $content[] = 'Unable to update local template files.';
+        }
+        $content[] = '+ Added a "core" update option.';
+        $content[] = '+ Fixed check not listing changes in updated modules.';
+        $content[] = '+ Fixed file updates not copying if in subdirectory.';
+        $content[] = '+ Updated modules now show current version and version to which they will be updated.';
     }
 
     return TRUE;
