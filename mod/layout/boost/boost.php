@@ -6,7 +6,7 @@
 
 $proper_name = 'Layout';
 $unregister  = TRUE;
-$version     = '2.1.0';
+$version     = '2.1.1';
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/layout/check.xml';
 $import_sql  = TRUE;
 $image_dir   = TRUE;
