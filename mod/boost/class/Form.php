@@ -137,6 +137,8 @@ class Boost_Form {
                 }
 
                 if ($mod->needsUpdate()) {
+                    $db_mod = &new PHPWS_Module($mod->title, false);
+                    $template['VERSION'] = $db_mod->version . ' &gt; ' . $mod->version;
                     if ($mod->checkDependency()) {
                         if ($title == 'boost') {
                             $tpl['WARNING'] = _('Boost requires updating! You should do so before any other module!');
