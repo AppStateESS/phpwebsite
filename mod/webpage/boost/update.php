@@ -12,10 +12,14 @@ function webpage_update(&$content, $currentVersion)
         if(!wp_update_010($content)) {
             return FALSE;
         }
+
+    case version_compare($currentVersion, '0.2.0', '<'):
+        $content[] = '+ Add ability to join all pages together';
+        $content[] = '+ Fixed xhtml issues with links';
+        $content[] = '+ Front page should no longer pull unapproved pages.';
     }
 
     return TRUE;
-
 }
 
 
