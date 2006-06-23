@@ -152,6 +152,7 @@ class Profile_Forms {
 
         $pageTags['TITLE_LABEL']  = _('Title');
         $pageTags['ACTION_LABEL'] = _('Action');
+        $pageTags['ID_LABEL']     = _('Division ID');
 
         $pager = & new DBPager('profiler_division', 'Profiler_Division');
         $pager->setModule('profiler');
