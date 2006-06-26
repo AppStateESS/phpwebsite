@@ -251,7 +251,10 @@ class Comment_Thread {
         $form->setMethod('get');
 
         $page_tags = $form->getTemplate();
-        $page_tags['NEW_POST_LINK'] = $this->postLink();
+
+        if ($this->canComment()) {
+            $page_tags['NEW_POST_LINK'] = $this->postLink();
+        }
 
         $pager->setModule('comments');
         $pager->setTemplate(COMMENT_VIEW_TEMPLATE);
@@ -267,6 +270,11 @@ class Comment_Thread {
 
         $content = $pager->get();
         return $content;
+    }
+
+    function canComment()
+    {
+        return ($this->allow_anon || Current_User::isLogged()) ? TRUE : FALSE;
     }
 
     function _createUserList($comment_list)

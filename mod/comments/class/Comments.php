@@ -129,8 +129,12 @@ class Comments {
     
         switch ($command) {
         case 'post_comment':
-            $title = _('Post Comment');
-            $content[] = Comments::form($thread);
+            if ($thread->canComment()) {
+                $title = _('Post Comment');
+                $content[] = Comments::form($thread);
+            } else {
+                PHPWS_Core::errorPage('404');
+            }
             break;
 
         case 'change_view':
@@ -166,10 +170,6 @@ class Comments {
             $key = & new Key($thread->key_id);
             $title = sprintf(_('Comment from: %s'), $key->getUrl());
             $content[] = Comments::viewComment($comment);
-            break;
-
-        case 'delete_comment':
-
             break;
         }
 
