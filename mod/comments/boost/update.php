@@ -8,26 +8,6 @@
 function comments_update(&$content, $currentVersion)
 {
     switch ($currentVersion) {
-    case version_compare($currentVersion, '0.0.2', '<'):
-        $result = comments_update_002($content);
-        if (PEAR::isError($result)) {
-            return $result;
-        } elseif (!$result) {
-            return false;
-        } else {
-            $content[] = '+ Added a shortcut icon.';
-        }
-
-    case version_compare($currentVersion, '0.0.3', '<'):
-        $result = comments_update_003($content);
-        if (PEAR::isError($result)) {
-            return $result;
-        }
-
-    case version_compare($currentVersion, '0.1.0', '<'):
-        $content[] = '+ Changing over to Demographics module.';
-        $result = comments_update_010($content);
-
     case version_compare($currentVersion, '0.2.0', '<'):
         $content[] = '+ Added anonymous tag.';
         if(!comments_update_020($content)) {
@@ -39,6 +19,9 @@ function comments_update(&$content, $currentVersion)
         if (!comments_update_025($content)) {
             return FALSE;
         }
+
+    case version_compare($currentVersion, '0.2.6', '<'):
+        $content[] = '+ Fixed occurrences where anonymous users could post on restricted threads.';
     }
             
     return TRUE;
