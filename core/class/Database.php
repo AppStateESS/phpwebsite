@@ -1007,6 +1007,7 @@ class PHPWS_DB {
 
     function insert($auto_index=TRUE)
     {
+        PHPWS_DB::touchDB();
         $maxID = TRUE;
         $table = $this->getTable();
         if (!$table) {
@@ -1048,6 +1049,7 @@ class PHPWS_DB {
 
     function update()
     {
+        PHPWS_DB::touchDB();
         $table = $this->getTable();
         if (!$table) {
             return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::update');
