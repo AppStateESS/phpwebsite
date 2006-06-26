@@ -35,6 +35,15 @@ function users_update(&$content, $currentVersion)
         if (!PHPWS_Boost::updateFiles($files, 'users')) {
             $content[] = 'Failed copying template file locally.';
         }
+
+    case version_compare($currentVersion, '2.0.6', '<'):
+        if (is_dir('images/users/confirm/') || @mkdir('images/users/confirm/')) {
+            $content[] = '+ Created confirm directory.';
+        } else {
+            $content[] = 'Error: unable to create images/users/confirm directory.';
+            return false;
+        }
+       
     }
 
     return TRUE;
