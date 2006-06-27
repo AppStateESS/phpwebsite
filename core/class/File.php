@@ -309,41 +309,75 @@ class PHPWS_File {
         return $dirCreated;
     }
 
-
-
     /**
-     * Creates a thumbnail of a jpeg or png image.
+     * Creates a thumbnail of a jpeg, gif or png image.  (Gif images are converted to
+     * jpeg thumbnails due to licensing issues.)  The thumbnail file is created as
+     * a separate "_tn" file or, if desired, as a replacement for the original.
      *
-     * @author   Jeremy Agee
-     * @modified Adam Morton
-     * @modified Steven Levin
-     * @modified Matthew McNaney <mcnaney at gmail dot com>
+     * @author   Jeremy Agee <jagee@NOSPAM.tux.appstate.edu>
+     * @modified Adam Morton <adam@NOSPAM.tux.appstate.edu>
+     * @modified Steven Levin <steven@NOSPAM.tux.appstate.edu>
+     * @modified George Brackett <gbrackett@NOSPAM.luceatlux.com>
+     * @modified Matt McNaney <matt at tux dot appstate dot edu>
      * @param    string  $fileName          The file name of the image you want thumbnailed.
      * @param    string  $directory         Path to the file you want thumbnailed
      * @param    string  $tndirectory       The path to where the new thumbnail file is stored
      * @param    integer $maxHeight         Set width of the thumbnail if you do not want to use the default 
      * @param    integer $maxWidth          Set height of the thumbnail if you do not want to use the default
+     * @param        boolean $replaceFile           Set TRUE if thumbnail should replace original file
      * @return   array   0=>thumbnailFileName, 1=>thumbnailWidth, 2=>thumbnailHeight 
      * @access   public
      */
-    function makeThumbnail($fileName, $directory, $tndirectory, $maxWidth=125, $maxHeight=125)
-    {
+    function makeThumbnail($fileName, $directory, $tndirectory, $maxWidth=125, $maxHeight=125, $replaceFile=FALSE) {
         $image = $directory . $fileName;
         $imageInfo = getimagesize($image);
 
-        if(($imageInfo[0] < $maxWidth) && ($imageInfo[1] < $maxHeight)) {
-            return array($fileName, $imageInfo[0], $imageInfo[1]);
+        // Check to make sure gd will support the specified type
+        $supported = FALSE;
+        // Index 2 is a flag indicating the type of the image: 1 = GIF, 2 = JPG, 3 = PNG, 
+        // 4 = SWF, 5 = PSD, 6 = BMP, 7 = TIFF(intel byte order), 8 = TIFF(motorola byte order), 
+        // 9 = JPC, 10 = JP2, 11 = JPX, 12 = JB2, 13 = SWC, 14 = IFF, 15 = WBMP, 16 = XBM.
+        switch($imageInfo[2]) {
+        case 1:         // we're converting GIF to JPG
+        case 2:
+            if(imagetypes() & IMG_JPG)
+                $supported = TRUE;
+            break;
+        case 3:
+            if(imagetypes() & IMG_PNG)
+                $supported = TRUE;
+            break;
+        }
+    
+        if (!$supported) {
+            return PHPWS_Error::get(PHPWS_GD_ERROR, 'core', 'PHPWS_File::makeThumbnail', $imageInfo['mime']);
+        }
+
+        $currentWidth = &$imageInfo[0];
+        $currentHeight = &$imageInfo[1];
+
+        if(($currentWidth < $maxWidth) && ($currentHeight < $maxHeight)) {
+            return array($fileName, $currentWidth, $currentHeight);
         } else {
-            if($imageInfo[0] > $imageInfo[1]) {
-                $scale = $maxWidth / $imageInfo[0];
-            } else{
-                $scale = $maxHeight / $imageInfo[1];
+            $widthScale  = $maxWidth / $currentWidth;
+            $heightScale = $maxHeight / $currentHeight;
+
+            $adjusted_h_to_w = floor($currentHeight * $widthScale);
+            $adjusted_w_to_w = floor($currentWidth * $widthScale);
+
+            if ( ($adjusted_h_to_w <= $maxHeight) &&
+                 ($adjusted_w_to_w <= $maxWidth)) {
+                $finalScale = $widthScale;
+            } else {
+                $finalScale = $heightScale;
             }
         }
 
-        $thumbnailWidth = round($scale * $imageInfo[0]);
-        $thumbnailHeight = round($scale * $imageInfo[1]);
+        $thumbnailWidth = round($finalScale * $currentWidth);
+        $thumbnailHeight = round($finalScale * $currentHeight);
         $thumbnailImage = NULL;
+      
+        // create image space in memory
         if(PHPWS_File::chkgd2()) {
             $thumbnailImage = ImageCreateTrueColor($thumbnailWidth, $thumbnailHeight);
             imageAlphaBlending($thumbnailImage, false);
@@ -351,32 +385,47 @@ class PHPWS_File {
         } else {
             $thumbnailImage = ImageCreate($thumbnailWidth, $thumbnailHeight);
         }
-  
-        if ($imageInfo[2] == 1) {
-            $fullImage = imagecreatefromgif($image);
-        } elseif ($imageInfo[2] == 2) {
-            $fullImage = imagecreatefromjpeg($image);
-        } elseif ($imageInfo[2] == 3) {
-            $fullImage = imagecreatefrompng($image);
+        // now pull in image data
+        switch($imageInfo[2]) {
+        case 1:
+            $fullImage = ImageCreateFromGIF($image);
+            break;
+        case 2:
+            $fullImage = ImageCreateFromJPEG($image);
+            break;
+        case 3:
+            $fullImage = ImageCreateFromPNG($image);
         }
-  
-        ImageCopyResized($thumbnailImage, $fullImage, 0, 0, 0, 0, $thumbnailWidth, $thumbnailHeight, ImageSX($fullImage), ImageSY($fullImage));
+    
+        // now create the thumbnail image in memory
+        if(PHPWS_File::chkgd2()) {
+            ImageCopyResampled($thumbnailImage, $fullImage, 0, 0, 0, 0, $thumbnailWidth, $thumbnailHeight, ImageSX($fullImage), ImageSY($fullImage));
+        } else {
+            ImageCopyResized($thumbnailImage, $fullImage, 0, 0, 0, 0, $thumbnailWidth, $thumbnailHeight, ImageSX($fullImage), ImageSY($fullImage));
+        }
+    
         ImageDestroy($fullImage);
-
         $thumbnailFileName = explode('.', $fileName);
-
-        if ($imageInfo[2] == 1) {
-            $thumbnailFileName = $thumbnailFileName[0] . '_tn.gif';
-            imagegif($thumbnailImage, $tndirectory . $thumbnailFileName);
-        } elseif ($imageInfo[2] == 2) {
-            $thumbnailFileName = $thumbnailFileName[0] . '_tn.jpg';
+    
+        if($replaceFile) {
+            unlink($image);
+        }
+    
+        switch($imageInfo[2]) {
+        case 1:         // convert gif to jpg
+        case 2:
+            $thumbnailFileName = $thumbnailFileName[0] . ($replaceFile ? '.jpg' : '_tn.jpg');
             imagejpeg($thumbnailImage, $tndirectory . $thumbnailFileName);
-        } elseif ($imageInfo[2] == 3) {
-            $thumbnailFileName = $thumbnailFileName[0] . '_tn.png';
+            break;
+        case 3:
+            $thumbnailFileName = $thumbnailFileName[0] . ($replaceFile ? '.png' : '_tn.png');
             imagepng($thumbnailImage, $tndirectory . $thumbnailFileName);
+            break;
         }
 
+        PHPWS_File::setFilePermissions($tndirectory . $thumbnailFileName);
         return array($thumbnailFileName, $thumbnailWidth, $thumbnailHeight);
+    
     } // END FUNC makeThumbnail()
 
     function rmdir($dir) 
