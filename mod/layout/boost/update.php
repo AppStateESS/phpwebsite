@@ -15,7 +15,9 @@ function layout_update(&$content, $currentVersion)
             return $result;
         }
         $content[] = _('+ Styles per page added.');
-        break;
+
+    case version_compare($currentVersion, '2.1.2', '<'):
+        $content[] = '+ Fixed header and footer form with javascript editors.';
     }
     return TRUE;
 }
