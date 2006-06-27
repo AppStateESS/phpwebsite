@@ -89,6 +89,7 @@ define('PHPWS_FILE_CANT_READ',        -805);
 define('PHPWS_FILE_DIR_NONWRITE',     -806);
 define('PHPWS_FILE_NO_TMP',           -807);
 define('PHPWS_FILE_SIZE',             -808);
+define('PHPWS_GD_ERROR',              -809);
 
 
 /******** Image.php & Document.php ********/
