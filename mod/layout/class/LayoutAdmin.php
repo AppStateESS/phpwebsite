@@ -304,7 +304,6 @@ class Layout_Admin{
 
     function editFooter()
     {
-        PHPWS_Core::initCoreClass('Editor.php');
         $form = & new PHPWS_Form('edit_header');
         $form->addHidden('module', 'layout');
         $form->addHidden('action', 'admin');
@@ -312,15 +311,10 @@ class Layout_Admin{
 
         $footer = $_SESSION['Layout_Settings']->footer;
 
-        if (Editor::willWork()){
-            $editor = & new Editor('htmlarea', 'footer', $footer);
-            $headInfo = $editor->get();
-            $form->addTplTag('FOOTER', $headInfo);
-        } else {
-            $form->addTextArea('footer', $footer);
-            $form->setRows('footer', 10);
-            $form->setWidth('footer', '80%');
-        }
+        $form->addTextArea('footer', $footer);
+        $form->useEditor('footer');
+        $form->setRows('footer', 10);
+        $form->setWidth('footer', '80%');
 
         $form->addSubmit('submit', _('Update Footer'));
 
@@ -331,7 +325,6 @@ class Layout_Admin{
 
     function editHeader()
     {
-        PHPWS_Core::initCoreClass('Editor.php');
         $form = & new PHPWS_Form('edit_header');
         $form->addHidden('module', 'layout');
         $form->addHidden('action', 'admin');
@@ -339,21 +332,16 @@ class Layout_Admin{
 
         $header = $_SESSION['Layout_Settings']->header;
 
-        if (Editor::willWork()){
-            $editor = & new Editor('htmlarea', 'header', $header);
-            $headInfo = $editor->get();
-            $form->addTplTag('HEADER', $headInfo);
-        } else {
-            $form->addTextArea('header', $header);
-            $form->setRows('header', 10);
-            $form->setWidth('header', '80%');
-        }
+        $form->addTextArea('header', $header);
+        $form->useEditor('header');
+        $form->setRows('header', 10);
+        $form->setWidth('header', '80%');
 
         $form->addSubmit('submit', _('Update Header'));
 
         $template = $form->getTemplate();
+
         return PHPWS_Template::process($template, 'layout', 'edit_header.tpl');
-    
     }
 
     function getThemeList()
