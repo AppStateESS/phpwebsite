@@ -70,8 +70,12 @@ function users_install(&$content)
         $db = & new PHPWS_DB('users_auth_scripts');
         $db->addValue('display_name', _('Local'));
         $db->addValue('filename', 'local.php');
-        $db->insert();
-
+        $authorize_id = $db->insert();
+        if (PEAR::isError($authorize_id)) {
+            PHPWS_Error::log($authorize_id);
+            $content[] = _('Unable to create authorization script.');
+            return FALSE;
+        }
         return TRUE;
     }
 
@@ -81,11 +85,16 @@ function users_install(&$content)
     
     if (isset($_POST['mod_title']) && $_POST['mod_title']=='users'){
         $result = User_Action::postUser($user);
-        if (!is_array($result)){
+        if (!is_array($result)) {
+            $db = & new PHPWS_DB('users_auth_scripts');
+            $db->addValue('display_name', _('Local'));
+            $db->addValue('filename', 'local.php');
+            $authorize_id = $db->insert();
+
             $user->setDeity(TRUE);
             $user->setActive(TRUE);
             $user->setApproved(TRUE);
-            $user->setAuthorize(1);
+            $user->setAuthorize($authorize_id);
             $result = $user->save();
             if (PEAR::isError($result)) {
                 return $result;
@@ -95,10 +104,6 @@ function users_install(&$content)
             PHPWS_Settings::save('users');
             $content[] = _('User created successfully.');
             $content[] = _('User\'s email used as contact email address.');
-            $db = & new PHPWS_DB('users_auth_scripts');
-            $db->addValue('display_name', _('Local'));
-            $db->addValue('filename', 'local.php');
-            $db->insert();
         } else {
             $content[] = userForm($user, $result);
             return FALSE;
