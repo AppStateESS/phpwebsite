@@ -174,7 +174,7 @@ class Comment_Item {
 
     function getRelativeTime()
     {
-        return PHPWS_Time::relativeTime($this->create_time, COMMENT_DATE_FORMAT);
+        return PHPWS_Time::relativeTime(PHPWS_Time::getServerTime($this->create_time), COMMENT_DATE_FORMAT);
     }
 
     function stampEditor()
