@@ -94,7 +94,7 @@ class PHPWS_Time {
      */
     function getServerTime($utc_time)
     {
-        return PHPWS_Time::convertUTCTime($utc_time, PHPWS_Time::getServerTZ());
+        return PHPWS_Time::convertUTCTime($utc_time, PHPWS_Time::getServerTZ(), TRUE);
     }
 
 
