@@ -180,6 +180,10 @@ class PHPWS_Calendar {
         case 'week':
             $content = $this->view->week();
             break;
+
+        default:
+            $content = _('Incorrect option');
+            break;
         }
 
         return $content;
@@ -253,7 +257,8 @@ class PHPWS_Calendar {
 
         $db->addOrder('start_time');
         $db->addOrder('end_time desc');
-        
+        $db->setIndexBy('id');
+
         $result = $db->getObjects('Calendar_Event');
 
         if (PEAR::isError($result)) {

@@ -133,9 +133,10 @@ class Calendar_View {
             $no_of_events = 0;
             $data['DAY'] = $day->day;
 
-            if (isset($this->event_sort[$year][$month][$day->day])) {
-                $no_of_events = count($this->event_sort[$year][$month][$day->day]);
+            if (isset($this->event_sort[$day->year]['months'][$day->month]['days'][$day->day]['events'])) {
+                $no_of_events = count($this->event_sort[$day->year]['months'][$day->month]['days'][$day->day]['events']);
             } 
+
 
             if ($day->empty) {
                 $data['CLASS'] = 'day-empty';
@@ -188,7 +189,54 @@ class Calendar_View {
             Layout::addStyle('calendar');
         }
 
-        test($this);
+        $oMonth = $this->calendar->getMonth($month, $year);
+        $date = $oMonth->thisMonth(TRUE);
+
+        $tpl = & new PHPWS_Template('calendar');
+        $tpl->setFile('view/list_view.tpl');
+
+        if (empty($this->event_sort[$year]['months'][$month]['days'])) {
+            echo 'empty';
+        } else {
+            foreach ($this->event_sort[$year]['months'][$month]['days'] as $day => $d_events) {
+                if (empty($d_events['hours'])) {
+                    continue;
+                }
+                foreach ($d_events['hours'] as $hour => $h_events) {
+                    foreach ($h_events['events'] as $event) {
+                        $tpl->setCurrentBlock('events');
+                        $tpl->setData($event->getTpl());
+                        $tpl->parseCurrentBlock();
+                    }
+                    $tpl->setCurrentBlock('hours');
+                    $h_data['HOUR_24'] = $hour;
+                    $h_data['HOUR_12'] = strftime('%l', mktime($hour));
+                    $h_data['AM_PM'] = strftime('%P', mktime($hour));
+                    
+                    $tpl->setData($h_data);
+                    $tpl->parseCurrentBlock();
+                }
+
+                $tpl->setCurrentBlock('days');
+                $d_data['FULL_WEEKDAY'] = strftime('%A', mktime(0,0,0, $month, $day));
+                $d_data['ABRV_WEEKDAY'] = strftime('%a', mktime(0,0,0, $month, $day));
+                $d_data['DAY_NUMBER'] = $day;
+                $tpl->setData($d_data);
+                $tpl->parseCurrentBlock();
+            }
+        }
+
+        $main_tpl['FULL_MONTH'] = strftime('%B', mktime(0,0,0, $month));
+        $main_tpl['ABRV_MONTH'] = strftime('%b', mktime(0,0,0, $month));
+
+        $main_tpl['FULL_YEAR'] = strftime('%Y', mktime(0,0,0, $month, $day, $year));
+        $main_tpl['ABRV_YEAR'] = strftime('%y', mktime(0,0,0, $month, $day, $year));
+
+        $tpl->setData($main_tpl);
+        $tpl->parseCurrentBlock();
+        
+        $content = $tpl->get();
+        return $content;
     }
 
     function month_grid()
@@ -211,7 +259,7 @@ class Calendar_View {
         }
 
         $this->sortEvents();
-
+        
         if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
             Layout::addStyle('calendar');
         }
@@ -235,6 +283,8 @@ class Calendar_View {
 
         $this->_weekday($oMonth, $oTpl);
         reset($oMonth->children);
+
+        // create day cells in grid
         $this->_month_days($oMonth, $oTpl);
 
         $vars['month'] = $month;
@@ -396,7 +446,11 @@ class Calendar_View {
             $year = (int)date('Y', $event->start_time);
             $month = (int)date('m', $event->start_time);
             $day = (int)date('d', $event->start_time);
-            $this->event_sort[$year][$month][$day][] = & $this->calendar->schedule->events[$key];
+            $hour = (int)date('H', $event->start_time);
+            $this->event_sort[$year]['events'][$key] = & $this->event_list[$key];
+            $this->event_sort[$year]['months'][$month]['events'][$key] = & $this->event_list[$key];
+            $this->event_sort[$year]['months'][$month]['days'][$day]['events'][$key] = & $this->event_list[$key];
+            $this->event_sort[$year]['months'][$month]['days'][$day]['hours'][$hour]['events'][$key] = & $this->event_list[$key];
         }
     }
 

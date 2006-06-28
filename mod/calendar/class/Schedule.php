@@ -296,8 +296,7 @@ class Calendar_Schedule {
 
     function loadEvents($start_search=NULL, $end_search=NULL)
     {
-        $result = Calendar::getEvents($start_search, $end_search, $this->id);
-
+        $result = PHPWS_Calendar::getEvents($start_search, $end_search, $this->id);
         $this->events = & $result;
         return TRUE;
     }

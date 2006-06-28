@@ -97,3 +97,33 @@ div.cal-events {
       text-align : center;
       border : 1px black solid;
 }
+
+
+div.month {
+     font-size : 1.6em;
+     font-weight : bold;
+}
+
+
+div.day {
+      font-size : 1.4em;
+      font-weight : bold;
+      margin : 5px 0px;
+      padding : 2px 4px;
+}
+
+div.hour {
+      font-size : 1.2em;
+      font-weight : bold;
+      margin : 5px 0px;
+      padding : 2px 4px;
+}
+
+div.list-event {
+      padding : 4px;
+      margin : 4px;
+}
+
+span.event-title, span.event-time {
+      font-weight : bold;
+}

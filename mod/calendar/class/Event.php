@@ -67,6 +67,11 @@ class Calendar_Event {
         $this->summary = PHPWS_Text::parseInput($summary);
     }
 
+    function getSummary()
+    {
+        return PHPWS_Text::parseOutput($this->summary);
+    }
+
     function getStartTime($format='%c')
     {
         return strftime($format, $this->start_time);
@@ -106,9 +111,13 @@ class Calendar_Event {
         return $sTime;
     }
 
-    function getSummary()
+
+    function getTpl()
     {
-        return PHPWS_Text::parseOutput($this->summary);
+        $tpl['TITLE']   = $this->title;
+        $tpl['SUMMARY'] = $this->getSummary();
+        $tpl['TIME']    = $this->getTime();
+        return $tpl;
     }
 
     function save()
