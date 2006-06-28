@@ -423,7 +423,6 @@ class PHPWS_File {
             break;
         }
 
-        PHPWS_File::setFilePermissions($tndirectory . $thumbnailFileName);
         return array($thumbnailFileName, $thumbnailWidth, $thumbnailHeight);
     
     } // END FUNC makeThumbnail()
