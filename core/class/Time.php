@@ -51,7 +51,7 @@ class PHPWS_Time {
         $aTime['m'] = (int)strftime('%m', $time);
         $aTime['d'] = (int)strftime('%e', $time);
         $aTime['y'] = (int)strftime('%Y', $time);
-        $aTime['h'] = (int)strftime('%H', $time);
+        $aTime['h'] = (int)strftime('%k', $time);
         $aTime['i'] = (int)strftime('%M', $time);
         $aTime['u'] = $time;
 
