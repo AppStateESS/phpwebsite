@@ -17,8 +17,12 @@ class Breadcrumb {
             $this->recordView();
         }
 
-        $show_list = array_slice($this->bc_list, $this->view_limit);
-        $content = implode(' &gt; ', $show_list);
+        if (count($this->bc_list) > $this->view_limit) {
+            $show_list = array_slice($this->bc_list, $this->view_limit, true);
+        } else {
+            $show_list = & $this->bc_list;
+        }
+        $content = implode(BC_DIVIDER, $show_list);
 
         Layout::add($content, 'breadcrumb', 'view');
     }
@@ -32,12 +36,11 @@ class Breadcrumb {
                 //remove records from that point on
                 $key_list = array_keys($this->bc_list);
                 $array_key_count = array_search($key->id, $key_list);
-                $this->bc_list = array_slice($this->bc_list, 0, $array_key_count + 1);
+                $this->bc_list = array_slice($this->bc_list, 0, $array_key_count + 1, true);
             } else {
                 $this->bc_list[$key->id] = $key->getUrl();
             }
         }
-    
     }
 
 

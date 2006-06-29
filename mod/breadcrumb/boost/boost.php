@@ -6,7 +6,7 @@
    */
 
 $proper_name  = 'Breadcrumb';
-$version      = '1.0.0';
+$version      = '1.0.1';
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/breadcrumb/check.xml';
 $priority     = 50;
 
