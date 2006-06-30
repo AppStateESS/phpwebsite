@@ -245,6 +245,7 @@ class PHPWS_Boost {
         }
 
         foreach ($this->modules as $title => $mod){
+            unset($GLOBALS['Modules'][$title]);
             $title = trim($title);
             if ($this->getStatus($title) == BOOST_DONE) {
                 continue;
