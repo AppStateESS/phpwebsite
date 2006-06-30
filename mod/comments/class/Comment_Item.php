@@ -308,10 +308,13 @@ class Comment_Item {
     function save()
     {
 	if (empty($this->thread_id) ||
-	    empty($this->subject)   ||
 	    empty($this->entry)) {
 	    return PHPWS_Error::get(COMMENTS_MISSING_THREAD, 'comments', 'Comment_Item::save');
 	}
+
+        if (empty($this->subject)) {
+            $this->subject = _('No subject');
+        }
 
 	if (empty($this->create_time)) {
 	    $this->stampCreateTime();
