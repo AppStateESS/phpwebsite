@@ -1,0 +1,23 @@
+Matthew McNaney - 30 June, 2006
++ Core
+- Added error messages to Core to help debug a bad source directory
+
++Boost
+- Added line to unset an uninstalled module from the Module global
+  variable
+
++ Branch
+- Core can call branch even if not installed. Added check to disallow
+  continuation 
+
++ Comment
+- Added a default 'No subject' to comments without subjects
+
++ Layout
+- Unsets box variable of uninstalled modules
+- Added new theme variable ONLY_TITLE
+- Boxes with duplicate content variable names were not getting added
+  properly. Fixed by having the module name verified.
+
++ Docs
+- Added this file!
