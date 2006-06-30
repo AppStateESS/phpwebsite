@@ -712,6 +712,7 @@ class PHPWS_Core {
             return TRUE;
         } else {
             if (!PHPWS_Core::initModClass('branch', 'Branch.php')) {
+                PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core', 'PHPWS_Core::checkBranch');
                 return FALSE;
             }
 
@@ -719,6 +720,7 @@ class PHPWS_Core {
                 $GLOBALS['Is_Branch'] = TRUE;
                 return TRUE;
             } else {
+                PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core', 'PHPWS_Core::checkBranch');
                 return FALSE;
             }
         }

@@ -16,6 +16,7 @@ $errors[PHPWS_WRONG_CLASS]           = _('Unknown or incorrect class.');
 $errors[PHPWS_UNKNOWN_MODULE]        = _('Unknown module.');
 $errors[PHPWS_CLASS_VARS]            = _('Unable to derive class variables.');
 $errors[PHPWS_NO_FUNCTION]           = _('Function name not found.');
+$errors[PHPWS_HUB_IDENTITY]          = _('Unable to verify source directory. Check PHPWS_SOURCE_DIR.');
 
 // Database.php 100 - 199
 $errors[PHPWS_DB_ERROR_TABLE]        = _('Table name not set.');
