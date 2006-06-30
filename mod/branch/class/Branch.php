@@ -165,6 +165,10 @@ If you are sure you want to remove the branch, type the branch name:');
 
     function checkCurrentBranch()
     {
+        if (!PHPWS_Core::moduleExists('branch')) {
+            return FALSE;
+        }
+
         if (isset($_SESSION['Approved_Branch'])) {
             return (bool)$_SESSION['Approved_Branch'];
         }
