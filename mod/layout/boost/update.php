@@ -18,6 +18,13 @@ function layout_update(&$content, $currentVersion)
 
     case version_compare($currentVersion, '2.1.2', '<'):
         $content[] = '+ Fixed header and footer form with javascript editors.';
+
+    case version_compare($currentVersion, '2.1.3', '<'):
+        $content[] = '- Unsets box variable of uninstalled modules';
+        $content[] = '- Added new theme variable ONLY_TITLE';
+        $content[] = '- Boxes with duplicate content variable names were not getting 
+added properly. Fixed by having the module name verified.';
+
     }
     return TRUE;
 }
