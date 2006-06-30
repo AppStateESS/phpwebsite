@@ -17,6 +17,9 @@ function webpage_update(&$content, $currentVersion)
         $content[] = '+ Add ability to join all pages together';
         $content[] = '+ Fixed xhtml issues with links';
         $content[] = '+ Front page should no longer pull unapproved pages.';
+
+    case version_compare($currentVersion, '0.2.1', '<'):
+        $content[] = '+ Added parseTags to content.';
     }
 
     return TRUE;

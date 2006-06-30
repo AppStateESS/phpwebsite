@@ -71,7 +71,7 @@ class Webpage_Page {
 
     function getContent()
     {
-        return PHPWS_Text::parseOutput($this->content);
+        return PHPWS_Text::parseTag(PHPWS_Text::parseOutput($this->content));
     }
 
     function getTemplateList()
