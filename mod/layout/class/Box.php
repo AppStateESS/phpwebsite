@@ -212,8 +212,9 @@ class Layout_Box {
         $db->addOrder('box_order');
         $boxes = $db->getObjects('Layout_Box');
 
-        if (!isset($boxes))
+        if (!isset($boxes)) {
             return;
+        }
 
         $count = 1;
         foreach ($boxes as $box){
@@ -245,9 +246,10 @@ class Layout_Box {
         $db = & new PHPWS_DB('layout_box');
         $db->addWhere('id', $this->getId());
         $result = $db->delete();
-  
-        if (PEAR::isError($result))
+
+        if (PEAR::isError($result)) {
             return $result;
+        }
 
         Layout_Box::reorderBoxes($theme, $theme_var);
     }

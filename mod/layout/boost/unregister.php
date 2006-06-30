@@ -11,8 +11,9 @@ function layout_unregister($module, &$content){
     $db->addWhere('module', $module);
     $moduleBoxes = $db->getObjects('Layout_Box');
 
-    if (empty($moduleBoxes))
+    if (empty($moduleBoxes)) {
         return;
+    }
 
     if (PEAR::isError($moduleBoxes)) {
         return $moduleBoxes;
@@ -21,6 +22,10 @@ function layout_unregister($module, &$content){
     foreach ($moduleBoxes as $box) {
         $box->kill();
     }
+
+    // below makes sure box doesn't get echoed
+    unset($GLOBALS['Layout'][$module]);
+    unset($_SESSION['Layout_Settings']->_boxes[$module]);
 
 }
 

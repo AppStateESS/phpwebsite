@@ -37,7 +37,7 @@ class Layout {
         // a new box for it.
 
         if (isset($module) && isset($content_var)) {
-            if (!$_SESSION['Layout_Settings']->isContentVar($content_var)) {
+            if (!$_SESSION['Layout_Settings']->isContentVar($module, $content_var)) {
                 if ($default_body) {
                     $theme_var = DEFAULT_THEME_VAR;
                 } else {
@@ -380,6 +380,9 @@ class Layout {
         return $_SESSION['Layout_Settings']->current_theme;
     }
 
+    /**
+     * Loads information sent to add function
+     */
     function getBoxContent()
     {
         $list = NULL;
@@ -843,6 +846,7 @@ class Layout {
         }
         $template['METATAGS']   = Layout::getMetaTags();
         $template['PAGE_TITLE'] = $_SESSION['Layout_Settings']->getPageTitle();
+        $template['ONLY_TITLE'] = $_SESSION['Layout_Settings']->getPageTitle(TRUE);
         $template['BASE']       = Layout::getBase();
    }
 

@@ -93,9 +93,9 @@ class Layout_Settings {
         return $this->_theme_variables;
     }
 
-    function isContentVar($contentVar)
+    function isContentVar($module, $contentVar)
     {
-        return in_array($contentVar, $this->_contentVars);
+        return in_array($module . '_' . $contentVar, $this->_contentVars);
     }
 
     function isMoveBox()
@@ -123,17 +123,22 @@ class Layout_Settings {
         $db = new PHPWS_db('layout_box');
         $db->addWhere('theme', $this->current_theme);
         $db->addColumn('content_var');
-        $result = $db->select('col');
+        $db->addColumn('module');
+        $result = $db->select();
 
         if (PEAR::isError($result)){
             PHPWS_Error::log($result);
             PHPWS_Core::errorPage();
         }
     
-        if (empty($result))
+        if (empty($result)) {
             return;
+        }
 
-        $this->_contentVars = $result;
+        foreach ($result as $c_vars) {
+            extract($c_vars);
+            $this->_contentVars[] = $module . '_' . $content_var;
+        }
     }
 
     function loadSettings()
