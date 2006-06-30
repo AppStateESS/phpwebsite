@@ -90,9 +90,9 @@ class PHPWS_Calendar {
             if ($this->request_date < mktime(0,0,0,1,1,1970)) {
                 $this->loadToday();
             } else {
-                $this->month = date('m', $this->request_date);
-                $this->day   = date('d', $this->request_date);
-                $this->year  = date('Y', $this->request_date);
+                $this->month = (int)date('m', $this->request_date);
+                $this->day   = (int)date('d', $this->request_date);
+                $this->year  = (int)date('Y', $this->request_date);
             }
         }
     }
