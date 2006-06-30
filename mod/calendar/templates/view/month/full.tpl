@@ -2,6 +2,7 @@
   <div class="box-title"><h1 class="align-center">{TITLE} -
   {FULL_MONTH_NAME}, {FULL_YEAR} {PICK}</h1></div>
   <div class="box-content">
+  <div class="view-links">{VIEW_LINKS}</div>
   <div class="month-view-full">
     <table>
       <tr>

@@ -196,7 +196,7 @@ class Calendar_View {
         $tpl->setFile('view/list_view.tpl');
 
         if (empty($this->event_sort[$year]['months'][$month]['days'])) {
-            echo 'empty';
+            $day = 1;
         } else {
             foreach ($this->event_sort[$year]['months'][$month]['days'] as $day => $d_events) {
                 if (empty($d_events['hours'])) {
@@ -226,11 +226,13 @@ class Calendar_View {
             }
         }
 
-        $main_tpl['FULL_MONTH'] = strftime('%B', mktime(0,0,0, $month));
-        $main_tpl['ABRV_MONTH'] = strftime('%b', mktime(0,0,0, $month));
-
+        $main_tpl['FULL_MONTH_NAME'] = strftime('%B', mktime(0,0,0, $month));
+        $main_tpl['ABRV_MONTH_NAME'] = strftime('%b', mktime(0,0,0, $month));
+        $main_tpl['TITLE'] = $title;
         $main_tpl['FULL_YEAR'] = strftime('%Y', mktime(0,0,0, $month, $day, $year));
         $main_tpl['ABRV_YEAR'] = strftime('%y', mktime(0,0,0, $month, $day, $year));
+
+        $main_tpl['PICK'] = $this->getPick();
 
         $tpl->setData($main_tpl);
         $tpl->parseCurrentBlock();
@@ -297,6 +299,7 @@ class Calendar_View {
         $template['PICK'] = $this->getPick();
         $template['FULL_YEAR'] = strftime('%Y', $date);
         $template['PARTIAL_YEAR'] = strftime('%y', $date);
+        $template['VIEW_LINKS'] = $this->viewLinks('month_grid');
 
         $oTpl->setData($template);
         $content = $oTpl->get();

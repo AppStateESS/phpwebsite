@@ -127,3 +127,7 @@ div.list-event {
 span.event-title, span.event-time {
       font-weight : bold;
 }
+
+div.view-links {
+   margin-bottom : 10px;
+}

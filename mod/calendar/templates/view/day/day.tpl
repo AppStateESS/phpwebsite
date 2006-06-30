@@ -9,7 +9,7 @@
 </div>
 
 <div class="bgcolor1 padded"><h1>{TITLE} - {DATE} {PICK}</h1>
-    <div class="smaller">{VIEW_LINKS}</div>
+    <div class="view-links">{VIEW_LINKS}</div>
 </div>
 {ADD_EVENT}
 <div>{MESSAGE}</div>

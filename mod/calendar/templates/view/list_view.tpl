@@ -1,14 +1,25 @@
-<div class="month">{FULL_MONTH}, {FULL_YEAR}</div>
+<div class="box">
+    <div class="box-title">
+        <h1 class="align-center">{TITLE} -
+        {FULL_MONTH_NAME}, {FULL_YEAR} {PICK}</h1>
+    </div>
+    <div class="box-content">
+        <div class="view-links">{VIEW_LINKS}</div>
+        <div class="month-view-list">
+<!-- BEGIN message -->{MESSAGE}<!-- END message -->
 <!-- BEGIN days -->
-<div class="day bgcolor1">{FULL_WEEKDAY} {DAY_NUMBER}</div>
+            <div class="day bgcolor1">{FULL_WEEKDAY} {DAY_NUMBER}</div>
 <!-- BEGIN hours -->
-<div class="hour bgcolor2">{HOUR_12}{AM_PM}</div>
+            <div class="hour bgcolor2">{HOUR_12}{AM_PM}</div>
 <!-- BEGIN events -->
-<div class="list-event">
-    <span class="event-title">{TITLE}</span>
-    <span class="event-time">{TIME}</span>
-    <div class="event-summary">{SUMMARY}</div>
-</div>
+            <div class="list-event">
+                <span class="event-title">{TITLE}</span>
+                <span class="event-time">{TIME}</span>
+                <div class="event-summary">{SUMMARY}</div>
+            </div>
 <!-- END events -->
 <!-- END hours -->
 <!-- END days -->
+        </div>
+    </div>
+</div>
