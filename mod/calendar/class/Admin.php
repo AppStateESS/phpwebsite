@@ -266,7 +266,7 @@ class Calendar_Admin {
 
         $tabs['my_schedule'] = array('title' => _('My Schedule'), 'link' => $link);
 
-        $tabs['events']      = array('title' => _('Events'), 'link' => $link);
+        //        $tabs['events']      = array('title' => _('Events'), 'link' => $link);
         if (Current_User::allow('calendar', 'edit_public') ||
             Current_User::allow('calendar', 'edit_private')) {
             $tabs['schedules']   = array('title' => _('Schedules'), 'link' => $link);
