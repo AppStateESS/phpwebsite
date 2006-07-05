@@ -389,12 +389,16 @@ class PHPWS_Text {
     }
 
     /**
-     * Creates a link to the previous referer
+     * Creates a link to the previous referer (page)
      */
     function backLink($title=NULL)
     {
         if (empty($title)) {
             $title = _('Return to previous page.');
+        }
+
+        if (!isset($_SERVER['HTTP_REFERER'])) {
+            return NULL;
         }
         return sprintf('<a href="%s">%s</a>', $_SERVER['HTTP_REFERER'], $title);
     }
