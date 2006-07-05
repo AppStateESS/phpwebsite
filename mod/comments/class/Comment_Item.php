@@ -8,7 +8,7 @@
 
 define('COMMENTS_MISSING_THREAD', 1);
 
-PHPWS_Core::configRequireOnce('comments', 'config.php');
+PHPWS_Core::requireConfig('comments', 'config.php');
 
 class Comment_Item {
     // Id number of comment
@@ -313,7 +313,7 @@ class Comment_Item {
 	}
 
         if (empty($this->subject)) {
-            $this->subject = _('No subject');
+            $this->subject = COMMENT_NO_SUBJECT;
         }
 
 	if (empty($this->create_time)) {

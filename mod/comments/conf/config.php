@@ -24,4 +24,9 @@ define('COMMENT_VIEW_ONE_TPL', 'alt_view_one.tpl');
 //define('COMMENT_VIEW_TEMPLATE', 'view.tpl');
 //define('COMMENT_VIEW_ONE_TPL', 'view_one.tpl');
 
+
+// This phrase will appear if a person doesn't enter a subject line
+// for their comment.
+define('COMMENT_NO_SUBJECT', _('No subject'));
+
 ?>

@@ -22,6 +22,14 @@ function comments_update(&$content, $currentVersion)
 
     case version_compare($currentVersion, '0.2.6', '<'):
         $content[] = '+ Fixed occurrences where anonymous users could post on restricted threads.';
+
+    case version_compare($currentVersion, '0.2.7', '<'):
+        $content[] = '+ Comments without subject will use COMMENT_NO_SUBJECT define.';
+        if (PHPWS_Boost::updateFiles(array('conf/config.php'), 'comments')) {
+            $content[] = 'New config.php file copied locally.';
+        } else {
+            $content[] = 'New config.php file failed to copy locally.';
+        }
     }
             
     return TRUE;
