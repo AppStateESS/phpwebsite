@@ -49,17 +49,41 @@ class Calendar_Event {
     {
         $db = & new PHPWS_DB('calendar_events');
         $result = $db->loadObject($this);
+
         if (PEAR::isError($result)) {
             $this->_error = $result;
             return $result;
+        } elseif (!$result) {
+            $this->id = 0;
         }
-        return TRUE;
+
+        return $result;
     }
 
 
     function setTitle($title)
     {
         $this->title = strip_tags($title);
+    }
+
+    function getTitle($linked=true)
+    {
+        if ($linked) {
+            $vars['view'] = 'event';
+            $vars['id']   = $this->id;
+
+            if (javascriptEnabled()) {
+                $vars['js'] = 1;
+                $js['address'] = PHPWS_Text::linkAddress('calendar', $vars);
+                $js['label'] = $this->title;
+                return javascript('open_window', $js);
+            } else {
+                return PHPWS_Text::moduleLink($this->title, 'calendar', $vars);
+            }
+
+        } else {
+            return $this->title;
+        }
     }
 
     function setSummary($summary)
@@ -100,11 +124,11 @@ class Calendar_Event {
             break;
 
         case 3:
-            $sTime = sprintf(_('Event starts at %s.'), strftime(CALENDAR_TIME_LIST_FORMAT, $this->start_time));
+            $sTime = sprintf(_('Starts at %s.'), strftime(CALENDAR_TIME_LIST_FORMAT, $this->start_time));
             break;
 
         case 4:
-            $sTime = sprintf(_('Event deadline at %s.'),  strftime(CALENDAR_TIME_LIST_FORMAT, $this->end_time));
+            $sTime = sprintf(_('Deadline at %s.'),  strftime(CALENDAR_TIME_LIST_FORMAT, $this->end_time));
             break;
         }
 
@@ -114,7 +138,7 @@ class Calendar_Event {
 
     function getTpl()
     {
-        $tpl['TITLE']   = $this->title;
+        $tpl['TITLE']   = $this->getTitle();
         $tpl['SUMMARY'] = $this->getSummary();
         $tpl['TIME']    = $this->getTime();
         return $tpl;
