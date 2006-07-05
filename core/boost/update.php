@@ -21,6 +21,7 @@ function core_update(&$content, $version) {
         if (PEAR::isError($result)) {
             return $result;
         }
+        $content[] = '- Created core_version table.';
     }
     
     return true;
