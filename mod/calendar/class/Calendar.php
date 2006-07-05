@@ -47,6 +47,10 @@ class PHPWS_Calendar {
     {
         if (isset($_REQUEST['view'])) {
             $this->current_view = $_REQUEST['view'];
+        } else {
+            if (isset($_REQUEST['id'])) {
+                $this->current_view = 'event';
+            }
         }
     }
 
@@ -181,6 +185,17 @@ class PHPWS_Calendar {
             $content = $this->view->week();
             break;
 
+        case 'event':
+            $event_id = (int)$_REQUEST['id'];
+
+            if (isset($_REQUEST['js'])) {
+                $content = $this->view->event($event_id, true);
+                Layout::nakedDisplay($content);
+                return;
+            } else {
+                $content = $this->view->event($event_id);
+            }
+            break;
         default:
             $content = _('Incorrect option');
             break;

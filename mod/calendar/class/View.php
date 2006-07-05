@@ -29,7 +29,9 @@ class Calendar_View {
         $vars = PHPWS_Text::getGetValues();
         unset($vars['module']);
 
-        $vars['schedule_id'] = $this->calendar->schedule->id;
+        if (isset($this->calendar->schedule)) {
+            $vars['schedule_id'] = $this->calendar->schedule->id;
+        }
         $vars['m'] = $this->calendar->month;
         $vars['d'] = $this->calendar->day;
         $vars['y'] = $this->calendar->year;
@@ -228,7 +230,8 @@ class Calendar_View {
 
         $main_tpl['FULL_MONTH_NAME'] = strftime('%B', mktime(0,0,0, $month));
         $main_tpl['ABRV_MONTH_NAME'] = strftime('%b', mktime(0,0,0, $month));
-        $main_tpl['TITLE'] = $title;
+
+        $main_tpl['SCHEDULE_TITLE'] = $title;
         $main_tpl['FULL_YEAR'] = strftime('%Y', mktime(0,0,0, $month, $day, $year));
         $main_tpl['ABRV_YEAR'] = strftime('%y', mktime(0,0,0, $month, $day, $year));
 
@@ -248,7 +251,7 @@ class Calendar_View {
 
         $startdate = mktime(0,0,0, $month, 1, $year);
         $enddate = mktime(23, 59, 59, $month + 1, 0, $year);
-        if (isset($this->calendar->schedule) ){
+        if (isset($this->calendar->schedule)) {
             $title = $this->calendar->schedule->title;
             $this->calendar->schedule->loadEvents($startdate, $enddate);
             $this->event_list = & $this->calendar->schedule->events;
@@ -329,13 +332,26 @@ class Calendar_View {
 
         $template['VIEW_LINKS'] = $this->viewLinks('day');
 
-        $template['TITLE'] = $this->calendar->schedule->title;
+        if (isset($this->calendar->schedule)) {
+            $this->calendar->schedule->loadEvents($uDate, $uDateEnd);
+            $title = $this->calendar->schedule->title;
+            $this->event_list = & $this->calendar->schedule->events;
+        } else {
+            $public_calendars = $this->calendar->getPublicCalendars();
+            if (!empty($public_calendars)) {
+                $this->event_list = $this->calendar->getEvents($startdate, $enddate, $public_calendars);
+            }
+
+            $title = _('Public events');
+        }
+
+        $template['TITLE'] = $title;
         $template['DATE'] = strftime(CALENDAR_DAY_FORMAT, $uDate);
 
         $template['PICK'] = $this->getPick();
 
-
-        if (Current_User::allow('calendar', 'edit_schedule', $this->calendar->schedule->id) ||
+        if ( isset($this->calendar->schedule) && 
+             Current_User::allow('calendar', 'edit_schedule', $this->calendar->schedule->id) ||
             ( PHPWS_Settings::get('calendar', 'personal_calendars') && 
               $this->calendar->schedule->user_id == Current_User::getId()
               )
@@ -343,14 +359,12 @@ class Calendar_View {
             MiniAdmin::add('calendar', $this->calendar->schedule->addEventLink($this->calendar->today));
         }
         
-
-        $this->calendar->schedule->loadEvents($uDate, $uDateEnd);
-        $events = & $this->calendar->schedule->events;
-
         $tpl = & new PHPWS_Template('calendar');
         $tpl->setFile('view/day/day.tpl');
 
-        if (empty($events)) {
+        $this->sortEvents();
+
+        if (empty($this->event_sort)) {
             $template['MESSAGE'] = _('No events planned for this day.');
         } else {
             $hour_list = array();
@@ -472,6 +486,25 @@ class Calendar_View {
 
         return implode('', $address);
     }
+
+    function event($id, $js=false) {
+        PHPWS_Core::initModClass('calendar', 'Event.php');
+        $event = & new Calendar_Event($id);
+        if (!$event->id) {
+            PHPWS_Core::errorPage('404');
+        }
+
+        $template = $event->getTpl();
+
+        if ($js) {
+            $template['CLOSE_WINDOW'] = javascript('close_window', array('value'=>_('Close')));
+        } else {
+            $template['BACK_LINK'] = PHPWS_Text::backLink();
+        }
+
+        return PHPWS_Template::process($template, 'calendar', 'view/event.tpl');
+    }
+
 }
 
 
