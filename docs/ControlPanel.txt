@@ -145,7 +145,7 @@ Security
 By default, panels do not include authorization keys in the link.
 If you want it to, call enableSecure();
 
-$pager->enableSecure();
+$panel->enableSecure();
 
 
 Tips:
