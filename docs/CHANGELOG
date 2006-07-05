@@ -1,8 +1,18 @@
-Matthew McNaney - 30 June, 2006
+5 July 2006
++ Categories
+- Fixed key unregister file
+
++ Core
+- Added key errors for missing key unregister files and/or functions
+
++ Boost
+- Added error messages for bad key unregistration
+
+30 June, 2006
 + Core
 - Added error messages to Core to help debug a bad source directory
 
-+Boost
++ Boost
 - Added line to unset an uninstalled module from the Module global
   variable
 
@@ -21,3 +31,6 @@ Matthew McNaney - 30 June, 2006
 
 + Docs
 - Added this file!
+
+
+28 June, 2006
