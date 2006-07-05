@@ -631,7 +631,11 @@ class PHPWS_Boost {
         $filename = sprintf('%smod/%s/inc/key.php', PHPWS_SOURCE_DIR, $module->title);
         if (is_file($filename)) {
             $content[] = _('Unregistered from Key.');
-            Key::unregisterModule($module->title);
+            if (Key::unregisterModule($module->title)) {
+                $content[] = _('Key unregistration successful.');
+            } else {
+                $content[] = _('Some key unregistrations were unsuccessful. Check your logs.');
+            }
         }
     
         return $result;
