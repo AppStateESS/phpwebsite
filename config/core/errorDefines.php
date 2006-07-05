@@ -127,6 +127,8 @@ define('SETTINGS_MISSING_FILE',       -1300);
 /**************  Key.php  *****************/
 define('KEY_NOT_FOUND',               -1400);
 define('KEY_PERM_COLUMN_MISSING',     -1401);
+define('KEY_UNREG_FILE_MISSING',      -1402);
+define('KEY_UNREG_FUNC_MISSING',      -1403);
 
 /*********** Cookie.php ******************/
 define('COOKIE_SET_FAILED',           -1600);
