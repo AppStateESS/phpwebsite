@@ -1,30 +1,35 @@
 5 July 2006
-+ Categories
+
++ Comments - 0_2_7
+- Added define for No subject line
+
++ Categories - not tagged
 - Fixed key unregister file
 
-+ Core
++ Core - 1_0_2
 - Added key errors for missing key unregister files and/or functions
 
-+ Boost
++ Boost - 1_8_6
 - Added error messages for bad key unregistration
 - Added functions for updating the core.
+- Made links use authorization keys
 
 30 June, 2006
-+ Core
++ Core - 1_0_2
 - Added error messages to Core to help debug a bad source directory
 
-+ Boost
++ Boost - 1_8_6
 - Added line to unset an uninstalled module from the Module global
   variable
 
-+ Branch
++ Branch - not tagged
 - Core can call branch even if not installed. Added check to disallow
   continuation 
 
-+ Comment
++ Comment - 0_2_7
 - Added a default 'No subject' to comments without subjects
 
-+ Layout
++ Layout - 2_1_3
 - Unsets box variable of uninstalled modules
 - Added new theme variable ONLY_TITLE
 - Boxes with duplicate content variable names were not getting added
