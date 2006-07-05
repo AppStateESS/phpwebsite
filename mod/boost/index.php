@@ -11,7 +11,7 @@ if (DEITY_ACCESS_ONLY && !Current_User::isDeity()) {
     Current_User::disallow();
  }
 
-if (!Current_User::allow('boost')) {
+if (!Current_User::authorized('boost')) {
     Current_User::disallow();
  }
 
@@ -59,6 +59,12 @@ switch ($_REQUEST['action']){
      PHPWS_Core::initModClass('boost', 'Action.php');
      $content[] = PHPWS_Text::backLink(_('Return to Boost')) . '<br />';
      $content[] = Boost_Action::uninstallModule($_REQUEST['opmod']);
+     break;
+
+ case 'update_core':
+     $content[] = PHPWS_Text::backLink(_('Return to Boost')) . '<br />';
+     PHPWS_Core::initModClass('boost', 'Action.php');
+     $content[] = Boost_Action::updateCore();
      break;
 
  case 'update':

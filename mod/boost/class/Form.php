@@ -63,18 +63,29 @@ class Boost_Form {
             }
         }
 
-        if ($type == 'core_mods'){
+        if ($type == 'core_mods') {
             $allowUninstall = FALSE;
             $modList = $core_mods;
             
-            $core = PHPWS_Core::getVersionInfo();
+            $core_file = PHPWS_Core::getVersionInfo();
+            $core_db = PHPWS_Core::getVersionInfo(false);
 
             $link_title = _('Check');
-            $link_command['action'] = 'check';
             $link_command['opmod'] = 'core';
-            $template['VERSION'] = $core['version'];
-            $template['TITLE']   = $core['proper_name'];
-            $template['COMMAND'] = PHPWS_Text::secureLink(_('Check'), 'boost', $link_command);
+
+            $template['TITLE']   = $core_file['proper_name'];
+            $template['VERSION'] = $core_file['version'];
+
+            $link_command['action'] = 'check';
+            $core_links[] = PHPWS_Text::secureLink(_('Check'), 'boost', $link_command);
+
+            if (version_compare($core_db['version'], $core_file['version'], '<')) {
+                $link_command['action'] = 'update_core';
+                $core_links[] = PHPWS_Text::secureLink(_('Update'), 'boost', $link_command);
+                $template['VERSION'] =sprintf('%s &gt; %s', $core_db['version'], $core_file['version']); 
+            }
+
+            $template['COMMAND'] = implode(' | ', $core_links);
             $template['ROW']     = 1;
             $tpl['mod-row'][] = $template;
 

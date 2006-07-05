@@ -72,6 +72,39 @@ class Boost_Action {
         return $content;
     }
 
+    function updateCore()
+    {
+        PHPWS_Core::initModClass('boost', 'Boost.php');
+        $content[] = _('Updating core');
+
+        require_once PHPWS_SOURCE_DIR . 'core/boost/update.php';
+
+        $ver_info = PHPWS_Core::getVersionInfo(false);
+
+        $content[] = _('Processing update file.');
+        $result = core_update($content, $ver_info['version']);
+
+        if ($result === true) {
+            $db = & new PHPWS_DB('core_version');
+            $file_ver = PHPWS_Core::getVersionInfo();
+            $db->addValue('version', $file_ver['version']);
+            $result = $db->update();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                $content[] = _('An error occurred updating the core.');
+            } else {
+                $content[] = _('Core successfully updated.');
+            }
+        } elseif (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $content[] = _('An error occurred updating the core.');
+        } else {
+            $content[] = _('An error occurred updating the core.');
+        }
+
+        return implode('<br />', $content);
+    }
+
     function updateModule($module_title)
     {
         PHPWS_Core::initModClass('boost', 'Boost.php');
