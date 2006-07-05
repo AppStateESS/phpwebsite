@@ -78,3 +78,8 @@ CREATE TABLE phpws_key_register (
 CREATE TABLE converted (
   convert_name varchar(30) NOT NULL default ''
 );
+
+CREATE TABLE core_version (
+  version varchar(10) NOT NULL default ''
+);
+

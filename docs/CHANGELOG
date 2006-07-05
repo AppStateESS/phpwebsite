@@ -7,6 +7,7 @@
 
 + Boost
 - Added error messages for bad key unregistration
+- Added functions for updating the core.
 
 30 June, 2006
 + Core

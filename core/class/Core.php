@@ -664,10 +664,28 @@ class PHPWS_Core {
         }
     }
 
-    function getVersionInfo()
+    /**
+     * Returns the core version.
+     * 
+     * @param boolean get_file  If true, uses the boost.php file, if false
+     *                          uses the database version.
+     */
+    function getVersionInfo($get_file=TRUE)
     {
+
         $file = PHPWS_SOURCE_DIR . 'core/boost/boost.php';
         include $file;
+
+        if (!$get_file) {
+            if (!PHPWS_DB::isTable('core_version')) {
+                $version = '1.0.0';
+            } else {
+                $db = & new PHPWS_DB('core_version');
+                $db->addColumn('version');
+                $version = $db->select('one');
+            }
+        }
+
         return array('proper_name'  => $proper_name,
                      'version'      => $version,
                      'version_http' => $version_http);
