@@ -701,14 +701,16 @@ class Key {
             $filename = sprintf('%smod/%s/inc/key.php', PHPWS_SOURCE_DIR, $module);
 
             if (!is_file($filename)) {
-                return FALSE;
+                PHPWS_Error::log(KEY_UNREG_FILE_MISSING, 'core', 'PHPWS_Key::unregister', $filename);
+                continue;
             }
 
             require_once $filename;
 
             $func_name = $module . '_unregister';
             if (!function_exists($func_name)) {
-                return FALSE;
+                PHPWS_Error::log(KEY_UNREG_FUNC_MISSING, 'core', 'PHPWS_Key::unregister', $func_name);
+                continue;
             }
 
             $result = $func_name($this);
