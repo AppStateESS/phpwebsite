@@ -172,7 +172,9 @@ class Boost_Form {
             }
 
             if ($mod->isAbout()){
-                $address = 'index.php?module=boost&amp;action=aboutView&amp;aboutmod=' . $mod->title;
+                $address = PHPWS_Text::linkAddress('boost',
+                                                   array('action' => 'aboutView', 'aboutmod'=> $mod->title),
+                                                   true);
                 $aboutView = array('label'=>_('About'), 'address'=>$address);
                 $template['ABOUT'] = Layout::getJavascript('open_window', $aboutView);
             }

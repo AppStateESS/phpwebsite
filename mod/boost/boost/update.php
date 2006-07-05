@@ -71,6 +71,10 @@ function boost_update(&$content, $currentVersion)
         $content[] = '+ Fixed check not listing changes in updated modules.';
         $content[] = '+ Fixed file updates not copying if in subdirectory.';
         $content[] = '+ Updated modules now show current version and version to which they will be updated.';
+
+    case version_compare($currentVersion, '1.8.6', '<'):
+        $content[] = '+ Added core update functionality.';
+        $content[] = '+ Authorization keys added to links for extra security.';
     }
 
     return TRUE;
