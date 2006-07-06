@@ -1,4 +1,13 @@
+6 July 2006
++ Calendar
+- Worked on week view
+- combined functionality in month_list and week view
+
 5 July 2006
+
++ Calendar - not tagged
+- added event view
+- fixed title display problem with templates
 
 + Comments - 0_2_7
 - Added define for No subject line
@@ -8,6 +17,9 @@
 
 + Core - 1_0_2
 - Added key errors for missing key unregister files and/or functions
+
++ Core - not tagged
+- Text.php - added error check to backLink function
 
 + Boost - 1_8_6
 - Added error messages for bad key unregistration
