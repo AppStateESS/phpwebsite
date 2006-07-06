@@ -440,7 +440,7 @@ class Branch_Admin {
 
     }
 
-    function &cpanel()
+    function cpanel()
     {
             PHPWS_Core::initModClass('controlpanel', 'Panel.php');
             $newLink = 'index.php?module=branch&amp;command=new';
@@ -505,6 +505,7 @@ class Branch_Admin {
     function testDB()
     {
         $connection = $this->checkConnection();
+
         switch ($connection) {
         case BRANCH_CONNECT_NO_DB:
             // connection made, but database does not exist
@@ -632,7 +633,7 @@ class Branch_Admin {
 
     function checkConnection()
     {
-        
+        PHPWS_DB::disconnect();
         $dsn1 =  sprintf('%s://%s:%s@%s',
                          $this->dbtype,
                          $this->dbuser,
@@ -669,13 +670,14 @@ class Branch_Admin {
                 $tables = $connection2->getlistOf('tables');
                 if (!empty($tables)) {
                     // connect was successful but database already contains tables
+                    $connection2->disconnect();
                     return BRANCH_CONNECT_WITH_TABLES;
                 } else {
                     // connection successful, table exists and is empty
+                    $connection2->disconnect();
                     return BRANCH_CONNECT_SUCCESS;
                 }
             }
-            $connection2->disconnect();
         }
     }
 
