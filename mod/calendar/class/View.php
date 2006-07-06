@@ -19,11 +19,17 @@ class Calendar_View {
     {
         switch ($_REQUEST['view']) {
         case 'full':
-            Layout::add($this->view->month_grid('full', $_REQUEST['month'], $_REQUEST['year']));
+            Layout::add($this->view->month_grid('full', $_REQUEST['m'], $_REQUEST['y']));
             break;
         }
     }
 
+    /**
+     * Returns a set of links to navigate the different calendar views
+     *
+     * @param string current_view   Name of the current view
+     * @return string
+     */
     function viewLinks($current_view)
     {
         $vars = PHPWS_Text::getGetValues();
@@ -81,7 +87,7 @@ class Calendar_View {
             Layout::addStyle('calendar');
         }
 
-        $oMonth = $this->calendar->getMonth($month, $year);
+        $oMonth = $this->calendar->getMonth();
         $date = $oMonth->thisMonth(TRUE);
 
         $oTpl = & new PHPWS_Template('calendar');
@@ -91,8 +97,8 @@ class Calendar_View {
         reset($oMonth->children);
         $this->_month_days($oMonth, $oTpl);
 
-        $vars['month'] = $month;
-        $vars['year'] = $year;
+        $vars['m'] = $month;
+        $vars['y'] = $year;
         $vars['view'] = 'full';
         $template['FULL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%B', $date), 'calendar', $vars);
         $template['PARTIAL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%b', $date), 'calendar', $vars);
@@ -125,6 +131,15 @@ class Calendar_View {
 
     }
 
+    function dayLink($label, $month, $day, $year)
+    {
+        return PHPWS_Text::moduleLink($label, 'calendar',
+                                      array('view' => 'day',
+                                            'm' => (int)$month,
+                                            'y' => (int)$year,
+                                            'd' => (int)$day));
+    }
+
     function _month_days(&$oMonth, &$oTpl)
     {
         $month = &$this->calendar->month;
@@ -133,7 +148,8 @@ class Calendar_View {
         while($day = $oMonth->fetch()) {
             $data['COUNT'] = NULL;
             $no_of_events = 0;
-            $data['DAY'] = $day->day;
+            $data['DAY'] = $this->dayLink($day->day, $month, $day->day, $year);
+
 
             if (isset($this->event_sort[$day->year]['months'][$day->month]['days'][$day->day]['events'])) {
                 $no_of_events = count($this->event_sort[$day->year]['months'][$day->month]['days'][$day->day]['events']);
@@ -166,19 +182,16 @@ class Calendar_View {
         }
     }
 
-    function month_list()
-    {
-        $month = &$this->calendar->month;
-        $year  = &$this->calendar->year;
 
-        $startdate = mktime(0,0,0, $month, 1, $year);
-        $enddate = mktime(23, 59, 59, $month + 1, 0, $year);
+    /**
+     * Adds events between the start and end date to the view's event_list
+     * variable
+     */
+    function loadEventList($startdate, $enddate) {
         if (isset($this->calendar->schedule) ){
-            $title = $this->calendar->schedule->title;
             $this->calendar->schedule->loadEvents($startdate, $enddate);
             $this->event_list = & $this->calendar->schedule->events;
         } else {
-            $title = _('Public events');
             $public_calendars = $this->calendar->getPublicCalendars();
             if (!empty($public_calendars)) {
                 $this->event_list = $this->calendar->getEvents($startdate, $enddate, $public_calendars);
@@ -186,17 +199,21 @@ class Calendar_View {
         }
 
         $this->sortEvents();
+    }
 
-        if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
-            Layout::addStyle('calendar');
+
+    function getViewTitle()
+    {
+        if (isset($this->calendar->schedule)) {
+            return $this->calendar->schedule->title;
+        } else {
+            return _('Public events');
         }
+    }
 
-        $oMonth = $this->calendar->getMonth($month, $year);
-        $date = $oMonth->thisMonth(TRUE);
-
-        $tpl = & new PHPWS_Template('calendar');
-        $tpl->setFile('view/list_view.tpl');
-
+    function loadDayList($month, $year, &$tpl)
+    {
+        
         if (empty($this->event_sort[$year]['months'][$month]['days'])) {
             $day = 1;
         } else {
@@ -220,17 +237,44 @@ class Calendar_View {
                 }
 
                 $tpl->setCurrentBlock('days');
-                $d_data['FULL_WEEKDAY'] = strftime('%A', mktime(0,0,0, $month, $day));
-                $d_data['ABRV_WEEKDAY'] = strftime('%a', mktime(0,0,0, $month, $day));
-                $d_data['DAY_NUMBER'] = $day;
+                $d_data['FULL_WEEKDAY'] = $this->dayLink(strftime('%A', mktime(0,0,0, $month, $day)),
+                                                         $month, $day, $year);
+                $d_data['ABRV_WEEKDAY'] = $this->dayLink(strftime('%a', mktime(0,0,0, $month, $day)),
+                                                         $month, $day, $year);
+                $d_data['DAY_NUMBER'] = $this->dayLink($day, $month, $day, $year);
                 $tpl->setData($d_data);
                 $tpl->parseCurrentBlock();
             }
         }
 
+    }
+
+    function month_list()
+    {
+        $month = &$this->calendar->month;
+        $year  = &$this->calendar->year;
+        $day   = 1;
+
+        $startdate = mktime(0,0,0, $month, 1, $year);
+        $enddate = mktime(23, 59, 59, $month + 1, 0, $year);
+
+        $this->loadEventList($startdate, $enddate);
+        $title = $this->getViewTitle();
+            
+        if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
+            Layout::addStyle('calendar');
+        }
+
+        $tpl = & new PHPWS_Template('calendar');
+        $tpl->setFile('view/month/list.tpl');
+
+        $this->loadDayList($month, $year, $tpl);
+           
         $main_tpl['FULL_MONTH_NAME'] = strftime('%B', mktime(0,0,0, $month));
         $main_tpl['ABRV_MONTH_NAME'] = strftime('%b', mktime(0,0,0, $month));
 
+
+        $main_tpl['VIEW_LINKS'] = $this->viewLinks('month_list');
         $main_tpl['SCHEDULE_TITLE'] = $title;
         $main_tpl['FULL_YEAR'] = strftime('%Y', mktime(0,0,0, $month, $day, $year));
         $main_tpl['ABRV_YEAR'] = strftime('%y', mktime(0,0,0, $month, $day, $year));
@@ -269,7 +313,7 @@ class Calendar_View {
             Layout::addStyle('calendar');
         }
 
-        $oMonth = $this->calendar->getMonth($month, $year);
+        $oMonth = $this->calendar->getMonth();
         $date = $oMonth->thisMonth(TRUE);
 
         // Check cache
@@ -292,8 +336,8 @@ class Calendar_View {
         // create day cells in grid
         $this->_month_days($oMonth, $oTpl);
 
-        $vars['month'] = $month;
-        $vars['year'] = $year;
+        $vars['m'] = $month;
+        $vars['y'] = $year;
         $vars['view'] = 'month_grid';
         $template['FULL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%B', $date), 'calendar', $vars);
         $template['PARTIAL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%b', $date), 'calendar', $vars);
@@ -313,11 +357,11 @@ class Calendar_View {
 
     function getPick()
     {
-        $js['month'] = $this->calendar->month;
-        $js['day']   = $this->calendar->day;
-        $js['year']  = $this->calendar->year;
-        $js['url']   = $this->getUrl();
-        $js['type']  = 'pick';
+        $js['month']    = $this->calendar->month;
+        $js['day']    = $this->calendar->day;
+        $js['year']    = $this->calendar->year;
+        $js['url']  = $this->getUrl();
+        $js['type'] = 'pick';
         return javascript('js_calendar', $js);
     }
 
@@ -327,13 +371,13 @@ class Calendar_View {
             Layout::addStyle('calendar');
         }
 
-        $uDate    = mktime(0, 0, 0, $this->calendar->month, $this->calendar->day, $this->calendar->year);
-        $uDateEnd = $uDate + 82800 + 3540 + 59; // 23 hours, 59 minutes, 59 seconds later
+        $startdate = mktime(0, 0, 0, $this->calendar->month, $this->calendar->day, $this->calendar->year);
+        $enddate   = $startdate + 82800 + 3540 + 59; // 23 hours, 59 minutes, 59 seconds later
 
         $template['VIEW_LINKS'] = $this->viewLinks('day');
 
         if (isset($this->calendar->schedule)) {
-            $this->calendar->schedule->loadEvents($uDate, $uDateEnd);
+            $this->calendar->schedule->loadEvents($startdate, $enddate);
             $title = $this->calendar->schedule->title;
             $this->event_list = & $this->calendar->schedule->events;
         } else {
@@ -346,7 +390,7 @@ class Calendar_View {
         }
 
         $template['TITLE'] = $title;
-        $template['DATE'] = strftime(CALENDAR_DAY_FORMAT, $uDate);
+        $template['DATE'] = strftime(CALENDAR_DAY_FORMAT, $startdate);
 
         $template['PICK'] = $this->getPick();
 
@@ -368,7 +412,7 @@ class Calendar_View {
             $template['MESSAGE'] = _('No events planned for this day.');
         } else {
             $hour_list = array();
-            foreach ($events as $oEvent) {
+            foreach ($this->event_list as $oEvent) {
                 switch ($oEvent->event_type) {
                 case '1':
                     if ($oEvent->block) {
@@ -413,7 +457,7 @@ class Calendar_View {
                         $details['LINKS'] = implode(' | ', $links);
                     }
 
-                    $details['TITLE']   = $oEvent->title;
+                    $details['TITLE']   = $oEvent->getTitle();
                     $details['SUMMARY'] = $oEvent->getSummary();
                     $details['TIME']    = $oEvent->getTime();
 
@@ -450,7 +494,62 @@ class Calendar_View {
         if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
             Layout::addStyle('calendar');
         }
-        echo date('Ymd', $this->calendar->request_date);
+
+        $month = &$this->calendar->month;
+        $year  = &$this->calendar->year;
+        $day   = &$this->calendar->day;
+
+        $current_weekday = strftime('%u', mktime(0,0,0,$month, $day, $year));
+
+        if ($current_weekday != CALENDAR_START_DAY) {
+            $week_start = $current_weekday - CALENDAR_START_DAY;
+        } else {
+            $week_start = 0;
+        }
+
+        $startdate = mktime(0,0,0, $month, $day, $year) - (86400 * $week_start);
+        $enddate = $startdate + (86400 * 7) - 1;
+
+        $this->loadEventList($startdate, $enddate);
+        $title = $this->getViewTitle();
+
+        $this->sortEvents();
+
+        if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
+            Layout::addStyle('calendar');
+        }
+
+        $tpl = & new PHPWS_Template('calendar');
+        $tpl->setFile('view/week.tpl');
+        $this->loadDayList($month, $year, $tpl);
+
+        $start_range = strftime('%b %e', $startdate);
+
+        if (date('m', $startdate) == date('m', $enddate)) {
+            $end_range = strftime('%e', $enddate);
+        } else {
+            $end_range = strftime('%b %e', $enddate);
+        }
+
+
+        $main_tpl['DAY_RANGE'] = sprintf('From %s to %s', $start_range, $end_range);
+
+        $main_tpl['FULL_MONTH_NAME'] = strftime('%B', mktime(0,0,0, $month));
+        $main_tpl['ABRV_MONTH_NAME'] = strftime('%b', mktime(0,0,0, $month));
+
+
+        $main_tpl['VIEW_LINKS'] = $this->viewLinks('week');
+        $main_tpl['SCHEDULE_TITLE'] = $title;
+        $main_tpl['FULL_YEAR'] = strftime('%Y', mktime(0,0,0, $month, $day, $year));
+        $main_tpl['ABRV_YEAR'] = strftime('%y', mktime(0,0,0, $month, $day, $year));
+
+        $main_tpl['PICK'] = $this->getPick();
+
+        $tpl->setData($main_tpl);
+        $tpl->parseCurrentBlock();
+        
+        $content = $tpl->get();
+        return $content;
     }
 
     function sortEvents()

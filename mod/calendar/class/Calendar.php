@@ -77,17 +77,28 @@ class PHPWS_Calendar {
         if (isset($_REQUEST['y'])) {
             $this->year = (int)$_REQUEST['y'];
             $change = TRUE;
+        } elseif (isset($_REQUEST['year'])) {
+            $this->year = (int)$_REQUEST['year'];
+            $change = TRUE;
         }
 
         if (isset($_REQUEST['m'])) {
             $this->month = (int)$_REQUEST['m'];
             $change = TRUE;
+        } elseif (isset($_REQUEST['month'])) {
+            $this->month = (int)$_REQUEST['month'];
+            $change = TRUE;
         }
+
 
         if (isset($_REQUEST['d'])) {
             $this->day = (int)$_REQUEST['d'];
             $change = TRUE;
+        } elseif (isset($_REQUEST['day'])) {
+            $this->day = (int)$_REQUEST['day'];
+            $change = TRUE;
         }
+
 
         if ($change) {
             $this->request_date = PHPWS_Time::convertServerTime(mktime(0,0,0, $this->month, $this->day, $this->year));
@@ -283,19 +294,21 @@ class PHPWS_Calendar {
 
         return $result;
     }
+
+    function &getWeek()
+    {
+        require_once 'Calendar/Week.php';
+
+        $oWeek = & new Calendar_Week($this->year, $this->month, $this->day, CALENDAR_START_DAY);
+        $oWeek->build();
+        return $oWeek;
+        
+    }
     
-    function &getMonth($month=NULL, $year=NULL)
+    function &getMonth()
     {
         require_once 'Calendar/Month/Weekdays.php';
-        if (!isset($month)) {
-            $month = date('m');
-        }
-
-        if (!isset($year)) {
-            $year = date('Y');
-        }
-
-        $oMonth = & new Calendar_Month_Weekdays($year, $month, PHPWS_Settings::get('calendar', 'starting_day'));
+        $oMonth = & new Calendar_Month_Weekdays($this->year, $this->month, PHPWS_Settings::get('calendar', 'starting_day'));
         $oMonth->build();
         return $oMonth;
     }

@@ -64,6 +64,11 @@ td.day-current {
   color : white;
 }
 
+td.day-current a {
+  color : white;
+}
+
+
 td.day-normal {
   background-color : #DEE2BD;
 }
@@ -80,6 +85,10 @@ div.cal-events {
 
 .calendar-event {
   padding : 5px;
+}
+
+.calendar-event-hour {
+     border-bottom : 1px solid black;    
 }
 
 .full {
@@ -130,4 +139,5 @@ span.event-title, span.event-time {
 
 div.view-links {
    margin-bottom : 10px;
+   text-align : center;
 }
