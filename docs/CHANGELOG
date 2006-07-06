@@ -1,4 +1,8 @@
 6 July 2006
++ Comments
+- Deleting a comment now clears its relationship to its replies
+
+
 + Calendar
 - Worked on week view
 - combined functionality in month_list and week view
