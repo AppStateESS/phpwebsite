@@ -15,14 +15,6 @@ define('PHPWS_HOME_DIR', '{home_dir}');
 define('SITE_HASH', '{site_hash}');
 
 /**
- * Some people are not blessed with the ability to just have
- * more than one database on their server. If you are one of
- * those people, you will need to attach a table prefix to 
- * each installation.
- */
-define('TABLE_PREFIX', '{dbprefix}');
-
-/**
  * This is you database information. The format is as follows:
  * 'db_type://dbuser:dbpassword@dbhost/dbname'
  * This format must be exact.
@@ -96,7 +88,7 @@ define('PHPWS_LOG_ERRORS', TRUE);
 /**
  * Directory where logs will be written
  */
-define('PHPWS_LOG_DIRECTORY', PHPWS_HOME_DIR . 'logs/');
+define('PHPWS_LOG_DIRECTORY', 'logs/');
 
 /**
  * Determines the permissions given to log files when written
@@ -125,7 +117,7 @@ define('MAX_POST_TRACK', 10);
  * core to only grab mod configuration files, set the below
  * to TRUE.
  */
-define('FORCE_MOD_CONFIG', TRUE);
+define('FORCE_MOD_CONFIG', FALSE);
 
 /********************** PEAR SETTINGS **************************/
 
@@ -155,7 +147,7 @@ define('DEFAULT_LANGUAGE', 'en-us');
  * Assigns a css style to the toggle element in list
  */
 
-define('PHPWS_LIST_TOGGLE_CLASS', ' class=\'bgcolor1\'');
+define('PHPWS_LIST_TOGGLE_CLASS', ' class="bgcolor1"');
 
 /************************ EDITOR *******************************/
 /*
@@ -182,7 +174,7 @@ define('ABSOLUTE_UPLOAD_LIMIT', '5000000');
  * in the file_types.php file. Make sure you know how to edit
  * arrays before altering the file.
  */ 
-include PHPWS_HOME_DIR . 'config/core/file_types.php';
+include 'config/core/file_types.php';
 
 /******************* IMAGES SETTINGS **************************/
 define('MAX_IMAGE_SIZE', 50000);
@@ -215,10 +207,10 @@ define('MAX_DOCUMENT_SIZE', 5000000);
  * /tmp/. The directory MUST have a forward slash (/) on the end.
  */
 
-define('ALLOW_CACHE_LITE', FALSE);
+define('ALLOW_CACHE_LITE', TRUE);
 define('ALLOW_SIGMA_CACHE', TRUE);
 define('CACHE_LIFETIME', 3600);
-define('CACHE_DIRECTORY', '/tmp/');
+define('CACHE_DIRECTORY', '{cache_directory}');
 
 /******************** MOD_REWRITE *******************************/
 /**
