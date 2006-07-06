@@ -396,21 +396,37 @@ class Comment_Item {
 	return PHPWS_Text::moduleLink($this->getSubject(TRUE), 'comments', $vars);
     }
 
+    /**
+     * Removes a comment from the database
+     */
     function delete()
     {
+        // physical removal
         $thread = & new Comment_Thread($this->thread_id);
         $db = & new PHPWS_DB('comments_items');
         $db->addWhere('id', $this->id);
         $db->delete();
 
+        // clear replies to this comment
+        $this->clearChildren();
+
+        // decrease thread count
         $thread->decreaseCount();
         $thread->save();
     }
 
+    /**
+     * Sets the replies to this comment to zero
+     */
+    function clearChildren()
+    {
+        PHPWS_DB::query('update comments_items set parent=0 where parent=' . $this->id);
+    }
+
     function responseNumber()
     {
-	$vars['user_action']   = 'view_comment';
-	$vars['cm_id']	   = $this->parent;
+	$vars['user_action'] = 'view_comment';
+	$vars['cm_id']	     = $this->parent;
 
 	return PHPWS_Text::moduleLink($this->parent, 'comments', $vars);
     }
