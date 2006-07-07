@@ -284,7 +284,14 @@ class Branch_Admin {
         $template['home_dir']     = $this->branch->directory;
         $template['site_hash']    = $this->branch->site_hash;
         $template['dsn']          = $this->getDSN();
-        $template['WINDOWS_PEAR'] = '//';
+
+        // if windows installation, comment out linux pear path
+        if (PHPWS_Core::isWindows()) {
+            $template['LINUX_PEAR'] = '//';
+        } else {
+            $template['WINDOWS_PEAR'] = '//';
+        }
+
         $file_content = PHPWS_Template::process($template, 'branch', 'config.tpl');
 
         $file_directory = $this->branch->directory . 'config/core/config.php';

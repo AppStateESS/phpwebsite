@@ -165,14 +165,11 @@ If you are sure you want to remove the branch, type the branch name:');
 
     function checkCurrentBranch()
     {
-        if (!PHPWS_Core::moduleExists('branch')) {
-            return FALSE;
-        }
-
         if (isset($_SESSION['Approved_Branch'])) {
             return (bool)$_SESSION['Approved_Branch'];
         }
 
+        PHPWS_DB::disconnect();
         $connection = Branch::getHubDB();
 
         if (!$connection) {
@@ -180,19 +177,22 @@ If you are sure you want to remove the branch, type the branch name:');
             return FALSE;
         }
 
-        $sql = sprintf('SELECT branch_sites.id FROM branch_sites WHERE site_hash=\'%s\' AND directory=\'%s\'',
-                       SITE_HASH, PHPWS_HOME_DIR);
+        $sql = sprintf('SELECT branch_sites.id FROM branch_sites WHERE site_hash=\'%s\'',
+                       SITE_HASH);
 
         $result = $connection->getOne($sql, NULL, DB_FETCHMODE_ASSOC);
+
         if (PEAR::isError($result)) {
             PHPWS_Error::log($connection);
             $_SESSION['Approved_Branch'] = FALSE;
             return FALSE;
         } elseif (empty($result)) {
             $_SESSION['Approved_Branch'] = FALSE;
+            $connection->disconnect();
             return FALSE;
         } else {
             $_SESSION['Approved_Branch'] = $result;
+            $connection->disconnect();
             return TRUE;
         }
     }
