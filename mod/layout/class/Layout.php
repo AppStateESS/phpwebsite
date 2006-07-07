@@ -151,9 +151,10 @@ class Layout {
         $cssFile['import'] = TRUE;
 
         $templateLoc = "templates/$module/$filename";
+        $moduleLoc   = sprintf('mod/%s/templates/%s', $module, $filename);
 
-        if (FORCE_MOD_TEMPLATES || !is_file($templateLoc)) {
-            $cssFile['file'] = "./mod/$module/templates/$filename";
+        if ( (FORCE_MOD_TEMPLATES || !is_file($templateLoc)) && is_file($moduleLoc)) {
+            $cssFile['file'] = $moduleLoc;
         } else {
             $cssFile['file'] = $templateLoc;
         }
