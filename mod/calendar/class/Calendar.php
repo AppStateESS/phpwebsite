@@ -295,6 +295,15 @@ class PHPWS_Calendar {
         return $result;
     }
 
+    function &getDay()
+    {
+        require_once 'Calendar/Day.php';
+        $oDay = & new Calendar_Day($this->year, $this->month, $this->day);
+        $oDay->build();
+        return $oDay;
+    }
+        
+
     function &getWeek()
     {
         require_once 'Calendar/Week.php';

@@ -5,7 +5,7 @@
         <div class="view-links">{VIEW_LINKS}</div>
     </div>
     <div class="box-content">
-
+    {MESSAGE}
         <div class="month-view-list">
 <!-- BEGIN message -->{MESSAGE}<!-- END message -->
 <!-- BEGIN days -->
