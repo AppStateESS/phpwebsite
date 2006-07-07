@@ -80,7 +80,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
     {
         $theme_dir  = PHPWS_Template::getTplDir($module) . $directory;
         $local_dir  = sprintf('./templates/%s/', $module) . $directory;
-        $module_dir = sprintf('./mod/%s/templates/', $module) . $directory;
+        $module_dir = sprintf(PHPWS_SOURCE_DIR . 'mod/%s/templates/', $module) . $directory;
 
         if (FORCE_THEME_TEMPLATES && is_dir($theme_dir)) {
             return $theme_dir;
