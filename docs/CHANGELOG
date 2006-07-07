@@ -1,9 +1,34 @@
+7 July 2006
+
++ Layout - not tagged
+- Layout uses the local module style sheet on a branch even if
+  force_mod_template is set.
+
++ Core - not tagged
+- Added missing version insert to install.sql file
+- Template.php : made sure forcing module templates grabbed them from
+  the hub directory.
+
++ Branch - not tagged
+- Hopefully patched up problems with a Windows installation
+- Removed earlier Branch installation check since branch will not be
+  installed on the branch site.
+- Updated configuration file template to match setup's
+- Fixed Branch uninstall not removing all tables.
+- Branch removal now available.
+- A link now appears to set the allowed modules to a newly created
+  branch.
+
+
 6 July 2006
-+ Comments
++ Branch - not tagged
+- Disconnect added before testing branch connections
+
++ Comments - not tagged
 - Deleting a comment now clears its relationship to its replies
 
 
-+ Calendar
++ Calendar - not tagged
 - Worked on week view
 - combined functionality in month_list and week view
 
