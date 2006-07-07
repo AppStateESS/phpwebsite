@@ -125,9 +125,7 @@ class Branch {
         $links[] = PHPWS_Text::secureLink(_('Edit'), 'branch', 
                                           array('command'=>'edit_branch', 'branch_id'=>$this->id));
 
-        $js['question'] = _('Removing this branch will make it inaccessible.\n
-The database and files will remain behind.\n
-If you are sure you want to remove the branch, type the branch name:');
+        $js['question'] = _('Removing this branch will make it inaccessible.\nThe database and files will remain behind.\nIf you are sure you want to remove the branch, type the branch name:');
         $js['address'] = sprintf('index.php?module=branch&command=remove_branch&branch_id=%s&authkey=%s', $this->id, Current_User::getAuthKey());
         $js['value_name'] = 'branch_name';
         $js['link'] = _('Remove');
@@ -247,6 +245,29 @@ If you are sure you want to remove the branch, type the branch name:');
             return $result;
         }
         $db->disconnect();
+    }
+
+    /**
+     * Deletes a branch from the hub's database
+     */
+    function delete()
+    {
+        $db = & new PHPWS_DB('branch_sites');
+        $db->addWhere('id', $this->id);
+        $result = $db->delete();
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            return false;
+        }
+        $db->reset();
+        $db->setTable('branch_mod_limit');
+        $db->addWhere('branch_id', $this->id);
+        $result = $db->delete();
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+        }
+
+        return true;
     }
 }
 

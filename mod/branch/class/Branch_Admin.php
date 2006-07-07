@@ -194,9 +194,22 @@ class Branch_Admin {
             $result =  $this->core_module_installation();
             if ($result) {
                 $this->content[] = _('All done!');
+                $this->content[] = PHPWS_Text::secureLink(_('Set up allowed modules'),
+                                                          'branch', array('command' => 'branch_modules',
+                                                                          'branch_id' => $this->branch->id));
                 $this->resetAdmin();
             }
             break;
+
+        case 'remove_branch':
+            if ( isset($_REQUEST['branch_id']) && isset($_REQUEST['branch_name']) &&
+                 $this->branch->branch_name === $_REQUEST['branch_name'] ) {
+                $this->branch->delete();
+            }
+
+            $this->listBranches();
+            break;
+            
 
         }// end of the command switch
 
