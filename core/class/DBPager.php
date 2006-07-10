@@ -219,7 +219,7 @@ class DBPager {
         $col_list = func_get_args();
 
         foreach ($col_list as $column) {
-            if (ctype_alnum($column) && $this->db->isTableColumn($column)) {
+            if (!preg_match('/\W/', $column) && $this->db->isTableColumn($column)) {
                 $this->searchColumn[] = $column;
             }
         }
