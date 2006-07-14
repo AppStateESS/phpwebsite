@@ -48,13 +48,14 @@ class Layout_Admin{
 
         case 'changeBoxSettings':
             Layout_Admin::saveBoxSettings();
-            $title = _('Adjust Boxes');
-            $template['MESSAGE'] = _('Settings changed.');
-            $content[] = Layout_Admin::boxesForm();
             if ($_REQUEST['reset_boxes']) {
                 unset($_SESSION['Layout_Settings']);
                 PHPWS_Core::reroute('index.php?module=layout&action=admin&authkey=' . Current_User::getAuthKey());
             }
+
+            $title = _('Adjust Boxes');
+            $template['MESSAGE'] = _('Settings changed.');
+            $content[] = Layout_Admin::boxesForm();
 
             break;
 
@@ -150,8 +151,7 @@ class Layout_Admin{
         case 'js_style_change':
             $content = Layout_Admin::jsStyleChange();
             if (empty($content)) {
-                echo $content;
-                //                javascript('close_refresh');
+                javascript('close_refresh');
             }
             Layout::nakedDisplay($content, _('Change CSS'));
             break;
