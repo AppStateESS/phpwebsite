@@ -163,23 +163,23 @@ class User_Form {
             return;
         }
 
-        $permSet[NO_PERMISSION]              = NO_PERM_NAME;
-        $permSet[UNRESTRICTED_PERMISSION]    = FULL_PERM_NAME;
+        $labels[] = NO_PERM_NAME;
+        $button[] = NO_PERMISSION;
 
         if (isset($item_permissions) && $item_permissions == TRUE) {
-            $permSet[RESTRICTED_PERMISSION] = PART_PERM_NAME;
-        } else {
-            unset($permSet[RESTRICTED_PERMISSION]);
+            $labels[] = PART_PERM_NAME;
+            $button[] = RESTRICTED_PERMISSION;
         }
 
-        ksort($permSet);
+        $labels[] = FULL_PERM_NAME;
+        $button[] = UNRESTRICTED_PERMISSION;
 
         $permCheck = $group->getPermissionLevel($mod['title']);
 
         $form = & new PHPWS_Form;
         $name = 'module_permission[' . $mod['title'] .']';
-        $form->addRadio($name, array_keys($permSet));
-        $form->setLabel($name, $permSet);
+        $form->addRadio($name, $button);
+        $form->setLabel($name, $labels);
         $form->setMatch($name, $permCheck);
         $radio = $form->get($name, TRUE);
 
