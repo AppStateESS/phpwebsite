@@ -13,6 +13,9 @@ PHPWS_Core::initModClass('users', 'Users.php');
 
 class Current_User {
 
+    /**
+     * Initializes the User session
+     */
     function init($id)
     {
         $_SESSION['User'] = new PHPWS_User($id);
@@ -26,11 +29,17 @@ class Current_User {
         return $_SESSION['User'];
     }
   
+    /**
+     * Determines if a user is allowed to use a specific module, permission, and/or item
+     */
     function allow($module, $subpermission=NULL, $item_id=NULL, $itemname=NULL)
     {
         return $_SESSION['User']->allow($module, $subpermission, $item_id, $itemname, FALSE);
     }
 
+    /**
+     * Works the same as the allow function but confirms the user's authorization code
+     */
     function authorized($module, $subpermission=NULL, $item_id=NULL, $itemname=NULL)
     {
         return $_SESSION['User']->allow($module, $subpermission, $item_id, $itemname, TRUE);
@@ -41,11 +50,18 @@ class Current_User {
         return $_SESSION['User']->allowedItem($module, $item_id, $itemname);
     }
 
+    /**
+     * Verifies the user is a deity and their authorization code is permitted
+     */
     function deityAllow()
     {
         return $_SESSION['User']->deityAllow();
     }
 
+    /**
+     * sends a user to the 403 error page and logs a message (if specified)
+     * to the security log
+     */
     function disallow($message=NULL)
     {
         PHPWS_User::disallow($message);
@@ -60,6 +76,9 @@ class Current_User {
         }
     }
 
+    /**
+     * returns true is currently logged user is a deity
+     */
     function isDeity()
     {
         return $_SESSION['User']->isDeity();
