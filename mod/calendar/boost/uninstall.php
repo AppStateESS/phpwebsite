@@ -1,18 +1,15 @@
 <?php
-
   /**
-   * Uninstall file for calendar
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
    */
 
 function calendar_uninstall(&$content)
 {
-    PHPWS_DB::dropTable('calendar_events');
+    // Need functions to remove old event tables
     PHPWS_DB::dropTable('calendar_schedule');
-    PHPWS_DB::dropTable('calendar_notice');
-    PHPWS_DB::dropTable('calendar_schedule_to_event');
-    $content[] = _('Calendar tables removed.');
-    return TRUE;
+    $content[] = 'Calendar tables removed.';
+    return true;
 }
-
 
 ?>

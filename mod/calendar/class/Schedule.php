@@ -1,228 +1,112 @@
 <?php
 
   /**
-   * These are the individuals calendars per user, object, room, etc.
-   * They are called schedules to prevent Calendar_Calendar confusion :)
-   *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
    * @version $Id$
+   * @author Matthew McNaney <mcnaney at gmail dot com>
    */
+
+define('CAL_VIEW_ALL',         1); // everyone can see this calendar
+define('CAL_VIEW_SOME',        2); // most will see the open and close details only
+define('CAL_VIEW_LIMIT',       3); // only people given express permission can view
 
 class Calendar_Schedule {
     /**
-     * primary id of schedule
-     * @access public
      * @var integer
      */
-    var $id = 0;
+    var $id          = 0;
 
     /**
-     * id of key associated to schedule
-     * @access public
+     * Key id for associations
      * @var integer
      */
-    var $key_id = 0;
+    var $key_id      = 0;
 
     /**
-     * id of user assigned to this schedule
-     * 0 = no user
-     * @access public
      * @var integer
      */
-    var $user_id = 0;
+    var $title       = null;
 
     /**
-     * name of schedule
-     * @access public
+     * information about the schedule
+     * @var string
+     */ 
+    var $summary     = null;
+
+    /**
+     * User's id associated to this schedule. If zero
+     * no association exists
+     * @var integer
+     */
+    var $user_id     = 0;
+
+    /**
+     * Determines if everyone can view the events
+     * or everyone sees blanks and only certain people see events
+     * or no one besides specific users may view
+     * @var integer
+     */
+    var $view_status = CAL_VIEW_ALL;
+
+    
+    /**
+     * Determines if anonymous users can see this schedule or
+     * if they must be registered
+     * @var boolean
+     */
+    var $public = true;
+
+    /**
+     * Name of contact for schedule
+     * 
      * @var string
      */
-    var $title = NULL;
+    var $contact_name = null;
 
     /**
-     * short summary of function of schedule
-     * @access public
+     * Email address of contact for schedule
+     * 
      * @var string
      */
-    var $summary = NULL; 
+    var $contact_email = null;
+
 
     /**
-     * indicator of public status
-     * 0 = private, 1 = viewable to public
-     * @access public
-     * @var integer
+     * Phone number of contact for schedule
+     * 
+     * @var string
      */
-    var $public_schedule = 0;
+    var $contact_number = null;
 
     /**
-     * list of events associated to this schedule
-     * @access private
+     * Last error recorded by the class
+     * @var object
+     */
+    var $_error         = null;
+
+
+    /**
+     * Array of events loaded into the object
      * @var array
      */
-    var $events = NULL;
-
-    /**
-     * date/time of last update
-     * @access public
-     * @var integer
-     */
-    var $last_updates = 0;
-
-    /**
-     * hour the day view will start
-     * @access private
-     * @var integer
-     */
-    var $day_view_start = 0;
-
-    /**
-     * hour the day view will end
-     * @access private
-     * @var integer
-     */
-    var $day_view_end = 0;
-
-    /**
-     * when viewing a week or month, day the week
-     * starts (0 - Sun, 1 - Mon, etc.)
-     * @access private
-     * @var integer
-     */
-    var $start_week = 0;
-
-    /**
-     * parent calendar object
-     * @access private
-     * @var object
-     */
-    var $calendar = NULL;
-
-    /**
-     * holds current error
-     * @access private
-     * @var object
-     */
-    var $_error = NULL;
-
-    var $display_name = NULL;
+    var $_event_list    = null;
     
-    function Calendar_Schedule($id=NULL)
+
+    /**
+     * Array of event pointers keyed to month, day, year, and hour
+     */
+    var $_ordered_list  = null;
+
+
+    function Calendar_Schedule($id=0)
     {
-        if (empty($id)) {
+        if (!$id) {
             return;
-        }
-
-        $this->id = (int)$id;
-        $this->init();
-    }
-
-    function init()
-    {
-        if (!$this->id) {
-            return;
-        }
-
-        $db = & new PHPWS_DB('calendar_schedule');
-        $result = $db->loadObject($this);
-        if (PEAR::isError($result)) {
-            $this->_error = $result;
-        }
-    }
-
-    function setTitle($title)
-    {
-        $this->title = trim(strip_tags($title));
-    }
-
-    function setSummary($summary)
-    {
-        $this->summary = PHPWS_Text::parseInput($summary);
-    }
-
-    function getSummary()
-    {
-        return PHPWS_Text::parseOutput($this->summary);
-    }
-
-    function setUserID($user_id)
-    {
-        $this->user_id = (int)$user_id;
-    }
-
-    function delete()
-    {
-        $db = & new PHPWS_DB('calendar_schedule');
-        $db->addWhere('id', $this->id);
-        $result = $db->delete();
-
-        
-    }
-
-    function post()
-    {
-        if (empty($_POST['title'])) {
-            $this->_error = _('You must give your calendar a title.');
         } else {
-            $this->setTitle($_POST['title']);
-        }
-
-        $this->setSummary($_POST['summary']);
-
-        if (isset($_POST['user_id'])) {
-            $this->user_id = (int)$_POST['user_id'];
-        }
-
-        if (isset($_POST['public']) && $_POST['public']) {
-            $this->public_schedule = 1;
-        } else {
-            $this->public_schedule = 0;
-        }
-
-        if (isset($this->_error)) {
-            return FALSE;
-        } else {
-            return TRUE;
+            $this->id = (int)$id;
+            $this->init();
         }
     }
 
-
-    function save()
-    {
-        $db = & new PHPWS_DB('calendar_schedule');
-        if (empty($this->id)) {
-            $new_key = TRUE;
-        } else {
-            $new_key = FALSE;
-        }
-
-        if ($this->day_view_start >= $this->day_view_end) {
-
-            $this->day_view_start = PHPWS_Settings::get('calendar', 'default_day_start');
-            $this->day_view_end = PHPWS_Settings::get('calendar', 'default_day_end');
-        }
-
-        $this->last_updated = PHPWS_Time::getUTCTime();
-
-        $result = $db->saveObject($this);
-
-        if (PEAR::isError($result)) {
-            return $result;
-        }
-
-        $result = $this->saveKey();
-        if (PEAR::isError($result)) {
-            return $result;
-        }
-
-        if ($new_key) {
-            $db->saveObject($this);
-        }
-    }
-
-    function getViewLink()
-    {
-        $vars['schedule_id'] = $this->id;
-        return PHPWS_Text::moduleLink($this->title, 'calendar', $vars);
-    }
 
     function addEventLink($default_date=NULL)
     {
@@ -231,7 +115,7 @@ class Calendar_Schedule {
         }
 
         if (javascriptEnabled()) {
-            $vars['address'] = sprintf('index.php?module=calendar&aop=create_event_js&schedule_id=%s&date=%s',
+            $vars['address'] = sprintf('index.php?module=calendar&amp;aop=create_event&amp;js=1&amp;schedule_id=%s&amp;date=%s',
                                        $this->id, $default_date);
             $vars['link_title'] = $vars['label'] = _('Add event');
             $vars['width'] = CALENDAR_EVENT_WIDTH;
@@ -245,25 +129,271 @@ class Calendar_Schedule {
                                           );
         }
     }
-    
-    /**
-     * Normally just key->allowView would suffice but we have to 
-     * consider private calendars as well
-     */
-    function allowView()
-    {
-        if ($this->user_id && $this->user_id == Current_User::getId()) {
-            return TRUE;
-        }
 
-        $key = $this->getKey();
-        return $key->allowView();
+    function createEventTable()
+    {
+        $table = $this->getEventTable();
+        if (empty($table)) {
+            return null;
+        }
+        
+        $template['TABLE'] = $table;
+        $query = PHPWS_Template::process($template, 'calendar', 'admin/event_table.tpl');
+
+        return PHPWS_DB::query($query);
     }
 
-    function getKey()
+    /**
+     * Deletes a schedule from the database
+     */
+    function delete()
+    {
+        if (empty($this->id)) {
+            return false;
+        }
+
+        $db = $this->getDB();
+        $db->addWhere('id', $this->id);
+
+        $result = $db->delete();
+
+        if (!PEAR::isError($result)) {
+            return PHPWS_DB::dropTable($this->getEventTable());
+        } else {
+            return $result;
+        }
+    }
+
+
+    /**
+     * Edit form for a schedule
+     */
+    function form()
+    {
+        $key = $this->getKey();
+        $form = & new PHPWS_Form('schedule_form');
+
+        if (isset($_REQUEST['js'])) {
+            $form->addHidden('js', 1);
+        }
+
+        $form->addHidden('module', 'calendar');
+        $form->addHidden('aop', 'post_schedule');
+        $form->addHidden('schedule_id', $this->id);
+
+        $form->addText('title', $this->title);
+        $form->setLabel('title', _('Title'));
+        $form->setSize('title', 40);
+
+        $form->addTextArea('summary', $this->summary);
+        $form->setLabel('summary', _('Summary'));
+        $form->useEditor('summary');
+
+        $form->addRadio('public', array(0,1));
+        $form->setLabel('public', array(_('Only registered users may view'),
+                                             _('Anyone may view')));
+
+        $form->setMatch('public', (int)$this->public);
+
+        $form->addRadio('view_status', array(CAL_VIEW_ALL, CAL_VIEW_SOME, CAL_VIEW_LIMIT));
+        $form->setLabel('view_status', array(_('Events details seen'),
+                                             _('Event details hidden'),
+                                             _('Schedule seen by permission only')));
+        $form->setMatch('view_status', $this->view_status);
+
+        $groups = Users_Permission::getPermissionGroups($key);
+        $group_list = $groups['permitted']['users'];
+
+        if (!empty($group_list)) {
+            $select_list[0] = _('Not assigned');
+            foreach ($group_list as $grp) {
+                $select_list[$grp['user_id']] = $grp['name'];
+            }
+            $form->addSelect('user_id', $select_list);
+            $form->setLabel('user_id', _('Assign to'));
+        }
+
+        $form->addSubmit(_('Save'));
+        
+        $template = $form->getTemplate();
+        
+        if (isset($_REQUEST['js'])) {
+            $template['CLOSE'] = javascript('close_window', array('value' => _('Cancel')));
+        }
+        
+        $template['PUBLIC_LABEL'] = _('Availability');
+        $template['VIEW_STATUS_LABEL'] = _('Event view status');
+
+        return PHPWS_Template::process($template, 'calendar', 'admin/forms/edit_schedule.tpl');
+    }
+
+    function getCurrentUserSchedule()
+    {
+        $user_id = Current_User::getId();
+
+        $schedule = & new Calendar_Schedule;
+
+        $db = Calendar_Schedule::getDB();
+        $db->addWhere('user_id', $user_id);
+        $result = $db->loadObject($schedule);
+        if (PEAR::isError($result) || !$result) {
+            return $result;
+        } else {
+            return $schedule;
+        }
+    }
+
+
+    function &getDB() {
+        $db = & new PHPWS_DB('calendar_schedule');
+        return $db;
+    }
+
+    function getEventTable()
+    {
+        if (!$this->id) {
+            return NULL;
+        } else {
+            return sprintf('calendar_event_%s', $this->id);
+        }
+    }
+
+    function &getKey()
     {
         $key = & new Key($this->key_id);
         return $key;
+    }
+
+    function getViewLink($formatted=true)
+    {
+        $vars['schedule_id'] = $this->id;
+
+        if ($formatted) {
+            return PHPWS_Text::moduleLink($this->title, 'calendar', $vars);
+        } else {
+            return PHPWS_Text::linkAddress('calendar', $vars);
+        }
+    }
+
+    function init()
+    {
+        $db = $this->getDB();
+        $db->loadObject($this);
+    }
+
+    function &loadEvent()
+    {
+        PHPWS_Core::initModClass('calendar', 'Event.php');
+
+        if (!empty($_REQUEST['event_id'])) {
+            $event = & new Calendar_Event($this, (int)$_REQUEST['event_id']);
+        } else {
+            $event = & new Calendar_Event;
+        }
+
+        return $event;
+    }
+
+
+    /**
+     * Apply the results from the scheduler form
+     */
+    function post()
+    {
+        if (empty($_POST['title'])) {
+            $this->_error = _('Missing title.');
+            $this->title = null;
+            return false;
+        } else {
+            $this->setTitle($_POST['title']);
+        }
+
+        $this->setSummary($_POST['summary']);
+        $this->setPublic($_POST['public']);
+        $this->setViewStatus($_POST['view_status']);
+
+        return true;
+    }
+
+
+    function rowTags()
+    {
+        if (Current_User::allow('calendar', 'edit_schedule', $this->id)) {
+            $links[] = $this->addEventLink();
+
+            $vars = array('aop'=>'edit_schedule', 'schedule_id' => $this->id);
+
+            if (javascriptEnabled()) {
+                $vars['js'] = 1;
+                $js_vars['address'] = PHPWS_Text::linkAddress('calendar', $vars);
+                $js_vars['label']   = _('Edit');
+                $js_vars['width']   = 640;
+                $js_vars['height']  = 600;
+                $links[] = javascript('open_window', $js_vars);
+            } else {
+                $links[] = PHPWS_Text::secureLink(_('Edit'), 'calendar',
+                                                  array('aop'=>'edit_schedule', 'schedule_id'=>$this->id));
+            }
+        } 
+
+        if (Current_User::allow('calendar', 'delete_schedule', $this->id)) {
+            $js['QUESTION'] = _('Are you sure you want to delete this schedule?');
+            //$js['QUESTION'] .= ' ' . _('All private, exclusive events will be deleted.');
+
+            $js['ADDRESS']  = sprintf('index.php?module=calendar&amp;aop=delete_schedule&amp;schedule_id=%s&amp;authkey=%s',
+                                      $this->id, Current_User::getAuthKey());
+            $js['LINK']     = _('Delete');
+            $links[] = javascript('confirm', $js);
+        }
+
+        if (!empty($links)) {
+            $tags['ADMIN'] = implode(' | ', $links);
+        } else {
+            $tags['ADMIN'] = _('None');
+        }
+
+        $tags['TITLE'] = $this->title;
+
+        return $tags;
+    }
+
+    /**
+     * Saves a schedule and creates a new event table if needed
+     */
+    function save()
+    {
+        $db = $this->getDB();
+        if (empty($this->id)) {
+            $new_key = TRUE;
+        } else {
+            $new_key = FALSE;
+        }
+
+        $result = $db->saveObject($this);
+        if (PEAR::isError($result)) {
+            return false;
+        } else {
+            if (!PHPWS_DB::isTable($this->getEventTable())) {
+                $result = $this->createEventTable();
+                if (PEAR::isError($result)) {
+                    $this->delete();
+                    return $result;
+                }
+            }
+            
+            $result = $this->saveKey();
+            if (PEAR::isError($result)) {
+                $this->delete();
+                return $result;
+            }
+            
+            if ($new_key) {
+                $db->saveObject($this);
+            }
+            
+            return true;
+
+        }
     }
 
     function saveKey()
@@ -285,64 +415,42 @@ class Calendar_Schedule {
         } else {
             $key->setEditPermission('edit_private');
         }
-        $key->setUrl($this->getViewLink(TRUE));
+        $key->setUrl($this->getViewLink(false));
         $key->setTitle($this->title);
         $key->setSummary($this->summary);
         $result = $key->save();
+
         $this->key_id = $key->id;
         return $result;
     }
 
 
-    function loadEvents($start_search=NULL, $end_search=NULL)
+
+    function setPublic($public)
     {
-        $result = PHPWS_Calendar::getEvents($start_search, $end_search, $this->id);
-        $this->events = & $result;
-        return TRUE;
+        $this->public = (bool)$public;
     }
 
-    function rowTags()
+    function setSummary($summary)
     {
-        if (Current_User::allow('calendar', 'edit_schedule', $this->id)) {
-            $links[] = $this->addEventLink();
-        } 
-
-        $links[] = PHPWS_Text::moduleLink(_('Edit'), 'calendar',
-                                          array('aop'=>'edit_schedule',
-                                                'schedule_id'=>$this->id));
-            $js['QUESTION'] = _('Are you sure you want to delete this calendar?');
-        if (!$this->public_schedule) {
-            $js['QUESTION'] .= ' ' . _('All private, exclusive events will be deleted.');
-        }
-        $js['ADDRESS']  = sprintf('index.php?module=calendar&amp;aop=delete_schedule&amp;schedule_id=%s&amp;authkey=%s',
-                                  $this->id, Current_User::getAuthKey());
-        $js['LINK']     = _('Delete');
-        $links[] = javascript('confirm', $js);
-
-        $tags['ADMIN'] = implode(' | ', $links);
-
-        if ($this->public_schedule) {
-            $jspub['ADDRESS']  = PHPWS_Text::linkAddress('calendar', array('schedule_id'=>$this->id, 'aop'=>'make_private'), TRUE);
-            $jspub['QUESTION'] = _('Making this calendar private hides it from other users.\\nAre you sure you want to continue?');
-            $jspub['LINK']     = _('Yes');
-            $tags['PUBLIC_SCHEDULE'] = javascript('confirm', $jspub);
-        } else {
-            $jspub['ADDRESS']  = PHPWS_Text::linkAddress('calendar', array('schedule_id'=>$this->id, 'aop'=>'make_public'), TRUE);
-            $jspub['QUESTION'] = _("Making this calendar public reveals it to other users.\\nAre you sure you want to continue?");
-            $jspub['LINK']     = _('No');
-            $tags['PUBLIC_SCHEDULE'] = javascript('confirm', $jspub);
-        }
-
-        if (empty($this->display_name)) {
-            $tags['DISPLAY_NAME'] = _('N/A');
-        } else {
-            $tags['DISPLAY_NAME'] = $this->display_name;
-        }
-
-        $tags['TITLE'] = $this->getViewLink();
-
-        return $tags;
+        $this->summary = PHPWS_Text::parseInput($summary);
     }
+
+    function setTitle($title)
+    {
+        $this->title = strip_tags($title);
+    }
+
+    function setViewStatus($status)
+    {
+        $this->view_status = (int)$status;
+    }
+
+    function view()
+    {
+
+    }
+
 }
 
 ?>

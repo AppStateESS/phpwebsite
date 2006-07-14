@@ -1,15 +1,13 @@
 <?php
+
   /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
    * @version $Id$
+   * @author Matthew McNaney <mcnaney at gmail dot com>
    */
+
 $proper_name  = 'Calendar';
-$version      = '0.0.1';
-$import_sql   = TRUE;
-$image_dir    = TRUE;
-$file_dir     = FALSE;
+$version      = '0.1.0';
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/calendar/check.xml';
-$about        = TRUE;
-$priority     = 50;
-$dependency   = FALSE;
+$image_dir    = true;
+$import_sql   = true;
 ?>

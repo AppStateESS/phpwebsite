@@ -3,6 +3,7 @@
    * @author Matthew McNaney <mcnaney at gmail dot com>
    * @version $Id$
    */
+
 if (!defined('PHPWS_SOURCE_DIR')) {
     include '../../config/core/404.html';
     exit();
@@ -10,6 +11,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 
 // If a admin action is called and the user has permissions enter in the admin functions
 // otherwise go into user functions
+PHPWS_Core::initModClass('calendar', 'Calendar.php');
 
 $Calendar = & new PHPWS_Calendar;
 
@@ -18,4 +20,5 @@ if ( ( isset($_REQUEST['aop']) || isset($_REQUEST['tab']) ) && Current_User::all
  } else {
     $Calendar->user();
  } 
+
 ?>
