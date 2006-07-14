@@ -331,10 +331,27 @@ class Users_Permission {
     }
 
     /**
-     * Returns all non-user groups that have restricted item permissions
+     * Returns all groups that have restricted item permissions
      * for a specific module
+     *
+     * @param object  key          Key object for comparison
+     * @param boolean edit_rights  If true, check the edit permissions as well
      */
-    function getRestrictedGroups($key, $edit_rights=FALSE)
+    function getRestrictedGroups($key, $edit_rights=false)
+    {
+        $group_list = getPermissionGroups($key, $edit_rights);
+        if (empty($group_list) || PEAR::isError($group_list)) {
+            return $group_list;
+        } elseif (isset($group_list['restricted']['all'])) {
+            return $group_list;
+        }
+    }
+    
+    /**
+     * Returns an associative list of all groups and their levels of permission
+     * in reference to the key passed to it
+     */
+    function &getPermissionGroups($key, $edit_rights=false)
     {
         if ( empty($key) ||
              !PHPWS_Core::isClass($key, 'key') || 
@@ -352,23 +369,54 @@ class Users_Permission {
         }
 
         $db = & new PHPWS_DB('users_groups');
+        $db->addColumn('users_groups.*');
+        $db->addColumn("$permTable.permission_level");
         $db->addWhere('id', "$permTable.group_id");
-        $db->addWhere("$permTable.permission_level", RESTRICTED_PERMISSION);
-
+        $db->addWhere("$permTable.permission_level", 0, '>');
+        
         $test_db = & new PHPWS_DB($permTable);
 
         if ($edit_rights) {
             if (!$test_db->isTableColumn($key->edit_permission)) {
-                return PHPWS_Error::get(KEY_PERM_COLUMN_MISSING, 'users', 'Users_Permission::getRestrictedGroups', $key->edit_permission);
+                return PHPWS_Error::get(KEY_PERM_COLUMN_MISSING, 'users',
+                                        'Users_Permission::getRestrictedGroups',
+                                        $key->edit_permission);
             }
             $db->addWhere($permTable . '.' . $key->edit_permission, 1);
         }
         
         $db->addOrder('name');
-
         $result = $db->select();
-        return $result;
+        if (empty($result) || PEAR::isError($result)) {
+            return $result;
+        }
+
+        foreach ($result as $group) {
+            if ($group['user_id']) {
+                if ($group['permission_level'] == RESTRICTED_PERMISSION) {
+                    $glist['restricted']['all'][]   =
+                    $glist['restricted']['users'][] = $group;
+                } else {
+                    $glist['unrestricted']['users'][] =
+                    $glist['unrestricted']['all'][]   = $group;
+                }
+                $glist['permitted']['users'][] = $group;
+            } else {
+                if ($group['permission_level'] == RESTRICTED_PERMISSION) {
+                    $glist['restricted']['groups'][] = 
+                    $glist['restricted']['all'][]    = $group;
+                } else {
+                    $glist['unrestricted']['groups'][] =
+                    $glist['unrestricted']['all'][]    = $group;
+                }
+                $glist['permitted']['groups'][] = $group;
+            }
+            $glist['permitted']['all'][] = $group;
+        }
+
+        return $glist;
     }
+
 
     function getGroupList($groups)
     {
