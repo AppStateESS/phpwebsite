@@ -1,4 +1,36 @@
+14 July 2006
++ Theme - not tagged
+Default - added breadcrumb tag
+
++ Calendar - not tagged
+- Overhaul in progress not functional
+- Rewrote the schedule creator
+- Using the new Users::getPermissionGroups function (needs dependency)
+
+
++ Layout - not tagged
+- Moved some content because they were set before a possible error.
+  Should the error occur, we don't want those settings
+
++ Users - not tagged
+- Fixed a problem with the permissions form made from the last Form
+  class update.
+- Added a getPermissionGroups function 
+
+
+12 July 2006
++ Core - not tagged
+Form - fixed radio button label assignment
+
+10 July 2006
++ Core - not tagged
+DBPager - fixed a filtering issue in the setSearch function
+
 7 July 2006
+
++ Calendar - not tagged
+- Added left and right arrows to navigation menu
+- Fixed an issue with the week view
 
 + Layout - not tagged
 - Layout uses the local module style sheet on a branch even if
