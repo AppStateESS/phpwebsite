@@ -1,3 +1,19 @@
+26 July 2006
++ File Cabinet - not tagged
+- Fixed incorrect naming of define
+
++ Menu -not tagged
+- Added menu class around menu template to assist with styling
+
++ Profiler - not tagged
+- Changed side bar view to homepage view
+- Added division view
+
+
++Users - not tagged
+- Changed user login box template
+
+
 14 July 2006
 + Theme - not tagged
 Default - added breadcrumb tag
