@@ -6,9 +6,10 @@
  * @version $Id$
  */
 
-
 PHPWS_Core::initModClass('profiler', 'Profile.php');
 PHPWS_Core::initModClass('profiler', 'Division.php');
+
+PHPWS_Core::requireConfig('profiler');
 
 class Profiler {
     function user()
@@ -47,7 +48,15 @@ class Profiler {
             }
             
             Layout::add($profile->display('large'));
-            Profiler::view();
+            break;
+
+        case 'view_div':
+            if (!isset($_REQUEST['div_id'])) {
+                PHPWS_Core::errorPage('404');
+            }
+
+            Profiler::view((int)$_REQUEST['div_id']);
+            
             break;
         }
 
@@ -254,7 +263,7 @@ class Profiler {
 
         $tabs['new']       = array ('title'=> _('New'), 'link'=> $link);
         $tabs['list']      = array ('title'=> _('List'), 'link'=> $link);
-        $tabs['division'] = array ('title'=> _('Division'), 'link'=>$link);
+        $tabs['division']  = array ('title'=> _('Division'), 'link'=>$link);
         $tabs['settings']  = array ('title'=> _('Settings'), 'link'=> $link);
         //        $tabs['approval']  = array ('title'=> _('Approval'), 'link'=> $link);
 
@@ -267,10 +276,10 @@ class Profiler {
 
     function saveSettings()
     {
-        if (isset($_POST['profile_sidebar'])) {
-            PHPWS_Settings::set('profiler', 'profile_sidebar', 1);
+        if (isset($_POST['profile_homepage'])) {
+            PHPWS_Settings::set('profiler', 'profile_homepage', 1);
         } else {
-            PHPWS_Settings::set('profiler', 'profile_sidebar', 0);
+            PHPWS_Settings::set('profiler', 'profile_homepage', 0);
         }
         PHPWS_Settings::set('profiler', 'profile_number',
                             (int)$_POST['profile_number']);
@@ -280,55 +289,75 @@ class Profiler {
 
 
     /**
-     * Pulls up the sidebar profiles
+     * Pulls up the homepage profiles
      *
      * I have hardcoded display numbers here for now but if/when categories
      * are added, this will change.
      */
-    function view()
+    function view($div_id=0)
     {
-        if (!PHPWS_Settings::get('profiler', 'profile_sidebar')) {
+        if (!PHPWS_Settings::get('profiler', 'profile_homepage')) {
             return;
         }
 
         $div = & new PHPWS_DB('profiler_division');
-        $div->addWhere('show_sidebar', 1);
+        if (!$div_id) {
+            $div->addWhere('show_homepage', 1);
+        } else {
+            $div->addWhere('id', $div_id);
+        }
+
         $div->addOrder('id');
-        $div->addColumn('id');
-        $result = $div->select('col');
+        $division_list = $div->getObjects('Profiler_Division');
         
-        if (empty($result)) {
+        if (empty($division_list)) {
             return;
         }
 
         $limit = PHPWS_Settings::get('profiler', 'profile_number');
         $db = & new PHPWS_DB('profiles');
 
-        foreach ($result as $id) {
-            $db->addOrder('random');
-            $db->setLimit($limit);
+        $tpl = & new PHPWS_Template('profiler');
+        $tpl->setFile('homepage.tpl');
 
-            $db->addWhere('profile_type', $id);
-            $student = $db->getObjects('Profile');
-            Profiler::_sidebar($student);
+        foreach ($division_list as $division) {
+            if (!$div_id) {
+                $db->addOrder('random');
+                $db->setLimit($limit);
+            }
+
+            $db->addWhere('profile_type', $division->id);
+
+            $profiles = $db->getObjects('Profile');
             $db->reset();
-        }
-    }
+            if (empty($profiles)) {
+                continue;
+            }
 
-    function _sidebar($list)
-    {
-        if (PEAR::isError($list)) {
-            PHPWS_Error::log($list, 'profiler', 'Profiler::_sidebar');
+            $tpl->setCurrentBlock('profile-row');
+            $col_count = 0;
+
+            foreach ($profiles as $item) {
+                $row_tpl = array();
+                $row_tpl['PROFILE'] = $item->display('small');
+
+                if ($col_count == PRF_MAXIMUM_COLUMNS) {
+                    $row_tpl['SHIFT'] = ' ';
+                    $col_count = 0;
+                }
+
+                $tpl->setData($row_tpl);
+                $tpl->parseCurrentBlock();
+                $col_count++;
+            }
+
+            $tpl->setCurrentBlock('profile-division');
+            $tpl->setData(array('DIV_NAME' => $division->viewLink()));
+            $tpl->parseCurrentBlock();
         }
 
-        if (empty($list)) {
-            return NULL;
-        }
-
-        foreach ($list as $item) {
-            $content = $item->display('small');
-            Layout::add($content, 'profiler', 'sidebar');
-        }
+        $content = $tpl->get();
+        Layout::add($content);
     }
     
 }

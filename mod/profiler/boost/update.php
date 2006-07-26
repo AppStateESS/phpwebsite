@@ -19,6 +19,18 @@ function profiler_update(&$content, $currentVersion)
             $content[] = 'Unable to copy template locally.';
             return false;
         }
+
+    case version_compare($currentVersion, '0.1.4', '<'):
+        $db = & new PHPWS_DB('profiler_division');
+        $result = $db->renameTableColumn('show_sidebar', 'show_homepage');
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $content[] = 'Unable to update profiler.';
+            return false;
+        } else {
+            $content[] = 'Moved profile display to home page.';
+        }
+        PHPWS_Boost::updateFiles(array('conf/config.php'));
     }     
     
     return TRUE;

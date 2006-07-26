@@ -172,7 +172,7 @@ class Profile {
 
         if (empty($all_profiles)) {
             $div = & new PHPWS_DB('profiler_division');
-            $div->addWhere('show_sidebar', 1);
+            $div->addWhere('show_homepage', 1);
             $div->addOrder('title');
             $div->addColumn('id');
             $div->addColumn('title');

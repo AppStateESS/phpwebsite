@@ -8,7 +8,7 @@
 class Profiler_Division {
     var $id    = 0;
     var $title = NULL;
-    var $show_sidebar = 1;
+    var $show_homepage = 1;
     var $error = NULL;
 
     function Profiler_Division($id=0) {
@@ -64,6 +64,13 @@ class Profiler_Division {
     {
         $db = & new PHPWS_DB('profiler_division');
         return $db->saveObject($this);
+    }
+
+    function viewLink()
+    {
+        $vars['user_cmd'] = 'view_div';
+        $vars['div_id'] = $this->id;
+        return PHPWS_Text::moduleLink($this->title, 'profiler', $vars);
     }
 
 }

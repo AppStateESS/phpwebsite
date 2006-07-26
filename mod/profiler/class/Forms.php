@@ -25,7 +25,7 @@ class Profile_Forms {
         PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
 
         $div = & new PHPWS_DB('profiler_division');
-        $div->addWhere('show_sidebar', 1);
+        $div->addWhere('show_homepage', 1);
         $div->addOrder('title');
         $div->addColumn('id');
         $div->addColumn('title');
@@ -130,9 +130,9 @@ class Profile_Forms {
         $form->setMatch('profile_number', PHPWS_Settings::get('profiler', 'profile_number'));
         $form->setLabel('profile_number', _('Number of profiles'));
 
-        $form->addCheckbox('profile_sidebar', 1);
-        $form->setMatch('profile_sidebar', PHPWS_Settings::get('profiler', 'profile_sidebar'));
-        $form->setLabel('profile_sidebar', _('Enable profile sidebar'));
+        $form->addCheckbox('profile_homepage', 1);
+        $form->setMatch('profile_homepage', PHPWS_Settings::get('profiler', 'profile_homepage'));
+        $form->setLabel('profile_homepage', _('Enable profile homepage'));
 
         $form->addSubmit(_('Save settings'));
 

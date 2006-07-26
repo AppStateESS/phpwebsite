@@ -1,6 +1,6 @@
 <?php
 
-$settings = array('profile_sidebar' => 1,
+$settings = array('profile_homepage' => 1,
                   'profile_number' => 2
                   );
 

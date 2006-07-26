@@ -1,6 +1,6 @@
 <div class="profile-small">
     <div class="profile-name">
-    {FIRST_NAME} {LAST_NAME}
+    <h2>{FIRST_NAME} {LAST_NAME}</h2>
     </div>
     <div class="profile-photo-small">
     {PHOTO_SMALL}

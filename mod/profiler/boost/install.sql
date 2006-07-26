@@ -20,6 +20,6 @@ CREATE TABLE profiles (
 CREATE TABLE profiler_division (
   id int NOT NULL default '0',
   title varchar(60) NOT NULL default '',
-  show_sidebar smallint NOT NULL default '0',
+  show_homepage smallint NOT NULL default '0',
   PRIMARY KEY  (id)
 );
