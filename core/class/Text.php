@@ -21,8 +21,8 @@ PHPWS_Core::configRequireOnce('core', 'text_settings.php');
 
 class PHPWS_Text {
     var $use_profanity  = ALLOW_PROFANITY;
-    var $use_breaker    = TRUE;
-    var $use_strip_tags = TRUE;
+    var $use_breaker    = true;
+    var $use_strip_tags = true;
     var $use_bbcode     = ALLOW_BB_CODE;
     var $_allowed_tags  = NULL;
 
@@ -248,25 +248,11 @@ class PHPWS_Text {
                               '/(<blockquote>)\n/iU',                      
                               );
 
-        $pre = array();
-        $i=0;
-        while ($pre_str = stristr($text,'<pre>')) {
-            $pre_str = substr($pre_str,0,strpos($pre_str,'</pre>')+6);
-            $text = str_replace($pre_str, "***pre_string***$i", $text);
-            $pre[$i] = str_replace("\r\n","\n",$pre_str);
-            $i++;
-        }
-
         $text = str_replace("\r\n", "\n", $text);
-
         $text = preg_replace($do_not_break, '\\1', $text); 
         $text = nl2br($text);
-
-        $cp = count($pre)-1;
-        for($i=0;$i <= $cp;$i++) {
-            $text = str_replace("***pre_string***$i", '<pre>'.substr($pre[$i],5,-6).'</pre>', $text);
-        }
-
+        // removes extra breaks stuck in code tags by editors
+        $text = preg_replace('/<code>(.*)<\/code>/Uies', "'<code>' . str_replace('<br />', '', '\\1') . '</code>'", $text);
         return $text;
     }
 
