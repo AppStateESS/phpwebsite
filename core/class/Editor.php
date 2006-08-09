@@ -12,11 +12,12 @@ PHPWS_Core::initCoreClass('File.php');
 class Editor {
     var $data       = NULL; // Contains the editor text
     var $name       = NULL;
+    var $id         = NULL; // text area id
     var $type       = NULL; // WYSIWYG file
     var $editorList = NULL;
     var $error      = NULL;
 
-    function Editor($name=NULL, $data=NULL, $type=NULL)
+    function Editor($name=NULL, $data=NULL, $id=NULL, $type=NULL)
     {
         $editorList = PHPWS_File::readDirectory('./javascript/editors/', TRUE);
 
@@ -38,21 +39,29 @@ class Editor {
             }
         }
 
+        if (isset($id)) {
+            $this->id = $id;
+        }
+
         if (isset($name)) {
             $this->setName($name);
+            if (empty($this->id)) {
+                $this->id = $name;
+            }
         }
 
         if (isset($data)) {
             $this->setData(trim($data));
         }
-
     }
 
     function get()
     {
         $formData['NAME'] = $this->name;
-        $formData['VALUE'] = PHPWS_Text::breaker($this->data);
+        $formData['ID']   = $this->id;
+        $formData['VALUE'] = $this->data;
         return Layout::getJavascript('editors/' . $this->type, $formData);
+
     }
 
     function getError()
@@ -77,7 +86,7 @@ class Editor {
 
     function setData($data)
     {
-        $this->data = html_entity_decode($data, ENT_QUOTES);
+        $this->data = $data;
     }
 
     function setName($name)
