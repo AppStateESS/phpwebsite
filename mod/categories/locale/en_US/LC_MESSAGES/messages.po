@@ -1,0 +1,246 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-08-09 14:48-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: boost/controlpanel.php:8
+msgid "Categories"
+msgstr ""
+
+#: boost/controlpanel.php:12
+msgid "Administrate your site's categories."
+msgstr ""
+
+#: boost/permission.php:4
+msgid "Edit categories"
+msgstr ""
+
+#: boost/permission.php:5
+msgid "Delete categories"
+msgstr ""
+
+#: boost/register.php:9
+msgid "No Categories file found."
+msgstr ""
+
+#: boost/register.php:21
+msgid "This modules category table already exists."
+msgstr ""
+
+#: boost/register.php:35
+msgid "Category table added."
+msgstr ""
+
+#: boost/update.php:20
+msgid "Add permissions to search."
+msgstr ""
+
+#: class/Action.php:18
+msgid "You are not authorized to administrate categories."
+msgstr ""
+
+#: class/Action.php:47 class/Action.php:63 class/Action.php:82
+msgid "Manage Categories"
+msgstr ""
+
+#: class/Action.php:53 class/Action.php:226
+msgid "Update Category"
+msgstr ""
+
+#: class/Action.php:55 class/Action.php:68 class/Action.php:228
+msgid "Add Category"
+msgstr ""
+
+#: class/Action.php:90
+msgid "Unable to save category."
+msgstr ""
+
+#: class/Action.php:90
+msgid "Please contact your administrator."
+msgstr ""
+
+#: class/Action.php:93
+msgid "Category saved successfully."
+msgstr ""
+
+#: class/Action.php:162
+msgid "Your category must have a title."
+msgstr ""
+
+#: class/Action.php:195
+msgid "New"
+msgstr ""
+
+#: class/Action.php:198
+msgid "List"
+msgstr ""
+
+#: class/Action.php:235 class/Action.php:239 class/Categories.php:362
+#: class/Category.php:96
+msgid "Top Level"
+msgstr ""
+
+#: class/Action.php:245 class/Action.php:290
+msgid "Parent"
+msgstr ""
+
+#: class/Action.php:252 class/Action.php:289
+msgid "Title"
+msgstr ""
+
+#: class/Action.php:258
+msgid "Description"
+msgstr ""
+
+#: class/Action.php:260
+msgid "Icon"
+msgstr ""
+
+#: class/Action.php:262
+msgid "Current Icon"
+msgstr ""
+
+#: class/Action.php:291
+msgid "Action"
+msgstr ""
+
+#: class/Action.php:303
+msgid "No categories found."
+msgstr ""
+
+#: class/Action.php:324
+msgid "All Categories"
+msgstr ""
+
+#: class/Action.php:336
+#, php-format
+msgid "%s: Module listing for %s"
+msgstr ""
+
+#: class/Action.php:339
+#, php-format
+msgid "%s: Module listing"
+msgstr ""
+
+#: class/Action.php:375 class/Action.php:377
+#, php-format
+msgid "All - %s items"
+msgstr ""
+
+#: class/Action.php:395
+msgid "View Module"
+msgstr ""
+
+#: class/Action.php:407
+msgid "Item Title"
+msgstr ""
+
+#: class/Action.php:408
+msgid "Creation date"
+msgstr ""
+
+#: class/Action.php:425
+msgid "No items found in this category."
+msgstr ""
+
+#: class/Categories.php:36 class/Categories.php:104
+msgid "Categorize"
+msgstr ""
+
+#: class/Categories.php:61
+msgid "You need to add some categories first."
+msgstr ""
+
+#: class/Categories.php:62
+msgid "Close window"
+msgstr ""
+
+#: class/Categories.php:85
+msgid "Add category"
+msgstr ""
+
+#: class/Categories.php:87
+msgid "All categories assigned."
+msgstr ""
+
+#: class/Categories.php:91
+msgid "No categories assigned."
+msgstr ""
+
+#: class/Categories.php:94
+msgid "Remove category"
+msgstr ""
+
+#: class/Categories.php:109
+msgid "Save and close"
+msgstr ""
+
+#: class/Categories.php:110
+msgid "Available categories"
+msgstr ""
+
+#: class/Categories.php:111
+msgid "Currently assigned"
+msgstr ""
+
+#: class/Categories.php:160
+msgid "item(s)"
+msgstr ""
+
+#: class/Categories.php:419
+#, php-format
+msgid "%s - %s item(s)"
+msgstr ""
+
+#: class/Categories.php:432
+msgid "No items available in this category."
+msgstr ""
+
+#: class/Category.php:202
+msgid "Edit"
+msgstr ""
+
+#: class/Category.php:205
+msgid "Are you sure you want to delete this category?"
+msgstr ""
+
+#: class/Category.php:208 class/Category.php:212
+msgid "Delete"
+msgstr ""
+
+#: conf/config.php:4
+msgid "Uncategorized"
+msgstr ""
+
+#: conf/error.php:3
+msgid "Category ID not found"
+msgstr ""
+
+#: conf/error.php:4
+msgid "There was a problem accessing the database."
+msgstr ""
+
+#: conf/error.php:5
+msgid "Module does not have a category table."
+msgstr ""
+
+#: conf/error.php:6
+msgid "Category item is missing variables."
+msgstr ""
+
+#: conf/error.php:7
+msgid "Missing either a version or item id."
+msgstr ""

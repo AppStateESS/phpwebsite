@@ -1,0 +1,129 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-08-09 14:48-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: boost/controlpanel.php:3
+msgid "Block"
+msgstr ""
+
+#: boost/controlpanel.php:7
+msgid "Create blocks of content."
+msgstr ""
+
+#: boost/permission.php:5
+msgid "Edit block"
+msgstr ""
+
+#: boost/permission.php:6
+msgid "Delete block"
+msgstr ""
+
+#: boost/uninstall.php:14
+msgid "Block tables removed."
+msgstr ""
+
+#: class/Block_Admin.php:43
+msgid "New"
+msgstr ""
+
+#: class/Block_Admin.php:44
+msgid "List"
+msgstr ""
+
+#: class/Block_Admin.php:67 class/Block_Admin.php:136
+msgid "New Block"
+msgstr ""
+
+#: class/Block_Admin.php:73
+msgid "Block deleted."
+msgstr ""
+
+#: class/Block_Admin.php:83
+msgid "Block pinned"
+msgstr ""
+
+#: class/Block_Admin.php:88
+msgid "Block unpinned"
+msgstr ""
+
+#: class/Block_Admin.php:106
+msgid "Block saved"
+msgstr ""
+
+#: class/Block_Admin.php:131
+msgid "Block list"
+msgstr ""
+
+#: class/Block_Admin.php:197
+msgid "Cancel"
+msgstr ""
+
+#: class/Block_Admin.php:204 class/Block_Admin.php:239
+msgid "Title"
+msgstr ""
+
+#: class/Block_Admin.php:208
+msgid "Save New Block"
+msgstr ""
+
+#: class/Block_Admin.php:211
+msgid "Update Current Block"
+msgstr ""
+
+#: class/Block_Admin.php:218
+msgid "Entry"
+msgstr ""
+
+#: class/Block_Admin.php:240
+msgid "Content"
+msgstr ""
+
+#: class/Block_Admin.php:241
+msgid "Action"
+msgstr ""
+
+#: class/Block_Item.php:175
+msgid "Are you sure you want to remove this block from this page?"
+msgstr ""
+
+#: class/Block_Item.php:206
+msgid "Edit"
+msgstr ""
+
+#: class/Block_Item.php:211
+msgid "Unpin"
+msgstr ""
+
+#: class/Block_Item.php:214
+msgid "Pin"
+msgstr ""
+
+#: class/Block_Item.php:223
+msgid "Copy"
+msgstr ""
+
+#: class/Block_Item.php:227
+msgid "Are you sure you want to permanently delete this block?"
+msgstr ""
+
+#: class/Block_Item.php:229
+msgid "Delete"
+msgstr ""
+
+#: inc/close.php:15
+msgid "Add block here"
+msgstr ""

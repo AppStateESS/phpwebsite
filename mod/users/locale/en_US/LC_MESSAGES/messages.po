@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-26 08:40-0400\n"
+"POT-Creation-Date: 2006-08-09 14:48-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,33 +53,41 @@ msgstr ""
 msgid "Deity users copied to branch."
 msgstr ""
 
-#: boost/install.php:71 boost/install.php:96
+#: boost/install.php:71 boost/install.php:90
 msgid "Local"
 msgstr ""
 
-#: boost/install.php:94
+#: boost/install.php:76
+msgid "Unable to create authorization script."
+msgstr ""
+
+#: boost/install.php:105
 msgid "User created successfully."
 msgstr ""
 
-#: boost/install.php:104
+#: boost/install.php:106
+msgid "User's email used as contact email address."
+msgstr ""
+
+#: boost/install.php:112
 msgid "Please create a user to administrate the site."
 msgstr ""
 
-#: boost/install.php:133 class/Form.php:75 class/Form.php:202
-#: class/Form.php:392 class/Form.php:729 class/Form.php:818
+#: boost/install.php:141 class/Form.php:75 class/Form.php:221
+#: class/Form.php:421 class/Form.php:802 class/Form.php:890
 msgid "Username"
 msgstr ""
 
-#: boost/install.php:134 class/Form.php:76 class/Form.php:394
-#: class/Form.php:736 class/Form.php:819 inc/my_page.php:75 inc/my_page.php:77
+#: boost/install.php:142 class/Form.php:76 class/Form.php:423
+#: class/Form.php:808 class/Form.php:891 inc/my_page.php:75 inc/my_page.php:77
 msgid "Password"
 msgstr ""
 
-#: boost/install.php:135 class/Form.php:203
+#: boost/install.php:143 class/Form.php:222
 msgid "Email"
 msgstr ""
 
-#: boost/install.php:137 class/Form.php:362
+#: boost/install.php:145 class/Form.php:391
 msgid "Add User"
 msgstr ""
 
@@ -139,206 +147,254 @@ msgstr ""
 msgid "Tried to perform an admin function in Users."
 msgstr ""
 
-#: class/Action.php:51 class/Action.php:263
+#: class/Action.php:51 class/Action.php:286
 msgid "Create User"
 msgstr ""
 
-#: class/Action.php:56 class/Action.php:79 class/Action.php:571
+#: class/Action.php:56 class/Action.php:76 class/Action.php:598
 msgid "Manage Users"
 msgstr ""
 
-#: class/Action.php:68 class/Action.php:113 class/Action.php:260
+#: class/Action.php:65 class/Action.php:283
 msgid "Edit User"
 msgstr ""
 
-#: class/Action.php:68 class/Form.php:873 class/Group.php:253
-#: class/Users.php:758
-msgid "Permissions"
-msgstr ""
-
-#: class/Action.php:81
+#: class/Action.php:78
 msgid "User deleted."
 msgstr ""
 
-#: class/Action.php:96
+#: class/Action.php:117
 msgid "Authorization updated."
 msgstr ""
 
-#: class/Action.php:98 class/Action.php:579 class/Form.php:380
+#: class/Action.php:119 class/Action.php:606 class/Form.php:409
 msgid "Authorization"
 msgstr ""
 
-#: class/Action.php:113
+#: class/Action.php:124
+msgid "Edit Authorization Script"
+msgstr ""
+
+#: class/Action.php:135
 msgid "Set User Permissions"
 msgstr ""
 
-#: class/Action.php:128
+#: class/Action.php:150
 msgid "Set Group Permissions"
 msgstr ""
 
-#: class/Action.php:134 class/Action.php:290
+#: class/Action.php:156 class/Action.php:313
 msgid "Create Group"
 msgstr ""
 
-#: class/Action.php:139 class/Action.php:290 class/Group.php:250
+#: class/Action.php:161 class/Action.php:313 class/Group.php:250
 msgid "Edit Group"
 msgstr ""
 
-#: class/Action.php:145 class/Action.php:152 class/Action.php:575
+#: class/Action.php:167 class/Action.php:174 class/Action.php:602
 msgid "Manage Groups"
 msgstr ""
 
-#: class/Action.php:158 class/Action.php:168
+#: class/Action.php:180 class/Action.php:190
 msgid "Manage Members"
 msgstr ""
 
-#: class/Action.php:181 class/Action.php:339 class/Action.php:580
+#: class/Action.php:203 class/Action.php:360 class/Action.php:607
 msgid "Settings"
 msgstr ""
 
-#: class/Action.php:198
+#: class/Action.php:220
 msgid "User deified."
 msgstr ""
 
-#: class/Action.php:201
+#: class/Action.php:223
 msgid "User remains a lowly mortal."
 msgstr ""
 
-#: class/Action.php:219
+#: class/Action.php:241
 msgid "User transformed into a lowly mortal."
 msgstr ""
 
-#: class/Action.php:222
+#: class/Action.php:244
 msgid "User remains a deity."
 msgstr ""
 
-#: class/Action.php:251
+#: class/Action.php:274
 msgid "User updated."
 msgstr ""
 
-#: class/Action.php:253 class/Action.php:255
+#: class/Action.php:276 class/Action.php:278
 msgid "User created."
 msgstr ""
 
-#: class/Action.php:276
+#: class/Action.php:299
 msgid "Permissions updated"
 msgstr ""
 
-#: class/Action.php:297
+#: class/Action.php:320
 msgid "An error occurred when trying to save the group."
 msgstr ""
 
-#: class/Action.php:299
+#: class/Action.php:322
 msgid "Group created."
 msgstr ""
 
-#: class/Action.php:316
+#: class/Action.php:339
 msgid "Member added."
 msgstr ""
 
-#: class/Action.php:329
+#: class/Action.php:352
 msgid "Member removed."
 msgstr ""
 
-#: class/Action.php:340 inc/my_page.php:39
+#: class/Action.php:364 inc/my_page.php:39
 msgid "User settings updated."
 msgstr ""
 
-#: class/Action.php:419
+#: class/Action.php:446
 msgid "Permissions saved."
 msgstr ""
 
-#: class/Action.php:420
+#: class/Action.php:447
 msgid "Close window"
 msgstr ""
 
-#: class/Action.php:425
+#: class/Action.php:452
 msgid "An error occurred."
 msgstr ""
 
-#: class/Action.php:427
+#: class/Action.php:454
 msgid "Permissions updated."
 msgstr ""
 
-#: class/Action.php:461
+#: class/Action.php:488
 msgid "Please try another user name."
 msgstr ""
 
-#: class/Action.php:478
+#: class/Action.php:504
 msgid "Missing an email address."
 msgstr ""
 
-#: class/Action.php:482
+#: class/Action.php:508
 msgid "This email address cannot be used."
 msgstr ""
 
-#: class/Action.php:487
+#: class/Action.php:513
 msgid "Confirmation phrase is not correct."
 msgstr ""
 
-#: class/Action.php:568
+#: class/Action.php:595
 msgid "New User"
 msgstr ""
 
-#: class/Action.php:574
+#: class/Action.php:601
 msgid "New Group"
 msgstr ""
 
-#: class/Action.php:607
+#: class/Action.php:635
 msgid "Login page"
 msgstr ""
 
-#: class/Action.php:608
+#: class/Action.php:636
 msgid "Username and password combination not found."
 msgstr ""
 
-#: class/Action.php:624 class/Action.php:638
+#: class/Action.php:640 class/Action.php:712
+msgid "Sorry"
+msgstr ""
+
+#: class/Action.php:644
+msgid ""
+"A problem occurred when accessing user information. Please try again later."
+msgstr ""
+
+#: class/Action.php:660 class/Action.php:674
 msgid "New Account Sign-up"
 msgstr ""
 
-#: class/Action.php:626
+#: class/Action.php:662
 msgid "You already have an account."
 msgstr ""
 
-#: class/Action.php:631
+#: class/Action.php:667
 msgid "Sorry, we are not accepting new users at this time."
 msgstr ""
 
-#: class/Action.php:641
+#: class/Action.php:677
 msgid "New user signup not allowed."
 msgstr ""
 
-#: class/Action.php:664
+#: class/Action.php:700
 msgid "Login Page"
 msgstr ""
 
-#: class/Action.php:698
+#: class/Action.php:709
+msgid "Welcome!"
+msgstr ""
+
+#: class/Action.php:710
+msgid "Your account has been successfully activated. Please log in."
+msgstr ""
+
+#: class/Action.php:713
+msgid ""
+"This authentication does not exist.<br />\n"
+" If you did not log in within the time frame specified in your email, please "
+"apply for another account."
+msgstr ""
+
+#: class/Action.php:747
+#, php-format
+msgid "User tried to send bad hash (%s) to confirm user."
+msgstr ""
+
+#: class/Action.php:793
 msgid "Account created successfully!"
 msgstr ""
 
-#: class/Action.php:699
+#: class/Action.php:794
 msgid "You will return to the home page in five seconds."
 msgstr ""
 
-#: class/Action.php:700
+#: class/Action.php:795
 msgid "Click here if you are not redirected."
 msgstr ""
 
-#: class/Action.php:703
+#: class/Action.php:798
 msgid ""
 "An error occurred when trying to create your account. Please try again later."
 msgstr ""
 
-#: class/Action.php:774
+#: class/Action.php:805
+msgid "User created successfully. Check your email for your login information."
+msgstr ""
+
+#: class/Action.php:811 class/Action.php:814
+msgid "There was problem creating your acccount. Check back later."
+msgstr ""
+
+#: class/Action.php:835
+msgid "Confirmation email"
+msgstr ""
+
+#: class/Action.php:932
 msgid "Username and password refused."
 msgstr ""
 
-#: class/Current_User.php:192
+#: class/Action.php:976
+msgid "You need to set a site contact address."
+msgstr ""
+
+#: class/Action.php:978
+msgid "Please enter a valid email address as a site contact."
+msgstr ""
+
+#: class/Current_User.php:241
 #, php-format
 msgid "Set permissions"
 msgstr ""
 
-#: class/Current_User.php:201
+#: class/Current_User.php:250
 msgid "Permission"
 msgstr ""
 
@@ -362,288 +418,291 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: class/Form.php:204
-msgid "Last Logged"
-msgstr ""
-
-#: class/Form.php:205
-msgid "Active"
-msgstr ""
-
-#: class/Form.php:206 class/Form.php:229
-msgid "Actions"
-msgstr ""
-
-#: class/Form.php:226 class/Form.php:466
-msgid "Group Name"
-msgstr ""
-
-#: class/Form.php:228 class/Group.php:256
+#: class/Form.php:125 class/Form.php:247 class/Form.php:516
+#: class/Group.php:256
 msgid "Members"
 msgstr ""
 
-#: class/Form.php:251 class/Form.php:479
+#: class/Form.php:128 class/Form.php:134 class/Form.php:310
+#: class/Group.php:250 class/Users.php:803
+msgid "Edit"
+msgstr ""
+
+#: class/Form.php:223
+msgid "Last Logged"
+msgstr ""
+
+#: class/Form.php:224
+msgid "Active"
+msgstr ""
+
+#: class/Form.php:225 class/Form.php:248
+msgid "Actions"
+msgstr ""
+
+#: class/Form.php:245 class/Form.php:510
+msgid "Group Name"
+msgstr ""
+
+#: class/Form.php:270 class/Form.php:533
 msgid "Add Member"
 msgstr ""
 
-#: class/Form.php:252 class/Form.php:476 class/Form.php:570
+#: class/Form.php:271 class/Form.php:530 class/Form.php:624
 msgid "Add"
 msgstr ""
 
-#: class/Form.php:254
+#: class/Form.php:273
 msgid "Group name"
 msgstr ""
 
-#: class/Form.php:281 class/Form.php:283
+#: class/Form.php:300 class/Form.php:302
 msgid "Member not found."
 msgstr ""
 
-#: class/Form.php:281
+#: class/Form.php:300
 msgid "Closest matches below."
 msgstr ""
 
-#: class/Form.php:283 class/Form.php:488
+#: class/Form.php:302 class/Form.php:542
 msgid "No matches found."
 msgstr ""
 
-#: class/Form.php:288 class/Form.php:480
+#: class/Form.php:313 class/Form.php:440 class/Form.php:519 class/Form.php:946
+#: class/Group.php:253 class/Users.php:806
+msgid "Permissions"
+msgstr ""
+
+#: class/Form.php:317 class/Form.php:534
 msgid "Current Members"
 msgstr ""
 
-#: class/Form.php:321 class/Form.php:513 class/Form.php:650
+#: class/Form.php:350 class/Form.php:567 class/Form.php:705
 msgid "Drop"
 msgstr ""
 
-#: class/Form.php:321
+#: class/Form.php:350
 msgid "Drop this member from the group."
 msgstr ""
 
-#: class/Form.php:342
+#: class/Form.php:371
 msgid "No members."
 msgstr ""
 
-#: class/Form.php:360
+#: class/Form.php:389
 msgid "Update User"
 msgstr ""
 
-#: class/Form.php:391 class/Form.php:744 inc/my_page.php:83
+#: class/Form.php:420 class/Form.php:815 inc/my_page.php:83
 msgid "Email Address"
 msgstr ""
 
-#: class/Form.php:393
+#: class/Form.php:422
 msgid "Display name"
 msgstr ""
 
-#: class/Form.php:412
+#: class/Form.php:456
 msgid "Only another deity can create a deity."
 msgstr ""
 
-#: class/Form.php:414
+#: class/Form.php:458
 msgid ""
 "Are you certain you want this user to have complete control of this web site?"
 msgstr ""
 
-#: class/Form.php:420
+#: class/Form.php:464
 msgid "Yes, make them a deity."
 msgstr ""
 
-#: class/Form.php:422
+#: class/Form.php:466
 msgid "No, leave them as a mortal."
 msgstr ""
 
-#: class/Form.php:431
+#: class/Form.php:475
 msgid "Only another deity can create a mortal."
 msgstr ""
 
-#: class/Form.php:434
+#: class/Form.php:478
 msgid "A deity can not make themselves mortal."
 msgstr ""
 
-#: class/Form.php:441
+#: class/Form.php:485
 msgid "Yes, make them a mortal."
 msgstr ""
 
-#: class/Form.php:443
+#: class/Form.php:487
 msgid "No, leave them as a deity."
 msgstr ""
 
-#: class/Form.php:457
+#: class/Form.php:501
 msgid "Update Group"
 msgstr ""
 
-#: class/Form.php:459
+#: class/Form.php:503
 msgid "Add Group"
 msgstr ""
 
-#: class/Form.php:486
+#: class/Form.php:540
 msgid "Members found."
 msgstr ""
 
-#: class/Form.php:497
+#: class/Form.php:551
 msgid "None found"
 msgstr ""
 
-#: class/Form.php:570
+#: class/Form.php:624
 msgid "Add this user to this group."
 msgstr ""
 
-#: class/Form.php:614
+#: class/Form.php:668
 msgid "No new scripts found"
 msgstr ""
 
-#: class/Form.php:619
+#: class/Form.php:673
 msgid "Add Script File"
 msgstr ""
 
-#: class/Form.php:623
+#: class/Form.php:677
 msgid "Update Default"
 msgstr ""
 
-#: class/Form.php:626
+#: class/Form.php:680
 msgid "Authorization Scripts"
 msgstr ""
 
-#: class/Form.php:627
+#: class/Form.php:681
 msgid "Default"
 msgstr ""
 
-#: class/Form.php:628 inc/my_page.php:65 inc/my_page.php:67
+#: class/Form.php:682 inc/my_page.php:65 inc/my_page.php:67
 msgid "Display Name"
 msgstr ""
 
-#: class/Form.php:629
+#: class/Form.php:683
 msgid "Script Filename"
 msgstr ""
 
-#: class/Form.php:630
+#: class/Form.php:684
 msgid "Action"
 msgstr ""
 
-#: class/Form.php:648
+#: class/Form.php:703
 msgid "Are you sure you want to drop this authorization script?"
 msgstr ""
 
-#: class/Form.php:655 class/Group.php:250 class/Users.php:755
-msgid "Edit"
-msgstr ""
-
-#: class/Form.php:678
-msgid "Update Settings"
-msgstr ""
-
-#: class/Form.php:681
-msgid "Not allowed"
-msgstr ""
-
-#: class/Form.php:682
-msgid "Immediate"
-msgstr ""
-
-#: class/Form.php:683
-msgid "Email Verification"
-msgstr ""
-
-#: class/Form.php:684
-msgid "Approval with Email Verification"
-msgstr ""
-
-#: class/Form.php:688
-msgid "User Signup Mode"
-msgstr ""
-
-#: class/Form.php:691
-msgid "Graphic Authenticator"
-msgstr ""
-
-#: class/Form.php:695
-msgid "Use graphic authentication?"
-msgstr ""
-
-#: class/Form.php:700 conf/config.php:31
+#: class/Form.php:719 class/Form.php:773 conf/config.php:32
 msgid "None"
 msgstr ""
 
-#: class/Form.php:706
-msgid "User Menu"
+#: class/Form.php:738
+msgid "Update Settings"
 msgstr ""
 
-#: class/Form.php:710
-msgid "Hide?"
+#: class/Form.php:741
+msgid "Site contact email"
 msgstr ""
 
-#: class/Form.php:711
-msgid "Hide login box"
+#: class/Form.php:746
+msgid "Not allowed"
 msgstr ""
 
-#: class/Form.php:740
-msgid "Confirm"
+#: class/Form.php:747
+msgid "Immediate"
 msgstr ""
 
 #: class/Form.php:748
+msgid "Email Verification"
+msgstr ""
+
+#: class/Form.php:763
+msgid "User Signup Mode"
+msgstr ""
+
+#: class/Form.php:768
+msgid "Use graphic authentication"
+msgstr ""
+
+#: class/Form.php:779
+msgid "User Menu"
+msgstr ""
+
+#: class/Form.php:783
+msgid "Hide login box"
+msgstr ""
+
+#: class/Form.php:784 class/Users.php:774
+msgid "Yes"
+msgstr ""
+
+#: class/Form.php:812
+msgid "Confirm"
+msgstr ""
+
+#: class/Form.php:819
 msgid "Confirm text"
 msgstr ""
 
-#: class/Form.php:751
+#: class/Form.php:827
 msgid "Please type the word seen in the image."
 msgstr ""
 
-#: class/Form.php:757
+#: class/Form.php:829
 msgid "Confirm Graphic"
 msgstr ""
 
-#: class/Form.php:762
+#: class/Form.php:834
 msgid "Sign up"
 msgstr ""
 
-#: class/Form.php:861
+#: class/Form.php:934
 msgid "All visitors"
 msgstr ""
 
-#: class/Form.php:862
+#: class/Form.php:935
 msgid "Logged visitors"
 msgstr ""
 
-#: class/Form.php:863
+#: class/Form.php:936
 msgid "Specific group(s)"
 msgstr ""
 
-#: class/Form.php:865
+#: class/Form.php:938
 msgid "Save permissions"
 msgstr ""
 
-#: class/Form.php:875
+#: class/Form.php:948
 msgid "Edit restrictions"
 msgstr ""
 
-#: class/Form.php:876
+#: class/Form.php:949
 msgid "View restrictions"
 msgstr ""
 
-#: class/Form.php:881
+#: class/Form.php:954
 msgid "No restricted edit groups found."
 msgstr ""
 
-#: class/Form.php:887
+#: class/Form.php:960
 msgid "No groups found."
 msgstr ""
 
-#: class/Form.php:891
+#: class/Form.php:964
 msgid "Cancel"
 msgstr ""
 
-#: class/Form.php:924
+#: class/Form.php:997
 msgid "Groups"
 msgstr ""
 
-#: class/Form.php:932
+#: class/Form.php:1005
 msgid "Users"
 msgstr ""
 
-#: class/Group.php:260 class/Users.php:724
+#: class/Group.php:260 class/Users.php:772
 msgid "Deactivate"
 msgstr ""
 
-#: class/Group.php:263 class/Users.php:729
+#: class/Group.php:263 class/Users.php:777
 msgid "Activate"
 msgstr ""
 
@@ -671,54 +730,66 @@ msgstr ""
 msgid "There was a problem with this module's My Page file."
 msgstr ""
 
-#: class/Permission.php:50
+#: class/Permission.php:51
 #, php-format
 msgid "Could not create \"%s\" permission column."
 msgstr ""
 
-#: class/Permission.php:53
+#: class/Permission.php:54
 #, php-format
 msgid "\"%s\" permission column created."
 msgstr ""
 
-#: class/Users.php:634
+#: class/Users.php:644
 msgid "Improper permission level for action requested."
 msgstr ""
 
-#: class/Users.php:726
-msgid "Yes"
+#: class/Users.php:758
+msgid "Are you sure you want to remove deity status?"
 msgstr ""
 
-#: class/Users.php:731
+#: class/Users.php:760
+msgid "Deity"
+msgstr ""
+
+#: class/Users.php:763
+msgid "Are you sure you want to deify this user?"
+msgstr ""
+
+#: class/Users.php:765
+msgid "Mortal"
+msgstr ""
+
+#: class/Users.php:779
 msgid "No"
 msgstr ""
 
-#: class/Users.php:737
+#: class/Users.php:785
 msgid "Never"
 msgstr ""
 
-#: class/Users.php:747
+#: class/Users.php:795
 #, php-format
 msgid "Are you certain you want to delete the user &quot;%s&quot; permanently?"
 msgstr ""
 
-#: class/Users.php:751
+#: class/Users.php:799
 msgid "Delete"
 msgstr ""
 
-#: conf/config.php:29
+#: conf/config.php:30
 msgid "Unrestricted"
 msgstr ""
 
-#: conf/config.php:30
+#: conf/config.php:31
 msgid "Restricted"
 msgstr ""
 
-#: conf/config.php:48
+#: conf/config.php:54
 msgid "Login"
 msgstr ""
 
-#: conf/config.php:49
+#: conf/config.php:55
 msgid "Want to join?"
 msgstr ""
 
@@ -825,6 +896,28 @@ msgstr ""
 
 #: conf/error.php:35
 msgid "Missing my_page function."
+msgstr ""
+
+#: conf/error.php:36
+msgid "Mistyped username."
+msgstr ""
+
+#: conf/error.php:37
+msgid ""
+"There is a problem with your authentication method. Contact the site "
+"administrator."
+msgstr ""
+
+#: conf/error.php:38
+msgid ""
+"Your user account has not been approved yet. Make sure you have responded to "
+"your authentication email."
+msgstr ""
+
+#: conf/error.php:39
+msgid ""
+"Your account has been deactivated. You will need to contact a site "
+"administrator to have it reactivated."
 msgstr ""
 
 #: inc/my_page.php:21

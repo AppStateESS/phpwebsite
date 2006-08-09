@@ -1,0 +1,235 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-08-09 14:48-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: boost/controlpanel.php:11
+msgid "Post current thoughts, happenings, and discussions."
+msgstr ""
+
+#: boost/permission.php:5 class/Blog.php:210
+msgid "Edit blog"
+msgstr ""
+
+#: boost/permission.php:6
+msgid "Delete blog"
+msgstr ""
+
+#: boost/uninstall.php:13
+msgid "Blog tables removed."
+msgstr ""
+
+#: class/Blog.php:160
+msgid "View"
+msgstr ""
+
+#: class/Blog.php:174 class/Blog.php:244
+msgid "Posted by"
+msgstr ""
+
+#: class/Blog.php:175 class/Blog.php:245
+msgid "Posted on"
+msgstr ""
+
+#: class/Blog.php:193
+msgid "Sorry you do not have permission to view this blog entry."
+msgstr ""
+
+#: class/Blog.php:208 class/Blog.php:269 class/Blog_Admin.php:253
+msgid "Edit"
+msgstr ""
+
+#: class/Blog.php:224
+msgid "Last poster"
+msgstr ""
+
+#: class/Blog.php:274
+msgid "Are you sure you want to permanently delete this blog entry?"
+msgstr ""
+
+#: class/Blog.php:276
+msgid "Delete"
+msgstr ""
+
+#: class/Blog.php:282
+msgid "Restore"
+msgstr ""
+
+#: class/Blog.php:288
+msgid "No action"
+msgstr ""
+
+#: class/Blog.php:312
+msgid "Missing title."
+msgstr ""
+
+#: class/Blog_Admin.php:18
+msgid "User attempted access to Blog administration."
+msgstr ""
+
+#: class/Blog_Admin.php:46
+msgid "User tried to edit a blog."
+msgstr ""
+
+#: class/Blog_Admin.php:50
+msgid "Update Blog Entry"
+msgstr ""
+
+#: class/Blog_Admin.php:64
+msgid "This version has not been approved."
+msgstr ""
+
+#: class/Blog_Admin.php:67
+msgid "A version of this entry is awaiting approval."
+msgstr ""
+
+#: class/Blog_Admin.php:82
+msgid "Blog Entries Awaiting Approval"
+msgstr ""
+
+#: class/Blog_Admin.php:111
+msgid "A problem occurred when trying to disapprove this entry."
+msgstr ""
+
+#: class/Blog_Admin.php:113
+msgid "Blog entry disapproved."
+msgstr ""
+
+#: class/Blog_Admin.php:132
+msgid "An error occurred when saving your version."
+msgstr ""
+
+#: class/Blog_Admin.php:136
+msgid "Blog entry approved."
+msgstr ""
+
+#: class/Blog_Admin.php:142
+msgid "Tried to edit an unapproved item."
+msgstr ""
+
+#: class/Blog_Admin.php:149
+msgid "Update Unapproved Blog Entry"
+msgstr ""
+
+#: class/Blog_Admin.php:154
+msgid "New Blog Entry"
+msgstr ""
+
+#: class/Blog_Admin.php:161
+msgid "Blog entry deleted."
+msgstr ""
+
+#: class/Blog_Admin.php:165 class/Blog_Admin.php:197
+msgid "Blog Archive"
+msgstr ""
+
+#: class/Blog_Admin.php:170
+msgid "Blog Restore"
+msgstr ""
+
+#: class/Blog_Admin.php:181
+msgid "Blog entry restored."
+msgstr ""
+
+#: class/Blog_Admin.php:193
+msgid "Blog entry removed."
+msgstr ""
+
+#: class/Blog_Admin.php:214
+msgid ""
+"An error occurred when trying to save your entry. Please check your logs."
+msgstr ""
+
+#: class/Blog_Admin.php:220
+msgid "Your entry is being held for approval."
+msgstr ""
+
+#: class/Blog_Admin.php:222
+msgid "Entry saved successfully."
+msgstr ""
+
+#: class/Blog_Admin.php:228
+msgid "View version"
+msgstr ""
+
+#: class/Blog_Admin.php:257
+msgid "Approve"
+msgstr ""
+
+#: class/Blog_Admin.php:260
+msgid "Disapprove"
+msgstr ""
+
+#: class/Blog_Admin.php:264
+msgid "Approval list"
+msgstr ""
+
+#: class/Blog_Admin.php:294
+msgid "New"
+msgstr ""
+
+#: class/Blog_Admin.php:297
+msgid "List"
+msgstr ""
+
+#: class/Blog_Admin.php:303
+#, php-format
+msgid "Approval (%s)"
+msgstr ""
+
+#: class/Blog_Admin.php:325 class/Blog_Form.php:39
+msgid "Title"
+msgstr ""
+
+#: class/Blog_Admin.php:326 class/Blog_Form.php:36
+msgid "Entry"
+msgstr ""
+
+#: class/Blog_Admin.php:327
+msgid "Creation Date"
+msgstr ""
+
+#: class/Blog_Admin.php:328
+msgid "Action"
+msgstr ""
+
+#: class/Blog_Form.php:21
+msgid "Save Changes and Approve"
+msgstr ""
+
+#: class/Blog_Form.php:27
+msgid "Update Entry"
+msgstr ""
+
+#: class/Blog_Form.php:29
+msgid "Add Entry"
+msgstr ""
+
+#: class/Blog_Form.php:42
+msgid "Allow comments"
+msgstr ""
+
+#: class/Blog_Form.php:46
+msgid "Allow anonymous comments"
+msgstr ""
+
+#: class/Blog_User.php:83
+msgid "Edit blogs"
+msgstr ""
+
+#: class/Blog_User.php:85
+msgid "Add new blog"
+msgstr ""

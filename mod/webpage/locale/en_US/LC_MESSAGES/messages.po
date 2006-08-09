@@ -1,0 +1,350 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-08-09 14:48-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: boost/controlpanel.php:2
+msgid "Web Pages"
+msgstr ""
+
+#: boost/controlpanel.php:5
+msgid "Creates web pages, articles, and the like."
+msgstr ""
+
+#: boost/permission.php:10
+msgid "Edit page"
+msgstr ""
+
+#: boost/permission.php:11
+msgid "Delete page"
+msgstr ""
+
+#: boost/uninstall.php:14
+msgid "Web Page tables removed."
+msgstr ""
+
+#: class/Admin.php:96 class/Forms.php:60
+msgid "Create header"
+msgstr ""
+
+#: class/Admin.php:101 class/Admin.php:217
+#, php-format
+msgid "Administrate page: %s"
+msgstr ""
+
+#: class/Admin.php:120
+msgid "Web Page Approval"
+msgstr ""
+
+#: class/Admin.php:129
+msgid "Page joined."
+msgstr ""
+
+#: class/Admin.php:135
+msgid "Pages joined."
+msgstr ""
+
+#: class/Admin.php:144
+msgid "Page removed."
+msgstr ""
+
+#: class/Admin.php:149
+msgid "Approval view"
+msgstr ""
+
+#: class/Admin.php:158
+msgid "Attempted to approve a webpage."
+msgstr ""
+
+#: class/Admin.php:162
+msgid "Web page approved."
+msgstr ""
+
+#: class/Admin.php:164
+msgid "A problem occurred when trying to approve a web page."
+msgstr ""
+
+#: class/Admin.php:170 class/Admin.php:228
+#, php-format
+msgid "Edit Page %s"
+msgstr ""
+
+#: class/Admin.php:175
+#, php-format
+msgid "Add page: %s"
+msgstr ""
+
+#: class/Admin.php:180
+#, php-format
+msgid "Edit header: %s"
+msgstr ""
+
+#: class/Admin.php:187 class/Admin.php:190
+msgid "Ignoring repeat post."
+msgstr ""
+
+#: class/Admin.php:197
+#, php-format
+msgid "Edit header page: %s"
+msgstr ""
+
+#: class/Admin.php:202 class/Admin.php:208
+msgid "An error occurred. Please check your logs."
+msgstr ""
+
+#: class/Admin.php:210
+msgid "Header saved successfully."
+msgstr ""
+
+#: class/Admin.php:222 class/Admin.php:235
+msgid "An error occurred while saving your page. Please check the error log."
+msgstr ""
+
+#: class/Admin.php:245
+msgid "Error: Unable to force template."
+msgstr ""
+
+#: class/Admin.php:251
+msgid "Page held for approval."
+msgstr ""
+
+#: class/Admin.php:253
+msgid "Page saved successfully."
+msgstr ""
+
+#: class/Admin.php:263
+msgid "List Web Pages"
+msgstr ""
+
+#: class/Admin.php:292
+msgid "Error"
+msgstr ""
+
+#: class/Admin.php:293
+msgid "A problem occurred when trying to delete your webpage."
+msgstr ""
+
+#: class/Admin.php:373
+msgid "New"
+msgstr ""
+
+#: class/Admin.php:376
+msgid "List"
+msgstr ""
+
+#: class/Admin.php:382
+#, php-format
+msgid "Approval(%s)"
+msgstr ""
+
+#: class/Admin.php:424 class/Forms.php:73
+msgid "Summary"
+msgstr ""
+
+#: class/Admin.php:429 class/Volume.php:400
+msgid "Page"
+msgstr ""
+
+#: class/Admin.php:433
+msgid "No pages have been created."
+msgstr ""
+
+#: class/Admin.php:437
+msgid "Approval list"
+msgstr ""
+
+#: class/Admin.php:443 class/Page.php:167 class/Volume.php:204
+msgid "Edit"
+msgstr ""
+
+#: class/Admin.php:448
+msgid "Approve"
+msgstr ""
+
+#: class/Admin.php:451
+msgid "Disapprove"
+msgstr ""
+
+#: class/Forms.php:19
+msgid "Header"
+msgstr ""
+
+#: class/Forms.php:24
+#, php-format
+msgid "Page %s"
+msgstr ""
+
+#: class/Forms.php:39
+msgid "Add Page"
+msgstr ""
+
+#: class/Forms.php:58
+msgid "Update header"
+msgstr ""
+
+#: class/Forms.php:68
+msgid "Webpage title"
+msgstr ""
+
+#: class/Forms.php:89
+msgid "Update page"
+msgstr ""
+
+#: class/Forms.php:91
+msgid "Add new page"
+msgstr ""
+
+#: class/Forms.php:99 class/Forms.php:136
+msgid "Title"
+msgstr ""
+
+#: class/Forms.php:106
+msgid "Content"
+msgstr ""
+
+#: class/Forms.php:111
+msgid "Page template"
+msgstr ""
+
+#: class/Forms.php:114
+msgid "Force all pages to use this template"
+msgstr ""
+
+#: class/Forms.php:125
+msgid "Delete"
+msgstr ""
+
+#: class/Forms.php:126
+msgid "Move to frontpage"
+msgstr ""
+
+#: class/Forms.php:127
+msgid "Move off frontpage"
+msgstr ""
+
+#: class/Forms.php:128
+msgid "Activate"
+msgstr ""
+
+#: class/Forms.php:129
+msgid "Deactivate"
+msgstr ""
+
+#: class/Forms.php:137
+msgid "Created on"
+msgstr ""
+
+#: class/Forms.php:138
+msgid "Updated on"
+msgstr ""
+
+#: class/Forms.php:139
+msgid "Created by"
+msgstr ""
+
+#: class/Forms.php:140
+msgid "Updated by"
+msgstr ""
+
+#: class/Forms.php:141
+msgid "Front page"
+msgstr ""
+
+#: class/Forms.php:142
+msgid "Action"
+msgstr ""
+
+#: class/Forms.php:145
+msgid "Go"
+msgstr ""
+
+#: class/Forms.php:148
+msgid "Are you sure you want to delete the checked web pages?"
+msgstr ""
+
+#: class/Page.php:120
+msgid "Missing page content."
+msgstr ""
+
+#: class/Page.php:171
+msgid "Are you sure you want to remove this page?"
+msgstr ""
+
+#: class/Page.php:179
+msgid "Are you sure you want to join this page to the next?"
+msgstr ""
+
+#: class/Page.php:185
+msgid ""
+"Are you sure you want to join ALL the pages into just one page? Warning: You "
+"will lose all page backups!"
+msgstr ""
+
+#: class/Page.php:246
+msgid "Edit web page"
+msgstr ""
+
+#: class/Page.php:249
+msgid "Edit page header"
+msgstr ""
+
+#: class/Page.php:250
+msgid "View page list"
+msgstr ""
+
+#: class/Volume.php:141
+msgid "Missing page title"
+msgstr ""
+
+#: class/Volume.php:174
+msgid "View"
+msgstr ""
+
+#: class/Volume.php:224
+msgid "Yes"
+msgstr ""
+
+#: class/Volume.php:226
+msgid "No"
+msgstr ""
+
+#: class/Volume.php:410
+msgid "Edit header"
+msgstr ""
+
+#: class/Volume.php:471
+msgid "Page is not complete."
+msgstr ""
+
+#: conf/config.php:7
+msgid "Previous page"
+msgstr ""
+
+#: conf/config.php:8
+msgid "Next page"
+msgstr ""
+
+#: conf/error.php:3
+msgid "Missing template file."
+msgstr ""
+
+#: conf/error.php:4
+msgid "Cannot find template file."
+msgstr ""
+
+#: conf/error.php:5
+msgid "Volume is missing a title."
+msgstr ""

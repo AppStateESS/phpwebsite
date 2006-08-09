@@ -1,0 +1,168 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-08-09 14:48-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: boost/controlpanel.php:9
+msgid "Content"
+msgstr ""
+
+#: boost/controlpanel.php:14
+msgid "Administration"
+msgstr ""
+
+#: boost/controlpanel.php:19
+msgid "Developer"
+msgstr ""
+
+#: boost/controlpanel.php:24
+msgid "Unsorted"
+msgstr ""
+
+#: boost/controlpanel.php:28
+msgid "Control Panel"
+msgstr ""
+
+#: boost/controlpanel.php:31
+msgid "Allow manipulation of the control panel."
+msgstr ""
+
+#: boost/permission.php:5
+msgid "Remove Tab"
+msgstr ""
+
+#: boost/permission.php:6
+msgid "Add Tab"
+msgstr ""
+
+#: boost/permission.php:7
+msgid "Move Link"
+msgstr ""
+
+#: boost/unregister.php:18
+msgid "No Control Panel file found for unregisteration."
+msgstr ""
+
+#: boost/unregister.php:87
+msgid "Control Panel links and tabs have been removed."
+msgstr ""
+
+#: class/Action.php:51
+msgid "Control Panel Administration"
+msgstr ""
+
+#: class/Action.php:71
+msgid "Move tab order up"
+msgstr ""
+
+#: class/Action.php:72
+msgid "Move tab order down"
+msgstr ""
+
+#: class/Action.php:76
+msgid "Move link order up"
+msgstr ""
+
+#: class/Action.php:77
+msgid "Move link order down"
+msgstr ""
+
+#: class/ControlPanel.php:59
+msgid "No tabs available in the Control Panel."
+msgstr ""
+
+#: class/ControlPanel.php:76
+msgid "An error occurred while accessing the Control Panel."
+msgstr ""
+
+#: class/ControlPanel.php:162
+msgid "No Control Panel file found."
+msgstr ""
+
+#: class/ControlPanel.php:170
+msgid "Copying source image directory for module."
+msgstr ""
+
+#: class/ControlPanel.php:174
+msgid "Source image directory copied successfully."
+msgstr ""
+
+#: class/ControlPanel.php:176
+msgid "Source image directory failed to copy."
+msgstr ""
+
+#: class/ControlPanel.php:193 class/ControlPanel.php:199
+msgid "Unable to create tab."
+msgstr ""
+
+#: class/ControlPanel.php:193
+msgid "Missing title."
+msgstr ""
+
+#: class/ControlPanel.php:199
+msgid "Missing link."
+msgstr ""
+
+#: class/ControlPanel.php:214
+msgid "An error occurred when trying to save a controlpanel tab."
+msgstr ""
+
+#: class/ControlPanel.php:219
+#, php-format
+msgid "Control Panel tabs created for %s."
+msgstr ""
+
+#: class/ControlPanel.php:221
+msgid "No Control Panel tabs found."
+msgstr ""
+
+#: class/ControlPanel.php:266
+msgid "Unable to load a link into a specified tab."
+msgstr ""
+
+#: class/ControlPanel.php:275
+msgid "There was a problem trying to save a Control Panel link."
+msgstr ""
+
+#: class/ControlPanel.php:280
+#, php-format
+msgid "Control Panel links created for %s."
+msgstr ""
+
+#: class/ControlPanel.php:282
+msgid "No Control Panel links found."
+msgstr ""
+
+#: class/Link.php:103
+#, php-format
+msgid "%s module icon"
+msgstr ""
+
+#: conf/error.php:3
+msgid "Tabs must be in an array."
+msgstr ""
+
+#: conf/error.php:4
+msgid "Tab is missing a title."
+msgstr ""
+
+#: conf/error.php:5
+msgid "Tab is missing a link address."
+msgstr ""
+
+#: conf/error.php:6
+msgid "Unable to pull control panel tabs from database."
+msgstr ""

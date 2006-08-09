@@ -1,0 +1,397 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-08-09 14:48-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: boost/controlpanel.php:8
+msgid "File Cabinet"
+msgstr ""
+
+#: boost/controlpanel.php:11
+msgid "Manages images and documents uploaded to your site."
+msgstr ""
+
+#: boost/permission.php:11
+msgid "Edit files"
+msgstr ""
+
+#: boost/permission.php:12
+msgid "Delete files"
+msgstr ""
+
+#: boost/permission.php:13
+msgid "Edit images"
+msgstr ""
+
+#: boost/permission.php:14
+msgid "Delete images"
+msgstr ""
+
+#: class/Cabinet_Action.php:47 class/Cabinet_Action.php:226
+msgid "Upload new document"
+msgstr ""
+
+#: class/Cabinet_Action.php:58 class/Cabinet_Action.php:89
+#: class/Cabinet_Action.php:96 class/Cabinet_Action.php:192
+msgid "Manage Images"
+msgstr ""
+
+#: class/Cabinet_Action.php:67 class/Cabinet_Action.php:83
+#: class/Cabinet_Action.php:233
+msgid "Manage Documents"
+msgstr ""
+
+#: class/Cabinet_Action.php:78
+msgid "An error occurred when trying to delete a document."
+msgstr ""
+
+#: class/Cabinet_Action.php:80
+msgid "Document deleted."
+msgstr ""
+
+#: class/Cabinet_Action.php:172
+msgid "Image uploaded!"
+msgstr ""
+
+#: class/Cabinet_Action.php:185
+msgid "Edit Image"
+msgstr ""
+
+#: class/Cabinet_Action.php:220
+msgid "Sorry"
+msgstr ""
+
+#: class/Cabinet_Action.php:221
+msgid "An error occurred while saving your document."
+msgstr ""
+
+#: class/Cabinet_Action.php:222
+msgid "Please check your logs."
+msgstr ""
+
+#: class/Cabinet_Action.php:230
+msgid "Document saved successfully."
+msgstr ""
+
+#: class/Cabinet_Action.php:245
+msgid "Document"
+msgstr ""
+
+#: class/Cabinet_Action.php:272 class/Cabinet_Action.php:287
+#: class/Cabinet_Action.php:361
+msgid "Settings"
+msgstr ""
+
+#: class/Cabinet_Action.php:284
+msgid "Settings saved."
+msgstr ""
+
+#: class/Cabinet_Action.php:311
+msgid "Default document directory may not be blank"
+msgstr ""
+
+#: class/Cabinet_Action.php:313
+msgid "Document directory does not exist."
+msgstr ""
+
+#: class/Cabinet_Action.php:315
+msgid "Unable to write to document directory."
+msgstr ""
+
+#: class/Cabinet_Action.php:317
+msgid "Unable to read document directory."
+msgstr ""
+
+#: class/Cabinet_Action.php:321
+msgid "Default image directory may not be blank"
+msgstr ""
+
+#: class/Cabinet_Action.php:323
+msgid "Image directory does not exist."
+msgstr ""
+
+#: class/Cabinet_Action.php:325
+msgid "Unable to write to image directory."
+msgstr ""
+
+#: class/Cabinet_Action.php:327
+msgid "Unable to read image directory."
+msgstr ""
+
+#: class/Cabinet_Action.php:355
+msgid "Images"
+msgstr ""
+
+#: class/Cabinet_Action.php:356
+msgid "Documents"
+msgstr ""
+
+#: class/Cabinet_Action.php:386
+msgid "Close window"
+msgstr ""
+
+#: class/Cabinet_Action.php:399 class/Cabinet_Action.php:423
+#: class/Cabinet_Action.php:426
+msgid "[default]"
+msgstr ""
+
+#: class/Cabinet_Action.php:453
+msgid "Sorry but this file is inaccessible at this time."
+msgstr ""
+
+#: class/Cabinet_Action.php:459
+msgid "Sorry, you are not allowed access to this file."
+msgstr ""
+
+#: class/Document.php:192 class/Document.php:198 class/Image.php:364
+#: class/Image_Manager.php:142
+msgid "Edit"
+msgstr ""
+
+#: class/Document.php:204 class/Image.php:357
+msgid "Clip"
+msgstr ""
+
+#: class/Document.php:207
+msgid "Are you sure you want to delete this document?"
+msgstr ""
+
+#: class/Document.php:208 class/Image.php:371 class/Image_Manager.php:144
+#: class/Image_Manager.php:423
+msgid "Delete"
+msgstr ""
+
+#: class/Forms.php:22
+msgid "Thumbnail"
+msgstr ""
+
+#: class/Forms.php:23 class/Forms.php:51 class/Forms.php:124
+#: class/Image_Manager.php:307 class/Image_Manager.php:404
+msgid "Title"
+msgstr ""
+
+#: class/Forms.php:24 class/Forms.php:52
+msgid "File name"
+msgstr ""
+
+#: class/Forms.php:25 class/Forms.php:54
+msgid "Size"
+msgstr ""
+
+#: class/Forms.php:26 class/Forms.php:55
+msgid "Action"
+msgstr ""
+
+#: class/Forms.php:35
+msgid "No items found."
+msgstr ""
+
+#: class/Forms.php:53
+msgid "File type"
+msgstr ""
+
+#: class/Forms.php:59 class/Forms.php:64
+msgid "Upload document"
+msgstr ""
+
+#: class/Forms.php:74
+msgid "No documents found."
+msgstr ""
+
+#: class/Forms.php:88
+msgid "Base document directory"
+msgstr ""
+
+#: class/Forms.php:92
+msgid "Base image directory"
+msgstr ""
+
+#: class/Forms.php:94
+msgid "Save settings"
+msgstr ""
+
+#: class/Forms.php:116
+msgid "Document location"
+msgstr ""
+
+#: class/Forms.php:120 class/Image_Manager.php:324
+msgid "Save directory"
+msgstr ""
+
+#: class/Forms.php:128 class/Image_Manager.php:314 class/Image_Manager.php:405
+msgid "Description"
+msgstr ""
+
+#: class/Forms.php:132 class/Image_Manager.php:328
+msgid "Update"
+msgstr ""
+
+#: class/Forms.php:134 class/Image_Manager.php:330 class/Image_Manager.php:418
+msgid "Upload"
+msgstr ""
+
+#: class/Forms.php:138 class/Image_Manager.php:335 class/Image_Manager.php:420
+msgid "Cancel"
+msgstr ""
+
+#: class/Forms.php:155
+msgid "Current document"
+msgstr ""
+
+#: class/Forms.php:159 class/Image_Manager.php:349
+msgid "Maximum file size"
+msgstr ""
+
+#: class/Image.php:369
+msgid "Are you sure you want to delete this image?"
+msgstr ""
+
+#: class/Image_Manager.php:110 class/Image_Manager.php:157
+msgid "No image"
+msgstr ""
+
+#: class/Image_Manager.php:146
+msgid "Copy"
+msgstr ""
+
+#: class/Image_Manager.php:159
+msgid "Clear image"
+msgstr ""
+
+#: class/Image_Manager.php:176
+msgid "Change Thumbnail"
+msgstr ""
+
+#: class/Image_Manager.php:204
+msgid "No thumbnail"
+msgstr ""
+
+#: class/Image_Manager.php:216
+msgid "Upload image"
+msgstr ""
+
+#: class/Image_Manager.php:234
+msgid "An error occurred when trying to save your image."
+msgstr ""
+
+#: class/Image_Manager.php:303
+msgid "Image location"
+msgstr ""
+
+#: class/Image_Manager.php:311
+msgid "Alternate text"
+msgstr ""
+
+#: class/Image_Manager.php:346
+msgid "Current image"
+msgstr ""
+
+#: class/Image_Manager.php:350
+msgid "Maximum width"
+msgstr ""
+
+#: class/Image_Manager.php:351
+msgid "Maximum height"
+msgstr ""
+
+#: class/Image_Manager.php:378
+msgid "No images found."
+msgstr ""
+
+#: class/Image_Manager.php:394
+msgid "View full image"
+msgstr ""
+
+#: class/Image_Manager.php:409
+msgid "Are you sure you want to permanently delete this image?"
+msgstr ""
+
+#: class/Image_Manager.php:411
+msgid "Choose a image first."
+msgstr ""
+
+#: class/Image_Manager.php:419
+msgid "Ok"
+msgstr ""
+
+#: class/Image_Manager.php:421
+msgid "Image Browser"
+msgstr ""
+
+#: conf/error.php:8
+msgid "Filename not set."
+msgstr ""
+
+#: conf/error.php:9
+msgid "Directory not set."
+msgstr ""
+
+#: conf/error.php:10
+msgid "There was a problem loading the image file."
+msgstr ""
+
+#: conf/error.php:11
+#, php-format
+msgid "Image was %sK making it larger than %sK size limit."
+msgstr ""
+
+#: conf/error.php:12
+#, php-format
+msgid "Image width was %spx, making it larger than %d pixel limit."
+msgstr ""
+
+#: conf/error.php:13
+#, php-format
+msgid "Image height was %spx, making it larger than %d pixel limit."
+msgstr ""
+
+#: conf/error.php:14
+msgid "Unacceptable image type."
+msgstr ""
+
+#: conf/error.php:15
+msgid "Image not found"
+msgstr ""
+
+#: conf/error.php:16
+#, php-format
+msgid "Document was %sK making it larger than %sK size limit."
+msgstr ""
+
+#: conf/error.php:17
+msgid "Unacceptable document type."
+msgstr ""
+
+#: conf/error.php:18
+msgid "Document not found."
+msgstr ""
+
+#: conf/error.php:19
+msgid "File not uploaded."
+msgstr ""
+
+#: conf/error.php:20
+msgid "Could not delete file."
+msgstr ""
+
+#: conf/error.php:21
+#, php-format
+msgid "Image is %spx x %spx, the maximum dimensions are %spx x %spx."
+msgstr ""
+
+#: conf/error.php:22
+msgid "Unable to move the file to its new directory."
+msgstr ""

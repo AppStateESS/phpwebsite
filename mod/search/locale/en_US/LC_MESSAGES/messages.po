@@ -1,0 +1,182 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-08-09 14:48-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: boost/controlpanel.php:3 class/User.php:44 class/User.php:49
+#: class/User.php:131
+msgid "Search"
+msgstr ""
+
+#: boost/controlpanel.php:6
+msgid "Administrate and see information on searches."
+msgstr ""
+
+#: boost/update.php:13
+msgid "Add permissions to search."
+msgstr ""
+
+#: boost/update.php:20
+msgid "Register Search to Key."
+msgstr ""
+
+#: boost/update.php:45
+msgid "A problem occurred during the update."
+msgstr ""
+
+#: class/Admin.php:75
+msgid "Keywords added to admin menu."
+msgstr ""
+
+#: class/Admin.php:202 class/Admin.php:215
+msgid "Drop"
+msgstr ""
+
+#: class/Admin.php:206
+msgid "Current keywords"
+msgstr ""
+
+#: class/Admin.php:221
+msgid "Add"
+msgstr ""
+
+#: class/Admin.php:227
+msgid "Clipped words"
+msgstr ""
+
+#: class/Admin.php:230
+msgid "Search Admin"
+msgstr ""
+
+#: class/Admin.php:232
+msgid "Close"
+msgstr ""
+
+#: class/Admin.php:243 class/Admin.php:354
+msgid "Keywords"
+msgstr ""
+
+#: class/Admin.php:253 class/Admin.php:306
+msgid "Delete"
+msgstr ""
+
+#: class/Admin.php:256 class/Admin.php:355
+msgid "Ignore"
+msgstr ""
+
+#: class/Admin.php:259
+msgid "Clip word"
+msgstr ""
+
+#: class/Admin.php:268 class/Admin.php:318
+msgid "Go"
+msgstr ""
+
+#: class/Admin.php:271 class/Admin.php:321
+msgid "Are you sure you want to delete the checked item(s)?"
+msgstr ""
+
+#: class/Admin.php:275 class/Admin.php:326
+msgid "Keyword"
+msgstr ""
+
+#: class/Admin.php:276
+msgid "Success"
+msgstr ""
+
+#: class/Admin.php:277
+msgid "Failure"
+msgstr ""
+
+#: class/Admin.php:278 class/Admin.php:328
+msgid "Last called"
+msgstr ""
+
+#: class/Admin.php:279
+msgid "Highest result"
+msgstr ""
+
+#: class/Admin.php:280
+msgid "Mixed"
+msgstr ""
+
+#: class/Admin.php:296
+msgid "Ignored"
+msgstr ""
+
+#: class/Admin.php:309
+msgid "Allow"
+msgstr ""
+
+#: class/Admin.php:327
+msgid "Total queries"
+msgstr ""
+
+#: class/User.php:78
+msgid "All modules"
+msgstr ""
+
+#: class/User.php:134
+msgid "Search for:"
+msgstr ""
+
+#: class/User.php:137
+msgid "Exact matches only"
+msgstr ""
+
+#: class/User.php:147
+msgid "Module list"
+msgstr ""
+
+#: class/User.php:157
+msgid "Local"
+msgstr ""
+
+#: class/User.php:176
+msgid "Search location"
+msgstr ""
+
+#: class/User.php:177
+msgid "Advanced Search"
+msgstr ""
+
+#: class/User.php:183
+msgid "A problem occurred during your search."
+msgstr ""
+
+#: class/User.php:185
+msgid "No results found."
+msgstr ""
+
+#: class/User.php:190
+msgid "Search Results"
+msgstr ""
+
+#: class/User.php:210
+msgid "Module"
+msgstr ""
+
+#: class/User.php:211
+msgid "Title"
+msgstr ""
+
+#: class/User.php:229
+msgid "The following search words were ignored"
+msgstr ""
+
+#: class/User.php:264
+msgid "Nothing found"
+msgstr ""

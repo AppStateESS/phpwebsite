@@ -1,0 +1,319 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-08-09 14:48-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: boost/controlpanel.php:6
+msgid "Layout"
+msgstr ""
+
+#: boost/controlpanel.php:9
+msgid "Control the layout of your site."
+msgstr ""
+
+#: boost/install.php:13
+msgid "Please enter a page title."
+msgstr ""
+
+#: boost/install.php:24
+msgid "Layout settings updated."
+msgstr ""
+
+#: boost/install.php:51
+msgid "No themes installed."
+msgstr ""
+
+#: boost/install.php:52
+msgid "Expect an error theme when finished."
+msgstr ""
+
+#: boost/install.php:56
+msgid "Pick a theme"
+msgstr ""
+
+#: boost/install.php:61 class/LayoutAdmin.php:366
+msgid "Page Title"
+msgstr ""
+
+#: boost/install.php:62
+msgid "Page Title: Name of your web site"
+msgstr ""
+
+#: boost/install.php:63
+msgid "Done"
+msgstr ""
+
+#: boost/unregister.php:9
+msgid "Removing old layout components."
+msgstr ""
+
+#: boost/update.php:17
+msgid "+ Styles per page added."
+msgstr ""
+
+#: class/Layout.php:695
+msgid "Box move off"
+msgstr ""
+
+#: class/Layout.php:703
+msgid "Change style"
+msgstr ""
+
+#: class/Layout.php:906
+msgid "Move to top"
+msgstr ""
+
+#: class/Layout.php:907
+msgid "Move up"
+msgstr ""
+
+#: class/Layout.php:908
+msgid "Move down"
+msgstr ""
+
+#: class/Layout.php:909
+msgid "Move to bottom"
+msgstr ""
+
+#: class/Layout.php:914
+msgid "Send to"
+msgstr ""
+
+#: class/Layout.php:924
+msgid "Move"
+msgstr ""
+
+#: class/LayoutAdmin.php:32 class/LayoutAdmin.php:56
+msgid "Adjust Boxes"
+msgstr ""
+
+#: class/LayoutAdmin.php:57
+msgid "Settings changed."
+msgstr ""
+
+#: class/LayoutAdmin.php:63 class/LayoutAdmin.php:141
+#: class/LayoutAdmin.php:147 class/LayoutAdmin.php:222
+msgid "Themes"
+msgstr ""
+
+#: class/LayoutAdmin.php:66
+msgid "Theme settings updated."
+msgstr ""
+
+#: class/LayoutAdmin.php:78 class/LayoutAdmin.php:90
+msgid "Error"
+msgstr ""
+
+#: class/LayoutAdmin.php:79 class/LayoutAdmin.php:91
+msgid "There was a problem updating the settings."
+msgstr ""
+
+#: class/LayoutAdmin.php:81
+msgid "Footer updated."
+msgstr ""
+
+#: class/LayoutAdmin.php:93
+msgid "Header updated."
+msgstr ""
+
+#: class/LayoutAdmin.php:99
+msgid "Edit Footer"
+msgstr ""
+
+#: class/LayoutAdmin.php:104
+msgid "Edit Header"
+msgstr ""
+
+#: class/LayoutAdmin.php:109 class/LayoutAdmin.php:124
+msgid "Edit Meta Tags"
+msgstr ""
+
+#: class/LayoutAdmin.php:125
+msgid "Meta Tags updated."
+msgstr ""
+
+#: class/LayoutAdmin.php:132
+msgid "Confirm Theme Change"
+msgstr ""
+
+#: class/LayoutAdmin.php:133
+msgid "If you are happy with the change, click the appropiate button."
+msgstr ""
+
+#: class/LayoutAdmin.php:134
+msgid ""
+"Failure to respond in ten seconds, reverts phpWebSite to the default theme."
+msgstr ""
+
+#: class/LayoutAdmin.php:156 class/LayoutAdmin.php:209
+msgid "Change CSS"
+msgstr ""
+
+#: class/LayoutAdmin.php:182
+msgid "-- Use default style --"
+msgstr ""
+
+#: class/LayoutAdmin.php:200
+msgid "Style sheet"
+msgstr ""
+
+#: class/LayoutAdmin.php:202
+msgid "Save"
+msgstr ""
+
+#: class/LayoutAdmin.php:204
+msgid "Cancel"
+msgstr ""
+
+#: class/LayoutAdmin.php:220
+msgid "Boxes"
+msgstr ""
+
+#: class/LayoutAdmin.php:221
+msgid "Meta Tags"
+msgstr ""
+
+#: class/LayoutAdmin.php:223
+msgid "Header"
+msgstr ""
+
+#: class/LayoutAdmin.php:224
+msgid "Footer"
+msgstr ""
+
+#: class/LayoutAdmin.php:238
+msgid "Update Theme Settings"
+msgstr ""
+
+#: class/LayoutAdmin.php:242
+msgid "There was a problem reading the theme directories."
+msgstr ""
+
+#: class/LayoutAdmin.php:248
+msgid "Default Theme"
+msgstr ""
+
+#: class/LayoutAdmin.php:261
+msgid "Disable"
+msgstr ""
+
+#: class/LayoutAdmin.php:261
+msgid "Enable"
+msgstr ""
+
+#: class/LayoutAdmin.php:270
+msgid "Don't reset"
+msgstr ""
+
+#: class/LayoutAdmin.php:270 class/LayoutAdmin.php:276
+msgid "Reset boxes"
+msgstr ""
+
+#: class/LayoutAdmin.php:273
+msgid "Change Settings"
+msgstr ""
+
+#: class/LayoutAdmin.php:277
+msgid "Box positioning"
+msgstr ""
+
+#: class/LayoutAdmin.php:298
+msgid "Complete the theme change"
+msgstr ""
+
+#: class/LayoutAdmin.php:299
+msgid "Restore the default theme"
+msgstr ""
+
+#: class/LayoutAdmin.php:319
+msgid "Update Footer"
+msgstr ""
+
+#: class/LayoutAdmin.php:340
+msgid "Update Header"
+msgstr ""
+
+#: class/LayoutAdmin.php:368
+msgid "Keywords"
+msgstr ""
+
+#: class/LayoutAdmin.php:370
+msgid "Description"
+msgstr ""
+
+#: class/LayoutAdmin.php:373
+msgid "Allow indexing"
+msgstr ""
+
+#: class/LayoutAdmin.php:376
+msgid "Allow link following"
+msgstr ""
+
+#: class/LayoutAdmin.php:378
+msgid "Update"
+msgstr ""
+
+#: class/LayoutAdmin.php:381
+msgid "Default Robot Settings"
+msgstr ""
+
+#: conf/error.php:3
+msgid "Layout session not set"
+msgstr ""
+
+#: conf/error.php:4
+msgid "Layout did not receive any data for display"
+msgstr ""
+
+#: conf/error.php:5
+msgid "Unable to receive theme information."
+msgstr ""
+
+#: conf/error.php:6
+msgid "Data was not an array."
+msgstr ""
+
+#: conf/error.php:7
+msgid "Javascript file was not found."
+msgstr ""
+
+#: conf/error.php:8
+msgid "Box order is out of sequence."
+msgstr ""
+
+#: conf/error.php:9
+msgid "The theme.ini file is missing for the default theme."
+msgstr ""
+
+#: inc/my_page.php:22
+msgid "Display settings"
+msgstr ""
+
+#: inc/my_page.php:29
+msgid "Settings saved"
+msgstr ""
+
+#: inc/my_page.php:53
+msgid "Available styles"
+msgstr ""
+
+#: inc/my_page.php:54
+msgid "Save settings"
+msgstr ""
+
+#: inc/my_page.php:56
+msgid "No alternate style sheets available."
+msgstr ""

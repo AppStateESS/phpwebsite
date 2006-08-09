@@ -1,0 +1,265 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-08-09 14:48-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: boost/controlpanel.php:3
+msgid "Profiler"
+msgstr ""
+
+#: boost/controlpanel.php:6
+msgid "Create profiles on individuals for display on site."
+msgstr ""
+
+#: boost/permission.php:5
+msgid "Delete Profiles"
+msgstr ""
+
+#: boost/uninstall.php:14
+msgid "Profiles table removed."
+msgstr ""
+
+#: class/Division.php:40 class/Profile.php:264
+msgid "Edit"
+msgstr ""
+
+#: class/Forms.php:37
+msgid "Please make a profile division type first."
+msgstr ""
+
+#: class/Forms.php:44
+msgid "First name"
+msgstr ""
+
+#: class/Forms.php:47
+msgid "Last name"
+msgstr ""
+
+#: class/Forms.php:50
+msgid "Full story"
+msgstr ""
+
+#: class/Forms.php:56
+msgid "Caption"
+msgstr ""
+
+#: class/Forms.php:60
+msgid "Profile type"
+msgstr ""
+
+#: class/Forms.php:64
+msgid "Update profile"
+msgstr ""
+
+#: class/Forms.php:66
+msgid "Create profile"
+msgstr ""
+
+#: class/Forms.php:78
+msgid "Large photo"
+msgstr ""
+
+#: class/Forms.php:79
+msgid "Medium photo"
+msgstr ""
+
+#: class/Forms.php:80
+msgid "Small photo"
+msgstr ""
+
+#: class/Forms.php:101
+msgid "Last Name"
+msgstr ""
+
+#: class/Forms.php:102
+msgid "First Name"
+msgstr ""
+
+#: class/Forms.php:103
+msgid "Type"
+msgstr ""
+
+#: class/Forms.php:104
+msgid "Submission Date"
+msgstr ""
+
+#: class/Forms.php:105 class/Forms.php:154
+msgid "Action"
+msgstr ""
+
+#: class/Forms.php:131
+msgid "Number of profiles"
+msgstr ""
+
+#: class/Forms.php:135
+msgid "Enable profile homepage"
+msgstr ""
+
+#: class/Forms.php:137
+msgid "Save settings"
+msgstr ""
+
+#: class/Forms.php:150
+msgid "Add division"
+msgstr ""
+
+#: class/Forms.php:153
+msgid "Title"
+msgstr ""
+
+#: class/Forms.php:155
+msgid "Division ID"
+msgstr ""
+
+#: class/Forms.php:174
+msgid "Update Division"
+msgstr ""
+
+#: class/Forms.php:176
+msgid "Create Division"
+msgstr ""
+
+#: class/Forms.php:179
+msgid "Save"
+msgstr ""
+
+#: class/Forms.php:181
+msgid "Division title"
+msgstr ""
+
+#: class/Forms.php:183
+msgid "Cancel"
+msgstr ""
+
+#: class/Forms.php:188
+msgid "Your title is empty or already in use. Enter another."
+msgstr ""
+
+#: class/Profile.php:86
+msgid "Read more. . ."
+msgstr ""
+
+#: class/Profile.php:186
+msgid "Profile not set."
+msgstr ""
+
+#: class/Profile.php:215
+msgid "Please enter a first name."
+msgstr ""
+
+#: class/Profile.php:221
+msgid "Please enter a last name."
+msgstr ""
+
+#: class/Profile.php:270
+msgid "Are you sure you want to permanently delete this profile?"
+msgstr ""
+
+#: class/Profile.php:272
+msgid "Delete"
+msgstr ""
+
+#: class/Profiler.php:46
+msgid "Edit profile"
+msgstr ""
+
+#: class/Profiler.php:81
+msgid "Please create a profile in this category."
+msgstr ""
+
+#: class/Profiler.php:117 class/Profiler.php:204
+msgid "Create New Profile"
+msgstr ""
+
+#: class/Profiler.php:122 class/Profiler.php:202
+msgid "Update Profile"
+msgstr ""
+
+#: class/Profiler.php:134
+msgid "Current Profiles"
+msgstr ""
+
+#: class/Profiler.php:139
+msgid "Divisions"
+msgstr ""
+
+#: class/Profiler.php:153 class/Profiler.php:171
+msgid "There is a problem with this Profiler division."
+msgstr ""
+
+#: class/Profiler.php:190
+msgid "You recently posted this identical profile."
+msgstr ""
+
+#: class/Profiler.php:191
+msgid "Ignoring the repeat."
+msgstr ""
+
+#: class/Profiler.php:212
+msgid "Sorry"
+msgstr ""
+
+#: class/Profiler.php:213
+msgid "An error occurred when saving your profile."
+msgstr ""
+
+#: class/Profiler.php:215
+msgid "Success"
+msgstr ""
+
+#: class/Profiler.php:217
+msgid "Profile saved successfully."
+msgstr ""
+
+#: class/Profiler.php:219
+msgid "Profile saved for approval."
+msgstr ""
+
+#: class/Profiler.php:227 class/Profiler.php:267
+msgid "Settings"
+msgstr ""
+
+#: class/Profiler.php:239
+msgid "Uh oh"
+msgstr ""
+
+#: class/Profiler.php:240
+msgid "There was a problem saving your settings."
+msgstr ""
+
+#: class/Profiler.php:242
+msgid "Setting saved"
+msgstr ""
+
+#: class/Profiler.php:243
+msgid "Go back to the Settings page."
+msgstr ""
+
+#: class/Profiler.php:264
+msgid "New"
+msgstr ""
+
+#: class/Profiler.php:265
+msgid "List"
+msgstr ""
+
+#: class/Profiler.php:266
+msgid "Division"
+msgstr ""
+
+#: conf/error.php:5
+msgid "Profile not found."
+msgstr ""
