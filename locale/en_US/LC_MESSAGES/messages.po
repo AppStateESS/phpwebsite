@@ -8,13 +8,30 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-25 15:06-0400\n"
+"POT-Creation-Date: 2006-08-09 14:37-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: phpws_stats.php:42
+#, php-format
+msgid "Execution time: %s seconds."
+msgstr ""
+
+#: phpws_stats.php:52
+msgid "Declared classes:"
+msgstr ""
+
+#: phpws_stats.php:57
+msgid "Current sessions:"
+msgstr ""
+
+#: phpws_stats.php:65
+msgid "Request"
+msgstr ""
 
 #: config/core/error.php:4
 msgid "Unknown Error."
@@ -24,11 +41,11 @@ msgstr ""
 msgid "File not found."
 msgstr ""
 
-#: config/core/error.php:6 config/core/error.php:43
+#: config/core/error.php:6 config/core/error.php:46
 msgid "Class does not exist."
 msgstr ""
 
-#: config/core/error.php:7 config/core/error.php:80
+#: config/core/error.php:7 config/core/error.php:83
 msgid "Directory is not writable."
 msgstr ""
 
@@ -76,285 +93,321 @@ msgstr ""
 msgid "Function name not found."
 msgstr ""
 
-#: config/core/error.php:21
-msgid "Table name not set."
+#: config/core/error.php:19
+msgid "Unable to verify source directory. Check PHPWS_SOURCE_DIR."
 msgstr ""
 
 #: config/core/error.php:22
-msgid "No values were set before the query"
+msgid "Table name not set."
 msgstr ""
 
 #: config/core/error.php:23
-msgid "No variables in object."
+msgid "No values were set before the query"
 msgstr ""
 
 #: config/core/error.php:24
-msgid "Not an acceptable operator."
+msgid "No variables in object."
 msgstr ""
 
 #: config/core/error.php:25
-msgid "Improper table name."
+msgid "Not an acceptable operator."
 msgstr ""
 
 #: config/core/error.php:26
-msgid "Improper column name."
+msgid "Improper table name."
 msgstr ""
 
 #: config/core/error.php:27
-msgid "Missing column to select."
+msgid "Improper column name."
 msgstr ""
 
 #: config/core/error.php:28
-msgid "Expecting an object variable."
+msgid "Missing column to select."
 msgstr ""
 
 #: config/core/error.php:29
-msgid "Class does not contain variables."
+msgid "Expecting an object variable."
 msgstr ""
 
 #: config/core/error.php:30
-msgid "Function was expecting a \"where\" parameter."
+msgid "Class does not contain variables."
 msgstr ""
 
 #: config/core/error.php:31
-msgid "Join database does not exist."
+msgid "Function was expecting a \"where\" parameter."
 msgstr ""
 
 #: config/core/error.php:32
-msgid "Table does not exist."
+msgid "Join database does not exist."
 msgstr ""
 
 #: config/core/error.php:33
+msgid "Table does not exist."
+msgstr ""
+
+#: config/core/error.php:34
 msgid "loadObject expected the object to have an id or where clause."
 msgstr ""
 
-#: config/core/error.php:37
-msgid "Module not set."
+#: config/core/error.php:35
+msgid "Select returned an empty result."
 msgstr ""
 
-#: config/core/error.php:38
-msgid "Class not set."
-msgstr ""
-
-#: config/core/error.php:39
-msgid "Table not set."
+#: config/core/error.php:36 mod/boost/class/Boost.php:130
+msgid "Database import failed."
 msgstr ""
 
 #: config/core/error.php:40
-msgid "List columns not set."
+msgid "Module not set."
 msgstr ""
 
 #: config/core/error.php:41
-msgid "Name not set."
+msgid "Class not set."
 msgstr ""
 
 #: config/core/error.php:42
-msgid "Op not set."
+msgid "Table not set."
+msgstr ""
+
+#: config/core/error.php:43
+msgid "List columns not set."
 msgstr ""
 
 #: config/core/error.php:44
-msgid "No items passed."
+msgid "Name not set."
 msgstr ""
 
 #: config/core/error.php:45
+msgid "Op not set."
+msgstr ""
+
+#: config/core/error.php:47
+msgid "No items passed."
+msgstr ""
+
+#: config/core/error.php:48
 msgid "Database columns not set."
 msgstr ""
 
-#: config/core/error.php:49
+#: config/core/error.php:52
 #, php-format
 msgid "You may not use \"%s\" as a form element name."
 msgstr ""
 
-#: config/core/error.php:50
+#: config/core/error.php:53
 #, php-format
 msgid "Unable to find element \"%s\"."
 msgstr ""
 
-#: config/core/error.php:51
+#: config/core/error.php:54
 msgid "Input type not set."
 msgstr ""
 
-#: config/core/error.php:52
+#: config/core/error.php:55
 msgid "Wrong element type for procedure."
 msgstr ""
 
-#: config/core/error.php:53
+#: config/core/error.php:56
 msgid "Can not change name. Already in use."
 msgstr ""
 
-#: config/core/error.php:54
+#: config/core/error.php:57
 msgid "No form elements have been created."
 msgstr ""
 
-#: config/core/error.php:55
+#: config/core/error.php:58
 msgid "The submitted template is not an array."
 msgstr ""
 
-#: config/core/error.php:56
+#: config/core/error.php:59
 msgid "File not found in _FILES array."
 msgstr ""
 
-#: config/core/error.php:57
+#: config/core/error.php:60
 msgid "Unrecognized form type."
 msgstr ""
 
-#: config/core/error.php:58
+#: config/core/error.php:61
 msgid "Match for must be an array for a multiple input."
 msgstr ""
 
-#: config/core/error.php:62
+#: config/core/error.php:65
 msgid "Id and table not set."
 msgstr ""
 
-#: config/core/error.php:63
+#: config/core/error.php:66
 msgid "No result returned from database."
 msgstr ""
 
-#: config/core/error.php:66
+#: config/core/error.php:69
 msgid "Module not found in the database."
 msgstr ""
 
-#: config/core/error.php:69
+#: config/core/error.php:72
 msgid "No error message file found."
 msgstr ""
 
-#: config/core/error.php:70
+#: config/core/error.php:73
 msgid "Blank module title sent to get function."
 msgstr ""
 
-#: config/core/error.php:73
+#: config/core/error.php:76
 msgid "Help option not found in help configuration file."
 msgstr ""
 
-#: config/core/error.php:76
+#: config/core/error.php:79
 msgid "PHPWS_File received an unknown construct."
 msgstr ""
 
-#: config/core/error.php:77
+#: config/core/error.php:80
 msgid "Class not found."
 msgstr ""
 
-#: config/core/error.php:78
+#: config/core/error.php:81
 msgid "Unable to delete file."
 msgstr ""
 
-#: config/core/error.php:79
+#: config/core/error.php:82
 msgid "Unable to delete directory."
 msgstr ""
 
-#: config/core/error.php:81
+#: config/core/error.php:84
 msgid "Cannot read file."
 msgstr ""
 
-#: config/core/error.php:82
+#: config/core/error.php:85
 msgid "Variable name not found in_FILES array."
 msgstr ""
 
-#: config/core/error.php:83
+#: config/core/error.php:86
 msgid "Unable to save file in selected directory."
 msgstr ""
 
-#: config/core/error.php:84
+#: config/core/error.php:87
 msgid "Upload directory not set in file object."
 msgstr ""
 
-#: config/core/error.php:85
+#: config/core/error.php:88
 msgid "Upload file size is larger than allowed."
 msgstr ""
 
-#: config/core/error.php:88
+#: config/core/error.php:89
+msgid "GD image libraries do not support this image type."
+msgstr ""
+
+#: config/core/error.php:92 config/filecabinet/error.php:8
+#: mod/filecabinet/conf/error.php:8
 msgid "Filename not set."
 msgstr ""
 
-#: config/core/error.php:89
+#: config/core/error.php:93 config/filecabinet/error.php:9
+#: mod/filecabinet/conf/error.php:9
 msgid "Directory not set."
 msgstr ""
 
-#: config/core/error.php:90
+#: config/core/error.php:94 config/filecabinet/error.php:10
+#: mod/filecabinet/conf/error.php:10
 msgid "There was a problem loading the image file."
 msgstr ""
 
-#: config/core/error.php:91
+#: config/core/error.php:95 config/filecabinet/error.php:11
+#: mod/filecabinet/conf/error.php:11
 #, php-format
 msgid "Image was %sK making it larger than %sK size limit."
 msgstr ""
 
-#: config/core/error.php:92
+#: config/core/error.php:96 config/filecabinet/error.php:12
+#: mod/filecabinet/conf/error.php:12
 #, php-format
 msgid "Image width was %spx, making it larger than %d pixel limit."
 msgstr ""
 
-#: config/core/error.php:93
+#: config/core/error.php:97 config/filecabinet/error.php:13
+#: mod/filecabinet/conf/error.php:13
 #, php-format
 msgid "Image height was %spx, making it larger than %d pixel limit."
 msgstr ""
 
-#: config/core/error.php:94
+#: config/core/error.php:98 config/filecabinet/error.php:14
+#: mod/filecabinet/conf/error.php:14
 msgid "Unacceptable image type."
 msgstr ""
 
-#: config/core/error.php:95
+#: config/core/error.php:99 config/filecabinet/error.php:15
+#: mod/filecabinet/conf/error.php:15
 msgid "Image not found"
 msgstr ""
 
-#: config/core/error.php:96
+#: config/core/error.php:100 config/filecabinet/error.php:16
+#: mod/filecabinet/conf/error.php:16
 #, php-format
 msgid "Document was %sK making it larger than %sK size limit."
 msgstr ""
 
-#: config/core/error.php:97
+#: config/core/error.php:101 config/filecabinet/error.php:17
+#: mod/filecabinet/conf/error.php:17
 msgid "Unacceptable document type."
 msgstr ""
 
-#: config/core/error.php:98
+#: config/core/error.php:102 config/filecabinet/error.php:18
+#: mod/filecabinet/conf/error.php:18
 msgid "Document not found."
 msgstr ""
 
-#: config/core/error.php:99
+#: config/core/error.php:103 config/filecabinet/error.php:19
+#: mod/filecabinet/conf/error.php:19
 msgid "File not uploaded."
 msgstr ""
 
-#: config/core/error.php:104
+#: config/core/error.php:108
 msgid "Function expected a string variable."
 msgstr ""
 
-#: config/core/error.php:107
+#: config/core/error.php:111
 msgid "No pages found."
 msgstr ""
 
-#: config/core/error.php:108
+#: config/core/error.php:112
 msgid "Module was not set."
 msgstr ""
 
-#: config/core/error.php:109
+#: config/core/error.php:113
 msgid "Template was not set."
 msgstr ""
 
-#: config/core/error.php:110
+#: config/core/error.php:114
 msgid "Table is blank"
 msgstr ""
 
-#: config/core/error.php:111
+#: config/core/error.php:115
 msgid "Method does not exist in specified class."
 msgstr ""
 
-#: config/core/error.php:114
+#: config/core/error.php:118
 msgid "Unable to find the specified editor type."
 msgstr ""
 
-#: config/core/error.php:117
+#: config/core/error.php:121
 msgid "Unable to find your module's settings.php file."
 msgstr ""
 
-#: config/core/error.php:120
+#: config/core/error.php:124
 msgid "Key not found."
 msgstr ""
 
-#: config/core/error.php:121
+#: config/core/error.php:125
 msgid "Edit permission column does not exist."
 msgstr ""
 
 #: config/core/error.php:126
+msgid "Could not find key unregister file."
+msgstr ""
+
+#: config/core/error.php:127
+msgid "Could not find key unregister function."
+msgstr ""
+
+#: config/core/error.php:132
 msgid "Failed to write cookie."
 msgstr ""
 
@@ -362,20 +415,986 @@ msgstr ""
 msgid "Form"
 msgstr ""
 
-#: core/class/DB/pgsql.php:63
-msgid "Unknown column type:"
+#: config/users/config.php:30 mod/users/conf/config.php:30
+msgid "Unrestricted"
 msgstr ""
 
-#: core/class/Batch.php:126 setup/class/Setup.php:319
-#: setup/class/Setup.php:390
+#: config/users/config.php:31 mod/users/conf/config.php:31
+msgid "Restricted"
+msgstr ""
+
+#: config/users/config.php:32 mod/calendar/class/Schedule.php:352
+#: mod/users/class/Form.php:719 mod/users/class/Form.php:773
+#: mod/users/conf/config.php:32 mod/calendar_old/class/Admin.php:587
+#: mod/calendar_new/class/Schedule.php:352
+msgid "None"
+msgstr ""
+
+#: config/users/config.php:54 mod/users/conf/config.php:54
+msgid "Login"
+msgstr ""
+
+#: config/users/config.php:55 mod/users/conf/config.php:55
+msgid "Want to join?"
+msgstr ""
+
+#: config/users/error.php:10 mod/users/conf/error.php:10
+msgid "Unknown error."
+msgstr ""
+
+#: config/users/error.php:11 mod/users/conf/error.php:11
+msgid "User name already in use."
+msgstr ""
+
+#: config/users/error.php:12 mod/users/conf/error.php:12
+msgid "Email address already in use."
+msgstr ""
+
+#: config/users/error.php:13 mod/users/conf/error.php:13
+msgid "A group with this name already exists."
+msgstr ""
+
+#: config/users/error.php:14 mod/users/conf/error.php:14
+msgid "Permission table name already exists."
+msgstr ""
+
+#: config/users/error.php:15 mod/users/conf/error.php:15
+msgid "Permission table not found."
+msgstr ""
+
+#: config/users/error.php:16 mod/users/conf/error.php:16
+msgid "Module's permission file is missing."
+msgstr ""
+
+#: config/users/error.php:17 mod/users/conf/error.php:17
+msgid "Module's item permission file is missing."
+msgstr ""
+
+#: config/users/error.php:18 mod/users/conf/error.php:18
+msgid "Username is improperly formatted."
+msgstr ""
+
+#: config/users/error.php:19 mod/users/conf/error.php:19
+msgid "Display name is improperly formatted."
+msgstr ""
+
+#: config/users/error.php:20 mod/users/conf/error.php:20
+msgid "Passwords do not match."
+msgstr ""
+
+#: config/users/error.php:21 mod/users/conf/error.php:21
+#, php-format
+msgid "Password must be at least %s characters in length."
+msgstr ""
+
+#: config/users/error.php:22 mod/users/conf/error.php:22
+msgid "Password is too easy to guess."
+msgstr ""
+
+#: config/users/error.php:23 mod/users/conf/error.php:23
+msgid "Module does not exist."
+msgstr ""
+
+#: config/users/error.php:24 mod/users/conf/error.php:24
+msgid "Invalid variable name."
+msgstr ""
+
+#: config/users/error.php:25 mod/users/conf/error.php:25
+msgid "Unable to save user information."
+msgstr ""
+
+#: config/users/error.php:26 mod/users/conf/error.php:26
+msgid "Improperly formatted group name."
+msgstr ""
+
+#: config/users/error.php:27 mod/users/conf/error.php:27
+msgid "Group does not exist."
+msgstr ""
+
+#: config/users/error.php:28 mod/users/conf/error.php:28
+msgid "User is missing their permission group"
+msgstr ""
+
+#: config/users/error.php:29 mod/users/conf/error.php:29
+msgid "Module tried to detect a non-existant permission."
+msgstr ""
+
+#: config/users/error.php:30 mod/users/conf/error.php:30
+msgid "User's email address is missing."
+msgstr ""
+
+#: config/users/error.php:31 mod/users/conf/error.php:31
+msgid "User's email address is missing or malformed."
+msgstr ""
+
+#: config/users/error.php:32 mod/users/conf/error.php:32
+msgid "Missing authorization script."
+msgstr ""
+
+#: config/users/error.php:33 mod/users/conf/error.php:33
+msgid "Unable to find font file for graphic confirmation."
+msgstr ""
+
+#: config/users/error.php:34 mod/users/conf/error.php:34
+msgid "Unable to write confirmation graphic to server."
+msgstr ""
+
+#: config/users/error.php:35 mod/users/conf/error.php:35
+msgid "Missing my_page function."
+msgstr ""
+
+#: config/users/error.php:36 mod/users/conf/error.php:36
+msgid "Mistyped username."
+msgstr ""
+
+#: config/users/error.php:37 mod/users/conf/error.php:37
+msgid ""
+"There is a problem with your authentication method. Contact the site "
+"administrator."
+msgstr ""
+
+#: config/users/error.php:38 mod/users/conf/error.php:38
+msgid ""
+"Your user account has not been approved yet. Make sure you have responded to "
+"your authentication email."
+msgstr ""
+
+#: config/users/error.php:39 mod/users/conf/error.php:39
+msgid ""
+"Your account has been deactivated. You will need to contact a site "
+"administrator to have it reactivated."
+msgstr ""
+
+#: config/controlpanel/error.php:3 mod/controlpanel/conf/error.php:3
+msgid "Tabs must be in an array."
+msgstr ""
+
+#: config/controlpanel/error.php:4 mod/controlpanel/conf/error.php:4
+msgid "Tab is missing a title."
+msgstr ""
+
+#: config/controlpanel/error.php:5 mod/controlpanel/conf/error.php:5
+msgid "Tab is missing a link address."
+msgstr ""
+
+#: config/controlpanel/error.php:6 mod/controlpanel/conf/error.php:6
+msgid "Unable to pull control panel tabs from database."
+msgstr ""
+
+#: config/layout/error.php:3 mod/layout/conf/error.php:3
+msgid "Layout session not set"
+msgstr ""
+
+#: config/layout/error.php:4 mod/layout/conf/error.php:4
+msgid "Layout did not receive any data for display"
+msgstr ""
+
+#: config/layout/error.php:5 mod/layout/conf/error.php:5
+msgid "Unable to receive theme information."
+msgstr ""
+
+#: config/layout/error.php:6 mod/layout/conf/error.php:6
+msgid "Data was not an array."
+msgstr ""
+
+#: config/layout/error.php:7 mod/layout/conf/error.php:7
+msgid "Javascript file was not found."
+msgstr ""
+
+#: config/layout/error.php:8 mod/layout/conf/error.php:8
+msgid "Box order is out of sequence."
+msgstr ""
+
+#: config/layout/error.php:9 mod/layout/conf/error.php:9
+msgid "The theme.ini file is missing for the default theme."
+msgstr ""
+
+#: config/boost/error.php:7 mod/boost/conf/error.php:7
+msgid "Object sent to boost was not of the PHPWS_Module class."
+msgstr ""
+
+#: config/boost/error.php:8 mod/boost/conf/error.php:8
+msgid "Unable to locate SQL import file."
+msgstr ""
+
+#: config/boost/error.php:9 mod/boost/conf/error.php:9
+msgid "Modules have not been set."
+msgstr ""
+
+#: config/boost/error.php:10 mod/boost/conf/error.php:10
+msgid "Failed installation of module."
+msgstr ""
+
+#: config/boost/error.php:11 mod/boost/conf/error.php:11
+msgid "Failed upgrade of module."
+msgstr ""
+
+#: config/boost/error.php:12 mod/boost/conf/error.php:12
+msgid "Module is missing register file."
+msgstr ""
+
+#: config/boost/error.php:13 mod/boost/conf/error.php:13
+msgid "Module is missing register function."
+msgstr ""
+
+#: config/boost/error.php:14 mod/boost/conf/error.php:14
+msgid "Unable to make a backup of a local module file."
+msgstr ""
+
+#: config/boost/error.php:15 mod/boost/conf/error.php:15
+msgid "Failed to copy file to local directory."
+msgstr ""
+
+#: config/related/config.php:3 mod/related/conf/config.php:3
+msgid "Related Topics"
+msgstr ""
+
+#: config/categories/config.php:4 mod/categories/conf/config.php:4
+msgid "Uncategorized"
+msgstr ""
+
+#: config/categories/error.php:3 mod/categories/conf/error.php:3
+msgid "Category ID not found"
+msgstr ""
+
+#: config/categories/error.php:4 mod/categories/conf/error.php:4
+msgid "There was a problem accessing the database."
+msgstr ""
+
+#: config/categories/error.php:5 mod/categories/conf/error.php:5
+msgid "Module does not have a category table."
+msgstr ""
+
+#: config/categories/error.php:6 mod/categories/conf/error.php:6
+msgid "Category item is missing variables."
+msgstr ""
+
+#: config/categories/error.php:7 mod/categories/conf/error.php:7
+msgid "Missing either a version or item id."
+msgstr ""
+
+#: config/filecabinet/error.php:20 mod/filecabinet/conf/error.php:20
+msgid "Could not delete file."
+msgstr ""
+
+#: config/filecabinet/error.php:21 mod/filecabinet/conf/error.php:21
+#, php-format
+msgid "Image is %spx x %spx, the maximum dimensions are %spx x %spx."
+msgstr ""
+
+#: config/filecabinet/error.php:22 mod/filecabinet/conf/error.php:22
+msgid "Unable to move the file to its new directory."
+msgstr ""
+
+#: config/version/error.php:11 mod/version/conf/error.php:11
+msgid "Version function requires an item id."
+msgstr ""
+
+#: config/version/error.php:12 mod/version/conf/error.php:12
+msgid "Source table not found."
+msgstr ""
+
+#: config/version/error.php:13 mod/version/conf/error.php:13
+msgid "Unknown module"
+msgstr ""
+
+#: config/version/error.php:14 mod/version/conf/error.php:14
+msgid "Set variable must be an object or an array."
+msgstr ""
+
+#: config/version/error.php:15 mod/version/conf/error.php:15
+msgid "Missing source data."
+msgstr ""
+
+#: config/version/error.php:16 mod/version/conf/error.php:16
+msgid "Missing columns.php file"
+msgstr ""
+
+#: config/clipboard/config.php:4 mod/clipboard/conf/config.php:4
+#: mod/search/class/Admin.php:202 mod/search/class/Admin.php:215
+#: mod/users/class/Form.php:350 mod/users/class/Form.php:567
+#: mod/users/class/Form.php:705
+msgid "Drop"
+msgstr ""
+
+#: config/demographics/error.php:8 mod/demographics/conf/error.php:8
+msgid "Demographics field does not exist."
+msgstr ""
+
+#: config/comments/config.php:9 mod/comments/conf/config.php:9
+msgid "Anonymous"
+msgstr ""
+
+#: config/comments/config.php:30 mod/comments/conf/config.php:30
+msgid "No subject"
+msgstr ""
+
+#: config/menu/config.php:11 mod/menu/conf/config.php:11
+msgid "Add Link"
+msgstr ""
+
+#: config/menu/config.php:13 mod/menu/conf/config.php:13
+msgid "Add Offsite Link"
+msgstr ""
+
+#: config/menu/config.php:15 mod/menu/conf/config.php:15
+msgid "Edit Link Title"
+msgstr ""
+
+#: config/menu/config.php:17 mod/menu/conf/config.php:17
+msgid "Delete Link"
+msgstr ""
+
+#: config/menu/config.php:19 mod/menu/conf/config.php:19
+msgid "Move Up"
+msgstr ""
+
+#: config/menu/config.php:21 mod/menu/conf/config.php:21
+msgid "Move Down"
+msgstr ""
+
+#: config/menu/config.php:23 mod/menu/conf/config.php:23
+msgid "Admin"
+msgstr ""
+
+#: config/menu/config.php:25 mod/menu/conf/config.php:25
+msgid "Admin mode on"
+msgstr ""
+
+#: config/menu/config.php:26 mod/menu/conf/config.php:26
+msgid "Admin mode off"
+msgstr ""
+
+#: config/menu/config.php:28 mod/menu/conf/config.php:28
+msgid "Pin to item"
+msgstr ""
+
+#: config/menu/config.php:29 mod/menu/conf/config.php:29
+msgid "Unpin menu"
+msgstr ""
+
+#: config/menu/error.php:4 mod/menu/conf/error.php:4
+msgid "Link is missing a title, url, or menu id."
+msgstr ""
+
+#: config/webpage/config.php:7 mod/webpage/conf/config.php:7
+msgid "Previous page"
+msgstr ""
+
+#: config/webpage/config.php:8 mod/webpage/conf/config.php:8
+msgid "Next page"
+msgstr ""
+
+#: config/webpage/error.php:3 mod/webpage/conf/error.php:3
+msgid "Missing template file."
+msgstr ""
+
+#: config/webpage/error.php:4 mod/webpage/conf/error.php:4
+msgid "Cannot find template file."
+msgstr ""
+
+#: config/webpage/error.php:5 mod/webpage/conf/error.php:5
+msgid "Volume is missing a title."
+msgstr ""
+
+#: config/access/error.php:7 mod/access/conf/error.php:7
+msgid "Bad keyword. Use only alphanumeric characters and underlines."
+msgstr ""
+
+#: config/access/error.php:8 mod/access/conf/error.php:8
+msgid "Keyword already in use. Choose another."
+msgstr ""
+
+#: config/access/error.php:9 mod/access/conf/error.php:9
+msgid "Missing keyword."
+msgstr ""
+
+#: config/access/error.php:10 mod/access/conf/error.php:10
+#: mod/menu/class/Menu_Admin.php:441
+msgid "Missing url."
+msgstr ""
+
+#: config/access/error.php:11 mod/access/conf/error.php:11
+msgid "The files/access/ directory is not writable."
+msgstr ""
+
+#: config/access/error.php:12 mod/access/conf/error.php:12
+msgid "Unable to write .htaccess file."
+msgstr ""
+
+#: config/access/error.php:13 mod/access/conf/error.php:13
+msgid ".htaccess file is missing."
+msgstr ""
+
+#: config/phatform/error.php:10
+msgid "You may not use that name for this form element."
+msgstr ""
+
+#: config/phatform/error.php:11
+msgid "The number of options must be a greater than zero."
+msgstr ""
+
+#: config/phatform/error.php:12
+msgid "The value for this element was not set."
+msgstr ""
+
+#: config/phatform/error.php:13
+msgid "The associated text for this element was not set."
+msgstr ""
+
+#: config/phatform/error.php:14
+msgid "There is a problem with options, contact a system administrator."
+msgstr ""
+
+#: config/phatform/error.php:15
+#, php-format
+msgid "The option set %s was unable to be saved."
+msgstr ""
+
+#: config/phatform/error.php:16
+#, php-format
+msgid "Unable to save %s."
+msgstr ""
+
+#: config/phatform/error.php:17
+msgid "All of the values were not set. You must fill out all of them."
+msgstr ""
+
+#: config/phatform/error.php:18
+msgid ""
+"All of the options and values were not set.  Check the box below to use your "
+"options as values."
+msgstr ""
+
+#: config/phatform/error.php:19
+msgid "Could not delete the element."
+msgstr ""
+
+#: config/phatform/error.php:20
+msgid "Missing form name."
+msgstr ""
+
+#: config/phatform/error.php:21
+msgid "Multiple submissions with editable form data are not allowed."
+msgstr ""
+
+#: config/phatform/error.php:22
+msgid "Anonymous submissions with editable form data are not allowed."
+msgstr ""
+
+#: config/phatform/error.php:23
+msgid "You must fill out all required fields to continue."
+msgstr ""
+
+#: config/phatform/error.php:24
+#, php-format
+msgid "You have passed the maximum allowed characters in the %s text field."
+msgstr ""
+
+#: config/phatform/error.php:25
+msgid "You must provide a submission message."
+msgstr ""
+
+#: config/phatform/error.php:26
+msgid "You must have at least one element to save this form."
+msgstr ""
+
+#: config/phatform/error.php:27
+msgid "Position must be an integer value."
+msgstr ""
+
+#: config/phatform/error.php:28
+msgid "Instructions are missing or formatted incorrectly."
+msgstr ""
+
+#: config/phatform/error.php:29
+msgid "\"Thank you\" message is not formatted correctly."
+msgstr ""
+
+#: config/phatform/error.php:30
+msgid "Form element is not an object."
+msgstr ""
+
+#: config/phatform/error.php:31
+msgid "The archive path is not web server writable."
+msgstr ""
+
+#: config/phatform/error.php:32
+msgid "The export path is not web server writable."
+msgstr ""
+
+#: config/phatform/manager.php:12
+msgid "ID"
+msgstr ""
+
+#: config/phatform/manager.php:13
+msgid "Name"
+msgstr ""
+
+#: config/phatform/manager.php:14
+msgid "Owner"
+msgstr ""
+
+#: config/phatform/manager.php:15
+msgid "Editor"
+msgstr ""
+
+#: config/phatform/manager.php:16 mod/version/class/Approval.php:149
+#: mod/version/class/Restore.php:88
+msgid "Created"
+msgstr ""
+
+#: config/phatform/manager.php:17
+msgid "Updated"
+msgstr ""
+
+#: config/phatform/manager.php:18 core/class/Manager.php:607
+msgid "Hidden"
+msgstr ""
+
+#: config/phatform/manager.php:19 core/class/Manager.php:617
+msgid "Approved"
+msgstr ""
+
+#: config/phatform/manager.php:20
+msgid "Ip"
+msgstr ""
+
+#: config/phatform/manager.php:21 mod/blog/class/Blog.php:160
+#: mod/version/class/Approval.php:203 mod/webpage/class/Volume.php:174
+msgid "View"
+msgstr ""
+
+#: config/phatform/manager.php:22 mod/access/class/Shortcut.php:93
+#: mod/block/class/Block_Item.php:206 mod/blog/class/Blog.php:208
+#: mod/blog/class/Blog.php:269 mod/blog/class/Blog_Admin.php:253
+#: mod/branch/class/Branch.php:125 mod/calendar/class/Schedule.php:329
+#: mod/calendar/class/Schedule.php:334 mod/categories/class/Category.php:202
+#: mod/comments/class/Comment_Item.php:354
+#: mod/filecabinet/class/Document.php:192
+#: mod/filecabinet/class/Document.php:198 mod/filecabinet/class/Image.php:364
+#: mod/filecabinet/class/Image_Manager.php:142
+#: mod/menu/class/Menu_Item.php:181 mod/profiler/class/Division.php:40
+#: mod/profiler/class/Profile.php:264 mod/related/class/Action.php:124
+#: mod/rss/class/Channel.php:78 mod/rss/class/Feed.php:63
+#: mod/users/class/Form.php:128 mod/users/class/Form.php:134
+#: mod/users/class/Form.php:310 mod/users/class/Group.php:250
+#: mod/users/class/Users.php:803 mod/version/class/Approval.php:208
+#: mod/webpage/class/Admin.php:443 mod/webpage/class/Page.php:167
+#: mod/webpage/class/Volume.php:204 mod/calendar_old/class/Event.php:261
+#: mod/calendar_old/class/Event.php:266
+#: mod/calendar_old/class/Schedule.php:313
+#: mod/calendar_new/class/Schedule.php:329
+#: mod/calendar_new/class/Schedule.php:334
+msgid "Edit"
+msgstr ""
+
+#: config/phatform/manager.php:23 mod/access/class/Forms.php:39
+#: mod/access/class/Forms.php:166 mod/access/class/Forms.php:218
+#: mod/access/class/Shortcut.php:87 mod/block/class/Block_Item.php:229
+#: mod/blog/class/Blog.php:276 mod/calendar/class/Schedule.php:345
+#: mod/categories/class/Category.php:208 mod/categories/class/Category.php:212
+#: mod/comments/class/Comment_Item.php:366
+#: mod/filecabinet/class/Document.php:208 mod/filecabinet/class/Image.php:371
+#: mod/filecabinet/class/Image_Manager.php:144
+#: mod/filecabinet/class/Image_Manager.php:423
+#: mod/menu/class/Menu_Item.php:206 mod/profiler/class/Profile.php:272
+#: mod/rss/class/Feed.php:70 mod/search/class/Admin.php:253
+#: mod/search/class/Admin.php:306 mod/users/class/Users.php:799
+#: mod/webpage/class/Forms.php:125 mod/calendar_old/class/Event.php:299
+#: mod/calendar_old/class/Event.php:302
+#: mod/calendar_old/class/Schedule.php:322
+#: mod/calendar_new/class/Schedule.php:345
+msgid "Delete"
+msgstr ""
+
+#: config/phatform/manager.php:24
+msgid "Hide"
+msgstr ""
+
+#: config/phatform/manager.php:25
+msgid "Show"
+msgstr ""
+
+#: config/phatform/manager.php:26 mod/blog/class/Blog_Admin.php:257
+#: mod/version/class/Approval.php:193 mod/webpage/class/Admin.php:448
+msgid "Approve"
+msgstr ""
+
+#: config/phatform/manager.php:27
+msgid "Refuse"
+msgstr ""
+
+#: config/phatform/manager.php:28 mod/users/class/Form.php:225
+#: mod/users/class/Form.php:248
+msgid "Actions"
+msgstr ""
+
+#: convert/class/Convert.php:46
+msgid "Unable to log in to the database. Please check your settings."
+msgstr ""
+
+#: convert/class/Convert.php:109
+msgid "No modules to convert."
+msgstr ""
+
+#: convert/class/Convert.php:122 mod/block/class/Block_Admin.php:204
+#: mod/block/class/Block_Admin.php:239 mod/blog/class/Blog_Admin.php:325
+#: mod/blog/class/Blog_Form.php:39 mod/calendar/class/Admin.php:313
+#: mod/calendar/class/Event.php:93 mod/calendar/class/Schedule.php:185
+#: mod/categories/class/Action.php:252 mod/categories/class/Action.php:289
+#: mod/filecabinet/class/Forms.php:23 mod/filecabinet/class/Forms.php:51
+#: mod/filecabinet/class/Forms.php:124
+#: mod/filecabinet/class/Image_Manager.php:307
+#: mod/filecabinet/class/Image_Manager.php:404
+#: mod/menu/class/Menu_Admin.php:330 mod/menu/class/Menu_Admin.php:365
+#: mod/menu/class/Menu_Admin.php:407 mod/profiler/class/Forms.php:153
+#: mod/related/class/Action.php:14 mod/related/class/Action.php:39
+#: mod/rss/class/Admin.php:180 mod/rss/class/Admin.php:225
+#: mod/rss/class/Admin.php:250 mod/rss/class/Admin.php:297
+#: mod/search/class/User.php:211 mod/webpage/class/Forms.php:99
+#: mod/webpage/class/Forms.php:136 mod/calendar_old/class/Admin.php:318
+#: mod/calendar_old/class/Admin.php:408 mod/calendar_old/class/Admin.php:445
+#: mod/calendar_new/class/Schedule.php:185
+#: mod/calendar_new/class/Admin.php:244
+msgid "Title"
+msgstr ""
+
+#: convert/class/Convert.php:123 mod/categories/class/Action.php:258
+#: mod/filecabinet/class/Forms.php:128
+#: mod/filecabinet/class/Image_Manager.php:314
+#: mod/filecabinet/class/Image_Manager.php:405
+#: mod/layout/class/LayoutAdmin.php:370 mod/rss/class/Admin.php:183
+msgid "Description"
+msgstr ""
+
+#: convert/class/Convert.php:125
+msgid "There aren't any conversion files in the convert/modules directory."
+msgstr ""
+
+#: convert/class/Convert.php:190 core/class/Database.php:1936
+#: mod/profiler/class/Forms.php:103
+msgid "Type"
+msgstr ""
+
+#: convert/class/Convert.php:193 mod/branch/class/Branch_Admin.php:627
+msgid "Database name"
+msgstr ""
+
+#: convert/class/Convert.php:196
+msgid "User name"
+msgstr ""
+
+#: convert/class/Convert.php:199 convert/class/Convert.php:310
+#: mod/users/boost/install.php:142 mod/users/class/Form.php:76
+#: mod/users/class/Form.php:423 mod/users/class/Form.php:808
+#: mod/users/class/Form.php:891 mod/users/inc/my_page.php:75
+#: mod/users/inc/my_page.php:77 setup/manager.php:106
+msgid "Password"
+msgstr ""
+
+#: convert/class/Convert.php:202
+msgid "Host"
+msgstr ""
+
+#: convert/class/Convert.php:205
+msgid "Port"
+msgstr ""
+
+#: convert/class/Convert.php:206
+msgid "Connect"
+msgstr ""
+
+#: convert/class/Convert.php:209
+msgid ""
+"Please enter the connect information for the database you wish to convert "
+"from."
+msgstr ""
+
+#: convert/class/Convert.php:223
+msgid "Converted"
+msgstr ""
+
+#: convert/class/Convert.php:225
+msgid "Convert!"
+msgstr ""
+
+#: convert/class/Convert.php:236
+msgid "phpWebSite 1.0.0 Convert"
+msgstr ""
+
+#: convert/class/Convert.php:243
+msgid "Main page"
+msgstr ""
+
+#: convert/class/Convert.php:255
+msgid "Please wait..."
+msgstr ""
+
+#: convert/class/Convert.php:307 setup/manager.php:107
+msgid "Log in"
+msgstr ""
+
+#: convert/class/Convert.php:309 mod/users/boost/install.php:141
+#: mod/users/class/Form.php:75 mod/users/class/Form.php:221
+#: mod/users/class/Form.php:421 mod/users/class/Form.php:802
+#: mod/users/class/Form.php:890 setup/manager.php:104
+msgid "Username"
+msgstr ""
+
+#: convert/class/Convert.php:328
+#, php-format
+msgid "Could not find info file. File : %s"
+msgstr ""
+
+#: convert/class/Convert.php:328 core/class/Error.php:85
+#: core/class/Error.php:107 mod/comments/class/Comments.php:151
+#: mod/layout/class/LayoutAdmin.php:78 mod/layout/class/LayoutAdmin.php:90
+#: mod/menu/class/Menu_Admin.php:132 mod/webpage/class/Admin.php:292
+msgid "Error"
+msgstr ""
+
+#: convert/class/Convert.php:335
+msgid "Not a convert file."
+msgstr ""
+
+#: convert/modules/block/convert.php:17
+msgid "Block is already converted."
+msgstr ""
+
+#: convert/modules/block/convert.php:23
+msgid "Block is not installed."
+msgstr ""
+
+#: convert/modules/block/convert.php:31
+msgid "No blocks found."
+msgstr ""
+
+#: convert/modules/block/convert.php:34
+msgid "An error occurred while accessing your mod_blockmaker_data table."
+msgstr ""
+
+#: convert/modules/block/convert.php:45
+msgid "An error occurred while converting your old blocks."
+msgstr ""
+
+#: convert/modules/block/convert.php:49
+msgid "Blocks converted."
+msgstr ""
+
+#: convert/modules/blog/convert.php:30
+msgid "Blog has already been converted."
+msgstr ""
+
+#: convert/modules/blog/convert.php:36
+msgid "Blog is not installed."
+msgstr ""
+
+#: convert/modules/blog/convert.php:40 convert/modules/users/convert.php:72
+msgid "You may convert to different ways."
+msgstr ""
+
+#: convert/modules/blog/convert.php:42 convert/modules/users/convert.php:75
+msgid "Manual mode requires you to click through the conversion process."
+msgstr ""
+
+#: convert/modules/blog/convert.php:44 convert/modules/users/convert.php:78
+msgid "Automatic mode converts the data without your interaction."
+msgstr ""
+
+#: convert/modules/blog/convert.php:47 convert/modules/users/convert.php:81
+msgid "If you encounter problems, you should use manual mode."
+msgstr ""
+
+#: convert/modules/blog/convert.php:48 convert/modules/users/convert.php:82
+msgid "Conversion will begin as soon as you make your choice."
+msgstr ""
+
+#: convert/modules/blog/convert.php:68
+msgid "No announcements to convert."
+msgstr ""
+
+#: convert/modules/blog/convert.php:79 convert/modules/menu/convert.php:97
+#: convert/modules/users/convert.php:122
+#: convert/modules/webpage/convert.php:40
+msgid "Batch previously run."
+msgstr ""
+
+#: convert/modules/blog/convert.php:98 convert/modules/users/convert.php:145
+#: convert/modules/webpage/convert.php:64
+#: mod/branch/class/Branch_Admin.php:196
+msgid "All done!"
+msgstr ""
+
+#: convert/modules/blog/convert.php:99 convert/modules/menu/convert.php:111
+#: convert/modules/users/convert.php:148
+#: convert/modules/webpage/convert.php:65
+msgid "Go back to main menu."
+msgstr ""
+
+#: convert/modules/categories/convert.php:16
+msgid "Any content modules using FatCat should be converted BEFORE continuing."
+msgstr ""
+
+#: convert/modules/categories/convert.php:17
+#: convert/modules/menu/convert.php:14
+msgid "Click to continue anyway."
+msgstr ""
+
+#: convert/modules/categories/convert.php:18
+#: convert/modules/menu/convert.php:15
+msgid "Otherwise, click on the \"Main page\" link above."
+msgstr ""
+
+#: convert/modules/categories/convert.php:27
+msgid "Categories has already been converted."
+msgstr ""
+
+#: convert/modules/categories/convert.php:62
+msgid "Finished converting categories!"
+msgstr ""
+
+#: convert/modules/categories/convert.php:63
+msgid "Continue to convert category elements."
+msgstr ""
+
+#: convert/modules/categories/convert.php:105
+msgid "Finished converting category items!"
+msgstr ""
+
+#: convert/modules/categories/convert.php:106
+msgid "Return to the main page."
+msgstr ""
+
+#: convert/modules/menu/convert.php:13
+msgid ""
+"Any content modules using Menu Manager should be converted BEFORE "
+"continuing.."
+msgstr ""
+
+#: convert/modules/menu/convert.php:22
+msgid "Menu is not installed."
+msgstr ""
+
+#: convert/modules/menu/convert.php:31
+msgid "Menu has already been converted."
+msgstr ""
+
+#: convert/modules/menu/convert.php:38
+msgid "Convert menus"
+msgstr ""
+
+#: convert/modules/menu/convert.php:42
+msgid "No menus found."
+msgstr ""
+
+#: convert/modules/menu/convert.php:65
+msgid "Some menus did not convert over properly. Please see logs."
+msgstr ""
+
+#: convert/modules/menu/convert.php:69
+msgid "Menu conversion finished."
+msgstr ""
+
+#: convert/modules/menu/convert.php:71
+msgid "Continue to convert menu links."
+msgstr ""
+
+#: convert/modules/menu/convert.php:79
+msgid "Convert menu links"
+msgstr ""
+
+#: convert/modules/menu/convert.php:86
+msgid "No menu links to convert."
+msgstr ""
+
+#: convert/modules/menu/convert.php:110
+msgid "Finished converting links."
+msgstr ""
+
+#: convert/modules/users/convert.php:25
+msgid "Continue: Convert everyone."
+msgstr ""
+
+#: convert/modules/users/convert.php:29
+msgid "Continue: Only those logged on within 6 months."
+msgstr ""
+
+#: convert/modules/users/convert.php:33
+msgid "Continue: Only those logged on within the last year."
+msgstr ""
+
+#: convert/modules/users/convert.php:39
+msgid ""
+"Return to main page if you change your mind. Click the above link to "
+"continue."
+msgstr ""
+
+#: convert/modules/users/convert.php:52
+msgid "You may choose to ignore users who haven't logged in for a while."
+msgstr ""
+
+#: convert/modules/users/convert.php:54
+msgid "Convert everyone."
+msgstr ""
+
+#: convert/modules/users/convert.php:55
+msgid "Only those logged on within 6 months."
+msgstr ""
+
+#: convert/modules/users/convert.php:56
+msgid "Only those logged on within the last year."
+msgstr ""
+
+#: convert/modules/users/convert.php:63 core/class/Batch.php:126
+#: setup/class/Setup.php:335 setup/class/Setup.php:401
 msgid "Continue"
 msgstr ""
 
-#: core/class/Core.php:500
+#: convert/modules/users/convert.php:110
+msgid "No users to convert."
+msgstr ""
+
+#: convert/modules/users/convert.php:125
+msgid "Some errors occurred when trying to convert some users."
+msgstr ""
+
+#: convert/modules/users/convert.php:146
+msgid ""
+"Please note that the user with an index of 1 was ignored by the conversion."
+msgstr ""
+
+#: convert/modules/users/convert.php:147
+msgid ""
+"If the first user on your old site is not you, then you will need to "
+"recreate them."
+msgstr ""
+
+#: convert/modules/webpage/convert.php:15
+msgid "Web pages have already been converted."
+msgstr ""
+
+#: convert/modules/webpage/convert.php:21
+msgid "Web Page is not installed."
+msgstr ""
+
+#: convert/modules/webpage/convert.php:30
+msgid "No pages to convert."
+msgstr ""
+
+#: convert/modules/webpage/convert.php:44
+msgid "Some errors occurred when trying to convert the following pages:"
+msgstr ""
+
+#: core/class/DB/pgsql.php:65
+msgid "Unknown column type:"
+msgstr ""
+
+#: core/class/Core.php:527
 msgid "User tried to post a file beyond server limits."
 msgstr ""
 
-#: core/class/Crutch.php:52
+#: core/class/Crutch.php:68
 msgid "Update your module to use keys."
 msgstr ""
 
@@ -383,19 +1402,26 @@ msgstr ""
 msgid "No rows found."
 msgstr ""
 
-#: core/class/DBPager.php:695 core/class/Manager.php:674
+#: core/class/DBPager.php:695 core/class/Manager.php:681
+#: mod/access/class/Forms.php:50 mod/access/class/Forms.php:199
+#: mod/access/class/Forms.php:275 mod/comments/class/Comment_Thread.php:250
+#: mod/search/class/Admin.php:268 mod/search/class/Admin.php:318
+#: mod/webpage/class/Forms.php:145
 msgid "Go"
 msgstr ""
 
-#: core/class/DBPager.php:714
+#: core/class/DBPager.php:714 mod/search/boost/controlpanel.php:3
+#: mod/search/class/User.php:44 mod/search/class/User.php:49
+#: mod/search/class/User.php:131
 msgid "Search"
 msgstr ""
 
-#: core/class/DBPager.php:741
+#: core/class/DBPager.php:741 mod/webpage/class/Admin.php:429
+#: mod/webpage/class/Volume.php:400
 msgid "Page"
 msgstr ""
 
-#: core/class/DBPager.php:742
+#: core/class/DBPager.php:742 mod/rss/class/Admin.php:228
 msgid "Limit"
 msgstr ""
 
@@ -403,50 +1429,46 @@ msgstr ""
 msgid "of"
 msgstr ""
 
-#: core/class/Database.php:1877
-msgid "Type"
-msgstr ""
-
-#: core/class/Database.php:2051
+#: core/class/Database.php:2116
 msgid "DB Operator:"
 msgstr ""
 
-#: core/class/Debug.php:99
+#: core/class/Debug.php:103
 msgid "Recursive object:"
 msgstr ""
 
-#: core/class/Debug.php:108
+#: core/class/Debug.php:112
 msgid "Class Name"
 msgstr ""
 
-#: core/class/Debug.php:113
+#: core/class/Debug.php:117
 #, php-format
 msgid "PHPWS_Debug: testObject received a/an %s variable, not an object."
 msgstr ""
 
-#: core/class/Debug.php:115 core/class/Debug.php:200
+#: core/class/Debug.php:119 core/class/Debug.php:204
 msgid ""
 "This is an incomplete object. If this is a sessioned object, make sure to "
 "declare the class before the variable."
 msgstr ""
 
-#: core/class/Debug.php:137
+#: core/class/Debug.php:141
 msgid "Recursive array"
 msgstr ""
 
-#: core/class/Debug.php:151
+#: core/class/Debug.php:155
 msgid "KEY"
 msgstr ""
 
-#: core/class/Debug.php:152
+#: core/class/Debug.php:156
 msgid "VALUE"
 msgstr ""
 
-#: core/class/Debug.php:179
+#: core/class/Debug.php:183
 msgid "Array contained no values."
 msgstr ""
 
-#: core/class/Debug.php:202
+#: core/class/Debug.php:206
 #, php-format
 msgid "Variable is a %s, not an object."
 msgstr ""
@@ -455,29 +1477,61 @@ msgstr ""
 msgid "Unknown error code."
 msgstr ""
 
-#: core/class/Error.php:85 core/class/Error.php:107
-msgid "Error"
-msgstr ""
-
 #: core/class/Error.php:108
 #, php-format
 msgid "The following error occurred in the %s module's %s function."
 msgstr ""
 
-#: core/class/Form.php:1242 core/class/Form.php:1245
+#: core/class/Form.php:1250 core/class/Form.php:1253
+#: mod/filecabinet/class/Image_Manager.php:110
+#: mod/filecabinet/class/Image_Manager.php:157
 msgid "No image"
 msgstr ""
 
-#: core/class/Form.php:1250 core/class/Form.php:1257
+#: core/class/Form.php:1258 core/class/Form.php:1265
 msgid "Main"
 msgstr ""
 
-#: core/class/Init.php:227 core/class/Init.php:242 core/class/Init.php:250
+#: core/class/Init.php:222 core/class/Init.php:237 core/class/Init.php:245
 msgid "Unknown"
 msgstr ""
 
-#: core/class/Key.php:373
+#: core/class/Key.php:379 mod/users/class/Form.php:50
+#: mod/users/class/Form.php:83
 msgid "Home"
+msgstr ""
+
+#: core/class/Manager.php:295
+msgid "Manager cannot initialize, the module was not set."
+msgstr ""
+
+#: core/class/Manager.php:302
+#, php-format
+msgid "Manager configuration file not found for module: %s"
+msgstr ""
+
+#: core/class/Manager.php:310 core/class/Manager.php:342
+msgid "Manager configuration file is an improper format."
+msgstr ""
+
+#: core/class/Manager.php:380
+msgid "Manager was not fully initialized to get a list."
+msgstr ""
+
+#: core/class/Manager.php:609
+msgid "Visible"
+msgstr ""
+
+#: core/class/Manager.php:619
+msgid "Unapproved"
+msgstr ""
+
+#: core/class/Manager.php:635 mod/comments/class/Comment_Thread.php:202
+msgid "All"
+msgstr ""
+
+#: core/class/Manager.php:695
+msgid "No items for the current list."
 msgstr ""
 
 #: core/class/Security.php:16
@@ -497,92 +1551,61 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
-#: core/class/Template.php:206
+#: core/class/Template.php:210
 msgid "Template error."
 msgstr ""
 
-#: core/class/Text.php:666 core/class/Text.php:667
+#: core/class/Text.php:383 mod/access/class/Access.php:141
+#: mod/access/class/Access.php:145
+msgid "Return to previous page."
+msgstr ""
+
+#: core/class/Text.php:688 core/class/Text.php:689
 msgid "No Images"
 msgstr ""
 
-#: core/class/Text.php:675 core/class/Text.php:677
+#: core/class/Text.php:697 core/class/Text.php:699
 msgid "\\1 wrote"
 msgstr ""
 
-#: core/class/Text.php:704
+#: core/class/Text.php:726
 msgid "Spoiler"
 msgstr ""
 
-#: core/class/Time.php:155
+#: core/class/Time.php:160
 msgid "a heartbeat ago"
 msgstr ""
 
-#: core/class/Time.php:158
+#: core/class/Time.php:163
 #, php-format
 msgid "%s mins ago"
 msgstr ""
 
-#: core/class/Time.php:161
+#: core/class/Time.php:166
 msgid "1 hour ago"
 msgstr ""
 
-#: core/class/Time.php:164
+#: core/class/Time.php:169
 #, php-format
 msgid "%s hours ago"
 msgstr ""
 
-#: core/class/Time.php:167
+#: core/class/Time.php:172
 msgid "1 day ago"
 msgstr ""
 
-#: core/class/Time.php:170
+#: core/class/Time.php:175
 #, php-format
 msgid "%s days ago"
 msgstr ""
 
-#: core/class/Time.php:173
+#: core/class/Time.php:178
 msgid "1 week ago"
 msgstr ""
 
-#: core/class/Time.php:176
+#: core/class/Time.php:181
 #, php-format
 msgid "%s weeks ago"
-msgstr ""
-
-#: core/class/Manager.php:292
-msgid "Manager cannot initialize, the module was not set."
-msgstr ""
-
-#: core/class/Manager.php:299
-msgid "Manager configuration file not found for module: [var1]"
-msgstr ""
-
-#: core/class/Manager.php:307 core/class/Manager.php:339
-msgid "Manager configuration file is an improper format."
-msgstr ""
-
-#: core/class/Manager.php:377
-msgid "Manager was not fully initialized to get a list."
-msgstr ""
-
-#: core/class/Manager.php:601
-msgid "Hidden"
-msgstr ""
-
-#: core/class/Manager.php:603
-msgid "Visible"
-msgstr ""
-
-#: core/class/Manager.php:611
-msgid "Approved"
-msgstr ""
-
-#: core/class/Manager.php:613
-msgid "Unapproved"
-msgstr ""
-
-#: core/class/Manager.php:688
-msgid "No items for the current list."
 msgstr ""
 
 #: inc/Security.php:48
@@ -605,374 +1628,4930 @@ msgstr ""
 msgid "Highlight Text"
 msgstr ""
 
-#: javascript/prompt/default.php:3
+#: javascript/prompt/default.php:8
 msgid "Change to"
 msgstr ""
 
-#: javascript/swapper/default.php:31
+#: javascript/swapper/default.php:31 mod/search/class/Admin.php:221
+#: mod/users/class/Form.php:271 mod/users/class/Form.php:530
+#: mod/users/class/Form.php:624
 msgid "Add"
 msgstr ""
 
-#: javascript/swapper/default.php:33
+#: javascript/swapper/default.php:33 mod/branch/class/Branch.php:131
+#: mod/users/class/Group.php:269 mod/version/class/Restore.php:136
+#: mod/calendar_old/class/Event.php:280 mod/calendar_old/class/Event.php:283
 msgid "Remove"
 msgstr ""
 
-#: phpws_stats.php:42
+#: javascript/close_window/default.php:4 mod/calendar/class/View.php:645
+#: mod/notes/class/Notes.php:47 mod/search/class/Admin.php:232
+#: mod/calendar_old/class/View.php:636 mod/calendar_new/class/View.php:645
+msgid "Close"
+msgstr ""
+
+#: mod/access/boost/controlpanel.php:2
+msgid "Access"
+msgstr ""
+
+#: mod/access/boost/controlpanel.php:5
+msgid "Controls the .htaccess file for Apache and creates shortcuts."
+msgstr ""
+
+#: mod/access/boost/permission.php:5
+msgid "Administrative options"
+msgstr ""
+
+#: mod/access/boost/uninstall.php:14
+msgid "Access tables removed."
+msgstr ""
+
+#: mod/access/class/Access.php:37 mod/comments/class/Comments.php:159
+#: mod/filecabinet/class/Cabinet_Action.php:220
+#: mod/menu/class/Menu_Admin.php:86 mod/profiler/class/Profiler.php:212
+#: mod/rss/class/Admin.php:283 mod/users/class/Action.php:640
+#: mod/users/class/Action.php:712
+msgid "Sorry"
+msgstr ""
+
+#: mod/access/class/Access.php:38
+msgid "Access needs a higher administrator's attention before you may use it."
+msgstr ""
+
+#: mod/access/class/Access.php:43 mod/comments/class/Comments.php:367
+#: mod/comments/class/My_Page.php:31
+#: mod/filecabinet/class/Cabinet_Action.php:284 mod/version/class/Admin.php:31
+msgid "Settings saved."
+msgstr ""
+
+#: mod/access/class/Access.php:49 mod/access/class/Access.php:390
+msgid "Administrator"
+msgstr ""
+
+#: mod/access/class/Access.php:56
+msgid "IP address was not formatted correctly or not allowed."
+msgstr ""
+
+#: mod/access/class/Access.php:59 mod/access/class/Access.php:115
+#: mod/access/class/Access.php:180 mod/users/class/Action.php:452
+msgid "An error occurred."
+msgstr ""
+
+#: mod/access/class/Access.php:59 mod/access/class/Access.php:115
+#: mod/filecabinet/class/Cabinet_Action.php:222
+msgid "Please check your logs."
+msgstr ""
+
+#: mod/access/class/Access.php:68
+msgid "IP address deleted."
+msgstr ""
+
+#: mod/access/class/Access.php:73
+msgid "Denys and Allows"
+msgstr ""
+
+#: mod/access/class/Access.php:83
+msgid "An error occurred when deleting your shortcut."
+msgstr ""
+
+#: mod/access/class/Access.php:87
+msgid "An error occurred when updating your .htaccess file."
+msgstr ""
+
+#: mod/access/class/Access.php:91
+msgid "Shortcut deleted"
+msgstr ""
+
+#: mod/access/class/Access.php:96 mod/access/class/Access.php:380
+#: mod/access/class/Forms.php:278
+msgid "Shortcuts"
+msgstr ""
+
+#: mod/access/class/Access.php:104
+msgid ".htaccess file written."
+msgstr ""
+
+#: mod/access/class/Access.php:106
+msgid "Unable to save .htaccess file."
+msgstr ""
+
+#: mod/access/class/Access.php:122
+msgid "Update .htaccess file"
+msgstr ""
+
+#: mod/access/class/Access.php:138 mod/access/class/Access.php:170
+#: mod/categories/class/Categories.php:62
+#: mod/filecabinet/class/Cabinet_Action.php:386 mod/users/class/Action.php:447
+msgid "Close window"
+msgstr ""
+
+#: mod/access/class/Access.php:140
+msgid "An error occurred:"
+msgstr ""
+
+#: mod/access/class/Access.php:144 mod/access/class/Access.php:174
+msgid "A serious error occurred. Please check your error.log."
+msgstr ""
+
+#: mod/access/class/Access.php:181
+msgid "Please check your error.log."
+msgstr ""
+
+#: mod/access/class/Access.php:183 mod/access/class/Access.php:188
+msgid "Access has saved your shortcut."
+msgstr ""
+
+#: mod/access/class/Access.php:184
+msgid "You can access this item with the following link:"
+msgstr ""
+
+#: mod/access/class/Access.php:189
+msgid "An administrator will need to approve it before it is functional."
+msgstr ""
+
+#: mod/access/class/Access.php:190
+msgid "When active, you will be able to use the following link:"
+msgstr ""
+
+#: mod/access/class/Access.php:350
+msgid "Shortcut"
+msgstr ""
+
+#: mod/access/class/Access.php:386
+msgid "Deny/Allow"
+msgstr ""
+
+#: mod/access/class/Access.php:393 mod/boost/class/Form.php:84
+#: mod/boost/class/Form.php:157 mod/branch/class/Branch_Admin.php:584
+#: mod/comments/class/My_Page.php:90 mod/filecabinet/class/Forms.php:132
+#: mod/filecabinet/class/Image_Manager.php:328
+#: mod/layout/class/LayoutAdmin.php:378 mod/menu/class/Menu_Admin.php:320
+#: mod/users/class/Form.php:117
+msgid "Update"
+msgstr ""
+
+#: mod/access/class/Forms.php:35 mod/access/class/Forms.php:164
+#: mod/users/class/Group.php:263 mod/users/class/Users.php:777
+#: mod/webpage/class/Forms.php:128
+msgid "Activate"
+msgstr ""
+
+#: mod/access/class/Forms.php:36 mod/access/class/Forms.php:165
+#: mod/users/class/Group.php:260 mod/users/class/Users.php:772
+#: mod/webpage/class/Forms.php:129
+msgid "Deactivate"
+msgstr ""
+
+#: mod/access/class/Forms.php:44 mod/layout/class/LayoutAdmin.php:368
+#: mod/search/class/Admin.php:243 mod/search/class/Admin.php:354
+msgid "Keywords"
+msgstr ""
+
+#: mod/access/class/Forms.php:45 mod/branch/class/Branch_Admin.php:840
+#: mod/menu/class/Menu_Admin.php:414
+msgid "Url"
+msgstr ""
+
+#: mod/access/class/Forms.php:46 mod/access/class/Forms.php:251
+msgid "Active?"
+msgstr ""
+
+#: mod/access/class/Forms.php:47 mod/access/class/Forms.php:254
+#: mod/block/class/Block_Admin.php:241 mod/blog/class/Blog_Admin.php:328
+#: mod/branch/class/Branch_Admin.php:841 mod/categories/class/Action.php:291
+#: mod/filecabinet/class/Forms.php:26 mod/filecabinet/class/Forms.php:55
+#: mod/menu/class/Menu_Admin.php:366 mod/profiler/class/Forms.php:105
+#: mod/profiler/class/Forms.php:154 mod/rss/class/Admin.php:227
+#: mod/rss/class/Admin.php:300 mod/users/class/Form.php:684
+#: mod/webpage/class/Forms.php:142 setup/manager.php:130
+msgid "Action"
+msgstr ""
+
+#: mod/access/class/Forms.php:53
+msgid "Are you sure you want to delete the checked shortcuts?"
+msgstr ""
+
+#: mod/access/class/Forms.php:70
+msgid "You do not have mod rewrite enabled."
+msgstr ""
+
+#: mod/access/class/Forms.php:71
+msgid "Open your config/core/config.php file in a text editor."
+msgstr ""
+
+#: mod/access/class/Forms.php:72
+msgid "Set your \"MOD_REWRITE_ENABLED\" define equal to TRUE."
+msgstr ""
+
+#: mod/access/class/Forms.php:75
+msgid "Your <b>.htaccess</b> file is not writable."
+msgstr ""
+
+#: mod/access/class/Forms.php:76
+msgid "Look in your installation directory and give Apache write access."
+msgstr ""
+
+#: mod/access/class/Forms.php:86
+msgid "Rewrite engine on"
+msgstr ""
+
+#: mod/access/class/Forms.php:92
+msgid "Shortcuts enabled"
+msgstr ""
+
+#: mod/access/class/Forms.php:98
+msgid "Allow file update"
+msgstr ""
+
+#: mod/access/class/Forms.php:104 mod/filecabinet/class/Forms.php:94
+#: mod/layout/inc/my_page.php:54 mod/profiler/class/Forms.php:137
+msgid "Save settings"
+msgstr ""
+
+#: mod/access/class/Forms.php:107
+msgid "Mod Rewrite Options"
+msgstr ""
+
+#: mod/access/class/Forms.php:108
+msgid ".htaccess File Options"
+msgstr ""
+
+#: mod/access/class/Forms.php:124
+msgid "Write .htaccess file"
+msgstr ""
+
+#: mod/access/class/Forms.php:127
+msgid "Your .htaccess file will contain the below:"
+msgstr ""
+
+#: mod/access/class/Forms.php:157
+msgid "Add allowed IP"
+msgstr ""
+
+#: mod/access/class/Forms.php:158
+msgid "Add denied IP"
+msgstr ""
+
+#: mod/access/class/Forms.php:170
+msgid "Do not allow all"
+msgstr ""
+
+#: mod/access/class/Forms.php:173
+msgid "Allow all"
+msgstr ""
+
+#: mod/access/class/Forms.php:182
+msgid "Do not deny all"
+msgstr ""
+
+#: mod/access/class/Forms.php:185
+msgid "Deny all"
+msgstr ""
+
+#: mod/access/class/Forms.php:192
+msgid "You have \"Allow all\" enabled. All rows below will be ignored."
+msgstr ""
+
+#: mod/access/class/Forms.php:196
+msgid "You have \"Deny all\" enabled. All rows below will be ignored."
+msgstr ""
+
+#: mod/access/class/Forms.php:201
+msgid "Are you sure you want to delete the checked ips?"
+msgstr ""
+
+#: mod/access/class/Forms.php:212
+msgid ""
+"An error occurred when trying to access the allowed and denied ip records. "
+"Please check your logs."
+msgstr ""
+
+#: mod/access/class/Forms.php:214 mod/access/class/Forms.php:245
+msgid "No denied ip addresses found."
+msgstr ""
+
+#: mod/access/class/Forms.php:215 mod/access/class/Forms.php:241
+msgid "No allowed ip addresses found."
+msgstr ""
+
+#: mod/access/class/Forms.php:220 mod/access/class/Shortcut.php:97
+#: mod/rss/class/Admin.php:217 mod/rss/class/Feed.php:77
+#: mod/users/class/Form.php:784 mod/users/class/Users.php:774
+#: mod/webpage/class/Volume.php:224 mod/calendar_old/class/Schedule.php:330
+msgid "Yes"
+msgstr ""
+
+#: mod/access/class/Forms.php:222 mod/access/class/Shortcut.php:99
+#: mod/rss/class/Admin.php:219 mod/rss/class/Feed.php:80
+#: mod/users/class/Users.php:779 mod/webpage/class/Volume.php:226
+#: mod/calendar_old/class/Schedule.php:335
+msgid "No"
+msgstr ""
+
+#: mod/access/class/Forms.php:252
+msgid "Allowed IPs"
+msgstr ""
+
+#: mod/access/class/Forms.php:253
+msgid "Denied IPs"
+msgstr ""
+
+#: mod/access/class/Forms.php:255
+msgid "IP Address"
+msgstr ""
+
+#: mod/access/class/Forms.php:256
+msgid ""
+"Remember to \"Update\" your access file when finished changing IP rules."
+msgstr ""
+
+#: mod/access/class/Forms.php:272
+msgid "Type keyword here"
+msgstr ""
+
+#: mod/access/class/Forms.php:279 mod/block/class/Block_Admin.php:197
+#: mod/calendar/class/Event.php:108 mod/calendar/class/Schedule.php:221
+#: mod/filecabinet/class/Forms.php:138
+#: mod/filecabinet/class/Image_Manager.php:335
+#: mod/filecabinet/class/Image_Manager.php:420
+#: mod/layout/class/LayoutAdmin.php:204 mod/profiler/class/Forms.php:183
+#: mod/rss/class/Admin.php:255 mod/users/class/Form.php:964
+#: mod/calendar_old/class/Admin.php:460
+#: mod/calendar_new/class/Schedule.php:221
+msgid "Cancel"
+msgstr ""
+
+#: mod/access/class/Shortcut.php:83
+msgid "Are you sure you want to delete this shortcut?"
+msgstr ""
+
+#: mod/block/boost/controlpanel.php:3
+msgid "Block"
+msgstr ""
+
+#: mod/block/boost/controlpanel.php:7
+msgid "Create blocks of content."
+msgstr ""
+
+#: mod/block/boost/permission.php:5
+msgid "Edit block"
+msgstr ""
+
+#: mod/block/boost/permission.php:6
+msgid "Delete block"
+msgstr ""
+
+#: mod/block/boost/uninstall.php:14
+msgid "Block tables removed."
+msgstr ""
+
+#: mod/block/class/Block_Admin.php:43 mod/blog/class/Blog_Admin.php:294
+#: mod/branch/class/Branch_Admin.php:467 mod/categories/class/Action.php:195
+#: mod/menu/class/Menu_Admin.php:294 mod/profiler/class/Profiler.php:264
+#: mod/webpage/class/Admin.php:373
+msgid "New"
+msgstr ""
+
+#: mod/block/class/Block_Admin.php:44 mod/blog/class/Blog_Admin.php:297
+#: mod/branch/class/Branch_Admin.php:470 mod/categories/class/Action.php:198
+#: mod/menu/class/Menu_Admin.php:299 mod/profiler/class/Profiler.php:265
+#: mod/webpage/class/Admin.php:376
+msgid "List"
+msgstr ""
+
+#: mod/block/class/Block_Admin.php:67 mod/block/class/Block_Admin.php:136
+msgid "New Block"
+msgstr ""
+
+#: mod/block/class/Block_Admin.php:73
+msgid "Block deleted."
+msgstr ""
+
+#: mod/block/class/Block_Admin.php:83
+msgid "Block pinned"
+msgstr ""
+
+#: mod/block/class/Block_Admin.php:88
+msgid "Block unpinned"
+msgstr ""
+
+#: mod/block/class/Block_Admin.php:106
+msgid "Block saved"
+msgstr ""
+
+#: mod/block/class/Block_Admin.php:131
+msgid "Block list"
+msgstr ""
+
+#: mod/block/class/Block_Admin.php:208
+msgid "Save New Block"
+msgstr ""
+
+#: mod/block/class/Block_Admin.php:211
+msgid "Update Current Block"
+msgstr ""
+
+#: mod/block/class/Block_Admin.php:218 mod/blog/class/Blog_Admin.php:326
+#: mod/blog/class/Blog_Form.php:36
+msgid "Entry"
+msgstr ""
+
+#: mod/block/class/Block_Admin.php:240
+#: mod/controlpanel/boost/controlpanel.php:9 mod/webpage/class/Forms.php:106
+msgid "Content"
+msgstr ""
+
+#: mod/block/class/Block_Item.php:175
+msgid "Are you sure you want to remove this block from this page?"
+msgstr ""
+
+#: mod/block/class/Block_Item.php:211 mod/menu/class/Menu_Item.php:197
+msgid "Unpin"
+msgstr ""
+
+#: mod/block/class/Block_Item.php:214 mod/menu/class/Menu_Item.php:194
+msgid "Pin"
+msgstr ""
+
+#: mod/block/class/Block_Item.php:223
+#: mod/filecabinet/class/Image_Manager.php:146
+msgid "Copy"
+msgstr ""
+
+#: mod/block/class/Block_Item.php:227
+msgid "Are you sure you want to permanently delete this block?"
+msgstr ""
+
+#: mod/block/inc/close.php:15
+msgid "Add block here"
+msgstr ""
+
+#: mod/blog/boost/controlpanel.php:11
+msgid "Post current thoughts, happenings, and discussions."
+msgstr ""
+
+#: mod/blog/boost/permission.php:5 mod/blog/class/Blog.php:210
+msgid "Edit blog"
+msgstr ""
+
+#: mod/blog/boost/permission.php:6
+msgid "Delete blog"
+msgstr ""
+
+#: mod/blog/boost/uninstall.php:13
+msgid "Blog tables removed."
+msgstr ""
+
+#: mod/blog/class/Blog.php:174 mod/blog/class/Blog.php:244
+#: mod/comments/class/Comment_Item.php:261
+msgid "Posted by"
+msgstr ""
+
+#: mod/blog/class/Blog.php:175 mod/blog/class/Blog.php:245
+#: mod/comments/class/Comment_Item.php:262
+msgid "Posted on"
+msgstr ""
+
+#: mod/blog/class/Blog.php:193
+msgid "Sorry you do not have permission to view this blog entry."
+msgstr ""
+
+#: mod/blog/class/Blog.php:224
+msgid "Last poster"
+msgstr ""
+
+#: mod/blog/class/Blog.php:274
+msgid "Are you sure you want to permanently delete this blog entry?"
+msgstr ""
+
+#: mod/blog/class/Blog.php:282 mod/version/class/Restore.php:132
+msgid "Restore"
+msgstr ""
+
+#: mod/blog/class/Blog.php:288
+msgid "No action"
+msgstr ""
+
+#: mod/blog/class/Blog.php:312 mod/calendar/class/Schedule.php:304
+#: mod/controlpanel/class/ControlPanel.php:193
+#: mod/menu/class/Menu_Admin.php:435 mod/calendar_new/class/Schedule.php:304
+msgid "Missing title."
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:18
+msgid "User attempted access to Blog administration."
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:46
+msgid "User tried to edit a blog."
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:50
+msgid "Update Blog Entry"
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:64
+msgid "This version has not been approved."
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:67
+msgid "A version of this entry is awaiting approval."
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:82
+msgid "Blog Entries Awaiting Approval"
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:111
+msgid "A problem occurred when trying to disapprove this entry."
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:113
+msgid "Blog entry disapproved."
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:132
+msgid "An error occurred when saving your version."
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:136
+msgid "Blog entry approved."
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:142
+msgid "Tried to edit an unapproved item."
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:149
+msgid "Update Unapproved Blog Entry"
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:154
+msgid "New Blog Entry"
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:161
+msgid "Blog entry deleted."
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:165 mod/blog/class/Blog_Admin.php:197
+msgid "Blog Archive"
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:170
+msgid "Blog Restore"
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:181
+msgid "Blog entry restored."
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:193
+msgid "Blog entry removed."
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:214
+msgid ""
+"An error occurred when trying to save your entry. Please check your logs."
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:220
+msgid "Your entry is being held for approval."
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:222
+msgid "Entry saved successfully."
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:228
+msgid "View version"
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:260 mod/version/class/Approval.php:197
+#: mod/webpage/class/Admin.php:451
+msgid "Disapprove"
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:264 mod/webpage/class/Admin.php:437
+msgid "Approval list"
+msgstr ""
+
+#: mod/blog/class/Blog_Admin.php:303
 #, php-format
-msgid "Execution time: %s seconds."
+msgid "Approval (%s)"
 msgstr ""
 
-#: phpws_stats.php:52
-msgid "Declared classes:"
+#: mod/blog/class/Blog_Admin.php:327
+msgid "Creation Date"
 msgstr ""
 
-#: phpws_stats.php:57
-msgid "Current sessions:"
+#: mod/blog/class/Blog_Form.php:21
+msgid "Save Changes and Approve"
 msgstr ""
 
-#: phpws_stats.php:65
-msgid "Request"
+#: mod/blog/class/Blog_Form.php:27
+msgid "Update Entry"
 msgstr ""
 
-#: setup/class/Setup.php:56
-msgid "Your configuration file already exists."
+#: mod/blog/class/Blog_Form.php:29
+msgid "Add Entry"
 msgstr ""
 
-#: setup/class/Setup.php:57
-msgid "Remove the following file and refresh to continue:"
+#: mod/blog/class/Blog_Form.php:42
+msgid "Allow comments"
 msgstr ""
 
-#: setup/class/Setup.php:62
-msgid "Your configuration file was written successfully!"
+#: mod/blog/class/Blog_Form.php:46
+msgid "Allow anonymous comments"
 msgstr ""
 
-#: setup/class/Setup.php:63
-msgid "Move on to Step 2"
+#: mod/blog/class/Blog_User.php:83
+msgid "Edit blogs"
+msgstr ""
+
+#: mod/blog/class/Blog_User.php:85
+msgid "Add new blog"
+msgstr ""
+
+#: mod/boost/boost/controlpanel.php:8
+msgid "Boost"
+msgstr ""
+
+#: mod/boost/boost/controlpanel.php:11
+msgid "Boost allows the installation and upgrading of modules."
+msgstr ""
+
+#: mod/boost/index.php:37 mod/boost/index.php:47 mod/boost/index.php:61
+#: mod/boost/index.php:66 mod/boost/index.php:72
+msgid "Return to Boost"
+msgstr ""
+
+#: mod/boost/index.php:52
+msgid "An error occurred while installing this module."
+msgstr ""
+
+#: mod/boost/index.php:53
+msgid "Please check your error logs."
+msgstr ""
+
+#: mod/boost/class/Action.php:21 mod/boost/class/Action.php:27
+msgid "Update check file not found."
+msgstr ""
+
+#: mod/boost/class/Action.php:31
+msgid "Local version"
+msgstr ""
+
+#: mod/boost/class/Action.php:33
+msgid "Current stable version"
+msgstr ""
+
+#: mod/boost/class/Action.php:37
+msgid "Changes"
+msgstr ""
+
+#: mod/boost/class/Action.php:39
+msgid "An update is available!"
+msgstr ""
+
+#: mod/boost/class/Action.php:40
+msgid "Download here"
+msgstr ""
+
+#: mod/boost/class/Action.php:42
+msgid "MD5 Sum"
+msgstr ""
+
+#: mod/boost/class/Action.php:46
+msgid "No update required."
+msgstr ""
+
+#: mod/boost/class/Action.php:49 mod/boost/class/Boost.php:866
+#: mod/related/class/Action.php:15 mod/related/class/Action.php:40
+#: mod/search/class/User.php:210
+msgid "Module"
+msgstr ""
+
+#: mod/boost/class/Action.php:78
+msgid "Updating core"
+msgstr ""
+
+#: mod/boost/class/Action.php:84 mod/boost/class/Boost.php:232
+msgid "Processing update file."
+msgstr ""
+
+#: mod/boost/class/Action.php:94 mod/boost/class/Action.php:100
+#: mod/boost/class/Action.php:102
+msgid "An error occurred updating the core."
+msgstr ""
+
+#: mod/boost/class/Action.php:96
+msgid "Core successfully updated."
+msgstr ""
+
+#: mod/boost/class/Action.php:123
+msgid "This module does not have dependents."
+msgstr ""
+
+#: mod/boost/class/Action.php:126
+#, php-format
+msgid "%s Dependencies"
+msgstr ""
+
+#: mod/boost/class/Action.php:128
+msgid "The following modules depend on this module to function:"
+msgstr ""
+
+#: mod/boost/class/Action.php:143
+#, php-format
+msgid "%s Module Dependencies"
+msgstr ""
+
+#: mod/boost/class/Action.php:145
+msgid "Module Needed"
+msgstr ""
+
+#: mod/boost/class/Action.php:146
+msgid "Version Needed"
+msgstr ""
+
+#: mod/boost/class/Action.php:147
+msgid "Current Version"
+msgstr ""
+
+#: mod/boost/class/Action.php:148
+msgid "Module Web Site"
+msgstr ""
+
+#: mod/boost/class/Action.php:149
+msgid "Status"
+msgstr ""
+
+#: mod/boost/class/Action.php:163
+msgid "Not installed"
+msgstr ""
+
+#: mod/boost/class/Action.php:170
+msgid "More info"
+msgstr ""
+
+#: mod/boost/class/Action.php:173
+msgid "Passed!"
+msgstr ""
+
+#: mod/boost/class/Action.php:175
+msgid "Failed"
+msgstr ""
+
+#: mod/boost/class/Boost.php:121
+msgid "Installing"
+msgstr ""
+
+#: mod/boost/class/Boost.php:124
+msgid "Importing SQL install file."
+msgstr ""
+
+#: mod/boost/class/Boost.php:131 mod/boost/class/Boost.php:272
+msgid "An import error occurred."
+msgstr ""
+
+#: mod/boost/class/Boost.php:132 mod/boost/class/Boost.php:273
+#: mod/boost/class/Boost.php:586 mod/boost/class/Boost.php:618
+msgid "Check your logs for more information."
+msgstr ""
+
+#: mod/boost/class/Boost.php:135 mod/boost/class/Boost.php:276
+msgid "Import successful."
+msgstr ""
+
+#: mod/boost/class/Boost.php:161 mod/boost/class/Boost.php:305
+msgid "There was a problem in the installation file:"
+msgstr ""
+
+#: mod/boost/class/Boost.php:177 mod/boost/class/Boost.php:179
+msgid "Continue installation..."
+msgstr ""
+
+#: mod/boost/class/Boost.php:181 mod/boost/class/Boost.php:184
+msgid "Installation complete!"
+msgstr ""
+
+#: mod/boost/class/Boost.php:196
+msgid "No installation file found."
+msgstr ""
+
+#: mod/boost/class/Boost.php:207
+msgid "Processing installation file."
+msgstr ""
+
+#: mod/boost/class/Boost.php:221
+msgid "No update file found."
+msgstr ""
+
+#: mod/boost/class/Boost.php:259
+msgid "Uninstalling"
+msgstr ""
+
+#: mod/boost/class/Boost.php:264
+msgid "Uninstall SQL not found."
+msgstr ""
+
+#: mod/boost/class/Boost.php:266
+msgid "Importing SQL uninstall file."
+msgstr ""
+
+#: mod/boost/class/Boost.php:290
+msgid "Finished uninstalling module!"
+msgstr ""
+
+#: mod/boost/class/Boost.php:343
+msgid "Uninstall file not found."
+msgstr ""
+
+#: mod/boost/class/Boost.php:344
+msgid "No uninstall file found."
+msgstr ""
+
+#: mod/boost/class/Boost.php:355
+msgid "Processing uninstall file."
+msgstr ""
+
+#: mod/boost/class/Boost.php:359
+#, php-format
+msgid "Uninstall function \"%s\" was not found."
+msgstr ""
+
+#: mod/boost/class/Boost.php:375
+msgid "Module does not require updating."
+msgstr ""
+
+#: mod/boost/class/Boost.php:390
+msgid "Updating"
+msgstr ""
+
+#: mod/boost/class/Boost.php:410
+msgid "There was a problem in the update file:"
+msgstr ""
+
+#: mod/boost/class/Boost.php:418
+msgid "Update complete!"
+msgstr ""
+
+#: mod/boost/class/Boost.php:420
+msgid "Update not completed."
+msgstr ""
+
+#: mod/boost/class/Boost.php:438
+msgid "Copying configuration files."
+msgstr ""
+
+#: mod/boost/class/Boost.php:439 mod/boost/class/Boost.php:449
+#: mod/boost/class/Boost.php:459 mod/boost/class/Boost.php:491
+#, php-format
+msgid "Copying directory %1$s to %2$s"
+msgstr ""
+
+#: mod/boost/class/Boost.php:448
+msgid "Copying javascript directories."
+msgstr ""
+
+#: mod/boost/class/Boost.php:458
+msgid "Copying template files."
+msgstr ""
+
+#: mod/boost/class/Boost.php:465
+msgid "Creating module image directory."
+msgstr ""
+
+#: mod/boost/class/Boost.php:466 mod/boost/class/Boost.php:474
+#: mod/boost/class/Boost.php:482
+msgid "Created directory"
+msgstr ""
+
+#: mod/boost/class/Boost.php:473
+msgid "Creating files directory for module."
+msgstr ""
+
+#: mod/boost/class/Boost.php:483
+msgid "Creating image directory for module."
+msgstr ""
+
+#: mod/boost/class/Boost.php:493 mod/controlpanel/class/ControlPanel.php:170
+msgid "Copying source image directory for module."
+msgstr ""
+
+#: mod/boost/class/Boost.php:497 mod/controlpanel/class/ControlPanel.php:174
+msgid "Source image directory copied successfully."
+msgstr ""
+
+#: mod/boost/class/Boost.php:499 mod/controlpanel/class/ControlPanel.php:176
+msgid "Source image directory failed to copy."
+msgstr ""
+
+#: mod/boost/class/Boost.php:512 mod/boost/class/Boost.php:520
+#: mod/boost/class/Boost.php:528 mod/boost/class/Boost.php:536
+#: mod/boost/class/Boost.php:544 mod/boost/class/Boost.php:552
+#, php-format
+msgid "Removing directory %s"
+msgstr ""
+
+#: mod/boost/class/Boost.php:514 mod/boost/class/Boost.php:522
+#: mod/boost/class/Boost.php:530 mod/boost/class/Boost.php:538
+#: mod/boost/class/Boost.php:546 mod/boost/class/Boost.php:554
+#, php-format
+msgid "Unable to remove directory %s"
+msgstr ""
+
+#: mod/boost/class/Boost.php:572
+msgid "Registering module to core."
+msgstr ""
+
+#: mod/boost/class/Boost.php:585
+msgid "An error occurred during registration."
+msgstr ""
+
+#: mod/boost/class/Boost.php:588
+msgid "Registration successful."
+msgstr ""
+
+#: mod/boost/class/Boost.php:599
+msgid "Registered to Key."
+msgstr ""
+
+#: mod/boost/class/Boost.php:609
+msgid "Unregistering module from core."
+msgstr ""
+
+#: mod/boost/class/Boost.php:617
+msgid "An error occurred while unregistering."
+msgstr ""
+
+#: mod/boost/class/Boost.php:620
+msgid "Unregistering was successful."
+msgstr ""
+
+#: mod/boost/class/Boost.php:633
+msgid "Unregistered from Key."
+msgstr ""
+
+#: mod/boost/class/Boost.php:635
+msgid "Key unregistration successful."
+msgstr ""
+
+#: mod/boost/class/Boost.php:637
+msgid "Some key unregistrations were unsuccessful. Check your logs."
+msgstr ""
+
+#: mod/boost/class/Boost.php:726
+#, php-format
+msgid "An error occurred while registering the %s module."
+msgstr ""
+
+#: mod/boost/class/Boost.php:731
+#, php-format
+msgid "%1$s successfully registered to %2$s."
+msgstr ""
+
+#: mod/boost/class/Boost.php:755
+#, php-format
+msgid "An error occurred while unregistering the %s module."
+msgstr ""
+
+#: mod/boost/class/Boost.php:760
+#, php-format
+msgid "%1$s successfully unregistered from %2$s."
+msgstr ""
+
+#: mod/boost/class/Boost.php:770
+msgid "Registering this module to other modules."
+msgstr ""
+
+#: mod/boost/class/Boost.php:788
+msgid "Unregistering this module from other modules."
+msgstr ""
+
+#: mod/boost/class/Boost.php:810
+msgid "Registering other modules to this module."
+msgstr ""
+
+#: mod/boost/class/Boost.php:826
+msgid "Unregistering other modules from this module."
+msgstr ""
+
+#: mod/boost/class/Boost.php:879
+msgid "The About file is missing for this module."
+msgstr ""
+
+#: mod/boost/class/Boost.php:908 setup/class/Setup.php:451
+msgid "The following directories need to be created:"
+msgstr ""
+
+#: mod/boost/class/Boost.php:914 setup/class/Setup.php:457
+msgid "The following directories are not writable:"
+msgstr ""
+
+#: mod/boost/class/Boost.php:916 setup/class/Setup.php:459
+msgid "You will need to change the permissions."
+msgstr ""
+
+#: mod/boost/class/Boost.php:917 setup/class/Setup.php:77
+#: setup/class/Setup.php:460
+msgid "Permission Help"
+msgstr ""
+
+#: mod/boost/class/Boost.php:924
+#, php-format
+msgid "Your logs/%s file must be readable and writable."
+msgstr ""
+
+#: mod/boost/class/Form.php:18
+msgid "index.php?module=boost&amp;action=admin"
+msgstr ""
+
+#: mod/boost/class/Form.php:20
+msgid "Core Modules"
+msgstr ""
+
+#: mod/boost/class/Form.php:21
+msgid "Other Modules"
+msgstr ""
+
+#: mod/boost/class/Form.php:73 mod/boost/class/Form.php:80
+#: mod/boost/class/Form.php:167
+msgid "Check"
+msgstr ""
+
+#: mod/boost/class/Form.php:97
+msgid "Module Title"
+msgstr ""
+
+#: mod/boost/class/Form.php:99
+msgid "More information"
+msgstr ""
+
+#: mod/boost/class/Form.php:100
+msgid "Current version"
+msgstr ""
+
+#: mod/boost/class/Form.php:103
+msgid ""
+"WARNING: Only deities can uninstall core modules. Doing so may corrupt your "
+"installation!"
+msgstr ""
+
+#: mod/boost/class/Form.php:107
+msgid "No modules available."
+msgstr ""
+
+#: mod/boost/class/Form.php:129
+msgid "Install"
+msgstr ""
+
+#: mod/boost/class/Form.php:132 mod/boost/class/Form.php:160
+msgid "Missing dependency"
+msgstr ""
+
+#: mod/boost/class/Form.php:139
+#, php-format
+msgid "This module is depended upon by: %s"
+msgstr ""
+
+#: mod/boost/class/Form.php:140
+msgid "Depended upon"
+msgstr ""
+
+#: mod/boost/class/Form.php:143
+msgid ""
+"Are you sure you want to uninstall this module? All data will be deleted."
+msgstr ""
+
+#: mod/boost/class/Form.php:145 setup/manager.php:123
+msgid "Uninstall"
+msgstr ""
+
+#: mod/boost/class/Form.php:155
+msgid "Boost requires updating! You should do so before any other module!"
+msgstr ""
+
+#: mod/boost/class/Form.php:170
+msgid "No Action"
+msgstr ""
+
+#: mod/boost/class/Form.php:178
+msgid "About"
+msgstr ""
+
+#: mod/branch/boost/controlpanel.php:3
+msgid "Branch"
+msgstr ""
+
+#: mod/branch/boost/controlpanel.php:6
+msgid "Install and update branch sites."
+msgstr ""
+
+#: mod/branch/class/Branch.php:128
+msgid ""
+"Removing this branch will make it inaccessible.\\nThe database and files "
+"will remain behind.\\nIf you are sure you want to remove the branch, type "
+"the branch name:"
+msgstr ""
+
+#: mod/branch/class/Branch.php:135
+msgid "Modules"
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:113
+msgid "Incorrect or missing branch id."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:147
+msgid "Module list saved successfully."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:149
+msgid "An error occurred when trying to save the module list."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:166
+msgid "An error occurred while saving your branch."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:174
+msgid "Create branch directories"
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:175
+msgid "Branch created successfully."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:178
+msgid "Continue to install branch core"
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:180
+msgid "Unable to create branch directories."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:181
+msgid "Sorry, but Branch failed to make the proper directories."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:197
+msgid "Set up allowed modules"
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:223
+msgid "Install branch core"
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:226
+msgid "Unable to get database connect information. Please try again."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:231
+msgid "Failed to copy theme files to branch."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:234
+msgid "Copied themes to branch."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:238
+msgid "Failed to copy core images to branch."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:241
+msgid "Copied core images."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:246
+msgid "Failed to copy core config files to branch."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:249
+msgid "Copied config files to branch."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:260
+msgid "Failed to create config.php file in the branch."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:263
+msgid "Config file created successfully."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:270
+msgid "Core SQL import failed."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:273
+msgid "Core SQL import successful."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:275
+msgid "Core installed successfully. Continue to core module installation."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:330
+msgid "Branch directory does not exist."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:342
+msgid "Directory creation successful."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:344 mod/branch/class/Branch_Admin.php:348
+msgid "Unable to create the directory. You will need to create it manually."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:353
+msgid "Directory exists but already contains files."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:358
+msgid "You must name your branch."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:361
+msgid "You may not use that branch name."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:366
+msgid "Enter your site's url address."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:373
+msgid "Your branch site must have a site_hash."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:393
+msgid "Installing core modules"
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:399 setup/class/Setup.php:544
+msgid "An error occurred while trying to install your modules."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:400 setup/class/Setup.php:545
+msgid "Please check your error logs and try again."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:535
+msgid "An error occurred when trying to connect to the database."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:538
+msgid "Database created successfully."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:543
+msgid "Unable to create the database. You will need to create it manually."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:547
+msgid "Connected successfully, but the database does not exist."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:554
+msgid "Could not connect to the database."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:562
+msgid "Connection successful. Database available."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:567
+msgid "Connected successfully, but this database already contains tables."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:582
+msgid "Edit branch"
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:586
+msgid "Create branch information"
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:587 mod/branch/class/Branch_Admin.php:646
+msgid "Continue..."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:591 mod/branch/class/Branch_Admin.php:838
+msgid "Branch name"
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:595 mod/branch/class/Branch_Admin.php:839
+msgid "Directory"
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:599
+msgid "URL"
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:603
+msgid "ID hash"
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:605
+msgid "Branch specifications"
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:614
+msgid "Setup branch database"
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:620
+msgid "Create new database"
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:624
+msgid "Database syntax"
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:630
+msgid "Permission user"
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:634
+msgid "User password"
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:637
+msgid "Database Host"
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:641
+msgid "Connection Port"
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:643
+msgid "Database information"
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:645
+msgid "Use hub values"
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:718
+msgid "This database name is not allowed."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:723
+msgid "You must type a database name."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:728
+msgid "You must type a database user."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:787
+#, php-format
+msgid "Module access for \"%s\""
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:821 mod/calendar/class/Schedule.php:216
+#: mod/comments/class/Comments.php:405 mod/layout/class/LayoutAdmin.php:202
+#: mod/profiler/class/Forms.php:179 mod/related/class/Action.php:82
+#: mod/rss/class/Admin.php:253 mod/version/class/Admin.php:61
+#: mod/calendar_old/class/Admin.php:622
+#: mod/calendar_new/class/Schedule.php:216
+msgid "Save"
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:827
+msgid "Unchecked modules cannot be installed on this branch."
+msgstr ""
+
+#: mod/branch/class/Branch_Admin.php:850
+msgid "Branch List"
+msgstr ""
+
+#: mod/calendar/boost/controlpanel.php:2
+#: mod/calendar_old/boost/controlpanel.php:2
+#: mod/calendar_new/boost/controlpanel.php:2
+msgid "Calendar"
+msgstr ""
+
+#: mod/calendar/boost/controlpanel.php:5
+#: mod/calendar_old/boost/controlpanel.php:5
+#: mod/calendar_new/boost/controlpanel.php:5
+msgid "Create events and schedules."
+msgstr ""
+
+#: mod/calendar/boost/permission.php:12
+#: mod/calendar_old/boost/permission.php:12
+#: mod/calendar_new/boost/permission.php:12
+msgid "Change module settings"
+msgstr ""
+
+#: mod/calendar/boost/permission.php:14
+#: mod/calendar_old/boost/permission.php:14
+#: mod/calendar_new/boost/permission.php:14
+msgid "Create/Edit public schedules"
+msgstr ""
+
+#: mod/calendar/boost/permission.php:15
+#: mod/calendar_old/boost/permission.php:15
+#: mod/calendar_new/boost/permission.php:15
+msgid "Edit private schedules"
+msgstr ""
+
+#: mod/calendar/class/Admin.php:49
+msgid "Update event"
+msgstr ""
+
+#: mod/calendar/class/Admin.php:51
+msgid "Create event"
+msgstr ""
+
+#: mod/calendar/class/Admin.php:60 mod/calendar_new/class/Admin.php:44
+msgid "Update schedule"
+msgstr ""
+
+#: mod/calendar/class/Admin.php:62 mod/calendar/class/Admin.php:319
+#: mod/calendar_old/class/Admin.php:322 mod/calendar_new/class/Admin.php:46
+#: mod/calendar_new/class/Admin.php:250
+msgid "Create schedule"
+msgstr ""
+
+#: mod/calendar/class/Admin.php:74 mod/calendar/class/Admin.php:308
+#: mod/calendar_old/class/Admin.php:114 mod/calendar_old/class/Admin.php:161
+#: mod/calendar_old/class/Admin.php:272 mod/calendar_new/class/Admin.php:58
+#: mod/calendar_new/class/Admin.php:239
+msgid "Schedules"
+msgstr ""
+
+#: mod/calendar/class/Admin.php:79
+#: mod/filecabinet/class/Cabinet_Action.php:272
+#: mod/filecabinet/class/Cabinet_Action.php:287
+#: mod/filecabinet/class/Cabinet_Action.php:361
+#: mod/menu/class/Menu_Admin.php:302 mod/profiler/class/Profiler.php:227
+#: mod/profiler/class/Profiler.php:267 mod/users/class/Action.php:203
+#: mod/users/class/Action.php:360 mod/users/class/Action.php:607
+#: mod/calendar_old/class/Admin.php:166 mod/calendar_old/class/Admin.php:276
+#: mod/calendar_new/class/Admin.php:63
+msgid "Settings"
+msgstr ""
+
+#: mod/calendar/class/Admin.php:140 mod/calendar_old/class/Admin.php:80
+#: mod/calendar_new/class/Admin.php:123
+msgid "Schedule deleted."
+msgstr ""
+
+#: mod/calendar/class/Admin.php:210 mod/calendar_old/class/Admin.php:349
+#: mod/calendar_new/class/Admin.php:176
+msgid "Sorry, personal schedules are disabled."
+msgstr ""
+
+#: mod/calendar/class/Admin.php:217 mod/calendar_old/class/Admin.php:356
+#: mod/calendar_new/class/Admin.php:183
+msgid "An error occurred when accessing the schedules."
+msgstr ""
+
+#: mod/calendar/class/Admin.php:220 mod/calendar_old/class/Admin.php:358
+#: mod/calendar_new/class/Admin.php:186
+msgid "You currently do not have a personal schedule. Please create one."
+msgstr ""
+
+#: mod/calendar/class/Admin.php:236 mod/calendar/class/Admin.php:241
+msgid "An error occurred when saving your event."
+msgstr ""
+
+#: mod/calendar/class/Admin.php:246 mod/calendar/class/Admin.php:251
+msgid "Event saved."
+msgstr ""
+
+#: mod/calendar/class/Admin.php:269 mod/calendar/class/Admin.php:274
+#: mod/calendar_new/class/Admin.php:200 mod/calendar_new/class/Admin.php:205
+msgid "An error occurred when saving your schedule."
+msgstr ""
+
+#: mod/calendar/class/Admin.php:278 mod/calendar/class/Admin.php:283
+msgid "Schedule saved."
+msgstr ""
+
+#: mod/calendar/class/Admin.php:314 mod/calendar/class/Event.php:98
+#: mod/calendar/class/Schedule.php:189 mod/webpage/class/Admin.php:424
+#: mod/webpage/class/Forms.php:73 mod/calendar_old/class/Admin.php:319
+#: mod/calendar_old/class/Admin.php:411 mod/calendar_old/class/Admin.php:449
+#: mod/calendar_new/class/Schedule.php:189
+#: mod/calendar_new/class/Admin.php:245
+msgid "Summary"
+msgstr ""
+
+#: mod/calendar/class/Admin.php:315 mod/calendar_old/class/Admin.php:320
+#: mod/calendar_old/class/Admin.php:397 mod/calendar_new/class/Admin.php:246
+msgid "Public"
+msgstr ""
+
+#: mod/calendar/class/Admin.php:316 mod/calendar_old/class/Admin.php:321
+#: mod/calendar_new/class/Admin.php:247
+msgid "User"
+msgstr ""
+
+#: mod/calendar/class/Admin.php:332 mod/calendar_old/class/Admin.php:324
+#: mod/calendar_new/class/Admin.php:263
+msgid "Options"
+msgstr ""
+
+#: mod/calendar/class/Admin.php:339 mod/calendar_old/class/Admin.php:331
+#: mod/calendar_new/class/Admin.php:270
+msgid "No schedules have been created."
+msgstr ""
+
+#: mod/calendar/class/Event.php:101 mod/calendar_old/class/Admin.php:453
+msgid "Start time"
+msgstr ""
+
+#: mod/calendar/class/Event.php:105 mod/calendar_old/class/Admin.php:457
+msgid "End time"
+msgstr ""
+
+#: mod/calendar/class/Event.php:118 mod/calendar_old/class/Admin.php:470
+msgid "Normal"
+msgstr ""
+
+#: mod/calendar/class/Event.php:120 mod/calendar/class/View.php:512
+#: mod/calendar_old/class/Admin.php:472 mod/calendar_old/class/View.php:503
+#: mod/calendar_new/class/View.php:512
+msgid "All day"
+msgstr ""
+
+#: mod/calendar/class/Event.php:122 mod/calendar_old/class/Admin.php:474
+msgid "Starts at"
+msgstr ""
+
+#: mod/calendar/class/Event.php:124 mod/calendar_old/class/Admin.php:476
+msgid "Deadline"
+msgstr ""
+
+#: mod/calendar/class/Event.php:131 mod/calendar_old/class/Admin.php:483
+msgid "Event type"
+msgstr ""
+
+#: mod/calendar/class/Event.php:133 mod/calendar_old/class/Admin.php:485
+msgid "Save event"
+msgstr ""
+
+#: mod/calendar/class/Event.php:187 mod/calendar_old/class/Event.php:181
+msgid "You must give your event a title."
+msgstr ""
+
+#: mod/calendar/class/Event.php:212 mod/calendar_old/class/Event.php:206
+msgid "The end time must be after the start time."
+msgstr ""
+
+#: mod/calendar/class/Schedule.php:120 mod/calendar/class/Schedule.php:125
+#: mod/calendar_old/class/Schedule.php:236
+#: mod/calendar_old/class/Schedule.php:241
+#: mod/calendar_new/class/Schedule.php:120
+#: mod/calendar_new/class/Schedule.php:125
+msgid "Add event"
+msgstr ""
+
+#: mod/calendar/class/Schedule.php:193 mod/calendar_new/class/Schedule.php:193
+msgid "Only registered users may view"
+msgstr ""
+
+#: mod/calendar/class/Schedule.php:194 mod/calendar_new/class/Schedule.php:194
+msgid "Anyone may view"
+msgstr ""
+
+#: mod/calendar/class/Schedule.php:199 mod/calendar_new/class/Schedule.php:199
+msgid "Events details seen"
+msgstr ""
+
+#: mod/calendar/class/Schedule.php:200 mod/calendar_new/class/Schedule.php:200
+msgid "Event details hidden"
+msgstr ""
+
+#: mod/calendar/class/Schedule.php:201 mod/calendar_new/class/Schedule.php:201
+msgid "Schedule seen by permission only"
+msgstr ""
+
+#: mod/calendar/class/Schedule.php:208 mod/calendar_new/class/Schedule.php:208
+msgid "Not assigned"
+msgstr ""
+
+#: mod/calendar/class/Schedule.php:213 mod/calendar_new/class/Schedule.php:213
+msgid "Assign to"
+msgstr ""
+
+#: mod/calendar/class/Schedule.php:224 mod/calendar_old/class/Admin.php:417
+#: mod/calendar_new/class/Schedule.php:224
+msgid "Availability"
+msgstr ""
+
+#: mod/calendar/class/Schedule.php:225 mod/calendar_new/class/Schedule.php:225
+msgid "Event view status"
+msgstr ""
+
+#: mod/calendar/class/Schedule.php:340 mod/calendar_new/class/Schedule.php:340
+msgid "Are you sure you want to delete this schedule?"
+msgstr ""
+
+#: mod/calendar/class/View.php:50 mod/calendar_old/class/View.php:41
+#: mod/calendar_new/class/View.php:50
+msgid "Previous month"
+msgstr ""
+
+#: mod/calendar/class/View.php:51 mod/calendar_old/class/View.php:42
+#: mod/calendar_new/class/View.php:51
+msgid "Next month"
+msgstr ""
+
+#: mod/calendar/class/View.php:55 mod/calendar/class/View.php:58
+#: mod/calendar_old/class/View.php:46 mod/calendar_old/class/View.php:49
+#: mod/calendar_new/class/View.php:55 mod/calendar_new/class/View.php:58
+msgid "Month list"
+msgstr ""
+
+#: mod/calendar/class/View.php:62 mod/calendar/class/View.php:65
+#: mod/calendar_old/class/View.php:53 mod/calendar_old/class/View.php:56
+#: mod/calendar_new/class/View.php:62 mod/calendar_new/class/View.php:65
+msgid "Month grid"
+msgstr ""
+
+#: mod/calendar/class/View.php:73 mod/calendar_old/class/View.php:64
+#: mod/calendar_new/class/View.php:73
+msgid "Previous week"
+msgstr ""
+
+#: mod/calendar/class/View.php:74 mod/calendar_old/class/View.php:65
+#: mod/calendar_new/class/View.php:74
+msgid "Next week"
+msgstr ""
+
+#: mod/calendar/class/View.php:76 mod/calendar/class/View.php:79
+#: mod/calendar_old/class/View.php:67 mod/calendar_old/class/View.php:70
+#: mod/calendar_new/class/View.php:76 mod/calendar_new/class/View.php:79
+msgid "Week"
+msgstr ""
+
+#: mod/calendar/class/View.php:88 mod/calendar_old/class/View.php:79
+#: mod/calendar_new/class/View.php:88
+msgid "Previous day"
+msgstr ""
+
+#: mod/calendar/class/View.php:89 mod/calendar_old/class/View.php:80
+#: mod/calendar_new/class/View.php:89
+msgid "Next day"
+msgstr ""
+
+#: mod/calendar/class/View.php:91 mod/calendar/class/View.php:94
+#: mod/calendar_old/class/View.php:82 mod/calendar_old/class/View.php:85
+#: mod/calendar_new/class/View.php:91 mod/calendar_new/class/View.php:94
+msgid "Day"
+msgstr ""
+
+#: mod/calendar/class/View.php:254 mod/calendar/class/View.php:347
+#: mod/calendar/class/View.php:433 mod/calendar_old/class/View.php:245
+#: mod/calendar_old/class/View.php:338 mod/calendar_old/class/View.php:424
+#: mod/calendar_new/class/View.php:254 mod/calendar_new/class/View.php:347
+#: mod/calendar_new/class/View.php:433
+msgid "Public events"
+msgstr ""
+
+#: mod/calendar/class/View.php:316 mod/calendar_old/class/View.php:307
+#: mod/calendar_new/class/View.php:316
+msgid "No events this month."
+msgstr ""
+
+#: mod/calendar/class/View.php:456 mod/calendar_old/class/View.php:447
+#: mod/calendar_new/class/View.php:456
+msgid "No events planned for this day."
+msgstr ""
+
+#: mod/calendar/class/View.php:573 mod/calendar_old/class/View.php:564
+#: mod/calendar_new/class/View.php:573
+msgid "No events this week."
+msgstr ""
+
+#: mod/calendar/conf/error.php:12
+msgid "Schedule event table is missing."
+msgstr ""
+
+#: mod/categories/boost/controlpanel.php:8
+msgid "Categories"
+msgstr ""
+
+#: mod/categories/boost/controlpanel.php:12
+msgid "Administrate your site's categories."
+msgstr ""
+
+#: mod/categories/boost/permission.php:4
+msgid "Edit categories"
+msgstr ""
+
+#: mod/categories/boost/permission.php:5
+msgid "Delete categories"
+msgstr ""
+
+#: mod/categories/boost/register.php:9
+msgid "No Categories file found."
+msgstr ""
+
+#: mod/categories/boost/register.php:21
+msgid "This modules category table already exists."
+msgstr ""
+
+#: mod/categories/boost/register.php:35
+msgid "Category table added."
+msgstr ""
+
+#: mod/categories/boost/update.php:20 mod/search/boost/update.php:13
+msgid "Add permissions to search."
+msgstr ""
+
+#: mod/categories/class/Action.php:18
+msgid "You are not authorized to administrate categories."
+msgstr ""
+
+#: mod/categories/class/Action.php:47 mod/categories/class/Action.php:63
+#: mod/categories/class/Action.php:82
+msgid "Manage Categories"
+msgstr ""
+
+#: mod/categories/class/Action.php:53 mod/categories/class/Action.php:226
+msgid "Update Category"
+msgstr ""
+
+#: mod/categories/class/Action.php:55 mod/categories/class/Action.php:68
+#: mod/categories/class/Action.php:228
+msgid "Add Category"
+msgstr ""
+
+#: mod/categories/class/Action.php:90
+msgid "Unable to save category."
+msgstr ""
+
+#: mod/categories/class/Action.php:90
+msgid "Please contact your administrator."
+msgstr ""
+
+#: mod/categories/class/Action.php:93
+msgid "Category saved successfully."
+msgstr ""
+
+#: mod/categories/class/Action.php:162
+msgid "Your category must have a title."
+msgstr ""
+
+#: mod/categories/class/Action.php:235 mod/categories/class/Action.php:239
+#: mod/categories/class/Categories.php:362
+#: mod/categories/class/Category.php:96
+msgid "Top Level"
+msgstr ""
+
+#: mod/categories/class/Action.php:245 mod/categories/class/Action.php:290
+msgid "Parent"
+msgstr ""
+
+#: mod/categories/class/Action.php:260
+msgid "Icon"
+msgstr ""
+
+#: mod/categories/class/Action.php:262
+msgid "Current Icon"
+msgstr ""
+
+#: mod/categories/class/Action.php:303
+msgid "No categories found."
+msgstr ""
+
+#: mod/categories/class/Action.php:324
+msgid "All Categories"
+msgstr ""
+
+#: mod/categories/class/Action.php:336
+#, php-format
+msgid "%s: Module listing for %s"
+msgstr ""
+
+#: mod/categories/class/Action.php:339
+#, php-format
+msgid "%s: Module listing"
+msgstr ""
+
+#: mod/categories/class/Action.php:375 mod/categories/class/Action.php:377
+#, php-format
+msgid "All - %s items"
+msgstr ""
+
+#: mod/categories/class/Action.php:395
+msgid "View Module"
+msgstr ""
+
+#: mod/categories/class/Action.php:407
+msgid "Item Title"
+msgstr ""
+
+#: mod/categories/class/Action.php:408
+msgid "Creation date"
+msgstr ""
+
+#: mod/categories/class/Action.php:425
+msgid "No items found in this category."
+msgstr ""
+
+#: mod/categories/class/Categories.php:36
+#: mod/categories/class/Categories.php:104
+msgid "Categorize"
+msgstr ""
+
+#: mod/categories/class/Categories.php:61
+msgid "You need to add some categories first."
+msgstr ""
+
+#: mod/categories/class/Categories.php:85
+msgid "Add category"
+msgstr ""
+
+#: mod/categories/class/Categories.php:87
+msgid "All categories assigned."
+msgstr ""
+
+#: mod/categories/class/Categories.php:91
+msgid "No categories assigned."
+msgstr ""
+
+#: mod/categories/class/Categories.php:94
+msgid "Remove category"
+msgstr ""
+
+#: mod/categories/class/Categories.php:109
+msgid "Save and close"
+msgstr ""
+
+#: mod/categories/class/Categories.php:110
+msgid "Available categories"
+msgstr ""
+
+#: mod/categories/class/Categories.php:111
+msgid "Currently assigned"
+msgstr ""
+
+#: mod/categories/class/Categories.php:160
+msgid "item(s)"
+msgstr ""
+
+#: mod/categories/class/Categories.php:419
+#, php-format
+msgid "%s - %s item(s)"
+msgstr ""
+
+#: mod/categories/class/Categories.php:432
+msgid "No items available in this category."
+msgstr ""
+
+#: mod/categories/class/Category.php:205
+msgid "Are you sure you want to delete this category?"
+msgstr ""
+
+#: mod/clipboard/class/Clipboard.php:44 mod/clipboard/class/Clipboard.php:87
+msgid "Clipboard"
+msgstr ""
+
+#: mod/clipboard/class/Clipboard.php:45
+msgid "Copy the text below and paste it into the text box."
+msgstr ""
+
+#: mod/clipboard/class/Clipboard.php:48
+msgid "Close Window"
+msgstr ""
+
+#: mod/clipboard/class/Clipboard.php:83
+msgid "Clear"
+msgstr ""
+
+#: mod/comments/boost/controlpanel.php:3
+msgid "Comments"
+msgstr ""
+
+#: mod/comments/boost/controlpanel.php:6
+msgid "Control administrative options for comments."
+msgstr ""
+
+#: mod/comments/boost/permission.php:5
+msgid "Edit Comments"
+msgstr ""
+
+#: mod/comments/boost/permission.php:6
+msgid "Delete Comments"
+msgstr ""
+
+#: mod/comments/boost/unregister.php:11
+msgid "Removing module's comments."
+msgstr ""
+
+#: mod/comments/boost/unregister.php:13
+msgid "Comments (if any) removed successfully"
+msgstr ""
+
+#: mod/comments/boost/unregister.php:15
+msgid "An error occurred when trying to remove comments."
+msgstr ""
+
+#: mod/comments/class/Comment_Item.php:258 mod/comments/class/Comments.php:257
+msgid "Subject"
+msgstr ""
+
+#: mod/comments/class/Comment_Item.php:259 mod/comments/class/Comments.php:274
+msgid "Comment"
+msgstr ""
+
+#: mod/comments/class/Comment_Item.php:260 mod/version/class/Approval.php:152
+#: mod/version/class/Restore.php:91
+msgid "Author"
+msgstr ""
+
+#: mod/comments/class/Comment_Item.php:277
+msgid "In response to"
+msgstr ""
+
+#: mod/comments/class/Comment_Item.php:283
+msgid "Edited"
+msgstr ""
+
+#: mod/comments/class/Comment_Item.php:285
+msgid "Edited by"
+msgstr ""
+
+#: mod/comments/class/Comment_Item.php:286
+msgid "Edited on"
+msgstr ""
+
+#: mod/comments/class/Comment_Item.php:290
+msgid "Reason"
+msgstr ""
+
+#: mod/comments/class/Comment_Item.php:363
+msgid "Are you sure you want to delete this comment?"
+msgstr ""
+
+#: mod/comments/class/Comment_Item.php:380
+msgid "Quote"
+msgstr ""
+
+#: mod/comments/class/Comment_Item.php:388
+msgid "Reply"
+msgstr ""
+
+#: mod/comments/class/Comment_Thread.php:58
+#: mod/comments/class/Comment_Thread.php:264
+msgid "No comments"
+msgstr ""
+
+#: mod/comments/class/Comment_Thread.php:60
+msgid "1 comment"
+msgstr ""
+
+#: mod/comments/class/Comment_Thread.php:62
+#, php-format
+msgid "%s comments"
+msgstr ""
+
+#: mod/comments/class/Comment_Thread.php:98
+msgid "Error occurred trying to create new thread."
+msgstr ""
+
+#: mod/comments/class/Comment_Thread.php:126
+msgid "Go back"
+msgstr ""
+
+#: mod/comments/class/Comment_Thread.php:141
+msgid "Post New Comment"
+msgstr ""
+
+#: mod/comments/class/Comment_Thread.php:203
+msgid "Today"
+msgstr ""
+
+#: mod/comments/class/Comment_Thread.php:204
+msgid "Since yesterday"
+msgstr ""
+
+#: mod/comments/class/Comment_Thread.php:205
+msgid "This week"
+msgstr ""
+
+#: mod/comments/class/Comment_Thread.php:206
+msgid "This month"
+msgstr ""
+
+#: mod/comments/class/Comment_Thread.php:209
+#: mod/comments/class/Comments.php:398
+msgid "Oldest first"
+msgstr ""
+
+#: mod/comments/class/Comment_Thread.php:210
+#: mod/comments/class/Comments.php:399
+msgid "Newest first"
+msgstr ""
+
+#: mod/comments/class/Comment_Thread.php:324
+msgid "Disable anonymous posting"
+msgstr ""
+
+#: mod/comments/class/Comment_Thread.php:327
+msgid "Enable anonymous posting"
+msgstr ""
+
+#: mod/comments/class/Comment_User.php:56
+msgid "Image signatures not allowed."
+msgstr ""
+
+#: mod/comments/class/Comment_User.php:145
+#, php-format
+msgid "%s's Website"
+msgstr ""
+
+#: mod/comments/class/Comment_User.php:146
+msgid "Website"
+msgstr ""
+
+#: mod/comments/class/Comment_User.php:203
+msgid "Joined"
+msgstr ""
+
+#: mod/comments/class/Comment_User.php:220
+msgid "Location"
+msgstr ""
+
+#: mod/comments/class/Comment_User.php:239
+msgid "Could not access image url."
+msgstr ""
+
+#: mod/comments/class/Comment_User.php:260
+msgid "There was a problem saving your image."
+msgstr ""
+
+#: mod/comments/class/Comment_User.php:279
+msgid "Your contact email is formatted improperly."
+msgstr ""
+
+#: mod/comments/class/Comments.php:133 mod/comments/class/Comments.php:277
+msgid "Post Comment"
+msgstr ""
+
+#: mod/comments/class/Comments.php:152
+msgid "Missing thread information."
+msgstr ""
+
+#: mod/comments/class/Comments.php:160
+msgid "A problem occurred when trying to save your comment."
+msgstr ""
+
+#: mod/comments/class/Comments.php:161
+msgid "Please try again later."
+msgstr ""
+
+#: mod/comments/class/Comments.php:171
+#, php-format
+msgid "Comment from: %s"
+msgstr ""
+
+#: mod/comments/class/Comments.php:248
+msgid "Reason for edit"
+msgstr ""
+
+#: mod/comments/class/Comments.php:261
+msgid "Re:"
+msgstr ""
+
+#: mod/comments/class/Comments.php:369
+msgid "Go back to settings..."
+msgstr ""
+
+#: mod/comments/class/Comments.php:382
+msgid "Allow user signatures"
+msgstr ""
+
+#: mod/comments/class/Comments.php:387
+msgid "Allow images in signatures"
+msgstr ""
+
+#: mod/comments/class/Comments.php:391
+msgid "Allow user avatars"
+msgstr ""
+
+#: mod/comments/class/Comments.php:395
+msgid "Save avatars locally"
+msgstr ""
+
+#: mod/comments/class/Comments.php:403
+msgid "Default order"
+msgstr ""
+
+#: mod/comments/class/Comments.php:409
+msgid "Comment settings"
+msgstr ""
+
+#: mod/comments/class/My_Page.php:18 mod/comments/class/My_Page.php:28
+msgid "Comment Settings"
+msgstr ""
+
+#: mod/comments/class/My_Page.php:73
+msgid "Signature"
+msgstr ""
+
+#: mod/comments/class/My_Page.php:84
+msgid "Avatar"
+msgstr ""
+
+#: mod/comments/class/My_Page.php:88
+msgid "Contact Email"
+msgstr ""
+
+#: mod/controlpanel/boost/controlpanel.php:14
+msgid "Administration"
+msgstr ""
+
+#: mod/controlpanel/boost/controlpanel.php:19
+msgid "Developer"
+msgstr ""
+
+#: mod/controlpanel/boost/controlpanel.php:24
+msgid "Unsorted"
+msgstr ""
+
+#: mod/controlpanel/boost/controlpanel.php:28 mod/users/class/Form.php:44
+msgid "Control Panel"
+msgstr ""
+
+#: mod/controlpanel/boost/controlpanel.php:31
+msgid "Allow manipulation of the control panel."
+msgstr ""
+
+#: mod/controlpanel/boost/permission.php:5
+msgid "Remove Tab"
+msgstr ""
+
+#: mod/controlpanel/boost/permission.php:6
+msgid "Add Tab"
+msgstr ""
+
+#: mod/controlpanel/boost/permission.php:7
+msgid "Move Link"
+msgstr ""
+
+#: mod/controlpanel/boost/unregister.php:18
+msgid "No Control Panel file found for unregisteration."
+msgstr ""
+
+#: mod/controlpanel/boost/unregister.php:87
+msgid "Control Panel links and tabs have been removed."
+msgstr ""
+
+#: mod/controlpanel/class/Action.php:51
+msgid "Control Panel Administration"
+msgstr ""
+
+#: mod/controlpanel/class/Action.php:71
+msgid "Move tab order up"
+msgstr ""
+
+#: mod/controlpanel/class/Action.php:72
+msgid "Move tab order down"
+msgstr ""
+
+#: mod/controlpanel/class/Action.php:76
+msgid "Move link order up"
+msgstr ""
+
+#: mod/controlpanel/class/Action.php:77
+msgid "Move link order down"
+msgstr ""
+
+#: mod/controlpanel/class/ControlPanel.php:59
+msgid "No tabs available in the Control Panel."
+msgstr ""
+
+#: mod/controlpanel/class/ControlPanel.php:76
+msgid "An error occurred while accessing the Control Panel."
+msgstr ""
+
+#: mod/controlpanel/class/ControlPanel.php:162
+msgid "No Control Panel file found."
+msgstr ""
+
+#: mod/controlpanel/class/ControlPanel.php:193
+#: mod/controlpanel/class/ControlPanel.php:199
+msgid "Unable to create tab."
+msgstr ""
+
+#: mod/controlpanel/class/ControlPanel.php:199
+msgid "Missing link."
+msgstr ""
+
+#: mod/controlpanel/class/ControlPanel.php:214
+msgid "An error occurred when trying to save a controlpanel tab."
+msgstr ""
+
+#: mod/controlpanel/class/ControlPanel.php:219
+#, php-format
+msgid "Control Panel tabs created for %s."
+msgstr ""
+
+#: mod/controlpanel/class/ControlPanel.php:221
+msgid "No Control Panel tabs found."
+msgstr ""
+
+#: mod/controlpanel/class/ControlPanel.php:266
+msgid "Unable to load a link into a specified tab."
+msgstr ""
+
+#: mod/controlpanel/class/ControlPanel.php:275
+msgid "There was a problem trying to save a Control Panel link."
+msgstr ""
+
+#: mod/controlpanel/class/ControlPanel.php:280
+#, php-format
+msgid "Control Panel links created for %s."
+msgstr ""
+
+#: mod/controlpanel/class/ControlPanel.php:282
+msgid "No Control Panel links found."
+msgstr ""
+
+#: mod/controlpanel/class/Link.php:103
+#, php-format
+msgid "%s module icon"
+msgstr ""
+
+#: mod/demographics/boost/uninstall.php:10
+msgid "Demographics table removed."
+msgstr ""
+
+#: mod/demographics/class/Demographics.php:87
+#: mod/demographics/class/Demographics.php:208
+msgid "No demographics file found."
+msgstr ""
+
+#: mod/demographics/class/Demographics.php:102
+#, php-format
+msgid "%s demographic field registered."
+msgstr ""
+
+#: mod/filecabinet/boost/controlpanel.php:8
+msgid "File Cabinet"
+msgstr ""
+
+#: mod/filecabinet/boost/controlpanel.php:11
+msgid "Manages images and documents uploaded to your site."
+msgstr ""
+
+#: mod/filecabinet/boost/permission.php:11
+msgid "Edit files"
+msgstr ""
+
+#: mod/filecabinet/boost/permission.php:12
+msgid "Delete files"
+msgstr ""
+
+#: mod/filecabinet/boost/permission.php:13
+msgid "Edit images"
+msgstr ""
+
+#: mod/filecabinet/boost/permission.php:14
+msgid "Delete images"
+msgstr ""
+
+#: mod/filecabinet/class/Cabinet_Action.php:47
+#: mod/filecabinet/class/Cabinet_Action.php:226
+msgid "Upload new document"
+msgstr ""
+
+#: mod/filecabinet/class/Cabinet_Action.php:58
+#: mod/filecabinet/class/Cabinet_Action.php:89
+#: mod/filecabinet/class/Cabinet_Action.php:96
+#: mod/filecabinet/class/Cabinet_Action.php:192
+msgid "Manage Images"
+msgstr ""
+
+#: mod/filecabinet/class/Cabinet_Action.php:67
+#: mod/filecabinet/class/Cabinet_Action.php:83
+#: mod/filecabinet/class/Cabinet_Action.php:233
+msgid "Manage Documents"
+msgstr ""
+
+#: mod/filecabinet/class/Cabinet_Action.php:78
+msgid "An error occurred when trying to delete a document."
+msgstr ""
+
+#: mod/filecabinet/class/Cabinet_Action.php:80
+msgid "Document deleted."
+msgstr ""
+
+#: mod/filecabinet/class/Cabinet_Action.php:172
+msgid "Image uploaded!"
+msgstr ""
+
+#: mod/filecabinet/class/Cabinet_Action.php:185
+msgid "Edit Image"
+msgstr ""
+
+#: mod/filecabinet/class/Cabinet_Action.php:221
+msgid "An error occurred while saving your document."
+msgstr ""
+
+#: mod/filecabinet/class/Cabinet_Action.php:230
+msgid "Document saved successfully."
+msgstr ""
+
+#: mod/filecabinet/class/Cabinet_Action.php:245
+msgid "Document"
+msgstr ""
+
+#: mod/filecabinet/class/Cabinet_Action.php:311
+msgid "Default document directory may not be blank"
+msgstr ""
+
+#: mod/filecabinet/class/Cabinet_Action.php:313
+msgid "Document directory does not exist."
+msgstr ""
+
+#: mod/filecabinet/class/Cabinet_Action.php:315
+msgid "Unable to write to document directory."
+msgstr ""
+
+#: mod/filecabinet/class/Cabinet_Action.php:317
+msgid "Unable to read document directory."
+msgstr ""
+
+#: mod/filecabinet/class/Cabinet_Action.php:321
+msgid "Default image directory may not be blank"
+msgstr ""
+
+#: mod/filecabinet/class/Cabinet_Action.php:323
+msgid "Image directory does not exist."
+msgstr ""
+
+#: mod/filecabinet/class/Cabinet_Action.php:325
+msgid "Unable to write to image directory."
+msgstr ""
+
+#: mod/filecabinet/class/Cabinet_Action.php:327
+msgid "Unable to read image directory."
+msgstr ""
+
+#: mod/filecabinet/class/Cabinet_Action.php:355
+msgid "Images"
+msgstr ""
+
+#: mod/filecabinet/class/Cabinet_Action.php:356
+msgid "Documents"
+msgstr ""
+
+#: mod/filecabinet/class/Cabinet_Action.php:399
+#: mod/filecabinet/class/Cabinet_Action.php:423
+#: mod/filecabinet/class/Cabinet_Action.php:426
+msgid "[default]"
+msgstr ""
+
+#: mod/filecabinet/class/Cabinet_Action.php:453
+msgid "Sorry but this file is inaccessible at this time."
+msgstr ""
+
+#: mod/filecabinet/class/Cabinet_Action.php:459
+msgid "Sorry, you are not allowed access to this file."
+msgstr ""
+
+#: mod/filecabinet/class/Document.php:204 mod/filecabinet/class/Image.php:357
+#: mod/menu/class/Menu_Item.php:186
+msgid "Clip"
+msgstr ""
+
+#: mod/filecabinet/class/Document.php:207
+msgid "Are you sure you want to delete this document?"
+msgstr ""
+
+#: mod/filecabinet/class/Forms.php:22
+msgid "Thumbnail"
+msgstr ""
+
+#: mod/filecabinet/class/Forms.php:24 mod/filecabinet/class/Forms.php:52
+msgid "File name"
+msgstr ""
+
+#: mod/filecabinet/class/Forms.php:25 mod/filecabinet/class/Forms.php:54
+msgid "Size"
+msgstr ""
+
+#: mod/filecabinet/class/Forms.php:35
+msgid "No items found."
+msgstr ""
+
+#: mod/filecabinet/class/Forms.php:53
+msgid "File type"
+msgstr ""
+
+#: mod/filecabinet/class/Forms.php:59 mod/filecabinet/class/Forms.php:64
+msgid "Upload document"
+msgstr ""
+
+#: mod/filecabinet/class/Forms.php:74
+msgid "No documents found."
+msgstr ""
+
+#: mod/filecabinet/class/Forms.php:88
+msgid "Base document directory"
+msgstr ""
+
+#: mod/filecabinet/class/Forms.php:92
+msgid "Base image directory"
+msgstr ""
+
+#: mod/filecabinet/class/Forms.php:116
+msgid "Document location"
+msgstr ""
+
+#: mod/filecabinet/class/Forms.php:120
+#: mod/filecabinet/class/Image_Manager.php:324
+msgid "Save directory"
+msgstr ""
+
+#: mod/filecabinet/class/Forms.php:134
+#: mod/filecabinet/class/Image_Manager.php:330
+#: mod/filecabinet/class/Image_Manager.php:418
+msgid "Upload"
+msgstr ""
+
+#: mod/filecabinet/class/Forms.php:155
+msgid "Current document"
+msgstr ""
+
+#: mod/filecabinet/class/Forms.php:159
+#: mod/filecabinet/class/Image_Manager.php:349
+msgid "Maximum file size"
+msgstr ""
+
+#: mod/filecabinet/class/Image.php:369
+msgid "Are you sure you want to delete this image?"
+msgstr ""
+
+#: mod/filecabinet/class/Image_Manager.php:159
+msgid "Clear image"
+msgstr ""
+
+#: mod/filecabinet/class/Image_Manager.php:176
+msgid "Change Thumbnail"
+msgstr ""
+
+#: mod/filecabinet/class/Image_Manager.php:204
+msgid "No thumbnail"
+msgstr ""
+
+#: mod/filecabinet/class/Image_Manager.php:216
+msgid "Upload image"
+msgstr ""
+
+#: mod/filecabinet/class/Image_Manager.php:234
+msgid "An error occurred when trying to save your image."
+msgstr ""
+
+#: mod/filecabinet/class/Image_Manager.php:303
+msgid "Image location"
+msgstr ""
+
+#: mod/filecabinet/class/Image_Manager.php:311
+msgid "Alternate text"
+msgstr ""
+
+#: mod/filecabinet/class/Image_Manager.php:346
+msgid "Current image"
+msgstr ""
+
+#: mod/filecabinet/class/Image_Manager.php:350
+msgid "Maximum width"
+msgstr ""
+
+#: mod/filecabinet/class/Image_Manager.php:351
+msgid "Maximum height"
+msgstr ""
+
+#: mod/filecabinet/class/Image_Manager.php:378
+msgid "No images found."
+msgstr ""
+
+#: mod/filecabinet/class/Image_Manager.php:394
+msgid "View full image"
+msgstr ""
+
+#: mod/filecabinet/class/Image_Manager.php:409
+msgid "Are you sure you want to permanently delete this image?"
+msgstr ""
+
+#: mod/filecabinet/class/Image_Manager.php:411
+msgid "Choose a image first."
+msgstr ""
+
+#: mod/filecabinet/class/Image_Manager.php:419
+msgid "Ok"
+msgstr ""
+
+#: mod/filecabinet/class/Image_Manager.php:421
+msgid "Image Browser"
+msgstr ""
+
+#: mod/help/class/Help.php:55
+msgid "No help file exists for this module."
+msgstr ""
+
+#: mod/help/class/Help.php:61
+msgid "No help exists for this topic."
+msgstr ""
+
+#: mod/layout/boost/controlpanel.php:6
+msgid "Layout"
+msgstr ""
+
+#: mod/layout/boost/controlpanel.php:9
+msgid "Control the layout of your site."
+msgstr ""
+
+#: mod/layout/boost/install.php:13
+msgid "Please enter a page title."
+msgstr ""
+
+#: mod/layout/boost/install.php:24
+msgid "Layout settings updated."
+msgstr ""
+
+#: mod/layout/boost/install.php:51
+msgid "No themes installed."
+msgstr ""
+
+#: mod/layout/boost/install.php:52
+msgid "Expect an error theme when finished."
+msgstr ""
+
+#: mod/layout/boost/install.php:56
+msgid "Pick a theme"
+msgstr ""
+
+#: mod/layout/boost/install.php:61 mod/layout/class/LayoutAdmin.php:366
+msgid "Page Title"
+msgstr ""
+
+#: mod/layout/boost/install.php:62
+msgid "Page Title: Name of your web site"
+msgstr ""
+
+#: mod/layout/boost/install.php:63
+msgid "Done"
+msgstr ""
+
+#: mod/layout/boost/unregister.php:9
+msgid "Removing old layout components."
+msgstr ""
+
+#: mod/layout/boost/update.php:17
+msgid "+ Styles per page added."
+msgstr ""
+
+#: mod/layout/class/Layout.php:695
+msgid "Box move off"
+msgstr ""
+
+#: mod/layout/class/Layout.php:703
+msgid "Change style"
+msgstr ""
+
+#: mod/layout/class/Layout.php:906
+msgid "Move to top"
+msgstr ""
+
+#: mod/layout/class/Layout.php:907
+msgid "Move up"
+msgstr ""
+
+#: mod/layout/class/Layout.php:908
+msgid "Move down"
+msgstr ""
+
+#: mod/layout/class/Layout.php:909
+msgid "Move to bottom"
+msgstr ""
+
+#: mod/layout/class/Layout.php:914
+msgid "Send to"
+msgstr ""
+
+#: mod/layout/class/Layout.php:924
+msgid "Move"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:32 mod/layout/class/LayoutAdmin.php:56
+msgid "Adjust Boxes"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:57
+msgid "Settings changed."
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:63 mod/layout/class/LayoutAdmin.php:141
+#: mod/layout/class/LayoutAdmin.php:147 mod/layout/class/LayoutAdmin.php:222
+msgid "Themes"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:66
+msgid "Theme settings updated."
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:79 mod/layout/class/LayoutAdmin.php:91
+msgid "There was a problem updating the settings."
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:81
+msgid "Footer updated."
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:93
+msgid "Header updated."
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:99
+msgid "Edit Footer"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:104
+msgid "Edit Header"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:109 mod/layout/class/LayoutAdmin.php:124
+msgid "Edit Meta Tags"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:125
+msgid "Meta Tags updated."
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:132
+msgid "Confirm Theme Change"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:133
+msgid "If you are happy with the change, click the appropiate button."
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:134
+msgid ""
+"Failure to respond in ten seconds, reverts phpWebSite to the default theme."
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:156 mod/layout/class/LayoutAdmin.php:209
+msgid "Change CSS"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:182
+msgid "-- Use default style --"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:200
+msgid "Style sheet"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:220
+msgid "Boxes"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:221
+msgid "Meta Tags"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:223 mod/webpage/class/Forms.php:19
+msgid "Header"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:224
+msgid "Footer"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:238
+msgid "Update Theme Settings"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:242
+msgid "There was a problem reading the theme directories."
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:248
+msgid "Default Theme"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:261
+msgid "Disable"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:261
+msgid "Enable"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:270
+msgid "Don't reset"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:270 mod/layout/class/LayoutAdmin.php:276
+msgid "Reset boxes"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:273
+msgid "Change Settings"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:277
+msgid "Box positioning"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:298
+msgid "Complete the theme change"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:299
+msgid "Restore the default theme"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:319
+msgid "Update Footer"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:340
+msgid "Update Header"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:373
+msgid "Allow indexing"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:376
+msgid "Allow link following"
+msgstr ""
+
+#: mod/layout/class/LayoutAdmin.php:381
+msgid "Default Robot Settings"
+msgstr ""
+
+#: mod/layout/inc/my_page.php:22
+msgid "Display settings"
+msgstr ""
+
+#: mod/layout/inc/my_page.php:29 mod/calendar_old/class/Admin.php:87
+msgid "Settings saved"
+msgstr ""
+
+#: mod/layout/inc/my_page.php:53
+msgid "Available styles"
+msgstr ""
+
+#: mod/layout/inc/my_page.php:56
+msgid "No alternate style sheets available."
+msgstr ""
+
+#: mod/menu/boost/controlpanel.php:7
+msgid "Menu"
+msgstr ""
+
+#: mod/menu/boost/controlpanel.php:10
+msgid "Controls the layout and positioning of your menus."
+msgstr ""
+
+#: mod/menu/boost/permission.php:5
+msgid "Create New Menus"
+msgstr ""
+
+#: mod/menu/boost/permission.php:6
+msgid "Delete Menus"
+msgstr ""
+
+#: mod/menu/boost/uninstall.php:16
+msgid "Menu tables removed."
+msgstr ""
+
+#: mod/menu/boost/update.php:14
+msgid "Register to key."
+msgstr ""
+
+#: mod/menu/boost/update.php:26 mod/search/boost/update.php:45
+msgid "A problem occurred during the update."
+msgstr ""
+
+#: mod/menu/class/Menu.php:100
+msgid "Add offsite link"
+msgstr ""
+
+#: mod/menu/class/Menu.php:131
+msgid "Enter link title"
+msgstr ""
+
+#: mod/menu/class/Menu.php:155
+msgid "Are you sure you want to unpin this menu from all pages?"
+msgstr ""
+
+#: mod/menu/class/Menu.php:157
+msgid "Are you sure you want to unpin this menu from this page?"
+msgstr ""
+
+#: mod/menu/class/Menu_Admin.php:19
+msgid "User attempted access to Menu administration."
+msgstr ""
+
+#: mod/menu/class/Menu_Admin.php:41 mod/menu/class/Menu_Admin.php:174
+msgid "Create New Menu"
+msgstr ""
+
+#: mod/menu/class/Menu_Admin.php:47
+msgid "Menu deleted."
+msgstr ""
+
+#: mod/menu/class/Menu_Admin.php:61
+msgid "Menu Settings"
+msgstr ""
+
+#: mod/menu/class/Menu_Admin.php:78
+msgid "Update Menu"
+msgstr ""
+
+#: mod/menu/class/Menu_Admin.php:87
+msgid "A problem occurred when saving your link."
+msgstr ""
+
+#: mod/menu/class/Menu_Admin.php:133
+msgid "There was a problem saving your link."
+msgstr ""
+
+#: mod/menu/class/Menu_Admin.php:177
+msgid "Menu saved"
+msgstr ""
+
+#: mod/menu/class/Menu_Admin.php:322
+msgid "Create"
+msgstr ""
+
+#: mod/menu/class/Menu_Admin.php:327
+msgid "Pin to all pages"
+msgstr ""
+
+#: mod/menu/class/Menu_Admin.php:336 mod/menu/class/Menu_Admin.php:338
+msgid "Template"
+msgstr ""
+
+#: mod/menu/class/Menu_Admin.php:339
+msgid "Cannot locate any menu templates. Cannot continue."
+msgstr ""
+
+#: mod/menu/class/Menu_Admin.php:384
+msgid "Enable Administration Mode"
+msgstr ""
+
+#: mod/menu/class/Menu_Admin.php:388
+msgid "Disable Administration Mode"
+msgstr ""
+
+#: mod/menu/class/Menu_Admin.php:417
+msgid "Save link"
+msgstr ""
+
+#: mod/menu/class/Menu_Admin.php:421
+msgid "Create Link"
+msgstr ""
+
+#: mod/menu/class/Menu_Item.php:81
+msgid "Missing menu title."
+msgstr ""
+
+#: mod/menu/class/Menu_Item.php:100
+msgid "Unable to save menu. Please check error logs."
+msgstr ""
+
+#: mod/menu/class/Menu_Item.php:189
+msgid "Unclip"
+msgstr ""
+
+#: mod/menu/class/Menu_Item.php:204
+msgid "Are you sure you want to delete this menu and all its links."
+msgstr ""
+
+#: mod/menu/class/Menu_Link.php:240
+msgid "Are you sure you want to delete this link: "
+msgstr ""
+
+#: mod/menu/class/Menu_Link.php:246
+msgid "Type the new title for this link."
+msgstr ""
+
+#: mod/miniadmin/class/MiniAdmin.php:34
+msgid "MiniAdmin"
+msgstr ""
+
+#: mod/notes/class/Notes.php:39
+#, php-format
+msgid "You have %s notes saved."
+msgstr ""
+
+#: mod/notes/class/Notes.php:49
+msgid "Notes"
+msgstr ""
+
+#: mod/profiler/boost/controlpanel.php:3
+msgid "Profiler"
+msgstr ""
+
+#: mod/profiler/boost/controlpanel.php:6
+msgid "Create profiles on individuals for display on site."
+msgstr ""
+
+#: mod/profiler/boost/permission.php:5
+msgid "Delete Profiles"
+msgstr ""
+
+#: mod/profiler/boost/uninstall.php:14
+msgid "Profiles table removed."
+msgstr ""
+
+#: mod/profiler/class/Forms.php:37
+msgid "Please make a profile division type first."
+msgstr ""
+
+#: mod/profiler/class/Forms.php:44
+msgid "First name"
+msgstr ""
+
+#: mod/profiler/class/Forms.php:47
+msgid "Last name"
+msgstr ""
+
+#: mod/profiler/class/Forms.php:50
+msgid "Full story"
+msgstr ""
+
+#: mod/profiler/class/Forms.php:56
+msgid "Caption"
+msgstr ""
+
+#: mod/profiler/class/Forms.php:60
+msgid "Profile type"
+msgstr ""
+
+#: mod/profiler/class/Forms.php:64
+msgid "Update profile"
+msgstr ""
+
+#: mod/profiler/class/Forms.php:66
+msgid "Create profile"
+msgstr ""
+
+#: mod/profiler/class/Forms.php:78
+msgid "Large photo"
+msgstr ""
+
+#: mod/profiler/class/Forms.php:79
+msgid "Medium photo"
+msgstr ""
+
+#: mod/profiler/class/Forms.php:80
+msgid "Small photo"
+msgstr ""
+
+#: mod/profiler/class/Forms.php:101
+msgid "Last Name"
+msgstr ""
+
+#: mod/profiler/class/Forms.php:102
+msgid "First Name"
+msgstr ""
+
+#: mod/profiler/class/Forms.php:104
+msgid "Submission Date"
+msgstr ""
+
+#: mod/profiler/class/Forms.php:131
+msgid "Number of profiles"
+msgstr ""
+
+#: mod/profiler/class/Forms.php:135
+msgid "Enable profile homepage"
+msgstr ""
+
+#: mod/profiler/class/Forms.php:150
+msgid "Add division"
+msgstr ""
+
+#: mod/profiler/class/Forms.php:155
+msgid "Division ID"
+msgstr ""
+
+#: mod/profiler/class/Forms.php:174
+msgid "Update Division"
+msgstr ""
+
+#: mod/profiler/class/Forms.php:176
+msgid "Create Division"
+msgstr ""
+
+#: mod/profiler/class/Forms.php:181
+msgid "Division title"
+msgstr ""
+
+#: mod/profiler/class/Forms.php:188
+msgid "Your title is empty or already in use. Enter another."
+msgstr ""
+
+#: mod/profiler/class/Profile.php:86
+msgid "Read more. . ."
+msgstr ""
+
+#: mod/profiler/class/Profile.php:186
+msgid "Profile not set."
+msgstr ""
+
+#: mod/profiler/class/Profile.php:215
+msgid "Please enter a first name."
+msgstr ""
+
+#: mod/profiler/class/Profile.php:221
+msgid "Please enter a last name."
+msgstr ""
+
+#: mod/profiler/class/Profile.php:270
+msgid "Are you sure you want to permanently delete this profile?"
+msgstr ""
+
+#: mod/profiler/class/Profiler.php:46
+msgid "Edit profile"
+msgstr ""
+
+#: mod/profiler/class/Profiler.php:81
+msgid "Please create a profile in this category."
+msgstr ""
+
+#: mod/profiler/class/Profiler.php:117 mod/profiler/class/Profiler.php:204
+msgid "Create New Profile"
+msgstr ""
+
+#: mod/profiler/class/Profiler.php:122 mod/profiler/class/Profiler.php:202
+msgid "Update Profile"
+msgstr ""
+
+#: mod/profiler/class/Profiler.php:134
+msgid "Current Profiles"
+msgstr ""
+
+#: mod/profiler/class/Profiler.php:139
+msgid "Divisions"
+msgstr ""
+
+#: mod/profiler/class/Profiler.php:153 mod/profiler/class/Profiler.php:171
+msgid "There is a problem with this Profiler division."
+msgstr ""
+
+#: mod/profiler/class/Profiler.php:190
+msgid "You recently posted this identical profile."
+msgstr ""
+
+#: mod/profiler/class/Profiler.php:191
+msgid "Ignoring the repeat."
+msgstr ""
+
+#: mod/profiler/class/Profiler.php:213
+msgid "An error occurred when saving your profile."
+msgstr ""
+
+#: mod/profiler/class/Profiler.php:215 mod/search/class/Admin.php:276
+msgid "Success"
+msgstr ""
+
+#: mod/profiler/class/Profiler.php:217
+msgid "Profile saved successfully."
+msgstr ""
+
+#: mod/profiler/class/Profiler.php:219
+msgid "Profile saved for approval."
+msgstr ""
+
+#: mod/profiler/class/Profiler.php:239
+msgid "Uh oh"
+msgstr ""
+
+#: mod/profiler/class/Profiler.php:240
+msgid "There was a problem saving your settings."
+msgstr ""
+
+#: mod/profiler/class/Profiler.php:242
+msgid "Setting saved"
+msgstr ""
+
+#: mod/profiler/class/Profiler.php:243
+msgid "Go back to the Settings page."
+msgstr ""
+
+#: mod/profiler/class/Profiler.php:266
+msgid "Division"
+msgstr ""
+
+#: mod/profiler/conf/error.php:5
+msgid "Profile not found."
+msgstr ""
+
+#: mod/related/class/Action.php:17
+msgid "Currently, nothing is associated with this item."
+msgstr ""
+
+#: mod/related/class/Action.php:18
+msgid ""
+"If you want to add related information to this item, click the \"Build "
+"Related\" link."
+msgstr ""
+
+#: mod/related/class/Action.php:25
+msgid "Build Related"
+msgstr ""
+
+#: mod/related/class/Action.php:45
+msgid "What do you want the title to be?"
+msgstr ""
+
+#: mod/related/class/Action.php:57
+msgid "Add item"
+msgstr ""
+
+#: mod/related/class/Action.php:62
+msgid "This item is related to the following:"
+msgstr ""
+
+#: mod/related/class/Action.php:73
+msgid "Quit"
+msgstr ""
+
+#: mod/related/class/Action.php:100
+msgid "View other items to add them to the list."
+msgstr ""
+
+#: mod/related/class/Action.php:190 mod/related/class/Action.php:214
+#: mod/related/class/Action.php:228 mod/related/class/Action.php:242
+#: mod/related/class/Action.php:256
+msgid "Bank not created."
+msgstr ""
+
+#: mod/related/class/Action.php:194
+msgid "Friend not created."
+msgstr ""
+
+#: mod/related/class/Action.php:218 mod/related/class/Action.php:232
+#: mod/related/class/Action.php:246
+msgid "Missing position."
+msgstr ""
+
+#: mod/related/class/Action.php:263
+msgid "The Related module encountered a database error."
+msgstr ""
+
+#: mod/related/class/Action.php:272
+msgid "Change Related Title"
+msgstr ""
+
+#: mod/rss/boost/controlpanel.php:2
+msgid "RSS Feeds"
+msgstr ""
+
+#: mod/rss/boost/controlpanel.php:5
+msgid "Administrative panel for setting RSS feeds."
+msgstr ""
+
+#: mod/rss/boost/unregister.php:14
+msgid "An error occurred trying to unregister this module from RSSFeeds."
+msgstr ""
+
+#: mod/rss/boost/unregister.php:17
+msgid "Module unregistered from RSSFeeds."
+msgstr ""
+
+#: mod/rss/class/Admin.php:74
+msgid "An error occurred when saving your channel."
+msgstr ""
+
+#: mod/rss/class/Admin.php:76
+msgid "Channel saved."
+msgstr ""
+
+#: mod/rss/class/Admin.php:157
+msgid "Channels"
+msgstr ""
+
+#: mod/rss/class/Admin.php:160
+msgid "Import"
+msgstr ""
+
+#: mod/rss/class/Admin.php:173
+msgid "Save Channel"
+msgstr ""
+
+#: mod/rss/class/Admin.php:189
+msgid "Edit channel"
+msgstr ""
+
+#: mod/rss/class/Admin.php:198
+msgid "Administrate RSS Feeds"
+msgstr ""
+
+#: mod/rss/class/Admin.php:205
+msgid "No channels have been registered."
+msgstr ""
+
+#: mod/rss/class/Admin.php:209
+msgid "An error occurred when trying to access your RSS channels."
+msgstr ""
+
+#: mod/rss/class/Admin.php:226 mod/users/class/Form.php:224
+msgid "Active"
+msgstr ""
+
+#: mod/rss/class/Admin.php:246 mod/rss/class/Admin.php:298
+msgid "Address"
+msgstr ""
+
+#: mod/rss/class/Admin.php:260
+msgid "Item limit"
+msgstr ""
+
+#: mod/rss/class/Admin.php:264
+msgid "Refresh time"
+msgstr ""
+
+#: mod/rss/class/Admin.php:268
+msgid "Feed title will be used if left empty"
+msgstr ""
+
+#: mod/rss/class/Admin.php:269
+msgid "In seconds"
+msgstr ""
+
+#: mod/rss/class/Admin.php:273
+msgid "Add Feed"
+msgstr ""
+
+#: mod/rss/class/Admin.php:284
+msgid "You must enable allow_url_fopen in your php.ini file."
+msgstr ""
+
+#: mod/rss/class/Admin.php:293
+msgid "Add feed"
+msgstr ""
+
+#: mod/rss/class/Admin.php:299
+msgid "Display?"
+msgstr ""
+
+#: mod/rss/class/Admin.php:301
+msgid "Refresh feed"
+msgstr ""
+
+#: mod/rss/class/Admin.php:310
+msgid "Import RSS Feeds"
+msgstr ""
+
+#: mod/rss/class/Admin.php:313
+msgid "Please enable Cache Lite in your config/core/config.php file."
+msgstr ""
+
+#: mod/rss/class/Channel.php:51
+msgid "You must enter a title."
+msgstr ""
+
+#: mod/rss/class/Feed.php:59
+msgid "Reset"
+msgstr ""
+
+#: mod/rss/class/Feed.php:67
+msgid "Are you sure you want to delete this RSS feed?"
+msgstr ""
+
+#: mod/rss/class/Feed.php:94
+#, php-format
+msgid "%d seconds"
+msgstr ""
+
+#: mod/rss/class/Feed.php:99
+#, php-format
+msgid "%d minutes, "
+msgstr ""
+
+#: mod/rss/class/Feed.php:101
+#, php-format
+msgid "%d minutes"
+msgstr ""
+
+#: mod/rss/class/Feed.php:107
+#, php-format
+msgid "%d hours, "
+msgstr ""
+
+#: mod/rss/class/Feed.php:109
+#, php-format
+msgid "%d hours"
+msgstr ""
+
+#: mod/rss/class/Feed.php:113
+#, php-format
+msgid "Every %s"
+msgstr ""
+
+#: mod/rss/class/Feed.php:172
+msgid "You must enter an address."
+msgstr ""
+
+#: mod/rss/class/Feed.php:178
+msgid "Invalid feed address."
+msgstr ""
+
+#: mod/rss/class/Feed.php:186
+#, php-format
+msgid "You may not pull more than %s feeds."
+msgstr ""
+
+#: mod/rss/class/Feed.php:196
+msgid "Refresh time is too low. It must be over 60 seconds."
+msgstr ""
+
+#: mod/rss/class/Feed.php:199
+msgid "You should refresh more often than every month."
+msgstr ""
+
+#: mod/rss/class/Feed.php:235
+msgid "Sorry, unable to grab feed."
+msgstr ""
+
+#: mod/rss/class/Feed.php:253
+msgid "Unable to list feed."
+msgstr ""
+
+#: mod/rss/class/RSS.php:15
+msgid "No RSS file found."
+msgstr ""
+
+#: mod/rss/class/RSS.php:26 mod/rss/class/RSS.php:27
+msgid "RSS file found but no channel information."
+msgstr ""
+
+#: mod/rss/class/RSS.php:51 mod/rss/class/RSS.php:52
+msgid "An error occurred registering to RSS module."
+msgstr ""
+
+#: mod/rss/class/RSS.php:55
+#, php-format
+msgid "RSS registration to %s module successful."
+msgstr ""
+
+#: mod/search/boost/controlpanel.php:6
+msgid "Administrate and see information on searches."
+msgstr ""
+
+#: mod/search/boost/update.php:20
+msgid "Register Search to Key."
+msgstr ""
+
+#: mod/search/class/Admin.php:75
+msgid "Keywords added to admin menu."
+msgstr ""
+
+#: mod/search/class/Admin.php:206
+msgid "Current keywords"
+msgstr ""
+
+#: mod/search/class/Admin.php:227
+msgid "Clipped words"
+msgstr ""
+
+#: mod/search/class/Admin.php:230
+msgid "Search Admin"
+msgstr ""
+
+#: mod/search/class/Admin.php:256 mod/search/class/Admin.php:355
+msgid "Ignore"
+msgstr ""
+
+#: mod/search/class/Admin.php:259
+msgid "Clip word"
+msgstr ""
+
+#: mod/search/class/Admin.php:271 mod/search/class/Admin.php:321
+msgid "Are you sure you want to delete the checked item(s)?"
+msgstr ""
+
+#: mod/search/class/Admin.php:275 mod/search/class/Admin.php:326
+msgid "Keyword"
+msgstr ""
+
+#: mod/search/class/Admin.php:277
+msgid "Failure"
+msgstr ""
+
+#: mod/search/class/Admin.php:278 mod/search/class/Admin.php:328
+msgid "Last called"
+msgstr ""
+
+#: mod/search/class/Admin.php:279
+msgid "Highest result"
+msgstr ""
+
+#: mod/search/class/Admin.php:280
+msgid "Mixed"
+msgstr ""
+
+#: mod/search/class/Admin.php:296
+msgid "Ignored"
+msgstr ""
+
+#: mod/search/class/Admin.php:309
+msgid "Allow"
+msgstr ""
+
+#: mod/search/class/Admin.php:327
+msgid "Total queries"
+msgstr ""
+
+#: mod/search/class/User.php:78
+msgid "All modules"
+msgstr ""
+
+#: mod/search/class/User.php:134
+msgid "Search for:"
+msgstr ""
+
+#: mod/search/class/User.php:137
+msgid "Exact matches only"
+msgstr ""
+
+#: mod/search/class/User.php:147
+msgid "Module list"
+msgstr ""
+
+#: mod/search/class/User.php:157 mod/users/boost/install.php:71
+#: mod/users/boost/install.php:90
+msgid "Local"
+msgstr ""
+
+#: mod/search/class/User.php:176
+msgid "Search location"
+msgstr ""
+
+#: mod/search/class/User.php:177
+msgid "Advanced Search"
+msgstr ""
+
+#: mod/search/class/User.php:183
+msgid "A problem occurred during your search."
+msgstr ""
+
+#: mod/search/class/User.php:185
+msgid "No results found."
+msgstr ""
+
+#: mod/search/class/User.php:190
+msgid "Search Results"
+msgstr ""
+
+#: mod/search/class/User.php:229
+msgid "The following search words were ignored"
+msgstr ""
+
+#: mod/search/class/User.php:264
+msgid "Nothing found"
+msgstr ""
+
+#: mod/skeleton/boost/controlpanel.php:2
+msgid "Skeleton"
+msgstr ""
+
+#: mod/skeleton/boost/controlpanel.php:5
+msgid "A framework for creating modules."
+msgstr ""
+
+#: mod/skeleton/conf/config.php:3
+msgid "Hello world!"
+msgstr ""
+
+#: mod/skeleton/conf/error.php:3
+msgid "Skeleton module is broken."
+msgstr ""
+
+#: mod/users/boost/controlpanel.php:3
+msgid "My Page"
+msgstr ""
+
+#: mod/users/boost/controlpanel.php:8
+msgid "User Administration"
+msgstr ""
+
+#: mod/users/boost/controlpanel.php:11
+msgid "Lets you create and edit users and groups."
+msgstr ""
+
+#: mod/users/boost/install.php:22
+msgid "Could not access hub database."
+msgstr ""
+
+#: mod/users/boost/install.php:26
+msgid "Could not find any hub deities."
+msgstr ""
+
+#: mod/users/boost/install.php:39 mod/users/boost/install.php:43
+msgid ""
+"Error: Missing login information for a deity user. Cannot copy to branch."
+msgstr ""
+
+#: mod/users/boost/install.php:50
+msgid "Unable to copy deity login to branch."
+msgstr ""
+
+#: mod/users/boost/install.php:62
+msgid "Unable to copy deity users to branch."
+msgstr ""
+
+#: mod/users/boost/install.php:67
+msgid "Deity users copied to branch."
+msgstr ""
+
+#: mod/users/boost/install.php:76
+msgid "Unable to create authorization script."
+msgstr ""
+
+#: mod/users/boost/install.php:105
+msgid "User created successfully."
+msgstr ""
+
+#: mod/users/boost/install.php:106
+msgid "User's email used as contact email address."
+msgstr ""
+
+#: mod/users/boost/install.php:112
+msgid "Please create a user to administrate the site."
+msgstr ""
+
+#: mod/users/boost/install.php:143 mod/users/class/Form.php:222
+msgid "Email"
+msgstr ""
+
+#: mod/users/boost/install.php:145 mod/users/class/Form.php:391
+msgid "Add User"
+msgstr ""
+
+#: mod/users/boost/permission.php:10
+msgid "Edit Users"
+msgstr ""
+
+#: mod/users/boost/permission.php:11
+msgid "Delete Users"
+msgstr ""
+
+#: mod/users/boost/permission.php:12
+msgid "Add / Edit Groups"
+msgstr ""
+
+#: mod/users/boost/permission.php:13
+msgid "Delete Groups"
+msgstr ""
+
+#: mod/users/boost/permission.php:14
+msgid "Edit Permissions"
+msgstr ""
+
+#: mod/users/boost/permission.php:18
+msgid "Authorization/Settings"
+msgstr ""
+
+#: mod/users/boost/register.php:17 mod/users/boost/register.php:18
+msgid "Permissions file not found."
+msgstr ""
+
+#: mod/users/boost/register.php:21
+msgid "Permissions table not created successfully."
+msgstr ""
+
+#: mod/users/boost/register.php:25
+msgid "Permissions table created successfully."
+msgstr ""
+
+#: mod/users/boost/register.php:30 mod/users/boost/register.php:31
+msgid "A problem occurred when trying to register this module to My Page."
+msgstr ""
+
+#: mod/users/boost/register.php:34
+msgid "My Page registered to Users module."
+msgstr ""
+
+#: mod/users/boost/unregister.php:13
+msgid "Permissions table not removed successfully."
+msgstr ""
+
+#: mod/users/boost/unregister.php:16
+msgid "Permissions table removed successfully."
+msgstr ""
+
+#: mod/users/class/Action.php:20
+msgid "Tried to perform an admin function in Users."
+msgstr ""
+
+#: mod/users/class/Action.php:51 mod/users/class/Action.php:286
+msgid "Create User"
+msgstr ""
+
+#: mod/users/class/Action.php:56 mod/users/class/Action.php:76
+#: mod/users/class/Action.php:598
+msgid "Manage Users"
+msgstr ""
+
+#: mod/users/class/Action.php:65 mod/users/class/Action.php:283
+msgid "Edit User"
+msgstr ""
+
+#: mod/users/class/Action.php:78
+msgid "User deleted."
+msgstr ""
+
+#: mod/users/class/Action.php:117
+msgid "Authorization updated."
+msgstr ""
+
+#: mod/users/class/Action.php:119 mod/users/class/Action.php:606
+#: mod/users/class/Form.php:409
+msgid "Authorization"
+msgstr ""
+
+#: mod/users/class/Action.php:124
+msgid "Edit Authorization Script"
+msgstr ""
+
+#: mod/users/class/Action.php:135
+msgid "Set User Permissions"
+msgstr ""
+
+#: mod/users/class/Action.php:150
+msgid "Set Group Permissions"
+msgstr ""
+
+#: mod/users/class/Action.php:156 mod/users/class/Action.php:313
+msgid "Create Group"
+msgstr ""
+
+#: mod/users/class/Action.php:161 mod/users/class/Action.php:313
+#: mod/users/class/Group.php:250
+msgid "Edit Group"
+msgstr ""
+
+#: mod/users/class/Action.php:167 mod/users/class/Action.php:174
+#: mod/users/class/Action.php:602
+msgid "Manage Groups"
+msgstr ""
+
+#: mod/users/class/Action.php:180 mod/users/class/Action.php:190
+msgid "Manage Members"
+msgstr ""
+
+#: mod/users/class/Action.php:220
+msgid "User deified."
+msgstr ""
+
+#: mod/users/class/Action.php:223
+msgid "User remains a lowly mortal."
+msgstr ""
+
+#: mod/users/class/Action.php:241
+msgid "User transformed into a lowly mortal."
+msgstr ""
+
+#: mod/users/class/Action.php:244
+msgid "User remains a deity."
+msgstr ""
+
+#: mod/users/class/Action.php:274
+msgid "User updated."
+msgstr ""
+
+#: mod/users/class/Action.php:276 mod/users/class/Action.php:278
+msgid "User created."
+msgstr ""
+
+#: mod/users/class/Action.php:299
+msgid "Permissions updated"
+msgstr ""
+
+#: mod/users/class/Action.php:320
+msgid "An error occurred when trying to save the group."
+msgstr ""
+
+#: mod/users/class/Action.php:322
+msgid "Group created."
+msgstr ""
+
+#: mod/users/class/Action.php:339
+msgid "Member added."
+msgstr ""
+
+#: mod/users/class/Action.php:352
+msgid "Member removed."
+msgstr ""
+
+#: mod/users/class/Action.php:364 mod/users/inc/my_page.php:39
+msgid "User settings updated."
+msgstr ""
+
+#: mod/users/class/Action.php:446
+msgid "Permissions saved."
+msgstr ""
+
+#: mod/users/class/Action.php:454
+msgid "Permissions updated."
+msgstr ""
+
+#: mod/users/class/Action.php:488
+msgid "Please try another user name."
+msgstr ""
+
+#: mod/users/class/Action.php:504
+msgid "Missing an email address."
+msgstr ""
+
+#: mod/users/class/Action.php:508
+msgid "This email address cannot be used."
+msgstr ""
+
+#: mod/users/class/Action.php:513
+msgid "Confirmation phrase is not correct."
+msgstr ""
+
+#: mod/users/class/Action.php:595
+msgid "New User"
+msgstr ""
+
+#: mod/users/class/Action.php:601
+msgid "New Group"
+msgstr ""
+
+#: mod/users/class/Action.php:635 setup/manager.php:62
+msgid "Login page"
+msgstr ""
+
+#: mod/users/class/Action.php:636 setup/manager.php:63
+msgid "Username and password combination not found."
+msgstr ""
+
+#: mod/users/class/Action.php:644
+msgid ""
+"A problem occurred when accessing user information. Please try again later."
+msgstr ""
+
+#: mod/users/class/Action.php:660 mod/users/class/Action.php:674
+msgid "New Account Sign-up"
+msgstr ""
+
+#: mod/users/class/Action.php:662
+msgid "You already have an account."
+msgstr ""
+
+#: mod/users/class/Action.php:667
+msgid "Sorry, we are not accepting new users at this time."
+msgstr ""
+
+#: mod/users/class/Action.php:677
+msgid "New user signup not allowed."
+msgstr ""
+
+#: mod/users/class/Action.php:700
+msgid "Login Page"
+msgstr ""
+
+#: mod/users/class/Action.php:709
+msgid "Welcome!"
+msgstr ""
+
+#: mod/users/class/Action.php:710
+msgid "Your account has been successfully activated. Please log in."
+msgstr ""
+
+#: mod/users/class/Action.php:713
+msgid ""
+"This authentication does not exist.<br />\n"
+" If you did not log in within the time frame specified in your email, please "
+"apply for another account."
+msgstr ""
+
+#: mod/users/class/Action.php:747
+#, php-format
+msgid "User tried to send bad hash (%s) to confirm user."
+msgstr ""
+
+#: mod/users/class/Action.php:793
+msgid "Account created successfully!"
+msgstr ""
+
+#: mod/users/class/Action.php:794
+msgid "You will return to the home page in five seconds."
+msgstr ""
+
+#: mod/users/class/Action.php:795
+msgid "Click here if you are not redirected."
+msgstr ""
+
+#: mod/users/class/Action.php:798
+msgid ""
+"An error occurred when trying to create your account. Please try again later."
+msgstr ""
+
+#: mod/users/class/Action.php:805
+msgid "User created successfully. Check your email for your login information."
+msgstr ""
+
+#: mod/users/class/Action.php:811 mod/users/class/Action.php:814
+msgid "There was problem creating your acccount. Check back later."
+msgstr ""
+
+#: mod/users/class/Action.php:835
+msgid "Confirmation email"
+msgstr ""
+
+#: mod/users/class/Action.php:932
+msgid "Username and password refused."
+msgstr ""
+
+#: mod/users/class/Action.php:976
+msgid "You need to set a site contact address."
+msgstr ""
+
+#: mod/users/class/Action.php:978
+msgid "Please enter a valid email address as a site contact."
+msgstr ""
+
+#: mod/users/class/Current_User.php:241
+#, php-format
+msgid "Set permissions"
+msgstr ""
+
+#: mod/users/class/Current_User.php:250
+msgid "Permission"
+msgstr ""
+
+#: mod/users/class/Form.php:41
+msgid "Hello"
+msgstr ""
+
+#: mod/users/class/Form.php:47
+msgid "Log Out"
+msgstr ""
+
+#: mod/users/class/Form.php:125 mod/users/class/Form.php:247
+#: mod/users/class/Form.php:516 mod/users/class/Group.php:256
+msgid "Members"
+msgstr ""
+
+#: mod/users/class/Form.php:223
+msgid "Last Logged"
+msgstr ""
+
+#: mod/users/class/Form.php:245 mod/users/class/Form.php:510
+msgid "Group Name"
+msgstr ""
+
+#: mod/users/class/Form.php:270 mod/users/class/Form.php:533
+msgid "Add Member"
+msgstr ""
+
+#: mod/users/class/Form.php:273
+msgid "Group name"
+msgstr ""
+
+#: mod/users/class/Form.php:300 mod/users/class/Form.php:302
+msgid "Member not found."
+msgstr ""
+
+#: mod/users/class/Form.php:300
+msgid "Closest matches below."
+msgstr ""
+
+#: mod/users/class/Form.php:302 mod/users/class/Form.php:542
+msgid "No matches found."
+msgstr ""
+
+#: mod/users/class/Form.php:313 mod/users/class/Form.php:440
+#: mod/users/class/Form.php:519 mod/users/class/Form.php:946
+#: mod/users/class/Group.php:253 mod/users/class/Users.php:806
+msgid "Permissions"
+msgstr ""
+
+#: mod/users/class/Form.php:317 mod/users/class/Form.php:534
+msgid "Current Members"
+msgstr ""
+
+#: mod/users/class/Form.php:350
+msgid "Drop this member from the group."
+msgstr ""
+
+#: mod/users/class/Form.php:371
+msgid "No members."
+msgstr ""
+
+#: mod/users/class/Form.php:389
+msgid "Update User"
+msgstr ""
+
+#: mod/users/class/Form.php:420 mod/users/class/Form.php:815
+#: mod/users/inc/my_page.php:83
+msgid "Email Address"
+msgstr ""
+
+#: mod/users/class/Form.php:422
+msgid "Display name"
+msgstr ""
+
+#: mod/users/class/Form.php:456
+msgid "Only another deity can create a deity."
+msgstr ""
+
+#: mod/users/class/Form.php:458
+msgid ""
+"Are you certain you want this user to have complete control of this web site?"
+msgstr ""
+
+#: mod/users/class/Form.php:464
+msgid "Yes, make them a deity."
+msgstr ""
+
+#: mod/users/class/Form.php:466
+msgid "No, leave them as a mortal."
+msgstr ""
+
+#: mod/users/class/Form.php:475
+msgid "Only another deity can create a mortal."
+msgstr ""
+
+#: mod/users/class/Form.php:478
+msgid "A deity can not make themselves mortal."
+msgstr ""
+
+#: mod/users/class/Form.php:485
+msgid "Yes, make them a mortal."
+msgstr ""
+
+#: mod/users/class/Form.php:487
+msgid "No, leave them as a deity."
+msgstr ""
+
+#: mod/users/class/Form.php:501
+msgid "Update Group"
+msgstr ""
+
+#: mod/users/class/Form.php:503
+msgid "Add Group"
+msgstr ""
+
+#: mod/users/class/Form.php:540
+msgid "Members found."
+msgstr ""
+
+#: mod/users/class/Form.php:551
+msgid "None found"
+msgstr ""
+
+#: mod/users/class/Form.php:624
+msgid "Add this user to this group."
+msgstr ""
+
+#: mod/users/class/Form.php:668
+msgid "No new scripts found"
+msgstr ""
+
+#: mod/users/class/Form.php:673
+msgid "Add Script File"
+msgstr ""
+
+#: mod/users/class/Form.php:677
+msgid "Update Default"
+msgstr ""
+
+#: mod/users/class/Form.php:680
+msgid "Authorization Scripts"
+msgstr ""
+
+#: mod/users/class/Form.php:681
+msgid "Default"
+msgstr ""
+
+#: mod/users/class/Form.php:682 mod/users/inc/my_page.php:65
+#: mod/users/inc/my_page.php:67
+msgid "Display Name"
+msgstr ""
+
+#: mod/users/class/Form.php:683
+msgid "Script Filename"
+msgstr ""
+
+#: mod/users/class/Form.php:703
+msgid "Are you sure you want to drop this authorization script?"
+msgstr ""
+
+#: mod/users/class/Form.php:738
+msgid "Update Settings"
+msgstr ""
+
+#: mod/users/class/Form.php:741
+msgid "Site contact email"
+msgstr ""
+
+#: mod/users/class/Form.php:746
+msgid "Not allowed"
+msgstr ""
+
+#: mod/users/class/Form.php:747
+msgid "Immediate"
+msgstr ""
+
+#: mod/users/class/Form.php:748
+msgid "Email Verification"
+msgstr ""
+
+#: mod/users/class/Form.php:763
+msgid "User Signup Mode"
+msgstr ""
+
+#: mod/users/class/Form.php:768
+msgid "Use graphic authentication"
+msgstr ""
+
+#: mod/users/class/Form.php:779
+msgid "User Menu"
+msgstr ""
+
+#: mod/users/class/Form.php:783
+msgid "Hide login box"
+msgstr ""
+
+#: mod/users/class/Form.php:812
+msgid "Confirm"
+msgstr ""
+
+#: mod/users/class/Form.php:819
+msgid "Confirm text"
+msgstr ""
+
+#: mod/users/class/Form.php:827
+msgid "Please type the word seen in the image."
+msgstr ""
+
+#: mod/users/class/Form.php:829
+msgid "Confirm Graphic"
+msgstr ""
+
+#: mod/users/class/Form.php:834
+msgid "Sign up"
+msgstr ""
+
+#: mod/users/class/Form.php:934
+msgid "All visitors"
+msgstr ""
+
+#: mod/users/class/Form.php:935
+msgid "Logged visitors"
+msgstr ""
+
+#: mod/users/class/Form.php:936
+msgid "Specific group(s)"
+msgstr ""
+
+#: mod/users/class/Form.php:938
+msgid "Save permissions"
+msgstr ""
+
+#: mod/users/class/Form.php:948
+msgid "Edit restrictions"
+msgstr ""
+
+#: mod/users/class/Form.php:949
+msgid "View restrictions"
+msgstr ""
+
+#: mod/users/class/Form.php:954
+msgid "No restricted edit groups found."
+msgstr ""
+
+#: mod/users/class/Form.php:960
+msgid "No groups found."
+msgstr ""
+
+#: mod/users/class/Form.php:997
+msgid "Groups"
+msgstr ""
+
+#: mod/users/class/Form.php:1005
+msgid "Users"
+msgstr ""
+
+#: mod/users/class/Group.php:268
+msgid "Are you SURE you want to remove this group?"
+msgstr ""
+
+#: mod/users/class/My_Page.php:16
+msgid "The is a problem with My Page."
+msgstr ""
+
+#: mod/users/class/My_Page.php:19
+msgid "No modules are registered to My Page."
+msgstr ""
+
+#: mod/users/class/My_Page.php:28
+msgid "This module is not registered with My Page"
+msgstr ""
+
+#: mod/users/class/My_Page.php:94
+msgid "There was a problem with this module's My Page file."
+msgstr ""
+
+#: mod/users/class/Permission.php:51
+#, php-format
+msgid "Could not create \"%s\" permission column."
+msgstr ""
+
+#: mod/users/class/Permission.php:54
+#, php-format
+msgid "\"%s\" permission column created."
+msgstr ""
+
+#: mod/users/class/Users.php:644
+msgid "Improper permission level for action requested."
+msgstr ""
+
+#: mod/users/class/Users.php:758
+msgid "Are you sure you want to remove deity status?"
+msgstr ""
+
+#: mod/users/class/Users.php:760
+msgid "Deity"
+msgstr ""
+
+#: mod/users/class/Users.php:763
+msgid "Are you sure you want to deify this user?"
+msgstr ""
+
+#: mod/users/class/Users.php:765
+msgid "Mortal"
+msgstr ""
+
+#: mod/users/class/Users.php:785
+msgid "Never"
+msgstr ""
+
+#: mod/users/class/Users.php:795
+#, php-format
+msgid "Are you certain you want to delete the user &quot;%s&quot; permanently?"
+msgstr ""
+
+#: mod/users/inc/my_page.php:21
+msgid "Change my Settings"
+msgstr ""
+
+#: mod/users/inc/my_page.php:74
+msgid "Password confirm"
+msgstr ""
+
+#: mod/users/inc/my_page.php:78
+msgid "Why can't I change my password?"
+msgstr ""
+
+#: mod/users/inc/my_page.php:91
+msgid "-- Use server's time zone --"
+msgstr ""
+
+#: mod/users/inc/my_page.php:110
+msgid "Time Zone"
+msgstr ""
+
+#: mod/users/inc/my_page.php:121
+msgid "Use Daylight Savings Time"
+msgstr ""
+
+#: mod/users/inc/my_page.php:124
+msgid "Update my information"
+msgstr ""
+
+#: mod/users/inc/parse.php:6
+msgid "New user signup is currently disabled."
+msgstr ""
+
+#: mod/version/boost/controlpanel.php:3
+msgid "Version"
+msgstr ""
+
+#: mod/version/boost/controlpanel.php:6
+msgid "Controls the versioning settings."
+msgstr ""
+
+#: mod/version/boost/unregister.php:41
+msgid "There was an error removing a version table."
+msgstr ""
+
+#: mod/version/boost/unregister.php:43
+#, php-format
+msgid "Version table removed: %s"
+msgstr ""
+
+#: mod/version/class/Admin.php:23 mod/version/class/Admin.php:30
+msgid "Version settings"
+msgstr ""
+
+#: mod/version/class/Admin.php:47
+msgid "Keep all versions"
+msgstr ""
+
+#: mod/version/class/Approval.php:128 mod/version/class/Approval.php:143
+msgid "No items for approval."
+msgstr ""
+
+#: mod/version/class/Restore.php:82
+msgid "No backup versions available."
+msgstr ""
+
+#: mod/version/class/Restore.php:134
+msgid "Are you sure you want to remove this version?"
+msgstr ""
+
+#: mod/webpage/boost/controlpanel.php:2
+msgid "Web Pages"
+msgstr ""
+
+#: mod/webpage/boost/controlpanel.php:5
+msgid "Creates web pages, articles, and the like."
+msgstr ""
+
+#: mod/webpage/boost/permission.php:10
+msgid "Edit page"
+msgstr ""
+
+#: mod/webpage/boost/permission.php:11
+msgid "Delete page"
+msgstr ""
+
+#: mod/webpage/boost/uninstall.php:14
+msgid "Web Page tables removed."
+msgstr ""
+
+#: mod/webpage/class/Admin.php:96 mod/webpage/class/Forms.php:60
+msgid "Create header"
+msgstr ""
+
+#: mod/webpage/class/Admin.php:101 mod/webpage/class/Admin.php:217
+#, php-format
+msgid "Administrate page: %s"
+msgstr ""
+
+#: mod/webpage/class/Admin.php:120
+msgid "Web Page Approval"
+msgstr ""
+
+#: mod/webpage/class/Admin.php:129
+msgid "Page joined."
+msgstr ""
+
+#: mod/webpage/class/Admin.php:135
+msgid "Pages joined."
+msgstr ""
+
+#: mod/webpage/class/Admin.php:144
+msgid "Page removed."
+msgstr ""
+
+#: mod/webpage/class/Admin.php:149
+msgid "Approval view"
+msgstr ""
+
+#: mod/webpage/class/Admin.php:158
+msgid "Attempted to approve a webpage."
+msgstr ""
+
+#: mod/webpage/class/Admin.php:162
+msgid "Web page approved."
+msgstr ""
+
+#: mod/webpage/class/Admin.php:164
+msgid "A problem occurred when trying to approve a web page."
+msgstr ""
+
+#: mod/webpage/class/Admin.php:170 mod/webpage/class/Admin.php:228
+#, php-format
+msgid "Edit Page %s"
+msgstr ""
+
+#: mod/webpage/class/Admin.php:175
+#, php-format
+msgid "Add page: %s"
+msgstr ""
+
+#: mod/webpage/class/Admin.php:180
+#, php-format
+msgid "Edit header: %s"
+msgstr ""
+
+#: mod/webpage/class/Admin.php:187 mod/webpage/class/Admin.php:190
+msgid "Ignoring repeat post."
+msgstr ""
+
+#: mod/webpage/class/Admin.php:197
+#, php-format
+msgid "Edit header page: %s"
+msgstr ""
+
+#: mod/webpage/class/Admin.php:202 mod/webpage/class/Admin.php:208
+#: mod/calendar_old/class/Admin.php:78
+msgid "An error occurred. Please check your logs."
+msgstr ""
+
+#: mod/webpage/class/Admin.php:210
+msgid "Header saved successfully."
+msgstr ""
+
+#: mod/webpage/class/Admin.php:222 mod/webpage/class/Admin.php:235
+msgid "An error occurred while saving your page. Please check the error log."
+msgstr ""
+
+#: mod/webpage/class/Admin.php:245
+msgid "Error: Unable to force template."
+msgstr ""
+
+#: mod/webpage/class/Admin.php:251
+msgid "Page held for approval."
+msgstr ""
+
+#: mod/webpage/class/Admin.php:253
+msgid "Page saved successfully."
+msgstr ""
+
+#: mod/webpage/class/Admin.php:263
+msgid "List Web Pages"
+msgstr ""
+
+#: mod/webpage/class/Admin.php:293
+msgid "A problem occurred when trying to delete your webpage."
+msgstr ""
+
+#: mod/webpage/class/Admin.php:382
+#, php-format
+msgid "Approval(%s)"
+msgstr ""
+
+#: mod/webpage/class/Admin.php:433
+msgid "No pages have been created."
+msgstr ""
+
+#: mod/webpage/class/Forms.php:24
+#, php-format
+msgid "Page %s"
+msgstr ""
+
+#: mod/webpage/class/Forms.php:39
+msgid "Add Page"
+msgstr ""
+
+#: mod/webpage/class/Forms.php:58
+msgid "Update header"
+msgstr ""
+
+#: mod/webpage/class/Forms.php:68
+msgid "Webpage title"
+msgstr ""
+
+#: mod/webpage/class/Forms.php:89
+msgid "Update page"
+msgstr ""
+
+#: mod/webpage/class/Forms.php:91
+msgid "Add new page"
+msgstr ""
+
+#: mod/webpage/class/Forms.php:111
+msgid "Page template"
+msgstr ""
+
+#: mod/webpage/class/Forms.php:114
+msgid "Force all pages to use this template"
+msgstr ""
+
+#: mod/webpage/class/Forms.php:126
+msgid "Move to frontpage"
+msgstr ""
+
+#: mod/webpage/class/Forms.php:127
+msgid "Move off frontpage"
+msgstr ""
+
+#: mod/webpage/class/Forms.php:137
+msgid "Created on"
+msgstr ""
+
+#: mod/webpage/class/Forms.php:138
+msgid "Updated on"
+msgstr ""
+
+#: mod/webpage/class/Forms.php:139
+msgid "Created by"
+msgstr ""
+
+#: mod/webpage/class/Forms.php:140
+msgid "Updated by"
+msgstr ""
+
+#: mod/webpage/class/Forms.php:141
+msgid "Front page"
+msgstr ""
+
+#: mod/webpage/class/Forms.php:148
+msgid "Are you sure you want to delete the checked web pages?"
+msgstr ""
+
+#: mod/webpage/class/Page.php:120
+msgid "Missing page content."
+msgstr ""
+
+#: mod/webpage/class/Page.php:171
+msgid "Are you sure you want to remove this page?"
+msgstr ""
+
+#: mod/webpage/class/Page.php:179
+msgid "Are you sure you want to join this page to the next?"
+msgstr ""
+
+#: mod/webpage/class/Page.php:185
+msgid ""
+"Are you sure you want to join ALL the pages into just one page? Warning: You "
+"will lose all page backups!"
+msgstr ""
+
+#: mod/webpage/class/Page.php:246
+msgid "Edit web page"
+msgstr ""
+
+#: mod/webpage/class/Page.php:249
+msgid "Edit page header"
+msgstr ""
+
+#: mod/webpage/class/Page.php:250
+msgid "View page list"
+msgstr ""
+
+#: mod/webpage/class/Volume.php:141
+msgid "Missing page title"
+msgstr ""
+
+#: mod/webpage/class/Volume.php:410
+msgid "Edit header"
+msgstr ""
+
+#: mod/webpage/class/Volume.php:471
+msgid "Page is not complete."
+msgstr ""
+
+#: mod/calendar_old/boost/uninstall.php:13
+msgid "Calendar tables removed."
+msgstr ""
+
+#: mod/calendar_old/class/Admin.php:59
+msgid "Create Personal Schedule"
+msgstr ""
+
+#: mod/calendar_old/class/Admin.php:70
+msgid "Create Schedule"
+msgstr ""
+
+#: mod/calendar_old/class/Admin.php:107
+msgid "Update Schedule"
+msgstr ""
+
+#: mod/calendar_old/class/Admin.php:119 mod/calendar_old/class/Admin.php:126
+#: mod/calendar_old/class/Admin.php:267
+msgid "My Schedule"
+msgstr ""
+
+#: mod/calendar_old/class/Admin.php:137
+msgid "Event saved successfully."
+msgstr ""
+
+#: mod/calendar_old/class/Admin.php:149
+msgid "There was a problem saving your schedule."
+msgstr ""
+
+#: mod/calendar_old/class/Admin.php:151
+msgid "Schedule saved successfully."
+msgstr ""
+
+#: mod/calendar_old/class/Admin.php:376
+msgid "Personal schedules are disabled."
+msgstr ""
+
+#: mod/calendar_old/class/Admin.php:397
+msgid "Private"
+msgstr ""
+
+#: mod/calendar_old/class/Admin.php:413
+msgid "Save calendar"
+msgstr ""
+
+#: mod/calendar_old/class/Admin.php:579
+msgid ""
+"There was an error when trying to access your calendars. Check your logs."
+msgstr ""
+
+#: mod/calendar_old/class/Admin.php:594
+msgid "Information panel"
+msgstr ""
+
+#: mod/calendar_old/class/Admin.php:598
+msgid "Week start"
+msgstr ""
+
+#: mod/calendar_old/class/Admin.php:601
+msgid "Off"
+msgstr ""
+
+#: mod/calendar_old/class/Admin.php:601
+msgid "On"
+msgstr ""
+
+#: mod/calendar_old/class/Admin.php:612
+msgid "Hour format"
+msgstr ""
+
+#: mod/calendar_old/class/Admin.php:617
+msgid "Never show"
+msgstr ""
+
+#: mod/calendar_old/class/Admin.php:618
+msgid "Show on front page only"
+msgstr ""
+
+#: mod/calendar_old/class/Admin.php:619
+msgid "Show always"
+msgstr ""
+
+#: mod/calendar_old/class/Admin.php:625
+msgid "Mini Calendar display"
+msgstr ""
+
+#: mod/calendar_old/class/Admin.php:626
+msgid "Personal schedules"
+msgstr ""
+
+#: mod/calendar_old/class/Calendar.php:212
+msgid "Incorrect option"
+msgstr ""
+
+#: mod/calendar_old/class/Event.php:123
+msgid "All day event"
+msgstr ""
+
+#: mod/calendar_old/class/Event.php:127
+#, php-format
+msgid "Starts at %s."
+msgstr ""
+
+#: mod/calendar_old/class/Event.php:131
+#, php-format
+msgid "Deadline at %s."
+msgstr ""
+
+#: mod/calendar_old/class/Event.php:277
+msgid "Are you sure you want to remove this event from this calendars?"
+msgstr ""
+
+#: mod/calendar_old/class/Event.php:296
+msgid ""
+"Are you sure you want to permanently delete this event from all calendars?"
+msgstr ""
+
+#: mod/calendar_old/class/Schedule.php:163
+msgid "You must give your calendar a title."
+msgstr ""
+
+#: mod/calendar_old/class/Schedule.php:316
+msgid "Are you sure you want to delete this calendar?"
+msgstr ""
+
+#: mod/calendar_old/class/Schedule.php:318
+msgid "All private, exclusive events will be deleted."
+msgstr ""
+
+#: mod/calendar_old/class/Schedule.php:329
+msgid ""
+"Making this calendar private hides it from other users.\\nAre you sure you "
+"want to continue?"
+msgstr ""
+
+#: mod/calendar_old/class/Schedule.php:334
+msgid ""
+"Making this calendar public reveals it to other users.\\nAre you sure you "
+"want to continue?"
+msgstr ""
+
+#: mod/calendar_old/class/Schedule.php:340
+msgid "N/A"
+msgstr ""
+
+#: mod/calendar_new/class/Admin.php:209 mod/calendar_new/class/Admin.php:214
+msgid "Schedule created."
 msgstr ""
 
 #: setup/class/Setup.php:65
+msgid "Your configuration file already exists."
+msgstr ""
+
+#: setup/class/Setup.php:66
+msgid "Remove the following file and refresh to continue:"
+msgstr ""
+
+#: setup/class/Setup.php:71
+msgid "Your configuration file was written successfully!"
+msgstr ""
+
+#: setup/class/Setup.php:72
+msgid "Move on to Step 2"
+msgstr ""
+
+#: setup/class/Setup.php:74
 msgid ""
 "Your configuration file could not be written into the following directory:"
 msgstr ""
 
-#: setup/class/Setup.php:67
+#: setup/class/Setup.php:76
 msgid "Please check your directory permissions and try again."
 msgstr ""
 
-#: setup/class/Setup.php:68 setup/class/Setup.php:439
-msgid "Permission Help"
-msgstr ""
-
-#: setup/class/Setup.php:98
+#: setup/class/Setup.php:108
 msgid "Unable to locate the source directory:"
 msgstr ""
 
-#: setup/class/Setup.php:128
+#: setup/class/Setup.php:139
 msgid "Missing a database user name."
 msgstr ""
 
-#: setup/class/Setup.php:135
+#: setup/class/Setup.php:146
 msgid "Missing a database password."
 msgstr ""
 
-#: setup/class/Setup.php:144
+#: setup/class/Setup.php:155
 msgid "Missing a database name."
 msgstr ""
 
-#: setup/class/Setup.php:152
-msgid ""
-"The Table Prefix may only consist of letters, numbers, and the underscore "
-"character."
-msgstr ""
-
-#: setup/class/Setup.php:153
-msgid "It also may not begin with a number."
-msgstr ""
-
 #: setup/class/Setup.php:176
+msgid ""
+"PhpWebSite was able to connect, but the database already contained tables."
+msgstr ""
+
+#: setup/class/Setup.php:181
 msgid "PhpWebSite was able to connect but the database itself does not exist."
 msgstr ""
 
-#: setup/class/Setup.php:177
+#: setup/class/Setup.php:182
 msgid "Do you want phpWebSite to create the database?"
 msgstr ""
 
-#: setup/class/Setup.php:178
+#: setup/class/Setup.php:183
 msgid ""
 "If not, you will need to create the database yourself and return to the "
 "setup."
 msgstr ""
 
-#: setup/class/Setup.php:182
+#: setup/class/Setup.php:187
 msgid "Unable to connect to the database with the information provided."
 msgstr ""
 
-#: setup/class/Setup.php:183
+#: setup/class/Setup.php:188
 msgid "Database Help"
 msgstr ""
 
-#: setup/class/Setup.php:196
+#: setup/class/Setup.php:202
 msgid "Unable to connect."
 msgstr ""
 
-#: setup/class/Setup.php:197
+#: setup/class/Setup.php:203
 msgid "Check your configuration settings."
 msgstr ""
 
-#: setup/class/Setup.php:204
+#: setup/class/Setup.php:210
 msgid "Unable to create the database."
 msgstr ""
 
-#: setup/class/Setup.php:205
+#: setup/class/Setup.php:211
 msgid "You will need to create it manually and rerun the setup."
 msgstr ""
 
-#: setup/class/Setup.php:213
+#: setup/class/Setup.php:219
 msgid "The database creation succeeded!"
 msgstr ""
 
-#: setup/class/Setup.php:214
+#: setup/class/Setup.php:220
 msgid "You can now finish the creation of your config file."
 msgstr ""
 
-#: setup/class/Setup.php:292
+#: setup/class/Setup.php:308
 msgid "Use Pear files included with phpWebSite (recommended)."
 msgstr ""
 
-#: setup/class/Setup.php:293
+#: setup/class/Setup.php:309
 msgid "Use server's Pear library files (not recommended)."
 msgstr ""
 
-#: setup/class/Setup.php:296
+#: setup/class/Setup.php:312
 msgid "This is the directory where phpWebSite is installed."
 msgstr ""
 
-#: setup/class/Setup.php:298
+#: setup/class/Setup.php:314
 msgid ""
 "The character string below differentiates your site from others on the same "
 "server."
 msgstr ""
 
-#: setup/class/Setup.php:299
+#: setup/class/Setup.php:315
 msgid "The example is randomly generated."
 msgstr ""
 
-#: setup/class/Setup.php:300
+#: setup/class/Setup.php:316
 msgid "You may change it if you wish."
 msgstr ""
 
-#: setup/class/Setup.php:302
+#: setup/class/Setup.php:318
 msgid "phpWebSite uses the Pear library extensively."
 msgstr ""
 
-#: setup/class/Setup.php:303
+#: setup/class/Setup.php:319
 msgid "We suggest you use the library files included with phpWebSite."
 msgstr ""
 
-#: setup/class/Setup.php:309
+#: setup/class/Setup.php:325
 msgid "Source Directory"
 msgstr ""
 
-#: setup/class/Setup.php:313
+#: setup/class/Setup.php:329
 msgid "Site Hash"
 msgstr ""
 
-#: setup/class/Setup.php:317
+#: setup/class/Setup.php:333
 msgid "Pear Configuration"
 msgstr ""
 
-#: setup/class/Setup.php:343
+#: setup/class/Setup.php:360
 msgid "Database Type"
 msgstr ""
 
-#: setup/class/Setup.php:344
+#: setup/class/Setup.php:361
 msgid ""
 "phpWebSite supports several databases. Choose the type your server currently "
 "is running."
 msgstr ""
 
-#: setup/class/Setup.php:346
+#: setup/class/Setup.php:363
 msgid "Database User"
 msgstr ""
 
-#: setup/class/Setup.php:347
+#: setup/class/Setup.php:364
 msgid "This is the user name that phpWebSite will use to access its database."
 msgstr ""
 
-#: setup/class/Setup.php:348
+#: setup/class/Setup.php:365
 msgid ""
 "Note: it is a good idea to give each phpWebSite installation its own user."
 msgstr ""
 
-#: setup/class/Setup.php:350
+#: setup/class/Setup.php:367
 msgid "Database Password"
 msgstr ""
 
-#: setup/class/Setup.php:351
+#: setup/class/Setup.php:368
 msgid "Enter the database's user password here."
 msgstr ""
 
-#: setup/class/Setup.php:353
+#: setup/class/Setup.php:370
 msgid "Host Specification"
 msgstr ""
 
-#: setup/class/Setup.php:354
+#: setup/class/Setup.php:371
 msgid ""
 "If your database is on the same server as your phpWebSite installation, "
 "leave this as &#x22;localhost&#x22;."
 msgstr ""
 
-#: setup/class/Setup.php:355
+#: setup/class/Setup.php:372
 msgid "Otherwise, enter the ip or dns to the database server."
 msgstr ""
 
-#: setup/class/Setup.php:357
+#: setup/class/Setup.php:374
 msgid "Host Specification Port"
 msgstr ""
 
-#: setup/class/Setup.php:358
+#: setup/class/Setup.php:375
 msgid ""
 "If your host specification requires access via a specific port, enter it "
 "here."
 msgstr ""
 
-#: setup/class/Setup.php:360
+#: setup/class/Setup.php:377
 msgid "Database Name"
 msgstr ""
 
-#: setup/class/Setup.php:361
+#: setup/class/Setup.php:378
 msgid "The database's name into which you are installing phpWebSite."
 msgstr ""
 
-#: setup/class/Setup.php:362
+#: setup/class/Setup.php:379
 msgid ""
 "Note: if you have not made this database yet, you should do so before "
 "continuing."
 msgstr ""
 
-#: setup/class/Setup.php:364
-msgid "Table Prefix"
-msgstr ""
-
-#: setup/class/Setup.php:365
-msgid ""
-"If phpWebSite is sharing a database with another application, we suggest you "
-"give the tables a prefix."
-msgstr ""
-
-#: setup/class/Setup.php:430
-msgid "The following directories need to be created:"
-msgstr ""
-
-#: setup/class/Setup.php:436
-msgid "The following directories are not writable:"
-msgstr ""
-
-#: setup/class/Setup.php:438
-msgid "You will need to change the permissions."
-msgstr ""
-
-#: setup/class/Setup.php:450
+#: setup/class/Setup.php:472
 msgid "phpWebSite 1.0.0 Beta Setup"
 msgstr ""
 
-#: setup/class/Setup.php:464
+#: setup/class/Setup.php:487
 msgid "There is a problem with your sessions."
 msgstr ""
 
-#: setup/class/Setup.php:465
+#: setup/class/Setup.php:488
 msgid "phpWebSite depends on sessions to move data between pages."
 msgstr ""
 
-#: setup/class/Setup.php:466
+#: setup/class/Setup.php:489
 msgid "Sessions Help"
 msgstr ""
 
-#: setup/class/Setup.php:483
+#: setup/class/Setup.php:507
 msgid "Begin Installation"
 msgstr ""
 
-#: setup/class/Setup.php:489
+#: setup/class/Setup.php:514
 msgid "Importing core database file."
 msgstr ""
 
-#: setup/class/Setup.php:497
+#: setup/class/Setup.php:521
 msgid "Some errors occurred while creating the core database tables."
 msgstr ""
 
-#: setup/class/Setup.php:498
+#: setup/class/Setup.php:522
 msgid "Please check your error log file."
 msgstr ""
 
-#: setup/class/Setup.php:503
+#: setup/class/Setup.php:527
 msgid "Core installation successful."
 msgstr ""
 
-#: setup/class/Setup.php:504
+#: setup/class/Setup.php:528
 msgid "Continue to Module Installation"
 msgstr ""
 
-#: setup/class/Setup.php:519
-msgid "An error occurred while trying to install your modules."
-msgstr ""
-
-#: setup/class/Setup.php:520
-msgid "Please check your error logs and try again."
-msgstr ""
-
-#: setup/class/Setup.php:535
+#: setup/class/Setup.php:561
 msgid "Installation of phpWebSite is complete."
 msgstr ""
 
-#: setup/class/Setup.php:536
+#: setup/class/Setup.php:562
 msgid "If you experienced any error messages, check your error.log file."
 msgstr ""
 
-#: setup/class/Setup.php:538
+#: setup/class/Setup.php:564
 msgid ""
 "Check Directory Permissions is enabled so be sure to secure your config and "
 "templates directories!"
 msgstr ""
 
-#: setup/class/Setup.php:539
+#: setup/class/Setup.php:565
 msgid "If you do not change it now, your next page will be an error screen."
 msgstr ""
 
-#: setup/class/Setup.php:541
+#: setup/class/Setup.php:567
 msgid ""
 "After you finish installing your modules in Boost, you should make your "
 "config and template directories non-writable."
 msgstr ""
 
-#: setup/class/Setup.php:543
+#: setup/class/Setup.php:569
 msgid "Go to my new website!"
 msgstr ""
 
-#: setup/index.php:10
-msgid "Unable to locate your pear library files."
-msgstr ""
-
-#: setup/index.php:12
-msgid "Untar pear.tgz in your phpwebsite installation directory."
-msgstr ""
-
-#: setup/index.php:49
+#: setup/index.php:59
 msgid "Directory Permissions"
 msgstr ""
 
-#: setup/index.php:60
-msgid "Create Config File"
-msgstr ""
-
 #: setup/index.php:65
-msgid "Create Database"
+msgid "Site Setup"
 msgstr ""
 
 #: setup/index.php:70
-msgid "Create Core"
+msgid "Create Config File"
 msgstr ""
 
 #: setup/index.php:75
+msgid "Create Database"
+msgstr ""
+
+#: setup/index.php:80
+msgid "Create Core"
+msgstr ""
+
+#: setup/index.php:85
 msgid "Install Modules"
 msgstr ""
 
@@ -984,14 +6563,6 @@ msgstr ""
 msgid "Login to Site Manager"
 msgstr ""
 
-#: setup/manager.php:62
-msgid "Login page"
-msgstr ""
-
-#: setup/manager.php:63
-msgid "Username and password combination not found."
-msgstr ""
-
 #: setup/manager.php:67
 msgid "You must be a deity to run Site Manager."
 msgstr ""
@@ -1000,24 +6571,8 @@ msgstr ""
 msgid "Main Menu"
 msgstr ""
 
-#: setup/manager.php:104
-msgid "Username"
-msgstr ""
-
-#: setup/manager.php:106
-msgid "Password"
-msgstr ""
-
-#: setup/manager.php:107
-msgid "Log in"
-msgstr ""
-
 #: setup/manager.php:110
 msgid "Please login"
-msgstr ""
-
-#: setup/manager.php:123
-msgid "Uninstall"
 msgstr ""
 
 #: setup/manager.php:128
@@ -1026,8 +6581,4 @@ msgstr ""
 
 #: setup/manager.php:129
 msgid "Module title"
-msgstr ""
-
-#: setup/manager.php:130
-msgid "Action"
 msgstr ""
