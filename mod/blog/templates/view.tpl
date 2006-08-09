@@ -10,6 +10,7 @@
     <!-- END categories -->
     <div class="box-content">
       {ENTRY}
+      <!-- BEGIN edit-link --><div class="align-right">{EDIT_LINK}</div><!-- END edit-link -->
       <!-- BEGIN comment-info -->
       <div class="read-more">
       {COMMENT_LINK}

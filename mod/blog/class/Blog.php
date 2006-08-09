@@ -54,6 +54,7 @@ class Blog {
         $this->entry = PHPWS_Text::parseInput($entry);
     }
 
+
     function getEntry($print=FALSE)
     {
         if ($print) {
@@ -203,13 +204,13 @@ class Blog {
             $vars['blog_id'] = $this->id;
             $vars['action']  = 'admin';
             $vars['command'] = 'edit';
-            if ($limited) {
-                $template['EDIT_LINK'] = PHPWS_Text::secureLink(_('Edit'), 'blog', $vars);
-            } else {
-                MiniAdmin::add('blog', array(PHPWS_Text::secureLink(_('Edit blog'), 'blog', $vars)));
-            }
-        }
 
+            $template['EDIT_LINK'] = PHPWS_Text::secureLink(_('Edit'), 'blog', $vars);
+            if (!$limited) {
+                MiniAdmin::add('blog', array(PHPWS_Text::secureLink(_('Edit blog'), 'blog', $vars)));
+            }        
+        }
+        
         if ($this->allow_comments) {
             $comments = Comments::getThread($key);
            
