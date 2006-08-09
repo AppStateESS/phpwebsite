@@ -212,7 +212,7 @@ class Layout {
     function nakedDisplay($content=NULL, $title=NULL)
     {
         Layout::disableRobots();
-        echo Layout::wrap($content, $title);
+        echo Layout::wrap($content, $title, true);
         exit();
     }
 
@@ -854,22 +854,24 @@ class Layout {
     /**
      * Wraps the content with the layout header
      */
-    function wrap($content, $title=NULL)
+    function wrap($content, $title=NULL, $use_blank=false)
     {
         $template['CONTENT'] = $content;
         Layout::loadHeaderTags($template);
-        $empty_tpl = sprintf('themes/%s/blank.tpl', Layout::getCurrentTheme());
 
         if (isset($title)) {
             $template['PAGE_TITLE'] = strip_tags($title);
         }
 
-        if (is_file($empty_tpl)) {
-            $result = PHPWS_Template::process($template, 'layout', $empty_tpl, TRUE);
-        } else {
-            $result = PHPWS_Template::process($template, 'layout', 'header.tpl');
-        }
+        if ($use_blank) {
+            $empty_tpl = sprintf('themes/%s/blank.tpl', Layout::getCurrentTheme());
 
+            if (is_file($empty_tpl)) {
+                $result = PHPWS_Template::process($template, 'layout', $empty_tpl, TRUE);
+                return $result;
+            }
+        }
+        $result = PHPWS_Template::process($template, 'layout', 'header.tpl');
         return $result;
     }
 
