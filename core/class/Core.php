@@ -374,6 +374,30 @@ class PHPWS_Core {
         return PHPWS_Core::configRequireOnce($module, $file, $exitOnError);
     }
 
+
+    /**
+     * Like requireConfig but for files in the inc directory
+     */
+    function requireInc($module, $file, $exitOnError=TRUE)
+    {
+        $inc_file = sprintf('%smod/%s/inc/%s', PHPWS_SOURCE_DIR, $module, $file);
+
+        if (!is_file($inc_file)) {
+            PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'core', 'requireInc', $inc_file);
+            if ($exitOnError) {
+                PHPWS_Core::errorPage();
+            }
+            else {
+                return FALSE;
+            }
+        } else {
+            require_once $inc_file;
+        }
+
+        return TRUE;
+    }
+
+
     /**
      * Loads a config file via a require. If missing, shows error page.
      * If file is NULL, function assumes 'config.php'
