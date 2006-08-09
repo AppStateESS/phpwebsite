@@ -102,10 +102,15 @@ class PHPWS_Time {
      * Returns the Unix time of the current user if their
      * timezone cookie is set. Otherwise, returns server time.
      */
-    function getUserTime($utc_time)
+    function getUserTime($utc_time=0, $gmt=true)
     {
+        if (!$utc_time) {
+            $gmt = true;
+            $utc_time = gmmktime();
+        }
+
         $user_tz = PHPWS_Time::getUserTZ();
-        return PHPWS_Time::convertUTCTime($utc_time, $user_tz);
+        return PHPWS_Time::convertUTCTime($utc_time, $user_tz, $gmt);
     }
 
     function convertUTCTime($time, $tz, $negative=FALSE)
