@@ -1,2 +1,2 @@
-<textarea id="{NAME}" name="{NAME}">{VALUE}</textarea>
+<textarea id="{ID}" name="{NAME}">{VALUE}</textarea>
 <div style="clear: both">&nbsp;</div>
