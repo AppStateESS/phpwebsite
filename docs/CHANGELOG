@@ -1,3 +1,44 @@
+09 August 2006
++ Config
+- added strong and pre tags to text_settings.php
+
++ Core
+- Added a requireInc function
+- Editor
+    o Added id field to editor textarea for possible future use
+    o Removed breaker function call
+    o Removed html_entity_decode
+- Form
+    o Removed an html decode that seemingly caused problems with
+      ampersand encoding
+    o Added id parameter to editor textarea
+- Template
+    o Forcing mod templates was getting ignored if the theme had
+      comparable templates. Changed so forcing mod template overwrites
+      everything.
+- Text
+    o Removed the <pre> tag formating. Wasn't working anyway.
+    o Added code to prevent breaks in <code> tags. They were usually
+      added by the js editors
+- Time : continuing my ever increasing confusion with timezones, made
+         more changes to try and get user timezone settings working. I
+         am sure I will be back.
+
++ Javascript        
+- Added id field to the fckeditor textarea
+
++ Blog
+- Edit links returned to blog view
+- main.tpl's title is under a panel-title class
+- view.tpl Edit link added
+
++ Layout
+- Layout will now use blank.tpl (if exists) with a nakedDisplay call
+
++ Theme
+- Removed unneeded semi-colons
+
+
 26 July 2006
 + File Cabinet - not tagged
 - Fixed incorrect naming of define
