@@ -98,7 +98,6 @@ class PHPWS_Form {
      */
     var $row_repeat = FALSE;
     
-
     /**
      * Constructor for class
      */
@@ -1066,8 +1065,6 @@ class PHPWS_Form {
      */
     function getTemplate($phpws=TRUE, $helperTags=TRUE, $template=NULL)
     {
-        translate('core');
-
         if (count($this->_elements) < 1) {
             return PHPWS_Error::get(PHPWS_FORM_NO_ELEMENTS, 'core', 'PHPWS_Form::getTemplate');
         }
@@ -1521,17 +1518,16 @@ class Form_TextArea extends Form_Element {
 
     function get()
     {
-        
         PHPWS_Core::initCoreClass('Editor.php');
         if ($this->_use_editor && Editor::willWork()) {
-            $editor = & new Editor($this->name, $this->value);
+            $editor = & new Editor($this->name, $this->value, $this->id);
             return $editor->get();
         }
 
         $value = $this->getValue();
 
-        $value = html_entity_decode($value, ENT_QUOTES);
-        
+        // commenting this out because ampersand values were not functioning
+        //        $value = html_entity_decode($value, ENT_QUOTES);
         $value = preg_replace('/<br\s?\/?>(\r\n)?/', "\n", $value);
 
         if (ord(substr($value, 0, 1)) == 13) {
@@ -1765,7 +1761,6 @@ class Form_Element {
   
     function Form_Element($name, $value=NULL)
     {
-        
         $this->setName($name);
         if (isset($value)) {
             $this->setValue($value);
