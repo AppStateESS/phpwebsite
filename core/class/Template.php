@@ -82,7 +82,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
         $local_dir  = sprintf('./templates/%s/', $module) . $directory;
         $module_dir = sprintf(PHPWS_SOURCE_DIR . 'mod/%s/templates/', $module) . $directory;
 
-        if (FORCE_THEME_TEMPLATES && is_dir($theme_dir)) {
+        if (FORCE_THEME_TEMPLATES || (!FORCE_MOD_TEMPLATES && is_dir($theme_dir))) {
             return $theme_dir;
         } elseif (FORCE_MOD_TEMPLATES && is_dir($module_dir)) {
             return $module_dir;
@@ -134,7 +134,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
                 return $theme_tpl;
             }
 
-            if ( FORCE_THEME_TEMPLATES || is_file($theme_tpl) ) {
+            if ( FORCE_THEME_TEMPLATES || (!FORCE_MOD_TEMPLATES && is_file($theme_tpl)) ) {
                 $result = $this->loadTemplateFile($theme_tpl);
                 $used_tpl = &$theme_tpl;
             } elseif ( FORCE_MOD_TEMPLATES || !is_file($template_tpl) ) {
