@@ -39,7 +39,7 @@ class PHPWS_Text {
         }
 
         if ($decode) {
-            $this->text = html_entity_decode($text, ENT_QUOTES);
+            $this->text = html_entity_decode($text, ENT_QUOTES, 'UTF-8');
         } else {
             $this->text = $text;
         }
@@ -97,16 +97,16 @@ class PHPWS_Text {
         if (empty($this->text)) {
             return NULL;
         }
+        
         $text = $this->text;
-
         if ($this->use_bbcode) {
             $text = PHPWS_Text::bb2html($text, 'whatsthat');
         }
-   
+
         if (!$this->use_profanity) {
             $text = PHPWS_Text::profanityFilter($text);
         }
-      
+
         if ($this->use_strip_tags) {
             $text = strip_tags($text, $this->_allowed_tags);
         }
