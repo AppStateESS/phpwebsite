@@ -136,7 +136,7 @@ class Profile {
     function getCaption($formatted=TRUE)
     {
         if ($formatted) {
-            return PHPWS_Text::parseOutput($this->caption);
+            return PHPWS_Text::parseTag(PHPWS_Text::parseOutput($this->caption));
         } else {
             return $this->caption;
         }
