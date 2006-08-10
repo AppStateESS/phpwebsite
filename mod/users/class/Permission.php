@@ -339,7 +339,7 @@ class Users_Permission {
      */
     function getRestrictedGroups($key, $edit_rights=false)
     {
-        $group_list = getPermissionGroups($key, $edit_rights);
+        $group_list = Users_Permission::getPermissionGroups($key, $edit_rights);
         if (empty($group_list) || PEAR::isError($group_list)) {
             return $group_list;
         } elseif (isset($group_list['restricted']['all'])) {
