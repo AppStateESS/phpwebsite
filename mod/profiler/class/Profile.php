@@ -160,7 +160,7 @@ class Profile {
     function getFullstory($formatted=TRUE)
     {
         if ($formatted) {
-            return PHPWS_Text::parseOutput($this->fullstory);
+            return PHPWS_Text::parseTag(PHPWS_Text::parseOutput($this->fullstory));
         } else {
             return $this->fullstory;
         }
