@@ -1,9 +1,11 @@
 <script type="text/javascript">
 //<![CDATA[
+var view_groups = null;
 window.onload = function() {
      view_groups = document.getElementById('view_groups');
      for (i = 0; i < 3; i++) {
-         current_radio = document.getElementById('choose_permissions_view_permission[' + i + ']');
+         current_radio = document.getElementById('choose_permissions_view_permission_' + i);
+
          if (current_radio.checked) {
              hideSelect(current_radio.value);
              return;
@@ -13,6 +15,10 @@ window.onload = function() {
 
 function hideSelect(radio_value)
 {
+
+    if (!view_groups) {
+        return;
+    }
     if (radio_value != '2') {
         view_groups.disabled = 'disabled';
     } else {
