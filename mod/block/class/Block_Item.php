@@ -57,7 +57,7 @@ class Block_Item {
     function getContent($format=TRUE)
     {
         if ($format) {
-            return PHPWS_Text::parseOutput($this->content);
+            return PHPWS_Text::parseTag(PHPWS_Text::parseOutput($this->content), null, 'block');
         } else {
             return $this->content;
         }
@@ -80,7 +80,7 @@ class Block_Item {
     }
 
     function summarize(){
-        return substr(strip_tags($this->getContent(TRUE)), 0, 40);
+        return substr(strip_tags($this->getContent()), 0, 40);
     }
 
     function init()
