@@ -1,5 +1,10 @@
 <?php
 
+  /**
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
+   */
+
 function filecabinet_document($file_type, $document_id)
 {
     if ($file_type == 'doc') {
