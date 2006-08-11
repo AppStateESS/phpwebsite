@@ -535,16 +535,33 @@ class PHPWS_Text {
 
     /**
      * Parses text for SmartTags
+     * @param string       text  Text to parse
+     * @param allowed_mods mixed Array of allowed modules or string of one
+     * @param ignore_mods  mixed Array of ignored modules or string of one
      */
-    function parseTag($text, $allowed_mods=NULL)
+    function parseTag($text, $allowed_mods=null, $ignored_mods=null)
     {
         if (!isset($GLOBALS['embedded_tags'])) {
             return $text;
         }
 
-        foreach ($GLOBALS['embedded_tags'] as $module => $ignore) {
-            if (empty($allowed_mods) || (is_array($allowed_mods) &&
-                                         in_array($module, $allowed_mods))) {
+        if (!empty($allowed_mods) && is_string($allowed_mods)) {
+            $hold = $allowed_mods;
+            unset($allowed_mods);
+            $allowed_mods[] = $hold;
+        }
+
+        if (!empty($ignored_mods) && is_string($ignored_mods)) {
+            $hold = $ignored_mods;
+            unset($ignored_mods);
+            $ignored_mods[] = $hold;
+        }
+
+        foreach ($GLOBALS['embedded_tags'] as $module => $null) {
+            if ( (empty($allowed_mods) || in_array($module, $allowed_mods)) ) {
+                if ( !empty($ignored_mods) && in_array($module, $ignored_mods) ) {
+                    continue;
+                }
                 $search = "\[($module):([\w\s:\.\?\!]*)\]";
                 $text = preg_replace_callback("/$search/Ui", 'getEmbedded', $text);
             }
