@@ -922,7 +922,8 @@ class User_Form {
         $view_matches = $key->getViewGroups();
         $edit_matches = $key->getEditGroups();
 
-        $edit_select = User_Form::_createMultiple($edit_groups, 'edit_groups', $edit_matches);
+
+        $edit_select = User_Form::_createMultiple($edit_groups['restricted']['all'], 'edit_groups', $edit_matches);
         $view_select = User_Form::_createMultiple($view_groups, 'view_groups', $view_matches);
 
         $form = & new PHPWS_Form('choose_permissions');
@@ -986,7 +987,7 @@ class User_Form {
                 $match = NULL;
             }
 
-            if ($group['user_id']) {
+            if (!empty($group['user_id'])) {
                 $users[] = sprintf('<option value="%s" %s>%s</option>', $group['id'], $match, $group['name']);
             } else {
                 $groups[] = sprintf('<option value="%s" %s>%s</option>', $group['id'], $match, $group['name']);
