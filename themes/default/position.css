@@ -48,3 +48,7 @@
     margin : 0;
     display : inline;
 }
+
+div.block-embedded {
+    width : 200px;
+}
