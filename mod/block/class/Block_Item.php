@@ -158,9 +158,13 @@ class Block_Item {
 
     function view($pin_mode=FALSE, $admin_icon=TRUE)
     {
-        $opt = NULL;
-
+        $edit = $opt = NULL;
+        
         if (Current_User::allow('block')) {
+            $img = '<img src="./images/mod/block/edit.png" />';
+            $edit = PHPWS_Text::secureLink($img, 'block', array('block_id'=>$this->id,
+                                                                'action'=>'edit'));
+            
             if (!empty($this->_pin_key) && $pin_mode) {
                 $link['action']   = 'lock';
                 $link['block_id'] = $this->id;
@@ -182,7 +186,8 @@ class Block_Item {
         $link['block_id'] = $this->id;
         $template = array('TITLE'   => $this->getTitle(),
                           'CONTENT' => $this->getContent(),
-                          'OPT'     => $opt
+                          'OPT'     => $opt,
+                          'EDIT'    => $edit
                           );
     
         return PHPWS_Template::process($template, 'block', 'sample.tpl');
