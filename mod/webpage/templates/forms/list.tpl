@@ -9,6 +9,7 @@
     <th>{CREATED_USER_SORT}&nbsp;{CREATED_USER_LABEL}<br />
         {UPDATED_USER_SORT}&nbsp;{UPDATED_USER_LABEL}</th>
     <th>{FRONTPAGE_SORT}&nbsp;{FRONTPAGE_LABEL}</th>
+    <th>{ACTIVE_SORT}&nbsp;{ACTIVE_LABEL}</th>
     <th>{ACTION_LABEL}</th>
   </tr>
 <!-- BEGIN listrows -->
@@ -18,6 +19,7 @@
     <td>{DATE_CREATED}<br />{DATE_UPDATED}</td>
     <td>{CREATED_USER}<br />{UPDATED_USER}</td>
     <td>{FRONTPAGE}</td>
+    <td>{ACTIVE}</td>
     <td>{ACTION}</td>
   </tr>
 <!-- END listrows -->
