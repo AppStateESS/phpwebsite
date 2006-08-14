@@ -136,6 +136,15 @@ $module_list[] = 'other_module';
 
 PHPWS_Text::parseTag($text, $module_list);
 
+If you want parseTag to ignore certain modules (such as your own) you
+can add them to the third parameter:
+
+$ignore_list[] = 'my_module';
+PHPWS_Text::parseTag($text, null, $ignore_list);
+
+If just one module is getting accepted or ignored, both parameters
+accept just the module title string.
+
 
 
 Final notes
