@@ -90,6 +90,11 @@ function blog_update(&$content, $currentVersion)
         if (!blog_update_025($content)) {
             return false;
         }
+
+    case version_compare($currentVersion, '0.2.6', '<'):
+        if (!blog_update_026($content)) {
+            return false;
+        }
     }
     return TRUE;
 }
@@ -143,15 +148,50 @@ function blog_update_025(&$content)
     $files[] = 'templates/edit.tpl';
     $files[] = 'templates/view.tpl';
 
-    if (PHPWS_Boost::updateFiles($files, 'blog')) {
+    $result = PHPWS_Boost::updateFiles($files, 'blog');
+
+    if (!PEAR::isError($result)) {
         $content[] = 'The following template files were successfully copied locally:';
         $content[] = implode('<br />', $files);
         $content[] = '<br />';
         return true;
     } else {
+        PHPWS_Error::log($result);
         $content[] = 'Blog update was unable to copy its updated template files locally.';
         return false;
     }
+}
+
+function blog_update_026(&$content)
+{
+    $files[] = 'templates/view.tpl';
+    $files[] = 'templates/main.tpl';
+    $result = PHPWS_Boost::updateFiles($files, 'blog');
+
+    if (!PEAR::isError($result)) {
+        $content[] = 'The following template files were successfully copied locally:';
+        $content[] = implode('<br />', $files);
+        $content[] = '<br />';
+        return true;
+    } else {
+        PHPWS_Error::log($result);
+        $content[] = 'Blog update was unable to copy its updated template files locally.';
+        return false;
+    }
+
+    $db = & new PHPWS_DB('blog_entries');
+    $result = $db->addTableColumn('summary', 'TEXT null');
+    if (PEAR::isError($result)) {
+        PHPWS_Error::log($result);
+        $content[] = 'Unable to create column on blog_entries table.';
+        return false;
+    }
+    $content[] = 'New - summary section to blogs.';
+    $content[] = 'New - edit links on list view';
+    $content[] = 'New - added panel-title class to main admin view';
+    $content[] = 'Fix - approval view';
+
+    return true;
 }
 
 ?>

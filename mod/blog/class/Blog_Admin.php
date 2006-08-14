@@ -264,7 +264,7 @@ class Blog_Admin {
         $options[] = PHPWS_Text::secureLink(_('Approval list'), 'blog', $vars);
 
         $template['OPTIONS'] = implode(' | ', $options);
-        $template['VIEW'] = $blog->approval_view();
+        $template['VIEW'] = $blog->brief_view();
         return PHPWS_Template::process($template, 'blog', 'version_view.tpl');
     }
 

@@ -9,11 +9,13 @@
     <div class="category-links">{CATEGORIES}</div>
     <!-- END categories -->
     <div class="box-content">
-      {ENTRY}
+      <div class="blog-summary">{SUMMARY}</div>
+      <div class="blog-entry">{ENTRY}</div>
       <!-- BEGIN edit-link --><div class="align-right">{EDIT_LINK}</div><!-- END edit-link -->
       <!-- BEGIN comment-info -->
       <div class="read-more">
-      {COMMENT_LINK}
+      <!-- BEGIN read-more -->{READ_MORE} |<!-- END read-more --> {COMMENT_LINK}
+
       <!-- BEGIN last-poster -->- {LAST_POSTER_LABEL}:
       {LAST_POSTER}<!-- END last-poster -->
       </div>

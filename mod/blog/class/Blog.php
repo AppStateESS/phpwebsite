@@ -7,19 +7,20 @@
    */
 
 class Blog {
-    var $id             = NULL;
+    var $id             = null;
     var $key_id         = 0;
-    var $title          = NULL;
-    var $entry          = NULL;
+    var $title          = null;
+    var $summary        = null;
+    var $entry          = null;
     var $author_id      = 0;
-    var $author         = NULL;
-    var $create_date    = NULL;
+    var $author         = null;
+    var $create_date    = null;
     var $allow_comments = 0;
     var $approved       = 0;
-    var $_error         = NULL;
+    var $_error         = null;
     var $allow_anon     = 0;
 
-    function Blog($id=NULL)
+    function Blog($id=null)
     {
         if (empty($id)) {
             $this->allow_comments = PHPWS_Settings::get('blog', 'allow_comments');
@@ -37,7 +38,7 @@ class Blog {
     function init()
     {
         if (!isset($this->id)) {
-            return FALSE;
+            return false;
         }
 
         $db = & new PHPWS_DB('blog_entries');
@@ -45,7 +46,7 @@ class Blog {
         if (PEAR::isError($result)) {
             return $result;
         } elseif (!$result) {
-            $this->id = NULL;
+            $this->id = null;
         }
     }
 
@@ -55,12 +56,35 @@ class Blog {
     }
 
 
-    function getEntry($print=FALSE)
+    function getEntry($print=false)
     {
+        if (empty($this->entry)) {
+            return null;
+        }
+
         if ($print) {
             return PHPWS_Text::parseOutput($this->entry);
         } else {
             return $this->entry;
+        }
+    }
+
+    function setSummary($summary)
+    {
+        $this->summary = PHPWS_Text::parseInput($summary);
+    }
+
+
+    function getSummary($print=false)
+    {
+        if (empty($this->summary)) {
+            return null;
+        }
+
+        if ($print) {
+            return PHPWS_Text::parseOutput($this->summary);
+        } else {
+            return $this->summary;
         }
     }
 
@@ -100,7 +124,7 @@ class Blog {
         }
 
         if ($this->approved) {
-            $update = (!$this->key_id) ? TRUE : FALSE;
+            $update = (!$this->key_id) ? true : false;
 
             $this->saveKey();
             if ($update) {
@@ -113,6 +137,7 @@ class Blog {
 
             $search = & new Search($this->key_id);
             $search->addKeywords($this->title);
+            $search->addKeywords($this->summary);
             $search->addKeywords($this->entry);
             $result = $search->save();
             if (PEAR::isError($result)) {
@@ -141,15 +166,19 @@ class Blog {
         $key->setItemName('entry');
         $key->setItemId($this->id);
         $key->setEditPermission('edit_blog');
-        $key->setUrl($this->getViewLink(TRUE));
+        $key->setUrl($this->getViewLink(true));
         $key->setTitle($this->title);
-        $key->setSummary($this->entry);
+        if (!empty($this->summary)) {
+            $key->setSummary($this->summary);
+        } else {
+            $key->setSummary($this->entry);
+        }
         $key->save();
         $this->key_id = $key->id;
         return $key;
     }
 
-    function getViewLink($bare=FALSE){
+    function getViewLink($bare=false){
         if ($bare) {
             if (MOD_REWRITE_ENABLED) {
                 return 'blog/' . $this->id;
@@ -165,7 +194,8 @@ class Blog {
     {
         $template['TITLE'] = $this->title;
         $template['LOCAL_DATE']  = $this->getLocalDate();
-        $template['ENTRY'] = PHPWS_Text::parseTag($this->getEntry(TRUE));
+        $template['SUMMARY'] = PHPWS_Text::parseTag($this->getSummary(true));
+        $template['ENTRY'] = PHPWS_Text::parseTag($this->getEntry(true));
 
         if (!empty($result)) {
             $template['CATEGORIES'] = implode(', ', $result);
@@ -179,7 +209,13 @@ class Blog {
     }
 
 
-    function view($edit=TRUE, $limited=TRUE)
+    /**
+     * Displays the blog entry
+     *
+     * @param boolean edit       If true, show edit link
+     * @param boolean summarized If true, this is a summarized entry
+     */
+    function view($edit=true, $summarized=true)
     {
         if (!$this->id) {
             PHPWS_Core::errorPage(404);
@@ -195,7 +231,21 @@ class Blog {
 
         $template['TITLE'] = PHPWS_Text::rewriteLink($this->title, 'blog', $this->id);
         $template['LOCAL_DATE']  = $this->getLocalDate();
-        $template['ENTRY'] = PHPWS_Text::parseTag($this->getEntry(TRUE));
+
+        $summary = $this->getSummary(true);
+        $entry   = $this->getEntry(true);
+
+        if ($summarized) {
+            if (empty($summary)) {
+                $template['SUMMARY'] = PHPWS_Text::parseTag($entry);
+            } else {
+                $template['READ_MORE'] = PHPWS_Text::rewriteLink(_('Read more'), 'blog', $this->id);
+                $template['SUMMARY'] =  PHPWS_Text::parseTag($summary);
+            }
+        } else {
+            $template['SUMMARY'] =  PHPWS_Text::parseTag($summary);
+            $template['ENTRY'] = PHPWS_Text::parseTag($entry);
+        }
 
         if ( $edit && 
              ( Current_User::allow('blog', 'edit_blog', $this->id, 'entry') ||
@@ -206,7 +256,7 @@ class Blog {
             $vars['command'] = 'edit';
 
             $template['EDIT_LINK'] = PHPWS_Text::secureLink(_('Edit'), 'blog', $vars);
-            if (!$limited) {
+            if (!$summarized) {
                 MiniAdmin::add('blog', array(PHPWS_Text::secureLink(_('Edit blog'), 'blog', $vars)));
             }        
         }
@@ -214,8 +264,8 @@ class Blog {
         if ($this->allow_comments) {
             $comments = Comments::getThread($key);
            
-            if ($limited && !empty($comments)) {
-                $link = $comments->countComments(TRUE);
+            if ($summarized && !empty($comments)) {
+                $link = $comments->countComments(true);
                 $template['COMMENT_LINK'] = PHPWS_Text::rewriteLink($link, 'blog', $this->id);
                 
                 $last_poster = $comments->getLastPoster();
@@ -231,7 +281,7 @@ class Blog {
                 $key->flag();
             }
         } else {
-            if (!$limited) {
+            if (!$summarized) {
                 $key->flag();
             }
         }
@@ -252,7 +302,7 @@ class Blog {
 
     function getPagerTags()
     {
-        $template['TITLE'] = sprintf('<a href="%s">%s</a>', $this->getViewLink(TRUE), $this->title);
+        $template['TITLE'] = sprintf('<a href="%s">%s</a>', $this->getViewLink(true), $this->title);
         $template['DATE'] = $this->getServerDate();
         $template['ENTRY'] = $this->getListEntry();
         $template['ACTION'] = $this->getListAction();
@@ -272,7 +322,7 @@ class Blog {
         if (Current_User::allow('blog', 'delete_blog')){
             $link['command'] = 'delete';
             $confirm_vars['QUESTION'] = _('Are you sure you want to permanently delete this blog entry?');
-            $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('blog', $link, TRUE);
+            $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('blog', $link, true);
             $confirm_vars['LINK'] = _('Delete');
             $list[] = Layout::getJavascript('confirm', $confirm_vars);
         }
@@ -289,23 +339,23 @@ class Blog {
     }
 
     function getListEntry(){
-        return substr(ltrim(strip_tags(str_replace('<br />', ' ', $this->getEntry(TRUE)))), 0, 30);
+        return substr(ltrim(strip_tags(str_replace('<br />', ' ', $this->getEntry(true)))), 0, 30);
     }
 
     function post_entry()
     {
-        $set_permissions = FALSE;
+        $set_permissions = false;
         
         if ($this->id && !Current_User::authorized('blog', 'edit_blog')) {
             Current_User::disallow();
-            return FALSE;
+            return false;
         } elseif (empty($this->id) && !Current_User::authorized('blog')) {
             Current_User::disallow();
-            return FALSE;
+            return false;
         }
 
         if (!isset($_POST['blog_id']) && PHPWS_Core::isPosted()) {
-            return TRUE;
+            return true;
         }
 
         if (empty($_POST['title'])) {
@@ -318,6 +368,7 @@ class Blog {
             $this->create_date = PHPWS_Time::getUTCTime();
         }
 
+        $this->setSummary($_POST['summary']);
         $this->setEntry($_POST['entry']);
 
         if (isset($_POST['allow_comments'])) {
@@ -342,12 +393,12 @@ class Blog {
             $this->approved = 1;
         }
 
-        return TRUE;
+        return true;
     }
 
     function delete()
     {
-        $all_is_well = TRUE;
+        $all_is_well = true;
         Key::drop($this->key_id);
         PHPWS_Core::initModClass('version', 'Version.php');
         Version::flush('blog_entries', $this->id);
@@ -357,7 +408,7 @@ class Blog {
 
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            $all_is_well = FALSE;
+            $all_is_well = false;
         }
 
         $key = & new Key($this->key_id);

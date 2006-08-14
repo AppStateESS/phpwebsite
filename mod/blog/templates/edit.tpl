@@ -1,11 +1,15 @@
 {START_FORM}
 <table class="form-table">
   <tr>
-    <td>{TITLE_LABEL}</span></td>
+    <td>{TITLE_LABEL}</td>
     <td>{TITLE}</td>
   </tr>
   <tr>
-    <td>{ENTRY_LABEL}</span></td>
+    <td>{SUMMARY_LABEL}</td>
+    <td>{SUMMARY}</td>
+  </tr>
+  <tr>
+    <td>{ENTRY_LABEL}</td>
     <td>{ENTRY}</td>
   </tr>
   <tr>

@@ -29,14 +29,22 @@ class Blog_Form {
             $form->addSubmit('submit', _('Add Entry'));
         }
 
+
+        $form->addText('title', $blog->title);
+        $form->setSize('title', 40);
+        $form->setLabel('title', _('Title'));
+
+        $form->addTextArea('summary', $blog->getSummary());
+        $form->useEditor('summary');
+        $form->setRows('summary', '10');
+        $form->setCols('summary', '60');
+        $form->setLabel('summary', _('Summary'));
+
         $form->addTextArea('entry', $blog->getEntry());
         $form->useEditor('entry');
         $form->setRows('entry', '10');
         $form->setCols('entry', '60');
         $form->setLabel('entry', _('Entry'));
-        $form->addText('title', $blog->title);
-        $form->setSize('title', 40);
-        $form->setLabel('title', _('Title'));
 
         $form->addCheck('allow_comments', 1);
         $form->setLabeL('allow_comments', _('Allow comments'));
