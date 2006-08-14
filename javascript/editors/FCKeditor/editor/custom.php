@@ -23,7 +23,7 @@ $home_dir = substr($_SERVER['SCRIPT_FILENAME'], 0, strpos($_SERVER['SCRIPT_FILEN
 
 
 FCKConfig.ToolbarSets["phpws"] = [
-	['NewPage','Preview'],
+	['FitWindow', 'NewPage','Preview'],
 	['Cut','Copy','Paste','PasteText','PasteWord'],
 	['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
 	'/',
@@ -31,7 +31,7 @@ FCKConfig.ToolbarSets["phpws"] = [
 	['OrderedList','UnorderedList','-','Outdent','Indent'],
 	['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
 	'/',
-	['Image', 'Table', 'Link','Unlink','Anchor'],
+	['Image', 'Flash', 'Table', 'Link','Unlink','Anchor'],
 	['SpellCheck', 'Rule','Smiley','SpecialChar', '-', 'Source', 'Style']
 ] ;
 

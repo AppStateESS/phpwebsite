@@ -1,2 +1,10 @@
 <textarea id="{ID}" name="{NAME}">{VALUE}</textarea>
-<div style="clear: both">&nbsp;</div>
+<script type="text/javascript">
+//<![CDATA[
+   var oFCKeditor = new FCKeditor( '{NAME}' , 500, 250, 'phpws') ;
+   oFCKeditor.BasePath = basepath
+   oFCKeditor.Config["CustomConfigurationsPath"] = 'custom.php?module={module}';
+   oFCKeditor.ReplaceTextarea() ;
+
+//]]>
+</script>
