@@ -1,3 +1,46 @@
+14 August 2006
++ Block
+- added admin edit icon to block view
+
++ Blog
+- added summary section
+
++ Boost
+- Now reports uncopyable file in log
+
++ Javascript
+- Editor - FCKeditor : added full page view, insert flash
+           buttons. Also recoded to allow multiple textareas
+
+11 August 2006
++ Core
+- Text.php : changed parseTag so you could add modules you wish to
+ignore. Should prevent endless loops
+
++ Docs
+- Updated SmartTags documentation to fit with Text.php changes.
+
++ Block
+- Block_Item.php : content now parses smart tags
+
++ Users
+- Form.php : Error in the permission form should be fixed
+
+
+10 August 2006
++ Layout
+- Changed import check for IE. Hopefully will detect it better.
+
++ Profile
+- Added parseTag call to getFullStory function.
+
++ Core
+- Text.php -  Added UTF-8 encoding to the parseOutput. Was trashing accented characters.
+
++ Users
+- Permission.php - Fixed typo causing syntax error on permission call
+- permission_pop.tpl - fixed javascript error from changes in the form class
+
 09 August 2006
 + Config
 - added strong and pre tags to text_settings.php
