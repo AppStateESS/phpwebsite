@@ -25,6 +25,7 @@ class Webpage_Volume {
     var $updated_user   = NULL;
     var $frontpage      = FALSE;
     var $approved       = 0;
+    var $active         = 1;
     var $_current_page  = 1;
     // array of pages indexed by order, value is id
     var $_key           = NULL;
@@ -197,6 +198,9 @@ class Webpage_Volume {
         }
     }
 
+    /**
+     * returns an associative array for the dbpager listing of volumes
+     */
     function rowTags()
     {
         $vars['volume_id'] = $this->id;
@@ -225,6 +229,14 @@ class Webpage_Volume {
         } else {
             $tpl['FRONTPAGE'] = _('No');
         }
+
+        if ($this->active) {
+            $tpl['ACTIVE'] = _('Yes');
+        } else {
+            $tpl['ACTIVE'] = _('No');
+        }
+
+
         return $tpl;
     }
 
@@ -325,6 +337,7 @@ class Webpage_Volume {
             $key->setEditPermission('edit_page');
         }
 
+        $key->active = (int)$this->active;
         $key->setTitle($this->title);
         $key->setSummary($this->summary);
         $key->setUrl($this->getViewLink(TRUE));

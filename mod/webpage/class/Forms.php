@@ -139,6 +139,7 @@ class Webpage_Forms {
         $tags['CREATED_USER_LABEL'] = _('Created by');
         $tags['UPDATED_USER_LABEL'] = _('Updated by');
         $tags['FRONTPAGE_LABEL']    = _('Front page');
+        $tags['ACTIVE_LABEL']       = _('Active');
         $tags['ACTION_LABEL']       = _('Action');
         $tags['CHECK_ALL'] = javascript('check_all', array('checkbox_name' => 'webpage'));
 

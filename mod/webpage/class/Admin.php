@@ -403,13 +403,10 @@ class Webpage_Admin {
 
     function setActive($pages, $active)
     {
-        $db = & new PHPWS_DB('phpws_key');
-        $db->addWhere('module', 'webpage');
-        $db->addWhere('item_id', $pages);
-        $db->addValue('active', (int)$active);
-        $result = $db->update();
-        if (PEAR::isError($result)) {
-            PHPWS_Error::log($result);
+        foreach ($pages as $id) {
+            $volume = & new Webpage_Volume((int)$id);
+            $volume->active = (bool)$active;
+            $volume->save();
         }
     }
 

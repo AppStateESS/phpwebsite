@@ -20,9 +20,33 @@ function webpage_update(&$content, $currentVersion)
 
     case version_compare($currentVersion, '0.2.1', '<'):
         $content[] = '+ Added parseTags to content.';
+
+    case version_compare($currentVersion, '0.2.2', '<'):
+        $result = wp_update_022();
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+        $content[] = 'New - added active column to web page admin list';
     }
 
     return TRUE;
+}
+
+function wp_update_022()
+{
+    $files[] = 'templates/forms/list.tpl';
+    $result = PHPWS_Boost::updateFiles($files, 'webpage');
+    if (PEAR::isError($result)) {
+        return $result;
+    }
+
+    $db = & new PHPWS_DB('webpage_volume');
+    $result = $db->addTableColumn('active', 'smallint NOT NULL default \'1\'');
+    if (PEAR::isError($result)) {
+        return $result;
+    }
+
+    return true;
 }
 
 
