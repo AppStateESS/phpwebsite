@@ -1,13 +1,16 @@
 <?php
+
   /**
    * @author Matthew McNaney <mcnaney at gmail dot com>
    * @version $Id$
    */
 
 if (!empty($_REQUEST['module'])) {
-    $subdir = preg_replace('/\W/', '', $_REQUEST['module']) . '/';
+    $module = preg_replace('/\W/', '', $_REQUEST['module']);
+    $subdir = $module . '/';
     $connector = '?module=' . preg_replace('/\W/', '', $_REQUEST['module']);
 } else {
+    $module = null;
     $subdir = NULL;
     $connector = NULL;
 }
@@ -45,9 +48,22 @@ FCKConfig.ToolbarSets["phpws"] = [
 *
 **/
 
-server_path = '<?php echo $home_dir ?>';
+server_path = '<?php echo $home_dir; ?>';
 
-FCKConfig.LinkBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Connector=connectors/phpws/connector.php' ;
+FCKConfig.LinkBroswer = true;
+FCKConfig.LinkBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Connector=connectors/phpws/connector.php&ServerPath=' + server_path;
+
+FCKConfig.ImageBrowser = true;
 FCKConfig.ImageBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Image&ServerPath=' + server_path + '&Connector=connectors/phpws/connector.php<?php echo $connector ?>';
+
+FCKConfig.FlashBrowser = true;
+FCKConfig.FlashBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Flash&ServerPath=' + server_path + '&Connector=connectors/phpws/connector.php<?php echo $connector ?>';
+
+FCKConfig.ImageUpload = true;
+FCKConfig.ImageUploadURL = FCKConfig.BasePath + 'filemanager/upload/phpws/upload.php?Type=Image&module=<?php echo $module;?>';
+FCKConfig.ImageUploadAllowedExtensions	= ".(jpg|gif|jpeg|png)$" ;
+FCKConfig.ImageUploadDeniedExtensions	= "" ;
+
+
 FCKConfig.SpellChecker = 'SpellerPages' ;
 FCKConfig.StylesXmlPath		= FCKConfig.EditorPath + 'phpwsstyles.xml' ;
