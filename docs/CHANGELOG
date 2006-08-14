@@ -1,4 +1,10 @@
 14 August 2006
++ Theme
+- Added style for embedded block
+
++ Web Page
+- Added active column to admin view and table
+
 + Block
 - added admin edit icon to block view
 
@@ -10,7 +16,8 @@
 
 + Javascript
 - Editor - FCKeditor : added full page view, insert flash
-           buttons. Also recoded to allow multiple textareas
+           buttons. Also recoded to allow multiple textareas.
+           Fixed bug #1515179. Can now upload images in the upload tab.
 
 11 August 2006
 + Core
