@@ -979,13 +979,13 @@ class PHPWS_Boost {
                     return TRUE;
                 }
                 if (!PHPWS_Boost::backupFile($local_file)) {
-                    return PHPWS_Error::get(BOOST_FAILED_BACKUP, 'boost', 'PHPWS_Boost::updateFiles');
+                    return PHPWS_Error::get(BOOST_FAILED_BACKUP, 'boost', 'PHPWS_Boost::updateFiles', $local_file);
                 }
             }
 
-            $result = copy($source_file, $local_file);
+            $result = @copy($source_file, $local_file);
             if (!$result) {
-                return PHPWS_Error::get(BOOST_FAILED_LOCAL_COPY, 'boost', 'PHPWS_Boost::updateFiles');
+                return PHPWS_Error::get(BOOST_FAILED_LOCAL_COPY, 'boost', 'PHPWS_Boost::updateFiles', $local_file);
             }
         }
         return TRUE;
@@ -1007,7 +1007,7 @@ class PHPWS_Boost {
         $aFile_alone[] = $new_file_ext;
 
         $new_filename = implode('/', $aFile) . '/' . implode('.', $aFile_alone);
-        return copy($filename, $new_filename);
+        return @copy($filename, $new_filename);
     }
 
 }
