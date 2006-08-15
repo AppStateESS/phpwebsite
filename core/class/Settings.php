@@ -6,6 +6,7 @@
  * per page.
  *
  * @author Matt McNaney <mcnaney at gmail dot com>
+ * @version $Id$
  */
 
 class PHPWS_Settings {
@@ -56,7 +57,6 @@ class PHPWS_Settings {
             return FALSE;
         }
         return in_array($value, $GLOBALS['PHPWS_Settings'][$module][$setting]);
-
     }
 
     /**
@@ -161,20 +161,22 @@ class PHPWS_Settings {
      */
     function load($module)
     {
+        $default = PHPWS_Settings::loadConfig($module);
+        if (!$default) {
+            $GLOBALS['PHPWS_Settings'][$module] = 1;
+            return PHPWS_Error::get(SETTINGS_MISSING_FILE, 'core', 'PHPWS_Settings::load', $module);
+        }
+        
+        include $default;
+        PHPWS_Settings::set($module, $settings);
+
         $db = & new PHPWS_DB('mod_settings');
         $db->addWhere('module', $module);
         $result = $db->select();
+
         if (PEAR::isError($result)) {
             return $result;
         } elseif (empty($result)) {
-            $default = PHPWS_Settings::loadConfig($module);
-            if (!$default) {
-                $GLOBALS['PHPWS_Settings'][$module] = 1;
-                return PHPWS_Error::get(SETTINGS_MISSING_FILE, 'core', 'PHPWS_Settings::load', $module);
-            }
-            
-            include $default;
-            PHPWS_Settings::set($module, $settings);
             PHPWS_Settings::save($module);
         } else {
             foreach ($result as $key => $value) {
