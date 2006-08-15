@@ -1,2 +1,2 @@
-<link rel="stylesheet" href="javascript/js_calendar/dhtmlgoodies_calendar/dhtmlgoodies_calendar.css" media="screen"></LINK>
+<link rel="stylesheet" type="text/css" href="javascript/js_calendar/dhtmlgoodies_calendar/dhtmlgoodies_calendar.css" media="screen" />
 <script type="text/javascript" src="javascript/js_calendar/dhtmlgoodies_calendar/dhtmlgoodies_calendar.js"></script>
