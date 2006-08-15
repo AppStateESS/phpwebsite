@@ -1896,7 +1896,7 @@ class PHPWS_DB {
     }// END FUNC loadObject
 
     /**
-     * Creates an array of objects contructed from the submitted
+     * Creates an array of objects constructed from the submitted
      * class name.
      *
      * Use this function instead of select() to get an array of objects.
@@ -1921,8 +1921,17 @@ class PHPWS_DB {
             return $result;
         }
 
-        foreach ($result as $indexby => $itemResult){
-            $genClass = & new $className;
+        $num_args = func_num_args();
+        $args = func_get_args();
+        array_shift($args);
+
+        foreach ($result as $indexby => $itemResult) {
+            if ($num_args < 2) {
+                $genClass = & new $className;
+            } else {
+                $eval = '$genClass = & new $className(' . implode(',', $args) . ');';
+                eval($eval);
+            }
             PHPWS_Core::plugObject($genClass, $itemResult);
             $items[$indexby] = $genClass;
         }
