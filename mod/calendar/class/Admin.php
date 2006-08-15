@@ -3,6 +3,8 @@
   /**
    * Contains administrative functionality
    *
+   * main : controls administrative routing
+   *
    * @author Matthew McNaney <mcnaney at gmail dot com>
    * @version $Id$
    */
@@ -12,9 +14,9 @@ class Calendar_Admin {
      * @var pointer to the parent object
      */
     var $calendar = null;
-    var $title   = null;
-    var $content = null;
-    var $message = null;
+    var $title    = null;
+    var $content  = null;
+    var $message  = null;
 
 
     function Calendar_Admin()
@@ -38,15 +40,28 @@ class Calendar_Admin {
 
     }
 
-    function editSchedule($schedule)
+    function editEvent()
     {
-        if ($schedule->id) {
+        $event = $this->calendar->schedule->loadEvent();
+
+        if ($event->id) {
+            $this->title = _('Update event');
+        } else {
+            $this->title = _('Create event');
+        }
+
+        $this->content = $event->form();
+    }
+
+    function editSchedule()
+    {
+        if ($this->calendar->schedule->id) {
             $this->title = _('Update schedule');
         } else {
             $this->title = _('Create schedule');
         }
 
-        $this->content = $schedule->form();
+        $this->content = $this->calendar->schedule->form();
     }
 
     function &getPanel()
@@ -69,19 +84,9 @@ class Calendar_Admin {
     }
 
 
-    function &loadSchedule()
-    {
-        PHPWS_Core::initModClass('calendar', 'Schedule.php');
-
-        if (!empty($_REQUEST['schedule_id'])) {
-            $schedule = & new Calendar_Schedule((int)$_REQUEST['schedule_id']);
-        } else {
-            $schedule = & new Calendar_Schedule;
-        }
-
-        return $schedule;
-    }
-
+    /**
+     * routes administrative commands
+     */
     function main()
     {
         if (!Current_User::allow('calendar')) {
@@ -103,9 +108,7 @@ class Calendar_Admin {
         switch ($command) {
         case 'create_event':
             $panel->setCurrentTab('schedules');
-            $schedule = $this->loadSchedule();
-            $event = $schedule->loadEvent();
-            $this->editEvent($event);
+            $this->editEvent();
             break;
 
         case 'create_schedule':
@@ -113,37 +116,49 @@ class Calendar_Admin {
                 Current_User::disallow();
             }
             $panel->setCurrentTab('schedules');
-            $schedule = $this->loadSchedule();
-            $this->editSchedule($schedule);
+            $this->editSchedule();
             break;
 
         case 'delete_schedule':
-            $schedule = $this->loadSchedule();
-            $schedule->delete();
+            $this->calendar->schedule->delete();
             $this->sendMessage(_('Schedule deleted.'), 'schedules');
             break;
 
         case 'edit_schedule':
-            if (empty($_REQUEST['schedule_id'])) {
+            if (empty($_REQUEST['sch_id'])) {
                 PHPWS_Core::errorPage('404');
             }
 
-            if (!Current_User::allow('calendar', 'edit_schedule', (int)$_REQUEST['schedule_id'])) {
+            if (!Current_User::allow('calendar', 'edit_schedule', (int)$_REQUEST['sch_id'])) {
                 Current_User::disallow();
             }
             $panel->setCurrentTab('schedules');
-            $schedule = $this->loadSchedule();
-            $this->editSchedule($schedule);
+            $this->editSchedule();
             break;
 
+        case 'make_default_public':
+            if (Current_User::isUnrestricted('calendar')) {
+                PHPWS_Settings::set('calendar', 'public_schedule', (int)$_REQUEST['sch_id']);
+                PHPWS_Settings::save('calendar');
+                $this->message =_('Default public schedule set.');
+            }
+            $this->scheduleListing();
+            break;
 
         case 'my_schedule':
             $panel->setCurrentTab('my_schedule');
             $this->mySchedule();
             break;
 
+        case 'post_event':
+            if (!$this->checkAuthorization('edit_schedule', $_POST['sch_id'])) {
+                Current_User::disallow();
+            }
+            $this->postEvent();
+            break;
+
         case 'post_schedule':
-            if (!$this->checkAuthorization('edit_schedule', $_POST['schedule_id'])) {
+            if (!$this->checkAuthorization('edit_schedule', $_POST['sch_id'])) {
                 Current_User::disallow();
             }
             $this->postSchedule();
@@ -152,11 +167,21 @@ class Calendar_Admin {
         case 'schedules':
             $this->scheduleListing();
             break;
+
+        case 'settings':
+
+            break;
         }
 
         $tpl['CONTENT'] = $this->content;
         $tpl['TITLE']   = $this->title;
-        $tpl['MESSAGE'] = $this->message;
+
+        if (is_array($this->message)) {
+            $tpl['MESSAGE'] = implode('<br />', $this->message);
+        } else {
+            $tpl['MESSAGE'] = $this->message;
+        } 
+
 
         $final = PHPWS_Template::process($tpl, 'calendar', 'admin/main.tpl');
 
@@ -171,6 +196,8 @@ class Calendar_Admin {
 
     function mySchedule()
     {
+        echo 'my schedule needs work or deletion';
+        return;
         //        $this->title = _('My Schedule');
         if (!PHPWS_Settings::get('calendar', 'personal_schedules')) {
             return _('Sorry, personal schedules are disabled.');
@@ -189,11 +216,44 @@ class Calendar_Admin {
         $this->content = $schedule->view();
     }
 
+    function postEvent()
+    {
+        $event = $this->calendar->schedule->loadEvent();
+        
+        if ($event->post()) {
+            $result = $event->save();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                if(PHPWS_Calendar::isJS()) {
+                    $this->sendMessage(_('An error occurred when saving your event.'), null, false);
+                    javascript('close_refresh');
+                    Layout::nakedDisplay();
+                    exit();
+                } else {
+                    $this->sendMessage(_('An error occurred when saving your event.'), 'schedules');
+                }
+
+            } else {
+                if(PHPWS_Calendar::isJS()) {
+                    $this->sendMessage(_('Event saved.'), null, false);
+                    javascript('close_refresh');
+                    Layout::nakedDisplay();
+                    exit();
+                } else {
+                    $this->sendMessage(_('Event saved.'), 'schedules');
+                }
+            }
+        } else {
+            $this->message = $event->_error;
+            $this->editEvent($event);
+        }
+        
+    }
+
     function postSchedule()
     {
-        $schedule = $this->loadSchedule();
-        if ($schedule->post()) {
-            $result = $schedule->save();
+        if ($this->calendar->schedule->post()) {
+            $result = $this->calendar->schedule->save();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
                 if(PHPWS_Calendar::isJS()) {
@@ -206,17 +266,17 @@ class Calendar_Admin {
                 }
             } else {
                 if(PHPWS_Calendar::isJS()) {
-                    $this->sendMessage(_('Schedule created.'), null, false);
+                    $this->sendMessage(_('Schedule saved.'), null, false);
                     javascript('close_refresh');
                     Layout::nakedDisplay();
                     exit();
                 } else {
-                    $this->sendMessage(_('Schedule created.'), 'schedules');
+                    $this->sendMessage(_('Schedule saved.'), 'schedules');
                 }
             }
         } else {
-            $this->message = $schedule->_error;
-            $this->editSchedule($schedule);
+            $this->message = $this->calendar->schedule->_error;
+            $this->editSchedule();
         }
     }
 

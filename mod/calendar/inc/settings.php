@@ -13,6 +13,8 @@ $settings = array('use_calendar_style' => 1,
                   'default_day_end'    => 18,
                   'default_hour_format'=> 'g',
                   'display_mini'       => 2,
-                  'info_panel'         => 0);
+                  'info_panel'         => 0,
+                  'public_schedule'    => 0,
+                  'default_view'       => 'grid');
 
 ?>

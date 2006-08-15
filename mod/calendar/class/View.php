@@ -8,20 +8,17 @@
    */
 
 class Calendar_View {
-    var $calendar = NULL;
+    var $user
+    var $current_view = null;
+
     /**
      * pointer to events
      */
-    var $event_sort = NULL;
-    var $event_list = NULL;
+    var $event_sort = null;
+    var $event_list = null;
 
-    function main()
+    function Calendar_View()
     {
-        switch ($_REQUEST['view']) {
-        case 'full':
-            Layout::add($this->view->month_grid('full', $_REQUEST['m'], $_REQUEST['y']));
-            break;
-        }
     }
 
     /**
@@ -36,7 +33,7 @@ class Calendar_View {
         unset($vars['module']);
 
         if (isset($this->calendar->schedule)) {
-            $vars['schedule_id'] = $this->calendar->schedule->id;
+            $vars['sch_id'] = $this->calendar->schedule->id;
         }
         $vars['m'] = $this->calendar->month;
         $vars['d'] = $this->calendar->day;
@@ -108,12 +105,12 @@ class Calendar_View {
         $vars['m'] = (int)$lMonth;
         $vars['d'] = (int)$lDay;
         $vars['y'] = (int)$lYear;
-        array_unshift($links, PHPWS_Text::moduleLink('&lt;&lt;', 'calendar', $vars, NULL, $left_link_title));
+        array_unshift($links, PHPWS_Text::moduleLink('&lt;&lt;', 'calendar', $vars, null, $left_link_title));
 
         $vars['m'] = (int)$rMonth;
         $vars['d'] = (int)$rDay;
         $vars['y'] = (int)$rYear;
-        $links[] = PHPWS_Text::moduleLink('&gt;&gt;', 'calendar', $vars, NULL, $right_link_title);
+        $links[] = PHPWS_Text::moduleLink('&gt;&gt;', 'calendar', $vars, null, $right_link_title);
 
         return implode(' | ', $links);
 
@@ -190,7 +187,7 @@ class Calendar_View {
         $year  = &$this->calendar->year;
 
         while($day = $oMonth->fetch()) {
-            $data['COUNT'] = NULL;
+            $data['COUNT'] = null;
             $no_of_events = 0;
             $data['DAY'] = $this->dayLink($day->day, $month, $day->day, $year);
 
@@ -332,82 +329,7 @@ class Calendar_View {
         return $content;
     }
 
-    function month_grid()
-    {
-        $month = &$this->calendar->month;
-        $year  = &$this->calendar->year;
 
-        $startdate = mktime(0,0,0, $month, 1, $year);
-        $enddate = mktime(23, 59, 59, $month + 1, 0, $year);
-        if (isset($this->calendar->schedule)) {
-            $title = $this->calendar->schedule->title;
-            $this->calendar->schedule->loadEvents($startdate, $enddate);
-            $this->event_list = & $this->calendar->schedule->events;
-        } else {
-            $title = _('Public events');
-            $public_calendars = $this->calendar->getPublicCalendars();
-            if (!empty($public_calendars)) {
-                $this->event_list = $this->calendar->getEvents($startdate, $enddate, $public_calendars);
-            }
-        }
-
-        $this->sortEvents();
-        
-        if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
-            Layout::addStyle('calendar');
-        }
-
-        $oMonth = $this->calendar->getMonth();
-        $date = $oMonth->thisMonth(TRUE);
-
-        // Check cache
-        //        $cache_key = sprintf('%s_%s_%s', $type, $oMonth->month, $oMonth->year);
-
-        /*
-        $content = PHPWS_Cache::get($cache_key);
-        if (!empty($content)) {
-            return $content;
-        }
-        */
-        // Cache empty, make month
-
-        $oTpl = & new PHPWS_Template('calendar');
-        $oTpl->setFile('view/month/full.tpl');
-
-        $this->_weekday($oMonth, $oTpl);
-        reset($oMonth->children);
-
-        // create day cells in grid
-        $this->_month_days($oMonth, $oTpl);
-
-        $vars['m'] = $month;
-        $vars['y'] = $year;
-        $vars['view'] = 'month_grid';
-        $template['FULL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%B', $date), 'calendar', $vars);
-        $template['PARTIAL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%b', $date), 'calendar', $vars);
-
-        $template['TITLE'] = $title;
-        $template['PICK'] = $this->getPick();
-        $template['FULL_YEAR'] = strftime('%Y', $date);
-        $template['PARTIAL_YEAR'] = strftime('%y', $date);
-        $template['VIEW_LINKS'] = $this->viewLinks('month_grid');
-
-        $oTpl->setData($template);
-        $content = $oTpl->get();
-
-        //        PHPWS_Cache::save($cache_key, $content);
-        return $content;
-    }
-
-    function getPick()
-    {
-        $js['month']    = $this->calendar->month;
-        $js['day']    = $this->calendar->day;
-        $js['year']    = $this->calendar->year;
-        $js['url']  = $this->getUrl();
-        $js['type'] = 'pick';
-        return javascript('js_calendar', $js);
-    }
 
     function day()
     {
@@ -598,39 +520,7 @@ class Calendar_View {
         return $content;
     }
 
-    function sortEvents()
-    {
-        if (empty($this->event_list)) {
-            return;
-        }
 
-        foreach ($this->event_list as $key => $event) {
-            $year = (int)date('Y', $event->start_time);
-            $month = (int)date('m', $event->start_time);
-            $day = (int)date('d', $event->start_time);
-            $hour = (int)date('H', $event->start_time);
-            $this->event_sort[$year]['events'][$key] = & $this->event_list[$key];
-            $this->event_sort[$year]['months'][$month]['events'][$key] = & $this->event_list[$key];
-            $this->event_sort[$year]['months'][$month]['days'][$day]['events'][$key] = & $this->event_list[$key];
-            $this->event_sort[$year]['months'][$month]['days'][$day]['hours'][$hour]['events'][$key] = & $this->event_list[$key];
-        }
-    }
-
-    function getUrl()
-    {
-        $getVars = PHPWS_Text::getGetValues();
-        $address[] = 'index.php?';
-        unset($getVars['m']);
-        unset($getVars['d']);
-        unset($getVars['y']);
-        foreach ($getVars as $key=>$value) {
-            $newvars[] = "$key=$value";
-        }
-
-        $address[] = implode('&amp;', $newvars);
-
-        return implode('', $address);
-    }
 
     function event($id, $js=false) {
         PHPWS_Core::initModClass('calendar', 'Event.php');

@@ -8,6 +8,7 @@
    */
 
 PHPWS_Core::requireConfig('calendar');
+PHPWS_Core::requireInc('calendar', 'error_defines.php');
 
 class PHPWS_Calendar {
     /**
@@ -45,10 +46,18 @@ class PHPWS_Calendar {
      */
     var $admin = null;
 
+    /**
+     * Contains the user object
+     */
+    var $user = null;
+
+    var $schedule = null;
+
     function PHPWS_Calendar()
     {
         $this->loadToday();
         $this->loadRequestDate();
+        $this->loadSchedule();
     }
 
     /**
@@ -60,6 +69,32 @@ class PHPWS_Calendar {
         $Calendar->admin = & new Calendar_Admin;
         $Calendar->admin->calendar = & $this;
         $Calendar->admin->main();
+    }
+
+    function &getDay()
+    {
+        require_once 'Calendar/Day.php';
+        $oDay = & new Calendar_Day($this->int_year, $this->int_month, $this->int_day);
+        $oDay->build();
+        return $oDay;
+    }
+        
+    function &getMonth()
+    {
+        require_once 'Calendar/Month/Weekdays.php';
+        $oMonth = & new Calendar_Month_Weekdays($this->int_year, $this->int_month, PHPWS_Settings::get('calendar', 'starting_day'));
+        $oMonth->build();
+        return $oMonth;
+    }
+
+    function &getWeek()
+    {
+        require_once 'Calendar/Week.php';
+
+        $oWeek = & new Calendar_Week($this->int_year, $this->int_month, $this->int_day, CALENDAR_START_DAY);
+        $oWeek->build();
+        return $oWeek;
+        
     }
 
 
@@ -125,6 +160,27 @@ class PHPWS_Calendar {
                 $this->int_year  = (int)date('Y', $this->current_date);
             }
         }
+    }
+
+
+    function &loadSchedule()
+    {
+        PHPWS_Core::initModClass('calendar', 'Schedule.php');
+
+        if (!empty($_REQUEST['sch_id'])) {
+            $this->schedule = & new Calendar_Schedule((int)$_REQUEST['sch_id']);
+        } else {
+            $this->schedule = & new Calendar_Schedule;
+        }
+    }
+
+
+    function user()
+    {
+        PHPWS_Core::initModClass('calendar', 'User.php');
+        $Calendar->user = & new Calendar_User;
+        $Calendar->user->calendar = & $this;
+        $Calendar->user->main();
     }
 }
 
