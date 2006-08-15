@@ -6,7 +6,7 @@
 {JAVASCRIPT}
 {STYLE}
 
-<style>
+<style type="text/css">
 body {
 padding : 10px;
 }
