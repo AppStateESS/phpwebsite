@@ -25,6 +25,8 @@ class Setup{
         if (!isset($_SESSION['configSettings'])) {
             $_SESSION['configSettings']['general']  = FALSE;
             $_SESSION['configSettings']['database'] = FALSE;
+            // Could use some windows checking here
+            Setup::setConfigSet('cache_directory', '/tmp/');
             Setup::setConfigSet('source_dir', Setup::getSourceDir());
             Setup::setConfigSet('home_dir', Setup::getSourceDir());
             Setup::setConfigSet('site_hash', md5(rand()));
