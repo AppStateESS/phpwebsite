@@ -1926,12 +1926,12 @@ class PHPWS_DB {
         array_shift($args);
 
         foreach ($result as $indexby => $itemResult) {
-            if ($num_args < 2) {
-                $genClass = & new $className;
-            } else {
-                $eval = '$genClass = & new $className(' . implode(',', $args) . ');';
-                eval($eval);
+            $genClass = & new $className;
+
+            if ($num_args > 1) {
+                call_user_func_array(array($genClass, $className), $args);
             }
+
             PHPWS_Core::plugObject($genClass, $itemResult);
             $items[$indexby] = $genClass;
         }
