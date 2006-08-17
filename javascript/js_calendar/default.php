@@ -22,11 +22,11 @@ if ($data['type'] == 'pick') {
     }
 
     if (empty($data['month'])) {
-        $data['year'] = date('m');
+        $data['month'] = date('m');
     }
 
     if (empty($data['day'])) {
-        $data['year'] = date('d');
+        $data['day'] = date('d');
     }
 
     $bodyfile = $base . 'javascript/js_calendar/body3.js';
