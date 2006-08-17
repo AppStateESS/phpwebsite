@@ -63,13 +63,13 @@ class Calendar_Event {
      */
     var $_event = null;
 
-    function Calendar_Event($schedule=0, $event_id=0)
+    function Calendar_Event($schedule=null, $event_id=0)
     {
         if ($schedule) {
             $this->_schedule = & $schedule;
             if (empty($event_id)) {
                 $this->start_time = PHPWS_Time::getUserTime();
-                $this->end_time = PHPWS_Time::getUserTime();
+                $this->end_time   = PHPWS_Time::getUserTime();
                 return;
             } else {
                 $this->id = (int)$event_id;
@@ -77,6 +77,47 @@ class Calendar_Event {
             }
         }
     }
+
+
+    function deleteLink()
+    {
+        if (javascriptEnabled()) {
+            $vars['QUESTION'] = _('Are you sure you want to permanently delete this event?');
+            $vars['ADDRESS'] = sprintf('index.php?module=calendar&amp;aop=delete_event&amp;sch_id=%s&amp;event_id=%s',
+                                       $this->_schedule->id,
+                                       $this->id);
+            $vars['LINK']    = _('Delete');
+            return javascript('confirm', $vars);
+        } else {
+            return PHPWS_Text::moduleLink(_('Delete'), 'calendar',
+                                          array('aop'         => 'delete_event',
+                                                'event_id'    => $this->id
+                                                )
+                                          );
+        }
+
+    }
+
+
+    function editLink()
+    {
+        if (javascriptEnabled()) {
+            $vars['address'] = sprintf('index.php?module=calendar&amp;js=1&amp;sch_id=%s&amp;aop=edit_event&amp;event_id=%s',
+                                       $this->_schedule->id,
+                                       $this->id);
+            $vars['link_title'] = $vars['label'] = _('Edit');
+            $vars['width'] = CALENDAR_EVENT_WIDTH;
+            $vars['height'] = CALENDAR_EVENT_HEIGHT;
+            return javascript('open_window', $vars);
+        } else {
+            return PHPWS_Text::moduleLink(_('Edit'), 'calendar',
+                                          array('aop'         => 'create_event',
+                                                'schedule_id' => $this->id,
+                                                'date'        => $default_date)
+                                          );
+        }
+    }
+
 
     /**
      * Creates the edit form for an event
@@ -154,15 +195,15 @@ class Calendar_Event {
     }
 
 
-    function getStartTime($format='%c')
-    {
-        return strftime($format, $this->start_time);
-    }
-
-
     function getEndTime($format='%c')
     {
         return strftime($format, $this->end_time);
+    }
+
+
+    function getStartTime($format='%c')
+    {
+        return strftime($format, $this->start_time);
     }
 
 
@@ -171,6 +212,77 @@ class Calendar_Event {
         return PHPWS_Text::parseOutput($this->summary);
     }
 
+    /**
+     * Returns a formated time for printing
+     */
+    function getTime()
+    {
+        switch ($this->event_type) {
+        case 1:
+            $sTime = sprintf('%s - %s', 
+                             strftime(CALENDAR_TIME_LIST_FORMAT, $this->start_time),
+                             strftime(CALENDAR_TIME_LIST_FORMAT, $this->end_time)
+                             );
+            break;
+
+        case 2:
+            $sTime = _('All day event');
+            break;
+
+        case 3:
+            $sTime = sprintf(_('Starts at %s.'), strftime(CALENDAR_TIME_LIST_FORMAT, $this->start_time));
+            break;
+
+        case 4:
+            $sTime = sprintf(_('Deadline at %s.'),  strftime(CALENDAR_TIME_LIST_FORMAT, $this->end_time));
+            break;
+        }
+
+        return $sTime;
+    }
+
+    /**
+     * Returns a linkable title (if linked is true)
+     */
+    function getTitle($linked=true)
+    {
+        if ($linked) {
+            $vars['view'] = 'event';
+            $vars['id']   = $this->id;
+            if (javascriptEnabled()) {
+                $vars['js'] = 1;
+                $js['address'] = PHPWS_Text::linkAddress('calendar', $vars);
+                $js['label'] = $this->title;
+                $js['width'] = '640';
+                $js['height'] = '480';
+
+                return javascript('open_window', $js);
+            } else {
+                return PHPWS_Text::moduleLink($this->title, 'calendar', $vars);
+            }
+
+        } else {
+            return $this->title;
+        }
+    }
+
+    function getTpl()
+    {
+        $tpl['TITLE']   = $this->getTitle();
+        $tpl['SUMMARY'] = $this->getSummary();
+        $tpl['TIME']    = $this->getTime();
+        if ( ($this->_schedule->public && Current_User::allow('calendar', 'edit_public', $this->_schedule->id)) ||
+             (!$this->_schedule->public && Current_User::allow('calendar', 'edit_private', $this->_schedule->id))
+             ) {
+            $link[] = $this->editLink();
+            $link[] = $this->deleteLink();
+            $tpl['LINKS'] = implode(' | ', $link);
+        }
+
+        
+
+        return $tpl;
+    }
 
     function init()
     {
@@ -183,7 +295,6 @@ class Calendar_Event {
 
         $db = & new PHPWS_DB($table);
         $db->loadObject($this);
-
     }
 
     function post()

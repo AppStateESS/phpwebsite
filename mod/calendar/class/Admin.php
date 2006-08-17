@@ -44,6 +44,11 @@ class Calendar_Admin {
     {
         $event = $this->calendar->schedule->loadEvent();
 
+        if (!$event->id) {
+            $event->end_time = $this->calendar->current_date;
+            $event->start_time = $this->calendar->current_date;
+        }
+
         if ($event->id) {
             $this->title = _('Update event');
         } else {
@@ -93,7 +98,7 @@ class Calendar_Admin {
             Current_User::disallow();
             return;
         }
-
+        //        echo date('Ymd', $this->calendar->current_date);
         $panel = $this->getPanel();
 
         if (isset($_REQUEST['aop'])) {
@@ -103,7 +108,6 @@ class Calendar_Admin {
         } else {
             $command = $panel->getCurrentTab();
         }
-
 
         switch ($command) {
         case 'create_event':
@@ -122,6 +126,11 @@ class Calendar_Admin {
         case 'delete_schedule':
             $this->calendar->schedule->delete();
             $this->sendMessage(_('Schedule deleted.'), 'schedules');
+            break;
+
+        case 'edit_event':
+            $panel->setCurrentTab('schedules');
+            $this->editEvent();
             break;
 
         case 'edit_schedule':

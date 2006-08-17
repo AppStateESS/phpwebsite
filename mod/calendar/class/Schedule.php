@@ -84,20 +84,6 @@ class Calendar_Schedule {
     var $_error         = null;
 
 
-    /**
-     * Array of events loaded into the object
-     * @var array
-     */
-    var $_event_list    = null;
-
-    var $_sorted_list   = null;
-
-    /**
-     * Array of event pointers keyed to month, day, year, and hour
-     */
-    var $_ordered_list  = null;
-
-
     function Calendar_Schedule($id=0)
     {
         if (!$id) {
@@ -124,9 +110,9 @@ class Calendar_Schedule {
             return javascript('open_window', $vars);
         } else {
             return PHPWS_Text::moduleLink(_('Add event'), 'calendar',
-                                          array('aop'         => 'create_event',
+                                          array('aop'    => 'create_event',
                                                 'sch_id' => $this->id,
-                                                'date'        => $default_date)
+                                                'date'   => $default_date)
                                           );
         }
     }
@@ -266,43 +252,6 @@ class Calendar_Schedule {
     }
 
 
-    function getEvents($start_search=NULL, $end_search=NULL, $schedules=NULL) {
-
-        PHPWS_Core::initModClass('calendar', 'Event.php');
-        if (!isset($start_search)) {
-            $start_search = mktime(0,0,0,1,1,1970);
-        } 
-
-        if (!isset($end_search)) {
-            // if this line is a problem, you need to upgrade
-            $end_search = mktime(0,0,0,1,1,2050);
-        }
-
-        $db = & new PHPWS_DB($this->getEventTable());
-
-        $db->addWhere('start_time', $start_search, '>=', NULL, 'start');
-        $db->addWhere('start_time', $end_search,   '<',  'AND', 'start');
-
-        $db->addWhere('end_time', $end_search,   '<=', 'NULL', 'end');
-        $db->addWhere('end_time', $start_search, '>', 'AND', 'end');
-
-        $db->setGroupConj('end', 'OR');
-
-        $db->addOrder('start_time');
-        $db->addOrder('end_time desc');
-        $db->setIndexBy('id');
-
-        $result = $db->getObjects('Calendar_Event', $this->id);
-
-        if (PEAR::isError($result)) {
-            PHPWS_Error::log($result);
-            return NULL;
-        }
-
-        return $result;
-    }
-
-
     function getViewLink($formatted=true)
     {
         $vars['sch_id'] = $this->id;
@@ -317,7 +266,11 @@ class Calendar_Schedule {
     function init()
     {
         $db = $this->getDB();
-        $db->loadObject($this);
+        $result = $db->loadObject($this);
+        if (PEAR::isError($result)) {
+            $this->id = 0;
+            PHPWS_Error::log($result);
+        }
     }
 
     function &loadEvent()
@@ -331,14 +284,6 @@ class Calendar_Schedule {
         }
 
         return $event;
-    }
-
-    function loadEventList($start_search=NULL, $end_search=NULL)
-    {
-        $result = $this->getEvents($start_search, $end_search, $this->id);
-        $this->_event_list = & $result;
-        $this->sortEvents();
-        return TRUE;
     }
 
     /**
@@ -503,23 +448,6 @@ class Calendar_Schedule {
         $this->view_status = (int)$status;
     }
 
-    function sortEvents()
-    {
-        if (empty($this->_event_list)) {
-            return;
-        }
-
-        foreach ($this->_event_list as $key => $event) {
-            $year = (int)date('Y', $event->start_time);
-            $month = (int)date('m', $event->start_time);
-            $day = (int)date('d', $event->start_time);
-            $hour = (int)date('H', $event->start_time);
-            $this->_sorted_list[$year]['events'][$key] = & $this->_event_list[$key];
-            $this->_sorted_list[$year]['months'][$month]['events'][$key] = & $this->_event_list[$key];
-            $this->_sorted_list[$year]['months'][$month]['days'][$day]['events'][$key] = & $this->_event_list[$key];
-            $this->_sorted_list[$year]['months'][$month]['days'][$day]['hours'][$hour]['events'][$key] = & $this->_event_list[$key];
-        }
-    }
 
     function view()
     {

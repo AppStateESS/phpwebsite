@@ -10,6 +10,11 @@
 PHPWS_Core::requireConfig('calendar');
 PHPWS_Core::requireInc('calendar', 'error_defines.php');
 
+define('MINI_CAL_NO_SHOW', 1);
+define('MINI_CAL_SHOW_FRONT', 2);
+define('MINI_CAL_SHOW_ALWAYS', 3);
+
+
 class PHPWS_Calendar {
     /**
      * unix timestamp of today
@@ -53,6 +58,15 @@ class PHPWS_Calendar {
 
     var $schedule = null;
 
+    /**
+     * Array of events loaded into the object
+     * @var array
+     */
+    var $event_list = null;
+
+    var $sorted_list = null;
+
+
     function PHPWS_Calendar()
     {
         $this->loadToday();
@@ -66,9 +80,9 @@ class PHPWS_Calendar {
     function admin()
     {
         PHPWS_Core::initModClass('calendar', 'Admin.php');
-        $Calendar->admin = & new Calendar_Admin;
-        $Calendar->admin->calendar = & $this;
-        $Calendar->admin->main();
+        $this->admin = & new Calendar_Admin;
+        $this->admin->calendar = & $this;
+        $this->admin->main();
     }
 
     function &getDay()
@@ -78,6 +92,45 @@ class PHPWS_Calendar {
         $oDay->build();
         return $oDay;
     }
+
+
+    function getEvents($start_search=NULL, $end_search=NULL, $schedules=NULL) {
+
+        PHPWS_Core::initModClass('calendar', 'Event.php');
+        if (!isset($start_search)) {
+            $start_search = mktime(0,0,0,1,1,1970);
+        } 
+
+        if (!isset($end_search)) {
+            // if this line is a problem, you need to upgrade
+            $end_search = mktime(0,0,0,1,1,2050);
+        }
+
+        $db = & new PHPWS_DB($this->schedule->getEventTable());
+
+        $db->addWhere('start_time', $start_search, '>=', NULL, 'start');
+        $db->addWhere('start_time', $end_search,   '<',  'AND', 'start');
+
+        $db->addWhere('end_time', $end_search,   '<=', 'NULL', 'end');
+        $db->addWhere('end_time', $start_search, '>', 'AND', 'end');
+
+        $db->setGroupConj('end', 'OR');
+
+        $db->addOrder('start_time');
+        $db->addOrder('end_time desc');
+        $db->setIndexBy('id');
+
+        $result = $db->getObjects('Calendar_Event', $this->schedule);
+
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            return NULL;
+        }
+
+        return $result;
+    }
+
+
         
     function &getMonth()
     {
@@ -103,6 +156,97 @@ class PHPWS_Calendar {
         return isset($_REQUEST['js']);
     }
 
+
+    function loadDefaultSchedule()
+    {
+        $sch_id = PHPWS_Settings::get('calendar', 'public_schedule');
+        if ($sch_id) {
+            $this->schedule = & new Calendar_Schedule((int)$sch_id);
+        }
+    }
+
+
+    function loadEventList($start_search=NULL, $end_search=NULL)
+    {
+        $result = $this->getEvents($start_search, $end_search, $this->schedule->id);
+        $this->event_list = & $result;
+        $this->sortEvents();
+        return true;
+    }
+
+
+    /**
+     * Loads the date requested by user
+     */
+    function loadRequestDate()
+    {
+        $change = false;
+
+        if (!empty($_REQUEST['date'])) {
+            $this->int_year  =    (int)date('Y', (int)$_REQUEST['date']);
+            $this->int_month =    (int)date('m', (int)$_REQUEST['date']);
+            $this->int_day   =    (int)date('j', (int)$_REQUEST['date']);
+            $this->current_date = (int)$_REQUEST['date'];
+            return;
+        } else {
+            if (!empty($_REQUEST['y'])) {
+                $this->int_year = (int)$_REQUEST['y'];
+                $change = true;
+            } elseif (!empty($_REQUEST['year'])) {
+                $this->int_year = (int)$_REQUEST['year'];
+                $change = true;
+            }
+
+            if (!empty($_REQUEST['m'])) {
+                $this->int_month = (int)$_REQUEST['m'];
+                $change = true;
+            } elseif (!empty($_REQUEST['month'])) {
+                $this->int_month = (int)$_REQUEST['month'];
+                $change = true;
+            }
+
+
+            if (!empty($_REQUEST['d'])) {
+                $this->int_day = (int)$_REQUEST['d'];
+                $change = true;
+            } elseif (!empty($_REQUEST['day'])) {
+                $this->int_day = (int)$_REQUEST['day'];
+                $change = true;
+            }
+        }
+
+
+        if ($change) {
+            $this->current_date = mktime(0,0,0, $this->int_month, $this->int_day, $this->int_year);
+
+            if ($this->current_date < mktime(0,0,0,1,1,1970)) {
+                $this->loadToday();
+            } else {
+                $this->int_month = (int)date('m', $this->current_date);
+                $this->int_day   = (int)date('d', $this->current_date);
+                $this->int_year  = (int)date('Y', $this->current_date);
+            }
+        }
+    }
+
+
+    /**
+     * Loads either the requested schedule, the default public schedule
+     * (if use_default is true) or an empty schedule object
+     */
+    function &loadSchedule()
+    {
+        PHPWS_Core::initModClass('calendar', 'Schedule.php');
+
+        if (!empty($_REQUEST['sch_id'])) {
+            $this->schedule = & new Calendar_Schedule((int)$_REQUEST['sch_id']);
+        }
+
+        if (empty($this->schedule)) {
+            $this->schedule = & new Calendar_Schedule;
+        }
+    }
+
     /**
      * Loads todays unix time and date info 
      */
@@ -116,71 +260,43 @@ class PHPWS_Calendar {
         $this->int_year         = &$atime['y'];
     }
 
-
-    /**
-     * Loads the date requested by user
-     */
-    function loadRequestDate()
+    function loadUser()
     {
-        $change = FALSE;
+        PHPWS_Core::initModClass('calendar', 'User.php');
+        $this->user = & new Calendar_User;
+        $this->user->calendar = & $this;
+    }
+    
 
-        if (isset($_REQUEST['y'])) {
-            $this->int_year = (int)$_REQUEST['y'];
-            $change = TRUE;
-        } elseif (isset($_REQUEST['year'])) {
-            $this->int_year = (int)$_REQUEST['year'];
-            $change = TRUE;
+    function sortEvents()
+    {
+        if (empty($this->event_list)) {
+            return;
         }
 
-        if (isset($_REQUEST['m'])) {
-            $this->int_month = (int)$_REQUEST['m'];
-            $change = TRUE;
-        } elseif (isset($_REQUEST['month'])) {
-            $this->int_month = (int)$_REQUEST['month'];
-            $change = TRUE;
-        }
-
-
-        if (isset($_REQUEST['d'])) {
-            $this->int_day = (int)$_REQUEST['d'];
-            $change = TRUE;
-        } elseif (isset($_REQUEST['day'])) {
-            $this->int_day = (int)$_REQUEST['day'];
-            $change = TRUE;
-        }
-
-
-        if ($change) {
-            $this->current_date = PHPWS_Time::convertServerTime(mktime(0,0,0, $this->int_month, $this->int_day, $this->int_year));
-            if ($this->current_date < mktime(0,0,0,1,1,1970)) {
-                $this->loadToday();
-            } else {
-                $this->int_month = (int)date('m', $this->current_date);
-                $this->int_day   = (int)date('d', $this->current_date);
-                $this->int_year  = (int)date('Y', $this->current_date);
-            }
+        foreach ($this->event_list as $key => $event) {
+            $year = (int)date('Y', $event->start_time);
+            $month = (int)date('m', $event->start_time);
+            $day = (int)date('d', $event->start_time);
+            $hour = (int)date('H', $event->start_time);
+            $this->sorted_list[$year]['events'][$key] = & $this->event_list[$key];
+            $this->sorted_list[$year]['months'][$month]['events'][$key] = & $this->event_list[$key];
+            $this->sorted_list[$year]['months'][$month]['days'][$day]['events'][$key] = & $this->event_list[$key];
+            $this->sorted_list[$year]['months'][$month]['days'][$day]['hours'][$hour]['events'][$key] = & $this->event_list[$key];
         }
     }
-
-
-    function &loadSchedule()
-    {
-        PHPWS_Core::initModClass('calendar', 'Schedule.php');
-
-        if (!empty($_REQUEST['sch_id'])) {
-            $this->schedule = & new Calendar_Schedule((int)$_REQUEST['sch_id']);
-        } else {
-            $this->schedule = & new Calendar_Schedule;
-        }
-    }
-
 
     function user()
     {
-        PHPWS_Core::initModClass('calendar', 'User.php');
-        $Calendar->user = & new Calendar_User;
-        $Calendar->user->calendar = & $this;
-        $Calendar->user->main();
+        $this->loadUser();
+        if (!$this->schedule->id) {
+            $this->loadDefaultSchedule();
+            if (!$this->schedule->id) {
+                $this->schedule->title = _('General');
+            }
+        }
+
+        $this->user->main();
     }
 }
 

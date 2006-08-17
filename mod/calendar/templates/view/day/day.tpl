@@ -1,13 +1,3 @@
-<div id="calendar-glance">
-<table width="100%">
-<!-- BEGIN glance_rows -->
-  <tr class="{BLOCK_CLASS}">
-    <td>{GLANCE_HOUR}</td>
-  </tr>
-<!-- END glance_rows -->
-</table>
-</div>
-
 <div class="box">
     <div class="box-title">
         <h1 class="align-center">{TITLE} - {DATE} {PICK}</h1>
@@ -16,14 +6,14 @@
     <div class="box-content">
         {ADD_EVENT}
         <div>{MESSAGE}</div>
-        <div id="calendar-day-list">
-
+        <div id="day-view">
         <!-- BEGIN calendar_events -->
             <div class="calendar-event">
-                <!-- BEGIN hour --><h1 class="calendar-event-hour">{HOUR}</h1><!-- END hour -->
-                <h2 class="calendar-event-title">{TITLE} - {TIME}</h2>
-                <div class="calendar-event-summary">{SUMMARY}</div>
-                <div class="calendar-admin">{LINKS}</div>
+                <!-- BEGIN hour --><div class="hour bgcolor2">{HOUR}</div><!-- END hour -->
+                <span class="event-title">{TITLE}</span>
+                <span class="event-time">{TIME}</span>
+                <div class="event-summary">{SUMMARY}</div>
+                <p class="calendar-admin">{LINKS}</p>
             </div>
         <!-- END calendar_events -->
         </div>
