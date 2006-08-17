@@ -1,3 +1,28 @@
+17 August 2006
++ Core
+- Database : getObject's extra parameters were too simplistic. You
+  could only use strings. Improved it.
+- Setup : put in default directory for cache
+
++ Javascript
+- js_calendar : fixed default typo
+
++ Calendar
+- moved previously working views back in
+- Changed navigation a little
+- Tried to remove redundant code.
+
+
+
+15 August 2006
++ Core
+- Database : added ability to add parameters to getObjects. every variable after the class name is sent to the constructor
+- Settings : changed so that setting default files are always called
+before pulling from the database.
+
++ Javascript
+- js_calendar : xhtml fixes
+
 14 August 2006
 + Theme
 - Added style for embedded block
@@ -218,5 +243,3 @@ DBPager - fixed a filtering issue in the setSearch function
 + Docs
 - Added this file!
 
-
-28 June, 2006
