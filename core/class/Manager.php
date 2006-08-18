@@ -557,6 +557,7 @@ class PHPWS_Manager {
         /* Build each item's row */
         $listTags['LIST_ITEMS'] = NULL;
         if($totalItems > 0) {
+            $tog = 1;
             foreach($items as $item) {
                 $object = NULL;
                 if(isset($this->_class)) {
@@ -577,8 +578,13 @@ class PHPWS_Manager {
                         }
                     }
                 }
-
-                PHPWS_WizardBag::toggle($row_class, ' class="bgcolor1"');
+                
+                if ($tog%2) {
+                    $row_class = ' class="bgcolor1"';
+                } else {
+                    $row_class = null;
+                }
+                $tog++;
                 /* Build row tags array for processTemplate() */
                 $rowTags = array();
                 if(isset($this->_listExtraLabels) && is_array($this->_listExtraLabels)) {
@@ -679,7 +685,7 @@ class PHPWS_Manager {
                 /* Create action select and Go button */
                 $listTags['ACTION_SELECT'] = PHPWS_Form::formSelect($this->_request, $actions);
                 $listTags['ACTION_BUTTON'] = PHPWS_Form::formSubmit(_('Go'));
-                $listTags['TOGGLE_ALL'] = PHPWS_WizardBag::js_insert('check_all', 'PHPWS_MAN_LIST_' . $this->listName);
+                $listTags['TOGGLE_ALL'] = javascript('check_all', array('FORM_NAME' => 'PHPWS_MAN_LIST_' . $this->listName));
         
                 /* Add hidden variable to designate the current module */
                 $elements[0] = PHPWS_Form::formHidden('module', $this->_module);

@@ -468,7 +468,7 @@ class PHPWS_Text {
         $link[] = '"';
         if ($target=='blank' || $target === TRUE)
             $link[] = ' target="_blank" ';
-        elseif ($target=="index")
+        elseif ($target=='index')
             $link[] = ' target="index" ';
 
         $link[] = '>';
