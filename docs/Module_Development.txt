@@ -430,24 +430,246 @@ Testing text doesn't stop at form entry either. Parse cookies. Expect
 someone to try and hack any input into the system.
 
 
-
 E. Language
 ----------------------------------------------------------------------
+phpWebSite 1.0 uses the gettext method of language translation. There
+are several benefits using gettext over the old method. First, there
+isn't an extra language session taking up memory. Second, it is easier
+to develop code around it. Third, editing the files is simple and
+there are many client programs that perform this function.
+
+The downside is that gettext must be compiled on the machine. This
+isn't that much of a problem on most Linux machines but may cause a
+problem with custom builds or Windows servers.
+
+Translating static text in your module is easy:
+
+_('Translate this text');
+
+Surround your text with underline, left then right parenthesis. The
+underline is short for gettext();
+
+When you have dynamic content in your translation, use printf or
+sprintf like so:
+
+printf(_('Good morning %s, how are you?'), 'Ted');
+
+This way the translator can move the "%s" around.
+
+You can learn more about gettext and translation in the
+docs/Language.txt file.
 
 
 
 F. Templating
 ----------------------------------------------------------------------
+Whenever possible, you should avoid putting html mark up in your
+code. Layout and style should be governed by template files.
+
+Template files are typically html encoded files containing special
+content tags. You can insert content into these content tags using the
+PHPWS_Template class.
+
+Example:
+
+The template - greeting.tpl
+----------------------------
+
+<h1>{GREETING}</h1>
+<p>{INFORMATION}</p>
+
+
+
+The code:
+----------------------------
+$template['INFORMATION'] = 'We hope you are well';
+
+$template['GREETING'] = sprintf(_('Good morning %s, how are you?'),
+                                'Ted');
+
+echo PHPWS_Template::process($template, 'my_module', 'greeting.tpl');
+
+
+The result:
+----------------------------
+<h1>Good morning Ted, how are you</h1>
+<p>We hope you are well</p>
+
+
+This is just the basics of templating. Make sure to read
+docs/template.txt for more information.
 
 
 
 G. Error Handling
 ----------------------------------------------------------------------
+Stuff happens (keeping this G rated y'all). Sometimes things go wrong
+in your module or in others. phpWebSite uses PEAR's error class for
+problem identification.
+
+PEAR's error class constructs an error object. These objects are easy
+to identify with "isError".
+
+$result = getError();
+
+if (PEAR::isError($result)) {
+   exit('An error occurred');
+}
+
+Rarely will you just exit however. Instead you need to report the
+error to the user and the site administrator.
+
+The PHPWS_Error class extends the PEAR error class. You can use this
+class to create your own error object.
+
+For example, say you have a function that takes an id greater than
+zero. If the id is zero, then something went wrong. We would use the
+"get" function.
+
+function load($id, $name_of_req) {
+     if ($id) {
+         loadItem($id, $name_of_req);
+     } else {
+         return PHPWS_Error::get(ERROR_CODE, 'my_module', 'load',
+                                 $name_of_req);
+     }
+}
+
+
+In the above example, an error object is returned with these
+variables:
+
+ERROR_CODE   - A predefined number indicating the problem
+my_module    - The module the error occurred in
+load         - The name of the function the error occurred in
+$name_of_req - This is extra information. In this case, the name of the
+               user that requested the load. This parameter is
+               optional.
+
+The ERROR_CODE is established earlier. I usually create a file named
+error_defines.php and include it when the module starts.
+
+
+inc/error_defines.php
+
+<?php
+
+    define('ERROR_CODE', -1);
+   
+?>
+
+
+The ERROR_CODE corresponds to a message set in my conf/error.php file:
+
+conf/error.php
+
+<?php
+
+    $errors = array(ERROR_CODE, _('Received a zero id.'));
+   
+?>
+
+The error class will look for the error.php file to get the proper
+message. The errors can be defined where ever you wish EXCEPT in the
+error.php file itself. The error.php may be called more than once and
+you can't have a repeating define function.
+
+Once you have an error object, you can print the message:
+
+echo $error->printError();
+
+You can also use the PEAR functions getUserInfo and getMessage.
+
+If the error message doesn't need to be seen by the user, you can
+simply log it:
+
+PHPWS_Error::log(ERROR_CODE, 'my_module', 'load', $name_of_req);
+
+If you received the error object from another source, you can log it
+directly:
+
+PHPWS_Error::log($error_object);
+
+These errors are written to your logs/error.log file.
+
+
+What is great about error objects is the ability to pass them up. For
+example look at the below.
+
+function foo()
+{
+        $bar = bar();
+        if (PEAR::isError($result)) {
+           return $result;
+        } else {
+           process_something($result);
+           return true;
+        }
+}
+
+function bar()
+{
+        $result = load_something();
+        if (PEAR::isError($result)) {
+           return $result;
+        } else {
+           return true;
+        }
+        
+}
+
+$result = foo();
+if (PEAR::isError($result)) {
+     PHPWS_Error::log($result);
+     echo 'Something is broken.';
+} else {
+     echo 'something loaded and processed successfully!';
+}
+
+
+In this case, the error could start in bar(), pass up to foo(), then
+get passed to the result variable. We can then log the error and give
+the user a useful (or not so useful as in this example) message.
+
+If something goes REALLY bad, you can also use the default error page:
+
+PHPWS_Core::errorPage();
+
+This just prints a simple html page that indicates something went
+quite wrong. The script then exits. You may see it if your database
+goes down or a file goes missing.
 
 
 
 H. Security
 ----------------------------------------------------------------------
+I wrote earlier about checking your input for evil scripting. This
+section is more general. It concerns user permissioning.
+
+I will touch on permissioning here. A more detailed account can
+(eventually not finished writing it yet) be found in
+docs/Permission.txt.
+
+There are five types of users:
+
+anonymous    - this user isn't logged in to the system
+
+logged       - this user is logged in, but doesn't have any
+               administrative permissions
+
+restricted   - this user is logged in and has restricted admin
+               privileges. These users can edit items but their
+               changes are subject to approval
+
+unrestricted - logged in user with full permissions in one module or
+               more. Their changes are not subject to approval
+
+deity        - an all-powerful logged in user. They have access to any
+               module, can view any item, and often use some
+               administrative functions or modules that mere mortals
+               are not allowed to touch.
+
+
 
 
 III. Installation
