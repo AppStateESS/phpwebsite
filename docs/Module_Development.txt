@@ -1,4 +1,59 @@
 Writing Modules for phpWebSite
+by Matthew McNaney
+
+-----------------------------------------------------------------------
+I.   Introduction
+
+II.  Programming
+   A. Programming Style
+     1. Classes
+     2. Sessions
+   B. Debug
+   C. Database Interaction
+     1. Format
+     2. loadObject and saveObject
+   D. Text
+     1. Input
+     2. Output
+     3. Links
+     4. User text
+   E. Language
+   F. Templating
+   G. Error Handling
+   H. Security
+
+III. Installation
+   A. Modules
+   B. Directories
+   C. Boost
+
+IV.  Administrating
+   A. Permissions
+   B. Control Panel
+   C. Settings
+   D. Form Class
+   E. Files
+     1. Images
+     2. Files
+   F. DBPager
+   G. Mini Admin
+
+V.   Users and Layouts
+   A. Layout
+   B. Javascript
+   C. Key Flag
+   D. Caching
+
+VI.  Advanced and Miscellaneous
+   A. Approval
+   B. Versioning
+   C. Cookies
+   D. SmartTags
+
+----------------------------------------------------------------------
+
+I. Introduction
+______________________________________________________________________
 
 PhpWebSite has come a long way since it was a phpNuke fork. In 0.8.x
 it became modular. With 0.x it was rewritten from the ground up and
@@ -8,941 +63,506 @@ Now that we approach the release of 1.x, phpWebSite is going through
 another metamorphosis. There are new tools and techniques to create a
 module. This document will attempt to take you through this process.
 
-I am currently writing this document while 1.x is still in the alpha
-phase. There are still some key core components that need
-development. However, before they can get written, a content module is
-needed to work against. So while I develop the first native module for
-0.9.4, I will go through the process to create it.
+Please note that the original version of this document was written
+during the alpha stages of 1.0.0. We are much closer to release
+now. Originally started two years ago, much has changed since. I have
+rewritten this document to reflect these changes.
 
-This document is expected to go through some change. I plan on
-releasing it early (before 1.0.0's official release) and updating it
-as features are added. Eventually, I hope the full powers of 1.0.0 are
-reflected within.
+Quick note: whenever I refer to an "item", I am expressing shorthand
+for any type of content in your module. A blog entry, calendar event,
+house listing, comment, etc. are "items".
 
 
-Getting Started
+II.  Programming
+______________________________________________________________________
 
-First, decide the module's name and its function. We will be creating
-creating a module to deal with links. It function will be to allow
-users to submit links, categorize them, etc. Pretty simple actually
-but it should contain enough functionality to cover the core's basics.
-The name of the module will be simply "links".
+Every one codes differently. When I started writing phpws, PHP itself
+was in version 4. As we get close to our release, PHP 5 installations
+are more frequent. PHP's current class structure is much different.
+More talented programmers are bound to scoff at my coding
+technique. That's ok. It just happens to be the way I learned. I hope
+to develop along with my code. Keeping that mind, feel free to deviate
+from my coding samples. You may want to copy my code to get started
+but develop your own technique.
 
-Second, we need to create specific directories. Here are the ones I am
-making along with why they need to be there.
 
-phpwebsite/mod/links/
-Our basic directory. It is important that the directory name is the
-same as the module name.
+A. Programming style
+----------------------------------------------------------------------
 
-The rest of the directories will be placed in the above directory.
+1. Classes
+......................................................................
 
-boost/
-This directory contains information on how to install, update, and
-uninstall your module. 99% of the time, this is required.
+phpWebSite 1.0 is almost entirely class based. If you are not familiar
+with Object Oriented Programming, you may have problems from here
+on. I would suggest reading some OOP documentation and code some
+examples. Let me repeat the warning from above: my OOP coding may vary
+wildly from "the standard" however it works for me. Use coding methods
+you find comfortable.
 
-class/
-This directory contains your module's class files. (If you are not
-programming using oop, you are going to have a great deal of
-difficulty from this point on.)
+You will find that many of the core classes use static calls. Others
+depend on a constructed object. I suggest that if you have a simple
+function that other modules could use to make it a static call. I like
+static calls because they are easier to remember. A more complex class
+may require a constructed object.
 
-conf/
-This is where your configuration files are placed. These will be
-copied to the phpwebsite/config/links/ directory upon
-installation. These are copied so branches can each have
-their own config file if they need it.
+For example, PHPWS_Text has two functions (which I will cover in a
+bit) that parse input and output text.
 
-docs/
-This is where we would put documentation on our module.
+$text = PHPWS_Text::parseInput($input);
+echo PHPWS_Text::parseOuput($text);
 
-img/
-Any images that are specific to our module need to go here. They will
-be copied to images/mod/links/ when the module is installed.
+Simple. The database class has a static call as well:
 
-inc/
-Another important directory. This directory contains your modules
-start up and close down files. More about this later.
+PHPWS_DB::query('SELECT id from mytable');
 
-lang/
-Contains your po file translations. More about this later as well.
+You will tend, however, to contruct a database object most of the time
+because of its complexity:
 
-templates/
-Contains your template files. These will be copied to
-templates/mod/links/ on install.
+$db = & new PHPWS_DB('table_name');
+$db->addWhere('column_name', 'foo');
+$db->loadObject($object);
 
-Next we need to make the installation files. Remember I said earlier
-that 99.9% of the time you needed to make a boost directory? You can
-create a simple module that doesn't require installation and therefore
-doesn't need most of the above directories.
 
-Make a directory named 'example'.
+2. Sessions
+......................................................................
+Sessions can be very helpful. They prevent redundant object
+construction, relay information without forms, links, or cookies, and
+generally simplify coding. That said, avoid them when possible.
 
-Save a file named 'index.php' in that directory with the following
-information.
+In phpWebSite 0.10.x and under, we couldn't get enough of sessions. We
+also tended to overuse them. This caused memory bloat and required
+constant vigilance of values. In phpWebSite 1.0, we try and use them
+sparingly. You should as well.
 
-<--------------- Start Code ------------------>
-<?php
+I would also recommend avoiding sessioned objects. Although it isn't
+hard to make sure their class is included before a session creation
+(which is required), it can tend to be a pain.
 
-Layout::add("Hello World!");
 
-?>
-<--------------- End Code -------------------->
+B. Debug
+----------------------------------------------------------------------
 
-Now go to your phpwebsite installation. Now type the following at the
-end of your address line:
+Those familiar with 0.10.x may remember the good ole testArray and
+testObject function:
 
-index.php?module=example
+echo phpws_debug::testarray($some_array);
+echo phpws_debug::testobject($some_object);
 
+These still exist in phpWebSite 1.0, but they have been combined to
+just "test":
 
-When you go to the page, you should see "Hello World!" on your page.
+test($some_array);
+test($some_object);
+test($some_string);
 
-Want to change make it a little more flashy?
+Notice you don't need to add echo.
 
-Change the 'Layout' line to the following:
+The "test" function will recognize the type of variable passed to it
+and behave appropiately. test() will change html tags to readable to
+special characters for readability.
 
-Layout::add(array("TITLE"=>"My First Module",
-                  "CONTENT"=>"Hello World!"),
-                  "exampleContent");
+test() accepts two extra parameters. The second parameter tells test()
+to exit after echoing the result, like so:
 
-Now it should be in a box! Ok it's not that exciting, but that is the
-most basic module you can design.
+test($some_array, true);
 
+Normally, test ignores redundant arrays and objects. You may bypass
+this by entering 'true' in the third parameter:
 
-We on the other hand are going to make an installable module. So we
-will be using Boost, the installation module in phpWebSite.
-
-To get started, we need to give boost some basic information about our
-module. This information will go into a file appropriately named
-'boost.php'. It will be placed into the conf/ directory. In fact, any
-time another module needs information about your module, it expects a
-file to be in your conf directory. For example, the control panel
-module will want icon and tab information. So we would create a
-controlpanel.php file and put it in conf/. We will get into this in
-more detail later.
-
-The boost.php file will have the following variables:
-
-proper_name - This is the title of the module. Ours will be "Links".
-
-version - This number tracks the development of our module. The format
-is 1.2.3. Minor fixes increment the last number (3). Large fixes
-increment the second number (2). Major upgrades of a program increment
-the first number (1). Since our module is brand new we will start with
-0.0.1
-
-register - If our module needs to perform an action when other modules
-are installed, this is set to TRUE. For now, we will keep this at
-FALSE.
-
-unregister - If our module needs to perform an action when other
-modules are uninstalled, then this is set to TRUE. Some modules (like
-Layout) perform an action when a module is uninstalled but NOT when
-one is installed.
-
-import_sql = If this is set to TRUE, boost will look for a install.sql
-file. We will be using this.
-
-image_dir = If this module uses user submitted images, you would set
-this to TRUE. Don't confuse this with images used by the
-module. Submitted images are different than administrative icons and
-the like. We can set this to FALSE.
-
-file_dir = If your module needs a directory to save files to, change
-this to TRUE. This will be FALSE for us.
-
-about - If true then this module has an About file. The About file
-just tells the admin who wrote the module, where the module is hosted
-on the web, and other errata. We'll set this to TRUE.
-
-version_http - You may want to keep a file somewhere that lets the
-user know if they can get an updated copy. This variable stores the
-web address to that file. We'll use this as well.
-
-priority - Most of the time, you can leave this alone. Priority
-determines the order that modules are loaded for execution. Some
-modules, like users and layout, are very import to load first. The
-default value is 50 but you can leave it blank. We will fill it in
-just for instructional purposes.
-
-
-So here is our boost.php file:
-
-<?php
-$proper_name  = "Links";
-$version      = "0.0.1";
-$register     = FALSE; // You could also leave this blank
-$unregister   = FALSE; // Ditto
-$import_sql   = TRUE;
-$image_dir    = FALSE;
-$file_dir     = FALSE;
-$version_http = "http://phpwebsite.appstate.edu/updates/links.ini";
-$about        = TRUE;
-$priority     = 50;
-?>
-
-If you have links on your phpwebsite installation, some of this
-information may have changed by the time you are reading this.
-
-SQL
-Although you can write a module without accessing the database, most
-of the time you will. So we need to tell Boost what our database
-tables look like.
-
-The best way to do this process is to make the table in your database,
-then export it.
-
-First we need to decide the structure of the most common element in
-our module. For links, that would be 'a link'. So lets create a table:
-
-CREATE TABLE links_links
-
-This looks strange because I am repeating the word 'links'
-twice. However, the first part of the table name should always be the
-name of your module followed by an underline. Everything beyond that,
-describes what the table contains. In this case, the table holds
-'links'. I could just as easily named it "links_href" or
-"links_clickable_words_that_take_you_to_another_page".
-I think using the word "links" again is sufficient. What is important
-to note is that I am NOT using uppercase characters in my table
-name. Uppercase letters can confused some databases. Not saying they
-can't handle it, it is just that different databases handle it
-differently. They all understand lowercase table and column
-names. This allows your module to be instantly accessible by other
-databases running phpwebsite. Just go ahead and do it.
-
-Now I need to decide the structure of this table. Most of the time,
-the first column you make will be the 'id' column. The 'id' of an item
-(our 'item' is our link) gives it a number different from all the
-other items in the table. So we need to make the id and integer (INT)
-and also make it the primary key. This will accomplish two things.
-1) When we ask for a link by its id, the database will find it faster
-and
-2) phpWebSite will automatically increment this number as we add more
-links.
+test($some_array, true, true);
 
-Here are some other columns I am going to create:
+Beware. Allowing recursive printing could cause a memory overflow:
 
-title - will hold the text displayed for the link.
+$foo = new Foo;
+$bar = new Bar;
 
-description - a short description about the site. Don't use 'desc' as
-a column name. The database won't like it.
-
-keywords - words that we want associated with the link for searching
-
-url - the actual link address itself
-
-secure - whether the link is a secure link or not
-
-user_id - the user_id of the person who submitted the link
-
-active - switch to determine whether the link is seen or not
-
-hits - records the amount of times a link has been clicked
-
-created - lists the date a link was created
-
-That should be sufficient for now. Here is what we will put in our
-install.sql file.
-
-CREATE TABLE links_links (
-id INT NOT NULL ,
-title VARCHAR( 255 ) NOT NULL ,
-description TEXT NOT NULL ,
-keywords TEXT NOT NULL ,
-url VARCHAR( 255 ) NOT NULL ,
-secure SMALLINT NOT NULL ,
-user_id INT NOT NULL ,
-active SMALLINT NOT NULL ,
-approved SMALLINT NOT NULL ,
-hits INT NOT NULL ,
-created INT NOT NULL ,
-PRIMARY KEY ( id )
-);
-
-This was a MySQL export. Notice that it does not contain any back-ticks
-(`). This is something specific to MySQL. It will confuse other
-databases, so don't use it. Also notice that we did not use
-TINYINT. They are MySQL specific. We also did not put integer lengths
-in the define. They tend to break MicrosoftSQL.
-
-This should be sufficient.
-
-Since you have told phpWebSite that you are using an SQL file for
-installation, it will expect one for uninstalling the module as
-well. Fortunately, these are easy to make. Create a file named
-uninstall.sql and just drop the data.
-
-DROP TABLE links_links;
-
-We are almost ready to install. The Links module requires an
-administrative interface. The easiest way to do this, is to register
-with the Control Panel module.
-
-Before we make this file, lets take a look how the Control Panel
-module creates a link on newly installed modules. If you look in the
-mod/controlpanel/boost/ directory, you will see a file named
-register.php. This file tells Boost what to do when a new module is
-installed. Notice the function name at the top of the file,
-"controlpanel_register". This is the function that Boost by
-default. As you can see it is just moduleName_register. There are two
-required parameters for the function, $module and $content.
-
-Notice that the $content variable has an ampersand. This indicates
-that the variable is being passed by reference. In other words,
-what ever we do to the $content variable, effects the variable sent
-by Boost. This lets the module return a specific value without having
-to send back the content created by the function.
-
-The 'module' variable is just the module's title. 
-
-I won't get into the intricacies of the register file, but we can
-follow what happens to our Links module.
-
-The register function for Control Panel is going to be looking for a
-registration file. It will look for that file in the conf/
-directory. So lets make one!
-
-Because you may want to make multiple links, control panel expects its
-information in an array. Here is what variables we will be filling in:
-
-label - the clickable text that will be next to the icon.
-
-restricted - indicates whether this is a restricted module or if any
-user can see it.
-
-url - the address that instructs phpWebSite how to access it.
-
-description - a short description of what the icon takes us to.
-
-image - the name of the icon.
-
-tab - the location to place the icon.
-
-
-Here is our array to put into the controlpanel.php file:
-
-$link[] = array("label"       => _("Links Administration"),
-                "restricted"  => TRUE,
-                "url"         =>
-                "index.php?module=links&action=admin",
-		"description" => _("Admin the links on your site."),
-		"image"       => "links.png",
-		"tab"         => "content"
-                );
-
-Now we just save that file in the conf/ directory. You can also add
-tabs to Control Panel, but you will need to read its documentation.
-
-Back to Control Panel's register function. It uses the 'module'
-parameter to check for the existence of the file we just made. If it
-sees it, it includes it and then inserts the various tabs and links
-into the database. Meanwhile it reports its status by adding lines of
-text to the 'content' array. If it was successful, it returns TRUE and
-FALSE otherwise. To see exactly HOW Control Panel does this, you will
-have to review the register.php file. One thing interesting to note is
-that Control Panel registers itself when it gets installed. In other
-words, when you install a module that has a register file it will:
-1) register itself to itself,
-2) register other modules to itself, and
-3) get registered by other modules.
-
-BTW, conversely if your module has a register.php file, it needs an
-unregister.php file as well. This file will remove the changes it made
-to a module when it gets uninstalled. For example, Control Panel drops
-your icon when you uninstall your module.
-
-There are two more files that can help with your module's
-installation and uninstallation. They are install.php and
-uninstall.php.
-
-The install.php file will be included if found and Boost will attempt
-to run a function entitled moduleName_install. For example, take a
-look at the install.php file in mod/users/boost/. When the user module
-is installed, it needs to create its first user. So it creates a form
-for you to enter your user name and password. Remember when you were
-installing phpWebSite? The new user form came from this file. This
-file will also suspend the completion of a module's installation by
-what it returns. The users_install function returns FALSE when it
-isn't finished and TRUE when it is. If it returns an error object
-(explained later) then Boost knows there was a problem and the module
-doesn't get installed.
-
-The uninstall file works the same way. When you are uninstalling a
-module, it allows it to perform some last minute maintenance.
-
-If the install file for users looks complicated, don't worry. Nine
-times out of ten you won't need one.
-
-Ready to install
-Links is now ready to install. We just go to Boost, click on Other
-Modules and click the install link. But wait, what about our About
-file? This is really simple, just create a very small HTML web page
-and drop it in your module's conf/ directory. You can click on About
-to see the one that comes with Links.
-
-Once you click Install, Boost should handle the rest. If there is a
-problem, you should get a warning message from either your module (if
-you wrote error messages in your register.php or install.php files) or
-from Boost itself. Bad errors will appear in either the error.log or
-boost.log file in your logs/ directory.
-
-If there aren't any errors, then you should get a "Installation
-Successful" message.
-
-Writing the Code
-
-Links is installed, but it doesn't DO anything. In fact, I usually
-write a module first and worry about the install files at the very
-end. This is because I usually don't know all the things that it
-needs until the module is finished.
-
-As I decide to add elements, I will discuss them here. It is debateable
-whether that is the BEST way to teach you, but I think it is the best
-way for you to learn what I know. Also, I don't plan everything out as
-I go. Usually I write some code, come back, add to it, tweak, etc. But
-when writing this documentation, we will pretend that I knew exactly
-how the module would turn out in the end.
-
-Before I continue, keep some things in mind. I will offer example code
-that may NOT be in Links. For example, I will start testing the module
-with sample code. This code will be removed before release. Most of
-the time this code will be pretty minor.
-
-Also, I will touch on some components of the core but I won't go in
-detail about each module. That should be covered that module's
-documentation. If I use every feature of every module, the Links
-module will be a Frankenstein's monster of code. We will only use what
-we need.
-
-Ok first thing I want to do is create my index.php file. When
-phpWebSite is told to use a specific module, it will route itself to
-the index.php file contained within your module's directory. What
-happens from that point on is up to you.
-
-I am going to start with a basic admin structure. The first thing I
-want to do is make a form to create links. To do so, I need a link
-class. Look at the file Link.php in the class/ directory.
-
-Notice the class name: Links_Link. I don't name it just 'Link' because
-there is the slim possibility that 'Link' could become a class name
-somewhere else. Get in the habit of prefixing your class names with
-the name of your module.
-
-The variable construction is simple: they are the same as the columns
-in our link table. I am making all of these variables public.
-(Note: php 4 doesn't really use public and private variables, but you
-should get in the habit of thinking about them).
-
-I am going to assign all these variables as NULL except for some
-exceptions. 'User_id' is going to be set to 0. I figure that some
-links may be posted anonomously. Since all users have ids above zero,
-this will be a good indicator. 'Active', 'hits', and 'created' will be
-defaulted to zero as well. I am also making a private value
-'_error'. The underscore denotes it as 'private'.
-
-Next I create the constructor with an id value parameter. The default
-will be 'NULL' so I can construct a blank link object. If the id
-parameter is available, I am going to run the init() function. If the
-init() function fails it will return an error object. Because the
-error happened in the constructor, I am going to store the error in
-the _error variable and log the error.
-
-Let's go over the error object. It would be in your best interest to
-handle error reporting in this manner. PEAR (one of the php libraries
-used extensively by phpWebSite) has a great error class. We use a
-modified form of it.
-
-To see how this works, take a look at the init() function. It is going
-to select a link from the database that matches the id number sent to
-it. One of three things could happen:
-1) it finds the link in the database (that's good!),
-2) it fails to find the link in the database (that's bad), or
-3) there was an error trying to select from the database (real bad).
-
-If the first condition happens, we just pass the information to the
-rest of the function. If the second condition happens, then we need to
-create our own error.
-
-if (empty($result))
-   return PHPWS_Error::get(LINKS_ERR_NOT_FOUND,
-		           "links",
-			   "Links_Link::init",
-			   "id=" . $this->getId()
-			   );
-
-Two things we need setup for our error control to function. First, we
-should define our error codes. You can set your codes however you wish
-however I find the easiest way is to define negative number values to
-descriptive code names. For example, in init you see the define
-LINKS_ERR_LINK_NOT_FOUND. All my error codes will be prefixed by
-LINKS_ERR. The rest of the code tells me what it is for. You can put
-these codes where ever you wish. The best place would be at the top of
-the class or in a config file. The advantage of a config file is that
-all your errors are in one place and you won't have a number overlap.
-I put my error codes in the conf/config.php file.
-
-Next I need to write an explanation of the error. I save these to the
-conf/ directory in a file named 'error.php'. Take a look at that
-file. I create an array named 'errors'. The key of each error is the
-define we made earlier and the value of the array row is the message.
-
-Back to the init function. Notice that we check for an empty
-result. If that is the case, a null was returned and we need to return
-the error we created using the PHPWS_Error::get function.
-
-PHPWS_Error::get(error_id, module_name, [class_name::]function_name, extra_data);
-
-The result will be an PEAR error object. Notice that I put the name of
-the class along with the function. If your function has a generic name
-(get, load, init, etc.), putting the class name will help you track
-down where the error originated.
-
-We can do a couple of things with the error object. We can print it
-using PHPWS_Error::printError(), or we can log it using
-PHPWS_Error::log(). In Links case, I am logging the error and then
-copying it to the _error variable. The error will show up in
-logs/error.log if it occurs.
-
-If the result passes the empty check, I am checking to see if the
-result is an error object.
-
-elseif (PEAR::isError($result))
-  return $result;
-
-If it is an error I am just returning it instead of creating my own
-error object. When writing your module, you should "pass the buck" like
-this as well. It will allow you to get to the root of the problem and
-avoid redundant code.
-
-
-The Administration Menu
-
-I want to start getting some data into our database. What I am going
-to do is create a form to enter information about our link, check the
-information for errors, put the information into a link object, and
-save it to the database.
-
-First we have a decision to make. How do we access the link creation?
-Remember that we are coming from the control panel link we made on
-installation. This is what I am thinking: we will have two tabs, one
-called 'New' and one called 'Edit'. The 'New' link will take them to
-the creation of a new link. 'Edit' will take them to a listing of
-links so they can be administrated.
-
-First thing I am going to do is make an Action.php class. This class
-will handle the various requests that come into the module. That is
-its only purpose. Look at the Action.php file.
-
-Now I need to require this file in the index.php file so I can use it.
-PHPWS_Core::initModClass("links", "Action.php");
-
-I could just as easily done it this way:
-require_once PHPWS_SOURCE_DIR . "mod/links/class/Action.php";
-
-However, the initModClass does this for me. It will also silence an
-error and log it, if the file is missing. Do whichever way you
-prefer. Do make sure that you use 'require_once' instead of simply
-'require'. That makes sure a class is not redeclared.
-
-By the way, the PHPWS_SOURCE_DIR is defined as the default directory
-for your installation. This can be very important if you want your
-module to be branch* compatible.
-
-Something else that I am going to add is a reroute at the top of the
-index file. I am going to use our source directory definition from
-above.
-
-if (!defined("PHPWS_SOURCE_DIR")){
-  header("location:../../index.php");
-  exit();
+$bar->foo = &$foo;
+$foo->bar = &$bar;
+
+test($foo, false, false); // Expect a crash!
+
+
+C. Database Interaction
+----------------------------------------------------------------------
+phpWebSite uses the PEAR Database class. This library allows multiple
+database type (MySQL, Postgresql, Oracle, etc.)
+interaction. phpWebSite also uses its own special database class named
+PHPWS_DB. This class handles the connection and most basic queries. You
+should familiarize yourself with it by reading the Database_Class.txt
+file in the docs directory.
+
+
+1. Format
+......................................................................
+Since you want your module to work independent from the database
+platform, you should construct your queries carefully. Great effort
+was put into the PHPWS_DB class to allow it to conform to separate
+platforms. When possible, you should use it instead of constructing
+your own queries. Also, security measures in PHPWS_DB class try to
+prevent database hijacking.
+
+
+2. loadObject and saveObject
+......................................................................
+Two very useful functions to note are loadObject and saveObject.
+When you create an item class, your variable names should mirror the
+column names.
+
+For example, this class:
+
+class foo {
+ var $id    = 0;
+ var $title = null;
 }
 
-This will send someone who is trying to access the index.php file
-directly back to our home page. Notice I put it before the class
-inclusions. If I didn't they wouldn't work and phpWebSite would print
-an error. Try to prevent users from seeing errors at all times.
+Should have a table like so:
 
-Since I know that I will have user and administrative functionality, I
-create some division of process:
+CREATE TABLE foo {
+id INT NOT NULL,
+title VARCHAR(255),
+primary key ('id')
+};
 
-if ($_REQUEST['action'] == 'admin'){
-  Links_Action::admin();
-}
-elseif ($_REQUEST['user']){
-  Links_Action::user();
-}
-
-The admin function will take care of administrative options and the
-user function will take care of user options.
-
-Of course you can do this any way you wish. Create a class named
-Admin.php and one named User.php and launch functions from there. Put
-a switch statement in the index to handle all the requests. It is up
-to you.
-
-Back to the Links_Action class, I have a function for admin and user
-options. I'll be working on the administrative portion first. I like
-to have my major module options in a tabbed format. To do so, I use
-the control panel module. It lets me embed my tabs within the
-phpWebSite control panel. This just lets the site admin work with in
-an easier interface.
-
-To see how this is done, look at the cpanel() function. It creates the
-links that I need:
-
-$newLink = "index.php?module=links&amp;action=admin";
-$newCommand = array ("title"=>_("New"), "link"=> $newLink);
-	
-$listLink = "index.php?module=links&amp;action=admin";
-$listCommand = array ("title"=>_("List"), "link"=> $listLink);
-
-Then I put them in an array:
-$tabs['new'] = $newCommand;
-$tabs['list'] = $listCommand;
-
-I create a control panel object:
-$panel = & new PHPWS_Panel("links");
-
-Put the links in it:
-$panel->quickSetTabs($tabs);
-
-I am also going to use my own template for my panel. To do so I set:
-$panel->setModule("links");
-$panel->setPanel("panel.tpl");
-
-My template file is in the templates/ directory. I am using a special
-style sheet as well. To get it included, I just have to tell the
-Layout module about it.
-
-Layout::addStyle("links");
-
-The resultant object is then passed back to the admin() function. At the
-end of admin() I call:
-
-$finalPanel = $panel->display($content);
-
-I want the content to appear beneath the tabs. To get my panel to be
-surrounded by the main control panel, I just use its display function:
-
-PHPWS_ControlPanel::display($panel->display($content));
-
-This will return my control panel inside of the main control panel.
-
-Now I take this result and put it into the Layout.
-
-Using Layout
-Getting your code to display in phpWebSite is simple. Every theme has
-a BODY tag (you will read about tags and templates later). The BODY tag
-is where the main portion of content gets displayed. Usually, it
-doesn't share its space with other modules (though it is
-possible). For our administrative panel we KNOW that it is the only
-thing we want in the main content area. So we just send our content to
-Layout like so:
-
-Layout::add($content);
-
-However, you may not want to put content in the BODY. You may want to
-create content in a small box to the side or above the BODY. To do so, 
-you need to tell the Layout module to store the content.
-
-Layout::add($content, $module_name, $marker);
-
-So, say for links I may want a small side box:
-
-Layout::add($content, "links", "sideBox");
-
-When ever I want to use that box, I make sure I use the same marker
-name. If I want to add more data to the sideBox I can just call the
-add() function again. It will append the text, not replace it.
-
-(For more information on Layout, look in mod/layout/docs/devdoc.txt)
-
-In Links, the control panel doesn't need its own box. It just needs to
-be in the main content area. So I call:
-
-Layout::add(PHPWS_ControlPanel::display($finalPanel));
+If you sync the variables and columns, loadObject and saveObject will
+simplify your life. Here is how you can easily load an object from the
+database. First I create the constructor function for "foo".
 
 
-Steering the Data
+class foo {
+ var $id    = 0;
+ var $title = null;
 
-Back to the module. I am going to create a switch statement to decide
-where we are headed next. We have two tabs: New and List. To discover
-which tab the user is viewing, I will call:
+  function foo($id=0) {
+     if ($id) {
+         $db = & new PHPWS_DB('foo_table'); // the foo table
 
-if (isset($_REQUEST['subaction']))
-  $subaction = $_REQUEST['subaction'];
-else
-  $subaction = $panel->getCurrentTab();
+         $this->id = (int)$id; // id exists, set the id
 
-Since we are coming here from the control panel, there will not be a
-request variable for subaction, so we will fill the variable with the
-current tab result. Now I use the $subaction variable to steer the logic:
-
-switch ($subaction){
-case "new":
-$content = Links_Action::edit($link);
-break;
-
-case "list":
-$content = Links_Action::link_list();
-break;
+         $db->loadObject($this);
+     }
+  }
 }
 
-You will also notice that I am creating a $link object here and
-passing it to the edit function. This will make more sense as we get
-further in the script.
+Now I can create my object.
+
+$foo = & new foo(5);
+
+The constructor will set the id, pull that row from table, and set the
+variables for that object (just title in this example).
+
+Now I can change the object and save the results with saveObject.
+
+$foo->title = 'Better title';
+
+$db = & new PHPWS_DB('foo_table');
+$db->saveObject($foo);
 
 
-Creating our First Link Form
-
-We are now in the edit function.
- function edit(&$link)
-
-We sent the link object by reference. This prevents copies of the
-object being created over and over.
-
-We will now go over two main components of phpWebSite: forms and
-templates. We will also touch on the translation system as well.
+These two functions are the foundation of your item class.
 
 
-Templates
+D. Text
 
-Templates files describe the structure of a page. Look at
-theme.tpl in one of the theme directories. That is a template. When
-you are viewing phpWebSite, you are actually seeing an amalgamation of
-templates.
+It should go without saying that a majority of the information we will
+be working with is text inputted by the user and text outputted by the
+software. The amount of text tends to create issues and problems. How
+do we save the text? How is the text displayed? How can we be sure the
+text is safe? Which html tags will we allow? 
 
-You will need a working knowledge of HTML before tackling
-templates. The upside is that is all you really need. They aren't
-complicated.
-
-
-Let's say you had a short section of HTML that displayed a picture and
-some text.
-
-<div align="center">
-<img src="my_beach_trip.jpg" width="500"
-height="430">
-</div>
-<br />
-<p>Here is a picture of me at the beach. The shark bite caused a few
-stiches but otherwise look at that sunset. Wow!</p>
+phpWebSite has a special text class to assist you with these issues.
 
 
-If you had a phpWebSite module that echoed this information, you
-wouldn't want to create the <div> and <p> tags. What if the person
-using your module didn't like that layout? So instead you make a
-template that receives the above content. It would look something like
-this: 
+1. Input
+......................................................................
+All input needs to be secured before going into the
+database. Although the database class tries to prevent malacious
+actions, it is best to parse the text before saving it.
 
-<div align="center">
-{IMAGE}
-</div>
-<br />
-<p>{COMMENT}</p>
+Use parseInput before setting your object's text variables. I usually
+use something like the following example:
 
-See? We removed the content that is supplied from our module and
-substituted the 'tags' IMAGE and COMMENT. PhpWebSite separates the
-tags from the other text by the {curly braces}.
+$foo->setSummary($_POST['summary');
 
-One more quick comment then we will move on. If you want some text to
-only appear if a tag get filled in, you can place special comments in
-your template. For example, if the above template might not have an
-image we may not want the <div> and <br /> tags to appear. Here is
-what we would change:
+class foo {
+....
 
-<!-- START image_placement -->
-<div align="center">
-{IMAGE}
-</div>
-<br />
-<!-- END image_placement -->
-<p>{COMMENT}</p>
-
-Now if the {IMAGE} tag is empty, nothing between the START and END
-comments will be echoed.
-
-Creating the Form Object
-
-PhpWebSite comes with a form class. Although you could type out all
-your input tags, the Form class can simplify the process.
-
-Look at the edit() function. Near the top we create our form object:
-
-$form = & new PHPWS_Form('edit_form');
-
-Next, I am going to create some hidden variables. To add form
-elements, you just use the add() function:
-
-$form->add("module", "hidden", "links");
-$form->add("action", "hidden", "admin");
-$form->add("subaction", "hidden", "postLink");
-
-
-The first variable is the name of the form element. The second
-paramter is the type (hidden, textfield, radio button, check box,
-etc.). The final parameter is the value of the element.
-
-The above are our routing variables. The first hidden variable tells
-phpwebsite what module to use. The second and third hidden variables
-guide our links module. This will cause links to send information to
-the admin() function. The admin function will then compare the
-subaction to the switch statement. More on that later.
-
-We want the edit function to have a dual purpose. It should allow for
-both the creation and updating of links. As such I am going to add the
-following:
-
-$link_id = $link->getId();
-
-if (isset($link_id)){
-  $form->add("link_id", "hidden", $id);
-  $form->add("submit", "submit", _("Update Link"));
-  $template['PAGE_TITLE'] = _("Update Link");
-} else {
-  $form->add("submit", "submit", _("Add Link"));
-  $template['PAGE_TITLE'] = _("Add Link");
+function setSummary($summary) {
+    $this->summary = PHPWS_Text::parseInput($summary);
 }
 
-If the link object has an id, it is obviously not new. Therefore we
-set the form to update. Besides adding the correct terminology to our
-title and submit button, we add the link's id to a hidden
-variable. Remember in our admin function we catch this variable to
-recreate our link object? You'll see how this comes in handy later.
+parseInput will encode all the html tags, remove problematic Windows
+characters, and change local web address to relative links.
 
-Now let add our first form element that requires interaction. We need
-a text field for the title of the link.		     
+Now the information contained in $foo->summary is ready to be saved.
 
-Accessing the Database
-A special database class was written for phpWebSite. Once you know how
-it works, it can make database queries much easier. If you want to
-know more about how it works, look up the Database class documentation
-in this directory.
 
-$form->add("title", "textfield", $link->getTitle());
+2. Output
+......................................................................
+Now we need to display our text. We can use parseOutput.
 
-I am using the $link object to fill in the text field value. Since our
-link object is new, the title is NULL. Therefore, the textfield is
-going to be empty. However, if we are editing a link or we have to
-return to this function after an error, the user submitted title will
-fill in the text field.
+echo $foo->getSummary();
 
-The user is going to need to know what to type here. A blank textfield
-without a labeled purpose will perplex our user. So I am going to
-create a label.
-
-$template['TITLE_LBL'] = _("Title");
-
-This will put the word "Title" in my template which I will eventually
-merge with my form. You may ask "Why not just label the title in my
-template?" You can do that, however that ends up restricting the
-language options of your module.
-
-Translating your Module
-
-You probably have noticed the _() function calls here and there. These
-calls are shorthand for the gettext function.
-
-Gettext is a php function that facilitates the translation of
-phpWebSite. Everytime you wrap a phrase in _(), it will targeted
-during the creation of your translation files. These are called po
-files. They contain the original phrase and then the translation of
-that phrase. So when I use _("Hello") in a script, it will appear as
-"Hola", "Bonjour", "Hallo", "Ciao", or others depending on the
-language of the viewer. You may also use gettext("translate this") if
-you prefer, but _() is acceptable.
-
-So, although this may make your module's templates more "taggy", the
-increase the usability of your module. If you believe that your module
-will only be used by specific people, then you can avoid using it. Be
-warned though it is tedious to put these in later.
-
-Back to our Form
-
-Now would be a good time to test what we have so far. I need to create
-a template for this form. I am going to create a file named 'edit.tpl'
-and save it in templates/forms/. Take a look at that file now.
-
-There are two important tags for forms: {START_FORM} and
-{END_FORM}. They indicate the start and end of our form. All of our
-form tags will go between them. So far we just have two form tags and
-one template tag. Your form tags will be the same as the form
-element's name. So the title textfield's tag is {TITLE}. The submit
-button is {SUBMIT}. I also need a tag for the title label:
-{TITLE_LBL}. Now I just put each of these tags in my template. I am
-going to use a table because I like my labels to line up with the form
-elements.
-
-<div class="page-title">{PAGE_TITLE}</div>
-{START_FORM}
-<table width="100%" cellpadding="4" cellspacing="4">
-  <tr>
-    <td><b>{TITLE_LBL}:</b></td>
-    <td>{TITLE}</td>
-  </tr>
-</table>
-{SUBMIT}
-{END_FORM}
-
-The file you are viewing is obviously much larger now, but we just
-want to test to make sure all is well.
-
-Now I want to get these form elements out of the form object. Before I
-do however I want to merge my $template variable with the one the form
-object will produce. To do so I run:
-
-$form->mergeTemplate($template);
-
-Now to get my final template:
-
-$final_template = $form->getTemplate();
-
-The last step is to process the template and  return the content back
-to the admin function.
-
-return PHPWS_Template::process($final_template, "links", "forms/edit.tpl");
-
-When I refresh the page, my form appears. I know I am in good shape to
-continue.
-
-Now I go through and add the rest of the form elements I will need for
-the link. As I add them, I update my template with the new
-information, tweaking as I go. Instead of adding a normal textarea, I
-decided to use a javascript tool called HyperTextArea.
-
-First, I need to check to see if the user is using javascript. You
-should stay away from making mission critical process javascript
-only. Try to allow for a backup mechanism. Here is the code for the
-description text area:
-
-if (JAVASCRIPT_ON){
-  $values['NAME'] = "edit_form";
-  $values['VALUE'] = $link->getDescription();
-  $template['DESCRIPTION'] = Layout::getJavascript("hypertext", $values);
-} else {
-  $form->add("description", "textarea", $link->getDescription());
-  $form->setWidth("description", "80%");
+function getSummary()
+{
+   return PHPWS_Text::parseOutput($this->summary);
 }
 
-If javascript is enabled, I load the hypertext javascript. The values
-(NAME and VALUE) fill in specific tags in the javascript. You should
-be able to find out what values a script accepts by viewing the README
-file in the javascript directory.
-
-If javascript is not available, I just create a simple form text area.
-
-Now that the form is ready, I need to write the code to catch the
-results.
+parseOutput does more work than parseInput. It will:
+1) Decode the html characters (encoded previously in parseInput)
+2) change bbcode into html tags
+3) remove profanity
+4) strip tags we don't wish to allow
+5) properly replace newline breaks with html breaks
+6) translate various symbols into XHTML acceptable coding
 
 
 
+3. Links
+......................................................................
+There are a handful of functions in the Text class that can assist you
+with html links. Although permanent links are easier to type out, you
+may find these functions help with the dynamic ones.
 
 
-Glossary
--------------------------------------------------------------------
-define - a constant variable.
-See http://www.php.net/manual/en/function.define.php
+PHPWS_Text::moduleLink($subject, $module, $variables,
+                       $target, $title);
 
-branch - An installation of phpWebSite that shares the files from a
-central hub. This allows several sites on the same server using one
-set of code.
+moduleLink creates a phpWebSite relative link. For example:
+
+$party_vars['city'] = 'Boone';
+$party_vars['house_id'] = 5;
+
+PHPWS_Text::moduleLink('Party at Jay\'s house', 
+                       'party_mod',
+                       $party_vars,
+                       'blank',
+                       'Directions to Jay\'s');
+
+The above will create:
+
+<a 
+href="index.php?module=party_mod&amp;city=Boone&amp;house_id=5"
+title="Directions to Jay's" target="_blank">
+Party at Jay's house
+</a>
+
+The target and title variables are optional.
+
+
+Sometimes you may want to create a more secure link. secureLink does
+this for you. It works exactly like moduleLink except it adds an
+authorization key to the end of the link.
+
+PHPWS_Text::secureLink($subject, $module, $variables, $target, $title);
+
+The authorization key works with the permissioning system in
+phpWebSite. It makes sure the person arriving at an administrative
+option is actually coming from the site and is logged in.
+
+Here is another example. Let's say that someone was able to create a
+bogus link somewhere on your site to exploit a weakness in the
+software:
+
+<img src="index.php?module=users&make_user_admin=6" />
+
+Now if user number 6 went to that address, nothing would happen
+because they don't have that priviledge. However, when you, an admin,
+log on, that image tag could send a command to the user module to make
+user 6 an admin. Since YOU had permissions, it would get through.
+
+With the authorization key, the above would fail because the security
+check would be expecting it. Since the hacker can't foresee what your
+authorization code will be the moment you log on, they have little
+chance of guessing the code.
+
+
+If you want to use a link like the above but want the href information
+only, you can use linkAddress:
+
+PHPWS_Text::linkAddress($module, $variables, $secure,
+                        $add_base, $convert_amp);
+
+The first two parameters should be familiar. The last three are
+optional, If "secure" is true, the authorization key will be added to
+the link. If "add_base" is true, the full site address will be
+prefixed to the address (i.e. http:://mysite.com/index.php... etc.).
+Finally, if "convert_amp" is true, all the ampersands will be
+converted into XHTML appropiate &amp;. You may want to set this to
+false if you are using a header.
+
+
+Finally, if you want to use short links via mod_rewrite, you can use
+the rewriteLink function:
+
+PHPWS_Text::rewriteLink($subject, $module, $id, $page);
+
+Example:
+
+echo PHPWS_Text::rewriteLink('Read more', 'newspaper', 6, 2);
+
+The above would print:
+
+<a href="/newspaper/6/2">Read more</a>
+
+If not using Apache or mod_rewrite is disabled, you will get a normal
+link.
+
+<a href="index.php?module=newspaper&id=6&page=2">Read more</a>
+
+Please familiarize yourself with mod_rewrite and .htaccess file
+formatting before using the above.
+
+
+4. User text
+......................................................................
+Some final notes before leaving the text discussion. Don't ever trust
+user input ESPECIALLY anonymous input. Comments, for example, strips
+all tags from user input. If they aren't using bb encoding, they don't
+get to format the text. This is for your own safety.
+
+As careful as I have been, I am SURE that somewhere I have left a
+variable open that can be exploited. It is inevitable. Get in the
+habit of testing all user data. Cast data types. Strip tags. Don't
+allow file uploads. If you allow any of the above, parse the mess out
+of it.
+
+Testing text doesn't stop at form entry either. Parse cookies. Expect
+someone to try and hack any input into the system.
+
+
+
+E. Language
+----------------------------------------------------------------------
+
+
+
+F. Templating
+----------------------------------------------------------------------
+
+
+
+G. Error Handling
+----------------------------------------------------------------------
+
+
+
+H. Security
+----------------------------------------------------------------------
+
+
+III. Installation
+______________________________________________________________________
+
+   A. Modules
+----------------------------------------------------------------------
+
+
+
+   B. Directories
+----------------------------------------------------------------------
+
+
+
+   C. Boost
+----------------------------------------------------------------------
+
+
+
+IV.  Administrating
+______________________________________________________________________
+
+
+   A. Permissions
+----------------------------------------------------------------------
+
+
+
+   B. Control Panel
+----------------------------------------------------------------------
+
+
+
+   C. Settings
+----------------------------------------------------------------------
+
+
+
+   D. Form Class
+----------------------------------------------------------------------
+
+
+
+   E. Files
+----------------------------------------------------------------------
+
+
+
+     1. Images
+......................................................................
+
+
+
+     2. Files
+......................................................................
+
+
+
+   F. DBPager
+----------------------------------------------------------------------
+
+
+
+   G. Mini Admin
+----------------------------------------------------------------------
+
+
+
+
+V.   Users and Layouts
+______________________________________________________________________
+
+
+
+   A. Layout
+----------------------------------------------------------------------
+
+
+
+   B. Javascript
+----------------------------------------------------------------------
+
+
+
+   C. Key Flag
+----------------------------------------------------------------------
+
+
+
+   D. Caching
+----------------------------------------------------------------------
+
+
+
+
+VI.  Advanced and Miscellaneous
+______________________________________________________________________
+
+
+
+   A. Approval
+----------------------------------------------------------------------
+
+
+
+   B. Versioning
+----------------------------------------------------------------------
+
+
+   C. Cookies
+----------------------------------------------------------------------
+
+
+
+   D. SmartTags
+----------------------------------------------------------------------
+
