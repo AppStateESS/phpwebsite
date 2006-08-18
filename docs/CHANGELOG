@@ -1,3 +1,16 @@
+18 August 2006
++ Core
+- removed old crutch files
+
++ Documentation
+- Started rewrite of module documentation
+
++ Blog
+- Added missing columns to install.sql
+
++ Users
+- Removed unused about files
+
 17 August 2006
 + Core
 - Database : getObject's extra parameters were too simplistic. You
