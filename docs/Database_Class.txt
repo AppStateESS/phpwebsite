@@ -450,6 +450,20 @@ you used for select.
 Make sure that you require the class file before you try to make
 objects from it.
 
+GetObjects can take extra parameters that you wish to pass to the
+constructor. For example if the class constructor looked like so:
+
+class friend($last_accessed, $when) {
+...
+}
+
+You could send the last_accessed and when variable like this:
+
+$result = $db->getObjects('friend', 'sam', mktime());
+
+Keep in mind that the constructor will be called before the variables
+are filled in.
+
 
 Insert
 
