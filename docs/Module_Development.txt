@@ -26,8 +26,13 @@ III. Installation
    A. Modules
    B. Directories
    C. Boost
+     1. Boost File
+     2. SQL import
    D. Permissions
    E. Control Panel
+     1. Links
+     2. Tabs
+   F. Dependencies
 
 IV.  Administrating
    A. Permissions
@@ -46,7 +51,9 @@ V.   Users and Layouts
    C. Key Flag
    D. Caching
 
-VI.  Advanced and Miscellaneous
+VI.  Uninstallation
+
+VII. Advanced and Miscellaneous
    A. Approval
    B. Versioning
    C. Cookies
@@ -646,35 +653,251 @@ goes down or a file goes missing.
 H. Security
 ----------------------------------------------------------------------
 Some final warnings before leaving this chapter.
-1) Parse all text coming in from post and get arrays.
-2) Parse all text coming in from a cookie.
-3) If you are expecting an integer, cast the variable with an (INT).
-4) For each php file you create, prevent any action from direct
-access. In other words, don't let a hacker browse directly to that
-file and run your script.
 
+1) Parse all text coming in from post and get arrays.
+2) Parse all text coming from a cookie.
+3) Check variable types. Cast integers.
+4) For each php file you create, prevent any action from direct
+   access. In other words, don't let a hacker browse directly to that
+   file and run your script.
+5) Use authorization keys on any command that alters the database.
 
 
 
 III. Installation
 ______________________________________________________________________
 
+
    A. Modules
 ----------------------------------------------------------------------
+When phpWebSite is accessed, the core loads all the currently
+installed modules. You can, however, access an uninstalled module.
 
+If we have a module named "foo" in the mod/foo directory and it has an
+index.php file, we can access it via phpwebsite like so:
+
+phpwebsite.com/index.php?module=foo
+
+Instructions contained in index.php will be executed within the
+phpWebSite shell.
+
+You should only try this for simple modules. A more complex module
+benefits from the Boost module's upgrade capabilities. 
 
 
    B. Directories
 ----------------------------------------------------------------------
+Decide on your module's function. Once you know what your module
+"does", think of a simple one or two word description for it. This
+will be your "module title". Now come up with a full name for it. This
+is the module's "proper name." For example, if I create a guestbook
+module, I may give it a module title of simply "guestbook" and a
+proper name of "Matt's Rockin' Guest Book."
+
+Now we need to create the module's directories. I will use the "Blog"
+module (module title : blog) for our examples.
+
+phpwebsite/mod/blog/
+Our basic directory. It is important that the directory name is the
+same as the module title.
+
+The rest of the directories will be placed in the above directory.
+
+boost/
+This directory contains information on how to install, update, and
+uninstall your module.
+
+class/
+The location of your module's class files.
+
+
+conf/
+This is where your configuration files are placed. These will be
+copied to the phpwebsite/config/blog/ directory upon
+installation. These are copied so branches can each have
+their own config file if they need it. Put files here that may be
+edited by a site administrator.
+
+docs/
+This is where we would put documentation on our module.
+
+img/
+Any images that are specific to our module need to go here. They will
+be copied to images/mod/blog/ when the module is installed.
+
+inc/
+Another important directory. This directory contains your modules
+start up and close down files. It also can contain important files
+that 1) remain in the hub directory and 2) should not be altered by a
+site administrator.
+
+lang/
+Contains your gettext file translations. More about this later.
+
+templates/
+Contains your template files. These will be copied to
+templates/mod/blog/ on install.
+
+Once your directories have been created, you can begin adding your
+installation files.
 
 
 
-   C. Boost
+C. Boost
 ----------------------------------------------------------------------
+The Boost module controls the installation, update, and uninstallation
+of all other modules in phpWebSite. Any information pertinent to the
+above are stored in the boost/ directory.
+
+
+1. Boost File
+......................................................................
+
+The most important boost file is named, aptly, boost.php. It relates
+all install, update, and uninstall information to the Boost module
+with just a handful of variables.
+
+Here is a list of variables used in the boost.php file.
+
+proper_name
+-----------
+This is the proper name of the module. The blog module's proper name
+is simply "Blog." 
+
+version
+-------
+This number tracks the development of our module. The format is
+1.2.3. Minor fixes increment the last number (3). Large fixes
+increment the second number (2). Major upgrades of a program increment
+the first number (1). As of this writing, Blog is at version 0.2.6.
+
+
+register
+--------
+If our module needs to perform an action when other modules are
+installed, this variable is set to TRUE. Blog doesn't require any
+external registration so it is set to FALSE.
+
+
+unregister
+----------
+If our module needs to perform an action when other modules are
+uninstalled, then this is set to TRUE. Usually, if a module registers
+other modules, it will need to unregister those modules as well.
+
+There are cases when a module does not register other modules but does
+need to unregister them. Layout, for example, does not register
+modules on installation but when a module is uninstalled, Layout drops
+all the display properties of that module. These properties were
+established during the runtime of that module, not during the
+installation.
+
+
+import_sql
+----------
+If this is set to TRUE, boost will look for a install.sql file. Blog
+uses this.
+
+
+image_dir
+---------
+If this module uses user submitted images, you would set this to
+TRUE. Boost will create an images/module_title directory for storage
+of the images.
+
+Don't confuse this with images used by the module internally
+(i.e. admin icons, buttons, etc.). Blog sets this to true.
+
+
+file_dir
+--------
+If your module needs a directory to save files to, change this to
+TRUE. Most of the time, this will be FALSE, as it is for Blog.
+
+
+about
+-----
+If TRUE, then this module has an About file (named about.html) in the
+boost directory. The About file informs the admin who wrote the
+module, where the module is hosted on the web, and other errata. Blog
+has a brief about file so it is set to TRUE.
+
+
+version_http
+------------
+You may want to keep a xml file somewhere that lets the user know if
+they can get an updated copy. This variable stores the web address to
+that file. Blog uses this as well.
+
+priority
+--------
+Most of the time, you can leave this alone. Priority determines the
+order that modules are loaded for execution. For some modules, like
+users and layout, it is very important they load first. The default
+value is 50 but you can leave it blank. We will fill it in just for
+instructional purposes.
+
+
+dependency
+----------
+If your module is dependent on other modules to function, you should
+set this to TRUE. We'll cover your dependency file in a little while.
+
+
+So here is our boost.php file from Blog :
+
+<?php
+
+$proper_name  = 'Blog';
+$version      = '0.2.6';
+$register     = FALSE;
+$unregister   = FALSE;
+$import_sql   = TRUE;
+$image_dir    = TRUE;
+$file_dir     = FALSE;
+$version_http = 'http://phpwebsite.appstate.edu/downloads/modules/blog/check.xml';
+$about        = TRUE;
+$priority     = 50;
+$dependency   = TRUE;
+?>
+
+
+2. SQL Import
+......................................................................
+
+If your module uses the database, you will need to import its tables
+during installation. Including a install.sql file is the simpliest way
+to do so. Here is Blog's install.sql file.
+
+CREATE TABLE blog_entries (
+id INT NOT NULL,
+key_id INT NOT NULL,
+title VARCHAR( 60 ) NOT NULL ,
+summary TEXT NULL,
+entry TEXT NOT NULL,
+author_id INT NOT NULL default '0',
+author varchar(50) NOT NULL default '',
+create_date INT NOT NULL ,
+allow_comments SMALLINT NOT NULL default '0',
+approved INT NOT NULL default '0',
+allow_anon SMALLINT NOT NULL default '0',
+PRIMARY KEY ( id )
+);
+
+CREATE INDEX blogentries_idx on blog_entries(key_id);
+
+When forming or exporting your module's SQL file, keep compatibility
+in mind. Remove any database system-specific commands. Also, only use
+lengths on character fields. INT(11) is an acceptable MySQL entry but
+one that will cause problems in other database systems.
+
+Make sure to create indexes outside of the table declaration. Please
+note the index's name format: contracted table name + underline +
+idx. This is phpWebSite's database class's default format.
 
 
 
-   D. Permissions
+D. Permissions
 ----------------------------------------------------------------------
 
 I will touch on permissioning here. A more detailed account can
@@ -739,6 +962,161 @@ Users would read this file and know,
 1) the module wants to use permissioning
 2) it will use subpermissions for editing and deleting and
 3) it will allow the admin to set item permissions.
+
+Your permissioning file will be registered by Users upon installation.
+
+
+E. Control Panel
+----------------------------------------------------------------------
+
+If your module has administrative settings, you will need a way for
+the site operator to get started. This is where the Control Panel
+module comes in.
+
+To get your module's icon on one of the Control Panel tabs, you need
+to create a controlpanel.php file in your boost directory.
+
+I will show the User's controlpanel.php file as an example:
+
+$tabs[] = array('title' => _('My Page'),
+		'label' => 'my_page',
+		'link'  => 'index.php?module=users&amp;action=user',
+		);
+
+$link[] = array('label'       => _('User Administration'),
+		'restricted'  => TRUE,
+		'url'         => 'index.php?module=users&amp;action=admin',
+		'description' => _('Lets you create and edit users and groups.'),
+		'image'       => 'users.png',
+		'tab'         => 'admin'
+		);
+
+I'll come back to the tabs array in a moment. Take a look at the link
+array.
+
+1. Links
+.....................................................................
+
+Although there is only one administrator link for users,
+control panel allows extras. The is the reasoning for making the $link
+variable an array. Inside the link variable is another array - an
+associative array. Here are the keys of the link array:
+
+label
+-----
+The proper name of the module. This is what the module will be titled
+in the control panel
+
+
+restricted
+----------
+Indicates if this module is restricted to administrators. If false,
+any one capable of logging in will see the link. In certain
+situations, this may be desired.
+
+
+url
+---
+The address resulting from clicking on the link. This will most likely
+include "index.php?module=your_module_name" plus some administrative
+variables.
+
+
+description
+-----------
+A description of your module. It will appear next to the module link.
+
+
+image
+-----
+The file name of the image shown next to your link. 
+
+
+tab
+---
+The tab you want your link to appear on. There are three default
+choices:
+
+1) content - if your module adds content to the web site, put the link
+here.
+
+2) admin - if your module assists with the administration of the site
+   or indirectly adds to the site content, put your link here.
+
+3) developer - if your module helps with the development of a module,
+   theme, style sheet, or anything outside the content or
+   administration of the site; put your link here.
+
+
+
+2. Tabs
+......................................................................
+
+Tabs control the different administrative pages. I just went over
+three of the default tabs (content, admin, developer). Your module's
+complexity may require a tab of its own.
+
+Going back to the User module example, you can see the $tabs[]
+array. It contains the information for the My Page tab. My Page is a
+special tab for controlling logged user options.
+
+Here are the variables needed in your tabs array:
+
+title
+-----
+The clickable title of the tab.
+
+
+label
+-----
+This is a simple word to identify the tab. The label should be
+alphanumeric with underlines only.
+
+
+link
+----
+The tab's destination url.
+
+
+To learn more about using the Control Panel in your module, please see
+part IV. section B.
+
+
+
+F. Dependencies
+----------------------------------------------------------------------
+
+Sometimes modules depend on other modules to function properly. Or
+perhaps your module uses only the latest version of another module or
+the core. In order to prevent people from installing or updating your
+module, you need to create a dependency file.
+
+A dependency file is an xml file describing the various modules and
+versions required by your module. It lives in your module's boost
+directory. Here is an example from Blog:
+
+<?xml version="1.0"?>
+<dependency>
+  <module>
+    <title>comments</title>
+    <properName>Comments</properName>
+    <version>0.2.5</version>
+    <url>http://phpwebsite.appstate.edu/module_info/comments.html</url>
+  </module>
+</dependency>
+
+This file tells phpWebSite the following:
+1) Blog is dependent on one module
+2) named comments.
+3) The proper name of the module is "Comments."
+4) Comments needs to at or above version 0.2.5.
+5) More information about Comments can be found at
+   http://phpwebsite.appstate.edu/downloads/modules/comments
+
+
+
+
+
 
 
 
@@ -816,9 +1194,13 @@ ______________________________________________________________________
 ----------------------------------------------------------------------
 
 
+VI.  Uninstallation
+______________________________________________________________________
 
 
-VI.  Advanced and Miscellaneous
+
+
+VII.  Advanced and Miscellaneous
 ______________________________________________________________________
 
 
