@@ -26,6 +26,8 @@ III. Installation
    A. Modules
    B. Directories
    C. Boost
+   D. Permissions
+   E. Control Panel
 
 IV.  Administrating
    A. Permissions
@@ -643,12 +645,41 @@ goes down or a file goes missing.
 
 H. Security
 ----------------------------------------------------------------------
-I wrote earlier about checking your input for evil scripting. This
-section is more general. It concerns user permissioning.
+Some final warnings before leaving this chapter.
+1) Parse all text coming in from post and get arrays.
+2) Parse all text coming in from a cookie.
+3) If you are expecting an integer, cast the variable with an (INT).
+4) For each php file you create, prevent any action from direct
+access. In other words, don't let a hacker browse directly to that
+file and run your script.
+
+
+
+
+III. Installation
+______________________________________________________________________
+
+   A. Modules
+----------------------------------------------------------------------
+
+
+
+   B. Directories
+----------------------------------------------------------------------
+
+
+
+   C. Boost
+----------------------------------------------------------------------
+
+
+
+   D. Permissions
+----------------------------------------------------------------------
 
 I will touch on permissioning here. A more detailed account can
 (eventually not finished writing it yet) be found in
-docs/Permission.txt.
+docs/Permission.txt. Checking for permissions is handled in part IV.
 
 There are five types of users:
 
@@ -670,23 +701,44 @@ deity        - an all-powerful logged in user. They have access to any
                are not allowed to touch.
 
 
+Before you start adding permissions to your module, you need to create
+a permission configuration file.
 
+The permission.php file is saved in your module's boost directory. If
+you only want your module to have all or nothing permissions. Just
+add:
 
-III. Installation
-______________________________________________________________________
+$user_permissions = true;
 
-   A. Modules
-----------------------------------------------------------------------
+and save the permission file. This indicates you not be using
+sub-permissions (explained in a second) or item permissions. The only
+to administrative options would be no permissions and all permissions.
 
+You may also include sub-permissions for your modules. For example,
+say you wanted to specify the administrators who may delete items from
+your module. Add a subpermission like so:
 
+$permissions['delete'] = _('Delete item')
 
-   B. Directories
-----------------------------------------------------------------------
+Finally, you may narrow down permissions to specific items. Just set:
 
+$item_permissions = true;
 
+Let's look at what a completed permissions file would look like:
 
-   C. Boost
-----------------------------------------------------------------------
+<?php
+$use_permissions = TRUE;
+
+$permissions['edit_items']   = _('Edit items');
+$permissions['delete_items'] = _('Delete items');
+
+$item_permissions = TRUE;
+?>
+
+Users would read this file and know,
+1) the module wants to use permissioning
+2) it will use subpermissions for editing and deleting and
+3) it will allow the admin to set item permissions.
 
 
 
