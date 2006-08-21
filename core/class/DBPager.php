@@ -621,6 +621,10 @@ class DBPager {
     }
 
 
+    /**
+     * Pulls variables from the object results. Calls object's formatting function if
+     * specified.
+     */
     function getPageRows(){
         $count = 0;
 
@@ -631,13 +635,13 @@ class DBPager {
         foreach ($this->display_rows as $disp_row){
             if (isset($this->class) && isset($this->runMethods)){
                 foreach ($this->runMethods as $run_function) {
-                    $disp_row->{$run_function}();
+                    call_user_func(array(&$disp_row, $run_function));
                 }
             }
 
             if (isset($this->class)) {
                 foreach ($this->_class_vars as $varname) {
-                    $template[$count][strtoupper($varname)] = $disp_row->{$varname};
+                    $template[$count][strtoupper($varname)] = $disp_row->$varname;
                 }
 
                 if (!empty($this->row_tags)) {
@@ -646,7 +650,7 @@ class DBPager {
                     }
 
                     if (empty($this->row_tags['variable'])) {
-                        $row_result = $disp_row->{$this->row_tags['method']}();
+                        $row_result = call_user_func(array(&$disp_row, $this->row_tags['method']));
                     } else {
                         $row_result = call_user_func_array(array(&$disp_row, $this->row_tags['method']), $this->row_tags['variable']);
                     }
@@ -661,7 +665,6 @@ class DBPager {
                     $template[$count][strtoupper($key)] = $value;
                 }
             }
-
             $count++;
         }
 
