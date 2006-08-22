@@ -17,8 +17,8 @@ class Blog {
     var $create_date    = null;
     var $allow_comments = 0;
     var $approved       = 0;
-    var $_error         = null;
     var $allow_anon     = 0;
+    var $_error         = null;
 
     function Blog($id=null)
     {
@@ -26,7 +26,6 @@ class Blog {
             $this->allow_comments = PHPWS_Settings::get('blog', 'allow_comments');
             return;
         }
-
 
         $this->id = (int)$id;
         $result = $this->init();
@@ -108,7 +107,7 @@ class Blog {
     {
         $db = & new PHPWS_DB('blog_entries');
         if (empty($this->id)) {
-            $this->create_date = PHPWS_Time::getUTCTime();
+            $this->create_date = mktime();
             $this->author_id = Current_User::getId();
             $this->author = Current_User::getDisplayName();
         }
@@ -365,7 +364,7 @@ class Blog {
         }
 
         if (empty($this->id)) {
-            $this->create_date = PHPWS_Time::getUTCTime();
+            $this->create_date = mktime();
         }
 
         $this->setSummary($_POST['summary']);
