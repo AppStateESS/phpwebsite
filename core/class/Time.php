@@ -1,19 +1,58 @@
 <?php
 
   /**
+   * The PHPWS_Time class is mainly for the parsing of timestamps
+   * into and out of UTC time.
+   * 
    * @author Matthew McNaney <mcnaney at gmail dot com>
    * @version $Id$
    */
 
 class PHPWS_Time {
 
-    /**
-     * Returns the UTC Unix time based on the server's tz
-     * settings
-     */
-    function getUTCTime()
+    function convertServerTime($time)
     {
-        return PHPWS_Time::convertUTCTime(mktime(), (int)date('O') / 100, TRUE);
+        $admin_offset = 3600 * PHPWS_Time::getServerTZ(); 
+        $server_offset = date('Z');
+        $time += $server_offset;
+        $time -= $admin_offset;
+        return $time;
+    }
+
+    function convertUserTime($time)
+    {
+        $user_offset = 3600 * PHPWS_Time::getUserTZ(); 
+        $server_offset = date('Z');
+        $time += $server_offset;
+        $time -= $user_offset;
+        return $time;
+    }
+
+
+    function getServerTime($time=0)
+    {
+        if (!$time) {
+            $time = mktime();
+        }
+
+        $admin_offset = 3600 * PHPWS_Time::getServerTZ(); 
+        $server_offset = date('Z');
+        $time -= $server_offset;
+        $time += $admin_offset;
+        return $time;
+    }
+
+    function getUserTime($time=0)
+    {
+        if (!$time) {
+            $time = mktime();
+        }
+
+        $user_offset = 3600 * PHPWS_Time::getUserTZ(); 
+        $server_offset = date('Z');
+        $time -= $server_offset;
+        $time += $user_offset;
+        return $time;
     }
 
 
@@ -42,30 +81,6 @@ class PHPWS_Time {
         return $server_tz;
     }
 
-    function getTimeArray($time=0)
-    {
-        if (!$time) {
-            $time = PHPWS_Time::mkservertime();
-        }
-
-        $aTime['m'] = (int)strftime('%m', $time);
-        $aTime['d'] = (int)strftime('%e', $time);
-        $aTime['y'] = (int)strftime('%Y', $time);
-        $aTime['h'] = (int)strftime('%k', $time);
-        $aTime['i'] = (int)strftime('%M', $time);
-        $aTime['u'] = $time;
-
-        return $aTime;
-    }
-
-    function mkservertime()
-    {
-        if (!defined('SERVER_TIME_ZONE')) {
-            return mktime();
-        } else {
-            return PHPWS_Time::getServerTime(PHPWS_Time::getUTCTime());
-        }
-    }
 
     /**
      * Get user's timezone or the server time zone if none is
@@ -88,48 +103,22 @@ class PHPWS_Time {
     }
 
 
-    /**
-     * Returns the Unix time of the server when passed
-     * the UTC time
-     */
-    function getServerTime($utc_time)
+    function getTimeArray($time=0)
     {
-        return PHPWS_Time::convertUTCTime($utc_time, PHPWS_Time::getServerTZ(), TRUE);
-    }
-
-
-    /**
-     * Returns the Unix time of the current user if their
-     * timezone cookie is set. Otherwise, returns server time.
-     */
-    function getUserTime($utc_time=0, $gmt=true)
-    {
-        if (!$utc_time) {
-            $gmt = true;
-            $utc_time = gmmktime();
+        if (!$time) {
+            $time = PHPWS_Time::getServerTime();
         }
 
-        $user_tz = PHPWS_Time::getUserTZ();
-        return PHPWS_Time::convertUTCTime($utc_time, $user_tz, $gmt);
+        $aTime['m'] = (int)strftime('%m', $time);
+        $aTime['d'] = (int)strftime('%e', $time);
+        $aTime['y'] = (int)strftime('%Y', $time);
+        $aTime['h'] = (int)strftime('%k', $time);
+        $aTime['i'] = (int)strftime('%M', $time);
+        $aTime['u'] = $time;
+
+        return $aTime;
     }
 
-    function convertUTCTime($time, $tz, $negative=FALSE)
-    {
-        if ($negative) {
-            $tz *= -1;
-        }
-        return $time + ($tz * 3600);
-    }
-
-    function convertServerTime($time)
-    {
-        return PHPWS_Time::convertUTCTime($time, PHPWS_Time::getServerTZ(), TRUE);
-    }
-
-    function convertUserTime($time)
-    {
-        return PHPWS_Time::convertUTCTime($time, PHPWS_Time::getUserTZ(), TRUE);
-    }
 
     function getTZList()
     {
