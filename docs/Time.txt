@@ -1,0 +1,159 @@
+PHPWS_Time Class by Matthew McNaney
+------------------------------------
+
+One part of php that I tend to have problems with are timezones. The
+various date and time functions tend to become confusing when you want
+to display a date based on a user's timezone. Other problems arise
+when you want your server's timezone to differ from its physical
+location.
+
+The PHPWS_Time class attempts to assist you with these problems. Be
+very careful how you use it; misunderstandings between what is
+expected and what arises abound.
+
+
+GMT / UTC
+------------------------------------
+GMT stands for Greenwich Mean Time. It is also refered to as UTC, or
+Coordinated Universal Time. They are different concepts between the
+two (which I won't get into) but for our purposes they are close enough.
+
+Think of UTC as the first time zone or "zero hour". Everything to the
+east of Greenwich Observatory adds hours in reference to this
+time. Everything to the west, removes hours. Here in North Carolina,
+we are 4 hours less than the UTC. We are at EST (UTC -4) (forget daylight
+savings time for now). California is three hours less than us. They
+are at PST (UTC -7). So if it is 4pm in London, it is 12pm here and 9am in
+California.
+
+
+Time Zone Two Step
+-------------------------------------
+Problems arise when your site user's are in different time zones. Say
+a user in Seattle makes an appointment to meet you online at 12pm. If
+your module does not adjust this appointment for your time zone, you
+will be waiting around for them for about three hours. His appointment
+should say 12pm and yours should say 3pm.
+
+So if we want to store the correct time, we need a standard. We can't
+save 12pm nor could we save 3pm if you made the appointment
+instead. We need to store the time in UTC.
+
+
+Using mktime
+------------------------------------
+No matter when your server is in the world, mktime returns a unix time
+stamp based on the UTC relative your server. When you are setting a
+snapshot time stamp, mktime is the function to use.
+
+
+What about gmmktime?
+------------------------------------
+Be careful with this function. It returns the unix time if the server
+was in London.
+
+If I use mktime(8, 0, 0, 8, 1, 2006); I am asking for the unix time
+in GMT relative to the time zone of my server.
+
+If I use gmmktime(8, 0, 0, 8, 1, 2006, ); I am asking for the unix time
+of my server relative to GMT. Calling gmmktime is like giving
+Greenwich a certain time so I can see what time it would be here.
+So if it is 8:00am in Greenwich, what time is it here? The above
+example would return 4:00am in unix time.
+
+
+date|gmdate - strftime|gmstrftime
+--------------------------------------
+To print out our unix time we have two functions, date and
+strftime. Their GMT equivalents are gmdate and gmstrftime.
+
+date and strftime take the timestamp and print the date relative to
+the server. gmdate and gmstrftime print the date relative to the GMT.
+
+Here are some examples:
+
+$mktime = mktime(8, 0, 0, 8, 1, 2006);
+$gmmktime = gmmktime(8, 0, 0, 8, 1, 2006);
+
+// what is the date here?
+echo date('Y-m-d g:ia', $mktime); 
+echo '<br>';
+
+// what is the date here if it is this time in GMT?
+echo date('Y-m-d g:ia', $gmmktime);
+echo '<br>';
+
+// what is the date in GMT if it is this time here?
+echo gmdate('Y-m-d g:ia', $mktime); 
+echo '<br>';
+
+// what is the date in GMT if it is this time in GMT
+echo gmdate('Y-m-d g:ia', $gmmktime); 
+
+Here are the results:
+
+2006-08-01 8:00am
+2006-08-01 4:00am
+2006-08-01 12:00pm
+2006-08-01 8:00am
+
+
+This can be confusing (it was for me anyway). Go over the comment
+questions until if becomes clear.
+
+
+The Plot Thickens
+--------------------
+Once you start to understand the above, another problem arises. What
+if the server's default time zone is not where the site is based? In
+other words, what if my server is in Texas but it serves users in
+Virginia? I don't want my events and appointments to correspond to
+Texas time.
+
+We'll start with the server time. For our examples we will say that
+the server lives in UTC -4. The site administrator meanwhile hosts the
+site for users in UTC -5.
+
+The admin posts an announcement and the code needs to timestamp it. What
+function should we use. mktime of course. Remember that is the same
+time the world over.
+
+Lets say the admin posts a calendar entry and wants to set it to
+12:00pm on August 1, 2006 server time. Now it gets more interesting. We will use
+convertServerTime to accommodate this request:
+
+$event_time = mktime(12, 0, 0, 8, 1, 2006);
+
+$convert_time = PHPWS_Time::convertServerTime($event_time);
+
+The $convert_time is now 1:00pm and we save it to the database. Why is
+it 1:00pm? Because our server is in UTC -4, one time zone higher than
+the site configured to UTC -5.
+
+Now, admin goes to check his event to see if it posted at the correct
+time. So the script will pull the time from the database. Now we need
+to print it as the server time:
+
+echo date('Y-m-d g:ia', PHPWS_Time::getServerTime($convert_time));
+
+The script will print:
+
+2006-08-01 12:00pm
+
+Meanwhile, a user from CST (UTC -6) hits the site and looks at the
+event. If they have set their time zone, we can conform the time to
+their location:
+
+echo date('Y-m-d g:ia', PHPWS_Time::getUserTime($convert_time));
+
+The script will give the user this date:
+
+2006-08-01 11:00am
+
+So to review, the admin set the time to 12pm. The database saved it
+under 1pm. The user who lives further west, sees the event at 11am.
+
+If we wanted the user to create an event, we can use
+PHPWS_Time::convertUserTime($time) to save it. In fact, you should do
+this for all your dates instead of using convertServerTime. This will
+allow you have site admins from all over the world.
