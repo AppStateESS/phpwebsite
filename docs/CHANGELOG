@@ -1,3 +1,20 @@
+22 August 2006
++ Core
+- Time.php : rewrote all most functions. should be easier to
+             understand now
+- Key.php  : Uses mktime for the timestamps and new Time functions for
+             display
+
++ Blog
+- Changed dependency information for comments
+- Uses new time functions
+
+
+21 August 2006
++ Core
+- DBPager : changed function call to use call_user_func. Eliminated an
+            undebugable problem in a module.
+
 18 August 2006
 + Core
 - removed old crutch files
