@@ -88,12 +88,12 @@ class Key {
 
     function getCreateDate($format = '%c')
     {
-        return strftime($format, $this->create_date);
+        return strftime($format, PHPWS_Time::getServerTime($this->create_date));
     }
 
     function getUpdateDate($format = '%c')
     {
-        return strftime($format, $this->update_date);
+        return strftime($format, PHPWS_Time::getServerTime($this->update_date));
     }
 
     function restrictToLogged()
@@ -253,7 +253,7 @@ class Key {
         }
 
         if (empty($this->create_date)) {
-            $this->create_date = PHPWS_Time::getUTCTime();
+            $this->create_date = mktime();
         }
 
         if (empty($this->creator)) {
@@ -264,7 +264,7 @@ class Key {
         $this->updater = Current_User::getDisplayName();
         $this->updater_id = Current_User::getId();
 
-        $this->update_date = PHPWS_Time::getUTCTime();
+        $this->update_date = mktime();
 
         $db = & new PHPWS_DB('phpws_key');
         $result = $db->saveObject($this);
