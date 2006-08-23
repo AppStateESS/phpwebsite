@@ -1141,6 +1141,10 @@ class PHPWS_DB {
 
             if ($type == 'count') {
                 if (empty($columns)) {
+                    // order and groupby are not needed if count is
+                    // using all rows
+                    $order = null;
+                    $groupby = null;
                     $columns = 'COUNT(*)';
                 } else {
                     $add_group = $columns;
