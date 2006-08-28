@@ -1,3 +1,18 @@
+28 August 2006
++ Calendar
+- Event view has view links
+- Added ability to pick schedule for viewing
+- Event is now keyed
+- some caching and js view in event disabled temporarily
+- Fixed install.sql file
+- full.tpl replaced with grid.tpl
+
+
+23 August 2006
++ Core
+- Database.php : if a count(*) is used, the db class will clear
+                 unneccessary order and group designations
+
 22 August 2006
 + Core
 - Time.php : rewrote all most functions. should be easier to
