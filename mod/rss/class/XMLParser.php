@@ -52,8 +52,7 @@ class XMLParser {
                 die(sprintf("XML error: %s at line %d",
                             xml_error_string(xml_get_error_code($this->xml)),
                             xml_get_current_line_number($this->xml)));
-                xml_parser_free($this->xml
-                                );
+                xml_parser_free($this->xml);
             }
         }
 
