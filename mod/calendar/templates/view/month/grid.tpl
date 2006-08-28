@@ -1,7 +1,8 @@
 <div class="box">
-  <div class="box-title"><h1 class="align-center">{TITLE} -
+  <div class="box-title"><h1 class="align-center"><!-- BEGIN title -->{TITLE} -<!-- END title -->
       {FULL_MONTH_NAME}, {FULL_YEAR} {PICK}</h1>
       <div class="view-links">{VIEW_LINKS}</div>
+      <div class="align-center smaller">{SCHEDULE_PICK}</div>
   </div>
   <div class="box-content">
   <div class="month-view-full">

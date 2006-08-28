@@ -45,7 +45,7 @@ class Calendar_Schedule {
      * or no one besides specific users may view
      * @var integer
      */
-    var $view_status = CAL_VIEW_ALL;
+    //    var $view_status = CAL_VIEW_ALL;
 
     
     /**
@@ -83,6 +83,12 @@ class Calendar_Schedule {
      */
     var $_error         = null;
 
+    /**
+     * Key object for this schedule
+     * @var object
+     */
+    var $_key           = null;
+
 
     function Calendar_Schedule($id=0)
     {
@@ -98,7 +104,7 @@ class Calendar_Schedule {
     function addEventLink($default_date=NULL)
     {
         if (!isset($default_date)) {
-            $default_date = PHPWS_Time::mkservertime();
+            $default_date = PHPWS_Time::getUserTime();
         }
 
         if (javascriptEnabled()) {
@@ -182,11 +188,13 @@ class Calendar_Schedule {
 
         $form->setMatch('public', (int)$this->public);
 
+        /*
         $form->addRadio('view_status', array(CAL_VIEW_ALL, CAL_VIEW_SOME, CAL_VIEW_LIMIT));
         $form->setLabel('view_status', array(_('Events details seen'),
                                              _('Event details hidden'),
                                              _('Schedule seen by permission only')));
         $form->setMatch('view_status', $this->view_status);
+
 
         $groups = Users_Permission::getPermissionGroups($key);
         $group_list = $groups['permitted']['users'];
@@ -199,6 +207,7 @@ class Calendar_Schedule {
             $form->addSelect('user_id', $select_list);
             $form->setLabel('user_id', _('Assign to'));
         }
+        */
 
         $form->addSubmit(_('Save'));
         
@@ -247,8 +256,11 @@ class Calendar_Schedule {
 
     function &getKey()
     {
-        $key = & new Key($this->key_id);
-        return $key;
+        if (!$this->_key) {
+            $this->_key = & new Key($this->key_id);
+        }
+
+        return $this->_key;
     }
 
 
@@ -267,9 +279,12 @@ class Calendar_Schedule {
     {
         $db = $this->getDB();
         $result = $db->loadObject($this);
+
         if (PEAR::isError($result)) {
             $this->id = 0;
             PHPWS_Error::log($result);
+        } elseif (!$result) {
+            $this->id = 0;
         }
     }
 

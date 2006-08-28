@@ -2,6 +2,7 @@
     <div class="box-title">
         <h1 class="align-center">{SCHEDULE_TITLE} - {DAY_RANGE} {PICK}</h1>
         <div class="view-links">{VIEW_LINKS}</div>
+        <div class="align-center smaller">{SCHEDULE_PICK}</div>
     </div>
     <div class="box-content">
     {MESSAGE}

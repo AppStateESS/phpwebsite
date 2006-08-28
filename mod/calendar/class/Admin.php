@@ -40,10 +40,8 @@ class Calendar_Admin {
 
     }
 
-    function editEvent()
+    function editEvent($event)
     {
-        $event = $this->calendar->schedule->loadEvent();
-
         if (!$event->id) {
             $event->end_time = $this->calendar->current_date;
             $event->start_time = $this->calendar->current_date;
@@ -112,7 +110,8 @@ class Calendar_Admin {
         switch ($command) {
         case 'create_event':
             $panel->setCurrentTab('schedules');
-            $this->editEvent();
+            $event = $this->calendar->schedule->loadEvent();
+            $this->editEvent($event);
             break;
 
         case 'create_schedule':
@@ -130,7 +129,8 @@ class Calendar_Admin {
 
         case 'edit_event':
             $panel->setCurrentTab('schedules');
-            $this->editEvent();
+            $event = $this->calendar->schedule->loadEvent();
+            $this->editEvent($event);
             break;
 
         case 'edit_schedule':

@@ -72,6 +72,7 @@ class PHPWS_Calendar {
         $this->loadToday();
         $this->loadRequestDate();
         $this->loadSchedule();
+        
     }
 
     /**
@@ -140,6 +141,33 @@ class PHPWS_Calendar {
         return $oMonth;
     }
 
+    /**
+     * Returns a list of schedules according to the user's permissions
+     */
+    function getScheduleList($mode='object')
+    {
+        $db = & new PHPWS_DB('calendar_schedule');
+        Key::restrictView($db);
+        $db->addOrder('title');
+        
+        switch ($mode) {
+        case 'object':
+            return $db->getObjects('Calendar_Schedule');
+            break;
+
+            
+        case 'brief':
+            $db->addColumn('id');
+            $db->addColumn('title');
+            $db->setIndexBy('id');
+            return $db->select('col');
+            break;
+        }
+        
+
+    }
+
+
     function &getWeek()
     {
         require_once 'Calendar/Week.php';
@@ -147,7 +175,6 @@ class PHPWS_Calendar {
         $oWeek = & new Calendar_Week($this->int_year, $this->int_month, $this->int_day, CALENDAR_START_DAY);
         $oWeek->build();
         return $oWeek;
-        
     }
 
 

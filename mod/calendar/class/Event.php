@@ -17,6 +17,11 @@ class Calendar_Event {
     var $id      = 0;
 
     /**
+     * @var integer
+     */
+    var $key_id  = 0;
+
+    /**
      * @var string
      */
     var $title   = null;
@@ -63,6 +68,13 @@ class Calendar_Event {
      */
     var $_event = null;
 
+    /**
+     * Key object for this schedule
+     * @var object
+     */
+    var $_key           = null;
+
+
     function Calendar_Event($schedule=null, $event_id=0)
     {
         if ($schedule) {
@@ -73,7 +85,13 @@ class Calendar_Event {
                 return;
             } else {
                 $this->id = (int)$event_id;
-                $this->init();
+                $result = $this->init();
+                if (PEAR::isError($result)) {
+                    PHPWS_Error::log($result);
+                    $this->id = 0;
+                } elseif (!$result) {
+                    $this->id = 0;
+                }
             }
         }
     }
@@ -118,6 +136,14 @@ class Calendar_Event {
         }
     }
 
+
+    function flagKey()
+    {
+        if (!isset($this->_key)) {
+            $this->_key = & new Key($this->key_id);
+        }
+        $this->_key->flag();
+    }
 
     /**
      * Creates the edit form for an event
@@ -201,6 +227,16 @@ class Calendar_Event {
     }
 
 
+    function &getKey()
+    {
+        if (!$this->_key) {
+            $this->_key = & new Key($this->key_id);
+        }
+
+        return $this->_key;
+    }
+
+
     function getStartTime($format='%c')
     {
         return strftime($format, $this->start_time);
@@ -247,20 +283,24 @@ class Calendar_Event {
     function getTitle($linked=true)
     {
         if ($linked) {
-            $vars['view'] = 'event';
-            $vars['id']   = $this->id;
+            $vars['view']   = 'event';
+            $vars['event_id']     = $this->id;
+            $vars['sch_id'] = $this->_schedule->id;
+            /*
             if (javascriptEnabled()) {
                 $vars['js'] = 1;
                 $js['address'] = PHPWS_Text::linkAddress('calendar', $vars);
-                $js['label'] = $this->title;
-                $js['width'] = '640';
-                $js['height'] = '480';
+                $js['label']   = $this->title;
+                $js['width']   = '640';
+                $js['height']  = '480';
 
                 return javascript('open_window', $js);
             } else {
+            */
                 return PHPWS_Text::moduleLink($this->title, 'calendar', $vars);
+                /*
             }
-
+                */
         } else {
             return $this->title;
         }
@@ -284,6 +324,15 @@ class Calendar_Event {
         return $tpl;
     }
 
+    function getViewLink()
+    {
+        $vars['view']   = 'event';
+        $vars['event_id']     = $this->id;
+        $vars['sch_id'] = $this->_schedule->id;
+        return PHPWS_Text::linkAddress('calendar', $vars);
+    }
+    
+
     function init()
     {
         $table = $this->_schedule->getEventTable();
@@ -294,9 +343,12 @@ class Calendar_Event {
         }
 
         $db = & new PHPWS_DB($table);
-        $db->loadObject($this);
+        return $db->loadObject($this);
     }
 
+    /**
+     * Posts the event information from the form into the object
+     */
     function post()
     {
         if (empty($_POST['title'])) {
@@ -385,19 +437,61 @@ class Calendar_Event {
             return PHPWS_Error::get();
         }
         
-        
         $db = & new PHPWS_DB($table);
         $result = $db->saveObject($this);
         if (PEAR::isError($result)) {
             return $result;
         } else {
+            if (empty($this->key_id)) {
+                $save_key = true;
+            } else {
+                $save_key = false;
+            }
+            $key = $this->saveKey();
+            if (PEAR::isError($key)) {
+                PHPWS_Error::log($key);
+                return false;
+            }
+
+            $db->saveObject($this);
+
+            $search = & new Search($this->key_id);
+            $search->addKeywords($this->title);
+            $search->addKeywords($this->summary);
+            $search->save();
             return TRUE;
         }
     }
 
     function saveKey()
     {
+        if (empty($this->key_id)) {
+            $key = & new Key;
+        } else {
+            $key = & new Key($this->key_id);
+            if (PEAR::isError($key->_error)) {
+                $key = & new Key;
+            }
+        }
 
+        $key->setModule('calendar');
+        $key->setItemName('event');
+        $key->setItemId($this->id);
+        //        $key->setEditPermission('edit_event');
+        $key->setUrl($this->getViewLink());
+        $key->setTitle($this->title);
+        if (!empty($this->summary)) {
+            $key->setSummary($this->summary);
+        } else {
+            $key->setSummary($this->title);
+        }
+
+        $result = $key->save();
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+        $this->key_id = $key->id;
+        return $key;
     }
 
 

@@ -15,9 +15,24 @@ class Calendar_User {
      */
     var $calendar = null;
 
+    /**
+     * @var string Contains printed content
+     */
     var $content = null;
-    var $title = null;
+
     var $current_view = null;
+
+    /**
+     * @var object If event is requested, contains object
+     */
+    var $event = null;
+
+
+    /**
+     * @var string Contains page title header
+     */
+    var $title = null;
+
 
     /**
      * @var Calendar_View object
@@ -50,8 +65,8 @@ class Calendar_User {
 
         $template['TITLE'] = $this->calendar->schedule->title;
         $template['DATE'] = strftime(CALENDAR_DAY_FORMAT, $startdate);
-
-        $template['PICK'] = $this->getPick();
+        $template['SCHEDULE_PICK'] = $this->schedulePick();
+        $template['PICK'] = $this->getDatePick();
         
         $tpl = & new PHPWS_Template('calendar');
         $tpl->setFile('view/day/day.tpl');
@@ -126,15 +141,14 @@ class Calendar_User {
     }
 
 
-    function event($id, $js=false) {
+    function event($js=false) {
         PHPWS_Core::initModClass('calendar', 'Event.php');
-        $event = & new Calendar_Event($this->calendar->schedule, $id);
 
-        if (!$event->id) {
+        if (!$this->event->id) {
             PHPWS_Core::errorPage('404');
         }
 
-        $template = $event->getTpl();
+        $template = $this->event->getTpl();
 
         if ($js) {
             $template['CLOSE_WINDOW'] = javascript('close_window', array('value'=>_('Close')));
@@ -142,11 +156,12 @@ class Calendar_User {
             $template['BACK_LINK'] = PHPWS_Text::backLink();
         }
 
+        $template['VIEW_LINKS'] = $this->viewLinks('event');
         return PHPWS_Template::process($template, 'calendar', 'view/event.tpl');
     }
 
 
-    function getPick()
+    function getDatePick()
     {
         $js['month'] = $this->calendar->int_month;
         $js['day'] = $this->calendar->int_day;
@@ -215,6 +230,15 @@ class Calendar_User {
         }
     }
 
+    function loadEvent()
+    {
+        PHPWS_Core::initModClass('calendar', 'Event.php');
+        if (!isset($_REQUEST['event_id'])) {
+            return false;
+        }
+        $this->event = & new Calendar_Event($this->calendar->schedule, (int)$_REQUEST['event_id']);
+        return true;
+    }
 
 
     function main()
@@ -339,16 +363,16 @@ class Calendar_User {
         // Check cache
         $cache_key = sprintf('grid_%s_%s_%s', $oMonth->month, $oMonth->year, $this->calendar->schedule->id);
 
-        
+        /*
         $content = PHPWS_Cache::get($cache_key);
         if (!empty($content)) {
             return $content;
         }
-        
+        */
         // Cache empty, make month
 
         $oTpl = & new PHPWS_Template('calendar');
-        $oTpl->setFile('view/month/full.tpl');
+        $oTpl->setFile('view/month/grid.tpl');
 
         $this->_weekday($oMonth, $oTpl);
         reset($oMonth->children);
@@ -362,15 +386,16 @@ class Calendar_User {
         $template['PARTIAL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%b', $date), 'calendar', $vars);
 
         $template['TITLE'] = $this->calendar->schedule->title;
-        $template['PICK'] = $this->getPick();
+        $template['PICK'] = $this->getDatePick();
         $template['FULL_YEAR'] = strftime('%Y', $date);
         $template['PARTIAL_YEAR'] = strftime('%y', $date);
         $template['VIEW_LINKS'] = $this->viewLinks('grid');
+        $template['SCHEDULE_PICK'] = $this->schedulePick();
 
         $oTpl->setData($template);
         $content = $oTpl->get();
 
-        PHPWS_Cache::save($cache_key, $content);
+        //        PHPWS_Cache::save($cache_key, $content);
         return $content;
     }
 
@@ -403,8 +428,9 @@ class Calendar_User {
         $main_tpl['SCHEDULE_TITLE']  = $this->calendar->schedule->title;
         $main_tpl['FULL_YEAR']       = strftime('%Y', mktime(0,0,0, $month, $day, $year));
         $main_tpl['ABRV_YEAR']       = strftime('%y', mktime(0,0,0, $month, $day, $year));
+        $template['SCHEDULE_PICK'] = $this->schedulePick();
 
-        $main_tpl['PICK'] = $this->getPick();
+        $main_tpl['PICK'] = $this->getDatePick();
 
         $tpl->setData($main_tpl);
         $tpl->parseCurrentBlock();
@@ -414,16 +440,44 @@ class Calendar_User {
     }
 
 
+    function schedulePick()
+    {
+        $schedules = $this->calendar->getScheduleList('brief');
+        if (count($schedules) < 2) {
+            return null;
+        }
+        $form = & new PHPWS_Form('schedule_pick');
+        $form->setMethod('get');
+        $form->addHidden('module', 'calendar');
+        $form->addHidden('view', $this->current_view);
+        $form->addHidden('date', $this->calendar->current_date);
+        $form->addSelect('sch_id', $schedules);
+        $form->setMatch('sch_id', $this->calendar->schedule->id);
+        $form->addSubmit('go', _('Change schedule'));
+        
+        $tpl = $form->getTemplate();
+        return implode("\n", $tpl);
+    }
+
     /**
      * Pathing for which view to display
      */
     function view()
     {
-        if ( ($this->calendar->schedule->public && Current_User::allow('calendar', 'edit_public', $this->calendar->schedule->id) ) ||
-             (!$this->calendar->schedule->public && Current_User::allow('calendar', 'edit_private', $this->calendar->schedule->id) )
+        if ( $this->calendar->schedule->id &&
+             ( ($this->calendar->schedule->public && Current_User::allow('calendar', 'edit_public', $this->calendar->schedule->id) ) ||
+               (!$this->calendar->schedule->public && Current_User::allow('calendar', 'edit_private', $this->calendar->schedule->id) )
+               )
              ) {
             MiniAdmin::add('calendar', $this->calendar->schedule->addEventLink($this->calendar->current_date));
         }
+
+        $schedule_key = $this->calendar->schedule->getKey();
+
+        if ( (!$this->calendar->schedule->public && !$schedule_key->allowView())) {
+            PHPWS_Core::errorPage('403');
+        }
+
 
         switch ($this->current_view) {
         case 'day':
@@ -443,14 +497,16 @@ class Calendar_User {
             break;
 
         case 'event':
-            $event_id = (int)$_REQUEST['id'];
+            if (!$this->loadEvent($_REQUEST['event_id']) || !$this->event->id) {
+                PHPWS_Core::errorPage('404');
+            }
 
             if (isset($_REQUEST['js'])) {
-                $this->content = $this->event($event_id, true);
+                $this->content = $this->event(true);
                 Layout::nakedDisplay($this->content);
                 return;
             } else {
-                $this->content = $this->event($event_id);
+                $this->content = $this->event();
             }
             break;
         default:
@@ -458,7 +514,17 @@ class Calendar_User {
             break;
         }
 
+        // If the schedule is public flag the schedule or event key
+        // Private schedules are not flagged.
+        if ($this->calendar->schedule->public) {
+            if ($this->current_view == 'event') {
+                $this->event->flagKey();
+            } else {
+                $schedule_key->flag();
+            }
+        }
     }
+
 
     /**
      * Returns a set of links to navigate the different calendar views
@@ -470,6 +536,11 @@ class Calendar_User {
     {
         $vars = PHPWS_Text::getGetValues();
         unset($vars['module']);
+
+        if ($current_view == 'event') {
+            $links[] = _('Event');
+            $vars['date'] = $this->event->start_time;
+        }
 
         if (isset($this->calendar->schedule)) {
             $vars['sch_id'] = $this->calendar->schedule->id;
@@ -530,11 +601,15 @@ class Calendar_User {
 
         $vars['view'] = $current_view;
 
-        $vars['date'] = $left_arrow_time;
-        array_unshift($links, PHPWS_Text::moduleLink('&lt;&lt;', 'calendar', $vars, null, $left_link_title));
+        if (!empty($left_arrow_time)) {
+            $vars['date'] = $left_arrow_time;
+            array_unshift($links, PHPWS_Text::moduleLink('&lt;&lt;', 'calendar', $vars, null, $left_link_title));
+        }
 
-        $vars['date'] = $right_arrow_time;
-        $links[] = PHPWS_Text::moduleLink('&gt;&gt;', 'calendar', $vars, null, $right_link_title);
+        if (!empty($right_arrow_time)) {
+            $vars['date'] = $right_arrow_time;
+            $links[] = PHPWS_Text::moduleLink('&gt;&gt;', 'calendar', $vars, null, $right_link_title);
+        }
 
         return implode(' | ', $links);
     }
@@ -588,8 +663,8 @@ class Calendar_User {
         $main_tpl['SCHEDULE_TITLE'] = $title;
         $main_tpl['FULL_YEAR'] = strftime('%Y', $this->calendar->current_date);
         $main_tpl['ABRV_YEAR'] = strftime('%y', $this->calendar->current_date);
-
-        $main_tpl['PICK'] = $this->getPick();
+        $template['SCHEDULE_PICK'] = $this->schedulePick();
+        $main_tpl['PICK'] = $this->getDatePick();
 
         $tpl->setData($main_tpl);
         $tpl->parseCurrentBlock();
