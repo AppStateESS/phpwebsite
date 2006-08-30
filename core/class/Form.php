@@ -455,8 +455,8 @@ class PHPWS_Form {
         }
 
         foreach ($this->_elements[$name] as $key => $element){
-            if (is_array($label) && isset($label[$element->place])) {
-                $result = $this->_elements[$name][$key]->setLabel($label[$element->place]);
+            if (is_array($label) && isset($label[$element->key])) {
+                $result = $this->_elements[$name][$key]->setLabel($label[$element->key]);
             }
             else {
                 $result = $this->_elements[$name][$key]->setLabel($label);
@@ -466,7 +466,6 @@ class PHPWS_Form {
                 return $result;
             }
         }
-
     }
 
     function getId($name)
