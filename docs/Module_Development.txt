@@ -28,11 +28,14 @@ III. Installation
    C. Boost
      1. Boost File
      2. SQL import
+     3. Install file
+     4. Registering
    D. Permissions
    E. Control Panel
      1. Links
      2. Tabs
    F. Dependencies
+   G. Installing
 
 IV.  Administrating
    A. Permissions
@@ -896,6 +899,102 @@ note the index's name format: contracted table name + underline +
 idx. This is phpWebSite's database class's default format.
 
 
+3. Install file
+......................................................................
+
+An install file is not necessary. Many times, you just need an
+install.sql file to import your module's tables. That said, there may
+be times when you need to perform other actions outside of the sql
+import. Perhaps you need to create some special directories. Maybe you
+need some information from the site administrator before the
+installation can complete. An install file can assist with such
+actions.
+
+We will be looking at Layout's install.php (look in:
+mod/layout/boost/) file as an example.
+
+First notice the function name "layout_install." You must have a
+function composed of your module's title, plus an underline, plus the
+word "install."
+
+Your function should take two parameters. The first parameter is a
+reference to Boost's content array variable. The second parameter is a
+boolean variable alerting you to the type of module installation; in a
+hub or in a branch.
+
+Let's have a quick run through this file. Layout uses the install.php
+file to determine your site's name and which theme you wish to
+use. 
+
+There are two parts to the install file. One part prints a form to
+gather the above information. Notice that form content is added to the
+$content array: 
+
+$content[] = PHPWS_Template::process($template, 'layout',
+                                     'setup.tpl');
+
+Remember, Boost implodes this array and prints the information within.
+
+After the form is created, the install function returns FALSE. This
+tells Boost that we aren't done yet.
+
+The second part of Layout's install function error checks form
+data. If satisfied, the install function saves the data and returns
+TRUE. This tells Boost we are done. If the data is in error, the
+function displays an error message and runs the form again. Since we
+still are not finished, FALSE is returned again.
+
+Boost will continue to run this file until it receives a TRUE OR an
+error object. If it receives an error object, the installation will
+fail and you will be able to return to the Boost module.
+
+
+4. Registering
+......................................................................
+
+If your module needs to interact with other modules when they are
+installed, you need to create a register.php file in the  module's
+boost directory. When the module is installed, Boost registers the
+module in three ways:
+1) The module is registered to other modules.
+2) The other modules are registered to it.
+3) The module is registered to itself.
+
+Let's use Control Panel as an example.
+
+1) Control Panel is registered to other modules. The Users module
+   registers its permissions for example.
+
+2) Other modules are registered to Control Panel. Boost goes through
+   runs every module currently installed against the Control Panel's
+   register file. Control Panel looks at each module to see if it has
+   a controlpanel.php file. If so, it creates the tabs and links
+   requested by the module.
+
+3) Control Panel registers itself. It looks in its own directory for a
+   controlpanel.php file and creates the tabs and links specified.
+
+
+Take a look at Control Panel's register.php file. It contains a
+function similar in construction to the install.php function. The
+function should contain the module title, plus an underline, followed
+by the word "register.".
+
+The register function will contain two variables. The first variable
+is the title of the module getting registered. Like the install.php
+function, the second variable is the referenced content
+variable. Anything we want to print in Boost is piped into it.
+
+If you wish, you can follow the logic in
+PHPWS_ControlPanel::registerModule method. Basically it performs the
+actions we went over previously in the Control Panel setup. Like
+install.php, Boost expects one of three results, true, false, or an
+error. If true, the registration was successful. If false, the
+registration was not completed. This is an appropriate response
+because the module may not need registering. The final response would
+be an error object. If such is returned, it is logged and Boost gives
+a warning. The module will still install.
+
 
 D. Permissions
 ----------------------------------------------------------------------
@@ -1101,27 +1200,41 @@ directory. Here is an example from Blog:
     <title>comments</title>
     <properName>Comments</properName>
     <version>0.2.5</version>
-    <url>http://phpwebsite.appstate.edu/module_info/comments.html</url>
+    <url>   http://phpwebsite.appstate.edu/downloads/modules/comments</url>
   </module>
 </dependency>
 
 This file tells phpWebSite the following:
 1) Blog is dependent on one module
-2) named comments.
+2) The module's title is comments.
 3) The proper name of the module is "Comments."
 4) Comments needs to at or above version 0.2.5.
 5) More information about Comments can be found at
    http://phpwebsite.appstate.edu/downloads/modules/comments
 
+You may add other modules by copying the format of the above:
+
+<module>
+...
+</module>
+<module>
+...
+</module>
+
+When finished, save this file as dependency.xml in your module's boost
+directory. Make sure to update this file along with your module.
 
 
+G. Installing
+----------------------------------------------------------------------
 
-
-
+Your module should now be ready for installation.
 
 
 IV.  Administrating
 ______________________________________________________________________
+
+
 
 
    A. Permissions
