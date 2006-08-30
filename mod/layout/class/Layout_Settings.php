@@ -35,6 +35,7 @@ class Layout_Settings {
     var $_style_sheets    = NULL;
     var $_extra_styles    = NULL;
     var $_key_styles      = NULL;
+    var $_allowed_move    = null;
 
     function Layout_Settings()
     {
@@ -91,6 +92,11 @@ class Layout_Settings {
     function getThemeVariables()
     {
         return $this->_theme_variables;
+    }
+
+    function getAllowedVariables()
+    {
+        return $this->_allowed_move;
     }
 
     function isContentVar($module, $contentVar)
@@ -165,8 +171,6 @@ class Layout_Settings {
             PHPWS_Error::log(LAYOUT_INI_FILE, 'layout', 'Layout_Settings::loadSettings', $themeInit);
             PHPWS_Core::errorPage();
         }
-
-
     }
 
     function loadStyleSheets($themeVars)
@@ -210,7 +214,25 @@ class Layout_Settings {
         if (isset($themeVars['theme_variables'])) {
             $theme_variables = array_merge($theme_variables, $themeVars['theme_variables']);
         }
+
         $this->_theme_variables = $theme_variables;
+
+        if (isset($themeVars['locked']['ignore'])) {
+            $sLocked = str_replace(' ', '', $themeVars['locked']['ignore']);
+            $locked = explode(',', $sLocked);
+
+            if (is_array($locked)) {
+                foreach ($locked as $ignore) {
+                    // add 2 because BODY and DEFAULT take the first two spaces
+                    unset($theme_variables[$ignore + 2]);
+                }
+                $this->_allowed_move = $theme_variables;
+            }
+        } else {
+            $this->_allowed_move = &$this->_theme_variables;
+        }
+
+
     }
 
     function saveSettings()

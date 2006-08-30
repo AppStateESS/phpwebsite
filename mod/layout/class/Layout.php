@@ -25,6 +25,10 @@ class Layout {
      * If the module and content_var are NOT set, the data goes into the 
      * BODY tag.
      *
+     * If default_body is true, then the content we will placed into the
+     * BODY tag by default instead of the DEFAULT tag. This occurs when 
+     * a preset theme variable was not created for the content variable.
+     *
      * @author Matt McNaney <matt at tux dot appstate dot edu>
      */
     function add($text, $module=NULL, $content_var=NULL, $default_body=FALSE)
@@ -337,7 +341,13 @@ class Layout {
         if (isset($themeVarList)) {
             foreach ($themeVarList as $theme_var){
                 ksort($unsortedLayout[$theme_var]);
-                $bodyLayout[strtoupper($theme_var)] = implode('', $unsortedLayout[$theme_var]);
+                $upper_theme_var = strtoupper($theme_var);
+                if (Layout::isMoveBox()) {
+                    $bodyLayout[$upper_theme_var] = '<div class="layout-variable">' . $theme_var .  implode('', $unsortedLayout[$theme_var]) . '</div>';
+                } else {
+                    $bodyLayout[$upper_theme_var] = implode('', $unsortedLayout[$theme_var]);
+                }
+
             }
 
             Layout::loadHeaderTags($bodyLayout);
@@ -901,18 +911,21 @@ class Layout {
     function moveBoxesTag($box){
         PHPWS_Core::initCoreClass('Form.php');
 
-        $themeVars = $_SESSION['Layout_Settings']->getThemeVariables();
+        $themeVars = $_SESSION['Layout_Settings']->getAllowedVariables();
 
         $menu['move_box_top'] = _('Move to top');
         $menu['move_box_up'] = _('Move up');
         $menu['move_box_down'] = _('Move down');
         $menu['move_box_bottom'] = _('Move to bottom');
+        $menu['restore'] = _('Restore to default');
         foreach ($themeVars as $var){
             if ($box->theme_var == $var) {
                 continue;
             }
             $menu[$var] = _('Send to') . ' ' . $var;
         }
+
+
 
         $form = new PHPWS_Form;
         $form->addHidden('module', 'layout');

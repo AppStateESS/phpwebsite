@@ -122,12 +122,16 @@ class Layout_Box {
         return $db->saveObject($this);
     }
 
+    /**
+     * Moves a box to a new location
+     */
     function move($dest)
     {
-        if ($dest != 'move_box_up'   &&
-            $dest != 'move_box_down' &&
-            $dest != 'move_box_top'  &&
-            $dest != 'move_box_bottom') {
+        if ($dest != 'move_box_up'     &&
+            $dest != 'move_box_down'   &&
+            $dest != 'move_box_top'    &&
+            $dest != 'move_box_bottom' &&
+            $dest != 'restore') {
 
             $themeVar = $this->theme_var;
             $this->setThemeVar($_POST['box_dest']);
@@ -137,6 +141,11 @@ class Layout_Box {
             return;
         }
 
+        if ($dest == 'restore') {
+            $this->kill();
+            $this->reorderBoxes($this->theme, $themeVar);
+            return;
+        }
 
         $db = & new PHPWS_DB('layout_box');
         $db->addWhere('id', $this->id, '!=');
