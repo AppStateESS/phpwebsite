@@ -9,7 +9,7 @@ define('DEFAULT_CALENDAR_VIEW', 'day');
 
   // Please read http://www.php.net/manual/en/function.strftime.php
   // before changing these values
-define('CALENDAR_DAY_FORMAT', '%B %e, %Y');
+define('CALENDAR_DAY_FORMAT', '%A, %B %e, %Y');
 
 // 0 Sunday, 1 Monday, etc.
 define('CALENDAR_START_DAY', 0);
@@ -27,5 +27,12 @@ define('CALENDAR_TIME_LIST_FORMAT', '%l:%M %P');
 define('CALENDAR_EVENT_WIDTH', 700);
 define('CALENDAR_EVENT_HEIGHT', 650);
 
+// Controls the dimensions of the repeat editor popup
+define('CALENDAR_REPEAT_WIDTH', 650);
+define('CALENDAR_REPEAT_HEIGHT', 350);
 
+// Repeats can get out of control. When this number is reached
+// the calendar module will not allow anymore repeat writes
+// to the database.
+define('CALENDAR_MAXIMUM_REPEATS', 50);
 ?>
