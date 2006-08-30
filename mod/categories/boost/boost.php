@@ -7,7 +7,7 @@
 
 $proper_name  = 'Categories';
 $version      = '2.1.5';
-$register     = TRUE;
+$register     = false;
 $unregister   = TRUE;
 $import_sql   = TRUE;
 $image_dir    = TRUE;
