@@ -41,11 +41,6 @@ class Calendar_Admin {
 
     function editEvent($event)
     {
-        if (!$event->id) {
-            $event->end_time = $this->calendar->current_date;
-            $event->start_time = $this->calendar->current_date;
-        }
-
         if ($event->id) {
             $this->title = _('Update event');
         } else {
@@ -168,7 +163,10 @@ class Calendar_Admin {
             if (!$this->checkAuthorization('edit_schedule', $_POST['sch_id'])) {
                 Current_User::disallow();
             }
-            $this->postRepeat();
+            if (!$this->postRepeat()) {
+                $event = $this->calendar->schedule->loadEvent();
+                $this->repeatEvent($event);
+            }
             break;
 
         case 'post_schedule':
@@ -267,7 +265,6 @@ class Calendar_Admin {
                 }
             }
         } else {
-            $this->message = $event->_error;
             $this->editEvent($event);
         }
         
@@ -280,7 +277,7 @@ class Calendar_Admin {
     function postRepeat()
     {
         $event = $this->calendar->schedule->loadEvent();
-        $edate = strtotime($_REQUEST['end_repeat_date']);
+        $edate = strtotime($_POST['end_repeat_date']);
 
         $unix_date = mktime('23', '59', '59', 
                             strftime('%m', $edate), strftime('%d', $edate), strftime('%Y', $edate));
@@ -290,12 +287,12 @@ class Calendar_Admin {
             return FALSE;
         }
 
-        if (!isset($_REQUEST['repeat_mode'])) {
+        if (!isset($_POST['repeat_mode'])) {
             $this->message = _('You must choose a repeat mode.');
             return FALSE;
         }
 
-        switch ($_REQUEST['repeat_mode']) {
+        switch ($_POST['repeat_mode']) {
         case 'daily':
             $result = $this->repeatDaily($event, $unix_date);
             break;
@@ -317,6 +314,31 @@ class Calendar_Admin {
             break;
         }
 
+        if (!$result) {
+            return false;
+        }
+
+        if (PEAR::isError($result)) {
+            if (PHPWS_Calendar::isJS()) {
+                PHPWS_Error::log($result);
+                $this->sendMessage(_('An error occurred when trying to repeat an event.', null, false));
+                javascript('close_refresh');
+                Layout::nakedDisplay();
+                exit();
+            } else {
+                $this->sendMessage(_('An error occurred when trying to repeat an event.', 'schedules'));
+            }
+        } else {
+            if (PHPWS_Calendar::isJS()) {
+                PHPWS_Error::log($result);
+                $this->sendMessage(_('Event repeated.', null, false));
+                javascript('close_refresh');
+                Layout::nakedDisplay();
+                exit();
+            } else {
+                $this->sendMessage(_('Event repeated.', 'schedules'));
+            }
+        }
     }
 
     function postSchedule()
@@ -401,15 +423,72 @@ class Calendar_Admin {
 
     function repeatMonthly(&$event, $until_date)
     {
+        require_once 'Calendar/Month.php';
 
+        if (!isset($_POST['monthly_repeat'])) {
+            return false;
+        }
+
+        $max_count = 0;
+        $copy_event = $event;
+
+        $current_m = (int)strftime('%m', $event->start_time);
+        $current_y = (int)strftime('%Y', $event->start_time);
+
+        $time_diff = $event->end_time - $event->start_time;
+
+        $cMonth = & new Calendar_Month($current_y, $current_m);
+        $ctm = $cMonth->getTimestamp();
+        $ntm = $cMonth->nextMonth('timestamp');
+        $cMonth->setTimestamp($ntm);
+
+        switch ($_POST['monthly_repeat']) {
+        case 'begin':
+            while (1) {
+                $ctm = $cMonth->getTimestamp();
+                if ($ctm > $until_date) {
+                    break;
+                }
+
+                $copy_event->id = 0;
+                $copy_event->key_id = 0;
+                $max_count++;
+                if ($max_count > CALENDAR_MAXIMUM_REPEATS) {
+                    return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatMonthly');
+                }
+
+                $copy_event->start_time = $ctm;
+                $copy_event->end_time = $ctm + $time_diff;
+
+                $result = $copy_event->save();
+                if (PEAR::isError($result)) {
+                    return $result;
+                }
+
+                $ntm = $cMonth->nextMonth('timestamp');
+                $cMonth->setTimestamp($ntm);
+            }
+            break;
+
+        case 'end':
+
+            break;
+
+        case 'start':
+
+            break;
+        }
+        return true;
     }
 
 
     function repeatWeekly(&$event, $until_date)
     {
-        if (!isset($_REQUEST['weekday_repeat']) || !is_array($_REQUEST['weekday_repeat'])) {
+        if (!isset($_POST['weekday_repeat']) || !is_array($_POST['weekday_repeat'])) {
             $this->message = _('You must choose which weekdays to repeat.');
+            return false;
         }
+
         $time_unit = $event->start_time + 86400;
 
         $copy_event = $event;
@@ -422,21 +501,22 @@ class Calendar_Admin {
 
         while($time_unit <= $until_date) {
             if (!in_array(strftime('%u', $time_unit), $repeat_days)) {
+                $time_unit += 86400;
                 continue;
             }
             $copy_event->id = 0;
             $copy_event->key_id = 0;
             $max_count++;
             if ($max_count > CALENDAR_MAXIMUM_REPEATS) {
-                return PHPWS_Error::get();
+                return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatWeekly');
             }
             $copy_event->start_time = $time_unit;
             $copy_event->end_time = $time_unit + $time_diff;
-            $time_unit += 86400;
             $result = $copy_event->save();
             if (PEAR::isError($result)) {
                 return $result;
             }
+            $time_unit += 86400;
         }
         return TRUE;
     }

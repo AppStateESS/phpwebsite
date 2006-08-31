@@ -4,11 +4,11 @@
    * @version $Id$
    */
 
-  // choices here are month_list, month_grid, day, and week
+// choices here are month_list, month_grid, day, and week
 define('DEFAULT_CALENDAR_VIEW', 'day');
 
-  // Please read http://www.php.net/manual/en/function.strftime.php
-  // before changing these values
+// Please read http://www.php.net/manual/en/function.strftime.php
+// before changing these values
 define('CALENDAR_DAY_FORMAT', '%A, %B %e, %Y');
 
 // 0 Sunday, 1 Monday, etc.

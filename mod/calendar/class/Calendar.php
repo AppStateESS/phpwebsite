@@ -95,7 +95,7 @@ class PHPWS_Calendar {
     }
 
 
-    function getEvents($start_search=NULL, $end_search=NULL, $schedules=NULL) {
+    function getEvents($start_search=null, $end_search=null, $schedules=null) {
 
         PHPWS_Core::initModClass('calendar', 'Event.php');
         if (!isset($start_search)) {
@@ -109,23 +109,27 @@ class PHPWS_Calendar {
 
         $db = & new PHPWS_DB($this->schedule->getEventTable());
 
-        $db->addWhere('start_time', $start_search, '>=', NULL, 'start');
+        $db->addWhere('start_time', $start_search, '>=', null,  'start');
         $db->addWhere('start_time', $end_search,   '<',  'AND', 'start');
 
-        $db->addWhere('end_time', $end_search,   '<=', 'NULL', 'end');
-        $db->addWhere('end_time', $start_search, '>', 'AND', 'end');
+        $db->addWhere('end_time',   $end_search,   '<=', null,  'end');
+        $db->addWhere('end_time',   $start_search, '>',  'AND', 'end');
+
+        $db->addWhere('start_time', $start_search, '<',  null,  'middle');
+        $db->addWhere('end_time',   $end_search,   '>',  'AND', 'middle');
 
         $db->setGroupConj('end', 'OR');
+        $db->setGroupConj('middle', 'OR');
 
         $db->addOrder('start_time');
         $db->addOrder('end_time desc');
         $db->setIndexBy('id');
-
+        
         $result = $db->getObjects('Calendar_Event', $this->schedule);
 
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            return NULL;
+            return null;
         }
 
         return $result;
@@ -137,7 +141,6 @@ class PHPWS_Calendar {
     {
         require_once 'Calendar/Month/Weekdays.php';
         $oMonth = & new Calendar_Month_Weekdays($this->int_year, $this->int_month, PHPWS_Settings::get('calendar', 'starting_day'));
-        $oMonth->build();
         return $oMonth;
     }
 
@@ -193,7 +196,7 @@ class PHPWS_Calendar {
     }
 
 
-    function loadEventList($start_search=NULL, $end_search=NULL)
+    function loadEventList($start_search=null, $end_search=null)
     {
         $result = $this->getEvents($start_search, $end_search, $this->schedule->id);
         $this->event_list = & $result;
@@ -302,14 +305,31 @@ class PHPWS_Calendar {
         }
 
         foreach ($this->event_list as $key => $event) {
-            $year = (int)date('Y', $event->start_time);
-            $month = (int)date('m', $event->start_time);
-            $day = (int)date('d', $event->start_time);
-            $hour = (int)date('H', $event->start_time);
-            $this->sorted_list[$year]['events'][$key] = & $this->event_list[$key];
-            $this->sorted_list[$year]['months'][$month]['events'][$key] = & $this->event_list[$key];
-            $this->sorted_list[$year]['months'][$month]['days'][$day]['events'][$key] = & $this->event_list[$key];
-            $this->sorted_list[$year]['months'][$month]['days'][$day]['hours'][$hour]['events'][$key] = & $this->event_list[$key];
+            $syear  = (int)date('Y', $event->start_time);
+            $smonth = (int)date('m', $event->start_time);
+            $sday   = (int)date('d', $event->start_time);
+            $shour  = (int)date('H', $event->start_time);
+            $sdate  = (int)date('Ymd', $event->start_time);
+            $edate  = (int)date('Ymd', $event->end_time);
+
+            $this->sorted_list[$syear]['events'][$key] = & $this->event_list[$key];
+            $this->sorted_list[$syear]['months'][$smonth]['events'][$key] = & $this->event_list[$key];
+            $this->sorted_list[$syear]['months'][$smonth]['days'][$sday]['events'][$key] = & $this->event_list[$key];
+            $this->sorted_list[$syear]['months'][$smonth]['days'][$sday]['hours'][$shour]['events'][$key] = & $this->event_list[$key];
+
+            if ($sdate != $edate) {
+                for ($i = $event->start_time + 86400; $i <= $event->end_time; $i += 86400) {
+                    $copy_month = (int)date('m', $i);
+                    $copy_day   = (int)date('d', $i);
+                    $copy_year  = (int)date('Y', $i);
+
+                    $this->sorted_list[$copy_year]['events'][$key] = & $this->event_list[$key];
+                    $this->sorted_list[$copy_year]['months'][$copy_month]['events'][$key] = & $this->event_list[$key];
+                    $this->sorted_list[$copy_year]['months'][$copy_month]['days'][$copy_day]['events'][$key] = & $this->event_list[$key];
+                    $this->sorted_list[$copy_year]['months'][$copy_month]['days'][$copy_day]['hours'][$shour]['events'][$key] = & $this->event_list[$key];
+                }
+            }
+
         }
     }
 

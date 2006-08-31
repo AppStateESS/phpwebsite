@@ -11,7 +11,7 @@
 <!-- BEGIN days -->
             <div class="day bgcolor1">{FULL_WEEKDAY} {DAY_NUMBER}</div>
 <!-- BEGIN hours -->
-            <div class="hour bgcolor2">{HOUR_12}{AM_PM}</div>
+            <div class="hour bgcolor2">{HOUR}</div>
 <!-- BEGIN events -->
             <div class="calendar-event">
                 <span class="event-title">{TITLE}</span> |

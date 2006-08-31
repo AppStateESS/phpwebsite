@@ -116,21 +116,27 @@ class Calendar_Event {
     }
 
 
-    function editLink()
+    function editLink($full=false)
     {
         $linkvar['aop']      = 'edit_event';
         $linkvar['sch_id']   = $this->_schedule->id;
         $linkvar['event_id'] = $this->id;
 
+        if ($full) {
+            $link_label = _('Edit event');
+        } else {
+            $link_label = _('Edit');
+        }
+
         if (javascriptEnabled()) {
             $linkvar['js'] = 1;
             $jsvars['address'] = PHPWS_Text::linkAddress('calendar', $linkvar);
-            $jsvars['link_title'] = $jsvars['label'] = _('Edit');
+            $jsvars['link_title'] = $jsvars['label'] = $link_label;
             $jsvars['width'] = CALENDAR_EVENT_WIDTH;
             $jsvars['height'] = CALENDAR_EVENT_HEIGHT;
             return javascript('open_window', $jsvars);
         } else {
-            return PHPWS_Text::moduleLink(_('Edit'), 'calendar', $linkvar);
+            return PHPWS_Text::moduleLink($link_label, 'calendar', $linkvar);
         }
     }
 
@@ -216,6 +222,42 @@ class Calendar_Event {
 
         javascript('modules/calendar/check_date');
         return PHPWS_Template::process($tpl, 'calendar', 'admin/forms/edit_event.tpl');
+    }
+
+    function getDate()
+    {
+        switch ($this->event_type) {
+        case 1:
+            if (date('Ym', $this->start_time) != date('Ym', $this->end_time)) {
+                $sTime = sprintf('%s, %s - %s, %s', 
+                                 strftime(CALENDAR_TIME_LIST_FORMAT, $this->start_time),
+                                 strftime('%B %e', $this->start_time),
+                                 strftime(CALENDAR_TIME_LIST_FORMAT, $this->end_time),
+                                 strftime('%B %e', $this->end_time)
+                                 );
+            
+            } else {
+                $sTime = sprintf('%s - %s', 
+                                 strftime(CALENDAR_TIME_LIST_FORMAT, $this->start_time),
+                                 strftime(CALENDAR_TIME_LIST_FORMAT, $this->end_time)
+                                 );
+            }
+            break;
+
+        case 2:
+            $sTime = _('All day event');
+            break;
+
+        case 3:
+            $sTime = sprintf(_('Starts at %s.'), strftime(CALENDAR_TIME_LIST_FORMAT, $this->start_time));
+            break;
+
+        case 4:
+            $sTime = sprintf(_('Deadline at %s.'),  strftime(CALENDAR_TIME_LIST_FORMAT, $this->end_time));
+            break;
+        }
+
+        return $sTime;
     }
 
 
@@ -324,7 +366,8 @@ class Calendar_Event {
     {
         $tpl['TITLE']   = $this->getTitle();
         $tpl['SUMMARY'] = $this->getSummary();
-        $tpl['TIME']    = $this->getTime();
+        $tpl['TIME']    = $this->getDate();
+        //        $tpl['TIME']    = $this->getTime();
         if ( ($this->_schedule->public && Current_User::allow('calendar', 'edit_public', $this->_schedule->id)) ||
              (!$this->_schedule->public && Current_User::allow('calendar', 'edit_private', $this->_schedule->id))
              ) {
@@ -333,8 +376,6 @@ class Calendar_Event {
             $link[] = $this->repeatLink();
             $tpl['LINKS'] = implode(' | ', $link);
         }
-
-        
 
         return $tpl;
     }
@@ -374,11 +415,13 @@ class Calendar_Event {
 
         $this->setSummary($_POST['summary']);
 
-        $start_date = & $_POST['start_date'];
-        $end_date = & $_POST['end_date'];
+        $start_date =  strtotime($_POST['start_date']);
+        $end_date =  strtotime($_POST['end_date']);
 
+        /*
         $start_date_array = explode('/', $start_date);
         $end_date_array = explode('/', $start_date);
+        */
 
         $start_time_hour   = &$_POST['start_time_hour'];
         $start_time_minute = &$_POST['start_time_minute'];
@@ -388,9 +431,9 @@ class Calendar_Event {
         switch ($_POST['event_type']) {
         case '1':
             $startTime = mktime($start_time_hour, $start_time_minute, 0,
-                                $start_date_array[1], $start_date_array[2], $start_date_array[0]);
+                                date('m', $start_date), date('d', $start_date), date('Y', $start_date));
             $endTime   = mktime($end_time_hour, $end_time_minute, 0,
-                                $end_date_array[1], $end_date_array[2], $end_date_array[0]);
+                                date('m', $end_date), date('d', $end_date), date('Y', $end_date));
             if ($startTime >= $endTime) {
                 $errors[] = _('The end time must be after the start time.');
             }
