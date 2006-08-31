@@ -1,3 +1,29 @@
+31 August 2006
++ Calendar
+- Expanded repeat capabilities
+- Began work on proper display of events spread over several days
+
+
+30 August 2006
++ Core
+- Form.php : replaced a reference to the place variable with key to
+             fix labels matching with elements
+
+- Module_Development.php : more information on files needs for
+                           installation in Boost
+
++ Calendar
+- Began work on repeat functionality
+
++ Categories
+- removed unused register code
+
++ Layout
+- Added ability to "lock out" some theme variables to prevent boxes from being moved into them
+- Added ability to reset a box
+- Layout variables now appear when move box is initialized
+
+
 28 August 2006
 + Calendar
 - Event view has view links
