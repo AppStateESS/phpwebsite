@@ -184,8 +184,8 @@ label.radio-label {
    padding : 4px;
 }
 
-.smaller {
-   font-size : .7em;
+.smaller, .smaller input, .smaller select {
+   font-size : .8em;
 }
 
 .larger {
