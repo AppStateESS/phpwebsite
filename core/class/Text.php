@@ -39,7 +39,7 @@ class PHPWS_Text {
         }
 
         if ($decode) {
-            if ((int)phpversion('tidy') < 5) {
+            if ((int)substr(phpversion(),0,1) > 4) {
                 $this->text = html_entity_decode($text, ENT_QUOTES, 'UTF-8');
             } else {
                 $this->text = $this->html_entity_decode($text, ENT_QUOTES, 'ISO-8859-1');
