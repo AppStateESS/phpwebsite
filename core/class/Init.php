@@ -50,10 +50,6 @@ PHPWS_Core::initCoreClass('Key.php');
 PHPWS_Core::initCoreClass('Cookie.php');
 PHPWS_Core::initCoreClass('Security.php');
 
-if (USE_CRUTCH_FILES || PHPWS_TRANSLATION == FALSE) {
-    PHPWS_Core::initCoreClass('Crutch.php');
-}
-
 if (!defined('USE_ROOT_CONFIG')) {
     define('USE_ROOT_CONFIG', FALSE);
 }
