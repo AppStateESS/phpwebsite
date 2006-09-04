@@ -351,7 +351,7 @@ class Users_Permission {
      * Returns an associative list of all groups and their levels of permission
      * in reference to the key passed to it
      */
-    function &getPermissionGroups($key, $edit_rights=false)
+    function getPermissionGroups($key, $edit_rights=false)
     {
         if ( empty($key) ||
              !PHPWS_Core::isClass($key, 'key') || 
