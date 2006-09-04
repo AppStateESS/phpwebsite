@@ -1718,14 +1718,15 @@ class PHPWS_DB {
                     . '(' . $info['name'] . ')';
                 $info['flags'] = str_replace(' multiple_key', '', $info['flags']);
             }
-            $preFlag = array('/not_null/', '/primary_key/', '/default_(.*)?/', '/blob/');
-            $postFlag = array('NOT NULL', 'PRIMARY KEY', "DEFAULT '\\1'", '');
+            $preFlag = array('/not_null/', '/primary_key/', '/default_(\w+)?/', '/blob/', '/%3a%3asmallint/i');
+            $postFlag = array('NOT NULL', 'PRIMARY KEY', "DEFAULT '\\1'", '', '');
             $multipleFlag = array('multiple_key', '');
             $flags = ' ' . preg_replace($preFlag, $postFlag, $info['flags']);
         }
-        else
+        else {
             $flags = NULL;
-    
+        }
+
         if ($strip_name == TRUE) {
             $column_info['parameters'] = $setting . $flags; 
         }
