@@ -81,7 +81,10 @@ class User_Form {
                              'command' => 'signup_user');
 
         $template['HOME_LOGIN'] = $template['HOME'] = PHPWS_Text::moduleLink(_('Home'));
-        $template['NEW_ACCOUNT'] = PHPWS_Text::moduleLink(USER_SIGNUP_QUESTION, 'users', $signup_vars);
+
+        if (PHPWS_Settings::get('users', 'new_user_method')) {
+            $template['NEW_ACCOUNT'] = PHPWS_Text::moduleLink(USER_SIGNUP_QUESTION, 'users', $signup_vars);
+        }
 
         $usermenu = PHPWS_User::getUserSetting('user_menu');
         return PHPWS_Template::process($template, 'users', 'usermenus/' . $usermenu);
