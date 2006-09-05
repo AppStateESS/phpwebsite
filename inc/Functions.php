@@ -13,10 +13,13 @@ $function_list = array('file_get_contents',
                        'html_entity_decode',
                        'scandir',
                        'str_ireplace',
-                       'array_diff_key'
+                       'array_diff_key',
+                       'stripos'
                        );
 
-loadFunction($function_list);
+if (version_compare(phpversion(), '5.0.0', '<')) {
+    loadFunction($function_list);
+ }
 
 // Copy of PEAR's Compat function
 function loadFunction($function)
@@ -42,8 +45,6 @@ function loadFunction($function)
     }
 
     return false;
-
-
 }
 
 
