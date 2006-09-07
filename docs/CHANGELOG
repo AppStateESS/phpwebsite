@@ -1,3 +1,30 @@
+7 September 2006
++ Core
+- Form.php : added extra space after checked parameter
+- Time.php : added a function to return time in iCal format
+
++ Calendar
+- Updated javascript check_date to work with new event entry
+- Restructured event entry
+- added hCalendar formatting to templates
+- Removed deadline and starts and event types
+- Added "all day" designator
+- Renamed "title" to "summary"
+- Renamed "summary" to "description"
+- Added location event information
+- Added ability to link location
+- Rewrote and simplified day, week, and month list code
+- Private schedules are marked restricted in their key
+- Moved day.tpl out of day directory
+
++ Theme
+- Removed border from abbr tag (used in calendar)
+
+5 September 2006
++ Core
+- Functions.php : Added stripos to compatibility functions
+- Text.php : Changed the bbcode decoder to use str_ireplace 
+
 31 August 2006
 + Calendar
 - Expanded repeat capabilities
