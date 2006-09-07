@@ -1673,11 +1673,11 @@ class Form_Checkbox extends Form_Element {
     function getMatch()
     {
         if (is_array($this->match) && in_array($this->value, $this->match)) {
-            return 'checked="checked"';
+            return 'checked="checked" ';
         }
 
         if ((string)$this->match == (string)$this->value) {
-            return 'checked="checked"';
+            return 'checked="checked" ';
         }
         else {
             return NULL;
