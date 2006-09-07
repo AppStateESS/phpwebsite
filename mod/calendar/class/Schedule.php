@@ -38,15 +38,6 @@ class Calendar_Schedule {
      * @var integer
      */
     var $user_id     = 0;
-
-    /**
-     * Determines if everyone can view the events
-     * or everyone sees blanks and only certain people see events
-     * or no one besides specific users may view
-     * @var integer
-     */
-    //    var $view_status = CAL_VIEW_ALL;
-
     
     /**
      * Determines if anonymous users can see this schedule or
@@ -183,19 +174,12 @@ class Calendar_Schedule {
         $form->useEditor('summary');
 
         $form->addRadio('public', array(0,1));
-        $form->setLabel('public', array(_('Only registered users may view'),
-                                             _('Anyone may view')));
+        $form->setLabel('public', array(_('Private'),
+                                        _('Public')));
 
         $form->setMatch('public', (int)$this->public);
 
         /*
-        $form->addRadio('view_status', array(CAL_VIEW_ALL, CAL_VIEW_SOME, CAL_VIEW_LIMIT));
-        $form->setLabel('view_status', array(_('Events details seen'),
-                                             _('Event details hidden'),
-                                             _('Schedule seen by permission only')));
-        $form->setMatch('view_status', $this->view_status);
-
-
         $groups = Users_Permission::getPermissionGroups($key);
         $group_list = $groups['permitted']['users'];
 
@@ -218,7 +202,6 @@ class Calendar_Schedule {
         }
         
         $template['PUBLIC_LABEL'] = _('Availability');
-        $template['VIEW_STATUS_LABEL'] = _('Event view status');
 
         return PHPWS_Template::process($template, 'calendar', 'admin/forms/edit_schedule.tpl');
     }
@@ -370,6 +353,12 @@ class Calendar_Schedule {
         }
 
         $tags['TITLE'] = $this->getViewLink();
+        
+        if ($this->public) {
+            $tags['AVAILABILITY'] = _('Public');
+        } else {
+            $tags['AVAILABILITY'] = _('Private');
+        }
 
         return $tags;
     }
@@ -428,8 +417,10 @@ class Calendar_Schedule {
         $key->setItemName('schedule');
         $key->setItemId($this->id);
         if ($this->public) {
+            $key->restricted = 0;
             $key->setEditPermission('edit_public');
         } else {
+            $key->restricted = 1;
             $key->setEditPermission('edit_private');
         }
         $key->setUrl($this->getViewLink(false));

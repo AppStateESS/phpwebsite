@@ -2,7 +2,7 @@
 <table class="form-table">
 <!-- BEGIN schedule-type -->
   <tr>
-    <td class="label">{PUBLIC_LABEL}</td>
+    <td><strong>{PUBLIC_LABEL}</strong></td>
     <td>
       {PUBLIC_1} {PUBLIC_1_LABEL}<br />
       {PUBLIC_2} {PUBLIC_2_LABEL}
@@ -18,5 +18,7 @@
     <td>{SUMMARY}</td>
   </tr>
 </table>
-{SUBMIT}
+<div class="align-center">{SUBMIT}
+<hr />
+{CLOSE}</div>
 {END_FORM}

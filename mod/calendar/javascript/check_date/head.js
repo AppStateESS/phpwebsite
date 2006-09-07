@@ -1,6 +1,14 @@
 <script type="text/javascript">
 //<![CDATA[
 
+window.onload = function ()
+{
+    all_day = document.getElementById('event_form_all_day');
+    alter_date(all_day);
+}
+
+
+
 function check_start_date() {
   form = document.getElementById('event_form');
 
@@ -37,30 +45,16 @@ function check_end_date() {
   }
 }
 
-function alter_date(event_type) {
-  start_time_display = document.getElementById('start-time');
-  end_time_display = document.getElementById('end-time');
+function alter_date(all_day) {
+  start_time = document.getElementById('start-time');
+  end_time = document.getElementById('end-time');
 
-  switch(event_type.value) {
-     case '1':
-       start_time_display.style.display = '';
-       end_time_display.style.display = '';
-     break;
-
-     case '2':
-       start_time_display.style.display = 'none';
-       end_time_display.style.display = 'none';
-     break;
-
-     case '3':
-       start_time_display.style.display = '';
-       end_time_display.style.display = 'none';
-     break;
-
-     case '4':
-       start_time_display.style.display = 'none';
-       end_time_display.style.display = '';
-     break;
+  if (all_day.checked) {
+       start_time.style.display = 'none';
+       end_time.style.display = 'none';
+  } else {
+      start_time.style.display = 'inline';
+      end_time.style.display = 'inline';
   }
   
 }

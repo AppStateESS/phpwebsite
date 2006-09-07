@@ -2,11 +2,13 @@
 <table width="99%">
   <tr>
     <th>{TITLE_LABEL} {TITLE_SORT}</th>
+    <th>{AVAILABILITY_LABEL} {PUBLIC_SORT}</th>
     <th>{ADMIN_LABEL}</th>
   </tr>
   <!-- BEGIN listrows -->
   <tr>
     <td>{TITLE}</td>
+    <td>{AVAILABILITY}</td>
     <td>{ADMIN}</td>
   </tr>
   <!-- END listrows -->

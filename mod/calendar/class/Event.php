@@ -22,21 +22,34 @@ class Calendar_Event {
     var $key_id  = 0;
 
     /**
+     * Summary of event
      * @var string
      */
-    var $title   = null;
-    
+    var $summary  = null;
+
+    /**
+     * location of event
+     * @var string
+     */
+    var $location = null;
+
+    /**
+     * link to location
+     */
+    var $loc_link = null;
+
     /**
      * @var string
      */
-    var $summary = null;
+    var $description = null;
 
     /**
-     * Type of event (normal, all day, start time only, end time only)
-     * @var integer
+     * If true (1) then this is an all day event
+     * @var int
      */
-    var $event_type = CALENDAR_EVENT_TYPE_NORMAL;
+    var $all_day     = 0;
 
+   
     /**
      * Start time of event
      * @var integer
@@ -50,11 +63,11 @@ class Calendar_Event {
      */
     var $end_time = 0;
 
-
     /**
-     * 
+     *  If true (1), then display as "Busy"
+     * @var integer
      */
-    var $active = true;
+    var $show_busy   = 0;
 
     /**
      * pointer to the parent schedule object
@@ -66,7 +79,7 @@ class Calendar_Event {
      * Current error if exists
      * @var object
      */
-    var $_event = null;
+    var $_error = null;
 
     /**
      * Key object for this schedule
@@ -80,6 +93,9 @@ class Calendar_Event {
         if ($schedule) {
             $this->_schedule = & $schedule;
             if (empty($event_id)) {
+                if (!$this->_schedule->public) {
+                    $this->show_busy = 1;
+                }
                 $this->start_time = PHPWS_Time::getUserTime();
                 $this->end_time   = PHPWS_Time::getUserTime();
                 return;
@@ -96,6 +112,17 @@ class Calendar_Event {
         }
     }
 
+    /**
+     * Returns true if the event time span is over one day in length
+     */
+    function dayDiff()
+    {
+        if (date('Ymd', $this->start_time) != date('Ymd', $this->end_time)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     function deleteLink()
     {
@@ -165,13 +192,21 @@ class Calendar_Event {
         $form->addHidden('event_id', $this->id);
         $form->addHidden('sch_id', $this->_schedule->id);
 
-        $form->addText('title', $this->title);
-        $form->setLabel('title', _('Title'));
-        $form->setSize('title', 60);
-
-        $form->addTextArea('summary', $this->summary);
-        $form->useEditor('summary');
+        $form->addText('summary', $this->summary);
         $form->setLabel('summary', _('Summary'));
+        $form->setSize('summary', 60);
+
+        $form->addText('location', $this->location);
+        $form->setLabel('location', _('Location'));
+        $form->setSize('location', 60);
+
+        $form->addText('loc_link', $this->loc_link);
+        $form->setLabel('loc_link', _('Location link'));
+        $form->setSize('loc_link', 60);
+
+        $form->addTextArea('description', $this->description);
+        $form->useEditor('description');
+        $form->setLabel('description', _('Description'));
 
         $form->addText('start_date', $this->getStartTime('%Y/%m/%d'));
         $form->setLabel('start_date', _('Start time'));
@@ -190,21 +225,14 @@ class Calendar_Event {
         $form->setExtra('start_time_hour', 'onchange="check_start_date()"');
         $form->setExtra('end_time_hour', 'onchange="check_end_date()"');
 
-        $event_types[1] = 1;
-        $event_labels[1] = _('Normal');
-        $event_types[2] = 2;
-        $event_labels[2] = _('All day');
-        $event_types[3] = 3;
-        $event_labels[3] = _('Starts at');
-        $event_types[4] = 4;
-        $event_labels[4] = _('Deadline');
+        $form->addCheck('all_day', 1);
+        $form->setMatch('all_day', $this->all_day);
+        $form->setLabel('all_day', _('All day event'));
+        $form->setExtra('all_day', 'onchange="alter_date(this)"');
 
-        $form->addRadio('event_type', $event_types);
-        $form->setLabel('event_type', $event_labels);
-        $form->setExtra('event_type', 'onchange="alter_date(this)"');
-
-        $form->setMatch('event_type', $this->event_type);
-        $form->addTplTag('EVENT_TYPE_LABEL', _('Event type'));
+        $form->addCheck('show_busy', 1);
+        $form->setMatch('show_busy', $this->show_busy);
+        $form->setLabel('show_busy', _('Show busy'));
 
         $form->addSubmit(_('Save event'));
 
@@ -223,43 +251,6 @@ class Calendar_Event {
         javascript('modules/calendar/check_date');
         return PHPWS_Template::process($tpl, 'calendar', 'admin/forms/edit_event.tpl');
     }
-
-    function getDate()
-    {
-        switch ($this->event_type) {
-        case 1:
-            if (date('Ym', $this->start_time) != date('Ym', $this->end_time)) {
-                $sTime = sprintf('%s, %s - %s, %s', 
-                                 strftime(CALENDAR_TIME_LIST_FORMAT, $this->start_time),
-                                 strftime('%B %e', $this->start_time),
-                                 strftime(CALENDAR_TIME_LIST_FORMAT, $this->end_time),
-                                 strftime('%B %e', $this->end_time)
-                                 );
-            
-            } else {
-                $sTime = sprintf('%s - %s', 
-                                 strftime(CALENDAR_TIME_LIST_FORMAT, $this->start_time),
-                                 strftime(CALENDAR_TIME_LIST_FORMAT, $this->end_time)
-                                 );
-            }
-            break;
-
-        case 2:
-            $sTime = _('All day event');
-            break;
-
-        case 3:
-            $sTime = sprintf(_('Starts at %s.'), strftime(CALENDAR_TIME_LIST_FORMAT, $this->start_time));
-            break;
-
-        case 4:
-            $sTime = sprintf(_('Deadline at %s.'),  strftime(CALENDAR_TIME_LIST_FORMAT, $this->end_time));
-            break;
-        }
-
-        return $sTime;
-    }
-
 
     function getEndTime($format='%c', $mode=null)
     {
@@ -284,7 +275,6 @@ class Calendar_Event {
         return $this->_key;
     }
 
-
     function getStartTime($format='%c', $mode=null)
     {
         $time = &$this->start_time;
@@ -299,75 +289,81 @@ class Calendar_Event {
     }
 
 
-    function getSummary()
+    function getDescription()
     {
-        return PHPWS_Text::parseOutput($this->summary);
+        return PHPWS_Text::parseOutput($this->description);
     }
 
     /**
-     * Returns a formated time for printing
+     * Returns a linkable summary (if linked is true)
      */
-    function getTime()
-    {
-        switch ($this->event_type) {
-        case 1:
-            $sTime = sprintf('%s - %s', 
-                             strftime(CALENDAR_TIME_LIST_FORMAT, $this->start_time),
-                             strftime(CALENDAR_TIME_LIST_FORMAT, $this->end_time)
-                             );
-            break;
-
-        case 2:
-            $sTime = _('All day event');
-            break;
-
-        case 3:
-            $sTime = sprintf(_('Starts at %s.'), strftime(CALENDAR_TIME_LIST_FORMAT, $this->start_time));
-            break;
-
-        case 4:
-            $sTime = sprintf(_('Deadline at %s.'),  strftime(CALENDAR_TIME_LIST_FORMAT, $this->end_time));
-            break;
-        }
-
-        return $sTime;
-    }
-
-    /**
-     * Returns a linkable title (if linked is true)
-     */
-    function getTitle($linked=true)
+    function getSummary($linked=true)
     {
         if ($linked) {
             $vars['view']   = 'event';
             $vars['event_id']     = $this->id;
             $vars['sch_id'] = $this->_schedule->id;
-            /*
-            if (javascriptEnabled()) {
-                $vars['js'] = 1;
-                $js['address'] = PHPWS_Text::linkAddress('calendar', $vars);
-                $js['label']   = $this->title;
-                $js['width']   = '640';
-                $js['height']  = '480';
-
-                return javascript('open_window', $js);
-            } else {
-            */
-                return PHPWS_Text::moduleLink($this->title, 'calendar', $vars);
-                /*
-            }
-                */
+            $url = PHPWS_Text::linkAddress('calendar', $vars, false, true);
+            return sprintf('<a href="%s" class="url">%s</a>', $url, $this->summary);
         } else {
-            return $this->title;
+            return $this->summary;
         }
     }
 
     function getTpl()
     {
-        $tpl['TITLE']   = $this->getTitle();
-        $tpl['SUMMARY'] = $this->getSummary();
-        $tpl['TIME']    = $this->getDate();
-        //        $tpl['TIME']    = $this->getTime();
+        $tpl['SUMMARY']     = $this->getSummary();
+        $tpl['DESCRIPTION'] = $this->getDescription();
+
+        if (CALENDAR_MONTH_FIRST) {
+            $month_day_mode = '%B %e';
+        } else {
+            $month_day_mode = '%e %B';
+        }
+
+        if ($this->all_day) {
+            if (date('Ymd', $this->start_time) != date('Ymd', $this->end_time)) {
+                if (CALENDAR_MONTH_FIRST) {
+                    $tpl['START_TIME'] =  sprintf(_('All day event, %s'), strftime('%B %e', $this->start_time));
+                } else {
+                    $tpl['START_TIME'] =  sprintf(_('All day event, %s'), strftime('%e', $this->start_time));
+                }
+
+                if (date('Ym', $this->start_time) != date('Ym', $this->end_time)) {
+                    if (CALENDAR_MONTH_FIRST) {
+                        $tpl['END_TIME'] = strftime('%B %e', $this->end_time);
+                    } else {
+                        $tpl['END_TIME'] = strftime('%e', $this->end_time);
+                    }
+                } else {
+                    if (CALENDAR_MONTH_FIRST) {
+                        $tpl['END_TIME'] = strftime('%e', $this->end_time);
+                    } else {
+                        $tpl['END_TIME'] = strftime('%e %B', $this->end_time);
+                    }
+                }
+            } else {
+                $tpl['START_TIME'] =  _('All day event');
+                $tpl['END_TIME'] = $this->getStartTime($month_day_mode);
+            }
+
+            $tpl['DTSTART']     = PHPWS_Time::getDTTime($this->start_time);
+            // Add one second to make end time midnight. Needed for hCalendar
+            $tpl['DTEND']       = PHPWS_Time::getDTTime($this->end_time+1);
+        } else {
+            if (date('Ymd', $this->start_time) != date('Ymd', $this->end_time)) {
+                // If this event happens over 2 or more day
+                $tpl['START_TIME'] = $this->getStartTime($month_day_mode . ', ' . CALENDAR_TIME_FORMAT);
+                $tpl['END_TIME']   = $this->getEndTime($month_day_mode . ', ' . CALENDAR_TIME_FORMAT);
+            } else {
+                $tpl['START_TIME'] = $this->getStartTime($month_day_mode . ', ' . CALENDAR_TIME_FORMAT);
+                $tpl['END_TIME']   = $this->getEndTime(CALENDAR_TIME_FORMAT);
+            }
+            $tpl['DTSTART']     = PHPWS_Time::getDTTime($this->start_time, 'user');
+            $tpl['DTEND']       = PHPWS_Time::getDTTime($this->end_time, 'user');
+        }
+
+
         if ( ($this->_schedule->public && Current_User::allow('calendar', 'edit_public', $this->_schedule->id)) ||
              (!$this->_schedule->public && Current_User::allow('calendar', 'edit_private', $this->_schedule->id))
              ) {
@@ -375,6 +371,19 @@ class Calendar_Event {
             $link[] = $this->deleteLink();
             $link[] = $this->repeatLink();
             $tpl['LINKS'] = implode(' | ', $link);
+        }
+
+        if (!empty($this->location)) {
+            $tpl['LOCATION_LABEL'] = _('Location');
+
+            if (!empty($this->loc_link)) {
+                $tpl['LOCATION'] = sprintf('<a href="%s" title="%s">%s</a>',
+                                           PHPWS_Text::checkLink($this->loc_link),
+                                           _('Visit this location\'s web site.'),
+                                           $this->location);
+            } else {
+                $tpl['LOCATION'] = $this->location;
+            }
         }
 
         return $tpl;
@@ -402,72 +411,67 @@ class Calendar_Event {
         return $db->loadObject($this);
     }
 
+
+    function monthDiff()
+    {
+        if (date('Ym', $this->start_time) != date('Ym', $this->end_time)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
     /**
      * Posts the event information from the form into the object
      */
     function post()
     {
-        if (empty($_POST['title'])) {
-            $errors[] = _('You must give your event a title.');
+        if (empty($_POST['summary'])) {
+            $errors[] = _('You must give your event a summary.');
         } else {
-            $this->setTitle($_POST['title']);
+            $this->setSummary($_POST['summary']);
         }
 
-        $this->setSummary($_POST['summary']);
+        $this->setLocation($_POST['location']);
+        $this->setDescription($_POST['description']);
+        $this->setLocLink($_POST['loc_link']);
+        if (isset($_POST['all_day'])) {
+            $this->all_day = 1;
+        } else {
+            $this->all_day = 0;
+        }
+
+        if (isset($_POST['show_busy'])) {
+            $this->show_busy = 1;
+        } else {
+            $this->show_busy = 0;
+        }
+
 
         $start_date =  strtotime($_POST['start_date']);
         $end_date =  strtotime($_POST['end_date']);
-
-        /*
-        $start_date_array = explode('/', $start_date);
-        $end_date_array = explode('/', $start_date);
-        */
 
         $start_time_hour   = &$_POST['start_time_hour'];
         $start_time_minute = &$_POST['start_time_minute'];
         $end_time_hour     = &$_POST['end_time_hour'];
         $end_time_minute   = &$_POST['end_time_minute'];
 
-        switch ($_POST['event_type']) {
-        case '1':
+        if ($this->all_day) {
+            $startTime = mktime(0,0,0, date('m', $start_date), date('d', $start_date),
+                                date('Y', $start_date));
+            $endTime = mktime(23,59,59, date('m', $end_date), (int)date('d', $end_date),
+                                date('Y', $end_date));
+
+        } else {
             $startTime = mktime($start_time_hour, $start_time_minute, 0,
                                 date('m', $start_date), date('d', $start_date), date('Y', $start_date));
             $endTime   = mktime($end_time_hour, $end_time_minute, 0,
                                 date('m', $end_date), date('d', $end_date), date('Y', $end_date));
-            if ($startTime >= $endTime) {
+        }
+
+        if ($startTime >= $endTime) {
                 $errors[] = _('The end time must be after the start time.');
-            }
-
-            /*
-            if (isset($_POST['block'])) {
-                $this->block = 1;
-            } else {
-                $this->block = 0;
-            }
-            */
-            break;
-
-        case '2':
-            $startTime = mktime(0, 0, 0,
-                                $start_date_array[1], $start_date_array[2], $start_date_array[0]);
-            $endTime   = mktime(23, 59, 59,
-                                $end_date_array[1], $end_date_array[2], $end_date_array[0]);
-            break;
-
-        case '3':
-            $startTime = mktime($start_time_hour, $start_time_minute, 0,
-                                $start_date_array[1], $start_date_array[2], $start_date_array[0]);
-            $endTime   = mktime(23, 59, 59,
-                                $end_date_array[1], $end_date_array[2], $end_date_array[0]);
-            break;
-
-        case '4':
-            $startTime = mktime(0, 0, 0,
-                                $start_date_array[1], $start_date_array[2], $start_date_array[0]);
-            $endTime   = mktime($end_time_hour, $end_time_minute, 0,
-                                $end_date_array[1], $end_date_array[2], $end_date_array[0]);
-            break;
-
         }
 
         $this->start_time = $startTime;
@@ -476,8 +480,6 @@ class Calendar_Event {
         if (isset($_POST['sch_id'])) {
             $this->_sch_id = (int)$_POST['sch_id'];
         }
-
-        $this->event_type = (int)$_POST['event_type'];
 
         if (isset($errors)) {
             $this->_error = &$errors;
@@ -627,8 +629,9 @@ class Calendar_Event {
             $db->saveObject($this);
 
             $search = & new Search($this->key_id);
-            $search->addKeywords($this->title);
             $search->addKeywords($this->summary);
+            $search->addKeywords($this->location);
+            $search->addKeywords($this->description);
             $search->save();
             return TRUE;
         }
@@ -650,11 +653,9 @@ class Calendar_Event {
         $key->setItemId($this->id);
         //        $key->setEditPermission('edit_event');
         $key->setUrl($this->getViewLink());
-        $key->setTitle($this->title);
-        if (!empty($this->summary)) {
-            $key->setSummary($this->summary);
-        } else {
-            $key->setSummary($this->title);
+        $key->setTitle($this->summary);
+        if (!empty($this->description)) {
+            $key->setSummary($this->description);
         }
 
         $result = $key->save();
@@ -666,14 +667,31 @@ class Calendar_Event {
     }
 
 
-    function setSummary($summary)
+    function setDescription($description)
     {
-        $this->summary = PHPWS_Text::parseInput($summary);
+        $this->description = PHPWS_Text::parseInput($description);
     }
 
-    function setTitle($title)
+    function setLocation($location)
     {
-        $this->title = strip_tags($title);
+        if (empty($location)) {
+            return;
+        }
+        $this->location = strip_tags($location);
+    }
+
+    function setLocLink($link)
+    {
+        if (empty($link)) {
+            return;
+        }
+
+        $this->loc_link = strip_tags($link);
+    }
+
+    function setSummary($summary)
+    {
+        $this->summary = strip_tags($summary);
     }
 
     function timeForm($name, $match, &$form)

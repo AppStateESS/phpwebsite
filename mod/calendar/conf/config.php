@@ -9,12 +9,21 @@ define('DEFAULT_CALENDAR_VIEW', 'day');
 
 // Please read http://www.php.net/manual/en/function.strftime.php
 // before changing these values
-define('CALENDAR_DAY_FORMAT', '%A, %B %e, %Y');
+define('CALENDAR_DATE_FORMAT', '%B %e, %Y');
+define('CALENDAR_TIME_FORMAT', '%l:%M %P');
+
+
+// View title format
+define('CALENDAR_DAY_HEADER', '%A %B %e, %Y');
+define('CALENDAR_WEEK_HEADER', '%B %e');
 
 // 0 Sunday, 1 Monday, etc.
 define('CALENDAR_START_DAY', 0);
 
-define('CALENDAR_MONTH_LISTING', '%B');
+// Determines whether to put the day before or after the month
+define('CALENDAR_MONTH_FIRST', true);
+
+
 
 // %l %p = 1 PM
 // %h    = 13

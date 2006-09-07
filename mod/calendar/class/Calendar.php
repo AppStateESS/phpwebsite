@@ -107,7 +107,12 @@ class PHPWS_Calendar {
             $end_search = mktime(0,0,0,1,1,2050);
         }
 
-        $db = & new PHPWS_DB($this->schedule->getEventTable());
+        $event_table = $this->schedule->getEventTable();
+        if (!$event_table) {
+            return null;
+        }
+
+        $db = & new PHPWS_DB($event_table);
 
         $db->addWhere('start_time', $start_search, '>=', null,  'start');
         $db->addWhere('start_time', $end_search,   '<',  'AND', 'start');
@@ -190,8 +195,21 @@ class PHPWS_Calendar {
     function loadDefaultSchedule()
     {
         $sch_id = PHPWS_Settings::get('calendar', 'public_schedule');
+
         if ($sch_id) {
             $this->schedule = & new Calendar_Schedule((int)$sch_id);
+        } else {
+            $db = & new PHPWS_DB('calendar_schedule');
+            $db->addColumn('id');
+            $db->addWhere('public', 1);
+            $db->setLimit(1);
+            $id = $db->select('one');
+            if (PEAR::isError($id)) {
+                PHPWS_Error::log($id);
+                return;
+            }
+            PHPWS_Settings::set('calendar', 'public_schedule', $id);
+            PHPWS_Settings::save('calendar');
         }
     }
 
@@ -323,13 +341,13 @@ class PHPWS_Calendar {
                     $copy_day   = (int)date('d', $i);
                     $copy_year  = (int)date('Y', $i);
 
+
                     $this->sorted_list[$copy_year]['events'][$key] = & $this->event_list[$key];
                     $this->sorted_list[$copy_year]['months'][$copy_month]['events'][$key] = & $this->event_list[$key];
                     $this->sorted_list[$copy_year]['months'][$copy_month]['days'][$copy_day]['events'][$key] = & $this->event_list[$key];
                     $this->sorted_list[$copy_year]['months'][$copy_month]['days'][$copy_day]['hours'][$shour]['events'][$key] = & $this->event_list[$key];
                 }
             }
-
         }
     }
 

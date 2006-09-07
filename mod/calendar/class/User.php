@@ -49,72 +49,91 @@ class Calendar_User {
     }
 
 
-    function plotDay(&$template, $startdate)
+    function getDaysEvents($startdate, &$tpl)
     {
-        if (empty($this->calendar->event_list)) {
-            $template['MESSAGE'] = _('No events planned for this day.');
-        } else {
-            $hour_list = array();
-            foreach ($this->calendar->event_list as $oEvent) {
-                switch ($oEvent->event_type) {
-                case '1':
-                    // checks to see if this is a multiple day event
-                    if (date('Ym', $oEvent->start_time) != date('Ym', $oEvent->end_time)) {
-                        // If the events end time is equal to today,
-                        // use the end time as the key
-                        if (date('Ymd', $oEvent->end_time) == date('Ymd', $startdate)) {
-                            $newList[strftime('%H', $oEvent->end_time)][] = $oEvent;
-                            break;
-                        } elseif (date('Ymd', $oEvent->start_time) != date('Ymd', $startdate)) {
-                            $newList[-1][] = $oEvent;
-                            break;
-                        }
-                    }
-                case '3':
-                    $newList[strftime('%H', $oEvent->start_time)][] = $oEvent;
-                    break;
+        $year  = (int)date('Y', $startdate);
+        $month = (int)date('m', $startdate);
+        $day   = (int)date('d', $startdate);
 
-                case '2':
-                    $newList[-1][] = $oEvent;
-                    break;
-
-                case '4':
-                    $newList[strftime('%H', $oEvent->end_time)][] = $oEvent;
-                    break;
-                }
-            }
-            ksort($newList);
-
-            foreach ($newList as $hour => $events) {
-                foreach ($events as $oEvent) {
-                    $details = $links = array();
-
-                    if (Current_User::allow('calendar', 'edit_public', $this->calendar->schedule->id)) {
-                        $links[] = $oEvent->editLink();
-                        $links[] = $oEvent->deleteLink();
-                    }
-                
-                    if (!empty($links)) {
-                        $details['LINKS'] = implode(' | ', $links);
-                    }
-
-                    $details = $oEvent->getTpl();
-                    
-                    if (!isset($hour_list[$hour])) {
-                        $hour_list[$hour] = 1;
-                        if ($hour == -1) {
-                            $details['HOUR']    = _('All day');
-                        } else {
-                            $details['HOUR']    = strftime('%l %p', mktime($hour));
-                        }
-                    }
-
-                    $template['calendar_events'][] = $details;
-                }
-            }
-
+        $day_events = @$this->calendar->sorted_list[$year]['months'][$month]['days'][$day]['events'];
+        
+        if (!$day_events) {
+            return false;
         }
 
+        $hour_list = array();
+        foreach ($day_events as $oEvent) {
+            if ($oEvent->all_day) {
+                $newList[-1][] = $oEvent;
+            } else {
+                // checks to see if this is a multiple day event
+                if (date('Ymd', $oEvent->start_time) != date('Ymd', $oEvent->end_time)) {
+                    // If the events end time is equal to today,
+                    // use the end time as the key
+                    if (date('Ymd', $oEvent->end_time) == date('Ymd', $startdate)) {
+                        $newList[strftime('%H', $oEvent->end_time)][] = $oEvent;
+                    } elseif (date('Ymd', $oEvent->start_time) != date('Ymd', $startdate)) {
+                        $newList[-1][] = $oEvent;
+                    } else {
+                        $newList[strftime('%H', $oEvent->start_time)][] = $oEvent;
+                    }
+                } else {
+                    $newList[strftime('%H', $oEvent->start_time)][] = $oEvent;
+                }
+            }
+        }
+
+        ksort($newList);
+        $tpl->setCurrentBlock('calendar-events');
+        foreach ($newList as $hour => $events) {
+            foreach ($events as $oEvent) {
+                $details = $links = array();
+
+                if (Current_User::allow('calendar', 'edit_public', $this->calendar->schedule->id)) {
+                    $links[] = $oEvent->editLink();
+                    $links[] = $oEvent->deleteLink();
+                }
+                
+                if (!empty($links)) {
+                    $details['LINKS'] = implode(' | ', $links);
+                }
+
+                $details = $oEvent->getTpl();
+
+                $duration = $oEvent->end_time - $oEvent->start_time;
+                $duration_day = floor($duration / 86400);
+                if ($duration_day) {
+                    $current_day = floor( ($oEvent->end_time - $startdate) / 86400);
+                    $day_number = $duration_day - $current_day + 1;
+                    switch ($day_number) {
+                    case 1:
+                        $details['DAY_NUMBER'] = sprintf(_('First day'), $day_number);
+                        break;
+
+                    case ($current_day < 1):
+                        $details['DAY_NUMBER'] = sprintf(_('Last day'), $day_number);
+                        break;
+
+                    default:
+                        $details['DAY_NUMBER'] = sprintf(_('Day %s'), $day_number);
+                        break;
+                    }
+                }
+                    
+                if (!isset($hour_list[$hour])) {
+                    $hour_list[$hour] = 1;
+                    if ($hour == -1) {
+                        $details['HOUR'] = _('All day');
+                    } else {
+                        $details['HOUR'] = strftime('%l %p', mktime($hour));
+                    }
+                }
+
+                $tpl->setData($details);
+                $tpl->parseCurrentBlock();
+            }
+        }
+        return true;
     }
 
     /**
@@ -130,15 +149,27 @@ class Calendar_User {
         $enddate   = $startdate + 82800 + 3540 + 59; // 23 hours, 59 minutes, 59 seconds later
 
         $this->calendar->loadEventList($startdate, $enddate);
-        $template['VIEW_LINKS'] = $this->viewLinks('day');
 
-        $template['TITLE'] = $this->calendar->schedule->title;
-        $template['DATE'] = strftime(CALENDAR_DAY_FORMAT, $startdate);
+        $tpl = & new PHPWS_Template('calendar');
+        $tpl->setFile('view/day.tpl');
+
+        if (!$this->getDaysEvents($startdate, $tpl)) {
+            $template['MESSAGE'] = _('No events on this day');
+        }
+
+        $template['VIEW_LINKS'] = $this->viewLinks('day');
+        $template['SCHEDULE_TITLE'] = $this->calendar->schedule->title;
+        $template['DATE'] = strftime(CALENDAR_DAY_HEADER, $startdate);
         $template['SCHEDULE_PICK'] = $this->schedulePick();
         $template['PICK'] = $this->getDatePick();
-        
-        $this->plotDay($template, $startdate);
-        return PHPWS_Template::process($template, 'calendar', 'view/day/day.tpl');
+
+        $tpl->setCurrentBlock('day');
+        $tpl->setData($template);
+        $tpl->parseCurrentBlock();
+
+        return $tpl->get();
+
+        return PHPWS_Template::process($template, 'calendar', 'view/day.tpl');
     }
 
     /**
@@ -204,49 +235,6 @@ class Calendar_User {
 
         return implode('', $address);
     }
-
-
-    function loadDayList(&$tpl)
-    {
-        $month = $this->calendar->int_month;
-        $year  = $this->calendar->int_year;
-
-        if (empty($this->calendar->sorted_list[$year]['months'][$month]['days'])) {
-            return FALSE;
-        } else {
-            foreach ($this->calendar->sorted_list[$year]['months'][$month]['days'] as $day => $d_events) {
-                if (empty($d_events['hours'])) {
-                    continue;
-                }
-                foreach ($d_events['hours'] as $hour => $h_events) {
-                    foreach ($h_events['events'] as $event) {
-                        
-                        $tpl->setCurrentBlock('events');
-                        $tpl->setData($event->getTpl());
-                        $tpl->parseCurrentBlock();
-                    }
-
-                    $tpl->setCurrentBlock('hours');
-
-                    $h_data['HOUR'] = strftime('%l %P', mktime($hour));
-                    
-                    $tpl->setData($h_data);
-                    $tpl->parseCurrentBlock();
-                }
-
-                $tpl->setCurrentBlock('days');
-                $d_data['FULL_WEEKDAY'] = $this->dayLink(strftime('%A', mktime(0,0,0, $month, $day)),
-                                                         $month, $day, $year);
-                $d_data['ABRV_WEEKDAY'] = $this->dayLink(strftime('%a', mktime(0,0,0, $month, $day)),
-                                                         $month, $day, $year);
-                $d_data['DAY_NUMBER'] = $this->dayLink($day, $month, $day, $year);
-                $tpl->setData($d_data);
-                $tpl->parseCurrentBlock();
-            }
-            return TRUE;
-        }
-    }
-
 
     function loadEvent()
     {
@@ -437,25 +425,32 @@ class Calendar_User {
         $tpl = & new PHPWS_Template('calendar');
         $tpl->setFile('view/month/list.tpl');
 
-        if (!$this->loadDayList($tpl)) {
-            $main_tpl['MESSAGE'] = _('No events this month.');
+
+        for ($i = $startdate; $i <= $enddate; $i += 86400) {
+            $day_result = $this->getDaysEvents($i, $tpl);
+            if ($day_result) {
+                $day_tpl['FULL_WEEKDAY'] = strftime('%A', $i);
+                $day_tpl['ABBR_WEEKDAY'] = strftime('%a', $i);
+                $day_tpl['DAY_NUMBER']   = strftime('%e', $i);
+                $tpl->setCurrentBlock('days');
+                $tpl->setData($day_tpl);
+                $tpl->parseCurrentBlock();
+            }
         }
-           
+
+
         $main_tpl['FULL_MONTH_NAME'] = strftime('%B', mktime(0,0,0, $month, $day, $year));
         $main_tpl['ABRV_MONTH_NAME'] = strftime('%b', mktime(0,0,0, $month, $day, $year));
         $main_tpl['VIEW_LINKS']      = $this->viewLinks('list');
         $main_tpl['SCHEDULE_TITLE']  = $this->calendar->schedule->title;
         $main_tpl['FULL_YEAR']       = strftime('%Y', mktime(0,0,0, $month, $day, $year));
         $main_tpl['ABRV_YEAR']       = strftime('%y', mktime(0,0,0, $month, $day, $year));
-        $template['SCHEDULE_PICK'] = $this->schedulePick();
-
+        $main_tpl['SCHEDULE_PICK']   = $this->schedulePick();
         $main_tpl['PICK'] = $this->getDatePick();
 
         $tpl->setData($main_tpl);
-        $tpl->parseCurrentBlock();
         
-        $content = $tpl->get();
-        return $content;
+        return $tpl->get();
     }
 
 
@@ -640,9 +635,7 @@ class Calendar_User {
             Layout::addStyle('calendar');
         }
 
-        $oDay = $this->calendar->getDay();
-
-        $current_weekday = date('w', $oDay->thisDay('timestamp'));
+        $current_weekday = date('w', $this->calendar->current_date);
 
         if ($current_weekday != CALENDAR_START_DAY) {
             $week_start = $current_weekday - CALENDAR_START_DAY;
@@ -654,8 +647,6 @@ class Calendar_User {
         $enddate = $startdate + (86400 * 7) - 1;
 
         $this->calendar->loadEventList($startdate, $enddate);
-        $title = $this->calendar->schedule->title;
-
         if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
             Layout::addStyle('calendar');
         }
@@ -663,33 +654,43 @@ class Calendar_User {
         $tpl = & new PHPWS_Template('calendar');
         $tpl->setFile('view/week.tpl');
 
-        if (!$this->loadDayList($tpl)) {
-            $main_tpl['MESSAGE'] = _('No events this week.');
-        }
+        $start_range = strftime(CALENDAR_WEEK_HEADER, $startdate);
 
-        $start_range = strftime('%B %e', $startdate);
+        if (date('Y', $startdate) != date('Y', $enddate)) {
+            $start_range .= strftime(', %Y', $startdate);
+        }
 
         if (date('m', $startdate) == date('m', $enddate)) {
-            $end_range = strftime('%e', $enddate);
+            $end_range = strftime('%e, %Y', $enddate);
         } else {
-            $end_range = strftime('%B %e', $enddate);
+            $end_range = strftime(CALENDAR_WEEK_HEADER, $enddate);
+            $end_range .= strftime(', %Y', $enddate);
         }
 
 
-        $main_tpl['DAY_RANGE'] = sprintf('From %s to %s', $start_range, $end_range);
+        for ($i = $startdate; $i <= $enddate; $i += 86400) {
+            $day_result = $this->getDaysEvents($i, $tpl);
+            if ($day_result) {
+                $day_tpl['FULL_WEEKDAY'] = strftime('%A', $i);
+                $day_tpl['ABBR_WEEKDAY'] = strftime('%a', $i);
+                $day_tpl['DAY_NUMBER']   = strftime('%e', $i);
+                $tpl->setCurrentBlock('days');
+                $tpl->setData($day_tpl);
+                $tpl->parseCurrentBlock();
+            }
+        }
 
+        $main_tpl['DAY_RANGE'] = sprintf('From %s to %s', $start_range, $end_range);
         $main_tpl['VIEW_LINKS'] = $this->viewLinks('week');
-        $main_tpl['SCHEDULE_TITLE'] = $title;
+        $main_tpl['SCHEDULE_TITLE'] = $this->calendar->schedule->title;
         $main_tpl['FULL_YEAR'] = strftime('%Y', $this->calendar->current_date);
         $main_tpl['ABRV_YEAR'] = strftime('%y', $this->calendar->current_date);
-        $template['SCHEDULE_PICK'] = $this->schedulePick();
+        $main_tpl['SCHEDULE_PICK'] = $this->schedulePick();
         $main_tpl['PICK'] = $this->getDatePick();
 
         $tpl->setData($main_tpl);
-        $tpl->parseCurrentBlock();
-        
-        $content = $tpl->get();
-        return $content;
+       
+        return $tpl->get();
     }
 
 

@@ -406,7 +406,7 @@ class Calendar_Admin {
             return;
         }
 
-        $this->title = sprintf(_('Repeat event - %s'), $event->title);
+        $this->title = sprintf(_('Repeat event - %s'), $event->summary);
         if (@$_REQUEST['js']) {
             $js = true;
         } else {
@@ -549,9 +549,10 @@ class Calendar_Admin {
         PHPWS_Core::initModClass('calendar', 'Schedule.php');
 
         $page_tags['TITLE_LABEL']        = _('Title');
-        $page_tags['SUMMARY_LABEL']      = _('Summary');
+        $page_tags['DESCRIPTION_LABEL']  = _('Description');
         $page_tags['PUBLIC_LABEL']       = _('Public');
         $page_tags['DISPLAY_NAME_LABEL'] = _('User');
+        $page_tags['AVAILABILITY_LABEL'] = _('Availability');
 
         $vars = array('aop'=>'create_schedule');
         $label = _('Create schedule');

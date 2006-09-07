@@ -1,15 +1,14 @@
 <div class="box">
     <div class="box-title">
-        <h1 class="align-center">{SCHEDULE_TITLE} - {DAY_RANGE} {PICK}</h1>
+        <h1 class="align-center">{SCHEDULE_TITLE} - {DATE} {PICK}</h1>
         <div class="view-links">{VIEW_LINKS}</div>
         <div class="align-center smaller">{SCHEDULE_PICK}</div>
     </div>
     <div class="box-content">
-        <div class="week-view">
-            <!-- BEGIN message -->{MESSAGE}<!-- END message -->
-            <!-- BEGIN days -->
-            <div class="day bgcolor1">{FULL_WEEKDAY} {DAY_NUMBER}</div>
-            <!-- BEGIN calendar-events -->
+        {ADD_EVENT}
+        <div>{MESSAGE}</div>
+        <div id="day-view">
+        <!-- BEGIN calendar-events -->
             <!-- BEGIN hour --><div class="hour bgcolor2">{HOUR}</div><!-- END hour -->
             <div class="vevent">
                 <h2 class="summary">{SUMMARY}</h2> 
@@ -21,7 +20,6 @@
                 <p class="calendar-admin">{LINKS}</p>
             </div>
         <!-- END calendar-events -->
-<!-- END days -->
         </div>
     </div>
 </div>

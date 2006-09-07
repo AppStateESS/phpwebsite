@@ -7,21 +7,22 @@
     <div class="box-content">
     {MESSAGE}
         <div class="month-view">
-<!-- BEGIN message -->{MESSAGE}<!-- END message -->
-<!-- BEGIN days -->
+        <!-- BEGIN message -->{MESSAGE}<!-- END message -->
+        <!-- BEGIN days -->
             <div class="day bgcolor1">{FULL_WEEKDAY} {DAY_NUMBER}</div>
-<!-- BEGIN hours -->
-            <div class="hour bgcolor2">{HOUR_12}{AM_PM}</div>
-<!-- BEGIN events -->
-            <div class="calendar-event">
-                <span class="event-title">{TITLE}</span> |
-                <span class="event-time">{TIME}</span>
-                <div class="event-summary">{SUMMARY}</div>
+            <!-- BEGIN calendar-events -->
+            <!-- BEGIN hour --><div class="hour bgcolor2">{HOUR}</div><!-- END hour -->
+            <div class="vevent">
+                <h2 class="summary">{SUMMARY}</h2> 
+                <abbr class="dtstart" title="{DTSTART}">{START_TIME}</abbr>
+                <!-- BEGIN end-time -->&ndash; <abbr class="dtend" title="{DTEND}">{END_TIME}</abbr><!-- END end-time -->
+                <!-- BEGIN day-number -->({DAY_NUMBER})<!-- END day-number -->
+                <!-- BEGIN location --><p>{LOCATION_LABEL}: <span class="location">{LOCATION}</span></p><!-- END location -->
+                <div class="description">{DESCRIPTION}</div>
                 <p class="calendar-admin">{LINKS}</p>
             </div>
-<!-- END events -->
-<!-- END hours -->
-<!-- END days -->
+        <!-- END calendar-events -->
+        <!-- END days -->
         </div>
     </div>
 </div>
