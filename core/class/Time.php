@@ -28,6 +28,59 @@ class PHPWS_Time {
         return $time;
     }
 
+    /**
+     * Returns a time in iCal format
+     */
+    function getDTTime($time=0, $mode='utc') {
+        if (!$time) {
+            $time = mktime();
+        }
+        switch ($mode) {
+        case 'user':
+            $new_time = PHPWS_Time::getUserTime($time);
+            $tz = PHPWS_Time::getUserTZ();
+            break;
+
+        case 'server':
+            $new_time = PHPWS_Time::getServerTime($time);
+            $tz = PHPWS_Time::getServerTZ();
+            break;
+
+        case 'all_day':
+        case 'utc':
+            $new_time = &$time;
+            $tz = 0;
+            break;
+        }
+
+
+        if ($mode == 'all_day') {
+            return strftime('%Y%m%d', $new_time);
+        }
+
+        $dttime = strftime('%Y%m%dT%H%M00', $new_time);
+        if ($tz != 0) {
+            if ($tz > 0) {
+                $sign = '+';
+            } else {
+                $sign = '-';
+            }
+
+            $tz = sqrt($tz*$tz) * 1000;
+
+            if ($tz < 10) {
+                $tz = '0' . $tz;
+            }
+            $tzadd = $sign . $tz;
+
+        } else {
+            $tzadd = 'Z';
+        }
+        $dttime .= $tzadd;
+
+        return $dttime;
+    }
+
 
     function getServerTime($time=0)
     {
