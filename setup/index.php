@@ -4,6 +4,11 @@
    * @version $Id$
    */
 
+if (ini_get('session.auto_start')) {
+    echo 'session.auto_start must be set to 0 for phpWebSite to work. Please review your php.ini file.';
+    exit();
+ }
+
 chdir('../');
 if (isWindows()) {
     ini_set('include_path', '.;.\\lib\\pear\\');
