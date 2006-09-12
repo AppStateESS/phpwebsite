@@ -24,7 +24,7 @@ class Layout_Settings {
     var $footer           = NULL;
     var $cache            = TRUE;
 
-    // Make sure to update your saveSettings function
+    // !!! Make sure to update your saveSettings function !!!
     // Remove all hidden variables from the update
     var $_contentVars     = array();
     var $_boxes           = array();
@@ -249,6 +249,7 @@ class Layout_Settings {
         unset($vars['_style_sheets']);
         unset($vars['_extra_styles']);
         unset($vars['_key_styles']);
+        unset($vars['_allowed_move']);
         
         $db->addValue($vars);
         return $db->update();

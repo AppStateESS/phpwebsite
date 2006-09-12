@@ -283,7 +283,10 @@ class Layout_Admin{
     function changeTheme($theme)
     {
         $_SESSION['Layout_Settings']->default_theme = $theme;
-        $_SESSION['Layout_Settings']->saveSettings();
+        $result = $_SESSION['Layout_Settings']->saveSettings();
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+        }
         Layout::reset();
     }
 
