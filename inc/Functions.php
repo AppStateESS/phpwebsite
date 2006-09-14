@@ -14,7 +14,8 @@ $function_list = array('file_get_contents',
                        'scandir',
                        'str_ireplace',
                        'array_diff_key',
-                       'stripos'
+                       'stripos',
+                       'clone'
                        );
 
 if (version_compare(phpversion(), '5.0.0', '<')) {
