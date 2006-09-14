@@ -1,3 +1,24 @@
+14 September 2006
++ Core
+- Function.php : added clone function
+
++ Calendar
+- Moved the event form into Admin.php.
+- Added code to delete an event
+- Started recoding the repeat functionality
+- Changed hcal display slightly for all day events
+- Moved event table sql template into inc folder
+
+12 September 2006
++ Block
+- Fixed bug #1552210 - extra breaks created per edit.
+
++ Layout
+- Fixed bug #1551163 - theme changes were not getting saved.
+
++ Core
+- Setup: For bug #1533711 added a warning to the setup.
+
 7 September 2006
 + Core
 - Form.php : added extra space after checked parameter
