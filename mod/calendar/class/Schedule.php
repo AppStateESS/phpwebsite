@@ -114,17 +114,32 @@ class Calendar_Schedule {
         }
     }
 
+    /**
+     * Creates an event and repeat table for the schedule
+     */
     function createEventTable()
     {
         $table = $this->getEventTable();
-        if (empty($table)) {
-            return null;
+        $recurr = $this->getRecurrenceTable();
+        if (empty($table) || empty($recurr)) {
+            return PHPWS_Error::get(CAL_CANNOT_MAKE_EVENT_TABLE, 'calendar',
+                                    'Calendar_Schedule::createEventTable');
         }
         
         $template['TABLE'] = $table;
-        $query = PHPWS_Template::process($template, 'calendar', 'admin/event_table.tpl');
+        $template['RECURR_TABLE'] = $recurr;
+        $template['INDEX_NAME'] = str_replace('_', '', $table) . '_idx';
+        $template['RECURR_INDEX_NAME'] = str_replace('_', '', $recurr) . '_idx';
 
-        return PHPWS_DB::query($query);
+        $file = PHPWS_SOURCE_DIR . 'mod/calendar/inc/event_table.sql';
+
+        if (!is_file($file)) {
+            return PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, 'calendar',
+                                    'Calendar_Schedule::createEventTable', $file);
+        }
+
+        $query = PHPWS_Template::process($template, 'calendar', $file, true);
+        return PHPWS_DB::import($query);
     }
 
     /**
@@ -236,7 +251,7 @@ class Calendar_Schedule {
             return sprintf('calendar_event_%s', $this->id);
         }
     }
-
+    
     function &getKey()
     {
         if (!$this->_key) {
@@ -244,6 +259,16 @@ class Calendar_Schedule {
         }
 
         return $this->_key;
+    }
+
+
+    function getRecurrenceTable()
+    {
+        if (!$this->id) {
+            return NULL;
+        } else {
+            return sprintf('calendar_recurr_%s', $this->id);
+        }
     }
 
 
@@ -299,8 +324,6 @@ class Calendar_Schedule {
 
         $this->setSummary($_POST['summary']);
         $this->setPublic($_POST['public']);
-        $this->setViewStatus($_POST['view_status']);
-
         return true;
     }
 
@@ -447,17 +470,6 @@ class Calendar_Schedule {
     function setTitle($title)
     {
         $this->title = strip_tags($title);
-    }
-
-    function setViewStatus($status)
-    {
-        $this->view_status = (int)$status;
-    }
-
-
-    function view()
-    {
-
     }
 
 }

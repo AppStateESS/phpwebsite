@@ -23,6 +23,8 @@ define('CALENDAR_START_DAY', 0);
 // Determines whether to put the day before or after the month
 define('CALENDAR_MONTH_FIRST', true);
 
+// if true, adds a DTEND time for all day events
+define('CALENDAR_HCAL_ALLDAY_END', false);
 
 
 // %l %p = 1 PM

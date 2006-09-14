@@ -671,12 +671,15 @@ class Calendar_User {
         for ($i = $startdate; $i <= $enddate; $i += 86400) {
             $day_result = $this->getDaysEvents($i, $tpl);
             if ($day_result) {
-                $day_tpl['FULL_WEEKDAY'] = strftime('%A', $i);
-                $day_tpl['ABBR_WEEKDAY'] = strftime('%a', $i);
-                $day_tpl['DAY_NUMBER']   = strftime('%e', $i);
+                $link = PHPWS_Text::linkAddress('calendar', array('date'=>$i, 'view'=>'day'));
+                $day_tpl['FULL_WEEKDAY'] = sprintf('<a href="%s">%s</a>', $link, strftime('%A', $i));
+                $day_tpl['ABBR_WEEKDAY'] = sprintf('<a href="%s">%s</a>', $link, strftime('%a', $i));
+                $day_tpl['DAY_NUMBER']   = sprintf('<a href="%s">%s</a>', $link, strftime('%e', $i));
                 $tpl->setCurrentBlock('days');
                 $tpl->setData($day_tpl);
                 $tpl->parseCurrentBlock();
+            } else {
+                $tpl->setVariable('MESSAGE', _('No events this week.'));
             }
         }
 

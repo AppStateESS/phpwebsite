@@ -64,10 +64,24 @@ class Calendar_Event {
     var $end_time = 0;
 
     /**
-     *  If true (1), then display as "Busy"
+     * If true (1), then display as "Busy"
      * @var integer
      */
     var $show_busy   = 0;
+
+    /**
+     * contains the repeat type of the event
+     * @var string
+     */ 
+    var $repeat_type = null;
+
+    var $end_repeat = 0;
+
+    /**
+     * Parent id of a repeating event
+     * @var integer
+     */
+    var $pid = 0;
 
     /**
      * pointer to the parent schedule object
@@ -87,9 +101,18 @@ class Calendar_Event {
      */
     var $_key           = null;
 
+    /**
+     * Copy of the previous repeat scheme. null if not set
+     * @var boolean
+     */
+    var $_previous_repeat = null;
 
     function Calendar_Event($schedule=null, $event_id=0)
     {
+        if (isset($this->repeat_type)) {
+            $this->_previous_repeat = $this->repeat_type;
+        }
+
         if ($schedule) {
             $this->_schedule = & $schedule;
             if (empty($event_id)) {
@@ -122,6 +145,21 @@ class Calendar_Event {
         } else {
             return false;
         }
+    }
+
+    function delete()
+    {
+        $table = $this->_schedule->getEventTable();
+
+        Key::drop($this->key_id);
+
+        $db = & new PHPWS_DB($table);
+        $db->addWhere('id', $this->id);
+        
+        if ($this->isRepeatSource()) {
+            $db->addWhere('pid', $this->id, null, 'or');
+        }
+        return $db->delete();
     }
 
     function deleteLink()
@@ -176,81 +214,6 @@ class Calendar_Event {
         $this->_key->flag();
     }
 
-    /**
-     * Creates the edit form for an event
-     */
-    function form()
-    {
-        // the form id is linked to the check_date javascript
-        $form = & new PHPWS_Form('event_form');
-        if (isset($_REQUEST['js'])) {
-            $form->addHidden('js', 1);
-        }
-
-        $form->addHidden('module', 'calendar');
-        $form->addHidden('aop', 'post_event');
-        $form->addHidden('event_id', $this->id);
-        $form->addHidden('sch_id', $this->_schedule->id);
-
-        $form->addText('summary', $this->summary);
-        $form->setLabel('summary', _('Summary'));
-        $form->setSize('summary', 60);
-
-        $form->addText('location', $this->location);
-        $form->setLabel('location', _('Location'));
-        $form->setSize('location', 60);
-
-        $form->addText('loc_link', $this->loc_link);
-        $form->setLabel('loc_link', _('Location link'));
-        $form->setSize('loc_link', 60);
-
-        $form->addTextArea('description', $this->description);
-        $form->useEditor('description');
-        $form->setLabel('description', _('Description'));
-
-        $form->addText('start_date', $this->getStartTime('%Y/%m/%d'));
-        $form->setLabel('start_date', _('Start time'));
-        $form->setExtra('start_date', 'onblur="check_start_date()"');
-
-        $form->addText('end_date', $this->getEndTime('%Y/%m/%d'));
-        $form->setLabel('end_date', _('End time'));
-        $form->setExtra('end_date', 'onblur="check_end_date()" onfocus="check_start_date()"');
-
-        $form->addButton('close', _('Cancel'));
-        $form->setExtra('close', 'onclick="window.close()"');
-
-        $this->timeForm('start_time', $this->start_time, $form);
-        $this->timeForm('end_time', $this->end_time, $form);
-
-        $form->setExtra('start_time_hour', 'onchange="check_start_date()"');
-        $form->setExtra('end_time_hour', 'onchange="check_end_date()"');
-
-        $form->addCheck('all_day', 1);
-        $form->setMatch('all_day', $this->all_day);
-        $form->setLabel('all_day', _('All day event'));
-        $form->setExtra('all_day', 'onchange="alter_date(this)"');
-
-        $form->addCheck('show_busy', 1);
-        $form->setMatch('show_busy', $this->show_busy);
-        $form->setLabel('show_busy', _('Show busy'));
-
-        $form->addSubmit(_('Save event'));
-
-        $tpl = $form->getTemplate();
-
-        $js_vars['date_name'] = 'start_date';
-        $tpl['START_CAL'] = javascript('js_calendar', $js_vars);
-
-        $js_vars['date_name'] = 'end_date';
-        $tpl['END_CAL'] = javascript('js_calendar', $js_vars);
-
-        if (isset($this->_error)) {
-            $tpl['ERROR'] = implode('<br />', $this->_error);
-        }
-
-        javascript('modules/calendar/check_date');
-        return PHPWS_Template::process($tpl, 'calendar', 'admin/forms/edit_event.tpl');
-    }
 
     function getEndTime($format='%c', $mode=null)
     {
@@ -347,9 +310,10 @@ class Calendar_Event {
                 $tpl['END_TIME'] = $this->getStartTime($month_day_mode);
             }
 
-            $tpl['DTSTART']     = PHPWS_Time::getDTTime($this->start_time);
-            // Add one second to make end time midnight. Needed for hCalendar
-            $tpl['DTEND']       = PHPWS_Time::getDTTime($this->end_time+1);
+            $tpl['DTSTART']     = PHPWS_Time::getDTTime($this->start_time, 'all_day');
+            if (CALENDAR_HCAL_ALLDAY_END) {
+                $tpl['DTEND']       = PHPWS_Time::getDTTime($this->end_time + 1, 'all_day');
+            }
         } else {
             if (date('Ymd', $this->start_time) != date('Ymd', $this->end_time)) {
                 // If this event happens over 2 or more day
@@ -369,7 +333,6 @@ class Calendar_Event {
              ) {
             $link[] = $this->editLink();
             $link[] = $this->deleteLink();
-            $link[] = $this->repeatLink();
             $tpl['LINKS'] = implode(' | ', $link);
         }
 
@@ -411,6 +374,32 @@ class Calendar_Event {
         return $db->loadObject($this);
     }
 
+    /**
+     * Returns true if this event is copy of another event
+     */
+    function isRepeatCopy()
+    {
+        if (!$this->pid || $this->pid == $this->id) {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    /**
+     * Returns true is this event is copied elsewhere
+     */
+    function isRepeatSource()
+    {
+        if (!$this->pid) {
+            return false;
+        } elseif ($this->pid == $this->id) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     function monthDiff()
     {
@@ -481,124 +470,85 @@ class Calendar_Event {
             $this->_sch_id = (int)$_POST['sch_id'];
         }
 
+        /********** Check repeats ************/
+
+        if (isset($_POST['repeat_event'])) {
+            $edate = strtotime($_POST['end_repeat_date']);
+
+            $unix_date = mktime('23', '59', '59', 
+                                strftime('%m', $edate), strftime('%d', $edate), strftime('%Y', $edate));
+            echo $unix_date;
+
+            $this->end_repeat = $unix_date;
+            if ($unix_date <= $this->start_time) {
+                $errors[] = _('The date to repeat until must be greater than the event\'s start date.');
+            }
+
+            if (isset($_POST['repeat_mode'])) {
+                $this->repeat_type = null;
+                switch ($_POST['repeat_mode']) {
+                case 'daily':
+                case 'yearly':
+                    $this->repeat_type = $_POST['repeat_mode'];
+                    break;
+
+                case 'weekly':
+                    $this->repeat_type = 'weekly';
+                    if (empty($_POST['weekday_repeat'])) {
+                        $errors[] = _('Weekly repeats require you pick one or more days.');
+                    } else {
+                        $this->repeat_type .= ':' . implode(';', $_POST['weekday_repeat']);
+                    }
+                    break;
+
+                case 'monthly':
+                    $this->repeat_type = 'monthly';
+                    if (empty($_POST['monthly_repeat'])) {
+                        $errors[] = _('Please pick a monthly repeat method.');
+                        break;
+                    }
+                    switch ($_POST['monthly_repeat']) {
+                    case 'begin':
+                    case 'end':
+                    case 'start':
+                        $this->repeat_type .= ':' . $_POST['monthly_repeat'];
+                        break;
+
+                    default:
+                        $errors[] = _('Please pick a proper monthly repeat method.');
+                    }
+                    break;
+                    
+                case 'every':
+                    if ( empty($_POST['every_repeat_number']) ||
+                         empty($_POST['every_repeat_weekday']) ||
+                         empty($_POST['every_repeat_frequency']) ) {
+                        $errors[] = _('Please choose options for the "Every" repeat method.');
+                        break;
+                    }
+                    
+                    $this->repeat_type = sprintf('every:%s;%s;%s',
+                                                 $_POST['every_repeat_number'],
+                                                 $_POST['every_repeat_weekday'],
+                                                 $_POST['every_repeat_frequency']);
+
+                    break;
+                }
+            } else {
+                $errors[] = _('You must choose a repeat mode.');
+            }
+        } else {
+            $this->pid = 0;
+            $this->repeat_type = null;
+            $this->end_repeat = 0;
+        }
+        
+
         if (isset($errors)) {
             $this->_error = &$errors;
             return FALSE;
         } else {
             return TRUE;
-        }
-    }
-
-    /**
-     * Form for repeating events
-     */
-    function repeat($js=false)
-    {
-        $form = & new PHPWS_Form('repeat_event');
-
-        $form->addHidden('module', 'calendar');
-        $form->addHidden('sch_id', $this->_schedule->id);
-        $form->addHidden('event_id', $this->id);
-        $form->addHidden('aop', 'post_repeat');
-
-        $form->addText('end_repeat_date', $this->getStartTime('%Y/%m/%d'));
-        $form->setLabel('end_repeat_date', _('Repeat event until:'));
-
-        $modes = array('daily',
-                       'weekly',
-                       'monthly',
-                       'yearly',
-                       'every');
-
-
-        $modes_label = array(_('Daily'),
-                             _('Weekly'),
-                             _('Monthly'),
-                             _('Yearly'),
-                             _('Every'));
-
-        $form->addRadio('repeat_mode', $modes);
-        $form->setLabel('repeat_mode', $modes_label);
-
-        $weekdays = array(1=>1,2=>2,3=>3,4=>4,5=>5,6=>6,7=>7);
-
-        $weekday_labels = array(1=>strftime('%A', mktime(0,0,0,1,5,1970)),
-                                2=>strftime('%A', mktime(0,0,0,1,6,1970)),
-                                3=>strftime('%A', mktime(0,0,0,1,7,1970)),
-                                4=>strftime('%A', mktime(0,0,0,1,8,1970)),
-                                5=>strftime('%A', mktime(0,0,0,1,9,1970)),
-                                6=>strftime('%A', mktime(0,0,0,1,10,1970)),
-                                7=>strftime('%A', mktime(0,0,0,1,11,1970))
-                                );
-
-        $form->addCheck('weekday_repeat', $weekdays);
-        $form->setLabel('weekday_repeat', $weekday_labels);
-
-
-
-        $monthly = array('begin' => _('Beginning of each month'),
-                         'end'   => _('End of each month'),
-                         'start' => _('Every month on start date')
-                         );
-
-        $form->addSelect('monthly_repeat', $monthly);
-
-        $every_repeat_week = array(1   => _('1st'),
-                                   2   => _('2nd'),
-                                   3   => _('3rd'),
-                                   4   => _('4th'),
-                                   'last' => _('Last')
-                                   );
-
-        $frequency = array('every' => _('Every month'),
-                           1 => strftime('%B', mktime(0,0,0,1,1,1970)),
-                           2 => strftime('%B', mktime(0,0,0,2,1,1970)),
-                           3 => strftime('%B', mktime(0,0,0,3,1,1970)),
-                           4 => strftime('%B', mktime(0,0,0,4,1,1970)),
-                           5 => strftime('%B', mktime(0,0,0,5,1,1970)),
-                           6 => strftime('%B', mktime(0,0,0,6,1,1970)),
-                           7 => strftime('%B', mktime(0,0,0,7,1,1970)),
-                           8 => strftime('%B', mktime(0,0,0,8,1,1970)),
-                           9 => strftime('%B', mktime(0,0,0,9,1,1970)),
-                           10 => strftime('%B', mktime(0,0,0,10,1,1970)),
-                           11 => strftime('%B', mktime(0,0,0,11,1,1970)),
-                           12 => strftime('%B', mktime(0,0,0,12,1,1970)));
-
-        $form->addSelect('every_repeat_number', $every_repeat_week);
-        $form->addSelect('every_repeat_weekday', $weekday_labels);
-        $form->addSelect('every_repeat_frequency', $frequency);
-
-        $form->addSubmit('submit', _('Repeat event'));
-        if ($js) {
-            $form->addHidden('js', 1);
-            $form->addButton('cancel', _('Cancel'));
-            $form->setExtra('cancel', 'onclick="window.close()"');
-        }
-
-        $tpl = $form->getTemplate();
-
-        $js_vars['date_name'] = 'end_repeat_date';
-        $tpl['END_CAL'] = javascript('js_calendar', $js_vars);
-
-
-        return PHPWS_Template::process($tpl, 'calendar', 'admin/forms/repeat.tpl');
-    }
-
-    function repeatLink()
-    {
-        $linkvar['aop']      = 'repeat_event';
-        $linkvar['sch_id']   = $this->_schedule->id;
-        $linkvar['event_id'] = $this->id;
-
-        if (javascriptEnabled()) {
-            $linkvar['js'] = 1;
-            $jsvars['address'] = PHPWS_Text::linkAddress('calendar', $linkvar);
-            $jsvars['link_title'] = $jsvars['label'] = _('Repeat');
-            $jsvars['width'] = CALENDAR_REPEAT_WIDTH;
-            $jsvars['height'] = CALENDAR_REPEAT_HEIGHT;
-            return javascript('open_window', $jsvars);
-        } else {
-            return PHPWS_Text::moduleLink(_('Repeat'), 'calendar', $linkvar);
         }
     }
 
