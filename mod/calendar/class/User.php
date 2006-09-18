@@ -425,10 +425,11 @@ class Calendar_User {
         $tpl = & new PHPWS_Template('calendar');
         $tpl->setFile('view/month/list.tpl');
 
-
+        $events_found = false;
         for ($i = $startdate; $i <= $enddate; $i += 86400) {
             $day_result = $this->getDaysEvents($i, $tpl);
             if ($day_result) {
+                $events_found = true;
                 $day_tpl['FULL_WEEKDAY'] = strftime('%A', $i);
                 $day_tpl['ABBR_WEEKDAY'] = strftime('%a', $i);
                 $day_tpl['DAY_NUMBER']   = strftime('%e', $i);
@@ -438,6 +439,9 @@ class Calendar_User {
             }
         }
 
+        if (!$events_found) {
+            $tpl->setVariable('MESSAGE', _('No events this month.'));
+        }
 
         $main_tpl['FULL_MONTH_NAME'] = strftime('%B', mktime(0,0,0, $month, $day, $year));
         $main_tpl['ABRV_MONTH_NAME'] = strftime('%b', mktime(0,0,0, $month, $day, $year));
@@ -667,10 +671,11 @@ class Calendar_User {
             $end_range .= strftime(', %Y', $enddate);
         }
 
-
+        $events_found = false;
         for ($i = $startdate; $i <= $enddate; $i += 86400) {
             $day_result = $this->getDaysEvents($i, $tpl);
             if ($day_result) {
+                $events_found = true;
                 $link = PHPWS_Text::linkAddress('calendar', array('date'=>$i, 'view'=>'day'));
                 $day_tpl['FULL_WEEKDAY'] = sprintf('<a href="%s">%s</a>', $link, strftime('%A', $i));
                 $day_tpl['ABBR_WEEKDAY'] = sprintf('<a href="%s">%s</a>', $link, strftime('%a', $i));
@@ -678,9 +683,11 @@ class Calendar_User {
                 $tpl->setCurrentBlock('days');
                 $tpl->setData($day_tpl);
                 $tpl->parseCurrentBlock();
-            } else {
-                $tpl->setVariable('MESSAGE', _('No events this week.'));
             }
+        }
+
+        if (!$events_found) {
+            $tpl->setVariable('MESSAGE', _('No events this week.'));
         }
 
         $main_tpl['DAY_RANGE'] = sprintf('From %s to %s', $start_range, $end_range);

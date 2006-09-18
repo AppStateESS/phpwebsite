@@ -128,7 +128,7 @@ class Calendar_Admin {
         $form->addCheck('repeat_event', 1);
         $form->setLabel('repeat_event', _('Make a repeating event'));
 
-        $form->addText('end_repeat_date', $event->getStartTime('%Y/%m/%d'));
+        $form->addText('end_repeat_date', $event->getEndRepeat('%Y/%m/%d'));
         $form->setLabel('end_repeat_date', _('Repeat event until:'));
 
         $modes = array('daily',
@@ -223,16 +223,23 @@ class Calendar_Admin {
         }
 
 
-        if ($event->isRepeatCopy()) {
+        if ($event->pid) {
+            $form->addHidden('pid', $event->pid);
+            // This is a repeat copy, if saved it removes it from the copy list
             $form->addSubmit('save', _('Save and remove repeat'));
-            $form->setExtra('save', sprintf('onclick="confirm(\'%s\')"',
+            $form->setExtra('save', sprintf('onclick="return confirm(\'%s\')"',
                                             _('Remove event from repeat list?')) );
-        } elseif ($event->isRepeatSource()) {
-            $form->addSubmit('save_source', _('Save this event only'));
+        } elseif ($event->repeat_type) {
+            // This is event is a source repeating event
+
+            // Save this 
+            // Not sure if coding this portion. commenting for now
+            // $form->addSubmit('save_source', _('Save this event only'));
             $form->addSubmit('save_copy', _('Save and apply to repeats'));
-            $form->setExtra('save_copy', sprintf('onclick="confirm(\'%s\')"',
+            $form->setExtra('save_copy', sprintf('onclick="return confirm(\'%s\')"',
                                             _('Apply changes to repeats?')) );
         } else {
+            // this is a non-repeating event
             $form->addSubmit('save', _('Save event'));
         }
 
@@ -250,6 +257,18 @@ class Calendar_Admin {
 
         if (isset($event->_error)) {
             $tpl['ERROR'] = implode('<br />', $event->_error);
+        }
+
+        if ($event->pid) {
+            $linkvar['aop']      = 'edit_event';
+            $linkvar['sch_id']   = $event->_schedule->id;
+            $linkvar['event_id'] = $event->pid;
+            if (javascriptEnabled()) {
+                $linkvar['js'] = 1;
+            }
+
+            $source_link = PHPWS_Text::moduleLink(_('Click here if you would prefer to edit the source event.'), 'calendar', $linkvar);
+            $tpl['REPEAT_WARNING'] = _('This is a repeat of another event.') . '<br />' . $source_link;
         }
 
         javascript('modules/calendar/edit_event');
@@ -398,6 +417,8 @@ class Calendar_Admin {
             $tpl['MESSAGE'] = $this->message;
         } 
 
+        // Clears in case of js window opening
+        $this->content = $this->title = $this->message = null;
 
         $final = PHPWS_Template::process($tpl, 'calendar', 'admin/main.tpl');
 
@@ -438,15 +459,21 @@ class Calendar_Admin {
     function postEvent()
     {
         $event = $this->calendar->schedule->loadEvent();
-        
+        $event->loadPrevious();
         if ($event->post()) {
-            $result = $event->save();
-
-            if (!empty($event->repeat_type)) {
-                $event->pid = $event->id;
-                $event->save();
-                $this->saveRepeat($event);
+            if ($event->pid) {
+                /**
+                 * if the pid is set, then it's saving a copy event
+                 * copy events are changed to source events so 
+                 * the pid and key are reset
+                 */
+                $event->pid = 0;
+                $event->key_id = 0;
             }
+
+            $result = $event->save();
+            $this->saveRepeat($event);
+
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
                 if(PHPWS_Calendar::isJS()) {
@@ -459,7 +486,6 @@ class Calendar_Admin {
                 }
             } else {
                 if(PHPWS_Calendar::isJS()) {
-                    $this->sendMessage(_('Event saved.'), null, false);
                     javascript('close_refresh');
                     Layout::nakedDisplay();
                     exit();
@@ -478,6 +504,39 @@ class Calendar_Admin {
      */
     function saveRepeat(&$event)
     {
+
+        // if this event has a parent id, don't try and save repeats
+        if ($event->pid) {
+            return true;
+        }
+
+        // This event is not repeating
+        if (empty($event->repeat_type)) {
+            // Previously, the event repeated, remove the copies
+            $result = $event->clearRepeats();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+            }
+            return true;
+        }
+
+        // Event is repeating
+
+        // First check if the repeat scheme changed
+
+        if ($event->_previous_repeat && $event->getCurrentHash() == $event->_previous_settings) {
+            // The event has not changed, so we just update the repeats
+            // that exist and return
+            return $event->updateRepeats();
+        }
+
+        // The repeat setting changed or were never set, so need to recreate the copies
+        $result = $event->clearRepeats();
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+        }
+
+
         $repeat_info = explode(':', $event->repeat_type);
         $repeat_mode = $repeat_info[0];
         if (isset($repeat_info[1])) {
@@ -567,27 +626,20 @@ class Calendar_Admin {
     {
         $time_unit = $event->start_time + 86400;
 
-        $copy_event = clone($event);
-
-        $copy_event->pid = $event->id;
-        $copy_event->repeat_type = null;
-        $copy_event->end_repeat = 0;
-
+        $copy_event = $event->repeatClone();
         $time_diff = $event->end_time - $event->start_time;
 
         $max_count = 0;
         while($time_unit <= $event->end_repeat) {
             $copy_event->id = 0;
-            $copy_event->key_id = 0;
 
             $max_count++;
             if ($max_count > CALENDAR_MAXIMUM_REPEATS) {
-                return PHPWS_Error::get();
+                return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatDaily');
             }
             $copy_event->start_time = $time_unit;
             $copy_event->end_time = $time_unit + $time_diff;
             $time_unit += 86400;
-
             $result = $copy_event->save();
             if (PEAR::isError($result)) {
                 return $result;
@@ -688,12 +740,10 @@ class Calendar_Admin {
 
         $time_unit = $event->start_time + 86400;
 
-        $copy_event = $event;
-
+        $copy_event = $event->repeatClone();
         $time_diff = $event->end_time - $event->start_time;
 
         $max_count = 0;
-
         $repeat_days = &$_REQUEST['weekday_repeat'];
 
         while($time_unit <= $event->end_repeat) {
@@ -702,7 +752,7 @@ class Calendar_Admin {
                 continue;
             }
             $copy_event->id = 0;
-            $copy_event->key_id = 0;
+
             $max_count++;
             if ($max_count > CALENDAR_MAXIMUM_REPEATS) {
                 return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatWeekly');
@@ -790,8 +840,7 @@ class Calendar_Admin {
     {
         $_SESSION['Calendar_Admin_Message'] = $message;
         if ($route && !empty($command)) {
-            echo $message;
-            //            PHPWS_Core::reroute('index.php?module=calendar&aop=' . $command);
+            PHPWS_Core::reroute('index.php?module=calendar&aop=' . $command);
         }
     }
 

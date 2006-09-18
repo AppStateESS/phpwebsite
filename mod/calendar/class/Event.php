@@ -102,17 +102,19 @@ class Calendar_Event {
     var $_key           = null;
 
     /**
-     * Copy of the previous repeat scheme. null if not set
-     * @var boolean
+     * Set to true if event was a repeat on load
      */
-    var $_previous_repeat = null;
+    var $_previous_repeat = false;
+
+    /**
+     * A hash of settings that determines if an event
+     * has changed enough from the last setting to warrant
+     * new repeat copies.
+     */
+    var $_previous_settings = null;
 
     function Calendar_Event($schedule=null, $event_id=0)
     {
-        if (isset($this->repeat_type)) {
-            $this->_previous_repeat = $this->repeat_type;
-        }
-
         if ($schedule) {
             $this->_schedule = & $schedule;
             if (empty($event_id)) {
@@ -133,6 +135,29 @@ class Calendar_Event {
                 }
             }
         }
+    }
+
+    function clearRepeats()
+    {
+        $table = $this->_schedule->getEventTable();
+        $db = & new PHPWS_DB($table);
+
+        $db->addWhere('pid', $this->id);
+        return $db->delete();
+    }
+
+
+    /**
+     * Makes a clone event
+     */
+    function &repeatClone()
+    {
+        $clone = clone($this);
+        $clone->pid         = $this->id;
+        $clone->repeat_type = null;
+        $clone->end_repeat  = 0;
+        $clone->key_id      = $this->key_id;
+        return $clone;
     }
 
     /**
@@ -156,9 +181,9 @@ class Calendar_Event {
         $db = & new PHPWS_DB($table);
         $db->addWhere('id', $this->id);
         
-        if ($this->isRepeatSource()) {
-            $db->addWhere('pid', $this->id, null, 'or');
-        }
+        // Remove any possible children
+        $db->addWhere('pid', $this->id, null, 'or');
+
         return $db->delete();
     }
 
@@ -212,6 +237,36 @@ class Calendar_Event {
             $this->_key = & new Key($this->key_id);
         }
         $this->_key->flag();
+    }
+
+    /**
+     * The variables hashed determine if an event needs to have its copies
+     * recreated
+     */
+    function getCurrentHash()
+    {
+        $hash[] = $this->repeat_type;
+        $hash[] = $this->end_repeat;
+        $hash[] = $this->start_time;
+        $hash[] = $this->end_time;
+        return md5(implode('', $hash));
+    }
+
+    function getEndRepeat($format='%c', $mode=null)
+    {
+        $time = &$this->end_repeat;
+
+        if (!$time) {
+            $time = $this->end_time;
+        }
+
+        if ($mode == 'user') {
+            $time = PHPWS_Time::getUserTime($time);
+        } elseif ($mode == 'server') {
+            $time = PHPWS_Time::getUserTime($time);
+        }
+
+        return strftime($format, $time);
     }
 
 
@@ -374,33 +429,19 @@ class Calendar_Event {
         return $db->loadObject($this);
     }
 
+
+    function loadPrevious()
+    {
+        if (isset($this->repeat_type)) {
+            $this->_previous_repeat = true;
+            $this->_previous_settings = $this->getCurrentHash();
+        }
+    }
+
+
     /**
      * Returns true if this event is copy of another event
      */
-    function isRepeatCopy()
-    {
-        if (!$this->pid || $this->pid == $this->id) {
-            return false;
-        } else {
-            return true;
-        }
-
-    }
-
-    /**
-     * Returns true is this event is copied elsewhere
-     */
-    function isRepeatSource()
-    {
-        if (!$this->pid) {
-            return false;
-        } elseif ($this->pid == $this->id) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     function monthDiff()
     {
         if (date('Ym', $this->start_time) != date('Ym', $this->end_time)) {
@@ -471,21 +512,18 @@ class Calendar_Event {
         }
 
         /********** Check repeats ************/
-
         if (isset($_POST['repeat_event'])) {
             $edate = strtotime($_POST['end_repeat_date']);
 
-            $unix_date = mktime('23', '59', '59', 
+            $this->end_repeat = mktime('23', '59', '59', 
                                 strftime('%m', $edate), strftime('%d', $edate), strftime('%Y', $edate));
-            echo $unix_date;
 
-            $this->end_repeat = $unix_date;
-            if ($unix_date <= $this->start_time) {
+            if (date('Ymd', $this->end_repeat) <= date('Ymd', $this->start_time)) {
                 $errors[] = _('The date to repeat until must be greater than the event\'s start date.');
             }
 
             if (isset($_POST['repeat_mode'])) {
-                $this->repeat_type = null;
+
                 switch ($_POST['repeat_mode']) {
                 case 'daily':
                 case 'yearly':
@@ -538,17 +576,15 @@ class Calendar_Event {
                 $errors[] = _('You must choose a repeat mode.');
             }
         } else {
-            $this->pid = 0;
             $this->repeat_type = null;
             $this->end_repeat = 0;
         }
-        
 
         if (isset($errors)) {
             $this->_error = &$errors;
-            return FALSE;
+            return false;
         } else {
-            return TRUE;
+            return true;
         }
     }
 
@@ -557,14 +593,16 @@ class Calendar_Event {
         $table = $this->_schedule->getEventTable();
 
         if (!PHPWS_DB::isTable($table)) {
-            return PHPWS_Error::get();
+            return PHPWS_Error::get(CAL_EVENT_TABLE_MISSING, 'calendar', 'Calendar_Event::save');
         }
         
         $db = & new PHPWS_DB($table);
         $result = $db->saveObject($this);
         if (PEAR::isError($result)) {
             return $result;
-        } else {
+        } elseif (!$this->pid) {
+            // only save the key if the pid is 0
+            // ie source event not copy
             if (empty($this->key_id)) {
                 $save_key = true;
             } else {
@@ -576,15 +614,19 @@ class Calendar_Event {
                 return false;
             }
 
-            $db->saveObject($this);
+            if ($save_key) {
+                $db->saveObject($this);
+            }
 
+            
+            /* save search settings */
             $search = & new Search($this->key_id);
             $search->addKeywords($this->summary);
             $search->addKeywords($this->location);
             $search->addKeywords($this->description);
             $search->save();
-            return TRUE;
-        }
+            return true;
+        } 
     }
 
     function saveKey()
@@ -670,6 +712,29 @@ class Calendar_Event {
         $form->setMatch($name . '_minute', $minute_match);
     }
 
+    function updateRepeats()
+    {
+
+        // this is a repeated copy of an event, no need to update
+        // likewise if repeat type is null
+        if ($this->pid || empty($this->repeat_type)) {
+            return true;
+        }
+
+        $table = $this->_schedule->getEventTable();
+        $db = & new PHPWS_DB($table);
+
+        $saveVals['summary']     = $this->summary;
+        $saveVals['location']    = $this->location;
+        $saveVals['loc_link']    = $this->loc_link;
+        $saveVals['description'] = $this->description;
+        $saveVals['show_busy']   = $this->show_busy;
+
+        $db->addWhere('pid', $this->id);
+        $db->addValue($saveVals);
+
+        return $db->update();
+    }
 
 }
 
