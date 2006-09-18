@@ -3,6 +3,7 @@
     <li id="event-pick" class="active"><a href="javascript:changeTab(0)">{EVENT_TAB}</a></li>
     <li id="repeat-pick" class="inactive"><a href="javascript:changeTab(1)">{REPEAT_TAB}</a></li>
 </ul>
+<!-- BEGIN repeat-warning --><div style="margin : 10px">{REPEAT_WARNING}</div><!-- END repeat-warning -->
 </div>
 <!-- BEGIN error --><h2 class="error">{ERROR}</h2><!-- END error -->
 <hr />
