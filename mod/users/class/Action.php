@@ -543,9 +543,15 @@ class User_Action {
     function postUser(&$user, $set_username=TRUE)
     {
         if ($set_username){
+            $user->_prev_username = $user->username;
             $result = $user->setUsername($_POST['username']);
             if (PEAR::isError($result)) {
                 $error['USERNAME_ERROR'] = $result->getMessage();
+            }
+
+            if ( ($user->_prev_username != $user->username) && 
+                 (empty($_POST['password1']) || empty($_POST['password2']))) {
+                $error['PASSWORD_ERROR'] = _('Passwords must be reentered on user name change.');
             }
         }
 

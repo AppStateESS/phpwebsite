@@ -17,28 +17,29 @@ if (!defined('ALLOWED_USERNAME_CHARACTERS')) {
 }
 
 class PHPWS_User {
-    var $id            = NULL;
-    var $username      = NULL;
-    var $deity         = FALSE;
-    var $active        = TRUE;
+    var $id             = NULL;
+    var $username       = NULL;
+    var $deity          = FALSE;
+    var $active         = TRUE;
     // method of authorizing the user
-    var $authorize     = 0;
-    var $last_logged   = 0;
-    var $log_count     = 0;
-    var $created       = 0;
-    var $updated       = 0;
+    var $authorize      = 0;
+    var $last_logged    = 0;
+    var $log_count      = 0;
+    var $created        = 0;
+    var $updated        = 0;
     // if true, they have been approved to log in
-    var $approved      = FALSE;
-    var $email         = NULL;
-    var $display_name  = NULL;
+    var $approved       = FALSE;
+    var $email          = NULL;
+    var $display_name   = NULL;
 
-    var $_password     = NULL;
-    var $_groups       = NULL;
-    var $_permission   = NULL;
-    var $_user_group   = NULL;
-    var $_auth_key     = NULL;
+    var $_password      = NULL;
+    var $_groups        = NULL;
+    var $_permission    = NULL;
+    var $_user_group    = NULL;
+    var $_auth_key      = NULL;
     // Indicates whether this is a logged in user
-    var $_logged       = FALSE;
+    var $_logged        = FALSE;
+    var $_prev_username = null;
  
     function PHPWS_User($id=NULL)
     {
@@ -557,13 +558,15 @@ class PHPWS_User {
 
     function saveLocalAuthorization()
     {
-        if (empty($this->username) || empty($this->_password))
+        if (empty($this->username) || empty($this->_password)) {
             return FALSE;
+        }
 
         $db = & new PHPWS_DB('user_authorization');
-        $db->addWhere('username', $this->username);
+        $db->addWhere('username', $this->_prev_username);
         $db->delete();
         $db->resetWhere();
+
         $db->addValue('username', $this->username);
         $db->addValue('password', $this->_password);
         return $db->insert();
