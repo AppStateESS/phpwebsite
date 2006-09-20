@@ -8,42 +8,96 @@
 PHPWS_Core::requireConfig('breadcrumb');
 
 class Breadcrumb {
-    var $sticky_home = BC_STICKY_HOME;
-    var $view_limit  = BC_VIEW_LIMIT;
-    var $bc_list     = array();
+    var $sticky_home   = BC_STICKY_HOME;
+    var $view_limit    = BC_VIEW_LIMIT;
+    var $queue_limit   = BC_QUEUE_LIMIT;
+    var $bc_list       = null;
+    var $current_count = 0;
+    var $key_list      = null;
+    var $position      = false;
+    var $previous      = false;
+
+    function Breadcrumb()
+    {
+        $this->bc_list  = array();
+        $this->key_list = array();
+    }
 
     function display() {
+        $this->view_limit = 4;
+
         if (!isset($_REQUEST['authkey'])) {
             $this->recordView();
         }
 
-        if (count($this->bc_list) > $this->view_limit) {
-            $show_list = array_slice($this->bc_list, $this->view_limit, true);
-        } else {
-            $show_list = & $this->bc_list;
-        }
-        $content = implode(BC_DIVIDER, $show_list);
+        $this->current_count = count($this->bc_list);
+        $this->key_list      = array_keys($this->bc_list);
+        $last_position = $this->current_count - 1;
+        $spacing = floor($this->view_limit/2);
 
-        Layout::add($content, 'breadcrumb', 'view');
+        $left = $this->position - $spacing;
+        $right = $this->position + $spacing;
+
+        if ($this->view_limit <= $this->current_count) {
+            while ($right > $last_position) {
+                $left--;
+                $right--;
+            }
+        }
+
+        if (!(int)($this->view_limit % 2) ) {
+            if ($right - 1 > $this->position) {
+                $right--;
+            } else {
+                $left++;
+            }
+        }
+       
+        while ($left < 0) {
+            $left++;
+            $right++;
+        }
+
+        if ($left > 0) {
+            $content[] = '...';
+        }
+
+
+        for($i = $left; $i <= $right; $i++) {
+            if ($bc = @$this->bc_list[$this->key_list[$i]]) {
+                if ($i == $this->position) {
+                    $content[] = '[' . $bc . ']';
+                } else {
+                    $content[] = $bc;
+                }
+            } else {
+                break;
+            }
+        }
+
+        if ($right < $last_position) {
+            $content[] = '...';
+        }
+
+        $print = implode(' &gt; ', $content);
+        Layout::add($print, 'breadcrumb', 'view');
     }
 
     function recordView()
     {
         $key = Key::getCurrent();
-        
-        if (Key::checkKey($key, TRUE)) {
-            if (isset($this->bc_list[$key->id])) {
-                //remove records from that point on
-                $key_list = array_keys($this->bc_list);
-                $array_key_count = array_search($key->id, $key_list);
-                $this->bc_list = array_slice($this->bc_list, 0, $array_key_count + 1, true);
-            } else {
-                $this->bc_list[$key->id] = $key->getUrl();
-            }
+        if (!Key::checkKey($key, TRUE)) {
+            return;
+        }
+
+        $this->position = array_search($key->id, $this->key_list);
+
+        if ($this->position === false) {
+            $this->bc_list[$key->id] = $key->getUrl();
+            $this->key_list = array_keys($this->bc_list);
+            $this->position = $this->current_count;
         }
     }
-
-
 }
 
 ?>
