@@ -1,3 +1,21 @@
+20 September 2006
++ Breadcrumb
+- Recoded logic
+- Added templating
+
++ Theme
+- Added styles for breadcrumb in default
+
+19 September 2006
++ Users
+- Fixed authorization problems occuring after changing user name.
+
+18 September 2006
++ Calendar
+- Changed edit_event template. Now contains repeat warning tag
+- More work on repeats and edits of repeats
+- No event messages for weekly and monthly view
+
 14 September 2006
 + Core
 - Function.php : added clone function
