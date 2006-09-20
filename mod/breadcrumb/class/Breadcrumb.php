@@ -59,28 +59,39 @@ class Breadcrumb {
         }
 
         if ($left > 0) {
-            $content[] = '...';
+            $tpl['bc-list'][] = array('BC' => '...', 'CLASS' => 'bc');
         }
 
-
+        $multiple = 0;
         for($i = $left; $i <= $right; $i++) {
             if ($bc = @$this->bc_list[$this->key_list[$i]]) {
                 if ($i == $this->position) {
-                    $content[] = '[' . $bc . ']';
+                    $class = 'current-bc';
                 } else {
-                    $content[] = $bc;
+                    $class = 'bc';
                 }
+
+                if ($this->current_count > 1 && $i != $right) {
+                    $separator = '&nbsp;';
+                } else {
+                    $separator = null;
+                }
+
+                $tpl['bc-list'][] = array('BC' => $bc, 'CLASS' => $class, 'SEPARATOR' => $separator);
             } else {
                 break;
             }
+            $multiple = 1;
         }
 
         if ($right < $last_position) {
-            $content[] = '...';
+            $tpl['bc-list'][] = array('BC' => '...', 'CLASS' => 'bc', 'SEPARATOR' => null);
         }
 
-        $print = implode(' &gt; ', $content);
-        Layout::add($print, 'breadcrumb', 'view');
+
+        $content = PHPWS_Template::process($tpl, 'breadcrumb', 'bc.tpl');
+
+        Layout::add($content, 'breadcrumb', 'view');
     }
 
     function recordView()
