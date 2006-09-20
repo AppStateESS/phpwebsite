@@ -255,3 +255,8 @@ ul#navlist li a {
 div.category-info {
    margin-bottom : 10px;                  
 }
+
+div.breadcrumb span.current-bc {
+   font-size : 1.1em;
+   font-weight : bold;
+}
