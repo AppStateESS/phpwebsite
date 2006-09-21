@@ -8,27 +8,31 @@
  */
 
 
-function menu_unregister(&$key)
+function menu_unregister_key(&$key)
 {
-
     PHPWS_Core::initModClass('menu', 'Menu_Link.php');
 
     if (empty($key) || empty($key->id)) {
         return FALSE;
     }
 
-    $link = &  new Menu_Link;
-
     $db = & new PHPWS_DB('menu_links');
     $db->addWhere('key_id', $key->id);
-    $db->loadObject($link);
-    $db->reset();
-    $link->_db = &$db;
-    $result = $link->delete(TRUE);
+    $result = $db->delete();
+
     if (PEAR::isError($result)) {
         PHPWS_Error::log($result);
     }
 
+    $db2 = & new PHPWS_DB('menu_assoc');
+    $db2->addWhere('key_id', $key->id);
+    $result = $db2->delete();
+
+    if (PEAR::isError($result)) {
+        PHPWS_Error::log($result);
+    }
+
+    return true;
 }
 
 ?>
