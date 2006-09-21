@@ -707,7 +707,7 @@ class Key {
 
             require_once $filename;
 
-            $func_name = $module . '_unregister';
+            $func_name = $module . '_unregister_key';
             if (!function_exists($func_name)) {
                 PHPWS_Error::log(KEY_UNREG_FUNC_MISSING, 'core', 'PHPWS_Key::unregister', $func_name);
                 continue;
@@ -729,11 +729,42 @@ class Key {
         return $db->insert();
     }
 
+    /**
+     * Unregisters a module by pulling current keys and
+     * deleting them individually. Although this takes longer
+     * than simply wiping the table, it cleans up old associations. Function
+     * also removes the module from the phpws_key_register table.
+     * Returns true is all is well, false if there was a problem cleaning
+     * up the associations, and an error object if a major problem occurred.
+     */
     function unregisterModule($module)
     {
-        $db = & new PHPWS_DB('phpws_key_register');
-        $db->addWhere('module', $module);
-        return $db->delete();
+        $error_free = true;
+
+        $db1 = & new PHPWS_DB('phpws_key');
+        $db1->addWhere('module', $module);
+        $result = $db1->getObjects('Key');
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        if (!empty($result)) {
+            foreach ($result as $key) {
+                $result = $key->delete();
+                if (!$result) {
+                    $error_free = false;
+                }
+            }
+        }
+
+        $db2 = & new PHPWS_DB('phpws_key_register');
+        $db2->addWhere('module', $module);
+        $result = $db2->delete();
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        return $error_free;
     }
 
     function getAllIds($module)
