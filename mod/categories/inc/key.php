@@ -8,7 +8,7 @@
  */
 
 
-function categories_unregister(&$key)
+function categories_unregister_key(&$key)
 {
     if (empty($key) || empty($key->id)) {
         return FALSE;
