@@ -10,6 +10,8 @@ define('CALENDAR_EVENT_TYPE_ALL_DAY', 2);
 define('CALENDAR_EVENT_TYPE_STARTS',  3);
 define('CALENDAR_EVENT_TYPE_ENDS'  ,  4);
 
+PHPWS_Core::requireInc('calendar', 'error_defines.php');
+
 class Calendar_Event {
     /**
      * @var integer
@@ -590,6 +592,8 @@ class Calendar_Event {
 
     function save()
     {
+        PHPWS_Core::initModClass('search', 'Search.php');
+
         $table = $this->_schedule->getEventTable();
 
         if (!PHPWS_DB::isTable($table)) {

@@ -9,6 +9,8 @@ define('CAL_VIEW_ALL',         1); // everyone can see this calendar
 define('CAL_VIEW_SOME',        2); // most will see the open and close details only
 define('CAL_VIEW_LIMIT',       3); // only people given express permission can view
 
+PHPWS_Core::requireInc('calendar', 'error_defines.php');
+
 class Calendar_Schedule {
     /**
      * @var integer
