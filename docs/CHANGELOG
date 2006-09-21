@@ -1,3 +1,49 @@
+21 September 2006
++ Core
+- Key.php
+  o changed unregister function name to -
+    "modulename_unregister_key" It was getting confused with the
+    module's normal unregister function
+  o rewrote Key's unregister function to remove associations
+    automatically
+
+- Settings.php : added function to unregister a module's settings
+ 
++ Boost
+- Added call to clear the cache on a module's removal
+- Added call to clear a module's settings upon removal
+- Recoded call to unregister a module's keys on removal (see Key.php above)
+
++ Breadcrumb
+- small change for divider display
+
++ Calendar
+- Fixed db typo
+- restored cache on mini calendar printout
+- every month variable changed from 'last' to '5'
+- fixed submit button bug on event forms after errors
+- removed myschedule for now
+- finished every repeat method
+- recoded the monthly repeat method
+- rewrote uninstall boost file
+
++ Categories
+- Retitled key unregistration function
+
++ Search
+- Retitled key unregistration function
+
++ Comments
+- Retitled key unregistration function
+
++ Menu
+- menu associations no cleared
+- changed function name
+
++ Related
+- related was missing key registration
+- added key unregistration file
+
 20 September 2006
 + Breadcrumb
 - Recoded logic
