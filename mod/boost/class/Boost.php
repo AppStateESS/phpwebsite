@@ -239,6 +239,7 @@ class PHPWS_Boost {
 
     function uninstall()
     {
+        PHPWS_Cache::clearCache();
         $content = array();
         if (!$this->isModules()) {
             return PHPWS_Error::get(BOOST_NO_MODULES_SET, 'boost', 'install');
@@ -617,7 +618,21 @@ class PHPWS_Boost {
             $content[] = _('An error occurred while unregistering.');
             $content[] = _('Check your logs for more information.');
         } else {
-            $content[] = _('Unregistering was successful.');
+            $content[] = _('Unregistering module from Boost was successful.');
+
+            $result = PHPWS_Settings::unregister($module->title);
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                $content[] = _('Module\'s settings could not be removed. See your error log.');
+            } else {
+                $content[] = _('Module\'s settings removed successfully.');
+            }
+
+            if (Key::unregisterModule($module->title)) {
+                $content[] = _('Key unregistration successful.');
+            } else {
+                $content[] = _('Some key unregistrations were unsuccessful. Check your logs.');
+            }
 
             if ($module->isUnregister()) {
                 $selfselfResult = $this->unregisterModToMod($module, $module, $content);
@@ -628,16 +643,7 @@ class PHPWS_Boost {
             $result = $this->unregisterAll($module);
         }
 
-        $filename = sprintf('%smod/%s/inc/key.php', PHPWS_SOURCE_DIR, $module->title);
-        if (is_file($filename)) {
-            $content[] = _('Unregistered from Key.');
-            if (Key::unregisterModule($module->title)) {
-                $content[] = _('Key unregistration successful.');
-            } else {
-                $content[] = _('Some key unregistrations were unsuccessful. Check your logs.');
-            }
-        }
-    
+
         return $result;
     }
 
@@ -712,7 +718,7 @@ class PHPWS_Boost {
             return NULL;
         }
 
-        include_once($registerFile);
+        include_once $registerFile;
 
         $registerFunc = $register_to_mod->title . '_register';
 
@@ -741,7 +747,7 @@ class PHPWS_Boost {
             return NULL;
         }
 
-        include_once($unregisterFile);
+        include_once $unregisterFile;
 
         $unregisterFunc = $unregister_from_mod->title . '_unregister';
 
