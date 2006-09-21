@@ -229,6 +229,16 @@ class PHPWS_Settings {
         }
     }
 
+    /**
+     * Unregisters a module's settings
+     */
+    function unregister($module)
+    {
+        $db = & new PHPWS_DB('mod_settings');
+        $db->addWhere('module', $module);
+        return $db->delete();
+    }
+
 }
 
 ?>
