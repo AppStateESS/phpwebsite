@@ -11,7 +11,7 @@ CREATE TABLE {TABLE} (
   show_busy smallint NOT NULL default '0',
   repeat_type varchar(50) default NULL,
   end_repeat int NOT NULL default '0',
-  pid int NOT NULL default '0'
+  pid int NOT NULL default '0',
   PRIMARY KEY  (id)
 );
 
