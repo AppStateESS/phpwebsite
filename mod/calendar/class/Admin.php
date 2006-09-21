@@ -172,7 +172,7 @@ class Calendar_Admin {
                                    2   => _('2nd'),
                                    3   => _('3rd'),
                                    4   => _('4th'),
-                                   'last' => _('Last')
+                                   5   => _('Last')
                                    );
 
         $frequency = array('every_month' => _('Every month'),
@@ -194,6 +194,7 @@ class Calendar_Admin {
         $form->addSelect('every_repeat_frequency', $frequency);
 
         /* set repeat form matches */
+
         if (!empty($event->repeat_type)) {
             $repeat_info = explode(':', $event->repeat_type);
             $repeat_mode_match = $repeat_info[0];
@@ -229,7 +230,7 @@ class Calendar_Admin {
             $form->addSubmit('save', _('Save and remove repeat'));
             $form->setExtra('save', sprintf('onclick="return confirm(\'%s\')"',
                                             _('Remove event from repeat list?')) );
-        } elseif ($event->repeat_type) {
+        } elseif ($event->id && $event->repeat_type) {
             // This is event is a source repeating event
 
             // Save this 
@@ -429,28 +430,6 @@ class Calendar_Admin {
             Layout::add(PHPWS_ControlPanel::display($panel->display()));
         }
 
-    }
-
-    function mySchedule()
-    {
-        echo 'my schedule needs work or deletion';
-        return;
-        //        $this->title = _('My Schedule');
-        if (!PHPWS_Settings::get('calendar', 'personal_schedules')) {
-            return _('Sorry, personal schedules are disabled.');
-        }
-
-        $schedule = Calendar_Schedule::getCurrentUserSchedule();
-
-        if (PEAR::isError($schedule)) {
-            PHPWS_Error::log($schedule);
-            $this->sendMessage(_('An error occurred when accessing the schedules.'));
-            return NULL;
-        } elseif (!$schedule) {
-            $this->sendMessage(_('You currently do not have a personal schedule. Please create one.'), 'create_personal_schedule');
-        }
-
-        $this->content = $schedule->view();
     }
 
     /**
@@ -667,65 +646,132 @@ class Calendar_Admin {
     function repeatEvery(&$event)
     {
 
-    }
-
-
-    function repeatMonthly(&$event)
-    {
-        require_once 'Calendar/Month.php';
-
         if (!isset($_POST['monthly_repeat'])) {
             return false;
         }
 
         $max_count = 0;
-        $copy_event = $event;
 
-        $current_m = (int)strftime('%m', $event->start_time);
-        $current_y = (int)strftime('%Y', $event->start_time);
+        $every_repeat_number = &$_POST['every_repeat_number'];
+        $every_repeat_weekday =  &$_POST['every_repeat_weekday'];
+        $every_repeat_frequency = &$_POST['every_repeat_frequency'];
 
+        $time_unit = $event->start_time + 86400;
+
+        $copy_event = $event->repeatClone();
         $time_diff = $event->end_time - $event->start_time;
 
-        $cMonth = & new Calendar_Month($current_y, $current_m);
-        $ctm = $cMonth->getTimestamp();
-        $ntm = $cMonth->nextMonth('timestamp');
-        $cMonth->setTimestamp($ntm);
+        $max_count = 0;
+        $repeat_days = &$_POST['weekday_repeat'];
 
-        switch ($_POST['monthly_repeat']) {
-        case 'begin':
-            while (1) {
-                $ctm = $cMonth->getTimestamp();
-                if ($ctm > $event->end_repeat) {
-                    break;
+        $weekday_count = 0;
+
+        while ($time_unit < $event->end_repeat) {
+            $copy_event->id = 0;
+
+            // First check if we are in the correct month or if the repeat is in every month
+            if ($every_repeat_frequency == 'every_month' || $every_repeat_frequency == (int)strftime('%m', $time_unit)) {
+
+                // next check if we are in the correct weekday
+                $current_weekday = (int)strftime('%u', $time_unit);
+
+                if ($current_weekday == $every_repeat_weekday) {
+                    $current_day = strftime('%e', $time_unit);
+
+                    // count the current weekday
+                    $day_add = ($current_day % 7) ? 1 : 0;
+
+                    $weekday_count = floor($current_day / 7) + $day_add;
+
+                    /**
+                     * if the current weekday count is equal to the repeat number
+                     * --- OR--- 
+                     * if the repeat is set to the last day of the month, and we are in the fourth weekday,
+                     * and next week would put us over the end of the month, then post this day
+                     */
+                    if ( $weekday_count == $every_repeat_number ||
+                         ( $every_repeat_number == 5 && $weekday_count == 4 && ( ($current_day + 7) > date('t', $time_unit) ) ) ) {
+                        $weekday_found = true;
+                        $max_count++;
+                        
+                        if ($max_count > CALENDAR_MAXIMUM_REPEATS) {
+                            return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatWeekly');
+                        }
+
+                        $copy_event->start_time = $time_unit;
+                        $copy_event->end_time = $time_unit + $time_diff;
+                        $result = $copy_event->save();
+                        if (PEAR::isError($result)) {
+                            return $result;
+                        }
+                    }
+
                 }
-
-                $copy_event->id = 0;
-                $copy_event->key_id = 0;
-                $max_count++;
-                if ($max_count > CALENDAR_MAXIMUM_REPEATS) {
-                    return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatMonthly');
-                }
-
-                $copy_event->start_time = $ctm;
-                $copy_event->end_time = $ctm + $time_diff;
-
-                $result = $copy_event->save();
-                if (PEAR::isError($result)) {
-                    return $result;
-                }
-
-                $ntm = $cMonth->nextMonth('timestamp');
-                $cMonth->setTimestamp($ntm);
             }
-            break;
 
-        case 'end':
 
-            break;
+            $time_unit += 86400;
+        }
+        //        exit('wtf');
 
-        case 'start':
+    }
 
-            break;
+
+    function repeatMonthly(&$event)
+    {
+        if (!isset($_POST['monthly_repeat'])) {
+            return false;
+        }
+
+        $max_count = 0;
+
+        $c_hour  = (int)strftime('%H', $event->start_time);
+        $c_min   = (int)strftime('%M', $event->start_time);
+        $c_month = (int)strftime('%m', $event->start_time);
+        $c_day   = (int)strftime('%d', $event->start_time);
+        $c_year  = (int)strftime('%Y', $event->start_time);
+
+        $time_diff = $event->end_time - $event->start_time;
+        $copy_event = $event->repeatClone();
+        // start count on month ahead
+        $ts_count = mktime($c_hour, $c_min, 0, $c_month + 1, $c_day, $c_year);
+
+        while ($ts_count <= $event->end_repeat) {
+            $max_count++;
+            if ($max_count > CALENDAR_MAXIMUM_REPEATS) {
+                return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatMonthly');
+            }
+
+            $copy_event->id = 0;            
+
+            $c_hour = (int)strftime('%H', $ts_count);
+            $c_min = (int)strftime('%M', $ts_count);
+            $ts_month = $c_month = (int)strftime('%m', $ts_count);
+            $ts_day = $c_day = (int)strftime('%d', $ts_count);
+            $c_year = (int)strftime('%Y', $ts_count);
+
+            switch ($_POST['monthly_repeat']) {
+            case 'begin':
+                $ts_day = 1;
+                break;
+
+            case 'end':
+                $ts_day = 0;
+                $ts_month++;
+                break;
+            }
+
+            $start_time = mktime($c_hour, $c_min, 0, $ts_month, $ts_day, $c_year);
+
+            $copy_event->start_time = $start_time;
+            $copy_event->end_time = $start_time + $time_diff;
+            
+            $result = $copy_event->save();
+            if (PEAR::isError($result)) {
+                return $result;
+            }
+
+            $ts_count = mktime($c_hour, $c_min, 0, $c_month + 1, $c_day, $c_year);
         }
         return true;
     }
@@ -744,7 +790,7 @@ class Calendar_Admin {
         $time_diff = $event->end_time - $event->start_time;
 
         $max_count = 0;
-        $repeat_days = &$_REQUEST['weekday_repeat'];
+        $repeat_days = &$_POST['weekday_repeat'];
 
         while($time_unit <= $event->end_repeat) {
             if (!in_array(strftime('%u', $time_unit), $repeat_days)) {
