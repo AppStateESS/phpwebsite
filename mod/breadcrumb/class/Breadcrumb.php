@@ -62,6 +62,10 @@ class Breadcrumb {
             $tpl['bc-list'][] = array('BC' => '...', 'CLASS' => 'bc');
         }
 
+        if ($right >= $this->current_count) {
+            $right = $this->current_count - 1;
+        }
+
         $multiple = 0;
         for($i = $left; $i <= $right; $i++) {
             if ($bc = @$this->bc_list[$this->key_list[$i]]) {
