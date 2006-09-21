@@ -8,7 +8,7 @@
  */
 
 
-function search_unregister(&$key)
+function search_unregister_key(&$key)
 {
     if (empty($key) || empty($key->id)) {
         return FALSE;
