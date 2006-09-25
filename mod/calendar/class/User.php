@@ -43,6 +43,8 @@ class Calendar_User {
     {
         if (isset($_REQUEST['view'])) {
             $this->current_view = preg_replace('/\W/', '', $_REQUEST['view']);
+        } elseif (isset($_REQUEST['id']) && isset($_REQUEST['page'])) {
+            $this->current_view = 'event';
         } else {
             $this->current_view = PHPWS_Settings::get('calendar', 'default_view');
         }
@@ -202,6 +204,7 @@ class Calendar_User {
             $template['BACK_LINK'] = PHPWS_Text::backLink(_('Back'));
         }
 
+
         $template['VIEW_LINKS'] = $this->viewLinks('event');
 
         return PHPWS_Template::process($template, 'calendar', 'view/event.tpl');
@@ -236,19 +239,17 @@ class Calendar_User {
         return implode('', $address);
     }
 
-    function loadEvent()
+    function loadEvent($event_id)
     {
         PHPWS_Core::initModClass('calendar', 'Event.php');
-        if (!isset($_REQUEST['event_id'])) {
-            return false;
-        }
-        $this->event = & new Calendar_Event($this->calendar->schedule, (int)$_REQUEST['event_id']);
+        $this->event = & new Calendar_Event($this->calendar->schedule, $event_id);
         return true;
     }
 
 
     function main()
     {
+
         if (isset($_REQUEST['uop'])) {
             $command = $_REQUEST['uop'];
         } else {
@@ -527,7 +528,15 @@ class Calendar_User {
             break;
 
         case 'event':
-            if (!$this->loadEvent($_REQUEST['event_id']) || !$this->event->id) {
+            if (isset($_REQUEST['page'])) {
+                $event_id = (int)$_REQUEST['page'];
+            } elseif (isset($_REQUEST['event_id'])) {
+                $event_id = $_REQUEST['event_id'];
+            } else {
+                PHPWS_Core::errorPage('404');
+            }
+
+            if (!$this->loadEvent($event_id) || !$this->event->id) {
                 PHPWS_Core::errorPage('404');
             }
 
@@ -539,6 +548,7 @@ class Calendar_User {
                 $this->content = $this->event();
             }
             break;
+            
         default:
             $this->content = _('Incorrect option');
             break;

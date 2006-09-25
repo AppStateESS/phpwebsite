@@ -288,9 +288,11 @@ class PHPWS_Calendar {
 
         if (!empty($_REQUEST['sch_id'])) {
             $this->schedule = & new Calendar_Schedule((int)$_REQUEST['sch_id']);
+        } elseif (isset($_REQUEST['id'])) {
+            $this->schedule = & new Calendar_Schedule((int)$_REQUEST['id']);
         }
 
-        if (empty($this->schedule)) {
+        if (empty($this->schedule) || !$this->schedule->id) {
             $this->schedule = & new Calendar_Schedule;
         }
     }
