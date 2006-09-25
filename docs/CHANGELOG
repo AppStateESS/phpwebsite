@@ -1,3 +1,18 @@
+25 September 2006
++ Convert
+- Calendar : converting repeats now
+
++ Calendar
+- Added some extra config calls, moved some logic around
+- Added "Today" link
+- Changed event view template
+- Fixed event view date and time
+- Added hCalendar information to event view template
+- added mod_rewrite ability for events
+- added hCalendar for event view
+- fixed date and time display on event view
+- fixed view links on event view
+
 21 September 2006
 + Core
 - Key.php
