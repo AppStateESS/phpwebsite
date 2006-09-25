@@ -451,8 +451,6 @@ class Calendar_Admin {
             }
 
             $result = $event->save();
-            $this->saveRepeat($event);
-
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
                 if(PHPWS_Calendar::isJS()) {
@@ -464,6 +462,19 @@ class Calendar_Admin {
                     $this->sendMessage(_('An error occurred when saving your event.'), 'schedules');
                 }
             } else {
+                $result = $this->saveRepeat($event);
+                if (PEAR::isError($result)) {
+                    if (PHPWS_Calendar::isJS()) {
+                        PHPWS_Error::log($result);
+                        $this->sendMessage(_('An error occurred when trying to repeat an event.', null, false));
+                        javascript('close_refresh');
+                        Layout::nakedDisplay();
+                        exit();
+                    } else {
+                        $this->sendMessage(_('An error occurred when trying to repeat an event.', 'schedules'));
+                    }
+                }
+
                 if(PHPWS_Calendar::isJS()) {
                     javascript('close_refresh');
                     Layout::nakedDisplay();
@@ -549,25 +560,9 @@ class Calendar_Admin {
         }
 
         if (PEAR::isError($result)) {
-            if (PHPWS_Calendar::isJS()) {
-                PHPWS_Error::log($result);
-                $this->sendMessage(_('An error occurred when trying to repeat an event.', null, false));
-                javascript('close_refresh');
-                Layout::nakedDisplay();
-                exit();
-            } else {
-                $this->sendMessage(_('An error occurred when trying to repeat an event.', 'schedules'));
-            }
+            return $result;
         } else {
-            if (PHPWS_Calendar::isJS()) {
-                PHPWS_Error::log($result);
-                $this->sendMessage(_('Event repeated.', null, false));
-                javascript('close_refresh');
-                Layout::nakedDisplay();
-                exit();
-            } else {
-                $this->sendMessage(_('Event repeated.', 'schedules'));
-            }
+            return true;
         }
     }
 
@@ -603,6 +598,8 @@ class Calendar_Admin {
 
     function repeatDaily(&$event)
     {
+        PHPWS_Core::requireConfig('calendar');
+
         $time_unit = $event->start_time + 86400;
 
         $copy_event = $event->repeatClone();

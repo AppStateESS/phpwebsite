@@ -1,5 +1,5 @@
 <div class="box">
-    <div class="view-links">{VIEW_LINKS}</div>
+<div class="align-right">{VIEW_LINKS}</div>
     <div class="box-title">
         <h1>{SUMMARY}</h1>
         <h2>{TIME}</h2>

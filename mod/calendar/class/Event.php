@@ -406,6 +406,7 @@ class Calendar_Event {
             }
         }
 
+        $tpl['BACK_LINK'] = PHPWS_Text::backLink();
         return $tpl;
     }
 
@@ -515,10 +516,7 @@ class Calendar_Event {
 
         /********** Check repeats ************/
         if (isset($_POST['repeat_event'])) {
-            $edate = strtotime($_POST['end_repeat_date']);
-
-            $this->end_repeat = mktime('23', '59', '59', 
-                                strftime('%m', $edate), strftime('%d', $edate), strftime('%Y', $edate));
+            $this->end_repeat = strtotime($_POST['end_repeat_date']) + 86399;
 
             if (date('Ymd', $this->end_repeat) <= date('Ymd', $this->start_time)) {
                 $errors[] = _('The date to repeat until must be greater than the event\'s start date.');

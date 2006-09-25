@@ -477,6 +477,18 @@ class Calendar_User {
         return implode("\n", $tpl);
     }
 
+    function todayLink()
+    {
+        $vars['sch_id'] = $this->calendar->schedule->id;
+        if ($this->current_view == 'event') {
+            $vars['view'] = 'day';
+        } else {
+            $vars['view'] = $this->current_view;
+        }
+        $vars['date'] = mktime();
+        return PHPWS_Text::moduleLink(_('Today'), 'calendar', $vars);
+    }
+
     /**
      * Pathing for which view to display
      */
@@ -555,8 +567,18 @@ class Calendar_User {
         $vars = PHPWS_Text::getGetValues();
         unset($vars['module']);
 
+        if (isset($_REQUEST['m']) &&
+            isset($_REQUEST['y']) && 
+            isset($_REQUEST['d'])) {
+            $vars['date'] = mktime(0,0,0, $_REQUEST['m'], $_REQUEST['d'], $_REQUEST['y']);
+            unset($vars['m']);
+            unset($vars['d']);
+            unset($vars['y']);
+        }
+
+        $links[] = $this->todayLink();
+
         if ($current_view == 'event') {
-            $links[] = _('Event');
             $vars['date'] = $this->event->start_time;
         }
 
@@ -628,6 +650,7 @@ class Calendar_User {
             $vars['date'] = $right_arrow_time;
             $links[] = PHPWS_Text::moduleLink('&gt;&gt;', 'calendar', $vars, null, $right_link_title);
         }
+
 
         return implode(' | ', $links);
     }
