@@ -20,6 +20,7 @@ define('EVENT_BATCH', 10);
 
 PHPWS_Core::initModClass('calendar', 'Schedule.php');
 PHPWS_Core::initModClass('calendar', 'Event.php');
+PHPWS_Core::initModClass('calendar', 'Admin.php');
 
 function convert()
 {
@@ -65,6 +66,8 @@ function convert()
         if (defined('IGNORE_BEFORE')) {
             $db->addWhere('startDate', IGNORE_BEFORE, '>=');
         }
+
+        
 
         $batch = & new Batches('convert_events');
 
@@ -130,11 +133,13 @@ function runBatch(&$db, &$batch)
         $schedule = & new Calendar_Schedule((int)$_SESSION['schedule_id']);
     }
 
+    $admin = & new Calendar_Admin;
+
     if (empty($result)) {
         return NULL;
     } else {
         foreach ($result as $oldEvent) {
-            $result = convertEvent($oldEvent, $schedule);
+            $result = convertEvent($oldEvent, $schedule, $admin);
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
                 $errors[] = 'Problem importing: ' . $oldEvent['title'];
@@ -167,13 +172,48 @@ function createSchedule()
 }
 
 
-function convertEvent($event, &$schedule)
+function convertEvent($event, &$schedule, &$admin)
 {
     $new_event = & new Calendar_Event;
     $new_event->_schedule = $schedule;
 
     $new_event->summary = $event['title'];
     $new_event->setDescription($event['description']);
+
+    $start_temp = (int)$event['startTime'];
+    $end_temp = (int)$event['endTime'];
+
+    if ($start_temp >= 0) {
+        $hour = floor((int)$start_temp/100);
+        $minute = (int)$start_temp % 100;
+        
+        if ($minute < 10) {
+            $minute = '0' . $minute;
+        }
+
+        if ($hour < 10) {
+            $hour = '0' . $hour;
+        }
+
+        $event['startTime'] = sprintf('%s:%s', $hour, $minute);
+    }
+
+    if ($end_temp >= 0) {
+        $hour = floor((int)$end_temp/100);
+        $minute = (int)$end_temp % 100;
+        
+        if ($minute < 10) {
+            $minute = '0' . $minute;
+        }
+1
+        if ($hour < 10) {
+            $hour = '0' . $hour;
+        }
+
+        $event['endTime'] = sprintf('%s:%s', $hour, $minute);
+    }
+    
+
 
     $all_day = 0;
     switch ($event['eventType']) {
@@ -189,8 +229,13 @@ function convertEvent($event, &$schedule)
         break;
 
     case 'start':
-        $start_time = strtotime(sprintf('%sT%s', $event['startDate'], $event['startTime']));
-        $end_time = strtotime(sprintf('%sT%s', $event['endDate'], '0000')) + 86400;
+        if ($event['startTime'] > 1) {
+            $start_time = strtotime(sprintf('%sT%s', $event['startDate'], $event['startTime']));
+            $end_time = strtotime(sprintf('%sT%s', $event['endDate'], '0000')) + 86400;
+        } else {
+            $start_time = strtotime(sprintf('%sT%s', $event['endDate'], $event['endTime']));
+            $end_time = strtotime(sprintf('%sT%s', $event['endDate'], '0000')) + 86400;
+        }
         break;
 
     case 'interval':
@@ -200,11 +245,37 @@ function convertEvent($event, &$schedule)
         break;
     }
 
+    if ($event['endRepeat']) {
+        setRepeat($new_event, $event);
+    }
+
+
     $new_event->start_time = $start_time;
     $new_event->end_time = $end_time;
     $new_event->all_day = $all_day;
+    $result = $new_event->save();
 
-    return $new_event->save();
+    if ($new_event->end_repeat) {
+        $admin->saveRepeat($new_event);
+    }
+}
+
+function setRepeat(&$new_event, &$event)
+{
+    // set to one second before midnight
+    $new_event->end_repeat = strtotime($event['endRepeat']) + 86399;
+
+    switch ($event['repeatMode']) {
+    case 'weekly':
+        $weekdays = explode(':', $event['repeatWeekdays']);
+        $sunday = array_shift($weekdays);
+        $weekdays[] = $sunday;
+        $new_event->repeat_type = 'weekly:' . implode(';', $weekdays);
+        break;
+    default:
+        $new_event->repeat_type = $event['repeatMode'];
+    }
+
 }
 
 
