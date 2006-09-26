@@ -92,10 +92,10 @@ class Breadcrumb {
             $tpl['bc-list'][] = array('BC' => '...', 'CLASS' => 'bc', 'SEPARATOR' => null);
         }
 
-
-        $content = PHPWS_Template::process($tpl, 'breadcrumb', 'bc.tpl');
-
-        Layout::add($content, 'breadcrumb', 'view');
+        if (!empty($tpl)) {
+            $content = PHPWS_Template::process($tpl, 'breadcrumb', 'bc.tpl');
+            Layout::add($content, 'breadcrumb', 'view');
+        }
     }
 
     function recordView()
