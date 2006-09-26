@@ -239,7 +239,11 @@ class Setup{
 
         switch ($mode){
         case 1:
-            return $dsn;
+            if ($dbtype == 'pgsql') {
+                return $dsn . '/' . $dbname;
+            } else {
+                return $dsn;
+            }
             break;
 
         case 2:
