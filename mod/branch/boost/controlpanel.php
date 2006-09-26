@@ -1,5 +1,8 @@
 <?php
-
+  /**
+   * @version $Id$
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   */
 $link[] = array('label'       => _('Branch'),
 		'restricted'  => TRUE,
 		'url'         => 'index.php?module=branch',

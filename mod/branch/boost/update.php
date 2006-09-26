@@ -8,7 +8,7 @@
 function branch_update(&$content, $version)
 {
     switch ($version) {
-    case version_compare($version, '1.1.2', '<'):
+    case version_compare($version, '0.1.2', '<'):
         $files[] = 'templates/config.tpl';
         $content[] = '- Patched problems preventing a Windows branch from installing.';
         $content[] = '- Updated configuration file template to match setup\'s.';
@@ -21,6 +21,8 @@ function branch_update(&$content, $version)
             $content[] = 'Configuration template file was not copied successfully.';
         }
 
+    case version_compare($version, '0.1.4', '<'):
+        PHPWS_Boost::registerMyModule('branch', 'users', $content);
     }
     return true;
 }
