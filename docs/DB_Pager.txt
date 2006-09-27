@@ -174,6 +174,29 @@ function get_row_tags($likes_chocolate, $age, $occupation) {
 } 
 
 
+If you are not using a class objects, another way of changing the row
+output is to pipe the information through a function or static method
+call. To do so, call addRowFunction:
+
+$pager->setRowFunction('row_func');
+
+This would pass your row variables to the "row_func" function and echo
+the resultant array.
+
+function row_func($values) {
+   $tpl['TITLE'] = process_title($values['title']);
+   return $tpl;
+}
+
+You may also call a static method by sending an class and method name
+array like so:
+
+$pager->addRowFunction(array('class_name', 'method_name'));
+
+The result from the method should, again, be an associative array
+corresponding to your pager template.
+
+
 Adding Toggles
 --------------------------------------------------------------------
 Non-colored rows are not only boring, they make it more difficult to
@@ -245,6 +268,14 @@ navigation:
   {PAGES}<br />
   {LIMITS}
 </div>
+
+If you don't like the limit divisions, you may set your own using
+setLimitList:
+
+$limits[4]  = 4;
+$limits[9]  = 9;
+$limits[16] = 16;
+$pager->setLimitList($limits);
 
 Clicking on the page links will let the user move through the
 data. Clicking on the limit links will let the user control how many
