@@ -5,7 +5,7 @@ CREATE TABLE documents (
   file_directory varchar(150) NOT NULL default '',
   file_type varchar(30) NOT NULL default '',
   title varchar(255) NOT NULL default '',
-  description text NOT NULL,
+  description text default NULL,
   size int NOT NULL default '0',
   downloaded int NOT NULL default '0',
   PRIMARY KEY  (id)
@@ -18,7 +18,7 @@ CREATE TABLE images (
   file_directory varchar(150) NOT NULL default '',
   file_type varchar(30) NOT NULL default '',
   title varchar(255) NOT NULL default '',
-  description text,
+  description text default NULL,
   size int NOT NULL default '0',
   width smallint NOT NULL default '0',
   height smallint NOT NULL default '0',
