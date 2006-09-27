@@ -38,14 +38,17 @@ class DBPager {
      * Methods the developer wants to run prior to
      * using the object
      */
-    var $runMethods = NULL;
+    var $run_methods = NULL;
 
+    var $run_function = NULL;
     /**
      * List of methods in class
      */  
     var $_methods = NULL;
 
     var $_class_vars = NULL;
+
+    var $table_columns = null;
 
     var $page_tags = NULL;
 
@@ -133,6 +136,8 @@ class DBPager {
 
         $this->db = & new PHPWS_DB($table);
         $this->db->setDistinct(TRUE);
+        $this->table_columns = $this->db->getTableColumns();
+
         if (PEAR::isError($this->db)){
             $this->error = $this->db;
             $this->db = NULL;
@@ -274,6 +279,8 @@ class DBPager {
      */
     function addRowTags()
     {
+        $method = func_get_arg(0);
+
         if (empty($this->class)) {
             return FALSE;
         }
@@ -281,8 +288,6 @@ class DBPager {
         if (func_num_args() < 1) {
             return FALSE;
         }
-
-        $method = func_get_arg(0);
 
         if (version_compare(phpversion(), '5.0.0',  '<')) {
             $method = strtolower($method);
@@ -303,11 +308,27 @@ class DBPager {
         $this->empty_message = strip_tags($message);
     }
 
-    function addRunMethod($method){
-        if (!in_array(strtolower($method), $this->_methods))
-            return;
+    /**
+     * Adds a function or static method call to pager
+     */
+    function addRowFunction($function) {
+        if (is_string($function) && function_exists($function)) {
+            $this->run_function = $function;
+            return true;
+        } elseif( is_array($function) && class_exists($function[0]) && in_array($function[1], get_class_methods($function[0])) ){
+            $this->run_function = $function;
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-        $this->runMethods[] = $method;
+    function addRunMethod($method){
+        if (!in_array(strtolower($method), $this->_methods)) {
+            return;
+        }
+
+        $this->run_methods[] = $method;
     }
 
     function addWhere($column, $value, $operator=NULL, $conj=NULL, $group=NULL){
@@ -400,7 +421,7 @@ class DBPager {
         } else {
             $result = $this->db->getObjects($this->class);
         }
-        
+
         if (PEAR::isError($result)) {
             return $result;
         }
@@ -500,11 +521,15 @@ class DBPager {
         return implode(' ', $pages);
     }
 
+    /**
+     * Returns the sorting buttons for table columns
+     */
     function getSortButtons(&$template){
-        if (empty($this->_class_vars)) {
+
+        if (empty($this->table_columns)) {
             return NULL;
         }
-        foreach ($this->_class_vars as $varname){
+        foreach ($this->table_columns as $varname){
             $vars = array();
             $values = $this->getLinkValues();
             $buttonname = $varname . '_SORT';
@@ -632,9 +657,9 @@ class DBPager {
             return NULL;
         }
 
-        foreach ($this->display_rows as $disp_row){
-            if (isset($this->class) && isset($this->runMethods)){
-                foreach ($this->runMethods as $run_function) {
+        foreach ($this->display_rows as $disp_row) {
+            if (isset($this->class) && isset($this->run_methods)){
+                foreach ($this->run_methods as $run_function) {
                     call_user_func(array(&$disp_row, $run_function));
                 }
             }
@@ -659,12 +684,20 @@ class DBPager {
                         $template[$count] = array_merge($template[$count], $row_result);
                     }
                 }
-
+  
             } else {
                 foreach ($disp_row as $key => $value) {
                     $template[$count][strtoupper($key)] = $value;
                 }
+
+                if(isset($this->run_function)) {
+                    $row_result = call_user_func($this->run_function, $disp_row);
+                    if (!empty($row_result)) {
+                        $template[$count] = array_merge($template[$count], $row_result);
+                    }
+                }
             }
+
             $count++;
         }
 
@@ -686,12 +719,6 @@ class DBPager {
         $form->addHidden($values);
         $form->addSelect('change_page', $page_list);
         $form->setExtra('change_page', 'onchange="this.form.submit()"');
-
-        /*
-        if (isset($_REQUEST['page'])) {
-            $form->setMatch('change_page', (int)$_REQUEST['page']);
-        }
-        */
         $form->setMatch('change_page', $this->current_page);
 
         if (!javascriptEnabled()) {
@@ -753,6 +780,9 @@ class DBPager {
 
     }
 
+    /**
+     * Returns the content of the the pager object
+     */
     function get($return_blank_results=TRUE)
     {
         $template = array();
@@ -818,7 +848,6 @@ class DBPager {
 
         DBPager::plugPageTags($template);
         $this->final_template = &$template;
-
         return PHPWS_Template::process($template, $this->module, $this->template);
     }
 
