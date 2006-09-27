@@ -460,8 +460,16 @@ class Cabinet_Action {
             return;
         }
 
+        $file_path = $document->getPath();
+
+        if (!is_file($file_path)) {
+            PHPWS_Error::log(FC_DOCUMENT_NOT_FOUND, 'filecabinet', 'Cabinet_Action::download', $file_path);
+            Layout::add(_('Sorry but this file is inaccessible at this time.'));
+            return;
+        }
+
         $dl = & new HTTP_Download;
-        $dl->setFile($document->getPath());
+        $dl->setFile($file_path);
         $dl->setContentDisposition(HTTP_DOWNLOAD_ATTACHMENT, $document->filename);
         $dl->setContentType($document->file_type);
         $dl->send();
