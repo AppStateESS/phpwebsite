@@ -425,6 +425,11 @@ class DBPager {
             return $count;
         }
 
+        if ($this->limit > 0) {
+            $this->db->setLimit($this->getLimit());
+        }
+
+
         $this->total_rows = &$count;
         $this->total_pages = ceil($this->total_rows / $this->limit);
 
@@ -432,9 +437,6 @@ class DBPager {
             $this->current_page = $this->total_pages;
         }
 
-        if ($this->limit > 0) {
-            $this->db->setLimit($this->getLimit());
-        }
 
         if (isset($this->orderby)) {
             $this->db->addOrder($this->orderby . ' ' . $this->orderby_dir);
