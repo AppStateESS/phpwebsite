@@ -1,3 +1,49 @@
+28 September 2006
++ Core
+- DBPager
+  o Added third parameter to setOrder function: only_if_empty. It is
+  false by default. If true, order will only be set if not previously
+  set
+  o Added a function called toggle function. Supposed to call a
+  specific function every specific n row. Untested but leaving in
+  for now.
+  o Changed the limit list so the current limit will not be linked
+  o added an error check to see if the current limit request is within
+  the set limit list. Should prevent users enter bogus limit numbers
+
+- Form : recoded crutch function calls since crutch files have been
+  removed
+
+- Manager : recoded for compatiblity.
+
+
+27 September 2006
++ Convert
+- Added filecabinet conversion script
+
++ Core
+- DBPager
+  o created addRowFunction for pagers not using classes
+  o Changed the sort function to use the table columns not the class
+    variables. This will help with non-class pulls
+
++ File Cabinet
+- updated filecabinet to make description column null
+- added a file existence check on document download
+
+26 September 2006
++ Block
+- Changed to only display miniadmin if javascript is enabled
+
++ Branch
+- Fixed Branch not copying javascript directory over
+- Branch now checks for writability of directory before trying to copy (Bug #1552259).
+- Changed defines to lower case.
+- Added permission file and changed update to register to Users (Bug #1544082).
+
++ Breadcrumb
+- small error check added
+
 25 September 2006
 + Convert
 - Calendar : converting repeats now
