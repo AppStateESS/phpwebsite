@@ -593,7 +593,8 @@ class PHPWS_Manager {
 
                 $rowTags['ROW_CLASS'] = $row_class;
                 if($makeForm) {
-                    $rowTags['SELECT'] = PHPWS_Form::formCheckBox('PHPWS_MAN_ITEMS[]', $item['id']);
+                    $ele = & new Form_CheckBox('PHPWS_MAN_ITEMS[]', $item['id']);
+                    $rowTags['SELECT'] = $ele->get();
                 }
 
                 foreach($this->_listColumns[$this->listName] as $listColumn => $listLabel) {
@@ -683,16 +684,18 @@ class PHPWS_Manager {
       
             if($makeForm) {
                 /* Create action select and Go button */
-                $listTags['ACTION_SELECT'] = PHPWS_Form::formSelect($this->_request, $actions);
-                $listTags['ACTION_BUTTON'] = PHPWS_Form::formSubmit(_('Go'));
+                $ele = & new Form_Select($this->_request, $actions);
+                $listTags['ACTION_SELECT'] = $ele->get();
+                $listTags['ACTION_BUTTON'] = sprintf('<input type="submit" value="%s" />', _('Go'));
                 $listTags['TOGGLE_ALL'] = javascript('check_all', array('FORM_NAME' => 'PHPWS_MAN_LIST_' . $this->listName));
         
                 /* Add hidden variable to designate the current module */
-                $elements[0] = PHPWS_Form::formHidden('module', $this->_module);
+                $ele = & new Form_Hidden('module', $this->_module);
+                $elements[0] = $ele->get();
                 $elements[0] .= PHPWS_Template::processTemplate($listTags, 'core', $listTpl, FALSE);
         
                 /* Create final form and dump it into a content variable to be returned */
-                $content = PHPWS_Form::makeForm('PHPWS_MAN_LIST_' . $this->listName, 'index.php', $elements);
+                $content = sprintf('<form name="%s" action="index.php" method="post">%s</form>', 'PHPWS_MAN_LIST_' . $this->listName, implode("\n", $elements));
             } else {
                 $content = PHPWS_Template::processTemplate($listTags, 'core', $listTpl, FALSE);
             }
@@ -745,7 +748,7 @@ class PHPWS_Manager {
 
                     $sql = substr($sql, 0, strlen($sql) - 2);
                 }
-                $sql .= ' FROM ' . PHPWS_TBL_PREFIX . $table;
+                $sql .= ' FROM ' . $table;
             } else {
                 $error = new PHPWS_Error('core', 'PHPWS_Manager:getItems()', 'Format error in config file.', 'exit', 1);
                 $error->message(NULL);
@@ -781,8 +784,7 @@ class PHPWS_Manager {
         }
 
         /* Set associative mode for db and execute query */
-        $GLOBALS['core']->setFetchMode('assoc');
-        $result = $GLOBALS['core']->getAll($sql);
+        $result = PHPWS_DB::getAll($sql);
 
         if($filterGroups) {
             $size = sizeof($result);
@@ -811,7 +813,7 @@ class PHPWS_Manager {
             $table = $this->_tables[$this->listName];
         }
 
-        $sql = 'SELECT id FROM ' . PHPWS_TBL_PREFIX . $table;
+        $sql = 'SELECT id FROM ' . $table;
 
         $sort = $this->getSort();
         if(isset($sort)) {
@@ -823,7 +825,7 @@ class PHPWS_Manager {
             $sql .= $order;
         }
 
-        return $GLOBALS['core']->getCol($sql);
+        return PHPWS_DB::getCol($sql);
     }
 
     /**
@@ -848,7 +850,7 @@ class PHPWS_Manager {
             }
       
             /* Begin sql update statement */
-            $sql = 'UPDATE ' . PHPWS_TBL_PREFIX . $table .
+            $sql = 'UPDATE ' . $table .
                 " SET $column='$value' WHERE id='";
 
             /* Set flag to know when to add sql for checking against extra ids */
@@ -862,7 +864,7 @@ class PHPWS_Manager {
             }
 
             /* Execute query and test for failure */
-            $result = $GLOBALS['core']->query($sql);
+            $result = PHPWS_DB::query($sql);
             if($result)
                 return TRUE;
             else
