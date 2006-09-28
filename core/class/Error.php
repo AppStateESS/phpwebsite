@@ -98,20 +98,6 @@ class PHPWS_Error {
 
         return $final;
     }
-
-    function message()
-    {
-        if (empty($this->crutch_info)) {
-            return;
-        }
-        $template['TITLE'] = _('Error');
-        $template['WARNING'] = sprintf(_('The following error occurred in the %s module\'s %s function.'), $this->crutch_info['module'],
-                                       $this->crutch_info['func']); 
-        $template['MESSAGE'] = $this->crutch_info['message'];
-
-        $content = PHPWS_Template::process($this->crutch_info, 'core', 'old_error.tpl');
-        Layout::add($content);
-    }
 }
 
 ?>
