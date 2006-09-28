@@ -41,6 +41,11 @@ class DBPager {
     var $run_methods = NULL;
 
     var $run_function = NULL;
+
+    var $toggle_function = null;
+    
+    var $toggle_func_number = 0;
+
     /**
      * List of methods in class
      */  
@@ -193,8 +198,11 @@ class DBPager {
         $this->link = PHPWS_Core::getCurrentUrl(TRUE, FALSE);
     }
 
-    function setOrder($column, $direction)
+    function setOrder($column, $direction, $only_if_empty=false)
     {
+        if ($only_if_empty && !empty($this->orderby)) {
+            return;
+        }
         $this->orderby =  preg_replace('/[^\w\.]/', '', $column);
         if (!preg_match('/asc|desc/i', $direction)) {
             $direction = 'asc';
@@ -308,6 +316,24 @@ class DBPager {
         $this->empty_message = strip_tags($message);
     }
 
+    function addToggleFunction($function, $toggle=2) {
+        if (empty($function) || $toggle < 2) {
+            return false;
+        }
+
+        $this->toggle_func_number = (int)$toggle;
+
+        if (is_string($function) && function_exists($function)) {
+            $this->toggle_function = $function;
+            return true;
+        } elseif( is_array($function) && class_exists($function[0]) && in_array($function[1], get_class_methods($function[0])) ){
+            $this->toggle_function = $function;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Adds a function or static method call to pager
      */
@@ -340,8 +366,8 @@ class DBPager {
     }
 
     function getLimit(){
-        if (empty($this->limit)) {
-            $this->limit = DBPAGER_DEFAULT_LIMIT;
+        if (empty($this->limit) || !isset($this->limitList[$this->limit])) {
+            list($this->limit) = each($this->limitList);
         }
 
         $start = ($this->current_page - 1) * $this->limit;
@@ -637,9 +663,13 @@ class DBPager {
             $link_pairs[] = "$key=$value";
         }
 
-        foreach ($this->limitList as $limit){
-            $link_pairs['a'] = "limit=$limit";
-            $links[] = sprintf('<a href="%s?%s">%s</a>', $this->getLinkBase(), implode('&amp;', $link_pairs), $limit);
+        foreach ($this->limitList as $limit) {
+            if ($limit == $this->limit) {
+                $links[] = $limit;
+            } else {
+                $link_pairs['a'] = "limit=$limit";
+                $links[] = sprintf('<a href="%s?%s">%s</a>', $this->getLinkBase(), implode('&amp;', $link_pairs), $limit);
+            }
         }
 
         return implode(' ', $links);
@@ -692,6 +722,15 @@ class DBPager {
 
                 if(isset($this->run_function)) {
                     $row_result = call_user_func($this->run_function, $disp_row);
+                    if (!empty($row_result)) {
+                        $template[$count] = array_merge($template[$count], $row_result);
+                    }
+                }
+            }
+
+            if (isset($this->toggle_function)) {
+                if (!($count % $this->toggle_func_number)) {
+                    $row_result = call_user_func($this->toggle_function, $disp_row);
                     if (!empty($row_result)) {
                         $template[$count] = array_merge($template[$count], $row_result);
                     }
