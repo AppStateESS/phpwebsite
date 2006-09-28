@@ -1285,63 +1285,80 @@ class PHPWS_Form {
         }
         return $selectList;
     }
-  
-
 
     function formTextField($name, $value, $size=30, $maxsize=255, $label=NULL)
     {
-        return CrutchForm::formTextField($name, $value, $size, $maxsize, $label);
+        $element = & new Form_Textfield($name, $value);
+        $element->setSize($size, $maxsize);
+        return $element->get();
     }
 
     function formTextArea ($name, $value=NULL, $rows=5, $cols=40, $label=NULL)
     {
-        return CrutchForm::formTextArea($name, $value, $rows, $cols, $label);
+        $element = & new Form_TextArea($name, $value);
+        $element->setRows($rows);
+        $element->setCols($cols);
+        return $element->get();
     }
 
     function formFile($name)
     {
-        return CrutchForm::formFile($name);
+        $element = & new Form_File($name);
+        $element->get();
     }
 
-    function formDate($date_name, $date_match=NULL, $yearStart=NULL, $yearEnd=NULL, $useBlanks=FALSE)
-    {
-        return CrutchForm::formDate($date_name, $date_match, $yearStart, $yearEnd, $useBlanks);
-    }
 
     function formRadio($name, $value, $match=NULL, $match_diff=NULL, $label=NULL) 
     {
-        return CrutchForm::formRadio($name, $value, $match, $match_diff, $label);
+        $element = & new Form_Radio($name, $value);
+        $element->setMatch($match);
+        return $element->get();
     }
 
     function formSubmit($value, $name=NULL, $class=NULL)
     {
-        return CrutchForm::formSubmit($value, $name, $class);
+        $element = & new Form_Submit($name, $value);
+        return $element->get();
     }
 
     function formSelect($name, $opt_array, $match = NULL, $ignore_index = FALSE, $match_to_value = FALSE, $onchange = NULL, $label = NULL)
     {
-        return CrutchForm::formSelect($name, $opt_array, $match, $ignore_index, $match_to_value, $onchange, $label);
+        $element = & new Form_Select($name, $opt_array);
+        $element->setMatch($match);
+        if ($onchange) {
+            $element->setExtra(sprintf('onchange="%s"', $onchange));
+        }
+        return $element->get();
     }
 
     function formMultipleSelect($name, $opt_array, $match = NULL, $ignore_index = FALSE, $match_to_value = FALSE, $onchange = NULL, $label = NULL)
     {
-        return CrutchForm::formMultipleSelect($name, $opt_array, $match, $ignore_index, $match_to_value, $onchange, $label);
+        $element = & new Form_Multiple($name, $opt_array);
+        $element->setMatch($match);
+        if ($onchange) {
+            $element->setExtra(sprintf('onchange="%s"', $onchange));
+        }
+        return $element->get();
     }
 
     function formHidden($name, $value=NULL)
     {
-        return CrutchForm::formHidden($name, $value);
+        $element = & new Form_Hidden($name, $value);
+        return $element->get();
     }
 
     function formCheckBox($name, $value = 1, $match = NULL, $match_diff = NULL, $label = NULL) 
     {
-        return CrutchForm::formCheck($name, $value, $match, $match_diff, $label);
+        $element = & new Form_Checkbox($name, $value);
+        $element->setMatch($match);
+        return $element->get();
     }
 
 
     function makeForm($name, $action, $elements, $method='post', $breaks=FALSE, $file=FALSE)
     {
-        return CrutchForm::makeForm($name, $action, $elements, $method, $breaks, $file);
+        return sprintf('<form name="%s" method="%s" action="%s">%s</form>', 
+                       $name, $method, $action, implode("\n", $elements));
     }
 
 }// End of PHPWS_Form Class
@@ -1971,9 +1988,12 @@ class Form_Element {
         return $this->extra;
     }
 
-    function setSize($size)
+    function setSize($size, $maxsize=0)
     {
         $this->size = (int)$size;
+        if ($maxsize) {
+            $this->setMaxSize($maxsize);
+        }
     }
 
     function getSize($formMode=FALSE)
