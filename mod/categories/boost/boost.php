@@ -6,7 +6,7 @@
 
 
 $proper_name  = 'Categories';
-$version      = '2.1.5';
+$version      = '2.1.6';
 $register     = false;
 $unregister   = TRUE;
 $import_sql   = TRUE;

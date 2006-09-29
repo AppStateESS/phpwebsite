@@ -28,6 +28,9 @@ function categories_update(&$content, $currentVersion)
         if (!$result) {
             return FALSE;
         }
+
+    case version_compare($currentVersion, '2.1.6', '<'):
+        $content[] = 'Fix - Key unregisteration works properly.';
     }
     return TRUE;
 }
