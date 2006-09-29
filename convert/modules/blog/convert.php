@@ -37,7 +37,7 @@ function convert()
     }
 
     if (!isset($_REQUEST['mode'])) {
-        $content[] = _('You may convert to different ways.');
+        $content[] = _('You may convert two different ways.');
         $content[] = sprintf('<a href="%s">%s</a>', 'index.php?command=convert&package=blog&mode=manual',
                              _('Manual mode requires you to click through the conversion process.'));
         $content[] = sprintf('<a href="%s">%s</a>', 'index.php?command=convert&package=blog&mode=auto',
