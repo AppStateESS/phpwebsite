@@ -1,0 +1,118 @@
+CORE CHANGES
+
+MISC
+  o Removed crutch files
+
+CLASSES
+
+Database.php
+  o added ability to add parameters to getObjects. every variable
+    after the class name is sent to the constructor
+  o if a count(*) is used, the db class will clear unneccessary order
+    and group designations 
+
+Setup.php
+  o added default cache directory
+  o For bug #1533711 added a warning to the setup.
+
+DBPager.php
+  o fixed a filtering issue in the setSearch function
+  o created addRowFunction for pagers not using classes
+  o Changed the sort function to use the table columns not the class
+    variables. This will help with non-class pulls
+  o Added third parameter to setOrder function: only_if_empty. It is
+    false by default. If true, order will only be set if not
+    previously set
+  o Added a function called toggle function. Supposed to call a
+    specific function every specific n row. Untested but leaving in
+    for now.
+  o Changed the limit list so the current limit will not be linked
+  o added an error check to see if the current limit request is within
+    the set limit list. Should prevent users enter bogus limit numbers 
+
+
+Core.php
+  o Added a requireInc function
+
+Editor.php
+  o Added id field to editor textarea for possible future use
+  o Removed breaker function call
+  o Removed html_entity_decode
+
+Form.php
+  o fixed radio button label assignment
+  o Removed an html decode that seemingly caused problems with
+    ampersand encoding
+  o Added id parameter to editor textarea
+  o replaced a reference to the place variable with key. Fixes labels
+    matching with elements
+  o Added extra space after checked parameter
+  o recoded crutch function calls since crutch files have been removed
+
+Functions.php
+  o Added stripos
+  o added clone function
+
+Key.php
+  o Uses mktime for the timestamps and new Time functions for display
+  o changed unregister function name to - "modulename_unregister_key"
+    It was getting confused with the module's normal unregister
+    function 
+  o rewrote Key's unregister function to remove associations
+    automatically
+
+Manager.php
+  o Recoded for compatibility
+
+Settings.php
+  o changed so that setting default files are always called before
+    pulling from the database. 
+
+Template.php
+  o Forcing mod templates was getting ignored if the theme had
+    comparable templates. Changed so forcing mod template overwrites
+    everything.
+  o Made sure forcing module templates grabbed them from the hub
+      directory. 
+
+Text.php
+  o Added error check to backLink function
+  o Removed the <pre> tag formating. Wasn't working anyway.
+  o Added code to prevent breaks in <code> tags. They were usually
+    added by the js editors
+  o Added UTF-8 encoding to the parseOutput. Was trashing accented
+    characters.
+  o changed parseTag so you could add modules you wish to
+    ignore. Should prevent endless loops
+  o Changed the bbcode decoder to use str_ireplace
+
+Time.php
+  o Recoded major chunk to properly figure user and admin time
+    difference
+  o Should be simplier to use
+  o Added a function to return time in iCal format
+
+
+CONFIG FILES
+
+text_settings.php - Added strong and pre tags to allowed tags
+install.sql - Added missing version insert
+
+
+
+DOCUMENTATION
+  o SmartTags - updated documentation to fit with Text.php changes.
+  o Module_Development - Rewrite. (not finished)
+
+
+JAVASCRIPT
+
+FCKEditor
+   o added full page view, insert flash buttons.
+   o Recoded to allow multiple textareas.
+   o Fixed bug #1515179. Can now upload images in the upload tab.
+
+JSCalendar
+   o XHTML cleanup
+   o fixed default typo
+
