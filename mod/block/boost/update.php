@@ -29,6 +29,18 @@ function block_update(&$content, $currentVersion)
             return $result;
         }
         $content[] = '+ added edit icon to block';
+
+    case version_compare($currentVersion, '1.0.0', '<'):
+        $files[] = 'templates/sample.tpl';
+        $result = PHPWS_Boost::updateFiles($files, 'block');
+        if (!$result) {
+            $content[] = 'Failed to add template file locally.';
+            return FALSE;
+        }
+        $content[] = '+ Changed to only display miniadmin if javascript is enabled';
+        $content[] = '+ Fixed bug #1552210 - extra breaks created per edit.';
+        $content[] = '+ Added admin edit icon to block view';
+        $content[] = '+ Block content now parses smart tags';
     }
     
     return TRUE;
