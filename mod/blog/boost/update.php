@@ -95,10 +95,38 @@ function blog_update(&$content, $currentVersion)
         if (!blog_update_026($content)) {
             return false;
         }
+
+    case version_compare($currentVersion, '1.0.0', '<'):
+        if (!blog_update_100($content)) {
+            return false;
+        }
     }
     return TRUE;
 }
 
+
+function blog_update_100(&$content)
+{
+    // main.tpl taken care of above
+    $files[] = 'templates/edit.tpl';
+    $result = PHPWS_Boost::updateFiles($files, 'blog');
+
+    if (!PEAR::isError($result)) {
+        $content[] = 'templates/edit.tpl file copied successfully.';
+    } else {
+        PHPWS_Error::log($result);
+        $content[] = 'Blog update was unable to copy its updated template files locally.';
+        return false;
+    }
+
+    $content[] = 'Fix - Changed dependency information for comments';
+    $content[] = 'Fix - Uses new time functions';
+    $content[] = 'Fix - main.tpl\'s title is under a panel-title class';
+    $content[] = 'New - added summary section';
+    $content[] = 'New - Edit links returned to blog view';
+    $content[] = 'New - view.tpl Edit link added';
+    return true;
+}
 
 function blog_update_003()
 {
