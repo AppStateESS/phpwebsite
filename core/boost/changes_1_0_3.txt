@@ -1,9 +1,13 @@
 CORE CHANGES
+---------------------------
 
 MISC
+...........................
   o Removed crutch files
 
+
 CLASSES
+...........................
 
 Database.php
   o added ability to add parameters to getObjects. every variable
@@ -29,7 +33,6 @@ DBPager.php
   o Changed the limit list so the current limit will not be linked
   o added an error check to see if the current limit request is within
     the set limit list. Should prevent users enter bogus limit numbers 
-
 
 Core.php
   o Added a requireInc function
@@ -94,25 +97,38 @@ Time.php
 
 
 CONFIG FILES
-
+....................
 text_settings.php - Added strong and pre tags to allowed tags
 install.sql - Added missing version insert
 
 
 
 DOCUMENTATION
+...................
   o SmartTags - updated documentation to fit with Text.php changes.
   o Module_Development - Rewrite. (not finished)
 
 
-JAVASCRIPT
 
+JAVASCRIPT
+.....................
 FCKEditor
-   o added full page view, insert flash buttons.
-   o Recoded to allow multiple textareas.
-   o Fixed bug #1515179. Can now upload images in the upload tab.
+  o added full page view, insert flash buttons.
+  o Recoded to allow multiple textareas.
+  o Fixed bug #1515179. Can now upload images in the upload tab.
 
 JSCalendar
-   o XHTML cleanup
-   o fixed default typo
+  o XHTML cleanup
+  o fixed default typo
 
+
+CONVERSION
+.......................
+  o Added calendar conversion
+  o Added filecabinet conversion
+  o Fixed some spelling typos in instructions
+  o Categories now creates its sequence table
+  o Added automatic mode and graph to categories
+  o Added calendar and documents category conversion
+  o Fixed bug in categories causing module name to be missing from
+    sort screen
