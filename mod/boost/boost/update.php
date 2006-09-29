@@ -75,6 +75,12 @@ function boost_update(&$content, $currentVersion)
     case version_compare($currentVersion, '1.8.6', '<'):
         $content[] = '+ Added core update functionality.';
         $content[] = '+ Authorization keys added to links for extra security.';
+        
+    case version_compare($currentVersion, '1.9.0', '<'):
+        $content[] = 'New - Added call to clear the cache on a module\'s removal.';
+        $content[] = 'New - Added call to clear a module\'s settings upon removal.';
+        $content[] = 'New - Recoded call to unregister a module\'s keys on removal.';
+        $content[] = 'New - Now reports uncopyable file in log.';
     }
 
     return TRUE;
