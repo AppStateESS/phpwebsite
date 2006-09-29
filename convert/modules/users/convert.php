@@ -69,7 +69,7 @@ function startOptions()
 function beginConverting()
 {
     if (!isset($_REQUEST['mode'])) {
-        $content[] = _('You may convert to different ways.');
+        $content[] = _('You may convert two different ways.');
         $content[] = sprintf('<a href="%s">%s</a>', 
                              sprintf('index.php?command=convert&package=users&stage=2&convert_who=%s&mode=manual', $_REQUEST['convert_who']),
                              _('Manual mode requires you to click through the conversion process.'));
