@@ -44,7 +44,7 @@ function convert()
     }
 
     if (!isset($_REQUEST['mode'])) {
-        $content[] = _('You may convert to different ways.');
+        $content[] = _('You may convert two different ways.');
         $content[] = sprintf('<a href="%s">%s</a>', 'index.php?command=convert&package=calendar&mode=manual',
                              _('Manual mode requires you to click through the conversion process.'));
         $content[] = sprintf('<a href="%s">%s</a>', 'index.php?command=convert&package=calendar&mode=auto',
@@ -178,6 +178,18 @@ function convertEvent($event, &$schedule, &$admin)
     $new_event->_schedule = $schedule;
 
     $new_event->summary = $event['title'];
+
+    if (!empty($event['image'])) {
+        $image = explode(':', $event['image']);
+        $prefix = 'images/calendar/';
+        $image_tag = sprintf('<img src="%s" width="%s" height="%s" />', $prefix . $image[0], $image[1], $image[2]);
+        if (!empty($event['description'])) {
+            $event['description'] = sprintf('<table width="100%%" cellpadding="5"><tr><td>%s</td><td>%s</td></tr></table>', $event['description'], $image_tag);
+        } else {
+            $event['description'] = $image_tag;
+        }
+    }
+
     $new_event->setDescription($event['description']);
 
     $start_temp = (int)$event['startTime'];
@@ -205,7 +217,7 @@ function convertEvent($event, &$schedule, &$admin)
         if ($minute < 10) {
             $minute = '0' . $minute;
         }
-1
+
         if ($hour < 10) {
             $hour = '0' . $hour;
         }
