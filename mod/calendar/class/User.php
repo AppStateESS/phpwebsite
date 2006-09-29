@@ -204,7 +204,6 @@ class Calendar_User {
             $template['BACK_LINK'] = PHPWS_Text::backLink(_('Back'));
         }
 
-
         $template['VIEW_LINKS'] = $this->viewLinks('event');
 
         return PHPWS_Template::process($template, 'calendar', 'view/event.tpl');
@@ -353,30 +352,34 @@ class Calendar_User {
      */
     function month_grid()
     {
+        if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
+            Layout::addStyle('calendar');
+        }
+
         $month = $this->calendar->int_month;
         $year  = $this->calendar->int_year;
+
+        $date_pick = $this->getDatePick();
+
+        // Check cache
+        $cache_key = sprintf('grid_%s_%s_%s', $month, $year, $this->calendar->schedule->id);
+
+        $content = PHPWS_Cache::get($cache_key);
+        if (!empty($content)) {
+            return $content;
+        }
+
+        // cache empty, make calendar
 
         $startdate = mktime(0,0,0, $month, 1, $year);
         $enddate = mktime(23, 59, 59, $month + 1, 0, $year);
 
         $this->calendar->loadEventList($startdate, $enddate);
 
-        if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
-            Layout::addStyle('calendar');
-        }
-
         $oMonth = $this->calendar->getMonth();
         $oMonth->build();
         $date = $oMonth->thisMonth(TRUE);
 
-        // Check cache
-        $cache_key = sprintf('grid_%s_%s_%s', $oMonth->month, $oMonth->year, $this->calendar->schedule->id);
-
-
-        $content = PHPWS_Cache::get($cache_key);
-        if (!empty($content)) {
-            return $content;
-        }
 
         // Cache empty, make month
         $oTpl = & new PHPWS_Template('calendar');
@@ -394,7 +397,7 @@ class Calendar_User {
         $template['PARTIAL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%b', $date), 'calendar', $vars);
 
         $template['TITLE'] = $this->calendar->schedule->title;
-        $template['PICK'] = $this->getDatePick();
+        $template['PICK'] = $date_pick;
         $template['FULL_YEAR'] = strftime('%Y', $date);
         $template['PARTIAL_YEAR'] = strftime('%y', $date);
         $template['VIEW_LINKS'] = $this->viewLinks('grid');
@@ -410,18 +413,34 @@ class Calendar_User {
 
     function month_list()
     {
+        if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
+            Layout::addStyle('calendar');
+        }
+
         $month = &$this->calendar->int_month;
         $year  = &$this->calendar->int_year;
         $day   = 1;
 
+        if (PHPWS_Cache::isEnabled() && Current_User::allow('calendar')) {
+            $this->resetCacheLink('list', $month, $year, $this->calendar->schedule->id);
+        }
+
+        // Check cache
+        $cache_key = sprintf('list_%s_%s_%s', $month, $year, $this->calendar->schedule->id);
+        $content = PHPWS_Cache::get($cache_key);
+        if (!empty($content)) {
+            return $content;
+        }
+
+        // cache empty, make calendar
+
         $startdate = mktime(0,0,0, $month, 1, $year);
         $enddate = mktime(23, 59, 59, $month + 1, 0, $year);
 
-        $this->calendar->loadEventList($startdate, $enddate);
+        $date_pick = $this->getDatePick();
 
-        if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
-            Layout::addStyle('calendar');
-        }
+
+        $this->calendar->loadEventList($startdate, $enddate);
 
         $tpl = & new PHPWS_Template('calendar');
         $tpl->setFile('view/month/list.tpl');
@@ -451,13 +470,20 @@ class Calendar_User {
         $main_tpl['FULL_YEAR']       = strftime('%Y', mktime(0,0,0, $month, $day, $year));
         $main_tpl['ABRV_YEAR']       = strftime('%y', mktime(0,0,0, $month, $day, $year));
         $main_tpl['SCHEDULE_PICK']   = $this->schedulePick();
-        $main_tpl['PICK'] = $this->getDatePick();
+        $main_tpl['PICK'] = $date_pick;
 
         $tpl->setData($main_tpl);
-        
-        return $tpl->get();
+        $content = $tpl->get();
+        PHPWS_Cache::save($cache_key, $content);
+        return $content;
     }
 
+    function resetCacheLink($type, $month, $year, $schedule)
+    {
+        $vars['aop'] = 'reset_cache';
+        $vars['key'] = sprintf('%s_%s_%s_%s', $type, $month, $year, $schedule);
+        MiniAdmin::add('calendar', PHPWS_Text::secureLink(_('Reset cache'), 'calendar', $vars));
+    }
 
     function schedulePick()
     {

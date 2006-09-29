@@ -400,6 +400,14 @@ class Calendar_Admin {
             $this->repeatEvent($event);
             break;
 
+        case 'reset_cache':
+            if (!Current_User::allow('calendar')) {
+                Current_User::disallow();
+            }
+            PHPWS_Cache::remove($_REQUEST['key']);
+            PHPWS_Core::goBack();
+            break;
+
         case 'schedules':
             $this->scheduleListing();
             break;

@@ -342,24 +342,33 @@ class Calendar_Event {
         }
 
         if ($this->all_day) {
+            $tpl['TO'] = '&ndash;';
             if (date('Ymd', $this->start_time) != date('Ymd', $this->end_time)) {
                 if (CALENDAR_MONTH_FIRST) {
-                    $tpl['START_TIME'] =  sprintf(_('All day event, %s'), strftime('%B %e', $this->start_time));
+                    if (date('Y', $this->start_time) != date('Y', $this->end_time)) {
+                        $tpl['START_TIME'] =  sprintf(_('All day event, %s'), strftime('%B %e, %Y', $this->start_time));
+                    } else {
+                        $tpl['START_TIME'] =  sprintf(_('All day event, %s'), strftime('%B %e', $this->start_time));
+                    }
                 } else {
-                    $tpl['START_TIME'] =  sprintf(_('All day event, %s'), strftime('%e', $this->start_time));
+                    if (date('Y', $this->start_time) != date('Y', $this->end_time)) {
+                        $tpl['START_TIME'] =  sprintf(_('All day event, %s'), strftime('%e, %Y', $this->start_time));
+                    } else {
+                        $tpl['START_TIME'] =  sprintf(_('All day event, %s'), strftime('%e', $this->start_time));
+                    }
                 }
 
                 if (date('Ym', $this->start_time) != date('Ym', $this->end_time)) {
                     if (CALENDAR_MONTH_FIRST) {
-                        $tpl['END_TIME'] = strftime('%B %e', $this->end_time);
+                        $tpl['END_TIME'] = strftime('%B %e, %Y', $this->end_time);
                     } else {
-                        $tpl['END_TIME'] = strftime('%e', $this->end_time);
+                        $tpl['END_TIME'] = strftime('%e, %Y', $this->end_time);
                     }
                 } else {
                     if (CALENDAR_MONTH_FIRST) {
-                        $tpl['END_TIME'] = strftime('%e', $this->end_time);
+                        $tpl['END_TIME'] = strftime('%e, %Y', $this->end_time);
                     } else {
-                        $tpl['END_TIME'] = strftime('%e %B', $this->end_time);
+                        $tpl['END_TIME'] = strftime('%e %B, %Y', $this->end_time);
                     }
                 }
             } else {
@@ -374,14 +383,19 @@ class Calendar_Event {
         } else {
             if (date('Ymd', $this->start_time) != date('Ymd', $this->end_time)) {
                 // If this event happens over 2 or more day
-                $tpl['START_TIME'] = $this->getStartTime($month_day_mode . ', ' . CALENDAR_TIME_FORMAT);
-                $tpl['END_TIME']   = $this->getEndTime($month_day_mode . ', ' . CALENDAR_TIME_FORMAT);
+                if (date('Y', $this->start_time) != date('Y', $this->end_time)) {
+                    $tpl['START_TIME'] = $this->getStartTime(CALENDAR_TIME_FORMAT . ', ' . $month_day_mode . ', %Y');
+                } else {
+                    $tpl['START_TIME'] = $this->getStartTime(CALENDAR_TIME_FORMAT . ', ' . $month_day_mode);
+                }
+                $tpl['END_TIME']   = $this->getEndTime(CALENDAR_TIME_FORMAT . ', ' . $month_day_mode . ', %Y');
             } else {
-                $tpl['START_TIME'] = $this->getStartTime($month_day_mode . ', ' . CALENDAR_TIME_FORMAT);
-                $tpl['END_TIME']   = $this->getEndTime(CALENDAR_TIME_FORMAT);
+                $tpl['START_TIME']   = $this->getStartTime(CALENDAR_TIME_FORMAT);
+                $tpl['END_TIME'] = $this->getEndTime(CALENDAR_TIME_FORMAT . ', ' . $month_day_mode . ', %Y');
             }
             $tpl['DTSTART']     = PHPWS_Time::getDTTime($this->start_time, 'user');
             $tpl['DTEND']       = PHPWS_Time::getDTTime($this->end_time, 'user');
+            $tpl['TO'] = _('to');
         }
 
 
@@ -619,7 +633,6 @@ class Calendar_Event {
             if ($save_key) {
                 $db->saveObject($this);
             }
-
             
             /* save search settings */
             $search = & new Search($this->key_id);
