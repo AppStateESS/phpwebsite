@@ -224,8 +224,9 @@ class DBPager {
     }
 
     function setDefaultLimit($limit) {
-        if (empty($this->limit))
+        if (empty($this->limit)) {
             $this->limit = (int)$limit;
+        }
     }
 
     function setSearch(){
@@ -366,8 +367,9 @@ class DBPager {
     }
 
     function getLimit(){
-        if (empty($this->limit) || !isset($this->limitList[$this->limit])) {
+        if (empty($this->limit) || !in_array($this->limit, $this->limitList)) {
             list($this->limit) = each($this->limitList);
+
         }
 
         $start = ($this->current_page - 1) * $this->limit;
@@ -428,7 +430,6 @@ class DBPager {
         if ($this->limit > 0) {
             $this->db->setLimit($this->getLimit());
         }
-
 
         $this->total_rows = &$count;
         $this->total_pages = ceil($this->total_rows / $this->limit);
