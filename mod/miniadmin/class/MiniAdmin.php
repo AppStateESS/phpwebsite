@@ -10,13 +10,14 @@
 class MiniAdmin {
     function add($module, $links)
     {
-        if (!is_array($links)) {
-            $hold = $links;
-            unset($links);
-            $links[] = $hold;
+        if (is_array($links)) {
+            foreach ($links as $link) {
+                MiniAdmin::add($module, $link);
+            }
+            return true;
         }
 
-        $GLOBALS['MiniAdmin'][$module] = $links;
+        $GLOBALS['MiniAdmin'][$module][] = $links;
         return TRUE;
     }
 
