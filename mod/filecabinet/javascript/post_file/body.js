@@ -2,7 +2,7 @@
 //<![CDATA[
 image = opener.document.getElementById('{itemname}-current-image').childNodes[0].firstChild;
 oLink = opener.document.getElementById('{itemname}-current-image').childNodes[0];
-hidden = opener.document.getElementById('{itemname}-current-image').childNodes[2];
+hidden = opener.document.getElementById('{itemname}-current-image').childNodes[1];
 new_current = oLink.href.replace(/current=\d*\'/gi, 'current={image_id}\'');
 
 oLink.href = new_current;

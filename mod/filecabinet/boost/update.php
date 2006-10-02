@@ -47,6 +47,11 @@ the default directory to the module that is accessing it.';
             $content[] = 'Fix - Renamed define variable.';
         }
 
+    case version_compare($version, '0.1.7', '<'):
+        $files = array();
+        $files[] = 'javascript/post_file/body.js';
+        PHPWS_Boost::updateFiles($files, 'filecabinet');
+        $content[] = 'Fix - Image manager window not updating parent hidden value.';
     }
 
     return true;
