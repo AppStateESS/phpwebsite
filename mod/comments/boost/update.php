@@ -30,6 +30,10 @@ function comments_update(&$content, $currentVersion)
         } else {
             $content[] = 'New config.php file failed to copy locally.';
         }
+
+    case version_compare($currentVersion, '0.2.8', '<'):
+        $content[] = 'Fix - Retitled key unregistration function.';
+        $content[] = 'Fix - Deleting a comment now clears its relationship to its replies.';
     }
             
     return TRUE;
