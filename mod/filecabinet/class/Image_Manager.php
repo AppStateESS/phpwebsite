@@ -279,12 +279,6 @@ class FC_Image_Manager {
 
         $img_directories = Cabinet_Action::getImgDirectories();
 
-        /*
-        if ($this->image->file_directory) {
-            $form->addHidden('directory', urlencode($this->image->file_directory));
-        }
-        */
-
         $form->addHidden('action',    'post_image_close');
         $form->addHidden('ms',        $this->image->_max_size);
         $form->addHidden('mh',        $this->image->_max_height);
@@ -335,6 +329,7 @@ class FC_Image_Manager {
         $template['CANCEL'] = sprintf('<input type="button" value="%s" onclick="javascript:window.close()" />', _('Cancel'));
 
         $errors = $this->image->getErrors();
+
         if (!empty($errors)) {
             foreach ($errors as $err) {
                 $message[] = array('ERROR' => $err->getMessage());
