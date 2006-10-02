@@ -23,6 +23,8 @@ the default directory to the module that is accessing it.';
         }
 
     case version_compare($version, '0.1.6', '<'):
+        $files = 'config/error.php';
+        PHPWS_Boost::updateFiles($files, 'filecabinet');
         $error = false;
         $type = PHPWS_DB::getDBType();
         if ($type == 'mysql') {
@@ -41,7 +43,8 @@ the default directory to the module that is accessing it.';
             $content[] = 'Failed converting documents table\'s description columns.';
             return false;
         } else {
-            $content[] = 'Changed description column in documents table to allow null values.';
+            $content[] = 'Fix - Changed description column in documents table to allow null values.';
+            $content[] = 'Fix - Renamed define variable.';
         }
 
     }
