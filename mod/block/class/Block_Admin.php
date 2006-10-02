@@ -212,7 +212,7 @@ class Block_Admin {
         }
 
 
-        $form->addTextArea('block_content', $block->getContent());
+        $form->addTextArea('block_content', $block->getContent(false));
         $form->setRows('block_content', '10');
         $form->setWidth('block_content', '80%');
         $form->setLabel('block_content', _('Entry'));
