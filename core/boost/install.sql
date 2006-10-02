@@ -82,5 +82,3 @@ CREATE TABLE converted (
 CREATE TABLE core_version (
   version varchar(10) NOT NULL default ''
 );
-
-INSERT INTO core_version (version) values ('1.0.2');
