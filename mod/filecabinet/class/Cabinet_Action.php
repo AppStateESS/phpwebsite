@@ -40,6 +40,7 @@ class Cabinet_Action {
             $document = & new PHPWS_Document($_REQUEST['document_id']);
         }
 
+
         switch ($action) {
         case 'new_document':
             PHPWS_Core::initModClass('filecabinet', 'Forms.php');
@@ -137,7 +138,8 @@ class Cabinet_Action {
                     Layout::nakedDisplay($manager->edit());
                 } else {
                     PHPWS_Error::log($result);
-                    $manager->errorPost();
+                    $manager->image->_errors[] = $result;
+                    Layout::nakedDisplay($manager->edit());
                 }
             } elseif (!$result) {
                 Layout::nakedDisplay($manager->edit());
