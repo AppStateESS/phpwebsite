@@ -288,12 +288,14 @@ class Calendar_Admin {
         $vars['aop'] = 'schedules';
         $tabs['schedules'] = array('title' => _('Schedules'),
                                    'link' => PHPWS_Text::linkAddress('calendar', $vars));
-
+        // disabled until written
+        /*
         $vars['aop'] = 'settings';                                   
         if (Current_User::allow('calendar', 'settings')) {
             $tabs['settings']    = array('title' => _('Settings'),
                                          'link' => PHPWS_Text::linkAddress('calendar', $vars));
         }
+        */
 
         $panel->quickSetTabs($tabs);
         return $panel;
