@@ -982,7 +982,7 @@ class PHPWS_Boost {
 
             if (is_file($local_file)) {
                 if (md5_file($local_file) == md5_file($source_file)) {
-                    return TRUE;
+                    continue;
                 }
                 if (!PHPWS_Boost::backupFile($local_file)) {
                     return PHPWS_Error::get(BOOST_FAILED_BACKUP, 'boost', 'PHPWS_Boost::updateFiles', $local_file);

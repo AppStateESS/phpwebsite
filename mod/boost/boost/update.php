@@ -81,6 +81,9 @@ function boost_update(&$content, $currentVersion)
         $content[] = 'New - Added call to clear a module\'s settings upon removal.';
         $content[] = 'New - Recoded call to unregister a module\'s keys on removal.';
         $content[] = 'New - Now reports uncopyable file in log.';
+
+    case version_compare($currentVersion, '1.9.1', '<'):
+        $content[] = 'Fix - updateFiles was only quitting if new files were identical.';
     }
 
     return TRUE;
