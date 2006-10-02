@@ -25,6 +25,18 @@ function layout_update(&$content, $currentVersion)
         $content[] = '- Boxes with duplicate content variable names were not getting 
 added properly. Fixed by having the module name verified.';
 
+    case version_compare($currentVersion, '2.1.4', '<'):
+        $files = array();
+        $files[] = 'templates/move_box_select.tpl';
+        PHPWS_Boost::updateFiles($files, 'layout');
+        $content[] = '- Fixed bug #1551163 - theme changes were not getting saved.';
+        $content[] = '- Added ability to "lock out" some theme variables to prevent boxes from being moved into them';
+        $content[] = '- Added ability to reset a box';
+        $content[] = '- Layout variables now appear when move box is initialized';
+        $content[] = '- Changed import check for IE. Hopefully will detect it better.';
+        $content[] = '- Layout will now use blank.tpl (if exists) with a nakedDisplay call';
+        $content[] = '- Layout uses the local module style sheet on a branch even if force_mod_template is set.';
+
     }
     return TRUE;
 }
