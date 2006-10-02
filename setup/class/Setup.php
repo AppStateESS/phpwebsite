@@ -530,8 +530,18 @@ class Setup{
         }
 
         if ($result == TRUE) {
-            $content[] = _('Core installation successful.') . '<br /><br />';
-            $content[] = '<a href="index.php?step=3">' . _('Continue to Module Installation') . '</a>';
+            $db = & new PHPWS_DB('core_version');
+            include(PHPWS_SOURCE_DIR . 'core/boost/boost.php');
+            $db->addValue('version', $version);
+            $result = $db->insert();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                $content[] = _('Some errors occurred while creating the core database tables.') . '<br />';
+                $content[] = _('Please check your error log file.') . '<br />';
+            } else {
+                $content[] = _('Core installation successful.') . '<br /><br />';
+                $content[] = '<a href="index.php?step=3">' . _('Continue to Module Installation') . '</a>';
+            }
         }
     }
 
