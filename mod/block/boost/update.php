@@ -41,6 +41,9 @@ function block_update(&$content, $currentVersion)
         $content[] = '+ Fixed bug #1552210 - extra breaks created per edit.';
         $content[] = '+ Added admin edit icon to block view';
         $content[] = '+ Block content now parses smart tags';
+
+    case version_compare($currentVersion, '1.0.1', '<'):
+        $content[] = 'Fix - Bug #1552210 Prevent double new lines.';
     }
     
     return TRUE;
