@@ -766,7 +766,7 @@ class User_Action {
             $user = & new PHPWS_User($user_id);
 
             // If the deadline has not yet passed, approve the user, save, and return true
-            if ($row['deadline'] > PHPWS_Time::mkservertime()) {
+            if ($row['deadline'] > mktime()) {
                 $db->delete();
                 $user->approved = 1;
                 $user->save();
@@ -783,7 +783,7 @@ class User_Action {
     function cleanUpConfirm()
     {
         $db = & new PHPWS_DB('users_signup');
-        $db->addWhere('deadline', PHPWS_Time::mkservertime(), '<');
+        $db->addWhere('deadline', mktime(), '<');
         $result = $db->delete();
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
@@ -860,7 +860,7 @@ class User_Action {
 
     function _createSignupConfirmation($user_id)
     {
-        $deadline = PHPWS_Time::mkservertime() + (3600 * NEW_SIGNUP_WINDOW);
+        $deadline = mktime() + (3600 * NEW_SIGNUP_WINDOW);
         $authkey = md5($deadline . $user_id);
 
         $db = & new PHPWS_DB('users_signup');
