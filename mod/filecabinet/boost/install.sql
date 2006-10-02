@@ -5,11 +5,13 @@ CREATE TABLE documents (
   file_directory varchar(150) NOT NULL default '',
   file_type varchar(30) NOT NULL default '',
   title varchar(255) NOT NULL default '',
-  description text default NULL,
+  description text NULL,
   size int NOT NULL default '0',
   downloaded int NOT NULL default '0',
   PRIMARY KEY  (id)
 );
+
+CREATE INDEX documents_idx on documents(key_id);
 
 CREATE TABLE images (
   id int NOT NULL default '0',
@@ -18,7 +20,7 @@ CREATE TABLE images (
   file_directory varchar(150) NOT NULL default '',
   file_type varchar(30) NOT NULL default '',
   title varchar(255) NOT NULL default '',
-  description text default NULL,
+  description text NULL,
   size int NOT NULL default '0',
   width smallint NOT NULL default '0',
   height smallint NOT NULL default '0',
@@ -26,3 +28,5 @@ CREATE TABLE images (
   thumbnail_source int NOT NULL default '0',
   PRIMARY KEY  (id)
 );
+
+CREATE INDEX images_idx on documents(key_id);
