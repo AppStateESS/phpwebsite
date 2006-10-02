@@ -24,24 +24,24 @@ the default directory to the module that is accessing it.';
 
     case version_compare($version, '0.1.6', '<'):
         $error = false;
-        $sql = 'ALTER TABLE documents MODIFY description text default null';
+        $type = PHPWS_DB::getDBType();
+        if ($type == 'mysql') {
+            $sql = 'ALTER TABLE documents MODIFY description text null';
+        } else {
+            $sql = 'ALTER TABLE documents ALTER COLUMN description drop NOT NULL';
+        }
+
         $result = PHPWS_DB::query($sql);
         if (PEAR::isError($result)) {
             $error = true;
             PHPWS_Error::log($result);
         }
 
-        $sql = 'ALTER TABLE images MODIFY description text default null';
-        $result = PHPWS_DB::query($sql);
-        if (PEAR::isError($result)) {
-            $error = true;
-            PHPWS_Error::log($result);
-        }
         if ($error) {
-            $content[] = 'Failed converting documents and images tables\' description columns.';
+            $content[] = 'Failed converting documents table\'s description columns.';
             return false;
         } else {
-            $content[] = 'Changed description column in documents and images tables to allow null values.';
+            $content[] = 'Changed description column in documents table to allow null values.';
         }
 
     }
