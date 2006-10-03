@@ -142,6 +142,13 @@ class Comments {
             break;
 
         case 'save_comment':
+            if (empty($_POST['cm_subject']) || empty($_POST['cm_entry'])) {
+                $title = _('Sorry');
+                $content[] = _('Your comment must contain a subject and comment.');
+                $content[] = PHPWS_Text::backLink();
+                break;
+            }
+
             if (PHPWS_Core::isPosted()) {
                 PHPWS_Core::reroute($thread->_key->url);
                 exit();
@@ -154,6 +161,7 @@ class Comments {
             }
 
             $result = Comments::saveComment($thread);
+
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
                 $title = _('Sorry');

@@ -160,13 +160,13 @@ class Comment_Item {
 
     function stampCreateTime()
     {
-	$this->create_time = gmmktime();
+	$this->create_time = mktime();
     }
 
     function getCreateTime($format=TRUE)
     {
 	if ($format) {
-	    return gmstrftime(COMMENT_DATE_FORMAT, $this->create_time);
+	    return strftime(COMMENT_DATE_FORMAT, $this->create_time);
 	} else {
 	    return $this->create_time;
 	}
@@ -174,7 +174,7 @@ class Comment_Item {
 
     function getRelativeTime()
     {
-        return PHPWS_Time::relativeTime(PHPWS_Time::getServerTime($this->create_time), COMMENT_DATE_FORMAT);
+        return PHPWS_Time::relativeTime($this->create_time);
     }
 
     function stampEditor()
@@ -264,7 +264,7 @@ class Comment_Item {
 	$template['SUBJECT']	     = $this->getSubject(TRUE);
 	$template['ENTRY']	     = $this->getEntry(TRUE);
 	$template['CREATE_TIME']     = $this->getCreateTime();
-        $template['RELATIVE_CREATE'] = $this->getRelativeTime(TRUE);
+        $template['RELATIVE_CREATE'] = $this->getRelativeTime();
         if ($can_post) {
             $template['QUOTE_LINK']	     = $this->quoteLink();
             $template['REPLY_LINK']      = $this->replyLink();
@@ -307,8 +307,7 @@ class Comment_Item {
 
     function save()
     {
-	if (empty($this->thread_id) ||
-	    empty($this->entry)) {
+	if (empty($this->thread_id)) {
 	    return PHPWS_Error::get(COMMENTS_MISSING_THREAD, 'comments', 'Comment_Item::save');
 	}
 
