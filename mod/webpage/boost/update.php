@@ -27,6 +27,26 @@ function webpage_update(&$content, $currentVersion)
             return $result;
         }
         $content[] = 'New - added active column to web page admin list';
+
+    case version_compare($currentVersion, '0.2.3', '<'):
+        $files = array();
+        $files[] = 'templates/forms/list.tpl';
+        $result = PHPWS_Boost::updateFiles($files, 'users');
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $content[] = 'Unable to update templates/forms/list.tpl';
+        } else {
+            $content[] = 'Template file updated.';
+        }
+
+        $db = & new PHPWS_DB('webpage_volume');
+        $result = $db->addTableColumn('active', 'smallint NOT NULL default \'0\'');
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $content[] = 'Failed adding active column to webpage_volume table.';
+        } else {
+            $content[] = 'New - Added active column to admin view and table.';
+        }
     }
 
     return TRUE;

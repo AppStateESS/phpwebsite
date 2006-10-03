@@ -79,6 +79,8 @@ class Webpage_Admin {
         case 'activate':
         case 'deactivate':
         case 'approval_view':
+        case 'deactivate_vol':
+        case 'activate_vol':
             if ( ( $volume->id 
                    && ( !Current_User::isUser($volume->create_user_id) && !Current_User::authorized('webpage', 'edit_page', $volume->id) ) )
                  || ( !Current_User::authorized('webpage', 'edit_page') ) ) {
@@ -295,6 +297,18 @@ class Webpage_Admin {
                 PHPWS_Core::goBack();
             }
 
+            break;
+
+        case 'activate_vol':
+            $volume->active = 1;
+            $volume->save();
+            PHPWS_Core::goBack();
+            break;
+
+        case 'deactivate_vol':
+            $volume->active = 0;
+            $volume->save();
+            PHPWS_Core::goBack();
             break;
 
         case 'activate':

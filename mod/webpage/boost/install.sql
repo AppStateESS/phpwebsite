@@ -14,6 +14,7 @@ CREATE TABLE webpage_volume (
   updated_user varchar(40) NOT NULL default '',
   frontpage smallint NOT NULL default '0',
   approved smallint NOT NULL default '0',
+  active smallint NOT NULL default '0',
   PRIMARY KEY  (id)
 );
 

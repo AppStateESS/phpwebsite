@@ -230,12 +230,15 @@ class Webpage_Volume {
             $tpl['FRONTPAGE'] = _('No');
         }
 
-        if ($this->active) {
-            $tpl['ACTIVE'] = _('Yes');
-        } else {
-            $tpl['ACTIVE'] = _('No');
-        }
 
+        if ($this->active) {
+            $vars['wp_admin'] = 'deactivate_vol';
+            $active = PHPWS_Text::secureLink(_('Yes'), 'webpage', $vars);
+        } else {
+            $vars['wp_admin'] = 'activate_vol';
+            $active = PHPWS_Text::secureLink(_('No'), 'webpage', $vars);
+        }
+        $tpl['ACTIVE'] = $active;
 
         return $tpl;
     }
