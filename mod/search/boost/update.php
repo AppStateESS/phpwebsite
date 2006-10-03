@@ -27,6 +27,9 @@ function search_update(&$content, $currentVersion)
         if (!search_update_010($content)) {
             return FALSE;
         }
+
+    case version_compare($currentVersion, '0.1.1', '<'):
+        $content[] = 'New - Retitled key unregistration function.';
     }
 
     return TRUE;
