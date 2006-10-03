@@ -34,6 +34,9 @@ function comments_update(&$content, $currentVersion)
     case version_compare($currentVersion, '0.2.8', '<'):
         $content[] = 'Fix - Retitled key unregistration function.';
         $content[] = 'Fix - Deleting a comment now clears its relationship to its replies.';
+
+    case version_compare($currentVersion, '0.2.9', '<'):
+        $content[] = 'Fix - Relative time listing.';
     }
             
     return TRUE;
