@@ -43,7 +43,26 @@ function users_update(&$content, $currentVersion)
             $content[] = 'Error: unable to create images/users/confirm directory.';
             return false;
         }
-       
+  
+    case version_compare($currentVersion, '2.0.7', '<'):
+        $files = array();
+        $files[] = 'templates/forms/permission_pop.tpl';
+        $files[] = 'templates/usermenus/Default.tpl';
+        $result = PHPWS_Boost::updateFiles($files, 'users');
+        if (PEAR::isError($result)) {
+            $content[] = 'Template files failed to copy locally.';
+        } else {
+            $content[] = 'Template files updated.';
+        }
+
+        $content[] = '- Fixed - Bug #1568383. Users was calling deprecated Time function.';
+        $content[] = '- Fixed authorization problems occuring after changing user name.';
+        $content[] = '- Error in the permission form should be fixed.';
+        $content[] = '- Permission.php - Fixed typo causing syntax error on permission call.';
+        $content[] = '- permission_pop.tpl - fixed javascript error from changes in the form class.';
+        $content[] = '- Changed user login box template.';
+        $content[] = '- Fixed a problem with the permissions form made from the last Form.';
+        $content[] = '- Added a getPermissionGroups function.';
     }
 
     return TRUE;
