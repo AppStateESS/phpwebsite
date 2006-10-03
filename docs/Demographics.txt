@@ -19,10 +19,29 @@ Registering your Module
 When your module is installed, Demographics will look for a file named
 "demographics.php" in your module's conf directory. The file should
 appear like the following example from Comments:
+// default fields used
+$default[] = 'contact_email';
+$default[] = 'website';
+
+Default fields are from the mod/demographics/inc/defaults.php
+file. Try not to repeat them. If you need information not listed in
+the defaults list, then you can add fields like so:
 
 
+$fields['avatar']['limit']    = 255; // small graphic of user
+$fields['signature']['limit'] = 255; // graphic or saying from user
 
+When creating your own fields, keep two settings in mind.
+The 'limit' setting is used for text/string fields. Whatever number
+you set will be the maximum size allowed for that field.
 
+When using such a field, you do not need to set the type. If you are
+using an integer/number field then you should set it like so:
+$fields['longitude']['type'] = 'integer';
+
+Integer fields do not have a limit setting.
+
+Add as many default and custom fields as you need.
 
 Creating a Demographics User Object
 --------------------------------------------------
@@ -41,8 +60,58 @@ access by declaring them as object vars:
 
 class my_object extends Demographics_User {
     var $first_name;
-
 }
 
-info_type : The variable data type. Can be text, bool, or int. Default is text.
-limit     : When the type is 'text',
+Here is what Comment's class looks like:
+class Comment_User extends Demographics_User {
+    var $display_name  = NULL; // this is copied from the user class
+    var $signature     = NULL; // newly created field
+    var $comments_made = 0;    // not part of demographics
+    var $joined_date   = 0;    // copied from user class
+    var $avatar        = NULL; // newly created field
+    var $contact_email = NULL; // default demographics field
+    var $website       = NULL; // default demographics field
+    var $location      = NULL; // not part of demographics
+    var $locked        = 0;
+
+    // using a second table with demographics
+    var $_table        = 'comments_users';
+...
+
+As you can see we have a combination of default demographic fields,
+newly created fields, and variables used specifically within comments.
+
+
+Loading an User's Demographics
+---------------------------------------------------
+Your constructor should call the "load" function from the parent
+class. Here is another example from comments:
+
+ function Comment_User($user_id=NULL)
+    {
+        if ($user_id == 0) {
+            $this->loadAnonymous();
+            return;
+        }
+        $this->user_id = (int)$user_id;
+        $this->load();
+    }
+
+
+Ignore the loadAnonymous function. It is specific to comments.
+Take a look at the rest of the constructor. First we set the object's
+user_id variable. The load function then pulls the user's current
+information from the demographic's table.
+
+Demographics will also look for a _table variable in the class. If
+found, it will suppliment its data. The extra table needs only to have
+a user_id column. Demographics will take care of saving and removing
+data to and from this table as well.
+
+
+Saving a User's Demographics
+--------------------------------------------------
+Once you have verified and set each variable in your object, call the
+"save" function. Demographics will take care of the rest. Make sure
+you parse the data going into Demographics, as it doesn't do any
+parsing on its own.
