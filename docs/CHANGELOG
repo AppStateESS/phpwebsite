@@ -1,3 +1,29 @@
+2 October 
+Note: changelog was overwritten by mistake on October 2. Summary
+follows
+
+Users
++ Fixed improper time function call on new user creation
+
+Calendar
++ Hiding setup tab for now
+
+Filecabinet
++ Fixed description table column
++ Image error now prints proper error
++ Fixed image manager not properly updating hidden input
+
+Boost
++ Fixed updateFiles function. Was previously quiting early on
+duplicates
+
+Web Page
++ Added active columns and admin options.
+
+Core
++ Setup : Core version handled by set up, not inserted via SQL manually
+
+
 28 September 2006
 + Core
 - DBPager
