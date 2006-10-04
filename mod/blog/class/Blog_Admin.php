@@ -221,6 +221,7 @@ class Blog_Admin {
                 } else {
                     Blog_Admin::setForward(_('Entry saved successfully.'), 'list');
                 }
+
             }
             break;
 

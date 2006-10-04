@@ -18,6 +18,7 @@ class Blog {
     var $allow_comments = 0;
     var $approved       = 0;
     var $allow_anon     = 0;
+    var $publish_date   = 0;
     var $_error         = null;
 
     function Blog($id=null)
@@ -98,6 +99,15 @@ class Blog {
         return strftime($type, PHPWS_Time::getUserTime($this->create_date));
     }
 
+    function getPublishDate()
+    {
+        if ($this->publish_date) {
+            return strftime('%Y%m%d %H:00', $this->publish_date);
+        } else {
+            return strftime('%Y%m%d %H:00', mktime());
+        }
+    }
+
     function getServerDate($type=BLOG_VIEW_DATE_FORMAT)
     {
         return strftime($type, PHPWS_Time::getServerTime($this->create_date));
@@ -107,7 +117,11 @@ class Blog {
     {
         $db = & new PHPWS_DB('blog_entries');
         if (empty($this->id)) {
-            $this->create_date = mktime();
+            if ($this->publish_date > mktime()) {
+                $this->create_date = $this->publish_date;
+            } else {
+                $this->create_date = mktime();
+            }
             $this->author_id = Current_User::getId();
             $this->author = Current_User::getDisplayName();
         }
@@ -363,10 +377,6 @@ class Blog {
             $this->title = strip_tags($_POST['title']);
         }
 
-        if (empty($this->id)) {
-            $this->create_date = mktime();
-        }
-
         $this->setSummary($_POST['summary']);
         $this->setEntry($_POST['entry']);
 
@@ -384,6 +394,12 @@ class Blog {
 
         if (empty($this->author)) {
             $this->author = Current_User::getDisplayName();
+        }
+
+        if (empty($_POST['publish_date'])) {
+            $this->publish_date = mktime();
+        } else {
+            $this->publish_date = strtotime($_POST['publish_date']);
         }
 
         if (isset($_POST['version_id']) || Current_User::isRestricted('blog')) {

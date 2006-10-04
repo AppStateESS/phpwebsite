@@ -13,6 +13,12 @@
     <td>{ENTRY}</td>
   </tr>
   <tr>
+    <td>{PUBLISH_DATE_LABEL}<br >
+        <span class="smaller">{EXAMPLE}</span>
+    </td>
+    <td>{PUBLISH_DATE}</td>
+  </tr>
+  <tr>
     <td>{ALLOW_COMMENTS_LABEL}</td>
     <td>{ALLOW_COMMENTS}</td>
   </tr>

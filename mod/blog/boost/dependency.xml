@@ -1,6 +1,12 @@
 <?xml version="1.0"?>
 <dependency>
   <module>
+    <title>core</title>
+    <properName>phpWebSite Core</properName>
+    <version>1.0.3</version>
+    <url>http://phpwebsite.appstate.edu/downloads/modules/core/</url>
+  </module>
+  <module>
     <title>comments</title>
     <properName>Comments</properName>
     <version>0.2.5</version>

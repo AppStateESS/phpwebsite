@@ -46,6 +46,10 @@ class Blog_Form {
         $form->setCols('entry', '60');
         $form->setLabel('entry', _('Entry'));
 
+        $form->addText('publish_date', $blog->getPublishDate());
+        $form->setLabel('publish_date', _('Publish date/time'));
+        $form->setSize('publish_date', 20);
+
         $form->addCheck('allow_comments', 1);
         $form->setLabeL('allow_comments', _('Allow comments'));
         $form->setMatch('allow_comments', $blog->allow_comments);
@@ -60,6 +64,7 @@ class Blog_Form {
 
         $template = $form->getTemplate();
 
+        $template['EXAMPLE'] = 'YYMMDD HH:MM';
         return PHPWS_Template::process($template, 'blog', 'edit.tpl');
     }
 }

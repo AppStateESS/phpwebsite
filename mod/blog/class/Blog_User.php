@@ -50,6 +50,7 @@ class Blog_User {
 
         $db = & new PHPWS_DB('blog_entries');
         $db->addWhere('approved', 1);
+        $db->addWhere('publish_date', mktime(), '<');
         $db->setLimit($limit);
         $db->addOrder('create_date desc');
 
