@@ -106,7 +106,6 @@ class PHPWS_Module {
         $title = $this->title;
 
         $this->setDirectory(PHPWS_SOURCE_DIR . "mod/$title/");
-
         if ($file == TRUE) {
             $result = PHPWS_Module::initByFile();
         } else {
@@ -330,6 +329,10 @@ class PHPWS_Module {
             }
         }
 
+        if ($title == 'core') {
+            return true;
+        }
+
         if (!empty($module_list) && isset($module_list[$title])) {
             return $module_list[$title];
         }
@@ -386,7 +389,11 @@ class PHPWS_Module {
 
         foreach ($dep_list['MODULE'] as $stats) {
             extract($stats);
-            $module = & new PHPWS_Module($TITLE, FALSE);
+            if ($TITLE == 'core') {
+                $module = PHPWS_Core::loadAsMod(false);
+            } else {
+                $module = & new PHPWS_Module($TITLE, FALSE);
+            }
 
             if (!$module->isInstalled()) {
                 return FALSE;

@@ -26,7 +26,10 @@ function core_update(&$content, $version) {
 
     case version_compare($version, '1.0.3', '<'):
         $content[] = 'Please see changes_1_0_3.txt in the core\'s boost directory for a listing of changes.';
-        break;
+
+    case version_compare($version, '1.0.5', '<'):
+        $content[] = '- Fixed core version on installation.';
+        $content[] = '- Changed Core.php and Module.php to track core\'s version better. Helps Boost with dependencies';
     }
     
     return true;
