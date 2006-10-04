@@ -1,3 +1,24 @@
+Boost
++ Tracks core dependencies now.
+
+Core
++ Core.php : altered loadAsMod function to pull version from file or
+             database
++ Module.php : added functions to load the core as a module. helps
+               with dependencies
+
+Blog - 1.1.0
++ Added publish date
+
+Comments - 0.2.9
++ Fixed relative time display.
+
+Documentation
++ Updated Demographics.txt file.
+
+
+phpWebSite RC3 Below
+----------------------------------------------------------------------
 2 October 
 Note: changelog was overwritten by mistake on October 2. Summary
 follows
