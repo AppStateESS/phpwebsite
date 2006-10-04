@@ -84,6 +84,9 @@ function boost_update(&$content, $currentVersion)
 
     case version_compare($currentVersion, '1.9.1', '<'):
         $content[] = 'Fix - updateFiles was only quitting if new files were identical.';
+
+    case version_compare($currentVersion, '1.9.2', '<'):
+        $content[] = 'Fix - Boost now tracks core dependencies properly.';
     }
 
     return TRUE;

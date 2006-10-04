@@ -149,10 +149,15 @@ class Boost_Action {
         $template['STATUS_LABEL']          = _('Status');
 
         foreach ($depend['MODULE'] as $module) {
-            
             $pass = TRUE;
             $tpl = array();
-            $mod_obj = & new PHPWS_Module($module['TITLE'], FALSE);
+
+            if ($module['TITLE'] == 'core') {
+                $mod_obj = PHPWS_Core::loadAsMod();
+            } else {
+                $mod_obj = & new PHPWS_Module($module['TITLE'], FALSE);
+            }
+
             $tpl['MODULE_NAME']    = $module['PROPERNAME'];
             $tpl['VERSION_NEEDED'] = $module['VERSION'];
 

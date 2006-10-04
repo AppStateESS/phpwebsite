@@ -112,7 +112,12 @@ class Boost_Form {
         foreach ($modList as $title) {
             $template = $link_command = NULL;
             $link_command['opmod'] = $title;
-            $mod = & new PHPWS_Module($title);
+            if ($title == 'core') {
+                $mod = PHPWS_Core::loadAsMod();
+            } else {
+                $mod = & new PHPWS_Module($title);
+            }
+
             if (!$mod->isFullMod()) {
                 continue;
             }
