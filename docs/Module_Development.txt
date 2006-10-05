@@ -37,7 +37,14 @@ III. Installation
    F. Dependencies
    G. Installing
 
-IV.  Administrating
+IV. Run Process
+   A. The index.php file
+   B. The Inc Files
+     1. init.php
+     2. runtime.php
+     3. close.php
+
+V.  Administrating
    A. Permissions
    B. Control Panel
    C. Settings
@@ -48,15 +55,15 @@ IV.  Administrating
    F. DBPager
    G. Mini Admin
 
-V.   Users and Layouts
+VI.   Users and Layouts
    A. Layout
    B. Javascript
    C. Key Flag
    D. Caching
 
-VI.  Uninstallation
+VII.  Uninstallation
 
-VII. Advanced and Miscellaneous
+VIII. Advanced and Miscellaneous
    A. Approval
    B. Versioning
    C. Cookies
@@ -1001,7 +1008,7 @@ D. Permissions
 
 I will touch on permissioning here. A more detailed account can
 (eventually not finished writing it yet) be found in
-docs/Permission.txt. Checking for permissions is handled in part IV.
+docs/Permission.txt. Checking for permissions is handled in part V.
 
 There are five types of users:
 
@@ -1178,7 +1185,7 @@ The tab's destination url.
 
 
 To learn more about using the Control Panel in your module, please see
-part IV. section B.
+part V. section B.
 
 
 
@@ -1200,7 +1207,7 @@ directory. Here is an example from Blog:
     <title>comments</title>
     <properName>Comments</properName>
     <version>0.2.5</version>
-    <url>   http://phpwebsite.appstate.edu/downloads/modules/comments</url>
+    <url>http://phpwebsite.appstate.edu/downloads/modules/comments</url>
   </module>
 </dependency>
 
@@ -1228,13 +1235,134 @@ directory. Make sure to update this file along with your module.
 G. Installing
 ----------------------------------------------------------------------
 
-Your module should now be ready for installation.
+Your module should now be ready for installation. Go into the Boost
+module and see if it appears on the list of "Other Modules." If you
+don't see it make sure your module is under the "mod" directory and
+that your module has a boost.php in its "boost" directory.
+
+After you click install, Boost does the following:
+1) Looks for your install.sql and imports it
+2) Looks for your install.php file and executes it
+3) Repeats step 2 until it is finished
+4) It copies your template, config, and javascript directory files
+   locally.
+5) It registers your module to other modules
+6) It registers other modules to you (i.e. controlpanel, users, etc.)
+7) It registers your module to itself (like controlpanel does)
+8) It flags your module to the key registration table
+9) It puts your module in the "modules" table.
+10) Tells you if the process was successful or not.
+
+If the installation went poorly, check your boost.log and error.log
+files in your logs/ directory. You will probably need to be root to do
+so. Log files contain sensitive information.
+
+If the installation did not contain any errors, congratulations!
 
 
-IV.  Administrating
+
+IV. Run Process
 ______________________________________________________________________
 
 
+A. The index.php file
+----------------------------------------------------------------------
+phpWebSite goes through a specific routine when accessing your
+module. The most important file in your module's directory is the
+index.php file. When your module is accessed directly, the index.php
+file is included by the core.
+
+Your index.php decides the direction of your module. Are we looking at
+an item? Was a new item just saved? Are we deleting an item? Your
+index.php file determines the path.
+
+Personally, I used to put all of my decision pathing in the index
+file. I tend not to do so anymore. More likely my index.php does three
+things:
+
+1) Is the user supposed to be here?
+   I will check to see if the index.php file is getting called
+   directly by the user. 99.9% of the time, you do not want this to
+   happen. What I do is check to see if the PHPWS_SOURCE_DIR is
+   defined. If it is not, phpWebSite is not running. Therefore, we can
+   stop execution cold.
+
+2) Is the request a harmless request? In other words, is a general
+   user requesting an action for which my module was designed? If so,
+   I route them to a function that determines their specific
+   request. I will tend to set a special variable name of these
+   requests (e.g. user_action, uaction, uop, etc.).
+
+3) Is the request an administrative request that can alter my module's
+   data? If so, I direct them to a function that determines their
+   administrative request. Sometimes I will check to see if they are
+   indeed an admin in the index file. Sometimes I do so in the routed
+   admin function.
+
+Keep in mind the index.php file is ONLY accessed when the module
+variable is set to your module. Blog's index file is accessed whenever
+module=blog:
+
+Example : http://mysite.com/index.php?module=blog&id=11
+
+The above link (if mysite.com existed) would load Blog's index.php
+file and send it an id of 11. Blog is written to check if only and id
+variable is sent. It then loads and prints the Blog entry with that id.
+
+So the index.php file responds to requests sent to your module. What
+if you want your module to respond even if not directly requested?
+This is where the next three "inc" files come in.
+
+
+B. The Inc Files
+----------------------------------------------------------------------
+
+I wrote about the inc directory earlier in chapter III, section B. It
+contains configuration files that should not be altered by site
+administrators. This directory also holds the three important module
+processing files: init.php, runtime.php, and close.php. Each one of
+these three files is called on every page load whether your module was
+specifically called or not.
+
+1. init.php
+......................................................................
+
+This file should contain code you wish to get executed before
+phpWebSite initializes the session. The most common use of init.php is
+to initialize class files for sessioned objects. PHP does not allow
+you to recall an object session before the session is created. So, you
+must require the object's session file beforehand. The init.php is a
+good place to do so.
+
+
+2. runtime.php
+......................................................................
+
+After every module's init.php file is called and sessions are
+initialized, phpWebSite looks for each module's runtime.php file. This
+file usually contains code that interacts with the current view. For
+example, Blog's runtime file checks to see if it should list its
+entries. You probably don't need this file if your module runs
+independent from other modules.
+
+
+3. close.php
+......................................................................
+
+This is your last chance to execute some of your module's
+code. phpWebSite calls this file after the currently requested
+module's index file is run. Use this file to respond to a previous
+module's actions.
+
+Please keep in mind that all three files are at the mercy of the
+module load order (the "priority" value in the boost.php file). If the
+runtime.php file is not giving you the desired results, try to put the
+same code in close.php. The close.php file may give your module the
+time it needs to read other module actions.
+
+
+V.  Administrating
+______________________________________________________________________
 
 
    A. Permissions
@@ -1283,7 +1411,7 @@ ______________________________________________________________________
 
 
 
-V.   Users and Layouts
+VI.   Users and Layouts
 ______________________________________________________________________
 
 
@@ -1307,13 +1435,13 @@ ______________________________________________________________________
 ----------------------------------------------------------------------
 
 
-VI.  Uninstallation
+VII.  Uninstallation
 ______________________________________________________________________
 
 
 
 
-VII.  Advanced and Miscellaneous
+VIII.  Advanced and Miscellaneous
 ______________________________________________________________________
 
 
