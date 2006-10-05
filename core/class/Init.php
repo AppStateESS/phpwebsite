@@ -76,7 +76,7 @@ function initLanguage()
         define('CORE_COOKIE_TIMEOUT', 3600);
     }
 
-    if (isset($_COOKIE['phpws_default_language'])){
+    if (isset($_COOKIE['phpws_default_language'])) {
         $language = $_COOKIE['phpws_default_language'];
 
         $locale = setLanguage($language);
@@ -102,7 +102,7 @@ function initLanguage()
                     if (setLanguage($langTest)) {
                         $locale_found = TRUE;
                         $locale = $langTest;
-                        setcookie('phpws_default_language', $locale, CORE_COOKIE_TIMEOUT);
+                        setcookie('phpws_default_language', $locale, mktime() + CORE_COOKIE_TIMEOUT);
                         break;
                     }
                 }
