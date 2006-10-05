@@ -22,6 +22,11 @@ function my_page()
 
     switch ($subcommand){
     case 'updateSettings':
+
+        if (isset($_GET['save'])) {
+            $template['MESSAGE'] = _('User settings updated.');
+        }
+
         $content = User_Settings::userForm($user);
         break;
 
@@ -36,8 +41,7 @@ function my_page()
         else {
             $user->save();
             $_SESSION['User'] = $user;
-            $template['MESSAGE'] = _('User settings updated.');
-            $content = User_Settings::userForm($user);
+            PHPWS_Core::reroute('index.php?module=users&action=user&tab=users&save=1');
         }
         break;
     }
