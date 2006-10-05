@@ -542,6 +542,9 @@ class Layout {
         return implode("\n", $metatags);
     }
 
+    /**
+     * Uses meta tags to load or refresh a new page
+     */
     function metaRoute($address=NULL, $time=5)
     {
         if (empty($address)) {
