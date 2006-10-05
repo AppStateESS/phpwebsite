@@ -23,6 +23,10 @@
   <tr><td colspan="2"><span class="error-message">{EMAIL_ERROR}</span></td></tr>
   <!-- END email-error -->
   <tr>
+    <td class="label">{LANGUAGE_LABEL}</td>
+    <td>{LANGUAGE}</td>
+  </tr>
+  <tr>
     <td class="label"><label for="timezone">{TIMEZONE_LABEL}</td>
     <td>{TIMEZONE}</td>
   </tr>

@@ -123,6 +123,18 @@ class User_Settings {
         $form->addHidden('userId', $user->getId());
         $form->addSubmit('submit', _('Update my information'));
 
+        $language_file = PHPWS_Core::getConfigFile('users', 'languages.php');
+
+        if ($language_file) {
+            include $language_file;
+            $form->addSelect('language', $languages);
+            $form->setLabel('language', _('Language preference'));
+            if (isset($_COOKIE['phpws_default_language'])) {
+                $language = preg_replace('/\W/', '', $_COOKIE['phpws_default_language']);
+                $form->setMatch('language', $language);
+            }
+        }
+
         $template = $form->getTemplate();
 
         if (isset($message)){

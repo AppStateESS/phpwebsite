@@ -11,22 +11,6 @@ function users_update(&$content, $currentVersion)
 
     switch ($currentVersion) {
 
-    case version_compare($currentVersion, '2.0.4', '<'):
-        if (!PHPWS_Boost::updateFiles(array('conf/config.php'), 'users')) {
-            $content[] = 'Failed to update config.php file.';
-            return FALSE;
-        }
-
-        $content[] = '+ Added new definition to User\'s config.php file.';
-        
-        $filename = PHPWS_SOURCE_DIR . 'mod/users/boost/update_2_0_4.sql';
-        $db = & new PHPWS_DB;
-        $result = $db->importFile($filename);
-        if (PEAR::isError($result)) {
-            return $result;
-        }
-        $content[] = '+ Created user signup authorization table.';
-
     case version_compare($currentVersion, '2.0.5', '<'):
         $files[] = 'templates/forms/permission_menu.tpl';
         $content[] = '+ Added ability to change deity status.';
@@ -63,6 +47,13 @@ function users_update(&$content, $currentVersion)
         $content[] = '- Changed user login box template.';
         $content[] = '- Fixed a problem with the permissions form made from the last Form.';
         $content[] = '- Added a getPermissionGroups function.';
+
+    case version_compare($currentVersion, '2.0.8', '<'):
+        $files = array();
+        $files[] = 'templates/my_page/user_setting.tpl';
+        $files[] = 'conf/languages.php';
+        PHPWS_Boost::updateFiles($files, 'users');
+        $content[] = '- Added language selection from My Page.';
     }
 
     return TRUE;

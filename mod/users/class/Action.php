@@ -584,6 +584,11 @@ class User_Action {
             $user->setAuthorize($_POST['authorize']);
         }
 
+        if (isset($_POST['language'])) {
+            $locale = preg_replace('/\W/', '', $_POST['language']);
+            setcookie('phpws_default_language', $locale, mktime() + CORE_COOKIE_TIMEOUT);
+        }
+
         if (isset($error)) {
             return $error;
         }
