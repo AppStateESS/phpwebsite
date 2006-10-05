@@ -59,6 +59,14 @@ class Profile_Forms {
         $form->setMatch('profile_type', $profile->profile_type);
         $form->setLabel('profile_type', _('Profile type'));
 
+        $form->addText('email', $profile->email);
+        $form->setLabel('email', _('Email address'));
+        $form->setSize('email', 30);
+
+        $form->addText('website', $profile->website);
+        $form->setLabel('website', _('Web site address'));
+        $form->setSize('website', 50);
+
         if ($profile->id) {
             $form->addHidden('profile_id', $profile->id);
             $form->addSubmit('submit', _('Update profile'));

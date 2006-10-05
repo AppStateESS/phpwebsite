@@ -21,6 +21,14 @@
     <td>{FULLSTORY}</td>
   </tr>
   <tr>
+    <td>{EMAIL_LABEL}</td>
+    <td>{EMAIL}</td>
+  </tr>
+  <tr>
+    <td>{WEBSITE_LABEL}</td>
+    <td>{WEBSITE}</td>
+  </tr>
+  <tr>
     <td>{KEYWORDS_LABEL}</td>
     <td>{KEYWORDS}</td>
   </tr>

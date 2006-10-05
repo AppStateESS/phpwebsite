@@ -49,9 +49,34 @@ function profiler_update(&$content, $currentVersion)
         $content[] = '- Added parseTag call to getFullStory function.';
         $content[] = '- Changed side bar view to homepage view';
         $content[] = '- Added division view';
+
+    case version_compare($currentVersion, '0.3.0', '<'):
+        $db = & new PHPWS_DB('profiles');
+        $result = $db->addTableColumn('email', 'varchar(60) NULL default \'\'');
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $content[] = 'Unable to add new column to the profiles table.';
+            return false;
+        }
+        $result = $db->addTableColumn('website', 'varchar(255) NULL default \'\'');
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $content[] = 'Unable to add new column to the profiles table.';
+            return false;
+        }
+
+        $files = array();
+        $files[] = 'templates/forms/edit.tpl';
+        $files[] = 'templates/view/large.tpl';
+        $files[] = 'templates/homepage.tpl';
+        $files[] = 'img/email.png';
+        $files[] = 'img/website.png';
+        PHPWS_Boost::updateFiles($files, 'profiler');
+
+        $content[] = 'New - email and web site address listings added to profiles.';
     }     
     
-    return TRUE;
+    return true;
 }
 
 ?>

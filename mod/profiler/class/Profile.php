@@ -14,24 +14,26 @@ define('PFL_PROFILE_NOT_FOUND', 1);
 
 class Profile {
     var $id              = 0;
-    var $firstname       = NULL;
-    var $lastname        = NULL;
+    var $firstname       = null;
+    var $lastname        = null;
     var $photo_large     = 0;     // Id to the photo
     var $photo_medium    = 0;     // Id to the photo
     var $photo_small     = 0;     // Id to the photo
-    var $fullstory       = NULL;  // Complete prose to profile
-    var $caption         = NULL;  // Abbreviated intro to the profile
+    var $fullstory       = null;  // Complete prose to profile
+    var $caption         = null;  // Abbreviated intro to the profile
+    var $email           = null;  // Email to contact profile
+    var $website         = null;  // Web site run by profile
     var $profile_type    = 0;     // Profile type number, see defines above
-    var $keywords        = NULL;  // Searchable words to find a profile
+    var $keywords        = null;  // Searchable words to find a profile
     var $submit_date     = 0;     // Date of profile creation
-    var $contributor     = NULL;  // Name of contributor
+    var $contributor     = null;  // Name of contributor
     var $contributor_id  = 0;
     var $approved        = 0;
-    var $_error          = NULL;  // Error object holder
-    var $_db             = NULL;  // Database object
-    var $_division_title = NULL;
+    var $_error          = null;  // Error object holder
+    var $_db             = null;  // Database object
+    var $_division_title = null;
 
-    function Profile($id=NULL)
+    function Profile($id=null)
     {
         if (empty($id)) {
             return TRUE;
@@ -65,9 +67,12 @@ class Profile {
 
         $template['FIRST_NAME'] = $this->firstname;
         $template['LAST_NAME'] = $this->lastname;
+
+        $link = PHPWS_Core::getHomeHttp() . 'index.php?module=profiler&amp;user_cmd=view_profile&amp;id=' . $this->id;
+
         if (!empty($images['small'])) {
             $image = & $images['small'];
-            $template['PHOTO_SMALL'] = $images['small']->getTag(TRUE);
+            $template['PHOTO_SMALL'] = sprintf('<a href="%s">%s</a>', $link, $images['small']->getTag(TRUE));
         }
 
         if (!empty($images['medium'])) {
@@ -80,18 +85,39 @@ class Profile {
 
         $template['FULLSTORY'] = $this->getFullstory();
         $template['CAPTION'] = $this->getCaption();
+        $template['READ_MORE'] = sprintf('<a href="%s">%s</a>', $link, _('Read more. . .'));
+        $template['WEBSITE_LABEL'] = _('Web site');
+        $template['WEBSITE'] = $this->getWebsite();
 
-        $template['READ_MORE'] = sprintf('<a href="%s">%s</a>', 
-                                         PHPWS_Core::getHomeHttp() . 'index.php?module=profiler&amp;user_cmd=view_profile&amp;id=' . $this->id,
-                                         _('Read more. . .'));
+        $template['EMAIL'] = $this->getEmail();
+        $template['EMAIL_LABEL'] = _('Email address');
+
 
         return PHPWS_Template::process($template, 'profiler', 'views/' . $template_name . '.tpl');
+    }
+
+    function getEmail()
+    {
+        if (empty($this->email)) {
+            return null;
+        }
+        
+        return sprintf('<a class="email" href="mailto:%s"><img src="images/mod/profiler/email.png" alt="%s" title="%s" /></a>', $this->email, _('Email'), _('Email'));
+    }
+
+    function getWebsite()
+    {
+        if (empty($this->website)) {
+            return null;
+        }
+
+        return sprintf('<a class="url" href="%s"><img src="images/mod/profiler/website.png" alt="%s" title="%s" /></a>', $this->website, _('Web site'), _('Web site'));
     }
 
     function loadImages()
     {
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
-        $images['small'] = $images['medium'] = $images['large'] = NULL;
+        $images['small'] = $images['medium'] = $images['large'] = null;
 
         if ($this->photo_small) {
             $images['small'] = & new PHPWS_Image($this->photo_small);
@@ -210,7 +236,6 @@ class Profile {
             return FALSE;
         }
 
-
         if (empty($_POST['firstname'])) {
             $error[] = _('Please enter a first name.');
         }
@@ -237,6 +262,25 @@ class Profile {
         if (empty($this->contributor_id)) {
             $this->contributor_id = Current_User::getId();
             $this->contributor = Current_User::getUsername();
+        }
+
+        if (isset($_POST['website'])) {
+            $link = PHPWS_Text::checkLink($_POST['website']);
+            $this->website = $link;
+            if (!PHPWS_Text::isValidInput($link, 'url')) {
+                $error[] = _('Web site address does not appear valid.');
+            }
+        } else {
+            $this->website = null;
+        }
+
+        if (isset($_POST['email'])) {
+            $this->email = $_POST['email'];
+            if (!PHPWS_Text::isValidInput($this->email, 'email')) {
+                $error[] = _('Email address does not appear valid.');
+            }
+        } else {
+            $this->email = null;
         }
 
         if (isset($_POST['version_id'])) {

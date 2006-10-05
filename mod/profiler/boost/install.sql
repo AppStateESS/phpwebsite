@@ -5,6 +5,8 @@ CREATE TABLE profiles (
   photo_large int NOT NULL default '0',
   photo_medium int NOT NULL default '0',
   photo_small int NOT NULL default '0',
+  website varchar(255) NULL default '',
+  email varchar(60) NULL default '',
   fullstory text,
   caption text,
   profile_type smallint NOT NULL default '0',
