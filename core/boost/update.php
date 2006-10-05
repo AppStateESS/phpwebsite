@@ -30,6 +30,9 @@ function core_update(&$content, $version) {
     case version_compare($version, '1.0.5', '<'):
         $content[] = '- Fixed core version on installation.';
         $content[] = '- Changed Core.php and Module.php to track core\'s version better. Helps Boost with dependencies';
+
+    case version_compare($version, '1.0.6', '<'):
+        $content[] = '- Fixed locale cookie saving incorrectly.';
     }
     
     return true;
