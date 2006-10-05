@@ -1,14 +1,29 @@
+October 5
+
+Core
++ Init.php - fixed locale cookie not getting saved properly
++ Documentation - more instruction add to Module_Development.txt
+
+Users
++ Added locale choice on My Page
+
+Photoalbum
++ Fixed bug 1571221. Call for non-existant function
+
 Boost
 + Tracks core dependencies now.
 
-Core
+
+October 4
+
+Core - 1.0.5
 + Core.php : altered loadAsMod function to pull version from file or
              database
 + Module.php : added functions to load the core as a module. helps
                with dependencies
 
 Blog - 1.1.0
-+ Added publish date
++ Added publish date FR #1533729
 
 Comments - 0.2.9
 + Fixed relative time display.
