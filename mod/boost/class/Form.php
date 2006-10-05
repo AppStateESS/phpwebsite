@@ -113,7 +113,7 @@ class Boost_Form {
             $template = $link_command = NULL;
             $link_command['opmod'] = $title;
             if ($title == 'core') {
-                $mod = PHPWS_Core::loadAsMod();
+                $mod = PHPWS_Core::loadAsMod(false);
             } else {
                 $mod = & new PHPWS_Module($title);
             }

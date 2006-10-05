@@ -87,6 +87,9 @@ function boost_update(&$content, $currentVersion)
 
     case version_compare($currentVersion, '1.9.2', '<'):
         $content[] = 'Fix - Boost now tracks core dependencies properly.';
+
+    case version_compare($currentVersion, '1.9.3', '<'):
+        $content[] = 'Fix - Boost was pulling Core\'s version from the file not the db.';
     }
 
     return TRUE;

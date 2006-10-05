@@ -153,7 +153,7 @@ class Boost_Action {
             $tpl = array();
 
             if ($module['TITLE'] == 'core') {
-                $mod_obj = PHPWS_Core::loadAsMod();
+                $mod_obj = PHPWS_Core::loadAsMod(false);
             } else {
                 $mod_obj = & new PHPWS_Module($module['TITLE'], FALSE);
             }
