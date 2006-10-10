@@ -799,6 +799,7 @@ class PHPWS_DB {
                 return $this->tables[0] . '.*';
             } else {
                 foreach ($this->columns as $col) {
+                    $as = null;
                     extract($col);
                     if ($max_min) {
                         $columns[] = strtoupper($max_min) . "($table.$name)";
