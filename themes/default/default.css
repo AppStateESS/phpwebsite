@@ -260,3 +260,9 @@ div.breadcrumb span.current-bc {
    font-size : 1.1em;
    font-weight : bold;
 }
+
+/*---- Notes ---- */
+
+.note-not-read {
+   font-weight : bold;
+}
