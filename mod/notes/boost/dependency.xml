@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<dependency>
+  <module>
+    <title>users</title>
+    <properName>Users</properName>
+    <version>2.0.9</version>
+    <url>http://phpwebsite.appstate.edu/downloads/modules/users/</url>
+  </module>
+</dependency>
