@@ -112,6 +112,26 @@ this function as to Database. You can set groups, set AND or OR, and
 use less/greater-than.
 
 
+Setting the Order
+--------------------------------------------------------------------
+If you wish to set an listing order, use the setOrder function.
+
+$pager->setOrder('column_name', 'direction', $only_if_empty);
+
+For example if you wanted to order by last name from A to Z:
+
+$pager->setOrder('last_name', 'asc');
+
+From Z to A
+
+$pager->setOrder('last_name', 'desc');
+
+If $only_if_empty is set to 'true' (it is false by default), then the
+order will ONLY be in effect if a sort option has not been
+selected.
+
+
+
 Plugging in Page Tags
 --------------------------------------------------------------------
 If you want to add extra dynamic information to your list template,
