@@ -54,6 +54,9 @@ function users_update(&$content, $currentVersion)
         $files[] = 'conf/languages.php';
         PHPWS_Boost::updateFiles($files, 'users');
         $content[] = '- Added language selection from My Page.';
+
+    case version_compare($currentVersion, '2.0.9', '<'):
+        $content[] = '+ Added allowUsername function Current_User class.';
     }
 
     return TRUE;

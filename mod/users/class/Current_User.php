@@ -261,12 +261,24 @@ class Current_User {
     }
 
     /**
+     * Returns true if the supplied username only contains characters defined
+     * by the ALLOWED_USERNAME_CHARACTERS variable.
+     */
+    function allowUsername($username)
+    {
+        if (preg_match('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/i', $username)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
      * Logs in a user dependant on their authorization setting
      */
-
     function loginUser($username, $password)
     {
-        if (preg_match('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/', $username)) {
+        if (!Current_User::allowUsername($username)) {
             return PHPWS_Error::get(USER_BAD_CHARACTERS, 'users', 'Current_User::loginUser');
         }
 

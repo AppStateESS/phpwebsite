@@ -9,6 +9,10 @@ class My_Page {
 
     function main()
     {
+        if (!Current_User::isLogged()) {
+            PHPWS_Core::errorPage('403');
+        }
+
         $result = $this->init();
 
         if (PEAR::isError($result)){
