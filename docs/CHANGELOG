@@ -1,16 +1,45 @@
-October 5
+October 10
 
 Core
++ Database.php : fixed a small bug with adding columns using "as". Value
+             was carrying over to other columns
++ Form.php : Added an error check on a select value
+
++ Documentation : updated DB_Pager.txt with information on setting a
+                  column order
+
+Notes
+- Rewrite started. Can now send and receive notes from other users.
+
+
+Users
+- My Page was appearing regardless of user login status
+- added allowUsername function to verify user name formating
+
+
+
+October 5
+
+Profiler
++ Added web site and email information to profiles
++ Changed large.tpl to use hcard
+
+
+
+Users
++ Added reroute after language option is chosen.
+
+Core 1.0.6
 + Init.php - fixed locale cookie not getting saved properly
 + Documentation - more instruction add to Module_Development.txt
 
-Users
+Users - 2.0.8
 + Added locale choice on My Page
 
-Photoalbum
+Photoalbum - 1.2.9
 + Fixed bug 1571221. Call for non-existant function
 
-Boost
+Boost - 1.9.3
 + Tracks core dependencies now.
 
 
