@@ -1592,12 +1592,11 @@ class Form_Select extends Form_Element {
             . $this->getDisabled()
             . $this->getData() . '>';
 
-        if (empty($this->value)) {
+        if (empty($this->value) || !is_array($this->value)) {
             return NULL;
         }
 
         foreach($this->value as $value=>$label){
-
             if (!is_string($value) && !is_numeric($value)) {
                 continue;
             }
