@@ -52,3 +52,9 @@
 div.block-embedded {
     width : 200px;
 }
+
+#miniadmin div.box-content {
+   font-size : .9em;
+   max-height : 180px;
+   overflow : auto;
+}
