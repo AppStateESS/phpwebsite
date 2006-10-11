@@ -39,6 +39,7 @@ function core_update(&$content, $version) {
         $content[] = '- Database.php : fixed a small bug with adding columns using "as". Value was carrying over to other columns.';
         $content[] = '- Form.php : Added an error check on a select value.';
         $content[] = '- Documentation : updated DB_Pager.txt with information on setting a column order.';
+        $content[] = '- Commented out putenv functions.';
     }
     
     return true;
