@@ -1,3 +1,15 @@
+October 11
+Core
++ Key.php - added a parameter on getCurrent that can allow you to
+            ignore a home key.
+
++ Init.php - Commented out putenv functions
+
+
+Notes
++ Added reply where you read notes.
++ Added ability to associate notes to key item.
+
 October 10
 
 Core

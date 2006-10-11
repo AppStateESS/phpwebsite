@@ -4,7 +4,10 @@ var timeout = {timeout};
 var refresh = {refresh};
 var loc_new = '{location}';
 
+<!-- BEGIN timeout -->
+{set_timeout}
 setTimeout('closeWindow()', timeout * 1000);
+<!-- END timeout -->
      
  function closeWindow() {
      if (refresh) {
