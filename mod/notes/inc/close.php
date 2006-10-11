@@ -6,13 +6,14 @@
    */
 
 if (Current_User::isLogged()) {
-    if (!isset($_SESSION['Notes_Show'])) {
-        $_SESSION['Notes_Show'] = 1;
-    }
+    PHPWS_Core::initModClass('notes', 'My_Page.php');
 
-    if ($_SESSION['Notes_Show']) {
-        PHPWS_Core::initModClass('notes', 'My_Page.php');
-        Notes_My_Page::showUnread();
+    Notes_My_Page::showUnread();
+
+    $key = Key::getCurrent(false);
+    if ($key) {
+        Notes_My_Page::miniAdminLink($key);
+        Notes_My_Page::showAssociations($key);
     }
  }
 

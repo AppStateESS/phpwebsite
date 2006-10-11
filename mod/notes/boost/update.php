@@ -9,9 +9,13 @@ function notes_update(&$content, $version) {
 
     switch ($version) {
     case version_compare($version, '0.1.0', '<'):
+        $files = array();
+        $files[] = 'conf/config.php';
+        PHPWS_Boost::updateFiles($files, 'notes');
         PHPWS_Boost::registerMyModule('notes', 'users', $content);
         $db = & new PHPWS_DB('notes');
         $db->dropTableColumn('check_key');
+        $db->addTableColumn('key_id', 'int NOT NULL default \'0\'');
         $db->addTableColumn('sender_id', 'int NOT NULL default \'0\'');
         $db->addTableColumn('read_once', 'smallint NOT NULL default \'0\'');
         $db->addTableColumn('encrypted', 'smallint NOT NULL default \'0\'');

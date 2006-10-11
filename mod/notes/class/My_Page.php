@@ -4,6 +4,7 @@
    * @version $Id$
    */
 
+PHPWS_Core::requireConfig('notes');
 PHPWS_Core::initModClass('notes', 'Note_Item.php');
 
 class Notes_My_Page {
@@ -100,6 +101,23 @@ class Notes_My_Page {
         }
     }
 
+    function miniAdminLink($key)
+    {
+        $vars = Notes_My_Page::myPageVars(false);
+        $vars['op'] = 'send_note';
+        $vars['key_id'] = $key->id;
+
+        if (javascriptEnabled()) {
+            $js_vars['address'] = PHPWS_Text::linkAddress('users', $vars);
+            $js_vars['label']   = _('Associate note');
+            $js_vars['width']   = 640;
+            $js_vars['height']  = 480;
+            MiniAdmin::add('notes', javascript('open_window', $js_vars));
+        } else {
+            MiniAdmin::add('notes', PHPWS_Text::moduleLink(_('Associate note'), 'users', $vars));
+        }
+    }
+
     function myPageVars($include_mod=true)
     {
         $vars = array('action' => 'user', 'tab' => 'notes');
@@ -113,9 +131,12 @@ class Notes_My_Page {
 
     function postNote(&$note)
     {
-
         $note->setTitle($_POST['title']);
         $note->setContent($_POST['content']);
+        $note->sender_id = Current_User::getId();
+        if (!empty($_POST['key_id'])) {
+            $note->key_id = (int)$_POST['key_id'];
+        }
 
         if (empty($_POST['user_id'])) {
             if (empty($_POST['username'])) {
@@ -124,7 +145,11 @@ class Notes_My_Page {
                 $this->errors['bad_username'] = _('Unsuitable user name characters.');
             } else {
                 $db = & new PHPWS_DB('users');
-                $db->addWhere('username', '%' . $_POST['username'] . '%', 'like');
+                if (NOTE_ALLOW_USERNAME_SEARCH) {
+                    $db->addWhere('username', '%' . $_POST['username'] . '%', 'like');
+                } else {
+                    $db->addWhere('username', $_POST['username']);
+                }
                 $db->addColumn('id');
                 $db->addColumn('username');
                 $db->setIndexBy('id');
@@ -151,8 +176,7 @@ class Notes_My_Page {
 
     function read()
     {
-        $_SESSION['Notes_Show'] = 0;
-
+        unset($_SESSION['Notes_Unread']);
         PHPWS_Core::initCoreClass('DBPager.php');
         $pager = & new DBPager('notes', 'Note_Item');
         $pager->setModule('notes');
@@ -163,7 +187,7 @@ class Notes_My_Page {
 
         $page_tags['TITLE_LABEL'] = _('Title');
         $page_tags['DATE_SENT_LABEL'] = _('Date sent');
-        $page_tags['SEND_LINK'] = $this->sendLink();
+        $page_tags['SEND_LINK'] = Note_Item::sendLink();
 
         $pager->addPageTags($page_tags);
         $pager->addRowTags('getTags');
@@ -171,22 +195,6 @@ class Notes_My_Page {
         $this->content = $pager->get();
     }
     
-    function sendLink()
-    {
-        $vars = $this->myPageVars(false);
-        $vars['op'] = 'send_note';
-
-        if (javascriptEnabled()) {
-            $js_vars['address'] = PHPWS_Text::linkAddress('users', $vars);
-            $js_vars['label'] = _('Send note');
-            $js_vars['width'] = 640;
-            $js_vars['height'] = 480;
-            return javascript('open_window', $js_vars);
-        } else {
-            return PHPWS_Text::moduleLink(_('Send note'), 'users', $vars);
-        }
-    }
-
     function sendMessage($message, $js=false)
     {
         $_SESSION['Note_Message'] = $message;
@@ -206,6 +214,24 @@ class Notes_My_Page {
 
         $form->addHidden($this->myPageVars());
         $form->addHidden('op', 'post_note');
+
+        if (isset($_REQUEST['key_id'])) {
+            $key = & new Key($_REQUEST['key_id']);
+            if ($key->id) {
+                $form->addHidden('key_id', $key->id);
+                $assoc = sprintf(_('Associate note to item: %s'), $key->title);
+                $form->addTplTag('KEY_ASSOCIATION', $assoc);
+            }
+        }
+
+        if (isset($_REQUEST['user_id'])) {
+            $user = & new PHPWS_User((int)$_REQUEST['user_id']);
+            if ($user->id) {
+                $note->user_id  = $user->id;
+                $note->username = $user->username;
+            }
+        }
+
 
         if (javascriptEnabled()) {
             $form->addHidden('js', 1);
@@ -229,9 +255,11 @@ class Notes_My_Page {
         $form->setRows('content', 10);
         $form->setCols('content', 50);
 
+        /*
         $form->addCheck('encrypted', 1);
         $form->setMatch('encrypted', $note->encrypted);
         $form->setLabel('encrypted', _('Encrypt message?'));
+        */
 
         $form->addSubmit(_('Send note'));
 
@@ -241,12 +269,43 @@ class Notes_My_Page {
         $this->content = PHPWS_Template::process($tpl, 'notes', 'send_note.tpl');
     }
 
-    function showUnread()
+    function showAssociations($key)
     {
         $db = & new PHPWS_DB('notes');
         $db->addWhere('user_id', Current_User::getId());
-        $db->addWhere('read_once', 0);
-        $notes = $db->count();
+        $db->addWhere('key_id', $key->id);
+        $db->addOrder('date_sent', 'desc');
+        $notes = $db->getObjects('Note_Item');
+
+        if (empty($notes)) {
+            return;
+        }
+
+        foreach ($notes as $note) {
+            $content[] = $note->readLink();
+        }
+
+        $tpl['TITLE'] = _('Associated Notes');
+        $tpl['CONTENT'] = implode('<br />', $content);
+        Layout::add(PHPWS_Template::process($tpl, 'layout', 'box.tpl'), 'notes', 'reminder');
+    }
+
+    function showUnread()
+    {
+        if ( isset($_SESSION['Notes_Unread']) && ( $_SESSION['Notes_Unread']['last_check'] + (NOTE_CHECK_INTERVAL * 60) >=  mktime() ) ) {
+            $notes = $_SESSION['Notes_Unread']['last_count'];
+        } else {
+            $db = & new PHPWS_DB('notes');
+            $db->addWhere('user_id', Current_User::getId());
+            $db->addWhere('read_once', 0);
+            $notes = $db->count();
+            if (PEAR::isError($notes)) {
+                PHPWS_Error::log($notes);
+                return;
+            }
+            $_SESSION['Notes_Unread']['last_check'] = mktime();
+            $_SESSION['Notes_Unread']['last_count'] = &$notes;
+        }
 
         if ($notes) {
             $tpl['TITLE'] = _('Notes');

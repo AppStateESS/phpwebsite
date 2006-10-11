@@ -7,8 +7,9 @@ CREATE TABLE notes (
   read_once smallint NOT NULL default '0',
   encrypted smallint NOT NULL default '0',
   date_sent int NOT NULL default '0',
+  key_id int NOT NULL default '0',
   PRIMARY KEY  (id)
 );
 
 
-CREATE INDEX notes_idx on notes(user_id);
+CREATE INDEX notes_idx on notes(user_id, key_id);

@@ -43,6 +43,11 @@ class Note_Item {
    */
   var $username = null;
 
+  /**
+   * Associates a note to keyed item
+   */
+  var $key_id   = 0;
+
   function Note_Item($id = NULL, $confirm_user=true)
   {
     if (empty($id)) {
@@ -87,15 +92,14 @@ class Note_Item {
 
   function getTags()
   {
-
       $tpl['DATE_SENT']  = $this->getDateSent();
       $tpl['TITLE'] = $this->readLink();
-
 
       if ($this->read_once) {
           $tpl['READ_CLASS'] = 'note-read';
           $tpl['READ_ONCE'] = _('Yes');
       } else {
+          $GLOBALS['Note_Unread'] = true;
           $tpl['NOT_READ_CLASS'] = 'note-not-read';
           $tpl['READ_ONCE'] = _('No');
       }
@@ -131,7 +135,11 @@ class Note_Item {
   {
       $tpl['TITLE'] = $this->title;
       $tpl['CONTENT'] = $this->getContent();
-      $tpl['SENDER'] = $this->sender;
+      if ($this->sender_id) {
+          $tpl['SENDER'] = $this->sendLink($this->sender_id, $this->sender);
+      } else {
+          $tpl['SENDER'] = _('System message');
+      }
       $tpl['DATE_SENT']  = $this->getDateSent();
       $tpl['DATE_LABEL'] = _('Sent on');
       $tpl['SENT_LABEL'] = _('Sent by');
@@ -161,8 +169,8 @@ class Note_Item {
           } else {
               $js_vars['label'] = _('Read');
           }
-          $js_vars['width'] = 500;
-          $js_vars['height'] = 400;
+          $js_vars['width']      = 640;
+          $js_vars['height']     = 480;
           $js_vars['link_title'] = _('Read note');
           return javascript('open_window', $js_vars);
       } else {
@@ -177,11 +185,42 @@ class Note_Item {
 
   function save()
   {
-    $this->date_sent = mktime();
-    $this->sender_id = Current_User::getId();
-    $db = & new PHPWS_DB('notes');
-    return $db->saveObject($this);
+      if (empty($this->user_id)) {
+          return false;
+      }
+
+      $this->date_sent = mktime();
+      $db = & new PHPWS_DB('notes');
+      return $db->saveObject($this);
   }
+  
+  
+  function sendLink($user_id=0, $label=null)
+  {
+      $vars = Notes_My_Page::myPageVars(false);
+      $vars['op'] = 'send_note';
+      if ($user_id) {
+          $vars['user_id'] = (int)$user_id;
+      }
+
+      if (empty($label)) {
+          $title = $label = _('Send note');
+      } else {
+          $title = sprintf(_('Send note to %s'), $label);
+      }
+      
+      if (javascriptEnabled()) {
+          $js_vars['address'] = PHPWS_Text::linkAddress('users', $vars);
+          $js_vars['label'] = $label;
+          $js_vars['link_title'] = $title;
+          $js_vars['width'] = 640;
+          $js_vars['height'] = 480;
+            return javascript('open_window', $js_vars);
+      } else {
+          return PHPWS_Text::moduleLink($label, 'users', $vars, null, $title);
+      }
+  }
+  
 
   function setUserId($user_id)
   {

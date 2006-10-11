@@ -1,5 +1,5 @@
+<!-- BEGIN key-association --><strong>{KEY_ASSOCIATION}</strong><!-- END key-assocation -->
 {START_FORM}
-
 <table class="form-table" width="100%" cellpadding="4">
     <tr>
         <td>{USERNAME_LABEL}</td>
