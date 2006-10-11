@@ -11,6 +11,7 @@ function notes_update(&$content, $version) {
     case version_compare($version, '0.1.0', '<'):
         $files = array();
         $files[] = 'conf/config.php';
+        $files[] = 'templates/note.tpl';
         PHPWS_Boost::updateFiles($files, 'notes');
         PHPWS_Boost::registerMyModule('notes', 'users', $content);
         $db = & new PHPWS_DB('notes');

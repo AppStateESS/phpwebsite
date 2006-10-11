@@ -81,7 +81,7 @@ class Notes_My_Page {
                 if ($note->save()) {
                     $this->sendMessage(_('Note sent successfully.'), $js);
                 } else {
-                    $this->sendMessage(_('Note was a repeat or caused an error. Not sent.'), $js);
+                    $this->sendMessage(_('Note was not sent successfully.'), $js);
                 }
             }
             break;
@@ -165,6 +165,8 @@ class Notes_My_Page {
                     list($note->user_id, $note->username) = each($result);
                 }
             }
+        } else {
+            $note->user_id = (int)$_POST['user_id'];
         }
 
         if (!empty($this->errors)) {
