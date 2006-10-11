@@ -33,6 +33,12 @@ function core_update(&$content, $version) {
 
     case version_compare($version, '1.0.6', '<'):
         $content[] = '- Fixed locale cookie saving incorrectly.';
+
+    case version_compare($version, '1.0.7', '<'):
+        $content[] = '- Key.php : Added parameter to avoid home keys when calling getCurrent.';
+        $content[] = '- Database.php : fixed a small bug with adding columns using "as". Value was carrying over to other columns.';
+        $content[] = '- Form.php : Added an error check on a select value.';
+        $content[] = '- Documentation : updated DB_Pager.txt with information on setting a column order.';
     }
     
     return true;
