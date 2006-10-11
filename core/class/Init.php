@@ -56,8 +56,12 @@ if (!defined('USE_ROOT_CONFIG')) {
 
 function setLanguage($language)
 {
+    // putenv is causing problems with safe_mode. commenting it out doesn't
+    // seem to cause prevent translation. leaving it here for now.
+    /*
     putenv("LANG=$language");
     putenv("LANGUAGE=$language");
+    */
     return setlocale(LC_ALL, $language);
 }
 
