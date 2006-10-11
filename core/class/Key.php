@@ -452,10 +452,14 @@ class Key {
         return $all_is_well;
     }
 
-    function getCurrent()
+    /**
+     * Retrieves the current flagged key. Will return the home key if
+     * on the home page and allow_home is true.
+     */
+    function getCurrent($allow_home=true)
     {
         if (!isset($GLOBALS['Current_Flag'])) {
-            if (isset($_REQUEST['module'])) {
+            if (isset($_REQUEST['module']) || !$allow_home) {
                 return NULL;
             } else {
                 return Key::getHomeKey();
