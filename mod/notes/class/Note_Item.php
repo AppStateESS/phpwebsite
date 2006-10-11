@@ -144,6 +144,21 @@ class Note_Item {
       $tpl['DATE_LABEL'] = _('Sent on');
       $tpl['SENT_LABEL'] = _('Sent by');
 
+      if ($this->key_id) {
+          $key = & new Key($this->key_id);
+          if ($key->id) {
+              $tpl['ASSOCIATE_LABEL'] = _('In reference to');
+
+              if (javascriptEnabled()) {
+                  $link = sprintf('<a href="#" onclick="closeWindow(); return false">%s</a>', $key->title);
+                  javascript('close_refresh', array('use_link'=>true, 'location'=> $key->url));
+              } else {
+                  $link = $key->getUrl();
+              }
+              $tpl['ASSOCIATE'] = $link;
+          }
+      }
+
       if (!$this->read_once) {
           $this->updateRead();
       }
@@ -190,6 +205,7 @@ class Note_Item {
       }
 
       $this->date_sent = mktime();
+
       $db = & new PHPWS_DB('notes');
       return $db->saveObject($this);
   }
@@ -240,6 +256,7 @@ class Note_Item {
 
   function updateRead()
   {
+      unset($_SESSION['Notes_Unread']);
       $db = & new PHPWS_DB('notes');
       $db->addWhere('id', $this->id);
       $db->addValue('read_once', 1);
