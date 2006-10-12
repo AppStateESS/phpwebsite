@@ -1,18 +1,35 @@
 October 11
-Core
+
+Core - 1.0.8
++ Configuration : error.php - shortened module missing message
++ Module.php - added error message to _error variable if module is not found
+
+Boost - 1.9.4
++ Will now read dependencies when checking for new versions
+
+
+Core - 1.0.7
 + Key.php - added a parameter on getCurrent that can allow you to
             ignore a home key.
 
 + Init.php - Commented out putenv functions
 
++ Javascript
+- close_refresh - added an option to not autoclose
 
-Notes
+
+Notes - 0.1.0
 + Added reply where you read notes.
 + Added ability to associate notes to key item.
++ Fixed problem with using username from drop down
+
+
+Version
+- Fixed default setting (Bug #1573480).
 
 October 10
 
-Core
+Core - 1.0.7
 + Database.php : fixed a small bug with adding columns using "as". Value
              was carrying over to other columns
 + Form.php : Added an error check on a select value
@@ -20,11 +37,11 @@ Core
 + Documentation : updated DB_Pager.txt with information on setting a
                   column order
 
-Notes
+Notes - 0.1.0
 - Rewrite started. Can now send and receive notes from other users.
 
 
-Users
+Users - 2.0.9
 - My Page was appearing regardless of user login status
 - added allowUsername function to verify user name formating
 
@@ -32,13 +49,11 @@ Users
 
 October 5
 
-Profiler
+Profiler - 0.3.0
 + Added web site and email information to profiles
 + Changed large.tpl to use hcard
 
-
-
-Users
+Users  - 2.0.9
 + Added reroute after language option is chosen.
 
 Core 1.0.6
