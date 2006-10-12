@@ -55,8 +55,12 @@ function users_update(&$content, $currentVersion)
         PHPWS_Boost::updateFiles($files, 'users');
         $content[] = '- Added language selection from My Page.';
 
+
     case version_compare($currentVersion, '2.0.9', '<'):
-        $content[] = '+ Added allowUsername function Current_User class.';
+        $content[] = '+ Added - allowUsername function Current_User class.';
+        $content[] = '+ Added - page refresh after language choice.';
+        $content[] = '+ Fixed - My Page was appearing regardless of user login status.';
+        $content[] = '+ Added - allowUsername function to verify user name formating.';
     }
 
     return TRUE;
