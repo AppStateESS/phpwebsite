@@ -41,6 +41,10 @@ function core_update(&$content, $version) {
         $content[] = '- Documentation : updated DB_Pager.txt with information on setting a column order.';
         $content[] = '- Init.php - Commented out putenv functions.';
         $content[] = '- Javascript : close_refresh - added option to not auto-close';
+
+    case version_compare($version, '1.0.8', '<'):
+        $content[] = '- Module.php : now adds error to _error variable if module could not be loaded.';
+        
     }
     
     return true;
