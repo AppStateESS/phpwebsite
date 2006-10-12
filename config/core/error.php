@@ -66,7 +66,7 @@ $errors[PHPWS_ITEM_ID_TABLE]          = _('Id and table not set.');
 $errors[PHPWS_ITEM_NO_RESULT]         = _('No result returned from database.');
 
 // Module.php 500 - 599
-$errors[PHPWS_NO_MOD_FOUND]           = _('Module not found in the database.');
+$errors[PHPWS_NO_MOD_FOUND]           = _('Module not found.');
 
 // Error.php 600 - 699
 $errors[PHPWS_NO_ERROR_FILE]          = _('No error message file found.');
