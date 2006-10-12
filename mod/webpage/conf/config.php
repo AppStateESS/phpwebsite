@@ -1,4 +1,8 @@
 <?php
+  /**
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
+   */
 
 define('WP_VOLUME_DATE_FORMAT', '%R, %e %b, %Y'); 
 
