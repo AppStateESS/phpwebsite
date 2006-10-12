@@ -16,6 +16,26 @@
 {UPDATE_PATH_LABEL}: {UPDATE_PATH}
 </p>
 <hr />
+<!-- BEGIN dependency-listing -->
+<h2>{DEPENDENCY_LABEL}</h2>
+<table cellpadding="5" width="50%">
+    <tr>
+    <th>{DEP_TITLE_LABEL}</th>
+    <th>{DEP_VERSION_LABEL}</th>
+    <th>{DEP_STATUS_LABEL}</th>
+    <th>&nbsp;</th>
+    </tr>
+<!-- BEGIN dependent-mods -->
+    <tr>
+        <td>{DEP_TITLE}</td>
+        <td>{DEP_VERSION}</td>
+        <td style="color : {DEP_STATUS_CLASS}">{DEP_STATUS}</td>
+        <td>{DEP_ADDRESS}</td>
+    </tr>
+<!-- END dependent-mods -->
+</table>
+<hr />
+<!-- END dependency-listing -->
 <h2>{CHANGES_LABEL}</h2>
 <p>{CHANGES}</p>
 <hr />

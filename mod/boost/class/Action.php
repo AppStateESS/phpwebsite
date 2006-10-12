@@ -41,6 +41,38 @@ class Boost_Action {
             $template['UPDATE_PATH'] = '<a href="' . $version_info['DOWNLOAD'] . '">' . $version_info['DOWNLOAD'] . '</a>';
             $template['MD5_LABEL'] = _('MD5 Sum');
             $template['MD5'] = $version_info['MD5SUM'];
+
+            if (isset($version_info['DEPENDENCY'][0]['MODULE'])) {
+                $template['DEPENDENCY_LABEL'] = _('Dependencies');
+                $template['DEP_TITLE_LABEL'] = _('Module title');
+                $template['DEP_VERSION_LABEL'] = _('Version required');
+                $template['DEP_STATUS_LABEL'] = _('Status');
+
+                foreach ($version_info['DEPENDENCY'][0]['MODULE'] as $dep_mod) {
+                    if ($dep_mod['TITLE'] == 'core') {
+                        $check_mod = PHPWS_Core::loadAsMod(false);
+                    } else {
+                        $check_mod = & new PHPWS_Module($dep_mod['TITLE'], false);
+                    }
+
+                    if ($check_mod->_error) {
+                        $status = _('Not installed');
+                        $row['DEP_STATUS_CLASS'] = 'red';
+                    } elseif (version_compare($check_mod->version, $dep_mod['VERSION'], '<')) {
+                        $status = _('Needs upgrading');
+                        $row['DEP_STATUS_CLASS'] = 'red';
+                    } else {
+                        $status = _('Passed!');
+                        $row['DEP_STATUS_CLASS'] = 'green';
+                    }
+                    $row['DEP_TITLE'] = $dep_mod['PROPERNAME'];
+                    $row['DEP_VERSION'] = $dep_mod['VERSION'];
+                    $row['DEP_ADDRESS'] = sprintf('<a href="%s">%s</a>',
+                                                  $dep_mod['URL'], _('Download'));
+                    $row['DEP_STATUS'] = $status;
+                    $template['dependent-mods'][] = $row;
+                }
+            }
         }
         else {
             $template['NO_UPDATE'] = _('No update required.');

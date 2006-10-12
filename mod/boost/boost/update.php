@@ -90,6 +90,12 @@ function boost_update(&$content, $currentVersion)
 
     case version_compare($currentVersion, '1.9.3', '<'):
         $content[] = 'Fix - Boost was pulling Core\'s version from the file not the db.';
+
+    case version_compare($currentVersion, '1.9.4', '<'):
+        $content[] = 'New - Boost will now check read dependencies included in the check.xml file.';
+        $files = array();
+        $files[] = 'templates/check_update.tpl';
+        PHPWS_Boost::updateFiles($files, 'boost');
     }
 
     return TRUE;
