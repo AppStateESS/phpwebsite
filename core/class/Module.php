@@ -114,8 +114,9 @@ class PHPWS_Module {
 
         if (PEAR::isError($result)) {
             $this->_error = $result;
+        } elseif(empty($result)) {
+            $this->_error = PHPWS_Error::get(PHPWS_NO_MOD_FOUND, 'core', 'PHPWS_Module::init', $title);
         }
-
     }
 
 
