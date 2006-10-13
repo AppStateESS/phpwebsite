@@ -82,7 +82,6 @@ function initLanguage()
 
     if (isset($_COOKIE['phpws_default_language'])) {
         $language = $_COOKIE['phpws_default_language'];
-
         $locale = setLanguage($language);
 
         if ($locale == FALSE) {
@@ -91,28 +90,27 @@ function initLanguage()
     } else {
         $userLang = getBrowserLanguage();
         $locale_found = FALSE;
-
-        if ($userLang[0] != DEFAULT_LANGUAGE){
-            foreach ($userLang as $language) {
-                $test[1] = $language;
-                $test[2] = substr($language, 0, 2);
-                $test[3] = $test[2] . '_' . strtoupper($test[2]);
-                if (strpos($language, '-')) {
-                    $test4 =  explode('-', $language);
-                    $test[4] = $test4[0] . '_' . strtoupper($test4[1]);
-                }
-
-                foreach ($test as $langTest){
-                    if (setLanguage($langTest)) {
-                        $locale_found = TRUE;
-                        $locale = $langTest;
-                        setcookie('phpws_default_language', $locale, mktime() + CORE_COOKIE_TIMEOUT);
-                        break;
-                    }
-                }
-                if ($locale_found) {
+        foreach ($userLang as $language) {
+            if (strpos($language, '-')) {
+                $testslash =  explode('-', $language);
+                $test[0] = $testslash[0] . '_' . strtoupper($testslash[1]);
+            }
+            
+            $test[1] = $language;
+            $test[2] = substr($language, 0, 2);
+            $test[3] = $test[2] . '_' . strtoupper($test[2]);
+            
+            foreach ($test as $langTest){
+                if (setLanguage($langTest)) {
+                    $locale_found = TRUE;
+                    $locale = $langTest;
+                    setcookie('phpws_default_language', $locale, mktime() + CORE_COOKIE_TIMEOUT);
                     break;
                 }
+            }
+            
+            if ($locale_found) {
+                break;
             }
         }
 
@@ -137,7 +135,6 @@ function loadBrowserInformation()
     if (!isset($_SERVER['HTTP_USER_AGENT'])) {
         $GLOBALS['browser_info'] = NULL;
         return;
-
     }
 
     $agent = $_SERVER['HTTP_USER_AGENT'];
