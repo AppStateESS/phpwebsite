@@ -99,7 +99,7 @@ function initLanguage()
             $test[1] = $language;
             $test[2] = substr($language, 0, 2);
             $test[3] = $test[2] . '_' . strtoupper($test[2]);
-            
+
             foreach ($test as $langTest){
                 if (setLanguage($langTest)) {
                     $locale_found = TRUE;
@@ -115,6 +115,7 @@ function initLanguage()
         }
 
         if ($locale_found == FALSE) {
+            setcookie('phpws_default_language', $locale, mktime() + CORE_COOKIE_TIMEOUT);
             $locale = setLanguage(DEFAULT_LANGUAGE);
         }
     }
