@@ -33,7 +33,7 @@ class PHPWS_Cache {
         }
 
         $cache = & PHPWS_Cache::initCache();
-
+        $key .= CURRENT_LANGUAGE;
         return $cache->get(md5($key));
     }
 
@@ -45,6 +45,7 @@ class PHPWS_Cache {
 
     function remove($key)
     {
+        $key .= CURRENT_LANGUAGE;
         $cache = & PHPWS_Cache::initCache();
         return $cache->remove(md5($key));
     }
@@ -56,6 +57,8 @@ class PHPWS_Cache {
     }
 
     function save($key, $content, $lifetime=CACHE_LIFETIME){
+        $key .= CURRENT_LANGUAGE;
+
         if (!PHPWS_Cache::isEnabled())
             return;
 
