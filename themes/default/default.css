@@ -7,6 +7,7 @@ body {
 
 #container, #header {
     background-color: #ADB583;
+    color : black;
 }
 
 
@@ -17,53 +18,62 @@ body {
 
 .toggle1 {
     background-color : #EDF4D1;
+    color : black;
 }
 
 .toggle2 {
     background-color : white;
+    color : black;
 }
 
 
 .bgcolor1 {
-        background-color : #DEE2BD;
+    background-color : #DEE2BD;
+    color : black;
 }
 
 .bgcolor2 {
-        background-color : #EDF4D1;
+    background-color : #EDF4D1;
+    color : black;
 }
 
 .bgcolor3 {
-        background-color : #ADB583;
+    background-color : #ADB583;
+    color : black;
 }
 
 
 q {
     background-color : #d6d7ca;
+    color : black;
 }
 
 
 a:link, a:visited {
     text-decoration : none;
+    background-color : inherit;
     color: #A03E19;
 }
 
 a:hover, a:active {
     text-decoration : underline;
+    background-color : inherit;
     color: #000;
 }
 
 
 h1, h2, h3 {
+    background-color : inherit;
     color: #A03E19;
 
 }
 
 h1 a {
-    color : inherit;
     text-decoration : none;
 }
 
 h1 a:hover {
+    background-color : inherit;
     color : #CB572D;
 }
 
@@ -75,12 +85,14 @@ th {
 
 
 .box {
-        background-color : #ebedd1;
+    background-color : #ebedd1;
+    color : black;
 }
 
 
 .box-title {
-        background-color : #DEE2BD;
+    background-color : #DEE2BD;
+    color : black;
 }
 
 
@@ -94,6 +106,7 @@ input, textarea {
 
 input:focus, textarea:focus {
     background-color : #EDEFDB;
+    color : black;
 }
 
 input[type="submit"] {
@@ -109,6 +122,7 @@ input[type="submit"] {
 /* ----------- Module ----------- */
 #top-menu {
     background-color : #DEE2BD;
+    color : black;
 }
 
 #top-menu a:hover{
@@ -128,12 +142,14 @@ div.blog div.read-more {
 div.category-links {
     padding : 4px;
     background-color : #EDF4D1;
+    color : black;
 }
 
 /*--------------- Control Panel ---------------*/
 
 div.frame {
     background-color: #CBCEAC;
+    color : black;
     border-color : #90996E;
 }
 
@@ -142,7 +158,6 @@ div.backgrd {
 }
 
 ul.tabmenu {
-   line-spacing : 0px;
    line-height : 0px;
    margin-top : 10px;
    margin-bottom : 12px;
@@ -165,22 +180,26 @@ ul.tabmenu li.active {
 
 ul.tabmenu li.active a:visited {
     text-decoration: none;
+    background-color : inherit;
     color: #49493D;
 }
 
 ul.tabmenu li.inactive a:link {
     text-decoration: none;
+    background-color : inherit;
     color: #49493D;
 }
 
 ul.tabmenu li.inactive a:visited {
     text-decoration: none;
+    background-color : inherit;
     color: #49493D;
 }
 
 ul.tabmenu li.inactive a:hover {
     text-decoration: none;
     color: black;
+    background-color : inherit;
 }
 
 ul.tabmenu li.inactive:hover {
@@ -208,41 +227,49 @@ div.menu-link a:hover {
 
 div.menu-link:hover {
     background-color : #ADB583;
+    color : black;
 }
 
 div.link-level-1 {
     padding : 5px;
     background-color : #CBCEAC;
+    color : black;
 }
 
 div.link-level-2 {
     padding : 5px;
     padding-left : 1em;
     background-color : #E2E5BF;
+    color : black;
 }
 
 div.link-level-3 {
     padding : 5px;
     padding-left : 2em;
     background-color : #F1F4CC;
+    color : black;
 }
 
 div.link-level-1:hover,
 div.link-level-2:hover,
 div.link-level-3:hover {
-    background-color : transparent;
+    background-color : inherit;
+    color : black;
 }
 
 div.current-link {
     background-color : #ADB583;
+    color : black;
 }
 
 div.category-menu-bar {
     background-color : #DEE2BD;
+    color : black;
 }
 
 div.panel-title {
     background-color : #DEE2BD;
+    color : black;
     padding : 4px;
     margin-bottom : 10px;
 }
