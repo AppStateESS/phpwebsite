@@ -140,7 +140,7 @@ define('FORCE_MOD_CONFIG', FALSE);
  * has been tested with setlocale or you will get English each
  * time.
  */
-define('DEFAULT_LANGUAGE', 'en-us');
+define('DEFAULT_LANGUAGE', 'en_US');
 
 /************************ LIST ********************************/
 /**
