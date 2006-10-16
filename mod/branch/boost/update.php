@@ -33,6 +33,11 @@ function branch_update(&$content, $version)
         $content[] = 'Fix - A link now appears to set the allowed modules to a newly created branch.';
         $content[] = 'Fix - Disconnect added before testing branch connections.';
         $content[] = 'Fix - Core can call branch even if not installed. Added check to disallow continuation.';
+
+    case version_compare($version, '0.1.5', '<'):
+        $content[] = 'New - Branches now record the correct core version.';
+        $content[] = 'New - Added function getBranches which returns an array of current branch objects';
+        $content[] = 'New - Added loadDSN function that parses a branch\'s config file to grab the dsn.';
     }
     return true;
 }

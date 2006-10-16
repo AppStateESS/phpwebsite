@@ -96,6 +96,9 @@ function boost_update(&$content, $currentVersion)
         $files = array();
         $files[] = 'templates/check_update.tpl';
         PHPWS_Boost::updateFiles($files, 'boost');
+
+    case version_compare($currentVersion, '1.9.5', '<'):
+        $content[] = 'Boost now updates installed branches.';
     }
 
     return TRUE;
