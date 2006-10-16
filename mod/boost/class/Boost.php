@@ -363,14 +363,13 @@ class PHPWS_Boost {
         }
     }
 
-    function update()
+    function update(&$content)
     {
-        $content = array();
         if (!$this->isModules()) {
             return PHPWS_Error::get(BOOST_NO_MODULES_SET, 'boost', 'update');
         }
-
-        foreach ($this->modules as $title => $mod){
+        
+        foreach ($this->modules as $title => $mod) {
             $updateMod = & new PHPWS_Module($mod->title);
             if (version_compare($updateMod->getVersion(), $mod->getVersion(), '=')) {
                 $content[] =  _('Module does not require updating.');
@@ -379,6 +378,7 @@ class PHPWS_Boost {
             }
 
             $title = trim($title);
+
             if ($this->getStatus($title) == BOOST_DONE) {
                 continue;
             }
@@ -389,7 +389,6 @@ class PHPWS_Boost {
             }
 
             $content[] = _('Updating') . ' - ' . $mod->getProperName();
-    
             $result = $this->onUpdate($mod, $content);
 
             if ($result === TRUE) {
@@ -414,14 +413,14 @@ class PHPWS_Boost {
                 PHPWS_Error::log($result);
             }
         }
-  
-        if ($result === TRUE || $result == -1) {
+
+        if ( isset($result) && ($result === TRUE || $result == -1) ) {
             $content[] = _('Update complete!');
+            return true;
         } else {
             $content[] = _('Update not completed.');
+            return false;
         }
-  
-        return implode('<br />', $content);    
     }
 
 
@@ -935,6 +934,15 @@ class PHPWS_Boost {
         return $errorDir;
     }
 
+    function getHomeDir()
+    {
+        if (isset($GLOBALS['boost_branch_dir'])) {
+            return $GLOBALS['boost_branch_dir'];
+        } else {
+            return './';
+        }
+    }
+
     /**
      * Receives an array of file locations. Updates
      * the local files and backs up the older version.
@@ -945,6 +953,8 @@ class PHPWS_Boost {
             return FALSE;
         }
 
+        $home_dir = PHPWS_Boost::getHomeDir();
+
         foreach ($file_array as $filename) {
             $filename = preg_replace('/^\/{1}/', '', $filename);
             $aFiles = explode('/', $filename);
@@ -953,24 +963,28 @@ class PHPWS_Boost {
 
             switch ($source_root) {
             case 'templates':
-                $local_root = sprintf('./templates/%s/', $module);
+                $local_root = sprintf('%stemplates/%s/', $home_dir, $module);
                 break;
 
             case 'conf':
-                $local_root = sprintf('./config/%s/', $module);               
+                $local_root = sprintf('%sconfig/%s/', $home_dir, $module);
                 break;
 
             case 'img':
-                $local_root = sprintf('./images/mod/%s/', $module);
+                $local_root = sprintf('%simages/mod/%s/', $home_dir, $module);
                 break;
 
             case 'javascript':
-                $local_root = sprintf('./javascript/modules/%s/', $module);
+                $local_root = sprintf('%sjavascript/modules/%s/', $home_dir, $module);
                 break;
 
             default:
                 continue;
                 break;
+            }
+
+            if (!PHPWS_Boost::checkLocalRoot($local_root)) {
+                return false;
             }
 
             $source_file = sprintf('%smod/%s/%s', PHPWS_SOURCE_DIR, $module, $filename);
@@ -997,6 +1011,23 @@ class PHPWS_Boost {
         return TRUE;
     }
 
+    function checkLocalRoot($local_root)
+    {
+        if (is_dir($local_root)) {
+            if (!is_writable($local_root)) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        if (@mkdir($local_root)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Backs up a file by removing the extension, padding the word
      * 'backup' then putting the ext back.
@@ -1014,6 +1045,45 @@ class PHPWS_Boost {
 
         $new_filename = implode('/', $aFile) . '/' . implode('.', $aFile_alone);
         return @copy($filename, $new_filename);
+    }
+
+    function updateBranches(&$content)
+    {
+        if (!PHPWS_Core::moduleExists('branch')) {
+            return true;
+        }
+
+        PHPWS_Core::initModClass('branch', 'Branch_Admin.php');
+        $branches = Branch_Admin::getBranches();
+        if (empty($branches)) {
+            return true;
+        }
+
+        foreach ($branches as $branch) {
+            // used as the "local" directory in updateFiles
+            $GLOBALS['boost_branch_dir'] = $branch->directory;
+
+            // reseting the boost update status
+            $keys = array_keys($this->status);
+            foreach ($keys as $akey) {
+                $this->status[$akey] = 0;
+            }
+            
+            $this->current = null;
+            $branch->loadDSN();
+            PHPWS_DB::loadDB($branch->dsn);
+            $content[] = '<hr />';
+            $content[] = sprintf(_('Updating branch %s'), $branch->branch_name);
+            
+            $result = $this->update($content);
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                $content[] = _('Unable to update branch.');
+            }
+        }
+
+        PHPWS_DB::disconnect();
+        Branch::getHubDB();
     }
 
 }

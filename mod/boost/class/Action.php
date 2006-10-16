@@ -1,5 +1,10 @@
 <?php
 
+  /**
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
+   */
+
 class Boost_Action {
 
     function checkupdate($mod_title)
@@ -142,8 +147,11 @@ class Boost_Action {
         PHPWS_Core::initModClass('boost', 'Boost.php');
         $boost = new PHPWS_Boost;
         $boost->loadModules(array($module_title), FALSE);
-        $content = $boost->update();
-        return $content;
+        $content = array();
+        if ($boost->update($content)) {
+            $boost->updateBranches($content);
+        }
+        return implode('<br />', $content);    
     }
 
     function showDependedUpon($base_mod)
