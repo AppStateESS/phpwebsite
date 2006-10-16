@@ -370,6 +370,13 @@ class PHPWS_Boost {
         }
         
         foreach ($this->modules as $title => $mod) {
+            if (isset($mod->_error)) {
+                if ($mod->_error->code == PHPWS_NO_MOD_FOUND) {
+                    $content[] = _('Module is not installed.');
+                    $result = true;
+                    continue;
+                }
+            }
             $updateMod = & new PHPWS_Module($mod->title);
             if (version_compare($updateMod->getVersion(), $mod->getVersion(), '=')) {
                 $content[] =  _('Module does not require updating.');
@@ -1059,23 +1066,24 @@ class PHPWS_Boost {
             return true;
         }
 
+        $keys = array_keys($this->status);
+
+
         foreach ($branches as $branch) {
             // used as the "local" directory in updateFiles
             $GLOBALS['boost_branch_dir'] = $branch->directory;
 
-            // reseting the boost update status
-            $keys = array_keys($this->status);
-            foreach ($keys as $akey) {
-                $this->status[$akey] = 0;
-            }
-            
-            $this->current = null;
             $branch->loadDSN();
             PHPWS_DB::loadDB($branch->dsn);
+
+            // create a new boost based on the branch database
+            $branch_boost = & new PHPWS_Boost;
+            $branch_boost->loadModules($keys, false);
+
             $content[] = '<hr />';
             $content[] = sprintf(_('Updating branch %s'), $branch->branch_name);
             
-            $result = $this->update($content);
+            $result = $branch_boost->update($content);
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
                 $content[] = _('Unable to update branch.');
