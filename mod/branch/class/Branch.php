@@ -10,7 +10,7 @@ class Branch {
     var $directory   = NULL; // saved WITHOUT final forward slash (/)
     var $url         = NULL;
     var $site_hash   = NULL;
-    var $dbname      = NULL;
+    var $dsn         = null;
 
     function Branch($id=0)
     {
@@ -21,6 +21,19 @@ class Branch {
 
         $this->id = (int)$id;
         $this->init();
+    }
+
+    function loadDSN()
+    {
+        $config = file('/var/www/html/branch/config/core/config.php');
+        foreach ($config as $row) {
+            $row = str_replace(' ', '', trim($row));
+            if (preg_match('/^define\(\'phpws_dsn\'/i', $row)) {
+                $this->dsn = preg_replace('/define\(\'phpws_dsn\',\'([\w\/:@]+)\'\);/iU', '\\1', $row);
+                return true;
+            }
+        }
+        return false;
     }
 
     function init()

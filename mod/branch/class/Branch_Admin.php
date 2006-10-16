@@ -292,9 +292,24 @@ class Branch_Admin {
         if (PEAR::isError($loaddb)) {
             return $loaddb;
         }
+
         $result = $db->importFile(PHPWS_SOURCE_DIR . 'core/boost/install.sql');
-        $db->disconnect();
-        return $result;
+
+        if ($result == TRUE) {
+            $db->setTable('core_version');
+            include(PHPWS_SOURCE_DIR . 'core/boost/boost.php');
+            $db->addValue('version', $version);
+            $result = $db->insert();
+            $db->disconnect();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                return $result;
+            }
+            return true;
+        } else {
+            $db->disconnect();
+            return $result;
+        }
     }
 
     function copy_config()
@@ -882,6 +897,12 @@ class Branch_Admin {
             $db->reset();
         }
         return true;
+    }
+
+    function getBranches()
+    {
+        $db = & new PHPWS_DB('branch_sites');
+        return $db->getObjects('Branch');
     }
 
 }
