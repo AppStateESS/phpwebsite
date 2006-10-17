@@ -152,7 +152,7 @@ class Calendar_User {
 
         $this->calendar->loadEventList($startdate, $enddate);
 
-        $tpl = & new PHPWS_Template('calendar');
+        $tpl = new PHPWS_Template('calendar');
         $tpl->setFile('view/day.tpl');
 
         if (!$this->getDaysEvents($startdate, $tpl)) {
@@ -241,7 +241,7 @@ class Calendar_User {
     function loadEvent($event_id)
     {
         PHPWS_Core::initModClass('calendar', 'Event.php');
-        $this->event = & new Calendar_Event($this->calendar->schedule, $event_id);
+        $this->event = new Calendar_Event($this->calendar->schedule, $event_id);
         return true;
     }
 
@@ -284,7 +284,7 @@ class Calendar_User {
         $oMonth->build();
         $date = $oMonth->thisMonth(TRUE);
 
-        $oTpl = & new PHPWS_Template('calendar');
+        $oTpl = new PHPWS_Template('calendar');
         $oTpl->setFile('view/month/mini.tpl');
 
         $this->_weekday($oMonth, $oTpl);
@@ -382,7 +382,7 @@ class Calendar_User {
 
 
         // Cache empty, make month
-        $oTpl = & new PHPWS_Template('calendar');
+        $oTpl = new PHPWS_Template('calendar');
         $oTpl->setFile('view/month/grid.tpl');
 
         $this->_weekday($oMonth, $oTpl);
@@ -442,7 +442,7 @@ class Calendar_User {
 
         $this->calendar->loadEventList($startdate, $enddate);
 
-        $tpl = & new PHPWS_Template('calendar');
+        $tpl = new PHPWS_Template('calendar');
         $tpl->setFile('view/month/list.tpl');
 
         $events_found = false;
@@ -491,7 +491,7 @@ class Calendar_User {
         if (count($schedules) < 2) {
             return null;
         }
-        $form = & new PHPWS_Form('schedule_pick');
+        $form = new PHPWS_Form('schedule_pick');
         $form->setMethod('get');
         $form->addHidden('module', 'calendar');
         $form->addHidden('view', $this->current_view);
@@ -662,7 +662,7 @@ class Calendar_User {
 
         if ($current_view == 'day') {
             require_once 'Calendar/Day.php';
-            $oDay = & new Calendar_Day($this->calendar->int_year, $this->calendar->int_month,
+            $oDay = new Calendar_Day($this->calendar->int_year, $this->calendar->int_month,
                                          $this->calendar->int_day);
             $left_arrow_time = $oDay->prevDay('timestamp');
             $right_arrow_time = $oDay->nextDay('timestamp');
@@ -714,7 +714,7 @@ class Calendar_User {
             Layout::addStyle('calendar');
         }
 
-        $tpl = & new PHPWS_Template('calendar');
+        $tpl = new PHPWS_Template('calendar');
         $tpl->setFile('view/week.tpl');
 
         $start_range = strftime(CALENDAR_WEEK_HEADER, $startdate);

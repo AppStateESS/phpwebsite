@@ -172,7 +172,7 @@ class Calendar_Schedule {
     function form()
     {
         $key = $this->getKey();
-        $form = & new PHPWS_Form('schedule_form');
+        $form = new PHPWS_Form('schedule_form');
 
         if (isset($_REQUEST['js'])) {
             $form->addHidden('js', 1);
@@ -227,7 +227,7 @@ class Calendar_Schedule {
     {
         $user_id = Current_User::getId();
 
-        $schedule = & new Calendar_Schedule;
+        $schedule = new Calendar_Schedule;
 
         $db = Calendar_Schedule::getDB();
         $db->addWhere('user_id', $user_id);
@@ -241,7 +241,7 @@ class Calendar_Schedule {
 
 
     function &getDB() {
-        $db = & new PHPWS_DB('calendar_schedule');
+        $db = new PHPWS_DB('calendar_schedule');
         return $db;
     }
 
@@ -257,7 +257,7 @@ class Calendar_Schedule {
     function &getKey()
     {
         if (!$this->_key) {
-            $this->_key = & new Key($this->key_id);
+            $this->_key = new Key($this->key_id);
         }
 
         return $this->_key;
@@ -303,9 +303,9 @@ class Calendar_Schedule {
         PHPWS_Core::initModClass('calendar', 'Event.php');
 
         if (!empty($_REQUEST['event_id'])) {
-            $event = & new Calendar_Event($this, (int)$_REQUEST['event_id']);
+            $event = new Calendar_Event($this, (int)$_REQUEST['event_id']);
         } else {
-            $event = & new Calendar_Event($this);
+            $event = new Calendar_Event($this);
         }
 
         return $event;
@@ -430,11 +430,11 @@ class Calendar_Schedule {
     function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = & new Key;
+            $key = new Key;
         } else {
-            $key = & new Key($this->key_id);
+            $key = new Key($this->key_id);
             if (PEAR::isError($key->_error)) {
-                $key = & new Key;
+                $key = new Key;
             }
         }
 

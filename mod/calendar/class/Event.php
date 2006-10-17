@@ -142,7 +142,7 @@ class Calendar_Event {
     function clearRepeats()
     {
         $table = $this->_schedule->getEventTable();
-        $db = & new PHPWS_DB($table);
+        $db = new PHPWS_DB($table);
 
         $db->addWhere('pid', $this->id);
         return $db->delete();
@@ -180,7 +180,7 @@ class Calendar_Event {
 
         Key::drop($this->key_id);
 
-        $db = & new PHPWS_DB($table);
+        $db = new PHPWS_DB($table);
         $db->addWhere('id', $this->id);
         
         // Remove any possible children
@@ -236,7 +236,7 @@ class Calendar_Event {
     function flagKey()
     {
         if (!isset($this->_key)) {
-            $this->_key = & new Key($this->key_id);
+            $this->_key = new Key($this->key_id);
         }
         $this->_key->flag();
     }
@@ -289,7 +289,7 @@ class Calendar_Event {
     function &getKey()
     {
         if (!$this->_key) {
-            $this->_key = & new Key($this->key_id);
+            $this->_key = new Key($this->key_id);
         }
 
         return $this->_key;
@@ -442,7 +442,7 @@ class Calendar_Event {
             return;
         }
 
-        $db = & new PHPWS_DB($table);
+        $db = new PHPWS_DB($table);
         return $db->loadObject($this);
     }
 
@@ -612,7 +612,7 @@ class Calendar_Event {
             return PHPWS_Error::get(CAL_EVENT_TABLE_MISSING, 'calendar', 'Calendar_Event::save');
         }
         
-        $db = & new PHPWS_DB($table);
+        $db = new PHPWS_DB($table);
         $result = $db->saveObject($this);
         if (PEAR::isError($result)) {
             return $result;
@@ -635,7 +635,7 @@ class Calendar_Event {
             }
             
             /* save search settings */
-            $search = & new Search($this->key_id);
+            $search = new Search($this->key_id);
             $search->addKeywords($this->summary);
             $search->addKeywords($this->location);
             $search->addKeywords($this->description);
@@ -647,11 +647,11 @@ class Calendar_Event {
     function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = & new Key;
+            $key = new Key;
         } else {
-            $key = & new Key($this->key_id);
+            $key = new Key($this->key_id);
             if (PEAR::isError($key->_error)) {
-                $key = & new Key;
+                $key = new Key;
             }
         }
 
@@ -737,7 +737,7 @@ class Calendar_Event {
         }
 
         $table = $this->_schedule->getEventTable();
-        $db = & new PHPWS_DB($table);
+        $db = new PHPWS_DB($table);
 
         $saveVals['summary']     = $this->summary;
         $saveVals['location']    = $this->location;

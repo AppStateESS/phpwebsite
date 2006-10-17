@@ -69,7 +69,7 @@ class Calendar_Admin {
         Layout::addStyle('calendar');
         
         // the form id is linked to the check_date javascript
-        $form = & new PHPWS_Form('event_form');
+        $form = new PHPWS_Form('event_form');
         if (isset($_REQUEST['js'])) {
             $form->addHidden('js', 1);
         }
@@ -282,7 +282,7 @@ class Calendar_Admin {
 
     function &getPanel()
     {
-        $panel = & new PHPWS_Panel('calendar');
+        $panel = new PHPWS_Panel('calendar');
 
 
         $vars['aop'] = 'schedules';
@@ -870,7 +870,7 @@ class Calendar_Admin {
             
         $page_tags['ADMIN_LABEL']        = _('Options');
 
-        $pager = & new DBPager('calendar_schedule', 'Calendar_Schedule');
+        $pager = new DBPager('calendar_schedule', 'Calendar_Schedule');
         $pager->setModule('calendar');
         $pager->setTemplate('admin/schedules.tpl');
         $pager->addPageTags($page_tags);
