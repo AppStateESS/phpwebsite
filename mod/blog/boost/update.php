@@ -19,7 +19,7 @@ function blog_update(&$content, $currentVersion)
         $content[] = 'Fixed view version functionality.';
 
     case version_compare($currentVersion, '0.2.0', '<'):
-        $db = & new PHPWS_DB('blog_entries');
+        $db = new PHPWS_DB('blog_entries');
         $result = $db->addTableColumn('author_id', 'int NOT NULL default \'0\'', 'entry');
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
@@ -74,7 +74,7 @@ function blog_update(&$content, $currentVersion)
         }
 
     case version_compare($currentVersion, '1.1.0', '<'):
-        $db = & new PHPWS_DB('blog_entries');
+        $db = new PHPWS_DB('blog_entries');
         $result = $db->addTableColumn('publish_date', 'int NOT NULL default \'0\'');
         $files = array();
         $files[] = 'templates/edit.tpl';
@@ -87,6 +87,12 @@ function blog_update(&$content, $currentVersion)
             $content[] = 'Blog entries now have a publish date setting.';
         }
 
+    case version_compare($currentVersion, '1.1.1', '<'):
+        $files = array();
+        $files[] = 'templates/view.tpl';
+        $files[] = 'templates/list_view.tpl';
+        PHPWS_Boost::updateFiles($files, 'blog');
+        $content[] = 'Updated to hAtom format.';
     }
 
     return true;
@@ -153,7 +159,7 @@ function blog_update_026(&$content)
         return false;
     }
 
-    $db = & new PHPWS_DB('blog_entries');
+    $db = new PHPWS_DB('blog_entries');
     $result = $db->addTableColumn('summary', 'TEXT null');
     if (PEAR::isError($result)) {
         PHPWS_Error::log($result);

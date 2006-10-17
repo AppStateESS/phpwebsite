@@ -11,11 +11,11 @@ class Blog_User {
     function main()
     {
         if (!isset($_REQUEST['blog_id']) && isset($_REQUEST['id'])) {
-            $blog = & new Blog((int)$_REQUEST['id']);
+            $blog = new Blog((int)$_REQUEST['id']);
         } elseif (isset($_REQUEST['blog_id'])) {
-            $blog = & new Blog((int)$_REQUEST['blog_id']);
+            $blog = new Blog((int)$_REQUEST['blog_id']);
         } else {
-            $blog = & new Blog();
+            $blog = new Blog();
         }
 
         if (!isset($_REQUEST['action'])) {
@@ -48,7 +48,7 @@ class Blog_User {
 
         $limit = 5;
 
-        $db = & new PHPWS_DB('blog_entries');
+        $db = new PHPWS_DB('blog_entries');
         $db->addWhere('approved', 1);
         $db->addWhere('publish_date', mktime(), '<');
         $db->setLimit($limit);
@@ -74,8 +74,6 @@ class Blog_User {
             }
         }
 
-        $content = implode('', $list);
-
         if (!Current_User::allow('blog')) {
             PHPWS_Cache::save($key, $content);
         } elseif (Current_User::allow('blog', 'edit_blog')) {
@@ -87,7 +85,9 @@ class Blog_User {
             MiniAdmin::add('blog', $link);
         }
 
-        return $content;
+        $tpl['ENTRIES'] = implode('', $list);
+        
+        return PHPWS_Template::process($tpl, 'blog', 'list_view.tpl');
     }
 
 }

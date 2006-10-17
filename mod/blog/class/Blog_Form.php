@@ -10,7 +10,7 @@ PHPWS_Core::initCoreClass('Form.php');
 class Blog_Form {
     function edit(&$blog, $version_id=NULL)
     {
-        $form = & new PHPWS_Form;
+        $form = new PHPWS_Form;
         $form->addHidden('module', 'blog');
         $form->addHidden('action', 'admin');
         $form->addHidden('command', 'post_entry');

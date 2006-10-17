@@ -33,9 +33,9 @@ class Blog_Admin {
         }
 
         if (isset($_REQUEST['blog_id'])) {
-            $blog = & new Blog((int)$_REQUEST['blog_id']);
+            $blog = new Blog((int)$_REQUEST['blog_id']);
         } else {
-            $blog = & new Blog();
+            $blog = new Blog();
         }
 
         switch ($command){
@@ -49,7 +49,7 @@ class Blog_Admin {
 
             $title = _('Update Blog Entry');
 
-            $version = & new Version('blog_entries');
+            $version = new Version('blog_entries');
             $version->setSource($blog);
             $approval_id = $version->isWaitingApproval();
 
@@ -57,7 +57,7 @@ class Blog_Admin {
                 $version->setId($approval_id);
                 $version->init();
 
-                $unapproved_blog = & new Blog;
+                $unapproved_blog = new Blog;
                 $version->loadObject($unapproved_blog);
 
                 if (Current_User::isRestricted('blog')) {
@@ -80,7 +80,7 @@ class Blog_Admin {
 
         case 'approval':
             $title = _('Blog Entries Awaiting Approval');
-            $approval = & new Version_Approval('blog', 'blog_entries', 'blog', 'brief_view');
+            $approval = new Version_Approval('blog', 'blog_entries', 'blog', 'brief_view');
 
             $vars['action'] = 'admin';
 
@@ -104,7 +104,7 @@ class Blog_Admin {
                 Current_User::disallow('Attempted to disapprove an entry as a restricted user.');
                 return;
             }
-            $version = & new Version('blog_entries', $_REQUEST['version_id']);
+            $version = new Version('blog_entries', $_REQUEST['version_id']);
             $result = $version->delete();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
@@ -120,7 +120,7 @@ class Blog_Admin {
                 return;
             }
 
-            $version = & new Version('blog_entries', $_REQUEST['version_id']);
+            $version = new Version('blog_entries', $_REQUEST['version_id']);
             $version->loadObject($blog);
             $blog->approved = 1;
             $blog->save();
@@ -131,7 +131,7 @@ class Blog_Admin {
                 PHPWS_Error::log($result);
                 Blog_Admin::setForward(_('An error occurred when saving your version.'), 'approval');
             } else {
-                $key = & new Key($version->source_data['key_id']);
+                $key = new Key($version->source_data['key_id']);
                 $version->authorizeCreator($key);
                 Blog_Admin::setForward(_('Blog entry approved.'), 'approval');
             }
@@ -143,7 +143,7 @@ class Blog_Admin {
                 return;
             }
 
-            $version = & new Version('blog_entries', $_REQUEST['version_id']);
+            $version = new Version('blog_entries', $_REQUEST['version_id']);
             $version->loadObject($blog);
 
             $title = _('Update Unapproved Blog Entry');
@@ -244,8 +244,8 @@ class Blog_Admin {
 
     function viewVersion($version_id)
     {
-        $version = & new Version('blog_entries', (int)$_REQUEST['version_id']);
-        $blog = & new Blog;
+        $version = new Version('blog_entries', (int)$_REQUEST['version_id']);
+        $blog = new Blog;
         $version->loadObject($blog);
 
         $vars['action'] = 'admin';
@@ -297,7 +297,7 @@ class Blog_Admin {
         $listLink = 'index.php?module=blog&amp;action=admin';
         $listCommand = array ('title'=>_('List'), 'link'=> $listLink);
 
-        $version = & new Version('blog_entries');
+        $version = new Version('blog_entries');
         $unapproved = $version->countUnapproved();
 
         $approvalLink = 'index.php?module=blog&amp;action=admin';
@@ -310,7 +310,7 @@ class Blog_Admin {
             $tabs['approval'] = &$approvalCommand;
         }
 
-        $panel = & new PHPWS_Panel('blog');
+        $panel = new PHPWS_Panel('blog');
         $panel->quickSetTabs($tabs);
 
         $panel->setModule('blog');
@@ -328,7 +328,7 @@ class Blog_Admin {
         $pageTags['DATE']   = _('Creation Date');
         $pageTags['ACTION'] = _('Action');
 
-        $pager = & new DBPager('blog_entries', 'Blog');
+        $pager = new DBPager('blog_entries', 'Blog');
         $pager->setModule('blog');
         $pager->setTemplate('list.tpl');
         $pager->addToggle('class="toggle1"');
@@ -369,7 +369,7 @@ class Blog_Admin {
         $vars['command'] = 'removePrevBlog';
         $remove_link = PHPWS_Text::linkAddress('blog', $vars, TRUE);
 
-        $restore = & new Version_Restore('blog', 'blog_entries', $blog->id, 'blog', 'brief_view');
+        $restore = new Version_Restore('blog', 'blog_entries', $blog->id, 'blog', 'brief_view');
         $restore->setRestoreUrl($restore_link);
         $restore->setRemoveUrl($remove_link);
         $result = $restore->getList();
@@ -378,13 +378,13 @@ class Blog_Admin {
   
     function restoreBlog($version_id)
     {
-        $version = & new Version('blog_entries', $version_id);
+        $version = new Version('blog_entries', $version_id);
         $version->restore();
     }
 
     function removePrevBlog($version_id)
     {
-        $version = & new Version('blog_entries', $version_id);
+        $version = new Version('blog_entries', $version_id);
         $version->delete();
     }
 }

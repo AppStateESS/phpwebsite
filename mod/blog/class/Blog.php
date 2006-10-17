@@ -41,7 +41,7 @@ class Blog {
             return false;
         }
 
-        $db = & new PHPWS_DB('blog_entries');
+        $db = new PHPWS_DB('blog_entries');
         $result = $db->loadObject($this);
         if (PEAR::isError($result)) {
             return $result;
@@ -115,7 +115,7 @@ class Blog {
 
     function save()
     {
-        $db = & new PHPWS_DB('blog_entries');
+        $db = new PHPWS_DB('blog_entries');
         if (empty($this->id)) {
             if ($this->publish_date > mktime()) {
                 $this->create_date = $this->publish_date;
@@ -126,7 +126,7 @@ class Blog {
             $this->author = Current_User::getDisplayName();
         }
 
-        $version = & new Version('blog_entries');
+        $version = new Version('blog_entries');
 
         if ($this->approved || !$this->id) {
             $result = $db->saveObject($this);
@@ -148,7 +148,7 @@ class Blog {
             $thread->allowAnonymous($this->allow_anon);
             $thread->save();
 
-            $search = & new Search($this->key_id);
+            $search = new Search($this->key_id);
             $search->addKeywords($this->title);
             $search->addKeywords($this->summary);
             $search->addKeywords($this->entry);
@@ -167,11 +167,11 @@ class Blog {
     function saveKey()
     {
         if (empty($this->key_id)) {
-            $key = & new Key;
+            $key = new Key;
         } else {
-            $key = & new Key($this->key_id);
+            $key = new Key($this->key_id);
             if (PEAR::isError($key->_error)) {
-                $key = & new Key;
+                $key = new Key;
             }
         }
 
@@ -207,6 +207,7 @@ class Blog {
     {
         $template['TITLE'] = $this->title;
         $template['LOCAL_DATE']  = $this->getLocalDate();
+        $template['PUBLISHED_DATE'] = PHPWS_Time::getDTTime($this->create_date);
         $template['SUMMARY'] = PHPWS_Text::parseTag($this->getSummary(true));
         $template['ENTRY'] = PHPWS_Text::parseTag($this->getEntry(true));
 
@@ -417,7 +418,7 @@ class Blog {
         Key::drop($this->key_id);
         PHPWS_Core::initModClass('version', 'Version.php');
         Version::flush('blog_entries', $this->id);
-        $db = & new PHPWS_DB('blog_entries');
+        $db = new PHPWS_DB('blog_entries');
         $db->addWhere('id', $this->id);
         $result = $db->delete();
 
@@ -426,7 +427,7 @@ class Blog {
             $all_is_well = false;
         }
 
-        $key = & new Key($this->key_id);
+        $key = new Key($this->key_id);
         $key->delete();
         return $all_is_well;
     }
