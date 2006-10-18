@@ -1,3 +1,16 @@
+October 18
+Core - 1.0.9
++ Form.php
+  o Crutch function for radio button had typo
+  o Added labels to checkbox and radio button crutch functions
+
+
+October 17
+Blog - 1.1.1
++ Added hAtom support (FR #1549640)
++ Changed object constructors to php 5 format
+
+
 October 11
 
 Core - 1.0.8
