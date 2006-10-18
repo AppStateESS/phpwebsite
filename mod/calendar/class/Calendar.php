@@ -144,8 +144,9 @@ class PHPWS_Calendar {
         
     function &getMonth()
     {
+        $start_day = (int)PHPWS_Settings::get('calendar', 'starting_day');
         require_once 'Calendar/Month/Weekdays.php';
-        $oMonth = new Calendar_Month_Weekdays($this->int_year, $this->int_month, PHPWS_Settings::get('calendar', 'starting_day'));
+        $oMonth = new Calendar_Month_Weekdays($this->int_year, $this->int_month, $start_day);
         return $oMonth;
     }
 
@@ -179,8 +180,8 @@ class PHPWS_Calendar {
     function &getWeek()
     {
         require_once 'Calendar/Week.php';
-
-        $oWeek = new Calendar_Week($this->int_year, $this->int_month, $this->int_day, CALENDAR_START_DAY);
+        $start_day = (int)PHPWS_Settings::get('calendar', 'starting_day');
+        $oWeek = new Calendar_Week($this->int_year, $this->int_month, $this->int_day, $start_day);
         $oWeek->build();
         return $oWeek;
     }

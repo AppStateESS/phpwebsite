@@ -17,9 +17,6 @@ define('CALENDAR_TIME_FORMAT', '%l:%M %P');
 define('CALENDAR_DAY_HEADER', '%A %B %e, %Y');
 define('CALENDAR_WEEK_HEADER', '%B %e');
 
-// 0 Sunday, 1 Monday, etc.
-define('CALENDAR_START_DAY', 0);
-
 // Determines whether to put the day before or after the month
 define('CALENDAR_MONTH_FIRST', true);
 

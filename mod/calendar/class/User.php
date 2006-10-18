@@ -698,10 +698,11 @@ class Calendar_User {
             Layout::addStyle('calendar');
         }
 
+        $start_day = PHPWS_Settings::get('calendar','starting_day');
         $current_weekday = date('w', $this->calendar->current_date);
 
-        if ($current_weekday != CALENDAR_START_DAY) {
-            $week_start = $current_weekday - CALENDAR_START_DAY;
+        if ($current_weekday != $start_day) {
+            $week_start = $current_weekday - $start_day;
         } else {
             $week_start = 0;
         }

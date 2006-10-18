@@ -15,6 +15,7 @@ $settings = array('use_calendar_style' => 1,
                   'display_mini'       => 2,
                   'info_panel'         => 0,
                   'public_schedule'    => 0,
-                  'default_view'       => 'grid');
+                  'default_view'       => 'grid',
+                  'allow_submissions'  => 0);
 
 ?>

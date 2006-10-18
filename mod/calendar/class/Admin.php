@@ -288,14 +288,11 @@ class Calendar_Admin {
         $vars['aop'] = 'schedules';
         $tabs['schedules'] = array('title' => _('Schedules'),
                                    'link' => PHPWS_Text::linkAddress('calendar', $vars));
-        // disabled until written
-        /*
         $vars['aop'] = 'settings';                                   
         if (Current_User::allow('calendar', 'settings')) {
             $tabs['settings']    = array('title' => _('Settings'),
                                          'link' => PHPWS_Text::linkAddress('calendar', $vars));
         }
-        */
 
         $panel->quickSetTabs($tabs);
         return $panel;
@@ -396,6 +393,12 @@ class Calendar_Admin {
             $this->postSchedule();
             break;
 
+        case 'post_settings':
+            $this->postSettings();
+            $this->message = _('Settings saved');
+            $this->settings();
+            break;
+
         case 'repeat_event':
             $panel->setCurrentTab('schedules');
             $event = $this->calendar->schedule->loadEvent();
@@ -411,11 +414,12 @@ class Calendar_Admin {
             break;
 
         case 'schedules':
+            $panel->setCurrentTab('schedules');
             $this->scheduleListing();
             break;
 
         case 'settings':
-
+            $this->settings();
             break;
         }
 
@@ -498,6 +502,12 @@ class Calendar_Admin {
         }
     }
 
+    function postSettings()
+    {
+        PHPWS_Settings::set('calendar', 'starting_day', (int)$_POST['starting_day']);
+        PHPWS_Settings::save('calendar');
+        PHPWS_Cache::clearCache();
+    }
 
     /**
      * Saves a repeated event
@@ -895,6 +905,36 @@ class Calendar_Admin {
         if ($route && !empty($command)) {
             PHPWS_Core::reroute('index.php?module=calendar&aop=' . $command);
         }
+    }
+
+    function settings()
+    {
+        $form = new PHPWS_Form('calendar_settings');
+        $form->addHidden('module', 'calendar');
+        $form->addHidden('aop', 'post_settings');
+
+        $form->addCheckbox('allow_submissions', 1);
+        $form->setMatch('allow_submissions', PHPWS_Settings::get('calendar', 'allow_submissions'));
+        $form->setLabel('allow_submissions', _('Allow public event submissions'));
+
+        $start_days = array(0,1);
+        $start_days_label[0] = strftime('%A', mktime(0,0,0,1,4,1970));
+        $start_days_label[1] = strftime('%A', mktime(0,0,0,1,5,1970));
+        $form->addRadio('starting_day', $start_days);
+        $form->setLabel('starting_day', $start_days_label);
+        $form->setMatch('starting_day', PHPWS_Settings::get('calendar', 'starting_day'));
+
+        $form->addCheck('personal_schedules', 1);
+        $form->setLabel('personal_schedules', _('Allow personal schedules'));
+        $form->setMatch('personal_schedules', PHPWS_Settings::get('calendar', 'personal_schedule'));
+
+        $form->addSubmit(_('Save settings'));
+        $tpl = $form->getTemplate();
+
+        $tpl['START_LABEL'] = _('Week start day');
+
+        $this->content = PHPWS_Template::process($tpl, 'calendar', 'admin/settings.tpl');
+        $this->title   = _('Calendar settings');
     }
 
 }
