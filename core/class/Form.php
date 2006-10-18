@@ -1310,9 +1310,9 @@ class PHPWS_Form {
 
     function formRadio($name, $value, $match=NULL, $match_diff=NULL, $label=NULL) 
     {
-        $element = & new Form_Radio($name, $value);
+        $element = & new Form_RadioButton($name, $value);
         $element->setMatch($match);
-        return $element->get();
+        return $element->get() . ' ' . $label;
     }
 
     function formSubmit($value, $name=NULL, $class=NULL)
@@ -1351,7 +1351,7 @@ class PHPWS_Form {
     {
         $element = & new Form_Checkbox($name, $value);
         $element->setMatch($match);
-        return $element->get();
+        return $element->get() . ' ' . $label;
     }
 
 
