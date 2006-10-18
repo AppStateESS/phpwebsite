@@ -44,7 +44,9 @@ function core_update(&$content, $version) {
 
     case version_compare($version, '1.0.8', '<'):
         $content[] = '- Module.php : now adds error to _error variable if module could not be loaded.';
-        
+
+    case version_compare($version, '1.0.9', '<'):
+        $content[] = '- Form.php : fixed crutch function for radio buttons and check boxes.';
     }
     
     return true;
