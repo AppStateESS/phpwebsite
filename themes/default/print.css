@@ -2,7 +2,7 @@ body {
      font-size : 12pt;
 }
 
-div.read-more, #sidepanel, #top-menu, div.category-links {
+input, div.read-more, #sidepanel, #top-menu, div.category-links {
     display : none;
 }
 
