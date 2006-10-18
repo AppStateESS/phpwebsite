@@ -4,7 +4,7 @@
  *
  * This class is stand alone. You must construct an object within your
  * function to get it to work:
- * $form = & new PHPWS_Form;
+ * $form = new PHPWS_Form;
  *
  * This class allows you to easily create a form and then fetch elements of
  * that form. It also allows you to export a template of the form that you
@@ -893,46 +893,46 @@ class PHPWS_Form {
         switch ($type){
         case 'text':
         case 'textfield':
-            $obj = & new Form_TextField($name, $value);
+            $obj = new Form_TextField($name, $value);
             return $obj;
             break;
       
         case 'textarea':
-            $obj = & new Form_TextArea($name, $value);
+            $obj = new Form_TextArea($name, $value);
             return $obj;
             break;
 
         case 'submit':
-            $obj = & new Form_Submit($name, $value);
+            $obj = new Form_Submit($name, $value);
             return $obj;
             break;
 
         case 'button':
-            $obj = & new Form_Button($name, $value);
+            $obj = new Form_Button($name, $value);
             return $obj;
             break;
             
 
         case 'password':
-            $obj = & new Form_Password($name, $value);
+            $obj = new Form_Password($name, $value);
             return $obj;
             break;
 
         case 'file':
             $this->_multipart = TRUE;
             $this->_encode = ' enctype="multipart/form-data"';
-            $obj = & new Form_File($name);
+            $obj = new Form_File($name);
             return $obj;
             break;
       
         case 'select':
         case 'dropbox':
-            $obj = & new Form_Select($name, $value);
+            $obj = new Form_Select($name, $value);
             return $obj;
             break;
 
         case 'multiple':
-            $obj = & new Form_Multiple($name, $value);
+            $obj = new Form_Multiple($name, $value);
             return $obj;
             break;
 
@@ -940,14 +940,14 @@ class PHPWS_Form {
         case 'radiobutton':
             if (is_array($value)) {
                 foreach ($value as $key=>$sub) {
-                    $radio = & new Form_RadioButton($name, $sub);
+                    $radio = new Form_RadioButton($name, $sub);
                     $radio->key = $sub;
                     $radio->place = $key;
                     $allRadio[$sub] = $radio;
                 }
                 return $allRadio;
             } else {
-                $obj = & new Form_RadioButton($name, $value);
+                $obj = new Form_RadioButton($name, $value);
                 return $obj;
             }
             break;
@@ -957,19 +957,19 @@ class PHPWS_Form {
             if (is_array($value)) {
                 $check_count=0;
                 foreach ($value as $sub) {
-                    $check[$check_count] = & new Form_Checkbox($name, $sub);
+                    $check[$check_count] = new Form_Checkbox($name, $sub);
                     $check[$check_count]->place = $check_count;
                     $check_count++;
                 }
                 return $check;
             } else {
-                $obj = & new Form_Checkbox($name, $value);
+                $obj = new Form_Checkbox($name, $value);
                 return $obj;
             }
             break;
 
         case 'hidden':
-            $obj = & new Form_Hidden($name, $value);
+            $obj = new Form_Hidden($name, $value);
             return $obj;
             break;
 
@@ -1214,7 +1214,7 @@ class PHPWS_Form {
 
     function _imageSelectArray($module, $current)
     {
-        $db = & new PHPWS_DB('images');
+        $db = new PHPWS_DB('images');
         $db->addWhere('module', $module);
         $db->addOrder('directory');
         $db->setIndexBy('id');
@@ -1288,14 +1288,14 @@ class PHPWS_Form {
 
     function formTextField($name, $value, $size=30, $maxsize=255, $label=NULL)
     {
-        $element = & new Form_Textfield($name, $value);
+        $element = new Form_Textfield($name, $value);
         $element->setSize($size, $maxsize);
         return $element->get();
     }
 
     function formTextArea ($name, $value=NULL, $rows=5, $cols=40, $label=NULL)
     {
-        $element = & new Form_TextArea($name, $value);
+        $element = new Form_TextArea($name, $value);
         $element->setRows($rows);
         $element->setCols($cols);
         return $element->get();
@@ -1303,27 +1303,27 @@ class PHPWS_Form {
 
     function formFile($name)
     {
-        $element = & new Form_File($name);
+        $element = new Form_File($name);
         $element->get();
     }
 
 
     function formRadio($name, $value, $match=NULL, $match_diff=NULL, $label=NULL) 
     {
-        $element = & new Form_RadioButton($name, $value);
+        $element = new Form_RadioButton($name, $value);
         $element->setMatch($match);
         return $element->get() . ' ' . $label;
     }
 
     function formSubmit($value, $name=NULL, $class=NULL)
     {
-        $element = & new Form_Submit($name, $value);
+        $element = new Form_Submit($name, $value);
         return $element->get();
     }
 
     function formSelect($name, $opt_array, $match = NULL, $ignore_index = FALSE, $match_to_value = FALSE, $onchange = NULL, $label = NULL)
     {
-        $element = & new Form_Select($name, $opt_array);
+        $element = new Form_Select($name, $opt_array);
         $element->setMatch($match);
         if ($onchange) {
             $element->setExtra(sprintf('onchange="%s"', $onchange));
@@ -1333,7 +1333,7 @@ class PHPWS_Form {
 
     function formMultipleSelect($name, $opt_array, $match = NULL, $ignore_index = FALSE, $match_to_value = FALSE, $onchange = NULL, $label = NULL)
     {
-        $element = & new Form_Multiple($name, $opt_array);
+        $element = new Form_Multiple($name, $opt_array);
         $element->setMatch($match);
         if ($onchange) {
             $element->setExtra(sprintf('onchange="%s"', $onchange));
@@ -1343,13 +1343,13 @@ class PHPWS_Form {
 
     function formHidden($name, $value=NULL)
     {
-        $element = & new Form_Hidden($name, $value);
+        $element = new Form_Hidden($name, $value);
         return $element->get();
     }
 
     function formCheckBox($name, $value = 1, $match = NULL, $match_diff = NULL, $label = NULL) 
     {
-        $element = & new Form_Checkbox($name, $value);
+        $element = new Form_Checkbox($name, $value);
         $element->setMatch($match);
         return $element->get() . ' ' . $label;
     }
@@ -1536,7 +1536,7 @@ class Form_TextArea extends Form_Element {
     {
         PHPWS_Core::initCoreClass('Editor.php');
         if ($this->_use_editor && Editor::willWork()) {
-            $editor = & new Editor($this->name, $this->value, $this->id);
+            $editor = new Editor($this->name, $this->value, $this->id);
             return $editor->get();
         }
 
