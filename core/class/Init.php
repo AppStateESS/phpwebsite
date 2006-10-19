@@ -19,6 +19,7 @@ if (!defined('PHPWS_HOME_DIR')) {
 
 /* Initialize language settings */
 if (!function_exists('bindtextdomain')){
+    define('CURRENT_LANGUAGE', 'en_US');
     define('PHPWS_TRANSLATION', FALSE);
     function _($text) {
         return $text;
