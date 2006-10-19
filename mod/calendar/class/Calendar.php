@@ -157,6 +157,13 @@ class PHPWS_Calendar {
     {
         $db = new PHPWS_DB('calendar_schedule');
         Key::restrictView($db);
+        $user_id = Current_User::getId();
+
+        if ($user_id) {
+            $db->addWhere('user_id', $user_id, '=', 'or', 'user_cal');
+            $db->setGroupConj('user_cal', 'or');
+        }
+
         $db->addOrder('title');
         
         switch ($mode) {
@@ -166,14 +173,13 @@ class PHPWS_Calendar {
 
             
         case 'brief':
+            //            $db->setTestMode();
             $db->addColumn('id');
             $db->addColumn('title');
             $db->setIndexBy('id');
             return $db->select('col');
             break;
         }
-        
-
     }
 
 

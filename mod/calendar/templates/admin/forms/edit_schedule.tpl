@@ -3,7 +3,7 @@
 <!-- BEGIN schedule-type -->
   <tr>
     <td><strong>{PUBLIC_LABEL}</strong></td>
-    <td>
+    <td>{PUBLIC}
       {PUBLIC_1} {PUBLIC_1_LABEL}<br />
       {PUBLIC_2} {PUBLIC_2_LABEL}
     </td>

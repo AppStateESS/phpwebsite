@@ -29,13 +29,31 @@ class Calendar_Admin {
         unset($_SESSION['Calendar_Admin_Message']);
     }
 
-
-    function checkAuthorization($command, $id)
+    function allowSchedulePost()
     {
-        if (empty($id)) {
-            return Current_User::authorized('calendar', $command);
+        if (!Current_User::allow('calendar')) {
+            return false;
+        }
+
+        if ($this->calendar->schedule->public) {
+            return Current_User::authorized('calendar', 'edit_public');
         } else {
-            return Current_User::authorized('calendar', $command, $id);
+            // private schedule
+            if ($this->calendar->schedule->id) {
+                // previously created schedule
+                if ($this->calendar->schedule->user_id == Current_User::getId()) {
+                    return true;
+                } else {
+                    return Current_User::authorized('calendar', 'edit_private');
+                }
+            } else {
+                // new schedule
+                if (PHPWS_Settings::get('calendar', 'personal_schedules')) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         }
     }
 
@@ -326,9 +344,12 @@ class Calendar_Admin {
             break;
 
         case 'create_schedule':
-            if (!Current_User::allow('calendar', 'create_schedule')) {
+            if (!Current_User::allow('calendar') || 
+                (!Current_User::allow('calendar', 'edit_public') && 
+                 !PHPWS_Settings::get('calendar', 'personal_schedules'))) {
                 Current_User::disallow();
             }
+
             $panel->setCurrentTab('schedules');
             $this->editSchedule();
             break;
@@ -374,22 +395,11 @@ class Calendar_Admin {
             $this->scheduleListing();
             break;
 
-        case 'my_schedule':
-            $panel->setCurrentTab('my_schedule');
-            $this->mySchedule();
-            break;
-
         case 'post_event':
-            if (!$this->checkAuthorization('edit_schedule', $_POST['sch_id'])) {
-                Current_User::disallow();
-            }
             $this->postEvent();
             break;
 
         case 'post_schedule':
-            if (!$this->checkAuthorization('edit_schedule', $_POST['sch_id'])) {
-                Current_User::disallow();
-            }
             $this->postSchedule();
             break;
 
@@ -504,6 +514,18 @@ class Calendar_Admin {
 
     function postSettings()
     {
+        if (isset($_POST['personal_schedules'])) {
+            PHPWS_Settings::set('calendar', 'personal_schedules', 1);
+        } else {
+            PHPWS_Settings::set('calendar', 'personal_schedules', 0);
+        }
+
+        if (isset($_POST['allow_submissions'])) {
+            PHPWS_Settings::set('calendar', 'allow_submissions', 1);
+        } else {
+            PHPWS_Settings::set('calendar', 'allow_submissions', 0);
+        }
+
         PHPWS_Settings::set('calendar', 'starting_day', (int)$_POST['starting_day']);
         PHPWS_Settings::save('calendar');
         PHPWS_Cache::clearCache();
@@ -589,6 +611,11 @@ class Calendar_Admin {
     function postSchedule()
     {
         if ($this->calendar->schedule->post()) {
+            if (!$this->allowSchedulePost()) {
+                Current_User::disallow();
+                return;
+            }
+
             $result = $this->calendar->schedule->save();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
@@ -926,7 +953,7 @@ class Calendar_Admin {
 
         $form->addCheck('personal_schedules', 1);
         $form->setLabel('personal_schedules', _('Allow personal schedules'));
-        $form->setMatch('personal_schedules', PHPWS_Settings::get('calendar', 'personal_schedule'));
+        $form->setMatch('personal_schedules', PHPWS_Settings::get('calendar', 'personal_schedules'));
 
         $form->addSubmit(_('Save settings'));
         $tpl = $form->getTemplate();

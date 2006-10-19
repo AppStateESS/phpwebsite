@@ -190,11 +190,20 @@ class Calendar_Schedule {
         $form->setLabel('summary', _('Summary'));
         $form->useEditor('summary');
 
-        $form->addRadio('public', array(0,1));
-        $form->setLabel('public', array(_('Private'),
-                                        _('Public')));
-
-        $form->setMatch('public', (int)$this->public);
+        if (PHPWS_Settings::get('calendar', 'personal_schedules')) {
+            if (Current_User::allow('calendar', 'edit_public')) {
+                $form->addRadio('public', array(0,1));
+                $form->setLabel('public', array(_('Private'),
+                                                _('Public')));
+                $form->setMatch('public', (int)$this->public);
+            } else {
+                $form->addTplTag('PUBLIC', _('Private'));
+                $form->addHidden('public', 0);
+            }
+        } else {
+            $form->addTplTag('PUBLIC', _('Public'));
+            $form->addHidden('public', 1);
+        }
 
         /*
         $groups = Users_Permission::getPermissionGroups($key);
@@ -326,6 +335,9 @@ class Calendar_Schedule {
 
         $this->setSummary($_POST['summary']);
         $this->setPublic($_POST['public']);
+        if (!$this->public && !$this->id) {
+            $this->user_id = Current_User::getId();
+        }
         return true;
     }
 
@@ -445,7 +457,7 @@ class Calendar_Schedule {
             $key->restricted = 0;
             $key->setEditPermission('edit_public');
         } else {
-            $key->restricted = 1;
+            $key->restricted = 2;
             $key->setEditPermission('edit_private');
         }
         $key->setUrl($this->getViewLink(false));

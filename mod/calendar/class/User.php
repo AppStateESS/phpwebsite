@@ -361,12 +361,14 @@ class Calendar_User {
 
         $date_pick = $this->getDatePick();
 
-        // Check cache
-        $cache_key = sprintf('grid_%s_%s_%s', $month, $year, $this->calendar->schedule->id);
-
-        $content = PHPWS_Cache::get($cache_key);
-        if (!empty($content)) {
-            return $content;
+        if (!Current_User::isLogged()) {
+            // Check cache
+            $cache_key = sprintf('grid_%s_%s_%s', $month, $year, $this->calendar->schedule->id);
+            
+            $content = PHPWS_Cache::get($cache_key);
+            if (!empty($content)) {
+                return $content;
+            }
         }
 
         // cache empty, make calendar
@@ -406,7 +408,9 @@ class Calendar_User {
         $oTpl->setData($template);
         $content = $oTpl->get();
 
-        PHPWS_Cache::save($cache_key, $content);
+        if (!Current_User::isLogged()) {
+            PHPWS_Cache::save($cache_key, $content);
+        }
         return $content;
     }
 
@@ -421,15 +425,13 @@ class Calendar_User {
         $year  = &$this->calendar->int_year;
         $day   = 1;
 
-        if (PHPWS_Cache::isEnabled() && Current_User::allow('calendar')) {
-            $this->resetCacheLink('list', $month, $year, $this->calendar->schedule->id);
-        }
-
-        // Check cache
-        $cache_key = sprintf('list_%s_%s_%s', $month, $year, $this->calendar->schedule->id);
-        $content = PHPWS_Cache::get($cache_key);
-        if (!empty($content)) {
-            return $content;
+        if (!Current_User::isLogged()) {
+            // Check cache
+            $cache_key = sprintf('list_%s_%s_%s', $month, $year, $this->calendar->schedule->id);
+            $content = PHPWS_Cache::get($cache_key);
+            if (!empty($content)) {
+                return $content;
+            }
         }
 
         // cache empty, make calendar
@@ -474,7 +476,10 @@ class Calendar_User {
 
         $tpl->setData($main_tpl);
         $content = $tpl->get();
-        PHPWS_Cache::save($cache_key, $content);
+
+        if (!Current_User::isLogged()) {
+            PHPWS_Cache::save($cache_key, $content);
+        }
         return $content;
     }
 
@@ -523,7 +528,8 @@ class Calendar_User {
     {
         if ( $this->calendar->schedule->id &&
              ( ($this->calendar->schedule->public && Current_User::allow('calendar', 'edit_public', $this->calendar->schedule->id) ) ||
-               (!$this->calendar->schedule->public && Current_User::allow('calendar', 'edit_private', $this->calendar->schedule->id) )
+               ( !$this->calendar->schedule->public && 
+                 ( $this->calendar->schedule->user_id == Current_User::getId() ||Current_User::allow('calendar', 'edit_private', $this->calendar->schedule->id) ) )
                )
              ) {
             MiniAdmin::add('calendar', $this->calendar->schedule->addEventLink($this->calendar->current_date));

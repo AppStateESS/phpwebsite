@@ -400,7 +400,9 @@ class Calendar_Event {
 
 
         if ( ($this->_schedule->public && Current_User::allow('calendar', 'edit_public', $this->_schedule->id)) ||
-             (!$this->_schedule->public && Current_User::allow('calendar', 'edit_private', $this->_schedule->id))
+             ( !$this->_schedule->public && 
+               ( $this->_schedule->user_id == Current_User::getId() || Current_User::allow('calendar', 'edit_private', $this->_schedule->id) )
+               )
              ) {
             $link[] = $this->editLink();
             $link[] = $this->deleteLink();
