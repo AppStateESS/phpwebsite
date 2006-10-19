@@ -332,8 +332,18 @@ class Calendar_Event {
 
     function getTpl()
     {
-        $tpl['SUMMARY']     = $this->getSummary();
-        $tpl['DESCRIPTION'] = $this->getDescription();
+        if ( $this->show_busy && (
+                                   ( $this->_schedule->public && !Current_User::allow('calendar', 'edit_public') ) ||
+                                   ( !$this->_schedule->public && ( !Current_User::allow('calendar', 'edit_private') || Current_User::getId() != $this->_schedule->user_id ) )
+                                       )
+             ) {
+
+            $tpl['SUMMARY']     = _('Busy');
+            $tpl['DESCRIPTION'] = null;
+        } else {
+            $tpl['SUMMARY']     = $this->getSummary();
+            $tpl['DESCRIPTION'] = $this->getDescription();
+        }
 
         if (CALENDAR_MONTH_FIRST) {
             $month_day_mode = '%B %e';
