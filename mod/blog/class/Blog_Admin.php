@@ -300,6 +300,10 @@ class Blog_Admin {
         $version = new Version('blog_entries');
         $unapproved = $version->countUnapproved();
 
+        if (PEAR::isError($unapproved)) {
+            PHPWS_Error::log($unapproved);
+            $unapproved = '??';
+        }
         $approvalLink = 'index.php?module=blog&amp;action=admin';
         $approvalCommand = array ('title'=>sprintf(_('Approval (%s)'), $unapproved), 'link'=> $approvalLink);
 
