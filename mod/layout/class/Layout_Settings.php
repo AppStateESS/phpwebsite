@@ -114,11 +114,13 @@ class Layout_Settings {
         $theme = $this->current_theme;
         $db = new PHPWS_db('layout_box');
         $db->addWhere('theme', $theme);
-        if(!$boxes = $db->getObjects('Layout_Box'))
+        if(!$boxes = $db->getObjects('Layout_Box')) {
             return;
+        }
 
-        foreach ($boxes as $box)
+        foreach ($boxes as $box) {
             $final[$box->module][$box->content_var] = $box;
+        }
 
         $this->_boxes = $final;
     }
