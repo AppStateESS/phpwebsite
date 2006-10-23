@@ -158,6 +158,15 @@ class Setup{
             $check = FALSE;
         }
 
+        if (!empty($_POST['dbprefix'])) {
+            if (preg_match('/\W/', $_POST['dbprefix'])) {
+                $content[] = _('Table prefix must be alphanumeric characters or underscores only');
+                $check = FALSE;
+            } else {
+                Setup::setConfigSet('dbprefix', $_POST['dbprefix']);
+            }
+        }
+
         Setup::setConfigSet('dbtype', $_POST['dbtype']);
         Setup::setConfigSet('dbport', $_POST['dbport']);
 
@@ -373,6 +382,9 @@ class Setup{
         $formTpl['DBPASS_LBL'] = _('Database Password');
         $formTpl['DBPASS_DEF'] = _('Enter the database\'s user password here.');
 
+        $formTpl['DBPREF_LBL'] = _('Table prefix');
+        $formTpl['DBPREF_DEF'] = _('If you are installing phpWebSite in a shared environment, you may assign a prefix to tables.<br />We recommend you run without one.');
+
         $formTpl['DBHOST_LBL'] = _('Host Specification');
         $formTpl['DBHOST_DEF'] = _('If your database is on the same server as your phpWebSite installation, leave this as &#x22;localhost&#x22;.')
             . '<br />' . _('Otherwise, enter the ip or dns to the database server.');
@@ -393,6 +405,9 @@ class Setup{
         $form->addPassword('dbpass', Setup::getConfigSet('dbpass'));
         $form->allowValue('dbpass');
         $form->setSize('dbpass', 20);
+
+        $form->addText('dbprefix', Setup::getConfigSet('dbprefix'));
+        $form->setSize('dbprefix', 5, 5);
 
         $form->addText('dbhost', Setup::getConfigSet('dbhost'));
         $form->setSize('dbhost', 20);
@@ -534,6 +549,7 @@ class Setup{
             include(PHPWS_SOURCE_DIR . 'core/boost/boost.php');
             $db->addValue('version', $version);
             $result = $db->insert();
+
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
                 $content[] = _('Some errors occurred while creating the core database tables.') . '<br />';

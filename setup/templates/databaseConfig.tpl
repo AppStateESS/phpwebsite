@@ -26,6 +26,12 @@
   </div>
 
   <div class="config-item">
+    <div class="label">{DBPREF_LBL}</div>
+    <div class="definition">{DBPREF_DEF}</div>
+    <div class="form-item">{DBPREFIX}</div>
+  </div>
+
+  <div class="config-item">
     <div class="label">{DBHOST_LBL}</div>
     <div class="definition">{DBHOST_DEF}</div>
     <div class="form-item">{DBHOST}</div>

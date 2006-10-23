@@ -23,6 +23,14 @@ define('SITE_HASH', '{site_hash}');
 define('PHPWS_DSN', '{dsn}');
 
 
+<!-- BEGIN pre -->
+/**
+ * Defining the below will prefix each phpwebsite table with the
+ * chosen characters.
+ */
+define('PHPWS_TABLE_PREFIX', '{dbprefix}');
+<!-- END pre -->
+
 /**
  * The core will occasionally save cookies. They do not contain
  * important information. This is the time until they expire.
