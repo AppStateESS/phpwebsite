@@ -145,11 +145,7 @@ class Notes_My_Page {
                 $this->errors['bad_username'] = _('Unsuitable user name characters.');
             } else {
                 $db = & new PHPWS_DB('users');
-                if (NOTE_ALLOW_USERNAME_SEARCH) {
-                    $db->addWhere('username', '%' . $_POST['username'] . '%', 'like');
-                } else {
-                    $db->addWhere('username', $_POST['username']);
-                }
+                $db->addWhere('username', $_POST['username']);
                 $db->addColumn('id');
                 $db->addColumn('username');
                 $db->setIndexBy('id');
@@ -157,13 +153,29 @@ class Notes_My_Page {
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
                     $this->errors['unknown'] = _('An error occurred when accessing the database.');
-                } elseif (empty($result)) {
-                    $this->errors['no_user'] = _('No user found.');
-                } elseif (count($result) > 1) {
-                    return $result;
+                } 
+
+                if (empty($result)) {
+                    if (NOTE_ALLOW_USERNAME_SEARCH) {
+                        $db->resetWhere();
+                        $db->addWhere('username', '%' . $_POST['username'] . '%', 'like');
+                        $result = $db->select('col');
+                        
+                        if (PEAR::isError($result)) {
+                            PHPWS_Error::log($result);
+                            $this->errors['unknown'] = _('An error occurred when accessing the database.');
+                        } elseif (empty($result)) {
+                            $this->errors['no_match'] = _('Could not find match.');
+                        } else {
+                        $note->username = $_POST['username'];
+                        return $result;
+                        }
+                    } else {
+                        $this->errors['no_match'] = _('Unknown user.');
+                    }
                 } else {
                     list($note->user_id, $note->username) = each($result);
-                }
+                } 
             }
         } else {
             $note->user_id = (int)$_POST['user_id'];
