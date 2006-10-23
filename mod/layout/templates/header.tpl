@@ -7,7 +7,7 @@
 {STYLE}
 
 </head>
-<body>
+<body id="layout-naked">
 {CONTENT}
 </body>
 </html>
