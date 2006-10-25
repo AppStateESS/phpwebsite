@@ -9,7 +9,7 @@
 
 define ('DB_USE_AFTER', FALSE);
 
-class PHPWS_SQL {
+class pgsql_PHPWS_SQL {
 
     function export(&$info){
         switch ($info['type']){
@@ -70,6 +70,7 @@ class PHPWS_SQL {
 
     function renameColumn($table, $column_name, $new_name, $specs)
     {
+        $table = PHPWS_DB::addPrefix($table);
         $sql = sprintf('ALTER TABLE %s RENAME COLUMN %s TO %s',
                        $table, $column_name, $new_name);
         return $sql;
@@ -115,7 +116,8 @@ class PHPWS_SQL {
 
     function dropSequence($table)
     {
-        $result = $GLOBALS['PEAR_DB']->query("DROP SEQUENCE $table");
+        $table = PHPWS_DB::addPrefix($table);
+        $result = $GLOBALS['PHPWS_DB']['connection']->query("DROP SEQUENCE $table");
         if (PEAR::isError($result)) {
             return $result;
         }

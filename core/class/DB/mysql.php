@@ -9,7 +9,7 @@
 
 define ('DB_USE_AFTER', TRUE);
 
-class PHPWS_SQL {
+class mysql_PHPWS_SQL {
 
     function export(&$info){
         switch ($info['type']){
@@ -50,6 +50,7 @@ class PHPWS_SQL {
 
     function renameColumn($table, $column_name, $new_name, $specs)
     {
+        $table = PHPWS_DB::addPrefix($table);
         $sql = sprintf('ALTER TABLE %s CHANGE %s %s %s',
                        $table, $column_name, $new_name, $specs['parameters']);
         return $sql;
@@ -76,7 +77,8 @@ class PHPWS_SQL {
 
     function dropSequence($table)
     {
-        $result = $GLOBALS['PEAR_DB']->query("DROP TABLE $table");
+        $table = PHPWS_DB::addPrefix($table);
+        $result = $GLOBALS['PHPWS_DB']['connection']->query("DROP TABLE $table");
         if (PEAR::isError($result)) {
             return $result;
         }
@@ -87,6 +89,7 @@ class PHPWS_SQL {
 
     function dropTableIndex($name, $table)
     {
+        $table = PHPWS_DB::addPrefix($table);
         return sprintf('DROP INDEX %s ON %s', $name, $table);
     }
 }
