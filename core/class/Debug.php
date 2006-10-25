@@ -134,6 +134,9 @@ class PHPWS_Debug {
      */
     function testArray($arrayVar, $displayTags=TRUE, $show_recursive=FALSE) 
     {
+        if (empty($arrayVar)) {
+            return null;
+        }
         $test_recursion = md5(serialize($arrayVar));
 
         if (!$show_recursive && isset($GLOBALS['Test_Recursion'])) {
