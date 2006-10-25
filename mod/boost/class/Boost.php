@@ -1061,23 +1061,21 @@ class PHPWS_Boost {
         }
 
         PHPWS_Core::initModClass('branch', 'Branch_Admin.php');
-        $branches = Branch_Admin::getBranches();
+        $branches = Branch_Admin::getBranches(true);
         if (empty($branches)) {
             return true;
         }
 
         $keys = array_keys($this->status);
 
-
         foreach ($branches as $branch) {
             // used as the "local" directory in updateFiles
             $GLOBALS['boost_branch_dir'] = $branch->directory;
 
-            $branch->loadDSN();
-            PHPWS_DB::loadDB($branch->dsn);
+            $branch->loadBranchDB();
 
             // create a new boost based on the branch database
-            $branch_boost = & new PHPWS_Boost;
+            $branch_boost = new PHPWS_Boost;
             $branch_boost->loadModules($keys, false);
 
             $content[] = '<hr />';
@@ -1091,7 +1089,6 @@ class PHPWS_Boost {
         }
 
         PHPWS_DB::disconnect();
-        Branch::getHubDB();
     }
 
 }
