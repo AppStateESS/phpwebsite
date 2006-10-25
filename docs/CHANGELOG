@@ -1,4 +1,78 @@
+October 25
+Core
++ Database.php
+  o DB factory files have been broken out into specially named
+    classes, hopefully this will allow dual connections on different
+    database systems
+  o Core.php - some tidying
+  o Crutch_DB.php - removed
+  o Database.php
+     - complete overhauled to allow table prefixing and multiple
+       concurrent connections 
+     - removed reference characters on constructors 
+  o Debug.php - duplicate null values are not labeled as recursive
+                arrays
+  o File.php - copy_directory function was reporting the wrong value
+               in its error messages
+
+Boost
++ Boost.php - a few small changes to help with branch module updates
+
+Branch
++ Overhauled to allow table prefixing. Requires Database changes.
+
+Users
++ The username column in user_authorization was made into a primary
+  key.
++ The install process was rewritten to work with branch changes.
+
+
+October 23
+
+Core
++ Database.php
+  o Added table prefixing back
+  o Altered the count type for select slightly
+
++ Setup - added table prefixing back to install process
+
+
+Blog
++ Added error catch for listing approvals
+
+Notes
++ Fixed Notes problem with using the first name it could find if an
+  exactly match could not be found
+
+
+Layout
+- Added id "layout-naked" to body tag for nakedDisplay function
+
+October 19
+Calendar
++ Private scheduling closer to working as intended
++ Event now shows as "Busy" if so marked
+
+
+Photoalbum
+- Fixed call to $GLOBALS['core']
+
+Core
+- Init.php : added a define for CURRENT_LANGUAGE if gettext is not working
+
 October 18
+
+Calendar
++ Added new permissions (not coded yet)
++ Put settings tab back with some upcoming changes
++ New template - admin/settings.tpl
++ Removed start day define. Now handled by settings
+
+
+Core
++ Form.php - Removed ampersands from constructors
+
+
 Core - 1.0.9
 + Form.php
   o Crutch function for radio button had typo
