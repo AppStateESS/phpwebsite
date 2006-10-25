@@ -14,6 +14,14 @@ define('PHPWS_HOME_DIR', '{home_dir}');
  */
 define('SITE_HASH', '{site_hash}');
 
+<!-- BEGIN pre -->
+/**
+ * Defining the below will prefix each phpwebsite table with the
+ * chosen characters.
+ */
+define('PHPWS_TABLE_PREFIX', '{dbprefix}');
+<!-- END pre -->
+
 /**
  * This is you database information. The format is as follows:
  * 'db_type://dbuser:dbpassword@dbhost/dbname'
@@ -21,7 +29,6 @@ define('SITE_HASH', '{site_hash}');
  */ 
 //define('PHPWS_DSN', 'dbtype://dbuser:dbpass@localhost/dbname');
 define('PHPWS_DSN', '{dsn}');
-
 
 /**
  * The core will occasionally save cookies. They do not contain

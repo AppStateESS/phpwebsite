@@ -5,14 +5,15 @@
    */
 
 class Branch {
-    var $id          = NULL;
-    var $branch_name = NULL;
-    var $directory   = NULL; // saved WITHOUT final forward slash (/)
-    var $url         = NULL;
-    var $site_hash   = NULL;
+    var $id          = null;
+    var $branch_name = null;
+    var $directory   = null; // saved WITHOUT final forward slash (/)
+    var $url         = null;
+    var $site_hash   = null;
     var $dsn         = null;
+    var $prefix      = null;
 
-    function Branch($id=0)
+    function Branch($id=0, $load_dsn=false)
     {
         $this->site_hash = md5(rand());
         if (!$id) {
@@ -25,15 +26,26 @@ class Branch {
 
     function loadDSN()
     {
-        $config = file('/var/www/html/branch/config/core/config.php');
+        $config = file($this->directory . '/config/core/config.php');
         foreach ($config as $row) {
             $row = str_replace(' ', '', trim($row));
             if (preg_match('/^define\(\'phpws_dsn\'/i', $row)) {
                 $this->dsn = preg_replace('/define\(\'phpws_dsn\',\'([\w\/:@]+)\'\);/iU', '\\1', $row);
+            }
+
+            if (preg_match('/^define\(\'phpws_table_prefix\'/i', $row)) {
+                $this->prefix = preg_replace('/define\(\'phpws_table_prefix\',\'([\w\/:@]+)\'\);/iU', '\\1', $row);
+            }
+
+            if (!empty($this->dsn) && !empty($this->prefix)) {
                 return true;
             }
         }
-        return false;
+        if (isset($this->dsn)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     function init()
@@ -153,6 +165,25 @@ class Branch {
         return $tpl;
     }
 
+    function getHubPrefix() {
+        $handle = @fopen(PHPWS_SOURCE_DIR . 'config/core/config.php', 'r');
+        if ($handle) {
+            $search_for = '^define\(\'PHPWS_TABLE_PREFIX\',';
+            while (!feof($handle)) {
+                $buffer = fgets($handle, 4096);
+                $buffer = str_replace(' ', '', $buffer);
+                if (preg_match('/' . $search_for . '/', $buffer)) {
+                    $prefix = preg_replace('/^define\(\'PHPWS_TABLE_PREFIX\',\'(.*)\'\);/Ui', '\\1', $buffer);
+                    return trim($prefix);
+                    break;
+                }
+            }
+            return null;
+        } else {
+            return null;
+        }
+    }
+
     function getHubDSN()
     {
         $handle = @fopen(PHPWS_SOURCE_DIR . 'config/core/config.php', 'r');
@@ -167,11 +198,51 @@ class Branch {
                     break;
                 }
             }
-            return NULL;
+            return null;
         } else {
-            return NULL;
+            return null;
+        }
+    }
+
+    /**
+     * Makes a connection to the hub database. Used when currently using a
+     * branch connection.
+     */
+    function loadHubDB()
+    {
+        $dsn = Branch::getHubDSN();
+        if (empty($dsn)) {
+            return FALSE;
         }
 
+        $GLOBALS['Branch_Temp']['dsn'] = $GLOBALS['PHPWS_DB']['dsn'];
+        $GLOBALS['Branch_Temp']['prefix'] = $GLOBALS['PHPWS_DB']['dsn'];
+
+        $prefix = Branch::getHubPrefix();
+        PHPWS_DB::loadDB($dsn, $prefix);
+    }
+
+    /**
+     * Connects currently constructed branch to its database
+     * Not called statically.
+     */
+    function loadBranchDB()
+    {
+        if (empty($this->dsn)) {
+            return false;
+        }
+
+        return PHPWS_DB::loadDB($this->dsn, $this->prefix);
+    }
+
+    /**
+     * Restores the branch connection after calling the loadHubDB
+     */
+    function restoreBranchDB()
+    {
+        $prefix = $dsn = null;
+        extract($GLOBALS['Branch_Temp']);
+        PHPWS_DB::loadDB($dsn, $prefix);
     }
 
     function checkCurrentBranch()
@@ -180,40 +251,44 @@ class Branch {
             return (bool)$_SESSION['Approved_Branch'];
         }
 
-        PHPWS_DB::disconnect();
-        $connection = Branch::getHubDB();
+        Branch::loadHubDb();
 
-        if (!$connection) {
+        if (!PHPWS_DB::isConnected()) {
             $_SESSION['Approved_Branch'] = FALSE;
             return FALSE;
         }
 
-        $sql = sprintf('SELECT branch_sites.id FROM branch_sites WHERE site_hash=\'%s\'',
-                       SITE_HASH);
+        $db = new PHPWS_DB('branch_sites');
+        $db->addWhere('site_hash', SITE_HASH);
+        $db->addColumn('id');
+        $result = $db->select('one');
 
-        $result = $connection->getOne($sql, NULL, DB_FETCHMODE_ASSOC);
+        PHPWS_DB::loadDB();
 
         if (PEAR::isError($result)) {
-            PHPWS_Error::log($connection);
+            PHPWS_Error::log($result);
             $_SESSION['Approved_Branch'] = FALSE;
-            return FALSE;
+            return false;
         } elseif (empty($result)) {
             $_SESSION['Approved_Branch'] = FALSE;
-            $connection->disconnect();
-            return FALSE;
+            return false;
         } else {
             $_SESSION['Approved_Branch'] = $result;
-            $connection->disconnect();
-            return TRUE;
+            return true;
         }
     }
 
     function getHubDB()
     {
         $dsn = Branch::getHubDSN();
-
         if (empty($dsn)) {
             return FALSE;
+        }
+
+        $prefix = Branch::getHubPrefix();
+
+        if ($prefix) {
+            $GLOBALS['PHPWS_TABLE_PREFIX'] = $prefix;
         }
 
         $connection = DB::connect($dsn);
@@ -238,26 +313,25 @@ class Branch {
     {
         $branch_id = Branch::getCurrent();
         if (!$branch_id) {
-            return NULL;
+            return null;
         }
 
-        $db = Branch::getHubDB();
+        Branch::loadHubDB();
 
-        if (!$db) {
-            return NULL;
-        }
+        $db = new PHPWS_DB('branch_mod_limit');
+        $db->addColumn('module_name');
+        $db->addWhere('branch_id', $branch_id);
+        $result = $db->select('col');
 
-        $sql = sprintf('SELECT module_name FROM branch_mod_limit WHERE branch_id=\'%s\'', $branch_id);
-
-        $result = $db->getCol($sql);
+        PHPWS_DB::loadDB();
 
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            return NULL;
+            return null;
         } else {
             return $result;
         }
-        $db->disconnect();
+        
     }
 
     /**

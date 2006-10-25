@@ -25,6 +25,10 @@
         <td>{DBPASS}</td>
     </tr>
     <tr>
+        <td>{DBPREFIX_LABEL}</td>
+        <td>{DBPREFIX}</td>
+    </tr>
+    <tr>
         <td>{DBHOST_LABEL}</td>
         <td>{DBHOST}</td>
     </tr>

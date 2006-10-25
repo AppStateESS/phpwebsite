@@ -36,7 +36,7 @@ class Branch_Admin {
     var $dbhost      = 'localhost';
     var $dbport      = null;
     var $dbtype      = null;
-
+    var $dbprefix    = null;
     var $dsn         = null; // full dsn
 
     var $create_step = 1;
@@ -62,12 +62,13 @@ class Branch_Admin {
 
         if (isset($_SESSION['branch_dsn'])) {
             $dsn = &$_SESSION['branch_dsn'];
-            $this->dbname = $dsn['dbname'];
-            $this->dbuser = $dsn['dbuser'];
-            $this->dbpass = $dsn['dbpass'];
-            $this->dbhost = $dsn['dbhost'];
-            $this->dbport = $dsn['dbport'];
-            $this->dbtype = $dsn['dbtype'];
+            $this->dbname   = $dsn['dbname'];
+            $this->dbuser   = $dsn['dbuser'];
+            $this->dbpass   = $dsn['dbpass'];
+            $this->dbhost   = $dsn['dbhost'];
+            $this->dbport   = $dsn['dbport'];
+            $this->dbtype   = $dsn['dbtype'];
+            $this->dbprefix = $dsn['dbprefix'];
         }
 
         if (isset($_REQUEST['branch_id'])) {
@@ -209,8 +210,6 @@ class Branch_Admin {
 
             $this->listBranches();
             break;
-            
-
         }// end of the command switch
 
     }
@@ -288,7 +287,7 @@ class Branch_Admin {
     function create_core()
     {
         $db = & new PHPWS_DB;
-        $loaddb = $db->loadDB($this->getDSN());
+        $loaddb = $db->loadDB($this->getDSN(), $this->dbprefix);
         if (PEAR::isError($loaddb)) {
             return $loaddb;
         }
@@ -318,6 +317,7 @@ class Branch_Admin {
         $template['home_dir']     = $this->branch->directory;
         $template['site_hash']    = $this->branch->site_hash;
         $template['dsn']          = $this->getDSN();
+        $template['dbprefix']     = $this->dbprefix;
 
         // if windows installation, comment out linux pear path
         if (PHPWS_Core::isWindows()) {
@@ -412,7 +412,7 @@ class Branch_Admin {
             $_SESSION['Boost']->loadModules($modules);
         }
 
-        PHPWS_DB::loadDB($this->getDSN());
+        PHPWS_DB::loadDB($this->getDSN(), $this->dbprefix);
 
         $this->title = _('Installing core modules');
 
@@ -427,8 +427,7 @@ class Branch_Admin {
             $this->content[] = $result;
         }
 
-        PHPWS_DB::disconnect();
-
+        PHPWS_DB::loadDB();
         return $_SESSION['Boost']->isFinished();
     }
 
@@ -447,12 +446,13 @@ class Branch_Admin {
      */
     function saveDSN()
     {
-        $_SESSION['branch_dsn'] = array('dbtype' => $this->dbtype,
-                                        'dbuser' => $this->dbuser,
-                                        'dbpass' => $this->dbpass,
-                                        'dbhost' => $this->dbhost,
-                                        'dbport' => $this->dbport,
-                                        'dbname' => $this->dbname);
+        $_SESSION['branch_dsn'] = array('dbtype'   => $this->dbtype,
+                                        'dbuser'   => $this->dbuser,
+                                        'dbpass'   => $this->dbpass,
+                                        'dbhost'   => $this->dbhost,
+                                        'dbport'   => $this->dbport,
+                                        'dbname'   => $this->dbname,
+                                        'dbprefix' => $this->dbprefix);
     }
 
     /**
@@ -476,7 +476,7 @@ class Branch_Admin {
             if ($dbname) {
                 $dsn .= '/' . $this->dbname;
             }
-            
+            $GLOBALS['Branch_DSN'] = $dsn;
             return $dsn;
         } else {
             return null;
@@ -549,7 +549,7 @@ class Branch_Admin {
     function testDB()
     {
         $connection = $this->checkConnection();
-
+        PHPWS_DB::loadDB();
         switch ($connection) {
         case BRANCH_CONNECT_NO_DB:
             // connection made, but database does not exist
@@ -656,6 +656,10 @@ class Branch_Admin {
         $form->addPassword('dbpass', $this->dbpass);
         $form->allowValue('dbpass');
         $form->setLabel('dbpass', _('User password'));
+
+        $form->addText('dbprefix', $this->dbprefix);
+        $form->setLabel('dbprefix', _('Table prefix'));
+        $form->setSize('dbprefix', 5, 5);
         
         $form->addText('dbhost', $this->dbhost);
         $form->setLabel('dbhost', _('Database Host'));
@@ -677,7 +681,6 @@ class Branch_Admin {
 
     function checkConnection()
     {
-        PHPWS_DB::disconnect();
         $dsn1 =  sprintf('%s://%s:%s@%s',
                          $this->dbtype,
                          $this->dbuser,
@@ -691,12 +694,12 @@ class Branch_Admin {
         $dsn2 = $dsn1 . '/' . $this->dbname;
 
         $connection = DB::connect($dsn1);
+        
         if (PEAR::isError($connection)) {
             // basic connection failed
             PHPWS_Error::log($connection);
             return BRANCH_NO_CONNECTION;
         } else {
-            $connection->disconnect();
             $connection2 = DB::connect($dsn2);
 
             if (PEAR::isError($connection2)) {
@@ -731,11 +734,12 @@ class Branch_Admin {
     function post_db()
     {
         $result = true;
-        $this->dbuser = $_POST['dbuser'];
-        $this->dbpass = $_POST['dbpass'];
-        $this->dbhost = $_POST['dbhost'];
-        $this->dbtype = $_POST['dbtype'];
-        $this->dbport = $_POST['dbport'];
+        $this->dbuser   = $_POST['dbuser'];
+        $this->dbpass   = $_POST['dbpass'];
+        $this->dbhost   = $_POST['dbhost'];
+        $this->dbtype   = $_POST['dbtype'];
+        $this->dbport   = $_POST['dbport'];
+        $this->dbprefix = $_POST['dbprefix'];
 
         $this->dbname = $_POST['dbname'];
         if (!PHPWS_DB::allowed($this->dbname)) {
@@ -753,6 +757,11 @@ class Branch_Admin {
             $result = false;
         }
 
+        if (preg_match('/\W/', $this->dbprefix)) {
+            $content[] = _('Table prefix must be alphanumeric characters or underscores only');
+            $result = false;
+        }
+
         return $result;
     }
 
@@ -761,7 +770,7 @@ class Branch_Admin {
      */
     function plugHubValues()
     {
-        $dsn = & $GLOBALS['PEAR_DB']->dsn;
+        $dsn = & $GLOBALS['PHPWS_DB']['connection']->dsn;
 
         $this->dbuser = $dsn['username'];
         $this->dbpass = $dsn['password'];
@@ -772,6 +781,7 @@ class Branch_Admin {
             $this->dbport = null;
         }
 
+        $this->dbprefix = PHPWS_DB::getPrefix();
         // dsn also contains dbsyntax
         $this->dbtype = $dsn['phptype'];
     }
@@ -822,7 +832,7 @@ class Branch_Admin {
             }
         }
 
-        $db = & new PHPWS_DB('branch_mod_limit');
+        $db = new PHPWS_DB('branch_mod_limit');
         $db->addWhere('branch_id', $this->branch->id);
         $db->addColumn('module_name');
         $branch_mods = $db->select('col');
@@ -899,10 +909,24 @@ class Branch_Admin {
         return true;
     }
 
-    function getBranches()
+    function getBranches($load_db_info=false)
     {
         $db = & new PHPWS_DB('branch_sites');
-        return $db->getObjects('Branch');
+        $result = $db->getObjects('Branch');
+        if (PEAR::isError($result) || !$load_db_info) {
+            return $result;
+        }
+        foreach ($result as $branch) {
+            if ($branch->loadDSN()) {
+                $new_result[] = $branch;
+            }
+        }
+
+        if (isset($new_result)) {
+            return $new_result;
+        } else {
+            return $result;
+        }
     }
 
 }
