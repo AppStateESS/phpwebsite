@@ -181,7 +181,7 @@ class PHPWS_File {
 
             if (is_file($source_directory . $file_name)) {
                 if (!is_writable($dest_directory)) {
-                    PHPWS_Error::log(PHPWS_DIR_NOT_WRITABLE, 'core', 'PHPWS_File::recursiveFileCopy', $toPath);
+                    PHPWS_Error::log(PHPWS_DIR_NOT_WRITABLE, 'core', 'PHPWS_File::recursiveFileCopy', $dest_directory);
                     return FALSE;
                 }
                 if (!@copy($source_directory . $file_name, $dest_directory . $file_name)) {
