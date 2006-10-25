@@ -29,10 +29,9 @@ class PHPWS_Core {
             PHPWS_Error::log($moduleList);
             PHPWS_Core::errorPage();
         }
-    
-        foreach ($moduleList as $mod){
-            PHPWS_Core::setCurrentModule($mod['title']);
 
+        foreach ($moduleList as $mod) {
+            PHPWS_Core::setCurrentModule($mod['title']);
             /* Using include instead of require to prevent broken mods from hosing the site */
             $includeFile = PHPWS_SOURCE_DIR . 'mod/' . $mod['title'] . '/inc/init.php';
 
@@ -444,7 +443,7 @@ class PHPWS_Core {
         }
 
         if (!$use_file) {
-            $db = & new PHPWS_DB('core_version');
+            $db = new PHPWS_DB('core_version');
             $db->addColumn('version');
             $version = $db->select('one');
         }
@@ -766,7 +765,6 @@ class PHPWS_Core {
                 PHPWS_Error::log(PHPWS_HUB_IDENTITY, 'core', 'PHPWS_Core::checkBranch');
                 return FALSE;
             }
-
             if (Branch::checkCurrentBranch()) {
                 $GLOBALS['Is_Branch'] = TRUE;
                 return TRUE;

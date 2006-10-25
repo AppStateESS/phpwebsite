@@ -94,9 +94,9 @@ class Boost_Form {
             $modList = $dir_mods;
         }
 
-        $tpl['TITLE_LABEL'] = _('Module Title');
+        $tpl['TITLE_LABEL']   = _('Module Title');
         $tpl['COMMAND_LABEL'] = ('Commands');
-        $tpl['ABOUT_LABEL'] = _('More information');
+        $tpl['ABOUT_LABEL']   = _('More information');
         $tpl['VERSION_LABEL'] = _('Current version');
         
         if ($type == 'core_mods' && Current_User::isDeity() && DEITIES_CAN_UNINSTALL) {
@@ -109,9 +109,11 @@ class Boost_Form {
 
         sort($modList);
         $count = 1;
+
         foreach ($modList as $title) {
             $template = $link_command = NULL;
             $link_command['opmod'] = $title;
+
             if ($title == 'core') {
                 $mod = PHPWS_Core::loadAsMod(false);
             } else {
@@ -129,7 +131,7 @@ class Boost_Form {
             $template['VERSION'] = $mod->version;
             $template['TITLE'] = $proper_name;
             $template['ROW'] = ($count % 2) + 1;
-            if (!$mod->isInstalled()){
+            if (!$mod->isInstalled()) {
                 if ($mod->checkDependency()) {
                     $link_title = _('Install');
                     $link_command['action'] = 'install';
