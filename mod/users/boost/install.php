@@ -14,60 +14,50 @@ function users_install(&$content)
     PHPWS_Core::configRequireOnce('users', 'config.php');
 
     if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'branch') {
-        $source_db = DB::connect(PHPWS_DSN);
-        $result = $source_db->getAssoc('select * from users where deity=1', NULL, NULL, DB_FETCHMODE_ASSOC);
+        Branch::loadHubDB();
+        $db = new PHPWS_DB('users');
+        $sql = 'select a.password, b.* from user_authorization as a, users as b where b.deity = 1 && a.username = b.username';
+        $deities = $db->getAll($sql);
 
-        if (PEAR::isError($result)) {
+        if (PEAR::isError($deities)) {
             PHPWS_Error::log($result);
             $content[] = _('Could not access hub database.');
             return FALSE;
         }
-        elseif (empty($result)) {
+        elseif (empty($deities)) {
             $content[] = _('Could not find any hub deities.');
             return FALSE;
         } else {
-            $db = & new PHPWS_DB('users');
-            $pass_db = & new PHPWS_DB('user_authorization');
+            Branch::restoreBranchDB();
+            $auth_db = new PHPWS_DB('user_authorization');
+            $user_db = new PHPWS_DB('users');
+            foreach ($deities as $deity) {
 
-            foreach ($result as $deity) {
-                unset($deity['id']);
-                $sql = sprintf('select * from user_authorization where username=\'%s\'', $deity['username']);
-
-                $login = $source_db->getRow($sql, NULL, DB_FETCHMODE_ASSOC);
-
-                if (empty($login)) {
-                    $content[] = _('Error: Missing login information for a deity user. Cannot copy to branch.');
+                $auth_db->addValue('username', $deity['username']);
+                $auth_db->addValue('password', $deity['password']);
+                $result = $auth_db->insert();
+                if (PEAR::isError($result)) {
+                    PHPWS_Error::log($result);
+                    $content[] = _('Unable to copy deity login to branch.');
                     continue;
-                } elseif (PEAR::isError($login)) {
-                    PHPWS_Error::log($login);
-                    $content[] = _('Error: Missing login information for a deity user. Cannot copy to branch.');
-                    continue;
-                } else {
-                    $pass_db->addValue($login);
-                    $result = $pass_db->insert();
-                    if (PEAR::isError($result)) {
-                        PHPWS_Error::log($result);
-                        $content[] = _('Unable to copy deity login to branch.');
-                        continue;
-                    }
-
-                    $pass_db->reset();
                 }
-
-                $db->addValue($deity);
-                $result = $db->insert();
-
+                unset($deity['password']);
+                $user_db->addValue($deity);
+                $result = $user_db->insert();
+                
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
                     $content[] = _('Unable to copy deity users to branch.');
+                    Branch::loadBranchDB();
                     return FALSE;
                 }
-                $db->reset();
+                $auth_db->reset();
+                $user_db->reset();
             }
             $content[] = _('Deity users copied to branch.');
         }
 
-        $db = & new PHPWS_DB('users_auth_scripts');
+        $db = new PHPWS_DB('users_auth_scripts');
         $db->addValue('display_name', _('Local'));
         $db->addValue('filename', 'local.php');
         $authorize_id = $db->insert();
@@ -79,14 +69,14 @@ function users_install(&$content)
         return TRUE;
     }
 
-    $user = & new PHPWS_User;
+    $user = new PHPWS_User;
     $content[] = '<hr />';
 
     
     if (isset($_POST['mod_title']) && $_POST['mod_title']=='users'){
         $result = User_Action::postUser($user);
         if (!is_array($result)) {
-            $db = & new PHPWS_DB('users_auth_scripts');
+            $db = new PHPWS_DB('users_auth_scripts');
             $db->addValue('display_name', _('Local'));
             $db->addValue('filename', 'local.php');
             $authorize_id = $db->insert();
@@ -123,7 +113,7 @@ function userForm(&$user, $errors=NULL){
     PHPWS_Core::initModClass('users', 'Form.php');
 
     translate('users');
-    $form = & new PHPWS_Form;
+    $form = new PHPWS_Form;
 
 
     if (isset($_REQUEST['module'])) {
