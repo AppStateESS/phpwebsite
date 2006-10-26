@@ -7,7 +7,7 @@
 class Branch {
     var $id          = null;
     var $branch_name = null;
-    var $directory   = null; // saved WITHOUT final forward slash (/)
+    var $directory   = null; 
     var $url         = null;
     var $site_hash   = null;
     var $dsn         = null;
@@ -26,7 +26,7 @@ class Branch {
 
     function loadDSN()
     {
-        $config = file($this->directory . '/config/core/config.php');
+        $config = file($this->directory . 'config/core/config.php');
         foreach ($config as $row) {
             $row = str_replace(' ', '', trim($row));
             if (preg_match('/^define\(\'phpws_dsn\'/i', $row)) {
@@ -97,43 +97,43 @@ class Branch {
 
     function createDirectories()
     {
-        if (!mkdir($this->directory . '/config/')) {
+        if (!mkdir($this->directory . 'config/')) {
             return FALSE;
         }
 
-        if (!mkdir($this->directory . '/config/core/')) {
+        if (!mkdir($this->directory . 'config/core/')) {
             return FALSE;
         }
         
-        if (!mkdir($this->directory . '/files/')) {
+        if (!mkdir($this->directory . 'files/')) {
             return FALSE;
         }
 
-        if (!mkdir($this->directory . '/images/')) {
+        if (!mkdir($this->directory . 'images/')) {
             return FALSE;
         }
 
-        if (!mkdir($this->directory . '/images/core/')) {
+        if (!mkdir($this->directory . 'images/core/')) {
             return FALSE;
         }
 
-        if (!mkdir($this->directory . '/javascript/')) {
+        if (!mkdir($this->directory . 'javascript/')) {
             return FALSE;
         }
 
-        if (!mkdir($this->directory . '/javascript/modules')) {
+        if (!mkdir($this->directory . 'javascript/modules')) {
             return FALSE;
         }
 
-        if (!mkdir($this->directory . '/templates/')) {
+        if (!mkdir($this->directory . 'templates/')) {
             return FALSE;
         }
 
-        if (!mkdir($this->directory . '/themes/')) {
+        if (!mkdir($this->directory . 'themes/')) {
             return FALSE;
         }
 
-        if (!mkdir($this->directory . '/logs/')) {
+        if (!mkdir($this->directory . 'logs/')) {
             return FALSE;
         }
 
