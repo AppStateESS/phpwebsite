@@ -14,7 +14,7 @@ function calendar_uninstall(&$content)
     if (PEAR::isError($schedules)) {
         return $schedules;
     } elseif (empty($schedules)) {
-        PHPWS_Core::dropTable('calendar_schedule');
+        PHPWS_DB::dropTable('calendar_schedule');
         return true;
     }
 
