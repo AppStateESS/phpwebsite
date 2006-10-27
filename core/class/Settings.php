@@ -123,10 +123,10 @@ class PHPWS_Settings {
 
             switch( $type ) {
             case 1:
-                $db->addValue('small_num', $value);
+                $db->addValue('small_num', (int)$value);
                 break;
             case 2:
-                $db->addValue('large_num', $value);
+                $db->addValue('large_num', (int)$value);
                 break;
 
             case 3:
@@ -152,6 +152,24 @@ class PHPWS_Settings {
             return $filename;
         } else {
             return NULL;
+        }
+    }
+
+    function reset($module, $value)
+    {
+        $default = PHPWS_Settings::loadConfig($module);
+        if (!$default) {
+            return PHPWS_Error::get(SETTINGS_MISSING_FILE, 'core', 'PHPWS_Settings::reset', $module);
+        }
+
+        include $default;
+
+        if (isset($settings[$value])) {
+            PHPWS_Settings::set($module, $value, $settings[$value]);
+            $result = PHPWS_Settings::save($module);
+            return true;
+        } else {
+            return false;
         }
     }
 
