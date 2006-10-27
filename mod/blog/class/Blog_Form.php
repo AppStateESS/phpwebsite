@@ -67,5 +67,32 @@ class Blog_Form {
         $template['EXAMPLE'] = 'YYMMDD HH:MM';
         return PHPWS_Template::process($template, 'blog', 'edit.tpl');
     }
+
+    function settings()
+    {
+        $form = new PHPWS_Form;
+        $form->addHidden('module', 'blog');
+        $form->addHidden('action', 'admin');
+        $form->addHidden('command', 'post_settings');
+
+        $form->addText('blog_limit', PHPWS_Settings::get('blog', 'blog_limit'));
+        $form->setSize('blog_limit', 2, 2);
+        $form->setLabel('blog_limit', _('Blog view limit'));
+
+        $form->addText('past_entries', PHPWS_Settings::get('blog', 'past_entries'));
+        $form->setLabel('past_entries', _('Number of past entries'));
+        $form->setSize('past_entries', 2, 2);
+
+        $form->addCheck('allow_comments', 1);
+        $form->setLabel('allow_comments', _('Allow comments by default'));
+        $form->setMatch('allow_comments', PHPWS_Settings::get('blog', 'allow_comments'));
+
+        $form->addSubmit(_('Save settings'));
+
+        $template = $form->getTemplate();
+        $template['PAST_NOTE'] = _('Set to zero to prevent display');
+
+        return PHPWS_Template::process($template, 'blog', 'settings.tpl');
+    }
 }
 ?>

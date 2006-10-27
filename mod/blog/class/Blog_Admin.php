@@ -225,6 +225,23 @@ class Blog_Admin {
             }
             break;
 
+        case 'post_settings':
+            if (!Current_User::authorized('blog', 'settings')) {
+                Current_User::disallow();
+                return;
+            }
+            Blog_Admin::postSettings();
+            $message = _('Blog settings saved.');
+        case 'settings':
+            if (!Current_User::allow('blog', 'settings')) {
+                Current_User::disallow();
+                return;
+            }
+            $panel->setCurrentTab('settings');
+            $title = _('Blog Settings');
+            $content = Blog_Form::settings();
+            break;
+
         case 'view_version':
             $title = _('View version');
             $content = Blog_Admin::viewVersion($_REQUEST['version_id']);
@@ -241,6 +258,27 @@ class Blog_Admin {
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
 
     }
+
+
+    function postSettings()
+    {
+        if (isset($_POST['allow_comments'])) {
+            PHPWS_Settings::set('blog', 'allow_comments', 1);
+        } else {
+            PHPWS_Settings::set('blog', 'allow_comments', 0);
+        }
+
+        PHPWS_Settings::set('blog', 'past_entries', (int)$_POST['past_entries']);
+        $blog_limit = (int)$_POST['blog_limit'];
+        if ($blog_limit) {
+            PHPWS_Settings::set('blog', 'blog_limit', $blog_limit);
+        } else {
+            PHPWS_Settings::set('blog', 'blog_limit', PHPWS_Setting::get('blog', 'blog_limit'));
+        }
+        
+        PHPWS_Settings::save('blog');
+    }
+
 
     function viewVersion($version_id)
     {
@@ -312,6 +350,11 @@ class Blog_Admin {
         if (Current_User::allow('blog', 'edit_blog')) {
             $tabs['list'] = &$listCommand;
             $tabs['approval'] = &$approvalCommand;
+        }
+
+        if (Current_User::allow('blog', 'settings')) {
+            $tabs['settings'] = array('title' => _('Settings'), 
+                                      'link' => 'index.php?module=blog&amp;action=admin');
         }
 
         $panel = new PHPWS_Panel('blog');

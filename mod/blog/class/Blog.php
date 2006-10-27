@@ -194,9 +194,9 @@ class Blog {
     function getViewLink($bare=false){
         if ($bare) {
             if (MOD_REWRITE_ENABLED) {
-                return 'blog/' . $this->id;
+                return PHPWS_HOME_HTTP . 'blog/' . $this->id;
             } else {
-                return 'index.php?module=blog&amp;action=view_comments&amp;id=' . $this->id;
+                return PHPWS_HOME_HTTP . 'index.php?module=blog&amp;action=view_comments&amp;id=' . $this->id;
             }
         } else {
             return PHPWS_Text::rewriteLink(_('View'), 'blog', $this->id);
@@ -243,7 +243,9 @@ class Blog {
             return _('Sorry you do not have permission to view this blog entry.');
         }
 
-        $template['TITLE'] = PHPWS_Text::rewriteLink($this->title, 'blog', $this->id);
+        $template['TITLE'] = sprintf('<a href="%s" rel="bookmark">%s</a>',
+                                     $this->getViewLink(true), $this->title);
+
         $template['LOCAL_DATE']  = $this->getLocalDate();
 
         $summary = $this->getSummary(true);

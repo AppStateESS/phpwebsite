@@ -6,6 +6,8 @@
    * @version $Id$
    */
 
+define('BLOG_CACHE_KEY', 'front_blog_page');
+
 class Blog_User {
 
     function main()
@@ -37,7 +39,8 @@ class Blog_User {
         Layout::add($content);
     }
 
-    function show(){
+    function show()
+    {
         $key = BLOG_CACHE_KEY;
 
         if (!Current_User::isLogged()    &&
@@ -46,7 +49,7 @@ class Blog_User {
             return $content;
         }
 
-        $limit = 5;
+        $limit = PHPWS_Settings::get('blog', 'blog_limit');
 
         $db = new PHPWS_DB('blog_entries');
         $db->addWhere('approved', 1);
@@ -65,6 +68,18 @@ class Blog_User {
 
         if (empty($result)) {
             return NULL;
+        }
+
+        $past_entries = PHPWS_Settings::get('blog', 'past_entries');
+        
+        if ($past_entries) {
+            $db->setLimit($limit, $past_entries);
+            $past = $db->getObjects('Blog');
+            if (PEAR::isError($past)) {
+                PHPWS_Error::log($past);
+            } elseif($past) {
+                Blog_User::showPast($past);
+            }
         }
     
         foreach ($result as $blog) {
@@ -89,6 +104,18 @@ class Blog_User {
         
         return PHPWS_Template::process($tpl, 'blog', 'list_view.tpl');
     }
+
+    function showPast($entries)
+    {
+        foreach ($entries as $entry) {
+            $tpl['entry'][] = array('TITLE' => sprintf('<a href="%s">%s</a>', $entry->getViewLink(true), $entry->title));
+        }
+
+        $tpl['PAST_TITLE'] = _('Previous blog entries');
+        $content = PHPWS_Template::process($tpl, 'blog', 'past_view.tpl');
+        Layout::add($content, 'blog', 'previous_entries');
+    }
+
 
 }
 

@@ -6,5 +6,7 @@
    */
 
 $settings['allow_comments'] = 1;
+$settings['blog_limit'] = 10;
+$settings['past_entries'] = 10;
 
 ?>
