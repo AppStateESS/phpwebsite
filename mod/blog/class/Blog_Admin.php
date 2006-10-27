@@ -268,6 +268,12 @@ class Blog_Admin {
             PHPWS_Settings::set('blog', 'allow_comments', 0);
         }
 
+        if (isset($_POST['home_page_display'])) {
+            PHPWS_Settings::set('blog', 'home_page_display', 1);
+        } else {
+            PHPWS_Settings::set('blog', 'home_page_display', 0);
+        }
+
         PHPWS_Settings::set('blog', 'past_entries', (int)$_POST['past_entries']);
         $blog_limit = (int)$_POST['blog_limit'];
         if ($blog_limit) {

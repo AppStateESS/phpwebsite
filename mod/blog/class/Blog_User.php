@@ -31,12 +31,30 @@ class Blog_User {
             $content = $blog->view(TRUE, FALSE);
             break;
 
+        case 'view':
+            $content = Blog_User::show();
+            Layout::add($content, 'blog', 'view', TRUE);
+            return;
+            break;
+
         default:
             PHPWS_Core::errorPage(404);
             break;
         }
 
         Layout::add($content);
+    }
+
+    function getCurrentEntries(&$db, $limit)
+    {
+        $db->addWhere('approved', 1);
+        $db->addWhere('publish_date', mktime(), '<');
+        $db->setLimit($limit);
+        $db->addOrder('create_date desc');
+
+        Key::restrictView($db, 'blog');
+
+        return $db->getObjects('Blog');
     }
 
     function show()
@@ -49,17 +67,9 @@ class Blog_User {
             return $content;
         }
 
-        $limit = PHPWS_Settings::get('blog', 'blog_limit');
-
         $db = new PHPWS_DB('blog_entries');
-        $db->addWhere('approved', 1);
-        $db->addWhere('publish_date', mktime(), '<');
-        $db->setLimit($limit);
-        $db->addOrder('create_date desc');
-
-        Key::restrictView($db, 'blog');
-
-        $result = $db->getObjects('Blog');
+        $limit = PHPWS_Settings::get('blog', 'blog_limit');
+        $result = Blog_User::getCurrentEntries($db, $limit);
 
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
@@ -105,6 +115,10 @@ class Blog_User {
         return PHPWS_Template::process($tpl, 'blog', 'list_view.tpl');
     }
 
+    /**
+     * Works with show function
+     * Displays entries outside the page limit
+     */
     function showPast($entries)
     {
         foreach ($entries as $entry) {
@@ -116,6 +130,23 @@ class Blog_User {
         Layout::add($content, 'blog', 'previous_entries');
     }
 
+    /**
+     * Displays current blog entries to side box
+     */
+    function showSide()
+    {
+        $db = new PHPWS_DB('blog_entries');
+        $limit = PHPWS_Settings::get('blog', 'blog_limit');
+        $result = Blog_User::getCurrentEntries($db, $limit);
+
+        foreach ($result as $entry) {
+            $tpl['entry'][] = array('TITLE' => sprintf('<a href="%s">%s</a>', $entry->getViewLink(true), $entry->title));
+        }
+
+        $tpl['RECENT_TITLE'] = sprintf('<a href="index.php?module=blog&amp;action=view">%s</a>', _('Recent blog entries'));
+        $content = PHPWS_Template::process($tpl, 'blog', 'recent_view.tpl');
+        Layout::add($content, 'blog', 'recent_entries');
+    }
 
 }
 

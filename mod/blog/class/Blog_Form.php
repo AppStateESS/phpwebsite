@@ -87,6 +87,10 @@ class Blog_Form {
         $form->setLabel('allow_comments', _('Allow comments by default'));
         $form->setMatch('allow_comments', PHPWS_Settings::get('blog', 'allow_comments'));
 
+        $form->addCheck('home_page_display', 1);
+        $form->setLabel('home_page_display', _('Show blog on home page'));
+        $form->setMatch('home_page_display', PHPWS_Settings::get('blog', 'home_page_display'));
+
         $form->addSubmit(_('Save settings'));
 
         $template = $form->getTemplate();

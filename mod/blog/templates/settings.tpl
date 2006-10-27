@@ -18,6 +18,12 @@
       <td>{ALLOW_COMMENTS}
       </td>
    </tr>
+   <tr>
+      <td>{HOME_PAGE_DISPLAY_LABEL}
+      </td>
+      <td>{HOME_PAGE_DISPLAY}
+      </td>
+   </tr>
 </table>
 {SUBMIT}
 {END_FORM}
