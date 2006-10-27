@@ -1,3 +1,47 @@
+October 27
+
+Core
++ Convert
+  o Added a table check to getSourceDB function.
+  o Removed ampersands from constructors
+  o Calendar - Added a check to assure calendar was installed before converting
+
++ Settings.php
+  o Added an error check to prevent null values from being saved in the
+    integer columns
+  o Added a reset function that sets a value back to the default
+
+
++ Batch.php - added some error checks
+
++ Database.php - Removed the static tables variable in the isTable
+  function. Possibility exists that two or more databases could be used
+  and the static list would return faulty information
+
+Blog
++ Added a settings tab and form
++ Through settings, can control number of current and past entries to
+  display and the default comment setting.
++ Added a "past entries" list which displays to the side
+  (requires new core update)
++ Admin can now chose to show blog on front page or not.
++ Updated local files: past_view.tpl, settings.tpl, config.php,
+  recent_view.tpl
+
+
+
+October 26
+Phatform
++ Fixed element move bug submitted by the great JYDAllStar from his
+  underground bunker
+
+Branch
++ Fixed directory references to extra slash.
+
+Photoalbum
++ Fixed pager listing all photos together regardless of album
++ Fixed prefix error message
+
 October 25
 Core
 + Database.php
@@ -20,6 +64,7 @@ Boost
 
 Branch
 + Overhauled to allow table prefixing. Requires Database changes.
++ Fixed bug 1582406, use proper directory
 
 Users
 + The username column in user_authorization was made into a primary
