@@ -39,7 +39,11 @@ class Batches {
 
     function setTotalItems($total)
     {
+        if (!is_numeric($total)) {
+            return false;
+        }
         $this->total_items = (int)$total;
+        return true;
     }
 
     function completeBatch()
@@ -60,8 +64,13 @@ class Batches {
 
     function setBatchSet($set_no)
     {
+        if (!is_numeric($set_no)) {
+            return false;
+        }
+
         $this->batch_set = (int)$set_no;
         $this->total_batches = (int)ceil($this->total_items / $this->batch_set);
+        return true;
     }
 
     function getLimit()
