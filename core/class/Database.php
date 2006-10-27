@@ -307,12 +307,8 @@ class PHPWS_DB {
 
     function isTable($table)
     {
-        static $tables;
-
-        if (count($tables) < 1) {
-            PHPWS_DB::touchDB();
-            $tables = PHPWS_DB::listTables();
-        }
+        PHPWS_DB::touchDB();
+        $tables = PHPWS_DB::listTables();
 
         $table = PHPWS_DB::addPrefix($table);
         return in_array($table, $tables);
