@@ -63,11 +63,13 @@ function convert()
         }
 
         $db = Convert::getSourceDB('mod_calendar_events');
+        if (!$db) {
+            $content[] = _('Calendar is not installed in other database.');
+            return implode('<br />', $content);
+        }
         if (defined('IGNORE_BEFORE')) {
             $db->addWhere('startDate', IGNORE_BEFORE, '>=');
         }
-
-        
 
         $batch = & new Batches('convert_events');
 
