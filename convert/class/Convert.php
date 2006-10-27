@@ -91,9 +91,11 @@ class Convert {
     {
         $dsn = $_SESSION['OTHER_DATABASE'];
 
-        $db = & new PHPWS_DB($table);
-        $db->loadDB($dsn);
-        $db->setTable($table);
+        PHPWS_DB::loadDB($dsn);
+        if (!PHPWS_DB::isTable($table)) {
+            return false;
+        }
+        $db = new PHPWS_DB($table);        
         return $db;
     }
 
@@ -182,7 +184,7 @@ class Convert {
                           'fbsql' =>'FrontBase',
                           'ifx'   =>'Informix');
 
-        $form = & new PHPWS_Form;
+        $form = new PHPWS_Form;
         $form->addHidden('command', 'make_connection');
         
         $form->addSelect('type', $db_list);
@@ -300,7 +302,7 @@ class Convert {
             $username = NULL;
         }
 
-        $form = & new PHPWS_Form('User_Login');
+        $form = new PHPWS_Form('User_Login');
         $form->addHidden('command', 'login');
         $form->addText('phpws_username', $username);
         $form->addPassword('phpws_password');
@@ -344,20 +346,20 @@ class Convert {
 
     function removeConvert($name)
     {
-        $db = & new PHPWS_DB('converted');
+        $db = new PHPWS_DB('converted');
         $db->addWhere('convert_name', $name);
         return $db->delete();
     }
 
     function addConvert($name)
     {
-        $db = & new PHPWS_DB('converted');
+        $db = new PHPWS_DB('converted');
         $db->addValue('convert_name', $name);
         return $db->insert();
     }
 
     function isConverted($name) {
-        $db = & new PHPWS_DB('converted');
+        $db = new PHPWS_DB('converted');
         $db->addWhere('convert_name', $name);
         $result = $db->select();
         if (PEAR::isError($result)) {
