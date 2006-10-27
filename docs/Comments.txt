@@ -1,0 +1,62 @@
+phpWebSite Comments
+-------------------
+By Matthew McNaney
+
+Adding comments to your content is simple. All that is required is
+that your content item uses the key class (see Key.txt for details).
+
+
+Creating a Thread
+-------------------
+
+First, include the Comments class:
+
+PHPWS_Core::initModClass('comments', 'Comments.php');
+
+
+Next create a thread associated to your item's key id:
+
+$thread = Comments::getThread($key_id);
+
+Decide if you want to allow anonymous comments in the thread:
+
+$thread->allowAnonymous(true);
+
+Finally, save the thread:
+
+$thread->save();
+
+
+Displaying the thread
+----------------------
+Now you just need to retrieve the thread and display it to your users.
+
+Require the Comments class again if you need be.
+
+Now retrieve the thread using the key that created it.
+
+$thread = Comments::getThread($key);
+
+If you need to know how many comments have been made to the thread,
+call countComments like so:
+
+printf('This item has %d comments.', $thread->countComments());
+
+You can also have this function return a formatted version.
+
+
+echo $thread->countComments(true);
+// if comments == 0, echoes "No comments"
+// if comments == 1, echoes "1 comment"
+// if comments > 1, echoes "n comments" where n is the count
+
+
+If you want to view the comments:
+
+echo $thread->view();
+
+
+Conclusion
+-------------------------
+That's all there is to it. The comments module handles pagination,
+posting, quoting, etc.
