@@ -274,12 +274,19 @@ class Blog_Admin {
             PHPWS_Settings::set('blog', 'home_page_display', 0);
         }
 
-        PHPWS_Settings::set('blog', 'past_entries', (int)$_POST['past_entries']);
+        $past_limit = (int)$_POST['past_entries'];
+
+        if ((int)$past_limit >= 0) {
+            PHPWS_Settings::set('blog', 'past_entries', $past_limit);
+        } else {
+            PHPWS_Settings::reset('blog', 'past_entries');
+        }
+
         $blog_limit = (int)$_POST['blog_limit'];
-        if ($blog_limit) {
+        if ((int)$blog_limit > 0) {
             PHPWS_Settings::set('blog', 'blog_limit', $blog_limit);
         } else {
-            PHPWS_Settings::set('blog', 'blog_limit', PHPWS_Setting::get('blog', 'blog_limit'));
+            PHPWS_Settings::reset('blog', 'blog_limit');
         }
         
         PHPWS_Settings::save('blog');
