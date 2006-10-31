@@ -15,7 +15,7 @@ define('BLOG_BATCH', 10);
 
 // Must be in YYYY-MM-DD format.
 // If you want to convert all your announcements, leave this line commented out.
-//define('IGNORE_BEFORE', '2006-01-01');
+// define('IGNORE_BEFORE', '2006-01-01');
 
 
 // If you do not want to convert comments, set this to false
@@ -139,10 +139,10 @@ function convertAnnouncement($entry)
 
     $val['id']      = $entry['id'];
     $val['title']   = strip_tags($entry['subject']);
-    $val['entry']   = $entry['summary'];
+    $val['summary']   = $entry['summary'];
 
     if (!empty($entry['body'])) {
-        $val['entry'] .= '<br /><br />' . $entry['body'];
+        $val['entry'] = $entry['body'];
     }
 
     $val['author']  = $entry['userCreated'];
@@ -164,6 +164,7 @@ function convertAnnouncement($entry)
     }
 
     $key = & new Key;
+    $key->create_date = $val['create_date'];
     $key->setItemId($val['id']);
     $key->setModule('blog');
     $key->setItemName('entry');
@@ -177,7 +178,10 @@ function convertAnnouncement($entry)
     $result = $db->insert(FALSE);
 
     $search = & new Search($key->id);
-    $search->addKeywords($val['entry']);
+    $search->addKeywords($val['summary']);
+    if (!empty($val['entry'])) {
+        $search->addKeywords($val['entry']);
+    }
     $search->addKeywords($val['title']);
     $search->save();
 
