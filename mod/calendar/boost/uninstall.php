@@ -14,7 +14,16 @@ function calendar_uninstall(&$content)
     if (PEAR::isError($schedules)) {
         return $schedules;
     } elseif (empty($schedules)) {
-        PHPWS_DB::dropTable('calendar_schedule');
+        $result = PHPWS_DB::dropTable('calendar_schedule');
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        $result = PHPWS_DB::dropTable('calendar_notice');
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
         return true;
     }
 
