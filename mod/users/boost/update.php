@@ -61,6 +61,10 @@ function users_update(&$content, $currentVersion)
         $content[] = '+ Added - page refresh after language choice.';
         $content[] = '+ Fixed - My Page was appearing regardless of user login status.';
         $content[] = '+ Added - allowUsername function to verify user name formating.';
+
+    case version_compare($currentVersion, '2.1.0', '<'):
+        $content[] = 'New - The username column in user_authorization was made into a primary key.';
+        $content[] = 'The install process was rewritten to work with branch changes.';
     }
 
     return TRUE;
