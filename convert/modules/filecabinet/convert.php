@@ -15,6 +15,13 @@ function convert()
         return _('File Cabinet has already converted Documents files.');
     }
 
+    $mod_list = PHPWS_Core::installModList();
+
+    if (!in_array('documents', $mod_list)) {
+        return _('The Documents module is not installed.');
+    }
+
+
     $db = Convert::getSourceDB('mod_documents_files');
     $all_files = $db->select();
     $db->disconnect();
