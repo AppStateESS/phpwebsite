@@ -169,7 +169,6 @@ function createSchedule()
     }
 
     $_SESSION['schedule_id'] = $schedule->id;
-
     return true;
 }
 
@@ -295,7 +294,7 @@ function setRepeat(&$new_event, &$event)
 
 function createSeqTable()
 {
-    $schedule = & new Calendar_Schedule((int)$_SESSION['schedule_id']);
+    $schedule = new Calendar_Schedule((int)$_SESSION['schedule_id']);
     $table = $schedule->getEventTable();
     $db = new PHPWS_DB($table);
     return $db->updateSequenceTable();
