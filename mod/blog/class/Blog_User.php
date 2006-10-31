@@ -139,6 +139,10 @@ class Blog_User {
         $limit = PHPWS_Settings::get('blog', 'blog_limit');
         $result = Blog_User::getCurrentEntries($db, $limit);
 
+        if (!$result) {
+            return;
+        }
+
         foreach ($result as $entry) {
             $tpl['entry'][] = array('TITLE' => sprintf('<a href="%s">%s</a>', $entry->getViewLink(true), $entry->title));
         }
