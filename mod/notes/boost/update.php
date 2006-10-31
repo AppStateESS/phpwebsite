@@ -22,6 +22,9 @@ function notes_update(&$content, $version) {
         $db->addTableColumn('encrypted', 'smallint NOT NULL default \'0\'');
         $db->addTableColumn('date_sent', 'int NOT NULL default \'0\'');
         $content[] = '+ Large portions rewritten.';
+
+    case version_compare($version, '0.1.1', '<'):
+        $content[] = 'Fix - Notes user entry was sending notes on unsuccessful username searches.';
     }
 
     return true;
