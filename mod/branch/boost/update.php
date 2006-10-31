@@ -42,6 +42,9 @@ function branch_update(&$content, $version)
     case version_compare($version, '1.0.0', '<'):
         $content[] = 'New - Overhauled to allow table prefixing. Requires Database changes.';
         $content[] = 'Fix - Bug 1582406, now uses proper directory.';
+
+    case version_compare($version, '1.0.1', '<'):
+        $content[] = 'Fix - Removed error during Boost update if no branches are installed.';
     }
     return true;
 }

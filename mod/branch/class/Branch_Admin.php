@@ -913,7 +913,7 @@ class Branch_Admin {
     {
         $db = & new PHPWS_DB('branch_sites');
         $result = $db->getObjects('Branch');
-        if (PEAR::isError($result) || !$load_db_info) {
+        if (PEAR::isError($result) || !$load_db_info || empty($result)) {
             return $result;
         }
         foreach ($result as $branch) {
