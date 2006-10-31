@@ -23,7 +23,7 @@ class Menu {
     {
         Layout::addStyle('menu');
         PHPWS_Core::initModClass('menu', 'Menu_Item.php');
-        $db = & new PHPWS_DB('menus');
+        $db = new PHPWS_DB('menus');
         $db->addWhere('pin_all', 1);
         $result = $db->getObjects('Menu_Item');
 
@@ -59,7 +59,7 @@ class Menu {
         Layout::addStyle('menu');
         PHPWS_Core::initModClass('menu', 'Menu_Item.php');
 
-        $db = & new PHPWS_DB('menus');
+        $db = new PHPWS_DB('menus');
         $db->addWhere('menu_assoc.key_id', $key->id);
         $db->addWhere('id', 'menu_assoc.menu_id');
         $result = $db->getObjects('Menu_Item');
@@ -78,7 +78,7 @@ class Menu {
                 if (in_array($menu_id, $seen)) {
                     continue;
                 }
-                $menu = & new Menu_Item($menu_id);
+                $menu = new Menu_Item($menu_id);
                 $menu->view(true);
             }
         }
@@ -91,15 +91,21 @@ class Menu {
         return $url == $compare;
     }
 
-    function getOffsiteLink($menu_id, $parent_id=0)
+    function getOffsiteLink($menu_id, $parent_id=0, $isKeyed=false)
     {
         $vars['command']   = 'add_offsite_link';
         $vars['menu_id']   = $menu_id;
         $vars['parent_id'] = $parent_id;
 
-        $js['link_title'] = _('Add offsite link');
+        if (!$isKeyed) {
+            $vars['dadd'] = urlencode(PHPWS_Core::getCurrentUrl(false));
+        }
+
+        $js['link_title'] = _('Add Other Link');
         $js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE, FALSE, FALSE);
         $js['label'] = MENU_LINK_ADD_OFFSITE;
+        $js['width'] = 500;
+        $js['height'] = 200;
         return javascript('open_window', $js);
     }
 
@@ -164,7 +170,7 @@ class Menu {
 
     function deleteLink($link_id)
     {
-        $link = & new Menu_Link($link_id);
+        $link = new Menu_Link($link_id);
         return $link->delete();
     }
 
@@ -172,6 +178,47 @@ class Menu {
     function isAdminMode()
     {
         return isset($_SESSION['Menu_Admin_Mode']);
+    }
+
+    function siteMap()
+    {
+        if (!isset($_GET['site_map'])) {
+            PHPWS_Core::errorPage('404');
+        }
+        PHPWS_Core::initModClass('menu', 'Menu_Item.php');
+        $menu = new Menu_Item((int)$_GET['site_map']);
+        if (empty($menu->title)) {
+            PHPWS_Core::errorPage('404');
+        }
+
+        $result = $menu->getLinks();
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            PHPWS_Core::errorPage();
+        }
+        $content = array();
+        if (!empty($result)) {
+            Menu::walkLinks($result, $content);
+        }
+
+        $tpl['TITLE'] = $menu->getTitle() . ' - ' . _('Site map');
+        $tpl['CONTENT'] = implode('', $content);
+        
+        Layout::add(PHPWS_Template::process($tpl, 'menu', 'site_map.tpl'));
+    }
+
+    function walkLinks($links, &$content)
+    {
+        $content[] = '<ol>';
+        foreach ($links as $link) {
+            $content[] = '<li>';
+            $content[] = $link->getUrl();
+            if (!empty($link->_children)) {
+                Menu::walkLinks($link->_children, $content);
+            }
+            $content[] = '</li>';
+        }
+        $content[] = '</ol>';
     }
 
 }

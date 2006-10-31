@@ -35,7 +35,7 @@ class Menu_Item {
         if (isset($this->_db)) {
             $this->_db->reset();
         } else {
-            $this->_db = & new PHPWS_DB('menus');
+            $this->_db = new PHPWS_DB('menus');
         }
     }
 
@@ -52,6 +52,12 @@ class Menu_Item {
         }
     }
 
+    function getTitle()
+    {
+        $vars['site_map'] = $this->id;
+        
+        return PHPWS_Text::moduleLink($this->title, 'menu', $vars);
+    }
 
     function setTitle($title)
     {
@@ -148,7 +154,7 @@ class Menu_Item {
             return NULL;
         }
 
-        $db = & new PHPWS_DB('menu_links');
+        $db = new PHPWS_DB('menu_links');
         $db->addWhere('menu_id', $this->id, NULL, NULL, 1);
         $db->addWhere('parent', $parent, NULL, NULL, 1);
 
@@ -212,7 +218,7 @@ class Menu_Item {
 
     function kill()
     {
-        $db = & new PHPWS_DB('menu_assoc');
+        $db = new PHPWS_DB('menu_assoc');
         $db->addWhere('menu_id', $this->id);
         $db->delete();
 
@@ -233,7 +239,7 @@ class Menu_Item {
             return FALSE;
         }
 
-        $link = & new Menu_Link;
+        $link = new Menu_Link;
         $link->key_id = 0;
         $link->setMenuId($this->id);
         $link->setTitle($title);
@@ -245,13 +251,13 @@ class Menu_Item {
 
     function addLink($key_id, $parent=0)
     {
-        $key = & new Key($key_id);
-        $link = & new Menu_Link;
+        $key = new Key($key_id);
+        $link = new Menu_Link;
 
         $link->setMenuId($this->id);
         $link->setKeyId($key->id);
         $link->setTitle($key->title);
-        $link->setUrl($key->url);
+        $link->url = &$key->url;
         $link->setParent($parent);
 
         return $link->save();
@@ -275,7 +281,7 @@ class Menu_Item {
         if ( !$pin_mode && Current_User::allow('menu') ) {
             if (Menu::isAdminMode()) {
                 $tpl['ADD_LINK'] = Menu::getAddLink($this->id);
-                $tpl['ADD_OFFSITE_LINK'] = Menu::getOffsiteLink($this->id);
+                $tpl['ADD_OFFSITE_LINK'] = Menu::getOffsiteLink($this->id, 0, isset($key));
 
                 if (!empty($key)) {
                     $tpl['CLIP'] = Menu::getUnpinLink($this->id, $key->id, $this->pin_all);
@@ -293,7 +299,7 @@ class Menu_Item {
             }
         }
 
-        $tpl['TITLE'] = $this->title;
+        $tpl['TITLE'] = $this->getTitle();
         $tpl['LINKS'] = $this->displayLinks($edit);
 
         if ($pin_mode &&

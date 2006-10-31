@@ -9,10 +9,16 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-if (isset($_REQUEST['command']) && !Current_User::allow('menu')) {
-  Current_User::disallow();
-}
+if (isset($_REQUEST['command'])) {
+    if (!Current_User::allow('menu')) {
+        Current_User::disallow();
+    } else {
+        Menu::admin();
+    }
+ } elseif (isset($_REQUEST['site_map'])) {
+     Menu::siteMap();
+ }
 
-Menu::admin();
+
 
 ?>

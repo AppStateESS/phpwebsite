@@ -92,14 +92,20 @@ class Menu_Link {
 
     function setUrl($url, $local=TRUE)
     {
+        /*
         if ($local) {
             PHPWS_Text::makeRelative($url);
         } else {
             $url = PHPWS_Text::checkLink($url);
         }
+        */
+        $url = PHPWS_Text::checkLink($url);
+        PHPWS_Text::makeRelative($url);
+
+
 
         $this->url = str_replace('&amp;', '&', trim($url));
-        $this->url = preg_replace('/&?authkey=\w{32}/', '', $url);
+        $this->url = preg_replace('/&?authkey=\w{32}/i', '', $url);
     }
 
     function getUrl()

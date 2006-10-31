@@ -10,7 +10,7 @@ define('MENU_CURRENT_LINK_STYLE', 'current-link');
 
 define('MENU_LINK_ADD', sprintf('<img src="./images/mod/menu/gtk-add.png" title="%s" alt="%s" />', _('Add Link'), _('Add Link')));
 
-define('MENU_LINK_ADD_OFFSITE', sprintf('<img src="./images/mod/menu/offsite.png" title="%s" alt="%s" />', _('Add Offsite Link'), _('Add Offsite Link')));
+define('MENU_LINK_ADD_OFFSITE', sprintf('<img src="./images/mod/menu/offsite.png" title="%s" alt="%s" />', _('Add Other Link'), _('Add Other Link')));
 
 define('MENU_LINK_EDIT', sprintf('<img src="./images/mod/menu/gnome-stock-edit.png" title="%s" />', _('Edit Link Title')));
 

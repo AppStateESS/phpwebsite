@@ -137,6 +137,9 @@ class Menu_Admin {
         case 'add_offsite_link':
             $link = & new Menu_Link;
             $link->parent = $_REQUEST['parent_id'];
+            if (isset($_REQUEST['dadd'])) {
+                $link->url = $_REQUEST['dadd'];
+            }
             Menu_Admin::offsiteLink($menu, $link);
             break;
 
@@ -243,7 +246,7 @@ class Menu_Admin {
             $menu->pin_all = 0;
             return $menu->save();
         } else {
-            $db = & new PHPWS_DB('menu_assoc');
+            $db = new PHPWS_DB('menu_assoc');
             $db->addWhere('menu_id', $menu->id);
             $db->addWhere('key_id', $_REQUEST['key_id']);
             return $db->delete();
@@ -302,7 +305,7 @@ class Menu_Admin {
         $adminCommand = array('title' => _('Settings'), 'link' => 'index.php?module=menu');
         $tabs['settings'] = $adminCommand;
 
-        $panel = & new PHPWS_Panel('menu');
+        $panel = new PHPWS_Panel('menu');
         $panel->quickSetTabs($tabs);
 
         $panel->setModule('menu');
@@ -312,7 +315,7 @@ class Menu_Admin {
 
     function editMenu(&$menu)
     {
-        $form = & new PHPWS_Form;
+        $form = new PHPWS_Form;
         $form->addHidden('module', 'menu');
         $form->addHidden('command', 'post_menu');
         if ($menu->id) {
@@ -351,7 +354,7 @@ class Menu_Admin {
             return TRUE;
         }
 
-        $link = & new Menu_Link($link_id);
+        $link = new Menu_Link($link_id);
         if (empty($link->_error)) {
             $link->setTitle($title);
             return $link->save();
@@ -366,7 +369,7 @@ class Menu_Admin {
         $page_tags['ACTION'] = _('Action');
 
         PHPWS_Core::initCoreClass('DBPager.php');
-        $pager = & new DBPager('menus', 'Menu_Item');
+        $pager = new DBPager('menus', 'Menu_Item');
         $pager->setModule('menu');
         $pager->addPageTags($page_tags);
         $pager->setTemplate('admin/menu_list.tpl');
@@ -394,7 +397,7 @@ class Menu_Admin {
 
     function offsiteLink($menu, $link, $errors=NULL)
     {
-        $form = & new PHPWS_Form('offsite_link');
+        $form = new PHPWS_Form('offsite_link');
         if ($link->id) {
             $form->addHidden('link_id', $link->id);
         }
@@ -419,6 +422,7 @@ class Menu_Admin {
         $template = $form->getTemplate();
 
         $template['FORM_TITLE'] = _('Create Link');
+        $template['CANCEL'] = javascript('close_window');
 
         if ($errors) {
             $template['ERRORS'] = implode('<br />', $errors);

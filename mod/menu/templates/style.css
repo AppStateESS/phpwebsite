@@ -10,3 +10,19 @@
     border : solid 1px black;
     background-color : #d7d7d7;
 }
+
+#menu-site-map ol {
+    list-style-type : upper-roman;
+}
+
+#menu-site-map ol ol {
+    list-style-type : upper-alpha;
+}
+
+#menu-site-map ol ol ol {
+    list-style-type : decimal;
+}
+
+#menu-site-map ol ol ol ol {
+    list-style-type : lower-alpha;
+}
