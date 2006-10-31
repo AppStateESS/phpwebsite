@@ -44,6 +44,10 @@ function branch_update(&$content, $version)
         $content[] = 'Fix - Bug 1582406, now uses proper directory.';
 
     case version_compare($version, '1.0.1', '<'):
+        $files = array();
+        $files[] = 'templates/config.tpl';
+        $files[] = 'templates/edit_db.tpl';
+        PHPWS_Boost::updateFiles($files, 'branch');
         $content[] = 'Fix - Removed error during Boost update if no branches are installed.';
     }
     return true;
