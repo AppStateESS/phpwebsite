@@ -93,6 +93,18 @@ function blog_update(&$content, $currentVersion)
         $files[] = 'templates/list_view.tpl';
         PHPWS_Boost::updateFiles($files, 'blog');
         $content[] = 'Updated to hAtom format.';
+
+    case version_compare($currentVersion, '1.2.0', '<'):
+        $files = array();
+        $files[] = 'conf/config.php';
+        $files[] = 'templates/recent_view.tpl';
+        $files[] = 'templates/settings.tpl';
+        $files[] = 'templates/past_view.tpl';
+        
+        $content[] = 'Change - moved cache key out of config';
+        $content[] = 'New - Settings tab allows control of view options for blog.';
+        $content[] = 'New - Past Entries box shows older blog entries.';
+        $content[] = 'New - Admin has ability to show blog on separate page.';
     }
 
     return true;
