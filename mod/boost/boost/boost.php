@@ -5,7 +5,7 @@
    */
 
 $proper_name  = 'Boost';
-$version      = '1.9.5';
+$version      = '1.9.6';
 $register     = TRUE;
 $import_sql   = FALSE;
 $image_dir    = FALSE;
