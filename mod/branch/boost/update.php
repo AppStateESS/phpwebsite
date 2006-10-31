@@ -38,6 +38,10 @@ function branch_update(&$content, $version)
         $content[] = 'New - Branches now record the correct core version.';
         $content[] = 'New - Added function getBranches which returns an array of current branch objects';
         $content[] = 'New - Added loadDSN function that parses a branch\'s config file to grab the dsn.';
+
+    case version_compare($version, '1.0.0', '<'):
+        $content[] = 'New - Overhauled to allow table prefixing. Requires Database changes.';
+        $content[] = 'Fix - Bug 1582406, now uses proper directory.';
     }
     return true;
 }

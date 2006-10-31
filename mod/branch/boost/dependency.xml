@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<dependency>
+  <module>
+    <title>core</title>
+    <properName>phpWebSite Core</properName>
+    <version>1.1.0</version>
+    <url>http://phpwebsite.appstate.edu/downloads/modules/core/</url>
+  </module>
+  <module>
+    <title>boost</title>
+    <properName>Boost</properName>
+    <version>1.9.6</version>
+    <url>http://phpwebsite.appstate.edu/downloads/modules/boost/</url>
+  </module>
+</dependency>
