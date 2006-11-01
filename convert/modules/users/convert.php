@@ -196,6 +196,8 @@ function convertUser($oldUser) {
     $val['updated']      = mktime();
     $val['log_count']    = $oldUser['log_sess'];
     $val['authorize']    = $_SESSION['users_convert_init'];
+    $val['active']       = 1;
+    $val['approved']     = 1;
     $db->addValue($val);
     
     $result = $db->insert(FALSE);
