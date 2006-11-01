@@ -567,7 +567,7 @@ class PHPWS_Text {
 
     function makeRelative(&$text){
         $address = addslashes(PHPWS_Core::getHomeHttp());
-        $text = str_replace($address, '', $text);
+        $text = str_replace($address, './', $text);
     }
 
     /**
