@@ -11,7 +11,7 @@
     <td>{URL_LABEL}</td><td>{URL}</td>
   </tr>
 </table>
-{SUBMIT}
+{SUBMIT} {CANCEL}
 {END_FORM}
 </div>
 </div>
