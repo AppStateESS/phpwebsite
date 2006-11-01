@@ -428,11 +428,19 @@ class Layout {
 
     function getFooter()
     {
+        if (PHPWS_Settings::get('layout', 'footer_fp_only') && isset($_REQUEST['module'])) {
+            return null;
+        }
+
         return PHPWS_Text::parseOutput($_SESSION['Layout_Settings']->footer);
     }
 
     function getHeader()
     {
+        if (PHPWS_Settings::get('layout', 'header_fp_only') && isset($_REQUEST['module'])) {
+            return null;
+        }
+
         return PHPWS_Text::parseOutput($_SESSION['Layout_Settings']->header);
     }
 

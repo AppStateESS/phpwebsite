@@ -15,7 +15,6 @@ class Layout_Admin{
 
     function admin()
     {
-
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $content = NULL;
         $panel = Layout_Admin::adminPanel();
@@ -307,10 +306,14 @@ class Layout_Admin{
 
     function editFooter()
     {
-        $form = & new PHPWS_Form('edit_header');
+        $form = & new PHPWS_Form('edit_footer');
         $form->addHidden('module', 'layout');
         $form->addHidden('action', 'admin');
         $form->addHidden('command', 'edit_footer');
+
+        $form->addCheck('footer_fp_only', 1);
+        $form->setMatch('footer_fp_only', PHPWS_Settings::get('layout', 'footer_fp_only'));
+        $form->setLabel('footer_fp_only', _('Only show footer on front page'));
 
         $footer = $_SESSION['Layout_Settings']->footer;
 
@@ -332,6 +335,10 @@ class Layout_Admin{
         $form->addHidden('module', 'layout');
         $form->addHidden('action', 'admin');
         $form->addHidden('command', 'edit_header');
+
+        $form->addCheck('header_fp_only', 1);
+        $form->setMatch('header_fp_only', PHPWS_Settings::get('layout', 'header_fp_only'));
+        $form->setLabel('header_fp_only', _('Only show header on front page'));
 
         $header = $_SESSION['Layout_Settings']->header;
 
@@ -427,12 +434,27 @@ class Layout_Admin{
 
     function postHeader()
     {
+        if (isset($_POST['header_fp_only'])) {
+            PHPWS_Settings::set('layout', 'header_fp_only', 1);
+        } else {
+            PHPWS_Settings::set('layout', 'header_fp_only', 0);
+        }
+
+        PHPWS_Settings::save('layout');
         $_SESSION['Layout_Settings']->header = PHPWS_Text::parseInput($_POST['header']);
         return $_SESSION['Layout_Settings']->saveSettings();
     }
 
     function postFooter()
     {
+        if (isset($_POST['footer_fp_only'])) {
+            PHPWS_Settings::set('layout', 'footer_fp_only', 1);
+        } else {
+            PHPWS_Settings::set('layout', 'footer_fp_only', 0);
+        }
+
+        PHPWS_Settings::save('layout');
+
         $_SESSION['Layout_Settings']->footer = PHPWS_Text::parseInput($_POST['footer']);
         return $_SESSION['Layout_Settings']->saveSettings();
     }
