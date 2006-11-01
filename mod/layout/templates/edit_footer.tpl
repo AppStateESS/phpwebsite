@@ -1,4 +1,5 @@
 {START_FORM}
+{FOOTER_FP_ONLY} {FOOTER_FP_ONLY_LABEL}<br />
 {FOOTER}
 <br /><br />
 {SUBMIT}
