@@ -37,6 +37,13 @@ added properly. Fixed by having the module name verified.';
         $content[] = '- Layout will now use blank.tpl (if exists) with a nakedDisplay call';
         $content[] = '- Layout uses the local module style sheet on a branch even if force_mod_template is set.';
 
+    case version_compare($currentVersion, '2.1.5', '<'):
+        $files = array();
+        $files[] = 'templates/edit_header.tpl';
+        $files[] = 'templates/edit_footer.tpl';
+        PHPWS_Boost::updateFiles($files, 'layout');
+        $content[] = 'New - Can now control whether header and/or footer appear on every page or just front page.';
+
     }
     return TRUE;
 }
