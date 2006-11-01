@@ -63,6 +63,12 @@ function core_update(&$content, $version) {
         $content[] = 'New - In Settings, added a reset function that sets a value back to the default.';
         $content[] = 'New - Error checks added to Batch.';
         $content[] = 'New - Removed the static tables variable in Database\'s isTable function. Possibility exists that two or more databases could be used and the static list would return faulty information.';
+
+    case version_compare($version, '1.1.1', '<'):
+        $content[] = 'Fix - Blog conversion now copies summary and body correctly.';
+        $content[] = 'Fix - File Cabinet conversion checks for Documents module before beginning.';
+        $content[] = 'Fix - Users conversion now sets users as active and approved.';
+        $content[] = 'Fix - Settings reloads after saving values. Prevent bad data.';
     }
     
     return true;
