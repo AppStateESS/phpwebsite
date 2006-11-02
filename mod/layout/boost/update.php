@@ -44,6 +44,11 @@ added properly. Fixed by having the module name verified.';
         PHPWS_Boost::updateFiles($files, 'layout');
         $content[] = 'New - Can now control whether header and/or footer appear on every page or just front page.';
 
+    case version_compare($currentVersion, '2.1.6', '<'):
+        $files = array('conf/config.php');
+        PHPWS_Boost::updateFiles($files, 'layout');
+        $content[] = 'Fixed style sheet issue with IE 7.';
+        $content[] = 'Cleaned up config.php file. Moved errors defines to Layout class file. (check your local backup).';
     }
     return TRUE;
 }
