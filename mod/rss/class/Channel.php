@@ -64,6 +64,16 @@ class RSS_Channel {
         }
     }
 
+    function getTitle($linkable=true)
+    {
+        if ($linkable) {
+            $vars['mod_title'] = $this->module;
+            return PHPWS_Text::moduleLink($this->title, 'rss', $vars);
+        } else {
+            return $this->title;
+        }
+    }
+
     function save()
     {
         $db = & new PHPWS_DB('rss_channel');

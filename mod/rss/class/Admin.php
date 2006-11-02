@@ -211,7 +211,7 @@ class RSS_Admin {
         }
 
         foreach ($channels as $oChannel) {
-            $row['TITLE'] = $oChannel->title;
+            $row['TITLE'] = $oChannel->getTitle();
             $row['ACTION'] = implode(' | ', $oChannel->getActionLinks());
             if ($oChannel->active) {
                 $row['ACTIVE'] = _('Yes');
@@ -225,8 +225,6 @@ class RSS_Admin {
         $tpl['TITLE_LABEL']  = _('Title');
         $tpl['ACTIVE_LABEL'] = _('Active');
         $tpl['ACTION_LABEL'] = _('Action');
-        $tpl['LIMIT_LABEL']  = _('Limit');
-
 
         $final_tpl['CONTENT'] = PHPWS_Template::process($tpl, 'rss', 'channel_list.tpl');
 

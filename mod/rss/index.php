@@ -1,5 +1,10 @@
 <?php
 
+  /**
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
+   */
+
 if (!defined('PHPWS_SOURCE_DIR')) {
     include '../../config/core/404.html';
     exit();
@@ -11,6 +16,9 @@ if ( ( isset($_REQUEST['command']) || isset($_REQUEST['tab']) ) && Current_User:
  } elseif (isset($_REQUEST['mod_title'])) {
      PHPWS_Core::initModClass('rss', 'RSS.php');
      RSS::viewChannel($_REQUEST['mod_title']);
+ } elseif (isset($_REQUEST['id'])) {
+     PHPWS_Core::initModClass('rss', 'RSS.php');
+     RSS::viewChannel($_REQUEST['id']);
  } else {
     PHPWS_Core::errorPage('404');
  }
