@@ -418,6 +418,7 @@ class Categories_Action {
         $pager->addPageTags($pageTags);
         $pager->addToggle('class="bgcolor2"');
         $pager->addRowTags('getTplTags');
+        $pager->setOrder('create_date', 'desc', true);
         $pager->setSearch('title');
         $content = $pager->get();
 
