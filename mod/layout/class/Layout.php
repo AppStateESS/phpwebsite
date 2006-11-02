@@ -750,7 +750,7 @@ class Layout {
         $version = getBrowserInfo('browser_version');
 
         // *sigh* not worth the hassle to conform to IE
-        if ($browser == 'MSIE' && (int)$version <= 6) {
+        if ($browser == 'MSIE' && (int)$version <= 7) {
             $can_import = FALSE;
         } else {
             $can_import = TRUE;
