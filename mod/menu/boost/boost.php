@@ -5,7 +5,7 @@
    */
 
 $proper_name  = 'Menu';
-$version      = '1.0.1';
+$version      = '1.0.2';
 $register     = FALSE;
 $unregister   = TRUE;
 $import_sql   = TRUE;

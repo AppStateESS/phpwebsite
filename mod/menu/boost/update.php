@@ -38,6 +38,9 @@ function menu_update(&$content, $currentVersion)
         $content[] = 'New - Added Site Map display that is accessible from clicking the menu name.';
         $content[] = 'Change -  The Create Offsite Link has been changed to Create Other Link.';
         $content[] = 'New - Create Other Link now sets the default url to the page from which it was clicked. Will not use a default url from a keyed page.';
+
+    case version_compare($currentVersion, '1.0.2', '<'):
+        $content[] = 'Fix - Introduced bug with Site Map in last version. Now shows admin menu again.';
     }
     return true;
 }
