@@ -9,16 +9,13 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-if (isset($_REQUEST['command'])) {
-    if (!Current_User::allow('menu')) {
-        Current_User::disallow();
-    } else {
-        Menu::admin();
-    }
- } elseif (isset($_REQUEST['site_map'])) {
-     Menu::siteMap();
+if (isset($_REQUEST['site_map'])) {
+    Menu::siteMap();
+ } elseif(Current_User::allow('menu')) {
+     Menu::admin();
+ } else {
+    PHPWS_Core::errorPage('404');
  }
-
 
 
 ?>
