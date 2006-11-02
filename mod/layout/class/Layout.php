@@ -8,6 +8,16 @@
  * @package Core
  */
 
+/********** Errors ****************/
+
+define('LAYOUT_SESSION_NOT_SET',    -1);
+define('LAYOUT_NO_CONTENT',         -2);
+define('LAYOUT_NO_THEME',           -3);
+define('LAYOUT_BAD_JS_DATA',        -4);
+define('LAYOUT_JS_FILE_NOT_FOUND',  -5);
+define('LAYOUT_BOX_ORDER_BROKEN',   -6);
+define('LAYOUT_INI_FILE',           -7);
+
 
 PHPWS_Core::initModClass('layout', 'Layout_Settings.php');
 PHPWS_Core::initCoreClass('Template.php');
