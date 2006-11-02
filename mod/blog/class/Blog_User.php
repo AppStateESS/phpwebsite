@@ -121,6 +121,9 @@ class Blog_User {
      */
     function showPast($entries)
     {
+        if (empty($entries)) {
+            return false;
+        }
         foreach ($entries as $entry) {
             $tpl['entry'][] = array('TITLE' => sprintf('<a href="%s">%s</a>', $entry->getViewLink(true), $entry->title));
         }
@@ -140,7 +143,7 @@ class Blog_User {
         $result = Blog_User::getCurrentEntries($db, $limit);
 
         if (!$result) {
-            return;
+            return false;
         }
 
         foreach ($result as $entry) {
