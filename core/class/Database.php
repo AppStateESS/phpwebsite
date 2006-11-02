@@ -870,7 +870,7 @@ class PHPWS_DB {
             $order = preg_replace('/[^\w\s\.]/', '', $order);
 
             if (preg_match('/(random|rand)(\(\))?/i', $order)) {
-                $this->order[] = ignore::randomOrder();
+                $this->order[] = $GLOBALS['PHPWS_DB']['lib']->randomOrder();
             } else {
                 if (strpos($order, '.')) {
                     list($table, $new_order) = explode('.', $order);
