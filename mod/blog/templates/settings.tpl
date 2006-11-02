@@ -1,5 +1,5 @@
 {START_FORM}
-<table class="form-table" widht="99%">
+<table class="form-table" width="99%">
    <tr>
       <td>{BLOG_LIMIT_LABEL}
       </td>

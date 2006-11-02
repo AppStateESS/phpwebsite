@@ -1,4 +1,4 @@
-<div class="blog-past-view">
+<div id="blog-past-view">
     <div class="box">
         <div class="box-title">
         <h1>{PAST_TITLE}</h1>

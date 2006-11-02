@@ -1,4 +1,4 @@
-<div class="blog-recent-view">
+<div id="blog-recent-view">
     <div class="box">
         <div class="box-title">
         <h1>{RECENT_TITLE}</h1>
