@@ -34,7 +34,7 @@ function convert()
         return _('An error occurred while accessing your mod_blockmaker_data table.');
     }
    
-
+    $values['key_id'] = 0;
     foreach ($all_blocks as $old_block) {
         $new_block = & new Block_Item;
         $new_block->setTitle($old_block['block_title']);
@@ -44,6 +44,10 @@ function convert()
             PHPWS_Error::log($all_blocks);
             return _('An error occurred while converting your old blocks.');
         }
+        $values['block_id'] = $new_block->id;
+        $db = new PHPWS_DB('block_pinned');
+        $db->addValue($values);
+        $db->insert();
     }
     Convert::addConvert('block');
     return _('Blocks converted.');
