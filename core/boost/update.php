@@ -69,6 +69,10 @@ function core_update(&$content, $version) {
         $content[] = 'Fix - File Cabinet conversion checks for Documents module before beginning.';
         $content[] = 'Fix - Users conversion now sets users as active and approved.';
         $content[] = 'Fix - Settings reloads after saving values. Prevent bad data.';
+
+    case version_compare($version, '1.1.2', '<'):
+        $content[] = 'Fix - Block conversion now places all blocks on front page.';
+        $content[] = 'Fix - Bug #1588765 : addOrder\'s random option works again.';
     }
     
     return true;

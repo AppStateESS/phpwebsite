@@ -1,6 +1,87 @@
+November 2
+
+Layout - 2.1.6
++ Changed import style sheet check to ignore IE 7 and below.
++ Cleaned up config.php.
+
+Categories
++ Set the default listing to create date descending
+
+Blog - 1.2.1
++ Updated files templates/past_view.tpl, templates/recent_view.tpl, templates/settings.tpl
++ Changed css classes to ids
++ Fixed typo in settings.tpl
+
+Core - 1.1.2
++ Convert - Block conversion now places all blocks on the front page
++ Database.php - Fixed Bug #1588765 - bad search and replace put an incorrect function name into the addOrder method.  Thanks webtor
+
+RSS
++ Channel title is now linked to feed
++ Added mod_rewrite formatting to feed
+
+
+Menu - 1.0.2
++ Bug #1588771 - Fixed admin page not working with menu
+
+November 1
+
+Core - 1.1.1
++ Convert
+  o Users were not set active on conversion
++ Settings
+  o If a setting were loaded after saving a new value, incorrect data
+    was returned
++ Text
+  o makeRelative changed back to use "./" Was breaking other
+  functions.
+
+
+Layout - 2.1.5
++ updated files templates/edit_header.tpl, templates/edit_footer.tpl
++ Added ability to control if header and/or footer only appear on
+  front page
+
+
+Menu - need to update template on next update
++ updated files templates/admin/offsite.tpl
++ Added cancel button to offsite template
+
+
+October 31
+
+Core - 1.1.1
++ Convert
+  o Blog convert not updated since summary was added.
+  o File Cabinet conversion now checks for Documents installation.
+
++ Text - makeRelative now removes home address instead of replacing
+         with "./"
+
+
+Blog - 1.2.1
++ Added an error check to avoid a message when no entries have been
+  created
++ Changed default settings
+
+Menu - 1.0.1
++ New file - templates/site_map.tpl - for new site map option
++ Updated file - templates/style.css - stylings for site map
++ Updated file - conf/config.php - Changed "offsite" to "other"
++ Added Site Map display that is accessible from clicking the menu
+  name
++ The Create Offsite Link has been changed to Create Other Link.
++ Create Other Link now sets the default url to the page from which it
+  was clicked. Will not use a default url from a keyed page.
+
+
+
+Branches - 1.0.1
+- Removed error caused from Boost update if no Branches are present
+
 October 27
 
-Core
+Core - 1.1.0
 + Convert
   o Added a table check to getSourceDB function.
   o Removed ampersands from constructors
@@ -18,7 +99,7 @@ Core
   function. Possibility exists that two or more databases could be used
   and the static list would return faulty information
 
-Blog
+Blog - 1.2.0
 + Added a settings tab and form
 + Through settings, can control number of current and past entries to
   display and the default comment setting.
@@ -31,19 +112,19 @@ Blog
 
 
 October 26
-Phatform
+Phatform - 3.0.3
 + Fixed element move bug submitted by the great JYDAllStar from his
   underground bunker
 
-Branch
+Branch - 1.0.0
 + Fixed directory references to extra slash.
 
-Photoalbum
+Photoalbum - 1.3.2
 + Fixed pager listing all photos together regardless of album
 + Fixed prefix error message
 
 October 25
-Core
+Core - 1.1.0
 + Database.php
   o DB factory files have been broken out into specially named
     classes, hopefully this will allow dual connections on different
@@ -59,14 +140,14 @@ Core
   o File.php - copy_directory function was reporting the wrong value
                in its error messages
 
-Boost
+Boost - 1.9.6
 + Boost.php - a few small changes to help with branch module updates
 
-Branch
+Branch - 1.0.0
 + Overhauled to allow table prefixing. Requires Database changes.
 + Fixed bug 1582406, use proper directory
 
-Users
+Users - 2.1.0
 + The username column in user_authorization was made into a primary
   key.
 + The install process was rewritten to work with branch changes.
@@ -74,7 +155,7 @@ Users
 
 October 23
 
-Core
+Core - 1.1.0
 + Database.php
   o Added table prefixing back
   o Altered the count type for select slightly
@@ -82,10 +163,10 @@ Core
 + Setup - added table prefixing back to install process
 
 
-Blog
+Blog 1.2.0
 + Added error catch for listing approvals
 
-Notes
+Notes - 0.1.1
 + Fixed Notes problem with using the first name it could find if an
   exactly match could not be found
 
@@ -93,28 +174,30 @@ Notes
 Layout
 - Added id "layout-naked" to body tag for nakedDisplay function
 
+
 October 19
-Calendar
+
+Calendar - 1.1.0
 + Private scheduling closer to working as intended
 + Event now shows as "Busy" if so marked
 
 
-Photoalbum
+Photoalbum - 1.3.2
 - Fixed call to $GLOBALS['core']
 
-Core
+Core - 1.1.0
 - Init.php : added a define for CURRENT_LANGUAGE if gettext is not working
 
 October 18
 
-Calendar
+Calendar - 1.1.0
 + Added new permissions (not coded yet)
 + Put settings tab back with some upcoming changes
 + New template - admin/settings.tpl
 + Removed start day define. Now handled by settings
 
 
-Core
+Core - 1.1.0
 + Form.php - Removed ampersands from constructors
 
 
@@ -143,9 +226,7 @@ Boost - 1.9.4
 Core - 1.0.7
 + Key.php - added a parameter on getCurrent that can allow you to
             ignore a home key.
-
 + Init.php - Commented out putenv functions
-
 + Javascript
 - close_refresh - added an option to not autoclose
 
