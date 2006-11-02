@@ -10,6 +10,10 @@ function rss_update(&$content, $version)
     case version_compare($version, '0.1.0', '<'):
         $content[] = '- Changed to binary safe file pull.';
         $content[] = '- Added system error checks and warnings.';
+
+    case version_compare($version, '0.1.1', '<'):
+        $content[] = '- Channel title now linked to feed.';
+        $content[] = '- mod_rewrite works with feed.';
     }
 
     return true;
