@@ -189,7 +189,8 @@ function runBatch(&$db, &$batch)
 function convertUser($oldUser) {
     $db = & new PHPWS_DB('users');
     $val['id']           = $oldUser['user_id'];
-    $val['display_name'] = $val['username']     = $oldUser['username'];
+    $val['username']     = strtolower($oldUser['username']);
+    $val['display_name'] = $oldUser['username'];
     $val['created']      = $val['last_logged']  = $oldUser['last_on'];
     $val['email']        = $oldUser['email'];
     $val['deity']        = $oldUser['deity'];
