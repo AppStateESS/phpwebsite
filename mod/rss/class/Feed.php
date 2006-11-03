@@ -1,5 +1,10 @@
 <?php
 
+  /**
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @version $Id$
+   */
+
 PHPWS_Core::initModClass('rss', 'XMLParser.php');
 
 PHPWS_Core::requireConfig('rss');
