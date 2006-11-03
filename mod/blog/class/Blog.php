@@ -194,9 +194,9 @@ class Blog {
     function getViewLink($bare=false){
         if ($bare) {
             if (MOD_REWRITE_ENABLED) {
-                return PHPWS_HOME_HTTP . 'blog/' . $this->id;
+                return 'blog/' . $this->id;
             } else {
-                return PHPWS_HOME_HTTP . 'index.php?module=blog&amp;action=view_comments&amp;id=' . $this->id;
+                return 'index.php?module=blog&amp;action=view_comments&amp;id=' . $this->id;
             }
         } else {
             return PHPWS_Text::rewriteLink(_('View'), 'blog', $this->id);
