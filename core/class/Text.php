@@ -565,9 +565,13 @@ class PHPWS_Text {
         return $text;
     }// END FUNC stripSlashQuotes()
 
-    function makeRelative(&$text){
+    function makeRelative(&$text, $prefix=true){
         $address = addslashes(PHPWS_Core::getHomeHttp());
-        $text = str_replace($address, './', $text);
+        if ($prefix) {
+            $text = str_replace($address, './', $text);
+        } else {
+            $text = str_replace($address, '', $text);
+        }
     }
 
     /**
