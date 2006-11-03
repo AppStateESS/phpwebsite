@@ -338,13 +338,13 @@ class Key {
 
     function setTitle($title)
     {
-        $this->title = strip_tags($title);
+        $this->title = PHPWS_Text::condense($title);
     }
 
     function setSummary($summary)
     {
         $summary = preg_replace('/(<|&lt;|\[).*(>|&gt;|\])/sUi', ' ', $summary);
-        $this->summary = $summary;
+        $this->summary = PHPWS_Text::condense($summary, 255);
     }
 
     function setUrl($url, $local=TRUE)
