@@ -6,7 +6,7 @@
    */
 
 function core_update(&$content, $version) {
-    
+    $content[] = '';
     switch ($version) {
     case version_compare($version, '1.0.2', '<'):
     
@@ -73,6 +73,11 @@ function core_update(&$content, $version) {
     case version_compare($version, '1.1.2', '<'):
         $content[] = 'Fix - Block conversion now places all blocks on front page.';
         $content[] = 'Fix - Bug #1588765 : addOrder\'s random option works again.';
+
+    case version_compare($version, '1.1.3', '<'):
+        $content[] = 'New - Added the "condense" function to Text class.';
+        $content[] = 'New - Key now uses the condense function for the summary.';
+        $content[] = 'Fix - Setting now resets only the module\'s values after saving.';
     }
     
     return true;
