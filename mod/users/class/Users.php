@@ -163,6 +163,7 @@ class PHPWS_User {
 
     function setUsername($username)
     {
+        $username = strtolower($username);
         if (empty($username) || preg_match('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/', $username)) {
             return PHPWS_Error::get(USER_ERR_BAD_USERNAME, 'users',
                                     'setUsername', $username);
