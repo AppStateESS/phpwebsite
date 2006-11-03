@@ -139,12 +139,14 @@ class PHPWS_Settings {
             }
             $result = $db->insert();
             if (PEAR::isError($result)) {
-                unset($GLOBALS['PHPWS_Settings']);
+                unset($GLOBALS['PHPWS_Settings'][$module]);
+                PHPWS_Settings::load($module);
                 return $result;
             }
             $db->reset();
         }
-        unset($GLOBALS['PHPWS_Settings']);
+        unset($GLOBALS['PHPWS_Settings'][$module]);
+        PHPWS_Settings::load($module);
     }
 
     function loadConfig($module)
