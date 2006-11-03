@@ -350,7 +350,7 @@ class Key {
     function setUrl($url, $local=TRUE)
     {
         if ($local) {
-            PHPWS_Text::makeRelative($url);
+            PHPWS_Text::makeRelative($url, false);
         }
         $this->url = str_replace('&amp;', '&', trim($url));
         $this->url = preg_replace('/&?authkey=\w{32}/', '', $this->url);
