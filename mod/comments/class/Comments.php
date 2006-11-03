@@ -63,7 +63,7 @@ class Comments {
         }
 
         $user = Comments::getCommentUser($user_id);
-        test($user);
+
         if (!empty($user->user_id)) {
             $user->bumpCommentsMade();
         }
