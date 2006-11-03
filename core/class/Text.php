@@ -878,6 +878,32 @@ class PHPWS_Text {
         return $new_arr;
     }
 
+    /**
+     * Returns a condensed version of text based on the maximum amount
+     * of characters allowed.
+     */
+    function condense($text, $max_characters=255)
+    {
+        $text = strip_tags($text);
+        if (strlen($text) < $max_characters) {
+            return $text;
+        }
+
+        $new_text = substr($text, 0, $max_characters);
+        $last_newline = strrpos($new_text, "\n");
+
+        if ($last_newline) {
+            return substr($text, 0, $last_newline + 1);
+        } else {
+            $last_period = strrpos($new_text, '.');
+            if ($last_period) {
+                return substr($new_text, 0, $last_period + 1);
+            } else {
+                return $new_text;
+            }
+        }
+    }
+
 
 }//END CLASS PHPWS_Text
 
