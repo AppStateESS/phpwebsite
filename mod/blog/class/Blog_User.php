@@ -99,7 +99,12 @@ class Blog_User {
             }
         }
 
-        if (!Current_User::allow('blog')) {
+
+        $tpl['ENTRIES'] = implode('', $list);
+
+        $content = PHPWS_Template::process($tpl, 'blog', 'list_view.tpl');        
+
+        if (!Current_User::isLogged() && !Current_User::allow('blog')) {
             PHPWS_Cache::save($key, $content);
         } elseif (Current_User::allow('blog', 'edit_blog')) {
             $vars['action'] = 'admin';
@@ -110,9 +115,7 @@ class Blog_User {
             MiniAdmin::add('blog', $link);
         }
 
-        $tpl['ENTRIES'] = implode('', $list);
-        
-        return PHPWS_Template::process($tpl, 'blog', 'list_view.tpl');
+        return $content;
     }
 
     /**
