@@ -15,7 +15,6 @@ include 'phpws_stats.php';
 // after installation
 
 define('AUTO_ROUTE', TRUE);
-define('PHPWS_HOME_HTTP', 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . '/');
 
 if (is_file('config/core/config.php')) {
     require_once 'config/core/config.php';
