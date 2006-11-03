@@ -154,7 +154,8 @@ class RSS_Channel {
 
         foreach ($this->_feeds as $key) {
             $itemTpl = NULL;
-            $itemTpl['ITEM_LINK']         = $home_http .  preg_replace('/&(?!amp;)/', '&amp;', $key->url);
+            $url = preg_replace('/^\.\//', '', $key->url);
+            $itemTpl['ITEM_LINK']         = $home_http .  preg_replace('/&(?!amp;)/', '&amp;', $url);
 
             $tpl->setCurrentBlock('item-about');
             $tpl->setData($itemTpl);
