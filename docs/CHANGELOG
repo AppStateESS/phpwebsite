@@ -1,4 +1,17 @@
+November 3
+----------
+Core - 1.1.3
+
++ Key.php - Now used the text function condense
++ Text.php - Added the condense function
++ Setting.php - Now reseting just the module's global value, not the
+                whole variable
+
+Comments
++ Removed test function call.
+
 November 2
+----------
 
 Layout - 2.1.6
 + Changed import style sheet check to ignore IE 7 and below.
@@ -16,7 +29,7 @@ Core - 1.1.2
 + Convert - Block conversion now places all blocks on the front page
 + Database.php - Fixed Bug #1588765 - bad search and replace put an incorrect function name into the addOrder method.  Thanks webtor
 
-RSS
+RSS - 0.1.1
 + Channel title is now linked to feed
 + Added mod_rewrite formatting to feed
 
@@ -24,7 +37,9 @@ RSS
 Menu - 1.0.2
 + Bug #1588771 - Fixed admin page not working with menu
 
+
 November 1
+----------
 
 Core - 1.1.1
 + Convert
@@ -43,12 +58,13 @@ Layout - 2.1.5
   front page
 
 
-Menu - need to update template on next update
+Menu - **** need to update template on next update ****
 + updated files templates/admin/offsite.tpl
 + Added cancel button to offsite template
 
 
 October 31
+----------
 
 Core - 1.1.1
 + Convert
@@ -80,6 +96,7 @@ Branches - 1.0.1
 - Removed error caused from Boost update if no Branches are present
 
 October 27
+----------
 
 Core - 1.1.0
 + Convert
@@ -112,6 +129,8 @@ Blog - 1.2.0
 
 
 October 26
+----------
+
 Phatform - 3.0.3
 + Fixed element move bug submitted by the great JYDAllStar from his
   underground bunker
