@@ -90,19 +90,12 @@ class Menu_Link {
         }
     }
 
-    function setUrl($url, $local=TRUE)
+    function setUrl($url)
     {
-        /*
-        if ($local) {
-            PHPWS_Text::makeRelative($url);
-        } else {
+        if (!preg_match('/^index\.php/', $url)) {
             $url = PHPWS_Text::checkLink($url);
+            PHPWS_Text::makeRelative($url);
         }
-        */
-        $url = PHPWS_Text::checkLink($url);
-        PHPWS_Text::makeRelative($url);
-
-
 
         $this->url = str_replace('&amp;', '&', trim($url));
         $this->url = preg_replace('/&?authkey=\w{32}/i', '', $url);
@@ -238,7 +231,7 @@ class Menu_Link {
     {
         if ( empty($_POST) && Menu::isAdminMode() && Current_User::allow('menu') ) {
             $template['ADD_LINK'] = Menu::getAddLink($this->menu_id, $this->id);
-            $template['ADD_OFFSITE_LINK'] = Menu::getOffsiteLink($this->menu_id, $this->id);
+            $template['ADD_SITE_LINK'] = Menu::getSiteLink($this->menu_id, $this->id);
             
             $vars['link_id'] = $this->id;
 
@@ -248,13 +241,22 @@ class Menu_Link {
             $js['LINK'] = MENU_LINK_DELETE;
             $template['DELETE_LINK'] = javascript('confirm', $js);
 
-            $vars['command'] = 'edit_link_title';
-            $prompt_js['question'] = _('Type the new title for this link.');
-            $prompt_js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE);
-            $prompt_js['answer'] = addslashes($this->title);
-            $prompt_js['value_name'] = 'link_title';
-            $prompt_js['link']       = MENU_LINK_EDIT;
-            $template['EDIT_LINK'] = javascript('prompt', $prompt_js);
+            if ($this->key_id) {
+                $vars['command'] = 'edit_link_title';
+                $prompt_js['question'] = _('Type the new title for this link.');
+                $prompt_js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE);
+                $prompt_js['answer'] = addslashes($this->title);
+                $prompt_js['value_name'] = 'link_title';
+                $prompt_js['link']       = MENU_LINK_EDIT;
+                $template['EDIT_LINK'] = javascript('prompt', $prompt_js);
+            } else {
+                $vars['command'] = 'edit_link';
+                $prompt_js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE);
+                $prompt_js['label']   = MENU_LINK_EDIT;
+                $prompt_js['width']   = 500;
+                $prompt_js['height']  = 200;
+                $template['EDIT_LINK'] = javascript('open_window', $prompt_js);
+            }
 
             $vars['command'] = 'move_link_up';
             $template['MOVE_LINK_UP'] = PHPWS_Text::secureLink(MENU_LINK_UP, 'menu', $vars);

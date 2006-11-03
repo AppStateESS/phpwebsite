@@ -91,9 +91,9 @@ class Menu {
         return $url == $compare;
     }
 
-    function getOffsiteLink($menu_id, $parent_id=0, $isKeyed=false)
+    function getSiteLink($menu_id, $parent_id=0, $isKeyed=false)
     {
-        $vars['command']   = 'add_offsite_link';
+        $vars['command']   = 'add_site_link';
         $vars['menu_id']   = $menu_id;
         $vars['parent_id'] = $parent_id;
 
@@ -103,7 +103,7 @@ class Menu {
 
         $js['link_title'] = _('Add Other Link');
         $js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE, FALSE, FALSE);
-        $js['label'] = MENU_LINK_ADD_OFFSITE;
+        $js['label'] = MENU_LINK_ADD_SITE;
         $js['width'] = 500;
         $js['height'] = 200;
         return javascript('open_window', $js);

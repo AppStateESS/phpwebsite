@@ -41,6 +41,15 @@ function menu_update(&$content, $currentVersion)
 
     case version_compare($currentVersion, '1.0.2', '<'):
         $content[] = 'Fix - Introduced bug with Site Map in last version. Now shows admin menu again.';
+
+    case version_compare($currentVersion, '1.0.3', '<'):
+        $files = array('templates/links/link.tpl', 'templates/menu_layout/basic.tpl');
+        if (PHPWS_Boost::updateFiles($files, 'menu')) {
+            $content[] = 'Template files updated successfully.';
+        } else {
+            $content[] = 'Template files were not updated successfully.';
+        }
+        $content[] = 'Unkeyed link urls may now be edited.';
     }
     return true;
 }

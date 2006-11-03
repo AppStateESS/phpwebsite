@@ -90,6 +90,11 @@ class Menu_Admin {
             }
             break;
 
+        case 'edit_link':
+            $link = new Menu_Link($_REQUEST['link_id']);
+            Menu_Admin::siteLink($menu, $link);
+            break;
+
         case 'delete_link':
             Menu::deleteLink($_REQUEST['link_id']);
             PHPWS_Core::goBack();
@@ -134,30 +139,30 @@ class Menu_Admin {
             }
             break;
 
-        case 'add_offsite_link':
+        case 'add_site_link':
             $link = & new Menu_Link;
             $link->parent = $_REQUEST['parent_id'];
             if (isset($_REQUEST['dadd'])) {
                 $link->url = $_REQUEST['dadd'];
             }
-            Menu_Admin::offsiteLink($menu, $link);
+            Menu_Admin::siteLink($menu, $link);
             break;
 
-        case 'edit_offsite_link':
+        case 'edit_site_link':
             $link = & new Menu_Link($_REQUEST['link_id']);
-            Menu_Admin::offsiteLink($menu, $link);
+            Menu_Admin::siteLink($menu, $link);
             break;
 
-        case 'post_offsite_link':
+        case 'post_site_link':
             if (isset($_REQUEST['link_id'])) {
                 $link = & new Menu_Link($_REQUEST['link_id']);
             } else {
                 $link = & new Menu_Link;
             }
 
-            $result = Menu_Admin::postOffsiteLink($link);
+            $result = Menu_Admin::postSiteLink($link);
             if (is_array($result)) {
-                Menu_Admin::offsiteLink($menu, $link, $result);
+                Menu_Admin::siteLink($menu, $link, $result);
             } else {
                 $link->save();
                 javascript('onload', array('function'=>'opener.window.location.reload(); window.close()'));
@@ -309,7 +314,7 @@ class Menu_Admin {
         $panel->quickSetTabs($tabs);
 
         $panel->setModule('menu');
-        //    $panel->setPanel('panel.tpl');
+
         return $panel;
     }
 
@@ -395,15 +400,15 @@ class Menu_Admin {
         return PHPWS_Template::process($tpl, 'menu', 'admin/settings.tpl');
     }
 
-    function offsiteLink($menu, $link, $errors=NULL)
+    function siteLink($menu, $link, $errors=NULL)
     {
-        $form = new PHPWS_Form('offsite_link');
+        $form = new PHPWS_Form('site_link');
         if ($link->id) {
             $form->addHidden('link_id', $link->id);
         }
 
         $form->addHidden('module', 'menu');
-        $form->addHidden('command', 'post_offsite_link');
+        $form->addHidden('command', 'post_site_link');
         $form->addHidden('menu_id', $menu->id);
         $form->addHidden('parent_id', $link->parent);
         $form->addText('title', $link->title);
@@ -416,7 +421,7 @@ class Menu_Admin {
         $form->addText('url', $link->url);
         $form->setLabel('url', _('Url'));
         $form->setSize('url', 50);
-
+        
         $form->addSubmit(_('Save link'));
 
         $template = $form->getTemplate();
@@ -433,7 +438,7 @@ class Menu_Admin {
         Layout::nakedDisplay($content);
     }
 
-    function postOffsiteLink(&$link)
+    function postSiteLink(&$link)
     {
         if (empty($_POST['title'])) {
             $error[] = _('Missing title.');
@@ -444,12 +449,17 @@ class Menu_Admin {
         if (empty($_POST['url'])) {
             $error[] = _('Missing url.');
         } else {
-            $link->setUrl($_POST['url'], FALSE);
+            $link->setUrl($_POST['url']);
         }
 
         $link->key_id = 0;
-        $link->menu_id =  $_POST['menu_id'];
-        $link->parent = $_POST['parent_id'];
+        if (!$link->menu_id) {
+            $link->menu_id =  $_POST['menu_id'];
+        }
+
+        if (!$link->parent) {
+            $link->parent = $_POST['parent_id'];
+        }
 
         if (isset($error)) {
             return $error;

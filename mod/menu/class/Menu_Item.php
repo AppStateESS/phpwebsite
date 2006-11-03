@@ -281,7 +281,7 @@ class Menu_Item {
         if ( !$pin_mode && Current_User::allow('menu') ) {
             if (Menu::isAdminMode()) {
                 $tpl['ADD_LINK'] = Menu::getAddLink($this->id);
-                $tpl['ADD_OFFSITE_LINK'] = Menu::getOffsiteLink($this->id, 0, isset($key));
+                $tpl['ADD_SITE_LINK'] = Menu::getSiteLink($this->id, 0, isset($key));
 
                 if (!empty($key)) {
                     $tpl['CLIP'] = Menu::getUnpinLink($this->id, $key->id, $this->pin_all);

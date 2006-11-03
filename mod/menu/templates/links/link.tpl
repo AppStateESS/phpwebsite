@@ -5,7 +5,7 @@
             <span class="menu-admin-link">{ADMIN}</span>
             <span class="menu-link-pop">
                 {ADD_LINK}
-                {ADD_OFFSITE_LINK}
+                {ADD_SITE_LINK}
                 {EDIT_LINK}
                 {DELETE_LINK}
                 {MOVE_LINK_UP}
