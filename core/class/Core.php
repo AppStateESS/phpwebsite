@@ -666,7 +666,8 @@ class PHPWS_Core {
         }
 
         $url = implode('', $address);
-        if ($with_slash) {
+
+        if ($with_slash && !preg_match('/\/?/', $url)) {
             $url .= '/';
         }
         return $url;
