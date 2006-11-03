@@ -1,5 +1,32 @@
 November 3
 ----------
+Core
++ Core.php - Home http now checks the url before adding a duplicate
+             slash on the end.
++ Text.php - makeRelative now has a parameter to decide if the ./
+             prefix should be added
++ Key.php  - Now calls makeRelative without ./ prefix
+
++ Convert
+  o Users now changes all usernames to lowercase.
+
+
+Blog
++ Cache was not saving the blog content correctly.
+
+Menu
++ Updated files - templates/links/link.tpl,
+                  templates/menu_layout/basic.tpl
++ Renamed offsite links to just site links to avoid confusion
++ If you edit a link that isn't keyed, you can now change the url
++ setUrl function changed to figure url without local parameter setting
+
+RSS
++ fixed an issue with mod_rewrite urls that could corrupt the feed
+
+
+November 3
+----------
 Core - 1.1.3
 
 + Key.php - Now used the text function condense
