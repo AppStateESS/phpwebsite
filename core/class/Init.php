@@ -116,8 +116,8 @@ function initLanguage()
         }
 
         if ($locale_found == FALSE) {
-            setcookie('phpws_default_language', $locale, mktime() + CORE_COOKIE_TIMEOUT);
             $locale = setLanguage(DEFAULT_LANGUAGE);
+            setcookie('phpws_default_language', $locale, mktime() + CORE_COOKIE_TIMEOUT);
         }
     }
 
