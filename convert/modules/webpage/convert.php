@@ -8,6 +8,8 @@
    */
 
 PHPWS_Core::initModClass('search', 'Search.php');
+PHPWS_Core::initModClass('webpage', 'Volume.php');
+PHPWS_Core::initModClass('webpage', 'Page.php');
 
 function convert()
 {
@@ -21,10 +23,24 @@ function convert()
         return _('Web Page is not installed.');
     }
 
+    if (!isset($_SESSION['Webpage_Method'])) {
+        if (isset($_GET['webpage_method'])) {
+            $_SESSION['Webpage_Method'] = $_GET['webpage_method'];
+        } else {
+            $content[] = _('There are two methods for converting your webpages:');
+            $content[] = sprintf('<a href="index.php?command=convert&amp;package=webpage&amp;webpage_method=sep">%s</a>',
+                                 _('Method 1 - Each section is placed into a separate page.'));
+            $content[] = sprintf('<a href="index.php?command=convert&amp;package=webpage&amp;webpage_method=col">%s</a>',
+                                 _('Method 2 - Each section is collected into ONE page.'));
+            $content[] = _('Click on the method you wish to use.');
+            return implode('<br /><br />', $content);
+        }
+    }
+
 
     $db = Convert::getSourceDB('mod_pagemaster_pages');
     
-    $batch = & new Batches('convert_pagemaster');
+    $batch = new Batches('convert_pagemaster');
     $total_pages = $db->count();
     if ($total_pages < 1) {
         return _('No pages to convert.');
@@ -61,6 +77,7 @@ function convert()
         createSeqTables();
         $batch->clear();
         Convert::addConvert('webpage');
+        unset($_SESSION['Webpage_Method']);
         $content[] =  _('All done!');
         $content[] = '<a href="index.php">' . _('Go back to main menu.') . '</a>';
     }
@@ -95,7 +112,7 @@ function runBatch(&$db, &$batch)
 
 function convertPage($page)
 {
-    $db = & new PHPWS_DB('webpage_volume');
+    $db = new PHPWS_DB('webpage_volume');
 
     $val['id']           = $page['id'];
     $val['title']        = strip_tags($page['title']);
@@ -105,8 +122,9 @@ function convertPage($page)
     $val['updated_user'] = $page['updated_username'];
     $val['frontpage']    = (int)$page['mainpage'];
     $val['approved']     = 1;
+    $val['active']       = $page['active'];
 
-    $key = & new Key;
+    $key = new Key;
     $key->setItemId($val['id']);
     $key->setModule('webpage');
     $key->setItemName('volume');
@@ -132,7 +150,11 @@ function convertPage($page)
 
 function convertSection($section_order, $volume_id, $title, $key_id)
 {
-    $section_order = unserialize($section_order);
+    $section_order = @unserialize($section_order);
+
+    if (!is_array($section_order)) {
+        return;
+    }
 
     $db = Convert::getSourceDB('mod_pagemaster_sections');
     $db->addWhere('id', $section_order, 'in', 'or');
@@ -145,21 +167,47 @@ function convertSection($section_order, $volume_id, $title, $key_id)
 
 function saveSections($sections, $volume_id, $title, $key_id)
 {
-    $db = & new PHPWS_DB('webpage_page');
+    // sep or col
+    $method = & $_SESSION['Webpage_Method'];
+    $title_set = false;
     $pages = 1;
+
+    if ($method == 'col') {
+        $page = new Webpage_Page;
+    }
+
     foreach ($sections as $sec) {
-        $val['approved']    = 1;
-        $val['id']          = $sec['id'];
-        $val['volume_id']   = $volume_id;
-        if (!empty($sec['title'])) {
-            $val['title']   = strip_tags($sec['title']);
+        if ($method == 'sep') {
+            $page = new Webpage_Page;
+            $page_content = array();
         }
-        $val['content']     = $sec['text'];
-        $val['page_number'] = $pages;
-        $val['template']    = 'basic.tpl';
+
+        if ($method == 'sep') {
+            $page->volume_id = $volume_id;
+            $page->approved  = 1;
+
+            if (!empty($sec['title'])) {
+                $page->title = strip_tags($sec['title']);
+            } else {
+                $page->title = null;
+            }
+            $page->page_number = $pages;
+            $page->template = 'basic.tpl';
+        } else {
+            if (!empty($sec['title'])) {
+                if (!$title_set) {
+                    $page->title = strip_tags($sec['title']);
+                    $title_set = true;
+                } else {
+                    $page_content[] = '<h2>' . $sec['title'] . '</h2>';
+                }
+            }
+        }
+
+        $page_content[] = $sec['text'];
 
         if (!empty($sec['image'])) {
-            $image = unserialize($sec['image']);
+            $image = @unserialize($sec['image']);
             if (is_array($image) && isset($image['name'])) {
                 $image_link = sprintf('<img src="%s" width="%s" height="%s" alt="%s" title="%s" />',
                                       'images/webpage/' . $image['name'],
@@ -167,21 +215,32 @@ function saveSections($sections, $volume_id, $title, $key_id)
                                       $image['height'],
                                       $image['alt'],
                                       $image['alt']);
-                $val['content'] .= $image_link;
+                $page_content[] = $image_link;
             }
         }
+
         $pages++;
-        $db->addValue($val);
-        $result = $db->insert(FALSE);
-        $search = & new Search($key_id);
-        $search->addKeywords($val['content']);
-        if (isset($val['title'])) {
-            $search->addKeywords($val['title']);
+
+        if ($method == 'sep') {
+            $page->content = implode("\n", $page_content);
+            $result = $page->save();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+            }
         }
-        $search->save();
-        $db->reset();
     }
-    $db->disconnect();
+
+    if ($method == 'col') {
+        $page->content     = implode("\n", $page_content);
+        $page->volume_id   = $volume_id;
+        $page->approved    = 1;
+        $page->page_number = 1;
+        $page->template    = 'basic.tpl';
+        $result = $page->save();
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+        }
+    }
 }
 
 function createSeqTables()
