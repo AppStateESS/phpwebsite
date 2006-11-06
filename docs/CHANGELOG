@@ -1,3 +1,23 @@
+November 6
+----------
+Core
++ Convert - Added the option to choose between creating a new page per
+            section or combining all sections into one page. 
+
++ Database - When using LIKE with addWhere, the factory files
+             determine what is returned. By default, phpwebsite will
+             assume you are performing a case insensitive search when
+             using LIKE. Since some databases perform case sensitive
+             searches with LIKE, a standard had to be established.
++ Init - Fixed error caused by statement flip
+
+
+Notes
++ Added Delete and Close button to read page.
++ Notes now searches display names. User names are searched but only
+  if permission is given by the admin.
++ Fixed bug with search user list. User id indexes were wrong.
+
 November 3
 ----------
 Core
@@ -24,6 +44,9 @@ Menu
 RSS
 + fixed an issue with mod_rewrite urls that could corrupt the feed
 
+
+Users
++ Forcing usernames to be lowercase.
 
 November 3
 ----------
