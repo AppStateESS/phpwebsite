@@ -11,4 +11,4 @@
         </div>
     </div>
 </div>
-{CLOSE}
+{DELETE}<br /> {CLOSE}

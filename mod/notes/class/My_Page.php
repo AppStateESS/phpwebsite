@@ -39,6 +39,12 @@ class Notes_My_Page {
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
             }
+
+            if (isset($_REQUEST['js'])) {
+                Layout::nakedDisplay(javascript('close_refresh'));
+                exit();
+            }
+
             $this->message = _('Message deleted.');
             $this->read();
             break;
@@ -72,6 +78,7 @@ class Notes_My_Page {
 
             $note = & new Note_Item;
             $result = $this->postNote($note);
+
             if (is_array($result)) {
                 $this->sendNote($note, $result);
             } elseif (!$result) {
@@ -133,6 +140,7 @@ class Notes_My_Page {
     {
         $note->setTitle($_POST['title']);
         $note->setContent($_POST['content']);
+
         $note->sender_id = Current_User::getId();
         if (!empty($_POST['key_id'])) {
             $note->key_id = (int)$_POST['key_id'];
@@ -145,11 +153,16 @@ class Notes_My_Page {
                 $this->errors['bad_username'] = _('Unsuitable user name characters.');
             } else {
                 $db = & new PHPWS_DB('users');
-                $db->addWhere('username', $_POST['username']);
+                $db->addWhere('display_name', $_POST['username']);
+                if (Current_User::allow('notes', 'search_usernames')) {
+                    $db->addWhere('username', $_POST['username'], null, 'or');
+                }
+
                 $db->addColumn('id');
-                $db->addColumn('username');
+                $db->addColumn('display_name');
                 $db->setIndexBy('id');
                 $result = $db->select('col');
+
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
                     $this->errors['unknown'] = _('An error occurred when accessing the database.');
@@ -158,17 +171,21 @@ class Notes_My_Page {
                 if (empty($result)) {
                     if (NOTE_ALLOW_USERNAME_SEARCH) {
                         $db->resetWhere();
-                        $db->addWhere('username', '%' . $_POST['username'] . '%', 'like');
+                        $db->addWhere('display_name', '%' . $_POST['username'] . '%', 'like');
+                        if (Current_User::allow('notes', 'search_usernames')) {
+                            $db->addWhere('username', '%' . $_POST['username'] . '%', 'like', 'or');
+                        }
+
                         $result = $db->select('col');
-                        
+
                         if (PEAR::isError($result)) {
                             PHPWS_Error::log($result);
                             $this->errors['unknown'] = _('An error occurred when accessing the database.');
                         } elseif (empty($result)) {
                             $this->errors['no_match'] = _('Could not find match.');
                         } else {
-                        $note->username = $_POST['username'];
-                        return $result;
+                            $note->username = $_POST['username'];
+                            return $result;
                         }
                     } else {
                         $this->errors['no_match'] = _('Unknown user.');
@@ -178,7 +195,18 @@ class Notes_My_Page {
                 } 
             }
         } else {
-            $note->user_id = (int)$_POST['user_id'];
+            if (empty($_POST['title']) && empty($_POST['content'])) {
+                $this->errors['no_content'] = _('You need to enter a title or some content.');
+            }
+            
+            $user = new PHPWS_User($_POST['user_id']);
+
+            if ($user->id) {
+                $note->user_id = $user->id;
+                $note->username = $user->username;
+            } else {
+                $this->errors['bad_user_id'] = _('Unable to resolve user name.');
+            }
         }
 
         if (!empty($this->errors)) {
@@ -253,8 +281,8 @@ class Notes_My_Page {
         }
 
         if (isset($users) && is_array($users)) {
-            array_unshift($users, _('- Search again -'));
-            $form->addSelect('user_id', $users);
+            $new_users = array(0 => _('- Search again -')) + $users;
+            $form->addSelect('user_id', $new_users);
         }
 
         $form->addText('username', $note->username);

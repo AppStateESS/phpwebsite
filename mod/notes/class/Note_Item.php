@@ -70,9 +70,10 @@ class Note_Item {
 
   function deleteLink()
   {
-      $vars = Notes_My_Page::myPageVars();
+      $vars = Notes_My_Page::myPageVars(false);
       $vars['op'] = 'delete_note';
       $vars['id'] = $this->id;
+      
       return PHPWS_Text::secureLink(_('Delete'), 'users', $vars);
   }
 
@@ -166,6 +167,21 @@ class Note_Item {
       if (javascriptEnabled()) {
           $tpl['CLOSE'] = javascript('close_window');
       }
+
+      if (javascriptEnabled()) {
+          $form = new PHPWS_Form;
+          $form->setMethod('get');
+          $form->useFieldset(false);
+          $vars = Notes_My_Page::myPageVars();
+          $vars['op'] = 'delete_note';
+          $vars['id'] = $this->id;
+          $vars['js'] = 1;
+          $form->addHidden($vars);
+          $form->addSubmit('delete', _('Delete and close'));
+          $form_tpl = $form->getTemplate();
+          $tpl['DELETE'] = implode($form_tpl);
+      } 
+
 
       return PHPWS_Template::process($tpl, 'notes', 'note.tpl');
   }
