@@ -7,9 +7,8 @@
  * @version $Id$
  */
 
-define ('DB_USE_AFTER', TRUE);
-
 class mysql_PHPWS_SQL {
+    var $db_use_after = true;
 
     function export(&$info){
         switch ($info['type']){
@@ -91,6 +90,11 @@ class mysql_PHPWS_SQL {
     {
         $table = PHPWS_DB::addPrefix($table);
         return sprintf('DROP INDEX %s ON %s', $name, $table);
+    }
+
+    function getLike()
+    {
+        return 'LIKE';
     }
 }
 

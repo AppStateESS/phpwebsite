@@ -7,9 +7,8 @@
  * @version $Id$
  */
 
-define ('DB_USE_AFTER', FALSE);
-
 class pgsql_PHPWS_SQL {
+    var $db_use_after = false;
 
     function export(&$info){
         switch ($info['type']){
@@ -129,6 +128,11 @@ class pgsql_PHPWS_SQL {
     function dropTableIndex($name, $table=NULL)
     {
      	return sprintf('DROP INDEX %s', $name);
+    }
+
+    function getLike()
+    {
+        return 'ILIKE';
     }
 
 }

@@ -639,6 +639,7 @@ class PHPWS_DB {
                          '<>',
                          '<=>',
                          'LIKE',
+                         'ILIKE',
                          'REGEXP',
                          'IN',
                          'NOT IN',
@@ -1576,7 +1577,7 @@ class PHPWS_DB {
             return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::addTableColumn', $column);
         }
 
-        if (DB_USE_AFTER && isset($after)) {
+        if ($GLOBALS['PHPWS_DB']['lib']->db_use_after && isset($after)) {
             if (strtolower($after) == 'first') {
                 $location = 'FIRST';
             } else {
@@ -2305,6 +2306,10 @@ class PHPWS_DB_Where {
 
         if (!PHPWS_DB::checkOperator($operator)) {
             return PHPWS_Error::get(PHPWS_DB_BAD_OP, 'core', 'PHPWS_DB::addWhere', _('DB Operator:') . $operator);
+        }
+
+        if ($operator == 'LIKE' || $operator == 'ILIKE') {
+            $operator = $GLOBALS['PHPWS_DB']['lib']->getLike();
         }
 
         $this->operator = $operator;
