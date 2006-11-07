@@ -102,6 +102,8 @@ class Version {
 
         $result = $this->_initVersionTable();
         if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $this->id = 0;
             $this->_error = $result;
             return;
         }
@@ -395,6 +397,7 @@ class Version {
     }
 
     function _buildVersionTable(){
+
         $source_db = & new PHPWS_DB($this->source_table);
         $allColumns = $source_db->getTableColumns(TRUE);
 
