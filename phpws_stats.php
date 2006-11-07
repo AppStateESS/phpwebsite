@@ -14,15 +14,18 @@
    * you uncomment this line.
    * While running smoothly, this line should be commented out. You
    * do NOT want users seeing system error messages.
+   * There is also an ini_set for display_errors. Again, this should normally be
+   * kept commented.
    */
+  // ini_set('display_errors', 'On');
   // error_reporting (E_ALL);
 
-define('stats_on',       FALSE); // Must be true for anything to echo
-define('stats_classes',  FALSE); // Show the classes currently included
-define('stats_time',     FALSE);  // Show the amount of time it took to compute
-define('stats_memory',   FALSE);  // Show amount of memory used
-define('stats_sessions', FALSE);  // Show the sessions currently used
-define('show_request',   FALSE);  // Show the _REQUEST info
+define('stats_on',       false); // Must be true for anything to echo
+define('stats_classes',  false); // Show the classes currently included
+define('stats_time',     false);  // Show the amount of time it took to compute
+define('stats_memory',   false);  // Show amount of memory used
+define('stats_sessions', false);  // Show the sessions currently used
+define('show_request',   false);  // Show the _REQUEST info
 
 if (stats_on && stats_time) {
     list($usec, $sec) = explode(' ', microtime());
@@ -62,7 +65,7 @@ function show_stats()
     }
 
     if(show_request) {
-        echo '<hr / >' . _('Request') . ' ';
+        echo '<hr />' . _('Request') . ' ';
         test($_REQUEST);
     }
 }
