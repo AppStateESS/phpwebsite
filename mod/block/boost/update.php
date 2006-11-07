@@ -44,6 +44,10 @@ function block_update(&$content, $currentVersion)
 
     case version_compare($currentVersion, '1.0.1', '<'):
         $content[] = 'Fix - Bug #1552210 Prevent double new lines.';
+
+    case version_compare($currentVersion, '1.0.2', '<'):
+        $content[] = 'Fix - Deleting a block doesn\'t remove list preferences in admin view.';
+        $content[] = 'Fix - Added alt and title tags to admin images.';
     }
     
     return TRUE;
