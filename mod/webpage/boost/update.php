@@ -47,6 +47,19 @@ function webpage_update(&$content, $currentVersion)
         } else {
             $content[] = 'New - Added active column to admin view and table.';
         }
+
+    case version_compare($currentVersion, '0.2.4', '<'):
+        $files = array();
+        $files[] = 'templates/page/basic.tpl';
+        $files[] = 'templates/page/prev_next.tpl';
+        $files[] = 'templates/page/short_links.tpl';
+        $files[] = 'templates/page/verbose_links.tpl';
+        if (PHPWS_Boost::updateFiles($files, 'webpage')) {
+            $content[] = 'Template files updated.';
+        } else {
+            $content[] = 'Template file not updated successfully.';
+        }
+        $content[] = 'Added commenting to page templates to prevent empty titles.';
     }
 
     return TRUE;
