@@ -168,6 +168,7 @@ class PHPWS_DB {
 
         PHPWS_DB::touchDB();
         $sql = PHPWS_DB::prefixQuery($sql);
+
         PHPWS_DB::logDB($sql);
         return $GLOBALS['PHPWS_DB']['connection']->query($sql);
     }
@@ -1064,7 +1065,6 @@ class PHPWS_DB {
         }
 
         $query = 'INSERT INTO ' . $table . ' (' . implode(', ', $columns) . ') VALUES (' . implode(', ', $set) . ')';
-     
         $result = PHPWS_DB::query($query);
 
         if (DB::isError($result)) {
@@ -1723,23 +1723,30 @@ class PHPWS_DB {
                     'text');
 
         foreach ($query_list as $command) {
+
+            $command = preg_replace('/ default (\'\'|""|``)/i', '', $command);
+
             if (preg_match ('/\s(smallint|int)\s/i', $command)) {
-                if(!preg_match('/\sdefault/i', $command)) {
-                    $command = preg_replace('/ int /i', ' int default 0 ', $command);
-                }
-
                 if(!preg_match('/\snull/i', $command)) {
-                    $command = preg_replace('/ int /i', ' int not null ', $command);
+                    $command = str_ireplace(' int ', ' INT NOT NULL ', $command);
+                    $command = str_ireplace(' smallint ', ' SMALLINT NOT NULL ', $command);
                 }
-
+                
+                if(!preg_match('/\sdefault/i', $command)) {
+                    $command = str_ireplace(' int ', ' INT DEFAULT 0 ', $command);
+                    $command = str_ireplace(' smallint ', ' SMALLINT DEFAULT 0 ', $command);
+                }
+                
+                $command = preg_replace('/ default \'(\d+)\'/Ui', ' DEFAULT \\1', $command);
             }
+
+
 
             $command = preg_replace($from, $to, $command);
             $newlist[] = $command;
         }
 
         $query = implode(',', $newlist);
-
         $GLOBALS['PHPWS_DB']['lib']->readyImport($query);
     }
 
@@ -1747,17 +1754,17 @@ class PHPWS_DB {
     function parsePearCol($info, $strip_name=FALSE)
     {
         $setting = $GLOBALS['PHPWS_DB']['lib']->export($info);
-
         if (isset($info['flags'])) {
             if (stristr($info['flags'], 'multiple_key')) {
                 $column_info['index'] = 'CREATE INDEX ' .  $info['name'] . ' on ' . $info['table'] 
                     . '(' . $info['name'] . ')';
                 $info['flags'] = str_replace(' multiple_key', '', $info['flags']);
             }
-            $preFlag = array('/not_null/', '/primary_key/', '/default_(\w+)?/', '/blob/', '/%3a%3asmallint/i');
+            $preFlag = array('/not_null/i', '/primary_key/i', '/default_(\w+)?/i', '/blob/i', '/%3a%3asmallint/i');
             $postFlag = array('NOT NULL', 'PRIMARY KEY', "DEFAULT '\\1'", '', '');
             $multipleFlag = array('multiple_key', '');
             $flags = ' ' . preg_replace($preFlag, $postFlag, $info['flags']);
+
         }
         else {
             $flags = NULL;
@@ -1769,7 +1776,7 @@ class PHPWS_DB {
         else {
             $column_info['parameters'] = $info['name'] . " $setting" . $flags; 
         }
-
+        
         return $column_info;
     }
 
@@ -2228,7 +2235,7 @@ class PHPWS_DB {
             break;
 
         case 'insert':
-            $table =  preg_replace('/insert |into | values|\(.*\)/iU', '', $sql);
+            $table =  preg_replace('/insert |into | values|\(.*\)/i', '', $sql);
             $tables[] = preg_replace('/\W/', '', $table);
             break;
 
@@ -2263,7 +2270,7 @@ class PHPWS_DB {
             $table = str_ireplace(' on ', ' ', $table);
             $table = str_ireplace('=', ' ', $table);
             $table = str_ireplace(',', ' ', $table);
-            $table = preg_replace('/ \w+\.\w+ /U', ' ', $table);
+            $table = preg_replace('/\w+\.\w+/', ' ', $table);
             $table = preg_replace('/(as \w+)/i', '', $table);
             $table = preg_replace('/ {2,}/', ' ', trim($table));
             $tables = explode(' ', $table);
