@@ -24,6 +24,7 @@ class PHPWS_Text {
     var $use_breaker    = true;
     var $use_strip_tags = true;
     var $use_bbcode     = ALLOW_BB_CODE;
+    var $use_smilies    = false;
     var $_allowed_tags  = NULL;
 
     function PHPWS_Text($text=NULL, $encoded=FALSE)
@@ -32,11 +33,13 @@ class PHPWS_Text {
         $this->setText($text, $encoded);
     }
 
-    function setText($text, $decode=TRUE)
+    function setText($text, $decode=true, $smilies=false)
     {
         if (empty($text) || !is_string($text)) {
             return;
         }
+
+        $this->use_smilies = $smilies;
 
         if ($decode) {
             if (version_compare(phpversion(), '5.0.0', '>=')) {
@@ -294,13 +297,9 @@ class PHPWS_Text {
         $text = PHPWS_Text::CleanupSmartQuotes($text);
 
         if ($encode) {
-            if ((int)phpversion('tidy') < 5) {
-                $char = 'ISO-8859-1';
-            } else {
-                $char = 'UTF-8';
-            }
-            $text = htmlentities($text, ENT_QUOTES, $char);
+            $text = htmlentities($text, ENT_QUOTES, 'UTF-8');
         }
+
         if (MAKE_ADDRESSES_RELATIVE) {
             PHPWS_Text::makeRelative($text);
         }
@@ -317,10 +316,10 @@ class PHPWS_Text {
      * @param   boolean decode       Whether entity_decoding should take place.
      * @return  string  text         Stripped text
      */
-    function parseOutput($text, $decode=TRUE)
+    function parseOutput($text, $decode=TRUE, $smilies=false)
     {
         $t = & new PHPWS_Text;
-        $t->setText($text, $decode);
+        $t->setText($text, $decode, $smilies);
 
         $text = $t->getPrint();
         return $text;
@@ -734,7 +733,7 @@ class PHPWS_Text {
         $bb2html = str_ireplace('[list]', '<ul>', $bb2html);
         $bb2html = str_ireplace('[/list]', '</ul>', $bb2html);
         
-        if (ALLOW_BB_SMILIES) {
+        if (ALLOW_BB_SMILIES && $this->use_smilies) {
             $bb2html = PHPWS_Text::getSmilie($bb2html);
         }
 
