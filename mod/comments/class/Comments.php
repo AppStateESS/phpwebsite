@@ -246,7 +246,7 @@ class Comments {
         if (isset($_REQUEST['cm_parent'])) {
             $c_parent = & new Comment_Item($_REQUEST['cm_parent']);
             $form->addHidden('cm_parent', $c_parent->getId());
-            $form->addTplTag('PARENT_SUBJECT', $c_parent->getSubject());
+            $form->addTplTag('PARENT_SUBJECT', $c_parent->subject);
             $form->addTplTag('PARENT_ENTRY', $c_parent->getEntry());
         }
     
@@ -266,9 +266,9 @@ class Comments {
         $form->setSize('cm_subject', 50);
 
         if (isset($c_parent) && empty($c_item->subject)) {
-            $form->setValue('cm_subject', _('Re:') . $c_parent->getSubject());
+            $form->setValue('cm_subject', _('Re:') . $c_parent->subject);
         } else {
-            $form->setValue('cm_subject', $c_item->getSubject());
+            $form->setValue('cm_subject', $c_item->subject);
         }
 
 

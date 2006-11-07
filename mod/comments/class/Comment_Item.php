@@ -103,15 +103,6 @@ class Comment_Item {
 	$this->subject = strip_tags(trim($subject));
     }
 
-    function getSubject($format=TRUE)
-    {
-	if ($format) {
-	    return PHPWS_Text::parseOutput($this->subject);
-	} else {
-	    return $this->subject;
-	}
-    }
-
     function setEntry($entry)
     {
         $entry = strip_tags($entry);
@@ -121,7 +112,7 @@ class Comment_Item {
     function getEntry($format=TRUE, $quoted=FALSE)
     {
 	if ($format) {
-	    $entry =  PHPWS_Text::parseOutput($this->entry);
+            $entry = PHPWS_Text::parseOutput($this->entry, true, true);
 	} else {
 	    $entry =  $this->entry;
 	}
@@ -261,7 +252,7 @@ class Comment_Item {
 	$template['POSTED_BY']	   = _('Posted by');
 	$template['POSTED_ON']	   = _('Posted on');
 
-	$template['SUBJECT']	     = $this->getSubject(TRUE);
+	$template['SUBJECT']	     = $this->subject;
 	$template['ENTRY']	     = $this->getEntry(TRUE);
 	$template['CREATE_TIME']     = $this->getCreateTime();
         $template['RELATIVE_CREATE'] = $this->getRelativeTime();
@@ -392,7 +383,7 @@ class Comment_Item {
 	$vars['user_action']   = 'view_comment';
 	$vars['cm_id']	   = $this->id;
 
-	return PHPWS_Text::moduleLink($this->getSubject(TRUE), 'comments', $vars);
+	return PHPWS_Text::moduleLink($this->subject, 'comments', $vars);
     }
 
     /**
