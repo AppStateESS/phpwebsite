@@ -1,7 +1,7 @@
 <div class="box">
   <div class="box-title"><h1>{PAGE_TITLE}</h1>{EDIT_HEADER}</div>
   <div class="box-content">
-    <h2>{TITLE}</h2>
+    <!-- BEGIN subpage-title --><h2>{TITLE}</h2><!-- END subpage-title -->
     {CONTENT}
     <!-- BEGIN page-listing -->
     <hr />

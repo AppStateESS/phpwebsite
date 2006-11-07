@@ -5,7 +5,7 @@
     <!-- BEGIN header --><div style="text-align : right">{EDIT_HEADER}</div><!-- END header -->
   </div>
   <div class="box-content">
-    <h2>{TITLE}</h2>
+    <!-- BEGIN subpage-title --><h2>{TITLE}</h2><!-- END subpage-title -->
     <div class="webpage-content">{CONTENT}</div>
     <!-- BEGIN page-listing -->
     <div class="page-links">{PAGE_LABEL}<br />
