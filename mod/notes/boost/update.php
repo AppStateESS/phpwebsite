@@ -25,6 +25,13 @@ function notes_update(&$content, $version) {
 
     case version_compare($version, '0.1.1', '<'):
         $content[] = 'Fix - Notes user entry was sending notes on unsuccessful username searches.';
+
+    case version_compare($version, '0.1.2', '<'):
+        PHPWS_Boost::registerMyModule('notes', 'users', $content);
+        $content[] = 'New - Added "Delete and Close" button to read page.';
+        $content[] = 'Fix - Notes now searches and shows display names by default.';
+        $content[] = 'New - Added permission to search usernames as well.';
+        $content[] = 'Fix - Search list user ids were broken.';
     }
 
     return true;
