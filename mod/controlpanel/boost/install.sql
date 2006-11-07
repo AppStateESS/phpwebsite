@@ -1,9 +1,12 @@
+-- @author Matthew McNaney <mcnaney at gmail dot com>
+-- @version $Id$
+
 CREATE TABLE controlpanel_tab (
-  id CHAR(255) NOT NULL default '',
-  title CHAR(255) NOT NULL default '',
-  link CHAR(255) NOT NULL default '',
-  tab_order smallint NOT NULL default '0',
-  itemname CHAR(255) NOT NULL default ''
+  id CHAR(255) NOT NULL,
+  title CHAR(255) NOT NULL,
+  link CHAR(255) NOT NULL,
+  tab_order smallint NOT NULL default 0,
+  itemname CHAR(255) NOT NULL
 );
 
 CREATE TABLE controlpanel_link (
