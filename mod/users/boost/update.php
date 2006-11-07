@@ -65,6 +65,10 @@ function users_update(&$content, $currentVersion)
     case version_compare($currentVersion, '2.1.0', '<'):
         $content[] = 'New - The username column in user_authorization was made into a primary key.';
         $content[] = 'The install process was rewritten to work with branch changes.';
+
+    case version_compare($currentVersion, '2.1.1', '<'):
+        $content[] = 'Fix - User names are now stored in lowercase. <b>You should change your password after updating to avoid problems</b>';
+
     }
 
     return TRUE;
