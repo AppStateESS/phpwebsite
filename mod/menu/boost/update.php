@@ -50,6 +50,15 @@ function menu_update(&$content, $currentVersion)
             $content[] = 'Template files were not updated successfully.';
         }
         $content[] = 'Unkeyed link urls may now be edited.';
+
+    case version_compare($currentVersion, '1.0.4', '<'):
+        $files = array('templates/admin/offsite.tpl');
+        if (PHPWS_Boost::updateFiles($files, 'menu')) {
+            $content[] = 'Template files updated successfully.';
+        } else {
+            $content[] = 'Template files were not updated successfully.';
+        }
+        $content[] = 'New - added cancel button to other link template (offsite.tpl).';
     }
     return true;
 }
