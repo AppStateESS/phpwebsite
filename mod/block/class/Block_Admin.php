@@ -70,7 +70,8 @@ class Block_Admin {
 
         case 'delete':
             $block->kill();
-            Block_Admin::sendMessage(_('Block deleted.'), 'list');
+            Block_Admin::sendMessage(_('Block deleted.'));
+            PHPWS_Core::goBack();
             break;
 
         case 'edit':
@@ -149,10 +150,12 @@ class Block_Admin {
         return PHPWS_Template::process($template, 'block', 'admin.tpl');
     }
 
-    function sendMessage($message, $command)
+    function sendMessage($message, $command=null)
     {
         $_SESSION['block_message'] = $message;
-        PHPWS_Core::reroute(PHPWS_Text::linkAddress('block', array('action'=>$command), TRUE));
+        if (isset($command)) {
+            PHPWS_Core::reroute(PHPWS_Text::linkAddress('block', array('action'=>$command), TRUE));
+        }
     }
 
     function getMessage()
