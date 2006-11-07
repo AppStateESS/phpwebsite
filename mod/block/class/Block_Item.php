@@ -161,7 +161,7 @@ class Block_Item {
         $edit = $opt = NULL;
         
         if (Current_User::allow('block')) {
-            $img = '<img src="./images/mod/block/edit.png" />';
+            $img = sprintf('<img src="./images/mod/block/edit.png" alt="%s" title="%s" />', _('Edit block'), _('Edit block'));
             $edit = PHPWS_Text::secureLink($img, 'block', array('block_id'=>$this->id,
                                                                 'action'=>'edit'));
             
@@ -177,7 +177,7 @@ class Block_Item {
                 $vars['key_id'] = $this->_pin_key->id;
                 $js_var['ADDRESS'] = PHPWS_Text::linkAddress('block', $vars, TRUE);
                 $js_var['QUESTION'] = _('Are you sure you want to remove this block from this page?');
-                $js_var['LINK'] = '<img src="./images/mod/block/remove.png" />';
+                $js_var['LINK'] = sprintf('<img src="./images/mod/block/remove.png" alt="%s" title="%s" />', _('Delete block'), ('Delete block'));
         
                 $opt = Layout::getJavascript('confirm', $js_var);
             }
