@@ -78,6 +78,20 @@ function core_update(&$content, $version) {
         $content[] = 'New - Added the "condense" function to Text class.';
         $content[] = 'New - Key now uses the condense function for the summary.';
         $content[] = 'Fix - Setting now resets only the module\'s values after saving.';
+
+    case version_compare($version, '1.2.0', '<'):
+        $content[] = 'Fix - Core.php : duplicate slashes on home urls removed.';
+        $content[] = 'Fix - Convert : Users in Postgresql conversions should now work. User names are stored in lowercase by default.';
+        $content[] = 'Fix - Database : LIKE comparison now is ALWAYS case insensitive. This standard allows different database OSs to operate identically in the software.';
+        $content[] = 'Fix - Database : fixed some table identification errors which fouled up table prefixing.';
+        $content[] = 'Fix - Text : htmlentities in parseInput shouldn\'t mangle foreign characters anymore.';
+        $content[] = 'Fix - Init : two statements\' orders were flipped by mistake.';
+        $content[] = 'New - Convert : Web Page conversion allows you to choose whether you want all the sections in one page or separate pages.';
+
+        $content[] = 'New - Database : added some sanity checks to normalize queries.';
+        $content[] = 'New - PHPWS_Stats : added a display_error ini_set. It is commented out.';
+        $content[] = 'New - Text : added a parameter to parseOutput to control display of smilies.';
+        $content[] = 'New - Text : makeRelative has a parameter to determine the local directory prefix.';
     }
     
     return true;
