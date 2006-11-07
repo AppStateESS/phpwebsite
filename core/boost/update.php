@@ -92,6 +92,9 @@ function core_update(&$content, $version) {
         $content[] = 'New - PHPWS_Stats : added a display_error ini_set. It is commented out.';
         $content[] = 'New - Text : added a parameter to parseOutput to control display of smilies.';
         $content[] = 'New - Text : makeRelative has a parameter to determine the local directory prefix.';
+
+    case version_compare($version, '1.2.1', '<'):
+        $content[] = 'Fix - Text : another small change to get foreign characters to work in php < 5.';
     }
     
     return true;

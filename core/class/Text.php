@@ -45,7 +45,7 @@ class PHPWS_Text {
             if (version_compare(phpversion(), '5.0.0', '>=')) {
                 $this->text = html_entity_decode($text, ENT_QUOTES, 'UTF-8');
             } else {
-                $this->text = $this->html_entity_decode($text, ENT_QUOTES, 'ISO-8859-1');
+                $this->text = $this->decode_entities($text);
             }
         } else {
             $this->text = $text;
@@ -53,30 +53,25 @@ class PHPWS_Text {
     }
 
     /**
-     * This is a copy of the compat function from Pear
-     * @author David Irvine <dave@codexweb.co.za>
-     * @author  Aidan Lister <aidan@php.net>
+     * This is a modified copy of a function from 'derernst at gmx dot ch' at php.net
+     * I added the mb_convert. His work was based on others. Please see notes under
+     * html_entity_decode
+     * @ author derernst at gmx dot ch
+     * @author Matthew McNaney <mcnaney at gmail dot com>
      */
-    function html_entity_decode($string, $quote_style= ENT_COMPAT, $charset = null) {
-        if (!is_int($quote_style)) {
-            user_error('html_entity_decode() expects parameter 2 to be long, ' .
-                gettype($quote_style) . ' given', E_USER_WARNING);
-            return;
+
+    function decode_entities($text, $quote_style = ENT_COMPAT) {
+        if (!function_exists('html_entity_decode')) {
+            $text = html_entity_decode($text, $quote_style, 'ISO-8859-1'); // NOTE: UTF-8 does not work!
         }
-
-        $trans_tbl = get_html_translation_table(HTML_ENTITIES);
-        $trans_tbl = array_flip($trans_tbl);
-
-        // Add single quote to translation table;
-        $trans_tbl['&#039;'] = '\'';
-
-        // Not translating double quotes
-        if ($quote_style & ENT_NOQUOTES) {
-            // Remove double quote from translation table
-            unset($trans_tbl['&quot;']);
+        else {
+            $trans_tbl = get_html_translation_table(HTML_ENTITIES, $quote_style);
+            $trans_tbl = array_flip($trans_tbl);
+            $text = strtr($text, $trans_tbl);
         }
-
-        return strtr($string, $trans_tbl);
+        $text = preg_replace('~&#x([0-9a-f]+);~ei', 'chr(hexdec("\\1"))', $text);
+        $text = preg_replace('~&#([0-9]+);~e', 'chr("\\1")', $text);
+        return mb_convert_encoding($text, 'UTF-8');
     }
 
 
