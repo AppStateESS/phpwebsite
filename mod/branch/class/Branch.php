@@ -33,7 +33,7 @@ class Branch {
                 $this->dsn = preg_replace('/define\(\'phpws_dsn\',\'([\w\/:@]+)\'\);/iU', '\\1', $row);
             }
 
-            if (preg_match('/^define\(\'phpws_table_prefix\'/i', $row)) {
+            if (preg_match('/^define\(\'phpws_table_prefix\',\'\w+\'/i', $row)) {
                 $this->prefix = preg_replace('/define\(\'phpws_table_prefix\',\'([\w\/:@]+)\'\);/iU', '\\1', $row);
             }
 
