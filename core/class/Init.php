@@ -63,7 +63,7 @@ function setLanguage($language)
     putenv("LANG=$language");
     putenv("LANGUAGE=$language");
     */
-    return setlocale(LC_ALL, $language);
+    return setlocale(LC_ALL, $language . '.UTF-8');
 }
 
 /**
