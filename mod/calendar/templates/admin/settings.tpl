@@ -8,6 +8,16 @@
             {STARTING_DAY_2} {STARTING_DAY_2_LABEL}
         </td>
     </tr>
+    <tr>
+        <td>
+            <strong>{MINI_CALENDAR}</strong>
+        </td>
+        <td>
+        {DISPLAY_MINI_1} {DISPLAY_MINI_1_LABEL}<br />
+        {DISPLAY_MINI_2} {DISPLAY_MINI_2_LABEL}<br />
+        {DISPLAY_MINI_3} {DISPLAY_MINI_3_LABEL}
+        </td>
+    </tr>
 </table>
 {SUBMIT}
 {END_FORM}

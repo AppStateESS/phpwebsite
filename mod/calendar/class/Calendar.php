@@ -10,9 +10,9 @@
 PHPWS_Core::requireConfig('calendar');
 PHPWS_Core::requireInc('calendar', 'error_defines.php');
 
-define('MINI_CAL_NO_SHOW', 1);
-define('MINI_CAL_SHOW_FRONT', 2);
-define('MINI_CAL_SHOW_ALWAYS', 3);
+define('MINI_CAL_NO_SHOW',     0);
+define('MINI_CAL_SHOW_FRONT',  1);
+define('MINI_CAL_SHOW_ALWAYS', 2);
 
 
 class PHPWS_Calendar {

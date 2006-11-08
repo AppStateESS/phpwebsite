@@ -526,6 +526,7 @@ class Calendar_Admin {
             PHPWS_Settings::set('calendar', 'allow_submissions', 0);
         }
 
+        PHPWS_Settings::set('calendar', 'display_mini', (int)$_POST['display_mini']);
         PHPWS_Settings::set('calendar', 'starting_day', (int)$_POST['starting_day']);
         PHPWS_Settings::save('calendar');
         PHPWS_Cache::clearCache();
@@ -864,20 +865,6 @@ class Calendar_Admin {
 
     }
 
-
-    /**
-     * Saves the settings posted from the settings page
-     */
-    function saveSettings()
-    {
-        PHPWS_Settings::set('calendar', 'info_panel',         $_POST['info_panel']);
-        PHPWS_Settings::set('calendar', 'starting_day',       $_POST['starting_day']);
-        PHPWS_Settings::set('calendar', 'personal_schedules', $_POST['personal_schedules']);
-        PHPWS_Settings::set('calendar', 'hour_format',        $_POST['hour_format']);
-        PHPWS_Settings::set('calendar', 'display_mini',       $_POST['display_mini']);
-        PHPWS_Settings::save('calendar');
-    }
-
     function scheduleListing()
     {
         $this->title = _('Schedules');
@@ -955,8 +942,14 @@ class Calendar_Admin {
         $form->setLabel('personal_schedules', _('Allow personal schedules'));
         $form->setMatch('personal_schedules', PHPWS_Settings::get('calendar', 'personal_schedules'));
 
+        $form->addRadio('display_mini', array(0,1,2));
+        $form->setLabel('display_mini', array(_('Don\'t show'), _('Only on front page'), _('On all pages')));
+        $form->setMatch('display_mini', PHPWS_Settings::get('calendar', 'display_mini'));
+
         $form->addSubmit(_('Save settings'));
         $tpl = $form->getTemplate();
+
+        $tpl['MINI_CALENDAR'] = _('Display mini calendar');
 
         $tpl['START_LABEL'] = _('Week start day');
 

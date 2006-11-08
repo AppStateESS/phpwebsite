@@ -4,7 +4,6 @@
    * @version $Id$
    */
 
-
 $mini_cal_display = PHPWS_Settings::get('calendar', 'display_mini');
 
 if ($mini_cal_display == MINI_CAL_SHOW_ALWAYS ||
