@@ -304,16 +304,19 @@ class RSS_Feed {
                 break;
 
             case 'IMAGE':
-                if ($version == '1.0') {
+                if ($version == '1.0' && isset($item['attributes']) && is_array($item['attributes'])) {
                     foreach ($item['attributes'] as $ignore=>$resource);
                     $this->mapped['CHANNEL']['IMAGE'] = $resource;
                 } elseif ($version == '2.0' || $version == '0.92') {
                     $this->pullImage($info['child']);
-                }                break;
+                }
+                break;
 
             case 'TEXTINPUT':
-                foreach ($item['attributes'] as $ignore=>$resource);
-                $this->mapped['CHANNEL']['TEXTINPUT'] = $resource;
+                if (isset($item['attributes']) && is_array($item['attributes'])) {
+                    foreach ($item['attributes'] as $ignore=>$resource);
+                    $this->mapped['CHANNEL']['TEXTINPUT'] = $resource;
+                }
                 break;
 
             default:
