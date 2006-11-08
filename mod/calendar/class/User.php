@@ -314,7 +314,7 @@ class Calendar_User {
         while($day = $oMonth->fetch()) {
             $data['COUNT'] = null;
             $no_of_events = 0;
-            $data['DAY'] = $this->dayLink($day->day, $month, $day->day, $year);
+            $data['DAY'] = $this->dayLink($day->day, $day->month, $day->day, $day->year);
 
 
             if (isset($this->calendar->sorted_list[$day->year]['months'][$day->month]['days'][$day->day]['events'])) {
