@@ -137,6 +137,10 @@ class Branch {
             return FALSE;
         }
 
+        if (!mkdir($this->directory . 'admin/')) {
+            return FALSE;
+        }
+
         return TRUE;
     }
 

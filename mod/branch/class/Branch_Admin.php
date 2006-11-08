@@ -226,6 +226,14 @@ class Branch_Admin {
             return false;
         }
 
+        if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'admin/', $this->branch->directory . 'admin/')) {
+            $this->content[] = _('Failed to copy admin file to branch.');
+            return false;
+        } else {
+            $this->content[] = _('Copied admin file to branch.');
+        }
+
+
         if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'themes/', $this->branch->directory . 'themes/')) {
             $this->content[] = _('Failed to copy theme files to branch.');
             return false;
