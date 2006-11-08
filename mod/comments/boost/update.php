@@ -40,6 +40,15 @@ function comments_update(&$content, $currentVersion)
 
     case version_compare($currentVersion, '0.3.0', '<'):
         $content[] = 'Small changes to sync comments to current core.';
+
+    case version_compare($currentVersion, '0.3.1', '<'):
+        if (PHPWS_Boost::updateFiles(array('conf/config.php'), 'comments')) {
+            $content[] = '- New config.php file copied locally.';
+
+        } else {
+            $content[] = '- New config.php file failed to copy locally.';
+        }
+        $content[] = '- Created default comment limit in config.';
     }
             
     return TRUE;

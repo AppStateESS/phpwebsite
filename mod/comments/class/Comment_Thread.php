@@ -261,6 +261,7 @@ class Comment_Thread {
         $pager->addPageTags($page_tags);
         $pager->addRowTags('getTpl', $this->allow_anon);
         $pager->setLimitList(array(10, 20, 50));
+        $pager->setDefaultLimit(COMMENT_DEFAULT_LIMIT);
         $pager->setEmptyMessage(_('No comments'));
         $pager->initialize();
         $rows = $pager->getRows();

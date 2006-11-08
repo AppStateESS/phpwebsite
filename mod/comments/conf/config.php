@@ -29,4 +29,7 @@ define('COMMENT_VIEW_ONE_TPL', 'alt_view_one.tpl');
 // for their comment.
 define('COMMENT_NO_SUBJECT', _('No subject'));
 
+// 10, 20, or 50 comments per page.
+define('COMMENT_DEFAULT_LIMIT', 20);
+
 ?>
