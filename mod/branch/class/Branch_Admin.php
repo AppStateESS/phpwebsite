@@ -325,7 +325,9 @@ class Branch_Admin {
         $template['home_dir']     = $this->branch->directory;
         $template['site_hash']    = $this->branch->site_hash;
         $template['dsn']          = $this->getDSN();
-        $template['dbprefix']     = $this->dbprefix;
+        if (!empty($this->dbprefix)) {
+            $template['dbprefix']     = $this->dbprefix;
+        }
 
         // if windows installation, comment out linux pear path
         if (PHPWS_Core::isWindows()) {
