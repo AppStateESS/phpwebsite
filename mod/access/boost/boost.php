@@ -5,7 +5,7 @@
    */
 
 $proper_name  = 'Access';
-$version      = '0.0.2';
+$version      = '0.1.0';
 $import_sql   = TRUE;
 $image_dir    = FALSE;
 $file_dir     = TRUE;

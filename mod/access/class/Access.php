@@ -7,6 +7,14 @@
  * @version $Id$
  */
 
+define('SHORTCUT_BAD_KEYWORD',     1);
+define('SHORTCUT_WORD_IN_USE',     2);
+define('SHORTCUT_MISSING_KEYWORD', 3);
+define('SHORTCUT_MISSING_URL',     4);
+define('ACCESS_FILES_DIR',         5);
+define('ACCESS_HTACCESS_WRITE',    6);
+define('ACCESS_HTACCESS_MISSING',  7);
+
 PHPWS_Core::requireConfig('access');
 
 class Access {
@@ -361,7 +369,9 @@ class Access {
             $content[] = 'Options +FollowSymlinks';
             $content[] = '';
             $content[] = Access::listShortcuts();
+            $content[] = DEFAULT_CONDITION;
             $content[] = DEFAULT_REWRITE_1;
+            $content[] = DEFAULT_CONDITION;
             $content[] = DEFAULT_REWRITE_2;
 
             return implode("\n", $content) . "\n";
