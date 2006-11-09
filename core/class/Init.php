@@ -74,7 +74,7 @@ function setLanguage($language)
 function initLanguage()
 {
     if (!defined('DEFAULT_LANGUAGE')) {
-        define('DEFAULT_LANGUAGE', 'en');
+        define('DEFAULT_LANGUAGE', 'en_US');
     }
 
     if (!defined('CORE_COOKIE_TIMEOUT')) {
@@ -326,7 +326,8 @@ function translate($module=NULL)
  */
 function translateFile($filename)
 {
-    return strtolower(CURRENT_LANGUAGE . '_' . $filename);
+    $language = str_ireplace('.utf-8', '', CURRENT_LANGUAGE);
+    return strtolower($language . '_' . $filename);
 }
 
 /**
