@@ -884,7 +884,7 @@ class Layout {
 
         $theme = Layout::getCurrentTheme();
         $key = Key::getCurrent();
-        if (Key::checkKey($key)) {
+        if (Key::checkKey($key, false)) {
             $page_metatags = Layout::getMetaPage($key->id);
 
             if (PEAR::isError($page_metatags)) {
