@@ -26,7 +26,10 @@ class PHPWS_Settings {
     }
 
     /**
-     * Checks to see if the value isset in the session
+     * Checks to see if the value isset in the global variable.
+     * is_set does not load all of the modules at once to allow
+     * checking against default settings. If all were pulled at once,
+     * newly added settings would get ignored.
      */
     function is_set($module, $setting=NULL)
     {
