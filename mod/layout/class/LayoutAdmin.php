@@ -117,7 +117,6 @@ class Layout_Admin{
             break;
 
         case 'postMeta':
-            PHPWS_Core::initModClass('layout', 'Initialize.php');
             Layout_Admin::postMeta();
             if (isset($_POST['key_id'])) {
                 javascript('close_refresh');
