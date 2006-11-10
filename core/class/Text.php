@@ -25,6 +25,7 @@ class PHPWS_Text {
     var $use_strip_tags = true;
     var $use_bbcode     = ALLOW_BB_CODE;
     var $use_smilies    = false;
+    var $fix_anchors    = FIX_ANCHORS;
     var $_allowed_tags  = NULL;
 
     function PHPWS_Text($text=NULL, $encoded=FALSE)
@@ -147,7 +148,23 @@ class PHPWS_Text {
             $text = PHPWS_Text::breaker($text);
         }
 
+        if ($this->fix_anchors) {
+            $text = PHPWS_Text::fixAnchors($text);
+        }
+
         return $text;
+    }
+
+    /**
+     * Fixes plain anchors. Makes them relative to the current page.
+     */
+    function fixAnchors($text)
+    {
+        $home_http = PHPWS_Core::getCurrentUrl();
+
+        return preg_replace('/href="#(\w+)"/',
+                            sprintf('href="%s#\\1"', $home_http),
+                            $text);
     }
 
     /**
