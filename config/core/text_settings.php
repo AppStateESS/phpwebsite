@@ -52,6 +52,11 @@ define('ALLOW_BB_IMAGES', FALSE);
 // Either "fieldset" or "blockquote"
 define('BBCODE_QUOTE_TYPE', 'fieldset');
 
+// parseOutput/getPrint fixes bare anchors to become relative to
+// the current page
+define('FIX_ANCHORS', true);
+
+
 /******************* Profanity Filter ********************
  *
  * The following words will be stripped automatically from any text
