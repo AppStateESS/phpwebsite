@@ -179,6 +179,7 @@ class Webpage_Admin {
             break;
 
         case 'edit_header':
+            $pagePanel->setCurrentTab('header');
             $title = sprintf(_('Edit header: %s'), $volume->title);
             $content = Webpage_Forms::editHeader($volume, $version);
             break;
