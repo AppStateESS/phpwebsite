@@ -496,14 +496,8 @@ class Layout {
 
     }
 
-    function getMetaRobot()
+    function getMetaRobot($meta_robots)
     {
-        if (!isset($GLOBALS['Layout_Robots'])) {
-            $meta_robots = '11';
-        } else {
-            $meta_robots = $GLOBALS['Layout_Robots'];
-        }
-
         switch ((string)$meta_robots){
         case '11':
             return 'all';
@@ -523,13 +517,21 @@ class Layout {
         }
     }
 
-    function getMetaTags()
+    function getMetaTags($page_metatags=null)
     {
-        extract($_SESSION['Layout_Settings']->getMetaTags());
+        if (!$page_metatags) {
+            extract($_SESSION['Layout_Settings']->getMetaTags());
+            if (!isset($GLOBALS['Layout_Robots'])) {
+                $meta_robots = '11';
+            } else {
+                $meta_robots = $GLOBALS['Layout_Robots'];
+            }
+        } else {
+            extract($page_metatags);
+        }
 
         // Say it loud
         $metatags[] = '<meta name="generator" content="phpWebSite" />';
-
 
         $metatags[] = '<meta content="text/html; charset=UTF-8"  http-equiv="Content-Type" />';
         if (!empty($author)) {
@@ -550,7 +552,7 @@ class Layout {
             $metatags[] = '<meta name="owner" content="' . $meta_owner . '" />';
         }
 
-        $robot = Layout::getMetaRobot();
+        $robot = Layout::getMetaRobot($meta_robots);
         $metatags[] = '<meta name="robots" content="' . $robot . '" />';
 
         if (isset($GLOBALS['extra_meta_tags']) && is_array($GLOBALS['extra_meta_tags'])) {
@@ -731,16 +733,25 @@ class Layout {
         if (javascriptEnabled() && Layout::getExtraStyles() &&
             Key::checkKey($key)) {
             
-            $js_vars['label'] = _('Change style');
-            $js_vars['width'] = 400;
-            $js_vars['height'] = 200;
 
-            $vars['action'] = 'admin';
-            $vars['command'] = 'js_style_change';
-            $vars['key_id'] = $key->id;
+            $js_vars['width']  = 400;
+            $js_vars['height'] = 200;
+            $vars['key_id']    = $key->id;
+            $vars['action']    = 'admin';
+
+            $js_vars['label'] = _('Change style');
+            $vars['command']  = 'js_style_change';
 
             $js_vars['address'] = PHPWS_Text::linkAddress('layout', $vars, TRUE);
             $links[] = javascript('open_window', $js_vars);
+
+            if (!$key->isHomeKey()) {
+                $js_vars['height'] = 400;
+                $js_vars['label'] = _('Meta tags');
+                $vars['command']  = 'page_meta_tags';
+                $js_vars['address'] = PHPWS_Text::linkAddress('layout', $vars, TRUE);
+                $links[] = javascript('open_window', $js_vars);
+            }
         }
 
         if (!isset($links)) {
@@ -805,7 +816,7 @@ class Layout {
             if (defined('DEFAULT_LANGUAGE')) {
                 define('CURRENT_LANGUAGE', DEFAULT_LANGUAGE);
             } else {
-                define('CURRENT_LANGUAGE', 'en_us');
+                define('CURRENT_LANGUAGE', 'en_US');
             }
         }
 
@@ -859,10 +870,29 @@ class Layout {
         $GLOBALS['Layout_Page_Title_Add'][] = $title;
     }
 
+    function getMetaPage($key_id)
+    {
+        $db = new PHPWS_DB('layout_metatags');
+        $db->addWhere('key_id', $key_id);
+        return $db->select('row');
+    }
+
 
     function loadHeaderTags(&$template)
     {
+        $page_metatags = null;
+
         $theme = Layout::getCurrentTheme();
+        $key = Key::getCurrent();
+        if (Key::checkKey($key)) {
+            $page_metatags = Layout::getMetaPage($key->id);
+
+            if (PEAR::isError($page_metatags)) {
+                PHPWS_Error::log($page_metatags);
+                $page_metatags = null;
+            }
+        }
+
 
         if (isset($GLOBALS['Layout_JS'])) {
             foreach ($GLOBALS['Layout_JS'] as $script=>$javascript)
@@ -876,8 +906,13 @@ class Layout {
         if (!empty($GLOBALS['Layout_Links'])) {
             $template['STYLE'] .= "\n" . implode("\n", $GLOBALS['Layout_Links']);
         }
-        $template['METATAGS']   = Layout::getMetaTags();
-        $template['PAGE_TITLE'] = $_SESSION['Layout_Settings']->getPageTitle();
+
+        $template['METATAGS']   = Layout::getMetaTags($page_metatags);
+        if ($page_metatags) {
+            $template['PAGE_TITLE'] = $page_metatags['page_title'] . PAGE_TITLE_DIVIDER . $_SESSION['Layout_Settings']->getPageTitle(true);
+        } else {
+            $template['PAGE_TITLE'] = $_SESSION['Layout_Settings']->getPageTitle();
+        }
         $template['ONLY_TITLE'] = $_SESSION['Layout_Settings']->getPageTitle(TRUE);
         $template['BASE']       = Layout::getBase();
    }
@@ -945,8 +980,6 @@ class Layout {
             }
             $menu[$var] = _('Send to') . ' ' . $var;
         }
-
-
 
         $form = new PHPWS_Form;
         $form->addHidden('module', 'layout');

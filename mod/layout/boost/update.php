@@ -49,6 +49,22 @@ added properly. Fixed by having the module name verified.';
         PHPWS_Boost::updateFiles($files, 'layout');
         $content[] = 'Fixed style sheet issue with IE 7.';
         $content[] = 'Cleaned up config.php file. Moved errors defines to Layout class file. (check your local backup).';
+
+    case version_compare($currentVersion, '2.2.0', '<'):
+        $files = array('templates/metatags.tpl');
+        if (PHPWS_Boost::updateFiles($files, 'layout')) {
+            $content[] = '- Template file "metatags.tpl" successfully updated.';
+        } else {
+            $content[] = '- Failed to successfully update template file "metatags.tpl".';
+        }
+
+        if (PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/layout/boost/update_220.sql', false)) {
+            $content[] = '- Table "layout_metatags" created successfully.';
+        } else {
+            $content[] = '- Unable to create "layout_metatags" table.';
+            return false;
+        }
+        $content[] = '- Added meta tag control on a per page basis.';
     }
     return TRUE;
 }

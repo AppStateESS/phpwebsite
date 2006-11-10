@@ -89,6 +89,19 @@ class Layout_Settings {
         return $meta;
     }
 
+    function getPageMetaTags($key_id)
+    {
+        $db = new PHPWS_DB('layout_metatags');
+        $db->addWhere('key_id', $key_id);
+        $row = $db->select('row');
+        if (PEAR::isError($row)) {
+            PHPWS_Error::log($row);
+            return null;
+        }
+
+        return $row;
+    }
+
     function getThemeVariables()
     {
         return $this->_theme_variables;

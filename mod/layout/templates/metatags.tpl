@@ -17,5 +17,5 @@
     </td>
   </tr>
 </table>
-{SUBMIT}
+{SUBMIT}&nbsp;&nbsp;{RESET}
 {END_FORM}

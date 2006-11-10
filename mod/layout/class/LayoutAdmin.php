@@ -119,6 +119,11 @@ class Layout_Admin{
         case 'postMeta':
             PHPWS_Core::initModClass('layout', 'Initialize.php');
             Layout_Admin::postMeta();
+            if (isset($_POST['key_id'])) {
+                javascript('close_refresh');
+                Layout::nakedDisplay();
+                exit();
+            }
             Layout::reset();
             $title = _('Edit Meta Tags');
             $template['MESSAGE'] = _('Meta Tags updated.');
@@ -153,6 +158,14 @@ class Layout_Admin{
                 javascript('close_refresh');
             }
             Layout::nakedDisplay($content, _('Change CSS'));
+            break;
+
+        case 'page_meta_tags':
+            $content = Layout_Admin::pageMetaTags((int)$_REQUEST['key_id']);
+            if (empty($content)) {
+                javascript('close_refresh');
+            }
+            Layout::nakedDisplay($content, _('Set meta tags'));
             break;
         }
 
@@ -189,7 +202,7 @@ class Layout_Admin{
             $current_style = 0;
         }
 
-        $form = & new PHPWS_Form('change_styles');
+        $form = new PHPWS_Form('change_styles');
         $form->addHidden('module', 'layout');
         $form->addHidden('action', 'admin');
         $form->addHidden('command', 'post_style_change');
@@ -222,14 +235,14 @@ class Layout_Admin{
         $tabs['header']    = array('title'=>_('Header'),    'link'=>$link);
         $tabs['footer']    = array('title'=>_('Footer'),    'link'=>$link);
         
-        $panel = & new PHPWS_Panel('layout');
+        $panel = new PHPWS_Panel('layout');
         $panel->quickSetTabs($tabs);
         return $panel;
     }
 
     function adminThemes()
     {
-        $form = & new PHPWS_Form('themes');
+        $form = new PHPWS_Form('themes');
         $form->addHidden('module', 'layout');
         $form->addHidden('action', 'admin');
         $form->addHidden('command', 'postTheme');
@@ -252,7 +265,7 @@ class Layout_Admin{
 
     function boxesForm()
     {
-        $form = & new PHPWS_Form('boxes');
+        $form = new PHPWS_Form('boxes');
         $form->addHidden('module', 'layout');
         $form->addHidden('action', 'admin');
         $form->addHidden('command', 'changeBoxSettings');
@@ -292,7 +305,7 @@ class Layout_Admin{
     function confirmThemeChange()
     {
         Layout::reset();
-        $form = & new PHPWS_Form('confirmThemeChange');
+        $form = new PHPWS_Form('confirmThemeChange');
         $form->addHidden('module', 'layout');
         $form->addHidden('action', 'admin');
         $form->addHidden('command', 'confirmThemeChange');
@@ -306,7 +319,7 @@ class Layout_Admin{
 
     function editFooter()
     {
-        $form = & new PHPWS_Form('edit_footer');
+        $form = new PHPWS_Form('edit_footer');
         $form->addHidden('module', 'layout');
         $form->addHidden('action', 'admin');
         $form->addHidden('command', 'edit_footer');
@@ -331,7 +344,7 @@ class Layout_Admin{
 
     function editHeader()
     {
-        $form = & new PHPWS_Form('edit_header');
+        $form = new PHPWS_Form('edit_header');
         $form->addHidden('module', 'layout');
         $form->addHidden('action', 'admin');
         $form->addHidden('command', 'edit_header');
@@ -360,14 +373,38 @@ class Layout_Admin{
         return PHPWS_File::readDirectory('themes/', 1);
     }
 
-    function metaForm()
+    /**
+     * Form for meta tags. Used for site mata tags and individual key
+     * meta tags.
+     */
+    function metaForm($key_id=0)
     {
-        extract($_SESSION['Layout_Settings']->getMetaTags());
+        $meta_description = $meta_keywords = $page_title = null;
+        $meta_robots = '11';
+
+        if (!$key_id) {
+            $vars = $_SESSION['Layout_Settings']->getMetaTags();
+        } else {
+            $vars = $_SESSION['Layout_Settings']->getPageMetaTags($key_id);
+            if (empty($vars)) {
+                $vars = $_SESSION['Layout_Settings']->getMetaTags();
+                $key = new Key($key_id);
+                $vars['page_title'] = $key->title;
+            }
+        }
+
+        if (is_array($vars)) {
+            extract($vars);
+        }
 
         $index = substr($meta_robots, 0, 1);
         $follow = substr($meta_robots, 1, 1);
 
-        $form = & new PHPWS_Form('metatags');
+        $form = new PHPWS_Form('metatags');
+        if ($key_id) {
+            $form->addHidden('key_id', $key_id);
+            $form->addSubmit('reset', _('Restore to default'));
+        }
         $form->addHidden('module', 'layout');
         $form->addHidden('action', 'admin');
         $form->addHidden('command', 'postMeta');
@@ -420,7 +457,7 @@ class Layout_Admin{
             return;
         }
 
-        $db = & new PHPWS_DB('layout_styles');
+        $db = new PHPWS_DB('layout_styles');
         $db->addWhere('key_id', (int)$_POST['key_id']);
         $db->delete();
         $db->reset();
@@ -467,21 +504,36 @@ class Layout_Admin{
         $values['meta_keywords'] = strip_tags($meta_keywords);
         $values['meta_description'] = strip_tags($meta_description);
 
-        if (isset($_POST['index']))
+        if (isset($_POST['index'])) {
             $index = 1;
-        else
+        } else {
             $index = 0;
+        }
 
-        if (isset($_POST['follow']))
+        if (isset($_POST['follow'])) {
             $follow = 1;
-        else
+        } else {
             $follow = 0;
+        }
 
         $values['meta_robots'] = $index . $follow;
-    
-        $db = & new PHPWS_DB('layout_config');
-        $db->addValue($values);
-        $db->update();
+
+        if (isset($key_id)) {
+            $values['key_id'] = $key_id;
+            $db = new PHPWS_DB('layout_metatags');
+            $db->addWhere('key_id', $key_id);
+            $db->delete();
+            if (isset($_POST['reset'])) {
+                return true;
+            }
+            $db->reset();
+            $db->addValue($values);
+            return $db->insert();
+        } else {
+            $db = new PHPWS_DB('layout_config');
+            $db->addValue($values);
+            return $db->update();
+        }
     }
 
     function saveBoxSettings()
@@ -496,6 +548,12 @@ class Layout_Admin{
         if ($_REQUEST['reset_boxes'] == '1') {
             Layout::resetDefaultBoxes();
         }
+    }
+
+    function pageMetaTags($key_id)
+    {
+        $content = Layout_Admin::metaForm($key_id);
+        return $content;
     }
 }
 
