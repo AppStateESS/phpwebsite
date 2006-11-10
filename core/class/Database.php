@@ -1643,13 +1643,13 @@ class PHPWS_DB {
      * This function can not be called statically.
      */
 
-    function importFile($filename)
+    function importFile($filename, $report_errors=TRUE)
     {
         if (!is_file($filename)) {
             return PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, 'core', 'PHPWS_DB::importFile');
         }
         $data = file_get_contents($filename);
-        return PHPWS_DB::import($data);
+        return PHPWS_DB::import($data, $report_errors);
     }
 
     /**
