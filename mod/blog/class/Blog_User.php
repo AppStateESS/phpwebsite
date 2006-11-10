@@ -28,6 +28,7 @@ class Blog_User {
 
         switch ($action) {
         case 'view_comments':
+            Layout::addPageTitle($blog->title);
             $content = $blog->view(TRUE, FALSE);
             break;
 
