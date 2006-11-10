@@ -116,9 +116,14 @@ class Convert {
             $filename = translateFile('info.ini');
             $info_file = $predir . $mod_dir . '/' . $filename;
 
-            if (is_file($info_file)) {
-                $template['convert_mods'][] = $this->convertLinkTpl($info_file, $mod_dir);
+            if (!is_file($info_file)) {
+                $info_file = $predir . $mod_dir . '/info.ini';
+                if (!is_file($info_file)) {
+                    continue;
+                }
             }
+
+            $template['convert_mods'][] = $this->convertLinkTpl($info_file, $mod_dir);
         }
 
         $template['TITLE_LABEL'] = _('Title');
@@ -327,12 +332,13 @@ class Convert {
         $info = translateFile('info.ini');
         $info_file = sprintf('convert/modules/%s/%s', $package, $info);
         if (!is_file($info_file)) {
-            $this->show(sprintf(_('Could not find info file. File : %s'), $info_file), _('Error'));
-            return;
+            $info_file = sprintf('convert/modules/%s/info.ini', $package);
+            if (!is_file($info_file)) {
+                $this->show(sprintf(_('Could not find info file. File : %s'), $info_file), _('Error'));
+                return;
+            }
         }
         $convert_info = parse_ini_file($info_file);
-
-
         if (!is_file($filename)) {
             $this->show(_('Not a convert file.'));
             return;
