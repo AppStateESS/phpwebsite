@@ -2,6 +2,81 @@ Need versions
 Categories
 Version
 
+November 10
+-----------
+Core
++ Convert
+  o Now looks for info.ini file if language version not available
+  o Added info.ini files for each converted module
+  o Removed unused en-us ini files.
+
++ Database
+  o Added a report_error parameter to importFile function.
+
++ Text
+  o Added a function to fix basic anchors in parsed text. Will now
+    suppliment them with the current url.
+  o Added a parameter to control whether to fix anchors by default or
+    not.
+
+Layout
++ Added meta tag settings per page.
+
+Blog
++ Entry viewing now adds the blog title to the page title.
+
+Users
++ Removed constructions by reference.
++ When logging in, the user object would have its session information
+  noted, saved and then reloaded. During the save, all its variables
+  were double checked. This was over kill and caused several extra
+  database calls. Changed to only update and then load
+  permissions. Saves several steps. 
+
+
+Web Page
++ Fixed bug that was using the wrong tab when editting the header.
+
+
+November 9
+----------
+Core
++ Error.php - Default language is now used when the get function is called.
++ Init.php
+  o Default language changed from "en" to "en_US"
+  o Stripping the utf-8 suffix from the language used in
+    translateFile.
+
+Access
++ Updated files config/config.php
++ Added Rewrite conditionals to allow directory searching
+
+November 8
+----------
+RSS
++ Added some error checks to feed translation.
+
+Core
++ Init.php - Added UTF-8 to setlocale language string.
+
+Branch
++ Fixed bug #1590935 - Copy admin directory to branch.
+
+Calendar
++ Updated file - templates/admin/forms/setting.tpl
++ Fixed bug #1589525 - Calendar days not linked to correct day view.
++ Fixed bug #1589528 - Added option to show mini calendar on all
+  pages, front only, or none to settings tab.
+
+Comments
++ Updated file conf/config.php
++ Added default comment limit and set it to 20.
+
+Branch
++ Changed the config file to not create a table prefix line if no
+  prefix exists.
++ Fixed bug that copying corrupt prefix data to the branch object.
+
 November 7
 ----------
 General
