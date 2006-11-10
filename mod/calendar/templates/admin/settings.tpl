@@ -18,6 +18,14 @@
         {DISPLAY_MINI_3} {DISPLAY_MINI_3_LABEL}
         </td>
     </tr>
+    <tr>
+        <td>
+            {DEFAULT_VIEW_LABEL}
+        </td>
+        <td>
+            {DEFAULT_VIEW}
+        </td>
+    </tr>
 </table>
 {SUBMIT}
 {END_FORM}

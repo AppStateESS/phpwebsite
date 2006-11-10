@@ -248,7 +248,6 @@ class Calendar_User {
 
     function main()
     {
-
         if (isset($_REQUEST['uop'])) {
             $command = $_REQUEST['uop'];
         } else {
@@ -256,7 +255,6 @@ class Calendar_User {
         }
 
         switch ($command) {
-            
         case 'view':
             $this->view();
             break;
@@ -270,8 +268,8 @@ class Calendar_User {
 
     function mini_month()
     {
-        $month = &$this->calendar->int_month;
-        $year  = &$this->calendar->int_year;
+        $month = (int)date('m');
+        $year  = (int)date('Y');
 
         $startdate = mktime(0,0,0, $month, 1, $year);
         $enddate = mktime(23, 59, 59, $month + 1, 0, $year);
@@ -282,7 +280,7 @@ class Calendar_User {
 
         $oMonth = $this->calendar->getMonth();
         $oMonth->build();
-        $date = $oMonth->thisMonth(TRUE);
+        $date = mktime(0,0,0, $month, 1, $year);
 
         $oTpl = new PHPWS_Template('calendar');
         $oTpl->setFile('view/month/mini.tpl');
@@ -292,7 +290,6 @@ class Calendar_User {
         $this->_month_days($oMonth, $oTpl);
 
         $vars['date'] = mktime(0,0,0, $month, 1, $year);
-        $vars['view'] = 'grid';
         $template['FULL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%B', $date), 'calendar', $vars);
         $template['PARTIAL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%b', $date), 'calendar', $vars);
         $template['FULL_YEAR'] = strftime('%Y', $date);
@@ -526,6 +523,11 @@ class Calendar_User {
      */
     function view()
     {
+        $key = new Key($this->calendar->schedule->key_id);
+        if (!$key->allowView()) {
+            $this->calendar->schedule = new Calendar_Schedule;
+        }
+
         if ( $this->calendar->schedule->id &&
              ( ($this->calendar->schedule->public && Current_User::allow('calendar', 'edit_public', $this->calendar->schedule->id) ) ||
                ( !$this->calendar->schedule->public && 
@@ -586,14 +588,10 @@ class Calendar_User {
             break;
         }
 
-        // If the schedule is public flag the schedule or event key
-        // Private schedules are not flagged.
-        if ($this->calendar->schedule->public) {
-            if ($this->current_view == 'event') {
-                $this->event->flagKey();
-            } else {
-                $schedule_key->flag();
-            }
+        if ($this->current_view == 'event') {
+            $this->event->flagKey();
+        } else {
+            $schedule_key->flag();
         }
     }
 
@@ -606,6 +604,10 @@ class Calendar_User {
      */
     function viewLinks($current_view)
     {
+        if (!$this->calendar->schedule->id) {
+            return null;
+        }
+
         $vars = PHPWS_Text::getGetValues();
         unset($vars['module']);
 

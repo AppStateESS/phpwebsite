@@ -72,7 +72,6 @@ class PHPWS_Calendar {
         $this->loadToday();
         $this->loadRequestDate();
         $this->loadSchedule();
-        
     }
 
     /**

@@ -13,7 +13,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 // otherwise go into user functions
 PHPWS_Core::initModClass('calendar', 'Calendar.php');
 
-$Calendar = & new PHPWS_Calendar;
+$Calendar = new PHPWS_Calendar;
 
 if ( ( isset($_REQUEST['aop']) || isset($_REQUEST['tab']) ) && Current_User::allow('Calendar') ) {
     $Calendar->admin();

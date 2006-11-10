@@ -528,6 +528,8 @@ class Calendar_Admin {
 
         PHPWS_Settings::set('calendar', 'display_mini', (int)$_POST['display_mini']);
         PHPWS_Settings::set('calendar', 'starting_day', (int)$_POST['starting_day']);
+        PHPWS_Settings::set('calendar', 'default_view', $_POST['default_view']);
+
         PHPWS_Settings::save('calendar');
         PHPWS_Cache::clearCache();
     }
@@ -945,6 +947,15 @@ class Calendar_Admin {
         $form->addRadio('display_mini', array(0,1,2));
         $form->setLabel('display_mini', array(_('Don\'t show'), _('Only on front page'), _('On all pages')));
         $form->setMatch('display_mini', PHPWS_Settings::get('calendar', 'display_mini'));
+
+        $views['grid'] = _('Month grid');
+        $views['list'] = _('Month list');
+        $views['day']  = _('Day view');
+        $views['week'] = _('Week view');
+
+        $form->addSelect('default_view', $views);
+        $form->setLabel('default_view', _('Default view'));
+        $form->setMatch('default_view', PHPWS_Settings::get('calendar', 'default_view'));
 
         $form->addSubmit(_('Save settings'));
         $tpl = $form->getTemplate();
