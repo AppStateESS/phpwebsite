@@ -37,6 +37,8 @@ ob_start();
 
 require_once PHPWS_SOURCE_DIR . 'core/class/Init.php';
 require_once PHPWS_SOURCE_DIR . 'inc/Security.php';
+PHPWS_Core::requireConfig('core', 'file_types.php');
+
 
 PHPWS_Core::checkSecurity();
 PHPWS_Core::initializeModules();
