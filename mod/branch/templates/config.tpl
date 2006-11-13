@@ -63,6 +63,18 @@ define('CORE_COOKIE_TIMEOUT', 2592000);
 
 define('CHECK_DIRECTORY_PERMISSIONS', FALSE);
 
+/************************ Captcha Settings *******************/
+/**
+ * Added 11/13/2006
+ * Determines if you want to use captcha and if so which version.
+ * phpWebSite ships with freecap by default which is supplied by
+ * http://www.puremango.co.uk/
+ *
+ */
+
+define('ALLOW_CAPTCHA', true);
+define('CAPTCHA_NAME', 'freecap');
+
 /************************ Time Zone **************************/
 /**
  * If SERVER_TIME_ZONE is commented out, phpWebSite will use the
@@ -175,13 +187,6 @@ define('DEFAULT_EDITOR_TOOL', '');
  */ 
 define('ABSOLUTE_UPLOAD_LIMIT', '5000000');
 
-
-/**
- * To keep this file a little tidier, file and image types are listed
- * in the file_types.php file. Make sure you know how to edit
- * arrays before altering the file.
- */ 
-include 'config/core/file_types.php';
 
 /******************* IMAGES SETTINGS **************************/
 define('MAX_IMAGE_SIZE', 50000);
