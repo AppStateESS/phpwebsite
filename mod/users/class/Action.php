@@ -131,6 +131,10 @@ class User_Action {
                 return;
             }
 
+            if (!$user->id) {
+                PHPWS_Core::errorPage('404');
+            }
+
             PHPWS_Core::initModClass('users', 'Group.php');
             $title = _('Set User Permissions') . ' : ' . $user->getUsername();
             $content = User_Form::setPermissions($user->getUserGroup());
@@ -523,21 +527,13 @@ class User_Action {
 
     function confirm()
     {
-        if (!PHPWS_User::getUserSetting('graphic_confirm')) {
+        if (!PHPWS_User::getUserSetting('graphic_confirm') || 
+            !extension_loaded('gd')) {
             return TRUE;
         }
-
-        if (isset($_POST['confirm_graphic']) &&
-            isset($_SESSION['USER_CONFIRM_PHRASE']) &&
-            $_POST['confirm_graphic'] == $_SESSION['USER_CONFIRM_PHRASE']) {
-            $result = TRUE;
-        } else {
-            $result = FALSE;
-        }
-
-        unset($_SESSION['USER_CONFIRM_PHRASE']);
-        return $result;
-
+        
+        PHPWS_Core::initCoreClass('Captcha.php');
+        return Captcha::verify($_POST['confirm_graphic']);
     }
 
     function postUser(&$user, $set_username=TRUE)

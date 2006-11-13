@@ -439,11 +439,14 @@ class User_Form {
         $links[] = PHPWS_Text::secureLink(_('Edit'), 'users', $vars);
         */
 
-        $vars['command'] = 'setUserPermissions';
-        $links[] = PHPWS_Text::secureLink(_('Permissions'), 'users', $vars);
+        if ($user->id) {
+            $vars['command'] = 'setUserPermissions';
+            $links[] = PHPWS_Text::secureLink(_('Permissions'), 'users', $vars);
+        }
 
-
-        $template['LINKS'] = implode(' | ', $links);
+        if (isset($links)) {
+            $template['LINKS'] = implode(' | ', $links);
+        }
 
         if (isset($message)) {
             foreach ($message as $tag=>$error)
@@ -765,8 +768,7 @@ class User_Form {
         $form->setLabel('user_signup', $signup_labels);
         $form->addTplTag('USER_SIGNUP_LABEL', _('User Signup Mode'));
         $form->setMatch('user_signup', PHPWS_User::getUserSetting('new_user_method'));
-
-        if (function_exists('gd_info')) {
+        if (extension_loaded('gd')) {
             $form->addCheckbox('graphic_confirm');
             $form->setLabel('graphic_confirm', _('Use graphic authentication'));
             $form->setMatch('graphic_confirm', PHPWS_User::getUserSetting('graphic_confirm'));
@@ -821,8 +823,7 @@ class User_Form {
         $form->addText('confirm_phrase');
         $form->setLabel('confirm_phrase', _('Confirm text'));
  
-        if (PHPWS_User::getUserSetting('graphic_confirm') && function_exists('gd_info')) {
-
+        if (PHPWS_User::getUserSetting('graphic_confirm') && extension_loaded('gd')) {
             $result = User_Form::confirmGraphic();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
@@ -849,28 +850,8 @@ class User_Form {
 
     function confirmGraphic()
     {
-        require_once 'Text/CAPTCHA.php';
-
-        if (!is_file(GC_FONT_PATH . GC_FONT_FILE)) {
-            return PHPWS_Error::get(USER_ERR_FONT_MISSING, 'users', 'User_Form::confirmGraphic', GC_FONT_PATH . GC_FONT_FILE);
-        }
-
-        $cap = Text_CAPTCHA::factory('Image');
-        $option['font_size'] = GC_FONT_SIZE;
-        $option['font_path'] = GC_FONT_PATH;
-        $option['font_file'] = GC_FONT_FILE;
-
-        $cap->init(GC_WIDTH, GC_HEIGHT, NULL, $option);
-        $phrase = $cap->getPhrase();
-        $directory = './images/users/confirm/';
-        $filename = session_id() . '.png';
-        $write_result = file_put_contents($directory . $filename, $cap->getCAPTCHAAsPNG());
-        if (!$write_result) {
-            return PHPWS_Error::get(USER_ERR_WRITE_CONFIRM, 'users', 'User_Form::confirmGraphic', $directory); 
-        } else {
-            $_SESSION['USER_CONFIRM_PHRASE'] = $phrase;
-            return '<img src="' . $directory . $filename . '" />';
-        }
+        PHPWS_Core::initCoreClass('Captcha.php');
+        return Captcha::get();
     }
 
     function loginPage()
