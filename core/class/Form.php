@@ -1536,14 +1536,18 @@ class Form_TextArea extends Form_Element {
     {
         PHPWS_Core::initCoreClass('Editor.php');
         if ($this->_use_editor && Editor::willWork()) {
-            $editor = new Editor($this->name, $this->value, $this->id);
+            $t = new PHPWS_Text;
+            $t->setText($this->value);
+            $t->use_profanity = true;
+            $t->use_bbcode    = false;
+            $t->fix_anchors   = false;
+            $text = $t->getPrint();
+            $editor = new Editor($this->name, $text, $this->id);
             return $editor->get();
         }
 
         $value = $this->getValue();
 
-        // commenting this out because ampersand values were not functioning
-        //        $value = html_entity_decode($value, ENT_QUOTES);
         $value = preg_replace('/<br\s?\/?>(\r\n)?/', "\n", $value);
 
         if (ord(substr($value, 0, 1)) == 13) {
