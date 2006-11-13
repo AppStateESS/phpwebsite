@@ -6,6 +6,10 @@
     <td>{ORDER}</td>
   </tr>
   <tr>
+    <td>{CAPTCHA_LABEL}</td>
+    <td>{CAPTCHA}</td>
+  </tr>
+  <tr>
     <td>{ALLOW_SIGNATURES_LABEL}</td>
     <td>{ALLOW_SIGNATURES}</td>
   </tr>

@@ -85,7 +85,11 @@ class Comments {
             break;
             
         case 'admin_menu':
-            $content = Comments::settingsForm();
+            if (Current_User::allow('comments', 'settings')) {
+                $content = Comments::settingsForm();
+            } else {
+                $content = _('Sorry, but you do not have rights to alter settings.');
+            }
             break;
 
         case 'post_settings':
@@ -126,12 +130,18 @@ class Comments {
         } else {
             $thread = & new Comment_Thread;
         }
+
+        if (isset($_REQUEST['cm_id'])) {
+            $c_item = & new Comment_Item($_REQUEST['cm_id']);
+        } else {
+            $c_item = & new Comment_Item;
+        }
     
         switch ($command) {
         case 'post_comment':
             if ($thread->canComment()) {
                 $title = _('Post Comment');
-                $content[] = Comments::form($thread);
+                $content[] = Comments::form($thread, $c_item);
             } else {
                 PHPWS_Core::errorPage('404');
             }
@@ -142,14 +152,7 @@ class Comments {
             break;
 
         case 'save_comment':
-            if (empty($_POST['cm_subject']) || empty($_POST['cm_entry'])) {
-                $title = _('Sorry');
-                $content[] = _('Your comment must contain a subject and comment.');
-                $content[] = PHPWS_Text::backLink();
-                break;
-            }
-
-            if (PHPWS_Core::isPosted()) {
+            if ($_REQUEST['cm_subject'] && $_REQUEST['cm_entry'] && PHPWS_Core::isPosted()) {
                 PHPWS_Core::reroute($thread->_key->url);
                 exit();
             }
@@ -160,16 +163,24 @@ class Comments {
                 break;
             }
 
-            $result = Comments::saveComment($thread);
+            if (Comments::postComment($thread, $c_item)) {
+                $result = $c_item->save();
+                if (PEAR::isError($result)) {
+                    PHPWS_Error::log($result);
+                    $title = _('Sorry');
+                    $content[] = _('A problem occurred when trying to save your comment.');
+                    $content[] = _('Please try again later.');
+                    break;
+                } else {
+                    PHPWS_Core::reroute($thread->_key->url);
+                    exit();
+                }
 
-            if (PEAR::isError($result)) {
-                PHPWS_Error::log($result);
-                $title = _('Sorry');
-                $content[] = _('A problem occurred when trying to save your comment.');
-                $content[] = _('Please try again later.');
             } else {
-                PHPWS_Core::reroute($thread->_key->url);
+                $title = _('Post Comment');
+                $content[] = Comments::form($thread, $c_item);
             }
+
             break;
 
         case 'view_comment':
@@ -207,12 +218,11 @@ class Comments {
         return;
     }
   
-    function saveComment(&$thread)
+    function postComment(&$thread, &$cm_item)
     {
-        if (isset($_POST['cm_id'])) {
-            $cm_item = & new Comment_Item($_POST['cm_id']);
-        } else {
-            $cm_item = & new Comment_Item;
+        if (empty($_POST['cm_subject']) || empty($_POST['cm_entry'])) {
+            $cm_item->_error = _('Your comment must contain a subject and comment.');
+            return false;
         }
 
         $cm_item->setThreadId($thread->id);
@@ -230,17 +240,19 @@ class Comments {
             }
         }
 
-        return $cm_item->save();
-    }
-
-    function form(&$thread)
-    {
-        if (isset($_REQUEST['cm_id'])) {
-            $c_item = & new Comment_Item($_REQUEST['cm_id']);
-        } else {
-            $c_item = & new Comment_Item;
+        if ( Comments::useCaptcha() ) {
+            PHPWS_Core::initCoreClass('Captcha.php');
+            if (!Captcha::verify($_POST['captcha'])) {
+                $cm_item->_error =  _('You failed verification. Try again.');
+                return false;
+            }
         }
 
+        return true;
+    }
+
+    function form(&$thread, $c_item)
+    {
         $form = & new PHPWS_Form;
     
         if (isset($_REQUEST['cm_parent'])) {
@@ -283,11 +295,51 @@ class Comments {
         $form->setCols('cm_entry', 50);
         $form->setRows('cm_entry', 10);
         $form->addSubmit(_('Post Comment'));
+
+        if (Comments::useCaptcha()) {
+            PHPWS_Core::initCoreClass('Captcha.php');
+            $form->addText('captcha');
+            $form->setLabel('captcha', _('Please copy the word in the above image.'));
+            $form->addTplTag('CAPTCHA_IMAGE', Captcha::get());
+        }
+
         $template = $form->getTemplate();
         $template['BACK_LINK'] = $thread->getSourceUrl(TRUE);
 
+        if ($c_item->_error) {
+            $template['ERROR'] = & $c_item->_error;
+        }
+
+
         $content = PHPWS_Template::process($template, 'comments', 'edit.tpl');
+
         return $content;
+    }
+
+    /**
+     * Determines if captcha should be used
+     */
+    function useCaptcha()
+    {
+        if (!extension_loaded('gd')) {
+            return false;
+        }
+
+        if (Current_User::allow('comments')) {
+            return false;
+        }
+
+        $captcha = PHPWS_Settings::get('comments', 'captcha');
+
+        // if captcha is enabled (1 or 2)
+        // and everyone has to use it (option 2) or
+        // the only anonymous and user is not logged in
+        // return true
+        if ($captcha && ($captcha == 2 || ($captcha == 1 && !Current_User::isLogged()))) {
+            return true;
+        }
+
+        return false;
     }
 
 
@@ -344,6 +396,7 @@ class Comments {
     function postSettings()
     {
         $settings['default_order'] = $_POST['order'];
+        $settings['captcha'] = (int)$_POST['captcha'];
 
         if (@$_POST['allow_signatures']) {
             $settings['allow_signatures'] = 1;
@@ -409,6 +462,16 @@ class Comments {
         $form->addSelect('order', $order_list);
         $form->setMatch('order', PHPWS_Settings::get('comments', 'default_order'));
         $form->setLabel('order', _('Default order'));
+
+        $captcha[0] = _('Don\'t use');
+        $captcha[1] = _('Anonymous users only');
+        $captcha[2] = _('All users');
+
+        if (extension_loaded('gd')) {
+            $form->addSelect('captcha', $captcha);
+            $form->setMatch('captcha', PHPWS_Settings::get('comments', 'captcha'));
+            $form->setLabel('captcha', _('CAPTCHA use'));
+        }
 
         $form->addSubmit(_('Save'));
 

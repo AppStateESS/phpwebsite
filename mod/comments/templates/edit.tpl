@@ -1,4 +1,5 @@
 <div class="box">
+<!-- BEGIN error --><div class="error">{ERROR}</div><!-- END error -->
   {BACK_LINK}
   {START_FORM}
   <div class="padded">
@@ -13,6 +14,10 @@
       {EDIT_REASON_LABEL}<br />
       {EDIT_REASON}
     </div><!-- END edit-reason -->
+  <div class="padded">
+    {CAPTCHA_IMAGE}<br />
+    {CAPTCHA_LABEL} {CAPTCHA} 
+  </div>
   {SUBMIT}
   {END_FORM}
 </div>
