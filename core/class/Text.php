@@ -28,10 +28,10 @@ class PHPWS_Text {
     var $fix_anchors    = FIX_ANCHORS;
     var $_allowed_tags  = NULL;
 
-    function PHPWS_Text($text=NULL, $encoded=FALSE)
+    function PHPWS_Text($text=NULL, $encoded=FALSE, $smilies=false)
     {
         $this->resetAllowedTags();
-        $this->setText($text, $encoded);
+        $this->setText($text, $encoded, $smilies);
     }
 
     function setText($text, $decode=true, $smilies=false)
