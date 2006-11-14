@@ -924,8 +924,8 @@ class PHPWS_Boost {
 
         if (isset($writableDir)) {
             $content[] = _('The following directories are not writable:');
-            $content[] = '<pre>' . implode("\n", $writableDir) . '</pre>';
-            $content[] = _('You will need to change the permissions.') . '<br />';
+            $content[] = '<pre>' . implode(chr(10), $writableDir) . '</pre>';
+            $content[] = _('You will need to change the permissions.');
             $content[] = '<a href="setup/help/permissions.' . DEFAULT_LANGUAGE . '.txt">' . _('Permission Help') . '</a><br />';
             $errorDir = FALSE;
         }
