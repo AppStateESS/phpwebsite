@@ -37,3 +37,6 @@ config/
 
 logs/ should NOT be world readable
 setup/ should be moved or made unreadable AFTER an installation
+
+Before updating the core, make sure to make a copy of your config/core
+directory or some of your settings could get overwritten.
