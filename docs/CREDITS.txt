@@ -22,13 +22,13 @@ Developers:
 --------------------------------------------------------------------------
 
 Matt McNaney (mcnaney at gmail dot com)
-Darren Greene (dg49379 at tux dot appstate dot edu)
 Kevin Wilcox (kevin at tux dot appstate dot edu)
 Jeremy Booker
 Jeff Tickle
 
 Prior to 1.x
 ----------------
+Darren Greene
 Steven Levin
 Adam Morton
 Jeremy Agee
@@ -36,7 +36,8 @@ Mike Wilson
 Ryan Cowan
 
 --------------------------------------------------------------------------
-The phpWebSite team would also like to thank the following projects:
+The phpWebSite team would also like to thank the following projects
+and their developers:
 --------------------------------------------------------------------------
 
 PHP
@@ -69,6 +70,12 @@ http://sourceforge.net
 Hotscripts
 http://www.hotscripts.com/
 
+FCKeditor
+http://www.fckeditor.net/
+
+Howard Yeend
+http://www.puremango.co.uk/
+
 --------------------------------------------------------------------------
 The phpWebSite team would also like to thank the following people in
 alphabetical order for their contributions and support:
@@ -79,6 +86,7 @@ Dr. Greg Blimling
 Fridtjof Busse
 Wendall Cada
 Eloi George/aDarkling
+Darren Greene
 Bobby Kennedy/fatman
 Rene Kiesler/rck
 Greg Meiste/blindman1344
