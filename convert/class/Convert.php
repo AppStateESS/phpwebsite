@@ -71,6 +71,8 @@ class Convert {
         $dbname = $_POST['db_name'];
         $dbport = $_POST['port'];
 
+        $_SESSION['Convert_Tbl_Prefix'] = $_POST['tbl_prefix'];
+
         $dsn =  $dbtype . '://' . $dbuser . ':' . $dbpass . '@' . $dbhost . '/' . $dbname;
         if (!empty($dbport)) {
             $dsn .= ':' . $dbport;
@@ -87,11 +89,22 @@ class Convert {
 
     }
 
+    function getTblPrefix()
+    {
+        return $_SESSION['Convert_Tbl_Prefix'];
+    }
+
     function &getSourceDB($table)
     {
         $dsn = $_SESSION['OTHER_DATABASE'];
 
-        PHPWS_DB::loadDB($dsn);
+        if (!empty($_SESSION['Convert_Tbl_Prefix'])) {
+            $prefix = & $_SESSION['Convert_Tbl_Prefix'];
+        } else {
+            $prefix = null;
+        }
+
+        PHPWS_DB::loadDB($dsn, $prefix);
         if (!PHPWS_DB::isTable($table)) {
             return false;
         }
@@ -152,6 +165,12 @@ class Convert {
 
         $username = $type = $port = $password = $name = NULL;
 
+        if (!empty($_SESSION['Convert_Tbl_Prefix'])) {
+            $tbl_prefix = & $_SESSION['Convert_Tbl_Prefix'];
+        } else {
+            $tbl_prefix = null;
+        }
+
         if (isset($_POST['name'])) {
             $name = $_POST['name'];
         }
@@ -198,6 +217,9 @@ class Convert {
 
         $form->addText('db_name', $name);
         $form->setLabel('db_name', _('Database name'));
+
+        $form->addText('tbl_prefix', $tbl_prefix);
+        $form->setLabel('tbl_prefix', _('Table prefix'));
 
         $form->addText('username', $username);
         $form->setLabel('username', _('User name'));
