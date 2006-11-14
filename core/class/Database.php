@@ -1655,6 +1655,8 @@ class PHPWS_DB {
     /**
      * Imports a SQL dump into the database.
      * This function can not be called statically.
+     * @returns True if successful, false if not successful and report_errors = false or
+     *               Error object if report_errors = true
      */
     function import($text, $report_errors=TRUE)
     {
@@ -1801,15 +1803,14 @@ class PHPWS_DB {
     function export($structure=TRUE, $contents=TRUE)
     {
         PHPWS_DB::touchDB();
+        $table = $this->addPrefix($this->tables[0]);
 
         if ($structure == TRUE) {
-            $table = $this->addPrefix($this->table);
             $columns =  $GLOBALS['PHPWS_DB']['connection']->tableInfo($table);
-
             $column_info = $this->parseColumns($columns);
             $index = $this->getIndex();
 
-            $sql[] = "CREATE TABLE $tableName ( " .  implode(', ', $column_info['parameters']) .' );';
+            $sql[] = "CREATE TABLE $table ( " .  implode(', ', $column_info['parameters']) . ' );';
             if (isset($column_info['index'])) {
                 $sql = array_merge($sql, $column_info['index']);
             }
@@ -1826,13 +1827,17 @@ class PHPWS_DB {
                         $allValues[] = PHPWS_DB::quote($value);
                     }
           
-                    $sql[] = "INSERT INTO $tableName (" . implode(', ', $allKeys) . ') VALUES (' . implode(', ', $allValues) . ');';
+                    $sql[] = "INSERT INTO $table (" . implode(', ', $allKeys) . ') VALUES (' . implode(', ', $allValues) . ');';
                     $allKeys = $allValues = array();
                 }
             }
         }
 
-        return implode("\n", $sql);
+        if (!empty($sql)) {
+            return implode("\n", $sql);
+        } else {
+            return null;
+        }
     }
 
     function quote($text)
