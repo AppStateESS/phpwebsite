@@ -11,7 +11,6 @@
 
 function convert()
 {
-
     if ( (!Convert::isConverted('webpage') || !Convert::isConverted('blog')) && !isset($_GET['ignore'])) {
         $content[] = _('Any content modules using FatCat should be converted BEFORE continuing.');
         $content[] = sprintf('<a href="index.php?command=convert&amp;package=menu&amp;ignore=1">%s</a>', _('Click to continue anyway.'));
@@ -26,15 +25,12 @@ function convert()
     } else {
         return _('Categories has already been converted.');
     }
-
-
-
 }
 
 function convertCategories()
 {
     $db = Convert::getSourceDB('mod_fatcat_categories');
-    $batch = & new Batches('convert_categories');
+    $batch = new Batches('convert_categories');
     $total_categories = $db->count();
     $batch->setTotalItems($total_categories);
     $batch->setBatchSet(50);
@@ -89,7 +85,7 @@ function convertItems()
 
         $db = Convert::getSourceDB('mod_fatcat_elements');
 
-        $batch = & new Batches('convert_category_items');
+        $batch = new Batches('convert_category_items');
         $total_items = $db->count();
 
         $batch->setTotalItems($total_items);
@@ -134,7 +130,7 @@ function runCatBatch(&$db, &$batch)
     $result = $db->select();
     $db->disconnect();
 
-    $newdb = & new PHPWS_DB('categories');
+    $newdb = new PHPWS_DB('categories');
 
     if (empty($result)) {
         return NULL;
@@ -160,8 +156,8 @@ function runCatItemBatch(&$db, &$batch)
     $result = $db->select();
     $db->disconnect();
 
-    $item_db = & new PHPWS_DB('category_items');
-    $key_db = & new PHPWS_DB('phpws_key');
+    $item_db = new PHPWS_DB('category_items');
+    $key_db = new PHPWS_DB('phpws_key');
 
     if (empty($result)) {
         return NULL;
@@ -195,6 +191,8 @@ function runCatItemBatch(&$db, &$batch)
                 break;
 
             case 'phatform':
+                $module = 'phatform';
+                $item_name = 'form';
                 break;
             } // end item switch
 
