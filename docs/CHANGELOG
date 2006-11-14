@@ -1,6 +1,50 @@
-Need versions
-Categories
+November 14
+-----------
+Core
++ Convert
+  o Added ability to set table prefix of conversion database.
+  o Added Phatform category conversion.
+  o Added Phatform conversion script.
+  o Added note about moving  your images and files before or after
+    conversion to readme file.
+
++ Database - Fixed export function.
+
+Boost
++ Check link will appear regardless of directory permissions.
+
 Version
++ Version won't spam tables it didn't remove when uninstalling a
+  module. 
+
+
+November 13
+-----------
+Core
++ Form.php - Change to the editor code that should prevent the
+  doubling of breaks
++ Text.php - added the smilies parameter to the constructor.
++ Captcha.php - New class to help with CAPTCHA
++ Setup - added captcha information to config.tpl, removed file_type include
++ Index.php - Added file_types include
+
+Branch
++ Updated files : templates/config.tpl
++ Added captcha information to branch config template and removed
+  file types include.
+
+
+Comments
++ Updated files : templates/edit.tpl, templates/settings_form.tpl
++ Added a permission for settings control.
++ Added new Captcha class for commenting (dependency on new core)
++ Added selector for captcha control on settings tab
+
+
+Users
++ Removed permissions page link on new user creation
++ Added error check to prohibit permissions on new users
++ Added support for new Captcha core class (dependency on new core)
 
 November 10
 -----------
@@ -17,7 +61,10 @@ Core
   o Added a function to fix basic anchors in parsed text. Will now
     suppliment them with the current url.
   o Added a parameter to control whether to fix anchors by default or
-    not.
+    not. Default set in config/core/text_settings.php update.
+
++ Functions
+  o Added str_split
 
 Layout
 + Added meta tag settings per page.
@@ -32,6 +79,15 @@ Users
   were double checked. This was over kill and caused several extra
   database calls. Changed to only update and then load
   permissions. Saves several steps. 
+
+
+Calendar
++ Updated files templates/admin/forms/settings.tpl
++ Opened up private calendar key posting to allow permission settings.
++ Added admin option to change the default calendar view
++ Month link on mini calendar now opens the default view.
++ Public calendars that are restricted are now properly hidden.
+
 
 
 Web Page
@@ -108,7 +164,7 @@ Comment - 0.3.0
 + Added third parameter to parseOutput to use smilies
 
 
-Version
+Version UPDATE!!!
 + Added error logging to a function call
 
 
@@ -189,7 +245,7 @@ Layout - 2.1.6
 + Changed import style sheet check to ignore IE 7 and below.
 + Cleaned up config.php.
 
-Categories
+Categories UPDATE!!!
 + Set the default listing to create date descending
 
 Blog - 1.2.1
