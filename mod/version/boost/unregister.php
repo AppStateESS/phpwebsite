@@ -35,6 +35,10 @@ function version_unregister($module, &$content)
         $version_table = $table_name . '_version';
         $version_table_seq = $version_table . '_seq';
 
+        if (!PHPWS_DB::isTable($version_table)) {
+            continue;
+        }
+
         $result = PHPWS_DB::dropTable($version_table);
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
