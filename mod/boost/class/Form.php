@@ -186,7 +186,7 @@ class Boost_Form {
                 $template['ABOUT'] = Layout::getJavascript('open_window', $aboutView);
             }
 
-            if (isset($link_command['action']) && $allow_update){
+            if (isset($link_command['action']) && ($allow_update || $link_command['action'] == 'check')){
                 $template['COMMAND'] = PHPWS_Text::secureLink($link_title, 'boost', $link_command);
             } else
                 $template['COMMAND'] = $link_title;
