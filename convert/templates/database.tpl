@@ -19,6 +19,10 @@
     <td>{DB_NAME}</td>
   </tr>
   <tr>
+    <td class="label" width="30%">{TBL_PREFIX_LABEL}</td>
+    <td>{TBL_PREFIX}</td>
+  </tr>
+  <tr>
     <td class="label">{HOST_LABEL}</td>
     <td>{HOST}</td>
   </tr>
