@@ -219,7 +219,7 @@ function convertPhatforms()
     $db->disconnect();
 
     if (empty($result)) {
-        return NULL;
+        return _('No forms to convert.');
     } else {
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
@@ -270,12 +270,9 @@ function convertPhatforms()
             $savedb->addValue($row);
             $result = $savedb->insert(false);
 
-
-
             $savedb->reset();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
-                continue;
             }
         }
     }
