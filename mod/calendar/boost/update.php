@@ -49,6 +49,11 @@ function calendar_update(&$content, $version)
 + Fixed bug #1589528 - Added option to show mini calendar on all
   pages, front only, or none to settings tab.
 + Added language file.
++ Updated files templates/admin/forms/settings.tpl
++ Opened up private calendar key posting to allow permission settings.
++ Added admin option to change the default calendar view
++ Month link on mini calendar now opens the default view.
++ Public calendars that are restricted are now properly hidden.
 </pre>';
     }
 
