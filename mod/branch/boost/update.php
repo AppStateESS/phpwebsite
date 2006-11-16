@@ -49,6 +49,17 @@ function branch_update(&$content, $version)
         $files[] = 'templates/edit_db.tpl';
         PHPWS_Boost::updateFiles($files, 'branch');
         $content[] = 'Fix - Removed error during Boost update if no branches are installed.';
+
+    case version_compare($version, '1.0.2', '<'):
+        $files = array();
+        $files[] = 'templates/config.tpl';
+        $content[] = '<pre>+ Fixed bug #1590935 - Copy admin directory to branch.
++ Changed the config file to not create a table prefix line if no
+  prefix exists.
++ Fixed bug that copying corrupt prefix data to the branch object.
++ Updated files : templates/config.tpl
++ Added captcha information to branch config template and removed
+  file types include.</pre>';
     }
     return true;
 }
