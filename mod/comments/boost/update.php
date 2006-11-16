@@ -8,12 +8,6 @@
 function comments_update(&$content, $currentVersion)
 {
     switch ($currentVersion) {
-    case version_compare($currentVersion, '0.2.0', '<'):
-        $content[] = '+ Added anonymous tag.';
-        if(!comments_update_020($content)) {
-            return FALSE;
-        }
-
     case version_compare($currentVersion, '0.2.5', '<'):
         $content[] = '+ Added quote next to reply tags. Template update.';
         if (!comments_update_025($content)) {
@@ -44,27 +38,37 @@ function comments_update(&$content, $currentVersion)
     case version_compare($currentVersion, '0.3.1', '<'):
         if (PHPWS_Boost::updateFiles(array('conf/config.php'), 'comments')) {
             $content[] = '- New config.php file copied locally.';
-
         } else {
             $content[] = '- New config.php file failed to copy locally.';
         }
         $content[] = '- Created default comment limit in config.';
+
+    case version_compare($currentVersion, '0.4.0', '<'):
+        $files = array();
+        $files[] = 'templates/edit.tpl';
+        $files[] = 'templates/settings_form.tpl';
+        $files[] = 'conf/config.php';
+        if (PHPWS_Boost::updateFiles($files, 'comments')) {
+            $content[] = 'Templates and config file copied locally.';
+        } else {
+            $content[] = 'Templates and config file failed to copy locally.';
+        }
+
+        $content[] = '<pre>
+0.4.0 Changes
+-------------
++ Updated file conf/config.php.
++ Added default comment limit and set it to 20.
++ Updated files : templates/edit.tpl, templates/settings_form.tpl
++ Added a permission for settings control.
++ Added new Captcha class for commenting.
++ Added selector for captcha control on settings tab.
+</pre>';
     }
             
     return TRUE;
 }
 
-
-function comments_update_020(&$content) {
-    $db = & new PHPWS_DB('comments_threads');
-    $result = $db->addTableColumn('allow_anon', 'smallint NOT NULL default \'0\'');
-    if (PEAR::isError($result)) {
-        PHPWS_Error::log($result);
-        $content[] = 'There was a problem adding the allow_anon column.';
-        return false;
-    }
-    return true;
-}
 
 function comments_update_025(&$content) {
     $files[] = 'templates/alt_view.tpl';
