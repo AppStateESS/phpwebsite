@@ -1,13 +1,12 @@
 November 16
 -----------
-Core
+Core - 1.3.1
 + Database.php
   o Added a DB_ALLOW_TABLE_INDEX definition to allow users with limited
     access to install.
   o Changed Database to use factory classes for adding table
     columns. Good ole postgresql!
   o Added index define to setup config template
-
 + Text.php
   o Added a couple of lines to breaker to prevent breaks inside pre
     tags
