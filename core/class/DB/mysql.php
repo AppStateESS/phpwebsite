@@ -8,8 +8,6 @@
  */
 
 class mysql_PHPWS_SQL {
-    var $db_use_after = true;
-
     function export(&$info){
         switch ($info['type']){
         case 'int':
@@ -95,6 +93,21 @@ class mysql_PHPWS_SQL {
     function getLike()
     {
         return 'LIKE';
+    }
+
+    function alterTable($table, $column, $parameter, $after=null)
+    {
+        if (!empty($after)) {
+            if (strtolower($after) == 'first') {
+                $location = 'FIRST';
+            } else {
+                $location = "AFTER $after";
+            }
+        } else {
+            $location = NULL;
+        }
+
+        return "ALTER TABLE $table ADD $column $parameter $location;";
     }
 }
 

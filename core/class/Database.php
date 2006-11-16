@@ -15,6 +15,10 @@ define ('LOG_DB', false);
 
 define ('DEFAULT_MODE', DB_FETCHMODE_ASSOC);
 
+if (!defined('DB_ALLOW_TABLE_INDEX')) {
+    define ('DB_ALLOW_TABLE_INDEX', true);
+ }
+
 class PHPWS_DB {
     var $tables      = NULL;
     var $where       = array();
@@ -1495,6 +1499,10 @@ class PHPWS_DB {
      */
     function createTableIndex($column, $name=NULL)
     {
+        if(!DB_ALLOW_TABLE_INDEX) {
+            return false;
+        }
+
         $table = $this->getTable();
         if (!$table) {
             return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::createTableIndex');
@@ -1577,24 +1585,14 @@ class PHPWS_DB {
             return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::addTableColumn', $column);
         }
 
-        if ($GLOBALS['PHPWS_DB']['lib']->db_use_after && isset($after)) {
-            if (strtolower($after) == 'first') {
-                $location = 'FIRST';
-            } else {
-                $location = "AFTER $after";
-            }
-        } else {
-            $location = NULL;
-        }
-
-        $sql = "ALTER TABLE $table ADD $column $parameter $location";
+        $sql = $GLOBALS['PHPWS_DB']['lib']->alterTable($table, $column, $parameter, $after);
 
         $result = PHPWS_DB::query($sql);
         if (PEAR::isError($result)) {
             return $result;
         }
 
-        if ($indexed == TRUE) {
+        if ($indexed == TRUE && DB_ALLOW_TABLE_INDEX) {
             $indexSql = "CREATE INDEX $column on $table($column)";
             $result = PHPWS_DB::query($indexSql);
             if (PEAR::isError($result)) {
@@ -1758,8 +1756,10 @@ class PHPWS_DB {
         $setting = $GLOBALS['PHPWS_DB']['lib']->export($info);
         if (isset($info['flags'])) {
             if (stristr($info['flags'], 'multiple_key')) {
-                $column_info['index'] = 'CREATE INDEX ' .  $info['name'] . ' on ' . $info['table'] 
-                    . '(' . $info['name'] . ')';
+                if (DB_ALLOW_TABLE_INDEX) {
+                    $column_info['index'] = 'CREATE INDEX ' .  $info['name'] . ' on ' . $info['table'] 
+                        . '(' . $info['name'] . ')';
+                }
                 $info['flags'] = str_replace(' multiple_key', '', $info['flags']);
             }
             $preFlag = array('/not_null/i', '/primary_key/i', '/default_(\w+)?/i', '/blob/i', '/%3a%3asmallint/i');

@@ -8,7 +8,6 @@
  */
 
 class pgsql_PHPWS_SQL {
-    var $db_use_after = false;
 
     function export(&$info){
         switch ($info['type']){
@@ -133,6 +132,90 @@ class pgsql_PHPWS_SQL {
     function getLike()
     {
         return 'ILIKE';
+    }
+
+    /**
+     * Postgres doesn't accept "after" or "before"
+     */
+    function alterTable($table, $column, $parameter, $after=null)
+    {
+        $parameter = strtolower($parameter);
+        $parameter = preg_replace('/ {2,}/', ' ', trim($parameter));
+
+        $pararray = explode(' ', $parameter);
+
+        switch ($parameter[0]) {
+        case 'smallint':
+        case 'int':
+        case 'integer':
+        case 'bigint':
+        case 'decimal':
+        case 'numeric':
+        case 'real':
+        case 'double':
+        case 'serial':
+        case 'bigserial':
+            $number = true;
+
+        default:
+            $number = false;
+        }
+        
+        $length = count($pararray);
+
+        for ($i=0; $i < $length; $i++) {
+            if ($pararray[$i] == 'not' && $pararray[$i+1] == 'null') {
+                $extra[] = "ALTER TABLE $table ALTER $column SET NOT NULL;";
+                $unset_it[] = $i;
+                $i++;
+                $unset_it[] = $i;
+                continue;
+            }
+
+            if ($pararray[$i] == 'after') {
+                $unset_it[] = $i;
+                $i++;
+                $unset_it[] = $i;
+                continue;
+            }
+
+            if ($pararray[$i] == 'null') {
+                $extra[] = "ALTER TABLE $table ALTER $column DROP NOT NULL;";
+                $unset_it[] = $i;
+                continue;
+            }
+
+            if ($pararray[$i] == 'default' && isset($pararray[$i+1])) {
+                if ($number) {
+                    $default_value = preg_replace('/\'"`/', '', $pararray[$i+1]);
+                } else {
+                    $default_value = preg_replace('/"`/', '\'', $pararray[$i+1]);
+                }
+                $extra[] = "ALTER TABLE $table ALTER $column SET DEFAULT $default_value;";
+                $unset_it[] = $i;
+                $i++;
+                $unset_it[] = $i;
+            }
+        }
+
+        if (isset($unset_it)) {
+            foreach ($unset_it as $key) {
+                unset($pararray[$key]);
+            }
+        }
+
+        if (!empty($pararray)) {
+            $new_para = implode(' ', $pararray);
+        } else {
+            $new_para = null;
+        }
+
+        $sql = "ALTER TABLE $table ADD $column $new_para;\n";
+        if (isset($extra)) {
+            $sql .= implode("\n", $extra);
+        }
+
+        return $sql;
     }
 
 }
