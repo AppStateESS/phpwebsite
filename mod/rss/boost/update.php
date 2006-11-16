@@ -14,6 +14,14 @@ function rss_update(&$content, $version)
     case version_compare($version, '0.1.1', '<'):
         $content[] = '- Channel title now linked to feed.';
         $content[] = '- mod_rewrite works with feed.';
+
+    case version_compare($version, '0.1.2', '<'):
+        $content[] = '<pre>
+0.1.2 changes
+-------------
++ Added some error checks to feed translation.
+</pre>';
+
     }
 
     return true;
