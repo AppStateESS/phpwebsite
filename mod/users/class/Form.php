@@ -17,6 +17,9 @@ PHPWS_Core::initCoreClass('Form.php');
 class User_Form {
     function logBox($logged=TRUE)
     {
+        if (PHPWS_Settings::get('users', 'user_menu') == 'none') {
+            return null;
+        }
         translate('users');
 
         if (Current_User::isLogged()) {
