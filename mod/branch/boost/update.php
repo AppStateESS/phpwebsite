@@ -60,6 +60,13 @@ function branch_update(&$content, $version)
 + Updated files : templates/config.tpl
 + Added captcha information to branch config template and removed
   file types include.</pre>';
+
+    case version_compare($version, '1.0.3', '<'):
+        $content[] = '<pre>1.0.3 changes
+-------------
+Added table index define to config.tpl (updated file).
+</pre>';
+        PHPWS_Boost::updateFiles(array('templates/config.tpl'), 'branch');
     }
     return true;
 }
