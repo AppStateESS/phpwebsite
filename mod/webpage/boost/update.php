@@ -40,7 +40,7 @@ function webpage_update(&$content, $currentVersion)
         }
 
         $db = & new PHPWS_DB('webpage_volume');
-        $result = $db->addTableColumn('active', 'smallint NOT NULL default \'0\'');
+        $result = $db->addTableColumn('active', 'smallint NOT NULL default 0');
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             $content[] = 'Failed adding active column to webpage_volume table.';
