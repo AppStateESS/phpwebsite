@@ -31,6 +31,14 @@ define('PHPWS_TABLE_PREFIX', '{dbprefix}');
 define('PHPWS_DSN', '{dsn}');
 
 /**
+ * Added 11/16/2006
+ * If your provider does not allow you to create indexes then 
+ * change this value to 'false' while you look for a new provider.
+ */
+define('DB_ALLOW_TABLE_INDEX', true);
+
+
+/**
  * The core will occasionally save cookies. They do not contain
  * important information. This is the time until they expire.
  */
