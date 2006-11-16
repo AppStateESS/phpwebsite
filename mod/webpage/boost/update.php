@@ -74,7 +74,7 @@ function wp_update_022()
     }
 
     $db = & new PHPWS_DB('webpage_volume');
-    $result = $db->addTableColumn('active', 'smallint NOT NULL default \'1\'');
+    $result = $db->addTableColumn('active', 'smallint NOT NULL default 1');
     if (PEAR::isError($result)) {
         return $result;
     }
@@ -86,20 +86,20 @@ function wp_update_022()
 function wp_update_010(&$content)
 {
     $db = & new PHPWS_DB('webpage_volume');
-    $result = $db->addTableColumn('create_user_id', 'int NOT NULL default \'0\'', 'date_updated');
+    $result = $db->addTableColumn('create_user_id', 'int NOT NULL default 0', 'date_updated');
     if (PEAR::isError($result)) {
         PHPWS_Error::log($result);
         return FALSE;
     }
 
-    $db->addTableColumn('update_user_id', 'int NOT NULL default \'0\'', 'created_user');
+    $db->addTableColumn('update_user_id', 'int NOT NULL default 0', 'created_user');
     if (PEAR::isError($result)) {
         PHPWS_Error::log($result);
         return FALSE;
     }
     $content[] = 'Added user id tracking columns to database tables.';
 
-    $db->addTableColumn('approved', 'smallint NOT NULL default \'1\'', 'frontpage');
+    $db->addTableColumn('approved', 'smallint NOT NULL default 1', 'frontpage');
     if (PEAR::isError($result)) {
         PHPWS_Error::log($result);
         return FALSE;
@@ -108,7 +108,7 @@ function wp_update_010(&$content)
     $content[] = 'Created approval hooks in volume table.';
 
     $db = & new PHPWS_DB('webpage_page');
-    $db->addTableColumn('approved', 'smallint NOT NULL default \'1\'', 'template');
+    $db->addTableColumn('approved', 'smallint NOT NULL default 1', 'template');
     if (PEAR::isError($result)) {
         PHPWS_Error::log($result);
         return FALSE;
