@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-09 14:48-0400\n"
+"POT-Creation-Date: 2006-11-16 09:04-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,59 +20,67 @@ msgstr ""
 msgid "Post current thoughts, happenings, and discussions."
 msgstr ""
 
-#: boost/permission.php:5 class/Blog.php:210
+#: boost/permission.php:11 class/Blog.php:276
 msgid "Edit blog"
 msgstr ""
 
-#: boost/permission.php:6
+#: boost/permission.php:12
 msgid "Delete blog"
+msgstr ""
+
+#: boost/permission.php:13
+msgid "Change settings (Unrestricted only)"
 msgstr ""
 
 #: boost/uninstall.php:13
 msgid "Blog tables removed."
 msgstr ""
 
-#: class/Blog.php:160
+#: class/Blog.php:202
 msgid "View"
 msgstr ""
 
-#: class/Blog.php:174 class/Blog.php:244
+#: class/Blog.php:218 class/Blog.php:310
 msgid "Posted by"
 msgstr ""
 
-#: class/Blog.php:175 class/Blog.php:245
+#: class/Blog.php:219 class/Blog.php:311
 msgid "Posted on"
 msgstr ""
 
-#: class/Blog.php:193
+#: class/Blog.php:243
 msgid "Sorry you do not have permission to view this blog entry."
 msgstr ""
 
-#: class/Blog.php:208 class/Blog.php:269 class/Blog_Admin.php:253
+#: class/Blog.php:258
+msgid "Read more"
+msgstr ""
+
+#: class/Blog.php:274 class/Blog.php:335 class/Blog_Admin.php:305
 msgid "Edit"
 msgstr ""
 
-#: class/Blog.php:224
+#: class/Blog.php:290
 msgid "Last poster"
 msgstr ""
 
-#: class/Blog.php:274
+#: class/Blog.php:340
 msgid "Are you sure you want to permanently delete this blog entry?"
 msgstr ""
 
-#: class/Blog.php:276
+#: class/Blog.php:342
 msgid "Delete"
 msgstr ""
 
-#: class/Blog.php:282
+#: class/Blog.php:348
 msgid "Restore"
 msgstr ""
 
-#: class/Blog.php:288
+#: class/Blog.php:354
 msgid "No action"
 msgstr ""
 
-#: class/Blog.php:312
+#: class/Blog.php:378
 msgid "Missing title."
 msgstr ""
 
@@ -161,48 +169,60 @@ msgstr ""
 msgid "Entry saved successfully."
 msgstr ""
 
-#: class/Blog_Admin.php:228
+#: class/Blog_Admin.php:234
+msgid "Blog settings saved."
+msgstr ""
+
+#: class/Blog_Admin.php:241
+msgid "Blog Settings"
+msgstr ""
+
+#: class/Blog_Admin.php:246
 msgid "View version"
 msgstr ""
 
-#: class/Blog_Admin.php:257
+#: class/Blog_Admin.php:309
 msgid "Approve"
 msgstr ""
 
-#: class/Blog_Admin.php:260
+#: class/Blog_Admin.php:312
 msgid "Disapprove"
 msgstr ""
 
-#: class/Blog_Admin.php:264
+#: class/Blog_Admin.php:316
 msgid "Approval list"
 msgstr ""
 
-#: class/Blog_Admin.php:294
+#: class/Blog_Admin.php:346
 msgid "New"
 msgstr ""
 
-#: class/Blog_Admin.php:297
+#: class/Blog_Admin.php:349
 msgid "List"
 msgstr ""
 
-#: class/Blog_Admin.php:303
+#: class/Blog_Admin.php:359
 #, php-format
 msgid "Approval (%s)"
 msgstr ""
 
-#: class/Blog_Admin.php:325 class/Blog_Form.php:39
+#: class/Blog_Admin.php:369
+msgid "Settings"
+msgstr ""
+
+#: class/Blog_Admin.php:386 class/Blog_Form.php:35
 msgid "Title"
 msgstr ""
 
-#: class/Blog_Admin.php:326 class/Blog_Form.php:36
+#: class/Blog_Admin.php:387 class/Blog_Form.php:47
 msgid "Entry"
 msgstr ""
 
-#: class/Blog_Admin.php:327
+#: class/Blog_Admin.php:388
 msgid "Creation Date"
 msgstr ""
 
-#: class/Blog_Admin.php:328
+#: class/Blog_Admin.php:389
 msgid "Action"
 msgstr ""
 
@@ -218,18 +238,58 @@ msgstr ""
 msgid "Add Entry"
 msgstr ""
 
-#: class/Blog_Form.php:42
+#: class/Blog_Form.php:41
+msgid "Summary"
+msgstr ""
+
+#: class/Blog_Form.php:50
+msgid "Publish date/time"
+msgstr ""
+
+#: class/Blog_Form.php:54
 msgid "Allow comments"
 msgstr ""
 
-#: class/Blog_Form.php:46
+#: class/Blog_Form.php:58
 msgid "Allow anonymous comments"
 msgstr ""
 
-#: class/Blog_User.php:83
+#: class/Blog_Form.php:80
+msgid "Blog view limit"
+msgstr ""
+
+#: class/Blog_Form.php:83
+msgid "Number of past entries"
+msgstr ""
+
+#: class/Blog_Form.php:87
+msgid "Allow comments by default"
+msgstr ""
+
+#: class/Blog_Form.php:91
+msgid "Show blog on home page"
+msgstr ""
+
+#: class/Blog_Form.php:94
+msgid "Save settings"
+msgstr ""
+
+#: class/Blog_Form.php:97
+msgid "Set to zero to prevent display"
+msgstr ""
+
+#: class/Blog_User.php:113
 msgid "Edit blogs"
 msgstr ""
 
-#: class/Blog_User.php:85
+#: class/Blog_User.php:115
 msgid "Add new blog"
+msgstr ""
+
+#: class/Blog_User.php:135
+msgid "Previous blog entries"
+msgstr ""
+
+#: class/Blog_User.php:157
+msgid "Recent blog entries"
 msgstr ""

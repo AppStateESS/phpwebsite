@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-09 14:48-0400\n"
+"POT-Creation-Date: 2006-11-16 09:04-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,11 +24,11 @@ msgstr ""
 msgid "Create blocks of content."
 msgstr ""
 
-#: boost/permission.php:5
+#: boost/permission.php:5 class/Block_Item.php:164
 msgid "Edit block"
 msgstr ""
 
-#: boost/permission.php:6
+#: boost/permission.php:6 class/Block_Item.php:180
 msgid "Delete block"
 msgstr ""
 
@@ -44,7 +44,7 @@ msgstr ""
 msgid "List"
 msgstr ""
 
-#: class/Block_Admin.php:67 class/Block_Admin.php:136
+#: class/Block_Admin.php:67 class/Block_Admin.php:137
 msgid "New Block"
 msgstr ""
 
@@ -52,75 +52,75 @@ msgstr ""
 msgid "Block deleted."
 msgstr ""
 
-#: class/Block_Admin.php:83
+#: class/Block_Admin.php:84
 msgid "Block pinned"
 msgstr ""
 
-#: class/Block_Admin.php:88
+#: class/Block_Admin.php:89
 msgid "Block unpinned"
 msgstr ""
 
-#: class/Block_Admin.php:106
+#: class/Block_Admin.php:107
 msgid "Block saved"
 msgstr ""
 
-#: class/Block_Admin.php:131
+#: class/Block_Admin.php:132
 msgid "Block list"
 msgstr ""
 
-#: class/Block_Admin.php:197
+#: class/Block_Admin.php:200
 msgid "Cancel"
 msgstr ""
 
-#: class/Block_Admin.php:204 class/Block_Admin.php:239
+#: class/Block_Admin.php:207 class/Block_Admin.php:242
 msgid "Title"
 msgstr ""
 
-#: class/Block_Admin.php:208
+#: class/Block_Admin.php:211
 msgid "Save New Block"
 msgstr ""
 
-#: class/Block_Admin.php:211
+#: class/Block_Admin.php:214
 msgid "Update Current Block"
 msgstr ""
 
-#: class/Block_Admin.php:218
+#: class/Block_Admin.php:221
 msgid "Entry"
 msgstr ""
 
-#: class/Block_Admin.php:240
+#: class/Block_Admin.php:243
 msgid "Content"
 msgstr ""
 
-#: class/Block_Admin.php:241
+#: class/Block_Admin.php:244
 msgid "Action"
 msgstr ""
 
-#: class/Block_Item.php:175
+#: class/Block_Item.php:179
 msgid "Are you sure you want to remove this block from this page?"
 msgstr ""
 
-#: class/Block_Item.php:206
+#: class/Block_Item.php:211
 msgid "Edit"
 msgstr ""
 
-#: class/Block_Item.php:211
+#: class/Block_Item.php:216
 msgid "Unpin"
 msgstr ""
 
-#: class/Block_Item.php:214
+#: class/Block_Item.php:219
 msgid "Pin"
 msgstr ""
 
-#: class/Block_Item.php:223
+#: class/Block_Item.php:228
 msgid "Copy"
 msgstr ""
 
-#: class/Block_Item.php:227
+#: class/Block_Item.php:232
 msgid "Are you sure you want to permanently delete this block?"
 msgstr ""
 
-#: class/Block_Item.php:229
+#: class/Block_Item.php:234
 msgid "Delete"
 msgstr ""
 

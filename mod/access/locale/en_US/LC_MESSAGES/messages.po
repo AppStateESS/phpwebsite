@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-09 14:48-0400\n"
+"POT-Creation-Date: 2006-11-16 09:04-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,115 +32,115 @@ msgstr ""
 msgid "Access tables removed."
 msgstr ""
 
-#: class/Access.php:37
+#: class/Access.php:45
 msgid "Sorry"
 msgstr ""
 
-#: class/Access.php:38
+#: class/Access.php:46
 msgid "Access needs a higher administrator's attention before you may use it."
 msgstr ""
 
-#: class/Access.php:43
+#: class/Access.php:51
 msgid "Settings saved."
 msgstr ""
 
-#: class/Access.php:49 class/Access.php:390
+#: class/Access.php:57 class/Access.php:400
 msgid "Administrator"
 msgstr ""
 
-#: class/Access.php:56
+#: class/Access.php:64
 msgid "IP address was not formatted correctly or not allowed."
 msgstr ""
 
-#: class/Access.php:59 class/Access.php:115 class/Access.php:180
+#: class/Access.php:67 class/Access.php:123 class/Access.php:188
 msgid "An error occurred."
 msgstr ""
 
-#: class/Access.php:59 class/Access.php:115
+#: class/Access.php:67 class/Access.php:123
 msgid "Please check your logs."
 msgstr ""
 
-#: class/Access.php:68
+#: class/Access.php:76
 msgid "IP address deleted."
 msgstr ""
 
-#: class/Access.php:73
+#: class/Access.php:81
 msgid "Denys and Allows"
 msgstr ""
 
-#: class/Access.php:83
+#: class/Access.php:91
 msgid "An error occurred when deleting your shortcut."
 msgstr ""
 
-#: class/Access.php:87
+#: class/Access.php:95
 msgid "An error occurred when updating your .htaccess file."
 msgstr ""
 
-#: class/Access.php:91
+#: class/Access.php:99
 msgid "Shortcut deleted"
 msgstr ""
 
-#: class/Access.php:96 class/Access.php:380 class/Forms.php:278
+#: class/Access.php:104 class/Access.php:390 class/Forms.php:278
 msgid "Shortcuts"
 msgstr ""
 
-#: class/Access.php:104
+#: class/Access.php:112
 msgid ".htaccess file written."
 msgstr ""
 
-#: class/Access.php:106
+#: class/Access.php:114
 msgid "Unable to save .htaccess file."
 msgstr ""
 
-#: class/Access.php:122
+#: class/Access.php:130
 msgid "Update .htaccess file"
 msgstr ""
 
-#: class/Access.php:138 class/Access.php:170
+#: class/Access.php:146 class/Access.php:178
 msgid "Close window"
 msgstr ""
 
-#: class/Access.php:140
+#: class/Access.php:148
 msgid "An error occurred:"
 msgstr ""
 
-#: class/Access.php:141 class/Access.php:145
+#: class/Access.php:149 class/Access.php:153
 msgid "Return to previous page."
 msgstr ""
 
-#: class/Access.php:144 class/Access.php:174
+#: class/Access.php:152 class/Access.php:182
 msgid "A serious error occurred. Please check your error.log."
 msgstr ""
 
-#: class/Access.php:181
+#: class/Access.php:189
 msgid "Please check your error.log."
 msgstr ""
 
-#: class/Access.php:183 class/Access.php:188
+#: class/Access.php:191 class/Access.php:196
 msgid "Access has saved your shortcut."
 msgstr ""
 
-#: class/Access.php:184
+#: class/Access.php:192
 msgid "You can access this item with the following link:"
 msgstr ""
 
-#: class/Access.php:189
+#: class/Access.php:197
 msgid "An administrator will need to approve it before it is functional."
 msgstr ""
 
-#: class/Access.php:190
+#: class/Access.php:198
 msgid "When active, you will be able to use the following link:"
 msgstr ""
 
-#: class/Access.php:350
+#: class/Access.php:358
 msgid "Shortcut"
 msgstr ""
 
-#: class/Access.php:386
+#: class/Access.php:396
 msgid "Deny/Allow"
 msgstr ""
 
-#: class/Access.php:393
+#: class/Access.php:403
 msgid "Update"
 msgstr ""
 

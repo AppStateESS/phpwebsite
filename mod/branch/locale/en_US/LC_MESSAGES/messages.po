@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-09 14:48-0400\n"
+"POT-Creation-Date: 2006-11-16 09:04-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,318 +16,346 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: boost/controlpanel.php:3
+#: boost/controlpanel.php:6
 msgid "Branch"
 msgstr ""
 
-#: boost/controlpanel.php:6
+#: boost/controlpanel.php:9
 msgid "Install and update branch sites."
 msgstr ""
 
-#: class/Branch.php:125
+#: class/Branch.php:154
 msgid "Edit"
 msgstr ""
 
-#: class/Branch.php:128
+#: class/Branch.php:157
 msgid ""
 "Removing this branch will make it inaccessible.\\nThe database and files "
 "will remain behind.\\nIf you are sure you want to remove the branch, type "
 "the branch name:"
 msgstr ""
 
-#: class/Branch.php:131
+#: class/Branch.php:160
 msgid "Remove"
 msgstr ""
 
-#: class/Branch.php:135
+#: class/Branch.php:164
 msgid "Modules"
 msgstr ""
 
-#: class/Branch_Admin.php:113
+#: class/Branch_Admin.php:114
 msgid "Incorrect or missing branch id."
 msgstr ""
 
-#: class/Branch_Admin.php:147
+#: class/Branch_Admin.php:148
 msgid "Module list saved successfully."
 msgstr ""
 
-#: class/Branch_Admin.php:149
+#: class/Branch_Admin.php:150
 msgid "An error occurred when trying to save the module list."
 msgstr ""
 
-#: class/Branch_Admin.php:166
+#: class/Branch_Admin.php:167
 msgid "An error occurred while saving your branch."
 msgstr ""
 
-#: class/Branch_Admin.php:174
+#: class/Branch_Admin.php:175
 msgid "Create branch directories"
 msgstr ""
 
-#: class/Branch_Admin.php:175
+#: class/Branch_Admin.php:176
 msgid "Branch created successfully."
 msgstr ""
 
-#: class/Branch_Admin.php:178
+#: class/Branch_Admin.php:179
 msgid "Continue to install branch core"
 msgstr ""
 
-#: class/Branch_Admin.php:180
+#: class/Branch_Admin.php:181
 msgid "Unable to create branch directories."
 msgstr ""
 
-#: class/Branch_Admin.php:181
+#: class/Branch_Admin.php:182
 msgid "Sorry, but Branch failed to make the proper directories."
 msgstr ""
 
-#: class/Branch_Admin.php:196
+#: class/Branch_Admin.php:197
 msgid "All done!"
 msgstr ""
 
-#: class/Branch_Admin.php:197
+#: class/Branch_Admin.php:198
 msgid "Set up allowed modules"
 msgstr ""
 
-#: class/Branch_Admin.php:223
+#: class/Branch_Admin.php:222
 msgid "Install branch core"
 msgstr ""
 
-#: class/Branch_Admin.php:226
+#: class/Branch_Admin.php:225
 msgid "Unable to get database connect information. Please try again."
 msgstr ""
 
-#: class/Branch_Admin.php:231
-msgid "Failed to copy theme files to branch."
+#: class/Branch_Admin.php:230
+msgid "Failed to copy admin file to branch."
 msgstr ""
 
-#: class/Branch_Admin.php:234
-msgid "Copied themes to branch."
+#: class/Branch_Admin.php:233
+msgid "Copied admin file to branch."
 msgstr ""
 
 #: class/Branch_Admin.php:238
-msgid "Failed to copy core images to branch."
+msgid "Failed to copy theme files to branch."
 msgstr ""
 
 #: class/Branch_Admin.php:241
+msgid "Copied themes to branch."
+msgstr ""
+
+#: class/Branch_Admin.php:245
+msgid "Failed to copy core images to branch."
+msgstr ""
+
+#: class/Branch_Admin.php:248
 msgid "Copied core images."
 msgstr ""
 
-#: class/Branch_Admin.php:246
+#: class/Branch_Admin.php:252
 msgid "Failed to copy core config files to branch."
 msgstr ""
 
-#: class/Branch_Admin.php:249
+#: class/Branch_Admin.php:255
 msgid "Copied config files to branch."
 msgstr ""
 
 #: class/Branch_Admin.php:260
-msgid "Failed to create config.php file in the branch."
+msgid "Failed to copy javascript files to branch."
 msgstr ""
 
 #: class/Branch_Admin.php:263
-msgid "Config file created successfully."
-msgstr ""
-
-#: class/Branch_Admin.php:270
-msgid "Core SQL import failed."
+msgid "Copied javascript files to branch."
 msgstr ""
 
 #: class/Branch_Admin.php:273
+msgid "Failed to create config.php file in the branch."
+msgstr ""
+
+#: class/Branch_Admin.php:276
+msgid "Config file created successfully."
+msgstr ""
+
+#: class/Branch_Admin.php:283
+msgid "Core SQL import failed."
+msgstr ""
+
+#: class/Branch_Admin.php:286
 msgid "Core SQL import successful."
 msgstr ""
 
-#: class/Branch_Admin.php:275
+#: class/Branch_Admin.php:288
 msgid "Core installed successfully. Continue to core module installation."
 msgstr ""
 
-#: class/Branch_Admin.php:330
+#: class/Branch_Admin.php:361
 msgid "Branch directory does not exist."
 msgstr ""
 
-#: class/Branch_Admin.php:342
+#: class/Branch_Admin.php:373
 msgid "Directory creation successful."
 msgstr ""
 
-#: class/Branch_Admin.php:344 class/Branch_Admin.php:348
+#: class/Branch_Admin.php:375 class/Branch_Admin.php:379
 msgid "Unable to create the directory. You will need to create it manually."
 msgstr ""
 
-#: class/Branch_Admin.php:353
+#: class/Branch_Admin.php:384
+msgid "Directory exists but is not writable."
+msgstr ""
+
+#: class/Branch_Admin.php:387
 msgid "Directory exists but already contains files."
 msgstr ""
 
-#: class/Branch_Admin.php:358
+#: class/Branch_Admin.php:392
 msgid "You must name your branch."
 msgstr ""
 
-#: class/Branch_Admin.php:361
+#: class/Branch_Admin.php:395
 msgid "You may not use that branch name."
 msgstr ""
 
-#: class/Branch_Admin.php:366
+#: class/Branch_Admin.php:400
 msgid "Enter your site's url address."
 msgstr ""
 
-#: class/Branch_Admin.php:373
+#: class/Branch_Admin.php:407
 msgid "Your branch site must have a site_hash."
 msgstr ""
 
-#: class/Branch_Admin.php:393
+#: class/Branch_Admin.php:427
 msgid "Installing core modules"
 msgstr ""
 
-#: class/Branch_Admin.php:399
+#: class/Branch_Admin.php:433
 msgid "An error occurred while trying to install your modules."
 msgstr ""
 
-#: class/Branch_Admin.php:400
+#: class/Branch_Admin.php:434
 msgid "Please check your error logs and try again."
 msgstr ""
 
-#: class/Branch_Admin.php:467
+#: class/Branch_Admin.php:501
 msgid "New"
 msgstr ""
 
-#: class/Branch_Admin.php:470
+#: class/Branch_Admin.php:504
 msgid "List"
 msgstr ""
 
-#: class/Branch_Admin.php:535
+#: class/Branch_Admin.php:569
 msgid "An error occurred when trying to connect to the database."
 msgstr ""
 
-#: class/Branch_Admin.php:538
+#: class/Branch_Admin.php:572
 msgid "Database created successfully."
 msgstr ""
 
-#: class/Branch_Admin.php:543
+#: class/Branch_Admin.php:577
 msgid "Unable to create the database. You will need to create it manually."
 msgstr ""
 
-#: class/Branch_Admin.php:547
+#: class/Branch_Admin.php:581
 msgid "Connected successfully, but the database does not exist."
 msgstr ""
 
-#: class/Branch_Admin.php:554
+#: class/Branch_Admin.php:588
 msgid "Could not connect to the database."
 msgstr ""
 
-#: class/Branch_Admin.php:562
+#: class/Branch_Admin.php:596
 msgid "Connection successful. Database available."
 msgstr ""
 
-#: class/Branch_Admin.php:567
+#: class/Branch_Admin.php:601
 msgid "Connected successfully, but this database already contains tables."
 msgstr ""
 
-#: class/Branch_Admin.php:582
+#: class/Branch_Admin.php:616
 msgid "Edit branch"
 msgstr ""
 
-#: class/Branch_Admin.php:584
+#: class/Branch_Admin.php:618
 msgid "Update"
 msgstr ""
 
-#: class/Branch_Admin.php:586
+#: class/Branch_Admin.php:620
 msgid "Create branch information"
 msgstr ""
 
-#: class/Branch_Admin.php:587 class/Branch_Admin.php:646
+#: class/Branch_Admin.php:621 class/Branch_Admin.php:684
 msgid "Continue..."
 msgstr ""
 
-#: class/Branch_Admin.php:591 class/Branch_Admin.php:838
+#: class/Branch_Admin.php:625 class/Branch_Admin.php:882
 msgid "Branch name"
 msgstr ""
 
-#: class/Branch_Admin.php:595 class/Branch_Admin.php:839
+#: class/Branch_Admin.php:629 class/Branch_Admin.php:883
 msgid "Directory"
 msgstr ""
 
-#: class/Branch_Admin.php:599
+#: class/Branch_Admin.php:633
 msgid "URL"
 msgstr ""
 
-#: class/Branch_Admin.php:603
+#: class/Branch_Admin.php:637
 msgid "ID hash"
 msgstr ""
 
-#: class/Branch_Admin.php:605
+#: class/Branch_Admin.php:639
 msgid "Branch specifications"
 msgstr ""
 
-#: class/Branch_Admin.php:614
+#: class/Branch_Admin.php:648
 msgid "Setup branch database"
 msgstr ""
 
-#: class/Branch_Admin.php:620
+#: class/Branch_Admin.php:654
 msgid "Create new database"
 msgstr ""
 
-#: class/Branch_Admin.php:624
+#: class/Branch_Admin.php:658
 msgid "Database syntax"
 msgstr ""
 
-#: class/Branch_Admin.php:627
+#: class/Branch_Admin.php:661
 msgid "Database name"
 msgstr ""
 
-#: class/Branch_Admin.php:630
+#: class/Branch_Admin.php:664
 msgid "Permission user"
 msgstr ""
 
-#: class/Branch_Admin.php:634
+#: class/Branch_Admin.php:668
 msgid "User password"
 msgstr ""
 
-#: class/Branch_Admin.php:637
+#: class/Branch_Admin.php:671
+msgid "Table prefix"
+msgstr ""
+
+#: class/Branch_Admin.php:675
 msgid "Database Host"
 msgstr ""
 
-#: class/Branch_Admin.php:641
+#: class/Branch_Admin.php:679
 msgid "Connection Port"
 msgstr ""
 
-#: class/Branch_Admin.php:643
+#: class/Branch_Admin.php:681
 msgid "Database information"
 msgstr ""
 
-#: class/Branch_Admin.php:645
+#: class/Branch_Admin.php:683
 msgid "Use hub values"
 msgstr ""
 
-#: class/Branch_Admin.php:718
+#: class/Branch_Admin.php:756
 msgid "This database name is not allowed."
 msgstr ""
 
-#: class/Branch_Admin.php:723
+#: class/Branch_Admin.php:761
 msgid "You must type a database name."
 msgstr ""
 
-#: class/Branch_Admin.php:728
+#: class/Branch_Admin.php:766
 msgid "You must type a database user."
 msgstr ""
 
-#: class/Branch_Admin.php:787
+#: class/Branch_Admin.php:771
+msgid "Table prefix must be alphanumeric characters or underscores only"
+msgstr ""
+
+#: class/Branch_Admin.php:831
 #, php-format
 msgid "Module access for \"%s\""
 msgstr ""
 
-#: class/Branch_Admin.php:821
+#: class/Branch_Admin.php:865
 msgid "Save"
 msgstr ""
 
-#: class/Branch_Admin.php:827
+#: class/Branch_Admin.php:871
 msgid "Unchecked modules cannot be installed on this branch."
 msgstr ""
 
-#: class/Branch_Admin.php:840
+#: class/Branch_Admin.php:884
 msgid "Url"
 msgstr ""
 
-#: class/Branch_Admin.php:841
+#: class/Branch_Admin.php:885
 msgid "Action"
 msgstr ""
 
-#: class/Branch_Admin.php:850
+#: class/Branch_Admin.php:894
 msgid "Branch List"
 msgstr ""

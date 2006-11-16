@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-09 14:48-0400\n"
+"POT-Creation-Date: 2006-11-16 09:04-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,7 +32,7 @@ msgstr ""
 msgid "Profiles table removed."
 msgstr ""
 
-#: class/Division.php:40 class/Profile.php:264
+#: class/Division.php:40 class/Profile.php:308
 msgid "Edit"
 msgstr ""
 
@@ -60,115 +60,139 @@ msgstr ""
 msgid "Profile type"
 msgstr ""
 
-#: class/Forms.php:64
+#: class/Forms.php:63 class/Profile.php:93
+msgid "Email address"
+msgstr ""
+
+#: class/Forms.php:67
+msgid "Web site address"
+msgstr ""
+
+#: class/Forms.php:72
 msgid "Update profile"
 msgstr ""
 
-#: class/Forms.php:66
+#: class/Forms.php:74
 msgid "Create profile"
 msgstr ""
 
-#: class/Forms.php:78
+#: class/Forms.php:86
 msgid "Large photo"
 msgstr ""
 
-#: class/Forms.php:79
+#: class/Forms.php:87
 msgid "Medium photo"
 msgstr ""
 
-#: class/Forms.php:80
+#: class/Forms.php:88
 msgid "Small photo"
 msgstr ""
 
-#: class/Forms.php:101
+#: class/Forms.php:109
 msgid "Last Name"
 msgstr ""
 
-#: class/Forms.php:102
+#: class/Forms.php:110
 msgid "First Name"
 msgstr ""
 
-#: class/Forms.php:103
+#: class/Forms.php:111
 msgid "Type"
 msgstr ""
 
-#: class/Forms.php:104
+#: class/Forms.php:112
 msgid "Submission Date"
 msgstr ""
 
-#: class/Forms.php:105 class/Forms.php:154
+#: class/Forms.php:113 class/Forms.php:162
 msgid "Action"
 msgstr ""
 
-#: class/Forms.php:131
+#: class/Forms.php:139
 msgid "Number of profiles"
 msgstr ""
 
-#: class/Forms.php:135
+#: class/Forms.php:143
 msgid "Enable profile homepage"
 msgstr ""
 
-#: class/Forms.php:137
+#: class/Forms.php:145
 msgid "Save settings"
 msgstr ""
 
-#: class/Forms.php:150
+#: class/Forms.php:158
 msgid "Add division"
 msgstr ""
 
-#: class/Forms.php:153
+#: class/Forms.php:161
 msgid "Title"
 msgstr ""
 
-#: class/Forms.php:155
+#: class/Forms.php:163
 msgid "Division ID"
 msgstr ""
 
-#: class/Forms.php:174
+#: class/Forms.php:182
 msgid "Update Division"
 msgstr ""
 
-#: class/Forms.php:176
+#: class/Forms.php:184
 msgid "Create Division"
 msgstr ""
 
-#: class/Forms.php:179
+#: class/Forms.php:187
 msgid "Save"
 msgstr ""
 
-#: class/Forms.php:181
+#: class/Forms.php:189
 msgid "Division title"
 msgstr ""
 
-#: class/Forms.php:183
+#: class/Forms.php:191
 msgid "Cancel"
 msgstr ""
 
-#: class/Forms.php:188
+#: class/Forms.php:196
 msgid "Your title is empty or already in use. Enter another."
 msgstr ""
 
-#: class/Profile.php:86
+#: class/Profile.php:88
 msgid "Read more. . ."
 msgstr ""
 
-#: class/Profile.php:186
+#: class/Profile.php:89 class/Profile.php:114
+msgid "Web site"
+msgstr ""
+
+#: class/Profile.php:105
+msgid "Email"
+msgstr ""
+
+#: class/Profile.php:212
 msgid "Profile not set."
 msgstr ""
 
-#: class/Profile.php:215
+#: class/Profile.php:240
 msgid "Please enter a first name."
 msgstr ""
 
-#: class/Profile.php:221
+#: class/Profile.php:246
 msgid "Please enter a last name."
 msgstr ""
 
-#: class/Profile.php:270
+#: class/Profile.php:271
+msgid "Web site address does not appear valid."
+msgstr ""
+
+#: class/Profile.php:280
+msgid "Email address does not appear valid."
+msgstr ""
+
+#: class/Profile.php:314
 msgid "Are you sure you want to permanently delete this profile?"
 msgstr ""
 
-#: class/Profile.php:272
+#: class/Profile.php:316
 msgid "Delete"
 msgstr ""
 

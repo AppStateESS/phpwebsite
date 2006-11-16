@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-09 14:48-0400\n"
+"POT-Creation-Date: 2006-11-16 09:04-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,12 +24,16 @@ msgstr ""
 msgid "Control administrative options for comments."
 msgstr ""
 
-#: boost/permission.php:5
-msgid "Edit Comments"
+#: boost/permission.php:9
+msgid "Edit comments"
 msgstr ""
 
-#: boost/permission.php:6
-msgid "Delete Comments"
+#: boost/permission.php:10
+msgid "Delete comments"
+msgstr ""
+
+#: boost/permission.php:11
+msgid "Change settings"
 msgstr ""
 
 #: boost/unregister.php:11
@@ -44,67 +48,67 @@ msgstr ""
 msgid "An error occurred when trying to remove comments."
 msgstr ""
 
-#: class/Comment_Item.php:258 class/Comments.php:257
+#: class/Comment_Item.php:249 class/Comments.php:277
 msgid "Subject"
 msgstr ""
 
-#: class/Comment_Item.php:259 class/Comments.php:274
+#: class/Comment_Item.php:250 class/Comments.php:294
 msgid "Comment"
 msgstr ""
 
-#: class/Comment_Item.php:260
+#: class/Comment_Item.php:251
 msgid "Author"
 msgstr ""
 
-#: class/Comment_Item.php:261
+#: class/Comment_Item.php:252
 msgid "Posted by"
 msgstr ""
 
-#: class/Comment_Item.php:262
+#: class/Comment_Item.php:253
 msgid "Posted on"
 msgstr ""
 
-#: class/Comment_Item.php:277
+#: class/Comment_Item.php:268
 msgid "In response to"
 msgstr ""
 
-#: class/Comment_Item.php:283
+#: class/Comment_Item.php:274
 msgid "Edited"
 msgstr ""
 
-#: class/Comment_Item.php:285
+#: class/Comment_Item.php:276
 msgid "Edited by"
 msgstr ""
 
-#: class/Comment_Item.php:286
+#: class/Comment_Item.php:277
 msgid "Edited on"
 msgstr ""
 
-#: class/Comment_Item.php:290
+#: class/Comment_Item.php:281
 msgid "Reason"
 msgstr ""
 
-#: class/Comment_Item.php:354
+#: class/Comment_Item.php:344
 msgid "Edit"
 msgstr ""
 
-#: class/Comment_Item.php:363
+#: class/Comment_Item.php:353
 msgid "Are you sure you want to delete this comment?"
 msgstr ""
 
-#: class/Comment_Item.php:366
+#: class/Comment_Item.php:356
 msgid "Delete"
 msgstr ""
 
-#: class/Comment_Item.php:380
+#: class/Comment_Item.php:370
 msgid "Quote"
 msgstr ""
 
-#: class/Comment_Item.php:388
+#: class/Comment_Item.php:378
 msgid "Reply"
 msgstr ""
 
-#: class/Comment_Thread.php:58 class/Comment_Thread.php:264
+#: class/Comment_Thread.php:58 class/Comment_Thread.php:265
 msgid "No comments"
 msgstr ""
 
@@ -149,11 +153,11 @@ msgstr ""
 msgid "This month"
 msgstr ""
 
-#: class/Comment_Thread.php:209 class/Comments.php:398
+#: class/Comment_Thread.php:209 class/Comments.php:459
 msgid "Oldest first"
 msgstr ""
 
-#: class/Comment_Thread.php:210 class/Comments.php:399
+#: class/Comment_Thread.php:210 class/Comments.php:460
 msgid "Newest first"
 msgstr ""
 
@@ -161,11 +165,11 @@ msgstr ""
 msgid "Go"
 msgstr ""
 
-#: class/Comment_Thread.php:324
+#: class/Comment_Thread.php:325
 msgid "Disable anonymous posting"
 msgstr ""
 
-#: class/Comment_Thread.php:327
+#: class/Comment_Thread.php:328
 msgid "Enable anonymous posting"
 msgstr ""
 
@@ -202,76 +206,108 @@ msgstr ""
 msgid "Your contact email is formatted improperly."
 msgstr ""
 
-#: class/Comments.php:133 class/Comments.php:277
+#: class/Comments.php:91
+msgid "Sorry, but you do not have rights to alter settings."
+msgstr ""
+
+#: class/Comments.php:143 class/Comments.php:180 class/Comments.php:297
 msgid "Post Comment"
 msgstr ""
 
-#: class/Comments.php:151
+#: class/Comments.php:161
 msgid "Error"
 msgstr ""
 
-#: class/Comments.php:152
+#: class/Comments.php:162
 msgid "Missing thread information."
 msgstr ""
 
-#: class/Comments.php:159
+#: class/Comments.php:170
 msgid "Sorry"
 msgstr ""
 
-#: class/Comments.php:160
+#: class/Comments.php:171
 msgid "A problem occurred when trying to save your comment."
 msgstr ""
 
-#: class/Comments.php:161
+#: class/Comments.php:172
 msgid "Please try again later."
 msgstr ""
 
-#: class/Comments.php:171
+#: class/Comments.php:190
 #, php-format
 msgid "Comment from: %s"
 msgstr ""
 
-#: class/Comments.php:248
+#: class/Comments.php:224
+msgid "Your comment must contain a subject and comment."
+msgstr ""
+
+#: class/Comments.php:246
+msgid "You failed verification. Try again."
+msgstr ""
+
+#: class/Comments.php:268
 msgid "Reason for edit"
 msgstr ""
 
-#: class/Comments.php:261
+#: class/Comments.php:281
 msgid "Re:"
 msgstr ""
 
-#: class/Comments.php:367 class/My_Page.php:31
+#: class/Comments.php:302
+msgid "Please copy the word in the above image."
+msgstr ""
+
+#: class/Comments.php:428 class/My_Page.php:31
 msgid "Settings saved."
 msgstr ""
 
-#: class/Comments.php:369
+#: class/Comments.php:430
 msgid "Go back to settings..."
 msgstr ""
 
-#: class/Comments.php:382
+#: class/Comments.php:443
 msgid "Allow user signatures"
 msgstr ""
 
-#: class/Comments.php:387
+#: class/Comments.php:448
 msgid "Allow images in signatures"
 msgstr ""
 
-#: class/Comments.php:391
+#: class/Comments.php:452
 msgid "Allow user avatars"
 msgstr ""
 
-#: class/Comments.php:395
+#: class/Comments.php:456
 msgid "Save avatars locally"
 msgstr ""
 
-#: class/Comments.php:403
+#: class/Comments.php:464
 msgid "Default order"
 msgstr ""
 
-#: class/Comments.php:405
+#: class/Comments.php:466
+msgid "Don't use"
+msgstr ""
+
+#: class/Comments.php:467
+msgid "Anonymous users only"
+msgstr ""
+
+#: class/Comments.php:468
+msgid "All users"
+msgstr ""
+
+#: class/Comments.php:473
+msgid "CAPTCHA use"
+msgstr ""
+
+#: class/Comments.php:476
 msgid "Save"
 msgstr ""
 
-#: class/Comments.php:409
+#: class/Comments.php:480
 msgid "Comment settings"
 msgstr ""
 

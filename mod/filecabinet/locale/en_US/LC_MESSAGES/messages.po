@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-09 14:48-0400\n"
+"POT-Creation-Date: 2006-11-16 09:04-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,119 +40,119 @@ msgstr ""
 msgid "Delete images"
 msgstr ""
 
-#: class/Cabinet_Action.php:47 class/Cabinet_Action.php:226
+#: class/Cabinet_Action.php:48 class/Cabinet_Action.php:228
 msgid "Upload new document"
 msgstr ""
 
-#: class/Cabinet_Action.php:58 class/Cabinet_Action.php:89
-#: class/Cabinet_Action.php:96 class/Cabinet_Action.php:192
+#: class/Cabinet_Action.php:59 class/Cabinet_Action.php:90
+#: class/Cabinet_Action.php:97 class/Cabinet_Action.php:194
 msgid "Manage Images"
 msgstr ""
 
-#: class/Cabinet_Action.php:67 class/Cabinet_Action.php:83
-#: class/Cabinet_Action.php:233
+#: class/Cabinet_Action.php:68 class/Cabinet_Action.php:84
+#: class/Cabinet_Action.php:235
 msgid "Manage Documents"
 msgstr ""
 
-#: class/Cabinet_Action.php:78
+#: class/Cabinet_Action.php:79
 msgid "An error occurred when trying to delete a document."
 msgstr ""
 
-#: class/Cabinet_Action.php:80
+#: class/Cabinet_Action.php:81
 msgid "Document deleted."
 msgstr ""
 
-#: class/Cabinet_Action.php:172
+#: class/Cabinet_Action.php:174
 msgid "Image uploaded!"
 msgstr ""
 
-#: class/Cabinet_Action.php:185
+#: class/Cabinet_Action.php:187
 msgid "Edit Image"
 msgstr ""
 
-#: class/Cabinet_Action.php:220
+#: class/Cabinet_Action.php:222
 msgid "Sorry"
 msgstr ""
 
-#: class/Cabinet_Action.php:221
+#: class/Cabinet_Action.php:223
 msgid "An error occurred while saving your document."
 msgstr ""
 
-#: class/Cabinet_Action.php:222
+#: class/Cabinet_Action.php:224
 msgid "Please check your logs."
 msgstr ""
 
-#: class/Cabinet_Action.php:230
+#: class/Cabinet_Action.php:232
 msgid "Document saved successfully."
 msgstr ""
 
-#: class/Cabinet_Action.php:245
+#: class/Cabinet_Action.php:247
 msgid "Document"
 msgstr ""
 
-#: class/Cabinet_Action.php:272 class/Cabinet_Action.php:287
-#: class/Cabinet_Action.php:361
+#: class/Cabinet_Action.php:274 class/Cabinet_Action.php:289
+#: class/Cabinet_Action.php:363
 msgid "Settings"
 msgstr ""
 
-#: class/Cabinet_Action.php:284
+#: class/Cabinet_Action.php:286
 msgid "Settings saved."
 msgstr ""
 
-#: class/Cabinet_Action.php:311
+#: class/Cabinet_Action.php:313
 msgid "Default document directory may not be blank"
 msgstr ""
 
-#: class/Cabinet_Action.php:313
+#: class/Cabinet_Action.php:315
 msgid "Document directory does not exist."
 msgstr ""
 
-#: class/Cabinet_Action.php:315
+#: class/Cabinet_Action.php:317
 msgid "Unable to write to document directory."
 msgstr ""
 
-#: class/Cabinet_Action.php:317
+#: class/Cabinet_Action.php:319
 msgid "Unable to read document directory."
 msgstr ""
 
-#: class/Cabinet_Action.php:321
+#: class/Cabinet_Action.php:323
 msgid "Default image directory may not be blank"
 msgstr ""
 
-#: class/Cabinet_Action.php:323
+#: class/Cabinet_Action.php:325
 msgid "Image directory does not exist."
 msgstr ""
 
-#: class/Cabinet_Action.php:325
+#: class/Cabinet_Action.php:327
 msgid "Unable to write to image directory."
 msgstr ""
 
-#: class/Cabinet_Action.php:327
+#: class/Cabinet_Action.php:329
 msgid "Unable to read image directory."
 msgstr ""
 
-#: class/Cabinet_Action.php:355
+#: class/Cabinet_Action.php:357
 msgid "Images"
 msgstr ""
 
-#: class/Cabinet_Action.php:356
+#: class/Cabinet_Action.php:358
 msgid "Documents"
 msgstr ""
 
-#: class/Cabinet_Action.php:386
+#: class/Cabinet_Action.php:388
 msgid "Close window"
 msgstr ""
 
-#: class/Cabinet_Action.php:399 class/Cabinet_Action.php:423
-#: class/Cabinet_Action.php:426
+#: class/Cabinet_Action.php:401 class/Cabinet_Action.php:425
+#: class/Cabinet_Action.php:428
 msgid "[default]"
 msgstr ""
 
-#: class/Cabinet_Action.php:453
+#: class/Cabinet_Action.php:455 class/Cabinet_Action.php:469
 msgid "Sorry but this file is inaccessible at this time."
 msgstr ""
 
-#: class/Cabinet_Action.php:459
+#: class/Cabinet_Action.php:461
 msgid "Sorry, you are not allowed access to this file."
 msgstr ""
 
@@ -170,7 +170,7 @@ msgid "Are you sure you want to delete this document?"
 msgstr ""
 
 #: class/Document.php:208 class/Image.php:371 class/Image_Manager.php:144
-#: class/Image_Manager.php:423
+#: class/Image_Manager.php:418
 msgid "Delete"
 msgstr ""
 
@@ -179,7 +179,7 @@ msgid "Thumbnail"
 msgstr ""
 
 #: class/Forms.php:23 class/Forms.php:51 class/Forms.php:124
-#: class/Image_Manager.php:307 class/Image_Manager.php:404
+#: class/Image_Manager.php:301 class/Image_Manager.php:399
 msgid "Title"
 msgstr ""
 
@@ -227,23 +227,23 @@ msgstr ""
 msgid "Document location"
 msgstr ""
 
-#: class/Forms.php:120 class/Image_Manager.php:324
+#: class/Forms.php:120 class/Image_Manager.php:318
 msgid "Save directory"
 msgstr ""
 
-#: class/Forms.php:128 class/Image_Manager.php:314 class/Image_Manager.php:405
+#: class/Forms.php:128 class/Image_Manager.php:308 class/Image_Manager.php:400
 msgid "Description"
 msgstr ""
 
-#: class/Forms.php:132 class/Image_Manager.php:328
+#: class/Forms.php:132 class/Image_Manager.php:322
 msgid "Update"
 msgstr ""
 
-#: class/Forms.php:134 class/Image_Manager.php:330 class/Image_Manager.php:418
+#: class/Forms.php:134 class/Image_Manager.php:324 class/Image_Manager.php:413
 msgid "Upload"
 msgstr ""
 
-#: class/Forms.php:138 class/Image_Manager.php:335 class/Image_Manager.php:420
+#: class/Forms.php:138 class/Image_Manager.php:329 class/Image_Manager.php:415
 msgid "Cancel"
 msgstr ""
 
@@ -251,7 +251,7 @@ msgstr ""
 msgid "Current document"
 msgstr ""
 
-#: class/Forms.php:159 class/Image_Manager.php:349
+#: class/Forms.php:159 class/Image_Manager.php:344
 msgid "Maximum file size"
 msgstr ""
 
@@ -287,47 +287,47 @@ msgstr ""
 msgid "An error occurred when trying to save your image."
 msgstr ""
 
-#: class/Image_Manager.php:303
+#: class/Image_Manager.php:297
 msgid "Image location"
 msgstr ""
 
-#: class/Image_Manager.php:311
+#: class/Image_Manager.php:305
 msgid "Alternate text"
 msgstr ""
 
-#: class/Image_Manager.php:346
+#: class/Image_Manager.php:341
 msgid "Current image"
 msgstr ""
 
-#: class/Image_Manager.php:350
+#: class/Image_Manager.php:345
 msgid "Maximum width"
 msgstr ""
 
-#: class/Image_Manager.php:351
+#: class/Image_Manager.php:346
 msgid "Maximum height"
 msgstr ""
 
-#: class/Image_Manager.php:378
+#: class/Image_Manager.php:373
 msgid "No images found."
 msgstr ""
 
-#: class/Image_Manager.php:394
+#: class/Image_Manager.php:389
 msgid "View full image"
 msgstr ""
 
-#: class/Image_Manager.php:409
+#: class/Image_Manager.php:404
 msgid "Are you sure you want to permanently delete this image?"
 msgstr ""
 
-#: class/Image_Manager.php:411
+#: class/Image_Manager.php:406
 msgid "Choose a image first."
 msgstr ""
 
-#: class/Image_Manager.php:419
+#: class/Image_Manager.php:414
 msgid "Ok"
 msgstr ""
 
-#: class/Image_Manager.php:421
+#: class/Image_Manager.php:416
 msgid "Image Browser"
 msgstr ""
 

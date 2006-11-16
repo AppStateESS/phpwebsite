@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-09 14:48-0400\n"
+"POT-Creation-Date: 2006-11-16 09:04-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,7 +44,7 @@ msgstr ""
 msgid "Pick a theme"
 msgstr ""
 
-#: boost/install.php:61 class/LayoutAdmin.php:366
+#: boost/install.php:61 class/LayoutAdmin.php:412
 msgid "Page Title"
 msgstr ""
 
@@ -64,209 +64,229 @@ msgstr ""
 msgid "+ Styles per page added."
 msgstr ""
 
-#: class/Layout.php:695
+#: class/Layout.php:728
 msgid "Box move off"
 msgstr ""
 
-#: class/Layout.php:703
+#: class/Layout.php:742
 msgid "Change style"
 msgstr ""
 
-#: class/Layout.php:906
+#: class/Layout.php:750
+msgid "Meta tags"
+msgstr ""
+
+#: class/Layout.php:972
 msgid "Move to top"
 msgstr ""
 
-#: class/Layout.php:907
+#: class/Layout.php:973
 msgid "Move up"
 msgstr ""
 
-#: class/Layout.php:908
+#: class/Layout.php:974
 msgid "Move down"
 msgstr ""
 
-#: class/Layout.php:909
+#: class/Layout.php:975
 msgid "Move to bottom"
 msgstr ""
 
-#: class/Layout.php:914
+#: class/Layout.php:976 class/LayoutAdmin.php:405
+msgid "Restore to default"
+msgstr ""
+
+#: class/Layout.php:981
 msgid "Send to"
 msgstr ""
 
-#: class/Layout.php:924
+#: class/Layout.php:991
 msgid "Move"
 msgstr ""
 
-#: class/LayoutAdmin.php:32 class/LayoutAdmin.php:56
+#: class/LayoutAdmin.php:31 class/LayoutAdmin.php:55
 msgid "Adjust Boxes"
 msgstr ""
 
-#: class/LayoutAdmin.php:57
+#: class/LayoutAdmin.php:56
 msgid "Settings changed."
 msgstr ""
 
-#: class/LayoutAdmin.php:63 class/LayoutAdmin.php:141
-#: class/LayoutAdmin.php:147 class/LayoutAdmin.php:222
+#: class/LayoutAdmin.php:62 class/LayoutAdmin.php:144
+#: class/LayoutAdmin.php:150 class/LayoutAdmin.php:233
 msgid "Themes"
 msgstr ""
 
-#: class/LayoutAdmin.php:66
+#: class/LayoutAdmin.php:65
 msgid "Theme settings updated."
 msgstr ""
 
-#: class/LayoutAdmin.php:78 class/LayoutAdmin.php:90
+#: class/LayoutAdmin.php:77 class/LayoutAdmin.php:89
 msgid "Error"
 msgstr ""
 
-#: class/LayoutAdmin.php:79 class/LayoutAdmin.php:91
+#: class/LayoutAdmin.php:78 class/LayoutAdmin.php:90
 msgid "There was a problem updating the settings."
 msgstr ""
 
-#: class/LayoutAdmin.php:81
+#: class/LayoutAdmin.php:80
 msgid "Footer updated."
 msgstr ""
 
-#: class/LayoutAdmin.php:93
+#: class/LayoutAdmin.php:92
 msgid "Header updated."
 msgstr ""
 
-#: class/LayoutAdmin.php:99
+#: class/LayoutAdmin.php:98
 msgid "Edit Footer"
 msgstr ""
 
-#: class/LayoutAdmin.php:104
+#: class/LayoutAdmin.php:103
 msgid "Edit Header"
 msgstr ""
 
-#: class/LayoutAdmin.php:109 class/LayoutAdmin.php:124
+#: class/LayoutAdmin.php:108 class/LayoutAdmin.php:127
 msgid "Edit Meta Tags"
 msgstr ""
 
-#: class/LayoutAdmin.php:125
+#: class/LayoutAdmin.php:128
 msgid "Meta Tags updated."
 msgstr ""
 
-#: class/LayoutAdmin.php:132
+#: class/LayoutAdmin.php:135
 msgid "Confirm Theme Change"
 msgstr ""
 
-#: class/LayoutAdmin.php:133
+#: class/LayoutAdmin.php:136
 msgid "If you are happy with the change, click the appropiate button."
 msgstr ""
 
-#: class/LayoutAdmin.php:134
+#: class/LayoutAdmin.php:137
 msgid ""
 "Failure to respond in ten seconds, reverts phpWebSite to the default theme."
 msgstr ""
 
-#: class/LayoutAdmin.php:156 class/LayoutAdmin.php:209
+#: class/LayoutAdmin.php:159 class/LayoutAdmin.php:220
 msgid "Change CSS"
 msgstr ""
 
-#: class/LayoutAdmin.php:182
+#: class/LayoutAdmin.php:167
+msgid "Set meta tags"
+msgstr ""
+
+#: class/LayoutAdmin.php:193
 msgid "-- Use default style --"
 msgstr ""
 
-#: class/LayoutAdmin.php:200
+#: class/LayoutAdmin.php:211
 msgid "Style sheet"
 msgstr ""
 
-#: class/LayoutAdmin.php:202
+#: class/LayoutAdmin.php:213
 msgid "Save"
 msgstr ""
 
-#: class/LayoutAdmin.php:204
+#: class/LayoutAdmin.php:215
 msgid "Cancel"
 msgstr ""
 
-#: class/LayoutAdmin.php:220
+#: class/LayoutAdmin.php:231
 msgid "Boxes"
 msgstr ""
 
-#: class/LayoutAdmin.php:221
+#: class/LayoutAdmin.php:232
 msgid "Meta Tags"
 msgstr ""
 
-#: class/LayoutAdmin.php:223
+#: class/LayoutAdmin.php:234
 msgid "Header"
 msgstr ""
 
-#: class/LayoutAdmin.php:224
+#: class/LayoutAdmin.php:235
 msgid "Footer"
 msgstr ""
 
-#: class/LayoutAdmin.php:238
+#: class/LayoutAdmin.php:249
 msgid "Update Theme Settings"
 msgstr ""
 
-#: class/LayoutAdmin.php:242
+#: class/LayoutAdmin.php:253
 msgid "There was a problem reading the theme directories."
 msgstr ""
 
-#: class/LayoutAdmin.php:248
+#: class/LayoutAdmin.php:259
 msgid "Default Theme"
 msgstr ""
 
-#: class/LayoutAdmin.php:261
+#: class/LayoutAdmin.php:272
 msgid "Disable"
 msgstr ""
 
-#: class/LayoutAdmin.php:261
+#: class/LayoutAdmin.php:272
 msgid "Enable"
 msgstr ""
 
-#: class/LayoutAdmin.php:270
+#: class/LayoutAdmin.php:281
 msgid "Don't reset"
 msgstr ""
 
-#: class/LayoutAdmin.php:270 class/LayoutAdmin.php:276
+#: class/LayoutAdmin.php:281 class/LayoutAdmin.php:287
 msgid "Reset boxes"
 msgstr ""
 
-#: class/LayoutAdmin.php:273
+#: class/LayoutAdmin.php:284
 msgid "Change Settings"
 msgstr ""
 
-#: class/LayoutAdmin.php:277
+#: class/LayoutAdmin.php:288
 msgid "Box positioning"
 msgstr ""
 
-#: class/LayoutAdmin.php:298
+#: class/LayoutAdmin.php:312
 msgid "Complete the theme change"
 msgstr ""
 
-#: class/LayoutAdmin.php:299
+#: class/LayoutAdmin.php:313
 msgid "Restore the default theme"
 msgstr ""
 
-#: class/LayoutAdmin.php:319
+#: class/LayoutAdmin.php:328
+msgid "Only show footer on front page"
+msgstr ""
+
+#: class/LayoutAdmin.php:337
 msgid "Update Footer"
 msgstr ""
 
-#: class/LayoutAdmin.php:340
+#: class/LayoutAdmin.php:353
+msgid "Only show header on front page"
+msgstr ""
+
+#: class/LayoutAdmin.php:362
 msgid "Update Header"
 msgstr ""
 
-#: class/LayoutAdmin.php:368
+#: class/LayoutAdmin.php:414
 msgid "Keywords"
 msgstr ""
 
-#: class/LayoutAdmin.php:370
+#: class/LayoutAdmin.php:416
 msgid "Description"
 msgstr ""
 
-#: class/LayoutAdmin.php:373
+#: class/LayoutAdmin.php:419
 msgid "Allow indexing"
 msgstr ""
 
-#: class/LayoutAdmin.php:376
+#: class/LayoutAdmin.php:422
 msgid "Allow link following"
 msgstr ""
 
-#: class/LayoutAdmin.php:378
+#: class/LayoutAdmin.php:424
 msgid "Update"
 msgstr ""
 
-#: class/LayoutAdmin.php:381
+#: class/LayoutAdmin.php:427
 msgid "Default Robot Settings"
 msgstr ""
 
