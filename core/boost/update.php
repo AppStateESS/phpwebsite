@@ -95,6 +95,44 @@ function core_update(&$content, $version) {
 
     case version_compare($version, '1.2.1', '<'):
         $content[] = 'Fix - Text : another small change to get foreign characters to work in php < 5.';
+
+    case version_compare($version, '1.3.0', '<'):
+        $content[] = '<pre>';
+        $content[] = '+ Init.php - Added UTF-8 to setlocale language string.
++ Added photoalbum conversion
++ Convert
+  o Added ability to set table prefix of conversion database.
+  o Added Phatform category conversion.
+  o Added Phatform conversion script.
+  o Added note about moving  your images and files before or after
+    conversion to readme file.
+  o Now looks for info.ini file if language version not available
+  o Added info.ini files for each converted module
+  o Removed unused en-us ini files.
++ Database
+  o Added a report_error parameter to importFile function.
+  o Fixed export function.
++ Error.php - Default language is now used when the get function is called.
++ Init.php
+  o Default language changed from "en" to "en_US"
+  o Stripping the utf-8 suffix from the language used in
+    translateFile.
++ Form.php - Change to the editor code that should prevent the
+  doubling of breaks
++ Text.php
+  o added the smilies parameter to the constructor.
+  o Added a function to fix basic anchors in parsed text. Will now
+    suppliment them with the current url.
+  o Added a parameter to control whether to fix anchors by default or
+    not. Default set in config/core/text_settings.php update.
+
++ Captcha.php - New class to help with CAPTCHA
++ Setup - added captcha information to config.tpl, removed file_type include
++ Index.php - Added file_types include
++ Added nonpareil theme
++ Functions.php - Added str_split
+';
+        $content[] = '</pre>';
     }
     
     return true;
