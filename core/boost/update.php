@@ -97,8 +97,10 @@ function core_update(&$content, $version) {
         $content[] = 'Fix - Text : another small change to get foreign characters to work in php < 5.';
 
     case version_compare($version, '1.3.0', '<'):
-        $content[] = '<pre>';
-        $content[] = '+ Init.php - Added UTF-8 to setlocale language string.
+        $content[] = '<pre>
+1.3.0 Changes
+-------------
++ Init.php - Added UTF-8 to setlocale language string.
 + Added photoalbum conversion
 + Convert
   o Added ability to set table prefix of conversion database.
@@ -131,8 +133,22 @@ function core_update(&$content, $version) {
 + Index.php - Added file_types include
 + Added nonpareil theme
 + Functions.php - Added str_split
-';
-        $content[] = '</pre>';
+</pre>';
+
+    case version_compare($version, '1.3.1', '<'):
+        $content[] = '<pre>
+1.3.1 Changes
+-------------
++ Database.php
+  o Added a DB_ALLOW_TABLE_INDEX definition to allow users with limited
+    access to install.
+  o Changed Database to use factory classes for adding table
+    columns. Good ole postgresql!
+  o Added index define to setup config template
++ Text.php
+  o Added a couple of lines to breaker to prevent breaks inside pre
+    tags
+</pre>';
     }
     
     return true;
