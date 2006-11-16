@@ -137,7 +137,7 @@ class pgsql_PHPWS_SQL {
     /**
      * Postgres doesn't accept "after" or "before"
      */
-    function alterTable($table, $column, $parameter, $after=null)
+    function addColumn($table, $column, $parameter, $after=null)
     {
         $parameter = strtolower($parameter);
         $parameter = preg_replace('/ {2,}/', ' ', trim($parameter));
@@ -164,10 +164,29 @@ class pgsql_PHPWS_SQL {
         $length = count($pararray);
 
         for ($i=0; $i < $length; $i++) {
-            if ($pararray[$i] == 'not' && $pararray[$i+1] == 'null') {
-                $extra[] = "ALTER TABLE $table ALTER $column SET NOT NULL;";
+            if ($pararray[$i] == 'default' && isset($pararray[$i+1])) {
+                if ($number) {
+                    $default_value = preg_replace('/\'"`/', '', $pararray[$i+1]);
+                } else {
+                    $default_value = preg_replace('/"`/', '\'', $pararray[$i+1]);
+                }
+                $extra[1] = "ALTER TABLE $table ALTER $column SET DEFAULT $default_value;";
+                $extra[2] = "UPDATE $table set $column = $default_value;";
                 $unset_it[] = $i;
                 $i++;
+                $unset_it[] = $i;
+            }
+
+            if ($pararray[$i] == 'not' && $pararray[$i+1] == 'null') {
+                $extra[3] = "ALTER TABLE $table ALTER $column SET NOT NULL;";
+                $unset_it[] = $i;
+                $i++;
+                $unset_it[] = $i;
+                continue;
+            }
+
+            if ($pararray[$i] == 'null') {
+                $extra[3] = "ALTER TABLE $table ALTER $column DROP NOT NULL;";
                 $unset_it[] = $i;
                 continue;
             }
@@ -179,23 +198,7 @@ class pgsql_PHPWS_SQL {
                 continue;
             }
 
-            if ($pararray[$i] == 'null') {
-                $extra[] = "ALTER TABLE $table ALTER $column DROP NOT NULL;";
-                $unset_it[] = $i;
-                continue;
-            }
 
-            if ($pararray[$i] == 'default' && isset($pararray[$i+1])) {
-                if ($number) {
-                    $default_value = preg_replace('/\'"`/', '', $pararray[$i+1]);
-                } else {
-                    $default_value = preg_replace('/"`/', '\'', $pararray[$i+1]);
-                }
-                $extra[] = "ALTER TABLE $table ALTER $column SET DEFAULT $default_value;";
-                $unset_it[] = $i;
-                $i++;
-                $unset_it[] = $i;
-            }
         }
 
         if (isset($unset_it)) {
@@ -210,12 +213,10 @@ class pgsql_PHPWS_SQL {
             $new_para = null;
         }
 
-        $sql = "ALTER TABLE $table ADD $column $new_para;\n";
-        if (isset($extra)) {
-            $sql .= implode("\n", $extra);
-        }
+        $extra[0] = "ALTER TABLE $table ADD $column $new_para;\n";
+        ksort($extra);
 
-        return $sql;
+        return $extra;
     }
 
 }

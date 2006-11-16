@@ -1585,11 +1585,13 @@ class PHPWS_DB {
             return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::addTableColumn', $column);
         }
 
-        $sql = $GLOBALS['PHPWS_DB']['lib']->alterTable($table, $column, $parameter, $after);
+        $sql = $GLOBALS['PHPWS_DB']['lib']->addColumn($table, $column, $parameter, $after);
 
-        $result = PHPWS_DB::query($sql);
-        if (PEAR::isError($result)) {
-            return $result;
+        foreach ($sql as $val) {
+            $result = PHPWS_DB::query($val);
+            if (PEAR::isError($result)) {
+                return $result;
+            }
         }
 
         if ($indexed == TRUE && DB_ALLOW_TABLE_INDEX) {

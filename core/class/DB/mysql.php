@@ -95,7 +95,7 @@ class mysql_PHPWS_SQL {
         return 'LIKE';
     }
 
-    function alterTable($table, $column, $parameter, $after=null)
+    function addColumn($table, $column, $parameter, $after=null)
     {
         if (!empty($after)) {
             if (strtolower($after) == 'first') {
@@ -107,7 +107,7 @@ class mysql_PHPWS_SQL {
             $location = NULL;
         }
 
-        return "ALTER TABLE $table ADD $column $parameter $location;";
+        return array("ALTER TABLE $table ADD $column $parameter $location;");
     }
 }
 
