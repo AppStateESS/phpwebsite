@@ -69,6 +69,22 @@ function users_update(&$content, $currentVersion)
     case version_compare($currentVersion, '2.1.1', '<'):
         $content[] = 'Fix - User names are now stored in lowercase. <b>You should change your password after updating to avoid problems</b>';
 
+    case version_compare($currentVersion, '2.2.0', '<'):
+        $content[] = '<pre>
+2.2.0 changes
+-------------
++ Removed permissions page link on new user creation
++ Added error check to prohibit permissions on new users
++ Added support for new Captcha core class
++ Removed constructions by reference.
++ When logging in, the user object would have its session information
+  noted, saved and then reloaded. During the save, all its variables
+  were double checked. This was over kill and caused several extra
+  database calls. Changed to only update and then load
+  permissions. Saves several steps.
++ Log in form returns null if the user box is set to none
+</pre>';
+
     }
 
     return TRUE;
