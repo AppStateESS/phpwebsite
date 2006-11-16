@@ -51,6 +51,9 @@ function boost_update(&$content, $currentVersion)
     case version_compare($currentVersion, '1.9.6', '<'):
         $content[] = 'Small changes to work with Branches better.';
 
+    case version_compare($currentVersion, '1.9.7', '<'):
+        $content[] = 'Fixed - Check link will appear regardless of directory permission.';
+
     }
 
     return TRUE;
