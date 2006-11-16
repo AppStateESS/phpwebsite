@@ -1,6 +1,29 @@
-November 15
+November 16
 -----------
 Core
++ Database.php
+  o Added a DB_ALLOW_TABLE_INDEX definition to allow users with limited
+    access to install.
+  o Changed Database to use factory classes for adding table
+    columns. Good ole postgresql!
+  o Added index define to setup config template
+
++ Text.php
+  o Added a couple of lines to breaker to prevent breaks inside pre
+    tags
+
+Branch
+ + Added table index define to config.tpl (updated file). 
+
+Webpage
++ Removed old update code and a repeat
+
+Users
++ Log in form returns null if the user box is set to none
+
+November 15
+-----------
+Core - 1.3.0
 + Added photoalbum conversion
 
 Phatform
@@ -12,7 +35,7 @@ Photoalbum
 
 November 14
 -----------
-Core
+Core - 1.3.0
 + Convert
   o Added ability to set table prefix of conversion database.
   o Added Phatform category conversion.
@@ -22,17 +45,17 @@ Core
 
 + Database - Fixed export function.
 
-Boost
+Boost - 1.9.7
 + Check link will appear regardless of directory permissions.
 
-Version
+Version - 0.1.0
 + Version won't spam tables it didn't remove when uninstalling a
   module. 
 
 
 November 13
 -----------
-Core
+Core - 1.3.0
 + Form.php - Change to the editor code that should prevent the
   doubling of breaks
 + Text.php - added the smilies parameter to the constructor.
@@ -40,7 +63,7 @@ Core
 + Setup - added captcha information to config.tpl, removed file_type include
 + Index.php - Added file_types include
 
-Branch
+Branch - 1.0.2
 + Updated files : templates/config.tpl
 + Added captcha information to branch config template and removed
   file types include.
@@ -60,7 +83,7 @@ Users
 
 November 10
 -----------
-Core
+Core - 1.3.0
 + Convert
   o Now looks for info.ini file if language version not available
   o Added info.ini files for each converted module
@@ -108,7 +131,7 @@ Web Page
 
 November 9
 ----------
-Core
+Core - 1.3.0
 + Error.php - Default language is now used when the get function is called.
 + Init.php
   o Default language changed from "en" to "en_US"
@@ -124,10 +147,10 @@ November 8
 RSS
 + Added some error checks to feed translation.
 
-Core
+Core - 1.3.0
 + Init.php - Added UTF-8 to setlocale language string.
 
-Branch
+Branch - 1.0.2
 + Fixed bug #1590935 - Copy admin directory to branch.
 
 Calendar
@@ -140,7 +163,7 @@ Comments
 + Updated file conf/config.php
 + Added default comment limit and set it to 20.
 
-Branch
+Branch - 1.0.2
 + Changed the config file to not create a table prefix line if no
   prefix exists.
 + Fixed bug that copying corrupt prefix data to the branch object.
@@ -176,7 +199,7 @@ Comment - 0.3.0
 + Added third parameter to parseOutput to use smilies
 
 
-Version UPDATE!!!
+Version - 0.1.0
 + Added error logging to a function call
 
 
@@ -496,7 +519,7 @@ Notes - 0.1.0
 + Fixed problem with using username from drop down
 
 
-Version
+Version - 0.1.0
 - Fixed default setting (Bug #1573480).
 
 October 10
