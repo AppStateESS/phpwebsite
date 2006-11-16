@@ -33,6 +33,23 @@ function calendar_update(&$content, $version)
         $content[] = '- Added admin option to change the default calendar view.';
         $content[] = '- Month link on mini calendar now opens the default view.';
         $content[] = '- Public calendars that are restricted are now properly hidden.';
+
+    case version_compare($version, '1.2.1', '<'):
+        $files = array();
+        $files[] = 'templates/admin/forms/setting.tpl';
+        if (PHPWS_Boost::updateFiles($files, 'calendar')) {
+            $content[] = 'Template files updated.';
+        } else {
+            $content[] = 'Failed to copy template files.';
+        }
+
+        $content[] = '<pre>
++ Updated file - templates/admin/forms/setting.tpl
++ Fixed bug #1589525 - Calendar days not linked to correct day view.
++ Fixed bug #1589528 - Added option to show mini calendar on all
+  pages, front only, or none to settings tab.
++ Added language file.
+</pre>';
     }
 
     return true;
