@@ -1,3 +1,28 @@
+November 17
+-----------
+Core
++ Database.php
+  o Added code to prevent index creation on sql imports if requested.
++ Setup
+  o Removed RC stuff from welcome
+  o Changed setup colors
+
+Layout
++ Added missing table to install.sql
++ Added index to metatags table
+
+
+Calendar
++ Fixed mini calendar changing date when viewing other months
++ Creating a new event will now properly use the currently viewed date
++ Added reset cache link to miniadmin
++ Added setting to show day links on mini calendar only if there is an
+  event on that day (Bug #1596779).
++ Added caching to mini calendar
++ Opened caching on grid regardless of log status
++ Events now appear on previous and next months in grid view
+  (Bug #1596780) 
+
 November 16
 -----------
 Core - 1.3.1
@@ -11,13 +36,10 @@ Core - 1.3.1
   o Added a couple of lines to breaker to prevent breaks inside pre
     tags
 
-Branch
- + Added table index define to config.tpl (updated file). 
-
 Webpage
 + Removed old update code and a repeat
 
-Users
+Users - 2.2.0
 + Log in form returns null if the user box is set to none
 
 November 15
@@ -41,7 +63,6 @@ Core - 1.3.0
   o Added Phatform conversion script.
   o Added note about moving  your images and files before or after
     conversion to readme file.
-
 + Database - Fixed export function.
 
 Boost - 1.9.7
@@ -68,14 +89,14 @@ Branch - 1.0.2
   file types include.
 
 
-Comments
+Comments - 0.4.0
 + Updated files : templates/edit.tpl, templates/settings_form.tpl
 + Added a permission for settings control.
 + Added new Captcha class for commenting (dependency on new core)
 + Added selector for captcha control on settings tab
 
 
-Users
+Users - 2.2.0
 + Removed permissions page link on new user creation
 + Added error check to prohibit permissions on new users
 + Added support for new Captcha core class (dependency on new core)
@@ -106,7 +127,7 @@ Layout
 Blog
 + Entry viewing now adds the blog title to the page title.
 
-Users
+Users - 2.2.0
 + Removed constructions by reference.
 + When logging in, the user object would have its session information
   noted, saved and then reloaded. During the save, all its variables
@@ -115,7 +136,7 @@ Users
   permissions. Saves several steps. 
 
 
-Calendar
+Calendar - 1.2.1
 + Updated files templates/admin/forms/settings.tpl
 + Opened up private calendar key posting to allow permission settings.
 + Added admin option to change the default calendar view
@@ -137,13 +158,13 @@ Core - 1.3.0
   o Stripping the utf-8 suffix from the language used in
     translateFile.
 
-Access
+Access - 0.1.0
 + Updated files config/config.php
 + Added Rewrite conditionals to allow directory searching
 
 November 8
 ----------
-RSS
+RSS - 0.1.2
 + Added some error checks to feed translation.
 
 Core - 1.3.0
@@ -152,13 +173,13 @@ Core - 1.3.0
 Branch - 1.0.2
 + Fixed bug #1590935 - Copy admin directory to branch.
 
-Calendar
+Calendar 1.2.1
 + Updated file - templates/admin/forms/setting.tpl
 + Fixed bug #1589525 - Calendar days not linked to correct day view.
 + Fixed bug #1589528 - Added option to show mini calendar on all
   pages, front only, or none to settings tab.
 
-Comments
+Comments 0.4.0
 + Updated file conf/config.php
 + Added default comment limit and set it to 20.
 
