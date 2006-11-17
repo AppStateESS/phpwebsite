@@ -1678,8 +1678,12 @@ class PHPWS_DB {
 
             if (preg_match("/;$/", $sqlRow)) {
                 $query = implode(' ', $sqlCommand);
-
                 $sqlCommand = array();
+
+                if(!DB_ALLOW_TABLE_INDEX &&
+                   preg_match('/^create index/i', $query)) {
+                    continue;
+                }
 
                 PHPWS_DB::homogenize($query);
 
