@@ -1,18 +1,20 @@
+CHANGELOG for phpWebSite version 1.0.0 stable
+
 November 17
 -----------
-Core
+Core - 1.3.2
 + Database.php
   o Added code to prevent index creation on sql imports if requested.
 + Setup
   o Removed RC stuff from welcome
   o Changed setup colors
 
-Layout
+Layout - 2.2.0
 + Added missing table to install.sql
 + Added index to metatags table
 
 
-Calendar
+Calendar - 1.2.2
 + Fixed mini calendar changing date when viewing other months
 + Creating a new event will now properly use the currently viewed date
 + Added reset cache link to miniadmin
@@ -36,7 +38,7 @@ Core - 1.3.1
   o Added a couple of lines to breaker to prevent breaks inside pre
     tags
 
-Webpage
+Webpage - 0.2.5
 + Removed old update code and a repeat
 
 Users - 2.2.0
@@ -47,11 +49,11 @@ November 15
 Core - 1.3.0
 + Added photoalbum conversion
 
-Phatform
+Phatform - 3.0.4
 + Simplified install.sql
 + Fixed some incompatible errorMessage function calls
 
-Photoalbum
+Photoalbum - 1.3.3
 + changed pager to use album ids and not photo id. big bug
 
 November 14
@@ -121,10 +123,10 @@ Core - 1.3.0
 + Functions
   o Added str_split
 
-Layout
+Layout - 2.2.0
 + Added meta tag settings per page.
 
-Blog
+Blog - 1.2.2
 + Entry viewing now adds the blog title to the page title.
 
 Users - 2.2.0
@@ -145,7 +147,7 @@ Calendar - 1.2.1
 
 
 
-Web Page
+Web Page - 0.2.5
 + Fixed bug that was using the wrong tab when editting the header.
 
 
@@ -421,7 +423,7 @@ Phatform - 3.0.3
 Branch - 1.0.0
 + Fixed directory references to extra slash.
 
-Photoalbum - 1.3.2
+Photoalbum - 1.3.3
 + Fixed pager listing all photos together regardless of album
 + Fixed prefix error message
 
