@@ -271,14 +271,37 @@ class Calendar_User {
         $month = (int)date('m');
         $year  = (int)date('Y');
 
+
+        // Check cache
+        $cache_key = sprintf('mini_%s_%s_%s', $month, $year, $this->calendar->schedule->id);
+        
+        $content = PHPWS_Cache::get($cache_key);
+        if (!empty($content)) {
+            return $content;
+        }
+
         $startdate = mktime(0,0,0, $month, 1, $year);
         $enddate = mktime(23, 59, 59, $month + 1, 0, $year);
-        
+
         if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
             Layout::addStyle('calendar');
         }
 
-        $oMonth = $this->calendar->getMonth();
+        if (PHPWS_Settings::get('calendar', 'mini_event_link')) {
+            $default_start = PHPWS_Settings::get('calendar','starting_day');
+            $start_day = date('w', $startdate) - $default_start;
+            $end_day  = date('w', $enddate);
+            
+            $startdate -= $start_day * 86400;
+            $enddate += $end_day * 86400;
+
+            $this->calendar->loadEventList($startdate, $enddate);
+            $link = false;
+        } else {
+            $link = true;
+        }
+
+        $oMonth = $this->calendar->getMonth($month, $year);
         $oMonth->build();
         $date = mktime(0,0,0, $month, 1, $year);
 
@@ -287,7 +310,7 @@ class Calendar_User {
 
         $this->_weekday($oMonth, $oTpl);
         reset($oMonth->children);
-        $this->_month_days($oMonth, $oTpl);
+        $this->_month_days($oMonth, $oTpl, $link);
 
         $vars['date'] = mktime(0,0,0, $month, 1, $year);
         $template['FULL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%B', $date), 'calendar', $vars);
@@ -297,26 +320,29 @@ class Calendar_User {
 
         $oTpl->setData($template);
         $content = $oTpl->get();
+
+        PHPWS_Cache::save($cache_key, $content);
         return $content;
     }
 
     /**
      * Fills in event totals for each day
      */
-    function _month_days(&$oMonth, &$oTpl)
+    function _month_days(&$oMonth, &$oTpl, $link_days=true)
     {
-        $month = &$this->calendar->int_month;
-        $year  = &$this->calendar->int_year;
-
         while($day = $oMonth->fetch()) {
             $data['COUNT'] = null;
             $no_of_events = 0;
-            $data['DAY'] = $this->dayLink($day->day, $day->month, $day->day, $day->year);
-
 
             if (isset($this->calendar->sorted_list[$day->year]['months'][$day->month]['days'][$day->day]['events'])) {
                 $no_of_events = count($this->calendar->sorted_list[$day->year]['months'][$day->month]['days'][$day->day]['events']);
             } 
+
+            if ($link_days || $no_of_events) {
+                $data['DAY'] = $this->dayLink($day->day, $day->month, $day->day, $day->year);
+            } else {
+                $data['DAY'] = $day->day;
+            }
 
             if ($day->empty) {
                 $data['CLASS'] = 'day-empty';
@@ -358,20 +384,25 @@ class Calendar_User {
 
         $date_pick = $this->getDatePick();
 
-        if (!Current_User::isLogged()) {
-            // Check cache
-            $cache_key = sprintf('grid_%s_%s_%s', $month, $year, $this->calendar->schedule->id);
-            
-            $content = PHPWS_Cache::get($cache_key);
-            if (!empty($content)) {
-                return $content;
-            }
+        // Check cache
+        $cache_key = sprintf('grid_%s_%s_%s', $month, $year, $this->calendar->schedule->id);
+        
+        $content = PHPWS_Cache::get($cache_key);
+        if (!empty($content)) {
+            return $content;
         }
 
         // cache empty, make calendar
 
         $startdate = mktime(0,0,0, $month, 1, $year);
         $enddate = mktime(23, 59, 59, $month + 1, 0, $year);
+
+        $default_start = PHPWS_Settings::get('calendar','starting_day');
+        $start_day = date('w', $startdate) - $default_start;
+        $end_day  = date('w', $enddate);
+
+        $startdate -= $start_day * 86400;
+        $enddate += $end_day * 86400;
 
         $this->calendar->loadEventList($startdate, $enddate);
 
@@ -405,9 +436,8 @@ class Calendar_User {
         $oTpl->setData($template);
         $content = $oTpl->get();
 
-        if (!Current_User::isLogged()) {
-            PHPWS_Cache::save($cache_key, $content);
-        }
+        PHPWS_Cache::save($cache_key, $content);
+
         return $content;
     }
 
@@ -534,7 +564,10 @@ class Calendar_User {
                  ( $this->calendar->schedule->user_id == Current_User::getId() ||Current_User::allow('calendar', 'edit_private', $this->calendar->schedule->id) ) )
                )
              ) {
+            $allowed = true;
             MiniAdmin::add('calendar', $this->calendar->schedule->addEventLink($this->calendar->current_date));
+        } else {
+            $allowed = false;
         }
 
         $schedule_key = $this->calendar->schedule->getKey();
@@ -550,10 +583,14 @@ class Calendar_User {
             break;
             
         case 'grid':
+            if (ALLOW_CACHE_LITE && Current_User::allow('calendar')) {
+                $this->resetCacheLink('grid', $this->calendar->int_month, $this->calendar->int_year, $this->calendar->schedule->id);
+            }
             $this->content = $this->month_grid();
             break;
 
         case 'list':
+            $this->resetCacheLink('list', $this->calendar->int_month, $this->calendar->int_year, $this->calendar->schedule->id);
             $this->content = $this->month_list();
             break;
 

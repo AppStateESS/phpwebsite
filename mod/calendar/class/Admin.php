@@ -340,6 +340,11 @@ class Calendar_Admin {
         case 'create_event':
             $panel->setCurrentTab('schedules');
             $event = $this->calendar->schedule->loadEvent();
+            if ($this->calendar->current_date) {
+                $event->start_time = $this->calendar->current_date;
+                $event->end_time = $this->calendar->current_date;
+            }
+
             $this->editEvent($event);
             break;
 
@@ -524,6 +529,12 @@ class Calendar_Admin {
             PHPWS_Settings::set('calendar', 'allow_submissions', 1);
         } else {
             PHPWS_Settings::set('calendar', 'allow_submissions', 0);
+        }
+
+        if (isset($_POST['mini_event_link'])) {
+            PHPWS_Settings::set('calendar', 'mini_event_link', 1);
+        } else {
+            PHPWS_Settings::set('calendar', 'mini_event_link', 0);
         }
 
         PHPWS_Settings::set('calendar', 'display_mini', (int)$_POST['display_mini']);
@@ -932,6 +943,11 @@ class Calendar_Admin {
         $form->addCheckbox('allow_submissions', 1);
         $form->setMatch('allow_submissions', PHPWS_Settings::get('calendar', 'allow_submissions'));
         $form->setLabel('allow_submissions', _('Allow public event submissions'));
+
+        $form->addCheckbox('mini_event_link', 1);
+        $form->setMatch('mini_event_link', PHPWS_Settings::get('calendar', 'mini_event_link'));
+        $form->setLabel('mini_event_link', _('Only link days with events in mini calendar'));
+
 
         $start_days = array(0,1);
         $start_days_label[0] = strftime('%A', mktime(0,0,0,1,4,1970));

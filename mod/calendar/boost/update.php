@@ -55,6 +55,30 @@ function calendar_update(&$content, $version)
 + Month link on mini calendar now opens the default view.
 + Public calendars that are restricted are now properly hidden.
 </pre>';
+
+    case version_compare($version, '1.2.2', '<'):
+        $files = array();
+        $files[] = 'templates/admin/forms/setting.tpl';
+        if (PHPWS_Boost::updateFiles($files, 'calendar')) {
+            $content[] = 'Template files updated.';
+        } else {
+            $content[] = 'Failed to copy template files.';
+        }
+
+        $content[] = '<pre>
+1.2.2 Changes
+-------------
++ Fixed mini calendar changing date when viewing other months
++ Creating a new event will now properly use the currently viewed date
++ Added reset cache link to miniadmin
++ Added setting to show day links on mini calendar only if there is an
+  event on that day (Bug #1596779).
++ Added caching to mini calendar
++ Opened caching on grid regardless of log status
++ Events now appear on previous and next months in grid view
+  (Bug #1596780) 
+</pre>';
+
     }
 
     return true;

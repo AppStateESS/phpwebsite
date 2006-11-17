@@ -19,6 +19,7 @@ $settings = array('use_calendar_style' => 1,
                   'info_panel'         => 0,
                   'public_schedule'    => 0,
                   'default_view'       => 'grid',
-                  'allow_submissions'  => 0);
+                  'allow_submissions'  => 0,
+                  'mini_event_link'    => 0);
 
 ?>
