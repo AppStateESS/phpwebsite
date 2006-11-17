@@ -149,6 +149,17 @@ function core_update(&$content, $version) {
   o Added a couple of lines to breaker to prevent breaks inside pre
     tags
 </pre>';
+
+    case version_compare($version, '1.3.2', '<'):
+        $content[] = '<pre>
+1.3.2 Changes
+-------------
++ Database.php
+  o Added code to prevent index creation on sql imports if requested.
++ Setup
+  o Removed RC stuff from welcome.
+  o Changed setup colors.
+</pre>';
     }
     
     return true;
