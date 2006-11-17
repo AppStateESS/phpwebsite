@@ -55,7 +55,7 @@ class PHPWS_Text {
 
     /**
      * This is a modified copy of a function from 'derernst at gmx dot ch' at php.net
-     * I added the mb_convert. His work was based on others. Please see notes under
+     * I added the utf8_convert. His work was based on others. Please see notes under
      * html_entity_decode
      * @ author derernst at gmx dot ch
      * @author Matthew McNaney <mcnaney at gmail dot com>
@@ -72,7 +72,7 @@ class PHPWS_Text {
         }
         $text = preg_replace('~&#x([0-9a-f]+);~ei', 'chr(hexdec("\\1"))', $text);
         $text = preg_replace('~&#([0-9]+);~e', 'chr("\\1")', $text);
-        return mb_convert_encoding($text, 'UTF-8');
+        return utf8_encode($text);
     }
 
 
