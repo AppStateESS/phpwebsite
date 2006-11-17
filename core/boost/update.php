@@ -160,6 +160,20 @@ function core_update(&$content, $version) {
   o Removed RC stuff from welcome.
   o Changed setup colors.
 </pre>';
+
+    case version_compare($version, '1.3.3', '<'):
+        $content[] = '<pre>
+1.3.3 Changes
+-------------
++ Cache.php
+  o Added site hash to key.
++ Text.php
+  o Changed mb_convert_encode to utf8_encode.
++ pear.tgz
+  o Removed some unused and repeated classes
+</pre>';
+
+
     }
     
     return true;
