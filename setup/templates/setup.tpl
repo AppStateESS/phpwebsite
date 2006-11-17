@@ -3,7 +3,7 @@
 <title>{TITLE}</title>
 <style type="text/css">
 body {
- background-color : #A6B8CC;
+ background-color : #ADB583;
  font-size : 100%;
  font-family: Arial, Helvetica, sans-serif;
  color : #0E1662;
@@ -15,10 +15,9 @@ body {
 
 #frame {
   margin-top : 20px;
-  padding : 10px;
   margin-left : 50px;
   margin-right : 50px;
-  background-color : #DCDDE2;
+  background-color : #DFE3BA;
 
 }
 
@@ -32,12 +31,13 @@ body {
  font-size : 150%;
  font-weight : bold;
  text-align : center;
- background-color : #0E1662;
+ background-color : #A03E19;
  padding : 5px;
  color : white;	
 }
 
 #main {
+ padding : 10px;
  margin : 10px;
 }
 
@@ -65,7 +65,17 @@ body {
 #config-form div.form-item {
  margin-top : 5px;
 }
+a:link, a:visited {
+    text-decoration : none;
+    background-color : inherit;
+    color: #A03E19;
+}
 
+a:hover, a:active {
+    text-decoration : underline;
+    background-color : inherit;
+    color: #000;
+}
 
 </style>
 </head>
