@@ -48,6 +48,14 @@ function webpage_update(&$content, $currentVersion)
             $content[] = 'Template file not updated successfully.';
         }
         $content[] = 'Added commenting to page templates to prevent empty titles.';
+
+    case version_compare($currentVersion, '0.2.5', '<'):
+        $content[] = '<pre>
+0.2.5 changes
+-------------
++ Fixed bug that was using the wrong tab when editing the header.
++ Removed old update code and a repeat in this file.
+</pre>';
     }
 
     return TRUE;
