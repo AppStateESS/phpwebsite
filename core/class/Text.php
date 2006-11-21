@@ -364,7 +364,7 @@ class PHPWS_Text {
 
         switch ($type) {
         case 'chars_space':
-            if (preg_match("/^[\w\s]+$/i",$userEntry)) return TRUE;
+            if (preg_match('/^[\w\s]+$/i',$userEntry)) return TRUE;
             else return FALSE;
             break;
 
@@ -373,22 +373,22 @@ class PHPWS_Text {
             break;
 
         case 'url':
-            if (preg_match("/^(http(s){0,1}:\/\/)[\w-]+(\.[\w-]+|\/)/i", $userEntry)) return TRUE;
+            if (preg_match('/^(http(s){0,1}:\/\/)\w([\.\w\-\/&?\+=])+$/i', $userEntry)) return TRUE;
             else return FALSE;
             break;
 
         case 'email':
-            if (preg_match("/^[\w]+(\.[\w]+)*@[\w]+(\.[\w]+)+$/i", $userEntry)) return TRUE;
+            if (preg_match('/^[\w]+([\.\w\-]+)*@[\w\-]+([\.\w\-]+)+$/i', $userEntry)) return TRUE;
             else return FALSE;
             break;
 
         case 'file':
-            if (preg_match("/^[\w\.]+$/i",$userEntry)) return TRUE;
+            if (preg_match('/^[\w\.]+$/i',$userEntry)) return TRUE;
             else return FALSE;
             break;
 
         default:
-            if (preg_match("/^[\w]+$/i",$userEntry)) return TRUE;
+            if (preg_match('/^[\w]+$/i',$userEntry)) return TRUE;
             else return FALSE;
             break;
         }
