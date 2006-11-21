@@ -43,4 +43,3 @@ meta_robots CHAR( 2 ) NOT NULL DEFAULT '11',
 PRIMARY KEY ( key_id )
 );
 
-CREATE INDEX layoutmetatags_idx ON layout_metatags (key_id);
