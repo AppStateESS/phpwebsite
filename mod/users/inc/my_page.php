@@ -161,7 +161,7 @@ class User_Settings {
             PHPWS_Cookie::delete('user_dst');
             return;
         } else {
-            PHPWS_Cookie::write('user_tz', $_POST['timezone']);
+            PHPWS_Cookie::write('user_tz', strip_tags($_POST['timezone']));
         }
 
 
