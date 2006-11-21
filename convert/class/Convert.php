@@ -35,6 +35,11 @@ class Convert {
             }
             break;
 
+        case 'logout':
+            PHPWS_Core::killAllSessions();
+            $this->loginForm();
+            break;
+
         case 'convert':
             $this->convertPackage($_REQUEST['package']);
             break;
@@ -270,7 +275,9 @@ class Convert {
         }
 
         $setupData['MAIN_LINK'] = sprintf('<a href="index.php?command=default">%s</a>', _('Main page'));
-
+        if (Current_User::isLogged()) {
+            $setupData['LOG_OUT'] = sprintf('<a href="index.php?command=logout">%s</a>', _('Log out'));
+        }
         $setupData['TITLE']     = $title;
         $setupData['CONTENT']   = $content;
         echo PHPWS_Template::process($setupData, '', 'convert/templates/convert.tpl', TRUE);

@@ -28,6 +28,10 @@ function convertElements()
     $error = false;
 
     $db = Convert::getSourceDB('mod_phatform_checkbox');
+    if (empty($db)) {
+        return _('Form Generator does not appear to be installed in the source database.');
+    }
+
     $checkbox = $db->export(false);
     $tbl_prefix = Convert::getTblPrefix();
 
