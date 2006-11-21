@@ -32,7 +32,7 @@ key_id INT NOT NULL ,
 style varchar( 40 ) NOT NULL
 );
 
-CREATE INDEX key_id ON layout_styles(key_id);
+CREATE INDEX layoutstyles_idx ON layout_styles(key_id);
 
 CREATE TABLE layout_metatags (
 key_id INT NOT NULL ,
