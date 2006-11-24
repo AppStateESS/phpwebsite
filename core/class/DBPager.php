@@ -415,14 +415,14 @@ class DBPager {
             $this->limit = DBPAGER_DEFAULT_LIMIT;
         }
 
-        if (!empty($this->search) && isset($this->searchColumn)){
+        if (!empty($this->search) && isset($this->searchColumn)) {
             foreach ($this->searchColumn as $column_name) {
-                $this->addWhere($column_name, $this->search, 'REGEXP');
+                $this->addWhere($column_name, '%' . strtolower($this->search) . '%', 'like');
             }
         }
 
         $count = $this->getTotalRows();
-        
+
         if (PEAR::isError($count)) {
             return $count;
         }
