@@ -9,6 +9,7 @@
     margin-top : -15px;
     border : solid 1px black;
     background-color : #d7d7d7;
+    color : inherit;
 }
 
 #menu-site-map ol {
