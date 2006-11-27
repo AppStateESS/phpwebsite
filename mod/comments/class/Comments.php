@@ -172,7 +172,7 @@ class Comments {
                     $content[] = _('Please try again later.');
                     break;
                 } else {
-                    PHPWS_Core::reroute($thread->_key->url);
+                    PHPWS_Core::reroute($thread->getSourceUrl(false, $c_item->id));
                     exit();
                 }
 
@@ -304,7 +304,11 @@ class Comments {
         }
 
         $template = $form->getTemplate();
-        $template['BACK_LINK'] = $thread->getSourceUrl(TRUE);
+        if (isset($c_parent)) {
+            $template['BACK_LINK'] = $thread->getSourceUrl(TRUE, $c_parent->id);
+        } else {
+            $template['BACK_LINK'] = $thread->getSourceUrl(TRUE);
+        }
 
         if ($c_item->_error) {
             $template['ERROR'] = & $c_item->_error;

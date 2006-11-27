@@ -120,12 +120,19 @@ class Comment_Thread {
         $this->source_url = stristr($link, 'index.php?');
     }
 
-    function getSourceUrl($full=FALSE)
+    function getSourceUrl($full=FALSE, $comment_id=0)
     {
+        PHPWS_Core::initCoreClass('DBPager.php');
+        $url = DBPager::getLastView('comments_items');
+
+        if ($comment_id) {
+            $url .= "#cm_$comment_id";
+        }
+
         if ($full==TRUE) {
-            return '<a href="' . $this->_key->url . '">' . _('Go back') . '</a>';
+            return sprintf('<a href="%s">%s</a>', $url, _('Go back'));
         } else {
-            return htmlentities($this->_key->url, ENT_QUOTES);
+            return $url;
         }
     }
 
@@ -211,6 +218,7 @@ class Comment_Thread {
 
 
         $pager = & new DBPager('comments_items', 'Comment_Item');
+        $pager->saveLastView();
         $form = & new PHPWS_Form;
         $form->addHidden('module', 'comments');
         $form->addHidden('user_action', 'change_view');
