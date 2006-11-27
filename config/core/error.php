@@ -125,6 +125,7 @@ $errors[KEY_NOT_FOUND]                = _('Key not found.');
 $errors[KEY_PERM_COLUMN_MISSING]      = _('Edit permission column does not exist.'); 
 $errors[KEY_UNREG_FILE_MISSING]       = _('Could not find key unregister file.');
 $errors[KEY_UNREG_FUNC_MISSING]       = _('Could not find key unregister function.');
+$errors[KEY_RESTRICT_NO_TABLE]        = _('Key can not restrict items on phpws_key table alone.');
 
 // Batch.php 1500-1599
 
