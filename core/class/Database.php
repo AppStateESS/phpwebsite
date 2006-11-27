@@ -9,7 +9,7 @@
 require_once 'DB.php';
 
 // Changing LOG_DB to TRUE will cause ALL DB traffic to get logged
-// This can log can get very large, very fast. DO NOT turn it on
+// This can log can get very large, very fast. DO NOT enable it
 // on a live server. It is for development purposes only.
 define ('LOG_DB', false);
 
@@ -716,7 +716,9 @@ class PHPWS_DB {
 
             $start_main = FALSE;
 
-            $sql[] = $this->_buildGroup($where_list, $ignore_list, TRUE);
+            if (!empty($where_list)) {
+                $sql[] = $this->_buildGroup($where_list, $ignore_list, TRUE);
+            }
             
             if (isset($this->qwhere)) {
                 $sql[] = $this->qwhere['conj'] . ' (' . $this->qwhere['where'] . ')';
