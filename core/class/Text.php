@@ -167,41 +167,6 @@ class PHPWS_Text {
                             $text);
     }
 
-    /**
-     * Cleans up MSWord smart quotes
-     * Gleaned from:
-     *  http://us4.php.net/manual/en/function.htmlentities.php
-     *
-     * @author wwb at 3dwargamer dot net
-     * @modified Matthew McNaney
-     */
-    function CleanupSmartQuotes($text)
-    {
-        
-        $badwordchars=array(
-                            chr(226).chr(128).chr(157),
-                            chr(239).chr(191).chr(189),
-                            chr(145),
-                            chr(146),
-                            chr(147),
-                            chr(148),
-                            chr(150),
-                            chr(151)
-                            );
-
-        $fixedwordchars=array(
-                              '&#34;',
-                              "'",
-                              "'",
-                              "'",
-                              '&#34;',
-                              '&#34;',
-                              '-',
-                              '&mdash;'
-                              );
-        return str_replace($badwordchars,$fixedwordchars,$text);
-    }
-
     function encodeXHTML($text){
         $xhtml['™']    = '&trade;';
         $xhtml['•']    = '&bull;';
@@ -307,8 +272,6 @@ class PHPWS_Text {
 
     function parseInput($text, $encode=TRUE){
         $text = trim($text);
-
-        $text = PHPWS_Text::CleanupSmartQuotes($text);
 
         if ($encode) {
             $text = htmlentities($text, ENT_QUOTES, 'UTF-8');
