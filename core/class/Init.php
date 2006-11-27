@@ -35,7 +35,7 @@ loadBrowserInformation();
 
 /* Load the Core class */
 require_once PHPWS_SOURCE_DIR . 'core/class/Core.php';
-require_once PHPWS_SOURCE_DIR . 'config/core/errorDefines.php';
+require_once PHPWS_SOURCE_DIR . 'core/inc/errorDefines.php';
 
 /***** PHPWS Classes ****/
 
