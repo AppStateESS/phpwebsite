@@ -149,6 +149,7 @@ class Blog {
             $thread->save();
 
             $search = new Search($this->key_id);
+            $search->resetKeywords();
             $search->addKeywords($this->title);
             $search->addKeywords($this->summary);
             $search->addKeywords($this->entry);
