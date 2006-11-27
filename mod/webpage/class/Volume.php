@@ -587,6 +587,25 @@ class Webpage_Volume {
         $template['SUMMARY'] = $this->getSummary();
         return PHPWS_Template::process($template, 'webpage', 'approval_list.tpl');
     }
+
+    function saveSearch()
+    {
+        $this->loadPages();
+        if (empty($this->_pages)) {
+            return true;
+        }
+
+        $search = & new Search($this->key_id);
+        $search->resetKeywords();
+        foreach ($this->_pages as $page) {
+            $content[] = $page->title;
+            $content[] = $page->content;
+        }
+
+        $all_search_content[] = implode(' ', $content);
+        $search->addKeywords($all_search_content);
+        return $search->save();
+    }
 }
 
 ?>

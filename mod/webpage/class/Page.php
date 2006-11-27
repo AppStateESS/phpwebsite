@@ -311,9 +311,7 @@ class Webpage_Page {
         }
 
         if ($this->approved) {
-            $search = & new Search($volume->key_id);
-            $search->addKeywords($this->title . ' ' .$this->content);
-            $sResult = $search->save();
+            $volume->saveSearch();
         } else {
             $vol_version = & new Version('webpage_volume');
             $vol_version->setSource($volume);
