@@ -53,17 +53,7 @@ class Search_Admin {
             break;
 
         case 'delete_keyword':
-            if (!empty($_REQUEST['keyword'])) {
-                $db = & new PHPWS_DB('search_stats');
-                if (is_array($_POST['keyword'])) {
-                    foreach ($_POST['keyword'] as $kw) {
-                        $db->addWhere('keyword', $kw);
-                    }
-                } else {
-                    $db->addWhere('keyword', $_REQUEST['keyword']);
-                }
-                $result = $db->delete();
-            }
+            Search_Admin::deleteKeyword();
             PHPWS_Core::goBack();
             break;
 
@@ -267,7 +257,7 @@ class Search_Admin {
 
         $js_vars['value'] = _('Go');
         $js_vars['select_id'] = $form->getId('command');
-        $js_vars['command_match'] = 'delete_keyword';
+        $js_vars['action_match'] = 'delete_keyword';
         $js_vars['message'] = _('Are you sure you want to delete the checked item(s)?');
         $template['SUBMIT'] = javascript('select_confirm', $js_vars);
         
@@ -317,7 +307,7 @@ class Search_Admin {
 
         $js_vars['value'] = _('Go');
         $js_vars['select_id'] = 'command';
-        $js_vars['command_match'] = 'delete_keyword';
+        $js_vars['action_match'] = 'delete_keyword';
         $js_vars['message'] = _('Are you sure you want to delete the checked item(s)?');
 
         $template['SUBMIT'] = javascript('select_confirm', $js_vars);
@@ -359,6 +349,22 @@ class Search_Admin {
 
         $panel->setModule('search');
         return $panel;
+    }
+
+    function deleteKeyword()
+    {
+        if (!empty($_GET['keyword'])) {
+            $db = & new PHPWS_DB('search_stats');
+            if (is_array($_GET['keyword'])) {
+                foreach ($_GET['keyword'] as $kw) {
+                    $db->addWhere('keyword', htmlentities($kw, ENT_QUOTES, 'UTF-8'), '=', 'or');
+                }
+            } else {
+                $db->addWhere('keyword', $_GET['keyword']);
+            }
+            return $db->delete();
+        }
+        return true;
     }
 
 }
