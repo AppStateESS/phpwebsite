@@ -67,3 +67,5 @@ FCKConfig.ImageUploadDeniedExtensions	= "" ;
 
 FCKConfig.SpellChecker = 'SpellerPages' ;
 FCKConfig.StylesXmlPath		= FCKConfig.EditorPath + 'phpwsstyles.xml' ;
+
+FCKConfig.ProcessHTMLEntities	= false ;
