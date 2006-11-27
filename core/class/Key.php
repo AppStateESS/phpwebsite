@@ -487,6 +487,9 @@ class Key {
         $source_table = $db->tables[0];
 
         if ($source_table == 'phpws_key') {
+            if (!isset($db->tables[1])) {
+                return PHPWS_Error::get(KEY_RESTRICT_NO_TABLE, 'core', 'Key::restrictView');
+            }
             $source_table = $db->tables[1];
             $key_table = TRUE;
         } else {
