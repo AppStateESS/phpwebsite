@@ -131,14 +131,21 @@ class DBPager {
      */
     var $final_template = NULL;
 
-    var $error;
+    var $error = null;
 
-    function DBPager($table, $class=NULL){
+    var $table = null;
+
+    function DBPager($table, $class=NULL) {
         if (empty($table)) {
             $this->error = PHPWS_Error::get(DBPAGER_NO_TABLE, 'core', 'DB_Pager::DBPager');
             return;
         }
 
+        if(isset($_SESSION['DBPager_Last_View'][$table])) {
+            unset($_SESSION['DBPager_Last_View'][$table]);
+        }
+
+        $this->table = &$table;
         $this->db = & new PHPWS_DB($table);
         $this->db->setDistinct(TRUE);
         $this->table_columns = $this->db->getTableColumns();
@@ -905,6 +912,19 @@ class DBPager {
         }
     }
 
+    function saveLastView()
+    {
+        $_SESSION['DBPager_Last_View'][$this->table] = PHPWS_Core::getCurrentUrl();
+    }
+
+    function getLastView($table)
+    {
+        if (isset($_SESSION['DBPager_Last_View'][$table])) {
+            return $_SESSION['DBPager_Last_View'][$table];
+        } else {
+            return null;
+        }
+    }
 }
 
 ?>
