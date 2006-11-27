@@ -253,12 +253,17 @@ class Search_User {
             }
 
             if ($exact_match) {
-                $keyword = "%$keyword %";
+                $s_keyword = "%$keyword %";
             } else {
-                $keyword = "%$keyword%";
+                $s_keyword = "%$keyword%";
             }
 
-            $pager->addWhere('search.keywords', $keyword, 'like', 'or', 1);
+            $pager->addWhere('search.keywords', $s_keyword, 'like', 'or', 1);
+        }
+
+        // No keywords were set. All under minimum word length
+        if (empty($s_keyword)) {
+            return null;
         }
 
         $pager->setEmptyMessage(_('Nothing found'));
@@ -272,7 +277,6 @@ class Search_User {
         }
 
         $result = $pager->get();
-
         Search_Stats::record($words, $pager->total_rows, $exact_match);
 
         return $result;

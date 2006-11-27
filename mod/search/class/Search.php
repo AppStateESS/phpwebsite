@@ -54,7 +54,12 @@ class Search {
         }
     }
 
-    function addKeywords($keywords, $parse_keywords=TRUE)
+    function resetKeywords()
+    {
+        $this->keywords = null;
+    }
+
+    function addKeywords($keywords, $parse_keywords=true)
     {
         if ( !is_array($keywords) && !is_string($keywords) ) {
             return FALSE;
@@ -67,13 +72,17 @@ class Search {
         if ($parse_keywords) {
             $parse_text = $this->parseKeywords($keywords);
         } else {
-            $parse_text = $this->filterWords($keywords);
+            $parse_text = $this->filterWords($keywords, false);
         }            
 
+        if (empty($parse_text)) {
+            return;
+        }
         // removes extra spaces
         $parse_text = preg_replace('/\s{2,}/', ' ', $parse_text);
 
         $keyword_list = explode(' ', trim($parse_text));
+
         if (empty($keyword_list)) {
             return FALSE;
         }
@@ -88,33 +97,44 @@ class Search {
         $this->keywords = array_unique($this->keywords);
     }
 
-    function filterWords($text)
+    function filterWords($text, $encode=true)
     {
         // can't use strip_tags because we need the spaces
         $text = preg_replace('/(<|&lt;).*(>|&gt;)/sUi', ' ', $text);
         $text = str_replace(' - ', ' ', $text);
+        if ($encode) {
+            $text = htmlentities($text, ENT_QUOTES, 'UTF-8');
+        }
         $text = strtolower($text);
-        $text = preg_replace('/[^\w\-\s]/', '', $text);
+        $text = preg_replace('/[^\w\-\s;&]/', '', $text);
         $text = preg_replace('/(-{2,}|\/)/U', ' ', $text);
-
         return $text;
     }
 
+    /**
+     * Filters text and clears common words from the inputed text
+     */
     function parseKeywords($text)
     {
         if (empty($text)) {
             return;
         }
 
-        $text = $this->filterWords($text);
+        $text = $this->filterWords($text, false);
 
-        // temporary. this will probably be from the database
-        $file_name = 'wordlist.en.txt';
+        $file_name = translateFile('wordlist.txt');
 
         // Removes trademark/registered, contractions, and website suffix
         $text = preg_replace('/\d|(n\'t|\'([sd]|ll|re|ve))|\.(com|edu|net|org)|\(tm\)|\(r\)/', '', $text);
 
         $config_file = PHPWS_Core::getConfigFile('search', $file_name);
+        if (!$config_file) {
+            $config_file = PHPWS_Core::getConfigFile('search', 'wordlist.txt');
+            if (!$config_file) {
+                return $text;
+            }
+        }
+
         $common_words = file($config_file);
         foreach ($common_words as $word) {
             $word = trim($word);
