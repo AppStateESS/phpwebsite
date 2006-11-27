@@ -35,3 +35,16 @@ $search->save();
 The result of the save function will either be true or an error
 object.
 
+If you are updating an item make sure to reset the keywords before
+adding any new ones.
+
+$search->resetKeywords();
+$search->addKeywords('dog');
+$search->addKeywords('cat');
+
+Search will pull your current information when you initialize it. If
+you don't reset your keywords, you will be adding on to the previous
+list. If you removed a search word from your content it will be
+included with the others. So if you had 'dinosaur' from a previous
+save, removed it, and didn't reset, then that item will still appear
+when 'dinosaur' is searched for.

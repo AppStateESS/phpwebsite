@@ -1,3 +1,97 @@
+November 27
+-----------
+Core
++ DBPager - Added saveLastView and getLastView functions. Allows the
+            dev to record where the user was last if they may leave
+            the page and need to return where they left. 
++ Text.php - Removed function that cleaned up word quotes. (Bug #1602046)
++ Updated files : moved conf/errorDefines.php to new inc/ directory.
+  config/error.php - added new key error message
+  javascript/check_all/head.js - check all was not functioning
+  correctly
++ Documentation - added note about resetKeywords in Search module.
+
++ Database.php - added an error check on the where creation
++ Init.php - errorDefines.php now pulled from the source inc directory
++ Key.php - Added an error check to restrictView function
+
+Search
++ Moved deletion of keyword to its own function
++ Fixed javascript confirmation on item deletion
++ Deletion of keyword is now htmlentitified to catch foreign
+  characters
++ Added resetKeywords function
++ FilterWords now has a htmlentities parameter and allows foreign
+  characters (bug #1602039). Thanks WeBToR
++ Config file is no longer hardcoded. Now picks file based on language.
++ If all search words are undersized, search will not throw an
+  error anymore.
+
+Comments
++ Updated templates templates/view.tpl, templates/alt_view.tpl
++ Added anchor tag to templates and code.
++ Changed the getSourceUrl function in the Thread to use the DBPager's
+  new saveLastView and getLastView functions.
++ Update dependent on new core.
+
+Blog
++ Making call to clearKeywords in search.
++ Depends on latest search version
+
+Web Page
++ Moved search save to Volume class
++ Searches now reset search key words to prevent lost searches.
++ Depends on new search
+
+Menu
++ Added a color : inherit to menu's style sheet to conform with css
+  standards. 
+
+November 24
+-----------
+Core
++ DBPager - Replaced regexp expression with like expression. regexp
+            incompatible with postgresql. 
+
+November 21
+-----------
+General
+-------
+Removed broken style tag from various about.html files (bug
+#1599136).
+
+Core
++ Text.php
+  o Changed isValidInput to allow emails with slashes (Bug #1600198)
+  o Altered isValidInput url check slightly
+  o changed double quotes to singles in isValidInput
++ Convert
+  o Added logout link.
+  o Added error check to phatform conversion.
++ Cookie.php
+  o Added error check to unset function (bug #1599140).
+
+
+Layout
++ Fixed index names, removed unneccessary index call
+
+Phatform
++ Small clarification to readme.txt
++ Fixed typo in FormManager
+
+phpwebsite 1.0.0 stable release below
+-------------------------------------
+
+November 17
+-----------
+Core - 1.3.3
++ Cache.php
+  o Added site hash to key.
++ Text.php
+  o Changed mb_convert_encode to utf8_encode.
++ pear.tgz
+  o Removed some unused and repeated classes
+
 CHANGELOG for phpWebSite version 1.0.0 stable
 
 November 17
