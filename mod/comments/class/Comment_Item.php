@@ -288,6 +288,8 @@ class Comment_Item {
             $template['EDIT_AUTHOR'] = NULL;
         }
 
+        $template['ANCHOR'] = sprintf('<a name="cm_%s"></a>', $this->id);
+
 	if (Current_User::allow('comments')) {
 	    $template['IP_ADDRESS'] = $this->getIp();
 	}

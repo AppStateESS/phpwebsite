@@ -6,6 +6,7 @@
     </div>
     <div class="padded">{EMPTY_MESSAGE}</div>
     <!-- BEGIN listrows -->
+    {ANCHOR}
     <div class="box">
         <div class="box-title">
             <h2 class="subject">{SUBJECT_LABEL}: {SUBJECT}</h2>

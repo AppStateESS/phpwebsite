@@ -6,6 +6,7 @@
     </div>
     <div class="padded">{EMPTY_MESSAGE}</div>
     <!-- BEGIN listrows -->
+    {ANCHOR}
     <table class="comment-table">
         <tr>
             <td colspan="2" class="bgcolor3 smaller padded" >{RELATIVE_CREATE}
