@@ -8,9 +8,8 @@
 var checked_status = false;
 
 function CheckAll(button, shortcut) {
-    var myregexp = new RegExp('^' + shortcut);
     for (i=0; checkbox = button.form.elements[i]; i++) {
-        if (myregexp.test(checkbox.name) && checkbox.type=='checkbox') {
+        if (checkbox.type=='checkbox' && shortcut.match(checkbox)) {
             if (checked_status) {
                 checkbox.checked = '';
             } else {
@@ -18,9 +17,9 @@ function CheckAll(button, shortcut) {
             }
         }
     }
+
     if (checked_status) {
         button.value = '{check_label}';
-
     } else {
         button.value = '{uncheck_label}';
     }
