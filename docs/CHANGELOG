@@ -1,3 +1,30 @@
+November 28
+-----------
+
+Core
++ General
+  o Moved core config file to new conf directory
+  o Tarred pear directory so would uncompress in lib directory
+
++ Setup
+  o Allows you to install phpWebSite into an existing database
+  o Set default editor to FCK
+
++ Module - can now initialize core as a module
+
++ Core - removed loadAsMod function. Ability transfered to Module
+         class. 
+
+Calendar
++ Changed default public calendar to -1 to prevent error messages.
+
+
+Boost
++ Removed the old loadAsMod functions for core.
++ Core updates config, image, template, and javascript files.
+
+
+
 November 27
 -----------
 Core
