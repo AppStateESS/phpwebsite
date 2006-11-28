@@ -180,7 +180,6 @@ class PHPWS_Calendar {
 
             
         case 'brief':
-            //            $db->setTestMode();
             $db->addColumn('id');
             $db->addColumn('title');
             $db->setIndexBy('id');
