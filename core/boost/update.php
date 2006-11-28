@@ -24,9 +24,6 @@ function core_update(&$content, $version) {
         }
         $content[] = '- Created core_version table.';
 
-    case version_compare($version, '1.0.3', '<'):
-        $content[] = 'Please see changes_1_0_3.txt in the core\'s boost directory for a listing of changes.';
-
     case version_compare($version, '1.0.5', '<'):
         $content[] = '- Fixed core version on installation.';
         $content[] = '- Changed Core.php and Module.php to track core\'s version better. Helps Boost with dependencies';
@@ -173,7 +170,73 @@ function core_update(&$content, $version) {
   o Removed some unused and repeated classes
 </pre>';
 
+    case version_compare($version, '1.3.4', '<'):
+        $files = array();
+        $files[] = 'conf/error.php';
+        $files[] = 'javascript/check_all/head.js';
 
+        $result = PHPWS_Boost::updateFiles($files, 'core');
+
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        if ($result) {
+            $content[] = 'Core file upgrade successful.';
+        } else {
+            $content[] = 'Failed to upgrade core files.';
+            return false;
+        }
+        $content[] = '<pre>
+1.3.4 Changes
+-------------
++ General
+  o Moved core config file to new conf directory
+  o Tarred pear directory so would uncompress in lib directory
+
++ Setup
+  o Allows you to install phpWebSite into an existing database
+  o Set default editor to FCK
+
++ Module.php
+  o Can now initialize core as a module
+
++ Core.php
+  o Removed loadAsMod function. Ability transfered to Module class.
+
++ DBPager
+  o Added saveLastView and getLastView functions. Allows the dev to
+    record where the user was last if they may leave the page and need
+    to return where they left.  
+  o Replaced regexp expression with like expression. regexp
+    incompatible with postgresql. 
+
++ Text.php
+  o Removed function that cleaned up word quotes. (Bug #1602046)
+  o Changed isValidInput to allow emails with slashes (Bug #1600198)
+  o Altered isValidInput url check slightly
+  o changed double quotes to singles in isValidInput
+
++ Updated files : 
+  o moved conf/errorDefines.php to new inc/ directory.
+  o config/conf/error.php - added new key error message
+  o javascript/check_all/head.js - check all was not functioning
+                                   correctly 
+
++ Documentation - added note about resetKeywords in Search module.
+
++ Database.php - added an error check on the where creation
++ Init.php - errorDefines.php now pulled from the source inc directory
++ Key.php - Added an error check to restrictView function
+
++ Convert
+  o Added logout link.
+  o Added error check to phatform conversion.
+
++ Cookie.php
+  o Added error check to unset function (bug #1599140).
+</pre>';
+         
     }
     
     return true;
