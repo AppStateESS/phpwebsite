@@ -65,7 +65,7 @@ switch ($_REQUEST['action']){
  case 'update_core':
      $content[] = PHPWS_Text::backLink(_('Return to Boost')) . '<br />';
      PHPWS_Core::initModClass('boost', 'Action.php');
-     $content[] = Boost_Action::updateCore();
+     $content[] = Boost_Action::updateModule('core');
      break;
 
  case 'update':
