@@ -17,7 +17,7 @@ $settings = array('use_calendar_style' => 1,
                   'default_hour_format'=> 'g',
                   'display_mini'       => 2,
                   'info_panel'         => 0,
-                  'public_schedule'    => 0,
+                  'public_schedule'    => -1,
                   'default_view'       => 'grid',
                   'allow_submissions'  => 0,
                   'mini_event_link'    => 0);
