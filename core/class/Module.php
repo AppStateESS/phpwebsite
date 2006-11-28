@@ -121,14 +121,14 @@ class PHPWS_Module {
                 $db->addColumn('version');
                 $version = $db->select('one');
             }
-            
+
+            $this->_dependency = (bool)$dependency;
             $this->setVersion($version);
             $this->setRegister(FALSE);
             $this->setImportSQL(TRUE);
             $this->setProperName('Core');
             $this->setVersionHttp($version_http);
         } else {
-
             $this->setDirectory(PHPWS_SOURCE_DIR . "mod/$title/");
             if ($file == TRUE) {
                 $result = PHPWS_Module::initByFile();
@@ -424,11 +424,7 @@ class PHPWS_Module {
 
         foreach ($dep_list['MODULE'] as $stats) {
             extract($stats);
-            if ($TITLE == 'core') {
-                $module = PHPWS_Core::loadAsMod(false);
-            } else {
-                $module = & new PHPWS_Module($TITLE, FALSE);
-            }
+            $module = & new PHPWS_Module($TITLE, FALSE);
 
             if (!$module->isInstalled()) {
                 return FALSE;
