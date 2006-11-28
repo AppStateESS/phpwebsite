@@ -998,13 +998,17 @@ class PHPWS_Boost {
                 break;
             }
 
-            if (!PHPWS_Boost::checkLocalRoot($local_root)) {
+            if (!isset($local_root) || !PHPWS_Boost::checkLocalRoot($local_root)) {
                 return false;
             }
 
 
             if ($module == 'core') {
-                $source_file = sprintf('%score/%s', PHPWS_SOURCE_DIR, $filename);
+                if ($source_root == 'javascript') {
+                    $source_file = sprintf('%s%s', PHPWS_SOURCE_DIR, $filename);
+                } else {
+                    $source_file = sprintf('%score/%s', PHPWS_SOURCE_DIR, $filename);
+                }
             } else {
                 $source_file = sprintf('%smod/%s/%s', PHPWS_SOURCE_DIR, $module, $filename);
             }
