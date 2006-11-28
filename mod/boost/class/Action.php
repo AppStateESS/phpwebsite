@@ -10,17 +10,8 @@ class Boost_Action {
     function checkupdate($mod_title)
     {
         PHPWS_Core::initCoreClass('Module.php');
-        if ($mod_title == 'core') {
-            $module = & new PHPWS_Module;
-            $core_info = PHPWS_Core::getVersionInfo();
-            $module->title = 'core';
-            $module->proper_name  = $core_info['proper_name'];
-            $module->version      = $core_info['version'];
-            $module->version_http = $core_info['version_http'];
-        } else {
-            $module = & new PHPWS_Module($mod_title);
-        }
-
+        $module = & new PHPWS_Module($mod_title);
+    
         $file = $module->getVersionHttp();
         if (empty($file)) {
             return _('Update check file not found.');
@@ -54,11 +45,7 @@ class Boost_Action {
                 $template['DEP_STATUS_LABEL'] = _('Status');
 
                 foreach ($version_info['DEPENDENCY'][0]['MODULE'] as $dep_mod) {
-                    if ($dep_mod['TITLE'] == 'core') {
-                        $check_mod = PHPWS_Core::loadAsMod(false);
-                    } else {
-                        $check_mod = & new PHPWS_Module($dep_mod['TITLE'], false);
-                    }
+                    $check_mod = & new PHPWS_Module($dep_mod['TITLE'], false);
 
                     if ($check_mod->_error) {
                         $status = _('Not installed');
@@ -147,6 +134,7 @@ class Boost_Action {
         PHPWS_Core::initModClass('boost', 'Boost.php');
         $boost = new PHPWS_Boost;
         $boost->loadModules(array($module_title), FALSE);
+
         $content = array();
         if ($boost->update($content)) {
             $boost->updateBranches($content);
@@ -192,11 +180,7 @@ class Boost_Action {
             $pass = TRUE;
             $tpl = array();
 
-            if ($module['TITLE'] == 'core') {
-                $mod_obj = PHPWS_Core::loadAsMod(false);
-            } else {
-                $mod_obj = & new PHPWS_Module($module['TITLE'], FALSE);
-            }
+            $mod_obj = & new PHPWS_Module($module['TITLE'], FALSE);
 
             $tpl['MODULE_NAME']    = $module['PROPERNAME'];
             $tpl['VERSION_NEEDED'] = $module['VERSION'];

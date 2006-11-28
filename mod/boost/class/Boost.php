@@ -31,10 +31,10 @@ class PHPWS_Boost {
         $this->modules[$module->title] = $module;
     }
 
-    function loadModules($modules, $file=TRUE)
+    function loadModules($modules, $file=true)
     {
-        foreach ($modules as $title){
-            $mod = & new PHPWS_Module(trim($title), $file);
+        foreach ($modules as $title) {
+            $mod = new PHPWS_Module(trim($title), $file);
             $this->addModule($mod);
             $this->setStatus($title, BOOST_NEW);
         }
@@ -45,15 +45,15 @@ class PHPWS_Boost {
         if (in_array(BOOST_NEW, $this->status)
             || in_array(BOOST_START, $this->status)
             || in_array(BOOST_PENDING, $this->status)) {
-            return FALSE;
+            return false;
         }
 
-        return TRUE;
+        return true;
     }
 
     function getRegisteredModules($module)
     {
-        $db = & new PHPWS_DB('modules');
+        $db = new PHPWS_DB('modules');
         $db->addWhere('registered.module', $module->title);
         $db->addWhere('title', 'registered.registered');
         return $db->getObjects('PHPWS_Module');
@@ -61,7 +61,7 @@ class PHPWS_Boost {
 
     function getInstalledModules()
     {
-        $db = & new PHPWS_DB('modules');
+        $db = new PHPWS_DB('modules');
         $db->addColumn('title');
         $modules = $db->getObjects('PHPWS_Module');
         return $modules;
@@ -97,9 +97,9 @@ class PHPWS_Boost {
         return isset($this->modules);
     }
 
-    function install($inBoost=TRUE, $inBranch=FALSE, $home_dir=NULL)
+    function install($inBoost=true, $inBranch=false, $home_dir=NULL)
     {
-        $continue = FALSE;
+        $continue = false;
         $content = array();
         if (!$this->isModules()) {
             return PHPWS_Error::get(BOOST_NO_MODULES_SET, 'boost', 'install');
@@ -122,7 +122,7 @@ class PHPWS_Boost {
 
             if ($this->getStatus($title) == BOOST_START && $mod->isImportSQL()) {
                 $content[] = _('Importing SQL install file.');
-                $db = & new PHPWS_DB;
+                $db = new PHPWS_DB;
                 $result = $db->importFile($mod->getDirectory() . 'boost/install.sql');
 
                 if (PEAR::isError($result)) {
@@ -138,23 +138,23 @@ class PHPWS_Boost {
 
             $result = $this->onInstall($mod, $content);
 
-            if ($result === TRUE) {
+            if ($result === true) {
                 $this->setStatus($title, BOOST_DONE);
                 $this->createDirectories($mod, $content, $home_dir);
                 $this->registerModule($mod, $content);
-                $continue = TRUE;
+                $continue = true;
                 break;
             } elseif ($result === -1) {
                 // No installation file (install.php) was found.
                 $this->setStatus($title, BOOST_DONE);
                 $this->createDirectories($mod, $content, $home_dir);
                 $this->registerModule($mod, $content);
-                $continue = TRUE;
+                $continue = true;
                 break;
             }
-            elseif ($result === FALSE) {
+            elseif ($result === false) {
                 $this->setStatus($title, BOOST_PENDING);
-                $continue = FALSE;
+                $continue = false;
                 break;
             }
             elseif (PEAR::isError($result)) {
@@ -162,7 +162,7 @@ class PHPWS_Boost {
                 $content[] = '<b>' . $result->getMessage() .'</b>';
                 $content[] = '<br />';
                 PHPWS_Error::log($result);
-                $continue = TRUE;
+                $continue = true;
                 break;
             }
 
@@ -175,7 +175,7 @@ class PHPWS_Boost {
                 $branchvars['command'] = 'core_module_installation';
                 $branchvars['branch_id'] = $_REQUEST['branch_id'];
                 $content[] = PHPWS_Text::secureLink(_('Continue installation...'), 'branch', $branchvars);
-            } elseif ($inBoost == FALSE) {
+            } elseif ($inBoost == false) {
                 $content[] = '<a href="index.php?step=3">' . _('Continue installation...') . '</a>';
             } else {
                 $content[] = _('Installation complete!');
@@ -208,7 +208,7 @@ class PHPWS_Boost {
             return $installFunction($installCnt);
         }
         else {
-            return TRUE;
+            return true;
         }
     }
 
@@ -232,7 +232,7 @@ class PHPWS_Boost {
             $updateCnt[] = _('Processing update file.');
             return $updateFunction($updateCnt, $currentVersion);
         } else {
-            return TRUE;
+            return true;
         }
     }
 
@@ -281,7 +281,7 @@ class PHPWS_Boost {
 
             $result = (bool)$this->onUninstall($mod, $content);
 
-            if ($result === TRUE) {
+            if ($result === true) {
                 $this->setStatus($title, BOOST_DONE);
                 $this->removeDirectories($mod, $content);
                 $this->unregisterModule($mod, $content);
@@ -298,7 +298,7 @@ class PHPWS_Boost {
                 $this->removeDependencies($mod);
                 $this->removeKeys($mod);
             }
-            elseif ($result === FALSE) {
+            elseif ($result === false) {
                 $this->setStatus($title, BOOST_PENDING);
                 break;
             }
@@ -315,14 +315,14 @@ class PHPWS_Boost {
 
     function removeDependencies($mod)
     {
-        $db = & new PHPWS_DB('dependencies');
+        $db = new PHPWS_DB('dependencies');
         $db->addWhere('source_mod', $mod->title);
         $db->delete();
     }
 
     function removeKeys($mod)
     {
-        $db = & new PHPWS_DB('phpws_key_edit');
+        $db = new PHPWS_DB('phpws_key_edit');
         $db->addWhere('key_id', 'phpws_key.id');
         $db->addWhere('phpws_key.module', $mod->title);
         $db->delete();
@@ -359,7 +359,7 @@ class PHPWS_Boost {
             $this->addLog($mod->title, 
                           sprintf(_('Uninstall function "%s" was not found.'), 
                                   $uninstallFunction));
-            return TRUE;
+            return true;
         }
     }
 
@@ -377,10 +377,10 @@ class PHPWS_Boost {
                     continue;
                 }
             }
-            $updateMod = & new PHPWS_Module($mod->title);
+            $updateMod = new PHPWS_Module($mod->title);
             if (version_compare($updateMod->getVersion(), $mod->getVersion(), '=')) {
                 $content[] =  _('Module does not require updating.');
-                $result = FALSE;
+                $result = false;
                 continue;
             }
 
@@ -398,18 +398,18 @@ class PHPWS_Boost {
             $content[] = _('Updating') . ' - ' . $mod->getProperName();
             $result = $this->onUpdate($mod, $content);
 
-            if ($result === TRUE) {
+            if ($result === true) {
                 $this->setStatus($title, BOOST_DONE);
-                $newMod = & new PHPWS_Module($mod->title);
+                $newMod = new PHPWS_Module($mod->title);
                 $newMod->save();
                 break;
             }
             elseif ($result === -1) {
-                $newMod = & new PHPWS_Module($mod->title);
+                $newMod = new PHPWS_Module($mod->title);
                 $newMod->save();
                 $this->setStatus($title, BOOST_DONE);
             }
-            elseif ($result === FALSE) {
+            elseif ($result === false) {
                 $this->setStatus($title, BOOST_PENDING);
                 break;
             }
@@ -421,7 +421,7 @@ class PHPWS_Boost {
             }
         }
 
-        if ( isset($result) && ($result === TRUE || $result == -1) ) {
+        if ( isset($result) && ($result === true || $result == -1) ) {
             $content[] = _('Update complete!');
             return true;
         } else {
@@ -431,7 +431,7 @@ class PHPWS_Boost {
     }
 
 
-    function createDirectories($mod, &$content, $homeDir = NULL, $overwrite=FALSE)
+    function createDirectories($mod, &$content, $homeDir = NULL, $overwrite=false)
     {
         PHPWS_Core::initCoreClass('File.php');
         if (!isset($homeDir)) {
@@ -441,7 +441,7 @@ class PHPWS_Boost {
         $configSource = $mod->getDirectory() . 'conf/';
         if (is_dir($configSource)) {
             $configDest   = $homeDir . '/config/' . $mod->title . '/';
-            if ($overwrite == TRUE || !is_dir($configDest)) {
+            if ($overwrite == true || !is_dir($configDest)) {
                 $content[] = _('Copying configuration files.');
                 $this->addLog($mod->title, sprintf(_("Copying directory %1\$s to %2\$s"), $configSource, $configDest));
                 PHPWS_File::recursiveFileCopy($configSource, $configDest);
@@ -451,7 +451,7 @@ class PHPWS_Boost {
         $javascriptSource = $mod->getDirectory() . 'javascript/';
         if (is_dir($javascriptSource)) {
             $javascriptDest   = $homeDir . '/javascript/modules/' . $mod->title . '/';
-            if ($overwrite == TRUE || !is_dir($javascriptDest)) {
+            if ($overwrite == true || !is_dir($javascriptDest)) {
                 $content[] = _('Copying javascript directories.');
                 $this->addLog($mod->title, sprintf(_("Copying directory %1\$s to %2\$s"), $javascriptSource, $javascriptDest));
                 PHPWS_File::recursiveFileCopy($javascriptSource, $javascriptDest);
@@ -461,7 +461,7 @@ class PHPWS_Boost {
         $templateSource = $mod->getDirectory() . 'templates/';
         if (is_dir($templateSource)) {
             $templateDest   = $homeDir . '/templates/' . $mod->title . '/';
-            if ($overwrite == TRUE || !is_dir($templateDest)) {
+            if ($overwrite == true || !is_dir($templateDest)) {
                 $content[] = _('Copying template files.');
                 $this->addLog($mod->title, sprintf(_("Copying directory %1\$s to %2\$s"), $templateSource, $templateDest));
                 PHPWS_File::recursiveFileCopy($templateSource, $templateDest);
@@ -566,8 +566,8 @@ class PHPWS_Boost {
 
     function registerMyModule($mod_to_register, $mod_to_register_to, &$content)
     {
-        $register_mod = & new PHPWS_Module($mod_to_register);
-        $register_to_mod = & new PHPWS_Module($mod_to_register_to);
+        $register_mod = new PHPWS_Module($mod_to_register);
+        $register_to_mod = new PHPWS_Module($mod_to_register_to);
         $result = PHPWS_Boost::unregisterModToMod($register_to_mod, $register_mod, $content);
         $result = PHPWS_Boost::registerModToMod($register_to_mod, $register_mod, $content);
         return $result;
@@ -583,7 +583,7 @@ class PHPWS_Boost {
         $db->delete();
         $db->resetWhere();
         if (!$module->getProperName())
-            $module->setProperName($module->getProperName(TRUE));
+            $module->setProperName($module->getProperName(true));
 
         $result = $module->save();
 
@@ -655,21 +655,21 @@ class PHPWS_Boost {
 
     function getRegMods()
     {
-        $db = & new PHPWS_DB('modules');
+        $db = new PHPWS_DB('modules');
         $db->addWhere('register', 1);
         return $db->getObjects('PHPWS_Module');
     }
 
     function getUnregMods()
     {
-        $db = & new PHPWS_DB('modules');
+        $db = new PHPWS_DB('modules');
         $db->addWhere('unregister', 1);
         return $db->getObjects('PHPWS_Module');
     }
 
     function setRegistered($module, $registered)
     {
-        $db = & new PHPWS_DB('registered');
+        $db = new PHPWS_DB('registered');
         $db->addValue('registered', $registered);
         $db->addValue('module', $module);
         $result = $db->insert();
@@ -682,7 +682,7 @@ class PHPWS_Boost {
 
     function unsetRegistered($module, $registered)
     {
-        $db = & new PHPWS_DB('registered');
+        $db = new PHPWS_DB('registered');
         $db->addWhere('registered', $registered);
         $db->addWhere('module', $module);
         $result = $db->delete();
@@ -697,7 +697,7 @@ class PHPWS_Boost {
 
     function isRegistered($module, $registered)
     {
-        $db = & new PHPWS_DB('registered');
+        $db = new PHPWS_DB('registered');
         $db->addWhere('registered', $registered);
         $db->addWhere('module', $module);
         $result = $db->select('one');
@@ -738,11 +738,11 @@ class PHPWS_Boost {
             $content[] = sprintf(_('An error occurred while registering the %s module.'), $register_mod->getProperName());
             $content[] = PHPWS_Boost::addLog($register_mod->title, $result->getMessage());
             $content[] = PHPWS_Error::log($result);
-        } elseif ($result == TRUE) {
+        } elseif ($result == true) {
             PHPWS_Boost::setRegistered($register_to_mod->title, $register_mod->title);
-            $content[] = sprintf(_("%1\$s successfully registered to %2\$s."), $register_mod->getProperName(TRUE), $register_to_mod->getProperName(TRUE));
+            $content[] = sprintf(_("%1\$s successfully registered to %2\$s."), $register_mod->getProperName(true), $register_to_mod->getProperName(true));
         }
-        return TRUE;
+        return true;
     }
 
     function unregisterModToMod($unregister_from_mod, $register_mod, &$content)
@@ -767,9 +767,9 @@ class PHPWS_Boost {
             $content[] = sprintf(_('An error occurred while unregistering the %s module.'),$register_mod->getProperName());
             PHPWS_Error::log($result);
             PHPWS_Boost::addLog($register_mod->title, $result->getMessage());
-        } elseif ($result == TRUE) {
+        } elseif ($result == true) {
             PHPWS_Boost::unsetRegistered($unregister_from_mod->title, $register_mod->title);
-            $content[] = sprintf(_("%1\$s successfully unregistered from %2\$s."), $register_mod->getProperName(TRUE), $unregister_from_mod->getProperName(TRUE));
+            $content[] = sprintf(_("%1\$s successfully unregistered from %2\$s."), $register_mod->getProperName(true), $unregister_from_mod->getProperName(true));
         }
     }
 
@@ -842,7 +842,7 @@ class PHPWS_Boost {
         if (PEAR::isError($modules)) {
             return $modules;
         } elseif (empty($modules) || !is_array($modules)) {
-            return TRUE;
+            return true;
         }
 
         foreach ($modules as $register_mod){
@@ -853,7 +853,7 @@ class PHPWS_Boost {
 
     function unregisterAll($module)
     {
-        $db = & new PHPWS_DB('registered');
+        $db = new PHPWS_DB('registered');
         $db->addWhere('registered', $module->title);
         $db->addWhere('module', $module->title, '=', 'or');
         return $db->delete();
@@ -868,7 +868,7 @@ class PHPWS_Boost {
         }
 
         $sql = File::readAll($file);
-        $db = & new PHPWS_DB;
+        $db = new PHPWS_DB;
         $result = $db->import($sql);
         return $result;
     }
@@ -882,7 +882,7 @@ class PHPWS_Boost {
     function aboutView($module)
     {
         PHPWS_Core::initCoreClass('Module.php');
-        $mod = & new PHPWS_Module($module);
+        $mod = new PHPWS_Module($module);
         $file = $mod->getDirectory() . 'boost/about.html';
 
         if (is_file($file)) {
@@ -900,7 +900,7 @@ class PHPWS_Boost {
      */
     function checkDirectories(&$content)
     {
-        $errorDir = TRUE;
+        $errorDir = true;
         $directory[] = 'config/';
         $directory[] = 'images/';
         $directory[] = 'templates/';
@@ -919,7 +919,7 @@ class PHPWS_Boost {
         if (isset($dirExist)) {
             $content[] = _('The following directories need to be created:');
             $content[] = '<pre>' . implode("\n", $dirExist) . '</pre>';
-            $errorDir = FALSE;
+            $errorDir = false;
         }
 
         if (isset($writableDir)) {
@@ -927,14 +927,14 @@ class PHPWS_Boost {
             $content[] = '<pre>' . implode(chr(10), $writableDir) . '</pre>';
             $content[] = _('You will need to change the permissions.');
             $content[] = '<a href="setup/help/permissions.' . DEFAULT_LANGUAGE . '.txt">' . _('Permission Help') . '</a><br />';
-            $errorDir = FALSE;
+            $errorDir = false;
         }
 
         $files = array('boost.log', 'error.log', 'security.log');
         foreach ($files as $log_name) {
             if (is_file('logs/' . $log_name) && (!is_readable('logs/' . $log_name) || !is_writable('logs/' . $log_name))) {
                 $content[] = sprintf(_('Your logs/%s file must be readable and writable.'), $log_name);
-                $errorDir = FALSE;
+                $errorDir = false;
             }
         }
 
@@ -957,7 +957,7 @@ class PHPWS_Boost {
     function updateFiles($file_array, $module)
     {
         if (!is_array($file_array)) {
-            return FALSE;
+            return false;
         }
 
         $home_dir = PHPWS_Boost::getHomeDir();
@@ -978,11 +978,19 @@ class PHPWS_Boost {
                 break;
 
             case 'img':
-                $local_root = sprintf('%simages/mod/%s/', $home_dir, $module);
+                if ($module == 'core') {
+                    $local_root = sprintf('%simages/core/', $home_dir);
+                } else {
+                    $local_root = sprintf('%simages/mod/%s/', $home_dir, $module);
+                }
                 break;
 
             case 'javascript':
-                $local_root = sprintf('%sjavascript/modules/%s/', $home_dir, $module);
+                if ($module == 'core') {
+                    $local_root = sprintf('%sjavascript/', $home_dir);
+                } else {
+                    $local_root = sprintf('%sjavascript/modules/%s/', $home_dir, $module);
+                }
                 break;
 
             default:
@@ -994,7 +1002,14 @@ class PHPWS_Boost {
                 return false;
             }
 
-            $source_file = sprintf('%smod/%s/%s', PHPWS_SOURCE_DIR, $module, $filename);
+
+            if ($module == 'core') {
+                $source_file = sprintf('%score/%s', PHPWS_SOURCE_DIR, $filename);
+            } else {
+                $source_file = sprintf('%smod/%s/%s', PHPWS_SOURCE_DIR, $module, $filename);
+            }
+
+
             $local_file = sprintf('%s%s', $local_root, $source_filename);
 
             if (!is_file($source_file)) {
@@ -1015,7 +1030,8 @@ class PHPWS_Boost {
                 return PHPWS_Error::get(BOOST_FAILED_LOCAL_COPY, 'boost', 'PHPWS_Boost::updateFiles', $local_file);
             }
         }
-        return TRUE;
+        
+        return true;
     }
 
     function checkLocalRoot($local_root)
