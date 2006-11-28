@@ -54,6 +54,14 @@ function boost_update(&$content, $currentVersion)
     case version_compare($currentVersion, '1.9.7', '<'):
         $content[] = 'Fixed - Check link will appear regardless of directory permission.';
 
+    case version_compare($currentVersion, '1.9.8', '<'):
+        $content[] = '<pre>
+1.9.8 Changes
+-------------
++ Removed the old loadAsMod functions for core.
++ Core updates config, image, template, and javascript files.
++ Added dependency ability for core.
+</pre>';
     }
 
     return TRUE;
