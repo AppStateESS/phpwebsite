@@ -424,40 +424,6 @@ class PHPWS_Core {
     }
 
     /**
-     * Loads the core class as a fake module
-     */
-    function &loadAsMod($use_file=true)
-    {
-        PHPWS_Core::initCoreClass('Module.php');
-    
-        $core = & new PHPWS_Module;
-        $core->setTitle('core');
-        $core->setDirectory(PHPWS_SOURCE_DIR . 'core/');
-
-        // even if use_file is false, we get the version_http from the file
-        $file = PHPWS_SOURCE_DIR . 'core/boost/boost.php';
-        if (!is_file($file)) {
-            return PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, 'core', 'PHPWS_Core::loadAsMod', $file);
-        } else {
-            include $file;
-        }
-
-        if (!$use_file) {
-            $db = new PHPWS_DB('core_version');
-            $db->addColumn('version');
-            $version = $db->select('one');
-        }
-
-        $core->setVersion($version);
-        $core->setRegister(FALSE);
-        $core->setImportSQL(TRUE);
-        $core->setProperName('Core');
-        $core->setVersionHttp($version_http);
-
-        return $core;
-    }
-
-    /**
      * Uses the Pear log class to write a log file to the logs directory
      */
     function log($message, $filename, $type=NULL)

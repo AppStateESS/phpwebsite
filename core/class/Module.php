@@ -103,19 +103,44 @@ class PHPWS_Module {
 
     function init($file=TRUE)
     {
-        $title = $this->title;
+        $title = &$this->title;
 
-        $this->setDirectory(PHPWS_SOURCE_DIR . "mod/$title/");
-        if ($file == TRUE) {
-            $result = PHPWS_Module::initByFile();
+        if ($title == 'core') {
+            $this->setDirectory(PHPWS_SOURCE_DIR . 'core/');
+            
+            // even if use_file is false, we get the version_http from the file
+            $filename = PHPWS_SOURCE_DIR . 'core/boost/boost.php';
+            if (!is_file($filename)) {
+                $this->_error = PHPWS_Error::get(PHPWS_FILE_NOT_FOUND, 'core', 'PHPWS_Module::init', $filename);
+            } else {
+                include $filename;
+            }
+            
+            if (!$file) {
+                $db = new PHPWS_DB('core_version');
+                $db->addColumn('version');
+                $version = $db->select('one');
+            }
+            
+            $this->setVersion($version);
+            $this->setRegister(FALSE);
+            $this->setImportSQL(TRUE);
+            $this->setProperName('Core');
+            $this->setVersionHttp($version_http);
         } else {
-            $result = PHPWS_Module::initByDB();
-        }
 
-        if (PEAR::isError($result)) {
-            $this->_error = $result;
-        } elseif(empty($result)) {
-            $this->_error = PHPWS_Error::get(PHPWS_NO_MOD_FOUND, 'core', 'PHPWS_Module::init', $title);
+            $this->setDirectory(PHPWS_SOURCE_DIR . "mod/$title/");
+            if ($file == TRUE) {
+                $result = PHPWS_Module::initByFile();
+            } else {
+                $result = PHPWS_Module::initByDB();
+            }
+
+            if (PEAR::isError($result)) {
+                $this->_error = $result;
+            } elseif(empty($result)) {
+                $this->_error = PHPWS_Error::get(PHPWS_NO_MOD_FOUND, 'core', 'PHPWS_Module::init', $title);
+            }
         }
     }
 
@@ -252,19 +277,28 @@ class PHPWS_Module {
 
     function save()
     {
-        $db = new PHPWS_DB('modules');
-        $db->addWhere('title', $this->title);
-        $db->delete();
-        $db->resetWhere();
-        if (!$this->getProperName()) {
-            $this->setProperName($this->getProperName(TRUE));
+        if ($this->title != 'core') {
+            $db = new PHPWS_DB('modules');
+            $db->addWhere('title', $this->title);
+            $db->delete();
+            $db->resetWhere();
+            if (!$this->getProperName()) {
+                $this->setProperName($this->getProperName(TRUE));
+            }
+            $result = $db->saveObject($this);
+            if (PEAR::isError($result)) {
+                return $result;
+            }
+            
+            return $this->saveDependencies();
+        } else {
+            $db = new PHPWS_DB('core_version');
+            $db->addValue('version', $this->version);
+            $result = $db->update();
+            if (PEAR::isError($result)) {
+                return $result;
+            }
         }
-        $result = $db->saveObject($this);
-        if (PEAR::isError($result)) {
-            return $result;
-        }
-
-        return $this->saveDependencies();
     }
 
     function saveDependencies()
