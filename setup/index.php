@@ -81,6 +81,14 @@ switch ($step){
      $setup->createDatabase($content);
      break;
 
+ case '1b':
+     $_SESSION['configSettings']['database'] = TRUE;
+     $dsn = Setup::getDSN(2);
+     Setup::setConfigSet('dsn', $dsn);
+     $title .= _('Create Config File');
+     $setup->createConfig($content);
+     break;
+
  case '2':
      $title .= _('Create Core');
      $result = $setup->createCore($content);

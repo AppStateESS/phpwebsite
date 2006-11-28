@@ -185,7 +185,13 @@ class Setup{
             return TRUE;
         } elseif ($checkConnection == 2) {
             $content[] = _('PhpWebSite was able to connect, but the database already contained tables.');
-            $_SESSION['configSettings']['database'] = FALSE;
+            if (Setup::getConfigSet('dbprefix')) {
+                $content[] = _('Since you set a table prefix, you may force an installation into this database.');
+                $content[] = _('Click the link below to continue or change your connection settings.');
+                $content[] = sprintf('<a href="index.php?step=1b">%s</a>',_('I want to install phpWebSite in this database.'));
+            } else {
+                $_SESSION['configSettings']['database'] = FALSE;
+            }
             return FALSE;
         }
         elseif ($checkConnection == -1) {
@@ -199,7 +205,6 @@ class Setup{
             $content[] = '<a href="help/database.' . DEFAULT_LANGUAGE . '.txt" target="index">' . _('Database Help') . '</a>';
             return FALSE;
         }
-
     }
 
 

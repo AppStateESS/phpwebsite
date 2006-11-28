@@ -185,8 +185,8 @@ define('PHPWS_LIST_TOGGLE_CLASS', ' class="bgcolor1"');
  * choose which editor you want to use as the default.
  * Example: define('DEFAULT_EDITOR_TOOL', 'FCKeditor');
  */
-define('USE_WYSIWYG_EDITOR', FALSE);
-define('DEFAULT_EDITOR_TOOL', '');
+define('USE_WYSIWYG_EDITOR', true);
+define('DEFAULT_EDITOR_TOOL', 'FCKeditor');
 
 /******************* ABSOLUTE LIMIT ***************************/
 /**
