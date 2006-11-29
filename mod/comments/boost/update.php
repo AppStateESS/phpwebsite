@@ -64,6 +64,27 @@ function comments_update(&$content, $currentVersion)
 + Added new Captcha class for commenting.
 + Added selector for captcha control on settings tab.
 </pre>';
+
+    case version_compare($currentVersion, '0.5.0', '<'):
+        $files = array();
+        $files[] = 'templates/view.tpl';
+        $files[] = 'templates/alt_view.tpl';
+        if (PHPWS_Boost::updateFiles($files, 'comments')) {
+            $content[] = 'Templates copied locally.';
+        } else {
+            $content[] = 'Templates failed to copy locally.';
+        }
+
+        $content[] = '<pre>
+0.5.0 Changes
+-------------
++ Updated templates templates/view.tpl, templates/alt_view.tpl
++ Added anchor tag to templates and code.
++ Changed the getSourceUrl function in the Thread to use the DBPager\'s
+  new saveLastView and getLastView functions.
++ Update dependent on new core.
+</pre>';
+
     }
             
     return TRUE;
