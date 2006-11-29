@@ -22,3 +22,7 @@ Go slow, backup your data, and test heavily before going live.
 When you are satified with the results, you may want to move the
 convert directory elsewhere, remove read priviledges, or delete it
 entirely.
+
+You must installed phpwebsite 1.0 successfully _before_ attempting to
+convert modules. Make sure the modules you are trying to convert have
+been installed on the new version.
