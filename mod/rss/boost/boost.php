@@ -7,8 +7,6 @@
 $proper_name  = 'RSSFeeds';
 $version      = '0.1.2';
 $import_sql   = TRUE;
-$image_dir    = TRUE;
-$file_dir     = FALSE;
 $register     = TRUE;
 $unregister   = FALSE;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/rss/check.xml';
