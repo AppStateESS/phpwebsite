@@ -33,4 +33,17 @@ function GetRootPath()
 	return substr( $sRealPath, 0, strlen( $sRealPath ) - strlen( $sSelfPath ) ) ;
 }
 
+function RemoveFromEnd( $sourceString, $charToRemove )
+{
+	$sPattern = '|' . $charToRemove . '+$|' ;
+	return preg_replace( $sPattern, '', $sourceString ) ;
+}
+
+function RemoveFromStart( $sourceString, $charToRemove )
+{
+	$sPattern = '|^' . $charToRemove . '+|' ;
+	return preg_replace( $sPattern, '', $sourceString ) ;
+}
+
+
 ?>

@@ -21,6 +21,9 @@
 require('config.php') ;
 require('util.php') ;
 
+if (isSet ($Config['Subdirectory'])) {
+	$GLOBALS['Subdirectory'] = $Config['Subdirectory'] ;
+}
 // This is the function that sends the results of the uploading process.
 function SendResults( $errorNumber, $fileUrl = '', $fileName = '', $customMsg = '' )
 {
@@ -75,12 +78,9 @@ $sFileUrl		= '' ;
 // Initializes the counter used to rename the file, if another one with the same name already exists.
 $iCounter = 0 ;
 
-// The the target directory.
-if ( isset( $Config['UserFilesAbsolutePath'] ) && strlen( $Config['UserFilesAbsolutePath'] ) > 0 )
-	$sServerDir = $Config['UserFilesAbsolutePath'] ;
-else 
-	$sServerDir = GetRootPath() . $Config["UserFilesPath"] ;
-
+// The target directory.
+$resource_dir = GetResourceTypeSubdirectory ( $sType );
+$sServerDir = $Config['UserFilesAbsolutePath'] . $resource_dir;
 
 while ( true )
 {
@@ -105,11 +105,31 @@ while ( true )
 			umask( $oldumask ) ;
 		}
 		
-		$sFileUrl = $Config["UserFilesPath"] . $sFileName ;
+		$sFileUrl = $Config["UserFilesPath"] . $resource_dir . $sFileName ;
 
 		break ;
 	}
 }
 
 SendResults( $sErrorNumber, $sFileUrl, $sFileName ) ;
+
+function GetResourceTypeSubdirectory ( $resourceType )
+{
+	// Return the empty string if no resource type specified, i.e. don't go down into any subdirectory
+	if ($resourceType == '') {return '';}
+	
+	// Use the configured value if it exists; NB array_key_exists is used rather than isSet to allow empty values
+	if (isSet ($GLOBALS['Subdirectory']) && array_key_exists ($resourceType, $GLOBALS['Subdirectory'])) {
+		
+		// If the value is empty, don't add a slash to the empty string, and return that
+		if ($GLOBALS['Subdirectory'][$resourceType] == '') {return '';}
+		
+		// Otherwise ensure the subdirectory is slash-terminated, and return that
+		return RemoveFromEnd( $GLOBALS['Subdirectory'][$resourceType], '/' ) . '/';
+	}
+	
+	// Otherwise default to the resource type name itself as the directory name
+	return $resourceType . '/';
+}
+
 ?>
