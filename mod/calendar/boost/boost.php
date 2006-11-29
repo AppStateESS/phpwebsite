@@ -8,6 +8,5 @@
 $proper_name  = 'Calendar';
 $version      = '1.2.2';
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/calendar/check.xml';
-$image_dir    = true;
 $import_sql   = true;
 ?>
