@@ -1025,13 +1025,15 @@ class PHPWS_Boost {
                     continue;
                 }
                 if (!PHPWS_Boost::backupFile($local_file)) {
-                    return PHPWS_Error::get(BOOST_FAILED_BACKUP, 'boost', 'PHPWS_Boost::updateFiles', $local_file);
+                    PHPWS_Error::log(BOOST_FAILED_BACKUP, 'boost', 'PHPWS_Boost::updateFiles', $local_file);
+                    return false;
                 }
             }
 
             $result = @copy($source_file, $local_file);
             if (!$result) {
-                return PHPWS_Error::get(BOOST_FAILED_LOCAL_COPY, 'boost', 'PHPWS_Boost::updateFiles', $local_file);
+                PHPWS_Error::log(BOOST_FAILED_LOCAL_COPY, 'boost', 'PHPWS_Boost::updateFiles', $local_file);
+                return false;
             }
         }
         
