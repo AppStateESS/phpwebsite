@@ -1,7 +1,7 @@
 <?php 
 /*
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2005 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2006 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
@@ -9,8 +9,11 @@
  * For further information visit:
  * 		http://www.fckeditor.net/
  * 
+ * "Support Open Source software. What about a donation today?"
+ * 
  * File Name: basexml.php
- * 	This is the File Manager Connector for ASP.
+ * 	These functions define the base of the XML response sent by the PHP
+ * 	connector.
  * 
  * File Authors:
  * 		Frederico Caldeira Knabben (fredck@fckeditor.net)
@@ -18,6 +21,8 @@
 
 function SetXmlHeaders()
 {
+	ob_end_clean() ;
+
 	// Prevent the browser from caching the result.
 	// Date in the past
 	header('Expires: Mon, 26 Jul 1997 05:00:00 GMT') ;
@@ -33,9 +38,8 @@ function SetXmlHeaders()
 	header( 'Content-Type:text/xml; charset=utf-8' ) ;
 }
 
-function CreateXmlHeader( $command, $resourceType, $currentFolder, $subdir=NULL )
+function CreateXmlHeader( $command, $resourceType, $currentFolder )
 {
-
 	SetXmlHeaders() ;
 	
 	// Create the XML document header.
@@ -43,23 +47,9 @@ function CreateXmlHeader( $command, $resourceType, $currentFolder, $subdir=NULL 
 
 	// Create the main "Connector" node.
 	echo '<Connector command="' . $command . '" resourceType="' . $resourceType . '">' ;
-
-        // Added this to prevent textarea from breaking on display
-        if ( isset($_SERVER['HTTPS']) &&
-             strtolower($_SERVER['HTTPS']) == 'on' ) {
-            $address[] =  'https://';
-        } else {
-            $address[] =  'http://';
-        }
-
-        $address[] = $_SERVER['HTTP_HOST'];
-        $address[] = dirname($_SERVER['PHP_SELF']);
-        $url = implode('', $address) . '/';
-        $url = preg_replace('/\/javascript\/editors.*/', '', $url) . '/images' . $subdir;
 	
 	// Add the current folder node.
-	//echo '<CurrentFolder path="' . ConvertToXmlAttribute( $currentFolder ) . '" url="' . ConvertToXmlAttribute( GetUrlFromPath( $resourceType, $currentFolder ) ) . '" />' ;
-        echo '<CurrentFolder path="' . ConvertToXmlAttribute( $currentFolder ) . '" url="' . $url . $currentFolder . '" />' ;
+	echo '<CurrentFolder path="' . ConvertToXmlAttribute( $currentFolder ) . '" url="' . ConvertToXmlAttribute( GetUrlFromPath( $resourceType, $currentFolder ) ) . '" />' ;
 }
 
 function CreateXmlFooter()

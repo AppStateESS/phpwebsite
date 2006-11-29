@@ -1,7 +1,7 @@
 <?php 
 /*
  * FCKeditor - The text editor for internet
- * Copyright (C) 2003-2005 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2006 Frederico Caldeira Knabben
  * 
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
@@ -9,8 +9,10 @@
  * For further information visit:
  * 		http://www.fckeditor.net/
  * 
+ * "Support Open Source software. What about a donation today?"
+ * 
  * File Name: io.php
- * 	This is the File Manager Connector for ASP.
+ * 	This is the File Manager Connector for PHP.
  * 
  * File Authors:
  * 		Frederico Caldeira Knabben (fredck@fckeditor.net)
@@ -18,10 +20,7 @@
 
 function GetUrlFromPath( $resourceType, $folderPath )
 {
-	if ( $resourceType == '' )
-		return RemoveFromEnd( $GLOBALS["UserFilesPath"], '/' ) . $folderPath ;
-	else
-		return $GLOBALS["UserFilesPath"] . $resourceType . $folderPath ;
+	return $GLOBALS["UserFilesPath"] . GetResourceTypeSubdirectory ( $resourceType ) . RemoveFromStart ( $folderPath , '/' );
 }
 
 function RemoveExtension( $fileName )
@@ -32,14 +31,34 @@ function RemoveExtension( $fileName )
 function ServerMapFolder( $resourceType, $folderPath )
 {
 	// Get the resource type directory.
-    //	$sResourceTypePath = $GLOBALS["UserFilesDirectory"] . $resourceType . '/' ;
-    $sResourceTypePath = $GLOBALS["UserFilesDirectory"];
+	$sResourceTypePath = $GLOBALS["UserFilesDirectory"] . GetResourceTypeSubdirectory ( $resourceType );
 
 	// Ensure that the directory exists.
 	CreateServerFolder( $sResourceTypePath ) ;
 
 	// Return the resource type directory combined with the required path.
 	return $sResourceTypePath . RemoveFromStart( $folderPath, '/' ) ;
+}
+
+
+// Function to determine the directory where the files for this resource type are located
+function GetResourceTypeSubdirectory ( $resourceType )
+{
+	// Return the empty string if no resource type specified, i.e. don't go down into any subdirectory
+	if ($resourceType == '') {return '';}
+	
+	// Use the configured value if it exists; NB array_key_exists is used rather than isSet to allow empty values
+	if (isSet ($GLOBALS['Subdirectory']) && array_key_exists ($resourceType, $GLOBALS['Subdirectory'])) {
+		
+		// If the value is empty, don't add a slash to the empty string, and return that
+		if ($GLOBALS['Subdirectory'][$resourceType] == '') {return '';}
+		
+		// Otherwise ensure the subdirectory is slash-terminated, and return that
+		return RemoveFromEnd( $GLOBALS['Subdirectory'][$resourceType], '/' ) . '/';
+	}
+	
+	// Otherwise default to the resource type name itself as the directory name
+	return $resourceType . '/';
 }
 
 function GetParentFolder( $folderPath )
@@ -50,6 +69,12 @@ function GetParentFolder( $folderPath )
 
 function CreateServerFolder( $folderPath )
 {
+	// Ensure the folder path has no double-slashes, or mkdir may fail on certain platforms
+	while (strpos ($folderPath, '//') !== false)
+	{
+		$folderPath = str_replace( '//', '/', $folderPath ) ;
+	}
+	
 	$sParent = GetParentFolder( $folderPath ) ;
 
 	// Check if the parent exists, or create it.
