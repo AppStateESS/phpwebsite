@@ -56,6 +56,15 @@ function webpage_update(&$content, $currentVersion)
 + Fixed bug that was using the wrong tab when editing the header.
 + Removed old update code and a repeat in this file.
 </pre>';
+
+    case version_compare($currentVersion, '0.2.6', '<'):
+        $content[] = '<pre>
+0.2.6 changes
+-------------
++ Moved search save to Volume class
++ Searches now reset search key words to prevent lost searches.
+</pre>';
+
     }
 
     return TRUE;
