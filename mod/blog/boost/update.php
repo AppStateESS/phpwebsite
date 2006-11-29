@@ -59,6 +59,13 @@ function blog_update(&$content, $currentVersion)
 -------------
 + Entry viewing now adds the blog title to the page title.
 </pre>';
+
+    case version_compare($currentVersion, '1.2.3', '<'):
+        $content[] = '<pre>
+1.2.3 Changes
+-------------
++ Make call to resetKeywords in search to prevent old search word retention.
+</pre>';
     }
 
     return true;

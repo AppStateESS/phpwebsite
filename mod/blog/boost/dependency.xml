@@ -12,4 +12,10 @@
     <version>0.2.5</version>
     <url>http://phpwebsite.appstate.edu/downloads/modules/comments/</url>
   </module>
+  <module>
+    <title>search</title>
+    <properName>Search</properName>
+    <version>0.2.0</version>
+    <url>http://phpwebsite.appstate.edu/downloads/modules/search/</url>
+  </module>
 </dependency>
