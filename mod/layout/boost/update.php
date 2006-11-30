@@ -65,6 +65,9 @@ added properly. Fixed by having the module name verified.';
             return false;
         }
         $content[] = '- Added meta tag control on a per page basis.';
+
+    case version_compare($currentVersion, '2.2.1', '<'):
+        $content[] = '+ Fixed improper sql call in update_220.sql file.';
     }
     return TRUE;
 }
