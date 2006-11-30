@@ -8,21 +8,6 @@
 function core_update(&$content, $version) {
     $content[] = '';
     switch ($version) {
-    case version_compare($version, '1.0.2', '<'):
-    
-        $db = & new PHPWS_DB('core_version');
-        $db->addValue('version', 'varchar(10) NOT NULL default \'\'');
-        $result = $db->createTable();
-        if (PEAR::isError($result)) {
-            return $result;
-        }
-        $db->reset();
-        $db->addValue('version', '1.0.0');
-        $result = $db->insert();
-        if (PEAR::isError($result)) {
-            return $result;
-        }
-        $content[] = '- Created core_version table.';
 
     case version_compare($version, '1.0.5', '<'):
         $content[] = '- Fixed core version on installation.';
@@ -236,7 +221,18 @@ function core_update(&$content, $version) {
 + Cookie.php
   o Added error check to unset function (bug #1599140).
 </pre>';
-         
+
+
+    case version_compare($version, '1.3.5', '<'):
+        $content[] = '<pre>
+1.3.5 Changes
+--------------
++ Convertion - added note to readme
++ Core.php - Fixed bug with getHomeHttp function
++ Javascript
+  o Rewrote portions of FCKeditor file manager. Works better now.
+  o Rewrote FCKeditor upload to work better with links.
+</pre>';
     }
     
     return true;
