@@ -62,6 +62,20 @@ function boost_update(&$content, $currentVersion)
 + Core updates config, image, template, and javascript files.
 + Added dependency ability for core.
 </pre>';
+
+    case version_compare($currentVersion, '1.9.9', '<'):
+        if (PHPWS_Boost::updateFiles(array('templates/module_list.tpl', 'boost'), 'boost')) {
+            $content[] = 'module_list.tpl file copied successfully.';
+        } else {
+            $content[] = 'Failed to copy module_list.tpl file successfully.';
+        }
+        $content[] = '<pre>
+1.9.9 Changes
+-------------
++ Changed updateFiles to return false even with a an error. Now logs
+  the error instead of returning it.
++ Added link to check all modules for updates at once.
+</pre>';
     }
 
     return TRUE;
