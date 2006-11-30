@@ -30,10 +30,10 @@ images/
 logs/
 ^ Should be writable to by apache.
 
-javascript/modules/
+javascript/
 templates/
 config/
-^ Should be writable ONLY during module installs/updates/uninstalls
+^ Should be writable ONLY during module or core installs/updates/uninstalls
 
 logs/ should NOT be world readable
 setup/ should be moved or made unreadable AFTER an installation
