@@ -70,7 +70,16 @@ class Boost_Form {
             $core_file = new PHPWS_Module('core');
             $core_db   = new PHPWS_Module('core', false);
 
-            $link_title = _('Check');
+            if (isset($_SESSION['Boost_Needs_Update']['core'])) {
+                if ($_SESSION['Boost_Needs_Update']['core']) {
+                    $link_title = _('Update available');
+                } else {
+                    $link_title = _('Up to date');
+                }
+            } else {
+                $link_title = _('Check');
+            }
+
             $link_command['opmod'] = 'core';
 
             $template['TITLE']   = $core_db->proper_name;
@@ -88,7 +97,7 @@ class Boost_Form {
                 $template['VERSION'] =sprintf('%s &gt; %s', $core_db->version, $core_file->version); 
             } else {
                 $link_command['action'] = 'check';
-                $core_links[] = PHPWS_Text::secureLink(_('Check'), 'boost', $link_command);
+                $core_links[] = PHPWS_Text::secureLink($link_title, 'boost', $link_command);
             }
 
             $template['COMMAND'] = implode(' | ', $core_links);
@@ -172,7 +181,16 @@ class Boost_Form {
                     $version_check = $mod->getVersionHttp();
           
                     if (isset($version_check)){
-                        $link_title = _('Check');
+                        if (isset($_SESSION['Boost_Needs_Update'][$mod->title])) {
+                            if ($_SESSION['Boost_Needs_Update'][$mod->title]) {
+                                $link_title = _('Update available');
+                            } else {
+                                $link_title = _('Up to date');
+                            }
+                        } else {
+                            $link_title = _('Check');
+                        }
+                        
                         $link_command['action'] = 'check';
                     } else
                         $link_title = _('No Action');
@@ -196,7 +214,8 @@ class Boost_Form {
             $count++;
         }
 
-   
+        $tpl['CHECK_FOR_UPDATES'] = PHPWS_Text::secureLink(_('Check all'), 'boost',
+                                                           array('action' => 'check_all', 'tab' => $type));
         $result = PHPWS_Template::process($tpl, 'boost', 'module_list.tpl');
         return $result;
     }

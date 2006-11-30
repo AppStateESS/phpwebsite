@@ -18,3 +18,4 @@
 </tr>
 <!-- END mod-row -->
 </table>
+<div class="align-center">{CHECK_FOR_UPDATES}</div>

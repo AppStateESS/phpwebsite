@@ -208,6 +208,42 @@ class Boost_Action {
 
         return PHPWS_Template::process($template, 'boost', 'dependency.tpl');
     }
+
+    /**
+     * Checks all modules for update status
+     */
+    function checkAll()
+    {
+        $installed_mods = PHPWS_Core::installModList();
+        if (empty($installed_mods)) {
+            return;
+        }
+
+        PHPWS_Core::initCoreClass('Module.php');
+
+        $installed_mods[] = 'core';
+
+        foreach ($installed_mods as $mod_title) {
+            $module = new PHPWS_Module($mod_title);
+            $file = $module->getVersionHttp();
+            if (empty($file)) {
+                continue;
+            }
+            
+            $full_xml_array = PHPWS_Text::xml2php($file, 2);
+
+            if (empty($full_xml_array)) {
+                continue;
+            }
+
+            $version_info = PHPWS_Text::tagXML($full_xml_array);
+            if (version_compare($version_info['VERSION'], $module->getVersion(), '>')) {
+                $_SESSION['Boost_Needs_Update'][$mod_title] = 1;
+            } else {
+                $_SESSION['Boost_Needs_Update'][$mod_title] = 0;
+            }
+        }
+    }
 }
 
 ?>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-16 09:04-0500\n"
+"POT-Creation-Date: 2006-11-30 08:52-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,141 +24,141 @@ msgstr ""
 msgid "Boost allows the installation and upgrading of modules."
 msgstr ""
 
-#: index.php:37 index.php:47 index.php:61 index.php:66 index.php:72
+#: index.php:37 index.php:52 index.php:65 index.php:70 index.php:75
 msgid "Return to Boost"
 msgstr ""
 
-#: index.php:52
+#: index.php:57
 msgid "An error occurred while installing this module."
 msgstr ""
 
-#: index.php:53
+#: index.php:58
 msgid "Please check your error logs."
 msgstr ""
 
-#: class/Action.php:26 class/Action.php:32
+#: class/Action.php:17 class/Action.php:23
 msgid "Update check file not found."
 msgstr ""
 
-#: class/Action.php:36
+#: class/Action.php:27
 msgid "Local version"
 msgstr ""
 
-#: class/Action.php:38
+#: class/Action.php:29
 msgid "Current stable version"
 msgstr ""
 
-#: class/Action.php:42
+#: class/Action.php:33
 msgid "Changes"
 msgstr ""
 
-#: class/Action.php:44
+#: class/Action.php:35
 msgid "An update is available!"
 msgstr ""
 
-#: class/Action.php:45
+#: class/Action.php:36
 msgid "Download here"
 msgstr ""
 
-#: class/Action.php:47
+#: class/Action.php:38
 msgid "MD5 Sum"
 msgstr ""
 
-#: class/Action.php:51
+#: class/Action.php:42
 msgid "Dependencies"
 msgstr ""
 
-#: class/Action.php:52
+#: class/Action.php:43
 msgid "Module title"
 msgstr ""
 
-#: class/Action.php:53
+#: class/Action.php:44
 msgid "Version required"
 msgstr ""
 
-#: class/Action.php:54 class/Action.php:189
+#: class/Action.php:45 class/Action.php:177
 msgid "Status"
 msgstr ""
 
-#: class/Action.php:64 class/Action.php:208
+#: class/Action.php:51 class/Action.php:192
 msgid "Not installed"
 msgstr ""
 
-#: class/Action.php:67
+#: class/Action.php:54
 msgid "Needs upgrading"
 msgstr ""
 
-#: class/Action.php:70 class/Action.php:218
+#: class/Action.php:57 class/Action.php:202
 msgid "Passed!"
 msgstr ""
 
-#: class/Action.php:76
+#: class/Action.php:63
 msgid "Download"
 msgstr ""
 
-#: class/Action.php:83
+#: class/Action.php:70
 msgid "No update required."
 msgstr ""
 
-#: class/Action.php:86 class/Boost.php:878
+#: class/Action.php:73 class/Boost.php:878
 msgid "Module"
 msgstr ""
 
-#: class/Action.php:115
+#: class/Action.php:102
 msgid "Updating core"
 msgstr ""
 
-#: class/Action.php:121 class/Boost.php:232
+#: class/Action.php:108 class/Boost.php:232
 msgid "Processing update file."
 msgstr ""
 
-#: class/Action.php:131 class/Action.php:137 class/Action.php:139
+#: class/Action.php:118 class/Action.php:124 class/Action.php:126
 msgid "An error occurred updating the core."
 msgstr ""
 
-#: class/Action.php:133
+#: class/Action.php:120
 msgid "Core successfully updated."
 msgstr ""
 
-#: class/Action.php:163
+#: class/Action.php:151
 msgid "This module does not have dependents."
 msgstr ""
 
-#: class/Action.php:166
+#: class/Action.php:154
 #, php-format
 msgid "%s Dependencies"
 msgstr ""
 
-#: class/Action.php:168
+#: class/Action.php:156
 msgid "The following modules depend on this module to function:"
 msgstr ""
 
-#: class/Action.php:183
+#: class/Action.php:171
 #, php-format
 msgid "%s Module Dependencies"
 msgstr ""
 
-#: class/Action.php:185
+#: class/Action.php:173
 msgid "Module Needed"
 msgstr ""
 
-#: class/Action.php:186
+#: class/Action.php:174
 msgid "Version Needed"
 msgstr ""
 
-#: class/Action.php:187
+#: class/Action.php:175
 msgid "Current Version"
 msgstr ""
 
-#: class/Action.php:188
+#: class/Action.php:176
 msgid "Module Web Site"
 msgstr ""
 
-#: class/Action.php:215
+#: class/Action.php:199
 msgid "More info"
 msgstr ""
 
-#: class/Action.php:220
+#: class/Action.php:204
 msgid "Failed"
 msgstr ""
 
@@ -431,12 +431,12 @@ msgstr ""
 msgid "Your logs/%s file must be readable and writable."
 msgstr ""
 
-#: class/Boost.php:1082
+#: class/Boost.php:1104
 #, php-format
 msgid "Updating branch %s"
 msgstr ""
 
-#: class/Boost.php:1087
+#: class/Boost.php:1109
 msgid "Unable to update branch."
 msgstr ""
 
@@ -452,72 +452,84 @@ msgstr ""
 msgid "Other Modules"
 msgstr ""
 
-#: class/Form.php:73 class/Form.php:80 class/Form.php:174
+#: class/Form.php:75 class/Form.php:186
+msgid "Update available"
+msgstr ""
+
+#: class/Form.php:77 class/Form.php:188
+msgid "Up to date"
+msgstr ""
+
+#: class/Form.php:80 class/Form.php:191
 msgid "Check"
 msgstr ""
 
-#: class/Form.php:84 class/Form.php:164
+#: class/Form.php:91 class/Form.php:174
 msgid "Update"
 msgstr ""
 
-#: class/Form.php:97
+#: class/Form.php:94 class/Form.php:149 class/Form.php:177
+msgid "Missing dependency"
+msgstr ""
+
+#: class/Form.php:111
 msgid "Module Title"
 msgstr ""
 
-#: class/Form.php:99
+#: class/Form.php:113
 msgid "More information"
 msgstr ""
 
-#: class/Form.php:100
+#: class/Form.php:114
 msgid "Current version"
 msgstr ""
 
-#: class/Form.php:103
+#: class/Form.php:117
 msgid ""
 "WARNING: Only deities can uninstall core modules. Doing so may corrupt your "
 "installation!"
 msgstr ""
 
-#: class/Form.php:107
+#: class/Form.php:121
 msgid "No modules available."
 msgstr ""
 
-#: class/Form.php:136
+#: class/Form.php:146
 msgid "Install"
 msgstr ""
 
-#: class/Form.php:139 class/Form.php:167
-msgid "Missing dependency"
-msgstr ""
-
-#: class/Form.php:146
+#: class/Form.php:156
 #, php-format
 msgid "This module is depended upon by: %s"
 msgstr ""
 
-#: class/Form.php:147
+#: class/Form.php:157
 msgid "Depended upon"
 msgstr ""
 
-#: class/Form.php:150
+#: class/Form.php:160
 msgid ""
 "Are you sure you want to uninstall this module? All data will be deleted."
 msgstr ""
 
-#: class/Form.php:152
+#: class/Form.php:162
 msgid "Uninstall"
 msgstr ""
 
-#: class/Form.php:162
+#: class/Form.php:172
 msgid "Boost requires updating! You should do so before any other module!"
 msgstr ""
 
-#: class/Form.php:177
+#: class/Form.php:196
 msgid "No Action"
 msgstr ""
 
-#: class/Form.php:185
+#: class/Form.php:204
 msgid "About"
+msgstr ""
+
+#: class/Form.php:217
+msgid "Check all"
 msgstr ""
 
 #: conf/error.php:7
