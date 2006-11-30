@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-16 09:04-0500\n"
+"POT-Creation-Date: 2006-11-30 08:52-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -52,7 +52,7 @@ msgstr ""
 msgid "Update schedule"
 msgstr ""
 
-#: class/Admin.php:76 class/Admin.php:884
+#: class/Admin.php:76 class/Admin.php:895
 msgid "Create schedule"
 msgstr ""
 
@@ -68,7 +68,7 @@ msgstr ""
 msgid "Location link"
 msgstr ""
 
-#: class/Admin.php:114 class/Admin.php:878
+#: class/Admin.php:114 class/Admin.php:889
 msgid "Description"
 msgstr ""
 
@@ -192,7 +192,7 @@ msgstr ""
 msgid "Repeat"
 msgstr ""
 
-#: class/Admin.php:307 class/Admin.php:872
+#: class/Admin.php:307 class/Admin.php:883
 msgid "Schedules"
 msgstr ""
 
@@ -200,133 +200,137 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: class/Admin.php:368
+#: class/Admin.php:373
 msgid "Schedule deleted."
 msgstr ""
 
-#: class/Admin.php:393
+#: class/Admin.php:398
 msgid "Default public schedule set."
 msgstr ""
 
-#: class/Admin.php:408
+#: class/Admin.php:413
 msgid "Settings saved"
 msgstr ""
 
-#: class/Admin.php:481 class/Admin.php:486
+#: class/Admin.php:486 class/Admin.php:491
 msgid "An error occurred when saving your event."
 msgstr ""
 
-#: class/Admin.php:493 class/Admin.php:498
+#: class/Admin.php:498 class/Admin.php:503
 msgid "An error occurred when trying to repeat an event."
 msgstr ""
 
-#: class/Admin.php:507
+#: class/Admin.php:512
 msgid "Event saved."
 msgstr ""
 
-#: class/Admin.php:626 class/Admin.php:631
+#: class/Admin.php:637 class/Admin.php:642
 msgid "An error occurred when saving your schedule."
 msgstr ""
 
-#: class/Admin.php:635 class/Admin.php:640
+#: class/Admin.php:646 class/Admin.php:651
 msgid "Schedule saved."
 msgstr ""
 
-#: class/Admin.php:680
+#: class/Admin.php:691
 msgid "This event does not exist."
 msgstr ""
 
-#: class/Admin.php:684
+#: class/Admin.php:695
 #, php-format
 msgid "Repeat event - %s"
 msgstr ""
 
-#: class/Admin.php:830
+#: class/Admin.php:841
 msgid "You must choose which weekdays to repeat."
 msgstr ""
 
-#: class/Admin.php:877 class/Schedule.php:186
+#: class/Admin.php:888 class/Schedule.php:186
 msgid "Title"
 msgstr ""
 
-#: class/Admin.php:879 class/Schedule.php:197 class/Schedule.php:204
+#: class/Admin.php:890 class/Schedule.php:197 class/Schedule.php:204
 #: class/Schedule.php:395
 msgid "Public"
 msgstr ""
 
-#: class/Admin.php:880
+#: class/Admin.php:891
 msgid "User"
 msgstr ""
 
-#: class/Admin.php:881 class/Schedule.php:230
+#: class/Admin.php:892 class/Schedule.php:230
 msgid "Availability"
 msgstr ""
 
-#: class/Admin.php:897
+#: class/Admin.php:908
 msgid "Options"
 msgstr ""
 
-#: class/Admin.php:904
+#: class/Admin.php:915
 msgid "No schedules have been created."
 msgstr ""
 
-#: class/Admin.php:934
+#: class/Admin.php:945
 msgid "Allow public event submissions"
 msgstr ""
 
-#: class/Admin.php:944
-msgid "Allow personal schedules"
-msgstr ""
-
-#: class/Admin.php:948
-msgid "Don't show"
-msgstr ""
-
-#: class/Admin.php:948
-msgid "Only on front page"
-msgstr ""
-
-#: class/Admin.php:948
-msgid "On all pages"
-msgstr ""
-
-#: class/Admin.php:951
-msgid "Month grid"
-msgstr ""
-
-#: class/Admin.php:952
-msgid "Month list"
-msgstr ""
-
-#: class/Admin.php:953
-msgid "Day view"
-msgstr ""
-
-#: class/Admin.php:954
-msgid "Week view"
-msgstr ""
-
-#: class/Admin.php:957
-msgid "Default view"
+#: class/Admin.php:949
+msgid "Only link days with events in mini calendar"
 msgstr ""
 
 #: class/Admin.php:960
-msgid "Save settings"
+msgid "Allow personal schedules"
 msgstr ""
 
-#: class/Admin.php:963
-msgid "Display mini calendar"
+#: class/Admin.php:964
+msgid "Don't show"
 msgstr ""
 
-#: class/Admin.php:965
-msgid "Week start day"
+#: class/Admin.php:964
+msgid "Only on front page"
+msgstr ""
+
+#: class/Admin.php:964
+msgid "On all pages"
+msgstr ""
+
+#: class/Admin.php:967
+msgid "Month grid"
 msgstr ""
 
 #: class/Admin.php:968
+msgid "Month list"
+msgstr ""
+
+#: class/Admin.php:969
+msgid "Day view"
+msgstr ""
+
+#: class/Admin.php:970
+msgid "Week view"
+msgstr ""
+
+#: class/Admin.php:973
+msgid "Default view"
+msgstr ""
+
+#: class/Admin.php:976
+msgid "Save settings"
+msgstr ""
+
+#: class/Admin.php:979
+msgid "Display mini calendar"
+msgstr ""
+
+#: class/Admin.php:981
+msgid "Week start day"
+msgstr ""
+
+#: class/Admin.php:984
 msgid "Calendar settings"
 msgstr ""
 
-#: class/Calendar.php:368
+#: class/Calendar.php:382
 msgid "General"
 msgstr ""
 
@@ -459,67 +463,67 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-#: class/User.php:462
+#: class/User.php:492
 msgid "No events this month."
 msgstr ""
 
-#: class/User.php:487
+#: class/User.php:517
 msgid "Reset cache"
 msgstr ""
 
-#: class/User.php:503
+#: class/User.php:533
 msgid "Change schedule"
 msgstr ""
 
-#: class/User.php:518
+#: class/User.php:548
 msgid "Today"
 msgstr ""
 
-#: class/User.php:587
+#: class/User.php:624
 msgid "Incorrect option"
 msgstr ""
 
-#: class/User.php:638
+#: class/User.php:675
 msgid "Previous month"
 msgstr ""
 
-#: class/User.php:639
+#: class/User.php:676
 msgid "Next month"
 msgstr ""
 
-#: class/User.php:643 class/User.php:646
+#: class/User.php:680 class/User.php:683
 msgid "Grid"
 msgstr ""
 
-#: class/User.php:650 class/User.php:653
+#: class/User.php:687 class/User.php:690
 msgid "Month"
 msgstr ""
 
-#: class/User.php:662
+#: class/User.php:699
 msgid "Previous week"
 msgstr ""
 
-#: class/User.php:663
+#: class/User.php:700
 msgid "Next week"
 msgstr ""
 
-#: class/User.php:665 class/User.php:668
+#: class/User.php:702 class/User.php:705
 msgid "Week"
 msgstr ""
 
-#: class/User.php:677
+#: class/User.php:714
 msgid "Previous day"
 msgstr ""
 
-#: class/User.php:678
+#: class/User.php:715
 msgid "Next day"
 msgstr ""
 
-#: class/User.php:680 class/User.php:683
+#: class/User.php:717 class/User.php:720
 msgid "Day"
 msgstr ""
 
-#: class/User.php:758
+#: class/User.php:795
 msgid "No events this week."
 msgstr ""
 
