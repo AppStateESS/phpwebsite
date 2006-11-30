@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-16 09:04-0500\n"
+"POT-Creation-Date: 2006-11-30 08:52-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,55 +18,6 @@ msgstr ""
 
 #: boost/permission.php:10
 msgid "Allow user name searching"
-msgstr ""
-
-#: class/Note_Item.php:77
-msgid "Delete"
-msgstr ""
-
-#: class/Note_Item.php:101
-msgid "Yes"
-msgstr ""
-
-#: class/Note_Item.php:105
-msgid "No"
-msgstr ""
-
-#: class/Note_Item.php:142
-msgid "System message"
-msgstr ""
-
-#: class/Note_Item.php:145
-msgid "Sent on"
-msgstr ""
-
-#: class/Note_Item.php:146
-msgid "Sent by"
-msgstr ""
-
-#: class/Note_Item.php:151
-msgid "In reference to"
-msgstr ""
-
-#: class/Note_Item.php:180
-msgid "Delete and close"
-msgstr ""
-
-#: class/Note_Item.php:201 class/Note_Item.php:211
-msgid "Read"
-msgstr ""
-
-#: class/Note_Item.php:205 class/Note_Item.php:209 class/Note_Item.php:211
-msgid "Read note"
-msgstr ""
-
-#: class/Note_Item.php:239 class/My_Page.php:306 class/My_Page.php:310
-msgid "Send note"
-msgstr ""
-
-#: class/Note_Item.php:241
-#, php-format
-msgid "Send note to %s"
 msgstr ""
 
 #: class/My_Page.php:48
@@ -150,6 +101,10 @@ msgstr ""
 msgid "Message"
 msgstr ""
 
+#: class/My_Page.php:306 class/My_Page.php:310 class/Note_Item.php:239
+msgid "Send note"
+msgstr ""
+
 #: class/My_Page.php:330
 msgid "Associated Notes"
 msgstr ""
@@ -161,4 +116,49 @@ msgstr ""
 #: class/My_Page.php:354
 #, php-format
 msgid "You have %d unread notes."
+msgstr ""
+
+#: class/Note_Item.php:77
+msgid "Delete"
+msgstr ""
+
+#: class/Note_Item.php:101
+msgid "Yes"
+msgstr ""
+
+#: class/Note_Item.php:105
+msgid "No"
+msgstr ""
+
+#: class/Note_Item.php:142
+msgid "System message"
+msgstr ""
+
+#: class/Note_Item.php:145
+msgid "Sent on"
+msgstr ""
+
+#: class/Note_Item.php:146
+msgid "Sent by"
+msgstr ""
+
+#: class/Note_Item.php:151
+msgid "In reference to"
+msgstr ""
+
+#: class/Note_Item.php:180
+msgid "Delete and close"
+msgstr ""
+
+#: class/Note_Item.php:201 class/Note_Item.php:211
+msgid "Read"
+msgstr ""
+
+#: class/Note_Item.php:205 class/Note_Item.php:209 class/Note_Item.php:211
+msgid "Read note"
+msgstr ""
+
+#: class/Note_Item.php:241
+#, php-format
+msgid "Send note to %s"
 msgstr ""
