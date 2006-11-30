@@ -227,7 +227,7 @@ function core_update(&$content, $version) {
         $content[] = '<pre>
 1.3.5 Changes
 --------------
-+ Convertion - added note to readme
++ Conversion - added note to readme
 + Core.php - Fixed bug with getHomeHttp function
 + Javascript
   o Rewrote portions of FCKeditor file manager. Works better now.
