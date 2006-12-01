@@ -220,8 +220,8 @@ class Comments {
   
     function postComment(&$thread, &$cm_item)
     {
-        if (empty($_POST['cm_subject']) || empty($_POST['cm_entry'])) {
-            $cm_item->_error = _('Your comment must contain a subject and comment.');
+        if (empty($_POST['cm_subject']) && empty($_POST['cm_entry'])) {
+            $cm_item->_error = _('You must include a subject or comment.');
             return false;
         }
 
