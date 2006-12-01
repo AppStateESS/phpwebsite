@@ -41,6 +41,12 @@ class Whodis {
         $page_tags['UPDATED_LABEL'] = _('Last visit');
         $page_tags['VISITS_LABEL']  = _('Total visits');
 
+        $limits[4]  = 10;
+        $limits[9]  = 25;
+        $limits[16] = 50;
+        $pager->setLimitList($limits);
+	$pager->setDefaultLimit(25);
+
         $pager->addPageTags($page_tags);
         $pager->addRowTags('getTags');
         $pager->setOrder('updated', 'desc', true);

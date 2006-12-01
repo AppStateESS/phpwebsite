@@ -21,7 +21,7 @@ class Whodis_Referrer {
         if (version_compare(phpversion(), '5.0.0', '>=')) {
             return html_entity_decode($this->url, ENT_QUOTES, 'UTF-8');
         } else {
-            return PHPWS_Text::decode_entities($text);
+            return PHPWS_Text::decode_entities($this->url);
         }
     }
 
@@ -53,9 +53,11 @@ class Whodis_Referrer {
 
     function getTags()
     {
-        $tags['URL'] = sprintf('<a href="%s" target="_index">%s</a>', $this->getUrl(), $this->getUrl());
-        $tags['CREATED'] = strftime('%c', $this->created);
-        $tags['UPDATED'] = strftime('%c', $this->updated);
+        $url = $this->getUrl();
+        $tags['URL'] = sprintf('<a href="%s" target="_index" title="%s" alt="%s">%s</a>',
+                       $url, $url, $url, substr($url, 0, 40));
+        $tags['CREATED'] = strftime('%H:%M %Y/%m/%d', $this->created);
+        $tags['UPDATED'] = strftime('%H:%M %Y/%m/%d', $this->updated);
         return $tags;
     }
 }
