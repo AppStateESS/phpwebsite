@@ -85,6 +85,8 @@ function users_update(&$content, $currentVersion)
 + Log in form returns null if the user box is set to none
 </pre>';
 
+    case version_compare($currentVersion, '2.2.1', '<'):
+        $content[] = '+ Fixed a bug causing conflicts between user and group permissions.';
     }
 
     return TRUE;
