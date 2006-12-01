@@ -152,7 +152,6 @@ class Users_Permission {
 
     function loadPermission($module, &$permissions)
     {
-
         $groups = $this->groups;
 
         $permTable = Users_Permission::getPermissionTableName($module);
@@ -165,7 +164,7 @@ class Users_Permission {
         $permDB = new PHPWS_DB($permTable);
 
         if (!empty($groups)) {
-                $permDB->addWhere('group_id', $groups, 'in');
+            $permDB->addWhere('group_id', $groups, 'in');
         }
 
         $permResult = $permDB->select();
@@ -190,13 +189,12 @@ class Users_Permission {
         }
 
         $permissionSet = array();
-        foreach ($permResult as $permission){
+        $permissionLevel = NO_PERMISSION;
+        foreach ($permResult as $permission) {
             unset($permission['group_id']);
-     
-            if (!isset($permissionLevel) || $permissionLevel < $permission['permission_level']) {
+
+            if ($permissionLevel < $permission['permission_level']) {
                 $permissionLevel = $permission['permission_level'];
-            } else {
-                $permissionLevel = NO_PERMISSION;
             }
 
             unset($permission['permission_level']);
