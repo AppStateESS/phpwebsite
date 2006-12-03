@@ -202,6 +202,34 @@ class Block_Item {
         return isset($_SESSION['Pinned_Blocks'][$this->id]);
     }
 
+    function allPinned()
+    {
+        static $all_pinned = null;
+
+        if (empty($all_pinned)) {
+            $db = new PHPWS_DB('block_pinned');
+            $db->addWhere('key_id', -1);
+            $db->addColumn('block_id');
+            $result = $db->select('col');
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                return false;
+            }
+            if ($result) {
+                $all_pinned = & $result;
+            } else {
+                $all_pinned = true;
+            }
+        }
+
+        if (is_array($all_pinned)) {
+            return in_array($this->id, $all_pinned);
+        } else {
+            return false;
+        }
+
+    }
+
     function getTpl()
     {
         $vars['block_id'] = $this->getId();
@@ -215,8 +243,15 @@ class Block_Item {
             $vars['action'] = 'unpin';
             $links[] = PHPWS_Text::secureLink(_('Unpin'), 'block', $vars);
         } else {
-            $vars['action'] = 'pin';
-            $links[] = PHPWS_Text::secureLink(_('Pin'), 'block', $vars);
+            if ($this->allPinned()) {
+                $vars['action'] = 'remove';
+                $links[] = PHPWS_Text::secureLink(_('Unpin all'), 'block', $vars);
+            } else {
+                $vars['action'] = 'pin';
+                $links[] = PHPWS_Text::secureLink(_('Pin'), 'block', $vars);
+                $vars['action'] = 'pin_all';
+                $links[] = PHPWS_Text::secureLink(_('Pin all'), 'block', $vars);
+            }
         }
 
         if (Current_User::isUnrestricted('block')) {

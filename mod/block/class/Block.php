@@ -13,6 +13,8 @@ class Block {
 
     function show()
     {
+        Block::showAllBlocks();
+
         $key = Key::getCurrent();
 
         if (empty($key) || $key->isDummy(true)) {
@@ -24,6 +26,13 @@ class Block {
             Block::viewPinnedBlocks($key);
         }
   
+    }
+
+    function showAllBlocks()
+    {
+        $key = new Key;
+        $key->id = -1;
+        Block::showBlocks($key);
     }
 
     function viewPinnedBlocks($key)

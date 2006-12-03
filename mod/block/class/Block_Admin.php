@@ -84,6 +84,11 @@ class Block_Admin {
             Block_Admin::sendMessage(_('Block pinned'), 'list');
             break;
 
+        case 'pin_all':
+            Block_Admin::pinBlockAll($block);
+            Block_Admin::sendMessage(_('Block pinned'), 'list');
+            break;
+
         case 'unpin':
             unset($_SESSION['Pinned_Blocks']);
             Block_Admin::sendMessage(_('Block unpinned'), 'list');
@@ -171,13 +176,15 @@ class Block_Admin {
 
     function removeBlock()
     {
-        if (!isset($_GET['key_id']) || !isset($_GET['block_id'])) {
+        if (!isset($_GET['block_id'])) {
             return;
         }
 
         $db = & new PHPWS_DB('block_pinned');
         $db->addWhere('block_id', $_GET['block_id']);
-        $db->addWhere('key_id', $_GET['key_id']);
+        if (isset($_GET['key_id'])) {
+            $db->addWhere('key_id', $_GET['key_id']);
+        }
         $result = $db->delete();
 
         if (PEAR::isError($result)) {
@@ -260,6 +267,20 @@ class Block_Admin {
         $_SESSION['Pinned_Blocks'][$block->getID()] = $block;
     }
   
+    function pinBlockAll(&$block)
+    {
+        $values['block_id'] = $block->id;
+        $db = & new PHPWS_DB('block_pinned');
+        $db->addWhere($values);
+        $result = $db->delete();
+        $db->resetWhere();
+
+        $values['key_id'] = -1;
+        $db->addValue($values);
+
+        return $db->insert();
+    }
+
 
     function lockBlock($block_id, $key_id)
     {
