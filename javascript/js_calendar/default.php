@@ -4,6 +4,12 @@
    * @version $Id$
    */
 
+if (!isset($data['form_name'])) {
+     $data['form_name'] = '0';
+} else {
+     $data['form_name'] = $data['form_name'];
+}
+
 $default['date_name'] = 'date';
 $default['type'] = 'text';
 
