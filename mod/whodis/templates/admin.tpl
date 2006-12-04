@@ -1,4 +1,9 @@
 <h1>WhoDis?</h1>
+<div class="align-right">
+{START_FORM}
+{PURGE_LABEL} {DAYS_OLD} {VISIT_LIMIT_LABEL} {VISIT_LIMIT} {SUBMIT}
+{END_FORM}
+</div>
 <table width="99%" cellpadding="4">
   <tr>
     <th>{URL_LABEL} {URL_SORT}</th>

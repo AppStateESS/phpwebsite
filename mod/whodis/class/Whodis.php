@@ -27,10 +27,64 @@ class Whodis {
         }
     }
 
+    function purge()
+    {
+        $db = new PHPWS_DB('whodis');
+        $go = false;
+        if (!empty($_POST['days_old'])) {
+            $days = (int)$_POST['days_old'];
+            $updated = mktime() - (86400 * $days);
+            $db->addWhere('updated', $updated, '<');
+            $go = true;
+        }
+
+        if (!empty($_POST['visit_limit'])) {
+            $db->addWhere('visits', (int)$_POST['visit_limit'], '<=');
+            $go = true;
+        }
+        if (!$go) {
+            return false;
+        }
+
+        return $db->delete();
+    }
+
     function admin()
     {
+
+        if (isset($_POST['op'])) {
+            switch ($_POST['op']) {
+            case 'purge':
+                Whodis::purge();
+                PHPWS_Core::goBack();
+                break;
+            }
+        }
+
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('whodis', 'Whodis_Referrer.php');
+
+        $form = new PHPWS_Form('purge');
+        $form->addHidden('module', 'whodis');
+        $form->addHidden('op', 'purge');
+        $days = array(0     => _('- Referrer age -'),
+                      1     => _('1 day old'),
+                      3     => _('3 days old'),
+                      7     => _('1 week old'),
+                      14    => _('2 weeks old'),
+                      30    => _('1 month old'),
+                      90    => _('3 months old'),
+                      365   => _('1 year old'),
+                      'all' => _('Everything'));
+
+        $form->addSelect('days_old', $days);
+
+        $form->addText('visit_limit');
+        $form->setSize('visit_limit', 4, 4);
+        $form->addSubmit(_('Purge'));
+        $form->setLabel('visit_limit', _('Visits'));
+
+        $page_tags = $form->getTemplate();
 
         $pager = new DBPager('whodis', 'Whodis_Referrer');
         $pager->setModule('whodis');
