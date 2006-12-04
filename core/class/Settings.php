@@ -12,16 +12,16 @@
 class PHPWS_Settings {
 
     /**
-     * Returns the value of a setting or FALSE if not set
+     * Returns the value of a setting or false if not set
      */
-    function get($module, $setting=NULL)
+    function get($module, $setting=null)
     {
         if (empty($setting) && PHPWS_Settings::is_set($module)) {
             return $GLOBALS['PHPWS_Settings'][$module];
         } elseif (PHPWS_Settings::is_set($module, $setting)) {
             return $GLOBALS['PHPWS_Settings'][$module][$setting];
         } else {
-            return FALSE;
+            return null;
         }
     }
 
@@ -31,33 +31,33 @@ class PHPWS_Settings {
      * checking against default settings. If all were pulled at once,
      * newly added settings would get ignored.
      */
-    function is_set($module, $setting=NULL)
+    function is_set($module, $setting=null)
     {
         if (!isset($GLOBALS['PHPWS_Settings'][$module])) {
             $result = PHPWS_Settings::load($module);
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
-                return FALSE;
+                return false;
             }
         }
 
         if (is_array($GLOBALS['PHPWS_Settings'][$module])) {
             if (empty($setting)) {
-                return TRUE;
+                return true;
             } elseif (isset($GLOBALS['PHPWS_Settings'][$module][$setting])) {
-                return TRUE;
+                return true;
             } else {
-                return FALSE;
+                return false;
             }
         } else {
-            return FALSE;
+            return false;
         }
     }
 
     function in_array($module, $setting, $value)
     {
         if (!PHPWS_Settings::is_set($module, $setting)) {
-            return FALSE;
+            return false;
         }
         return in_array($value, $GLOBALS['PHPWS_Settings'][$module][$setting]);
     }
@@ -65,7 +65,7 @@ class PHPWS_Settings {
     /**
      * Sets the module setting value
      */
-    function set($module, $setting, $value=NULL)
+    function set($module, $setting, $value=null)
     {
         if (empty($setting)) {
             return;
@@ -75,11 +75,11 @@ class PHPWS_Settings {
             foreach ($setting as $key => $subval) {
                 PHPWS_Settings::set($module, $key, $subval);
             }
-            return TRUE;
+            return true;
         }
 
         $GLOBALS['PHPWS_Settings'][$module][$setting] = $value;
-        return TRUE;
+        return true;
     }
 
     function append($module, $setting, $value)
@@ -88,17 +88,17 @@ class PHPWS_Settings {
             foreach ($setting as $key => $subval) {
                 $result = PHPWS_Settings::append($module, $key, $subval);
                 if (!$result) {
-                    return FALSE;
+                    return false;
                 }
             }
-            return TRUE;
+            return true;
         } elseif ( isset($GLOBALS['PHPWS_Settings'][$module][$setting]) &&
                    !is_array($GLOBALS['PHPWS_Settings'][$module][$setting])) {
-            return FALSE;
+            return false;
         }
 
         $GLOBALS['PHPWS_Settings'][$module][$setting][] = $value;
-        return TRUE;
+        return true;
     }
 
     /**
@@ -107,7 +107,7 @@ class PHPWS_Settings {
     function save($module)
     {
         if (!PHPWS_Settings::is_set($module)) {
-            return FALSE;
+            return false;
         }
 
         $db = & new PHPWS_DB('mod_settings');
@@ -140,6 +140,7 @@ class PHPWS_Settings {
                 $db->addValue('large_char', $value);
                 break;
             }
+
             $result = $db->insert();
             if (PEAR::isError($result)) {
                 unset($GLOBALS['PHPWS_Settings'][$module]);
@@ -155,10 +156,11 @@ class PHPWS_Settings {
     function loadConfig($module)
     {
         $filename = sprintf('%smod/%s/inc/settings.php', PHPWS_SOURCE_DIR, $module);
+
         if (is_file($filename)) {
             return $filename;
         } else {
-            return NULL;
+            return null;
         }
     }
 
@@ -223,13 +225,18 @@ class PHPWS_Settings {
                 PHPWS_Settings::set($module, $value['setting_name'], $setval);
             }
         }
-        return TRUE;
+        return true;
     }
 
     function getType($value)
     {
-        switch ($value) {
-        case is_numeric($value):
+        switch (gettype($value)) {
+        case 'NULL':
+            return 3;
+            break;
+
+        case 'boolean':
+        case 'integer':
             if ((int)$value < 100000) {
                 return 1;
             } else {
@@ -237,7 +244,8 @@ class PHPWS_Settings {
             }
             break;
 
-        case is_string($value):
+        case 'double':
+        case 'string':
             if (strlen($value) < 100) {
                 return 3;
             } else {
@@ -245,7 +253,8 @@ class PHPWS_Settings {
             }
             break;
 
-        case is_array($value):
+        case 'object':
+        case 'array':
             return 4;
             break;
 
