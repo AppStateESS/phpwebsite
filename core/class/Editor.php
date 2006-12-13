@@ -16,6 +16,7 @@ class Editor {
     var $type       = NULL; // WYSIWYG file
     var $editorList = NULL;
     var $error      = NULL;
+    var $limited    = false;
 
     function Editor($name=NULL, $data=NULL, $id=NULL, $type=NULL)
     {
@@ -57,11 +58,11 @@ class Editor {
 
     function get()
     {
-        $formData['NAME'] = $this->name;
-        $formData['ID']   = $this->id;
-        $formData['VALUE'] = $this->data;
+        $formData['NAME']    = $this->name;
+        $formData['ID']      = $this->id;
+        $formData['VALUE']   = $this->data;
+        $formData['LIMITED'] = $this->limited;
         return Layout::getJavascript('editors/' . $this->type, $formData);
-
     }
 
     function getError()
@@ -102,6 +103,11 @@ class Editor {
         else {
             return PHPWS_Error::get(EDITOR_MISSING_FILE, 'core', 'Editor::constructor', $type);
         }
+    }
+
+    function useLimited($value=true)
+    {
+        $this->limited = (bool)$value;
     }
 
     function willWork()
