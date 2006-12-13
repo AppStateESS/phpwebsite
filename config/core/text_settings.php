@@ -56,6 +56,12 @@ define('BBCODE_QUOTE_TYPE', 'fieldset');
 // the current page
 define('FIX_ANCHORS', true);
 
+// if true, parseOutput will collapse long urls into a shorter size
+define('COLLAPSE_URLS', true);
+
+// The collapsed url will ALWAYS contain the root address.
+// You can't set this so low that the root is abbreviated.
+define('COLLAPSE_LIMIT', 30);
 
 /******************* Profanity Filter ********************
  *
