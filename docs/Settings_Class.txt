@@ -14,7 +14,7 @@ Installation
 The PHPWS_Settings class requires one thing: a settings.php
 file. Create the file under the directory:
 
-mod/your_module/conf/
+mod/your_module/inc/
 
 This is the file the class will check if no settings have been made
 yet. Think of it as a defaults file.
