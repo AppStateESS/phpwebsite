@@ -3,7 +3,7 @@
 //<![CDATA[
    var oFCKeditor = new FCKeditor( '{NAME}' , 500, 250, 'phpws') ;
    oFCKeditor.BasePath = basepath
-   oFCKeditor.Config["CustomConfigurationsPath"] = 'custom.js';
+   oFCKeditor.Config["CustomConfigurationsPath"] = '{config}';
    oFCKeditor.ReplaceTextarea() ;
 
 //]]>
