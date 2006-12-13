@@ -26,7 +26,9 @@ class PHPWS_Text {
     var $use_bbcode     = ALLOW_BB_CODE;
     var $use_smilies    = false;
     var $fix_anchors    = FIX_ANCHORS;
+    var $collapse_urls  = COLLAPSE_URLS;
     var $_allowed_tags  = NULL;
+
 
     function PHPWS_Text($text=NULL, $encoded=FALSE, $smilies=false)
     {
@@ -152,6 +154,10 @@ class PHPWS_Text {
             $text = PHPWS_Text::fixAnchors($text);
         }
 
+        if ($this->collapse_urls) {
+            $text = PHPWS_Text::collapseUrls($text);
+        }
+
         return $text;
     }
 
@@ -273,13 +279,14 @@ class PHPWS_Text {
     function parseInput($text, $encode=TRUE){
         $text = trim($text);
 
+        if (MAKE_ADDRESSES_RELATIVE) {
+            PHPWS_Text::makeRelative($text, true, true);
+        }
+
         if ($encode) {
             $text = htmlentities($text, ENT_QUOTES, 'UTF-8');
         }
 
-        if (MAKE_ADDRESSES_RELATIVE) {
-            PHPWS_Text::makeRelative($text);
-        }
         return trim($text);
     }
 
@@ -541,13 +548,24 @@ class PHPWS_Text {
         return $text;
     }// END FUNC stripSlashQuotes()
 
-    function makeRelative(&$text, $prefix=true){
+
+    /**
+     * Makes links relative to home site
+     */
+    function makeRelative(&$text, $prefix=true, $inlink_only=false){
         $address = addslashes(PHPWS_Core::getHomeHttp());
         if ($prefix) {
-            $text = str_replace($address, './', $text);
+            $replace = './';
         } else {
-            $text = str_replace($address, '', $text);
+            $replace = '';
         }
+
+        if ($inlink_only) {
+            $address = '="' . $address;
+            $replace = '="' . $replace;
+        }
+
+        $text = str_replace($address, $replace, $text);
     }
 
     /**
@@ -882,6 +900,37 @@ class PHPWS_Text {
                 return $new_text;
             }
         }
+    }
+
+    function collapseUrls($text, $limit=COLLAPSE_LIMIT)
+    {
+        if (!(int)$limit) {
+            return $text;
+        }
+        $replace = '/>([\s\n]*http(s){0,1}:\/\/)(.{' . $limit . ',})([\s\n]*<\/a>)/ie';
+        $replace_with = "'>\\1' . PHPWS_Text::shortenUrl('\\3', $limit) . '\\4'";
+        return preg_replace($replace, $replace_with, $text);
+    }
+
+    function shortenUrl($url, $limit=30)
+    {
+
+        if (!(int)$limit) {
+            return $url;
+        }
+
+        $url_length = strpos($url, '/');
+
+        if (!$url_length) {
+            $url_length = floor($limit/2);
+        }
+
+        $pickup = $limit - $url_length;
+        if ($pickup < 3) {
+            $pickup = 3;
+        }
+
+        return substr($url, 0, $url_length) . '(...)' . substr($url, -1 * $pickup, $pickup);
     }
 
 
