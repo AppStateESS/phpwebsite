@@ -468,11 +468,6 @@ class PHPWS_User {
     }
 
 
-    function updateStats()
-    {
-
-    }
-
     function save()
     {
         PHPWS_Core::initModClass('users', 'Group.php');
@@ -540,10 +535,16 @@ class PHPWS_User {
 
         if ($this->authorize > 0) {
             if ($this->authorize == LOCAL_AUTHORIZATION) {
-                $this->saveLocalAuthorization();
+                $result = $this->saveLocalAuthorization();
+                if (PEAR::isError($result)) {
+                    PHPWS_Error::log($result);
+                }
             }
             elseif ($this->authorize == GLOBAL_AUTHORIZATION) {
-                $this->saveGlobalAuthorization();
+                $result = $this->saveGlobalAuthorization();
+                if (PEAR::isError($result)) {
+                    PHPWS_Error::log($result);
+                }
             }
         }
 
@@ -586,8 +587,12 @@ class PHPWS_User {
         }
 
         $db = new PHPWS_DB('user_authorization');
-        $db->addWhere('username', $this->_prev_username);
-        $db->delete();
+        if (!empty($this->_prev_username)) {
+            $db->addWhere('username', $this->_prev_username);
+        } else {
+            $db->addWhere('username', $this->username);
+        }
+        $result = $db->delete();
         $db->resetWhere();
 
         $db->addValue('username', $this->username);

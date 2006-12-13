@@ -24,6 +24,7 @@
 </tr>
 <!-- END listrows -->
 </table>
+{EMPTY_MESSAGE}
 <br />
 <div class="align-center">
 {TOTAL_ROWS}<br />

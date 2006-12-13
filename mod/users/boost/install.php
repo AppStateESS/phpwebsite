@@ -16,11 +16,11 @@ function users_install(&$content)
     if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'branch') {
         Branch::loadHubDB();
         $db = new PHPWS_DB('users');
-        $sql = 'select a.password, b.* from user_authorization as a, users as b where b.deity = 1 && a.username = b.username';
+        $sql = 'select a.password, b.* from user_authorization as a, users as b where b.deity = 1 and a.username = b.username';
         $deities = $db->getAll($sql);
 
         if (PEAR::isError($deities)) {
-            PHPWS_Error::log($result);
+            PHPWS_Error::log($deities);
             $content[] = _('Could not access hub database.');
             return FALSE;
         }

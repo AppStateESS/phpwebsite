@@ -30,7 +30,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE user_authorization (
-  username varchar(40) NOT NULL,
+  username varchar(30) NOT NULL,
   password CHAR(32) NOT NULL,
   PRIMARY KEY (username)
 );

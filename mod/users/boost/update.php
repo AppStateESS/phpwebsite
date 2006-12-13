@@ -8,7 +8,6 @@
 
 function users_update(&$content, $currentVersion)
 {
-
     switch ($currentVersion) {
 
     case version_compare($currentVersion, '2.0.5', '<'):
@@ -87,6 +86,11 @@ function users_update(&$content, $currentVersion)
 
     case version_compare($currentVersion, '2.2.1', '<'):
         $content[] = '+ Fixed a bug causing conflicts between user and group permissions.';
+
+    case version_compare($currentVersion, '2.2.2', '<'):
+        $content[] = '+ Set username to the same character size in both users table and user_authorization.';
+        $content[] = '+ Fixed typo causing branch installation failure on Postgresql.';
+
     }
 
     return TRUE;
