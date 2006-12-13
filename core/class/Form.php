@@ -29,6 +29,7 @@
  */
 
 PHPWS_Core::configRequireOnce('core', 'formConfig.php', TRUE);
+PHPWS_Core::initCoreClass('Editor.php');
 
 class PHPWS_Form {
     var $id = 'phpws_form';
@@ -370,7 +371,7 @@ class PHPWS_Form {
         return $current_key;
     }
 
-    function useEditor($name, $value=TRUE)
+    function useEditor($name, $value=TRUE, $limited=false)
     {
         if (!$this->testName($name)) {
             return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::useEditor', array($name));
@@ -380,10 +381,8 @@ class PHPWS_Form {
             if ($this->_elements[$name][$key]->type != 'textarea') {
                 break;
             }
-            $result = $this->_elements[$name][$key]->_use_editor = $value;
-            if (PEAR::isError($result)) {
-                return $result;
-            }
+            $this->_elements[$name][$key]->_use_editor = $value;
+            $this->_elements[$name][$key]->_limit_editor = $limited;
         }
     }
 
@@ -1476,11 +1475,12 @@ class Form_Password extends Form_Element {
 }
 
 class Form_TextArea extends Form_Element {
-    var $type        = 'textarea';
-    var $rows        = DFLT_ROWS;
-    var $cols        = DFLT_COLS;
-    var $height      = NULL;
-    var $_use_editor = FALSE;
+    var $type          = 'textarea';
+    var $rows          = DFLT_ROWS;
+    var $cols          = DFLT_COLS;
+    var $height        = NULL;
+    var $_use_editor   = FALSE;
+    var $_limit_editor = false;
 
     function setRows($rows)
     {
@@ -1534,7 +1534,6 @@ class Form_TextArea extends Form_Element {
 
     function get()
     {
-        PHPWS_Core::initCoreClass('Editor.php');
         if ($this->_use_editor && Editor::willWork()) {
             $t = new PHPWS_Text;
             $t->setText($this->value);
@@ -1543,6 +1542,7 @@ class Form_TextArea extends Form_Element {
             $t->fix_anchors   = false;
             $text = $t->getPrint();
             $editor = new Editor($this->name, $text, $this->id);
+            $editor->useLimited($this->_limit_editor);
             return $editor->get();
         }
 
