@@ -321,10 +321,11 @@ class Branch_Admin {
 
     function copy_config()
     {
-        $template['source_dir']   = PHPWS_SOURCE_DIR;
-        $template['home_dir']     = $this->branch->directory;
-        $template['site_hash']    = $this->branch->site_hash;
-        $template['dsn']          = $this->getDSN();
+        $template['source_dir']      = PHPWS_SOURCE_DIR;
+        $template['home_dir']        = $this->branch->directory;
+        $template['site_hash']       = $this->branch->site_hash;
+        $template['dsn']             = $this->getDSN();
+        $template['cache_directory'] = CACHE_DIRECTORY;
         if (!empty($this->dbprefix)) {
             $template['dbprefix']     = $this->dbprefix;
         }
