@@ -7,6 +7,9 @@
    * @version $Id$
    */
 
+if (!defined('CALENDAR_TOTAL_SUGGESTIONS')) {
+    define('CALENDAR_TOTAL_SUGGESTIONS', 5);
+ }
 
 class Calendar_User {
 
@@ -33,6 +36,7 @@ class Calendar_User {
      */
     var $title = null;
 
+    var $message = null;
 
     /**
      * @var Calendar_View object
@@ -50,6 +54,16 @@ class Calendar_User {
         }
     }
 
+
+    function allowSuggestion()
+    {
+        if ( isset($_SESSION['Calendar_Total_Suggestions']) &&
+             $_SESSION['Calendar_Total_Suggestions'] >= CALENDAR_TOTAL_SUGGESTIONS ) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     function getDaysEvents($startdate, &$tpl)
     {
@@ -164,6 +178,7 @@ class Calendar_User {
         $template['DATE'] = strftime(CALENDAR_DAY_HEADER, $startdate);
         $template['SCHEDULE_PICK'] = $this->schedulePick();
         $template['PICK'] = $this->getDatePick();
+        $template['SUGGEST'] = $this->suggestLink();
 
         $tpl->setCurrentBlock('day');
         $tpl->setData($template);
@@ -213,8 +228,8 @@ class Calendar_User {
     function getDatePick()
     {
         $js['month'] = $this->calendar->int_month;
-        $js['day'] = $this->calendar->int_day;
-        $js['year'] = $this->calendar->int_year;
+        $js['day']   = $this->calendar->int_day;
+        $js['year']  = $this->calendar->int_year;
 
         $js['url']   = $this->getUrl();
         $js['type']  = 'pick';
@@ -238,6 +253,14 @@ class Calendar_User {
         return implode('', $address);
     }
 
+    function loadSuggestion($id=0)
+    {
+        PHPWS_Core::initModClass('calendar', 'Suggestion.php');
+        $this->event = new Calendar_Suggestion;
+        $this->event->_schedule = & $this->calendar->schedule;
+        $this->event->schedule_id = $this->event->_schedule->id;
+    }
+
     function loadEvent($event_id)
     {
         PHPWS_Core::initModClass('calendar', 'Event.php');
@@ -258,12 +281,54 @@ class Calendar_User {
         case 'view':
             $this->view();
             break;
+
+        case 'suggest_event':
+            if (!PHPWS_Settings::get('calendar', 'allow_submissions')) {
+                PHPWS_Core::errorPage('403');
+            }
+
+            if (!$this->allowSuggestion()) {
+                $this->title = _('Sorry');
+                $this->content = _('You have exceeded your allowed event submissions.');
+                break;
+            }
+
+            PHPWS_Core::initModClass('calendar', 'Admin.php');
+            $this->loadSuggestion();
+            $this->title = _('Suggest event');
+            $this->content = Calendar_Admin::event_form($this->event, true);
+            break;
+
+        case 'post_suggestion':
+            if (!$this->postSuggestion()) {
+                PHPWS_Core::initModClass('calendar', 'Admin.php');
+                $this->title = _('Suggest event');
+                $this->content = Calendar_Admin::event_form($this->event, true);
+            }
+            break;
         }
 
-        $template['CONTENT'] = $this->content;
-        $template['TITLE']   = $this->title;
-        $final = PHPWS_Template::process($template, 'calendar', 'user_main.tpl');
-        Layout::add($final);
+
+        $tpl['CONTENT'] = $this->content;
+        $tpl['TITLE']   = $this->title;
+
+        if (is_array($this->message)) {
+            $tpl['MESSAGE'] = implode('<br />', $this->message);
+        } else {
+            $tpl['MESSAGE'] = $this->message;
+        } 
+
+        // Clears in case of js window opening
+        $this->content = $this->title = $this->message = null;
+
+        $final = PHPWS_Template::process($tpl, 'calendar', 'user_main.tpl');
+
+        if (PHPWS_Calendar::isJS()) {
+            Layout::nakedDisplay($final);
+        } else {
+            Layout::add($final);
+        }
+
     }
 
     function mini_month()
@@ -510,6 +575,61 @@ class Calendar_User {
         return $content;
     }
 
+
+    function postSuggestion()
+    {
+        $this->loadSuggestion();
+        
+        if ($this->event->post()) {
+            if (PHPWS_Core::isPosted()) {
+                $this->title = _('Duplicate suggestion.');
+                $this->content = _('You may try to suggest a different event.');
+                return true;
+            }
+
+            if (!isset($_SESSION['Calendar_Total_Suggestions'])) {
+                $_SESSION['Calendar_Total_Suggestions'] = 0;
+            }
+
+            if (!$this->allowSuggestion()) {
+                $this->title = _('Sorry');
+                $this->content = _('You have exceeded your allowed event submissions.');
+                return true;
+            }
+
+            $result = $this->event->save();
+
+            $_SESSION['Calendar_Total_Suggestions']++;
+
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                if(PHPWS_Calendar::isJS()) {
+                    javascript('close_refresh', array('timeout'=>5, 'refresh'=>0));
+                    Layout::nakedDisplay('Event suggestion failed to save. Try again later.');
+                    exit();
+                } else {
+                    $this->title = _('Sorry');
+                    $this->content = _('Unable to save your event suggestion.');
+                    return true;
+                }
+            } else {
+                if(PHPWS_Calendar::isJS()) {
+                    javascript('alert', array('content' =>_('Event submitted for approval.')));
+                    javascript('close_refresh', array('timeout'=>1, 'refresh'=>0));
+                    Layout::nakedDisplay();
+                    exit();
+                } else {
+                    $this->title = _('Event saved');
+                    $this->content = _('An administrator will review your submission. Thank you.');
+                    return true;
+                }
+            }
+        } else {
+            return false;
+        }
+    }
+
+
     function resetCacheLink($type, $month, $year, $schedule)
     {
         $vars['aop'] = 'reset_cache';
@@ -534,6 +654,18 @@ class Calendar_User {
         
         $tpl = $form->getTemplate();
         return implode("\n", $tpl);
+    }
+
+    function suggestLink()
+    {
+        if ( !$this->allowSuggestion()                      ||
+             !$this->calendar->schedule->public             || 
+             Current_User::allow('calendar', 'edit_public') ||
+             !PHPWS_Settings::get('calendar', 'allow_submissions') ) {
+            return null;
+        }
+
+        return $this->calendar->schedule->addSuggestLink($this->calendar->current_date);
     }
 
     function todayLink()
@@ -590,7 +722,9 @@ class Calendar_User {
             break;
 
         case 'list':
-            $this->resetCacheLink('list', $this->calendar->int_month, $this->calendar->int_year, $this->calendar->schedule->id);
+            if (ALLOW_CACHE_LITE && Current_User::allow('calendar')) {
+                $this->resetCacheLink('list', $this->calendar->int_month, $this->calendar->int_year, $this->calendar->schedule->id);
+            }
             $this->content = $this->month_list();
             break;
 

@@ -79,6 +79,23 @@ function calendar_update(&$content, $version)
   (Bug #1596780) 
 </pre>';
 
+    case version_compare($version, '1.3.0', '<'):
+        $result = PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/calendar/boost/sql_update_130.sql');
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $content[] = '+ Unable to import new suggestion table.';
+            return false;
+        } else {
+            $content[] = '+ Suggestion table import successful';
+            $content[] = '<pre>
+1.3.0 Changes
+-------------
++ Added ability to for anonymous users to make event suggestions.
+</pre>';
+
+        }
+        break;
+
     }
 
     return true;

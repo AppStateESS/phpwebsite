@@ -192,3 +192,8 @@ div.event-tabs {
     text-decoration: none; 
     color: black;
 }
+
+.overflow {
+    overflow : auto;
+    max-height : 200px;
+}

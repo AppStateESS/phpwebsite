@@ -35,6 +35,12 @@ define('CALENDAR_TIME_LIST_FORMAT', '%l:%M %P');
 define('CALENDAR_EVENT_WIDTH', 700);
 define('CALENDAR_EVENT_HEIGHT', 650);
 
+
+// Controls the dimensions of the event editor popup
+define('CALENDAR_SUGGEST_WIDTH', 600);
+define('CALENDAR_SUGGEST_HEIGHT', 550);
+
+
 // Controls the dimensions of the repeat editor popup
 define('CALENDAR_REPEAT_WIDTH', 650);
 define('CALENDAR_REPEAT_HEIGHT', 350);
@@ -43,4 +49,8 @@ define('CALENDAR_REPEAT_HEIGHT', 350);
 // the calendar module will not allow anymore repeat writes
 // to the database.
 define('CALENDAR_MAXIMUM_REPEATS', 50);
+
+// Total amount of allowed calendar suggestions
+define('CALENDAR_TOTAL_SUGGESTIONS', 5);
+
 ?>

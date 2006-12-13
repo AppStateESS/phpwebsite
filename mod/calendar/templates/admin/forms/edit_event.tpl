@@ -1,3 +1,5 @@
+<!-- BEGIN hr -->
+<!-- BEGIN event-tab -->
 <div class="event-tabs">
 <ul class="cal-tab">
     <li id="event-pick" class="active"><a href="javascript:changeTab(0)">{EVENT_TAB}</a></li>
@@ -5,8 +7,10 @@
 </ul>
 <!-- BEGIN repeat-warning --><div style="margin : 10px">{REPEAT_WARNING}</div><!-- END repeat-warning -->
 </div>
+<!-- END event-tab -->
 <!-- BEGIN error --><h2 class="error">{ERROR}</h2><!-- END error -->
 <hr />
+<!-- END hr -->
 {START_FORM}
 <div id="event-tab" style="display : block">
 <table class="form-table">
@@ -33,7 +37,7 @@
     </td>
     <td>
         {START_DATE} {START_CAL}
-        <span id="start-time" style="display : none">{START_TIME_HOUR}:{START_TIME_MINUTE}</span>
+        <span id="start-time" style="display : inline">{START_TIME_HOUR}:{START_TIME_MINUTE}</span>
         {ALL_DAY} {ALL_DAY_LABEL}
     </td>
   </tr>
@@ -41,7 +45,7 @@
     <td>{END_DATE_LABEL}<br /><span style="font-weight:normal" class="smaller">YYYY/MM/DD</span></td>
     <td>
         {END_DATE} {END_CAL}
-        <span id="end-time" style="display : none">{END_TIME_HOUR}:{END_TIME_MINUTE}</span>
+        <span id="end-time" style="display : inline">{END_TIME_HOUR}:{END_TIME_MINUTE}</span>
         {SHOW_BUSY} {SHOW_BUSY_LABEL}
     </td>
   </tr>
@@ -86,6 +90,6 @@
     </tr>
 </table>
 </div>
-<div style="position : absolute; bottom : 5px; left : 5px">{SAVE}{SAVE_SOURCE}{SAVE_COPY}</div>
-<div style="position : absolute; bottom : 5px; right : 5px;">{CLOSE}</div>
+<div>{SAVE}{SAVE_SOURCE}{SAVE_COPY}</div>
+<div class="align-center">{CLOSE}</div>
 {END_FORM}

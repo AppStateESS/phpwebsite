@@ -21,5 +21,6 @@
             </div>
         <!-- END calendar-events -->
         </div>
+        {SUGGEST}
     </div>
 </div>

@@ -116,6 +116,29 @@ class Calendar_Schedule {
         }
     }
 
+    function addSuggestLink($default_date=NULL)
+    {
+        if (!isset($default_date)) {
+            $default_date = PHPWS_Time::getUserTime();
+        }
+
+        if (javascriptEnabled()) {
+            $vars['address'] = sprintf('index.php?module=calendar&amp;uop=suggest_event&amp;js=1&amp;sch_id=%s&amp;date=%s',
+                                       $this->id, $default_date);
+            $vars['link_title'] = $vars['label'] = _('Suggest event');
+            $vars['width'] = CALENDAR_SUGGEST_WIDTH;
+            $vars['height'] = CALENDAR_SUGGEST_HEIGHT;
+            return javascript('open_window', $vars);
+        } else {
+            return PHPWS_Text::moduleLink(_('Suggest event'), 'calendar',
+                                          array('uop'    => 'suggest_event',
+                                                'sch_id' => $this->id,
+                                                'date'   => $default_date)
+                                          );
+        }
+    }
+
+
     /**
      * Creates an event and repeat table for the schedule
      */
@@ -433,9 +456,8 @@ class Calendar_Schedule {
             if ($new_key) {
                 $db->saveObject($this);
             }
-            
-            return true;
 
+            return true;
         }
     }
 

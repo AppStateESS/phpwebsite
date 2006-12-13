@@ -150,19 +150,6 @@ class Calendar_Event {
 
 
     /**
-     * Makes a clone event
-     */
-    function &repeatClone()
-    {
-        $clone = clone($this);
-        $clone->pid         = $this->id;
-        $clone->repeat_type = null;
-        $clone->end_repeat  = 0;
-        $clone->key_id      = $this->key_id;
-        return $clone;
-    }
-
-    /**
      * Returns true if the event time span is over one day in length
      */
     function dayDiff()
@@ -468,6 +455,16 @@ class Calendar_Event {
     }
 
 
+    function loadSchedule($id)
+    {
+        $this->_schedule = new Calendar_Schedule($id);
+        if ($this->_schedule->id) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Returns true if this event is copy of another event
      */
@@ -484,7 +481,7 @@ class Calendar_Event {
     /**
      * Posts the event information from the form into the object
      */
-    function post()
+    function post($suggested=false)
     {
         if (empty($_POST['summary'])) {
             $errors[] = _('You must give your event a summary.');
@@ -493,7 +490,7 @@ class Calendar_Event {
         }
 
         $this->setLocation($_POST['location']);
-        $this->setDescription($_POST['description']);
+        $this->setDescription($_POST['description'], $suggested);
         $this->setLocLink($_POST['loc_link']);
         if (isset($_POST['all_day'])) {
             $this->all_day = 1;
@@ -501,7 +498,7 @@ class Calendar_Event {
             $this->all_day = 0;
         }
 
-        if (isset($_POST['show_busy'])) {
+        if (!$suggested && isset($_POST['show_busy'])) {
             $this->show_busy = 1;
         } else {
             $this->show_busy = 0;
@@ -541,7 +538,7 @@ class Calendar_Event {
         }
 
         /********** Check repeats ************/
-        if (isset($_POST['repeat_event'])) {
+        if (!$suggested && isset($_POST['repeat_event'])) {
             $this->end_repeat = strtotime($_POST['end_repeat_date']) + 86399;
 
             if (date('Ymd', $this->end_repeat) <= date('Ymd', $this->start_time)) {
@@ -614,6 +611,21 @@ class Calendar_Event {
         }
     }
 
+
+    /**
+     * Makes a clone event
+     */
+    function &repeatClone()
+    {
+        $clone = clone($this);
+        $clone->pid         = $this->id;
+        $clone->repeat_type = null;
+        $clone->end_repeat  = 0;
+        $clone->key_id      = $this->key_id;
+        return $clone;
+    }
+
+
     function save()
     {
         PHPWS_Core::initModClass('search', 'Search.php');
@@ -670,7 +682,7 @@ class Calendar_Event {
         $key->setModule('calendar');
         $key->setItemName('event');
         $key->setItemId($this->id);
-        //        $key->setEditPermission('edit_event');
+
         $key->setUrl($this->getViewLink());
         $key->setTitle($this->summary);
         if (!empty($this->description)) {
@@ -686,8 +698,12 @@ class Calendar_Event {
     }
 
 
-    function setDescription($description)
+    function setDescription($description, $suggested=false)
     {
+        if ($suggested) {
+            $description = strip_tags($description);
+        }
+
         $this->description = PHPWS_Text::parseInput($description);
     }
 
