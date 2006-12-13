@@ -177,6 +177,10 @@ class DBPager {
             $this->current_page = (int)$_REQUEST['page'];
         }
 
+        if (!$this->current_page) {
+            $this->current_page = 1;
+        }
+
         if (isset($_REQUEST['limit']) && $_REQUEST['limit'] > 0) {
             $this->limit = (int)$_REQUEST['limit'];
         }
@@ -192,6 +196,7 @@ class DBPager {
         if (isset($_REQUEST['pager_c_search'])) {
             if (!empty($_REQUEST['pager_c_search'])) {
                 $this->search = preg_replace('/\W/', '', $_REQUEST['pager_c_search']);
+                $this->current_page = 1;
             } else {
                 $this->search = NULL;
             }
@@ -205,7 +210,7 @@ class DBPager {
         $this->link = PHPWS_Core::getCurrentUrl(TRUE, FALSE);
     }
 
-    function setOrder($column, $direction, $only_if_empty=false)
+    function setOrder($column, $direction='asc', $only_if_empty=false)
     {
         if ($only_if_empty && !empty($this->orderby)) {
             return;
@@ -399,7 +404,7 @@ class DBPager {
             $result = $this->db->select('count');
         }
 
-        //        $this->db->resetColumns();
+        $this->db->resetColumns();
         return $result;
     }
 
@@ -409,7 +414,7 @@ class DBPager {
     }
 
     /**
-     * Pulls the appropiate rows from the data base.
+     * Pulls the appropriate rows from the data base.
      *
      * This function pulls the database information then plugs
      * the data it gets into the object.
@@ -424,7 +429,8 @@ class DBPager {
 
         if (!empty($this->search) && isset($this->searchColumn)) {
             foreach ($this->searchColumn as $column_name) {
-                $this->addWhere($column_name, '%' . strtolower($this->search) . '%', 'like');
+                // change to OR
+                $this->addWhere($column_name, '%' . strtolower($this->search) . '%', 'like', 'or');
             }
         }
 
@@ -616,7 +622,8 @@ class DBPager {
 
         if (!empty($this->search)) {
             $values['pager_search'] = $this->search;
-        } else {
+        }
+         else {
             $values['pager_search'] = NULL;
         }
 
@@ -788,6 +795,7 @@ class DBPager {
         $form = & new PHPWS_Form('search_list');
         $form->setMethod('get');
         $values = $this->getLinkValues();
+        unset($values['pager_search']);
         $form->addHidden($values);
         $form->addText('pager_c_search', $this->search);
         $form->setLabel('pager_c_search', _('Search'));
@@ -862,8 +870,11 @@ class DBPager {
         }
 
         $count = 0;
+        $this->_getNavigation($template);
+        $this->getSortButtons($template);
+
         if (isset($rows)) {
-            $this->_getNavigation($template);
+
             foreach ($rows as $rowitem){
                 if (isset($max_tog)) {
                     if ($max_tog == 1) {
@@ -888,7 +899,7 @@ class DBPager {
                 $template['listrows'][] = $rowitem;
             }
       
-            $this->getSortButtons($template);
+
         } elseif(!$return_blank_results) {
             return NULL;
         } else {
