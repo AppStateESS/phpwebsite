@@ -237,6 +237,9 @@ class Boost_Action {
             }
 
             $version_info = PHPWS_Text::tagXML($full_xml_array);
+            if (empty($version_info) || empty($version_info['VERSION'])) {
+                continue;
+            }
             if (version_compare($version_info['VERSION'], $module->getVersion(), '>')) {
                 $_SESSION['Boost_Needs_Update'][$mod_title] = 1;
             } else {
