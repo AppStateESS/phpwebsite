@@ -97,6 +97,9 @@ $content = $pager->get();
 
 Layout::add($content);
 
+Read on to configure options and get information on setting up your
+pager template.
+
 
 Where Options
 --------------------------------------------------------------------
