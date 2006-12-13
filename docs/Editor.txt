@@ -76,8 +76,9 @@ Now you just need to capture the editor data:
 
 $textarea_content = $editor->get();
 
-Now you can echo this into your form. If you want to put the editor
-into your phpWebSite form object, do so:
+Now you can echo this into your form (easier method below in "Form
+Class"). If you want to put the editor into your phpWebSite form
+object, do so: 
 
 $form->addTplTag('TEXT_AREA', $content);
 
@@ -86,6 +87,32 @@ You may want to make a label for it as well like so:
 $form->addTplTag('TEXT_AREA_LABEL',
 		 PHPWS_Form::makeLabel('name_of_textarea',
 				       'My text area example');
+
+Form Class
+----------------------------
+
+The PHPWS_Form class includes an easy method to use the editor in your
+text area.
+
+$form->addTextArea('description', $description);
+$form->useEditor('description', true, true);
+
+The first parameter of useEditor tells the form class which element to
+use.
+
+The second and third option are optional. The second parameter tells
+the form class whether to use the editor or not. So you could, if you
+wish, call:
+
+$form->useEditor('description', false);
+
+And the editor would NOT be used.
+
+The last parameter is the "limited" parameter. If true, the editor
+will attempt to use a limited version of the editor. Please note that
+if a limited condition was not written for the editor, this parameter
+will be ignored.
+
 
 
 Creating your own Editor
