@@ -8,6 +8,7 @@
     <div class="form-item">
       {SOURCE_DIR}
     </div>
+    <!-- BEGIN source_dir --><div class="error">{SOURCE_DIR_ERR}</div><!-- END source_dir -->
   </div>
  
   <div class="config-item">
@@ -16,6 +17,7 @@
     <div class="form-item">
       {SITE_HASH}
     </div>
+    <!-- BEGIN site_hash --><div class="error">{SITE_HASH_ERR}</div><!-- END site_hash -->
   </div>
 
   <div class="config-item">

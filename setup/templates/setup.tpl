@@ -77,6 +77,12 @@ a:hover, a:active {
     color: #000;
 }
 
+div.error {
+  background-color : red;
+  color : white;
+  font-weight : bold;
+}
+
 </style>
 </head>
 <body>

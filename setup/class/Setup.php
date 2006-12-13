@@ -43,23 +43,25 @@ class Setup{
     {
         Setup::initConfigSet();
 
+        $messages = array();
+
         if (isset($_POST['action'])) {
             if ($_POST['action'] == 'postGeneralConfig') {
-                if (Setup::postGeneralConfig($content)) {
+                if (Setup::postGeneralConfig($content, $messages)) {
                     $_SESSION['configSettings']['general'] = TRUE;
                 }
             } elseif ($_POST['action'] == 'postDatabaseConfig') {
-                if (Setup::postDatabaseConfig($content)) {
+                if (Setup::postDatabaseConfig($content, $messages)) {
                     $_SESSION['configSettings']['database'] = TRUE;
                 }
             }
         }
 
         if ($_SESSION['configSettings']['general'] == FALSE) {
-            Setup::generalConfig($content);
+            Setup::generalConfig($content, $messages);
         }
         elseif ($_SESSION['configSettings']['database'] == FALSE) {
-            Setup::databaseConfig($content);
+            Setup::databaseConfig($content, $messages);
         }
         else {
             $configDir = Setup::getConfigSet('source_dir') . 'config/core/';
@@ -97,7 +99,7 @@ class Setup{
         return File::write($location . 'config.php', $configFile, FILE_MODE_WRITE);
     }
 
-    function postGeneralConfig(&$content)
+    function postGeneralConfig(&$content, &$messages)
     {
         $check = TRUE;
         $source_dir = $_POST['source_dir'];
@@ -107,7 +109,7 @@ class Setup{
         }
 
         if (!is_dir($source_dir)) {
-            $content[] = _('Unable to locate the source directory:') . ' ' . $source_dir;
+            $messages['source_dir'] = _('Unable to locate the source directory:') . ' ' . $source_dir;
             $check = FALSE;
         }
         else {
@@ -126,11 +128,16 @@ class Setup{
             }
         }
 
-        Setup::setConfigSet('site_hash', $_POST['site_hash']);
+        if (empty($_POST['site_hash'])) {
+            $messages['site_hash'] = _('Site hash may not be empty.');
+            $check = false;
+        } else {
+            Setup::setConfigSet('site_hash', $_POST['site_hash']);
+        }
         return $check;
     }
 
-    function postDatabaseConfig(&$content)
+    function postDatabaseConfig(&$content, &$messages)
     {
         $check = TRUE;
         $currentPW = Setup::getConfigSet('dbpass');
@@ -138,14 +145,19 @@ class Setup{
         if (!empty($_POST['dbuser'])) {
             Setup::setConfigSet('dbuser', $_POST['dbuser']);
         } else {
-            $content[] = _('Missing a database user name.');
+            $messages['dbuser'] = _('Missing a database user name.');
             $check = FALSE;
         }
 
         if (!empty($_POST['dbpass'])) {
-            Setup::setConfigSet('dbpass', $_POST['dbpass']);
+            if (preg_match('/\W/', $_POST['dbpass'])) {
+                $messages['dbpass'] = _('Database password may contain alphanumeric characters or underscores only.');
+                $check = false;
+            } else {
+                Setup::setConfigSet('dbpass', $_POST['dbpass']);
+            }
         } elseif (empty($currentPW)) {
-            $content[] = _('Missing a database password.');
+            $messages['dbpass'] = _('Missing a database password.');
             $check = FALSE;
         }
 
@@ -154,13 +166,13 @@ class Setup{
         if (!empty($_POST['dbname'])) {
             Setup::setConfigSet('dbname', $_POST['dbname']);
         } else {
-            $content[] = _('Missing a database name.');
+            $messages['dbname'] = _('Missing a database name.');
             $check = FALSE;
         }
 
         if (!empty($_POST['dbprefix'])) {
             if (preg_match('/\W/', $_POST['dbprefix'])) {
-                $content[] = _('Table prefix must be alphanumeric characters or underscores only');
+                $messages['dbpref'] = _('Table prefix must be alphanumeric characters or underscores only');
                 $check = FALSE;
             } else {
                 Setup::setConfigSet('dbprefix', $_POST['dbprefix']);
@@ -184,25 +196,28 @@ class Setup{
         if ($checkConnection == 1) {
             return TRUE;
         } elseif ($checkConnection == 2) {
-            $content[] = _('PhpWebSite was able to connect, but the database already contained tables.');
+            $sub['main'] = _('PhpWebSite was able to connect, but the database already contained tables.');
             if (Setup::getConfigSet('dbprefix')) {
-                $content[] = _('Since you set a table prefix, you may force an installation into this database.');
-                $content[] = _('Click the link below to continue or change your connection settings.');
-                $content[] = sprintf('<a href="index.php?step=1b">%s</a>',_('I want to install phpWebSite in this database.'));
+                $sub[] = _('Since you set a table prefix, you may force an installation into this database.');
+                $sub[] = _('Click the link below to continue or change your connection settings.');
+                $sub[] = sprintf('<a href="index.php?step=1b">%s</a>',_('I want to install phpWebSite in this database.'));
             } else {
                 $_SESSION['configSettings']['database'] = FALSE;
             }
+            $messages['main'] = implode('<br />', $sub);
             return FALSE;
         }
         elseif ($checkConnection == -1) {
-            $content[] = _('PhpWebSite was able to connect but the database itself does not exist.');
-            $content[] = '<a href="index.php?step=1a">' . _('Do you want phpWebSite to create the database?') . '</a>';
-            $content[] = _('If not, you will need to create the database yourself and return to the setup.');
+            $sub[] = _('PhpWebSite was able to connect but the database itself does not exist.');
+            $sub[] = '<a href="index.php?step=1a">' . _('Do you want phpWebSite to create the database?') . '</a>';
+            $sub[] = _('If not, you will need to create the database yourself and return to the setup.');
+            $messages['main'] = implode('<br />', $sub);
             return FALSE;
         }
         else {
-            $content[] = _('Unable to connect to the database with the information provided.');
-            $content[] = '<a href="help/database.' . DEFAULT_LANGUAGE . '.txt" target="index">' . _('Database Help') . '</a>';
+            $sub[] = _('Unable to connect to the database with the information provided.');
+            $sub[] = '<a href="help/database.' . DEFAULT_LANGUAGE . '.txt" target="index">' . _('Database Help') . '</a>';
+            $messages['main'] = implode('<br />', $sub);
             return FALSE;
         }
     }
@@ -247,6 +262,7 @@ class Setup{
         $dbname = Setup::getConfigSet('dbname');
 
         $dsn =  $dbtype . '://' . $dbuser . ':' . $dbpass . '@' . $dbhost;
+
         if (!empty($dbport)) {
             $dsn .= ':' . $dbport;
         }
@@ -318,7 +334,7 @@ class Setup{
         return $_SESSION['configSettings'][$setting];
     }
 
-    function generalConfig(&$content)
+    function generalConfig(&$content, $messages)
     {
 
         $form = & new PHPWS_Form('generalConfig');
@@ -337,6 +353,16 @@ class Setup{
 
         $formTpl['PEAR_DEF'] = _('phpWebSite uses the Pear library extensively.') . '<br />'
             . _('We suggest you use the library files included with phpWebSite.');
+
+        if (isset($messages['source_dir'])) {
+            $formTpl['SOURCE_DIR_ERR'] = $messages['source_dir'];
+        }
+
+
+        if (isset($messages['site_hash'])) {
+            $formTpl['SITE_HASH_ERR'] = $messages['site_hash'];
+        }
+
 
         $form->add('source_dir', 'textfield', $source_dir);
         $form->setSize('source_dir', 50);
@@ -360,8 +386,11 @@ class Setup{
     }
 
 
-    function databaseConfig(&$content)
+    function databaseConfig(&$content, $messages)
     {
+        if (isset($messages['main'])) {
+            $formTpl['MAIN'] = $messages['main'];
+        }
         $form = & new PHPWS_Form('databaseConfig');
         $form->add('step',   'hidden', '1');
         $form->add('action', 'hidden', 'postDatabaseConfig');
@@ -383,12 +412,23 @@ class Setup{
         $formTpl['DBUSER_LBL'] = _('Database User');
         $formTpl['DBUSER_DEF'] = _('This is the user name that phpWebSite will use to access its database.')
             . ' <br /><i>' . _('Note: it is a good idea to give each phpWebSite installation its own user.') . '</i>';
+        if (isset($messages['dbuser'])) {
+            $formTpl['DBUSER_ERR'] = $messages['dbuser'];
+        }
 
         $formTpl['DBPASS_LBL'] = _('Database Password');
         $formTpl['DBPASS_DEF'] = _('Enter the database\'s user password here.');
+        if (isset($messages['dbpass'])) {
+            $formTpl['DBPASS_ERR'] = $messages['dbpass'];
+        }
+
 
         $formTpl['DBPREF_LBL'] = _('Table prefix');
         $formTpl['DBPREF_DEF'] = _('If you are installing phpWebSite in a shared environment, you may assign a prefix to tables.<br />We recommend you run without one.');
+        if (isset($messages['dbpref'])) {
+            $formTpl['DBPREF_ERR'] = $messages['dbpref'];
+        }
+
 
         $formTpl['DBHOST_LBL'] = _('Host Specification');
         $formTpl['DBHOST_DEF'] = _('If your database is on the same server as your phpWebSite installation, leave this as &#x22;localhost&#x22;.')
@@ -400,6 +440,10 @@ class Setup{
         $formTpl['DBNAME_LBL'] = _('Database Name');
         $formTpl['DBNAME_DEF'] = _('The database\'s name into which you are installing phpWebSite.')
             . '<br /><i>' . _('Note: if you have not made this database yet, you should do so before continuing.') . '</i>';
+        if (isset($messages['dbname'])) {
+            $formTpl['DBNAME_ERR'] = $messages['dbname'];
+        }
+        
 
         $form->addSelect('dbtype', $databases);
         $form->setMatch('dbtype', Setup::getConfigSet('dbtype'));
