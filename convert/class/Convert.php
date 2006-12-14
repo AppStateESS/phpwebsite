@@ -41,6 +41,7 @@ class Convert {
             break;
 
         case 'convert':
+            $this->siteDB();
             $this->convertPackage($_REQUEST['package']);
             break;
 
@@ -89,6 +90,11 @@ class Convert {
             return FALSE;
         } else {
             $_SESSION['OTHER_DATABASE'] = $dsn;
+            if (isset($_POST['site'])) {
+                $_SESSION['SITE'] = $_POST['site'];
+            } else {
+                $_SESSION['SITE'] = 0;
+            }
             return TRUE;
         }
 
@@ -130,6 +136,10 @@ class Convert {
             return;
         }
 
+        if ($_SESSION['SITE']) {
+            $result = Convert::siteDB();
+        }
+        
         foreach ($directories as $mod_dir) {
             $filename = translateFile('info.ini');
             $info_file = $predir . $mod_dir . '/' . $filename;
@@ -176,6 +186,12 @@ class Convert {
             $tbl_prefix = null;
         }
 
+        if (isset($_POST['site'])) {
+            $site = $_POST['site'];
+        } else {
+            $site = 0;
+        }
+
         if (isset($_POST['name'])) {
             $name = $_POST['name'];
         }
@@ -213,9 +229,29 @@ class Convert {
                           'fbsql' =>'FrontBase',
                           'ifx'   =>'Informix');
 
+        $mods = PHPWS_Core::installModList();
+
         $form = new PHPWS_Form;
         $form->addHidden('command', 'make_connection');
-        
+
+        if (in_array('branch', $mods)) {
+            $db = new PHPWS_DB('branch_sites');
+            $db->addColumn('id');
+            $db->addColumn('branch_name');
+            $db->setIndexBy('id');
+            $branches = $db->select('col');
+            if (PEAR::isError($branches)) {
+                PHPWS_Error::log($branches);
+            } else {
+                $branches[0] = _('Hub site');
+            }
+            ksort($branches);
+            $form->addSelect('site', $branches);
+            $form->setLabel('site', _('Conversion site'));
+            $form->setMatch('site', $site);
+        }
+
+
         $form->addSelect('type', $db_list);
         $form->setMatch('type', $type);
         $form->setLabel('type', _('Type'));
@@ -393,6 +429,23 @@ class Convert {
         return $db->insert();
     }
 
+    function siteDB()
+    {
+        static $branch = null;
+
+        if ($_SESSION['SITE']) {
+            PHPWS_Core::initModClass('branch', 'Branch.php');
+            if (!$branch) {
+                $branch = new Branch($_SESSION['SITE']);
+                if (empty($branch->branch_name)) {
+                    Convert::branchError();
+                }
+                $branch->loadDSN();
+            }
+            return $branch->loadBranchDB();
+        }
+    }
+
     function isConverted($name) {
         $db = new PHPWS_DB('converted');
         $db->addWhere('convert_name', $name);
@@ -402,6 +455,12 @@ class Convert {
         } else  {
             return !empty($result);
         }
+    }
+
+    function branchError()
+    {
+        echo _('Failed to make connection with the requested branch site.');
+        exit();
     }
 
 }
