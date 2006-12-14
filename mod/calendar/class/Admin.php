@@ -186,7 +186,7 @@ class Calendar_Admin {
             $form->setRows('description', 8);
             $form->setCols('description', 55);
         } else {
-            $form->useEditor('description', true, true);
+            $form->useEditor('description');
         }
 
         $form->setLabel('description', _('Description'));
