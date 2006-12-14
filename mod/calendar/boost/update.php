@@ -86,11 +86,29 @@ function calendar_update(&$content, $version)
             $content[] = '+ Unable to import new suggestion table.';
             return false;
         } else {
+            $files = array('templates/admin/forms/edit_event.tpl',
+                           'templates/view/day.tpl',
+                           'templates/view/week.tpl',
+                           'templates/view/month/grid.tpl',
+                           'templates/view/month/list.tpl',
+                           'templates/style.css',
+                           'templates/user_main.tpl',
+                           'templates/admin/approval.tpl',
+                           'conf/config.php');
+            if (PHPWS_Boost::updateFiles($files, 'calendar')) {
+                $content[] = '+ Template files updated successfully.';
+            } else {
+                $content[] = '+ Unable to copy template files locally.';
+                $content[] = '<pre>' . implode("\n", $files) . '</pre>';
+            }
+
             $content[] = '+ Suggestion table import successful';
             $content[] = '<pre>
 1.3.0 Changes
 -------------
 + Added ability to for anonymous users to make event suggestions.
++ Fixed some issues with javascript disabled users unable to make events.
++ First public schedule is made the default on creation.
 </pre>';
 
         }
