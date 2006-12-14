@@ -2,6 +2,12 @@
 {DIRECTIONS}
 {START_FORM}
 <table width="100%" class="form-table">
+<!-- BEGIN site -->
+  <tr>
+    <td class="label" width="30%">{SITE_LABEL}</td>
+    <td>{SITE}</td>
+  </tr>
+<!-- END site -->
   <tr>
     <td class="label" width="30%">{TYPE_LABEL}</td>
     <td>{TYPE}</td>

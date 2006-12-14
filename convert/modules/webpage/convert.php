@@ -68,7 +68,6 @@ function convert()
     //    $content[] = sprintf('%s&#37; done<br>', $batch->percentDone());
 
     $batch->completeBatch();
-
     
     if (!$batch->isFinished()) {
         Convert::forward($batch->getAddress());
@@ -92,6 +91,7 @@ function runBatch(&$db, &$batch)
     $db->setLimit($start, $limit);
     $result = $db->select();
     $db->disconnect();
+    Convert::siteDB();
 
     if (empty($result)) {
         return NULL;
@@ -161,6 +161,7 @@ function convertSection($section_order, $volume_id, $title, $key_id)
     $db->setIndexBy('id');
     $sections = $db->select();
     $db->disconnect();
+    Convert::siteDB();
 
     saveSections($sections, $volume_id, $title, $key_id);
 }
@@ -222,7 +223,7 @@ function saveSections($sections, $volume_id, $title, $key_id)
         $pages++;
 
         if ($method == 'sep') {
-            $page->content = implode("\n", $page_content);
+            $page->setContent(implode("\n", $page_content));
             $result = $page->save();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
@@ -231,7 +232,7 @@ function saveSections($sections, $volume_id, $title, $key_id)
     }
 
     if ($method == 'col') {
-        $page->content     = implode("\n", $page_content);
+        $page->setContent(implode("\n", $page_content));
         $page->volume_id   = $volume_id;
         $page->approved    = 1;
         $page->page_number = 1;

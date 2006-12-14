@@ -45,6 +45,7 @@ function convertElements()
             $checkbox = str_replace($tbl_prefix . 'mod_phatform', 'mod_phatform', $checkbox);
         }
         $db->disconnect();
+        Convert::siteDB();
 
         if (PHPWS_DB::import($checkbox, false)) {
             createSeqTable('mod_phatform_checkbox');
@@ -68,6 +69,7 @@ function convertElements()
             $dropbox = str_replace($tbl_prefix . 'mod_phatform', 'mod_phatform', $dropbox);
         }
         $db->disconnect();
+        Convert::siteDB();
 
         if (PHPWS_DB::import($dropbox, false)) {
             createSeqTable('mod_phatform_dropbox');
@@ -93,6 +95,7 @@ function convertElements()
             $multiselect = str_replace($tbl_prefix . 'mod_phatform', 'mod_phatform', $multiselect);
         }
         $db->disconnect();
+        Convert::siteDB();
 
         if (PHPWS_DB::import($multiselect, false)) {
             createSeqTable('mod_phatform_multiselect');
@@ -117,6 +120,7 @@ function convertElements()
             $options = str_replace($tbl_prefix . 'mod_phatform', 'mod_phatform', $options);
         }
         $db->disconnect();
+        Convert::siteDB();
 
         if (PHPWS_DB::import($options, false)) {
             createSeqTable('mod_phatform_options');
@@ -142,6 +146,7 @@ function convertElements()
             $radiobutton = str_replace($tbl_prefix . 'mod_phatform', 'mod_phatform', $radiobutton);
         }
         $db->disconnect();
+        Convert::siteDB();
 
         if (PHPWS_DB::import($radiobutton, false)) {
             createSeqTable('mod_phatform_radiobutton');
@@ -166,6 +171,7 @@ function convertElements()
             $textarea = str_replace($tbl_prefix . 'mod_phatform', 'mod_phatform', $textarea);
         }
         $db->disconnect();
+        Convert::siteDB();
 
         if (PHPWS_DB::import($textarea, false)) {
             createSeqTable('mod_phatform_textarea');
@@ -189,6 +195,7 @@ function convertElements()
             $textfield = str_replace($tbl_prefix . 'mod_phatform', 'mod_phatform', $textfield);
         }
         $db->disconnect();
+        Convert::siteDB();
 
         if (PHPWS_DB::import($textfield, false)) {
             createSeqTable('mod_phatform_textfield');
@@ -221,6 +228,7 @@ function convertPhatforms()
 
     $result = $db->select();
     $db->disconnect();
+    Convert::siteDB();
 
     if (empty($result)) {
         return _('No forms to convert.');
@@ -244,6 +252,7 @@ function convertPhatforms()
                 }
 
                 $db->disconnect();
+                Convert::siteDB();
                 $result = PHPWS_DB::import($form_data);
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);

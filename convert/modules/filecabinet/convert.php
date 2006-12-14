@@ -17,14 +17,15 @@ function convert()
 
     $mod_list = PHPWS_Core::installModList();
 
-    if (!in_array('documents', $mod_list)) {
-        return _('The Documents module is not installed.');
+    if (!in_array('filecabinet', $mod_list)) {
+        return _('The File Cabinet module is not installed.');
     }
 
 
     $db = Convert::getSourceDB('mod_documents_files');
     $all_files = $db->select();
     $db->disconnect();
+    Convert::siteDB();
 
     if (empty($all_files)) {
         return _('No files found.');

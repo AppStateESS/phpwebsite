@@ -28,6 +28,7 @@ function convertAlbum()
     $db = Convert::getSourceDB('mod_photoalbum_albums');
     $result = $db->select();
     $db->disconnect();
+    Convert::siteDB();
 
     if (empty($result)) {
         return _('No albums to convert.');
@@ -86,6 +87,7 @@ function convertPics()
             $photos = str_replace($tbl_prefix . 'mod_photoalbum', 'mod_photoalbum', $photos);
         }
         $db->disconnect();
+        Convert::siteDB();
 
         if (PHPWS_DB::import($photos, false)) {
             createSeqTable('mod_photoalbum_photos');

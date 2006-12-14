@@ -26,6 +26,7 @@ function convert()
     $db = Convert::getSourceDB('mod_blockmaker_data');
     $all_blocks = $db->select();
     $db->disconnect();
+    Convert::siteDB();
 
     if (empty($all_blocks)) {
         return _('No blocks found.');

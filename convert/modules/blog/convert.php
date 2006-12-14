@@ -111,6 +111,7 @@ function runBatch(&$db, &$batch)
     $db->setLimit($start, $limit);
     $result = $db->select();
     $db->disconnect();
+    Convert::siteDB();
 
     if (empty($result)) {
         return NULL;
@@ -139,7 +140,7 @@ function convertAnnouncement($entry)
 
     $val['id']      = $entry['id'];
     $val['title']   = strip_tags($entry['subject']);
-    $val['summary']   = $entry['summary'];
+    $val['summary'] = $entry['summary'];
 
     if (!empty($entry['body'])) {
         $val['entry'] = $entry['body'];
@@ -196,6 +197,7 @@ function convertAnnouncement($entry)
         $comment_list = $cm_db->select();
 
         $cm_db->disconnect();
+        Convert::siteDB();
         if (!empty($comment_list)) {
             convertComments($comment_list, $val['key_id']);
         }
@@ -267,6 +269,7 @@ function buildAuthor($username)
     $db->addColumn('user_id');
     $user_id = $db->select('one');
     $db->disconnect();
+    Convert::siteDB();
 
     if ($user_id == 1) {
         return FALSE;

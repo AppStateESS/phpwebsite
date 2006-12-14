@@ -159,6 +159,7 @@ function runBatch(&$db, &$batch)
     $db->setLimit($start, $limit);
     $result = $db->select();
     $db->disconnect();
+    Convert::siteDB();
 
     $username = strtolower(Current_User::getUsername());
 

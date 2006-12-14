@@ -129,6 +129,7 @@ function runCatBatch(&$db, &$batch)
     $db->setLimit($start, $limit);
     $result = $db->select();
     $db->disconnect();
+    Convert::siteDB();
 
     $newdb = new PHPWS_DB('categories');
 
@@ -155,6 +156,7 @@ function runCatItemBatch(&$db, &$batch)
     $db->setLimit($start, $limit);
     $result = $db->select();
     $db->disconnect();
+    Convert::siteDB();
 
     $item_db = new PHPWS_DB('category_items');
     $key_db = new PHPWS_DB('phpws_key');

@@ -128,6 +128,7 @@ function runBatch(&$db, &$batch)
     $db->setLimit($start, $limit);
     $result = $db->select();
     $db->disconnect();
+    Convert::siteDB();
 
     if (!isset($_SESSION['schedule_id'])) {
         return false;

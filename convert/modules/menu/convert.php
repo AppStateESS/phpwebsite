@@ -43,6 +43,7 @@ function convertMenu()
     }
 
     $db->disconnect();
+    Convert::siteDB();
 
     $newdb = & new PHPWS_DB('menus');
 
@@ -121,6 +122,7 @@ function linkBatch($db, $batch)
     $db->setLimit($start, $limit);
     $result = $db->select();
     $db->disconnect();
+    Convert::siteDB();
 
     if (empty($result)) {
         return NULL;
