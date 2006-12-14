@@ -233,6 +233,27 @@ function core_update(&$content, $version) {
   o Rewrote portions of FCKeditor file manager. Works better now.
   o Rewrote FCKeditor upload to work better with links.
 </pre>';
+
+
+    case version_compare($version, '1.3.6', '<'):
+        $content[] = '<pre>
+1.3.6 Changes
+--------------
++ Pear - added mime file for email class
++ Convert
+  o Convert class now allows the user to pick a destination branch.
+  o siteDB function added. Used in developer\'s convert.php file to
+    restore the branch connection after a disconnect.
+  o Fixed File Cabinet conversion typo (bug #1608912).
++ Documentation
+  o Settings_Class - Fixed directory for settings file
++ Settings
+  o Set password character limits
+  o Moved error messages to appropriate areas
+  o Now allows null settings.
++ Javascript
+  o Added suggested js_calendar fix. Thanks Verdon.
+</pre>';
     }
     
     return true;
