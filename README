@@ -40,3 +40,6 @@ setup/ should be moved or made unreadable AFTER an installation
 
 Before updating the core, make sure to make a copy of your config/core
 directory or some of your settings could get overwritten.
+
+phpWebSite uses UTF-8 character encoding. Some older database versions
+of MySQL (pre 4.1) do not support it.
