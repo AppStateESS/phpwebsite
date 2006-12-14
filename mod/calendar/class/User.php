@@ -491,12 +491,13 @@ class Calendar_User {
         $template['FULL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%B', $date), 'calendar', $vars);
         $template['PARTIAL_MONTH_NAME'] = PHPWS_Text::moduleLink(strftime('%b', $date), 'calendar', $vars);
 
-        $template['TITLE'] = $this->calendar->schedule->title;
-        $template['PICK'] = $date_pick;
-        $template['FULL_YEAR'] = strftime('%Y', $date);
-        $template['PARTIAL_YEAR'] = strftime('%y', $date);
-        $template['VIEW_LINKS'] = $this->viewLinks('grid');
+        $template['TITLE']         = $this->calendar->schedule->title;
+        $template['PICK']          = $date_pick;
+        $template['FULL_YEAR']     = strftime('%Y', $date);
+        $template['PARTIAL_YEAR']  = strftime('%y', $date);
+        $template['VIEW_LINKS']    = $this->viewLinks('grid');
         $template['SCHEDULE_PICK'] = $this->schedulePick();
+        $template['SUGGEST']       = $this->suggestLink();
 
         $oTpl->setData($template);
         $content = $oTpl->get();
@@ -564,7 +565,8 @@ class Calendar_User {
         $main_tpl['FULL_YEAR']       = strftime('%Y', mktime(0,0,0, $month, $day, $year));
         $main_tpl['ABRV_YEAR']       = strftime('%y', mktime(0,0,0, $month, $day, $year));
         $main_tpl['SCHEDULE_PICK']   = $this->schedulePick();
-        $main_tpl['PICK'] = $date_pick;
+        $main_tpl['PICK']            = $date_pick;
+        $main_tpl['SUGGEST']         = $this->suggestLink();
 
         $tpl->setData($main_tpl);
         $content = $tpl->get();
@@ -929,14 +931,14 @@ class Calendar_User {
             $tpl->setVariable('MESSAGE', _('No events this week.'));
         }
 
-        $main_tpl['DAY_RANGE'] = sprintf('From %s to %s', $start_range, $end_range);
-        $main_tpl['VIEW_LINKS'] = $this->viewLinks('week');
+        $main_tpl['DAY_RANGE']      = sprintf('From %s to %s', $start_range, $end_range);
+        $main_tpl['VIEW_LINKS']     = $this->viewLinks('week');
         $main_tpl['SCHEDULE_TITLE'] = $this->calendar->schedule->title;
-        $main_tpl['FULL_YEAR'] = strftime('%Y', $this->calendar->current_date);
-        $main_tpl['ABRV_YEAR'] = strftime('%y', $this->calendar->current_date);
-        $main_tpl['SCHEDULE_PICK'] = $this->schedulePick();
-        $main_tpl['PICK'] = $this->getDatePick();
-
+        $main_tpl['FULL_YEAR']      = strftime('%Y', $this->calendar->current_date);
+        $main_tpl['ABRV_YEAR']      = strftime('%y', $this->calendar->current_date);
+        $main_tpl['SCHEDULE_PICK']  = $this->schedulePick();
+        $main_tpl['PICK']           = $this->getDatePick();
+        $main_tpl['SUGGEST']        = $this->suggestLink();
         $tpl->setData($main_tpl);
        
         return $tpl->get();

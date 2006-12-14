@@ -1,7 +1,7 @@
 <div class="box">
     <div class="box-title">
         <h1 class="align-center">{SCHEDULE_TITLE} - {DATE} {PICK}</h1>
-        <div class="view-links">{VIEW_LINKS}</div>
+        <div class="view-links">{VIEW_LINKS}<br />{SUGGEST}</div>
         <div class="align-center smaller">{SCHEDULE_PICK}</div>
     </div>
     <div class="box-content">
@@ -21,6 +21,5 @@
             </div>
         <!-- END calendar-events -->
         </div>
-        {SUGGEST}
     </div>
 </div>
