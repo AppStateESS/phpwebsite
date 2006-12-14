@@ -254,6 +254,57 @@ function core_update(&$content, $version) {
 + Javascript
   o Added suggested js_calendar fix. Thanks Verdon.
 </pre>';
+
+
+   case version_compare($version, '1.3.7', '<'):
+       if (PHPWS_Boost::updateFiles(array('conf/text_settings.php'), 'core')) {
+           $content[] = '+ Configuration file text_settings.php updated.';
+       } else {
+           $content[] = '+ Configuration file text_settings.php could not be updated.';
+       }
+        $content[] = '<pre>
+1.3.7 Changes
+--------------
++ Editor
+  o Added a "limited" option to allow the wysiwyg stub developer to
+    have a second set of tools.
+
++ Form
+  o useEditor function will now accept a limited parameter.
+
++ Text
+  o Added parameter to makeRelative to force a change only inside link
+    tags
+  o makeRelative is run before htmlentities is called.
+  o makeRelative only changes urls next to the characters =". This
+    should prevent displayed addresses from being relativized.
+  o Added function to collapse long urls.
+
++ Documentation
+  o Added a small note to DB_Pager.txt to inform the user that basic
+    instruction does not end at the $pager->get() function.
+  o Editor.txt - Added instructions on using the Editor class with the
+    Form class. 
+  o Settings_Class.txt - fixed the path location for the settings.php
+    file. 
+
++ Javascript
+  o FCKEditor - added ability to show limited wysiwyg tool
+
++ Setup
+  o Error messages now appear under incorrect setting
+
++ DBPager
+  o Current page set back to page 1 after a new search or if current
+    page is set to zero
+  o setOrder function now has a default of \'asc\' (ascending).
+  o Fixed instant where searches were joined with AND instead of OR
+  o Pager search variable is reset when a new search is
+    called. Prevents empty variable in GET string.
+  o Pager now grabs navigation and sort buttons regardless of row
+    status. 
+</pre>';
+ 
     }
     
     return true;
