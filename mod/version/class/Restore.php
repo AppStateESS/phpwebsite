@@ -93,7 +93,6 @@ class Version_Restore {
             // prevent the repeat
             unset($version['username']);
 
-
             $keys = array_keys($version);
             if (!empty($this->columns)) {
                 $show_cols = array_intersect($this->columns, $keys);
@@ -142,7 +141,11 @@ class Version_Restore {
             $temp_count++;
         }
 
-        return PHPWS_Template::process($template, 'version', $template_file);
+        if (empty($template)) {
+            return _('A problem occurred when trying to process the restoration list.');
+        } else {
+            return PHPWS_Template::process($template, 'version', $template_file);
+        }
         
     }
 
