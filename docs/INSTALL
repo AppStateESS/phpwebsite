@@ -1,3 +1,137 @@
-Untar phpwebsite/fallout into your web directory.
-Point your browser to that directory.
-Follow directions.
+Welcome to phpWebSite 1.0.0
+----------------------------
+
+This version is a complete rewrite of phpWebSite. Modules written for
+0.10.x will NOT work with this code. Most of the modules written by
+Appalachian State have either been rewritten for 1.0.0 or "converted."
+
+The two converted modules are Form Generator and Photo Album. Please
+note that both modules still have some the problems of their previous
+versions:
+
+1) They both use a lot of memory. You may want to bump up your memory
+   requirements in your config/core/config.php file to 16mb
+   ini_set('memory_limit', '16M');
+
+2) Both do not function under Postgresql.
+
+Eventually, both modules will be rewritten for 1.0.0 with new features
+and better compatibility.
+
+
+Starting the install
+--------------------
+If you are not reading this from the distribution, download the latest
+tarball from http://phpwebsite.appstate.edu.
+
+Although 1.0.0 is an upgrade to 0.10.x, it is different enough to
+require a fresh directory. Do not untar inside or copy the result to
+an old 0.10.x directory.
+
+
+Directory permissions
+---------------------
+Certain directories need to be writable during installation.
+
+The first three only need to be writable during the installation and
+later updates:
+
+config/
+templates/
+javascript/
+
+After installation and updates, set these directories back to read
+only.
+
+The next three may remain writable throughout usage of phpWebSite.
+
+files/
+images/
+logs/
+
+Files written to the logs/ directory will be readable by root and
+apache _only_. If you need to change these permissions, check your
+config/core/config.php file after installation. If log permissions are
+preventing installation, you can alter the template file used to
+create the configuration file. It is located in
+setup/templates/config.tpl.
+
+CAUTION: you DO NOT WANT users to be able to read your logs. If you
+don't have root access, think about changing the log directory off the
+web root. Change the PHPWS_LOG_DIRECTORY definition to do so.
+
+
+Database setup
+--------------
+phpWebSite 1.0.0 currently works with Postgresql and MySQL. More
+databases will become available should the need arise.
+
+If using MySQL, the phpWebSite setup will allow you to create a new
+database. The Postgresql setup will not; you will need to create it
+beforehand.
+
+Currently, phpWebSite 1.0.0 uses the UTF-8 character standard for
+storage and display. If you are using MySQL version prior to 4.1, you
+may encounter some problems with accented characters.
+
+
+Running Setup
+-------------
+Open your browser and go to:
+
+http://your_site_name.com/setup
+
+where "your_site_name" is the dns name or ip address of your
+installation.
+
+phpWebSite will take you through the creation of your config.php file
+and the installation into your database. If the installation should
+fail at any point, check your logs/error.log file for clues to the
+problem. If the installation fails at Step 2, the problem is most
+certainly a database problem.
+
+If you are able to fix the problem, you must wipe the database and
+start over. If the database was created successfully, drop all the
+tables and run setup again. The setup will skip the config.php
+creation if previously successful.
+
+
+Success!
+--------
+If you are successful, log in to the site, go to the Control Panel,
+and click into the Boost module. Click the "Check all" link at the
+bottom. Boost informs you which modules have updated versions. If Core
+and/or Boost have new versions, you should download them. Afterwards,
+get new copies of any other modules you wish to install.
+
+Core modules are installed by default. Other modules are optional.
+Click the install link next to each. You may return later to check the
+update status of modules.
+
+When finished installing and updating, you should change the write
+permissions of your config, templates, and javascript directories.
+
+
+Problems
+--------
+Problems with installation are normally related to:
+
+1) memory limits (uncomment and raise this in the
+   config/core/config.php file)
+
+2) database problems (check your error.log file),
+
+3) or directory permissions (web server must write to the
+   forementioned directories).
+
+phpWebSite is tested extensively on Linux servers running
+Apache. Windows servers (especially running IIS) are not tested
+in-house. Although Windows installations have been successful,
+something may have escaped our attention.
+
+If you have problems, discover a bug, or would like to request a new
+feature, please post to Sourceforge:
+
+https://sourceforge.net/projects/phpwebsite/
+
+You can also visit our IRC channel at irc.freenode.net #phpwebsite.
