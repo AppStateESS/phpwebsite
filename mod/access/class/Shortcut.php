@@ -141,6 +141,7 @@ class Access_Shortcut {
     function getHtaccess()
     {
         return 'RewriteCond %{REQUEST_FILENAME} !-d' . "\n" . 
+            'RewriteCond %{REQUEST_FILENAME} !-f' . "\n" . 
             sprintf('RewriteRule ^%s$ %s [L]', $this->keyword, $this->url);
     }
     
