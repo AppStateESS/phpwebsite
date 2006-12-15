@@ -3,6 +3,10 @@
   {BACK_LINK}
   {START_FORM}
   <div class="padded">
+    {ANON_NAME_LABEL}<br />
+    {ANON_NAME}
+  </div>
+  <div class="padded">
     {CM_SUBJECT_LABEL}<br />
     {CM_SUBJECT}
   </div>

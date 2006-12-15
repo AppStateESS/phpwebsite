@@ -25,6 +25,10 @@
     <td>{LOCAL_AVATARS_LABEL}</td>
     <td>{LOCAL_AVATARS}</td>
   </tr>
+  <tr>
+    <td>{ANONYMOUS_NAMING_LABEL}</td>
+    <td>{ANONYMOUS_NAMING}</td>
+  </tr>
 </table>
 {SUBMIT}
 {END_FORM}

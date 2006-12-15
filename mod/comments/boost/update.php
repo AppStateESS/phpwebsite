@@ -85,6 +85,30 @@ function comments_update(&$content, $currentVersion)
 + Update dependent on new core.
 </pre>';
 
+    case version_compare($currentVersion, '0.5.1', '<'):
+        $db = new PHPWS_DB('comments_items');
+        $result = $db->addTableColumn('anon_name', 'varchar(30) default NULL');
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $content[] = 'Error encountered while trying to update comments_items table.';
+            return false;
+        } else {
+            $content[] = 'comments_items table updated.';
+        }
+
+        $files = array('templates/edit.tpl', 'templates/settings_form.tpl');
+        if (PHPWS_Boost::updateFiles($files, 'comments')) {
+            $content[] = 'Templates copied locally.';
+        } else {
+            $content[] = 'Templates failed to copy locally.';
+        }
+
+        $content[] = '<pre>
+0.5.1 Changes
+-------------
++ Option for anonymous users to enter a name to the comment.
+</pre>';
+
     }
             
     return TRUE;

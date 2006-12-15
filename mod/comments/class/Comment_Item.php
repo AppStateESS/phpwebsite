@@ -21,16 +21,19 @@ class Comment_Item {
     var $parent	      = 0;
 
     // Subject of comment
-    var $subject      = NULL;
+    var $subject      = null;
 
     // Content of comment
-    var $entry	      = NULL;
+    var $entry	      = null;
+
+    // name of anonymous submitter
+    var $anon_name  = null;
 
     // Author's user id
     var $author_id    = 0;
 
     // IP address of poster
-    var $author_ip    = NULL;
+    var $author_ip    = null;
 
     // Date comment was created
     var $create_time  = 0;
@@ -39,15 +42,15 @@ class Comment_Item {
     var $edit_time    = 0;
 
     // Reason comment was edited
-    var $edit_reason  = NULL;
+    var $edit_reason  = null;
 
     // Name of person who edited the comment
-    var $edit_author  = NULL;
+    var $edit_author  = null;
 
     // Error encountered when processing object
-    var $_error	      = NULL;
+    var $_error	      = null;
 
-    function Comment_Item($id=NULL)
+    function Comment_Item($id=null)
     {
 	if (empty($id)) {
 	    return;
@@ -124,6 +127,17 @@ class Comment_Item {
         }
     }
 
+    function setAnonName($name=null)
+    {
+        $name = strip_tags($name);
+
+        if (empty($name) || strlen($name) < 2) {
+            $this->anon_name = DEFAULT_ANONYMOUS_TITLE;
+        } else {
+            $this->anon_name = & $name;
+        }
+    }
+
     function stampAuthor()
     {
 	if (Current_User::isLogged()) {
@@ -179,7 +193,7 @@ class Comment_Item {
     {
 	if ($format) {
 	    if (empty($this->edit_time)) {
-		return NULL;
+		return null;
 	    } else {
 		return gmstrftime(COMMENT_DATE_FORMAT, $this->edit_time);
 	    }
@@ -219,8 +233,12 @@ class Comment_Item {
 
     function getAuthorName()
     {
-        $author = $this->getAuthor();
-        return $author->display_name;
+        if (!$this->author_id && $this->anon_name) {
+            return $this->anon_name;
+        } else {
+            $author = $this->getAuthor();
+            return $author->display_name;
+        }
     }
 
     function getError()
@@ -245,6 +263,10 @@ class Comment_Item {
         }
 
 	$author_info = $author->getTpl();
+
+        if (!$this->author_id && $this->anon_name) {
+            $author_info['AUTHOR_NAME'] = &$this->anon_name;
+        }
 
 	$template['SUBJECT_LABEL'] = _('Subject');
 	$template['ENTRY_LABEL']   = _('Comment');
@@ -280,12 +302,12 @@ class Comment_Item {
 		$template['EDIT_REASON']       = $this->getEditReason();
 		$template['EDIT_REASON_LABEL'] = _('Reason');
 	    } else {
-                $template['EDIT_REASON'] = NULL;
+                $template['EDIT_REASON'] = null;
             }
 	} else {
-            $template['EDIT_TIME'] = NULL;
-            $template['EDIT_REASON'] = NULL;
-            $template['EDIT_AUTHOR'] = NULL;
+            $template['EDIT_TIME'] = null;
+            $template['EDIT_REASON'] = null;
+            $template['EDIT_AUTHOR'] = null;
         }
 
         $template['ANCHOR'] = sprintf('<a name="cm_%s"></a>', $this->id);
@@ -345,7 +367,7 @@ class Comment_Item {
 	    $vars['cm_id']	   = $this->getId();
 	    return PHPWS_Text::moduleLink(_('Edit'), 'comments', $vars);
 	} else {
-	    return NULL;
+	    return null;
 	}
     }
 
@@ -358,7 +380,7 @@ class Comment_Item {
 	    $vars['LINK'] = _('Delete');
 	    return Layout::getJavascript('confirm', $vars);
 	} else {
-	    return NULL;
+	    return null;
 	}
 
     }

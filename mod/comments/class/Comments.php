@@ -225,9 +225,15 @@ class Comments {
             return false;
         }
 
+        if (!Current_User::isLogged() && 
+            PHPWS_Settings::get('comments', 'anonymous_naming')) {
+            $cm_item->setAnonName($_POST['anon_name']);
+        }
+
         $cm_item->setThreadId($thread->id);
         $cm_item->setSubject($_POST['cm_subject']);
         $cm_item->setEntry($_POST['cm_entry']);
+
         if (isset($_POST['cm_parent'])) {
             $cm_item->setParent($_POST['cm_parent']);
         }
@@ -267,6 +273,12 @@ class Comments {
             $form->addText('edit_reason', $c_item->getEditReason());
             $form->setLabel('edit_reason', _('Reason for edit'));
             $form->setSize('edit_reason', 50);
+        }
+
+        if (!Current_User::isLogged() && PHPWS_Settings::get('comments', 'anonymous_naming')) {
+            $form->addText('anon_name', $c_item->getEditReason());
+            $form->setLabel('anon_name', _('Name'));
+            $form->setSize('anon_name', 30);
         }
 
         $form->addHidden('module', 'comments');
@@ -426,6 +438,14 @@ class Comments {
             $settings['local_avatars'] = 0;
         }
 
+
+        if (@$_POST['anonymous_naming']) {
+            $settings['anonymous_naming'] = 1;
+        } else {
+            $settings['anonymous_naming'] = 0;
+        }
+
+
         PHPWS_Settings::set('comments', $settings);
         PHPWS_Settings::save('comments');
 
@@ -459,6 +479,10 @@ class Comments {
         $form->addCheck('local_avatars', 1);
         $form->setLabel('local_avatars', _('Save avatars locally'));
         $form->setMatch('local_avatars', $settings['local_avatars']);
+
+        $form->addCheck('anonymous_naming', 1);
+        $form->setLabel('anonymous_naming', _('Allow anonymous naming'));
+        $form->setMatch('anonymous_naming', $settings['anonymous_naming']);
 
         $order_list = array('old_all'  => _('Oldest first'),
                             'new_all'  => _('Newest first'));

@@ -11,6 +11,7 @@ $settings = array('allow_signatures'       => 0,
                   'local_avatars'          => 1,
                   'allow_image_signatures' => 0,
                   'default_order'          => 'old_all',
-                  'captcha'                => 0);
+                  'captcha'                => 0,
+                  'anonymous_naming'       => 0);
 
 ?>
