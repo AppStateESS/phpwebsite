@@ -623,9 +623,6 @@ class DBPager {
         if (!empty($this->search)) {
             $values['pager_search'] = $this->search;
         }
-         else {
-            $values['pager_search'] = NULL;
-        }
 
         if (isset($this->orderby)) {
             $values['orderby'] = $this->orderby;
