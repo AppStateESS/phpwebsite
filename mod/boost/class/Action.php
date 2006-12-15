@@ -10,7 +10,7 @@ class Boost_Action {
     function checkupdate($mod_title)
     {
         PHPWS_Core::initCoreClass('Module.php');
-        $module = & new PHPWS_Module($mod_title);
+        $module = new PHPWS_Module($mod_title);
     
         $file = $module->getVersionHttp();
         if (empty($file)) {
@@ -27,7 +27,13 @@ class Boost_Action {
         $template['LOCAL_VERSION_LABEL'] = _('Local version');
         $template['LOCAL_VERSION'] = $module->getVersion();
         $template['STABLE_VERSION_LABEL'] = _('Current stable version');
-        $template['STABLE_VERSION'] = $version_info['VERSION'];
+        if (!isset($version_info['VERSION'])) {
+            $template['STABLE_VERSION'] = _('Source XML error');
+            $version_info['VERSION'] = $module->getVersion();
+        } else {
+            $_SESSION['Boost_Needs_Update'][$mod_title] = $version_info['VERSION'];
+            $template['STABLE_VERSION'] = $version_info['VERSION'];
+        } 
 
         if (version_compare($version_info['VERSION'], $module->getVersion(), '>')) {
             $template['CHANGES_LABEL'] = _('Changes');
@@ -45,7 +51,7 @@ class Boost_Action {
                 $template['DEP_STATUS_LABEL'] = _('Status');
 
                 foreach ($version_info['DEPENDENCY'][0]['MODULE'] as $dep_mod) {
-                    $check_mod = & new PHPWS_Module($dep_mod['TITLE'], false);
+                    $check_mod = new PHPWS_Module($dep_mod['TITLE'], false);
 
                     if ($check_mod->_error) {
                         $status = _('Not installed');
@@ -109,7 +115,7 @@ class Boost_Action {
         $result = core_update($content, $ver_info['version']);
 
         if ($result === true) {
-            $db = & new PHPWS_DB('core_version');
+            $db = new PHPWS_DB('core_version');
             $file_ver = PHPWS_Core::getVersionInfo();
             $db->addValue('version', $file_ver['version']);
             $result = $db->update();
@@ -145,7 +151,7 @@ class Boost_Action {
     function showDependedUpon($base_mod)
     {
         PHPWS_Core::initCoreClass('Module.php');
-        $module = & new PHPWS_Module($base_mod);
+        $module = new PHPWS_Module($base_mod);
         $dependents = $module->isDependedUpon();
         if (empty($dependents)) {
             return _('This module does not have dependents.');
@@ -155,7 +161,7 @@ class Boost_Action {
 
         $content[] = _('The following modules depend on this module to function:');
         foreach ($dependents as $mod) {
-            $dep_module = & new PHPWS_Module($mod);
+            $dep_module = new PHPWS_Module($mod);
             $content[] = $dep_module->getProperName();
         }
         
@@ -166,7 +172,7 @@ class Boost_Action {
     function showDependency($base_module_title)
     {
         PHPWS_Core::initCoreClass('Module.php');
-        $module = & new PHPWS_Module($base_module_title);
+        $module = new PHPWS_Module($base_module_title);
         $depend = $module->getDependencies();
         $template['TITLE'] = sprintf(_('%s Module Dependencies'), $module->getProperName());
 
@@ -180,7 +186,7 @@ class Boost_Action {
             $pass = TRUE;
             $tpl = array();
 
-            $mod_obj = & new PHPWS_Module($module['TITLE'], FALSE);
+            $mod_obj = new PHPWS_Module($module['TITLE'], FALSE);
 
             $tpl['MODULE_NAME']    = $module['PROPERNAME'];
             $tpl['VERSION_NEEDED'] = $module['VERSION'];
@@ -214,16 +220,17 @@ class Boost_Action {
      */
     function checkAll()
     {
-        $installed_mods = PHPWS_Core::installModList();
-        if (empty($installed_mods)) {
+        PHPWS_Core::initModClass('boost', 'Boost.php');
+        $all_mods = PHPWS_Boost::getAllMods();
+        if (empty($all_mods)) {
             return;
         }
 
         PHPWS_Core::initCoreClass('Module.php');
 
-        $installed_mods[] = 'core';
+        $all_mods[] = 'core';
 
-        foreach ($installed_mods as $mod_title) {
+        foreach ($all_mods as $mod_title) {
             $module = new PHPWS_Module($mod_title);
             $file = $module->getVersionHttp();
             if (empty($file)) {
@@ -240,11 +247,8 @@ class Boost_Action {
             if (empty($version_info) || empty($version_info['VERSION'])) {
                 continue;
             }
-            if (version_compare($version_info['VERSION'], $module->getVersion(), '>')) {
-                $_SESSION['Boost_Needs_Update'][$mod_title] = 1;
-            } else {
-                $_SESSION['Boost_Needs_Update'][$mod_title] = 0;
-            }
+  
+            $_SESSION['Boost_Needs_Update'][$mod_title] = $version_info['VERSION'];
         }
     }
 }

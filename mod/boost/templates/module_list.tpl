@@ -4,6 +4,7 @@
 <tr>
   <th>{TITLE_LABEL}</th>
   <th>{VERSION_LABEL}</th>
+  <th>{LATEST_LABEL}</th>
   <th>{COMMAND_LABEL}</th>
   <th>{ABOUT_LABEL}</th>
 </tr>
@@ -11,6 +12,7 @@
 <tr class="bgcolor{ROW}">
   <td>{TITLE}</td>
   <td>{VERSION}</td>
+  <td>{LATEST}</td>
   <td>{COMMAND} 
   <!-- BEGIN uninstall -->&nbsp;|&nbsp;&nbsp;{UNINSTALL}<!-- END uninstall -->
   </td>

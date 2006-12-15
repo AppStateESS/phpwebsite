@@ -1113,6 +1113,17 @@ class PHPWS_Boost {
         PHPWS_DB::disconnect();
     }
 
+    function getAllMods()
+    {
+        $all_mods = PHPWS_File::readDirectory(PHPWS_SOURCE_DIR . 'mod/', TRUE);
+        foreach ($all_mods as $key=> $module) {
+            if (is_file(PHPWS_SOURCE_DIR . 'mod/' . $module . '/boost/boost.php')) {
+                $dir_mods[] = $module;
+            }
+        }
+        return $dir_mods;
+    }
+    
 }
 
 ?>
