@@ -2188,10 +2188,32 @@ class PHPWS_DB {
         
         foreach ($tables as $tbl) {
             $tbl = trim($tbl);
-            $sql = preg_replace("/$tbl(\W)|$tbl$/", $GLOBALS['PHPWS_DB']['tbl_prefix'] . $tbl . '\\1', $sql);
+            $sql = preg_replace("/'(.*$tbl.*)'/Ue", 'PHPWS_DB::_prepop("\\1")', $sql);
+            $sql = preg_replace("/$tbl(\W)|$tbl$/", PHPWS_DB::getPrefix() . $tbl . '\\1', $sql);
+            $sql = PHPWS_DB::_prejoin($sql);
         }
         return $sql;
     }
+
+
+    function _prepop($val)
+    {
+        static $key = 0;
+        $key++;
+        $GLOBALS['In_Quote_Store'][$key] = $val;
+        return '|{[' . $key . ']}|';
+    }
+    
+    function _prejoin($sql)
+    {
+        if (isset($GLOBALS['In_Quote_Store'])) {
+            foreach ($GLOBALS['In_Quote_Store'] as $key => $value) {
+                $sql = str_replace("|{[$key]}|", "'$value'", $sql);
+            }
+        }
+        return $sql;
+    }
+
     
 
     function pullTables($sql)
