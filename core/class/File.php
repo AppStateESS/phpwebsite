@@ -429,6 +429,10 @@ class PHPWS_File {
 
     function rmdir($dir) 
     {
+        if (!preg_match('/\/$/', $dir)) {
+            $dir .= '/';
+        }
+
         if(is_dir($dir)) {
             $handle = opendir($dir);
             while($file = readdir($handle)) {
@@ -445,6 +449,7 @@ class PHPWS_File {
                 }
             }
             closedir($handle);
+
             $result = @rmdir($dir);
             if (!$result) {
                 PHPWS_Error::log(PHPWS_DIR_DELETE_DENIED, 'core', 'PHPWS_File::rmdir', $dir);
