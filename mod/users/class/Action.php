@@ -939,7 +939,7 @@ class User_Action {
         Layout::add(_('Username and password refused.'), 'users', 'User_Main');
     }
 
-    function getGroups($mode=NULL, $group_list)
+    function getGroups($mode=NULL)
     {
         if (isset($GLOBALS['User_Group_List'])) {
             return $GLOBALS['User_Group_List'];
