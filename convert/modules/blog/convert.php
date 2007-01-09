@@ -55,6 +55,9 @@ function convert()
             $show_wait = FALSE;
         }
         $db = Convert::getSourceDB('mod_announce');
+        if (empty($db)) {
+            return _('Announcements is not installed in this database.');
+        }
         $db->addWhere('approved', 1);
 
         if (defined('IGNORE_BEFORE')) {
