@@ -59,6 +59,17 @@ function menu_update(&$content, $currentVersion)
             $content[] = 'Template files were not updated successfully.';
         }
         $content[] = 'New - added cancel button to other link template (offsite.tpl).';
+
+    case version_compare($currentVersion, '1.1.0', '<'):
+        $files = array('conf/config.php', 'templates/links/link.tpl', 'templates/menu_layout/basic.tpl', 'img/attach.png', 'templates/admin/pin_list.tpl');
+        if (PHPWS_Boost::updateFiles($files, 'menu')) {
+            $content[] = 'Files updated successfully.';
+        } else {
+            $content[] = 'Files were not updated successfully.';
+            $content[] = '<pre>' . implode("\n", $files) . '</pre>';
+        }
+        $content[] = '+ Added pinLink function for developers to add a link to any menu.';
+        $content[] = '+ Added mechanism for adding a pinned link.';
     }
     return true;
 }
