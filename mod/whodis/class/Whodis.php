@@ -34,14 +34,23 @@ class Whodis {
         if (!empty($_POST['days_old'])) {
             $days = (int)$_POST['days_old'];
             $updated = mktime() - (86400 * $days);
-            $db->addWhere('updated', $updated, '<');
+            $db->addWhere('updated', $updated, '<', null, 1);
             $go = true;
         }
 
         if (!empty($_POST['visit_limit'])) {
-            $db->addWhere('visits', (int)$_POST['visit_limit'], '<=');
+            $db->addWhere('visits', (int)$_POST['visit_limit'], '<=', 'and', 1);
             $go = true;
         }
+
+        if (isset($_POST['delete_checked']) && !empty($_POST['referrer'])) {
+            if(is_array($_POST['referrer'])) {
+                $db->addWhere('id', $_POST['referrer'], 'in', 'or', 2);
+                $db->setGroupConj(2, 'or');
+            }
+            $go = true;
+        }
+
         if (!$go) {
             return false;
         }
@@ -64,6 +73,8 @@ class Whodis {
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('whodis', 'Whodis_Referrer.php');
 
+
+
         $form = new PHPWS_Form('purge');
         $form->addHidden('module', 'whodis');
         $form->addHidden('op', 'purge');
@@ -83,12 +94,16 @@ class Whodis {
         $form->setSize('visit_limit', 4, 4);
         $form->addSubmit(_('Purge'));
         $form->setLabel('visit_limit', _('Visits'));
+        $form->addSubmit('delete_checked', _('Delete checked'));
 
         $page_tags = $form->getTemplate();
+
+        $page_tags['CHECK_ALL'] = javascript('check_all', array('checkbox_name'=>'referrer[]'));
 
         $pager = new DBPager('whodis', 'Whodis_Referrer');
         $pager->setModule('whodis');
         $pager->setTemplate('admin.tpl');
+        $pager->setSearch('url');
 
         $page_tags['URL_LABEL']     = _('Referrer');
         $page_tags['CREATED_LABEL'] = _('First visit');

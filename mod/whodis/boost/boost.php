@@ -5,7 +5,7 @@
    */
 
 $proper_name  = 'Whodis?';
-$version      = '0.0.2';
+$version      = '0.0.3';
 $register     = FALSE;
 $unregister   = FALSE;
 $import_sql   = TRUE;

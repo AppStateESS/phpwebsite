@@ -54,6 +54,8 @@ class Whodis_Referrer {
     function getTags()
     {
         $url = $this->getUrl();
+        $tags['CHECKBOX'] = sprintf('<input type="checkbox" name="referrer[]" value="%s" />',
+                                    $this->id);
         $tags['URL'] = sprintf('<a href="%s" target="_index" title="%s" alt="%s">%s</a>',
                        $url, $url, $url, substr($url, 0, 40));
         $tags['CREATED'] = strftime('%H:%M %Y/%m/%d', $this->created);

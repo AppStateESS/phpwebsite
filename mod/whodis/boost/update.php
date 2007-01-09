@@ -14,10 +14,17 @@ function whodis_update(&$content, $version)
             $content[] = 'Template failed to copy to local directory.';
         }
         $content[] = 'Added purge functionality.';
-        break;
+
+    case version_compare($version, '0.0.3', '<'):
+        if (PHPWS_Boost::updateFiles(array('templates/admin.tpl'), 'whodis')) {
+            $content[] = 'Template upgraded successfully.';
+        } else {
+            $content[] = 'Template failed to copy to local directory.';
+        }
+        $content[] = '+ Added search option to listing.';
+        $content[] = '+ Added checkboxes on referrers for search deletions.';
     }
     return true;
 }
-
 
 ?>
