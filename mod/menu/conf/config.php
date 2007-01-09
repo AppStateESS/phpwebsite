@@ -22,6 +22,8 @@ define('MENU_LINK_DOWN', sprintf('<img src="./images/mod/menu/gtk-go-down.png" t
 
 define('MENU_LINK_ADMIN', sprintf('<img src="./images/mod/menu/foo.png" title="%s" alt="%s" />', _('Admin'), _('Admin')));
 
+define('MENU_PIN_LINK',  sprintf('<img src="./images/mod/menu/attach.png" title="%s" alt="%s" />', _('Pin links'), _('Pin links')));
+
 define('MENU_ADMIN_ON', _('Admin mode on'));
 define('MENU_ADMIN_OFF', _('Admin mode off'));
 

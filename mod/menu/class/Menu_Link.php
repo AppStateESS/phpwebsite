@@ -230,6 +230,7 @@ class Menu_Link {
     function _loadAdminLinks(&$template)
     {
         if ( empty($_POST) && Menu::isAdminMode() && Current_User::allow('menu') ) {
+            $template['PIN_LINK'] = Menu_Item::getPinLink($this->menu_id, $this->id);
             $template['ADD_LINK'] = Menu::getAddLink($this->menu_id, $this->id);
             $template['ADD_SITE_LINK'] = Menu::getSiteLink($this->menu_id, $this->id);
             

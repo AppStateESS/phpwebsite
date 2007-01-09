@@ -37,6 +37,17 @@ class Menu_Admin {
 
         // start command switch
         switch ($command) {
+
+        case 'add_pin_link':
+            Menu_Admin::addPinLink();
+            javascript('close_refresh');
+            Layout::nakedDisplay();
+            break;
+
+        case 'pick_link':
+            Layout::nakedDisplay(Menu_Admin::pickLink());
+            break;
+
         case 'new':
             $title = _('Create New Menu');
             $content = Menu_Admin::editMenu($menu);
@@ -214,6 +225,35 @@ class Menu_Admin {
         Layout::add(PHPWS_ControlPanel::display($panel->display()));
     }
 
+    function addPinLink()
+    {
+        $pin_id = &$_POST['links'];
+        $link_id = &$_POST['link_id'];
+        @$pin = $_SESSION['Menu_Pin_Links'][$pin_id];
+        if (empty($pin)) {
+            return false;
+        }
+
+
+        $link = new Menu_Link;
+        $link->menu_id = (int)$_POST['menu_id'];
+        $link->title   = $pin['title'];
+        $link->url     = $pin['url'];
+        $link->key_id  = 0;
+        if ($link_id) {
+            $link->parent = (int)$link_id;
+        }
+
+        $result = $link->save();
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+        }
+
+        unset($_SESSION['Menu_Pin_Links'][$pin_id]);
+        if (empty($_SESSION['Menu_Pin_Links'])) {
+            unset($_SESSION['Menu_Pin_Links']);
+        }
+    }
 
     function sendMessage($message, $command)
     {
@@ -382,6 +422,37 @@ class Menu_Admin {
         $pager->addRowTags('getRowTags');
         $content = $pager->get();
         return $content;
+    }
+
+    function pickLink()
+    {
+        $menu_id = (int)$_GET['menu_id'];
+        if (isset($_GET['link_id'])) {
+            $link_id = (int)$_GET['link_id'];
+        } else {
+            $link_id = 0;
+        }
+
+        if (!isset($_SESSION['Menu_Pin_Links'])) {
+            return _('No links in queue.');
+        }
+
+        foreach ($_SESSION['Menu_Pin_Links'] as $key=>$data) {
+            $pin_list[$key] = $data['title'];
+        }
+
+        $form = new PHPWS_Form('pick_link');
+        $form->addHidden('module', 'menu');
+        $form->addHidden('command', 'add_pin_link');
+        $form->addHidden('menu_id', $menu_id);
+        $form->addHidden('link_id', $link_id);
+        $form->addSelect('links', $pin_list);
+        $form->setLabel('links', _('Pinned links'));
+        $form->addSubmit('add', _('Add to menu'));
+
+        $tpl = $form->getTemplate();
+        $tpl['CLOSE'] = sprintf('<a href="#" onclick="window.close(); return false">%s</a>', _('Close'));
+        return PHPWS_Template::process($tpl, 'menu', 'admin/pin_list.tpl');
     }
 
 

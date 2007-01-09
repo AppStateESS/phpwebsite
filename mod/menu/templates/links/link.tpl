@@ -4,6 +4,7 @@
         <span class="menu-admin">
             <span class="menu-admin-link">{ADMIN}</span>
             <span class="menu-link-pop">
+                {PIN_LINK}
                 {ADD_LINK}
                 {ADD_SITE_LINK}
                 {EDIT_LINK}

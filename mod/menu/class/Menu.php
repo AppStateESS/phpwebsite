@@ -148,6 +148,13 @@ class Menu {
 
     }
 
+    function pinLink($title, $url)
+    {
+        $key = substr(md5($title), 0, 8);
+        $_SESSION['Menu_Pin_Links'][$key]['title'] = $title;
+        $_SESSION['Menu_Pin_Links'][$key]['url'] = $url;
+    }
+
     function getUnpinLink($menu_id, $key_id, $pin_all=0)
     {
         $vars['command'] = 'unpin_menu';

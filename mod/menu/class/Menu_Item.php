@@ -263,6 +263,26 @@ class Menu_Item {
         return $link->save();
     }
 
+    function getPinLink($menu_id, $link_id=0)
+    {
+        if (!isset($_SESSION['Menu_Pin_Links'])) {
+            return null;
+        }
+        $vars['command'] = 'pick_link';
+        $vars['menu_id'] = $menu_id;
+        if ($link_id) {
+            $vars['link_id'] = $link_id;
+        }
+        
+        $js['width']   = '300';
+        $js['height']  = '100';
+
+        $js['address'] = PHPWS_Text::linkAddress('menu', $vars, true);
+        $js['label'] = MENU_PIN_LINK;
+
+        return javascript('open_window', $js);
+    }
+
     /**
      * Returns a menu and its links for display
      */
@@ -292,6 +312,10 @@ class Menu_Item {
                 $vars['command'] = 'disable_admin_mode';
                 $vars['return'] = 1;
                 $tpl['ADMIN_LINK'] = PHPWS_Text::moduleLink(MENU_ADMIN_OFF, 'menu', $vars);
+
+                if (isset($_SESSION['Menu_Pin_Links'])) {
+                    $tpl['PIN_LINK'] = $this->getPinLink($this->id);
+                }
             } else {
                 $vars['command'] = 'enable_admin_mode';
                 $vars['return'] = 1;
