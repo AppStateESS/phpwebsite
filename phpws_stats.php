@@ -26,6 +26,7 @@ define('stats_time',     false);  // Show the amount of time it took to compute
 define('stats_memory',   false);  // Show amount of memory used
 define('stats_sessions', false);  // Show the sessions currently used
 define('show_request',   false);  // Show the _REQUEST info
+define('display_status', false); // Shows configuration settings that may confuse developer
 
 if (stats_on && stats_time) {
     list($usec, $sec) = explode(' ', microtime());
@@ -58,6 +59,28 @@ function show_stats()
     if (stats_sessions) {
         $sessions = array_keys($_SESSION);
         $content[] = _('Current sessions:') . '<ul>' . implode('</li><li>', $sessions) . '</ul>';
+    }
+
+    if (display_status) {
+        if (ALLOW_CACHE_LITE) {
+            $subcontent[] = _('Cache Lite is enabled.');
+        } else {
+            $subcontent[] = _('Cache Lite is disabled.');
+        }
+
+        if (FORCE_MOD_TEMPLATES) {
+            $subcontent[] = _('Using module template, not local.');
+        } else {
+            $subcontent[] = _('Using local templates, not module\'s.');
+        }
+
+        if (FORCE_MOD_CONFIG) {
+            $subcontent[] = _('Using configuration files directly from module\'s directory.');
+        } else {
+            $subcontent[] = _('Using local configuration files.');
+        }
+
+        $content[] = implode('<br />', $subcontent);
     }
     
     if (isset($content)) {
