@@ -8,40 +8,61 @@
 PHPWS_Core::initCoreClass('Form.php');
 
 class Blog_Form {
-    function edit(&$blog, $version_id=NULL)
+    function edit(&$blog, $version_id=NULL, $limited=false)
     {
         $form = new PHPWS_Form;
         $form->addHidden('module', 'blog');
-        $form->addHidden('action', 'admin');
-        $form->addHidden('command', 'post_entry');
 
-        if (isset($version_id)) {
-            $form->addHidden('version_id', $version_id);
-            if (Current_User::isUnrestricted('blog')) {
-                $form->addSubmit('approve_entry', _('Save Changes and Approve'));
+        if ($limited) {
+            $form->addHidden('action', 'post_suggestion');
+            $form->addSubmit('submit', _('Suggest entry'));
+        } else {
+            $form->addHidden('action', 'admin');
+            $form->addHidden('command', 'post_entry');
+
+            if (isset($version_id)) {
+                $form->addHidden('version_id', $version_id);
+                if (Current_User::isUnrestricted('blog')) {
+                    $form->addSubmit('approve_entry', _('Save Changes and Approve'));
+                }
+            }
+
+            if (isset($blog->id) || isset($version_id)){
+                $form->addHidden('blog_id', $blog->id);
+                $form->addSubmit('submit', _('Update entry'));
+            } else {
+                $form->addSubmit('submit', _('Add entry'));
+            }
+
+            $form->addCheck('allow_comments', 1);
+            $form->setLabeL('allow_comments', _('Allow comments'));
+            $form->setMatch('allow_comments', $blog->allow_comments);
+            
+            $form->addCheck('allow_anon', 1);
+            $form->setLabeL('allow_anon', _('Allow anonymous comments'));
+            if ($blog->id) {
+                PHPWS_Core::initModClass('comments', 'Comments.php');
+                $thread = Comments::getThread($blog->key_id);
+                $form->setMatch('allow_anon', $thread->allow_anon);
             }
         }
-
-        if (isset($blog->id) || isset($version_id)){
-            $form->addHidden('blog_id', $blog->id);
-            $form->addSubmit('submit', _('Update Entry'));
-        } else {
-            $form->addSubmit('submit', _('Add Entry'));
-        }
-
 
         $form->addText('title', $blog->title);
         $form->setSize('title', 40);
         $form->setLabel('title', _('Title'));
 
         $form->addTextArea('summary', $blog->getSummary());
-        $form->useEditor('summary');
+        if (!$limited) {
+            $form->useEditor('summary');
+        }
         $form->setRows('summary', '10');
         $form->setCols('summary', '60');
         $form->setLabel('summary', _('Summary'));
 
         $form->addTextArea('entry', $blog->getEntry());
-        $form->useEditor('entry');
+        if (!$limited) {
+            $form->useEditor('entry');
+        }
         $form->setRows('entry', '10');
         $form->setCols('entry', '60');
         $form->setLabel('entry', _('Entry'));
@@ -49,18 +70,6 @@ class Blog_Form {
         $form->addText('publish_date', $blog->getPublishDate());
         $form->setLabel('publish_date', _('Publish date/time'));
         $form->setSize('publish_date', 20);
-
-        $form->addCheck('allow_comments', 1);
-        $form->setLabeL('allow_comments', _('Allow comments'));
-        $form->setMatch('allow_comments', $blog->allow_comments);
-
-        $form->addCheck('allow_anon', 1);
-        $form->setLabeL('allow_anon', _('Allow anonymous comments'));
-        if ($blog->id) {
-            PHPWS_Core::initModClass('comments', 'Comments.php');
-            $thread = Comments::getThread($blog->key_id);
-            $form->setMatch('allow_anon', $thread->allow_anon);
-        }
 
         $template = $form->getTemplate();
 
@@ -91,9 +100,19 @@ class Blog_Form {
         $form->setLabel('home_page_display', _('Show blog on home page'));
         $form->setMatch('home_page_display', PHPWS_Settings::get('blog', 'home_page_display'));
 
+        $form->addCheck('allow_anonymous_submit', 1);
+        $form->setLabel('allow_anonymous_submit', _('Allow anonymous submissions'));
+        $form->setMatch('allow_anonymous_submit', PHPWS_Settings::get('blog', 'allow_anonymous_submit'));
+
         $form->addSubmit(_('Save settings'));
 
         $template = $form->getTemplate();
+
+        if (PHPWS_Settings::get('blog', 'allow_anonymous_submit')) {
+            $template['MENU_LINK'] = PHPWS_Text::secureLink(_('Clip for menu'), 'blog',
+                                                            array('action'=>'admin', 'command'=>'menu_submit_link'));
+        }
+
         $template['PAST_NOTE'] = _('Set to zero to prevent display');
 
         return PHPWS_Template::process($template, 'blog', 'settings.tpl');

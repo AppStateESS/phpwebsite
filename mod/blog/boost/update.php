@@ -66,6 +66,22 @@ function blog_update(&$content, $currentVersion)
 -------------
 + Make call to resetKeywords in search to prevent old search word retention.
 </pre>';
+
+    case version_compare($currentVersion, '1.3.0', '<'):
+        $files = array('templates/edit.tpl', 'templates/settings.tpl', 'templates/submit.tpl', 'templates/user_main.tpl');
+        if (PHPWS_Boost::updateFiles($files, 'blog')) {
+            $content[] = 'Template files copied successfully.';
+        } else {
+            $content[] = 'Failed to copy template files successfully.';
+        }
+
+        $content[] = '<pre>
+1.3.0 Changes
+-------------
++ Added ability for anonymous and users without blog permission to
+  submit entries for later approval.
++ Added setting to allow anonymous submission.
+</pre>';
     }
 
     return true;

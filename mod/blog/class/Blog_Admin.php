@@ -123,6 +123,13 @@ class Blog_Admin {
             $version = new Version('blog_entries', $_REQUEST['version_id']);
             $version->loadObject($blog);
             $blog->approved = 1;
+
+            if (!$blog->author_id) {
+                // if author id is zero, then plug in the approver's information
+                $blog->author = Current_User::getDisplayName();
+                $blog->author_id = Current_User::getId();
+            }
+
             $blog->save();
             $version->setSource($blog);
             $version->setApproved(TRUE);
@@ -164,6 +171,11 @@ class Blog_Admin {
         case 'list':
             $title = _('Blog Archive');
             $content = Blog_Admin::entry_list();
+            break;
+
+        case 'menu_submit_link':
+            Menu::pinLink(_('Submit entry'), 'index.php?module=blog&action=user&action=submit');
+            PHPWS_Core::reroute('index.php?module=blog&action=admin&tab=settings&authkey=' . Current_User::getAuthKey());
             break;
 
         case 'restore':
@@ -274,6 +286,12 @@ class Blog_Admin {
             PHPWS_Settings::set('blog', 'home_page_display', 0);
         }
 
+        if (isset($_POST['allow_anonymous_submit'])) {
+            PHPWS_Settings::set('blog', 'allow_anonymous_submit', 1);
+        } else {
+            PHPWS_Settings::set('blog', 'allow_anonymous_submit', 0);
+        }
+
         $past_limit = (int)$_POST['past_entries'];
 
         if ((int)$past_limit >= 0) {
@@ -302,6 +320,7 @@ class Blog_Admin {
         $vars['action'] = 'admin';
         $vars['version_id'] = $version->id;
         $vars['command'] = 'edit_unapproved';
+
         $options[] = PHPWS_Text::secureLink(_('Edit'), 'blog', $vars);
 
         if (!$version->vr_approved && Current_User::isUnrestricted('blog')) {

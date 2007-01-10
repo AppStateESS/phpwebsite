@@ -37,7 +37,22 @@ class Blog_User {
             Layout::add($content, 'blog', 'view', TRUE);
             return;
             break;
+            
+        case 'submit':
+            if (Current_User::allow('blog', 'edit_blog')) {
+                PHPWS_Core::reroute(PHPWS_Text::linkAddress('blog', array('action'=>'admin', 'tab'=>'new'), 1));
+            }
+            // Must create a new blog. Don't use above shortcut
+            $blog = new Blog;
+            $content = Blog_User::submitAnonymous($blog);
+            break;
 
+        case 'post_suggestion':
+            // Must create a new blog. Don't use above shortcut
+            $blog = new Blog;
+            $content = Blog_User::postSuggestion($blog);
+            break;
+            
         default:
             PHPWS_Core::errorPage(404);
             break;
@@ -45,6 +60,53 @@ class Blog_User {
 
         Layout::add($content);
     }
+
+
+    function postSuggestion(&$blog)
+    {
+        if (PHPWS_Core::isPosted()) {
+            $tpl['TITLE'] = _('Repeat submission');
+            $tpl['CONTENT'] =  _('Your submission is still awaiting approval.');
+            return PHPWS_Template::process($tpl, 'blog', 'user_main.tpl');
+        }
+
+        if (empty($_POST['title'])) {
+            $blog->title = _('No title');
+        } else {
+            $blog->setTitle($_POST['title']);
+        }
+
+        if (!Current_User::isLogged() && !empty($_POST['author'])) {
+            $blog->author = strip_tags($_POST['author']);
+            $blog->author_id = 0;
+        }
+
+        // Do not let anonymous users use html tags
+        $blog->setSummary(strip_tags($_POST['summary']));
+        $blog->setEntry(strip_tags($_POST['entry']));
+
+        $blog->approved = false;
+        $result = $blog->save();
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $tpl['TITLE'] = _('Sorry');
+            $tpl['CONTENT'] =  _('A problem occured with your submission. Please try again later.');
+        } else {
+            $tpl['TITLE'] = _('Thank you');
+            $tpl['CONTENT'] =  _('Your entry has been submitted for review.');
+        }
+        return PHPWS_Template::process($tpl, 'blog', 'user_main.tpl');
+    }
+
+
+    function submitAnonymous(&$blog)
+    {
+        PHPWS_Core::initModClass('blog', 'Blog_Form.php');
+        $tpl['TITLE'] = _('Submit Entry');
+        $tpl['CONTENT'] = Blog_Form::edit($blog, null, true);
+        return PHPWS_Template::process($tpl, 'blog', 'user_main.tpl');
+    }
+
 
     function getCurrentEntries(&$db, $limit)
     {
@@ -78,6 +140,10 @@ class Blog_User {
         }
 
         if (empty($result)) {
+            if (Current_User::allow('blog')) {
+                MiniAdmin::add('blog', PHPWS_Text::secureLink(_('Create first blog entry!'), 'blog', array('action'=>'admin', 'tab'=>'new')));
+            }
+
             return NULL;
         }
 
@@ -103,7 +169,7 @@ class Blog_User {
 
         $tpl['ENTRIES'] = implode('', $list);
 
-        $content = PHPWS_Template::process($tpl, 'blog', 'list_view.tpl');        
+        $content = PHPWS_Template::process($tpl, 'blog', 'list_view.tpl');
 
         if (!Current_User::isLogged() && !Current_User::allow('blog')) {
             PHPWS_Cache::save($key, $content);

@@ -115,6 +115,7 @@ class Blog {
 
     function save()
     {
+        PHPWS_Core::initModClass('version', 'Version.php');
         $db = new PHPWS_DB('blog_entries');
         if (empty($this->id)) {
             if ($this->publish_date > mktime()) {
@@ -122,8 +123,14 @@ class Blog {
             } else {
                 $this->create_date = mktime();
             }
-            $this->author_id = Current_User::getId();
-            $this->author = Current_User::getDisplayName();
+
+            if (Current_User::isLogged()) {
+                $this->author_id = Current_User::getId();
+                $this->author    = Current_User::getDisplayName();
+            } elseif (empty($this->author)) {
+                $this->author_id = 0;
+                $this->author    = _('Anonymous');
+            }
         }
 
         $version = new Version('blog_entries');
@@ -158,7 +165,6 @@ class Blog {
                 return $result;
             }
         }
-
 
         $version->setSource($this);
         $version->setApproved($this->approved);
@@ -218,7 +224,11 @@ class Blog {
 
         $template['POSTED_BY'] = _('Posted by');
         $template['POSTED_ON'] = _('Posted on');
-        $template['AUTHOR'] = $this->author;
+        if ($this->author_id) {
+            $template['AUTHOR'] = $this->author;
+        } else {
+            $template['AUTHOR'] = _('Anonymous');
+        }
     
         return PHPWS_Template::process($template, 'blog', 'view.tpl');
     }
@@ -266,8 +276,9 @@ class Blog {
 
         if ( $edit && 
              ( Current_User::allow('blog', 'edit_blog', $this->id, 'entry') ||
-               $this->author_id == Current_User::getId())
-             ) {
+               ( Current_User::allow('blog', 'edit_blog') && $this->author_id == Current_User::getId() )
+               ) ) {
+
             $vars['blog_id'] = $this->id;
             $vars['action']  = 'admin';
             $vars['command'] = 'edit';
@@ -330,8 +341,9 @@ class Blog {
         $link['action'] = 'admin';
         $link['blog_id'] = $this->id;
 
-        if (Current_User::getId() == $this->author_id || 
-            Current_User::allow('blog', 'edit_blog', $this->id, 'entry')){
+        if ( ( Current_User::allow('blog', 'edit_blog') && Current_User::getId() == $this->author_id )
+            || Current_User::allow('blog', 'edit_blog', $this->id, 'entry') ){
+
             $link['command'] = 'edit';
             $list[] = PHPWS_Text::secureLink(_('Edit'), 'blog', $link);
         }

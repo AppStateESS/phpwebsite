@@ -18,6 +18,7 @@
     </td>
     <td>{PUBLISH_DATE}</td>
   </tr>
+  <!-- BEGIN comments -->
   <tr>
     <td>{ALLOW_COMMENTS_LABEL}</td>
     <td>{ALLOW_COMMENTS}</td>
@@ -26,6 +27,7 @@
     <td>{ALLOW_ANON_LABEL}</td>
     <td>{ALLOW_ANON}</td>
   </tr>
+  <!-- END comments -->
 </table>
 {SUBMIT}
 {END_FORM}
