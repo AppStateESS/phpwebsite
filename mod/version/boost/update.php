@@ -22,6 +22,14 @@ function version_update(&$content, $currentVersion)
 + Added some missing error logging.
 + Fixed default setting (Bug #1573480).
 </pre>';
+
+    case version_compare($currentVersion, '0.1.1', '<'):
+        $content[] = '<pre>
++ Changed the way approval versions are pulled. Allows vr_creator to
+  be 0 for anonymous submissions.
++ If the author is blank, version labels the author as Anonymous.
+</pre>';
+
     }
     return TRUE;
 }
