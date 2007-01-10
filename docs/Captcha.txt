@@ -1,0 +1,112 @@
+Using Captcha
+by Matthew McNaney
+
+Introduction
+------------
+This document instructs the reader in applying a CAPTCHA
+(http://en.wikipedia.org/wiki/Captcha) to a form in phpWebSite.
+
+
+1. Include the Captcha class:
+
+PHPWS_Core::initCoreClass('Captcha.php');
+
+
+2. Create a text field to store for the user to type in the answer:
+
+$form = new Form;
+$form->addText('message');
+$form->setLabel('message', 'Enter your message');
+
+$form->addText('captcha');
+$form->setLabel('captcha', 'Copy the word seen in the above image');
+
+
+3. Create an area to echo the CAPTCHA graphic on your page and use
+   Captcha's "get" method.
+
+$tpl = $form->getTemplate();
+
+$tpl['CAPTCHA_IMAGE'] = Captcha::get();
+
+
+4. Now you need to verify the submission.
+
+if (!Captcha::verify($_POST['captcha'])) {
+   echo 'You failed the CAPTCHA test!';
+} else {
+  postRestofForm();
+}
+
+
+This completes the developer application of the Captcha class.
+
+
+
+Settings
+--------
+The Captcha class receives its settings from the
+config/core/config.php file.
+
+If you want to allow programs to use the captcha, set :
+
+define('ALLOW_CAPTCHA', true);
+
+The CAPTCHA_NAME variable defines which captcha program to use.
+The CAPTCHA programs are stored in the javascript/captcha
+directory. The name reflects the directory it is in.
+
+
+Adding a New Captcha
+--------------------
+CAPTCHA scripts work like any other javascript code in phpWebSite. You
+need a body.js that delivers the image. You need a head.js (usually)
+to include the script in the header.
+
+You will also need a verify.php file which includes a "verify"
+function. The verify function must receive an answer string and return
+a boolean result.
+
+phpWebSite ships with freecap, an open source CAPTCHA solution by
+Howard Yeend from www.puremango.co.uk. It has been altered to work
+with phpWebSite. Do not expect other CAPTCHA programs to work just by
+dumping them in a directory. Someone will need to mold it to work
+specifically in phpWebSite.
+
+
+Conclusion
+----------
+The above should get you started developing with and using CAPTCHAs in
+your installation. We are aware of the limitations of using CAPTCHAs
+(i.e. inaccessibility to the sight-impaired) and hope to have
+solutions for them in the future. You may want to develop alternate
+links or methods of authentication for those you don't wish to alienate.
+
+
+Troubleshooting
+----------------
+Not working?
+
+- Make sure you have ALLOW_CAPTCHA set to true.
+- Make sure the CAPTCHA_NAME is spelled correctly.
+- Verify the files inside the named CAPTCHA directory.
+- Check your browser's javascript settings. Most Captchas won't
+  function if javascript is disabled.
+- Is the captcha using a dictionary? Do you have that dictionary
+  installed?
+- Is the captcha using the GD library? Have you compiled it into your
+  PHP (NOT phpWebSite) installation?
+- If the captcha is using a specific font, see if you have that font
+  installed.
+- If you are editing a CAPTCHA to work in phpWebSite, check the
+  directories in the script. Often they expect to be operating in the
+  root. Make them point to the proper javascript/captcha/ directory.
+- phpWebSite names its sessions. If your CAPTCHA script is only using
+  "session_start", it won't "see" phpWebSite's session. Do the
+  following:
+
+// if in javascript/captcha/scriptname/
+include('../../../config/core/config.php');
+session_name(md5(SITE_HASH . $_SERVER['REMOTE_ADDR']));
+session_start();
+
