@@ -1,3 +1,56 @@
+January 10
+----------
+Core
++ Documentation
+  o Created Captcha.txt documentation for Captcha class.
+
+
+Blog
++ Added Version module requirement
++ Added ability for anonymous and users without blog permission to
+  submit entries for later approval.
++ Added setting to allow anonymous submission.
++ Updated files: templates/edit.tpl, templates/settings.tpl,
+  templates/submit.tpl, templates/user_main.tpl
+
+Version
++ Changed the way approval versions are pulled. Allows vr_creator to
+  be 0 for anonymous submissions.
++ If the author is blank, version labels the author as Anonymous.
+
+January 9
+---------
+Menu
++ Added pinLink function for developers to add a link to any menu.
++ Added mechanism for adding a pinned link.
++ Updated files: conf/config.php, templates/links/link.tpl,
+  templates/menu_layout/basic.tpl, img/attach.png,
+  templates/admin/pin_list.tpl
+        
+
+Core
++ Convert
+  o Error checked added to Blog to assure Announcements was installed.
+
++ File.php
+  o Fixed bug in rmdir function preventing files inside directories
+    from being deleted. 
+
+
+Whodis? - 0.0.3
++ Added search option to listing.
++ Added checkboxes on referrers for search deletions.
+
+Users
++ Removed unneeded function parameter on getGroups
+
+January 8
+---------
+Core
++ Database
+  o Added functions to try and prevent table prefixing inside single
+    quotes. 
+
 December 13
 -----------
 Core
