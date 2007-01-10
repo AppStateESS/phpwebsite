@@ -289,6 +289,10 @@ class Users_Permission {
 
     function setPermissions($group_id, $module, $level, $subpermissions=NULL)
     {
+        if (empty($group_id) || !is_numeric($group_id)) {
+            return false;
+        }
+
         $tableName = Users_Permission::getPermissionTableName($module);
         if (!PHPWS_DB::isTable($tableName)) {
             return;
