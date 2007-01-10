@@ -102,7 +102,7 @@ class Version_Approval {
         $this->_db->addColumn('*');
         $this->_db->addColumn('users.username');
         $this->_db->addWhere('vr_approved', 0);
-        $this->_db->addWhere('vr_creator', 'users.id');
+        $this->_db->addJoin('left', $this->_db->tables[0], 'users', 'vr_creator', 'id');
 
         $result = $this->_db->select();
 
@@ -150,7 +150,11 @@ class Version_Approval {
             $row_tpl['CREATE_DATE']       = strftime('%c', $app_item['vr_create_date']);
 
             $row_tpl['AUTHOR_LABEL']      = _('Author');
-            $row_tpl['AUTHOR']            = $app_item['username'];
+            if (!empty($app_item['username'])) {
+                $row_tpl['AUTHOR']        = $app_item['username'];
+            } else {
+                $row_tpl['AUTHOR']        = _('Anonymous');
+            }
             // prevent the repeat
             unset($app_item['username']);
 
