@@ -5,6 +5,14 @@ Core
   o Created Captcha.txt documentation for Captcha class.
 
 
+Users
++ Dropped references from some constructors
++ Added error check to setPermissions function: won't accept empty
+  group id
++ tidied (lower cased constants)
++ Changed id default to zero.
+
+
 Blog
 + Added Version module requirement
 + Added ability for anonymous and users without blog permission to
