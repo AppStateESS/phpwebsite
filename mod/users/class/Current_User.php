@@ -156,7 +156,7 @@ class Current_User {
 
     function updateLastLogged()
     {
-        $db = & new PHPWS_DB('users');
+        $db = new PHPWS_DB('users');
         $db->addWhere('id', $_SESSION['User']->getId());
         $db->addValue('last_logged', mktime());
         return $db->update();
@@ -180,7 +180,7 @@ class Current_User {
     function isLogged()
     {
         if (!isset($_SESSION['User'])) {
-            $_SESSION['User'] = & new PHPWS_User;
+            $_SESSION['User'] = new PHPWS_User;
         }
 
         return $_SESSION['User']->isLogged();
@@ -284,8 +284,8 @@ class Current_User {
 
         $createUser = FALSE;
         // First check if they are currently a user
-        $user = & new PHPWS_User;
-        $db = & new PHPWS_DB('users');
+        $user = new PHPWS_User;
+        $db = new PHPWS_DB('users');
         $db->addWhere('username', strtolower($username));
         $result = $db->loadObject($user);
 
@@ -342,7 +342,7 @@ class Current_User {
 
     function authorize($authorize, &$user, $password)
     {
-        $db = & new PHPWS_DB('users_auth_scripts');
+        $db = new PHPWS_DB('users_auth_scripts');
         $db->setIndexBy('id');
         $result = $db->select();
 
