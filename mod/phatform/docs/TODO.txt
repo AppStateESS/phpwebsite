@@ -1,0 +1,10 @@
+Phatform TODO
+-------------
+
+- Finish statistical view of data on reporting side.
+- Custom templates for forms.
+- Being able to require that input into a textfield is numeric.
+- General user interface and flow tweaking.
+- PHPWS_Manager enhancements are needed to finish up permissioning
+  and display issues.
+- Ability to run a custom function on data upon submission of form.

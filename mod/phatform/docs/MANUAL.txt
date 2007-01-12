@@ -1,0 +1,13 @@
+Phatform Manual
+---------------
+
+In our rush to release phatform to the public, Steven and
+Adam have not had time to put together a good user manual
+yet. Time will be spent over the next few weeks or months
+to create this document as swiftly as possible.
+
+We are always looking for help with compiling documentation.
+Both for phpWebSite as a whole and phatform in particular.
+If you are interested in helping to create a user manual
+for phatform, please contact Adam Morton via email at
+adam@NOSPAM.tux.appstate.edu.  Remove the 'NOSPAM.'.

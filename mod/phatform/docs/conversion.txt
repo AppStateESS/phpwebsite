@@ -1,0 +1,68 @@
+index.php
+Fixed the index.php check on the GLOBAL core variable
+Added session object construction in index.php
+
+phatform.php
+Fixed directory of boost.php in phatform.php
+
+boost/boost.php
+Moved file to boost directory and rewrote boost.php file.
+
+boost/controlpanel.php
+Moved and updated controlpanel.php file
+
+boost/install.php
+Removed file
+
+boost/permission.php
+Created permission.php file
+
+
+class/Checkbox.php
+
+class/Dropbox.php
+sqlFriendly
+
+class/Form.php
+Changed raw drop table queries to PHPWS_DB::dropTable
+
+class/FormManager.php
+Changed user session to Current_User
+Some content sent to default box.tpl in layout
+
+class/Element.php
+Moved Instruction tag to box title
+Fixed submit button label on Option save form
+changed accessDenied to go to an error page
+
+
+class/Form.php
+Tabs changed
+Dropped call to PHPWS_Array::reindex - changed to array_merge
+
+
+conf/manager.php
+Removed translate function calls
+
+inc/init.php
+Created init files to emulate old boost class inclusion
+
+
+
+
+
+
+Various files
+Changed require_once core classes to correct directory
+Changed tabbing to 4 space standard
+Swapped double quotes to single where appropiate
+Changed translate sessions to gettext format
+Altered spacing for readability
+Reset CVS file versions
+Untabified files
+Changed Error report method
+Created error file, put error defines in init.php
+Changed GLOBAL variable printing to use Layout class
+Replaced PHPWS_DATABASE with PHPWS_DB
+Changed bg_light and bg_medium to bgcolor1 and bgcolor2 respectively
+Removed references to FatCat

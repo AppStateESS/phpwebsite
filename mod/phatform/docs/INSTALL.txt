@@ -1,0 +1,38 @@
+Installation of PhatForm
+------------------------
+
+1. Untar the phatform files into your phpwebsite's mod directory:
+
+      tar -xzf phatform_2.10.tar.gz
+
+2. Change the permissions on the phatform/export and phatform/archive
+   directories to give the web server write permissions:
+
+      Root access:
+         chown apache.apache phatform/export phatform/archive
+
+      Non-Root access:
+         chmod 777 phatform/export phatform/archive
+
+   Shell scripts are provided in the phatform/util/ directory that
+   will automagically set your permissions for you.  Simply change
+   to the phatform/util directory and execute 'chownphat.sh' if you
+   have root access to the machine, or 'chmodphat.sh' if you don't
+   have root access:
+
+      Root access:
+         cd mod/phatform/util/
+         ./chownphat.sh username.group
+
+      Non-Root access:
+         cd mod/phatform/util/
+         ./chmodphat.sh
+
+3. Using your browser open your phpwebsite site and login as a deity
+   user.
+
+4. Select 'Modules' from your user menu and enter the Boost module.
+
+5. Select the 'Install' button next to the module titled 'Form Generator'.
+
+6. Enjoy!

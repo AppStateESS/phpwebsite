@@ -1,0 +1,12 @@
+Phatform Requirements
+
+It is assumed that the user of phatform has a working web server
+with a working installation of phpWebSite v0.9.0 or greater. It is
+also assumed that the user wishing to install phatform has a deity
+account or an administrative account with full rights to the Boost
+module.
+
+Requirements:
+-------------
+- phpWebSite v0.9.0 or greater
+- zip program installed on server

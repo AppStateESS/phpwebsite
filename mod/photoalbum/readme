@@ -1,0 +1,5 @@
+Please be aware this is a conversion of Photo Album. It was not
+designed specifically to run in 1.0.
+
+As a result, some bugs may remain and you will be unable to run it
+under Postgresql.

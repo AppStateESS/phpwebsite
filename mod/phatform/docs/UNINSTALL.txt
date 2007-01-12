@@ -1,0 +1,21 @@
+Uninstallation of phatform
+--------------------------
+
+MAKE SURE YOU BACKUP YOUR PHATFORM DATA BEFORE YOU CONTINUE!!
+
+All phatform data is located in tables prefixed with mod_phatform_
+and files located in the phatform/export and phatform/archive
+directories.
+
+1. Open your browser and point it to your phpwebsite installation.
+
+2. Login as a deity user and select the 'Modules' link from the user
+   menu.
+
+3. Enter the Boost module and click the 'Uninstall' button next to
+   the module titled 'Form Generator'.
+
+4. Choose 'Yes' when prompted to confirm the uninstall.
+
+5. You may now safely remove all the files in the ./mod/phatform/
+   directory.

@@ -1,0 +1,172 @@
+Post Process Patch Information File. (V0.1)
+-------------------------------------------
+
+Written by Rob Willett (1/3/2004)
+
+Introduction
+------------
+
+This patch was written to allow a user to specify some post processing PHP code 
+to be run after completion of a form created using Phatform in 
+phpWebsite V0.9.3-2. It has not been tested on any other version of phpwebsite
+so I have no idea if it will work or not. I suspect not but your mileage may
+vary.
+
+The reason I wrote the patches was that I needed to analyse forms that had been
+submitted by people onto my website. Since the website is not yet up and running
+there is no point in me putting the details in here. (yet). I was aware that 
+the authors of PhatForm were planning to do something like this but I needed it
+now and had a few evenings to spare. Apologies if I step on peoples toes. 
+
+I had thought that the patches would take longer to write as I had never delved
+into the core of phpwebsite. Once I had got my head around what needed to be
+done my solution turned out to be almost trivial. I would like to claim credit
+for the work being so easy but it must go to Adam Morton and Steve, apologies
+but I couldn't find a surname for Steve, for writing such elegant code.
+
+The Solution
+------------
+
+I wanted to allow form administrators the ability to analyse forms that 
+had been submitted. Originally I thought about just automatically adding up the 
+values for each questions and outputting that to the screen. However 
+questionaires are becoming more and more complex and I wanted the ability
+to create multi-dimension analysis. e.g. Personality tests might score you in
+a number of different dimensions based on creativity, assertiveness, leadership
+etc etc. 
+
+This meant that a simple totalling program wouldn't be versatile enough. The
+only solution that I could see would be either a dedicated form analysis 
+language or allow the administrator to use PHP code. Whilst I could write 
+a new language, how uber-geek is that, the sensible solution is to simply
+use PHP. There are security issues with this which I'll come onto later.
+
+The obvious place for the post processing code is in the form creation window. 
+I've modified one of the the standard templates, settings.tpl, to add in 
+a section where you can write PHP code. I've also modified the database table 
+install.sql to add in the extra column needed to store the post processing code.
+
+The rest of the changes are all in Form.php. All I've done is add in code to 
+store and retrieve the post processing code and to execute it. It was amost 
+trivially easy to modify Form.php to do this. Kudos to Adam and Steve.
+
+The last part of the work is executing the PHP code at the end of the 
+submission. I use the PHP lambda function, create_function, to create a 
+function to run the code. I have no idea about efficiency on this but high 
+speed was not my main priority. I pass in all the details about the 
+form submission. The function created by the user is run and the output
+returned is displayed in the window after submission. If no output nothing is 
+displayed. 
+
+How to use
+----------
+
+When you create the form you now have the option of creating some PHP code to
+analyse the form. This code is wrapped inside a function call created for 
+you that has a single argument passed to it, $form_details. $form_details 
+is an array that holds all the values to the questions the user has 
+answered. $form_details does not have any database information such as 
+the DB connector or anything like that. $form_details is indexed on 
+the name of the form question. 
+
+As with anything like this a worked example is worth a few words.
+
+1. Create a form with a single radio button and 3 options to the button, 
+   option 1, option 2 and option 3. Each option has a value of 1, 2, 3 
+   respectively. 
+
+2. Add the following code into the Post Processing window. Please don't
+   put the code snippet start and ends, <sigh>.
+
+-------------------- Start of code snippet ----------------------------
+
+foreach ($form_details as $key=>$value)
+{
+	$retval .= "PostProcessing: '$key' '$value'<br>";
+}
+
+return $retval;
+
+-------------------- End of code snippet ----------------------------
+
+   Save the form and submit the form. You should now have the normal 'Thank 
+   you' note with all your fields and values displayed. 
+
+3. Now I know this code doesn't do anything really useful but you have to 
+   work out what you want it to do. It's easy to simply add the values of 
+   the questions up and produce a mildly amusing personality analysis at the
+   end.
+
+-------------------- Start of code snippet ----------------------------
+
+$total = 0;
+
+foreach ($form_details as $key=>$value)
+{
+ 	$total += $value;
+}
+
+if ($total < 5) {
+	$retval = "You're not too sharp...Perhaps a job in politics";
+} else if ($total < 10) {
+	$retval = "You're fairly average...Perhaps a job as a political aide";
+} else 
+	$retval = "You're a sharp cookie...Too sharp perhaps..";
+
+return $retvali."<br>";
+
+-------------------- End of code snippet ----------------------------
+
+4. If you don't add any code to the post processing window this is ok. 
+   Nothing different will happen. No code means the form has exactly the 
+   same behaviour as before.
+
+5. Always put a semi-colon (;) at the end of the last line. PHP create_function
+   seems to demand it.
+
+Security
+--------
+
+As the Post Processing Code is just PHP, it could do just about anything. This 
+is the good bit and the bad bit. If you don't trust your forms administrator 
+to do the job then don't apply this patch. 
+
+If somebody could inject bad code into your database table then this would 
+also cause a problem, mind you if they can do that your DB has just gone pop 
+anyway.
+
+If there is an error in your code then nothing will be displayed. Go to your
+Apache logs and look up the error there.
+
+What could be done better.
+--------------------------
+
+I'm not too happy about having to do an extra database call to recover all the
+data after submission. Any suggestions as to what could be done better
+greatfully received.
+
+There's no checking of the syntax of the post processing code.
+
+Perhaps there needs to be a flag to turn post processing options on or off.
+
+Contact Information
+-------------------
+
+I can be contacted on rob.phatform.patch@robertwillett.NOSPAM.com. As I 
+work on other projects, none to do with this, please do not expect 
+immediate replies to any e-mails.
+
+Licenses
+--------
+
+All this code is issued under the LGPL as is phpwebsite. I personally have no 
+aim to make any money out of this, but if you want to make me your sole heir 
+to a multi-million fortune, I won't complain. Since other people have done all
+the hard work in making Phatform I can't take any more credit than I deserve
+which is effectivly none. At the time of writing SCO were being a bunch of 
+dickheads, I gather that I can't stop them using this code if they agree with
+the LGPL but would prefer if they didn't. Yah Boo.
+
+If you do find this useful drop me a line and let me know. If you don't find
+it useful then best of luck writing your own.
+
