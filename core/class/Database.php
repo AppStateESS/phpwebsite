@@ -2175,6 +2175,11 @@ class PHPWS_DB {
         return null;
     }
 
+
+    /**
+     * @author Matthew McNaney
+     * @author Hilmar
+     */
     function prefixQuery($sql)
     {
         if (empty($GLOBALS['PHPWS_DB']['tbl_prefix'])) {
@@ -2185,36 +2190,39 @@ class PHPWS_DB {
         if (empty($tables)) {
             return $sql;
         }
-        
+
         foreach ($tables as $tbl) {
             $tbl = trim($tbl);
-            $sql = preg_replace("/'(.*$tbl.*)'/Ue", 'PHPWS_DB::_prepop("\\1")', $sql);
-            $sql = preg_replace("/$tbl(\W)|$tbl$/", PHPWS_DB::getPrefix() . $tbl . '\\1', $sql);
-            $sql = PHPWS_DB::_prejoin($sql);
+            $sql = PHPWS_DB::prefixVary($sql, $tbl);
         }
         return $sql;
     }
 
+    /**
+     * Prefix tablenames, but not within 'quoted values', called from prefixQuery
+     * @author Hilmar
+     */
+    function prefixVary($sql, $tbl)
+    {
+        $repl = true;
+        $ar = explode("'", $sql);
 
-    function _prepop($val)
-    {
-        static $key = 0;
-        $key++;
-        $GLOBALS['In_Quote_Store'][$key] = $val;
-        return '|{[' . $key . ']}|';
-    }
-    
-    function _prejoin($sql)
-    {
-        if (isset($GLOBALS['In_Quote_Store'])) {
-            foreach ($GLOBALS['In_Quote_Store'] as $key => $value) {
-                $sql = str_replace("|{[$key]}|", "'$value'", $sql);
+        foreach ($ar as $v) {
+            if ($repl) {
+                $subsql[] = preg_replace("/$tbl(\W)|$tbl$/",
+                                         $GLOBALS['PHPWS_DB']['tbl_prefix'] . $tbl . '\\1', $v);
+                $repl = false;
+            } else {
+                $subsql[] = $v;
+                if (substr($v, -1, 1) == "\\") continue;
+                $repl = true;
             }
         }
+        $sql = implode('\'', $subsql);
+
         return $sql;
     }
 
-    
 
     function pullTables($sql)
     {
