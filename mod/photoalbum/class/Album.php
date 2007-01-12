@@ -739,6 +739,7 @@ class PHPWS_Album extends PHPWS_Item {
     {
         $vars['PHPWS_Album_op'] = 'view';
         $vars['PHPWS_Album_id'] = $value['id'];
+        $tpl['IMAGE'] = PHPWS_Text::moduleLink($value['image'], 'photoalbum', $vars);
         $tpl['LABEL'] = PHPWS_Text::moduleLink($value['label'], 'photoalbum', $vars);
         $tpl['UPDATED'] = strftime('%c', $value['updated']);
         return $tpl;
