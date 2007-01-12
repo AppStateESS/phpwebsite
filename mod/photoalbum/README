@@ -1,8 +1,0 @@
-This module was converted from the 0.10.x version.
-It requires a great deal of memory compared to 1.x modules.
-Please go to your config/core/config.php file and uncomment this line:
-
-ini_set('memory_limit', '10M');
-
-You should probably set this number to around 18M ESPECIALLY if you
-are also running Form Generator.
