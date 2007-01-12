@@ -134,8 +134,9 @@ class PHPWS_User {
     {
         $DB = new PHPWS_DB('users_groups');
         $DB->addWhere('name', $name);
-        if (isset($id))
+        if ($id) {
             $DB->addWhere('user_id', $id, '!=');
+        }
 
         $result = $DB->select('one');
         if (PEAR::isError($result)) {
