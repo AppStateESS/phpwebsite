@@ -224,7 +224,7 @@ administrator (more on that later).
 Here is an example of saving a version.
 First we decide if we need to save the item.
 
-if ($my_item->approved || !$this->id) {
+if ($my_item->approved || !$my_item->id) {
      $my_item->save();      
 }
 
@@ -502,9 +502,15 @@ permissions. Now the easy part:
 $version = & new Version('my_mod_table', $_GET['version_id']);
 $version->restore();
 
-That's it. To remove a version, just delete it:
+That's it*. To remove a version, just delete it:
 
 $version->delete();
+
+* Note: Sometimes you may not want ALL of the version to restore. For
+  example, if the restored item was in a specific order that has since
+  changed, you don't want to force it into the same position. In such
+  a case, edit a version object's "source_data" array before calling
+  the restore function.
 
 
 
