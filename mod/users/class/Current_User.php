@@ -5,7 +5,7 @@
    * logged into the system. Current_User is actually pathing through
    * the current user session.
    *
-   * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @author  Matthew McNaney <mcnaney at gmail dot com>
    * @version $Id$
    */
 
@@ -31,17 +31,40 @@ class Current_User {
   
     /**
      * Determines if a user is allowed to use a specific module, permission, and/or item
+     *
+     * @param  string   module             Name of the module checking
+     * @param  string   subpermission      Name of the module permission to verify
+     * @param  integer  item_id            Id of the item to verify
+     * @param  string   itename            Name of the item permission
+     * @param  boolean  unrestricted_only  If true, user must be have unrestricted 
+     *                                     priviledges for that module regardless of 
+     *                                     module, subpermission, or item id
      */
-    function allow($module, $subpermission=NULL, $item_id=NULL, $itemname=NULL)
+    function allow($module, $subpermission=NULL, $item_id=NULL, $itemname=NULL, $unrestricted_only=false)
     {
+        if ($unrestricted_only && Current_User::isRestricted($module)) {
+                return false;
+        }
         return $_SESSION['User']->allow($module, $subpermission, $item_id, $itemname, FALSE);
     }
 
     /**
      * Works the same as the allow function but confirms the user's authorization code
+     *
+     * @param  string   module             Name of the module checking
+     * @param  string   subpermission      Name of the module permission to verify
+     * @param  integer  item_id            Id of the item to verify
+     * @param  string   itename            Name of the item permission
+     * @param  boolean  unrestricted_only  If true, user must be have unrestricted 
+     *                                     priviledges for that module regardless of 
+     *                                     module, subpermission, or item id
      */
-    function authorized($module, $subpermission=NULL, $item_id=NULL, $itemname=NULL)
+    function authorized($module, $subpermission=NULL, $item_id=NULL, $itemname=NULL, $unrestricted_only=false)
     {
+        if ($unrestricted_only && Current_User::isRestricted($module)) {
+                return false;
+        }
+
         return $_SESSION['User']->allow($module, $subpermission, $item_id, $itemname, TRUE);
     }
 
