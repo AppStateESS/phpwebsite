@@ -144,9 +144,9 @@ class Webpage_Page {
 
     function viewBasic()
     {
-        $template['TITLE'] = $this->title;
+        $template['PAGE_TITLE'] = $this->title;
         $template['CONTENT'] = $this->getContent();
-        
+        return PHPWS_Template::process($template, 'webpage', 'page/' . $this->template);
     }
 
     function getTplTags($admin=FALSE, $include_header=TRUE, $version=0)
@@ -155,8 +155,8 @@ class Webpage_Page {
         $template['CONTENT'] = $this->getContent();
         $template['CURRENT_PAGE'] = $this->page_number;
 
-        if ( Current_User::isUser($this->_volume->create_user_id)
-             || Current_User::allow('webpage', 'edit_page', $this->id) ) {
+        if ( (Current_User::allow('webpage', 'edit_page') && Current_User::isUser($this->_volume->create_user_id))
+             || Current_User::allow('webpage', 'edit_page', $this->volume_id) ) {
             $vars = array('wp_admin'  => 'edit_page',
                           'page_id'   => $this->id,
                           'volume_id' => $this->volume_id);
@@ -167,6 +167,7 @@ class Webpage_Page {
             $links[] = PHPWS_Text::secureLink(_('Edit'), 'webpage', $vars);
 
             if ($admin) {
+
                 if (Current_User::allow('webpage', 'delete_page')) {
                     $jsvar['QUESTION'] = _('Are you sure you want to remove this page?');
                     $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=delete_page&amp;page_id=%s&amp;volume_id=%s&amp;authkey=%s',
@@ -175,6 +176,13 @@ class Webpage_Page {
                     
                     $links[] = javascript('confirm', $jsvar);
                 }
+
+                if (Current_User::allow('webpage', 'edit_page', $this->volume_id, null, true)) {
+                    $vars = array('wp_admin'=>'restore_page', 'volume_id'=>$this->volume_id, 'page_id'=>$this->id);
+                    $links[] = PHPWS_Text::secureLink(_('Restore'), 'webpage', $vars);
+                }
+
+
                 if($this->page_number < count($this->_volume->_pages)) {
                     $jsvar['QUESTION'] = _('Are you sure you want to join this page to the next?');
                     $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=join_page&amp;page_id=%s&amp;volume_id=%s&amp;authkey=%s',
@@ -188,9 +196,8 @@ class Webpage_Page {
                     $jsvar['LINK'] = ('Join all');
                     $links[] = javascript('confirm', $jsvar);
                 }
-
             }
-
+            
             $template['ADMIN_LINKS'] = implode(' | ', $links);
         }
 
@@ -235,7 +242,7 @@ class Webpage_Page {
         $this->_volume->flagKey();
         
         if ( Current_User::isUser($this->_volume->create_user_id) || 
-             Current_User::allow('webpage', 'edit_page', $this->id) ) {
+             Current_User::allow('webpage', 'edit_page', $this->volume_id) ) {
             $vars = array('wp_admin'  => 'edit_page',
                           'page_id'   => $this->id,
                           'volume_id' => $this->volume_id);

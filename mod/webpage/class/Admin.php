@@ -41,13 +41,14 @@ class Webpage_Admin {
         }
 
         if (isset($_REQUEST['volume_id'])) {
-            $volume = & new Webpage_Volume($_REQUEST['volume_id']);            
+            $volume = new Webpage_Volume($_REQUEST['volume_id']);            
         } else {
-            $volume = & new Webpage_Volume;
+            $volume = new Webpage_Volume;
         }
 
+        // Only makes volume version. Page versions made separately.
         if (!empty($_REQUEST['version_id'])) {
-            $version = & new Version('webpage_volume', (int)$_REQUEST['version_id']);
+            $version = new Version('webpage_volume', (int)$_REQUEST['version_id']);
             $version->loadObject($volume);
             $volume->loadApprovalPages();
             $version_id = $version->id;
@@ -59,7 +60,7 @@ class Webpage_Admin {
         if (isset($_REQUEST['page_id'])) {
             $page = $volume->getPagebyId($_REQUEST['page_id']);
         } else {
-            $page = & new Webpage_Page;
+            $page = new Webpage_Page;
             $page->volume_id = $volume->id;
             $page->_volume = &$volume;
         }
@@ -81,6 +82,8 @@ class Webpage_Admin {
         case 'approval_view':
         case 'deactivate_vol':
         case 'activate_vol':
+        case 'restore_volume':
+        case 'restore_page':
             if ( ( $volume->id 
                    && ( !Current_User::isUser($volume->create_user_id) && !Current_User::authorized('webpage', 'edit_page', $volume->id) ) )
                  || ( !Current_User::authorized('webpage', 'edit_page') ) ) {
@@ -97,6 +100,39 @@ class Webpage_Admin {
             $pagePanel->setCurrentTab('header');
             $title = _('Create header');
             $content = Webpage_Forms::editHeader($volume, $version);
+            break;
+
+        case 'restore_volume_version':
+            $version->restore();
+            Webpage_Admin::sendMessage( _('Header restored.'),
+                                       sprintf('edit_webpage&tab=header&volume_id=%s', $volume->id) );
+            break;
+
+        case 'restore_page_version':
+            $page_version = new Version('webpage_page', (int)$_GET['version_id']);
+            /**
+             * Have to set the page number.
+             * We don't want the saved version to screw up the page order
+             **/
+            $page_version->source_data['page_number'] = $page->page_number;
+            $page_version->restore();
+            Webpage_Admin::sendMessage( _('Page restored.'),
+                                       sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s',
+                                               $page->page_number, $volume->id, $page->id));
+            break;
+
+        case 'remove_page_restore':
+            $page_version = new Version('webpage_page', (int)$_GET['version_id']);
+            $page_version->delete();
+            Webpage_Admin::sendMessage( _('Page restored.'),
+                                       sprintf('restore_page&tab=page_%s&volume_id=%s&page_id=%s',
+                                               $page->page_number, $volume->id, $page->id));
+
+
+        case 'remove_volume_restore':
+            $version->delete();
+            Webpage_Admin::sendMessage( _('Header version deleted.'),
+                                       sprintf('restore_volume&volume_id=%s', $volume->id) );
             break;
 
         case 'edit_webpage':
@@ -260,7 +296,6 @@ class Webpage_Admin {
                                                    $page->page_number, $volume->id, $page->id, $version_id));
             }
             break;
-            // end web page admin cases
 
         case 'list':
             $title = _('List Web Pages');
@@ -326,9 +361,19 @@ class Webpage_Admin {
             PHPWS_Core::goBack();
             break;
 
+        case 'restore_page':
+            $title = sprintf(_('Restore Page %s'), $page->page_number);
+            $content = Webpage_Admin::restorePage($volume, $page);
+            break;
+
+        case 'restore_volume':
+            $title = _('Restore Web Page Header');
+            $content = Webpage_Admin::restoreVolume($volume);
+            break;
+
         default:
             PHPWS_Core::errorPage('404');
-        }
+        }   // end web page admin cases
 
         // Sticks inside the panel
         switch ($command) {
@@ -339,6 +384,8 @@ class Webpage_Admin {
         case 'post_page':
         case 'edit_header':
         case 'post_header':
+        case 'restore_volume':
+        case 'restore_page':
             $pagePanel->setContent($content);
             $content = $pagePanel->display();
         }
@@ -350,6 +397,47 @@ class Webpage_Admin {
         $panel->setContent($final);
         $finalPanel = $panel->display();
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
+    }
+
+    function restorePage(&$volume, &$page)
+    {
+        PHPWS_Core::initModClass('version', 'Restore.php');
+        
+        $restore = new Version_Restore('webpage', 'webpage_page', $page->id,
+                                       'Webpage_Page', 'viewBasic');
+
+        $vars['volume_id'] = $volume->id;
+        $vars['page_id'] = $page->id;
+        $vars['wp_admin'] = 'restore_page_version';
+        $restore_link = PHPWS_Text::linkAddress('webpage', $vars, true);
+
+        $vars['wp_admin'] = 'remove_page_restore';
+        $remove_link = PHPWS_Text::linkAddress('webpage', $vars, true);
+
+        $restore->setRestoreUrl($restore_link);
+        $restore->setRemoveUrl($remove_link);
+        
+        return $restore->getList();
+    }
+
+    function restoreVolume(&$volume)
+    {
+        PHPWS_Core::initModClass('version', 'Restore.php');
+        
+        $restore = new Version_Restore('webpage', 'webpage_volume', $volume->id,
+                                       'Webpage_Volume', 'approval_view');
+
+        $vars['volume_id'] = $volume->id;
+        $vars['wp_admin'] = 'restore_volume_version';
+        $restore_link = PHPWS_Text::linkAddress('webpage', $vars, true);
+
+        $vars['wp_admin'] = 'remove_volume_restore';
+        $remove_link = PHPWS_Text::linkAddress('webpage', $vars, true);
+
+        $restore->setRestoreUrl($restore_link);
+        $restore->setRemoveUrl($remove_link);
+        
+        return $restore->getList();
     }
 
     function sendMessage($message, $command)
@@ -391,13 +479,13 @@ class Webpage_Admin {
         $link['title'] = _('List');
         $tabs['list'] = $link;
 
-        $version = & new Version('webpage_volume');
+        $version = new Version('webpage_volume');
         $unapproved = $version->countUnapproved();
 
         $link['title'] = sprintf(_('Approval(%s)'), $unapproved);
         $tabs['approve'] = $link;
 
-        $panel = & new PHPWS_Panel('wp_main_panel');
+        $panel = new PHPWS_Panel('wp_main_panel');
         $panel->quickSetTabs($tabs);
 
         $panel->setModule('webpage');
@@ -410,7 +498,7 @@ class Webpage_Admin {
             return;
         }
 
-        $db = & new PHPWS_DB('webpage_volume');
+        $db = new PHPWS_DB('webpage_volume');
         $db->addWhere('id', $pages);
         $db->addValue('frontpage', (int)$move_val);
         return $db->update();
@@ -419,7 +507,7 @@ class Webpage_Admin {
     function setActive($pages, $active)
     {
         foreach ($pages as $id) {
-            $volume = & new Webpage_Volume((int)$id);
+            $volume = new Webpage_Volume((int)$id);
             $volume->active = (bool)$active;
             $volume->save();
         }
@@ -427,7 +515,7 @@ class Webpage_Admin {
 
     function approvalView(&$volume, &$version)
     {
-        $approval = & new Version_Approval('webpage', 'webpage_page', 'Webpage_Page');
+        $approval = new Version_Approval('webpage', 'webpage_page', 'Webpage_Page');
         $approval->_db->addOrder('page_number');
         $pages = $approval->get();
 
@@ -477,7 +565,7 @@ class Webpage_Admin {
         }
 
         foreach ($webpage as $wp) {
-            $volume = & new Webpage_Volume($wp);
+            $volume = new Webpage_Volume($wp);
             $result = $volume->delete();
             if (PEAR::isError($result)) {
                 return $result;
@@ -488,16 +576,16 @@ class Webpage_Admin {
 
     function approveWebpage()
     {
-        $version = & new Version('webpage_volume', $_GET['version_id']);
-        $volume = & new Webpage_Volume;
+        $version = new Version('webpage_volume', $_GET['version_id']);
+        $volume = new Webpage_Volume;
         $version->loadObject($volume);
-        $pages = & new Version_Approval('webpage', 'webpage_page');
+        $pages = new Version_Approval('webpage', 'webpage_page');
         $pages->addWhere('volume_id', $volume->id);
         $unapproved_pages = $pages->get(TRUE);
 
         if (!empty($unapproved_pages)) {
             foreach ($unapproved_pages as $pageVer) {
-                $pageObj = & new Webpage_Page;
+                $pageObj = new Webpage_Page;
                 $pageVer->loadObject($pageObj);
                 $pageObj->approved = 1;
                 $result = $pageObj->save();

@@ -209,18 +209,18 @@ class Webpage_Volume {
 
         $links[] = $this->getViewLink();
 
-        /*
         $vars['wp_admin'] = 'delete_wp';
-        $js_vars['QUESTION'] = sprintf(_('Are you sure you want to delete %s and all its pages?'),
+        $js_vars['QUESTION'] = sprintf(_('Are you sure you want to delete &quot;%s&quot and all its pages?'),
                                        $this->title);
         $js_vars['ADDRESS'] = PHPWS_Text::linkAddress('webpage', $vars, TRUE);
         $js_vars['LINK'] = _('Delete');
         $links[] = javascript('confirm', $js_vars);
-        */
 
         $tpl['DATE_CREATED'] = $this->getDateCreated();
         $tpl['DATE_UPDATED'] = $this->getDateUpdated();
         $tpl['ACTION']       = implode(' | ', $links);
+
+        $tpl['TITLE'] = sprintf('<a href="%s">%s</a>', $this->getViewLink(true), $this->title);
 
         $tpl['CHECKBOX'] = sprintf('<input type="checkbox" name="webpage[]" id="webpage" value="%s" />', $this->id);
 
@@ -416,7 +416,7 @@ class Webpage_Volume {
             $template['PAGE_LABEL'] = _('Page');
         }
 
-        if ( Current_User::isUser($this->create_user_id) || 
+        if ( (Current_User::allow('webpage', 'edit_page') && Current_User::isUser($this->create_user_id)) || 
              Current_User::allow('webpage', 'edit_page', $this->id)) {
             $vars['wp_admin'] = 'edit_header';
             $vars['volume_id'] = $this->id;
@@ -426,6 +426,10 @@ class Webpage_Volume {
             $template['EDIT_HEADER'] = PHPWS_Text::secureLink(_('Edit header'), 'webpage', $vars);
         }
 
+        if (!$version && Current_User::allow('webpage', 'edit_page', null, null, true)) {
+            $vars = array('wp_admin' => 'restore_volume', 'volume_id'=>$this->id);
+            $template['RESTORE'] = PHPWS_Text::secureLink(_('Restore'), 'webpage', $vars);
+        }
 
         $result = Categories::getSimpleLinks($this->key_id);
         if (!empty($result)) {
@@ -606,6 +610,7 @@ class Webpage_Volume {
         $search->addKeywords($all_search_content);
         return $search->save();
     }
+
 }
 
 ?>
