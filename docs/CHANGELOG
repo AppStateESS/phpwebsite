@@ -1,3 +1,24 @@
+January 12
+----------
+
+Users
+----------
++ Added a unrestricted only parameter to Current_User's allow and
+  authorize functions
+
+Web Pages
+----------
++ Added ability to restore old headers and pages.
++ Updated files: templates/header.tpl
+
+Photoalbum
+----------
++ Linked the Album image
+
+Core
++ Database
+  o Added Hilmar's prefixing code.
+
 January 10
 ----------
 Core
