@@ -84,7 +84,7 @@ class File_Common {
               $_FILES[$var_name]['error'] == UPLOAD_ERR_FORM_SIZE)
             ) {
             $this->_errors[] =  PHPWS_Error::get(PHPWS_FILE_SIZE, 'core', 'File_Common::getFiles');
-            return FALSE;
+            return false;
         }
 
 
@@ -94,7 +94,7 @@ class File_Common {
 
         if (PEAR::isError($this->_upload)) {
             $this->_errors[] = $this->_upload();
-            return FALSE;
+            return false;
         }
 
         if ($this->_upload->isValid()) {
@@ -114,7 +114,7 @@ class File_Common {
                 } else {
                     $this->_errors[] = PHPWS_Error::get(FC_IMG_SIZE, 'filecabinet', 'PHPWS_Document::importPost', array($this->size, $this->_max_size));
                 }
-                return FALSE;
+                return false;
             }
 
             if (!$this->allowType()) {
@@ -123,7 +123,7 @@ class File_Common {
                 } else {
                     $this->_errors[] = PHPWS_Error::get(FC_IMG_WRONG_TYPE, 'filecabinet', 'PHPWS_Document::importPost');
                 }
-                return FALSE;
+                return false;
             }
 
             if ($this->_classtype == 'image') {
@@ -131,6 +131,7 @@ class File_Common {
 
                 if(!$this->allowDimensions()) {
                     $this->_errors[] = PHPWS_Error::get(FC_IMAGE_DIMENSION, 'filecabinet', 'PHPWS_Document::importPost', array($this->width, $this->height, $this->_max_width, $this->_max_height));                
+                    return false;
                 }
             }
 
@@ -141,18 +142,18 @@ class File_Common {
                 }
 
                 // if the document id is set, we assume they are just updating other information
-                return TRUE;
+                return true;
             }
 
-            // If there wasn't a file uploaded, we return a FALSE without an error.
+            // If there wasn't a file uploaded, we return a false without an error.
             // This will allow to check for a false and continue on if the error array is empty
-            return FALSE;
+            return false;
         } elseif ($this->_upload->isError()) {
             $this->_errors[] = $this->_upload->getMessage();
-            return FALSE;
+            return false;
         }
 
-        return TRUE;
+        return true;
     }
 
     function getErrors()
@@ -179,7 +180,7 @@ class File_Common {
         $this->size = (int)$size;
     }
 
-    function getSize($format=FALSE)
+    function getSize($format=false)
     {
         if ($format) {
             return $this->_formatSize($this->size);
@@ -194,7 +195,7 @@ class File_Common {
         $this->_max_size = (int)$max_size;
     }
 
-    function getMaxSize($format=FALSE)
+    function getMaxSize($format=false)
     {
         if ($format) {
             return $this->_formatSize($this->_max_size);
@@ -223,7 +224,7 @@ class File_Common {
         $this->description = PHPWS_Text::parseInput($description);
     }
 
-    function getDescription($format=FALSE)
+    function getDescription($format=false)
     {
         if ($format) {
             return PHPWS_Text::parseOutput($this->description);
@@ -238,7 +239,7 @@ class File_Common {
             $size = $this->getSize();
         }
 
-        return ($size <= $this->_max_size && $size <= ABSOLUTE_UPLOAD_LIMIT) ? TRUE : FALSE;
+        return ($size <= $this->_max_size && $size <= ABSOLUTE_UPLOAD_LIMIT) ? true : false;
     }
 
 
@@ -253,15 +254,15 @@ class File_Common {
             return $moved;
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
      * Returns the directory path of the file
-     * If relative is TRUE, a path relative to the installation
+     * If relative is true, a path relative to the installation
      * directory is returned.
      */
-    function getPath($relative=TRUE)
+    function getPath($relative=true)
     {
         if (empty($this->file_name)) {
             return PHPWS_Error::get(FC_FILENAME_NOT_SET, 'filecabinet', 'File_Common::getPath');
@@ -298,11 +299,11 @@ class File_Common {
         if (!@rename($oldfile,$newfile)) {
             if (@copy ($oldfile,$newfile)) {
                 unlink($oldfile);
-                return TRUE;
+                return true;
             }
-            return FALSE;
+            return false;
         }
-        return TRUE;
+        return true;
     }
 }
 
