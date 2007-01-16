@@ -19,6 +19,10 @@ function phatform_install(&$content)
         $content[] = 'Failed to create report directory.';
     }
 
+    if (!@mkdir('files/phatform/export/')) {
+        $content[] = 'Failed to create report directory.';
+    }
+
     return true;
 }
 
