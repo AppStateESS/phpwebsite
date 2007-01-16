@@ -404,7 +404,6 @@ class DBPager {
             $result = $this->db->select('count');
         }
 
-        $this->db->resetColumns();
         return $result;
     }
 
@@ -419,7 +418,8 @@ class DBPager {
      * This function pulls the database information then plugs
      * the data it gets into the object.
      */
-    function initialize(){
+    function initialize()
+    {
         if (isset($this->error)) {
             return $this->error;
         }
@@ -450,7 +450,6 @@ class DBPager {
         if ($this->current_page > $this->total_pages) {
             $this->current_page = $this->total_pages;
         }
-
 
         if (isset($this->orderby)) {
             $this->db->addOrder($this->orderby . ' ' . $this->orderby_dir);
@@ -774,7 +773,7 @@ class DBPager {
         $form->setExtra('change_page', 'onchange="this.form.submit()"');
         $form->setMatch('change_page', $this->current_page);
 
-        if (!javascriptEnabled()) {
+        if (!function_exists('javascriptEnabled') || !javascriptEnabled()) {
             $form->addSubmit('go', _('Go'));
         }
 
