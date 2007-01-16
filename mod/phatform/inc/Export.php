@@ -13,21 +13,19 @@ function export($formId = NULL) {
 
     $exportDir = PHPWS_HOME_DIR . 'files/phatform/export/';
     $path = $exportDir;
-
     clearstatcache();
     if(!is_dir($path)) {
         if(is_writeable($exportDir)) {
             PHPWS_File::makeDir($path);
         } else {
-            return PHPWS_Error::get(PHATFORM_EXPORT_PATH, 'phatform', 'Export.php::export()');
+            return PHPWS_Error::get(PHATFORM_EXPORT_PATH, 'phatform', 'Export.php::export');
         }
     } elseif(!is_writeable($path)) {
-        return PHPWS_Error::get(PHATFORM_EXPORT_PATH, 'phatform', 'Export.php::export()');
+        return PHPWS_Error::get(PHATFORM_EXPORT_PATH, 'phatform', 'Export.php::export');
     }
 
     $sql = 'SELECT * FROM mod_phatform_form_' . $formId;
-    $GLOBALS['core']->setFetchMode(DB_FETCHMODE_ASSOC);
-    $result = $GLOBALS['core']->getAll($sql, TRUE);
+    $result = PHPWS_DB::getAll($sql);
 
     if(sizeof($result) > 0) {
         $data = '';
