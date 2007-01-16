@@ -208,10 +208,10 @@ class PHPWS_Image extends File_Common {
 
     function allowDimensions()
     {
-        if (!$this->allowWidth() || !$this->allowHeight()) {
-            return FALSE;
+        if ($this->allowWidth() && $this->allowHeight()) {
+            return true;
         } else {
-            return TRUE;
+            return false;
         }
     }
 
