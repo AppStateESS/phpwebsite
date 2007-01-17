@@ -1,24 +1,24 @@
 <?php
 
-/**
- * Returns the contents of a directory in an array
- * 
- * If directoriesOnly is TRUE, then only directories will be listed.
- * If filesOnly is TRUE, then only files will be listed.
- * Function returns directory names and file names by default.
- * Special directories '.', '..', and 'CVS' are not returned.
- *
- * @author                            Matt McNaney <matt@NOSPAM.tux.appstate.edu>
- * @modified                          Adam Morton <adam@NOSPAM.tux.appstate.edu>
- * @param    string   path            The path to directory to be read
- * @param    boolean  directoriesOnly If TRUE, return directory names only
- * @param    boolean  filesOnly       If TRUE, return file names only
- * @param    boolean  recursive       If TRUE, readDirectory will recurse through the given directory and all directories 'beneath' it.
- * @param    array    extensions      An array containing file extensions of files you wish to have returned.
- * @param    boolean  appendPath      Whether or not to append the full path to all entries returned
- * @return   array    directory       An array containing the names of directories and/or files in the specified directory.
- * @access   public
- */
+  /**
+   * Returns the contents of a directory in an array
+   * 
+   * If directoriesOnly is TRUE, then only directories will be listed.
+   * If filesOnly is TRUE, then only files will be listed.
+   * Function returns directory names and file names by default.
+   * Special directories '.', '..', and 'CVS' are not returned.
+   *
+   * @author                            Matt McNaney <matt@NOSPAM.tux.appstate.edu>
+   * @modified                          Adam Morton <adam@NOSPAM.tux.appstate.edu>
+   * @param    string   path            The path to directory to be read
+   * @param    boolean  directoriesOnly If TRUE, return directory names only
+   * @param    boolean  filesOnly       If TRUE, return file names only
+   * @param    boolean  recursive       If TRUE, readDirectory will recurse through the given directory and all directories 'beneath' it.
+   * @param    array    extensions      An array containing file extensions of files you wish to have returned.
+   * @param    boolean  appendPath      Whether or not to append the full path to all entries returned
+   * @return   array    directory       An array containing the names of directories and/or files in the specified directory.
+   * @access   public
+   */
 
 
 class PHPWS_File {
@@ -51,7 +51,7 @@ class PHPWS_File {
 
         foreach ($listing as $directory) {
             $full_dir = $root_dir . $directory;
-            if ($directory == '.' || $directory == '..' || !is_dir($full_dir)) {
+            if (strpos($directory, '.') === 0 || !is_dir($full_dir)) {
                 continue;
             }
 
@@ -74,77 +74,153 @@ class PHPWS_File {
         return $directories;
     }
 
+    /*
+     function readDirectory($path, $directoriesOnly=FALSE, $filesOnly=FALSE, $recursive=FALSE, $extensions=array(), $appendPath=FALSE)
+     {
+     if($directoriesOnly && $filesOnly) {
+     $directoriesOnly = FALSE;
+     $filesOnly = FALSE;
+     }
 
-    function readDirectory($path, $directoriesOnly=FALSE, $filesOnly=FALSE, $recursive=FALSE, $extensions=array(), $appendPath=FALSE)
+     if (!is_dir($path)) {
+     return FALSE;
+     }
+
+     $dir = dir($path);
+     while ($file = $dir->read()){
+     $fullpath = $path . $file;
+     if ($directoriesOnly && !$filesOnly && @is_dir($fullpath) && !preg_match('/~$/', $file) && $file != '.' && $file != '..' && $file != 'CVS') {
+     if($appendPath) {
+     $directory[] = $fullpath;
+     } else {
+     $directory[] = $file;
+     }
+     } elseif (!$directoriesOnly && $filesOnly && !is_dir($path . $file) && !preg_match('/~$/', $file) && $file != 'CVS' && $file != '.' && $file != '..') {
+     if (is_array($extensions) && count($extensions) > 0) {
+     $extTest = explode('.', $file);
+     if (in_array($extTest[1], $extensions)) {
+     if ($appendPath) {
+     $directory[] = $fullpath;
+     } else {
+     $directory[] = $file;
+     }
+     }
+     } elseif ($appendPath) {
+     $directory[] = $fullpath;
+     } else {
+     $directory[] = $file;
+     }
+     } elseif (!$directoriesOnly && !$filesOnly && $file != '.' && $file != '..' && $file != 'CVS') {
+     if (!is_dir($path . $file) && is_array($extensions) && count($extensions) > 0) {
+     $extTest = explode('.', $file);
+     if (in_array($extTest[1], $extensions)) {
+     if ($appendPath) {
+     $directory[] = $fullpath;
+     } else {
+     $directory[] = $file;
+     }
+     } elseif ($appendPath) {
+     $directory[] = $fullpath;
+     } else {
+     $directory[] = $file;
+     }
+     } else {
+     if ($appendPath) {
+     $directory[] = $fullpath;
+     } else {
+     $directory[] = $file;
+     }
+     }
+     }
+
+     if ($recursive && is_dir($fullpath) && $file != 'CVS' && $file != '.' && $file != '..') {
+     $directory = array_merge($directory, PHPWS_File::readDirectory($fullpath . '/', $directoriesOnly, $filesOnly, $recursive, $extensions, $appendPath));
+     }
+     }
+     $dir->close();
+
+     if (isset($directory)) {
+     return $directory;
+     } else {
+     return NULL;
+     }
+     }
+    */
+
+    /**
+     * Cannot set files_only and recursive to true
+     */
+    function readDirectory($path, $directories_only=false, $files_only=false, $recursive=false, $extensions=null)
     {
-        if($directoriesOnly && $filesOnly) {
-            $directoriesOnly = FALSE;
-            $filesOnly = FALSE;
+        static $first_path = null;
+        $listing = null;
+
+        if (!preg_match('/\/$/', $path)) {
+            $path .= '/';
+        }
+
+        if (empty($first_path)) {
+            $first_path = $path;
+        }
+
+        if ($directories_only && $files_only) {
+            $directories_only = $files_only = false;
         }
 
         if (!is_dir($path)) {
-            return FALSE;
+            return false;
         }
 
         $dir = dir($path);
-        while ($file = $dir->read()){
+
+        while($file = $dir->read()) {
             $fullpath = $path . $file;
-            if ($directoriesOnly && !$filesOnly && @is_dir($fullpath) && !preg_match('/~$/', $file) && $file != '.' && $file != '..' && $file != 'CVS') {
-                if($appendPath) {
-                    $directory[] = $fullpath;
-                } else {
-                    $directory[] = $file;
-                }
-            } elseif (!$directoriesOnly && $filesOnly && !is_dir($path . $file) && !preg_match('/~$/', $file) && $file != 'CVS' && $file != '.' && $file != '..') {
-                if (is_array($extensions) && count($extensions) > 0) {
-                    $extTest = explode('.', $file);
-                    if (in_array($extTest[1], $extensions)) {
-                        if ($appendPath) {
-                            $directory[] = $fullpath;
-                        } else {
-                            $directory[] = $file;
-                        }
-                    }
-                } elseif ($appendPath) {
-                    $directory[] = $fullpath;
-                } else {
-                    $directory[] = $file;
-                }
-            } elseif (!$directoriesOnly && !$filesOnly && $file != '.' && $file != '..' && $file != 'CVS') {
-                if (!is_dir($path . $file) && is_array($extensions) && count($extensions) > 0) {
-                    $extTest = explode('.', $file);
-                    if (in_array($extTest[1], $extensions)) {
-                        if ($appendPath) {
-                            $directory[] = $fullpath;
-                        } else {
-                            $directory[] = $file;
-                        }
-                    } elseif ($appendPath) {
-                        $directory[] = $fullpath;
-                    } else {
-                        $directory[] = $file;
-                    }
-                } else {
-                    if ($appendPath) {
-                        $directory[] = $fullpath;
-                    } else {
-                        $directory[] = $file;
-                    }
-                }
+            $showpath = str_replace($first_path, '', $fullpath);
+
+            if (strpos($file, '.') === 0) {
+                // skips hidden files, directories and back references
+                continue;
             }
 
-            if ($recursive && is_dir($fullpath) && $file != 'CVS' && $file != '.' && $file != '..') {
-                $directory = array_merge($directory, PHPWS_File::readDirectory($fullpath . '/', $directoriesOnly, $filesOnly, $recursive, $extensions, $appendPath));
+            if (is_dir($fullpath)) {
+                if ($files_only) {
+                    continue;
+                }
+
+                if (empty($extensions)) {
+                    $listing[] = $showpath;
+                }
+
+                if ($recursive) {
+                    $subdir = PHPWS_File::readDirectory($fullpath, $directories_only, false, true, $extensions);
+
+                    if (!empty($subdir)) {
+                        if (!empty($listing)) {
+                            $listing = array_merge($listing, $subdir);
+                        } else {
+                            $listing = $subdir;
+                        }
+                    }
+                }
+            } elseif ($directories_only) {
+                continue;
+            } else {
+                if (!empty($extensions)) {
+                    $aFile = explode('.', $file);
+                    $ext = array_pop($aFile);
+
+                    if (!in_array($ext, $extensions)) {
+                        continue;
+                    }
+                }
+                $listing[] = $showpath;
             }
         }
         $dir->close();
+        return $listing;
+    }
 
-        if (isset($directory)) {
-            return $directory;
-        } else {
-            return NULL;
-        }
-    }// END FUNC readDirectory()
+
 
     /**
      * Recursively copies files from one directory to another.
