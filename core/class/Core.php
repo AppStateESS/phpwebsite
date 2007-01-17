@@ -79,7 +79,7 @@ class PHPWS_Core {
             return $DB->select();
         }
     }
-
+    
     /**
      * Returns an associative array of all the modules in the
      * module table
@@ -105,6 +105,16 @@ class PHPWS_Core {
 
         $GLOBALS['Core_Module_Names'] = $result;
         return $GLOBALS['Core_Module_Names'];
+    }
+
+    /**
+     * Returns a module object based on core
+     */
+    function &loadAsMod($use_file=true)
+    {
+        PHPWS_Core::initCoreClass('Module.php');
+        $core_mod = new PHPWS_Module('core', $use_file);
+        return $core_mod;
     }
 
 
