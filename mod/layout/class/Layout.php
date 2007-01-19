@@ -18,6 +18,9 @@ define('LAYOUT_JS_FILE_NOT_FOUND',  -5);
 define('LAYOUT_BOX_ORDER_BROKEN',   -6);
 define('LAYOUT_INI_FILE',           -7);
 
+if (!defined('LAYOUT_THEME_EXEC')) {
+    define('LAYOUT_THEME_EXEC', false);
+ }
 
 PHPWS_Core::initModClass('layout', 'Layout_Settings.php');
 PHPWS_Core::initCoreClass('Template.php');
@@ -67,6 +70,26 @@ class Layout {
         Layout::_loadBox($text, $module, $content_var);
     }
 
+
+    function plug($content, $theme_var)
+    {
+        if (empty($content) || empty($theme_var) || preg_match('/\W/', $theme_var)) {
+            return false;
+        }
+        $GLOBALS['Layout_Plugs'][strtoupper($theme_var)][] = $content;
+    }
+
+    function getPlugs()
+    {
+        if (!isset($GLOBALS['Layout_Plugs'])) {
+            return null;
+        } else {
+            foreach ($GLOBALS['Layout_Plugs'] as $theme_var=>$content) {
+                $tpl[$theme_var] = implode('', $content);
+            }
+            return $tpl;
+        }
+    }
 
     function _loadBox($text, $module, $contentVar)
     {
@@ -307,6 +330,10 @@ class Layout {
      */
     function display()
     {
+        if (LAYOUT_THEME_EXEC) {
+            $theme_exec = sprintf('themes/%s/theme.php', Layout::getCurrentTheme());
+            @include_once $theme_exec;
+        }
         Layout::processHeld();
         $themeVarList = array();
 
@@ -345,6 +372,15 @@ class Layout {
                     PHPWS_Error::log(LAYOUT_BOX_ORDER_BROKEN, 'layout', 'Layout::display', $theme_var);
                 }
                 $unsortedLayout[$theme_var][$order] = $template;
+            }
+        }
+
+        if (isset($GLOBALS['Layout_Plugs'])) {
+            foreach ($GLOBALS['Layout_Plugs'] as $plug_var=>$content) {
+                if (!in_array($plug_var, $themeVarList)) {
+                    $themeVarList[] = $plug_var;
+                    $unsortedLayout[$plug_var][0] = implode('', $content);
+                }
             }
         }
 
