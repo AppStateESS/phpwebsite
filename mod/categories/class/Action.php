@@ -38,14 +38,18 @@ class Categories_Action {
 
         switch ($subaction) {
         case 'post_item':
-            Categories_Action::postItem();
+            if (isset($_POST['quick_add'])) {
+                Categories_Action::quickAdd($_POST['category_name'], $_POST['key_id']);
+            } else {
+                Categories_Action::postItem();
+            }
+
             PHPWS_Core::goBack();
             break;
 
         case 'deleteCategory':
             Categories::delete($category);
-            $title = _('Manage Categories');
-            $content[] = Categories_Action::category_list();
+            PHPWS_Core::goBack();
             break;
 
         case 'edit':
@@ -446,6 +450,43 @@ class Categories_Action {
         $db->addWhere('cat_id', (int)$cat_id);
         $db->addWhere('key_id', (int)$key_id);
         return $db->delete();
+    }
+
+    function quickAdd($title, $key_id)
+    {
+        $title = strip_tags($title);
+
+        if (empty($title)) {
+            return false;
+        }
+
+        $db = new PHPWS_DB('categories');
+        $db->addWhere('title', $title, 'like');
+        $db->addColumn('id');
+        $result = $db->select('one');
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            return false;
+        } elseif ($result) {
+            $result = Categories_Action::addCategoryItem($result, $key_id);
+            return true;
+        }
+
+        $category = new Category;
+        $category->setTitle($title);
+        if ($_POST['quick_parent']) {
+            $category->setParent($_POST['quick_parent']);
+        }
+
+        $result = $category->save();
+
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            return false;
+        }
+
+        Categories_Action::addCategoryItem($category->id, $key_id);
+        return true;
     }
 
     function postItem()

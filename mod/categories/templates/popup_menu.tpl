@@ -12,7 +12,9 @@
         <td>{REMOVE_CATEGORY}<br />{REMOVE}</td>
       </tr>
     </table>
+    <div class="padded">{QUICK_PARENT}{CATEGORY_NAME} {QUICK_ADD}</div>
     <div class="padded align-center">{CLOSE}</div>
     {END_FORM}
+    {CANCEL}
   </div>
 </div>

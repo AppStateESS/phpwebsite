@@ -35,7 +35,7 @@ class Categories{
         if (javascriptEnabled()) {
             $js_vars['label'] = _('Categorize');
             $js_vars['width'] = 640;
-            $js_vars['height'] = 200;
+            $js_vars['height'] = 250;
 
             $vars['action'] = 'admin';
             $vars['subaction'] = 'set_item_category';
@@ -55,8 +55,12 @@ class Categories{
 
     function showForm(&$key, $popup=FALSE)
     {
-        $add_list = Categories::getCategories('list');
+        $full_list = $add_list = Categories::getCategories('list');
 
+        $full_list = array_reverse($full_list, true);
+        $full_list[0] = '';
+        $full_list = array_reverse($full_list, true);
+        
         if (empty($add_list)) {
             $content =  _('You need to add some categories first.');
             $content.= '<br /><a href="#" onclick="window.close()">' . _('Close window') . '</a>';
@@ -94,19 +98,21 @@ class Categories{
             $form->addSubmit('remove', _('Remove category'));
         }
 
+        $form->addSelect('quick_parent', $full_list);
+        $form->addTextField('category_name');
+        $form->addSubmit('quick_add', _('Quick add'));
+
         $template = $form->getTemplate();
         
-        
-        if ($key->allowEdit()) {
-            $template['CONTENT'] = 'test';
-        }
-
         $template['CAT_TITLE'] = _('Categorize');
         $template['ITEM_TITLE'] = $key->title;
 
         if ($popup) {
             $template['CLOSE'] = sprintf('<input type="button" value="%s" onclick="opener.location.href=\'%s\'; window.close();" />',
                                          _('Save and close'), $key->url);
+            $template['CANCEL'] = sprintf('<input type="button" value="%s" onclick="window.close();" />',
+                                         _('Cancel'));
+
             $template['AVAILABLE'] = _('Available categories');
             $template['CURRENT'] = _('Currently assigned');
             $content = PHPWS_Template::process($template, 'categories', 'popup_menu.tpl');

@@ -6,4 +6,5 @@
     <td class="bgcolor3">{REMOVE_CATEGORY} {REMOVE}</td>
   </tr>
 </table>
+<div class="padded">{QUICK_PARENT}{CATEGORY_NAME} {QUICK_ADD}</div>
 {END_FORM}

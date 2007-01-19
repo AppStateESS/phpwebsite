@@ -13,7 +13,7 @@ class Category{
     var $id          = NULL;
     var $title       = NULL;
     var $description = NULL;
-    var $parent      = NULL;
+    var $parent      = 0;
     var $icon        = NULL;
     var $children    = NULL;
 
@@ -26,7 +26,6 @@ class Category{
             $this->id     = 0;
             $this->title  = DEFAULT_UNCATEGORIZED_TITLE;
             $this->icon   = DEFAULT_UNCATEGORIZED_ICON;
-            $this->parent = 0;
             return;
         }
 
@@ -176,7 +175,7 @@ class Category{
     {
         $cat = & new Category($parent);
         $list[$cat->id] = $cat;
-        if ($cat->parent != 0) {
+        if ($cat->parent > 0) {
             $cat->_addParent($list, $cat->parent);
         }
     }
@@ -185,7 +184,7 @@ class Category{
     {
         $list = array();
         $list[$this->id] = $this;
-        if ($this->parent != 0) {
+        if ($this->parent > 0) {
             $this->_addParent($list, $this->parent);
         }
         $list = array_reverse($list, TRUE);
