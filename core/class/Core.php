@@ -243,12 +243,41 @@ class PHPWS_Core {
         }
     }
 
+    function bookmark()
+    {
+        $_SESSION['PHPWS_Bookmark'] = PHPWS_Core::getCurrentUrl();
+    }
+
+    function returnToBookmark($clear_bm=true)
+    {
+        if (isset($_SESSION['PHPWS_Bookmark'])) {
+            $bm = $_SESSION['PHPWS_Bookmark'];
+            if ($clear_bm) {
+                unset($_SESSION['PHPWS_Bookmark']);
+            }
+                
+            PHPWS_Core::reroute($bm);
+        } else {
+            PHPWS_Core::goBack();
+        }
+    }
+
     /**
      * Returns the user browser to the referer (last web page)
      */
     function goBack()
     {
-        PHPWS_Core::reroute($_SERVER['HTTP_REFERER']);
+        if (isset($_SERVER['HTTP_REFERER'])) {
+            // prevent an endless loop
+            $current_url = PHPWS_Core::getCurrentUrl(false);
+            if (strtolower($current_url) == strtolower($_SERVER['HTTP_REFERER'])) {
+                PHPWS_Core::home();
+            } else {
+                PHPWS_Core::reroute($_SERVER['HTTP_REFERER']);            
+            }
+        } else {
+            PHPWS_Core::home();
+        }
     }
 
     /**
@@ -734,7 +763,10 @@ class PHPWS_Core {
      */
     function checkBranch()
     {
-        if (PHPWS_SOURCE_DIR == getcwd() . '/') {
+        if (php_sapi_name() == 'cgi' && PHPWS_SOURCE_DIR == getcwd() . '/') {
+            $GLOBALS['Is_Branch'] = FALSE;
+            return TRUE;
+        } elseif(str_ireplace('index.php', '', $_SERVER['SCRIPT_FILENAME']) == PHPWS_SOURCE_DIR) {
             $GLOBALS['Is_Branch'] = FALSE;
             return TRUE;
         } else {
