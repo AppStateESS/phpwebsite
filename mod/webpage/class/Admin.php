@@ -561,7 +561,11 @@ class Webpage_Admin {
         @$webpage = $_REQUEST['webpage'];
 
         if (empty($webpage) || !is_array($webpage)) {
-            return;
+            if (isset($_GET['volume_id'])) {
+                $webpage[] = (int)$_GET['volume_id'];
+            } else {
+                return;
+            }
         }
 
         foreach ($webpage as $wp) {
