@@ -1,6 +1,12 @@
 {START_FORM}
 <table class="form-table" width="99%">
    <tr>
+      <td>{CACHE_VIEW_LABEL}<br /><span class="smaller">{RESET_CACHE}</span>
+      </td>
+      <td>{CACHE_VIEW}
+      </td>
+   </tr>
+   <tr>
       <td>{BLOG_LIMIT_LABEL}
       </td>
       <td>{BLOG_LIMIT}

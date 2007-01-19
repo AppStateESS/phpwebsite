@@ -126,6 +126,7 @@ class Blog_User {
 
         if (!Current_User::isLogged()    &&
             !Current_User::allow('blog') &&
+            PHPWS_Settings::get('blog', 'cache_view') &&
             $content = PHPWS_Cache::get($key)) {
             return $content;
         }
@@ -171,7 +172,8 @@ class Blog_User {
 
         $content = PHPWS_Template::process($tpl, 'blog', 'list_view.tpl');
 
-        if (!Current_User::isLogged() && !Current_User::allow('blog')) {
+        if (!Current_User::isLogged() && !Current_User::allow('blog') &&
+            PHPWS_Settings::get('blog', 'cache_view')) {
             PHPWS_Cache::save($key, $content);
         } elseif (Current_User::allow('blog', 'edit_blog')) {
             $vars['action'] = 'admin';

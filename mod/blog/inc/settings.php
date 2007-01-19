@@ -10,5 +10,6 @@ $settings['blog_limit'] = 5;
 $settings['past_entries'] = 5;
 $settings['home_page_display'] = 1;
 $settings['allow_anonymous_submits'] = 0;
+$settings['cache_view'] = 1;
 
 ?>

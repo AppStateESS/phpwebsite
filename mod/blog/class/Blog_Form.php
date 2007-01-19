@@ -100,6 +100,19 @@ class Blog_Form {
         $form->setLabel('home_page_display', _('Show blog on home page'));
         $form->setMatch('home_page_display', PHPWS_Settings::get('blog', 'home_page_display'));
 
+        $cache_view = PHPWS_Settings::get('blog', 'cache_view');
+        $form->addCheck('cache_view', 1);
+        $form->setLabel('cache_view', _('Cache anonymous view'));
+        $form->setMatch('cache_view', $cache_view);
+        if (!ALLOW_CACHE_LITE) {
+            $form->setDisabled('cache_view');
+            $form->addTplTag('RESET_CACHE', _('System caching disabled.'));
+        } else {
+            if ($cache_view) {
+                $form->addTplTag('RESET_CACHE', PHPWS_Text::secureLink(_('Reset cache'), 'blog', array('action'=>'admin', 'command'=>'reset_cache')));
+            }
+        }
+
         $form->addCheck('allow_anonymous_submit', 1);
         $form->setLabel('allow_anonymous_submit', _('Allow anonymous submissions'));
         $form->setMatch('allow_anonymous_submit', PHPWS_Settings::get('blog', 'allow_anonymous_submit'));

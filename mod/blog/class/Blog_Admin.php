@@ -237,6 +237,11 @@ class Blog_Admin {
             }
             break;
 
+        case 'reset_cache':
+            PHPWS_Cache::remove(BLOG_CACHE_KEY);
+            PHPWS_Core::goBack();
+            break;
+
         case 'post_settings':
             if (!Current_User::authorized('blog', 'settings')) {
                 Current_User::disallow();
@@ -278,6 +283,12 @@ class Blog_Admin {
             PHPWS_Settings::set('blog', 'allow_comments', 1);
         } else {
             PHPWS_Settings::set('blog', 'allow_comments', 0);
+        }
+
+        if (isset($_POST['cache_view'])) {
+            PHPWS_Settings::set('blog', 'cache_view', 1);
+        } else {
+            PHPWS_Settings::set('blog', 'cache_view', 0);
         }
 
         if (isset($_POST['home_page_display'])) {
