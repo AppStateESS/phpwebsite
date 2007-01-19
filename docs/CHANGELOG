@@ -1,3 +1,52 @@
+January 19
+----------
+
+Layout
++ Added the plug function to allow users to inject content directly
+  into a theme.
++ Layout now looks for and includes a theme's theme.php file.
++ Updated files : conf/config.php
+
+Core
++ Core.php
+  o Changed Branch checking method
++ Javascript
+  o Converted current 0.10.x wysiwyg to editor named "simple"
++ Documentation
+  o Theme_Creation.txt - added information on locking variables and
+    using the theme.php file.
++ Theme
+  o Added theme.php file.
+
+Blog
++ Added a setting to enable/disable the blog view caching.
++ Added link to reset the view cache.
++ Updated files : templates/settings.tpl
+
+January 17
+----------
+Core
++ File.php - rewrote readDirectory function.
+
+January 16
+----------
+Phatform
++ Added missing "export" directory creation.
++ Removed all global core calls
+
+Core
++ DB_Pager
+  o Removing resetColumns function from getTotalRows function.
+  o Error check added before calling javascriptEnabled function.
+  o Some tidy
+
+
+File Cabinet
++ Fixed bug in image manager. Was ignoring width and height upload
+  restrictions.
++ lowercased bools
++ Changed 'x' to 'by' in error message.
+
 January 12
 ----------
 
