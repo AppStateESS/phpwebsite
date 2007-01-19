@@ -385,7 +385,7 @@ class DBPager {
         }
 
         $start = ($this->current_page - 1) * $this->limit;
-        return array($start, $this->limit);
+        return array((int)$start, (int)$this->limit);
     }
 
     function getTotalRows(){
@@ -449,6 +449,7 @@ class DBPager {
 
         if ($this->current_page > $this->total_pages) {
             $this->current_page = $this->total_pages;
+            $this->db->setLimit($this->getLimit());
         }
 
         if (isset($this->orderby)) {
