@@ -245,6 +245,20 @@ When a specific page sets an alternate style sheet, phpWebsite appends
 the file to the list of current style sheets.
 
 
+Locking variables
+--------------------------------------------------------------------
+Layout gives administrators the ability to move content into different
+theme tags. If you want to prevent admins from accessing a certain tag
+you can lock it.
+
+[locked]
+ignore = 0,1,3,4,5,6,7,8
+
+Each number corresponds to a theme_variable. If that number is
+ignored, Layout will not offer the opportunity to move content to that
+tag.
+
+
 Alternate templates (Advanced)
 --------------------------------------------------------------------
 Modules use templates as well. The results of these templates are
@@ -282,3 +296,25 @@ Now I make a copy of the top.tpl file in the usermenus
 directory. That's all there is to it. Now if I make changes to the
 template, they will be reflected in my theme.
 
+
+Theme.php
+--------------------------------------------------------------------
+If you want to insert the results of a small php script, you can use
+the theme.php file.
+
+In order for Layout to run the theme.php file, LAYOUT_THEME_EXEC must
+be set to "true" in your config/layout/config.php file. Once set,
+Layout will include the current theme's theme.php file before
+compiling the output.
+
+The best way to use theme.php is to pipe the content into the plug
+function:
+
+Layout::plug($some_bit_of_content, $theme_variable_name);
+
+Afterwards, the theme.tpl just needs a tag named after the
+$theme_variable_name. In other words, if the $theme_variable_name is
+'foobar' then you need a {FOOBAR} tag in your theme.tpl file.
+
+Unless you are testing, I do not recommend simply echoing content in
+your theme.php file. Use Layout to display the content.
