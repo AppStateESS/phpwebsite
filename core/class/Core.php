@@ -734,7 +734,7 @@ class PHPWS_Core {
      */
     function checkBranch()
     {
-        if (str_ireplace('index.php', '', $_SERVER['SCRIPT_FILENAME']) == PHPWS_SOURCE_DIR) {
+        if (PHPWS_SOURCE_DIR == getcwd() . '/') {
             $GLOBALS['Is_Branch'] = FALSE;
             return TRUE;
         } else {
