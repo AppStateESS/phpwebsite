@@ -48,6 +48,13 @@ function block_update(&$content, $currentVersion)
     case version_compare($currentVersion, '1.0.2', '<'):
         $content[] = 'Fix - Deleting a block doesn\'t remove list preferences in admin view.';
         $content[] = 'Fix - Added alt and title tags to admin images.';
+
+    case version_compare($currentVersion, '1.1.0', '<'):
+        $content[] = '
+<pre>
++ Added ability to pin blocks to all pages.
++ Added view permissions.
+</pre>';
     }
     
     return TRUE;
