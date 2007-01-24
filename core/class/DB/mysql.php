@@ -54,10 +54,10 @@ class mysql_PHPWS_SQL {
     }
 
     function getLimit($limit){
-        $sql[] = 'LIMIT ' . $limit['total'];
+        $sql[] = 'LIMIT ' . $limit['offset'];
     
         if (isset($limit['offset'])) {
-            $sql[] = ', ' . $limit['offset'];
+            $sql[] = ', ' . $limit['total'];
         }
 
         return implode(' ', $sql);
