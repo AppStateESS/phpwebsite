@@ -108,15 +108,19 @@ class Blog_User {
     }
 
 
-    function getCurrentEntries(&$db, $limit)
+    function getCurrentEntries(&$db, $limit, $page=1)
     {
         $db->addWhere('approved', 1);
         $db->addWhere('publish_date', mktime(), '<');
-        $db->setLimit($limit);
+        if ($page) {
+            $offset = ($page - 1) * $limit;
+        } else  {
+            $offset = 0;
+        }
+
+        $db->setLimit($limit, $offset);
         $db->addOrder('create_date desc');
-
         Key::restrictView($db, 'blog');
-
         return $db->getObjects('Blog');
     }
 
@@ -133,7 +137,13 @@ class Blog_User {
 
         $db = new PHPWS_DB('blog_entries');
         $limit = PHPWS_Settings::get('blog', 'blog_limit');
-        $result = Blog_User::getCurrentEntries($db, $limit);
+        $page = @$_GET['page'];
+
+        if (empty($page) || !is_numeric($page)) {
+            $page = 0;
+        }
+
+        $result = Blog_User::getCurrentEntries($db, $limit, $page);
 
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
