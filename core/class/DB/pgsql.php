@@ -75,16 +75,14 @@ class pgsql_PHPWS_SQL {
     }
 
 
-    function getLimit($limit){
+    function getLimit($limit)
+    {
         $sql[] = 'LIMIT';
-
-        if (isset($limit['offset'])) {
-            $sql[] = $limit['offset'];
-            $sql[] = 'OFFSET';
-        }
-
         $sql[] = $limit['total'];
-    
+        if (isset($limit['offset'])) {
+            $sql[] = 'OFFSET';
+            $sql[] = $limit['offset'];
+        }
         return implode(' ', $sql);
     }
 
