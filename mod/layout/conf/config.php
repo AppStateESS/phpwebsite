@@ -6,7 +6,7 @@
    */
 
 
-define('LAYOUT_THEME_EXEC', true);
+define('LAYOUT_THEME_EXEC', false);
 
 define('DEFAULT_BOX_VAR', 'DEFAULT');
 define('DEFAULT_THEME_VAR', 'BODY');
