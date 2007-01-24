@@ -4,6 +4,8 @@ Database Assistance
 Here are some steps to try and get your database working with
 phpWebSite.
 
+Quick note: if using PostgresSQL, please check end of document.
+
 Step 1 - Make sure your database is running
 ---------------------------------------------------------------------
 
@@ -111,6 +113,9 @@ the installation screen.
 
 Final Notes:
 ---------------------------------------------------------------------
+If you are using PostgresSQL, phpWebSite will NOT be able to create a
+new database for you. You must create a database to install into
+beforehand.
 
 We recommend you invest in a web enabled database tool. We use
 phpMyAdmin for MySQL and phpPgAdmin for Postgres. Both are excellent
