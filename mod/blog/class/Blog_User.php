@@ -108,15 +108,10 @@ class Blog_User {
     }
 
 
-    function getCurrentEntries(&$db, $limit, $page=1)
+    function getCurrentEntries(&$db, $limit, $offset)
     {
         $db->addWhere('approved', 1);
         $db->addWhere('publish_date', mktime(), '<');
-        if ($page) {
-            $offset = ($page - 1) * $limit;
-        } else  {
-            $offset = 0;
-        }
 
         $db->setLimit($limit, $offset);
         $db->addOrder('create_date desc');
@@ -137,13 +132,20 @@ class Blog_User {
 
         $db = new PHPWS_DB('blog_entries');
         $limit = PHPWS_Settings::get('blog', 'blog_limit');
+        $limit = 3;
         $page = @$_GET['page'];
+
+        if ($page) {
+            $offset = ($page - 1) * $limit;
+        } else  {
+            $offset = 0;
+        }
 
         if (empty($page) || !is_numeric($page)) {
             $page = 0;
         }
 
-        $result = Blog_User::getCurrentEntries($db, $limit, $page);
+        $result = Blog_User::getCurrentEntries($db, $limit, $offset);
 
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
@@ -159,10 +161,12 @@ class Blog_User {
         }
 
         $past_entries = PHPWS_Settings::get('blog', 'past_entries');
-        
+        $past_entries = 2;
+
         if ($past_entries) {
-            $db->setLimit($limit, $past_entries);
+            $db->setLimit($past_entries, $limit+$offset);
             $past = $db->getObjects('Blog');
+
             if (PEAR::isError($past)) {
                 PHPWS_Error::log($past);
             } elseif($past) {
@@ -176,7 +180,16 @@ class Blog_User {
                 $list[] = $view;
             }
         }
-
+        $page_vars['action'] = 'view';
+        if ($page > 1) {
+            $page_vars['page'] = $page - 1;
+            $tpl['PREV_PAGE'] = PHPWS_Text::moduleLink(_('Previous page'), 'blog', $page_vars);
+            $page_vars['page'] = $page + 1;
+            $tpl['NEXT_PAGE'] = PHPWS_Text::moduleLink(_('Next page'), 'blog', $page_vars);
+        } else {
+            $page_vars['page'] = 2;
+            $tpl['NEXT_PAGE'] = PHPWS_Text::moduleLink(_('Next page'), 'blog', $page_vars);
+        }
 
         $tpl['ENTRIES'] = implode('', $list);
 
