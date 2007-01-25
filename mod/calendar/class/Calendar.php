@@ -177,7 +177,6 @@ class PHPWS_Calendar {
         case 'object':
             return $db->getObjects('Calendar_Schedule');
             break;
-
             
         case 'brief':
             $db->addColumn('id');
@@ -313,7 +312,7 @@ class PHPWS_Calendar {
         }
 
         if (empty($this->schedule) || !$this->schedule->id) {
-            $this->loadDefaultSchedule();
+            $this->schedule = new Calendar_Schedule;
         }
     }
 

@@ -471,7 +471,7 @@ class Calendar_Admin {
                  !PHPWS_Settings::get('calendar', 'personal_schedules'))) {
                 Current_User::disallow();
             }
-
+            $this->calendar->schedule = new Calendar_Schedule;
             $panel->setCurrentTab('schedules');
             $this->editSchedule();
             break;
@@ -626,6 +626,17 @@ class Calendar_Admin {
                     }
                 }
 
+                PHPWS_Cache::remove(sprintf('grid_%s_%s_%s', 
+                                     date('n', $event->start_time),
+                                     date('Y', $event->start_time),
+                                            $this->calendar->schedule->id));
+
+                PHPWS_Cache::remove(sprintf('list_%s_%s_%s',
+                                            date('n', $event->start_time),
+                                            date('Y', $event->start_time),
+                                            $this->calendar->schedule->id));
+
+                
                 if(PHPWS_Calendar::isJS()) {
                     javascript('close_refresh');
                     Layout::nakedDisplay();
@@ -657,6 +668,12 @@ class Calendar_Admin {
             PHPWS_Settings::set('calendar', 'mini_event_link', 1);
         } else {
             PHPWS_Settings::set('calendar', 'mini_event_link', 0);
+        }
+
+        if (isset($_POST['cache_month_views'])) {
+            PHPWS_Settings::set('calendar', 'cache_month_views', 1);
+        } else {
+            PHPWS_Settings::set('calendar', 'cache_month_views', 0);
         }
 
         PHPWS_Settings::set('calendar', 'display_mini', (int)$_POST['display_mini']);
@@ -1086,6 +1103,10 @@ class Calendar_Admin {
         $form->addCheck('personal_schedules', 1);
         $form->setLabel('personal_schedules', _('Allow personal schedules'));
         $form->setMatch('personal_schedules', PHPWS_Settings::get('calendar', 'personal_schedules'));
+
+        $form->addCheck('cache_month_views', 1);
+        $form->setLabel('cache_month_views', _('Cache month views (public only)'));
+        $form->setMatch('cache_month_views', PHPWS_Settings::get('calendar', 'cache_month_views'));
 
         $form->addRadio('display_mini', array(0,1,2));
         $form->setLabel('display_mini', array(_('Don\'t show'), _('Only on front page'), _('On all pages')));

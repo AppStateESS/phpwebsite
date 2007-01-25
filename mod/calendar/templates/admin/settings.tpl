@@ -2,6 +2,7 @@
 <div>{ALLOW_SUBMISSIONS} {ALLOW_SUBMISSIONS_LABEL}</div>
 <div>{PERSONAL_SCHEDULES} {PERSONAL_SCHEDULES_LABEL}</div>
 <div>{MINI_EVENT_LINK} {MINI_EVENT_LINK_LABEL}</div>
+<div>{CACHE_MONTH_VIEWS} {CACHE_MONTH_VIEWS_LABEL}</div>
 <table class="form-table" width="98%">
     <tr>
         <td width="20%"><strong>{START_LABEL}</strong></td>

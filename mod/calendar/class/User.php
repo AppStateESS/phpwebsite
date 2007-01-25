@@ -338,11 +338,13 @@ class Calendar_User {
 
 
         // Check cache
-        $cache_key = sprintf('mini_%s_%s_%s', $month, $year, $this->calendar->schedule->id);
+        if (PHPWS_Settings::get('calendar', 'cache_month_views')) {
+            $cache_key = sprintf('mini_%s_%s_%s', $month, $year, $this->calendar->schedule->id);
         
-        $content = PHPWS_Cache::get($cache_key);
-        if (!empty($content)) {
-            return $content;
+            $content = PHPWS_Cache::get($cache_key);
+            if (!empty($content)) {
+                return $content;
+            }
         }
 
         $startdate = mktime(0,0,0, $month, 1, $year);
@@ -386,7 +388,9 @@ class Calendar_User {
         $oTpl->setData($template);
         $content = $oTpl->get();
 
-        PHPWS_Cache::save($cache_key, $content);
+        if (isset($cache_key)) {
+            PHPWS_Cache::save($cache_key, $content);
+        }
         return $content;
     }
 
@@ -450,11 +454,13 @@ class Calendar_User {
         $date_pick = $this->getDatePick();
 
         // Check cache
-        $cache_key = sprintf('grid_%s_%s_%s', $month, $year, $this->calendar->schedule->id);
+        if ($this->calendar->schedule->public && PHPWS_Settings::get('calendar', 'cache_month_views')) {
+            $cache_key = sprintf('grid_%s_%s_%s', $month, $year, $this->calendar->schedule->id);
         
-        $content = PHPWS_Cache::get($cache_key);
-        if (!empty($content)) {
-            return $content;
+            $content = PHPWS_Cache::get($cache_key);
+            if (!empty($content)) {
+                return $content;
+            }
         }
 
         // cache empty, make calendar
@@ -502,7 +508,9 @@ class Calendar_User {
         $oTpl->setData($template);
         $content = $oTpl->get();
 
-        PHPWS_Cache::save($cache_key, $content);
+        if (isset($cache_key)) {
+            PHPWS_Cache::save($cache_key, $content);
+        }
 
         return $content;
     }
@@ -518,7 +526,7 @@ class Calendar_User {
         $year  = &$this->calendar->int_year;
         $day   = 1;
 
-        if (!Current_User::isLogged()) {
+        if ($this->calendar->schedule->public && PHPWS_Settings::get('calendar', 'cache_month_views')) {
             // Check cache
             $cache_key = sprintf('list_%s_%s_%s', $month, $year, $this->calendar->schedule->id);
             $content = PHPWS_Cache::get($cache_key);
@@ -526,7 +534,7 @@ class Calendar_User {
                 return $content;
             }
         }
-
+        
         // cache empty, make calendar
 
         $startdate = mktime(0,0,0, $month, 1, $year);
@@ -689,7 +697,7 @@ class Calendar_User {
     {
         $key = new Key($this->calendar->schedule->key_id);
         if (!$key->allowView()) {
-            $this->calendar->schedule = new Calendar_Schedule;
+            $this->calendar->loadDefaultSchedule();
         }
 
         if ( $this->calendar->schedule->id &&
@@ -709,7 +717,6 @@ class Calendar_User {
         if ( (!$this->calendar->schedule->public && !$schedule_key->allowView())) {
             PHPWS_Core::errorPage('403');
         }
-
 
         switch ($this->current_view) {
         case 'day':
