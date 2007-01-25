@@ -972,8 +972,8 @@ class PHPWS_DB {
             $_offset = trim($split[1]);
         }
         else {
-            $_limit = $limit;
-            $_offset = $offset;
+            $_limit = & $limit;
+            $_offset = & $offset;
         }
 
         $this->limit['total'] = preg_replace('/[^\d\s]/', '', $_limit);
