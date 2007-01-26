@@ -58,3 +58,7 @@ div.block-embedded {
    max-height : 180px;
    overflow : auto;
 }
+
+#blog-list-view {
+   margin-bottom : 2em;
+}
