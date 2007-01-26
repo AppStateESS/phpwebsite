@@ -119,6 +119,7 @@ class PHPWS_Settings {
             if (empty($key)) {
                 continue;
             }
+
             $type = PHPWS_Settings::getType($value);
             $db->addValue('module', $module);
             $db->addValue('setting_name', $key);
@@ -246,6 +247,9 @@ class PHPWS_Settings {
 
         case 'double':
         case 'string':
+            if (strpos($value, '.') === false && is_numeric($value)) {
+                return PHPWS_Settings::getType((int)$value);
+            }
             if (strlen($value) < 100) {
                 return 3;
             } else {
