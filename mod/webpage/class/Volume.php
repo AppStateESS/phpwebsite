@@ -5,6 +5,8 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
+
+PHPWS_Core::requireInc('webpage', 'error_defines.php');
 PHPWS_Core::requireConfig('webpage', 'config.php');
 PHPWS_Core::initModClass('webpage', 'Page.php');
 
@@ -15,25 +17,25 @@ if (!defined('WP_VOLUME_DATE_FORMAT')) {
 class Webpage_Volume {
     var $id             = 0;
     var $key_id         = 0;
-    var $title          = NULL;
-    var $summary        = NULL;
+    var $title          = null;
+    var $summary        = null;
     var $date_created   = 0;
     var $date_updated   = 0;
     var $create_user_id = 0;
-    var $created_user   = NULL;
+    var $created_user   = null;
     var $update_user_id = 0;
-    var $updated_user   = NULL;
-    var $frontpage      = FALSE;
+    var $updated_user   = null;
+    var $frontpage      = false;
     var $approved       = 0;
     var $active         = 1;
     var $_current_page  = 1;
     // array of pages indexed by order, value is id
-    var $_key           = NULL;
-    var $_pages         = NULL;
-    var $_error         = NULL;
-    var $_db            = NULL;
+    var $_key           = null;
+    var $_pages         = null;
+    var $_error         = null;
+    var $_db            = null;
 
-    function Webpage_Volume($id=NULL)
+    function Webpage_Volume($id=null)
     {
         if (empty($id)) {
             return;
@@ -56,13 +58,14 @@ class Webpage_Volume {
     function loadApprovalPages()
     {
         $this->loadPages();
-        $approval = & new Version_Approval('webpage', 'webpage_page', 'Webpage_Page');
+        $approval = new Version_Approval('webpage', 'webpage_page', 'Webpage_Page');
         $approval->_db->addOrder('page_number');
         $pages = $approval->get();
+
         if (!empty($pages)) {
             foreach ($pages as $version) {
-                $page = & new Webpage_Page;
-                $page->_volume = &$this;
+                $page = new Webpage_Page;
+                $page->_volume = & $this;
                 $version->loadObject($page);
                 $this->_pages[$page->id] = $page;
             }
@@ -73,7 +76,9 @@ class Webpage_Volume {
     {
         $db = & new PHPWS_DB('webpage_page');
         $db->addWhere('volume_id', $this->id);
-        $db->addWhere('approved', 1);
+        if ($this->approved) {
+            $db->addWhere('approved', 1);
+        }
         $db->setIndexBy('id');
         $db->addOrder('page_number');
         $result = $db->getObjects('Webpage_Page');
@@ -102,7 +107,7 @@ class Webpage_Volume {
     }
 
 
-    function getDateCreated($format=NULL)
+    function getDateCreated($format=null)
     {
         if (empty($format)) {
             $format = WP_VOLUME_DATE_FORMAT;
@@ -111,7 +116,7 @@ class Webpage_Volume {
         return strftime($format, $this->date_created);
     }
 
-    function getDateUpdated($format=NULL)
+    function getDateUpdated($format=null)
     {
         if (empty($format)) {
             $format = WP_VOLUME_DATE_FORMAT;
@@ -145,7 +150,7 @@ class Webpage_Volume {
         }
 
         if (empty($_POST['summary'])) {
-            $this->summary = NULL;
+            $this->summary = null;
         } else {
             $this->setSummary($_POST['summary']);
         }
@@ -159,11 +164,11 @@ class Webpage_Volume {
         if (isset($errors)) {
             return $errors;
         } else {
-            return TRUE;
+            return true;
         }
     }
 
-    function getViewLink($base=FALSE)
+    function getViewLink($base=false)
     {
         if ($base) {
             if (MOD_REWRITE_ENABLED) {
@@ -194,7 +199,7 @@ class Webpage_Volume {
         if ($page) {
             return $page->getPageUrl();
         } else {
-            return NULL;
+            return null;
         }
     }
 
@@ -204,17 +209,29 @@ class Webpage_Volume {
     function rowTags()
     {
         $vars['volume_id'] = $this->id;
-        $vars['wp_admin'] = 'edit_webpage';
-        $links[] = PHPWS_Text::secureLink(_('Edit'), 'webpage', $vars);
+        if (Current_User::allow('webpage', 'edit_page', $this->id, 'volume')) {
+            $vars['wp_admin'] = 'edit_webpage';
+            if (Current_User::isRestricted('webpage')) {
+                $version = new Version('webpage_volume');
+                $version->setSource($this);
+                $approval_id = $version->isWaitingApproval();
+                if ($approval_id) {
+                    $vars['version_id'] = & $approval_id;
+                }
+            }
+            $links[] = PHPWS_Text::secureLink(_('Edit'), 'webpage', $vars);
+        }
 
         $links[] = $this->getViewLink();
 
-        $vars['wp_admin'] = 'delete_wp';
-        $js_vars['QUESTION'] = sprintf(_('Are you sure you want to delete &quot;%s&quot and all its pages?'),
-                                       $this->title);
-        $js_vars['ADDRESS'] = PHPWS_Text::linkAddress('webpage', $vars, TRUE);
-        $js_vars['LINK'] = _('Delete');
-        $links[] = javascript('confirm', $js_vars);
+        if (Current_User::isUnrestricted('webpage') && Current_User::allow('webpage', 'delete_page')) {
+            $vars['wp_admin'] = 'delete_wp';
+            $js_vars['QUESTION'] = sprintf(_('Are you sure you want to delete &quot;%s&quot and all its pages?'),
+                                           $this->title);
+            $js_vars['ADDRESS'] = PHPWS_Text::linkAddress('webpage', $vars, true);
+            $js_vars['LINK'] = _('Delete');
+            $links[] = javascript('confirm', $js_vars);
+        }
 
         $tpl['DATE_CREATED'] = $this->getDateCreated();
         $tpl['DATE_UPDATED'] = $this->getDateUpdated();
@@ -224,21 +241,22 @@ class Webpage_Volume {
 
         $tpl['CHECKBOX'] = sprintf('<input type="checkbox" name="webpage[]" id="webpage" value="%s" />', $this->id);
 
-        if ($this->frontpage) {
-            $tpl['FRONTPAGE'] = _('Yes');
-        } else {
-            $tpl['FRONTPAGE'] = _('No');
-        }
+        if (Current_User::isUnrestricted('webpage') && Current_User::allow('webpage', 'delete_page')) {
+            if ($this->frontpage) {
+                $tpl['FRONTPAGE'] = _('Yes');
+            } else {
+                $tpl['FRONTPAGE'] = _('No');
+            }
 
-
-        if ($this->active) {
-            $vars['wp_admin'] = 'deactivate_vol';
-            $active = PHPWS_Text::secureLink(_('Yes'), 'webpage', $vars);
-        } else {
-            $vars['wp_admin'] = 'activate_vol';
-            $active = PHPWS_Text::secureLink(_('No'), 'webpage', $vars);
+            if ($this->active) {
+                $vars['wp_admin'] = 'deactivate_vol';
+                $active = PHPWS_Text::secureLink(_('Yes'), 'webpage', $vars);
+            } else {
+                $vars['wp_admin'] = 'activate_vol';
+                $active = PHPWS_Text::secureLink(_('No'), 'webpage', $vars);
+            }
+            $tpl['ACTIVE'] = $active;
         }
-        $tpl['ACTIVE'] = $active;
 
         return $tpl;
     }
@@ -268,32 +286,31 @@ class Webpage_Volume {
 
         Version::flush('webpage_volume', $this->id);
         
-        return TRUE;
+        return true;
     }
 
     function save()
     {
         PHPWS_Core::initModClass('version', 'Version.php');
-        if (empty($this->id)) {
-            $new_vol = TRUE;
-        } else {
-            $new_vol = FALSE;
-        }
 
         if (empty($this->title)) {
             return PHPWS_Error::get(WP_TPL_TITLE_MISSING, 'webpages', 'Volume::save');
         }
 
         $this->update_user_id = Current_User::getId();
-        $this->updated_user = Current_User::getUsername();
-        $this->date_updated = mktime();
+        $this->updated_user   = Current_User::getUsername();
+        $this->date_updated   = mktime();
+
         if (!$this->id) {
+            $new_vol = true;
             $this->create_user_id = Current_User::getId();
             $this->created_user = Current_User::getUsername();
             $this->date_created = mktime();
+        } else {
+            $new_vol = false;
         }
 
-
+        // If unapproved, we create an unapproved source volume
         if ($this->approved || !$this->id) {
             $this->resetDB();
             $result = $this->_db->saveObject($this);
@@ -303,13 +320,13 @@ class Webpage_Volume {
         }
 
         if ($this->approved) {
-            $update = (!$this->key_id) ? TRUE : FALSE;
+            $update = (!$this->key_id) ? true : false;
 
             $key = $this->saveKey();
             if ($update) {
                 $this->_db->saveObject($this);
             }
-            $search = & new Search($this->key_id);
+            $search = new Search($this->key_id);
             $search->addKeywords($this->title);
             $search->addKeywords($this->summary);
             $result = $search->save();
@@ -318,7 +335,7 @@ class Webpage_Volume {
             }
         }
 
-        $version = & new Version('webpage_volume');
+        $version = new Version('webpage_volume');
         $version->setSource($this);
         $version->setApproved($this->approved);
         if ($this->approved) {
@@ -343,7 +360,7 @@ class Webpage_Volume {
         $key->active = (int)$this->active;
         $key->setTitle($this->title);
         $key->setSummary($this->summary);
-        $key->setUrl($this->getViewLink(TRUE));
+        $key->setUrl($this->getViewLink(true));
 
         $result = $key->save();
         $this->key_id = $key->id;
@@ -354,13 +371,13 @@ class Webpage_Volume {
     function &getPagebyNumber($page_number)
     {
         if (!$page_number) {
-            return NULL;
+            return null;
         }
 
         $page_number = (int)$page_number;
 
         if (empty($page_number) || empty($this->_pages)) {
-            return NULL;
+            return null;
         }
 
         $i = 1;
@@ -377,13 +394,13 @@ class Webpage_Volume {
     function &getPagebyId($page_id)
     {
         if (!isset($this->_pages[(int)$page_id])) {
-            return NULL;
+            return null;
         }
         return $this->_pages[(int)$page_id];
     }
 
 
-    function getTplTags($page_links=TRUE, $version=0)
+    function getTplTags($page_links=true, $version=0)
     {
         $template['PAGE_TITLE'] = $this->title;
         $template['SUMMARY'] = $this->getSummary();
@@ -395,7 +412,7 @@ class Webpage_Volume {
                     $template['verbose-link'][] = array('VLINK' => $page->page_number . ' ' . $page->title);
                 } else {
                     $brief_link[] = $page->getPageLink();
-                    $template['verbose-link'][] = array('VLINK' => $page->getPageLink(TRUE));
+                    $template['verbose-link'][] = array('VLINK' => $page->getPageLink(true));
                 }
             }
 
@@ -444,7 +461,7 @@ class Webpage_Volume {
         if (!$this->frontpage) {
             $this->flagKey();
         }
-        $template = $this->getTplTags(FALSE, $version);
+        $template = $this->getTplTags(false, $version);
         return PHPWS_Template::process($template, 'webpage', 'header.tpl');
     }
 
@@ -453,7 +470,7 @@ class Webpage_Volume {
         $template_dir = Webpage_Page::getTemplateDirectory();
 
         if (empty($this->id) || !is_file($template_dir . $template)) {
-            return FALSE;
+            return false;
         }
 
         $db = & new PHPWS_DB('webpage_page');
@@ -462,12 +479,12 @@ class Webpage_Volume {
         return $db->update();
     }
     
-    function view($page=NULL)
+    function view($page=null)
     {
         $this->loadKey();
 
         if (!$this->_key->allowView()) {
-            return NULL;
+            return null;
         }
 
         Layout::addStyle('webpage');
@@ -495,11 +512,11 @@ class Webpage_Volume {
         return $content;
     }
 
-    function showAllPages($admin=FALSE)
+    function showAllPages($admin=false)
     {
-        $template = $this->getTplTags(FALSE);
+        $template = $this->getTplTags(false);
         foreach ($this->_pages as $page) {
-            $template['multiple'][] = $page->getTplTags(FALSE, FALSE);
+            $template['multiple'][] = $page->getTplTags(false, false);
         }
 
         return PHPWS_Template::process($template, 'webpage', 'multiple/default.tpl');
@@ -543,7 +560,7 @@ class Webpage_Volume {
     function joinPage($page_id)
     {
         if (!isset($this->_pages[$page_id])) {
-            return TRUE;
+            return true;
         } else {
             $source = $this->_pages[$page_id];
         }
@@ -561,9 +578,9 @@ class Webpage_Volume {
         $result = $next_page->delete();
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            return FALSE;
+            return false;
         } else {
-            return TRUE;
+            return true;
         }
         unset($this->_pages[$next_page->id]);
     }
@@ -571,7 +588,7 @@ class Webpage_Volume {
     function dropPage($page_id)
     {
         if (!isset($this->_pages[$page_id])) {
-            return TRUE;
+            return true;
         }
 
         $this->_pages[$page_id]->delete();
@@ -599,7 +616,7 @@ class Webpage_Volume {
             return true;
         }
 
-        $search = & new Search($this->key_id);
+        $search = new Search($this->key_id);
         $search->resetKeywords();
         foreach ($this->_pages as $page) {
             $content[] = $page->title;

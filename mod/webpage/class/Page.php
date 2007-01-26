@@ -6,19 +6,22 @@
  * @version $Id$
  */
 
+PHPWS_Core::requireInc('webpage', 'error_defines.php');
+
 class Webpage_Page {
     var $id          = 0;
     // Id of volume page belongs to
     var $volume_id   = 0;
-    var $title       = NULL;
-    var $content     = NULL;
-    var $page_number = NULL;
-    var $template    = NULL;
+    var $title       = null;
+    var $content     = null;
+    var $page_number = null;
+    var $template    = null;
     var $approved    = 0;
-    var $_error      = NULL;
-    var $_volume     = NULL;
+    var $_error      = null;
+    var $_volume     = null;
+    var $_volume_ver = 0;
 
-    function Webpage_Page($id=NULL)
+    function Webpage_Page($id=null)
     {
         if (empty($id)) {
             return;
@@ -80,7 +83,7 @@ class Webpage_Page {
 
         $files = scandir($directory);
         if (empty($files)) {
-            return NULL;
+            return null;
         }
 
         foreach ($files as $key => $f_name) {
@@ -89,7 +92,7 @@ class Webpage_Page {
             }
         }
         if (!isset($file_list)) {
-            return NULL;
+            return null;
         } else {
             return $file_list;
         }
@@ -105,13 +108,13 @@ class Webpage_Page {
     function post()
     {
         if (empty($_POST['volume_id'])) {
-            exit('missing volume id. better error here');
+            return PHPWS_Error::get('WP_MISSING_VOLUME_ID', 'webpage', 'Webpage_Page::post');
         }
 
         $this->volume_id = (int)$_POST['volume_id'];
 
         if (empty($_POST['title'])) {
-            $this->title = NULL;
+            $this->title = null;
         } else {
             $this->setTitle($_POST['title']);
         }
@@ -123,7 +126,7 @@ class Webpage_Page {
         }
 
         if (empty($_POST['template'])) {
-            return PHPWS_Error(WP_MISSING_TEMPLATE, 'webpage', 'Page::post');
+            return PHPWS_Error::get(WP_MISSING_TEMPLATE, 'webpage', 'Webpage_Page::post');
         }
 
         $this->template = strip_tags($_POST['template']);
@@ -138,7 +141,7 @@ class Webpage_Page {
         if (isset($errors)) {
             return $errors;
         } else {
-            return TRUE;
+            return true;
         }
     }
 
@@ -149,7 +152,7 @@ class Webpage_Page {
         return PHPWS_Template::process($template, 'webpage', 'page/' . $this->template);
     }
 
-    function getTplTags($admin=FALSE, $include_header=TRUE, $version=0)
+    function getTplTags($admin=false, $include_header=true, $version=0)
     {
         $template['TITLE'] = $this->title;
         $template['CONTENT'] = $this->getContent();
@@ -167,8 +170,7 @@ class Webpage_Page {
             $links[] = PHPWS_Text::secureLink(_('Edit'), 'webpage', $vars);
 
             if ($admin) {
-
-                if (Current_User::allow('webpage', 'delete_page')) {
+                if (Current_User::isUnrestricted('webpage') && Current_User::allow('webpage', 'delete_page')) {
                     $jsvar['QUESTION'] = _('Are you sure you want to remove this page?');
                     $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=delete_page&amp;page_id=%s&amp;volume_id=%s&amp;authkey=%s',
                                                 $this->id, $this->volume_id, Current_User::getAuthKey());
@@ -177,25 +179,25 @@ class Webpage_Page {
                     $links[] = javascript('confirm', $jsvar);
                 }
 
-                if (Current_User::allow('webpage', 'edit_page', $this->volume_id, null, true)) {
+                if (Current_User::allow('webpage', 'edit_page', $this->volume_id, 'volume', true)) {
                     $vars = array('wp_admin'=>'restore_page', 'volume_id'=>$this->volume_id, 'page_id'=>$this->id);
                     $links[] = PHPWS_Text::secureLink(_('Restore'), 'webpage', $vars);
+
+                    if($this->page_number < count($this->_volume->_pages)) {
+                        $jsvar['QUESTION'] = _('Are you sure you want to join this page to the next?');
+                        $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=join_page&amp;page_id=%s&amp;volume_id=%s&amp;authkey=%s',
+                                                    $this->id, $this->volume_id, Current_User::getAuthKey());
+                        $jsvar['LINK'] = ('Join next');
+                        $links[] = javascript('confirm', $jsvar);
+                        
+                        $jsvar['QUESTION'] = _('Are you sure you want to join ALL the pages into just one page? Warning: You will lose all page backups!');
+                        $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=join_all_pages&amp;volume_id=%s&amp;authkey=%s',
+                                                    $this->volume_id, Current_User::getAuthKey());
+                        $jsvar['LINK'] = ('Join all');
+                        $links[] = javascript('confirm', $jsvar);
+                    }
                 }
 
-
-                if($this->page_number < count($this->_volume->_pages)) {
-                    $jsvar['QUESTION'] = _('Are you sure you want to join this page to the next?');
-                    $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=join_page&amp;page_id=%s&amp;volume_id=%s&amp;authkey=%s',
-                                                $this->id, $this->volume_id, Current_User::getAuthKey());
-                    $jsvar['LINK'] = ('Join next');
-                    $links[] = javascript('confirm', $jsvar);
-
-                    $jsvar['QUESTION'] = _('Are you sure you want to join ALL the pages into just one page? Warning: You will lose all page backups!');
-                    $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=join_all_pages&amp;volume_id=%s&amp;authkey=%s',
-                                                $this->volume_id, Current_User::getAuthKey());
-                    $jsvar['LINK'] = ('Join all');
-                    $links[] = javascript('confirm', $jsvar);
-                }
             }
             
             $template['ADMIN_LINKS'] = implode(' | ', $links);
@@ -208,7 +210,7 @@ class Webpage_Page {
         return $template;
     }
 
-    function getPageLink($verbose=FALSE)
+    function getPageLink($verbose=false)
     {
         $id = $this->_volume->id;
         $page = (int)$this->page_number;
@@ -231,9 +233,9 @@ class Webpage_Page {
         }
     }
 
-    function view($admin=FALSE, $version_id=0)
+    function view($admin=false, $version_id=0)
     {
-        $template = $this->getTplTags($admin, TRUE, $version_id);
+        $template = $this->getTplTags($admin, true, $version_id);
 
         if (!is_file($this->getTemplateDirectory() . $this->template)) {
             return implode('<br />', $template);
@@ -284,7 +286,7 @@ class Webpage_Page {
         if (PEAR::isError($result)) {
             return $result;
         } else {
-            return TRUE;
+            return true;
         }
     }
 
@@ -292,13 +294,17 @@ class Webpage_Page {
     {
         PHPWS_Core::initModClass('version', 'Version.php');        
         if (empty($this->volume_id)) {
-            return FALSE;
+            return PHPWS_Error::get('WP_MISSING_VOLUME_ID', 'webpage', 'Webpage_Page::save');
         }
 
-        $volume = & new Webpage_Volume($this->volume_id);
+        if (empty($this->_volume)) {
+            $volume = new Webpage_Volume($this->volume_id);
+        } else {
+            $volume = & $this->_volume;
+        }
         
         if (empty($this->content)) {
-            return FALSE;
+            $this->content = _('Page is missing content.');
         }
 
         if (!$this->checkTemplate()) {
@@ -310,7 +316,7 @@ class Webpage_Page {
         }
 
         if ($this->approved || !$this->id) {
-            $db = & new PHPWS_DB('webpage_page');
+            $db = new PHPWS_DB('webpage_page');
             $result = $db->saveObject($this);
             if (PEAR::isError($result)) {
                 return $result;
@@ -320,13 +326,14 @@ class Webpage_Page {
         if ($this->approved) {
             $volume->saveSearch();
         } else {
-            $vol_version = & new Version('webpage_volume');
+            $vol_version = new Version('webpage_volume');
             $vol_version->setSource($volume);
-            $vol_version->setApproved(FALSE);
+            $vol_version->setApproved(false);
             $vol_version->save();
+            $page->_volume_ver = $vol_version->id;
         }
 
-        $version = & new Version('webpage_page');
+        $version = new Version('webpage_page');
         $version->setSource($this);
         $version->setApproved($this->approved);
         return $version->save();

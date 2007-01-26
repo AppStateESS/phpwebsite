@@ -7,6 +7,7 @@
  * @version $Id$
  */
 
+PHPWS_Core::requireInc('webpage', 'error_defines.php');
 PHPWS_Core::initModClass('webpage', 'Volume.php');
 
 class Webpage_User {

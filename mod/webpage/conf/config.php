@@ -12,9 +12,4 @@ define('WP_PREVIOUS_PAGE', _('Previous page'));
 define('WP_NEXT_PAGE', _('Next page'));
 
 
-// Error messages
-define('WP_MISSING_TEMPLATE', 1);
-define('WP_TPL_FILE_MISSING', 2);
-define('WP_TPL_TITLE_MISSING',3);
-
 ?>

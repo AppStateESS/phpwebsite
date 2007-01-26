@@ -7,6 +7,7 @@
  * @version $Id$
  */
 
+PHPWS_Core::requireInc('webpage', 'error_defines.php');
 PHPWS_Core::initModClass('webpage', 'Volume.php');
 PHPWS_Core::initModClass('webpage', 'Forms.php');
 
@@ -41,7 +42,7 @@ class Webpage_Admin {
         }
 
         if (isset($_REQUEST['volume_id'])) {
-            $volume = new Webpage_Volume($_REQUEST['volume_id']);            
+            $volume = new Webpage_Volume($_REQUEST['volume_id']);
         } else {
             $volume = new Webpage_Volume;
         }
@@ -64,7 +65,6 @@ class Webpage_Admin {
             $page->volume_id = $volume->id;
             $page->_volume = &$volume;
         }
-
 
         // Determines if page panel needs creating
         // also see panel commands below switch to add content
@@ -232,13 +232,12 @@ class Webpage_Admin {
             }
 
             $result = $volume->post();
+
             if (is_array($result)) {
+                // errors occurred
                 $title = sprintf(_('Edit header page: %s'), $volume->title);
                 $content = Webpage_Forms::editHeader($volume, $version);
                 $message = implode('<br />', $result);
-            } elseif (PEAR::isError($result)) {
-                PHPWS_Error::log($result);
-                Webpage_Admin::sendMessage(_('An error occurred. Please check your logs.'), 'list');
             } else {
                 PHPWS_Core::initModClass('webpage', 'Forms.php');
                 $result = $volume->save();
@@ -247,7 +246,7 @@ class Webpage_Admin {
                     Webpage_Admin::sendMessage(_('An error occurred. Please check your logs.'), 'list');
                 } else {
                     Webpage_Admin::sendMessage(_('Header saved successfully.'), 
-                                               'edit_webpage&tab=header&volume_id=' . $volume->id);
+                                               'edit_webpage&tab=header&volume_id=' . $volume->id . '&version_id=' . $version_id);
                 }
             }
             break;
@@ -286,7 +285,7 @@ class Webpage_Admin {
                                                            $page->page_number, $volume->id, $page->id, $version_id));
                     }
                 }
-                if ($version_id) {
+                if (!$page->approved) {
                     $message = _('Page held for approval.');
                 } else {
                     $message = _('Page saved successfully.');
@@ -613,7 +612,6 @@ class Webpage_Admin {
             PHPWS_Error::log($result);
             return FALSE;
         }
-
 
         $version->setSource($volume);
         $version->setApproved(TRUE);

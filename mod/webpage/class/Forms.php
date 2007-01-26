@@ -79,6 +79,8 @@ class Webpage_Forms {
 
     function editPage(&$page, &$version)
     {
+        PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
+
         $form = & new PHPWS_Form;
         $form->addHidden('module', 'webpage');
         $form->addHidden('wp_admin', 'post_page');
@@ -114,6 +116,17 @@ class Webpage_Forms {
         $form->setLabel('force_template', _('Force all pages to use this template'));
         
         $template = $form->getTemplate();
+
+        /*
+        $manager = & new FC_Image_Manager($image_id);
+        $manager->setMaxWidth(640);
+        $manager->setMaxHeight(480);
+        $manager->setMaxSize(100000);
+        $manager->setModule('webpage');
+        $manager->setItemname('page_image');
+
+        $template['PAGE_IMAGE'] = $manager->get();
+        */
 
         return PHPWS_Template::process($template, 'webpage', 'forms/edit_page.tpl');
 
