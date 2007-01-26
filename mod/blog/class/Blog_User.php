@@ -108,7 +108,7 @@ class Blog_User {
     }
 
 
-    function getCurrentEntries(&$db, $limit, $offset)
+    function getEntries(&$db, $limit, $offset)
     {
         $db->addWhere('approved', 1);
         $db->addWhere('publish_date', mktime(), '<');
@@ -132,7 +132,6 @@ class Blog_User {
 
         $db = new PHPWS_DB('blog_entries');
         $limit = PHPWS_Settings::get('blog', 'blog_limit');
-        $limit = 3;
         $page = @$_GET['page'];
 
         if ($page) {
@@ -145,7 +144,7 @@ class Blog_User {
             $page = 0;
         }
 
-        $result = Blog_User::getCurrentEntries($db, $limit, $offset);
+        $result = Blog_User::getEntries($db, $limit, $offset);
 
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
@@ -160,17 +159,18 @@ class Blog_User {
             return NULL;
         }
 
-        $past_entries = PHPWS_Settings::get('blog', 'past_entries');
-        $past_entries = 2;
+        if ($page < 2) {
+            $past_entries = PHPWS_Settings::get('blog', 'past_entries');
 
-        if ($past_entries) {
-            $db->setLimit($past_entries, $limit+$offset);
-            $past = $db->getObjects('Blog');
+            if ($past_entries) {
+                $db->setLimit($past_entries, $past_entries);
+                $past = $db->getObjects('Blog');
 
-            if (PEAR::isError($past)) {
-                PHPWS_Error::log($past);
-            } elseif($past) {
-                Blog_User::showPast($past);
+                if (PEAR::isError($past)) {
+                    PHPWS_Error::log($past);
+                } elseif($past) {
+                    Blog_User::showPast($past);
+                }
             }
         }
     
@@ -235,7 +235,7 @@ class Blog_User {
     {
         $db = new PHPWS_DB('blog_entries');
         $limit = PHPWS_Settings::get('blog', 'blog_limit');
-        $result = Blog_User::getCurrentEntries($db, $limit);
+        $result = Blog_User::getEntries($db, $limit);
 
         if (!$result) {
             return false;
