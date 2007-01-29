@@ -39,8 +39,8 @@ $Config['UserFilesPath'] = $home_url ;	// Set to / if you want filebrowsing acro
 // user files directory. Usefull if you are using a virtual directory, symbolic
 // link or alias. Examples: 'C:\\MySite\\UserFiles\\' or '/root/mysite/UserFiles/'.
 // Attention: The above 'UserFilesPath' must point to the same directory.
-$Config['UserFilesAbsolutePath'] =  substr($_SERVER['SCRIPT_FILENAME'], 0, strpos($_SERVER['SCRIPT_FILENAME'], 'javascript/editors/'));
-
+$current_dir = getcwd();
+$Config['UserFilesAbsolutePath'] = substr($current_dir, 0, strpos($current_dir, 'javascript/editors/'));
 
 // Due to security issues with Apache modules, it is reccomended to leave the
 // following setting enabled.
