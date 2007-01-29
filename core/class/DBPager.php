@@ -339,9 +339,19 @@ class DBPager {
         if (is_string($function) && function_exists($function)) {
             $this->toggle_function = $function;
             return true;
-        } elseif( is_array($function) && class_exists($function[0]) && in_array($function[1], get_class_methods($function[0])) ){
-            $this->toggle_function = $function;
-            return true;
+        } elseif( is_array($function) && class_exists($function[0]) ) {
+            if (version_compare(phpversion(), '5.0.0',  '<')) {
+                $method = strtolower($function[1]);
+            } else {
+                $method = & $function[1];
+            }
+            
+            if ( in_array($method, get_class_methods($function[0])) ) {
+                $this->toggle_function = $function;
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
@@ -354,9 +364,19 @@ class DBPager {
         if (is_string($function) && function_exists($function)) {
             $this->run_function = $function;
             return true;
-        } elseif( is_array($function) && class_exists($function[0]) && in_array($function[1], get_class_methods($function[0])) ){
-            $this->run_function = $function;
-            return true;
+        } elseif( is_array($function) && class_exists($function[0]) ) {
+            if (version_compare(phpversion(), '5.0.0',  '<')) {
+                $method = strtolower($function[1]);
+            } else {
+                $method = & $function[1];
+            }
+
+            if ( in_array($method, get_class_methods($function[0])) ) {
+                $this->run_function = $function;
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
