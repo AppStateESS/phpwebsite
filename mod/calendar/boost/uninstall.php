@@ -24,6 +24,11 @@ function calendar_uninstall(&$content)
             return $result;
         }
 
+        $result = PHPWS_DB::dropTable('calendar_suggestions');
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
         return true;
     }
 
@@ -46,6 +51,12 @@ function calendar_uninstall(&$content)
     if (PEAR::isError($result)) {
         return $result;
     }
+
+    $result = PHPWS_DB::dropTable('calendar_suggestions');
+    if (PEAR::isError($result)) {
+        return $result;
+    }
+
 
     if (!$error) {
         $content[] = 'Calendar tables removed.';
