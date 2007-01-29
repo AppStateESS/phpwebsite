@@ -515,9 +515,12 @@ class Calendar_User {
         $year  = &$this->calendar->int_year;
         $day   = 1;
 
-        if ($this->calendar->schedule->public && PHPWS_Settings::get('calendar', 'cache_month_views')) {
-            // Check cache
+        if ($this->calendar->schedule->public && !Current_User::isLogged() && PHPWS_Settings::get('calendar', 'cache_month_views')) {
             $cache_key = sprintf('list_%s_%s_%s', $month, $year, $this->calendar->schedule->id);
+        }
+
+        if (isset($cache_key)) {
+            // Check cache
             $content = PHPWS_Cache::get($cache_key);
             if (!empty($content)) {
                 return $content;
@@ -568,7 +571,7 @@ class Calendar_User {
         $tpl->setData($main_tpl);
         $content = $tpl->get();
 
-        if (!Current_User::isLogged()) {
+        if (isset($cache_key)) {
             PHPWS_Cache::save($cache_key, $content);
         }
         return $content;
