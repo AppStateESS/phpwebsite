@@ -103,17 +103,6 @@ class Calendar_User {
         $tpl->setCurrentBlock('calendar-events');
         foreach ($newList as $hour => $events) {
             foreach ($events as $oEvent) {
-                $details = $links = array();
-
-                if (Current_User::allow('calendar', 'edit_public', $this->calendar->schedule->id)) {
-                    $links[] = $oEvent->editLink();
-                    $links[] = $oEvent->deleteLink();
-                }
-                
-                if (!empty($links)) {
-                    $details['LINKS'] = implode(' | ', $links);
-                }
-
                 $details = $oEvent->getTpl();
 
                 $duration = $oEvent->end_time - $oEvent->start_time;
@@ -700,12 +689,7 @@ class Calendar_User {
             $this->calendar->loadDefaultSchedule();
         }
 
-        if ( $this->calendar->schedule->id &&
-             ( ($this->calendar->schedule->public && Current_User::allow('calendar', 'edit_public', $this->calendar->schedule->id) ) ||
-               ( !$this->calendar->schedule->public && 
-                 ( $this->calendar->schedule->user_id == Current_User::getId() ||Current_User::allow('calendar', 'edit_private', $this->calendar->schedule->id) ) )
-               )
-             ) {
+        if ($this->calendar->schedule->checkPermissions()) {
             $allowed = true;
             MiniAdmin::add('calendar', $this->calendar->schedule->addEventLink($this->calendar->current_date));
         } else {

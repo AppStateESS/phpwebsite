@@ -477,17 +477,23 @@ class Calendar_Admin {
             break;
 
         case 'delete_event':
-            $event = $this->calendar->schedule->loadEvent();
-            $result = $event->delete();
-            if (PEAR::isError($result)) {
-                PHPWS_Error::log($result);
+            if ($this->calendar->schedule->checkPermissions(true)) {
+                $event = $this->calendar->schedule->loadEvent();
+                $result = $event->delete();
+                if (PEAR::isError($result)) {
+                    PHPWS_Error::log($result);
+                }
             }
             PHPWS_Core::goBack();
             break;
 
         case 'delete_schedule':
-            $this->calendar->schedule->delete();
-            $this->sendMessage(_('Schedule deleted.'), 'schedules');
+            if (Current_User::authorized('calendar', 'delete_schedule') && Current_User::isUnrestricted('calendar')) {
+                $this->calendar->schedule->delete();
+                $this->sendMessage(_('Schedule deleted.'), 'schedules');
+            } else {
+                Current_User::disallow();
+            }
             break;
 
         case 'disapprove_suggestion':
@@ -497,6 +503,9 @@ class Calendar_Admin {
 
         case 'edit_event':
             $panel->setCurrentTab('schedules');
+            if (!$this->calendar->schedule->checkPermissions()) {
+                Current_User::disallow();
+            }
             $event = $this->calendar->schedule->loadEvent();
             $this->editEvent($event);
             break;
@@ -506,7 +515,7 @@ class Calendar_Admin {
                 PHPWS_Core::errorPage('404');
             }
 
-            if (!Current_User::allow('calendar', 'edit_schedule', (int)$_REQUEST['sch_id'])) {
+            if (!$this->calendar->schedule->checkPermissions()) {
                 Current_User::disallow();
             }
             $panel->setCurrentTab('schedules');
@@ -523,6 +532,9 @@ class Calendar_Admin {
             break;
 
         case 'post_event':
+            if (!$this->calendar->schedule->checkPermissions(true)) {
+                Current_User::disallow();
+            }
             $this->postEvent();
             break;
 
@@ -531,6 +543,9 @@ class Calendar_Admin {
             break;
 
         case 'post_settings':
+            if (!Current_User::authorized('calendar', 'settings')) {
+                Current_User::disallow();
+            }
             $this->postSettings();
             $this->message = _('Settings saved');
             $this->settings();

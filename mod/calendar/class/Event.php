@@ -319,12 +319,7 @@ class Calendar_Event {
 
     function getTpl()
     {
-        if ( $this->show_busy && (
-                                   ( $this->_schedule->public && !Current_User::allow('calendar', 'edit_public') ) ||
-                                   ( !$this->_schedule->public && ( !Current_User::allow('calendar', 'edit_private') || Current_User::getId() != $this->_schedule->user_id ) )
-                                       )
-             ) {
-
+        if ( $this->show_busy && !$this->_schedule->checkPermissions() ) {
             $tpl['SUMMARY']     = _('Busy');
             $tpl['DESCRIPTION'] = null;
         } else {
@@ -396,15 +391,13 @@ class Calendar_Event {
         }
 
 
-        if ( ($this->_schedule->public && Current_User::allow('calendar', 'edit_public', $this->_schedule->id)) ||
-             ( !$this->_schedule->public && 
-               ( $this->_schedule->user_id == Current_User::getId() || Current_User::allow('calendar', 'edit_private', $this->_schedule->id) )
-               )
-             ) {
+        if ($this->_schedule->checkPermissions()) {
             $link[] = $this->editLink();
             $link[] = $this->deleteLink();
             $tpl['LINKS'] = implode(' | ', $link);
         }
+        
+
 
         if (!empty($this->location)) {
             $tpl['LOCATION_LABEL'] = _('Location');

@@ -228,20 +228,6 @@ class Calendar_Schedule {
             $form->addHidden('public', 1);
         }
 
-        /*
-        $groups = Users_Permission::getPermissionGroups($key);
-        $group_list = $groups['permitted']['users'];
-
-        if (!empty($group_list)) {
-            $select_list[0] = _('Not assigned');
-            foreach ($group_list as $grp) {
-                $select_list[$grp['user_id']] = $grp['name'];
-            }
-            $form->addSelect('user_id', $select_list);
-            $form->setLabel('user_id', _('Assign to'));
-        }
-        */
-
         $form->addSubmit(_('Save'));
         
         $template = $form->getTemplate();
@@ -364,10 +350,36 @@ class Calendar_Schedule {
         return true;
     }
 
+    function checkPermissions($authorized=false)
+    {
+        if ($this->public) {
+            if ($authorized) {
+                return Current_User::authorized('calendar', 'edit_public', $this->id, 'schedule');
+            } else {
+                return Current_User::allow('calendar', 'edit_public', $this->id, 'schedule');
+            }
+        } else {
+            if ($authorized) {
+                if ( Current_User::getAuthKey() == $_REQUEST['authkey'] &&
+                     $this->user_id == Current_User::getId()) {
+                    return true;
+                } else {
+                    return Current_User::authorized('calendar', 'edit_private', $this->id, 'schedule');
+                }
+            } else {
+                if ($this->user_id == Current_User::getId()) {
+                    return true;
+                } else {
+                    return Current_User::allow('calendar', 'edit_private', $this->id, 'schedule');
+                }
+            }
+        }
+    }
+
 
     function rowTags()
     {
-        if (Current_User::allow('calendar', 'edit_schedule', $this->id)) {
+        if ($this->checkPermissions()) {
             $links[] = $this->addEventLink();
 
             $vars = array('aop'=>'edit_schedule', 'sch_id' => $this->id);
@@ -385,10 +397,8 @@ class Calendar_Schedule {
             }
         } 
 
-        if (Current_User::allow('calendar', 'delete_schedule', $this->id)) {
+        if (Current_User::allow('calendar', 'delete_schedule') && Current_User::isUnrestricted('calendar')) {
             $js['QUESTION'] = _('Are you sure you want to delete this schedule?');
-            //$js['QUESTION'] .= ' ' . _('All private, exclusive events will be deleted.');
-
             $js['ADDRESS']  = sprintf('index.php?module=calendar&amp;aop=delete_schedule&amp;sch_id=%s&amp;authkey=%s',
                                       $this->id, Current_User::getAuthKey());
             $js['LINK']     = _('Delete');
