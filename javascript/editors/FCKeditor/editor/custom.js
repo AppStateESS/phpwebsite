@@ -54,6 +54,6 @@ FCKConfig.FlashUploadAllowedExtensions	= ".(swf|fla)$" ;
 FCKConfig.FlashUploadDeniedExtensions	= "" ; // empty for all
 
 FCKConfig.SpellChecker = 'SpellerPages' ;
-FCKConfig.StylesXmlPath		= FCKConfig.EditorPath + 'phpwsstyles.xml' ;
-
+FCKConfig.StylesXmlPath		= FCKConfig.BasePath + 'phpwsstyles.xml' ;
+alert(FCKConfig.StylesXmlPath);
 FCKConfig.ProcessHTMLEntities	= false ;
