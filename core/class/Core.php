@@ -308,6 +308,7 @@ class PHPWS_Core {
     function reroute($address=NULL)
     {
         if (!preg_match('/^http/', $address)) {
+            $address = preg_replace('@^/@', '', $address);
             $http = PHPWS_Core::getHttp();
 
             $dirArray = explode('/', $_SERVER['PHP_SELF']);
@@ -315,10 +316,9 @@ class PHPWS_Core {
             $dirArray[] = '';
       
             $directory = implode('/', $dirArray);
-      
             $location = $http . $_SERVER['HTTP_HOST'] . $directory . $address;
         } else {
-            $location = &$address;
+            $location = & $address;
         }
 
         $location = preg_replace('/&amp;/', '&', $location);
