@@ -1964,6 +1964,10 @@ class PHPWS_DB {
      * Use this function instead of select() to get an array of objects.
      * Note that your class variables and column names MUST match exactly.
      * Unmatched pairs will be ignored.
+     *
+     * Any extra parameters after classname are piped into the object 
+     * constructor.
+     *
      * @author Matthew McNaney <matt at tux dot appstate dot edu>
      * @param string $className Name of object class
      * @return array $items     Array of objects
@@ -1986,12 +1990,12 @@ class PHPWS_DB {
         $num_args = func_num_args();
         $args = func_get_args();
         array_shift($args);
-
         foreach ($result as $indexby => $itemResult) {
             $genClass = new $className;
 
             if ($num_args > 1) {
-                call_user_func_array(array($genClass, $className), $args);
+                // reference is necessary for genClass in php 4
+                call_user_func_array(array(&$genClass, $className), $args);
             }
 
             PHPWS_Core::plugObject($genClass, $itemResult);
