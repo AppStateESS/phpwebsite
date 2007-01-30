@@ -152,9 +152,12 @@ class Comments {
             break;
 
         case 'save_comment':
-            if ($_REQUEST['cm_subject'] && $_REQUEST['cm_entry'] && PHPWS_Core::isPosted()) {
+            if (empty($_REQUEST['cm_subject']) && empty($_REQUEST['cm_entry'])) {
                 PHPWS_Core::reroute($thread->_key->url);
-                exit();
+            }
+
+            if (PHPWS_Core::isPosted()) {
+                PHPWS_Core::reroute($thread->_key->url);
             }
 
             if (!isset($thread)) {
