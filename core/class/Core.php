@@ -307,6 +307,9 @@ class PHPWS_Core {
      */
     function reroute($address=NULL)
     {
+        // Set last post since we will be skipping it
+        PHPWS_Core::setLastPost();
+
         if (!preg_match('/^http/', $address)) {
             $address = preg_replace('@^/@', '', $address);
             $http = PHPWS_Core::getHttp();
