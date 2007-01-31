@@ -17,6 +17,7 @@ class Webpage_Page {
     var $page_number = null;
     var $template    = null;
     var $approved    = 0;
+    var $image_id    = 0;
     var $_error      = null;
     var $_volume     = null;
     var $_volume_ver = 0;
@@ -137,6 +138,9 @@ class Webpage_Page {
             $this->approved = 1;
         }
 
+        if (isset($_POST['image_id'])) {
+            $this->image_id = (int)$_POST['image_id'];
+        }
 
         if (isset($errors)) {
             return $errors;
@@ -152,9 +156,21 @@ class Webpage_Page {
         return PHPWS_Template::process($template, 'webpage', 'page/' . $this->template);
     }
 
+    function getImage()
+    {
+        if (!$this->image_id) {
+            return null;
+        } else {
+            PHPWS_Core::initModClass('filecabinet', 'Image.php');
+            $image = new PHPWS_Image($this->image_id);
+            return $image->getTag();
+        }
+    }
+
     function getTplTags($admin=false, $include_header=true, $version=0)
     {
         $template['TITLE'] = $this->title;
+        $template['IMAGE'] = $this->getImage();
         $template['CONTENT'] = $this->getContent();
         $template['CURRENT_PAGE'] = $this->page_number;
 

@@ -593,6 +593,7 @@ class Webpage_Volume {
 
         $this->_pages[$page_id]->delete();
         unset($this->_pages[$page_id]);
+        Version::flush('webpage_page', $page_id);
 
         $count = 1;
         foreach ($this->_pages as $id => $page) {

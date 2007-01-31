@@ -40,7 +40,7 @@ class Webpage_Forms {
             $tabs['add_page'] = $link;
         }
 
-        $panel = & new PHPWS_Panel('wp_edit_page');
+        $panel = new PHPWS_Panel('wp_edit_page');
         $panel->quickSetTabs($tabs);
 
         $panel->setModule('webpage');
@@ -49,7 +49,7 @@ class Webpage_Forms {
 
     function editHeader(&$volume, &$version)
     {
-        $form = & new PHPWS_Form;
+        $form = new PHPWS_Form;
         $form->addHidden('module', 'webpage');
         $form->addHidden('wp_admin', 'post_header');
 
@@ -79,9 +79,7 @@ class Webpage_Forms {
 
     function editPage(&$page, &$version)
     {
-        PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
-
-        $form = & new PHPWS_Form;
+        $form = new PHPWS_Form;
         $form->addHidden('module', 'webpage');
         $form->addHidden('wp_admin', 'post_page');
         $form->addHidden('volume_id', $page->volume_id);
@@ -115,21 +113,20 @@ class Webpage_Forms {
         $form->addCheck('force_template', 1);
         $form->setLabel('force_template', _('Force all pages to use this template'));
         
+        if (PHPWS_Settings::get('webpage', 'add_images')) {
+            //            $form->addHidden('image_id', $page->image_id);
+            PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
+            $manager = new FC_Image_Manager($page->image_id);
+            $manager->setMaxWidth(640);
+            $manager->setMaxHeight(480);
+            $manager->setMaxSize(100000);
+            $manager->setModule('webpage');
+            $manager->setItemname('image_id');
+            $form->addTplTag('PAGE_IMAGE', $manager->get());
+        }
+
         $template = $form->getTemplate();
-
-        /*
-        $manager = & new FC_Image_Manager($image_id);
-        $manager->setMaxWidth(640);
-        $manager->setMaxHeight(480);
-        $manager->setMaxSize(100000);
-        $manager->setModule('webpage');
-        $manager->setItemname('page_image');
-
-        $template['PAGE_IMAGE'] = $manager->get();
-        */
-
         return PHPWS_Template::process($template, 'webpage', 'forms/edit_page.tpl');
-
     }
 
     function wp_list()
@@ -141,7 +138,7 @@ class Webpage_Forms {
         $select_op['activate']           = _('Activate');
         $select_op['deactivate']         = _('Deactivate');
 
-        $form = & new PHPWS_Form;
+        $form = new PHPWS_Form;
         $form->addHidden('module', 'webpage');
         $form->addSelect('wp_admin', $select_op);
         $tags = $form->getTemplate();
@@ -164,7 +161,7 @@ class Webpage_Forms {
         $tags['SUBMIT'] = javascript('select_confirm', $js);
 
         PHPWS_Core::initCoreClass('DBPager.php');
-        $pager = & new DBPager('webpage_volume', 'Webpage_Volume');
+        $pager = new DBPager('webpage_volume', 'Webpage_Volume');
         $pager->setModule('webpage');
         $pager->setTemplate('forms/list.tpl');
         $pager->setLink('index.php?module=webpage&amp;tab=list');
@@ -183,7 +180,7 @@ class Webpage_Forms {
     {
         PHPWS_Core::initModClass('version', 'Version.php');
 
-        $approval = & new Version_Approval('webpage', 'webpage_volume', 'Webpage_Volume', 'approval_view');
+        $approval = new Version_Approval('webpage', 'webpage_volume', 'Webpage_Volume', 'approval_view');
         $vars['wp_admin'] = 'edit_webpage';
         $approval->setEditUrl(PHPWS_Text::linkAddress('webpage', $vars, TRUE));
 

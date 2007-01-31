@@ -73,7 +73,7 @@ class Webpage_Admin {
         case 'edit_webpage':
         case 'edit_page':
         case 'add_page':
-        case 'drop_page':
+        case 'delete_page':
         case 'edit_header':
         case 'post_header':
         case 'post_page':
@@ -370,6 +370,14 @@ class Webpage_Admin {
             $content = Webpage_Admin::restoreVolume($volume);
             break;
 
+        case 'post_settings':
+            Webpage_Admin::postSettings();
+            $message = _('Settings saved.');
+        case 'settings':
+            $title = _('Settings');
+            $content = Webpage_Admin::settings();
+            break;
+
         default:
             PHPWS_Core::errorPage('404');
         }   // end web page admin cases
@@ -477,6 +485,9 @@ class Webpage_Admin {
 
         $link['title'] = _('List');
         $tabs['list'] = $link;
+
+        $link['title'] = _('Settings');
+        $tabs['settings'] = $link;
 
         $version = new Version('webpage_volume');
         $unapproved = $version->countUnapproved();
@@ -621,6 +632,33 @@ class Webpage_Admin {
             return FALSE;
         }
         return TRUE;
+    }
+
+    function postSettings()
+    {
+        if (isset($_POST['add_images'])) {
+            PHPWS_Settings::set('webpage', 'add_images', 1);
+        } else {
+            PHPWS_Settings::set('webpage', 'add_images', 0);
+        }
+
+        PHPWS_Settings::save('webpage');
+    }
+
+    function settings()
+    {
+        $form = new PHPWS_Form('webpage_settings');
+        $form->addHidden('module', 'webpage');
+        $form->addHidden('wp_admin', 'post_settings');
+
+        $form->addCheckbox('add_images', 1);
+        $form->setMatch('add_images', PHPWS_Settings::get('webpage', 'add_images'));
+        $form->setLabel('add_images', _('Simple image forms'));
+
+        $form->addSubmit('save', _('Save settings'));
+        
+        $tpl = $form->getTemplate();
+        return PHPWS_Template::process($tpl, 'webpage', 'forms/settings.tpl');
     }
 }
 

@@ -26,5 +26,6 @@ CREATE TABLE webpage_page (
   page_number smallint NOT NULL default 0,
   template varchar(40) NOT NULL,
   approved smallint NOT NULL default 0,
+  image_id int NOT NULL default 0
   PRIMARY KEY  (id)
 );

@@ -65,6 +65,31 @@ function webpage_update(&$content, $currentVersion)
 + Searches now reset search key words to prevent lost searches.
 </pre>';
 
+    case version_compare($currentVersion, '0.3.0', '<'):
+        $files = array('templates/page/basic.tpl',
+                       'templates/page/prev_next.tpl',
+                       'templates/page/short_links.tpl',
+                       'templates/page/verbose_links.tpl');
+        if (PHPWS_Boost::updateFiles($files, 'webpage')) {
+            $content[] = 'Template files updated successfully.';
+        } else {
+            $content[] = 'Template files not updated.';
+        }
+        $db = new PHPWS_DB('webpage_page');
+        $result = $db->addTableColumn('image_id', 'int NOT NULL default 0');
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $content[] = 'Failed adding image_id column to webpage_page table.';
+            return false;
+        }
+
+        $content[] = '<pre>
+0.3.0 changes
+-------------
++ Added simple image page inclusion.
+</pre>';
+
+
     }
 
     return TRUE;
