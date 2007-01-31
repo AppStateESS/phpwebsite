@@ -1,5 +1,113 @@
+January 31
+----------
+
+Version
+--------
++ Version listing was not keeping correct number of versions.
++ Reduced default version storage to 5.
+
+File Cabinet
+------------
++ Increased file name size in database.
++ Added image directory selection to pick image menu
++ Choosing an image directory only shows images from that directory
++ Removed choice of image directory root. Will always be images/
++ Fixed root document directory. Now actually puts files in said
+  directory.
++ Upload windows choose the default directory better
++ Removed [default] tag from directory listing
+
+
+Web Page
+--------
++ Added simple image page addition.
+
+
+Core
++ File.php - removed old version of readDirectory
+
+Categories
++ With quick creation of categories in place, no need for old warning
+  message. Altered pop up box.
+
+January 30
+----------
+Core
++ Core
+  o Added check for leading slash in url sent to reroute function
+  o Added setLastPost to reroute function. Function was getting skipped.
+
++ Database
+  o fixed getObjects. Extra parameters were passed to constructors BUT
+    the object is not passed by reference in php 4. Once the object
+    was created, it was cleared 
+
+Comments
++ Fixed isPosted check to prevent extra posts
+
+January 29
+----------
+Core
++ Editors
+  o Removed dependence on SCRIPT_FILENAME variable for FCK's file
+    manager
+  o Fixed the style settings in the FCK editor
+  o Added style settings note to FCK readme file
+
+Calendar
++ Labeled some permissions "unrestricted only"
++ Added permissions checks for editing and deleting
++ Created checkPermissions function in schedule class to simplify code
++ Removed commented legacy code from Schedule.php
++ Added missing suggestion tables to install and uninstall
++ Fixed caching logic 
+
+January 26
+----------
+Core
++ Settings will now change numeric strings to integers
++ Theme : added margin to bottom of blog
+
+Blog
++ Finished pagination of blog view
++ Removed test code
++ Updated files: templates/list_view.tpl
+
+Webpage
++ Moved error defines into their own file
++ lowercased constants
++ Added some missing error reporting
++ Worked on page editing and approval
++ Updated files: conf/config.php, conf/error.php, templates/form/edit_page.tpl
+
+January 25
+----------
+
+Calendar
++ Fixed default schedule loading in Calendar class
++ Fixed inability to create more than one schedule
++ Added option to disable month view caching
++ Caching now works on public calendars only.
++ Updated files: templates/admin/settings.tpl
+
+Blog
++ Added pagination to blog view
+
+Core
++ Database
+  o Fixed some mixups in the setLimit function
+  o Limit variables passed by reference instead of copied
++ DBPager 
+  o Part of setLimit problem was pager was working around the error by
+  sending backward data. Fixed.
+
+
+
 January 19
 ----------
+
+Web Page
++ Fixed delete call from list link
 
 Layout
 + Added the plug function to allow users to inject content directly
@@ -9,7 +117,9 @@ Layout
 
 Core
 + Core.php
-  o Changed Branch checking method
+  o Changed Branch checking method (Bug #1638042)
+  o Added error checks to goBack to prevent endless loop
+  o Added bookmark and returnToBookmark functions
 + Javascript
   o Converted current 0.10.x wysiwyg to editor named "simple"
 + Documentation
@@ -17,6 +127,13 @@ Core
     using the theme.php file.
 + Theme
   o Added theme.php file.
++ DBPager
+  o Fixed pagination if the limit it raised on a high page count
+
+Categories
++ Added ability to add categories quickly on the assignment form
++ Category parent defaulted to zero instead of null
++ Updated files: templates/menu_bar.tpl, templates/popup_menu.tpl
 
 Blog
 + Added a setting to enable/disable the blog view caching.
