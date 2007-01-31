@@ -293,3 +293,9 @@ div.breadcrumb span.current-bc {
 .note-not-read {
    font-weight : bold;
 }
+
+div.webpage-image {
+   float : right;
+   display : inline;
+   margin : 0 0 10px 10px;                  
+}
