@@ -56,15 +56,10 @@ class Categories{
     function showForm(&$key, $popup=FALSE)
     {
         $full_list = $add_list = Categories::getCategories('list');
-
-        $full_list = array_reverse($full_list, true);
-        $full_list[0] = '';
-        $full_list = array_reverse($full_list, true);
-        
-        if (empty($add_list)) {
-            $content =  _('You need to add some categories first.');
-            $content.= '<br /><a href="#" onclick="window.close()">' . _('Close window') . '</a>';
-            return $content;
+        if (!empty($full_list)) {
+            $full_list = array_reverse($full_list, true);
+            $full_list[0] = '';
+            $full_list = array_reverse($full_list, true);
         }
 
         $current_cat_ids = Categories::getCurrent($key->id);
@@ -87,8 +82,10 @@ class Categories{
         if (!empty($add_list)) {
             $form->addSelect('add_category', $add_list);
             $form->addSubmit('add', _('Add category'));
-        } else {
+        } elseif (!empty($full_list)) {
             $form->addTplTag('ADD_CATEGORY', _('All categories assigned.'));
+        } else {
+            $form->addTplTag('ADD_CATEGORY', _('No categories available.'));
         }
         
         if (empty($remove_list)) {
@@ -98,7 +95,9 @@ class Categories{
             $form->addSubmit('remove', _('Remove category'));
         }
 
-        $form->addSelect('quick_parent', $full_list);
+        if (!empty($full_list)) {
+            $form->addSelect('quick_parent', $full_list);
+        }
         $form->addTextField('category_name');
         $form->addSubmit('quick_add', _('Quick add'));
 
