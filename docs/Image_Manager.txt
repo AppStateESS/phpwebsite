@@ -1,0 +1,84 @@
+How to use Image Manager
+by Matthew McNaney
+
+
+Introduction
+------------
+Image Manager is a small javascript app that assist with image form
+insertion. It does away with associating image files to an element
+with a file form input method.
+
+
+
+Getting started
+----------------
+Image Manager is a component of the File Manager module and you will
+need to include the manager class file.
+
+PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
+
+Now you need to construct the manager object.
+
+$manager = new FC_Image_Manager($image_id);
+
+Next, set the name of your module:
+
+$manager->setModule('my_mod');
+
+Finally, you need to set your item name:
+
+$manager->setItemname('my_mod_image');
+
+Keep track of your item name. We will need it when we add the Manager
+to your form.
+
+File Cabinet indexes all the images used with Image Manager. Your
+module will need to store this id number and present it when accessing
+the Image Manager. If your module's content item does not have an
+image associated with it yet, then the image_id would be zero.
+
+
+Setting parameters
+------------------
+You can set image specifications once the manager object is
+constructed.
+
+$manager->setMaxWidth(640);
+$manager->setMaxHeight(480);
+$manager->setMaxSize(100000);
+
+In the above example, the Image Manager will refuse any image that is:
+1) wider than 640 pixels,
+2) higher than 480 pixels, or
+3) has a file size larger than 100000 bytes.
+
+
+Form inclusion
+--------------
+The Image Manager must be surrounded by a form. It will create a
+hidden tag named after your item name. Using the above example, a
+hidden tag would like like so:
+
+<input type="hidden" id="my_mod_image_hidden_value" name="my_mod_image" value="0" />
+
+Call the "get" function to retrieve the selection interface and the
+above hidden tag. Put the results inside your form, like so:
+
+$form->addTplTag('IMAGE_MANAGER', $manager->get());
+
+Form submission
+---------------
+After the user posts your item's form, you just need to catch and save
+the image id from the hidden variable.
+
+$my_item->image_id = $_POST['my_mod_image'];
+
+
+Displaying the image
+--------------------
+To display the image, you just need to construct an image object and
+call the getTag function:
+
+PHPWS_Core::initModClass('filecabinet', 'Image.php');
+$image = new PHPWS_Image($my_item->image_id);
+echo $image->getTag();
