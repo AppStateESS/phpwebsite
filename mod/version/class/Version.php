@@ -278,7 +278,7 @@ class Version {
             return;
         }
 
-        $last_number = $last_number - (int)$saved_version;
+        $last_number = $last_number - (int)$saved_version - 1;
 
         $db->resetColumns();
         $db->addWhere('vr_number', $last_number, '<=');
