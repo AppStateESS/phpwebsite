@@ -27,8 +27,6 @@ class PHPWS_Image extends File_Common {
     function PHPWS_Image($id=NULL)
     {
         $this->loadAllowedTypes();
-        $this->_file_type = 'image';
-
         if (empty($id)) {
             return;
         }
@@ -184,7 +182,7 @@ class PHPWS_Image extends File_Common {
 
     function getDefaultDirectory()
     {
-        return PHPWS_Settings::get('filecabinet', 'base_img_directory');
+        return PHPWS_HOME_DIR . 'images/';
     }
 
     function allowWidth($imagewidth=NULL)

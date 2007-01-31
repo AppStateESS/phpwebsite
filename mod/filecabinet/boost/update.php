@@ -52,6 +52,34 @@ the default directory to the module that is accessing it.';
         $files[] = 'javascript/post_file/body.js';
         PHPWS_Boost::updateFiles($files, 'filecabinet');
         $content[] = 'Fix - Image manager window not updating parent hidden value.';
+
+    case version_compare($version, '0.2.0', '<'):
+        $files = array();
+        $files[] = 'javascript/clear_image/head.js';
+        $files[] = 'javascript/post_file/body.js';
+        $files[] = 'templates/style.css';
+        $files[] = 'templates/cookie_directory.tpl';
+        $files[] = 'templates/manager/pick.tpl';
+
+        PHPWS_Boost::updateFiles($files, 'filecabinet');
+        $type = PHPWS_DB::getDBType();
+        if ($type == 'mysql') {
+            $sql = 'ALTER TABLE images MODIFY file_name varchar(255) NOT NULL';
+        } else {
+            $sql = 'ALTER TABLE images ALTER COLUMN file_name varchar(255) NOT NULL';
+        }
+        $result = PHPWS_DB::query($sql);
+        if (PEAR::isError($result)) {
+            $error = true;
+            PHPWS_Error::log($result);
+        }
+        $content[] = '<pre>
++ Increased file name size.
++ Fixed javascript errors with clear image link.
++ Added image directory selection in Image Manager
++ Root document directory should work now.
+</pre>';
+
     }
 
     return true;

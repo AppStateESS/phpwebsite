@@ -4,13 +4,13 @@ PHPWS_Core::requireConfig('filecabinet');
 PHPWS_Core::initModClass('filecabinet', 'Image.php');
 
 class FC_Image_Manager {
-    var $image          = NULL;
-    var $mod_title      = NULL;
-    var $itemname       = NULL;
-    var $thumbnail      = NULL;
-    var $tn_width       = MAX_TN_IMAGE_WIDTH;
-    var $tn_height      = MAX_TN_IMAGE_HEIGHT;
-    var $_error         = NULL;
+    var $image             = NULL;
+    var $mod_title         = NULL;
+    var $itemname          = NULL;
+    var $thumbnail         = NULL;
+    var $tn_width          = MAX_TN_IMAGE_WIDTH;
+    var $tn_height         = MAX_TN_IMAGE_HEIGHT;
+    var $_error            = NULL;
 
     function FC_Image_Manager($image_id=NULL)
     {
@@ -129,7 +129,7 @@ class FC_Image_Manager {
         $vars['label']   = $label;
 
         $tpl['IMAGE'] = javascript('open_window', $vars);
-        $tpl['HIDDEN'] = sprintf('<input type="hidden" name="%s" value="%s" />', $this->itemname, $this->image->id);
+        $tpl['HIDDEN'] = sprintf('<input type="hidden" id="%s" name="%s" value="%s" />', $this->itemname . '_hidden_value', $this->itemname, $this->image->id);
         $tpl['ITEMNAME'] = $this->itemname;
         $tpl['CLEAR_IMAGE'] = $this->getClearLink();
         return PHPWS_Template::process($tpl, 'filecabinet', 'manager/javascript.tpl');
@@ -213,19 +213,18 @@ class FC_Image_Manager {
         $vars['address'] = $this->getLinkAddress('filecabinet', $link_vars);
         $vars['width']   = FC_UPLOAD_WIDTH;
         $vars['height']  = FC_UPLOAD_HEIGHT;
-        $vars['label']   = _('Upload image'); 
-
+        $vars['label']   = _('Upload image');
         return javascript('open_window', $vars);
     }
 
    
-    function getLinkAddress($use_image=TRUE)
+    function getLinkAddress($use_image=TRUE, $directory=null)
     {
         $link_vars = $this->getSettings();
         $link_vars['action']    = 'upload_form';
 
-        if (isset($this->image->directory)) {
-            $link_vars['directory'] = urlencode($this->image->directory);
+        if ($directory) {
+            $link_vars['dir'] = $directory;
         }
         return PHPWS_Text::linkAddress('filecabinet', $link_vars);
     }
@@ -272,7 +271,7 @@ class FC_Image_Manager {
 
     function edit()
     {
-        $form = & new PHPWS_Form;
+        $form = new PHPWS_Form;
         $form->addHidden('module', 'filecabinet');
 
         $session_index = md5($this->mod_title . $this->itemname);
@@ -311,14 +310,12 @@ class FC_Image_Manager {
 
         if ($this->image->file_directory) {
             $form->setMatch('directory', $this->image->file_directory);
-        } elseif (isset($_REQUEST['mod_title'])) {
-            $image_directory = PHPWS_HOME_DIR . 'images/' . $_REQUEST['mod_title'] . '/';
-            $form->setMatch('directory', $image_directory);
+        } elseif (isset($_REQUEST['dir'])) {
+            $form->setMatch('directory', urlencode($_REQUEST['dir']));
         }
         $form->setLabel('directory', _('Save directory'));
 
-
-        if (isset($this->image->id)) {
+        if (!empty($this->image->id)) {
             $form->addSubmit(_('Update'));
         } else {
             $form->addSubmit(_('Upload'));
@@ -353,6 +350,13 @@ class FC_Image_Manager {
 
     function editImage($clear_opener=FALSE)
     {
+        Layout::addStyle('filecabinet');
+        if (isset($_GET['dir'])) {
+            $directory = $_GET['dir'];
+        } else {
+            $directory = null;
+        }
+
         if ($clear_opener) {
             $this->getClearLink();
             javascript('onload', array('function' => "clear_image('" . $this->itemname . "')"));
@@ -361,11 +365,27 @@ class FC_Image_Manager {
         $db = & new PHPWS_DB('images');
         $db->addWhere('thumbnail_source', 0, '>');
         $db->setIndexBy('thumbnail_source');
+
+        if (isset($directory)) {
+            // if zero, we are at base directory
+            if ($directory == '0') {
+                $current_directory = sprintf('%simages/', PHPWS_HOME_DIR);
+            } else {
+                $current_directory = sprintf('%simages/%s/', PHPWS_HOME_DIR, $directory);
+            }
+        } elseif (!empty($this->image) && $this->image->id) {
+            $current_directory = $this->image->file_directory;
+        } else {
+            $current_directory = sprintf('%simages/', PHPWS_HOME_DIR);
+        }
+
+        $db->addWhere('file_directory', $current_directory);
         $thumbnails = $db->getObjects('PHPWS_Image');
 
         $db->reset();
         $db->addWhere('thumbnail_source', 0, '=', 'and', 1);
         $db->addWhere('thumbnail_source', 'images.id', '=', 'or', 1);
+
         $db->setIndexBy('id');
         $source_images = $db->getObjects('PHPWS_Image');
 
@@ -409,7 +429,11 @@ class FC_Image_Manager {
         $js_vars['itemname']  = $this->itemname;
 
         javascript('modules/filecabinet/pick_image', $js_vars);
-        $tpl['UPLOAD_LINK'] = $this->getLinkAddress();
+        
+        $tpl['DIRECTORY_LABEL'] = _('Directory');
+        $tpl['DIRECTORY'] = $this->navigateDirectories($current_directory);
+        
+        $tpl['UPLOAD_LINK'] = $this->getLinkAddress(true, $directory);
         $tpl['UPLOAD'] = _('Upload');
         $tpl['OK'] = _('Ok');
         $tpl['CANCEL'] = _('Cancel');
@@ -420,6 +444,73 @@ class FC_Image_Manager {
         return $content;
     }
 
+    function navigateDirectories($current_directory)
+    {
+        $directory = PHPWS_HOME_DIR . 'images';
+        $directories = PHPWS_File::readDirectory($directory, true, false, true);
+
+        $main = Cabinet_Action::parseDirectory($directories);
+
+        $current_source = str_replace($directory . '/', '', $current_directory);
+        $c_source_array = explode('/', trim($current_source));
+
+        $tpl = new PHPWS_Template('filecabinet');
+        $tpl->setFile('cookie_directory.tpl');
+
+        $images = array_keys($main);
+        foreach ($images as $child) {
+            $link = $this->directoryLink($child, $child);
+            $tpl->setCurrentBlock('child-row');
+            $tpl->setData(array('CHILD' => $link));
+            $tpl->parseCurrentBlock();
+        }
+
+        $tpl->setCurrentBlock('parent-row');
+        $tpl->setData(array('PARENT' => $this->directoryLink(_('images'))));
+        $tpl->parseCurrentBlock();
+
+        $pointer_a = & $main;
+
+        foreach ($c_source_array as $foo) {
+            $so_far[] = $foo;
+            $pointer_b = & $pointer_a;
+            if (isset($pointer_b[$foo])) {
+                $children = array_keys($pointer_b[$foo]);
+                foreach ($children as $child) {
+                    $child = $this->directoryLink($child, implode('/', $so_far) . '/' . $child);
+                    $tpl->setCurrentBlock('child-row');
+                    $tpl->setData(array('CHILD' => $child));
+                    $tpl->parseCurrentBlock();
+                }
+
+                $tpl->setCurrentBlock('parent-row');
+                $tpl->setData(array('PARENT' => $this->directoryLink($foo)));
+                $tpl->parseCurrentBlock();
+            }
+
+            $pointer_a = & $pointer_b[$foo];
+        }
+
+        return $tpl->get();
+    }
+
+    function directoryLink($link, $current_dir=null)
+    {
+        $base_vars = PHPWS_Text::getGetValues();
+        unset($base_vars['dir']);
+
+        if ($current_dir) {
+            $base_vars['dir'] = $current_dir;
+        } else {
+            $base_vars['dir'] = 0;
+        }
+        $url[] = 'index.php?';
+        foreach ($base_vars as $key=>$value) {
+            $url[] = "$key=$value";
+        }
+
+        return sprintf('<a href="%s">%s</a>', implode('&amp;', $url), $link);
+    }
 
     function loadReqValues()
     {

@@ -87,10 +87,11 @@ class Cabinet_Form {
         $form->setSize('base_doc_directory', '50');
         $form->setLabel('base_doc_directory', _('Base document directory'));
 
+        /*
         $form->addText('base_img_directory', PHPWS_Settings::get('filecabinet', 'base_img_directory'));
         $form->setSize('base_img_directory', '50');
         $form->setLabel('base_img_directory', _('Base image directory'));
-
+        */
         $form->addSubmit(_('Save settings'));
         $tpl = $form->getTemplate();
         return PHPWS_Template::process($tpl, 'filecabinet', 'settings.tpl');
@@ -99,6 +100,8 @@ class Cabinet_Form {
     function editDocument(&$document, $js_form=FALSE)
     {
         PHPWS_Core::initCoreClass('File.php');
+
+        Layout::addStyle('filecabinet');
 
         $form = & new PHPWS_FORM;
         $form->addHidden('module', 'filecabinet');
@@ -127,7 +130,7 @@ class Cabinet_Form {
         $form->addTextArea('description', $document->description);
         $form->setLabel('description', _('Description'));
 
-        if (isset($document->id)) {
+        if (!empty($document->id)) {
             $form->addHidden('document_id', $document->id);
             $form->addSubmit('submit', _('Update'));
         } else {

@@ -69,9 +69,9 @@ class File_Common {
             $this->description = NULL;
         }
 
-        if (isset($_POST['directory'])) {
-            $directory =  str_ireplace('%2f', '/', $_POST['directory']);
-            $this->setDirectory($directory);
+        if (isset($_POST['directory']) && !empty($_POST['directory'])) {
+            $directory =  urldecode($_POST['directory']);
+            $this->setDirectory($this->getDefaultDirectory() . $directory);
         } else {
             if (empty($this->file_directory)) {
                 $this->setDirectory($this->getDefaultDirectory());
@@ -86,7 +86,6 @@ class File_Common {
             $this->_errors[] =  PHPWS_Error::get(PHPWS_FILE_SIZE, 'core', 'File_Common::getFiles');
             return false;
         }
-
 
         // need to get language
         $oUpload = new HTTP_Upload('en');
@@ -166,6 +165,7 @@ class File_Common {
         if (!preg_match('/\/$/', $directory)) {
             $directory .= '/';
         }
+
         $this->file_directory = $directory;
     }
 
@@ -249,7 +249,8 @@ class File_Common {
     function write()
     {
         $this->_upload->setName($this->file_name);
-        $moved = $this->_upload->moveTo($this->file_directory);
+        $directory = preg_replace('@[/\\\]$@', '', $this->file_directory);
+        $moved = $this->_upload->moveTo($directory);
         if (!PEAR::isError($moved)) {
             return $moved;
         }
