@@ -303,6 +303,25 @@ class Blog_Admin {
             PHPWS_Settings::set('blog', 'allow_anonymous_submit', 0);
         }
 
+        if (isset($_POST['simple_image'])) {
+            PHPWS_Settings::set('blog', 'simple_image', 1);
+            if ( !empty($_POST['max_width']) ) {
+                $max_width = (int)$_POST['max_width'];
+                if ($max_width >= 50 && $max_width <= 2048 ) {
+                    PHPWS_Settings::set('blog', 'max_width', $max_width);
+                }
+            }
+
+            if ( !empty($_POST['max_height']) ) {
+                $max_height = (int)$_POST['max_height'];
+                if ($max_height >= 50 && $max_height <= 2048 ) {
+                    PHPWS_Settings::set('blog', 'max_height', $max_height);
+                }
+            }
+        } else {
+            PHPWS_Settings::set('blog', 'simple_image', 0);
+        }
+
         $past_limit = (int)$_POST['past_entries'];
 
         if ((int)$past_limit >= 0) {

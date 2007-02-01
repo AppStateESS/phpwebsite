@@ -12,6 +12,12 @@
     <td>{ENTRY_LABEL}</td>
     <td>{ENTRY}</td>
   </tr>
+  <!-- BEGIN image -->
+  <tr>
+    <td><strong>{IMAGE_LABEL}</strong></td>
+    <td>{IMAGE_MANAGER}</td>
+  </tr>
+  <!-- END image -->
   <tr>
     <td>{PUBLISH_DATE_LABEL}<br >
         <span class="smaller">{EXAMPLE}</span>

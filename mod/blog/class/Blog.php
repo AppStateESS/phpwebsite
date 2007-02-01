@@ -19,6 +19,7 @@ class Blog {
     var $approved       = 0;
     var $allow_anon     = 0;
     var $publish_date   = 0;
+    var $image_id       = 0;
     var $_error         = null;
 
     function Blog($id=null)
@@ -48,6 +49,21 @@ class Blog {
         } elseif (!$result) {
             $this->id = null;
         }
+    }
+
+    function getImage()
+    {
+        if (!$this->image_id) {
+            return null;
+        }
+
+        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        $image = new PHPWS_Image($this->image_id);
+        if (!$image->id) {
+            $this->logErrors();
+            return null;
+        }
+        return $image->getTag();
     }
 
     function setEntry($entry)
@@ -217,6 +233,7 @@ class Blog {
         $template['PUBLISHED_DATE'] = PHPWS_Time::getDTTime($this->create_date);
         $template['SUMMARY'] = PHPWS_Text::parseTag($this->getSummary(true));
         $template['ENTRY'] = PHPWS_Text::parseTag($this->getEntry(true));
+        $template['IMAGE'] = $this->getImage();
 
         if (!empty($result)) {
             $template['CATEGORIES'] = implode(', ', $result);
@@ -273,6 +290,8 @@ class Blog {
             $template['SUMMARY'] =  PHPWS_Text::parseTag($summary);
             $template['ENTRY'] = PHPWS_Text::parseTag($entry);
         }
+
+        $template['IMAGE'] = $this->getImage();
 
         if ( $edit && 
              ( Current_User::allow('blog', 'edit_blog', $this->id, 'entry') ||
@@ -395,6 +414,10 @@ class Blog {
 
         $this->setSummary($_POST['summary']);
         $this->setEntry($_POST['entry']);
+
+        if (isset($_POST['image_id'])) {
+            $this->image_id = (int)$_POST['image_id'];
+        }
 
         if (isset($_POST['allow_comments'])) {
             $this->allow_comments = 1;

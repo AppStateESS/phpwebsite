@@ -82,6 +82,28 @@ function blog_update(&$content, $currentVersion)
   submit entries for later approval.
 + Added setting to allow anonymous submission.
 </pre>';
+
+    case version_compare($currentVersion, '1.4.0', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/edit.tpl', 'templates/settings.tpl', 'templates/view.tpl');
+        if (PHPWS_Boost::updateFiles($files, 'blog')) {
+            $content[] = '+ Copied the following files locally:';
+            $content[] = implode("\n", $files);
+        } else {
+            $content[] = '+ Failed to copy the following files locally:';
+            $content[] = implode("\n", $files);
+        }
+
+        $db = new PHPWS_DB('blog_entries');
+        $result = $db->addTableColumn('image_id', 'int NOT NULL default 0');
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $content[] = 'Unable to add image_id colume to blog_entries table.</pre>';
+            return false;
+        }
+
+        $content[] = '+ Added ability to add images to entry without editor.</pre>';
+
     }
 
     return true;

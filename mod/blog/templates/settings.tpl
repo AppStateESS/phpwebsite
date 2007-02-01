@@ -37,5 +37,9 @@
       </td>
    </tr>
 </table>
+<fieldset><legend>{SIMPLE_IMAGE} {SIMPLE_IMAGE_LABEL}</legend>
+{MAX_WIDTH_LABEL} {MAX_WIDTH}<br /><br />
+{MAX_HEIGHT_LABEL} {MAX_HEIGHT}
+</fieldset>
 {SUBMIT}
 {END_FORM}

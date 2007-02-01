@@ -45,6 +45,18 @@ class Blog_Form {
                 $thread = Comments::getThread($blog->key_id);
                 $form->setMatch('allow_anon', $thread->allow_anon);
             }
+
+            if (PHPWS_Settings::get('blog', 'simple_image')) {
+                PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
+                $manager = new FC_Image_Manager($blog->image_id);
+                $manager->setModule('blog');
+                $manager->setItemname('image_id');
+                $manager->setMaxWidth(PHPWS_Settings::get('blog', 'max_width'));
+                $manager->setMaxHeight(PHPWS_Settings::get('blog', 'max_height'));
+                $form->addTplTag('IMAGE_MANAGER', $manager->get());
+                $form->addTplTag('IMAGE_LABEL', _('Image'));
+            }
+
         }
 
         $form->addText('title', $blog->title);
@@ -96,6 +108,10 @@ class Blog_Form {
         $form->setLabel('allow_comments', _('Allow comments by default'));
         $form->setMatch('allow_comments', PHPWS_Settings::get('blog', 'allow_comments'));
 
+        $form->addCheck('simple_image', 1);
+        $form->setLabel('simple_image', _('Use Image Manager'));
+        $form->setMatch('simple_image', PHPWS_Settings::get('blog', 'simple_image'));
+
         $form->addCheck('home_page_display', 1);
         $form->setLabel('home_page_display', _('Show blog on home page'));
         $form->setMatch('home_page_display', PHPWS_Settings::get('blog', 'home_page_display'));
@@ -116,6 +132,15 @@ class Blog_Form {
         $form->addCheck('allow_anonymous_submit', 1);
         $form->setLabel('allow_anonymous_submit', _('Allow anonymous submissions'));
         $form->setMatch('allow_anonymous_submit', PHPWS_Settings::get('blog', 'allow_anonymous_submit'));
+
+        $form->addTextField('max_width', PHPWS_Settings::get('blog', 'max_width'));
+        $form->setLabel('max_width', _('Maximum image width (50-2048)'));
+        $form->setSize('max_width', 4,4);
+
+        $form->addTextField('max_height', PHPWS_Settings::get('blog', 'max_height'));
+        $form->setLabel('max_height', _('Maximum image height (50-2048)'));
+        $form->setSize('max_height', 4,4);
+        
 
         $form->addSubmit(_('Save settings'));
 

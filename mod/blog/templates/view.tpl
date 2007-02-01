@@ -8,7 +8,7 @@
     <div class="category-links">{CATEGORIES}</div>
     <!-- END categories -->
     <div class="box-content">
-      <div class="entry-summary">{SUMMARY}</div>
+      <div class="entry-summary"><!-- BEGIN image --><div class="entry-image">{IMAGE}</div><!-- END image -->{SUMMARY}</div>
       <div class="entry-content">{ENTRY}</div>
       <!-- BEGIN edit-link --><div class="align-right">{EDIT_LINK}</div><!-- END edit-link -->
       <!-- BEGIN comment-info -->
