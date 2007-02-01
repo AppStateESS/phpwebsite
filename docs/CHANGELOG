@@ -1,3 +1,33 @@
+February 1
+----------
+
+Core
+-------
++ Theme - added code to prevent image overlap in blog and webpage
++ Database.php - addTableColumn checks for a column's existence and
+  returning false if so. Prevents error lock ups.
+
+Webpage 
+-------
++ Altered page templates to prevent float overlap (previous update
+  takes care of copy)
+
+
+Blog
+-------
++ Added ability to place images on blog entries without editor.
+
+
+File Cabinet
+-------------
++ Fixed base directory uploads
++ Document was changing the object id to null when failing to load the
+  object. Changed it to a zero.
++ Added more directory error checks.
++ Image manager will try and match the current module to its directory.
++ New error message for bad directory choice
+
+
 January 31
 ----------
 
