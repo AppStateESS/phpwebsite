@@ -221,6 +221,11 @@ label.radio-label {
 
 }
 
+.entry-summary, .webpage-content  {
+   /* prevents float overlap */
+    overflow: hidden;
+}
+
 code {
     white-space: pre-wrap;       /* css-3 */
     white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
@@ -231,4 +236,11 @@ code {
 
 abbr {
     border : none;
+}
+
+
+div.webpage-image, div.entry-image{
+   float : right;
+   display : inline;
+   margin : 0 0 10px 10px;                  
 }
