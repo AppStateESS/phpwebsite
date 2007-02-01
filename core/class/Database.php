@@ -1571,10 +1571,14 @@ class PHPWS_DB {
     /**
      * Adds a column to the database table
      *
+     * Returns error object if fails. Returns false if table column already
+     * exists. Returns true is successful.
+     *
      * @param string  column    Name of column to add
      * @param string  parameter Specifics of table column
      * @param string  after     If supported, add column after this column
      * @param boolean indexed   Create an index on the column if true
+     * @returns mixed
      */
     function addTableColumn($column, $parameter, $after=NULL, $indexed=FALSE)
     {
@@ -1585,6 +1589,10 @@ class PHPWS_DB {
 
         if (!PHPWS_DB::allowed($column)) {
             return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::addTableColumn', $column);
+        }
+
+        if ($this->isTableColumn($column)) {
+            return false;
         }
 
         $sql = $GLOBALS['PHPWS_DB']['lib']->addColumn($table, $column, $parameter, $after);
