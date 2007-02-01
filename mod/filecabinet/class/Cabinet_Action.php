@@ -439,8 +439,7 @@ class Cabinet_Action {
         if (empty($directories)) {
             return array(0 => '/');
         } else {
-            $search = preg_quote($img_dir, '/');
-            $new_list[$img_dir] = '/';
+            $new_list[0] = '/';
             foreach ($directories as $dir) {
                 if (is_writable($img_dir . $dir)) {
                     $new_list[urlencode($dir)] = "/$dir/";

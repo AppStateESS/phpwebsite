@@ -60,6 +60,7 @@ the default directory to the module that is accessing it.';
         $files[] = 'templates/style.css';
         $files[] = 'templates/cookie_directory.tpl';
         $files[] = 'templates/manager/pick.tpl';
+        $files[] = 'conf/error.php';
 
         PHPWS_Boost::updateFiles($files, 'filecabinet');
         $type = PHPWS_DB::getDBType();

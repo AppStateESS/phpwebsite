@@ -34,9 +34,11 @@ class PHPWS_Image extends File_Common {
         $this->setId((int)$id);
         $result = $this->init();
         if (PEAR::isError($result)) {
+            $this->id = 0;
             $this->_errors[] = $result;
         } elseif (empty($result)) {
-            return PHPWS_Error::get(FC_IMG_NOT_FOUND, 'filecabinet', 'PHPWS_Image');
+            $this->id = 0;
+            $this->_errors[] = PHPWS_Error::get(FC_IMG_NOT_FOUND, 'filecabinet', 'PHPWS_Image');
         }
     }
 
@@ -46,7 +48,7 @@ class PHPWS_Image extends File_Common {
             return FALSE;
         }
 
-        $db = & new PHPWS_DB('images');
+        $db = new PHPWS_DB('images');
         return $db->loadObject($this);
     }
 
@@ -218,6 +220,10 @@ class PHPWS_Image extends File_Common {
     {
         if (empty($this->file_directory)) {
             $this->file_directory = $this->getDefaultDirectory();
+        }
+
+        if (!is_writable($this->file_directory)) {
+            return PHPWS_Error::get(FC_BAD_DIRECTORY, 'filecabinet', 'PHPWS_Image::save', $this->file_directory);
         }
 
         if (empty($this->alt)) {

@@ -36,15 +36,19 @@ class File_Common {
 
     function logErrors()
     {
-        if (empty($this->_errors) || !is_array($this->_errors)) {
-            return;
-        }
-
-        foreach ($this->_errors as $error) {
-            PHPWS_Error::log($error);
+        if ( !empty($this->_errors) && is_array($this->_errors) ) {
+            foreach ($this->_errors as $error) {
+                PHPWS_Error::log($error);
+            }
         }
     }
 
+    /**
+     * Tests file upload to determine if it may be saved to the server.
+     * Returns true if so, false otherwise.
+     * Called from Image_Manager's postImage function and Cabinet_Action's
+     * postDocument function.
+     */
     function importPost($var_name)
     {
         require 'HTTP/Upload.php';
@@ -69,12 +73,18 @@ class File_Common {
             $this->description = NULL;
         }
 
+        $default_dir = $this->getDefaultDirectory();
         if (isset($_POST['directory']) && !empty($_POST['directory'])) {
             $directory =  urldecode($_POST['directory']);
-            $this->setDirectory($this->getDefaultDirectory() . $directory);
+
+            if (preg_match('@^' . $default_dir . '@', $directory)) {
+                $this->setDirectory($directory);
+            } else {
+                $this->setDirectory($default_dir . $directory);
+            }
         } else {
             if (empty($this->file_directory)) {
-                $this->setDirectory($this->getDefaultDirectory());
+                $this->setDirectory($default_dir);
             }
         }
 

@@ -4,15 +4,15 @@ PHPWS_Core::requireConfig('filecabinet');
 PHPWS_Core::initModClass('filecabinet', 'Image.php');
 
 class FC_Image_Manager {
-    var $image             = NULL;
-    var $mod_title         = NULL;
-    var $itemname          = NULL;
-    var $thumbnail         = NULL;
+    var $image             = null;
+    var $mod_title         = null;
+    var $itemname          = null;
+    var $thumbnail         = null;
     var $tn_width          = MAX_TN_IMAGE_WIDTH;
     var $tn_height         = MAX_TN_IMAGE_HEIGHT;
-    var $_error            = NULL;
+    var $_error            = null;
 
-    function FC_Image_Manager($image_id=NULL)
+    function FC_Image_Manager($image_id=null)
     {
         if (empty($image_id)) {
             $this->image = & new PHPWS_Image;
@@ -100,7 +100,7 @@ class FC_Image_Manager {
 
     function normal()
     {
-        return NULL;
+        return null;
     }
 
     function noImage()
@@ -122,6 +122,10 @@ class FC_Image_Manager {
         $link_vars = $this->getSettings();
         $link_vars['action']    = 'edit_image';
         $link_vars['current']   = $this->image->id;
+        if (!$this->image->id) {
+            $link_vars['dir'] = $this->mod_title;
+        }
+
    
         $vars['address'] = PHPWS_Text::linkAddress('filecabinet', $link_vars);
         $vars['width']   = FC_MANAGER_WIDTH;
@@ -260,6 +264,7 @@ class FC_Image_Manager {
 
     function postImage()
     {
+        // importPost in File_Common
         if (!$this->image->importPost('file_name')) {
             return FALSE;
         } else {
@@ -287,7 +292,6 @@ class FC_Image_Manager {
         if ($this->image->id) {
             $form->addHidden('image_id', $this->image->id);
         }
-
 
         $form->addFile('file_name');
         $form->setSize('file_name', 30);
@@ -362,21 +366,25 @@ class FC_Image_Manager {
             javascript('onload', array('function' => "clear_image('" . $this->itemname . "')"));
         }
 
-        $db = & new PHPWS_DB('images');
+        $db = new PHPWS_DB('images');
         $db->addWhere('thumbnail_source', 0, '>');
         $db->setIndexBy('thumbnail_source');
 
+        $default_dir = PHPWS_Image::getDefaultDirectory();
         if (isset($directory)) {
             // if zero, we are at base directory
             if ($directory == '0') {
-                $current_directory = sprintf('%simages/', PHPWS_HOME_DIR);
+                $current_directory = & $default_dir;
             } else {
-                $current_directory = sprintf('%simages/%s/', PHPWS_HOME_DIR, $directory);
+                $current_directory = $default_dir . $directory . '/';
+                if (!is_writable($current_directory)) {
+                    $current_directory = & $default_dir;
+                }
             }
         } elseif (!empty($this->image) && $this->image->id) {
             $current_directory = $this->image->file_directory;
         } else {
-            $current_directory = sprintf('%simages/', PHPWS_HOME_DIR);
+            $current_directory = & $default_dir;
         }
 
         $db->addWhere('file_directory', $current_directory);

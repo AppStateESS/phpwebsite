@@ -29,10 +29,10 @@ class PHPWS_Document extends File_Common {
 
         $result = $this->init();
         if (PEAR::isError($result)) {
-            $this->id = NULL;
+            $this->id = 0;
             $this->_errors[] = $result;
         } elseif (empty($result)) {
-            $this->id = NULL;
+            $this->id = 0;
             $this->_errors[] = PHPWS_Error::get(FC_DOCUMENT_NOT_FOUND, 'filecabinet', 'PHPWS_Document');
         }
 

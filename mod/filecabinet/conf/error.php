@@ -20,5 +20,6 @@ $errors[FC_NO_UPLOAD]              = _('File not uploaded.');
 $errors[FC_COULD_NOT_DELETE]       = _('Could not delete file.');
 $errors[FC_IMAGE_DIMENSION]        = _('Image is %spx by %spx, the maximum dimensions are %spx by %spx.');
 $errors[FC_FILE_MOVE]              = _('Unable to move the file to its new directory.');
+$errors[FC_BAD_DIRECTORY]          = _('Could not write to directory.');
 
 ?>
