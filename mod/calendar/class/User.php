@@ -670,7 +670,7 @@ class Calendar_User {
         return $this->calendar->schedule->addSuggestLink($this->calendar->current_date);
     }
 
-    function todayLink()
+    function todayLink($view)
     {
         $vars['sch_id'] = $this->calendar->schedule->id;
         if ($this->current_view == 'event') {
@@ -679,7 +679,22 @@ class Calendar_User {
             $vars['view'] = $this->current_view;
         }
         $vars['date'] = mktime();
-        return PHPWS_Text::moduleLink(_('Today'), 'calendar', $vars);
+
+        switch ($view) {
+        case 'grid':
+        case 'list':
+            $view_name = _('This month');
+            break;
+
+        case 'week':
+            $view_name = _('This week');
+            break;
+
+        case 'day':
+            $view_name = _('Today');
+        }
+
+        return PHPWS_Text::moduleLink($view_name, 'calendar', $vars);
     }
 
     /**
@@ -778,6 +793,10 @@ class Calendar_User {
         $vars = PHPWS_Text::getGetValues();
         unset($vars['module']);
 
+        if ($current_view == 'grid') {
+            $vars['date'] = $this->calendar->today;
+        }
+
         if (isset($_REQUEST['m']) &&
             isset($_REQUEST['y']) && 
             isset($_REQUEST['d'])) {
@@ -787,7 +806,8 @@ class Calendar_User {
             unset($vars['y']);
         }
 
-        $links[] = $this->todayLink();
+
+        $links[] = $this->todayLink($current_view);
 
         if ($current_view == 'event') {
             $vars['date'] = $this->event->start_time;
