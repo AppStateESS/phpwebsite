@@ -102,7 +102,7 @@ class Menu {
         }
 
         $js['link_title'] = _('Add Other Link');
-        $js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE, FALSE, FALSE);
+        $js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE, FALSE);
         $js['label'] = MENU_LINK_ADD_SITE;
         $js['width'] = 500;
         $js['height'] = 200;
@@ -135,7 +135,7 @@ class Menu {
             if (empty($key->title)) {
                 $vars['url'] = urlencode(urlencode($key->url));
                 $js['question']   = _('Enter link title');
-                $js['address']    = PHPWS_Text::linkAddress('menu', $vars, TRUE, FALSE, FALSE);
+                $js['address']    = PHPWS_Text::linkAddress('menu', $vars, TRUE, FALSE);
                 $js['link']       = MENU_LINK_ADD;
                 $js['value_name'] = 'link_title';
                 return javascript('prompt', $js);
