@@ -325,7 +325,6 @@ class Calendar_User {
         $month = (int)date('m');
         $year  = (int)date('Y');
 
-
         // Check cache
         if (PHPWS_Settings::get('calendar', 'cache_month_views')) {
             $cache_key = sprintf('mini_%s_%s_%s', $month, $year, $this->calendar->schedule->id);
@@ -344,13 +343,13 @@ class Calendar_User {
         }
 
         if (PHPWS_Settings::get('calendar', 'mini_event_link')) {
+            $this->calendar->loadDefaultSchedule();
             $default_start = PHPWS_Settings::get('calendar','starting_day');
             $start_day = date('w', $startdate) - $default_start;
             $end_day  = date('w', $enddate);
             
             $startdate -= $start_day * 86400;
             $enddate += $end_day * 86400;
-
             $this->calendar->loadEventList($startdate, $enddate);
             $link = false;
         } else {

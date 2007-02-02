@@ -430,8 +430,7 @@ class Calendar_Event {
         $table = $this->_schedule->getEventTable();
         
         if (empty($table)) {
-            // error here
-            return;
+            return PHPWS_Error::get(CAL_EVENT_TABLE_MISSING, 'calendar', 'Calendar::init', $table);
         }
 
         $db = new PHPWS_DB($table);
@@ -501,6 +500,10 @@ class Calendar_Event {
         $start_date =  strtotime($_POST['start_date']);
         $end_date =  strtotime($_POST['end_date']);
 
+        if ($start_date > $end_date) {
+            $end_date = $start_date;
+        }
+
         $start_time_hour   = &$_POST['start_time_hour'];
         $start_time_minute = &$_POST['start_time_minute'];
         $end_time_hour     = &$_POST['end_time_hour'];
@@ -520,7 +523,7 @@ class Calendar_Event {
         }
 
         if ($startTime >= $endTime) {
-                $errors[] = _('The end time must be after the start time.');
+            $errors[] = _('The end time must be after the start time.');
         }
 
         $this->start_time = $startTime;

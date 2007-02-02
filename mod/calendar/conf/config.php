@@ -10,7 +10,7 @@ define('DEFAULT_CALENDAR_VIEW', 'day');
 // Please read http://www.php.net/manual/en/function.strftime.php
 // before changing these values
 define('CALENDAR_DATE_FORMAT', '%B %e, %Y');
-define('CALENDAR_TIME_FORMAT', '%l:%M %P');
+define('CALENDAR_TIME_FORMAT', '%l:%M %p');
 
 
 // View title format
@@ -29,7 +29,7 @@ define('CALENDAR_HCAL_ALLDAY_END', false);
 define('CALENDAR_TIME_FORM_FORMAT', '%l %p');
 define('CALENDAR_TIME_MINUTE_INC', 15);
 
-define('CALENDAR_TIME_LIST_FORMAT', '%l:%M %P');
+define('CALENDAR_TIME_LIST_FORMAT', '%l:%M %p');
 
 // Controls the dimensions of the event editor popup
 define('CALENDAR_EVENT_WIDTH', 700);
