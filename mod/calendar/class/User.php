@@ -412,7 +412,10 @@ class Calendar_User {
             }
 
             if ($no_of_events) {
-                $data['COUNT'] = sprintf('%s event(s)', $no_of_events);
+                $data['COUNT'] = PHPWS_Text::moduleLink(sprintf('%s event(s)', $no_of_events), 
+                                                        'calendar', array('view'=>'day',
+                                                                          'date'=>$day->thisDay(true),
+                                                                          'sch_id'=>$this->calendar->schedule->id));
             }
 
             $oTpl->setCurrentBlock('calendar-col');
