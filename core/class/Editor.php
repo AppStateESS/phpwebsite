@@ -122,7 +122,7 @@ class Editor {
 
         extract($GLOBALS['browser_info']);
 
-        if ($browser == 'Opera') {
+        if ($browser == 'Opera' || $browser == 'AppleWebKit') {
             return FALSE;
         }
 
