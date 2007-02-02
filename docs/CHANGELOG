@@ -1,3 +1,36 @@
+February 2
+----------
+
+Calendar
+--------
++ Bug #1648965. Clicking Day or Week from grid view pulls correct day
++ Changed "Today" link to view appropiate description to prevent
+  confusion
+
+Core
+------
++ Editor - Fixed FCKeditor's style sheet
+
+Menu
+-----
++ Links missing &amp; were causing validation errors. Fixed.
++ Fixed missing quote in config.php links
++ Updated files: conf/config.php
+
+
+Web Pages
+---------
++ Moved a function out of Page getTpl for clarity
++ Added a page select with onchange function. Put it into the basic
+  page layout
++ Added page summary information to page templates
++ Replaced an panic exit with an logged error and send to the
+  errorPage
++ Updated files: templates/page/basic.tpl, templates/page/prev_next.tpl,
+  templates/page/short_links.tpl templates/page/verbose_links.tpl,
+  conf/error.php 
+
+
 February 1
 ----------
 
