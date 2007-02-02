@@ -34,7 +34,7 @@ class Webpage_Page {
 
     function init()
     {
-        $db = & new PHPWS_DB('webpage_page');
+        $db = new PHPWS_DB('webpage_page');
         $result = $db->loadObject($this);
         if (PEAR::isError($result)) {
             $this->_error = $result;
@@ -49,7 +49,7 @@ class Webpage_Page {
 
     function loadVolume()
     {
-        $this->_volume = & new Webpage_Volume($this->volume_id);
+        $this->_volume = new Webpage_Volume($this->volume_id);
     }
 
     function setTitle($title)
@@ -186,36 +186,8 @@ class Webpage_Page {
             $links[] = PHPWS_Text::secureLink(_('Edit'), 'webpage', $vars);
 
             if ($admin) {
-                if (Current_User::isUnrestricted('webpage') && Current_User::allow('webpage', 'delete_page')) {
-                    $jsvar['QUESTION'] = _('Are you sure you want to remove this page?');
-                    $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=delete_page&amp;page_id=%s&amp;volume_id=%s&amp;authkey=%s',
-                                                $this->id, $this->volume_id, Current_User::getAuthKey());
-                    $jsvar['LINK'] = ('Delete');
-                    
-                    $links[] = javascript('confirm', $jsvar);
-                }
-
-                if (Current_User::allow('webpage', 'edit_page', $this->volume_id, 'volume', true)) {
-                    $vars = array('wp_admin'=>'restore_page', 'volume_id'=>$this->volume_id, 'page_id'=>$this->id);
-                    $links[] = PHPWS_Text::secureLink(_('Restore'), 'webpage', $vars);
-
-                    if($this->page_number < count($this->_volume->_pages)) {
-                        $jsvar['QUESTION'] = _('Are you sure you want to join this page to the next?');
-                        $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=join_page&amp;page_id=%s&amp;volume_id=%s&amp;authkey=%s',
-                                                    $this->id, $this->volume_id, Current_User::getAuthKey());
-                        $jsvar['LINK'] = ('Join next');
-                        $links[] = javascript('confirm', $jsvar);
-                        
-                        $jsvar['QUESTION'] = _('Are you sure you want to join ALL the pages into just one page? Warning: You will lose all page backups!');
-                        $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=join_all_pages&amp;volume_id=%s&amp;authkey=%s',
-                                                    $this->volume_id, Current_User::getAuthKey());
-                        $jsvar['LINK'] = ('Join all');
-                        $links[] = javascript('confirm', $jsvar);
-                    }
-                }
-
+                $this->moreAdminLinks($links);
             }
-            
             $template['ADMIN_LINKS'] = implode(' | ', $links);
         }
 
@@ -224,6 +196,37 @@ class Webpage_Page {
             $template = array_merge($template, $header_tags);
         }
         return $template;
+    }
+
+    function moreAdminLinks(&$links)
+    {
+        if (Current_User::isUnrestricted('webpage') && Current_User::allow('webpage', 'delete_page')) {
+            $jsvar['QUESTION'] = _('Are you sure you want to remove this page?');
+            $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=delete_page&amp;page_id=%s&amp;volume_id=%s&amp;authkey=%s',
+                                        $this->id, $this->volume_id, Current_User::getAuthKey());
+            $jsvar['LINK'] = ('Delete');
+                    
+            $links[] = javascript('confirm', $jsvar);
+        }
+
+        if (Current_User::allow('webpage', 'edit_page', $this->volume_id, 'volume', true)) {
+            $vars = array('wp_admin'=>'restore_page', 'volume_id'=>$this->volume_id, 'page_id'=>$this->id);
+            $links[] = PHPWS_Text::secureLink(_('Restore'), 'webpage', $vars);
+
+            if($this->page_number < count($this->_volume->_pages)) {
+                $jsvar['QUESTION'] = _('Are you sure you want to join this page to the next?');
+                $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=join_page&amp;page_id=%s&amp;volume_id=%s&amp;authkey=%s',
+                                            $this->id, $this->volume_id, Current_User::getAuthKey());
+                $jsvar['LINK'] = ('Join next');
+                $links[] = javascript('confirm', $jsvar);
+                        
+                $jsvar['QUESTION'] = _('Are you sure you want to join ALL the pages into just one page? Warning: You will lose all page backups!');
+                $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=join_all_pages&amp;volume_id=%s&amp;authkey=%s',
+                                            $this->volume_id, Current_User::getAuthKey());
+                $jsvar['LINK'] = ('Join all');
+                $links[] = javascript('confirm', $jsvar);
+            }
+        }
     }
 
     function getPageLink($verbose=false)
@@ -282,7 +285,7 @@ class Webpage_Page {
 
     function delete()
     {
-        $db = & new PHPWS_DB('webpage_page');
+        $db = new PHPWS_DB('webpage_page');
         $db->addWhere('id', $this->id);
 
         $result = $db->delete();

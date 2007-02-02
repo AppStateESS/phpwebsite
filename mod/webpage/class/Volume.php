@@ -400,6 +400,25 @@ class Webpage_Volume {
     }
 
 
+    function getPageSelect($alist)
+    {
+            $form = new PHPWS_Form('page_select');
+            $form->setMethod('get');
+            $form->noAuthKey();
+            $form->addHidden('module', 'webpage');
+            $form->addHidden('id', $this->id);
+            $form->addSelect('page', $alist);
+            $form->setMatch('page', $this->_current_page);
+            $form->setLabel('page', _('Page'));
+            if (javascriptEnabled()) {
+                $form->setExtra('page', 'onchange="this.form.submit()"');
+            } else {
+                $form->addSubmit('go', _('Go!'));
+            }
+            $formtpl = $form->getTemplate();
+            return implode("\n", $formtpl);
+    }
+
     function getTplTags($page_links=true, $version=0)
     {
         $template['PAGE_TITLE'] = $this->title;
@@ -414,7 +433,10 @@ class Webpage_Volume {
                     $brief_link[] = $page->getPageLink();
                     $template['verbose-link'][] = array('VLINK' => $page->getPageLink(true));
                 }
+                $alist[$page->page_number] = $page->title;
             }
+
+            $template['PAGE_SELECT'] = $this->getPageSelect($alist);
 
             if ($this->_current_page > 1) {
                 $page = $this->_current_page - 1;
@@ -484,7 +506,7 @@ class Webpage_Volume {
         $this->loadKey();
 
         if (!$this->_key->allowView()) {
-            return null;
+            PHPWS_Core::errorPage('404');
         }
 
         Layout::addStyle('webpage');
@@ -500,7 +522,8 @@ class Webpage_Volume {
             } else {
                 $oPage = $this->getCurrentPage();
                 if (!is_object($oPage)) {
-                    exit('major error');
+                    PHPWS_Error::log(WP_PAGE_FROM_VOLUME, 'webpage', 'Webpage_Volume::view');
+                    PHPWS_Core::errorPage();
                 }
                 $content = $oPage->view();
             }
