@@ -31,11 +31,11 @@ default options for FCKeditor.
 The word 'content' is restricted. Do not use it as the name of
 your text area.
 
-Style choices are set in phpwsstyles.xml. The format should be easy to
-understand. Please be aware that if your theme does not have class
-definitions for float-left, float-right, smaller, and larger, those
-styles will not work. Rename the classes in the xml file if you have
-other plans for your style sheets.
+Style choices are set in editor/phpwsstyles.xml. The format should be
+easy to understand. Please be aware that if your theme does not have
+class definitions for float-left, float-right, smaller, and larger,
+those styles will not work. Rename the classes in the xml file if you
+have other plans for your style sheets.
 
 Please see the Editors.txt file in the docs/ directory for more
 information.
