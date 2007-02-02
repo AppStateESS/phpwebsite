@@ -35,14 +35,28 @@ h3 {
 
 /* ---------- Tags ---------- */
 
+/* ----------- Compliant ------------ */
 code {
-    white-space: pre;
     border: 1px solid #C0C0C0;
     display: block;
     overflow:auto;
     background-color : white;
     height : 200px;
+    white-space: pre;
 }
+
+/* Uncommenting the below may break CSS compliancy but will
+improve the appearence of the <code> tag in different browsers.
+Your choice. Please experiment */
+
+code {
+/* white-space: pre-wrap;      */  /* css-3 */
+/* white-space: -moz-pre-wrap; */  /* Mozilla, since 1999 */
+/* white-space: -pre-wrap;     */  /* Opera 4-6 */
+/* white-space: -o-pre-wrap;   */  /* Opera 7 */
+/* word-wrap: break-word;      */  /* Internet Explorer 5.5+ */
+}
+
 
 pre {
     font-size : 1.1em;
@@ -226,13 +240,6 @@ label.radio-label {
     overflow: hidden;
 }
 
-code {
-    white-space: pre-wrap;       /* css-3 */
-    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-    white-space: -pre-wrap;      /* Opera 4-6 */
-    white-space: -o-pre-wrap;    /* Opera 7 */
-    word-wrap: break-word;       /* Internet Explorer 5.5+ */
-}
 
 abbr {
     border : none;
