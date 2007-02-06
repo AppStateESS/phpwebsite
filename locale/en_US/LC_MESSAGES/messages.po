@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-16 09:01-0500\n"
+"POT-Creation-Date: 2007-02-06 10:04-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,686 +16,633 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: config/core/error.php:4
+#: config/core/formConfig.php:29 core/conf/formConfig.php:29
+msgid "Form"
+msgstr ""
+
+#: config/core/error.php:4 core/conf/error.php:4
 msgid "Unknown Error."
 msgstr ""
 
-#: config/core/error.php:5
+#: config/core/error.php:5 core/conf/error.php:5
 msgid "File not found."
 msgstr ""
 
-#: config/core/error.php:6 config/core/error.php:46
+#: config/core/error.php:6 config/core/error.php:46 core/conf/error.php:6
+#: core/conf/error.php:46
 msgid "Class does not exist."
 msgstr ""
 
-#: config/core/error.php:7 config/core/error.php:83
+#: config/core/error.php:7 config/core/error.php:83 core/conf/error.php:7
+#: core/conf/error.php:83
 msgid "Directory is not writable."
 msgstr ""
 
-#: config/core/error.php:8
+#: config/core/error.php:8 core/conf/error.php:8
 msgid "Wrong variable type."
 msgstr ""
 
-#: config/core/error.php:9
+#: config/core/error.php:9 core/conf/error.php:9
 msgid "Improperly formated text."
 msgstr ""
 
-#: config/core/error.php:10
+#: config/core/error.php:10 core/conf/error.php:10
 msgid "Invalid value."
 msgstr ""
 
-#: config/core/error.php:11
+#: config/core/error.php:11 core/conf/error.php:11
 msgid "No active modules installed."
 msgstr ""
 
-#: config/core/error.php:12
+#: config/core/error.php:12 core/conf/error.php:12
 msgid "Wrong data type."
 msgstr ""
 
-#: config/core/error.php:13
+#: config/core/error.php:13 core/conf/error.php:13
 msgid "Directories are not secure."
 msgstr ""
 
-#: config/core/error.php:14
+#: config/core/error.php:14 core/conf/error.php:14
 msgid "Unable to create file directory."
 msgstr ""
 
-#: config/core/error.php:15
+#: config/core/error.php:15 core/conf/error.php:15
 msgid "Unknown or incorrect class."
 msgstr ""
 
-#: config/core/error.php:16
+#: config/core/error.php:16 core/conf/error.php:16
 msgid "Unknown module."
 msgstr ""
 
-#: config/core/error.php:17
+#: config/core/error.php:17 core/conf/error.php:17
 msgid "Unable to derive class variables."
 msgstr ""
 
-#: config/core/error.php:18
+#: config/core/error.php:18 core/conf/error.php:18
 msgid "Function name not found."
 msgstr ""
 
-#: config/core/error.php:19
+#: config/core/error.php:19 core/conf/error.php:19
 msgid "Unable to verify source directory. Check PHPWS_SOURCE_DIR."
 msgstr ""
 
-#: config/core/error.php:22
+#: config/core/error.php:22 core/conf/error.php:22
 msgid "Table name not set."
 msgstr ""
 
-#: config/core/error.php:23
+#: config/core/error.php:23 core/conf/error.php:23
 msgid "No values were set before the query"
 msgstr ""
 
-#: config/core/error.php:24
+#: config/core/error.php:24 core/conf/error.php:24
 msgid "No variables in object."
 msgstr ""
 
-#: config/core/error.php:25
+#: config/core/error.php:25 core/conf/error.php:25
 msgid "Not an acceptable operator."
 msgstr ""
 
-#: config/core/error.php:26
+#: config/core/error.php:26 core/conf/error.php:26
 msgid "Improper table name."
 msgstr ""
 
-#: config/core/error.php:27
+#: config/core/error.php:27 core/conf/error.php:27
 msgid "Improper column name."
 msgstr ""
 
-#: config/core/error.php:28
+#: config/core/error.php:28 core/conf/error.php:28
 msgid "Missing column to select."
 msgstr ""
 
-#: config/core/error.php:29
+#: config/core/error.php:29 core/conf/error.php:29
 msgid "Expecting an object variable."
 msgstr ""
 
-#: config/core/error.php:30
+#: config/core/error.php:30 core/conf/error.php:30
 msgid "Class does not contain variables."
 msgstr ""
 
-#: config/core/error.php:31
+#: config/core/error.php:31 core/conf/error.php:31
 msgid "Function was expecting a \"where\" parameter."
 msgstr ""
 
-#: config/core/error.php:32
+#: config/core/error.php:32 core/conf/error.php:32
 msgid "Join database does not exist."
 msgstr ""
 
-#: config/core/error.php:33
+#: config/core/error.php:33 core/conf/error.php:33
 msgid "Table does not exist."
 msgstr ""
 
-#: config/core/error.php:34
+#: config/core/error.php:34 core/conf/error.php:34
 msgid "loadObject expected the object to have an id or where clause."
 msgstr ""
 
-#: config/core/error.php:35
+#: config/core/error.php:35 core/conf/error.php:35
 msgid "Select returned an empty result."
 msgstr ""
 
-#: config/core/error.php:36
+#: config/core/error.php:36 core/conf/error.php:36
 msgid "Database import failed."
 msgstr ""
 
-#: config/core/error.php:40
+#: config/core/error.php:40 core/conf/error.php:40
 msgid "Module not set."
 msgstr ""
 
-#: config/core/error.php:41
+#: config/core/error.php:41 core/conf/error.php:41
 msgid "Class not set."
 msgstr ""
 
-#: config/core/error.php:42
+#: config/core/error.php:42 core/conf/error.php:42
 msgid "Table not set."
 msgstr ""
 
-#: config/core/error.php:43
+#: config/core/error.php:43 core/conf/error.php:43
 msgid "List columns not set."
 msgstr ""
 
-#: config/core/error.php:44
+#: config/core/error.php:44 core/conf/error.php:44
 msgid "Name not set."
 msgstr ""
 
-#: config/core/error.php:45
+#: config/core/error.php:45 core/conf/error.php:45
 msgid "Op not set."
 msgstr ""
 
-#: config/core/error.php:47
+#: config/core/error.php:47 core/conf/error.php:47
 msgid "No items passed."
 msgstr ""
 
-#: config/core/error.php:48
+#: config/core/error.php:48 core/conf/error.php:48
 msgid "Database columns not set."
 msgstr ""
 
-#: config/core/error.php:52
+#: config/core/error.php:52 core/conf/error.php:52
 #, php-format
 msgid "You may not use \"%s\" as a form element name."
 msgstr ""
 
-#: config/core/error.php:53
+#: config/core/error.php:53 core/conf/error.php:53
 #, php-format
 msgid "Unable to find element \"%s\"."
 msgstr ""
 
-#: config/core/error.php:54
+#: config/core/error.php:54 core/conf/error.php:54
 msgid "Input type not set."
 msgstr ""
 
-#: config/core/error.php:55
+#: config/core/error.php:55 core/conf/error.php:55
 msgid "Wrong element type for procedure."
 msgstr ""
 
-#: config/core/error.php:56
+#: config/core/error.php:56 core/conf/error.php:56
 msgid "Can not change name. Already in use."
 msgstr ""
 
-#: config/core/error.php:57
+#: config/core/error.php:57 core/conf/error.php:57
 msgid "No form elements have been created."
 msgstr ""
 
-#: config/core/error.php:58
+#: config/core/error.php:58 core/conf/error.php:58
 msgid "The submitted template is not an array."
 msgstr ""
 
-#: config/core/error.php:59
+#: config/core/error.php:59 core/conf/error.php:59
 msgid "File not found in _FILES array."
 msgstr ""
 
-#: config/core/error.php:60
+#: config/core/error.php:60 core/conf/error.php:60
 msgid "Unrecognized form type."
 msgstr ""
 
-#: config/core/error.php:61
+#: config/core/error.php:61 core/conf/error.php:61
 msgid "Match for must be an array for a multiple input."
 msgstr ""
 
-#: config/core/error.php:65
+#: config/core/error.php:65 core/conf/error.php:65
 msgid "Id and table not set."
 msgstr ""
 
-#: config/core/error.php:66
+#: config/core/error.php:66 core/conf/error.php:66
 msgid "No result returned from database."
 msgstr ""
 
-#: config/core/error.php:69
+#: config/core/error.php:69 core/conf/error.php:69
 msgid "Module not found."
 msgstr ""
 
-#: config/core/error.php:72
+#: config/core/error.php:72 core/conf/error.php:72
 msgid "No error message file found."
 msgstr ""
 
-#: config/core/error.php:73
+#: config/core/error.php:73 core/conf/error.php:73
 msgid "Blank module title sent to get function."
 msgstr ""
 
-#: config/core/error.php:76
+#: config/core/error.php:76 core/conf/error.php:76
 msgid "Help option not found in help configuration file."
 msgstr ""
 
-#: config/core/error.php:79
+#: config/core/error.php:79 core/conf/error.php:79
 msgid "PHPWS_File received an unknown construct."
 msgstr ""
 
-#: config/core/error.php:80
+#: config/core/error.php:80 core/conf/error.php:80
 msgid "Class not found."
 msgstr ""
 
-#: config/core/error.php:81
+#: config/core/error.php:81 core/conf/error.php:81
 msgid "Unable to delete file."
 msgstr ""
 
-#: config/core/error.php:82
+#: config/core/error.php:82 core/conf/error.php:82
 msgid "Unable to delete directory."
 msgstr ""
 
-#: config/core/error.php:84
+#: config/core/error.php:84 core/conf/error.php:84
 msgid "Cannot read file."
 msgstr ""
 
-#: config/core/error.php:85
+#: config/core/error.php:85 core/conf/error.php:85
 msgid "Variable name not found in_FILES array."
 msgstr ""
 
-#: config/core/error.php:86
+#: config/core/error.php:86 core/conf/error.php:86
 msgid "Unable to save file in selected directory."
 msgstr ""
 
-#: config/core/error.php:87
+#: config/core/error.php:87 core/conf/error.php:87
 msgid "Upload directory not set in file object."
 msgstr ""
 
-#: config/core/error.php:88
+#: config/core/error.php:88 core/conf/error.php:88
 msgid "Upload file size is larger than allowed."
 msgstr ""
 
-#: config/core/error.php:89
+#: config/core/error.php:89 core/conf/error.php:89
 msgid "GD image libraries do not support this image type."
 msgstr ""
 
-#: config/core/error.php:92
+#: config/core/error.php:92 core/conf/error.php:92
 msgid "Filename not set."
 msgstr ""
 
-#: config/core/error.php:93
+#: config/core/error.php:93 core/conf/error.php:93
 msgid "Directory not set."
 msgstr ""
 
-#: config/core/error.php:94
+#: config/core/error.php:94 core/conf/error.php:94
 msgid "There was a problem loading the image file."
 msgstr ""
 
-#: config/core/error.php:95
+#: config/core/error.php:95 core/conf/error.php:95
 #, php-format
 msgid "Image was %sK making it larger than %sK size limit."
 msgstr ""
 
-#: config/core/error.php:96
+#: config/core/error.php:96 core/conf/error.php:96
 #, php-format
 msgid "Image width was %spx, making it larger than %d pixel limit."
 msgstr ""
 
-#: config/core/error.php:97
+#: config/core/error.php:97 core/conf/error.php:97
 #, php-format
 msgid "Image height was %spx, making it larger than %d pixel limit."
 msgstr ""
 
-#: config/core/error.php:98
+#: config/core/error.php:98 core/conf/error.php:98
 msgid "Unacceptable image type."
 msgstr ""
 
-#: config/core/error.php:99
+#: config/core/error.php:99 core/conf/error.php:99
 msgid "Image not found"
 msgstr ""
 
-#: config/core/error.php:100
+#: config/core/error.php:100 core/conf/error.php:100
 #, php-format
 msgid "Document was %sK making it larger than %sK size limit."
 msgstr ""
 
-#: config/core/error.php:101
+#: config/core/error.php:101 core/conf/error.php:101
 msgid "Unacceptable document type."
 msgstr ""
 
-#: config/core/error.php:102
+#: config/core/error.php:102 core/conf/error.php:102
 msgid "Document not found."
 msgstr ""
 
-#: config/core/error.php:103
+#: config/core/error.php:103 core/conf/error.php:103
 msgid "File not uploaded."
 msgstr ""
 
-#: config/core/error.php:108
+#: config/core/error.php:108 core/conf/error.php:108
 msgid "Function expected a string variable."
 msgstr ""
 
-#: config/core/error.php:111
+#: config/core/error.php:111 core/conf/error.php:111
 msgid "No pages found."
 msgstr ""
 
-#: config/core/error.php:112
+#: config/core/error.php:112 core/conf/error.php:112
 msgid "Module was not set."
 msgstr ""
 
-#: config/core/error.php:113
+#: config/core/error.php:113 core/conf/error.php:113
 msgid "Template was not set."
 msgstr ""
 
-#: config/core/error.php:114
+#: config/core/error.php:114 core/conf/error.php:114
 msgid "Table is blank"
 msgstr ""
 
-#: config/core/error.php:115
+#: config/core/error.php:115 core/conf/error.php:115
 msgid "Method does not exist in specified class."
 msgstr ""
 
-#: config/core/error.php:118
+#: config/core/error.php:118 core/conf/error.php:118
 msgid "Unable to find the specified editor type."
 msgstr ""
 
-#: config/core/error.php:121
+#: config/core/error.php:121 core/conf/error.php:121
 msgid "Unable to find your module's settings.php file."
 msgstr ""
 
-#: config/core/error.php:124
+#: config/core/error.php:124 core/conf/error.php:124
 msgid "Key not found."
 msgstr ""
 
-#: config/core/error.php:125
+#: config/core/error.php:125 core/conf/error.php:125
 msgid "Edit permission column does not exist."
 msgstr ""
 
-#: config/core/error.php:126
+#: config/core/error.php:126 core/conf/error.php:126
 msgid "Could not find key unregister file."
 msgstr ""
 
-#: config/core/error.php:127
+#: config/core/error.php:127 core/conf/error.php:127
 msgid "Could not find key unregister function."
 msgstr ""
 
-#: config/core/error.php:132
+#: config/core/error.php:128 core/conf/error.php:128
+msgid "Key can not restrict items on phpws_key table alone."
+msgstr ""
+
+#: config/core/error.php:133 core/conf/error.php:133
 msgid "Failed to write cookie."
 msgstr ""
 
-#: config/core/formConfig.php:29
-msgid "Form"
-msgstr ""
-
-#: convert/class/Convert.php:46
+#: convert/class/Convert.php:52
 msgid "Unable to log in to the database. Please check your settings."
 msgstr ""
 
-#: convert/class/Convert.php:124
+#: convert/class/Convert.php:135
 msgid "No modules to convert."
 msgstr ""
 
-#: convert/class/Convert.php:142
+#: convert/class/Convert.php:157
 msgid "Title"
 msgstr ""
 
-#: convert/class/Convert.php:143
+#: convert/class/Convert.php:158
 msgid "Description"
 msgstr ""
 
-#: convert/class/Convert.php:145
+#: convert/class/Convert.php:160
 msgid "There aren't any conversion files in the convert/modules directory."
 msgstr ""
 
-#: convert/class/Convert.php:216 core/class/Database.php:1999
+#: convert/class/Convert.php:246
+msgid "Hub site"
+msgstr ""
+
+#: convert/class/Convert.php:250
+msgid "Conversion site"
+msgstr ""
+
+#: convert/class/Convert.php:257 core/class/Database.php:2019
 msgid "Type"
 msgstr ""
 
-#: convert/class/Convert.php:219
+#: convert/class/Convert.php:260
 msgid "Database name"
 msgstr ""
 
-#: convert/class/Convert.php:222 setup/class/Setup.php:385
+#: convert/class/Convert.php:263 setup/class/Setup.php:426
 msgid "Table prefix"
 msgstr ""
 
-#: convert/class/Convert.php:225
+#: convert/class/Convert.php:266
 msgid "User name"
 msgstr ""
 
-#: convert/class/Convert.php:228 convert/class/Convert.php:339
+#: convert/class/Convert.php:269 convert/class/Convert.php:382
 #: setup/manager.php:106
 msgid "Password"
 msgstr ""
 
-#: convert/class/Convert.php:231
+#: convert/class/Convert.php:272
 msgid "Host"
 msgstr ""
 
-#: convert/class/Convert.php:234
+#: convert/class/Convert.php:275
 msgid "Port"
 msgstr ""
 
-#: convert/class/Convert.php:235
+#: convert/class/Convert.php:276
 msgid "Connect"
 msgstr ""
 
-#: convert/class/Convert.php:238
+#: convert/class/Convert.php:279
 msgid ""
 "Please enter the connect information for the database you wish to convert "
 "from."
 msgstr ""
 
-#: convert/class/Convert.php:252
+#: convert/class/Convert.php:293
 msgid "Converted"
 msgstr ""
 
-#: convert/class/Convert.php:254
+#: convert/class/Convert.php:295
 msgid "Convert!"
 msgstr ""
 
-#: convert/class/Convert.php:265
+#: convert/class/Convert.php:306
 msgid "phpWebSite 1.0.0 Convert"
 msgstr ""
 
-#: convert/class/Convert.php:272
+#: convert/class/Convert.php:313
 msgid "Main page"
 msgstr ""
 
-#: convert/class/Convert.php:284
+#: convert/class/Convert.php:315
+msgid "Log out"
+msgstr ""
+
+#: convert/class/Convert.php:327
 msgid "Please wait..."
 msgstr ""
 
-#: convert/class/Convert.php:336 setup/manager.php:107
+#: convert/class/Convert.php:379 setup/manager.php:107
 msgid "Log in"
 msgstr ""
 
-#: convert/class/Convert.php:338 setup/manager.php:104
+#: convert/class/Convert.php:381 setup/manager.php:104
 msgid "Username"
 msgstr ""
 
-#: convert/class/Convert.php:359
+#: convert/class/Convert.php:402
 #, php-format
 msgid "Could not find info file. File : %s"
 msgstr ""
 
-#: convert/class/Convert.php:359 core/class/Error.php:86
+#: convert/class/Convert.php:402 core/class/Error.php:86
 msgid "Error"
 msgstr ""
 
-#: convert/class/Convert.php:365
+#: convert/class/Convert.php:408
 msgid "Not a convert file."
 msgstr ""
 
-#: convert/modules/block/convert.php:17
-msgid "Block is already converted."
+#: convert/class/Convert.php:462
+msgid "Failed to make connection with the requested branch site."
 msgstr ""
 
-#: convert/modules/block/convert.php:23
-msgid "Block is not installed."
+#: convert/modules/phatform/convert.php:14
+msgid "Form Generator is not installed locally."
 msgstr ""
 
-#: convert/modules/block/convert.php:31
-msgid "No blocks found."
+#: convert/modules/phatform/convert.php:22
+msgid "Form Generator has already been converted."
 msgstr ""
 
-#: convert/modules/block/convert.php:34
-msgid "An error occurred while accessing your mod_blockmaker_data table."
+#: convert/modules/phatform/convert.php:32
+msgid "Form Generator does not appear to be installed in the source database."
 msgstr ""
 
-#: convert/modules/block/convert.php:45
-msgid "An error occurred while converting your old blocks."
+#: convert/modules/phatform/convert.php:41
+msgid "An error occurred when trying to copy your mod_phatform_checkbox table."
 msgstr ""
 
-#: convert/modules/block/convert.php:53
-msgid "Blocks converted."
+#: convert/modules/phatform/convert.php:52
+msgid "Check box table imported successfully."
 msgstr ""
 
-#: convert/modules/blog/convert.php:30
-msgid "Blog has already been converted."
+#: convert/modules/phatform/convert.php:55
+msgid "Check box table failed to copy successfully."
 msgstr ""
 
-#: convert/modules/blog/convert.php:36
-msgid "Blog is not installed."
+#: convert/modules/phatform/convert.php:65
+msgid "An error occurred when trying to copy your mod_phatform_dropbox table."
 msgstr ""
 
-#: convert/modules/blog/convert.php:40 convert/modules/calendar/convert.php:47
-#: convert/modules/categories/convert.php:68
-#: convert/modules/users/convert.php:72
-msgid "You may convert two different ways."
+#: convert/modules/phatform/convert.php:76
+msgid "Drop box table imported successfully."
 msgstr ""
 
-#: convert/modules/blog/convert.php:42 convert/modules/calendar/convert.php:49
-#: convert/modules/categories/convert.php:70
-#: convert/modules/users/convert.php:75
-msgid "Manual mode requires you to click through the conversion process."
+#: convert/modules/phatform/convert.php:79
+msgid "Drop box table failed to copy successfully."
 msgstr ""
 
-#: convert/modules/blog/convert.php:44 convert/modules/calendar/convert.php:51
-#: convert/modules/categories/convert.php:72
-#: convert/modules/users/convert.php:78
-msgid "Automatic mode converts the data without your interaction."
+#: convert/modules/phatform/convert.php:90
+msgid ""
+"An error occurred when trying to copy your mod_phatform_multiselect table."
 msgstr ""
 
-#: convert/modules/blog/convert.php:47 convert/modules/calendar/convert.php:54
-#: convert/modules/categories/convert.php:75
-#: convert/modules/users/convert.php:81
-msgid "If you encounter problems, you should use manual mode."
+#: convert/modules/phatform/convert.php:102
+msgid "Multi-select table imported successfully."
 msgstr ""
 
-#: convert/modules/blog/convert.php:48 convert/modules/calendar/convert.php:55
-#: convert/modules/categories/convert.php:76
-#: convert/modules/users/convert.php:82
-msgid "Conversion will begin as soon as you make your choice."
+#: convert/modules/phatform/convert.php:105
+msgid "Multi-select table failed to copy successfully."
 msgstr ""
 
-#: convert/modules/blog/convert.php:68
-msgid "No announcements to convert."
+#: convert/modules/phatform/convert.php:116
+msgid "An error occurred when trying to copy your mod_phatform_options table."
 msgstr ""
 
-#: convert/modules/blog/convert.php:79 convert/modules/calendar/convert.php:89
-#: convert/modules/menu/convert.php:97 convert/modules/users/convert.php:122
-#: convert/modules/webpage/convert.php:56
-msgid "Batch previously run."
+#: convert/modules/phatform/convert.php:127
+msgid "Options table imported successfully."
 msgstr ""
 
-#: convert/modules/blog/convert.php:98
+#: convert/modules/phatform/convert.php:130
+msgid "Options table failed to copy successfully."
+msgstr ""
+
+#: convert/modules/phatform/convert.php:142
+msgid ""
+"An error occurred when trying to copy your mod_phatform_radiobutton table."
+msgstr ""
+
+#: convert/modules/phatform/convert.php:153
+msgid "Radio button table imported successfully."
+msgstr ""
+
+#: convert/modules/phatform/convert.php:156
+msgid "Radio button table failed to copy successfully."
+msgstr ""
+
+#: convert/modules/phatform/convert.php:167
+msgid "An error occurred when trying to copy your mod_phatform_textarea table."
+msgstr ""
+
+#: convert/modules/phatform/convert.php:178
+msgid "Text area table imported successfully."
+msgstr ""
+
+#: convert/modules/phatform/convert.php:181
+msgid "Text area table failed to copy successfully."
+msgstr ""
+
+#: convert/modules/phatform/convert.php:191
+msgid ""
+"An error occurred when trying to copy your mod_phatform_textfield table."
+msgstr ""
+
+#: convert/modules/phatform/convert.php:202
+msgid "Text field table imported successfully."
+msgstr ""
+
+#: convert/modules/phatform/convert.php:205
+msgid "Text field table failed to copy successfully."
+msgstr ""
+
+#: convert/modules/phatform/convert.php:211
+msgid ""
+"One or more errors occurred while copying over Form Generator tables. Please "
+"check your logs, clear your database tables, and try again."
+msgstr ""
+
+#: convert/modules/phatform/convert.php:215
+#: convert/modules/photoalbum/convert.php:70
+msgid "Continue conversion. . ."
+msgstr ""
+
+#: convert/modules/phatform/convert.php:226
+msgid "Form Generator is not installed in the supplied database."
+msgstr ""
+
+#: convert/modules/phatform/convert.php:234
+msgid "No forms to convert."
+msgstr ""
+
+#: convert/modules/phatform/convert.php:238
+msgid "An unrecoverable error occurred. Check your logs."
+msgstr ""
+
+#: convert/modules/phatform/convert.php:295
+msgid "Form generator forms converted and keyed!"
+msgstr ""
+
+#: convert/modules/phatform/convert.php:296
+#: convert/modules/users/convert.php:145 convert/modules/blog/convert.php:101
 #: convert/modules/calendar/convert.php:115
-#: convert/modules/users/convert.php:145
-#: convert/modules/webpage/convert.php:81
-#: convert/modules/phatform/convert.php:283
+#: convert/modules/webpage/convert.php:80
 msgid "All done!"
 msgstr ""
 
-#: convert/modules/blog/convert.php:99
-#: convert/modules/calendar/convert.php:116
-#: convert/modules/menu/convert.php:111 convert/modules/users/convert.php:148
-#: convert/modules/webpage/convert.php:82
-msgid "Go back to main menu."
-msgstr ""
-
-#: convert/modules/calendar/convert.php:28
-msgid "Calendar has already been converted."
-msgstr ""
-
-#: convert/modules/calendar/convert.php:34
-msgid "Calendar is not installed."
-msgstr ""
-
-#: convert/modules/calendar/convert.php:67
-msgid "Calendar is not installed in other database."
-msgstr ""
-
-#: convert/modules/calendar/convert.php:78
-msgid "No events to convert."
-msgstr ""
-
-#: convert/modules/calendar/convert.php:93
-msgid "Failed to run batch. Check your session settings."
-msgstr ""
-
-#: convert/modules/categories/convert.php:15
-msgid "Any content modules using FatCat should be converted BEFORE continuing."
-msgstr ""
-
-#: convert/modules/categories/convert.php:16
-#: convert/modules/menu/convert.php:14
-msgid "Click to continue anyway."
-msgstr ""
-
-#: convert/modules/categories/convert.php:17
-#: convert/modules/menu/convert.php:15
-msgid "Otherwise, click on the \"Main page\" link above."
-msgstr ""
-
-#: convert/modules/categories/convert.php:26
-msgid "Categories has already been converted."
-msgstr ""
-
-#: convert/modules/categories/convert.php:58
-msgid "Finished converting categories!"
-msgstr ""
-
-#: convert/modules/categories/convert.php:59
-msgid "Continue to convert category elements."
-msgstr ""
-
-#: convert/modules/categories/convert.php:117
-msgid "Finished converting category items!"
-msgstr ""
-
-#: convert/modules/categories/convert.php:118
-#: convert/modules/photoalbum/convert.php:101
-msgid "Return to the main page."
-msgstr ""
-
-#: convert/modules/filecabinet/convert.php:15
-msgid "File Cabinet has already converted Documents files."
-msgstr ""
-
-#: convert/modules/filecabinet/convert.php:21
-msgid "The Documents module is not installed."
-msgstr ""
-
-#: convert/modules/filecabinet/convert.php:30
-msgid "No files found."
-msgstr ""
-
-#: convert/modules/filecabinet/convert.php:33
-msgid "An error occurred while accessing your mod_documents_files table."
-msgstr ""
-
-#: convert/modules/filecabinet/convert.php:49
-msgid "An error occurred while converting your old documents."
-msgstr ""
-
-#: convert/modules/filecabinet/convert.php:53
-msgid "Documents converted."
-msgstr ""
-
-#: convert/modules/menu/convert.php:13
-msgid ""
-"Any content modules using Menu Manager should be converted BEFORE "
-"continuing.."
-msgstr ""
-
-#: convert/modules/menu/convert.php:22
-msgid "Menu is not installed."
-msgstr ""
-
-#: convert/modules/menu/convert.php:31
-msgid "Menu has already been converted."
-msgstr ""
-
-#: convert/modules/menu/convert.php:38
-msgid "Convert menus"
-msgstr ""
-
-#: convert/modules/menu/convert.php:42
-msgid "No menus found."
-msgstr ""
-
-#: convert/modules/menu/convert.php:65
-msgid "Some menus did not convert over properly. Please see logs."
-msgstr ""
-
-#: convert/modules/menu/convert.php:69
-msgid "Menu conversion finished."
-msgstr ""
-
-#: convert/modules/menu/convert.php:71
-msgid "Continue to convert menu links."
-msgstr ""
-
-#: convert/modules/menu/convert.php:79
-msgid "Convert menu links"
-msgstr ""
-
-#: convert/modules/menu/convert.php:86
-msgid "No menu links to convert."
-msgstr ""
-
-#: convert/modules/menu/convert.php:110
-msgid "Finished converting links."
+#: convert/modules/phatform/convert.php:298
+msgid "Return to main page."
 msgstr ""
 
 #: convert/modules/users/convert.php:25
@@ -733,12 +680,48 @@ msgid "Only those logged on within the last year."
 msgstr ""
 
 #: convert/modules/users/convert.php:63 core/class/Batch.php:135
-#: setup/class/Setup.php:350 setup/class/Setup.php:422
+#: setup/class/Setup.php:381 setup/class/Setup.php:471
 msgid "Continue"
+msgstr ""
+
+#: convert/modules/users/convert.php:72 convert/modules/blog/convert.php:40
+#: convert/modules/categories/convert.php:68
+#: convert/modules/calendar/convert.php:47
+msgid "You may convert two different ways."
+msgstr ""
+
+#: convert/modules/users/convert.php:75 convert/modules/blog/convert.php:42
+#: convert/modules/categories/convert.php:70
+#: convert/modules/calendar/convert.php:49
+msgid "Manual mode requires you to click through the conversion process."
+msgstr ""
+
+#: convert/modules/users/convert.php:78 convert/modules/blog/convert.php:44
+#: convert/modules/categories/convert.php:72
+#: convert/modules/calendar/convert.php:51
+msgid "Automatic mode converts the data without your interaction."
+msgstr ""
+
+#: convert/modules/users/convert.php:81 convert/modules/blog/convert.php:47
+#: convert/modules/categories/convert.php:75
+#: convert/modules/calendar/convert.php:54
+msgid "If you encounter problems, you should use manual mode."
+msgstr ""
+
+#: convert/modules/users/convert.php:82 convert/modules/blog/convert.php:48
+#: convert/modules/categories/convert.php:76
+#: convert/modules/calendar/convert.php:55
+msgid "Conversion will begin as soon as you make your choice."
 msgstr ""
 
 #: convert/modules/users/convert.php:110
 msgid "No users to convert."
+msgstr ""
+
+#: convert/modules/users/convert.php:122 convert/modules/blog/convert.php:82
+#: convert/modules/menu/convert.php:98 convert/modules/calendar/convert.php:89
+#: convert/modules/webpage/convert.php:56
+msgid "Batch previously run."
 msgstr ""
 
 #: convert/modules/users/convert.php:125
@@ -754,6 +737,214 @@ msgstr ""
 msgid ""
 "If the first user on your old site is not you, then you will need to "
 "recreate them."
+msgstr ""
+
+#: convert/modules/users/convert.php:148 convert/modules/blog/convert.php:102
+#: convert/modules/menu/convert.php:112
+#: convert/modules/calendar/convert.php:116
+#: convert/modules/webpage/convert.php:81
+msgid "Go back to main menu."
+msgstr ""
+
+#: convert/modules/blog/convert.php:30
+msgid "Blog has already been converted."
+msgstr ""
+
+#: convert/modules/blog/convert.php:36
+msgid "Blog is not installed."
+msgstr ""
+
+#: convert/modules/blog/convert.php:59
+msgid "Announcements is not installed in this database."
+msgstr ""
+
+#: convert/modules/blog/convert.php:71
+msgid "No announcements to convert."
+msgstr ""
+
+#: convert/modules/menu/convert.php:13
+msgid ""
+"Any content modules using Menu Manager should be converted BEFORE "
+"continuing.."
+msgstr ""
+
+#: convert/modules/menu/convert.php:14
+#: convert/modules/categories/convert.php:16
+msgid "Click to continue anyway."
+msgstr ""
+
+#: convert/modules/menu/convert.php:15
+#: convert/modules/categories/convert.php:17
+msgid "Otherwise, click on the \"Main page\" link above."
+msgstr ""
+
+#: convert/modules/menu/convert.php:22
+msgid "Menu is not installed."
+msgstr ""
+
+#: convert/modules/menu/convert.php:31
+msgid "Menu has already been converted."
+msgstr ""
+
+#: convert/modules/menu/convert.php:38
+msgid "Convert menus"
+msgstr ""
+
+#: convert/modules/menu/convert.php:42
+msgid "No menus found."
+msgstr ""
+
+#: convert/modules/menu/convert.php:66
+msgid "Some menus did not convert over properly. Please see logs."
+msgstr ""
+
+#: convert/modules/menu/convert.php:70
+msgid "Menu conversion finished."
+msgstr ""
+
+#: convert/modules/menu/convert.php:72
+msgid "Continue to convert menu links."
+msgstr ""
+
+#: convert/modules/menu/convert.php:80
+msgid "Convert menu links"
+msgstr ""
+
+#: convert/modules/menu/convert.php:87
+msgid "No menu links to convert."
+msgstr ""
+
+#: convert/modules/menu/convert.php:111
+msgid "Finished converting links."
+msgstr ""
+
+#: convert/modules/categories/convert.php:15
+msgid "Any content modules using FatCat should be converted BEFORE continuing."
+msgstr ""
+
+#: convert/modules/categories/convert.php:26
+msgid "Categories has already been converted."
+msgstr ""
+
+#: convert/modules/categories/convert.php:58
+msgid "Finished converting categories!"
+msgstr ""
+
+#: convert/modules/categories/convert.php:59
+msgid "Continue to convert category elements."
+msgstr ""
+
+#: convert/modules/categories/convert.php:117
+msgid "Finished converting category items!"
+msgstr ""
+
+#: convert/modules/categories/convert.php:118
+#: convert/modules/photoalbum/convert.php:103
+msgid "Return to the main page."
+msgstr ""
+
+#: convert/modules/filecabinet/convert.php:15
+msgid "File Cabinet has already converted Documents files."
+msgstr ""
+
+#: convert/modules/filecabinet/convert.php:21
+msgid "The File Cabinet module is not installed."
+msgstr ""
+
+#: convert/modules/filecabinet/convert.php:31
+msgid "No files found."
+msgstr ""
+
+#: convert/modules/filecabinet/convert.php:34
+msgid "An error occurred while accessing your mod_documents_files table."
+msgstr ""
+
+#: convert/modules/filecabinet/convert.php:50
+msgid "An error occurred while converting your old documents."
+msgstr ""
+
+#: convert/modules/filecabinet/convert.php:54
+msgid "Documents converted."
+msgstr ""
+
+#: convert/modules/calendar/convert.php:28
+msgid "Calendar has already been converted."
+msgstr ""
+
+#: convert/modules/calendar/convert.php:34
+msgid "Calendar is not installed."
+msgstr ""
+
+#: convert/modules/calendar/convert.php:67
+msgid "Calendar is not installed in other database."
+msgstr ""
+
+#: convert/modules/calendar/convert.php:78
+msgid "No events to convert."
+msgstr ""
+
+#: convert/modules/calendar/convert.php:93
+msgid "Failed to run batch. Check your session settings."
+msgstr ""
+
+#: convert/modules/block/convert.php:17
+msgid "Block is already converted."
+msgstr ""
+
+#: convert/modules/block/convert.php:23
+msgid "Block is not installed."
+msgstr ""
+
+#: convert/modules/block/convert.php:32
+msgid "No blocks found."
+msgstr ""
+
+#: convert/modules/block/convert.php:35
+msgid "An error occurred while accessing your mod_blockmaker_data table."
+msgstr ""
+
+#: convert/modules/block/convert.php:46
+msgid "An error occurred while converting your old blocks."
+msgstr ""
+
+#: convert/modules/block/convert.php:54
+msgid "Blocks converted."
+msgstr ""
+
+#: convert/modules/photoalbum/convert.php:14
+msgid "Photo Album is not installed locally."
+msgstr ""
+
+#: convert/modules/photoalbum/convert.php:22
+msgid "Photo Album has already been converted."
+msgstr ""
+
+#: convert/modules/photoalbum/convert.php:34
+msgid "No albums to convert."
+msgstr ""
+
+#: convert/modules/photoalbum/convert.php:37
+msgid "An error occurred when accessing the conversion database."
+msgstr ""
+
+#: convert/modules/photoalbum/convert.php:68
+msgid "Albums converted and keyed."
+msgstr ""
+
+#: convert/modules/photoalbum/convert.php:83
+msgid "An error occurred when trying to copy your mod_photoalbum_photos table."
+msgstr ""
+
+#: convert/modules/photoalbum/convert.php:94
+msgid "Photos table imported successfully."
+msgstr ""
+
+#: convert/modules/photoalbum/convert.php:97
+msgid "Photos table failed to copy successfully."
+msgstr ""
+
+#: convert/modules/photoalbum/convert.php:102
+msgid "Finished converting Photo Album."
 msgstr ""
 
 #: convert/modules/webpage/convert.php:17
@@ -788,271 +979,114 @@ msgstr ""
 msgid "Some errors occurred when trying to convert the following pages:"
 msgstr ""
 
-#: convert/modules/phatform/convert.php:14
-msgid "Form Generator is not installed locally."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:22
-msgid "Form Generator has already been converted."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:37
-msgid "An error occurred when trying to copy your mod_phatform_checkbox table."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:47
-msgid "Check box table imported successfully."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:50
-msgid "Check box table failed to copy successfully."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:60
-msgid "An error occurred when trying to copy your mod_phatform_dropbox table."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:70
-msgid "Drop box table imported successfully."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:73
-msgid "Drop box table failed to copy successfully."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:84
-msgid ""
-"An error occurred when trying to copy your mod_phatform_multiselect table."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:95
-msgid "Multi-select table imported successfully."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:98
-msgid "Multi-select table failed to copy successfully."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:109
-msgid "An error occurred when trying to copy your mod_phatform_options table."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:119
-msgid "Options table imported successfully."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:122
-msgid "Options table failed to copy successfully."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:134
-msgid ""
-"An error occurred when trying to copy your mod_phatform_radiobutton table."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:144
-msgid "Radio button table imported successfully."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:147
-msgid "Radio button table failed to copy successfully."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:158
-msgid "An error occurred when trying to copy your mod_phatform_textarea table."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:168
-msgid "Text area table imported successfully."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:171
-msgid "Text area table failed to copy successfully."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:181
-msgid ""
-"An error occurred when trying to copy your mod_phatform_textfield table."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:191
-msgid "Text field table imported successfully."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:194
-msgid "Text field table failed to copy successfully."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:200
-msgid ""
-"One or more errors occurred while copying over Form Generator tables. Please "
-"check your logs, clear your database tables, and try again."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:204
-#: convert/modules/photoalbum/convert.php:69
-msgid "Continue conversion. . ."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:215
-msgid "Form Generator is not installed in the supplied database."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:222
-msgid "No forms to convert."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:226
-msgid "An unrecoverable error occurred. Check your logs."
-msgstr ""
-
-#: convert/modules/phatform/convert.php:282
-msgid "Form generator forms converted and keyed!"
-msgstr ""
-
-#: convert/modules/phatform/convert.php:285
-msgid "Return to main page."
-msgstr ""
-
-#: convert/modules/photoalbum/convert.php:14
-msgid "Photo Album is not installed locally."
-msgstr ""
-
-#: convert/modules/photoalbum/convert.php:22
-msgid "Photo Album has already been converted."
-msgstr ""
-
-#: convert/modules/photoalbum/convert.php:33
-msgid "No albums to convert."
-msgstr ""
-
-#: convert/modules/photoalbum/convert.php:36
-msgid "An error occurred when accessing the conversion database."
-msgstr ""
-
-#: convert/modules/photoalbum/convert.php:67
-msgid "Albums converted and keyed."
-msgstr ""
-
-#: convert/modules/photoalbum/convert.php:82
-msgid "An error occurred when trying to copy your mod_photoalbum_photos table."
-msgstr ""
-
-#: convert/modules/photoalbum/convert.php:92
-msgid "Photos table imported successfully."
-msgstr ""
-
-#: convert/modules/photoalbum/convert.php:95
-msgid "Photos table failed to copy successfully."
-msgstr ""
-
-#: convert/modules/photoalbum/convert.php:100
-msgid "Finished converting Photo Album."
-msgstr ""
-
-#: core/class/DB/pgsql.php:64
+#: core/class/DB/pgsql.php:63
 msgid "Unknown column type:"
-msgstr ""
-
-#: core/class/Core.php:535
-msgid "User tried to post a file beyond server limits."
-msgstr ""
-
-#: core/class/DBPager.php:5
-msgid "No rows found."
-msgstr ""
-
-#: core/class/DBPager.php:767 core/class/Manager.php:689
-msgid "Go"
-msgstr ""
-
-#: core/class/DBPager.php:786
-msgid "Search"
-msgstr ""
-
-#: core/class/DBPager.php:813
-msgid "Page"
-msgstr ""
-
-#: core/class/DBPager.php:814
-msgid "Limit"
-msgstr ""
-
-#: core/class/DBPager.php:816
-msgid "of"
-msgstr ""
-
-#: core/class/Database.php:132
-#, php-format
-msgid "Connected to database \"%s\""
-msgstr ""
-
-#: core/class/Database.php:138
-msgid "Failed to connect."
-msgstr ""
-
-#: core/class/Database.php:2320
-msgid "DB Operator:"
-msgstr ""
-
-#: core/class/Debug.php:103
-msgid "Recursive object:"
-msgstr ""
-
-#: core/class/Debug.php:112
-msgid "Class Name"
-msgstr ""
-
-#: core/class/Debug.php:117
-#, php-format
-msgid "PHPWS_Debug: testObject received a/an %s variable, not an object."
-msgstr ""
-
-#: core/class/Debug.php:119 core/class/Debug.php:207
-msgid ""
-"This is an incomplete object. If this is a sessioned object, make sure to "
-"declare the class before the variable."
-msgstr ""
-
-#: core/class/Debug.php:144
-msgid "Recursive array"
-msgstr ""
-
-#: core/class/Debug.php:158
-msgid "KEY"
-msgstr ""
-
-#: core/class/Debug.php:159
-msgid "VALUE"
-msgstr ""
-
-#: core/class/Debug.php:186
-msgid "Array contained no values."
-msgstr ""
-
-#: core/class/Debug.php:209
-#, php-format
-msgid "Variable is a %s, not an object."
 msgstr ""
 
 #: core/class/Error.php:54
 msgid "Unknown error code."
 msgstr ""
 
-#: core/class/Form.php:1249 core/class/Form.php:1252
+#: core/class/Time.php:202
+msgid "a heartbeat ago"
+msgstr ""
+
+#: core/class/Time.php:205
+#, php-format
+msgid "%s mins ago"
+msgstr ""
+
+#: core/class/Time.php:208
+msgid "1 hour ago"
+msgstr ""
+
+#: core/class/Time.php:211
+#, php-format
+msgid "%s hours ago"
+msgstr ""
+
+#: core/class/Time.php:214
+msgid "1 day ago"
+msgstr ""
+
+#: core/class/Time.php:217
+#, php-format
+msgid "%s days ago"
+msgstr ""
+
+#: core/class/Time.php:220
+msgid "1 week ago"
+msgstr ""
+
+#: core/class/Time.php:223
+#, php-format
+msgid "%s weeks ago"
+msgstr ""
+
+#: core/class/Form.php:1248 core/class/Form.php:1251
 msgid "No image"
 msgstr ""
 
-#: core/class/Form.php:1257 core/class/Form.php:1264
+#: core/class/Form.php:1256 core/class/Form.php:1263
 msgid "Main"
 msgstr ""
 
-#: core/class/Init.php:221 core/class/Init.php:236 core/class/Init.php:244
+#: core/class/Init.php:222 core/class/Init.php:237 core/class/Init.php:245
 msgid "Unknown"
 msgstr ""
 
-#: core/class/Key.php:379
-msgid "Home"
+#: core/class/Database.php:136
+#, php-format
+msgid "Connected to database \"%s\""
+msgstr ""
+
+#: core/class/Database.php:142
+msgid "Failed to connect."
+msgstr ""
+
+#: core/class/Database.php:2370
+msgid "DB Operator:"
+msgstr ""
+
+#: core/class/DBPager.php:5
+msgid "No rows found."
+msgstr ""
+
+#: core/class/DBPager.php:797 core/class/Manager.php:689
+msgid "Go"
+msgstr ""
+
+#: core/class/DBPager.php:817
+msgid "Search"
+msgstr ""
+
+#: core/class/DBPager.php:844
+msgid "Page"
+msgstr ""
+
+#: core/class/DBPager.php:845
+msgid "Limit"
+msgstr ""
+
+#: core/class/DBPager.php:847
+msgid "of"
+msgstr ""
+
+#: core/class/Security.php:16
+msgid "Unknown user"
+msgstr ""
+
+#: core/class/Security.php:22
+#, php-format
+msgid "Coming from: %s"
+msgstr ""
+
+#: core/class/Security.php:25
+msgid "Unknown source"
+msgstr ""
+
+#: core/class/Security.php:30
+msgid "Warning"
 msgstr ""
 
 #: core/class/Manager.php:295
@@ -1096,105 +1130,76 @@ msgstr ""
 msgid "No items for the current list."
 msgstr ""
 
-#: core/class/Security.php:16
-msgid "Unknown user"
-msgstr ""
-
-#: core/class/Security.php:22
-#, php-format
-msgid "Coming from: %s"
-msgstr ""
-
-#: core/class/Security.php:25
-msgid "Unknown source"
-msgstr ""
-
-#: core/class/Security.php:30
-msgid "Warning"
-msgstr ""
-
 #: core/class/Template.php:210
 msgid "Template error."
 msgstr ""
 
-#: core/class/Text.php:431
+#: core/class/Text.php:403
 msgid "Return to previous page."
 msgstr ""
 
-#: core/class/Text.php:757 core/class/Text.php:758
+#: core/class/Text.php:740 core/class/Text.php:741
 msgid "No Images"
 msgstr ""
 
-#: core/class/Text.php:766 core/class/Text.php:768
+#: core/class/Text.php:749 core/class/Text.php:751
 msgid "\\1 wrote"
 msgstr ""
 
-#: core/class/Text.php:795
+#: core/class/Text.php:778
 msgid "Spoiler"
 msgstr ""
 
-#: core/class/Time.php:202
-msgid "a heartbeat ago"
+#: core/class/Debug.php:103
+msgid "Recursive object:"
 msgstr ""
 
-#: core/class/Time.php:205
+#: core/class/Debug.php:112
+msgid "Class Name"
+msgstr ""
+
+#: core/class/Debug.php:117
 #, php-format
-msgid "%s mins ago"
+msgid "PHPWS_Debug: testObject received a/an %s variable, not an object."
 msgstr ""
 
-#: core/class/Time.php:208
-msgid "1 hour ago"
+#: core/class/Debug.php:119 core/class/Debug.php:207
+msgid ""
+"This is an incomplete object. If this is a sessioned object, make sure to "
+"declare the class before the variable."
 msgstr ""
 
-#: core/class/Time.php:211
+#: core/class/Debug.php:144
+msgid "Recursive array"
+msgstr ""
+
+#: core/class/Debug.php:158
+msgid "KEY"
+msgstr ""
+
+#: core/class/Debug.php:159
+msgid "VALUE"
+msgstr ""
+
+#: core/class/Debug.php:186
+msgid "Array contained no values."
+msgstr ""
+
+#: core/class/Debug.php:209
 #, php-format
-msgid "%s hours ago"
+msgid "Variable is a %s, not an object."
 msgstr ""
 
-#: core/class/Time.php:214
-msgid "1 day ago"
+#: core/class/Core.php:543
+msgid "User tried to post a file beyond server limits."
 msgstr ""
 
-#: core/class/Time.php:217
-#, php-format
-msgid "%s days ago"
-msgstr ""
-
-#: core/class/Time.php:220
-msgid "1 week ago"
-msgstr ""
-
-#: core/class/Time.php:223
-#, php-format
-msgid "%s weeks ago"
+#: core/class/Key.php:379
+msgid "Home"
 msgstr ""
 
 #: inc/Security.php:48
 msgid "Attempted cross-site scripting attack."
-msgstr ""
-
-#: javascript/check_all/default.php:8
-msgid "Uncheck all"
-msgstr ""
-
-#: javascript/check_all/default.php:9
-msgid "Check all"
-msgstr ""
-
-#: javascript/close_window/default.php:4
-msgid "Close"
-msgstr ""
-
-#: javascript/editors/htmlarea/default.php:13
-msgid "Insert HTML"
-msgstr ""
-
-#: javascript/editors/htmlarea/default.php:14
-msgid "Highlight Text"
-msgstr ""
-
-#: javascript/prompt/default.php:8
-msgid "Change to"
 msgstr ""
 
 #: javascript/swapper/default.php:31
@@ -1205,354 +1210,401 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: phpws_stats.php:45
+#: javascript/prompt/default.php:8
+msgid "Change to"
+msgstr ""
+
+#: javascript/close_window/default.php:8
+msgid "Close"
+msgstr ""
+
+#: javascript/check_all/default.php:8
+msgid "Uncheck all"
+msgstr ""
+
+#: javascript/check_all/default.php:9
+msgid "Check all"
+msgstr ""
+
+#: javascript/editors/htmlarea/default.php:13
+msgid "Insert HTML"
+msgstr ""
+
+#: javascript/editors/htmlarea/default.php:14
+msgid "Highlight Text"
+msgstr ""
+
+#: phpws_stats.php:46
 #, php-format
 msgid "Execution time: %s seconds."
 msgstr ""
 
-#: phpws_stats.php:55
+#: phpws_stats.php:56
 msgid "Declared classes:"
 msgstr ""
 
-#: phpws_stats.php:60
+#: phpws_stats.php:61
 msgid "Current sessions:"
 msgstr ""
 
+#: phpws_stats.php:66
+msgid "Cache Lite is enabled."
+msgstr ""
+
 #: phpws_stats.php:68
+msgid "Cache Lite is disabled."
+msgstr ""
+
+#: phpws_stats.php:72
+msgid "Using module template, not local."
+msgstr ""
+
+#: phpws_stats.php:74
+msgid "Using local templates, not module's."
+msgstr ""
+
+#: phpws_stats.php:78
+msgid "Using configuration files directly from module's directory."
+msgstr ""
+
+#: phpws_stats.php:80
+msgid "Using local configuration files."
+msgstr ""
+
+#: phpws_stats.php:91
 msgid "Request"
 msgstr ""
 
-#: setup/class/Setup.php:67
+#: setup/class/Setup.php:69
 msgid "Your configuration file already exists."
 msgstr ""
 
-#: setup/class/Setup.php:68
+#: setup/class/Setup.php:70
 msgid "Remove the following file and refresh to continue:"
 msgstr ""
 
-#: setup/class/Setup.php:73
+#: setup/class/Setup.php:75
 msgid "Your configuration file was written successfully!"
 msgstr ""
 
-#: setup/class/Setup.php:74
+#: setup/class/Setup.php:76
 msgid "Move on to Step 2"
 msgstr ""
 
-#: setup/class/Setup.php:76
+#: setup/class/Setup.php:78
 msgid ""
 "Your configuration file could not be written into the following directory:"
 msgstr ""
 
-#: setup/class/Setup.php:78
+#: setup/class/Setup.php:80
 msgid "Please check your directory permissions and try again."
 msgstr ""
 
-#: setup/class/Setup.php:79 setup/class/Setup.php:481
+#: setup/class/Setup.php:81 setup/class/Setup.php:530
 msgid "Permission Help"
 msgstr ""
 
-#: setup/class/Setup.php:110
+#: setup/class/Setup.php:112
 msgid "Unable to locate the source directory:"
 msgstr ""
 
-#: setup/class/Setup.php:141
-msgid "Missing a database user name."
+#: setup/class/Setup.php:132
+msgid "Site hash may not be empty."
 msgstr ""
 
 #: setup/class/Setup.php:148
+msgid "Missing a database user name."
+msgstr ""
+
+#: setup/class/Setup.php:154
+msgid ""
+"Database password may contain alphanumeric characters or underscores only."
+msgstr ""
+
+#: setup/class/Setup.php:160
 msgid "Missing a database password."
 msgstr ""
 
-#: setup/class/Setup.php:157
+#: setup/class/Setup.php:169
 msgid "Missing a database name."
 msgstr ""
 
-#: setup/class/Setup.php:163
+#: setup/class/Setup.php:175
 msgid "Table prefix must be alphanumeric characters or underscores only"
 msgstr ""
 
-#: setup/class/Setup.php:187
+#: setup/class/Setup.php:199
 msgid ""
 "PhpWebSite was able to connect, but the database already contained tables."
 msgstr ""
 
-#: setup/class/Setup.php:192
+#: setup/class/Setup.php:201
+msgid ""
+"Since you set a table prefix, you may force an installation into this "
+"database."
+msgstr ""
+
+#: setup/class/Setup.php:202
+msgid "Click the link below to continue or change your connection settings."
+msgstr ""
+
+#: setup/class/Setup.php:203
+msgid "I want to install phpWebSite in this database."
+msgstr ""
+
+#: setup/class/Setup.php:211
 msgid "PhpWebSite was able to connect but the database itself does not exist."
 msgstr ""
 
-#: setup/class/Setup.php:193
+#: setup/class/Setup.php:212
 msgid "Do you want phpWebSite to create the database?"
 msgstr ""
 
-#: setup/class/Setup.php:194
+#: setup/class/Setup.php:213
 msgid ""
 "If not, you will need to create the database yourself and return to the "
 "setup."
 msgstr ""
 
-#: setup/class/Setup.php:198
+#: setup/class/Setup.php:218
 msgid "Unable to connect to the database with the information provided."
 msgstr ""
 
-#: setup/class/Setup.php:199
+#: setup/class/Setup.php:219
 msgid "Database Help"
 msgstr ""
 
-#: setup/class/Setup.php:213
+#: setup/class/Setup.php:233
 msgid "Unable to connect."
 msgstr ""
 
-#: setup/class/Setup.php:214
+#: setup/class/Setup.php:234
 msgid "Check your configuration settings."
 msgstr ""
 
-#: setup/class/Setup.php:221
+#: setup/class/Setup.php:241
 msgid "Unable to create the database."
 msgstr ""
 
-#: setup/class/Setup.php:222
+#: setup/class/Setup.php:242
 msgid "You will need to create it manually and rerun the setup."
 msgstr ""
 
-#: setup/class/Setup.php:230
+#: setup/class/Setup.php:250
 msgid "The database creation succeeded!"
 msgstr ""
 
-#: setup/class/Setup.php:231
+#: setup/class/Setup.php:251
 msgid "You can now finish the creation of your config file."
 msgstr ""
 
-#: setup/class/Setup.php:323
+#: setup/class/Setup.php:344
 msgid "Use Pear files included with phpWebSite (recommended)."
 msgstr ""
 
-#: setup/class/Setup.php:324
+#: setup/class/Setup.php:345
 msgid "Use server's Pear library files (not recommended)."
 msgstr ""
 
-#: setup/class/Setup.php:327
+#: setup/class/Setup.php:348
 msgid "This is the directory where phpWebSite is installed."
 msgstr ""
 
-#: setup/class/Setup.php:329
+#: setup/class/Setup.php:350
 msgid ""
 "The character string below differentiates your site from others on the same "
 "server."
 msgstr ""
 
-#: setup/class/Setup.php:330
+#: setup/class/Setup.php:351
 msgid "The example is randomly generated."
 msgstr ""
 
-#: setup/class/Setup.php:331
+#: setup/class/Setup.php:352
 msgid "You may change it if you wish."
 msgstr ""
 
-#: setup/class/Setup.php:333
+#: setup/class/Setup.php:354
 msgid "phpWebSite uses the Pear library extensively."
 msgstr ""
 
-#: setup/class/Setup.php:334
+#: setup/class/Setup.php:355
 msgid "We suggest you use the library files included with phpWebSite."
 msgstr ""
 
-#: setup/class/Setup.php:340
+#: setup/class/Setup.php:371
 msgid "Source Directory"
 msgstr ""
 
-#: setup/class/Setup.php:344
+#: setup/class/Setup.php:375
 msgid "Site Hash"
 msgstr ""
 
-#: setup/class/Setup.php:348
+#: setup/class/Setup.php:379
 msgid "Pear Configuration"
 msgstr ""
 
-#: setup/class/Setup.php:375
+#: setup/class/Setup.php:409
 msgid "Database Type"
 msgstr ""
 
-#: setup/class/Setup.php:376
+#: setup/class/Setup.php:410
 msgid ""
 "phpWebSite supports several databases. Choose the type your server currently "
 "is running."
 msgstr ""
 
-#: setup/class/Setup.php:378
+#: setup/class/Setup.php:412
 msgid "Database User"
 msgstr ""
 
-#: setup/class/Setup.php:379
+#: setup/class/Setup.php:413
 msgid "This is the user name that phpWebSite will use to access its database."
 msgstr ""
 
-#: setup/class/Setup.php:380
+#: setup/class/Setup.php:414
 msgid ""
 "Note: it is a good idea to give each phpWebSite installation its own user."
 msgstr ""
 
-#: setup/class/Setup.php:382
+#: setup/class/Setup.php:419
 msgid "Database Password"
 msgstr ""
 
-#: setup/class/Setup.php:383
+#: setup/class/Setup.php:420
 msgid "Enter the database's user password here."
 msgstr ""
 
-#: setup/class/Setup.php:386
+#: setup/class/Setup.php:427
 msgid ""
 "If you are installing phpWebSite in a shared environment, you may assign a "
 "prefix to tables.<br />We recommend you run without one."
 msgstr ""
 
-#: setup/class/Setup.php:388
+#: setup/class/Setup.php:433
 msgid "Host Specification"
 msgstr ""
 
-#: setup/class/Setup.php:389
+#: setup/class/Setup.php:434
 msgid ""
 "If your database is on the same server as your phpWebSite installation, "
 "leave this as &#x22;localhost&#x22;."
 msgstr ""
 
-#: setup/class/Setup.php:390
+#: setup/class/Setup.php:435
 msgid "Otherwise, enter the ip or dns to the database server."
 msgstr ""
 
-#: setup/class/Setup.php:392
+#: setup/class/Setup.php:437
 msgid "Host Specification Port"
 msgstr ""
 
-#: setup/class/Setup.php:393
+#: setup/class/Setup.php:438
 msgid ""
 "If your host specification requires access via a specific port, enter it "
 "here."
 msgstr ""
 
-#: setup/class/Setup.php:395
+#: setup/class/Setup.php:440
 msgid "Database Name"
 msgstr ""
 
-#: setup/class/Setup.php:396
+#: setup/class/Setup.php:441
 msgid "The database's name into which you are installing phpWebSite."
 msgstr ""
 
-#: setup/class/Setup.php:397
+#: setup/class/Setup.php:442
 msgid ""
 "Note: if you have not made this database yet, you should do so before "
 "continuing."
 msgstr ""
 
-#: setup/class/Setup.php:472
+#: setup/class/Setup.php:521
 msgid "The following directories need to be created:"
 msgstr ""
 
-#: setup/class/Setup.php:478
+#: setup/class/Setup.php:527
 msgid "The following directories are not writable:"
 msgstr ""
 
-#: setup/class/Setup.php:480
+#: setup/class/Setup.php:529
 msgid "You will need to change the permissions."
 msgstr ""
 
-#: setup/class/Setup.php:493
+#: setup/class/Setup.php:542
 msgid "phpWebSite 1.0.0 Beta Setup"
 msgstr ""
 
-#: setup/class/Setup.php:508
+#: setup/class/Setup.php:557
 msgid "There is a problem with your sessions."
 msgstr ""
 
-#: setup/class/Setup.php:509
+#: setup/class/Setup.php:558
 msgid "phpWebSite depends on sessions to move data between pages."
 msgstr ""
 
-#: setup/class/Setup.php:510
+#: setup/class/Setup.php:559
 msgid "Sessions Help"
 msgstr ""
 
-#: setup/class/Setup.php:528
+#: setup/class/Setup.php:577
 msgid "Begin Installation"
 msgstr ""
 
-#: setup/class/Setup.php:535
+#: setup/class/Setup.php:584
 msgid "Importing core database file."
 msgstr ""
 
-#: setup/class/Setup.php:542 setup/class/Setup.php:555
+#: setup/class/Setup.php:591 setup/class/Setup.php:604
 msgid "Some errors occurred while creating the core database tables."
 msgstr ""
 
-#: setup/class/Setup.php:543 setup/class/Setup.php:556
+#: setup/class/Setup.php:592 setup/class/Setup.php:605
 msgid "Please check your error log file."
 msgstr ""
 
-#: setup/class/Setup.php:558
+#: setup/class/Setup.php:607
 msgid "Core installation successful."
 msgstr ""
 
-#: setup/class/Setup.php:559
+#: setup/class/Setup.php:608
 msgid "Continue to Module Installation"
 msgstr ""
 
-#: setup/class/Setup.php:576
+#: setup/class/Setup.php:625
 msgid "An error occurred while trying to install your modules."
 msgstr ""
 
-#: setup/class/Setup.php:577
+#: setup/class/Setup.php:626
 msgid "Please check your error logs and try again."
 msgstr ""
 
-#: setup/class/Setup.php:593
+#: setup/class/Setup.php:642
 msgid "Installation of phpWebSite is complete."
 msgstr ""
 
-#: setup/class/Setup.php:594
+#: setup/class/Setup.php:643
 msgid "If you experienced any error messages, check your error.log file."
 msgstr ""
 
-#: setup/class/Setup.php:596
+#: setup/class/Setup.php:645
 msgid ""
 "Check Directory Permissions is enabled so be sure to secure your config and "
 "templates directories!"
 msgstr ""
 
-#: setup/class/Setup.php:597
+#: setup/class/Setup.php:646
 msgid "If you do not change it now, your next page will be an error screen."
 msgstr ""
 
-#: setup/class/Setup.php:599
+#: setup/class/Setup.php:648
 msgid ""
 "After you finish installing your modules in Boost, you should make your "
 "config and template directories non-writable."
 msgstr ""
 
-#: setup/class/Setup.php:601
+#: setup/class/Setup.php:650
 msgid "Go to my new website!"
-msgstr ""
-
-#: setup/index.php:64
-msgid "Directory Permissions"
-msgstr ""
-
-#: setup/index.php:70
-msgid "Site Setup"
-msgstr ""
-
-#: setup/index.php:75
-msgid "Create Config File"
-msgstr ""
-
-#: setup/index.php:80
-msgid "Create Database"
-msgstr ""
-
-#: setup/index.php:85
-msgid "Create Core"
-msgstr ""
-
-#: setup/index.php:90
-msgid "Install Modules"
 msgstr ""
 
 #: setup/manager.php:14
@@ -1597,4 +1649,28 @@ msgstr ""
 
 #: setup/manager.php:130
 msgid "Action"
+msgstr ""
+
+#: setup/index.php:64
+msgid "Directory Permissions"
+msgstr ""
+
+#: setup/index.php:70
+msgid "Site Setup"
+msgstr ""
+
+#: setup/index.php:75 setup/index.php:88
+msgid "Create Config File"
+msgstr ""
+
+#: setup/index.php:80
+msgid "Create Database"
+msgstr ""
+
+#: setup/index.php:93
+msgid "Create Core"
+msgstr ""
+
+#: setup/index.php:98
+msgid "Install Modules"
 msgstr ""
