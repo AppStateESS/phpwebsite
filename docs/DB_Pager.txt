@@ -249,7 +249,12 @@ So if I wanted to search among the db table column 'filename' I would
 add:
 $pager->setSearch('filename');
 
-Then all you need to do is add the SEARCH tag into your template.
+Each extra parameter sent to setSearch will search an addition column:
+
+$pager->setSearch('filename', 'first_name');
+
+The search form will be visable after you add the SEARCH tag into your
+template.
 
 
 Setting up your template
@@ -299,6 +304,9 @@ $limits[4]  = 4;
 $limits[9]  = 9;
 $limits[16] = 16;
 $pager->setLimitList($limits);
+
+To choose the default limit use:
+$pager->setDefaultLimit(9);
 
 Clicking on the page links will let the user move through the
 data. Clicking on the limit links will let the user control how many
