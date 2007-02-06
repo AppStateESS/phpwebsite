@@ -1,3 +1,17 @@
+February 5
+----------
+
+Access
+---------
++ Fixed header tags Bug #1652279
++ Updated files: templates/main.tpl, templates/box.tpl,
+  templates/shortcut_menu.tpl 
+
+Blog
+---------
++ Added missing comma after image_id column
+
+
 February 2
 ----------
 
@@ -6,6 +20,12 @@ Calendar
 + Bug #1648965. Clicking Day or Week from grid view pulls correct day
 + Changed "Today" link to view appropiate description to prevent
   confusion
++ Changed time defaults to %p to work with more installs
++ If start date is greater than end date, the event will be saved to
+  the save day.
++ Bug #1648963. Fixed mini month not showing days with events.
++ Updated files: conf/config.php
++ Made event count linkable in grid view
 
 Core
 ------
