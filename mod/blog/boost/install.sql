@@ -14,7 +14,7 @@ publish_date INT NOT NULL default 0,
 allow_comments SMALLINT NOT NULL default 0,
 approved INT NOT NULL default 0,
 allow_anon SMALLINT NOT NULL default 0,
-image_id INT NOT NULL default 0
+image_id INT NOT NULL default 0,
 PRIMARY KEY ( id )
 );
 
