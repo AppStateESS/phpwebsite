@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-16 09:04-0500\n"
+"POT-Creation-Date: 2007-02-06 09:53-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,201 +16,181 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: boost/controlpanel.php:8
-msgid "Categories"
+#: class/Categories.php:36 class/Categories.php:106
+msgid "Categorize"
 msgstr ""
 
-#: boost/controlpanel.php:12
-msgid "Administrate your site's categories."
+#: class/Categories.php:84
+msgid "Add category"
 msgstr ""
 
-#: boost/permission.php:4
-msgid "Edit categories"
+#: class/Categories.php:86
+msgid "All categories assigned."
 msgstr ""
 
-#: boost/permission.php:5
-msgid "Delete categories"
+#: class/Categories.php:88
+msgid "No categories available."
 msgstr ""
 
-#: boost/update.php:20
-msgid "Add permissions to search."
+#: class/Categories.php:92
+msgid "No categories assigned."
+msgstr ""
+
+#: class/Categories.php:95
+msgid "Remove category"
+msgstr ""
+
+#: class/Categories.php:102
+msgid "Quick add"
+msgstr ""
+
+#: class/Categories.php:111
+msgid "Save and close"
+msgstr ""
+
+#: class/Categories.php:113
+msgid "Cancel"
+msgstr ""
+
+#: class/Categories.php:115
+msgid "Available categories"
+msgstr ""
+
+#: class/Categories.php:116
+msgid "Currently assigned"
+msgstr ""
+
+#: class/Categories.php:165
+msgid "item(s)"
+msgstr ""
+
+#: class/Categories.php:367 class/Action.php:239 class/Action.php:243
+#: class/Category.php:95
+msgid "Top Level"
+msgstr ""
+
+#: class/Categories.php:424
+#, php-format
+msgid "%s - %s item(s)"
+msgstr ""
+
+#: class/Categories.php:437
+msgid "No items available in this category."
 msgstr ""
 
 #: class/Action.php:18
 msgid "You are not authorized to administrate categories."
 msgstr ""
 
-#: class/Action.php:47 class/Action.php:63 class/Action.php:82
-msgid "Manage Categories"
-msgstr ""
-
-#: class/Action.php:53 class/Action.php:226
+#: class/Action.php:57 class/Action.php:230
 msgid "Update Category"
 msgstr ""
 
-#: class/Action.php:55 class/Action.php:68 class/Action.php:228
+#: class/Action.php:59 class/Action.php:72 class/Action.php:232
 msgid "Add Category"
 msgstr ""
 
-#: class/Action.php:90
+#: class/Action.php:67 class/Action.php:86
+msgid "Manage Categories"
+msgstr ""
+
+#: class/Action.php:94
 msgid "Unable to save category."
 msgstr ""
 
-#: class/Action.php:90
+#: class/Action.php:94
 msgid "Please contact your administrator."
 msgstr ""
 
-#: class/Action.php:93
+#: class/Action.php:97
 msgid "Category saved successfully."
 msgstr ""
 
-#: class/Action.php:162
+#: class/Action.php:166
 msgid "Your category must have a title."
 msgstr ""
 
-#: class/Action.php:195
+#: class/Action.php:199
 msgid "New"
 msgstr ""
 
-#: class/Action.php:198
+#: class/Action.php:202
 msgid "List"
 msgstr ""
 
-#: class/Action.php:235 class/Action.php:239 class/Categories.php:362
-#: class/Category.php:96
-msgid "Top Level"
-msgstr ""
-
-#: class/Action.php:245 class/Action.php:290
+#: class/Action.php:249 class/Action.php:294
 msgid "Parent"
 msgstr ""
 
-#: class/Action.php:252 class/Action.php:289
+#: class/Action.php:256 class/Action.php:293
 msgid "Title"
 msgstr ""
 
-#: class/Action.php:258
+#: class/Action.php:262
 msgid "Description"
 msgstr ""
 
-#: class/Action.php:260
+#: class/Action.php:264
 msgid "Icon"
 msgstr ""
 
-#: class/Action.php:262
+#: class/Action.php:266
 msgid "Current Icon"
 msgstr ""
 
-#: class/Action.php:291
+#: class/Action.php:295
 msgid "Action"
 msgstr ""
 
-#: class/Action.php:303
+#: class/Action.php:307
 msgid "No categories found."
 msgstr ""
 
-#: class/Action.php:324
+#: class/Action.php:328
 msgid "All Categories"
 msgstr ""
 
-#: class/Action.php:336
+#: class/Action.php:340
 #, php-format
 msgid "%s: Module listing for %s"
 msgstr ""
 
-#: class/Action.php:339
+#: class/Action.php:343
 #, php-format
 msgid "%s: Module listing"
 msgstr ""
 
-#: class/Action.php:375 class/Action.php:377
+#: class/Action.php:379 class/Action.php:381
 #, php-format
 msgid "All - %s items"
 msgstr ""
 
-#: class/Action.php:395
+#: class/Action.php:399
 msgid "View Module"
 msgstr ""
 
-#: class/Action.php:407
+#: class/Action.php:411
 msgid "Item Title"
 msgstr ""
 
-#: class/Action.php:408
+#: class/Action.php:412
 msgid "Creation date"
 msgstr ""
 
-#: class/Action.php:426
+#: class/Action.php:430
 msgid "No items found in this category."
 msgstr ""
 
-#: class/Categories.php:36 class/Categories.php:104
-msgid "Categorize"
-msgstr ""
-
-#: class/Categories.php:61
-msgid "You need to add some categories first."
-msgstr ""
-
-#: class/Categories.php:62
-msgid "Close window"
-msgstr ""
-
-#: class/Categories.php:85
-msgid "Add category"
-msgstr ""
-
-#: class/Categories.php:87
-msgid "All categories assigned."
-msgstr ""
-
-#: class/Categories.php:91
-msgid "No categories assigned."
-msgstr ""
-
-#: class/Categories.php:94
-msgid "Remove category"
-msgstr ""
-
-#: class/Categories.php:109
-msgid "Save and close"
-msgstr ""
-
-#: class/Categories.php:110
-msgid "Available categories"
-msgstr ""
-
-#: class/Categories.php:111
-msgid "Currently assigned"
-msgstr ""
-
-#: class/Categories.php:160
-msgid "item(s)"
-msgstr ""
-
-#: class/Categories.php:419
-#, php-format
-msgid "%s - %s item(s)"
-msgstr ""
-
-#: class/Categories.php:432
-msgid "No items available in this category."
-msgstr ""
-
-#: class/Category.php:202
+#: class/Category.php:201
 msgid "Edit"
 msgstr ""
 
-#: class/Category.php:205
+#: class/Category.php:204
 msgid "Are you sure you want to delete this category?"
 msgstr ""
 
-#: class/Category.php:208 class/Category.php:212
+#: class/Category.php:207 class/Category.php:211
 msgid "Delete"
-msgstr ""
-
-#: conf/config.php:4
-msgid "Uncategorized"
 msgstr ""
 
 #: conf/error.php:3
@@ -231,4 +211,28 @@ msgstr ""
 
 #: conf/error.php:7
 msgid "Missing either a version or item id."
+msgstr ""
+
+#: conf/config.php:4
+msgid "Uncategorized"
+msgstr ""
+
+#: boost/controlpanel.php:8
+msgid "Categories"
+msgstr ""
+
+#: boost/controlpanel.php:12
+msgid "Administrate your site's categories."
+msgstr ""
+
+#: boost/update.php:20
+msgid "Add permissions to search."
+msgstr ""
+
+#: boost/permission.php:4
+msgid "Edit categories"
+msgstr ""
+
+#: boost/permission.php:5
+msgid "Delete categories"
 msgstr ""

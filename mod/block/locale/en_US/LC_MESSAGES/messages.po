@@ -8,33 +8,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-16 09:04-0500\n"
+"POT-Creation-Date: 2007-02-06 09:53-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: boost/controlpanel.php:3
-msgid "Block"
-msgstr ""
-
-#: boost/controlpanel.php:7
-msgid "Create blocks of content."
-msgstr ""
-
-#: boost/permission.php:5 class/Block_Item.php:164
-msgid "Edit block"
-msgstr ""
-
-#: boost/permission.php:6 class/Block_Item.php:180
-msgid "Delete block"
-msgstr ""
-
-#: boost/uninstall.php:14
-msgid "Block tables removed."
-msgstr ""
 
 #: class/Block_Admin.php:43
 msgid "New"
@@ -44,7 +24,7 @@ msgstr ""
 msgid "List"
 msgstr ""
 
-#: class/Block_Admin.php:67 class/Block_Admin.php:137
+#: class/Block_Admin.php:67 class/Block_Admin.php:142
 msgid "New Block"
 msgstr ""
 
@@ -52,76 +32,104 @@ msgstr ""
 msgid "Block deleted."
 msgstr ""
 
-#: class/Block_Admin.php:84
+#: class/Block_Admin.php:84 class/Block_Admin.php:89
 msgid "Block pinned"
 msgstr ""
 
-#: class/Block_Admin.php:89
+#: class/Block_Admin.php:94
 msgid "Block unpinned"
 msgstr ""
 
-#: class/Block_Admin.php:107
+#: class/Block_Admin.php:112
 msgid "Block saved"
 msgstr ""
 
-#: class/Block_Admin.php:132
+#: class/Block_Admin.php:137
 msgid "Block list"
 msgstr ""
 
-#: class/Block_Admin.php:200
+#: class/Block_Admin.php:207
 msgid "Cancel"
 msgstr ""
 
-#: class/Block_Admin.php:207 class/Block_Admin.php:242
+#: class/Block_Admin.php:214 class/Block_Admin.php:249
 msgid "Title"
 msgstr ""
 
-#: class/Block_Admin.php:211
+#: class/Block_Admin.php:218
 msgid "Save New Block"
 msgstr ""
 
-#: class/Block_Admin.php:214
+#: class/Block_Admin.php:221
 msgid "Update Current Block"
 msgstr ""
 
-#: class/Block_Admin.php:221
+#: class/Block_Admin.php:228
 msgid "Entry"
 msgstr ""
 
-#: class/Block_Admin.php:243
+#: class/Block_Admin.php:250
 msgid "Content"
 msgstr ""
 
-#: class/Block_Admin.php:244
+#: class/Block_Admin.php:251
 msgid "Action"
+msgstr ""
+
+#: class/Block_Item.php:164 boost/permission.php:5
+msgid "Edit block"
 msgstr ""
 
 #: class/Block_Item.php:179
 msgid "Are you sure you want to remove this block from this page?"
 msgstr ""
 
-#: class/Block_Item.php:211
+#: class/Block_Item.php:180 boost/permission.php:6
+msgid "Delete block"
+msgstr ""
+
+#: class/Block_Item.php:239
 msgid "Edit"
 msgstr ""
 
-#: class/Block_Item.php:216
+#: class/Block_Item.php:244
 msgid "Unpin"
 msgstr ""
 
-#: class/Block_Item.php:219
+#: class/Block_Item.php:248
+msgid "Unpin all"
+msgstr ""
+
+#: class/Block_Item.php:251
 msgid "Pin"
 msgstr ""
 
-#: class/Block_Item.php:228
+#: class/Block_Item.php:253
+msgid "Pin all"
+msgstr ""
+
+#: class/Block_Item.php:263
 msgid "Copy"
 msgstr ""
 
-#: class/Block_Item.php:232
+#: class/Block_Item.php:267
 msgid "Are you sure you want to permanently delete this block?"
 msgstr ""
 
-#: class/Block_Item.php:234
+#: class/Block_Item.php:269
 msgid "Delete"
+msgstr ""
+
+#: boost/uninstall.php:14
+msgid "Block tables removed."
+msgstr ""
+
+#: boost/controlpanel.php:3
+msgid "Block"
+msgstr ""
+
+#: boost/controlpanel.php:7
+msgid "Create blocks of content."
 msgstr ""
 
 #: inc/close.php:15

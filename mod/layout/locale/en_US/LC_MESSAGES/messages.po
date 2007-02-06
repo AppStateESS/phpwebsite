@@ -8,101 +8,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-16 09:04-0500\n"
+"POT-Creation-Date: 2007-02-06 09:53-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: boost/controlpanel.php:6
-msgid "Layout"
-msgstr ""
-
-#: boost/controlpanel.php:9
-msgid "Control the layout of your site."
-msgstr ""
-
-#: boost/install.php:13
-msgid "Please enter a page title."
-msgstr ""
-
-#: boost/install.php:24
-msgid "Layout settings updated."
-msgstr ""
-
-#: boost/install.php:51
-msgid "No themes installed."
-msgstr ""
-
-#: boost/install.php:52
-msgid "Expect an error theme when finished."
-msgstr ""
-
-#: boost/install.php:56
-msgid "Pick a theme"
-msgstr ""
-
-#: boost/install.php:61 class/LayoutAdmin.php:412
-msgid "Page Title"
-msgstr ""
-
-#: boost/install.php:62
-msgid "Page Title: Name of your web site"
-msgstr ""
-
-#: boost/install.php:63
-msgid "Done"
-msgstr ""
-
-#: boost/unregister.php:9
-msgid "Removing old layout components."
-msgstr ""
-
-#: boost/update.php:17
-msgid "+ Styles per page added."
-msgstr ""
-
-#: class/Layout.php:728
-msgid "Box move off"
-msgstr ""
-
-#: class/Layout.php:742
-msgid "Change style"
-msgstr ""
-
-#: class/Layout.php:750
-msgid "Meta tags"
-msgstr ""
-
-#: class/Layout.php:972
-msgid "Move to top"
-msgstr ""
-
-#: class/Layout.php:973
-msgid "Move up"
-msgstr ""
-
-#: class/Layout.php:974
-msgid "Move down"
-msgstr ""
-
-#: class/Layout.php:975
-msgid "Move to bottom"
-msgstr ""
-
-#: class/Layout.php:976 class/LayoutAdmin.php:405
-msgid "Restore to default"
-msgstr ""
-
-#: class/Layout.php:981
-msgid "Send to"
-msgstr ""
-
-#: class/Layout.php:991
-msgid "Move"
-msgstr ""
 
 #: class/LayoutAdmin.php:31 class/LayoutAdmin.php:55
 msgid "Adjust Boxes"
@@ -266,6 +178,14 @@ msgstr ""
 msgid "Update Header"
 msgstr ""
 
+#: class/LayoutAdmin.php:405 class/Layout.php:1012
+msgid "Restore to default"
+msgstr ""
+
+#: class/LayoutAdmin.php:412 boost/install.php:61
+msgid "Page Title"
+msgstr ""
+
 #: class/LayoutAdmin.php:414
 msgid "Keywords"
 msgstr ""
@@ -288,6 +208,42 @@ msgstr ""
 
 #: class/LayoutAdmin.php:427
 msgid "Default Robot Settings"
+msgstr ""
+
+#: class/Layout.php:764
+msgid "Box move off"
+msgstr ""
+
+#: class/Layout.php:778
+msgid "Change style"
+msgstr ""
+
+#: class/Layout.php:786
+msgid "Meta tags"
+msgstr ""
+
+#: class/Layout.php:1008
+msgid "Move to top"
+msgstr ""
+
+#: class/Layout.php:1009
+msgid "Move up"
+msgstr ""
+
+#: class/Layout.php:1010
+msgid "Move down"
+msgstr ""
+
+#: class/Layout.php:1011
+msgid "Move to bottom"
+msgstr ""
+
+#: class/Layout.php:1017
+msgid "Send to"
+msgstr ""
+
+#: class/Layout.php:1027
+msgid "Move"
 msgstr ""
 
 #: conf/error.php:3
@@ -316,6 +272,50 @@ msgstr ""
 
 #: conf/error.php:9
 msgid "The theme.ini file is missing for the default theme."
+msgstr ""
+
+#: boost/controlpanel.php:6
+msgid "Layout"
+msgstr ""
+
+#: boost/controlpanel.php:9
+msgid "Control the layout of your site."
+msgstr ""
+
+#: boost/update.php:17
+msgid "+ Styles per page added."
+msgstr ""
+
+#: boost/install.php:13
+msgid "Please enter a page title."
+msgstr ""
+
+#: boost/install.php:24
+msgid "Layout settings updated."
+msgstr ""
+
+#: boost/install.php:51
+msgid "No themes installed."
+msgstr ""
+
+#: boost/install.php:52
+msgid "Expect an error theme when finished."
+msgstr ""
+
+#: boost/install.php:56
+msgid "Pick a theme"
+msgstr ""
+
+#: boost/install.php:62
+msgid "Page Title: Name of your web site"
+msgstr ""
+
+#: boost/install.php:63
+msgid "Done"
+msgstr ""
+
+#: boost/unregister.php:9
+msgid "Removing old layout components."
 msgstr ""
 
 #: inc/my_page.php:22

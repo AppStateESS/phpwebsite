@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-16 09:04-0500\n"
+"POT-Creation-Date: 2007-02-06 09:53-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,153 +16,12 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: boost/controlpanel.php:2
-msgid "RSS Feeds"
-msgstr ""
-
-#: boost/controlpanel.php:5
-msgid "Administrative panel for setting RSS feeds."
-msgstr ""
-
-#: boost/unregister.php:14
-msgid "An error occurred trying to unregister this module from RSSFeeds."
-msgstr ""
-
-#: boost/unregister.php:17
-msgid "Module unregistered from RSSFeeds."
-msgstr ""
-
-#: class/Admin.php:74
-msgid "An error occurred when saving your channel."
-msgstr ""
-
-#: class/Admin.php:76
-msgid "Channel saved."
-msgstr ""
-
-#: class/Admin.php:157
-msgid "Channels"
-msgstr ""
-
-#: class/Admin.php:160
-msgid "Import"
-msgstr ""
-
-#: class/Admin.php:173
-msgid "Save Channel"
-msgstr ""
-
-#: class/Admin.php:180 class/Admin.php:225 class/Admin.php:248
-#: class/Admin.php:295
-msgid "Title"
-msgstr ""
-
-#: class/Admin.php:183
-msgid "Description"
-msgstr ""
-
-#: class/Admin.php:189
-msgid "Edit channel"
-msgstr ""
-
-#: class/Admin.php:198
-msgid "Administrate RSS Feeds"
-msgstr ""
-
-#: class/Admin.php:205
-msgid "No channels have been registered."
-msgstr ""
-
-#: class/Admin.php:209
-msgid "An error occurred when trying to access your RSS channels."
-msgstr ""
-
-#: class/Admin.php:217 class/Feed.php:82
-msgid "Yes"
-msgstr ""
-
-#: class/Admin.php:219 class/Feed.php:85
-msgid "No"
-msgstr ""
-
-#: class/Admin.php:226
-msgid "Active"
-msgstr ""
-
-#: class/Admin.php:227 class/Admin.php:298
-msgid "Action"
-msgstr ""
-
-#: class/Admin.php:244 class/Admin.php:296
-msgid "Address"
-msgstr ""
-
-#: class/Admin.php:251
-msgid "Save"
-msgstr ""
-
-#: class/Admin.php:253
-msgid "Cancel"
-msgstr ""
-
-#: class/Admin.php:258
-msgid "Item limit"
-msgstr ""
-
-#: class/Admin.php:262
-msgid "Refresh time"
-msgstr ""
-
-#: class/Admin.php:266
-msgid "Feed title will be used if left empty"
-msgstr ""
-
-#: class/Admin.php:267
-msgid "In seconds"
-msgstr ""
-
-#: class/Admin.php:271
-msgid "Add Feed"
-msgstr ""
-
-#: class/Admin.php:281
-msgid "Sorry"
-msgstr ""
-
-#: class/Admin.php:282
-msgid "You must enable allow_url_fopen in your php.ini file."
-msgstr ""
-
-#: class/Admin.php:291
-msgid "Add feed"
-msgstr ""
-
-#: class/Admin.php:297
-msgid "Display?"
-msgstr ""
-
-#: class/Admin.php:299
-msgid "Refresh feed"
-msgstr ""
-
-#: class/Admin.php:308
-msgid "Import RSS Feeds"
-msgstr ""
-
-#: class/Admin.php:311
-msgid "Please enable Cache Lite in your config/core/config.php file."
-msgstr ""
-
-#: class/Channel.php:51
-msgid "You must enter a title."
-msgstr ""
-
-#: class/Channel.php:88 class/Feed.php:68
-msgid "Edit"
-msgstr ""
-
 #: class/Feed.php:64
 msgid "Reset"
+msgstr ""
+
+#: class/Feed.php:68 class/Channel.php:88
+msgid "Edit"
 msgstr ""
 
 #: class/Feed.php:72
@@ -171,6 +30,14 @@ msgstr ""
 
 #: class/Feed.php:75
 msgid "Delete"
+msgstr ""
+
+#: class/Feed.php:82 class/Admin.php:217
+msgid "Yes"
+msgstr ""
+
+#: class/Feed.php:85 class/Admin.php:219
+msgid "No"
 msgstr ""
 
 #: class/Feed.php:99
@@ -247,4 +114,137 @@ msgstr ""
 #: class/RSS.php:55
 #, php-format
 msgid "RSS registration to %s module successful."
+msgstr ""
+
+#: class/Admin.php:74
+msgid "An error occurred when saving your channel."
+msgstr ""
+
+#: class/Admin.php:76
+msgid "Channel saved."
+msgstr ""
+
+#: class/Admin.php:157
+msgid "Channels"
+msgstr ""
+
+#: class/Admin.php:160
+msgid "Import"
+msgstr ""
+
+#: class/Admin.php:173
+msgid "Save Channel"
+msgstr ""
+
+#: class/Admin.php:180 class/Admin.php:225 class/Admin.php:248
+#: class/Admin.php:295
+msgid "Title"
+msgstr ""
+
+#: class/Admin.php:183
+msgid "Description"
+msgstr ""
+
+#: class/Admin.php:189
+msgid "Edit channel"
+msgstr ""
+
+#: class/Admin.php:198
+msgid "Administrate RSS Feeds"
+msgstr ""
+
+#: class/Admin.php:205
+msgid "No channels have been registered."
+msgstr ""
+
+#: class/Admin.php:209
+msgid "An error occurred when trying to access your RSS channels."
+msgstr ""
+
+#: class/Admin.php:226
+msgid "Active"
+msgstr ""
+
+#: class/Admin.php:227 class/Admin.php:298
+msgid "Action"
+msgstr ""
+
+#: class/Admin.php:244 class/Admin.php:296
+msgid "Address"
+msgstr ""
+
+#: class/Admin.php:251
+msgid "Save"
+msgstr ""
+
+#: class/Admin.php:253
+msgid "Cancel"
+msgstr ""
+
+#: class/Admin.php:258
+msgid "Item limit"
+msgstr ""
+
+#: class/Admin.php:262
+msgid "Refresh time"
+msgstr ""
+
+#: class/Admin.php:266
+msgid "Feed title will be used if left empty"
+msgstr ""
+
+#: class/Admin.php:267
+msgid "In seconds"
+msgstr ""
+
+#: class/Admin.php:271
+msgid "Add Feed"
+msgstr ""
+
+#: class/Admin.php:281
+msgid "Sorry"
+msgstr ""
+
+#: class/Admin.php:282
+msgid "You must enable allow_url_fopen in your php.ini file."
+msgstr ""
+
+#: class/Admin.php:291
+msgid "Add feed"
+msgstr ""
+
+#: class/Admin.php:297
+msgid "Display?"
+msgstr ""
+
+#: class/Admin.php:299
+msgid "Refresh feed"
+msgstr ""
+
+#: class/Admin.php:308
+msgid "Import RSS Feeds"
+msgstr ""
+
+#: class/Admin.php:311
+msgid "Please enable Cache Lite in your config/core/config.php file."
+msgstr ""
+
+#: class/Channel.php:51
+msgid "You must enter a title."
+msgstr ""
+
+#: boost/controlpanel.php:2
+msgid "RSS Feeds"
+msgstr ""
+
+#: boost/controlpanel.php:5
+msgid "Administrative panel for setting RSS feeds."
+msgstr ""
+
+#: boost/unregister.php:14
+msgid "An error occurred trying to unregister this module from RSSFeeds."
+msgstr ""
+
+#: boost/unregister.php:17
+msgid "Module unregistered from RSSFeeds."
 msgstr ""

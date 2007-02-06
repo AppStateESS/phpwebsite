@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-16 09:04-0500\n"
+"POT-Creation-Date: 2007-02-06 09:53-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,100 +16,56 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: boost/uninstall.php:28
-msgid "Removed all dynamic Form Generator tables."
+#: class/Multiselect.php:91
+msgid "Multiselect Element Instructions"
 msgstr ""
 
-#: boost/uninstall.php:39
-msgid "All Form Generator static tables removed."
-msgstr ""
-
-#: boost/permission.php:8
-msgid "Create/Edit forms"
-msgstr ""
-
-#: boost/permission.php:9
-msgid "Delete forms"
-msgstr ""
-
-#: boost/permission.php:10
-msgid "Forms are pre_approved"
-msgstr ""
-
-#: boost/permission.php:11
-msgid "Only edit own forms"
-msgstr ""
-
-#: boost/permission.php:12
-msgid "View reports"
-msgstr ""
-
-#: boost/permission.php:13
-msgid "Edit form entries"
-msgstr ""
-
-#: boost/permission.php:14
-msgid "Delete form entries"
-msgstr ""
-
-#: boost/permission.php:15
-msgid "Export report data"
-msgstr ""
-
-#: boost/permission.php:16
-msgid "Archive forms"
-msgstr ""
-
-#: boost/permission.php:17
-msgid "Edit option sets"
-msgstr ""
-
-#: class/Checkbox.php:81
-msgid "Checkbox Element Instructions"
-msgstr ""
-
-#: class/Checkbox.php:84 class/Dropbox.php:97 class/Multiselect.php:94
-#: class/Radiobutton.php:86 class/Textarea.php:98 class/Textfield.php:98
+#: class/Multiselect.php:94 class/Radiobutton.php:86 class/Dropbox.php:97
+#: class/Textarea.php:98 class/Checkbox.php:84 class/Textfield.php:98
 msgid "Associated Text"
 msgstr ""
 
-#: class/Checkbox.php:86 class/Dropbox.php:101 class/Form.php:271
-#: class/Multiselect.php:96 class/Radiobutton.php:88 class/Textarea.php:100
+#: class/Multiselect.php:96 class/Radiobutton.php:88 class/Dropbox.php:101
+#: class/Textarea.php:100 class/Form.php:271 class/Checkbox.php:86
 #: class/Textfield.php:100 conf/manager.php:13
 msgid "Name"
 msgstr ""
 
-#: class/Checkbox.php:88 class/Dropbox.php:105 class/Multiselect.php:100
-#: class/Radiobutton.php:90
+#: class/Multiselect.php:98 class/Textfield.php:102
+msgid "Size"
+msgstr ""
+
+#: class/Multiselect.php:100 class/Radiobutton.php:90 class/Dropbox.php:105
+#: class/Checkbox.php:88
 msgid "Number of Options"
 msgstr ""
 
-#: class/Checkbox.php:93 class/Dropbox.php:109 class/Multiselect.php:105
-#: class/Radiobutton.php:95
+#: class/Multiselect.php:105 class/Radiobutton.php:95 class/Dropbox.php:109
+#: class/Checkbox.php:93
 msgid "Predefined Option Set"
 msgstr ""
 
-#: class/Checkbox.php:97 class/Dropbox.php:117 class/Multiselect.php:109
-#: class/Radiobutton.php:99
+#: class/Multiselect.php:109 class/Radiobutton.php:99 class/Dropbox.php:117
+#: class/Checkbox.php:97
 msgid "Required"
 msgstr ""
 
-#: class/Checkbox.php:99 class/Dropbox.php:119 class/Element.php:364
-#: class/Form.php:613 class/Form.php:618 class/FormManager.php:351
-#: class/Multiselect.php:111 class/Radiobutton.php:101 class/Textarea.php:110
+#: class/Multiselect.php:111 class/Element.php:364 class/Radiobutton.php:101
+#: class/Dropbox.php:119 class/Textarea.php:110 class/FormManager.php:351
+#: class/Form.php:613 class/Form.php:618 class/Checkbox.php:99
 #: class/Textfield.php:110
 msgid "Back"
 msgstr ""
 
-#: class/Checkbox.php:100 class/Dropbox.php:120 class/Form.php:620
-#: class/Multiselect.php:112 class/Radiobutton.php:102
+#: class/Multiselect.php:112 class/Radiobutton.php:102 class/Dropbox.php:120
+#: class/Form.php:620 class/Checkbox.php:100
 msgid "Next"
 msgstr ""
 
-#: class/Checkbox.php:120
+#: class/Multiselect.php:131
 msgid ""
-"The name you entered for the Checkbox is not valid or is already in use with "
-"this form."
+"The name you entered for the Multiselect is not valid or is already in use "
+"with this form."
 msgstr ""
 
 #: class/Element.php:110 conf/error.php:12
@@ -128,7 +84,7 @@ msgstr ""
 msgid "Text"
 msgstr ""
 
-#: class/Element.php:299 class/FormManager.php:331 class/Textarea.php:106
+#: class/Element.php:299 class/Textarea.php:106 class/FormManager.php:331
 #: class/Textfield.php:106
 msgid "Value"
 msgstr ""
@@ -172,303 +128,6 @@ msgstr ""
 msgid "Are you sure you want to remove this %s element?"
 msgstr ""
 
-#: class/Form.php:275
-msgid "Item limit per page"
-msgstr ""
-
-#: class/Form.php:280 class/Textfield.php:95
-msgid "Instructions"
-msgstr ""
-
-#: class/Form.php:285
-msgid "Submission Message"
-msgstr ""
-
-#: class/Form.php:292
-msgid "Post Process Code"
-msgstr ""
-
-#: class/Form.php:298
-msgid "Admin Email (comma delimited)"
-msgstr ""
-
-#: class/Form.php:302
-msgid "Allow multiple submissions"
-msgstr ""
-
-#: class/Form.php:306
-msgid "Allow anonymous submissions"
-msgstr ""
-
-#: class/Form.php:310
-msgid "Allow users to edit their form data"
-msgstr ""
-
-#: class/Form.php:314
-msgid "Show numbers for form elements (eg: 1, 2, 3)"
-msgstr ""
-
-#: class/Form.php:318
-msgid "Show form page numbers (eg: page 1 of 6)"
-msgstr ""
-
-#: class/Form.php:322
-msgid "Hide this form"
-msgstr ""
-
-#: class/Form.php:325
-msgid "Save Settings"
-msgstr ""
-
-#: class/Form.php:328
-msgid "Edit Elements"
-msgstr ""
-
-#: class/Form.php:496
-msgid "Form settings successfully saved!<br /><br />"
-msgstr ""
-
-#: class/Form.php:519 class/FormManager.php:379
-msgid "This form is not available for viewing at this time."
-msgstr ""
-
-#: class/Form.php:527
-msgid "You must be logged in to view this form!"
-msgstr ""
-
-#: class/Form.php:532
-msgid "You have already filled out this form!"
-msgstr ""
-
-#: class/Form.php:536
-msgid "You only have permission to edit your own forms!"
-msgstr ""
-
-#: class/Form.php:558
-msgid "The form must be saved before it is available to the public."
-msgstr ""
-
-#: class/Form.php:615
-msgid "Finish"
-msgstr ""
-
-#: class/Form.php:643
-#, php-format
-msgid "Page %1$s of %2$s"
-msgstr ""
-
-#: class/Form.php:719
-msgid "Element successfully added!"
-msgstr ""
-
-#: class/Form.php:746
-msgid "Element successfully removed!"
-msgstr ""
-
-#: class/Form.php:763
-msgid "Dropbox"
-msgstr ""
-
-#: class/Form.php:764
-msgid "Textfield"
-msgstr ""
-
-#: class/Form.php:765 class/Textarea.php:171 class/Textarea.php:173
-msgid "Textarea"
-msgstr ""
-
-#: class/Form.php:766
-msgid "Multiple Select"
-msgstr ""
-
-#: class/Form.php:767
-msgid "Radio Button"
-msgstr ""
-
-#: class/Form.php:768
-msgid "Checkbox"
-msgstr ""
-
-#: class/Form.php:778
-msgid "Page"
-msgstr ""
-
-#: class/Form.php:782
-msgid "Go!"
-msgstr ""
-
-#: class/Form.php:783
-msgid "Add"
-msgstr ""
-
-#: class/Form.php:784
-msgid "Form Settings"
-msgstr ""
-
-#: class/Form.php:787
-msgid "Save Form"
-msgstr ""
-
-#: class/Form.php:838 class/Report.php:263 conf/manager.php:22
-msgid "Edit"
-msgstr ""
-
-#: class/Form.php:839
-msgid "Remove"
-msgstr ""
-
-#: class/Form.php:840
-msgid "Move Up"
-msgstr ""
-
-#: class/Form.php:841
-msgid "Move Down"
-msgstr ""
-
-#: class/Form.php:844
-msgid "Go"
-msgstr ""
-
-#: class/Form.php:1066
-msgid "Return to Report"
-msgstr ""
-
-#: class/Form.php:1069
-msgid "Retake Form"
-msgstr ""
-
-#: class/Form.php:1072
-msgid "Home"
-msgstr ""
-
-#: class/Form.php:1213 conf/manager.php:16
-msgid "Created"
-msgstr ""
-
-#: class/Form.php:1214 class/Report.php:241 conf/manager.php:17
-msgid "Updated"
-msgstr ""
-
-#: class/Form.php:1220
-msgid "Form Information"
-msgstr ""
-
-#: class/Form.php:1470
-msgid "Failed to archive."
-msgstr ""
-
-#: class/Form.php:1506
-msgid "WARNING!"
-msgstr ""
-
-#: class/Form.php:1507
-msgid ""
-"You have chosen to edit a saved form! All current data will be archived and "
-"cleared if you chose to continue!  Make sure you export your data from your "
-"form before you continue!"
-msgstr ""
-
-#: class/Form.php:1508
-msgid "Cancel"
-msgstr ""
-
-#: class/Form.php:1509
-msgid "Confirm"
-msgstr ""
-
-#: class/Form.php:1514
-msgid "Form"
-msgstr ""
-
-#: class/Form.php:1732
-#, php-format
-msgid "The form %s was successfully archived."
-msgstr ""
-
-#: class/FormManager.php:50
-msgid "New Form"
-msgstr ""
-
-#: class/FormManager.php:51
-msgid "List Forms"
-msgstr ""
-
-#: class/FormManager.php:55
-msgid "List Archives"
-msgstr ""
-
-#: class/FormManager.php:58
-msgid "List Exports"
-msgstr ""
-
-#: class/FormManager.php:65
-msgid "Settings"
-msgstr ""
-
-#: class/FormManager.php:69
-msgid "Elements"
-msgstr ""
-
-#: class/FormManager.php:73 class/FormManager.php:272
-msgid "Option Sets"
-msgstr ""
-
-#: class/FormManager.php:78
-msgid "Report"
-msgstr ""
-
-#: class/FormManager.php:82
-msgid "Archive"
-msgstr ""
-
-#: class/FormManager.php:167
-msgid "Saved Forms"
-msgstr ""
-
-#: class/FormManager.php:171
-msgid "Unsaved Forms"
-msgstr ""
-
-#: class/FormManager.php:176
-msgid "Unapproved Forms"
-msgstr ""
-
-#: class/FormManager.php:180
-msgid "Forms"
-msgstr ""
-
-#: class/FormManager.php:204
-msgid "Delete form confirmation"
-msgstr ""
-
-#: class/FormManager.php:230
-msgid ""
-"Are you sure you wish to delete the following forms?  All data associated "
-"with these forms will be lost!"
-msgstr ""
-
-#: class/FormManager.php:328
-msgid "Edit option set"
-msgstr ""
-
-#: class/FormManager.php:352
-msgid "Save"
-msgstr ""
-
-#: class/Multiselect.php:91
-msgid "Multiselect Element Instructions"
-msgstr ""
-
-#: class/Multiselect.php:98 class/Textfield.php:102
-msgid "Size"
-msgstr ""
-
-#: class/Multiselect.php:131
-msgid ""
-"The name you entered for the Multiselect is not valid or is already in use "
-"with this form."
-msgstr ""
-
 #: class/Radiobutton.php:83
 msgid "Radiobutton Element Instructions"
 msgstr ""
@@ -509,12 +168,20 @@ msgstr ""
 msgid "User"
 msgstr ""
 
+#: class/Report.php:241 class/Form.php:1214 conf/manager.php:17
+msgid "Updated"
+msgstr ""
+
 #: class/Report.php:242 class/advViews.php:311 class/advViews.php:426
 msgid "Action"
 msgstr ""
 
 #: class/Report.php:260 class/advViews.php:467 conf/manager.php:21
 msgid "View"
+msgstr ""
+
+#: class/Report.php:263 class/Form.php:838 conf/manager.php:22
+msgid "Edit"
 msgstr ""
 
 #: class/Report.php:264 class/advViews.php:351 class/advViews.php:475
@@ -600,9 +267,294 @@ msgstr ""
 msgid "Save Textarea"
 msgstr ""
 
+#: class/Textarea.php:171 class/Textarea.php:173 class/Form.php:765
+msgid "Textarea"
+msgstr ""
+
 #: class/Textarea.php:173 class/Textfield.php:174
 #, php-format
 msgid "The %s element was saved successfully."
+msgstr ""
+
+#: class/FormManager.php:50
+msgid "New Form"
+msgstr ""
+
+#: class/FormManager.php:51
+msgid "List Forms"
+msgstr ""
+
+#: class/FormManager.php:55
+msgid "List Archives"
+msgstr ""
+
+#: class/FormManager.php:58
+msgid "List Exports"
+msgstr ""
+
+#: class/FormManager.php:65
+msgid "Settings"
+msgstr ""
+
+#: class/FormManager.php:69
+msgid "Elements"
+msgstr ""
+
+#: class/FormManager.php:73 class/FormManager.php:272
+msgid "Option Sets"
+msgstr ""
+
+#: class/FormManager.php:78
+msgid "Report"
+msgstr ""
+
+#: class/FormManager.php:82
+msgid "Archive"
+msgstr ""
+
+#: class/FormManager.php:167
+msgid "Saved Forms"
+msgstr ""
+
+#: class/FormManager.php:171
+msgid "Unsaved Forms"
+msgstr ""
+
+#: class/FormManager.php:176
+msgid "Unapproved Forms"
+msgstr ""
+
+#: class/FormManager.php:180
+msgid "Forms"
+msgstr ""
+
+#: class/FormManager.php:204
+msgid "Delete form confirmation"
+msgstr ""
+
+#: class/FormManager.php:230
+msgid ""
+"Are you sure you wish to delete the following forms?  All data associated "
+"with these forms will be lost!"
+msgstr ""
+
+#: class/FormManager.php:328
+msgid "Edit option set"
+msgstr ""
+
+#: class/FormManager.php:352
+msgid "Save"
+msgstr ""
+
+#: class/FormManager.php:379 class/Form.php:519
+msgid "This form is not available for viewing at this time."
+msgstr ""
+
+#: class/Form.php:275
+msgid "Item limit per page"
+msgstr ""
+
+#: class/Form.php:280 class/Textfield.php:95
+msgid "Instructions"
+msgstr ""
+
+#: class/Form.php:285
+msgid "Submission Message"
+msgstr ""
+
+#: class/Form.php:292
+msgid "Post Process Code"
+msgstr ""
+
+#: class/Form.php:298
+msgid "Admin Email (comma delimited)"
+msgstr ""
+
+#: class/Form.php:302
+msgid "Allow multiple submissions"
+msgstr ""
+
+#: class/Form.php:306
+msgid "Allow anonymous submissions"
+msgstr ""
+
+#: class/Form.php:310
+msgid "Allow users to edit their form data"
+msgstr ""
+
+#: class/Form.php:314
+msgid "Show numbers for form elements (eg: 1, 2, 3)"
+msgstr ""
+
+#: class/Form.php:318
+msgid "Show form page numbers (eg: page 1 of 6)"
+msgstr ""
+
+#: class/Form.php:322
+msgid "Hide this form"
+msgstr ""
+
+#: class/Form.php:325
+msgid "Save Settings"
+msgstr ""
+
+#: class/Form.php:328
+msgid "Edit Elements"
+msgstr ""
+
+#: class/Form.php:496
+msgid "Form settings successfully saved!<br /><br />"
+msgstr ""
+
+#: class/Form.php:527
+msgid "You must be logged in to view this form!"
+msgstr ""
+
+#: class/Form.php:532
+msgid "You have already filled out this form!"
+msgstr ""
+
+#: class/Form.php:536
+msgid "You only have permission to edit your own forms!"
+msgstr ""
+
+#: class/Form.php:558
+msgid "The form must be saved before it is available to the public."
+msgstr ""
+
+#: class/Form.php:615
+msgid "Finish"
+msgstr ""
+
+#: class/Form.php:643
+#, php-format
+msgid "Page %1$s of %2$s"
+msgstr ""
+
+#: class/Form.php:719
+msgid "Element successfully added!"
+msgstr ""
+
+#: class/Form.php:746
+msgid "Element successfully removed!"
+msgstr ""
+
+#: class/Form.php:763
+msgid "Dropbox"
+msgstr ""
+
+#: class/Form.php:764
+msgid "Textfield"
+msgstr ""
+
+#: class/Form.php:766
+msgid "Multiple Select"
+msgstr ""
+
+#: class/Form.php:767
+msgid "Radio Button"
+msgstr ""
+
+#: class/Form.php:768
+msgid "Checkbox"
+msgstr ""
+
+#: class/Form.php:778
+msgid "Page"
+msgstr ""
+
+#: class/Form.php:782
+msgid "Go!"
+msgstr ""
+
+#: class/Form.php:783
+msgid "Add"
+msgstr ""
+
+#: class/Form.php:784
+msgid "Form Settings"
+msgstr ""
+
+#: class/Form.php:787
+msgid "Save Form"
+msgstr ""
+
+#: class/Form.php:839
+msgid "Remove"
+msgstr ""
+
+#: class/Form.php:840
+msgid "Move Up"
+msgstr ""
+
+#: class/Form.php:841
+msgid "Move Down"
+msgstr ""
+
+#: class/Form.php:844
+msgid "Go"
+msgstr ""
+
+#: class/Form.php:1066
+msgid "Return to Report"
+msgstr ""
+
+#: class/Form.php:1069
+msgid "Retake Form"
+msgstr ""
+
+#: class/Form.php:1072
+msgid "Home"
+msgstr ""
+
+#: class/Form.php:1213 conf/manager.php:16
+msgid "Created"
+msgstr ""
+
+#: class/Form.php:1220
+msgid "Form Information"
+msgstr ""
+
+#: class/Form.php:1470
+msgid "Failed to archive."
+msgstr ""
+
+#: class/Form.php:1506
+msgid "WARNING!"
+msgstr ""
+
+#: class/Form.php:1507
+msgid ""
+"You have chosen to edit a saved form! All current data will be archived and "
+"cleared if you chose to continue!  Make sure you export your data from your "
+"form before you continue!"
+msgstr ""
+
+#: class/Form.php:1508
+msgid "Cancel"
+msgstr ""
+
+#: class/Form.php:1509
+msgid "Confirm"
+msgstr ""
+
+#: class/Form.php:1514
+msgid "Form"
+msgstr ""
+
+#: class/Form.php:1732
+#, php-format
+msgid "The form %s was successfully archived."
+msgstr ""
+
+#: class/Checkbox.php:81
+msgid "Checkbox Element Instructions"
+msgstr ""
+
+#: class/Checkbox.php:120
+msgid ""
+"The name you entered for the Checkbox is not valid or is already in use with "
+"this form."
 msgstr ""
 
 #: class/Textfield.php:104
@@ -742,46 +694,6 @@ msgid ""
 "There was a problem deleting viewing archive table associated for filename "
 msgstr ""
 
-#: conf/manager.php:14
-msgid "Owner"
-msgstr ""
-
-#: conf/manager.php:15
-msgid "Editor"
-msgstr ""
-
-#: conf/manager.php:18
-msgid "Hidden"
-msgstr ""
-
-#: conf/manager.php:19
-msgid "Approved"
-msgstr ""
-
-#: conf/manager.php:20
-msgid "Ip"
-msgstr ""
-
-#: conf/manager.php:24
-msgid "Hide"
-msgstr ""
-
-#: conf/manager.php:25
-msgid "Show"
-msgstr ""
-
-#: conf/manager.php:26
-msgid "Approve"
-msgstr ""
-
-#: conf/manager.php:27
-msgid "Refuse"
-msgstr ""
-
-#: conf/manager.php:28
-msgid "Actions"
-msgstr ""
-
 #: conf/error.php:10
 msgid "You may not use that name for this form element."
 msgstr ""
@@ -873,6 +785,94 @@ msgstr ""
 
 #: conf/error.php:32
 msgid "The export path is not web server writable."
+msgstr ""
+
+#: conf/manager.php:14
+msgid "Owner"
+msgstr ""
+
+#: conf/manager.php:15
+msgid "Editor"
+msgstr ""
+
+#: conf/manager.php:18
+msgid "Hidden"
+msgstr ""
+
+#: conf/manager.php:19
+msgid "Approved"
+msgstr ""
+
+#: conf/manager.php:20
+msgid "Ip"
+msgstr ""
+
+#: conf/manager.php:24
+msgid "Hide"
+msgstr ""
+
+#: conf/manager.php:25
+msgid "Show"
+msgstr ""
+
+#: conf/manager.php:26
+msgid "Approve"
+msgstr ""
+
+#: conf/manager.php:27
+msgid "Refuse"
+msgstr ""
+
+#: conf/manager.php:28
+msgid "Actions"
+msgstr ""
+
+#: boost/uninstall.php:28
+msgid "Removed all dynamic Form Generator tables."
+msgstr ""
+
+#: boost/uninstall.php:39
+msgid "All Form Generator static tables removed."
+msgstr ""
+
+#: boost/permission.php:8
+msgid "Create/Edit forms"
+msgstr ""
+
+#: boost/permission.php:9
+msgid "Delete forms"
+msgstr ""
+
+#: boost/permission.php:10
+msgid "Forms are pre_approved"
+msgstr ""
+
+#: boost/permission.php:11
+msgid "Only edit own forms"
+msgstr ""
+
+#: boost/permission.php:12
+msgid "View reports"
+msgstr ""
+
+#: boost/permission.php:13
+msgid "Edit form entries"
+msgstr ""
+
+#: boost/permission.php:14
+msgid "Delete form entries"
+msgstr ""
+
+#: boost/permission.php:15
+msgid "Export report data"
+msgstr ""
+
+#: boost/permission.php:16
+msgid "Archive forms"
+msgstr ""
+
+#: boost/permission.php:17
+msgid "Edit option sets"
 msgstr ""
 
 #: inc/Archive.php:10 inc/Export.php:10

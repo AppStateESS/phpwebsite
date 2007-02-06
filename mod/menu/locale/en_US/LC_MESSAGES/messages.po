@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-16 09:04-0500\n"
+"POT-Creation-Date: 2007-02-06 09:53-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,160 +16,136 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: boost/controlpanel.php:7
-msgid "Menu"
-msgstr ""
-
-#: boost/controlpanel.php:10
-msgid "Controls the layout and positioning of your menus."
-msgstr ""
-
-#: boost/permission.php:5
-msgid "Create New Menus"
-msgstr ""
-
-#: boost/permission.php:6
-msgid "Delete Menus"
-msgstr ""
-
-#: boost/uninstall.php:16
-msgid "Menu tables removed."
-msgstr ""
-
-#: boost/update.php:14
-msgid "Register to key."
-msgstr ""
-
-#: boost/update.php:71
-msgid "A problem occurred during the update."
-msgstr ""
-
-#: class/Menu.php:104
-msgid "Add Other Link"
-msgstr ""
-
-#: class/Menu.php:137
-msgid "Enter link title"
-msgstr ""
-
-#: class/Menu.php:161
-msgid "Are you sure you want to unpin this menu from all pages?"
-msgstr ""
-
-#: class/Menu.php:163
-msgid "Are you sure you want to unpin this menu from this page?"
-msgstr ""
-
-#: class/Menu.php:204
-msgid "Site map"
-msgstr ""
-
 #: class/Menu_Admin.php:19
 msgid "User attempted access to Menu administration."
 msgstr ""
 
-#: class/Menu_Admin.php:41 class/Menu_Admin.php:182
+#: class/Menu_Admin.php:52 class/Menu_Admin.php:193
 msgid "Create New Menu"
 msgstr ""
 
-#: class/Menu_Admin.php:47
+#: class/Menu_Admin.php:58
 msgid "Menu deleted."
 msgstr ""
 
-#: class/Menu_Admin.php:61
+#: class/Menu_Admin.php:72
 msgid "Menu Settings"
 msgstr ""
 
-#: class/Menu_Admin.php:78
+#: class/Menu_Admin.php:89
 msgid "Update Menu"
 msgstr ""
 
-#: class/Menu_Admin.php:86
+#: class/Menu_Admin.php:97
 msgid "Sorry"
 msgstr ""
 
-#: class/Menu_Admin.php:87
+#: class/Menu_Admin.php:98
 msgid "A problem occurred when saving your link."
 msgstr ""
 
-#: class/Menu_Admin.php:137
+#: class/Menu_Admin.php:148
 msgid "Error"
 msgstr ""
 
-#: class/Menu_Admin.php:138
+#: class/Menu_Admin.php:149
 msgid "There was a problem saving your link."
 msgstr ""
 
-#: class/Menu_Admin.php:185
+#: class/Menu_Admin.php:196
 msgid "Menu saved"
 msgstr ""
 
-#: class/Menu_Admin.php:302
+#: class/Menu_Admin.php:342
 msgid "New"
 msgstr ""
 
-#: class/Menu_Admin.php:307
+#: class/Menu_Admin.php:347
 msgid "List"
 msgstr ""
 
-#: class/Menu_Admin.php:310
+#: class/Menu_Admin.php:350
 msgid "Settings"
 msgstr ""
 
-#: class/Menu_Admin.php:328
+#: class/Menu_Admin.php:368
 msgid "Update"
 msgstr ""
 
-#: class/Menu_Admin.php:330
+#: class/Menu_Admin.php:370
 msgid "Create"
 msgstr ""
 
-#: class/Menu_Admin.php:335
+#: class/Menu_Admin.php:375
 msgid "Pin to all pages"
 msgstr ""
 
-#: class/Menu_Admin.php:338 class/Menu_Admin.php:373 class/Menu_Admin.php:415
+#: class/Menu_Admin.php:378 class/Menu_Admin.php:413 class/Menu_Admin.php:486
 msgid "Title"
 msgstr ""
 
-#: class/Menu_Admin.php:344 class/Menu_Admin.php:346
+#: class/Menu_Admin.php:384 class/Menu_Admin.php:386
 msgid "Template"
 msgstr ""
 
-#: class/Menu_Admin.php:347
+#: class/Menu_Admin.php:387
 msgid "Cannot locate any menu templates. Cannot continue."
 msgstr ""
 
-#: class/Menu_Admin.php:374
+#: class/Menu_Admin.php:414
 msgid "Action"
 msgstr ""
 
-#: class/Menu_Admin.php:392
-msgid "Enable Administration Mode"
-msgstr ""
-
-#: class/Menu_Admin.php:396
-msgid "Disable Administration Mode"
-msgstr ""
-
-#: class/Menu_Admin.php:422
-msgid "Url"
-msgstr ""
-
-#: class/Menu_Admin.php:425
-msgid "Save link"
-msgstr ""
-
-#: class/Menu_Admin.php:429
-msgid "Create Link"
-msgstr ""
-
-#: class/Menu_Admin.php:444
-msgid "Missing title."
+#: class/Menu_Admin.php:437
+msgid "No links in queue."
 msgstr ""
 
 #: class/Menu_Admin.php:450
+msgid "Pinned links"
+msgstr ""
+
+#: class/Menu_Admin.php:451
+msgid "Add to menu"
+msgstr ""
+
+#: class/Menu_Admin.php:454
+msgid "Close"
+msgstr ""
+
+#: class/Menu_Admin.php:463
+msgid "Enable Administration Mode"
+msgstr ""
+
+#: class/Menu_Admin.php:467
+msgid "Disable Administration Mode"
+msgstr ""
+
+#: class/Menu_Admin.php:493
+msgid "Url"
+msgstr ""
+
+#: class/Menu_Admin.php:496
+msgid "Save link"
+msgstr ""
+
+#: class/Menu_Admin.php:500
+msgid "Create Link"
+msgstr ""
+
+#: class/Menu_Admin.php:515
+msgid "Missing title."
+msgstr ""
+
+#: class/Menu_Admin.php:521
 msgid "Missing url."
+msgstr ""
+
+#: class/Menu_Link.php:240
+msgid "Are you sure you want to delete this link: "
+msgstr ""
+
+#: class/Menu_Link.php:247
+msgid "Type the new title for this link."
 msgstr ""
 
 #: class/Menu_Item.php:87
@@ -208,12 +184,28 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: class/Menu_Link.php:239
-msgid "Are you sure you want to delete this link: "
+#: class/Menu.php:104
+msgid "Add Other Link"
 msgstr ""
 
-#: class/Menu_Link.php:246
-msgid "Type the new title for this link."
+#: class/Menu.php:137
+msgid "Enter link title"
+msgstr ""
+
+#: class/Menu.php:168
+msgid "Are you sure you want to unpin this menu from all pages?"
+msgstr ""
+
+#: class/Menu.php:170
+msgid "Are you sure you want to unpin this menu from this page?"
+msgstr ""
+
+#: class/Menu.php:211
+msgid "Site map"
+msgstr ""
+
+#: conf/error.php:4
+msgid "Link is missing a title, url, or menu id."
 msgstr ""
 
 #: conf/config.php:11
@@ -245,21 +237,57 @@ msgid "Admin"
 msgstr ""
 
 #: conf/config.php:25
+msgid "Pin links"
+msgstr ""
+
+#: conf/config.php:27
 msgid "Admin mode on"
 msgstr ""
 
-#: conf/config.php:26
+#: conf/config.php:28
 msgid "Admin mode off"
 msgstr ""
 
-#: conf/config.php:28
+#: conf/config.php:30
 msgid "Pin to item"
 msgstr ""
 
-#: conf/config.php:29
+#: conf/config.php:31
 msgid "Unpin menu"
 msgstr ""
 
-#: conf/error.php:4
-msgid "Link is missing a title, url, or menu id."
+#: boost/uninstall.php:16
+msgid "Menu tables removed."
+msgstr ""
+
+#: boost/controlpanel.php:7
+msgid "Menu"
+msgstr ""
+
+#: boost/controlpanel.php:10
+msgid "Controls the layout and positioning of your menus."
+msgstr ""
+
+#: boost/update.php:14
+msgid "Register to key."
+msgstr ""
+
+#: boost/update.php:82
+msgid "A problem occurred during the update."
+msgstr ""
+
+#: boost/permission.php:5
+msgid "Create New Menus"
+msgstr ""
+
+#: boost/permission.php:6
+msgid "Delete Menus"
+msgstr ""
+
+#: boost/install.php:12
+msgid "Main menu"
+msgstr ""
+
+#: boost/install.php:20
+msgid "Default menu created successfully."
 msgstr ""

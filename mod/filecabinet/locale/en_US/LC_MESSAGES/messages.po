@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-16 09:04-0500\n"
+"POT-Creation-Date: 2007-02-06 09:53-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,119 +16,206 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: boost/controlpanel.php:8
-msgid "File Cabinet"
+#: class/Image_Manager.php:110 class/Image_Manager.php:161
+msgid "No image"
 msgstr ""
 
-#: boost/controlpanel.php:11
-msgid "Manages images and documents uploaded to your site."
+#: class/Image_Manager.php:146 class/Document.php:192 class/Document.php:198
+#: class/Image.php:368
+msgid "Edit"
 msgstr ""
 
-#: boost/permission.php:11
-msgid "Edit files"
+#: class/Image_Manager.php:148 class/Image_Manager.php:450
+#: class/Document.php:208 class/Image.php:375
+msgid "Delete"
 msgstr ""
 
-#: boost/permission.php:12
-msgid "Delete files"
+#: class/Image_Manager.php:150
+msgid "Copy"
 msgstr ""
 
-#: boost/permission.php:13
-msgid "Edit images"
+#: class/Image_Manager.php:163
+msgid "Clear image"
 msgstr ""
 
-#: boost/permission.php:14
-msgid "Delete images"
+#: class/Image_Manager.php:180
+msgid "Change Thumbnail"
 msgstr ""
 
-#: class/Cabinet_Action.php:48 class/Cabinet_Action.php:228
+#: class/Image_Manager.php:208
+msgid "No thumbnail"
+msgstr ""
+
+#: class/Image_Manager.php:220
+msgid "Upload image"
+msgstr ""
+
+#: class/Image_Manager.php:237
+msgid "An error occurred when trying to save your image."
+msgstr ""
+
+#: class/Image_Manager.php:300
+msgid "Image location"
+msgstr ""
+
+#: class/Image_Manager.php:304 class/Image_Manager.php:427 class/Forms.php:23
+#: class/Forms.php:51 class/Forms.php:127
+msgid "Title"
+msgstr ""
+
+#: class/Image_Manager.php:308
+msgid "Alternate text"
+msgstr ""
+
+#: class/Image_Manager.php:311 class/Image_Manager.php:428 class/Forms.php:131
+msgid "Description"
+msgstr ""
+
+#: class/Image_Manager.php:320 class/Forms.php:123
+msgid "Save directory"
+msgstr ""
+
+#: class/Image_Manager.php:323 class/Forms.php:135
+msgid "Update"
+msgstr ""
+
+#: class/Image_Manager.php:325 class/Image_Manager.php:445 class/Forms.php:137
+msgid "Upload"
+msgstr ""
+
+#: class/Image_Manager.php:330 class/Image_Manager.php:447 class/Forms.php:141
+msgid "Cancel"
+msgstr ""
+
+#: class/Image_Manager.php:342
+msgid "Current image"
+msgstr ""
+
+#: class/Image_Manager.php:345 class/Forms.php:162
+msgid "Maximum file size"
+msgstr ""
+
+#: class/Image_Manager.php:346
+msgid "Maximum width"
+msgstr ""
+
+#: class/Image_Manager.php:347
+msgid "Maximum height"
+msgstr ""
+
+#: class/Image_Manager.php:401
+msgid "No images found."
+msgstr ""
+
+#: class/Image_Manager.php:417
+msgid "View full image"
+msgstr ""
+
+#: class/Image_Manager.php:432
+msgid "Are you sure you want to permanently delete this image?"
+msgstr ""
+
+#: class/Image_Manager.php:434
+msgid "Choose a image first."
+msgstr ""
+
+#: class/Image_Manager.php:441
+msgid "Directory"
+msgstr ""
+
+#: class/Image_Manager.php:446
+msgid "Ok"
+msgstr ""
+
+#: class/Image_Manager.php:448
+msgid "Image Browser"
+msgstr ""
+
+#: class/Image_Manager.php:477
+msgid "images"
+msgstr ""
+
+#: class/Document.php:204 class/Image.php:361
+msgid "Clip"
+msgstr ""
+
+#: class/Document.php:207
+msgid "Are you sure you want to delete this document?"
+msgstr ""
+
+#: class/Cabinet_Action.php:47 class/Cabinet_Action.php:227
 msgid "Upload new document"
 msgstr ""
 
-#: class/Cabinet_Action.php:59 class/Cabinet_Action.php:90
-#: class/Cabinet_Action.php:97 class/Cabinet_Action.php:194
+#: class/Cabinet_Action.php:58 class/Cabinet_Action.php:89
+#: class/Cabinet_Action.php:96 class/Cabinet_Action.php:193
 msgid "Manage Images"
 msgstr ""
 
-#: class/Cabinet_Action.php:68 class/Cabinet_Action.php:84
-#: class/Cabinet_Action.php:235
+#: class/Cabinet_Action.php:67 class/Cabinet_Action.php:83
+#: class/Cabinet_Action.php:234
 msgid "Manage Documents"
 msgstr ""
 
-#: class/Cabinet_Action.php:79
+#: class/Cabinet_Action.php:78
 msgid "An error occurred when trying to delete a document."
 msgstr ""
 
-#: class/Cabinet_Action.php:81
+#: class/Cabinet_Action.php:80
 msgid "Document deleted."
 msgstr ""
 
-#: class/Cabinet_Action.php:174
+#: class/Cabinet_Action.php:173
 msgid "Image uploaded!"
 msgstr ""
 
-#: class/Cabinet_Action.php:187
+#: class/Cabinet_Action.php:186
 msgid "Edit Image"
 msgstr ""
 
-#: class/Cabinet_Action.php:222
+#: class/Cabinet_Action.php:221
 msgid "Sorry"
 msgstr ""
 
-#: class/Cabinet_Action.php:223
+#: class/Cabinet_Action.php:222
 msgid "An error occurred while saving your document."
 msgstr ""
 
-#: class/Cabinet_Action.php:224
+#: class/Cabinet_Action.php:223
 msgid "Please check your logs."
 msgstr ""
 
-#: class/Cabinet_Action.php:232
+#: class/Cabinet_Action.php:231
 msgid "Document saved successfully."
 msgstr ""
 
-#: class/Cabinet_Action.php:247
+#: class/Cabinet_Action.php:246
 msgid "Document"
 msgstr ""
 
-#: class/Cabinet_Action.php:274 class/Cabinet_Action.php:289
+#: class/Cabinet_Action.php:273 class/Cabinet_Action.php:288
 #: class/Cabinet_Action.php:363
 msgid "Settings"
 msgstr ""
 
-#: class/Cabinet_Action.php:286
+#: class/Cabinet_Action.php:285
 msgid "Settings saved."
 msgstr ""
 
-#: class/Cabinet_Action.php:313
+#: class/Cabinet_Action.php:312
 msgid "Default document directory may not be blank"
 msgstr ""
 
-#: class/Cabinet_Action.php:315
+#: class/Cabinet_Action.php:314
 msgid "Document directory does not exist."
 msgstr ""
 
-#: class/Cabinet_Action.php:317
+#: class/Cabinet_Action.php:316
 msgid "Unable to write to document directory."
 msgstr ""
 
-#: class/Cabinet_Action.php:319
+#: class/Cabinet_Action.php:318
 msgid "Unable to read document directory."
-msgstr ""
-
-#: class/Cabinet_Action.php:323
-msgid "Default image directory may not be blank"
-msgstr ""
-
-#: class/Cabinet_Action.php:325
-msgid "Image directory does not exist."
-msgstr ""
-
-#: class/Cabinet_Action.php:327
-msgid "Unable to write to image directory."
-msgstr ""
-
-#: class/Cabinet_Action.php:329
-msgid "Unable to read image directory."
 msgstr ""
 
 #: class/Cabinet_Action.php:357
@@ -143,44 +230,20 @@ msgstr ""
 msgid "Close window"
 msgstr ""
 
-#: class/Cabinet_Action.php:401 class/Cabinet_Action.php:425
-#: class/Cabinet_Action.php:428
-msgid "[default]"
-msgstr ""
-
-#: class/Cabinet_Action.php:455 class/Cabinet_Action.php:469
+#: class/Cabinet_Action.php:467 class/Cabinet_Action.php:481
 msgid "Sorry but this file is inaccessible at this time."
 msgstr ""
 
-#: class/Cabinet_Action.php:461
+#: class/Cabinet_Action.php:473
 msgid "Sorry, you are not allowed access to this file."
 msgstr ""
 
-#: class/Document.php:192 class/Document.php:198 class/Image.php:364
-#: class/Image_Manager.php:142
-msgid "Edit"
-msgstr ""
-
-#: class/Document.php:204 class/Image.php:357
-msgid "Clip"
-msgstr ""
-
-#: class/Document.php:207
-msgid "Are you sure you want to delete this document?"
-msgstr ""
-
-#: class/Document.php:208 class/Image.php:371 class/Image_Manager.php:144
-#: class/Image_Manager.php:418
-msgid "Delete"
+#: class/Image.php:373
+msgid "Are you sure you want to delete this image?"
 msgstr ""
 
 #: class/Forms.php:22
 msgid "Thumbnail"
-msgstr ""
-
-#: class/Forms.php:23 class/Forms.php:51 class/Forms.php:124
-#: class/Image_Manager.php:301 class/Image_Manager.php:399
-msgid "Title"
 msgstr ""
 
 #: class/Forms.php:24 class/Forms.php:52
@@ -215,120 +278,16 @@ msgstr ""
 msgid "Base document directory"
 msgstr ""
 
-#: class/Forms.php:92
-msgid "Base image directory"
-msgstr ""
-
-#: class/Forms.php:94
+#: class/Forms.php:95
 msgid "Save settings"
 msgstr ""
 
-#: class/Forms.php:116
+#: class/Forms.php:119
 msgid "Document location"
 msgstr ""
 
-#: class/Forms.php:120 class/Image_Manager.php:318
-msgid "Save directory"
-msgstr ""
-
-#: class/Forms.php:128 class/Image_Manager.php:308 class/Image_Manager.php:400
-msgid "Description"
-msgstr ""
-
-#: class/Forms.php:132 class/Image_Manager.php:322
-msgid "Update"
-msgstr ""
-
-#: class/Forms.php:134 class/Image_Manager.php:324 class/Image_Manager.php:413
-msgid "Upload"
-msgstr ""
-
-#: class/Forms.php:138 class/Image_Manager.php:329 class/Image_Manager.php:415
-msgid "Cancel"
-msgstr ""
-
-#: class/Forms.php:155
+#: class/Forms.php:158
 msgid "Current document"
-msgstr ""
-
-#: class/Forms.php:159 class/Image_Manager.php:344
-msgid "Maximum file size"
-msgstr ""
-
-#: class/Image.php:369
-msgid "Are you sure you want to delete this image?"
-msgstr ""
-
-#: class/Image_Manager.php:110 class/Image_Manager.php:157
-msgid "No image"
-msgstr ""
-
-#: class/Image_Manager.php:146
-msgid "Copy"
-msgstr ""
-
-#: class/Image_Manager.php:159
-msgid "Clear image"
-msgstr ""
-
-#: class/Image_Manager.php:176
-msgid "Change Thumbnail"
-msgstr ""
-
-#: class/Image_Manager.php:204
-msgid "No thumbnail"
-msgstr ""
-
-#: class/Image_Manager.php:216
-msgid "Upload image"
-msgstr ""
-
-#: class/Image_Manager.php:234
-msgid "An error occurred when trying to save your image."
-msgstr ""
-
-#: class/Image_Manager.php:297
-msgid "Image location"
-msgstr ""
-
-#: class/Image_Manager.php:305
-msgid "Alternate text"
-msgstr ""
-
-#: class/Image_Manager.php:341
-msgid "Current image"
-msgstr ""
-
-#: class/Image_Manager.php:345
-msgid "Maximum width"
-msgstr ""
-
-#: class/Image_Manager.php:346
-msgid "Maximum height"
-msgstr ""
-
-#: class/Image_Manager.php:373
-msgid "No images found."
-msgstr ""
-
-#: class/Image_Manager.php:389
-msgid "View full image"
-msgstr ""
-
-#: class/Image_Manager.php:404
-msgid "Are you sure you want to permanently delete this image?"
-msgstr ""
-
-#: class/Image_Manager.php:406
-msgid "Choose a image first."
-msgstr ""
-
-#: class/Image_Manager.php:414
-msgid "Ok"
-msgstr ""
-
-#: class/Image_Manager.php:416
-msgid "Image Browser"
 msgstr ""
 
 #: conf/error.php:8
@@ -389,9 +348,37 @@ msgstr ""
 
 #: conf/error.php:21
 #, php-format
-msgid "Image is %spx x %spx, the maximum dimensions are %spx x %spx."
+msgid "Image is %spx by %spx, the maximum dimensions are %spx by %spx."
 msgstr ""
 
 #: conf/error.php:22
 msgid "Unable to move the file to its new directory."
+msgstr ""
+
+#: conf/error.php:23
+msgid "Could not write to directory."
+msgstr ""
+
+#: boost/controlpanel.php:8
+msgid "File Cabinet"
+msgstr ""
+
+#: boost/controlpanel.php:11
+msgid "Manages images and documents uploaded to your site."
+msgstr ""
+
+#: boost/permission.php:11
+msgid "Edit files"
+msgstr ""
+
+#: boost/permission.php:12
+msgid "Delete files"
+msgstr ""
+
+#: boost/permission.php:13
+msgid "Edit images"
+msgstr ""
+
+#: boost/permission.php:14
+msgid "Delete images"
 msgstr ""

@@ -8,81 +8,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-16 09:04-0500\n"
+"POT-Creation-Date: 2007-02-06 09:53-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: boost/controlpanel.php:11
-msgid "Post current thoughts, happenings, and discussions."
-msgstr ""
-
-#: boost/permission.php:11 class/Blog.php:276
-msgid "Edit blog"
-msgstr ""
-
-#: boost/permission.php:12
-msgid "Delete blog"
-msgstr ""
-
-#: boost/permission.php:13
-msgid "Change settings (Unrestricted only)"
-msgstr ""
-
-#: boost/uninstall.php:13
-msgid "Blog tables removed."
-msgstr ""
-
-#: class/Blog.php:202
-msgid "View"
-msgstr ""
-
-#: class/Blog.php:218 class/Blog.php:310
-msgid "Posted by"
-msgstr ""
-
-#: class/Blog.php:219 class/Blog.php:311
-msgid "Posted on"
-msgstr ""
-
-#: class/Blog.php:243
-msgid "Sorry you do not have permission to view this blog entry."
-msgstr ""
-
-#: class/Blog.php:258
-msgid "Read more"
-msgstr ""
-
-#: class/Blog.php:274 class/Blog.php:335 class/Blog_Admin.php:305
-msgid "Edit"
-msgstr ""
-
-#: class/Blog.php:290
-msgid "Last poster"
-msgstr ""
-
-#: class/Blog.php:340
-msgid "Are you sure you want to permanently delete this blog entry?"
-msgstr ""
-
-#: class/Blog.php:342
-msgid "Delete"
-msgstr ""
-
-#: class/Blog.php:348
-msgid "Restore"
-msgstr ""
-
-#: class/Blog.php:354
-msgid "No action"
-msgstr ""
-
-#: class/Blog.php:378
-msgid "Missing title."
-msgstr ""
 
 #: class/Blog_Admin.php:18
 msgid "User attempted access to Blog administration."
@@ -116,180 +48,340 @@ msgstr ""
 msgid "Blog entry disapproved."
 msgstr ""
 
-#: class/Blog_Admin.php:132
+#: class/Blog_Admin.php:139
 msgid "An error occurred when saving your version."
 msgstr ""
 
-#: class/Blog_Admin.php:136
+#: class/Blog_Admin.php:143
 msgid "Blog entry approved."
 msgstr ""
 
-#: class/Blog_Admin.php:142
+#: class/Blog_Admin.php:149
 msgid "Tried to edit an unapproved item."
 msgstr ""
 
-#: class/Blog_Admin.php:149
+#: class/Blog_Admin.php:156
 msgid "Update Unapproved Blog Entry"
 msgstr ""
 
-#: class/Blog_Admin.php:154
+#: class/Blog_Admin.php:161
 msgid "New Blog Entry"
 msgstr ""
 
-#: class/Blog_Admin.php:161
+#: class/Blog_Admin.php:168
 msgid "Blog entry deleted."
 msgstr ""
 
-#: class/Blog_Admin.php:165 class/Blog_Admin.php:197
+#: class/Blog_Admin.php:172 class/Blog_Admin.php:209
 msgid "Blog Archive"
 msgstr ""
 
-#: class/Blog_Admin.php:170
+#: class/Blog_Admin.php:177
+msgid "Submit entry"
+msgstr ""
+
+#: class/Blog_Admin.php:182
 msgid "Blog Restore"
 msgstr ""
 
-#: class/Blog_Admin.php:181
+#: class/Blog_Admin.php:193
 msgid "Blog entry restored."
 msgstr ""
 
-#: class/Blog_Admin.php:193
+#: class/Blog_Admin.php:205
 msgid "Blog entry removed."
 msgstr ""
 
-#: class/Blog_Admin.php:214
+#: class/Blog_Admin.php:226
 msgid ""
 "An error occurred when trying to save your entry. Please check your logs."
 msgstr ""
 
-#: class/Blog_Admin.php:220
+#: class/Blog_Admin.php:232
 msgid "Your entry is being held for approval."
 msgstr ""
 
-#: class/Blog_Admin.php:222
+#: class/Blog_Admin.php:234
 msgid "Entry saved successfully."
 msgstr ""
 
-#: class/Blog_Admin.php:234
+#: class/Blog_Admin.php:251
 msgid "Blog settings saved."
 msgstr ""
 
-#: class/Blog_Admin.php:241
+#: class/Blog_Admin.php:258
 msgid "Blog Settings"
 msgstr ""
 
-#: class/Blog_Admin.php:246
+#: class/Blog_Admin.php:263
 msgid "View version"
 msgstr ""
 
-#: class/Blog_Admin.php:309
+#: class/Blog_Admin.php:354 class/Blog.php:305 class/Blog.php:367
+msgid "Edit"
+msgstr ""
+
+#: class/Blog_Admin.php:358
 msgid "Approve"
 msgstr ""
 
-#: class/Blog_Admin.php:312
+#: class/Blog_Admin.php:361
 msgid "Disapprove"
 msgstr ""
 
-#: class/Blog_Admin.php:316
+#: class/Blog_Admin.php:365
 msgid "Approval list"
 msgstr ""
 
-#: class/Blog_Admin.php:346
+#: class/Blog_Admin.php:395
 msgid "New"
 msgstr ""
 
-#: class/Blog_Admin.php:349
+#: class/Blog_Admin.php:398
 msgid "List"
 msgstr ""
 
-#: class/Blog_Admin.php:359
+#: class/Blog_Admin.php:408
 #, php-format
 msgid "Approval (%s)"
 msgstr ""
 
-#: class/Blog_Admin.php:369
+#: class/Blog_Admin.php:418
 msgid "Settings"
 msgstr ""
 
-#: class/Blog_Admin.php:386 class/Blog_Form.php:35
+#: class/Blog_Admin.php:435 class/Blog_Form.php:64
 msgid "Title"
 msgstr ""
 
-#: class/Blog_Admin.php:387 class/Blog_Form.php:47
+#: class/Blog_Admin.php:436 class/Blog_Form.php:80
 msgid "Entry"
 msgstr ""
 
-#: class/Blog_Admin.php:388
+#: class/Blog_Admin.php:437
 msgid "Creation Date"
 msgstr ""
 
-#: class/Blog_Admin.php:389
+#: class/Blog_Admin.php:438
 msgid "Action"
 msgstr ""
 
-#: class/Blog_Form.php:21
-msgid "Save Changes and Approve"
+#: class/Blog_User.php:68
+msgid "Repeat submission"
 msgstr ""
 
-#: class/Blog_Form.php:27
-msgid "Update Entry"
+#: class/Blog_User.php:69
+msgid "Your submission is still awaiting approval."
 msgstr ""
 
-#: class/Blog_Form.php:29
-msgid "Add Entry"
+#: class/Blog_User.php:74
+msgid "No title"
 msgstr ""
 
-#: class/Blog_Form.php:41
-msgid "Summary"
+#: class/Blog_User.php:92
+msgid "Sorry"
 msgstr ""
 
-#: class/Blog_Form.php:50
-msgid "Publish date/time"
+#: class/Blog_User.php:93
+msgid "A problem occured with your submission. Please try again later."
 msgstr ""
 
-#: class/Blog_Form.php:54
-msgid "Allow comments"
+#: class/Blog_User.php:95
+msgid "Thank you"
 msgstr ""
 
-#: class/Blog_Form.php:58
-msgid "Allow anonymous comments"
+#: class/Blog_User.php:96
+msgid "Your entry has been submitted for review."
 msgstr ""
 
-#: class/Blog_Form.php:80
-msgid "Blog view limit"
+#: class/Blog_User.php:105
+msgid "Submit Entry"
 msgstr ""
 
-#: class/Blog_Form.php:83
-msgid "Number of past entries"
+#: class/Blog_User.php:156
+msgid "Create first blog entry!"
 msgstr ""
 
-#: class/Blog_Form.php:87
-msgid "Allow comments by default"
+#: class/Blog_User.php:186
+msgid "Previous page"
 msgstr ""
 
-#: class/Blog_Form.php:91
-msgid "Show blog on home page"
+#: class/Blog_User.php:188 class/Blog_User.php:191
+msgid "Next page"
 msgstr ""
 
-#: class/Blog_Form.php:94
-msgid "Save settings"
-msgstr ""
-
-#: class/Blog_Form.php:97
-msgid "Set to zero to prevent display"
-msgstr ""
-
-#: class/Blog_User.php:113
+#: class/Blog_User.php:204
 msgid "Edit blogs"
 msgstr ""
 
-#: class/Blog_User.php:115
+#: class/Blog_User.php:206
 msgid "Add new blog"
 msgstr ""
 
-#: class/Blog_User.php:135
+#: class/Blog_User.php:226
 msgid "Previous blog entries"
 msgstr ""
 
-#: class/Blog_User.php:157
+#: class/Blog_User.php:248
 msgid "Recent blog entries"
+msgstr ""
+
+#: class/Blog.php:148 class/Blog.php:247
+msgid "Anonymous"
+msgstr ""
+
+#: class/Blog.php:225
+msgid "View"
+msgstr ""
+
+#: class/Blog.php:242 class/Blog.php:341
+msgid "Posted by"
+msgstr ""
+
+#: class/Blog.php:243 class/Blog.php:342
+msgid "Posted on"
+msgstr ""
+
+#: class/Blog.php:271
+msgid "Sorry you do not have permission to view this blog entry."
+msgstr ""
+
+#: class/Blog.php:286
+msgid "Read more"
+msgstr ""
+
+#: class/Blog.php:307 boost/permission.php:11
+msgid "Edit blog"
+msgstr ""
+
+#: class/Blog.php:321
+msgid "Last poster"
+msgstr ""
+
+#: class/Blog.php:372
+msgid "Are you sure you want to permanently delete this blog entry?"
+msgstr ""
+
+#: class/Blog.php:374
+msgid "Delete"
+msgstr ""
+
+#: class/Blog.php:380
+msgid "Restore"
+msgstr ""
+
+#: class/Blog.php:386
+msgid "No action"
+msgstr ""
+
+#: class/Blog.php:410
+msgid "Missing title."
+msgstr ""
+
+#: class/Blog_Form.php:18
+msgid "Suggest entry"
+msgstr ""
+
+#: class/Blog_Form.php:26
+msgid "Save Changes and Approve"
+msgstr ""
+
+#: class/Blog_Form.php:32
+msgid "Update entry"
+msgstr ""
+
+#: class/Blog_Form.php:34
+msgid "Add entry"
+msgstr ""
+
+#: class/Blog_Form.php:38
+msgid "Allow comments"
+msgstr ""
+
+#: class/Blog_Form.php:42
+msgid "Allow anonymous comments"
+msgstr ""
+
+#: class/Blog_Form.php:57
+msgid "Image"
+msgstr ""
+
+#: class/Blog_Form.php:72
+msgid "Summary"
+msgstr ""
+
+#: class/Blog_Form.php:83
+msgid "Publish date/time"
+msgstr ""
+
+#: class/Blog_Form.php:101
+msgid "Blog view limit"
+msgstr ""
+
+#: class/Blog_Form.php:104
+msgid "Number of past entries"
+msgstr ""
+
+#: class/Blog_Form.php:108
+msgid "Allow comments by default"
+msgstr ""
+
+#: class/Blog_Form.php:112
+msgid "Use Image Manager"
+msgstr ""
+
+#: class/Blog_Form.php:116
+msgid "Show blog on home page"
+msgstr ""
+
+#: class/Blog_Form.php:121
+msgid "Cache anonymous view"
+msgstr ""
+
+#: class/Blog_Form.php:125
+msgid "System caching disabled."
+msgstr ""
+
+#: class/Blog_Form.php:128
+msgid "Reset cache"
+msgstr ""
+
+#: class/Blog_Form.php:133
+msgid "Allow anonymous submissions"
+msgstr ""
+
+#: class/Blog_Form.php:137
+msgid "Maximum image width (50-2048)"
+msgstr ""
+
+#: class/Blog_Form.php:141
+msgid "Maximum image height (50-2048)"
+msgstr ""
+
+#: class/Blog_Form.php:145
+msgid "Save settings"
+msgstr ""
+
+#: class/Blog_Form.php:150
+msgid "Clip for menu"
+msgstr ""
+
+#: class/Blog_Form.php:154
+msgid "Set to zero to prevent display"
+msgstr ""
+
+#: boost/uninstall.php:13
+msgid "Blog tables removed."
+msgstr ""
+
+#: boost/controlpanel.php:11
+msgid "Post current thoughts, happenings, and discussions."
+msgstr ""
+
+#: boost/permission.php:12
+msgid "Delete blog"
+msgstr ""
+
+#: boost/permission.php:13
+msgid "Change settings (Unrestricted only)"
 msgstr ""

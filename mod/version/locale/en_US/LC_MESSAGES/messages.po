@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-16 09:04-0500\n"
+"POT-Creation-Date: 2007-02-06 09:53-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,21 +16,56 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: boost/controlpanel.php:3
-msgid "Version"
+#: class/Restore.php:82
+msgid "No backup versions available."
 msgstr ""
 
-#: boost/controlpanel.php:6
-msgid "Controls the versioning settings."
+#: class/Restore.php:88 class/Approval.php:149
+msgid "Created"
 msgstr ""
 
-#: boost/unregister.php:45
-msgid "There was an error removing a version table."
+#: class/Restore.php:91 class/Approval.php:152
+msgid "Author"
 msgstr ""
 
-#: boost/unregister.php:47
-#, php-format
-msgid "Version table removed: %s"
+#: class/Restore.php:131
+msgid "Restore"
+msgstr ""
+
+#: class/Restore.php:133
+msgid "Are you sure you want to remove this version?"
+msgstr ""
+
+#: class/Restore.php:135
+msgid "Remove"
+msgstr ""
+
+#: class/Restore.php:145
+msgid "A problem occurred when trying to process the restoration list."
+msgstr ""
+
+#: class/Approval.php:128 class/Approval.php:143
+msgid "No items for approval."
+msgstr ""
+
+#: class/Approval.php:156
+msgid "Anonymous"
+msgstr ""
+
+#: class/Approval.php:197
+msgid "Approve"
+msgstr ""
+
+#: class/Approval.php:201
+msgid "Disapprove"
+msgstr ""
+
+#: class/Approval.php:207
+msgid "View"
+msgstr ""
+
+#: class/Approval.php:212
+msgid "Edit"
 msgstr ""
 
 #: class/Admin.php:23 class/Admin.php:30
@@ -47,50 +82,6 @@ msgstr ""
 
 #: class/Admin.php:61
 msgid "Save"
-msgstr ""
-
-#: class/Approval.php:128 class/Approval.php:143
-msgid "No items for approval."
-msgstr ""
-
-#: class/Approval.php:149 class/Restore.php:88
-msgid "Created"
-msgstr ""
-
-#: class/Approval.php:152 class/Restore.php:91
-msgid "Author"
-msgstr ""
-
-#: class/Approval.php:193
-msgid "Approve"
-msgstr ""
-
-#: class/Approval.php:197
-msgid "Disapprove"
-msgstr ""
-
-#: class/Approval.php:203
-msgid "View"
-msgstr ""
-
-#: class/Approval.php:208
-msgid "Edit"
-msgstr ""
-
-#: class/Restore.php:82
-msgid "No backup versions available."
-msgstr ""
-
-#: class/Restore.php:132
-msgid "Restore"
-msgstr ""
-
-#: class/Restore.php:134
-msgid "Are you sure you want to remove this version?"
-msgstr ""
-
-#: class/Restore.php:136
-msgid "Remove"
 msgstr ""
 
 #: conf/error.php:11
@@ -115,4 +106,21 @@ msgstr ""
 
 #: conf/error.php:16
 msgid "Missing columns.php file"
+msgstr ""
+
+#: boost/controlpanel.php:3
+msgid "Version"
+msgstr ""
+
+#: boost/controlpanel.php:6
+msgid "Controls the versioning settings."
+msgstr ""
+
+#: boost/unregister.php:45
+msgid "There was an error removing a version table."
+msgstr ""
+
+#: boost/unregister.php:47
+#, php-format
+msgid "Version table removed: %s"
 msgstr ""

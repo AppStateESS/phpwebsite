@@ -1,0 +1,85 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-02-06 09:53-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: class/Whodis.php:81
+msgid "- Referrer age -"
+msgstr ""
+
+#: class/Whodis.php:82
+msgid "1 day old"
+msgstr ""
+
+#: class/Whodis.php:83
+msgid "3 days old"
+msgstr ""
+
+#: class/Whodis.php:84
+msgid "1 week old"
+msgstr ""
+
+#: class/Whodis.php:85
+msgid "2 weeks old"
+msgstr ""
+
+#: class/Whodis.php:86
+msgid "1 month old"
+msgstr ""
+
+#: class/Whodis.php:87
+msgid "3 months old"
+msgstr ""
+
+#: class/Whodis.php:88
+msgid "1 year old"
+msgstr ""
+
+#: class/Whodis.php:89
+msgid "Everything"
+msgstr ""
+
+#: class/Whodis.php:95
+msgid "Purge"
+msgstr ""
+
+#: class/Whodis.php:96
+msgid "Visits"
+msgstr ""
+
+#: class/Whodis.php:97
+msgid "Delete checked"
+msgstr ""
+
+#: class/Whodis.php:108
+msgid "Referrer"
+msgstr ""
+
+#: class/Whodis.php:109
+msgid "First visit"
+msgstr ""
+
+#: class/Whodis.php:110
+msgid "Last visit"
+msgstr ""
+
+#: class/Whodis.php:111
+msgid "Total visits"
+msgstr ""
+
+#: boost/controlpanel.php:11
+msgid "Records the href referrers from who is visiting your site."
+msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-16 09:04-0500\n"
+"POT-Creation-Date: 2007-02-06 09:53-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,18 +16,18 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: boost/controlpanel.php:2
-msgid "Skeleton"
-msgstr ""
-
-#: boost/controlpanel.php:5
-msgid "A framework for creating modules."
+#: conf/error.php:3
+msgid "Skeleton module is broken."
 msgstr ""
 
 #: conf/config.php:3
 msgid "Hello world!"
 msgstr ""
 
-#: conf/error.php:3
-msgid "Skeleton module is broken."
+#: boost/controlpanel.php:2
+msgid "Skeleton"
+msgstr ""
+
+#: boost/controlpanel.php:5
+msgid "A framework for creating modules."
 msgstr ""

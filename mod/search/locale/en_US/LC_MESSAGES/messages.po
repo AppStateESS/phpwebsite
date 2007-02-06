@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-16 09:04-0500\n"
+"POT-Creation-Date: 2007-02-06 09:53-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,113 +16,9 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: boost/controlpanel.php:3 class/User.php:44 class/User.php:49
-#: class/User.php:131
+#: class/User.php:44 class/User.php:49 class/User.php:131
+#: boost/controlpanel.php:3
 msgid "Search"
-msgstr ""
-
-#: boost/controlpanel.php:6
-msgid "Administrate and see information on searches."
-msgstr ""
-
-#: boost/update.php:13
-msgid "Add permissions to search."
-msgstr ""
-
-#: boost/update.php:20
-msgid "Register Search to Key."
-msgstr ""
-
-#: boost/update.php:48
-msgid "A problem occurred during the update."
-msgstr ""
-
-#: class/Admin.php:75
-msgid "Keywords added to admin menu."
-msgstr ""
-
-#: class/Admin.php:202 class/Admin.php:215
-msgid "Drop"
-msgstr ""
-
-#: class/Admin.php:206
-msgid "Current keywords"
-msgstr ""
-
-#: class/Admin.php:221
-msgid "Add"
-msgstr ""
-
-#: class/Admin.php:227
-msgid "Clipped words"
-msgstr ""
-
-#: class/Admin.php:230
-msgid "Search Admin"
-msgstr ""
-
-#: class/Admin.php:232
-msgid "Close"
-msgstr ""
-
-#: class/Admin.php:243 class/Admin.php:354
-msgid "Keywords"
-msgstr ""
-
-#: class/Admin.php:253 class/Admin.php:306
-msgid "Delete"
-msgstr ""
-
-#: class/Admin.php:256 class/Admin.php:355
-msgid "Ignore"
-msgstr ""
-
-#: class/Admin.php:259
-msgid "Clip word"
-msgstr ""
-
-#: class/Admin.php:268 class/Admin.php:318
-msgid "Go"
-msgstr ""
-
-#: class/Admin.php:271 class/Admin.php:321
-msgid "Are you sure you want to delete the checked item(s)?"
-msgstr ""
-
-#: class/Admin.php:275 class/Admin.php:326
-msgid "Keyword"
-msgstr ""
-
-#: class/Admin.php:276
-msgid "Success"
-msgstr ""
-
-#: class/Admin.php:277
-msgid "Failure"
-msgstr ""
-
-#: class/Admin.php:278 class/Admin.php:328
-msgid "Last called"
-msgstr ""
-
-#: class/Admin.php:279
-msgid "Highest result"
-msgstr ""
-
-#: class/Admin.php:280
-msgid "Mixed"
-msgstr ""
-
-#: class/Admin.php:296
-msgid "Ignored"
-msgstr ""
-
-#: class/Admin.php:309
-msgid "Allow"
-msgstr ""
-
-#: class/Admin.php:327
-msgid "Total queries"
 msgstr ""
 
 #: class/User.php:78
@@ -177,6 +73,98 @@ msgstr ""
 msgid "The following search words were ignored"
 msgstr ""
 
-#: class/User.php:264
+#: class/User.php:269
 msgid "Nothing found"
+msgstr ""
+
+#: class/Admin.php:65
+msgid "Keywords added to admin menu."
+msgstr ""
+
+#: class/Admin.php:192 class/Admin.php:205
+msgid "Drop"
+msgstr ""
+
+#: class/Admin.php:196
+msgid "Current keywords"
+msgstr ""
+
+#: class/Admin.php:211
+msgid "Add"
+msgstr ""
+
+#: class/Admin.php:217
+msgid "Clipped words"
+msgstr ""
+
+#: class/Admin.php:220
+msgid "Search Admin"
+msgstr ""
+
+#: class/Admin.php:222
+msgid "Close"
+msgstr ""
+
+#: class/Admin.php:233 class/Admin.php:344
+msgid "Keywords"
+msgstr ""
+
+#: class/Admin.php:243 class/Admin.php:296
+msgid "Delete"
+msgstr ""
+
+#: class/Admin.php:246 class/Admin.php:345
+msgid "Ignore"
+msgstr ""
+
+#: class/Admin.php:249
+msgid "Clip word"
+msgstr ""
+
+#: class/Admin.php:258 class/Admin.php:308
+msgid "Go"
+msgstr ""
+
+#: class/Admin.php:261 class/Admin.php:311
+msgid "Are you sure you want to delete the checked item(s)?"
+msgstr ""
+
+#: class/Admin.php:265 class/Admin.php:316
+msgid "Keyword"
+msgstr ""
+
+#: class/Admin.php:266
+msgid "Success"
+msgstr ""
+
+#: class/Admin.php:267
+msgid "Failure"
+msgstr ""
+
+#: class/Admin.php:268 class/Admin.php:318
+msgid "Last called"
+msgstr ""
+
+#: class/Admin.php:269
+msgid "Highest result"
+msgstr ""
+
+#: class/Admin.php:270
+msgid "Mixed"
+msgstr ""
+
+#: class/Admin.php:286
+msgid "Ignored"
+msgstr ""
+
+#: class/Admin.php:299
+msgid "Allow"
+msgstr ""
+
+#: class/Admin.php:317
+msgid "Total queries"
+msgstr ""
+
+#: boost/controlpanel.php:6
+msgid "Administrate and see information on searches."
 msgstr ""

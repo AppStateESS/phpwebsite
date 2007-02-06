@@ -8,33 +8,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-30 08:52-0500\n"
+"POT-Creation-Date: 2007-02-06 09:53-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: boost/controlpanel.php:8
-msgid "Boost"
-msgstr ""
-
-#: boost/controlpanel.php:11
-msgid "Boost allows the installation and upgrading of modules."
-msgstr ""
-
-#: index.php:37 index.php:52 index.php:65 index.php:70 index.php:75
-msgid "Return to Boost"
-msgstr ""
-
-#: index.php:57
-msgid "An error occurred while installing this module."
-msgstr ""
-
-#: index.php:58
-msgid "Please check your error logs."
-msgstr ""
 
 #: class/Action.php:17 class/Action.php:23
 msgid "Update check file not found."
@@ -48,118 +28,215 @@ msgstr ""
 msgid "Current stable version"
 msgstr ""
 
-#: class/Action.php:33
+#: class/Action.php:31
+msgid "Source XML error"
+msgstr ""
+
+#: class/Action.php:39
 msgid "Changes"
 msgstr ""
 
-#: class/Action.php:35
+#: class/Action.php:41
 msgid "An update is available!"
 msgstr ""
 
-#: class/Action.php:36
+#: class/Action.php:42
 msgid "Download here"
 msgstr ""
 
-#: class/Action.php:38
+#: class/Action.php:44
 msgid "MD5 Sum"
 msgstr ""
 
-#: class/Action.php:42
+#: class/Action.php:48
 msgid "Dependencies"
 msgstr ""
 
-#: class/Action.php:43
+#: class/Action.php:49
 msgid "Module title"
 msgstr ""
 
-#: class/Action.php:44
+#: class/Action.php:50
 msgid "Version required"
 msgstr ""
 
-#: class/Action.php:45 class/Action.php:177
+#: class/Action.php:51 class/Action.php:183
 msgid "Status"
 msgstr ""
 
-#: class/Action.php:51 class/Action.php:192
+#: class/Action.php:57 class/Action.php:198
 msgid "Not installed"
 msgstr ""
 
-#: class/Action.php:54
+#: class/Action.php:60
 msgid "Needs upgrading"
 msgstr ""
 
-#: class/Action.php:57 class/Action.php:202
+#: class/Action.php:63 class/Action.php:208
 msgid "Passed!"
 msgstr ""
 
-#: class/Action.php:63
+#: class/Action.php:69
 msgid "Download"
 msgstr ""
 
-#: class/Action.php:70
+#: class/Action.php:76
 msgid "No update required."
 msgstr ""
 
-#: class/Action.php:73 class/Boost.php:878
+#: class/Action.php:79 class/Boost.php:891
 msgid "Module"
 msgstr ""
 
-#: class/Action.php:102
+#: class/Action.php:108
 msgid "Updating core"
 msgstr ""
 
-#: class/Action.php:108 class/Boost.php:232
+#: class/Action.php:114 class/Boost.php:232
 msgid "Processing update file."
 msgstr ""
 
-#: class/Action.php:118 class/Action.php:124 class/Action.php:126
+#: class/Action.php:124 class/Action.php:130 class/Action.php:132
 msgid "An error occurred updating the core."
 msgstr ""
 
-#: class/Action.php:120
+#: class/Action.php:126
 msgid "Core successfully updated."
 msgstr ""
 
-#: class/Action.php:151
+#: class/Action.php:157
 msgid "This module does not have dependents."
 msgstr ""
 
-#: class/Action.php:154
+#: class/Action.php:160
 #, php-format
 msgid "%s Dependencies"
 msgstr ""
 
-#: class/Action.php:156
+#: class/Action.php:162
 msgid "The following modules depend on this module to function:"
 msgstr ""
 
-#: class/Action.php:171
+#: class/Action.php:177
 #, php-format
 msgid "%s Module Dependencies"
 msgstr ""
 
-#: class/Action.php:173
+#: class/Action.php:179
 msgid "Module Needed"
 msgstr ""
 
-#: class/Action.php:174
+#: class/Action.php:180
 msgid "Version Needed"
 msgstr ""
 
-#: class/Action.php:175
+#: class/Action.php:181
 msgid "Current Version"
 msgstr ""
 
-#: class/Action.php:176
+#: class/Action.php:182
 msgid "Module Web Site"
 msgstr ""
 
-#: class/Action.php:199
+#: class/Action.php:205
 msgid "More info"
 msgstr ""
 
-#: class/Action.php:204
+#: class/Action.php:210
 msgid "Failed"
+msgstr ""
+
+#: class/Form.php:18
+msgid "index.php?module=boost&amp;action=admin"
+msgstr ""
+
+#: class/Form.php:20
+msgid "Core Modules"
+msgstr ""
+
+#: class/Form.php:21
+msgid "Other Modules"
+msgstr ""
+
+#: class/Form.php:75 class/Form.php:150
+#, php-format
+msgid "%s - New"
+msgstr ""
+
+#: class/Form.php:78 class/Form.php:153
+msgid "Check"
+msgstr ""
+
+#: class/Form.php:89 class/Form.php:177
+msgid "Update"
+msgstr ""
+
+#: class/Form.php:92 class/Form.php:165 class/Form.php:180
+msgid "Missing dependency"
+msgstr ""
+
+#: class/Form.php:98 class/Form.php:212
+msgid "None"
+msgstr ""
+
+#: class/Form.php:109
+msgid "Module Title"
+msgstr ""
+
+#: class/Form.php:111
+msgid "More information"
+msgstr ""
+
+#: class/Form.php:112
+msgid "Current version"
+msgstr ""
+
+#: class/Form.php:115
+msgid ""
+"WARNING: Only deities can uninstall core modules. Doing so may corrupt your "
+"installation!"
+msgstr ""
+
+#: class/Form.php:119
+msgid "No modules available."
+msgstr ""
+
+#: class/Form.php:162
+msgid "Install"
+msgstr ""
+
+#: class/Form.php:175
+msgid "Boost requires updating! You should do so before any other module!"
+msgstr ""
+
+#: class/Form.php:189
+#, php-format
+msgid "This module is depended upon by: %s"
+msgstr ""
+
+#: class/Form.php:190
+msgid "Depended upon"
+msgstr ""
+
+#: class/Form.php:193
+msgid ""
+"Are you sure you want to uninstall this module? All data will be deleted."
+msgstr ""
+
+#: class/Form.php:195
+msgid "Uninstall"
+msgstr ""
+
+#: class/Form.php:205
+msgid "About"
+msgstr ""
+
+#: class/Form.php:219
+msgid "Check all"
+msgstr ""
+
+#: class/Form.php:221
+msgid "Latest version"
 msgstr ""
 
 #: class/Boost.php:121
@@ -178,8 +255,8 @@ msgstr ""
 msgid "An import error occurred."
 msgstr ""
 
-#: class/Boost.php:132 class/Boost.php:274 class/Boost.php:593
-#: class/Boost.php:625
+#: class/Boost.php:132 class/Boost.php:274 class/Boost.php:606
+#: class/Boost.php:638
 msgid "Check your logs for more information."
 msgstr ""
 
@@ -314,222 +391,137 @@ msgstr ""
 msgid "Source image directory failed to copy."
 msgstr ""
 
-#: class/Boost.php:519 class/Boost.php:527 class/Boost.php:535
-#: class/Boost.php:543 class/Boost.php:551 class/Boost.php:559
+#: class/Boost.php:520 class/Boost.php:521 class/Boost.php:530
+#: class/Boost.php:531 class/Boost.php:540 class/Boost.php:541
+#: class/Boost.php:550 class/Boost.php:551 class/Boost.php:560
+#: class/Boost.php:561 class/Boost.php:570 class/Boost.php:571
 #, php-format
 msgid "Removing directory %s"
 msgstr ""
 
-#: class/Boost.php:521 class/Boost.php:529 class/Boost.php:537
-#: class/Boost.php:545 class/Boost.php:553 class/Boost.php:561
+#: class/Boost.php:523 class/Boost.php:533 class/Boost.php:543
+#: class/Boost.php:553 class/Boost.php:563 class/Boost.php:573
+msgid "Failure to remove directory."
+msgstr ""
+
+#: class/Boost.php:524 class/Boost.php:534 class/Boost.php:544
+#: class/Boost.php:554 class/Boost.php:564 class/Boost.php:574
 #, php-format
 msgid "Unable to remove directory %s"
 msgstr ""
 
-#: class/Boost.php:579
+#: class/Boost.php:592
 msgid "Registering module to core."
 msgstr ""
 
-#: class/Boost.php:592
+#: class/Boost.php:605
 msgid "An error occurred during registration."
 msgstr ""
 
-#: class/Boost.php:595
+#: class/Boost.php:608
 msgid "Registration successful."
 msgstr ""
 
-#: class/Boost.php:606
+#: class/Boost.php:619
 msgid "Registered to Key."
 msgstr ""
 
-#: class/Boost.php:616
+#: class/Boost.php:629
 msgid "Unregistering module from core."
 msgstr ""
 
-#: class/Boost.php:624
+#: class/Boost.php:637
 msgid "An error occurred while unregistering."
 msgstr ""
 
-#: class/Boost.php:627
+#: class/Boost.php:640
 msgid "Unregistering module from Boost was successful."
 msgstr ""
 
-#: class/Boost.php:632
+#: class/Boost.php:645
 msgid "Module's settings could not be removed. See your error log."
 msgstr ""
 
-#: class/Boost.php:634
+#: class/Boost.php:647
 msgid "Module's settings removed successfully."
 msgstr ""
 
-#: class/Boost.php:638
+#: class/Boost.php:651
 msgid "Key unregistration successful."
 msgstr ""
 
-#: class/Boost.php:640
+#: class/Boost.php:653
 msgid "Some key unregistrations were unsuccessful. Check your logs."
 msgstr ""
 
-#: class/Boost.php:738
+#: class/Boost.php:751
 #, php-format
 msgid "An error occurred while registering the %s module."
 msgstr ""
 
-#: class/Boost.php:743
+#: class/Boost.php:756
 #, php-format
 msgid "%1$s successfully registered to %2$s."
 msgstr ""
 
-#: class/Boost.php:767
+#: class/Boost.php:780
 #, php-format
 msgid "An error occurred while unregistering the %s module."
 msgstr ""
 
-#: class/Boost.php:772
+#: class/Boost.php:785
 #, php-format
 msgid "%1$s successfully unregistered from %2$s."
 msgstr ""
 
-#: class/Boost.php:782
+#: class/Boost.php:795
 msgid "Registering this module to other modules."
 msgstr ""
 
-#: class/Boost.php:800
+#: class/Boost.php:813
 msgid "Unregistering this module from other modules."
 msgstr ""
 
-#: class/Boost.php:822
+#: class/Boost.php:835
 msgid "Registering other modules to this module."
 msgstr ""
 
-#: class/Boost.php:838
+#: class/Boost.php:851
 msgid "Unregistering other modules from this module."
 msgstr ""
 
-#: class/Boost.php:891
+#: class/Boost.php:904
 msgid "The About file is missing for this module."
 msgstr ""
 
-#: class/Boost.php:920
+#: class/Boost.php:933
 msgid "The following directories need to be created:"
 msgstr ""
 
-#: class/Boost.php:926
+#: class/Boost.php:939
 msgid "The following directories are not writable:"
 msgstr ""
 
-#: class/Boost.php:928
+#: class/Boost.php:941
 msgid "You will need to change the permissions."
 msgstr ""
 
-#: class/Boost.php:929
+#: class/Boost.php:942
 msgid "Permission Help"
 msgstr ""
 
-#: class/Boost.php:936
+#: class/Boost.php:949
 #, php-format
 msgid "Your logs/%s file must be readable and writable."
 msgstr ""
 
-#: class/Boost.php:1104
+#: class/Boost.php:1117
 #, php-format
 msgid "Updating branch %s"
 msgstr ""
 
-#: class/Boost.php:1109
+#: class/Boost.php:1122
 msgid "Unable to update branch."
-msgstr ""
-
-#: class/Form.php:18
-msgid "index.php?module=boost&amp;action=admin"
-msgstr ""
-
-#: class/Form.php:20
-msgid "Core Modules"
-msgstr ""
-
-#: class/Form.php:21
-msgid "Other Modules"
-msgstr ""
-
-#: class/Form.php:75 class/Form.php:186
-msgid "Update available"
-msgstr ""
-
-#: class/Form.php:77 class/Form.php:188
-msgid "Up to date"
-msgstr ""
-
-#: class/Form.php:80 class/Form.php:191
-msgid "Check"
-msgstr ""
-
-#: class/Form.php:91 class/Form.php:174
-msgid "Update"
-msgstr ""
-
-#: class/Form.php:94 class/Form.php:149 class/Form.php:177
-msgid "Missing dependency"
-msgstr ""
-
-#: class/Form.php:111
-msgid "Module Title"
-msgstr ""
-
-#: class/Form.php:113
-msgid "More information"
-msgstr ""
-
-#: class/Form.php:114
-msgid "Current version"
-msgstr ""
-
-#: class/Form.php:117
-msgid ""
-"WARNING: Only deities can uninstall core modules. Doing so may corrupt your "
-"installation!"
-msgstr ""
-
-#: class/Form.php:121
-msgid "No modules available."
-msgstr ""
-
-#: class/Form.php:146
-msgid "Install"
-msgstr ""
-
-#: class/Form.php:156
-#, php-format
-msgid "This module is depended upon by: %s"
-msgstr ""
-
-#: class/Form.php:157
-msgid "Depended upon"
-msgstr ""
-
-#: class/Form.php:160
-msgid ""
-"Are you sure you want to uninstall this module? All data will be deleted."
-msgstr ""
-
-#: class/Form.php:162
-msgid "Uninstall"
-msgstr ""
-
-#: class/Form.php:172
-msgid "Boost requires updating! You should do so before any other module!"
-msgstr ""
-
-#: class/Form.php:196
-msgid "No Action"
-msgstr ""
-
-#: class/Form.php:204
-msgid "About"
-msgstr ""
-
-#: class/Form.php:217
-msgid "Check all"
 msgstr ""
 
 #: conf/error.php:7
@@ -566,4 +558,24 @@ msgstr ""
 
 #: conf/error.php:15
 msgid "Failed to copy file to local directory."
+msgstr ""
+
+#: boost/controlpanel.php:8
+msgid "Boost"
+msgstr ""
+
+#: boost/controlpanel.php:11
+msgid "Boost allows the installation and upgrading of modules."
+msgstr ""
+
+#: index.php:37 index.php:52 index.php:65 index.php:70 index.php:75
+msgid "Return to Boost"
+msgstr ""
+
+#: index.php:57
+msgid "An error occurred while installing this module."
+msgstr ""
+
+#: index.php:58
+msgid "Please check your error logs."
 msgstr ""

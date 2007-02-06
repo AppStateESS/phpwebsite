@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-16 09:04-0500\n"
+"POT-Creation-Date: 2007-02-06 09:53-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,152 +16,16 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: boost/controlpanel.php:3
-msgid "Profiler"
-msgstr ""
-
-#: boost/controlpanel.php:6
-msgid "Create profiles on individuals for display on site."
-msgstr ""
-
-#: boost/permission.php:5
-msgid "Delete Profiles"
-msgstr ""
-
-#: boost/uninstall.php:14
-msgid "Profiles table removed."
-msgstr ""
-
-#: class/Division.php:40 class/Profile.php:308
-msgid "Edit"
-msgstr ""
-
-#: class/Forms.php:37
-msgid "Please make a profile division type first."
-msgstr ""
-
-#: class/Forms.php:44
-msgid "First name"
-msgstr ""
-
-#: class/Forms.php:47
-msgid "Last name"
-msgstr ""
-
-#: class/Forms.php:50
-msgid "Full story"
-msgstr ""
-
-#: class/Forms.php:56
-msgid "Caption"
-msgstr ""
-
-#: class/Forms.php:60
-msgid "Profile type"
-msgstr ""
-
-#: class/Forms.php:63 class/Profile.php:93
-msgid "Email address"
-msgstr ""
-
-#: class/Forms.php:67
-msgid "Web site address"
-msgstr ""
-
-#: class/Forms.php:72
-msgid "Update profile"
-msgstr ""
-
-#: class/Forms.php:74
-msgid "Create profile"
-msgstr ""
-
-#: class/Forms.php:86
-msgid "Large photo"
-msgstr ""
-
-#: class/Forms.php:87
-msgid "Medium photo"
-msgstr ""
-
-#: class/Forms.php:88
-msgid "Small photo"
-msgstr ""
-
-#: class/Forms.php:109
-msgid "Last Name"
-msgstr ""
-
-#: class/Forms.php:110
-msgid "First Name"
-msgstr ""
-
-#: class/Forms.php:111
-msgid "Type"
-msgstr ""
-
-#: class/Forms.php:112
-msgid "Submission Date"
-msgstr ""
-
-#: class/Forms.php:113 class/Forms.php:162
-msgid "Action"
-msgstr ""
-
-#: class/Forms.php:139
-msgid "Number of profiles"
-msgstr ""
-
-#: class/Forms.php:143
-msgid "Enable profile homepage"
-msgstr ""
-
-#: class/Forms.php:145
-msgid "Save settings"
-msgstr ""
-
-#: class/Forms.php:158
-msgid "Add division"
-msgstr ""
-
-#: class/Forms.php:161
-msgid "Title"
-msgstr ""
-
-#: class/Forms.php:163
-msgid "Division ID"
-msgstr ""
-
-#: class/Forms.php:182
-msgid "Update Division"
-msgstr ""
-
-#: class/Forms.php:184
-msgid "Create Division"
-msgstr ""
-
-#: class/Forms.php:187
-msgid "Save"
-msgstr ""
-
-#: class/Forms.php:189
-msgid "Division title"
-msgstr ""
-
-#: class/Forms.php:191
-msgid "Cancel"
-msgstr ""
-
-#: class/Forms.php:196
-msgid "Your title is empty or already in use. Enter another."
-msgstr ""
-
 #: class/Profile.php:88
 msgid "Read more. . ."
 msgstr ""
 
 #: class/Profile.php:89 class/Profile.php:114
 msgid "Web site"
+msgstr ""
+
+#: class/Profile.php:93 class/Forms.php:63
+msgid "Email address"
 msgstr ""
 
 #: class/Profile.php:105
@@ -186,6 +50,10 @@ msgstr ""
 
 #: class/Profile.php:280
 msgid "Email address does not appear valid."
+msgstr ""
+
+#: class/Profile.php:308 class/Division.php:40
+msgid "Edit"
 msgstr ""
 
 #: class/Profile.php:314
@@ -284,6 +152,138 @@ msgstr ""
 msgid "Division"
 msgstr ""
 
+#: class/Forms.php:37
+msgid "Please make a profile division type first."
+msgstr ""
+
+#: class/Forms.php:44
+msgid "First name"
+msgstr ""
+
+#: class/Forms.php:47
+msgid "Last name"
+msgstr ""
+
+#: class/Forms.php:50
+msgid "Full story"
+msgstr ""
+
+#: class/Forms.php:56
+msgid "Caption"
+msgstr ""
+
+#: class/Forms.php:60
+msgid "Profile type"
+msgstr ""
+
+#: class/Forms.php:67
+msgid "Web site address"
+msgstr ""
+
+#: class/Forms.php:72
+msgid "Update profile"
+msgstr ""
+
+#: class/Forms.php:74
+msgid "Create profile"
+msgstr ""
+
+#: class/Forms.php:86
+msgid "Large photo"
+msgstr ""
+
+#: class/Forms.php:87
+msgid "Medium photo"
+msgstr ""
+
+#: class/Forms.php:88
+msgid "Small photo"
+msgstr ""
+
+#: class/Forms.php:109
+msgid "Last Name"
+msgstr ""
+
+#: class/Forms.php:110
+msgid "First Name"
+msgstr ""
+
+#: class/Forms.php:111
+msgid "Type"
+msgstr ""
+
+#: class/Forms.php:112
+msgid "Submission Date"
+msgstr ""
+
+#: class/Forms.php:113 class/Forms.php:162
+msgid "Action"
+msgstr ""
+
+#: class/Forms.php:139
+msgid "Number of profiles"
+msgstr ""
+
+#: class/Forms.php:143
+msgid "Enable profile homepage"
+msgstr ""
+
+#: class/Forms.php:145
+msgid "Save settings"
+msgstr ""
+
+#: class/Forms.php:158
+msgid "Add division"
+msgstr ""
+
+#: class/Forms.php:161
+msgid "Title"
+msgstr ""
+
+#: class/Forms.php:163
+msgid "Division ID"
+msgstr ""
+
+#: class/Forms.php:182
+msgid "Update Division"
+msgstr ""
+
+#: class/Forms.php:184
+msgid "Create Division"
+msgstr ""
+
+#: class/Forms.php:187
+msgid "Save"
+msgstr ""
+
+#: class/Forms.php:189
+msgid "Division title"
+msgstr ""
+
+#: class/Forms.php:191
+msgid "Cancel"
+msgstr ""
+
+#: class/Forms.php:196
+msgid "Your title is empty or already in use. Enter another."
+msgstr ""
+
 #: conf/error.php:5
 msgid "Profile not found."
+msgstr ""
+
+#: boost/uninstall.php:14
+msgid "Profiles table removed."
+msgstr ""
+
+#: boost/controlpanel.php:3
+msgid "Profiler"
+msgstr ""
+
+#: boost/controlpanel.php:6
+msgid "Create profiles on individuals for display on site."
+msgstr ""
+
+#: boost/permission.php:5
+msgid "Delete Profiles"
 msgstr ""
