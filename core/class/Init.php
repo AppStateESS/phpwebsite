@@ -88,6 +88,7 @@ function initLanguage()
         if ($locale == FALSE) {
             $locale = setLanguage(DEFAULT_LANGUAGE);
         }
+        $locale = str_replace('.UTF-8', '', $locale);
     } else {
         $userLang = getBrowserLanguage();
         $locale_found = FALSE;
@@ -270,7 +271,6 @@ function getBrowserLanguage()
 function loadLanguageDefaults($language)
 {
     $rootDir = PHPWS_HOME_DIR . 'config/core/i18n/';
-
     if (is_file($rootDir . $language . '.php')){
         require_once $rootDir . $language . '.php';
     } else {
