@@ -34,7 +34,7 @@ class PHPWS_Group {
 
     function init()
     {
-        $db = & new PHPWS_DB('users_groups');
+        $db = new PHPWS_DB('users_groups');
         return $db->loadObject($this);
     }
 
@@ -60,7 +60,7 @@ class PHPWS_Group {
 
     function loadGroups()
     {
-        $DB = & new PHPWS_DB('users_members');
+        $DB = new PHPWS_DB('users_members');
         $DB->addWhere('member_id', $this->getId());
         $DB->addColumn('group_id');
         $result = $DB->select('col');
@@ -85,7 +85,7 @@ class PHPWS_Group {
 
     function loadMembers()
     {
-        $db = & new PHPWS_DB('users_members');
+        $db = new PHPWS_DB('users_members');
         $db->addWhere('group_id', $this->getId());
         $db->addColumn('member_id');
         $result = $db->select('col');
@@ -101,7 +101,7 @@ class PHPWS_Group {
             if (strlen($name) < GROUPNAME_LENGTH)
                 return PHPWS_Error::get(USER_ERR_BAD_GROUP_NAME, 'users', 'setName');
 
-            $db = & new PHPWS_DB('users_groups');
+            $db = new PHPWS_DB('users_groups');
             $db->addWhere('name', $name);
             $db->addWhere('id', $this->id, '!=');
             $result = $db->select('one');
@@ -151,15 +151,22 @@ class PHPWS_Group {
 
     function dropAllMembers()
     {
-        $db = & new PHPWS_DB('users_members');
+        $db = new PHPWS_DB('users_members');
         $db->addWhere('group_id', $this->getId());
+        return $db->delete();
+    }
+
+    function clearMembership()
+    {
+        $db = new PHPWS_DB('users_members');
+        $db->addWhere('member_id', $this->getId());
         return $db->delete();
     }
 
     function addMember($member, $test=FALSE)
     {
         if ($test == TRUE){
-            $db = & new PHPWS_DB('users_groups');
+            $db = new PHPWS_DB('users_groups');
             $db->addWhere('id', $member);
             $result = $db->select('one');
             if (isset($result)){
@@ -184,14 +191,14 @@ class PHPWS_Group {
 
     function save()
     {
-        $db = & new PHPWS_DB('users_groups');
+        $db = new PHPWS_DB('users_groups');
 
         $result = $db->saveObject($this);
         $members = $this->getMembers();
 
         if (isset($members)){
             $this->dropAllMembers();
-            $db = & new PHPWS_DB('users_members');
+            $db = new PHPWS_DB('users_members');
             foreach($members as $member){
                 $db->addValue('group_id', $this->getId());
                 $db->addValue('member_id', $member);
@@ -203,10 +210,11 @@ class PHPWS_Group {
 
     function kill()
     {
-        $db = & new PHPWS_DB('users_groups');
+        $db = new PHPWS_DB('users_groups');
         $db->addWhere('id', $this->id);
         $db->delete();
         $this->dropAllMembers();
+        $this->clearMembership();
     }
 
     function allow($itemName, $permission=NULL, $item_id=NULL, $itemname=NULL)
@@ -235,7 +243,7 @@ class PHPWS_Group {
             $groups = $this->_groups;
 
         $groups[] = $this->getId();
-        $this->_permission = & new Users_Permission($groups);
+        $this->_permission = new Users_Permission($groups);
     }
 
     function getTplTags()
