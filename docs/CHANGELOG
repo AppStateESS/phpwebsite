@@ -1,182 +1,41 @@
-February 5
-----------
+6 February 2007
++ Init.php - strips the UTF8 off the end of locale to match preference
+             file
++ Language - updated po file
 
-Access
----------
-+ Fixed header tags Bug #1652279
-+ Updated files: templates/main.tpl, templates/box.tpl,
-  templates/shortcut_menu.tpl 
-
-Blog
----------
-+ Added missing comma after image_id column
-
-
-February 2
-----------
-
-Calendar
---------
-+ Bug #1648965. Clicking Day or Week from grid view pulls correct day
-+ Changed "Today" link to view appropiate description to prevent
-  confusion
-+ Changed time defaults to %p to work with more installs
-+ If start date is greater than end date, the event will be saved to
-  the save day.
-+ Bug #1648963. Fixed mini month not showing days with events.
-+ Updated files: conf/config.php
-+ Made event count linkable in grid view
-
-Core
-------
+2 February 2007
 + Editor - Fixed FCKeditor's style sheet
 
-Menu
------
-+ Links missing &amp; were causing validation errors. Fixed.
-+ Fixed missing quote in config.php links
-+ Updated files: conf/config.php
-
-
-Web Pages
----------
-+ Moved a function out of Page getTpl for clarity
-+ Added a page select with onchange function. Put it into the basic
-  page layout
-+ Added page summary information to page templates
-+ Replaced an panic exit with an logged error and send to the
-  errorPage
-+ Updated files: templates/page/basic.tpl, templates/page/prev_next.tpl,
-  templates/page/short_links.tpl templates/page/verbose_links.tpl,
-  conf/error.php 
-
-
-February 1
-----------
-
-Core
--------
+1 February 2007
 + Theme - added code to prevent image overlap in blog and webpage
 + Database.php - addTableColumn checks for a column's existence and
   returning false if so. Prevents error lock ups.
 
-Webpage 
--------
-+ Altered page templates to prevent float overlap (previous update
-  takes care of copy)
-
-
-Blog
--------
-+ Added ability to place images on blog entries without editor.
-
-
-File Cabinet
--------------
-+ Fixed base directory uploads
-+ Document was changing the object id to null when failing to load the
-  object. Changed it to a zero.
-+ Added more directory error checks.
-+ Image manager will try and match the current module to its directory.
-+ New error message for bad directory choice
-
-
-January 31
-----------
-
-Version
---------
-+ Version listing was not keeping correct number of versions.
-+ Reduced default version storage to 5.
-
-File Cabinet
-------------
-+ Increased file name size in database.
-+ Added image directory selection to pick image menu
-+ Choosing an image directory only shows images from that directory
-+ Removed choice of image directory root. Will always be images/
-+ Fixed root document directory. Now actually puts files in said
-  directory.
-+ Upload windows choose the default directory better
-+ Removed [default] tag from directory listing
-
-
-Web Page
---------
-+ Added simple image page addition.
-
-
-Core
+31 January 2007
 + File.php - removed old version of readDirectory
 
-Categories
-+ With quick creation of categories in place, no need for old warning
-  message. Altered pop up box.
-
-January 30
-----------
-Core
+30 January 2007
 + Core
   o Added check for leading slash in url sent to reroute function
   o Added setLastPost to reroute function. Function was getting skipped.
-
 + Database
   o fixed getObjects. Extra parameters were passed to constructors BUT
     the object is not passed by reference in php 4. Once the object
     was created, it was cleared 
 
-Comments
-+ Fixed isPosted check to prevent extra posts
-
-January 29
-----------
-Core
+29 January 2007
 + Editors
   o Removed dependence on SCRIPT_FILENAME variable for FCK's file
     manager
   o Fixed the style settings in the FCK editor
   o Added style settings note to FCK readme file
 
-Calendar
-+ Labeled some permissions "unrestricted only"
-+ Added permissions checks for editing and deleting
-+ Created checkPermissions function in schedule class to simplify code
-+ Removed commented legacy code from Schedule.php
-+ Added missing suggestion tables to install and uninstall
-+ Fixed caching logic 
-
-January 26
-----------
-Core
+26 January 2007
 + Settings will now change numeric strings to integers
 + Theme : added margin to bottom of blog
 
-Blog
-+ Finished pagination of blog view
-+ Removed test code
-+ Updated files: templates/list_view.tpl
 
-Webpage
-+ Moved error defines into their own file
-+ lowercased constants
-+ Added some missing error reporting
-+ Worked on page editing and approval
-+ Updated files: conf/config.php, conf/error.php, templates/form/edit_page.tpl
-
-January 25
-----------
-
-Calendar
-+ Fixed default schedule loading in Calendar class
-+ Fixed inability to create more than one schedule
-+ Added option to disable month view caching
-+ Caching now works on public calendars only.
-+ Updated files: templates/admin/settings.tpl
-
-Blog
-+ Added pagination to blog view
-
-Core
+25 January 2007
 + Database
   o Fixed some mixups in the setLimit function
   o Limit variables passed by reference instead of copied
@@ -184,21 +43,7 @@ Core
   o Part of setLimit problem was pager was working around the error by
   sending backward data. Fixed.
 
-
-
-January 19
-----------
-
-Web Page
-+ Fixed delete call from list link
-
-Layout
-+ Added the plug function to allow users to inject content directly
-  into a theme.
-+ Layout now looks for and includes a theme's theme.php file.
-+ Updated files : conf/config.php
-
-Core
+19 January 2007
 + Core.php
   o Changed Branch checking method (Bug #1638042)
   o Added error checks to goBack to prevent endless loop
@@ -213,132 +58,41 @@ Core
 + DBPager
   o Fixed pagination if the limit it raised on a high page count
 
-Categories
-+ Added ability to add categories quickly on the assignment form
-+ Category parent defaulted to zero instead of null
-+ Updated files: templates/menu_bar.tpl, templates/popup_menu.tpl
-
-Blog
-+ Added a setting to enable/disable the blog view caching.
-+ Added link to reset the view cache.
-+ Updated files : templates/settings.tpl
-
-January 17
-----------
-Core
+17 January 2007
 + File.php - rewrote readDirectory function.
 
-January 16
-----------
-Phatform
-+ Added missing "export" directory creation.
-+ Removed all global core calls
-
-Core
+16 January 2007
 + DB_Pager
   o Removing resetColumns function from getTotalRows function.
   o Error check added before calling javascriptEnabled function.
   o Some tidy
 
-
-File Cabinet
-+ Fixed bug in image manager. Was ignoring width and height upload
-  restrictions.
-+ lowercased bools
-+ Changed 'x' to 'by' in error message.
-
-January 12
-----------
-
-Users
-----------
-+ Added a unrestricted only parameter to Current_User's allow and
-  authorize functions
-
-Web Pages
-----------
-+ Added ability to restore old headers and pages.
-+ Updated files: templates/header.tpl
-
-Photoalbum
-----------
-+ Linked the Album image
-
-Core
+12 January 2007
 + Database
   o Added Hilmar's prefixing code.
 
-January 10
-----------
-Core
+10 January 2007
 + Documentation
   o Created Captcha.txt documentation for Captcha class.
 
-
-Users
-+ Dropped references from some constructors
-+ Added error check to setPermissions function: won't accept empty
-  group id
-+ tidied (lower cased constants)
-+ Changed id default to zero.
-
-
-Blog
-+ Added Version module requirement
-+ Added ability for anonymous and users without blog permission to
-  submit entries for later approval.
-+ Added setting to allow anonymous submission.
-+ Updated files: templates/edit.tpl, templates/settings.tpl,
-  templates/submit.tpl, templates/user_main.tpl
-
-Version
-+ Changed the way approval versions are pulled. Allows vr_creator to
-  be 0 for anonymous submissions.
-+ If the author is blank, version labels the author as Anonymous.
-
-January 9
----------
-Menu
-+ Added pinLink function for developers to add a link to any menu.
-+ Added mechanism for adding a pinned link.
-+ Updated files: conf/config.php, templates/links/link.tpl,
-  templates/menu_layout/basic.tpl, img/attach.png,
-  templates/admin/pin_list.tpl
-        
-
-Core
+9 January 2007
 + Convert
   o Error checked added to Blog to assure Announcements was installed.
-
 + File.php
   o Fixed bug in rmdir function preventing files inside directories
     from being deleted. 
 
-
-Whodis? - 0.0.3
-+ Added search option to listing.
-+ Added checkboxes on referrers for search deletions.
-
-Users
-+ Removed unneeded function parameter on getGroups
-
-January 8
----------
-Core
+8 January 2007
 + Database
   o Added functions to try and prevent table prefixing inside single
     quotes. 
 
-December 13
------------
-Core
+13 December 2006
 + Editor
   o Added a "limited" option to allow the wysiwyg stub developer to
     have a second set of tools.
-
 + Form
   o useEditor function will now accept a limited parameter.
-
 + Text.php
   o Added parameter to makeRelative to force a change only inside link
     tags
@@ -346,7 +100,6 @@ Core
   o makeRelative only changes urls next to the characters =". This
     should prevent displayed addresses from being relativized.
   o Added function to collapse long urls.
-
 + Documentation
   o Added a small note to DB_Pager.txt to inform the user that basic
     instruction does not end at the $pager->get() function.
@@ -354,30 +107,13 @@ Core
     Form class. 
   o Settings_Class.txt - fixed the path location for the settings.php
     file. 
-
 + Javascript
   o FCKEditor - added ability to show limited wysiwyg tool
-
 + Setup
   o Error messages now appear under incorrect setting
 
 
-Calendar
-+ Updated files : templates/admin/forms/edit_event.tpl
-                  templates/view/day
-                  templates/style.css
-                  templates/user_main.tpl
-                  templates/admin/approval.tpl
-                  conf/config.php
-+ Added ability for users to make event suggestions
-+ Fixed some javascript vs. non-js issues in event creation.
-
-
-
-December 11
------------
-Core
-
+11 December 2006
 + DBPager
   o Current page set back to page 1 after a new search or if current
     page is set to zero
@@ -388,13 +124,11 @@ Core
   o Pager now grabs navigation and sort buttons regardless of row
     status. 
 
-December 8
-----------
 
-Branch
-+ Added missing cache_directory value for config.tpl.
 
-Core - 1.3.6
+Version 1.3.6
+--------------------------------------------------------------------------
+8 December 2006
 + Pear - added mime file for email class
 + Convert
   o Convert class now allows the user to pick a destination branch.
@@ -404,100 +138,45 @@ Core - 1.3.6
     can be created for 8859 to utf-8 conversions.
   o Fixed File Cabinet conversion typo (bug #1608912).
 
-Boost
-+ Added error check for version checking Bug #1606366
-
-Users - 2.2.2
-+ Fixed typo causing branch installation failure on Postgresql
-
-December 7
-----------
-
-Users - 2.2.2
-+ Set username to the same character size in both users table and
-user_authorization.
-
-December 6
-----------
-Core - 1.3.6
+6 December 2006
 + Documentation
   o Settings_Class - Fixed directory for settings file
 + Settings
   o Set password character limits
   o Moved error messages to appropriate areas
 
-December 4
-----------
-Core - 1.3.6
+4 December 2006
 + Settings
   o Now allows null settings.
 + Javascript
   o Added suggested js_calendar fix. Thanks Verdon.
 
-Whodis - 0.0.2
-+ Added purge functionality.
 
-December 1
-----------
-Users - 2.2.1
-+ Fixed a bug causing conflicts between user and group permissions.
-
-Whodis - 0.0.2
-+ Created href referrer module.
-
-November 30
------------
-Boost - 1.9.9
-+ Added link to check all modules for updates at once.
-+ Updated file templates/module_list.tpl
-
-November 29
------------
-General
+Version 1.3.5
+--------------------------------------------------------------------------
+29 November 2006
 + Changed boost files to prevent unneccessary folder creation
-
-Core - 1.3.5
 + Convertion - added note to readme
 + Core.php - Fixed bug with getHomeHttp function
 + Javascript
   o Rewrote portions of FCKeditor file manager. Works better now.
   o Rewrote FCKeditor upload to work better with links.
 
-Boost - 1.9.9
-+ Changed updateFiles to return false even with a an error. Now logs
-  the error instead of returning it.
 
-
-November 28
------------
-
-Core - 1.3.4
+Version 1.3.4
+--------------------------------------------------------------------------
+28 November 2006
 + General
   o Moved core config file to new conf directory
   o Tarred pear directory so would uncompress in lib directory
-
 + Setup
   o Allows you to install phpWebSite into an existing database
   o Set default editor to FCK
-
 + Module - can now initialize core as a module
-
 + Core - removed loadAsMod function. Ability transfered to Module
          class. 
 
-Calendar
-+ Changed default public calendar to -1 to prevent error messages.
-
-
-Boost - 1.9.8
-+ Removed the old loadAsMod functions for core.
-+ Core updates config, image, template, and javascript files.
-+ Added dependency ability for core.
-
-
-November 27
------------
-Core - 1.3.4
+27 November 2006
 + DBPager - Added saveLastView and getLastView functions. Allows the
             dev to record where the user was last if they may leave
             the page and need to return where they left. 
@@ -512,52 +191,16 @@ Core - 1.3.4
 + Init.php - errorDefines.php now pulled from the source inc directory
 + Key.php - Added an error check to restrictView function
 
-Search - 0.2.0
-+ Moved deletion of keyword to its own function
-+ Fixed javascript confirmation on item deletion
-+ Deletion of keyword is now htmlentitified to catch foreign
-  characters
-+ Added resetKeywords function
-+ FilterWords now has a htmlentities parameter and allows foreign
-  characters (bug #1602039). Thanks WeBToR
-+ Config file is no longer hardcoded. Now picks file based on language.
-+ If all search words are undersized, search will not throw an
-  error anymore.
-
-Comments - 0.5.0
-+ Updated templates templates/view.tpl, templates/alt_view.tpl
-+ Added anchor tag to templates and code.
-+ Changed the getSourceUrl function in the Thread to use the DBPager's
-  new saveLastView and getLastView functions.
-+ Update dependent on new core.
-
-Blog - 1.2.3
-+ Making call to resetKeywords in search.
-+ Depends on latest search version
-
-Web Page - 0.2.6
-+ Moved search save to Volume class
-+ Searches now reset search key words to prevent lost searches.
-+ Depends on new search
-
-Menu
-+ Added a color : inherit to menu's style sheet to conform with css
-  standards. 
-
-November 24
------------
-Core - 1.3.4
+24 November 2006
 + DBPager - Replaced regexp expression with like expression. regexp
             incompatible with postgresql. 
 
-November 21
------------
+21 November 2006
 General
 -------
 Removed broken style tag from various about.html files (bug
 #1599136).
 
-Core - 1.3.4
 + Text.php
   o Changed isValidInput to allow emails with slashes (Bug #1600198)
   o Altered isValidInput url check slightly
@@ -568,20 +211,9 @@ Core - 1.3.4
 + Cookie.php
   o Added error check to unset function (bug #1599140).
 
-
-Layout - 2.2.1
-+ Fixed index names, removed unneccessary index call
-
-Phatform - 3.0.5
-+ Small clarification to readme.txt
-+ Fixed typo in FormManager
-
-phpwebsite 1.0.0 stable release below
--------------------------------------
-
-November 17
------------
-Core - 1.3.3
+Version 1.3.3
+--------------------------------------------------------------------------
+17 November 2006
 + Cache.php
   o Added site hash to key.
 + Text.php
@@ -591,34 +223,19 @@ Core - 1.3.3
 
 CHANGELOG for phpWebSite version 1.0.0 stable
 
-November 17
------------
-Core - 1.3.2
+
+Version 1.3.2
+--------------------------------------------------------------------------
+17 November 2006
 + Database.php
   o Added code to prevent index creation on sql imports if requested.
 + Setup
   o Removed RC stuff from welcome
   o Changed setup colors
 
-Layout - 2.2.0
-+ Added missing table to install.sql
-+ Added index to metatags table
-
-
-Calendar - 1.2.2
-+ Fixed mini calendar changing date when viewing other months
-+ Creating a new event will now properly use the currently viewed date
-+ Added reset cache link to miniadmin
-+ Added setting to show day links on mini calendar only if there is an
-  event on that day (Bug #1596779).
-+ Added caching to mini calendar
-+ Opened caching on grid regardless of log status
-+ Events now appear on previous and next months in grid view
-  (Bug #1596780) 
-
-November 16
------------
-Core - 1.3.1
+Version 1.3.1
+--------------------------------------------------------------------------
+16 November 2006
 + Database.php
   o Added a DB_ALLOW_TABLE_INDEX definition to allow users with limited
     access to install.
@@ -629,27 +246,12 @@ Core - 1.3.1
   o Added a couple of lines to breaker to prevent breaks inside pre
     tags
 
-Webpage - 0.2.5
-+ Removed old update code and a repeat
-
-Users - 2.2.0
-+ Log in form returns null if the user box is set to none
-
-November 15
------------
-Core - 1.3.0
+Version 1.3.0
+--------------------------------------------------------------------------
+15 November 2006
 + Added photoalbum conversion
 
-Phatform - 3.0.4
-+ Simplified install.sql
-+ Fixed some incompatible errorMessage function calls
-
-Photoalbum - 1.3.3
-+ changed pager to use album ids and not photo id. big bug
-
-November 14
------------
-Core - 1.3.0
+14 November 2006
 + Convert
   o Added ability to set table prefix of conversion database.
   o Added Phatform category conversion.
@@ -658,17 +260,7 @@ Core - 1.3.0
     conversion to readme file.
 + Database - Fixed export function.
 
-Boost - 1.9.7
-+ Check link will appear regardless of directory permissions.
-
-Version - 0.1.0
-+ Version won't spam tables it didn't remove when uninstalling a
-  module. 
-
-
-November 13
------------
-Core - 1.3.0
+13 November 2006
 + Form.php - Change to the editor code that should prevent the
   doubling of breaks
 + Text.php - added the smilies parameter to the constructor.
@@ -676,125 +268,45 @@ Core - 1.3.0
 + Setup - added captcha information to config.tpl, removed file_type include
 + Index.php - Added file_types include
 
-Branch - 1.0.2
-+ Updated files : templates/config.tpl
-+ Added captcha information to branch config template and removed
-  file types include.
-
-
-Comments - 0.4.0
-+ Updated files : templates/edit.tpl, templates/settings_form.tpl
-+ Added a permission for settings control.
-+ Added new Captcha class for commenting (dependency on new core)
-+ Added selector for captcha control on settings tab
-
-
-Users - 2.2.0
-+ Removed permissions page link on new user creation
-+ Added error check to prohibit permissions on new users
-+ Added support for new Captcha core class (dependency on new core)
-
-November 10
------------
-Core - 1.3.0
+10 November 2006
 + Convert
   o Now looks for info.ini file if language version not available
   o Added info.ini files for each converted module
   o Removed unused en-us ini files.
-
 + Database
   o Added a report_error parameter to importFile function.
-
 + Text
   o Added a function to fix basic anchors in parsed text. Will now
     suppliment them with the current url.
   o Added a parameter to control whether to fix anchors by default or
     not. Default set in config/core/text_settings.php update.
-
 + Functions
   o Added str_split
 
-Layout - 2.2.0
-+ Added meta tag settings per page.
-
-Blog - 1.2.2
-+ Entry viewing now adds the blog title to the page title.
-
-Users - 2.2.0
-+ Removed constructions by reference.
-+ When logging in, the user object would have its session information
-  noted, saved and then reloaded. During the save, all its variables
-  were double checked. This was over kill and caused several extra
-  database calls. Changed to only update and then load
-  permissions. Saves several steps. 
-
-
-Calendar - 1.2.1
-+ Updated files templates/admin/forms/settings.tpl
-+ Opened up private calendar key posting to allow permission settings.
-+ Added admin option to change the default calendar view
-+ Month link on mini calendar now opens the default view.
-+ Public calendars that are restricted are now properly hidden.
-
-
-
-Web Page - 0.2.5
-+ Fixed bug that was using the wrong tab when editting the header.
-
-
-November 9
-----------
-Core - 1.3.0
+9 November 2006
 + Error.php - Default language is now used when the get function is called.
 + Init.php
   o Default language changed from "en" to "en_US"
   o Stripping the utf-8 suffix from the language used in
     translateFile.
 
-Access - 0.1.0
-+ Updated files config/config.php
-+ Added Rewrite conditionals to allow directory searching
-
-November 8
-----------
-RSS - 0.1.2
-+ Added some error checks to feed translation.
-
-Core - 1.3.0
+8 November 2006
 + Init.php - Added UTF-8 to setlocale language string.
 
-Branch - 1.0.2
-+ Fixed bug #1590935 - Copy admin directory to branch.
 
-Calendar 1.2.1
-+ Updated file - templates/admin/forms/setting.tpl
-+ Fixed bug #1589525 - Calendar days not linked to correct day view.
-+ Fixed bug #1589528 - Added option to show mini calendar on all
-  pages, front only, or none to settings tab.
-
-Comments 0.4.0
-+ Updated file conf/config.php
-+ Added default comment limit and set it to 20.
-
-Branch - 1.0.2
-+ Changed the config file to not create a table prefix line if no
-  prefix exists.
-+ Fixed bug that copying corrupt prefix data to the branch object.
-
-November 7
-----------
+Version 1.2.0
+--------------------------------------------------------------------------
+7 November 2006
 General
 + Simplified all install.sql files to make them more compatible with postgresql.
 + Also added comments for version control.
 
-Core - 1.2.0
 + Database
   o Fixed some problems with the function that identifies tables
     within a query. Needed for prefixing.
   o Added some sanity checks to normalize queries for different
     databases.
   o Added display_errors as an ini_set to phpws_stats.php
-
 + Text
   o Added use_smilies variable. Determines whether parsed text will
     look for smilie icons. 
@@ -802,31 +314,8 @@ Core - 1.2.0
   o Fixed htmlentities function in parseInput that was mangling
     foreign characters. 
 
-Block - 1.0.2
-+ Deleting a block pops back to list with view options intact.
-+ Added alt and title to edit and delete images for xhtml
-  compatiblity.
 
-Comment - 0.3.0
-+ Removed getSubject function since it doesn't require formating
-+ Added third parameter to parseOutput to use smilies
-
-
-Version - 0.1.0
-+ Added error logging to a function call
-
-
-Web Page - 0.2.4
-+ Updated files: templates/page/basic.tpl,
-                 templates/page/prev_next.tpl,
-                 templates/page/short_links.tpl,
-                 templates/page/verbose_links.tpl
-+ Added commenting to page templates to prevent the display of the h2
-  tags. 
-
-November 6
-----------
-Core - 1.2.0
+6 November 2006
 + Convert - Added the option to choose between creating a new page per
             section or combining all sections into one page. 
 
@@ -837,16 +326,7 @@ Core - 1.2.0
              searches with LIKE, a standard had to be established.
 + Init - Fixed error caused by statement flip
 
-
-Notes - 0.1.2
-+ Added Delete and Close button to read page.
-+ Notes now searches display names. User names are searched but only
-  if permission is given by the admin.
-+ Fixed bug with search user list. User id indexes were wrong.
-
-November 3
-----------
-Core - 1.2.0
+3 November 2006
 + Core.php - Home http now checks the url before adding a duplicate
              slash on the end.
 + Text.php - makeRelative now has a parameter to decide if the ./
@@ -857,67 +337,25 @@ Core - 1.2.0
   o Users now changes all usernames to lowercase.
 
 
-Blog
-+ Cache was not saving the blog content correctly.
-
-Menu
-+ Updated files - templates/links/link.tpl,
-                  templates/menu_layout/basic.tpl
-+ Renamed offsite links to just site links to avoid confusion
-+ If you edit a link that isn't keyed, you can now change the url
-+ setUrl function changed to figure url without local parameter setting
-
-RSS
-+ fixed an issue with mod_rewrite urls that could corrupt the feed
-
-
-Users - 2.1.1
-+ Forcing usernames to be lowercase.
-
-November 3
-----------
-Core - 1.1.3
-
+Version 1.1.3
+--------------------------------------------------------------------------
+3 November 2006
 + Key.php - Now used the text function condense
 + Text.php - Added the condense function
 + Setting.php - Now reseting just the module's global value, not the
                 whole variable
 
-Comments - 0.3.0
-+ Removed test function call.
 
-November 2
-----------
-
-Layout - 2.1.6
-+ Changed import style sheet check to ignore IE 7 and below.
-+ Cleaned up config.php.
-
-Categories UPDATE!!!
-+ Set the default listing to create date descending
-
-Blog - 1.2.1
-+ Updated files templates/past_view.tpl, templates/recent_view.tpl, templates/settings.tpl
-+ Changed css classes to ids
-+ Fixed typo in settings.tpl
-
-Core - 1.1.2
+Version 1.1.2
+--------------------------------------------------------------------------
+2 November 2006
 + Convert - Block conversion now places all blocks on the front page
 + Database.php - Fixed Bug #1588765 - bad search and replace put an incorrect function name into the addOrder method.  Thanks webtor
 
-RSS - 0.1.1
-+ Channel title is now linked to feed
-+ Added mod_rewrite formatting to feed
 
-
-Menu - 1.0.2
-+ Bug #1588771 - Fixed admin page not working with menu
-
-
-November 1
-----------
-
-Core - 1.1.1
+Version 1.1.1
+--------------------------------------------------------------------------
+1 November 2006
 + Convert
   o Users were not set active on conversion
 + Settings
@@ -927,99 +365,31 @@ Core - 1.1.1
   o makeRelative changed back to use "./" Was breaking other
   functions.
 
-
-Layout - 2.1.5
-+ updated files templates/edit_header.tpl, templates/edit_footer.tpl
-+ Added ability to control if header and/or footer only appear on
-  front page
-
-
-Menu - 1.0.4
-+ updated files templates/admin/offsite.tpl
-+ Added cancel button to offsite template
-
-
-October 31
-----------
-
-Core - 1.1.1
+31 October 2006
 + Convert
   o Blog convert not updated since summary was added.
   o File Cabinet conversion now checks for Documents installation.
-
 + Text - makeRelative now removes home address instead of replacing
          with "./"
 
 
-Blog - 1.2.1
-+ Added an error check to avoid a message when no entries have been
-  created
-+ Changed default settings
-
-Menu - 1.0.1
-+ New file - templates/site_map.tpl - for new site map option
-+ Updated file - templates/style.css - stylings for site map
-+ Updated file - conf/config.php - Changed "offsite" to "other"
-+ Added Site Map display that is accessible from clicking the menu
-  name
-+ The Create Offsite Link has been changed to Create Other Link.
-+ Create Other Link now sets the default url to the page from which it
-  was clicked. Will not use a default url from a keyed page.
-
-
-
-Branches - 1.0.1
-- Removed error caused from Boost update if no Branches are present
-
-October 27
-----------
-
-Core - 1.1.0
+Version 1.1.0
+--------------------------------------------------------------------------
+27 October 2006
 + Convert
   o Added a table check to getSourceDB function.
   o Removed ampersands from constructors
   o Calendar - Added a check to assure calendar was installed before converting
-
 + Settings.php
   o Added an error check to prevent null values from being saved in the
     integer columns
   o Added a reset function that sets a value back to the default
-
-
 + Batch.php - added some error checks
-
 + Database.php - Removed the static tables variable in the isTable
   function. Possibility exists that two or more databases could be used
   and the static list would return faulty information
 
-Blog - 1.2.0
-+ Added a settings tab and form
-+ Through settings, can control number of current and past entries to
-  display and the default comment setting.
-+ Added a "past entries" list which displays to the side
-  (requires new core update)
-+ Admin can now chose to show blog on front page or not.
-+ Updated local files: past_view.tpl, settings.tpl, config.php,
-  recent_view.tpl
-
-
-
-October 26
-----------
-
-Phatform - 3.0.3
-+ Fixed element move bug submitted by the great JYDAllStar from his
-  underground bunker
-
-Branch - 1.0.0
-+ Fixed directory references to extra slash.
-
-Photoalbum - 1.3.3
-+ Fixed pager listing all photos together regardless of album
-+ Fixed prefix error message
-
-October 25
-Core - 1.1.0
+25 October 2006
 + Database.php
   o DB factory files have been broken out into specially named
     classes, hopefully this will allow dual connections on different
@@ -1035,681 +405,243 @@ Core - 1.1.0
   o File.php - copy_directory function was reporting the wrong value
                in its error messages
 
-Boost - 1.9.6
-+ Boost.php - a few small changes to help with branch module updates
-
-Branch - 1.0.0
-+ Overhauled to allow table prefixing. Requires Database changes.
-+ Fixed bug 1582406, use proper directory
-
-Users - 2.1.0
-+ The username column in user_authorization was made into a primary
-  key.
-+ The install process was rewritten to work with branch changes.
-
-
-October 23
-
-Core - 1.1.0
+23 October 2006
 + Database.php
   o Added table prefixing back
   o Altered the count type for select slightly
-
 + Setup - added table prefixing back to install process
 
-
-Blog 1.2.0
-+ Added error catch for listing approvals
-
-Notes - 0.1.1
-+ Fixed Notes problem with using the first name it could find if an
-  exactly match could not be found
-
-
-Layout
-- Added id "layout-naked" to body tag for nakedDisplay function
-
-
-October 19
-
-Calendar - 1.1.0
-+ Private scheduling closer to working as intended
-+ Event now shows as "Busy" if so marked
-
-
-Photoalbum - 1.3.2
-- Fixed call to $GLOBALS['core']
-
-Core - 1.1.0
+19 October 2006
 - Init.php : added a define for CURRENT_LANGUAGE if gettext is not working
 
-October 18
-
-Calendar - 1.1.0
-+ Added new permissions (not coded yet)
-+ Put settings tab back with some upcoming changes
-+ New template - admin/settings.tpl
-+ Removed start day define. Now handled by settings
-
-
-Core - 1.1.0
+18 October 2006
 + Form.php - Removed ampersands from constructors
 
-
-Core - 1.0.9
+Version 1.0.9
+--------------------------------------------------------------------------
+12 October 2006
 + Form.php
   o Crutch function for radio button had typo
   o Added labels to checkbox and radio button crutch functions
 
-
-October 17
-Blog - 1.1.1
-+ Added hAtom support (FR #1549640)
-+ Changed object constructors to php 5 format
-
-
-October 11
-
-Core - 1.0.8
+Version 1.0.8
+--------------------------------------------------------------------------
+11 October 2006
 + Configuration : error.php - shortened module missing message
 + Module.php - added error message to _error variable if module is not found
 
-Boost - 1.9.4
-+ Will now read dependencies when checking for new versions
-
-
-Core - 1.0.7
+Version 1.0.7
+--------------------------------------------------------------------------
+11 October 2006
 + Key.php - added a parameter on getCurrent that can allow you to
             ignore a home key.
 + Init.php - Commented out putenv functions
 + Javascript
 - close_refresh - added an option to not autoclose
 
-
-Notes - 0.1.0
-+ Added reply where you read notes.
-+ Added ability to associate notes to key item.
-+ Fixed problem with using username from drop down
-
-
-Version - 0.1.0
-- Fixed default setting (Bug #1573480).
-
-October 10
-
-Core - 1.0.7
+10 October 2006
 + Database.php : fixed a small bug with adding columns using "as". Value
              was carrying over to other columns
 + Form.php : Added an error check on a select value
-
 + Documentation : updated DB_Pager.txt with information on setting a
                   column order
 
-Notes - 0.1.0
-- Rewrite started. Can now send and receive notes from other users.
-
-
-Users - 2.0.9
-- My Page was appearing regardless of user login status
-- added allowUsername function to verify user name formating
-
-
-
-October 5
-
-Profiler - 0.3.0
-+ Added web site and email information to profiles
-+ Changed large.tpl to use hcard
-
-Users  - 2.0.9
-+ Added reroute after language option is chosen.
-
-Core 1.0.6
+Version 1.0.7
+--------------------------------------------------------------------------
+5 October 2006
 + Init.php - fixed locale cookie not getting saved properly
 + Documentation - more instruction add to Module_Development.txt
 
-Users - 2.0.8
-+ Added locale choice on My Page
-
-Photoalbum - 1.2.9
-+ Fixed bug 1571221. Call for non-existant function
-
-Boost - 1.9.3
-+ Tracks core dependencies now.
-
-
-October 4
-
-Core - 1.0.5
+Version 1.0.5
+--------------------------------------------------------------------------
+4 October 2006
 + Core.php : altered loadAsMod function to pull version from file or
              database
 + Module.php : added functions to load the core as a module. helps
                with dependencies
-
-Blog - 1.1.0
-+ Added publish date FR #1533729
-
-Comments - 0.2.9
-+ Fixed relative time display.
-
 Documentation
 + Updated Demographics.txt file.
 
 
-phpWebSite RC3 Below
+RC3 and under
 ----------------------------------------------------------------------
-2 October 
 Note: changelog was overwritten by mistake on October 2. Summary
 follows
 
-Users
-+ Fixed improper time function call on new user creation
-
-Calendar
-+ Hiding setup tab for now
-
-Filecabinet
-+ Fixed description table column
-+ Image error now prints proper error
-+ Fixed image manager not properly updating hidden input
-
-Boost
-+ Fixed updateFiles function. Was previously quiting early on
-duplicates
-
-Web Page
-+ Added active columns and admin options.
-
-Core
+2 October 2006
 + Setup : Core version handled by set up, not inserted via SQL manually
 
-
 28 September 2006
-+ Core
-- DBPager
++ DBPager
   o Added third parameter to setOrder function: only_if_empty. It is
-  false by default. If true, order will only be set if not previously
-  set
+    false by default. If true, order will only be set if not
+    previously set
   o Added a function called toggle function. Supposed to call a
-  specific function every specific n row. Untested but leaving in
-  for now.
+    specific function every specific n row. Untested but leaving in
+    for now. 
   o Changed the limit list so the current limit will not be linked
   o added an error check to see if the current limit request is within
-  the set limit list. Should prevent users enter bogus limit numbers
-
-- Form : recoded crutch function calls since crutch files have been
+    the set limit list. Should prevent users enter bogus limit numbers 
++ Form : recoded crutch function calls since crutch files have been
   removed
-
-- Manager : recoded for compatiblity.
-
++ Manager : recoded for compatiblity.
 
 27 September 2006
 + Convert
-- Added filecabinet conversion script
+  o Added filecabinet conversion script
 
-+ Core
-- DBPager
++ DBPager
   o created addRowFunction for pagers not using classes
   o Changed the sort function to use the table columns not the class
     variables. This will help with non-class pulls
 
-+ File Cabinet
-- updated filecabinet to make description column null
-- added a file existence check on document download
-
-26 September 2006
-+ Block
-- Changed to only display miniadmin if javascript is enabled
-
-+ Branch
-- Fixed Branch not copying javascript directory over
-- Branch now checks for writability of directory before trying to copy (Bug #1552259).
-- Changed defines to lower case.
-- Added permission file and changed update to register to Users (Bug #1544082).
-
-+ Breadcrumb
-- small error check added
-
 25 September 2006
 + Convert
-- Calendar : converting repeats now
-
-+ Calendar
-- Added some extra config calls, moved some logic around
-- Added "Today" link
-- Changed event view template
-- Fixed event view date and time
-- Added hCalendar information to event view template
-- added mod_rewrite ability for events
-- added hCalendar for event view
-- fixed date and time display on event view
-- fixed view links on event view
+  o Calendar : converting repeats now
 
 21 September 2006
-+ Core
-- Key.php
++ Key.php
   o changed unregister function name to -
     "modulename_unregister_key" It was getting confused with the
     module's normal unregister function
   o rewrote Key's unregister function to remove associations
     automatically
-
-- Settings.php : added function to unregister a module's settings
- 
-+ Boost
-- Added call to clear the cache on a module's removal
-- Added call to clear a module's settings upon removal
-- Recoded call to unregister a module's keys on removal (see Key.php above)
-
-+ Breadcrumb
-- small change for divider display
-
-+ Calendar
-- Fixed db typo
-- restored cache on mini calendar printout
-- every month variable changed from 'last' to '5'
-- fixed submit button bug on event forms after errors
-- removed myschedule for now
-- finished every repeat method
-- recoded the monthly repeat method
-- rewrote uninstall boost file
-
-+ Categories
-- Retitled key unregistration function
-
-+ Search - 0.1.1
-- Retitled key unregistration function
-
-+ Comments
-- Retitled key unregistration function
-
-+ Menu
-- menu associations no cleared
-- changed function name
-
-+ Related
-- related was missing key registration
-- added key unregistration file
-
-20 September 2006
-+ Breadcrumb
-- Recoded logic
-- Added templating
++ Settings.php : added function to unregister a module's settings
 
 + Theme
-- Added styles for breadcrumb in default
+  o Added styles for breadcrumb in default
 
-19 September 2006
-+ Users
-- Fixed authorization problems occuring after changing user name.
-
-18 September 2006
-+ Calendar
-- Changed edit_event template. Now contains repeat warning tag
-- More work on repeats and edits of repeats
-- No event messages for weekly and monthly view
 
 14 September 2006
-+ Core
-- Function.php : added clone function
-
-+ Calendar
-- Moved the event form into Admin.php.
-- Added code to delete an event
-- Started recoding the repeat functionality
-- Changed hcal display slightly for all day events
-- Moved event table sql template into inc folder
-
-12 September 2006
-+ Block
-- Fixed bug #1552210 - extra breaks created per edit.
-
-+ Layout
-- Fixed bug #1551163 - theme changes were not getting saved.
-
-+ Core
-- Setup: For bug #1533711 added a warning to the setup.
++ Function.php : added clone function
++ Setup: For bug #1533711 added a warning to the setup.
 
 7 September 2006
-+ Core
-- Form.php : added extra space after checked parameter
-- Time.php : added a function to return time in iCal format
-
-+ Calendar
-- Updated javascript check_date to work with new event entry
-- Restructured event entry
-- added hCalendar formatting to templates
-- Removed deadline and starts and event types
-- Added "all day" designator
-- Renamed "title" to "summary"
-- Renamed "summary" to "description"
-- Added location event information
-- Added ability to link location
-- Rewrote and simplified day, week, and month list code
-- Private schedules are marked restricted in their key
-- Moved day.tpl out of day directory
-
++ Form.php : added extra space after checked parameter
++ Time.php : added a function to return time in iCal format
 + Theme
-- Removed border from abbr tag (used in calendar)
+  o Removed border from abbr tag (used in calendar)
 
 5 September 2006
-+ Core
-- Functions.php : Added stripos to compatibility functions
-- Text.php : Changed the bbcode decoder to use str_ireplace 
-
-31 August 2006
-+ Calendar
-- Expanded repeat capabilities
-- Began work on proper display of events spread over several days
-
++ Functions.php : Added stripos to compatibility functions
++ Text.php : Changed the bbcode decoder to use str_ireplace 
 
 30 August 2006
-+ Core
-- Form.php : replaced a reference to the place variable with key to
++ Form.php : replaced a reference to the place variable with key to
              fix labels matching with elements
-
-- Module_Development.php : more information on files needs for
++ Module_Development.php : more information on files needs for
                            installation in Boost
 
-+ Calendar
-- Began work on repeat functionality
-
-+ Categories
-- removed unused register code
-
-+ Layout
-- Added ability to "lock out" some theme variables to prevent boxes from being moved into them
-- Added ability to reset a box
-- Layout variables now appear when move box is initialized
-
-
-28 August 2006
-+ Calendar
-- Event view has view links
-- Added ability to pick schedule for viewing
-- Event is now keyed
-- some caching and js view in event disabled temporarily
-- Fixed install.sql file
-- full.tpl replaced with grid.tpl
-
-
 23 August 2006
-+ Core
-- Database.php : if a count(*) is used, the db class will clear
++ Database.php : if a count(*) is used, the db class will clear
                  unneccessary order and group designations
 
 22 August 2006
-+ Core
-- Time.php : rewrote all most functions. should be easier to
++ Time.php : rewrote all most functions. should be easier to
              understand now
-- Key.php  : Uses mktime for the timestamps and new Time functions for
++ Key.php  : Uses mktime for the timestamps and new Time functions for
              display
-
-+ Blog
-- Changed dependency information for comments
-- Uses new time functions
 
 
 21 August 2006
-+ Core
-- DBPager : changed function call to use call_user_func. Eliminated an
++ DBPager : changed function call to use call_user_func. Eliminated an
             undebugable problem in a module.
 
 18 August 2006
-+ Core
-- removed old crutch files
-
++ Removed old crutch files
 + Documentation
 - Started rewrite of module documentation
 
-+ Blog
-- Added missing columns to install.sql
-
-+ Users
-- Removed unused about files
-
 17 August 2006
-+ Core
-- Database : getObject's extra parameters were too simplistic. You
++ Database : getObject's extra parameters were too simplistic. You
   could only use strings. Improved it.
-- Setup : put in default directory for cache
++ Setup : put in default directory for cache
 
 + Javascript
-- js_calendar : fixed default typo
-
-+ Calendar
-- moved previously working views back in
-- Changed navigation a little
-- Tried to remove redundant code.
-
+  o js_calendar : fixed default typo
 
 
 15 August 2006
-+ Core
-- Database : added ability to add parameters to getObjects. every variable after the class name is sent to the constructor
-- Settings : changed so that setting default files are always called
-before pulling from the database.
++ Database : added ability to add parameters to getObjects. every variable after the class name is sent to the constructor
++ Settings : changed so that setting default files are always called
+             before pulling from the database.
 
 + Javascript
-- js_calendar : xhtml fixes
+  o js_calendar : xhtml fixes
 
 14 August 2006
 + Theme
-- Added style for embedded block
-
-+ Web Page
-- Added active column to admin view and table
-
-+ Block
-- added admin edit icon to block view
-
-+ Blog
-- added summary section
-
-+ Boost
-- Now reports uncopyable file in log
+  o Added style for embedded block
 
 + Javascript
-- Editor - FCKeditor : added full page view, insert flash
+  o Editor - FCKeditor : added full page view, insert flash
            buttons. Also recoded to allow multiple textareas.
            Fixed bug #1515179. Can now upload images in the upload tab.
 
 11 August 2006
-+ Core
-- Text.php : changed parseTag so you could add modules you wish to
-ignore. Should prevent endless loops
++ Text.php
+  o changed parseTag so you could add modules you wish to
+    ignore. Should prevent endless loops 
 
 + Docs
-- Updated SmartTags documentation to fit with Text.php changes.
-
-+ Block
-- Block_Item.php : content now parses smart tags
-
-+ Users
-- Form.php : Error in the permission form should be fixed
+  o Updated SmartTags documentation to fit with Text.php changes.
 
 
 10 August 2006
-+ Layout
-- Changed import check for IE. Hopefully will detect it better.
-
-+ Profile
-- Added parseTag call to getFullStory function.
-
-+ Core
-- Text.php -  Added UTF-8 encoding to the parseOutput. Was trashing accented characters.
-
-+ Users
-- Permission.php - Fixed typo causing syntax error on permission call
-- permission_pop.tpl - fixed javascript error from changes in the form class
++ Text.php -  Added UTF-8 encoding to the parseOutput. Was trashing accented characters.
 
 09 August 2006
 + Config
-- added strong and pre tags to text_settings.php
+  o added strong and pre tags to text_settings.php
 
-+ Core
-- Added a requireInc function
-- Editor
++ Added a requireInc function
++ Editor
     o Added id field to editor textarea for possible future use
     o Removed breaker function call
     o Removed html_entity_decode
-- Form
++ Form
     o Removed an html decode that seemingly caused problems with
       ampersand encoding
     o Added id parameter to editor textarea
-- Template
++ Template
     o Forcing mod templates was getting ignored if the theme had
       comparable templates. Changed so forcing mod template overwrites
       everything.
-- Text
++ Text
     o Removed the <pre> tag formating. Wasn't working anyway.
     o Added code to prevent breaks in <code> tags. They were usually
       added by the js editors
-- Time : continuing my ever increasing confusion with timezones, made
++ Time : continuing my ever increasing confusion with timezones, made
          more changes to try and get user timezone settings working. I
          am sure I will be back.
 
 + Javascript        
-- Added id field to the fckeditor textarea
-
-+ Blog
-- Edit links returned to blog view
-- main.tpl's title is under a panel-title class
-- view.tpl Edit link added
-
-+ Layout
-- Layout will now use blank.tpl (if exists) with a nakedDisplay call
+  o Added id field to the fckeditor textarea
 
 + Theme
-- Removed unneeded semi-colons
-
-
-26 July 2006
-+ File Cabinet - not tagged
-- Fixed incorrect naming of define
-
-+ Menu -not tagged
-- Added menu class around menu template to assist with styling
-
-+ Profiler - not tagged
-- Changed side bar view to homepage view
-- Added division view
-
-
-+Users - not tagged
-- Changed user login box template
-
+  o Removed unneeded semi-colons
 
 14 July 2006
-+ Theme - not tagged
-Default - added breadcrumb tag
-
-+ Calendar - not tagged
-- Overhaul in progress not functional
-- Rewrote the schedule creator
-- Using the new Users::getPermissionGroups function (needs dependency)
-
-
-+ Layout - not tagged
-- Moved some content because they were set before a possible error.
-  Should the error occur, we don't want those settings
-
-+ Users - not tagged
-- Fixed a problem with the permissions form made from the last Form
-  class update.
-- Added a getPermissionGroups function 
-
++ Theme
+  o Default - added breadcrumb tag
 
 12 July 2006
-+ Core - not tagged
-Form - fixed radio button label assignment
++ Form - fixed radio button label assignment
 
 10 July 2006
-+ Core - not tagged
-DBPager - fixed a filtering issue in the setSearch function
++ DBPager - fixed a filtering issue in the setSearch function
 
 7 July 2006
-
-+ Calendar - not tagged
-- Added left and right arrows to navigation menu
-- Fixed an issue with the week view
-
-+ Layout - not tagged
-- Layout uses the local module style sheet on a branch even if
-  force_mod_template is set.
-
-+ Core - not tagged
-- Added missing version insert to install.sql file
-- Template.php : made sure forcing module templates grabbed them from
++ Added missing version insert to install.sql file
++ Template.php : made sure forcing module templates grabbed them from
   the hub directory.
 
-+ Branch - not tagged
-- Hopefully patched up problems with a Windows installation
-- Removed earlier Branch installation check since branch will not be
-  installed on the branch site.
-- Updated configuration file template to match setup's
-- Fixed Branch uninstall not removing all tables.
-- Branch removal now available.
-- A link now appears to set the allowed modules to a newly created
-  branch.
-
-
-6 July 2006
-+ Branch - not tagged
-- Disconnect added before testing branch connections
-
-+ Comments - not tagged
-- Deleting a comment now clears its relationship to its replies
-
-
-+ Calendar - not tagged
-- Worked on week view
-- combined functionality in month_list and week view
-
 5 July 2006
-
-+ Calendar - not tagged
-- added event view
-- fixed title display problem with templates
-
-+ Comments - 0_2_7
-- Added define for No subject line
-
-+ Categories - not tagged
-- Fixed key unregister file
-
-+ Core - 1_0_2
-- Added key errors for missing key unregister files and/or functions
-
-+ Core - not tagged
-- Text.php - added error check to backLink function
-
-+ Boost - 1_8_6
-- Added error messages for bad key unregistration
-- Added functions for updating the core.
-- Made links use authorization keys
++ Added key errors for missing key unregister files and/or functions
++ Text.php - added error check to backLink function
 
 30 June, 2006
-+ Core - 1_0_2
-- Added error messages to Core to help debug a bad source directory
-
-+ Boost - 1_8_6
-- Added line to unset an uninstalled module from the Module global
-  variable
-
-+ Branch - not tagged
-- Core can call branch even if not installed. Added check to disallow
-  continuation 
-
-+ Comment - 0_2_7
-- Added a default 'No subject' to comments without subjects
-
-+ Layout - 2_1_3
-- Unsets box variable of uninstalled modules
-- Added new theme variable ONLY_TITLE
-- Boxes with duplicate content variable names were not getting added
-  properly. Fixed by having the module name verified.
-
++ Added error messages to Core to help debug a bad source directory
 + Docs
-- Added this file!
+  o Added this file!
 
