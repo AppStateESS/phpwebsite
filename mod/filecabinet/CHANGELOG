@@ -1,0 +1,37 @@
+1 February 2007
++ Fixed base directory uploads
++ Document was changing the object id to null when failing to load the
+  object. Changed it to a zero.
++ Added more directory error checks.
++ Image manager will try and match the current module to its directory.
++ New error message for bad directory choice
+
+31 January 2007
++ Increased file name size in database.
++ Added image directory selection to pick image menu
++ Choosing an image directory only shows images from that directory
++ Removed choice of image directory root. Will always be images/
++ Fixed root document directory. Now actually puts files in said
+  directory.
++ Upload windows choose the default directory better
++ Removed [default] tag from directory listing
+
+16 January 2007
++ Fixed bug in image manager. Was ignoring width and height upload
+  restrictions.
++ Lowercased bools
++ Changed 'x' to 'by' in error message.
+
+RC3 and under
+----------------------------------------------------------------------
+2 October 2006
++ Fixed description table column
++ Image error now prints proper error
++ Fixed image manager not properly updating hidden input
+
+27 September 2006
++ Updated filecabinet to make description column null
++ Added a file existence check on document download
+
+26 July 2006
++ Fixed incorrect naming of define
