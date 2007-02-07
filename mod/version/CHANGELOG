@@ -1,0 +1,22 @@
+Version 0.1.1
+---------------------------------------------------------------------
+31 January 2007
++ Version listing was not keeping correct number of versions.
++ Reduced default version storage to 5.
+
+10 January 2007
++ Changed the way approval versions are pulled. Allows vr_creator to
+  be 0 for anonymous submissions.
++ If the author is blank, version labels the author as Anonymous.
+
+Version 0.1.0
+---------------------------------------------------------------------
+14 November 2006
++ Version won't spam tables it didn't remove when uninstalling a
+  module. 
+
+7 November 2006
++ Added error logging to a function call
+
+11 October 2006
++ Fixed default setting (Bug #1573480).
