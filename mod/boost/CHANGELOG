@@ -1,0 +1,62 @@
+8 December 2006
++ Added error check for version checking Bug #1606366
+
+Version 1.9.9
+------------------------------------------------------
+30 November 2006
++ Added link to check all modules for updates at once.
++ Updated file templates/module_list.tpl
+
+29 November 2006
++ Changed updateFiles to return false even with a an error. Now logs
+  the error instead of returning it.
+
+Version 1.9.8
+------------------------------------------------------
+28 November 2006
++ Removed the old loadAsMod functions for core.
++ Core updates config, image, template, and javascript files.
++ Added dependency ability for core.
+
+Version 1.9.7
+------------------------------------------------------
+14 November 2006
++ Check link will appear regardless of directory permissions.
+
+Version 1.9.6
+------------------------------------------------------
+25 October 2006
++ A few small changes to help with branch module updates
+
+Version 1.9.4
+------------------------------------------------------
+11 October 2006
++ Will now read dependencies when checking for new versions
+
+Version 1.9.3
+------------------------------------------------------
+5 October 2006
++ Tracks core dependencies now.
+
+2 October 2006
++ Fixed updateFiles function. Was previously quiting early on
+  duplicates
+
+21 September 2006
++ Added call to clear the cache on a module's removal
++ Added call to clear a module's settings upon removal
++ Recoded call to unregister a module's keys on removal (see Key.php above)
+
+14 August 2006
++ Now reports uncopyable file in log
+
+Version 1.8.6
+------------------------------------------------------
+5 July 2006
++ Added error messages for bad key unregistration
++ Added functions for updating the core.
++ Made links use authorization keys
+
+30 June 2006
++ Added line to unset an uninstalled module from the Module global
+  variable

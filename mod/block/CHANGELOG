@@ -1,0 +1,19 @@
+Version 1.0.2
+---------------------------------------------------------------
+
+7 November 2006
++ Deleting a block pops back to list with view options intact.
++ Added alt and title to edit and delete images for xhtml
+  compatiblity.
+
+26 September 2006
++ Changed to only display miniadmin if javascript is enabled
+
+12 September 2006
++ Fixed bug #1552210 - extra breaks created per edit.
+
+14 August 2006
++ added admin edit icon to block view
+
+11 August 2006
++ Block_Item.php : content now parses smart tags

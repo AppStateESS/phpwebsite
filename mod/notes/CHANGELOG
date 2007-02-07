@@ -1,0 +1,23 @@
+Version 0.1.2
+------------------------------------------------------------------------
+6 November 2006
++ Added Delete and Close button to read page.
++ Notes now searches display names. User names are searched but only
+  if permission is given by the admin.
++ Fixed bug with search user list. User id indexes were wrong.
+
+Version 0.1.1
+------------------------------------------------------------------------
+23 October 2006
++ Fixed Notes problem with using the first name it could find if an
+  exactly match could not be found
+
+Version 0.1.0
+------------------------------------------------------------------------
+11 October 2006
++ Added reply where you read notes.
++ Added ability to associate notes to key item.
++ Fixed problem with using username from drop down
+
+10 October 2006
++ Rewrite started. Can now send and receive notes from other users.

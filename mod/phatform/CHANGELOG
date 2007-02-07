@@ -1,0 +1,23 @@
+Note: this log is only for notes post-1.0-conversion
+
+16 January 2007
++ Added missing "export" directory creation.
++ Removed all global core calls
+
+
+Version 3.0.5
+-------------------------------------------------------------------
+21 November 2006
++ Small clarification to readme.txt
++ Fixed typo in FormManager
+
+Version 3.0.4
+-------------------------------------------------------------------
+15 November 2006
++ Simplified install.sql
++ Fixed some incompatible errorMessage function calls
+
+Version 3.0.3
+-------------------------------------------------------------------
++ Fixed element move bug submitted by the great JYDAllStar from his
+  underground bunker

@@ -1,0 +1,13 @@
+Version 0.1.2
+-------------------------------------------------------------------------------
+8 November 2006
++ Added some error checks to feed translation.
+
+3 November 2006
++ Fixed an issue with mod_rewrite urls that could corrupt the feed
+
+Version 0.1.1
+-------------------------------------------------------------------------------
+2 November 2006
++ Channel title is now linked to feed
++ Added mod_rewrite formatting to feed

@@ -1,0 +1,24 @@
+31 January 2007
++ With quick creation of categories in place, no need for old warning
+  message. Altered pop up box.
+
+19 January 2007
++ Added ability to add categories quickly on the assignment form
++ Category parent defaulted to zero instead of null
++ Updated files: templates/menu_bar.tpl, templates/popup_menu.tpl
+
+2 November 2006
++ Set the default listing to create date descending
+
+Version 2.1.5
+----------------------------------------------------------------------
+27 September 2006
++ Retitled and fixed key unregistration function
+
+30 August 2006
++ Removed unused register code
+
+RC3 and under
+----------------------------------------------------------------------
+5 July 2006
++ Fixed key unregister file

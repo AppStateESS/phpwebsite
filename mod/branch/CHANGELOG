@@ -1,0 +1,54 @@
+8 December 2006
++ Added missing cache_directory value for config.tpl.
+
+Version 1.0.2
+----------------------------------------------------------
+13 November 2006
++ Updated files : templates/config.tpl
++ Added captcha information to branch config template and removed
+  file types include.
+
+8 November 2006
++ Fixed bug #1590935 - Copy admin directory to branch.
++ Changed the config file to not create a table prefix line if no
+  prefix exists.
++ Fixed bug that copying corrupt prefix data to the branch object.
+
+
+Version 1.0.1
+----------------------------------------------------------
+31 October 2006
++ Removed error caused from Boost update if no Branches are present
+
+
+Version 1.0.0
+----------------------------------------------------------
+26 October 2006
++ Fixed directory references to extra slash.
+
+25 October 2006
++ Overhauled to allow table prefixing. Requires Database changes.
++ Fixed bug 1582406, use proper directory
+
+27 September 2006
++ Fixed Branch not copying javascript directory over
++ Branch now checks for writability of directory before trying to copy (Bug #1552259).
++ Changed defines to lower case.
++ Added permission file and changed update to register to Users (Bug #1544082).
+
+7 July 2006
++ Hopefully patched up problems with a Windows installation
++ Removed earlier Branch installation check since branch will not be
+  installed on the branch site.
++ Updated configuration file template to match setup's
++ Fixed Branch uninstall not removing all tables.
++ Branch removal now available.
++ A link now appears to set the allowed modules to a newly created
+  branch.
+
+6 July 2006
++ Disconnect added before testing branch connections
+
+30 June 2006
++ Core can call branch even if not installed. Added check to disallow
+  continuation 

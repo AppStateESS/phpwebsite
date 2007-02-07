@@ -1,0 +1,68 @@
+19 January 2007
++ Added the plug function to allow users to inject content directly
+  into a theme.
++ Layout now looks for and includes a theme's theme.php file.
++ Updated files : conf/config.php
+
+Version 2.2.1
+-------------------------------------------------------------------
+21 November 2006
++ Fixed index names, removed unneccessary index call
+
+Version 2.2.0
+-------------------------------------------------------------------
+17 November 2006
++ Added missing table to install.sql
++ Added index to metatags table
+
+10 November 2006
++ Added meta tag settings per page.
+
+Version 2.1.6
+-------------------------------------------------------------------
+2 November 2006
++ Changed import style sheet check to ignore IE 7 and below.
++ Cleaned up config.php.
+
+Version 2.1.5
+-------------------------------------------------------------------
+1 November 2006
++ Updated files templates/edit_header.tpl, templates/edit_footer.tpl
++ Added ability to control if header and/or footer only appear on
+  front page
+
+
+Version 2.1.4 (pre rc3)
+-------------------------------------------------------------------
+23 October 2006
++ Added id "layout-naked" to body tag for nakedDisplay function
+
+14 September 2006
++ Fixed bug #1551163 - theme changes were not getting saved.
+
+30 August 2006
++ Added ability to "lock out" some theme variables to prevent boxes from being moved into them
++ Added ability to reset a box
++ Layout variables now appear when move box is initialized
+
+10 August 2006
++ Changed import check for IE. Hopefully will detect it better.
+
+9 August 2006
++ Layout will now use blank.tpl (if exists) with a nakedDisplay call
+
+14 July 2006
++ Moved some content because they were set before a possible error.
+  Should the error occur, we don't want those settings
+
+7 July 2006
++ Layout uses the local module style sheet on a branch even if
+  force_mod_template is set.
+
+Version 2.1.3 (pre rc3)
+-------------------------------------------------------------------
+30 June 2006
++ Unsets box variable of uninstalled modules
++ Added new theme variable ONLY_TITLE
++ Boxes with duplicate content variable names were not getting added
+  properly. Fixed by having the module name verified.

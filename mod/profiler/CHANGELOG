@@ -1,0 +1,13 @@
+Version 0.3.0
+--------------------------------------------------------------------
+5 October 2006
++ Added web site and email information to profiles
++ Changed large.tpl to use hcard
+
+10 August 2006
++ Added parseTag call to getFullStory function.
+
+26 July 2006
++ Changed side bar view to homepage view
++ Added division view
+

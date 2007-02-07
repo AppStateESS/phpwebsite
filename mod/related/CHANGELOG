@@ -1,0 +1,5 @@
+Version 0.1.1
+------------------------------------------------------------------
+21 September 2006
++ related was missing key registration
++ added key unregistration file

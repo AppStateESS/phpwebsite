@@ -1,0 +1,165 @@
+2 February 2007
++ Bug #1648965. Clicking Day or Week from grid view pulls correct day
++ Changed "Today" link to view appropiate description to prevent
+  confusion
++ Changed time defaults to %p to work with more installs
++ If start date is greater than end date, the event will be saved to
+  the save day.
++ Bug #1648963. Fixed mini month not showing days with events.
++ Updated files: conf/config.php
++ Made event count linkable in grid view
+
+29 January 2007
++ Labeled some permissions "unrestricted only"
++ Added permissions checks for editing and deleting
++ Created checkPermissions function in schedule class to simplify code
++ Removed commented legacy code from Schedule.php
++ Added missing suggestion tables to install and uninstall
++ Fixed caching logic
+
+25 January 2007
++ Fixed default schedule loading in Calendar class
++ Fixed inability to create more than one schedule
++ Added option to disable month view caching
++ Caching now works on public calendars only.
++ Updated files: templates/admin/settings.tpl
+
+13 December 2006
++ Updated files : templates/admin/forms/edit_event.tpl
+                  templates/view/day
+                  templates/style.css
+                  templates/user_main.tpl
+                  templates/admin/approval.tpl
+                  conf/config.php
++ Added ability for users to make event suggestions
++ Fixed some javascript vs. non-js issues in event creation.
+
+28 November 2006
++ Changed default public calendar to -1 to prevent error messages.
+
+Version 1.2.2
+------------------------------------------------------------------
+17 November 2006
++ Fixed mini calendar changing date when viewing other months
++ Creating a new event will now properly use the currently viewed date
++ Added reset cache link to miniadmin
++ Added setting to show day links on mini calendar only if there is an
+  event on that day (Bug #1596779).
++ Added caching to mini calendar
++ Opened caching on grid regardless of log status
++ Events now appear on previous and next months in grid view
+  (Bug #1596780) 
+
+Version 1.2.1
+------------------------------------------------------------------
+10 November 2006
++ Updated files templates/admin/forms/settings.tpl
++ Opened up private calendar key posting to allow permission settings.
++ Added admin option to change the default calendar view
++ Month link on mini calendar now opens the default view.
++ Public calendars that are restricted are now properly hidden.
+
+8 November 2006
++ Updated file - templates/admin/forms/setting.tpl
++ Fixed bug #1589525 - Calendar days not linked to correct day view.
++ Fixed bug #1589528 - Added option to show mini calendar on all
+  pages, front only, or none to settings tab.
+
+Version 1.1.0
+------------------------------------------------------------------
+19 October 2006
++ Private scheduling closer to working as intended
++ Event now shows as "Busy" if so marked
+
+18 October 2006
++ Added new permissions (not coded yet)
++ Put settings tab back with some upcoming changes
++ New template - admin/settings.tpl
++ Removed start day define. Now handled by settings
+
+RC3 and under
+------------------------------------------------------------------
+2 October 2006
++ Hiding setup tab for now
+
+25 September 2006
++ Added some extra config calls, moved some logic around
++ Added "Today" link
++ Changed event view template
++ Fixed event view date and time
++ Added hCalendar information to event view template
++ added mod_rewrite ability for events
++ added hCalendar for event view
++ fixed date and time display on event view
++ fixed view links on event view
+
+21 September 2006
++ Fixed db typo
++ restored cache on mini calendar printout
++ every month variable changed from 'last' to '5'
++ fixed submit button bug on event forms after errors
++ removed myschedule for now
++ finished every repeat method
++ recoded the monthly repeat method
++ rewrote uninstall boost file
+
+18 September 2006
++ Changed edit_event template. Now contains repeat warning tag
++ More work on repeats and edits of repeats
++ No event messages for weekly and monthly view
+
+14 September 2006
++ Moved the event form into Admin.php.
++ Added code to delete an event
++ Started recoding the repeat functionality
++ Changed hcal display slightly for all day events
++ Moved event table sql template into inc folder
+
+7 September 2006
++ Updated javascript check_date to work with new event entry
++ Restructured event entry
++ added hCalendar formatting to templates
++ Removed deadline and starts and event types
++ Added "all day" designator
++ Renamed "title" to "summary"
++ Renamed "summary" to "description"
++ Added location event information
++ Added ability to link location
++ Rewrote and simplified day, week, and month list code
++ Private schedules are marked restricted in their key
++ Moved day.tpl out of day directory
+
+31 August 2006
++ Expanded repeat capabilities
++ Began work on proper display of events spread over several days
+
+30 August 2006
++ Began work on repeat functionality
+
+28 August 2006
++ Event view has view links
++ Added ability to pick schedule for viewing
++ Event is now keyed
++ some caching and js view in event disabled temporarily
++ Fixed install.sql file
++ full.tpl replaced with grid.tpl
+
+17 August 2006
++ moved previously working views back in
++ Changed navigation a little
++ Tried to remove redundant code.
+
+14 July 2006
++ Overhaul in progress not functional
++ Rewrote the schedule creator
++ Using the new Users::getPermissionGroups function (needs dependency)
+
+7 July 2006
++ Added left and right arrows to navigation menu
++ Fixed an issue with the week view
+
+6 July 2006
++ added event view
++ fixed title display problem with templates
++ Worked on week view
++ combined functionality in month_list and week view

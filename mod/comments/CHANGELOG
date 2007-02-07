@@ -1,0 +1,51 @@
+30 January 2007
++ Fixed isPosted check to prevent extra posts
+
+Version 0.5.0
+--------------------------------------------------------------------
+27 November 2006
++ Updated templates templates/view.tpl, templates/alt_view.tpl
++ Added anchor tag to templates and code.
++ Changed the getSourceUrl function in the Thread to use the DBPager's
+  new saveLastView and getLastView functions.
++ Update dependent on new core.
+
+Version 0.4.0
+--------------------------------------------------------------------
+13 November 2006
++ Updated files : templates/edit.tpl, templates/settings_form.tpl
++ Added a permission for settings control.
++ Added new Captcha class for commenting (dependency on new core)
++ Added selector for captcha control on settings tab
+
+8 November 2006
++ Updated file conf/config.php
++ Added default comment limit and set it to 20.
+
+Version 0.3.0
+--------------------------------------------------------------------
+7 November 2006
++ Removed getSubject function since it doesn't require formating
++ Added third parameter to parseOutput to use smilies
+
+3 November 2006
++ Removed test function call.
+
+Version 0.2.9
+--------------------------------------------------------------------
+4 October 2006
++ Fixed relative time display.
+
+21 September 2006
++ Retitled key unregistration function
+
+6 July 2006
++ Deleting a comment now clears its relationship to its replies
+
+Version 0.2.7
+--------------------------------------------------------------------
+5 July 2006
++ Added define for No subject line
+
+30 June 2006
++ Added a default 'No subject' to comments without subjects

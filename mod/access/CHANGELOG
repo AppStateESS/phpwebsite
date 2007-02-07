@@ -1,0 +1,11 @@
+5 February 2006
++ Fixed header tags Bug #1652279
++ Updated files: templates/main.tpl, templates/box.tpl, templates/shortcut_menu.tpl 
+
+
+Version 0.1.0
+-------------
+
+9 November 2006
++ Updated files config/config.php
++ Added Rewrite conditionals to allow directory searching

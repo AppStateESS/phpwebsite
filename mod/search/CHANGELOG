@@ -1,0 +1,18 @@
+Version 0.2.0
+------------------------------------------------------------------------
+27 November 2006
++ Moved deletion of keyword to its own function
++ Fixed javascript confirmation on item deletion
++ Deletion of keyword is now htmlentitified to catch foreign
+  characters
++ Added resetKeywords function
++ FilterWords now has a htmlentities parameter and allows foreign
+  characters (bug #1602039). Thanks WeBToR
++ Config file is no longer hardcoded. Now picks file based on language.
++ If all search words are undersized, search will not throw an
+  error anymore.
+
+Version 0.1.1
+-------------------------------------------------------------------------
+21 September 2006
++ Retitled key unregistration function

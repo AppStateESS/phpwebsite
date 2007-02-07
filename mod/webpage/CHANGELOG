@@ -1,0 +1,64 @@
+2 February 2006
++ Moved a function out of Page getTpl for clarity
++ Added a page select with onchange function. Put it into the basic
+  page layout
++ Added page summary information to page templates
++ Replaced an panic exit with an logged error and send to the
+  errorPage
++ Updated files: templates/page/basic.tpl, templates/page/prev_next.tpl,
+  templates/page/short_links.tpl templates/page/verbose_links.tpl,
+  conf/error.php 
+
+1 February 2006
++ Altered page templates to prevent float overlap (previous update
+  takes care of copy)
+
+31 January 2006
++ Added simple image page addition.
+
+26 January 2006
++ Moved error defines into their own file
++ lowercased constants
++ Added some missing error reporting
++ Worked on page editing and approval
++ Updated files: conf/config.php, conf/error.php,
+  templates/form/edit_page.tpl 
+
+19 January 2006
++ Fixed delete call from list link
+
+12 January 2006
++ Added ability to restore old headers and pages.
++ Updated files: templates/header.tpl
+
+Version 0.2.6
+------------------------------------------------------------------------
+27 November 2006
++ Moved search save to Volume class
++ Searches now reset search key words to prevent lost searches.
++ Depends on new search
+
+Version 0.2.5
+------------------------------------------------------------------------
+16 November 2006
++ Removed old update code and a repeat
+
+10 November 2006
++ Fixed bug that was using the wrong tab when editting the header.
+
+
+Version 0.2.4
+------------------------------------------------------------------------
+7 November 2006
++ Updated files: templates/page/basic.tpl,
+                 templates/page/prev_next.tpl,
+                 templates/page/short_links.tpl,
+                 templates/page/verbose_links.tpl
++ Added commenting to page templates to prevent the display of the h2
+  tags.
+
+2 October 2005
++ Added active columns and admin options.
+
+14 August 2006
++ Added active column to admin view and table
