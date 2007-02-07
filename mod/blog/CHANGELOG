@@ -1,0 +1,98 @@
+5 February 2007
++ Added missing comma after image_id column
+
+1 February 2007
++ Added ability to place images on blog entries without editor.
+
+26 January 2007
++ Finished pagination of blog view
++ Removed test code
++ Updated files: templates/list_view.tpl
+
+25 January 2007
++ Added pagination to blog view
+
+19 January 2007
++ Added a setting to enable/disable the blog view caching.
++ Added link to reset the view cache.
++ Updated files : templates/settings.tpl
+
+
+Version 1.3.0 - unreleased
+------------------------------------------------------------------
+10 January 2007
++ Added Version module requirement
++ Added ability for anonymous and users without blog permission to
+  submit entries for later approval.
++ Added setting to allow anonymous submission.
++ Updated files: templates/edit.tpl, templates/settings.tpl,
+  templates/submit.tpl, templates/user_main.tpl
+
+Version 1.2.3
+------------------------------------------------------------------
+27 November 2006
++ Making call to resetKeywords in search.
++ Depends on latest search version
+
+Version 1.2.2
+------------------------------------------------------------------
+10 November 2006
++ Entry viewing now adds the blog title to the page title.
+
+3 November 2007
++ Cache was not saving the blog content correctly.
+
+Version 1.2.1
+------------------------------------------------------------------
+2 November 2006
++ Updated files templates/past_view.tpl, templates/recent_view.tpl,
+  templates/settings.tpl
++ Changed css classes to ids
++ Fixed typo in settings.tpl
+
+31 October 2006
++ Added an error check to avoid a message when no entries have been
+  created
++ Changed default settings
+
+Version 1.2.0
+------------------------------------------------------------------
+27 October 2006
++ Added a settings tab and form
++ Through settings, can control number of current and past entries to
+  display and the default comment setting.
++ Added a "past entries" list which displays to the side
+  (requires new core update)
++ Admin can now chose to show blog on front page or not.
++ Updated local files: past_view.tpl, settings.tpl, config.php,
+  recent_view.tpl
+
+23 October 2006
++ Added error catch for listing approvals
+
+Version 1.1.1
+------------------------------------------------------------------
+17 October 2006
++ Added hAtom support (FR #1549640)
++ Changed object constructors to php 5 format
+
+Version 1.1.0
+------------------------------------------------------------------
+4 October 2006
++ Added publish date FR #1533729
+
+22 August 2006
++ Changed dependency information for comments
++ Uses new time functions
+
+18 August 2006
++ Added missing columns to install.sql
+
+14 August 2006
++ Added summary section
+
+
+9 August 2006
++ Edit links returned to blog view
++ main.tpl's title is under a panel+title class
++ view.tpl Edit link added
