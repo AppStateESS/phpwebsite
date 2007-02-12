@@ -89,6 +89,24 @@ function webpage_update(&$content, $currentVersion)
 + Added simple image page inclusion.
 </pre>';
 
+    case version_compare($currentVersion, '0.4.0', '<'):
+        if (!PHPWS_DB::isTable('webpage_featured')) {
+            $db2 = new PHPWS_DB('webpage_featured');
+            $db2->addValue('id', 'int NOT NULL default 0');
+            $db2->addValue('vol_order', 'int NOT NULL default 0');
+            $result = $db2->createTable();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                $content[] = 'Unable to create webpage_featured table.';
+                return false;
+            }
+        }
+        $content[] = '<pre>
+0.4.0 changes
+-------------
++ Added "Featured" option. Lets you promote specific web pages summaries.
++ Added ability to move pages inside volumes.
+</pre>';
 
     }
 

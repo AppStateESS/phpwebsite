@@ -131,12 +131,15 @@ class Webpage_Forms {
 
     function wp_list()
     {
-        $select_op[] = '';
+        $select_op['list'] = '';
         $select_op['delete_wp']          = _('Delete');
         $select_op['move_to_frontpage']  = _('Move to frontpage');
         $select_op['move_off_frontpage'] = _('Move off frontpage');
         $select_op['activate']           = _('Activate');
         $select_op['deactivate']         = _('Deactivate');
+        if (Current_User::allow('webpage', 'featured')) {
+            $select_op['feature']            = _('Feature page');
+        }
 
         $form = new PHPWS_Form;
         $form->addHidden('module', 'webpage');

@@ -79,6 +79,7 @@ class Webpage_Admin {
         case 'post_page':
         case 'activate':
         case 'deactivate':
+        case 'feature':
         case 'approval_view':
         case 'deactivate_vol':
         case 'activate_vol':
@@ -119,6 +120,20 @@ class Webpage_Admin {
             Webpage_Admin::sendMessage( _('Page restored.'),
                                        sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s',
                                                $page->page_number, $volume->id, $page->id));
+            break;
+
+        case 'page_up':
+            $page->moveUp();
+            Webpage_Admin::sendMessage( _('Page moved.'),
+                                        sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s',
+                                                $page->page_number, $volume->id, $page->id));
+            break;
+
+        case 'page_down':
+            $page->moveDown();
+            Webpage_Admin::sendMessage( _('Page moved.'),
+                                        sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s',
+                                                $page->page_number, $volume->id, $page->id));
             break;
 
         case 'remove_page_restore':
@@ -305,14 +320,14 @@ class Webpage_Admin {
             if (isset($_POST['webpage'])) {
                 Webpage_Admin::setFrontPage($_POST['webpage'], 1);
             }
-            PHPWS_Core::goBack();
+            Webpage_Admin::goBack();
             break;
 
         case 'move_off_frontpage':
             if (isset($_POST['webpage'])) {
                 Webpage_Admin::setFrontPage($_POST['webpage'], 0);
             }
-            PHPWS_Core::goBack();
+            Webpage_Admin::goBack();
             break;
             
             
@@ -329,7 +344,7 @@ class Webpage_Admin {
                 $title = _('Error');
                 $content = _('A problem occurred when trying to delete your webpage.');
             } else {
-                PHPWS_Core::goBack();
+                Webpage_Admin::goBack();
             }
 
             break;
@@ -337,27 +352,34 @@ class Webpage_Admin {
         case 'activate_vol':
             $volume->active = 1;
             $volume->save();
-            PHPWS_Core::goBack();
+            Webpage_Admin::goBack();
             break;
 
         case 'deactivate_vol':
             $volume->active = 0;
             $volume->save();
-            PHPWS_Core::goBack();
+            Webpage_Admin::goBack();
+            break;
+
+        case 'feature':
+            if (isset($_POST['webpage'])) {
+                Webpage_Admin::setFeatured($_POST['webpage'], 1);
+            }
+            Webpage_Admin::goBack();
             break;
 
         case 'activate':
             if (isset($_POST['webpage'])) {
                 Webpage_Admin::setActive($_POST['webpage'], 1);
             }
-            PHPWS_Core::goBack();
+            Webpage_Admin::goBack();
             break;
 
         case 'deactivate':
             if (isset($_POST['webpage'])) {
                 Webpage_Admin::setActive($_POST['webpage'], 0);
             }
-            PHPWS_Core::goBack();
+            Webpage_Admin::goBack();
             break;
 
         case 'restore_page':
@@ -376,6 +398,30 @@ class Webpage_Admin {
         case 'settings':
             $title = _('Settings');
             $content = Webpage_Admin::settings();
+            break;
+
+        case 'drop_feature':
+            if (!Current_User::authorized('webpage', 'featured')) {
+                Current_User::disallow();
+            }
+            Webpage_Admin::dropFeature($volume);
+            PHPWS_Core::home();
+            break;
+
+        case 'up_feature':
+            if (!Current_User::authorized('webpage', 'featured')) {
+                Current_User::disallow();
+            }
+            Webpage_Admin::moveFeature($volume, 'up');
+            PHPWS_Core::home();
+            break;
+
+        case 'down_feature':
+            if (!Current_User::authorized('webpage', 'featured')) {
+                Current_User::disallow();
+            }
+            Webpage_Admin::moveFeature($volume, 'down');
+            PHPWS_Core::home();
             break;
 
         default:
@@ -523,6 +569,37 @@ class Webpage_Admin {
         }
     }
 
+    function setFeatured($pages, $featured=1)
+    {
+        $db = new PHPWS_DB('webpage_featured');
+        $db->addColumn('vol_order');
+        $vol_order = $db->select('max');
+
+        $db->reset();
+        $db->addColumn('id');
+        $all_cols = $db->select('col');
+
+        if (PEAR::isError($all_cols)) {
+            PHPWS_Error::log($all_cols);
+            return;
+        }
+
+        foreach ($pages as $id) {
+            if (in_array($id, $all_cols)) {
+                continue;
+            }
+            $vol_order++;
+            $db->reset();
+            $db->addValue('id', $id);
+            $db->addValue('vol_order', $vol_order);
+            $result = $db->insert();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                return;
+            }
+        }
+    }
+
     function approvalView(&$volume, &$version)
     {
         $approval = new Version_Approval('webpage', 'webpage_page', 'Webpage_Page');
@@ -659,6 +736,76 @@ class Webpage_Admin {
         
         $tpl = $form->getTemplate();
         return PHPWS_Template::process($tpl, 'webpage', 'forms/settings.tpl');
+    }
+
+    function goBack()
+    {
+        PHPWS_Core::reroute('index.php?module=webpage&tab=list');
+    }
+
+    function dropFeature($volume)
+    {
+        if (!$volume->id) {
+            return;
+        }
+        $db = new PHPWS_DB('webpage_featured');
+        $db->addWhere('id', $volume->id);
+        $db->addColumn('vol_order');
+        $vol_order = $db->select('one');
+        if (PEAR::isError($vol_order)) {
+            PHPWS_Error::log($vol_order);
+        } elseif (!$vol_order) {
+            return;
+        }
+        $db->delete();
+        $db->reset();
+        $db->addWhere('vol_order', $vol_order, '>');
+        $db->reduceColumn('vol_order');
+    }
+    
+    function moveFeature($volume, $direction)
+    {
+        if (!$volume->id) {
+            return;
+        }
+        $db = new PHPWS_DB('webpage_featured');
+        $db->addWhere('id', $volume->id);
+        $db->addColumn('vol_order');
+        $vol_order = $db->select('one');
+        $db->reset();
+        $db->addColumn('vol_order', 'max');
+        $max = $db->select('max');
+        $db->reset();
+
+        if ($direction == 'up') {
+            if ($vol_order == 1) {
+                $db->reduceColumn('vol_order');
+                $db->addValue('vol_order', $max);
+                $db->addWhere('id', $volume->id);
+                $db->update();
+            } else {
+                $db->addWhere('vol_order', $vol_order - 1);
+                $db->incrementColumn('vol_order');
+                $db->reset();
+
+                $db->addWhere('id', $volume->id);
+                $db->reduceColumn('vol_order');
+            }
+        } else {
+            if ($vol_order == $max) {
+                $db->incrementColumn('vol_order');
+                $db->addValue('vol_order', 1);
+                $db->addWhere('id', $volume->id);
+                $db->update();
+            } else {
+                $db->addWhere('vol_order', $vol_order + 1);
+                $db->reduceColumn('vol_order');
+                $db->reset();
+
+                $db->addWhere('id', $volume->id);
+                $db->incrementColumn('vol_order');
+            }
+        }
     }
 }
 

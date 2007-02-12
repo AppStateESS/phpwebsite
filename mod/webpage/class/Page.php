@@ -188,15 +188,20 @@ class Webpage_Page {
             if ($admin) {
                 $this->moreAdminLinks($links);
             }
+
+            $vars['wp_admin'] = 'page_up';
             if ($this->page_number > 1) {
-                $vars['wp_admin'] = 'page_up';
                 $links[] = PHPWS_Text::secureLink(_('Move up'), 'webpage', $vars);
+            } else {
+                $links[] = PHPWS_Text::secureLink(_('Move to end'), 'webpage', $vars);
             }
 
             $total_pages = $this->_volume->getTotalPages();
-            if ($this->page_number < $total_pages) {
                 $vars['wp_admin'] = 'page_down';
+            if ($this->page_number < $total_pages) {
                 $links[] = PHPWS_Text::secureLink(_('Move down'), 'webpage', $vars);
+            } else {
+                $links[] = PHPWS_Text::secureLink(_('Move to front'), 'webpage', $vars);
             }
 
             $template['ADMIN_LINKS'] = implode(' | ', $links);
@@ -238,6 +243,42 @@ class Webpage_Page {
                 $links[] = javascript('confirm', $jsvar);
             }
         }
+    }
+
+    function moveUp()
+    {
+        $db = new PHPWS_DB('webpage_page');
+        $db->addWhere('volume_id', $this->volume_id);
+        $total_pages = $db->count();
+
+        if ($this->page_number == 1) {
+            $db->reduceColumn('page_number');
+            $this->page_number = $total_pages;
+        } else {
+            $db->addWhere('page_number', $this->page_number - 1);
+            $db->addValue('page_number', $this->page_number);
+            $db->update();
+            $this->page_number--;
+        }
+        $this->save();
+    }
+
+    function moveDown()
+    {
+        $db = new PHPWS_DB('webpage_page');
+        $db->addWhere('volume_id', $this->volume_id);
+        $total_pages = $db->count();
+
+        if ($this->page_number == $total_pages) {
+            $this->page_number = 1;
+            $db->incrementColumn('page_number');
+        } else {
+            $db->addWhere('page_number', $this->page_number + 1);
+            $db->addValue('page_number', $this->page_number);
+            $db->update();
+            $this->page_number++;
+        }
+        $this->save();
     }
 
     function getPageLink($verbose=false)

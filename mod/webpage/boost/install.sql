@@ -18,6 +18,8 @@ CREATE TABLE webpage_volume (
   PRIMARY KEY  (id)
 );
 
+CREATE INDEX webpagevolume_idx on webpage_volume(key_id);
+
 CREATE TABLE webpage_page (
   id int NOT NULL default 0,
   volume_id int NOT NULL default 0,
@@ -28,4 +30,11 @@ CREATE TABLE webpage_page (
   approved smallint NOT NULL default 0,
   image_id int NOT NULL default 0,
   PRIMARY KEY  (id)
+);
+
+CREATE INDEX webpagepage_idx on webpage_page(volume_id);
+
+CREATE TABLE webpage_featured (
+  id int NOT NULL default 0,
+  vol_order int NOT NULL default 0
 );

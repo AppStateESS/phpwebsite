@@ -28,6 +28,7 @@ class Webpage_Volume {
     var $frontpage      = false;
     var $approved       = 0;
     var $active         = 1;
+    var $featured       = 0;
     var $_current_page  = 1;
     // array of pages indexed by order, value is id
     var $_key           = null;
@@ -128,6 +129,11 @@ class Webpage_Volume {
     function setTitle($title)
     {
         $this->title = strip_tags($title);
+    }
+
+    function getTitle()
+    {
+        return sprintf('<a href="%s">%s</a>', $this->getViewLink(true), $this->title);
     }
 
     function setSummary($summary)
@@ -473,6 +479,12 @@ class Webpage_Volume {
         if (!$version && Current_User::allow('webpage', 'edit_page', null, null, true)) {
             $vars = array('wp_admin' => 'restore_volume', 'volume_id'=>$this->id);
             $template['RESTORE'] = PHPWS_Text::secureLink(_('Restore'), 'webpage', $vars);
+            if ($this->featured) {
+                $vars['wp_admin'] = 'unfeature';
+            } else {
+                $vars['wp_admin'] = 'feature';
+            }
+            $template['FEATURE'] = PHPWS_Text::secureLink(_('Feature'), 'webpage', $vars);
         }
 
         $result = Categories::getSimpleLinks($this->key_id);

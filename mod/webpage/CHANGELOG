@@ -1,3 +1,12 @@
+12 February 2006
++ Added ability to move pages
++ Added Feature ability
++ Indexed page and volume table
++ Added Feature permission
++ Fixed some bugs with admin options
++ Fixed submitting an empty command
++ Updated files: templates/featured.tpl, templates/header.tpl
+
 2 February 2006
 + Moved a function out of Page getTpl for clarity
 + Added a page select with onchange function. Put it into the basic

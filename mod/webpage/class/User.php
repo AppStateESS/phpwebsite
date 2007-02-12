@@ -46,6 +46,53 @@ class Webpage_User {
 
     }
 
+    function showFeatured()
+    {
+        if (isset($_REQUEST['module'])) {
+            return NULL;
+        }
+
+        $db = new PHPWS_DB('webpage_featured');
+        $db->addColumn('webpage_volume.*');
+        $db->addWhere('webpage_featured.id', 'webpage_volume.id');
+        $db->addOrder('webpage_featured.vol_order');
+        $result = $db->getObjects('webpage_volume');
+        if (empty($result)) {
+            return null;
+        } elseif (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+        } else {
+            foreach ($result as $volume) {
+                $key = new Key($volume->key_id);
+                if (!$key->allowView()) {
+                    continue;
+                }
+                $tpl['TITLE'] = $volume->getTitle();
+                $tpl['SUMMARY'] = $volume->getSummary();
+
+                if (Current_User::allow('webpage', 'featured') && Current_User::isUnrestricted('users')) {
+                    $vars['volume_id'] = $volume->id;
+                    $vars['wp_admin'] = 'drop_feature';
+                    $links[1] = PHPWS_Text::secureLink(_('Drop'), 'webpage', $vars);
+
+                    $vars['wp_admin'] = 'up_feature';
+                    $links[2] = PHPWS_Text::secureLink(_('Up'), 'webpage', $vars);
+
+                    $vars['wp_admin'] = 'down_feature';
+                    $links[3] = PHPWS_Text::secureLink(_('Down'), 'webpage', $vars);
+
+                    $tpl['LINKS'] = implode(' | ', $links);
+                }
+                $template['volume'][] = $tpl;
+            }
+        }
+        $template['FEATURED_TITLE'] = _('Featured pages');
+
+
+        $content = PHPWS_Template::process($template, 'webpage', 'featured.tpl');
+        Layout::add($content, 'webpage', 'featured');
+    }
+
     function showFrontPage()
     {
         if (isset($_REQUEST['module'])) {
