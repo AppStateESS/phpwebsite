@@ -141,6 +141,11 @@ class Webpage_Volume {
         return PHPWS_Text::parseOutput($this->summary);
     }
 
+    function getTotalPages()
+    {
+        return count($this->_pages);
+    }
+
     function post()
     {
         if (empty($_POST['title'])) {

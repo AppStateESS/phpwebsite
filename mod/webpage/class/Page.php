@@ -176,18 +176,29 @@ class Webpage_Page {
 
         if ( (Current_User::allow('webpage', 'edit_page') && Current_User::isUser($this->_volume->create_user_id))
              || Current_User::allow('webpage', 'edit_page', $this->volume_id) ) {
-            $vars = array('wp_admin'  => 'edit_page',
-                          'page_id'   => $this->id,
+            $vars = array('page_id'   => $this->id,
                           'volume_id' => $this->volume_id);
             if ($version) {
                 $vars['version_id'] = $version;
             }
 
+            $vars['wp_admin'] = 'edit_page';
             $links[] = PHPWS_Text::secureLink(_('Edit'), 'webpage', $vars);
 
             if ($admin) {
                 $this->moreAdminLinks($links);
             }
+            if ($this->page_number > 1) {
+                $vars['wp_admin'] = 'page_up';
+                $links[] = PHPWS_Text::secureLink(_('Move up'), 'webpage', $vars);
+            }
+
+            $total_pages = $this->_volume->getTotalPages();
+            if ($this->page_number < $total_pages) {
+                $vars['wp_admin'] = 'page_down';
+                $links[] = PHPWS_Text::secureLink(_('Move down'), 'webpage', $vars);
+            }
+
             $template['ADMIN_LINKS'] = implode(' | ', $links);
         }
 
