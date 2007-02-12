@@ -235,7 +235,7 @@ label.radio-label {
 
 }
 
-.entry-summary, .webpage-content  {
+.entry-summary, .webpage-content, .webpage-summary {
    /* prevents float overlap */
     overflow: hidden;
 }
