@@ -9,6 +9,8 @@
  * @version $Id$
  */
 
+require_once 'config/core/language.php';
+
 if (!defined('PHPWS_SOURCE_DIR')) {
     define('PHPWS_SOURCE_DIR', './');
 }
@@ -28,7 +30,6 @@ if (!function_exists('bindtextdomain')){
     define('PHPWS_TRANSLATION', TRUE);
     initLanguage();
     translate('core');
-    textdomain('messages');
 }
 
 loadBrowserInformation();
@@ -36,6 +37,7 @@ loadBrowserInformation();
 /* Load the Core class */
 require_once PHPWS_SOURCE_DIR . 'core/class/Core.php';
 require_once PHPWS_SOURCE_DIR . 'core/inc/errorDefines.php';
+
 
 /***** PHPWS Classes ****/
 
@@ -57,12 +59,12 @@ if (!defined('USE_ROOT_CONFIG')) {
 
 function setLanguage($language)
 {
-    // putenv is causing problems with safe_mode. commenting it out doesn't
-    // seem to cause prevent translation. leaving it here for now.
-    /*
-    putenv("LANG=$language");
-    putenv("LANGUAGE=$language");
-    */
+    // putenv may cause problems with safe_mode.
+    // change USE_PUTENV in the language.php config file
+    if (USE_PUTENV) {
+        putenv("LANG=$language");
+        putenv("LANGUAGE=$language");
+    }
     return setlocale(LC_ALL, $language . '.UTF-8');
 }
 
@@ -81,7 +83,9 @@ function initLanguage()
         define('CORE_COOKIE_TIMEOUT', 3600);
     }
 
-    if (isset($_COOKIE['phpws_default_language'])) {
+    // Language will ignore user settings if FORCE_DEFAULT_LANGUAGE is true
+    // See language.php configuration file
+    if (!FORCE_DEFAULT_LANGUAGE && isset($_COOKIE['phpws_default_language'])) {
         $language = $_COOKIE['phpws_default_language'];
         $locale = setLanguage($language);
 
@@ -90,29 +94,32 @@ function initLanguage()
         }
         $locale = str_replace('.UTF-8', '', $locale);
     } else {
-        $userLang = getBrowserLanguage();
         $locale_found = FALSE;
-        foreach ($userLang as $language) {
-            if (strpos($language, '-')) {
-                $testslash =  explode('-', $language);
-                $test[0] = $testslash[0] . '_' . strtoupper($testslash[1]);
-            }
-            
-            $test[1] = $language;
-            $test[2] = substr($language, 0, 2);
-            $test[3] = $test[2] . '_' . strtoupper($test[2]);
 
-            foreach ($test as $langTest){
-                if (setLanguage($langTest)) {
-                    $locale_found = TRUE;
-                    $locale = $langTest;
-                    setcookie('phpws_default_language', $locale, mktime() + CORE_COOKIE_TIMEOUT);
+        if (!FORCE_DEFAULT_LANGUAGE) {
+            $userLang = getBrowserLanguage();
+            foreach ($userLang as $language) {
+                if (strpos($language, '-')) {
+                    $testslash =  explode('-', $language);
+                    $test[0] = $testslash[0] . '_' . strtoupper($testslash[1]);
+                }
+            
+                $test[1] = $language;
+                $test[2] = substr($language, 0, 2);
+                $test[3] = $test[2] . '_' . strtoupper($test[2]);
+
+                foreach ($test as $langTest){
+                    if (setLanguage($langTest)) {
+                        $locale_found = TRUE;
+                        $locale = $langTest;
+                        setcookie('phpws_default_language', $locale, mktime() + CORE_COOKIE_TIMEOUT);
+                        break;
+                    }
+                }
+            
+                if ($locale_found) {
                     break;
                 }
-            }
-            
-            if ($locale_found) {
-                break;
             }
         }
 
@@ -135,6 +142,7 @@ function initLanguage()
 
 function loadBrowserInformation()
 {
+    translate('core');
     if (!isset($_SERVER['HTTP_USER_AGENT'])) {
         $GLOBALS['browser_info'] = NULL;
         return;
@@ -209,17 +217,22 @@ function loadBrowserInformation()
             $platform = $newVars[$platformCheck];
 
             if ($platform == 'Windows'){
-                if ($newVars[$platformCheck + 1] == 'NT' && $newVars[$platformCheck + 2] == '5.0')
+                if ($newVars[$platformCheck + 1] == 'NT' && $newVars[$platformCheck + 2] == '5.0') {
                     $platform = 'Windows 2000';
-                else
+                }
+                else {
                     $platform .= ' ' . $newVars[$platformCheck + 1] . ' ' . $newVars[$platformCheck + 2];
+                }
 
-                if (isset($newVars[9]))
+                if (isset($newVars[9])) {
                     $program = explode('/', $newVars[9]);
-                elseif(isset($newVars[8]))
+                }
+                elseif(isset($newVars[8])) {
                     $program = explode('/', $newVars[8]);
-                else
+                }
+                else {
                     $program = _('Unknown');
+                }
             } else {
                 if (isset($newVars[8])){
                     if ($newVars[8] == 'Red') {
@@ -231,10 +244,12 @@ function loadBrowserInformation()
                         $program[0] = $program[1] = 'Unknown';
                     }
                 }
-                elseif (isset($newVars[7]))
+                elseif (isset($newVars[7])) {
                     $program = explode('/', $newVars[7]);
-                else
+                }
+                else {
                     $program = _('Unknown');
+                }
             }
 
             break;
@@ -290,21 +305,17 @@ function doubleLanguage($language)
 
 function translate($module=NULL)
 {
+    if (!PHPWS_TRANSLATION || DISABLE_TRANSLATION) {
+        return NULL;
+    }
+
     if (empty($module)) {
-        if (isset($GLOBALS['last_gettext'])) {
-            $directory = &$GLOBALS['last_gettext'];
-            if (is_dir($directory)) {
-                bindtextdomain('messages', $directory);
-                textdomain('messages');
-            }
+        if (isset($GLOBALS['Lang_Set']['previous'])) {
+            $GLOBALS['Lang_Set']['current'] = array_pop($GLOBALS['Lang_Set']['previous']);
         } else {
             translate('core');
         }
     } else {
-        if (!defined('PHPWS_TRANSLATION') || !PHPWS_TRANSLATION) {
-            return NULL;
-        }
-    
         if ($module == 'core') {
             $directory = PHPWS_SOURCE_DIR . 'locale';
         } else {
@@ -316,8 +327,14 @@ function translate($module=NULL)
         }
 
         bindtextdomain('messages', $directory);
-        textdomain('messages');
-        $GLOBALS['last_gettext'] = $directory;
+        if ( isset($GLOBALS['Lang_Set']['current']) && 
+             ( isset($GLOBALS['Lang_Set']['previous']) &&
+               $GLOBALS['Lang_Set']['current'] != end($GLOBALS['Lang_Set']['previous'])
+               )
+             ) {
+            $GLOBALS['Lang_Set']['previous'][] = $GLOBALS['Lang_Set']['current'];
+        }
+        $GLOBALS['Lang_Set']['current'] = $directory;
     }
 }
 
