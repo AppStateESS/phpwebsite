@@ -8,6 +8,7 @@
 function new_account($item)
 {
     if (!PHPWS_User::getUserSetting('new_user_method') > 0) {
+        translate('users');
         return _('New user signup is currently disabled.');
     }
     $signup_vars = array('action'  => 'user',

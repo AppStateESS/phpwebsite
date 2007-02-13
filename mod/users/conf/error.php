@@ -38,4 +38,5 @@ $errors = array(
                 USER_NOT_APPROVED         => _('Your user account has not been approved yet. Make sure you have responded to your authentication email.'),
                 USER_NOT_ACTIVE           => _('Your account has been deactivated. You will need to contact a site administrator to have it reactivated.')
 		);
+translate();
 ?>

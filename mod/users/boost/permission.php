@@ -5,6 +5,7 @@
    * @version $Id$
    */
 
+translate('users');
 $use_permissions = TRUE;
 
 $permissions['edit_users']       = _('Edit Users');
@@ -17,4 +18,5 @@ $permissions['edit_permissions'] = _('Edit Permissions');
  */
 $permissions['settings']         = _('Authorization/Settings');
 
+translate();
 ?>

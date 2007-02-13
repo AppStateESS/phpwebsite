@@ -261,7 +261,9 @@ class Current_User {
                 $content = PHPWS_Template::process($tpl, 'users', 'forms/permission_menu.tpl');
                 Layout::add($content, 'users', 'permissions');
             } else {
+                translate('users');
                 $links[] = Current_User::popupPermission($key->id, sprintf(_('Set permissions'), $key->title));
+                translate();
                 MiniAdmin::add('users', $links);
             }
         }
@@ -270,7 +272,9 @@ class Current_User {
     function popupPermission($key_id, $label=NULL)
     {
         if (empty($label)) {
+            translate('users');
             $js_vars['label'] = _('Permission');
+            translate();
         } else {
             $js_vars['label'] = strip_tags($label);
         }

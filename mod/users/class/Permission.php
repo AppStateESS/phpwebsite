@@ -42,6 +42,7 @@ class Users_Permission {
 
 
         $columnSetting = 'smallint NOT NULL default \'0\'';
+        translate('users');
         foreach ($permissions as $perm_name => $perm_proper) {
             if (in_array($perm_name, $columns)) {
                 continue;
@@ -54,6 +55,7 @@ class Users_Permission {
                 $content[] = sprintf(_('"%s" permission column created.'), $perm_name);
             }
         }
+        translate();
         return TRUE;
     }
 

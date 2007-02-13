@@ -9,6 +9,7 @@
 
 function my_page()
 {
+    translate('users');
     PHPWS_Core::initModClass('help', 'Help.php');
     if (isset($_REQUEST['subcommand'])) {
         $subcommand = $_REQUEST['subcommand'];
@@ -47,7 +48,7 @@ function my_page()
     }
 
     $template['CONTENT'] = $content;
-
+    translate();
     return PHPWS_Template::process($template, 'users', 'my_page/main.tpl'); 
 }
 
@@ -127,18 +128,19 @@ class User_Settings {
         $form->addHidden('userId', $user->getId());
         $form->addSubmit('submit', _('Update my information'));
 
-        $language_file = PHPWS_Core::getConfigFile('users', 'languages.php');
+        if (!DISABLE_TRANSLATION && !FORCE_DEFAULT_LANGUAGE) {
+            $language_file = PHPWS_Core::getConfigFile('users', 'languages.php');
 
-        if ($language_file) {
-            include $language_file;
-            $form->addSelect('language', $languages);
-            $form->setLabel('language', _('Language preference'));
-            if (isset($_COOKIE['phpws_default_language'])) {
-                $language = preg_replace('/\W/', '', $_COOKIE['phpws_default_language']);
-                $form->setMatch('language', $language);
+            if ($language_file) {
+                include $language_file;
+                $form->addSelect('language', $languages);
+                $form->setLabel('language', _('Language preference'));
+                if (isset($_COOKIE['phpws_default_language'])) {
+                    $language = preg_replace('/\W/', '', $_COOKIE['phpws_default_language']);
+                    $form->setMatch('language', $language);
+                }
             }
         }
-
         $template = $form->getTemplate();
 
         if (isset($message)){
@@ -146,7 +148,7 @@ class User_Settings {
                 $template[$tag] = $error;
             }
         }
-
+        translate();
         return PHPWS_Template::process($template, 'users', 'my_page/user_setting.tpl');
     }
 

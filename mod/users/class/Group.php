@@ -248,6 +248,7 @@ class PHPWS_Group {
 
     function getTplTags()
     {
+        translate('users');
         $this->loadMembers();
         $id = $this->id;
 
@@ -287,6 +288,8 @@ class PHPWS_Group {
         else {
             $template['MEMBERS'] = 0;
         }
+
+        translate();
         return $template;
     }
 

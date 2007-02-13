@@ -5,7 +5,9 @@
    * @version $Id$
    */
 
-function users_register($module, &$content){
+function users_register($module, &$content)
+{
+    translate('users');
     PHPWS_Core::initModClass('users', 'Permission.php');
     PHPWS_Core::initModClass('users', 'My_Page.php');
 
@@ -35,7 +37,7 @@ function users_register($module, &$content){
     } else {
         $no_my_page = TRUE;
     }
-
+    translate();
     // If the module doesn't have permissions or a My Page
     // then don't register the module
     if ($no_permissions && $no_my_page) {

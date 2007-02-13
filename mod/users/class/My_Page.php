@@ -9,6 +9,7 @@ class My_Page {
 
     function main()
     {
+        translate('users');
         if (!Current_User::isLogged()) {
             PHPWS_Core::errorPage('403');
         }
@@ -95,6 +96,7 @@ class My_Page {
 
         if (!is_file($final_file)){
             PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'users', 'userOption', $final_file);
+            translate('users');
             return _('There was a problem with this module\'s My Page file.');
         }
 

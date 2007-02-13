@@ -10,10 +10,14 @@ function users_unregister($module, &$content){
     $result = Users_Permission::removePermissions($module);
 
     if (PEAR::isError($result)) {
+        translate('users');
         $content[] = _('Permissions table not removed successfully.');        
+        translate();
         return FALSE;
     } elseif ($result) {
+        translate('users');
         $content[] = _('Permissions table removed successfully.');
+        translate();
         return TRUE;
     }
     

@@ -9,6 +9,7 @@
 
 function users_install(&$content)
 {
+    translate('users');
     PHPWS_Core::initModClass('users', 'Users.php');
     PHPWS_Core::initModClass('users', 'Action.php');
     PHPWS_Core::configRequireOnce('users', 'config.php');
@@ -26,6 +27,7 @@ function users_install(&$content)
         }
         elseif (empty($deities)) {
             $content[] = _('Could not find any hub deities.');
+            translate();
             return FALSE;
         } else {
             Branch::restoreBranchDB();
@@ -64,8 +66,10 @@ function users_install(&$content)
         if (PEAR::isError($authorize_id)) {
             PHPWS_Error::log($authorize_id);
             $content[] = _('Unable to create authorization script.');
+            translate();
             return FALSE;
         }
+        translate();
         return TRUE;
     }
 
@@ -96,14 +100,16 @@ function users_install(&$content)
             $content[] = _('User\'s email used as contact email address.');
         } else {
             $content[] = userForm($user, $result);
+            translate();
             return FALSE;
         }
     } else {
         $content[] = _('Please create a user to administrate the site.') . '<br />';
         $content[] = userForm($user);
+        translate();
         return FALSE;
     }
-
+    translate();
     return TRUE;
 }
 
