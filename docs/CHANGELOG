@@ -1,3 +1,19 @@
+CHANGELOG
+This is the change log for the phpWebSite base only. Each module has
+its own separate CHANGELOG file.
+
+13 February 2007
++ Changed Init.php translate function. Should now track previous
+  directory setting properly.
++ Added several translate functions throughout the base classes.
++ Moved language settings to a new config file : language.php 
++ Removed textdomain function from Init.php. It was a redundant call.
++ Removed language setting from setup config template
++ Updated files: conf/language.php
+
+12 February 2007
++ Theme - added webpage-summary to float fix
+
 6 February 2007
 + Init.php - strips the UTF8 off the end of locale to match preference
              file
