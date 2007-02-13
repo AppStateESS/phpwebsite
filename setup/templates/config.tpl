@@ -162,14 +162,6 @@ define('FORCE_MOD_CONFIG', FALSE);
 // Windows environments. Use this one instead on a windows machine.
 {WINDOWS_PEAR}ini_set('include_path', '.;' . PHPWS_SOURCE_DIR . 'lib\\pear\\');
 
-/************************ LANGUAGE *****************************/
-/**
- * Should phpWebSite be unable to assign a language to a user
- * it will default to the one below. MAKE SURE you use one that
- * has been tested with setlocale or you will get English each
- * time.
- */
-define('DEFAULT_LANGUAGE', 'en_US');
 
 /************************ LIST ********************************/
 /**
