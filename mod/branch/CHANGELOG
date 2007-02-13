@@ -1,3 +1,7 @@
+13 February 2007
++ Removed language setting from default config.php template
++ Raised core dependency
+
 8 December 2006
 + Added missing cache_directory value for config.tpl.
 
