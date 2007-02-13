@@ -35,6 +35,7 @@ if (stats_on && stats_time) {
 
 function show_stats()
 {
+    translate('core');
     if (!stats_on) {
         return TRUE;
     }
