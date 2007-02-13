@@ -132,8 +132,9 @@ class PHPWS_DB {
                 return $connect;
             }
         }
-        
+        translate('core');
         PHPWS_DB::logDB(sprintf(_('Connected to database "%s"'), $dbname));
+        
 
         // Load the factory files
         $type = $connect->dbsyntax;
@@ -152,6 +153,7 @@ class PHPWS_DB {
         $GLOBALS['PHPWS_DB']['dbs'][$key]['tbl_prefix'] = $tbl_prefix;
         $GLOBALS['PHPWS_DB']['dbs'][$key]['type']       = $type;
         PHPWS_DB::_updateCurrent($key);
+        translate();
         return TRUE;
     }
 
@@ -2016,6 +2018,7 @@ class PHPWS_DB {
     function saveObject(&$object, $stripChar=FALSE, $autodetect_id=TRUE)
     {
         if (!is_object($object)) {
+            translate('core');
             return PHPWS_Error::get(PHPWS_WRONG_TYPE, 'core', 'PHPWS_DB::saveObject', _('Type') . ': ' . gettype($object));
         }
 
@@ -2367,6 +2370,7 @@ class PHPWS_DB_Where {
         }
 
         if (!PHPWS_DB::checkOperator($operator)) {
+            translate('core');
             return PHPWS_Error::get(PHPWS_DB_BAD_OP, 'core', 'PHPWS_DB::addWhere', _('DB Operator:') . $operator);
         }
 

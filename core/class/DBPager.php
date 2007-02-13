@@ -1,5 +1,6 @@
 <?php
 
+translate('core');
 define ('DBPAGER_DEFAULT_LIMIT', 10);
 define ('DBPAGER_PAGE_LIMIT', 8);
 define ('DBPAGER_DEFAULT_EMPTY_MESSAGE', _('No rows found.'));
@@ -135,7 +136,8 @@ class DBPager {
 
     var $table = null;
 
-    function DBPager($table, $class=NULL) {
+    function DBPager($table, $class=NULL)
+    {
         if (empty($table)) {
             $this->error = PHPWS_Error::get(DBPAGER_NO_TABLE, 'core', 'DB_Pager::DBPager');
             return;
@@ -235,13 +237,15 @@ class DBPager {
         return TRUE;
     }
 
-    function setDefaultLimit($limit) {
+    function setDefaultLimit($limit)
+    {
         if (empty($this->limit)) {
             $this->limit = (int)$limit;
         }
     }
 
-    function setSearch(){
+    function setSearch()
+    {
         $col_list = func_get_args();
 
         foreach ($col_list as $column) {
@@ -251,11 +255,13 @@ class DBPager {
         }
     }
 
-    function setPageTurnerLeft($turner){
+    function setPageTurnerLeft($turner)
+    {
         $this->page_turner_left = $turner;
     }
 
-    function setPageTurnerRight($turner){
+    function setPageTurnerRight($turner)
+    {
         $this->page_turner_right = $turner;
     }
 
@@ -268,11 +274,13 @@ class DBPager {
         $this->limitList = $list;
     }
 
-    function addToggle($toggle){
+    function addToggle($toggle)
+    {
         $this->toggles[] = $toggle;
     }
 
-    function setLink($link){
+    function setLink($link)
+    {
         $this->link = $link;
     }
 
@@ -286,11 +294,13 @@ class DBPager {
         return str_replace(strstr($this->link, '?'), '', $this->link);
     }
 
-    function setModule($module){
+    function setModule($module)
+    {
         $this->module = $module;
     }
 
-    function setTemplate($template){
+    function setTemplate($template)
+    {
         $this->template = $template;
     }
 
@@ -325,11 +335,13 @@ class DBPager {
         $this->row_tags = array('method'=>$method, 'variable'=>$variables);
     }
 
-    function setEmptyMessage($message){
+    function setEmptyMessage($message)
+    {
         $this->empty_message = strip_tags($message);
     }
 
-    function addToggleFunction($function, $toggle=2) {
+    function addToggleFunction($function, $toggle=2) 
+    {
         if (empty($function) || $toggle < 2) {
             return false;
         }
@@ -360,7 +372,8 @@ class DBPager {
     /**
      * Adds a function or static method call to pager
      */
-    function addRowFunction($function) {
+    function addRowFunction($function)
+    {
         if (is_string($function) && function_exists($function)) {
             $this->run_function = $function;
             return true;
@@ -382,7 +395,8 @@ class DBPager {
         }
     }
 
-    function addRunMethod($method){
+    function addRunMethod($method)
+    {
         if (!in_array(strtolower($method), $this->_methods)) {
             return;
         }
@@ -390,15 +404,18 @@ class DBPager {
         $this->run_methods[] = $method;
     }
 
-    function addWhere($column, $value, $operator=NULL, $conj=NULL, $group=NULL){
+    function addWhere($column, $value, $operator=NULL, $conj=NULL, $group=NULL)
+    {
         return $this->db->addWhere($column, $value, $operator, $conj, $group);
     }
 
-    function addPageTags($tags){
+    function addPageTags($tags)
+    {
         $this->page_tags = $tags;
     }
 
-    function getLimit(){
+    function getLimit()
+    {
         if (empty($this->limit) || !in_array($this->limit, $this->limitList)) {
             list($this->limit) = each($this->limitList);
         }
@@ -407,7 +424,8 @@ class DBPager {
         return array((int)$this->limit, (int)$start);
     }
 
-    function getTotalRows(){
+    function getTotalRows()
+    {
         if (isset($this->error)) {
             return;
         }
@@ -491,7 +509,8 @@ class DBPager {
         return TRUE;
     }
 
-    function getPageLinks(){
+    function getPageLinks()
+    {
         if ($this->total_pages < 1) {
             $current_page = $total_pages = 1;
         } else {
@@ -585,7 +604,8 @@ class DBPager {
     /**
      * Returns the sorting buttons for table columns
      */
-    function getSortButtons(&$template){
+    function getSortButtons(&$template)
+    {
 
         if (empty($this->table_columns)) {
             return NULL;
@@ -689,7 +709,8 @@ class DBPager {
     }
 
 
-    function getLimitList(){
+    function getLimitList()
+    {
         $values = $this->getLinkValues();
         unset($values['limit']);
         foreach ($values as $key => $value) {
@@ -713,7 +734,8 @@ class DBPager {
      * Pulls variables from the object results. Calls object's formatting function if
      * specified.
      */
-    function getPageRows(){
+    function getPageRows()
+    {
         $count = 0;
 
         if (!isset($this->display_rows)) {
@@ -776,7 +798,9 @@ class DBPager {
         return $template;
     }
 
-    function getPageDrop(){
+    function getPageDrop()
+    {
+        translate('core');
         if (empty($this->total_pages)) {
             $page_list[1] = 1;
         } else {
@@ -803,11 +827,14 @@ class DBPager {
             PHPWS_Error::log($template);
             return NULL;
         }
+        translate();
         return implode("\n", $template);
     }
 
 
-    function getSearchBox(){
+    function getSearchBox()
+    {
+        translate('core');
         $form = & new PHPWS_Form('search_list');
         $form->setMethod('get');
         $values = $this->getLinkValues();
@@ -820,11 +847,13 @@ class DBPager {
             PHPWS_Error::log($template);
             return NULL;
         }
+        translate();
         return implode("\n", $template);
     }
 
     function _getNavigation(&$template)
     {
+        translate('core');
         if ($this->total_rows < 1) {
             $total_row = $start_row = $end_row = 1;
         } else {
@@ -837,8 +866,9 @@ class DBPager {
 
         $pages = $this->getPageLinks();
 
-        if (PEAR::isError($pages))
+        if (PEAR::isError($pages)) {
             return $pages;
+        }
 
         $template['PAGES']     = $pages;
         $template['PAGE_LABEL']  = _('Page');
@@ -850,7 +880,7 @@ class DBPager {
         if (isset($this->searchColumn)) {
             $template['SEARCH']    = $this->getSearchBox();
         }
-
+        translate();
     }
 
     /**

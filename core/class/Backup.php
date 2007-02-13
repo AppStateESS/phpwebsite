@@ -1,5 +1,10 @@
 <?php
 
+  /**
+   * @version $Id$
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   */
+
 class Backup {
   var $table         = NULL;
   var $current_id    = NULL;

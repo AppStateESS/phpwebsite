@@ -371,6 +371,7 @@ class Key {
 
     function &getHomeKey()
     {
+        translate('core');
         if (!isset($GLOBALS['Home_Key'])) {
             $key = & new Key;
             $key->id = 0;
@@ -381,6 +382,7 @@ class Key {
 
             $GLOBALS['Home_Key'] = $key;
         }
+        translate();
         return $GLOBALS['Home_Key'];
     }
 

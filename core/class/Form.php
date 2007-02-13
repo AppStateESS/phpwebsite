@@ -1213,6 +1213,7 @@ class PHPWS_Form {
 
     function _imageSelectArray($module, $current)
     {
+        translate('core');
         $db = new PHPWS_DB('images');
         $db->addWhere('module', $module);
         $db->addOrder('directory');
@@ -1282,6 +1283,7 @@ class PHPWS_Form {
 
             $selectList[] = '</optgroup>';
         }
+        translate();
         return $selectList;
     }
 

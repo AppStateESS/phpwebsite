@@ -1,5 +1,4 @@
 <?php
-
 require_once(PHPWS_SOURCE_DIR . 'core/class/Pager.php');
 
 /**
@@ -291,6 +290,7 @@ class PHPWS_Manager {
      * @access public
      */
     function init() {
+        translate('core');
         if(!isset($this->_module)) {
             $message = _('Manager cannot initialize, the module was not set.');
             $error = new PHPWS_Error('core', 'PHPWS_Manager::init()', $message, 'exit', 1);
@@ -363,6 +363,7 @@ class PHPWS_Manager {
                 $this->_listPaging[$listName] = $$paging;
             }
         }
+        translate();
     }
 
     /**
@@ -374,6 +375,7 @@ class PHPWS_Manager {
      * @access public
      */
     function getList($listName, $title=NULL, $makeForm=TRUE, $overRideOp=NULL) {
+        translate('core');
         $this->listName = $listName;
 
         if(!isset($this->_table) && !isset($this->_request)) {
@@ -709,7 +711,7 @@ class PHPWS_Manager {
         $this->setSort(NULL);
         $this->setOrder(NULL);
         $this->_class = NULL;
-
+        translate();
         return $content;
     }// END FUNC getList()
 

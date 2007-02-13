@@ -31,7 +31,8 @@ class PHPWS_Time {
     /**
      * Returns a time in iCal format
      */
-    function getDTTime($time=0, $mode='utc') {
+    function getDTTime($time=0, $mode='utc')
+    {
         if (!$time) {
             $time = mktime();
         }
@@ -189,14 +190,14 @@ class PHPWS_Time {
      * @date   2006-02-03
      *
      */
-    function relativeTime($timestamp, $format='%c') {
+    function relativeTime($timestamp, $format='%c')
+    {
         translate('core');
         $rel   = time() - $timestamp;
         $mins  = floor($rel / 60);
         $hours = floor($mins / 60);
         $days  = floor($hours / 24);
         $weeks = floor($days/ 7);
-      
       
         if    ($mins < 2) {
             return _('a heartbeat ago');

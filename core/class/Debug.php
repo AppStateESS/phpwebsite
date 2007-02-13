@@ -95,6 +95,7 @@ class PHPWS_Debug {
      */
     function testObject($objVar, $displayTags=TRUE, $show_recursive=FALSE)
     {
+        translate('core');
         if(is_object($objVar)) {
             $test_recursion = md5(serialize($objVar));
             
@@ -134,6 +135,7 @@ class PHPWS_Debug {
      */
     function testArray($arrayVar, $displayTags=TRUE, $show_recursive=FALSE) 
     {
+        translate('core');
         if (empty($arrayVar)) {
             return null;
         }
@@ -202,6 +204,7 @@ function test($value, $exitAfter=FALSE, $show_recursive=FALSE)
 
 function objectInfo($object)
 {
+    translate('core');
     if (!is_object($object)){
         if (gettype($object) == 'object') {
             echo _('This is an incomplete object. If this is a sessioned object, make sure to declare the class before the variable.') . '<br />';
@@ -213,7 +216,7 @@ function objectInfo($object)
 
     $info['class'] = get_class($object);
     $info['methods'] = get_class_methods($info['class']);
-
+    translate();
     test($info);
     return TRUE;
 }

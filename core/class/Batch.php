@@ -3,6 +3,7 @@
   /**
    * Separates work into batches to prevent memory caps or timeouts
    * 
+   * @version $Id$
    * @author Matthew McNaney <mcnaney at gmail dot com>
    */
 
@@ -131,12 +132,14 @@ class Batches {
 
     function continueLink($continue_link=NULL)
     {
+        translate('core');
         if (empty($continue_link)) {
             $continue_link = _('Continue');
         }
 
         $url = $this->getAddress();
 
+        translate();
         return sprintf('<a href="%s">%s</a>', $url, $continue_link);
     }
 

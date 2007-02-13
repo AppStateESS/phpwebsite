@@ -400,7 +400,9 @@ class PHPWS_Text {
     function backLink($title=NULL)
     {
         if (empty($title)) {
+            translate('core');
             $title = _('Return to previous page.');
+            translate();
         }
 
         if (!isset($_SERVER['HTTP_REFERER'])) {
@@ -664,6 +666,7 @@ class PHPWS_Text {
      */
     function bb2html($bb2html, $title)
     {
+        translate('core');
         /*      pre-formatted text (even bbcode inside [pre] text will remain untouched, as it should be)
          there may be multiple <pre> blocks, so we grab them all and create an array     */
         $pre = array(); $i=0;
@@ -785,7 +788,7 @@ class PHPWS_Text {
         for($i=0;$i <= $cp;$i++) {
             $bb2html = str_replace("***pre_string***$i", '<pre>'.substr($pre[$i],5,-6).'</pre>', $bb2html);
         }
-
+        translate();
         return $bb2html;
     }
     /* end function bb2html($bb2html, $title) */
