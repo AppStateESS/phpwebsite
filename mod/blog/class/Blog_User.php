@@ -59,11 +59,13 @@ class Blog_User {
         }
 
         Layout::add($content);
+        translate();
     }
 
 
     function postSuggestion(&$blog)
     {
+        translate('blog');
         if (PHPWS_Core::isPosted()) {
             $tpl['TITLE'] = _('Repeat submission');
             $tpl['CONTENT'] =  _('Your submission is still awaiting approval.');
@@ -95,15 +97,18 @@ class Blog_User {
             $tpl['TITLE'] = _('Thank you');
             $tpl['CONTENT'] =  _('Your entry has been submitted for review.');
         }
+        translate();
         return PHPWS_Template::process($tpl, 'blog', 'user_main.tpl');
     }
 
 
     function submitAnonymous(&$blog)
     {
+        translate('blog');
         PHPWS_Core::initModClass('blog', 'Blog_Form.php');
         $tpl['TITLE'] = _('Submit Entry');
         $tpl['CONTENT'] = Blog_Form::edit($blog, null, true);
+        translate();
         return PHPWS_Template::process($tpl, 'blog', 'user_main.tpl');
     }
 
@@ -121,6 +126,7 @@ class Blog_User {
 
     function show()
     {
+        translate('blog');
         $key = BLOG_CACHE_KEY;
 
         if (!Current_User::isLogged()    &&
@@ -206,7 +212,7 @@ class Blog_User {
             $link[] = PHPWS_Text::secureLink(_('Add new blog'), 'blog', $vars);
             MiniAdmin::add('blog', $link);
         }
-
+        translate();
         return $content;
     }
 
@@ -216,6 +222,7 @@ class Blog_User {
      */
     function showPast($entries)
     {
+        translate('blog');
         if (empty($entries)) {
             return false;
         }
@@ -226,6 +233,7 @@ class Blog_User {
         $tpl['PAST_TITLE'] = _('Previous blog entries');
         $content = PHPWS_Template::process($tpl, 'blog', 'past_view.tpl');
         Layout::add($content, 'blog', 'previous_entries');
+        translate();
     }
 
     /**
@@ -233,6 +241,7 @@ class Blog_User {
      */
     function showSide()
     {
+        translate('blog');
         $db = new PHPWS_DB('blog_entries');
         $limit = PHPWS_Settings::get('blog', 'blog_limit');
         $result = Blog_User::getEntries($db, $limit);
@@ -248,6 +257,7 @@ class Blog_User {
         $tpl['RECENT_TITLE'] = sprintf('<a href="index.php?module=blog&amp;action=view">%s</a>', _('Recent blog entries'));
         $content = PHPWS_Template::process($tpl, 'blog', 'recent_view.tpl');
         Layout::add($content, 'blog', 'recent_entries');
+        translate();
     }
 
 }

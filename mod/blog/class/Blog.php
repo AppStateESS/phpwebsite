@@ -131,6 +131,7 @@ class Blog {
 
     function save()
     {
+        translate('blog');
         PHPWS_Core::initModClass('version', 'Version.php');
         $db = new PHPWS_DB('blog_entries');
         if (empty($this->id)) {
@@ -148,7 +149,7 @@ class Blog {
                 $this->author    = _('Anonymous');
             }
         }
-
+        translate();
         $version = new Version('blog_entries');
 
         if ($this->approved || !$this->id) {
@@ -222,6 +223,7 @@ class Blog {
                 return 'index.php?module=blog&amp;action=view_comments&amp;id=' . $this->id;
             }
         } else {
+            translate('blog');
             return PHPWS_Text::rewriteLink(_('View'), 'blog', $this->id);
         }
     }
@@ -238,7 +240,7 @@ class Blog {
         if (!empty($result)) {
             $template['CATEGORIES'] = implode(', ', $result);
         }
-
+        translate('blog');
         $template['POSTED_BY'] = _('Posted by');
         $template['POSTED_ON'] = _('Posted on');
         if ($this->author_id) {
@@ -246,7 +248,7 @@ class Blog {
         } else {
             $template['AUTHOR'] = _('Anonymous');
         }
-    
+        translate();
         return PHPWS_Template::process($template, 'blog', 'view.tpl');
     }
 
@@ -259,6 +261,7 @@ class Blog {
      */
     function view($edit=true, $summarized=true)
     {
+        translate('blog');
         if (!$this->id) {
             PHPWS_Core::errorPage(404);
         }
@@ -341,7 +344,7 @@ class Blog {
         $template['POSTED_BY'] = _('Posted by');
         $template['POSTED_ON'] = _('Posted on');
         $template['AUTHOR'] = $this->author;
-    
+        translate();
         return PHPWS_Template::process($template, 'blog', 'view.tpl');
     }
 
@@ -357,6 +360,7 @@ class Blog {
     }
 
     function getListAction(){
+        translate('blog');
         $link['action'] = 'admin';
         $link['blog_id'] = $this->id;
 
@@ -380,10 +384,14 @@ class Blog {
             $list[] = PHPWS_Text::secureLink(_('Restore'), 'blog', $link);
         }
 
-        if (isset($list))
-            return implode(' | ', $list);
-        else
-            return _('No action');
+        if (isset($list)) {
+            $response = implode(' | ', $list);
+        }
+        else {
+            $response = _('No action');
+        }
+        translate();
+        return $response;
     }
 
     function getListEntry(){
@@ -407,6 +415,7 @@ class Blog {
         }
 
         if (empty($_POST['title'])) {
+            translate('blog');
             return array(_('Missing title.'));
         } else {
             $this->title = strip_tags($_POST['title']);

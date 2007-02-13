@@ -14,6 +14,7 @@ class Blog_Admin {
 
     function main()
     {
+        translate('blog');
         if (!Current_User::authorized('blog')) {
             Current_User::disallow(_('User attempted access to Blog administration.'));
             return;
@@ -273,7 +274,7 @@ class Blog_Admin {
         $panel->setContent($final);
         $finalPanel = $panel->display();
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
-
+        translate();
     }
 
 
@@ -343,6 +344,7 @@ class Blog_Admin {
 
     function viewVersion($version_id)
     {
+        translate('blog');
         $version = new Version('blog_entries', (int)$_REQUEST['version_id']);
         $blog = new Blog;
         $version->loadObject($blog);
@@ -366,6 +368,7 @@ class Blog_Admin {
 
         $template['OPTIONS'] = implode(' | ', $options);
         $template['VIEW'] = $blog->brief_view();
+        translate();
         return PHPWS_Template::process($template, 'blog', 'version_view.tpl');
     }
 
@@ -389,6 +392,7 @@ class Blog_Admin {
 
     function &cpanel()
     {
+        translate('blog');
         PHPWS_Core::initModClass('version', 'Version.php');
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $newLink = 'index.php?module=blog&amp;action=admin';
@@ -424,12 +428,14 @@ class Blog_Admin {
 
         $panel->setModule('blog');
         $panel->setPanel('panel.tpl');
+        translate();
         return $panel;
     }
 
 
     function entry_list()
     {
+        translate('blog');
         PHPWS_Core::initCoreClass('DBPager.php');
 
         $pageTags['TITLE']  = _('Title');
@@ -447,6 +453,7 @@ class Blog_Admin {
         $pager->setSearch('title');
         $pager->setDefaultOrder('create_date', 'desc');
         $content = $pager->get();
+        translate();
         return $content;
     }
 
