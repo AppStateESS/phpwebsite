@@ -191,8 +191,8 @@ table.form-table td {
 }
 
 
-label.radio-label {
-    font-weight : normal;
+.top-label label {
+    font-weight : bold;
 }
 
 
@@ -201,7 +201,7 @@ label.radio-label {
 }
 
 .padded {
-   padding : 4px;
+   padding : .8em;
 }
 
 .smaller, .smaller input, .smaller select {
