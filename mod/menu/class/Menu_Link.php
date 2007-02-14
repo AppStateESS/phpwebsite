@@ -39,7 +39,7 @@ class Menu_Link {
     function init()
     {
         $db = $this->getDB();
-        $db = & new PHPWS_DB('menu_links');
+        $db = new PHPWS_DB('menu_links');
         $db->loadObject($this);
         $this->loadChildren();
     }
@@ -47,7 +47,7 @@ class Menu_Link {
     function &getDB()
     {
         if (empty($this->_db)) {
-            $this->_db = & new PHPWS_DB('menu_links');
+            $this->_db = new PHPWS_DB('menu_links');
         }
         $this->_db->reset();
         return $this->_db;
@@ -293,7 +293,7 @@ class Menu_Link {
             return TRUE;
         }
 
-        $above = & new Menu_Link;
+        $above = new Menu_Link;
 
         $db = $this->getDB();
         $db->addWhere('menu_id', $this->menu_id);
@@ -323,7 +323,7 @@ class Menu_Link {
             return TRUE;
         }
 
-        $below = & new Menu_Link;
+        $below = new Menu_Link;
         
         $db = $this->getDB();
         $db->addWhere('menu_id', $this->menu_id);

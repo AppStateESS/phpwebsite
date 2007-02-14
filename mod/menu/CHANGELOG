@@ -1,3 +1,7 @@
+14 February 2007
++ Removed references from object constructors
++ Removed a unneeded double urlencode and a urldecode
+
 6 February 2007
 + Default menu is created on install.
 

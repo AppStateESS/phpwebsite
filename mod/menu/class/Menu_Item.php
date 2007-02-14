@@ -243,7 +243,8 @@ class Menu_Item {
         $link->key_id = 0;
         $link->setMenuId($this->id);
         $link->setTitle($title);
-        $link->setUrl(urldecode($url));
+
+        $link->setUrl($url);
         $link->setParent($parent);
 
         return $link->save();

@@ -30,9 +30,9 @@ class Menu_Admin {
         }
 
         if (isset($_REQUEST['menu_id'])) {
-            $menu = & new Menu_Item((int)$_REQUEST['menu_id']);
+            $menu = new Menu_Item((int)$_REQUEST['menu_id']);
         } else {
-            $menu = & new Menu_Item;
+            $menu = new Menu_Item;
         }
 
         // start command switch
@@ -74,13 +74,13 @@ class Menu_Admin {
             break;
 
         case 'move_link_up':
-            $link = & new Menu_Link($_REQUEST['link_id']);
+            $link = new Menu_Link($_REQUEST['link_id']);
             $link->moveUp();
             PHPWS_Core::goBack();
             break;
 
         case 'move_link_down':
-            $link = & new Menu_Link($_REQUEST['link_id']);
+            $link = new Menu_Link($_REQUEST['link_id']);
             $link->moveDown();
             PHPWS_Core::goBack();
             break;
@@ -151,7 +151,7 @@ class Menu_Admin {
             break;
 
         case 'add_site_link':
-            $link = & new Menu_Link;
+            $link = new Menu_Link;
             $link->parent = $_REQUEST['parent_id'];
             if (isset($_REQUEST['dadd'])) {
                 $link->url = $_REQUEST['dadd'];
@@ -160,15 +160,15 @@ class Menu_Admin {
             break;
 
         case 'edit_site_link':
-            $link = & new Menu_Link($_REQUEST['link_id']);
+            $link = new Menu_Link($_REQUEST['link_id']);
             Menu_Admin::siteLink($menu, $link);
             break;
 
         case 'post_site_link':
             if (isset($_REQUEST['link_id'])) {
-                $link = & new Menu_Link($_REQUEST['link_id']);
+                $link = new Menu_Link($_REQUEST['link_id']);
             } else {
-                $link = & new Menu_Link;
+                $link = new Menu_Link;
             }
 
             $result = Menu_Admin::postSiteLink($link);
@@ -271,7 +271,7 @@ class Menu_Admin {
         $menu_id = &$_REQUEST['menu_id'];
         $key_id = &$_REQUEST['key_id'];
 
-        $db = & new PHPWS_DB('menu_assoc');
+        $db = new PHPWS_DB('menu_assoc');
         $db->addWhere('menu_id', $menu_id);
         $db->addWhere('key_id', $key_id);
         $db->delete();
