@@ -54,7 +54,7 @@ class PHPWS_Document extends File_Common {
             return FALSE;
         }
 
-        $db = & new PHPWS_DB('documents');
+        $db = new PHPWS_DB('documents');
         return $db->loadObject($this);
     }
 
@@ -96,7 +96,7 @@ class PHPWS_Document extends File_Common {
             }
         }
 
-        $db = & new PHPWS_DB('documents');
+        $db = new PHPWS_DB('documents');
 
         if ((bool)$no_dupes && empty($this->id)) {
             $db->addWhere('file_name',  $this->file_name);
@@ -142,11 +142,11 @@ class PHPWS_Document extends File_Common {
     function &saveKey()
     {
         if (empty($this->key_id)) {
-            $key = & new Key;
+            $key = new Key;
         } else {
-            $key = & new Key($this->key_id);
+            $key = new Key($this->key_id);
             if (PEAR::isError($key->_error)) {
-                $key = & new Key;
+                $key = new Key;
             }
         }
 
@@ -178,7 +178,7 @@ class PHPWS_Document extends File_Common {
             }
         }
 
-        $db = & new PHPWS_DB('documents');
+        $db = new PHPWS_DB('documents');
         $db->addWhere('id', $this->id);
         return $db->delete();
     }

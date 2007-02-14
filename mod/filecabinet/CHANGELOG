@@ -1,4 +1,6 @@
 14 February 2007
++ Removed references from object constructors
++ Added missing comment lines
 + Added translate statements
 + Added system upload memory check. Overrides site setting in form.
 

@@ -72,8 +72,8 @@ class PHPWS_Image extends File_Common {
             return $this;
         }
 
-        $thumbnail = & new PHPWS_Image;
-        $db = & new PHPWS_DB('images');
+        $thumbnail = new PHPWS_Image;
+        $db = new PHPWS_DB('images');
         $db->addWhere('thumbnail_source', $this->id);
         $db->loadObject($thumbnail);
         return $thumbnail;
@@ -240,7 +240,7 @@ class PHPWS_Image extends File_Common {
             }
         }
 
-        $db = & new PHPWS_DB('images');
+        $db = new PHPWS_DB('images');
 
         if ((bool)$no_dupes && empty($this->id)) {
             $db->addWhere('file_name',  $this->file_name);
@@ -296,7 +296,7 @@ class PHPWS_Image extends File_Common {
 
     function delete($delete_thumbnail=TRUE)
     {
-        $db = & new PHPWS_DB('images');
+        $db = new PHPWS_DB('images');
         $db->addWhere('id', $this->id);
         $result = $db->delete();
         if (PEAR::isError($result)) {
@@ -314,7 +314,7 @@ class PHPWS_Image extends File_Common {
         }
 
         if ($this->thumbnail_source != $this->id) {
-            $tn = & new PHPWS_Image;
+            $tn = new PHPWS_Image;
             $db->reset();
             $db->addWhere('thumbnail_source', $this->id);
             $result = $db->loadObject($tn);

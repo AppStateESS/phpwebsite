@@ -36,15 +36,15 @@ class Cabinet_Action {
         }
 
         if (isset($_REQUEST['image_id'])) {
-            $image = & new PHPWS_Image($_REQUEST['image_id']);
+            $image = new PHPWS_Image($_REQUEST['image_id']);
         } elseif (isset($_REQUEST['document_id'])) {
-            $document = & new PHPWS_Document($_REQUEST['document_id']);
+            $document = new PHPWS_Document($_REQUEST['document_id']);
         }
 
         switch ($action) {
         case 'new_document':
             PHPWS_Core::initModClass('filecabinet', 'Forms.php');
-            $document = & new PHPWS_Document;
+            $document = new PHPWS_Document;
             $title = _('Upload new document');
             $content = Cabinet_Form::editDocument($document);
             break;
@@ -92,7 +92,7 @@ class Cabinet_Action {
                 break;
             }
 
-            $image = & new PHPWS_Image((int)$_REQUEST['image_id']);
+            $image = new PHPWS_Image((int)$_REQUEST['image_id']);
             Clipboard::copy($image->getTitle(), $image->getTag());
             $title = _('Manage Images');
             $content = Cabinet_Form::imageManager('image');
@@ -104,7 +104,7 @@ class Cabinet_Action {
                 PHPWS_Error::log($result);
             }
             PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
-            $manager = & new FC_Image_Manager;
+            $manager = new FC_Image_Manager;
             $manager->loadReqValues();
             Layout::nakedDisplay($manager->editImage(TRUE));
             break;
@@ -113,7 +113,7 @@ class Cabinet_Action {
             PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
 
             if (isset($_REQUEST['image_id'])) {
-                $manager = & new FC_Image_Manager($_REQUEST['image_id']);
+                $manager = new FC_Image_Manager($_REQUEST['image_id']);
             }
             $manager->loadReqValues();
             $manager->postPick();
@@ -124,9 +124,9 @@ class Cabinet_Action {
             PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
             
             if (isset($_REQUEST['image_id'])) {
-                $manager = & new FC_Image_Manager($_REQUEST['image_id']);
+                $manager = new FC_Image_Manager($_REQUEST['image_id']);
             } else {
-                $manager = & new FC_Image_Manager;
+                $manager = new FC_Image_Manager;
             }
             $manager->loadReqValues();
             
@@ -157,7 +157,7 @@ class Cabinet_Action {
                 Current_User::disallow();
             }
             if (!isset($document)) {
-                $document = & new PHPWS_Document;
+                $document = new PHPWS_Document;
             }
             $content = Cabinet_Action::documentUpload($document);
             Layout::nakedDisplay($content);
@@ -177,7 +177,7 @@ class Cabinet_Action {
 
         case 'upload_form':
             PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
-            $manager = & new FC_Image_Manager;
+            $manager = new FC_Image_Manager;
             $manager->loadReqValues();
             Layout::nakedDisplay($manager->edit());
             break;
@@ -185,7 +185,7 @@ class Cabinet_Action {
         case 'admin_edit_image':
             PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
             $title = _('Edit Image');
-            $manager = & new FC_Image_Manager($_REQUEST['image_id']);
+            $manager = new FC_Image_Manager($_REQUEST['image_id']);
             Layout::nakedDisplay($manager->edit());
             break;
 
@@ -214,7 +214,7 @@ class Cabinet_Action {
         case 'admin_post_document':
             if (!PHPWS_Core::isPosted()) {
                 if (!isset($document)) {
-                    $document = & new PHPWS_Document;
+                    $document = new PHPWS_Document;
                 }
                 $result = Cabinet_Action::postDocument($document);
                 if (PEAR::isError($result)) {
@@ -239,7 +239,7 @@ class Cabinet_Action {
         case 'js_post_document':
             if (!PHPWS_Core::isPosted()) {
                 if (!isset($document)) {
-                    $document = & new PHPWS_Document;
+                    $document = new PHPWS_Document;
                 }
 
                 if (!Cabinet_Action::postDocument($document)) {
@@ -258,9 +258,9 @@ class Cabinet_Action {
         case 'edit_image':
             PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
             if (isset($_REQUEST['current'])) {
-                $manager = & new FC_Image_Manager((int)$_REQUEST['current']);
+                $manager = new FC_Image_Manager((int)$_REQUEST['current']);
             } else {
-                $manager = & new FC_Image_Manager;
+                $manager = new FC_Image_Manager;
             }
             $manager->loadReqValues();
             Layout::nakedDisplay($manager->editImage());
@@ -345,7 +345,7 @@ class Cabinet_Action {
 
     function getImageXML($image_id)
     {
-        $image = & new PHPWS_Image($image_id);
+        $image = new PHPWS_Image($image_id);
         $src = $image->getFullDirectory();
 
         header("Content-type: text/xml");
@@ -368,7 +368,7 @@ class Cabinet_Action {
             $tabs['setting']  = array('title'=> _('Settings'), 'link' => $link);
         }
 
-        $panel = & new PHPWS_Panel('filecabinet');
+        $panel = new PHPWS_Panel('filecabinet');
         $panel->quickSetTabs($tabs);
 
         $panel->setModule('filecabinet');
@@ -468,7 +468,7 @@ class Cabinet_Action {
         translate('filecabinet');
         require_once 'HTTP/Download.php';
 
-        $document = & new PHPWS_Document($id);
+        $document = new PHPWS_Document($id);
         if (!empty($document->_errors)) {
             foreach ($this->_errors as $err) {
                 PHPWS_Error::log($err);
@@ -477,7 +477,7 @@ class Cabinet_Action {
             return;
         }
 
-        $key = & new Key($document->key_id);
+        $key = new Key($document->key_id);
         if (!$key->allowView()) {
             Layout::add(_('Sorry, you are not allowed access to this file.'));
             return;
@@ -491,7 +491,7 @@ class Cabinet_Action {
             return;
         }
 
-        $dl = & new HTTP_Download;
+        $dl = new HTTP_Download;
         $dl->setFile($file_path);
         $dl->setContentDisposition(HTTP_DOWNLOAD_ATTACHMENT, $document->filename);
         $dl->setContentType($document->file_type);

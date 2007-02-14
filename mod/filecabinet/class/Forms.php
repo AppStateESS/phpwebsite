@@ -1,5 +1,10 @@
 <?php
 
+  /**
+   * @version $Id$
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   */
+
 PHPWS_Core::initModClass('filecabinet', 'Image.php');
 PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
@@ -10,7 +15,7 @@ class Cabinet_Form {
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
 
-        $pager = & new DBPager('images', 'PHPWS_Image');
+        $pager = new DBPager('images', 'PHPWS_Image');
         $pager->setModule('filecabinet');
         $pager->setTemplate('imageList.tpl');
         $pager->addRowTags('getRowTags');
@@ -24,7 +29,7 @@ class Cabinet_Form {
         $tags['FILE_NAME'] = _('File name');
         $tags['SIZE']      = _('Size');
         $tags['ACTION']    = _('Action');
-        $manager = & new FC_Image_Manager;
+        $manager = new FC_Image_Manager;
         $tags['UPLOAD']    = $manager->getUploadLink();
 
         $pager->addPageTags($tags);
@@ -42,7 +47,7 @@ class Cabinet_Form {
     {
         translate('filecabinet');
         PHPWS_Core::initCoreClass('DBPager.php');
-        $pager = & new DBPager('documents', 'PHPWS_Document');
+        $pager = new DBPager('documents', 'PHPWS_Document');
         $pager->setModule('filecabinet');
         $pager->setTemplate('documentList.tpl');
         $pager->addRowTags('getRowTags');
@@ -81,7 +86,7 @@ class Cabinet_Form {
 
     function settings()
     {
-        $form = & new PHPWS_FORM;
+        $form = new PHPWS_FORM;
         $form->addHidden('module', 'filecabinet');
         $form->addHidden('action', 'save_settings');
 
@@ -108,7 +113,7 @@ class Cabinet_Form {
 
         Layout::addStyle('filecabinet');
 
-        $form = & new PHPWS_FORM;
+        $form = new PHPWS_FORM;
         $form->addHidden('module', 'filecabinet');
 
         $doc_directories = Cabinet_Action::getDocDirectories();

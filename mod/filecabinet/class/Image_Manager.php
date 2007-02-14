@@ -1,5 +1,10 @@
 <?php
 
+  /**
+   * @version $Id$
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   */
+
 PHPWS_Core::requireConfig('filecabinet');
 PHPWS_Core::initModClass('filecabinet', 'Image.php');
 
@@ -15,8 +20,8 @@ class FC_Image_Manager {
     function FC_Image_Manager($image_id=null)
     {
         if (empty($image_id)) {
-            $this->image = & new PHPWS_Image;
-            $this->thumbnail = & new PHPWS_Image;
+            $this->image = new PHPWS_Image;
+            $this->thumbnail = new PHPWS_Image;
             return;
         }
      
@@ -26,12 +31,12 @@ class FC_Image_Manager {
     function loadImage($image_id)
     {
         if (!$image_id) {
-            $this->image = & new PHPWS_Image;
-            $this->thumbnail = & new PHPWS_Image;
+            $this->image = new PHPWS_Image;
+            $this->thumbnail = new PHPWS_Image;
             return;
         }
 
-        $this->image = & new PHPWS_Image((int)$image_id);
+        $this->image = new PHPWS_Image((int)$image_id);
         $this->loadThumbnail();
     }
 
@@ -42,8 +47,8 @@ class FC_Image_Manager {
 
     function loadThumbnail()
     {
-        $this->thumbnail = & new PHPWS_Image;
-        $db = & new PHPWS_DB('images');
+        $this->thumbnail = new PHPWS_Image;
+        $db = new PHPWS_DB('images');
         $db->addWhere('thumbnail_source', $this->image->id);
         $result = $db->loadObject($this->thumbnail);
     }
@@ -55,7 +60,7 @@ class FC_Image_Manager {
 
     function setImageId($image_id)
     {
-        $this->image = & new PHPWS_Image($image_id);
+        $this->image = new PHPWS_Image($image_id);
     }
 
     function setItemName($itemname)
