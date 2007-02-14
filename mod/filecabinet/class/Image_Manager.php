@@ -113,6 +113,7 @@ class FC_Image_Manager {
 
     function javascript()
     {
+        translate('filecabinet');
         if ($this->image->id) {
             $label = $this->thumbnail->getTag();
         } else {
@@ -136,6 +137,7 @@ class FC_Image_Manager {
         $tpl['HIDDEN'] = sprintf('<input type="hidden" id="%s" name="%s" value="%s" />', $this->itemname . '_hidden_value', $this->itemname, $this->image->id);
         $tpl['ITEMNAME'] = $this->itemname;
         $tpl['CLEAR_IMAGE'] = $this->getClearLink();
+        translate();
         return PHPWS_Template::process($tpl, 'filecabinet', 'manager/javascript.tpl');
     }
 

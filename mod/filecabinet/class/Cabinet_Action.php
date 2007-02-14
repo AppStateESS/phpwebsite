@@ -20,6 +20,7 @@ class Cabinet_Action {
 
     function admin()
     {
+        translate('filecabinet');
         if (!Current_User::allow('filecabinet')){
             Current_User::disallow();
             return;
@@ -304,10 +305,12 @@ class Cabinet_Action {
         $panel->setContent($main);
         $finalPanel = $panel->display();
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
+        translate();
     }
 
     function saveSettings()
     {
+        translate('filecabinet');
         if (empty($_POST['base_doc_directory'])) {
             $errors[] = _('Default document directory may not be blank');
         } elseif (!is_dir($_POST['base_doc_directory'])) {
@@ -329,6 +332,7 @@ class Cabinet_Action {
             $errors[] = _('Unable to read image directory.');
         }
         */
+        translate();
         if (isset($errors)) {
             return $errors;
         } else {
@@ -351,6 +355,7 @@ class Cabinet_Action {
 
     function &cpanel()
     {
+        translate('filecabinet');
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=filecabinet';
 
@@ -367,6 +372,7 @@ class Cabinet_Action {
         $panel->quickSetTabs($tabs);
 
         $panel->setModule('filecabinet');
+        translate();
         return $panel;
     }
 
@@ -382,6 +388,7 @@ class Cabinet_Action {
 
     function viewImage($image)
     {
+        translate('filecabinet');
         $template['TITLE'] = $image->title;
         $template['DESCRIPTION']  = $image->description;
         $template['IMAGE'] = $image->getTag();
@@ -389,6 +396,7 @@ class Cabinet_Action {
 
         $content = PHPWS_Template::process($template, 'filecabinet', 'view.tpl');
         Layout::nakedDisplay($content);
+        translate();
     }
 
     function parseDirectory($directory_list)
@@ -457,6 +465,7 @@ class Cabinet_Action {
 
     function download($id)
     {
+        translate('filecabinet');
         require_once 'HTTP/Download.php';
 
         $document = & new PHPWS_Document($id);

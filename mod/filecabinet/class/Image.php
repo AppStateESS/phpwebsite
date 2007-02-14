@@ -358,6 +358,7 @@ class PHPWS_Image extends File_Common {
 
     function getRowTags()
     {
+        translate('filecabinet');
         $links[] = PHPWS_Text::secureLink(_('Clip'), 'filecabinet',
                                           array('action'=>'clip_image',
                                                 'image_id' => $this->id));
@@ -380,7 +381,7 @@ class PHPWS_Image extends File_Common {
         $tpl['FILE_NAME'] = $this->file_name;
         $tpl['THUMBNAIL'] = $this->getJSView(TRUE);
         $tpl['TITLE']     = $this->title;
-
+        translate();
         return $tpl;
     }
 

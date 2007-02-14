@@ -4,7 +4,7 @@
    * @version $Id$
    */
 
-
+translate('filecabinet');
 $errors[FC_FILENAME_NOT_SET]       = _('Filename not set.');
 $errors[FC_DIRECTORY_NOT_SET]      = _('Directory not set.');
 $errors[FC_BOUND_FAILED]           = _('There was a problem loading the image file.');
@@ -21,5 +21,5 @@ $errors[FC_COULD_NOT_DELETE]       = _('Could not delete file.');
 $errors[FC_IMAGE_DIMENSION]        = _('Image is %spx by %spx, the maximum dimensions are %spx by %spx.');
 $errors[FC_FILE_MOVE]              = _('Unable to move the file to its new directory.');
 $errors[FC_BAD_DIRECTORY]          = _('Could not write to directory.');
-
+translate();
 ?>

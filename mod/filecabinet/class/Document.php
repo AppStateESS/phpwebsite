@@ -185,6 +185,7 @@ class PHPWS_Document extends File_Common {
 
     function getRowTags()
     {
+        translate('filecabinet');
         $vars['document_id'] = $this->id;
 
         if (javascriptEnabled()) {
@@ -213,7 +214,7 @@ class PHPWS_Document extends File_Common {
 
         $tpl['ACTION'] = implode(' | ', $links);
         $tpl['SIZE'] = $this->getSize(TRUE);
-
+        translate();
         return $tpl;
     }
 

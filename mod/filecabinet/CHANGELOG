@@ -1,3 +1,7 @@
+14 February 2007
++ Added translate statements
++ Added system upload memory check. Overrides site setting in form.
+
 1 February 2007
 + Fixed base directory uploads
 + Document was changing the object id to null when failing to load the

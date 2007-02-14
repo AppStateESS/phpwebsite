@@ -1,5 +1,8 @@
 <?php
-
+  /**
+   * @version $Id$
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   */
 $icon_list = array('pdf'   => 'acroread.png',
                    'xls'   => 'spreadsheet.png',
                    'ppt'   => 'powerpoint.png',
