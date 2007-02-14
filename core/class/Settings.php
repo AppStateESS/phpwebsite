@@ -110,8 +110,10 @@ class PHPWS_Settings {
             return false;
         }
 
-        $db = & new PHPWS_DB('mod_settings');
+        $db = new PHPWS_DB('mod_settings');
+
         $db->addWhere('module', $module);
+        $db->addWhere('setting_name', array_keys($GLOBALS['PHPWS_Settings'][$module]));
         $db->delete();
         $db->reset();
 
@@ -141,7 +143,6 @@ class PHPWS_Settings {
                 $db->addValue('large_char', $value);
                 break;
             }
-
             $result = $db->insert();
             if (PEAR::isError($result)) {
                 unset($GLOBALS['PHPWS_Settings'][$module]);
@@ -198,7 +199,7 @@ class PHPWS_Settings {
         include $default;
         PHPWS_Settings::set($module, $settings);
 
-        $db = & new PHPWS_DB('mod_settings');
+        $db = new PHPWS_DB('mod_settings');
         $db->addWhere('module', $module);
         $result = $db->select();
 
@@ -272,7 +273,7 @@ class PHPWS_Settings {
      */
     function unregister($module)
     {
-        $db = & new PHPWS_DB('mod_settings');
+        $db = new PHPWS_DB('mod_settings');
         $db->addWhere('module', $module);
         return $db->delete();
     }
