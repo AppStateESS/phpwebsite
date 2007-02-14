@@ -2,6 +2,16 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+14 February 2007
++ Theme
+  o changed padded style from px to em
+  o added new form style for dropping out of form tables.
++ Settings
+  o Bug 1659055 - if a single setting is saved without loading the
+    module, all settings would get reset. Made change to only clear
+    items getting saved.
+
+
 13 February 2007
 + Changed Init.php translate function. Should now track previous
   directory setting properly.
