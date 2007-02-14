@@ -1,25 +1,12 @@
 {HEADER}
-
 {START_FORM}
-<table class="form-table">
-  <tr>
-    <td>{TITLE_LABEL}</td><td>{TITLE}</td>
-  </tr>
-  <tr>
-    <td>{CONTENT_LABEL}</td><td>{CONTENT}</td>
-  </tr>
-  <tr>
-    <td>{TEMPLATE_LABEL}</td>
-    <td>{TEMPLATE}<br />
-    {FORCE_TEMPLATE} {FORCE_TEMPLATE_LABEL}
-    </td>
-  </tr>
+<div class="top-label">
+<div class="padded">{TITLE_LABEL}<br />{TITLE}</div>
+<div class="padded">{CONTENT_LABEL}<br />{CONTENT}</div>
+<div class="padded">{TEMPLATE_LABEL}<br />{TEMPLATE} {FORCE_TEMPLATE} {FORCE_TEMPLATE_LABEL}</div>
 <!-- BEGIN image -->
-  <tr>
-    <td>Image</td>
-    <td>{PAGE_IMAGE}</td>
-  </tr>
+<div class="padded"><label>Image</label><div>{PAGE_IMAGE}</div></div>
 <!-- END image -->
-</table>
+</div>
 {SUBMIT}  
 {END_FORM}

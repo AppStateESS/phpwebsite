@@ -1,14 +1,5 @@
 {START_FORM}
-<table class="form-table">
-  <tr>
-    <td class="form-label">{TITLE_LABEL}</td><td>{TITLE}</td>
-  </tr>
-  <tr>
-    <td class="form-label">{SUMMARY_LABEL}</td><td>{SUMMARY}</td>
-  </tr>
-  <tr>
-    <td class="form-label">{TEMPLATE_LABEL}</td><td>{TEMPLATE}</td>
-  </tr>
-</table>
+<div class="padded">{TITLE_LABEL}{TITLE}</div>
+<div class="padded">{SUMMARY_LABEL}{SUMMARY}</div>
 {SUBMIT}  
 {END_FORM}

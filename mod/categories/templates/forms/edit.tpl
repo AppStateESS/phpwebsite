@@ -1,26 +1,13 @@
 {START_FORM}
-<table border="0" width="99%" cellpadding="4" cellspacing="4">
-  <tr>
-    <td width="15%"><strong>{PARENT_LABEL}:</strong></td>
-    <td>{PARENT}</td>
-  </tr>
-  <tr>
-    <td><strong>{TITLE_LABEL}:</strong></td>
-    <td>{TITLE}
+<div class="top-label">
+    <div class="padded">{PARENT_LABEL} {PARENT}</div>
+    <div class="padded">{TITLE_LABEL}<br />{TITLE}
 	<!-- BEGIN title-error -->
-	<div class="cat-error">{TITLE_ERROR}</div>
+	<br /><span class="error">{TITLE_ERROR}</span>
 	<!-- END title-error -->
-    </td>
-  </tr>
-  <tr>
-    <td><strong>{CAT_DESCRIPTION_LABEL}:</strong></td>
-    <td>{CAT_DESCRIPTION}</td>
-  </tr>
-  <tr>
-    <td><strong>{ICON_LABEL}:</strong></td>
-    <td>{ICON}</td>
-  </tr>
-</table>
-<br />
+    </div>
+    <div class="padded">{CAT_DESCRIPTION_LABEL}<br />{CAT_DESCRIPTION}</div>
+    <div class="padded"><label>{ICON_LABEL}</label><br />{ICON}</div>
+</div>
 {SUBMIT}
 {END_FORM}
