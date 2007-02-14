@@ -1,5 +1,9 @@
 Version 1.4.0
 -----------------------------------------------------------------
+14 February 2007
++ Removed table format from edit form
++ Updated files: templates/edit.tpl
+
 13 February 2007
 + Added translate function calls to various files
 

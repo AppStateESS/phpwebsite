@@ -1,3 +1,7 @@
+14 February 2007
++ Removed table format from edit form
++ Update files: templates/forms/edit.tpl
+
 31 January 2007
 + With quick creation of categories in place, no need for old warning
   message. Altered pop up box.

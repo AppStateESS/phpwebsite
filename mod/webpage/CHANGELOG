@@ -1,4 +1,8 @@
-12 February 2006
+14 February 2007
++ Removed table format from edit form
++ Updated files: templates/forms/edit_page.tpl, templates/forms/edit.tpl
+
+12 February 2007
 + Added ability to move pages
 + Added Feature ability
 + Indexed page and volume table
@@ -7,7 +11,7 @@
 + Fixed submitting an empty command
 + Updated files: templates/featured.tpl, templates/header.tpl
 
-2 February 2006
+2 February 2007
 + Moved a function out of Page getTpl for clarity
 + Added a page select with onchange function. Put it into the basic
   page layout
@@ -18,14 +22,14 @@
   templates/page/short_links.tpl templates/page/verbose_links.tpl,
   conf/error.php 
 
-1 February 2006
+1 February 2007
 + Altered page templates to prevent float overlap (previous update
   takes care of copy)
 
-31 January 2006
+31 January 2007
 + Added simple image page addition.
 
-26 January 2006
+26 January 2007
 + Moved error defines into their own file
 + lowercased constants
 + Added some missing error reporting
@@ -33,10 +37,10 @@
 + Updated files: conf/config.php, conf/error.php,
   templates/form/edit_page.tpl 
 
-19 January 2006
+19 January 2007
 + Fixed delete call from list link
 
-12 January 2006
+12 January 2007
 + Added ability to restore old headers and pages.
 + Updated files: templates/header.tpl
 
