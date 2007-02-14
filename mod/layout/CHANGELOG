@@ -1,3 +1,6 @@
+14 February 2007
++ Removed references from object constructors.
+
 19 January 2007
 + Added the plug function to allow users to inject content directly
   into a theme.

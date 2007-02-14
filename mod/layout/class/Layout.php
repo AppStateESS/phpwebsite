@@ -257,7 +257,7 @@ class Layout {
     function checkSettings()
     {
         if (!isset($_SESSION['Layout_Settings'])) {
-            $_SESSION['Layout_Settings'] = & new Layout_Settings;
+            $_SESSION['Layout_Settings'] = new Layout_Settings;
         }
     }
 
@@ -721,7 +721,7 @@ class Layout {
 
     function reset()
     {
-        $_SESSION['Layout_Settings'] = & new Layout_Settings;
+        $_SESSION['Layout_Settings'] = new Layout_Settings;
     }
 
     function resetBoxes()
@@ -731,7 +731,7 @@ class Layout {
 
     function resetDefaultBoxes()
     {
-        $db = & new PHPWS_DB('layout_box');
+        $db = new PHPWS_DB('layout_box');
         $db->addWhere('theme', Layout::getDefaultTheme());
         $result = $db->delete();
 
@@ -979,7 +979,7 @@ class Layout {
 
     function purgeBox($content_var)
     {
-        $db = & new PHPWS_DB('layout_box');
+        $db = new PHPWS_DB('layout_box');
         $db->addWhere('content_var', $content_var);
         $result = $db->getObjects('Layout_Box');
         if (PEAR::isError($result)) {

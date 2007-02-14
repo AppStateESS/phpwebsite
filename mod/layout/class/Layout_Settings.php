@@ -252,7 +252,7 @@ class Layout_Settings {
 
     function saveSettings()
     {
-        $db = & new PHPWS_DB('layout_config');
+        $db = new PHPWS_DB('layout_config');
         $vars = PHPWS_Core::stripObjValues($this);
         unset($vars['current_theme']);
         unset($vars['_contentVars']);
@@ -272,7 +272,7 @@ class Layout_Settings {
 
     function loadKeyStyle($key_id)
     {
-        $db = & new PHPWS_DB('layout_styles');
+        $db = new PHPWS_DB('layout_styles');
         $db->addWhere('key_id', (int)$key_id);
         $db->addColumn('style');
         $result = $db->select('one');

@@ -147,7 +147,7 @@ class Layout_Box {
             return;
         }
 
-        $db = & new PHPWS_DB('layout_box');
+        $db = new PHPWS_DB('layout_box');
         $db->addWhere('id', $this->id, '!=');
         $db->addWhere('theme', $this->theme);
         $db->addWhere('theme_var', $this->theme_var);
@@ -215,7 +215,7 @@ class Layout_Box {
 
     function reorderBoxes($theme, $themeVar)
     {
-        $db = & new PHPWS_DB('layout_box');
+        $db = new PHPWS_DB('layout_box');
         $db->addWhere('theme', $theme);
         $db->addWhere('theme_var', $themeVar);
         $db->addOrder('box_order');
@@ -252,7 +252,7 @@ class Layout_Box {
         $theme_var = $this->getThemeVar();
         $theme = $this->getTheme();
 
-        $db = & new PHPWS_DB('layout_box');
+        $db = new PHPWS_DB('layout_box');
         $db->addWhere('id', $this->getId());
         $result = $db->delete();
 
