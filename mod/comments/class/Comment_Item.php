@@ -68,7 +68,7 @@ class Comment_Item {
 	if (!isset($this->id))
 	    return FALSE;
 
-	$db = & new PHPWS_DB('comments_items');
+	$db = new PHPWS_DB('comments_items');
 	$result = $db->loadObject($this);
 	if (PEAR::isError($result))
 	    return $result;
@@ -134,8 +134,16 @@ class Comment_Item {
         if (empty($name) || strlen($name) < 2) {
             $this->anon_name = DEFAULT_ANONYMOUS_TITLE;
         } else {
+            include PHPWS_Core::getConfigFile('comments', 'forbidden.php');
+            foreach ($forbidden_names as $fn) {
+                if (preg_match('/' . $fn . '/i', $name)) {
+                    return false;
+                }
+            }
+            
             $this->anon_name = & $name;
         }
+        return true;
     }
 
     function stampAuthor()
@@ -225,7 +233,7 @@ class Comment_Item {
         }
         
         if (empty($author)) {
-            $author = & new Comment_User($this->author_id);
+            $author = new Comment_User($this->author_id);
         }
 
         return $author;
@@ -265,7 +273,8 @@ class Comment_Item {
 	$author_info = $author->getTpl();
 
         if (!$this->author_id && $this->anon_name) {
-            $author_info['AUTHOR_NAME'] = &$this->anon_name;
+            $author_info['AUTHOR_NAME'] = & $this->anon_name;
+            $author_info['ANONYMOUS_TAG'] = COMMENT_ANONYMOUS_TAG;
         }
 
 	$template['SUBJECT_LABEL'] = _('Subject');
@@ -346,10 +355,10 @@ class Comment_Item {
 	    $increase_count = TRUE;
 	}
 
-	$db = & new PHPWS_DB('comments_items');
+	$db = new PHPWS_DB('comments_items');
 	$result = $db->saveObject($this);
 	if (!PEAR::isError($result) && $increase_count) {
-	    $thread = & new Comment_Thread($this->thread_id);
+	    $thread = new Comment_Thread($this->thread_id);
 	    $thread->increaseCount();
 	    $thread->postLastUser($this->author_id);
 	    $thread->save();
@@ -359,6 +368,7 @@ class Comment_Item {
 
     function editLink()
     {
+        translate('comments');
 	if (Current_User::allow('comments') ||
 	    ($this->author_id > 0 && $this->author_id == Current_User::getId())
 	    ) {
@@ -373,11 +383,13 @@ class Comment_Item {
 
     function deleteLink()
     {
+        translate('comments');
 	if (Current_User::allow('comments', 'delete_comments')) {
 	    $vars['QUESTION'] = _('Are you sure you want to delete this comment?');
 	    $vars['ADDRESS'] = 'index.php?module=comments&amp;cm_id=' . $this->getId() . '&amp;admin_action=delete_comment&amp;authkey='
 		. Current_User::getAuthKey();
 	    $vars['LINK'] = _('Delete');
+            translate();
 	    return Layout::getJavascript('confirm', $vars);
 	} else {
 	    return null;
@@ -390,7 +402,7 @@ class Comment_Item {
 	$vars['user_action']   = 'post_comment';
 	$vars['thread_id']     = $this->thread_id;
 	$vars['cm_parent']     = $this->getId();
-
+        translate('comments');
 	return PHPWS_Text::moduleLink(_('Quote'), 'comments', $vars);
     }
 
@@ -398,7 +410,7 @@ class Comment_Item {
     {
 	$vars['user_action']   = 'post_comment';
 	$vars['thread_id']     = $this->thread_id;
-
+        translate('comments');
 	return PHPWS_Text::moduleLink(_('Reply'), 'comments', $vars);
     }
 
@@ -416,8 +428,8 @@ class Comment_Item {
     function delete()
     {
         // physical removal
-        $thread = & new Comment_Thread($this->thread_id);
-        $db = & new PHPWS_DB('comments_items');
+        $thread = new Comment_Thread($this->thread_id);
+        $db = new PHPWS_DB('comments_items');
         $db->addWhere('id', $this->id);
         $db->delete();
 
@@ -447,7 +459,7 @@ class Comment_Item {
 
     function responseAuthor()
     {
-        $comment = & new Comment_Item($this->parent);
+        $comment = new Comment_Item($this->parent);
 	$vars['user_action']   = 'view_comment';
 	$vars['cm_id']	       = $comment->id;
 	return PHPWS_Text::moduleLink($comment->getAuthorName(), 'comments', $vars);

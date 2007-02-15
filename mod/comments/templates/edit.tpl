@@ -2,10 +2,12 @@
 <!-- BEGIN error --><div class="error">{ERROR}</div><!-- END error -->
   {BACK_LINK}
   {START_FORM}
+  <!-- BEGIN anon-post -->
   <div class="padded">
     {ANON_NAME_LABEL}<br />
     {ANON_NAME}
   </div>
+  <!-- END anon-post -->
   <div class="padded">
     {CM_SUBJECT_LABEL}<br />
     {CM_SUBJECT}

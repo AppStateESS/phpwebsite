@@ -7,6 +7,7 @@
 
 function comments_unregister($module, &$content)
 {
+    translate('comments');
     PHPWS_Core::initModClass('comments', 'Comments.php');
     $content[] = _('Removing module\'s comments.');
     if (Comments::unregister($module)) {
@@ -14,6 +15,7 @@ function comments_unregister($module, &$content)
     } else {
         $content[] = _('An error occurred when trying to remove comments.');
     }
+    translate();
     return TRUE;
 }
 

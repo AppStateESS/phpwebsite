@@ -35,7 +35,7 @@ class Comment_Thread {
 
     function init()
     {
-        $db = & new PHPWS_DB('comments_threads');
+        $db = new PHPWS_DB('comments_threads');
         $db->addWhere('id', $this->id);
         $result = $db->loadObject($this);
         if (PEAR::isError($result)) {
@@ -53,6 +53,7 @@ class Comment_Thread {
 
     function countComments($formatted=FALSE)
     {
+        translate('comments');
         if ($formatted) {
             if (empty($this->total_comments)) {
                 return _('No comments');
@@ -68,7 +69,7 @@ class Comment_Thread {
 
     function loadKey()
     {
-        $this->_key = & new Key($this->key_id);
+        $this->_key = new Key($this->key_id);
     }
 
     function getLastPoster()
@@ -84,7 +85,7 @@ class Comment_Thread {
      */
     function buildThread()
     {
-        $db = & new PHPWS_DB('comments_threads');
+        $db = new PHPWS_DB('comments_threads');
         $db->addWhere('key_id', $this->key_id);
         $result = $db->loadObject($this);
 
@@ -95,7 +96,9 @@ class Comment_Thread {
             $result = $this->save();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
+                translate('comments');
                 $this->_error = _('Error occurred trying to create new thread.');
+                translate();
             }
             return TRUE;
         } else {
@@ -130,6 +133,7 @@ class Comment_Thread {
         }
 
         if ($full==TRUE) {
+            translate('comments');
             return sprintf('<a href="%s">%s</a>', $url, _('Go back'));
         } else {
             return $url;
@@ -143,6 +147,7 @@ class Comment_Thread {
 
     function postLink()
     {
+        translate('comments');
         $vars['user_action']   = 'post_comment';
         $vars['thread_id']     = $this->id;
         return PHPWS_Text::moduleLink(_('Post New Comment'), 'comments', $vars);
@@ -150,13 +155,13 @@ class Comment_Thread {
 
     function save()
     {
-        $db = & new PHPWS_DB('comments_threads');
+        $db = new PHPWS_DB('comments_threads');
         return $db->saveObject($this);
     }
 
     function delete()
     {
-        $db = & new PHPWS_DB('comments_items');
+        $db = new PHPWS_DB('comments_items');
         $db->addWhere('thread_id', $this->id);
         $item_result = $db->delete();
 
@@ -164,7 +169,7 @@ class Comment_Thread {
             return $item_result;
         }
 
-        $db = & new PHPWS_DB('comments_threads');
+        $db = new PHPWS_DB('comments_threads');
         $db->addWhere('id', $this->id);
         $thread_result = $db->delete();
 
@@ -199,6 +204,7 @@ class Comment_Thread {
 
     function view($parent_id=0)
     {
+        translate('comments');
         if (Current_User::allow('comments')) {
             $this->miniAdmin();
         }
@@ -217,9 +223,9 @@ class Comment_Thread {
                             'new_all'  => _('Newest first'));
 
 
-        $pager = & new DBPager('comments_items', 'Comment_Item');
+        $pager = new DBPager('comments_items', 'Comment_Item');
         $pager->saveLastView();
-        $form = & new PHPWS_Form;
+        $form = new PHPWS_Form;
         $form->addHidden('module', 'comments');
         $form->addHidden('user_action', 'change_view');
         $form->addSelect('time_period', $time_period);
@@ -278,6 +284,7 @@ class Comment_Thread {
         }
 
         $content = $pager->get();
+        translate();
         return $content;
     }
 
@@ -321,12 +328,13 @@ class Comment_Thread {
 
     function postLastUser($author_id)
     {
-        $author = & new Comment_User($author_id);
+        $author = new Comment_User($author_id);
         $this->last_poster = $author->display_name;
     }
 
     function miniAdmin()
     {
+        translate('comments');
         $vars['thread_id'] = $this->id;
         if ($this->allow_anon) {
             $vars['admin_action'] = 'disable_anon_posting';
@@ -337,6 +345,7 @@ class Comment_Thread {
         }
 
         MiniAdmin::add('comments', $link);
+        translate();
     }
 
 }

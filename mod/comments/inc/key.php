@@ -16,9 +16,9 @@ function comments_unregister_key(&$key)
 
     PHPWS_Core::initModClass('comments', 'Comment_Thread.php');
 
-    $thread = & new Comment_Thread;
+    $thread = new Comment_Thread;
 
-    $db = & new PHPWS_DB('comments_threads');
+    $db = new PHPWS_DB('comments_threads');
     $db->addWhere('key_id', $key->id);
     $result = $db->loadObject($thread);
 

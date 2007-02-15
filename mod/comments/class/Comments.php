@@ -23,7 +23,7 @@ class Comments {
 
         if (!Key::isKey($key)) {
             if (is_numeric($key)) {
-                $key = & new Key((int)$key);
+                $key = new Key((int)$key);
             } else {
                 return NULL;
             }
@@ -33,7 +33,7 @@ class Comments {
             return NULL;
         }
 
-        $thread = & new Comment_Thread;
+        $thread = new Comment_Thread;
 
         $thread->key_id = $key->id;
         $thread->_key = $key;
@@ -47,7 +47,7 @@ class Comments {
             return $GLOBALS['Comment_Users'][$user_id];
         }
 
-        $user = & new Comment_User($user_id);
+        $user = new Comment_User($user_id);
         if ($user->isNew()) {
             $result = $user->saveUser();
         }
@@ -75,10 +75,11 @@ class Comments {
      */
     function adminAction($command)
     {
+        translate('comments');
         $content = NULL;
         switch ($command) {
         case 'delete_comment':
-            $comment = & new Comment_Item($_REQUEST['cm_id']);
+            $comment = new Comment_Item($_REQUEST['cm_id']);
             $comment->delete();
             PHPWS_Core::goBack();
             return;
@@ -97,7 +98,7 @@ class Comments {
             break;
 
         case 'disable_anon_posting':
-            $db = & new PHPWS_DB('comments_threads');
+            $db = new PHPWS_DB('comments_threads');
             $db->addWhere('id', (int)$_REQUEST['thread_id']);
             $db->addValue('allow_anon', 0);
             $result = $db->update();
@@ -108,7 +109,7 @@ class Comments {
             break;
 
         case 'enable_anon_posting':
-            $db = & new PHPWS_DB('comments_threads');
+            $db = new PHPWS_DB('comments_threads');
             $db->addWhere('id', (int)$_REQUEST['thread_id']);
             $db->addValue('allow_anon', 1);
             $result = $db->update();
@@ -118,23 +119,24 @@ class Comments {
             PHPWS_Core::goBack();
             break;
         }
-
+        translate();
         Layout::add(PHPWS_ControlPanel::display($content));
     }
 
     function userAction($command)
     {
+        translate('comments');
         $title = NULL;
         if (isset($_REQUEST['thread_id'])) {
-            $thread = & new Comment_Thread($_REQUEST['thread_id']);
+            $thread = new Comment_Thread($_REQUEST['thread_id']);
         } else {
-            $thread = & new Comment_Thread;
+            $thread = new Comment_Thread;
         }
 
         if (isset($_REQUEST['cm_id'])) {
-            $c_item = & new Comment_Item($_REQUEST['cm_id']);
+            $c_item = new Comment_Item($_REQUEST['cm_id']);
         } else {
-            $c_item = & new Comment_Item;
+            $c_item = new Comment_Item;
         }
     
         switch ($command) {
@@ -187,9 +189,9 @@ class Comments {
             break;
 
         case 'view_comment':
-            $comment = & new Comment_Item($_REQUEST['cm_id']);
-            $thread = & new Comment_Thread($comment->thread_id);
-            $key = & new Key($thread->key_id);
+            $comment = new Comment_Item($_REQUEST['cm_id']);
+            $thread = new Comment_Thread($comment->thread_id);
+            $key = new Key($thread->key_id);
             $title = sprintf(_('Comment from: %s'), $key->getUrl());
             $content[] = Comments::viewComment($comment);
             break;
@@ -200,7 +202,7 @@ class Comments {
         $template['CONTENT'] = implode('<br />', $content);
 
         Layout::add(PHPWS_Template::process($template, 'comments', 'main.tpl'));
-
+        translate();
     }
 
     function changeView()
@@ -223,14 +225,10 @@ class Comments {
   
     function postComment(&$thread, &$cm_item)
     {
+        translate('comments');
         if (empty($_POST['cm_subject']) && empty($_POST['cm_entry'])) {
             $cm_item->_error = _('You must include a subject or comment.');
             return false;
-        }
-
-        if (!Current_User::isLogged() && 
-            PHPWS_Settings::get('comments', 'anonymous_naming')) {
-            $cm_item->setAnonName($_POST['anon_name']);
         }
 
         $cm_item->setThreadId($thread->id);
@@ -249,23 +247,35 @@ class Comments {
             }
         }
 
-        if ( Comments::useCaptcha() ) {
-            PHPWS_Core::initCoreClass('Captcha.php');
-            if (!Captcha::verify($_POST['captcha'])) {
-                $cm_item->_error =  _('You failed verification. Try again.');
+        if (!Current_User::isLogged() && 
+            PHPWS_Settings::get('comments', 'anonymous_naming')) {
+            if (!$cm_item->setAnonName($_POST['anon_name'])) {
+                $cm_item->_error = _('That name is not allowed. Try another.');
+                translate();
                 return false;
             }
         }
 
+
+        if ( Comments::useCaptcha() ) {
+            PHPWS_Core::initCoreClass('Captcha.php');
+            if (!Captcha::verify($_POST['captcha'])) {
+                $cm_item->_error =  _('You failed verification. Try again.');
+                translate();
+                return false;
+            }
+        }
+        translate();
         return true;
     }
 
     function form(&$thread, $c_item)
     {
-        $form = & new PHPWS_Form;
+        translate('comments');
+        $form = new PHPWS_Form;
     
         if (isset($_REQUEST['cm_parent'])) {
-            $c_parent = & new Comment_Item($_REQUEST['cm_parent']);
+            $c_parent = new Comment_Item($_REQUEST['cm_parent']);
             $form->addHidden('cm_parent', $c_parent->getId());
             $form->addTplTag('PARENT_SUBJECT', $c_parent->subject);
             $form->addTplTag('PARENT_ENTRY', $c_parent->getEntry());
@@ -281,7 +291,7 @@ class Comments {
         if (!Current_User::isLogged() && PHPWS_Settings::get('comments', 'anonymous_naming')) {
             $form->addText('anon_name', $c_item->getEditReason());
             $form->setLabel('anon_name', _('Name'));
-            $form->setSize('anon_name', 30);
+            $form->setSize('anon_name', 20, 20);
         }
 
         $form->addHidden('module', 'comments');
@@ -331,7 +341,7 @@ class Comments {
 
 
         $content = PHPWS_Template::process($template, 'comments', 'edit.tpl');
-
+        translate();
         return $content;
     }
 
@@ -374,7 +384,7 @@ class Comments {
             return TRUE;
         }
 
-        $db = & new PHPWS_DB('comments_threads');
+        $db = new PHPWS_DB('comments_threads');
         $db->addWhere('key_id', $ids, 'in');
         $db->addColumn('id');
         $id_list = $db->select('col');
@@ -385,7 +395,7 @@ class Comments {
             return FALSE;
         }
 
-        $db2 = & new PHPWS_DB('comments_items');
+        $db2 = new PHPWS_DB('comments_items');
         $db2->addWhere('thread_id', $id_list, 'in');
         $result = $db2->delete();
         if (PEAR::isError($result)) {
@@ -405,7 +415,7 @@ class Comments {
 
     function viewComment($comment)
     {
-        $thread = & new Comment_Thread($comment->getThreadId());
+        $thread = new Comment_Thread($comment->getThreadId());
         $tpl = $comment->getTpl($thread->allow_anon);
         $tpl['CHILDREN'] = $thread->view($comment->getId());
         $content = PHPWS_Template::process($tpl, 'comments', COMMENT_VIEW_ONE_TPL);
@@ -414,6 +424,7 @@ class Comments {
 
     function postSettings()
     {
+        translate('comments');
         $settings['default_order'] = $_POST['order'];
         $settings['captcha'] = (int)$_POST['captcha'];
 
@@ -455,14 +466,16 @@ class Comments {
         $content[] = _('Settings saved.');
         $vars['admin_action'] = 'admin_menu';
         $content[] = PHPWS_Text::secureLink(_('Go back to settings...'), 'comments', $vars);
+        translate();
         return implode('<br /><br />', $content);
     }
 
     function settingsForm()
     {
+        translate('comments');
         $settings = PHPWS_Settings::get('comments');
 
-        $form = & new PHPWS_Form('comments');
+        $form = new PHPWS_Form('comments');
         $form->addHidden('module', 'comments');
         $form->addHidden('admin_action', 'post_settings');
 
@@ -509,7 +522,7 @@ class Comments {
         $tpl = $form->getTemplate();
 
         $tpl['TITLE'] = _('Comment settings');
-        
+        translate();
         return PHPWS_Template::process($tpl, 'comments', 'settings_form.tpl');
     }
 

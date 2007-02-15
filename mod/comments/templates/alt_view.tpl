@@ -13,7 +13,7 @@
                 <!-- BEGIN response --> - {RESPONSE_LABEL} {RESPONSE_NAME}<!-- END response -->
         <tr>
             <td class="author-info bgcolor1" valign="top">
-               <h2>{AUTHOR_NAME} <!-- BEGIN ip -->- {IP_ADDRESS}<!-- END ip --></h2>
+               <h2>{AUTHOR_NAME} {ANONYMOUS_TAG}<!-- BEGIN ip -->- {IP_ADDRESS}<!-- END ip --></h2>
                {AVATAR}
             </td>
             <td class="comment-body">

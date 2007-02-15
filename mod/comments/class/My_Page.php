@@ -1,10 +1,15 @@
 <?php
+  /**
+   * @version $Id$
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   */
 PHPWS_Core::initModClass('comments', 'Comment_User.php');
 
 class Comments_My_Page {
   
     function main()
     {
+        translate('comments');
         if (isset($_REQUEST['my_page_op'])) {
             $command = &$_REQUEST['my_page_op'];
         } else {
@@ -16,12 +21,12 @@ class Comments_My_Page {
         switch ($command) {
         case 'main':
             $title = _('Comment Settings');
-            $C_User = & new Comment_User(Current_User::getId());
+            $C_User = new Comment_User(Current_User::getId());
             $content = Comments_My_Page::editOptions($C_User);
             break;
 
         case 'save_options':
-            $C_User = & new Comment_User(Current_User::getId());
+            $C_User = new Comment_User(Current_User::getId());
             $result = $C_User->saveOptions();
             if (is_array($result)) {
                 $message = implode('<br />', $result);
@@ -38,6 +43,7 @@ class Comments_My_Page {
         if (isset($message)) {
             $box['MESSAGE'] = &$message;
         }
+        translate();
         return PHPWS_Template::process($box, 'comments', 'my_page.tpl');
     }
 
@@ -59,7 +65,8 @@ class Comments_My_Page {
 
     function editOptions($user)
     {
-        $form = & new PHPWS_Form;
+        translate('comments');
+        $form = new PHPWS_Form;
         $hidden['module'] = 'users';
         $hidden['action'] = 'user';
         $hidden['tab']    = 'comments';
@@ -89,7 +96,7 @@ class Comments_My_Page {
         $form->setSize('contact_email', 40);
         $form->addSubmit(_('Update'));
         $template = $form->getTemplate();
-
+        translate();
         return PHPWS_Template::process($template, 'comments', 'user_settings.tpl');
     }
 

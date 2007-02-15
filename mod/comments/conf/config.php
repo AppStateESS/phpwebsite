@@ -6,7 +6,18 @@
    * @version $Id$
    */
 
+translate('comments');
 define('DEFAULT_ANONYMOUS_TITLE', _('Anonymous')); // What an anonymous poster is called
+
+/**
+ * If you allow anonymous users to post and enter their name, you may
+ * want to mark their name somehow. The COMMENT_ANONYMOUS_TAG _only_ appears
+ * if the user was anonymous. You can make it a word, image, or just an activation
+ * space.
+ */
+define('COMMENT_ANONYMOUS_TAG', _('(Anon)'));
+
+
 define('COMMENT_DATE_FORMAT', '%c');
 
 // Maximum dimensions of an user's avatar graphic
@@ -32,4 +43,5 @@ define('COMMENT_NO_SUBJECT', _('No subject'));
 // 10, 20, or 50 comments per page.
 define('COMMENT_DEFAULT_LIMIT', 20);
 
+translate();
 ?>
