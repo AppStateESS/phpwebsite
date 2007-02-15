@@ -1,5 +1,7 @@
-Version 1.4.0
------------------------------------------------------------------
+Version 1.4.1
+------------------------------------------------------------------
+Note: previous SVN versions joined into 1.4.1
+
 14 February 2007
 + Removed table format from edit form
 + Updated files: templates/edit.tpl
@@ -29,9 +31,6 @@ Version 1.4.0
 + Added link to reset the view cache.
 + Updated files : templates/settings.tpl
 
-
-Version 1.3.0 - unreleased
-------------------------------------------------------------------
 10 January 2007
 + Added Version module requirement
 + Added ability for anonymous and users without blog permission to

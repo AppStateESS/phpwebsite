@@ -67,51 +67,48 @@ function blog_update(&$content, $currentVersion)
 + Make call to resetKeywords in search to prevent old search word retention.
 </pre>';
 
-    case version_compare($currentVersion, '1.3.0', '<'):
-        $files = array('templates/edit.tpl', 'templates/settings.tpl', 'templates/submit.tpl', 'templates/user_main.tpl');
-        if (PHPWS_Boost::updateFiles($files, 'blog')) {
-            $content[] = 'Template files copied successfully.';
-        } else {
-            $content[] = 'Failed to copy template files successfully.';
-        }
+    case version_compare($currentVersion, '1.4.1', '<'):
+        $content[] = '<pre>';
 
-        $content[] = '<pre>
-1.3.0 Changes
--------------
-+ Added ability for anonymous and users without blog permission to
-  submit entries for later approval.
-+ Added setting to allow anonymous submission.
-</pre>';
-
-    case version_compare($currentVersion, '1.4.0', '<'):
         $db = new PHPWS_DB('blog_entries');
         $result = $db->addTableColumn('image_id', 'int NOT NULL default 0');
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            $content[] = 'Unable to add image_id colume to blog_entries table.';
+            $content[] = 'Unable to add image_id colume to blog_entries table.</pre>';
             return false;
         }
 
-        $content[] = '<pre>
-1.4.0 Changes
--------------';
+        $files = array('templates/edit.tpl',
+                       'templates/settings.tpl',
+                       'templates/view.tpl',
+                       'templates/submit.tpl',
+                       'templates/user_main.tpl',
+                       'templates/list_view.tpl');
 
-        $files = array('templates/edit.tpl', 'templates/settings.tpl', 'templates/view.tpl', 'templates/list_view.tpl');
+        $content[] = '+ Updated template files';
         if (PHPWS_Boost::updateFiles($files, 'blog')) {
-            $content[] = '+ Copied the following files locally:';
-            $content[] = implode("\n", $files);
+            $content[] = " o Files copied successfully:";
+
         } else {
-            $content[] = '+ Failed to copy the following files locally:';
-            $content[] = implode("\n", $files);
+            $content[] = " o Failed to copy files:";
         }
 
-        $content[] = '+ Added ability to place images on Blog entries without editor.';
-        $content[] = '+ Added pagination to Blog view.';
-        $content[] = '+ Added link to reset the view cache.';
-        $content[] = '+ Added ability to add images to entry without editor.</pre>';
+        $content[] = "    " . implode("\n    ", $files);
+        $content[] = '
+1.4.1 Changes
+-------------
++ Added ability for anonymous and users without blog permission to
+  submit entries for later approval.
++ Added setting to allow anonymous submission.
++ Added ability to place images on Blog entries without editor.
++ Added pagination to Blog view.
++ Added link to reset the view cache.
++ Added ability to add images to entry without editor.
++ Added missing translate calls.
++ Changed edit form layout.
+</pre>';
+        return true;
     }
-
-    return true;
 }
 
 ?>
