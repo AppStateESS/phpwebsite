@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-06 09:53-0500\n"
+"POT-Creation-Date: 2007-02-15 10:21-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,223 +16,168 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: class/Categories.php:36 class/Categories.php:106
-msgid "Categorize"
-msgstr ""
-
-#: class/Categories.php:84
-msgid "Add category"
-msgstr ""
-
-#: class/Categories.php:86
-msgid "All categories assigned."
-msgstr ""
-
-#: class/Categories.php:88
-msgid "No categories available."
-msgstr ""
-
-#: class/Categories.php:92
-msgid "No categories assigned."
-msgstr ""
-
-#: class/Categories.php:95
-msgid "Remove category"
-msgstr ""
-
-#: class/Categories.php:102
-msgid "Quick add"
-msgstr ""
-
-#: class/Categories.php:111
-msgid "Save and close"
-msgstr ""
-
-#: class/Categories.php:113
-msgid "Cancel"
-msgstr ""
-
-#: class/Categories.php:115
-msgid "Available categories"
-msgstr ""
-
-#: class/Categories.php:116
-msgid "Currently assigned"
-msgstr ""
-
-#: class/Categories.php:165
-msgid "item(s)"
-msgstr ""
-
-#: class/Categories.php:367 class/Action.php:239 class/Action.php:243
-#: class/Category.php:95
-msgid "Top Level"
-msgstr ""
-
-#: class/Categories.php:424
 #, php-format
 msgid "%s - %s item(s)"
 msgstr ""
 
-#: class/Categories.php:437
-msgid "No items available in this category."
-msgstr ""
-
-#: class/Action.php:18
-msgid "You are not authorized to administrate categories."
-msgstr ""
-
-#: class/Action.php:57 class/Action.php:230
-msgid "Update Category"
-msgstr ""
-
-#: class/Action.php:59 class/Action.php:72 class/Action.php:232
-msgid "Add Category"
-msgstr ""
-
-#: class/Action.php:67 class/Action.php:86
-msgid "Manage Categories"
-msgstr ""
-
-#: class/Action.php:94
-msgid "Unable to save category."
-msgstr ""
-
-#: class/Action.php:94
-msgid "Please contact your administrator."
-msgstr ""
-
-#: class/Action.php:97
-msgid "Category saved successfully."
-msgstr ""
-
-#: class/Action.php:166
-msgid "Your category must have a title."
-msgstr ""
-
-#: class/Action.php:199
-msgid "New"
-msgstr ""
-
-#: class/Action.php:202
-msgid "List"
-msgstr ""
-
-#: class/Action.php:249 class/Action.php:294
-msgid "Parent"
-msgstr ""
-
-#: class/Action.php:256 class/Action.php:293
-msgid "Title"
-msgstr ""
-
-#: class/Action.php:262
-msgid "Description"
-msgstr ""
-
-#: class/Action.php:264
-msgid "Icon"
-msgstr ""
-
-#: class/Action.php:266
-msgid "Current Icon"
-msgstr ""
-
-#: class/Action.php:295
-msgid "Action"
-msgstr ""
-
-#: class/Action.php:307
-msgid "No categories found."
-msgstr ""
-
-#: class/Action.php:328
-msgid "All Categories"
-msgstr ""
-
-#: class/Action.php:340
-#, php-format
-msgid "%s: Module listing for %s"
-msgstr ""
-
-#: class/Action.php:343
 #, php-format
 msgid "%s: Module listing"
 msgstr ""
 
-#: class/Action.php:379 class/Action.php:381
+#, php-format
+msgid "%s: Module listing for %s"
+msgstr ""
+
+msgid "Action"
+msgstr ""
+
+msgid "Add Category"
+msgstr ""
+
+msgid "Add category"
+msgstr ""
+
+msgid "Add permissions to search."
+msgstr ""
+
+msgid "Administrate your site's categories."
+msgstr ""
+
 #, php-format
 msgid "All - %s items"
 msgstr ""
 
-#: class/Action.php:399
-msgid "View Module"
+msgid "All Categories"
 msgstr ""
 
-#: class/Action.php:411
-msgid "Item Title"
+msgid "All categories assigned."
 msgstr ""
 
-#: class/Action.php:412
-msgid "Creation date"
-msgstr ""
-
-#: class/Action.php:430
-msgid "No items found in this category."
-msgstr ""
-
-#: class/Category.php:201
-msgid "Edit"
-msgstr ""
-
-#: class/Category.php:204
 msgid "Are you sure you want to delete this category?"
 msgstr ""
 
-#: class/Category.php:207 class/Category.php:211
-msgid "Delete"
+msgid "Available categories"
 msgstr ""
 
-#: conf/error.php:3
-msgid "Category ID not found"
+msgid "Cancel"
 msgstr ""
 
-#: conf/error.php:4
-msgid "There was a problem accessing the database."
-msgstr ""
-
-#: conf/error.php:5
-msgid "Module does not have a category table."
-msgstr ""
-
-#: conf/error.php:6
-msgid "Category item is missing variables."
-msgstr ""
-
-#: conf/error.php:7
-msgid "Missing either a version or item id."
-msgstr ""
-
-#: conf/config.php:4
-msgid "Uncategorized"
-msgstr ""
-
-#: boost/controlpanel.php:8
 msgid "Categories"
 msgstr ""
 
-#: boost/controlpanel.php:12
-msgid "Administrate your site's categories."
+msgid "Categorize"
 msgstr ""
 
-#: boost/update.php:20
-msgid "Add permissions to search."
+msgid "Category ID not found"
 msgstr ""
 
-#: boost/permission.php:4
+msgid "Category item is missing variables."
+msgstr ""
+
+msgid "Category saved successfully."
+msgstr ""
+
+msgid "Creation date"
+msgstr ""
+
+msgid "Current Icon"
+msgstr ""
+
+msgid "Currently assigned"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Delete categories"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
 msgid "Edit categories"
 msgstr ""
 
-#: boost/permission.php:5
-msgid "Delete categories"
+msgid "Icon"
+msgstr ""
+
+msgid "Item Title"
+msgstr ""
+
+msgid "List"
+msgstr ""
+
+msgid "Manage Categories"
+msgstr ""
+
+msgid "Missing either a version or item id."
+msgstr ""
+
+msgid "Module does not have a category table."
+msgstr ""
+
+msgid "New"
+msgstr ""
+
+msgid "No categories assigned."
+msgstr ""
+
+msgid "No categories available."
+msgstr ""
+
+msgid "No categories found."
+msgstr ""
+
+msgid "No items available in this category."
+msgstr ""
+
+msgid "No items found in this category."
+msgstr ""
+
+msgid "Parent"
+msgstr ""
+
+msgid "Please contact your administrator."
+msgstr ""
+
+msgid "Quick add"
+msgstr ""
+
+msgid "Remove category"
+msgstr ""
+
+msgid "Save and close"
+msgstr ""
+
+msgid "There was a problem accessing the database."
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Top Level"
+msgstr ""
+
+msgid "Unable to save category."
+msgstr ""
+
+msgid "Uncategorized"
+msgstr ""
+
+msgid "Update Category"
+msgstr ""
+
+msgid "View Module"
+msgstr ""
+
+msgid "You are not authorized to administrate categories."
+msgstr ""
+
+msgid "Your category must have a title."
+msgstr ""
+
+msgid "item(s)"
 msgstr ""

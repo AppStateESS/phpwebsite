@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-06 09:53-0500\n"
+"POT-Creation-Date: 2007-02-15 10:21-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,155 +16,116 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: class/User.php:44 class/User.php:49 class/User.php:131
-#: boost/controlpanel.php:3
-msgid "Search"
-msgstr ""
-
-#: class/User.php:78
-msgid "All modules"
-msgstr ""
-
-#: class/User.php:134
-msgid "Search for:"
-msgstr ""
-
-#: class/User.php:137
-msgid "Exact matches only"
-msgstr ""
-
-#: class/User.php:147
-msgid "Module list"
-msgstr ""
-
-#: class/User.php:157
-msgid "Local"
-msgstr ""
-
-#: class/User.php:176
-msgid "Search location"
-msgstr ""
-
-#: class/User.php:177
-msgid "Advanced Search"
-msgstr ""
-
-#: class/User.php:183
 msgid "A problem occurred during your search."
 msgstr ""
 
-#: class/User.php:185
-msgid "No results found."
-msgstr ""
-
-#: class/User.php:190
-msgid "Search Results"
-msgstr ""
-
-#: class/User.php:210
-msgid "Module"
-msgstr ""
-
-#: class/User.php:211
-msgid "Title"
-msgstr ""
-
-#: class/User.php:229
-msgid "The following search words were ignored"
-msgstr ""
-
-#: class/User.php:269
-msgid "Nothing found"
-msgstr ""
-
-#: class/Admin.php:65
-msgid "Keywords added to admin menu."
-msgstr ""
-
-#: class/Admin.php:192 class/Admin.php:205
-msgid "Drop"
-msgstr ""
-
-#: class/Admin.php:196
-msgid "Current keywords"
-msgstr ""
-
-#: class/Admin.php:211
 msgid "Add"
 msgstr ""
 
-#: class/Admin.php:217
-msgid "Clipped words"
+msgid "Administrate and see information on searches."
 msgstr ""
 
-#: class/Admin.php:220
-msgid "Search Admin"
+msgid "Advanced Search"
 msgstr ""
 
-#: class/Admin.php:222
-msgid "Close"
+msgid "All modules"
 msgstr ""
 
-#: class/Admin.php:233 class/Admin.php:344
-msgid "Keywords"
-msgstr ""
-
-#: class/Admin.php:243 class/Admin.php:296
-msgid "Delete"
-msgstr ""
-
-#: class/Admin.php:246 class/Admin.php:345
-msgid "Ignore"
-msgstr ""
-
-#: class/Admin.php:249
-msgid "Clip word"
-msgstr ""
-
-#: class/Admin.php:258 class/Admin.php:308
-msgid "Go"
-msgstr ""
-
-#: class/Admin.php:261 class/Admin.php:311
-msgid "Are you sure you want to delete the checked item(s)?"
-msgstr ""
-
-#: class/Admin.php:265 class/Admin.php:316
-msgid "Keyword"
-msgstr ""
-
-#: class/Admin.php:266
-msgid "Success"
-msgstr ""
-
-#: class/Admin.php:267
-msgid "Failure"
-msgstr ""
-
-#: class/Admin.php:268 class/Admin.php:318
-msgid "Last called"
-msgstr ""
-
-#: class/Admin.php:269
-msgid "Highest result"
-msgstr ""
-
-#: class/Admin.php:270
-msgid "Mixed"
-msgstr ""
-
-#: class/Admin.php:286
-msgid "Ignored"
-msgstr ""
-
-#: class/Admin.php:299
 msgid "Allow"
 msgstr ""
 
-#: class/Admin.php:317
-msgid "Total queries"
+msgid "Are you sure you want to delete the checked item(s)?"
 msgstr ""
 
-#: boost/controlpanel.php:6
-msgid "Administrate and see information on searches."
+msgid "Clip word"
+msgstr ""
+
+msgid "Clipped words"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Current keywords"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Drop"
+msgstr ""
+
+msgid "Exact matches only"
+msgstr ""
+
+msgid "Failure"
+msgstr ""
+
+msgid "Go"
+msgstr ""
+
+msgid "Highest result"
+msgstr ""
+
+msgid "Ignore"
+msgstr ""
+
+msgid "Ignored"
+msgstr ""
+
+msgid "Keyword"
+msgstr ""
+
+msgid "Keywords"
+msgstr ""
+
+msgid "Keywords added to admin menu."
+msgstr ""
+
+msgid "Last called"
+msgstr ""
+
+msgid "Local"
+msgstr ""
+
+msgid "Mixed"
+msgstr ""
+
+msgid "Module"
+msgstr ""
+
+msgid "Module list"
+msgstr ""
+
+msgid "No results found."
+msgstr ""
+
+msgid "Nothing found"
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+msgid "Search Admin"
+msgstr ""
+
+msgid "Search Results"
+msgstr ""
+
+msgid "Search for:"
+msgstr ""
+
+msgid "Search location"
+msgstr ""
+
+msgid "Success"
+msgstr ""
+
+msgid "The following search words were ignored"
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Total queries"
 msgstr ""

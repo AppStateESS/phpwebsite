@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-06 09:53-0500\n"
+"POT-Creation-Date: 2007-02-15 10:21-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,111 +16,84 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: class/Restore.php:82
-msgid "No backup versions available."
-msgstr ""
-
-#: class/Restore.php:88 class/Approval.php:149
-msgid "Created"
-msgstr ""
-
-#: class/Restore.php:91 class/Approval.php:152
-msgid "Author"
-msgstr ""
-
-#: class/Restore.php:131
-msgid "Restore"
-msgstr ""
-
-#: class/Restore.php:133
-msgid "Are you sure you want to remove this version?"
-msgstr ""
-
-#: class/Restore.php:135
-msgid "Remove"
-msgstr ""
-
-#: class/Restore.php:145
 msgid "A problem occurred when trying to process the restoration list."
 msgstr ""
 
-#: class/Approval.php:128 class/Approval.php:143
-msgid "No items for approval."
-msgstr ""
-
-#: class/Approval.php:156
 msgid "Anonymous"
 msgstr ""
 
-#: class/Approval.php:197
 msgid "Approve"
 msgstr ""
 
-#: class/Approval.php:201
-msgid "Disapprove"
+msgid "Are you sure you want to remove this version?"
 msgstr ""
 
-#: class/Approval.php:207
-msgid "View"
+msgid "Author"
 msgstr ""
 
-#: class/Approval.php:212
-msgid "Edit"
-msgstr ""
-
-#: class/Admin.php:23 class/Admin.php:30
-msgid "Version settings"
-msgstr ""
-
-#: class/Admin.php:31
-msgid "Settings saved."
-msgstr ""
-
-#: class/Admin.php:47
-msgid "Keep all versions"
-msgstr ""
-
-#: class/Admin.php:61
-msgid "Save"
-msgstr ""
-
-#: conf/error.php:11
-msgid "Version function requires an item id."
-msgstr ""
-
-#: conf/error.php:12
-msgid "Source table not found."
-msgstr ""
-
-#: conf/error.php:13
-msgid "Unknown module"
-msgstr ""
-
-#: conf/error.php:14
-msgid "Set variable must be an object or an array."
-msgstr ""
-
-#: conf/error.php:15
-msgid "Missing source data."
-msgstr ""
-
-#: conf/error.php:16
-msgid "Missing columns.php file"
-msgstr ""
-
-#: boost/controlpanel.php:3
-msgid "Version"
-msgstr ""
-
-#: boost/controlpanel.php:6
 msgid "Controls the versioning settings."
 msgstr ""
 
-#: boost/unregister.php:45
+msgid "Created"
+msgstr ""
+
+msgid "Disapprove"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Keep all versions"
+msgstr ""
+
+msgid "Missing columns.php file"
+msgstr ""
+
+msgid "Missing source data."
+msgstr ""
+
+msgid "No backup versions available."
+msgstr ""
+
+msgid "No items for approval."
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Restore"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Set variable must be an object or an array."
+msgstr ""
+
+msgid "Settings saved."
+msgstr ""
+
+msgid "Source table not found."
+msgstr ""
+
 msgid "There was an error removing a version table."
 msgstr ""
 
-#: boost/unregister.php:47
+msgid "Unknown module"
+msgstr ""
+
+msgid "Version"
+msgstr ""
+
+msgid "Version function requires an item id."
+msgstr ""
+
+msgid "Version settings"
+msgstr ""
+
 #, php-format
 msgid "Version table removed: %s"
+msgstr ""
+
+msgid "View"
 msgstr ""

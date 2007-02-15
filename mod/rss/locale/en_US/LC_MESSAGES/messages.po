@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-06 09:53-0500\n"
+"POT-Creation-Date: 2007-02-15 10:21-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,235 +16,178 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: class/Feed.php:64
-msgid "Reset"
-msgstr ""
-
-#: class/Feed.php:68 class/Channel.php:88
-msgid "Edit"
-msgstr ""
-
-#: class/Feed.php:72
-msgid "Are you sure you want to delete this RSS feed?"
-msgstr ""
-
-#: class/Feed.php:75
-msgid "Delete"
-msgstr ""
-
-#: class/Feed.php:82 class/Admin.php:217
-msgid "Yes"
-msgstr ""
-
-#: class/Feed.php:85 class/Admin.php:219
-msgid "No"
-msgstr ""
-
-#: class/Feed.php:99
-#, php-format
-msgid "%d seconds"
-msgstr ""
-
-#: class/Feed.php:104
-#, php-format
-msgid "%d minutes, "
-msgstr ""
-
-#: class/Feed.php:106
-#, php-format
-msgid "%d minutes"
-msgstr ""
-
-#: class/Feed.php:112
-#, php-format
-msgid "%d hours, "
-msgstr ""
-
-#: class/Feed.php:114
 #, php-format
 msgid "%d hours"
 msgstr ""
 
-#: class/Feed.php:118
+#, php-format
+msgid "%d hours, "
+msgstr ""
+
+#, php-format
+msgid "%d minutes"
+msgstr ""
+
+#, php-format
+msgid "%d minutes, "
+msgstr ""
+
+#, php-format
+msgid "%d seconds"
+msgstr ""
+
+msgid "Action"
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid "Add Feed"
+msgstr ""
+
+msgid "Add feed"
+msgstr ""
+
+msgid "Address"
+msgstr ""
+
+msgid "Administrate RSS Feeds"
+msgstr ""
+
+msgid "Administrative panel for setting RSS feeds."
+msgstr ""
+
+msgid "An error occurred registering to RSS module."
+msgstr ""
+
+msgid "An error occurred trying to unregister this module from RSSFeeds."
+msgstr ""
+
+msgid "An error occurred when saving your channel."
+msgstr ""
+
+msgid "An error occurred when trying to access your RSS channels."
+msgstr ""
+
+msgid "Are you sure you want to delete this RSS feed?"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Channel saved."
+msgstr ""
+
+msgid "Channels"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Display?"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Edit channel"
+msgstr ""
+
 #, php-format
 msgid "Every %s"
 msgstr ""
 
-#: class/Feed.php:177
-msgid "You must enter an address."
+msgid "Feed title will be used if left empty"
 msgstr ""
 
-#: class/Feed.php:183
+msgid "Import"
+msgstr ""
+
+msgid "Import RSS Feeds"
+msgstr ""
+
+msgid "In seconds"
+msgstr ""
+
 msgid "Invalid feed address."
 msgstr ""
 
-#: class/Feed.php:191
-#, php-format
-msgid "You may not pull more than %s feeds."
+msgid "Item limit"
 msgstr ""
 
-#: class/Feed.php:201
-msgid "Refresh time is too low. It must be over 60 seconds."
+msgid "Module unregistered from RSSFeeds."
 msgstr ""
 
-#: class/Feed.php:204
-msgid "You should refresh more often than every month."
+msgid "No"
 msgstr ""
 
-#: class/Feed.php:240
-msgid "Sorry, unable to grab feed."
-msgstr ""
-
-#: class/Feed.php:258
-msgid "Unable to list feed."
-msgstr ""
-
-#: class/RSS.php:15
 msgid "No RSS file found."
 msgstr ""
 
-#: class/RSS.php:26 class/RSS.php:27
+msgid "No channels have been registered."
+msgstr ""
+
+msgid "Please enable Cache Lite in your config/core/config.php file."
+msgstr ""
+
+msgid "RSS Feeds"
+msgstr ""
+
 msgid "RSS file found but no channel information."
 msgstr ""
 
-#: class/RSS.php:51 class/RSS.php:52
-msgid "An error occurred registering to RSS module."
-msgstr ""
-
-#: class/RSS.php:55
 #, php-format
 msgid "RSS registration to %s module successful."
 msgstr ""
 
-#: class/Admin.php:74
-msgid "An error occurred when saving your channel."
-msgstr ""
-
-#: class/Admin.php:76
-msgid "Channel saved."
-msgstr ""
-
-#: class/Admin.php:157
-msgid "Channels"
-msgstr ""
-
-#: class/Admin.php:160
-msgid "Import"
-msgstr ""
-
-#: class/Admin.php:173
-msgid "Save Channel"
-msgstr ""
-
-#: class/Admin.php:180 class/Admin.php:225 class/Admin.php:248
-#: class/Admin.php:295
-msgid "Title"
-msgstr ""
-
-#: class/Admin.php:183
-msgid "Description"
-msgstr ""
-
-#: class/Admin.php:189
-msgid "Edit channel"
-msgstr ""
-
-#: class/Admin.php:198
-msgid "Administrate RSS Feeds"
-msgstr ""
-
-#: class/Admin.php:205
-msgid "No channels have been registered."
-msgstr ""
-
-#: class/Admin.php:209
-msgid "An error occurred when trying to access your RSS channels."
-msgstr ""
-
-#: class/Admin.php:226
-msgid "Active"
-msgstr ""
-
-#: class/Admin.php:227 class/Admin.php:298
-msgid "Action"
-msgstr ""
-
-#: class/Admin.php:244 class/Admin.php:296
-msgid "Address"
-msgstr ""
-
-#: class/Admin.php:251
-msgid "Save"
-msgstr ""
-
-#: class/Admin.php:253
-msgid "Cancel"
-msgstr ""
-
-#: class/Admin.php:258
-msgid "Item limit"
-msgstr ""
-
-#: class/Admin.php:262
-msgid "Refresh time"
-msgstr ""
-
-#: class/Admin.php:266
-msgid "Feed title will be used if left empty"
-msgstr ""
-
-#: class/Admin.php:267
-msgid "In seconds"
-msgstr ""
-
-#: class/Admin.php:271
-msgid "Add Feed"
-msgstr ""
-
-#: class/Admin.php:281
-msgid "Sorry"
-msgstr ""
-
-#: class/Admin.php:282
-msgid "You must enable allow_url_fopen in your php.ini file."
-msgstr ""
-
-#: class/Admin.php:291
-msgid "Add feed"
-msgstr ""
-
-#: class/Admin.php:297
-msgid "Display?"
-msgstr ""
-
-#: class/Admin.php:299
 msgid "Refresh feed"
 msgstr ""
 
-#: class/Admin.php:308
-msgid "Import RSS Feeds"
+msgid "Refresh time"
 msgstr ""
 
-#: class/Admin.php:311
-msgid "Please enable Cache Lite in your config/core/config.php file."
+msgid "Refresh time is too low. It must be over 60 seconds."
 msgstr ""
 
-#: class/Channel.php:51
+msgid "Reset"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Save Channel"
+msgstr ""
+
+msgid "Sorry"
+msgstr ""
+
+msgid "Sorry, unable to grab feed."
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Unable to list feed."
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+#, php-format
+msgid "You may not pull more than %s feeds."
+msgstr ""
+
+msgid "You must enable allow_url_fopen in your php.ini file."
+msgstr ""
+
 msgid "You must enter a title."
 msgstr ""
 
-#: boost/controlpanel.php:2
-msgid "RSS Feeds"
+msgid "You must enter an address."
 msgstr ""
 
-#: boost/controlpanel.php:5
-msgid "Administrative panel for setting RSS feeds."
-msgstr ""
-
-#: boost/unregister.php:14
-msgid "An error occurred trying to unregister this module from RSSFeeds."
-msgstr ""
-
-#: boost/unregister.php:17
-msgid "Module unregistered from RSSFeeds."
+msgid "You should refresh more often than every month."
 msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-06 09:53-0500\n"
+"POT-Creation-Date: 2007-02-15 10:21-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,401 +16,340 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: class/Forms.php:19
-msgid "Header"
+msgid "A problem occurred when trying to approve a web page."
 msgstr ""
 
-#: class/Forms.php:24
-#, php-format
-msgid "Page %s"
+msgid "A problem occurred when trying to delete your webpage."
 msgstr ""
 
-#: class/Forms.php:39
-msgid "Add Page"
-msgstr ""
-
-#: class/Forms.php:58
-msgid "Update header"
-msgstr ""
-
-#: class/Forms.php:60 class/Admin.php:101
-msgid "Create header"
-msgstr ""
-
-#: class/Forms.php:68
-msgid "Webpage title"
-msgstr ""
-
-#: class/Forms.php:73 class/Admin.php:534
-msgid "Summary"
-msgstr ""
-
-#: class/Forms.php:89
-msgid "Update page"
-msgstr ""
-
-#: class/Forms.php:91
-msgid "Add new page"
-msgstr ""
-
-#: class/Forms.php:99 class/Forms.php:146
-msgid "Title"
-msgstr ""
-
-#: class/Forms.php:106
-msgid "Content"
-msgstr ""
-
-#: class/Forms.php:111
-msgid "Page template"
-msgstr ""
-
-#: class/Forms.php:114
-msgid "Force all pages to use this template"
-msgstr ""
-
-#: class/Forms.php:135 class/Volume.php:232
-msgid "Delete"
-msgstr ""
-
-#: class/Forms.php:136
-msgid "Move to frontpage"
-msgstr ""
-
-#: class/Forms.php:137
-msgid "Move off frontpage"
-msgstr ""
-
-#: class/Forms.php:138
-msgid "Activate"
-msgstr ""
-
-#: class/Forms.php:139
-msgid "Deactivate"
-msgstr ""
-
-#: class/Forms.php:147
-msgid "Created on"
-msgstr ""
-
-#: class/Forms.php:148
-msgid "Updated on"
-msgstr ""
-
-#: class/Forms.php:149
-msgid "Created by"
-msgstr ""
-
-#: class/Forms.php:150
-msgid "Updated by"
-msgstr ""
-
-#: class/Forms.php:151
-msgid "Front page"
-msgstr ""
-
-#: class/Forms.php:152
-msgid "Active"
-msgstr ""
-
-#: class/Forms.php:153
 msgid "Action"
 msgstr ""
 
-#: class/Forms.php:156
-msgid "Go"
+msgid "Activate"
 msgstr ""
 
-#: class/Forms.php:159
+msgid "Active"
+msgstr ""
+
+msgid "Add Page"
+msgstr ""
+
+msgid "Add new page"
+msgstr ""
+
+#, php-format
+msgid "Add page: %s"
+msgstr ""
+
+#, php-format
+msgid "Administrate page: %s"
+msgstr ""
+
+msgid "An error occurred while saving your page. Please check the error log."
+msgstr ""
+
+msgid "An error occurred. Please check your logs."
+msgstr ""
+
+msgid "Approval list"
+msgstr ""
+
+msgid "Approval view"
+msgstr ""
+
+#, php-format
+msgid "Approval(%s)"
+msgstr ""
+
+msgid "Approve"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete &quot;%s&quot and all its pages?"
+msgstr ""
+
 msgid "Are you sure you want to delete the checked web pages?"
 msgstr ""
 
-#: class/Page.php:124
-msgid "Missing page content."
-msgstr ""
-
-#: class/Page.php:186 class/Volume.php:222 class/Admin.php:553
-msgid "Edit"
-msgstr ""
-
-#: class/Page.php:204
-msgid "Are you sure you want to remove this page?"
-msgstr ""
-
-#: class/Page.php:214 class/Volume.php:470
-msgid "Restore"
-msgstr ""
-
-#: class/Page.php:217
-msgid "Are you sure you want to join this page to the next?"
-msgstr ""
-
-#: class/Page.php:223
 msgid ""
 "Are you sure you want to join ALL the pages into just one page? Warning: You "
 "will lose all page backups!"
 msgstr ""
 
-#: class/Page.php:274
-msgid "Edit web page"
+msgid "Are you sure you want to join this page to the next?"
 msgstr ""
 
-#: class/Page.php:277
-msgid "Edit page header"
+msgid "Are you sure you want to remove this page?"
 msgstr ""
 
-#: class/Page.php:278
-msgid "View page list"
-msgstr ""
-
-#: class/Page.php:326
-msgid "Page is missing content."
-msgstr ""
-
-#: class/Volume.php:147
-msgid "Missing page title"
-msgstr ""
-
-#: class/Volume.php:180
-msgid "View"
-msgstr ""
-
-#: class/Volume.php:229
-#, php-format
-msgid "Are you sure you want to delete &quot;%s&quot and all its pages?"
-msgstr ""
-
-#: class/Volume.php:246 class/Volume.php:253
-msgid "Yes"
-msgstr ""
-
-#: class/Volume.php:248 class/Volume.php:256
-msgid "No"
-msgstr ""
-
-#: class/Volume.php:412 class/Volume.php:455 class/Admin.php:539
-msgid "Page"
-msgstr ""
-
-#: class/Volume.php:416
-msgid "Go!"
-msgstr ""
-
-#: class/Volume.php:465
-msgid "Edit header"
-msgstr ""
-
-#: class/Volume.php:531
-msgid "Page is not complete."
-msgstr ""
-
-#: class/Admin.php:107
-msgid "Header restored."
-msgstr ""
-
-#: class/Admin.php:119 class/Admin.php:127
-msgid "Page restored."
-msgstr ""
-
-#: class/Admin.php:134
-msgid "Header version deleted."
-msgstr ""
-
-#: class/Admin.php:139 class/Admin.php:255
-#, php-format
-msgid "Administrate page: %s"
-msgstr ""
-
-#: class/Admin.php:158
-msgid "Web Page Approval"
-msgstr ""
-
-#: class/Admin.php:167
-msgid "Page joined."
-msgstr ""
-
-#: class/Admin.php:173
-msgid "Pages joined."
-msgstr ""
-
-#: class/Admin.php:182
-msgid "Page removed."
-msgstr ""
-
-#: class/Admin.php:187
-msgid "Approval view"
-msgstr ""
-
-#: class/Admin.php:196
 msgid "Attempted to approve a webpage."
 msgstr ""
 
-#: class/Admin.php:200
-msgid "Web page approved."
+msgid "Cannot find template file."
 msgstr ""
 
-#: class/Admin.php:202
-msgid "A problem occurred when trying to approve a web page."
+msgid "Content"
 msgstr ""
 
-#: class/Admin.php:208 class/Admin.php:266
+msgid "Create header"
+msgstr ""
+
+msgid "Created by"
+msgstr ""
+
+msgid "Created on"
+msgstr ""
+
+msgid "Creates web pages, articles, and the like."
+msgstr ""
+
+msgid "Deactivate"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Delete page"
+msgstr ""
+
+msgid "Disapprove"
+msgstr ""
+
+msgid "Down"
+msgstr ""
+
+msgid "Drop"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
 #, php-format
 msgid "Edit Page %s"
 msgstr ""
 
-#: class/Admin.php:213
-#, php-format
-msgid "Add page: %s"
+msgid "Edit header"
 msgstr ""
 
-#: class/Admin.php:219
-#, php-format
-msgid "Edit header: %s"
-msgstr ""
-
-#: class/Admin.php:226 class/Admin.php:229
-msgid "Ignoring repeat post."
-msgstr ""
-
-#: class/Admin.php:238
 #, php-format
 msgid "Edit header page: %s"
 msgstr ""
 
-#: class/Admin.php:246
-msgid "An error occurred. Please check your logs."
+#, php-format
+msgid "Edit header: %s"
 msgstr ""
 
-#: class/Admin.php:248
-msgid "Header saved successfully."
+msgid "Edit page"
 msgstr ""
 
-#: class/Admin.php:260 class/Admin.php:273
-msgid "An error occurred while saving your page. Please check the error log."
+msgid "Edit page header"
 msgstr ""
 
-#: class/Admin.php:283
-msgid "Error: Unable to force template."
+msgid "Edit web page"
 msgstr ""
 
-#: class/Admin.php:289
-msgid "Page held for approval."
-msgstr ""
-
-#: class/Admin.php:291
-msgid "Page saved successfully."
-msgstr ""
-
-#: class/Admin.php:300
-msgid "List Web Pages"
-msgstr ""
-
-#: class/Admin.php:329
 msgid "Error"
 msgstr ""
 
-#: class/Admin.php:330
-msgid "A problem occurred when trying to delete your webpage."
+msgid "Error occurred when trying to pull a page from the volume."
 msgstr ""
 
-#: class/Admin.php:364
+msgid "Error: Unable to force template."
+msgstr ""
+
+msgid "Feature"
+msgstr ""
+
+msgid "Feature page"
+msgstr ""
+
+msgid "Featured pages"
+msgstr ""
+
+msgid "Force all pages to use this template"
+msgstr ""
+
+msgid "Front page"
+msgstr ""
+
+msgid "Go"
+msgstr ""
+
+msgid "Go!"
+msgstr ""
+
+msgid "Header"
+msgstr ""
+
+msgid "Header restored."
+msgstr ""
+
+msgid "Header saved successfully."
+msgstr ""
+
+msgid "Header version deleted."
+msgstr ""
+
+msgid "Ignoring repeat post."
+msgstr ""
+
+msgid "List"
+msgstr ""
+
+msgid "List Web Pages"
+msgstr ""
+
+msgid "Missing page content."
+msgstr ""
+
+msgid "Missing page title"
+msgstr ""
+
+msgid "Missing template file."
+msgstr ""
+
+msgid "Missing volume id."
+msgstr ""
+
+msgid "Move down"
+msgstr ""
+
+msgid "Move off frontpage"
+msgstr ""
+
+msgid "Move to end"
+msgstr ""
+
+msgid "Move to front"
+msgstr ""
+
+msgid "Move to frontpage"
+msgstr ""
+
+msgid "Move up"
+msgstr ""
+
+msgid "New"
+msgstr ""
+
+msgid "Next page"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "No pages have been created."
+msgstr ""
+
+msgid "Page"
+msgstr ""
+
+#, php-format
+msgid "Page %s"
+msgstr ""
+
+msgid "Page held for approval."
+msgstr ""
+
+msgid "Page is missing content."
+msgstr ""
+
+msgid "Page is not complete."
+msgstr ""
+
+msgid "Page joined."
+msgstr ""
+
+msgid "Page moved."
+msgstr ""
+
+msgid "Page removed."
+msgstr ""
+
+msgid "Page restored."
+msgstr ""
+
+msgid "Page saved successfully."
+msgstr ""
+
+msgid "Page template"
+msgstr ""
+
+msgid "Pages joined."
+msgstr ""
+
+msgid "Previous page"
+msgstr ""
+
+msgid "Restore"
+msgstr ""
+
 #, php-format
 msgid "Restore Page %s"
 msgstr ""
 
-#: class/Admin.php:369
 msgid "Restore Web Page Header"
 msgstr ""
 
-#: class/Admin.php:375
-msgid "Settings saved."
-msgstr ""
-
-#: class/Admin.php:377 class/Admin.php:489
-msgid "Settings"
-msgstr ""
-
-#: class/Admin.php:483
-msgid "New"
-msgstr ""
-
-#: class/Admin.php:486
-msgid "List"
-msgstr ""
-
-#: class/Admin.php:495
-#, php-format
-msgid "Approval(%s)"
-msgstr ""
-
-#: class/Admin.php:543
-msgid "No pages have been created."
-msgstr ""
-
-#: class/Admin.php:547
-msgid "Approval list"
-msgstr ""
-
-#: class/Admin.php:558
-msgid "Approve"
-msgstr ""
-
-#: class/Admin.php:561
-msgid "Disapprove"
-msgstr ""
-
-#: class/Admin.php:656
-msgid "Simple image forms"
-msgstr ""
-
-#: class/Admin.php:658
 msgid "Save settings"
 msgstr ""
 
-#: conf/error.php:7
-msgid "Missing template file."
+msgid "Set featured pages"
 msgstr ""
 
-#: conf/error.php:8
-msgid "Cannot find template file."
+msgid "Settings"
 msgstr ""
 
-#: conf/error.php:9
+msgid "Settings saved."
+msgstr ""
+
+msgid "Simple image forms"
+msgstr ""
+
+msgid "Summary"
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Up"
+msgstr ""
+
+msgid "Update header"
+msgstr ""
+
+msgid "Update page"
+msgstr ""
+
+msgid "Updated by"
+msgstr ""
+
+msgid "Updated on"
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "View page list"
+msgstr ""
+
 msgid "Volume is missing a title."
 msgstr ""
 
-#: conf/error.php:10
-msgid "Missing volume id."
+msgid "Web Page Approval"
 msgstr ""
 
-#: conf/error.php:11
-msgid "Error occurred when trying to pull a page from the volume."
-msgstr ""
-
-#: conf/config.php:11
-msgid "Previous page"
-msgstr ""
-
-#: conf/config.php:12
-msgid "Next page"
-msgstr ""
-
-#: boost/uninstall.php:14
 msgid "Web Page tables removed."
 msgstr ""
 
-#: boost/controlpanel.php:2
 msgid "Web Pages"
 msgstr ""
 
-#: boost/controlpanel.php:5
-msgid "Creates web pages, articles, and the like."
+msgid "Web page approved."
 msgstr ""
 
-#: boost/permission.php:10
-msgid "Edit page"
+msgid "Webpage title"
 msgstr ""
 
-#: boost/permission.php:11
-msgid "Delete page"
+msgid "Yes"
 msgstr ""

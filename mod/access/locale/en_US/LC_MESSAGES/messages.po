@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-06 09:53-0500\n"
+"POT-Creation-Date: 2007-02-15 10:20-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,338 +16,254 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: class/Shortcut.php:83
-msgid "Are you sure you want to delete this shortcut?"
-msgstr ""
-
-#: class/Shortcut.php:87 class/Forms.php:39 class/Forms.php:166
-#: class/Forms.php:218
-msgid "Delete"
-msgstr ""
-
-#: class/Shortcut.php:93
-msgid "Edit"
-msgstr ""
-
-#: class/Shortcut.php:97 class/Forms.php:220
-msgid "Yes"
-msgstr ""
-
-#: class/Shortcut.php:99 class/Forms.php:222
-msgid "No"
-msgstr ""
-
-#: class/Access.php:45
-msgid "Sorry"
-msgstr ""
-
-#: class/Access.php:46
-msgid "Access needs a higher administrator's attention before you may use it."
-msgstr ""
-
-#: class/Access.php:51
-msgid "Settings saved."
-msgstr ""
-
-#: class/Access.php:57 class/Access.php:400
-msgid "Administrator"
-msgstr ""
-
-#: class/Access.php:64
-msgid "IP address was not formatted correctly or not allowed."
-msgstr ""
-
-#: class/Access.php:67 class/Access.php:123 class/Access.php:188
-msgid "An error occurred."
-msgstr ""
-
-#: class/Access.php:67 class/Access.php:123
-msgid "Please check your logs."
-msgstr ""
-
-#: class/Access.php:76
-msgid "IP address deleted."
-msgstr ""
-
-#: class/Access.php:81
-msgid "Denys and Allows"
-msgstr ""
-
-#: class/Access.php:91
-msgid "An error occurred when deleting your shortcut."
-msgstr ""
-
-#: class/Access.php:95
-msgid "An error occurred when updating your .htaccess file."
-msgstr ""
-
-#: class/Access.php:99
-msgid "Shortcut deleted"
-msgstr ""
-
-#: class/Access.php:104 class/Access.php:390 class/Forms.php:278
-msgid "Shortcuts"
-msgstr ""
-
-#: class/Access.php:112
-msgid ".htaccess file written."
-msgstr ""
-
-#: class/Access.php:114
-msgid "Unable to save .htaccess file."
-msgstr ""
-
-#: class/Access.php:130
-msgid "Update .htaccess file"
-msgstr ""
-
-#: class/Access.php:146 class/Access.php:178
-msgid "Close window"
-msgstr ""
-
-#: class/Access.php:148
-msgid "An error occurred:"
-msgstr ""
-
-#: class/Access.php:149 class/Access.php:153
-msgid "Return to previous page."
-msgstr ""
-
-#: class/Access.php:152 class/Access.php:182
-msgid "A serious error occurred. Please check your error.log."
-msgstr ""
-
-#: class/Access.php:189
-msgid "Please check your error.log."
-msgstr ""
-
-#: class/Access.php:191 class/Access.php:196
-msgid "Access has saved your shortcut."
-msgstr ""
-
-#: class/Access.php:192
-msgid "You can access this item with the following link:"
-msgstr ""
-
-#: class/Access.php:197
-msgid "An administrator will need to approve it before it is functional."
-msgstr ""
-
-#: class/Access.php:198
-msgid "When active, you will be able to use the following link:"
-msgstr ""
-
-#: class/Access.php:358
-msgid "Shortcut"
-msgstr ""
-
-#: class/Access.php:396
-msgid "Deny/Allow"
-msgstr ""
-
-#: class/Access.php:403
-msgid "Update"
-msgstr ""
-
-#: class/Forms.php:35 class/Forms.php:164
-msgid "Activate"
-msgstr ""
-
-#: class/Forms.php:36 class/Forms.php:165
-msgid "Deactivate"
-msgstr ""
-
-#: class/Forms.php:44
-msgid "Keywords"
-msgstr ""
-
-#: class/Forms.php:45
-msgid "Url"
-msgstr ""
-
-#: class/Forms.php:46 class/Forms.php:251
-msgid "Active?"
-msgstr ""
-
-#: class/Forms.php:47 class/Forms.php:254
-msgid "Action"
-msgstr ""
-
-#: class/Forms.php:50 class/Forms.php:199 class/Forms.php:275
-msgid "Go"
-msgstr ""
-
-#: class/Forms.php:53
-msgid "Are you sure you want to delete the checked shortcuts?"
-msgstr ""
-
-#: class/Forms.php:70
-msgid "You do not have mod rewrite enabled."
-msgstr ""
-
-#: class/Forms.php:71
-msgid "Open your config/core/config.php file in a text editor."
-msgstr ""
-
-#: class/Forms.php:72
-msgid "Set your \"MOD_REWRITE_ENABLED\" define equal to TRUE."
-msgstr ""
-
-#: class/Forms.php:75
-msgid "Your <b>.htaccess</b> file is not writable."
-msgstr ""
-
-#: class/Forms.php:76
-msgid "Look in your installation directory and give Apache write access."
-msgstr ""
-
-#: class/Forms.php:86
-msgid "Rewrite engine on"
-msgstr ""
-
-#: class/Forms.php:92
-msgid "Shortcuts enabled"
-msgstr ""
-
-#: class/Forms.php:98
-msgid "Allow file update"
-msgstr ""
-
-#: class/Forms.php:104
-msgid "Save settings"
-msgstr ""
-
-#: class/Forms.php:107
-msgid "Mod Rewrite Options"
-msgstr ""
-
-#: class/Forms.php:108
 msgid ".htaccess File Options"
 msgstr ""
 
-#: class/Forms.php:124
-msgid "Write .htaccess file"
+msgid ".htaccess file is missing."
 msgstr ""
 
-#: class/Forms.php:127
-msgid "Your .htaccess file will contain the below:"
+msgid ".htaccess file written."
 msgstr ""
 
-#: class/Forms.php:157
+msgid "A serious error occurred. Please check your error.log."
+msgstr ""
+
+msgid "Access"
+msgstr ""
+
+msgid "Access has saved your shortcut."
+msgstr ""
+
+msgid "Access needs a higher administrator's attention before you may use it."
+msgstr ""
+
+msgid "Access tables removed."
+msgstr ""
+
+msgid "Action"
+msgstr ""
+
+msgid "Activate"
+msgstr ""
+
+msgid "Active?"
+msgstr ""
+
 msgid "Add allowed IP"
 msgstr ""
 
-#: class/Forms.php:158
 msgid "Add denied IP"
 msgstr ""
 
-#: class/Forms.php:170
-msgid "Do not allow all"
+msgid "Administrative options"
 msgstr ""
 
-#: class/Forms.php:173
+msgid "Administrator"
+msgstr ""
+
 msgid "Allow all"
 msgstr ""
 
-#: class/Forms.php:182
-msgid "Do not deny all"
+msgid "Allow file update"
 msgstr ""
 
-#: class/Forms.php:185
-msgid "Deny all"
+msgid "Allowed IPs"
 msgstr ""
 
-#: class/Forms.php:192
-msgid "You have \"Allow all\" enabled. All rows below will be ignored."
+msgid "An administrator will need to approve it before it is functional."
 msgstr ""
 
-#: class/Forms.php:196
-msgid "You have \"Deny all\" enabled. All rows below will be ignored."
+msgid "An error occurred when deleting your shortcut."
 msgstr ""
 
-#: class/Forms.php:201
-msgid "Are you sure you want to delete the checked ips?"
-msgstr ""
-
-#: class/Forms.php:212
 msgid ""
 "An error occurred when trying to access the allowed and denied ip records. "
 "Please check your logs."
 msgstr ""
 
-#: class/Forms.php:214 class/Forms.php:245
-msgid "No denied ip addresses found."
+msgid "An error occurred when updating your .htaccess file."
 msgstr ""
 
-#: class/Forms.php:215 class/Forms.php:241
-msgid "No allowed ip addresses found."
+msgid "An error occurred."
 msgstr ""
 
-#: class/Forms.php:252
-msgid "Allowed IPs"
+msgid "An error occurred:"
 msgstr ""
 
-#: class/Forms.php:253
+msgid "Are you sure you want to delete the checked ips?"
+msgstr ""
+
+msgid "Are you sure you want to delete the checked shortcuts?"
+msgstr ""
+
+msgid "Are you sure you want to delete this shortcut?"
+msgstr ""
+
+msgid "Bad keyword. Use only alphanumeric characters and underlines."
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Close window"
+msgstr ""
+
+msgid "Controls the .htaccess file for Apache and creates shortcuts."
+msgstr ""
+
+msgid "Deactivate"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
 msgid "Denied IPs"
 msgstr ""
 
-#: class/Forms.php:255
+msgid "Deny all"
+msgstr ""
+
+msgid "Deny/Allow"
+msgstr ""
+
+msgid "Denys and Allows"
+msgstr ""
+
+msgid "Do not allow all"
+msgstr ""
+
+msgid "Do not deny all"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Go"
+msgstr ""
+
 msgid "IP Address"
 msgstr ""
 
-#: class/Forms.php:256
+msgid "IP address deleted."
+msgstr ""
+
+msgid "IP address was not formatted correctly or not allowed."
+msgstr ""
+
+msgid "Keyword already in use. Choose another."
+msgstr ""
+
+msgid "Keywords"
+msgstr ""
+
+msgid "Look in your installation directory and give Apache write access."
+msgstr ""
+
+msgid "Missing keyword."
+msgstr ""
+
+msgid "Missing url."
+msgstr ""
+
+msgid "Mod Rewrite Options"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "No allowed ip addresses found."
+msgstr ""
+
+msgid "No denied ip addresses found."
+msgstr ""
+
+msgid "Open your config/core/config.php file in a text editor."
+msgstr ""
+
+msgid "Please check your error.log."
+msgstr ""
+
+msgid "Please check your logs."
+msgstr ""
+
 msgid ""
 "Remember to \"Update\" your access file when finished changing IP rules."
 msgstr ""
 
-#: class/Forms.php:272
-msgid "Type keyword here"
+msgid "Return to previous page."
 msgstr ""
 
-#: class/Forms.php:279
-msgid "Cancel"
+msgid "Rewrite engine on"
 msgstr ""
 
-#: conf/error.php:7
-msgid "Bad keyword. Use only alphanumeric characters and underlines."
+msgid "Save settings"
 msgstr ""
 
-#: conf/error.php:8
-msgid "Keyword already in use. Choose another."
+msgid "Set your \"MOD_REWRITE_ENABLED\" define equal to TRUE."
 msgstr ""
 
-#: conf/error.php:9
-msgid "Missing keyword."
+msgid "Settings saved."
 msgstr ""
 
-#: conf/error.php:10
-msgid "Missing url."
+msgid "Shortcut"
 msgstr ""
 
-#: conf/error.php:11
+msgid "Shortcut deleted"
+msgstr ""
+
+msgid "Shortcuts"
+msgstr ""
+
+msgid "Shortcuts enabled"
+msgstr ""
+
+msgid "Sorry"
+msgstr ""
+
 msgid "The files/access/ directory is not writable."
 msgstr ""
 
-#: conf/error.php:12
+msgid "Type keyword here"
+msgstr ""
+
+msgid "Unable to save .htaccess file."
+msgstr ""
+
 msgid "Unable to write .htaccess file."
 msgstr ""
 
-#: conf/error.php:13
-msgid ".htaccess file is missing."
+msgid "Update"
 msgstr ""
 
-#: boost/uninstall.php:14
-msgid "Access tables removed."
+msgid "Update .htaccess file"
 msgstr ""
 
-#: boost/controlpanel.php:2
-msgid "Access"
+msgid "Url"
 msgstr ""
 
-#: boost/controlpanel.php:5
-msgid "Controls the .htaccess file for Apache and creates shortcuts."
+msgid "When active, you will be able to use the following link:"
 msgstr ""
 
-#: boost/permission.php:5
-msgid "Administrative options"
+msgid "Write .htaccess file"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "You can access this item with the following link:"
+msgstr ""
+
+msgid "You do not have mod rewrite enabled."
+msgstr ""
+
+msgid "You have \"Allow all\" enabled. All rows below will be ignored."
+msgstr ""
+
+msgid "You have \"Deny all\" enabled. All rows below will be ignored."
+msgstr ""
+
+msgid "Your .htaccess file will contain the below:"
+msgstr ""
+
+msgid "Your <b>.htaccess</b> file is not writable."
 msgstr ""

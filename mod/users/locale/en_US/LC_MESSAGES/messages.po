@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-06 09:53-0500\n"
+"POT-Creation-Date: 2007-02-15 10:21-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,941 +16,707 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: class/Current_User.php:264
 #, php-format
-msgid "Set permissions"
+msgid "\"%s\" permission column created."
 msgstr ""
 
-#: class/Current_User.php:273
-msgid "Permission"
+msgid "-- Use server's time zone --"
 msgstr ""
 
-#: class/Group.php:250 class/Users.php:842 class/Form.php:134
-#: class/Form.php:140 class/Form.php:316
-msgid "Edit"
+msgid "A deity can not make themselves mortal."
 msgstr ""
 
-#: class/Group.php:250 class/Action.php:165 class/Action.php:317
-msgid "Edit Group"
+msgid "A group with this name already exists."
 msgstr ""
 
-#: class/Group.php:253 class/Users.php:845 class/Form.php:319
-#: class/Form.php:447 class/Form.php:528 class/Form.php:934
-msgid "Permissions"
-msgstr ""
-
-#: class/Group.php:256 class/Form.php:131 class/Form.php:253
-#: class/Form.php:525
-msgid "Members"
-msgstr ""
-
-#: class/Group.php:260 class/Users.php:811
-msgid "Deactivate"
-msgstr ""
-
-#: class/Group.php:263 class/Users.php:816
-msgid "Activate"
-msgstr ""
-
-#: class/Group.php:268
-msgid "Are you SURE you want to remove this group?"
-msgstr ""
-
-#: class/Group.php:269
-msgid "Remove"
-msgstr ""
-
-#: class/Action.php:20
-msgid "Tried to perform an admin function in Users."
-msgstr ""
-
-#: class/Action.php:51 class/Action.php:290
-msgid "Create User"
-msgstr ""
-
-#: class/Action.php:56 class/Action.php:76 class/Action.php:606
-msgid "Manage Users"
-msgstr ""
-
-#: class/Action.php:65 class/Action.php:287
-msgid "Edit User"
-msgstr ""
-
-#: class/Action.php:78
-msgid "User deleted."
-msgstr ""
-
-#: class/Action.php:117
-msgid "Authorization updated."
-msgstr ""
-
-#: class/Action.php:119 class/Action.php:614 class/Form.php:415
-msgid "Authorization"
-msgstr ""
-
-#: class/Action.php:124
-msgid "Edit Authorization Script"
-msgstr ""
-
-#: class/Action.php:139
-msgid "Set User Permissions"
-msgstr ""
-
-#: class/Action.php:154
-msgid "Set Group Permissions"
-msgstr ""
-
-#: class/Action.php:160 class/Action.php:317
-msgid "Create Group"
-msgstr ""
-
-#: class/Action.php:171 class/Action.php:178 class/Action.php:610
-msgid "Manage Groups"
-msgstr ""
-
-#: class/Action.php:184 class/Action.php:194
-msgid "Manage Members"
-msgstr ""
-
-#: class/Action.php:207 class/Action.php:364 class/Action.php:615
-msgid "Settings"
-msgstr ""
-
-#: class/Action.php:224
-msgid "User deified."
-msgstr ""
-
-#: class/Action.php:227
-msgid "User remains a lowly mortal."
-msgstr ""
-
-#: class/Action.php:245
-msgid "User transformed into a lowly mortal."
-msgstr ""
-
-#: class/Action.php:248
-msgid "User remains a deity."
-msgstr ""
-
-#: class/Action.php:278
-msgid "User updated."
-msgstr ""
-
-#: class/Action.php:280 class/Action.php:282
-msgid "User created."
-msgstr ""
-
-#: class/Action.php:303
-msgid "Permissions updated"
-msgstr ""
-
-#: class/Action.php:324
-msgid "An error occurred when trying to save the group."
-msgstr ""
-
-#: class/Action.php:326
-msgid "Group created."
-msgstr ""
-
-#: class/Action.php:343
-msgid "Member added."
-msgstr ""
-
-#: class/Action.php:356
-msgid "Member removed."
-msgstr ""
-
-#: class/Action.php:368 inc/my_page.php:27
-msgid "User settings updated."
-msgstr ""
-
-#: class/Action.php:450
-msgid "Permissions saved."
-msgstr ""
-
-#: class/Action.php:451
-msgid "Close window"
-msgstr ""
-
-#: class/Action.php:456
-msgid "An error occurred."
-msgstr ""
-
-#: class/Action.php:458
-msgid "Permissions updated."
-msgstr ""
-
-#: class/Action.php:492
-msgid "Please try another user name."
-msgstr ""
-
-#: class/Action.php:508
-msgid "Missing an email address."
-msgstr ""
-
-#: class/Action.php:512
-msgid "This email address cannot be used."
-msgstr ""
-
-#: class/Action.php:517
-msgid "Confirmation phrase is not correct."
-msgstr ""
-
-#: class/Action.php:550
-msgid "Passwords must be reentered on user name change."
-msgstr ""
-
-#: class/Action.php:603
-msgid "New User"
-msgstr ""
-
-#: class/Action.php:609
-msgid "New Group"
-msgstr ""
-
-#: class/Action.php:643
-msgid "Login page"
-msgstr ""
-
-#: class/Action.php:644
-msgid "Username and password combination not found."
-msgstr ""
-
-#: class/Action.php:648 class/Action.php:720
-msgid "Sorry"
-msgstr ""
-
-#: class/Action.php:652
 msgid ""
 "A problem occurred when accessing user information. Please try again later."
 msgstr ""
 
-#: class/Action.php:668 class/Action.php:682
-msgid "New Account Sign-up"
+msgid "A problem occurred when trying to register this module to My Page."
 msgstr ""
 
-#: class/Action.php:670
-msgid "You already have an account."
+msgid "Account created successfully!"
 msgstr ""
 
-#: class/Action.php:675
-msgid "Sorry, we are not accepting new users at this time."
+msgid "Action"
 msgstr ""
 
-#: class/Action.php:685
-msgid "New user signup not allowed."
+msgid "Actions"
 msgstr ""
 
-#: class/Action.php:708
+msgid "Activate"
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid "Add"
+msgstr ""
+
+msgid "Add / Edit Groups"
+msgstr ""
+
+msgid "Add Group"
+msgstr ""
+
+msgid "Add Member"
+msgstr ""
+
+msgid "Add Script File"
+msgstr ""
+
+msgid "Add User"
+msgstr ""
+
+msgid "Add this user to this group."
+msgstr ""
+
+msgid "All visitors"
+msgstr ""
+
+msgid ""
+"An error occurred when trying to create your account. Please try again later."
+msgstr ""
+
+msgid "An error occurred when trying to save the group."
+msgstr ""
+
+msgid "An error occurred."
+msgstr ""
+
+msgid "Are you SURE you want to remove this group?"
+msgstr ""
+
+msgid ""
+"Are you certain you want this user to have complete control of this web site?"
+msgstr ""
+
+#, php-format
+msgid "Are you certain you want to delete the user &quot;%s&quot; permanently?"
+msgstr ""
+
+msgid "Are you sure you want to deify this user?"
+msgstr ""
+
+msgid "Are you sure you want to drop this authorization script?"
+msgstr ""
+
+msgid "Are you sure you want to remove deity status?"
+msgstr ""
+
+msgid "Authorization"
+msgstr ""
+
+msgid "Authorization Scripts"
+msgstr ""
+
+msgid "Authorization updated."
+msgstr ""
+
+msgid "Authorization/Settings"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Change my Settings"
+msgstr ""
+
+msgid "Click here if you are not redirected."
+msgstr ""
+
+msgid "Close window"
+msgstr ""
+
+msgid "Closest matches below."
+msgstr ""
+
+msgid "Confirm"
+msgstr ""
+
+msgid "Confirm Graphic"
+msgstr ""
+
+msgid "Confirm text"
+msgstr ""
+
+msgid "Confirmation email"
+msgstr ""
+
+msgid "Confirmation phrase is not correct."
+msgstr ""
+
+msgid "Control Panel"
+msgstr ""
+
+msgid "Could not access hub database."
+msgstr ""
+
+#, php-format
+msgid "Could not create \"%s\" permission column."
+msgstr ""
+
+msgid "Could not find any hub deities."
+msgstr ""
+
+msgid "Create Group"
+msgstr ""
+
+msgid "Create User"
+msgstr ""
+
+msgid "Current Members"
+msgstr ""
+
+msgid "Deactivate"
+msgstr ""
+
+msgid "Default"
+msgstr ""
+
+msgid "Deity"
+msgstr ""
+
+msgid "Deity users copied to branch."
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Delete Groups"
+msgstr ""
+
+msgid "Delete Users"
+msgstr ""
+
+msgid "Display Name"
+msgstr ""
+
+msgid "Display name"
+msgstr ""
+
+msgid "Display name is improperly formatted."
+msgstr ""
+
+msgid "Drop"
+msgstr ""
+
+msgid "Drop this member from the group."
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Edit Authorization Script"
+msgstr ""
+
+msgid "Edit Group"
+msgstr ""
+
+msgid "Edit Permissions"
+msgstr ""
+
+msgid "Edit User"
+msgstr ""
+
+msgid "Edit Users"
+msgstr ""
+
+msgid "Edit restrictions"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Email Address"
+msgstr ""
+
+msgid "Email Verification"
+msgstr ""
+
+msgid "Email address already in use."
+msgstr ""
+
+msgid "Group Name"
+msgstr ""
+
+msgid "Group created."
+msgstr ""
+
+msgid "Group does not exist."
+msgstr ""
+
+msgid "Group name"
+msgstr ""
+
+msgid "Groups"
+msgstr ""
+
+msgid "Hello"
+msgstr ""
+
+msgid "Hide login box"
+msgstr ""
+
+msgid "Home"
+msgstr ""
+
+msgid "Immediate"
+msgstr ""
+
+msgid "Improper permission level for action requested."
+msgstr ""
+
+msgid "Improperly formatted group name."
+msgstr ""
+
+msgid "Invalid variable name."
+msgstr ""
+
+msgid "Language preference"
+msgstr ""
+
+msgid "Last Logged"
+msgstr ""
+
+msgid "Lets you create and edit users and groups."
+msgstr ""
+
+msgid "Local"
+msgstr ""
+
+msgid "Log Out"
+msgstr ""
+
+msgid "Logged visitors"
+msgstr ""
+
+msgid "Login"
+msgstr ""
+
 msgid "Login Page"
 msgstr ""
 
-#: class/Action.php:717
-msgid "Welcome!"
+msgid "Login page"
 msgstr ""
 
-#: class/Action.php:718
-msgid "Your account has been successfully activated. Please log in."
+msgid "Manage Groups"
 msgstr ""
 
-#: class/Action.php:721
+msgid "Manage Members"
+msgstr ""
+
+msgid "Manage Users"
+msgstr ""
+
+msgid "Member added."
+msgstr ""
+
+msgid "Member not found."
+msgstr ""
+
+msgid "Member removed."
+msgstr ""
+
+msgid "Members"
+msgstr ""
+
+msgid "Members found."
+msgstr ""
+
+msgid "Missing an email address."
+msgstr ""
+
+msgid "Missing authorization script."
+msgstr ""
+
+msgid "Missing my_page function."
+msgstr ""
+
+msgid "Mistyped username."
+msgstr ""
+
+msgid "Module does not exist."
+msgstr ""
+
+msgid "Module tried to detect a non-existant permission."
+msgstr ""
+
+msgid "Module's item permission file is missing."
+msgstr ""
+
+msgid "Module's permission file is missing."
+msgstr ""
+
+msgid "Mortal"
+msgstr ""
+
+msgid "My Page"
+msgstr ""
+
+msgid "My Page registered to Users module."
+msgstr ""
+
+msgid "Never"
+msgstr ""
+
+msgid "New Account Sign-up"
+msgstr ""
+
+msgid "New Group"
+msgstr ""
+
+msgid "New User"
+msgstr ""
+
+msgid "New user signup is currently disabled."
+msgstr ""
+
+msgid "New user signup not allowed."
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "No groups found."
+msgstr ""
+
+msgid "No matches found."
+msgstr ""
+
+msgid "No members."
+msgstr ""
+
+msgid "No modules are registered to My Page."
+msgstr ""
+
+msgid "No new scripts found"
+msgstr ""
+
+msgid "No restricted edit groups found."
+msgstr ""
+
+msgid "No, leave them as a deity."
+msgstr ""
+
+msgid "No, leave them as a mortal."
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "None found"
+msgstr ""
+
+msgid "Not allowed"
+msgstr ""
+
+msgid "Only another deity can create a deity."
+msgstr ""
+
+msgid "Only another deity can create a mortal."
+msgstr ""
+
+msgid "Password"
+msgstr ""
+
+msgid "Password confirm"
+msgstr ""
+
+msgid "Password is too easy to guess."
+msgstr ""
+
+#, php-format
+msgid "Password must be at least %s characters in length."
+msgstr ""
+
+msgid "Passwords do not match."
+msgstr ""
+
+msgid "Passwords must be reentered on user name change."
+msgstr ""
+
+msgid "Permission"
+msgstr ""
+
+msgid "Permission table name already exists."
+msgstr ""
+
+msgid "Permission table not found."
+msgstr ""
+
+msgid "Permissions"
+msgstr ""
+
+msgid "Permissions file not found."
+msgstr ""
+
+msgid "Permissions saved."
+msgstr ""
+
+msgid "Permissions table created successfully."
+msgstr ""
+
+msgid "Permissions table not created successfully."
+msgstr ""
+
+msgid "Permissions table not removed successfully."
+msgstr ""
+
+msgid "Permissions table removed successfully."
+msgstr ""
+
+msgid "Permissions updated"
+msgstr ""
+
+msgid "Permissions updated."
+msgstr ""
+
+msgid "Please create a user to administrate the site."
+msgstr ""
+
+msgid "Please enter a valid email address as a site contact."
+msgstr ""
+
+msgid "Please try another user name."
+msgstr ""
+
+msgid "Please type the word seen in the image."
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Restricted"
+msgstr ""
+
+msgid "Save permissions"
+msgstr ""
+
+msgid "Script Filename"
+msgstr ""
+
+msgid "Set Group Permissions"
+msgstr ""
+
+msgid "Set User Permissions"
+msgstr ""
+
+#, php-format
+msgid "Set permissions"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Sign up"
+msgstr ""
+
+msgid "Site contact email"
+msgstr ""
+
+msgid "Sorry"
+msgstr ""
+
+msgid "Sorry, we are not accepting new users at this time."
+msgstr ""
+
+msgid "Specific group(s)"
+msgstr ""
+
+msgid "The is a problem with My Page."
+msgstr ""
+
+msgid ""
+"There is a problem with your authentication method. Contact the site "
+"administrator."
+msgstr ""
+
+msgid "There was a problem with this module's My Page file."
+msgstr ""
+
+msgid "There was problem creating your acccount. Check back later."
+msgstr ""
+
 msgid ""
 "This authentication does not exist.<br />\n"
 " If you did not log in within the time frame specified in your email, please "
 "apply for another account."
 msgstr ""
 
-#: class/Action.php:755
+msgid "This email address cannot be used."
+msgstr ""
+
+msgid "This module is not registered with My Page"
+msgstr ""
+
+msgid "Time Zone"
+msgstr ""
+
+msgid "Tried to perform an admin function in Users."
+msgstr ""
+
+msgid "Unable to copy deity login to branch."
+msgstr ""
+
+msgid "Unable to copy deity users to branch."
+msgstr ""
+
+msgid "Unable to create authorization script."
+msgstr ""
+
+msgid "Unable to find font file for graphic confirmation."
+msgstr ""
+
+msgid "Unable to save user information."
+msgstr ""
+
+msgid "Unable to write confirmation graphic to server."
+msgstr ""
+
+msgid "Unknown error."
+msgstr ""
+
+msgid "Unrestricted"
+msgstr ""
+
+msgid "Update"
+msgstr ""
+
+msgid "Update Default"
+msgstr ""
+
+msgid "Update Group"
+msgstr ""
+
+msgid "Update Settings"
+msgstr ""
+
+msgid "Update User"
+msgstr ""
+
+msgid "Update my information"
+msgstr ""
+
+msgid "Use Daylight Savings Time"
+msgstr ""
+
+msgid "Use graphic authentication"
+msgstr ""
+
+msgid "User Administration"
+msgstr ""
+
+msgid "User Menu"
+msgstr ""
+
+msgid "User Signup Mode"
+msgstr ""
+
+msgid "User created successfully."
+msgstr ""
+
+msgid "User created successfully. Check your email for your login information."
+msgstr ""
+
+msgid "User created."
+msgstr ""
+
+msgid "User deified."
+msgstr ""
+
+msgid "User deleted."
+msgstr ""
+
+msgid "User is missing their permission group"
+msgstr ""
+
+msgid "User name already in use."
+msgstr ""
+
+msgid "User remains a deity."
+msgstr ""
+
+msgid "User remains a lowly mortal."
+msgstr ""
+
+msgid "User settings updated."
+msgstr ""
+
+msgid "User transformed into a lowly mortal."
+msgstr ""
+
 #, php-format
 msgid "User tried to send bad hash (%s) to confirm user."
 msgstr ""
 
-#: class/Action.php:801
-msgid "Account created successfully!"
+msgid "User updated."
 msgstr ""
 
-#: class/Action.php:802
-msgid "You will return to the home page in five seconds."
-msgstr ""
-
-#: class/Action.php:803
-msgid "Click here if you are not redirected."
-msgstr ""
-
-#: class/Action.php:806
-msgid ""
-"An error occurred when trying to create your account. Please try again later."
-msgstr ""
-
-#: class/Action.php:813
-msgid "User created successfully. Check your email for your login information."
-msgstr ""
-
-#: class/Action.php:819 class/Action.php:822
-msgid "There was problem creating your acccount. Check back later."
-msgstr ""
-
-#: class/Action.php:843
-msgid "Confirmation email"
-msgstr ""
-
-#: class/Action.php:940
-msgid "Username and password refused."
-msgstr ""
-
-#: class/Action.php:984
-msgid "You need to set a site contact address."
-msgstr ""
-
-#: class/Action.php:986
-msgid "Please enter a valid email address as a site contact."
-msgstr ""
-
-#: class/Permission.php:51
-#, php-format
-msgid "Could not create \"%s\" permission column."
-msgstr ""
-
-#: class/Permission.php:54
-#, php-format
-msgid "\"%s\" permission column created."
-msgstr ""
-
-#: class/My_Page.php:20
-msgid "The is a problem with My Page."
-msgstr ""
-
-#: class/My_Page.php:23
-msgid "No modules are registered to My Page."
-msgstr ""
-
-#: class/My_Page.php:32
-msgid "This module is not registered with My Page"
-msgstr ""
-
-#: class/My_Page.php:98
-msgid "There was a problem with this module's My Page file."
-msgstr ""
-
-#: class/Users.php:682
-msgid "Improper permission level for action requested."
-msgstr ""
-
-#: class/Users.php:797
-msgid "Are you sure you want to remove deity status?"
-msgstr ""
-
-#: class/Users.php:799
-msgid "Deity"
-msgstr ""
-
-#: class/Users.php:802
-msgid "Are you sure you want to deify this user?"
-msgstr ""
-
-#: class/Users.php:804
-msgid "Mortal"
-msgstr ""
-
-#: class/Users.php:813 class/Form.php:792
-msgid "Yes"
-msgstr ""
-
-#: class/Users.php:818
-msgid "No"
-msgstr ""
-
-#: class/Users.php:824
-msgid "Never"
-msgstr ""
-
-#: class/Users.php:834
-#, php-format
-msgid "Are you certain you want to delete the user &quot;%s&quot; permanently?"
-msgstr ""
-
-#: class/Users.php:838
-msgid "Delete"
-msgstr ""
-
-#: class/Form.php:44
-msgid "Hello"
-msgstr ""
-
-#: class/Form.php:47
-msgid "Control Panel"
-msgstr ""
-
-#: class/Form.php:50
-msgid "Log Out"
-msgstr ""
-
-#: class/Form.php:53 class/Form.php:86
-msgid "Home"
-msgstr ""
-
-#: class/Form.php:78 class/Form.php:227 class/Form.php:427 class/Form.php:810
-#: class/Form.php:877 boost/install.php:131
-msgid "Username"
-msgstr ""
-
-#: class/Form.php:79 class/Form.php:429 class/Form.php:816 class/Form.php:878
-#: boost/install.php:132 inc/my_page.php:80 inc/my_page.php:82
-msgid "Password"
-msgstr ""
-
-#: class/Form.php:123
-msgid "Update"
-msgstr ""
-
-#: class/Form.php:228 boost/install.php:133
-msgid "Email"
-msgstr ""
-
-#: class/Form.php:229
-msgid "Last Logged"
-msgstr ""
-
-#: class/Form.php:230
-msgid "Active"
-msgstr ""
-
-#: class/Form.php:231 class/Form.php:254
-msgid "Actions"
-msgstr ""
-
-#: class/Form.php:251 class/Form.php:519
-msgid "Group Name"
-msgstr ""
-
-#: class/Form.php:276 class/Form.php:542
-msgid "Add Member"
-msgstr ""
-
-#: class/Form.php:277 class/Form.php:539 class/Form.php:633
-msgid "Add"
-msgstr ""
-
-#: class/Form.php:279
-msgid "Group name"
-msgstr ""
-
-#: class/Form.php:306 class/Form.php:308
-msgid "Member not found."
-msgstr ""
-
-#: class/Form.php:306
-msgid "Closest matches below."
-msgstr ""
-
-#: class/Form.php:308 class/Form.php:551
-msgid "No matches found."
-msgstr ""
-
-#: class/Form.php:323 class/Form.php:543
-msgid "Current Members"
-msgstr ""
-
-#: class/Form.php:356 class/Form.php:576 class/Form.php:714
-msgid "Drop"
-msgstr ""
-
-#: class/Form.php:356
-msgid "Drop this member from the group."
-msgstr ""
-
-#: class/Form.php:377
-msgid "No members."
-msgstr ""
-
-#: class/Form.php:395
-msgid "Update User"
-msgstr ""
-
-#: class/Form.php:397 boost/install.php:135
-msgid "Add User"
-msgstr ""
-
-#: class/Form.php:426 class/Form.php:823 inc/my_page.php:88
-msgid "Email Address"
-msgstr ""
-
-#: class/Form.php:428
-msgid "Display name"
-msgstr ""
-
-#: class/Form.php:465
-msgid "Only another deity can create a deity."
-msgstr ""
-
-#: class/Form.php:467
-msgid ""
-"Are you certain you want this user to have complete control of this web site?"
-msgstr ""
-
-#: class/Form.php:473
-msgid "Yes, make them a deity."
-msgstr ""
-
-#: class/Form.php:475
-msgid "No, leave them as a mortal."
-msgstr ""
-
-#: class/Form.php:484
-msgid "Only another deity can create a mortal."
-msgstr ""
-
-#: class/Form.php:487
-msgid "A deity can not make themselves mortal."
-msgstr ""
-
-#: class/Form.php:494
-msgid "Yes, make them a mortal."
-msgstr ""
-
-#: class/Form.php:496
-msgid "No, leave them as a deity."
-msgstr ""
-
-#: class/Form.php:510
-msgid "Update Group"
-msgstr ""
-
-#: class/Form.php:512
-msgid "Add Group"
-msgstr ""
-
-#: class/Form.php:549
-msgid "Members found."
-msgstr ""
-
-#: class/Form.php:560
-msgid "None found"
-msgstr ""
-
-#: class/Form.php:633
-msgid "Add this user to this group."
-msgstr ""
-
-#: class/Form.php:677
-msgid "No new scripts found"
-msgstr ""
-
-#: class/Form.php:682
-msgid "Add Script File"
-msgstr ""
-
-#: class/Form.php:686
-msgid "Update Default"
-msgstr ""
-
-#: class/Form.php:689
-msgid "Authorization Scripts"
-msgstr ""
-
-#: class/Form.php:690
-msgid "Default"
-msgstr ""
-
-#: class/Form.php:691 inc/my_page.php:70 inc/my_page.php:72
-msgid "Display Name"
-msgstr ""
-
-#: class/Form.php:692
-msgid "Script Filename"
-msgstr ""
-
-#: class/Form.php:693
-msgid "Action"
-msgstr ""
-
-#: class/Form.php:712
-msgid "Are you sure you want to drop this authorization script?"
-msgstr ""
-
-#: class/Form.php:728 class/Form.php:781 conf/config.php:32
-msgid "None"
-msgstr ""
-
-#: class/Form.php:747
-msgid "Update Settings"
-msgstr ""
-
-#: class/Form.php:750
-msgid "Site contact email"
-msgstr ""
-
-#: class/Form.php:755
-msgid "Not allowed"
-msgstr ""
-
-#: class/Form.php:756
-msgid "Immediate"
-msgstr ""
-
-#: class/Form.php:757
-msgid "Email Verification"
-msgstr ""
-
-#: class/Form.php:772
-msgid "User Signup Mode"
-msgstr ""
-
-#: class/Form.php:776
-msgid "Use graphic authentication"
-msgstr ""
-
-#: class/Form.php:787
-msgid "User Menu"
-msgstr ""
-
-#: class/Form.php:791
-msgid "Hide login box"
-msgstr ""
-
-#: class/Form.php:820
-msgid "Confirm"
-msgstr ""
-
-#: class/Form.php:827
-msgid "Confirm text"
-msgstr ""
-
-#: class/Form.php:834
-msgid "Please type the word seen in the image."
-msgstr ""
-
-#: class/Form.php:836
-msgid "Confirm Graphic"
-msgstr ""
-
-#: class/Form.php:841
-msgid "Sign up"
-msgstr ""
-
-#: class/Form.php:922
-msgid "All visitors"
-msgstr ""
-
-#: class/Form.php:923
-msgid "Logged visitors"
-msgstr ""
-
-#: class/Form.php:924
-msgid "Specific group(s)"
-msgstr ""
-
-#: class/Form.php:926
-msgid "Save permissions"
-msgstr ""
-
-#: class/Form.php:936
-msgid "Edit restrictions"
-msgstr ""
-
-#: class/Form.php:937
-msgid "View restrictions"
-msgstr ""
-
-#: class/Form.php:942
-msgid "No restricted edit groups found."
-msgstr ""
-
-#: class/Form.php:948
-msgid "No groups found."
-msgstr ""
-
-#: class/Form.php:952
-msgid "Cancel"
-msgstr ""
-
-#: class/Form.php:985
-msgid "Groups"
-msgstr ""
-
-#: class/Form.php:993
-msgid "Users"
-msgstr ""
-
-#: conf/error.php:10
-msgid "Unknown error."
-msgstr ""
-
-#: conf/error.php:11
-msgid "User name already in use."
-msgstr ""
-
-#: conf/error.php:12
-msgid "Email address already in use."
-msgstr ""
-
-#: conf/error.php:13
-msgid "A group with this name already exists."
-msgstr ""
-
-#: conf/error.php:14
-msgid "Permission table name already exists."
-msgstr ""
-
-#: conf/error.php:15
-msgid "Permission table not found."
-msgstr ""
-
-#: conf/error.php:16
-msgid "Module's permission file is missing."
-msgstr ""
-
-#: conf/error.php:17
-msgid "Module's item permission file is missing."
-msgstr ""
-
-#: conf/error.php:18
-msgid "Username is improperly formatted."
-msgstr ""
-
-#: conf/error.php:19
-msgid "Display name is improperly formatted."
-msgstr ""
-
-#: conf/error.php:20
-msgid "Passwords do not match."
-msgstr ""
-
-#: conf/error.php:21
-#, php-format
-msgid "Password must be at least %s characters in length."
-msgstr ""
-
-#: conf/error.php:22
-msgid "Password is too easy to guess."
-msgstr ""
-
-#: conf/error.php:23
-msgid "Module does not exist."
-msgstr ""
-
-#: conf/error.php:24
-msgid "Invalid variable name."
-msgstr ""
-
-#: conf/error.php:25
-msgid "Unable to save user information."
-msgstr ""
-
-#: conf/error.php:26
-msgid "Improperly formatted group name."
-msgstr ""
-
-#: conf/error.php:27
-msgid "Group does not exist."
-msgstr ""
-
-#: conf/error.php:28
-msgid "User is missing their permission group"
-msgstr ""
-
-#: conf/error.php:29
-msgid "Module tried to detect a non-existant permission."
-msgstr ""
-
-#: conf/error.php:30
-msgid "User's email address is missing."
-msgstr ""
-
-#: conf/error.php:31
 msgid "User's email address is missing or malformed."
 msgstr ""
 
-#: conf/error.php:32
-msgid "Missing authorization script."
+msgid "User's email address is missing."
 msgstr ""
 
-#: conf/error.php:33
-msgid "Unable to find font file for graphic confirmation."
+msgid "User's email used as contact email address."
 msgstr ""
 
-#: conf/error.php:34
-msgid "Unable to write confirmation graphic to server."
+msgid "Username"
 msgstr ""
 
-#: conf/error.php:35
-msgid "Missing my_page function."
+msgid "Username and password combination not found."
 msgstr ""
 
-#: conf/error.php:36
-msgid "Mistyped username."
+msgid "Username and password refused."
 msgstr ""
 
-#: conf/error.php:37
-msgid ""
-"There is a problem with your authentication method. Contact the site "
-"administrator."
+msgid "Username is improperly formatted."
 msgstr ""
 
-#: conf/error.php:38
-msgid ""
-"Your user account has not been approved yet. Make sure you have responded to "
-"your authentication email."
+msgid "Users"
 msgstr ""
 
-#: conf/error.php:39
+msgid "View restrictions"
+msgstr ""
+
+msgid "Want to join?"
+msgstr ""
+
+msgid "Welcome!"
+msgstr ""
+
+msgid "Why can't I change my password?"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "Yes, make them a deity."
+msgstr ""
+
+msgid "Yes, make them a mortal."
+msgstr ""
+
+msgid "You already have an account."
+msgstr ""
+
+msgid "You need to set a site contact address."
+msgstr ""
+
+msgid "You will return to the home page in five seconds."
+msgstr ""
+
 msgid ""
 "Your account has been deactivated. You will need to contact a site "
 "administrator to have it reactivated."
 msgstr ""
 
-#: conf/config.php:30
-msgid "Unrestricted"
+msgid "Your account has been successfully activated. Please log in."
 msgstr ""
 
-#: conf/config.php:31
-msgid "Restricted"
-msgstr ""
-
-#: conf/config.php:54
-msgid "Login"
-msgstr ""
-
-#: conf/config.php:55
-msgid "Want to join?"
-msgstr ""
-
-#: boost/controlpanel.php:8
-msgid "My Page"
-msgstr ""
-
-#: boost/controlpanel.php:13
-msgid "User Administration"
-msgstr ""
-
-#: boost/controlpanel.php:16
-msgid "Lets you create and edit users and groups."
-msgstr ""
-
-#: boost/register.php:17 boost/register.php:18
-msgid "Permissions file not found."
-msgstr ""
-
-#: boost/register.php:21
-msgid "Permissions table not created successfully."
-msgstr ""
-
-#: boost/register.php:25
-msgid "Permissions table created successfully."
-msgstr ""
-
-#: boost/register.php:30 boost/register.php:31
-msgid "A problem occurred when trying to register this module to My Page."
-msgstr ""
-
-#: boost/register.php:34
-msgid "My Page registered to Users module."
-msgstr ""
-
-#: boost/install.php:24
-msgid "Could not access hub database."
-msgstr ""
-
-#: boost/install.php:28
-msgid "Could not find any hub deities."
-msgstr ""
-
-#: boost/install.php:41
-msgid "Unable to copy deity login to branch."
-msgstr ""
-
-#: boost/install.php:50
-msgid "Unable to copy deity users to branch."
-msgstr ""
-
-#: boost/install.php:57
-msgid "Deity users copied to branch."
-msgstr ""
-
-#: boost/install.php:61 boost/install.php:80
-msgid "Local"
-msgstr ""
-
-#: boost/install.php:66
-msgid "Unable to create authorization script."
-msgstr ""
-
-#: boost/install.php:95
-msgid "User created successfully."
-msgstr ""
-
-#: boost/install.php:96
-msgid "User's email used as contact email address."
-msgstr ""
-
-#: boost/install.php:102
-msgid "Please create a user to administrate the site."
-msgstr ""
-
-#: boost/unregister.php:13
-msgid "Permissions table not removed successfully."
-msgstr ""
-
-#: boost/unregister.php:16
-msgid "Permissions table removed successfully."
-msgstr ""
-
-#: boost/permission.php:10
-msgid "Edit Users"
-msgstr ""
-
-#: boost/permission.php:11
-msgid "Delete Users"
-msgstr ""
-
-#: boost/permission.php:12
-msgid "Add / Edit Groups"
-msgstr ""
-
-#: boost/permission.php:13
-msgid "Delete Groups"
-msgstr ""
-
-#: boost/permission.php:14
-msgid "Edit Permissions"
-msgstr ""
-
-#: boost/permission.php:18
-msgid "Authorization/Settings"
-msgstr ""
-
-#: inc/parse.php:11
-msgid "New user signup is currently disabled."
-msgstr ""
-
-#: inc/my_page.php:21
-msgid "Change my Settings"
-msgstr ""
-
-#: inc/my_page.php:79
-msgid "Password confirm"
-msgstr ""
-
-#: inc/my_page.php:83
-msgid "Why can't I change my password?"
-msgstr ""
-
-#: inc/my_page.php:96
-msgid "-- Use server's time zone --"
-msgstr ""
-
-#: inc/my_page.php:115
-msgid "Time Zone"
-msgstr ""
-
-#: inc/my_page.php:126
-msgid "Use Daylight Savings Time"
-msgstr ""
-
-#: inc/my_page.php:129
-msgid "Update my information"
-msgstr ""
-
-#: inc/my_page.php:136
-msgid "Language preference"
+msgid ""
+"Your user account has not been approved yet. Make sure you have responded to "
+"your authentication email."
 msgstr ""

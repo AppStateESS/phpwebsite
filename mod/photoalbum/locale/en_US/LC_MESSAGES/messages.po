@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-06 09:53-0500\n"
+"POT-Creation-Date: 2007-02-15 10:21-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,561 +16,422 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: class/AlbumManager.php:52
-msgid "Photo Albums"
-msgstr ""
-
-#: class/AlbumManager.php:60
-msgid "New Album"
-msgstr ""
-
-#: class/AlbumManager.php:63 class/Album.php:755
-msgid "List Albums"
-msgstr ""
-
-#: class/AlbumManager.php:66
-msgid "Last image"
-msgstr ""
-
-#: class/AlbumManager.php:67
-msgid "Album name"
-msgstr ""
-
-#: class/AlbumManager.php:68
-msgid "Information"
-msgstr ""
-
-#: class/AlbumManager.php:69
-msgid "Last updated"
-msgstr ""
-
-#: class/AlbumManager.php:70
-msgid "Action"
-msgstr ""
-
-#: class/AlbumManager.php:80
-msgid "No albums found."
-msgstr ""
-
-#: class/AlbumManager.php:93
-msgid "Access Denied!"
-msgstr ""
-
-#: class/AlbumManager.php:96
-msgid "Access denied function was called without a proper error initialized."
-msgstr ""
-
-#: class/Photo.php:63 class/Photo.php:203
-msgid "Width"
-msgstr ""
-
-#: class/Photo.php:64 class/Photo.php:204
-msgid "Height"
-msgstr ""
-
-#: class/Photo.php:65 class/Photo.php:205
-msgid "Type"
-msgstr ""
-
-#: class/Photo.php:67 class/Photo.php:223 class/Album.php:439
-msgid "Upload Image"
-msgstr ""
-
-#: class/Photo.php:68 class/Photo.php:224 class/Album.php:168
-#: class/Album.php:440 conf/manager.php:14
-msgid "Short"
-msgstr ""
-
-#: class/Photo.php:74
-msgid "This photo is currently hidden from the public."
-msgstr ""
-
-#: class/Photo.php:87 class/Album.php:431
-msgid "Back to album"
-msgstr ""
-
-#: class/Photo.php:91
-msgid "Print"
-msgstr ""
-
-#: class/Photo.php:94 class/Photo.php:571
-msgid "Edit"
-msgstr ""
-
-#: class/Photo.php:97 class/Photo.php:576
-msgid "Delete"
-msgstr ""
-
-#: class/Photo.php:106
-msgid "Prev"
-msgstr ""
-
-#: class/Photo.php:111 class/NoJSSlideShow.php:134
-msgid "Next"
-msgstr ""
-
-#: class/Photo.php:119 class/Photo.php:225 class/Album.php:170
-msgid "Extended"
-msgstr ""
-
-#: class/Photo.php:123 class/Photo.php:208 conf/manager.php:11
-msgid "Updated"
-msgstr ""
-
-#: class/Photo.php:153 class/Album.php:131 class/Album.php:435
-msgid "Visible"
-msgstr ""
-
-#: class/Photo.php:154 class/Album.php:132 class/Album.php:436
-#: conf/manager.php:15
-msgid "Hidden"
-msgstr ""
-
-#: class/Photo.php:182 class/Album.php:158 class/Album.php:423
-msgid "Save"
-msgstr ""
-
-#: class/Photo.php:206
-msgid "Remove Image"
-msgstr ""
-
-#: class/Photo.php:226 class/Album.php:169 class/Album.php:441
-msgid "Activity"
-msgstr ""
-
-#: class/Photo.php:260
-msgid "The image was successfully removed."
-msgstr ""
-
-#: class/Photo.php:263
-msgid "There was a problem removing the image."
-msgstr ""
-
-#: class/Photo.php:275
-msgid "You must remove the image before uploading a new one."
-msgstr ""
-
-#: class/Photo.php:322 class/Album.php:561
-msgid "The image uploaded was not an allowed image type."
-msgstr ""
-
-#: class/Photo.php:328
-msgid "There was a problem uploading the specified image."
-msgstr ""
-
-#: class/Photo.php:334
-msgid "The file uploaded exceeded the max size allowed."
-msgstr ""
-
-#: class/Photo.php:351
-msgid "You must enter a short description for the photo."
-msgstr ""
-
-#: class/Photo.php:359
-msgid "There was a problem saving the information to the database."
-msgstr ""
-
-#: class/Photo.php:369
-#, php-format
-msgid ""
-"The Photo %s was saved but their was a problem creating the thumbnail image."
-msgstr ""
-
-#: class/Photo.php:372
-#, php-format
-msgid "The Photo %s was successfully saved."
-msgstr ""
-
-#: class/Photo.php:425
-#, php-format
-msgid "The photo %s was successfully deleted from the database."
-msgstr ""
-
-#: class/Photo.php:435
-msgid "No photo was deleted from the database."
-msgstr ""
-
-#: class/Photo.php:447
-msgid "Delete Photo Confirmation"
-msgstr ""
-
-#: class/Photo.php:467 class/Album.php:300
-msgid "Yes"
-msgstr ""
-
-#: class/Photo.php:468 class/Album.php:301
-msgid "No"
-msgstr ""
-
-#: class/Photo.php:472
-msgid "Are you sure you want to delete this photo?"
-msgstr ""
-
-#: class/Photo.php:478 class/Album.php:309 class/Album.php:707
-msgid "Photo Album"
-msgstr ""
-
-#: class/Photo.php:519
-msgid "View Photo"
-msgstr ""
-
-#: class/Photo.php:525 class/Album.php:751
-msgid "New Photo"
-msgstr ""
-
-#: class/Photo.php:527
-msgid "Edit Photo"
-msgstr ""
-
-#: class/NoJSSlideShow.php:112
-msgid "Back&nbsp;to&nbsp;Album"
-msgstr ""
-
-#: class/NoJSSlideShow.php:125
-msgid "Previous"
-msgstr ""
-
-#: class/NoJSSlideShow.php:151
-msgid "Image "
-msgstr ""
-
-#: class/NoJSSlideShow.php:152
-msgid "of"
-msgstr ""
-
-#: class/NoJSSlideShow.php:157
-msgid "Return to "
-msgstr ""
-
-#: class/NoJSSlideShow.php:160
-msgid "high tech"
-msgstr ""
-
-#: class/NoJSSlideShow.php:165 class/SlideShow.php:142
 msgid " mode."
 msgstr ""
 
-#: class/Album.php:167 conf/manager.php:9
-msgid "Name"
+msgid "A file was uploaded but no short description was given."
 msgstr ""
 
-#: class/Album.php:174 class/Album.php:180
-msgid "Back"
+msgid "A short description was added but no file was uploaded."
 msgstr ""
 
-#: class/Album.php:177
-msgid "Delete Album"
+msgid "Access Denied!"
 msgstr ""
 
-#: class/Album.php:227
-msgid "You must enter a name for the Photo Album."
+msgid "Access denied function was called without a proper error initialized."
 msgstr ""
 
-#: class/Album.php:236
-msgid "The Photo Album could not be updated to the database."
+msgid "Action"
 msgstr ""
 
-#: class/Album.php:248 conf/error.php:7
-msgid "The photo album image directory could not be created."
+msgid "Activity"
 msgstr ""
 
-#: class/Album.php:252
-#, php-format
-msgid "The Photo Album \"%s\" was successfully saved."
+msgid "Add album"
 msgstr ""
 
-#: class/Album.php:278
-#, php-format
-msgid ""
-"The album %s and all its photos were successfully deleted from the database."
+msgid "Add photo"
 msgstr ""
 
-#: class/Album.php:287
-msgid "No album was deleted from the database."
+msgid "Album Contains No Photos"
 msgstr ""
 
-#: class/Album.php:294
-msgid "Delete Album Confirmation"
+msgid "Album name"
 msgstr ""
 
-#: class/Album.php:305
+msgid "All photos"
+msgstr ""
+
 msgid ""
 "Are you sure you want to delete this album and all the photos associated "
 "with it?"
 msgstr ""
 
-#: class/Album.php:333
-msgid "No photos found."
+msgid "Are you sure you want to delete this photo?"
 msgstr ""
 
-#: class/Album.php:349
-msgid "This album is currently hidden from the public."
+msgid "Back"
 msgstr ""
 
-#: class/Album.php:352
-msgid "Order By"
-msgstr ""
-
-#: class/Album.php:353
-msgid "First"
-msgstr ""
-
-#: class/Album.php:368 class/Album.php:373
-msgid "Oldest"
-msgstr ""
-
-#: class/Album.php:369 class/Album.php:372
-msgid "Newest"
-msgstr ""
-
-#: class/Album.php:393
-msgid "You do not have permission to add photos within an album."
-msgstr ""
-
-#: class/Album.php:422
-msgid "Update"
-msgstr ""
-
-#: class/Album.php:432
-msgid "Number of photos (select before uploading)"
-msgstr ""
-
-#: class/Album.php:442
-msgid "Photo Number"
-msgstr ""
-
-#: class/Album.php:565
-msgid "There was a problem uploading the specified file."
-msgstr ""
-
-#: class/Album.php:570 class/Album.php:578
-msgid "A file was uploaded but no short description was given."
-msgstr ""
-
-#: class/Album.php:576
-msgid "A short description was added but no file was uploaded."
-msgstr ""
-
-#: class/Album.php:580
-msgid "No file was uploaded and no short description was given."
-msgstr ""
-
-#: class/Album.php:586
-msgid "The uploaded file exceeded the max file size allowed."
-msgstr ""
-
-#: class/Album.php:694
-msgid "Edit Album"
-msgstr ""
-
-#: class/Album.php:716
-msgid "Batch Add Photos"
-msgstr ""
-
-#: class/Album.php:725 class/Album.php:758
-msgid "Slide Show"
-msgstr ""
-
-#: class/Album.php:752
-msgid "Batch Add"
-msgstr ""
-
-#: class/Album.php:762
-msgid "Missing Descriptions"
-msgstr ""
-
-#: class/Album.php:764
-msgid "All photos"
-msgstr ""
-
-#: class/Album.php:766
-msgid "Settings"
-msgstr ""
-
-#: class/SlideShow.php:75
-msgid "Stop Show"
-msgstr ""
-
-#: class/SlideShow.php:76
-msgid "Start Show"
-msgstr ""
-
-#: class/SlideShow.php:79
 msgid "Back to Album"
 msgstr ""
 
-#: class/SlideShow.php:81
-msgid "Two Seconds"
+msgid "Back to album"
 msgstr ""
 
-#: class/SlideShow.php:82
-msgid "Three Seconds"
+msgid "Back&nbsp;to&nbsp;Album"
 msgstr ""
 
-#: class/SlideShow.php:83
-msgid "Five Seconds"
-msgstr ""
-
-#: class/SlideShow.php:84
-msgid "Seven Seconds"
-msgstr ""
-
-#: class/SlideShow.php:85
-msgid "Ten Seconds"
-msgstr ""
-
-#: class/SlideShow.php:86
-msgid "Thirty Seconds"
-msgstr ""
-
-#: class/SlideShow.php:87
-msgid "One Minute"
-msgstr ""
-
-#: class/SlideShow.php:88
-msgid "Two Minutes"
-msgstr ""
-
-#: class/SlideShow.php:90
-msgid "Fade"
-msgstr ""
-
-#: class/SlideShow.php:91
-msgid "Box In"
-msgstr ""
-
-#: class/SlideShow.php:92
-msgid "Box Out"
-msgstr ""
-
-#: class/SlideShow.php:93
-msgid "Pixellate"
-msgstr ""
-
-#: class/SlideShow.php:94
-msgid "Circle In"
-msgstr ""
-
-#: class/SlideShow.php:95
-msgid "Circle Out"
-msgstr ""
-
-#: class/SlideShow.php:96
-msgid "Horizontal Checkerboard"
-msgstr ""
-
-#: class/SlideShow.php:97
-msgid "Vertical Checkerboard"
-msgstr ""
-
-#: class/SlideShow.php:98
-msgid "Dissolve"
-msgstr ""
-
-#: class/SlideShow.php:99
-msgid "Wipe Up"
-msgstr ""
-
-#: class/SlideShow.php:100
-msgid "Gradient Wipe"
-msgstr ""
-
-#: class/SlideShow.php:101
-msgid "Spiral"
-msgstr ""
-
-#: class/SlideShow.php:102
-msgid "Wheel"
-msgstr ""
-
-#: class/SlideShow.php:103
-msgid "Radial Wipe"
-msgstr ""
-
-#: class/SlideShow.php:104
-msgid "Iris"
-msgstr ""
-
-#: class/SlideShow.php:105
-msgid "Strips"
-msgstr ""
-
-#: class/SlideShow.php:106
 msgid "Barn"
 msgstr ""
 
-#: class/SlideShow.php:123
-msgid "Set Speed: &nbsp;"
+msgid "Batch Add"
 msgstr ""
 
-#: class/SlideShow.php:126
-msgid "Transition Effect: &nbsp;"
+msgid "Batch Add Photos"
 msgstr ""
 
-#: class/SlideShow.php:128
-msgid "Loop:  "
+msgid "Box In"
 msgstr ""
 
-#: class/SlideShow.php:129
-msgid "Loading Next Image..."
+msgid "Box Out"
 msgstr ""
 
-#: class/SlideShow.php:130
-msgid "Loading Image..."
+msgid "Circle In"
 msgstr ""
 
-#: class/SlideShow.php:132
-msgid "Not working, try "
+msgid "Circle Out"
 msgstr ""
 
-#: class/SlideShow.php:133
-msgid "the "
+msgid "Delete"
 msgstr ""
 
-#: class/SlideShow.php:136
-msgid "low tech"
+msgid "Delete Album"
 msgstr ""
 
-#: class/SlideShow.php:149
-msgid "Album Contains No Photos"
+msgid "Delete Album Confirmation"
 msgstr ""
 
-#: conf/error.php:8
-msgid "User tried to upload duplicate image."
+msgid "Delete Photo Confirmation"
 msgstr ""
 
-#: conf/manager.php:10
-msgid "Editor"
-msgstr ""
-
-#: conf/manager.php:12
-msgid "Description"
-msgstr ""
-
-#: conf/manager.php:13
-msgid "Thumbnail"
-msgstr ""
-
-#: conf/permission.php:5 boost/permission.php:5
-msgid "Add album"
-msgstr ""
-
-#: conf/permission.php:6 boost/permission.php:6
-msgid "Edit album"
-msgstr ""
-
-#: conf/permission.php:7 boost/permission.php:7
-msgid "Add photo"
-msgstr ""
-
-#: conf/permission.php:8 boost/permission.php:8
-msgid "Edit photo"
-msgstr ""
-
-#: conf/permission.php:9 boost/permission.php:9
 msgid "Delete album"
 msgstr ""
 
-#: conf/permission.php:10 boost/permission.php:10
 msgid "Delete photo"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Dissolve"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Edit Album"
+msgstr ""
+
+msgid "Edit Photo"
+msgstr ""
+
+msgid "Edit album"
+msgstr ""
+
+msgid "Edit photo"
+msgstr ""
+
+msgid "Editor"
+msgstr ""
+
+msgid "Extended"
+msgstr ""
+
+msgid "Fade"
+msgstr ""
+
+msgid "First"
+msgstr ""
+
+msgid "Five Seconds"
+msgstr ""
+
+msgid "Gradient Wipe"
+msgstr ""
+
+msgid "Height"
+msgstr ""
+
+msgid "Hidden"
+msgstr ""
+
+msgid "Horizontal Checkerboard"
+msgstr ""
+
+msgid "Image "
+msgstr ""
+
+msgid "Information"
+msgstr ""
+
+msgid "Iris"
+msgstr ""
+
+msgid "Last image"
+msgstr ""
+
+msgid "Last updated"
+msgstr ""
+
+msgid "List Albums"
+msgstr ""
+
+msgid "Loading Image..."
+msgstr ""
+
+msgid "Loading Next Image..."
+msgstr ""
+
+msgid "Loop:  "
+msgstr ""
+
+msgid "Missing Descriptions"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "New Album"
+msgstr ""
+
+msgid "New Photo"
+msgstr ""
+
+msgid "Newest"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "No album was deleted from the database."
+msgstr ""
+
+msgid "No albums found."
+msgstr ""
+
+msgid "No file was uploaded and no short description was given."
+msgstr ""
+
+msgid "No photo was deleted from the database."
+msgstr ""
+
+msgid "No photos found."
+msgstr ""
+
+msgid "Not working, try "
+msgstr ""
+
+msgid "Number of photos (select before uploading)"
+msgstr ""
+
+msgid "Oldest"
+msgstr ""
+
+msgid "One Minute"
+msgstr ""
+
+msgid "Order By"
+msgstr ""
+
+msgid "Photo Album"
+msgstr ""
+
+msgid "Photo Albums"
+msgstr ""
+
+msgid "Photo Number"
+msgstr ""
+
+msgid "Pixellate"
+msgstr ""
+
+msgid "Prev"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Print"
+msgstr ""
+
+msgid "Radial Wipe"
+msgstr ""
+
+msgid "Remove Image"
+msgstr ""
+
+msgid "Return to "
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Set Speed: &nbsp;"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Seven Seconds"
+msgstr ""
+
+msgid "Short"
+msgstr ""
+
+msgid "Slide Show"
+msgstr ""
+
+msgid "Spiral"
+msgstr ""
+
+msgid "Start Show"
+msgstr ""
+
+msgid "Stop Show"
+msgstr ""
+
+msgid "Strips"
+msgstr ""
+
+msgid "Ten Seconds"
+msgstr ""
+
+#, php-format
+msgid ""
+"The Photo %s was saved but their was a problem creating the thumbnail image."
+msgstr ""
+
+#, php-format
+msgid "The Photo %s was successfully saved."
+msgstr ""
+
+#, php-format
+msgid "The Photo Album \"%s\" was successfully saved."
+msgstr ""
+
+msgid "The Photo Album could not be updated to the database."
+msgstr ""
+
+#, php-format
+msgid ""
+"The album %s and all its photos were successfully deleted from the database."
+msgstr ""
+
+msgid "The file uploaded exceeded the max size allowed."
+msgstr ""
+
+msgid "The image uploaded was not an allowed image type."
+msgstr ""
+
+msgid "The image was successfully removed."
+msgstr ""
+
+#, php-format
+msgid "The photo %s was successfully deleted from the database."
+msgstr ""
+
+msgid "The photo album image directory could not be created."
+msgstr ""
+
+msgid "The uploaded file exceeded the max file size allowed."
+msgstr ""
+
+msgid "There was a problem removing the image."
+msgstr ""
+
+msgid "There was a problem saving the information to the database."
+msgstr ""
+
+msgid "There was a problem uploading the specified file."
+msgstr ""
+
+msgid "There was a problem uploading the specified image."
+msgstr ""
+
+msgid "Thirty Seconds"
+msgstr ""
+
+msgid "This album is currently hidden from the public."
+msgstr ""
+
+msgid "This photo is currently hidden from the public."
+msgstr ""
+
+msgid "Three Seconds"
+msgstr ""
+
+msgid "Thumbnail"
+msgstr ""
+
+msgid "Transition Effect: &nbsp;"
+msgstr ""
+
+msgid "Two Minutes"
+msgstr ""
+
+msgid "Two Seconds"
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "Update"
+msgstr ""
+
+msgid "Updated"
+msgstr ""
+
+msgid "Upload Image"
+msgstr ""
+
+msgid "User tried to upload duplicate image."
+msgstr ""
+
+msgid "Vertical Checkerboard"
+msgstr ""
+
+msgid "View Photo"
+msgstr ""
+
+msgid "Visible"
+msgstr ""
+
+msgid "Wheel"
+msgstr ""
+
+msgid "Width"
+msgstr ""
+
+msgid "Wipe Up"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "You do not have permission to add photos within an album."
+msgstr ""
+
+msgid "You must enter a name for the Photo Album."
+msgstr ""
+
+msgid "You must enter a short description for the photo."
+msgstr ""
+
+msgid "You must remove the image before uploading a new one."
+msgstr ""
+
+msgid "high tech"
+msgstr ""
+
+msgid "low tech"
+msgstr ""
+
+msgid "of"
+msgstr ""
+
+msgid "the "
 msgstr ""

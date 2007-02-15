@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-06 09:53-0500\n"
+"POT-Creation-Date: 2007-02-15 10:21-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,22 +16,17 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: class/Clipboard.php:44 class/Clipboard.php:87
-msgid "Clipboard"
-msgstr ""
-
-#: class/Clipboard.php:45
-msgid "Copy the text below and paste it into the text box."
-msgstr ""
-
-#: class/Clipboard.php:48
-msgid "Close Window"
-msgstr ""
-
-#: class/Clipboard.php:83
 msgid "Clear"
 msgstr ""
 
-#: conf/config.php:4
+msgid "Clipboard"
+msgstr ""
+
+msgid "Close Window"
+msgstr ""
+
+msgid "Copy the text below and paste it into the text box."
+msgstr ""
+
 msgid "Drop"
 msgstr ""

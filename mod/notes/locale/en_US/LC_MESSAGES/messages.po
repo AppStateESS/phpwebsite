@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-06 09:53-0500\n"
+"POT-Creation-Date: 2007-02-15 10:21-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,149 +16,113 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: class/Note_Item.php:77
-msgid "Delete"
+msgid "- Search again -"
 msgstr ""
 
-#: class/Note_Item.php:101
-msgid "Yes"
+msgid "Allow user name searching"
 msgstr ""
 
-#: class/Note_Item.php:105
-msgid "No"
-msgstr ""
-
-#: class/Note_Item.php:142
-msgid "System message"
-msgstr ""
-
-#: class/Note_Item.php:145
-msgid "Sent on"
-msgstr ""
-
-#: class/Note_Item.php:146
-msgid "Sent by"
-msgstr ""
-
-#: class/Note_Item.php:151
-msgid "In reference to"
-msgstr ""
-
-#: class/Note_Item.php:180
-msgid "Delete and close"
-msgstr ""
-
-#: class/Note_Item.php:201 class/Note_Item.php:211
-msgid "Read"
-msgstr ""
-
-#: class/Note_Item.php:205 class/Note_Item.php:209 class/Note_Item.php:211
-msgid "Read note"
-msgstr ""
-
-#: class/Note_Item.php:239 class/My_Page.php:306 class/My_Page.php:310
-msgid "Send note"
-msgstr ""
-
-#: class/Note_Item.php:241
-#, php-format
-msgid "Send note to %s"
-msgstr ""
-
-#: class/My_Page.php:48
-msgid "Message deleted."
-msgstr ""
-
-#: class/My_Page.php:89
-msgid "Note sent successfully."
-msgstr ""
-
-#: class/My_Page.php:91
-msgid "Note was not sent successfully."
-msgstr ""
-
-#: class/My_Page.php:119 class/My_Page.php:124
-msgid "Associate note"
-msgstr ""
-
-#: class/My_Page.php:151
-msgid "You must enter a username."
-msgstr ""
-
-#: class/My_Page.php:153
-msgid "Unsuitable user name characters."
-msgstr ""
-
-#: class/My_Page.php:168 class/My_Page.php:183
 msgid "An error occurred when accessing the database."
 msgstr ""
 
-#: class/My_Page.php:185
-msgid "Could not find match."
+msgid "Associate note"
 msgstr ""
 
-#: class/My_Page.php:191
-msgid "Unknown user."
-msgstr ""
-
-#: class/My_Page.php:199
-msgid "You need to enter a title or some content."
-msgstr ""
-
-#: class/My_Page.php:208
-msgid "Unable to resolve user name."
-msgstr ""
-
-#: class/My_Page.php:226
-msgid "No notes found."
-msgstr ""
-
-#: class/My_Page.php:230 class/My_Page.php:292
-msgid "Title"
-msgstr ""
-
-#: class/My_Page.php:231
-msgid "Date sent"
-msgstr ""
-
-#: class/My_Page.php:236
-msgid "Read notes"
-msgstr ""
-
-#: class/My_Page.php:264
 #, php-format
 msgid "Associate note to item: %s"
 msgstr ""
 
-#: class/My_Page.php:280
-msgid "Cancel"
-msgstr ""
-
-#: class/My_Page.php:284
-msgid "- Search again -"
-msgstr ""
-
-#: class/My_Page.php:289
-msgid "Recipient"
-msgstr ""
-
-#: class/My_Page.php:296
-msgid "Message"
-msgstr ""
-
-#: class/My_Page.php:330
 msgid "Associated Notes"
 msgstr ""
 
-#: class/My_Page.php:353
+msgid "Cancel"
+msgstr ""
+
+msgid "Could not find match."
+msgstr ""
+
+msgid "Date sent"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Delete and close"
+msgstr ""
+
+msgid "In reference to"
+msgstr ""
+
+msgid "Message"
+msgstr ""
+
+msgid "Message deleted."
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "No notes found."
+msgstr ""
+
+msgid "Note sent successfully."
+msgstr ""
+
+msgid "Note was not sent successfully."
+msgstr ""
+
 msgid "Notes"
 msgstr ""
 
-#: class/My_Page.php:354
+msgid "Read"
+msgstr ""
+
+msgid "Read note"
+msgstr ""
+
+msgid "Read notes"
+msgstr ""
+
+msgid "Recipient"
+msgstr ""
+
+msgid "Send note"
+msgstr ""
+
+#, php-format
+msgid "Send note to %s"
+msgstr ""
+
+msgid "Sent by"
+msgstr ""
+
+msgid "Sent on"
+msgstr ""
+
+msgid "System message"
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Unable to resolve user name."
+msgstr ""
+
+msgid "Unknown user."
+msgstr ""
+
+msgid "Unsuitable user name characters."
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
 #, php-format
 msgid "You have %d unread notes."
 msgstr ""
 
-#: boost/permission.php:10
-msgid "Allow user name searching"
+msgid "You must enter a username."
+msgstr ""
+
+msgid "You need to enter a title or some content."
 msgstr ""

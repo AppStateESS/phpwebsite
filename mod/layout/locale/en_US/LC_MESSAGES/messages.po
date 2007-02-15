@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-06 09:53-0500\n"
+"POT-Creation-Date: 2007-02-15 10:21-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,324 +16,243 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: class/LayoutAdmin.php:31 class/LayoutAdmin.php:55
+msgid "+ Styles per page added."
+msgstr ""
+
+msgid "-- Use default style --"
+msgstr ""
+
 msgid "Adjust Boxes"
 msgstr ""
 
-#: class/LayoutAdmin.php:56
-msgid "Settings changed."
+msgid "Allow indexing"
 msgstr ""
 
-#: class/LayoutAdmin.php:62 class/LayoutAdmin.php:144
-#: class/LayoutAdmin.php:150 class/LayoutAdmin.php:233
-msgid "Themes"
+msgid "Allow link following"
 msgstr ""
 
-#: class/LayoutAdmin.php:65
-msgid "Theme settings updated."
+msgid "Available styles"
 msgstr ""
 
-#: class/LayoutAdmin.php:77 class/LayoutAdmin.php:89
-msgid "Error"
+msgid "Box move off"
 msgstr ""
 
-#: class/LayoutAdmin.php:78 class/LayoutAdmin.php:90
-msgid "There was a problem updating the settings."
+msgid "Box order is out of sequence."
 msgstr ""
 
-#: class/LayoutAdmin.php:80
-msgid "Footer updated."
+msgid "Box positioning"
 msgstr ""
 
-#: class/LayoutAdmin.php:92
-msgid "Header updated."
+msgid "Boxes"
 msgstr ""
 
-#: class/LayoutAdmin.php:98
-msgid "Edit Footer"
+msgid "Cancel"
 msgstr ""
 
-#: class/LayoutAdmin.php:103
-msgid "Edit Header"
+msgid "Change CSS"
 msgstr ""
 
-#: class/LayoutAdmin.php:108 class/LayoutAdmin.php:127
-msgid "Edit Meta Tags"
+msgid "Change Settings"
 msgstr ""
 
-#: class/LayoutAdmin.php:128
-msgid "Meta Tags updated."
+msgid "Change style"
 msgstr ""
 
-#: class/LayoutAdmin.php:135
+msgid "Complete the theme change"
+msgstr ""
+
 msgid "Confirm Theme Change"
 msgstr ""
 
-#: class/LayoutAdmin.php:136
-msgid "If you are happy with the change, click the appropiate button."
+msgid "Control the layout of your site."
 msgstr ""
 
-#: class/LayoutAdmin.php:137
+msgid "Data was not an array."
+msgstr ""
+
+msgid "Default Robot Settings"
+msgstr ""
+
+msgid "Default Theme"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Disable"
+msgstr ""
+
+msgid "Display settings"
+msgstr ""
+
+msgid "Don't reset"
+msgstr ""
+
+msgid "Done"
+msgstr ""
+
+msgid "Edit Footer"
+msgstr ""
+
+msgid "Edit Header"
+msgstr ""
+
+msgid "Edit Meta Tags"
+msgstr ""
+
+msgid "Enable"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "Expect an error theme when finished."
+msgstr ""
+
 msgid ""
 "Failure to respond in ten seconds, reverts phpWebSite to the default theme."
 msgstr ""
 
-#: class/LayoutAdmin.php:159 class/LayoutAdmin.php:220
-msgid "Change CSS"
-msgstr ""
-
-#: class/LayoutAdmin.php:167
-msgid "Set meta tags"
-msgstr ""
-
-#: class/LayoutAdmin.php:193
-msgid "-- Use default style --"
-msgstr ""
-
-#: class/LayoutAdmin.php:211
-msgid "Style sheet"
-msgstr ""
-
-#: class/LayoutAdmin.php:213
-msgid "Save"
-msgstr ""
-
-#: class/LayoutAdmin.php:215
-msgid "Cancel"
-msgstr ""
-
-#: class/LayoutAdmin.php:231
-msgid "Boxes"
-msgstr ""
-
-#: class/LayoutAdmin.php:232
-msgid "Meta Tags"
-msgstr ""
-
-#: class/LayoutAdmin.php:234
-msgid "Header"
-msgstr ""
-
-#: class/LayoutAdmin.php:235
 msgid "Footer"
 msgstr ""
 
-#: class/LayoutAdmin.php:249
-msgid "Update Theme Settings"
+msgid "Footer updated."
 msgstr ""
 
-#: class/LayoutAdmin.php:253
-msgid "There was a problem reading the theme directories."
+msgid "Header"
 msgstr ""
 
-#: class/LayoutAdmin.php:259
-msgid "Default Theme"
+msgid "Header updated."
 msgstr ""
 
-#: class/LayoutAdmin.php:272
-msgid "Disable"
+msgid "If you are happy with the change, click the appropiate button."
 msgstr ""
 
-#: class/LayoutAdmin.php:272
-msgid "Enable"
-msgstr ""
-
-#: class/LayoutAdmin.php:281
-msgid "Don't reset"
-msgstr ""
-
-#: class/LayoutAdmin.php:281 class/LayoutAdmin.php:287
-msgid "Reset boxes"
-msgstr ""
-
-#: class/LayoutAdmin.php:284
-msgid "Change Settings"
-msgstr ""
-
-#: class/LayoutAdmin.php:288
-msgid "Box positioning"
-msgstr ""
-
-#: class/LayoutAdmin.php:312
-msgid "Complete the theme change"
-msgstr ""
-
-#: class/LayoutAdmin.php:313
-msgid "Restore the default theme"
-msgstr ""
-
-#: class/LayoutAdmin.php:328
-msgid "Only show footer on front page"
-msgstr ""
-
-#: class/LayoutAdmin.php:337
-msgid "Update Footer"
-msgstr ""
-
-#: class/LayoutAdmin.php:353
-msgid "Only show header on front page"
-msgstr ""
-
-#: class/LayoutAdmin.php:362
-msgid "Update Header"
-msgstr ""
-
-#: class/LayoutAdmin.php:405 class/Layout.php:1012
-msgid "Restore to default"
-msgstr ""
-
-#: class/LayoutAdmin.php:412 boost/install.php:61
-msgid "Page Title"
-msgstr ""
-
-#: class/LayoutAdmin.php:414
-msgid "Keywords"
-msgstr ""
-
-#: class/LayoutAdmin.php:416
-msgid "Description"
-msgstr ""
-
-#: class/LayoutAdmin.php:419
-msgid "Allow indexing"
-msgstr ""
-
-#: class/LayoutAdmin.php:422
-msgid "Allow link following"
-msgstr ""
-
-#: class/LayoutAdmin.php:424
-msgid "Update"
-msgstr ""
-
-#: class/LayoutAdmin.php:427
-msgid "Default Robot Settings"
-msgstr ""
-
-#: class/Layout.php:764
-msgid "Box move off"
-msgstr ""
-
-#: class/Layout.php:778
-msgid "Change style"
-msgstr ""
-
-#: class/Layout.php:786
-msgid "Meta tags"
-msgstr ""
-
-#: class/Layout.php:1008
-msgid "Move to top"
-msgstr ""
-
-#: class/Layout.php:1009
-msgid "Move up"
-msgstr ""
-
-#: class/Layout.php:1010
-msgid "Move down"
-msgstr ""
-
-#: class/Layout.php:1011
-msgid "Move to bottom"
-msgstr ""
-
-#: class/Layout.php:1017
-msgid "Send to"
-msgstr ""
-
-#: class/Layout.php:1027
-msgid "Move"
-msgstr ""
-
-#: conf/error.php:3
-msgid "Layout session not set"
-msgstr ""
-
-#: conf/error.php:4
-msgid "Layout did not receive any data for display"
-msgstr ""
-
-#: conf/error.php:5
-msgid "Unable to receive theme information."
-msgstr ""
-
-#: conf/error.php:6
-msgid "Data was not an array."
-msgstr ""
-
-#: conf/error.php:7
 msgid "Javascript file was not found."
 msgstr ""
 
-#: conf/error.php:8
-msgid "Box order is out of sequence."
+msgid "Keywords"
 msgstr ""
 
-#: conf/error.php:9
-msgid "The theme.ini file is missing for the default theme."
-msgstr ""
-
-#: boost/controlpanel.php:6
 msgid "Layout"
 msgstr ""
 
-#: boost/controlpanel.php:9
-msgid "Control the layout of your site."
+msgid "Layout did not receive any data for display"
 msgstr ""
 
-#: boost/update.php:17
-msgid "+ Styles per page added."
+msgid "Layout session not set"
 msgstr ""
 
-#: boost/install.php:13
-msgid "Please enter a page title."
-msgstr ""
-
-#: boost/install.php:24
 msgid "Layout settings updated."
 msgstr ""
 
-#: boost/install.php:51
+msgid "Meta Tags"
+msgstr ""
+
+msgid "Meta Tags updated."
+msgstr ""
+
+msgid "Meta tags"
+msgstr ""
+
+msgid "Move"
+msgstr ""
+
+msgid "Move down"
+msgstr ""
+
+msgid "Move to bottom"
+msgstr ""
+
+msgid "Move to top"
+msgstr ""
+
+msgid "Move up"
+msgstr ""
+
+msgid "No alternate style sheets available."
+msgstr ""
+
 msgid "No themes installed."
 msgstr ""
 
-#: boost/install.php:52
-msgid "Expect an error theme when finished."
+msgid "Only show footer on front page"
 msgstr ""
 
-#: boost/install.php:56
-msgid "Pick a theme"
+msgid "Only show header on front page"
 msgstr ""
 
-#: boost/install.php:62
+msgid "Page Title"
+msgstr ""
+
 msgid "Page Title: Name of your web site"
 msgstr ""
 
-#: boost/install.php:63
-msgid "Done"
+msgid "Pick a theme"
 msgstr ""
 
-#: boost/unregister.php:9
+msgid "Please enter a page title."
+msgstr ""
+
 msgid "Removing old layout components."
 msgstr ""
 
-#: inc/my_page.php:22
-msgid "Display settings"
+msgid "Reset boxes"
 msgstr ""
 
-#: inc/my_page.php:29
-msgid "Settings saved"
+msgid "Restore the default theme"
 msgstr ""
 
-#: inc/my_page.php:53
-msgid "Available styles"
+msgid "Restore to default"
 msgstr ""
 
-#: inc/my_page.php:54
+msgid "Save"
+msgstr ""
+
 msgid "Save settings"
 msgstr ""
 
-#: inc/my_page.php:56
-msgid "No alternate style sheets available."
+msgid "Send to"
+msgstr ""
+
+msgid "Set meta tags"
+msgstr ""
+
+msgid "Settings changed."
+msgstr ""
+
+msgid "Settings saved"
+msgstr ""
+
+msgid "Style sheet"
+msgstr ""
+
+msgid "The theme.ini file is missing for the default theme."
+msgstr ""
+
+msgid "Theme settings updated."
+msgstr ""
+
+msgid "Themes"
+msgstr ""
+
+msgid "There was a problem reading the theme directories."
+msgstr ""
+
+msgid "There was a problem updating the settings."
+msgstr ""
+
+msgid "Unable to receive theme information."
+msgstr ""
+
+msgid "Update"
+msgstr ""
+
+msgid "Update Footer"
+msgstr ""
+
+msgid "Update Header"
+msgstr ""
+
+msgid "Update Theme Settings"
 msgstr ""

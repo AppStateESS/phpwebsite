@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-06 09:53-0500\n"
+"POT-Creation-Date: 2007-02-15 10:21-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,274 +16,206 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: class/Profile.php:88
-msgid "Read more. . ."
-msgstr ""
-
-#: class/Profile.php:89 class/Profile.php:114
-msgid "Web site"
-msgstr ""
-
-#: class/Profile.php:93 class/Forms.php:63
-msgid "Email address"
-msgstr ""
-
-#: class/Profile.php:105
-msgid "Email"
-msgstr ""
-
-#: class/Profile.php:212
-msgid "Profile not set."
-msgstr ""
-
-#: class/Profile.php:240
-msgid "Please enter a first name."
-msgstr ""
-
-#: class/Profile.php:246
-msgid "Please enter a last name."
-msgstr ""
-
-#: class/Profile.php:271
-msgid "Web site address does not appear valid."
-msgstr ""
-
-#: class/Profile.php:280
-msgid "Email address does not appear valid."
-msgstr ""
-
-#: class/Profile.php:308 class/Division.php:40
-msgid "Edit"
-msgstr ""
-
-#: class/Profile.php:314
-msgid "Are you sure you want to permanently delete this profile?"
-msgstr ""
-
-#: class/Profile.php:316
-msgid "Delete"
-msgstr ""
-
-#: class/Profiler.php:46
-msgid "Edit profile"
-msgstr ""
-
-#: class/Profiler.php:81
-msgid "Please create a profile in this category."
-msgstr ""
-
-#: class/Profiler.php:117 class/Profiler.php:204
-msgid "Create New Profile"
-msgstr ""
-
-#: class/Profiler.php:122 class/Profiler.php:202
-msgid "Update Profile"
-msgstr ""
-
-#: class/Profiler.php:134
-msgid "Current Profiles"
-msgstr ""
-
-#: class/Profiler.php:139
-msgid "Divisions"
-msgstr ""
-
-#: class/Profiler.php:153 class/Profiler.php:171
-msgid "There is a problem with this Profiler division."
-msgstr ""
-
-#: class/Profiler.php:190
-msgid "You recently posted this identical profile."
-msgstr ""
-
-#: class/Profiler.php:191
-msgid "Ignoring the repeat."
-msgstr ""
-
-#: class/Profiler.php:212
-msgid "Sorry"
-msgstr ""
-
-#: class/Profiler.php:213
-msgid "An error occurred when saving your profile."
-msgstr ""
-
-#: class/Profiler.php:215
-msgid "Success"
-msgstr ""
-
-#: class/Profiler.php:217
-msgid "Profile saved successfully."
-msgstr ""
-
-#: class/Profiler.php:219
-msgid "Profile saved for approval."
-msgstr ""
-
-#: class/Profiler.php:227 class/Profiler.php:267
-msgid "Settings"
-msgstr ""
-
-#: class/Profiler.php:239
-msgid "Uh oh"
-msgstr ""
-
-#: class/Profiler.php:240
-msgid "There was a problem saving your settings."
-msgstr ""
-
-#: class/Profiler.php:242
-msgid "Setting saved"
-msgstr ""
-
-#: class/Profiler.php:243
-msgid "Go back to the Settings page."
-msgstr ""
-
-#: class/Profiler.php:264
-msgid "New"
-msgstr ""
-
-#: class/Profiler.php:265
-msgid "List"
-msgstr ""
-
-#: class/Profiler.php:266
-msgid "Division"
-msgstr ""
-
-#: class/Forms.php:37
-msgid "Please make a profile division type first."
-msgstr ""
-
-#: class/Forms.php:44
-msgid "First name"
-msgstr ""
-
-#: class/Forms.php:47
-msgid "Last name"
-msgstr ""
-
-#: class/Forms.php:50
-msgid "Full story"
-msgstr ""
-
-#: class/Forms.php:56
-msgid "Caption"
-msgstr ""
-
-#: class/Forms.php:60
-msgid "Profile type"
-msgstr ""
-
-#: class/Forms.php:67
-msgid "Web site address"
-msgstr ""
-
-#: class/Forms.php:72
-msgid "Update profile"
-msgstr ""
-
-#: class/Forms.php:74
-msgid "Create profile"
-msgstr ""
-
-#: class/Forms.php:86
-msgid "Large photo"
-msgstr ""
-
-#: class/Forms.php:87
-msgid "Medium photo"
-msgstr ""
-
-#: class/Forms.php:88
-msgid "Small photo"
-msgstr ""
-
-#: class/Forms.php:109
-msgid "Last Name"
-msgstr ""
-
-#: class/Forms.php:110
-msgid "First Name"
-msgstr ""
-
-#: class/Forms.php:111
-msgid "Type"
-msgstr ""
-
-#: class/Forms.php:112
-msgid "Submission Date"
-msgstr ""
-
-#: class/Forms.php:113 class/Forms.php:162
 msgid "Action"
 msgstr ""
 
-#: class/Forms.php:139
-msgid "Number of profiles"
-msgstr ""
-
-#: class/Forms.php:143
-msgid "Enable profile homepage"
-msgstr ""
-
-#: class/Forms.php:145
-msgid "Save settings"
-msgstr ""
-
-#: class/Forms.php:158
 msgid "Add division"
 msgstr ""
 
-#: class/Forms.php:161
-msgid "Title"
+msgid "An error occurred when saving your profile."
 msgstr ""
 
-#: class/Forms.php:163
-msgid "Division ID"
+msgid "Are you sure you want to permanently delete this profile?"
 msgstr ""
 
-#: class/Forms.php:182
-msgid "Update Division"
-msgstr ""
-
-#: class/Forms.php:184
-msgid "Create Division"
-msgstr ""
-
-#: class/Forms.php:187
-msgid "Save"
-msgstr ""
-
-#: class/Forms.php:189
-msgid "Division title"
-msgstr ""
-
-#: class/Forms.php:191
 msgid "Cancel"
 msgstr ""
 
-#: class/Forms.php:196
-msgid "Your title is empty or already in use. Enter another."
+msgid "Caption"
 msgstr ""
 
-#: conf/error.php:5
-msgid "Profile not found."
+msgid "Create Division"
 msgstr ""
 
-#: boost/uninstall.php:14
-msgid "Profiles table removed."
+msgid "Create New Profile"
 msgstr ""
 
-#: boost/controlpanel.php:3
-msgid "Profiler"
+msgid "Create profile"
 msgstr ""
 
-#: boost/controlpanel.php:6
 msgid "Create profiles on individuals for display on site."
 msgstr ""
 
-#: boost/permission.php:5
+msgid "Current Profiles"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
 msgid "Delete Profiles"
+msgstr ""
+
+msgid "Division"
+msgstr ""
+
+msgid "Division ID"
+msgstr ""
+
+msgid "Division title"
+msgstr ""
+
+msgid "Divisions"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Edit profile"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Email address"
+msgstr ""
+
+msgid "Email address does not appear valid."
+msgstr ""
+
+msgid "Enable profile homepage"
+msgstr ""
+
+msgid "First Name"
+msgstr ""
+
+msgid "First name"
+msgstr ""
+
+msgid "Full story"
+msgstr ""
+
+msgid "Go back to the Settings page."
+msgstr ""
+
+msgid "Ignoring the repeat."
+msgstr ""
+
+msgid "Large photo"
+msgstr ""
+
+msgid "Last Name"
+msgstr ""
+
+msgid "Last name"
+msgstr ""
+
+msgid "List"
+msgstr ""
+
+msgid "Medium photo"
+msgstr ""
+
+msgid "New"
+msgstr ""
+
+msgid "Number of profiles"
+msgstr ""
+
+msgid "Please create a profile in this category."
+msgstr ""
+
+msgid "Please enter a first name."
+msgstr ""
+
+msgid "Please enter a last name."
+msgstr ""
+
+msgid "Please make a profile division type first."
+msgstr ""
+
+msgid "Profile not found."
+msgstr ""
+
+msgid "Profile not set."
+msgstr ""
+
+msgid "Profile saved for approval."
+msgstr ""
+
+msgid "Profile saved successfully."
+msgstr ""
+
+msgid "Profile type"
+msgstr ""
+
+msgid "Profiler"
+msgstr ""
+
+msgid "Profiles table removed."
+msgstr ""
+
+msgid "Read more. . ."
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Save settings"
+msgstr ""
+
+msgid "Setting saved"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Small photo"
+msgstr ""
+
+msgid "Sorry"
+msgstr ""
+
+msgid "Submission Date"
+msgstr ""
+
+msgid "Success"
+msgstr ""
+
+msgid "There is a problem with this Profiler division."
+msgstr ""
+
+msgid "There was a problem saving your settings."
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "Uh oh"
+msgstr ""
+
+msgid "Update Division"
+msgstr ""
+
+msgid "Update Profile"
+msgstr ""
+
+msgid "Update profile"
+msgstr ""
+
+msgid "Web site"
+msgstr ""
+
+msgid "Web site address"
+msgstr ""
+
+msgid "Web site address does not appear valid."
+msgstr ""
+
+msgid "You recently posted this identical profile."
+msgstr ""
+
+msgid "Your title is empty or already in use. Enter another."
 msgstr ""

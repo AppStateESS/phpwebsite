@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-06 09:53-0500\n"
+"POT-Creation-Date: 2007-02-15 10:20-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,566 +16,424 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: class/Action.php:17 class/Action.php:23
-msgid "Update check file not found."
-msgstr ""
-
-#: class/Action.php:27
-msgid "Local version"
-msgstr ""
-
-#: class/Action.php:29
-msgid "Current stable version"
-msgstr ""
-
-#: class/Action.php:31
-msgid "Source XML error"
-msgstr ""
-
-#: class/Action.php:39
-msgid "Changes"
-msgstr ""
-
-#: class/Action.php:41
-msgid "An update is available!"
-msgstr ""
-
-#: class/Action.php:42
-msgid "Download here"
-msgstr ""
-
-#: class/Action.php:44
-msgid "MD5 Sum"
-msgstr ""
-
-#: class/Action.php:48
-msgid "Dependencies"
-msgstr ""
-
-#: class/Action.php:49
-msgid "Module title"
-msgstr ""
-
-#: class/Action.php:50
-msgid "Version required"
-msgstr ""
-
-#: class/Action.php:51 class/Action.php:183
-msgid "Status"
-msgstr ""
-
-#: class/Action.php:57 class/Action.php:198
-msgid "Not installed"
-msgstr ""
-
-#: class/Action.php:60
-msgid "Needs upgrading"
-msgstr ""
-
-#: class/Action.php:63 class/Action.php:208
-msgid "Passed!"
-msgstr ""
-
-#: class/Action.php:69
-msgid "Download"
-msgstr ""
-
-#: class/Action.php:76
-msgid "No update required."
-msgstr ""
-
-#: class/Action.php:79 class/Boost.php:891
-msgid "Module"
-msgstr ""
-
-#: class/Action.php:108
-msgid "Updating core"
-msgstr ""
-
-#: class/Action.php:114 class/Boost.php:232
-msgid "Processing update file."
-msgstr ""
-
-#: class/Action.php:124 class/Action.php:130 class/Action.php:132
-msgid "An error occurred updating the core."
-msgstr ""
-
-#: class/Action.php:126
-msgid "Core successfully updated."
-msgstr ""
-
-#: class/Action.php:157
-msgid "This module does not have dependents."
-msgstr ""
-
-#: class/Action.php:160
 #, php-format
-msgid "%s Dependencies"
+msgid "%1$s successfully registered to %2$s."
 msgstr ""
 
-#: class/Action.php:162
-msgid "The following modules depend on this module to function:"
-msgstr ""
-
-#: class/Action.php:177
 #, php-format
-msgid "%s Module Dependencies"
+msgid "%1$s successfully unregistered from %2$s."
 msgstr ""
 
-#: class/Action.php:179
-msgid "Module Needed"
-msgstr ""
-
-#: class/Action.php:180
-msgid "Version Needed"
-msgstr ""
-
-#: class/Action.php:181
-msgid "Current Version"
-msgstr ""
-
-#: class/Action.php:182
-msgid "Module Web Site"
-msgstr ""
-
-#: class/Action.php:205
-msgid "More info"
-msgstr ""
-
-#: class/Action.php:210
-msgid "Failed"
-msgstr ""
-
-#: class/Form.php:18
-msgid "index.php?module=boost&amp;action=admin"
-msgstr ""
-
-#: class/Form.php:20
-msgid "Core Modules"
-msgstr ""
-
-#: class/Form.php:21
-msgid "Other Modules"
-msgstr ""
-
-#: class/Form.php:75 class/Form.php:150
 #, php-format
 msgid "%s - New"
 msgstr ""
 
-#: class/Form.php:78 class/Form.php:153
+#, php-format
+msgid "%s Dependencies"
+msgstr ""
+
+#, php-format
+msgid "%s Module Dependencies"
+msgstr ""
+
+msgid "About"
+msgstr ""
+
+msgid "An error occurred during registration."
+msgstr ""
+
+msgid "An error occurred updating the core."
+msgstr ""
+
+msgid "An error occurred while installing this module."
+msgstr ""
+
+#, php-format
+msgid "An error occurred while registering the %s module."
+msgstr ""
+
+#, php-format
+msgid "An error occurred while unregistering the %s module."
+msgstr ""
+
+msgid "An error occurred while unregistering."
+msgstr ""
+
+msgid "An import error occurred."
+msgstr ""
+
+msgid "An update is available!"
+msgstr ""
+
+msgid ""
+"Are you sure you want to uninstall this module? All data will be deleted."
+msgstr ""
+
+msgid "Boost"
+msgstr ""
+
+msgid "Boost allows the installation and upgrading of modules."
+msgstr ""
+
+msgid "Boost requires updating! You should do so before any other module!"
+msgstr ""
+
+msgid "Changes"
+msgstr ""
+
 msgid "Check"
 msgstr ""
 
-#: class/Form.php:89 class/Form.php:177
-msgid "Update"
+msgid "Check all"
 msgstr ""
 
-#: class/Form.php:92 class/Form.php:165 class/Form.php:180
-msgid "Missing dependency"
+msgid "Check your logs for more information."
 msgstr ""
 
-#: class/Form.php:98 class/Form.php:212
-msgid "None"
+msgid "Continue installation..."
 msgstr ""
 
-#: class/Form.php:109
-msgid "Module Title"
+msgid "Copying configuration files."
 msgstr ""
 
-#: class/Form.php:111
-msgid "More information"
+#, php-format
+msgid "Copying directory %1$s to %2$s"
 msgstr ""
 
-#: class/Form.php:112
+msgid "Copying javascript directories."
+msgstr ""
+
+msgid "Copying source image directory for module."
+msgstr ""
+
+msgid "Copying template files."
+msgstr ""
+
+msgid "Core Modules"
+msgstr ""
+
+msgid "Core successfully updated."
+msgstr ""
+
+msgid "Created directory"
+msgstr ""
+
+msgid "Creating files directory for module."
+msgstr ""
+
+msgid "Creating image directory for module."
+msgstr ""
+
+msgid "Creating module image directory."
+msgstr ""
+
+msgid "Current Version"
+msgstr ""
+
+msgid "Current stable version"
+msgstr ""
+
 msgid "Current version"
 msgstr ""
 
-#: class/Form.php:115
+msgid "Database import failed."
+msgstr ""
+
+msgid "Depended upon"
+msgstr ""
+
+msgid "Dependencies"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Download here"
+msgstr ""
+
+msgid "Failed"
+msgstr ""
+
+msgid "Failed installation of module."
+msgstr ""
+
+msgid "Failed to copy file to local directory."
+msgstr ""
+
+msgid "Failed upgrade of module."
+msgstr ""
+
+msgid "Failure to remove directory."
+msgstr ""
+
+msgid "Finished uninstalling module!"
+msgstr ""
+
+msgid "Import successful."
+msgstr ""
+
+msgid "Importing SQL install file."
+msgstr ""
+
+msgid "Importing SQL uninstall file."
+msgstr ""
+
+msgid "Install"
+msgstr ""
+
+msgid "Installation complete!"
+msgstr ""
+
+msgid "Installing"
+msgstr ""
+
+msgid "Key unregistration successful."
+msgstr ""
+
+msgid "Latest version"
+msgstr ""
+
+msgid "Local version"
+msgstr ""
+
+msgid "MD5 Sum"
+msgstr ""
+
+msgid "Missing dependency"
+msgstr ""
+
+msgid "Module"
+msgstr ""
+
+msgid "Module Needed"
+msgstr ""
+
+msgid "Module Title"
+msgstr ""
+
+msgid "Module Web Site"
+msgstr ""
+
+msgid "Module does not require updating."
+msgstr ""
+
+msgid "Module is missing register file."
+msgstr ""
+
+msgid "Module is missing register function."
+msgstr ""
+
+msgid "Module is not installed."
+msgstr ""
+
+msgid "Module title"
+msgstr ""
+
+msgid "Module's settings could not be removed. See your error log."
+msgstr ""
+
+msgid "Module's settings removed successfully."
+msgstr ""
+
+msgid "Modules have not been set."
+msgstr ""
+
+msgid "More info"
+msgstr ""
+
+msgid "More information"
+msgstr ""
+
+msgid "Needs upgrading"
+msgstr ""
+
+msgid "No installation file found."
+msgstr ""
+
+msgid "No modules available."
+msgstr ""
+
+msgid "No uninstall file found."
+msgstr ""
+
+msgid "No update file found."
+msgstr ""
+
+msgid "No update required."
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Not installed"
+msgstr ""
+
+msgid "Object sent to boost was not of the PHPWS_Module class."
+msgstr ""
+
+msgid "Other Modules"
+msgstr ""
+
+msgid "Passed!"
+msgstr ""
+
+msgid "Permission Help"
+msgstr ""
+
+msgid "Please check your error logs."
+msgstr ""
+
+msgid "Processing installation file."
+msgstr ""
+
+msgid "Processing uninstall file."
+msgstr ""
+
+msgid "Processing update file."
+msgstr ""
+
+msgid "Registered to Key."
+msgstr ""
+
+msgid "Registering module to core."
+msgstr ""
+
+msgid "Registering other modules to this module."
+msgstr ""
+
+msgid "Registering this module to other modules."
+msgstr ""
+
+msgid "Registration successful."
+msgstr ""
+
+#, php-format
+msgid "Removing directory %s"
+msgstr ""
+
+msgid "Return to Boost"
+msgstr ""
+
+msgid "Some key unregistrations were unsuccessful. Check your logs."
+msgstr ""
+
+msgid "Source XML error"
+msgstr ""
+
+msgid "Source image directory copied successfully."
+msgstr ""
+
+msgid "Source image directory failed to copy."
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "The About file is missing for this module."
+msgstr ""
+
+msgid "The following directories are not writable:"
+msgstr ""
+
+msgid "The following directories need to be created:"
+msgstr ""
+
+msgid "The following modules depend on this module to function:"
+msgstr ""
+
+msgid "There was a problem in the installation file:"
+msgstr ""
+
+msgid "There was a problem in the update file:"
+msgstr ""
+
+msgid "This module does not have dependents."
+msgstr ""
+
+#, php-format
+msgid "This module is depended upon by: %s"
+msgstr ""
+
+msgid "Unable to locate SQL import file."
+msgstr ""
+
+msgid "Unable to make a backup of a local module file."
+msgstr ""
+
+#, php-format
+msgid "Unable to remove directory %s"
+msgstr ""
+
+msgid "Unable to update branch."
+msgstr ""
+
+msgid "Uninstall"
+msgstr ""
+
+msgid "Uninstall SQL not found."
+msgstr ""
+
+msgid "Uninstall file not found."
+msgstr ""
+
+#, php-format
+msgid "Uninstall function \"%s\" was not found."
+msgstr ""
+
+msgid "Uninstalling"
+msgstr ""
+
+msgid "Unregistering module from Boost was successful."
+msgstr ""
+
+msgid "Unregistering module from core."
+msgstr ""
+
+msgid "Unregistering other modules from this module."
+msgstr ""
+
+msgid "Unregistering this module from other modules."
+msgstr ""
+
+msgid "Update"
+msgstr ""
+
+msgid "Update check file not found."
+msgstr ""
+
+msgid "Update complete!"
+msgstr ""
+
+msgid "Update not completed."
+msgstr ""
+
+msgid "Updating"
+msgstr ""
+
+#, php-format
+msgid "Updating branch %s"
+msgstr ""
+
+msgid "Updating core"
+msgstr ""
+
+msgid "Version Needed"
+msgstr ""
+
+msgid "Version required"
+msgstr ""
+
 msgid ""
 "WARNING: Only deities can uninstall core modules. Doing so may corrupt your "
 "installation!"
 msgstr ""
 
-#: class/Form.php:119
-msgid "No modules available."
-msgstr ""
-
-#: class/Form.php:162
-msgid "Install"
-msgstr ""
-
-#: class/Form.php:175
-msgid "Boost requires updating! You should do so before any other module!"
-msgstr ""
-
-#: class/Form.php:189
-#, php-format
-msgid "This module is depended upon by: %s"
-msgstr ""
-
-#: class/Form.php:190
-msgid "Depended upon"
-msgstr ""
-
-#: class/Form.php:193
-msgid ""
-"Are you sure you want to uninstall this module? All data will be deleted."
-msgstr ""
-
-#: class/Form.php:195
-msgid "Uninstall"
-msgstr ""
-
-#: class/Form.php:205
-msgid "About"
-msgstr ""
-
-#: class/Form.php:219
-msgid "Check all"
-msgstr ""
-
-#: class/Form.php:221
-msgid "Latest version"
-msgstr ""
-
-#: class/Boost.php:121
-msgid "Installing"
-msgstr ""
-
-#: class/Boost.php:124
-msgid "Importing SQL install file."
-msgstr ""
-
-#: class/Boost.php:130
-msgid "Database import failed."
-msgstr ""
-
-#: class/Boost.php:131 class/Boost.php:273
-msgid "An import error occurred."
-msgstr ""
-
-#: class/Boost.php:132 class/Boost.php:274 class/Boost.php:606
-#: class/Boost.php:638
-msgid "Check your logs for more information."
-msgstr ""
-
-#: class/Boost.php:135 class/Boost.php:277
-msgid "Import successful."
-msgstr ""
-
-#: class/Boost.php:161 class/Boost.php:306
-msgid "There was a problem in the installation file:"
-msgstr ""
-
-#: class/Boost.php:177 class/Boost.php:179
-msgid "Continue installation..."
-msgstr ""
-
-#: class/Boost.php:181 class/Boost.php:184
-msgid "Installation complete!"
-msgstr ""
-
-#: class/Boost.php:196
-msgid "No installation file found."
-msgstr ""
-
-#: class/Boost.php:207
-msgid "Processing installation file."
-msgstr ""
-
-#: class/Boost.php:221
-msgid "No update file found."
-msgstr ""
-
-#: class/Boost.php:260
-msgid "Uninstalling"
-msgstr ""
-
-#: class/Boost.php:265
-msgid "Uninstall SQL not found."
-msgstr ""
-
-#: class/Boost.php:267
-msgid "Importing SQL uninstall file."
-msgstr ""
-
-#: class/Boost.php:291
-msgid "Finished uninstalling module!"
-msgstr ""
-
-#: class/Boost.php:344
-msgid "Uninstall file not found."
-msgstr ""
-
-#: class/Boost.php:345
-msgid "No uninstall file found."
-msgstr ""
-
-#: class/Boost.php:356
-msgid "Processing uninstall file."
-msgstr ""
-
-#: class/Boost.php:360
-#, php-format
-msgid "Uninstall function \"%s\" was not found."
-msgstr ""
-
-#: class/Boost.php:375
-msgid "Module is not installed."
-msgstr ""
-
-#: class/Boost.php:382
-msgid "Module does not require updating."
-msgstr ""
-
-#: class/Boost.php:398
-msgid "Updating"
-msgstr ""
-
-#: class/Boost.php:417
-msgid "There was a problem in the update file:"
-msgstr ""
-
-#: class/Boost.php:425
-msgid "Update complete!"
-msgstr ""
-
-#: class/Boost.php:428
-msgid "Update not completed."
-msgstr ""
-
-#: class/Boost.php:445
-msgid "Copying configuration files."
-msgstr ""
-
-#: class/Boost.php:446 class/Boost.php:456 class/Boost.php:466
-#: class/Boost.php:498
-#, php-format
-msgid "Copying directory %1$s to %2$s"
-msgstr ""
-
-#: class/Boost.php:455
-msgid "Copying javascript directories."
-msgstr ""
-
-#: class/Boost.php:465
-msgid "Copying template files."
-msgstr ""
-
-#: class/Boost.php:472
-msgid "Creating module image directory."
-msgstr ""
-
-#: class/Boost.php:473 class/Boost.php:481 class/Boost.php:489
-msgid "Created directory"
-msgstr ""
-
-#: class/Boost.php:480
-msgid "Creating files directory for module."
-msgstr ""
-
-#: class/Boost.php:490
-msgid "Creating image directory for module."
-msgstr ""
-
-#: class/Boost.php:500
-msgid "Copying source image directory for module."
-msgstr ""
-
-#: class/Boost.php:504
-msgid "Source image directory copied successfully."
-msgstr ""
-
-#: class/Boost.php:506
-msgid "Source image directory failed to copy."
-msgstr ""
-
-#: class/Boost.php:520 class/Boost.php:521 class/Boost.php:530
-#: class/Boost.php:531 class/Boost.php:540 class/Boost.php:541
-#: class/Boost.php:550 class/Boost.php:551 class/Boost.php:560
-#: class/Boost.php:561 class/Boost.php:570 class/Boost.php:571
-#, php-format
-msgid "Removing directory %s"
-msgstr ""
-
-#: class/Boost.php:523 class/Boost.php:533 class/Boost.php:543
-#: class/Boost.php:553 class/Boost.php:563 class/Boost.php:573
-msgid "Failure to remove directory."
-msgstr ""
-
-#: class/Boost.php:524 class/Boost.php:534 class/Boost.php:544
-#: class/Boost.php:554 class/Boost.php:564 class/Boost.php:574
-#, php-format
-msgid "Unable to remove directory %s"
-msgstr ""
-
-#: class/Boost.php:592
-msgid "Registering module to core."
-msgstr ""
-
-#: class/Boost.php:605
-msgid "An error occurred during registration."
-msgstr ""
-
-#: class/Boost.php:608
-msgid "Registration successful."
-msgstr ""
-
-#: class/Boost.php:619
-msgid "Registered to Key."
-msgstr ""
-
-#: class/Boost.php:629
-msgid "Unregistering module from core."
-msgstr ""
-
-#: class/Boost.php:637
-msgid "An error occurred while unregistering."
-msgstr ""
-
-#: class/Boost.php:640
-msgid "Unregistering module from Boost was successful."
-msgstr ""
-
-#: class/Boost.php:645
-msgid "Module's settings could not be removed. See your error log."
-msgstr ""
-
-#: class/Boost.php:647
-msgid "Module's settings removed successfully."
-msgstr ""
-
-#: class/Boost.php:651
-msgid "Key unregistration successful."
-msgstr ""
-
-#: class/Boost.php:653
-msgid "Some key unregistrations were unsuccessful. Check your logs."
-msgstr ""
-
-#: class/Boost.php:751
-#, php-format
-msgid "An error occurred while registering the %s module."
-msgstr ""
-
-#: class/Boost.php:756
-#, php-format
-msgid "%1$s successfully registered to %2$s."
-msgstr ""
-
-#: class/Boost.php:780
-#, php-format
-msgid "An error occurred while unregistering the %s module."
-msgstr ""
-
-#: class/Boost.php:785
-#, php-format
-msgid "%1$s successfully unregistered from %2$s."
-msgstr ""
-
-#: class/Boost.php:795
-msgid "Registering this module to other modules."
-msgstr ""
-
-#: class/Boost.php:813
-msgid "Unregistering this module from other modules."
-msgstr ""
-
-#: class/Boost.php:835
-msgid "Registering other modules to this module."
-msgstr ""
-
-#: class/Boost.php:851
-msgid "Unregistering other modules from this module."
-msgstr ""
-
-#: class/Boost.php:904
-msgid "The About file is missing for this module."
-msgstr ""
-
-#: class/Boost.php:933
-msgid "The following directories need to be created:"
-msgstr ""
-
-#: class/Boost.php:939
-msgid "The following directories are not writable:"
-msgstr ""
-
-#: class/Boost.php:941
 msgid "You will need to change the permissions."
 msgstr ""
 
-#: class/Boost.php:942
-msgid "Permission Help"
-msgstr ""
-
-#: class/Boost.php:949
 #, php-format
 msgid "Your logs/%s file must be readable and writable."
 msgstr ""
 
-#: class/Boost.php:1117
-#, php-format
-msgid "Updating branch %s"
-msgstr ""
-
-#: class/Boost.php:1122
-msgid "Unable to update branch."
-msgstr ""
-
-#: conf/error.php:7
-msgid "Object sent to boost was not of the PHPWS_Module class."
-msgstr ""
-
-#: conf/error.php:8
-msgid "Unable to locate SQL import file."
-msgstr ""
-
-#: conf/error.php:9
-msgid "Modules have not been set."
-msgstr ""
-
-#: conf/error.php:10
-msgid "Failed installation of module."
-msgstr ""
-
-#: conf/error.php:11
-msgid "Failed upgrade of module."
-msgstr ""
-
-#: conf/error.php:12
-msgid "Module is missing register file."
-msgstr ""
-
-#: conf/error.php:13
-msgid "Module is missing register function."
-msgstr ""
-
-#: conf/error.php:14
-msgid "Unable to make a backup of a local module file."
-msgstr ""
-
-#: conf/error.php:15
-msgid "Failed to copy file to local directory."
-msgstr ""
-
-#: boost/controlpanel.php:8
-msgid "Boost"
-msgstr ""
-
-#: boost/controlpanel.php:11
-msgid "Boost allows the installation and upgrading of modules."
-msgstr ""
-
-#: index.php:37 index.php:52 index.php:65 index.php:70 index.php:75
-msgid "Return to Boost"
-msgstr ""
-
-#: index.php:57
-msgid "An error occurred while installing this module."
-msgstr ""
-
-#: index.php:58
-msgid "Please check your error logs."
+msgid "index.php?module=boost&amp;action=admin"
 msgstr ""

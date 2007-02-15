@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-06 09:53-0500\n"
+"POT-Creation-Date: 2007-02-15 10:21-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,77 +16,58 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: class/Action.php:14 class/Action.php:39
-msgid "Title"
+msgid "Add item"
 msgstr ""
 
-#: class/Action.php:15 class/Action.php:40
-msgid "Module"
+msgid "Bank not created."
 msgstr ""
 
-#: class/Action.php:17
+msgid "Build Related"
+msgstr ""
+
+msgid "Change Related Title"
+msgstr ""
+
 msgid "Currently, nothing is associated with this item."
 msgstr ""
 
-#: class/Action.php:18
+msgid "Edit"
+msgstr ""
+
+msgid "Friend not created."
+msgstr ""
+
 msgid ""
 "If you want to add related information to this item, click the \"Build "
 "Related\" link."
 msgstr ""
 
-#: class/Action.php:25
-msgid "Build Related"
-msgstr ""
-
-#: class/Action.php:45
-msgid "What do you want the title to be?"
-msgstr ""
-
-#: class/Action.php:57
-msgid "Add item"
-msgstr ""
-
-#: class/Action.php:62
-msgid "This item is related to the following:"
-msgstr ""
-
-#: class/Action.php:73
-msgid "Quit"
-msgstr ""
-
-#: class/Action.php:82
-msgid "Save"
-msgstr ""
-
-#: class/Action.php:100
-msgid "View other items to add them to the list."
-msgstr ""
-
-#: class/Action.php:124
-msgid "Edit"
-msgstr ""
-
-#: class/Action.php:190 class/Action.php:214 class/Action.php:228
-#: class/Action.php:242 class/Action.php:256
-msgid "Bank not created."
-msgstr ""
-
-#: class/Action.php:194
-msgid "Friend not created."
-msgstr ""
-
-#: class/Action.php:218 class/Action.php:232 class/Action.php:246
 msgid "Missing position."
 msgstr ""
 
-#: class/Action.php:263
+msgid "Module"
+msgstr ""
+
+msgid "Quit"
+msgstr ""
+
+msgid "Related Topics"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
 msgid "The Related module encountered a database error."
 msgstr ""
 
-#: class/Action.php:272
-msgid "Change Related Title"
+msgid "This item is related to the following:"
 msgstr ""
 
-#: conf/config.php:3
-msgid "Related Topics"
+msgid "Title"
+msgstr ""
+
+msgid "View other items to add them to the list."
+msgstr ""
+
+msgid "What do you want the title to be?"
 msgstr ""
