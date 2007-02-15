@@ -84,11 +84,15 @@ Open the list and make sure the file list looks correct. Now run
 xgettext against it. Make sure you run the list from where it was
 created. If you don't the file locations will be incorrect.
 
-xgettext -n --language=PHP --keyword=_ -f translate_list.txt
+xgettext -s --no-location --language=PHP --keyword=_ -f translate_list.txt
 
 A couple of switches were added here:
 
--n              : puts line numbers next to the translations
+-s              : sorts the translation alphabetically 
+--no-location   : doesn't list the file and line number of the
+                  translation. Although harder to locate, easier for
+                  translators to see updates via diffs. The
+                  alternative and default value is -n or --add_location.
 --language= PHP : tells xgettext that we are parsing a php
                   file. Gettext can usually detect but might as well
                   force.
