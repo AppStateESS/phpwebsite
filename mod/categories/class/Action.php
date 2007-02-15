@@ -14,8 +14,10 @@ class Categories_Action {
 
     function admin()
     {
+        translate('categories');
         if (!Current_User::authorized('categories')) {
             Current_User::disallow(_('You are not authorized to administrate categories.'));
+            translate();
             return;
         }
 
@@ -31,9 +33,9 @@ class Categories_Action {
         }
 
         if (isset($_REQUEST['category_id'])) {
-            $category = & new Category($_REQUEST['category_id']);
+            $category = new Category($_REQUEST['category_id']);
         } else {
-            $category = & new Category;
+            $category = new Category;
         }
 
         switch ($subaction) {
@@ -112,6 +114,7 @@ class Categories_Action {
         $panel->setContent($final);
         $finalPanel = $panel->display();
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
+        translate();
     }
 
     function sendMessage($message, $command)
@@ -160,6 +163,7 @@ class Categories_Action {
 
     function postCategory(&$category)
     {
+        translate('categories');
         PHPWS_Core::initCoreClass('File.php');
 
         if (empty($_POST['title'])) {
@@ -181,7 +185,7 @@ class Categories_Action {
             $category->icon = 0;
         }
 
-
+        translate();
         if (isset($errors)) {
             return $errors;
         } else {
@@ -192,6 +196,7 @@ class Categories_Action {
 
     function &cpanel()
     {
+        translate('categories');
         Layout::addStyle('categories');
 
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
@@ -204,21 +209,23 @@ class Categories_Action {
         $tabs['new'] = $newCommand;
         $tabs['list'] = $listCommand;
 
-        $panel = & new PHPWS_Panel('categories');
+        $panel = new PHPWS_Panel('categories');
         $panel->quickSetTabs($tabs);
         $panel->enableSecure();
         $panel->setModule('categories');
         $panel->setPanel('panel.tpl');
+        translate();
         return $panel;
     }
   
 
     function edit(&$category, $errors=NULL)
     {
+        translate('categories');
         $template = NULL;
         PHPWS_Core::initCoreClass('Editor.php');
 
-        $form = & new PHPWS_Form('edit_form');
+        $form = new PHPWS_Form('edit_form');
         $form->add('module', 'hidden', 'categories');
         $form->add('action', 'hidden', 'admin');                     
         $form->add('subaction', 'hidden', 'postCategory');
@@ -268,14 +275,14 @@ class Categories_Action {
 
         $form->mergeTemplate($template);
         $final_template = $form->getTemplate();
-
+        translate();
         return PHPWS_Template::process($final_template, 'categories', 'forms/edit.tpl');
     }
 
     function getManager($image_id, $image_name)
     {
         PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
-        $manager = & new FC_Image_Manager($image_id);
+        $manager = new FC_Image_Manager($image_id);
         $manager->setMaxWidth(CAT_MAX_ICON_WIDTH);
         $manager->setMaxHeight(CAT_MAX_ICON_HEIGHT);
         $manager->setMaxSize(CAT_MAX_ICON_SIZE);
@@ -288,13 +295,14 @@ class Categories_Action {
 
     function category_list()
     {
+        translate('categories');
         PHPWS_Core::initCoreClass('DBPager.php');
 
         $pageTags['TITLE_LABEL'] = _('Title');
         $pageTags['PARENT_LABEL'] = _('Parent');
         $pageTags['ACTION_LABEL'] = _('Action');
 
-        $pager = & new DBPager('categories', 'Category');
+        $pager = new DBPager('categories', 'Category');
         $pager->setModule('categories');
         $pager->setDefaultLimit(10);
         $pager->setTemplate('category_list.tpl');
@@ -304,11 +312,10 @@ class Categories_Action {
         $content = $pager->get();
 
         if (empty($content)) {
-            return _('No categories found.');
+            $content = _('No categories found.');
         }
-        else {
-            return $content;
-        }
+        translate();        
+        return $content;
     }
 
     /**
@@ -316,11 +323,12 @@ class Categories_Action {
      */
     function viewCategory($id=NULL, $module=NULL) 
     {
+        translate('categories');
         $oMod = $category = NULL;
 
         if (!empty($module)) {
             PHPWS_Core::initCoreClass('Module.php');
-            $oMod = & new PHPWS_Module($module);
+            $oMod = new PHPWS_Module($module);
         } 
 
         if (!isset($id)) {
@@ -330,7 +338,7 @@ class Categories_Action {
                 $template['TITLE'] .= ' - ' . $oMod->getProperName();
             }
         } else {
-            $category = & new Category((int)$id);
+            $category = new Category((int)$id);
             $template['CATEGORY_DESCRIPTION'] = $category->getDescription();
             if ($category->icon) {
                 $icon = $category->getIcon();
@@ -357,13 +365,16 @@ class Categories_Action {
         $template['FAMILY'] = $family_list;
         $template['CONTENT'] = &$content;
 
-        return  PHPWS_Template::process($template, 'categories', 'view_categories.tpl');
+        translate();
+        return PHPWS_Template::process($template, 'categories', 'view_categories.tpl');
     }
 
 
     function moduleSelect($category=NULL)
     {
-        $db = & new PHPWS_DB('category_items');
+        translate('categories');
+
+        $db = new PHPWS_DB('category_items');
 
         if (isset($category)) {
             $db->addWhere('cat_id', $category);
@@ -381,7 +392,7 @@ class Categories_Action {
             $mod_list[0] = sprintf(_('All - %s items'), $all_no);
         }
 
-        $form = & new PHPWS_Form;
+        $form = new PHPWS_Form;
         $form->setMethod('get');
         $form->addHidden('module', 'categories');
         $form->addHidden('action', 'view');
@@ -398,6 +409,7 @@ class Categories_Action {
 
         $form->addSubmit('submit', _('View Module'));
 
+        translate();
         return $form->getTemplate();
     }
 
@@ -407,11 +419,11 @@ class Categories_Action {
     function getAllItems(&$category, $module) 
     {
         PHPWS_Core::initCoreClass('DBPager.php');
-
+        translate('categories');
         $pageTags['TITLE_LABEL'] = _('Item Title');
         $pageTags['CREATE_DATE_LABEL'] = _('Creation date');
 
-        $pager = & new DBPager('phpws_key', 'Key');
+        $pager = new DBPager('phpws_key', 'Key');
         $pager->addWhere('category_items.cat_id', $category->id);
         $pager->addWhere('category_items.module', $module);
         
@@ -427,26 +439,26 @@ class Categories_Action {
         $content = $pager->get();
 
         if (empty($content)) {
-            return _('No items found in this category.');
+            $content =  _('No items found in this category.');
         }
-        else {
-            return $content;
-        }
-    }
 
+        translate();
+        return $content;
+    }
+    
     function addCategoryItem($cat_id, $key_id)
     {
-        $db = & new PHPWS_DB('category_items');
+        $db = new PHPWS_DB('category_items');
         $db->addValue('cat_id', (int)$cat_id);
         $db->addValue('key_id', (int)$key_id);
-        $key = & new Key((int)$key_id);
+        $key = new Key((int)$key_id);
         $db->addValue('module', $key->module);
         return $db->insert();
     }
 
     function removeCategoryItem($cat_id, $key_id)
     {
-        $db = & new PHPWS_DB('category_items');
+        $db = new PHPWS_DB('category_items');
         $db->addWhere('cat_id', (int)$cat_id);
         $db->addWhere('key_id', (int)$key_id);
         return $db->delete();
@@ -504,7 +516,7 @@ class Categories_Action {
      */
     function categoryPopup()
     {
-        $key = & new Key((int)$_REQUEST['key_id']);
+        $key = new Key((int)$_REQUEST['key_id']);
         $content = Categories::showForm($key, TRUE);
         return $content;
     }

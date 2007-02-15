@@ -14,11 +14,14 @@
 2 November 2006
 + Set the default listing to create date descending
 
-Version 2.1.5
+Version 2.1.6
 ----------------------------------------------------------------------
 27 September 2006
 + Retitled and fixed key unregistration function
 
+
+Version 2.1.5
+----------------------------------------------------------------------
 30 August 2006
 + Removed unused register code
 

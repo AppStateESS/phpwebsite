@@ -4,7 +4,7 @@
  * @version $Id
  */
 
-
+translate('categories');
 $link[] = array('label'       => _('Categories'),
                 'restricted'  => TRUE,
                 'url'         =>
@@ -13,4 +13,5 @@ $link[] = array('label'       => _('Categories'),
                 'image'       => 'categories.png',
                 'tab'         => 'content'
                 );
+translate();
 ?>

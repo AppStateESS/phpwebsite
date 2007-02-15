@@ -92,6 +92,7 @@ class Category{
         static $parentTitle = array();
 
         if ($this->parent == 0) {
+            translate('categories');
             return _('Top Level');
         }
 
@@ -193,6 +194,7 @@ class Category{
 
     function getRowTags()
     {
+        translate('categories');
         $vars['module']      = 'categories';
         $vars['action']      = 'admin';
         $vars['category_id'] = $this->getId();
@@ -215,7 +217,7 @@ class Category{
         $tpl['DESCRIPTION'] = $this->getDescription();
         $tpl['PARENT'] = $this->getParentTitle();
         $tpl['TITLE'] = $this->getViewLink();
-
+        translate();
         return $tpl;
     }
 }

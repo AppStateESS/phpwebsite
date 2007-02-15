@@ -17,6 +17,8 @@ class Categories{
 
     function show()
     {
+        translate('categories');
+
         if (!Current_User::allow('categories')) {
             return;
         }
@@ -50,11 +52,14 @@ class Categories{
                 Layout::add($content, 'categories', 'Admin_Menu');
             }
         }
+        translate();
     }
 
 
     function showForm(&$key, $popup=FALSE)
     {
+        translate('categories');
+
         $full_list = $add_list = Categories::getCategories('list');
         if (!empty($full_list)) {
             $full_list = array_reverse($full_list, true);
@@ -73,7 +78,7 @@ class Categories{
             }
         }
 
-        $form = & new PHPWS_Form('category_list');
+        $form = new PHPWS_Form('category_list');
         $form->addHidden('module', 'categories');
         $form->addHidden('action', 'admin');
         $form->addHidden('subaction', 'post_item');
@@ -118,6 +123,8 @@ class Categories{
         } else {
             $content = PHPWS_Template::process($template, 'categories', 'menu_bar.tpl');
         }
+
+        translate();
         return $content;
     }
 
@@ -138,9 +145,10 @@ class Categories{
      */
     function _makeLink($list, $module)
     {
+        translate('categories');
         $vars['action'] = 'view';
 
-        $db = & new PHPWS_DB('phpws_key');
+        $db = new PHPWS_DB('phpws_key');
 
         if (!empty($module)) {
             $vars['ref_mod'] = $module;
@@ -178,13 +186,14 @@ class Categories{
         }
 
         $links = PHPWS_Template::process($template, 'categories', 'simple_list.tpl');
+        translate();
         return $links;
     }
 
 
     function _getItemsCategories($key)
     {
-        $db = & new PHPWS_DB('categories');
+        $db = new PHPWS_DB('categories');
         $db->addWhere('category_items.key_id', $key->id);
         $db->addWhere('id', 'category_items.cat_id');
         $cat_result = $db->getObjects('Category');
@@ -205,7 +214,7 @@ class Categories{
         if (empty($key)) {
             $key = Key::getCurrent();
         } elseif (is_numeric($key)) {
-            $key = & new Key($key);
+            $key = new Key($key);
         }
 
         if (!Key::checkKey($key, FALSE)) {
@@ -234,7 +243,7 @@ class Categories{
 
         if ($mode == 'extended') {
             if ($category->parent) {
-                $parent = & new Category($category->parent);
+                $parent = new Category($category->parent);
                 $link[] = Categories::_createExtendedLink($parent, 'extended');
             }
         }
@@ -248,7 +257,7 @@ class Categories{
      */
     function getCurrent($key_id)
     {
-        $db = & new PHPWS_DB('category_items');
+        $db = new PHPWS_DB('category_items');
         $db->addWhere('key_id', (int)$key_id);
         $db->addColumn('cat_id');
         return $db->select('col');
@@ -257,7 +266,7 @@ class Categories{
 
     function getCategories($mode='sorted', $drop=NULL)
     {
-        $db = & new PHPWS_DB('categories');
+        $db = new PHPWS_DB('categories');
 
         switch ($mode){
         case 'sorted':
@@ -266,7 +275,7 @@ class Categories{
 
             $cats = $db->getObjects('Category');
 
-            $uncat = & new Category(0);
+            $uncat = new Category(0);
 
             if (empty($cats)) {
                 $cats[] = $uncat;
@@ -336,18 +345,19 @@ class Categories{
 
     function getTopLevel()
     {
-        $db = & new PHPWS_DB('categories');
+        $db = new PHPWS_DB('categories');
         $db->addWhere('parent', 0);
         return $db->getObjects('Category');
     }
 
     function cookieCrumb($category=NULL, $module=NULL)
     {
+        translate('categories');
         Layout::addStyle('categories');
 
         $top_level = Categories::getTopLevel();
 
-        $tpl = & new PHPWS_Template('categories');
+        $tpl = new PHPWS_Template('categories');
         $tpl->setFile('list.tpl');
 
         if (!empty($top_level)) {
@@ -386,13 +396,15 @@ class Categories{
         }
 
         $content = $tpl->get();
+        translate();
         return $content;
     }
 
     function getModuleListing($cat_id=NULL)
     {
+        translate('categories');
         PHPWS_Core::initCoreClass('Module.php');
-        $db = & new PHPWS_DB('category_items');
+        $db = new PHPWS_DB('category_items');
         if (isset($cat_id)) {
             $db->addWhere('cat_id' , (int)$cat_id);
         }
@@ -423,8 +435,10 @@ class Categories{
             foreach ($mod_count as $mod_title => $items) {
                 $mod_list[$mod_title] = sprintf(_('%s - %s item(s)'), $mod_names[$mod_title], $mod_count[$mod_title]);
             }
+            translate();
             return $mod_list;
         } else {
+            translate();
             return NULL;
         }
     }
@@ -434,13 +448,14 @@ class Categories{
         $module_list = Categories::getModuleListing($category->getId());
 
         if (empty($module_list)) {
+            translate('categories');
             return _('No items available in this category.');
         }
 
         $vars['action'] = 'view';
         $vars['id'] = $category->getId();
 
-        $tpl = & new PHPWS_Template('categories');
+        $tpl = new PHPWS_Template('categories');
         $tpl->setFile('module_list.tpl');
 
         $tpl->setCurrentBlock('module-row');
@@ -454,7 +469,7 @@ class Categories{
 
     function removeModule($module)
     {
-        $db = & new PHPWS_DB('category_items');
+        $db = new PHPWS_DB('category_items');
         $db->addWhere('module', $module);
         $db->delete();
     }
