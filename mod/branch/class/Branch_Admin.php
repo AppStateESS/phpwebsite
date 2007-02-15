@@ -72,9 +72,9 @@ class Branch_Admin {
         }
 
         if (isset($_REQUEST['branch_id'])) {
-            $this->branch = & new Branch($_REQUEST['branch_id']);
+            $this->branch = new Branch($_REQUEST['branch_id']);
         } else {
-            $this->branch = & new Branch;
+            $this->branch = new Branch;
         }
     }
 
@@ -98,6 +98,7 @@ class Branch_Admin {
      */
     function direct()
     {
+        translate('branch');
         if (!@$command = $_REQUEST['command']) {
             $command = $this->panel->getCurrentTab();
         }
@@ -211,11 +212,12 @@ class Branch_Admin {
             $this->listBranches();
             break;
         }// end of the command switch
-
+        translate();
     }
 
     function install_branch_core()
     {
+        translate('branch');
         PHPWS_Core::initCoreClass('File.php');
         $content = array();
 
@@ -289,12 +291,13 @@ class Branch_Admin {
         $vars['command']   = 'core_module_installation';
         $vars['branch_id'] = $this->branch->id;
         $this->content[] = PHPWS_Text::secureLink($link, 'branch', $vars);
+        translate();
         return true;
     }
 
     function create_core()
     {
-        $db = & new PHPWS_DB;
+        $db = new PHPWS_DB;
         $loaddb = $db->loadDB($this->getDSN(), $this->dbprefix);
         if (PEAR::isError($loaddb)) {
             return $loaddb;
@@ -346,6 +349,7 @@ class Branch_Admin {
 
     function post_basic()
     {
+        translate('branch');
         PHPWS_Core::initCoreClass('File.php');
         $result = true;
 
@@ -382,19 +386,19 @@ class Branch_Admin {
                 }
             }
         } elseif (!is_writable($this->branch->directory)) {
-                $this->message[] = _('Directory exists but is not writable.');
-                $result = false;
+            $this->message[] = _('Directory exists but is not writable.');
+            $result = false;
         } elseif(!$this->branch->id && PHPWS_File::listDirectories($this->branch->directory)) {
-                $this->message[] = _('Directory exists but already contains files.');
-                $result = false;
+            $this->message[] = _('Directory exists but already contains files.');
+            $result = false;
         }
 
         if (empty($_POST['branch_name'])) {
             $this->message[] = _('You must name your branch.');
             $result = false;
         } elseif (!$this->branch->setBranchName($_POST['branch_name'])) {
-                $this->message[] = _('You may not use that branch name.');
-                $result = false;
+            $this->message[] = _('You may not use that branch name.');
+            $result = false;
         }
 
         if (empty($_POST['url'])) {
@@ -410,13 +414,14 @@ class Branch_Admin {
         } else {
             $this->branch->site_hash = $_POST['site_hash'];
         }
-
+        translate();
         return $result;
     }
 
 
     function core_module_installation()
     {
+        translate('branch');
         if (!isset($_SESSION['Boost'])){
             $modules = PHPWS_Core::coreModList();
             $_SESSION['Boost'] = new PHPWS_Boost;
@@ -439,6 +444,7 @@ class Branch_Admin {
         }
 
         PHPWS_DB::loadDB();
+        translate();
         return $_SESSION['Boost']->isFinished();
     }
 
@@ -472,46 +478,48 @@ class Branch_Admin {
      * set, it returns null
      */
     function &getDSN($dbname=true)
-    {
-        if (isset($this->dbuser)) {
-            $dsn =  sprintf('%s://%s:%s@%s',
-                            $this->dbtype,
-                            $this->dbuser,
-                            $this->dbpass,
-                            $this->dbhost);
+        {
+            if (isset($this->dbuser)) {
+                $dsn =  sprintf('%s://%s:%s@%s',
+                                $this->dbtype,
+                                $this->dbuser,
+                                $this->dbpass,
+                                $this->dbhost);
             
-            if ($this->dbport) {
-                $dsn .= ':' . $this->dbport;
+                if ($this->dbport) {
+                    $dsn .= ':' . $this->dbport;
+                }
+
+                if ($dbname) {
+                    $dsn .= '/' . $this->dbname;
+                }
+                $GLOBALS['Branch_DSN'] = $dsn;
+                return $dsn;
+            } else {
+                return null;
             }
 
-            if ($dbname) {
-                $dsn .= '/' . $this->dbname;
-            }
-            $GLOBALS['Branch_DSN'] = $dsn;
-            return $dsn;
-        } else {
-            return null;
         }
-
-    }
 
     function cpanel()
     {
-            PHPWS_Core::initModClass('controlpanel', 'Panel.php');
-            $newLink = 'index.php?module=branch&amp;command=new';
-            $newCommand = array ('title'=>_('New'), 'link'=> $newLink);
+        translate('branch');
+        PHPWS_Core::initModClass('controlpanel', 'Panel.php');
+        $newLink = 'index.php?module=branch&amp;command=new';
+        $newCommand = array ('title'=>_('New'), 'link'=> $newLink);
         
-            $listLink = 'index.php?module=branch&amp;command=list';
-            $listCommand = array ('title'=>_('List'), 'link'=> $listLink);
+        $listLink = 'index.php?module=branch&amp;command=list';
+        $listCommand = array ('title'=>_('List'), 'link'=> $listLink);
 
-            $tabs['new'] = &$newCommand;
-            $tabs['list'] = &$listCommand;
+        $tabs['new'] = &$newCommand;
+        $tabs['list'] = &$listCommand;
 
-            $panel = & new PHPWS_Panel('branch');
-            $panel->quickSetTabs($tabs);
-            $panel->enableSecure();
-            $panel->setModule('branch');
-            $this->panel = &$panel;
+        $panel = new PHPWS_Panel('branch');
+        $panel->quickSetTabs($tabs);
+        $panel->enableSecure();
+        $panel->setModule('branch');
+        $this->panel = &$panel;
+        translate();
     }
     
     /**
@@ -559,6 +567,7 @@ class Branch_Admin {
      */
     function testDB()
     {
+        translate('branch');
         $connection = $this->checkConnection();
         PHPWS_DB::loadDB();
         switch ($connection) {
@@ -603,13 +612,15 @@ class Branch_Admin {
             $this->edit_db();
             break;
         }
+        translate();
     }
 
     function edit_basic()
     {
+        translate('branch');
         $branch = & $this->branch;
 
-        $form = & new PHPWS_Form('branch-form');
+        $form = new PHPWS_Form('branch-form');
         $form->addHidden('module', 'branch');
         $form->addHidden('command', 'post_basic');
 
@@ -639,6 +650,7 @@ class Branch_Admin {
         $template = $form->getTemplate();
         $template['BRANCH_LEGEND'] = _('Branch specifications');
         $this->content = PHPWS_Template::process($template, 'branch', 'edit_basic.tpl');
+        translate();
     }
 
     /**
@@ -646,8 +658,9 @@ class Branch_Admin {
      */
     function edit_db()
     {
+        translate('branch');
         $this->title = _('Setup branch database');
-        $form = & new PHPWS_Form('branch-form');
+        $form = new PHPWS_Form('branch-form');
         $form->addHidden('module', 'branch');
         $form->addHidden('command', 'post_db');
 
@@ -687,7 +700,7 @@ class Branch_Admin {
         $template = $form->getTemplate();
 
         $this->content = PHPWS_Template::process($template, 'branch', 'edit_db.tpl');
-
+        translate();
     }
 
     function checkConnection()
@@ -744,6 +757,7 @@ class Branch_Admin {
      */
     function post_db()
     {
+        translate('branch');
         $result = true;
         $this->dbuser   = $_POST['dbuser'];
         $this->dbpass   = $_POST['dbpass'];
@@ -772,7 +786,7 @@ class Branch_Admin {
             $content[] = _('Table prefix must be alphanumeric characters or underscores only');
             $result = false;
         }
-
+        translate();
         return $result;
     }
 
@@ -828,6 +842,7 @@ class Branch_Admin {
      */
     function edit_modules()
     {
+        translate('branch');
         PHPWS_Core::initCoreClass('File.php');
         $this->title = sprintf(_('Module access for "%s"'), $this->branch->branch_name);
 
@@ -850,7 +865,7 @@ class Branch_Admin {
 
         unset($dir_mods[array_search('branch', $dir_mods)]);
         sort($dir_mods);
-        $form = & new PHPWS_Form('module_list');
+        $form = new PHPWS_Form('module_list');
         $form->useRowRepeat();
 
         $form->addHidden('module', 'branch');
@@ -872,7 +887,8 @@ class Branch_Admin {
         $template['DIRECTIONS'] = _('Unchecked modules cannot be installed on this branch.');
 
         $content = PHPWS_Template::process($template, 'branch', 'module_list.tpl');
-        $this->content = $content;
+        $this->content = & $content;
+        translate();
     }
 
     /**
@@ -880,13 +896,14 @@ class Branch_Admin {
      */
     function listBranches()
     {
+        translate('branch');
         $page_tags['BRANCH_NAME_LABEL'] = _('Branch name');
         $page_tags['DIRECTORY_LABEL']   = _('Directory');
         $page_tags['URL_LABEL']         = _('Url');
         $page_tags['ACTION_LABEL']      = _('Action');
 
         PHPWS_Core::initCoreClass('DBPager.php');
-        $pager = & new DBPager('branch_sites', 'Branch');
+        $pager = new DBPager('branch_sites', 'Branch');
         $pager->setModule('branch');
         $pager->setTemplate('branch_list.tpl');
         $pager->addPageTags($page_tags);
@@ -894,11 +911,12 @@ class Branch_Admin {
         $pager->addRowTags('getTpl');
         $this->title = _('Branch List');
         $this->content = $pager->get();
+        translate();
     }
 
     function saveBranchModules()
     {
-        $db = & new PHPWS_DB('branch_mod_limit');
+        $db = new PHPWS_DB('branch_mod_limit');
         $db->addWhere('branch_id', (int)$_POST['branch_id']);
         $db->delete();
         $db->reset();
@@ -922,7 +940,7 @@ class Branch_Admin {
 
     function getBranches($load_db_info=false)
     {
-        $db = & new PHPWS_DB('branch_sites');
+        $db = new PHPWS_DB('branch_sites');
         $result = $db->getObjects('Branch');
         if (PEAR::isError($result) || !$load_db_info || empty($result)) {
             return $result;

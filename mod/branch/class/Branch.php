@@ -50,7 +50,7 @@ class Branch {
 
     function init()
     {
-        $db = & new PHPWS_DB('branch_sites');
+        $db = new PHPWS_DB('branch_sites');
         $result = $db->loadObject($this);
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
@@ -61,7 +61,7 @@ class Branch {
     function setBranchName($branch_name)
     {
         $this->branch_name = $branch_name;
-        $db = & new PHPWS_DB('branch_sites');
+        $db = new PHPWS_DB('branch_sites');
         $db->addWhere('branch_name', $branch_name);
         $db->addWhere('id', $this->id, '!=');
         $result = $db->select();
@@ -81,7 +81,7 @@ class Branch {
             $this->directory .= '/';
         }
 
-        $db = & new PHPWS_DB('branch_sites');
+        $db = new PHPWS_DB('branch_sites');
         return $db->saveObject($this);
     }
 
@@ -149,6 +149,7 @@ class Branch {
      */
     function getTpl()
     {
+        translate('branch');
         $tpl['URL'] = $this->getUrl();
 
         $links[] = PHPWS_Text::secureLink(_('Edit'), 'branch', 
@@ -165,7 +166,7 @@ class Branch {
                                           array('command'=>'branch_modules', 'branch_id'=>$this->id));
 
         $tpl['ACTION'] = implode(' | ', $links);
-
+        translate();
         return $tpl;
     }
 
@@ -343,7 +344,7 @@ class Branch {
      */
     function delete()
     {
-        $db = & new PHPWS_DB('branch_sites');
+        $db = new PHPWS_DB('branch_sites');
         $db->addWhere('id', $this->id);
         $result = $db->delete();
         if (PEAR::isError($result)) {

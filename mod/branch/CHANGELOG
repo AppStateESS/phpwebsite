@@ -1,9 +1,27 @@
+Version 1.0.4
+---------------------------------------------------------
+15 February 2007
++ Updated locale files.
++ Added translate functions.
+
 13 February 2007
 + Removed language setting from default config.php template
 + Raised core dependency
 
 8 December 2006
 + Added missing cache_directory value for config.tpl.
+
+Version 1.0.3
+----------------------------------------------------------
+16 November 2006
++ Fixed bug #1590935 - Copy admin directory to branch.
++ Changed the config file to not create a table prefix line if no
+  prefix exists.
++ Fixed bug that copying corrupt prefix data to the branch object.
++ Updated files : templates/config.tpl
++ Added captcha information to branch config template and removed
+  file types include.
+
 
 Version 1.0.2
 ----------------------------------------------------------
