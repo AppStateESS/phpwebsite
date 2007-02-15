@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-15 10:10-0500\n"
+"POT-Creation-Date: 2007-02-15 10:21-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,8 +16,73 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+msgid " (system wide)"
+msgstr ""
+
+msgid " mode."
+msgstr ""
+
+#, php-format
+msgid "\"%s\" permission column created."
+msgstr ""
+
+msgid "\"Thank you\" message is not formatted correctly."
+msgstr ""
+
+#, php-format
+msgid "%1$s successfully registered to %2$s."
+msgstr ""
+
+#, php-format
+msgid "%1$s successfully unregistered from %2$s."
+msgstr ""
+
+#, php-format
+msgid "%d hours"
+msgstr ""
+
+#, php-format
+msgid "%d hours, "
+msgstr ""
+
+#, php-format
+msgid "%d minutes"
+msgstr ""
+
+#, php-format
+msgid "%d minutes, "
+msgstr ""
+
+#, php-format
+msgid "%d seconds"
+msgstr ""
+
+#, php-format
+msgid "%s - %s item(s)"
+msgstr ""
+
+#, php-format
+msgid "%s - New"
+msgstr ""
+
+#, php-format
+msgid "%s Dependencies"
+msgstr ""
+
+#, php-format
+msgid "%s Module Dependencies"
+msgstr ""
+
+#, php-format
+msgid "%s comments"
+msgstr ""
+
 #, php-format
 msgid "%s days ago"
+msgstr ""
+
+#, php-format
+msgid "%s demographic field registered."
 msgstr ""
 
 #, php-format
@@ -29,27 +94,337 @@ msgid "%s mins ago"
 msgstr ""
 
 #, php-format
+msgid "%s module icon"
+msgstr ""
+
+#, php-format
 msgid "%s weeks ago"
+msgstr ""
+
+#, php-format
+msgid "%s's Website"
+msgstr ""
+
+#, php-format
+msgid "%s: Module listing"
+msgstr ""
+
+#, php-format
+msgid "%s: Module listing for %s"
+msgstr ""
+
+msgid "+ Styles per page added."
+msgstr ""
+
+msgid "- Referrer age -"
+msgstr ""
+
+msgid "- Search again -"
+msgstr ""
+
+msgid "-- Use default style --"
+msgstr ""
+
+msgid "-- Use server's time zone --"
+msgstr ""
+
+msgid ".htaccess File Options"
+msgstr ""
+
+msgid ".htaccess file is missing."
+msgstr ""
+
+msgid ".htaccess file written."
+msgstr ""
+
+msgid "1 comment"
 msgstr ""
 
 msgid "1 day ago"
 msgstr ""
 
+msgid "1 day old"
+msgstr ""
+
 msgid "1 hour ago"
+msgstr ""
+
+msgid "1 month old"
 msgstr ""
 
 msgid "1 week ago"
 msgstr ""
 
+msgid "1 week old"
+msgstr ""
+
+msgid "1 year old"
+msgstr ""
+
+msgid "1st"
+msgstr ""
+
+msgid "2 weeks old"
+msgstr ""
+
+msgid "2nd"
+msgstr ""
+
+msgid "3 days old"
+msgstr ""
+
+msgid "3 months old"
+msgstr ""
+
+msgid "3rd"
+msgstr ""
+
+msgid "4th"
+msgstr ""
+
+msgid "A deity can not make themselves mortal."
+msgstr ""
+
+msgid "A file was uploaded but no short description was given."
+msgstr ""
+
+msgid "A framework for creating modules."
+msgstr ""
+
+msgid "A group with this name already exists."
+msgstr ""
+
+msgid "A problem occured with your submission. Please try again later."
+msgstr ""
+
+msgid "A problem occurred during the update."
+msgstr ""
+
+msgid "A problem occurred during your search."
+msgstr ""
+
+msgid ""
+"A problem occurred when accessing user information. Please try again later."
+msgstr ""
+
+msgid "A problem occurred when saving your link."
+msgstr ""
+
+msgid "A problem occurred when trying to approve a web page."
+msgstr ""
+
+msgid "A problem occurred when trying to delete your webpage."
+msgstr ""
+
+msgid "A problem occurred when trying to disapprove this entry."
+msgstr ""
+
+msgid "A problem occurred when trying to process the restoration list."
+msgstr ""
+
+msgid "A problem occurred when trying to register this module to My Page."
+msgstr ""
+
+msgid "A problem occurred when trying to save your comment."
+msgstr ""
+
+msgid "A serious error occurred. Please check your error.log."
+msgstr ""
+
+msgid "A short description was added but no file was uploaded."
+msgstr ""
+
+msgid "A version of this entry is awaiting approval."
+msgstr ""
+
+msgid "About"
+msgstr ""
+
+msgid "Access"
+msgstr ""
+
+msgid "Access Denied!"
+msgstr ""
+
+msgid "Access denied function was called without a proper error initialized."
+msgstr ""
+
+msgid "Access has saved your shortcut."
+msgstr ""
+
+msgid "Access needs a higher administrator's attention before you may use it."
+msgstr ""
+
+msgid "Access tables removed."
+msgstr ""
+
+msgid "Account created successfully!"
+msgstr ""
+
 msgid "Action"
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "Activate"
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid "Active?"
+msgstr ""
+
+msgid "Activity"
 msgstr ""
 
 msgid "Add"
 msgstr ""
 
+msgid "Add / Edit Groups"
+msgstr ""
+
+msgid "Add Category"
+msgstr ""
+
+msgid "Add Feed"
+msgstr ""
+
+msgid "Add Group"
+msgstr ""
+
+msgid "Add Member"
+msgstr ""
+
+msgid "Add Other Link"
+msgstr ""
+
+msgid "Add Page"
+msgstr ""
+
+msgid "Add Script File"
+msgstr ""
+
+msgid "Add Tab"
+msgstr ""
+
+msgid "Add User"
+msgstr ""
+
+msgid "Add album"
+msgstr ""
+
+msgid "Add allowed IP"
+msgstr ""
+
+msgid "Add block here"
+msgstr ""
+
+msgid "Add category"
+msgstr ""
+
+msgid "Add denied IP"
+msgstr ""
+
+msgid "Add division"
+msgstr ""
+
+msgid "Add entry"
+msgstr ""
+
+msgid "Add event"
+msgstr ""
+
+msgid "Add feed"
+msgstr ""
+
+msgid "Add item"
+msgstr ""
+
+msgid "Add link"
+msgstr ""
+
+msgid "Add new blog"
+msgstr ""
+
+msgid "Add new page"
+msgstr ""
+
+msgid "Add other link"
+msgstr ""
+
+#, php-format
+msgid "Add page: %s"
+msgstr ""
+
+msgid "Add permissions to search."
+msgstr ""
+
+msgid "Add photo"
+msgstr ""
+
+msgid "Add this user to this group."
+msgstr ""
+
+msgid "Add to menu"
+msgstr ""
+
+msgid "Address"
+msgstr ""
+
+msgid "Adjust Boxes"
+msgstr ""
+
+msgid "Admin"
+msgstr ""
+
+msgid "Admin Email (comma delimited)"
+msgstr ""
+
+msgid "Admin mode off"
+msgstr ""
+
+msgid "Admin mode on"
+msgstr ""
+
+msgid "Administrate RSS Feeds"
+msgstr ""
+
+msgid "Administrate and see information on searches."
+msgstr ""
+
+#, php-format
+msgid "Administrate page: %s"
+msgstr ""
+
+msgid "Administrate your site's categories."
+msgstr ""
+
+msgid "Administration"
+msgstr ""
+
+msgid "Administrative options"
+msgstr ""
+
+msgid "Administrative panel for setting RSS feeds."
+msgstr ""
+
+msgid "Administrator"
+msgstr ""
+
+msgid "Advanced Search"
+msgstr ""
+
 msgid ""
 "After you finish installing your modules in Boost, you should make your "
 "config and template directories non-writable."
+msgstr ""
+
+msgid "Album Contains No Photos"
+msgstr ""
+
+msgid "Album name"
 msgstr ""
 
 msgid "Albums converted and keyed."
@@ -58,10 +433,166 @@ msgstr ""
 msgid "All"
 msgstr ""
 
+#, php-format
+msgid "All - %s items"
+msgstr ""
+
+msgid "All Categories"
+msgstr ""
+
+msgid "All Form Generator static tables removed."
+msgstr ""
+
+msgid "All categories assigned."
+msgstr ""
+
+msgid "All day"
+msgstr ""
+
+msgid "All day event"
+msgstr ""
+
+#, php-format
+msgid "All day event, %s"
+msgstr ""
+
 msgid "All done!"
 msgstr ""
 
+msgid "All modules"
+msgstr ""
+
+msgid ""
+"All of the options and values were not set.  Check the box below to use your "
+"options as values."
+msgstr ""
+
+msgid "All of the values were not set. You must fill out all of them."
+msgstr ""
+
+msgid "All photos"
+msgstr ""
+
+msgid "All users"
+msgstr ""
+
+msgid "All visitors"
+msgstr ""
+
+msgid "Allow"
+msgstr ""
+
+msgid "Allow all"
+msgstr ""
+
+msgid "Allow anonymous comments"
+msgstr ""
+
+msgid "Allow anonymous naming"
+msgstr ""
+
+msgid "Allow anonymous submissions"
+msgstr ""
+
+msgid "Allow comments"
+msgstr ""
+
+msgid "Allow comments by default"
+msgstr ""
+
+msgid "Allow file update"
+msgstr ""
+
+msgid "Allow images in signatures"
+msgstr ""
+
+msgid "Allow indexing"
+msgstr ""
+
+msgid "Allow link following"
+msgstr ""
+
+msgid "Allow manipulation of the control panel."
+msgstr ""
+
+msgid "Allow multiple submissions"
+msgstr ""
+
+msgid "Allow personal schedules"
+msgstr ""
+
+msgid "Allow public event submissions"
+msgstr ""
+
+msgid "Allow user avatars"
+msgstr ""
+
+msgid "Allow user name searching"
+msgstr ""
+
+msgid "Allow user signatures"
+msgstr ""
+
+msgid "Allow users to edit their form data"
+msgstr ""
+
+msgid "Allowed IPs"
+msgstr ""
+
+msgid "Alternate text"
+msgstr ""
+
+msgid "An administrator will need to approve it before it is functional."
+msgstr ""
+
+msgid "An administrator will review your submission. Thank you."
+msgstr ""
+
+msgid "An error occurred during registration."
+msgstr ""
+
+msgid "An error occurred registering to RSS module."
+msgstr ""
+
+msgid "An error occurred trying to unregister this module from RSSFeeds."
+msgstr ""
+
+msgid "An error occurred updating the core."
+msgstr ""
+
 msgid "An error occurred when accessing the conversion database."
+msgstr ""
+
+msgid "An error occurred when accessing the database."
+msgstr ""
+
+msgid "An error occurred when deleting your shortcut."
+msgstr ""
+
+msgid "An error occurred when saving your channel."
+msgstr ""
+
+msgid "An error occurred when saving your event."
+msgstr ""
+
+msgid "An error occurred when saving your profile."
+msgstr ""
+
+msgid "An error occurred when saving your schedule."
+msgstr ""
+
+msgid "An error occurred when saving your version."
+msgstr ""
+
+msgid ""
+"An error occurred when trying to access the allowed and denied ip records. "
+"Please check your logs."
+msgstr ""
+
+msgid "An error occurred when trying to access your RSS channels."
+msgstr ""
+
+msgid "An error occurred when trying to connect to the database."
 msgstr ""
 
 msgid "An error occurred when trying to copy your mod_phatform_checkbox table."
@@ -91,6 +622,41 @@ msgstr ""
 msgid "An error occurred when trying to copy your mod_photoalbum_photos table."
 msgstr ""
 
+msgid ""
+"An error occurred when trying to create your account. Please try again later."
+msgstr ""
+
+msgid "An error occurred when trying to delete a document."
+msgstr ""
+
+msgid "An error occurred when trying to remove comments."
+msgstr ""
+
+msgid "An error occurred when trying to repeat an event."
+msgstr ""
+
+msgid "An error occurred when trying to save a controlpanel tab."
+msgstr ""
+
+msgid "An error occurred when trying to save the group."
+msgstr ""
+
+msgid "An error occurred when trying to save the module list."
+msgstr ""
+
+msgid ""
+"An error occurred when trying to save your entry. Please check your logs."
+msgstr ""
+
+msgid "An error occurred when trying to save your image."
+msgstr ""
+
+msgid "An error occurred when updating your .htaccess file."
+msgstr ""
+
+msgid "An error occurred while accessing the Control Panel."
+msgstr ""
+
 msgid "An error occurred while accessing your mod_blockmaker_data table."
 msgstr ""
 
@@ -103,13 +669,60 @@ msgstr ""
 msgid "An error occurred while converting your old documents."
 msgstr ""
 
+msgid "An error occurred while installing this module."
+msgstr ""
+
+#, php-format
+msgid "An error occurred while registering the %s module."
+msgstr ""
+
+msgid "An error occurred while saving your branch."
+msgstr ""
+
+msgid "An error occurred while saving your document."
+msgstr ""
+
+msgid "An error occurred while saving your page. Please check the error log."
+msgstr ""
+
 msgid "An error occurred while trying to install your modules."
+msgstr ""
+
+#, php-format
+msgid "An error occurred while unregistering the %s module."
+msgstr ""
+
+msgid "An error occurred while unregistering."
+msgstr ""
+
+msgid "An error occurred."
+msgstr ""
+
+msgid "An error occurred. Please check your logs."
+msgstr ""
+
+msgid "An error occurred:"
+msgstr ""
+
+msgid "An import error occurred."
 msgstr ""
 
 msgid "An unrecoverable error occurred. Check your logs."
 msgstr ""
 
+msgid "An update is available!"
+msgstr ""
+
 msgid "Announcements is not installed in this database."
+msgstr ""
+
+msgid "Anonymous"
+msgstr ""
+
+msgid "Anonymous submissions with editable form data are not allowed."
+msgstr ""
+
+msgid "Anonymous users only"
 msgstr ""
 
 msgid "Any content modules using FatCat should be converted BEFORE continuing."
@@ -120,16 +733,258 @@ msgid ""
 "continuing.."
 msgstr ""
 
+msgid "Apply changes to repeats?"
+msgstr ""
+
+#, php-format
+msgid "Approval (%s)"
+msgstr ""
+
+msgid "Approval list"
+msgstr ""
+
+msgid "Approval view"
+msgstr ""
+
+#, php-format
+msgid "Approval(%s)"
+msgstr ""
+
+msgid "Approve"
+msgstr ""
+
 msgid "Approved"
+msgstr ""
+
+msgid "Archive"
+msgstr ""
+
+msgid "Archive file was not found."
+msgstr ""
+
+msgid "Archive forms"
+msgstr ""
+
+msgid "Archived Form"
+msgstr ""
+
+msgid "Are you SURE you want to remove this group?"
+msgstr ""
+
+msgid ""
+"Are you certain you want this user to have complete control of this web site?"
+msgstr ""
+
+#, php-format
+msgid "Are you certain you want to delete the user &quot;%s&quot; permanently?"
+msgstr ""
+
+msgid "Are you sure you want to deify this user?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to delete &quot;%s&quot and all its pages?"
+msgstr ""
+
+msgid "Are you sure you want to delete the checked ips?"
+msgstr ""
+
+msgid "Are you sure you want to delete the checked item(s)?"
+msgstr ""
+
+msgid "Are you sure you want to delete the checked shortcuts?"
+msgstr ""
+
+msgid "Are you sure you want to delete the checked web pages?"
+msgstr ""
+
+msgid "Are you sure you want to delete this RSS feed?"
+msgstr ""
+
+msgid ""
+"Are you sure you want to delete this album and all the photos associated "
+"with it?"
+msgstr ""
+
+msgid "Are you sure you want to delete this category?"
+msgstr ""
+
+msgid "Are you sure you want to delete this comment?"
+msgstr ""
+
+msgid "Are you sure you want to delete this document?"
+msgstr ""
+
+msgid "Are you sure you want to delete this entry?"
+msgstr ""
+
+msgid "Are you sure you want to delete this image?"
+msgstr ""
+
+msgid "Are you sure you want to delete this link: "
+msgstr ""
+
+msgid "Are you sure you want to delete this menu and all its links."
+msgstr ""
+
+msgid "Are you sure you want to delete this photo?"
+msgstr ""
+
+msgid "Are you sure you want to delete this schedule?"
+msgstr ""
+
+msgid "Are you sure you want to delete this shortcut?"
+msgstr ""
+
+msgid "Are you sure you want to drop this authorization script?"
+msgstr ""
+
+msgid ""
+"Are you sure you want to join ALL the pages into just one page? Warning: You "
+"will lose all page backups!"
+msgstr ""
+
+msgid "Are you sure you want to join this page to the next?"
+msgstr ""
+
+msgid "Are you sure you want to permanently delete this block?"
+msgstr ""
+
+msgid "Are you sure you want to permanently delete this blog entry?"
+msgstr ""
+
+msgid "Are you sure you want to permanently delete this event?"
+msgstr ""
+
+msgid "Are you sure you want to permanently delete this image?"
+msgstr ""
+
+msgid "Are you sure you want to permanently delete this profile?"
+msgstr ""
+
+msgid "Are you sure you want to remove deity status?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you want to remove this %s element?"
+msgstr ""
+
+msgid "Are you sure you want to remove this block from this page?"
+msgstr ""
+
+msgid "Are you sure you want to remove this page?"
+msgstr ""
+
+msgid "Are you sure you want to remove this version?"
+msgstr ""
+
+msgid ""
+"Are you sure you want to uninstall this module? All data will be deleted."
+msgstr ""
+
+msgid "Are you sure you want to unpin this menu from all pages?"
+msgstr ""
+
+msgid "Are you sure you want to unpin this menu from this page?"
+msgstr ""
+
+#, php-format
+msgid ""
+"Are you sure you wish to delete the archive with filename \"<b>%s</b>\"?"
+msgstr ""
+
+#, php-format
+msgid "Are you sure you wish to delete the export with filename \"<b>%s</b>\"?"
+msgstr ""
+
+msgid ""
+"Are you sure you wish to delete the following forms?  All data associated "
+"with these forms will be lost!"
+msgstr ""
+
+msgid "Are you sure you wish to view this archive?"
 msgstr ""
 
 msgid "Array contained no values."
 msgstr ""
 
+msgid "Associate note"
+msgstr ""
+
+#, php-format
+msgid "Associate note to item: %s"
+msgstr ""
+
+msgid "Associated Notes"
+msgstr ""
+
+msgid "Associated Text"
+msgstr ""
+
 msgid "Attempted cross-site scripting attack."
 msgstr ""
 
+msgid "Attempted to approve a webpage."
+msgstr ""
+
+msgid "Author"
+msgstr ""
+
+msgid "Authorization"
+msgstr ""
+
+msgid "Authorization Scripts"
+msgstr ""
+
+msgid "Authorization updated."
+msgstr ""
+
+msgid "Authorization/Settings"
+msgstr ""
+
 msgid "Automatic mode converts the data without your interaction."
+msgstr ""
+
+msgid "Availability"
+msgstr ""
+
+msgid "Available categories"
+msgstr ""
+
+msgid "Available styles"
+msgstr ""
+
+msgid "Avatar"
+msgstr ""
+
+msgid "Back"
+msgstr ""
+
+msgid "Back to Album"
+msgstr ""
+
+msgid "Back to album"
+msgstr ""
+
+msgid "Back&nbsp;to&nbsp;Album"
+msgstr ""
+
+msgid "Bad keyword. Use only alphanumeric characters and underlines."
+msgstr ""
+
+msgid "Bank not created."
+msgstr ""
+
+msgid "Barn"
+msgstr ""
+
+msgid "Base document directory"
+msgstr ""
+
+msgid "Batch Add"
+msgstr ""
+
+msgid "Batch Add Photos"
 msgstr ""
 
 msgid "Batch previously run."
@@ -138,7 +993,16 @@ msgstr ""
 msgid "Begin Installation"
 msgstr ""
 
+msgid "Beginning of each month"
+msgstr ""
+
 msgid "Blank module title sent to get function."
+msgstr ""
+
+msgid "Block"
+msgstr ""
+
+msgid "Block deleted."
 msgstr ""
 
 msgid "Block is already converted."
@@ -147,7 +1011,49 @@ msgstr ""
 msgid "Block is not installed."
 msgstr ""
 
+msgid "Block list"
+msgstr ""
+
+msgid "Block pinned"
+msgstr ""
+
+msgid "Block saved"
+msgstr ""
+
+msgid "Block tables removed."
+msgstr ""
+
+msgid "Block unpinned"
+msgstr ""
+
 msgid "Blocks converted."
+msgstr ""
+
+msgid "Blog Archive"
+msgstr ""
+
+msgid "Blog Entries Awaiting Approval"
+msgstr ""
+
+msgid "Blog Restore"
+msgstr ""
+
+msgid "Blog Settings"
+msgstr ""
+
+msgid "Blog entry approved."
+msgstr ""
+
+msgid "Blog entry deleted."
+msgstr ""
+
+msgid "Blog entry disapproved."
+msgstr ""
+
+msgid "Blog entry removed."
+msgstr ""
+
+msgid "Blog entry restored."
 msgstr ""
 
 msgid "Blog has already been converted."
@@ -156,10 +1062,82 @@ msgstr ""
 msgid "Blog is not installed."
 msgstr ""
 
+msgid "Blog settings saved."
+msgstr ""
+
+msgid "Blog tables removed."
+msgstr ""
+
+msgid "Blog view limit"
+msgstr ""
+
+msgid "Boost"
+msgstr ""
+
+msgid "Boost allows the installation and upgrading of modules."
+msgstr ""
+
+msgid "Boost requires updating! You should do so before any other module!"
+msgstr ""
+
+msgid "Box In"
+msgstr ""
+
+msgid "Box Out"
+msgstr ""
+
+msgid "Box move off"
+msgstr ""
+
+msgid "Box order is out of sequence."
+msgstr ""
+
+msgid "Box positioning"
+msgstr ""
+
+msgid "Boxes"
+msgstr ""
+
+msgid "Branch"
+msgstr ""
+
+msgid "Branch List"
+msgstr ""
+
+msgid "Branch created successfully."
+msgstr ""
+
+msgid "Branch directory does not exist."
+msgstr ""
+
+msgid "Branch name"
+msgstr ""
+
+msgid "Branch specifications"
+msgstr ""
+
+msgid "Build Related"
+msgstr ""
+
+msgid "Busy"
+msgstr ""
+
+msgid "CAPTCHA use"
+msgstr ""
+
 msgid "Cache Lite is disabled."
 msgstr ""
 
 msgid "Cache Lite is enabled."
+msgstr ""
+
+msgid "Cache anonymous view"
+msgstr ""
+
+msgid "Cache month views (public only)"
+msgstr ""
+
+msgid "Calendar"
 msgstr ""
 
 msgid "Calendar has already been converted."
@@ -171,16 +1149,91 @@ msgstr ""
 msgid "Calendar is not installed."
 msgstr ""
 
+msgid "Calendar settings"
+msgstr ""
+
 msgid "Can not change name. Already in use."
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Cannot create event table."
+msgstr ""
+
+msgid "Cannot find template file."
+msgstr ""
+
+msgid "Cannot locate any menu templates. Cannot continue."
 msgstr ""
 
 msgid "Cannot read file."
 msgstr ""
 
+msgid "Caption"
+msgstr ""
+
+msgid "Categories"
+msgstr ""
+
 msgid "Categories has already been converted."
 msgstr ""
 
+msgid "Categorize"
+msgstr ""
+
+msgid "Category ID not found"
+msgstr ""
+
+msgid "Category item is missing variables."
+msgstr ""
+
+msgid "Category saved successfully."
+msgstr ""
+
+msgid "Change CSS"
+msgstr ""
+
+msgid "Change Related Title"
+msgstr ""
+
+msgid "Change Settings"
+msgstr ""
+
+msgid "Change Thumbnail"
+msgstr ""
+
+msgid "Change module settings (unrestricted only)"
+msgstr ""
+
+msgid "Change my Settings"
+msgstr ""
+
+msgid "Change schedule"
+msgstr ""
+
+msgid "Change settings"
+msgstr ""
+
+msgid "Change settings (Unrestricted only)"
+msgstr ""
+
+msgid "Change style"
+msgstr ""
+
 msgid "Change to"
+msgstr ""
+
+msgid "Changes"
+msgstr ""
+
+msgid "Channel saved."
+msgstr ""
+
+msgid "Channels"
+msgstr ""
+
+msgid "Check"
 msgstr ""
 
 msgid ""
@@ -200,6 +1253,24 @@ msgstr ""
 msgid "Check your configuration settings."
 msgstr ""
 
+msgid "Check your logs for more information."
+msgstr ""
+
+msgid "Checkbox"
+msgstr ""
+
+msgid "Checkbox Element Instructions"
+msgstr ""
+
+msgid "Choose a image first."
+msgstr ""
+
+msgid "Circle In"
+msgstr ""
+
+msgid "Circle Out"
+msgstr ""
+
 msgid "Class Name"
 msgstr ""
 
@@ -215,6 +1286,21 @@ msgstr ""
 msgid "Class not set."
 msgstr ""
 
+msgid "Clean-Up"
+msgstr ""
+
+msgid "Clear"
+msgstr ""
+
+msgid "Clear image"
+msgstr ""
+
+msgid "Click here if you are not redirected."
+msgstr ""
+
+msgid "Click here if you would prefer to edit the source event."
+msgstr ""
+
 msgid "Click on the method you wish to use."
 msgstr ""
 
@@ -224,24 +1310,121 @@ msgstr ""
 msgid "Click to continue anyway."
 msgstr ""
 
+msgid "Clip"
+msgstr ""
+
+msgid "Clip for menu"
+msgstr ""
+
+msgid "Clip word"
+msgstr ""
+
+msgid "Clipboard"
+msgstr ""
+
+msgid "Clipped words"
+msgstr ""
+
 msgid "Close"
+msgstr ""
+
+msgid "Close Window"
+msgstr ""
+
+msgid "Close window"
+msgstr ""
+
+msgid "Closest matches below."
+msgstr ""
+
+msgid "Columns"
 msgstr ""
 
 #, php-format
 msgid "Coming from: %s"
 msgstr ""
 
+msgid "Comment"
+msgstr ""
+
+msgid "Comment Settings"
+msgstr ""
+
+#, php-format
+msgid "Comment from: %s"
+msgstr ""
+
+msgid "Comment settings"
+msgstr ""
+
+msgid "Comments"
+msgstr ""
+
+msgid "Comments (if any) removed successfully"
+msgstr ""
+
+msgid "Complete"
+msgstr ""
+
+msgid "Complete the theme change"
+msgstr ""
+
+msgid "Completed"
+msgstr ""
+
+msgid "Config file created successfully."
+msgstr ""
+
+msgid "Confirm"
+msgstr ""
+
+msgid "Confirm Graphic"
+msgstr ""
+
+msgid "Confirm Theme Change"
+msgstr ""
+
+msgid "Confirm text"
+msgstr ""
+
+msgid "Confirmation email"
+msgstr ""
+
+msgid "Confirmation phrase is not correct."
+msgstr ""
+
 msgid "Connect"
+msgstr ""
+
+msgid "Connected successfully, but the database does not exist."
+msgstr ""
+
+msgid "Connected successfully, but this database already contains tables."
 msgstr ""
 
 #, php-format
 msgid "Connected to database \"%s\""
 msgstr ""
 
+msgid "Connection Port"
+msgstr ""
+
+msgid "Connection successful. Database available."
+msgstr ""
+
+msgid "Contact Email"
+msgstr ""
+
+msgid "Content"
+msgstr ""
+
 msgid "Continue"
 msgstr ""
 
 msgid "Continue conversion. . ."
+msgstr ""
+
+msgid "Continue installation..."
 msgstr ""
 
 msgid "Continue to Module Installation"
@@ -253,6 +1436,12 @@ msgstr ""
 msgid "Continue to convert menu links."
 msgstr ""
 
+msgid "Continue to install branch core"
+msgstr ""
+
+msgid "Continue..."
+msgstr ""
+
 msgid "Continue: Convert everyone."
 msgstr ""
 
@@ -260,6 +1449,38 @@ msgid "Continue: Only those logged on within 6 months."
 msgstr ""
 
 msgid "Continue: Only those logged on within the last year."
+msgstr ""
+
+msgid "Control Panel"
+msgstr ""
+
+msgid "Control Panel Administration"
+msgstr ""
+
+msgid "Control Panel links and tabs have been removed."
+msgstr ""
+
+#, php-format
+msgid "Control Panel links created for %s."
+msgstr ""
+
+#, php-format
+msgid "Control Panel tabs created for %s."
+msgstr ""
+
+msgid "Control administrative options for comments."
+msgstr ""
+
+msgid "Control the layout of your site."
+msgstr ""
+
+msgid "Controls the .htaccess file for Apache and creates shortcuts."
+msgstr ""
+
+msgid "Controls the layout and positioning of your menus."
+msgstr ""
+
+msgid "Controls the versioning settings."
 msgstr ""
 
 msgid "Conversion site"
@@ -283,7 +1504,81 @@ msgstr ""
 msgid "Converted"
 msgstr ""
 
+msgid "Copied admin file to branch."
+msgstr ""
+
+msgid "Copied config files to branch."
+msgstr ""
+
+msgid "Copied core images."
+msgstr ""
+
+msgid "Copied javascript files to branch."
+msgstr ""
+
+msgid "Copied themes to branch."
+msgstr ""
+
+msgid "Copy"
+msgstr ""
+
+msgid "Copy the text below and paste it into the text box."
+msgstr ""
+
+msgid "Copying configuration files."
+msgstr ""
+
+#, php-format
+msgid "Copying directory %1$s to %2$s"
+msgstr ""
+
+msgid "Copying javascript directories."
+msgstr ""
+
+msgid "Copying source image directory for module."
+msgstr ""
+
+msgid "Copying template files."
+msgstr ""
+
+msgid "Core Modules"
+msgstr ""
+
+msgid "Core SQL import failed."
+msgstr ""
+
+msgid "Core SQL import successful."
+msgstr ""
+
 msgid "Core installation successful."
+msgstr ""
+
+msgid "Core installed successfully. Continue to core module installation."
+msgstr ""
+
+msgid "Core successfully updated."
+msgstr ""
+
+msgid "Could not access hub database."
+msgstr ""
+
+msgid "Could not access image url."
+msgstr ""
+
+msgid "Could not connect to the database."
+msgstr ""
+
+#, php-format
+msgid "Could not create \"%s\" permission column."
+msgstr ""
+
+msgid "Could not delete file."
+msgstr ""
+
+msgid "Could not delete the element."
+msgstr ""
+
+msgid "Could not find any hub deities."
 msgstr ""
 
 #, php-format
@@ -296,6 +1591,15 @@ msgstr ""
 msgid "Could not find key unregister function."
 msgstr ""
 
+msgid "Could not find match."
+msgstr ""
+
+msgid "Could not write to directory."
+msgstr ""
+
+msgid "Create"
+msgstr ""
+
 msgid "Create Config File"
 msgstr ""
 
@@ -305,13 +1609,145 @@ msgstr ""
 msgid "Create Database"
 msgstr ""
 
+msgid "Create Division"
+msgstr ""
+
+msgid "Create Group"
+msgstr ""
+
+msgid "Create Link"
+msgstr ""
+
+msgid "Create New Menu"
+msgstr ""
+
+msgid "Create New Menus"
+msgstr ""
+
+msgid "Create New Profile"
+msgstr ""
+
+msgid "Create User"
+msgstr ""
+
+msgid "Create blocks of content."
+msgstr ""
+
+msgid "Create branch directories"
+msgstr ""
+
+msgid "Create branch information"
+msgstr ""
+
+msgid "Create event"
+msgstr ""
+
+msgid "Create events and schedules."
+msgstr ""
+
+msgid "Create first blog entry!"
+msgstr ""
+
+msgid "Create header"
+msgstr ""
+
+msgid "Create new database"
+msgstr ""
+
+msgid "Create profile"
+msgstr ""
+
+msgid "Create profiles on individuals for display on site."
+msgstr ""
+
+msgid "Create schedule"
+msgstr ""
+
+msgid "Create/Edit forms"
+msgstr ""
+
+msgid "Create/Edit public schedule"
+msgstr ""
+
+msgid "Created"
+msgstr ""
+
+msgid "Created by"
+msgstr ""
+
+msgid "Created directory"
+msgstr ""
+
+msgid "Created on"
+msgstr ""
+
+msgid "Creates web pages, articles, and the like."
+msgstr ""
+
+msgid "Creating files directory for module."
+msgstr ""
+
+msgid "Creating image directory for module."
+msgstr ""
+
+msgid "Creating module image directory."
+msgstr ""
+
+msgid "Creation Date"
+msgstr ""
+
+msgid "Creation date"
+msgstr ""
+
+msgid "Current Icon"
+msgstr ""
+
+msgid "Current Members"
+msgstr ""
+
+msgid "Current Profiles"
+msgstr ""
+
+msgid "Current Version"
+msgstr ""
+
+msgid "Current document"
+msgstr ""
+
+msgid "Current image"
+msgstr ""
+
+msgid "Current keywords"
+msgstr ""
+
 msgid "Current sessions:"
+msgstr ""
+
+msgid "Current stable version"
+msgstr ""
+
+msgid "Current version"
+msgstr ""
+
+msgid "Currently assigned"
+msgstr ""
+
+msgid "Currently, nothing is associated with this item."
 msgstr ""
 
 msgid "DB Operator:"
 msgstr ""
 
+msgid "Daily"
+msgstr ""
+
+msgid "Data was not an array."
+msgstr ""
+
 msgid "Database Help"
+msgstr ""
+
+msgid "Database Host"
 msgstr ""
 
 msgid "Database Name"
@@ -329,7 +1765,13 @@ msgstr ""
 msgid "Database columns not set."
 msgstr ""
 
+msgid "Database created successfully."
+msgstr ""
+
 msgid "Database import failed."
+msgstr ""
+
+msgid "Database information"
 msgstr ""
 
 msgid "Database name"
@@ -339,16 +1781,182 @@ msgid ""
 "Database password may contain alphanumeric characters or underscores only."
 msgstr ""
 
+msgid "Database syntax"
+msgstr ""
+
+msgid "Date Created"
+msgstr ""
+
+msgid "Date sent"
+msgstr ""
+
+msgid "Day"
+msgstr ""
+
+#, php-format
+msgid "Day %s"
+msgstr ""
+
+msgid "Day view"
+msgstr ""
+
+msgid "Deactivate"
+msgstr ""
+
 msgid "Declared classes:"
+msgstr ""
+
+msgid "Default"
+msgstr ""
+
+msgid "Default Robot Settings"
+msgstr ""
+
+msgid "Default Theme"
+msgstr ""
+
+msgid "Default document directory may not be blank"
+msgstr ""
+
+msgid "Default menu created successfully."
+msgstr ""
+
+msgid "Default order"
+msgstr ""
+
+msgid "Default public"
+msgstr ""
+
+msgid "Default public schedule set."
+msgstr ""
+
+msgid "Default view"
+msgstr ""
+
+msgid "Deity"
+msgstr ""
+
+msgid "Deity users copied to branch."
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Delete Album"
+msgstr ""
+
+msgid "Delete Album Confirmation"
+msgstr ""
+
+msgid "Delete Groups"
+msgstr ""
+
+msgid "Delete Menus"
+msgstr ""
+
+msgid "Delete Photo Confirmation"
+msgstr ""
+
+msgid "Delete Profiles"
+msgstr ""
+
+msgid "Delete Users"
+msgstr ""
+
+msgid "Delete album"
+msgstr ""
+
+msgid "Delete and close"
+msgstr ""
+
+msgid "Delete block"
+msgstr ""
+
+msgid "Delete blog"
+msgstr ""
+
+msgid "Delete categories"
+msgstr ""
+
+msgid "Delete checked"
+msgstr ""
+
+msgid "Delete comments"
+msgstr ""
+
+msgid "Delete files"
+msgstr ""
+
+msgid "Delete form confirmation"
+msgstr ""
+
+msgid "Delete form entries"
+msgstr ""
+
+msgid "Delete forms"
+msgstr ""
+
+msgid "Delete images"
+msgstr ""
+
+msgid "Delete link"
+msgstr ""
+
+msgid "Delete page"
+msgstr ""
+
+msgid "Delete photo"
+msgstr ""
+
+msgid "Delete schedules (unrestricted only)"
+msgstr ""
+
+msgid "Demographics field does not exist."
+msgstr ""
+
+msgid "Demographics table removed."
+msgstr ""
+
+msgid "Denied IPs"
+msgstr ""
+
+msgid "Deny all"
+msgstr ""
+
+msgid "Deny/Allow"
+msgstr ""
+
+msgid "Denys and Allows"
+msgstr ""
+
+msgid "Depended upon"
+msgstr ""
+
+msgid "Dependencies"
 msgstr ""
 
 msgid "Description"
 msgstr ""
 
+msgid "Developer"
+msgstr ""
+
 msgid "Directories are not secure."
 msgstr ""
 
+msgid "Directory"
+msgstr ""
+
 msgid "Directory Permissions"
+msgstr ""
+
+msgid "Directory creation successful."
+msgstr ""
+
+msgid "Directory exists but already contains files."
+msgstr ""
+
+msgid "Directory exists but is not writable."
 msgstr ""
 
 msgid "Directory is not writable."
@@ -357,17 +1965,110 @@ msgstr ""
 msgid "Directory not set."
 msgstr ""
 
+msgid "Disable"
+msgstr ""
+
+msgid "Disable Administration Mode"
+msgstr ""
+
+msgid "Disable anonymous posting"
+msgstr ""
+
+msgid "Disapprove"
+msgstr ""
+
+msgid "Display Name"
+msgstr ""
+
+msgid "Display mini calendar"
+msgstr ""
+
+msgid "Display name"
+msgstr ""
+
+msgid "Display name is improperly formatted."
+msgstr ""
+
+msgid "Display settings"
+msgstr ""
+
+msgid "Display?"
+msgstr ""
+
+msgid "Dissolve"
+msgstr ""
+
+msgid "Division"
+msgstr ""
+
+msgid "Division ID"
+msgstr ""
+
+msgid "Division title"
+msgstr ""
+
+msgid "Divisions"
+msgstr ""
+
+msgid "Do not allow all"
+msgstr ""
+
+msgid "Do not deny all"
+msgstr ""
+
 msgid "Do you want phpWebSite to create the database?"
 msgstr ""
 
+msgid "Document"
+msgstr ""
+
+msgid "Document deleted."
+msgstr ""
+
+msgid "Document directory does not exist."
+msgstr ""
+
+msgid "Document location"
+msgstr ""
+
 msgid "Document not found."
+msgstr ""
+
+msgid "Document saved successfully."
 msgstr ""
 
 #, php-format
 msgid "Document was %sK making it larger than %sK size limit."
 msgstr ""
 
+msgid "Documents"
+msgstr ""
+
 msgid "Documents converted."
+msgstr ""
+
+msgid "Don't reset"
+msgstr ""
+
+msgid "Don't show"
+msgstr ""
+
+msgid "Don't use"
+msgstr ""
+
+msgid "Done"
+msgstr ""
+
+msgid "Down"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Download here"
+msgstr ""
+
+msgid "Drop"
 msgstr ""
 
 msgid "Drop box table failed to copy successfully."
@@ -376,23 +2077,315 @@ msgstr ""
 msgid "Drop box table imported successfully."
 msgstr ""
 
+msgid "Drop this member from the group."
+msgstr ""
+
+msgid "Dropbox"
+msgstr ""
+
+msgid "Duplicate suggestion."
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Edit Album"
+msgstr ""
+
+msgid "Edit Authorization Script"
+msgstr ""
+
+msgid "Edit Elements"
+msgstr ""
+
+msgid "Edit Footer"
+msgstr ""
+
+msgid "Edit Group"
+msgstr ""
+
+msgid "Edit Header"
+msgstr ""
+
+msgid "Edit Image"
+msgstr ""
+
+msgid "Edit Meta Tags"
+msgstr ""
+
+#, php-format
+msgid "Edit Page %s"
+msgstr ""
+
+msgid "Edit Permissions"
+msgstr ""
+
+msgid "Edit Photo"
+msgstr ""
+
+msgid "Edit User"
+msgstr ""
+
+msgid "Edit Users"
+msgstr ""
+
+msgid "Edit album"
+msgstr ""
+
+msgid "Edit block"
+msgstr ""
+
+msgid "Edit blog"
+msgstr ""
+
+msgid "Edit blogs"
+msgstr ""
+
+msgid "Edit branch"
+msgstr ""
+
+msgid "Edit categories"
+msgstr ""
+
+msgid "Edit channel"
+msgstr ""
+
+msgid "Edit comments"
+msgstr ""
+
+msgid "Edit event"
+msgstr ""
+
+msgid "Edit files"
+msgstr ""
+
+msgid "Edit form entries"
+msgstr ""
+
+msgid "Edit header"
+msgstr ""
+
+#, php-format
+msgid "Edit header page: %s"
+msgstr ""
+
+#, php-format
+msgid "Edit header: %s"
+msgstr ""
+
+msgid "Edit images"
+msgstr ""
+
+msgid "Edit link title"
+msgstr ""
+
+msgid "Edit option set"
+msgstr ""
+
+msgid "Edit option sets"
+msgstr ""
+
+msgid "Edit page"
+msgstr ""
+
+msgid "Edit page header"
+msgstr ""
+
 msgid "Edit permission column does not exist."
+msgstr ""
+
+msgid "Edit photo"
+msgstr ""
+
+msgid "Edit private schedule"
+msgstr ""
+
+msgid "Edit profile"
+msgstr ""
+
+msgid "Edit restrictions"
+msgstr ""
+
+msgid "Edit web page"
+msgstr ""
+
+msgid "Edited"
+msgstr ""
+
+msgid "Edited by"
+msgstr ""
+
+msgid "Edited on"
+msgstr ""
+
+msgid "Editor"
+msgstr ""
+
+msgid "Element successfully added!"
+msgstr ""
+
+msgid "Element successfully removed!"
+msgstr ""
+
+msgid "Elements"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Email Address"
+msgstr ""
+
+msgid "Email Verification"
+msgstr ""
+
+msgid "Email address"
+msgstr ""
+
+msgid "Email address already in use."
+msgstr ""
+
+msgid "Email address does not appear valid."
+msgstr ""
+
+msgid "Enable"
+msgstr ""
+
+msgid "Enable Administration Mode"
+msgstr ""
+
+msgid "Enable anonymous posting"
+msgstr ""
+
+msgid "Enable profile homepage"
+msgstr ""
+
+msgid "End of each month"
+msgstr ""
+
+msgid "End time"
+msgstr ""
+
+msgid "Enter link title"
 msgstr ""
 
 msgid "Enter the database's user password here."
 msgstr ""
 
+msgid "Enter your site's url address."
+msgstr ""
+
+msgid "Entries"
+msgstr ""
+
+msgid "Entry"
+msgstr ""
+
+msgid "Entry saved successfully."
+msgstr ""
+
 msgid "Error"
+msgstr ""
+
+msgid "Error occurred trying to create new thread."
+msgstr ""
+
+msgid "Error occurred when trying to pull a page from the volume."
+msgstr ""
+
+msgid "Error: Unable to force template."
+msgstr ""
+
+msgid "Event"
+msgstr ""
+
+msgid "Event saved"
+msgstr ""
+
+msgid "Event saved."
+msgstr ""
+
+msgid "Event submitted for approval."
+msgstr ""
+
+msgid "Every"
+msgstr ""
+
+#, php-format
+msgid "Every %s"
+msgstr ""
+
+msgid "Every month"
+msgstr ""
+
+msgid "Every month on start date"
+msgstr ""
+
+msgid "Everything"
+msgstr ""
+
+msgid "Exact matches only"
 msgstr ""
 
 #, php-format
 msgid "Execution time: %s seconds."
 msgstr ""
 
+msgid "Existing Archives"
+msgstr ""
+
+msgid "Existing Exports"
+msgstr ""
+
+msgid "Expect an error theme when finished."
+msgstr ""
+
 msgid "Expecting an object variable."
 msgstr ""
 
+msgid "Export"
+msgstr ""
+
+msgid "Export report data"
+msgstr ""
+
+msgid "Extended"
+msgstr ""
+
+msgid "Fade"
+msgstr ""
+
+msgid "Failed"
+msgstr ""
+
+msgid "Failed installation of module."
+msgstr ""
+
+msgid "Failed to archive."
+msgstr ""
+
 msgid "Failed to connect."
+msgstr ""
+
+msgid "Failed to copy admin file to branch."
+msgstr ""
+
+msgid "Failed to copy core config files to branch."
+msgstr ""
+
+msgid "Failed to copy core images to branch."
+msgstr ""
+
+msgid "Failed to copy file to local directory."
+msgstr ""
+
+msgid "Failed to copy javascript files to branch."
+msgstr ""
+
+msgid "Failed to copy theme files to branch."
+msgstr ""
+
+msgid "Failed to create config.php file in the branch."
 msgstr ""
 
 msgid "Failed to make connection with the requested branch site."
@@ -404,7 +2397,44 @@ msgstr ""
 msgid "Failed to write cookie."
 msgstr ""
 
+msgid "Failed upgrade of module."
+msgstr ""
+
+msgid "Failure"
+msgstr ""
+
+msgid "Failure to remove directory."
+msgstr ""
+
+msgid ""
+"Failure to respond in ten seconds, reverts phpWebSite to the default theme."
+msgstr ""
+
+msgid "Feature"
+msgstr ""
+
+msgid "Feature page"
+msgstr ""
+
+msgid "Featured pages"
+msgstr ""
+
+msgid "Feed title will be used if left empty"
+msgstr ""
+
+msgid "File Cabinet"
+msgstr ""
+
 msgid "File Cabinet has already converted Documents files."
+msgstr ""
+
+msgid "File contained no archive to view."
+msgstr ""
+
+msgid "File contained no content."
+msgstr ""
+
+msgid "File name"
 msgstr ""
 
 msgid "File not found in _FILES array."
@@ -416,7 +2446,16 @@ msgstr ""
 msgid "File not uploaded."
 msgstr ""
 
+msgid "File type"
+msgstr ""
+
+msgid "Filename"
+msgstr ""
+
 msgid "Filename not set."
+msgstr ""
+
+msgid "Finish"
 msgstr ""
 
 msgid "Finished converting Photo Album."
@@ -429,6 +2468,37 @@ msgid "Finished converting category items!"
 msgstr ""
 
 msgid "Finished converting links."
+msgstr ""
+
+msgid "Finished uninstalling module!"
+msgstr ""
+
+msgid "First"
+msgstr ""
+
+msgid "First Name"
+msgstr ""
+
+#, php-format
+msgid "First day"
+msgstr ""
+
+msgid "First name"
+msgstr ""
+
+msgid "First visit"
+msgstr ""
+
+msgid "Five Seconds"
+msgstr ""
+
+msgid "Footer"
+msgstr ""
+
+msgid "Footer updated."
+msgstr ""
+
+msgid "Force all pages to use this template"
 msgstr ""
 
 msgid "Form"
@@ -446,7 +2516,40 @@ msgstr ""
 msgid "Form Generator is not installed locally."
 msgstr ""
 
+msgid "Form Information"
+msgstr ""
+
+msgid "Form Name"
+msgstr ""
+
+msgid "Form Settings"
+msgstr ""
+
+msgid "Form element is not an object."
+msgstr ""
+
 msgid "Form generator forms converted and keyed!"
+msgstr ""
+
+msgid "Form settings successfully saved!<br /><br />"
+msgstr ""
+
+msgid "Forms"
+msgstr ""
+
+msgid "Forms are pre_approved"
+msgstr ""
+
+msgid "Friend not created."
+msgstr ""
+
+msgid "Front page"
+msgstr ""
+
+msgid "Full List"
+msgstr ""
+
+msgid "Full story"
 msgstr ""
 
 msgid "Function expected a string variable."
@@ -461,13 +2564,73 @@ msgstr ""
 msgid "GD image libraries do not support this image type."
 msgstr ""
 
+msgid "General"
+msgstr ""
+
 msgid "Go"
+msgstr ""
+
+msgid "Go back"
 msgstr ""
 
 msgid "Go back to main menu."
 msgstr ""
 
+msgid "Go back to settings..."
+msgstr ""
+
+msgid "Go back to the Settings page."
+msgstr ""
+
 msgid "Go to my new website!"
+msgstr ""
+
+msgid "Go!"
+msgstr ""
+
+msgid "Gradient Wipe"
+msgstr ""
+
+msgid "Grid"
+msgstr ""
+
+msgid "Group Name"
+msgstr ""
+
+msgid "Group created."
+msgstr ""
+
+msgid "Group does not exist."
+msgstr ""
+
+msgid "Group name"
+msgstr ""
+
+msgid "Groups"
+msgstr ""
+
+msgid "Header"
+msgstr ""
+
+msgid "Header restored."
+msgstr ""
+
+msgid "Header saved successfully."
+msgstr ""
+
+msgid "Header updated."
+msgstr ""
+
+msgid "Header version deleted."
+msgstr ""
+
+msgid "Height"
+msgstr ""
+
+msgid "Hello"
+msgstr ""
+
+msgid "Hello world!"
 msgstr ""
 
 msgid "Help option not found in help configuration file."
@@ -476,10 +2639,25 @@ msgstr ""
 msgid "Hidden"
 msgstr ""
 
+msgid "Hide"
+msgstr ""
+
+msgid "Hide login box"
+msgstr ""
+
+msgid "Hide this form"
+msgstr ""
+
+msgid "Highest result"
+msgstr ""
+
 msgid "Highlight Text"
 msgstr ""
 
 msgid "Home"
+msgstr ""
+
+msgid "Horizontal Checkerboard"
 msgstr ""
 
 msgid "Host"
@@ -497,6 +2675,24 @@ msgstr ""
 msgid "I want to install phpWebSite in this database."
 msgstr ""
 
+msgid "ID"
+msgstr ""
+
+msgid "ID hash"
+msgstr ""
+
+msgid "IP Address"
+msgstr ""
+
+msgid "IP address deleted."
+msgstr ""
+
+msgid "IP address was not formatted correctly or not allowed."
+msgstr ""
+
+msgid "Icon"
+msgstr ""
+
 msgid "Id and table not set."
 msgstr ""
 
@@ -508,6 +2704,9 @@ msgstr ""
 msgid ""
 "If the first user on your old site is not you, then you will need to "
 "recreate them."
+msgstr ""
+
+msgid "If you are happy with the change, click the appropiate button."
 msgstr ""
 
 msgid ""
@@ -525,6 +2724,11 @@ msgid "If you experienced any error messages, check your error.log file."
 msgstr ""
 
 msgid ""
+"If you want to add related information to this item, click the \"Build "
+"Related\" link."
+msgstr ""
+
+msgid ""
 "If your database is on the same server as your phpWebSite installation, "
 "leave this as &#x22;localhost&#x22;."
 msgstr ""
@@ -534,11 +2738,45 @@ msgid ""
 "here."
 msgstr ""
 
+msgid "Ignore"
+msgstr ""
+
+msgid "Ignored"
+msgstr ""
+
+msgid "Ignoring repeat post."
+msgstr ""
+
+msgid "Ignoring the repeat."
+msgstr ""
+
+msgid "Image"
+msgstr ""
+
+msgid "Image "
+msgstr ""
+
+msgid "Image Browser"
+msgstr ""
+
 #, php-format
 msgid "Image height was %spx, making it larger than %d pixel limit."
 msgstr ""
 
+#, php-format
+msgid "Image is %spx by %spx, the maximum dimensions are %spx by %spx."
+msgstr ""
+
+msgid "Image location"
+msgstr ""
+
 msgid "Image not found"
+msgstr ""
+
+msgid "Image signatures not allowed."
+msgstr ""
+
+msgid "Image uploaded!"
 msgstr ""
 
 #, php-format
@@ -549,10 +2787,34 @@ msgstr ""
 msgid "Image width was %spx, making it larger than %d pixel limit."
 msgstr ""
 
+msgid "Images"
+msgstr ""
+
+msgid "Immediate"
+msgstr ""
+
+msgid "Import"
+msgstr ""
+
+msgid "Import RSS Feeds"
+msgstr ""
+
+msgid "Import successful."
+msgstr ""
+
+msgid "Importing SQL install file."
+msgstr ""
+
+msgid "Importing SQL uninstall file."
+msgstr ""
+
 msgid "Importing core database file."
 msgstr ""
 
 msgid "Improper column name."
+msgstr ""
+
+msgid "Improper permission level for action requested."
 msgstr ""
 
 msgid "Improper table name."
@@ -561,13 +2823,54 @@ msgstr ""
 msgid "Improperly formated text."
 msgstr ""
 
+msgid "Improperly formatted group name."
+msgstr ""
+
+msgid ""
+"In order to view this archive a new table will need to added to your "
+"database."
+msgstr ""
+
+msgid "In reference to"
+msgstr ""
+
+msgid "In response to"
+msgstr ""
+
+msgid "In seconds"
+msgstr ""
+
+msgid "Incomplete"
+msgstr ""
+
+msgid "Incorrect option"
+msgstr ""
+
+msgid "Incorrect or missing branch id."
+msgstr ""
+
+msgid "Information"
+msgstr ""
+
 msgid "Input type not set."
 msgstr ""
 
 msgid "Insert HTML"
 msgstr ""
 
+msgid "Install"
+msgstr ""
+
 msgid "Install Modules"
+msgstr ""
+
+msgid "Install and update branch sites."
+msgstr ""
+
+msgid "Install branch core"
+msgstr ""
+
+msgid "Installation complete!"
 msgstr ""
 
 msgid "Installation of phpWebSite is complete."
@@ -576,13 +2879,58 @@ msgstr ""
 msgid "Installed modules"
 msgstr ""
 
+msgid "Installing"
+msgstr ""
+
+msgid "Installing core modules"
+msgstr ""
+
+msgid "Instructions"
+msgstr ""
+
+msgid "Instructions are missing or formatted incorrectly."
+msgstr ""
+
+msgid "Invalid Filename Given"
+msgstr ""
+
+msgid "Invalid feed address."
+msgstr ""
+
 msgid "Invalid value."
+msgstr ""
+
+msgid "Invalid variable name."
+msgstr ""
+
+msgid "Ip"
+msgstr ""
+
+msgid "Iris"
+msgstr ""
+
+msgid "Item Title"
+msgstr ""
+
+msgid "Item limit"
+msgstr ""
+
+msgid "Item limit per page"
+msgstr ""
+
+msgid "Javascript file was not found."
 msgstr ""
 
 msgid "Join database does not exist."
 msgstr ""
 
+msgid "Joined"
+msgstr ""
+
 msgid "KEY"
+msgstr ""
+
+msgid "Keep all versions"
 msgstr ""
 
 msgid "Key can not restrict items on phpws_key table alone."
@@ -591,10 +2939,125 @@ msgstr ""
 msgid "Key not found."
 msgstr ""
 
+msgid "Key unregistration successful."
+msgstr ""
+
+msgid "Keyword"
+msgstr ""
+
+msgid "Keyword already in use. Choose another."
+msgstr ""
+
+msgid "Keywords"
+msgstr ""
+
+msgid "Keywords added to admin menu."
+msgstr ""
+
+msgid "Language preference"
+msgstr ""
+
+msgid "Large photo"
+msgstr ""
+
+msgid "Last"
+msgstr ""
+
+msgid "Last Entry"
+msgstr ""
+
+msgid "Last Logged"
+msgstr ""
+
+msgid "Last Name"
+msgstr ""
+
+msgid "Last called"
+msgstr ""
+
+#, php-format
+msgid "Last day"
+msgstr ""
+
+msgid "Last image"
+msgstr ""
+
+msgid "Last name"
+msgstr ""
+
+msgid "Last poster"
+msgstr ""
+
+msgid "Last updated"
+msgstr ""
+
+msgid "Last visit"
+msgstr ""
+
+msgid "Latest version"
+msgstr ""
+
+msgid "Layout"
+msgstr ""
+
+msgid "Layout did not receive any data for display"
+msgstr ""
+
+msgid "Layout session not set"
+msgstr ""
+
+msgid "Layout settings updated."
+msgstr ""
+
+msgid "Lets you create and edit users and groups."
+msgstr ""
+
 msgid "Limit"
 msgstr ""
 
+msgid "Link is missing a title, url, or menu id."
+msgstr ""
+
+msgid "List"
+msgstr ""
+
+msgid "List Albums"
+msgstr ""
+
+msgid "List Archives"
+msgstr ""
+
+msgid "List Exports"
+msgstr ""
+
+msgid "List Forms"
+msgstr ""
+
+msgid "List Web Pages"
+msgstr ""
+
 msgid "List columns not set."
+msgstr ""
+
+msgid "Loading Image..."
+msgstr ""
+
+msgid "Loading Next Image..."
+msgstr ""
+
+msgid "Local"
+msgstr ""
+
+msgid "Local version"
+msgstr ""
+
+msgid "Location"
+msgstr ""
+
+msgid "Location link"
+msgstr ""
+
+msgid "Log Out"
 msgstr ""
 
 msgid "Log in"
@@ -603,10 +3066,28 @@ msgstr ""
 msgid "Log out"
 msgstr ""
 
+msgid "Logged visitors"
+msgstr ""
+
+msgid "Login"
+msgstr ""
+
+msgid "Login Page"
+msgstr ""
+
 msgid "Login page"
 msgstr ""
 
 msgid "Login to Site Manager"
+msgstr ""
+
+msgid "Look in your installation directory and give Apache write access."
+msgstr ""
+
+msgid "Loop:  "
+msgstr ""
+
+msgid "MD5 Sum"
 msgstr ""
 
 msgid "Main"
@@ -615,7 +3096,34 @@ msgstr ""
 msgid "Main Menu"
 msgstr ""
 
+msgid "Main menu"
+msgstr ""
+
 msgid "Main page"
+msgstr ""
+
+msgid "Make a repeating event"
+msgstr ""
+
+msgid "Make default public"
+msgstr ""
+
+msgid "Manage Categories"
+msgstr ""
+
+msgid "Manage Documents"
+msgstr ""
+
+msgid "Manage Groups"
+msgstr ""
+
+msgid "Manage Images"
+msgstr ""
+
+msgid "Manage Members"
+msgstr ""
+
+msgid "Manage Users"
 msgstr ""
 
 msgid "Manager cannot initialize, the module was not set."
@@ -631,19 +3139,91 @@ msgstr ""
 msgid "Manager was not fully initialized to get a list."
 msgstr ""
 
+msgid "Manages images and documents uploaded to your site."
+msgstr ""
+
 msgid "Manual mode requires you to click through the conversion process."
 msgstr ""
 
 msgid "Match for must be an array for a multiple input."
 msgstr ""
 
+msgid "Maximum allowed repeats reached."
+msgstr ""
+
+msgid "Maximum file size"
+msgstr ""
+
+msgid "Maximum height"
+msgstr ""
+
+msgid "Maximum image height (50-2048)"
+msgstr ""
+
+msgid "Maximum image width (50-2048)"
+msgstr ""
+
+msgid "Maximum width"
+msgstr ""
+
+msgid "Maxsize"
+msgstr ""
+
+msgid "Medium photo"
+msgstr ""
+
+msgid "Member added."
+msgstr ""
+
+msgid "Member not found."
+msgstr ""
+
+msgid "Member removed."
+msgstr ""
+
+msgid "Members"
+msgstr ""
+
+msgid "Members found."
+msgstr ""
+
+msgid "Menu"
+msgstr ""
+
+msgid "Menu Settings"
+msgstr ""
+
 msgid "Menu conversion finished."
+msgstr ""
+
+msgid "Menu deleted."
 msgstr ""
 
 msgid "Menu has already been converted."
 msgstr ""
 
 msgid "Menu is not installed."
+msgstr ""
+
+msgid "Menu saved"
+msgstr ""
+
+msgid "Menu tables removed."
+msgstr ""
+
+msgid "Message"
+msgstr ""
+
+msgid "Message deleted."
+msgstr ""
+
+msgid "Meta Tags"
+msgstr ""
+
+msgid "Meta Tags updated."
+msgstr ""
+
+msgid "Meta tags"
 msgstr ""
 
 msgid "Method 1 - Each section is placed into a separate page."
@@ -655,6 +3235,12 @@ msgstr ""
 msgid "Method does not exist in specified class."
 msgstr ""
 
+msgid "MiniAdmin"
+msgstr ""
+
+msgid "Missing Descriptions"
+msgstr ""
+
 msgid "Missing a database name."
 msgstr ""
 
@@ -664,7 +3250,113 @@ msgstr ""
 msgid "Missing a database user name."
 msgstr ""
 
+msgid "Missing an email address."
+msgstr ""
+
+msgid "Missing authorization script."
+msgstr ""
+
 msgid "Missing column to select."
+msgstr ""
+
+msgid "Missing columns.php file"
+msgstr ""
+
+msgid "Missing dependency"
+msgstr ""
+
+msgid "Missing either a version or item id."
+msgstr ""
+
+msgid "Missing form name."
+msgstr ""
+
+msgid "Missing keyword."
+msgstr ""
+
+msgid "Missing link."
+msgstr ""
+
+msgid "Missing menu title."
+msgstr ""
+
+msgid "Missing my_page function."
+msgstr ""
+
+msgid "Missing page content."
+msgstr ""
+
+msgid "Missing page title"
+msgstr ""
+
+msgid "Missing position."
+msgstr ""
+
+msgid "Missing source data."
+msgstr ""
+
+msgid "Missing template file."
+msgstr ""
+
+msgid "Missing thread information."
+msgstr ""
+
+msgid "Missing title."
+msgstr ""
+
+msgid "Missing url."
+msgstr ""
+
+msgid "Missing volume id."
+msgstr ""
+
+msgid "Mistyped username."
+msgstr ""
+
+msgid "Mixed"
+msgstr ""
+
+msgid "Mod Rewrite Options"
+msgstr ""
+
+msgid "Module"
+msgstr ""
+
+msgid "Module Needed"
+msgstr ""
+
+msgid "Module Title"
+msgstr ""
+
+msgid "Module Web Site"
+msgstr ""
+
+#, php-format
+msgid "Module access for \"%s\""
+msgstr ""
+
+msgid "Module does not exist."
+msgstr ""
+
+msgid "Module does not have a category table."
+msgstr ""
+
+msgid "Module does not require updating."
+msgstr ""
+
+msgid "Module is missing register file."
+msgstr ""
+
+msgid "Module is missing register function."
+msgstr ""
+
+msgid "Module is not installed."
+msgstr ""
+
+msgid "Module list"
+msgstr ""
+
+msgid "Module list saved successfully."
 msgstr ""
 
 msgid "Module not found."
@@ -676,10 +3368,103 @@ msgstr ""
 msgid "Module title"
 msgstr ""
 
+msgid "Module tried to detect a non-existant permission."
+msgstr ""
+
+msgid "Module unregistered from RSSFeeds."
+msgstr ""
+
 msgid "Module was not set."
 msgstr ""
 
+msgid "Module's item permission file is missing."
+msgstr ""
+
+msgid "Module's permission file is missing."
+msgstr ""
+
+msgid "Module's settings could not be removed. See your error log."
+msgstr ""
+
+msgid "Module's settings removed successfully."
+msgstr ""
+
+msgid "Modules"
+msgstr ""
+
+msgid "Modules have not been set."
+msgstr ""
+
+msgid "Month"
+msgstr ""
+
+msgid "Month grid"
+msgstr ""
+
+msgid "Month list"
+msgstr ""
+
+msgid "Monthly"
+msgstr ""
+
+msgid "More info"
+msgstr ""
+
+msgid "More information"
+msgstr ""
+
+msgid "Mortal"
+msgstr ""
+
+msgid "Move"
+msgstr ""
+
+msgid "Move Down"
+msgstr ""
+
+msgid "Move Link"
+msgstr ""
+
+msgid "Move Up"
+msgstr ""
+
+msgid "Move down"
+msgstr ""
+
+msgid "Move link order down"
+msgstr ""
+
+msgid "Move link order up"
+msgstr ""
+
+msgid "Move off frontpage"
+msgstr ""
+
 msgid "Move on to Step 2"
+msgstr ""
+
+msgid "Move tab order down"
+msgstr ""
+
+msgid "Move tab order up"
+msgstr ""
+
+msgid "Move to bottom"
+msgstr ""
+
+msgid "Move to end"
+msgstr ""
+
+msgid "Move to front"
+msgstr ""
+
+msgid "Move to frontpage"
+msgstr ""
+
+msgid "Move to top"
+msgstr ""
+
+msgid "Move up"
 msgstr ""
 
 msgid "Multi-select table failed to copy successfully."
@@ -688,46 +3473,247 @@ msgstr ""
 msgid "Multi-select table imported successfully."
 msgstr ""
 
+msgid "Multiple Select"
+msgstr ""
+
+msgid "Multiple submissions with editable form data are not allowed."
+msgstr ""
+
+msgid "Multiselect Element Instructions"
+msgstr ""
+
+msgid "My Page"
+msgstr ""
+
+msgid "My Page registered to Users module."
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
 msgid "Name not set."
+msgstr ""
+
+msgid "Needs upgrading"
+msgstr ""
+
+msgid "Never"
+msgstr ""
+
+msgid "New"
+msgstr ""
+
+msgid "New Account Sign-up"
+msgstr ""
+
+msgid "New Album"
+msgstr ""
+
+msgid "New Block"
+msgstr ""
+
+msgid "New Blog Entry"
+msgstr ""
+
+msgid "New Form"
+msgstr ""
+
+msgid "New Group"
+msgstr ""
+
+msgid "New Photo"
+msgstr ""
+
+msgid "New User"
+msgstr ""
+
+msgid "New user signup is currently disabled."
+msgstr ""
+
+msgid "New user signup not allowed."
+msgstr ""
+
+msgid "Newest"
+msgstr ""
+
+msgid "Newest first"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+msgid "Next Entry"
+msgstr ""
+
+msgid "Next day"
+msgstr ""
+
+msgid "Next month"
+msgstr ""
+
+msgid "Next page"
+msgstr ""
+
+msgid "Next week"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "No Control Panel file found for unregisteration."
+msgstr ""
+
+msgid "No Control Panel file found."
+msgstr ""
+
+msgid "No Control Panel links found."
+msgstr ""
+
+msgid "No Control Panel tabs found."
 msgstr ""
 
 msgid "No Images"
 msgstr ""
 
+msgid "No RSS file found."
+msgstr ""
+
+msgid "No action"
+msgstr ""
+
 msgid "No active modules installed."
+msgstr ""
+
+msgid "No album was deleted from the database."
+msgstr ""
+
+msgid "No albums found."
 msgstr ""
 
 msgid "No albums to convert."
 msgstr ""
 
+msgid "No allowed ip addresses found."
+msgstr ""
+
+msgid "No alternate style sheets available."
+msgstr ""
+
 msgid "No announcements to convert."
+msgstr ""
+
+msgid "No backup versions available."
 msgstr ""
 
 msgid "No blocks found."
 msgstr ""
 
+msgid "No categories assigned."
+msgstr ""
+
+msgid "No categories available."
+msgstr ""
+
+msgid "No categories found."
+msgstr ""
+
+msgid "No channels have been registered."
+msgstr ""
+
+msgid "No comments"
+msgstr ""
+
+msgid "No demographics file found."
+msgstr ""
+
+msgid "No denied ip addresses found."
+msgstr ""
+
+msgid "No documents found."
+msgstr ""
+
+msgid "No element was removed."
+msgstr ""
+
+msgid "No entries were found matching your search query."
+msgstr ""
+
 msgid "No error message file found."
+msgstr ""
+
+msgid "No events on this day"
+msgstr ""
+
+msgid "No events this month."
+msgstr ""
+
+msgid "No events this week."
 msgstr ""
 
 msgid "No events to convert."
 msgstr ""
 
+msgid "No file was uploaded and no short description was given."
+msgstr ""
+
 msgid "No files found."
+msgstr ""
+
+msgid "No form ID was passed"
 msgstr ""
 
 msgid "No form elements have been created."
 msgstr ""
 
+msgid "No form entry was deleted from the database."
+msgstr ""
+
 msgid "No forms to convert."
+msgstr ""
+
+msgid "No groups found."
+msgstr ""
+
+msgid "No help exists for this topic."
+msgstr ""
+
+msgid "No help file exists for this module."
 msgstr ""
 
 msgid "No image"
 msgstr ""
 
+msgid "No images found."
+msgstr ""
+
+msgid "No installation file found."
+msgstr ""
+
+msgid "No items available in this category."
+msgstr ""
+
+msgid "No items for approval."
+msgstr ""
+
 msgid "No items for the current list."
 msgstr ""
 
+msgid "No items found in this category."
+msgstr ""
+
+msgid "No items found."
+msgstr ""
+
 msgid "No items passed."
+msgstr ""
+
+msgid "No links in queue."
+msgstr ""
+
+msgid "No matches found."
+msgstr ""
+
+msgid "No members."
 msgstr ""
 
 msgid "No menu links to convert."
@@ -736,19 +3722,76 @@ msgstr ""
 msgid "No menus found."
 msgstr ""
 
+msgid "No modules are registered to My Page."
+msgstr ""
+
+msgid "No modules available."
+msgstr ""
+
 msgid "No modules to convert."
+msgstr ""
+
+msgid "No new scripts found"
+msgstr ""
+
+msgid "No notes found."
 msgstr ""
 
 msgid "No pages found."
 msgstr ""
 
+msgid "No pages have been created."
+msgstr ""
+
 msgid "No pages to convert."
+msgstr ""
+
+msgid "No photo was deleted from the database."
+msgstr ""
+
+msgid "No photos found."
+msgstr ""
+
+msgid "No restricted edit groups found."
 msgstr ""
 
 msgid "No result returned from database."
 msgstr ""
 
+msgid "No results found."
+msgstr ""
+
 msgid "No rows found."
+msgstr ""
+
+msgid "No schedules have been created."
+msgstr ""
+
+msgid "No subject"
+msgstr ""
+
+msgid "No suggestions to approve."
+msgstr ""
+
+msgid "No tabs available in the Control Panel."
+msgstr ""
+
+msgid "No themes installed."
+msgstr ""
+
+msgid "No thumbnail"
+msgstr ""
+
+msgid "No title"
+msgstr ""
+
+msgid "No uninstall file found."
+msgstr ""
+
+msgid "No update file found."
+msgstr ""
+
+msgid "No update required."
 msgstr ""
 
 msgid "No users to convert."
@@ -760,10 +3803,37 @@ msgstr ""
 msgid "No variables in object."
 msgstr ""
 
+msgid "No, leave them as a deity."
+msgstr ""
+
+msgid "No, leave them as a mortal."
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "None found"
+msgstr ""
+
 msgid "Not a convert file."
 msgstr ""
 
+msgid "Not allowed"
+msgstr ""
+
 msgid "Not an acceptable operator."
+msgstr ""
+
+msgid "Not installed"
+msgstr ""
+
+msgid "Not working, try "
+msgstr ""
+
+msgid "Note sent successfully."
+msgstr ""
+
+msgid "Note was not sent successfully."
 msgstr ""
 
 msgid ""
@@ -775,9 +3845,66 @@ msgid ""
 "Note: it is a good idea to give each phpWebSite installation its own user."
 msgstr ""
 
+msgid "Notes"
+msgstr ""
+
+msgid "Nothing found"
+msgstr ""
+
+msgid "Number of Options"
+msgstr ""
+
+msgid "Number of past entries"
+msgstr ""
+
+msgid "Number of photos (select before uploading)"
+msgstr ""
+
+msgid "Number of profiles"
+msgstr ""
+
+msgid "Object sent to boost was not of the PHPWS_Module class."
+msgstr ""
+
+msgid "Ok"
+msgstr ""
+
+msgid "Oldest"
+msgstr ""
+
+msgid "Oldest first"
+msgstr ""
+
+msgid "On all pages"
+msgstr ""
+
+msgid "One Minute"
+msgstr ""
+
 msgid ""
 "One or more errors occurred while copying over Form Generator tables. Please "
 "check your logs, clear your database tables, and try again."
+msgstr ""
+
+msgid "Only another deity can create a deity."
+msgstr ""
+
+msgid "Only another deity can create a mortal."
+msgstr ""
+
+msgid "Only edit own forms"
+msgstr ""
+
+msgid "Only link days with events in mini calendar"
+msgstr ""
+
+msgid "Only on front page"
+msgstr ""
+
+msgid "Only show footer on front page"
+msgstr ""
+
+msgid "Only show header on front page"
 msgstr ""
 
 msgid "Only those logged on within 6 months."
@@ -789,16 +3916,40 @@ msgstr ""
 msgid "Op not set."
 msgstr ""
 
+msgid "Open your config/core/config.php file in a text editor."
+msgstr ""
+
+msgid "Option"
+msgstr ""
+
+msgid "Option Instructions"
+msgstr ""
+
+msgid "Option Sets"
+msgstr ""
+
+msgid "Options"
+msgstr ""
+
 msgid "Options table failed to copy successfully."
 msgstr ""
 
 msgid "Options table imported successfully."
 msgstr ""
 
+msgid "Order By"
+msgstr ""
+
+msgid "Other Modules"
+msgstr ""
+
 msgid "Otherwise, click on the \"Main page\" link above."
 msgstr ""
 
 msgid "Otherwise, enter the ip or dns to the database server."
+msgstr ""
+
+msgid "Owner"
 msgstr ""
 
 #, php-format
@@ -811,19 +3962,133 @@ msgstr ""
 msgid "Page"
 msgstr ""
 
+#, php-format
+msgid "Page %1$s of %2$s"
+msgstr ""
+
+#, php-format
+msgid "Page %s"
+msgstr ""
+
+msgid "Page Title"
+msgstr ""
+
+msgid "Page Title: Name of your web site"
+msgstr ""
+
+msgid "Page held for approval."
+msgstr ""
+
+msgid "Page is missing content."
+msgstr ""
+
+msgid "Page is not complete."
+msgstr ""
+
+msgid "Page joined."
+msgstr ""
+
+msgid "Page moved."
+msgstr ""
+
+msgid "Page removed."
+msgstr ""
+
+msgid "Page restored."
+msgstr ""
+
+msgid "Page saved successfully."
+msgstr ""
+
+msgid "Page template"
+msgstr ""
+
+msgid "Pages joined."
+msgstr ""
+
+msgid "Parent"
+msgstr ""
+
+msgid "Passed!"
+msgstr ""
+
 msgid "Password"
+msgstr ""
+
+msgid "Password confirm"
+msgstr ""
+
+msgid "Password is too easy to guess."
+msgstr ""
+
+#, php-format
+msgid "Password must be at least %s characters in length."
+msgstr ""
+
+msgid "Passwords do not match."
+msgstr ""
+
+msgid "Passwords must be reentered on user name change."
 msgstr ""
 
 msgid "Pear Configuration"
 msgstr ""
 
+msgid "Permission"
+msgstr ""
+
 msgid "Permission Help"
+msgstr ""
+
+msgid "Permission table name already exists."
+msgstr ""
+
+msgid "Permission table not found."
+msgstr ""
+
+msgid "Permission user"
+msgstr ""
+
+msgid "Permissions"
+msgstr ""
+
+msgid "Permissions file not found."
+msgstr ""
+
+msgid "Permissions saved."
+msgstr ""
+
+msgid "Permissions table created successfully."
+msgstr ""
+
+msgid "Permissions table not created successfully."
+msgstr ""
+
+msgid "Permissions table not removed successfully."
+msgstr ""
+
+msgid "Permissions table removed successfully."
+msgstr ""
+
+msgid "Permissions updated"
+msgstr ""
+
+msgid "Permissions updated."
+msgstr ""
+
+msgid "Photo Album"
 msgstr ""
 
 msgid "Photo Album has already been converted."
 msgstr ""
 
 msgid "Photo Album is not installed locally."
+msgstr ""
+
+msgid "Photo Albums"
+msgstr ""
+
+msgid "Photo Number"
 msgstr ""
 
 msgid "Photos table failed to copy successfully."
@@ -839,6 +4104,30 @@ msgid ""
 "PhpWebSite was able to connect, but the database already contained tables."
 msgstr ""
 
+msgid "Pick a theme"
+msgstr ""
+
+msgid "Pin"
+msgstr ""
+
+msgid "Pin all"
+msgstr ""
+
+msgid "Pin links"
+msgstr ""
+
+msgid "Pin to all pages"
+msgstr ""
+
+msgid "Pin to item"
+msgstr ""
+
+msgid "Pinned links"
+msgstr ""
+
+msgid "Pixellate"
+msgstr ""
+
 msgid "Please check your directory permissions and try again."
 msgstr ""
 
@@ -846,6 +4135,45 @@ msgid "Please check your error log file."
 msgstr ""
 
 msgid "Please check your error logs and try again."
+msgstr ""
+
+msgid "Please check your error logs."
+msgstr ""
+
+msgid "Please check your error.log."
+msgstr ""
+
+msgid "Please check your logs."
+msgstr ""
+
+msgid "Please choose options for the \"Every\" repeat method."
+msgstr ""
+
+msgid "Please contact your administrator."
+msgstr ""
+
+msgid "Please copy the word in the above image."
+msgstr ""
+
+msgid "Please create a profile in this category."
+msgstr ""
+
+msgid "Please create a user to administrate the site."
+msgstr ""
+
+msgid "Please enable Cache Lite in your config/core/config.php file."
+msgstr ""
+
+msgid "Please enter a first name."
+msgstr ""
+
+msgid "Please enter a last name."
+msgstr ""
+
+msgid "Please enter a page title."
+msgstr ""
+
+msgid "Please enter a valid email address as a site contact."
 msgstr ""
 
 msgid ""
@@ -856,8 +4184,26 @@ msgstr ""
 msgid "Please login"
 msgstr ""
 
+msgid "Please make a profile division type first."
+msgstr ""
+
 msgid ""
 "Please note that the user with an index of 1 was ignored by the conversion."
+msgstr ""
+
+msgid "Please pick a monthly repeat method."
+msgstr ""
+
+msgid "Please pick a proper monthly repeat method."
+msgstr ""
+
+msgid "Please try again later."
+msgstr ""
+
+msgid "Please try another user name."
+msgstr ""
+
+msgid "Please type the word seen in the image."
 msgstr ""
 
 msgid "Please wait..."
@@ -866,10 +4212,167 @@ msgstr ""
 msgid "Port"
 msgstr ""
 
+msgid "Position must be an integer value."
+msgstr ""
+
+msgid "Post Comment"
+msgstr ""
+
+msgid "Post New Comment"
+msgstr ""
+
+msgid "Post Process Code"
+msgstr ""
+
+msgid "Post current thoughts, happenings, and discussions."
+msgstr ""
+
+msgid "Posted by"
+msgstr ""
+
+msgid "Posted on"
+msgstr ""
+
+msgid "Predefined Option Set"
+msgstr ""
+
+msgid "Prev"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Previous Entry"
+msgstr ""
+
+msgid "Previous blog entries"
+msgstr ""
+
+msgid "Previous day"
+msgstr ""
+
+msgid "Previous month"
+msgstr ""
+
+msgid "Previous page"
+msgstr ""
+
+msgid "Previous week"
+msgstr ""
+
+msgid "Print"
+msgstr ""
+
+msgid "Print View"
+msgstr ""
+
+msgid "Private"
+msgstr ""
+
+msgid "Processing installation file."
+msgstr ""
+
+msgid "Processing uninstall file."
+msgstr ""
+
+msgid "Processing update file."
+msgstr ""
+
+msgid "Profile not found."
+msgstr ""
+
+msgid "Profile not set."
+msgstr ""
+
+msgid "Profile saved for approval."
+msgstr ""
+
+msgid "Profile saved successfully."
+msgstr ""
+
+msgid "Profile type"
+msgstr ""
+
+msgid "Profiler"
+msgstr ""
+
+msgid "Profiles table removed."
+msgstr ""
+
+msgid "Public"
+msgstr ""
+
+msgid "Publish date/time"
+msgstr ""
+
+msgid "Purge"
+msgstr ""
+
+msgid "Quick add"
+msgstr ""
+
+msgid "Quit"
+msgstr ""
+
+msgid "Quote"
+msgstr ""
+
+msgid "RSS Feeds"
+msgstr ""
+
+msgid "RSS file found but no channel information."
+msgstr ""
+
+#, php-format
+msgid "RSS registration to %s module successful."
+msgstr ""
+
+msgid "Radial Wipe"
+msgstr ""
+
+msgid "Radio Button"
+msgstr ""
+
 msgid "Radio button table failed to copy successfully."
 msgstr ""
 
 msgid "Radio button table imported successfully."
+msgstr ""
+
+msgid "Radiobutton Element Instructions"
+msgstr ""
+
+msgid "Re:"
+msgstr ""
+
+msgid "Read"
+msgstr ""
+
+msgid "Read more"
+msgstr ""
+
+msgid "Read more. . ."
+msgstr ""
+
+msgid "Read note"
+msgstr ""
+
+msgid "Read notes"
+msgstr ""
+
+msgid "Reason"
+msgstr ""
+
+msgid "Reason for edit"
+msgstr ""
+
+msgid "Recent blog entries"
+msgstr ""
+
+msgid "Recipient"
+msgstr ""
+
+msgid "Records the href referrers from who is visiting your site."
 msgstr ""
 
 msgid "Recursive array"
@@ -878,13 +4381,152 @@ msgstr ""
 msgid "Recursive object:"
 msgstr ""
 
+msgid "Referrer"
+msgstr ""
+
+msgid "Refresh feed"
+msgstr ""
+
+msgid "Refresh time"
+msgstr ""
+
+msgid "Refresh time is too low. It must be over 60 seconds."
+msgstr ""
+
+msgid "Refuse"
+msgstr ""
+
+msgid "Register to key."
+msgstr ""
+
+msgid "Registered to Key."
+msgstr ""
+
+msgid "Registering module to core."
+msgstr ""
+
+msgid "Registering other modules to this module."
+msgstr ""
+
+msgid "Registering this module to other modules."
+msgstr ""
+
+msgid "Registration successful."
+msgstr ""
+
+msgid "Related Topics"
+msgstr ""
+
+msgid ""
+"Remember to \"Update\" your access file when finished changing IP rules."
+msgstr ""
+
 msgid "Remove"
+msgstr ""
+
+msgid "Remove Image"
+msgstr ""
+
+msgid "Remove Tab"
+msgstr ""
+
+msgid "Remove category"
+msgstr ""
+
+msgid "Remove event from repeat list?"
 msgstr ""
 
 msgid "Remove the following file and refresh to continue:"
 msgstr ""
 
+msgid "Removed all dynamic Form Generator tables."
+msgstr ""
+
+#, php-format
+msgid "Removing directory %s"
+msgstr ""
+
+msgid "Removing module's comments."
+msgstr ""
+
+msgid "Removing old layout components."
+msgstr ""
+
+msgid ""
+"Removing this branch will make it inaccessible.\\nThe database and files "
+"will remain behind.\\nIf you are sure you want to remove the branch, type "
+"the branch name:"
+msgstr ""
+
+msgid "Repeat"
+msgstr ""
+
+#, php-format
+msgid "Repeat event - %s"
+msgstr ""
+
+msgid "Repeat event until:"
+msgstr ""
+
+msgid "Repeat submission"
+msgstr ""
+
+msgid "Reply"
+msgstr ""
+
+msgid "Report"
+msgstr ""
+
+msgid "Report View"
+msgstr ""
+
 msgid "Request"
+msgstr ""
+
+msgid "Require"
+msgstr ""
+
+msgid "Required"
+msgstr ""
+
+msgid "Reset"
+msgstr ""
+
+msgid "Reset boxes"
+msgstr ""
+
+msgid "Reset cache"
+msgstr ""
+
+msgid "Restore"
+msgstr ""
+
+#, php-format
+msgid "Restore Page %s"
+msgstr ""
+
+msgid "Restore Web Page Header"
+msgstr ""
+
+msgid "Restore the default theme"
+msgstr ""
+
+msgid "Restore to default"
+msgstr ""
+
+msgid "Restricted"
+msgstr ""
+
+msgid "Retake Form"
+msgstr ""
+
+msgid "Return to "
+msgstr ""
+
+msgid "Return to Boost"
+msgstr ""
+
+msgid "Return to Report"
 msgstr ""
 
 msgid ""
@@ -901,13 +4543,216 @@ msgstr ""
 msgid "Return to the main page."
 msgstr ""
 
+msgid "Rewrite engine on"
+msgstr ""
+
+msgid "Rows"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Save "
+msgstr ""
+
+msgid "Save Changes and Approve"
+msgstr ""
+
+msgid "Save Channel"
+msgstr ""
+
+msgid "Save Form"
+msgstr ""
+
+msgid "Save New Block"
+msgstr ""
+
+msgid "Save Settings"
+msgstr ""
+
+msgid "Save Textarea"
+msgstr ""
+
+msgid "Save Textfield"
+msgstr ""
+
+msgid "Save and apply to repeats"
+msgstr ""
+
+msgid "Save and close"
+msgstr ""
+
+msgid "Save and remove repeat"
+msgstr ""
+
+msgid "Save avatars locally"
+msgstr ""
+
+msgid "Save directory"
+msgstr ""
+
+msgid "Save event"
+msgstr ""
+
+msgid "Save link"
+msgstr ""
+
+msgid "Save option set as"
+msgstr ""
+
+msgid "Save permissions"
+msgstr ""
+
+msgid "Save settings"
+msgstr ""
+
+msgid "Saved Forms"
+msgstr ""
+
+msgid "Schedule deleted."
+msgstr ""
+
+msgid "Schedule event table is missing."
+msgstr ""
+
+msgid "Schedule saved."
+msgstr ""
+
+msgid "Schedules"
+msgstr ""
+
+msgid "Script Filename"
+msgstr ""
+
 msgid "Search"
+msgstr ""
+
+msgid "Search Admin"
+msgstr ""
+
+msgid "Search Results"
+msgstr ""
+
+msgid "Search for:"
+msgstr ""
+
+msgid "Search location"
 msgstr ""
 
 msgid "Select returned an empty result."
 msgstr ""
 
+msgid "Send note"
+msgstr ""
+
+#, php-format
+msgid "Send note to %s"
+msgstr ""
+
+msgid "Send to"
+msgstr ""
+
+msgid "Sent by"
+msgstr ""
+
+msgid "Sent on"
+msgstr ""
+
 msgid "Sessions Help"
+msgstr ""
+
+msgid "Set Group Permissions"
+msgstr ""
+
+msgid "Set Speed: &nbsp;"
+msgstr ""
+
+msgid "Set User Permissions"
+msgstr ""
+
+msgid "Set featured pages"
+msgstr ""
+
+msgid "Set meta tags"
+msgstr ""
+
+#, php-format
+msgid "Set permissions"
+msgstr ""
+
+msgid "Set to zero to prevent display"
+msgstr ""
+
+msgid "Set up allowed modules"
+msgstr ""
+
+msgid "Set variable must be an object or an array."
+msgstr ""
+
+msgid "Set your \"MOD_REWRITE_ENABLED\" define equal to TRUE."
+msgstr ""
+
+msgid "Setting saved"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Settings changed."
+msgstr ""
+
+msgid "Settings saved"
+msgstr ""
+
+msgid "Settings saved."
+msgstr ""
+
+msgid "Setup branch database"
+msgstr ""
+
+msgid "Seven Seconds"
+msgstr ""
+
+msgid "Short"
+msgstr ""
+
+msgid "Shortcut"
+msgstr ""
+
+msgid "Shortcut deleted"
+msgstr ""
+
+msgid "Shortcuts"
+msgstr ""
+
+msgid "Shortcuts enabled"
+msgstr ""
+
+msgid "Show"
+msgstr ""
+
+msgid "Show blog on home page"
+msgstr ""
+
+msgid "Show busy"
+msgstr ""
+
+msgid "Show form page numbers (eg: page 1 of 6)"
+msgstr ""
+
+msgid "Show numbers for form elements (eg: 1, 2, 3)"
+msgstr ""
+
+msgid "Sign up"
+msgstr ""
+
+msgid "Signature"
+msgstr ""
+
+msgid "Simple image forms"
+msgstr ""
+
+msgid "Since yesterday"
 msgstr ""
 
 msgid ""
@@ -921,7 +4766,28 @@ msgstr ""
 msgid "Site Setup"
 msgstr ""
 
+msgid "Site contact email"
+msgstr ""
+
 msgid "Site hash may not be empty."
+msgstr ""
+
+msgid "Site map"
+msgstr ""
+
+msgid "Size"
+msgstr ""
+
+msgid "Skeleton"
+msgstr ""
+
+msgid "Skeleton module is broken."
+msgstr ""
+
+msgid "Slide Show"
+msgstr ""
+
+msgid "Small photo"
 msgstr ""
 
 msgid "Some errors occurred when trying to convert some users."
@@ -933,13 +4799,121 @@ msgstr ""
 msgid "Some errors occurred while creating the core database tables."
 msgstr ""
 
+msgid "Some key unregistrations were unsuccessful. Check your logs."
+msgstr ""
+
 msgid "Some menus did not convert over properly. Please see logs."
+msgstr ""
+
+msgid "Sorry"
+msgstr ""
+
+msgid "Sorry but this file is inaccessible at this time."
+msgstr ""
+
+msgid "Sorry you do not have permission to view this blog entry."
+msgstr ""
+
+msgid "Sorry, but Branch failed to make the proper directories."
+msgstr ""
+
+msgid "Sorry, but you do not have rights to alter settings."
+msgstr ""
+
+msgid "Sorry, unable to grab feed."
+msgstr ""
+
+msgid "Sorry, we are not accepting new users at this time."
+msgstr ""
+
+msgid "Sorry, you are not allowed access to this file."
 msgstr ""
 
 msgid "Source Directory"
 msgstr ""
 
+msgid "Source XML error"
+msgstr ""
+
+msgid "Source image directory copied successfully."
+msgstr ""
+
+msgid "Source image directory failed to copy."
+msgstr ""
+
+msgid "Source table not found."
+msgstr ""
+
+msgid "Specific group(s)"
+msgstr ""
+
+msgid "Spiral"
+msgstr ""
+
 msgid "Spoiler"
+msgstr ""
+
+msgid "Start Show"
+msgstr ""
+
+msgid "Start time"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Stop Show"
+msgstr ""
+
+msgid "Strips"
+msgstr ""
+
+msgid "Style sheet"
+msgstr ""
+
+msgid "Subject"
+msgstr ""
+
+msgid "Submission Date"
+msgstr ""
+
+msgid "Submission Message"
+msgstr ""
+
+msgid "Submit Entry"
+msgstr ""
+
+msgid "Submit entry"
+msgstr ""
+
+msgid "Success"
+msgstr ""
+
+msgid "Successfully deleted table associated with the archive with filename "
+msgstr ""
+
+msgid "Suggest entry"
+msgstr ""
+
+msgid "Suggest event"
+msgstr ""
+
+msgid "Suggested events"
+msgstr ""
+
+msgid "Summary"
+msgstr ""
+
+msgid "System caching disabled."
+msgstr ""
+
+msgid "System message"
+msgstr ""
+
+msgid "Tab is missing a link address."
+msgstr ""
+
+msgid "Tab is missing a title."
 msgstr ""
 
 msgid "Table does not exist."
@@ -960,10 +4934,22 @@ msgstr ""
 msgid "Table prefix must be alphanumeric characters or underscores only"
 msgstr ""
 
+msgid "Tabs must be in an array."
+msgstr ""
+
+msgid "Template"
+msgstr ""
+
 msgid "Template error."
 msgstr ""
 
 msgid "Template was not set."
+msgstr ""
+
+msgid "Ten Seconds"
+msgstr ""
+
+msgid "Text"
 msgstr ""
 
 msgid "Text area table failed to copy successfully."
@@ -978,7 +4964,64 @@ msgstr ""
 msgid "Text field table imported successfully."
 msgstr ""
 
+msgid "Textarea"
+msgstr ""
+
+msgid "Textarea Element Instructions"
+msgstr ""
+
+msgid "Textfield"
+msgstr ""
+
+msgid "Thank you"
+msgstr ""
+
+#, php-format
+msgid "The %s element could not be saved to the database."
+msgstr ""
+
+#, php-format
+msgid "The %s element was saved successfully."
+msgstr ""
+
+#, php-format
+msgid "The %s was saved successfully."
+msgstr ""
+
+msgid "The About file is missing for this module."
+msgstr ""
+
 msgid "The File Cabinet module is not installed."
+msgstr ""
+
+#, php-format
+msgid ""
+"The Photo %s was saved but their was a problem creating the thumbnail image."
+msgstr ""
+
+#, php-format
+msgid "The Photo %s was successfully saved."
+msgstr ""
+
+#, php-format
+msgid "The Photo Album \"%s\" was successfully saved."
+msgstr ""
+
+msgid "The Photo Album could not be updated to the database."
+msgstr ""
+
+msgid "The Related module encountered a database error."
+msgstr ""
+
+#, php-format
+msgid ""
+"The album %s and all its photos were successfully deleted from the database."
+msgstr ""
+
+msgid "The archive path is not web server writable."
+msgstr ""
+
+msgid "The associated text for this element was not set."
 msgstr ""
 
 msgid ""
@@ -992,7 +5035,25 @@ msgstr ""
 msgid "The database's name into which you are installing phpWebSite."
 msgstr ""
 
+msgid "The date to repeat until must be greater than the event's start date."
+msgstr ""
+
+msgid "The element was successfully removed."
+msgstr ""
+
+msgid "The end time must be after the start time."
+msgstr ""
+
 msgid "The example is randomly generated."
+msgstr ""
+
+msgid "The export path is not web server writable."
+msgstr ""
+
+msgid "The file uploaded exceeded the max size allowed."
+msgstr ""
+
+msgid "The files/access/ directory is not writable."
 msgstr ""
 
 msgid "The following directories are not writable:"
@@ -1001,7 +5062,86 @@ msgstr ""
 msgid "The following directories need to be created:"
 msgstr ""
 
+msgid "The following modules depend on this module to function:"
+msgstr ""
+
+msgid "The following search words were ignored"
+msgstr ""
+
+#, php-format
+msgid "The form %s was successfully archived."
+msgstr ""
+
+msgid "The form entry was successfully deleted from the database."
+msgstr ""
+
+msgid "The form must be saved before it is available to the public."
+msgstr ""
+
+msgid "The image uploaded was not an allowed image type."
+msgstr ""
+
+msgid "The image was successfully removed."
+msgstr ""
+
+msgid "The is a problem with My Page."
+msgstr ""
+
+msgid ""
+"The name you entered for the Checkbox is not valid or is already in use with "
+"this form."
+msgstr ""
+
+msgid ""
+"The name you entered for the Multiselect is not valid or is already in use "
+"with this form."
+msgstr ""
+
+msgid ""
+"The name you entered for the Textfield is not valid or is already in use "
+"with this form."
+msgstr ""
+
+msgid "The number of options must be a greater than zero."
+msgstr ""
+
+#, php-format
+msgid "The option set %s was successfully saved."
+msgstr ""
+
+#, php-format
+msgid "The option set %s was unable to be saved."
+msgstr ""
+
+msgid "The phatform archive was successfully <b>deleted</b>."
+msgstr ""
+
+msgid "The phatform export was successfully <b>deleted</b>."
+msgstr ""
+
+#, php-format
+msgid "The photo %s was successfully deleted from the database."
+msgstr ""
+
+msgid "The photo album image directory could not be created."
+msgstr ""
+
 msgid "The submitted template is not an array."
+msgstr ""
+
+msgid "The theme.ini file is missing for the default theme."
+msgstr ""
+
+msgid "The uploaded file exceeded the max file size allowed."
+msgstr ""
+
+msgid "The value for this element was not set."
+msgstr ""
+
+msgid "Theme settings updated."
+msgstr ""
+
+msgid "Themes"
 msgstr ""
 
 msgid "There are two methods for converting your webpages:"
@@ -1010,10 +5150,106 @@ msgstr ""
 msgid "There aren't any conversion files in the convert/modules directory."
 msgstr ""
 
+msgid "There is a problem with options, contact a system administrator."
+msgstr ""
+
+msgid "There is a problem with this Profiler division."
+msgstr ""
+
+msgid ""
+"There is a problem with your authentication method. Contact the site "
+"administrator."
+msgstr ""
+
 msgid "There is a problem with your sessions."
 msgstr ""
 
+msgid "There was a problem accessing the database."
+msgstr ""
+
+msgid "There was a problem deleting the archive."
+msgstr ""
+
+msgid "There was a problem deleting the export."
+msgstr ""
+
+msgid ""
+"There was a problem deleting viewing archive table associated for filename "
+msgstr ""
+
+msgid "There was a problem in the installation file:"
+msgstr ""
+
+msgid "There was a problem in the update file:"
+msgstr ""
+
 msgid "There was a problem loading the image file."
+msgstr ""
+
+msgid "There was a problem reading the theme directories."
+msgstr ""
+
+msgid "There was a problem removing the image."
+msgstr ""
+
+msgid "There was a problem saving the information to the database."
+msgstr ""
+
+msgid "There was a problem saving your image."
+msgstr ""
+
+msgid "There was a problem saving your link."
+msgstr ""
+
+msgid "There was a problem saving your settings."
+msgstr ""
+
+msgid "There was a problem trying to save a Control Panel link."
+msgstr ""
+
+msgid "There was a problem updating the settings."
+msgstr ""
+
+msgid "There was a problem uploading the specified file."
+msgstr ""
+
+msgid "There was a problem uploading the specified image."
+msgstr ""
+
+msgid "There was a problem with this module's My Page file."
+msgstr ""
+
+msgid "There was an error removing a version table."
+msgstr ""
+
+msgid "There was problem creating your acccount. Check back later."
+msgstr ""
+
+msgid "Thirty Seconds"
+msgstr ""
+
+msgid "This album is currently hidden from the public."
+msgstr ""
+
+msgid ""
+"This authentication does not exist.<br />\n"
+" If you did not log in within the time frame specified in your email, please "
+"apply for another account."
+msgstr ""
+
+msgid "This database name is not allowed."
+msgstr ""
+
+msgid "This email address cannot be used."
+msgstr ""
+
+msgid "This event does not exist."
+msgstr ""
+
+msgid "This form is not available for viewing at this time."
+msgstr ""
+
+msgid "This is a repeat of another event."
 msgstr ""
 
 msgid ""
@@ -1027,10 +5263,89 @@ msgstr ""
 msgid "This is the user name that phpWebSite will use to access its database."
 msgstr ""
 
+msgid "This item is related to the following:"
+msgstr ""
+
+msgid "This module does not have dependents."
+msgstr ""
+
+#, php-format
+msgid "This module is depended upon by: %s"
+msgstr ""
+
+msgid "This module is not registered with My Page"
+msgstr ""
+
+msgid "This month"
+msgstr ""
+
+msgid "This photo is currently hidden from the public."
+msgstr ""
+
+msgid "This version has not been approved."
+msgstr ""
+
+msgid "This week"
+msgstr ""
+
+msgid "Three Seconds"
+msgstr ""
+
+msgid "Thumbnail"
+msgstr ""
+
+msgid "Time Zone"
+msgstr ""
+
 msgid "Title"
 msgstr ""
 
+msgid "Title / Time / Description"
+msgstr ""
+
+msgid "Today"
+msgstr ""
+
+msgid "Top Level"
+msgstr ""
+
+msgid "Total"
+msgstr ""
+
+msgid "Total queries"
+msgstr ""
+
+msgid "Total visits"
+msgstr ""
+
+msgid "Transition Effect: &nbsp;"
+msgstr ""
+
+msgid "Tried to edit an unapproved item."
+msgstr ""
+
+msgid "Tried to perform an admin function in Users."
+msgstr ""
+
+msgid "Two Minutes"
+msgstr ""
+
+msgid "Two Seconds"
+msgstr ""
+
 msgid "Type"
+msgstr ""
+
+msgid "Type keyword here"
+msgstr ""
+
+msgid "Type the new title for this link."
+msgstr ""
+
+msgid "URL"
+msgstr ""
+
+msgid "Uh oh"
 msgstr ""
 
 msgid "Unable to connect to the database with the information provided."
@@ -1039,10 +5354,31 @@ msgstr ""
 msgid "Unable to connect."
 msgstr ""
 
+msgid "Unable to copy deity login to branch."
+msgstr ""
+
+msgid "Unable to copy deity users to branch."
+msgstr ""
+
+msgid "Unable to create authorization script."
+msgstr ""
+
+msgid "Unable to create branch directories."
+msgstr ""
+
 msgid "Unable to create file directory."
 msgstr ""
 
+msgid "Unable to create tab."
+msgstr ""
+
 msgid "Unable to create the database."
+msgstr ""
+
+msgid "Unable to create the database. You will need to create it manually."
+msgstr ""
+
+msgid "Unable to create the directory. You will need to create it manually."
 msgstr ""
 
 msgid "Unable to delete directory."
@@ -1058,10 +5394,25 @@ msgstr ""
 msgid "Unable to find element \"%s\"."
 msgstr ""
 
+msgid "Unable to find font file for graphic confirmation."
+msgstr ""
+
 msgid "Unable to find the specified editor type."
 msgstr ""
 
 msgid "Unable to find your module's settings.php file."
+msgstr ""
+
+msgid "Unable to get database connect information. Please try again."
+msgstr ""
+
+msgid "Unable to list feed."
+msgstr ""
+
+msgid "Unable to load a link into a specified tab."
+msgstr ""
+
+msgid "Unable to locate SQL import file."
 msgstr ""
 
 msgid "Unable to locate the source directory:"
@@ -1070,10 +5421,63 @@ msgstr ""
 msgid "Unable to log in to the database. Please check your settings."
 msgstr ""
 
+msgid "Unable to make a backup of a local module file."
+msgstr ""
+
+msgid "Unable to move the file to its new directory."
+msgstr ""
+
+msgid "Unable to pull control panel tabs from database."
+msgstr ""
+
+msgid "Unable to read document directory."
+msgstr ""
+
+msgid "Unable to receive theme information."
+msgstr ""
+
+#, php-format
+msgid "Unable to remove directory %s"
+msgstr ""
+
+msgid "Unable to resolve user name."
+msgstr ""
+
+#, php-format
+msgid "Unable to save %s."
+msgstr ""
+
+msgid "Unable to save .htaccess file."
+msgstr ""
+
+msgid "Unable to save category."
+msgstr ""
+
 msgid "Unable to save file in selected directory."
 msgstr ""
 
+msgid "Unable to save menu. Please check error logs."
+msgstr ""
+
+msgid "Unable to save user information."
+msgstr ""
+
+msgid "Unable to save your event suggestion."
+msgstr ""
+
+msgid "Unable to update branch."
+msgstr ""
+
 msgid "Unable to verify source directory. Check PHPWS_SOURCE_DIR."
+msgstr ""
+
+msgid "Unable to write .htaccess file."
+msgstr ""
+
+msgid "Unable to write confirmation graphic to server."
+msgstr ""
+
+msgid "Unable to write to document directory."
 msgstr ""
 
 msgid "Unacceptable document type."
@@ -1085,10 +5489,35 @@ msgstr ""
 msgid "Unapproved"
 msgstr ""
 
+msgid "Unapproved Forms"
+msgstr ""
+
+msgid "Uncategorized"
+msgstr ""
+
 msgid "Uncheck all"
 msgstr ""
 
+msgid "Unchecked modules cannot be installed on this branch."
+msgstr ""
+
+msgid "Unclip"
+msgstr ""
+
 msgid "Uninstall"
+msgstr ""
+
+msgid "Uninstall SQL not found."
+msgstr ""
+
+msgid "Uninstall file not found."
+msgstr ""
+
+#, php-format
+msgid "Uninstall function \"%s\" was not found."
+msgstr ""
+
+msgid "Uninstalling"
 msgstr ""
 
 msgid "Unknown"
@@ -1103,6 +5532,12 @@ msgstr ""
 msgid "Unknown error code."
 msgstr ""
 
+msgid "Unknown error."
+msgstr ""
+
+msgid "Unknown module"
+msgstr ""
+
 msgid "Unknown module."
 msgstr ""
 
@@ -1115,31 +5550,285 @@ msgstr ""
 msgid "Unknown user"
 msgstr ""
 
+msgid "Unknown user."
+msgstr ""
+
+msgid "Unpin"
+msgstr ""
+
+msgid "Unpin all"
+msgstr ""
+
+msgid "Unpin menu"
+msgstr ""
+
 msgid "Unrecognized form type."
+msgstr ""
+
+msgid "Unregistering module from Boost was successful."
+msgstr ""
+
+msgid "Unregistering module from core."
+msgstr ""
+
+msgid "Unregistering other modules from this module."
+msgstr ""
+
+msgid "Unregistering this module from other modules."
+msgstr ""
+
+msgid "Unrestricted"
+msgstr ""
+
+msgid "Unsaved Forms"
+msgstr ""
+
+msgid "Unsorted"
+msgstr ""
+
+msgid "Unsuitable user name characters."
+msgstr ""
+
+msgid "Up"
+msgstr ""
+
+msgid "Update"
+msgstr ""
+
+msgid "Update .htaccess file"
+msgstr ""
+
+msgid "Update Blog Entry"
+msgstr ""
+
+msgid "Update Category"
+msgstr ""
+
+msgid "Update Current Block"
+msgstr ""
+
+msgid "Update Default"
+msgstr ""
+
+msgid "Update Division"
+msgstr ""
+
+msgid "Update Footer"
+msgstr ""
+
+msgid "Update Group"
+msgstr ""
+
+msgid "Update Header"
+msgstr ""
+
+msgid "Update Menu"
+msgstr ""
+
+msgid "Update Profile"
+msgstr ""
+
+msgid "Update Settings"
+msgstr ""
+
+msgid "Update Theme Settings"
+msgstr ""
+
+msgid "Update Unapproved Blog Entry"
+msgstr ""
+
+msgid "Update User"
+msgstr ""
+
+msgid "Update check file not found."
+msgstr ""
+
+msgid "Update complete!"
+msgstr ""
+
+msgid "Update entry"
+msgstr ""
+
+msgid "Update event"
+msgstr ""
+
+msgid "Update header"
+msgstr ""
+
+msgid "Update my information"
+msgstr ""
+
+msgid "Update not completed."
+msgstr ""
+
+msgid "Update page"
+msgstr ""
+
+msgid "Update profile"
+msgstr ""
+
+msgid "Update schedule"
+msgstr ""
+
+msgid "Updated"
+msgstr ""
+
+msgid "Updated by"
+msgstr ""
+
+msgid "Updated on"
+msgstr ""
+
+msgid "Updating"
+msgstr ""
+
+#, php-format
+msgid "Updating branch %s"
+msgstr ""
+
+msgid "Updating core"
+msgstr ""
+
+msgid "Upload"
+msgstr ""
+
+msgid "Upload Image"
 msgstr ""
 
 msgid "Upload directory not set in file object."
 msgstr ""
 
+msgid "Upload document"
+msgstr ""
+
 msgid "Upload file size is larger than allowed."
+msgstr ""
+
+msgid "Upload image"
+msgstr ""
+
+msgid "Upload new document"
+msgstr ""
+
+msgid "Url"
+msgstr ""
+
+msgid "Use Daylight Savings Time"
+msgstr ""
+
+msgid "Use Image Manager"
 msgstr ""
 
 msgid "Use Pear files included with phpWebSite (recommended)."
 msgstr ""
 
+msgid "Use graphic authentication"
+msgstr ""
+
+msgid "Use hub values"
+msgstr ""
+
+msgid "Use option text as values"
+msgstr ""
+
 msgid "Use server's Pear library files (not recommended)."
+msgstr ""
+
+msgid "User"
+msgstr ""
+
+msgid "User Administration"
+msgstr ""
+
+msgid "User Menu"
+msgstr ""
+
+msgid "User Signup Mode"
+msgstr ""
+
+msgid "User attempted access to Blog administration."
+msgstr ""
+
+msgid "User attempted access to Menu administration."
+msgstr ""
+
+msgid "User created successfully."
+msgstr ""
+
+msgid "User created successfully. Check your email for your login information."
+msgstr ""
+
+msgid "User created."
+msgstr ""
+
+msgid "User deified."
+msgstr ""
+
+msgid "User deleted."
+msgstr ""
+
+msgid "User is missing their permission group"
 msgstr ""
 
 msgid "User name"
 msgstr ""
 
+msgid "User name already in use."
+msgstr ""
+
+msgid "User password"
+msgstr ""
+
+msgid "User remains a deity."
+msgstr ""
+
+msgid "User remains a lowly mortal."
+msgstr ""
+
+msgid "User settings updated."
+msgstr ""
+
+msgid "User transformed into a lowly mortal."
+msgstr ""
+
+msgid "User tried to edit a blog."
+msgstr ""
+
 msgid "User tried to post a file beyond server limits."
+msgstr ""
+
+#, php-format
+msgid "User tried to send bad hash (%s) to confirm user."
+msgstr ""
+
+msgid "User tried to upload duplicate image."
+msgstr ""
+
+msgid "User updated."
+msgstr ""
+
+msgid "User's email address is missing or malformed."
+msgstr ""
+
+msgid "User's email address is missing."
+msgstr ""
+
+msgid "User's email used as contact email address."
 msgstr ""
 
 msgid "Username"
 msgstr ""
 
 msgid "Username and password combination not found."
+msgstr ""
+
+msgid "Username and password refused."
+msgstr ""
+
+msgid "Username is improperly formatted."
+msgstr ""
+
+msgid "Users"
 msgstr ""
 
 msgid "Using configuration files directly from module's directory."
@@ -1157,6 +5846,9 @@ msgstr ""
 msgid "VALUE"
 msgstr ""
 
+msgid "Value"
+msgstr ""
+
 #, php-format
 msgid "Variable is a %s, not an object."
 msgstr ""
@@ -1164,7 +5856,79 @@ msgstr ""
 msgid "Variable name not found in_FILES array."
 msgstr ""
 
+msgid "Version"
+msgstr ""
+
+msgid "Version Needed"
+msgstr ""
+
+msgid "Version function requires an item id."
+msgstr ""
+
+msgid "Version required"
+msgstr ""
+
+msgid "Version settings"
+msgstr ""
+
+#, php-format
+msgid "Version table removed: %s"
+msgstr ""
+
+msgid "Vertical Checkerboard"
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "View Module"
+msgstr ""
+
+msgid "View Photo"
+msgstr ""
+
+msgid "View full image"
+msgstr ""
+
+msgid "View other items to add them to the list."
+msgstr ""
+
+msgid "View page list"
+msgstr ""
+
+msgid "View reports"
+msgstr ""
+
+msgid "View restrictions"
+msgstr ""
+
+msgid "View version"
+msgstr ""
+
+msgid "Viewing of archive has been canceled."
+msgstr ""
+
 msgid "Visible"
+msgstr ""
+
+msgid "Visit this location's web site."
+msgstr ""
+
+msgid "Visits"
+msgstr ""
+
+msgid "Volume is missing a title."
+msgstr ""
+
+msgid "WARNING!"
+msgstr ""
+
+msgid ""
+"WARNING: Only deities can uninstall core modules. Doing so may corrupt your "
+"installation!"
+msgstr ""
+
+msgid "Want to join?"
 msgstr ""
 
 msgid "Warning"
@@ -1173,10 +5937,76 @@ msgstr ""
 msgid "We suggest you use the library files included with phpWebSite."
 msgstr ""
 
+msgid "Web Page Approval"
+msgstr ""
+
 msgid "Web Page is not installed."
 msgstr ""
 
+msgid "Web Page tables removed."
+msgstr ""
+
+msgid "Web Pages"
+msgstr ""
+
+msgid "Web page approved."
+msgstr ""
+
 msgid "Web pages have already been converted."
+msgstr ""
+
+msgid "Web site"
+msgstr ""
+
+msgid "Web site address"
+msgstr ""
+
+msgid "Web site address does not appear valid."
+msgstr ""
+
+msgid "Webpage title"
+msgstr ""
+
+msgid "Website"
+msgstr ""
+
+msgid "Week"
+msgstr ""
+
+msgid "Week start day"
+msgstr ""
+
+msgid "Week view"
+msgstr ""
+
+msgid "Weekly"
+msgstr ""
+
+msgid "Weekly repeats require you pick one or more days."
+msgstr ""
+
+msgid "Welcome!"
+msgstr ""
+
+msgid "What do you want the title to be?"
+msgstr ""
+
+msgid "Wheel"
+msgstr ""
+
+msgid "When active, you will be able to use the following link:"
+msgstr ""
+
+msgid "Why can't I change my password?"
+msgstr ""
+
+msgid "Width"
+msgstr ""
+
+msgid "Wipe Up"
+msgstr ""
+
+msgid "Write .htaccess file"
 msgstr ""
 
 msgid "Wrong data type."
@@ -1188,7 +6018,73 @@ msgstr ""
 msgid "Wrong variable type."
 msgstr ""
 
+msgid "Yearly"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "Yes, make them a deity."
+msgstr ""
+
+msgid "Yes, make them a mortal."
+msgstr ""
+
+msgid "You already have an account."
+msgstr ""
+
+msgid "You are not authorized to administrate categories."
+msgstr ""
+
+msgid "You can access this item with the following link:"
+msgstr ""
+
 msgid "You can now finish the creation of your config file."
+msgstr ""
+
+msgid "You do not have mod rewrite enabled."
+msgstr ""
+
+msgid "You do not have permission to add photos within an album."
+msgstr ""
+
+msgid "You failed verification. Try again."
+msgstr ""
+
+msgid "You have \"Allow all\" enabled. All rows below will be ignored."
+msgstr ""
+
+msgid "You have \"Deny all\" enabled. All rows below will be ignored."
+msgstr ""
+
+#, php-format
+msgid "You have %d unread notes."
+msgstr ""
+
+msgid "You have already filled out this form!"
+msgstr ""
+
+#, php-format
+msgid ""
+"You have chosen <b>not</b> to delete the archive with the filename \"%s\"."
+msgstr ""
+
+#, php-format
+msgid ""
+"You have chosen <b>not</b> to delete the export with the filename \"%s\"."
+msgstr ""
+
+msgid ""
+"You have chosen to edit a saved form! All current data will be archived and "
+"cleared if you chose to continue!  Make sure you export your data from your "
+"form before you continue!"
+msgstr ""
+
+msgid "You have exceeded your allowed event submissions."
+msgstr ""
+
+#, php-format
+msgid "You have passed the maximum allowed characters in the %s text field."
 msgstr ""
 
 msgid "You may change it if you wish."
@@ -1201,16 +6097,121 @@ msgid "You may convert two different ways."
 msgstr ""
 
 #, php-format
+msgid "You may not pull more than %s feeds."
+msgstr ""
+
+#, php-format
 msgid "You may not use \"%s\" as a form element name."
 msgstr ""
 
+msgid "You may not use that branch name."
+msgstr ""
+
+msgid "You may not use that name for this form element."
+msgstr ""
+
+msgid "You may try to suggest a different event."
+msgstr ""
+
 msgid "You must be a deity to run Site Manager."
+msgstr ""
+
+msgid "You must be logged in to view this form!"
+msgstr ""
+
+msgid "You must choose a repeat mode."
+msgstr ""
+
+msgid "You must choose which weekdays to repeat."
+msgstr ""
+
+msgid "You must enable allow_url_fopen in your php.ini file."
+msgstr ""
+
+msgid "You must enter a name for the Photo Album."
+msgstr ""
+
+msgid "You must enter a short description for the photo."
+msgstr ""
+
+msgid "You must enter a title."
+msgstr ""
+
+msgid "You must enter a username."
+msgstr ""
+
+msgid "You must enter an address."
+msgstr ""
+
+msgid "You must fill out all required fields to continue."
+msgstr ""
+
+msgid "You must give your event a summary."
+msgstr ""
+
+msgid "You must have at least one element to save this form."
+msgstr ""
+
+msgid "You must include a subject or comment."
+msgstr ""
+
+msgid "You must name your branch."
+msgstr ""
+
+msgid "You must provide a submission message."
+msgstr ""
+
+msgid "You must remove the image before uploading a new one."
+msgstr ""
+
+msgid "You must type a database name."
+msgstr ""
+
+msgid "You must type a database user."
+msgstr ""
+
+msgid "You need to enter a title or some content."
+msgstr ""
+
+msgid "You need to set a site contact address."
+msgstr ""
+
+msgid "You only have permission to edit your own forms!"
+msgstr ""
+
+msgid "You recently posted this identical profile."
+msgstr ""
+
+msgid "You should refresh more often than every month."
 msgstr ""
 
 msgid "You will need to change the permissions."
 msgstr ""
 
 msgid "You will need to create it manually and rerun the setup."
+msgstr ""
+
+msgid "You will return to the home page in five seconds."
+msgstr ""
+
+msgid "Your .htaccess file will contain the below:"
+msgstr ""
+
+msgid "Your <b>.htaccess</b> file is not writable."
+msgstr ""
+
+msgid ""
+"Your account has been deactivated. You will need to contact a site "
+"administrator to have it reactivated."
+msgstr ""
+
+msgid "Your account has been successfully activated. Please log in."
+msgstr ""
+
+msgid "Your branch site must have a site_hash."
+msgstr ""
+
+msgid "Your category must have a title."
 msgstr ""
 
 msgid "Your configuration file already exists."
@@ -1223,7 +6224,31 @@ msgstr ""
 msgid "Your configuration file was written successfully!"
 msgstr ""
 
+msgid "Your contact email is formatted improperly."
+msgstr ""
+
 msgid "Your core config.php file is missing. Please create one and return."
+msgstr ""
+
+msgid "Your entry has been submitted for review."
+msgstr ""
+
+msgid "Your entry is being held for approval."
+msgstr ""
+
+#, php-format
+msgid "Your logs/%s file must be readable and writable."
+msgstr ""
+
+msgid "Your submission is still awaiting approval."
+msgstr ""
+
+msgid "Your title is empty or already in use. Enter another."
+msgstr ""
+
+msgid ""
+"Your user account has not been approved yet. Make sure you have responded to "
+"your authentication email."
 msgstr ""
 
 msgid "\\1 wrote"
@@ -1232,7 +6257,22 @@ msgstr ""
 msgid "a heartbeat ago"
 msgstr ""
 
+msgid "high tech"
+msgstr ""
+
+msgid "images"
+msgstr ""
+
+msgid "index.php?module=boost&amp;action=admin"
+msgstr ""
+
+msgid "item(s)"
+msgstr ""
+
 msgid "loadObject expected the object to have an id or where clause."
+msgstr ""
+
+msgid "low tech"
 msgstr ""
 
 msgid "of"
@@ -1253,4 +6293,10 @@ msgid ""
 msgstr ""
 
 msgid "phpWebSite uses the Pear library extensively."
+msgstr ""
+
+msgid "the "
+msgstr ""
+
+msgid "to"
 msgstr ""
