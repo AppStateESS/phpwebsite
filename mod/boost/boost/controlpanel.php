@@ -5,6 +5,7 @@
  * @version $Id$
  */
 
+translate('boost');
 $link[] = array('label'       => _('Boost'),
 		'restricted'  => TRUE,
 		'url'         => 'index.php?module=boost&action=admin',
@@ -12,4 +13,5 @@ $link[] = array('label'       => _('Boost'),
 		'image'       => 'boost.png',
 		'tab'         => 'admin'
 		);
+translate();
 ?>

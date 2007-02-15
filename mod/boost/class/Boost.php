@@ -99,6 +99,7 @@ class PHPWS_Boost {
 
     function install($inBoost=true, $inBranch=false, $home_dir=NULL)
     {
+        translate('boost');
         $continue = false;
         $content = array();
         if (!$this->isModules()) {
@@ -137,7 +138,8 @@ class PHPWS_Boost {
             }
 
             $result = $this->onInstall($mod, $content);
-
+            // in case install changes translate directory
+            translate('boost');
             if ($result === true) {
                 $this->setStatus($title, BOOST_DONE);
                 $this->createDirectories($mod, $content, $home_dir);
@@ -165,7 +167,6 @@ class PHPWS_Boost {
                 $continue = true;
                 break;
             }
-
         }
 
         if ($continue && $last_mod->title != $title) {
@@ -183,13 +184,14 @@ class PHPWS_Boost {
         } elseif($continue) {
             $content[] = _('Installation complete!');
         }
-    
+        translate();    
         return implode('<br />', $content);    
     }
 
 
     function onInstall($mod, &$installCnt)
     {
+        translate('boost');
         $onInstallFile = $mod->getDirectory() . 'boost/install.php';
         $installFunction = $mod->title . '_install';
         if (!is_file($onInstallFile)) {
@@ -210,6 +212,7 @@ class PHPWS_Boost {
         else {
             return true;
         }
+        translate();
     }
 
     function onUpdate($mod, &$updateCnt)

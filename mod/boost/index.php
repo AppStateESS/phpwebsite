@@ -1,10 +1,14 @@
 <?php
+  /**
+   * @version $Id$
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   */
 
 if (!defined('PHPWS_SOURCE_DIR')) {
     include '../../config/core/404.html';
     exit();
 }
-
+translate('boost');
 PHPWS_Core::requireConfig('boost');
 
 if (DEITY_ACCESS_ONLY && !Current_User::isDeity()) {
@@ -89,4 +93,5 @@ switch ($_REQUEST['action']){
 $boostPanel->setContent(implode('', $content));
 $finalContent = $boostPanel->display();
 Layout::add(PHPWS_ControlPanel::display($finalContent));
+translate();
 ?>

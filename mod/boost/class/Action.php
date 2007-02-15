@@ -9,6 +9,7 @@ class Boost_Action {
 
     function checkupdate($mod_title)
     {
+        translate('boost');
         PHPWS_Core::initCoreClass('Module.php');
         $module = new PHPWS_Module($mod_title);
     
@@ -77,7 +78,7 @@ class Boost_Action {
         }
 
         $template['TITLE'] = _('Module') . ': ' . $module->getProperName(TRUE);
-
+        translate();
         return PHPWS_Template::process($template, 'boost', 'check_update.tpl');
     }
 
@@ -104,6 +105,7 @@ class Boost_Action {
 
     function updateCore()
     {
+        translate('boost');
         PHPWS_Core::initModClass('boost', 'Boost.php');
         $content[] = _('Updating core');
 
@@ -131,7 +133,7 @@ class Boost_Action {
         } else {
             $content[] = _('An error occurred updating the core.');
         }
-
+        translate();
         return implode('<br />', $content);
     }
 
@@ -150,6 +152,7 @@ class Boost_Action {
 
     function showDependedUpon($base_mod)
     {
+        translate('boost');
         PHPWS_Core::initCoreClass('Module.php');
         $module = new PHPWS_Module($base_mod);
         $dependents = $module->isDependedUpon();
@@ -166,11 +169,13 @@ class Boost_Action {
         }
         
         $template['CONTENT'] = implode('<br />', $content);
+        translate();
         return PHPWS_Template::process($template, 'boost', 'main.tpl');
     }
 
     function showDependency($base_module_title)
     {
+        translate('boost');
         PHPWS_Core::initCoreClass('Module.php');
         $module = new PHPWS_Module($base_module_title);
         $depend = $module->getDependencies();
@@ -211,7 +216,7 @@ class Boost_Action {
             }
             $template['module-row'][] = $tpl;
         }
-
+        translate();
         return PHPWS_Template::process($template, 'boost', 'dependency.tpl');
     }
 

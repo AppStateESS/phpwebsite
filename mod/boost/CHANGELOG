@@ -1,3 +1,10 @@
+15 February 2007
++ Added translate functions
+
+9 January 2007
++ Boost now reports on the directories it deletes.
++ Boost now only deletes image and file directories if defined on install.
+
 8 December 2006
 + Added error check for version checking Bug #1606366
 
