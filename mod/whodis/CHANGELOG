@@ -1,0 +1,13 @@
+Version 0.0.3
+---------------------------------------------------------------------
+9 January 2007
++ Added search option to listing.
++ Added checkboxes on referrers for search deletions.
+
+Version 0.0.2
+---------------------------------------------------------------------
+4 December 2006
++ Added purge functionality.
+
+1 December 2006
++ Created href referrer module.
