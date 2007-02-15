@@ -5,7 +5,7 @@
    * @author Matthew McNaney <mcnaney at gmail dot com>
    * @version $Id$
    */
-
+translate('calendar');
 $use_permissions  = TRUE;
 $item_permissions = TRUE;
 
@@ -15,5 +15,5 @@ $permissions['edit_public']         = _('Create/Edit public schedule');
 // Creation of private schedules handled by calendar settings
 $permissions['edit_private']        = _('Edit private schedule');
 $permissions['delete_schedule']     = _('Delete schedules (unrestricted only)');
-
+translate();
 ?>

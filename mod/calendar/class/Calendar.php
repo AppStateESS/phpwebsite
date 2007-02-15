@@ -378,7 +378,9 @@ class PHPWS_Calendar {
         if (!$this->schedule->id) {
             $this->loadDefaultSchedule();
             if (!$this->schedule->id) {
+                translate('calendar');
                 $this->schedule->title = _('General');
+                translate();
             }
         }
 

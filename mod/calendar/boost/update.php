@@ -7,78 +7,11 @@
 
 function calendar_update(&$content, $version)
 {
-
     switch ($version) {
-    case version_compare($version, '1.1.0', '<'):
-        $files[] = 'templates/style.css';
-        $files[] = 'templates/admin/settings.tpl';
-        $files[] = 'templates/admin/forms/edit_schedule.tpl';
-        if (PHPWS_Boost::updateFiles($files, 'calendar')) {
-            $content[] = 'Template files updated.';
-        } else {
-            $content[] = 'Failed to copy template files.';
-        }
-        $content[] = 'New - event displays as Busy to the public if set as such.';
-        $content[] = 'New - Settings tab returns with a few basic settings.';
-
-    case version_compare($version, '1.2.0', '<'):
-        $files = array('templates/admin/forms/settings.tpl');
-        if (PHPWS_Boost::updateFiles($files, 'calendar')) {
-            $content[] = 'Template files updated.';
-        } else {
-            $content[] = 'Failed to copy template files.';
-        }
-        
-        $content[] = '- Opened up private calendar key posting to allow permission settings.';
-        $content[] = '- Added admin option to change the default calendar view.';
-        $content[] = '- Month link on mini calendar now opens the default view.';
-        $content[] = '- Public calendars that are restricted are now properly hidden.';
-
-    case version_compare($version, '1.2.1', '<'):
-        $files = array();
-        $files[] = 'templates/admin/forms/setting.tpl';
-        if (PHPWS_Boost::updateFiles($files, 'calendar')) {
-            $content[] = 'Template files updated.';
-        } else {
-            $content[] = 'Failed to copy template files.';
-        }
-
-        $content[] = '<pre>
-+ Updated file - templates/admin/forms/setting.tpl
-+ Fixed bug #1589525 - Calendar days not linked to correct day view.
-+ Fixed bug #1589528 - Added option to show mini calendar on all
-  pages, front only, or none to settings tab.
-+ Added language file.
-+ Updated files templates/admin/forms/settings.tpl
-+ Opened up private calendar key posting to allow permission settings.
-+ Added admin option to change the default calendar view
-+ Month link on mini calendar now opens the default view.
-+ Public calendars that are restricted are now properly hidden.
-</pre>';
-
     case version_compare($version, '1.2.2', '<'):
-        $files = array();
-        $files[] = 'templates/admin/forms/setting.tpl';
-        if (PHPWS_Boost::updateFiles($files, 'calendar')) {
-            $content[] = 'Template files updated.';
-        } else {
-            $content[] = 'Failed to copy template files.';
-        }
-
-        $content[] = '<pre>
-1.2.2 Changes
--------------
-+ Fixed mini calendar changing date when viewing other months
-+ Creating a new event will now properly use the currently viewed date
-+ Added reset cache link to miniadmin
-+ Added setting to show day links on mini calendar only if there is an
-  event on that day (Bug #1596779).
-+ Added caching to mini calendar
-+ Opened caching on grid regardless of log status
-+ Events now appear on previous and next months in grid view
-  (Bug #1596780) 
-</pre>';
-
+        $content[] = 'This package will not update any versions prior to 1.2.2.';
+        return false;
+        
     case version_compare($version, '1.3.0', '<'):
         $result = PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/calendar/boost/sql_update_130.sql');
         if (PEAR::isError($result)) {
@@ -101,7 +34,7 @@ function calendar_update(&$content, $version)
                 $content[] = '+ Unable to copy template files locally.';
                 $content[] = '<pre>' . implode("\n", $files) . '</pre>';
             }
-
+            
             $content[] = '+ Suggestion table import successful';
             $content[] = '<pre>
 1.3.0 Changes
@@ -110,10 +43,39 @@ function calendar_update(&$content, $version)
 + Fixed some issues with javascript disabled users unable to make events.
 + First public schedule is made the default on creation.
 </pre>';
-
         }
-        break;
+            
+    case version_compare($version, '1.4.0', '<'):
+        $content[] = "<pre>1.4.0 Changes\n-------------";
+        $files = array('templates/admin/settings.tpl', 'conf/config.php');
+        if (PHPWS_Boost::updateFiles($files, 'calendar')) {
+            $content[] = '+ Successfully copied these files locally:';
+        } else {
+            $content[] = '+ Could not copy these files locally:';
+        }
 
+        $content[] = '    ' . implode("\n    ", $files);
+        $content[] = '+ Bug #1648965. Clicking Day or Week from grid view pulls correct day
++ Changed "Today" link to view appropiate description to prevent
+  confusion
++ Changed time defaults to %p to work with more installs
++ If start date is greater than end date, the event will be saved to
+  the save day.
++ Bug #1648963. Fixed mini month not showing days with events.
++ Made event count linkable in grid view
++ Labeled some permissions "unrestricted only"
++ Added permissions checks for editing and deleting
++ Created checkPermissions function in schedule class to simplify code
++ Removed commented legacy code from Schedule.php
++ Added missing suggestion tables to install and uninstall
++ Fixed caching logic
++ Fixed default schedule loading in Calendar class
++ Fixed inability to create more than one schedule
++ Added option to disable month view caching
++ Caching now works on public calendars only.
++ Added translate functions.
++ Updated message translation files.</pre>';
+        
     }
 
     return true;

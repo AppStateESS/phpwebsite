@@ -178,6 +178,7 @@ class Calendar_Event {
 
     function deleteLink()
     {
+        translate('calendar');
         if (javascriptEnabled()) {
             $vars['QUESTION'] = _('Are you sure you want to permanently delete this event?');
             $vars['ADDRESS'] = sprintf('index.php?module=calendar&amp;aop=delete_event&amp;sch_id=%s&amp;event_id=%s',
@@ -197,16 +198,18 @@ class Calendar_Event {
 
     function editLink($full=false)
     {
+        translate('calendar');
         $linkvar['aop']      = 'edit_event';
         $linkvar['sch_id']   = $this->_schedule->id;
         $linkvar['event_id'] = $this->id;
-
+        
         if ($full) {
             $link_label = _('Edit event');
         } else {
             $link_label = _('Edit');
         }
 
+        translate();
         if (javascriptEnabled()) {
             $linkvar['js'] = 1;
             $jsvars['address'] = PHPWS_Text::linkAddress('calendar', $linkvar);
@@ -319,6 +322,7 @@ class Calendar_Event {
 
     function getTpl()
     {
+        translate('calendar');
         if ( $this->show_busy && !$this->_schedule->checkPermissions() ) {
             $tpl['SUMMARY']     = _('Busy');
             $tpl['DESCRIPTION'] = null;
@@ -413,6 +417,7 @@ class Calendar_Event {
         }
 
         $tpl['BACK_LINK'] = PHPWS_Text::backLink();
+        translate();
         return $tpl;
     }
 
@@ -475,6 +480,7 @@ class Calendar_Event {
      */
     function post($suggested=false)
     {
+        translate('calendar');
         if (empty($_POST['summary'])) {
             $errors[] = _('You must give your event a summary.');
         } else {
@@ -605,6 +611,7 @@ class Calendar_Event {
         } else {
             return true;
         }
+        translate();
     }
 
 

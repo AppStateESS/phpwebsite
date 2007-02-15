@@ -13,6 +13,6 @@ $errors = array(
                 CAL_REPEAT_LIMIT_PASSED => _('Maximum allowed repeats reached.'),
                 CAL_CANNOT_MAKE_EVENT_TABLE => _('Cannot create event table.')
                 );
-
+translate();
 
 ?>

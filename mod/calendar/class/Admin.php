@@ -61,6 +61,7 @@ class Calendar_Admin {
     {
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('calendar', 'Suggestion.php');
+        translate('calendar');
         $pager = new DBPager('calendar_suggestions', 'Calendar_Suggestion');
         $pager->setModule('calendar');
         $pager->setTemplate('admin/approval.tpl');
@@ -76,6 +77,7 @@ class Calendar_Admin {
 
         $this->title = _('Suggested events');
         $this->content = $pager->get();
+        translate();
     }
 
     function approveSuggestion($id)
@@ -126,6 +128,7 @@ class Calendar_Admin {
 
     function editEvent($event)
     {
+        translate('calendar');
         if ($event->id) {
             $this->title = _('Update event');
         } else {
@@ -133,10 +136,12 @@ class Calendar_Admin {
         }
 
         $this->content = $this->event_form($event);
+        translate();
     }
 
     function editSchedule()
     {
+        translate('calendar');
         if ($this->calendar->schedule->id) {
             $this->title = _('Update schedule');
         } else {
@@ -144,6 +149,7 @@ class Calendar_Admin {
         }
 
         $this->content = $this->calendar->schedule->form();
+        translate();
     }
 
     /**
@@ -151,6 +157,7 @@ class Calendar_Admin {
      */
     function event_form(&$event, $suggest=false)
     {
+        translate('calendar');
         Layout::addStyle('calendar');
         
         // the form id is linked to the check_date javascript
@@ -386,7 +393,7 @@ class Calendar_Admin {
             javascript('modules/calendar/edit_event');
             javascript('modules/calendar/check_date');
         }
-
+        translate();
         return PHPWS_Template::process($tpl, 'calendar', 'admin/forms/edit_event.tpl');
     }
 
@@ -395,7 +402,7 @@ class Calendar_Admin {
     {
         $panel = new PHPWS_Panel('calendar');
 
-
+        translate('calendar');
         $vars['aop'] = 'schedules';
         $tabs['schedules'] = array('title' => _('Schedules'),
                                    'link' => PHPWS_Text::linkAddress('calendar', $vars));
@@ -420,6 +427,7 @@ class Calendar_Admin {
         }
 
         $panel->quickSetTabs($tabs);
+        translate();
         return $panel;
     }
 
@@ -428,6 +436,7 @@ class Calendar_Admin {
      */
     function main()
     {
+        translate('calendar');
         if (!Current_User::allow('calendar')) {
             Current_User::disallow();
             return;
@@ -595,7 +604,7 @@ class Calendar_Admin {
             $panel->setContent($final);
             Layout::add(PHPWS_ControlPanel::display($panel->display()));
         }
-
+        translate();
     }
 
     /**
@@ -603,6 +612,7 @@ class Calendar_Admin {
      */
     function postEvent()
     {
+        translate('calendar');
         $event = $this->calendar->schedule->loadEvent();
         $event->loadPrevious();
         if ($event->post()) {
@@ -663,6 +673,7 @@ class Calendar_Admin {
         } else {
             $this->editEvent($event);
         }
+        translate();
     }
 
     function postSettings()
@@ -778,6 +789,7 @@ class Calendar_Admin {
 
     function postSchedule()
     {
+        translate('calendar');
         if ($this->calendar->schedule->post()) {
             if (!$this->allowSchedulePost()) {
                 Current_User::disallow();
@@ -814,6 +826,7 @@ class Calendar_Admin {
             $this->message = $this->calendar->schedule->_error;
             $this->editSchedule();
         }
+        translate();
     }
 
     function repeatDaily(&$event)
@@ -846,6 +859,7 @@ class Calendar_Admin {
 
     function repeatEvent($event)
     {
+        translate('calendar');
         if (!$event->id) {
             $this->content = _('This event does not exist.');
             return;
@@ -858,6 +872,7 @@ class Calendar_Admin {
             $js = false;
         }
         $this->content = $event->repeat($js);
+        translate();
     }
 
     function repeatEvery(&$event)
@@ -997,10 +1012,12 @@ class Calendar_Admin {
     function repeatWeekly(&$event)
     {
         if (!isset($_POST['weekday_repeat']) || !is_array($_POST['weekday_repeat'])) {
+            translate('calendar');
             $this->message = _('You must choose which weekdays to repeat.');
+            translate();
             return false;
         }
-
+        
         $time_unit = $event->start_time + 86400;
 
         $copy_event = $event->repeatClone();
@@ -1032,13 +1049,9 @@ class Calendar_Admin {
     }
 
 
-    function repeatYearly(&$event)
-    {
-
-    }
-
     function scheduleListing()
     {
+        translate('calendar');
         $this->title = _('Schedules');
 
         PHPWS_Core::initCoreClass('DBPager.php');
@@ -1081,7 +1094,7 @@ class Calendar_Admin {
         $pager->db->addJoin('left', 'calendar_schedule', 'users', 'user_id', 'id');
 
         $pager->initialize();
- 
+        translate();
         $this->content = $pager->get();
     }
 
@@ -1095,6 +1108,7 @@ class Calendar_Admin {
 
     function settings()
     {
+        translate('calendar');
         $form = new PHPWS_Form('calendar_settings');
         $form->addHidden('module', 'calendar');
         $form->addHidden('aop', 'post_settings');
@@ -1106,7 +1120,6 @@ class Calendar_Admin {
         $form->addCheckbox('mini_event_link', 1);
         $form->setMatch('mini_event_link', PHPWS_Settings::get('calendar', 'mini_event_link'));
         $form->setLabel('mini_event_link', _('Only link days with events in mini calendar'));
-
 
         $start_days = array(0,1);
         $start_days_label[0] = strftime('%A', mktime(0,0,0,1,4,1970));
@@ -1145,6 +1158,7 @@ class Calendar_Admin {
 
         $this->content = PHPWS_Template::process($tpl, 'calendar', 'admin/settings.tpl');
         $this->title   = _('Calendar settings');
+        translate();
     }
 
 }
