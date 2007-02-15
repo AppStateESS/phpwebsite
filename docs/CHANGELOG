@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+Version 1.4.0
+----------------------------------------------------------------------
+
 14 February 2007
 + Theme
   o changed padded style from px to em
@@ -113,6 +116,9 @@ its own separate CHANGELOG file.
   o Added functions to try and prevent table prefixing inside single
     quotes. 
 
+
+Version 1.3.7
+--------------------------------------------------------------------------
 13 December 2006
 + Editor
   o Added a "limited" option to allow the wysiwyg stub developer to
