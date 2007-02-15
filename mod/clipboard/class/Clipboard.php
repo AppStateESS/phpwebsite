@@ -38,6 +38,7 @@ class Clipboard
 
     function view()
     {
+        translate('clipboard');
         $clip = $_SESSION['Clipboard']->components[$_REQUEST['key']]->content;
         $clip =  sprintf('<textarea cols="35" rows="4">%s</textarea>', $clip);
    
@@ -48,6 +49,7 @@ class Clipboard
         $button = _('Close Window');
         $template['BUTTON'] = sprintf('<input type="button" onclick="window.close()" value="%s" />', $button);
         Layout::nakedDisplay(PHPWS_Template::process($template, 'clipboard', 'clipboard.tpl'));
+        translate();
     }
 
 
@@ -78,6 +80,7 @@ class Clipboard
             $content[] = Layout::getJavascript('open_window', $data) . ' ' . $drop;
         }
 
+        translate('clipboard');
         unset($clipVars['key']);
         $clipVars['action'] = 'clear';
         $template['CLEAR'] = PHPWS_Text::moduleLink(_('Clear'), 'clipboard', $clipVars);
@@ -89,11 +92,12 @@ class Clipboard
         $layout = PHPWS_Template::process($vars, 'clipboard', 'show.tpl');
 
         Layout::set($layout, 'clipboard', 'clipboard');
+        translate();
     }
 
     function init()
     {
-        $_SESSION['Clipboard'] = & new Clipboard;
+        $_SESSION['Clipboard'] = new Clipboard;
     }
 
     function copy($title, $content)
@@ -105,7 +109,7 @@ class Clipboard
         $key = md5($title . $content);
 
         if (!isset($_SESSION['Clipboard']->components[$key])) {
-            $_SESSION['Clipboard']->components[$key] = & new Clipboard_Component($title, $content);
+            $_SESSION['Clipboard']->components[$key] = new Clipboard_Component($title, $content);
         }
         Clipboard::show();
     }

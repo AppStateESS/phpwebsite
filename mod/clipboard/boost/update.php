@@ -12,10 +12,13 @@ function clipboard_update(&$content, $currentVersion)
         $db->addWhere('itemname', 'clipboard');
         $db->delete();
         $content[] = 'Removing Clipboard\'s Control Panel link.';
-        return TRUE;
-        break;
+
+
+    case version_compare($currentVersion, '0.0.3', '<'):
+        $content[] = '<pre>+ Added translate functions</pre>';
     }
 
+    return true;
 }
 
 ?>
