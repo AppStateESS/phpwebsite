@@ -11,8 +11,10 @@ function block_uninstall(&$content)
 {
     PHPWS_DB::dropTable('block');
     PHPWS_DB::dropTable('block_pinned');
+    translate('block');
     $content[] = _('Block tables removed.');
-    return TRUE;
+    translate();
+    return true;
 }
 
 

@@ -1,6 +1,21 @@
+Version 1.1.1
+---------------------------------------------------------------
+
+15 February 2007
++ Updated translation files.
++ Added translate functions.
+
 14 February 2007
 + Removed table format from edit form
 + Updated files: templates/edit.tpl
+
+Version 1.1.0
+---------------------------------------------------------------
+
+22 January 2007
++ Added ability to pin blocks to all pages.
++ Added view permissions.
+
 
 Version 1.0.2
 ---------------------------------------------------------------

@@ -159,7 +159,7 @@ class Block_Item {
     function view($pin_mode=FALSE, $admin_icon=TRUE)
     {
         $edit = $opt = NULL;
-        
+        translate('block');
         if (Current_User::allow('block')) {
             $img = sprintf('<img src="./images/mod/block/edit.png" alt="%s" title="%s" />', _('Edit block'), _('Edit block'));
             $edit = PHPWS_Text::secureLink($img, 'block', array('block_id'=>$this->id,
@@ -189,7 +189,7 @@ class Block_Item {
                           'OPT'     => $opt,
                           'EDIT'    => $edit
                           );
-    
+        translate();
         return PHPWS_Template::process($template, 'block', 'sample.tpl');
     }
 
@@ -232,6 +232,7 @@ class Block_Item {
 
     function getTpl()
     {
+        translate('block');
         $vars['block_id'] = $this->getId();
 
         if (Current_User::allow('block', 'edit_block', $this->id)) {
@@ -272,7 +273,7 @@ class Block_Item {
 
         $template['ACTION'] = implode(' | ', $links);
         $template['CONTENT'] = $this->summarize();
-
+        translate();
         return $template;
     }
 

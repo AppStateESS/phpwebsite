@@ -38,6 +38,7 @@ class Block_Admin {
 
     function &cpanel()
     {
+        translate('block');
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $linkBase = 'index.php?module=block';
         $tabs['new']  = array ('title'=>_('New'),  'link'=> $linkBase);
@@ -48,11 +49,13 @@ class Block_Admin {
         $panel->quickSetTabs($tabs);
 
         $panel->setModule('block');
+        translate();
         return $panel;
     }
 
     function route($action)
     {
+        translate('block');
         $title = $content = NULL;
         $message = Block_Admin::getMessage();
 
@@ -151,7 +154,7 @@ class Block_Admin {
             $template['MESSAGE'] = &$message;
         }
         $template['CONTENT'] = &$content;
-
+        translate();
         return PHPWS_Template::process($template, 'block', 'admin.tpl');
     }
 
@@ -195,6 +198,7 @@ class Block_Admin {
 
     function edit(&$block, $js=FALSE)
     {
+        translate('block');
         PHPWS_Core::initCoreClass('Editor.php');
         $form = & new PHPWS_Form;
         $form->addHidden('module', 'block');
@@ -231,6 +235,7 @@ class Block_Admin {
         $template = $form->getTemplate();
 
         $content = PHPWS_Template::process($template, 'block', 'edit.tpl');
+        translate();
         return $content;
     }
 
@@ -244,6 +249,7 @@ class Block_Admin {
 
     function blockList()
     {
+        translate('block');
         PHPWS_Core::initCoreClass('DBPager.php');
     
         $pageTags['TITLE']   = _('Title');
@@ -255,9 +261,9 @@ class Block_Admin {
         $pager->addToggle('class="bgcolor1"');
         $pager->addPageTags($pageTags);
         $pager->addRowTags('getTpl');
-    
+        
         $content = $pager->get();
-
+        translate();
         return $content;
     }
 

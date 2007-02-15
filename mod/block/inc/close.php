@@ -8,6 +8,7 @@
 Block::show();
 
 if (Current_User::allow('block')) {
+    translate('block');
     $key = Key::getCurrent();
     if (Key::checkKey($key) && javascriptEnabled()) {
         $val['address'] = sprintf('index.php?module=block&action=js_block_edit&key_id=%s&authkey=%s',
@@ -17,6 +18,7 @@ if (Current_User::allow('block')) {
         $val['height'] = 480;
         MiniAdmin::add('block', javascript('open_window', $val));
     }
+    translate();
  }
 
 ?>

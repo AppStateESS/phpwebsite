@@ -55,6 +55,21 @@ function block_update(&$content, $currentVersion)
 + Added ability to pin blocks to all pages.
 + Added view permissions.
 </pre>';
+
+    case version_compare($currentVersion, '1.1.1', '<'):
+        $content[] = '<pre>
+1.1.1 changes
+-------------';
+        if (PHPWS_Boost::updateFiles(array('templates/edit.tpl'), 'block')) {
+            $content[] = '+ Updated edit.tpl file copied locally.';
+        } else {
+            $content[] = '+ Unable to copy edit.tpl locally.';
+        }
+
+        $content[] = '+ Updated translation files.
++ Added translate functions.
++ Removed table format from edit form
+</pre>';
     }
     
     return TRUE;
