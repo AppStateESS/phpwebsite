@@ -15,6 +15,18 @@ function access_update(&$content, $version)
             $content[] = '- Unable to copy config.php locally.';
         }
         $content[] = '- Added rewrite conditionals to .htaccess write.';
+
+    case version_compare($version, '0.1.1', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/main.tpl', 'templates/box.tpl', 'templates/shortcut_menu.tpl');
+        if (PHPWS_Boost::updateFiles($files, 'access')) {
+            $content[] = '-- Copied following template files locally:';
+        } else {
+            $content[] = '-- Failed to copy the following files locally:';
+        }
+        $content[] = implode("\n", $files);
+        $content[] = '+ Fixed header tags (Bug #1652279)';
+        $content[] = '</pre>';
     }
 
     return true;
