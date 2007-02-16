@@ -1,3 +1,5 @@
+Version 1.1.0
+------------------------------------------------------------------
 14 February 2007
 + Removed references from object constructors
 + Removed a unneeded double urlencode and a urldecode
@@ -21,6 +23,9 @@
 + Added a color : inherit to menu's style sheet to conform with css
   standards.
 
+Version 1.0.4
+-------------------------------------------------------------------
+
 3 November 2006
 + Updated files - templates/links/link.tpl,
                   templates/menu_layout/basic.tpl
@@ -29,8 +34,6 @@
 + setUrl function changed to figure url without local parameter
   setting
 
-Version 1.0.4
--------------------------------------------------------------------
 2 November 2006
 + Bug #1588771 - Fixed admin page not working with menu
 

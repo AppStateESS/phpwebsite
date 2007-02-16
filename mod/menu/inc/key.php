@@ -16,7 +16,7 @@ function menu_unregister_key(&$key)
         return FALSE;
     }
 
-    $db = & new PHPWS_DB('menu_links');
+    $db = new PHPWS_DB('menu_links');
     $db->addWhere('key_id', $key->id);
     $result = $db->delete();
 
@@ -24,7 +24,7 @@ function menu_unregister_key(&$key)
         PHPWS_Error::log($result);
     }
 
-    $db2 = & new PHPWS_DB('menu_assoc');
+    $db2 = new PHPWS_DB('menu_assoc');
     $db2->addWhere('key_id', $key->id);
     $result = $db2->delete();
 

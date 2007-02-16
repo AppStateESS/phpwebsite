@@ -83,6 +83,7 @@ class Menu_Item {
 
     function post()
     {
+        translate('menu');
         if (empty($_POST['title'])) {
             $errors[] = _('Missing menu title.');
         } else {
@@ -98,12 +99,15 @@ class Menu_Item {
         }
 
         if (isset($errors)) {
+            translate();
             return $errors;
         } else {
             $result = $this->save();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
-                return array(_('Unable to save menu. Please check error logs.'));
+                $msg = array(_('Unable to save menu. Please check error logs.'));
+                translate();
+                return $msg;
             }
             return TRUE;
         }
@@ -182,6 +186,7 @@ class Menu_Item {
 
     function getRowTags()
     {
+        translate('menu');
         $vars['menu_id'] = $this->id;
         $vars['command'] = 'edit_menu';
         $links[] = PHPWS_Text::secureLink(_('Edit'), 'menu', $vars);
@@ -213,6 +218,7 @@ class Menu_Item {
         $links[] = javascript('confirm', $js);
 
         $tpl['ACTION'] = implode(' | ', $links);
+        translate();
         return $tpl;
     }
 

@@ -17,7 +17,9 @@ function menu_install(&$content)
         PHPWS_Error::log($result);
         return false;
     } else {
+        translate('menu');
         $content[] = _('Default menu created successfully.');
+        translate();
         return true;
     }
 

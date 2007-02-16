@@ -235,7 +235,7 @@ class Menu_Link {
             $template['ADD_SITE_LINK'] = Menu::getSiteLink($this->menu_id, $this->id);
             
             $vars['link_id'] = $this->id;
-
+            translate('menu');
             $vars['command'] = 'delete_link';
             $js['QUESTION'] = _('Are you sure you want to delete this link: ' . addslashes($this->title));
             $js['ADDRESS'] = PHPWS_Text::linkAddress('menu', $vars, TRUE);
@@ -266,6 +266,7 @@ class Menu_Link {
 
             $template['ADMIN'] = MENU_LINK_ADMIN;
         }
+        translate();
     }
 
     function delete($save_links=FALSE)

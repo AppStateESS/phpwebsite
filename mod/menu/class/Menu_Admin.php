@@ -11,6 +11,7 @@ class Menu_Admin {
 
     function main()
     {
+        translate('menu');
         $title = $content = $message = NULL;
 
         PHPWS_Core::initModClass('menu', 'Menu_Item.php');
@@ -20,7 +21,7 @@ class Menu_Admin {
             return;
         }
 
-        $panel = & Menu_Admin::cpanel();
+        $panel = Menu_Admin::cpanel();
 
         if (isset($_REQUEST['command'])) {
             $command = $_REQUEST['command'];
@@ -223,6 +224,7 @@ class Menu_Admin {
         $final_content = PHPWS_Template::process($tpl, 'menu', 'main.tpl');
         $panel->setContent($final_content);
         Layout::add(PHPWS_ControlPanel::display($panel->display()));
+        translate();
     }
 
     function addPinLink()
@@ -333,8 +335,10 @@ class Menu_Admin {
     }
 
 
-    function &cpanel()
+    function cpanel()
     {
+        translate('menu');
+
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
 
         if (Current_User::allow('menu', 'create_new_menu')) {
@@ -354,12 +358,13 @@ class Menu_Admin {
         $panel->quickSetTabs($tabs);
 
         $panel->setModule('menu');
-
+        translate();
         return $panel;
     }
 
     function editMenu(&$menu)
     {
+        translate('menu');
         $form = new PHPWS_Form;
         $form->addHidden('module', 'menu');
         $form->addHidden('command', 'post_menu');
@@ -389,6 +394,7 @@ class Menu_Admin {
         }
 
         $template = $form->getTemplate();
+        translate();
         return PHPWS_Template::process($template, 'menu', 'menu_form.tpl');
     }
 
@@ -410,6 +416,7 @@ class Menu_Admin {
 
     function menuList()
     {
+        translate('menu');
         $page_tags['TITLE'] = _('Title');
         $page_tags['ACTION'] = _('Action');
 
@@ -421,11 +428,13 @@ class Menu_Admin {
         $pager->setLink('index.php?module=menu&amp;tab=list');
         $pager->addRowTags('getRowTags');
         $content = $pager->get();
+        translate();
         return $content;
     }
 
     function pickLink()
     {
+        translate('menu');
         $menu_id = (int)$_GET['menu_id'];
         if (isset($_GET['link_id'])) {
             $link_id = (int)$_GET['link_id'];
@@ -434,7 +443,9 @@ class Menu_Admin {
         }
 
         if (!isset($_SESSION['Menu_Pin_Links'])) {
-            return _('No links in queue.');
+            $msg = _('No links in queue.');
+            translate();
+            return $msg;
         }
 
         foreach ($_SESSION['Menu_Pin_Links'] as $key=>$data) {
@@ -452,12 +463,14 @@ class Menu_Admin {
 
         $tpl = $form->getTemplate();
         $tpl['CLOSE'] = sprintf('<a href="#" onclick="window.close(); return false">%s</a>', _('Close'));
+        translate();
         return PHPWS_Template::process($tpl, 'menu', 'admin/pin_list.tpl');
     }
 
 
     function settings()
     {
+        translate('menu');
         if (!isset($_SESSION['Menu_Admin_Mode'])) {
             $vars['command'] = 'enable_admin_mode';
             $tpl['ADMIN_LINK'] = PHPWS_Text::secureLink(_('Enable Administration Mode'),
@@ -467,7 +480,7 @@ class Menu_Admin {
             $tpl['ADMIN_LINK'] = PHPWS_Text::secureLink(_('Disable Administration Mode'),
                                                         'menu', $vars);
         }
-
+        translate();
         return PHPWS_Template::process($tpl, 'menu', 'admin/settings.tpl');
     }
 
@@ -477,7 +490,7 @@ class Menu_Admin {
         if ($link->id) {
             $form->addHidden('link_id', $link->id);
         }
-
+        translate('menu');
         $form->addHidden('module', 'menu');
         $form->addHidden('command', 'post_site_link');
         $form->addHidden('menu_id', $menu->id);
@@ -505,12 +518,13 @@ class Menu_Admin {
         }
 
         $content = PHPWS_Template::process($template, 'menu', 'admin/offsite.tpl');
-
+        translate();
         Layout::nakedDisplay($content);
     }
 
     function postSiteLink(&$link)
     {
+        translate('menu');
         if (empty($_POST['title'])) {
             $error[] = _('Missing title.');
         } else {
@@ -531,7 +545,7 @@ class Menu_Admin {
         if (!$link->parent) {
             $link->parent = $_POST['parent_id'];
         }
-
+        translate();
         if (isset($error)) {
             return $error;
         } else {

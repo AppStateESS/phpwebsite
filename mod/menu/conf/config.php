@@ -1,5 +1,8 @@
 <?php
-
+  /**
+   * @version $Id$
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   */
 translate('menu');
 
   // Limits the number of characters a menu link can be

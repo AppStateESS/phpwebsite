@@ -100,12 +100,13 @@ class Menu {
         if (!$isKeyed) {
             $vars['dadd'] = urlencode(PHPWS_Core::getCurrentUrl(false));
         }
-
+        translate('menu');
         $js['link_title'] = _('Add Other Link');
         $js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE, FALSE);
         $js['label'] = MENU_LINK_ADD_SITE;
         $js['width'] = 500;
         $js['height'] = 200;
+        translate();
         return javascript('open_window', $js);
     }
 
@@ -135,7 +136,9 @@ class Menu {
             // for dummy keys
             if (empty($key->title)) {
                 $vars['url']      = urlencode($key->url);
+                translate('menu');
                 $js['question']   = _('Enter link title');
+                translate();
                 $js['address']    = PHPWS_Text::linkAddress('menu', $vars, TRUE, FALSE);
                 $js['link']       = MENU_LINK_ADD;
                 $js['value_name'] = 'link_title';
@@ -164,7 +167,7 @@ class Menu {
             $vars['key_id'] = $key_id;
         }
         $vars['pin_all'] = $pin_all;
-
+        translate('menu');
         if ($pin_all) {
             $js['QUESTION']   = _('Are you sure you want to unpin this menu from all pages?');
         } else {
@@ -172,7 +175,7 @@ class Menu {
         }
         $js['ADDRESS']    = PHPWS_Text::linkAddress('menu', $vars, TRUE);
         $js['LINK']       = MENU_UNPIN;
-        
+        translate();
         return javascript('confirm', $js);
     }
 
@@ -208,10 +211,10 @@ class Menu {
         if (!empty($result)) {
             Menu::walkLinks($result, $content);
         }
-
+        translate('menu');
         $tpl['TITLE'] = $menu->getTitle() . ' - ' . _('Site map');
         $tpl['CONTENT'] = implode('', $content);
-        
+        translate();
         Layout::add(PHPWS_Template::process($tpl, 'menu', 'site_map.tpl'));
     }
 
