@@ -8,9 +8,11 @@
 $use_permissions = TRUE;
 $item_permissions = TRUE;
 
+translate('filecabinet');
 $permissions['edit_document']       = _('Edit files');
 $permissions['delete_document']     = _('Delete files');
 $permissions['edit_image']          = _('Edit images');
 $permissions['delete_image']        = _('Delete images');
+translate();
 
 ?>

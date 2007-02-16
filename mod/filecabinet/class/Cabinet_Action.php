@@ -293,7 +293,7 @@ class Cabinet_Action {
 
 
         default:
-            exit($action);
+            PHPWS_Core::errorPage('404');
         }
     
         $template['TITLE']   = $title;
@@ -474,12 +474,14 @@ class Cabinet_Action {
                 PHPWS_Error::log($err);
             }
             Layout::add(_('Sorry but this file is inaccessible at this time.'));
+            translate();
             return;
         }
 
         $key = new Key($document->key_id);
         if (!$key->allowView()) {
             Layout::add(_('Sorry, you are not allowed access to this file.'));
+            translate();
             return;
         }
 
@@ -488,6 +490,7 @@ class Cabinet_Action {
         if (!is_file($file_path)) {
             PHPWS_Error::log(FC_DOCUMENT_NOT_FOUND, 'filecabinet', 'Cabinet_Action::download', $file_path);
             Layout::add(_('Sorry but this file is inaccessible at this time.'));
+            translate();
             return;
         }
 

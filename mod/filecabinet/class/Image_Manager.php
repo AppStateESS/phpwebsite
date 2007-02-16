@@ -110,10 +110,12 @@ class FC_Image_Manager {
 
     function noImage()
     {
+        translate('filecabinet');
+        $no_image = _('No image');
+        translate();
         return sprintf('<img src="%s" width="%s" height="%s" title="%s" alt="%s" />',
                              FC_NONE_IMAGE_SRC, MAX_TN_IMAGE_WIDTH, 
-                             MAX_TN_IMAGE_HEIGHT, _('No image'), _('No image')
-                             );
+                             MAX_TN_IMAGE_HEIGHT, $no_image, $no_image);
     }
 
     function javascript()
@@ -148,6 +150,7 @@ class FC_Image_Manager {
 
     function getRowTags()
     {
+        translate('filecabinet');
         $vars['image_id'] = $this->image->id;
         $vars['action'] = 'editImage';
         $links[] = PHPWS_Text::secureLink(_('Edit'), 'filecabinet', $vars);
@@ -157,18 +160,20 @@ class FC_Image_Manager {
         $links[] = PHPWS_Text::moduleLink(_('Copy'), 'filecabinet', $vars);
 
         $tpl['ACTION'] = implode(' | ', $links);
+        translate();
         return $tpl;
     }
 
     function getClearLink()
     {
+        translate('filecabinet');
         $js_vars['src']      = FC_NONE_IMAGE_SRC;
         $js_vars['width']    = MAX_TN_IMAGE_WIDTH;
         $js_vars['height']   = MAX_TN_IMAGE_HEIGHT;
         $js_vars['title']    = $js_vars['alt'] = _('No image');
         $js_vars['itemname'] = $this->itemname;
         $js_vars['label']    = _('Clear image');
-
+        translate();
         return javascript('modules/filecabinet/clear_image', $js_vars);
     }
 
@@ -180,11 +185,14 @@ class FC_Image_Manager {
         $link_vars['mod_title'] = $this->mod_title;
         $link_vars['itemname']  = $this->itemname;
         $link_vars['current']   = $this->image->id;
-   
+        
         $vars['address'] = PHPWS_Text::linkAddress('filecabinet', $link_vars);
         $vars['width']   = FC_UPLOAD_WIDTH;
         $vars['height']  = FC_UPLOAD_HEIGHT;
+
+        translate('filecabinet');
         $vars['label']   = _('Change Thumbnail');
+        translate();
         return javascript('open_window', $vars);
     }
 
@@ -211,8 +219,11 @@ class FC_Image_Manager {
 
     function noThumbnail()
     {
+        translate('filecabinet');
+        $no_thumb = _('No thumbnail');
+        translate();
         return sprintf('<img title="%s" alt="%s" src="images/mod/filecabinet/no_thumbnail.png" />',
-                       _('No thumbnail'), _('No thumbnail'));
+                       $no_thumb, $no_thumb);
     }
 
     /**
@@ -220,11 +231,13 @@ class FC_Image_Manager {
      */
     function getUploadLink()
     {
-        $link_vars['action']    = 'edit_image';
+        $link_vars['action'] = 'edit_image';
         $vars['address'] = $this->getLinkAddress('filecabinet', $link_vars);
         $vars['width']   = FC_UPLOAD_WIDTH;
         $vars['height']  = FC_UPLOAD_HEIGHT;
+        translate('filecabinet');
         $vars['label']   = _('Upload image');
+        translate();
         return javascript('open_window', $vars);
     }
 
@@ -241,6 +254,7 @@ class FC_Image_Manager {
     }
 
     function errorPost() {
+        translate('filecabinet');
         exit(_('An error occurred when trying to save your image.'));
     }
 
@@ -303,7 +317,8 @@ class FC_Image_Manager {
         $form->addFile('file_name');
         $form->setSize('file_name', 30);
         $form->setMaxFileSize($this->image->_max_size);
-        
+
+        translate('filecabinet');
         $form->setLabel('file_name', _('Image location'));
 
         $form->addText('title', $this->image->title);
@@ -355,7 +370,7 @@ class FC_Image_Manager {
         $template['MAX_SIZE']         = $this->image->_max_size;
         $template['MAX_WIDTH']        = $this->image->_max_width;
         $template['MAX_HEIGHT']       = $this->image->_max_height;
-
+        translate();
         return PHPWS_Template::process($template, 'filecabinet', 'image_edit.tpl');
     }
 
@@ -404,6 +419,7 @@ class FC_Image_Manager {
         $db->setIndexBy('id');
         $source_images = $db->getObjects('PHPWS_Image');
 
+        translate('filecabinet');
         if (empty($thumbnails)) {
             $tpl['MESSAGE'] = _('No images found.');
         } else {
@@ -456,11 +472,14 @@ class FC_Image_Manager {
         $tpl['SUBHEIGHT'] = floor(FC_MANAGER_HEIGHT * .95);
         $tpl['DELETE'] = _('Delete');
         $content = PHPWS_Template::process($tpl, 'filecabinet', 'manager/pick.tpl');
+
+        translate();
         return $content;
     }
 
     function navigateDirectories($current_directory)
     {
+        translate('filecabinet');
         $directory = PHPWS_HOME_DIR . 'images';
         $directories = PHPWS_File::readDirectory($directory, true, false, true);
 
@@ -505,7 +524,7 @@ class FC_Image_Manager {
 
             $pointer_a = & $pointer_b[$foo];
         }
-
+        translate();
         return $tpl->get();
     }
 
