@@ -5,8 +5,7 @@
    */
 
 translate('demographics');
-$errors = array (FIELD_NOT_FOUND  => _('Demographics field does not exist.')
-                 );
-
+$errors = array (FIELD_NOT_FOUND  => _('Demographics field does not exist.'));
+translate();
 
 ?>

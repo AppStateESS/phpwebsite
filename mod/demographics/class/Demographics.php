@@ -15,7 +15,7 @@ class Demographics {
      */
     function &getUser($user_id, $create_new=TRUE)
     {
-        $demo_user = & new Demographics_User($user_id, $create_new);
+        $demo_user = new Demographics_User($user_id, $create_new);
         if ($demo_user->_error) {
             return $demo_user->_error;
         } elseif (!$demo_user->user_id) {
@@ -31,7 +31,7 @@ class Demographics {
      */
     function &getFields()
     {
-        $db = & new PHPWS_DB('demographics');
+        $db = new PHPWS_DB('demographics');
         $columns = $db->getTableColumns();
         return $columns;
     }
@@ -80,11 +80,12 @@ class Demographics {
      */
     function register($module)
     {
-        
+        translate('demographics');
         $file = sprintf('%smod/%s/boost/demographics.php', PHPWS_SOURCE_DIR, $module);
 
         if (!is_file($file)) {
             PHPWS_Boost::addLog($module, _('No demographics file found.'));
+            translate();
             return FALSE;
         }
 
@@ -102,6 +103,7 @@ class Demographics {
                 PHPWS_Boost::addLog($module, sprintf(_('%s demographic field registered.'), $field_name));
             }
         }
+        translate();
         return TRUE;
     }
 
@@ -135,7 +137,7 @@ class Demographics {
             return TRUE;
         }
 
-        $db = & new PHPWS_DB('demographics');
+        $db = new PHPWS_DB('demographics');
         return $db->dropTableColumn($field_name);
     }
 
@@ -192,7 +194,7 @@ class Demographics {
             break;
         }
 
-        $db = & new PHPWS_DB('demographics');
+        $db = new PHPWS_DB('demographics');
         return $db->addTableColumn($field_name, $parameter);
     }
 
@@ -205,7 +207,9 @@ class Demographics {
         $file = PHPWS_Core::getConfigFile($module, 'demographics.php');
 
         if (!is_file($file)) {
+            translate('demographics');
             PHPWS_Boost::addLog($module, _('No demographics file found.'));
+            translate();
             return FALSE;
         }
 
@@ -227,13 +231,13 @@ class Demographics {
         }
 
         if (isset($table)) {
-            $db = & new PHPWS_DB($table);
+            $db = new PHPWS_DB($table);
             $db->setDistinct(true);
             $db->addJoin('left', $table, 'demographics', 'user_id', 'user_id');
             $db->addColumn($table . '.*');
             $db->addColumn('demographics.*');
         } else {
-            $db = & new PHPWS_DB('demographics');
+            $db = new PHPWS_DB('demographics');
         }
 
         $db->addWhere('user_id', $ids);

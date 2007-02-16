@@ -24,12 +24,12 @@ class Demographics_User {
         }
 
         if (isset($this->_table)) {
-            $db = & new PHPWS_DB($this->_table);
+            $db = new PHPWS_DB($this->_table);
             $db->addJoin('left', $this->_table, 'demographics', 'user_id', 'user_id');
             $db->addColumn($this->_table . '.*');
             $db->addColumn('demographics.*');
         } else {
-            $db = & new PHPWS_DB('demographics');
+            $db = new PHPWS_DB('demographics');
         }
 
         $db->addWhere('user_id', (int)$this->user_id);
@@ -61,7 +61,7 @@ class Demographics_User {
             return FALSE;
         }
 
-        $db = & new PHPWS_DB('demographics');
+        $db = new PHPWS_DB('demographics');
         if (!$this->_new_user) {
             $db->addWhere('user_id', $this->user_id);
         }
@@ -73,7 +73,7 @@ class Demographics_User {
         }
 
         if (isset($this->_table)) {
-            $db = & new PHPWS_DB($this->_table);
+            $db = new PHPWS_DB($this->_table);
             if (!$this->_new_user) {
                 $db->addWhere('user_id', $this->user_id);
             }
@@ -95,7 +95,7 @@ class Demographics_User {
             return FALSE;
         }
 
-        $db = & new PHPWS_DB('demographics');
+        $db = new PHPWS_DB('demographics');
         $db->addWhere('user_id', $this->user_id);
         $result = $db->delete();
         if (PEAR::isError($result)) {
@@ -104,7 +104,7 @@ class Demographics_User {
         }
 
         if (isset($this->_table)) {
-            $db = & new PHPWS_DB($this->_table);
+            $db = new PHPWS_DB($this->_table);
             $db->addWhere('user_id', $this->user_id);
 
             $result = $db->delete();
