@@ -5,8 +5,10 @@
  */
 
 function layout_unregister($module, &$content){
+    translate('layout');
     PHPWS_Core::initModClass('layout', 'Box.php');
     $content[] = _('Removing old layout components.');
+    translate();
     $db = & new PHPWS_DB('layout_box');
     $db->addWhere('module', $module);
     $moduleBoxes = $db->getObjects('Layout_Box');

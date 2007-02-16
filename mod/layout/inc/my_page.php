@@ -16,7 +16,7 @@ function my_page()
     if (!(@$lo_command = $_REQUEST['lo_command'])) {
         $lo_command = 'user_form';
     }
-
+    translate('layout');
     switch ($lo_command) {
     case 'user_form':
         $title = _('Display settings');
@@ -34,6 +34,7 @@ function my_page()
     $tpl['TITLE']   = $title;
     $tpl['CONTENT'] = $content;
     $tpl['MESSAGE'] = $message;
+    translate();
     return PHPWS_Template::process($tpl, 'layout', 'main.tpl');
 }
 
@@ -45,15 +46,18 @@ class Layout_User_Settings {
         My_Page::addHidden($form, 'layout');
 
         $form->addHidden('lo_command', 'save_settings');
-
+        translate('layout');
         $css = Layout::getAlternateStyles();
         if ($css) {
             $form->addSelect('alternate', $css);
             $form->setMatch('alternate', PHPWS_Cookie::read('layout_style'));
             $form->setLabel('alternate', _('Available styles'));
             $form->addSubmit(_('Save settings'));
+            translate();
         } else {
-            return _('No alternate style sheets available.');
+            $blank = _('No alternate style sheets available.');
+            translate();
+            return $blank;
         }
 
         $template = $form->getTemplate();

@@ -3,6 +3,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
+translate('layout');
 $link[] = array('label'       => _('Layout'),
 		 'restricted'  => TRUE,
 		 'url'         => 'index.php?module=layout&action=admin',
@@ -10,4 +11,5 @@ $link[] = array('label'       => _('Layout'),
 		 'image'       => 'layout.png',
 		 'tab'         => 'admin'
 		 );
+translate();
 ?>

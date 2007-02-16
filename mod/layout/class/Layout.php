@@ -758,6 +758,7 @@ class Layout {
 
     function miniLinks()
     {
+        translate('layout');
         if (Layout::isMoveBox()) {
             $vars['action']  = 'admin';
             $vars['command'] = 'turn_off_box_move';
@@ -791,6 +792,7 @@ class Layout {
         }
 
         if (!isset($links)) {
+            translate();
             return;
         }
 
@@ -799,6 +801,7 @@ class Layout {
         // MiniAdmin runs get before layout and runtime won't work
         // with flagged keys 
         MiniAdmin::get();
+        translate();
     }
 
     function styleLink($link, $header=FALSE)
@@ -1004,7 +1007,7 @@ class Layout {
         PHPWS_Core::initCoreClass('Form.php');
 
         $themeVars = $_SESSION['Layout_Settings']->getAllowedVariables();
-
+        translate('layout');
         $menu['move_box_top'] = _('Move to top');
         $menu['move_box_up'] = _('Move up');
         $menu['move_box_down'] = _('Move down');
@@ -1027,6 +1030,7 @@ class Layout {
         $form->addSubmit('move', _('Move'));
 
         $template = $form->getTemplate();
+        translate();
         return PHPWS_Template::process($template, 'layout', 'move_box_select.tpl');
     }
 

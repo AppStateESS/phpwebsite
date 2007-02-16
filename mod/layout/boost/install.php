@@ -7,7 +7,7 @@
 function layout_install(&$content, $branchInstall=FALSE)
 {
     $page_title = NULL;
-
+    translate('layout');
     if (isset($_POST['process_layout'])) {
         if (empty($_POST['page_title'])) {
             $error  = _('Please enter a page title.');
@@ -64,7 +64,7 @@ function layout_install(&$content, $branchInstall=FALSE)
   
     $template = $form->getTemplate();
     $content[] = PHPWS_Template::process($template, 'layout', 'setup.tpl');
-
+    translate();
     return FALSE;
 
 }

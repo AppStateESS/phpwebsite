@@ -1,3 +1,9 @@
+Version 2.3.0
+-------------------------------------------------------------------
+16 February 2007
++ Added translate functions.
++ Wrote update script
+
 14 February 2007
 + Removed references from object constructors.
 
