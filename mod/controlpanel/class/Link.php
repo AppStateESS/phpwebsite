@@ -31,7 +31,7 @@ class PHPWS_Panel_Link {
 
     function init()
     {
-        $db = & new PHPWS_DB('controlpanel_link');
+        $db = new PHPWS_DB('controlpanel_link');
         $result = $db->loadObject($this);
         if (PEAR::isError($result)) {
             return $result;
@@ -98,9 +98,11 @@ class PHPWS_Panel_Link {
         }
 
         if (is_file($this->image)) {
+            translate('controlpanel');
             $image = sprintf('<img src="%s" border="0" title="%s" alt="%s" />',
                              $this->image, $this->getLabel(),
                              sprintf(_('%s module icon'), $this->getLabel()));
+            translate();
         } else {
             return NULL;
         }
@@ -144,7 +146,7 @@ class PHPWS_Panel_Link {
             return $this->link_order;
         }
 
-        $db = & new PHPWS_DB('controlpanel_link');
+        $db = new PHPWS_DB('controlpanel_link');
         $db->addWhere('tab', $this->tab);
         $db->addColumn('link_order', 'max');
         $max = $db->select('one');
@@ -183,7 +185,7 @@ class PHPWS_Panel_Link {
 
     function save()
     {
-        $db = & new PHPWS_DB('controlpanel_link');
+        $db = new PHPWS_DB('controlpanel_link');
         $this->link_order = $this->getLinkOrder();
         $result = $db->saveObject($this);
         return $result;
@@ -204,7 +206,7 @@ class PHPWS_Panel_Link {
      */ 
     function moveUp()
     {
-        $db = & new PHPWS_DB('controlpanel_link');
+        $db = new PHPWS_DB('controlpanel_link');
         $db->setIndexBy('link_order');
         $db->addWhere('tab', $this->tab);
         $db->addOrder('link_order');
@@ -231,7 +233,7 @@ class PHPWS_Panel_Link {
 
     function moveDown()
     {
-        $db = & new PHPWS_DB('controlpanel_link');
+        $db = new PHPWS_DB('controlpanel_link');
         $db->setIndexBy('link_order');
         $db->addWhere('tab', $this->tab);
         $db->addOrder('link_order');
@@ -261,7 +263,7 @@ class PHPWS_Panel_Link {
 
     function kill()
     {
-        $db = & new PHPWS_DB('controlpanel_link');
+        $db = new PHPWS_DB('controlpanel_link');
         $db->addWhere('id', $this->id);
         $result = $db->delete();
         if (PEAR::isError($result))

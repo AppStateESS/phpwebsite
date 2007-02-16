@@ -7,6 +7,8 @@
 
 function controlpanel_unregister($module, &$content)
 {
+
+    translate('controlpanel');
     PHPWS_Core::initModClass('controlpanel', 'ControlPanel.php');
     PHPWS_Core::initModClass('controlpanel', 'Tab.php');
     PHPWS_Core::initModClass('controlpanel', 'Link.php');
@@ -16,6 +18,7 @@ function controlpanel_unregister($module, &$content)
     
     if (!is_file($cpFile)){
         PHPWS_Boost::addLog($module, _('No Control Panel file found for unregisteration.'));
+        translate();
         return FALSE;
     }
 
@@ -36,7 +39,7 @@ function controlpanel_unregister($module, &$content)
             }
         }
 
-        $db = & new PHPWS_DB('controlpanel_link');
+        $db = new PHPWS_DB('controlpanel_link');
         foreach ($itemnameList as $itemname) {
             $db->addWhere('itemname', $itemname);
             $result = $db->getObjects('PHPWS_Panel_Link');
@@ -69,7 +72,7 @@ function controlpanel_unregister($module, &$content)
             }
         }
 
-        $db = & new PHPWS_DB('controlpanel_tab');
+        $db = new PHPWS_DB('controlpanel_tab');
         foreach ($labelList as $label){
             $db->addWhere('label', $label);
             $result = $db->getObjects('PHPWS_Panel_Tab');
@@ -85,6 +88,7 @@ function controlpanel_unregister($module, &$content)
     }
 
     $content[] = _('Control Panel links and tabs have been removed.');
+    translate();
     PHPWS_ControlPanel::reset();
 }
 ?>

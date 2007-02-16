@@ -4,7 +4,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-
+translate('controlpanel');
 $tabs[] = array('id' => 'content',
 		'title' => _('Content'),
 		'link'  => 'index.php?module=controlpanel',
@@ -33,5 +33,5 @@ $link[] = array('label'       => _('Control Panel'),
 		'tab'         => 'admin'
 		);
 
-
+translate();
 ?>

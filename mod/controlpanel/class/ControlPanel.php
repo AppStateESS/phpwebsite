@@ -54,7 +54,7 @@ class PHPWS_ControlPanel {
                 $panel->dropTab($tab->id);
             }
         }
-
+        translate('controlpanel');
         if (empty($panel->tabs)) {
             return _('No tabs available in the Control Panel.');
         }
@@ -111,7 +111,7 @@ class PHPWS_ControlPanel {
 
     function getAllTabs()
     {
-        $db = & new PHPWS_DB('controlpanel_tab');
+        $db = new PHPWS_DB('controlpanel_tab');
         $db->setIndexBy('id');
         $db->addOrder('tab_order');
         return $db->getObjects('PHPWS_Panel_Tab');
@@ -153,6 +153,8 @@ class PHPWS_ControlPanel {
 
     function registerModule($module, &$content)
     {
+        translate('controlpanel');
+
         PHPWS_Core::initModClass('controlpanel', 'Tab.php');
         PHPWS_Core::initModClass('controlpanel', 'Link.php');
 
@@ -160,6 +162,7 @@ class PHPWS_ControlPanel {
 
         if (!is_file($cpFile)){
             PHPWS_Boost::addLog($module, _('No Control Panel file found.'));
+            translate();
             return FALSE;
         }
 
@@ -213,6 +216,7 @@ class PHPWS_ControlPanel {
                 if (PEAR::isError($result)) {
                     $content[] = _('An error occurred when trying to save a controlpanel tab.');
                     PHPWS_Error::log($result);
+                    translate();
                     return FALSE;
                 }
             }
@@ -273,6 +277,7 @@ class PHPWS_ControlPanel {
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
                     $content[] = _('There was a problem trying to save a Control Panel link.');
+                    translate();
                     return FALSE;
                 }
                 $db->resetWhere();
@@ -281,10 +286,9 @@ class PHPWS_ControlPanel {
         } else {
             PHPWS_Boost::addLog($module, _('No Control Panel links found.'));
         }
-
+        translate();
         PHPWS_ControlPanel::reset();
         return TRUE;
-
     }
 
     function makeDefaultTabs()
@@ -292,7 +296,7 @@ class PHPWS_ControlPanel {
         $tabs = PHPWS_ControlPanel::getDefaultTabs();
 
         foreach ($tabs as $tab){
-            $newTab = & new PHPWS_Panel_Tab;
+            $newTab = new PHPWS_Panel_Tab;
             $newTab->setId($tab['id']);
             $newTab->setTitle($tab['title']);
             $newTab->setLink($tab['link']);
@@ -304,7 +308,7 @@ class PHPWS_ControlPanel {
             }
         }
 
-        $db = & new PHPWS_DB('controlpanel_link');
+        $db = new PHPWS_DB('controlpanel_link');
         $result = $db->getObjects('PHPWS_Panel_Link');
 
         $count = 1;
