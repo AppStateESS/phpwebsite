@@ -1,4 +1,9 @@
 <?php
+  /**
+   * @version $Id$
+   * @author Jeremy Agee
+   * @modifed Matthew McNaney
+   */
 
 $config = PHPWS_Core::getConfigFile('help', 'config.php');
 
