@@ -13,4 +13,5 @@ function controlpanel_update(&$content, $currentVersion)
 ------------
 + Added translate functions.</pre>';
     }
+    return true;
 }
