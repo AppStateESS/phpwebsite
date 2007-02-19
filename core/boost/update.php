@@ -116,9 +116,11 @@ Core classes
     the object is not passed by reference in php 4. Once the object
     was created, it was cleared.
   o Fixed some mixups in the setLimit function
+  o Added limit error check to mysql.php and mysqli.php.
   o Limit variables passed by reference instead of copied
   o Added Hilmar\'s prefixing code to prevent table prefixing inside single
     quotes. 
+
 
 + Settings class
   o Bug 1659055 - if a single setting is saved without loading the
