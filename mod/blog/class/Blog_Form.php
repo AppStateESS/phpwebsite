@@ -10,7 +10,6 @@ PHPWS_Core::initCoreClass('Form.php');
 class Blog_Form {
     function edit(&$blog, $version_id=NULL, $limited=false)
     {
-        translate('blog');
         $form = new PHPWS_Form;
         $form->addHidden('module', 'blog');
 
@@ -87,13 +86,11 @@ class Blog_Form {
         $template = $form->getTemplate();
 
         $template['EXAMPLE'] = 'YYMMDD HH:MM';
-        translate();
         return PHPWS_Template::process($template, 'blog', 'edit.tpl');
     }
 
     function settings()
     {
-        translate('blog');
         $form = new PHPWS_Form;
         $form->addHidden('module', 'blog');
         $form->addHidden('action', 'admin');
@@ -155,7 +152,6 @@ class Blog_Form {
         }
 
         $template['PAST_NOTE'] = _('Set to zero to prevent display');
-        translate();
         return PHPWS_Template::process($template, 'blog', 'settings.tpl');
     }
 }

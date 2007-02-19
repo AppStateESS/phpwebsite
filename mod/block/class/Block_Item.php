@@ -232,7 +232,6 @@ class Block_Item {
 
     function getTpl()
     {
-        translate('block');
         $vars['block_id'] = $this->getId();
 
         if (Current_User::allow('block', 'edit_block', $this->id)) {
@@ -273,7 +272,6 @@ class Block_Item {
 
         $template['ACTION'] = implode(' | ', $links);
         $template['CONTENT'] = $this->summarize();
-        translate();
         return $template;
     }
 

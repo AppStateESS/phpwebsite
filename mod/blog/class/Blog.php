@@ -240,7 +240,7 @@ class Blog {
         if (!empty($result)) {
             $template['CATEGORIES'] = implode(', ', $result);
         }
-        translate('blog');
+
         $template['POSTED_BY'] = _('Posted by');
         $template['POSTED_ON'] = _('Posted on');
         if ($this->author_id) {
@@ -248,7 +248,7 @@ class Blog {
         } else {
             $template['AUTHOR'] = _('Anonymous');
         }
-        translate();
+
         return PHPWS_Template::process($template, 'blog', 'view.tpl');
     }
 
@@ -360,7 +360,6 @@ class Blog {
     }
 
     function getListAction(){
-        translate('blog');
         $link['action'] = 'admin';
         $link['blog_id'] = $this->id;
 
@@ -390,7 +389,6 @@ class Blog {
         else {
             $response = _('No action');
         }
-        translate();
         return $response;
     }
 
@@ -415,7 +413,6 @@ class Blog {
         }
 
         if (empty($_POST['title'])) {
-            translate('blog');
             return array(_('Missing title.'));
         } else {
             $this->title = strip_tags($_POST['title']);

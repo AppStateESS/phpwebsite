@@ -10,7 +10,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 }
 
 PHPWS_Core::initModClass('blog', 'Blog.php');
-
+translate('blog');
 if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'admin' &&
     Current_User::allow('blog')) {
     PHPWS_Core::initModClass('blog', 'Blog_Admin.php');
@@ -18,5 +18,5 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'admin' &&
 } else {
     Blog_User::main();
 }
-
+translate();
 ?>

@@ -4,6 +4,7 @@
    * @author Matthew McNaney <mcnaney at gmail dot com>
    */
 
+translate('blog');
 if (PHPWS_Settings::get('blog', 'home_page_display')) {
     if (!isset($_REQUEST['module'])) {
         $content = Blog_User::show();
@@ -12,5 +13,5 @@ if (PHPWS_Settings::get('blog', 'home_page_display')) {
  } else {
      Blog_User::showSide();
  }
-
+translate();
 ?>

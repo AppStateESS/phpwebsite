@@ -2,6 +2,9 @@ Version 1.4.1
 ------------------------------------------------------------------
 Note: previous SVN versions joined into 1.4.1
 
+19 February 2007
++ Removed excess translates
+
 14 February 2007
 + Removed table format from edit form
 + Updated files: templates/edit.tpl
