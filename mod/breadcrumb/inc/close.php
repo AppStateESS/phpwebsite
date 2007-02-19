@@ -6,7 +6,7 @@
    */
 
 if (!isset($_SESSION['Breadcrumb'])) {
-    $_SESSION['Breadcrumb'] = & new Breadcrumb;
+    $_SESSION['Breadcrumb'] = new Breadcrumb;
  }
 
 $_SESSION['Breadcrumb']->display();
