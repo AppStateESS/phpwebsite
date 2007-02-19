@@ -30,6 +30,13 @@ function version_update(&$content, $currentVersion)
 + If the author is blank, version labels the author as Anonymous.
 </pre>';
 
+    case version_compare($currentVersion, '0.1.2', '<'):
+        $content[] = '<pre>
+0.1.2 changes
+-------------
++ Added translate functions
+</pre>';
+
     }
     return TRUE;
 }

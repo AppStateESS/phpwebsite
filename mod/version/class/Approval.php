@@ -36,7 +36,7 @@ class Version_Approval {
                 $this->setViewMethod($view_method);
             }
         }
-        $this->_db = & new PHPWS_DB($this->version_table);
+        $this->_db = new PHPWS_DB($this->version_table);
     }
 
 
@@ -112,7 +112,7 @@ class Version_Approval {
             }
 
             foreach ($result as $ver_arr) {
-                $version = & new Version($this->source_table);
+                $version = new Version($this->source_table);
                 $version->_plugInVersion($ver_arr);
                 $listing[$version->id] = $version;
             }
@@ -124,8 +124,11 @@ class Version_Approval {
 
     function getList($restrict_approval=TRUE)
     {
+        translate('version');
         if (!PHPWS_DB::isTable($this->version_table)) {
-            return _('No items for approval.');
+            $msg = _('No items for approval.');
+            translate();
+            return $msg;
         }
 
         if (empty($this->approve_url) || empty($this->disapprove_url)) {
@@ -140,7 +143,9 @@ class Version_Approval {
         }
 
         if (empty($result)) {
-            return _('No items for approval.');
+            $msg =  _('No items for approval.');
+            translate();
+            return $msg;
         }
         $temp_count = 0;
         foreach ($result as $app_item) {
@@ -168,7 +173,7 @@ class Version_Approval {
             $count = 0;
 
             if (!empty($this->class_name) && !empty($this->view_method)) {
-                $temp_obj = & new $this->class_name;
+                $temp_obj = new $this->class_name;
                 PHPWS_Core::plugObject($temp_obj, $app_item);
 
                 $result = $temp_obj->{$this->view_method}();
@@ -219,7 +224,7 @@ class Version_Approval {
             $template['approval-rows'][$temp_count] = $row_tpl;
             $temp_count++;
         }
-
+        translate();
         return PHPWS_Template::process($template, 'version', $template_file);
     }
 

@@ -52,7 +52,7 @@ class Version_Admin {
 
         $version_number = PHPWS_Settings::get('version', 'saved_versions');
 
-        $form = & new PHPWS_Form;
+        $form = new PHPWS_Form;
         $form->addHidden('module', 'version');
         $form->addHidden('command', 'post_setting');
         $form->addSelect('saved_versions', $versions);

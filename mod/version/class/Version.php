@@ -164,8 +164,8 @@ class Version {
   
     function save()
     {
-        $source_db = & new PHPWS_DB($this->source_table);
-        $version_db = & new PHPWS_DB($this->version_table);
+        $source_db = new PHPWS_DB($this->source_table);
+        $version_db = new PHPWS_DB($this->version_table);
 
         if (empty($this->source_data)) {
             return PHPWS_Error::get(VERSION_MISSING_SOURCE, 'version', 'save');
@@ -268,7 +268,7 @@ class Version {
             return;
         }
 
-        $db = & new PHPWS_DB($this->version_table);
+        $db = new PHPWS_DB($this->version_table);
         $db->addWhere('source_id', $this->source_id);
         $db->addColumn('vr_number', 'max');
         $last_number = $db->select('one');
@@ -286,7 +286,7 @@ class Version {
     }
 
     function _clearCurrents(){
-        $db = & new PHPWS_DB($this->version_table);
+        $db = new PHPWS_DB($this->version_table);
         $db->addWhere('source_id', $this->source_id);
         $db->addValue('vr_current', 0);
         $db->update();
@@ -297,13 +297,13 @@ class Version {
      */
     function countUnapproved()
     {
-        $version_db = & new PHPWS_DB($this->version_table);
+        $version_db = new PHPWS_DB($this->version_table);
         $version_db->addWhere('vr_approved', 0);
         return $version_db->count();
     }
 
     function getUnapproved($restrict=FALSE){
-        $version_db = & new PHPWS_DB($this->version_table);
+        $version_db = new PHPWS_DB($this->version_table);
 
         if ($restrict == TRUE) {
             $version_db->addWhere('vr_creator', Current_User::getId());
@@ -317,7 +317,7 @@ class Version {
         }
     
         foreach ($result as $row) {
-            $version = & new Version($this->source_table);
+            $version = new Version($this->source_table);
             $version->_plugInVersion($row);
             $unapproved_list[$row['id']] = $version;
         }
@@ -337,8 +337,8 @@ class Version {
     }
 
     function _copyVersionColumn($col_name){
-        $source_db = & new PHPWS_DB($this->source_table);
-        $version_db = & new PHPWS_DB($this->version_table);
+        $source_db = new PHPWS_DB($this->source_table);
+        $version_db = new PHPWS_DB($this->version_table);
 
         $col_info = $source_db->getColumnInfo($col_name, TRUE);
         if (isset($col_info['index'])) {
@@ -354,7 +354,7 @@ class Version {
         if (empty($this->source_id)) {
             return 1;
         }
-        $version_db = & new PHPWS_DB($this->version_table);
+        $version_db = new PHPWS_DB($this->version_table);
 
         $version_db->addWhere('source_id', $this->source_id);
         $version_db->addColumn('vr_number', 'max');
@@ -372,7 +372,7 @@ class Version {
 
     function _initVersion()
     {
-        $version_db = & new PHPWS_DB($this->version_table);
+        $version_db = new PHPWS_DB($this->version_table);
         $version_db->addWhere('id', $this->id);
         $row = $version_db->select('row');
         if (PEAR::isError($row)) {
@@ -398,7 +398,7 @@ class Version {
 
     function _buildVersionTable(){
 
-        $source_db = & new PHPWS_DB($this->source_table);
+        $source_db = new PHPWS_DB($this->source_table);
         $allColumns = $source_db->getTableColumns(TRUE);
 
         foreach ($allColumns as $editCol){
@@ -433,7 +433,7 @@ class Version {
             return $result;
         }
 
-        $db = & new PHPWS_DB($this->version_table);
+        $db = new PHPWS_DB($this->version_table);
         $db->createTableIndex('source_id');
 
         return TRUE;
@@ -454,7 +454,7 @@ class Version {
     }
 
     function isWaitingApproval(){
-        $db = & new PHPWS_DB($this->version_table);
+        $db = new PHPWS_DB($this->version_table);
         $db->addWhere('source_id', $this->source_id);
         $db->addWhere('vr_approved', 0);
         $db->addColumn('id');
@@ -467,8 +467,8 @@ class Version {
 
     function flush($table, $item_id)
     {
-        $version = & new Version($table);
-        $db = & new PHPWS_DB($version->version_table);
+        $version = new Version($table);
+        $db = new PHPWS_DB($version->version_table);
         $db->addWhere('source_id', (int)$item_id);
         return $db->delete();
     }
@@ -483,7 +483,7 @@ class Version {
             return FALSE;
         }
 
-        $db = & new PHPWS_DB($this->version_table);
+        $db = new PHPWS_DB($this->version_table);
         $db->addWhere('id', $this->id);
         $result = $db->delete();
 
@@ -493,7 +493,7 @@ class Version {
 
         // If this is the first version, kill the source
         if ($clean_up && !$this->vr_number == 1) {
-            $source = & new PHPWS_DB($this->source_table);
+            $source = new PHPWS_DB($this->source_table);
             $source->addWhere('id', $this->source_id);
             $result = $source->delete();
             if (PEAR::isError($result)) {
@@ -529,7 +529,7 @@ class Version {
      * Replaces a current version with an older version
      */
     function restore(){
-        $db = & new PHPWS_DB($this->source_table);
+        $db = new PHPWS_DB($this->source_table);
         $db->addWhere('id', $this->source_id);
         $data = $this->getSource();
         $db->addValue($data);

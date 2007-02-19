@@ -42,7 +42,7 @@ class Version_Restore {
             return FALSE;
         }
 
-        $db = & new PHPWS_DB($this->version_table);
+        $db = new PHPWS_DB($this->version_table);
         $db->addWhere('source_id', $this->source_id);
         $db->addWhere('vr_approved', 1);
         $db->addWhere('vr_current', 0);
@@ -78,8 +78,11 @@ class Version_Restore {
 
     function getList()
     {
+        translate('version');
         if ( !PHPWS_DB::isTable($this->version_table) || empty($this->backup_list) ) {
-            return _('No backup versions available.');
+            $msg = _('No backup versions available.');
+            translate();
+            return $msg;
         }
 
         $temp_count = 0;
@@ -103,7 +106,7 @@ class Version_Restore {
             $count = 0;
 
             if (!empty($this->class_name) && !empty($this->view_method)) {
-                $temp_obj = & new $this->class_name;
+                $temp_obj = new $this->class_name;
                 PHPWS_Core::plugObject($temp_obj, $version);
 
                 $result = $temp_obj->{$this->view_method}();
@@ -142,8 +145,11 @@ class Version_Restore {
         }
 
         if (empty($template)) {
-            return _('A problem occurred when trying to process the restoration list.');
+            $msg = _('A problem occurred when trying to process the restoration list.');
+            translate();
+            return $msg;
         } else {
+            translate();
             return PHPWS_Template::process($template, 'version', $template_file);
         }
         

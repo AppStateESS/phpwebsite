@@ -15,5 +15,6 @@ $errors = array(
 		VERSION_MISSING_SOURCE  => _('Missing source data.'),
                 VERSION_DEFAULT_MISSING => _('Missing columns.php file')
 		);
+translate();
 
 ?>

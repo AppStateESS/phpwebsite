@@ -15,8 +15,8 @@ if (!Current_User::authorized('version')) {
  }
 
 PHPWS_Core::initModClass('version', 'Admin.php');
-
+translate('version');
 Version_Admin::main();
-
+translate();
 
 ?>
