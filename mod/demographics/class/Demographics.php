@@ -80,12 +80,11 @@ class Demographics {
      */
     function register($module)
     {
-        translate('demographics');
+
         $file = sprintf('%smod/%s/boost/demographics.php', PHPWS_SOURCE_DIR, $module);
 
         if (!is_file($file)) {
             PHPWS_Boost::addLog($module, _('No demographics file found.'));
-            translate();
             return FALSE;
         }
 
@@ -103,7 +102,6 @@ class Demographics {
                 PHPWS_Boost::addLog($module, sprintf(_('%s demographic field registered.'), $field_name));
             }
         }
-        translate();
         return TRUE;
     }
 
