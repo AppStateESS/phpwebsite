@@ -10,10 +10,12 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 }
 
 PHPWS_Core::initModClass('filecabinet', 'Cabinet_Action.php');
+translate('filecabinet');
 if (!isset($_REQUEST['tab']) && !isset($_REQUEST['action']) && isset($_REQUEST['id'])) {
     Cabinet_Action::download($_REQUEST['id']);
  } else {
     Cabinet_Action::admin();
  }
+translate();
 
 ?>

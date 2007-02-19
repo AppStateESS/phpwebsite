@@ -1,5 +1,8 @@
 Version 0.3.1
 ---------------
+19 February 2007
++ Reduced translate calls
+
 16 February 2007
 + Added more translate functions
 + Wrote update script

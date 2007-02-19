@@ -11,7 +11,6 @@ PHPWS_Core::initModClass('filecabinet', 'Document.php');
 class Cabinet_Form {
     function imageManager()
     {
-        translate('filecabinet');
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
 
@@ -39,13 +38,11 @@ class Cabinet_Form {
         if (empty($result)) {
             return _('No items found.');
         }
-        translate();
         return $result;
     }
 
     function documentManager()
     {
-        translate('filecabinet');
         PHPWS_Core::initCoreClass('DBPager.php');
         $pager = new DBPager('documents', 'PHPWS_Document');
         $pager->setModule('filecabinet');
@@ -80,7 +77,6 @@ class Cabinet_Form {
             return _('No documents found.');
         }
 
-        translate();
         return $result;
     }
 
@@ -99,16 +95,13 @@ class Cabinet_Form {
         $form->setSize('base_img_directory', '50');
         $form->setLabel('base_img_directory', _('Base image directory'));
         */
-        translate('filecabinet');
         $form->addSubmit(_('Save settings'));
         $tpl = $form->getTemplate();
-        translate();
         return PHPWS_Template::process($tpl, 'filecabinet', 'settings.tpl');
     }
 
     function editDocument(&$document, $js_form=FALSE)
     {
-        translate('filecabinet');
         PHPWS_Core::initCoreClass('File.php');
 
         Layout::addStyle('filecabinet');
@@ -178,7 +171,6 @@ class Cabinet_Form {
             $template['MAX_SIZE'] = $max_size;
         }
 
-        translate();
         return PHPWS_Template::process($template, 'filecabinet', 'document_edit.tpl');
     }
 }
