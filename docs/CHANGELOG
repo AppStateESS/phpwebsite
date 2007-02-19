@@ -4,6 +4,9 @@ its own separate CHANGELOG file.
 
 Version 1.4.0
 ----------------------------------------------------------------------
+19 February 2007
++ Database
+  o Added limit error check to mysql.php and mysqli.php
 
 14 February 2007
 + Theme
