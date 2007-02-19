@@ -71,7 +71,7 @@ class Access {
 
             case 'delete_allow_deny':
                 PHPWS_Core::initModClass('access', 'Allow_Deny.php');
-                $allow_deny = & new Access_Allow_Deny($_GET['ad_id']);
+                $allow_deny = new Access_Allow_Deny($_GET['ad_id']);
                 $allow_deny->delete();
                 Access::sendMessage(_('IP address deleted.'), 'deny_allow');
                 break;
@@ -84,7 +84,7 @@ class Access {
 
             case 'delete_shortcut':
                 PHPWS_Core::initModClass('access', 'Shortcut.php');
-                $shortcut = & new Access_Shortcut($_REQUEST['shortcut_id']);
+                $shortcut = new Access_Shortcut($_REQUEST['shortcut_id']);
                 if (empty($shortcut->_error) && $shortcut->id) {
                     $result = $shortcut->delete();
                     if (PEAR::isError($result)) {
@@ -141,7 +141,7 @@ class Access {
             case 'post_shortcut':
                 PHPWS_Core::initModClass('access', 'Shortcut.php');
 
-                $shortcut = & new Access_Shortcut;
+                $shortcut = new Access_Shortcut;
                 $result = $shortcut->postShortcut();
                 $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" />', _('Close window'));
                 if (PEAR::isError($result)) {
@@ -249,7 +249,7 @@ class Access {
             $allow_str = "Allow from all";
         }
 
-        $db = & new PHPWS_DB('access_allow_deny');
+        $db = new PHPWS_DB('access_allow_deny');
         $db->addWhere('active', 1);
 
         if ($deny_all) {
@@ -404,7 +404,7 @@ class Access {
             $tabs['update'] = $link;
         }
  
-        $panel = & new PHPWS_Panel('access_panel');
+        $panel = new PHPWS_Panel('access_panel');
         $panel->enableSecure();
 
         if (!empty($tabs)) {
@@ -436,7 +436,7 @@ class Access {
 
     function getAllowDeny()
     {
-        $db = & new PHPWS_DB('access_allow_deny');
+        $db = new PHPWS_DB('access_allow_deny');
         $db->addOrder('ip_address');
         return $db->getObjects('Access_Allow_Deny');
     }
@@ -444,7 +444,7 @@ class Access {
     function getShortcuts($active_only=FALSE)
     {
         PHPWS_Core::initModClass('access', 'Shortcut.php');
-        $db = & new PHPWS_DB('access_shortcuts');
+        $db = new PHPWS_DB('access_shortcuts');
         $db->addOrder('keyword');
         if ($active_only) {
             $db->addWhere('active', 1);
@@ -481,7 +481,7 @@ class Access {
         }
 
         PHPWS_Core::initModClass('access', 'Shortcut.php');
-        $db = & new PHPWS_DB('access_shortcuts');
+        $db = new PHPWS_DB('access_shortcuts');
         $db->addWhere('id', $_POST['shortcut']);
 
         switch ($_POST['list_action']) {
@@ -520,7 +520,7 @@ class Access {
         PHPWS_Core::initModClass('access', 'Allow_Deny.php');
 
         if (isset($_POST['add_allow_address']) && !empty($_POST['allow_address'])) {
-            $allow = & new Access_Allow_Deny;
+            $allow = new Access_Allow_Deny;
             $allow->allow_or_deny = 1;
             $result = $allow->setIpAddress($_POST['allow_address']);
             if (!$result) {
@@ -532,7 +532,7 @@ class Access {
         }
 
         if (isset($_POST['add_deny_address']) && !empty($_POST['deny_address'])) {
-            $deny = & new Access_Allow_Deny;
+            $deny = new Access_Allow_Deny;
             $deny->allow_or_deny = 0;
             $result = $deny->setIpAddress($_POST['deny_address']);
             if (!$result) {
@@ -553,7 +553,7 @@ class Access {
                 PHPWS_Settings::save('access');
                 return TRUE;
             } elseif (!empty($_POST['allows'])) {
-                $db = & new PHPWS_DB('access_allow_deny');
+                $db = new PHPWS_DB('access_allow_deny');
 
                 // just in case something goes wrong
                 $db->addWhere('allow_or_deny', 1);
@@ -586,7 +586,7 @@ class Access {
             PHPWS_Settings::save('access');
             return TRUE;
         } elseif (!empty($_POST['denys'])) {
-            $db = & new PHPWS_DB('access_allow_deny');
+            $db = new PHPWS_DB('access_allow_deny');
             // just in case something goes wrong
             $db->addWhere('allow_or_deny', 0);
             $db->addWhere('id', $_POST['denys']);

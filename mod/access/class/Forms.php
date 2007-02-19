@@ -19,13 +19,13 @@ class Access_Forms {
 
         PHPWS_Core::initModClass('access', 'Shortcut.php');
         PHPWS_Core::initCoreClass('DBPager.php');
-        $pager = & new DBPager('access_shortcuts', 'Access_Shortcut');
+        $pager = new DBPager('access_shortcuts', 'Access_Shortcut');
         $pager->setModule('access');
         $pager->setTemplate('forms/shortcut_list.tpl');
         $pager->setLink('index.php?module=access&amp;tab=shortcuts');
         $pager->addToggle('class="bgcolor1"');
 
-        $form = & new PHPWS_Form('shortcut_list');
+        $form = new PHPWS_Form('shortcut_list');
         $form->addHidden('module', 'access');
         $form->addHidden('command', 'post_shortcut_list');
 
@@ -77,7 +77,7 @@ class Access_Forms {
             return implode('<br />', $content);
         }
 
-        $form = & new PHPWS_Form;
+        $form = new PHPWS_Form;
         $form->addHidden('module', 'access');
         $form->addHidden('command', 'post_admin');
 
@@ -118,7 +118,7 @@ class Access_Forms {
             return;
         }
 
-        $form = & new PHPWS_Form;
+        $form = new PHPWS_Form;
         $form->addHidden('module', 'access');
         $form->addHidden('command', 'post_update_file');
         $form->addSubmit(_('Write .htaccess file'));
@@ -143,7 +143,7 @@ class Access_Forms {
 
         PHPWS_Core::initModClass('access', 'Allow_Deny.php');
 
-        $form = & new PHPWS_Form('allow_deny');
+        $form = new PHPWS_Form('allow_deny');
         $form->addHidden('module', 'access');
         $form->addHidden('command', 'post_deny_allow');
 
@@ -157,7 +157,7 @@ class Access_Forms {
         $form->addSubmit('add_allow_address', _('Add allowed IP'));
         $form->addSubmit('add_deny_address', _('Add denied IP'));
 
-        $db = & new PHPWS_DB('access_allow_deny');
+        $db = new PHPWS_DB('access_allow_deny');
         $result = $db->getObjects('Access_Allow_Deny');
 
         $options['none']      = '';
@@ -265,7 +265,7 @@ class Access_Forms {
             javascript('close_window');
         }
 
-        $form = & new PHPWS_Form('shortcut_menu');
+        $form = new PHPWS_Form('shortcut_menu');
         $form->addHidden('module', 'access');
         $form->addHidden('command', 'post_shortcut');
         $form->addHidden('key_id', $key_id);

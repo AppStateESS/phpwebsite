@@ -32,7 +32,7 @@ class Access_Allow_Deny {
     function resetDB()
     {
         if (empty($this->_db)) {
-            $this->_db = & new PHPWS_DB('access_allow_deny');
+            $this->_db = new PHPWS_DB('access_allow_deny');
         } else {
             $this->_db->reset();
         }

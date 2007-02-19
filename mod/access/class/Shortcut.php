@@ -20,7 +20,7 @@ class Access_Shortcut {
 
     function init()
     {
-        $db = & new PHPWS_DB('access_shortcuts');
+        $db = new PHPWS_DB('access_shortcuts');
         $result = $db->loadObject($this);
         if (PEAR::isError($result)) {
             $this->_error = $result;
@@ -43,7 +43,7 @@ class Access_Shortcut {
             return $result;
         }
 
-        $key = & new Key((int)$_POST['key_id']);
+        $key = new Key((int)$_POST['key_id']);
         $this->setUrl($key->url);
         return TRUE;
     }
@@ -61,7 +61,7 @@ class Access_Shortcut {
             return PHPWS_Error::get(SHORTCUT_BAD_KEYWORD, 'access', 'Shortcut::setKeyword');
         }
 
-        $db = & new PHPWS_DB('access_shortcuts');
+        $db = new PHPWS_DB('access_shortcuts');
         $db->addWhere('keyword', $keyword);
         $result = $db->select();
         if (!empty($result)) {
@@ -119,7 +119,7 @@ class Access_Shortcut {
             $this->active = 1;
         }
 
-        $db = & new PHPWS_DB('access_shortcuts');
+        $db = new PHPWS_DB('access_shortcuts');
         return $db->saveObject($this);
     }
 
@@ -147,7 +147,7 @@ class Access_Shortcut {
     
     function delete()
     {
-        $db = & new PHPWS_DB('access_shortcuts');
+        $db = new PHPWS_DB('access_shortcuts');
         $db->addWhere('id', $this->id);
         return $db->delete();
     }

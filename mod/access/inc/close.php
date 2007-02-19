@@ -10,7 +10,9 @@ if (MOD_REWRITE_ENABLED && Current_User::allow('access') &&
     $key = Key::getCurrent();
     if (!empty($key) && !$key->isDummy()) {
         PHPWS_Core::initModClass('access', 'Access.php');
+        translate('access');
         Access::shortcut($key);
+        translate();
     }
  }
 

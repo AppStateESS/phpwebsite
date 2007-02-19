@@ -27,6 +27,14 @@ function access_update(&$content, $version)
         $content[] = implode("\n", $files);
         $content[] = '+ Fixed header tags (Bug #1652279)';
         $content[] = '</pre>';
+
+    case version_compare($version, '0.1.2', '<'):
+        $content[] = '<pre>
+0.1.2 changes
+---------------
++ Added translate functions.
+</pre>
+';
     }
 
     return true;
