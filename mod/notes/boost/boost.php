@@ -4,7 +4,7 @@
    * @version $Id$
    */
 $proper_name  = 'Notes';
-$version      = '0.1.2';
+$version      = '0.1.3';
 $register     = FALSE;
 $unregister   = FALSE;
 $import_sql   = TRUE;

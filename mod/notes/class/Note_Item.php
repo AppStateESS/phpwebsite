@@ -60,7 +60,7 @@ class Note_Item {
 
   function delete($confirm=true)
   {
-      $db = & new PHPWS_DB('notes');
+      $db = new PHPWS_DB('notes');
       $db->addWhere('id', $this->id);
       if ($confirm) {
           $db->addWhere('user_id', Current_User::getId());
@@ -68,6 +68,9 @@ class Note_Item {
       return $db->delete();
   }
 
+  /**
+   * Translated from call
+   */ 
   function deleteLink()
   {
       $vars = Notes_My_Page::myPageVars(false);
@@ -93,6 +96,7 @@ class Note_Item {
 
   function getTags()
   {
+      translate('note');
       $tpl['DATE_SENT']  = $this->getDateSent();
       $tpl['TITLE'] = $this->readLink();
 
@@ -109,7 +113,7 @@ class Note_Item {
       $links[] = $this->deleteLink();
 
       $tpl['LINKS'] = implode(' | ', $links);
-
+      translate();
       return $tpl;
   }
 
@@ -119,7 +123,7 @@ class Note_Item {
     if (empty($this->id)) {
       return FALSE;
     }
-    $db = & new PHPWS_DB('notes');
+    $db = new PHPWS_DB('notes');
     $db->addWhere('id', $this->id);
     if ($confirm_user) {
         $db->addWhere('user_id', Current_User::getId());
@@ -146,7 +150,7 @@ class Note_Item {
       $tpl['SENT_LABEL'] = _('Sent by');
 
       if ($this->key_id) {
-          $key = & new Key($this->key_id);
+          $key = new Key($this->key_id);
           if ($key->id) {
               $tpl['ASSOCIATE_LABEL'] = _('In reference to');
 
@@ -222,7 +226,7 @@ class Note_Item {
 
       $this->date_sent = mktime();
 
-      $db = & new PHPWS_DB('notes');
+      $db = new PHPWS_DB('notes');
       return $db->saveObject($this);
   }
   
@@ -273,7 +277,7 @@ class Note_Item {
   function updateRead()
   {
       unset($_SESSION['Notes_Unread']);
-      $db = & new PHPWS_DB('notes');
+      $db = new PHPWS_DB('notes');
       $db->addWhere('id', $this->id);
       $db->addValue('read_once', 1);
       return $db->update();
