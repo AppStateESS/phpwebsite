@@ -9,7 +9,8 @@
  */
 
 class mysql_PHPWS_SQL {
-    function export(&$info){
+    function export(&$info)
+    {
         switch ($info['type']){
         case 'int':
             if (!isset($info['len']) || $info['len'] > 6)
@@ -54,17 +55,21 @@ class mysql_PHPWS_SQL {
         return $sql;
     }
 
-    function getLimit($limit){
-        $sql[] = 'LIMIT ' . $limit['total'];
-    
-        if (isset($limit['offset'])) {
-            $sql[] = ', ' . $limit['offset'];
+    function getLimit($limit)
+    {
+        if (!isset($limit['total'])) {
+            return null;
         }
 
-        return implode(' ', $sql);
+        if (isset($limit['offset'])) {
+            return sprintf('LIMIT %s, %s', $limit['offset'], $limit['total']);
+        } else {
+            return 'LIMIT ' . $limit['total'];
+        }
     }
 
-    function readyImport(&$query){
+    function readyImport(&$query)
+    {
         return;
     }
 
