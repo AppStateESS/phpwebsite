@@ -14,7 +14,7 @@ class Profile_Forms {
 
     function &default_form()
     {
-        $form = & new PHPWS_Form;
+        $form = new PHPWS_Form;
         $form->addHidden('module', 'profiler');
 
         return $form;
@@ -23,8 +23,8 @@ class Profile_Forms {
     function edit($profile)
     {
         PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
-
-        $div = & new PHPWS_DB('profiler_division');
+        translate('profiler');
+        $div = new PHPWS_DB('profiler_division');
         $div->addWhere('show_homepage', 1);
         $div->addOrder('title');
         $div->addColumn('id');
@@ -34,7 +34,8 @@ class Profile_Forms {
 
         if (empty($profile_types)) {
             $vars['tab'] = 'division';
-            return PHPWS_Text::secureLink(_('Please make a profile division type first.'), 'profiler', $vars);
+            $msg = _('Please make a profile division type first.');
+            return PHPWS_Text::secureLink($msg, 'profiler', $vars);
         }
 
         $form = Profile_Forms::default_form();
@@ -86,13 +87,14 @@ class Profile_Forms {
         $template['PHOTO_LARGE_LABEL'] = _('Large photo');
         $template['PHOTO_MEDIUM_LABEL'] = _('Medium photo');
         $template['PHOTO_SMALL_LABEL'] = _('Small photo');
-        
+
+        translate();
         return PHPWS_Template::process($template, 'profiler', 'forms/edit.tpl');
     }
 
     function getManager($image_id, $image_name)
     {
-        $manager = & new FC_Image_Manager($image_id);
+        $manager = new FC_Image_Manager($image_id);
         $manager->setMaxWidth(MAX_PHOTO_WIDTH);
         $manager->setMaxHeight(MAX_PHOTO_HEIGHT);
         $manager->setMaxSize(PR_MAX_FILE_SIZE);
@@ -105,14 +107,14 @@ class Profile_Forms {
     function profileList()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
-
+        translate('profiler');
         $pageTags['LASTNAME']     = _('Last Name');
         $pageTags['FIRSTNAME']    = _('First Name');
         $pageTags['PROFILE_TYPE'] = _('Type');
         $pageTags['SUBMIT_DATE']  = _('Submission Date');
         $pageTags['ACTION']       = _('Action');
 
-        $pager = & new DBPager('profiles', 'Profile');
+        $pager = new DBPager('profiles', 'Profile');
         $pager->db->addColumn('profiles.*');
         $pager->db->addColumn('profiler_division.title', NULL, '_division_title');
         $pager->db->addWhere('profile_type', 'profiler_division.id');
@@ -124,12 +126,13 @@ class Profile_Forms {
         $pager->addPageTags($pageTags);
         $pager->setSearch('lastname', 'firstname');
         $content = $pager->get();
-
+        translate();
         return $content;
     }
 
     function settings()
     {
+        translate('profiler');
         $form = Profile_Forms::default_form();
         $form->addHidden('command', 'save_settings');
 
@@ -145,6 +148,7 @@ class Profile_Forms {
         $form->addSubmit(_('Save settings'));
 
         $template = $form->getTemplate();
+        translate();
         return PHPWS_Template::process($template, 'profiler', 'forms/settings.tpl');
     }
 
@@ -152,7 +156,7 @@ class Profile_Forms {
     {
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('profiler', 'Division.php');
-
+        translate('profiler');
         $js_vars['height']  = '200';
         $js_vars['address'] = 'index.php?module=profiler&amp;command=edit_division&authkey=' . Current_User::getAuthKey();
         $js_vars['label']   = _('Add division');
@@ -162,21 +166,22 @@ class Profile_Forms {
         $pageTags['ACTION_LABEL'] = _('Action');
         $pageTags['ID_LABEL']     = _('Division ID');
 
-        $pager = & new DBPager('profiler_division', 'Profiler_Division');
+        $pager = new DBPager('profiler_division', 'Profiler_Division');
         $pager->setModule('profiler');
         $pager->setTemplate('forms/division_list.tpl');
         $pager->addToggle('class="toggle1"');
         $pager->addRowTags('getTags');
         $pager->addPageTags($pageTags);
+        translate();
         return $pager->get();
     }
 
     function editDivision(&$division, $error=FALSE)
     {
-        $form = & new PHPWS_Form('division');
+        $form = new PHPWS_Form('division');
         $form->addHidden('module', 'profiler');
         $form->addHidden('command', 'update_division');
-
+        translate('profiler');
         if ($division->id) {
             $form->addHidden('division_id', $division->id);
             $form->addTplTag('PAGE_TITLE', _('Update Division'));
@@ -195,6 +200,7 @@ class Profile_Forms {
         if ($error) {
             $template['ERROR'] = _('Your title is empty or already in use. Enter another.');
         }
+        translate();
         return PHPWS_Template::process($template, 'profiler', 'forms/division_edit.tpl');
     }
 

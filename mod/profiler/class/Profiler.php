@@ -34,7 +34,7 @@ class Profiler {
             if (!isset($_REQUEST['id'])) {
                 PHPWS_Core::errorPage(404);
             }
-            $profile = & new Profile($_REQUEST['id']);
+            $profile = new Profile($_REQUEST['id']);
             if (!empty($profile->_error)) {
                 PHPWS_Error::log($profile->_error);
                 PHPWS_Core::errorPage(404);
@@ -43,7 +43,9 @@ class Profiler {
             if (Current_User::allow('profiler')) {
                 $vars['command']    = 'edit';
                 $vars['profile_id'] = $profile->id;
+                translate('profiler');
                 $link = PHPWS_Text::secureLink(_('Edit profile'), 'profiler', $vars);
+                translate();
                 MiniAdmin::add('profiler', $link);
             }
             
@@ -67,18 +69,21 @@ class Profiler {
         if (!is_numeric($type)) {
             PHPWS_Core::errorPage('404');
         }
-        $db = & new PHPWS_DB('profiles');
+        $db = new PHPWS_DB('profiles');
         if ($type) {
             $db->addWhere('profile_type', $type);
         }
         $db->addOrder('RAND()');
         $db->addWhere('id', 0, '>');
         $db->setLimit(1);
-        $profile = & new Profile;
+        $profile = new Profile;
         $result = $db->loadObject($profile);
 
         if (empty($result)) {
-            return _('Please create a profile in this category.');
+            translate('profiler');
+            $msg = _('Please create a profile in this category.');
+            translate();
+            return $msg;
         }
 
         return $profile->display($template);
@@ -105,15 +110,15 @@ class Profiler {
         }
 
         if (isset($_REQUEST['profile_id'])) {
-            $profile = & new Profile($_REQUEST['profile_id']);
+            $profile = new Profile($_REQUEST['profile_id']);
             if (PEAR::isError($profile->_error)) {
                 PHPWS_Core::errorPage(404);
             }
         }
-
+        translate('profiler');
         switch ($command) {
         case 'new':
-            $profile = & new Profile;
+            $profile = new Profile;
             $title = _('Create New Profile');
             $content = Profile_Forms::edit($profile);
             break;
@@ -143,9 +148,9 @@ class Profiler {
         case 'edit_division':
             PHPWS_Core::initModClass('profiler', 'Division.php');
             if (isset($_REQUEST['division_id'])) {
-                $division = & new Profiler_Division((int)$_REQUEST['division_id']);
+                $division = new Profiler_Division((int)$_REQUEST['division_id']);
             } else {
-                $division = & new Profiler_Division;
+                $division = new Profiler_Division;
             }
 
             if ($division->error) {
@@ -161,9 +166,9 @@ class Profiler {
         case 'update_division':
             PHPWS_Core::initModClass('profiler', 'Division.php');            
             if (isset($_REQUEST['division_id'])) {
-                $division = & new Profiler_Division((int)$_REQUEST['division_id']);
+                $division = new Profiler_Division((int)$_REQUEST['division_id']);
             } else {
-                $division = & new Profiler_Division;
+                $division = new Profiler_Division;
             }
 
             if ($division->error) {
@@ -193,7 +198,7 @@ class Profiler {
             }
 
             if (!isset($profile)) {
-                $profile = & new Profile;
+                $profile = new Profile;
             }
             $result = $profile->postProfile();
 
@@ -253,11 +258,14 @@ class Profiler {
         $finalcontent = PHPWS_Template::process($tpl, 'profiler', 'main.tpl');
         $panel->setContent($finalcontent);
         $finalPanel = $panel->display();
+
+        translate();
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
     }
 
     function &cpanel()
     {
+        translate('profiler');
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=profiler';
 
@@ -267,10 +275,10 @@ class Profiler {
         $tabs['settings']  = array ('title'=> _('Settings'), 'link'=> $link);
         //        $tabs['approval']  = array ('title'=> _('Approval'), 'link'=> $link);
 
-        $panel = & new PHPWS_Panel('profiler');
+        $panel = new PHPWS_Panel('profiler');
         $panel->quickSetTabs($tabs);
         $panel->setModule('profiler');
-
+        translate();
         return $panel;
     }
 
@@ -300,7 +308,7 @@ class Profiler {
             return;
         }
 
-        $div = & new PHPWS_DB('profiler_division');
+        $div = new PHPWS_DB('profiler_division');
         if (!$div_id) {
             $div->addWhere('show_homepage', 1);
         } else {
@@ -315,9 +323,9 @@ class Profiler {
         }
 
         $limit = PHPWS_Settings::get('profiler', 'profile_number');
-        $db = & new PHPWS_DB('profiles');
+        $db = new PHPWS_DB('profiles');
 
-        $tpl = & new PHPWS_Template('profiler');
+        $tpl = new PHPWS_Template('profiler');
         $tpl->setFile('homepage.tpl');
 
         foreach ($division_list as $division) {

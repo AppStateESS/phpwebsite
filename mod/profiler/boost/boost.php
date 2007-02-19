@@ -6,7 +6,7 @@
    */
 
 $proper_name  = 'Profiler';
-$version      = '0.3.0';
+$version      = '0.3.1';
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/profiler/check.xml';
 $register     = FALSE;
 $unregister   = FALSE;

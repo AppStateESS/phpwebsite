@@ -27,13 +27,14 @@ class Profiler_Division {
 
     function init()
     {
-        $db = & new PHPWS_DB('profiler_division');
+        $db = new PHPWS_DB('profiler_division');
         $db->addWhere('id', $this->id);
         return $db->loadObject($this);
     }
 
     function getTags()
     {
+        translate('profiler');
         $js_vars['height']  = '200';
         $js_vars['address'] = sprintf('index.php?module=profiler&amp;command=edit_division&division_id=%s&authkey=%s', 
                                       $this->id, Current_User::getAuthKey());
@@ -41,6 +42,7 @@ class Profiler_Division {
         $links[] = javascript('open_window', $js_vars);
 
         $tpl['ACTION'] = implode(' | ', $links);
+        translate();
         return $tpl;
     }
 
@@ -48,7 +50,7 @@ class Profiler_Division {
     {
         $this->title = @preg_replace('/[^\w\s]/', '', $_POST['title']);
 
-        $db = & new PHPWS_DB('profiler_division');
+        $db = new PHPWS_DB('profiler_division');
         $db->addWhere('title', $this->title);
         if ($db->select('one')) {
             return FALSE;
@@ -62,7 +64,7 @@ class Profiler_Division {
 
     function save()
     {
-        $db = & new PHPWS_DB('profiler_division');
+        $db = new PHPWS_DB('profiler_division');
         return $db->saveObject($this);
     }
 

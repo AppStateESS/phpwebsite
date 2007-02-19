@@ -53,12 +53,13 @@ class Profile {
         if (isset($this->_db)) {
             $this->_db->reset();
         } else {
-            $this->_db = & new PHPWS_DB('profiles');
+            $this->_db = new PHPWS_DB('profiles');
         }
     }
 
     function display($template_name)
     {
+        translate('profiler');
         Layout::addStyle('profiler');
 
         $images = $this->loadImages();
@@ -91,16 +92,20 @@ class Profile {
 
         $template['EMAIL'] = $this->getEmail();
         $template['EMAIL_LABEL'] = _('Email address');
-
-
+        
+        translate();
         return PHPWS_Template::process($template, 'profiler', 'views/' . $template_name . '.tpl');
     }
 
+    /**
+     * translated in display function
+     */
     function getEmail()
     {
         if (empty($this->email)) {
             return null;
         }
+        
         
         return sprintf('<a class="email" href="mailto:%s"><img src="images/mod/profiler/email.png" alt="%s" title="%s" /></a>', $this->email, _('Email'), _('Email'));
     }
@@ -120,15 +125,15 @@ class Profile {
         $images['small'] = $images['medium'] = $images['large'] = null;
 
         if ($this->photo_small) {
-            $images['small'] = & new PHPWS_Image($this->photo_small);
+            $images['small'] = new PHPWS_Image($this->photo_small);
         }
 
         if ($this->photo_medium) {
-            $images['medium'] = & new PHPWS_Image($this->photo_medium);
+            $images['medium'] = new PHPWS_Image($this->photo_medium);
         }
  
         if ($this->photo_large) {
-            $images['large'] = & new PHPWS_Image($this->photo_large);
+            $images['large'] = new PHPWS_Image($this->photo_large);
         }
 
         return $images;
@@ -197,7 +202,7 @@ class Profile {
         static $all_profiles = array();
 
         if (empty($all_profiles)) {
-            $div = & new PHPWS_DB('profiler_division');
+            $div = new PHPWS_DB('profiler_division');
             $div->addWhere('show_homepage', 1);
             $div->addOrder('title');
             $div->addColumn('id');
@@ -229,6 +234,7 @@ class Profile {
 
     function postProfile()
     {
+        translate('profiler');
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
 
         if (!Current_User::authorized('profiler')) {
@@ -296,10 +302,12 @@ class Profile {
         } else {
             return TRUE;
         }
+        translate();
     }
 
     function getProfileTags()
     {
+        translate('profiler');
         //        $tpl['PROFILE_TYPE'] = $this->getProfileType();
         $tpl['PROFILE_TYPE'] = $this->_division_title;
 
@@ -318,6 +326,7 @@ class Profile {
         }
 
         $tpl['ACTION'] = implode(' | ', $links);
+        translate();
         return $tpl;
     }
   
@@ -346,7 +355,7 @@ class Profile {
             }
         }
 
-        $version = & new Version('profiles');
+        $version = new Version('profiles');
         $version->setSource($this);
         $version->setApproved($this->approved);
         return $version->save();
