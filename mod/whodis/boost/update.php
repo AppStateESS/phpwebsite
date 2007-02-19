@@ -15,6 +15,7 @@ function whodis_update(&$content, $version)
         }
         $content[] = 'Added purge functionality.';
 
+
     case version_compare($version, '0.0.3', '<'):
         if (PHPWS_Boost::updateFiles(array('templates/admin.tpl'), 'whodis')) {
             $content[] = 'Template upgraded successfully.';
@@ -23,6 +24,13 @@ function whodis_update(&$content, $version)
         }
         $content[] = '+ Added search option to listing.';
         $content[] = '+ Added checkboxes on referrers for search deletions.';
+
+    case version_compare($version, '0.0.4', '<'):
+        $content[] = '<pre>
+0.0.4 changes
+---------------
++ Added translate functions
+</pre>';
     }
     return true;
 }

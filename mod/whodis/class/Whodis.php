@@ -60,7 +60,7 @@ class Whodis {
 
     function admin()
     {
-
+        translate('whodis');
         if (isset($_POST['op'])) {
             switch ($_POST['op']) {
             case 'purge':
@@ -72,8 +72,6 @@ class Whodis {
 
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('whodis', 'Whodis_Referrer.php');
-
-
 
         $form = new PHPWS_Form('purge');
         $form->addHidden('module', 'whodis');
@@ -120,7 +118,7 @@ class Whodis {
         $pager->addRowTags('getTags');
         $pager->setOrder('updated', 'desc', true);
         $content = $pager->get();
-
+        translate();
         Layout::add(PHPWS_Controlpanel::display($content));
     }
 
