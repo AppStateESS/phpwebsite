@@ -24,7 +24,6 @@ class Notes_My_Page {
 
     function main()
     {
-        translate('notes');
         $js = false;
 
         if (isset($_REQUEST['op'])) {
@@ -98,7 +97,6 @@ class Notes_My_Page {
             PHPWS_Core::errorPage('404');
         }
 
-        translate();
         $tpl['TITLE'] =  $this->title;
         $tpl['CONTENT'] = $this->content;
         $tpl['MESSAGE'] = $this->message;
@@ -115,7 +113,6 @@ class Notes_My_Page {
         $vars = Notes_My_Page::myPageVars(false);
         $vars['op'] = 'send_note';
         $vars['key_id'] = $key->id;
-        translate('notes');
         if (javascriptEnabled()) {
             $js_vars['address'] = PHPWS_Text::linkAddress('users', $vars);
             $js_vars['label']   = _('Associate note');
@@ -125,7 +122,6 @@ class Notes_My_Page {
         } else {
             MiniAdmin::add('notes', PHPWS_Text::moduleLink(_('Associate note'), 'users', $vars));
         }
-        translate();
     }
 
     function myPageVars($include_mod=true)
@@ -148,7 +144,7 @@ class Notes_My_Page {
         if (!empty($_POST['key_id'])) {
             $note->key_id = (int)$_POST['key_id'];
         }
-        translate('notes');
+
         if (empty($_POST['user_id'])) {
             if (empty($_POST['username'])) {
                 $this->errors['missing_username'] = _('You must enter a username.');
@@ -211,7 +207,7 @@ class Notes_My_Page {
                 $this->errors['bad_user_id'] = _('Unable to resolve user name.');
             }
         }
-        translate();
+
         if (!empty($this->errors)) {
             return false;
         } else {
@@ -221,7 +217,6 @@ class Notes_My_Page {
 
     function read()
     {
-        translate('notes');
         unset($_SESSION['Notes_Unread']);
         PHPWS_Core::initCoreClass('DBPager.php');
         $pager = new DBPager('notes', 'Note_Item');
@@ -239,7 +234,6 @@ class Notes_My_Page {
         $pager->addRowTags('getTags');
         $this->title = _('Read notes');
         $this->content = $pager->get();
-        translate();
     }
     
     function sendMessage($message, $js=false)
@@ -257,7 +251,6 @@ class Notes_My_Page {
 
     function sendNote(&$note, $users=null)
     {
-        translate('notes');
         $form = new PHPWS_Form('send_note');
 
         $form->addHidden($this->myPageVars());
@@ -315,7 +308,6 @@ class Notes_My_Page {
 
         $this->title = _('Send note');
         $this->content = PHPWS_Template::process($tpl, 'notes', 'send_note.tpl');
-        translate();
     }
 
     function showAssociations($key)
@@ -333,11 +325,9 @@ class Notes_My_Page {
         foreach ($notes as $note) {
             $content[] = $note->readLink();
         }
-        translate('notes');
         $tpl['TITLE'] = _('Associated Notes');
         $tpl['CONTENT'] = implode('<br />', $content);
         Layout::add(PHPWS_Template::process($tpl, 'layout', 'box.tpl'), 'notes', 'reminder');
-        translate();
     }
 
     function showUnread()
@@ -358,14 +348,12 @@ class Notes_My_Page {
         }
 
         if ($notes) {
-            translate('notes');
             $tpl['TITLE'] = _('Notes');
             $link_val = sprintf(_('You have %d unread notes.'), $notes);
             $val = Notes_My_Page::myPageVars(false);
             $tpl['CONTENT'] = PHPWS_Text::moduleLink($link_val, 'users', $val);
             $content = PHPWS_Template::process($tpl, 'layout', 'box.tpl');
             Layout::add($content, 'notes', 'reminder');
-            translate();
         }
 
     }

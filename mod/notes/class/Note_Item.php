@@ -96,7 +96,6 @@ class Note_Item {
 
   function getTags()
   {
-      translate('note');
       $tpl['DATE_SENT']  = $this->getDateSent();
       $tpl['TITLE'] = $this->readLink();
 
@@ -113,7 +112,6 @@ class Note_Item {
       $links[] = $this->deleteLink();
 
       $tpl['LINKS'] = implode(' | ', $links);
-      translate();
       return $tpl;
   }
 
