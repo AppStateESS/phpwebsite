@@ -14,7 +14,6 @@ class Boost_Form {
     }
 
     function setTabs(&$panel){
-        translate('boost');
         $link = _('index.php?module=boost&amp;action=admin');
     
         $core_links['title'] = _('Core Modules');
@@ -26,11 +25,9 @@ class Boost_Form {
         $tabs['other_mods'] = $other_links;
 
         $panel->quickSetTabs($tabs);
-        translate();
     }
 
     function listModules($type){
-        translate('boost');
         Layout::addStyle('boost');
         PHPWS_Core::initCoreClass('Module.php');
         PHPWS_Core::initCoreClass('Text.php');
@@ -222,7 +219,6 @@ class Boost_Form {
                                                            array('action' => 'check_all', 'tab' => $type));
         $tpl['LATEST_LABEL'] = _('Latest version');
         $result = PHPWS_Template::process($tpl, 'boost', 'module_list.tpl');
-        translate();
         return $result;
     }
 }

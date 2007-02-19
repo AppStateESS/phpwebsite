@@ -184,14 +184,13 @@ class PHPWS_Boost {
         } elseif($continue) {
             $content[] = _('Installation complete!');
         }
-        translate();    
+        translate();
         return implode('<br />', $content);    
     }
 
 
     function onInstall($mod, &$installCnt)
     {
-        translate('boost');
         $onInstallFile = $mod->getDirectory() . 'boost/install.php';
         $installFunction = $mod->title . '_install';
         if (!is_file($onInstallFile)) {
@@ -212,7 +211,6 @@ class PHPWS_Boost {
         else {
             return true;
         }
-        translate();
     }
 
     function onUpdate($mod, &$updateCnt)
@@ -284,6 +282,8 @@ class PHPWS_Boost {
 
             $result = (bool)$this->onUninstall($mod, $content);
 
+            // ensure translate path
+            translate('boost');
             if ($result === true) {
                 $this->setStatus($title, BOOST_DONE);
                 $this->removeDirectories($mod, $content);
@@ -400,6 +400,9 @@ class PHPWS_Boost {
 
             $content[] = _('Updating') . ' - ' . $mod->getProperName();
             $result = $this->onUpdate($mod, $content);
+
+            // assure boost translation path
+            translate('boost');
 
             if ($result === true) {
                 $this->setStatus($title, BOOST_DONE);
@@ -664,7 +667,6 @@ class PHPWS_Boost {
             $selfResult = $this->unregisterSelfToOthers($module, $content);
             $result = $this->unregisterAll($module);
         }
-
 
         return $result;
     }
