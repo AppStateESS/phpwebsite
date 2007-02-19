@@ -3,7 +3,7 @@
   /**
    * Index file for phatform module
    *
-   * @version $Id: index.php 20 2006-10-18 18:23:18Z matt $
+   * @version $Id$
    */
 $GLOBALS['CNT_phatform']['title'] = $GLOBALS['CNT_phatform']['content'] = NULL;
 $GLOBALS['CNT_phatform']['message'] = NULL;

@@ -2,7 +2,7 @@
 
   /**
    * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id: install.php 20 2006-10-18 18:23:18Z matt $
+   * @version $Id$
    */
 
 function phatform_install(&$content)
@@ -20,7 +20,7 @@ function phatform_install(&$content)
     }
 
     if (!@mkdir('files/phatform/export/')) {
-        $content[] = 'Failed to create report directory.';
+        $content[] = 'Failed to create export directory.';
     }
 
     return true;

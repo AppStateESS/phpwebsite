@@ -3,7 +3,7 @@
 /**
  * Manager Configuration File for PhatForm
  * 
- * @version $Id: manager.php 2 2006-04-27 20:24:18Z matt $
+ * @version $Id$
  * @author  Steven Levin
  * @modified Matthew McNaney <mcnaney at gmail dot com>
  */

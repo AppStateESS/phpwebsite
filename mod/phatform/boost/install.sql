@@ -1,5 +1,5 @@
 -- @author Matthew McNaney <mcnaney at gmail dot com>
--- @version $Id: install.sql 25 2006-11-15 16:25:34Z matt $
+-- @version $Id$
 
 CREATE TABLE mod_phatform_forms (
   id int(10) unsigned NOT NULL default 0,

@@ -5,7 +5,7 @@ require_once(PHPWS_SOURCE_DIR . 'core/class/Text.php');
 /**
  * PHAT_Rport class for reporting on PHAT_Form data
  *
- * @version $Id: Report.php 26 2006-11-15 16:25:55Z matt $
+ * @version $Id$
  * @author  Adam Morton
  * @author  Steven Levin
  * @modified Matthew McNaney <mcnaney at gmail dot com>

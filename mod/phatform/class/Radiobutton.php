@@ -5,7 +5,7 @@ require_once(PHPWS_SOURCE_DIR . 'mod/phatform/class/Element.php');
 /**
  * Radiobutton item
  *
- * @version $Id: Radiobutton.php 20 2006-10-18 18:23:18Z matt $
+ * @version $Id$
  * @author  Steven Levin
  * @author  Adam Morton
  * @modified Matthew McNaney <mcnaney at gmail dot com>

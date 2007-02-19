@@ -1,7 +1,7 @@
 <?php
 
   /**
-   * @version $Id: update.php 28 2006-11-17 17:02:42Z matt $
+   * @version $Id$
    * @author Matthew McNaney <mcnaney at gmail dot com>
    */
 
@@ -21,6 +21,14 @@ function phatform_update(&$content, $version)
 + Simplified install.sql
 + Fixed some incompatible errorMessage function calls
 </pre>';
+
+    case version_compare($version, '3.0.5', '<'):
+        $content[] = '<pre>
+3.0.5 changes
+-------------
++ Fixed typo in Form_Manager class causing crashes.
+</pre>';
+
     }
     return true;
 }

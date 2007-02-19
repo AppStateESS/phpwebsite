@@ -3,7 +3,7 @@
  * Uninstall file for PhatForm v2
  *
  * Rewritten to work with phpwebsite 1.0
- * @version $Id: uninstall.php 2 2006-04-27 20:24:18Z matt $
+ * @version $Id$
  */
 
 function phatform_uninstall(&$content) {

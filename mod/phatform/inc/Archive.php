@@ -1,6 +1,6 @@
 <?php
   /**
-   * @version $Id: Archive.php 20 2006-10-18 18:23:18Z matt $
+   * @version $Id$
    * @author Adam Morton
    * @author Steven Levin
    */

@@ -2,7 +2,7 @@
 /**
  * Configuration file for phatform module
  *
- * @version $Id: phatform.php 2 2006-04-27 20:24:18Z matt $
+ * @version $Id$
  */
 
 include(PHPWS_SOURCE_DIR . 'mod/phatform/boost/boost.php');

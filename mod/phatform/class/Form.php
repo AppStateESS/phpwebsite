@@ -8,7 +8,7 @@ require_once(PHPWS_SOURCE_DIR . 'core/class/Item.php');
  * This class contains all the variables and functions neccessary to represent
  * and edit an html form.
  *
- * @version $Id: Form.php 26 2006-11-15 16:25:55Z matt $
+ * @version $Id$
  * @author  Steven Levin <steven@NOSPAM.tux.appstate.edu>
  * @author  Adam Morton <adam@NOSPAM.tux.appstate.edu>
  * @modified Matthew McNaney <mcnaney at gmail dot com>

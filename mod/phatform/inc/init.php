@@ -1,7 +1,7 @@
 <?php
 
   /**
-   * @version $Id: init.php 5 2006-04-28 17:54:32Z matt $
+   * @version $Id$
    * @author Matthew McNaney <mcnaney at gmail dot com>
    */
 

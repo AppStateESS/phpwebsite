@@ -8,7 +8,7 @@ require_once(PHPWS_SOURCE_DIR . 'mod/phatform/class/Report.php');
  *
  * Archive and Export View Class
  *
- * @version $Id: advViews.php 20 2006-10-18 18:23:18Z matt $
+ * @version $Id$
  * @author  Darren Greene <dg49379@NOSPAM.tux.appstate.edu>
  * @modified Matthew McNaney <mcnaney at gmail dot com>
  * @package Phat Form

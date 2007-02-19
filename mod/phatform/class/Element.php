@@ -11,7 +11,7 @@ require_once(PHPWS_SOURCE_DIR . 'core/class/Text.php');
 /**
  * Element class for phatform
  *
- * @version $Id: Element.php 20 2006-10-18 18:23:18Z matt $
+ * @version $Id$
  * @author  Steven Levin <steven@NOSPAM.tux.appstate.edu>
  * @author  Adam Morton <adam@NOSPAM.tux.appstate.edu>
  * @modified Matthew McNaney <mcnaney at gmail dot com>

@@ -1,6 +1,6 @@
 <?php
   /**
-   * @version $Id: permission.php 2 2006-04-27 20:24:18Z matt $
+   * @version $Id$
    * @author Matthew McNaney <mcnaney at gmail dot com>
    */
 
