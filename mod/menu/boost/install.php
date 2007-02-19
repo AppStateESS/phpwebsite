@@ -7,6 +7,7 @@
 
 function menu_install(&$content)
 {
+    translate('menu');
     PHPWS_Core::initModClass('menu', 'Menu_Item.php');
     $menu = new Menu_Item;
     $menu->title = _('Main menu');
@@ -15,9 +16,9 @@ function menu_install(&$content)
     $result = $menu->save();
     if (PEAR::isError($result)) {
         PHPWS_Error::log($result);
+        translate();
         return false;
     } else {
-        translate('menu');
         $content[] = _('Default menu created successfully.');
         translate();
         return true;

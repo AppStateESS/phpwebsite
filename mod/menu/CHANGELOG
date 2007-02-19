@@ -1,5 +1,9 @@
 Version 1.1.0
 ------------------------------------------------------------------
+19 February 2007
++ Reduced translate links
++ Removed register.php and unregister parameter from boost.php
+
 14 February 2007
 + Removed references from object constructors
 + Removed a unneeded double urlencode and a urldecode
