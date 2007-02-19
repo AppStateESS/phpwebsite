@@ -20,7 +20,6 @@ class User_Form {
         if (PHPWS_Settings::get('users', 'user_menu') == 'none') {
             return null;
         }
-        translate('users');
 
         if (Current_User::isLogged()) {
             $username = Current_User::getUsername();
@@ -67,7 +66,7 @@ class User_Form {
             $username = NULL;
         }
 
-        $form = & new PHPWS_Form('User_Login');
+        $form = new PHPWS_Form('User_Login');
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'user');
         $form->addHidden('command', 'login');
@@ -97,11 +96,11 @@ class User_Form {
     function setPermissions($id)
     {
         translate('users');
-        $group = & new PHPWS_Group($id, FALSE);
+        $group = new PHPWS_Group($id, FALSE);
 
         $modules = PHPWS_Core::getModules();
 
-        $tpl = & new PHPWS_Template('users');
+        $tpl = new PHPWS_Template('users');
         $tpl->setFile('forms/permissions.tpl');
 
         $group->loadPermissions(FALSE);
@@ -117,7 +116,7 @@ class User_Form {
             $tpl->parseCurrentBlock('module');
         }
 
-        $form = & new PHPWS_Form();
+        $form = new PHPWS_Form();
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'admin');
         $form->addHidden('command', 'postPermission');
@@ -184,7 +183,7 @@ class User_Form {
 
         $permCheck = $group->getPermissionLevel($mod['title']);
 
-        $form = & new PHPWS_Form;
+        $form = new PHPWS_Form;
         $name = 'module_permission[' . $mod['title'] .']';
         $form->addRadio($name, $button);
         $form->setLabel($name, $labels);
@@ -197,7 +196,7 @@ class User_Form {
 
         if (isset($permissions)) {
             foreach ($permissions as $permName => $permProper){
-                $form = & new PHPWS_Form;
+                $form = new PHPWS_Form;
 
                 $name = 'sub_permission[' . $mod['title'] . '][' . $permName . ']';
                 $form->addCheckBox($name, 1);
@@ -232,7 +231,7 @@ class User_Form {
         $pageTags['ACTIVE_LABEL'] = _('Active');
         $pageTags['ACTIONS_LABEL'] = _('Actions');
 
-        $pager = & new DBPager('users', 'PHPWS_User');
+        $pager = new DBPager('users', 'PHPWS_User');
         $pager->setDefaultLimit(10);
         $pager->setModule('users');
         $pager->setTemplate('manager/users.tpl');
@@ -257,7 +256,7 @@ class User_Form {
         $pageTags['ACTIONS_LABEL'] = _('Actions');
         translate();
 
-        $pager = & new DBPager('users_groups', 'PHPWS_Group');
+        $pager = new DBPager('users_groups', 'PHPWS_Group');
         $pager->setModule('users');
         $pager->setTemplate('manager/groups.tpl');
         $pager->setLink('index.php?module=users&amp;action=admin&amp;tab=manage_groups&amp;authkey=' . Current_User::getAuthKey());
@@ -272,7 +271,7 @@ class User_Form {
 
     function manageMembers(&$group)
     {
-        $form = & new PHPWS_Form('memberList');
+        $form = new PHPWS_Form('memberList');
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'admin');
         $form->addHidden('command', 'postMembers');
@@ -287,7 +286,7 @@ class User_Form {
 
         if (isset($_POST['search_member'])) {
             $_SESSION['Last_Member_Search'] = preg_replace('/[\W]+/', '', $_POST['search_member']);
-            $db = & new PHPWS_DB('users_groups');
+            $db = new PHPWS_DB('users_groups');
             $db->addWhere('name', $_SESSION['Last_Member_Search']);
             $db->addColumn('id');
             $result = $db->select('one');
@@ -345,7 +344,7 @@ class User_Form {
         $result = $group->getMembers();
         unset($db);
         if ($result){
-            $db = & new PHPWS_DB('users_groups');
+            $db = new PHPWS_DB('users_groups');
             $db->addColumn('name');
             $db->addColumn('id');
             $db->addWhere('id', $result, '=', 'or');
@@ -374,7 +373,7 @@ class User_Form {
                 $data[] = PHPWS_Template::process($template, 'users', 'forms/memberlist.tpl');
             }
 
-            $pager = & new PHPWS_Pager;
+            $pager = new PHPWS_Pager;
             $pager->setData($data);
             $pager->setLinkBack('index.php?module=users&amp;group=' . $group->getId() . '&amp;action=admin&amp;command=manageMembers');
             $pager->pageData();
@@ -396,7 +395,7 @@ class User_Form {
     {
         translate('users');
 
-        $form = & new PHPWS_Form;
+        $form = new PHPWS_Form;
         if ($user->getId() > 0) {
             $form->addHidden('user_id', $user->getId());
             $form->addSubmit('submit', _('Update User'));
@@ -409,7 +408,7 @@ class User_Form {
         $form->addHidden('module', 'users');
 
         if (Current_User::allow('users', 'settings')) {
-            $db = & new PHPWS_DB('users_auth_scripts');
+            $db = new PHPWS_DB('users_auth_scripts');
             $db->setIndexBy('id');
             $db->addColumn('id');
             $db->addColumn('display_name');
@@ -514,7 +513,7 @@ class User_Form {
     {
         translate('users');
 
-        $form = & new PHPWS_Form('groupForm');
+        $form = new PHPWS_Form('groupForm');
         $members = $group->getMembers();
 
         if ($group->getId() > 0) {
@@ -575,14 +574,14 @@ class User_Form {
             return _('None found');
         }
 
-        $db = & new PHPWS_DB('users_groups');
+        $db = new PHPWS_DB('users_groups');
         foreach ($members as $id)
             $db->addWhere('id', $id);
         $db->addOrder('name');
         $db->setIndexBy('id');
         $result = $db->getObjects('PHPWS_Group');
 
-        $tpl = & new PHPWS_Template('users');
+        $tpl = new PHPWS_Template('users');
         $tpl->setFile('forms/memberlist.tpl');
         $count = 0;
         $form = new PHPWS_Form;
@@ -606,7 +605,7 @@ class User_Form {
 
     function getLikeGroups($name, &$group)
     {
-        $db = & new PHPWS_DB('users_groups');
+        $db = new PHPWS_DB('users_groups');
         $name = preg_replace('/[^\w]/', '', $name);
         $db->addWhere('name', "%$name%", 'LIKE');
 
@@ -629,7 +628,7 @@ class User_Form {
               return NULL;
         }
 
-        $tpl = & new PHPWS_Template('users');
+        $tpl = new PHPWS_Template('users');
         $tpl->setFile('forms/likeGroups.tpl');
         $count = 0;
 
@@ -676,7 +675,7 @@ class User_Form {
             $file_compare[] = $auth['filename'];
         }
 
-        $form = & new PHPWS_Form;
+        $form = new PHPWS_Form;
 
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'admin');
@@ -886,7 +885,7 @@ class User_Form {
             $username = NULL;
         }
 
-        $form = & new PHPWS_Form('User_Login');
+        $form = new PHPWS_Form('User_Login');
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'user');
         $form->addHidden('command', 'login');
@@ -907,7 +906,7 @@ class User_Form {
 
     function _getNonUserGroups()
     {
-        $db = & new PHPWS_DB('users_groups');
+        $db = new PHPWS_DB('users_groups');
         $db->addOrder('name');
         $db->addWhere('user_id', 0);
         return $db->select();
@@ -936,7 +935,7 @@ class User_Form {
         $edit_select = User_Form::_createMultiple($edit_groups['restricted']['all'], 'edit_groups', $edit_matches);
         $view_select = User_Form::_createMultiple($view_groups, 'view_groups', $view_matches);
 
-        $form = & new PHPWS_Form('choose_permissions');
+        $form = new PHPWS_Form('choose_permissions');
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'permission');
         $form->addHidden('key_id', $key->id);

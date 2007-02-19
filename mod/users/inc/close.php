@@ -11,7 +11,8 @@ if (PHPWS_Core::getCurrentModule() != 'users'){
     PHPWS_Core::killSession('User_Manager');
     PHPWS_Core::killSession('Group_Manager');
 }
-
+translate('users');
 Current_User::permissionMenu();
+translate();
 
 ?>

@@ -55,10 +55,9 @@ function my_page()
 class User_Settings {
 
     function userForm(&$user, $message=NULL){
-        translate('users');
         Layout::addStyle('users');
 
-        $form = & new PHPWS_Form;
+        $form = new PHPWS_Form;
 
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'user');
@@ -148,7 +147,6 @@ class User_Settings {
                 $template[$tag] = $error;
             }
         }
-        translate();
         return PHPWS_Template::process($template, 'users', 'my_page/user_setting.tpl');
     }
 

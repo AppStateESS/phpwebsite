@@ -47,7 +47,7 @@ class My_Page {
     function init()
     {
         PHPWS_Core::initCoreClass('Module.php');
-        $db = & new PHPWS_DB('users_my_page_mods');
+        $db = new PHPWS_DB('users_my_page_mods');
         $db->addColumn('mod_title');
         $result = $db->select('col');
 
@@ -57,7 +57,7 @@ class My_Page {
 
         if ($result) {
             foreach ($result as $mod_title) {
-                $this->modules[$mod_title] = & new PHPWS_Module($mod_title);
+                $this->modules[$mod_title] = new PHPWS_Module($mod_title);
             }
         } else {
             return FALSE;
@@ -80,7 +80,7 @@ class My_Page {
             $tabs[$module->title] = array('title'=>$module->getProperName(), 'link'=>$link);
         }
 
-        $panel = & new PHPWS_Panel('users');
+        $panel = new PHPWS_Panel('users');
         $panel->quickSetTabs($tabs);
         $panel->setModule('users');
         $panel->setPanel('panel.tpl');
@@ -89,7 +89,7 @@ class My_Page {
 
     function userOption($module_title)
     {
-        $module = & new PHPWS_Module($module_title);
+        $module = new PHPWS_Module($module_title);
         $directory = $module->getDirectory();
 
         $final_file = $directory . 'inc/my_page.php';
@@ -116,7 +116,7 @@ class My_Page {
             return FALSE;
         }
 
-        $db = & new PHPWS_DB('users_my_page_mods');
+        $db = new PHPWS_DB('users_my_page_mods');
         $db->addValue('mod_title', $mod_title);
         return $db->insert();
     }

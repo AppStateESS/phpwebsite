@@ -8,7 +8,7 @@
 
 function authorize($user, $password)
 {
-    $db = & new PHPWS_DB('user_authorization');
+    $db = new PHPWS_DB('user_authorization');
     if (preg_match('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/', $user->username)) {
         return FALSE;
     }

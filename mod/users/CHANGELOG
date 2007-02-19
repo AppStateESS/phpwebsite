@@ -1,3 +1,6 @@
+Version 2.3.0
+-------------------------------------------------------------------
+
 13 February 2007
 + Added translate function calls in classes and my_page.php
 + my_page hides translation option if language defines disable selection

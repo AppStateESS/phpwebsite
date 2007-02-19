@@ -33,15 +33,15 @@ class User_Action {
         }
 
         if (isset($_REQUEST['user_id'])) {
-            $user = & new PHPWS_User((int)$_REQUEST['user_id']);
+            $user = new PHPWS_User((int)$_REQUEST['user_id']);
         } else {
-            $user = & new PHPWS_User;
+            $user = new PHPWS_User;
         }
 
         if (isset($_REQUEST['group_id'])) {
-            $group = & new PHPWS_Group((int)$_REQUEST['group_id']);
+            $group = new PHPWS_Group((int)$_REQUEST['group_id']);
         } else {
-            $group = & new PHPWS_Group;
+            $group = new PHPWS_Group;
         }
 
         switch ($command) {
@@ -64,7 +64,7 @@ class User_Action {
 
         case 'editUser':
             $title = _('Edit User');
-            $user = & new PHPWS_User($_REQUEST['user_id']);
+            $user = new PHPWS_User($_REQUEST['user_id']);
             $content = User_Form::userForm($user);
             break;      
 
@@ -217,7 +217,7 @@ class User_Action {
                 Current_User::disallow();
                 return;
             }
-            $user = & new PHPWS_User($_REQUEST['user']);
+            $user = new PHPWS_User($_REQUEST['user']);
             if (isset($_GET['authorize'])){
                 if ($_GET['authorize'] == 1 && Current_User::isDeity()){
                     $user->setDeity(TRUE);
@@ -238,7 +238,7 @@ class User_Action {
                 return;
             }
 
-            $user = & new PHPWS_User($_REQUEST['user']);
+            $user = new PHPWS_User($_REQUEST['user']);
             if (isset($_GET['authorize'])){
                 if ($_GET['authorize'] == 1 && Current_User::isDeity()){
                     $user->setDeity(FALSE);
@@ -397,7 +397,7 @@ class User_Action {
             PHPWS_Core::goBack();
         }
 
-        $key = & new Key((int)$_REQUEST['key_id']);
+        $key = new Key((int)$_REQUEST['key_id']);
 
         if (!Key::checkKey($key, FALSE)) {
             PHPWS_Core::errorPage();
@@ -430,7 +430,7 @@ class User_Action {
             return;
         }
 
-        $key = & new Key((int)$_REQUEST['key_id']);
+        $key = new Key((int)$_REQUEST['key_id']);
 
         if (!Key::checkKey($key, FALSE)) {
             return;
@@ -619,7 +619,7 @@ class User_Action {
             $tabs['settings'] = array('title'=>_('Settings'), 'link'=>$link);
         }
 
-        $panel = & new PHPWS_Panel('user_user_panel');
+        $panel = new PHPWS_Panel('user_user_panel');
         $panel->quickSetTabs($tabs);
         $panel->setModule('users');
         $panel->setPanel('panel.tpl');
@@ -666,7 +666,7 @@ class User_Action {
 
         case 'my_page':
             PHPWS_Core::initModClass('users', 'My_Page.php');
-            $my_page = & new My_Page;
+            $my_page = new My_Page;
             $my_page->main();
             break;
 
@@ -676,7 +676,7 @@ class User_Action {
                 $content = _('You already have an account.');
                 break;
             }
-            $user = & new PHPWS_User;
+            $user = new PHPWS_User;
             if (PHPWS_User::getUserSetting('new_user_method') == 0) {
                 $content = _('Sorry, we are not accepting new users at this time.');
                 break;
@@ -692,7 +692,7 @@ class User_Action {
                 return;
             }
 
-            $user = & new PHPWS_User;
+            $user = new PHPWS_User;
             $result = User_Action::postNewUser($user);
 
             if (is_array($result)) {
@@ -762,7 +762,7 @@ class User_Action {
             PHPWS_Core::errorPage('400');
             Security::log(sprintf(_('User tried to send bad hash (%s) to confirm user.'), $hash));
         }
-        $db = & new PHPWS_DB('users_signup');
+        $db = new PHPWS_DB('users_signup');
         $db->addWhere('authkey', $hash);
         $row = $db->select('row');
         translate();
@@ -773,7 +773,7 @@ class User_Action {
             return FALSE;
         } else {
             $user_id = &$row['user_id'];
-            $user = & new PHPWS_User($user_id);
+            $user = new PHPWS_User($user_id);
 
             // If the deadline has not yet passed, approve the user, save, and return true
             if ($row['deadline'] > mktime()) {
@@ -791,7 +791,7 @@ class User_Action {
 
     function cleanUpConfirm()
     {
-        $db = & new PHPWS_DB('users_signup');
+        $db = new PHPWS_DB('users_signup');
         $db->addWhere('deadline', mktime(), '<');
         $result = $db->delete();
         if (PEAR::isError($result)) {
@@ -847,7 +847,7 @@ class User_Action {
         $message = User_Action::_getSignupMessage($authkey);
 
         PHPWS_Core::initCoreClass('Mail.php');
-        $mail = & new PHPWS_Mail;
+        $mail = new PHPWS_Mail;
         $mail->addSendTo($user->email);
         $mail->setSubject(_('Confirmation email'));
         $mail->setFrom($site_contact);
@@ -874,7 +874,7 @@ class User_Action {
         $deadline = mktime() + (3600 * NEW_SIGNUP_WINDOW);
         $authkey = md5($deadline . $user_id);
 
-        $db = & new PHPWS_DB('users_signup');
+        $db = new PHPWS_DB('users_signup');
         $db->addValue('authkey', $authkey);
         $db->addValue('user_id', $user_id);
         $db->addValue('deadline', $deadline);
@@ -958,7 +958,7 @@ class User_Action {
 
         PHPWS_Core::initModClass('users', 'Group.php');
 
-        $db = & new PHPWS_DB('users_groups');
+        $db = new PHPWS_DB('users_groups');
         if ($mode == 'users') {
             $db->addWhere('user_id', 0, '>');
         }
@@ -1025,7 +1025,7 @@ class User_Action {
 
     function getAuthorizationList()
     {
-        $db = & new PHPWS_DB('users_auth_scripts');
+        $db = new PHPWS_DB('users_auth_scripts');
         $db->addOrder('display_name');
         $result = $db->select();
 
@@ -1044,7 +1044,7 @@ class User_Action {
                 return FALSE;
             }
 
-            $db = & new PHPWS_DB('users_auth_scripts');
+            $db = new PHPWS_DB('users_auth_scripts');
             $db->addWhere('filename', strip_tags($_POST['file_list']));
             $result = $db->select('one');
 
@@ -1065,7 +1065,7 @@ class User_Action {
 
 
         if (isset($_POST['default_authorization'])){
-            $db = & new PHPWS_DB('users_config');
+            $db = new PHPWS_DB('users_config');
             $db->addValue('default_authorization', (int)$_POST['default_authorization']);
             $result = $db->update();
 
@@ -1079,7 +1079,7 @@ class User_Action {
 
     function dropAuthorization($script_id)
     {
-        $db = & new PHPWS_DB('users_auth_scripts');
+        $db = new PHPWS_DB('users_auth_scripts');
         $db->addWhere('id', (int)$script_id);
         return $db->delete();
     }

@@ -37,7 +37,7 @@ class Users_Permission {
             return TRUE;
         }
 
-        $db = & new PHPWS_DB($tableName);
+        $db = new PHPWS_DB($tableName);
         $columns = $db->getTableColumns();
 
 
@@ -176,7 +176,7 @@ class Users_Permission {
             return TRUE;
         }
 
-        $itemdb = & new PHPWS_DB('phpws_key');
+        $itemdb = new PHPWS_DB('phpws_key');
         $itemdb->addWhere('phpws_key_edit.group_id', $this->groups);
         $itemdb->addWhere('phpws_key_edit.key_id', 'phpws_key.id');
         $itemdb->addWhere('phpws_key.module', $module);
@@ -270,7 +270,7 @@ class Users_Permission {
             return PHPWS_Error::get(USER_ERR_PERM_TABLE, 'users', 'createPermissionTable', 'Table Name: ' . $tableName);
         }
 
-        $DB = & new PHPWS_DB($tableName);
+        $DB = new PHPWS_DB($tableName);
     
         $columns['group_id'] = 'int NOT NULL default \'0\'';
         $columns['permission_level'] = 'smallint NOT NULL default \'0\'';
@@ -300,7 +300,7 @@ class Users_Permission {
             return;
         }
 
-        $db = & new PHPWS_DB($tableName);
+        $db = new PHPWS_DB($tableName);
         $db->addWhere('group_id', (int)$group_id);
 
         $db->delete();
@@ -372,13 +372,13 @@ class Users_Permission {
             return PHPWS_Error::get(USER_ERR_PERM_FILE, 'users', __CLASS__ . '::' . __FUNCTION__);
         }
 
-        $db = & new PHPWS_DB('users_groups');
+        $db = new PHPWS_DB('users_groups');
         $db->addColumn('users_groups.*');
         $db->addColumn("$permTable.permission_level");
         $db->addWhere('id', "$permTable.group_id");
         $db->addWhere("$permTable.permission_level", 0, '>');
         
-        $test_db = & new PHPWS_DB($permTable);
+        $test_db = new PHPWS_DB($permTable);
 
         if ($edit_rights) {
             if (!$test_db->isTableColumn($key->edit_permission)) {
@@ -426,7 +426,7 @@ class Users_Permission {
     {
         PHPWS_Core::initModClass('users', 'Group.php');
 
-        $db = & new PHPWS_DB('users_groups');
+        $db = new PHPWS_DB('users_groups');
 
         $db->addWhere('id', $groups);
         $result = $db->getObjects('PHPWS_Group');
@@ -481,7 +481,7 @@ class Users_Permission {
 
     function clearItemPermissions($module, $group_id)
     {
-        $db = & new PHPWS_DB('phpws_key_edit');
+        $db = new PHPWS_DB('phpws_key_edit');
         $db->addWhere('group_id', $group_id);
         $db->addWhere('phpws_key.module', $module);
         $db->addWhere('key_id', 'phpws_key.id');
@@ -491,7 +491,7 @@ class Users_Permission {
 
     function giveItemPermission($user_id, &$key)
     {
-        $user = & new PHPWS_User($user_id);
+        $user = new PHPWS_User($user_id);
         $groups = $user->getGroups();
 
         if (empty($groups) || !is_array($groups)) {

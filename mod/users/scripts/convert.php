@@ -21,7 +21,7 @@
 
 function authorize(&$user, $password)
 {
-    $db = & new PHPWS_DB('users_conversion');
+    $db = new PHPWS_DB('users_conversion');
     if (preg_match('/[^' . ALLOWED_USERNAME_CHARACTERS . ']/', $user->username)) {
         return FALSE;
     }
@@ -34,7 +34,7 @@ function authorize(&$user, $password)
         return $result;
     }
 
-    $db2 = & new PHPWS_DB('users');
+    $db2 = new PHPWS_DB('users');
     $db2->addWhere('username', strtolower($user->username));
     $result = $db2->loadObject($user);
 
