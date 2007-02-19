@@ -46,7 +46,6 @@ class Calendar_Suggestion extends Calendar_Event {
 
     function getTpl()
     {
-        translate('calendar');
         $tpl['SUMMARY']     = $this->summary;
         $tpl['DESCRIPTION'] = $this->getDescription();
 
@@ -128,7 +127,6 @@ class Calendar_Suggestion extends Calendar_Event {
         $links[] = PHPWS_Text::secureLink(_('Disapprove'), 'calendar', $vars);
 
         $tpl['ACTION'] = implode(' | ', $links);
-        translate();
         return $tpl;
     }
 

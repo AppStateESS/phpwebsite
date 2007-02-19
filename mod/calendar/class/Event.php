@@ -178,7 +178,6 @@ class Calendar_Event {
 
     function deleteLink()
     {
-        translate('calendar');
         if (javascriptEnabled()) {
             $vars['QUESTION'] = _('Are you sure you want to permanently delete this event?');
             $vars['ADDRESS'] = sprintf('index.php?module=calendar&amp;aop=delete_event&amp;sch_id=%s&amp;event_id=%s',
@@ -198,7 +197,6 @@ class Calendar_Event {
 
     function editLink($full=false)
     {
-        translate('calendar');
         $linkvar['aop']      = 'edit_event';
         $linkvar['sch_id']   = $this->_schedule->id;
         $linkvar['event_id'] = $this->id;
@@ -209,7 +207,6 @@ class Calendar_Event {
             $link_label = _('Edit');
         }
 
-        translate();
         if (javascriptEnabled()) {
             $linkvar['js'] = 1;
             $jsvars['address'] = PHPWS_Text::linkAddress('calendar', $linkvar);
@@ -480,7 +477,6 @@ class Calendar_Event {
      */
     function post($suggested=false)
     {
-        translate('calendar');
         if (empty($_POST['summary'])) {
             $errors[] = _('You must give your event a summary.');
         } else {
@@ -611,7 +607,6 @@ class Calendar_Event {
         } else {
             return true;
         }
-        translate();
     }
 
 

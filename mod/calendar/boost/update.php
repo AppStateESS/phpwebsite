@@ -75,7 +75,6 @@ function calendar_update(&$content, $version)
 + Caching now works on public calendars only.
 + Added translate functions.
 + Updated message translation files.</pre>';
-        
     }
 
     return true;

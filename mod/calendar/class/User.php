@@ -67,7 +67,6 @@ class Calendar_User {
 
     function getDaysEvents($startdate, &$tpl)
     {
-        translate('calendar');
         $year  = (int)date('Y', $startdate);
         $month = (int)date('m', $startdate);
         $day   = (int)date('d', $startdate);
@@ -139,7 +138,6 @@ class Calendar_User {
                 $tpl->parseCurrentBlock();
             }
         }
-        translate();
         return true;
     }
 
@@ -148,7 +146,6 @@ class Calendar_User {
      */
     function day()
     {
-        translate('calendar');
         if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
             Layout::addStyle('calendar');
         }
@@ -175,7 +172,6 @@ class Calendar_User {
         $tpl->setCurrentBlock('day');
         $tpl->setData($template);
         $tpl->parseCurrentBlock();
-        translate();
         return $tpl->get();
     }
 
@@ -196,7 +192,6 @@ class Calendar_User {
 
     function event($js=false) {
         PHPWS_Core::initModClass('calendar', 'Event.php');
-        translate('calendar');
         if (!$this->event->id) {
             PHPWS_Core::errorPage('404');
         }
@@ -210,7 +205,6 @@ class Calendar_User {
         }
 
         $template['VIEW_LINKS'] = $this->viewLinks('event');
-        translate();
         return PHPWS_Template::process($template, 'calendar', 'view/event.tpl');
     }
 
@@ -261,7 +255,6 @@ class Calendar_User {
 
     function main()
     {
-        translate('calendar');
         if (isset($_REQUEST['uop'])) {
             $command = $_REQUEST['uop'];
         } else {
@@ -311,8 +304,6 @@ class Calendar_User {
 
         // Clears in case of js window opening
         $this->content = $this->title = $this->message = null;
-
-        translate();
 
         $final = PHPWS_Template::process($tpl, 'calendar', 'user_main.tpl');
 
@@ -512,7 +503,6 @@ class Calendar_User {
 
     function month_list()
     {
-        translate('calendar');
         if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
             Layout::addStyle('calendar');
         }
@@ -581,14 +571,12 @@ class Calendar_User {
             PHPWS_Cache::save($cache_key, $content);
         }
         
-        translate();
         return $content;
     }
 
 
     function postSuggestion()
     {
-        translate('calendar');
         $this->loadSuggestion();
         
         if ($this->event->post()) {
@@ -632,12 +620,10 @@ class Calendar_User {
                 } else {
                     $this->title = _('Event saved');
                     $this->content = _('An administrator will review your submission. Thank you.');
-                    translate();
                     return true;
                 }
             }
         } else {
-            translate();
             return false;
         }
     }
@@ -645,11 +631,9 @@ class Calendar_User {
 
     function resetCacheLink($type, $month, $year, $schedule)
     {
-        translate('calendar');
         $vars['aop'] = 'reset_cache';
         $vars['key'] = sprintf('%s_%s_%s_%s', $type, $month, $year, $schedule);
         MiniAdmin::add('calendar', PHPWS_Text::secureLink(_('Reset cache'), 'calendar', $vars));
-        translate();
     }
 
     function schedulePick()
@@ -665,9 +649,7 @@ class Calendar_User {
         $form->addHidden('date', $this->calendar->current_date);
         $form->addSelect('sch_id', $schedules);
         $form->setMatch('sch_id', $this->calendar->schedule->id);
-        translate('calendar');
         $form->addSubmit('go', _('Change schedule'));
-        translate();
         $tpl = $form->getTemplate();
         return implode("\n", $tpl);
     }
@@ -686,7 +668,6 @@ class Calendar_User {
 
     function todayLink($view)
     {
-        translate('calendar');
         $vars['sch_id'] = $this->calendar->schedule->id;
         if ($this->current_view == 'event') {
             $vars['view'] = 'day';
@@ -708,7 +689,7 @@ class Calendar_User {
         case 'day':
             $view_name = _('Today');
         }
-        translate();
+
         return PHPWS_Text::moduleLink($view_name, 'calendar', $vars);
     }
 
@@ -717,7 +698,6 @@ class Calendar_User {
      */
     function view()
     {
-        translate('calendar');
         $key = new Key($this->calendar->schedule->key_id);
         if (!$key->allowView()) {
             $this->calendar->loadDefaultSchedule();
@@ -791,7 +771,6 @@ class Calendar_User {
         } else {
             $schedule_key->flag();
         }
-        translate();
     }
 
 
@@ -833,8 +812,6 @@ class Calendar_User {
         if (isset($this->calendar->schedule)) {
             $vars['sch_id'] = $this->calendar->schedule->id;
         }
-
-        translate('calendar');
 
         // Get the values for the left and right arrows in a month view
         if ($current_view == 'list' || $current_view == 'grid') {
@@ -901,7 +878,6 @@ class Calendar_User {
             $links[] = PHPWS_Text::moduleLink('&gt;&gt;', 'calendar', $vars, null, $right_link_title);
         }
 
-        translate();
         return implode(' | ', $links);
     }
 
@@ -960,7 +936,6 @@ class Calendar_User {
             }
         }
 
-        translate('calendar');
         if (!$events_found) {
             $tpl->setVariable('MESSAGE', _('No events this week.'));
         }
@@ -974,7 +949,7 @@ class Calendar_User {
         $main_tpl['PICK']           = $this->getDatePick();
         $main_tpl['SUGGEST']        = $this->suggestLink();
         $tpl->setData($main_tpl);
-        translate();
+
         return $tpl->get();
     }
 

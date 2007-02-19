@@ -1,5 +1,9 @@
 Version 1.4.0
 ------------------------------------------------------------------
+19 February 2007
++ Reduced translate functions
++ Removed single quotes from default integers in sql file.
+
 2 February 2007
 + Bug #1648965. Clicking Day or Week from grid view pulls correct day
 + Changed "Today" link to view appropiate description to prevent

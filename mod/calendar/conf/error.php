@@ -7,7 +7,6 @@
 
 
 translate('calendar');
-
 $errors = array(
                 CAL_EVENT_TABLE_MISSING => _('Schedule event table is missing.'),
                 CAL_REPEAT_LIMIT_PASSED => _('Maximum allowed repeats reached.'),

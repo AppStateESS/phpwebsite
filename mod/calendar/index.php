@@ -14,11 +14,11 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 PHPWS_Core::initModClass('calendar', 'Calendar.php');
 
 $Calendar = new PHPWS_Calendar;
-
+translate('calendar');
 if ( ( isset($_REQUEST['aop']) || isset($_REQUEST['tab']) ) && Current_User::allow('Calendar') ) {
     $Calendar->admin();
  } else {
     $Calendar->user();
  } 
-
+translate();
 ?>

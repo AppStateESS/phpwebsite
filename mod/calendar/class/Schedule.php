@@ -99,9 +99,7 @@ class Calendar_Schedule {
         if (!isset($default_date)) {
             $default_date = PHPWS_Time::getUserTime();
         }
-        translate('calendar');
         $add_label = _('Add event');
-        translate();
         if (javascriptEnabled()) {
             $vars['address'] = sprintf('index.php?module=calendar&amp;aop=create_event&amp;js=1&amp;sch_id=%s&amp;date=%s',
                                        $this->id, $default_date);
@@ -124,9 +122,7 @@ class Calendar_Schedule {
             $default_date = PHPWS_Time::getUserTime();
         }
 
-        translate('calendar');
         $suggest_label = _('Suggest event');
-        translate();
 
         if (javascriptEnabled()) {
             $vars['address'] = sprintf('index.php?module=calendar&amp;uop=suggest_event&amp;js=1&amp;sch_id=%s&amp;date=%s',
@@ -203,7 +199,6 @@ class Calendar_Schedule {
         $key = $this->getKey();
         $form = new PHPWS_Form('schedule_form');
 
-        translate('calendar');
         if (isset($_REQUEST['js'])) {
             $form->addHidden('js', 1);
         }
@@ -244,7 +239,6 @@ class Calendar_Schedule {
         }
         
         $template['PUBLIC_LABEL'] = _('Availability');
-        translate();
         return PHPWS_Template::process($template, 'calendar', 'admin/forms/edit_schedule.tpl');
     }
 
@@ -341,7 +335,6 @@ class Calendar_Schedule {
      */
     function post()
     {
-        translate('calendar');
         if (empty($_POST['title'])) {
             $this->_error = _('Missing title.');
             $this->title = null;
@@ -355,7 +348,6 @@ class Calendar_Schedule {
         if (!$this->public && !$this->id) {
             $this->user_id = Current_User::getId();
         }
-        translate();
         return true;
     }
 
@@ -388,7 +380,6 @@ class Calendar_Schedule {
 
     function rowTags()
     {
-        translate('calendar');
         if ($this->checkPermissions()) {
             $links[] = $this->addEventLink();
 
@@ -439,7 +430,6 @@ class Calendar_Schedule {
         } else {
             $tags['AVAILABILITY'] = _('Private');
         }
-        translate();
         return $tags;
     }
 
