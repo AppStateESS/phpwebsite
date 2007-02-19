@@ -27,6 +27,14 @@ function photoalbum_update(&$content, $version) {
 + Fixed bug prevented pictures from appearing the albums.
 </pre>';
 
+    case version_compare($version, '1.3.4', '<'):
+        $content[] = '<pre>
+1.3.4 Changes
+-------------
++ Added translate function
++ Linked the Album image
+</pre>';
+
     }
 
     return true;
