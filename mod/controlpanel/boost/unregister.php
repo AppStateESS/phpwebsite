@@ -45,6 +45,7 @@ function controlpanel_unregister($module, &$content)
             $result = $db->getObjects('PHPWS_Panel_Link');
       
             if (PEAR::isError($result) || empty($result)) {
+                translate();
                 return $result;
             }
 
@@ -78,6 +79,7 @@ function controlpanel_unregister($module, &$content)
             $result = $db->getObjects('PHPWS_Panel_Tab');
 
             if (PEAR::isError($result) || empty($result)) {
+                translate();
                 return $result;
             }
 

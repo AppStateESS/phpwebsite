@@ -190,8 +190,6 @@ class PHPWS_Panel{
         $template['CONTENT'] = $content;
         return PHPWS_Template::process($template, $module, $panel);
     }
-
-
 }
 
 ?>

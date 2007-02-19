@@ -54,7 +54,7 @@ class PHPWS_ControlPanel {
                 $panel->dropTab($tab->id);
             }
         }
-        translate('controlpanel');
+
         if (empty($panel->tabs)) {
             return _('No tabs available in the Control Panel.');
         }
@@ -153,8 +153,6 @@ class PHPWS_ControlPanel {
 
     function registerModule($module, &$content)
     {
-        translate('controlpanel');
-
         PHPWS_Core::initModClass('controlpanel', 'Tab.php');
         PHPWS_Core::initModClass('controlpanel', 'Link.php');
 
@@ -162,7 +160,6 @@ class PHPWS_ControlPanel {
 
         if (!is_file($cpFile)){
             PHPWS_Boost::addLog($module, _('No Control Panel file found.'));
-            translate();
             return FALSE;
         }
 
@@ -181,7 +178,8 @@ class PHPWS_ControlPanel {
         }
 
         include $cpFile;
-
+        // insure cp file does not change translation directory
+        translate('controlpanel');
         if (isset($tabs) && is_array($tabs)) {
             foreach ($tabs as $info){
                 $tab = new PHPWS_Panel_Tab;
@@ -216,7 +214,6 @@ class PHPWS_ControlPanel {
                 if (PEAR::isError($result)) {
                     $content[] = _('An error occurred when trying to save a controlpanel tab.');
                     PHPWS_Error::log($result);
-                    translate();
                     return FALSE;
                 }
             }
@@ -277,7 +274,6 @@ class PHPWS_ControlPanel {
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
                     $content[] = _('There was a problem trying to save a Control Panel link.');
-                    translate();
                     return FALSE;
                 }
                 $db->resetWhere();
@@ -286,7 +282,7 @@ class PHPWS_ControlPanel {
         } else {
             PHPWS_Boost::addLog($module, _('No Control Panel links found.'));
         }
-        translate();
+
         PHPWS_ControlPanel::reset();
         return TRUE;
     }

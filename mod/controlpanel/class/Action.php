@@ -48,10 +48,9 @@ class CP_Action {
             $content = CP_Action::adminMenu();
             break;
         }
-        translate('controlpanel');
+
         $template['TITLE'] = _('Control Panel Administration');
         $template['CONTENT'] = $content;
-        translate();
         $final = PHPWS_Template::process($template, 'controlpanel', 'main.tpl');
 
         Layout::add(PHPWS_ControlPanel::display($final));
@@ -63,7 +62,6 @@ class CP_Action {
         $tabs = PHPWS_ControlPanel::getAllTabs();
         $links = PHPWS_ControlPanel::getAllLinks();
 
-        translate('controlpanel');
         $tpl = new PHPWS_Template('controlpanel');
         $tpl->setFile('panelList.tpl');
 
@@ -124,7 +122,6 @@ class CP_Action {
         }
 
         $content = $tpl->get();
-        translate();
         return $content;
     }
 }

@@ -1,3 +1,7 @@
+19 February 2007
++ Moved and reduced translate functions
++ Added some commenting
+
 16 February 2007
 + Added translate functions.
 + Removed object contructor references.

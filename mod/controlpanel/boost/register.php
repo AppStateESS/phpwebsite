@@ -7,7 +7,10 @@
 
 function controlpanel_register($module, &$content){
     PHPWS_Core::initModClass('controlpanel', 'ControlPanel.php');
-    return PHPWS_ControlPanel::registerModule($module, $content);
+    translate('controlpanel');
+    $result = PHPWS_ControlPanel::registerModule($module, $content);
+    translate();
+    return $result;
 }
 
 ?>
