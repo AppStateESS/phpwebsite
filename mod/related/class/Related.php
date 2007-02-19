@@ -37,7 +37,7 @@ class Related {
 
     function init()
     {
-        $db = & new PHPWS_DB('related_main');
+        $db = new PHPWS_DB('related_main');
         $result = $db->loadObject($this);
 
         if (PEAR::isError($result)) {
@@ -45,7 +45,7 @@ class Related {
         } elseif (!$result) {
             $this->id = NULL;
         } else {
-            $this->_key = & new Key($this->key_id);
+            $this->_key = new Key($this->key_id);
         }
 
     }
@@ -62,7 +62,7 @@ class Related {
             $this->key_id = $key->id;
         } elseif (is_numeric($key)) {
             $this->key_id = $key;
-            $this->_key = & new Key($this->key_id);
+            $this->_key = new Key($this->key_id);
         }
 
         if (empty($this->title)) {
@@ -116,7 +116,7 @@ class Related {
             return NULL;
         }
 
-        $db = & new PHPWS_DB('related_friends');
+        $db = new PHPWS_DB('related_friends');
         $db->addWhere('source_id', $this->id);
         $db->addOrder('rating');
         $db->addColumn('friend_id');
@@ -127,7 +127,7 @@ class Related {
         }
 
         foreach ($result as $id) {
-            $this->friends[] = & new Related($id);
+            $this->friends[] = new Related($id);
         }
 
     }
@@ -236,7 +236,7 @@ class Related {
 
     function load(){
         if (!isset($this->id)) {
-            $db = & new PHPWS_DB('related_main');
+            $db = new PHPWS_DB('related_main');
             $db->addWhere('key_id', $this->key_id);
             $result = $db->loadObject($this);
             if (PEAR::isError($result)) {
@@ -257,7 +257,7 @@ class Related {
             return NULL;
         }
     
-        $related = & new Related;
+        $related = new Related;
         $related->setKey($key);
         $related->load();
 
@@ -297,8 +297,9 @@ class Related {
         return TRUE;
     }
 
-    function save(){
-        $db = & new PHPWS_DB('related_main');
+    function save()
+    {
+        $db = new PHPWS_DB('related_main');
         $result = $db->saveObject($this);
 
         if (PEAR::isError($result))
@@ -327,13 +328,13 @@ class Related {
     }
 
     function clearRelated(){
-        $db = & new PHPWS_DB('related_friends');
+        $db = new PHPWS_DB('related_friends');
         $db->addWhere('source_id', $this->id);
         $result = $db->delete();
     }
 
     function clearFriends(){
-        $db = & new PHPWS_DB('related_friends');
+        $db = new PHPWS_DB('related_friends');
         $db->addWhere('friend_id', $this->id);
         $result = $db->delete();
     }
@@ -341,13 +342,13 @@ class Related {
     function kill(){
         $this->clearRelated();
         $this->clearFriends();
-        $db = & new PHPWS_DB('related_main');
+        $db = new PHPWS_DB('related_main');
         $db->addWhere('id', $this->id);
         $db->delete();
     }
 
     function addRelation($id, $rating){
-        $db = & new PHPWS_DB('related_friends');
+        $db = new PHPWS_DB('related_friends');
         $db->addValue('source_id', $this->id);
         $db->addValue('friend_id', $id);
         $db->addValue('rating', $rating);

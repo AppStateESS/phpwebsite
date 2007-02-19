@@ -11,6 +11,7 @@ class Related_Action {
 
     function create(&$related)
     {
+        translate('related');
         $template['TITLE_LBL'] = _('Title');
         $template['MODULE_LBL'] = _('Module');
 
@@ -25,16 +26,16 @@ class Related_Action {
         $template['LINK'] = PHPWS_Text::secureLink(_('Build Related'), 'related', $vars);
         $template['TITLE'] = $related->getUrl(TRUE);
 
-        $module = & new PHPWS_Module($related->_key->module);
+        $module = new PHPWS_Module($related->_key->module);
         $template['MODULE'] = $module->getProperName(TRUE);
-
+        translate();
         return PHPWS_Template::process($template, 'related', 'create.tpl');
     }
 
     function edit(&$current)
     {
         PHPWS_Core::initCoreClass('Module.php');
-
+        translate('related');
         $related = & Related_Action::getBank();
         $template['TITLE_LBL'] = _('Title');
         $template['MODULE_LBL'] = _('Module');
@@ -74,7 +75,7 @@ class Related_Action {
 
         Related_Action::setCurrent($current);
 
-        $module = & new PHPWS_Module($related->_key->module);
+        $module = new PHPWS_Module($related->_key->module);
         $template['MODULE'] = $module->getProperName(TRUE);
 
         if (!empty($related->friends)) {
@@ -99,7 +100,7 @@ class Related_Action {
         } else {
             $template['FRIEND_NAME'] = _('View other items to add them to the list.');
         }
-
+        translate();
         return PHPWS_Template::process($template, 'related', 'edit.tpl');
     }
 
@@ -118,10 +119,12 @@ class Related_Action {
         $template['TITLE'] = $related->getUrl(TRUE);
 
         if (Current_User::allow('related')) {
+            translate('related');
             $linkvars = array('action' => 'edit',
                               'id'     => $related->id
                               );
             $template['EDIT_LINK'] = PHPWS_Text::moduleLink(_('Edit'), 'related', $linkvars);
+            translate();
         }
 
         foreach ($friends as $key=>$friend_item){
@@ -170,7 +173,7 @@ class Related_Action {
 
     function start()
     {
-        $related = & new Related;
+        $related = new Related;
         $related->setKey($_REQUEST['key']);
         $related->setBanked(TRUE);
         Related_Action::setBank($related);
@@ -273,7 +276,7 @@ class Related_Action {
 
         $related = Related_Action::getBank();
 
-        $form = & new PHPWS_Form;
+        $form = new PHPWS_Form;
         $form->add('module', 'hidden', 'related');
         $form->add('action', 'hidden', 'postTitle');
         $form->add('title', 'text', $related->title);

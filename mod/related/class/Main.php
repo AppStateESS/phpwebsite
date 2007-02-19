@@ -96,7 +96,7 @@ class Related {
     if (!isset($this->id))
       return NULL;
 
-    $db = & new PHPWS_DB("related_friends");
+    $db = new PHPWS_DB("related_friends");
     $db->addWhere("source_id", $this->id);
     $db->addOrder("rating");
     $db->setIndexBy("rating");
