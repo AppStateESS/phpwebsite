@@ -167,7 +167,7 @@ class Boost_Form {
                 $links[] = PHPWS_Text::secureLink($link_title, 'boost', $link_command);
             } else {
                 if ($mod->needsUpdate()) {
-                    $db_mod = &new PHPWS_Module($mod->title, false);
+                    $db_mod = new PHPWS_Module($mod->title, false);
                     $template['VERSION'] = $db_mod->version . ' &gt; ' . $mod->version;
                     if ($mod->checkDependency()) {
                         if ($title == 'boost') {
