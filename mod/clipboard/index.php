@@ -9,10 +9,11 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
+translate('clipboard');
 if (!isset($_SESSION['Clipboard'])) {
   Clipboard::init();
 }
 
 Clipboard::action();
-
+translate();
 ?>

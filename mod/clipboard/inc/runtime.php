@@ -8,6 +8,7 @@
 if (!isset($_SESSION['Clipboard'])) {
   return;
 }
-
+translate('clipboard');
 Clipboard::show();
+translate();
 ?>
