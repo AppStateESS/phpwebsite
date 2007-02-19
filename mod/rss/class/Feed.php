@@ -60,7 +60,6 @@ class RSS_Feed {
     {
         $vars['command'] = 'reset_feed';
         $vars['feed_id'] = $this->id;
-        translate('rss');
         $links[] = PHPWS_Text::secureLink(_('Reset'), 'rss', $vars);
 
         $jsvars['address'] = sprintf('index.php?module=rss&command=edit_feed&feed_id=%s&authkey=%s',
@@ -119,7 +118,6 @@ class RSS_Feed {
 
 
         $tpl['REFRESH_TIME'] = $refresh_time;
-        translate();
         return $tpl;
     }
 
@@ -172,7 +170,7 @@ class RSS_Feed {
         } else {
             $this->title = NULL;
         }
-        translate('rss');
+
         if (!isset($_POST['address'])) {
             $error[] = _('You must enter an address.');
         }
@@ -206,7 +204,7 @@ class RSS_Feed {
         } else {
             $this->refresh_time = &$refresh_time;
         }
-        translate();
+
         if (isset($error)) {
             return $error;
         } else {
@@ -236,7 +234,6 @@ class RSS_Feed {
      */
     function view()
     {
-        translate('rss');
         if (!$this->loadParser()) {
             $tpl['MESSAGE'] = _('Sorry, unable to grab feed.');
         } else {
@@ -277,7 +274,7 @@ class RSS_Feed {
         }
                                          
         $content = PHPWS_Template::process($tpl, 'rss', 'feeds/view_rss.tpl');
-        translate();
+
         return $content;
     }
 

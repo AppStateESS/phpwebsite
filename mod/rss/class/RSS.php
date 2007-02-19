@@ -9,12 +9,10 @@ class RSS {
 
     function registerModule($module, &$content)
     {
-        translate('rss');
         $reg_file = PHPWS_Core::getConfigFile($module, 'rss.php');
 
         if ($reg_file == FALSE) {
             PHPWS_Boost::addLog($module, _('No RSS file found.'));
-            translate();
             return FALSE;
         }
 
@@ -52,11 +50,9 @@ class RSS {
             PHPWS_Error::log($result);
             PHPWS_Boost::addLog($module, _('An error occurred registering to RSS module.'));
             $content[] = _('An error occurred registering to RSS module.');
-            translate();
             return NULL;
         } else {
             $content[] = sprintf(_('RSS registration to %s module successful.'), $oModule->proper_name);
-            translate();
             return TRUE;
         }
     }

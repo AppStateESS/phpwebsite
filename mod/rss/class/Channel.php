@@ -45,7 +45,6 @@ class RSS_Channel {
 
     function post()
     {
-        translate('rss');
         if (isset($_POST['title'])) {
             $this->title = $_POST['title'];
         } else {
@@ -57,7 +56,6 @@ class RSS_Channel {
         } else {
             $this->description = NULL;
         }
-        translate();
         if (isset($errors)) {
             return $errors;
         } else {
@@ -83,11 +81,9 @@ class RSS_Channel {
 
     function getActionLinks()
     {
-        translate('rss');
         $vars['channel_id'] = $this->id;
         $vars['command'] = 'edit_channel';
         $links[] = PHPWS_Text::secureLink(_('Edit'), 'rss', $vars);
-        translate();
 
         return $links;
     }

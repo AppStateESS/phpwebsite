@@ -18,7 +18,6 @@ class RSS_Admin {
             Current_User::disallow();
         }
 
-        translate('rss');
         $panel = & RSS_Admin::adminPanel();
 
         if (isset($_REQUEST['command'])) {
@@ -127,7 +126,6 @@ class RSS_Admin {
         $panel->setContent($content);
         $content = $panel->display();
         Layout::add(PHPWS_ControlPanel::display($content));
-        translate();
     }
 
 
@@ -151,10 +149,7 @@ class RSS_Admin {
         return $message;
     }
 
-    /**
-     * translated in main()
-     */
-    function &adminPanel()
+    function adminPanel()
     {
         $opt['link'] = 'index.php?module=rss';
 
@@ -169,9 +164,6 @@ class RSS_Admin {
         return $panel;
     }
 
-    /**
-     * translated in main
-     */
     function editChannel(&$channel)
     {
         $form = new PHPWS_Form;
@@ -199,9 +191,6 @@ class RSS_Admin {
 
     }
 
-    /**
-     * translated in main()
-     */
     function channels()
     {
         PHPWS_Core::initModClass('rss', 'Channel.php');
@@ -241,9 +230,6 @@ class RSS_Admin {
         return $final_tpl;
     }
 
-    /**
-     * translated in main
-     */
     function editFeed(&$feed)
     {
         $form = new PHPWS_Form;
@@ -286,9 +272,6 @@ class RSS_Admin {
         return $tpl;
     }
 
-    /**
-     * translated in main
-     */
     function import()
     {
         PHPWS_Core::requireConfig('rss');
