@@ -256,8 +256,6 @@ class Comment_Item {
 
     function getTpl($allow_anon)
     {
-        translate('comments');
-
         $author = $this->getAuthor();
 
         /**
@@ -325,7 +323,6 @@ class Comment_Item {
 	    $template['IP_ADDRESS'] = $this->getIp();
 	}
 	$template = array_merge($author_info, $template);
-        translate();
 	return $template;
     }
 
@@ -368,7 +365,6 @@ class Comment_Item {
 
     function editLink()
     {
-        translate('comments');
 	if (Current_User::allow('comments') ||
 	    ($this->author_id > 0 && $this->author_id == Current_User::getId())
 	    ) {
@@ -383,13 +379,11 @@ class Comment_Item {
 
     function deleteLink()
     {
-        translate('comments');
 	if (Current_User::allow('comments', 'delete_comments')) {
 	    $vars['QUESTION'] = _('Are you sure you want to delete this comment?');
 	    $vars['ADDRESS'] = 'index.php?module=comments&amp;cm_id=' . $this->getId() . '&amp;admin_action=delete_comment&amp;authkey='
 		. Current_User::getAuthKey();
 	    $vars['LINK'] = _('Delete');
-            translate();
 	    return Layout::getJavascript('confirm', $vars);
 	} else {
 	    return null;
@@ -402,7 +396,6 @@ class Comment_Item {
 	$vars['user_action']   = 'post_comment';
 	$vars['thread_id']     = $this->thread_id;
 	$vars['cm_parent']     = $this->getId();
-        translate('comments');
 	return PHPWS_Text::moduleLink(_('Quote'), 'comments', $vars);
     }
 
@@ -410,7 +403,6 @@ class Comment_Item {
     {
 	$vars['user_action']   = 'post_comment';
 	$vars['thread_id']     = $this->thread_id;
-        translate('comments');
 	return PHPWS_Text::moduleLink(_('Reply'), 'comments', $vars);
     }
 

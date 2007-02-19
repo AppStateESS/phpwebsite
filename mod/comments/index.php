@@ -14,6 +14,7 @@ if ($_REQUEST['module'] != 'comments') {
   return;
 }
 
+translate('comments');
 PHPWS_Core::initModClass('comments', 'Comments.php');
 
 if (isset($_REQUEST['user_action'])) {
@@ -25,5 +26,5 @@ if (isset($_REQUEST['user_action'])) {
 } else {
     PHPWS_Core::errorPage('404');
  }
-
+translate();
 ?>

@@ -65,7 +65,6 @@ class Comments_My_Page {
 
     function editOptions($user)
     {
-        translate('comments');
         $form = new PHPWS_Form;
         $hidden['module'] = 'users';
         $hidden['action'] = 'user';
@@ -96,7 +95,6 @@ class Comments_My_Page {
         $form->setSize('contact_email', 40);
         $form->addSubmit(_('Update'));
         $template = $form->getTemplate();
-        translate();
         return PHPWS_Template::process($template, 'comments', 'user_settings.tpl');
     }
 

@@ -48,7 +48,6 @@ class Comment_User extends Demographics_User {
             $this->signature = NULL;
             return TRUE;
         }
-        translate('comments');
         if (PHPWS_Settings::get('comments', 'allow_image_signatures')) {
             $this->signature = trim(strip_tags($sig, '<img>'));
         } else {
@@ -57,7 +56,6 @@ class Comment_User extends Demographics_User {
             }
             $this->signature = trim(strip_tags($sig));
         }
-        translate();
         return TRUE;
     }
 
@@ -140,7 +138,6 @@ class Comment_User extends Demographics_User {
     function getWebsite($format=FALSE)
     {
         if ($format && isset($this->website)) {
-            translate('comments');
             return sprintf('<a href="%s" title="%s">%s</a>',
                            $this->website,
                            sprintf(_('%s\'s Website'), $this->display_name),
@@ -190,7 +187,6 @@ class Comment_User extends Demographics_User {
 
     function getTpl()
     {
-        translate('comments');
         $template['AUTHOR_NAME']   = $this->display_name;
         $template['COMMENTS_MADE'] = $this->comments_made;
 
@@ -221,13 +217,11 @@ class Comment_User extends Demographics_User {
             $template['LOCATION'] = $this->location;
             $template['LOCATION_LABEL'] = _('Location');
         }
-        translate();
         return $template;
     }
 
     function saveOptions()
     {
-        translate('comments');
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
         if (PHPWS_Settings::get('comments', 'allow_signatures')) {
             $this->setSignature($_POST['signature']);
@@ -284,7 +278,6 @@ class Comment_User extends Demographics_User {
             }
         }
 
-        translate();
         if (isset($errors)) {
             return $errors;
         } else {

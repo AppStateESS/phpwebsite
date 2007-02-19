@@ -5,9 +5,13 @@
    */
 
 
-function my_page(){
-  PHPWS_Core::initModClass('comments', 'My_Page.php');
-  return Comments_My_Page::main();
+function my_page()
+{
+    translate('comments');
+    PHPWS_Core::initModClass('comments', 'My_Page.php');
+    $content = Comments_My_Page::main();
+    translate();
+    return $content;
 }
 
 ?>

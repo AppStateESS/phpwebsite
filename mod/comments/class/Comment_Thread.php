@@ -55,13 +55,16 @@ class Comment_Thread {
     {
         translate('comments');
         if ($formatted) {
+
             if (empty($this->total_comments)) {
-                return _('No comments');
+                $msg = _('No comments');
             } elseif ($this->total_comments == 1) {
-                return _('1 comment');
+                $msg = _('1 comment');
             } else {
-                return sprintf(_('%s comments'), $this->total_comments);
+                $msg = sprintf(_('%s comments'), $this->total_comments);
             }
+            translate();
+            return $msg;
         } else {
             return $this->total_comments;
         }
@@ -125,6 +128,7 @@ class Comment_Thread {
 
     function getSourceUrl($full=FALSE, $comment_id=0)
     {
+        translate('comments');
         PHPWS_Core::initCoreClass('DBPager.php');
         $url = DBPager::getLastView('comments_items');
 
@@ -133,11 +137,11 @@ class Comment_Thread {
         }
 
         if ($full==TRUE) {
-            translate('comments');
-            return sprintf('<a href="%s">%s</a>', $url, _('Go back'));
-        } else {
-            return $url;
+            $url = sprintf('<a href="%s">%s</a>', $url, _('Go back'));
         }
+
+        translate();
+        return $url;
     }
 
     function setKey($key)
@@ -147,7 +151,6 @@ class Comment_Thread {
 
     function postLink()
     {
-        translate('comments');
         $vars['user_action']   = 'post_comment';
         $vars['thread_id']     = $this->id;
         return PHPWS_Text::moduleLink(_('Post New Comment'), 'comments', $vars);
@@ -334,7 +337,6 @@ class Comment_Thread {
 
     function miniAdmin()
     {
-        translate('comments');
         $vars['thread_id'] = $this->id;
         if ($this->allow_anon) {
             $vars['admin_action'] = 'disable_anon_posting';
@@ -345,7 +347,6 @@ class Comment_Thread {
         }
 
         MiniAdmin::add('comments', $link);
-        translate();
     }
 
 }

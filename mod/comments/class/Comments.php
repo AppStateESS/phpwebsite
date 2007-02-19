@@ -17,6 +17,7 @@ class Comments {
 
     function &getThread($key=NULL)
     {
+        translate('comments');
         if (empty($key)) {
             $key = Key::getCurrent();
         }
@@ -38,6 +39,7 @@ class Comments {
         $thread->key_id = $key->id;
         $thread->_key = $key;
         $thread->buildThread();
+        translate();
         return $thread;
     }
 
@@ -75,7 +77,6 @@ class Comments {
      */
     function adminAction($command)
     {
-        translate('comments');
         $content = NULL;
         switch ($command) {
         case 'delete_comment':
@@ -119,13 +120,11 @@ class Comments {
             PHPWS_Core::goBack();
             break;
         }
-        translate();
         Layout::add(PHPWS_ControlPanel::display($content));
     }
 
     function userAction($command)
     {
-        translate('comments');
         $title = NULL;
         if (isset($_REQUEST['thread_id'])) {
             $thread = new Comment_Thread($_REQUEST['thread_id']);
@@ -202,7 +201,6 @@ class Comments {
         $template['CONTENT'] = implode('<br />', $content);
 
         Layout::add(PHPWS_Template::process($template, 'comments', 'main.tpl'));
-        translate();
     }
 
     function changeView()
@@ -225,7 +223,6 @@ class Comments {
   
     function postComment(&$thread, &$cm_item)
     {
-        translate('comments');
         if (empty($_POST['cm_subject']) && empty($_POST['cm_entry'])) {
             $cm_item->_error = _('You must include a subject or comment.');
             return false;
@@ -251,7 +248,6 @@ class Comments {
             PHPWS_Settings::get('comments', 'anonymous_naming')) {
             if (!$cm_item->setAnonName($_POST['anon_name'])) {
                 $cm_item->_error = _('That name is not allowed. Try another.');
-                translate();
                 return false;
             }
         }
@@ -261,17 +257,14 @@ class Comments {
             PHPWS_Core::initCoreClass('Captcha.php');
             if (!Captcha::verify($_POST['captcha'])) {
                 $cm_item->_error =  _('You failed verification. Try again.');
-                translate();
                 return false;
             }
         }
-        translate();
         return true;
     }
 
     function form(&$thread, $c_item)
     {
-        translate('comments');
         $form = new PHPWS_Form;
     
         if (isset($_REQUEST['cm_parent'])) {
@@ -341,7 +334,6 @@ class Comments {
 
 
         $content = PHPWS_Template::process($template, 'comments', 'edit.tpl');
-        translate();
         return $content;
     }
 
@@ -415,16 +407,17 @@ class Comments {
 
     function viewComment($comment)
     {
+        translate('comments');
         $thread = new Comment_Thread($comment->getThreadId());
         $tpl = $comment->getTpl($thread->allow_anon);
         $tpl['CHILDREN'] = $thread->view($comment->getId());
         $content = PHPWS_Template::process($tpl, 'comments', COMMENT_VIEW_ONE_TPL);
+        translate();
         return $content;
     }
 
     function postSettings()
     {
-        translate('comments');
         $settings['default_order'] = $_POST['order'];
         $settings['captcha'] = (int)$_POST['captcha'];
 
@@ -466,13 +459,11 @@ class Comments {
         $content[] = _('Settings saved.');
         $vars['admin_action'] = 'admin_menu';
         $content[] = PHPWS_Text::secureLink(_('Go back to settings...'), 'comments', $vars);
-        translate();
         return implode('<br /><br />', $content);
     }
 
     function settingsForm()
     {
-        translate('comments');
         $settings = PHPWS_Settings::get('comments');
 
         $form = new PHPWS_Form('comments');
@@ -522,7 +513,6 @@ class Comments {
         $tpl = $form->getTemplate();
 
         $tpl['TITLE'] = _('Comment settings');
-        translate();
         return PHPWS_Template::process($tpl, 'comments', 'settings_form.tpl');
     }
 
