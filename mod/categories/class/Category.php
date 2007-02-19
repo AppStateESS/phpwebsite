@@ -38,7 +38,7 @@ class Category{
   
     function init()
     {
-        $db = & new PHPWS_DB('categories');
+        $db = new PHPWS_DB('categories');
         $result = $db->loadObject($this);
         if (PEAR::isError($result)) {
             return $result;
@@ -92,7 +92,6 @@ class Category{
         static $parentTitle = array();
 
         if ($this->parent == 0) {
-            translate('categories');
             return _('Top Level');
         }
 
@@ -100,7 +99,7 @@ class Category{
             return $parentTitle[$this->parent];
         }
 
-        $parent = & new Category($this->parent);
+        $parent = new Category($this->parent);
         $parentTitle[$parent->id] = $parent->title;
 
         return $parent->title;
@@ -131,7 +130,7 @@ class Category{
             return;
         }
 
-        $db = & new PHPWS_DB('categories');
+        $db = new PHPWS_DB('categories');
         $db->addWhere('parent', $this->id);
         $db->addOrder('title');
         $result = $db->getObjects('Category');
@@ -145,7 +144,7 @@ class Category{
 
     function save()
     {
-        $db = & new PHPWS_DB('categories');
+        $db = new PHPWS_DB('categories');
         $result = $db->saveObject($this);
         return $result;
     }
@@ -155,7 +154,7 @@ class Category{
         if (empty($this->id)) {
             return FALSE;
         }
-        $db = & new PHPWS_DB('categories');
+        $db = new PHPWS_DB('categories');
         $db->addWhere('id', $this->id);
         return $db->delete();
     }
@@ -174,7 +173,7 @@ class Category{
 
     function _addParent(&$list, $parent)
     {
-        $cat = & new Category($parent);
+        $cat = new Category($parent);
         $list[$cat->id] = $cat;
         if ($cat->parent > 0) {
             $cat->_addParent($list, $cat->parent);
@@ -194,7 +193,6 @@ class Category{
 
     function getRowTags()
     {
-        translate('categories');
         $vars['module']      = 'categories';
         $vars['action']      = 'admin';
         $vars['category_id'] = $this->getId();
@@ -217,7 +215,6 @@ class Category{
         $tpl['DESCRIPTION'] = $this->getDescription();
         $tpl['PARENT'] = $this->getParentTitle();
         $tpl['TITLE'] = $this->getViewLink();
-        translate();
         return $tpl;
     }
 }

@@ -17,8 +17,6 @@ class Categories{
 
     function show()
     {
-        translate('categories');
-
         if (!Current_User::allow('categories')) {
             return;
         }
@@ -52,14 +50,11 @@ class Categories{
                 Layout::add($content, 'categories', 'Admin_Menu');
             }
         }
-        translate();
     }
 
 
     function showForm(&$key, $popup=FALSE)
     {
-        translate('categories');
-
         $full_list = $add_list = Categories::getCategories('list');
         if (!empty($full_list)) {
             $full_list = array_reverse($full_list, true);
@@ -124,7 +119,6 @@ class Categories{
             $content = PHPWS_Template::process($template, 'categories', 'menu_bar.tpl');
         }
 
-        translate();
         return $content;
     }
 
@@ -145,7 +139,6 @@ class Categories{
      */
     function _makeLink($list, $module)
     {
-        translate('categories');
         $vars['action'] = 'view';
 
         $db = new PHPWS_DB('phpws_key');
@@ -186,7 +179,6 @@ class Categories{
         }
 
         $links = PHPWS_Template::process($template, 'categories', 'simple_list.tpl');
-        translate();
         return $links;
     }
 
@@ -352,7 +344,6 @@ class Categories{
 
     function cookieCrumb($category=NULL, $module=NULL)
     {
-        translate('categories');
         Layout::addStyle('categories');
 
         $top_level = Categories::getTopLevel();
@@ -396,13 +387,11 @@ class Categories{
         }
 
         $content = $tpl->get();
-        translate();
         return $content;
     }
 
     function getModuleListing($cat_id=NULL)
     {
-        translate('categories');
         PHPWS_Core::initCoreClass('Module.php');
         $db = new PHPWS_DB('category_items');
         if (isset($cat_id)) {
@@ -435,10 +424,8 @@ class Categories{
             foreach ($mod_count as $mod_title => $items) {
                 $mod_list[$mod_title] = sprintf(_('%s - %s item(s)'), $mod_names[$mod_title], $mod_count[$mod_title]);
             }
-            translate();
             return $mod_list;
         } else {
-            translate();
             return NULL;
         }
     }
@@ -448,7 +435,6 @@ class Categories{
         $module_list = Categories::getModuleListing($category->getId());
 
         if (empty($module_list)) {
-            translate('categories');
             return _('No items available in this category.');
         }
 

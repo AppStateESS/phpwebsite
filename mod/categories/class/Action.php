@@ -14,10 +14,8 @@ class Categories_Action {
 
     function admin()
     {
-        translate('categories');
         if (!Current_User::authorized('categories')) {
             Current_User::disallow(_('You are not authorized to administrate categories.'));
-            translate();
             return;
         }
 
@@ -114,7 +112,6 @@ class Categories_Action {
         $panel->setContent($final);
         $finalPanel = $panel->display();
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
-        translate();
     }
 
     function sendMessage($message, $command)
@@ -163,7 +160,6 @@ class Categories_Action {
 
     function postCategory(&$category)
     {
-        translate('categories');
         PHPWS_Core::initCoreClass('File.php');
 
         if (empty($_POST['title'])) {
@@ -185,7 +181,6 @@ class Categories_Action {
             $category->icon = 0;
         }
 
-        translate();
         if (isset($errors)) {
             return $errors;
         } else {
@@ -196,7 +191,6 @@ class Categories_Action {
 
     function &cpanel()
     {
-        translate('categories');
         Layout::addStyle('categories');
 
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
@@ -214,14 +208,12 @@ class Categories_Action {
         $panel->enableSecure();
         $panel->setModule('categories');
         $panel->setPanel('panel.tpl');
-        translate();
         return $panel;
     }
   
 
     function edit(&$category, $errors=NULL)
     {
-        translate('categories');
         $template = NULL;
         PHPWS_Core::initCoreClass('Editor.php');
 
@@ -275,7 +267,6 @@ class Categories_Action {
 
         $form->mergeTemplate($template);
         $final_template = $form->getTemplate();
-        translate();
         return PHPWS_Template::process($final_template, 'categories', 'forms/edit.tpl');
     }
 
@@ -295,7 +286,6 @@ class Categories_Action {
 
     function category_list()
     {
-        translate('categories');
         PHPWS_Core::initCoreClass('DBPager.php');
 
         $pageTags['TITLE_LABEL'] = _('Title');
@@ -314,7 +304,6 @@ class Categories_Action {
         if (empty($content)) {
             $content = _('No categories found.');
         }
-        translate();        
         return $content;
     }
 
@@ -323,7 +312,6 @@ class Categories_Action {
      */
     function viewCategory($id=NULL, $module=NULL) 
     {
-        translate('categories');
         $oMod = $category = NULL;
 
         if (!empty($module)) {
@@ -365,15 +353,12 @@ class Categories_Action {
         $template['FAMILY'] = $family_list;
         $template['CONTENT'] = &$content;
 
-        translate();
         return PHPWS_Template::process($template, 'categories', 'view_categories.tpl');
     }
 
 
     function moduleSelect($category=NULL)
     {
-        translate('categories');
-
         $db = new PHPWS_DB('category_items');
 
         if (isset($category)) {
@@ -409,7 +394,6 @@ class Categories_Action {
 
         $form->addSubmit('submit', _('View Module'));
 
-        translate();
         return $form->getTemplate();
     }
 
@@ -419,7 +403,7 @@ class Categories_Action {
     function getAllItems(&$category, $module) 
     {
         PHPWS_Core::initCoreClass('DBPager.php');
-        translate('categories');
+
         $pageTags['TITLE_LABEL'] = _('Item Title');
         $pageTags['CREATE_DATE_LABEL'] = _('Creation date');
 
@@ -442,7 +426,6 @@ class Categories_Action {
             $content =  _('No items found in this category.');
         }
 
-        translate();
         return $content;
     }
     
