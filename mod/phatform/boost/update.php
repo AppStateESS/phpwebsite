@@ -29,6 +29,15 @@ function phatform_update(&$content, $version)
 + Fixed typo in Form_Manager class causing crashes.
 </pre>';
 
+    case version_compare($version, '3.0.6', '<'):
+        $content[] = '<pre>
+3.0.6 changes
+-------------
++ Added translate call.
++ Added missing "export" directory creation.
++ Removed all global core calls
+</pre>';
+
     }
     return true;
 }

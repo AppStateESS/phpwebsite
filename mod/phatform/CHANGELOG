@@ -1,5 +1,10 @@
 Note: this log is only for notes post-1.0-conversion
 
+Version 3.0.6
+------------------------------------------------------------------
+19 February 2007
++ Added translate call.
+
 16 January 2007
 + Added missing "export" directory creation.
 + Removed all global core calls
