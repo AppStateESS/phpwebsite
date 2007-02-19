@@ -23,7 +23,6 @@ class Profile_Forms {
     function edit($profile)
     {
         PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
-        translate('profiler');
         $div = new PHPWS_DB('profiler_division');
         $div->addWhere('show_homepage', 1);
         $div->addOrder('title');
@@ -88,7 +87,6 @@ class Profile_Forms {
         $template['PHOTO_MEDIUM_LABEL'] = _('Medium photo');
         $template['PHOTO_SMALL_LABEL'] = _('Small photo');
 
-        translate();
         return PHPWS_Template::process($template, 'profiler', 'forms/edit.tpl');
     }
 
@@ -107,7 +105,6 @@ class Profile_Forms {
     function profileList()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
-        translate('profiler');
         $pageTags['LASTNAME']     = _('Last Name');
         $pageTags['FIRSTNAME']    = _('First Name');
         $pageTags['PROFILE_TYPE'] = _('Type');
@@ -125,14 +122,11 @@ class Profile_Forms {
         $pager->addRowTags('getProfileTags');
         $pager->addPageTags($pageTags);
         $pager->setSearch('lastname', 'firstname');
-        $content = $pager->get();
-        translate();
-        return $content;
+        return $pager->get();
     }
 
     function settings()
     {
-        translate('profiler');
         $form = Profile_Forms::default_form();
         $form->addHidden('command', 'save_settings');
 
@@ -148,7 +142,6 @@ class Profile_Forms {
         $form->addSubmit(_('Save settings'));
 
         $template = $form->getTemplate();
-        translate();
         return PHPWS_Template::process($template, 'profiler', 'forms/settings.tpl');
     }
 
@@ -156,7 +149,6 @@ class Profile_Forms {
     {
         PHPWS_Core::initCoreClass('DBPager.php');
         PHPWS_Core::initModClass('profiler', 'Division.php');
-        translate('profiler');
         $js_vars['height']  = '200';
         $js_vars['address'] = 'index.php?module=profiler&amp;command=edit_division&authkey=' . Current_User::getAuthKey();
         $js_vars['label']   = _('Add division');
@@ -172,7 +164,6 @@ class Profile_Forms {
         $pager->addToggle('class="toggle1"');
         $pager->addRowTags('getTags');
         $pager->addPageTags($pageTags);
-        translate();
         return $pager->get();
     }
 
@@ -181,7 +172,6 @@ class Profile_Forms {
         $form = new PHPWS_Form('division');
         $form->addHidden('module', 'profiler');
         $form->addHidden('command', 'update_division');
-        translate('profiler');
         if ($division->id) {
             $form->addHidden('division_id', $division->id);
             $form->addTplTag('PAGE_TITLE', _('Update Division'));
@@ -200,7 +190,6 @@ class Profile_Forms {
         if ($error) {
             $template['ERROR'] = _('Your title is empty or already in use. Enter another.');
         }
-        translate();
         return PHPWS_Template::process($template, 'profiler', 'forms/division_edit.tpl');
     }
 

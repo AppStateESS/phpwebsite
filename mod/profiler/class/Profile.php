@@ -59,7 +59,6 @@ class Profile {
 
     function display($template_name)
     {
-        translate('profiler');
         Layout::addStyle('profiler');
 
         $images = $this->loadImages();
@@ -93,13 +92,9 @@ class Profile {
         $template['EMAIL'] = $this->getEmail();
         $template['EMAIL_LABEL'] = _('Email address');
         
-        translate();
         return PHPWS_Template::process($template, 'profiler', 'views/' . $template_name . '.tpl');
     }
 
-    /**
-     * translated in display function
-     */
     function getEmail()
     {
         if (empty($this->email)) {
@@ -234,7 +229,6 @@ class Profile {
 
     function postProfile()
     {
-        translate('profiler');
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
 
         if (!Current_User::authorized('profiler')) {
@@ -302,12 +296,10 @@ class Profile {
         } else {
             return TRUE;
         }
-        translate();
     }
 
     function getProfileTags()
     {
-        translate('profiler');
         //        $tpl['PROFILE_TYPE'] = $this->getProfileType();
         $tpl['PROFILE_TYPE'] = $this->_division_title;
 
@@ -326,7 +318,6 @@ class Profile {
         }
 
         $tpl['ACTION'] = implode(' | ', $links);
-        translate();
         return $tpl;
     }
   

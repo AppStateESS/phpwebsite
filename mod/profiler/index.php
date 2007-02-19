@@ -9,6 +9,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
+translate('profiler');
 if (isset($_REQUEST['user_cmd'])) {
     PHPWS_Core::initModClass('profiler', 'Profiler.php');
     Profiler::user();
@@ -18,8 +19,7 @@ if (isset($_REQUEST['user_cmd'])) {
     }
     
     PHPWS_Core::initModClass('profiler', 'Profiler.php');
-    
     Profiler::admin();
 }
-
+translate();
 ?>

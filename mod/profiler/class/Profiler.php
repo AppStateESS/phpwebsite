@@ -43,9 +43,7 @@ class Profiler {
             if (Current_User::allow('profiler')) {
                 $vars['command']    = 'edit';
                 $vars['profile_id'] = $profile->id;
-                translate('profiler');
                 $link = PHPWS_Text::secureLink(_('Edit profile'), 'profiler', $vars);
-                translate();
                 MiniAdmin::add('profiler', $link);
             }
             
@@ -80,10 +78,7 @@ class Profiler {
         $result = $db->loadObject($profile);
 
         if (empty($result)) {
-            translate('profiler');
-            $msg = _('Please create a profile in this category.');
-            translate();
-            return $msg;
+            return _('Please create a profile in this category.');
         }
 
         return $profile->display($template);
@@ -115,7 +110,6 @@ class Profiler {
                 PHPWS_Core::errorPage(404);
             }
         }
-        translate('profiler');
         switch ($command) {
         case 'new':
             $profile = new Profile;
@@ -259,13 +253,11 @@ class Profiler {
         $panel->setContent($finalcontent);
         $finalPanel = $panel->display();
 
-        translate();
         Layout::add(PHPWS_ControlPanel::display($finalPanel));
     }
 
-    function &cpanel()
+    function cpanel()
     {
-        translate('profiler');
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=profiler';
 
@@ -278,7 +270,6 @@ class Profiler {
         $panel = new PHPWS_Panel('profiler');
         $panel->quickSetTabs($tabs);
         $panel->setModule('profiler');
-        translate();
         return $panel;
     }
 

@@ -34,7 +34,6 @@ class Profiler_Division {
 
     function getTags()
     {
-        translate('profiler');
         $js_vars['height']  = '200';
         $js_vars['address'] = sprintf('index.php?module=profiler&amp;command=edit_division&division_id=%s&authkey=%s', 
                                       $this->id, Current_User::getAuthKey());
@@ -42,7 +41,6 @@ class Profiler_Division {
         $links[] = javascript('open_window', $js_vars);
 
         $tpl['ACTION'] = implode(' | ', $links);
-        translate();
         return $tpl;
     }
 

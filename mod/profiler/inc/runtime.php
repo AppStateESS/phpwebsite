@@ -6,7 +6,9 @@
 
 if (!isset($_REQUEST['module'])) {
     PHPWS_Core::initModClass('profiler', 'Profiler.php');
+    translate('profiler');
     Profiler::view();
+    translate();
  }
 
 
