@@ -5,7 +5,7 @@
    * @author Matthew McNaney <mcnaney at gmail dot com>
    */
 
-translate('related');
+
 if (!defined('PHPWS_SOURCE_DIR')) {
     include '../../config/core/404.html';
     exit();
@@ -14,7 +14,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 if (!defined('PHPWS_SOURCE_DIR') || !isset($_REQUEST['action'])) {
     return NULL;
  }
-
+translate('related');
 PHPWS_CORE::initModClass('related', 'Related.php');
 PHPWS_CORE::initModClass('related', 'Action.php');
 
