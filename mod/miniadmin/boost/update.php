@@ -12,6 +12,12 @@ function miniadmin_update(&$content, $version)
 
     case version_compare($version, '1.0.0', '<'):
         $content[] = '- Changed to allow the addition of multiple yet single link submissions.';
+
+    case version_compare($version, '1.0.1', '<'):
+        $content[] = '<pre>
+1.0.1 changes
+------------------
++ Added translate function</pre>';
     }
     return true;
 }
