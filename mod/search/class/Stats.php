@@ -26,7 +26,7 @@ class Search_Stats {
 
         $insert = FALSE;
 
-        $db = & new PHPWS_DB('search_stats');
+        $db = new PHPWS_DB('search_stats');
 
         $word_count = count($words);
 
@@ -39,7 +39,7 @@ class Search_Stats {
             $keyword = trim($keyword);
 
             $db->addWhere('keyword', $keyword);
-            $stat = & new Search_Stats;
+            $stat = new Search_Stats;
             $result = $db->loadObject($stat);
 
             if (empty($stat->keyword)) {
@@ -74,7 +74,7 @@ class Search_Stats {
 
     function save($insert=TRUE)
     {
-        $db = & new PHPWS_DB('search_stats');
+        $db = new PHPWS_DB('search_stats');
         $this->keyword = trim($this->keyword);
         if (!$insert) {
             $db->addWhere('keyword', $this->keyword);

@@ -123,7 +123,7 @@ class Search_Admin {
 
     function removeSearchword($keyword, $key_id)
     {
-        $search = & new Search((int)$key_id);
+        $search = new Search((int)$key_id);
         if ($search->_error) {
             PHPWS_Error::log($search->_error);
             return;
@@ -135,7 +135,7 @@ class Search_Admin {
 
     function addKeyword($keyword, $key_id)
     {
-        $search = & new Search((int)$key_id);
+        $search = new Search((int)$key_id);
         if ($search->_error) {
             PHPWS_Error::log($search->_error);
             return;
@@ -183,7 +183,7 @@ class Search_Admin {
         }
 
         if ($on_page) {
-            $search = & new Search($key);
+            $search = new Search($key);
             if ($search->keywords) {
                 foreach ($search->keywords as $keyword) {
                     $vars['key_id'] = $key->id;
@@ -234,7 +234,7 @@ class Search_Admin {
 
         PHPWS_Core::initModClass('search', 'Stats.php');
 
-        $pager = & new DBPager('search_stats', 'Search_Stats');
+        $pager = new DBPager('search_stats', 'Search_Stats');
         $pager->setModule('search');
         $pager->setTemplate('pager.tpl');
         $pager->addRowTags('getTplTags');
@@ -248,7 +248,7 @@ class Search_Admin {
         // remember word to add to items
         $options['add_parse_word'] = _('Clip word');
 
-        $form = & new PHPWS_Form('keywords');
+        $form = new PHPWS_Form('keywords');
         $form->setMethod('get');
         $form->addHidden('module', 'search');
         $form->addSelect('command', $options);
@@ -287,7 +287,7 @@ class Search_Admin {
 
         PHPWS_Core::initModClass('search', 'Stats.php');
 
-        $pager = & new DBPager('search_stats', 'Search_Stats');
+        $pager = new DBPager('search_stats', 'Search_Stats');
         $pager->setModule('search');
         $pager->setTemplate('ignore.tpl');
         $pager->addRowTags('getTplTags');
@@ -298,7 +298,7 @@ class Search_Admin {
         // if entered in search box, remove
         $options['remove_ignore'] = _('Allow');
 
-        $form = & new PHPWS_Form;
+        $form = new PHPWS_Form;
         $form->setMethod('get');
         $form->addHidden('module', 'search');
         $form->addSelect('command', $options);
@@ -331,7 +331,7 @@ class Search_Admin {
         if (!is_array($kw_list)) {
             return FALSE;
         }
-        $db = & new PHPWS_DB('search_stats');
+        $db = new PHPWS_DB('search_stats');
         $db->addWhere('keyword', $kw_list);
         $db->addValue('ignored', (int)$ignore);
         return $db->update();
@@ -344,7 +344,7 @@ class Search_Admin {
         $tab['keyword'] = array ('title'=>_('Keywords'), 'link'=> $link);
         $tab['ignore'] = array ('title'=>_('Ignore'), 'link'=> $link);
 
-        $panel = & new PHPWS_Panel('search');
+        $panel = new PHPWS_Panel('search');
         $panel->quickSetTabs($tab);
 
         $panel->setModule('search');
@@ -354,7 +354,7 @@ class Search_Admin {
     function deleteKeyword()
     {
         if (!empty($_GET['keyword'])) {
-            $db = & new PHPWS_DB('search_stats');
+            $db = new PHPWS_DB('search_stats');
             if (is_array($_GET['keyword'])) {
                 foreach ($_GET['keyword'] as $kw) {
                     $db->addWhere('keyword', htmlentities($kw, ENT_QUOTES, 'UTF-8'), '=', 'or');

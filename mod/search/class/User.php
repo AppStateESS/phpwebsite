@@ -36,7 +36,7 @@ class Search_User {
                                SEARCH_DEFAULT);
         }
 
-        $form = & new PHPWS_Form('search_box');
+        $form = new PHPWS_Form('search_box');
         $form->setMethod('get');
         $form->addHidden('module', 'search');
         $form->addHidden('user', 'search');
@@ -76,7 +76,6 @@ class Search_User {
         }
 
         $mod_list = array('all'=> _('All modules'));
-
         if (!empty($result)) {
             $mod_list = array_merge($mod_list, $result);
         }
@@ -124,7 +123,7 @@ class Search_User {
             exit();
         }
 
-        $form = & new PHPWS_Form('search_box');
+        $form = new PHPWS_Form('search_box');
         $form->setMethod('get');
         $form->addHidden('module', 'search');
         $form->addHidden('user', 'search');
@@ -196,7 +195,7 @@ class Search_User {
 
     function getIgnore()
     {
-        $db = & new PHPWS_DB('search_stats');
+        $db = new PHPWS_DB('search_stats');
         $db->addWhere('ignored', 1);
         $db->addColumn('keyword');
         return $db->select('col');
@@ -240,7 +239,7 @@ class Search_User {
         }
 
         PHPWS_Core::initCoreClass('DBPager.php');
-        $pager = & new DBPager('phpws_key', 'Key');
+        $pager = new DBPager('phpws_key', 'Key');
         $pager->setModule('search');
         $pager->setTemplate('search_results.tpl');
         $pager->addToggle('class="bgcolor1"');

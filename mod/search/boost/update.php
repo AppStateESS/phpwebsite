@@ -37,6 +37,13 @@ function search_update(&$content, $currentVersion)
 + If all search words are undersized, search will not throw an
   error anymore.
 </pre>';
+
+    case version_compare($currentVersion, '0.2.1', '<'):
+        $content[] = '<pre>
+0.2.1 Changes
+-------------
++ Added translate functions.
+</pre>';        
     }
 
     return TRUE;

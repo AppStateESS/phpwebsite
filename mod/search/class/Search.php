@@ -26,7 +26,7 @@ class Search {
 
     function init()
     {
-        $db = & new PHPWS_DB('search');
+        $db = new PHPWS_DB('search');
         $db->addWhere('key_id', $this->key_id);
         $result = $db->loadObject($this);
         if (PEAR::isError($result)) {
@@ -162,12 +162,12 @@ class Search {
         if (empty($this->key_id) || empty($this->keywords)) {
             return FALSE;
         }
-        $db = & new PHPWS_DB('search');
+        $db = new PHPWS_DB('search');
         $db->addWhere('key_id', $this->key_id);
         $db->delete();
         $db->reset();
 
-        $key = & new Key($this->key_id);
+        $key = new Key($this->key_id);
 
         $db->addValue('key_id', $key->id);
         $db->addValue('module', $key->module);
