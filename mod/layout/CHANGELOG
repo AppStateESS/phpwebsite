@@ -1,5 +1,8 @@
 Version 2.3.0
 -------------------------------------------------------------------
+19 February 2007
++ Reduced translate calls.
+
 16 February 2007
 + Added translate functions.
 + Wrote update script

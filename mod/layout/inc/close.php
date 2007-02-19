@@ -6,6 +6,7 @@
  * @version $Id$
  */
 
+translate('layout');
 if (Current_User::allow('layout')) {
     Layout::miniLinks();
  }
@@ -13,5 +14,5 @@ if (Current_User::allow('layout')) {
 Layout::showKeyStyle();
 
 echo Layout::display();
-
+translate();
 ?>

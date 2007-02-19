@@ -15,7 +15,7 @@ if ($_REQUEST['module'] != 'layout' || !isset($_REQUEST['action'])) {
  }
 
 PHPWS_Core::initModClass('layout', 'LayoutAdmin.php');
-
+translate('layout');
 switch ($_REQUEST['action']){
  case 'admin':
    Layout_Admin::admin();
@@ -24,6 +24,6 @@ switch ($_REQUEST['action']){
  default:
      PHPWS_Core::errorPage('404');
 } // END action switch
-
+translate();
 
 ?>

@@ -15,7 +15,6 @@ class Layout_Admin{
 
     function admin()
     {
-        translate('layout');
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $content = NULL;
         $panel = Layout_Admin::adminPanel();
@@ -180,7 +179,6 @@ class Layout_Admin{
         $panel->setContent($final);
 
         Layout::add(PHPWS_ControlPanel::display($panel->display()));
-        translate();
     }
 
     function jsStyleChange()
@@ -191,7 +189,6 @@ class Layout_Admin{
             exit('wtf');
             return FALSE;
         }
-        translate('layout');
         $styles[0] = _('-- Use default style --');
         ksort($styles, SORT_NUMERIC);
 
@@ -220,7 +217,6 @@ class Layout_Admin{
         $template = $form->getTemplate();
 
         $template['TITLE'] = _('Change CSS');
-        translate();
         return PHPWS_Template::process($template, 'layout', 'style_change.tpl');
     }
 
@@ -229,7 +225,6 @@ class Layout_Admin{
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=layout&amp;action=admin';
-        translate('layout');
         $tabs['boxes']     = array('title'=>_('Boxes'),     'link'=>$link);
         $tabs['meta']      = array('title'=>_('Meta Tags'), 'link'=>$link);
         $tabs['theme']     = array('title'=>_('Themes'),    'link'=>$link);
@@ -238,7 +233,6 @@ class Layout_Admin{
         
         $panel = new PHPWS_Panel('layout');
         $panel->quickSetTabs($tabs);
-        translate();
         return $panel;
     }
 
@@ -249,7 +243,6 @@ class Layout_Admin{
         $form->addHidden('action', 'admin');
         $form->addHidden('command', 'postTheme');
 
-        translate('layout');
         $form->addSubmit('update', _('Update Theme Settings'));
         $themeList = Layout_Admin::getThemeList();
         if (PEAR::isError($themeList)){
@@ -263,13 +256,11 @@ class Layout_Admin{
         $form->setLabel('default_theme', _('Default Theme'));
 
         $template = $form->getTemplate();
-        translate();
         return PHPWS_Template::process($template, 'layout', 'themes.tpl');
     }
 
     function boxesForm()
     {
-        translate('layout');
         $form = new PHPWS_Form('boxes');
         $form->addHidden('module', 'layout');
         $form->addHidden('action', 'admin');
@@ -292,7 +283,6 @@ class Layout_Admin{
         $template = $form->getTemplate();
         $template['RESET_LEGEND'] = _('Reset boxes');
         $template['MOVE_LEGEND'] = _('Box positioning');
-        translate();
         return PHPWS_Template::process($template, 'layout', 'BoxControl.tpl');
     }
 
@@ -309,7 +299,6 @@ class Layout_Admin{
 
     function confirmThemeChange()
     {
-        translate('layout');
         Layout::reset();
         $form = new PHPWS_Form('confirmThemeChange');
         $form->addHidden('module', 'layout');
@@ -320,13 +309,11 @@ class Layout_Admin{
         $form->addSubmit('decline', _('Restore the default theme'));
         $address = 'index.php?module=layout&amp;action=admin&amp;command=confirmThemeChange';
         Layout::metaRoute($address, 10);
-        translate();
         return $form->getMerge();
     }
 
     function editFooter()
     {
-        translate('layout');
         $form = new PHPWS_Form('edit_footer');
         $form->addHidden('module', 'layout');
         $form->addHidden('action', 'admin');
@@ -346,15 +333,12 @@ class Layout_Admin{
         $form->addSubmit('submit', _('Update Footer'));
 
         $template = $form->getTemplate();
-        translate();
         return PHPWS_Template::process($template, 'layout', 'edit_footer.tpl');
     }
 
 
     function editHeader()
     {
-        translate('layout');
-
         $form = new PHPWS_Form('edit_header');
         $form->addHidden('module', 'layout');
         $form->addHidden('action', 'admin');
@@ -374,7 +358,6 @@ class Layout_Admin{
         $form->addSubmit('submit', _('Update Header'));
 
         $template = $form->getTemplate();
-        translate();
         return PHPWS_Template::process($template, 'layout', 'edit_header.tpl');
     }
 
@@ -412,7 +395,6 @@ class Layout_Admin{
         $follow = substr($meta_robots, 1, 1);
 
         $form = new PHPWS_Form('metatags');
-        translate('layout');
         if ($key_id) {
             $form->addHidden('key_id', $key_id);
             $form->addSubmit('reset', _('Restore to default'));
@@ -438,7 +420,6 @@ class Layout_Admin{
 
         $template = $form->getTemplate();
         $template['ROBOT_LABEL'] = _('Default Robot Settings');
-        translate();
         return PHPWS_Template::process($template, 'layout', 'metatags.tpl');
     }
 
