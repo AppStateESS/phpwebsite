@@ -11,7 +11,7 @@ CREATE TABLE mod_photoalbum_albums (
   groups mediumtext,
   created int NOT NULL default 0,
   updated int NOT NULL default 0,
-  hidden smallint NOT NULL default '1',
+  hidden smallint NOT NULL default 1,
   approved smallint NOT NULL default 0,
   blurb0 text,
   blurb1 text,

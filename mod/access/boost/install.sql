@@ -10,7 +10,7 @@ CREATE TABLE access_shortcuts (
 );
 
 CREATE TABLE access_allow_deny (
-  id int(11) NOT NULL default '0',
+  id int(11) NOT NULL default 0,
   ip_address varchar(40) NOT NULL,
   allow_or_deny smallint(6) NOT NULL default 0,
   active smallint(6) NOT NULL default 0,
