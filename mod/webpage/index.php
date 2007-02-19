@@ -1,10 +1,15 @@
 <?php
+  /**
+   * @version $Id$
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   */
 
 if (!defined('PHPWS_SOURCE_DIR')) {
     include '../../config/core/404.html';
     exit();
 }
 
+translate('webpage');
 if (isset($_REQUEST['wp_user'])) {
     PHPWS_Core::initModClass('webpage', 'User.php');
     Webpage_User::main();
@@ -20,5 +25,5 @@ if (isset($_REQUEST['wp_user'])) {
 } else {
     PHPWS_Core::errorPage('404');
 }
-
+translate();
 ?>

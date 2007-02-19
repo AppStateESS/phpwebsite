@@ -50,7 +50,7 @@ class Webpage_Volume {
     function resetDB()
     {
         if (empty($this->_db)) {
-            $this->_db = & new PHPWS_DB('webpage_volume');
+            $this->_db = new PHPWS_DB('webpage_volume');
         } else {
             $this->_db->reset();
         }
@@ -75,7 +75,7 @@ class Webpage_Volume {
 
     function loadPages()
     {
-        $db = & new PHPWS_DB('webpage_page');
+        $db = new PHPWS_DB('webpage_page');
         $db->addWhere('volume_id', $this->id);
         if ($this->approved) {
             $db->addWhere('approved', 1);
@@ -274,7 +274,7 @@ class Webpage_Volume {
 
     function delete()
     {
-        $pagedb = & new PHPWS_DB('webpage_page');
+        $pagedb = new PHPWS_DB('webpage_page');
         $pagedb->addWhere('volume_id', $this->id);
         $result = $pagedb->delete();
 
@@ -282,7 +282,7 @@ class Webpage_Volume {
             return $result;
         }
 
-        $page_version = & new PHPWS_DB('webpage_page_version');
+        $page_version = new PHPWS_DB('webpage_page_version');
         $page_version->addWhere('volume_id', $this->id);
         $page_version->delete();
 
@@ -359,9 +359,9 @@ class Webpage_Volume {
     function saveKey()
     {
         if ($this->key_id) {
-            $key = & new Key($this->key_id);
+            $key = new Key($this->key_id);
         } else {
-            $key = & new Key;
+            $key = new Key;
             $key->setModule('webpage');
             $key->setItemName('volume');
             $key->setItemId($this->id);
@@ -512,7 +512,7 @@ class Webpage_Volume {
             return false;
         }
 
-        $db = & new PHPWS_DB('webpage_page');
+        $db = new PHPWS_DB('webpage_page');
         $db->addValue('template', $template);
         $db->addWhere('volume_id', $this->id);
         return $db->update();
@@ -576,7 +576,7 @@ class Webpage_Volume {
     function loadKey()
     {
         if (empty($this->_key)) {
-            $this->_key = & new Key($this->key_id);
+            $this->_key = new Key($this->key_id);
         }
     }
 

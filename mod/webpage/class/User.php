@@ -29,7 +29,7 @@ class Webpage_User {
                 exit();
             }
 
-            $volume = & new Webpage_Volume($_REQUEST['id']);
+            $volume = new Webpage_Volume($_REQUEST['id']);
             $volume->loadKey();
             if (!$volume->_key->allowView()) {
                 PHPWS_Core::errorPage(404);
@@ -101,7 +101,7 @@ class Webpage_User {
 
         PHPWS_Core::initModClass('webpage', 'Volume.php');
 
-        $db = & new PHPWS_DB('webpage_volume');
+        $db = new PHPWS_DB('webpage_volume');
         $db->addWhere('frontpage', 1);
         $db->addWhere('approved', 1);
         Key::restrictView($db, 'webpage');

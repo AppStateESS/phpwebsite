@@ -1,3 +1,8 @@
+Version 0.5.0 (merged svn versions > 0.2.6)
+------------------------------------------------------------------------
+19 February 2007
++ Added translate functions
+
 14 February 2007
 + Removed table format from edit form
 + Updated files: templates/forms/edit_page.tpl, templates/forms/edit.tpl
