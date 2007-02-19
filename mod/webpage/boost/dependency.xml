@@ -7,10 +7,10 @@
     <url>http://phpwebsite.appstate.edu/downloads/modules/menu</url>
   </module>
   <module>
-    <title>related</title>
-    <properName>Related</properName>
-    <version>0.0.1</version>
-    <url>http://phpwebsite.appstate.edu/downloads/modules/related</url>
+    <title>core</title>
+    <properName>phpWebSite Core</properName>
+    <version>1.4.0</version>
+    <url>http://phpwebsite.appstate.edu/downloads/modules/core/</url>
   </module>
   <module>
     <title>categories</title>
