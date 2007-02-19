@@ -9,8 +9,10 @@ if (!Current_User::authorized('branch')) {
     Current_User::disallow();
  }
 
+translate('branch');
 PHPWS_Core::initModClass('branch', 'Branch_Admin.php');
-$branch_admin = & new Branch_Admin;
+$branch_admin = new Branch_Admin;
 $branch_admin->main();
+translate();
 
 ?>

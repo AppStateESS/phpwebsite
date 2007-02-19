@@ -149,7 +149,6 @@ class Branch {
      */
     function getTpl()
     {
-        translate('branch');
         $tpl['URL'] = $this->getUrl();
 
         $links[] = PHPWS_Text::secureLink(_('Edit'), 'branch', 
@@ -166,7 +165,6 @@ class Branch {
                                           array('command'=>'branch_modules', 'branch_id'=>$this->id));
 
         $tpl['ACTION'] = implode(' | ', $links);
-        translate();
         return $tpl;
     }
 

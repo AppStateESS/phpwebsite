@@ -98,7 +98,6 @@ class Branch_Admin {
      */
     function direct()
     {
-        translate('branch');
         if (!@$command = $_REQUEST['command']) {
             $command = $this->panel->getCurrentTab();
         }
@@ -212,12 +211,10 @@ class Branch_Admin {
             $this->listBranches();
             break;
         }// end of the command switch
-        translate();
     }
 
     function install_branch_core()
     {
-        translate('branch');
         PHPWS_Core::initCoreClass('File.php');
         $content = array();
 
@@ -291,7 +288,6 @@ class Branch_Admin {
         $vars['command']   = 'core_module_installation';
         $vars['branch_id'] = $this->branch->id;
         $this->content[] = PHPWS_Text::secureLink($link, 'branch', $vars);
-        translate();
         return true;
     }
 
@@ -349,7 +345,6 @@ class Branch_Admin {
 
     function post_basic()
     {
-        translate('branch');
         PHPWS_Core::initCoreClass('File.php');
         $result = true;
 
@@ -414,14 +409,12 @@ class Branch_Admin {
         } else {
             $this->branch->site_hash = $_POST['site_hash'];
         }
-        translate();
         return $result;
     }
 
 
     function core_module_installation()
     {
-        translate('branch');
         if (!isset($_SESSION['Boost'])){
             $modules = PHPWS_Core::coreModList();
             $_SESSION['Boost'] = new PHPWS_Boost;
@@ -444,7 +437,6 @@ class Branch_Admin {
         }
 
         PHPWS_DB::loadDB();
-        translate();
         return $_SESSION['Boost']->isFinished();
     }
 
@@ -503,7 +495,6 @@ class Branch_Admin {
 
     function cpanel()
     {
-        translate('branch');
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $newLink = 'index.php?module=branch&amp;command=new';
         $newCommand = array ('title'=>_('New'), 'link'=> $newLink);
@@ -519,7 +510,6 @@ class Branch_Admin {
         $panel->enableSecure();
         $panel->setModule('branch');
         $this->panel = &$panel;
-        translate();
     }
     
     /**
@@ -567,7 +557,6 @@ class Branch_Admin {
      */
     function testDB()
     {
-        translate('branch');
         $connection = $this->checkConnection();
         PHPWS_DB::loadDB();
         switch ($connection) {
@@ -612,12 +601,10 @@ class Branch_Admin {
             $this->edit_db();
             break;
         }
-        translate();
     }
 
     function edit_basic()
     {
-        translate('branch');
         $branch = & $this->branch;
 
         $form = new PHPWS_Form('branch-form');
@@ -650,7 +637,6 @@ class Branch_Admin {
         $template = $form->getTemplate();
         $template['BRANCH_LEGEND'] = _('Branch specifications');
         $this->content = PHPWS_Template::process($template, 'branch', 'edit_basic.tpl');
-        translate();
     }
 
     /**
@@ -658,7 +644,6 @@ class Branch_Admin {
      */
     function edit_db()
     {
-        translate('branch');
         $this->title = _('Setup branch database');
         $form = new PHPWS_Form('branch-form');
         $form->addHidden('module', 'branch');
@@ -700,7 +685,6 @@ class Branch_Admin {
         $template = $form->getTemplate();
 
         $this->content = PHPWS_Template::process($template, 'branch', 'edit_db.tpl');
-        translate();
     }
 
     function checkConnection()
@@ -757,7 +741,6 @@ class Branch_Admin {
      */
     function post_db()
     {
-        translate('branch');
         $result = true;
         $this->dbuser   = $_POST['dbuser'];
         $this->dbpass   = $_POST['dbpass'];
@@ -786,7 +769,6 @@ class Branch_Admin {
             $content[] = _('Table prefix must be alphanumeric characters or underscores only');
             $result = false;
         }
-        translate();
         return $result;
     }
 
@@ -842,7 +824,6 @@ class Branch_Admin {
      */
     function edit_modules()
     {
-        translate('branch');
         PHPWS_Core::initCoreClass('File.php');
         $this->title = sprintf(_('Module access for "%s"'), $this->branch->branch_name);
 
@@ -888,7 +869,6 @@ class Branch_Admin {
 
         $content = PHPWS_Template::process($template, 'branch', 'module_list.tpl');
         $this->content = & $content;
-        translate();
     }
 
     /**
@@ -896,7 +876,6 @@ class Branch_Admin {
      */
     function listBranches()
     {
-        translate('branch');
         $page_tags['BRANCH_NAME_LABEL'] = _('Branch name');
         $page_tags['DIRECTORY_LABEL']   = _('Directory');
         $page_tags['URL_LABEL']         = _('Url');
@@ -911,7 +890,6 @@ class Branch_Admin {
         $pager->addRowTags('getTpl');
         $this->title = _('Branch List');
         $this->content = $pager->get();
-        translate();
     }
 
     function saveBranchModules()
