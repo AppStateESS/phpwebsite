@@ -121,6 +121,8 @@ Core classes
   o Added Hilmar\'s prefixing code to prevent table prefixing inside single
     quotes. 
 
++ Module
+  o Default image and file directory setting is "false".
 
 + Settings class
   o Bug 1659055 - if a single setting is saved without loading the

@@ -6,25 +6,25 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 class PHPWS_Module {
-    var $title         = NULL;
-    var $proper_name   = NULL;
+    var $title         = null;
+    var $proper_name   = null;
     var $priority      = 50;
-    var $directory     = NULL;
-    var $version       = NULL;
-    var $active        = TRUE; 
-    var $image_dir     = TRUE;
-    var $file_dir      = TRUE;
-    var $register      = FALSE;
-    var $unregister    = FALSE;
-    var $import_sql    = FALSE;
-    var $version_http  = NULL;
-    var $about         = FALSE;
-    var $fullMod       = TRUE;
-    var $_dependency   = FALSE;
-    var $_dep_list     = NULL;
-    var $_error        = NULL;
+    var $directory     = null;
+    var $version       = null;
+    var $active        = true; 
+    var $image_dir     = false;
+    var $file_dir      = false;
+    var $register      = false;
+    var $unregister    = false;
+    var $import_sql    = false;
+    var $version_http  = null;
+    var $about         = false;
+    var $fullMod       = true;
+    var $_dependency   = false;
+    var $_dep_list     = null;
+    var $_error        = null;
 
-    function PHPWS_Module($title=NULL, $file=TRUE)
+    function PHPWS_Module($title=null, $file=true)
     {
         if (isset($title)) {
             $this->setTitle($title);
@@ -44,8 +44,8 @@ class PHPWS_Module {
         $filename = sprintf('%smod/%s/boost/boost.php', PHPWS_SOURCE_DIR, $this->title);
 
         if (!is_file($filename)) {
-            $this->fullMod = FALSE;
-            return NULL;
+            $this->fullMod = false;
+            return null;
         }
 
         include $filename;
@@ -98,10 +98,10 @@ class PHPWS_Module {
             $this->_dependency = (bool)$dependency;
         }
 
-        return TRUE;
+        return true;
     }
 
-    function init($file=TRUE)
+    function init($file=true)
     {
         $title = &$this->title;
 
@@ -124,13 +124,13 @@ class PHPWS_Module {
 
             $this->_dependency = (bool)$dependency;
             $this->setVersion($version);
-            $this->setRegister(FALSE);
-            $this->setImportSQL(TRUE);
+            $this->setRegister(false);
+            $this->setImportSQL(true);
             $this->setProperName('Core');
             $this->setVersionHttp($version_http);
         } else {
             $this->setDirectory(PHPWS_SOURCE_DIR . "mod/$title/");
-            if ($file == TRUE) {
+            if ($file == true) {
                 $result = PHPWS_Module::initByFile();
             } else {
                 $result = PHPWS_Module::initByDB();
@@ -155,9 +155,9 @@ class PHPWS_Module {
         $this->proper_name = $name;
     }
 
-    function getProperName($useTitle=FALSE)
+    function getProperName($useTitle=false)
     {
-        if (!isset($this->proper_name) && $useTitle == TRUE) {
+        if (!isset($this->proper_name) && $useTitle == true) {
             return ucwords(str_replace('_', ' ', $this->title));
         }
         else {
@@ -283,7 +283,7 @@ class PHPWS_Module {
             $db->delete();
             $db->resetWhere();
             if (!$this->getProperName()) {
-                $this->setProperName($this->getProperName(TRUE));
+                $this->setProperName($this->getProperName(true));
             }
             $result = $db->saveObject($this);
             if (PEAR::isError($result)) {
@@ -304,7 +304,7 @@ class PHPWS_Module {
     function saveDependencies()
     {
         if (!$this->_dependency) {
-            return TRUE;
+            return true;
         }
 
         $db = & new PHPWS_DB('dependencies');
@@ -315,7 +315,7 @@ class PHPWS_Module {
         $dep_list = $this->getDependencies();
 
         if (empty($dep_list)) {
-            return NULL;
+            return null;
         }
 
         foreach ($dep_list['MODULE'] as $stats) {
@@ -345,14 +345,14 @@ class PHPWS_Module {
         $result = $db->select('col');
 
         if (empty($result)) {
-            return $depend_list[$this->title] = FALSE;
+            return $depend_list[$this->title] = false;
         } else {
             return $depend_list[$this->title] = $result;
         }
             
     }
 
-    function isInstalled($title=NULL)
+    function isInstalled($title=null)
     {
         static $module_list = array();
 
@@ -360,7 +360,7 @@ class PHPWS_Module {
             if (isset($this->title)) {
                 $title = &$this->title;
             } else {
-                return NULL;
+                return null;
             }
         }
 
@@ -378,14 +378,14 @@ class PHPWS_Module {
         $result = $db->select('one');
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            return FALSE;
+            return false;
         } else {
             if (isset($result)) {
-                $module_list[$title] = TRUE;
-                return TRUE;
+                $module_list[$title] = true;
+                return true;
             } else {
-                $module_list[$title] = FALSE;
-                return FALSE;
+                $module_list[$title] = false;
+                return false;
             }
         }
     }
@@ -397,7 +397,7 @@ class PHPWS_Module {
         $result = $db->select('row');
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            return FALSE;
+            return false;
         }
 
         return version_compare($result['version'], $this->getVersion(), '<');
@@ -413,29 +413,29 @@ class PHPWS_Module {
         // Module doesn't have dependencies therefore no
         // need to check
         if (!$this->_dependency) {
-            return TRUE;
+            return true;
         }
 
         $dep_list = $this->getDependencies();
 
         if (empty($dep_list)) {
-            return FALSE;
+            return false;
         }
 
         foreach ($dep_list['MODULE'] as $stats) {
             extract($stats);
-            $module = & new PHPWS_Module($TITLE, FALSE);
+            $module = & new PHPWS_Module($TITLE, false);
 
             if (!$module->isInstalled()) {
-                return FALSE;
+                return false;
             }
 
             if (version_compare($VERSION, $module->getVersion(), '>')) {
-                return FALSE;
+                return false;
             }
         }
 
-        return TRUE;
+        return true;
     }
 
 
@@ -443,14 +443,14 @@ class PHPWS_Module {
     {
         $file = $this->getDirectory() . 'boost/dependency.xml';
         if (!is_file($file)) {
-            return NULL;
+            return null;
         }
 
         $dep_list = PHPWS_Text::xml2php($file, 1);
         $module_list = PHPWS_Text::tagXML($dep_list);
 
         if (!isset($module_list['MODULE'])) {
-            return NULL;
+            return null;
         }
 
         return $module_list;
