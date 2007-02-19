@@ -18,6 +18,7 @@ class RSS_Admin {
             Current_User::disallow();
         }
 
+        translate('rss');
         $panel = & RSS_Admin::adminPanel();
 
         if (isset($_REQUEST['command'])) {
@@ -29,17 +30,16 @@ class RSS_Admin {
         }
 
         if (isset($_REQUEST['channel_id'])) {
-            $channel = & new RSS_Channel($_REQUEST['channel_id']);
+            $channel = new RSS_Channel($_REQUEST['channel_id']);
         } else {
-            $channel = & new RSS_Channel;
+            $channel = new RSS_Channel;
         }
 
         if (isset($_REQUEST['feed_id'])) {
-            $feed = & new RSS_Feed($_REQUEST['feed_id']);
+            $feed = new RSS_Feed($_REQUEST['feed_id']);
         } else {
-            $feed = & new RSS_Feed;
+            $feed = new RSS_Feed;
         }
-
 
         switch ($command) {
         case 'channels':
@@ -127,6 +127,7 @@ class RSS_Admin {
         $panel->setContent($content);
         $content = $panel->display();
         Layout::add(PHPWS_ControlPanel::display($content));
+        translate();
     }
 
 
@@ -150,6 +151,9 @@ class RSS_Admin {
         return $message;
     }
 
+    /**
+     * translated in main()
+     */
     function &adminPanel()
     {
         $opt['link'] = 'index.php?module=rss';
@@ -160,14 +164,17 @@ class RSS_Admin {
         $opt['title'] = _('Import');
         $tab['import'] = $opt;
 
-        $panel = & new PHPWS_Panel('rss_admin');
+        $panel = new PHPWS_Panel('rss_admin');
         $panel->quickSetTabs($tab);
         return $panel;
     }
 
+    /**
+     * translated in main
+     */
     function editChannel(&$channel)
     {
-        $form = & new PHPWS_Form;
+        $form = new PHPWS_Form;
         $form->addHidden('module', 'rss');
         $form->addHidden('command', 'post_channel');
         $form->addSubmit(_('Save Channel'));
@@ -192,12 +199,15 @@ class RSS_Admin {
 
     }
 
+    /**
+     * translated in main()
+     */
     function channels()
     {
         PHPWS_Core::initModClass('rss', 'Channel.php');
         $final_tpl['TITLE'] = _('Administrate RSS Feeds');
 
-        $db = & new PHPWS_DB('rss_channel');
+        $db = new PHPWS_DB('rss_channel');
         $db->addOrder('title');
         $channels = $db->getObjects('RSS_Channel');
         
@@ -231,9 +241,12 @@ class RSS_Admin {
         return $final_tpl;
     }
 
+    /**
+     * translated in main
+     */
     function editFeed(&$feed)
     {
-        $form = & new PHPWS_Form;
+        $form = new PHPWS_Form;
         if ($feed->id) {
             $form->addHidden('feed_id', $feed->id);
         }
@@ -273,6 +286,9 @@ class RSS_Admin {
         return $tpl;
     }
 
+    /**
+     * translated in main
+     */
     function import()
     {
         PHPWS_Core::requireConfig('rss');
@@ -298,7 +314,7 @@ class RSS_Admin {
         $template['ACTION_LABEL']  = _('Action');
         $template['REFRESH_TIME_LABEL'] = _('Refresh feed');
 
-        $pager = & new DBPager('rss_feeds', 'RSS_Feed');
+        $pager = new DBPager('rss_feeds', 'RSS_Feed');
         $pager->setModule('rss');
         $pager->setTemplate('admin_feeds.tpl');
         $pager->addPageTags($template);

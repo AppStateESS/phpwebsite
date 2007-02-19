@@ -35,7 +35,7 @@ class RSS_Channel {
 
     function init()
     {
-        $db = & new PHPWS_DB('rss_channel');
+        $db = new PHPWS_DB('rss_channel');
         $result = $db->loadObject($this);
         if (PEAR::isError($result)) {
             $this->_error = $result;
@@ -45,6 +45,7 @@ class RSS_Channel {
 
     function post()
     {
+        translate('rss');
         if (isset($_POST['title'])) {
             $this->title = $_POST['title'];
         } else {
@@ -56,7 +57,7 @@ class RSS_Channel {
         } else {
             $this->description = NULL;
         }
-
+        translate();
         if (isset($errors)) {
             return $errors;
         } else {
@@ -76,16 +77,17 @@ class RSS_Channel {
 
     function save()
     {
-        $db = & new PHPWS_DB('rss_channel');
+        $db = new PHPWS_DB('rss_channel');
         return $db->saveObject($this);
     }
 
     function getActionLinks()
     {
+        translate('rss');
         $vars['channel_id'] = $this->id;
-
         $vars['command'] = 'edit_channel';
         $links[] = PHPWS_Text::secureLink(_('Edit'), 'rss', $vars);
+        translate();
 
         return $links;
     }
@@ -101,7 +103,7 @@ class RSS_Channel {
 
     function loadFeeds()
     {
-        $db = & new PHPWS_DB('phpws_key');
+        $db = new PHPWS_DB('phpws_key');
         $db->addWhere('module', $this->module);
         $db->addWhere('restricted', 0);
 
@@ -137,7 +139,7 @@ class RSS_Channel {
 
         $home_http = PHPWS_Core::getHomeHttp();
 
-        $tpl = & new PHPWS_Template('rss');
+        $tpl = new PHPWS_Template('rss');
         $tpl->setFile('rss10.tpl');
         
         $channel_data['CHANNEL_TITLE']       = $this->title;

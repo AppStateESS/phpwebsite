@@ -9,17 +9,19 @@ class RSS {
 
     function registerModule($module, &$content)
     {
+        translate('rss');
         $reg_file = PHPWS_Core::getConfigFile($module, 'rss.php');
 
-        if ($reg_file == FALSE){
+        if ($reg_file == FALSE) {
             PHPWS_Boost::addLog($module, _('No RSS file found.'));
+            translate();
             return FALSE;
         }
 
         PHPWS_Core::initModClass('rss', 'Channel.php');
         include $reg_file;
 
-        $oChannel = & new RSS_Channel;
+        $oChannel = new RSS_Channel;
         $oChannel->module = $module;
 
         if (!isset($channel) || !is_array($channel)) {
@@ -27,7 +29,7 @@ class RSS {
             PHPWS_Boost::addLog($module, _('RSS file found but no channel information.'));
         }
 
-        $oModule = & new PHPWS_Module($module);
+        $oModule = new PHPWS_Module($module);
 
         if (!empty($channel['title'])) {
             $oChannel->title = strip_tags($channel['title']);
@@ -50,9 +52,11 @@ class RSS {
             PHPWS_Error::log($result);
             PHPWS_Boost::addLog($module, _('An error occurred registering to RSS module.'));
             $content[] = _('An error occurred registering to RSS module.');
+            translate();
             return NULL;
         } else {
             $content[] = sprintf(_('RSS registration to %s module successful.'), $oModule->proper_name);
+            translate();
             return TRUE;
         }
     }
@@ -60,7 +64,7 @@ class RSS {
     function showFeeds()
     {
         PHPWS_Core::initModClass('rss', 'Feed.php');
-        $db = & new PHPWS_DB('rss_feeds');
+        $db = new PHPWS_DB('rss_feeds');
 
         $db->addWhere('display', 1);
         $result = $db->getObjects('RSS_Feed');
@@ -78,8 +82,8 @@ class RSS {
     function viewChannel($module)
     {
         PHPWS_Core::initModClass('rss', 'Channel.php');
-        $channel = & new RSS_Channel;
-        $db = & new PHPWS_DB('rss_channel');
+        $channel = new RSS_Channel;
+        $db = new PHPWS_DB('rss_channel');
         $db->addWhere('module', $module);
         $db->loadObject($channel);
 
@@ -98,8 +102,8 @@ class RSS {
     function showIcon(&$key)
     {
         PHPWS_Core::initModClass('rss', 'Channel.php');
-        $channel = & new RSS_Channel;
-        $db = & new PHPWS_DB('rss_channel');
+        $channel = new RSS_Channel;
+        $db = new PHPWS_DB('rss_channel');
         $db->addWhere('module', $key->module);
         $db->loadObject($channel);
 

@@ -22,6 +22,14 @@ function rss_update(&$content, $version)
 + Added some error checks to feed translation.
 </pre>';
 
+    case version_compare($version, '0.1.3', '<'):
+        $content[] = '<pre>
+0.1.3 changes
+-------------
++ Added translate functions
+</pre>';
+
+
     }
 
     return true;
