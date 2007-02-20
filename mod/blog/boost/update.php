@@ -50,6 +50,7 @@ function blog_update(&$content, $currentVersion)
         $content[] = '
 1.4.1 Changes
 -------------
++ Added missing category tags to entry listing.
 + Added ability for anonymous and users without blog permission to
   submit entries for later approval.
 + Added setting to allow anonymous submission.

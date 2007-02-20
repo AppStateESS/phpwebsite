@@ -237,6 +237,7 @@ class Blog {
         $template['ENTRY'] = PHPWS_Text::parseTag($this->getEntry(true));
         $template['IMAGE'] = $this->getImage();
 
+        $result = Categories::getSimpleLinks($key);
         if (!empty($result)) {
             $template['CATEGORIES'] = implode(', ', $result);
         }
