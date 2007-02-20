@@ -137,7 +137,9 @@ function runCatBatch(&$db, &$batch)
         return NULL;
     } else {
         foreach ($result as $oldCat) {
-            $val['id']          = $oldCat['cat_id'];
+            if ($oldCat['cat_id']) {
+                $val['id']          = $oldCat['cat_id'];
+            }
             $val['title']       = $oldCat['title'];
             $val['description'] = $oldCat['description'];
             $val['parent']      = $oldCat['parent'];
@@ -165,6 +167,10 @@ function runCatItemBatch(&$db, &$batch)
         return NULL;
     } else {
         foreach ($result as $item) {
+            // ignores 0 id category
+            if (!$item['cat_id']) {
+                continue;
+            }
             $module = $item_name = $item_id = NULL;
 
             switch ($item['module_title']) {
