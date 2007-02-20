@@ -16,7 +16,7 @@ define('EVENT_BATCH', 10);
 
 // Must be in YYYYMMDD format.
 // If you want to convert all your events, leave this line commented out.
-//define('IGNORE_BEFORE', '20050601');
+// define('IGNORE_BEFORE', '20050601');
 
 PHPWS_Core::initModClass('calendar', 'Schedule.php');
 PHPWS_Core::initModClass('calendar', 'Event.php');
@@ -127,6 +127,7 @@ function runBatch(&$db, &$batch)
     $limit = $batch->getLimit();
     $db->setLimit($limit, $start);
     $result = $db->select();
+    
     $db->disconnect();
     Convert::siteDB();
 
@@ -159,9 +160,9 @@ function runBatch(&$db, &$batch)
 
 function createSchedule()
 {
-    $schedule = & new Calendar_Schedule;
-    $schedule->title = 'Conversion';
-    $schedule->summary = 'Events pulled from 0.10.x calendar module.';
+    $schedule = new Calendar_Schedule;
+    $schedule->title = _('Conversion');
+    $schedule->summary = _('Events pulled from 0.10.x calendar module.');
     $schedule->public = true;
     $result = $schedule->save();
     if (PEAR::isError($result)) {
@@ -169,6 +170,8 @@ function createSchedule()
         return false;
     }
 
+    PHPWS_Settings::set('calendar', 'public_schedule', $schedule->id);
+    PHPWS_Settings::save('calendar');
     $_SESSION['schedule_id'] = $schedule->id;
     return true;
 }
