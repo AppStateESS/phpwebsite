@@ -18,10 +18,10 @@ function layout_update(&$content, $currentVersion)
 
     case version_compare($currentVersion, '2.3.0', '<'):
         $content[] = '<pre>';
-        if (PHPWS_Boost::updateFiles(array('conf/config.php'), 'layout')) {
-            $content[] = 'Updated conf/config.php file.';
+        if (PHPWS_Boost::updateFiles(array('conf/config.php', 'conf/error.php'), 'layout')) {
+            $content[] = 'Updated conf/config.php and conf/error.php file.';
         } else {
-            $content[] = 'Unable to update conf/config.php file.';
+            $content[] = 'Unable to update conf/config.php and conf/error.php file.';
         }
         $content[] = '
 2.3.0 changes
@@ -31,7 +31,6 @@ function layout_update(&$content, $currentVersion)
   into a theme.
 + Added translate functions.
 + Layout now looks for and includes a theme\'s theme.php file.
-+ Updated files : conf/config.php
 </pre>';
 
     }
