@@ -13,8 +13,7 @@ $errors = array(
 		LAYOUT_JS_FILE_NOT_FOUND => _('Javascript file was not found.'),
                 LAYOUT_BOX_ORDER_BROKEN  => _('Box order is out of sequence.'),
                 LAYOUT_INI_FILE          => _('The theme.ini file is missing for the default theme.')
+                );
 translate();
-);
-
 
 ?>
