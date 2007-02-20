@@ -6,6 +6,7 @@ Version 1.4.0
 ----------------------------------------------------------------------
 
 20 February 2007
++ Raised version to 1.1.0
 + Convert
   o Fixed setLimit calls.
   o Calendar - New schedule is made default public after conversion.
