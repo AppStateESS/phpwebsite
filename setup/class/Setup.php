@@ -92,7 +92,7 @@ class Setup{
             return FALSE;
         }
 
-        $tpl = & new PHPWS_Template;
+        $tpl = new PHPWS_Template;
         $tpl->setFile('setup/templates/config.tpl', TRUE);
         $tpl->setData($_SESSION['configSettings']);
         $configFile = $tpl->get();
@@ -337,7 +337,7 @@ class Setup{
     function generalConfig(&$content, $messages)
     {
 
-        $form = & new PHPWS_Form('generalConfig');
+        $form = new PHPWS_Form('generalConfig');
         $site_hash  = Setup::getConfigSet('site_hash');
 
         $source_dir = Setup::getConfigSet('source_dir');
@@ -391,7 +391,7 @@ class Setup{
         if (isset($messages['main'])) {
             $formTpl['MAIN'] = $messages['main'];
         }
-        $form = & new PHPWS_Form('databaseConfig');
+        $form = new PHPWS_Form('databaseConfig');
         $form->add('step',   'hidden', '1');
         $form->add('action', 'hidden', 'postDatabaseConfig');
 
@@ -475,7 +475,7 @@ class Setup{
     function createForm($form, $tplFile)
     {
         $template = $form->getTemplate();
-        $tpl = & new PHPWS_Template;
+        $tpl = new PHPWS_Template;
         $tpl->setFile("setup/templates/$tplFile", TRUE);
         $tpl->setData($template);
 
@@ -536,10 +536,11 @@ class Setup{
 
     function show($content, $title=NULL)
     {
-        $tpl = & new PHPWS_Template;
+        include 'core/conf/version.php';
+        $tpl = new PHPWS_Template;
         $tpl->setFile('setup/templates/setup.tpl', TRUE);
         if (!isset($title)) {
-            $title = _('phpWebSite 1.1.0 Setup');
+            $title = sprintf(_('phpWebSite %s Setup'), $version);
         }
 
         $setupData['TITLE'] = $title;
@@ -583,7 +584,7 @@ class Setup{
         require_once('File.php');
         $content[] = _('Importing core database file.') . '<br />';
 
-        $db = & new PHPWS_DB;
+        $db = new PHPWS_DB;
         $result = $db->importFile('core/boost/install.sql');
 
         if (PEAR::isError($result)) {
@@ -594,7 +595,7 @@ class Setup{
         }
 
         if ($result == TRUE) {
-            $db = & new PHPWS_DB('core_version');
+            $db = new PHPWS_DB('core_version');
             include(PHPWS_SOURCE_DIR . 'core/boost/boost.php');
             $db->addValue('version', $version);
             $result = $db->insert();

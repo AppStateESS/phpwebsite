@@ -6,6 +6,7 @@ Version 1.4.0
 ----------------------------------------------------------------------
 
 20 February 2007
++ Changed version file and setup with new version.
 + Raised version to 1.1.0
 + Convert
   o Fixed setLimit calls.

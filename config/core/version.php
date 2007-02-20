@@ -1,3 +1,10 @@
 <?php
-$version = '1.0.0';
+  /**
+   * Complete version
+   * 
+   * @version $Id$
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   */
+
+$version = '1.1.0';
 ?>

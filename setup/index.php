@@ -52,7 +52,7 @@ session_start();
 
 $content = array();
 $setup = & new Setup;
-$title = 'phpWebSite 1.0.0 - ';
+$title = 'phpWebSite 1.1.0 - ';
 
 if (!$setup->checkSession($content) || !isset($_REQUEST['step'])) {
     $step = 0;
