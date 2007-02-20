@@ -55,7 +55,7 @@ function startOptions()
     $convert_list['month'] = _('Only those logged on within 6 months.');
     $convert_list['year'] = _('Only those logged on within the last year.');
 
-    $form = & new PHPWS_Form;
+    $form = new PHPWS_Form;
     $form->addHidden('command', 'convert');
     $form->addHidden('package', 'users');
     $form->addHidden('stage', 1);
@@ -103,7 +103,7 @@ function beginConverting()
             break;
         }
 
-        $batch = & new Batches('convert_users');
+        $batch = new Batches('convert_users');
 
         $total_users = $db->count();
         if ($total_users < 1) {
@@ -122,7 +122,7 @@ function beginConverting()
             $content[] = _('Batch previously run.');
         } else {
             if(!runBatch($db, $batch)) {
-                $content[] = _('Some errors occurred when trying to convert some users.');
+                $content[] = _('Some users caused conversion errors.');
             }
         }
 
@@ -156,7 +156,7 @@ function runBatch(&$db, &$batch)
 {
     $start = $batch->getStart();
     $limit = $batch->getLimit();
-    $db->setLimit($start, $limit);
+    $db->setLimit($limit, $start);
     $result = $db->select();
     $db->disconnect();
     Convert::siteDB();
@@ -164,8 +164,8 @@ function runBatch(&$db, &$batch)
     $username = strtolower(Current_User::getUsername());
 
     initialize();
-    if (empty($result)) {
-        return NULL;
+    if (empty($_SESSION['users_convert_init']) || empty($result)) {
+        return false;
     } else {
         foreach ($result as $oldUser) {
             if ($oldUser['user_id'] == 1 ||
@@ -187,8 +187,9 @@ function runBatch(&$db, &$batch)
     }
 }
 
-function convertUser($oldUser) {
-    $db = & new PHPWS_DB('users');
+function convertUser($oldUser)
+{
+    $db = new PHPWS_DB('users');
     $val['id']           = $oldUser['user_id'];
     $val['username']     = strtolower($oldUser['username']);
     $val['display_name'] = $oldUser['username'];
@@ -218,7 +219,7 @@ function convertUser($oldUser) {
         return $result;
     }
 
-    $convert = & new PHPWS_DB('users_conversion');
+    $convert = new PHPWS_DB('users_conversion');
     $convert->addValue('username', $val['username']);
     $convert->addValue('password', $oldUser['password']);
     return $convert->insert(FALSE);
@@ -231,7 +232,7 @@ function initialize()
     }
 
     if (!PHPWS_DB::isTable('users_conversion')) {
-        $db = & new PHPWS_DB('users_conversion');
+        $db = new PHPWS_DB('users_conversion');
         $db->addValue('username', 'varchar(50) NOT NULL');
         $db->addValue('password', 'char(32) NOT NULL');
         $db->createTable();
@@ -246,13 +247,23 @@ function initialize()
         }
         $_SESSION['users_convert_init'] = $id;
     } else {
-        $db = & new PHPWS_DB('users_auth_scripts');
+        $db = new PHPWS_DB('users_auth_scripts');
         $db->addWhere('filename', 'convert.php');
         $db->addColumn('id');
         $id = $db->select('one');
         if (PEAR::isError($id)) {
             PHPWS_Error::log($id);
             PHPWS_Core::errorPage();
+        }
+        if (empty($id)) {
+            $db->reset();
+            $db->addValue('display_name', 'Convert');
+            $db->addValue('filename', 'convert.php');
+            $id = $db->insert();
+            if (PEAR::isError($id)) {
+                PHPWS_Error::log($id);
+                PHPWS_Core::errorPage();
+            }
         }
         $_SESSION['users_convert_init'] = $id;
     }

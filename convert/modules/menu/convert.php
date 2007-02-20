@@ -48,17 +48,21 @@ function convertMenu()
     $newdb = & new PHPWS_DB('menus');
 
     foreach ($result as $menu) {
-        $val['id']         = $menu['menu_id'];
+        //        $val['id']         = $menu['menu_id'];
+        $old_id = $menu['menu_id'];
         $val['title']      = $menu['menu_title'];
         $val['template']   = 'basic.tpl';
         $val['restricted'] = 0;
         $val['pin_all']    = 1;
         $newdb->addValue($val);
-        $result = $newdb->insert(FALSE);
+        $result = $newdb->insert();
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             $errors[] = $val['title'];
+        } else {
+            $_SESSION['Menu_New_Id'][$old_id] = $result;
         }
+        
         $newdb->reset();
     }
 
@@ -66,7 +70,6 @@ function convertMenu()
         $content[] = _('Some menus did not convert over properly. Please see logs.');
     } else {
         Convert::addConvert('menus');
-
         $content[] = _('Menu conversion finished.');
         $content[] = sprintf('<a href="index.php?command=convert&amp;package=menu">%s</a>',
                              _('Continue to convert menu links.'));
@@ -108,6 +111,7 @@ function convertLinks()
     } else {
         createSeqTables();
         $batch->clear();
+        PHPWS_Core::killSession('Menu_New_Id');
         $content[] =  _('Finished converting links.');
         $content[] = '<a href="index.php">' . _('Go back to main menu.') . '</a>';
     }
@@ -119,7 +123,7 @@ function linkBatch($db, $batch)
 {
     $start = $batch->getStart();
     $limit = $batch->getLimit();
-    $db->setLimit($start, $limit);
+    $db->setLimit($limit, $start);
     $result = $db->select();
     $db->disconnect();
     Convert::siteDB();
@@ -139,10 +143,11 @@ function linkBatch($db, $batch)
 }
 
 function convertLink($link) {
-    $db = & new PHPWS_DB('menu_links');
+    $db = new PHPWS_DB('menu_links');
 
     $val['id']         = $link['menu_item_id'];
-    $val['menu_id']    = $link['menu_id'];
+    $old_id = & $link['menu_id'];
+    $val['menu_id']    = $_SESSION['Menu_New_Id'][$old_id];
     if ($link['menu_item_pid'] != $val['id']) {
         $val['parent'] = $link['menu_item_pid'];
     } else {

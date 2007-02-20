@@ -15,7 +15,7 @@ define('BLOG_BATCH', 10);
 
 // Must be in YYYY-MM-DD format.
 // If you want to convert all your announcements, leave this line commented out.
-// define('IGNORE_BEFORE', '2006-01-01');
+define('IGNORE_BEFORE', '2006-01-01');
 
 
 // If you do not want to convert comments, set this to false
@@ -111,7 +111,7 @@ function runBatch(&$db, &$batch)
 {
     $start = $batch->getStart();
     $limit = $batch->getLimit();
-    $db->setLimit($start, $limit);
+    $db->setLimit($limit, $start);
     $result = $db->select();
     $db->disconnect();
     Convert::siteDB();

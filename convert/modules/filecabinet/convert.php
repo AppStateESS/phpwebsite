@@ -23,6 +23,10 @@ function convert()
 
 
     $db = Convert::getSourceDB('mod_documents_files');
+    if (empty($db)) {
+        return _('Documents module is not installed on the current database.');
+    }
+
     $all_files = $db->select();
     $db->disconnect();
     Convert::siteDB();
