@@ -539,7 +539,7 @@ class Setup{
         $tpl = & new PHPWS_Template;
         $tpl->setFile('setup/templates/setup.tpl', TRUE);
         if (!isset($title)) {
-            $title = _('phpWebSite 1.0.0 Beta Setup');
+            $title = _('phpWebSite 1.1.0 Setup');
         }
 
         $setupData['TITLE'] = $title;
