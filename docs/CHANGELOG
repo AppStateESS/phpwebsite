@@ -4,6 +4,13 @@ its own separate CHANGELOG file.
 
 Version 1.4.0
 ----------------------------------------------------------------------
+
+20 February 2007
++ Convert
+  o Fixed setLimit calls.
+  o Calendar - New schedule is made default public after conversion.
+  o Categories - Ignores categories with zero id.
+
 19 February 2007
 + Database
   o Added limit error check to mysql.php and mysqli.php
