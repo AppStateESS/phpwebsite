@@ -377,7 +377,8 @@ class Categories_Action {
             $mod_list[0] = sprintf(_('All - %s items'), $all_no);
         }
 
-        $form = new PHPWS_Form;
+        $form = new PHPWS_Form('module_select');
+        $form->noAuthKey();
         $form->setMethod('get');
         $form->addHidden('module', 'categories');
         $form->addHidden('action', 'view');
@@ -413,7 +414,8 @@ class Categories_Action {
         
         Key::restrictView($pager->db, $module);
         $pager->setModule('categories');
-        $pager->setDefaultLimit(10);
+        $pager->setLimitList(array(10, 25, 50));
+        $pager->setDefaultLimit(25);
         $pager->setTemplate('category_item_list.tpl');
         $pager->addPageTags($pageTags);
         $pager->addToggle('class="bgcolor2"');

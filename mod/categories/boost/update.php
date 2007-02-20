@@ -35,7 +35,8 @@ function categories_update(&$content, $currentVersion)
 + Updated files: templates/menu_bar.tpl, templates/popup_menu.tpl
 + Set the default listing to create date descending
 + Added translate functions.
-+ Updated message translation files.</pre>';
++ Updated message translation files.
++ Increase category list size limits.</pre>';
     }
     return true;
 }
