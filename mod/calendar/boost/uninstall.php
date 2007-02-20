@@ -57,11 +57,17 @@ function calendar_uninstall(&$content)
         return $result;
     }
 
+    if (PHPWS_DB::isTable('converted')) {
+        $db2 = new PHPWS_DB('converted');
+        $db2->addWhere('convert_name', array('schedule', 'calendar'));
+        $db2->delete();
+        $content[] = _('Removed convert flag.');
+    }
 
     if (!$error) {
-        $content[] = 'Calendar tables removed.';
+        $content[] = _('Calendar tables removed.');
     } else {
-        $content[] = 'Some errors occurred when uninstalling Calendar.';
+        $content[] = _('Some errors occurred when uninstalling Calendar.');
     }
     return true;
 }
