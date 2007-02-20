@@ -1,5 +1,9 @@
 Version 1.4.0
 ------------------------------------------------------------------
+20 February 2007
++ Uninstall clears calendar convert status.
++ Added new phrases to translation.
+
 19 February 2007
 + Reduced translate functions
 + Removed single quotes from default integers in sql file.
