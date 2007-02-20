@@ -153,7 +153,7 @@ function runCatItemBatch(&$db, &$batch)
 {
     $start = $batch->getStart();
     $limit = $batch->getLimit();
-    $db->setLimit($start, $limit);
+    $db->setLimit($limit, $start);
     $result = $db->select();
     $db->disconnect();
     Convert::siteDB();
