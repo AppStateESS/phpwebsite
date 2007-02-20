@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-15 10:21-0500\n"
+"POT-Creation-Date: 2007-02-20 14:29-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -97,6 +97,9 @@ msgid "Calendar"
 msgstr ""
 
 msgid "Calendar settings"
+msgstr ""
+
+msgid "Calendar tables removed."
 msgstr ""
 
 msgid "Cancel"
@@ -212,6 +215,10 @@ msgstr ""
 msgid "First day"
 msgstr ""
 
+#, php-format
+msgid "From %s to %s"
+msgstr ""
+
 msgid "General"
 msgstr ""
 
@@ -324,6 +331,9 @@ msgstr ""
 msgid "Remove event from repeat list?"
 msgstr ""
 
+msgid "Removed convert flag."
+msgstr ""
+
 msgid "Repeat"
 msgstr ""
 
@@ -371,6 +381,9 @@ msgid "Settings saved"
 msgstr ""
 
 msgid "Show busy"
+msgstr ""
+
+msgid "Some errors occurred when uninstalling Calendar."
 msgstr ""
 
 msgid "Sorry"
