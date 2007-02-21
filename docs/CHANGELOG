@@ -4,6 +4,9 @@ its own separate CHANGELOG file.
 
 
 21 February 2007
++ Function
+  o Added a parse check on a PHP 4 function name for Compat mode.
+
 + DB_Pager
   o Cleaned up translate functions.
   o Added alt and title parameters to sorting images for xhtml
