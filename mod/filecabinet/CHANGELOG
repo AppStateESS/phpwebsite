@@ -1,5 +1,11 @@
 Version 0.3.1
 ---------------
+21 February 2007
++ Removed test function call.
++ Added "loadDimensions" function to image class
++ Added a gd lib check to image manager. Uses the nogd.png image for a
+  thumbnail if fails.
+
 19 February 2007
 + Reduced translate calls
 

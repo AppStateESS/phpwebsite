@@ -52,6 +52,23 @@ class PHPWS_Image extends File_Common {
         return $db->loadObject($this);
     }
 
+    function loadDimensions()
+    {
+        if (empty($this->file_directory) ||
+            empty($this->file_name) ||
+            !is_file($this->file_directory . $this->file_name)) {
+            return false;
+        }
+
+        $dimen = getimagesize($this->getFullDirectory());
+        if (!is_array($dimen)) {
+            return false;
+        }
+        $this->width = $dimen[0];
+        $this->height = $dimen[1];
+        return true;
+    }
+
     function getTag()
     {
         $tag[] = '<img';

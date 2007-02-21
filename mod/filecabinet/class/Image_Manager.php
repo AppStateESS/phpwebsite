@@ -570,14 +570,27 @@ class FC_Image_Manager {
     function createThumbnail()
     {
         PHPWS_Core::initCoreClass('File.php');
-        $src_img   = &$this->image;
-        $thumbnail = &$this->thumbnail;
+        $src_img   = $this->image;
+        $thumbnail = $this->thumbnail;
 
-        $thumbnail->file_directory   = $src_img->file_directory;
-        $thumbnail->file_type             = $src_img->file_type;
         $thumbnail->title            = $src_img->title;
         $thumbnail->description      = $src_img->description;
         $thumbnail->thumbnail_source = $src_img->id;
+        $thumbnail->file_directory   = $src_img->file_directory;
+
+        if (!extension_loaded('gd')) {
+            $thumbnailFileName = preg_replace('/\.(jpg|png|gif)$/', '', $src_img->file_name);
+            $thumbnail->setFilename($thumbnailFileName . '_tn.png');
+            $thumbnail->file_type = 'image/png';
+            $full_dir = $thumbnail->getFullDirectory();
+            @copy(PHPWS_HOME_DIR . 'images/mod/filecabinet/nogd.png', $full_dir);
+            $thumbnail->loadDimensions();
+            $thumbnail->size = filesize($full_dir);
+            $result = $thumbnail->save(true, false);
+            return true;
+        }
+
+        $thumbnail->file_type = $src_img->file_type;
 
         if ( ($src_img->width < $this->tn_width) &&
              ($src_img->height < $this->tn_height) ) {
@@ -618,16 +631,15 @@ class FC_Image_Manager {
                          $thumbnail->width, $thumbnail->height, ImageSX($fullImage), ImageSY($fullImage));
         ImageDestroy($fullImage);
 
-        $thumbnailFileName = explode('.', $src_img->file_name);
-
+        $thumbnailFileName = preg_replace('/\.(jpg|png|gif)$/', '', $src_img->file_name);
         if ($src_img->file_type == 'image/gif') {
-            $thumbnail->setFilename($thumbnailFileName[0] . '_tn.gif');
+            $thumbnail->setFilename($thumbnailFileName . '_tn.gif');
             imagegif($thumbnailImage, $thumbnail->getFullDirectory());
         } elseif ($src_img->file_type == 'image/jpeg') {
-            $thumbnail->setFilename($thumbnailFileName[0] . '_tn.jpg');
+            $thumbnail->setFilename($thumbnailFileName . '_tn.jpg');
             imagejpeg($thumbnailImage, $thumbnail->getFullDirectory());
         } elseif ($src_img->file_type == 'image/png') {
-            $thumbnail->setFilename($thumbnailFileName[0] . '_tn.png');
+            $thumbnail->setFilename($thumbnailFileName . '_tn.png');
             imagepng($thumbnailImage, $thumbnail->getFullDirectory());
         }
 
