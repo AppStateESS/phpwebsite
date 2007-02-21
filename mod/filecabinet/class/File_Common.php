@@ -89,7 +89,6 @@ class File_Common {
         }
 
         // UPLOAD defines come from PEAR lib/pear/Compat/Constant/UPLOAD_ERR.php
-        test($_FILES);
 
         if (isset($_FILES[$var_name]['error']) && 
             ( $_FILES[$var_name]['error'] == UPLOAD_ERR_INI_SIZE ||
