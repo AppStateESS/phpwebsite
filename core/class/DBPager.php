@@ -606,7 +606,6 @@ class DBPager {
      */
     function getSortButtons(&$template)
     {
-
         if (empty($this->table_columns)) {
             return NULL;
         }
@@ -620,17 +619,21 @@ class DBPager {
             if ($this->orderby == $varname){
                 if ($this->orderby_dir == 'desc'){
                     unset($values['orderby_dir']);
-                    $button = '<img src="images/core/list/up_pointer.png" border="0" />';
+                    $alt = _('Sort ascending');
+                    $button = sprintf('<img src="images/core/list/up_pointer.png" border="0" alt="%s" title="%s" />', $alt, $alt);
                 } elseif ($this->orderby_dir =="asc") {
+                    $alt = _('Sort descending');
                     $values['orderby_dir'] = 'desc';
-                    $button = '<img src="images/core/list/down_pointer.png" border="0" />';
+                    $button = sprintf('<img src="images/core/list/down_pointer.png" border="0" alt="%s" title="%s" />', $alt, $alt);
                 } else {
-                    $button = '<img src="images/core/list/sort_none.png" border="0" />';
+                    $alt = _('Unsorted');
+                    $button = sprintf('<img src="images/core/list/sort_none.png" border="0"  alt="%s" title="%s" />', $alt, $alt);
                     $values['orderby_dir'] = 'asc';
                 }
 
             } else {
-                $button = '<img src="images/core/list/sort_none.png" border="0" />';
+                $alt = _('Unsorted');
+                $button = sprintf('<img src="images/core/list/sort_none.png" border="0"  alt="%s" title="%s" />', $alt, $alt);
                 $values['orderby_dir'] = 'asc';
             }
 
@@ -800,7 +803,6 @@ class DBPager {
 
     function getPageDrop()
     {
-        translate('core');
         if (empty($this->total_pages)) {
             $page_list[1] = 1;
         } else {
@@ -827,14 +829,13 @@ class DBPager {
             PHPWS_Error::log($template);
             return NULL;
         }
-        translate();
+
         return implode("\n", $template);
     }
 
 
     function getSearchBox()
     {
-        translate('core');
         $form = & new PHPWS_Form('search_list');
         $form->setMethod('get');
         $values = $this->getLinkValues();
@@ -847,13 +848,12 @@ class DBPager {
             PHPWS_Error::log($template);
             return NULL;
         }
-        translate();
+
         return implode("\n", $template);
     }
 
     function _getNavigation(&$template)
     {
-        translate('core');
         if ($this->total_rows < 1) {
             $total_row = $start_row = $end_row = 1;
         } else {
@@ -870,17 +870,16 @@ class DBPager {
             return $pages;
         }
 
-        $template['PAGES']     = $pages;
+        $template['PAGES']       = $pages;
         $template['PAGE_LABEL']  = _('Page');
         $template['LIMIT_LABEL'] = _('Limit');
-        $template['PAGE_DROP'] = $this->getPageDrop();
+        $template['PAGE_DROP']   = $this->getPageDrop();
         $template['TOTAL_ROWS']  = $start_row . ' - ' . $end_row . ' ' . _('of') . ' ' . $total_row;
-        $template['LIMITS']    = $this->getLimitList();
+        $template['LIMITS']      = $this->getLimitList();
 
         if (isset($this->searchColumn)) {
-            $template['SEARCH']    = $this->getSearchBox();
+            $template['SEARCH'] = $this->getSearchBox();
         }
-        translate();
     }
 
     /**
@@ -888,6 +887,7 @@ class DBPager {
      */
     function get($return_blank_results=TRUE)
     {
+        translate('core');
         $template = array();
 
         if (empty($this->display_rows)) {
@@ -954,6 +954,7 @@ class DBPager {
 
         DBPager::plugPageTags($template);
         $this->final_template = &$template;
+        translate();
         return PHPWS_Template::process($template, $this->module, $this->template);
     }
 
