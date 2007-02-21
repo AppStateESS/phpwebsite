@@ -2,6 +2,16 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+
+21 February 2007
++ DB_Pager
+  o Cleaned up translate functions.
+  o Added alt and title parameters to sorting images for xhtml
+    compliance.
+
++ Documentation - fixed typo in DB_Pager.txt
+
+
 Version 1.4.0
 ----------------------------------------------------------------------
 
