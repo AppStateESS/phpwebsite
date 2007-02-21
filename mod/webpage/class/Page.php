@@ -192,7 +192,7 @@ class Webpage_Page {
             $vars['wp_admin'] = 'page_up';
             if ($this->page_number > 1) {
                 $links[] = PHPWS_Text::secureLink(_('Move up'), 'webpage', $vars);
-            } else {
+            } elseif (count($this->_volume->_pages) > 1) {
                 $links[] = PHPWS_Text::secureLink(_('Move to end'), 'webpage', $vars);
             }
 
@@ -200,7 +200,7 @@ class Webpage_Page {
                 $vars['wp_admin'] = 'page_down';
             if ($this->page_number < $total_pages) {
                 $links[] = PHPWS_Text::secureLink(_('Move down'), 'webpage', $vars);
-            } else {
+            } elseif (count($this->_volume->_pages) > 1) {
                 $links[] = PHPWS_Text::secureLink(_('Move to front'), 'webpage', $vars);
             }
 

@@ -1,5 +1,5 @@
 {START_FORM}
-<div class="padded">{TITLE_LABEL}{TITLE}</div>
-<div class="padded">{SUMMARY_LABEL}{SUMMARY}</div>
+<div class="padded"><strong>{TITLE_LABEL}</strong><br />{TITLE}</div>
+<div class="padded"><strong>{SUMMARY_LABEL}</strong><br />{SUMMARY}</div>
 {SUBMIT}  
 {END_FORM}
