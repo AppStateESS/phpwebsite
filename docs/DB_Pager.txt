@@ -201,7 +201,7 @@ If you are not using a class objects, another way of changing the row
 output is to pipe the information through a function or static method
 call. To do so, call addRowFunction:
 
-$pager->setRowFunction('row_func');
+$pager->addRowFunction('row_func');
 
 This would pass your row variables to the "row_func" function and echo
 the resultant array.
