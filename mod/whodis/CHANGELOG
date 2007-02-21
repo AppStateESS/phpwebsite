@@ -1,3 +1,13 @@
+Version 0.0.5
+---------------------------------------------------------------------
++ Can now add filters which will ignore matching referrers.
++ Remove Whodis from general user panel.
+
+Version 0.0.4
+---------------------------------------------------------------------
+19 February 2007
++ Added translate functions
+
 Version 0.0.3
 ---------------------------------------------------------------------
 9 January 2007

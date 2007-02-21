@@ -31,6 +31,43 @@ function whodis_update(&$content, $version)
 ---------------
 + Added translate functions
 </pre>';
+
+    case version_compare($version, '0.0.5', '<'):
+        $sql = "
+CREATE TABLE whodis_filters (
+  id int NOT NULL default 0,
+  filter varchar(255) NOT NULL default '',
+  PRIMARY KEY  (id)
+)";
+        $result = PHPWS_DB::query($sql);
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $content[] = 'An error occurred when trying to create the whodis_filters table.';
+            return false;
+        } else {
+            $content[] = 'whodis_filters table created successfully.';
+        }
+
+        PHPWS_Boost::registerMyModule('whodis', 'users', $content);
+        PHPWS_Boost::registerMyModule('whodis', 'controlpanel', $content);
+
+        $files = array('templates/admin.tpl', 'templates/filter.tpl');
+        $content[] = '<pre>';
+        if (PHPWS_Boost::updateFiles($files, 'whodis')) {
+            $content[] = 'The following files were updated successfully:';
+        } else {
+            $content[] = 'The following files were NOT updated successfully:';
+        }
+
+        $content[] = '    ' . implode("\n    ", $files);
+
+        $content[] = '0.0.5 changes
+---------------
++ Can now add filters which will ignore matching referrers.
++ Remove Whodis from general user panel.
++ Can now set whodis permissions.
+</pre>';
+
     }
     return true;
 }

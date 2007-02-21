@@ -1,6 +1,7 @@
 <h1>WhoDis?</h1>
-<div class="align-right">
+<p>{ADMIN_LINKS}</p>
 {START_FORM}
+<div>
 {PURGE_LABEL} {DAYS_OLD} {VISIT_LIMIT_LABEL} {VISIT_LIMIT} {SUBMIT}
 </div>
 <table width="99%" cellpadding="4">
