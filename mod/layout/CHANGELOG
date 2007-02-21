@@ -1,5 +1,8 @@
 Version 2.3.0
 -------------------------------------------------------------------
+21 February 2007
++ Added missing security checks.
+
 19 February 2007
 + Reduced translate calls.
 

@@ -15,6 +15,9 @@ class Layout_Admin{
 
     function admin()
     {
+        if (!Current_User::allow('layout')) {
+            Current_User::disallow();
+        }
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $content = NULL;
         $panel = Layout_Admin::adminPanel();

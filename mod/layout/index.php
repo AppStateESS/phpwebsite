@@ -14,6 +14,10 @@ if ($_REQUEST['module'] != 'layout' || !isset($_REQUEST['action'])) {
      PHPWS_Core::errorPage('404');
  }
 
+if (!Current_User::allow('layout')) {
+    Current_User::disallow();
+ }
+
 PHPWS_Core::initModClass('layout', 'LayoutAdmin.php');
 translate('layout');
 switch ($_REQUEST['action']){
