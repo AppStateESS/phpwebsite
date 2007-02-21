@@ -4,6 +4,10 @@ its own separate CHANGELOG file.
 
 
 21 February 2007
++ Translate
+  o fixed i18n files. en_EN.php changed to en_US.php
+  o Updated files: conf/i18n/en_US.php
+
 + Function
   o Added a parse check on a PHP 4 function name for Compat mode.
 
