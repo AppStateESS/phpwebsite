@@ -31,6 +31,7 @@ function layout_update(&$content, $currentVersion)
   into a theme.
 + Added translate functions.
 + Layout now looks for and includes a theme\'s theme.php file.
++ Fixed unauthorized access.
 </pre>';
 
     }
