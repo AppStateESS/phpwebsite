@@ -7,6 +7,9 @@
  * @version $Id$
  */
 
+if (!defined('PHPWS_SOURCE_DIR')) {
+    exit();
+ }
 $function_list = array('file_get_contents',
                        'file_put_contents',
                        'mime_content_type',
@@ -39,10 +42,12 @@ function loadFunction($function)
     // Load function
     if (!function_exists($function)) {
         // edited for phpwebsite
-        $file = sprintf('Compat/Function/%s.php', $function);
-
-        if ((@include_once $file) !== false) {
-            return true;
+        if (!preg_match('/\W/', $function)) {
+            $file = sprintf('Compat/Function/%s.php', $function);
+            
+            if ((@include_once $file) !== false) {
+                return true;
+            }
         }
     }
 

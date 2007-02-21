@@ -5,6 +5,9 @@
  * against user submissions.
  */
 
+if (!defined('PHPWS_SOURCE_DIR')) {
+    exit();
+ }
 
 /**
  * stripslashes_deep is from aderyn (gmail.com) on php.net
