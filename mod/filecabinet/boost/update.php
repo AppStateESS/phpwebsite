@@ -68,6 +68,24 @@ function filecabinet_update(&$content, $version)
 + Lowercased bools
 + Changed \'x\' to \'by\' in error message.
 ';
+
+    case version_compare($version, '0.3.2', '<'):
+        $files = array('img/nogd.png');
+        $content[] = '<pre>';
+        if (PHPWS_Boost::updateFiles($files, 'filecabinet')) {
+            $content[] = '+ nogd.png image copied successfully.';
+        } else {
+            $content[] = '! nogd.png failed to copy to images/mod/filecabinet/';
+        }
+
+        $content[] = '
+0.3.2 changes
+-------------
++ Removed test function call.
++ Added "loadDimensions" function to image class
++ Added a gd lib check to image manager. Uses the nogd.png image for a
+  thumbnail if fails.
+</pre>';
     }
 
     return true;
