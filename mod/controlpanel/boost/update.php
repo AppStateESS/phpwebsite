@@ -12,6 +12,12 @@ function controlpanel_update(&$content, $currentVersion)
         $content[] = '<pre>2.0.1 Changes
 ------------
 + Added translate functions.</pre>';
+
+    case version_compare($currentVersion, '2.0.2', '<'):
+        $content[] = '<pre>2.0.2 Changes
+------------
++ Fixed problem with unregister function.</pre>';
+
     }
     return true;
 }

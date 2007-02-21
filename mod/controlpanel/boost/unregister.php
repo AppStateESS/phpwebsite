@@ -7,7 +7,6 @@
 
 function controlpanel_unregister($module, &$content)
 {
-
     translate('controlpanel');
     PHPWS_Core::initModClass('controlpanel', 'ControlPanel.php');
     PHPWS_Core::initModClass('controlpanel', 'Tab.php');
@@ -43,10 +42,12 @@ function controlpanel_unregister($module, &$content)
         foreach ($itemnameList as $itemname) {
             $db->addWhere('itemname', $itemname);
             $result = $db->getObjects('PHPWS_Panel_Link');
-      
-            if (PEAR::isError($result) || empty($result)) {
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
                 translate();
                 return $result;
+            } elseif (!$result) {
+                continue;
             }
 
             foreach ($result as $link) {
@@ -78,10 +79,13 @@ function controlpanel_unregister($module, &$content)
             $db->addWhere('label', $label);
             $result = $db->getObjects('PHPWS_Panel_Tab');
 
-            if (PEAR::isError($result) || empty($result)) {
+            if (PEAR::isError($result)) {
                 translate();
+                PHPWS_Error::log($result);
                 return $result;
-            }
+            } elseif (empty($result)) {
+                continue;
+            } 
 
             foreach ($result as $tab) {
                 $tab->kill();
@@ -92,5 +96,6 @@ function controlpanel_unregister($module, &$content)
     $content[] = _('Control Panel links and tabs have been removed.');
     translate();
     PHPWS_ControlPanel::reset();
+    return true;
 }
 ?>
