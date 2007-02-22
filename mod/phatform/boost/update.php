@@ -36,6 +36,7 @@ function phatform_update(&$content, $version)
 + Added translate call.
 + Added missing "export" directory creation.
 + Removed all global core calls
++ Fixed email bug.
 </pre>';
 
     }

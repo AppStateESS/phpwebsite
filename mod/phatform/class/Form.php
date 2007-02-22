@@ -1018,11 +1018,17 @@ class PHAT_Form extends PHPWS_Item {
         /* Check to see if this user has started entering data for this form yet */
         $db = new PHPWS_DB('mod_phatform_form_' . $this->getId());
         $db->addValue($queryData);
+
         if(isset($this->_dataId)) {
             $db->addWhere('id', $this->_dataId);
             $db->update();
         } else {
-            $db->insert();
+            $result = $db->insert();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+            } else {
+                $this->_dataId = $result;
+            }
         }
 
         return $error;
@@ -1246,7 +1252,6 @@ class PHAT_Form extends PHPWS_Item {
         $sql = 'SELECT * FROM ' . $this->getTableName() . ' WHERE id=\'' . $this->_dataId . '\'';
 
         $result = PHPWS_DB::getAll($sql);
-
         $this->_userData = $result[0];
         $this->_position = 0;
     }
