@@ -4,6 +4,12 @@ its own separate CHANGELOG file.
 
 
 21 February 2007
++System-wide
+  o Created theme_tags.txt files in all modules that use content
+    variables.
+  o Created docs directories in all modules.
+  o Moved CHANGELOG files to new docs directories.
+
 + Translate
   o fixed i18n files. en_EN.php changed to en_US.php
   o Updated files: conf/i18n/en_US.php
