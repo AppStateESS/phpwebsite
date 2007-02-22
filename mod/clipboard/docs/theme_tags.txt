@@ -1,0 +1,6 @@
+The Clipboard module has only one content variable.
+
+Name: clipboard
+Tag : CLIPBOARD_CLIPBOARD
+-------------------------
+Pops up when something is clipped. Should be near the top of a page.

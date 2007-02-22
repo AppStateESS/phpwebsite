@@ -1,0 +1,6 @@
+The Calendar module has just one content variable.
+
+Name: minimonth
+Tag : CALENDAR_MINIMONTH
+------------------------
+This is a small month grid. The admin has the option to turn this off.

@@ -1,0 +1,14 @@
+The Web Page module has two content variables.
+
+Name: featured
+Tag : WEBPAGE_FEATURED
+----------------------
+Admins can choose to highlight specific pages. The page title and
+summary are listed. This appears only on the front page.
+
+Name: page_view
+Tag : WEBPAGE_PAGE_VIEW
+------------------------
+When a Web Page is set to appear on the home page, it is displayed in
+this theme tag. By default, the content will be pushed into the BODY
+tag. Obviously this tag should allow for a large viewing area.

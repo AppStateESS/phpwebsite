@@ -1,0 +1,5 @@
+Information on the Layout module may be found in the docs/ directory of
+this module installation. Because Layout is a "base" module, you can
+also find information in phpWebSite's docs/ directory.
+
+Please see Theme_Creation.txt for information on creating a theme.

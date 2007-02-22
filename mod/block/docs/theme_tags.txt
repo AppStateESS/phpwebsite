@@ -1,0 +1,15 @@
+Block uses several content variables. Only one is permanent.
+
+Name: Block_List
+ Tag: BLOCK_BLOCK_LIST
+----------------------
+Unpinned blocks appear here.
+
+
+Name: block_n
+ Tag: BLOCK_BLOCK_n
+----------------------
+"n" is the id number of the block. You could plan for BLOCK_BLOCK_1,
+BLOCK_BLOCK_2, but it is just easier to let them fall into the DEFAULT
+tag and let them get sorted out by the admin.
+

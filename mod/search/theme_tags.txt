@@ -1,0 +1,15 @@
+The Search module has two content variables.
+
+Name: search_box
+Tag : SEARCH_SEARCH_BOX
+-----------------------
+Displays the user search box. Consists of just the text field and the
+submit button.
+
+
+Name: admin_box
+Tag : SEARCH_ADMIN_BOX
+----------------------
+This is the administrative box displayed when editing search content
+on a per item basis. Should be kept near the top of the page or left
+in the DEFAULT tag.

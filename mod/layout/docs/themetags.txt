@@ -1,0 +1,92 @@
+Layout creates the majority of tags within a theme. Here are the tags
+you will need in your theme:
+
+XML
+---
+This tag is only used when XML_MODE is enabled. It adds an xml tag to
+the top of the page. (Note: XML_MODE is set in Layout's config.php file.
+
+
+XML_STYLE
+---------
+When XML_MODE is enabled, this tag will contain the xml-stylesheet
+tags.
+
+
+DOCTYPE
+--------
+Contains the document type. Differs depending on the XML_MODE.
+
+
+XHTML
+-----
+The <html> tag is defined here; which is why your theme should not
+have one.
+
+
+BASE
+-----
+Assigns the home url to the base tag. This is required for some
+javascript processes. Remove at your own risk :)
+
+
+PAGE_TITLE
+-----------
+Contains the page title as defined in Layout. You may replace this
+with one of your own if you wish but then you can't share your
+theme. You can use this elsewhere in your theme if you wish.
+
+
+METATAGS
+------------
+Metatags defined in the Layout module appear here. Add to them as you
+see fit.
+
+
+JAVASCRIPT
+------------
+Holds the head.js content of various javascript programs used by
+phpWebSite. Essential.
+
+
+STYLE
+----------
+Contains the style links defined in a theme's theme.ini file. This tag
+will be empty when XML_MODE is enabled.
+
+
+BODY
+------
+Without this tag, Layout will not function. It must be present. All
+unspecified content (i.e. not giving a content variable name) appears
+here.
+
+
+DEFAULT
+--------
+The other necessary tag. Any specified content with a variable
+designation will appear here if not applied elsewhere. In other words,
+if my module (named "mymod") has a content variable named "stuff" and
+the theme doesn't have a theme_variable named "MYMOD_STUFF", it would
+get dropped into the DEFAULT tag.
+
+
+
+The next set of tags are not essential to the operation of the site.
+
+SAMPLE
+---------
+Layout allows a theme to display code results from a theme.php
+file. An example of this is included with the "default" theme. You can
+remove it from your own theme.
+
+
+LAYOUT_HEADER & LAYOUT_FOOTER
+--------------
+The Layout module lets an admin add content to the header and/or
+footer using these tags. You don't have to include them but doing so
+will cripple that capability.
+
+
+The above are the only tags needed by the Layout module. Any other
+tags are only to help in default module content placement.

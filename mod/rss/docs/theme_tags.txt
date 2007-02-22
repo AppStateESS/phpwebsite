@@ -1,0 +1,8 @@
+The RSS module has just one content variable.
+
+Name: feeds
+Tag : RSS_FEEDS
+-----------------
+All feed boxes display inside this tag. If used, it can tend to get
+long.
+

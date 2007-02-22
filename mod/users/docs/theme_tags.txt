@@ -1,0 +1,15 @@
+The Users module uses two content variables.
+
+Name: login_box
+Tag : USERS_LOGIN_BOX
+---------------------
+Contains the log-in form. After logging in, it contains a small menu
+of links. The admin has the option of changing the layout of the form:
+vertical or horizontal. 
+
+
+Name: permissions
+Tag : USERS_PERMISSIONS
+-----------------------
+If the admin has their javascript disabled, the User module displays
+the permission admin panel in this space. Best left in DEFAULT.

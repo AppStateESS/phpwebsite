@@ -1,5 +1,8 @@
 Version 0.1.2
 --------------
+22 February 2007
++ Put file directory option back into boost.php file.
+
 19 February 2007
 + Added translate functions.
 + Removed reference constructors.

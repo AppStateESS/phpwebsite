@@ -1,0 +1,9 @@
+Categories only has one content variable.
+
+Name: Admin_Menu
+Tag : CATEGORIES_ADMIN_MENU
+----------------------------
+If the user administrating the site does not have javascript enabled,
+an administration menu appears in this block instead. It is not really
+worth the time to create a special theme tag for it. DEFAULT should be
+sufficient.

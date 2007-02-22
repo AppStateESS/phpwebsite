@@ -1,0 +1,23 @@
+Blog only uses three theme tags.
+
+Name: view
+Tag : BLOG_VIEW
+---------------
+Blog will put this content into the BODY tag, not the DEFAULT tag if
+the theme does not assign it. It contains the full blog entry
+listing (title, body, comment links, etc.).
+
+Name: previous_entries
+Tag : BLOG_PREVIOUS_ENTRIES
+---------------------------
+This is a listing of past blog entries. Any not seen on the default
+view page are listed.
+
+
+Name: recent_entries
+Tag : BLOG_RECENT_ENTRIES
+-------------------------
+If the admin decides not to show the current blog on the home page,
+this block will show up instead. It contains the titles of new blogs.
+
+

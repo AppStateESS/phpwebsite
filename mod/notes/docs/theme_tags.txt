@@ -1,0 +1,7 @@
+The Notes module has one content variable.
+
+Name: reminder
+Tag : NOTES_REMINDER
+---------------------
+Note reminders to users appear here. If set in a theme, it probably
+should be fairly high to assure notice.
