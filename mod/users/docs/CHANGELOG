@@ -3,6 +3,7 @@ Version 2.3.0
 22 February 2007
 + Removed redundant translate functions.
 + Removed addStyle call from my_page.php (Bug #1665576)
++ Removed unneeded content variable.
 
 13 February 2007
 + Added translate function calls in classes and my_page.php

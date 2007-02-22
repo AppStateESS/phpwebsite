@@ -1,5 +1,10 @@
 Version 2.3.0
 -------------------------------------------------------------------
+22 February 2007
++ Added missing media tags to XML mode.
++ Added XML mode define to config.php file. Puts layout into xhtml+xml mode.
++ Updated files: conf/config.php
+
 21 February 2007
 + Added missing security checks.
 
