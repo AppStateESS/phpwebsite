@@ -1,5 +1,8 @@
 Version 2.3.0
 -------------------------------------------------------------------
+22 February 2007
++ Removed redundant translate functions.
+
 
 13 February 2007
 + Added translate function calls in classes and my_page.php

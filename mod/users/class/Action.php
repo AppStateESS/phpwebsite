@@ -13,7 +13,6 @@ class User_Action {
 
     function adminAction()
     {
-        translate('users');
         PHPWS_Core::initModClass('users', 'Group.php');
         $message = $content = NULL;
         
@@ -387,7 +386,6 @@ class User_Action {
         $panel->setContent($final);
 
         Layout::add(PHPWS_ControlPanel::display($panel->display()));
-        translate();
     }
 
     function popupPermission()
@@ -447,12 +445,10 @@ class User_Action {
         Users_Permission::postEditPermissions($key);
 
         $result = $key->save();
-        translate('users');
         if (isset($_POST['popbox'])) {
             $tpl['TITLE'] = _('Permissions saved.');
             $tpl['BUTTON'] = sprintf('<input type="button" name="close_window" value="%s" onclick="window.close()" />', _('Close window'));
             Layout::nakedDisplay(PHPWS_Template::process($tpl, 'users', 'close.tpl'));
-            translate();
         } else {
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
@@ -488,7 +484,6 @@ class User_Action {
      */
     function postNewUser(&$user)
     {
-        translate('users');
         $new_user_method = PHPWS_User::getUserSetting('new_user_method');
 
         $result = $user->setUsername($_POST['username']);
@@ -520,7 +515,7 @@ class User_Action {
         if (!User_Action::confirm()) {
             $error['CONFIRM_ERROR'] = _('Confirmation phrase is not correct.');
         }
-        translate();
+
         if (isset($error)) {
             return $error;
         } else {
@@ -542,7 +537,6 @@ class User_Action {
 
     function postUser(&$user, $set_username=TRUE)
     {
-        translate('users');
         if ($set_username){
             $user->_prev_username = $user->username;
             $result = $user->setUsername($_POST['username']);
@@ -589,7 +583,7 @@ class User_Action {
             $locale = preg_replace('/\W/', '', $_POST['language']);
             setcookie('phpws_default_language', $locale, mktime() + CORE_COOKIE_TIMEOUT);
         }
-        translate();
+
         if (isset($error)) {
             return $error;
         }
@@ -598,9 +592,8 @@ class User_Action {
         }
     }
 
-    function &cpanel()
+    function cpanel()
     {
-        translate('users');
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=users&amp;action=admin';
 
@@ -623,7 +616,7 @@ class User_Action {
         $panel->quickSetTabs($tabs);
         $panel->setModule('users');
         $panel->setPanel('panel.tpl');
-        translate();
+
         return $panel;
     }
 
@@ -633,7 +626,6 @@ class User_Action {
      */
     function userAction()
     {
-        translate('users');
         if (isset($_REQUEST['command'])) {
             $command = $_REQUEST['command'];
         }
@@ -751,12 +743,10 @@ class User_Action {
             $final = PHPWS_Template::process($tag, 'users', 'user_main.tpl');
             Layout::add($final);
         }
-        translate();
     }
 
     function confirmUser()
     {
-        translate('users');
         $hash = $_GET['hash'];
         if (preg_match('/\W/', $hash)) {
             PHPWS_Core::errorPage('400');
@@ -765,7 +755,7 @@ class User_Action {
         $db = new PHPWS_DB('users_signup');
         $db->addWhere('authkey', $hash);
         $row = $db->select('row');
-        translate();
+
         if (PEAR::isError($row)) {
             PHPWS_Error::log($row);
             return FALSE;
@@ -801,7 +791,6 @@ class User_Action {
 
     function successfulSignup($user)
     {
-        translate('users');
         switch (PHPWS_User::getUserSetting('new_user_method')) {
         case AUTO_SIGNUP:
             $result = User_Action::saveNewUser($user, TRUE);
@@ -831,13 +820,11 @@ class User_Action {
             }
         }
 
-        translate();
         return implode('<br />', $content);
     }
 
     function confirmEmail($user)
     {
-        translate('users');
         $site_contact = PHPWS_User::getUserSetting('site_contact');
         $authkey = User_Action::_createSignupConfirmation($user->id);
         if (!$authkey) {
@@ -852,7 +839,7 @@ class User_Action {
         $mail->setSubject(_('Confirmation email'));
         $mail->setFrom($site_contact);
         $mail->setMessageBody($message);
-        translate();
+
         return $mail->send();
     }
 
@@ -945,9 +932,7 @@ class User_Action {
 
     function badLogin()
     {
-        translate('users');
         Layout::add(_('Username and password refused.'), 'users', 'User_Main');
-        translate();
     }
 
     function getGroups($mode=NULL)
@@ -988,14 +973,14 @@ class User_Action {
             Current_User::disallow();
             return;
         }
-        translate('users');
+
         $settings['site_contact'] = $_POST['site_contact'];
         if (!isset($_POST['site_contact'])) {
             $error = _('You need to set a site contact address.');
         } elseif (!PHPWS_Text::isValidInput($_POST['site_contact'], 'email')) {
             $error = _('Please enter a valid email address as a site contact.');
         }
-        translate();
+
         if (is_numeric($_POST['user_signup'])) {
             $settings['new_user_method'] = (int)$_POST['user_signup'];
         }

@@ -38,7 +38,6 @@ class User_Form {
 
     function loggedIn()
     {
-        translate('users');
         PHPWS_Core::initCoreClass('Text.php');
         $template['GREETING'] = _('Hello');
         $template['USERNAME'] = Current_User::getUsername();
@@ -52,14 +51,11 @@ class User_Form {
         $template['HOME_USER_PANEL'] = $template['HOME'] = PHPWS_Text::moduleLink(_('Home'));
     
         $usermenu = PHPWS_User::getUserSetting('user_menu');
-        translate();
         return PHPWS_Template::process($template, 'users', 'usermenus/' . $usermenu);
     }
 
     function loggedOut()
     {
-        translate('users');
-
         if (isset($_REQUEST['phpws_username'])) {
             $username = $_REQUEST['phpws_username'];
         } else {
@@ -89,13 +85,12 @@ class User_Form {
         }
 
         $usermenu = PHPWS_User::getUserSetting('user_menu');
-        translate();
+
         return PHPWS_Template::process($template, 'users', 'usermenus/' . $usermenu);
     }
 
     function setPermissions($id)
     {
-        translate('users');
         $group = new PHPWS_Group($id, FALSE);
 
         $modules = PHPWS_Core::getModules();
@@ -146,7 +141,6 @@ class User_Form {
         $tpl->setData($template);
         
         $content = $tpl->get();
-        translate();
         return $content;
     }
 
@@ -224,7 +218,7 @@ class User_Form {
     function manageUsers()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
-        translate('users');
+
         $pageTags['USERNAME_LABEL'] = _('Username');
         $pageTags['EMAIL_LABEL'] = _('Email');
         $pageTags['LAST_LOGGED_LABEL'] = _('Last Logged');
@@ -241,7 +235,7 @@ class User_Form {
         $pager->addToggle('class="toggle1"');
         $pager->addToggle('class="toggle2"');
         $pager->setSearch('username', 'email');
-        translate();
+
         return $pager->get();
     }
 
@@ -249,12 +243,11 @@ class User_Form {
     function manageGroups()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
-        translate('users');
+
         $pageTags['GROUPNAME'] = _('Group Name');
         //    $pageTags['ACTIVE'] = _('Active');
         $pageTags['MEMBERS_LABEL'] = _('Members');
         $pageTags['ACTIONS_LABEL'] = _('Actions');
-        translate();
 
         $pager = new DBPager('users_groups', 'PHPWS_Group');
         $pager->setModule('users');
@@ -277,7 +270,7 @@ class User_Form {
         $form->addHidden('command', 'postMembers');
         $form->addHidden('group_id', $group->getId());
         $form->addText('search_member');
-        translate('users');
+
         $form->setLabel('search_member', _('Add Member'));
         $form->addSubmit('search', _('Add'));
 
@@ -327,7 +320,6 @@ class User_Form {
 
         $template['CURRENT_MEMBERS_LBL'] = _('Current Members');
         $template['CURRENT_MEMBERS'] = User_Form::getMemberList($group);
-        translate();
         $result =  PHPWS_Template::process($template, 'users', 'forms/memberForm.tpl');
 
         return $result;
@@ -337,7 +329,6 @@ class User_Form {
 
     function getMemberList(&$group)
     {
-        translate('users');
         PHPWS_Core::initCoreClass('Pager.php');
         $content = NULL;
 
@@ -383,7 +374,7 @@ class User_Form {
         if (!isset($content)) {
             $content = _('No members.');
         }
-        translate();
+
         if (PEAR::isError($content)) {
             PHPWS_Error::log($content);
             return $content->getMessage();
@@ -393,8 +384,6 @@ class User_Form {
 
     function userForm(&$user, $message=NULL)
     {
-        translate('users');
-
         $form = new PHPWS_Form;
         if ($user->getId() > 0) {
             $form->addHidden('user_id', $user->getId());
@@ -453,8 +442,6 @@ class User_Form {
             $links[] = PHPWS_Text::secureLink(_('Permissions'), 'users', $vars);
         }
 
-        translate();
-
         if (isset($links)) {
             $template['LINKS'] = implode(' | ', $links);
         }
@@ -469,7 +456,6 @@ class User_Form {
 
     function deify(&$user)
     {
-        translate('users');
         if (!$_SESSION['User']->isDeity() || ($user->getId() == $_SESSION['User']->getId())) {
             $content[] = _('Only another deity can create a deity.');
         } else {
@@ -483,13 +469,12 @@ class User_Form {
             $values['authorize'] = '0';
             $content[] = PHPWS_Text::secureLink(_('No, leave them as a mortal.'), 'users', $values);
         }
-        translate();
+
         return implode('<br />', $content);
     }
 
     function mortalize(&$user)
     {
-        translate('users');
         if (!$_SESSION['User']->isDeity()) {
             $content[] = _('Only another deity can create a mortal.');
         }
@@ -505,14 +490,12 @@ class User_Form {
             $values['authorize'] = '0';
             $content[] = PHPWS_Text::secureLink(_('No, leave them as a deity.'), 'users', $values);
         }
-        translate();
+
         return implode('<br />', $content);
     }
 
     function groupForm(&$group)
     {
-        translate('users');
-
         $form = new PHPWS_Form('groupForm');
         $members = $group->getMembers();
 
@@ -541,13 +524,12 @@ class User_Form {
         $template['LINKS'] = implode(' | ', $links);
 
         $content = PHPWS_Template::process($template, 'users', 'forms/groupForm.tpl');
-        translate();
+
         return $content;
     }
 
     function memberForm()
     {
-        translate('users');
         $form->add('add_member', 'textfield');
         $form->add('new_member_submit', 'submit', _('Add'));
     
@@ -563,12 +545,10 @@ class User_Form {
             } else
                 $template['LIKE_INSTRUCTION'] = _('No matches found.');
         }
-        translate();
     }
 
     function memberListForm($group)
     {
-        translate('users');
         $members = $group->getMembers();
         if (!isset($members)) {
             return _('None found');
@@ -598,7 +578,6 @@ class User_Form {
             $tpl->parseCurrentBlock();
         }
 
-        translate();
         return $tpl->get();
     }
 
@@ -636,7 +615,6 @@ class User_Form {
         $vars['command'] = 'addMember';
         $vars['group_id'] = $group->getId();
 
-        translate('users');
         foreach ($result as $member){
             if (isset($members)) {
                 if (in_array($member->getId(), $members)) {
@@ -655,7 +633,7 @@ class User_Form {
             }
             $tpl->parseCurrentBlock();
         }
-        translate();
+
         $content = $tpl->get();
         return $content;
     }
@@ -665,7 +643,6 @@ class User_Form {
      */
     function authorizationSetup()
     {
-        translate('users');
         $template = array();
         PHPWS_Core::initCoreClass('File.php');
 
@@ -746,13 +723,11 @@ class User_Form {
       
             $template['auth-rows'][] = $row;
         }
-        translate();
         return PHPWS_Template::process($template, 'users', 'forms/authorization.tpl');
     }
 
     function settings()
     {
-        translate('users');
         PHPWS_Core::initModClass('help', 'Help.php');
 
         $content = array();
@@ -809,7 +784,6 @@ class User_Form {
         $form->addTplTag('AFFIRM', _('Yes'));
 
         $template = $form->getTemplate();
-        translate();
         return PHPWS_Template::process($template, 'users', 'forms/settings.tpl');
     }
 
@@ -818,7 +792,6 @@ class User_Form {
      */
     function signup_form($user, $message=NULL)
     {
-        translate('users');
         $form = new PHPWS_Form;
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'user');
@@ -866,7 +839,6 @@ class User_Form {
         }
 
         $result = PHPWS_Template::process($template, 'users', 'forms/signup_form.tpl');
-        translate();
         return $result;
     }
 
@@ -878,7 +850,6 @@ class User_Form {
 
     function loginPage()
     {
-        translate('users');
         if (isset($_REQUEST['phpws_username'])) {
             $username = $_REQUEST['phpws_username'];
         } else {
@@ -899,7 +870,7 @@ class User_Form {
         $template = $form->getTemplate();
 
         $content = PHPWS_Template::process($template, 'users', 'forms/login_form.tpl');
-        translate();
+
         return $content;
     }
 
@@ -925,7 +896,6 @@ class User_Form {
             return $tpl;
         }
 
-        translate('users');
         $view_groups = User_Form::_getNonUserGroups();
 
         $view_matches = $key->getViewGroups();
@@ -979,15 +949,11 @@ class User_Form {
             unset($_SESSION['Permission_Message']);
         }
 
-        translate();
-
         return $tpl;
     }
 
     function _createMultiple($group_list, $name, $matches)
     {
-        translate('users');
-
         if (empty($group_list)) {
             return NULL;
         }
@@ -1025,7 +991,6 @@ class User_Form {
             $users = array();
         }
 
-        translate();
         if (isset($select)) {
             return sprintf('<select size="5" multiple="multiple" id="%s" name="%s[]">%s</select>',
                            $name, $name, implode("\n", $select));

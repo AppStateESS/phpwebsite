@@ -790,8 +790,6 @@ class PHPWS_User {
 
     function getUserTpl()
     { 
-        translate('users');
-
         // Don't let a deity change their deity status
         // Don't let non-deities change status
 
@@ -856,7 +854,7 @@ class PHPWS_User {
         if ($this->deity && !Current_User::isDeity()) {
             unset($template['ACTIONS']);
         }
-        translate();
+
         return $template;
     }
 
