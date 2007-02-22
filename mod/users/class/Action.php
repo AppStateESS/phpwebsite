@@ -932,7 +932,7 @@ class User_Action {
 
     function badLogin()
     {
-        Layout::add(_('Username and password refused.'), 'users', 'User_Main');
+        Layout::add(_('Username and password refused.'));
     }
 
     function getGroups($mode=NULL)
