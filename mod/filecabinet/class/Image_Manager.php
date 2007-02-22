@@ -579,15 +579,17 @@ class FC_Image_Manager {
         $thumbnail->file_directory   = $src_img->file_directory;
 
         if (!extension_loaded('gd')) {
-            $thumbnailFileName = preg_replace('/\.(jpg|png|gif)$/', '', $src_img->file_name);
-            $thumbnail->setFilename($thumbnailFileName . '_tn.png');
-            $thumbnail->file_type = 'image/png';
-            $full_dir = $thumbnail->getFullDirectory();
-            @copy(PHPWS_HOME_DIR . 'images/mod/filecabinet/nogd.png', $full_dir);
-            $thumbnail->loadDimensions();
-            $thumbnail->size = filesize($full_dir);
-            $result = $thumbnail->save(true, false);
-            return true;
+            if (!dl('gd.so')) {
+                $thumbnailFileName = preg_replace('/\.(jpg|png|gif)$/', '', $src_img->file_name);
+                $thumbnail->setFilename($thumbnailFileName . '_tn.png');
+                $thumbnail->file_type = 'image/png';
+                $full_dir = $thumbnail->getFullDirectory();
+                @copy(PHPWS_HOME_DIR . 'images/mod/filecabinet/nogd.png', $full_dir);
+                $thumbnail->loadDimensions();
+                $thumbnail->size = filesize($full_dir);
+                $result = $thumbnail->save(true, false);
+                return true;
+            }
         }
 
         $thumbnail->file_type = $src_img->file_type;
