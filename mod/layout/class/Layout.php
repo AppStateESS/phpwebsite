@@ -22,6 +22,10 @@ if (!defined('LAYOUT_THEME_EXEC')) {
     define('LAYOUT_THEME_EXEC', false);
  }
 
+if (!defined('XML_MODE')) {
+    define('XML_MODE', false);
+ }
+
 PHPWS_Core::initModClass('layout', 'Layout_Settings.php');
 PHPWS_Core::initCoreClass('Template.php');
 PHPWS_Core::requireConfig('layout');
@@ -817,13 +821,13 @@ class Layout {
         extract($link);
 
         if (!empty($title)) {
-            $cssTitle = 'title="' . $title . '"';
+            $cssTitle = 'title="' . preg_replace('/\W/', '_', $title) . '"';
         } else {
             $cssTitle = NULL;
         }
 
         if (!empty($media)) {
-            $media_tag = sprintf('media="%s"', $media);
+            $media_tag = sprintf(' media="%s"', $media);
         } else {
             $media_tag = NULL;
         }
@@ -831,17 +835,17 @@ class Layout {
 
         if ($header == TRUE) {
             if (isset($alternate) && $alternate == TRUE) {
-                return sprintf('<?xml-stylesheet alternate="yes" %s href="%s" type="text/css"?>', $cssTitle, $file);
+                return sprintf('<?xml-stylesheet alternate="yes" %s href="%s" type="text/css"%s?>', $cssTitle, $file, $media_tag);
             } else {
-                return sprintf('<?xml-stylesheet %s href="%s" type="text/css"?>', $cssTitle, $file);
+                return sprintf('<?xml-stylesheet %s href="%s" type="text/css"%s?>', $cssTitle, $file, $media_tag);
             }
         } else {
             if ($import == TRUE && $can_import) {
-                return sprintf('<style type="text/css"> @import url("%s") %s;</style>', $file, $media);
+                return sprintf('<style type="text/css"> @import url("%s")%s;</style>', $file, $media);
             } elseif (isset($alternate) && $alternate == TRUE) {
-                return sprintf('<link rel="alternate stylesheet" %s href="%s" type="text/css" %s />', $cssTitle, $file, $media_tag);
+                return sprintf('<link rel="alternate stylesheet" %s href="%s" type="text/css"%s />', $cssTitle, $file, $media_tag);
             } else {
-                return sprintf('<link rel="stylesheet" %s href="%s" type="text/css" %s />', $cssTitle, $file, $media_tag);
+                return sprintf('<link rel="stylesheet" %s href="%s" type="text/css"%s />', $cssTitle, $file, $media_tag);
             }
         }
     }
@@ -856,9 +860,8 @@ class Layout {
             }
         }
 
-        $testing = true;
 
-        if($testing == FALSE && stristr($_SERVER['HTTP_ACCEPT'],'application/xhtml+xml')){
+        if(XML_MODE == TRUE && stristr($_SERVER['HTTP_ACCEPT'],'application/xhtml+xml')){
             header('Content-Type: application/xhtml+xml; charset=UTF-8');
             $template['XML'] = '<?xml version="1.0" encoding="UTF-8"?>';
             $template['DOCTYPE'] = "\n" . '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -872,6 +875,7 @@ class Layout {
             $template['XHTML'] = '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="' . CURRENT_LANGUAGE . '" lang="' . CURRENT_LANGUAGE . '">';
             $template['STYLE'] = Layout::getStyleLinks(FALSE);
         }
+
         header('Content-Language: ' . CURRENT_LANGUAGE);
         header('Content-Script-Type: text/javascript');
         header('Content-Style-Type: text/css');

@@ -32,6 +32,8 @@ function layout_update(&$content, $currentVersion)
 + Added translate functions.
 + Layout now looks for and includes a theme\'s theme.php file.
 + Fixed unauthorized access.
++ Added XML mode to config.php file. Puts Layout in XHTML+XML content mode.
++ Added missing media parameters to XML mode.
 </pre>';
 
     }
