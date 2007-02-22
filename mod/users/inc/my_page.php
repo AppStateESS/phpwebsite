@@ -55,8 +55,6 @@ function my_page()
 class User_Settings {
 
     function userForm(&$user, $message=NULL){
-        Layout::addStyle('users');
-
         $form = new PHPWS_Form;
 
         $form->addHidden('module', 'users');
