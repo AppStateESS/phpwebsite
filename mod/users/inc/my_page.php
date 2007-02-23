@@ -142,7 +142,9 @@ class User_Settings {
         $editor_list = Editor::getEditorList();
         $all_editors['none'] = _('None');
         foreach ($editor_list as $value) {
-            $all_editors[$value] = $value;
+            if (Editor::willWork($value)) {
+                $all_editors[$value] = $value;
+            }
         }
 
         $user_type = Editor::getUserType();
