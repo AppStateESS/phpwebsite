@@ -17,8 +17,9 @@ function filecabinet_update(&$content, $version)
         if ($type == 'mysql') {
             $sql = 'ALTER TABLE images MODIFY file_name varchar(255) NOT NULL';
         } else {
-            $sql = 'ALTER TABLE images ALTER COLUMN file_name varchar(255) NOT NULL';
+            $sql = 'ALTER TABLE images ALTER COLUMN file_name TYPE varchar(255)';
         }
+
         $result = PHPWS_DB::query($sql);
         if (PEAR::isError($result)) {
             $content[] = 'Failed increasing images.file_name column';
