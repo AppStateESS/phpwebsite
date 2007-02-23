@@ -3,12 +3,14 @@ This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
 23 February 2007
++ phpws_info can now list browser info.
 + Editor
   o Removed htmlarea directory
   o Added supported.php files to FCK and tinymce (simple doesn't need
     it)
   o Editor will now check the user cookie for an Editor choice. It
     defaults to the core config.php setting.
+  o Set support settings for safari in tinymce
 
 21 February 2007
 +System-wide
