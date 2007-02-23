@@ -154,7 +154,7 @@ function loadBrowserInformation()
     foreach ($agentVars as $agent){
         $newVars[] = preg_replace('/[^\w\.\/]/', '', $agent);
     }
-
+    
     list($engine, $engine_version) = explode('/', $newVars[0]);
     $browser['engine'] = $engine;
     $browser['engine_version'] = $engine_version;
@@ -209,6 +209,9 @@ function loadBrowserInformation()
                 $platformCheck = 1;
                 $program[0] = 'Opera';
                 $program[1] = $newVars[6];
+            } elseif($newVars[1] == 'Macintosh') {
+                $browser['locale'] = $newVars[7];
+                $platformCheck = 4;
             } else {
                 $browser['locale'] = $newVars[5];
                 $platformCheck = 3;
@@ -232,6 +235,12 @@ function loadBrowserInformation()
                 }
                 else {
                     $program = _('Unknown');
+                }
+            } elseif($platform == 'Mac') {
+                if (preg_match('/^applewebkit/i', $newVars['8'])) {
+                    $program = explode('/', $newVars['12']);
+                } else {
+                    $program = explode('/', $newVars[10]);
                 }
             } else {
                 if (isset($newVars[8])){
