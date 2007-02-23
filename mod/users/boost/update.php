@@ -37,6 +37,21 @@ function users_update(&$content, $currentVersion)
 </pre>
 ';
 
+    case version_compare($currentVersion, '2.3.1', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/my_page/user_setting.tpl');
+        if (PHPWS_Boost::updateFiles($files, 'users')) {
+            $content[] = 'Successfully updated my_page/user_setting.tpl file.';
+        } else {
+            $content[] = 'Unable to update my_page/user_setting.tpl file.';
+        }
+        $content[] = '
+2.3.1 changes
+------------------------
++ Added ability for user to set editor preferences
+</pre>
+';
+
     }
 
     return TRUE;
