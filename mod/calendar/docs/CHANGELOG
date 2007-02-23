@@ -1,5 +1,8 @@
 Version 1.4.0
 ------------------------------------------------------------------
+23 February 2007
++ Fixed bug with navigation links when viewing single event.
+
 20 February 2007
 + Uninstall clears calendar convert status.
 + Added new phrases to translation.

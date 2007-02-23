@@ -686,6 +686,7 @@ class Calendar_User {
             $view_name = _('This week');
             break;
 
+        case 'event':
         case 'day':
             $view_name = _('Today');
         }
