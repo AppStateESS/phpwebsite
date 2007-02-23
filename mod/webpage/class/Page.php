@@ -187,22 +187,25 @@ class Webpage_Page {
 
             if ($admin) {
                 $this->moreAdminLinks($links);
-            }
+                $vars['wp_admin'] = 'page_up';
+                if ($this->page_number > 1) {
+                    $links[] = PHPWS_Text::secureLink(_('Move up'), 'webpage', $vars);
+                } elseif (count($this->_volume->_pages) > 1) {
+                    $links[] = PHPWS_Text::secureLink(_('Move to end'), 'webpage', $vars);
+                }
 
-            $vars['wp_admin'] = 'page_up';
-            if ($this->page_number > 1) {
-                $links[] = PHPWS_Text::secureLink(_('Move up'), 'webpage', $vars);
-            } elseif (count($this->_volume->_pages) > 1) {
-                $links[] = PHPWS_Text::secureLink(_('Move to end'), 'webpage', $vars);
-            }
-
-            $total_pages = $this->_volume->getTotalPages();
+                $total_pages = $this->_volume->getTotalPages();
                 $vars['wp_admin'] = 'page_down';
-            if ($this->page_number < $total_pages) {
-                $links[] = PHPWS_Text::secureLink(_('Move down'), 'webpage', $vars);
-            } elseif (count($this->_volume->_pages) > 1) {
-                $links[] = PHPWS_Text::secureLink(_('Move to front'), 'webpage', $vars);
+                if ($this->page_number < $total_pages) {
+                    $links[] = PHPWS_Text::secureLink(_('Move down'), 'webpage', $vars);
+                } elseif (count($this->_volume->_pages) > 1) {
+                    $links[] = PHPWS_Text::secureLink(_('Move to front'), 'webpage', $vars);
+                }
+            } else {
+                $vars['wp_admin'] = 'edit_webpage';
+                $links[] = PHPWS_Text::secureLink(_('Sort'), 'webpage', $vars);
             }
+
 
             $template['ADMIN_LINKS'] = implode(' | ', $links);
         }
