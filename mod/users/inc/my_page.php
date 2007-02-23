@@ -33,7 +33,7 @@ function my_page()
 
     case 'postUser':
         User_Settings::setTZ();
-        
+        User_Settings::setEditor();
         $result = User_Action::postUser($user, FALSE);
 
         if (is_array($result)) {
@@ -138,6 +138,22 @@ class User_Settings {
                 }
             }
         }
+
+        $editor_list = Editor::getEditorList();
+        $all_editors['none'] = _('None');
+        foreach ($editor_list as $value) {
+            $all_editors[$value] = $value;
+        }
+
+        $user_type = Editor::getUserType();
+        if (!$user_type) {
+            $user_type = 'none';
+        }
+
+        $form->addSelect('editor', $all_editors);
+        $form->setLabel('editor', _('Preferred editor (admins only)'));
+        $form->setMatch('editor', $user_type);
+
         $template = $form->getTemplate();
 
         if (isset($message)){
@@ -167,6 +183,13 @@ class User_Settings {
             PHPWS_Cookie::write('user_dst', 1);
         } else {
             PHPWS_Cookie::delete('user_dst');
+        }
+    }
+
+    function setEditor()
+    {
+        if (!preg_match('/\W/', $_POST['editor'])) {
+            PHPWS_Cookie::write('phpws_editor', $_POST['editor']);
         }
     }
 }

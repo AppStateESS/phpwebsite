@@ -31,6 +31,10 @@
     <td>{TIMEZONE}</td>
   </tr>
   <tr>
+    <td class="label"><label for="timezone">{EDITOR_LABEL}</td>
+    <td>{EDITOR}</td>
+  </tr>
+  <tr>
     <td>&nbsp;</td>
     <td>{DST} {DST_LABEL}</td>
   </tr>
