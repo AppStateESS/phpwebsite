@@ -2,6 +2,13 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+23 February 2007
++ Editor
+  o Removed htmlarea directory
+  o Added supported.php files to FCK and tinymce (simple doesn't need
+    it)
+  o Editor will now check the user cookie for an Editor choice. It
+    defaults to the core config.php setting.
 
 21 February 2007
 +System-wide
