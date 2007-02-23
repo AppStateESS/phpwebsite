@@ -1,5 +1,10 @@
 Version 2.3.0
 -------------------------------------------------------------------
+23 February 2007
++ Added ability for user to choose their preferred editor.
++ Updated files: templates/my_page/user_setting.tpl
+
+
 22 February 2007
 + Removed redundant translate functions.
 + Removed addStyle call from my_page.php (Bug #1665576)
