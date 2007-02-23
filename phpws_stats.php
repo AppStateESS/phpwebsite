@@ -20,13 +20,14 @@
   // ini_set('display_errors', 'On');
   // error_reporting (E_ALL);
 
-define('stats_on',       false); // Must be true for anything to echo
-define('stats_classes',  false); // Show the classes currently included
-define('stats_time',     false);  // Show the amount of time it took to compute
-define('stats_memory',   false);  // Show amount of memory used
-define('stats_sessions', false);  // Show the sessions currently used
-define('show_request',   false);  // Show the _REQUEST info
-define('display_status', false); // Shows configuration settings that may confuse developer
+define('stats_on',        false); // Must be true for anything to echo
+define('stats_classes',   false); // Show the classes currently included
+define('stats_time',      false);  // Show the amount of time it took to compute
+define('stats_memory',    false);  // Show amount of memory used
+define('stats_sessions',  false);  // Show the sessions currently used
+define('show_request',    false);  // Show the _REQUEST info
+define('display_status',  false); // Shows configuration settings that may confuse developer
+define('browser_details', false); // Shows information collected about your browser
 
 if (stats_on && stats_time) {
     list($usec, $sec) = explode(' ', microtime());
@@ -91,6 +92,10 @@ function show_stats()
     if(show_request) {
         echo '<hr />' . _('Request') . ' ';
         test($_REQUEST);
+    }
+
+    if (browser_details) {
+        test($GLOBALS['browser_info']);
     }
 }
 
