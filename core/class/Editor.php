@@ -9,6 +9,9 @@
 
 PHPWS_Core::initCoreClass('File.php');
 
+// If true, then force the usage of the selected editor
+define ('FORCE_EDITOR', false);
+
 class Editor {
     var $data       = NULL; // Contains the editor text
     var $name       = NULL;
@@ -20,7 +23,7 @@ class Editor {
 
     function Editor($name=NULL, $data=NULL, $id=NULL, $type=NULL)
     {
-        $editorList = PHPWS_File::readDirectory('./javascript/editors/', TRUE);
+        $editorList = $this->getEditorList();
 
         if (PEAR::isError($editorList)) {
             PHPWS_Error::log($editorList);
@@ -28,7 +31,7 @@ class Editor {
         }
 
         if (empty($type)) {
-            $type = DEFAULT_EDITOR_TOOL;
+            $type = $this->getUserType();
         }
 
         $this->editorList = $editorList;
@@ -65,6 +68,11 @@ class Editor {
         return Layout::getJavascript('editors/' . $this->type, $formData);
     }
 
+    function getEditorList()
+    {
+        return PHPWS_File::readDirectory('javascript/editors/', TRUE);
+    }
+    
     function getError()
     {
         return $this->error;
@@ -75,6 +83,24 @@ class Editor {
         return $this->name;
     }
 
+    function getUserType()
+    {
+        if ($user_type = PHPWS_Cookie::read('phpws_editor')) {
+            if ($user_type == 'none') {
+                return null;
+            }
+            // prevent shenanigans
+            if (preg_match('/\W/', $user_type)) {
+                return DEFAULT_EDITOR_TOOL;
+            }
+            if (Editor::isType($user_type)) {
+                return $user_type;
+            }
+        }
+
+        return DEFAULT_EDITOR_TOOL;
+    }
+
     function getType()
     {
         return $this->type;
@@ -82,7 +108,7 @@ class Editor {
 
     function isType($type_name)
     {
-        return in_array($type_name, $this->editorList);
+        return in_array($type_name, Editor::getEditorList());
     }
 
     function setData($data)
@@ -110,8 +136,13 @@ class Editor {
         $this->limited = (bool)$value;
     }
 
-    function willWork()
+
+    function willWork($type=null)
     {
+        if (FORCE_EDITOR) {
+            return true;
+        }
+
         if (USE_WYSIWYG_EDITOR == FALSE) {
             return FALSE;
         }
@@ -120,21 +151,45 @@ class Editor {
             return FALSE;
         }
 
+        if (empty($type)) {
+            $type = Editor::getUserType();
+        }
+
+        // if type is null, user doesn't want an editor
+        if (empty($type)) {
+            return false;
+        }
+
+        if (isset($_SESSION['Editor_Works'][$type])) {
+            return $_SESSION['Editor_Works'][$type];
+        }
+
         extract($GLOBALS['browser_info']);
-
-        if ($browser == 'Opera' || $browser == 'AppleWebKit') {
-            return FALSE;
+        $support_file = sprintf('javascript/editors/%s/supported.php', $type);
+        if (is_file($support_file)) {
+            include $support_file;
+            if (isset($supported)) {
+                foreach ($supported as $spt) {
+                    if (!isset($spt['browser']) || !isset($spt['platform']) || !isset($spt['version'])) {
+                        continue;
+                    }
+                    if ( strtolower($browser) == $spt['browser']   &&
+                         strtolower($platform) == $spt['platform'] &&
+                         version_compare($browser_version, $spt['version'], '>=') ) {
+                        $_SESSION['Editor_Works'][$type] = true;
+                        return true;
+                    }
+                }
+                $_SESSION['Editor_Works'][$type] = false;
+                return false;
+            } else {
+                $_SESSION['Editor_Works'][$type] = true;
+                return true;
+            }
+        } else {
+            $_SESSION['Editor_Works'][$type] = true;
+            return true;
         }
-
-        if ($engine == 'Mozilla' &&
-            ( ($engine_version >= '5.0') || ($browser == 'MSIE' && $browser_version > '5.5') )
-            ) {
-
-            return TRUE;
-        }
-
-        return FALSE;
-
     }
 
 }
