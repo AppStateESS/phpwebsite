@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-15 10:21-0500\n"
+"POT-Creation-Date: 2007-02-26 15:18-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,10 +40,16 @@ msgstr ""
 msgid "3 months old"
 msgstr ""
 
+msgid "Add filter"
+msgstr ""
+
 msgid "Delete checked"
 msgstr ""
 
 msgid "Everything"
+msgstr ""
+
+msgid "Filters"
 msgstr ""
 
 msgid "First visit"
@@ -59,6 +65,9 @@ msgid "Records the href referrers from who is visiting your site."
 msgstr ""
 
 msgid "Referrer"
+msgstr ""
+
+msgid "Referrers"
 msgstr ""
 
 msgid "Total visits"
