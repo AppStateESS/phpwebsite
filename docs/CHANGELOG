@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+
+Version 1.4.1
+----------------------------------------------------------------------
+
 26 February 2007
 + Removed constructor references from Template.php
 
