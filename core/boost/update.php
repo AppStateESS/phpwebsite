@@ -6,6 +6,15 @@
    */
 
 function core_update(&$content, $version) {
+    $boost_module = new PHPWS_Module('boost');
+    if (version_compare($boost_module->version, '2.0.0', '<')) {
+        $content[] = '<h1>Important!</h1>
+<p>Core cannot properly update your installation yet. You will need to grab a recent copy of Boost (1.9.8 or higher).</p>
+<p>Do not try to update Boost, just copy it into the mod/boost/ directory. Once you have done that, update the Core, then update Boost.</p>
+';
+        return false;
+    }
+
     $content[] = '';
     switch ($version) {
 
