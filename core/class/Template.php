@@ -199,10 +199,10 @@ class PHPWS_Template extends HTML_Template_Sigma {
         }
 
         if ($strict) {
-            $tpl = & new PHPWS_Template;
+            $tpl = new PHPWS_Template;
             $tpl->setFile($file, TRUE);
         } else {
-            $tpl = & new PHPWS_Template($module, $file);
+            $tpl = new PHPWS_Template($module, $file);
         }
 
         if (PEAR::isError($tpl->error)) {
@@ -251,7 +251,7 @@ class PHPWS_Template extends HTML_Template_Sigma {
         if ($defaultTpl)
             return PHPWS_Template::process($template, $module, $file);
         else {
-            $tpl = & new PHPWS_Template($module);
+            $tpl = new PHPWS_Template($module);
             $tpl->setFile($file, TRUE);
             $tpl->setData($template);
             return $tpl->get();
