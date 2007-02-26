@@ -57,6 +57,14 @@ class Webpage_Page {
         $this->title = strip_tags($title);
     }
 
+    /**
+     * Returns linked title
+     */
+    function getTitle()
+    {
+        return PHPWS_Text::rewriteLink($this->title, 'webpage', $this->_volume->id, $this->page_number);
+    }
+
     function setContent($content)
     {
         $this->content = PHPWS_Text::parseInput($content);
@@ -151,7 +159,7 @@ class Webpage_Page {
 
     function viewBasic()
     {
-        $template['PAGE_TITLE'] = $this->title;
+        $template['PAGE_TITLE'] = $this->getTitle();
         $template['CONTENT'] = $this->getContent();
         return PHPWS_Template::process($template, 'webpage', 'page/' . $this->template);
     }
@@ -169,7 +177,7 @@ class Webpage_Page {
 
     function getTplTags($admin=false, $include_header=true, $version=0)
     {
-        $template['TITLE'] = $this->title;
+        $template['TITLE'] = $this->getTitle();
         $template['IMAGE'] = $this->getImage();
         $template['CONTENT'] = $this->getContent();
         $template['CURRENT_PAGE'] = $this->page_number;

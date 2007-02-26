@@ -1,5 +1,9 @@
 Version 0.5.0 (merged svn versions > 0.2.6)
 ------------------------------------------------------------------------
+26 February 2007
++ Fixed reference problem occuring in PHP 4
++ Made volume and page titles linked
+
 23 February 2007
 + Removed the links that let you move pages around. Changed to a
   single "sort" link that takes you to the overview page.

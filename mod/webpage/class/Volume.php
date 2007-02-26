@@ -434,7 +434,7 @@ class Webpage_Volume {
 
     function getTplTags($page_links=true, $version=0)
     {
-        $template['PAGE_TITLE'] = $this->title;
+        $template['PAGE_TITLE'] = $this->getTitle();
         $template['SUMMARY'] = $this->getSummary();
 
         if ($page_links && count($this->_pages) > 1) {
