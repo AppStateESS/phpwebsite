@@ -3,8 +3,8 @@
   <module>
     <title>core</title>
     <properName>phpWebSite Core</properName>
-    <version>1.4.0</version>
-    <url>http://phpwebsite.appstate.edu/downloads/modules/core/</url>
+    <version>1.4.1</version>
+    <url>http://phpwebsite.appstate.edu/downloads/modules/base/</url>
   </module>
   <module>
     <title>comments</title>
