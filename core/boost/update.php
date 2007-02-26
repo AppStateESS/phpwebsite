@@ -201,6 +201,41 @@ Conversion
 Updated files:
 conf/language.php
 ';
+
+    case version_compare($version, '1.4.1', '<'):
+        $content[] = '<pre>';
+       if (PHPWS_Boost::updateFiles(array('conf/i18n/en_US.php'), 'core')) {
+           $content[] = 'Added config/core/i18n/en_US.php file.';
+       } else {
+           $content[] = 'Unable to add config/core/i18n/en_US.php file.';
+       }
+        $content[] = '
+1.4.1 Changes
+--------------
++ Removed constructor references from Template.php
++ phpws_info can now list browser info.
++ Editor
+  o Removed htmlarea directory
+  o Added supported.php files to FCK and tinymce (simple doesn\'t need
+    it)
+  o Editor will now check the user cookie for an Editor choice. It
+    defaults to the core config.php setting.
+  o Set support settings for safari in tinymce
+
++ Translate
+  o fixed i18n files. en_EN.php changed to en_US.php
+
++ Function
+  o Added a parse check on a PHP 4 function name for Compat mode.
+
++ DB_Pager
+  o Cleaned up translate functions.
+  o Added alt and title parameters to sorting images for xhtml
+    compliance.
+
++ Documentation - fixed typo in DB_Pager.txt
+';
+
     }
     return true;
 }
