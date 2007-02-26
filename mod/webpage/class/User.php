@@ -29,12 +29,12 @@ class Webpage_User {
                 exit();
             }
 
-            $volume = new Webpage_Volume($_REQUEST['id']);
+            $volume = new Webpage_Volume($_GET['id']);
             $volume->loadKey();
             if (!$volume->_key->allowView()) {
                 PHPWS_Core::errorPage(404);
             }
-            @$page = $_REQUEST['page'];
+            @$page = $_GET['page'];
             Layout::add($volume->view($page));
             PHPWS_Core::initModClass('menu', 'Menu.php');
             break;

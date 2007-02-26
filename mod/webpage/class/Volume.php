@@ -90,7 +90,7 @@ class Webpage_Volume {
                 return;
             } else {
                 foreach ($result as $key => $page) {
-                    $page->_volume = &$this;
+                    $page->_volume = & $this;
                     $this->_pages[$key] = $page;
                 }
             }
@@ -192,9 +192,11 @@ class Webpage_Volume {
         }
     }
 
-    function &getCurrentPage()
+    function getCurrentPage()
     {
         $page = $this->getPagebyNumber($this->_current_page);
+        // Necessary for php 4
+        $page->_volume->_current_page = $this->_current_page;
         return $page;
     }
 
@@ -413,21 +415,21 @@ class Webpage_Volume {
 
     function getPageSelect($alist)
     {
-            $form = new PHPWS_Form('page_select');
-            $form->setMethod('get');
-            $form->noAuthKey();
-            $form->addHidden('module', 'webpage');
-            $form->addHidden('id', $this->id);
-            $form->addSelect('page', $alist);
-            $form->setMatch('page', $this->_current_page);
-            $form->setLabel('page', _('Page'));
-            if (javascriptEnabled()) {
-                $form->setExtra('page', 'onchange="this.form.submit()"');
-            } else {
-                $form->addSubmit('go', _('Go!'));
-            }
-            $formtpl = $form->getTemplate();
-            return implode("\n", $formtpl);
+        $form = new PHPWS_Form('page_select');
+        $form->setMethod('get');
+        $form->noAuthKey();
+        $form->addHidden('module', 'webpage');
+        $form->addHidden('id', $this->id);
+        $form->addSelect('page', $alist);
+        $form->setMatch('page', $this->_current_page);
+        $form->setLabel('page', _('Page'));
+        if (javascriptEnabled()) {
+            $form->setExtra('page', 'onchange="this.form.submit()"');
+        } else {
+            $form->addSubmit('go', _('Go!'));
+        }
+        $formtpl = $form->getTemplate();
+        return implode("\n", $formtpl);
     }
 
     function getTplTags($page_links=true, $version=0)
@@ -538,6 +540,7 @@ class Webpage_Volume {
                 $content = $this->showAllPages();
             } else {
                 $oPage = $this->getCurrentPage();
+
                 if (!is_object($oPage)) {
                     PHPWS_Error::log(WP_PAGE_FROM_VOLUME, 'webpage', 'Webpage_Volume::view');
                     PHPWS_Core::errorPage();
