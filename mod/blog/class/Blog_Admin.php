@@ -386,7 +386,7 @@ class Blog_Admin {
         return $message;
     }
 
-    function &cpanel()
+    function cpanel()
     {
         PHPWS_Core::initModClass('version', 'Version.php');
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
@@ -431,10 +431,10 @@ class Blog_Admin {
     {
         PHPWS_Core::initCoreClass('DBPager.php');
 
-        $pageTags['TITLE']  = _('Title');
-        $pageTags['ENTRY']  = _('Entry');
-        $pageTags['DATE']   = _('Creation Date');
-        $pageTags['ACTION'] = _('Action');
+        $pageTags['TITLE']   = _('Title');
+        $pageTags['SUMMARY'] = _('Summary');
+        $pageTags['DATE']    = _('Creation Date');
+        $pageTags['ACTION']  = _('Action');
 
         $pager = new DBPager('blog_entries', 'Blog');
         $pager->setModule('blog');

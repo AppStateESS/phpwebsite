@@ -1,9 +1,13 @@
-Version 1.4.1
+Version 1.4.2
 ------------------------------------------------------------------
-Note: previous SVN versions joined into 1.4.1
 26 February 2007
 + Fixed bug causing an error when entries were moved off the front
   page. Thanks Ann.
++ Changed admin list to show summary instead of entry data.
+
+Version 1.4.1
+------------------------------------------------------------------
+Note: previous SVN versions joined into 1.4.1
 
 20 February 2007
 + Added missing category tags.

@@ -355,7 +355,7 @@ class Blog {
     {
         $template['TITLE'] = sprintf('<a href="%s">%s</a>', $this->getViewLink(true), $this->title);
         $template['DATE'] = $this->getServerDate();
-        $template['ENTRY'] = $this->getListEntry();
+        $template['SUMMARY'] = $this->getListSummary();
         $template['ACTION'] = $this->getListAction();
         return $template;
     }
@@ -393,8 +393,8 @@ class Blog {
         return $response;
     }
 
-    function getListEntry(){
-        return substr(ltrim(strip_tags(str_replace('<br />', ' ', $this->getEntry(true)))), 0, 30);
+    function getListSummary(){
+        return substr(ltrim(strip_tags(str_replace('<br />', ' ', $this->getSummary(true)))), 0, 30);
     }
 
     function post_entry()

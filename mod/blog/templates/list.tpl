@@ -1,14 +1,14 @@
 <table cellpadding="4" cellspacing="1" width="98%">
   <tr>
     <th>{TITLE} {TITLE_SORT}</th>
-    <th>{ENTRY}</th>
+    <th>{SUMMARY}</th>
     <th>{DATE} {CREATE_DATE_SORT}</th>
     <th>{ACTION}</th>
   </tr>
 <!-- BEGIN listrows -->
   <tr {TOGGLE}>
     <td>{TITLE}</td>
-    <td>{ENTRY}</td>
+    <td>{SUMMARY}</td>
     <td>{DATE}</td>
     <td>{ACTION}</td>
   </tr>

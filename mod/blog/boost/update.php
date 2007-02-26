@@ -61,8 +61,21 @@ function blog_update(&$content, $currentVersion)
 + Added missing translate calls.
 + Changed edit form layout.
 </pre>';
-        return true;
+    case version_compare($currentVersion, '1.4.2', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/list.tpl');
+        if (PHPWS_Boost::updateFiles($files, 'blog')) {
+            $content[] = '+ Updated templates/blog/list.tpl file.';
+        } else {
+            $content[] = '+ Unable to update templates/blog/list.tpl file.';
+        }
+        $content[] = '1.4.1 Changes
+-------------
++ Fixed bug causing error message when Blog listing moved off front page.
++ Changes "Entry" column to "Summary" on admin list. Was not updated since summary was added.
+</pre>';
     }
+    return true;
 }
 
 ?>

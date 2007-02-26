@@ -5,7 +5,7 @@
    */
 
 $proper_name  = 'Blog';
-$version      = '1.4.1';
+$version      = '1.4.2';
 $register     = FALSE;
 $unregister   = FALSE;
 $import_sql   = TRUE;
