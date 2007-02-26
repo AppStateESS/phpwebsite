@@ -108,7 +108,7 @@ class Blog_User {
     }
 
 
-    function getEntries(&$db, $limit, $offset)
+    function getEntries(&$db, $limit, $offset=0)
     {
         $db->addWhere('approved', 1);
         $db->addWhere('publish_date', mktime(), '<');
