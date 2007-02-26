@@ -37,7 +37,9 @@ function boost_update(&$content, $currentVersion)
 </pre>';
 
     case version_compare($currentVersion, '2.0.0', '<'):
-        $content[] = '<pre>+ Added error check for version checking Bug #1606366
+        $content[] = '<pre>2.0.0 Changes
+-------------
++ Added error check for version checking Bug #1606366
 + Boost now reports on the directories it deletes.
 + Boost now only deletes image and file directories if defined on install.
 + Added translate functions.</pre>';
