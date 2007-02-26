@@ -15,7 +15,9 @@ function clipboard_update(&$content, $currentVersion)
 
 
     case version_compare($currentVersion, '0.0.3', '<'):
-        $content[] = '<pre>+ Added translate functions</pre>';
+        $content[] = '<pre>0.0.3 changes
+-------------
++ Added translate functions</pre>';
     }
 
     return true;
