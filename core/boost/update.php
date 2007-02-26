@@ -204,10 +204,10 @@ conf/language.php
 
     case version_compare($version, '1.4.1', '<'):
         $content[] = '<pre>';
-       if (PHPWS_Boost::updateFiles(array('conf/i18n/en_US.php'), 'core')) {
-           $content[] = 'Added config/core/i18n/en_US.php file.';
+        if (PHPWS_Boost::updateFiles(array('conf/i18n/en_US.php', 'conf/text_settings.php'), 'core')) {
+           $content[] = 'Added config/core/i18n/en_US.php file and updated config/core/text_settings.php.';
        } else {
-           $content[] = 'Unable to add config/core/i18n/en_US.php file.';
+           $content[] = 'Unable to add config/core/i18n/en_US.php or update config/core/text_settings.php file.';
        }
         $content[] = '
 1.4.1 Changes
