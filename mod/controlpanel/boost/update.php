@@ -18,6 +18,16 @@ function controlpanel_update(&$content, $currentVersion)
 ------------
 + Fixed problem with unregister function.</pre>';
 
+    case version_compare($currentVersion, '2.0.3', '<'):
+        $content[] = '<pre>2.0.3 Changes
+------------';
+        $files = array('templates/style.css');
+        $content[] = '+ Updated style.css to work better with IE/Safari (thanks singletrack).';
+        if (!PHPWS_Boost::updateFiles($files, 'controlpanel')) {
+            $content[] = 'Warning: style.css could not be copied locally to templates/controlpanel.';
+        }
+        $content[] = '+ Fixed problem with unregister function.</pre>';
+
     }
     return true;
 }

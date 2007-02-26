@@ -1,23 +1,23 @@
 /* ---------- Containers ----------- */
 div.controlpanel {
-    padding : 10px;
+    padding : 3px;
 }
 
 .frame {
-    margin : 3px 5px 0px 0px;
+    margin : 1px 5px 0px 0px;
     background-color: #BFBFBF;
-    padding: 5px;
-    border : 2px solid black;
+    padding: 2px;
+    border : 1px solid black;
     width : 98%;
 }
 
 
 .frame .backgrd {
-    margin : 0px;
+    margin : 2px;
     background-color : white;
     padding : 5px;
-    border-left : 2px solid #696969;
-    border-top : 2px solid #696969;
+    border-left : 1px solid #696969;
+    border-top : 1px solid #696969;
     overflow : auto;
 }
 
@@ -25,13 +25,20 @@ div.controlpanel {
 
 /*--------------- Tabs ---------------*/
 
+ul.tabmenu {
+	display: inline;
+}
+
 .tabmenu li {
-    padding: 5px 5px 4px 5px;
+    padding: 3px 5px 2px 5px;
     display: inline;
     list-style-type: none;
-    border : 2px solid black;
+    border : 1px solid black;
+    /* Gecko browsers */
+    -moz-border-radius-topleft: 4px;
+    -moz-border-radius-topright: 4px;
     font-size: 0.8em;
-    margin-right : 4px;
+    margin-right : 2px;
 }
 
 
@@ -40,7 +47,7 @@ div.controlpanel {
     background-color : #BFBFBF;
     border-bottom : none;
     z-index : 2;
-    padding-bottom : 6px;
+    padding-bottom : 3px;
 }
 
 .tabmenu li.active a:link,
@@ -89,4 +96,3 @@ div.link a{
     font-size : .9em;
     font-weight : bold;
 }
-
