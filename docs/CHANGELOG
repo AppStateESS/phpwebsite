@@ -8,6 +8,7 @@ Version 1.4.1
 
 26 February 2007
 + Removed constructor references from Template.php
++ Added Boost warning.
 
 23 February 2007
 + phpws_info can now list browser info.
