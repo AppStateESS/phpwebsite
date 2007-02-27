@@ -14,7 +14,8 @@ function branch_update(&$content, $version)
 
     case version_compare($version, '1.0.4', '<'):
         $files = array('templates/config.tpl');
-        $content[] = '<pre>';
+        $content[] = '<pre>1.0.4 Changes
+-------------';
         if (PHPWS_Boost::updateFiles($files, 'blog')) {
             $content[] = '+ Updated config.tpl template.';
         } else {
