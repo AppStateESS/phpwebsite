@@ -245,6 +245,12 @@ conf/language.php
 + Documentation - fixed typo in DB_Pager.txt
 ';
 
+    case version_compare($version, '1.4.2', '<'):
+        $content[] = '<pre>
+1.4.2 Changes
+--------------
++ Fixed shorten url function in Text.php
+</pre>';
     }
     return true;
 }
