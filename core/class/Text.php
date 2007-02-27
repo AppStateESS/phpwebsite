@@ -910,20 +910,20 @@ class PHPWS_Text {
         if (!(int)$limit) {
             return $text;
         }
-        $replace = '/>([\s\n]*http(s){0,1}:\/\/)(.{' . $limit . ',})([\s\n]*<\/a>)/ie';
-        $replace_with = "'>\\1' . PHPWS_Text::shortenUrl('\\3', $limit) . '\\4'";
-        return preg_replace($replace, $replace_with, $text);
+
+        return preg_replace('/(<a .*?>http(s)?:\/\/)(.*?)(<\/a>)/e', 
+                            "'\\1' . PHPWS_Text::shortenUrl('\\3', $limit) . '\\4'",
+                            $text);
     }
 
     function shortenUrl($url, $limit=30)
     {
-
-        if (!(int)$limit) {
+        if (!(int)$limit || strlen($url) < $limit) {
             return $url;
         }
 
-        $url_length = strpos($url, '/');
-
+        $url_length = strpos($url, '?');
+        
         if (!$url_length) {
             $url_length = floor($limit/2);
         }
@@ -933,7 +933,7 @@ class PHPWS_Text {
             $pickup = 3;
         }
 
-        return substr($url, 0, $url_length) . '(...)' . substr($url, -1 * $pickup, $pickup);
+        return substr($url, 0, $url_length) . '...' . substr($url, -1 * $pickup, $pickup);
     }
 
 
