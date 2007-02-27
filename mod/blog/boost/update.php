@@ -69,7 +69,7 @@ function blog_update(&$content, $currentVersion)
         } else {
             $content[] = '+ Unable to update templates/blog/list.tpl file.';
         }
-        $content[] = '1.4.1 Changes
+        $content[] = '1.4.2 Changes
 -------------
 + Fixed bug causing error message when Blog listing moved off front page.
 + Changes "Entry" column to "Summary" on admin list. Was not updated since summary was added.
