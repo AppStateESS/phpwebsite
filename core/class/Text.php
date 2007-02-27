@@ -132,6 +132,7 @@ class PHPWS_Text {
         }
         
         $text = $this->text;
+        
         if ($this->use_bbcode) {
             $text = PHPWS_Text::bb2html($text, 'whatsthat');
         }
@@ -911,9 +912,9 @@ class PHPWS_Text {
             return $text;
         }
 
-        return preg_replace('/(<a .*?>http(s)?:\/\/)(.*?)(<\/a>)/e', 
-                            "'\\1' . PHPWS_Text::shortenUrl('\\3', $limit) . '\\4'",
-                            $text);
+        return str_replace('\"', '"', preg_replace('/(<a .*?>http(s)?:\/\/)(.*?)(<\/a>)/ie',
+                                                   "'\\1' . PHPWS_Text::shortenUrl('\\3', $limit) . '\\4'",
+                                                   $text));
     }
 
     function shortenUrl($url, $limit=30)
