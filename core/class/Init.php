@@ -143,6 +143,7 @@ function initLanguage()
 function loadBrowserInformation()
 {
     translate('core');
+    $allowed_platforms = array('linux', 'mac', 'windows');
     if (!isset($_SERVER['HTTP_USER_AGENT'])) {
         $GLOBALS['browser_info'] = NULL;
         return;
@@ -154,7 +155,7 @@ function loadBrowserInformation()
     foreach ($agentVars as $agent){
         $newVars[] = preg_replace('/[^\w\.\/]/', '', $agent);
     }
-    
+
     list($engine, $engine_version) = explode('/', $newVars[0]);
     $browser['engine'] = $engine;
     $browser['engine_version'] = $engine_version;
@@ -162,6 +163,7 @@ function loadBrowserInformation()
     switch ($engine){
     case 'Opera':
         $platform = $newVars[1];
+
         $program = explode('/', $newVars[0]);
 
         if ($platform == 'Windows'){
@@ -169,7 +171,11 @@ function loadBrowserInformation()
                 $platform = 'Windows 2000';
             else
                 $platform .= ' ' . $newVars[2] . ' ' . $newVars[3];
+        } elseif (!in_array(strtolower($platform), $allowed_platforms)) {
+            $platform = $newVars[2];
         }
+
+
         $browser['locale'] = $newVars[5];
         break;
 
