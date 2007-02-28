@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+28 February 2007
++ Added browser detection support under x11
+
+
 Version 1.4.2
 ----------------------------------------------------------------------
 27 February 2007
