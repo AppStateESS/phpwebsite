@@ -68,6 +68,12 @@ CREATE TABLE whodis_filters (
 + Can now set whodis permissions.
 </pre>';
 
+    case version_compare($version, '0.0.6', '<'):
+        $content[] = '<pre>0.0.6 changes
+---------------
++ Added validity check of referrer url.
++ Fixed bug preventing duplicate recording.</pre>';
+
     }
     return true;
 }

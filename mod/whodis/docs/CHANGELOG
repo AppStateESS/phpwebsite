@@ -1,3 +1,8 @@
+Version 0.0.6
+---------------------------------------------------------------------
++ Fixed bug preventing whodis from tracking repeats
++ Checking for quotes in referrer.
+
 Version 0.0.5
 ---------------------------------------------------------------------
 + Can now add filters which will ignore matching referrers.

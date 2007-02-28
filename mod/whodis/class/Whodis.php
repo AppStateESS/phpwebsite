@@ -10,13 +10,15 @@ class Whodis {
     {
         if (!empty($_SERVER['HTTP_REFERER'])) {
             $referrer = & $_SERVER['HTTP_REFERER'];
-            if (Whodis::passFilters($referrer)) {
-                PHPWS_Core::initModClass('whodis', 'Whodis_Referrer.php');
-                
-                $whodis = new Whodis_Referrer;
-                $result = $whodis->save($referrer);
-                if (PEAR::isError($result)) {
-                    PHPWS_Error::log($result);
+            if (!preg_match('/["\']/', $referrer)) {
+                if (Whodis::passFilters($referrer)) {
+                    PHPWS_Core::initModClass('whodis', 'Whodis_Referrer.php');
+                    
+                    $whodis = new Whodis_Referrer;
+                    $result = $whodis->save($referrer);
+                    if (PEAR::isError($result)) {
+                        PHPWS_Error::log($result);
+                    }
                 }
             }
         }

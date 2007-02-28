@@ -29,7 +29,7 @@ class Whodis_Referrer {
     {
         $this->setUrl($url);
         $db = new PHPWS_DB('whodis');
-        $db->addWhere('url', $url);
+        $db->addWhere('url', $this->url);
         $result = $db->select('row');
 
         $db->reset();
