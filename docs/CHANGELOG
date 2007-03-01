@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+1 March 2007
++ Init.php - Removed Windows versions from platform identification
+
 28 February 2007
 + Added browser detection support under x11
 

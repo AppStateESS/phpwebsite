@@ -185,12 +185,6 @@ function loadBrowserInformation()
             $program[0] = $newVars[2];
             $program[1] = $newVars[3];
             $platform = $newVars[4];
-            if ($platform == 'Windows'){
-                if ($newVars[5] == 'NT' && $newVars[6] == '5.0')
-                    $platform = 'Windows 2000';
-                else
-                    $platform .= ' ' . $newVars[5] . ' ' . $newVars[6];
-            }
             break;
 
         case '4.74':
@@ -222,17 +216,10 @@ function loadBrowserInformation()
                 $browser['locale'] = $newVars[5];
                 $platformCheck = 3;
             }
-            
+
             $platform = $newVars[$platformCheck];
 
-            if ($platform == 'Windows'){
-                if ($newVars[$platformCheck + 1] == 'NT' && $newVars[$platformCheck + 2] == '5.0') {
-                    $platform = 'Windows 2000';
-                }
-                else {
-                    $platform .= ' ' . $newVars[$platformCheck + 1] . ' ' . $newVars[$platformCheck + 2];
-                }
-
+            if ($platform == 'Windows') {
                 if (isset($newVars[9])) {
                     $program = explode('/', $newVars[9]);
                 }
