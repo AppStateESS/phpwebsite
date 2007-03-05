@@ -267,7 +267,7 @@ class Blog {
         $key = new Key($this->key_id);
 
         if (!$key->allowView()) {
-            return _('Sorry you do not have permission to view this blog entry.');
+            Current_User::requireLogin();            
         }
 
         $template['TITLE'] = sprintf('<a href="%s" rel="bookmark">%s</a>',

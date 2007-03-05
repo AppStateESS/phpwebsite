@@ -74,7 +74,20 @@ function blog_update(&$content, $currentVersion)
 + Fixed bug causing error message when Blog listing moved off front page.
 + Changes "Entry" column to "Summary" on admin list. Was not updated since summary was added.
 </pre>';
-    }
+
+    case version_compare($currentVersion, '1.4.3', '<'):
+        $content[] = '<pre>1.4.2 Changes
+-------------';
+        $files = array('img/blog.png');
+        if (PHPWS_Boost::updateFiles($files, 'blog')) {
+            $content[] = '+ Updated control panel icon.';
+        } else {
+            $content[] = '+ Unable to update control panel icon.';
+        }
+        $content[] = '+ Priviledged blog entries now forward to login page.
+</pre>';
+
+    } // end of switch
     return true;
 }
 
