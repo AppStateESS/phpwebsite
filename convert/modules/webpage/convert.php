@@ -113,16 +113,17 @@ function runBatch(&$db, &$batch)
 function convertPage($page)
 {
     $db = new PHPWS_DB('webpage_volume');
-
-    $val['id']           = $page['id'];
-    $val['title']        = strip_tags($page['title']);
-    $val['date_created'] = strtotime($page['created_date']);
-    $val['date_updated'] = strtotime($page['updated_date']);
-    $val['created_user'] = $page['created_username'];
-    $val['updated_user'] = $page['updated_username'];
-    $val['frontpage']    = (int)$page['mainpage'];
-    $val['approved']     = 1;
-    $val['active']       = $page['active'];
+    $user_id = Current_User::getId();
+    $val['id']             = $page['id'];
+    $val['title']          = strip_tags($page['title']);
+    $val['date_created']   = strtotime($page['created_date']);
+    $val['date_updated']   = strtotime($page['updated_date']);
+    $val['created_user']   = $page['created_username'];
+    $val['updated_user']   = $page['updated_username'];
+    $val['create_user_id'] = $user_id;
+    $val['frontpage']      = (int)$page['mainpage'];
+    $val['approved']       = 1;
+    $val['active']         = $page['active'];
 
     $key = new Key;
     $key->setItemId($val['id']);
