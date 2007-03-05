@@ -1373,6 +1373,11 @@ class PHPWS_DB {
                 $rows[$index][] = $hold;
                 $stacked = TRUE;
             }
+            if (!is_array($rows[$index])) {
+                $i = $rows[$index];
+                $rows[$index] = array();
+                $rows[$index][] = $i;
+            }
             $rows[$index][] = $item;
         } else {
             $rows[$index] = $item;
