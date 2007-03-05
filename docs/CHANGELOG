@@ -2,6 +2,15 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+
+5 March 2007
++ Database
+  o When pulling select columns, the results were not
+    stacking correctly due to variable differences. Added some checks to
+    prevent it.
++ Conversion - Web page convertion adds create_user_id now.
+
+
 1 March 2007
 + Init.php - Removed Windows versions from platform identification
 
