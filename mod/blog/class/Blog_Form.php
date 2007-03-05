@@ -35,7 +35,7 @@ class Blog_Form {
             }
 
             $form->addCheck('allow_comments', 1);
-            $form->setLabeL('allow_comments', _('Allow comments'));
+            $form->setLabel('allow_comments', _('Allow comments'));
             $form->setMatch('allow_comments', $blog->allow_comments);
             
             $form->addCheck('allow_anon', 1);
