@@ -149,11 +149,16 @@ class Current_User {
     }
 
     /**
+     * An id of 0 will ALWAYS return false.
+     *
      * @param integer id
      * @return True, if current user's id equals the parameter
      */
     function isUser($id)
     {
+        if (!$id) {
+            return false;
+        }
         return ($_SESSION['User']->id == $id) ? TRUE : FALSE;
     }
 
@@ -397,7 +402,16 @@ class Current_User {
 
         return $result;
     }
-
+    
+    function requireLogin()
+    {
+        if (Current_User::isLogged()) {
+            return false;
+        }
+        PHPWS_Core::bookmark();
+        $url = 'index.php?module=users&action=user&command=login_page';
+        PHPWS_Core::reroute($url);
+    }
 
 }
 

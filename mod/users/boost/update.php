@@ -52,7 +52,19 @@ function users_update(&$content, $currentVersion)
 </pre>
 ';
 
-    }
+    case version_compare($currentVersion, '2.3.2', '<'):
+        $content[] = '<pre>2.3.2 changes';
+        if (PHPWS_Boost::updateFiles(array('img/users.png'), 'users')) {
+            $content[] = '+ Updated control panel icon.';
+        } else {
+            $content[] = '+ Unable to update control panel icon.';
+        }
+        $content[] = '+ Added error check to login.
++ isUser will now always return false if passed a zero id.
++ Added new function requireLogin that forwards a user to the login
+  screen
+</pre>';
+            } // End of switch statement
 
     return TRUE;
 }

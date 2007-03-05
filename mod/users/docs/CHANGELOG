@@ -1,3 +1,11 @@
+5 March 2007
++ Changed control panel icon
++ Added error check to login.
++ isUser will now always return false if passed a zero id.
++ Added new function requireLogin that forwards a user to the login
+  screen
+
+
 Version 2.3.1
 -------------------------------------------------------------------
 23 February 2007

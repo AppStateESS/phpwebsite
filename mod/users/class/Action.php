@@ -635,8 +635,9 @@ class User_Action {
 
         switch ($command) {
         case 'login':
-            if (!Current_User::isLogged()) {
-                $result = User_Action::loginUser($_POST['phpws_username'], $_POST['phpws_password']);
+            if ( !Current_User::isLogged() && isset($_POST['phpws_username']) &&
+                 isset($_POST['phpws_password']) ) {
+                $result = Current_User::loginUser($_POST['phpws_username'], $_POST['phpws_password']);
                 if (!$result) {
                     $title = _('Login page');
                     $message = _('Username and password combination not found.');
@@ -651,8 +652,10 @@ class User_Action {
                     }
                 } else {
                     Current_User::getLogin();
-                    PHPWS_Core::goBack();
+                    PHPWS_Core::returnToBookmark();
                 }
+            } else {
+                PHPWS_Core::errorPage('403');
             }
             break;
 
