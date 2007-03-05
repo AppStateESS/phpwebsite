@@ -525,7 +525,7 @@ class Webpage_Volume {
         $this->loadKey();
 
         if (!$this->_key->allowView()) {
-            PHPWS_Core::errorPage('404');
+            Current_User::requireLogin();
         }
 
         Layout::addStyle('webpage');

@@ -86,6 +86,28 @@ function webpage_update(&$content, $currentVersion)
 + Added translate functions.
 </pre>';
 
+    case version_compare($currentVersion, '0.5.1', '<'):
+        $db = new PHPWS_DB('webpage_volume');
+        $db->addWhere('create_user_id', 0);
+        $db->addValue('create_user_id', Current_User::getId());
+        $result = $db->update();
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $content[] = 'An error occurred while trying to update your webpage_volume table.';
+            return false;
+        }
+
+        $content[] = '<pre>0.5.1 Changes
+-------------';
+        if (PHPWS_Boost::updateFiles(array('img/webpage.png'))) {
+            $content[] = '+ Updated Web Page control panel icon.';
+        } else {
+            $content[] = '+ Unable to updated Web Page control panel icon.';
+        }
+$content[] = '
++ Updated created_user_id for converted pages.
++ Requesting a restricted page forwards user to the login screen.
+</pre>';
     }
 
     return TRUE;

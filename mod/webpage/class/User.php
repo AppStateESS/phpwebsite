@@ -32,7 +32,8 @@ class Webpage_User {
             $volume = new Webpage_Volume($_GET['id']);
             $volume->loadKey();
             if (!$volume->_key->allowView()) {
-                PHPWS_Core::errorPage(404);
+                Current_User::requireLogin();
+                //                PHPWS_Core::errorPage(404);
             }
             @$page = $_GET['page'];
             Layout::add($volume->view($page));

@@ -1,3 +1,10 @@
+Version 0.5.1
+------------------------------------------------------------------------
+5 March 2007
++ Changed control panel icon
++ Updated created_user_id for converted pages
++ Requesting a restricted page forwards user to the login screen.
+
 Version 0.5.0 (merged svn versions > 0.2.6)
 ------------------------------------------------------------------------
 26 February 2007

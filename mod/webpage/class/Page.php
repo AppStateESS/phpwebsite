@@ -325,8 +325,9 @@ class Webpage_Page {
        
         $this->_volume->flagKey();
         
-        if ( Current_User::isUser($this->_volume->create_user_id) || 
-             Current_User::allow('webpage', 'edit_page', $this->volume_id) ) {
+        if ( Current_User::isLogged() &&
+             ( Current_User::isUser($this->_volume->create_user_id) || 
+               Current_User::allow('webpage', 'edit_page', $this->volume_id) ) ) {
             $vars = array('wp_admin'  => 'edit_page',
                           'page_id'   => $this->id,
                           'volume_id' => $this->volume_id);
