@@ -157,13 +157,19 @@ class Boost_Action {
         }
 
         $template['TITLE'] = sprintf(_('%s Dependencies'), $module->getProperName());
-
+        $content[] = PHPWS_Text::backLink() . '<br />';
         $content[] = _('The following modules depend on this module to function:');
         foreach ($dependents as $mod) {
             $dep_module = new PHPWS_Module($mod);
             $content[] = $dep_module->getProperName();
         }
-        
+
+        $uninstallVars = array('opmod'=>$base_mod, 'action'=>'uninstall');
+        $js['QUESTION'] = _('Are you sure you want to uninstall this module? All data will be deleted.');
+        $js['ADDRESS'] = PHPWS_Text::linkAddress('boost', $uninstallVars, TRUE);
+        $js['LINK'] = _('Click here to force an uninstall.');
+        $content[] = javascript('confirm', $js);
+
         $template['CONTENT'] = implode('<br />', $content);
 
         return PHPWS_Template::process($template, 'boost', 'main.tpl');

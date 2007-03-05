@@ -32,13 +32,16 @@ $boostPanel = & new PHPWS_Panel('boost');
 $boostPanel->enableSecure();
 Boost_Form::setTabs($boostPanel);
 
+$vars = array('action'=>'admin', 'tab'=>$boostPanel->getCurrentTab());
+$backToBoost = PHPWS_Text::secureLink(_('Return to Boost'), 'boost', $vars);
+
 switch ($_REQUEST['action']){
  case 'admin':
      $content[] = Boost_Form::listModules(Boost_Form::boostTab($boostPanel));
      break;
 
  case 'check':
-     $content[] = PHPWS_Text::backLink(_('Return to Boost')) . '<br />';
+     $content[] =  $backToBoost . '<br />';
      $content[] = Boost_Action::checkupdate($_REQUEST['opmod']);
      break;
 
@@ -53,7 +56,7 @@ switch ($_REQUEST['action']){
      break;
 
  case 'install':
-     $content[] = PHPWS_Text::backLink(_('Return to Boost')) . '<br />';
+     $content[] =  $backToBoost . '<br />';
 
      $result = Boost_Action::installModule($_REQUEST['opmod']);
      if (PEAR::isError($result)) {
@@ -66,17 +69,19 @@ switch ($_REQUEST['action']){
      break;
 
  case 'uninstall':
-     $content[] = PHPWS_Text::backLink(_('Return to Boost')) . '<br />';
+
+     $content[] =  $backToBoost . '<br />';
+     $content[] = '<br />';
      $content[] = Boost_Action::uninstallModule($_REQUEST['opmod']);
      break;
 
  case 'update_core':
-     $content[] = PHPWS_Text::backLink(_('Return to Boost')) . '<br />';
+     $content[] =  $backToBoost . '<br />';
      $content[] = Boost_Action::updateModule('core');
      break;
 
  case 'update':
-     $content[] = PHPWS_Text::backLink(_('Return to Boost')) . '<br />';
+     $content[] =  $backToBoost . '<br />';
      $content[] = Boost_Action::updateModule($_REQUEST['opmod']);
      break;
 
