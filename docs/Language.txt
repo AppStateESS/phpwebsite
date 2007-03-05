@@ -73,7 +73,8 @@ This would create a message file for just the testing.php file.
 
 xgettext --keyword=_ *.php
 
-This would create a message file for all the files ending in php.
+This would create a message file for all the files in the current
+directory ending in php.
 
 However, since there can be many files through different directories,
 it might be easier to just create a list of files to translate.
