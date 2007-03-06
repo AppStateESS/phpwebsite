@@ -251,6 +251,31 @@ conf/language.php
 --------------
 + Fixed shorten url function in Text.php
 </pre>';
+
+    case version_compare($version, '1.4.3', '<'):
+        $content[] = '<pre>1.4.3 Changes
+--------------';
+        $files = array('conf/language.php',
+                       'javascript/editors/FCKeditor/supported.php',
+                       'javascript/editors/tinymce/supported.php');
+        if (PHPWS_Boost::updateFiles($files, 'core')) {
+            $content[] = '+ Copied the following files:';
+        } else {
+            $content[] = '+ Unable to copy the following files:';
+        }
+        $content[] = '    ' . implode("\n    ", $files);
+
+        if (is_dir('javascript/editors/htmlarea/')) {
+            if (@rmdir('javascript/editors/htmlarea/')) {
+                $content[] = '+ Deleted htmlarea editor directory.';
+            } else {
+                $content[] = '+ Tried to delete htmlarea editor directory but failed.';
+            }
+        }
+        $content[] = '+ Fixed issue with selecting columns with setindex in Database class.
++ Web Page conversion adds missing create_user_id.
++ Removed Windows version types from browser indentification.
++ Browser identification broadened.';
     }
     return true;
 }
