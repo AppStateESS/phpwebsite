@@ -107,6 +107,7 @@ function webpage_update(&$content, $currentVersion)
 $content[] = '
 + Updated created_user_id for converted pages.
 + Requesting a restricted page forwards user to the login screen.
++ Added "select option" to drop down menu on page listing (FR#1674326)
 </pre>';
     }
 

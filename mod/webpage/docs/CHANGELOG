@@ -1,5 +1,8 @@
 Version 0.5.1
 ------------------------------------------------------------------------
+6 March 2007
++ Added 'select option' to drop down menu on page listing (FR#1674326)
+
 5 March 2007
 + Changed control panel icon
 + Updated created_user_id for converted pages
