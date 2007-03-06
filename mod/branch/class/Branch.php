@@ -29,11 +29,12 @@ class Branch {
         $config = file($this->directory . 'config/core/config.php');
         foreach ($config as $row) {
             $row = str_replace(' ', '', trim($row));
-            if (preg_match('/^define\(\'phpws_dsn\'/i', $row)) {
-                $this->dsn = preg_replace('/define\(\'phpws_dsn\',\'([\w\/:@]+)\'\);/iU', '\\1', $row);
+            if (preg_match("/^define\('phpws_dsn'/i", $row)) {
+                $sub = explode(',', $row);
+                $this->dsn = preg_replace("@'|\);$@", '', $sub[1]);
             }
 
-            if (preg_match('/^define\(\'phpws_table_prefix\',\'\w+\'/i', $row)) {
+            if (preg_match("/^define\('phpws_table_prefix','\w+'/i", $row)) {
                 $this->prefix = preg_replace('/define\(\'phpws_table_prefix\',\'([\w\/:@]+)\'\);/iU', '\\1', $row);
             }
 
