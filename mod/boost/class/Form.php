@@ -126,7 +126,7 @@ class Boost_Form {
             $template = $link_command = NULL;
             $link_command['opmod'] = $title;
 
-            $mod = & new PHPWS_Module($title);
+            $mod = new PHPWS_Module($title);
 
             if (!$mod->isFullMod()) {
                 continue;

@@ -1,3 +1,6 @@
+6 March 2007
++ Removed referenced constructor
+
 5 March 2007
 + Changed control panel icon
 + Changed backLink call to definite url to prevent loops.
