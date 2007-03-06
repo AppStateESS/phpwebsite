@@ -21,6 +21,7 @@ class Blog {
     var $publish_date   = 0;
     var $expire_date    = 0;
     var $image_id       = 0;
+    var $sticky         = 0;
     var $_error         = null;
 
     function Blog($id=null)
@@ -407,6 +408,13 @@ class Blog {
         if (Current_User::isUnrestricted('blog')){
             $link['command'] = 'restore';
             $list[] = PHPWS_Text::secureLink(_('Restore'), 'blog', $link);
+            if ($this->sticky) {
+                $link['command'] = 'unsticky';
+                $list[] = PHPWS_Text::secureLink(_('Unsticky'), 'blog', $link);
+            } else {
+                $link['command'] = 'sticky';
+                $list[] = PHPWS_Text::secureLink(_('Sticky'), 'blog', $link);
+            }
         }
 
         if (isset($list)) {

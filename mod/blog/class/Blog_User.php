@@ -117,9 +117,10 @@ class Blog_User {
         $db->setGroupConj(1, 'and');
 
         $db->setLimit($limit, $offset);
+        $db->addOrder('sticky desc'); 
         $db->addOrder('create_date desc');
         Key::restrictView($db, 'blog');
-        //        $db->setTestMode();
+        //$db->setTestMode();
         return $db->getObjects('Blog');
     }
 

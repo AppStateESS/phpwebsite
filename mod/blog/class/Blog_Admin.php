@@ -35,7 +35,7 @@ class Blog_Admin {
         if (isset($_REQUEST['blog_id'])) {
             $blog = new Blog((int)$_REQUEST['blog_id']);
         } else {
-            $blog = new Blog();
+            $blog = new Blog;
         }
 
         switch ($command){
@@ -181,6 +181,22 @@ class Blog_Admin {
         case 'restore':
             $title = _('Blog Restore') . ' : ' . $blog->title;
             $content = Blog_Admin::restoreVersionList($blog);
+            break;
+
+        case 'sticky':
+            if (!Current_User::isUnrestricted('blog')) {
+                Current_User::disallow();
+            }
+            Blog_Admin::sticky($blog);
+            PHPWS_Core::goBack();
+            break;
+
+        case 'unsticky':
+            if (!Current_User::isUnrestricted('blog')) {
+                Current_User::disallow();
+            }
+            Blog_Admin::unsticky($blog);
+            PHPWS_Core::goBack();
             break;
 
         case 'restorePrevBlog':
@@ -430,6 +446,9 @@ class Blog_Admin {
     function entry_list()
     {
         PHPWS_Core::initCoreClass('DBPager.php');
+        $db = new PHPWS_DB('blog_stickies');
+        $db->addColumn('blog_id');
+        $GLOBALS['blog_stickies'] = $db->select('col');
 
         $pageTags['TITLE']          = _('Title');
         $pageTags['SUMMARY']        = _('Summary');
@@ -495,6 +514,47 @@ class Blog_Admin {
     {
         $version = new Version('blog_entries', $version_id);
         $version->delete();
+    }
+
+    function sticky($blog)
+    {
+        $db = new PHPWS_DB('blog_entries');
+        $db->addWhere('sticky', 0, '>');
+        $db->addWhere('id', $blog->id, '!=');
+        $db->addOrder('sticky');
+        $result = $db->getObjects('Blog');
+
+        $count = 1;
+        if (!empty($result)) {
+            foreach ($result as $bg) {
+                $bg->sticky = $count;
+                $bg->save();
+                $count++;
+            }
+        }
+        $blog->sticky = $count;
+        $blog->save();
+    }
+
+    function unsticky($blog)
+    {
+        $blog->sticky = 0;
+        $blog->save();
+
+        $db = new PHPWS_DB('blog_entries');
+        $db->addWhere('sticky', 0, '>');
+        $db->addWhere('id', $blog->id, '!=');
+        $db->addOrder('sticky');
+        $result = $db->getObjects('Blog');
+
+        $count = 1;
+        if (!empty($result)) {
+            foreach ($result as $bg) {
+                $bg->sticky = $count;
+                $bg->save();
+                $count++;
+            }
+        }
     }
 }
 

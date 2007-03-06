@@ -80,7 +80,7 @@ function blog_update(&$content, $currentVersion)
 -------------';
 
         $db = new PHPWS_DB('blog_entries');
-        $result = $db->addTableColumn('expire_date', 'int default 0', 'publish_date');
+        $result = $db->addTableColumn('expire_date', 'int not null default 0', 'publish_date');
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             $content[] = 'Unable to create table column "expire_date" on blog_entries table.</pre>';
@@ -88,6 +88,16 @@ function blog_update(&$content, $currentVersion)
         } else {
             $content[] = '+ Created "expire_date" column on blog_entries table.';
         }
+
+        $result = $db->addTableColumn('sticky', 'smallint not null default 0');
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $content[] = 'Unable to create table column "sticky" on blog_entries table.</pre>';
+            return false;
+        } else {
+            $content[] = '+ Created "sticky" column on blog_entries table.';
+        }
+  
         $files = array('img/blog.png', 'templates/edit.tpl', 'templates/list.tpl');
         if (PHPWS_Boost::updateFiles($files, 'blog')) {
             $content[] = '+ Updated the following files:';
@@ -96,6 +106,7 @@ function blog_update(&$content, $currentVersion)
         }
         $content[] = '    ' . implode("\n    ", $files);
         $content[] = '+ Priviledged blog entries now forward to login page.
++ Added sticky option.
 + Added expiration options.
 </pre>';
 
