@@ -34,7 +34,7 @@ class PHPWS_Module {
 
     function initByDB()
     {
-        $db = & new PHPWS_DB('modules');
+        $db = new PHPWS_DB('modules');
         $db->addWhere('title', $this->title);
         return $db->loadObject($this);
     }
@@ -307,7 +307,7 @@ class PHPWS_Module {
             return true;
         }
 
-        $db = & new PHPWS_DB('dependencies');
+        $db = new PHPWS_DB('dependencies');
         $db->addWhere('source_mod', $this->title);
         $db->delete();
         $db->reset();
@@ -339,7 +339,7 @@ class PHPWS_Module {
             return $depend_list[$this->title];
         }
         
-        $db = & new PHPWS_DB('dependencies');
+        $db = new PHPWS_DB('dependencies');
         $db->addWhere('depended_on', $this->title);
         $db->addColumn('source_mod');
         $result = $db->select('col');
@@ -372,7 +372,7 @@ class PHPWS_Module {
             return $module_list[$title];
         }
 
-        $db = & new PHPWS_DB('modules');
+        $db = new PHPWS_DB('modules');
         $db->addWhere('title', $title);
         $db->addColumn('title');
         $result = $db->select('one');
@@ -392,14 +392,13 @@ class PHPWS_Module {
 
     function needsUpdate()
     {
-        $db = & new PHPWS_DB('modules');
+        $db = new PHPWS_DB('modules');
         $db->addWhere('title', $this->title);
         $result = $db->select('row');
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             return false;
         }
-
         return version_compare($result['version'], $this->getVersion(), '<');
     }
   
@@ -424,7 +423,7 @@ class PHPWS_Module {
 
         foreach ($dep_list['MODULE'] as $stats) {
             extract($stats);
-            $module = & new PHPWS_Module($TITLE, false);
+            $module = new PHPWS_Module($TITLE, false);
 
             if (!$module->isInstalled()) {
                 return false;
