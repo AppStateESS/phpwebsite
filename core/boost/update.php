@@ -257,7 +257,8 @@ conf/language.php
 --------------';
         $files = array('conf/language.php',
                        'javascript/editors/FCKeditor/supported.php',
-                       'javascript/editors/tinymce/supported.php');
+                       'javascript/editors/tinymce/supported.php',
+                       'javascript/editors/FCKeditor/editor/phpwsstyles.xml');
         if (PHPWS_Boost::updateFiles($files, 'core')) {
             $content[] = '+ Copied the following files:';
         } else {
