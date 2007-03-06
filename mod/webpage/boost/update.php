@@ -99,7 +99,7 @@ function webpage_update(&$content, $currentVersion)
 
         $content[] = '<pre>0.5.1 Changes
 -------------';
-        if (PHPWS_Boost::updateFiles(array('img/webpage.png'))) {
+        if (PHPWS_Boost::updateFiles(array('img/webpage.png'), 'webpage')) {
             $content[] = '+ Updated Web Page control panel icon.';
         } else {
             $content[] = '+ Unable to updated Web Page control panel icon.';
