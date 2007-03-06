@@ -1,6 +1,9 @@
 Version 1.4.3
 ------------------------------------------------------------------
-March 2007
+6 March 2007
++ Added ability for blog entries to expire.
+
+5 March 2007
 + Changed control panel icon
 + Priviledged blog entries now forward to login page.
 

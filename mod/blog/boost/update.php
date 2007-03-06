@@ -76,15 +76,27 @@ function blog_update(&$content, $currentVersion)
 </pre>';
 
     case version_compare($currentVersion, '1.4.3', '<'):
-        $content[] = '<pre>1.4.2 Changes
+        $content[] = '<pre>1.4.3 Changes
 -------------';
-        $files = array('img/blog.png');
-        if (PHPWS_Boost::updateFiles($files, 'blog')) {
-            $content[] = '+ Updated control panel icon.';
+
+        $db = new PHPWS_DB('blog_entries');
+        $result = $db->addTableColumn('expire_date', 'int default 0', 'publish_date');
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            $content[] = 'Unable to create table column "expire_date" on blog_entries table.</pre>';
+            return false;
         } else {
-            $content[] = '+ Unable to update control panel icon.';
+            $content[] = '+ Created "expire_date" column on blog_entries table.';
         }
+        $files = array('img/blog.png', 'templates/edit.tpl', 'templates/list.tpl');
+        if (PHPWS_Boost::updateFiles($files, 'blog')) {
+            $content[] = '+ Updated the following files:';
+        } else {
+            $content[] = '+ Unable to update the following files:';
+        }
+        $content[] = '    ' . implode("\n    ", $files);
         $content[] = '+ Priviledged blog entries now forward to login page.
++ Added expiration options.
 </pre>';
 
     } // end of switch

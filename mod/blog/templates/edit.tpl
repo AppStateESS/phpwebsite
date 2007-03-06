@@ -15,6 +15,10 @@
             {PUBLISH_DATE_LABEL} <span class="smaller">{EXAMPLE}</span><br />    
             {PUBLISH_DATE}
         </div>
+        <div class="padded">
+            {EXPIRE_DATE_LABEL} <span class="smaller">{EXAMPLE}</span><br />    
+            {EXPIRE_DATE}
+        </div>
 <!-- BEGIN comments -->
         <div class="padded">
             {ALLOW_COMMENTS} {ALLOW_COMMENTS_LABEL}<br />

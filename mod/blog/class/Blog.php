@@ -19,6 +19,7 @@ class Blog {
     var $approved       = 0;
     var $allow_anon     = 0;
     var $publish_date   = 0;
+    var $expire_date    = 0;
     var $image_id       = 0;
     var $_error         = null;
 
@@ -124,10 +125,36 @@ class Blog {
         }
     }
 
-    function getServerDate($type=BLOG_VIEW_DATE_FORMAT)
+    function getExpireDate()
+    {
+        if ($this->expire_date) {
+            return strftime('%Y%m%d %H:00', $this->expire_date);
+        } else {
+            return null;
+        }
+    }
+
+    function relativeCreateDate($type=BLOG_VIEW_DATE_FORMAT)
     {
         return strftime($type, PHPWS_Time::getServerTime($this->create_date));
     }
+
+
+    function relativePublishDate($type=BLOG_VIEW_DATE_FORMAT)
+    {
+        return strftime($type, PHPWS_Time::getServerTime($this->publish_date));
+    }
+
+
+    function relativeExpireDate($type=BLOG_VIEW_DATE_FORMAT)
+    {
+        if (!$this->expire_date) {
+            return _('No expiration');
+        } else {
+            return strftime($type, PHPWS_Time::getServerTime($this->expire_date));
+        }
+    }
+
 
     function save()
     {
@@ -149,6 +176,7 @@ class Blog {
                 $this->author    = _('Anonymous');
             }
         }
+
         translate();
         $version = new Version('blog_entries');
 
@@ -349,7 +377,9 @@ class Blog {
     function getPagerTags()
     {
         $template['TITLE'] = sprintf('<a href="%s">%s</a>', $this->getViewLink(true), $this->title);
-        $template['DATE'] = $this->getServerDate();
+        $template['CREATE_DATE'] = $this->relativeCreateDate();
+        $template['PUBLISH_DATE'] = $this->relativePublishDate();
+        $template['EXPIRE_DATE'] = $this->relativeExpireDate();
         $template['SUMMARY'] = $this->getListSummary();
         $template['ACTION'] = $this->getListAction();
         return $template;
@@ -389,7 +419,7 @@ class Blog {
     }
 
     function getListSummary(){
-        return substr(ltrim(strip_tags(str_replace('<br />', ' ', $this->getSummary(true)))), 0, 30);
+        return substr(ltrim(strip_tags(str_replace('<br />', ' ', $this->getSummary(true)))), 0, 60);
     }
 
     function post_entry()
@@ -441,6 +471,12 @@ class Blog {
             $this->publish_date = mktime();
         } else {
             $this->publish_date = strtotime($_POST['publish_date']);
+        }
+
+        if (empty($_POST['expire_date'])) {
+            $this->expire_date = 0;
+        } else {
+            $this->expire_date = strtotime($_POST['expire_date']);
         }
 
         if (isset($_POST['version_id']) || Current_User::isRestricted('blog')) {

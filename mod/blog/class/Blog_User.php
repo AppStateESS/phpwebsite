@@ -112,10 +112,14 @@ class Blog_User {
     {
         $db->addWhere('approved', 1);
         $db->addWhere('publish_date', mktime(), '<');
+        $db->addWhere('expire_date', mktime(), '>', 'and', 1);
+        $db->addWhere('expire_date', 0, '=', 'or', 1);
+        $db->setGroupConj(1, 'and');
 
         $db->setLimit($limit, $offset);
         $db->addOrder('create_date desc');
         Key::restrictView($db, 'blog');
+        //        $db->setTestMode();
         return $db->getObjects('Blog');
     }
 

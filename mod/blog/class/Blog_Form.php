@@ -83,6 +83,10 @@ class Blog_Form {
         $form->setLabel('publish_date', _('Publish date/time'));
         $form->setSize('publish_date', 20);
 
+        $form->addText('expire_date', $blog->getExpireDate());
+        $form->setLabel('expire_date', _('Expire date/time'));
+        $form->setSize('expire_date', 20);
+
         $template = $form->getTemplate();
 
         $template['EXAMPLE'] = 'YYMMDD HH:MM';

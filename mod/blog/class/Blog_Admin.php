@@ -431,16 +431,17 @@ class Blog_Admin {
     {
         PHPWS_Core::initCoreClass('DBPager.php');
 
-        $pageTags['TITLE']   = _('Title');
-        $pageTags['SUMMARY'] = _('Summary');
-        $pageTags['DATE']    = _('Creation Date');
+        $pageTags['TITLE']          = _('Title');
+        $pageTags['SUMMARY']        = _('Summary');
+        $pageTags['CREATION_LABEL'] = _('Creation');
+        $pageTags['PUBLISH_LABEL']  = _('Publish');
+        $pageTags['EXPIRE_LABEL']   = _('Expire');
         $pageTags['ACTION']  = _('Action');
 
         $pager = new DBPager('blog_entries', 'Blog');
         $pager->setModule('blog');
         $pager->setTemplate('list.tpl');
         $pager->addToggle('class="toggle1"');
-        $pager->addToggle('class="toggle2"');
         $pager->addRowTags('getPagerTags');
         $pager->addPageTags($pageTags);
         $pager->setSearch('title');
