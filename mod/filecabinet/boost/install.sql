@@ -32,4 +32,4 @@ CREATE TABLE images (
   PRIMARY KEY  (id)
 );
 
-CREATE INDEX images_idx on documents(key_id);
+CREATE INDEX images_idx on images(key_id);
