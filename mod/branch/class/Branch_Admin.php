@@ -262,7 +262,15 @@ class Branch_Admin {
             $this->content[] = _('Copied javascript files to branch.');
         }
 
-
+        if (is_file(PHPWS_SOURCE_DIR . '.htaccess')) {
+            $this->content[] = _('.htaccess detected on hub. Attempting to create default file on branch.');
+            if (@copy(PHPWS_SOURCE_DIR . 'mod/branch/inc/htaccess', $this->branch->directory . '.htaccess')) {
+                $this->content[] = _('Copied successfully.');
+            } else {
+                $this->content[] = _('Unable to copy .htaccess file.');
+            }
+        }
+        
         $stats = sprintf('<?php include \'%sphpws_stats.php\' ?>', PHPWS_SOURCE_DIR);
         $index_file = sprintf('<?php include \'%sindex.php\'; ?>', PHPWS_SOURCE_DIR);
         file_put_contents($this->branch->directory . 'phpws_stats.php', $stats);
@@ -284,6 +292,7 @@ class Branch_Admin {
         } else {
             $this->content[] = _('Core SQL import successful.');
         }
+
         $link = _('Core installed successfully. Continue to core module installation.');
         $vars['command']   = 'core_module_installation';
         $vars['branch_id'] = $this->branch->id;

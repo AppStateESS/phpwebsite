@@ -1,3 +1,6 @@
+7 March 2007
++ Branch now copies htaccess file to branch site.
+
 6 March 2007
 + Trying different method of getting branch dsn.
 
