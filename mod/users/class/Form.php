@@ -95,6 +95,13 @@ class User_Form {
 
         $modules = PHPWS_Core::getModules();
 
+        foreach ($modules as $mod) {
+            $preorder[$mod['title']] = $mod;
+        }
+
+        ksort($preorder);
+        $modules = $preorder;
+
         $tpl = new PHPWS_Template('users');
         $tpl->setFile('forms/permissions.tpl');
 
