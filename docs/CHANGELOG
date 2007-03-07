@@ -5,6 +5,9 @@ its own separate CHANGELOG file.
 
 Version 1.4.3
 ----------------------------------------------------------------------
+7 March 2007
++  Removed fake French translation.
+
 6 March 2007
 + Wrote update scripts.
 + Removed reference constructors from Module.php
