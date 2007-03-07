@@ -8,13 +8,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-15 10:20-0500\n"
+"POT-Creation-Date: 2007-03-07 12:32-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+msgid ".htaccess detected on hub. Attempting to create default file on branch."
+msgstr ""
 
 msgid "Action"
 msgstr ""
@@ -83,6 +86,9 @@ msgid "Copied core images."
 msgstr ""
 
 msgid "Copied javascript files to branch."
+msgstr ""
+
+msgid "Copied successfully."
 msgstr ""
 
 msgid "Copied themes to branch."
@@ -231,6 +237,9 @@ msgid "This database name is not allowed."
 msgstr ""
 
 msgid "URL"
+msgstr ""
+
+msgid "Unable to copy .htaccess file."
 msgstr ""
 
 msgid "Unable to create branch directories."
