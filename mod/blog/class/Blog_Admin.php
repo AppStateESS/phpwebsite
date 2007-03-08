@@ -522,18 +522,24 @@ class Blog_Admin {
         $db->addWhere('sticky', 0, '>');
         $db->addWhere('id', $blog->id, '!=');
         $db->addOrder('sticky');
-        $result = $db->getObjects('Blog');
+        $db->addColumn('id');
+        $db->addColumn('sticky');
+        $result = $db->select();
 
         $count = 1;
         if (!empty($result)) {
             foreach ($result as $bg) {
-                $bg->sticky = $count;
-                $bg->save();
+                $db->reset();
+                $db->addWhere('id', $bg['id']);
+                $db->addValue('sticky', $count);
+                $db->update();
                 $count++;
             }
         }
-        $blog->sticky = $count;
-        $blog->save();
+        $db->reset();
+        $db->addWhere('id', $blog->id);
+        $db->addValue('sticky', $count);
+        $db->update();
     }
 
     function unsticky($blog)
@@ -545,13 +551,16 @@ class Blog_Admin {
         $db->addWhere('sticky', 0, '>');
         $db->addWhere('id', $blog->id, '!=');
         $db->addOrder('sticky');
-        $result = $db->getObjects('Blog');
-
+        $db->addColumn('id');
+        $db->addColumn('sticky');
+        $result = $db->select();
         $count = 1;
         if (!empty($result)) {
             foreach ($result as $bg) {
-                $bg->sticky = $count;
-                $bg->save();
+                $db->reset();
+                $db->addWhere('id', $bg['id']);
+                $db->addValue('sticky', $count);
+                $db->update();
                 $count++;
             }
         }
