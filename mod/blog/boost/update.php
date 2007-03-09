@@ -108,6 +108,8 @@ function blog_update(&$content, $currentVersion)
         $content[] = '+ Priviledged blog entries now forward to login page.
 + Added sticky option.
 + Added expiration options.
++ Removed fake French translation.
++ Changed Control Panel icon.
 </pre>';
 
     } // end of switch
