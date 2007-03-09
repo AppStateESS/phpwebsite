@@ -66,7 +66,7 @@ class PHPWS_Core {
      */
     function getModules($active=TRUE, $just_title=FALSE)
     {
-        $DB = & new PHPWS_DB('modules');
+        $DB = new PHPWS_DB('modules');
         if ($active == TRUE) {
             $DB->addWhere('active', 1);
         }
@@ -92,7 +92,7 @@ class PHPWS_Core {
             return $GLOBALS['Core_Module_Names'];
         }
 
-        $db = & new PHPWS_DB('modules');
+        $db = new PHPWS_DB('modules');
         $db->setIndexBy('title');
         $db->addOrder('proper_name');
         $db->addColumn('proper_name');
@@ -588,7 +588,7 @@ class PHPWS_Core {
      */
     function installModList()
     {
-        $db = & new PHPWS_DB('modules');
+        $db = new PHPWS_DB('modules');
         $db->addColumn('title');
         return $db->select('col');
     }
@@ -722,7 +722,7 @@ class PHPWS_Core {
             if (!PHPWS_DB::isTable('core_version')) {
                 $version = '1.0.0';
             } else {
-                $db = & new PHPWS_DB('core_version');
+                $db = new PHPWS_DB('core_version');
                 $db->addColumn('version');
                 $version = $db->select('one');
             }

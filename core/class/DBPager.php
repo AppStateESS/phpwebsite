@@ -136,6 +136,9 @@ class DBPager {
 
     var $table = null;
 
+    // Record of the sql query used to pull the rows.
+    var $row_query = null;
+
     function DBPager($table, $class=NULL)
     {
         if (empty($table)) {
@@ -500,6 +503,8 @@ class DBPager {
         } else {
             $result = $this->db->getObjects($this->class);
         }
+
+        $this->row_query = $this->db->lastQuery();
 
         if (PEAR::isError($result)) {
             return $result;
