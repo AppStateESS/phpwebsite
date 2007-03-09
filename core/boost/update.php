@@ -276,7 +276,9 @@ conf/language.php
         $content[] = '+ Fixed issue with selecting columns with setindex in Database class.
 + Web Page conversion adds missing create_user_id.
 + Removed Windows version types from browser indentification.
-+ Browser identification broadened.';
++ Browser identification broadened.
++ Database column select bug fixed.
++ Removed fake French translation (as should you!!!)';
     }
     return true;
 }
