@@ -16,7 +16,7 @@ function branch_update(&$content, $version)
         $files = array('templates/config.tpl');
         $content[] = '<pre>1.0.4 Changes
 -------------';
-        if (PHPWS_Boost::updateFiles($files, 'blog')) {
+        if (PHPWS_Boost::updateFiles($files, 'branch')) {
             $content[] = '+ Updated config.tpl template.';
         } else {
             $content[] = '+ Unable to copy updated config.tpl template.';
@@ -25,6 +25,24 @@ function branch_update(&$content, $version)
 + Added translate functions.
 + Removed language setting from default config.php template
 + Added missing cache_directory value for config.tpl.</pre>';
+
+    case version_compare($version, '1.0.5', '<'):
+        $content[] = '<pre>1.0.5 Changes
+-------------';
+        $files = array('img/branch.png', 'templates/config.tpl');
+        if (PHPWS_Boost::updateFiles($files, 'branch')) {
+            $content[] = '+ Updated the following files:';
+        } else {
+            $content[] = '+ Failed to update the following files:';
+        }
+
+        $content[] = '    ' . implode("\n    ", $files);
+
+        $content[] = '
++ Previous update had a typo in the file update: fixed.
++ Branch now copies htaccess file to branch site.
++ Trying different method of getting branch dsn.
++ Changed control panel icon</pre>';
         
     }
     return true;
