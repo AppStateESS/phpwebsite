@@ -1,3 +1,7 @@
+12 March 2007
++ Rewrote theme change code.
++ Added ability to force theme on layout settings construction.
+
 5 March 2007
 + Changed control panel icon
 
