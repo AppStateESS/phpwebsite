@@ -1888,6 +1888,9 @@ class Form_Element {
     function setId()
     {
         $id = $this->getName();
+        // changed 20070312
+        // Square brackets are not allowed as id names.
+        $id = preg_replace('/\[(\w)\]/', '_\\1', $id);
 
         // changed 6/14/06
         if ($this->type == 'radio') {

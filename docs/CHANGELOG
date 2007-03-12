@@ -2,6 +2,11 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+12 March 2007
++ Changed id display in Forms.php. Arrays with square brackets are not
+  xhtml compliant.
+
+
 Version 1.4.3
 ----------------------------------------------------------------------
 9 March 2007
