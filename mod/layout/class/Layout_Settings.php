@@ -36,10 +36,11 @@ class Layout_Settings {
     var $_extra_styles    = NULL;
     var $_key_styles      = NULL;
     var $_allowed_move    = null;
+    var $_true_theme      = null;
 
-    function Layout_Settings()
+    function Layout_Settings($theme=null)
     {
-        $this->loadSettings();
+        $this->loadSettings($theme);
         $this->loadContentVars();
         $this->loadBoxes();
         $GLOBALS['Layout_Robots'] = $this->meta_robots;
@@ -162,7 +163,7 @@ class Layout_Settings {
         }
     }
 
-    function loadSettings()
+    function loadSettings($theme=null)
     {
         $db = new PHPWS_DB('layout_config');
         $result = $db->loadObject($this, FALSE);
@@ -170,6 +171,10 @@ class Layout_Settings {
         if (PEAR::isError($result)){
             PHPWS_Error::log($result);
             PHPWS_Core::errorPage();
+        }
+
+        if ($theme && is_dir('themes/' . $theme)) {
+            $this->default_theme = $theme;
         }
 
         if (empty($this->current_theme)) {

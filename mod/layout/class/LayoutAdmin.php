@@ -64,7 +64,7 @@ class Layout_Admin{
         case 'confirmThemeChange':
             $title = _('Themes');
             if (isset($_POST['confirm'])) {
-                Layout_Admin::changeTheme($_POST['theme']);
+                Layout_Admin::changeTheme();
                 $template['MESSAGE'] = _('Theme settings updated.');
             } else {
                 Layout::reset();
@@ -132,17 +132,23 @@ class Layout_Admin{
             $content[] = Layout_Admin::metaForm();
             break;
 
+        case 'demo_fail':
+            unset($_SESSION['Layout_Settings']);
+            Layout::checkSettings();
+            PHPWS_Core::reroute('index.php?module=layout&amp;action=admin&amp;command=confirmThemeChange');
+            break;
+
+        case 'demo_theme':
+            $title = _('Confirm Theme Change');
+            $content[] = _('If you are happy with the change, click the appropiate button.');
+            $content[] = _('Failure to respond in ten seconds, reverts phpWebSite to the default theme.');
+            $content[] = Layout_Admin::confirmThemeChange();
+            break;
+
         case 'postTheme':
             if ($_POST['default_theme'] != $_SESSION['Layout_Settings']->current_theme) {
-                Layout::resetBoxes();
-                $title = _('Confirm Theme Change');
-                $content[] = _('If you are happy with the change, click the appropiate button.');
-                $content[] = _('Failure to respond in ten seconds, reverts phpWebSite to the default theme.');
-                $content[] = Layout_Admin::confirmThemeChange();
-                $_SESSION['Layout_Settings']->current_theme = $_POST['default_theme'];
-                $_SESSION['Layout_Settings']->loadSettings();
-                $_SESSION['Layout_Settings']->loadContentVars();
-                $_SESSION['Layout_Settings']->loadBoxes();
+                Layout::reset($_POST['default_theme']);
+                PHPWS_Core::reroute('index.php?module=layout&action=admin&command=demo_theme&authkey=' . Current_User::getAuthKey());
             } else {
                 $title = _('Themes');
                 $content[] = Layout_Admin::adminThemes();
@@ -189,7 +195,6 @@ class Layout_Admin{
         $styles = Layout::getExtraStyles();
 
         if (empty($styles) || !isset($_REQUEST['key_id'])) {
-            exit('wtf');
             return FALSE;
         }
         $styles[0] = _('-- Use default style --');
@@ -290,9 +295,8 @@ class Layout_Admin{
     }
 
 
-    function changeTheme($theme)
+    function changeTheme()
     {
-        $_SESSION['Layout_Settings']->default_theme = $theme;
         $result = $_SESSION['Layout_Settings']->saveSettings();
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
@@ -302,15 +306,13 @@ class Layout_Admin{
 
     function confirmThemeChange()
     {
-        Layout::reset();
         $form = new PHPWS_Form('confirmThemeChange');
         $form->addHidden('module', 'layout');
         $form->addHidden('action', 'admin');
         $form->addHidden('command', 'confirmThemeChange');
-        $form->addHidden('theme', $_POST['default_theme']);
         $form->addSubmit('confirm', _('Complete the theme change'));
         $form->addSubmit('decline', _('Restore the default theme'));
-        $address = 'index.php?module=layout&amp;action=admin&amp;command=confirmThemeChange';
+        $address = 'index.php?module=layout&amp;action=admin&amp;command=demo_fail';
         Layout::metaRoute($address, 10);
         return $form->getMerge();
     }

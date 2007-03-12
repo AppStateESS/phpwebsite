@@ -723,10 +723,15 @@ class Layout {
         $_SESSION['Layout_Settings']->_move_box = (bool)$key;
     }
 
-    function reset()
+    function reset($theme=null)
     {
-        $_SESSION['Layout_Settings'] = new Layout_Settings;
+        if ($theme) {
+            $_SESSION['Layout_Settings'] = new Layout_Settings($theme);
+        } else {
+            $_SESSION['Layout_Settings'] = new Layout_Settings;
+        }
     }
+
 
     function resetBoxes()
     {
