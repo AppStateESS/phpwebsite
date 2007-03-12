@@ -90,6 +90,6 @@
     </tr>
 </table>
 </div>
-<div>{SAVE}{SAVE_SOURCE}{SAVE_COPY}</div>
+<div>{SAVE}{SAVE_SOURCE}{SAVE_COPY} {SYNC}</div>
 <div class="align-center">{CLOSE}</div>
 {END_FORM}

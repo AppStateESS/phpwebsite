@@ -383,6 +383,8 @@ class Calendar_Admin {
             $tpl['REPEAT_WARNING'] = _('This is a repeat of another event.') . '<br />' . $source_link;
         }
 
+        $tpl['SYNC'] = sprintf('<input type="button" style="display : none" id="sync-dates" onclick="sync_dates(); return false;" name="sync-dates" value="%s" />', _('Sync dates'));
+
         if (javascriptEnabled()) {
             javascript('modules/calendar/edit_event');
             javascript('modules/calendar/check_date');

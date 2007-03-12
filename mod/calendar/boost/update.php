@@ -75,7 +75,23 @@ function calendar_update(&$content, $version)
 + Caching now works on public calendars only.
 + Added translate functions.
 + Updated message translation files.</pre>';
-    }
+
+    case version_compare($version, '1.4.1', '<'):
+        $content[] = "<pre>1.4.1 Changes\n-------------";
+        $files = array('templates/admin/forms/edit_event.tpl', 'javascript/check_date/head.js');
+        if (PHPWS_Boost::updateFiles($files, 'calendar')) {
+            $content[] = '+ Successfully updated the following files:';
+        } else {
+            $content[] = '+ Unable to update the following files:';
+        }
+        $content[] = '    ' . implode("\n    ", $files);
+        $content[] = '+ Made noon the default time for new events.
++ Fixed Daylight Saving Time breaking repeats.
++ Delete event links made secure.
++ Days made linkable in month list view.
++ Added a sync dates button on the edit event form.';
+
+    } // end of switch
 
     return true;
 }

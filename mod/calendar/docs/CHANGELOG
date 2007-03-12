@@ -1,3 +1,10 @@
+12 March 2007
++ Made noon the default time for new events.
++ Fixed Daylight Saving Time breaking repeats.
++ Delete event links made secure.
++ Days made linkable in month list view.
++ Added a sync dates button on the edit event form.
+
 5 March 2007
 + Changed control panel icon
 
