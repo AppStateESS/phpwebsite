@@ -541,9 +541,12 @@ class Calendar_User {
             $day_result = $this->getDaysEvents($i, $tpl);
             if ($day_result) {
                 $events_found = true;
-                $day_tpl['FULL_WEEKDAY'] = strftime('%A', $i);
-                $day_tpl['ABBR_WEEKDAY'] = strftime('%a', $i);
-                $day_tpl['DAY_NUMBER']   = strftime('%e', $i);
+                $day_tpl['FULL_WEEKDAY'] = PHPWS_Text::moduleLink(strftime('%A', $i), 'calendar',
+                                                                 array('view' => 'day', 'date'=>$i, 'schedule_id'=>$this->calendar->schedule->id));
+                $day_tpl['ABBR_WEEKDAY'] = PHPWS_Text::moduleLink(strftime('%a', $i), 'calendar',
+                                                                 array('view' => 'day', 'date'=>$i, 'schedule_id'=>$this->calendar->schedule->id));
+                $day_tpl['DAY_NUMBER']   = PHPWS_Text::moduleLink(strftime('%e', $i), 'calendar',
+                                                                 array('view' => 'day', 'date'=>$i, 'schedule_id'=>$this->calendar->schedule->id));
                 $tpl->setCurrentBlock('days');
                 $tpl->setData($day_tpl);
                 $tpl->parseCurrentBlock();

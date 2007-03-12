@@ -180,14 +180,15 @@ class Calendar_Event {
     {
         if (javascriptEnabled()) {
             $vars['QUESTION'] = _('Are you sure you want to permanently delete this event?');
-            $vars['ADDRESS'] = sprintf('index.php?module=calendar&amp;aop=delete_event&amp;sch_id=%s&amp;event_id=%s',
-                                       $this->_schedule->id,
-                                       $this->id);
+            $vars['ADDRESS'] = PHPWS_Text::linkAddress('calendar', array('aop' => 'delete_event',
+                                                                         'sch_id' => $this->_schedule->id,
+                                                                         'event_id' => $this->id), true);
             $vars['LINK']    = _('Delete');
             return javascript('confirm', $vars);
         } else {
-            return PHPWS_Text::moduleLink(_('Delete'), 'calendar',
+            return PHPWS_Text::secureLink(_('Delete'), 'calendar',
                                           array('aop'         => 'delete_event',
+                                                'sch_id' => $this->_schedule->id,
                                                 'event_id'    => $this->id
                                                 )
                                           );

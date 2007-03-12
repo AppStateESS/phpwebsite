@@ -457,8 +457,15 @@ class Calendar_Admin {
             $panel->setCurrentTab('schedules');
             $event = $this->calendar->schedule->loadEvent();
             if ($this->calendar->current_date) {
-                $event->start_time = $this->calendar->current_date;
-                $event->end_time = $this->calendar->current_date;
+                $event->start_time = mktime(12, 0, 0,
+                                            $this->calendar->int_month, 
+                                            $this->calendar->int_day, 
+                                            $this->calendar->int_year);
+
+                $event->end_time = mktime(12, 0, 0,
+                                            $this->calendar->int_month, 
+                                            $this->calendar->int_day, 
+                                            $this->calendar->int_year);
             }
 
             $this->editEvent($event);
@@ -818,6 +825,8 @@ class Calendar_Admin {
     {
         PHPWS_Core::requireConfig('calendar');
 
+        $dst_start = date('I', $event->start_time);
+
         $time_unit = $event->start_time + 86400;
 
         $copy_event = $event->repeatClone();
@@ -827,10 +836,21 @@ class Calendar_Admin {
         while($time_unit <= $event->end_repeat) {
             $copy_event->id = 0;
 
+            $dst_current = date('I', $time_unit);
+            if ($dst_current != $dst_start) {
+                if ($dst_current) {
+                    $time_unit -= 3600;
+                } else {
+                    $time_unit += 3600;
+                }
+                $dst_start = $dst_current;
+            }
+
             $max_count++;
             if ($max_count > CALENDAR_MAXIMUM_REPEATS) {
                 return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatDaily');
             }
+
             $copy_event->start_time = $time_unit;
             $copy_event->end_time = $time_unit + $time_diff;
             $time_unit += 86400;
@@ -864,7 +884,7 @@ class Calendar_Admin {
         if (!isset($_POST['monthly_repeat'])) {
             return false;
         }
-
+        $dst_start = date('I', $event->start_time);
         $max_count = 0;
 
         $every_repeat_number = &$_POST['every_repeat_number'];
@@ -883,7 +903,17 @@ class Calendar_Admin {
 
         while ($time_unit < $event->end_repeat) {
             $copy_event->id = 0;
-
+            
+            $dst_current = date('I', $time_unit);
+            if ($dst_current != $dst_start) {
+                if ($dst_current) {
+                    $time_unit -= 3600;
+                } else {
+                    $time_unit += 3600;
+                }
+                $dst_start = $dst_current;
+            }
+            
             // First check if we are in the correct month or if the repeat is in every month
             if ($every_repeat_frequency == 'every_month' || $every_repeat_frequency == (int)strftime('%m', $time_unit)) {
 
@@ -927,8 +957,6 @@ class Calendar_Admin {
 
             $time_unit += 86400;
         }
-        //        exit('wtf');
-
     }
 
 
@@ -946,8 +974,10 @@ class Calendar_Admin {
         $c_day   = (int)strftime('%d', $event->start_time);
         $c_year  = (int)strftime('%Y', $event->start_time);
 
+
         $time_diff = $event->end_time - $event->start_time;
         $copy_event = $event->repeatClone();
+
         // start count on month ahead
         $ts_count = mktime($c_hour, $c_min, 0, $c_month + 1, $c_day, $c_year);
 
@@ -977,10 +1007,9 @@ class Calendar_Admin {
             }
 
             $start_time = mktime($c_hour, $c_min, 0, $ts_month, $ts_day, $c_year);
-
             $copy_event->start_time = $start_time;
             $copy_event->end_time = $start_time + $time_diff;
-            
+
             $result = $copy_event->save();
             if (PEAR::isError($result)) {
                 return $result;
@@ -988,6 +1017,7 @@ class Calendar_Admin {
 
             $ts_count = mktime($c_hour, $c_min, 0, $c_month + 1, $c_day, $c_year);
         }
+
         return true;
     }
 
@@ -1006,18 +1036,31 @@ class Calendar_Admin {
 
         $max_count = 0;
         $repeat_days = &$_POST['weekday_repeat'];
-
+        $dst_start = date('I', $event->start_time);
         while($time_unit <= $event->end_repeat) {
+
             if (!in_array(strftime('%u', $time_unit), $repeat_days)) {
                 $time_unit += 86400;
                 continue;
             }
+
+            $dst_current = date('I', $time_unit);
+            if ($dst_current != $dst_start) {
+                if ($dst_current) {
+                    $time_unit -= 3600;
+                } else {
+                    $time_unit += 3600;
+                }
+                $dst_start = $dst_current;
+            }
+
             $copy_event->id = 0;
 
             $max_count++;
             if ($max_count > CALENDAR_MAXIMUM_REPEATS) {
                 return PHPWS_Error::get(CAL_REPEAT_LIMIT_PASSED, 'calendar', 'Calendar_Admin::repeatWeekly');
             }
+
             $copy_event->start_time = $time_unit;
             $copy_event->end_time = $time_unit + $time_diff;
             $result = $copy_event->save();
