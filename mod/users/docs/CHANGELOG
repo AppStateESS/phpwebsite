@@ -1,3 +1,7 @@
+13 March 2007
++ Found template typo that broke IE login.
++ Updated file: templates/user_main.tpl
+
 7 March 2007
 + Removed fake French translation.
 + Ordered permissions alphabetically (FR #1665183).
