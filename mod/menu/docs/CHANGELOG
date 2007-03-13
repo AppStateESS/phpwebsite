@@ -1,3 +1,7 @@
+13 March 2007
++ Changed template so IE would hide the menu
++ Changed the menu margins so noth FF and IE could access the menu.
+
 5 March 2007
 + Changed control panel icon
 
