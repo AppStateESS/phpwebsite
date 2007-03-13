@@ -4,7 +4,7 @@ div.controlpanel {
 }
 
 .frame {
-    margin : 1px 5px 0px 0px;
+    margin : 0px 5px 0px 0px;
     background-color: #BFBFBF;
     padding: 2px;
     border : 1px solid black;
@@ -24,10 +24,6 @@ div.controlpanel {
 
 
 /*--------------- Tabs ---------------*/
-
-ul.tabmenu {
-	display: inline;
-}
 
 .tabmenu li {
     padding: 3px 5px 2px 5px;
