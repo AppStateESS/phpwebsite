@@ -157,12 +157,6 @@ div.backgrd {
     border-color: #90996E;
 }
 
-ul.tabmenu {
-   line-height : 0px;
-   margin-top : 10px;
-   margin-bottom : 12px;
-}
-
 ul.tabmenu li {
     border-color: #90996E;
     border-bottom : none;
