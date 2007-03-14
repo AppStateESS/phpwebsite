@@ -1085,10 +1085,12 @@ class PHPWS_DB {
     function update()
     {
         PHPWS_DB::touchDB();
-        $table = $this->getTable();
-        if (!$table) {
+
+        if (!$this->tables) {
             return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::update');
         }
+
+        $table = $this->tables[0];
 
         $values = $this->getAllValues();
         $where = $this->getWhere(TRUE);
