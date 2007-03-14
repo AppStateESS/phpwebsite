@@ -482,7 +482,7 @@ class PHPWS_DB {
             }
             return implode(',', $table_list);
         } else {
-            foreach ($this->tables[0] as $table);
+            foreach ($this->tables as $table);
             return $table;
         }
     }
@@ -1080,6 +1080,7 @@ class PHPWS_DB {
         }
 
         $query = 'INSERT INTO ' . $table . ' (' . implode(', ', $columns) . ') VALUES (' . implode(', ', $set) . ')';
+
         $result = PHPWS_DB::query($query);
 
         if (DB::isError($result)) {
