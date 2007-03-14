@@ -1,3 +1,6 @@
+Version 2.3.2
+------------------------------------------------------------------
+
 13 March 2007
 + Found template typo that broke IE login.
 + Updated file: templates/user_main.tpl

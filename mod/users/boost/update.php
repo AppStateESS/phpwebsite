@@ -54,12 +54,18 @@ function users_update(&$content, $currentVersion)
 
     case version_compare($currentVersion, '2.3.2', '<'):
         $content[] = '<pre>2.3.2 changes';
+        $files = array('img/users.png', 'templates/user_main.tpl');
         if (PHPWS_Boost::updateFiles(array('img/users.png'), 'users')) {
-            $content[] = '+ Updated control panel icon.';
+            $content[] = '+ Updated the following files:';
         } else {
-            $content[] = '+ Unable to update control panel icon.';
+            $content[] = '+ Unable to update the following files:';
         }
+        $content[] = '    ' . implode("\n    ", $files);
         $content[] = '+ Added error check to login.
++ Changed user control panel icon.
++ Fixed template typo that broke IE login.
++ Removed fake French translation (delete mod/users/locale/fr_FR/ directory
++ Permissions are now ordered alphabetically.
 + isUser will now always return false if passed a zero id.
 + Added new function requireLogin that forwards a user to the login
   screen
