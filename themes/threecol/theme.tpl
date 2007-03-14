@@ -19,10 +19,12 @@
      {DEFAULT}
      <!-- BEGIN notes --><div id="notes-list">{NOTES_REMINDER}</div><!-- END notes -->
    </div>
+   <div id="right-panel">
+   {RIGHT_PANEL}
+   </div>
    <div id="main-content">
      <!-- BEGIN header --><div id="header">{LAYOUT_HEADER}</div><!-- END header -->
      {BODY}
-     <div id="bottom">{BOTTOM}</div>
    </div>
    <div id="footer">{LAYOUT_FOOTER}</div>
 </div>
