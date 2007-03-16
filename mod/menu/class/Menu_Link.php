@@ -33,6 +33,7 @@ class Menu_Link {
         $result = $this->init();
         if (PEAR::isError($result)) {
             $this->_error = $result;
+            $this->id = 0;
         }
     }
 
@@ -40,7 +41,14 @@ class Menu_Link {
     {
         $db = $this->getDB();
         $db = new PHPWS_DB('menu_links');
-        $db->loadObject($this);
+        $result = $db->loadObject($this);
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+        if (!$result) {
+            $this->id = 0;
+            return false;
+        }
         $this->loadChildren();
     }
 

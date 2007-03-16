@@ -44,8 +44,23 @@ class Menu_Admin {
             Layout::nakedDisplay();
             break;
 
+        case 'pin_page_post':
+            if (empty($_POST['title'])) {
+                Menu_Admin::pinPageForm($_POST['url'], true);
+            } else {
+                Menu::pinLink($_POST['title'], $_POST['url']);
+                javascript('close_refresh');
+                Layout::nakedDisplay();
+            }
+            break;
+
         case 'pick_link':
-            Layout::nakedDisplay(Menu_Admin::pickLink());
+            if (count($_SESSION['Menu_Pin_Links']) < 2) {
+                Menu_Admin::quickPinLink($_GET['menu_id']);
+                Layout::nakedDisplay(javascript('close_refresh'));
+            } else {
+                Layout::nakedDisplay(Menu_Admin::pickLink());
+            }
             break;
 
         case 'new':
@@ -164,6 +179,10 @@ class Menu_Admin {
             Menu_Admin::siteLink($menu, $link);
             break;
 
+        case 'pin_page':
+            Menu_Admin::pinPage();
+            break;
+
         case 'post_site_link':
             if (isset($_REQUEST['link_id'])) {
                 $link = new Menu_Link($_REQUEST['link_id']);
@@ -176,8 +195,7 @@ class Menu_Admin {
                 Menu_Admin::siteLink($menu, $link, $result);
             } else {
                 $link->save();
-                javascript('onload', array('function'=>'opener.window.location.reload(); window.close()'));
-                Layout::nakedDisplay('');
+                Layout::nakedDisplay(javascript('close_refresh'));
             }
             break;
 
@@ -213,7 +231,6 @@ class Menu_Admin {
             $title = ('Menu List');
             $content = Menu_Admin::menuList();
             break;
-
         } // end command switch
 
         $tpl['TITLE']   = $title;
@@ -230,25 +247,30 @@ class Menu_Admin {
         $pin_id = &$_POST['links'];
         $link_id = &$_POST['link_id'];
         @$pin = $_SESSION['Menu_Pin_Links'][$pin_id];
+
         if (empty($pin)) {
             return false;
         }
 
-
-        $link = new Menu_Link;
-        $link->menu_id = (int)$_POST['menu_id'];
-        $link->title   = $pin['title'];
-        $link->url     = $pin['url'];
-        $link->key_id  = 0;
-        if ($link_id) {
-            $link->parent = (int)$link_id;
+        if (!isset($_POST['remove'])) {
+            $link = new Menu_Link;
+            $link->menu_id = (int)$_POST['menu_id'];
+            $link->title   = $pin['title'];
+            $link->url     = $pin['url'];
+            if (isset($pin['key_id'])) {
+                $link->key_id  = (int)$pin['key_id'];
+            } else {
+                $link->key_id  = 0;
+            }
+            if ($link_id) {
+                $link->parent = (int)$link_id;
+            }
+            
+            $result = $link->save();
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+            }
         }
-
-        $result = $link->save();
-        if (PEAR::isError($result)) {
-            PHPWS_Error::log($result);
-        }
-
         unset($_SESSION['Menu_Pin_Links'][$pin_id]);
         if (empty($_SESSION['Menu_Pin_Links'])) {
             unset($_SESSION['Menu_Pin_Links']);
@@ -260,6 +282,46 @@ class Menu_Admin {
         $_SESSION['Menu_message'] = $message;
         PHPWS_Core::reroute(sprintf('index.php?module=menu&command=%s&authkey=%s', $command, Current_User::getAuthKey()));
         exit();
+    }
+
+    function pinPageForm($url, $error=false)
+    {
+        $form = new PHPWS_Form('menu');
+        $form->addText('title');
+        $form->setLabel('title', _('Enter link title'));
+        $form->addHidden('command', 'pin_page_post');
+        $form->addHidden('url', $url);
+        $form->addHidden('module', 'menu');
+        $form->addSubmit(_('Save'));
+        $tpl = $form->getTemplate();
+        $tpl['CANCEL'] = javascript('close_window', array('value'=>_('Cancel')));
+        if ($error) {
+            $tpl['ERRORS'] = _('You must enter a link title.');
+        }
+        return PHPWS_Template::process($tpl, 'menu', 'admin/offsite.tpl');
+    }
+
+    function pinPage()
+    {
+        if (isset($_GET['key_id'])) {
+            $key = new Key($_GET['key_id']);
+            if ($key) {
+                Menu::pinLink($key->title, $key->url, $key->id);
+                $content = javascript('close_refresh');
+            } else {
+                $content = javascript('close_refresh', array('refresh'=>0));
+            }
+        } elseif (isset($_GET['lurl'])) {
+            if (isset($_GET['ltitle'])) {
+                Menu::pinLink($_GET['ltitle'], $_GET['lurl']);
+                $content = javascript('close_refresh');
+            } else {
+                $content = Menu_Admin::pinPageForm($_GET['lurl']);
+            }
+        } else {
+            $content = javascript('close_refresh', array('refresh'=>0));
+        }
+        Layout::nakedDisplay($content);
     }
 
     function pinMenu()
@@ -448,6 +510,7 @@ class Menu_Admin {
         $form->addSelect('links', $pin_list);
         $form->setLabel('links', _('Pinned links'));
         $form->addSubmit('add', _('Add to menu'));
+        $form->addSubmit('remove', _('Clear from list'));
 
         $tpl = $form->getTemplate();
         $tpl['CLOSE'] = sprintf('<a href="#" onclick="window.close(); return false">%s</a>', _('Close'));
@@ -534,7 +597,29 @@ class Menu_Admin {
             return TRUE;
         }
     }
-    
+
+    function quickPinLink()
+    {
+        if (empty($_SESSION['Menu_Pin_Links'])) {
+            return;
+        }
+        $link = new Menu_Link;
+        $link->menu_id = $_GET['menu_id'];
+        foreach ($_SESSION['Menu_Pin_Links'] as $pin);
+        $link->setTitle($pin['title']);
+        $link->setUrl($pin['url']);
+
+        if (isset($pin['key_id'])) {
+            $link->key_id  = (int)$pin['key_id'];
+        } else {
+            $link->key_id  = 0;
+        }
+        if ($_GET['link_id']) {
+            $link->parent = (int)$_GET['link_id'];
+        }
+        $link->save();
+        unset($_SESSION['Menu_Pin_Links']);
+    }
 }
 
 ?>

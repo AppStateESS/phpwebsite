@@ -150,11 +150,14 @@ class Menu {
 
     }
 
-    function pinLink($title, $url)
+    function pinLink($title, $url, $key_id=0)
     {
         $key = substr(md5($title), 0, 8);
-        $_SESSION['Menu_Pin_Links'][$key]['title'] = $title;
-        $_SESSION['Menu_Pin_Links'][$key]['url'] = $url;
+        $_SESSION['Menu_Pin_Links'][$key]['title'] = strip_tags($title);
+        $_SESSION['Menu_Pin_Links'][$key]['url'] = strip_tags($url);
+        if ($key_id) {
+            $_SESSION['Menu_Pin_Links'][$key]['key_id'] = $key_id;
+        }
     }
 
     function getUnpinLink($menu_id, $key_id, $pin_all=0)

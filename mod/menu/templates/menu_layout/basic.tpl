@@ -8,6 +8,6 @@
         {TITLE}</h1>
         </div>
         <div id="menu-links">{LINKS}</div>
-        <div class="align-center">{ADMIN_LINK}</div>
+        <div class="align-center"><!-- BEGIN pin -->{PIN_PAGE}<br /><!-- END pin -->{ADMIN_LINK}</div>
     </div>
 </div>

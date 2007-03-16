@@ -264,11 +264,15 @@ class Menu_Item {
         return $link->save();
     }
 
+    /**
+     * This link lets you pin a stored link to the menu
+     */
     function getPinLink($menu_id, $link_id=0)
     {
         if (!isset($_SESSION['Menu_Pin_Links'])) {
             return null;
         }
+
         $vars['command'] = 'pick_link';
         $vars['menu_id'] = $menu_id;
         if ($link_id) {
@@ -301,6 +305,26 @@ class Menu_Item {
 
         if ( !$pin_mode && Current_User::allow('menu') ) {
             if (Menu::isAdminMode()) {
+                if(!isset($_REQUEST['authkey'])) {
+                    $pinvars['command'] = 'pin_page';
+                    if ($key) {
+                        if ($key->isDummy()) {
+                            $pinvars['ltitle'] = urlencode($key->title);
+                            $pinvars['lurl'] = urlencode($key->url);
+                        } else {
+                            $pinvars['key_id'] = $key->id;
+                        }
+                    } else {
+                        $pinvars['lurl'] = urlencode(PHPWS_Core::getCurrentUrl());
+                    }
+                    
+                    $js['address'] = PHPWS_Text::linkAddress('menu', $pinvars);
+                    $js['label']   = _('Pin page');
+                    $js['width']   = 300;
+                    $js['height']  = 180;
+                    $tpl['PIN_PAGE'] = javascript('open_window', $js);
+                }
+
                 $tpl['ADD_LINK'] = Menu::getAddLink($this->id);
                 $tpl['ADD_SITE_LINK'] = Menu::getSiteLink($this->id, 0, isset($key));
 
