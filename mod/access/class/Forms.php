@@ -81,7 +81,6 @@ class Access_Forms {
         $form->addHidden('module', 'access');
         $form->addHidden('command', 'post_admin');
 
-
         $form->addCheckbox('rewrite_engine', 1);
         $form->setLabel('rewrite_engine', _('Rewrite engine on'));
         if (PHPWS_Settings::get('access', 'rewrite_engine')) {
@@ -94,6 +93,13 @@ class Access_Forms {
             $form->setMatch('shortcuts_enabled', 1);
         }
 
+        $form->addCheckbox('allow_deny_enabled', 1);
+        $form->setLabel('allow_deny_enabled', _('Allow/Deny enabled'));
+        if (PHPWS_Settings::get('access', 'allow_deny_enabled')) {
+            $form->setMatch('allow_deny_enabled', 1);
+        }
+
+
         $form->addCheckBox('allow_file_update', 1);
         $form->setLabel('allow_file_update', _('Allow file update'));
         if (PHPWS_Settings::get('access', 'allow_file_update')) {
@@ -104,8 +110,8 @@ class Access_Forms {
         $form->addSubmit(_('Save settings'));
         $template = $form->getTemplate();
 
-        $template['MOD_REWRITE_LABEL'] = _('Mod Rewrite Options');
-        $template['HTACCESS_LABEL'] = _('.htaccess File Options');
+        $template['MOD_REWRITE_LABEL'] = _('Mod Rewrite options');
+        $template['HTACCESS_LABEL'] = _('.htaccess file options');
 
         return PHPWS_Template::process($template, 'access', 'forms/administrator.tpl');
     }
@@ -122,6 +128,15 @@ class Access_Forms {
         $form->addHidden('module', 'access');
         $form->addHidden('command', 'post_update_file');
         $form->addSubmit(_('Write .htaccess file'));
+
+        $question = _('Are you sure you want to restore the default .htaccess file?');
+        $link = PHPWS_Text::linkAddress('access', array('command'=>'restore_default'), true);
+        
+        javascript('confirm');
+        $form->addButton('restore', _('Restore default .htaccess'));
+        $form->setExtra('restore', sprintf('onclick="confirm_link(\'%s\', \'%s\')"',
+                                           $question, $link));
+
         $template = $form->getTemplate();
 
         $template['INFO'] = _('Your .htaccess file will contain the below:');
@@ -129,6 +144,9 @@ class Access_Forms {
         $allow_deny = Access::getAllowDenyList();
         $template['HTACCESS'] = $allow_deny;
         $template['HTACCESS'] .= Access::getRewrite();
+
+        $template['CURRENT'] = file_get_contents(PHPWS_HOME_DIR . '.htaccess');
+        $template['CURRENT_LABEL'] = _('Current .htaccess file');
 
         return PHPWS_Template::process($template, 'access', 'forms/update_file.tpl');
         
@@ -261,17 +279,42 @@ class Access_Forms {
 
     function shortcut_menu()
     {
-        if (!@$key_id = $_REQUEST['key_id']) {
-            javascript('close_window');
+        PHPWS_Core::initModClass('access', 'Shortcut.php');
+        @$sc_id = $_GET['sc_id'];
+
+        if (!$sc_id) {
+            @$key_id = $_GET['key_id'];
+            if (!$key_id) {
+                javascript('close_window');
+                return;
+            } else {
+                $shortcut = new Access_Shortcut;
+                $key = new Key($key_id);
+                if (!$key->id) {
+                    javascript('close_window');
+                    return;
+                }
+
+                $shortcut->keyword = preg_replace('/[^\w\s\-]/', '', $key->title);
+            }
+        } else {
+            $shortcut = new Access_Shortcut($sc_id);
+            if (!$shortcut->id) {
+                javascript('close_window');
+                return;
+            }
         }
 
         $form = new PHPWS_Form('shortcut_menu');
         $form->addHidden('module', 'access');
         $form->addHidden('command', 'post_shortcut');
-        $form->addHidden('key_id', $key_id);
-        $instruction = _('Type keyword here');
-        $form->addText('keyword', $instruction);
-        $form->setExtra('keyword', sprintf('onclick="if (this.value == \'%s\') {this.value=\'\'}"', $instruction));
+        if (isset($key_id)) {
+            $form->addHidden('key_id', $key_id);
+        } else {
+            $form->addHidden('sc_id', $shortcut->id);
+        }
+
+        $form->addText('keyword', $shortcut->keyword);
         $form->addSubmit('go', _('Go'));
         $tpl = $form->getTemplate();
 

@@ -35,6 +35,35 @@ function access_update(&$content, $version)
 + Added translate functions.
 </pre>
 ';
+
+    case version_compare($version, '0.2.0', '<'):
+        $content[] = '<pre>
+0.2.0 changes
+---------------';
+        $files = array('conf/error.php',
+                       'templates/forms/administrator.tpl',
+                       'templates/forms/update_file.tpl');
+        if (PHPWS_Boost::updateFiles($files, 'menu')) {
+            $content[] = '+ The following files were updated successfully.';
+        } else {
+            $content[] = '+ The following files were not updated successfully.';
+        }
+        $content[] = '    ' . implode("\n    ", $files);
+
+        $content[] = '+ Update panel shows the current .htaccess file as well as
+  the one the admin is about to save.
++ Changed the admin panel to turn off different components.
++ Rewrite engine enabled by default.
++ Shortcuts now separated by dashes and not underlines
++ Keywords in shortcuts parsed better.
++ Admins can now edit shortcut keywords from the admin panel.
++ Deny/Allow tab changed to Allow/Deny since it is set that way every where else.
++ Allow/Deny can now be disabled in the Admin panel.
++ Added a way to restore the default .htaccess file.
++ Removed symbolic link option from htaccess writes.
+</pre>
+';
+
     }
 
     return true;

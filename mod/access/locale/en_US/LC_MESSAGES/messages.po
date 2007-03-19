@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-15 10:20-0500\n"
+"POT-Creation-Date: 2007-03-19 13:49-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,10 +16,10 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid ".htaccess File Options"
+msgid ".htaccess file is missing."
 msgstr ""
 
-msgid ".htaccess file is missing."
+msgid ".htaccess file options"
 msgstr ""
 
 msgid ".htaccess file written."
@@ -67,6 +67,12 @@ msgstr ""
 msgid "Allow file update"
 msgstr ""
 
+msgid "Allow/Deny"
+msgstr ""
+
+msgid "Allow/Deny enabled"
+msgstr ""
+
 msgid "Allowed IPs"
 msgstr ""
 
@@ -99,7 +105,10 @@ msgstr ""
 msgid "Are you sure you want to delete this shortcut?"
 msgstr ""
 
-msgid "Bad keyword. Use only alphanumeric characters and underlines."
+msgid "Are you sure you want to restore the default .htaccess file?"
+msgstr ""
+
+msgid "Bad keyword. Use only alphanumeric characters and spaces."
 msgstr ""
 
 msgid "Cancel"
@@ -111,7 +120,13 @@ msgstr ""
 msgid "Controls the .htaccess file for Apache and creates shortcuts."
 msgstr ""
 
+msgid "Current .htaccess file"
+msgstr ""
+
 msgid "Deactivate"
+msgstr ""
+
+msgid "Default .htaccess file restored."
 msgstr ""
 
 msgid "Delete"
@@ -121,9 +136,6 @@ msgid "Denied IPs"
 msgstr ""
 
 msgid "Deny all"
-msgstr ""
-
-msgid "Deny/Allow"
 msgstr ""
 
 msgid "Denys and Allows"
@@ -165,7 +177,7 @@ msgstr ""
 msgid "Missing url."
 msgstr ""
 
-msgid "Mod Rewrite Options"
+msgid "Mod Rewrite options"
 msgstr ""
 
 msgid "No"
@@ -188,6 +200,9 @@ msgstr ""
 
 msgid ""
 "Remember to \"Update\" your access file when finished changing IP rules."
+msgstr ""
+
+msgid "Restore default .htaccess"
 msgstr ""
 
 msgid "Return to previous page."
@@ -223,7 +238,7 @@ msgstr ""
 msgid "The files/access/ directory is not writable."
 msgstr ""
 
-msgid "Type keyword here"
+msgid "Unable to restore default .htaccess file."
 msgstr ""
 
 msgid "Unable to save .htaccess file."

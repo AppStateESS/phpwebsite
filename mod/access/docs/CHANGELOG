@@ -1,12 +1,25 @@
+Version 0.2.0
+------------------------------------------------------------------------------------
+
 19 March 2007
++ Update panel shows the current .htaccess file as well as
+  the one the admin is about to save.
++ Changed the admin panel to turn off different components.
++ Rewrite engine enabled by default.
++ Shortcuts now separated by dashes and not underlines
++ Keywords in shortcuts parsed better.
++ Admins can now edit shortcut keywords from the admin panel.
++ Deny/Allow tab changed to Allow/Deny since it is set that way every where else.
++ Allow/Deny can now be disabled in the Admin panel.
++ Added a way to restore the default .htaccess file.
 + Removed follow sym links from htaccess
 
 5 March 2007
-------------
 + Changed control panel icon
 
 Version 0.1.2
---------------
+------------------------------------------------------------------------------------
+
 22 February 2007
 + Put file directory option back into boost.php file.
 
@@ -15,14 +28,14 @@ Version 0.1.2
 + Removed reference constructors.
 
 Version 0.1.1
--------------
+------------------------------------------------------------------------------------
 
 5 February 2007
 + Fixed header tags Bug #1652279
 + Updated files: templates/main.tpl, templates/box.tpl, templates/shortcut_menu.tpl 
 
 Version 0.1.0
--------------
+------------------------------------------------------------------------------------
 
 9 November 2006
 + Updated files config/config.php

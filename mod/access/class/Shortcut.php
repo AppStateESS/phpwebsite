@@ -1,4 +1,8 @@
 <?php
+  /**
+   * @version $Id$
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   */
 
 PHPWS_Core::requireConfig('access');
 
@@ -16,6 +20,7 @@ class Access_Shortcut {
         }
 
         $this->id = (int)$id;
+        $this->init();
     }
 
     function init()
@@ -24,6 +29,9 @@ class Access_Shortcut {
         $result = $db->loadObject($this);
         if (PEAR::isError($result)) {
             $this->_error = $result;
+            $this->id = 0;
+        } elseif (!$result) {
+            $this->id = 0;
         }
         return $result;
     }
@@ -34,8 +42,13 @@ class Access_Shortcut {
             return PHPWS_Error::get(SHORTCUT_MISSING_KEYWORD, 'access', 'Shortcut::postShortcut');
         }
 
-        if (!isset($_POST['key_id'])) {
-            return PHPWS_Error::get(SHORTCUT_MISSING_KEY, 'access', 'Shortcut::postShortcut');
+        if (!$this->id) {
+            if (empty($_POST['key_id'])) {
+                return PHPWS_Error::get(SHORTCUT_MISSING_KEY, 'access', 'Shortcut::postShortcut');
+            } else {
+                $key = new Key((int)$_POST['key_id']);
+                $this->setUrl($key->url);
+            }
         }
         
         $result = $this->setKeyword($_POST['keyword']);
@@ -43,8 +56,6 @@ class Access_Shortcut {
             return $result;
         }
 
-        $key = new Key((int)$_POST['key_id']);
-        $this->setUrl($key->url);
         return TRUE;
     }
 
@@ -55,24 +66,26 @@ class Access_Shortcut {
 
     function setKeyword($keyword)
     {
-        $keyword = str_replace(' ', '_', $keyword);
+        $keyword = preg_replace('/[^\w\s\-]/', '', strtolower($keyword));
+        $keyword = preg_replace('/\s/', '-', $keyword);
 
-        if (preg_match('/\W/', $keyword)) {
+        if (empty($keyword)) {
             return PHPWS_Error::get(SHORTCUT_BAD_KEYWORD, 'access', 'Shortcut::setKeyword');
         }
 
-        $db = new PHPWS_DB('access_shortcuts');
-        $db->addWhere('keyword', $keyword);
-        $result = $db->select();
-        if (!empty($result)) {
-            if (PEAR::isError($result)) {
-                PHPWS_Error::log($result);
-                return FALSE;
-            } else {
-                return PHPWS_Error::get(SHORTCUT_WORD_IN_USE, 'access', 'Shortcut::setKeyword');
+        if (!$this->id) {
+            $db = new PHPWS_DB('access_shortcuts');
+            $db->addWhere('keyword', $keyword);
+            $result = $db->select();
+            if (!empty($result)) {
+                if (PEAR::isError($result)) {
+                    PHPWS_Error::log($result);
+                    return FALSE;
+                } else {
+                    return PHPWS_Error::get(SHORTCUT_WORD_IN_USE, 'access', 'Shortcut::setKeyword');
+                }
             }
         }
-
         $this->keyword = $keyword;
 
         return TRUE;
@@ -87,10 +100,15 @@ class Access_Shortcut {
         $js['LINK'] = _('Delete');
         $tags[] = javascript('confirm', $js);
 
-        $link_vars['shortcut_id'] = $this->id;
-        $link_vars['command']     = 'edit_shortcut';
+        $vars['command'] = 'edit_shortcut';
+        $vars['sc_id'] = $this->id;
+        $link = PHPWS_Text::linkAddress('access', $vars, true);
+        $js_vars['address'] = $link;
+        $js_vars['label'] = _('Edit');
+        $js_vars['height'] = '200';
+        $js_link = javascript('open_window', $js_vars);
 
-        $tags[] = PHPWS_Text::secureLink(_('Edit'), 'access', $link_vars);
+        $tags[] = $js_link;
 
         $template['URL'] = sprintf('<a href="%s">%s</a>', $this->url, $this->url);
         if ($this->active) {

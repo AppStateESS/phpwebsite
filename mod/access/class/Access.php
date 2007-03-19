@@ -50,7 +50,16 @@ class Access {
                 Access::saveAdmin();
                 Access::sendMessage(_('Settings saved.'), 'admin');
                 break;
-
+                
+            case 'restore_default':
+                $source = PHPWS_SOURCE_DIR . 'mod/access/inc/htaccess';
+                $dest = PHPWS_HOME_DIR . '.htaccess';
+                if (@copy($source, $dest)) {
+                    Access::sendMessage(_('Default .htaccess file restored.'), 'update');
+                } else {
+                    Access::sendMessage(_('Unable to restore default .htaccess file.'), 'update');
+                }
+                break;
 
             case 'admin':
                 PHPWS_Core::initModClass('access', 'Forms.php');
@@ -60,7 +69,7 @@ class Access {
 
             case 'post_deny_allow':
                 $result = Access::postDenyAllow();
-                if ($result == FALSE) {
+                if ($result == false) {
                     Access::sendMessage(_('IP address was not formatted correctly or not allowed.'), 'deny_allow');
                 } elseif (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
@@ -141,14 +150,19 @@ class Access {
             case 'post_shortcut':
                 PHPWS_Core::initModClass('access', 'Shortcut.php');
 
-                $shortcut = new Access_Shortcut;
+                if (isset($_POST['sc_id'])) {
+                    $shortcut = new Access_Shortcut($_POST['sc_id']);
+                } else {
+                    $shortcut = new Access_Shortcut;
+                }
+
                 $result = $shortcut->postShortcut();
                 $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" />', _('Close window'));
                 if (PEAR::isError($result)) {
                     $tpl['TITLE'] = _('An error occurred:') . '<br />' . $result->getMessage() . '<br />';
                     $tpl['CONTENT']  = sprintf('<a href="%s">%s</a>', $_SERVER['HTTP_REFERER'], _('Return to previous page.'));
                     $content = PHPWS_Template::process($tpl, 'access', 'box.tpl');
-                } elseif ($result == FALSE) {
+                } elseif ($result == false) {
                     $tpl['TITLE'] = _('A serious error occurred. Please check your error.log.') . '<br />';
                     $tpl['CONTENT'] = sprintf('<a href="%s">%s</a>', $_SERVER['HTTP_REFERER'], _('Return to previous page.'));
                     $content = PHPWS_Template::process($tpl, 'access', 'box.tpl');
@@ -180,7 +194,6 @@ class Access {
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             $content[] = _('A serious error occurred. Please check your error.log.');
-
         } else {
             if (PHPWS_Settings::get('access', 'allow_file_update')) {
                 $result = Access::writeAccess();
@@ -190,13 +203,13 @@ class Access {
                 } else {
                     $tpl['TITLE'] = _('Access has saved your shortcut.');
                     $content[] = _('You can access this item with the following link:');
-                    $content[] = $shortcut->getRewrite(TRUE, FALSE);
+                    $content[] = $shortcut->getRewrite(true, false);
                 }
             } else {
                 $tpl['TITLE'] = _('Access has saved your shortcut.');
                 $content[] = _('An administrator will need to approve it before it is functional.');
                 $content[] = _('When active, you will be able to use the following link:');
-                $content[] = $shortcut->getRewrite(TRUE, FALSE);
+                $content[] = $shortcut->getRewrite(true, false);
             }
         }
         $tpl['CONTENT'] = implode('<br />', $content);
@@ -209,6 +222,12 @@ class Access {
             PHPWS_Settings::set('access', 'shortcuts_enabled', 1);
         } else {
             PHPWS_Settings::set('access', 'shortcuts_enabled', 0);
+        }
+
+        if (isset($_POST['allow_deny_enabled'])) {
+            PHPWS_Settings::set('access', 'allow_deny_enabled', 1);
+        } else {
+            PHPWS_Settings::set('access', 'allow_deny_enabled', 0);
         }
         
         if (isset($_POST['rewrite_engine'])) {
@@ -236,6 +255,10 @@ class Access {
         $content = array();
         PHPWS_Core::initModClass('access', 'Allow_Deny.php');
 
+        if (!PHPWS_Settings::get('access', 'allow_deny_enabled')) {
+            return "Order Allow,Deny\nAllow from all\n\n";
+        }
+
         $deny_all = PHPWS_Settings::get('access', 'deny_all');
         $allow_all = PHPWS_Settings::get('access', 'allow_all');
 
@@ -244,9 +267,9 @@ class Access {
         if ($deny_all && $allow_all) {
             return NULL;
         } elseif ($deny_all) {
-            $deny_str = "Deny from all";
+            $deny_str = 'Deny from all';
         } elseif ($allow_all) {
-            $allow_str = "Allow from all";
+            $allow_str = 'Allow from all';
         }
 
         $db = new PHPWS_DB('access_allow_deny');
@@ -322,30 +345,31 @@ class Access {
 
         if (!is_writable('files/access/')) {
             PHPWS_Error::log(ACCESS_FILES_DIR, 'access', 'Access::writeAccess'); 
-            return FALSE;
+            return false;
         }
         
         if (!is_file('.htaccess')) {
             PHPWS_Error::log(ACCESS_HTACCESS_MISSING, 'access', 'Access::writeAccess');
-            return FALSE;
+            return false;
         }
 
         if (!@copy('./.htaccess', './files/access/htaccess_' . mktime())) {
             PHPWS_Error::log(ACCESS_FILES_DIR, 'access', 'Access::writeAccess'); 
-            return FALSE;
+            return false;
         }
-
 
         $allow_deny = Access::getAllowDenyList() . "\n";
         $rewrite =  Access::getRewrite() . "\n";
 
-        $result = @file_put_contents('.htaccess', $allow_deny . $rewrite);
+        $filename = PHPWS_HOME_DIR . '.htaccess';
+
+        $result = @file_put_contents($filename, $allow_deny . $rewrite);
         if (!$result) {
             PHPWS_Error::log(ACCESS_HTACCESS_WRITE, 'access', 'Access::writeAccess'); 
-            return FALSE;
+            return false;
         }
 
-        return TRUE;
+        return true;
     }
 
 
@@ -353,7 +377,7 @@ class Access {
     {
         $vars['command'] = 'edit_shortcut';
         $vars['key_id']  = $key->id; 
-        $link = PHPWS_Text::linkAddress('access', $vars, TRUE);
+        $link = PHPWS_Text::linkAddress('access', $vars, true);
         $js_vars['address'] = $link;
         $js_vars['label'] = _('Shortcut');
         $js_vars['height'] = '200';
@@ -384,15 +408,14 @@ class Access {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link['link'] = 'index.php?module=access';
 
-        if (MOD_REWRITE_ENABLED && Access::check_htaccess() &&
-            PHPWS_Settings::get('access', 'rewrite_engine')) {
+        if (MOD_REWRITE_ENABLED && Access::check_htaccess()) {
             $link['title'] = _('Shortcuts');
             $tabs['shortcuts'] = $link;
         }
 
         if (Current_User::allow('access', 'admin_options')) {
             if (Access::check_htaccess()) {
-                $link['title'] = _('Deny/Allow');
+                $link['title'] = _('Allow/Deny');
                 $tabs['deny_allow'] = $link;
             }
 
@@ -417,7 +440,11 @@ class Access {
 
     function listShortcuts()
     {
-        $shortcuts = Access::getShortcuts(TRUE);
+        if (!PHPWS_Settings::get('access', 'shortcuts_enabled')) {
+            return null;
+        }
+
+        $shortcuts = Access::getShortcuts(true);
 
         if (PEAR::isError($shortcuts)) {
             PHPWS_Error::log($shortcuts);
@@ -440,7 +467,7 @@ class Access {
         return $db->getObjects('Access_Allow_Deny');
     }
 
-    function getShortcuts($active_only=FALSE)
+    function getShortcuts($active_only=false)
     {
         PHPWS_Core::initModClass('access', 'Shortcut.php');
         $db = new PHPWS_DB('access_shortcuts');
@@ -550,7 +577,7 @@ class Access {
                     PHPWS_Settings::set('access', 'allow_all', 1);
                 }
                 PHPWS_Settings::save('access');
-                return TRUE;
+                return true;
             } elseif (!empty($_POST['allows'])) {
                 $db = new PHPWS_DB('access_allow_deny');
 
@@ -583,7 +610,7 @@ class Access {
                 PHPWS_Settings::set('access', 'deny_all', 1);
             }
             PHPWS_Settings::save('access');
-            return TRUE;
+            return true;
         } elseif (!empty($_POST['denys'])) {
             $db = new PHPWS_DB('access_allow_deny');
             // just in case something goes wrong
@@ -607,6 +634,6 @@ class Access {
             }
         }
 
-        return TRUE;
+        return true;
     }
 }
