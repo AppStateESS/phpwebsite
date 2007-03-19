@@ -42,7 +42,8 @@ function access_update(&$content, $version)
 ---------------';
         $files = array('conf/error.php',
                        'templates/forms/administrator.tpl',
-                       'templates/forms/update_file.tpl');
+                       'templates/forms/update_file.tpl',
+                       'img/access.png');
         if (PHPWS_Boost::updateFiles($files, 'menu')) {
             $content[] = '+ The following files were updated successfully.';
         } else {
@@ -61,6 +62,7 @@ function access_update(&$content, $version)
 + Allow/Deny can now be disabled in the Admin panel.
 + Added a way to restore the default .htaccess file.
 + Removed symbolic link option from htaccess writes.
++ New control panel icon.
 </pre>
 ';
 
