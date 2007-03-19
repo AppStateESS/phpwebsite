@@ -219,7 +219,9 @@ class Menu_Link {
         }
     }
 
-
+    /**
+     * Compares a link's children to the current key
+     */
     function childIsCurrent(&$current_key)
     {
         if (empty($this->_children)) {
@@ -229,6 +231,11 @@ class Menu_Link {
         foreach ($this->_children as $child) {
             if ( ($current_key->id !== 0 && $child->key_id == $current_key->id) || ($child->url == $current_key->url) ){
                 return TRUE;
+            }
+            if (!empty($child->_children)) {
+                if ($child->childIsCurrent($current_key)) {
+                    return true;
+                }
             }
         }
         return FALSE;
