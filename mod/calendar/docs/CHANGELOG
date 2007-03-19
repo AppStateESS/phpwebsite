@@ -1,4 +1,10 @@
 12 March 2007
+!! Calendar icon still needs updating.
+
+Version 1.4.1
+------------------------------------------------------------------
+
+12 March 2007
 + Made noon the default time for new events.
 + Fixed Daylight Saving Time breaking repeats.
 + Delete event links made secure.
