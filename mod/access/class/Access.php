@@ -366,7 +366,6 @@ class Access {
     {
         if (PHPWS_Settings::get('access', 'rewrite_engine')) {
             $content[] = 'RewriteEngine On';
-            $content[] = 'Options +FollowSymlinks';
             $content[] = '';
             $content[] = Access::listShortcuts();
             $content[] = DEFAULT_CONDITION;
