@@ -1,10 +1,7 @@
 Order Allow,Deny
 Allow from all
 
-
 RewriteEngine On
-Options +FollowSymlinks
-
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^([a-z0-9]+)/([a-z0-9]+)/?$ index.php?module=$1&id=$2 [L,NC]

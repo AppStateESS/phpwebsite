@@ -1,3 +1,6 @@
+19 March 2007
++ Removed follow sym links from htaccess file.
+
 7 March 2007
 + Branch now copies htaccess file to branch site.
 
