@@ -1051,7 +1051,9 @@ class Layout {
 
         foreach ($settings->_style_sheets as $css) {
             if (@$css['title']) {
-                $sheets[$css['file']] = $css['title'];
+                $filename = str_ireplace('themes/' . $_SESSION['Layout_Settings']->current_theme . '/',
+                                         '', $css['file']);
+                $sheets[$filename] = $css['title'];
             }
         }
 

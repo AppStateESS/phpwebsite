@@ -203,11 +203,14 @@ class Layout_Settings {
         for ($i = 1; $i < 20; $i++) {
             if (isset($themeVars['style_sheet_' . $i])) {
                 $style = &$themeVars['style_sheet_' . $i];
+                $style_file = $style['file'];
                 $style['file'] = $directory . $style['file'];
 
-                if ($cookie) {
+                // If the cookie is set, the alternate style sheet then becomes
+                // a primary. The primary becomes an alternate.
+                if ($cookie && is_file($directory . $cookie)) {
                     if (isset($style['title'])) {
-                        if ($cookie == $style['file']) {
+                        if ($cookie == $style_file) {
                             $style['alternate'] = FALSE;
                         } else {
                             $style['alternate'] = TRUE;

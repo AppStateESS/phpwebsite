@@ -1,3 +1,7 @@
+19 March 2007
++ Fixed: bug in Layout confused a user's style sheet settings after
+  the theme was changed.
+
 12 March 2007
 + Rewrote theme change code.
 + Added ability to force theme on layout settings construction.
