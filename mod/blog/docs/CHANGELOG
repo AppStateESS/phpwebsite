@@ -1,3 +1,7 @@
+19 March 2007
++ Fixed pagination on list view.
++ Updated file templates/list_view.tpl
+
 Version 1.4.3
 ------------------------------------------------------------------
 8 March 2007
