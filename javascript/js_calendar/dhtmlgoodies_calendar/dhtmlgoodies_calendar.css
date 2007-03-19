@@ -63,7 +63,7 @@
 	color: #317082;
 	left:0px;
 	top:15px;
-	zIndex:1000;
+	z-index:1000;
 	display:none;
 
 }
