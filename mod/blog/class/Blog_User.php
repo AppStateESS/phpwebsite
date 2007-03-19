@@ -107,6 +107,16 @@ class Blog_User {
         return PHPWS_Template::process($tpl, 'blog', 'user_main.tpl');
     }
 
+    function totalEntries()
+    {
+        $db = new PHPWS_DB('blog_entries');
+        $db->addWhere('approved', 1);
+        $db->addWhere('publish_date', mktime(), '<');
+        $db->addWhere('expire_date', mktime(), '>', 'and', 1);
+        $db->addWhere('expire_date', 0, '=', 'or', 1);
+        Key::restrictView($db, 'blog');
+        return $db->count();
+    }
 
     function getEntries(&$db, $limit, $offset=0)
     {
@@ -120,13 +130,23 @@ class Blog_User {
         $db->addOrder('sticky desc'); 
         $db->addOrder('create_date desc');
         Key::restrictView($db, 'blog');
-        //$db->setTestMode();
         return $db->getObjects('Blog');
     }
 
     function show()
     {
-        $key = BLOG_CACHE_KEY;
+        $total_entries = Blog_User::totalEntries();
+
+        $limit = PHPWS_Settings::get('blog', 'blog_limit');
+        $page = @$_GET['page'];
+
+        if (!is_numeric($page) || $page < 2) {
+            $offset = $page = 0;
+        } else {
+            $offset = ($page - 1) * $limit;
+        }
+
+        $key = BLOG_CACHE_KEY . $page;
 
         if (!Current_User::isLogged()    &&
             !Current_User::allow('blog') &&
@@ -136,18 +156,7 @@ class Blog_User {
         }
 
         $db = new PHPWS_DB('blog_entries');
-        $limit = PHPWS_Settings::get('blog', 'blog_limit');
-        $page = @$_GET['page'];
 
-        if ($page) {
-            $offset = ($page - 1) * $limit;
-        } else  {
-            $offset = 0;
-        }
-
-        if (empty($page) || !is_numeric($page)) {
-            $page = 0;
-        }
 
         $result = Blog_User::getEntries($db, $limit, $offset);
 
@@ -185,13 +194,16 @@ class Blog_User {
                 $list[] = $view;
             }
         }
+
         $page_vars['action'] = 'view';
         if ($page > 1) {
             $page_vars['page'] = $page - 1;
             $tpl['PREV_PAGE'] = PHPWS_Text::moduleLink(_('Previous page'), 'blog', $page_vars);
-            $page_vars['page'] = $page + 1;
-            $tpl['NEXT_PAGE'] = PHPWS_Text::moduleLink(_('Next page'), 'blog', $page_vars);
-        } else {
+            if ($limit + $offset < $total_entries) {
+                $page_vars['page'] = $page + 1;
+                $tpl['NEXT_PAGE'] = PHPWS_Text::moduleLink(_('Next page'), 'blog', $page_vars);
+            }
+        } elseif ($limit + $offset < $total_entries) {
             $page_vars['page'] = 2;
             $tpl['NEXT_PAGE'] = PHPWS_Text::moduleLink(_('Next page'), 'blog', $page_vars);
         }
