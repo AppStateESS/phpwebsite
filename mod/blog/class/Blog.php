@@ -62,7 +62,7 @@ class Blog {
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
         $image = new PHPWS_Image($this->image_id);
         if (!$image->id) {
-            $this->logErrors();
+            $image->logErrors();
             return null;
         }
         return $image->getTag();
