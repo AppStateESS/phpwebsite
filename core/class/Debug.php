@@ -3,7 +3,8 @@
 /**
  * debugger for the phpWebSite core
  *
- * @author Steven Levin <steven@NOSPAM.tux.appstate.edu>
+ * @author Steven Levin
+ * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  * @package Core
  */
@@ -13,7 +14,11 @@ class PHPWS_Debug {
     function test($value, $show_recursive=FALSE)
     {
         if (empty($value)) {
-            return '<pre>NULL</pre>';
+            if (is_null($value)) {
+                return '<pre>NULL</pre>';
+            } else {
+                return '<pre>0</pre>';
+            }
         }
         switch(gettype($value)){
         case 'object':
