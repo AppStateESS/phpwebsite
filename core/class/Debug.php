@@ -16,16 +16,16 @@ class PHPWS_Debug {
         if (empty($value)) {
             $value = PHPWS_Debug::emptyVal($value);
         }
-        switch(gettype($value)){
-        case 'object':
+        switch(1) {
+        case is_object($value):
             return PHPWS_Debug::testObject($value, 1, $show_recursive);
             break;
       
-        case 'array':
+        case is_array($value):
             return 'Array' . PHPWS_Debug::testArray($value, 1, $show_recursive);
             break;
 
-        case 'boolean':
+        case is_bool($value):
             if ($value) {
                 return '<pre>bool(TRUE)</pre>';
             }
@@ -33,13 +33,15 @@ class PHPWS_Debug {
                 return '<pre>bool(FALSE)</pre>';
             }
 
-        case 'string':
-        case 'integer':
+        case is_numeric($value):
+            return '<pre>' . $value . '</pre>';
+
+        case is_string($value):
             return '<pre>' . preg_replace('/\n|(\r\n)/', '\n', htmlspecialchars($value)) . '</pre>';
             break;
 
         default:
-            return $value;
+            return '<pre>' . $value . '</pre>';
         }
     }
 
@@ -115,7 +117,7 @@ class PHPWS_Debug {
                 PHPWS_Debug::testArray($objectInfo, $displayTags, $show_recursive);
         }
 
-        if (gettype($objVar) != 'object') {
+        if (!is_object($objVar)) {
             return sprintf(_('PHPWS_Debug: testObject received a/an %s variable, not an object.'), gettype($objVar)) . '<br />';
         } else {
             return _('This is an incomplete object. If this is a sessioned object, make sure to declare the class before the variable.') . '<br />';
@@ -172,7 +174,7 @@ class PHPWS_Debug {
                     } else if($displayTags && is_string($value)) {
                         $value = htmlspecialchars($value);
                     } else {
-                        $value = '<pre>NULL</pre>';
+                        $value = '<pre>' . $value . '</pre>';
                     }
 
                     $info[] = '  <tr>'; 
