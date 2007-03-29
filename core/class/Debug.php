@@ -14,11 +14,7 @@ class PHPWS_Debug {
     function test($value, $show_recursive=FALSE)
     {
         if (empty($value)) {
-            if (is_null($value)) {
-                return '<pre>NULL</pre>';
-            } else {
-                return '<pre>0</pre>';
-            }
+            $value = PHPWS_Debug::emptyVal($value);
         }
         switch(gettype($value)){
         case 'object':
@@ -31,10 +27,10 @@ class PHPWS_Debug {
 
         case 'boolean':
             if ($value) {
-                return 'TRUE';
+                return '<pre>TRUE</pre>';
             }
             else {
-                return 'FALSE';
+                return '<pre>FALSE</pre>';
             }
 
         case 'string':
@@ -142,7 +138,7 @@ class PHPWS_Debug {
     {
         translate('core');
         if (empty($arrayVar)) {
-            return null;
+            return '<pre>' . PHPWS_Debug::emptyVal($arrayVar) . '</pre>';
         }
         $test_recursion = md5(serialize($arrayVar));
 
@@ -167,19 +163,16 @@ class PHPWS_Debug {
 ';
 
                 foreach($arrayVar as $key => $value) {
-                    if(is_array($value)) {
+                    if (empty($value)) {
+                        $value = '<pre>' . PHPWS_Debug::emptyVal($value) . '</pre>';
+                    } else if(is_array($value)) {
                         $value = PHPWS_Debug::testArray($value, $displayTags, $show_recursive);
                     } else if(is_object($value)) {
                         $value = PHPWS_Debug::testObject($value, $displayTags, $show_recursive);
                     } else if($displayTags && is_string($value)) {
                         $value = htmlspecialchars($value);
-                    } else if($value !== NULL) {
-                        ob_start();
-                        var_dump($value);
-                        $value = ob_get_contents();
-                        ob_end_clean();
                     } else {
-                        $value = 'NULL';
+                        $value = '<pre>NULL</pre>';
                     }
 
                     $info[] = '  <tr>'; 
@@ -197,6 +190,30 @@ class PHPWS_Debug {
         }
     } // END FUNC testArray
 
+    function emptyVal($value)
+    {
+        switch (1) {
+        case is_string($value):
+            if ($value == '0') {
+                return 'string(1)"0"';
+            } else {
+                return '""';
+            }
+            
+        case is_array($value):
+            return 'array()';
+            
+        case is_null($value):
+            return 'NULL';
+
+        case is_bool($value):
+            return 'FALSE';
+            
+        case is_integer($value):
+            return 'int(0)';
+        }
+    }
+
 } // END CLASS PHPWS_Debug
 
 function test($value, $exitAfter=FALSE, $show_recursive=FALSE)
@@ -206,6 +223,7 @@ function test($value, $exitAfter=FALSE, $show_recursive=FALSE)
         exit();
     }
 }
+
 
 function objectInfo($object)
 {
