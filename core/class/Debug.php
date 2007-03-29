@@ -27,10 +27,10 @@ class PHPWS_Debug {
 
         case 'boolean':
             if ($value) {
-                return '<pre>TRUE</pre>';
+                return '<pre>bool(TRUE)</pre>';
             }
             else {
-                return '<pre>FALSE</pre>';
+                return '<pre>bool(FALSE)</pre>';
             }
 
         case 'string':
@@ -207,7 +207,7 @@ class PHPWS_Debug {
             return 'NULL';
 
         case is_bool($value):
-            return 'FALSE';
+            return 'bool(FALSE)';
             
         case is_integer($value):
             return 'int(0)';
