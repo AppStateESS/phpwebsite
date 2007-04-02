@@ -390,12 +390,11 @@ class User_Action {
 
     function popupPermission()
     {
-
         if (!isset($_REQUEST['key_id'])) {
-            PHPWS_Core::goBack();
+            echo _('Missing key information.');
         }
 
-        $key = new Key((int)$_REQUEST['key_id']);
+        $key = new Key((int)$_GET['key_id']);
 
         if (!Key::checkKey($key, FALSE)) {
             PHPWS_Core::errorPage();

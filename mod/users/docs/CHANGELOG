@@ -1,3 +1,9 @@
+2 April 2007
++ Changed popuppermission to echo error instead of using goback
+  function.
++ Fixed error code call in Permissions.php. Needed to call core code.
++ Added German translation files
+
 Version 2.3.2
 ------------------------------------------------------------------
 

@@ -382,7 +382,7 @@ class Users_Permission {
 
         if ($edit_rights) {
             if (!$test_db->isTableColumn($key->edit_permission)) {
-                return PHPWS_Error::get(KEY_PERM_COLUMN_MISSING, 'users',
+                return PHPWS_Error::get(KEY_PERM_COLUMN_MISSING, 'core',
                                         'Users_Permission::getRestrictedGroups',
                                         $key->edit_permission);
             }
