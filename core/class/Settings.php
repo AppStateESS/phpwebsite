@@ -239,7 +239,7 @@ class PHPWS_Settings {
 
         case 'boolean':
         case 'integer':
-            if ((int)$value < 100000) {
+            if ((int)$value < 32700) {
                 return 1;
             } else {
                 return 2;
