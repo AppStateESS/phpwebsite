@@ -47,16 +47,13 @@ class Blog_Form {
             }
 
             if (PHPWS_Settings::get('blog', 'simple_image')) {
-                PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
-                $manager = new FC_Image_Manager($blog->image_id);
-                $manager->setModule('blog');
-                $manager->setItemname('image_id');
-                $manager->setMaxWidth(PHPWS_Settings::get('blog', 'max_width'));
-                $manager->setMaxHeight(PHPWS_Settings::get('blog', 'max_height'));
+                PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+                $manager = Cabinet::imageManager($blog->image_id, 'image_id',
+                                                 PHPWS_Settings::get('blog', 'max_width'),
+                                                 PHPWS_Settings::get('blog', 'max_height'));
                 $form->addTplTag('IMAGE_MANAGER', $manager->get());
                 $form->addTplTag('IMAGE_LABEL', _('Image'));
             }
-
         }
 
         $form->addText('title', $blog->title);
