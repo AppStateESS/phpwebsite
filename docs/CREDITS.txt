@@ -87,6 +87,7 @@ Fridtjof Busse
 Wendall Cada
 Eloi George/aDarkling
 Darren Greene
+Peter Heppner (German translations)
 Bobby Kennedy/fatman
 Rene Kiesler/rck
 Greg Meiste/blindman1344
@@ -95,6 +96,7 @@ Ken Nordquist/kenphused
 Mike Noyes/mhnoyes
 Paivi/spiggy
 Andrew Patterson/inuitart
+Ortwin Pinke
 Kenneth Poulsen/KennethP
 Michael Rasmussen/TechElephant
 Sharon Renshaw/Sharondippity
