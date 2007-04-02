@@ -1,3 +1,7 @@
+26 March 2007
++ Fixed: logErrors called on blog object instead of image object
+  on empty image id.
+
 19 March 2007
 + Fixed pagination on list view.
 + Updated file templates/list_view.tpl
