@@ -62,7 +62,7 @@ class Webpage_Page {
      */
     function getTitle()
     {
-        return PHPWS_Text::rewriteLink($this->title, 'webpage', $this->_volume->id, $this->page_number);
+        return $this->title;
     }
 
     function setContent($content)

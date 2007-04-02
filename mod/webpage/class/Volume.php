@@ -133,7 +133,7 @@ class Webpage_Volume {
 
     function getTitle()
     {
-        return sprintf('<a href="%s">%s</a>', $this->getViewLink(true), $this->title);
+        return $this->title;
     }
 
     function setSummary($summary)
