@@ -188,15 +188,6 @@ define('DEFAULT_EDITOR_TOOL', 'FCKeditor');
 define('ABSOLUTE_UPLOAD_LIMIT', '5000000');
 
 
-/******************* IMAGES SETTINGS **************************/
-define('MAX_IMAGE_SIZE', 50000);
-define('MAX_IMAGE_WIDTH', 800);
-define('MAX_IMAGE_HEIGHT', 600);
-
-/******************* DOCUMENT SETTINGS *************************/
-define('MAX_DOCUMENT_SIZE', 5000000);
-
-
 /******************** CACHING **********************************/
 /**
  * There are two forms of caching in phpWebSite, both developed by
