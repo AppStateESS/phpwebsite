@@ -1,7 +1,7 @@
 <script type="text/javascript">
 //<![CDATA[
 
-function open_window(page, width, height) {
+function open_window(page, width, height, window_name) {
    x = (640 - width)/2, y = (480 - height)/2;
 
     if (screen) {
@@ -9,7 +9,7 @@ function open_window(page, width, height) {
         x = (screen.availWidth - width)/2;
     }
 
-  popup = window.open(page, 'CtrlWindow', 'toolbar={toolbar},top='+ y +',left='+ x +',screenY='+ y +',screenX='+ x +',scrollbars={scrollbars},menubar={menubar},location={location},resizable={resizable},width=' + width + ',height=' + height);
+  popup = window.open(page, window_name, 'toolbar={toolbar},top='+ y +',left='+ x +',screenY='+ y +',screenX='+ x +',scrollbars={scrollbars},menubar={menubar},location={location},resizable={resizable},width=' + width + ',height=' + height);
 }
 
 //]]>
