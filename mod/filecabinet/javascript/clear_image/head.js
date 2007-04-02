@@ -7,8 +7,8 @@
 
         if (image) {
             image.src = '{src}';
-            image.width = {width};
-            image.height = {height};
+            image.width = 100;
+            image.height = 100;
             image.title = '{title}';
             image.alt   = '{alt}';
         }

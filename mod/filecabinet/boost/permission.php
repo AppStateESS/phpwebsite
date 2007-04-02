@@ -9,10 +9,13 @@ $use_permissions = TRUE;
 $item_permissions = TRUE;
 
 translate('filecabinet');
-$permissions['edit_document']       = _('Edit files');
-$permissions['delete_document']     = _('Delete files');
-$permissions['edit_image']          = _('Edit images');
-$permissions['delete_image']        = _('Delete images');
+$permissions['edit_folders']     = _('Edit folders');
+$permissions['delete_folders']   = _('Delete folders');
+$permissions['add_images']       = _('Add/edit images');
+$permissions['delete_images']    = _('Delete images');
+$permissions['add_documents']    = _('Add/edit documents');
+$permissions['delete_documents'] = _('Delete documents');
+$permissions['settings']         = _('Change settings');
 translate();
 
 ?>

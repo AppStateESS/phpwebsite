@@ -21,5 +21,8 @@ $errors[FC_COULD_NOT_DELETE]       = _('Could not delete file.');
 $errors[FC_IMAGE_DIMENSION]        = _('Image is %spx by %spx, the maximum dimensions are %spx by %spx.');
 $errors[FC_FILE_MOVE]              = _('Unable to move the file to its new directory.');
 $errors[FC_BAD_DIRECTORY]          = _('Could not write to directory.');
+$errors[FC_MISSING_FOLDER]         = _('Missing folder information.');
+$errors[FC_MAX_FORM_UPLOAD]        = _('File uploaded exceeded %sK size limit.');
+$errors[FC_MISSING_TMP]            = _('Missing temporary upload directory.');
 translate();
 ?>

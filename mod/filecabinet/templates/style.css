@@ -6,74 +6,6 @@ margin-bottom : 10px;
 
 /*  List by James N Pope via http://css.maxdesign.com.au/ */
 
-ul#dirlist { font-family: sans-serif; }
-
-ul#dirlist a
-{
-font-weight: bold;
-text-decoration: none;
-}
-
-ul#dirlist, ul#dirlist ul, ul#dirlist li
-{
-margin: 0px;
-padding: 0px;
-list-style-type: none;
-}
-
-ul#dirlist li { 
-    float : left;
-    display : inline;
-    background-color : white;
-}
-
-ul#dirlist li a
-{
-color: black
-background-color: white;
-padding: 3px;
-
-}
-
-ul#dirlist li a:hover
-{
-color: white;
-background-color: grey;
-}
-
-ul#dirlist li a:active
-{
-color: #cccccc;
-background-color: #000000;
-}
-
-ul#subdirlist { display: none; }
-ul#subdirlist li { float: none; }
-
-ul#subdirlist li a
-{
-padding: 0px;
-margin: 0px;
-}
-
-ul#dirlist li:hover ul#subdirlist
-{
-display: block;
-position: absolute;
-font-size: 8pt;
-padding-top: 5px;
-}
-
-ul#dirlist li:hover ul#subdirlist li a
-{
-display: block;
-width: 10em;
-border: none;
-padding: 2px;
-}
-
-/* End directory menu */
-
 
 div.image-info {
     float : left;
@@ -125,15 +57,98 @@ div.dimensions {
      bottom : 2px;
 }
 
-div.img-holder {
-     height : 80px;
-     margin-bottom : 5px;
-}
-
-div.img-holder {
-    border : 2px transparent solid;
-}
-
 #image-manager-list {
 margin-top : 20px;
+}
+
+div#fc-folder-list {
+     overflow : auto;
+}
+
+div.fc-icon {
+   text-align : center;
+   float : left;
+   display : inline;
+   margin-left : 50px;
+   margin-bottom : 50px;
+}
+
+ul#image-folders {
+padding :8px;
+}
+
+ul#image-folders li {
+list-style-type : none;
+text-align : center;
+line-height : 1em;
+margin-bottom : 1em;
+}
+
+
+div#folders {
+position : absolute;
+top : 40px;
+left : 5px;
+width : 90px;
+height : 500px;
+background-color : white;
+overflow : auto;
+padding : 3px;
+}
+
+div#images {
+position : absolute;
+top : 40px;
+left : 110px;
+width : 550px;
+height : 500px;
+background-color : white;
+overflow : auto;
+padding : 3px;
+}
+
+input#add-folder {
+position : absolute;
+left : 20px;
+top : 552px;
+}
+
+input#add-image {
+position : absolute;
+left : 320px;
+top : 552px;
+}
+
+ul#image-list li {
+display : inline;
+list-style-type : none;
+float : left;
+margin : 10px;
+padding : 2px 3px 1px 3px;
+}
+
+ul#image-list li p.dimensions {
+text-align : center;
+font-size : .9em;
+}
+
+li.image-select {
+background-color : #D4D4D4;
+}
+
+div#fc-file-list td.fc-size{
+  text-align : right;
+}
+
+div#fc-file-list td, div#fc-file-list th {
+  padding : 5px;
+}
+
+
+div#fc-file-list td {
+  padding : 0px 10px;
+}
+
+div#fc-file-list td.fc-icon {
+   padding : 0px;
 }

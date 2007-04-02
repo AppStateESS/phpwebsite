@@ -9,13 +9,25 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
-PHPWS_Core::initModClass('filecabinet', 'Cabinet_Action.php');
+PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
 translate('filecabinet');
-if (!isset($_REQUEST['tab']) && !isset($_REQUEST['action']) && isset($_REQUEST['id'])) {
-    Cabinet_Action::download($_REQUEST['id']);
- } else {
-    Cabinet_Action::admin();
- }
+$cabinet = new Cabinet;
+if (isset($_REQUEST['uop'])) {
+    $cabinet->user();
+} elseif (isset($_REQUEST['aop']) || isset($_REQUEST['tab'])) {
+    $cabinet->admin();
+} elseif ( isset($_GET['id']) ) {
+    if (isset($_GET['page']) && strtolower($_GET['page']) == 'image') {
+        $cabinet->viewImage($_GET['id']);
+    } elseif (isset($_GET['page']) && strtolower($_GET['page']) == 'folder') {
+        $_REQUEST['uop'] = 'view_folder';
+        $_REQUEST['folder_id'] = (int)$_GET['id'];
+        $cabinet->user();
+    } else {
+        $cabinet->download($_GET['id']);
+    }
+}
+
 translate();
 
 ?>

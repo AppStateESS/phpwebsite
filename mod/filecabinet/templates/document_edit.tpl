@@ -16,9 +16,6 @@
     <td>{FILE_NAME_LABEL}</td><td>{FILE_NAME}</td>
   </tr>
   <tr>
-    <td>{DIRECTORY_LABEL}</td><td>{DIRECTORY}</td>
-  </tr>
-  <tr>
     <td>{TITLE_LABEL}</td><td>{TITLE}</td>
   </tr>
   <tr>

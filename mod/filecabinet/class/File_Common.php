@@ -11,56 +11,87 @@ require_once PHPWS_SOURCE_DIR . 'mod/filecabinet/inc/errorDefines.php';
 
 class File_Common {
     var $id              = 0;
-    var $key_id          = 0;
-    var $file_name       = NULL;
-    var $file_directory  = NULL;
-    var $ext             = NULL;
-    var $file_type       = NULL;
-    var $title           = NULL;
-    var $description     = NULL;
-    var $size            = NULL;
+    var $file_name       = null;
+    var $file_directory  = null;
+    var $folder_id       = 0;
+    var $ext             = null;
+    var $file_type       = null;
+    var $title           = null;
+    var $description     = null;
+    var $size            = null;
 
     /**
      * PEAR upload object
      */
-    var $_upload         = NULL;
+    var $_upload         = null;
     var $_errors         = array();
-    var $_allowed_types  = NULL;
-    var $_move_directory = NULL;
+    var $_allowed_types  = null;
+    var $_max_size       = 0;
 
 
-    function setId($id)
+    function allowSize($size=NULL)
     {
-        $this->id = (int)$id;
+        if (!isset($size)) {
+            $size = $this->getSize();
+        }
+
+        return ($size <= $this->_max_size && $size <= ABSOLUTE_UPLOAD_LIMIT) ? true : false;
     }
 
-    function logErrors()
+    function allowType($type=NULL)
     {
-        if ( !empty($this->_errors) && is_array($this->_errors) ) {
-            foreach ($this->_errors as $error) {
-                PHPWS_Error::log($error);
-            }
+        if (!isset($type)) {
+            $type = $this->file_type;
+        }
+
+        return in_array($type, $this->_allowed_types);
+    }
+
+    function formatSize($size)
+    {
+        if ($size >= 1000000) {
+            return round($size / 1000000, 2) . 'MB';
+        } else {
+            return round($size / 1000, 2) . 'K';
         }
     }
+
+    function setMaxSize($max_size)
+    {
+        $this->_max_size = (int)$max_size;
+    }
+
+
+    function getSize($format=false)
+    {
+        if ($format) {
+            return $this->formatSize($this->size);
+        } else {
+            return $this->size;
+        }
+    }
+
 
     /**
      * Tests file upload to determine if it may be saved to the server.
      * Returns true if so, false otherwise.
-     * Called from Image_Manager's postImage function and Cabinet_Action's
+     * Called from Image_Manager's postImageUpload function and Cabinet_Action's
      * postDocument function.
      */
     function importPost($var_name)
     {
         require 'HTTP/Upload.php';
 
-        // Store current directory in case they are moving the document
-        // or image
-        $current_directory = $this->file_directory;
+        if (!empty($_POST['folder_id'])) {
+            $this->folder_id = (int)$_POST['folder_id'];
+        } elseif (!$this->folder_id) {
+            $this->_errors[] = PHPWS_Error::get(FC_MISSING_FOLDER, 'filecabinet', 'File_Common::importPost');
+        }
 
         if (isset($_POST['title'])) {
             $this->setTitle($_POST['title']);
         } else {
-            $this->title = NULL;
+            $this->title = null;
         }
 
         if (isset($_POST['alt'])) {
@@ -70,33 +101,31 @@ class File_Common {
         if (isset($_POST['description'])) {
             $this->setDescription($_POST['description']);
         } else {
-            $this->description = NULL;
+            $this->description = null;
         }
 
-        $default_dir = $this->getDefaultDirectory();
-        if (isset($_POST['directory']) && !empty($_POST['directory'])) {
-            $directory =  urldecode($_POST['directory']);
+        if (!empty($_FILES[$var_name]['error'])) {
+            switch ($_FILES[$var_name]['error']) {
+            case UPLOAD_ERR_INI_SIZE:
+                $this->_errors[] =  PHPWS_Error::get(PHPWS_FILE_SIZE, 'core', 'File_Common::getFiles');
+                break;
 
-            if (preg_match('@^' . $default_dir . '@', $directory)) {
-                $this->setDirectory($directory);
-            } else {
-                $this->setDirectory($default_dir . $directory);
+            case UPLOAD_ERR_FORM_SIZE:
+                $this->_errors[] = PHPWS_Error::get(FC_MAX_FORM_UPLOAD, 'filecabinet', 'PHPWS_Document::importPost', array($this->_max_size));
+                break;
+
+            case UPLOAD_ERR_NO_FILE:
+                // Missing file is not important for an update
+                if ($this->id) {
+                    return true;
+                } else {
+                    $this->_errors[] = PHPWS_Error::get(FC_NO_UPLOAD, 'filecabinet', 'PHPWS_Document::importPost', array($this->_max_size));
+                }
+                break;
+
+            case UPLOAD_ERR_NO_TMP_DIR:
+                $this->_errors[] = PHPWS_Error::get(FC_MISSING_TMP, 'filecabinet', 'PHPWS_Document::importPost', array($this->_max_size));
             }
-        } else {
-            if (empty($this->file_directory)) {
-                $this->setDirectory($default_dir);
-            }
-        }
-
-        // UPLOAD defines come from PEAR lib/pear/Compat/Constant/UPLOAD_ERR.php
-
-        if (isset($_FILES[$var_name]['error']) && 
-            ( $_FILES[$var_name]['error'] == UPLOAD_ERR_INI_SIZE ||
-              $_FILES[$var_name]['error'] == UPLOAD_ERR_FORM_SIZE)
-            ) {
-
-            $this->_errors[] =  PHPWS_Error::get(PHPWS_FILE_SIZE, 'core', 'File_Common::getFiles');
-            return false;
         }
 
         // need to get language
@@ -107,6 +136,7 @@ class File_Common {
             $this->_errors[] = $this->_upload();
             return false;
         }
+
 
         if ($this->_upload->isValid()) {
             $file_vars = $this->_upload->getProp();
@@ -146,19 +176,6 @@ class File_Common {
                 }
             }
 
-        } elseif ($this->_upload->isMissing()) {
-            if ($this->id) {
-                if ($current_directory != $this->file_directory) {
-                    $this->_move_directory = & $current_directory;
-                }
-
-                // if the document id is set, we assume they are just updating other information
-                return true;
-            }
-
-            // If there wasn't a file uploaded, we return a false without an error.
-            // This will allow to check for a false and continue on if the error array is empty
-            return false;
         } elseif ($this->_upload->isError()) {
             $this->_errors[] = $this->_upload->getMessage();
             return false;
@@ -167,24 +184,20 @@ class File_Common {
         return true;
     }
 
-    function getErrors()
+
+    function setDescription($description)
     {
-        return $this->_errors;
+        $this->description = strip_tags($description);
     }
 
-    function setDirectory($directory)
+    function getDescription()
     {
-        if (!preg_match('/\/$/', $directory)) {
-            $directory .= '/';
-        }
-
-        $this->file_directory = $directory;
+        return $this->description;
     }
-
 
     function setFilename($filename)
     {
-        $this->file_name = preg_replace('/[^\w\s\.]/', '_', $filename);
+        $this->file_name = preg_replace('/[^\w\.]/', '_', $filename);
     }
 
     function setSize($size)
@@ -192,132 +205,62 @@ class File_Common {
         $this->size = (int)$size;
     }
 
-    function getSize($format=false)
-    {
-        if ($format) {
-            return $this->_formatSize($this->size);
-        } else {
-            return $this->size;
-        }
-    }
-
-
-    function setMaxSize($max_size)
-    {
-        $this->_max_size = (int)$max_size;
-    }
-
-    function getMaxSize($format=false)
-    {
-        if ($format) {
-            return $this->_formatSize($this->_max_size);
-        } else {
-            return $this->_max_size;
-        }
-    }
-
-    function _formatSize($size)
-    {
-        if ($size >= 1000000) {
-            return round($size / 1000000, 2) . 'MB';
-        } else {
-            return round($size / 1000, 2) . 'K';
-        }
-    }
-
-
     function setTitle($title)
     {
         $this->title = strip_tags($title);
     }
-
-    function setDescription($description)
-    {
-        $this->description = PHPWS_Text::parseInput($description);
-    }
-
-    function getDescription($format=false)
-    {
-        if ($format) {
-            return PHPWS_Text::parseOutput($this->description);
-        } else {
-            return $this->description;
-        }
-    }
-
-    function allowSize($size=NULL)
-    {
-        if (!isset($size)) {
-            $size = $this->getSize();
-        }
-
-        return ($size <= $this->_max_size && $size <= ABSOLUTE_UPLOAD_LIMIT) ? true : false;
-    }
-
 
     /**
      * Writes the file to the server
      */
     function write()
     {
-        $this->_upload->setName($this->file_name);
-        $directory = preg_replace('@[/\\\]$@', '', $this->file_directory);
-        $moved = $this->_upload->moveTo($directory);
-        if (!PEAR::isError($moved)) {
-            return $moved;
+        if ($this->_upload) {
+            $this->_upload->setName($this->file_name);
+            $directory = preg_replace('@[/\\\]$@', '', $this->file_directory);
+            $moved = $this->_upload->moveTo($directory);
+            if (!PEAR::isError($moved)) {
+                return $moved;
+            }
         }
 
         return true;
     }
 
-    /**
-     * Returns the directory path of the file
-     * If relative is true, a path relative to the installation
-     * directory is returned.
-     */
-    function getPath($relative=true)
+    function getPath()
     {
-        if (empty($this->file_name)) {
-            return PHPWS_Error::get(FC_FILENAME_NOT_SET, 'filecabinet', 'File_Common::getPath');
-        }
-
-        if (empty($this->file_directory)) {
-            return PHPWS_Error::get(FC_DIRECTORY_NOT_SET, 'filecabinet', 'File_Common::getPath');
-        }
-
-        if ($relative) {
-            $directory = str_replace(PHPWS_HOME_DIR, './', $this->file_directory);
-            return sprintf('%s%s', $directory, $this->file_name);
-        } else {
-            return $this->file_directory . $this->file_name;
-        }
+        return $this->file_directory . $this->file_name;
     }
 
-    function allowType($type=NULL)
+    function logErrors()
     {
-        if (!isset($type)) {
-            $type = $this->file_type;
-        }
-
-        return in_array($type, $this->_allowed_types);
-    }
-
-    /**
-     * Substitute for rename
-     * from php.net
-     * @author ddoyle [at] canadalawbook [dot] ca
-     */
-    function move_file($oldfile, $newfile)
-    {
-        if (!@rename($oldfile,$newfile)) {
-            if (@copy ($oldfile,$newfile)) {
-                unlink($oldfile);
-                return true;
+        if ( !empty($this->_errors) && is_array($this->_errors) ) {
+            foreach ($this->_errors as $error) {
+                PHPWS_Error::log($error);
             }
+        }
+    }
+
+    function printErrors()
+    {
+        if ( !empty($this->_errors) && is_array($this->_errors) ) {
+            foreach ($this->_errors as $error) {
+                $foo[] = $error->getMessage();
+            }
+            return implode('<br />', $foo);
+        }
+    }
+
+    function loadFileSize()
+    {
+        if (empty($this->file_directory) ||
+            empty($this->file_name) ||
+            !is_file($this->getPath())) {
             return false;
         }
-        return true;
-    }
-}
 
+        $this->size = filesize($this->getPath());
+    }
+
+}
 ?>

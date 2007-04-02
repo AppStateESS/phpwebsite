@@ -1,9 +1,8 @@
-<div>
-<h1>{TITLE}</h1>
-<div>
-{IMAGE}
-<p class="padded">{DESCRIPTION}</p>
+<div id="image-view">
+   <h1>{TITLE}</h1>
+   <div class="align-center">
+      {IMAGE}
+      <!-- BEGIN desc --><p class="padded">{DESCRIPTION}</p><!-- END desc -->
+   </div>
 </div>
-</div>
-<div style="margin-top : 10px; text-align : center"><input type="button" value="{CLOSE}" onclick="javascript:window.close()" /></div>
-
+<div class="align-center">{CLOSE}</div>

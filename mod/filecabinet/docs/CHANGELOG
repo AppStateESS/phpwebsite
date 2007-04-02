@@ -1,3 +1,40 @@
+2 April 2007
++ Completely rewrote file cabinet.
++ Folders used as file containers
++ Image manager crops and resizes images to fit specifications.
+
++ Updated files : conf/config.php, conf/error.php, conf/icons.php,
+                  img/icons/audio.png, img/icons/document.png,
+                  img/icons/flash_icon.png, img/icons/spreadsheet.png,
+                  img/icons/tar.png
+                  javascript/pick_image/head.js,
+                  javascript/pick_image/scripts.js
+                  templates/document_edit.tpl
+                  templates/image_edit.tpl
+                  templates/settings.tpl
+                  templates/style.css
+                  templates/view.tpl
+                  
+
++ New files :     img/folder.png, img/folder.svg,
+                  javascript/folder_contents/head.js
+                  javascript/refresh_manager/head.js
+                  templates/edit_folder.tpl
+                  templates/file_list.tpl
+                  templates/folder_list.tpl
+                  templates/image_folders.tpl
+                  templates/image_grid.tpl
+                  templates/image.xml
+                  templates/javascript.tpl
+                  templates/plain.tpl
+            
++ Deleted files   class/Cabinet_Action.php,
+                  javascript/post_file/body.js,
+                  templates/cookie_directory.tpl,
+                  templates/documentList.tpl, templates/edit.tpl,
+                  templates/imageList.tpl
+        
+
 5 March 2007
 + Changed control panel icon
 

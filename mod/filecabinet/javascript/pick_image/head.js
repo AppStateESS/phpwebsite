@@ -1,43 +1,46 @@
 <script type="text/javascript">
+//<![CDATA[
 
-var image_id  = 0;
-var mod_title = '{mod_title}';
-var current_image = 0;
-var itemname = '{itemname}';
-var authkey = '{authkey}';
+function pick_image(image_id, src, title) {
+  span = opener.document.getElementById('{itemname}-current-image');
+  image = opener.document.getElementById('{itemname}-current-image').firstChild.firstChild;
+  hidden = opener.document.getElementById('{itemname}_hidden_value');
+  image.src = src;
+  image.title = title;
 
-function post_pick(mod_title, itemname)
+  hidden.setAttribute('value', image_id);
+
+  span_update = span.innerHTML.replace(/current=\d*\'/gi, 'current=' + image_id + '\'');
+
+  span.innerHTML = span_update;
+  window.close();
+}
+
+function oversized(image_id, width, height) {
+    var link = 'index.php?module=filecabinet&aop=resize_image&authkey={authkey}&mw=' + width + '&mh=' + height + '&image_id=' + image_id;
+    var success = 'resize_update(requester.responseXML)';
+    var failure = 'alert("{failure_message}")';
+
+    if (confirm('{confirmation}')) {
+        loadRequester(link, success, failure);
+    }
+    return false;
+}
+
+function resize_update(response)
 {
-    if (current_image < 1) {
-        alert('{image_warning}');
-        return;
+    src = response.documentElement.getElementsByTagName('thumbnail')[0].firstChild.data;
+    image_id = response.documentElement.getElementsByTagName('id')[0].firstChild.data;
+    title = response.documentElement.getElementsByTagName('title')[0].firstChild.data;
+
+    if (!response) {
+        alert("{failure_message}");
+    } else {
+        pick_image(image_id, src, title,1);
+        window.location.href = window.location.href;
     }
-    document.location.href = 'index.php?module=filecabinet&action=post_pick&mod_title=' + mod_title + '&itemname=' + itemname + '&image_id=' + current_image;
 }
 
-function delete_pick() {
-    if (current_image < 1) {
-        alert('{image_warning}');
-        return;
-    }
-
-    if (confirm('{confirm_delete}')) {
-        document.location.href = 'index.php?module=filecabinet&action=delete_pick&mod_title=' + mod_title + '&itemname=' + itemname + '&image_id=' + current_image;
-    }
-
-}
-
-function upload_new(address) {
-width = {upload_width};
-height = {upload_height};
-
-x = getX(width);
-y = getY(height);
-
-window_vars = 'toolbar=no,top='+ y +',left='+ x +',screenY='+ y +',screenX='+ x +',scrollbars=yes,menubar=no,location=no,resizable=yes,width=' + width + ',height=' + height;
-
-upload = window.open(address, 'upload_window', window_vars);
-}
-
+//]]>
 </script>
 <script type="text/javascript" src="./javascript/modules/filecabinet/pick_image/scripts.js"></script>

@@ -21,6 +21,8 @@ define('FC_COULD_NOT_DELETE',      -112);
 define('FC_IMAGE_DIMENSION',       -113);
 define('FC_FILE_MOVE',             -114);
 define('FC_BAD_DIRECTORY',         -115);
-
+define('FC_MISSING_FOLDER',        -116);
+define('FC_MAX_FORM_UPLOAD',       -117);
+define('FC_MISSING_TMP',           -118);
 
 ?>
