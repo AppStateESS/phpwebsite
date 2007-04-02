@@ -19,7 +19,7 @@ class PHPWS_Error {
         return PEAR::isError($item);
     }
 
-    function &get($value, $module, $funcName=NULL, $extraInfo=NULL){
+    function get($value, $module, $funcName=NULL, $extraInfo=NULL){
         setLanguage(DEFAULT_LANGUAGE);
         $errorFile = PHPWS_Core::getConfigFile($module, 'error.php');
         if (empty($module)) {
