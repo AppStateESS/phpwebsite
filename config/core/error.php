@@ -85,7 +85,7 @@ $errors[PHPWS_FILE_CANT_READ]         = _('Cannot read file.');
 $errors[PHPWS_FILE_NO_FILES]          = _('Variable name not found in_FILES array.');
 $errors[PHPWS_FILE_DIR_NONWRITE]      = _('Unable to save file in selected directory.');
 $errors[PHPWS_FILE_NO_TMP]            = _('Upload directory not set in file object.');
-$errors[PHPWS_FILE_SIZE]              = _('Upload file size is larger than allowed.');
+$errors[PHPWS_FILE_SIZE]              = sprintf(_('Upload file size is larger than the server %s maximum.'), ini_get('post_max_size'));
 $errors[PHPWS_GD_ERROR]               = _('GD image libraries do not support this image type.');
 
 // Image.php and Document.php 900 - 999
