@@ -1,4 +1,7 @@
-function loadRequester() {
+function loadRequester(file_directory, success, failure) {
+    if (!file_directory || !success || !failure) {
+        return false;
+    }
      if (requester != null && requester.readyState != 0 && requester.readyState != 4)
          {
              requester.abort();
@@ -19,11 +22,15 @@ function loadRequester() {
      
      requester.open('GET', file_directory);   
      requester.send(null);
+
+     success_function = new Function(success);
+     failure_function = new Function(failure);
+
      requester.onreadystatechange = stateHandler;
      return true;
  }
 
-function stateHandler()
+function stateHandler(success, failure)
 {
     if (requester.readyState == 4) {
         if (requester.status == 200) {
