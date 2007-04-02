@@ -1,12 +1,220 @@
-Access Module
+Short Urls and the Access Module
 by Matthew McNaney
 
 Introduction
--------------------------------------------------------
+--------------------------------------------------------------------
 The Access module allows you to manage your .htaccess file, a local
-custimization file for Apache.
+customization file for Apache.
 
 Access is for basic configurations ONLY. If you have complex commands
 in your .htaccess file, you may want to steer clear of the Access
 module.
+
+Access and short url forwarding are two different processes. You can
+use short urls and never touch Access. Access however depends on the
+.htaccess file functioning properly.
+
+
+Getting Started
+--------------------------------------------------------------------
+First, you need to be sure that your .htaccess file functions
+properly. This is a simple test.
+
+Install the Blog module. Make a quick blog entry. Go back to the home
+page and click the title of the entry. You should arrive at an address
+like the following ("your.site.com" would be your site address):
+
+http://your.site.com/index.php?module=blog&id=1
+
+Now we can test the short url. Enter the following into the address
+bar:
+
+http://your.site.com/blog/1
+
+Did you arrive back on the same page? If so, Apache's mod_rewrite is
+active and your .htaccess file works.
+
+If not, you will need to determine the cause of the problem. If you
+received a browser 404 message, then the problem lies within your
+Apache configuration. If you receive a custom 404 message (Says
+something like "These are not the pages you're looking for"), then
+the .htaccess works but the address was faulty. Check it again.
+
+
+Apache configuration
+---------------------------------------------------------------------
+As a security measure, Apache can limit .htaccess access. If you are
+running phpWebSite in a hosted environment, you will need to contact
+the server administrator.
+
+If you have root access on the web server, you can make the changes in
+your httpd.conf file. 
+
+Backup your original conf file.
+
+Make sure that Apache is loading the mod_rewrite module. Look for the
+following:
+
+#LoadModule rewrite_module modules/mod_rewrite.so
+
+Now, you need to search for AllowOverride settings, specifically for
+ones set as "None."
+
+The first AllowOverride will probably be inside <Directory />
+tags. Leave this one alone. It is the root server setting.
+
+The next directory tag may look like so: <Directory "/var/www/html">
+Results may vary but basically this is the setting for the whole web
+root. You will either want to change this variable or you will need to
+write (or locate) a separate directory tag specifically for your
+installation. There may be several AllowOverrides. Make sure you
+choose the correct one.
+
+Which ever tag you edit, we want to change AllowOverride from "None"
+to something else.
+
+AllowOverride All
+
+This lets .htaccess locally override your Apache server
+configuration. If you want to restrict it you can set it to:
+
+AllowOverride Limit FileInfo
+
+(
+  Note: older versions of .htaccess contained
+  "Options +FollowSymlinks".
+  If yours does as well you need to either give "All" access or, if
+  you want Option overrides,  remove that line from your 
+  .htaccess file.
+)
+
+If you don't want to use the Access module, you could just set the
+AllowOverride to just FileInfo.
+
+
+Short Urls
+-------------------------------------------------------------------
+Hopefully, the Blog test is now functioning properly. The format for
+shortened urls is
+
+site address / module name / module item id
+
+So in the example:
+http://your.site.com/blog/1
+
+the .htaccess file expands it to
+http://your.site.com/index.php?module=blog&id=1
+
+Web Pages uses the page option which is formatted like so:
+
+site address / module name / module item id / page number
+
+So for page 2 on a web page with an id of 5, the short url would look
+like so:
+
+http://your.site.com/webpage/5/2
+
+This translates to:
+
+http://your.site.com/index.php?module=webpage&id=5&page=2
+
+
+
+Enabling Short Urls in phpWebSite
+-------------------------------------------------------------------
+If .htaccess is working properly, phpWebSite will recognize the short
+urls. In order for phpWebSite to create short urls, you will need to
+edit your config/core/config.php file.
+
+Look for this line:
+define('MOD_REWRITE_ENABLED', false);
+
+and change it to:
+define('MOD_REWRITE_ENABLED', true);
+
+From this point on, many user links will be converted to the shortened
+format. Please note that copied links will not be convert
+retroactively. For example, links copied inside a web page will not be
+found and altered.
+
+Read that paragraph one more time. Once you enable mod_rewrite, the
+links saved within your system will be in short form. If your web
+server loses mod_rewrite ability, all your shortened links will need
+to changed back into their long form.
+
+
+Working in the Access module
+-------------------------------------------------------------------
+Once your are sure your .htaccess file works and you have
+MOD_REWRITE_ENABLED set to true, you can start using the Access
+module.
+
+Access rewrites the .htaccess file. These edits allow custom url
+redirects and ip permissioning.
+
+Access will verify that 1) you have MOD_REWRITE_ENABLED set to true,
+and 2) that the .htaccess file is writable by Apache. Once these
+conditions are met you may use Access.
+
+
+Administrator
+-------------------------------------------------------------------
+There are a few administrator options on this panel tab.
+
+Rewrite engine on
+Unchecking this disables the rewrite engine on the next update. No
+rewrites will occur. If you have shortened urls, turning this off WILL
+BREAK THEM.
+
+Shortcuts enabled
+Unchecking this removes any shortcuts created by the Access module on
+the next update. Shortened urls will still function if the rewrite
+engine is on.
+
+Allow/Deny enabled
+Unchecking this sets the default status back to "Allow all, Deny none"
+on the next update.
+
+Allow file update
+Unchecking this requires a file update after each new
+shortcut creation. Leaving it checked causes a new .htaccess write
+after each addition. 
+
+
+Updating
+-------------------------------------------------------------------
+When working in Access, you will sometimes need to manually update the
+.htaccess file. As stated above, if "Allow file update" is checked,
+the .htaccess file will be updated with each new shortcut.
+New allow/deny rules, however, will not automatically update the
+.htaccess file. You will need to come to this panel and update the
+file after you are satisfied with the changes.
+
+If you need to restore your .htaccess file back to its default status,
+click the "Restore default .htaccess" button.
+
+
+The Deny/Allow panel
+-------------------------------------------------------------------
+You may set ip conditionals using this page. Allowed ips overwrite
+denied rules.
+(This section is not finished.)
+
+
+Shortcuts
+-------------------------------------------------------------------
+Shortcuts are links to keyed items that you give a specific name. For
+example say you had a web page about an upcoming concert:
+
+The long url
+http://mysite.com/index.php?module=webpage&id=5
+
+The rewrite url
+http://mysite.com/webpage/5
+
+The shortcut
+http://mysite.com/van-halen-reunion
+
+Shortcuts are made from the MiniAdmin interface. The administrative
+tab in Access allows you to edit or delete the shortcuts.
 
