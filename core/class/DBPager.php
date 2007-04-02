@@ -470,7 +470,7 @@ class DBPager {
         if (!empty($this->search) && isset($this->searchColumn)) {
             foreach ($this->searchColumn as $column_name) {
                 // change to OR
-                $this->addWhere($column_name, '%' . strtolower($this->search) . '%', 'like', 'or');
+                $this->addWhere($column_name, '%' . strtolower($this->search) . '%', 'like', 'or', 1);
             }
         }
 
@@ -503,7 +503,7 @@ class DBPager {
         } else {
             $result = $this->db->getObjects($this->class);
         }
-
+        
         $this->row_query = $this->db->lastQuery();
 
         if (PEAR::isError($result)) {
@@ -773,7 +773,7 @@ class DBPager {
                         $row_result = call_user_func_array(array(&$disp_row, $this->row_tags['method']), $this->row_tags['variable']);
                     }
 
-                    if (!empty($row_result)) {
+                    if (!empty($row_result) && is_array($row_result)) {
                         $template[$count] = array_merge($template[$count], $row_result);
                     }
                 }
