@@ -91,8 +91,9 @@ function filecabinet_update(&$content, $version)
     case version_compare($version, '1.0.0', '<'):
         $content[] = '<pre>';
         PHPWS_Boost::registerMyModule('filecabinet', 'users', $content);
+        PHPWS_Boost::registerMyModule('filecabinet', 'controlpanel', $content);
         if (!PHPWS_DB::isTable('folders')) {
-            if (PHPWS_Core::importFile(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/folders.sql')) {
+            if (PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/folders.sql')) {
                 $content[] = 'Folders table created successfully.';
             } else {
                 $content[] = 'Failed to create folders table.</pre>';
@@ -148,7 +149,6 @@ function filecabinet_update(&$content, $version)
         $image_folder->title = 'Images';
         $image_folder->ftype = IMAGE_FOLDER;
         $image_folder->save();
-
 
         $image_db->reset();
         $image_db->addColumn('file_name');

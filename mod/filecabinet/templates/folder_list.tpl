@@ -1,5 +1,5 @@
 {LINKS}
-<table cellpadding="6" cellspacing="1">
+<table cellpadding="6" cellspacing="1" width="100%">
   <tr>
     <th width="5%">&nbsp;</th>
     <th>{TITLE_SORT} {TITLE_LABEL}</th>
