@@ -558,17 +558,18 @@ class PHPWS_Text {
     function makeRelative(&$text, $prefix=true, $inlink_only=false){
         $address = addslashes(PHPWS_Core::getHomeHttp());
         if ($prefix) {
-            $replace = './';
+            $pre = './';
         } else {
-            $replace = '';
+            $pre = '';
         }
 
         if ($inlink_only) {
-            $address = '="' . $address;
-            $replace = '="' . $replace;
+            $src = '@(src|href)="' . $address . '@';
+            $rpl = "\\1=\"$pre";
+            $text = preg_replace($src, $rpl, $text);
+        } else {
+            $text = str_replace($address, $pre, $text);
         }
-
-        $text = str_replace($address, $replace, $text);
     }
 
     /**

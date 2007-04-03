@@ -3,7 +3,9 @@ This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
 3 April 2007
-+ Bug #1690757 - Added space to radio button to help with formatting
++ Bug #1690757 - Form.php : Added space to radio button to help with formatting
++ Bug #1689289 - Text.php : Changed makeRelative's inline mode to only
+change src and href addresses.
 
 12 March 2007
 + Changed id display in Forms.php. Arrays with square brackets are not
