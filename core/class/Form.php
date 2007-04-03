@@ -1734,7 +1734,7 @@ class Form_RadioButton extends Form_Element {
     function getMatch()
     {
         if ((string)$this->match == (string)$this->value) {
-            return 'checked="checked"';
+            return 'checked="checked" ';
         }
         else {
             return NULL;
