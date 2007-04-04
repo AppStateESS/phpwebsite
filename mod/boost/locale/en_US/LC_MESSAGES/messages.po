@@ -247,7 +247,7 @@ msgstr ""
 msgid "Needs upgrading"
 msgstr ""
 
-msgid "No installation file found."
+msgid "Installation file not implemented."
 msgstr ""
 
 msgid "No modules available."
