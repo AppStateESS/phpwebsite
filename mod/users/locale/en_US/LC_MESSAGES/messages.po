@@ -449,7 +449,7 @@ msgstr ""
 msgid "Permissions"
 msgstr ""
 
-msgid "Permissions file not found."
+msgid "Permissions file not implemented."
 msgstr ""
 
 msgid "Permissions saved."
