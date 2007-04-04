@@ -16,7 +16,7 @@ function controlpanel_unregister($module, &$content)
     $cpFile = sprintf('%smod/%s/boost/controlpanel.php', PHPWS_SOURCE_DIR, $module);
     
     if (!is_file($cpFile)){
-        PHPWS_Boost::addLog($module, _('No Control Panel file found for unregisteration.'));
+        PHPWS_Boost::addLog($module, _('Control Panel unregisteration file not implemented.'));
         translate();
         return FALSE;
     }
