@@ -91,6 +91,7 @@ Peter Heppner (German translations)
 Bobby Kennedy/fatman
 Rene Kiesler/rck
 Greg Meiste/blindman1344
+Greg Morgan/dr_kludge
 Shaun Murray/singletrack
 Ken Nordquist/kenphused
 Mike Noyes/mhnoyes
