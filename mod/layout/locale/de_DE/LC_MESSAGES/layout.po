@@ -1,0 +1,257 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPWS1_1_0,Layout2_3_0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-02-26 15:18-0500\n"
+"PO-Revision-Date: 2007-03-05 12:01+0100\n"
+"Last-Translator: Peter Heppner <heppner@gmx.de>\n"
+"Language-Team: Peter Heppner <heppner@gmx.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "-- Use default style --"
+msgstr "-- Standardstil benutzen --"
+
+msgid "Adjust Boxes"
+msgstr "Boxen korrigieren"
+
+msgid "Allow indexing"
+msgstr "Indizierung erlauben"
+
+msgid "Allow link following"
+msgstr "Linkverfolgung erlauben"
+
+msgid "Available styles"
+msgstr "Verfügbare Stile"
+
+msgid "Box move off"
+msgstr "Box bewegen aus"
+
+msgid "Box order is out of sequence."
+msgstr "Boxreihenfolge ist völlig durcheinander."
+
+msgid "Box positioning"
+msgstr "Boxpositionierung"
+
+msgid "Boxes"
+msgstr "Boxen"
+
+msgid "Cancel"
+msgstr "Abbruch"
+
+msgid "Change CSS"
+msgstr "CSS ändern"
+
+msgid "Change Settings"
+msgstr "Einstellungen ändern"
+
+msgid "Change style"
+msgstr "Stil ändern"
+
+msgid "Complete the theme change"
+msgstr "Themenänderung fertigstellen"
+
+msgid "Confirm Theme Change"
+msgstr "Themenänderungen bestätigen"
+
+msgid "Control the layout of your site."
+msgstr "Steuert das Layout der Website."
+
+msgid "Data was not an array."
+msgstr ""
+
+msgid "Default Robot Settings"
+msgstr "Standard Robot Einstellungen"
+
+msgid "Default Theme"
+msgstr "Standardthema"
+
+msgid "Description"
+msgstr "Beschreibung"
+
+msgid "Disable"
+msgstr "Abschalten"
+
+msgid "Display settings"
+msgstr "Anzeigeeinstellungen"
+
+msgid "Don't reset"
+msgstr "Nicht zurücksetzen"
+
+msgid "Done"
+msgstr "Fertig"
+
+msgid "Edit Footer"
+msgstr "Fußzeile bearbeiten"
+
+msgid "Edit Header"
+msgstr "Kopfzeile bearbeiten"
+
+msgid "Edit Meta Tags"
+msgstr "Meta Tags bearbeiten"
+
+msgid "Enable"
+msgstr "Einschalten"
+
+msgid "Error"
+msgstr "Fehler"
+
+msgid "Expect an error theme when finished."
+msgstr ""
+
+msgid "Failure to respond in ten seconds, reverts phpWebSite to the default theme."
+msgstr ""
+
+msgid "Footer"
+msgstr "Fußzeile"
+
+msgid "Footer updated."
+msgstr "Fußzeile aktualisiert."
+
+msgid "Header"
+msgstr "Kopfzeile"
+
+msgid "Header updated."
+msgstr "Kopfzeile aktualisiert."
+
+msgid "If you are happy with the change, click the appropiate button."
+msgstr "Wenn Du zufrieden bist, drücke den entsprechenden Knopf."
+
+msgid "Javascript file was not found."
+msgstr "Javascriptdatei nicht gefunden."
+
+msgid "Keywords"
+msgstr "Schlüsselworte"
+
+msgid "Layout"
+msgstr "Layout"
+
+msgid "Layout did not receive any data for display"
+msgstr "Layout hat keine Anzeigedaten empfangen"
+
+msgid "Layout session not set"
+msgstr "Layoutmodus nicht eingeschaltet"
+
+msgid "Layout settings updated."
+msgstr "Layouteinstellungen aktualisiert."
+
+msgid "Meta Tags"
+msgstr "Meta Tags"
+
+msgid "Meta Tags updated."
+msgstr "Meta Tags aktualisiert."
+
+msgid "Meta tags"
+msgstr "Meta Tags"
+
+msgid "Move"
+msgstr "Verschieben"
+
+msgid "Move down"
+msgstr "Nach unten verschieben"
+
+msgid "Move to bottom"
+msgstr "Nach ganz unten"
+
+msgid "Move to top"
+msgstr "Nach ganz oben"
+
+msgid "Move up"
+msgstr "Nach oben verschieben"
+
+msgid "No alternate style sheets available."
+msgstr ""
+
+msgid "No themes installed."
+msgstr "Keine Themen installiert."
+
+msgid "Only show footer on front page"
+msgstr "Fußzeile nur auf Eingangsseite zeigen"
+
+msgid "Only show header on front page"
+msgstr "Kopfzeile nur auf Eingangsseite zeigen"
+
+msgid "Page Title"
+msgstr "Seitentitel"
+
+msgid "Page Title: Name of your web site"
+msgstr "Seitentitel: Name der Website"
+
+msgid "Pick a theme"
+msgstr "Thema auswählen"
+
+msgid "Please enter a page title."
+msgstr "Bitte Seitentitel eingeben."
+
+msgid "Removing old layout components."
+msgstr "Alte Layoutkomponenten werden entfernt."
+
+msgid "Reset boxes"
+msgstr "Boxen zurücksetzen"
+
+msgid "Restore the default theme"
+msgstr "Standardthema wiederherstellen"
+
+msgid "Restore to default"
+msgstr "Wiederherstellen"
+
+msgid "Save"
+msgstr "Speichern"
+
+msgid "Save settings"
+msgstr "Einstellungen speichern"
+
+msgid "Send to"
+msgstr "Senden an"
+
+msgid "Set meta tags"
+msgstr "Meta Tags setzen"
+
+msgid "Settings changed."
+msgstr "Einstellungen geändert."
+
+msgid "Settings saved"
+msgstr "Einstellungen gespeichert"
+
+msgid "Style sheet"
+msgstr "Stylesheet"
+
+msgid "The theme.ini file is missing for the default theme."
+msgstr ""
+
+msgid "Theme settings updated."
+msgstr "Themeneinstellungen aktualisiert."
+
+msgid "Themes"
+msgstr "Themen"
+
+msgid "There was a problem reading the theme directories."
+msgstr "Ein Problem ist beim Lesen der Themenverzeichnisse aufgetreten."
+
+msgid "There was a problem updating the settings."
+msgstr "Ein Problem ist beim Bearbeiten der Einstellungen aufgetreten."
+
+msgid "Unable to receive theme information."
+msgstr "Kann keine Themeninformationen empfangen."
+
+msgid "Update"
+msgstr "Aktualisieren"
+
+msgid "Update Footer"
+msgstr "Fußzeile aktualisieren"
+
+msgid "Update Header"
+msgstr "Kopfzeile aktualisieren"
+
+msgid "Update Theme Settings"
+msgstr "Themeneinstellungen aktualisieren"
+

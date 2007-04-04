@@ -4,9 +4,6 @@
    * @version $Id$
    */
 
-translate('layout');
 Layout::checkJavascript();
 Layout::checkSettings();
-translate();
-
 ?>

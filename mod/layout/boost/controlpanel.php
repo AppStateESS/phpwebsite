@@ -3,13 +3,12 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-translate('layout');
-$link[] = array('label'       => _('Layout'),
+
+$link[] = array('label'       => dgettext('layout', 'Layout'),
 		 'restricted'  => TRUE,
 		 'url'         => 'index.php?module=layout&action=admin',
-		 'description' => _('Control the layout of your site.'),
+		 'description' => dgettext('layout', 'Control the layout of your site.'),
 		 'image'       => 'layout.png',
 		 'tab'         => 'admin'
 		 );
-translate();
 ?>

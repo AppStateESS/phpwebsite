@@ -770,7 +770,7 @@ class Layout {
         if (Layout::isMoveBox()) {
             $vars['action']  = 'admin';
             $vars['command'] = 'turn_off_box_move';
-            $links[] = PHPWS_Text::moduleLink(_('Box move off'), 'layout', $vars);
+            $links[] = PHPWS_Text::moduleLink(dgettext('layout', 'Box move off'), 'layout', $vars);
         }
 
 
@@ -784,7 +784,7 @@ class Layout {
             $vars['key_id']    = $key->id;
             $vars['action']    = 'admin';
 
-            $js_vars['label'] = _('Change style');
+            $js_vars['label'] = dgettext('layout', 'Change style');
             $vars['command']  = 'js_style_change';
 
             $js_vars['address'] = PHPWS_Text::linkAddress('layout', $vars, TRUE);
@@ -792,7 +792,7 @@ class Layout {
 
             if (!$key->isHomeKey()) {
                 $js_vars['height'] = 400;
-                $js_vars['label'] = _('Meta tags');
+                $js_vars['label'] = dgettext('layout', 'Meta tags');
                 $vars['command']  = 'page_meta_tags';
                 $js_vars['address'] = PHPWS_Text::linkAddress('layout', $vars, TRUE);
                 $links[] = javascript('open_window', $js_vars);
@@ -1013,16 +1013,16 @@ class Layout {
         PHPWS_Core::initCoreClass('Form.php');
 
         $themeVars = $_SESSION['Layout_Settings']->getAllowedVariables();
-        $menu['move_box_top'] = _('Move to top');
-        $menu['move_box_up'] = _('Move up');
-        $menu['move_box_down'] = _('Move down');
-        $menu['move_box_bottom'] = _('Move to bottom');
-        $menu['restore'] = _('Restore to default');
+        $menu['move_box_top'] = dgettext('layout', 'Move to top');
+        $menu['move_box_up'] = dgettext('layout', 'Move up');
+        $menu['move_box_down'] = dgettext('layout', 'Move down');
+        $menu['move_box_bottom'] = dgettext('layout', 'Move to bottom');
+        $menu['restore'] = dgettext('layout', 'Restore to default');
         foreach ($themeVars as $var){
             if ($box->theme_var == $var) {
                 continue;
             }
-            $menu[$var] = _('Send to') . ' ' . $var;
+            $menu[$var] = dgettext('layout', 'Send to') . ' ' . $var;
         }
 
         $form = new PHPWS_Form;
@@ -1032,7 +1032,7 @@ class Layout {
         $form->addHidden('box_source', $box->id);
         $form->addSelect('box_dest', $menu);
         $form->setMatch('box_dest', $box->theme_var);
-        $form->addSubmit('move', _('Move'));
+        $form->addSubmit('move', dgettext('layout', 'Move'));
 
         $template = $form->getTemplate();
         return PHPWS_Template::process($template, 'layout', 'move_box_select.tpl');

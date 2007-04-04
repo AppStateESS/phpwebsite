@@ -1,8 +1,12 @@
 <?php
+  /**
+   * @version $Id$
+   * @author Matthew McNaney <mcnaney at gmail dot com>
+   */
 
 function my_page()
 {
-    translate('layout');
+    
     $title = $content =  NULL;
 
     if (@$message = $_SESSION['Layout_User_Message']) {
@@ -20,14 +24,14 @@ function my_page()
 
     switch ($lo_command) {
     case 'user_form':
-        $title = _('Display settings');
+        $title = dgettext('layout', 'Display settings');
         $content = Layout_User_Settings::user_form(); 
         break;
 
     case 'save_settings':
         Layout_User_Settings::save_settings();
         $_SESSION['Reset_Layout'] = 1;
-        $_SESSION['Layout_User_Message'] = _('Settings saved');
+        $_SESSION['Layout_User_Message'] = dgettext('layout', 'Settings saved');
         PHPWS_Core::reroute('index.php?module=users&action=user&tab=layout');
         break;
     }
@@ -35,7 +39,7 @@ function my_page()
     $tpl['TITLE']   = $title;
     $tpl['CONTENT'] = $content;
     $tpl['MESSAGE'] = $message;
-    translate();
+    
     return PHPWS_Template::process($tpl, 'layout', 'main.tpl');
 }
 
@@ -52,10 +56,10 @@ class Layout_User_Settings {
         if ($css) {
             $form->addSelect('alternate', $css);
             $form->setMatch('alternate', PHPWS_Cookie::read('layout_style'));
-            $form->setLabel('alternate', _('Available styles'));
-            $form->addSubmit(_('Save settings'));
+            $form->setLabel('alternate', dgettext('layout', 'Available styles'));
+            $form->addSubmit(dgettext('layout', 'Save settings'));
         } else {
-            $blank = _('No alternate style sheets available.');
+            $blank = dgettext('layout', 'No alternate style sheets available.');
             return $blank;
         }
 

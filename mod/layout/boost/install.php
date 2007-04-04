@@ -7,10 +7,10 @@
 function layout_install(&$content, $branchInstall=FALSE)
 {
     $page_title = NULL;
-    translate('layout');
+    
     if (isset($_POST['process_layout'])) {
         if (empty($_POST['page_title'])) {
-            $error  = _('Please enter a page title.');
+            $error  = dgettext('layout', 'Please enter a page title.');
         } else {
             $page_title = strip_tags($_POST['page_title']);
             $default_theme = $_POST['theme'];
@@ -21,7 +21,7 @@ function layout_install(&$content, $branchInstall=FALSE)
             $db->addValue('default_theme', trim($default_theme));
             $db->addValue('page_title', $page_title);
             $db->update();
-            $content[] = _('Layout settings updated.');
+            $content[] = dgettext('layout', 'Layout settings updated.');
             return TRUE;
         } else {
             $tpl['ERROR'] = $error;
@@ -48,26 +48,24 @@ function layout_install(&$content, $branchInstall=FALSE)
     $form->addHidden('process_layout', 1);
 
     if (empty($available_themes)) {
-        $content[] = _('No themes installed.');
-        $content[] = _('Expect an error theme when finished.');
+        $content[] = dgettext('layout', 'No themes installed.');
+        $content[] = dgettext('layout', 'Expect an error theme when finished.');
     } else {
         $form->addSelect('theme', $available_themes);
         $form->reindexValue('theme');
-        $form->setLabel('theme', _('Pick a theme'));
+        $form->setLabel('theme', dgettext('layout', 'Pick a theme'));
         $form->setMatch('theme', $default_theme);
     }
 
     $form->addText('page_title', $page_title);
-    $form->setLabel('page_title', _('Page Title'));
-    $form->setTitle('page_title', _('Page Title: Name of your web site'));
-    $form->addSubmit(_('Done'));
+    $form->setLabel('page_title', dgettext('layout', 'Page Title'));
+    $form->setTitle('page_title', dgettext('layout', 'Page Title: Name of your web site'));
+    $form->addSubmit(dgettext('layout', 'Done'));
   
     $template = $form->getTemplate();
     $content[] = PHPWS_Template::process($template, 'layout', 'setup.tpl');
-    translate();
+    
     return FALSE;
-
 }
-
 
 ?>

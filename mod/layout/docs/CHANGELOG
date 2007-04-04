@@ -1,3 +1,7 @@
+4 April 2007
++ Added German translations
++ Updated language functions
+
 19 March 2007
 + Fixed: bug in Layout confused a user's style sheet settings after
   the theme was changed.
