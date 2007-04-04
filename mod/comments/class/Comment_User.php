@@ -52,7 +52,7 @@ class Comment_User extends Demographics_User {
             $this->signature = trim(strip_tags($sig, '<img>'));
         } else {
             if (preg_match('/<img/', $_POST['signature'])) {
-                $this->_error[] = _('Image signatures not allowed.');
+                $this->_error[] = dgettext('comments', 'Image signatures not allowed.');
             }
             $this->signature = trim(strip_tags($sig));
         }
@@ -140,8 +140,8 @@ class Comment_User extends Demographics_User {
         if ($format && isset($this->website)) {
             return sprintf('<a href="%s" title="%s">%s</a>',
                            $this->website,
-                           sprintf(_('%s\'s Website'), $this->display_name),
-                           _('Website'));
+                           sprintf(dgettext('comments', '%s\'s Website'), $this->display_name),
+                           dgettext('comments', 'Website'));
         } else {
             return $this->website;
         }
@@ -198,7 +198,7 @@ class Comment_User extends Demographics_User {
 
         if (!empty($this->joined_date)) {
             $template['JOINED_DATE'] = $this->getJoinedDate(TRUE);
-            $template['JOINED_DATE_LABEL'] = _('Joined');
+            $template['JOINED_DATE_LABEL'] = dgettext('comments', 'Joined');
         }
 
         if (isset($this->avatar)) {
@@ -215,7 +215,7 @@ class Comment_User extends Demographics_User {
 
         if (isset($this->location)) {
             $template['LOCATION'] = $this->location;
-            $template['LOCATION_LABEL'] = _('Location');
+            $template['LOCATION_LABEL'] = dgettext('comments', 'Location');
         }
         return $template;
     }
@@ -234,7 +234,7 @@ class Comment_User extends Demographics_User {
         } else {
             $image_info = @getimagesize($_POST['avatar']);
             if (!$image_info) {
-                $errors[] = _('Could not access image url.');
+                $errors[] = dgettext('comments', 'Could not access image url.');
             }
         }
 
@@ -255,7 +255,7 @@ class Comment_User extends Demographics_User {
                     $result = $image->write();
                     if (PEAR::isError($result)) {
                         PHPWS_Error::log($result);
-                        $errors[] = array(_('There was a problem saving your image.'));
+                        $errors[] = array(dgettext('comments', 'There was a problem saving your image.'));
                     } else {
                         $this->setAvatar($image->getPath());
                     }
@@ -274,7 +274,7 @@ class Comment_User extends Demographics_User {
             $this->contact_email = NULL;
         } else {
             if (!$this->setContactEmail($_POST['contact_email'])) {
-                $errors[] = _('Your contact email is formatted improperly.');
+                $errors[] = dgettext('comments', 'Your contact email is formatted improperly.');
             }
         }
 

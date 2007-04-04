@@ -6,11 +6,9 @@
 
 $use_permissions = TRUE;
 
-translate('comments');
-$permissions['edit_comments']   = _('Edit comments');
-$permissions['delete_comments'] = _('Delete comments');
-$permissions['settings']        = _('Change settings');
-translate();
+$permissions['edit_comments']   = dgettext('comments', 'Edit comments');
+$permissions['delete_comments'] = dgettext('comments', 'Delete comments');
+$permissions['settings']        = dgettext('comments', 'Change settings');
 
 $item_permissions = FALSE;
 ?>

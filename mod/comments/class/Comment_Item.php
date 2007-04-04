@@ -275,11 +275,11 @@ class Comment_Item {
             $author_info['ANONYMOUS_TAG'] = COMMENT_ANONYMOUS_TAG;
         }
 
-	$template['SUBJECT_LABEL'] = _('Subject');
-	$template['ENTRY_LABEL']   = _('Comment');
-	$template['AUTHOR_LABEL']  = _('Author');
-	$template['POSTED_BY']	   = _('Posted by');
-	$template['POSTED_ON']	   = _('Posted on');
+	$template['SUBJECT_LABEL'] = dgettext('comments', 'Subject');
+	$template['ENTRY_LABEL']   = dgettext('comments', 'Comment');
+	$template['AUTHOR_LABEL']  = dgettext('comments', 'Author');
+	$template['POSTED_BY']	   = dgettext('comments', 'Posted by');
+	$template['POSTED_ON']	   = dgettext('comments', 'Posted on');
 
 	$template['SUBJECT']	     = $this->subject;
 	$template['ENTRY']	     = $this->getEntry(TRUE);
@@ -294,20 +294,20 @@ class Comment_Item {
 	$template['VIEW_LINK']	     = $this->viewLink();
 
         if ($this->parent) {
-            $template['RESPONSE_LABEL']  = _('In response to');
+            $template['RESPONSE_LABEL']  = dgettext('comments', 'In response to');
             $template['RESPONSE_NUMBER'] = $this->responseNumber();
             $template['RESPONSE_NAME']   = $this->responseAuthor();
         }
 
 	if ($this->edit_time) {
-	    $template['EDIT_LABEL']	   = _('Edited');
+	    $template['EDIT_LABEL']	   = dgettext('comments', 'Edited');
 	    $template['EDIT_AUTHOR']	   = $this->getEditAuthor();
-	    $template['EDIT_AUTHOR_LABEL'] = _('Edited by');
-	    $template['EDIT_TIME_LABEL']   = _('Edited on');
+	    $template['EDIT_AUTHOR_LABEL'] = dgettext('comments', 'Edited by');
+	    $template['EDIT_TIME_LABEL']   = dgettext('comments', 'Edited on');
 	    $template['EDIT_TIME']	   = $this->getEditTime();
 	    if (!empty($this->edit_reason)) {
 		$template['EDIT_REASON']       = $this->getEditReason();
-		$template['EDIT_REASON_LABEL'] = _('Reason');
+		$template['EDIT_REASON_LABEL'] = dgettext('comments', 'Reason');
 	    } else {
                 $template['EDIT_REASON'] = null;
             }
@@ -371,7 +371,7 @@ class Comment_Item {
 	    $vars['user_action']   = 'post_comment';
 	    $vars['thread_id']	   = $this->thread_id;
 	    $vars['cm_id']	   = $this->getId();
-	    return PHPWS_Text::moduleLink(_('Edit'), 'comments', $vars);
+	    return PHPWS_Text::moduleLink(dgettext('comments', 'Edit'), 'comments', $vars);
 	} else {
 	    return null;
 	}
@@ -380,10 +380,10 @@ class Comment_Item {
     function deleteLink()
     {
 	if (Current_User::allow('comments', 'delete_comments')) {
-	    $vars['QUESTION'] = _('Are you sure you want to delete this comment?');
+	    $vars['QUESTION'] = dgettext('comments', 'Are you sure you want to delete this comment?');
 	    $vars['ADDRESS'] = 'index.php?module=comments&amp;cm_id=' . $this->getId() . '&amp;admin_action=delete_comment&amp;authkey='
 		. Current_User::getAuthKey();
-	    $vars['LINK'] = _('Delete');
+	    $vars['LINK'] = dgettext('comments', 'Delete');
 	    return Layout::getJavascript('confirm', $vars);
 	} else {
 	    return null;
@@ -396,14 +396,14 @@ class Comment_Item {
 	$vars['user_action']   = 'post_comment';
 	$vars['thread_id']     = $this->thread_id;
 	$vars['cm_parent']     = $this->getId();
-	return PHPWS_Text::moduleLink(_('Quote'), 'comments', $vars);
+	return PHPWS_Text::moduleLink(dgettext('comments', 'Quote'), 'comments', $vars);
     }
 
     function replyLink()
     {
 	$vars['user_action']   = 'post_comment';
 	$vars['thread_id']     = $this->thread_id;
-	return PHPWS_Text::moduleLink(_('Reply'), 'comments', $vars);
+	return PHPWS_Text::moduleLink(dgettext('comments', 'Reply'), 'comments', $vars);
     }
 
     function viewLink()

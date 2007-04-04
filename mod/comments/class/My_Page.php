@@ -9,7 +9,7 @@ class Comments_My_Page {
   
     function main()
     {
-        translate('comments');
+        
         if (isset($_REQUEST['my_page_op'])) {
             $command = &$_REQUEST['my_page_op'];
         } else {
@@ -20,7 +20,7 @@ class Comments_My_Page {
  
         switch ($command) {
         case 'main':
-            $title = _('Comment Settings');
+            $title = dgettext('comments', 'Comment Settings');
             $C_User = new Comment_User(Current_User::getId());
             $content = Comments_My_Page::editOptions($C_User);
             break;
@@ -30,10 +30,10 @@ class Comments_My_Page {
             $result = $C_User->saveOptions();
             if (is_array($result)) {
                 $message = implode('<br />', $result);
-                $title = _('Comment Settings');
+                $title = dgettext('comments', 'Comment Settings');
                 $content = Comments_My_Page::editOptions($C_User);
             } else {
-                Comments_My_Page::sendMessage(_('Settings saved.'));
+                Comments_My_Page::sendMessage(dgettext('comments', 'Settings saved.'));
             }
             break;
         }
@@ -43,7 +43,7 @@ class Comments_My_Page {
         if (isset($message)) {
             $box['MESSAGE'] = &$message;
         }
-        translate();
+        
         return PHPWS_Template::process($box, 'comments', 'my_page.tpl');
     }
 
@@ -76,7 +76,7 @@ class Comments_My_Page {
             $form->addText('signature', $user->getSignature());
             $form->setSize('signature', 60);
             $form->setMaxSize('signature', 254);
-            $form->setLabel('signature', _('Signature'));
+            $form->setLabel('signature', dgettext('comments', 'Signature'));
         }
 
         if (PHPWS_Settings::get('comments', 'allow_avatars')) {
@@ -87,13 +87,13 @@ class Comments_My_Page {
                 $form->addText('avatar', $user->getAvatar());
                 $form->setSize('avatar', 60);
             }
-            $form->setLabel('avatar', _('Avatar'));
+            $form->setLabel('avatar', dgettext('comments', 'Avatar'));
         }
             
         $form->addText('contact_email', $user->getContactEmail());
-        $form->setLabel('contact_email', _('Contact Email'));
+        $form->setLabel('contact_email', dgettext('comments', 'Contact Email'));
         $form->setSize('contact_email', 40);
-        $form->addSubmit(_('Update'));
+        $form->addSubmit(dgettext('comments', 'Update'));
         $template = $form->getTemplate();
         return PHPWS_Template::process($template, 'comments', 'user_settings.tpl');
     }

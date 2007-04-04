@@ -17,7 +17,7 @@ class Comments {
 
     function &getThread($key=NULL)
     {
-        translate('comments');
+        
         if (empty($key)) {
             $key = Key::getCurrent();
         }
@@ -39,7 +39,7 @@ class Comments {
         $thread->key_id = $key->id;
         $thread->_key = $key;
         $thread->buildThread();
-        translate();
+        
         return $thread;
     }
 
@@ -90,7 +90,7 @@ class Comments {
             if (Current_User::allow('comments', 'settings')) {
                 $content = Comments::settingsForm();
             } else {
-                $content = _('Sorry, but you do not have rights to alter settings.');
+                $content = dgettext('comments', 'Sorry, but you do not have rights to alter settings.');
             }
             break;
 
@@ -141,7 +141,7 @@ class Comments {
         switch ($command) {
         case 'post_comment':
             if ($thread->canComment()) {
-                $title = _('Post Comment');
+                $title = dgettext('comments', 'Post Comment');
                 $content[] = Comments::form($thread, $c_item);
             } else {
                 PHPWS_Core::errorPage('404');
@@ -162,8 +162,8 @@ class Comments {
             }
 
             if (!isset($thread)) {
-                $title = _('Error');
-                $content[] = _('Missing thread information.');
+                $title = dgettext('comments', 'Error');
+                $content[] = dgettext('comments', 'Missing thread information.');
                 break;
             }
 
@@ -171,9 +171,9 @@ class Comments {
                 $result = $c_item->save();
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
-                    $title = _('Sorry');
-                    $content[] = _('A problem occurred when trying to save your comment.');
-                    $content[] = _('Please try again later.');
+                    $title = dgettext('comments', 'Sorry');
+                    $content[] = dgettext('comments', 'A problem occurred when trying to save your comment.');
+                    $content[] = dgettext('comments', 'Please try again later.');
                     break;
                 } else {
                     PHPWS_Core::reroute($thread->getSourceUrl(false, $c_item->id));
@@ -181,7 +181,7 @@ class Comments {
                 }
 
             } else {
-                $title = _('Post Comment');
+                $title = dgettext('comments', 'Post Comment');
                 $content[] = Comments::form($thread, $c_item);
             }
 
@@ -191,7 +191,7 @@ class Comments {
             $comment = new Comment_Item($_REQUEST['cm_id']);
             $thread = new Comment_Thread($comment->thread_id);
             $key = new Key($thread->key_id);
-            $title = sprintf(_('Comment from: %s'), $key->getUrl());
+            $title = sprintf(dgettext('comments', 'Comment from: %s'), $key->getUrl());
             $content[] = Comments::viewComment($comment);
             break;
         }
@@ -224,7 +224,7 @@ class Comments {
     function postComment(&$thread, &$cm_item)
     {
         if (empty($_POST['cm_subject']) && empty($_POST['cm_entry'])) {
-            $cm_item->_error = _('You must include a subject or comment.');
+            $cm_item->_error = dgettext('comments', 'You must include a subject or comment.');
             return false;
         }
 
@@ -247,7 +247,7 @@ class Comments {
         if (!Current_User::isLogged() && 
             PHPWS_Settings::get('comments', 'anonymous_naming')) {
             if (!$cm_item->setAnonName($_POST['anon_name'])) {
-                $cm_item->_error = _('That name is not allowed. Try another.');
+                $cm_item->_error = dgettext('comments', 'That name is not allowed. Try another.');
                 return false;
             }
         }
@@ -256,7 +256,7 @@ class Comments {
         if ( Comments::useCaptcha() ) {
             PHPWS_Core::initCoreClass('Captcha.php');
             if (!Captcha::verify($_POST['captcha'])) {
-                $cm_item->_error =  _('You failed verification. Try again.');
+                $cm_item->_error =  dgettext('comments', 'You failed verification. Try again.');
                 return false;
             }
         }
@@ -277,13 +277,13 @@ class Comments {
         if (!empty($c_item->id)) {
             $form->addHidden('cm_id', $c_item->id);
             $form->addText('edit_reason', $c_item->getEditReason());
-            $form->setLabel('edit_reason', _('Reason for edit'));
+            $form->setLabel('edit_reason', dgettext('comments', 'Reason for edit'));
             $form->setSize('edit_reason', 50);
         }
 
         if (!Current_User::isLogged() && PHPWS_Settings::get('comments', 'anonymous_naming')) {
             $form->addText('anon_name', $c_item->getEditReason());
-            $form->setLabel('anon_name', _('Name'));
+            $form->setLabel('anon_name', dgettext('comments', 'Name'));
             $form->setSize('anon_name', 20, 20);
         }
 
@@ -292,11 +292,11 @@ class Comments {
         $form->addHidden('thread_id',    $thread->getId());
 
         $form->addText('cm_subject');
-        $form->setLabel('cm_subject', _('Subject'));
+        $form->setLabel('cm_subject', dgettext('comments', 'Subject'));
         $form->setSize('cm_subject', 50);
 
         if (isset($c_parent) && empty($c_item->subject)) {
-            $form->setValue('cm_subject', _('Re:') . $c_parent->subject);
+            $form->setValue('cm_subject', dgettext('comments', 'Re:') . $c_parent->subject);
         } else {
             $form->setValue('cm_subject', $c_item->subject);
         }
@@ -309,15 +309,15 @@ class Comments {
         }
 
         $form->addTextArea('cm_entry', $entry_text);
-        $form->setLabel('cm_entry', _('Comment'));
+        $form->setLabel('cm_entry', dgettext('comments', 'Comment'));
         $form->setCols('cm_entry', 50);
         $form->setRows('cm_entry', 10);
-        $form->addSubmit(_('Post Comment'));
+        $form->addSubmit(dgettext('comments', 'Post Comment'));
 
         if (Comments::useCaptcha()) {
             PHPWS_Core::initCoreClass('Captcha.php');
             $form->addText('captcha');
-            $form->setLabel('captcha', _('Please copy the word in the above image.'));
+            $form->setLabel('captcha', dgettext('comments', 'Please copy the word in the above image.'));
             $form->addTplTag('CAPTCHA_IMAGE', Captcha::get());
         }
 
@@ -407,12 +407,12 @@ class Comments {
 
     function viewComment($comment)
     {
-        translate('comments');
+        
         $thread = new Comment_Thread($comment->getThreadId());
         $tpl = $comment->getTpl($thread->allow_anon);
         $tpl['CHILDREN'] = $thread->view($comment->getId());
         $content = PHPWS_Template::process($tpl, 'comments', COMMENT_VIEW_ONE_TPL);
-        translate();
+        
         return $content;
     }
 
@@ -456,9 +456,9 @@ class Comments {
         PHPWS_Settings::set('comments', $settings);
         PHPWS_Settings::save('comments');
 
-        $content[] = _('Settings saved.');
+        $content[] = dgettext('comments', 'Settings saved.');
         $vars['admin_action'] = 'admin_menu';
-        $content[] = PHPWS_Text::secureLink(_('Go back to settings...'), 'comments', $vars);
+        $content[] = PHPWS_Text::secureLink(dgettext('comments', 'Go back to settings...'), 'comments', $vars);
         return implode('<br /><br />', $content);
     }
 
@@ -471,48 +471,48 @@ class Comments {
         $form->addHidden('admin_action', 'post_settings');
 
         $form->addCheck('allow_signatures', 1);
-        $form->setLabel('allow_signatures', _('Allow user signatures'));
+        $form->setLabel('allow_signatures', dgettext('comments', 'Allow user signatures'));
         $form->setMatch('allow_signatures', $settings['allow_signatures']);
                         
 
         $form->addCheck('allow_image_signatures', 1);
-        $form->setLabel('allow_image_signatures', _('Allow images in signatures'));
+        $form->setLabel('allow_image_signatures', dgettext('comments', 'Allow images in signatures'));
         $form->setMatch('allow_image_signatures', $settings['allow_image_signatures']);
 
         $form->addCheck('allow_avatars', 1);
-        $form->setLabel('allow_avatars', _('Allow user avatars'));
+        $form->setLabel('allow_avatars', dgettext('comments', 'Allow user avatars'));
         $form->setMatch('allow_avatars', $settings['allow_avatars']);
 
         $form->addCheck('local_avatars', 1);
-        $form->setLabel('local_avatars', _('Save avatars locally'));
+        $form->setLabel('local_avatars', dgettext('comments', 'Save avatars locally'));
         $form->setMatch('local_avatars', $settings['local_avatars']);
 
         $form->addCheck('anonymous_naming', 1);
-        $form->setLabel('anonymous_naming', _('Allow anonymous naming'));
+        $form->setLabel('anonymous_naming', dgettext('comments', 'Allow anonymous naming'));
         $form->setMatch('anonymous_naming', $settings['anonymous_naming']);
 
-        $order_list = array('old_all'  => _('Oldest first'),
-                            'new_all'  => _('Newest first'));
+        $order_list = array('old_all'  => dgettext('comments', 'Oldest first'),
+                            'new_all'  => dgettext('comments', 'Newest first'));
 
         $form->addSelect('order', $order_list);
         $form->setMatch('order', PHPWS_Settings::get('comments', 'default_order'));
-        $form->setLabel('order', _('Default order'));
+        $form->setLabel('order', dgettext('comments', 'Default order'));
 
-        $captcha[0] = _('Don\'t use');
-        $captcha[1] = _('Anonymous users only');
-        $captcha[2] = _('All users');
+        $captcha[0] = dgettext('comments', 'Don\'t use');
+        $captcha[1] = dgettext('comments', 'Anonymous users only');
+        $captcha[2] = dgettext('comments', 'All users');
 
         if (extension_loaded('gd')) {
             $form->addSelect('captcha', $captcha);
             $form->setMatch('captcha', PHPWS_Settings::get('comments', 'captcha'));
-            $form->setLabel('captcha', _('CAPTCHA use'));
+            $form->setLabel('captcha', dgettext('comments', 'CAPTCHA use'));
         }
 
-        $form->addSubmit(_('Save'));
+        $form->addSubmit(dgettext('comments', 'Save'));
 
         $tpl = $form->getTemplate();
 
-        $tpl['TITLE'] = _('Comment settings');
+        $tpl['TITLE'] = dgettext('comments', 'Comment settings');
         return PHPWS_Template::process($tpl, 'comments', 'settings_form.tpl');
     }
 

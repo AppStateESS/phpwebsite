@@ -53,17 +53,17 @@ class Comment_Thread {
 
     function countComments($formatted=FALSE)
     {
-        translate('comments');
+        
         if ($formatted) {
 
             if (empty($this->total_comments)) {
-                $msg = _('No comments');
+                $msg = dgettext('comments', 'No comments');
             } elseif ($this->total_comments == 1) {
-                $msg = _('1 comment');
+                $msg = dgettext('comments', '1 comment');
             } else {
-                $msg = sprintf(_('%s comments'), $this->total_comments);
+                $msg = sprintf(dgettext('comments', '%s comments'), $this->total_comments);
             }
-            translate();
+            
             return $msg;
         } else {
             return $this->total_comments;
@@ -99,9 +99,9 @@ class Comment_Thread {
             $result = $this->save();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
-                translate('comments');
-                $this->_error = _('Error occurred trying to create new thread.');
-                translate();
+                
+                $this->_error = dgettext('comments', 'Error occurred trying to create new thread.');
+                
             }
             return TRUE;
         } else {
@@ -128,7 +128,7 @@ class Comment_Thread {
 
     function getSourceUrl($full=FALSE, $comment_id=0)
     {
-        translate('comments');
+        
         PHPWS_Core::initCoreClass('DBPager.php');
         $url = DBPager::getLastView('comments_items');
 
@@ -137,10 +137,10 @@ class Comment_Thread {
         }
 
         if ($full==TRUE) {
-            $url = sprintf('<a href="%s">%s</a>', $url, _('Go back'));
+            $url = sprintf('<a href="%s">%s</a>', $url, dgettext('comments', 'Go back'));
         }
 
-        translate();
+        
         return $url;
     }
 
@@ -153,7 +153,7 @@ class Comment_Thread {
     {
         $vars['user_action']   = 'post_comment';
         $vars['thread_id']     = $this->id;
-        return PHPWS_Text::moduleLink(_('Post New Comment'), 'comments', $vars);
+        return PHPWS_Text::moduleLink(dgettext('comments', 'Post New Comment'), 'comments', $vars);
     }
 
     function save()
@@ -207,7 +207,7 @@ class Comment_Thread {
 
     function view($parent_id=0)
     {
-        translate('comments');
+        
         if (Current_User::allow('comments')) {
             $this->miniAdmin();
         }
@@ -215,15 +215,15 @@ class Comment_Thread {
         Layout::addStyle('comments');
         PHPWS_Core::initCoreClass('DBPager.php');
 
-        $time_period = array('all'    => _('All'),
-                             'today'  => _('Today'),
-                             'yd'     => _('Since yesterday'),
-                             'week'   => _('This week'),
-                             'month'  => _('This month')
+        $time_period = array('all'    => dgettext('comments', 'All'),
+                             'today'  => dgettext('comments', 'Today'),
+                             'yd'     => dgettext('comments', 'Since yesterday'),
+                             'week'   => dgettext('comments', 'This week'),
+                             'month'  => dgettext('comments', 'This month')
                              );
 
-        $order_list = array('old_all'  => _('Oldest first'),
-                            'new_all'  => _('Newest first'));
+        $order_list = array('old_all'  => dgettext('comments', 'Oldest first'),
+                            'new_all'  => dgettext('comments', 'Newest first'));
 
 
         $pager = new DBPager('comments_items', 'Comment_Item');
@@ -264,7 +264,7 @@ class Comment_Thread {
         $form->setMatch('order', $default_order);
 
         $form->noAuthKey();
-        $form->addSubmit(_('Go'));
+        $form->addSubmit(dgettext('comments', 'Go'));
         $form->setMethod('get');
 
         $page_tags = $form->getTemplate();
@@ -279,7 +279,7 @@ class Comment_Thread {
         $pager->addRowTags('getTpl', $this->allow_anon);
         $pager->setLimitList(array(10, 20, 50));
         $pager->setDefaultLimit(COMMENT_DEFAULT_LIMIT);
-        $pager->setEmptyMessage(_('No comments'));
+        $pager->setEmptyMessage(dgettext('comments', 'No comments'));
         $pager->initialize();
         $rows = $pager->getRows();
         if (!empty($rows)) {
@@ -287,7 +287,7 @@ class Comment_Thread {
         }
 
         $content = $pager->get();
-        translate();
+        
         return $content;
     }
 
@@ -340,10 +340,10 @@ class Comment_Thread {
         $vars['thread_id'] = $this->id;
         if ($this->allow_anon) {
             $vars['admin_action'] = 'disable_anon_posting';
-            $link = PHPWS_Text::secureLink(_('Disable anonymous posting'), 'comments', $vars);
+            $link = PHPWS_Text::secureLink(dgettext('comments', 'Disable anonymous posting'), 'comments', $vars);
         } else {
             $vars['admin_action'] = 'enable_anon_posting';
-            $link = PHPWS_Text::secureLink(_('Enable anonymous posting'), 'comments', $vars);
+            $link = PHPWS_Text::secureLink(dgettext('comments', 'Enable anonymous posting'), 'comments', $vars);
         }
 
         MiniAdmin::add('comments', $link);

@@ -6,8 +6,7 @@
    * @version $Id$
    */
 
-translate('comments');
-define('DEFAULT_ANONYMOUS_TITLE', _('Anonymous')); // What an anonymous poster is called
+define('DEFAULT_ANONYMOUS_TITLE', dgettext('comments', 'Anonymous')); // What an anonymous poster is called
 
 /**
  * If you allow anonymous users to post and enter their name, you may
@@ -15,7 +14,7 @@ define('DEFAULT_ANONYMOUS_TITLE', _('Anonymous')); // What an anonymous poster i
  * if the user was anonymous. You can make it a word, image, or just an activation
  * space.
  */
-define('COMMENT_ANONYMOUS_TAG', _('(Anon)'));
+define('COMMENT_ANONYMOUS_TAG', dgettext('comments', '(Anon)'));
 
 
 define('COMMENT_DATE_FORMAT', '%c');
@@ -38,10 +37,9 @@ define('COMMENT_VIEW_ONE_TPL', 'alt_view_one.tpl');
 
 // This phrase will appear if a person doesn't enter a subject line
 // for their comment.
-define('COMMENT_NO_SUBJECT', _('No subject'));
+define('COMMENT_NO_SUBJECT', dgettext('comments', 'No subject'));
 
 // 10, 20, or 50 comments per page.
 define('COMMENT_DEFAULT_LIMIT', 20);
 
-translate();
 ?>
