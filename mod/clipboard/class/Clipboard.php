@@ -41,11 +41,11 @@ class Clipboard
         $clip = $_SESSION['Clipboard']->components[$_REQUEST['key']]->content;
         $clip =  sprintf('<textarea cols="35" rows="4">%s</textarea>', $clip);
    
-        $template['TITLE'] = _('Clipboard');
-        $template['DIRECTIONS'] = _('Copy the text below and paste it into the text box.');
+        $template['TITLE'] = dgettext('clipboard', 'Clipboard');
+        $template['DIRECTIONS'] = dgettext('clipboard', 'Copy the text below and paste it into the text box.');
         $template['CONTENT'] = $clip;
     
-        $button = _('Close Window');
+        $button = dgettext('clipboard', 'Close Window');
         $template['BUTTON'] = sprintf('<input type="button" onclick="window.close()" value="%s" />', $button);
         Layout::nakedDisplay(PHPWS_Template::process($template, 'clipboard', 'clipboard.tpl'));
     }
@@ -80,11 +80,11 @@ class Clipboard
 
         unset($clipVars['key']);
         $clipVars['action'] = 'clear';
-        $template['CLEAR'] = PHPWS_Text::moduleLink(_('Clear'), 'clipboard', $clipVars);
+        $template['CLEAR'] = PHPWS_Text::moduleLink(dgettext('clipboard', 'Clear'), 'clipboard', $clipVars);
         $template['LINKS'] = implode('<br />', $content);
 
         $vars['CONTENT'] = PHPWS_Template::process($template, 'clipboard', 'list.tpl');
-        $vars['TITLE'] = _('Clipboard');
+        $vars['TITLE'] = dgettext('clipboard', 'Clipboard');
 
         $layout = PHPWS_Template::process($vars, 'clipboard', 'show.tpl');
 
