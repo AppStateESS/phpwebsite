@@ -14,21 +14,21 @@ class Boost_Action {
     
         $file = $module->getVersionHttp();
         if (empty($file)) {
-            return _('Update check file not found.');
+            return dgettext('boost', 'Update check file not found.');
         }
 
         $full_xml_array = PHPWS_Text::xml2php($file, 2);
 
         if (empty($full_xml_array)) {
-            return _('Update check file not found.');
+            return dgettext('boost', 'Update check file not found.');
         }
         $version_info = PHPWS_Text::tagXML($full_xml_array);
 
-        $template['LOCAL_VERSION_LABEL'] = _('Local version');
+        $template['LOCAL_VERSION_LABEL'] = dgettext('boost', 'Local version');
         $template['LOCAL_VERSION'] = $module->getVersion();
-        $template['STABLE_VERSION_LABEL'] = _('Current stable version');
+        $template['STABLE_VERSION_LABEL'] = dgettext('boost', 'Current stable version');
         if (!isset($version_info['VERSION'])) {
-            $template['STABLE_VERSION'] = _('Source XML error');
+            $template['STABLE_VERSION'] = dgettext('boost', 'Source XML error');
             $version_info['VERSION'] = $module->getVersion();
         } else {
             $_SESSION['Boost_Needs_Update'][$mod_title] = $version_info['VERSION'];
@@ -36,47 +36,47 @@ class Boost_Action {
         } 
 
         if (version_compare($version_info['VERSION'], $module->getVersion(), '>')) {
-            $template['CHANGES_LABEL'] = _('Changes');
+            $template['CHANGES_LABEL'] = dgettext('boost', 'Changes');
             $template['CHANGES'] = PHPWS_Text::parseOutput($version_info['CHANGES']);
-            $template['UPDATE_AVAILABLE'] = _('An update is available!') . '<br />';
-            $template['UPDATE_PATH_LABEL'] = _('Download here');
+            $template['UPDATE_AVAILABLE'] = dgettext('boost', 'An update is available!') . '<br />';
+            $template['UPDATE_PATH_LABEL'] = dgettext('boost', 'Download here');
             $template['UPDATE_PATH'] = '<a href="' . $version_info['DOWNLOAD'] . '">' . $version_info['DOWNLOAD'] . '</a>';
-            $template['MD5_LABEL'] = _('MD5 Sum');
+            $template['MD5_LABEL'] = dgettext('boost', 'MD5 Sum');
             $template['MD5'] = $version_info['MD5SUM'];
 
             if (isset($version_info['DEPENDENCY'][0]['MODULE'])) {
-                $template['DEPENDENCY_LABEL'] = _('Dependencies');
-                $template['DEP_TITLE_LABEL'] = _('Module title');
-                $template['DEP_VERSION_LABEL'] = _('Version required');
-                $template['DEP_STATUS_LABEL'] = _('Status');
+                $template['DEPENDENCY_LABEL'] = dgettext('boost', 'Dependencies');
+                $template['DEP_TITLE_LABEL'] = dgettext('boost', 'Module title');
+                $template['DEP_VERSION_LABEL'] = dgettext('boost', 'Version required');
+                $template['DEP_STATUS_LABEL'] = dgettext('boost', 'Status');
 
                 foreach ($version_info['DEPENDENCY'][0]['MODULE'] as $dep_mod) {
                     $check_mod = new PHPWS_Module($dep_mod['TITLE'], false);
 
                     if ($check_mod->_error) {
-                        $status = _('Not installed');
+                        $status = dgettext('boost', 'Not installed');
                         $row['DEP_STATUS_CLASS'] = 'red';
                     } elseif (version_compare($check_mod->version, $dep_mod['VERSION'], '<')) {
-                        $status = _('Needs upgrading');
+                        $status = dgettext('boost', 'Needs upgrading');
                         $row['DEP_STATUS_CLASS'] = 'red';
                     } else {
-                        $status = _('Passed!');
+                        $status = dgettext('boost', 'Passed!');
                         $row['DEP_STATUS_CLASS'] = 'green';
                     }
                     $row['DEP_TITLE'] = $dep_mod['PROPERNAME'];
                     $row['DEP_VERSION'] = $dep_mod['VERSION'];
                     $row['DEP_ADDRESS'] = sprintf('<a href="%s">%s</a>',
-                                                  $dep_mod['URL'], _('Download'));
+                                                  $dep_mod['URL'], dgettext('boost', 'Download'));
                     $row['DEP_STATUS'] = $status;
                     $template['dependent-mods'][] = $row;
                 }
             }
         }
         else {
-            $template['NO_UPDATE'] = _('No update required.');
+            $template['NO_UPDATE'] = dgettext('boost', 'No update required.');
         }
 
-        $template['TITLE'] = _('Module') . ': ' . $module->getProperName(TRUE);
+        $template['TITLE'] = dgettext('boost', 'Module') . ': ' . $module->getProperName(TRUE);
         return PHPWS_Template::process($template, 'boost', 'check_update.tpl');
     }
 
@@ -104,13 +104,13 @@ class Boost_Action {
     function updateCore()
     {
         PHPWS_Core::initModClass('boost', 'Boost.php');
-        $content[] = _('Updating core');
+        $content[] = dgettext('boost', 'Updating core');
 
         require_once PHPWS_SOURCE_DIR . 'core/boost/update.php';
 
         $ver_info = PHPWS_Core::getVersionInfo(false);
 
-        $content[] = _('Processing update file.');
+        $content[] = dgettext('boost', 'Processing update file.');
         $result = core_update($content, $ver_info['version']);
 
         if ($result === true) {
@@ -120,15 +120,15 @@ class Boost_Action {
             $result = $db->update();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
-                $content[] = _('An error occurred updating the core.');
+                $content[] = dgettext('boost', 'An error occurred updating the core.');
             } else {
-                $content[] = _('Core successfully updated.');
+                $content[] = dgettext('boost', 'Core successfully updated.');
             }
         } elseif (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            $content[] = _('An error occurred updating the core.');
+            $content[] = dgettext('boost', 'An error occurred updating the core.');
         } else {
-            $content[] = _('An error occurred updating the core.');
+            $content[] = dgettext('boost', 'An error occurred updating the core.');
         }
 
         return implode('<br />', $content);
@@ -153,21 +153,21 @@ class Boost_Action {
         $module = new PHPWS_Module($base_mod);
         $dependents = $module->isDependedUpon();
         if (empty($dependents)) {
-            return _('This module does not have dependents.');
+            return dgettext('boost', 'This module does not have dependents.');
         }
 
-        $template['TITLE'] = sprintf(_('%s Dependencies'), $module->getProperName());
+        $template['TITLE'] = sprintf(dgettext('boost', '%s Dependencies'), $module->getProperName());
         $content[] = PHPWS_Text::backLink() . '<br />';
-        $content[] = _('The following modules depend on this module to function:');
+        $content[] = dgettext('boost', 'The following modules depend on this module to function:');
         foreach ($dependents as $mod) {
             $dep_module = new PHPWS_Module($mod);
             $content[] = $dep_module->getProperName();
         }
 
         $uninstallVars = array('opmod'=>$base_mod, 'action'=>'uninstall');
-        $js['QUESTION'] = _('Are you sure you want to uninstall this module? All data will be deleted.');
+        $js['QUESTION'] = dgettext('boost', 'Are you sure you want to uninstall this module? All data will be deleted.');
         $js['ADDRESS'] = PHPWS_Text::linkAddress('boost', $uninstallVars, TRUE);
-        $js['LINK'] = _('Click here to force an uninstall.');
+        $js['LINK'] = dgettext('boost', 'Click here to force an uninstall.');
         $content[] = javascript('confirm', $js);
 
         $template['CONTENT'] = implode('<br />', $content);
@@ -180,13 +180,13 @@ class Boost_Action {
         PHPWS_Core::initCoreClass('Module.php');
         $module = new PHPWS_Module($base_module_title);
         $depend = $module->getDependencies();
-        $template['TITLE'] = sprintf(_('%s Module Dependencies'), $module->getProperName());
+        $template['TITLE'] = sprintf(dgettext('boost', '%s Module Dependencies'), $module->getProperName());
 
-        $template['MODULE_NAME_LABEL']     = _('Module Needed');
-        $template['VERSION_NEEDED_LABEL']  = _('Version Needed');
-        $template['CURRENT_VERSION_LABEL'] = _('Current Version');
-        $template['URL_LABEL']             = _('Module Web Site');
-        $template['STATUS_LABEL']          = _('Status');
+        $template['MODULE_NAME_LABEL']     = dgettext('boost', 'Module Needed');
+        $template['VERSION_NEEDED_LABEL']  = dgettext('boost', 'Version Needed');
+        $template['CURRENT_VERSION_LABEL'] = dgettext('boost', 'Current Version');
+        $template['URL_LABEL']             = dgettext('boost', 'Module Web Site');
+        $template['STATUS_LABEL']          = dgettext('boost', 'Status');
 
         foreach ($depend['MODULE'] as $module) {
             $pass = TRUE;
@@ -201,19 +201,19 @@ class Boost_Action {
                 $tpl['CURRENT_VERSION'] = $mod_obj->getVersion();
             } else {
                 $pass = FALSE;
-                $tpl['CURRENT_VERSION'] = _('Not installed');
+                $tpl['CURRENT_VERSION'] = dgettext('boost', 'Not installed');
             }
 
             if ($pass && version_compare($module['VERSION'], $mod_obj->getVersion(), '>')) {
                 $pass = FALSE;
             }
 
-            $tpl['URL'] = sprintf('<a href="%s" target="_blank">%s</a>', $module['URL'], _('More info'));
+            $tpl['URL'] = sprintf('<a href="%s" target="_blank">%s</a>', $module['URL'], dgettext('boost', 'More info'));
 
             if ($pass) {
-                $tpl['STATUS_GOOD'] = _('Passed!');
+                $tpl['STATUS_GOOD'] = dgettext('boost', 'Passed!');
             } else {
-                $tpl['STATUS_BAD'] = _('Failed');
+                $tpl['STATUS_BAD'] = dgettext('boost', 'Failed');
             }
             $template['module-row'][] = $tpl;
         }

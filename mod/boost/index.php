@@ -8,7 +8,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     include '../../config/core/404.html';
     exit();
 }
-translate('boost');
+
 PHPWS_Core::requireConfig('boost');
 
 if (DEITY_ACCESS_ONLY && !Current_User::isDeity()) {
@@ -33,7 +33,7 @@ $boostPanel->enableSecure();
 Boost_Form::setTabs($boostPanel);
 
 $vars = array('action'=>'admin', 'tab'=>$boostPanel->getCurrentTab());
-$backToBoost = PHPWS_Text::secureLink(_('Return to Boost'), 'boost', $vars);
+$backToBoost = PHPWS_Text::secureLink(dgettext('boost', 'Return to Boost'), 'boost', $vars);
 
 switch ($_REQUEST['action']){
  case 'admin':
@@ -61,8 +61,8 @@ switch ($_REQUEST['action']){
      $result = Boost_Action::installModule($_REQUEST['opmod']);
      if (PEAR::isError($result)) {
          PHPWS_Error::log($result);
-         $content[] = _('An error occurred while installing this module.') .
-             ' ' . _('Please check your error logs.');
+         $content[] = dgettext('boost', 'An error occurred while installing this module.') .
+             ' ' . dgettext('boost', 'Please check your error logs.');
      } else {
          $content[] = $result;
      }
@@ -98,5 +98,5 @@ switch ($_REQUEST['action']){
 $boostPanel->setContent(implode('', $content));
 $finalContent = $boostPanel->display();
 Layout::add(PHPWS_ControlPanel::display($finalContent));
-translate();
+
 ?>

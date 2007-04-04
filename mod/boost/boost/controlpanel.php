@@ -5,13 +5,13 @@
  * @version $Id$
  */
 
-translate('boost');
-$link[] = array('label'       => _('Boost'),
+
+$link[] = array('label'       => dgettext('boost', 'Boost'),
 		'restricted'  => TRUE,
 		'url'         => 'index.php?module=boost&action=admin',
-		'description' => _('Boost allows the installation and upgrading of modules.'),
+		'description' => dgettext('boost', 'Boost allows the installation and upgrading of modules.'),
 		'image'       => 'boost.png',
 		'tab'         => 'admin'
 		);
-translate();
+
 ?>
