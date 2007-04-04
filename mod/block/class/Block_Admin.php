@@ -40,8 +40,8 @@ class Block_Admin {
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $linkBase = 'index.php?module=block';
-        $tabs['new']  = array ('title'=>_('New'),  'link'=> $linkBase);
-        $tabs['list'] = array ('title'=>_('List'), 'link'=> $linkBase);
+        $tabs['new']  = array ('title'=>dgettext('block', 'New'),  'link'=> $linkBase);
+        $tabs['list'] = array ('title'=>dgettext('block', 'List'), 'link'=> $linkBase);
 
         $panel = & new PHPWS_Panel('categories');
         $panel->enableSecure();
@@ -64,13 +64,13 @@ class Block_Admin {
 
         switch ($action) {
         case 'new':
-            $title = _('New Block');
+            $title = dgettext('block', 'New Block');
             $content = Block_Admin::edit($block);
             break;
 
         case 'delete':
             $block->kill();
-            Block_Admin::sendMessage(_('Block deleted.'));
+            Block_Admin::sendMessage(dgettext('block', 'Block deleted.'));
             PHPWS_Core::goBack();
             break;
 
@@ -81,17 +81,17 @@ class Block_Admin {
 
         case 'pin':
             Block_Admin::pinBlock($block);
-            Block_Admin::sendMessage(_('Block pinned'), 'list');
+            Block_Admin::sendMessage(dgettext('block', 'Block pinned'), 'list');
             break;
 
         case 'pin_all':
             Block_Admin::pinBlockAll($block);
-            Block_Admin::sendMessage(_('Block pinned'), 'list');
+            Block_Admin::sendMessage(dgettext('block', 'Block pinned'), 'list');
             break;
 
         case 'unpin':
             unset($_SESSION['Pinned_Blocks']);
-            Block_Admin::sendMessage(_('Block unpinned'), 'list');
+            Block_Admin::sendMessage(dgettext('block', 'Block unpinned'), 'list');
             break;
 
         case 'remove':
@@ -109,7 +109,7 @@ class Block_Admin {
                 Block_Admin::postBlock($block);
                 $result = $block->save();
             }
-            Block_Admin::sendMessage(_('Block saved'), 'list');
+            Block_Admin::sendMessage(dgettext('block', 'Block saved'), 'list');
             break;
 
         case 'postJSBlock':
@@ -134,12 +134,12 @@ class Block_Admin {
             break;
 
         case 'list':
-            $title = _('Block list');
+            $title = dgettext('block', 'Block list');
             $content = Block_Admin::blockList();
             break;
 
         case 'js_block_edit':
-            $template['TITLE'] = _('New Block');
+            $template['TITLE'] = dgettext('block', 'New Block');
             $template['CONTENT'] = Block_Admin::edit($block, TRUE);
             $content = PHPWS_Template::process($template, 'block', 'admin.tpl');
             Layout::nakedDisplay($content);
@@ -203,28 +203,28 @@ class Block_Admin {
             if (isset($_REQUEST['key_id'])) {
                 $form->addHidden('key_id', (int)$_REQUEST['key_id']);
             }
-            $form->addButton('cancel', _('Cancel'));
+            $form->addButton('cancel', dgettext('block', 'Cancel'));
             $form->setExtra('cancel', 'onclick="window.close()"');
         } else {
             $form->addHidden('action', 'postBlock');
         }
 
         $form->addText('title', $block->getTitle());
-        $form->setLabel('title', _('Title'));
+        $form->setLabel('title', dgettext('block', 'Title'));
         $form->setSize('title', 50);
 
         if (empty($block->id)) {
-            $form->addSubmit('submit', _('Save New Block'));
+            $form->addSubmit('submit', dgettext('block', 'Save New Block'));
         } else {
             $form->addHidden('block_id', $block->getId());
-            $form->addSubmit('submit', _('Update Current Block'));
+            $form->addSubmit('submit', dgettext('block', 'Update Current Block'));
         }
 
 
         $form->addTextArea('block_content', $block->getContent(false));
         $form->setRows('block_content', '10');
         $form->setWidth('block_content', '80%');
-        $form->setLabel('block_content', _('Entry'));
+        $form->setLabel('block_content', dgettext('block', 'Entry'));
         $form->useEditor('block_content');
 
         $template = $form->getTemplate();
@@ -245,9 +245,9 @@ class Block_Admin {
     {
         PHPWS_Core::initCoreClass('DBPager.php');
     
-        $pageTags['TITLE']   = _('Title');
-        $pageTags['CONTENT'] = _('Content');
-        $pageTags['ACTION']  = _('Action');
+        $pageTags['TITLE']   = dgettext('block', 'Title');
+        $pageTags['CONTENT'] = dgettext('block', 'Content');
+        $pageTags['ACTION']  = dgettext('block', 'Action');
         $pager = & new DBPager('block', 'Block_Item');
         $pager->setModule('block');
         $pager->setTemplate('list.tpl');

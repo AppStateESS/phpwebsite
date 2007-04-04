@@ -15,8 +15,7 @@ if (!Current_User::authorized('block')) {
   return;
 }
 
-translate('block');
 PHPWS_Core::initModClass('block', 'Block_Admin.php');
 Block_Admin::action();
-translate();
+
 ?>

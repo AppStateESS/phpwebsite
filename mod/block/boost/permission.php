@@ -5,10 +5,10 @@
    */
 
 $use_permissions = TRUE;
-translate('block');
-$permissions['edit_block'] = _('Edit block');
-$permissions['delete_block'] = _('Delete block');
-translate();
+
+$permissions['edit_block'] = dgettext('block', 'Edit block');
+$permissions['delete_block'] = dgettext('block', 'Delete block');
+
 $item_permissions = TRUE;
 
 ?>
