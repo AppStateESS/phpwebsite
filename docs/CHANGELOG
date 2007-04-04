@@ -7,6 +7,31 @@ its own separate CHANGELOG file.
 + Bug #1689289 - Text.php : Changed makeRelative's inline mode to only
 change src and href addresses.
 
+
+2 April 2007
++ Changed error message to report server's maximum file size
++ DBPager
+  o Added error check
+  o The search query was put into it own where group to prevent conflicts.
++ Error - removed function reference from get function
++ Settings - changed upper limit on small int detection
++ Documention
+  o Access - added a lot of new information
++ Javascript
+  o Rewrote ajax javascript functionality
+  o open_window lets you label the windows now
++ Setup - removed the image settings from the default config file
+
+29 March 2007
++ Debug - test function identifies empty values better
+
+19 March 2007
++ js_calendar - fixed style sheet to make xhtml compliant
+
+14 March 2007
++ Database - update, insert, and delete functions no longer pull
+multiple tables 
+
 12 March 2007
 + Changed id display in Forms.php. Arrays with square brackets are not
   xhtml compliant.
