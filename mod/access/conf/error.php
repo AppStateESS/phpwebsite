@@ -3,7 +3,7 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
-translate('access');
+
 $errors = array(SHORTCUT_BAD_KEYWORD     => dgettext('access', 'Bad keyword. Use only alphanumeric characters, dashes and spaces.'),
                 SHORTCUT_WORD_IN_USE     => dgettext('access', 'Keyword already in use. Choose another.'),
                 SHORTCUT_MISSING_KEYWORD => dgettext('access', 'Missing keyword.'),
@@ -12,6 +12,4 @@ $errors = array(SHORTCUT_BAD_KEYWORD     => dgettext('access', 'Bad keyword. Use
                 ACCESS_HTACCESS_WRITE    => dgettext('access', 'Unable to write .htaccess file.'),
                 ACCESS_HTACCESS_MISSING  => dgettext('access', '.htaccess file is missing.')
                 );
-
-translate();
 ?>

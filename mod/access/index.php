@@ -10,13 +10,11 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 }
 
 PHPWS_Core::initModClass('access', 'Access.php');
-translate('access');
 if (Current_User::authorized('access')) {
     Access::main();
 } else {
     Current_User::disallow();
     exit();
 }
-translate();
 
 ?>
