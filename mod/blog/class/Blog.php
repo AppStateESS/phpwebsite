@@ -150,7 +150,7 @@ class Blog {
     function relativeExpireDate($type=BLOG_VIEW_DATE_FORMAT)
     {
         if (!$this->expire_date) {
-            return _('No expiration');
+            return dgettext('blog', 'No expiration');
         } else {
             return strftime($type, PHPWS_Time::getServerTime($this->expire_date));
         }
@@ -159,7 +159,6 @@ class Blog {
 
     function save()
     {
-        translate('blog');
         PHPWS_Core::initModClass('version', 'Version.php');
         $db = new PHPWS_DB('blog_entries');
         if (empty($this->id)) {
@@ -174,11 +173,10 @@ class Blog {
                 $this->author    = Current_User::getDisplayName();
             } elseif (empty($this->author)) {
                 $this->author_id = 0;
-                $this->author    = _('Anonymous');
+                $this->author    = dgettext('blog', 'Anonymous');
             }
         }
 
-        translate();
         $version = new Version('blog_entries');
 
         if ($this->approved || !$this->id) {
@@ -252,8 +250,7 @@ class Blog {
                 return 'index.php?module=blog&amp;action=view_comments&amp;id=' . $this->id;
             }
         } else {
-            translate('blog');
-            return PHPWS_Text::rewriteLink(_('View'), 'blog', $this->id);
+            return PHPWS_Text::rewriteLink(dgettext('blog', 'View'), 'blog', $this->id);
         }
     }
 
@@ -266,12 +263,12 @@ class Blog {
         $template['ENTRY'] = PHPWS_Text::parseTag($this->getEntry(true));
         $template['IMAGE'] = $this->getImage();
 
-        $template['POSTED_BY'] = _('Posted by');
-        $template['POSTED_ON'] = _('Posted on');
+        $template['POSTED_BY'] = dgettext('blog', 'Posted by');
+        $template['POSTED_ON'] = dgettext('blog', 'Posted on');
         if ($this->author_id) {
             $template['AUTHOR'] = $this->author;
         } else {
-            $template['AUTHOR'] = _('Anonymous');
+            $template['AUTHOR'] = dgettext('blog', 'Anonymous');
         }
 
         return PHPWS_Template::process($template, 'blog', 'view.tpl');
@@ -286,7 +283,6 @@ class Blog {
      */
     function view($edit=true, $summarized=true)
     {
-        translate('blog');
         if (!$this->id) {
             PHPWS_Core::errorPage(404);
         }
@@ -311,7 +307,7 @@ class Blog {
             if (empty($summary)) {
                 $template['SUMMARY'] = PHPWS_Text::parseTag($entry);
             } else {
-                $template['READ_MORE'] = PHPWS_Text::rewriteLink(_('Read more'), 'blog', $this->id);
+                $template['READ_MORE'] = PHPWS_Text::rewriteLink(dgettext('blog', 'Read more'), 'blog', $this->id);
                 $template['SUMMARY'] =  PHPWS_Text::parseTag($summary);
             }
         } else {
@@ -330,9 +326,9 @@ class Blog {
             $vars['action']  = 'admin';
             $vars['command'] = 'edit';
 
-            $template['EDIT_LINK'] = PHPWS_Text::secureLink(_('Edit'), 'blog', $vars);
+            $template['EDIT_LINK'] = PHPWS_Text::secureLink(dgettext('blog', 'Edit'), 'blog', $vars);
             if (!$summarized) {
-                MiniAdmin::add('blog', array(PHPWS_Text::secureLink(_('Edit blog'), 'blog', $vars)));
+                MiniAdmin::add('blog', array(PHPWS_Text::secureLink(dgettext('blog', 'Edit blog'), 'blog', $vars)));
             }        
         }
         
@@ -346,7 +342,7 @@ class Blog {
                 $last_poster = $comments->getLastPoster();
                 
                 if (!empty($last_poster)) {
-                    $template['LAST_POSTER_LABEL'] = _('Last poster');
+                    $template['LAST_POSTER_LABEL'] = dgettext('blog', 'Last poster');
                     $template['LAST_POSTER'] = $last_poster;
                 }
             } elseif ($this->id) {
@@ -366,10 +362,9 @@ class Blog {
             $template['CATEGORIES'] = implode(', ', $result);
         }
 
-        $template['POSTED_BY'] = _('Posted by');
-        $template['POSTED_ON'] = _('Posted on');
+        $template['POSTED_BY'] = dgettext('blog', 'Posted by');
+        $template['POSTED_ON'] = dgettext('blog', 'Posted on');
         $template['AUTHOR'] = $this->author;
-        translate();
         return PHPWS_Template::process($template, 'blog', 'view.tpl');
     }
 
@@ -394,26 +389,26 @@ class Blog {
             || Current_User::allow('blog', 'edit_blog', $this->id, 'entry') ){
 
             $link['command'] = 'edit';
-            $list[] = PHPWS_Text::secureLink(_('Edit'), 'blog', $link);
+            $list[] = PHPWS_Text::secureLink(dgettext('blog', 'Edit'), 'blog', $link);
         }
     
         if (Current_User::allow('blog', 'delete_blog')){
             $link['command'] = 'delete';
-            $confirm_vars['QUESTION'] = _('Are you sure you want to permanently delete this blog entry?');
+            $confirm_vars['QUESTION'] = dgettext('blog', 'Are you sure you want to permanently delete this blog entry?');
             $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('blog', $link, true);
-            $confirm_vars['LINK'] = _('Delete');
+            $confirm_vars['LINK'] = dgettext('blog', 'Delete');
             $list[] = Layout::getJavascript('confirm', $confirm_vars);
         }
 
         if (Current_User::isUnrestricted('blog')){
             $link['command'] = 'restore';
-            $list[] = PHPWS_Text::secureLink(_('Restore'), 'blog', $link);
+            $list[] = PHPWS_Text::secureLink(dgettext('blog', 'Restore'), 'blog', $link);
             if ($this->sticky) {
                 $link['command'] = 'unsticky';
-                $list[] = PHPWS_Text::secureLink(_('Unsticky'), 'blog', $link);
+                $list[] = PHPWS_Text::secureLink(dgettext('blog', 'Unsticky'), 'blog', $link);
             } else {
                 $link['command'] = 'sticky';
-                $list[] = PHPWS_Text::secureLink(_('Sticky'), 'blog', $link);
+                $list[] = PHPWS_Text::secureLink(dgettext('blog', 'Sticky'), 'blog', $link);
             }
         }
 
@@ -421,7 +416,7 @@ class Blog {
             $response = implode(' | ', $list);
         }
         else {
-            $response = _('No action');
+            $response = dgettext('blog', 'No action');
         }
         return $response;
     }
@@ -447,7 +442,7 @@ class Blog {
         }
 
         if (empty($_POST['title'])) {
-            return array(_('Missing title.'));
+            return array(dgettext('blog', 'Missing title.'));
         } else {
             $this->title = strip_tags($_POST['title']);
         }

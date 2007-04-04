@@ -15,7 +15,7 @@ class Blog_Form {
 
         if ($limited) {
             $form->addHidden('action', 'post_suggestion');
-            $form->addSubmit('submit', _('Suggest entry'));
+            $form->addSubmit('submit', dgettext('blog', 'Suggest entry'));
         } else {
             $form->addHidden('action', 'admin');
             $form->addHidden('command', 'post_entry');
@@ -23,23 +23,23 @@ class Blog_Form {
             if (isset($version_id)) {
                 $form->addHidden('version_id', $version_id);
                 if (Current_User::isUnrestricted('blog')) {
-                    $form->addSubmit('approve_entry', _('Save Changes and Approve'));
+                    $form->addSubmit('approve_entry', dgettext('blog', 'Save Changes and Approve'));
                 }
             }
 
             if (isset($blog->id) || isset($version_id)){
                 $form->addHidden('blog_id', $blog->id);
-                $form->addSubmit('submit', _('Update entry'));
+                $form->addSubmit('submit', dgettext('blog', 'Update entry'));
             } else {
-                $form->addSubmit('submit', _('Add entry'));
+                $form->addSubmit('submit', dgettext('blog', 'Add entry'));
             }
 
             $form->addCheck('allow_comments', 1);
-            $form->setLabel('allow_comments', _('Allow comments'));
+            $form->setLabel('allow_comments', dgettext('blog', 'Allow comments'));
             $form->setMatch('allow_comments', $blog->allow_comments);
             
             $form->addCheck('allow_anon', 1);
-            $form->setLabeL('allow_anon', _('Allow anonymous comments'));
+            $form->setLabeL('allow_anon', dgettext('blog', 'Allow anonymous comments'));
             if ($blog->id) {
                 PHPWS_Core::initModClass('comments', 'Comments.php');
                 $thread = Comments::getThread($blog->key_id);
@@ -52,13 +52,13 @@ class Blog_Form {
                                                  PHPWS_Settings::get('blog', 'max_width'),
                                                  PHPWS_Settings::get('blog', 'max_height'));
                 $form->addTplTag('IMAGE_MANAGER', $manager->get());
-                $form->addTplTag('IMAGE_LABEL', _('Image'));
+                $form->addTplTag('IMAGE_LABEL', dgettext('blog', 'Image'));
             }
         }
 
         $form->addText('title', $blog->title);
         $form->setSize('title', 40);
-        $form->setLabel('title', _('Title'));
+        $form->setLabel('title', dgettext('blog', 'Title'));
 
         $form->addTextArea('summary', $blog->getSummary());
         if (!$limited) {
@@ -66,7 +66,7 @@ class Blog_Form {
         }
         $form->setRows('summary', '10');
         $form->setCols('summary', '60');
-        $form->setLabel('summary', _('Summary'));
+        $form->setLabel('summary', dgettext('blog', 'Summary'));
 
         $form->addTextArea('entry', $blog->getEntry());
         if (!$limited) {
@@ -74,14 +74,14 @@ class Blog_Form {
         }
         $form->setRows('entry', '10');
         $form->setCols('entry', '60');
-        $form->setLabel('entry', _('Entry'));
+        $form->setLabel('entry', dgettext('blog', 'Entry'));
 
         $form->addText('publish_date', $blog->getPublishDate());
-        $form->setLabel('publish_date', _('Publish date/time'));
+        $form->setLabel('publish_date', dgettext('blog', 'Publish date/time'));
         $form->setSize('publish_date', 20);
 
         $form->addText('expire_date', $blog->getExpireDate());
-        $form->setLabel('expire_date', _('Expire date/time'));
+        $form->setLabel('expire_date', dgettext('blog', 'Expire date/time'));
         $form->setSize('expire_date', 20);
 
         $template = $form->getTemplate();
@@ -99,60 +99,60 @@ class Blog_Form {
 
         $form->addText('blog_limit', PHPWS_Settings::get('blog', 'blog_limit'));
         $form->setSize('blog_limit', 2, 2);
-        $form->setLabel('blog_limit', _('Blog view limit'));
+        $form->setLabel('blog_limit', dgettext('blog', 'Blog view limit'));
 
         $form->addText('past_entries', PHPWS_Settings::get('blog', 'past_entries'));
-        $form->setLabel('past_entries', _('Number of past entries'));
+        $form->setLabel('past_entries', dgettext('blog', 'Number of past entries'));
         $form->setSize('past_entries', 2, 2);
 
         $form->addCheck('allow_comments', 1);
-        $form->setLabel('allow_comments', _('Allow comments by default'));
+        $form->setLabel('allow_comments', dgettext('blog', 'Allow comments by default'));
         $form->setMatch('allow_comments', PHPWS_Settings::get('blog', 'allow_comments'));
 
         $form->addCheck('simple_image', 1);
-        $form->setLabel('simple_image', _('Use Image Manager'));
+        $form->setLabel('simple_image', dgettext('blog', 'Use Image Manager'));
         $form->setMatch('simple_image', PHPWS_Settings::get('blog', 'simple_image'));
 
         $form->addCheck('home_page_display', 1);
-        $form->setLabel('home_page_display', _('Show blog on home page'));
+        $form->setLabel('home_page_display', dgettext('blog', 'Show blog on home page'));
         $form->setMatch('home_page_display', PHPWS_Settings::get('blog', 'home_page_display'));
 
         $cache_view = PHPWS_Settings::get('blog', 'cache_view');
         $form->addCheck('cache_view', 1);
-        $form->setLabel('cache_view', _('Cache anonymous view'));
+        $form->setLabel('cache_view', dgettext('blog', 'Cache anonymous view'));
         $form->setMatch('cache_view', $cache_view);
         if (!ALLOW_CACHE_LITE) {
             $form->setDisabled('cache_view');
-            $form->addTplTag('RESET_CACHE', _('System caching disabled.'));
+            $form->addTplTag('RESET_CACHE', dgettext('blog', 'System caching disabled.'));
         } else {
             if ($cache_view) {
-                $form->addTplTag('RESET_CACHE', PHPWS_Text::secureLink(_('Reset cache'), 'blog', array('action'=>'admin', 'command'=>'reset_cache')));
+                $form->addTplTag('RESET_CACHE', PHPWS_Text::secureLink(dgettext('blog', 'Reset cache'), 'blog', array('action'=>'admin', 'command'=>'reset_cache')));
             }
         }
 
         $form->addCheck('allow_anonymous_submit', 1);
-        $form->setLabel('allow_anonymous_submit', _('Allow anonymous submissions'));
+        $form->setLabel('allow_anonymous_submit', dgettext('blog', 'Allow anonymous submissions'));
         $form->setMatch('allow_anonymous_submit', PHPWS_Settings::get('blog', 'allow_anonymous_submit'));
 
         $form->addTextField('max_width', PHPWS_Settings::get('blog', 'max_width'));
-        $form->setLabel('max_width', _('Maximum image width (50-2048)'));
+        $form->setLabel('max_width', dgettext('blog', 'Maximum image width (50-2048)'));
         $form->setSize('max_width', 4,4);
 
         $form->addTextField('max_height', PHPWS_Settings::get('blog', 'max_height'));
-        $form->setLabel('max_height', _('Maximum image height (50-2048)'));
+        $form->setLabel('max_height', dgettext('blog', 'Maximum image height (50-2048)'));
         $form->setSize('max_height', 4,4);
         
 
-        $form->addSubmit(_('Save settings'));
+        $form->addSubmit(dgettext('blog', 'Save settings'));
 
         $template = $form->getTemplate();
 
         if (PHPWS_Settings::get('blog', 'allow_anonymous_submit')) {
-            $template['MENU_LINK'] = PHPWS_Text::secureLink(_('Clip for menu'), 'blog',
+            $template['MENU_LINK'] = PHPWS_Text::secureLink(dgettext('blog', 'Clip for menu'), 'blog',
                                                             array('action'=>'admin', 'command'=>'menu_submit_link'));
         }
 
-        $template['PAST_NOTE'] = _('Set to zero to prevent display');
+        $template['PAST_NOTE'] = dgettext('blog', 'Set to zero to prevent display');
         return PHPWS_Template::process($template, 'blog', 'settings.tpl');
     }
 }

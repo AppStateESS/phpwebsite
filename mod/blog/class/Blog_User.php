@@ -65,13 +65,13 @@ class Blog_User {
     function postSuggestion(&$blog)
     {
         if (PHPWS_Core::isPosted()) {
-            $tpl['TITLE'] = _('Repeat submission');
-            $tpl['CONTENT'] =  _('Your submission is still awaiting approval.');
+            $tpl['TITLE'] = dgettext('blog', 'Repeat submission');
+            $tpl['CONTENT'] =  dgettext('blog', 'Your submission is still awaiting approval.');
             return PHPWS_Template::process($tpl, 'blog', 'user_main.tpl');
         }
 
         if (empty($_POST['title'])) {
-            $blog->title = _('No title');
+            $blog->title = dgettext('blog', 'No title');
         } else {
             $blog->setTitle($_POST['title']);
         }
@@ -89,11 +89,11 @@ class Blog_User {
         $result = $blog->save();
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            $tpl['TITLE'] = _('Sorry');
-            $tpl['CONTENT'] =  _('A problem occured with your submission. Please try again later.');
+            $tpl['TITLE'] = dgettext('blog', 'Sorry');
+            $tpl['CONTENT'] =  dgettext('blog', 'A problem occured with your submission. Please try again later.');
         } else {
-            $tpl['TITLE'] = _('Thank you');
-            $tpl['CONTENT'] =  _('Your entry has been submitted for review.');
+            $tpl['TITLE'] = dgettext('blog', 'Thank you');
+            $tpl['CONTENT'] =  dgettext('blog', 'Your entry has been submitted for review.');
         }
         return PHPWS_Template::process($tpl, 'blog', 'user_main.tpl');
     }
@@ -102,7 +102,7 @@ class Blog_User {
     function submitAnonymous(&$blog)
     {
         PHPWS_Core::initModClass('blog', 'Blog_Form.php');
-        $tpl['TITLE'] = _('Submit Entry');
+        $tpl['TITLE'] = dgettext('blog', 'Submit Entry');
         $tpl['CONTENT'] = Blog_Form::edit($blog, null, true);
         return PHPWS_Template::process($tpl, 'blog', 'user_main.tpl');
     }
@@ -167,7 +167,7 @@ class Blog_User {
 
         if (empty($result)) {
             if (Current_User::allow('blog')) {
-                MiniAdmin::add('blog', PHPWS_Text::secureLink(_('Create first blog entry!'), 'blog', array('action'=>'admin', 'tab'=>'new')));
+                MiniAdmin::add('blog', PHPWS_Text::secureLink(dgettext('blog', 'Create first blog entry!'), 'blog', array('action'=>'admin', 'tab'=>'new')));
             }
 
             return NULL;
@@ -198,14 +198,14 @@ class Blog_User {
         $page_vars['action'] = 'view';
         if ($page > 1) {
             $page_vars['page'] = $page - 1;
-            $tpl['PREV_PAGE'] = PHPWS_Text::moduleLink(_('Previous page'), 'blog', $page_vars);
+            $tpl['PREV_PAGE'] = PHPWS_Text::moduleLink(dgettext('blog', 'Previous page'), 'blog', $page_vars);
             if ($limit + $offset < $total_entries) {
                 $page_vars['page'] = $page + 1;
-                $tpl['NEXT_PAGE'] = PHPWS_Text::moduleLink(_('Next page'), 'blog', $page_vars);
+                $tpl['NEXT_PAGE'] = PHPWS_Text::moduleLink(dgettext('blog', 'Next page'), 'blog', $page_vars);
             }
         } elseif ($limit + $offset < $total_entries) {
             $page_vars['page'] = 2;
-            $tpl['NEXT_PAGE'] = PHPWS_Text::moduleLink(_('Next page'), 'blog', $page_vars);
+            $tpl['NEXT_PAGE'] = PHPWS_Text::moduleLink(dgettext('blog', 'Next page'), 'blog', $page_vars);
         }
 
         $tpl['ENTRIES'] = implode('', $list);
@@ -218,9 +218,9 @@ class Blog_User {
         } elseif (Current_User::allow('blog', 'edit_blog')) {
             $vars['action'] = 'admin';
             $vars['tab'] = 'list';
-            $link[] = PHPWS_Text::secureLink(_('Edit blogs'), 'blog', $vars);
+            $link[] = PHPWS_Text::secureLink(dgettext('blog', 'Edit blogs'), 'blog', $vars);
             $vars['tab'] = 'new';
-            $link[] = PHPWS_Text::secureLink(_('Add new blog'), 'blog', $vars);
+            $link[] = PHPWS_Text::secureLink(dgettext('blog', 'Add new blog'), 'blog', $vars);
             MiniAdmin::add('blog', $link);
         }
 
@@ -240,7 +240,7 @@ class Blog_User {
             $tpl['entry'][] = array('TITLE' => sprintf('<a href="%s">%s</a>', $entry->getViewLink(true), $entry->title));
         }
 
-        $tpl['PAST_TITLE'] = _('Previous blog entries');
+        $tpl['PAST_TITLE'] = dgettext('blog', 'Previous blog entries');
         $content = PHPWS_Template::process($tpl, 'blog', 'past_view.tpl');
         Layout::add($content, 'blog', 'previous_entries');
     }
@@ -262,7 +262,7 @@ class Blog_User {
             $tpl['entry'][] = array('TITLE' => sprintf('<a href="%s">%s</a>', $entry->getViewLink(true), $entry->title));
         }
 
-        $tpl['RECENT_TITLE'] = sprintf('<a href="index.php?module=blog&amp;action=view">%s</a>', _('Recent blog entries'));
+        $tpl['RECENT_TITLE'] = sprintf('<a href="index.php?module=blog&amp;action=view">%s</a>', dgettext('blog', 'Recent blog entries'));
         $content = PHPWS_Template::process($tpl, 'blog', 'recent_view.tpl');
         Layout::add($content, 'blog', 'recent_entries');
     }

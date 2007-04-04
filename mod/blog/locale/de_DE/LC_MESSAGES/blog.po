@@ -1,0 +1,297 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPWS1_1_0,Blog1_4_2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-02-15 10:20-0500\n"
+"PO-Revision-Date: 2007-03-05 11:41+0100\n"
+"Last-Translator: Peter Heppner <heppner@gmx.de>\n"
+"Language-Team: Peter Heppner <heppner@gmx.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "A problem occured with your submission. Please try again later."
+msgstr "Ein Fehler ist bei Deiner Antwort aufgetreten. Versuche es später noch einmal."
+
+msgid "A problem occurred when trying to disapprove this entry."
+msgstr "Ein Problem ist bei der Ablehnung für diesen Eintrag aufgetreten."
+
+msgid "A version of this entry is awaiting approval."
+msgstr "Eine Version diese Eintrags wartet auf Genehmigung."
+
+msgid "Action"
+msgstr "Aktion"
+
+msgid "Add entry"
+msgstr "Eintrag hinzufügen"
+
+msgid "Add new blog"
+msgstr "Blog hinzufügen"
+
+msgid "Allow anonymous comments"
+msgstr "Anonyme Kommentare erlauben"
+
+msgid "Allow anonymous submissions"
+msgstr "Anonyme Antworten erlaubt"
+
+msgid "Allow comments"
+msgstr "Kommentare erlauben"
+
+msgid "Allow comments by default"
+msgstr "Kommentare erlauben (Standard)"
+
+msgid "An error occurred when saving your version."
+msgstr "Ein Fehler ist beim Speichern der Version aufgetreten."
+
+msgid "An error occurred when trying to save your entry. Please check your logs."
+msgstr "Ein Fehler ist beim Speichern eines Eintrags aufgetreten. Bitte Logdatei prüfen."
+
+msgid "Anonymous"
+msgstr "Anonym"
+
+#, php-format
+msgid "Approval (%s)"
+msgstr "Genehmigung (%s)"
+
+msgid "Approval list"
+msgstr "Genehmigungsliste"
+
+msgid "Approve"
+msgstr "Akzeptieren"
+
+msgid "Are you sure you want to permanently delete this blog entry?"
+msgstr "Soll dieser Blogeintrag für immer gelöscht werden?"
+
+msgid "Blog Archive"
+msgstr "Blogarchiv"
+
+msgid "Blog Entries Awaiting Approval"
+msgstr "Blogeinträge die auf Genehmigung warten"
+
+msgid "Blog Restore"
+msgstr "Blog wiederherstellen"
+
+msgid "Blog Settings"
+msgstr "Blogeinstellungen"
+
+msgid "Blog entry approved."
+msgstr "Blogeintrag akzeptiert."
+
+msgid "Blog entry deleted."
+msgstr "Blogeintrag gelöscht."
+
+msgid "Blog entry disapproved."
+msgstr "Blogeintrag abgelehnt."
+
+msgid "Blog entry removed."
+msgstr "Blogeintrag entfernt."
+
+msgid "Blog entry restored."
+msgstr "Blogeintrag wiederhergestellt."
+
+msgid "Blog settings saved."
+msgstr "Blogeinstellungen gespeichert."
+
+msgid "Blog tables removed."
+msgstr "Blogtabellen entfernt."
+
+msgid "Blog view limit"
+msgstr "Blogansichtmenge"
+
+msgid "Cache anonymous view"
+msgstr "Seitenliste anzeigen"
+
+msgid "Change settings (Unrestricted only)"
+msgstr "Einstellungen ändern (nur uneingeschränkte Benutzer erlaubt)"
+
+msgid "Clip for menu"
+msgstr "Clip an Menü"
+
+msgid "Create first blog entry!"
+msgstr "Ersten Blogeintrag erstellen!"
+
+msgid "Creation Date"
+msgstr "Erstelldatum"
+
+msgid "Delete"
+msgstr "Löschen"
+
+msgid "Delete blog"
+msgstr "Blog löschen"
+
+msgid "Disapprove"
+msgstr "Ablehnen"
+
+msgid "Edit"
+msgstr "Bearbeiten"
+
+msgid "Edit blog"
+msgstr "Blog bearbeiten"
+
+msgid "Edit blogs"
+msgstr "Blog bearbeiten"
+
+msgid "Entry"
+msgstr "Eintrag"
+
+msgid "Entry saved successfully."
+msgstr "Eintrag gespeichert."
+
+msgid "Image"
+msgstr "Bild"
+
+msgid "Last poster"
+msgstr "Letzter Bearbeiter"
+
+msgid "List"
+msgstr "Liste"
+
+msgid "Maximum image height (50-2048)"
+msgstr "Maximale Bildhöhe (50-2048)"
+
+msgid "Maximum image width (50-2048)"
+msgstr "Maximale Bildbreite (50-2048)"
+
+msgid "Missing title."
+msgstr "Seitentitel fehlt."
+
+msgid "New"
+msgstr "Neu"
+
+msgid "New Blog Entry"
+msgstr "Neuer Blogeintrag"
+
+msgid "Next page"
+msgstr "Nächste Seite"
+
+msgid "No action"
+msgstr "Keine Aktion"
+
+msgid "No title"
+msgstr "Kein Titel"
+
+msgid "Number of past entries"
+msgstr "Anzahl älterer Einträge"
+
+msgid "Post current thoughts, happenings, and discussions."
+msgstr "Ankündigungen, Ereignisse und Diskussionen."
+
+msgid "Posted by"
+msgstr "Erstellt von"
+
+msgid "Posted on"
+msgstr "Erstellt am"
+
+msgid "Previous blog entries"
+msgstr "Vorherige Blogeinträge"
+
+msgid "Previous page"
+msgstr "Vorherige Seite"
+
+msgid "Publish date/time"
+msgstr "Veröffentlichungsdatum/zeit"
+
+msgid "Read more"
+msgstr "Mehr..."
+
+msgid "Recent blog entries"
+msgstr "Ältere Blogeinträge"
+
+msgid "Repeat submission"
+msgstr "Wiederhole Sendung"
+
+msgid "Reset cache"
+msgstr "Cache zurücksetzen"
+
+msgid "Restore"
+msgstr "Wiederherstellen"
+
+msgid "Save Changes and Approve"
+msgstr "Änderungen speichern und akzeptieren."
+
+msgid "Save settings"
+msgstr "Einstellungen speichern"
+
+msgid "Set to zero to prevent display"
+msgstr "Auf 0 setzen um die Anzeige abzuschalten"
+
+msgid "Settings"
+msgstr "Einstellungen"
+
+msgid "Show blog on home page"
+msgstr "Zeige Blog auf der Hauptseite"
+
+msgid "Sorry"
+msgstr "Pech"
+
+msgid "Sorry you do not have permission to view this blog entry."
+msgstr "Du hast nicht die Berechtigung um diesen Blogeintrag anzusehen!"
+
+msgid "Submit Entry"
+msgstr "Eintrag abschicken"
+
+msgid "Submit entry"
+msgstr "Eintrag abschicken"
+
+msgid "Suggest entry"
+msgstr "Eintrag vorschlagen"
+
+msgid "Summary"
+msgstr "Zusammenfassung"
+
+msgid "System caching disabled."
+msgstr "Systemcache abgeschaltet."
+
+msgid "Thank you"
+msgstr "Danke."
+
+msgid "This version has not been approved."
+msgstr "Diese Version wurde nicht genehmigt."
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Tried to edit an unapproved item."
+msgstr "Versuch der Bearbeitung eines ungenehmigten Elements."
+
+msgid "Update Blog Entry"
+msgstr "Blogeintrag aktualisieren"
+
+msgid "Update Unapproved Blog Entry"
+msgstr "Ungenehmigten Blogeintrag aktualisieren"
+
+msgid "Update entry"
+msgstr "Eintrag aktualisieren"
+
+msgid "Use Image Manager"
+msgstr "Benutze Bildermanager"
+
+msgid "User attempted access to Blog administration."
+msgstr "Der Benutzer versuchte die Blogverwaltung aufzurufen."
+
+msgid "User tried to edit a blog."
+msgstr "Der Benutzer versuchte einen Blogeintrag zu bearbeiten."
+
+msgid "View"
+msgstr "Ansicht"
+
+msgid "View version"
+msgstr "Version ansehen"
+
+msgid "Your entry has been submitted for review."
+msgstr "Deine Antwort wurde zur Ansicht abgeschickt."
+
+msgid "Your entry is being held for approval."
+msgstr "Dein Beitrag wird für eine Genehmigung bereitgehalten."
+
+msgid "Your submission is still awaiting approval."
+msgstr "Deine Antwort wartet noch auf Genehmigung."
+

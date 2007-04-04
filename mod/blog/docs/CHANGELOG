@@ -1,3 +1,6 @@
+4 April 2007
++ Changed to new language functionality.
+
 26 March 2007
 + Fixed: logErrors called on blog object instead of image object
   on empty image id.
