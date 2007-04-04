@@ -58,7 +58,7 @@ $content[] = '<pre>1.1.1 Changes
         $content[] = '    ' . implode("\n    ", $files);
         $content[] = '+ Changed template so IE would hide the menu.
 + Menu now allows you pin any non-admin page into the menu.
-+ Change menu margins to so both FF and IE could access the popup menu.</pre>';
++ Changed menu margins so both FF and IE could access the popup menu.</pre>';
 
     }
     return true;

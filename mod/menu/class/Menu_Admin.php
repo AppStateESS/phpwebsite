@@ -16,7 +16,7 @@ class Menu_Admin {
         PHPWS_Core::initModClass('menu', 'Menu_Item.php');
 
         if (!Current_User::allow('menu')){
-            Current_User::disallow(_('User attempted access to Menu administration.'));
+            Current_User::disallow(dgettext('menu', 'User attempted access to Menu administration.'));
             return;
         }
 
@@ -64,13 +64,13 @@ class Menu_Admin {
             break;
 
         case 'new':
-            $title = _('Create New Menu');
+            $title = dgettext('menu', 'Create New Menu');
             $content = Menu_Admin::editMenu($menu);
             break;
 
         case 'delete_menu':
             $menu->kill();
-            Menu_Admin::sendMessage(_('Menu deleted.'), 'list');
+            Menu_Admin::sendMessage(dgettext('menu', 'Menu deleted.'), 'list');
             break;
 
         case 'enable_admin_mode':
@@ -84,7 +84,7 @@ class Menu_Admin {
                 PHPWS_Core::goBack();
             }
         case 'settings':
-            $title = _('Menu Settings');
+            $title = dgettext('menu', 'Menu Settings');
             $content = Menu_Admin::settings();
             break;
 
@@ -101,7 +101,7 @@ class Menu_Admin {
             break;
 
         case 'edit_menu':
-            $title = _('Update Menu');
+            $title = dgettext('menu', 'Update Menu');
             $content = Menu_Admin::editMenu($menu);
             break;
 
@@ -109,8 +109,8 @@ class Menu_Admin {
             $result = Menu_Admin::editLinkTitle($_REQUEST['link_id'], $_REQUEST['link_title']);
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
-                $title = _('Sorry');
-                $content = _('A problem occurred when saving your link.');
+                $title = dgettext('menu', 'Sorry');
+                $content = dgettext('menu', 'A problem occurred when saving your link.');
             } else {
                 PHPWS_Core::goBack();
             }
@@ -160,8 +160,8 @@ class Menu_Admin {
             if ($result) {
                 PHPWS_Core::goBack();
             } else {
-                $title = _('Error');
-                $content = _('There was a problem saving your link.');
+                $title = dgettext('menu', 'Error');
+                $content = dgettext('menu', 'There was a problem saving your link.');
             }
             break;
 
@@ -208,10 +208,10 @@ class Menu_Admin {
             $post_result = $menu->post();
             if (is_array($post_result)) {
                 $tpl['MESSAGE'] = implode('<br />', $post_result);
-                $title = _('Create New Menu');
+                $title = dgettext('menu', 'Create New Menu');
                 $content = Menu_Admin::editMenu($menu);
             } else {
-                Menu_Admin::sendMessage(_('Menu saved'), 'list');
+                Menu_Admin::sendMessage(dgettext('menu', 'Menu saved'), 'list');
             }
             break;
 
@@ -288,15 +288,15 @@ class Menu_Admin {
     {
         $form = new PHPWS_Form('menu');
         $form->addText('title');
-        $form->setLabel('title', _('Enter link title'));
+        $form->setLabel('title', dgettext('menu', 'Enter link title'));
         $form->addHidden('command', 'pin_page_post');
         $form->addHidden('url', $url);
         $form->addHidden('module', 'menu');
-        $form->addSubmit(_('Save'));
+        $form->addSubmit(dgettext('menu', 'Save'));
         $tpl = $form->getTemplate();
-        $tpl['CANCEL'] = javascript('close_window', array('value'=>_('Cancel')));
+        $tpl['CANCEL'] = javascript('close_window', array('value'=>dgettext('menu', 'Cancel')));
         if ($error) {
-            $tpl['ERRORS'] = _('You must enter a link title.');
+            $tpl['ERRORS'] = dgettext('menu', 'You must enter a link title.');
         }
         return PHPWS_Template::process($tpl, 'menu', 'admin/offsite.tpl');
     }
@@ -401,15 +401,15 @@ class Menu_Admin {
 
         if (Current_User::allow('menu', 'create_new_menu')) {
             $newLink = 'index.php?module=menu';
-            $newCommand = array ('title'=>_('New'), 'link'=> $newLink);
+            $newCommand = array ('title'=>dgettext('menu', 'New'), 'link'=> $newLink);
             $tabs['new'] = $newCommand;
         }
         
         $listLink = 'index.php?module=menu';
-        $listCommand = array ('title'=>_('List'), 'link'=> $listLink);
+        $listCommand = array ('title'=>dgettext('menu', 'List'), 'link'=> $listLink);
         $tabs['list'] = $listCommand;
 
-        $adminCommand = array('title' => _('Settings'), 'link' => 'index.php?module=menu');
+        $adminCommand = array('title' => dgettext('menu', 'Settings'), 'link' => 'index.php?module=menu');
         $tabs['settings'] = $adminCommand;
 
         $panel = new PHPWS_Panel('menu');
@@ -426,26 +426,26 @@ class Menu_Admin {
         $form->addHidden('command', 'post_menu');
         if ($menu->id) {
             $form->addHidden('menu_id', $menu->id);
-            $form->addSubmit('submit', _('Update'));
+            $form->addSubmit('submit', dgettext('menu', 'Update'));
         } else {
-            $form->addSubmit('submit', _('Create'));
+            $form->addSubmit('submit', dgettext('menu', 'Create'));
         }
 
         $form->addCheck('pin_all', 1);
         $form->setMatch('pin_all', $menu->pin_all);
-        $form->setLabel('pin_all', _('Pin to all pages'));
+        $form->setLabel('pin_all', dgettext('menu', 'Pin to all pages'));
 
         $form->addText('title', $menu->title);
-        $form->setLabel('title', _('Title'));
+        $form->setLabel('title', dgettext('menu', 'Title'));
         $form->setSize('title', 30, 30);
 
         if($template_list = $menu->getTemplateList()) {
             $form->addSelect('template', $template_list);
             $form->setMatch('template', $menu->template);
-            $form->setLabel('template', _('Template'));
+            $form->setLabel('template', dgettext('menu', 'Template'));
         } else {
-            $form->addTplTag('TEMPLATE_LABEL', _('Template'));
-            $form->addTplTag('TEMPLATE', _('Cannot locate any menu templates. Cannot continue.'));
+            $form->addTplTag('TEMPLATE_LABEL', dgettext('menu', 'Template'));
+            $form->addTplTag('TEMPLATE', dgettext('menu', 'Cannot locate any menu templates. Cannot continue.'));
             $form->dropElement('submit');
         }
 
@@ -471,8 +471,8 @@ class Menu_Admin {
 
     function menuList()
     {
-        $page_tags['TITLE'] = _('Title');
-        $page_tags['ACTION'] = _('Action');
+        $page_tags['TITLE'] = dgettext('menu', 'Title');
+        $page_tags['ACTION'] = dgettext('menu', 'Action');
 
         PHPWS_Core::initCoreClass('DBPager.php');
         $pager = new DBPager('menus', 'Menu_Item');
@@ -495,7 +495,7 @@ class Menu_Admin {
         }
 
         if (!isset($_SESSION['Menu_Pin_Links'])) {
-            return _('No links in queue.');
+            return dgettext('menu', 'No links in queue.');
         }
 
         foreach ($_SESSION['Menu_Pin_Links'] as $key=>$data) {
@@ -508,12 +508,12 @@ class Menu_Admin {
         $form->addHidden('menu_id', $menu_id);
         $form->addHidden('link_id', $link_id);
         $form->addSelect('links', $pin_list);
-        $form->setLabel('links', _('Pinned links'));
-        $form->addSubmit('add', _('Add to menu'));
-        $form->addSubmit('remove', _('Clear from list'));
+        $form->setLabel('links', dgettext('menu', 'Pinned links'));
+        $form->addSubmit('add', dgettext('menu', 'Add to menu'));
+        $form->addSubmit('remove', dgettext('menu', 'Clear from list'));
 
         $tpl = $form->getTemplate();
-        $tpl['CLOSE'] = sprintf('<a href="#" onclick="window.close(); return false">%s</a>', _('Close'));
+        $tpl['CLOSE'] = sprintf('<a href="#" onclick="window.close(); return false">%s</a>', dgettext('menu', 'Close'));
         return PHPWS_Template::process($tpl, 'menu', 'admin/pin_list.tpl');
     }
 
@@ -522,11 +522,11 @@ class Menu_Admin {
     {
         if (!isset($_SESSION['Menu_Admin_Mode'])) {
             $vars['command'] = 'enable_admin_mode';
-            $tpl['ADMIN_LINK'] = PHPWS_Text::secureLink(_('Enable Administration Mode'),
+            $tpl['ADMIN_LINK'] = PHPWS_Text::secureLink(dgettext('menu', 'Enable Administration Mode'),
                                                         'menu', $vars);
         } else {
             $vars['command'] = 'disable_admin_mode';
-            $tpl['ADMIN_LINK'] = PHPWS_Text::secureLink(_('Disable Administration Mode'),
+            $tpl['ADMIN_LINK'] = PHPWS_Text::secureLink(dgettext('menu', 'Disable Administration Mode'),
                                                         'menu', $vars);
         }
         return PHPWS_Template::process($tpl, 'menu', 'admin/settings.tpl');
@@ -543,21 +543,21 @@ class Menu_Admin {
         $form->addHidden('menu_id', $menu->id);
         $form->addHidden('parent_id', $link->parent);
         $form->addText('title', $link->title);
-        $form->setLabel('title', _('Title'));
+        $form->setLabel('title', dgettext('menu', 'Title'));
         if (MENU_TITLE_LIMIT > 0) {
             $form->setSize('title', MENU_TITLE_LIMIT);
             $form->setMaxSize('title', MENU_TITLE_LIMIT);
         }
 
         $form->addText('url', $link->url);
-        $form->setLabel('url', _('Url'));
+        $form->setLabel('url', dgettext('menu', 'Url'));
         $form->setSize('url', 50);
         
-        $form->addSubmit(_('Save link'));
+        $form->addSubmit(dgettext('menu', 'Save link'));
 
         $template = $form->getTemplate();
 
-        $template['FORM_TITLE'] = _('Create Link');
+        $template['FORM_TITLE'] = dgettext('menu', 'Create Link');
         $template['CANCEL'] = javascript('close_window');
 
         if ($errors) {
@@ -571,13 +571,13 @@ class Menu_Admin {
     function postSiteLink(&$link)
     {
         if (empty($_POST['title'])) {
-            $error[] = _('Missing title.');
+            $error[] = dgettext('menu', 'Missing title.');
         } else {
             $link->setTitle($_POST['title']);
         }
 
         if (empty($_POST['url'])) {
-            $error[] = _('Missing url.');
+            $error[] = dgettext('menu', 'Missing url.');
         } else {
             $link->setUrl($_POST['url']);
         }

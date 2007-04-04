@@ -84,7 +84,7 @@ class Menu_Item {
     function post()
     {
         if (empty($_POST['title'])) {
-            $errors[] = _('Missing menu title.');
+            $errors[] = dgettext('menu', 'Missing menu title.');
         } else {
             $this->setTitle($_POST['title']);
         }
@@ -103,7 +103,7 @@ class Menu_Item {
             $result = $this->save();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
-                return array(_('Unable to save menu. Please check error logs.'));
+                return array(dgettext('menu', 'Unable to save menu. Please check error logs.'));
             }
             return TRUE;
         }
@@ -184,32 +184,32 @@ class Menu_Item {
     {
         $vars['menu_id'] = $this->id;
         $vars['command'] = 'edit_menu';
-        $links[] = PHPWS_Text::secureLink(_('Edit'), 'menu', $vars);
+        $links[] = PHPWS_Text::secureLink(dgettext('menu', 'Edit'), 'menu', $vars);
 
         if (!isset($_SESSION['Menu_Clip']) || 
             !isset($_SESSION['Menu_Clip'][$this->id])) {
             $vars['command'] = 'clip';
-            $links[] = PHPWS_Text::secureLink(_('Clip'), 'menu', $vars);
+            $links[] = PHPWS_Text::secureLink(dgettext('menu', 'Clip'), 'menu', $vars);
         } else {
             $vars['command'] = 'unclip';
-            $links[] = PHPWS_Text::secureLink(_('Unclip'), 'menu', $vars);
+            $links[] = PHPWS_Text::secureLink(dgettext('menu', 'Unclip'), 'menu', $vars);
         }
 
         $vars['command'] = 'pin_all';
         if ($this->pin_all == 0) {
-            $link_title = _('Pin');
+            $link_title = dgettext('menu', 'Pin');
             $vars['hook'] = 1;
         } else {
-            $link_title = _('Unpin');
+            $link_title = dgettext('menu', 'Unpin');
             $vars['hook'] = 0;
         }
         $links[] = PHPWS_Text::secureLink($link_title, 'menu', $vars);
         unset($vars['hook']);
 
         $vars['command'] = 'delete_menu';
-        $js['QUESTION'] = _('Are you sure you want to delete this menu and all its links.');
+        $js['QUESTION'] = dgettext('menu', 'Are you sure you want to delete this menu and all its links.');
         $js['ADDRESS']  = PHPWS_Text::linkAddress('menu', $vars, TRUE);
-        $js['LINK'] = _('Delete');
+        $js['LINK'] = dgettext('menu', 'Delete');
         $links[] = javascript('confirm', $js);
 
         $tpl['ACTION'] = implode(' | ', $links);
@@ -319,7 +319,7 @@ class Menu_Item {
                     }
                     
                     $js['address'] = PHPWS_Text::linkAddress('menu', $pinvars);
-                    $js['label']   = _('Pin page');
+                    $js['label']   = dgettext('menu', 'Pin page');
                     $js['width']   = 300;
                     $js['height']  = 180;
                     $tpl['PIN_PAGE'] = javascript('open_window', $js);

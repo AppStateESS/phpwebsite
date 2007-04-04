@@ -3,10 +3,9 @@
    * @version $Id$
    * @author Matthew McNaney <mcnaney at gmail dot com>
    */
-translate('menu');
+
 $errors = array(
-		MENU_MISSING_INFO => _('Link is missing a title, url, or menu id.')
+		MENU_MISSING_INFO => dgettext('menu', 'Link is missing a title, url, or menu id.')
 		);
-translate();
 
 ?>

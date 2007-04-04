@@ -8,7 +8,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     include '../../config/core/404.html';
     exit();
 }
-translate('menu');
+
 if (isset($_REQUEST['site_map'])) {
     Menu::siteMap();
  } elseif(Current_User::allow('menu')) {
@@ -16,6 +16,5 @@ if (isset($_REQUEST['site_map'])) {
  } else {
     PHPWS_Core::errorPage('404');
  }
-translate();
 
 ?>
