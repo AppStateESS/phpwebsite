@@ -111,7 +111,7 @@ class Branch_Admin {
         case 'edit':
             // editing existing branch
             if (empty($this->branch->id)) {
-                $this->content = _('Incorrect or missing branch id.');
+                $this->content = dgettext('branch', 'Incorrect or missing branch id.');
             }
             break;
 
@@ -145,9 +145,9 @@ class Branch_Admin {
 
         case 'save_branch_modules':
             if ($this->saveBranchModules()) {
-                $this->message = _('Module list saved successfully.');
+                $this->message = dgettext('branch', 'Module list saved successfully.');
             } else {
-                $this->message = _('An error occurred when trying to save the module list.');
+                $this->message = dgettext('branch', 'An error occurred when trying to save the module list.');
             }
             $this->edit_modules();
             break;
@@ -164,7 +164,7 @@ class Branch_Admin {
                 $result = $this->branch->save();
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
-                    $this->title = _('An error occurred while saving your branch.');
+                    $this->title = dgettext('branch', 'An error occurred while saving your branch.');
                     $this->content = $result->getMessage();
                     return;
                 }
@@ -172,14 +172,14 @@ class Branch_Admin {
                 if ($new_branch) {
                     if ($this->branch->createDirectories()) {
                         $this->setCreateStep(3);
-                        $this->title = _('Create branch directories');
-                        $this->message[] = _('Branch created successfully.');
+                        $this->title = dgettext('branch', 'Create branch directories');
+                        $this->message[] = dgettext('branch', 'Branch created successfully.');
                         $vars['command'] = 'install_branch_core';
                         $vars['branch_id'] = $this->branch->id;
-                        $this->content = PHPWS_Text::secureLink(_('Continue to install branch core'), 'branch', $vars); 
+                        $this->content = PHPWS_Text::secureLink(dgettext('branch', 'Continue to install branch core'), 'branch', $vars); 
                     } else {
-                        $this->title = _('Unable to create branch directories.');
-                        $this->content = _('Sorry, but Branch failed to make the proper directories.');
+                        $this->title = dgettext('branch', 'Unable to create branch directories.');
+                        $this->content = dgettext('branch', 'Sorry, but Branch failed to make the proper directories.');
                     }
                 } else {
                     $this->listBranches();
@@ -194,8 +194,8 @@ class Branch_Admin {
         case 'core_module_installation':
             $result =  $this->core_module_installation();
             if ($result) {
-                $this->content[] = _('All done!');
-                $this->content[] = PHPWS_Text::secureLink(_('Set up allowed modules'),
+                $this->content[] = dgettext('branch', 'All done!');
+                $this->content[] = PHPWS_Text::secureLink(dgettext('branch', 'Set up allowed modules'),
                                                           'branch', array('command' => 'branch_modules',
                                                                           'branch_id' => $this->branch->id));
                 $this->resetAdmin();
@@ -218,56 +218,56 @@ class Branch_Admin {
         PHPWS_Core::initCoreClass('File.php');
         $content = array();
 
-        $this->title = _('Install branch core');
+        $this->title = dgettext('branch', 'Install branch core');
         $dsn = $this->getDSN();
         if (empty($dsn)) {
-            $this->content[] = _('Unable to get database connect information. Please try again.');
+            $this->content[] = dgettext('branch', 'Unable to get database connect information. Please try again.');
             return false;
         }
 
         if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'admin/', $this->branch->directory . 'admin/')) {
-            $this->content[] = _('Failed to copy admin file to branch.');
+            $this->content[] = dgettext('branch', 'Failed to copy admin file to branch.');
             return false;
         } else {
-            $this->content[] = _('Copied admin file to branch.');
+            $this->content[] = dgettext('branch', 'Copied admin file to branch.');
         }
 
 
         if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'themes/', $this->branch->directory . 'themes/')) {
-            $this->content[] = _('Failed to copy theme files to branch.');
+            $this->content[] = dgettext('branch', 'Failed to copy theme files to branch.');
             return false;
         } else {
-            $this->content[] = _('Copied themes to branch.');
+            $this->content[] = dgettext('branch', 'Copied themes to branch.');
         }
 
         if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'images/core/', $this->branch->directory . 'images/core/')) {
-            $this->content[] = _('Failed to copy core images to branch.');
+            $this->content[] = dgettext('branch', 'Failed to copy core images to branch.');
             return false;
         } else {
-            $this->content[] = _('Copied core images.');
+            $this->content[] = dgettext('branch', 'Copied core images.');
         }
 
         if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'config/core/', $this->branch->directory . 'config/core/')) {
-            $this->content[] = _('Failed to copy core config files to branch.');
+            $this->content[] = dgettext('branch', 'Failed to copy core config files to branch.');
             return false;
         } else {
-            $this->content[] = _('Copied config files to branch.');
+            $this->content[] = dgettext('branch', 'Copied config files to branch.');
             @unlink($this->branch->directory . 'config.php');
         }
 
         if (!PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'javascript/', $this->branch->directory . 'javascript/')) {
-            $this->content[] = _('Failed to copy javascript files to branch.');
+            $this->content[] = dgettext('branch', 'Failed to copy javascript files to branch.');
             return false;
         } else {
-            $this->content[] = _('Copied javascript files to branch.');
+            $this->content[] = dgettext('branch', 'Copied javascript files to branch.');
         }
 
         if (is_file(PHPWS_SOURCE_DIR . '.htaccess')) {
-            $this->content[] = _('.htaccess detected on hub. Attempting to create default file on branch.');
+            $this->content[] = dgettext('branch', '.htaccess detected on hub. Attempting to create default file on branch.');
             if (@copy(PHPWS_SOURCE_DIR . 'mod/branch/inc/htaccess', $this->branch->directory . '.htaccess')) {
-                $this->content[] = _('Copied successfully.');
+                $this->content[] = dgettext('branch', 'Copied successfully.');
             } else {
-                $this->content[] = _('Unable to copy .htaccess file.');
+                $this->content[] = dgettext('branch', 'Unable to copy .htaccess file.');
             }
         }
         
@@ -277,23 +277,23 @@ class Branch_Admin {
         file_put_contents($this->branch->directory . 'index.php', $index_file);
         
         if (!$this->copy_config()) {
-            $this->content[] = _('Failed to create config.php file in the branch.');
+            $this->content[] = dgettext('branch', 'Failed to create config.php file in the branch.');
             return false;
         } else {
-            $this->content[] = _('Config file created successfully.');
+            $this->content[] = dgettext('branch', 'Config file created successfully.');
         }
 
         $result = $this->create_core();
 
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            $this->content[] = _('Core SQL import failed.');
+            $this->content[] = dgettext('branch', 'Core SQL import failed.');
             return false;
         } else {
-            $this->content[] = _('Core SQL import successful.');
+            $this->content[] = dgettext('branch', 'Core SQL import successful.');
         }
 
-        $link = _('Core installed successfully. Continue to core module installation.');
+        $link = dgettext('branch', 'Core installed successfully. Continue to core module installation.');
         $vars['command']   = 'core_module_installation';
         $vars['branch_id'] = $this->branch->id;
         $this->content[] = PHPWS_Text::secureLink($link, 'branch', $vars);
@@ -367,7 +367,7 @@ class Branch_Admin {
         }
 
         if (!is_dir($this->branch->directory)) {
-            $this->message[] = _('Branch directory does not exist.');
+            $this->message[] = dgettext('branch', 'Branch directory does not exist.');
             $directory = explode('/', $this->branch->directory);
             // removes item after the /
             array_pop($directory);
@@ -379,41 +379,41 @@ class Branch_Admin {
             if (!$this->branch->id) {
                 if (is_writable($write_dir)) {
                     if(@mkdir($this->branch->directory)) {
-                        $this->message[] = _('Directory creation successful.');
+                        $this->message[] = dgettext('branch', 'Directory creation successful.');
                     } else {
-                        $this->message[] = _('Unable to create the directory. You will need to create it manually.');
+                        $this->message[] = dgettext('branch', 'Unable to create the directory. You will need to create it manually.');
                         return false;
                     }
                 } else {
-                    $this->message[] = _('Unable to create the directory. You will need to create it manually.');
+                    $this->message[] = dgettext('branch', 'Unable to create the directory. You will need to create it manually.');
                     $result = false;
                 }
             }
         } elseif (!is_writable($this->branch->directory)) {
-            $this->message[] = _('Directory exists but is not writable.');
+            $this->message[] = dgettext('branch', 'Directory exists but is not writable.');
             $result = false;
         } elseif(!$this->branch->id && PHPWS_File::listDirectories($this->branch->directory)) {
-            $this->message[] = _('Directory exists but already contains files.');
+            $this->message[] = dgettext('branch', 'Directory exists but already contains files.');
             $result = false;
         }
 
         if (empty($_POST['branch_name'])) {
-            $this->message[] = _('You must name your branch.');
+            $this->message[] = dgettext('branch', 'You must name your branch.');
             $result = false;
         } elseif (!$this->branch->setBranchName($_POST['branch_name'])) {
-            $this->message[] = _('You may not use that branch name.');
+            $this->message[] = dgettext('branch', 'You may not use that branch name.');
             $result = false;
         }
 
         if (empty($_POST['url'])) {
-            $this->message[] = _('Enter your site\'s url address.');
+            $this->message[] = dgettext('branch', 'Enter your site\'s url address.');
             $result = false;
         } else {
             $this->branch->url = $_POST['url'];
         }
 
         if (empty($_POST['site_hash'])) {
-            $this->message[] = _('Your branch site must have a site_hash.');
+            $this->message[] = dgettext('branch', 'Your branch site must have a site_hash.');
             $result = false;
         } else {
             $this->branch->site_hash = $_POST['site_hash'];
@@ -432,14 +432,14 @@ class Branch_Admin {
 
         PHPWS_DB::loadDB($this->getDSN(), $this->dbprefix);
 
-        $this->title = _('Installing core modules');
+        $this->title = dgettext('branch', 'Installing core modules');
 
         $result = $_SESSION['Boost']->install(false, true, $this->branch->directory);
 
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            $this->content[] = _('An error occurred while trying to install your modules.') 
-                . ' ' . _('Please check your error logs and try again.');
+            $this->content[] = dgettext('branch', 'An error occurred while trying to install your modules.') 
+                . ' ' . dgettext('branch', 'Please check your error logs and try again.');
             return true;
         } else {
             $this->content[] = $result;
@@ -506,10 +506,10 @@ class Branch_Admin {
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $newLink = 'index.php?module=branch&amp;command=new';
-        $newCommand = array ('title'=>_('New'), 'link'=> $newLink);
+        $newCommand = array ('title'=>dgettext('branch', 'New'), 'link'=> $newLink);
         
         $listLink = 'index.php?module=branch&amp;command=list';
-        $listCommand = array ('title'=>_('List'), 'link'=> $listLink);
+        $listCommand = array ('title'=>dgettext('branch', 'List'), 'link'=> $listLink);
 
         $tabs['new'] = &$newCommand;
         $tabs['list'] = &$listCommand;
@@ -574,26 +574,26 @@ class Branch_Admin {
             if (isset($_POST['createdb'])) {
                 $result = $this->createDB();
                 if (PEAR::isError($result)) {
-                    $this->message[] = _('An error occurred when trying to connect to the database.');
+                    $this->message[] = dgettext('branch', 'An error occurred when trying to connect to the database.');
                     $this->edit_db();
                 } elseif ($result) {
-                    $this->message[] = _('Database created successfully.');
+                    $this->message[] = dgettext('branch', 'Database created successfully.');
                     $this->setCreateStep(2);
                     $this->saveDSN();
                     $this->edit_basic();
                 } else {
-                    $this->message[] = _('Unable to create the database. You will need to create it manually.');
+                    $this->message[] = dgettext('branch', 'Unable to create the database. You will need to create it manually.');
                     $this->edit_db();
                 }
             } else {
-                $this->message[] = _('Connected successfully, but the database does not exist.');
+                $this->message[] = dgettext('branch', 'Connected successfully, but the database does not exist.');
                 $this->edit_db();
             }
             break;
 
         case BRANCH_NO_CONNECTION:
             // Failed connection
-            $this->message[] = _('Could not connect to the database.');
+            $this->message[] = dgettext('branch', 'Could not connect to the database.');
             $this->edit_db();
             break;
 
@@ -601,12 +601,12 @@ class Branch_Admin {
             // connection successful
             $this->setCreateStep(2);
             $this->saveDSN();
-            $this->message[] = _('Connection successful. Database available.');
+            $this->message[] = dgettext('branch', 'Connection successful. Database available.');
             $this->edit_basic();
             break;
 
         case BRANCH_CONNECT_WITH_TABLES:
-            $this->message[] = _('Connected successfully, but this database already contains tables.');
+            $this->message[] = dgettext('branch', 'Connected successfully, but this database already contains tables.');
             $this->edit_db();
             break;
         }
@@ -621,30 +621,30 @@ class Branch_Admin {
         $form->addHidden('command', 'post_basic');
 
         if ($branch->id) {
-            $this->title = _('Edit branch');
+            $this->title = dgettext('branch', 'Edit branch');
             $form->addHidden('branch_id', $this->branch->id);
-            $form->addSubmit('submit', _('Update'));
+            $form->addSubmit('submit', dgettext('branch', 'Update'));
         } else {
-            $this->title = _('Create branch information');
-            $form->addSubmit('submit', _('Continue...'));
+            $this->title = dgettext('branch', 'Create branch information');
+            $form->addSubmit('submit', dgettext('branch', 'Continue...'));
         }
 
         $form->addText('branch_name', $branch->branch_name);
-        $form->setLabel('branch_name', _('Branch name'));
+        $form->setLabel('branch_name', dgettext('branch', 'Branch name'));
 
         $form->addText('directory', $branch->directory);
         $form->setSize('directory', 50);
-        $form->setLabel('directory', _('Directory'));
+        $form->setLabel('directory', dgettext('branch', 'Directory'));
 
         $form->addText('url', $branch->url);
         $form->setSize('url', 50);
-        $form->setLabel('url', _('URL'));
+        $form->setLabel('url', dgettext('branch', 'URL'));
 
         $form->addText('site_hash', $branch->site_hash);
         $form->setSize('site_hash', 40);
-        $form->setLabel('site_hash', _('ID hash'));
+        $form->setLabel('site_hash', dgettext('branch', 'ID hash'));
         $template = $form->getTemplate();
-        $template['BRANCH_LEGEND'] = _('Branch specifications');
+        $template['BRANCH_LEGEND'] = dgettext('branch', 'Branch specifications');
         $this->content = PHPWS_Template::process($template, 'branch', 'edit_basic.tpl');
     }
 
@@ -653,43 +653,43 @@ class Branch_Admin {
      */
     function edit_db()
     {
-        $this->title = _('Setup branch database');
+        $this->title = dgettext('branch', 'Setup branch database');
         $form = new PHPWS_Form('branch-form');
         $form->addHidden('module', 'branch');
         $form->addHidden('command', 'post_db');
 
         $form->addCheck('createdb', $this->createdb);
-        $form->setLabel('createdb', _('Create new database'));
+        $form->setLabel('createdb', dgettext('branch', 'Create new database'));
         
         $form->addSelect('dbtype', $this->db_list);
         $form->setMatch('dbtype', $this->dbtype);
-        $form->setLabel('dbtype', _('Database syntax'));
+        $form->setLabel('dbtype', dgettext('branch', 'Database syntax'));
         
         $form->addText('dbname', $this->dbname);
-        $form->setLabel('dbname', _('Database name'));
+        $form->setLabel('dbname', dgettext('branch', 'Database name'));
         
         $form->addText('dbuser', $this->dbuser);
-        $form->setLabel('dbuser', _('Permission user'));
+        $form->setLabel('dbuser', dgettext('branch', 'Permission user'));
         
         $form->addPassword('dbpass', $this->dbpass);
         $form->allowValue('dbpass');
-        $form->setLabel('dbpass', _('User password'));
+        $form->setLabel('dbpass', dgettext('branch', 'User password'));
 
         $form->addText('dbprefix', $this->dbprefix);
-        $form->setLabel('dbprefix', _('Table prefix'));
+        $form->setLabel('dbprefix', dgettext('branch', 'Table prefix'));
         $form->setSize('dbprefix', 5, 5);
         
         $form->addText('dbhost', $this->dbhost);
-        $form->setLabel('dbhost', _('Database Host'));
+        $form->setLabel('dbhost', dgettext('branch', 'Database Host'));
         $form->setSize('dbhost', 40);
         
         $form->addText('dbport', $this->dbport);
-        $form->setLabel('dbport', _('Connection Port'));
+        $form->setLabel('dbport', dgettext('branch', 'Connection Port'));
         
-        $form->addTplTag('DB_LEGEND', _('Database information'));
+        $form->addTplTag('DB_LEGEND', dgettext('branch', 'Database information'));
         
-        $form->addSubmit('plug', _('Use hub values'));
-        $form->addSubmit('submit', _('Continue...'));
+        $form->addSubmit('plug', dgettext('branch', 'Use hub values'));
+        $form->addSubmit('submit', dgettext('branch', 'Continue...'));
         
         $template = $form->getTemplate();
 
@@ -760,22 +760,22 @@ class Branch_Admin {
 
         $this->dbname = $_POST['dbname'];
         if (!PHPWS_DB::allowed($this->dbname)) {
-            $this->message[] = _('This database name is not allowed.');
+            $this->message[] = dgettext('branch', 'This database name is not allowed.');
             $result = false;
         }
 
         if (empty($this->dbname)) {
-            $this->message[] = _('You must type a database name.');
+            $this->message[] = dgettext('branch', 'You must type a database name.');
             $result = false;
         }
 
         if (empty($this->dbuser)) {
-            $this->message[] = _('You must type a database user.');
+            $this->message[] = dgettext('branch', 'You must type a database user.');
             $result = false;
         }
 
         if (preg_match('/\W/', $this->dbprefix)) {
-            $content[] = _('Table prefix must be alphanumeric characters or underscores only');
+            $content[] = dgettext('branch', 'Table prefix must be alphanumeric characters or underscores only');
             $result = false;
         }
         return $result;
@@ -834,7 +834,7 @@ class Branch_Admin {
     function edit_modules()
     {
         PHPWS_Core::initCoreClass('File.php');
-        $this->title = sprintf(_('Module access for "%s"'), $this->branch->branch_name);
+        $this->title = sprintf(dgettext('branch', 'Module access for "%s"'), $this->branch->branch_name);
 
         $content = null;
 
@@ -868,13 +868,13 @@ class Branch_Admin {
             $form->setMatch('module_name', $branch_mods);
         }
 
-        $form->addSubmit('submit', _('Save'));
+        $form->addSubmit('submit', dgettext('branch', 'Save'));
 
         $form->addTplTag('CHECK_ALL', javascript('check_all', array('checkbox_name' => 'module_name')));
 
         $template = $form->getTemplate();
 
-        $template['DIRECTIONS'] = _('Unchecked modules cannot be installed on this branch.');
+        $template['DIRECTIONS'] = dgettext('branch', 'Unchecked modules cannot be installed on this branch.');
 
         $content = PHPWS_Template::process($template, 'branch', 'module_list.tpl');
         $this->content = & $content;
@@ -885,10 +885,10 @@ class Branch_Admin {
      */
     function listBranches()
     {
-        $page_tags['BRANCH_NAME_LABEL'] = _('Branch name');
-        $page_tags['DIRECTORY_LABEL']   = _('Directory');
-        $page_tags['URL_LABEL']         = _('Url');
-        $page_tags['ACTION_LABEL']      = _('Action');
+        $page_tags['BRANCH_NAME_LABEL'] = dgettext('branch', 'Branch name');
+        $page_tags['DIRECTORY_LABEL']   = dgettext('branch', 'Directory');
+        $page_tags['URL_LABEL']         = dgettext('branch', 'Url');
+        $page_tags['ACTION_LABEL']      = dgettext('branch', 'Action');
 
         PHPWS_Core::initCoreClass('DBPager.php');
         $pager = new DBPager('branch_sites', 'Branch');
@@ -897,7 +897,7 @@ class Branch_Admin {
         $pager->addPageTags($page_tags);
         $pager->addToggle('class="toggle1"');
         $pager->addRowTags('getTpl');
-        $this->title = _('Branch List');
+        $this->title = dgettext('branch', 'Branch List');
         $this->content = $pager->get();
     }
 

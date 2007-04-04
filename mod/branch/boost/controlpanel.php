@@ -3,14 +3,13 @@
    * @version $Id$
    * @author Matthew McNaney <mcnaney at gmail dot com>
    */
-translate('branch');
-$link[] = array('label'       => _('Branch'),
+
+$link[] = array('label'       => dgettext('branch', 'Branch'),
 		'restricted'  => TRUE,
 		'url'         => 'index.php?module=branch',
-		'description' => _('Install and update branch sites.'),
+		'description' => dgettext('branch', 'Install and update branch sites.'),
 		'image'       => 'branch.png',
 		'tab'         => 'admin'
 		);
-translate();
 
 ?>
