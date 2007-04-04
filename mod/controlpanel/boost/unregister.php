@@ -7,7 +7,6 @@
 
 function controlpanel_unregister($module, &$content)
 {
-    translate('controlpanel');
     PHPWS_Core::initModClass('controlpanel', 'ControlPanel.php');
     PHPWS_Core::initModClass('controlpanel', 'Tab.php');
     PHPWS_Core::initModClass('controlpanel', 'Link.php');
@@ -16,8 +15,8 @@ function controlpanel_unregister($module, &$content)
     $cpFile = sprintf('%smod/%s/boost/controlpanel.php', PHPWS_SOURCE_DIR, $module);
     
     if (!is_file($cpFile)){
-        PHPWS_Boost::addLog($module, _('Control Panel unregisteration file not implemented.'));
-        translate();
+        PHPWS_Boost::addLog($module, dgettext('controlpanel', 'Control Panel unregisteration file not implemented.'));
+        
         return FALSE;
     }
 
@@ -44,7 +43,7 @@ function controlpanel_unregister($module, &$content)
             $result = $db->getObjects('PHPWS_Panel_Link');
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
-                translate();
+                
                 return $result;
             } elseif (!$result) {
                 continue;
@@ -80,7 +79,7 @@ function controlpanel_unregister($module, &$content)
             $result = $db->getObjects('PHPWS_Panel_Tab');
 
             if (PEAR::isError($result)) {
-                translate();
+                
                 PHPWS_Error::log($result);
                 return $result;
             } elseif (empty($result)) {
@@ -93,8 +92,8 @@ function controlpanel_unregister($module, &$content)
         }
     }
 
-    $content[] = _('Control Panel links and tabs have been removed.');
-    translate();
+    $content[] = dgettext('controlpanel', 'Control Panel links and tabs have been removed.');
+    
     PHPWS_ControlPanel::reset();
     return true;
 }

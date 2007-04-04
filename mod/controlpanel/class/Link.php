@@ -100,7 +100,7 @@ class PHPWS_Panel_Link {
         if (is_file($this->image)) {
             $image = sprintf('<img src="%s" title="%s" alt="%s" />',
                              $this->image, $this->getLabel(),
-                             sprintf(_('%s module icon'), $this->getLabel()));
+                             sprintf(dgettext('controlpanel', '%s module icon'), $this->getLabel()));
         } else {
             return NULL;
         }
