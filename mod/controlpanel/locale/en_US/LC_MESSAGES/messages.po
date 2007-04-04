@@ -82,16 +82,16 @@ msgstr ""
 msgid "Move tab order up"
 msgstr ""
 
-msgid "No Control Panel file found for unregisteration."
+msgid "Control Panel unregisteration file not implemented."
 msgstr ""
 
-msgid "No Control Panel file found."
+msgid "Control Panel file not implemented."
 msgstr ""
 
-msgid "No Control Panel links found."
+msgid "Control Panel links not implemented."
 msgstr ""
 
-msgid "No Control Panel tabs found."
+msgid "Control Panel tabs not implemented."
 msgstr ""
 
 msgid "No tabs available in the Control Panel."

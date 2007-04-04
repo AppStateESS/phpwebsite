@@ -159,7 +159,7 @@ class PHPWS_ControlPanel {
         $cpFile = sprintf('%smod/%s/boost/controlpanel.php', PHPWS_SOURCE_DIR, $module);
 
         if (!is_file($cpFile)){
-            PHPWS_Boost::addLog($module, _('No Control Panel file found.'));
+            PHPWS_Boost::addLog($module, _('Control Panel file not implemented.'));
             return FALSE;
         }
 
@@ -219,7 +219,7 @@ class PHPWS_ControlPanel {
             }
             $content[] = sprintf(_('Control Panel tabs created for %s.'), $module);
         } else {
-            PHPWS_Boost::addLog($module, _('No Control Panel tabs found.'));
+            PHPWS_Boost::addLog($module, _('Control Panel tabs not implemented.'));
         }
         
         if (isset($link) && is_array($link)) {
