@@ -179,14 +179,14 @@ class Calendar_Event {
     function deleteLink()
     {
         if (javascriptEnabled()) {
-            $vars['QUESTION'] = _('Are you sure you want to permanently delete this event?');
+            $vars['QUESTION'] = dgettext('calendar', 'Are you sure you want to permanently delete this event?');
             $vars['ADDRESS'] = PHPWS_Text::linkAddress('calendar', array('aop' => 'delete_event',
                                                                          'sch_id' => $this->_schedule->id,
                                                                          'event_id' => $this->id), true);
-            $vars['LINK']    = _('Delete');
+            $vars['LINK']    = dgettext('calendar', 'Delete');
             return javascript('confirm', $vars);
         } else {
-            return PHPWS_Text::secureLink(_('Delete'), 'calendar',
+            return PHPWS_Text::secureLink(dgettext('calendar', 'Delete'), 'calendar',
                                           array('aop'         => 'delete_event',
                                                 'sch_id' => $this->_schedule->id,
                                                 'event_id'    => $this->id
@@ -203,9 +203,9 @@ class Calendar_Event {
         $linkvar['event_id'] = $this->id;
         
         if ($full) {
-            $link_label = _('Edit event');
+            $link_label = dgettext('calendar', 'Edit event');
         } else {
-            $link_label = _('Edit');
+            $link_label = dgettext('calendar', 'Edit');
         }
 
         if (javascriptEnabled()) {
@@ -320,9 +320,9 @@ class Calendar_Event {
 
     function getTpl()
     {
-        translate('calendar');
+        
         if ( $this->show_busy && !$this->_schedule->checkPermissions() ) {
-            $tpl['SUMMARY']     = _('Busy');
+            $tpl['SUMMARY']     = dgettext('calendar', 'Busy');
             $tpl['DESCRIPTION'] = null;
         } else {
             $tpl['SUMMARY']     = $this->getSummary();
@@ -340,15 +340,15 @@ class Calendar_Event {
             if (date('Ymd', $this->start_time) != date('Ymd', $this->end_time)) {
                 if (CALENDAR_MONTH_FIRST) {
                     if (date('Y', $this->start_time) != date('Y', $this->end_time)) {
-                        $tpl['START_TIME'] =  sprintf(_('All day event, %s'), strftime('%B %e, %Y', $this->start_time));
+                        $tpl['START_TIME'] =  sprintf(dgettext('calendar', 'All day event, %s'), strftime('%B %e, %Y', $this->start_time));
                     } else {
-                        $tpl['START_TIME'] =  sprintf(_('All day event, %s'), strftime('%B %e', $this->start_time));
+                        $tpl['START_TIME'] =  sprintf(dgettext('calendar', 'All day event, %s'), strftime('%B %e', $this->start_time));
                     }
                 } else {
                     if (date('Y', $this->start_time) != date('Y', $this->end_time)) {
-                        $tpl['START_TIME'] =  sprintf(_('All day event, %s'), strftime('%e, %Y', $this->start_time));
+                        $tpl['START_TIME'] =  sprintf(dgettext('calendar', 'All day event, %s'), strftime('%e, %Y', $this->start_time));
                     } else {
-                        $tpl['START_TIME'] =  sprintf(_('All day event, %s'), strftime('%e', $this->start_time));
+                        $tpl['START_TIME'] =  sprintf(dgettext('calendar', 'All day event, %s'), strftime('%e', $this->start_time));
                     }
                 }
 
@@ -366,7 +366,7 @@ class Calendar_Event {
                     }
                 }
             } else {
-                $tpl['START_TIME'] =  _('All day event');
+                $tpl['START_TIME'] =  dgettext('calendar', 'All day event');
                 $tpl['END_TIME'] = $this->getStartTime($month_day_mode);
             }
 
@@ -389,7 +389,7 @@ class Calendar_Event {
             }
             $tpl['DTSTART']     = PHPWS_Time::getDTTime($this->start_time, 'user');
             $tpl['DTEND']       = PHPWS_Time::getDTTime($this->end_time, 'user');
-            $tpl['TO'] = _('to');
+            $tpl['TO'] = dgettext('calendar', 'to');
         }
 
 
@@ -402,12 +402,12 @@ class Calendar_Event {
 
 
         if (!empty($this->location)) {
-            $tpl['LOCATION_LABEL'] = _('Location');
+            $tpl['LOCATION_LABEL'] = dgettext('calendar', 'Location');
 
             if (!empty($this->loc_link)) {
                 $tpl['LOCATION'] = sprintf('<a href="%s" title="%s">%s</a>',
                                            PHPWS_Text::checkLink($this->loc_link),
-                                           _('Visit this location\'s web site.'),
+                                           dgettext('calendar', 'Visit this location\'s web site.'),
                                            $this->location);
             } else {
                 $tpl['LOCATION'] = $this->location;
@@ -415,7 +415,7 @@ class Calendar_Event {
         }
 
         $tpl['BACK_LINK'] = PHPWS_Text::backLink();
-        translate();
+        
         return $tpl;
     }
 
@@ -479,7 +479,7 @@ class Calendar_Event {
     function post($suggested=false)
     {
         if (empty($_POST['summary'])) {
-            $errors[] = _('You must give your event a summary.');
+            $errors[] = dgettext('calendar', 'You must give your event a summary.');
         } else {
             $this->setSummary($_POST['summary']);
         }
@@ -526,7 +526,7 @@ class Calendar_Event {
         }
 
         if ($startTime >= $endTime) {
-            $errors[] = _('The end time must be after the start time.');
+            $errors[] = dgettext('calendar', 'The end time must be after the start time.');
         }
 
         $this->start_time = $startTime;
@@ -541,7 +541,7 @@ class Calendar_Event {
             $this->end_repeat = strtotime($_POST['end_repeat_date']) + 86399;
 
             if (date('Ymd', $this->end_repeat) <= date('Ymd', $this->start_time)) {
-                $errors[] = _('The date to repeat until must be greater than the event\'s start date.');
+                $errors[] = dgettext('calendar', 'The date to repeat until must be greater than the event\'s start date.');
             }
 
             if (isset($_POST['repeat_mode'])) {
@@ -555,7 +555,7 @@ class Calendar_Event {
                 case 'weekly':
                     $this->repeat_type = 'weekly';
                     if (empty($_POST['weekday_repeat'])) {
-                        $errors[] = _('Weekly repeats require you pick one or more days.');
+                        $errors[] = dgettext('calendar', 'Weekly repeats require you pick one or more days.');
                     } else {
                         $this->repeat_type .= ':' . implode(';', $_POST['weekday_repeat']);
                     }
@@ -564,7 +564,7 @@ class Calendar_Event {
                 case 'monthly':
                     $this->repeat_type = 'monthly';
                     if (empty($_POST['monthly_repeat'])) {
-                        $errors[] = _('Please pick a monthly repeat method.');
+                        $errors[] = dgettext('calendar', 'Please pick a monthly repeat method.');
                         break;
                     }
                     switch ($_POST['monthly_repeat']) {
@@ -575,7 +575,7 @@ class Calendar_Event {
                         break;
 
                     default:
-                        $errors[] = _('Please pick a proper monthly repeat method.');
+                        $errors[] = dgettext('calendar', 'Please pick a proper monthly repeat method.');
                     }
                     break;
                     
@@ -583,7 +583,7 @@ class Calendar_Event {
                     if ( empty($_POST['every_repeat_number']) ||
                          empty($_POST['every_repeat_weekday']) ||
                          empty($_POST['every_repeat_frequency']) ) {
-                        $errors[] = _('Please choose options for the "Every" repeat method.');
+                        $errors[] = dgettext('calendar', 'Please choose options for the "Every" repeat method.');
                         break;
                     }
                     
@@ -595,7 +595,7 @@ class Calendar_Event {
                     break;
                 }
             } else {
-                $errors[] = _('You must choose a repeat mode.');
+                $errors[] = dgettext('calendar', 'You must choose a repeat mode.');
             }
         } else {
             $this->repeat_type = null;

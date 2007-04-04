@@ -60,15 +60,15 @@ class Calendar_Suggestion extends Calendar_Event {
             if (date('Ymd', $this->start_time) != date('Ymd', $this->end_time)) {
                 if (CALENDAR_MONTH_FIRST) {
                     if (date('Y', $this->start_time) != date('Y', $this->end_time)) {
-                        $tpl['START_TIME'] =  sprintf(_('All day event, %s'), strftime('%B %e, %Y', $this->start_time));
+                        $tpl['START_TIME'] =  sprintf(dgettext('calendar', 'All day event, %s'), strftime('%B %e, %Y', $this->start_time));
                     } else {
-                        $tpl['START_TIME'] =  sprintf(_('All day event, %s'), strftime('%B %e', $this->start_time));
+                        $tpl['START_TIME'] =  sprintf(dgettext('calendar', 'All day event, %s'), strftime('%B %e', $this->start_time));
                     }
                 } else {
                     if (date('Y', $this->start_time) != date('Y', $this->end_time)) {
-                        $tpl['START_TIME'] =  sprintf(_('All day event, %s'), strftime('%e, %Y', $this->start_time));
+                        $tpl['START_TIME'] =  sprintf(dgettext('calendar', 'All day event, %s'), strftime('%e, %Y', $this->start_time));
                     } else {
-                        $tpl['START_TIME'] =  sprintf(_('All day event, %s'), strftime('%e', $this->start_time));
+                        $tpl['START_TIME'] =  sprintf(dgettext('calendar', 'All day event, %s'), strftime('%e', $this->start_time));
                     }
                 }
 
@@ -86,7 +86,7 @@ class Calendar_Suggestion extends Calendar_Event {
                     }
                 }
             } else {
-                $tpl['START_TIME'] =  _('All day event');
+                $tpl['START_TIME'] =  dgettext('calendar', 'All day event');
                 $tpl['END_TIME'] = $this->getStartTime($month_day_mode);
             }
 
@@ -103,7 +103,7 @@ class Calendar_Suggestion extends Calendar_Event {
                 $tpl['START_TIME']   = $this->getStartTime(CALENDAR_TIME_FORMAT);
                 $tpl['END_TIME'] = $this->getEndTime(CALENDAR_TIME_FORMAT . ', ' . $month_day_mode . ', %Y');
             }
-            $tpl['TO'] = _('to');
+            $tpl['TO'] = dgettext('calendar', 'to');
         }
 
 
@@ -111,7 +111,7 @@ class Calendar_Suggestion extends Calendar_Event {
             if (!empty($this->loc_link)) {
                 $tpl['LOCATION'] = sprintf('<a href="%s" title="%s">%s</a>',
                                            PHPWS_Text::checkLink($this->loc_link),
-                                           _('Visit this location\'s web site.'),
+                                           dgettext('calendar', 'Visit this location\'s web site.'),
                                            $this->location);
             } else {
                 $tpl['LOCATION'] = $this->location;
@@ -121,10 +121,10 @@ class Calendar_Suggestion extends Calendar_Event {
         $vars['suggestion_id'] = $this->id;
 
         $vars['aop'] = 'approve_suggestion';
-        $links[] = PHPWS_Text::secureLink(_('Approve'), 'calendar', $vars);
+        $links[] = PHPWS_Text::secureLink(dgettext('calendar', 'Approve'), 'calendar', $vars);
 
         $vars['aop'] = 'disapprove_suggestion';
-        $links[] = PHPWS_Text::secureLink(_('Disapprove'), 'calendar', $vars);
+        $links[] = PHPWS_Text::secureLink(dgettext('calendar', 'Disapprove'), 'calendar', $vars);
 
         $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;

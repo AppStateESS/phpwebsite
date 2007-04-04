@@ -99,7 +99,7 @@ class Calendar_Schedule {
         if (!isset($default_date)) {
             $default_date = PHPWS_Time::getUserTime();
         }
-        $add_label = _('Add event');
+        $add_label = dgettext('calendar', 'Add event');
         if (javascriptEnabled()) {
             $vars['address'] = sprintf('index.php?module=calendar&amp;aop=create_event&amp;js=1&amp;sch_id=%s&amp;date=%s',
                                        $this->id, $default_date);
@@ -122,7 +122,7 @@ class Calendar_Schedule {
             $default_date = PHPWS_Time::getUserTime();
         }
 
-        $suggest_label = _('Suggest event');
+        $suggest_label = dgettext('calendar', 'Suggest event');
 
         if (javascriptEnabled()) {
             $vars['address'] = sprintf('index.php?module=calendar&amp;uop=suggest_event&amp;js=1&amp;sch_id=%s&amp;date=%s',
@@ -208,37 +208,37 @@ class Calendar_Schedule {
         $form->addHidden('sch_id', $this->id);
 
         $form->addText('title', $this->title);
-        $form->setLabel('title', _('Title'));
+        $form->setLabel('title', dgettext('calendar', 'Title'));
         $form->setSize('title', 40);
 
         $form->addTextArea('summary', $this->summary);
-        $form->setLabel('summary', _('Summary'));
+        $form->setLabel('summary', dgettext('calendar', 'Summary'));
         $form->useEditor('summary');
 
         if (PHPWS_Settings::get('calendar', 'personal_schedules')) {
             if (Current_User::allow('calendar', 'edit_public')) {
                 $form->addRadio('public', array(0,1));
-                $form->setLabel('public', array(_('Private'),
-                                                _('Public')));
+                $form->setLabel('public', array(dgettext('calendar', 'Private'),
+                                                dgettext('calendar', 'Public')));
                 $form->setMatch('public', (int)$this->public);
             } else {
-                $form->addTplTag('PUBLIC', _('Private'));
+                $form->addTplTag('PUBLIC', dgettext('calendar', 'Private'));
                 $form->addHidden('public', 0);
             }
         } else {
-            $form->addTplTag('PUBLIC', _('Public'));
+            $form->addTplTag('PUBLIC', dgettext('calendar', 'Public'));
             $form->addHidden('public', 1);
         }
 
-        $form->addSubmit(_('Save'));
+        $form->addSubmit(dgettext('calendar', 'Save'));
         
         $template = $form->getTemplate();
         
         if (isset($_REQUEST['js'])) {
-            $template['CLOSE'] = javascript('close_window', array('value' => _('Cancel')));
+            $template['CLOSE'] = javascript('close_window', array('value' => dgettext('calendar', 'Cancel')));
         }
         
-        $template['PUBLIC_LABEL'] = _('Availability');
+        $template['PUBLIC_LABEL'] = dgettext('calendar', 'Availability');
         return PHPWS_Template::process($template, 'calendar', 'admin/forms/edit_schedule.tpl');
     }
 
@@ -336,7 +336,7 @@ class Calendar_Schedule {
     function post()
     {
         if (empty($_POST['title'])) {
-            $this->_error = _('Missing title.');
+            $this->_error = dgettext('calendar', 'Missing title.');
             $this->title = null;
             return false;
         } else {
@@ -388,21 +388,21 @@ class Calendar_Schedule {
             if (javascriptEnabled()) {
                 $vars['js'] = 1;
                 $js_vars['address'] = PHPWS_Text::linkAddress('calendar', $vars);
-                $js_vars['label']   = _('Edit');
+                $js_vars['label']   = dgettext('calendar', 'Edit');
                 $js_vars['width']   = 640;
                 $js_vars['height']  = 600;
                 $links[] = javascript('open_window', $js_vars);
             } else {
-                $links[] = PHPWS_Text::secureLink(_('Edit'), 'calendar',
+                $links[] = PHPWS_Text::secureLink(dgettext('calendar', 'Edit'), 'calendar',
                                                   array('aop'=>'edit_schedule', 'sch_id'=>$this->id));
             }
         } 
 
         if (Current_User::allow('calendar', 'delete_schedule') && Current_User::isUnrestricted('calendar')) {
-            $js['QUESTION'] = _('Are you sure you want to delete this schedule?');
+            $js['QUESTION'] = dgettext('calendar', 'Are you sure you want to delete this schedule?');
             $js['ADDRESS']  = sprintf('index.php?module=calendar&amp;aop=delete_schedule&amp;sch_id=%s&amp;authkey=%s',
                                       $this->id, Current_User::getAuthKey());
-            $js['LINK']     = _('Delete');
+            $js['LINK']     = dgettext('calendar', 'Delete');
             $links[] = javascript('confirm', $js);
         }
 
@@ -411,24 +411,24 @@ class Calendar_Schedule {
             if ($public_schedule != $this->id) {
                 $link_vars['aop'] = 'make_default_public';
                 $link_vars['sch_id'] = $this->id;
-                $links[] = PHPWS_Text::secureLink(_('Make default public'), 'calendar', $link_vars);
+                $links[] = PHPWS_Text::secureLink(dgettext('calendar', 'Make default public'), 'calendar', $link_vars);
             } else {
-                $links[] = _('Default public');
+                $links[] = dgettext('calendar', 'Default public');
             }
         }
 
         if (!empty($links)) {
             $tags['ADMIN'] = implode(' | ', $links);
         } else {
-            $tags['ADMIN'] = _('None');
+            $tags['ADMIN'] = dgettext('calendar', 'None');
         }
 
         $tags['TITLE'] = $this->getViewLink();
         
         if ($this->public) {
-            $tags['AVAILABILITY'] = _('Public');
+            $tags['AVAILABILITY'] = dgettext('calendar', 'Public');
         } else {
-            $tags['AVAILABILITY'] = _('Private');
+            $tags['AVAILABILITY'] = dgettext('calendar', 'Private');
         }
         return $tags;
     }

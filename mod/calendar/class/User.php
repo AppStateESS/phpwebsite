@@ -112,15 +112,15 @@ class Calendar_User {
                     $day_number = $duration_day - $current_day + 1;
                     switch ($day_number) {
                     case 1:
-                        $details['DAY_NUMBER'] = sprintf(_('First day'), $day_number);
+                        $details['DAY_NUMBER'] = sprintf(dgettext('calendar', 'First day'), $day_number);
                         break;
 
                     case ($current_day < 1):
-                        $details['DAY_NUMBER'] = sprintf(_('Last day'), $day_number);
+                        $details['DAY_NUMBER'] = sprintf(dgettext('calendar', 'Last day'), $day_number);
                         break;
 
                     default:
-                        $details['DAY_NUMBER'] = sprintf(_('Day %s'), $day_number);
+                        $details['DAY_NUMBER'] = sprintf(dgettext('calendar', 'Day %s'), $day_number);
                         break;
                     }
                 }
@@ -128,7 +128,7 @@ class Calendar_User {
                 if (!isset($hour_list[$hour])) {
                     $hour_list[$hour] = 1;
                     if ($hour == -1) {
-                        $details['HOUR'] = _('All day');
+                        $details['HOUR'] = dgettext('calendar', 'All day');
                     } else {
                         $details['HOUR'] = strftime('%l %p', mktime($hour));
                     }
@@ -159,7 +159,7 @@ class Calendar_User {
         $tpl->setFile('view/day.tpl');
 
         if (!$this->getDaysEvents($startdate, $tpl)) {
-            $template['MESSAGE'] = _('No events on this day');
+            $template['MESSAGE'] = dgettext('calendar', 'No events on this day');
         }
 
         $template['VIEW_LINKS'] = $this->viewLinks('day');
@@ -199,9 +199,9 @@ class Calendar_User {
         $template = $this->event->getTpl();
 
         if ($js) {
-            $template['CLOSE_WINDOW'] = javascript('close_window', array('value'=>_('Close')));
+            $template['CLOSE_WINDOW'] = javascript('close_window', array('value'=>dgettext('calendar', 'Close')));
         } else {
-            $template['BACK_LINK'] = PHPWS_Text::backLink(_('Back'));
+            $template['BACK_LINK'] = PHPWS_Text::backLink(dgettext('calendar', 'Back'));
         }
 
         $template['VIEW_LINKS'] = $this->viewLinks('event');
@@ -272,21 +272,21 @@ class Calendar_User {
             }
 
             if (!$this->allowSuggestion()) {
-                $this->title = _('Sorry');
-                $this->content = _('You have exceeded your allowed event submissions.');
+                $this->title = dgettext('calendar', 'Sorry');
+                $this->content = dgettext('calendar', 'You have exceeded your allowed event submissions.');
                 break;
             }
 
             PHPWS_Core::initModClass('calendar', 'Admin.php');
             $this->loadSuggestion();
-            $this->title = _('Suggest event');
+            $this->title = dgettext('calendar', 'Suggest event');
             $this->content = Calendar_Admin::event_form($this->event, true);
             break;
 
         case 'post_suggestion':
             if (!$this->postSuggestion()) {
                 PHPWS_Core::initModClass('calendar', 'Admin.php');
-                $this->title = _('Suggest event');
+                $this->title = dgettext('calendar', 'Suggest event');
                 $this->content = Calendar_Admin::event_form($this->event, true);
             }
             break;
@@ -554,7 +554,7 @@ class Calendar_User {
         }
 
         if (!$events_found) {
-            $tpl->setVariable('MESSAGE', _('No events this month.'));
+            $tpl->setVariable('MESSAGE', dgettext('calendar', 'No events this month.'));
         }
 
         $main_tpl['FULL_MONTH_NAME'] = strftime('%B', mktime(0,0,0, $month, $day, $year));
@@ -584,8 +584,8 @@ class Calendar_User {
         
         if ($this->event->post()) {
             if (PHPWS_Core::isPosted()) {
-                $this->title = _('Duplicate suggestion.');
-                $this->content = _('You may try to suggest a different event.');
+                $this->title = dgettext('calendar', 'Duplicate suggestion.');
+                $this->content = dgettext('calendar', 'You may try to suggest a different event.');
                 return true;
             }
 
@@ -594,8 +594,8 @@ class Calendar_User {
             }
 
             if (!$this->allowSuggestion()) {
-                $this->title = _('Sorry');
-                $this->content = _('You have exceeded your allowed event submissions.');
+                $this->title = dgettext('calendar', 'Sorry');
+                $this->content = dgettext('calendar', 'You have exceeded your allowed event submissions.');
                 return true;
             }
 
@@ -610,19 +610,19 @@ class Calendar_User {
                     Layout::nakedDisplay('Event suggestion failed to save. Try again later.');
                     exit();
                 } else {
-                    $this->title = _('Sorry');
-                    $this->content = _('Unable to save your event suggestion.');
+                    $this->title = dgettext('calendar', 'Sorry');
+                    $this->content = dgettext('calendar', 'Unable to save your event suggestion.');
                     return true;
                 }
             } else {
                 if(PHPWS_Calendar::isJS()) {
-                    javascript('alert', array('content' =>_('Event submitted for approval.')));
+                    javascript('alert', array('content' =>dgettext('calendar', 'Event submitted for approval.')));
                     javascript('close_refresh', array('timeout'=>1, 'refresh'=>0));
                     Layout::nakedDisplay();
                     exit();
                 } else {
-                    $this->title = _('Event saved');
-                    $this->content = _('An administrator will review your submission. Thank you.');
+                    $this->title = dgettext('calendar', 'Event saved');
+                    $this->content = dgettext('calendar', 'An administrator will review your submission. Thank you.');
                     return true;
                 }
             }
@@ -636,7 +636,7 @@ class Calendar_User {
     {
         $vars['aop'] = 'reset_cache';
         $vars['key'] = sprintf('%s_%s_%s_%s', $type, $month, $year, $schedule);
-        MiniAdmin::add('calendar', PHPWS_Text::secureLink(_('Reset cache'), 'calendar', $vars));
+        MiniAdmin::add('calendar', PHPWS_Text::secureLink(dgettext('calendar', 'Reset cache'), 'calendar', $vars));
     }
 
     function schedulePick()
@@ -652,7 +652,7 @@ class Calendar_User {
         $form->addHidden('date', $this->calendar->current_date);
         $form->addSelect('sch_id', $schedules);
         $form->setMatch('sch_id', $this->calendar->schedule->id);
-        $form->addSubmit('go', _('Change schedule'));
+        $form->addSubmit('go', dgettext('calendar', 'Change schedule'));
         $tpl = $form->getTemplate();
         return implode("\n", $tpl);
     }
@@ -682,16 +682,16 @@ class Calendar_User {
         switch ($view) {
         case 'grid':
         case 'list':
-            $view_name = _('This month');
+            $view_name = dgettext('calendar', 'This month');
             break;
 
         case 'week':
-            $view_name = _('This week');
+            $view_name = dgettext('calendar', 'This week');
             break;
 
         case 'event':
         case 'day':
-            $view_name = _('Today');
+            $view_name = dgettext('calendar', 'Today');
         }
 
         return PHPWS_Text::moduleLink($view_name, 'calendar', $vars);
@@ -766,7 +766,7 @@ class Calendar_User {
             break;
             
         default:
-            $this->content = _('Incorrect option');
+            $this->content = dgettext('calendar', 'Incorrect option');
             break;
         }
 
@@ -822,22 +822,22 @@ class Calendar_User {
             $oMonth = $this->calendar->getMonth();
             $left_arrow_time = $oMonth->prevMonth('timestamp');
             $right_arrow_time = $oMonth->nextMonth('timestamp');
-            $left_link_title = _('Previous month');
-            $right_link_title = _('Next month');
+            $left_link_title = dgettext('calendar', 'Previous month');
+            $right_link_title = dgettext('calendar', 'Next month');
         }
 
         if ($current_view == 'grid') {
-            $links[] = _('Grid');
+            $links[] = dgettext('calendar', 'Grid');
         } else {
             $vars['view'] = 'grid';
-            $links[] = PHPWS_Text::moduleLink(_('Grid'), 'calendar', $vars);
+            $links[] = PHPWS_Text::moduleLink(dgettext('calendar', 'Grid'), 'calendar', $vars);
         }
 
         if ($current_view == 'list') {
-            $links[] = _('Month');
+            $links[] = dgettext('calendar', 'Month');
         } else {
             $vars['view'] = 'list';
-            $links[] = PHPWS_Text::moduleLink(_('Month'), 'calendar', $vars);
+            $links[] = PHPWS_Text::moduleLink(dgettext('calendar', 'Month'), 'calendar', $vars);
         }
 
 
@@ -846,13 +846,13 @@ class Calendar_User {
             $oWeek = $this->calendar->getWeek();
             $left_arrow_time = $oWeek->prevWeek('timestamp');
             $right_arrow_time = $oWeek->nextWeek('timestamp');
-            $left_link_title = _('Previous week');
-            $right_link_title = _('Next week');
+            $left_link_title = dgettext('calendar', 'Previous week');
+            $right_link_title = dgettext('calendar', 'Next week');
             
-            $links[] = _('Week');
+            $links[] = dgettext('calendar', 'Week');
         } else {
             $vars['view'] = 'week';
-            $links[] = PHPWS_Text::moduleLink(_('Week'), 'calendar', $vars);
+            $links[] = PHPWS_Text::moduleLink(dgettext('calendar', 'Week'), 'calendar', $vars);
         }
 
         if ($current_view == 'day') {
@@ -861,13 +861,13 @@ class Calendar_User {
                                          $this->calendar->int_day);
             $left_arrow_time = $oDay->prevDay('timestamp');
             $right_arrow_time = $oDay->nextDay('timestamp');
-            $left_link_title = _('Previous day');
-            $right_link_title = _('Next day');
+            $left_link_title = dgettext('calendar', 'Previous day');
+            $right_link_title = dgettext('calendar', 'Next day');
 
-            $links[] = _('Day');
+            $links[] = dgettext('calendar', 'Day');
         } else {
             $vars['view'] = 'day';
-            $links[] = PHPWS_Text::moduleLink(_('Day'), 'calendar', $vars);
+            $links[] = PHPWS_Text::moduleLink(dgettext('calendar', 'Day'), 'calendar', $vars);
         }
 
         $vars['view'] = $current_view;
@@ -941,10 +941,10 @@ class Calendar_User {
         }
 
         if (!$events_found) {
-            $tpl->setVariable('MESSAGE', _('No events this week.'));
+            $tpl->setVariable('MESSAGE', dgettext('calendar', 'No events this week.'));
         }
 
-        $main_tpl['DAY_RANGE']      = sprintf(_('From %s to %s'), $start_range, $end_range);
+        $main_tpl['DAY_RANGE']      = sprintf(dgettext('calendar', 'From %s to %s'), $start_range, $end_range);
         $main_tpl['VIEW_LINKS']     = $this->viewLinks('week');
         $main_tpl['SCHEDULE_TITLE'] = $this->calendar->schedule->title;
         $main_tpl['FULL_YEAR']      = strftime('%Y', $this->calendar->current_date);
