@@ -31,8 +31,8 @@ class MiniAdmin {
 
         $oTpl = new PHPWS_Template('miniadmin');
         $oTpl->setFile('mini_admin.tpl');
-        translate('miniadmin');
-        $tpl['MINIADMIN_TITLE'] = _('MiniAdmin');
+        
+        $tpl['MINIADMIN_TITLE'] = dgettext('miniadmin', 'MiniAdmin');
         foreach ($GLOBALS['MiniAdmin'] as $module => $links) {
             foreach ($links as $link) {
                 $oTpl->setCurrentBlock('links');
@@ -45,7 +45,7 @@ class MiniAdmin {
         }
         $oTpl->setData($tpl);
         $content = $oTpl->get();
-        translate();
+        
         Layout::set($content, 'users', 'mini_admin');
     }
 }
