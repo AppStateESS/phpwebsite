@@ -6,7 +6,6 @@
    */
 
 if (Current_User::isLogged()) {
-    translate('notes');
     PHPWS_Core::initModClass('notes', 'My_Page.php');
 
     Notes_My_Page::showUnread();
@@ -16,7 +15,6 @@ if (Current_User::isLogged()) {
         Notes_My_Page::miniAdminLink($key);
         Notes_My_Page::showAssociations($key);
     }
-    translate();
  }
 
 ?>

@@ -77,7 +77,7 @@ class Note_Item {
       $vars['op'] = 'delete_note';
       $vars['id'] = $this->id;
       
-      return PHPWS_Text::secureLink(_('Delete'), 'users', $vars);
+      return PHPWS_Text::secureLink(dgettext('notes', 'Delete'), 'users', $vars);
   }
 
   function getContent()
@@ -101,11 +101,11 @@ class Note_Item {
 
       if ($this->read_once) {
           $tpl['READ_CLASS'] = 'note-read';
-          $tpl['READ_ONCE'] = _('Yes');
+          $tpl['READ_ONCE'] = dgettext('notes', 'Yes');
       } else {
           $GLOBALS['Note_Unread'] = true;
           $tpl['NOT_READ_CLASS'] = 'note-not-read';
-          $tpl['READ_ONCE'] = _('No');
+          $tpl['READ_ONCE'] = dgettext('notes', 'No');
       }
 
       $links[] = $this->readLink(false);
@@ -141,16 +141,16 @@ class Note_Item {
       if ($this->sender_id) {
           $tpl['SENDER'] = $this->sendLink($this->sender_id, $this->sender);
       } else {
-          $tpl['SENDER'] = _('System message');
+          $tpl['SENDER'] = dgettext('notes', 'System message');
       }
       $tpl['DATE_SENT']  = $this->getDateSent();
-      $tpl['DATE_LABEL'] = _('Sent on');
-      $tpl['SENT_LABEL'] = _('Sent by');
+      $tpl['DATE_LABEL'] = dgettext('notes', 'Sent on');
+      $tpl['SENT_LABEL'] = dgettext('notes', 'Sent by');
 
       if ($this->key_id) {
           $key = new Key($this->key_id);
           if ($key->id) {
-              $tpl['ASSOCIATE_LABEL'] = _('In reference to');
+              $tpl['ASSOCIATE_LABEL'] = dgettext('notes', 'In reference to');
 
               if (javascriptEnabled()) {
                   $link = sprintf('<a href="#" onclick="closeWindow(); return false">%s</a>', $key->title);
@@ -179,7 +179,7 @@ class Note_Item {
           $vars['id'] = $this->id;
           $vars['js'] = 1;
           $form->addHidden($vars);
-          $form->addSubmit('delete', _('Delete and close'));
+          $form->addSubmit('delete', dgettext('notes', 'Delete and close'));
           $form_tpl = $form->getTemplate();
           $tpl['DELETE'] = implode($form_tpl);
       } 
@@ -200,17 +200,17 @@ class Note_Item {
           if ($use_title) {
               $js_vars['label'] = $this->title;
           } else {
-              $js_vars['label'] = _('Read');
+              $js_vars['label'] = dgettext('notes', 'Read');
           }
           $js_vars['width']      = 640;
           $js_vars['height']     = 480;
-          $js_vars['link_title'] = _('Read note');
+          $js_vars['link_title'] = dgettext('notes', 'Read note');
           return javascript('open_window', $js_vars);
       } else {
           if ($use_title) {
-              return PHPWS_Text::moduleLink($this->title, 'users', $vars, null, _('Read note'));
+              return PHPWS_Text::moduleLink($this->title, 'users', $vars, null, dgettext('notes', 'Read note'));
           } else {
-              return PHPWS_Text::moduleLink(_('Read'), 'users', $vars, null, _('Read note'));
+              return PHPWS_Text::moduleLink(dgettext('notes', 'Read'), 'users', $vars, null, dgettext('notes', 'Read note'));
           }
       }
       
@@ -238,9 +238,9 @@ class Note_Item {
       }
 
       if (empty($label)) {
-          $title = $label = _('Send note');
+          $title = $label = dgettext('notes', 'Send note');
       } else {
-          $title = sprintf(_('Send note to %s'), $label);
+          $title = sprintf(dgettext('notes', 'Send note to %s'), $label);
       }
       
       if (javascriptEnabled()) {

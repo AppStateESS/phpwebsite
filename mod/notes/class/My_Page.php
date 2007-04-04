@@ -45,7 +45,7 @@ class Notes_My_Page {
                 exit();
             }
 
-            $this->message = _('Message deleted.');
+            $this->message = dgettext('notes', 'Message deleted.');
             $this->read();
             break;
 
@@ -86,9 +86,9 @@ class Notes_My_Page {
                 $this->sendNote($note);
             } else {
                 if ($note->save()) {
-                    $this->sendMessage(_('Note sent successfully.'), $js);
+                    $this->sendMessage(dgettext('notes', 'Note sent successfully.'), $js);
                 } else {
-                    $this->sendMessage(_('Note was not sent successfully.'), $js);
+                    $this->sendMessage(dgettext('notes', 'Note was not sent successfully.'), $js);
                 }
             }
             break;
@@ -115,12 +115,12 @@ class Notes_My_Page {
         $vars['key_id'] = $key->id;
         if (javascriptEnabled()) {
             $js_vars['address'] = PHPWS_Text::linkAddress('users', $vars);
-            $js_vars['label']   = _('Associate note');
+            $js_vars['label']   = dgettext('notes', 'Associate note');
             $js_vars['width']   = 640;
             $js_vars['height']  = 480;
             MiniAdmin::add('notes', javascript('open_window', $js_vars));
         } else {
-            MiniAdmin::add('notes', PHPWS_Text::moduleLink(_('Associate note'), 'users', $vars));
+            MiniAdmin::add('notes', PHPWS_Text::moduleLink(dgettext('notes', 'Associate note'), 'users', $vars));
         }
     }
 
@@ -147,9 +147,9 @@ class Notes_My_Page {
 
         if (empty($_POST['user_id'])) {
             if (empty($_POST['username'])) {
-                $this->errors['missing_username'] = _('You must enter a username.');
+                $this->errors['missing_username'] = dgettext('notes', 'You must enter a username.');
             } elseif (!Current_User::allowUsername($_POST['username'])) {
-                $this->errors['bad_username'] = _('Unsuitable user name characters.');
+                $this->errors['bad_username'] = dgettext('notes', 'Unsuitable user name characters.');
             } else {
                 $db = new PHPWS_DB('users');
                 $db->addWhere('display_name', $_POST['username']);
@@ -164,7 +164,7 @@ class Notes_My_Page {
 
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
-                    $this->errors['unknown'] = _('An error occurred when accessing the database.');
+                    $this->errors['unknown'] = dgettext('notes', 'An error occurred when accessing the database.');
                 } 
 
                 if (empty($result)) {
@@ -179,15 +179,15 @@ class Notes_My_Page {
 
                         if (PEAR::isError($result)) {
                             PHPWS_Error::log($result);
-                            $this->errors['unknown'] = _('An error occurred when accessing the database.');
+                            $this->errors['unknown'] = dgettext('notes', 'An error occurred when accessing the database.');
                         } elseif (empty($result)) {
-                            $this->errors['no_match'] = _('Could not find match.');
+                            $this->errors['no_match'] = dgettext('notes', 'Could not find match.');
                         } else {
                             $note->username = $_POST['username'];
                             return $result;
                         }
                     } else {
-                        $this->errors['no_match'] = _('Unknown user.');
+                        $this->errors['no_match'] = dgettext('notes', 'Unknown user.');
                     }
                 } else {
                     list($note->user_id, $note->username) = each($result);
@@ -195,7 +195,7 @@ class Notes_My_Page {
             }
         } else {
             if (empty($_POST['title']) && empty($_POST['content'])) {
-                $this->errors['no_content'] = _('You need to enter a title or some content.');
+                $this->errors['no_content'] = dgettext('notes', 'You need to enter a title or some content.');
             }
             
             $user = new PHPWS_User($_POST['user_id']);
@@ -204,7 +204,7 @@ class Notes_My_Page {
                 $note->user_id = $user->id;
                 $note->username = $user->username;
             } else {
-                $this->errors['bad_user_id'] = _('Unable to resolve user name.');
+                $this->errors['bad_user_id'] = dgettext('notes', 'Unable to resolve user name.');
             }
         }
 
@@ -222,17 +222,17 @@ class Notes_My_Page {
         $pager = new DBPager('notes', 'Note_Item');
         $pager->setModule('notes');
         $pager->setTemplate('read.tpl');
-        $pager->setEmptyMessage(_('No notes found.'));
+        $pager->setEmptyMessage(dgettext('notes', 'No notes found.'));
         $pager->addWhere('user_id', Current_User::getId());
         $pager->setOrder('date_sent', 'desc', true);
 
-        $page_tags['TITLE_LABEL'] = _('Title');
-        $page_tags['DATE_SENT_LABEL'] = _('Date sent');
+        $page_tags['TITLE_LABEL'] = dgettext('notes', 'Title');
+        $page_tags['DATE_SENT_LABEL'] = dgettext('notes', 'Date sent');
         $page_tags['SEND_LINK'] = Note_Item::sendLink();
 
         $pager->addPageTags($page_tags);
         $pager->addRowTags('getTags');
-        $this->title = _('Read notes');
+        $this->title = dgettext('notes', 'Read notes');
         $this->content = $pager->get();
     }
     
@@ -260,7 +260,7 @@ class Notes_My_Page {
             $key = new Key($_REQUEST['key_id']);
             if ($key->id) {
                 $form->addHidden('key_id', $key->id);
-                $assoc = sprintf(_('Associate note to item: %s'), $key->title);
+                $assoc = sprintf(dgettext('notes', 'Associate note to item: %s'), $key->title);
                 $form->addTplTag('KEY_ASSOCIATION', $assoc);
             }
         }
@@ -276,37 +276,37 @@ class Notes_My_Page {
 
         if (javascriptEnabled()) {
             $form->addHidden('js', 1);
-            $form->addTplTag('CANCEL', javascript('close_window', array('value' =>_('Cancel'))));
+            $form->addTplTag('CANCEL', javascript('close_window', array('value' =>dgettext('notes', 'Cancel'))));
         }
 
         if (isset($users) && is_array($users)) {
-            $new_users = array(0 => _('- Search again -')) + $users;
+            $new_users = array(0 => dgettext('notes', '- Search again -')) + $users;
             $form->addSelect('user_id', $new_users);
         }
 
         $form->addText('username', $note->username);
-        $form->setLabel('username', _('Recipient'));
+        $form->setLabel('username', dgettext('notes', 'Recipient'));
 
         $form->addText('title', $note->title);
-        $form->setLabel('title', _('Title'));
+        $form->setLabel('title', dgettext('notes', 'Title'));
         $form->setSize('title', 45);
 
         $form->addTextArea('content', $note->content);
-        $form->setLabel('content', _('Message'));
+        $form->setLabel('content', dgettext('notes', 'Message'));
         $form->setRows('content', 10);
         $form->setCols('content', 50);
 
         /*
         $form->addCheck('encrypted', 1);
         $form->setMatch('encrypted', $note->encrypted);
-        $form->setLabel('encrypted', _('Encrypt message?'));
+        $form->setLabel('encrypted', dgettext('notes', 'Encrypt message?'));
         */
 
-        $form->addSubmit(_('Send note'));
+        $form->addSubmit(dgettext('notes', 'Send note'));
 
         $tpl = $form->getTemplate();
 
-        $this->title = _('Send note');
+        $this->title = dgettext('notes', 'Send note');
         $this->content = PHPWS_Template::process($tpl, 'notes', 'send_note.tpl');
     }
 
@@ -325,7 +325,7 @@ class Notes_My_Page {
         foreach ($notes as $note) {
             $content[] = $note->readLink();
         }
-        $tpl['TITLE'] = _('Associated Notes');
+        $tpl['TITLE'] = dgettext('notes', 'Associated Notes');
         $tpl['CONTENT'] = implode('<br />', $content);
         Layout::add(PHPWS_Template::process($tpl, 'layout', 'box.tpl'), 'notes', 'reminder');
     }
@@ -348,8 +348,8 @@ class Notes_My_Page {
         }
 
         if ($notes) {
-            $tpl['TITLE'] = _('Notes');
-            $link_val = sprintf(_('You have %d unread notes.'), $notes);
+            $tpl['TITLE'] = dgettext('notes', 'Notes');
+            $link_val = sprintf(dgettext('notes', 'You have %d unread notes.'), $notes);
             $val = Notes_My_Page::myPageVars(false);
             $tpl['CONTENT'] = PHPWS_Text::moduleLink($link_val, 'users', $val);
             $content = PHPWS_Template::process($tpl, 'layout', 'box.tpl');
