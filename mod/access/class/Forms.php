@@ -32,25 +32,25 @@ class Access_Forms {
 
         $options['none'] = '';
         if (Current_User::allow('access', 'admin_options')) {
-            $options['active'] = _('Activate');
-            $options['deactive'] = _('Deactivate');
+            $options['active'] = dgettext('access', 'Activate');
+            $options['deactive'] = dgettext('access', 'Deactivate');
         }
 
-        $options['delete'] = _('Delete');
+        $options['delete'] = dgettext('access', 'Delete');
         $form->addSelect('list_action', $options);
 
         $page_tags = $form->getTemplate();
 
-        $page_tags['KEYWORD_LABEL']  = _('Keywords');
-        $page_tags['URL_LABEL']      = _('Url');
-        $page_tags['ACTIVE_LABEL'] = _('Active?');
-        $page_tags['ACTION_LABEL']   = _('Action');
+        $page_tags['KEYWORD_LABEL']  = dgettext('access', 'Keywords');
+        $page_tags['URL_LABEL']      = dgettext('access', 'Url');
+        $page_tags['ACTIVE_LABEL'] = dgettext('access', 'Active?');
+        $page_tags['ACTION_LABEL']   = dgettext('access', 'Action');
         $page_tags['CHECK_ALL_SHORTCUTS'] = javascript('check_all', array('checkbox_name' => 'shortcut[]'));
 
-        $js_vars['value']        = _('Go');
+        $js_vars['value']        = dgettext('access', 'Go');
         $js_vars['select_id']    = $form->getId('list_action');
         $js_vars['action_match'] = 'delete';
-        $js_vars['message']      = _('Are you sure you want to delete the checked shortcuts?');
+        $js_vars['message']      = dgettext('access', 'Are you sure you want to delete the checked shortcuts?');
         $page_tags['SUBMIT'] = javascript('select_confirm', $js_vars);
 
         $pager->addPageTags($page_tags);
@@ -67,13 +67,13 @@ class Access_Forms {
             return;
         }
         if (!MOD_REWRITE_ENABLED) {
-            $content[] = _('You do not have mod rewrite enabled.');
-            $content[] = _('Open your config/core/config.php file in a text editor.');
-            $content[] = _('Set your "MOD_REWRITE_ENABLED" define equal to TRUE.');
+            $content[] = dgettext('access', 'You do not have mod rewrite enabled.');
+            $content[] = dgettext('access', 'Open your config/core/config.php file in a text editor.');
+            $content[] = dgettext('access', 'Set your "MOD_REWRITE_ENABLED" define equal to TRUE.');
             return implode('<br />', $content);
         } elseif (!Access::check_htaccess()) {
-            $content[] = _('Your <b>.htaccess</b> file is not writable.');
-            $content[] = _('Look in your installation directory and give Apache write access.');
+            $content[] = dgettext('access', 'Your <b>.htaccess</b> file is not writable.');
+            $content[] = dgettext('access', 'Look in your installation directory and give Apache write access.');
             return implode('<br />', $content);
         }
 
@@ -82,36 +82,36 @@ class Access_Forms {
         $form->addHidden('command', 'post_admin');
 
         $form->addCheckbox('rewrite_engine', 1);
-        $form->setLabel('rewrite_engine', _('Rewrite engine on'));
+        $form->setLabel('rewrite_engine', dgettext('access', 'Rewrite engine on'));
         if (PHPWS_Settings::get('access', 'rewrite_engine')) {
             $form->setMatch('rewrite_engine', 1);
         }
 
         $form->addCheckbox('shortcuts_enabled', 1);
-        $form->setLabel('shortcuts_enabled', _('Shortcuts enabled'));
+        $form->setLabel('shortcuts_enabled', dgettext('access', 'Shortcuts enabled'));
         if (PHPWS_Settings::get('access', 'shortcuts_enabled')) {
             $form->setMatch('shortcuts_enabled', 1);
         }
 
         $form->addCheckbox('allow_deny_enabled', 1);
-        $form->setLabel('allow_deny_enabled', _('Allow/Deny enabled'));
+        $form->setLabel('allow_deny_enabled', dgettext('access', 'Allow/Deny enabled'));
         if (PHPWS_Settings::get('access', 'allow_deny_enabled')) {
             $form->setMatch('allow_deny_enabled', 1);
         }
 
 
         $form->addCheckBox('allow_file_update', 1);
-        $form->setLabel('allow_file_update', _('Allow file update'));
+        $form->setLabel('allow_file_update', dgettext('access', 'Allow file update'));
         if (PHPWS_Settings::get('access', 'allow_file_update')) {
             $form->setMatch('allow_file_update', 1);
         }
 
 
-        $form->addSubmit(_('Save settings'));
+        $form->addSubmit(dgettext('access', 'Save settings'));
         $template = $form->getTemplate();
 
-        $template['MOD_REWRITE_LABEL'] = _('Mod Rewrite options');
-        $template['HTACCESS_LABEL'] = _('.htaccess file options');
+        $template['MOD_REWRITE_LABEL'] = dgettext('access', 'Mod Rewrite options');
+        $template['HTACCESS_LABEL'] = dgettext('access', '.htaccess file options');
 
         return PHPWS_Template::process($template, 'access', 'forms/administrator.tpl');
     }
@@ -127,26 +127,26 @@ class Access_Forms {
         $form = new PHPWS_Form;
         $form->addHidden('module', 'access');
         $form->addHidden('command', 'post_update_file');
-        $form->addSubmit(_('Write .htaccess file'));
+        $form->addSubmit(dgettext('access', 'Write .htaccess file'));
 
-        $question = _('Are you sure you want to restore the default .htaccess file?');
+        $question = dgettext('access', 'Are you sure you want to restore the default .htaccess file?');
         $link = PHPWS_Text::linkAddress('access', array('command'=>'restore_default'), true);
         
         javascript('confirm');
-        $form->addButton('restore', _('Restore default .htaccess'));
+        $form->addButton('restore', dgettext('access', 'Restore default .htaccess'));
         $form->setExtra('restore', sprintf('onclick="confirm_link(\'%s\', \'%s\')"',
                                            $question, $link));
 
         $template = $form->getTemplate();
 
-        $template['INFO'] = _('Your .htaccess file will contain the below:');
+        $template['INFO'] = dgettext('access', 'Your .htaccess file will contain the below:');
 
         $allow_deny = Access::getAllowDenyList();
         $template['HTACCESS'] = $allow_deny;
         $template['HTACCESS'] .= Access::getRewrite();
 
         $template['CURRENT'] = file_get_contents(PHPWS_HOME_DIR . '.htaccess');
-        $template['CURRENT_LABEL'] = _('Current .htaccess file');
+        $template['CURRENT_LABEL'] = dgettext('access', 'Current .htaccess file');
 
         return PHPWS_Template::process($template, 'access', 'forms/update_file.tpl');
         
@@ -172,23 +172,23 @@ class Access_Forms {
 
         $form->addText('allow_address');
         $form->addText('deny_address');
-        $form->addSubmit('add_allow_address', _('Add allowed IP'));
-        $form->addSubmit('add_deny_address', _('Add denied IP'));
+        $form->addSubmit('add_allow_address', dgettext('access', 'Add allowed IP'));
+        $form->addSubmit('add_deny_address', dgettext('access', 'Add denied IP'));
 
         $db = new PHPWS_DB('access_allow_deny');
         $result = $db->getObjects('Access_Allow_Deny');
 
         $options['none']      = '';
-        $options['active']    = _('Activate');
-        $options['deactive']  = _('Deactivate');
-        $options['delete']    = _('Delete');
+        $options['active']    = dgettext('access', 'Activate');
+        $options['deactive']  = dgettext('access', 'Deactivate');
+        $options['delete']    = dgettext('access', 'Delete');
 
         if (PHPWS_Settings::get('access', 'allow_all')) {
             $allow_all = TRUE;
-            $options['allow_all'] = _('Do not allow all');
+            $options['allow_all'] = dgettext('access', 'Do not allow all');
         } else {
             $allow_all = FALSE;
-            $options['allow_all'] = _('Allow all');
+            $options['allow_all'] = dgettext('access', 'Allow all');
         }
 
         $form->addSelect('allow_action', $options);
@@ -197,26 +197,26 @@ class Access_Forms {
 
         if (PHPWS_Settings::get('access', 'deny_all')) {
             $deny_all = TRUE;
-            $options['deny_all'] = _('Do not deny all');
+            $options['deny_all'] = dgettext('access', 'Do not deny all');
         } else {
             $deny_all = FALSE;
-            $options['deny_all'] = _('Deny all');
+            $options['deny_all'] = dgettext('access', 'Deny all');
         }
         $form->addSelect('deny_action', $options);
 
         $template = $form->getTemplate();
 
         if ($allow_all) {
-            $template['ALLOW_ALL_MESSAGE'] = _('You have "Allow all" enabled. All rows below will be ignored.');
+            $template['ALLOW_ALL_MESSAGE'] = dgettext('access', 'You have "Allow all" enabled. All rows below will be ignored.');
         }
 
         if ($deny_all) {
-            $template['DENY_ALL_MESSAGE'] = _('You have "Deny all" enabled. All rows below will be ignored.');
+            $template['DENY_ALL_MESSAGE'] = dgettext('access', 'You have "Deny all" enabled. All rows below will be ignored.');
         }
 
-        $js_vars['value']        = _('Go');
+        $js_vars['value']        = dgettext('access', 'Go');
         $js_vars['action_match'] = 'delete';
-        $js_vars['message']      = _('Are you sure you want to delete the checked ips?');
+        $js_vars['message']      = dgettext('access', 'Are you sure you want to delete the checked ips?');
 
         $js_vars['select_id']    = 'allow_deny_allow_action';
         $template['ALLOW_ACTION_SUBMIT'] = javascript('select_confirm', $js_vars);
@@ -227,17 +227,17 @@ class Access_Forms {
 
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            return _('An error occurred when trying to access the allowed and denied ip records. Please check your logs.');
+            return dgettext('access', 'An error occurred when trying to access the allowed and denied ip records. Please check your logs.');
         } elseif (empty($result)) {
-            $template['DENY_MESSAGE']  = _('No denied ip addresses found.');
-            $template['ALLOW_MESSAGE'] = _('No allowed ip addresses found.');
+            $template['DENY_MESSAGE']  = dgettext('access', 'No denied ip addresses found.');
+            $template['ALLOW_MESSAGE'] = dgettext('access', 'No allowed ip addresses found.');
         } else {
             foreach ($result as $allow_deny) {
-                $action = PHPWS_Text::secureLink(_('Delete'), 'access', array('ad_id'=>$allow_deny->id, 'command'=>'delete_allow_deny'));
+                $action = PHPWS_Text::secureLink(dgettext('access', 'Delete'), 'access', array('ad_id'=>$allow_deny->id, 'command'=>'delete_allow_deny'));
                 if ($allow_deny->active) {
-                    $active = _('Yes');
+                    $active = dgettext('access', 'Yes');
                 } else {
-                    $active = _('No');
+                    $active = dgettext('access', 'No');
                 }
 
                 if ($allow_deny->allow_or_deny) {
@@ -256,22 +256,22 @@ class Access_Forms {
             }
 
             if (empty($template['allow_rows'])) {
-                $template['ALLOW_MESSAGE'] = _('No allowed ip addresses found.');
+                $template['ALLOW_MESSAGE'] = dgettext('access', 'No allowed ip addresses found.');
             }
 
             if (empty($template['deny_rows'])) {
-                $template['DENY_MESSAGE'] = _('No denied ip addresses found.');
+                $template['DENY_MESSAGE'] = dgettext('access', 'No denied ip addresses found.');
             }
         }
 
         $template['CHECK_ALL_ALLOW'] = javascript('check_all', array('checkbox_name' => 'allows'));
         $template['CHECK_ALL_DENY'] = javascript('check_all', array('checkbox_name' => 'denys'));
-        $template['ACTIVE_LABEL']     = _('Active?');
-        $template['ALLOW_TITLE']      = _('Allowed IPs');
-        $template['DENY_TITLE']       = _('Denied IPs');
-        $template['ACTION_LABEL']     = _('Action');
-        $template['IP_ADDRESS_LABEL'] = _('IP Address');
-        $template['WARNING']          = _('Remember to "Update" your access file when finished changing IP rules.');
+        $template['ACTIVE_LABEL']     = dgettext('access', 'Active?');
+        $template['ALLOW_TITLE']      = dgettext('access', 'Allowed IPs');
+        $template['DENY_TITLE']       = dgettext('access', 'Denied IPs');
+        $template['ACTION_LABEL']     = dgettext('access', 'Action');
+        $template['IP_ADDRESS_LABEL'] = dgettext('access', 'IP Address');
+        $template['WARNING']          = dgettext('access', 'Remember to "Update" your access file when finished changing IP rules.');
 
 
         return PHPWS_Template::process($template, 'access', 'forms/allow_deny.tpl');
@@ -315,11 +315,11 @@ class Access_Forms {
         }
 
         $form->addText('keyword', $shortcut->keyword);
-        $form->addSubmit('go', _('Go'));
+        $form->addSubmit('go', dgettext('access', 'Go'));
         $tpl = $form->getTemplate();
 
-        $tpl['TITLE'] = _('Shortcuts');
-        $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close();" />', _('Cancel'));
+        $tpl['TITLE'] = dgettext('access', 'Shortcuts');
+        $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close();" />', dgettext('access', 'Cancel'));
         $content = PHPWS_Template::process($tpl, 'access', 'shortcut_menu.tpl');
         return $content;
     }

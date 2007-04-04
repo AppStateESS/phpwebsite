@@ -42,38 +42,38 @@ class Access {
         // If the command is empty, that means no tabs were set
         // In this case, an admin with full rights needs to log in
         if (empty($command)) {
-            $title = _('Sorry');
-            $content = _('Access needs a higher administrator\'s attention before you may use it.');
+            $title = dgettext('access', 'Sorry');
+            $content = dgettext('access', 'Access needs a higher administrator\'s attention before you may use it.');
         } else {
             switch ($command) {
             case 'post_admin':
                 Access::saveAdmin();
-                Access::sendMessage(_('Settings saved.'), 'admin');
+                Access::sendMessage(dgettext('access', 'Settings saved.'), 'admin');
                 break;
                 
             case 'restore_default':
                 $source = PHPWS_SOURCE_DIR . 'mod/access/inc/htaccess';
                 $dest = PHPWS_HOME_DIR . '.htaccess';
                 if (@copy($source, $dest)) {
-                    Access::sendMessage(_('Default .htaccess file restored.'), 'update');
+                    Access::sendMessage(dgettext('access', 'Default .htaccess file restored.'), 'update');
                 } else {
-                    Access::sendMessage(_('Unable to restore default .htaccess file.'), 'update');
+                    Access::sendMessage(dgettext('access', 'Unable to restore default .htaccess file.'), 'update');
                 }
                 break;
 
             case 'admin':
                 PHPWS_Core::initModClass('access', 'Forms.php');
-                $title = _('Administrator');
+                $title = dgettext('access', 'Administrator');
                 $content = Access_Forms::administrator();
                 break;
 
             case 'post_deny_allow':
                 $result = Access::postDenyAllow();
                 if ($result == false) {
-                    Access::sendMessage(_('IP address was not formatted correctly or not allowed.'), 'deny_allow');
+                    Access::sendMessage(dgettext('access', 'IP address was not formatted correctly or not allowed.'), 'deny_allow');
                 } elseif (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
-                    Access::sendMessage(_('An error occurred.') . ' ' . _('Please check your logs.'), 'deny_allow');
+                    Access::sendMessage(dgettext('access', 'An error occurred.') . ' ' . dgettext('access', 'Please check your logs.'), 'deny_allow');
                 }
                 Access::sendMessage(NULL, 'deny_allow');
                 break;
@@ -82,12 +82,12 @@ class Access {
                 PHPWS_Core::initModClass('access', 'Allow_Deny.php');
                 $allow_deny = new Access_Allow_Deny($_GET['ad_id']);
                 $allow_deny->delete();
-                Access::sendMessage(_('IP address deleted.'), 'deny_allow');
+                Access::sendMessage(dgettext('access', 'IP address deleted.'), 'deny_allow');
                 break;
 
             case 'deny_allow':
                 PHPWS_Core::initModClass('access', 'Forms.php');
-                $title = _('Denys and Allows');
+                $title = dgettext('access', 'Denys and Allows');
                 $content = Access_Forms::denyAllowForm();
                 break;
 
@@ -97,20 +97,20 @@ class Access {
                 if (empty($shortcut->_error) && $shortcut->id) {
                     $result = $shortcut->delete();
                     if (PEAR::isError($result)) {
-                        Access::sendMessage(_('An error occurred when deleting your shortcut.'), 'shortcuts');
+                        Access::sendMessage(dgettext('access', 'An error occurred when deleting your shortcut.'), 'shortcuts');
                     } elseif (PHPWS_Settings::get('access', 'allow_file_update')) {
                         $result = Access::writeAccess();
                         if (PEAR::isError($result)) {
-                            Access::sendMessage(_('An error occurred when updating your .htaccess file.'), 'shortcuts');
+                            Access::sendMessage(dgettext('access', 'An error occurred when updating your .htaccess file.'), 'shortcuts');
                         }
                     }
                 }
-                Access::sendMessage(_('Shortcut deleted'), 'shortcuts');
+                Access::sendMessage(dgettext('access', 'Shortcut deleted'), 'shortcuts');
                 break;
                 
             case 'shortcuts':
                 PHPWS_Core::initModClass('access', 'Forms.php');
-                $title = _('Shortcuts');
+                $title = dgettext('access', 'Shortcuts');
                 $content = Access_Forms::shortcuts();
                 break;
 
@@ -118,9 +118,9 @@ class Access {
             case 'post_update_file':
                 $result = Access::writeAccess();
                 if ($result) {
-                    $message = _('.htaccess file written.');
+                    $message = dgettext('access', '.htaccess file written.');
                 } else {
-                    $message = _('Unable to save .htaccess file.');
+                    $message = dgettext('access', 'Unable to save .htaccess file.');
                 }
                 Access::sendMessage($message, 'update');
                 break;
@@ -129,14 +129,14 @@ class Access {
                 $message = NULL;
                 $result = Access::postShortcutList();
                 if (PEAR::isError($result)) {
-                    $message = _('An error occurred.') . ' ' . _('Please check your logs.');
+                    $message = dgettext('access', 'An error occurred.') . ' ' . dgettext('access', 'Please check your logs.');
                 }
                 Access::sendMessage($message, 'shortcuts');
                 break;
 
             case 'update':
                 PHPWS_Core::initModClass('access', 'Forms.php');
-                $title = _('Update .htaccess file');
+                $title = dgettext('access', 'Update .htaccess file');
                 $content = Access_Forms::updateFile();
                 break;
 
@@ -157,14 +157,14 @@ class Access {
                 }
 
                 $result = $shortcut->postShortcut();
-                $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" />', _('Close window'));
+                $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" />', dgettext('access', 'Close window'));
                 if (PEAR::isError($result)) {
-                    $tpl['TITLE'] = _('An error occurred:') . '<br />' . $result->getMessage() . '<br />';
-                    $tpl['CONTENT']  = sprintf('<a href="%s">%s</a>', $_SERVER['HTTP_REFERER'], _('Return to previous page.'));
+                    $tpl['TITLE'] = dgettext('access', 'An error occurred:') . '<br />' . $result->getMessage() . '<br />';
+                    $tpl['CONTENT']  = sprintf('<a href="%s">%s</a>', $_SERVER['HTTP_REFERER'], dgettext('access', 'Return to previous page.'));
                     $content = PHPWS_Template::process($tpl, 'access', 'box.tpl');
                 } elseif ($result == false) {
-                    $tpl['TITLE'] = _('A serious error occurred. Please check your error.log.') . '<br />';
-                    $tpl['CONTENT'] = sprintf('<a href="%s">%s</a>', $_SERVER['HTTP_REFERER'], _('Return to previous page.'));
+                    $tpl['TITLE'] = dgettext('access', 'A serious error occurred. Please check your error.log.') . '<br />';
+                    $tpl['CONTENT'] = sprintf('<a href="%s">%s</a>', $_SERVER['HTTP_REFERER'], dgettext('access', 'Return to previous page.'));
                     $content = PHPWS_Template::process($tpl, 'access', 'box.tpl');
                 } else {
                     $content = Access::saveShortcut($shortcut);
@@ -189,26 +189,26 @@ class Access {
 
     function saveShortcut(&$shortcut)
     {
-        $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" />', _('Close window'));
+        $tpl['CLOSE'] = sprintf('<input type="button" value="%s" onclick="window.close()" />', dgettext('access', 'Close window'));
         $result = $shortcut->save();
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            $content[] = _('A serious error occurred. Please check your error.log.');
+            $content[] = dgettext('access', 'A serious error occurred. Please check your error.log.');
         } else {
             if (PHPWS_Settings::get('access', 'allow_file_update')) {
                 $result = Access::writeAccess();
                 if (!$result) {
-                    $tpl['TITLE'] = _('An error occurred.');
-                    $content[] =  _('Please check your error.log.');
+                    $tpl['TITLE'] = dgettext('access', 'An error occurred.');
+                    $content[] =  dgettext('access', 'Please check your error.log.');
                 } else {
-                    $tpl['TITLE'] = _('Access has saved your shortcut.');
-                    $content[] = _('You can access this item with the following link:');
+                    $tpl['TITLE'] = dgettext('access', 'Access has saved your shortcut.');
+                    $content[] = dgettext('access', 'You can access this item with the following link:');
                     $content[] = $shortcut->getRewrite(true, false);
                 }
             } else {
-                $tpl['TITLE'] = _('Access has saved your shortcut.');
-                $content[] = _('An administrator will need to approve it before it is functional.');
-                $content[] = _('When active, you will be able to use the following link:');
+                $tpl['TITLE'] = dgettext('access', 'Access has saved your shortcut.');
+                $content[] = dgettext('access', 'An administrator will need to approve it before it is functional.');
+                $content[] = dgettext('access', 'When active, you will be able to use the following link:');
                 $content[] = $shortcut->getRewrite(true, false);
             }
         }
@@ -379,7 +379,7 @@ class Access {
         $vars['key_id']  = $key->id; 
         $link = PHPWS_Text::linkAddress('access', $vars, true);
         $js_vars['address'] = $link;
-        $js_vars['label'] = _('Shortcut');
+        $js_vars['label'] = dgettext('access', 'Shortcut');
         $js_vars['height'] = '200';
         $js_link = javascript('open_window', $js_vars);
         MiniAdmin::add('access', $js_link);
@@ -409,20 +409,20 @@ class Access {
         $link['link'] = 'index.php?module=access';
 
         if (MOD_REWRITE_ENABLED && Access::check_htaccess()) {
-            $link['title'] = _('Shortcuts');
+            $link['title'] = dgettext('access', 'Shortcuts');
             $tabs['shortcuts'] = $link;
         }
 
         if (Current_User::allow('access', 'admin_options')) {
             if (Access::check_htaccess()) {
-                $link['title'] = _('Allow/Deny');
+                $link['title'] = dgettext('access', 'Allow/Deny');
                 $tabs['deny_allow'] = $link;
             }
 
-            $link['title'] = _('Administrator');
+            $link['title'] = dgettext('access', 'Administrator');
             $tabs['admin'] = $link;
 
-            $link['title'] = _('Update');
+            $link['title'] = dgettext('access', 'Update');
             $tabs['update'] = $link;
         }
  

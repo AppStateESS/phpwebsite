@@ -11,7 +11,7 @@ function access_uninstall(&$content)
 {
     PHPWS_DB::dropTable('access_shortcuts');
     PHPWS_DB::dropTable('access_allow_deny');
-    $content[] = _('Access tables removed.');
+    $content[] = dgettext('access', 'Access tables removed.');
     return TRUE;
 }
 

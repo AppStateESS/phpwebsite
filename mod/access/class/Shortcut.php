@@ -93,18 +93,18 @@ class Access_Shortcut {
 
     function rowTags()
     {
-        $js['QUESTION'] = _('Are you sure you want to delete this shortcut?');
+        $js['QUESTION'] = dgettext('access', 'Are you sure you want to delete this shortcut?');
         $js['ADDRESS']  = sprintf('index.php?module=access&amp;command=delete_shortcut&amp;shortcut_id=%s&amp;authkey=%s',
                                   $this->id,
                                   Current_User::getAuthKey());
-        $js['LINK'] = _('Delete');
+        $js['LINK'] = dgettext('access', 'Delete');
         $tags[] = javascript('confirm', $js);
 
         $vars['command'] = 'edit_shortcut';
         $vars['sc_id'] = $this->id;
         $link = PHPWS_Text::linkAddress('access', $vars, true);
         $js_vars['address'] = $link;
-        $js_vars['label'] = _('Edit');
+        $js_vars['label'] = dgettext('access', 'Edit');
         $js_vars['height'] = '200';
         $js_link = javascript('open_window', $js_vars);
 
@@ -112,9 +112,9 @@ class Access_Shortcut {
 
         $template['URL'] = sprintf('<a href="%s">%s</a>', $this->url, $this->url);
         if ($this->active) {
-            $template['ACTIVE'] = _('Yes');
+            $template['ACTIVE'] = dgettext('access', 'Yes');
         } else {
-            $template['ACTIVE'] = _('No');
+            $template['ACTIVE'] = dgettext('access', 'No');
         }
 
         $template['ACTION'] = implode(' | ', $tags);

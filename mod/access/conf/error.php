@@ -4,13 +4,13 @@
  * @version $Id$
  */
 translate('access');
-$errors = array(SHORTCUT_BAD_KEYWORD     => _('Bad keyword. Use only alphanumeric characters, dashes and spaces.'),
-                SHORTCUT_WORD_IN_USE     => _('Keyword already in use. Choose another.'),
-                SHORTCUT_MISSING_KEYWORD => _('Missing keyword.'),
-                SHORTCUT_MISSING_URL     => _('Missing url.'),
-                ACCESS_FILES_DIR         => _('The files/access/ directory is not writable.'),
-                ACCESS_HTACCESS_WRITE    => _('Unable to write .htaccess file.'),
-                ACCESS_HTACCESS_MISSING  => _('.htaccess file is missing.')
+$errors = array(SHORTCUT_BAD_KEYWORD     => dgettext('access', 'Bad keyword. Use only alphanumeric characters, dashes and spaces.'),
+                SHORTCUT_WORD_IN_USE     => dgettext('access', 'Keyword already in use. Choose another.'),
+                SHORTCUT_MISSING_KEYWORD => dgettext('access', 'Missing keyword.'),
+                SHORTCUT_MISSING_URL     => dgettext('access', 'Missing url.'),
+                ACCESS_FILES_DIR         => dgettext('access', 'The files/access/ directory is not writable.'),
+                ACCESS_HTACCESS_WRITE    => dgettext('access', 'Unable to write .htaccess file.'),
+                ACCESS_HTACCESS_MISSING  => dgettext('access', '.htaccess file is missing.')
                 );
 
 translate();
