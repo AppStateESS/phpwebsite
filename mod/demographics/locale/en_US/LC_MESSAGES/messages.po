@@ -26,5 +26,5 @@ msgstr ""
 msgid "Demographics table removed."
 msgstr ""
 
-msgid "No demographics file found."
+msgid "Demographics file not implemented."
 msgstr ""

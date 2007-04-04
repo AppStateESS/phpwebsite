@@ -84,7 +84,7 @@ class Demographics {
         $file = sprintf('%smod/%s/boost/demographics.php', PHPWS_SOURCE_DIR, $module);
 
         if (!is_file($file)) {
-            PHPWS_Boost::addLog($module, _('No demographics file found.'));
+            PHPWS_Boost::addLog($module, _('Demographics file not implemented.'));
             return FALSE;
         }
 
