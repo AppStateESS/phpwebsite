@@ -356,6 +356,10 @@ class PHPWS_Module {
     {
         static $module_list = array();
 
+        if (isset($this->_error) && $this->_error->code == PHPWS_NO_MOD_FOUND) {
+            return false;
+        }
+
         if (empty($title)) {
             if (isset($this->title)) {
                 $title = &$this->title;

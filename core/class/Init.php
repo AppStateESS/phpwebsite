@@ -19,19 +19,7 @@ if (!defined('PHPWS_HOME_DIR')) {
     define('PHPWS_HOME_DIR', './');
 }
 
-/* Initialize language settings */
-if (!function_exists('bindtextdomain')){
-    define('CURRENT_LANGUAGE', 'en_US');
-    define('PHPWS_TRANSLATION', FALSE);
-    function _($text) {
-        return $text;
-    }
-} else {
-    define('PHPWS_TRANSLATION', TRUE);
-    initLanguage();
-    translate('core');
-}
-
+initializei18n();
 loadBrowserInformation();
 
 /* Load the Core class */
@@ -57,6 +45,44 @@ if (!defined('USE_ROOT_CONFIG')) {
     define('USE_ROOT_CONFIG', FALSE);
 }
 
+function initializei18n()
+{
+    /* Initialize language settings */
+    if (DISABLE_TRANSLATION || !function_exists('bindtextdomain')) {
+        define('CURRENT_LANGUAGE', 'en_US');
+        define('PHPWS_TRANSLATION', FALSE);
+
+        if (!function_exists('dgettext')) {
+            function dgettext($mod, $text) {
+                return $text;
+            }
+        }
+        if (!function_exists('_')) {
+            function _($text) {
+                return $text;
+            }
+        }
+    } else {
+        define('PHPWS_TRANSLATION', TRUE);
+        initLanguage();
+        $core_locale = PHPWS_SOURCE_DIR . 'locale'; 
+        bindtextdomain('messages', $core_locale); 
+ 
+        $handle = opendir(PHPWS_SOURCE_DIR . "mod/"); 
+ 
+        while ($mod_name = readdir($handle)) {
+            $localedir = sprintf('%smod/%s/locale/', PHPWS_SOURCE_DIR, $mod_name); 
+        
+            if (is_dir(PHPWS_SOURCE_DIR . 'mod/' . $mod_name)) {
+                if (file_exists($localedir) && $mod_name != "..") {
+                    bindtextdomain($mod_name, $localedir); 
+                }
+            } 
+        }
+        closedir($handle);
+    }
+}
+
 function setLanguage($language)
 {
     // putenv may cause problems with safe_mode.
@@ -65,6 +91,7 @@ function setLanguage($language)
         putenv("LANG=$language");
         putenv("LANGUAGE=$language");
     }
+
     return setlocale(LC_ALL, $language . '.UTF-8');
 }
 
@@ -307,37 +334,7 @@ function doubleLanguage($language)
 
 function translate($module=NULL)
 {
-    if (!PHPWS_TRANSLATION || DISABLE_TRANSLATION) {
-        return NULL;
-    }
-
-    if (empty($module)) {
-        if (isset($GLOBALS['Lang_Set']['previous'])) {
-            $GLOBALS['Lang_Set']['current'] = array_pop($GLOBALS['Lang_Set']['previous']);
-        } else {
-            translate('core');
-        }
-    } else {
-        if ($module == 'core') {
-            $directory = PHPWS_SOURCE_DIR . 'locale';
-        } else {
-            $directory = PHPWS_SOURCE_DIR . "mod/$module/locale";
-        }
-
-        if (!is_dir($directory)) {
-            return NULL;
-        }
-
-        bindtextdomain('messages', $directory);
-        if ( isset($GLOBALS['Lang_Set']['current']) && 
-             ( isset($GLOBALS['Lang_Set']['previous']) &&
-               $GLOBALS['Lang_Set']['current'] != end($GLOBALS['Lang_Set']['previous'])
-               )
-             ) {
-            $GLOBALS['Lang_Set']['previous'][] = $GLOBALS['Lang_Set']['current'];
-        }
-        $GLOBALS['Lang_Set']['current'] = $directory;
-    }
+    // kept to prevent breakage
 }
 
 /**

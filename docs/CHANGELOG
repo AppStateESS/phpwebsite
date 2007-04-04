@@ -2,6 +2,15 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+4 April 2007
++ Database - Fixed bug with addTable / changed all booleans to lower
+             case
++ Module - Changed isInstalled slightly. If on initialization, there
+           is a "not installed" error, we can assume the module is not
+           installed and return false. Otherwise, we check in the
+           normal way.
++ Init - Using new language translation method recommended by Ortwin Pinke
+
 3 April 2007
 + Bug #1690757 - Form.php : Added space to radio button to help with formatting
 + Bug #1689289 - Text.php : Changed makeRelative's inline mode to only

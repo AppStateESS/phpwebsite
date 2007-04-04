@@ -101,9 +101,13 @@ A couple of switches were added here:
  -f             : tell xgettext to get the file names from our translate_list.txt
                   file
 
-Once your messages.po (or source.po) file is created successfully, we need to create
-a home for it. Go into your module directory. Now make the following
-directory:
+Once your messages.po (or source.po) file is created successfully. You
+need to rename it so phpWebSite can see it. Change the po file to
+match your module's name. For example, if you module is name "foobar",
+rename messages.po to foobar.po.
+
+Next, we need to create a home for your new po file. Go into your
+module directory. Now make the following directory:
 
 locale/[language]/LC_MESSAGES/
 
@@ -113,7 +117,7 @@ use:
 
 locale/en_US/LC_MESSAGES/
 
-Now copy your messages file to that directory.
+Now copy your renamed messages file to that directory.
 
 Congratulations, you have just made your module internationally
 compatible!
