@@ -62,7 +62,7 @@ class User_Form {
             $username = NULL;
         }
 
-        $form = new PHPWS_Form('User_Login');
+        $form = new PHPWS_Form('User_Login_Box');
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'user');
         $form->addHidden('command', 'login');
@@ -863,7 +863,7 @@ class User_Form {
             $username = NULL;
         }
 
-        $form = new PHPWS_Form('User_Login');
+        $form = new PHPWS_Form('User_Login_Main');
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'user');
         $form->addHidden('command', 'login');

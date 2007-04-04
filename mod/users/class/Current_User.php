@@ -24,7 +24,7 @@ class Current_User {
         Current_User::getLogin();
     }
 
-    function &getUserObj()
+    function getUserObj()
     {
         return $_SESSION['User'];
     }

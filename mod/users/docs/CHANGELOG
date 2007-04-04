@@ -1,3 +1,8 @@
+4 April 2007
++ Changed form names on login templates since both have ids and may
+  appear on same page.
++ Removed return by reference from Current_User::getUserObj
+
 2 April 2007
 + Changed popuppermission to echo error instead of using goback
   function.
