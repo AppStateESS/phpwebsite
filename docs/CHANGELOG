@@ -9,7 +9,11 @@ its own separate CHANGELOG file.
            is a "not installed" error, we can assume the module is not
            installed and return false. Otherwise, we check in the
            normal way.
-+ Init - Using new language translation method recommended by Ortwin Pinke
++ Init - Using new language translation method recommended by Ortwin
+         Pinke
+
+Documentation - updated Language.txt to reflect changes made in Init.php
+
 
 3 April 2007
 + Bug #1690757 - Form.php : Added space to radio button to help with formatting
