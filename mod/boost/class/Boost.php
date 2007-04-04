@@ -194,7 +194,7 @@ class PHPWS_Boost {
         $onInstallFile = $mod->getDirectory() . 'boost/install.php';
         $installFunction = $mod->title . '_install';
         if (!is_file($onInstallFile)) {
-            $this->addLog($mod->title, _('No installation file found.'));
+            $this->addLog($mod->title, _('Installation file not implemented.'));
             return -1;
         }
 
