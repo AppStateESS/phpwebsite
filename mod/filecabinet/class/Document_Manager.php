@@ -19,7 +19,7 @@ class FC_Document_Manager {
 
     function edit()
     {
-        $this->cabinet->title = _('Upload document');
+        $this->cabinet->title = dgettext('filecabinet', 'Upload document');
         if (empty($this->document)) {
             $this->loadDocument();
         }
@@ -34,23 +34,23 @@ class FC_Document_Manager {
 
         $form->addFile('file_name');
         $form->setSize('file_name', 30);
-        $form->setLabel('file_name', _('Document location'));
+        $form->setLabel('file_name', dgettext('filecabinet', 'Document location'));
 
         $form->addText('title', $this->document->title);
         $form->setSize('title', 40);
-        $form->setLabel('title', _('Title'));
+        $form->setLabel('title', dgettext('filecabinet', 'Title'));
 
         $form->addTextArea('description', $this->document->description);
-        $form->setLabel('description', _('Description'));
+        $form->setLabel('description', dgettext('filecabinet', 'Description'));
 
         if (!empty($this->document->id)) {
             $form->addHidden('document_id', $this->document->id);
-            $form->addSubmit('submit', _('Update'));
+            $form->addSubmit('submit', dgettext('filecabinet', 'Update'));
         } else {
-            $form->addSubmit('submit', _('Upload'));
+            $form->addSubmit('submit', dgettext('filecabinet', 'Upload'));
         }
 
-        $form->addButton('cancel', _('Cancel'));
+        $form->addButton('cancel', dgettext('filecabinet', 'Cancel'));
         $form->setExtra('cancel', 'onclick="window.close()"');
 
         $form->setExtra('submit', 'onclick="this.style.display=\'none\'"');
@@ -58,20 +58,20 @@ class FC_Document_Manager {
         $template = $form->getTemplate();
 
         if ($this->document->id) {
-            $template['CURRENT_DOCUMENT_LABEL'] = _('Current document');
+            $template['CURRENT_DOCUMENT_LABEL'] = dgettext('filecabinet', 'Current document');
             $template['CURRENT_DOCUMENT_ICON']  = $this->document->getIconView();
             $template['CURRENT_DOCUMENT_FILE']  = $this->document->file_name;
         }
-        $template['MAX_SIZE_LABEL'] = _('Maximum file size');
+        $template['MAX_SIZE_LABEL'] = dgettext('filecabinet', 'Maximum file size');
 
         $sys_size = str_replace('M', '', ini_get('upload_max_filesize'));
 
         $sys_size = $sys_size * 1000000;
 
         if((int)$sys_size < (int)$this->max_size) {
-            $template['MAX_SIZE'] = sprintf(_('%d bytes (system wide)'), $sys_size);
+            $template['MAX_SIZE'] = sprintf(dgettext('filecabinet', '%d bytes (system wide)'), $sys_size);
         } else {
-            $template['MAX_SIZE'] = sprintf(_('%d bytes'), $this->max_size);
+            $template['MAX_SIZE'] = sprintf(dgettext('filecabinet', '%d bytes'), $this->max_size);
         }
 
         $this->cabinet->content = PHPWS_Template::process($template, 'filecabinet', 'document_edit.tpl');
@@ -109,7 +109,7 @@ class FC_Document_Manager {
             PHPWS_Error::log($result);
             $vars['timeout'] = '3';
             $vars['refresh'] = 0;
-            $this->cabinet->content = _('An error occurred when trying to save your document.');
+            $this->cabinet->content = dgettext('filecabinet', 'An error occurred when trying to save your document.');
             javascript('close_refresh', $vars);
             return;
         } elseif ($result) {

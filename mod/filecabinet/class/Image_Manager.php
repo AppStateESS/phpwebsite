@@ -82,7 +82,7 @@ class FC_Image_Manager {
 
                 $content =  PHPWS_Template::process($template, 'filecabinet', 'manager/pick.tpl');
             } else {
-                $content = _('Folder empty.');
+                $content = dgettext('filecabinet', 'Folder empty.');
             }
         }
         
@@ -94,7 +94,7 @@ class FC_Image_Manager {
      */
     function edit()
     {
-        $this->cabinet->title = _('Upload image');
+        $this->cabinet->title = dgettext('filecabinet', 'Upload image');
         $form = new PHPWS_Form;
         $form->addHidden('module', 'filecabinet');
 
@@ -118,37 +118,37 @@ class FC_Image_Manager {
         $form->setSize('file_name', 30);
         $form->setMaxFileSize($this->max_size);
 
-        $form->setLabel('file_name', _('Image location'));
+        $form->setLabel('file_name', dgettext('filecabinet', 'Image location'));
 
         $form->addText('title', $this->image->title);
         $form->setSize('title', 40);
-        $form->setLabel('title', _('Title'));
+        $form->setLabel('title', dgettext('filecabinet', 'Title'));
 
         $form->addText('alt', $this->image->alt);
         $form->setSize('alt', 40);
-        $form->setLabel('alt', _('Alternate text'));
+        $form->setLabel('alt', dgettext('filecabinet', 'Alternate text'));
 
         $form->addTextArea('description', $this->image->description);
-        $form->setLabel('description', _('Description'));
+        $form->setLabel('description', dgettext('filecabinet', 'Description'));
 
 
         if (!empty($this->image->id)) {
-            $form->addSubmit(_('Update'));
+            $form->addSubmit(dgettext('filecabinet', 'Update'));
         } else {
-            $form->addSubmit(_('Upload'));
+            $form->addSubmit(dgettext('filecabinet', 'Upload'));
         }
 
         $template = $form->getTemplate();
 
-        $template['CANCEL'] = sprintf('<input type="button" value="%s" onclick="javascript:window.close()" />', _('Cancel'));
+        $template['CANCEL'] = sprintf('<input type="button" value="%s" onclick="javascript:window.close()" />', dgettext('filecabinet', 'Cancel'));
 
         if ($this->image->id) {
-            $template['CURRENT_IMAGE_LABEL'] = _('Current image');
+            $template['CURRENT_IMAGE_LABEL'] = dgettext('filecabinet', 'Current image');
             $template['CURRENT_IMAGE']       = $this->image->getJSView(TRUE);
         }
-        $template['MAX_SIZE_LABEL']   = _('Maximum file size');
-        $template['MAX_WIDTH_LABEL']  = _('Maximum width');
-        $template['MAX_HEIGHT_LABEL'] = _('Maximum height');
+        $template['MAX_SIZE_LABEL']   = dgettext('filecabinet', 'Maximum file size');
+        $template['MAX_WIDTH_LABEL']  = dgettext('filecabinet', 'Maximum width');
+        $template['MAX_HEIGHT_LABEL'] = dgettext('filecabinet', 'Maximum height');
         $template['MAX_SIZE']         = $this->max_size;
         $template['MAX_WIDTH']        = $this->max_width;
         $template['MAX_HEIGHT']       = $this->max_height;
@@ -179,7 +179,7 @@ class FC_Image_Manager {
             PHPWS_Error::log($result);
             $vars['timeout'] = '3';
             $vars['refresh'] = 0;
-            $this->cabinet->content = _('An error occurred when trying to save your image.');
+            $this->cabinet->content = dgettext('filecabinet', 'An error occurred when trying to save your image.');
             javascript('close_refresh', $vars);
             return;
         } elseif ($result) {
@@ -201,7 +201,7 @@ class FC_Image_Manager {
 
     function get()
     {
-        translate('filecabinet');
+        
         if ($this->image->id) {
             $label = $this->image->getThumbnail();
         } else {
@@ -224,7 +224,7 @@ class FC_Image_Manager {
         $tpl['ITEMNAME'] = $this->itemname;
         $tpl['CLEAR_IMAGE'] = $this->getClearLink();
 
-        translate();
+        
         return PHPWS_Template::process($tpl, 'filecabinet', 'manager/javascript.tpl');
     }
 
@@ -240,7 +240,7 @@ class FC_Image_Manager {
 
     function noImage()
     {
-        $no_image = _('No image');
+        $no_image = dgettext('filecabinet', 'No image');
         return sprintf('<img src="%s" width="%s" height="%s" title="%s" alt="%s" />',
                              FC_NONE_IMAGE_SRC, 100, 
                              100, $no_image, $no_image);
@@ -251,9 +251,9 @@ class FC_Image_Manager {
         $js_vars['src']      = FC_NONE_IMAGE_SRC;
         $js_vars['width']    = 100;
         $js_vars['height']   = 100;
-        $js_vars['title']    = $js_vars['alt'] = _('No image');
+        $js_vars['title']    = $js_vars['alt'] = dgettext('filecabinet', 'No image');
         $js_vars['itemname'] = $this->itemname;
-        $js_vars['label']    = _('Clear image');
+        $js_vars['label']    = dgettext('filecabinet', 'Clear image');
         return javascript('modules/filecabinet/clear_image', $js_vars);
     }
 
@@ -293,14 +293,14 @@ class FC_Image_Manager {
         }
 
         Layout::addStyle('filecabinet');
-        $this->cabinet->title = _('Choose an image folder');
+        $this->cabinet->title = dgettext('filecabinet', 'Choose an image folder');
 
         // Needed only for image view popups.
         javascript('open_window');
         $js['itemname'] = $this->itemname;
 
-        $js['failure_message'] = addslashes(_('Unable to resize image.'));
-        $js['confirmation'] = sprintf(_('This image is larger than the %s x %s limit. Do you want to resize the image to fit?'),
+        $js['failure_message'] = addslashes(dgettext('filecabinet', 'Unable to resize image.'));
+        $js['confirmation'] = sprintf(dgettext('filecabinet', 'This image is larger than the %s x %s limit. Do you want to resize the image to fit?'),
                                       $this->max_width,
                                       $this->max_height);
         $js['authkey'] = Current_User::getAuthKey();
@@ -320,11 +320,11 @@ class FC_Image_Manager {
 
         $address = PHPWS_Text::linkAddress('filecabinet', array('aop'=>'add_folder', 'ftype'=>IMAGE_FOLDER), true);
         $folder_window = sprintf("javascript:open_window('%s', %s, %s, 'new_folder'); return false", $address, 370, 420);
-        $tpl['ADD_FOLDER'] = sprintf('<input id="add-folder" type="button" name="add_folder" value="%s" onclick="%s" />', _('Add folder'), $folder_window);
+        $tpl['ADD_FOLDER'] = sprintf('<input id="add-folder" type="button" name="add_folder" value="%s" onclick="%s" />', dgettext('filecabinet', 'Add folder'), $folder_window);
 
         $address = PHPWS_Text::linkAddress('filecabinet', array('aop'=>'upload_image_form', 'im'=>1, 'folder_id'=>$folder->id), true);
         $image_window = sprintf("javascript:open_window('%s', %s, %s, 'new_image'); return false", $address, 540, 460);
-        $image_button = sprintf('<input id="add-image" type="button" name="add_image" value="%s" onclick="%s" />', _('Add image'), $image_window);
+        $image_button = sprintf('<input id="add-image" type="button" name="add_image" value="%s" onclick="%s" />', dgettext('filecabinet', 'Add image'), $image_window);
 
         $tpl['ADD_IMAGE'] = $image_button;
 
@@ -334,14 +334,14 @@ class FC_Image_Manager {
                 $tpl['IMAGE_LIST'] = &$show_images;
                 $tpl['IMG_DISPLAY'] = 'visible';
             } else {
-                $tpl['IMAGE_LIST'] = _('Bad folder id.');
+                $tpl['IMAGE_LIST'] = dgettext('filecabinet', 'Bad folder id.');
             }
         } else {
             $tpl['IMG_DISPLAY'] = 'hidden';
             if (empty($folders)) {
-                $tpl['IMAGE_LIST'] = _('Please create a new folder.');
+                $tpl['IMAGE_LIST'] = dgettext('filecabinet', 'Please create a new folder.');
             } else {
-                $tpl['IMAGE_LIST'] = _('Please choose a new folder.');
+                $tpl['IMAGE_LIST'] = dgettext('filecabinet', 'Please choose a new folder.');
             }
         }
 

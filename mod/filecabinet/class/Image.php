@@ -141,7 +141,7 @@ class PHPWS_Image extends File_Common {
             $values['label'] = $this->getThumbnail();
         } else {
             $values['label'] = sprintf('<img src="images/mod/filecabinet/viewmag+.png" width="16" height="16" title="%s" />',
-                                   _('View full image'));
+                                   dgettext('filecabinet', 'View full image'));
         }
 
         $size = $this->popupSize();
@@ -324,10 +324,8 @@ class PHPWS_Image extends File_Common {
     
     function rowTags()
     {
-        translate('filecabinet');
-
         if (Current_User::allow('filecabinet', 'edit_folder', $this->folder_id)) {
-            $links[] = PHPWS_Text::secureLink(_('Clip'), 'filecabinet',
+            $links[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Clip'), 'filecabinet',
                                               array('aop'=>'clip_image',
                                                     'image_id' => $this->id));
             
@@ -339,13 +337,13 @@ class PHPWS_Image extends File_Common {
             $jsvars['height'] = 480;
             $jsvars['address'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
 
-            $jsvars['label'] = _('Edit');
+            $jsvars['label'] = dgettext('filecabinet', 'Edit');
             $links[] = javascript('open_window', $jsvars);
         
             $vars['aop'] = 'delete_image';
-            $js['QUESTION'] = _('Are you sure you want to delete this image?');
+            $js['QUESTION'] = dgettext('filecabinet', 'Are you sure you want to delete this image?');
             $js['ADDRESS']  = PHPWS_Text::linkAddress('filecabinet', $vars, true);
-            $js['LINK']     = _('Delete');
+            $js['LINK']     = dgettext('filecabinet', 'Delete');
             $links[] = javascript('confirm', $js);
         
             $tpl['ACTION'] = implode(' | ', $links);
@@ -356,8 +354,7 @@ class PHPWS_Image extends File_Common {
         $tpl['THUMBNAIL'] = $this->getJSView(TRUE);
         $tpl['TITLE']     = $this->title;
         $tpl['DIMENSIONS'] = sprintf('%s x %s', $this->width, $this->height);
-
-        translate();
+        
         return $tpl;
     }
     

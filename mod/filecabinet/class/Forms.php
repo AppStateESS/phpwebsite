@@ -19,15 +19,15 @@ class Cabinet_Form {
         $links[] = $folder->editLink();
 
         $pagetags['LINKS'] = implode(' | ', $links);
-        $pagetags['TITLE_LABEL'] = _('Title');
-        $pagetags['ITEM_LABEL']  = _('Items');
+        $pagetags['TITLE_LABEL'] = dgettext('filecabinet', 'Title');
+        $pagetags['ITEM_LABEL']  = dgettext('filecabinet', 'Items');
 
         $pager = new DBPager('folders', 'Folder');
         $pager->setModule('filecabinet');
         $pager->setTemplate('folder_list.tpl');
         $pager->addPageTags($pagetags);
         $pager->addRowTags('rowTags');
-        $pager->setEmptyMessage(_('No folders found.'));
+        $pager->setEmptyMessage(dgettext('filecabinet', 'No folders found.'));
         $pager->addWhere('ftype', $type);
 
         $this->cabinet->content = $pager->get();
@@ -42,20 +42,20 @@ class Cabinet_Form {
 
         if ($folder->id) {
             $form->addHidden('folder_id', $folder->id);
-            $form->addSubmit('submit', _('Update folder'));
+            $form->addSubmit('submit', dgettext('filecabinet', 'Update folder'));
         } else {
-            $form->addSubmit('submit', _('Create folder'));
+            $form->addSubmit('submit', dgettext('filecabinet', 'Create folder'));
         }
 
         $form->addTextField('title', $folder->title);
         $form->setSize('title', 40, 255);
-        $form->setLabel('title', _('Title'));
+        $form->setLabel('title', dgettext('filecabinet', 'Title'));
 
         $form->addTextArea('description', $folder->description);
-        $form->setLabel('description', _('Description'));
+        $form->setLabel('description', dgettext('filecabinet', 'Description'));
 
         $form->addRadio('public_folder', array(0, 1));
-        $form->setLabel('public_folder', array( _('Private'), _('Public')));
+        $form->setLabel('public_folder', array( dgettext('filecabinet', 'Private'), dgettext('filecabinet', 'Public')));
         $form->setMatch('public_folder', $folder->public_folder);
 
         /**
@@ -93,11 +93,11 @@ class Cabinet_Form {
             $limits[50] =  50;
         }
 
-        $pagetags['ACTION_LABEL'] = _('Action');
-        $pagetags['SIZE_LABEL'] = _('Size');
-        $pagetags['FILE_NAME_LABEL'] = _('File name');
-        $pagetags['FILE_TYPE_LABEL'] = _('File type');
-        $pagetags['TITLE_LABEL'] = _('Title');
+        $pagetags['ACTION_LABEL'] = dgettext('filecabinet', 'Action');
+        $pagetags['SIZE_LABEL'] = dgettext('filecabinet', 'Size');
+        $pagetags['FILE_NAME_LABEL'] = dgettext('filecabinet', 'File name');
+        $pagetags['FILE_TYPE_LABEL'] = dgettext('filecabinet', 'File type');
+        $pagetags['TITLE_LABEL'] = dgettext('filecabinet', 'Title');
 
         $pager->setLimitList($limits);
         $pager->setDefaultLimit(16);
@@ -109,7 +109,7 @@ class Cabinet_Form {
         $pager->setModule('filecabinet');
         $pager->addPageTags($pagetags);
         $pager->addRowTags('rowTags', $pick_image);
-        $pager->setEmptyMessage(_('Folder is empty.'));
+        $pager->setEmptyMessage(dgettext('filecabinet', 'Folder is empty.'));
         $this->cabinet->content = $pager->get();
     }
 
@@ -121,26 +121,25 @@ class Cabinet_Form {
 
         $form->addText('base_doc_directory', PHPWS_Settings::get('filecabinet', 'base_doc_directory'));
         $form->setSize('base_doc_directory', '50');
-        $form->setLabel('base_doc_directory', _('Base document directory'));
+        $form->setLabel('base_doc_directory', dgettext('filecabinet', 'Base document directory'));
 
         $form->addText('max_image_width', PHPWS_Settings::get('filecabinet', 'max_image_width'));
-        $form->setLabel('max_image_width', _('Maximum image pixel width'));
+        $form->setLabel('max_image_width', dgettext('filecabinet', 'Maximum image pixel width'));
         $form->setSize('max_image_width', 4, 4);
 
         $form->addText('max_image_height', PHPWS_Settings::get('filecabinet', 'max_image_height'));
-        $form->setLabel('max_image_height', _('Maximum image pixel height'));
+        $form->setLabel('max_image_height', dgettext('filecabinet', 'Maximum image pixel height'));
         $form->setSize('max_image_height', 4, 4);
 
         $form->addText('max_image_size', PHPWS_Settings::get('filecabinet', 'max_image_size'));
-        $form->setLabel('max_image_size', _('Maximum image file size (in bytes)'));
+        $form->setLabel('max_image_size', dgettext('filecabinet', 'Maximum image file size (in bytes)'));
         $form->setSize('max_image_size', 10, 10);
 
         $form->addText('max_document_size', PHPWS_Settings::get('filecabinet', 'max_document_size'));
-        $form->setLabel('max_document_size', _('Maximum document file size (in bytes)'));
+        $form->setLabel('max_document_size', dgettext('filecabinet', 'Maximum document file size (in bytes)'));
         $form->setSize('max_document_size', 10, 10);
 
-
-        $form->addSubmit(_('Save settings'));
+        $form->addSubmit(dgettext('filecabinet', 'Save settings'));
         $tpl = $form->getTemplate();
         return PHPWS_Template::process($tpl, 'filecabinet', 'settings.tpl');
     }

@@ -47,10 +47,10 @@ class Folder {
 
     function deleteLink()
     {
-        $vars['QUESTION'] = _('Are you certain you want to delete this folder and all its contents?');
+        $vars['QUESTION'] = dgettext('filecabinet', 'Are you certain you want to delete this folder and all its contents?');
         $vars['ADDRESS']  = PHPWS_Text::linkAddress('filecabinet', array('aop'=>'delete_folder', 'folder_id'=>$this->id),
                                                     true);
-        $vars['LINK'] = _('Delete');
+        $vars['LINK'] = dgettext('filecabinet', 'Delete');
         return javascript('confirm', $vars);
     }
 
@@ -62,9 +62,9 @@ class Folder {
         if ($this->id) {
             $vars['aop']    = 'edit_folder';
             $vars['folder_id'] = $this->id;
-            $js['label'] = _('Edit');
+            $js['label'] = dgettext('filecabinet', 'Edit');
         } else {
-            $js['label'] = _('Add folder');
+            $js['label'] = dgettext('filecabinet', 'Add folder');
             $vars['aop'] = 'add_folder';
         }
 
@@ -81,9 +81,9 @@ class Folder {
     {
         $vars['action'] = 'delete_image';
         $vars['image_id'] = $this->id;
-        $js['QUESTION'] = _('Are you sure you want to delete this image?');
+        $js['QUESTION'] = dgettext('filecabinet', 'Are you sure you want to delete this image?');
         $js['ADDRESS']  = PHPWS_Text::linkAddress('filecabinet', $vars, true);
-        $js['LINK']     = _('Delete');
+        $js['LINK']     = dgettext('filecabinet', 'Delete');
         $links[] = javascript('confirm', $js);
     }
 
@@ -113,7 +113,7 @@ class Folder {
         $vars['address'] = 'index.php?module=filecabinet&aop=upload_image_form&folder_id=' . $this->id;
         $vars['width']   = 540;
         $vars['height']  = 460;
-        $vars['label']   = _('Add image');
+        $vars['label']   = dgettext('filecabinet', 'Add image');
         return javascript('open_window', $vars);
     }
 
@@ -123,7 +123,7 @@ class Folder {
         $vars['address'] = 'index.php?module=filecabinet&aop=upload_document_form&folder_id=' . $this->id;
         $vars['width']   = 540;
         $vars['height']  = 400;
-        $vars['label']   = _('Add document');
+        $vars['label']   = dgettext('filecabinet', 'Add document');
         return javascript('open_window', $vars);
     }
 
@@ -145,7 +145,7 @@ class Folder {
     function post()
     {
         if (empty($_POST['title'])) {
-            $this->_error = _('You must entitle your folder.');
+            $this->_error = dgettext('filecabinet', 'You must entitle your folder.');
             return false;
         } else {
             $this->setTitle($_POST['title']);
@@ -288,7 +288,7 @@ class Folder {
                                $icon);
 
         javascript('ajax', $jsvars);
-        Layout::getModuleJavascript('filecabinet', 'folder_contents', array('error_message'=>_('Bad folder id.')));
+        Layout::getModuleJavascript('filecabinet', 'folder_contents', array('error_message'=>dgettext('filecabinet', 'Bad folder id.')));
 
         return $tpl;
     }

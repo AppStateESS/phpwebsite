@@ -87,7 +87,7 @@ class PHPWS_Document extends File_Common {
                 return sprintf('<a href="%s">%s</a>', $link, $this->file_name);
 
             case 'download':
-                return sprintf('<a href="%s">%s</a>', $link, _('Download'));
+                return sprintf('<a href="%s">%s</a>', $link, dgettext('filecabinet', 'Download'));
             }
         } else {
             return $link;
@@ -112,17 +112,17 @@ class PHPWS_Document extends File_Common {
             $vars['document_id'] = $this->id;
             $vars['aop'] = 'upload_document_form';
             $js['address'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
-            $js['label'] = _('Edit');
+            $js['label'] = dgettext('filecabinet', 'Edit');
             $js['width'] = 550;
             $js['height'] = 430;
             $links[] = javascript('open_window', $js);
             
             $vars['aop'] = 'clip_document';
-            $links[] = PHPWS_Text::moduleLink(_('Clip'), 'filecabinet', $vars);
+            $links[] = PHPWS_Text::moduleLink(dgettext('filecabinet', 'Clip'), 'filecabinet', $vars);
             
             $vars['aop'] = 'delete_document';
-            $js['QUESTION'] = _('Are you sure you want to delete this document?');
-            $js['LINK'] = _('Delete');
+            $js['QUESTION'] = dgettext('filecabinet', 'Are you sure you want to delete this document?');
+            $js['LINK'] = dgettext('filecabinet', 'Delete');
             $js['ADDRESS'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
             $links[] = javascript('confirm', $js);
         }

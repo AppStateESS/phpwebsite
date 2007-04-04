@@ -42,7 +42,7 @@ class Cabinet {
         switch ($aop) {
         case 'image':
             $this->panel->setCurrentTab('image');
-            $this->title = _('Image folders');
+            $this->title = dgettext('filecabinet', 'Image folders');
             $this->loadForms();
             $this->forms->getFolders(IMAGE_FOLDER);
             break;
@@ -82,7 +82,7 @@ class Cabinet {
 
         case 'document':
             $this->panel->setCurrentTab('document');
-            $this->title = _('Document folders');
+            $this->title = dgettext('filecabinet', 'Document folders');
             $this->loadForms();
             $this->forms->getFolders(DOCUMENT_FOLDER);
             break;
@@ -116,7 +116,7 @@ class Cabinet {
             $this->loadFolder();
             if ($this->folder->post()) {
                 if (!$this->folder->save()) {
-                    Layout::nakedDisplay(_('Failed to create folder. Please check your logs.'));
+                    Layout::nakedDisplay(dgettext('filecabinet', 'Failed to create folder. Please check your logs.'));
                 } else {
                     Layout::nakedDisplay(javascript('close_refresh'));
                 }
@@ -135,11 +135,11 @@ class Cabinet {
             if (is_array($result)) {
                 $this->message = implode('<br />', $result);
             } else {
-                $this->message = _('Settings saved.');
+                $this->message = dgettext('filecabinet', 'Settings saved.');
             }
         case 'settings':
             $this->loadForms();
-            $this->title = _('Settings');
+            $this->title = dgettext('filecabinet', 'Settings');
             $this->content = $this->forms->settings();
             break;
 
@@ -192,14 +192,14 @@ class Cabinet {
             foreach ($this->_errors as $err) {
                 PHPWS_Error::log($err);
             }
-            Layout::add(_('Sorry but this file is inaccessible at this time.'));
+            Layout::add(dgettext('filecabinet', 'Sorry but this file is inaccessible at this time.'));
             return;
         }
 
         $folder = new Folder($document->folder_id);
 
         if (!$folder->allow()) {
-            Layout::add(_('Sorry, you are not allowed access to this file.'));
+            Layout::add(dgettext('filecabinet', 'Sorry, you are not allowed access to this file.'));
             return;
         }
 
@@ -207,7 +207,7 @@ class Cabinet {
 
         if (!is_file($file_path)) {
             PHPWS_Error::log(FC_DOCUMENT_NOT_FOUND, 'filecabinet', 'Cabinet_Action::download', $file_path);
-            Layout::add(_('Sorry but this file is inaccessible at this time.'));
+            Layout::add(dgettext('filecabinet', 'Sorry but this file is inaccessible at this time.'));
             return;
         }
 
@@ -271,9 +271,9 @@ class Cabinet {
     {
         $this->loadForms();
         if ($this->folder->ftype == IMAGE_FOLDER) {
-            $this->title   = _('Create image folder');
+            $this->title   = dgettext('filecabinet', 'Create image folder');
         } else {
-            $this->title   = _('Create document folder');
+            $this->title   = dgettext('filecabinet', 'Create document folder');
         }
         $this->content = $this->forms->editFolder($this->folder);
     }
@@ -282,9 +282,9 @@ class Cabinet {
     {
         $this->loadForms();
         if ($this->folder->ftype == IMAGE_FOLDER) {
-            $this->title   = _('Update image folder');
+            $this->title   = dgettext('filecabinet', 'Update image folder');
         } else {
-            $this->title   = _('Update document folder');
+            $this->title   = dgettext('filecabinet', 'Update document folder');
         }
         $this->content = $this->forms->editFolder($this->folder);
     }
@@ -343,13 +343,13 @@ class Cabinet {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=filecabinet';
 
-        $image_command    = array('title'=>_('Image folders'), 'link'=> $link);
-        $document_command = array('title'=>_('Document folders'), 'link'=> $link);
+        $image_command    = array('title'=>dgettext('filecabinet', 'Image folders'), 'link'=> $link);
+        $document_command = array('title'=>dgettext('filecabinet', 'Document folders'), 'link'=> $link);
 
         $tabs['image']    = $image_command;
         $tabs['document'] = $document_command;
         if (Current_User::isDeity()) {
-            $tabs['settings']  = array('title'=> _('Settings'), 'link' => $link);
+            $tabs['settings']  = array('title'=> dgettext('filecabinet', 'Settings'), 'link' => $link);
         }
 
         $this->panel = new PHPWS_Panel('filecabinet');
@@ -360,13 +360,13 @@ class Cabinet {
     function saveSettings()
     {
         if (empty($_POST['base_doc_directory'])) {
-            $errors[] = _('Default document directory may not be blank');
+            $errors[] = dgettext('filecabinet', 'Default document directory may not be blank');
         } elseif (!is_dir($_POST['base_doc_directory'])) {
-            $errors[] = _('Document directory does not exist.');
+            $errors[] = dgettext('filecabinet', 'Document directory does not exist.');
         } elseif (!is_writable($_POST['base_doc_directory'])) {
-            $errors[] = _('Unable to write to document directory.');
+            $errors[] = dgettext('filecabinet', 'Unable to write to document directory.');
         } elseif (!is_readable($_POST['base_doc_directory'])) {
-            $errors[] = _('Unable to read document directory.');
+            $errors[] = dgettext('filecabinet', 'Unable to read document directory.');
         } else {
             $dir = $_POST['base_doc_directory'];
             if (!preg_match('@/$@', $dir)) {
@@ -376,13 +376,13 @@ class Cabinet {
         }
 
         if (empty($_POST['max_image_width']) || $_POST['max_image_width'] < 50) {
-            $errors[] = _('The max image width must be greater than 50 pixels.');
+            $errors[] = dgettext('filecabinet', 'The max image width must be greater than 50 pixels.');
         } else {
             PHPWS_Settings::set('filecabinet', 'max_image_width', $_POST['max_image_width']);
         }
 
         if (empty($_POST['max_image_height']) || $_POST['max_image_height'] < 50) {
-            $errors[] = _('The max image height must be greater than 50 pixels.');
+            $errors[] = dgettext('filecabinet', 'The max image height must be greater than 50 pixels.');
         } else {
             PHPWS_Settings::set('filecabinet', 'max_image_height', $_POST['max_image_height']);
         }
@@ -390,22 +390,22 @@ class Cabinet {
         $max_file_upload = preg_replace('/\D/', '', ini_get('upload_max_filesize'));
 
         if (empty($_POST['max_image_size'])) {
-            $errors[] = _('You must set a maximum image file size.');
+            $errors[] = dgettext('filecabinet', 'You must set a maximum image file size.');
         } else {
             $max_image_size = (int)$_POST['max_image_size'];
             if ( ($max_image_size / 1000000) > ((int)$max_file_upload) ) {
-                $errors[] = sprintf(_('Your maximum image size exceeds the server limit of %sMB.'), $max_file_upload);
+                $errors[] = sprintf(dgettext('filecabinet', 'Your maximum image size exceeds the server limit of %sMB.'), $max_file_upload);
             } else {
                 PHPWS_Settings::set('filecabinet', 'max_image_size', $max_image_size);
             }
         }
 
         if (empty($_POST['max_document_size'])) {
-            $errors[] = _('You must set a maximum document file size.');
+            $errors[] = dgettext('filecabinet', 'You must set a maximum document file size.');
         } else {
             $max_document_size = (int)$_POST['max_document_size'];
             if ( ($max_document_size / 1000000) > (int)$max_file_upload ) {
-                $errors[] = sprintf(_('Your maximum document size exceeds the server limit of %sMB.'), $max_file_upload);
+                $errors[] = sprintf(dgettext('filecabinet', 'Your maximum document size exceeds the server limit of %sMB.'), $max_file_upload);
             } else {
                 PHPWS_Settings::set('filecabinet', 'max_document_size', $max_document_size);
             }
