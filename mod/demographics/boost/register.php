@@ -7,9 +7,7 @@
 function demographics_register($module, &$content)
 {
     PHPWS_Core::initModClass('demographics', 'Demographics.php');
-    translate('demographics');
     $result = Demographics::register($module);
-    translate();
     return $result;
 }
 

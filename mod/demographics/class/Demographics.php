@@ -84,7 +84,7 @@ class Demographics {
         $file = sprintf('%smod/%s/boost/demographics.php', PHPWS_SOURCE_DIR, $module);
 
         if (!is_file($file)) {
-            PHPWS_Boost::addLog($module, _('Demographics file not implemented.'));
+            PHPWS_Boost::addLog($module, dgettext('demographics', 'Demographics file not implemented.'));
             return FALSE;
         }
 
@@ -99,7 +99,7 @@ class Demographics {
         if (isset($default) && is_array($default)) {
             foreach ($default as $field_name) {
                 Demographics::registerDefaultField($field_name);
-                PHPWS_Boost::addLog($module, sprintf(_('%s demographic field registered.'), $field_name));
+                PHPWS_Boost::addLog($module, sprintf(dgettext('demographics', '%s demographic field registered.'), $field_name));
             }
         }
         return TRUE;
@@ -205,9 +205,7 @@ class Demographics {
         $file = PHPWS_Core::getConfigFile($module, 'demographics.php');
 
         if (!is_file($file)) {
-            translate('demographics');
-            PHPWS_Boost::addLog($module, _('No demographics file found.'));
-            translate();
+            PHPWS_Boost::addLog($module, dgettext('demographics', 'No demographics file found.'));
             return FALSE;
         }
 

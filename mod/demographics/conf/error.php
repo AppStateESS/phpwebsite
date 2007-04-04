@@ -4,8 +4,5 @@
    * @version $Id$
    */
 
-translate('demographics');
-$errors = array (FIELD_NOT_FOUND  => _('Demographics field does not exist.'));
-translate();
-
+$errors = array (FIELD_NOT_FOUND  => dgettext('demographics', 'Demographics field does not exist.'));
 ?>
