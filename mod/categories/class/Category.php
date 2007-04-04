@@ -92,7 +92,7 @@ class Category{
         static $parentTitle = array();
 
         if ($this->parent == 0) {
-            return _('Top Level');
+            return dgettext('categories', 'Top Level');
         }
 
         if (isset($parentTitle[$this->parent])) {
@@ -198,17 +198,17 @@ class Category{
         $vars['category_id'] = $this->getId();
 
         $vars['subaction'] = 'edit';
-        $links[] = PHPWS_Text::secureLink(_('Edit'), 'categories', $vars);
+        $links[] = PHPWS_Text::secureLink(dgettext('categories', 'Edit'), 'categories', $vars);
 
         if (javascriptEnabled()) {
-            $js_vars['QUESTION'] = _('Are you sure you want to delete this category?');
+            $js_vars['QUESTION'] = dgettext('categories', 'Are you sure you want to delete this category?');
             $js_vars['ADDRESS']  = 'index.php?module=categories&amp;action=admin&amp;subaction=deleteCategory&amp;category_id=' . 
                 $this->getId() . '&amp;authkey=' . Current_User::getAuthKey();
-            $js_vars['LINK']     = _('Delete');
+            $js_vars['LINK']     = dgettext('categories', 'Delete');
             $links[] = Layout::getJavascript('confirm', $js_vars);
         } else {
             $vars['subaction'] = 'delete';
-            $links[] = PHPWS_Text::moduleLink(_('Delete'), 'categories', $vars);
+            $links[] = PHPWS_Text::moduleLink(dgettext('categories', 'Delete'), 'categories', $vars);
         }
 
         $tpl['ACTION'] = implode(' | ', $links);

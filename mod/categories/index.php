@@ -12,11 +12,11 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 
 PHPWS_Core::initModClass('categories', 'Action.php');
 PHPWS_Core::initModClass('categories', 'Categories.php');
-translate('categories');
+
 if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'admin'){
     Categories_Action::admin();
 } else {
     Categories_Action::user();
 }
-translate();
+
 ?>

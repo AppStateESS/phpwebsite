@@ -4,14 +4,14 @@
  * @version $Id
  */
 
-translate('categories');
-$link[] = array('label'       => _('Categories'),
+
+$link[] = array('label'       => dgettext('categories', 'Categories'),
                 'restricted'  => TRUE,
                 'url'         =>
                 'index.php?module=categories&amp;action=admin',
-                'description' => _('Administrate your site\'s categories.'),
+                'description' => dgettext('categories', 'Administrate your site\'s categories.'),
                 'image'       => 'categories.png',
                 'tab'         => 'content'
                 );
-translate();
+
 ?>

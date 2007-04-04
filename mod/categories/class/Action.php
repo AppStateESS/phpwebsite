@@ -15,7 +15,7 @@ class Categories_Action {
     function admin()
     {
         if (!Current_User::authorized('categories')) {
-            Current_User::disallow(_('You are not authorized to administrate categories.'));
+            Current_User::disallow(dgettext('categories', 'You are not authorized to administrate categories.'));
             return;
         }
 
@@ -54,9 +54,9 @@ class Categories_Action {
 
         case 'edit':
             if ($category->id) {
-                $title = _('Update Category');
+                $title = dgettext('categories', 'Update Category');
             } else {
-                $title = _('Add Category');
+                $title = dgettext('categories', 'Add Category');
             }
 
             $content[] = Categories_Action::edit($category);
@@ -64,12 +64,12 @@ class Categories_Action {
 
         case 'list':
             $panel->setCurrentTab('list');
-            $title = _('Manage Categories');
+            $title = dgettext('categories', 'Manage Categories');
             $content[] = Categories_Action::category_list();
             break;
 
         case 'new':
-            $title = _('Add Category');
+            $title = dgettext('categories', 'Add Category');
             $content[] = Categories_Action::edit($category);
             break;
 
@@ -83,7 +83,7 @@ class Categories_Action {
             break;
 
         case 'postCategory':
-            $title = _('Manage Categories');
+            $title = dgettext('categories', 'Manage Categories');
             $result = Categories_Action::postCategory($category);
             if (is_array($result)) {
                 $content[] = Categories_Action::edit($category, $result);
@@ -91,10 +91,10 @@ class Categories_Action {
                 $result = $category->save();
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
-                    $message = _('Unable to save category.') . ' ' .  _('Please contact your administrator.');
+                    $message = dgettext('categories', 'Unable to save category.') . ' ' .  dgettext('categories', 'Please contact your administrator.');
                 }
                 else {
-                    $message = _('Category saved successfully.');
+                    $message = dgettext('categories', 'Category saved successfully.');
                 }
 
                 Categories_Action::sendMessage($message, 'list');
@@ -163,7 +163,7 @@ class Categories_Action {
         PHPWS_Core::initCoreClass('File.php');
 
         if (empty($_POST['title'])) {
-            $errors['title'] = _('Your category must have a title.');
+            $errors['title'] = dgettext('categories', 'Your category must have a title.');
         }
 
         $category->setTitle($_POST['title']);
@@ -195,10 +195,10 @@ class Categories_Action {
 
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $newLink = 'index.php?module=categories&amp;action=admin';
-        $newCommand = array ('title'=>_('New'), 'link'=> $newLink);
+        $newCommand = array ('title'=>dgettext('categories', 'New'), 'link'=> $newLink);
         
         $listLink = 'index.php?module=categories&amp;action=admin';
-        $listCommand = array ('title'=>_('List'), 'link'=> $listLink);
+        $listCommand = array ('title'=>dgettext('categories', 'List'), 'link'=> $listLink);
 
         $tabs['new'] = $newCommand;
         $tabs['list'] = $listCommand;
@@ -226,43 +226,43 @@ class Categories_Action {
 
         if (isset($cat_id)) {
             $form->add('category_id', 'hidden', $cat_id);
-            $form->add('submit', 'submit', _('Update Category'));
+            $form->add('submit', 'submit', dgettext('categories', 'Update Category'));
         } else {
-            $form->add('submit', 'submit', _('Add Category'));
+            $form->add('submit', 'submit', dgettext('categories', 'Add Category'));
         }
 
         $category_list = Categories::getCategories('list', $category->getId());
 
         if (is_array($category_list)) {
             $reverse = array_reverse($category_list, TRUE);
-            $reverse[0] = '-' . _('Top Level') . '-';
+            $reverse[0] = '-' . dgettext('categories', 'Top Level') . '-';
             $category_list = array_reverse($reverse, TRUE);
         }
         else {
-            $category_list = array(0=>'-' . _('Top Level') . '-');
+            $category_list = array(0=>'-' . dgettext('categories', 'Top Level') . '-');
         }
 
 
         $form->addSelect('parent', $category_list);
         $form->setMatch('parent', $category->getParent());
-        $form->setLabel('parent', _('Parent'));
+        $form->setLabel('parent', dgettext('categories', 'Parent'));
 
         if (isset($errors['title'])) {
             $template['TITLE_ERROR'] = $errors['title'];
         }
         $form->add('title', 'textfield', $category->getTitle());
         $form->setsize('title', 40);
-        $form->setLabel('title', _('Title'));
+        $form->setLabel('title', dgettext('categories', 'Title'));
 
         $form->addTextArea('cat_description', $category->getDescription());
         $form->useEditor('cat_description');
         $form->setRows('cat_description', '10');
         $form->setWidth('cat_description', '80%');
-        $form->setLabel('cat_description', _('Description'));
+        $form->setLabel('cat_description', dgettext('categories', 'Description'));
 
-        $template['IMAGE_LABEL'] = _('Icon');
+        $template['IMAGE_LABEL'] = dgettext('categories', 'Icon');
 
-        $template['ICON_LABEL'] = _('Current Icon');
+        $template['ICON_LABEL'] = dgettext('categories', 'Current Icon');
         $template['ICON'] = Categories_Action::getManager($category->icon, 'icon');
 
         $form->mergeTemplate($template);
@@ -288,9 +288,9 @@ class Categories_Action {
     {
         PHPWS_Core::initCoreClass('DBPager.php');
 
-        $pageTags['TITLE_LABEL'] = _('Title');
-        $pageTags['PARENT_LABEL'] = _('Parent');
-        $pageTags['ACTION_LABEL'] = _('Action');
+        $pageTags['TITLE_LABEL'] = dgettext('categories', 'Title');
+        $pageTags['PARENT_LABEL'] = dgettext('categories', 'Parent');
+        $pageTags['ACTION_LABEL'] = dgettext('categories', 'Action');
 
         $pager = new DBPager('categories', 'Category');
         $pager->setModule('categories');
@@ -302,7 +302,7 @@ class Categories_Action {
         $content = $pager->get();
 
         if (empty($content)) {
-            $content = _('No categories found.');
+            $content = dgettext('categories', 'No categories found.');
         }
         return $content;
     }
@@ -321,7 +321,7 @@ class Categories_Action {
 
         if (!isset($id)) {
             $content = Categories::getCategoryList($module);
-            $template['TITLE'] = _('All Categories');
+            $template['TITLE'] = dgettext('categories', 'All Categories');
             if ($oMod) {
                 $template['TITLE'] .= ' - ' . $oMod->getProperName();
             }
@@ -333,10 +333,10 @@ class Categories_Action {
                 $template['CATEGORY_ICON'] = $icon->getTag();
             }
             if (isset($module) && $module != '0') {
-                $template['TITLE'] = sprintf(_('%s: Module listing for %s'), $category->title, $oMod->getProperName());
+                $template['TITLE'] = sprintf(dgettext('categories', '%s: Module listing for %s'), $category->title, $oMod->getProperName());
                 $content = Categories_Action::getAllItems($category, $module);
             } else {
-                $template['TITLE'] = sprintf(_('%s: Module listing'), $category->title);
+                $template['TITLE'] = sprintf(dgettext('categories', '%s: Module listing'), $category->title);
                 $content = Categories::listModuleItems($category);
             }
         }
@@ -372,9 +372,9 @@ class Categories_Action {
         $all_no = $db->count();
 
         if (!empty($mod_list)) {
-            array_unshift($mod_list, sprintf(_('All - %s items'), $all_no));
+            array_unshift($mod_list, sprintf(dgettext('categories', 'All - %s items'), $all_no));
         } else {
-            $mod_list[0] = sprintf(_('All - %s items'), $all_no);
+            $mod_list[0] = sprintf(dgettext('categories', 'All - %s items'), $all_no);
         }
 
         $form = new PHPWS_Form('module_select');
@@ -393,7 +393,7 @@ class Categories_Action {
             $form->setMatch('ref_mod', $_REQUEST['ref_mod']);
         }
 
-        $form->addSubmit('submit', _('View Module'));
+        $form->addSubmit('submit', dgettext('categories', 'View Module'));
 
         return $form->getTemplate();
     }
@@ -405,8 +405,8 @@ class Categories_Action {
     {
         PHPWS_Core::initCoreClass('DBPager.php');
 
-        $pageTags['TITLE_LABEL'] = _('Item Title');
-        $pageTags['CREATE_DATE_LABEL'] = _('Creation date');
+        $pageTags['TITLE_LABEL'] = dgettext('categories', 'Item Title');
+        $pageTags['CREATE_DATE_LABEL'] = dgettext('categories', 'Creation date');
 
         $pager = new DBPager('phpws_key', 'Key');
         $pager->addWhere('category_items.cat_id', $category->id);
@@ -425,7 +425,7 @@ class Categories_Action {
         $content = $pager->get();
 
         if (empty($content)) {
-            $content =  _('No items found in this category.');
+            $content =  dgettext('categories', 'No items found in this category.');
         }
 
         return $content;

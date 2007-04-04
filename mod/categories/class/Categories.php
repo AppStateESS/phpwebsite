@@ -33,7 +33,7 @@ class Categories{
         }
 
         if (javascriptEnabled()) {
-            $js_vars['label'] = _('Categorize');
+            $js_vars['label'] = dgettext('categories', 'Categorize');
             $js_vars['width'] = 640;
             $js_vars['height'] = 250;
 
@@ -81,39 +81,39 @@ class Categories{
 
         if (!empty($add_list)) {
             $form->addSelect('add_category', $add_list);
-            $form->addSubmit('add', _('Add category'));
+            $form->addSubmit('add', dgettext('categories', 'Add category'));
         } elseif (!empty($full_list)) {
-            $form->addTplTag('ADD_CATEGORY', _('All categories assigned.'));
+            $form->addTplTag('ADD_CATEGORY', dgettext('categories', 'All categories assigned.'));
         } else {
-            $form->addTplTag('ADD_CATEGORY', _('No categories available.'));
+            $form->addTplTag('ADD_CATEGORY', dgettext('categories', 'No categories available.'));
         }
         
         if (empty($remove_list)) {
-            $form->addTplTag('REMOVE_CATEGORY', _('No categories assigned.'));
+            $form->addTplTag('REMOVE_CATEGORY', dgettext('categories', 'No categories assigned.'));
         } else {
             $form->addSelect('remove_category', $remove_list);
-            $form->addSubmit('remove', _('Remove category'));
+            $form->addSubmit('remove', dgettext('categories', 'Remove category'));
         }
 
         if (!empty($full_list)) {
             $form->addSelect('quick_parent', $full_list);
         }
         $form->addTextField('category_name');
-        $form->addSubmit('quick_add', _('Quick add'));
+        $form->addSubmit('quick_add', dgettext('categories', 'Quick add'));
 
         $template = $form->getTemplate();
         
-        $template['CAT_TITLE'] = _('Categorize');
+        $template['CAT_TITLE'] = dgettext('categories', 'Categorize');
         $template['ITEM_TITLE'] = $key->title;
 
         if ($popup) {
             $template['CLOSE'] = sprintf('<input type="button" value="%s" onclick="opener.location.href=\'%s\'; window.close();" />',
-                                         _('Save and close'), $key->url);
+                                         dgettext('categories', 'Save and close'), $key->url);
             $template['CANCEL'] = sprintf('<input type="button" value="%s" onclick="window.close();" />',
-                                         _('Cancel'));
+                                         dgettext('categories', 'Cancel'));
 
-            $template['AVAILABLE'] = _('Available categories');
-            $template['CURRENT'] = _('Currently assigned');
+            $template['AVAILABLE'] = dgettext('categories', 'Available categories');
+            $template['CURRENT'] = dgettext('categories', 'Currently assigned');
             $content = PHPWS_Template::process($template, 'categories', 'popup_menu.tpl');
         } else {
             $content = PHPWS_Template::process($template, 'categories', 'menu_bar.tpl');
@@ -163,7 +163,7 @@ class Categories{
             }
             $db->resetWhere();
             $count = (int)$result;
-            $items = ' - ' . $count . ' ' . _('item(s)');
+            $items = ' - ' . $count . ' ' . dgettext('categories', 'item(s)');
 
             $vars['id'] = $category->id;
 
@@ -365,7 +365,7 @@ class Categories{
         }
 
         $tpl->setCurrentBlock('parent-row');
-        $tpl->setData(array('PARENT' => PHPWS_Text::moduleLink( _('Top Level'), 'categories', $vars)));
+        $tpl->setData(array('PARENT' => PHPWS_Text::moduleLink( dgettext('categories', 'Top Level'), 'categories', $vars)));
         $tpl->parseCurrentBlock();
 
         if (!empty($category)) {
@@ -422,7 +422,7 @@ class Categories{
 
         if (!empty($mod_count)) {
             foreach ($mod_count as $mod_title => $items) {
-                $mod_list[$mod_title] = sprintf(_('%s - %s item(s)'), $mod_names[$mod_title], $mod_count[$mod_title]);
+                $mod_list[$mod_title] = sprintf(dgettext('categories', '%s - %s item(s)'), $mod_names[$mod_title], $mod_count[$mod_title]);
             }
             return $mod_list;
         } else {
@@ -435,7 +435,7 @@ class Categories{
         $module_list = Categories::getModuleListing($category->getId());
 
         if (empty($module_list)) {
-            return _('No items available in this category.');
+            return dgettext('categories', 'No items available in this category.');
         }
 
         $vars['action'] = 'view';
