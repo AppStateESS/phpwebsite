@@ -268,64 +268,64 @@ class PHAT_Form extends PHPWS_Item {
         $form->addTextField('PHAT_FormName', $this->getLabel());
         $form->setSize('PHAT_FormName', PHAT_DEFAULT_SIZE);
         $form->setMaxSize('PHAT_FormName', PHAT_DEFAULT_MAXSIZE);
-        $form->setLabel('PHAT_FormName', _('Name'));
+        $form->setLabel('PHAT_FormName', dgettext('phatform', 'Name'));
 
         $form->addTextField('PHAT_FormPageLimit', $this->_pageLimit);
         $form->setSize('PHAT_FormPageLimit', 3, 3);
-        $form->setLabel('PHAT_FormPageLimit', _('Item limit per page'));
+        $form->setLabel('PHAT_FormPageLimit', dgettext('phatform', 'Item limit per page'));
 
         $form->addTextArea('PHAT_FormBlurb0', $this->_blurb0);
         $form->setCols('PHAT_FormBlurb0', PHAT_DEFAULT_COLS);
         $form->setRows('PHAT_FormBlurb0', PHAT_DEFAULT_ROWS);
-        $form->setLabel('PHAT_FormBlurb0', _('Instructions'));
+        $form->setLabel('PHAT_FormBlurb0', dgettext('phatform', 'Instructions'));
 
         $form->addTextArea('PHAT_FormBlurb1', $this->_blurb1);
         $form->setCols('PHAT_FormBlurb1', PHAT_DEFAULT_COLS);
         $form->setRows('PHAT_FormBlurb1', PHAT_DEFAULT_ROWS);
-        $form->setLabel('PHAT_FormBlurb1', _('Submission Message'));
+        $form->setLabel('PHAT_FormBlurb1', dgettext('phatform', 'Submission Message'));
 
 
         /* RBW Added a section to hold the post processing code 1/3/04 */
         $form->addTextArea('PHAT_PostProcess', $this->getPostProcessCode());
         $form->setCols('PHAT_FormBlurb1', PHAT_DEFAULT_COLS);
         $form->setRows('PHAT_FormBlurb1', PHAT_DEFAULT_ROWS);
-        $form->setLabel('PHAT_PostProcess', _('Post Process Code'));
+        $form->setLabel('PHAT_PostProcess', dgettext('phatform', 'Post Process Code'));
         $formTags['POSTPROCESS_HELP']  = PHPWS_Help::show_link('phatform', 'post_process_code');
 
         $form->addTextArea('PHAT_FormEmails', $this->getAdminEmails());
         $form->setCols('PHAT_FormBlurb1', PHAT_DEFAULT_COLS);
         $form->setRows('PHAT_FormBlurb1', PHAT_DEFAULT_ROWS);
-        $form->setLabel('PHAT_FormEmails', _('Admin Email (comma delimited)'));
+        $form->setLabel('PHAT_FormEmails', dgettext('phatform', 'Admin Email (comma delimited)'));
 
         $form->addCheckbox('PHAT_FormMultiSubmit', 1);
         $form->setMatch('PHAT_FormMultiSubmit', $this->_multiSubmit);
-        $form->setLabel('PHAT_FormMultiSubmit', _('Allow multiple submissions'));
+        $form->setLabel('PHAT_FormMultiSubmit', dgettext('phatform', 'Allow multiple submissions'));
 
         $form->addCheckbox('PHAT_FormAnonymous', 1);
         $form->setMatch('PHAT_FormAnonymous', $this->_anonymous);
-        $form->setLabel('PHAT_FormAnonymous', _('Allow anonymous submissions'));
+        $form->setLabel('PHAT_FormAnonymous', dgettext('phatform', 'Allow anonymous submissions'));
 
         $form->addCheckBox('PHAT_FormEditData', 1);
         $form->setMatch('PHAT_FormEditData', $this->_editData);
-        $form->setLabel('PHAT_FormEditData', _('Allow users to edit their form data'));
+        $form->setLabel('PHAT_FormEditData', dgettext('phatform', 'Allow users to edit their form data'));
 
         $form->addCheckBox('PHAT_FormShowElementNumbers', 1);
         $form->setMatch('PHAT_FormShowElementNumbers', $this->_showElementNumbers);
-        $form->setLabel('PHAT_FormShowElementNumbers', _('Show numbers for form elements (eg: 1, 2, 3)'));
+        $form->setLabel('PHAT_FormShowElementNumbers', dgettext('phatform', 'Show numbers for form elements (eg: 1, 2, 3)'));
 
         $form->addCheckBox('PHAT_FormShowPageNumbers', 1);
         $form->setMatch('PHAT_FormShowPageNumbers', $this->_showPageNumbers);
-        $form->setLabel('PHAT_FormShowPageNumbers', _('Show form page numbers (eg: page 1 of 6)'));
+        $form->setLabel('PHAT_FormShowPageNumbers', dgettext('phatform', 'Show form page numbers (eg: page 1 of 6)'));
 
         $form->addCheckBox('PHAT_FormHidden', 1);
         $form->setMatch('PHAT_FormHidden', $this->isHidden());
-        $form->setLabel('PHAT_FormHidden', _('Hide this form'));
+        $form->setLabel('PHAT_FormHidden', dgettext('phatform', 'Hide this form'));
 
         /* Can't forget the save button */
-        $form->addSubmit('PHAT_SaveSettings', _('Save Settings'));
+        $form->addSubmit('PHAT_SaveSettings', dgettext('phatform', 'Save Settings'));
 
         if($this->getId()) {
-            $form->addSubmit('PHAT_EditElements', _('Edit Elements'));
+            $form->addSubmit('PHAT_EditElements', dgettext('phatform', 'Edit Elements'));
             $GLOBALS['CNT_phatform']['title'] = $this->getLabel();
         } else {
             $GLOBALS['CNT_phatform']['title'] = PHAT_TITLE;
@@ -493,7 +493,7 @@ class PHAT_Form extends PHPWS_Item {
             } else {
                 $this->_position = 0;
 
-                $content = _('Form settings successfully saved!<br /><br />');
+                $content = dgettext('phatform', 'Form settings successfully saved!<br /><br />');
                 if($this->isSaved()) {
                     $content .= $this->view(FALSE);
                 } else {
@@ -516,7 +516,7 @@ class PHAT_Form extends PHPWS_Item {
      */
     function view($edit = FALSE) {
         if(($this->isHidden() && !$edit) || (!$this->isSaved() && !Current_User::allow('phatform', 'edit_forms'))) {
-            return _('This form is not available for viewing at this time.');
+            return dgettext('phatform', 'This form is not available for viewing at this time.');
         }
 
         $GLOBALS['CNT_phatform']['title'] = $this->getLabel();
@@ -524,16 +524,16 @@ class PHAT_Form extends PHPWS_Item {
         if(!$edit) {
             /* If this form is not anonymous and the user is not logged in, print message and bail */
             if(($this->_editData || !$this->_anonymous) && !Current_User::isLogged())
-                return _('You must be logged in to view this form!');
+                return dgettext('phatform', 'You must be logged in to view this form!');
 
             /* If this form is not multi submit and the user has filled out this for before,
              print message and bail */
             if(!$this->_editData && !$this->_multiSubmit && $this->hasSubmission())
-                return _('You have already filled out this form!');
+                return dgettext('phatform', 'You have already filled out this form!');
 
             if(!Current_User::isDeity() && Current_User::allow('phatform', 'user_forms_only')) {
                 if(Current_User::getUsername() != $this->getOwner()) {
-                    return _('You only have permission to edit your own forms!');
+                    return dgettext('phatform', 'You only have permission to edit your own forms!');
                 }
             }
         }
@@ -555,7 +555,7 @@ class PHAT_Form extends PHPWS_Item {
             $viewTags['BLURB0'] = PHPWS_Text::parseOutput($this->_blurb0);
 
             if(!$this->_saved) {
-                $viewTags['WARNING'] = _('The form must be saved before it is available to the public.');
+                $viewTags['WARNING'] = dgettext('phatform', 'The form must be saved before it is available to the public.');
             }
         }
 
@@ -610,14 +610,14 @@ class PHAT_Form extends PHPWS_Item {
             if(!$edit) {
                 if($this->currentPage() == $this->numPages()) {
                     if($this->_editData && $this->currentPage() > 1) {
-                        $formTags['BACK_BUTTON'] = PHPWS_Form::formSubmit(_('Back'), 'PHAT_Back');
+                        $formTags['BACK_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Back'), 'PHAT_Back');
                     }
-                    $formTags['SUBMIT_BUTTON'] = PHPWS_Form::formSubmit(_('Finish'), 'PHAT_Submit');
+                    $formTags['SUBMIT_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Finish'), 'PHAT_Submit');
                 } else {
                     if($this->_editData && $this->currentPage() > 1) {
-                        $formTags['BACK_BUTTON'] = PHPWS_Form::formSubmit(_('Back'), 'PHAT_Back');
+                        $formTags['BACK_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Back'), 'PHAT_Back');
                     }
-                    $formTags['NEXT_BUTTON'] = PHPWS_Form::formSubmit(_('Next'), 'PHAT_Next');
+                    $formTags['NEXT_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Next'), 'PHAT_Next');
                 }
             }
 
@@ -640,7 +640,7 @@ class PHAT_Form extends PHPWS_Item {
 
         /* Check to see if we should show page numbers or not */
         if($this->_showPageNumbers) {
-            $viewTags['PAGE_NUMBER'] = sprintf(_('Page %1$s of %2$s'), $this->currentPage(), $this->numPages());
+            $viewTags['PAGE_NUMBER'] = sprintf(dgettext('phatform', 'Page %1$s of %2$s'), $this->currentPage(), $this->numPages());
         }
 
         /* If in edit mode, display the toolbar */
@@ -716,7 +716,7 @@ class PHAT_Form extends PHPWS_Item {
         if(PHPWS_Error::isError($result)) {
             return $result;
         } else {
-            return _('Element successfully added!') . '<br />';
+            return dgettext('phatform', 'Element successfully added!') . '<br />';
         }
     }// END FUNC pushElement()
 
@@ -743,7 +743,7 @@ class PHAT_Form extends PHPWS_Item {
         if(PHPWS_Error::isError($result)) {
             return $result;
         } else {
-            return _('Element successfully removed!') . '<br />';
+            return dgettext('phatform', 'Element successfully removed!') . '<br />';
         }
     }
 
@@ -760,12 +760,12 @@ class PHAT_Form extends PHPWS_Item {
      */
     function _toolbar()
     {
-        $elementTypes = array('PHAT_Dropbox'     => _('Dropbox'),
-                              'PHAT_Textfield'   => _('Textfield'),
-                              'PHAT_Textarea'    => _('Textarea'),
-                              'PHAT_Multiselect' => _('Multiple Select'),
-                              'PHAT_Radiobutton' => _('Radio Button'),
-                              'PHAT_Checkbox'    => _('Checkbox'));
+        $elementTypes = array('PHAT_Dropbox'     => dgettext('phatform', 'Dropbox'),
+                              'PHAT_Textfield'   => dgettext('phatform', 'Textfield'),
+                              'PHAT_Textarea'    => dgettext('phatform', 'Textarea'),
+                              'PHAT_Multiselect' => dgettext('phatform', 'Multiple Select'),
+                              'PHAT_Radiobutton' => dgettext('phatform', 'Radio Button'),
+                              'PHAT_Checkbox'    => dgettext('phatform', 'Checkbox'));
 
         for($i=1; $i <= $this->numPages(); $i++) {
             $pageNumber[$i] = $i;
@@ -775,16 +775,16 @@ class PHAT_Form extends PHPWS_Item {
 
         $form->addSelect('PHAT_PageNumber', $pageNumber);
         $form->setMatch('PHAT_PageNumber', $this->currentPage());
-        $form->setLabel('PHAT_PageNumber', _('Page'));
+        $form->setLabel('PHAT_PageNumber', dgettext('phatform', 'Page'));
 
         $form->addSelect('PHAT_ElementType', $elementTypes);
 
-        $form->addSubmit('PHAT_Go', _('Go!'));
-        $form->addSubmit('PHAT_Add', _('Add'));
-        $form->addSubmit('PHAT_Settings', _('Form Settings'));
+        $form->addSubmit('PHAT_Go', dgettext('phatform', 'Go!'));
+        $form->addSubmit('PHAT_Add', dgettext('phatform', 'Add'));
+        $form->addSubmit('PHAT_Settings', dgettext('phatform', 'Form Settings'));
 
         if($this->isApproved()) {
-            $form->addSubmit('PHAT_Save', _('Save Form'));
+            $form->addSubmit('PHAT_Save', dgettext('phatform', 'Save Form'));
         }
 
         $form->addHidden('module', 'phatform');
@@ -835,13 +835,13 @@ class PHAT_Form extends PHPWS_Item {
      * @see    view()
      */
     function _elementEditor($key) {
-        $actions['edit'] = _('Edit');
-        $actions['remove'] = _('Remove');
-        $actions['moveUp'] = _('Move Up');
-        $actions['moveDown'] = _('Move Down');
+        $actions['edit'] = dgettext('phatform', 'Edit');
+        $actions['remove'] = dgettext('phatform', 'Remove');
+        $actions['moveUp'] = dgettext('phatform', 'Move Up');
+        $actions['moveDown'] = dgettext('phatform', 'Move Down');
 
         $editor = PHPWS_Form::formSelect('PHAT_Action_$key', $actions);
-        $editor .= PHPWS_Form::formSubmit(_('Go'), "go_$key");
+        $editor .= PHPWS_Form::formSubmit(dgettext('phatform', 'Go'), "go_$key");
 
         return $editor;
     }// END FUNC _elementEditor()
@@ -1069,13 +1069,13 @@ class PHAT_Form extends PHPWS_Item {
             $this->setDataId($dataId);
 
             /* RBW Append any output onto what we already have from the post processing code. */
-            $thanksTags['RETURN'] .= '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=list">' . _('Return to Report') . '</a>';
+            $thanksTags['RETURN'] .= '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=list">' . dgettext('phatform', 'Return to Report') . '</a>';
         } elseif($this->_multiSubmit) {
             /* RBW Append any output onto what we already have from the post processing code. */
-            $thanksTags['RETURN'] .= '<a href="index.php?module=phatform&amp;PHAT_MAN_OP=View&amp;PHAT_FORM_ID=' . $this->getId() . '">' . _('Retake Form') . '</a>';
+            $thanksTags['RETURN'] .= '<a href="index.php?module=phatform&amp;PHAT_MAN_OP=View&amp;PHAT_FORM_ID=' . $this->getId() . '">' . dgettext('phatform', 'Retake Form') . '</a>';
         }
 
-        $thanksTags['HOME'] = '<a href="./index.php">' . _('Home') . '</a>';
+        $thanksTags['HOME'] = '<a href="./index.php">' . dgettext('phatform', 'Home') . '</a>';
 
         $GLOBALS['CNT_phatform']['title'] = $this->getLabel();
         return PHPWS_Template::processTemplate($thanksTags, 'phatform', 'form/thanks.tpl');
@@ -1216,14 +1216,14 @@ class PHAT_Form extends PHPWS_Item {
      */
     function getFormInfo() {
         /* Created info tags */
-        $infoTags['CREATED_LABEL'] = _('Created');
-        $infoTags['UPDATED_LABEL'] = _('Updated');
+        $infoTags['CREATED_LABEL'] = dgettext('phatform', 'Created');
+        $infoTags['UPDATED_LABEL'] = dgettext('phatform', 'Updated');
         $infoTags['CREATED'] = $this->getCreated();
         $infoTags['UPDATED'] = $this->getUpdated();
         $infoTags['OWNER'] = $this->getOwner();
         $infoTags['EDITOR'] = $this->getEditor();
         $infoTags['IP_ADDRESS'] = $this->getIp();
-        $infoTags['TITLE'] = _('Form Information');
+        $infoTags['TITLE'] = dgettext('phatform', 'Form Information');
 
         /* Return processed template */
         return PHPWS_Template::processTemplate($infoTags, 'phatform', 'form/info.tpl');
@@ -1472,7 +1472,7 @@ class PHAT_Form extends PHPWS_Item {
 
             if(PHPWS_Error::isError($error)) {
                 PHPWS_Error::log($error);
-                javascript('alert', array('content' => _('Failed to archive.')));
+                javascript('alert', array('content' => dgettext('phatform', 'Failed to archive.')));
                 unset($_REQUEST['PHAT_ArchiveConfirm']);
                 unset($error);
                 $_REQUEST['PHAT_FORM_OP'] = 'ArchiveConfirm';
@@ -1508,15 +1508,15 @@ class PHAT_Form extends PHPWS_Item {
 
             $elements[0] = implode("\n", $eles);
 
-            $confirmTags['WARNING_TAG'] = _('WARNING!');
-            $confirmTags['MESSAGE'] = _('You have chosen to edit a saved form! All current data will be archived and cleared if you chose to continue!  Make sure you export your data from your form before you continue!');
-            $confirmTags['CANCEL_BUTTON'] = PHPWS_Form::formSubmit(_('Cancel'), 'PHAT_ArchiveCancel');
-            $confirmTags['CONFIRM_BUTTON'] = PHPWS_Form::formSubmit(_('Confirm'), 'PHAT_ArchiveConfirm');
+            $confirmTags['WARNING_TAG'] = dgettext('phatform', 'WARNING!');
+            $confirmTags['MESSAGE'] = dgettext('phatform', 'You have chosen to edit a saved form! All current data will be archived and cleared if you chose to continue!  Make sure you export your data from your form before you continue!');
+            $confirmTags['CANCEL_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Cancel'), 'PHAT_ArchiveCancel');
+            $confirmTags['CONFIRM_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Confirm'), 'PHAT_ArchiveConfirm');
 
             $elements[0] .= PHPWS_Template::processTemplate($confirmTags, 'phatform', 'form/archiveConfirm.tpl');
             $content =  PHPWS_Form::makeForm('PHAT_FormArchiveConfirm', 'index.php', $elements);
 
-            $GLOBALS['CNT_phatform']['title'] = _('Form').': '.$this->getLabel();
+            $GLOBALS['CNT_phatform']['title'] = dgettext('phatform', 'Form').': '.$this->getLabel();
             $GLOBALS['CNT_phatform']['content'] .= $content;
         }
     }
@@ -1734,7 +1734,7 @@ class PHAT_Form extends PHPWS_Item {
                 if(PHPWS_Error::isError($error)) {
                     javascript('alert', array('content' => PHPWS_Error::printError($error)));
                 } else {
-                    $_SESSION['PHAT_Message'] = sprintf(_('The form %s was successfully archived.'), '<b><i>' . $this->getLabel() . '</i></b>');
+                    $_SESSION['PHAT_Message'] = sprintf(dgettext('phatform', 'The form %s was successfully archived.'), '<b><i>' . $this->getLabel() . '</i></b>');
                 }
 
                 $_REQUEST['PHAT_FORM_OP'] = 'report';

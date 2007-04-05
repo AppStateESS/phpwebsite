@@ -5,7 +5,7 @@
    *
    * @version $Id$
    */
-translate('phatform');
+
 $GLOBALS['CNT_phatform']['title'] = $GLOBALS['CNT_phatform']['content'] = NULL;
 $GLOBALS['CNT_phatform']['message'] = NULL;
 if(!defined('PHPWS_SOURCE_DIR')) {
@@ -64,5 +64,5 @@ $tpl['MESSAGE'] = $GLOBALS['CNT_phatform']['message'];
 $tpl['CONTENT'] = $GLOBALS['CNT_phatform']['content'];
 
 Layout::add(PHPWS_Template::process($tpl, 'phatform', 'box.tpl'));
-translate();
+
 ?>

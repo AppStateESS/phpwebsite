@@ -7,7 +7,7 @@
 
 function archive($formId = NULL) {
     if(!isset($formId)) {
-        $message = _('No form ID was passed');
+        $message = dgettext('phatform', 'No form ID was passed');
         return new PHPWS_Error('phatform', 'archive()', $message, 'continue', PHAT_DEBUG_MODE);
     }
  

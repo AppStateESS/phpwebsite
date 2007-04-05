@@ -107,7 +107,7 @@ class PHAT_Element extends PHPWS_Item {
         } else if(isset($value)) {
             $this->_value = PHPWS_Text::parseInput($value);
         } else if(PHAT_VALUE_REQUIRED) {
-            $message = _('The value for this element was not set.');
+            $message = dgettext('phatform', 'The value for this element was not set.');
             return PHPWS_Error::get(PHATFORM_VALUE_MISSING, 'phatform', 'PHAT_Element::setValue()');
         } else {
             $this->_value = NULL;
@@ -291,13 +291,13 @@ class PHAT_Element extends PHPWS_Item {
         $elements[0] = '<input type="hidden" name="module" value="phatform" /><input type="hidden" name="PHAT_EL_OP" value="SaveElementOptions" />';
 
         if(PHAT_SHOW_INSTRUCTIONS) {
-            $GLOBALS['CNT_phatform']['title'] = _('Option Instructions');
+            $GLOBALS['CNT_phatform']['title'] = dgettext('phatform', 'Option Instructions');
         }
 
-        $editTags['NUMBER_LABEL'] = _('Option');
-        $editTags['INPUT_LABEL'] = _('Text');
-        $editTags['VALUE_LABEL'] = _('Value');
-        $editTags['DEFAULT_LABEL'] = _('Default');
+        $editTags['NUMBER_LABEL'] = dgettext('phatform', 'Option');
+        $editTags['INPUT_LABEL'] = dgettext('phatform', 'Text');
+        $editTags['VALUE_LABEL'] = dgettext('phatform', 'Value');
+        $editTags['DEFAULT_LABEL'] = dgettext('phatform', 'Default');
 
         $editTags['OPTIONS'] = '';
         $rowClass = NULL;
@@ -359,10 +359,10 @@ class PHAT_Element extends PHPWS_Item {
         $element = new Form_Checkbox('PHAT_ElementUseText', 1);
         $element->setMatch($check);
 
-        $editTags['USE_TEXT_CHECK'] = _('Use option text as values') . ': ' . $element->get();
-        $editTags['SAVE_OPTION_SET'] = _('Save option set as') . ': ' . PHPWS_Form::formTextField('PHAT_SaveOptionSet', $setName, PHAT_DEFAULT_SIZE, PHAT_DEFAULT_MAXSIZE);
-        $editTags['BACK_BUTTON'] = PHPWS_Form::formSubmit(_('Back'), 'PHAT_OptionBack');
-        $editTags['SAVE_BUTTON'] = PHPWS_Form::formSubmit(_('Save ' . $properName));
+        $editTags['USE_TEXT_CHECK'] = dgettext('phatform', 'Use option text as values') . ': ' . $element->get();
+        $editTags['SAVE_OPTION_SET'] = dgettext('phatform', 'Save option set as') . ': ' . PHPWS_Form::formTextField('PHAT_SaveOptionSet', $setName, PHAT_DEFAULT_SIZE, PHAT_DEFAULT_MAXSIZE);
+        $editTags['BACK_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Back'), 'PHAT_OptionBack');
+        $editTags['SAVE_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Save ' . $properName));
 
         $elements[0] .= PHPWS_Template::processTemplate($editTags, 'phatform', 'element/optionList.tpl');
 
@@ -436,7 +436,7 @@ class PHAT_Element extends PHPWS_Item {
                     $id = $db->insert();
                     if($id) {
                         $this->setOptionSet($id);
-                        $returnText = sprintf(_('The option set %s was successfully saved.'), '<b><i>' . $label . '</i></b>') . '<br />';
+                        $returnText = sprintf(dgettext('phatform', 'The option set %s was successfully saved.'), '<b><i>' . $label . '</i></b>') . '<br />';
                     } else {
                         return PHPWS_Error::get(PHATFORM_OPTION_WONT_SAVE, 'phatform', 'PHAT_Element::saveOptions()', array($label));
                     }
@@ -445,7 +445,7 @@ class PHAT_Element extends PHPWS_Item {
                 if(PHPWS_Error::isError($this->commit())) {
                     return PHPWS_Error::get(PHATFORM_ELEMENT_FAIL, 'phatform', 'PHAT_Element::saveOptions()',  array($properName));
                 } else {
-                    $returnText .= sprintf(_('The %s was saved successfully.'), '<b><i>' . $properName . '</i></b>');
+                    $returnText .= sprintf(dgettext('phatform', 'The %s was saved successfully.'), '<b><i>' . $properName . '</i></b>');
                     return $returnText;
                 }
 
@@ -593,16 +593,16 @@ class PHAT_Element extends PHPWS_Item {
                 if(PHPWS_Error::isError($result)) {
                     return $result;
                 } else {
-                    return _('The element was successfully removed.');
+                    return dgettext('phatform', 'The element was successfully removed.');
                 }
             }
         } else if(isset($_REQUEST['PHAT_No'])) {
-            return _('No element was removed.');;
+            return dgettext('phatform', 'No element was removed.');;
         } else {
             $className = get_class($this);
             $properName = ucfirst(str_ireplace('phat_', '', $className));
 
-            $tags['MESSAGE'] = sprintf(_('Are you sure you want to remove this %s element?'), '<b><i>' . $properName . '</i></b>');
+            $tags['MESSAGE'] = sprintf(dgettext('phatform', 'Are you sure you want to remove this %s element?'), '<b><i>' . $properName . '</i></b>');
             $tags['YES_BUTTON'] = PHPWS_Form::formSubmit('Yes', 'PHAT_Yes');
             $tags['NO_BUTTON'] = PHPWS_Form::formSubmit('No', 'PHAT_No');
             $tags['ELEMENT_PREVIEW'] = $this->view();

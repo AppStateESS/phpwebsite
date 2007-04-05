@@ -94,19 +94,19 @@ class PHAT_Dropbox extends PHAT_Element {
         $form->addTextArea('PHAT_ElementBlurb', $this->getBlurb());
         $form->setRows('PHAT_ElementBlurb', PHAT_DEFAULT_ROWS);
         $form->setCols('PHAT_ElementBlurb', PHAT_DEFAULT_COLS);
-        $form->setLabel('PHAT_ElementBlurb', _('Associated Text'));
+        $form->setLabel('PHAT_ElementBlurb', dgettext('phatform', 'Associated Text'));
 
         $form->addText('PHAT_ElementName', $this->getLabel());
         $form->setSize('PHAT_ElementName', PHAT_DEFAULT_SIZE, PHAT_DEFAULT_MAXSIZE);
-        $form->setLabel('PHAT_ElementName', _('Name'));
+        $form->setLabel('PHAT_ElementName', dgettext('phatform', 'Name'));
 
         $form->addText('PHAT_ElementNumOptions', $numOptions);
         $form->setSize('PHAT_ElementNumOptions', 5, 3);
-        $form->setLabel('PHAT_ElementNumOptions', _('Number of Options'));
+        $form->setLabel('PHAT_ElementNumOptions', dgettext('phatform', 'Number of Options'));
 
         $options = $this->getOptionSets();
         if(is_array($options)) {
-            $editTags['OPTION_SET_LABEL'] = _('Predefined Option Set');
+            $editTags['OPTION_SET_LABEL'] = dgettext('phatform', 'Predefined Option Set');
             $form->addSelect('PHAT_OptionSet', $options);
             $form->setMatch('PHAT_OptionSet', $this->getOptionSet());
         }
@@ -114,10 +114,10 @@ class PHAT_Dropbox extends PHAT_Element {
 
         $form->addCheck('PHAT_ElementRequired', 1);
         $form->setMatch('PHAT_ElementRequired', $this->isRequired());
-        $form->setLabel('PHAT_ElementRequired', _('Required'));        
+        $form->setLabel('PHAT_ElementRequired', dgettext('phatform', 'Required'));        
 
-        $form->addSubmit('PHAT_ElementBack', _('Back'));
-        $form->addSubmit('NEXT_BUTTON',_('Next'));
+        $form->addSubmit('PHAT_ElementBack', dgettext('phatform', 'Back'));
+        $form->addSubmit('NEXT_BUTTON',dgettext('phatform', 'Next'));
 
         $template = $form->getTemplate();
 

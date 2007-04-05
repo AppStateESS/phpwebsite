@@ -32,30 +32,30 @@ class advViews {
     function deleteExport() {
         if(isset($_POST['yes'])){
             if(!isset($_REQUEST['EXPORT_filename'])) {
-                $content = _('There was a problem deleting the export.') . '<br /><br />';     
+                $content = dgettext('phatform', 'There was a problem deleting the export.') . '<br /><br />';     
                 $content .= $this->viewExports();
                 return $content;
             }
 
             $filename = PHPWS_HOME_DIR . 'files/phatform/export/' . $_REQUEST['EXPORT_filename'];      
             if(is_file($filename) && unlink($filename)) {
-                $content = _('The phatform export was successfully <b>deleted</b>.') . '<br /><br />'; 
+                $content = dgettext('phatform', 'The phatform export was successfully <b>deleted</b>.') . '<br /><br />'; 
             } else {
-                $content = _('There was a problem deleting the export.') . '<br /><br />';     
+                $content = dgettext('phatform', 'There was a problem deleting the export.') . '<br /><br />';     
             }
 
             $content .= $_SESSION['PHAT_advViews']->viewExports();
         } elseif (isset($_POST['no'])) {
-            $content = sprintf(_('You have chosen <b>not</b> to delete the export with the filename "%s".'), $_REQUEST["EXPORT_filename"]) . '<br /><br />';
+            $content = sprintf(dgettext('phatform', 'You have chosen <b>not</b> to delete the export with the filename "%s".'), $_REQUEST["EXPORT_filename"]) . '<br /><br />';
             $content .= $_SESSION['PHAT_advViews']->viewExports();
         } else {
             $elements[0] = PHPWS_Form::formHidden('module', 'phatform');
             $elements[0] .= PHPWS_Form::formHidden('EXPORT_OP', 'deleteExport');
             $elements[0] .= PHPWS_Form::formHidden('EXPORT_filename', $_REQUEST['EXPORT_filename']);
-            $elements[0] .= PHPWS_Form::formSubmit(_('Yes'), 'yes');
-            $elements[0] .= PHPWS_Form::formSubmit(_('No'), 'no');
+            $elements[0] .= PHPWS_Form::formSubmit(dgettext('phatform', 'Yes'), 'yes');
+            $elements[0] .= PHPWS_Form::formSubmit(dgettext('phatform', 'No'), 'no');
 
-            $content = sprintf(_('Are you sure you wish to delete the export with filename "<b>%s</b>"?'), $_REQUEST['EXPORT_filename']) . '<br /><br />';
+            $content = sprintf(dgettext('phatform', 'Are you sure you wish to delete the export with filename "<b>%s</b>"?'), $_REQUEST['EXPORT_filename']) . '<br /><br />';
             $content .= PHPWS_Form::makeForm('export_delete', 'index.php', $elements);
         }
 
@@ -80,13 +80,13 @@ class advViews {
         if(is_file($filename)) {
             $fileContent = file($filename);
         } else {
-            $content .= _('Archive file was not found.');
+            $content .= dgettext('phatform', 'Archive file was not found.');
             $content .= $this->viewArchives();
             return $content;
         }
 
         if(empty($fileContent)) {
-            $content .= _('File contained no content.');
+            $content .= dgettext('phatform', 'File contained no content.');
             $content .= $this->viewArchives();
             return $content;
         }
@@ -121,7 +121,7 @@ class advViews {
         }
 
         if(empty($sql)) {
-            $content .= _('File contained no archive to view.');
+            $content .= dgettext('phatform', 'File contained no archive to view.');
             $content .= $this->viewArchives();
             return $content;
         }
@@ -173,7 +173,7 @@ class advViews {
             $data['owner'] = $_SESSION['OBJ_user']->username;
             $data['editor'] = $_SESSION['OBJ_user']->username;
             $data['ip'] = $_SERVER['REMOTE_ADDR'];
-            $data['label'] = _('Archived Form');
+            $data['label'] = dgettext('phatform', 'Archived Form');
             $data['groups'] = NULL;
             $data['created'] = time();
             $data['updated'] = time();
@@ -188,7 +188,7 @@ class advViews {
             return $this->readyViewArchive($formId, $newTableName);
 
         } else if(isset($_REQUEST['no'])) {
-            $content .= _('Viewing of archive has been canceled.');
+            $content .= dgettext('phatform', 'Viewing of archive has been canceled.');
             $content .= $this->viewArchives();
             return $content;
 
@@ -196,11 +196,11 @@ class advViews {
             $elements[0] = PHPWS_Form::formHidden('module', 'phatform');
             $elements[0] .= PHPWS_Form::formHidden('ARCHIVE_OP', 'viewArchive');
             $elements[0] .= PHPWS_Form::formHidden('ARCHIVE_filename', $_REQUEST['ARCHIVE_filename']);
-            $elements[0] .= PHPWS_Form::formSubmit(_('Yes'), 'yes');
-            $elements[0] .= PHPWS_Form::formSubmit(_('No'), 'no');
+            $elements[0] .= PHPWS_Form::formSubmit(dgettext('phatform', 'Yes'), 'yes');
+            $elements[0] .= PHPWS_Form::formSubmit(dgettext('phatform', 'No'), 'no');
 
-            $content .= _('In order to view this archive a new table will need to added to your database.') . '<br /><br />';
-            $content .= '<b>' . _('Are you sure you wish to view this archive?') .'</b><br /><br />';
+            $content .= dgettext('phatform', 'In order to view this archive a new table will need to added to your database.') . '<br /><br />';
+            $content .= '<b>' . dgettext('phatform', 'Are you sure you wish to view this archive?') .'</b><br /><br />';
             $content .= PHPWS_Form::makeForm('archive_view', 'index.php', $elements);
             return $content;
         }
@@ -213,7 +213,7 @@ class advViews {
     function deleteArchive() {
         if(isset($_POST['yes'])){
             if(!isset($_REQUEST['ARCHIVE_filename'])) {
-                $content = _('There was a problem deleting the archive.') . '<br /><br />';    
+                $content = dgettext('phatform', 'There was a problem deleting the archive.') . '<br /><br />';    
                 $content .= $this->viewArchives();
                 return $content;
             }
@@ -222,23 +222,23 @@ class advViews {
 
             $filename = PHPWS_HOME_DIR . 'files/phatform/archive/' . $_REQUEST['ARCHIVE_filename'];      
             if(is_file($filename) && unlink($filename)) {
-                $content = _('The phatform archive was successfully <b>deleted</b>.') . '<br /><br />';        
+                $content = dgettext('phatform', 'The phatform archive was successfully <b>deleted</b>.') . '<br /><br />';        
             } else {
-                $content = _('There was a problem deleting the archive.') . '<br /><br />';    
+                $content = dgettext('phatform', 'There was a problem deleting the archive.') . '<br /><br />';    
             }
 
             $content .= $_SESSION['PHAT_advViews']->viewArchives();
         } elseif (isset($_POST['no'])) {
-            $content = sprintf(_('You have chosen <b>not</b> to delete the archive with the filename "%s".'), $_REQUEST['ARCHIVE_filename']) . '<br /><br />';
+            $content = sprintf(dgettext('phatform', 'You have chosen <b>not</b> to delete the archive with the filename "%s".'), $_REQUEST['ARCHIVE_filename']) . '<br /><br />';
             $content .= $_SESSION['PHAT_advViews']->viewArchives();
         } else {
             $elements[0] = PHPWS_Form::formHidden('module', 'phatform');
             $elements[0] .= PHPWS_Form::formHidden('ARCHIVE_OP', 'deleteArchive');
             $elements[0] .= PHPWS_Form::formHidden('ARCHIVE_filename', $_REQUEST['ARCHIVE_filename']);
-            $elements[0] .= PHPWS_Form::formSubmit(_('Yes'), 'yes');
-            $elements[0] .= PHPWS_Form::formSubmit(_('No'), 'no');
+            $elements[0] .= PHPWS_Form::formSubmit(dgettext('phatform', 'Yes'), 'yes');
+            $elements[0] .= PHPWS_Form::formSubmit(dgettext('phatform', 'No'), 'no');
 
-            $content = sprintf(_('Are you sure you wish to delete the archive with filename "<b>%s</b>"?'), $_REQUEST['ARCHIVE_filename']) . '<br /><br />';
+            $content = sprintf(dgettext('phatform', 'Are you sure you wish to delete the archive with filename "<b>%s</b>"?'), $_REQUEST['ARCHIVE_filename']) . '<br /><br />';
             $content .= PHPWS_Form::makeForm('archive_delete', 'index.php', $elements);
         }
 
@@ -253,7 +253,7 @@ class advViews {
             readfile($filename);
 
         } else {
-            return _('Invalid Filename Given') . '<br />';
+            return dgettext('phatform', 'Invalid Filename Given') . '<br />';
         }
     }
 
@@ -282,7 +282,7 @@ class advViews {
 
             exit();
         } else {
-            return _('Invalid Filename Given') . '<br />';
+            return dgettext('phatform', 'Invalid Filename Given') . '<br />';
         }
     }
 
@@ -306,9 +306,9 @@ class advViews {
         }
 
         $listTags = array();
-        $listTags['FILENAME_LABEL'] = _('Filename');
-        $listTags['DATE_LABEL'] = _('Date Created');
-        $listTags['ACTION_LABEL'] = _('Action');
+        $listTags['FILENAME_LABEL'] = dgettext('phatform', 'Filename');
+        $listTags['DATE_LABEL'] = dgettext('phatform', 'Date Created');
+        $listTags['ACTION_LABEL'] = dgettext('phatform', 'Action');
     
         $highlight = ' class="bgcolor1"';
     
@@ -347,8 +347,8 @@ class advViews {
                 $rowTags['DATE'] = $entry['date'];
                 if(isset($entry['formId']))
                     $rowTags['FORM_LABEL'] = $entry['formId'];
-                $rowTags['DOWNLOAD'] = '<a href="index.php?module=phatform&amp;EXPORT_OP=downloadExport&amp;EXPORT_filename=' . $entry['filename'] . '">' . _('Download') . '</a>';
-                $rowTags['DELETE'] = '<a href="index.php?module=phatform&amp;EXPORT_OP=deleteExport&amp;EXPORT_filename=' . $entry['filename'] . '">' . _('Delete') . '</a>';
+                $rowTags['DOWNLOAD'] = '<a href="index.php?module=phatform&amp;EXPORT_OP=downloadExport&amp;EXPORT_filename=' . $entry['filename'] . '">' . dgettext('phatform', 'Download') . '</a>';
+                $rowTags['DELETE'] = '<a href="index.php?module=phatform&amp;EXPORT_OP=deleteExport&amp;EXPORT_filename=' . $entry['filename'] . '">' . dgettext('phatform', 'Delete') . '</a>';
                 if ($tog%2) {
                     $highlight = ' class="bgcolor1"';
                 } else {
@@ -363,13 +363,13 @@ class advViews {
             }
       
             $listTags['SECTION_INFO'] = $data[2];
-            $listTags['SECTION_INFO_LABEL'] = _('Entries');
-            $listTags['LINK_BACK'] = '<a href="./index.php?module=phatform&amp;PHAT_FORM_OP=report">' . _('Report View') . '</a>';
+            $listTags['SECTION_INFO_LABEL'] = dgettext('phatform', 'Entries');
+            $listTags['LINK_BACK'] = '<a href="./index.php?module=phatform&amp;PHAT_FORM_OP=report">' . dgettext('phatform', 'Report View') . '</a>';
         } else {
-            $listTags['LIST_ITEMS'] = '<tr><td colspan="4" class="smalltext">' . _('No entries were found matching your search query.') . '</td></tr>';
+            $listTags['LIST_ITEMS'] = '<tr><td colspan="4" class="smalltext">' . dgettext('phatform', 'No entries were found matching your search query.') . '</td></tr>';
         }      
 
-        $GLOBALS['CNT_phatform']['title'] = _('Existing Exports');
+        $GLOBALS['CNT_phatform']['title'] = dgettext('phatform', 'Existing Exports');
         return PHPWS_Template::processTemplate($listTags, 'phatform', 'report/export/list.tpl');
     }
 
@@ -420,10 +420,10 @@ class advViews {
         }
 
         $listTags = array();
-        $listTags['FORMNAME_LABEL'] = _('Form Name');
-        $listTags['FILENAME_LABEL'] = _('Filename');
-        $listTags['DATE_LABEL'] = _('Date Created');
-        $listTags['ACTION_LABEL'] = _('Action');
+        $listTags['FORMNAME_LABEL'] = dgettext('phatform', 'Form Name');
+        $listTags['FILENAME_LABEL'] = dgettext('phatform', 'Filename');
+        $listTags['DATE_LABEL'] = dgettext('phatform', 'Date Created');
+        $listTags['ACTION_LABEL'] = dgettext('phatform', 'Action');
         $highlight = ' class="bgcolor1"';
     
         $files = array();
@@ -458,21 +458,21 @@ class advViews {
                 if($formname = $this->getArchiveFormName($entry['filename'], $formNum[0]))
                     $rowTags['FORMNAME']  = $formname;
                 else
-                    $rowTags['FORMNAME'] = _('Unknown');
+                    $rowTags['FORMNAME'] = dgettext('phatform', 'Unknown');
 
                 $rowTags['HIGHLIGHT'] = $highlight;
                 $rowTags['FILENAME'] = $entry['filename'];
                 $rowTags['DATE'] = $entry['date'];
-                $rowTags['DOWNLOAD'] = '<a href="index.php?module=phatform&amp;ARCHIVE_OP=downloadArchive&amp;ARCHIVE_filename=' . $entry['filename'] . '">' . _('Download') . '</a>';
-                $rowTags['VIEW'] = '<a href="index.php?module=phatform&amp;ARCHIVE_OP=viewArchive&amp;ARCHIVE_filename=' . $entry['filename'] . '">' . _('View') . '</a>';
+                $rowTags['DOWNLOAD'] = '<a href="index.php?module=phatform&amp;ARCHIVE_OP=downloadArchive&amp;ARCHIVE_filename=' . $entry['filename'] . '">' . dgettext('phatform', 'Download') . '</a>';
+                $rowTags['VIEW'] = '<a href="index.php?module=phatform&amp;ARCHIVE_OP=viewArchive&amp;ARCHIVE_filename=' . $entry['filename'] . '">' . dgettext('phatform', 'View') . '</a>';
                 $db = new PHPWS_DB('mod_phatform_forms');
                 $db->addWhere('archiveFileName', '%' . $entry['filename'] . '%', 'LIKE');
                 $result = $db->select();
                 if($result) {
-                    $rowTags['CLEANUP'] = '<a href="index.php?module=phatform&amp;ARCHIVE_OP=cleanUpArchive&amp;ARCHIVE_filename='.$entry['filename'] . '">' . _('Clean-Up') . '</a>';
+                    $rowTags['CLEANUP'] = '<a href="index.php?module=phatform&amp;ARCHIVE_OP=cleanUpArchive&amp;ARCHIVE_filename='.$entry['filename'] . '">' . dgettext('phatform', 'Clean-Up') . '</a>';
                 }
 
-                $rowTags['DELETE'] = '<a href="index.php?module=phatform&amp;ARCHIVE_OP=deleteArchive&amp;ARCHIVE_filename=' . $entry['filename'] . '">' . _('Delete') . '</a>';
+                $rowTags['DELETE'] = '<a href="index.php?module=phatform&amp;ARCHIVE_OP=deleteArchive&amp;ARCHIVE_filename=' . $entry['filename'] . '">' . dgettext('phatform', 'Delete') . '</a>';
                 
                 if ($tog%2) {
                     $highlight = ' class="bgcolor1"';
@@ -488,14 +488,14 @@ class advViews {
             }
       
             $listTags['SECTION_INFO'] = $data[2];
-            $listTags['SECTION_INFO_LABEL'] = _('Entries');
-            $listTags['LINK_BACK'] = '<a href="index.php?module=phatform&amp;PHAT_FORM_OP=report">' . _('Report View') . '</a>';
+            $listTags['SECTION_INFO_LABEL'] = dgettext('phatform', 'Entries');
+            $listTags['LINK_BACK'] = '<a href="index.php?module=phatform&amp;PHAT_FORM_OP=report">' . dgettext('phatform', 'Report View') . '</a>';
         } else {
 
-            $listTags['LIST_ITEMS'] = '<tr><td colspan="4" class="smalltext">' . _('No entries were found matching your search query.') . '</td></tr>';
+            $listTags['LIST_ITEMS'] = '<tr><td colspan="4" class="smalltext">' . dgettext('phatform', 'No entries were found matching your search query.') . '</td></tr>';
         }      
 
-        $GLOBALS['CNT_phatform']['title'] = _('Existing Archives');
+        $GLOBALS['CNT_phatform']['title'] = dgettext('phatform', 'Existing Archives');
         return PHPWS_Template::processTemplate($listTags, 'phatform', 'report/archive/list.tpl');
     }
 
@@ -510,14 +510,14 @@ class advViews {
                 if(PHPWS_DB::query($sql)) {
                     $result = $db->delete();
                     if($result) {
-                        return _('Successfully deleted table associated with the archive with filename ') . "<b>'". $_REQUEST['ARCHIVE_filename'] . "'</b>.";
+                        return dgettext('phatform', 'Successfully deleted table associated with the archive with filename ') . "<b>'". $_REQUEST['ARCHIVE_filename'] . "'</b>.";
                     }
                     else {
-                        return _('There was a problem deleting viewing archive table associated for filename ') . "<b>'".$_REQUEST['ARCHIVE_filename'] . "'</b>.";       
+                        return dgettext('phatform', 'There was a problem deleting viewing archive table associated for filename ') . "<b>'".$_REQUEST['ARCHIVE_filename'] . "'</b>.";       
                     }
 
                 } else {
-                    return _('There was a problem deleting viewing archive table associated for filename ') . "<b>'".$_REQUEST['ARCHIVE_filename'] . "'</b>.";   
+                    return dgettext('phatform', 'There was a problem deleting viewing archive table associated for filename ') . "<b>'".$_REQUEST['ARCHIVE_filename'] . "'</b>.";   
                 }
             }
         }
@@ -536,7 +536,7 @@ class advViews {
             break;
         }
     
-        $GLOBALS['CNT_phatform']['title'] = _('Existing Exports');
+        $GLOBALS['CNT_phatform']['title'] = dgettext('phatform', 'Existing Exports');
         $GLOBALS['CNT_phatform']['content'] = $content;
     }
 
@@ -564,7 +564,7 @@ class advViews {
             break;
         }
 
-        $GLOBALS['CNT_phatform']['title'] = _('Existing Archives');
+        $GLOBALS['CNT_phatform']['title'] = dgettext('phatform', 'Existing Archives');
         $GLOBALS['CNT_phatform']['content'] = $content;
     }
 

@@ -167,19 +167,19 @@ class PHAT_Report {
      */
     function formStats() {
         $statsTags['FORM_NAME'] = $this->_formName;
-        $statsTags['COMPLETED_LABEL'] = _('Completed');
+        $statsTags['COMPLETED_LABEL'] = dgettext('phatform', 'Completed');
         $statsTags['COMPLETED_NUM'] = $this->_completeEntries;
-        $statsTags['INCOMPLETE_LABEL'] = _('Incomplete');
+        $statsTags['INCOMPLETE_LABEL'] = dgettext('phatform', 'Incomplete');
         $statsTags['INCOMPLETE_NUM'] = $this->_incompleteEntries;
-        $statsTags['TOTAL_LABEL'] = _('Total');
+        $statsTags['TOTAL_LABEL'] = dgettext('phatform', 'Total');
         $statsTags['TOTAL_NUM'] = $this->_totalEntries;
 
-        $statsTags['LAST_ENTRY_LABEL'] = _('Last Entry');
+        $statsTags['LAST_ENTRY_LABEL'] = dgettext('phatform', 'Last Entry');
         $statsTags['LAST_ENTRY'] = $this->getLastEntry();
     
-        $statsTags['LIST_LINK'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=list&amp;PHAT_FullList=1">' . _('Full List') . '</a>';
+        $statsTags['LIST_LINK'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=list&amp;PHAT_FullList=1">' . dgettext('phatform', 'Full List') . '</a>';
 
-        $statsTags['PRINT'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=list&amp;lay_quiet=1" target="_blank">' . _('Print') . '</a>';
+        $statsTags['PRINT'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=list&amp;lay_quiet=1" target="_blank">' . dgettext('phatform', 'Print') . '</a>';
 
         if(isset($_REQUEST['ARCHIVE_OP']))
             $statsTags['BACK_LINK'] = $_SESSION['PHAT_advViews']->archiveBack();
@@ -187,7 +187,7 @@ class PHAT_Report {
         $elements = array();
         $elements[0] = PHPWS_Form::formHidden('PHAT_REPORT_OP', 'export');
         $elements[0] .= PHPWS_Form::formHidden('module', 'phatform');
-        $elements[0] .= PHPWS_Form::formSubmit(_('Export'), 'export');
+        $elements[0] .= PHPWS_Form::formSubmit(dgettext('phatform', 'Export'), 'export');
 
         if(!isset($this->archive))
             $statsTags['EXPORT'] = PHPWS_Form::makeForm('export_button', 'index.php', $elements);
@@ -236,10 +236,10 @@ class PHAT_Report {
         }
 
         $listTags = array();
-        $listTags['ID_LABEL'] = _('ID');
-        $listTags['USER_LABEL'] = _('User');
-        $listTags['UPDATED_LABEL'] = _('Updated');
-        $listTags['ACTION_LABEL'] = _('Action');
+        $listTags['ID_LABEL'] = dgettext('phatform', 'ID');
+        $listTags['USER_LABEL'] = dgettext('phatform', 'User');
+        $listTags['UPDATED_LABEL'] = dgettext('phatform', 'Updated');
+        $listTags['ACTION_LABEL'] = dgettext('phatform', 'Action');
 
         $highlight = ' class="bgcolor1"';
         if(sizeof($this->_entries) > 0) {
@@ -257,11 +257,11 @@ class PHAT_Report {
                 $rowTags['USER'] = $entry['user'];
                 $rowTags['UPDATED'] = date(PHPWS_DATE_FORMAT . ' ' . PHPWS_TIME_FORMAT, $entry['updated']);
 
-                $rowTags['VIEW'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=view&amp;PHAT_ENTRY_ID=' . $entry['id'] . '">' . _('View') . '</a>';
+                $rowTags['VIEW'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=view&amp;PHAT_ENTRY_ID=' . $entry['id'] . '">' . dgettext('phatform', 'View') . '</a>';
 
                 if(!isset($this->archive)) {
-                    $rowTags['EDIT'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=edit&amp;PHAT_ENTRY_ID=' . $entry['id'] . '">' . _('Edit') . '</a>';
-                    $rowTags['DELETE'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=confirmDelete&amp;PHAT_ENTRY_ID=' . $entry['id'] . '">' . _('Delete') . '</a>';
+                    $rowTags['EDIT'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=edit&amp;PHAT_ENTRY_ID=' . $entry['id'] . '">' . dgettext('phatform', 'Edit') . '</a>';
+                    $rowTags['DELETE'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=confirmDelete&amp;PHAT_ENTRY_ID=' . $entry['id'] . '">' . dgettext('phatform', 'Delete') . '</a>';
                 }       
 
                 if ($count%2) {
@@ -277,14 +277,14 @@ class PHAT_Report {
                 }
       
                 $listTags['SECTION_INFO'] = $data[2];
-                $listTags['SECTION_INFO_LABEL'] = _('Entries');
+                $listTags['SECTION_INFO_LABEL'] = dgettext('phatform', 'Entries');
             }
         } else {
-            $listTags['LIST_ITEMS'] = '<tr><td colspan="4" class="smalltext">' . _('No entries were found matching your search query.') . '</td></tr>';
+            $listTags['LIST_ITEMS'] = '<tr><td colspan="4" class="smalltext">' . dgettext('phatform', 'No entries were found matching your search query.') . '</td></tr>';
         }      
 
         if(!isset($_REQUEST['lay_quiet'])) {
-            $filterOptions = array(1=>_('All'), 2=>_('Incomplete'), 3=>_('Complete'));
+            $filterOptions = array(1=>dgettext('phatform', 'All'), 2=>dgettext('phatform', 'Incomplete'), 3=>dgettext('phatform', 'Complete'));
             $limitOptions = array(10=>10, 20=>20, 30=>30, 40=>40, 50=>50);
 
             $elements[0] = PHPWS_Form::formHidden('module', 'phatform');
@@ -297,7 +297,7 @@ class PHAT_Report {
                 $elements[0] .= PHPWS_Form::formTextField('PHAT_EntrySearch', $this->_searchQuery, 20, 255);
             }
       
-            $elements[0] .= PHPWS_Form::formSubmit(_('Search'));
+            $elements[0] .= PHPWS_Form::formSubmit(dgettext('phatform', 'Search'));
             $listTags['SEARCH_FORM'] = PHPWS_Form::makeForm('PHAT_SearchEntries', 'index.php', $elements);
         }
 
@@ -363,14 +363,14 @@ class PHAT_Report {
             $entryTags['BACK_LINK'] = $_SESSION['PHAT_advViews']->getArchiveViewLink();
 
         if($showLinks && !isset($_REQUEST['lay_quiet'])) {
-            $entryTags['PRINT'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=view&amp;PHAT_ENTRY_ID=' . $_REQUEST['PHAT_ENTRY_ID'] . '&amp;lay_quiet=1" target="_blank">' . _('Print View') . '</a>';
+            $entryTags['PRINT'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=view&amp;PHAT_ENTRY_ID=' . $_REQUEST['PHAT_ENTRY_ID'] . '&amp;lay_quiet=1" target="_blank">' . dgettext('phatform', 'Print View') . '</a>';
 
             /* Show the next and/or previous links to step through entries */
             if($entryKey < sizeof($this->_entries) - 1)
-                $entryTags['NEXT'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=view&amp;PHAT_ENTRY_ID=' . $this->_entries[$entryKey+1]['id'] . '">' . _('Next Entry') . '</a>';
+                $entryTags['NEXT'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=view&amp;PHAT_ENTRY_ID=' . $this->_entries[$entryKey+1]['id'] . '">' . dgettext('phatform', 'Next Entry') . '</a>';
       
             if($entryKey > 0)
-                $entryTags['PREVIOUS'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=view&amp;PHAT_ENTRY_ID=' . $this->_entries[$entryKey-1]['id'] . '">' . _('Previous Entry') . '</a>';
+                $entryTags['PREVIOUS'] = '<a href="index.php?module=phatform&amp;PHAT_REPORT_OP=view&amp;PHAT_ENTRY_ID=' . $this->_entries[$entryKey-1]['id'] . '">' . dgettext('phatform', 'Previous Entry') . '</a>';
         }
 
         $GLOBALS['CNT_phatform']['title'] = $_SESSION['PHAT_FormManager']->form->getLabel();
@@ -409,9 +409,9 @@ class PHAT_Report {
         }
         $elements[0] = implode("\n", $eles);
     
-        $confirmTags['MESSAGE'] = _('Are you sure you want to delete this entry?');
-        $confirmTags['NO_BUTTON'] = PHPWS_Form::formSubmit(_('No'), 'PHAT_DeleteNo');
-        $confirmTags['YES_BUTTON'] = PHPWS_Form::formSubmit(_('Yes'), 'PHAT_DeleteYes');
+        $confirmTags['MESSAGE'] = dgettext('phatform', 'Are you sure you want to delete this entry?');
+        $confirmTags['NO_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'No'), 'PHAT_DeleteNo');
+        $confirmTags['YES_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Yes'), 'PHAT_DeleteYes');
     
         $elements[0] .= PHPWS_Template::processTemplate($confirmTags, 'phatform', 'report/deleteConfirm.tpl');
         $content = PHPWS_Form::makeForm('PHAT_EntryDeleteConfirm', 'index.php', $elements);
@@ -440,11 +440,11 @@ class PHAT_Report {
                     break;
             }
             unset($this->_entries[$entryKey]);
-            $message = _('The form entry was successfully deleted from the database.');
+            $message = dgettext('phatform', 'The form entry was successfully deleted from the database.');
             $this->PHAT_Report();
         } else if(isset($_REQUEST['PHAT_DeleteNo'])) {
             $_REQUEST['PHAT_REPORT_OP'] = 'list';
-            $message = _('No form entry was deleted from the database.');
+            $message = dgettext('phatform', 'No form entry was deleted from the database.');
         }
 
         $GLOBALS['CNT_phatform']['content'] .= $message;
@@ -728,10 +728,10 @@ class PHAT_Report {
 
             if(($start + $limit) >= $numrows){
                 $nav_links .= "&#62;&#62;\n";
-                $section_info = ($start + 1) . " - " . ($start + $item_count) . ' ' . _('of') . ' ' . $numrows . "\n";
+                $section_info = ($start + 1) . " - " . ($start + $item_count) . ' ' . dgettext('phatform', 'of') . ' ' . $numrows . "\n";
             } else {
                 $nav_links .= "<a href=\"" . $link_back . "&amp;PDA_limit=" . $limit . "&#38;PDA_start=" . ($start + $limit) . "&#38;PDA_section=" . ($current_section + 1) . "\"" . $link_class . "\" title=\"&#62;&#62;\">&#62;&#62;</a>\n";
-                $section_info = ($start + 1) . " - " . ($start + $limit) . ' ' . _('of') . ' ' .$numrows . "\n";
+                $section_info = ($start + 1) . " - " . ($start + $limit) . ' ' . dgettext('phatform', 'of') . ' ' .$numrows . "\n";
             }
       
         } else {

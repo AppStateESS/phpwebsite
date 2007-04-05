@@ -9,23 +9,23 @@
  */
 
 /* Labels */
-$id       = _('ID');
-$label    = _('Name');
-$owner    = _('Owner');
-$editor   = _('Editor');
-$created  = _('Created');
-$updated  = _('Updated');
-$hidden   = _('Hidden');
-$approved = _('Approved');
-$ip       = _('Ip');
-$view     = _('View');
-$edit     = _('Edit');
-$delete   = _('Delete');
-$hide     = _('Hide');
-$show     = _('Show');
-$approve  = _('Approve');
-$refuse   = _('Refuse');
-$actions  = _('Actions');
+$id       = dgettext('phatform', 'ID');
+$label    = dgettext('phatform', 'Name');
+$owner    = dgettext('phatform', 'Owner');
+$editor   = dgettext('phatform', 'Editor');
+$created  = dgettext('phatform', 'Created');
+$updated  = dgettext('phatform', 'Updated');
+$hidden   = dgettext('phatform', 'Hidden');
+$approved = dgettext('phatform', 'Approved');
+$ip       = dgettext('phatform', 'Ip');
+$view     = dgettext('phatform', 'View');
+$edit     = dgettext('phatform', 'Edit');
+$delete   = dgettext('phatform', 'Delete');
+$hide     = dgettext('phatform', 'Hide');
+$show     = dgettext('phatform', 'Show');
+$approve  = dgettext('phatform', 'Approve');
+$refuse   = dgettext('phatform', 'Refuse');
+$actions  = dgettext('phatform', 'Actions');
 
 $lists = array('saved'=>"approved='1' AND saved='1' AND 
                   (archiveTableName is NULL OR archiveTableName = '')",

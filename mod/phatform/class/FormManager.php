@@ -47,39 +47,39 @@ class PHAT_FormManager extends PHPWS_Manager {
     function menu() {
         $links = array();
 
-        $links[] = '<a href="./index.php?module=phatform&amp;PHAT_MAN_OP=NewForm">'._('New Form').'</a>';
-        $links[] = '<a href="./index.php?module=phatform&amp;PHAT_MAN_OP=List">'._('List Forms').'</a>';
+        $links[] = '<a href="./index.php?module=phatform&amp;PHAT_MAN_OP=NewForm">'.dgettext('phatform', 'New Form').'</a>';
+        $links[] = '<a href="./index.php?module=phatform&amp;PHAT_MAN_OP=List">'.dgettext('phatform', 'List Forms').'</a>';
 
         if(!isset($this->form) || $this->form->isArchiveView()) {
             if(Current_User::allow('phatform', 'archive_form'))
-                $links[] = '<a href="./index.php?module=phatform&amp;PHAT_MAN_OP=viewArchives&amp;PDA_start=0">'._('List Archives').'</a>';
+                $links[] = '<a href="./index.php?module=phatform&amp;PHAT_MAN_OP=viewArchives&amp;PDA_start=0">'.dgettext('phatform', 'List Archives').'</a>';
 
             if(Current_User::allow('phatform', 'report_export'))
-                $links[] = '<a href="./index.php?module=phatform&amp;PHAT_MAN_OP=viewExports&amp;PDA_start=0">'._('List Exports').'</a>';
+                $links[] = '<a href="./index.php?module=phatform&amp;PHAT_MAN_OP=viewExports&amp;PDA_start=0">'.dgettext('phatform', 'List Exports').'</a>';
         }
 
         if(isset($this->form) && !$this->form->isArchiveView()) {
             $id = $this->form->getId();
             if(isset($id)) {
                 if(Current_User::allow('phatform', 'edit_forms')) {
-                    $links[] = '<a href="./index.php?module=phatform&amp;PHAT_FORM_OP=editSettings">'._('Settings').'</a>';
+                    $links[] = '<a href="./index.php?module=phatform&amp;PHAT_FORM_OP=editSettings">'.dgettext('phatform', 'Settings').'</a>';
                 }
         
                 if(!$this->form->isSaved() && Current_User::allow('phatform', 'edit_forms')) {
-                    $links[] = '<a href="./index.php?module=phatform&amp;PHAT_FORM_OP=editElements">'._('Elements').'</a>';
+                    $links[] = '<a href="./index.php?module=phatform&amp;PHAT_FORM_OP=editElements">'.dgettext('phatform', 'Elements').'</a>';
                 }
 
                 if(Current_User::allow('phatform', 'edit_options')) {
-                    $links[] = '<a href="./index.php?module=phatform&amp;PHAT_MAN_OP=Options">'._('Option Sets').'</a>';
+                    $links[] = '<a href="./index.php?module=phatform&amp;PHAT_MAN_OP=Options">'.dgettext('phatform', 'Option Sets').'</a>';
                 }
             }
       
             if($this->form->isSaved() && Current_User::allow('phatform', 'report_view')) {
-                $links[] = '<a href="./index.php?module=phatform&amp;PHAT_FORM_OP=report">'._('Report').'</a>';
+                $links[] = '<a href="./index.php?module=phatform&amp;PHAT_FORM_OP=report">'.dgettext('phatform', 'Report').'</a>';
             }
 
             if($this->form->isSaved() && Current_User::allow('phatform', 'archive_form')) {
-                $links[] = '<a href="./index.php?module=phatform&amp;PHAT_FORM_OP=archive">'._('Archive').'</a>';
+                $links[] = '<a href="./index.php?module=phatform&amp;PHAT_FORM_OP=archive">'.dgettext('phatform', 'Archive').'</a>';
             }
         }
 
@@ -164,20 +164,20 @@ class PHAT_FormManager extends PHPWS_Manager {
 
             /* Always show the saved/approved forms to the admin user */
             /* Make sure user isn't a deity and then see if they can only edit their forms */
-            $content[] = $this->getList('saved', _('Saved Forms'));
+            $content[] = $this->getList('saved', dgettext('phatform', 'Saved Forms'));
 
             /* If a user can edit forms, show the unsaved ones */
             if(Current_User::allow('phatform', 'edit_forms')) {
-                $content[] = '<hr />' . $this->getList('unsaved', _('Unsaved Forms'));
+                $content[] = '<hr />' . $this->getList('unsaved', dgettext('phatform', 'Unsaved Forms'));
             }
 
             /* Grab unapproved forms */
             if(Current_User::allow('phatform', 'approve_forms')) {
-                $content[] = '<hr />' . $this->getList('unapproved', _('Unapproved Forms'));
+                $content[] = '<hr />' . $this->getList('unapproved', dgettext('phatform', 'Unapproved Forms'));
             }
         } else {
             /* Not an admin user so only show them a list of available forms */
-            $content[] = $this->getList('user', _('Forms'));
+            $content[] = $this->getList('user', dgettext('phatform', 'Forms'));
         }
         
         $GLOBALS['CNT_phatform']['title'] = PHAT_TITLE;
@@ -201,7 +201,7 @@ class PHAT_FormManager extends PHPWS_Manager {
             $this->_list();
             return;
         } else {
-            $title = _('Delete form confirmation');
+            $title = dgettext('phatform', 'Delete form confirmation');
             $content = $this->_confirmDelete($ids);
             $GLOBALS['CNT_phatform']['title'] = $title;
             $GLOBALS['CNT_phatform']['content'] = $content;
@@ -227,7 +227,7 @@ class PHAT_FormManager extends PHPWS_Manager {
         $confirmTags = array();
         $confirmTags['ITEMS'] = ''; 
     
-        $confirmTags['MESSAGE'] = _('Are you sure you wish to delete the following forms?  All data associated with these forms will be lost!');
+        $confirmTags['MESSAGE'] = dgettext('phatform', 'Are you sure you wish to delete the following forms?  All data associated with these forms will be lost!');
         $confirmTags['YES_BUTTON'] = PHPWS_Form::formSubmit('Yes', 'yes');
         $confirmTags['NO_BUTTON'] = PHPWS_Form::formSubmit('No', 'no');
 
@@ -269,7 +269,7 @@ class PHAT_FormManager extends PHPWS_Manager {
         $content = array();
         $content[] = $this->menu();
         $this->setTable('mod_phatform_options');
-        $content[] = $this->getList('options', _('Option Sets'));
+        $content[] = $this->getList('options', dgettext('phatform', 'Option Sets'));
         $this->setTable('mod_phatform_forms');
      
         return implode(chr(10), $content);
@@ -325,10 +325,10 @@ class PHAT_FormManager extends PHPWS_Manager {
                 $values = unserialize(stripslashes($result['valueSet']));
          
                 $editTags = array();
-                $editTags['TITLE'] = _('Edit option set')."&#160;{$result['label']}";
-                $editTags['NUMBER_LABEL'] = _('Option');
-                $editTags['INPUT_LABEL'] = _('Text');
-                $editTags['VALUE_LABEL'] = _('Value');
+                $editTags['TITLE'] = dgettext('phatform', 'Edit option set')."&#160;{$result['label']}";
+                $editTags['NUMBER_LABEL'] = dgettext('phatform', 'Option');
+                $editTags['INPUT_LABEL'] = dgettext('phatform', 'Text');
+                $editTags['VALUE_LABEL'] = dgettext('phatform', 'Value');
          
                 $editTags['OPTIONS'] = '';
                 $rowClass = NULL;
@@ -348,8 +348,8 @@ class PHAT_FormManager extends PHPWS_Manager {
                     $editTags['OPTIONS'] .= PHPWS_Template::processTemplate($optionRow, 'phatform', 'options/option.tpl');
                 }
             }
-            $editTags['BACK_BUTTON'] = PHPWS_Form::formSubmit(_('Back'), 'PHAT_OptionBack');
-            $editTags['SAVE_BUTTON'] = PHPWS_Form::formSubmit(_('Save'), 'PHAT_SaveOptionSet');
+            $editTags['BACK_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Back'), 'PHAT_OptionBack');
+            $editTags['SAVE_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Save'), 'PHAT_SaveOptionSet');
        
             $elements[] = PHPWS_Template::processTemplate($editTags, 'phatform', 'options/optionList.tpl');
        
@@ -376,7 +376,7 @@ class PHAT_FormManager extends PHPWS_Manager {
                     $content = $this->form->view();
                 else {
                     $GLOBALS['CNT_phatform']['title'] = $this->form->getLabel();
-                    $content = _('This form is not available for viewing at this time.');
+                    $content = dgettext('phatform', 'This form is not available for viewing at this time.');
                 }
             } 
             break;

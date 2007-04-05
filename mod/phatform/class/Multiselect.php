@@ -88,28 +88,28 @@ class PHAT_Multiselect extends PHAT_Element {
         }
 
         if(PHAT_SHOW_INSTRUCTIONS) {
-            $GLOBALS['CNT_phatform']['title'] = _('Multiselect Element Instructions');
+            $GLOBALS['CNT_phatform']['title'] = dgettext('phatform', 'Multiselect Element Instructions');
         }
 
-        $editTags['BLURB_LABEL'] = _('Associated Text');
+        $editTags['BLURB_LABEL'] = dgettext('phatform', 'Associated Text');
         $editTags['BLURB_INPUT'] = PHPWS_Form::formTextArea('PHAT_ElementBlurb', $this->getBlurb(), PHAT_DEFAULT_ROWS, PHAT_DEFAULT_COLS);
-        $editTags['NAME_LABEL'] = _('Name');
+        $editTags['NAME_LABEL'] = dgettext('phatform', 'Name');
         $editTags['NAME_INPUT'] = PHPWS_Form::formTextField('PHAT_ElementName', $this->getLabel(), PHAT_DEFAULT_SIZE, PHAT_DEFAULT_MAXSIZE);
-        $editTags['SIZE_LABEL'] = _('Size');
+        $editTags['SIZE_LABEL'] = dgettext('phatform', 'Size');
         $editTags['SIZE_INPUT'] = PHPWS_Form::formTextField('PHAT_ElementSize', $this->_size, 5, 3);
-        $editTags['OPTIONS_LABEL'] = _('Number of Options');
+        $editTags['OPTIONS_LABEL'] = dgettext('phatform', 'Number of Options');
         $editTags['OPTIONS_INPUT'] = PHPWS_Form::formTextField('PHAT_ElementNumOptions', $numOptions, 5, 3);
     
         $options = $this->getOptionSets();
         if(is_array($options)) {
-            $editTags['OPTION_SET_LABEL'] = _('Predefined Option Set');
+            $editTags['OPTION_SET_LABEL'] = dgettext('phatform', 'Predefined Option Set');
             $editTags['OPTION_SET_INPUT'] = PHPWS_Form::formSelect('PHAT_OptionSet', $options, $this->getOptionSet(), FALSE, TRUE);
         }
 
-        $editTags['REQUIRE_LABEL'] = _('Required');
+        $editTags['REQUIRE_LABEL'] = dgettext('phatform', 'Required');
         $editTags['REQUIRE_INPUT'] = PHPWS_Form::formCheckBox('PHAT_ElementRequired', 1, $this->isRequired());
-        $editTags['BACK_BUTTON'] = PHPWS_Form::formSubmit(_('Back'), 'PHAT_ElementBack');
-        $editTags['NEXT_BUTTON'] = PHPWS_Form::formSubmit(_('Next'));
+        $editTags['BACK_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Back'), 'PHAT_ElementBack');
+        $editTags['NEXT_BUTTON'] = PHPWS_Form::formSubmit(dgettext('phatform', 'Next'));
 
         $elements[0] .= PHPWS_Template::processTemplate($editTags, 'phatform', 'multiselect/edit.tpl');
 
@@ -128,7 +128,7 @@ class PHAT_Multiselect extends PHAT_Element {
         $label = $this->getLabel();
         if((!$_SESSION['PHAT_FormManager']->form->checkLabel($_REQUEST['PHAT_ElementName']) && (strcasecmp($label, $_REQUEST['PHAT_ElementName']) != 0))
            || PHPWS_Error::isError($this->setLabel(PHPWS_DB::sqlFriendlyName($_REQUEST['PHAT_ElementName'])))) {
-            $message = _('The name you entered for the Multiselect is not valid or is already in use with this form.');
+            $message = dgettext('phatform', 'The name you entered for the Multiselect is not valid or is already in use with this form.');
             $currentError = PHPWS_Error::get(PHATFORM_INVALID_NAME, 'phatform', 'PHAT_Multiselect::save()');
             $error = TRUE;
         }

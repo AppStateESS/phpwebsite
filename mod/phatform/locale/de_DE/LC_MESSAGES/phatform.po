@@ -1,0 +1,658 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPWS1_1_0,Phatform3_0_6\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-02-26 15:18-0500\n"
+"PO-Revision-Date: 2007-03-05 12:05+0100\n"
+"Last-Translator: Peter Heppner <heppner@gmx.de>\n"
+"Language-Team: Peter Heppner <heppner@gmx.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+msgid "\"Thank you\" message is not formatted correctly."
+msgstr "\"Danke\" Nachricht ist fehlerhaft formatiert."
+
+msgid "Action"
+msgstr "Aktion"
+
+msgid "Actions"
+msgstr "Aktionen"
+
+msgid "Add"
+msgstr "Hinzufügen"
+
+msgid "Admin Email (comma delimited)"
+msgstr ""
+
+msgid "All"
+msgstr "Alle"
+
+msgid "All Form Generator static tables removed."
+msgstr "Alle statischen Formgeneratortabellen entfernt."
+
+msgid "All of the options and values were not set.  Check the box below to use your options as values."
+msgstr "Es wurden nicht alle Optionen und Werte angegeben. Kreuze den Kasten unten an, um Optionen als Werte zu benutzen."
+
+msgid "All of the values were not set. You must fill out all of them."
+msgstr "Es wurden nicht alle Werte angegeben. Es müssen alle ausgefüllt werden."
+
+msgid "Allow anonymous submissions"
+msgstr "Anonyme Antworten erlaubt"
+
+msgid "Allow multiple submissions"
+msgstr "Mehrfachantworten erlaubt"
+
+msgid "Allow users to edit their form data"
+msgstr "Erlaube Benutzern ihre Formulardaten zu bearbeiten"
+
+msgid "Anonymous submissions with editable form data are not allowed."
+msgstr "Anonyme Antworten mit editierbaren Formulardaten sind nicht erlaubt."
+
+msgid "Approve"
+msgstr "Akzeptieren"
+
+msgid "Approved"
+msgstr "Akzeptiert"
+
+msgid "Archive"
+msgstr "Archiv"
+
+msgid "Archive file was not found."
+msgstr "Archivdatei nicht gefunden."
+
+msgid "Archive forms"
+msgstr "Archiviere Formulare"
+
+msgid "Archived Form"
+msgstr "Archivierte Formulare"
+
+msgid "Are you sure you want to delete this entry?"
+msgstr "Soll diese Eintrag gelöscht werden?"
+
+#, php-format
+msgid "Are you sure you want to remove this %s element?"
+msgstr "Solle dieses Element %s entfernt werden?"
+
+#, php-format
+msgid "Are you sure you wish to delete the archive with filename \"<b>%s</b>\"?"
+msgstr "Soll dieses Archiv mit dem Dateinamen \"<b>%s</b>\" gelöscht werden?"
+
+#, php-format
+msgid "Are you sure you wish to delete the export with filename \"<b>%s</b>\"?"
+msgstr "Soll dieser Export mit dem Dateinamen \"<b>%s</b>\" gelöscht werden?"
+
+msgid "Are you sure you wish to delete the following forms?  All data associated with these forms will be lost!"
+msgstr "Sollen diese markierten Formulare gelöscht werden? Alle Daten zu diesen Formularen werden ebenfalls gelöscht!"
+
+msgid "Are you sure you wish to view this archive?"
+msgstr "Sollen dieses Archiv angesehen werden?"
+
+msgid "Associated Text"
+msgstr "Dazugehöriger Text"
+
+msgid "Back"
+msgstr "Zurück"
+
+msgid "Cancel"
+msgstr "Abbruch"
+
+msgid "Checkbox"
+msgstr "Checkbox"
+
+msgid "Checkbox Element Instructions"
+msgstr "Checkbox Element Anweisungen"
+
+msgid "Clean-Up"
+msgstr "Aufräumen"
+
+msgid "Columns"
+msgstr "Spalten"
+
+msgid "Complete"
+msgstr "Komplett"
+
+msgid "Completed"
+msgstr "Fertiggestellt"
+
+msgid "Confirm"
+msgstr "Bestätige"
+
+msgid "Could not delete the element."
+msgstr "Das Element konnte nicht gelöscht werden."
+
+msgid "Create/Edit forms"
+msgstr "Erstelle/Bearbeite Formulare"
+
+msgid "Created"
+msgstr "Erstellt"
+
+msgid "Date Created"
+msgstr "Datum der Erstellung"
+
+msgid "Default"
+msgstr "Standard"
+
+msgid "Delete"
+msgstr "Löschen"
+
+msgid "Delete form confirmation"
+msgstr "Formularlöschen bestätigen"
+
+msgid "Delete form entries"
+msgstr "Formularelemente löschen"
+
+msgid "Delete forms"
+msgstr "Formulare löschen"
+
+msgid "Download"
+msgstr "Download"
+
+msgid "Dropbox"
+msgstr "Dropbox"
+
+msgid "Edit"
+msgstr "Bearbeiten"
+
+msgid "Edit Elements"
+msgstr "Elemente bearbeiten"
+
+msgid "Edit form entries"
+msgstr "Formularelemente bearbeiten"
+
+msgid "Edit option set"
+msgstr "Optionsgruppe bearbeiten"
+
+msgid "Edit option sets"
+msgstr "Optionsgruppen bearbeiten"
+
+msgid "Editor"
+msgstr "Editor"
+
+msgid "Element successfully added!"
+msgstr "Element hinzugefügt!"
+
+msgid "Element successfully removed!"
+msgstr "Element entfernt!"
+
+msgid "Elements"
+msgstr "Elemente"
+
+msgid "Entries"
+msgstr "Einträge"
+
+msgid "Existing Archives"
+msgstr "Vorhandene Archive"
+
+msgid "Existing Exports"
+msgstr "Vorhandene Exporte"
+
+msgid "Export"
+msgstr "Export"
+
+msgid "Export report data"
+msgstr "Exportiere Berichtsdaten"
+
+msgid "Failed to archive."
+msgstr "Fehler beim Archivieren."
+
+msgid "Failed to create archive directory."
+msgstr "Archivverzeichnis konnte nicht erstellt werden."
+
+msgid "Failed to create export directory."
+msgstr "Exportverzeichnis konnte nicht erstellt werden."
+
+msgid "Failed to create files directory."
+msgstr "Dateiverzeichnis konnte nicht erstellt werden."
+
+msgid "Failed to create report directory."
+msgstr "Berichtsverzeichnis konnte nicht erstellt werden."
+
+msgid "File contained no archive to view."
+msgstr "Datei enthält kein Archiv zum Ansehen."
+
+msgid "File contained no content."
+msgstr "Datei enthält keine Inhalt."
+
+msgid "Filename"
+msgstr "Dateiname"
+
+msgid "Finish"
+msgstr "Beenden"
+
+msgid "Form"
+msgstr "Formular"
+
+msgid "Form Information"
+msgstr "Formularinformationen"
+
+msgid "Form Name"
+msgstr "Formularname"
+
+msgid "Form Settings"
+msgstr "Formulareinstellungen"
+
+msgid "Form element is not an object."
+msgstr "Form element is not an object."
+
+msgid "Form settings successfully saved!<br /><br />"
+msgstr "Formulareinstellungen gespeichert!<br /><br />"
+
+msgid "Forms"
+msgstr "Formulare"
+
+msgid "Forms are pre_approved"
+msgstr "Formulare sind vor-genehmigt"
+
+msgid "Full List"
+msgstr "Volle Liste"
+
+msgid "Go"
+msgstr "Los"
+
+msgid "Go!"
+msgstr "Los!"
+
+msgid "Hidden"
+msgstr "Versteckt"
+
+msgid "Hide"
+msgstr "Verstecken"
+
+msgid "Hide this form"
+msgstr "Verstecke dieses Formular"
+
+msgid "Home"
+msgstr "Home"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "In order to view this archive a new table will need to added to your database."
+msgstr "Damit dieses Archiv angesehen werden kann, muss eine neue Tabelle in der Datenbank angelegt werden."
+
+msgid "Incomplete"
+msgstr "Nicht vollständig"
+
+msgid "Instructions"
+msgstr "Anweisungen"
+
+msgid "Instructions are missing or formatted incorrectly."
+msgstr "Anweisungen fehlen oder sind fehlerhaft formatiert."
+
+msgid "Invalid Filename Given"
+msgstr "Nicht erlaubter Dateiname wurde angegeben."
+
+msgid "Ip"
+msgstr "IP"
+
+msgid "Item limit per page"
+msgstr "Elementbegrenzung pro Seite"
+
+msgid "Last Entry"
+msgstr "Letzter Eintrag"
+
+msgid "List Archives"
+msgstr "Archive auflisten"
+
+msgid "List Exports"
+msgstr "Exporte auflisten"
+
+msgid "List Forms"
+msgstr "Formulare auflisten"
+
+msgid "Maxsize"
+msgstr "Maximalgrösse"
+
+msgid "Missing form name."
+msgstr "Fehlender Formularname."
+
+msgid "Move Down"
+msgstr "Nach unten"
+
+msgid "Move Up"
+msgstr "Nach oben"
+
+msgid "Multiple Select"
+msgstr "Mehrfachauswahl"
+
+msgid "Multiple submissions with editable form data are not allowed."
+msgstr "Mehrfachantworten mit editierbaren Formulardaten sind nicht erlaubt."
+
+msgid "Multiselect Element Instructions"
+msgstr "Multiselect Element Anweisungen"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "New Form"
+msgstr "Neues Formular"
+
+msgid "Next"
+msgstr "Nächstes"
+
+msgid "Next Entry"
+msgstr "Nächster Eintrag"
+
+msgid "No"
+msgstr "Nein"
+
+msgid "No element was removed."
+msgstr "Kein Element entfernt."
+
+msgid "No entries were found matching your search query."
+msgstr "Es wurden keine Einträge für deine Abfrage gefunden."
+
+msgid "No form ID was passed"
+msgstr "Keine Formular-ID übergeben"
+
+msgid "No form entry was deleted from the database."
+msgstr "Kein Formulareintrag wurde aus der Datenbank entfernt."
+
+msgid "Number of Options"
+msgstr "Anzahl Optionen"
+
+msgid "Only edit own forms"
+msgstr "Nur eigene Formulare bearbeiten"
+
+msgid "Option"
+msgstr "Option"
+
+msgid "Option Instructions"
+msgstr "Optionsanweisungen"
+
+msgid "Option Sets"
+msgstr "Optionsgruppe"
+
+msgid "Owner"
+msgstr "Besitzer"
+
+msgid "Page"
+msgstr "Seite"
+
+#, php-format
+msgid "Page %1$s of %2$s"
+msgstr "Seite %1$s von %2$s"
+
+msgid "Position must be an integer value."
+msgstr ""
+
+msgid "Post Process Code"
+msgstr ""
+
+msgid "Predefined Option Set"
+msgstr "Vordefinierte Optionsgruppe"
+
+msgid "Previous Entry"
+msgstr "Vorheriger Eintrag"
+
+msgid "Print"
+msgstr "Drucken"
+
+msgid "Print View"
+msgstr "Druckansicht"
+
+msgid "Radio Button"
+msgstr "Radio Button"
+
+msgid "Radiobutton Element Instructions"
+msgstr "Radiobutton Element Anweisungen"
+
+msgid "Refuse"
+msgstr "Ablehnen"
+
+msgid "Remove"
+msgstr "Entfernen"
+
+msgid "Removed all dynamic Form Generator tables."
+msgstr "Alle dynamischen Formgeneratortabellen entfernt."
+
+msgid "Report"
+msgstr "Bericht"
+
+msgid "Report View"
+msgstr "Berichtsansicht"
+
+msgid "Require"
+msgstr "Benötigt"
+
+msgid "Required"
+msgstr "Benötigt"
+
+msgid "Retake Form"
+msgstr "Formular wiederverwenden"
+
+msgid "Return to Report"
+msgstr "Zurück zum Bericht"
+
+msgid "Rows"
+msgstr "Zeilen"
+
+msgid "Save"
+msgstr "Speichern"
+
+msgid "Save "
+msgstr "Speichern"
+
+msgid "Save Form"
+msgstr "Formular speichern"
+
+msgid "Save Settings"
+msgstr "Einstellungen speichern"
+
+msgid "Save Textarea"
+msgstr "Textarea speichern"
+
+msgid "Save Textfield"
+msgstr "Textfeld speichern"
+
+msgid "Save option set as"
+msgstr "Optionsgruppe speichern als"
+
+msgid "Saved Forms"
+msgstr "Gespeicherte Formulare"
+
+msgid "Search"
+msgstr "Suche"
+
+msgid "Settings"
+msgstr "Einstellungen"
+
+msgid "Show"
+msgstr "Zeigen"
+
+msgid "Show form page numbers (eg: page 1 of 6)"
+msgstr "Zeige Seitennummern (z.B: Seite 1 von 6)"
+
+msgid "Show numbers for form elements (eg: 1, 2, 3)"
+msgstr "Zeige Nummern für Formularelemente (z.B: 1, 2, 3)"
+
+msgid "Size"
+msgstr "Grösse"
+
+msgid "Submission Message"
+msgstr "Eingabenachricht"
+
+msgid "Successfully deleted table associated with the archive with filename "
+msgstr "Die zugehörige Tabelle zur Archivdatei wurde gelöscht "
+
+msgid "Text"
+msgstr "Text"
+
+msgid "Textarea"
+msgstr "Textbereich"
+
+msgid "Textarea Element Instructions"
+msgstr "Textarea Element Anweisungen"
+
+msgid "Textfield"
+msgstr "Textfeld"
+
+#, php-format
+msgid "The %s element could not be saved to the database."
+msgstr "Das %s Element konnte nicht in der Datenbank gespeichert werden."
+
+#, php-format
+msgid "The %s element was saved successfully."
+msgstr "Das Element %s wurde gespeichert."
+
+#, php-format
+msgid "The %s was saved successfully."
+msgstr "%s wurde gespeichert."
+
+msgid "The archive path is not web server writable."
+msgstr "Das Archivverzeichnis ist nicht vom Webserver beschreibbar."
+
+msgid "The associated text for this element was not set."
+msgstr "Der zugehörige Text für dieses Element wurde nicht angegeben."
+
+msgid "The element was successfully removed."
+msgstr "Das Element wurde entfernt."
+
+msgid "The export path is not web server writable."
+msgstr "Das Exportverzeichnis ist nicht vom Webserver beschreibbar."
+
+#, php-format
+msgid "The form %s was successfully archived."
+msgstr "Das Formular %s wurde archiviert."
+
+msgid "The form entry was successfully deleted from the database."
+msgstr "Der Formulareintrag wurde aus der Datenbank entfernt."
+
+msgid "The form must be saved before it is available to the public."
+msgstr "Das Formular muss erst gespeichert werden, bevor es öffentlich werden kann."
+
+msgid "The name you entered for the Checkbox is not valid or is already in use with this form."
+msgstr "Der Name für diese Checkbox ist nicht erlaubt oder schon in diesem Formular benutzt."
+
+msgid "The name you entered for the Multiselect is not valid or is already in use with this form."
+msgstr "Der Name für diesen Multiselect ist nicht erlaubt oder schon in diesem Formular benutzt."
+
+msgid "The name you entered for the Textfield is not valid or is already in use with this form."
+msgstr "Der Name für dieses Textfeld ist nicht erlaubt oder schon in diesem Formular benutzt."
+
+msgid "The number of options must be a greater than zero."
+msgstr "Die Anzahl der Optionen muss grösser 0 sein."
+
+#, php-format
+msgid "The option set %s was successfully saved."
+msgstr "Die Optionsgruppe %s wurde gespeichert."
+
+#, php-format
+msgid "The option set %s was unable to be saved."
+msgstr "Optionsgruppe %s wurde nicht gespeichert."
+
+msgid "The phatform archive was successfully <b>deleted</b>."
+msgstr "Das Phatform Archiv wurde <b>gelöscht</b>."
+
+msgid "The phatform export was successfully <b>deleted</b>."
+msgstr "Der Phatform Export wurde <b>gelöscht</b>."
+
+msgid "The value for this element was not set."
+msgstr "Der Wert für dieses Element wurde nicht angegeben."
+
+msgid "There is a problem with options, contact a system administrator."
+msgstr "Ein Problem mit den Optionen ist aufgetreten. Kontaktiere den Systemadministrator."
+
+msgid "There was a problem deleting the archive."
+msgstr "Ein Problem ist beim Löschen des Archivs aufgetreten."
+
+msgid "There was a problem deleting the export."
+msgstr "Ein Problem ist beim Löschen des Exports aufgetreten."
+
+msgid "There was a problem deleting viewing archive table associated for filename "
+msgstr "Ein Problem ist beim Löschen / Ansehen der Archivtabelle aufgetreten."
+
+msgid "This form is not available for viewing at this time."
+msgstr "Dieses Formular ist zur Zeit nicht zur Ansicht verfügbar."
+
+msgid "Total"
+msgstr "Insgesamt"
+
+#, php-format
+msgid "Unable to save %s."
+msgstr "%s kann nicht gespeichert werden."
+
+msgid "Unapproved Forms"
+msgstr "Ungenehmigte Formulare"
+
+msgid "Unknown"
+msgstr "Unbekannt"
+
+msgid "Unsaved Forms"
+msgstr "Ungespeicherte Formulare"
+
+msgid "Updated"
+msgstr "Aktualisiert"
+
+msgid "Use option text as values"
+msgstr "Benutze Optionstext als Wert"
+
+msgid "User"
+msgstr "Benutzer"
+
+msgid "Value"
+msgstr "Wert"
+
+msgid "View"
+msgstr "Ansicht"
+
+msgid "View reports"
+msgstr "Berichte ansehen"
+
+msgid "Viewing of archive has been canceled."
+msgstr "Ansicht des Archivs wurde abgebrochen."
+
+msgid "WARNING!"
+msgstr "WARNUNG!"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "You have already filled out this form!"
+msgstr "Du hast dieses Formular schon ausgefüllt!"
+
+#, php-format
+msgid "You have chosen <b>not</b> to delete the archive with the filename \"%s\"."
+msgstr "Du willst <b>nicht</b>,dass das Archiv mit dem Dateinamen \"%s\" gelöscht wird."
+
+#, php-format
+msgid "You have chosen <b>not</b> to delete the export with the filename \"%s\"."
+msgstr "Du willst <b>nicht</b>,dass der Export mit dem Dateinamen \"%s\" gelöscht wird."
+
+msgid "You have chosen to edit a saved form! All current data will be archived and cleared if you chose to continue!  Make sure you export your data from your form before you continue!"
+msgstr ""
+
+#, php-format
+msgid "You have passed the maximum allowed characters in the %s text field."
+msgstr ""
+
+msgid "You may not use that name for this form element."
+msgstr "Dieser Name darf nicht für dieses Element benutzt werden."
+
+msgid "You must be logged in to view this form!"
+msgstr "Du musst angemeldet sein, um dieses Formular anzusehen!"
+
+msgid "You must fill out all required fields to continue."
+msgstr ""
+
+msgid "You must have at least one element to save this form."
+msgstr ""
+
+msgid "You must provide a submission message."
+msgstr ""
+
+msgid "You only have permission to edit your own forms!"
+msgstr "Du hast nur die Berechtigung deine eigenen Formulare zu bearbeiten!"
+
+msgid "of"
+msgstr "von"
+

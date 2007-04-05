@@ -5,15 +5,15 @@
    */
 
 $use_permissions = TRUE;
-$permissions['edit_forms']      = _('Create/Edit forms');
-$permissions['delete_forms']    = _('Delete forms');
-$permissions['approve_forms']   = _('Forms are pre_approved');
-$permissions['user_forms_only'] = _('Only edit own forms');
-$permissions['report_view']     = _('View reports');
-$permissions['report_edit']     = _('Edit form entries');
-$permissions['report_delete']   = _('Delete form entries');
-$permissions['report_export']   = _('Export report data');
-$permissions['archive_form']    = _('Archive forms');
-$permissions['edit_options']    = _('Edit option sets');
+$permissions['edit_forms']      = dgettext('phatform', 'Create/Edit forms');
+$permissions['delete_forms']    = dgettext('phatform', 'Delete forms');
+$permissions['approve_forms']   = dgettext('phatform', 'Forms are pre_approved');
+$permissions['user_forms_only'] = dgettext('phatform', 'Only edit own forms');
+$permissions['report_view']     = dgettext('phatform', 'View reports');
+$permissions['report_edit']     = dgettext('phatform', 'Edit form entries');
+$permissions['report_delete']   = dgettext('phatform', 'Delete form entries');
+$permissions['report_export']   = dgettext('phatform', 'Export report data');
+$permissions['archive_form']    = dgettext('phatform', 'Archive forms');
+$permissions['edit_options']    = dgettext('phatform', 'Edit option sets');
 
 ?>
