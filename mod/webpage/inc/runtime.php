@@ -6,11 +6,9 @@
    */
 
 if (!isset($_REQUEST['module']) || $_REQUEST['module'] == 'webpage') {
-    translate('webpage');
     PHPWS_Core::initModClass('webpage', 'User.php');
     Webpage_User::showFrontPage();
     Webpage_User::showFeatured();
-    translate();
- }
+}
 
 ?>

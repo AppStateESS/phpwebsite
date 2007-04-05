@@ -16,12 +16,12 @@ class Webpage_Forms {
             $link['link'] .= '&version_id=' . $version_id;
         }
 
-        $link['title'] = _('Header');
+        $link['title'] = dgettext('webpage', 'Header');
         $tabs['header'] = $link;
 
         if (!empty($volume->_pages)) {
             foreach ($volume->_pages as $page_id => $page) {
-                $link['title'] = sprintf(_('Page %s'), $page->page_number);
+                $link['title'] = sprintf(dgettext('webpage', 'Page %s'), $page->page_number);
                 $link['link'] = sprintf('index.php?module=webpage&wp_admin=edit_webpage&page_id=%s&volume_id=%s', $page_id, $volume->id);
                 if ($version_id) {
                     $link['link'] .= '&version_id=' . $version_id;
@@ -36,7 +36,7 @@ class Webpage_Forms {
                 $link['link'] .= '&version_id=' . $version_id;
             }
 
-            $link['title'] = _('Add Page');
+            $link['title'] = dgettext('webpage', 'Add Page');
             $tabs['add_page'] = $link;
         }
 
@@ -55,9 +55,9 @@ class Webpage_Forms {
 
         if ($volume->id) {
             $form->addHidden('volume_id', $volume->id);
-            $form->addSubmit(_('Update header'));
+            $form->addSubmit(dgettext('webpage', 'Update header'));
         } else {
-            $form->addSubmit(_('Create header'));
+            $form->addSubmit(dgettext('webpage', 'Create header'));
         }
 
         if (!empty($version)) {
@@ -65,12 +65,12 @@ class Webpage_Forms {
         }
 
         $form->addText('title', $volume->title);
-        $form->setLabel('title', _('Webpage title'));
+        $form->setLabel('title', dgettext('webpage', 'Webpage title'));
         $form->setSize('title', 50);
 
         $form->addTextArea('summary', $volume->summary);
         $form->useEditor('summary');
-        $form->setLabel('summary', _('Summary'));
+        $form->setLabel('summary', dgettext('webpage', 'Summary'));
 
         $template = $form->getTemplate();
         return PHPWS_Template::process($template, 'webpage', 'forms/edit.tpl');
@@ -86,9 +86,9 @@ class Webpage_Forms {
 
         if ($page->id) {
             $form->addHidden('page_id', $page->id);
-            $form->addSubmit(_('Update page'));
+            $form->addSubmit(dgettext('webpage', 'Update page'));
         } else {
-            $form->addSubmit(_('Add new page'));
+            $form->addSubmit(dgettext('webpage', 'Add new page'));
         }
 
         if (!empty($version)) {
@@ -96,22 +96,22 @@ class Webpage_Forms {
         }
 
         $form->addText('title', $page->title);
-        $form->setLabel('title', _('Title'));
+        $form->setLabel('title', dgettext('webpage', 'Title'));
         $form->setSize('title', 50);
 
         $form->addTextArea('content', $page->content);
         $form->useEditor('content');
         $form->setRows('content', 20);
         $form->setCols('content', 90);
-        $form->setLabel('content', _('Content'));
+        $form->setLabel('content', dgettext('webpage', 'Content'));
 
 
         $form->addSelect('template', $page->getTemplateList());
         $form->setMatch ('template', $page->template);
-        $form->setLabel('template', _('Page template'));
+        $form->setLabel('template', dgettext('webpage', 'Page template'));
 
         $form->addCheck('force_template', 1);
-        $form->setLabel('force_template', _('Force all pages to use this template'));
+        $form->setLabel('force_template', dgettext('webpage', 'Force all pages to use this template'));
         
         if (PHPWS_Settings::get('webpage', 'add_images')) {
             //            $form->addHidden('image_id', $page->image_id);
@@ -131,14 +131,14 @@ class Webpage_Forms {
 
     function wp_list()
     {
-        $select_op['list'] = _('- Select option -');
-        $select_op['delete_wp']          = _('Delete');
-        $select_op['move_to_frontpage']  = _('Move to frontpage');
-        $select_op['move_off_frontpage'] = _('Move off frontpage');
-        $select_op['activate']           = _('Activate');
-        $select_op['deactivate']         = _('Deactivate');
+        $select_op['list'] = dgettext('webpage', '- Select option -');
+        $select_op['delete_wp']          = dgettext('webpage', 'Delete');
+        $select_op['move_to_frontpage']  = dgettext('webpage', 'Move to frontpage');
+        $select_op['move_off_frontpage'] = dgettext('webpage', 'Move off frontpage');
+        $select_op['activate']           = dgettext('webpage', 'Activate');
+        $select_op['deactivate']         = dgettext('webpage', 'Deactivate');
         if (Current_User::allow('webpage', 'featured')) {
-            $select_op['feature']            = _('Feature page');
+            $select_op['feature']            = dgettext('webpage', 'Feature page');
         }
 
         $form = new PHPWS_Form;
@@ -146,20 +146,20 @@ class Webpage_Forms {
         $form->addSelect('wp_admin', $select_op);
         $tags = $form->getTemplate();
 
-        $tags['TITLE_LABEL']        = _('Title');
-        $tags['DATE_CREATED_LABEL'] = _('Created on');
-        $tags['DATE_UPDATED_LABEL'] = _('Updated on');
-        $tags['CREATED_USER_LABEL'] = _('Created by');
-        $tags['UPDATED_USER_LABEL'] = _('Updated by');
-        $tags['FRONTPAGE_LABEL']    = _('Front page');
-        $tags['ACTIVE_LABEL']       = _('Active');
-        $tags['ACTION_LABEL']       = _('Action');
+        $tags['TITLE_LABEL']        = dgettext('webpage', 'Title');
+        $tags['DATE_CREATED_LABEL'] = dgettext('webpage', 'Created on');
+        $tags['DATE_UPDATED_LABEL'] = dgettext('webpage', 'Updated on');
+        $tags['CREATED_USER_LABEL'] = dgettext('webpage', 'Created by');
+        $tags['UPDATED_USER_LABEL'] = dgettext('webpage', 'Updated by');
+        $tags['FRONTPAGE_LABEL']    = dgettext('webpage', 'Front page');
+        $tags['ACTIVE_LABEL']       = dgettext('webpage', 'Active');
+        $tags['ACTION_LABEL']       = dgettext('webpage', 'Action');
         $tags['CHECK_ALL'] = javascript('check_all', array('checkbox_name' => 'webpage'));
 
-        $js['value']        = _('Go');
+        $js['value']        = dgettext('webpage', 'Go');
         $js['select_id']    = $form->getId('wp_admin');
         $js['action_match'] = 'delete_wp';
-        $js['message']      = _('Are you sure you want to delete the checked web pages?');
+        $js['message']      = dgettext('webpage', 'Are you sure you want to delete the checked web pages?');
 
         $tags['SUBMIT'] = javascript('select_confirm', $js);
 

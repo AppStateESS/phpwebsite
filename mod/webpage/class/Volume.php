@@ -155,7 +155,7 @@ class Webpage_Volume {
     function post()
     {
         if (empty($_POST['title'])) {
-            $errors[] = _('Missing page title');
+            $errors[] = dgettext('webpage', 'Missing page title');
         } else {
             $this->setTitle($_POST['title']);
         }
@@ -188,7 +188,7 @@ class Webpage_Volume {
                 return 'index.php?module=webpage&amp;id=' . $this->id;
             }
         } else {
-            return PHPWS_Text::rewriteLink(_('View'), 'webpage', $this->id);
+            return PHPWS_Text::rewriteLink(dgettext('webpage', 'View'), 'webpage', $this->id);
         }
     }
 
@@ -232,17 +232,17 @@ class Webpage_Volume {
                     $vars['version_id'] = & $approval_id;
                 }
             }
-            $links[] = PHPWS_Text::secureLink(_('Edit'), 'webpage', $vars);
+            $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Edit'), 'webpage', $vars);
         }
 
         $links[] = $this->getViewLink();
 
         if (Current_User::isUnrestricted('webpage') && Current_User::allow('webpage', 'delete_page')) {
             $vars['wp_admin'] = 'delete_wp';
-            $js_vars['QUESTION'] = sprintf(_('Are you sure you want to delete &quot;%s&quot and all its pages?'),
+            $js_vars['QUESTION'] = sprintf(dgettext('webpage', 'Are you sure you want to delete &quot;%s&quot and all its pages?'),
                                            $this->title);
             $js_vars['ADDRESS'] = PHPWS_Text::linkAddress('webpage', $vars, true);
-            $js_vars['LINK'] = _('Delete');
+            $js_vars['LINK'] = dgettext('webpage', 'Delete');
             $links[] = javascript('confirm', $js_vars);
         }
 
@@ -256,17 +256,17 @@ class Webpage_Volume {
 
         if (Current_User::isUnrestricted('webpage') && Current_User::allow('webpage', 'delete_page')) {
             if ($this->frontpage) {
-                $tpl['FRONTPAGE'] = _('Yes');
+                $tpl['FRONTPAGE'] = dgettext('webpage', 'Yes');
             } else {
-                $tpl['FRONTPAGE'] = _('No');
+                $tpl['FRONTPAGE'] = dgettext('webpage', 'No');
             }
 
             if ($this->active) {
                 $vars['wp_admin'] = 'deactivate_vol';
-                $active = PHPWS_Text::secureLink(_('Yes'), 'webpage', $vars);
+                $active = PHPWS_Text::secureLink(dgettext('webpage', 'Yes'), 'webpage', $vars);
             } else {
                 $vars['wp_admin'] = 'activate_vol';
-                $active = PHPWS_Text::secureLink(_('No'), 'webpage', $vars);
+                $active = PHPWS_Text::secureLink(dgettext('webpage', 'No'), 'webpage', $vars);
             }
             $tpl['ACTIVE'] = $active;
         }
@@ -422,11 +422,11 @@ class Webpage_Volume {
         $form->addHidden('id', $this->id);
         $form->addSelect('page', $alist);
         $form->setMatch('page', $this->_current_page);
-        $form->setLabel('page', _('Page'));
+        $form->setLabel('page', dgettext('webpage', 'Page'));
         if (javascriptEnabled()) {
             $form->setExtra('page', 'onchange="this.form.submit()"');
         } else {
-            $form->addSubmit('go', _('Go!'));
+            $form->addSubmit('go', dgettext('webpage', 'Go!'));
         }
         $formtpl = $form->getTemplate();
         return implode("\n", $formtpl);
@@ -465,7 +465,7 @@ class Webpage_Volume {
 
            
             $template['BRIEF_PAGE_LINKS'] = implode('&nbsp;', $brief_link);
-            $template['PAGE_LABEL'] = _('Page');
+            $template['PAGE_LABEL'] = dgettext('webpage', 'Page');
         }
 
         if ( (Current_User::allow('webpage', 'edit_page') && Current_User::isUser($this->create_user_id)) || 
@@ -475,18 +475,18 @@ class Webpage_Volume {
             if ($version) {
                 $vars['version_id'] = $version;
             }
-            $template['EDIT_HEADER'] = PHPWS_Text::secureLink(_('Edit header'), 'webpage', $vars);
+            $template['EDIT_HEADER'] = PHPWS_Text::secureLink(dgettext('webpage', 'Edit header'), 'webpage', $vars);
         }
 
         if (!$version && Current_User::allow('webpage', 'edit_page', null, null, true)) {
             $vars = array('wp_admin' => 'restore_volume', 'volume_id'=>$this->id);
-            $template['RESTORE'] = PHPWS_Text::secureLink(_('Restore'), 'webpage', $vars);
+            $template['RESTORE'] = PHPWS_Text::secureLink(dgettext('webpage', 'Restore'), 'webpage', $vars);
             if ($this->featured) {
                 $vars['wp_admin'] = 'unfeature';
             } else {
                 $vars['wp_admin'] = 'feature';
             }
-            $template['FEATURE'] = PHPWS_Text::secureLink(_('Feature'), 'webpage', $vars);
+            $template['FEATURE'] = PHPWS_Text::secureLink(dgettext('webpage', 'Feature'), 'webpage', $vars);
         }
 
         $result = Categories::getSimpleLinks($this->key_id);
@@ -548,7 +548,7 @@ class Webpage_Volume {
                 $content = $oPage->view();
             }
         } else {
-            $content = _('Page is not complete.');
+            $content = dgettext('webpage', 'Page is not complete.');
         }
 
         $this->flagKey();

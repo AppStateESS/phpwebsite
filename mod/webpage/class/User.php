@@ -74,21 +74,20 @@ class Webpage_User {
                 if (Current_User::allow('webpage', 'featured') && Current_User::isUnrestricted('users')) {
                     $vars['volume_id'] = $volume->id;
                     $vars['wp_admin'] = 'drop_feature';
-                    $links[1] = PHPWS_Text::secureLink(_('Drop'), 'webpage', $vars);
+                    $links[1] = PHPWS_Text::secureLink(dgettext('webpage', 'Drop'), 'webpage', $vars);
 
                     $vars['wp_admin'] = 'up_feature';
-                    $links[2] = PHPWS_Text::secureLink(_('Up'), 'webpage', $vars);
+                    $links[2] = PHPWS_Text::secureLink(dgettext('webpage', 'Up'), 'webpage', $vars);
 
                     $vars['wp_admin'] = 'down_feature';
-                    $links[3] = PHPWS_Text::secureLink(_('Down'), 'webpage', $vars);
+                    $links[3] = PHPWS_Text::secureLink(dgettext('webpage', 'Down'), 'webpage', $vars);
 
                     $tpl['LINKS'] = implode(' | ', $links);
                 }
                 $template['volume'][] = $tpl;
             }
         }
-        $template['FEATURED_TITLE'] = _('Featured pages');
-
+        $template['FEATURED_TITLE'] = dgettext('webpage', 'Featured pages');
 
         $content = PHPWS_Template::process($template, 'webpage', 'featured.tpl');
         Layout::add($content, 'webpage', 'featured');

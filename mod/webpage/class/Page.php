@@ -129,7 +129,7 @@ class Webpage_Page {
         }
 
         if (empty($_POST['content'])) {
-            $errors[] = _('Missing page content.');
+            $errors[] = dgettext('webpage', 'Missing page content.');
         } else {
             $this->setContent($_POST['content']);
         }
@@ -191,27 +191,27 @@ class Webpage_Page {
             }
 
             $vars['wp_admin'] = 'edit_page';
-            $links[] = PHPWS_Text::secureLink(_('Edit'), 'webpage', $vars);
+            $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Edit'), 'webpage', $vars);
 
             if ($admin) {
                 $this->moreAdminLinks($links);
                 $vars['wp_admin'] = 'page_up';
                 if ($this->page_number > 1) {
-                    $links[] = PHPWS_Text::secureLink(_('Move up'), 'webpage', $vars);
+                    $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Move up'), 'webpage', $vars);
                 } elseif (count($this->_volume->_pages) > 1) {
-                    $links[] = PHPWS_Text::secureLink(_('Move to end'), 'webpage', $vars);
+                    $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Move to end'), 'webpage', $vars);
                 }
 
                 $total_pages = $this->_volume->getTotalPages();
                 $vars['wp_admin'] = 'page_down';
                 if ($this->page_number < $total_pages) {
-                    $links[] = PHPWS_Text::secureLink(_('Move down'), 'webpage', $vars);
+                    $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Move down'), 'webpage', $vars);
                 } elseif (count($this->_volume->_pages) > 1) {
-                    $links[] = PHPWS_Text::secureLink(_('Move to front'), 'webpage', $vars);
+                    $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Move to front'), 'webpage', $vars);
                 }
             } else {
                 $vars['wp_admin'] = 'edit_webpage';
-                $links[] = PHPWS_Text::secureLink(_('Sort'), 'webpage', $vars);
+                $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Sort'), 'webpage', $vars);
             }
 
 
@@ -228,7 +228,7 @@ class Webpage_Page {
     function moreAdminLinks(&$links)
     {
         if (Current_User::isUnrestricted('webpage') && Current_User::allow('webpage', 'delete_page')) {
-            $jsvar['QUESTION'] = _('Are you sure you want to remove this page?');
+            $jsvar['QUESTION'] = dgettext('webpage', 'Are you sure you want to remove this page?');
             $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=delete_page&amp;page_id=%s&amp;volume_id=%s&amp;authkey=%s',
                                         $this->id, $this->volume_id, Current_User::getAuthKey());
             $jsvar['LINK'] = ('Delete');
@@ -238,16 +238,16 @@ class Webpage_Page {
 
         if (Current_User::allow('webpage', 'edit_page', $this->volume_id, 'volume', true)) {
             $vars = array('wp_admin'=>'restore_page', 'volume_id'=>$this->volume_id, 'page_id'=>$this->id);
-            $links[] = PHPWS_Text::secureLink(_('Restore'), 'webpage', $vars);
+            $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Restore'), 'webpage', $vars);
 
             if($this->page_number < count($this->_volume->_pages)) {
-                $jsvar['QUESTION'] = _('Are you sure you want to join this page to the next?');
+                $jsvar['QUESTION'] = dgettext('webpage', 'Are you sure you want to join this page to the next?');
                 $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=join_page&amp;page_id=%s&amp;volume_id=%s&amp;authkey=%s',
                                             $this->id, $this->volume_id, Current_User::getAuthKey());
                 $jsvar['LINK'] = ('Join next');
                 $links[] = javascript('confirm', $jsvar);
                         
-                $jsvar['QUESTION'] = _('Are you sure you want to join ALL the pages into just one page? Warning: You will lose all page backups!');
+                $jsvar['QUESTION'] = dgettext('webpage', 'Are you sure you want to join ALL the pages into just one page? Warning: You will lose all page backups!');
                 $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=join_all_pages&amp;volume_id=%s&amp;authkey=%s',
                                             $this->volume_id, Current_User::getAuthKey());
                 $jsvar['LINK'] = ('Join all');
@@ -335,11 +335,11 @@ class Webpage_Page {
                 $vars['version_id'] = $version_id;
             }
             
-            $links[] = PHPWS_Text::secureLink(_('Edit web page'), 'webpage', $vars);
+            $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Edit web page'), 'webpage', $vars);
             
             $vars['wp_admin'] = 'edit_header';
-            $links[] = PHPWS_Text::secureLink(_('Edit page header'), 'webpage', $vars);
-            $links[] = PHPWS_Text::secureLink(_('View page list'), 'webpage', array('tab' => 'list'));
+            $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Edit page header'), 'webpage', $vars);
+            $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'View page list'), 'webpage', array('tab' => 'list'));
             
             MiniAdmin::add('webpage', $links);
         }
@@ -387,7 +387,7 @@ class Webpage_Page {
         }
         
         if (empty($this->content)) {
-            $this->content = _('Page is missing content.');
+            $this->content = dgettext('webpage', 'Page is missing content.');
         }
 
         if (!$this->checkTemplate()) {

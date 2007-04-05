@@ -99,13 +99,13 @@ class Webpage_Admin {
             // web page admin
         case 'new':
             $pagePanel->setCurrentTab('header');
-            $title = _('Create header');
+            $title = dgettext('webpage', 'Create header');
             $content = Webpage_Forms::editHeader($volume, $version);
             break;
 
         case 'restore_volume_version':
             $version->restore();
-            Webpage_Admin::sendMessage( _('Header restored.'),
+            Webpage_Admin::sendMessage( dgettext('webpage', 'Header restored.'),
                                        sprintf('edit_webpage&tab=header&volume_id=%s', $volume->id) );
             break;
 
@@ -117,21 +117,21 @@ class Webpage_Admin {
              **/
             $page_version->source_data['page_number'] = $page->page_number;
             $page_version->restore();
-            Webpage_Admin::sendMessage( _('Page restored.'),
+            Webpage_Admin::sendMessage( dgettext('webpage', 'Page restored.'),
                                        sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s',
                                                $page->page_number, $volume->id, $page->id));
             break;
 
         case 'page_up':
             $page->moveUp();
-            Webpage_Admin::sendMessage( _('Page moved.'),
+            Webpage_Admin::sendMessage( dgettext('webpage', 'Page moved.'),
                                         sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s',
                                                 $page->page_number, $volume->id, $page->id));
             break;
 
         case 'page_down':
             $page->moveDown();
-            Webpage_Admin::sendMessage( _('Page moved.'),
+            Webpage_Admin::sendMessage( dgettext('webpage', 'Page moved.'),
                                         sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s',
                                                 $page->page_number, $volume->id, $page->id));
             break;
@@ -139,19 +139,19 @@ class Webpage_Admin {
         case 'remove_page_restore':
             $page_version = new Version('webpage_page', (int)$_GET['version_id']);
             $page_version->delete();
-            Webpage_Admin::sendMessage( _('Page restored.'),
+            Webpage_Admin::sendMessage( dgettext('webpage', 'Page restored.'),
                                        sprintf('restore_page&tab=page_%s&volume_id=%s&page_id=%s',
                                                $page->page_number, $volume->id, $page->id));
 
 
         case 'remove_volume_restore':
             $version->delete();
-            Webpage_Admin::sendMessage( _('Header version deleted.'),
+            Webpage_Admin::sendMessage( dgettext('webpage', 'Header version deleted.'),
                                        sprintf('restore_volume&volume_id=%s', $volume->id) );
             break;
 
         case 'edit_webpage':
-            $title = sprintf(_('Administrate page: %s'), $volume->title);
+            $title = sprintf(dgettext('webpage', 'Administrate page: %s'), $volume->title);
             if ($page->id) {
                 $pagePanel->setCurrentTab('page_' . $page->page_number);
                 $content = $page->view(TRUE, $version_id);
@@ -170,7 +170,7 @@ class Webpage_Admin {
             break;
 
         case 'approve':
-            $title = _('Web Page Approval');
+            $title = dgettext('webpage', 'Web Page Approval');
             $content = Webpage_Forms::approval();
             break;
 
@@ -179,13 +179,13 @@ class Webpage_Admin {
                 PHPWS_Core::errorPage('404');
             }
             $volume->joinPage((int)$_REQUEST['page_id']);
-            Webpage_Admin::sendMessage( _('Page joined.'),
+            Webpage_Admin::sendMessage( dgettext('webpage', 'Page joined.'),
                                        sprintf('edit_webpage&tab=page_%s&volume_id=%s', $page->page_number, $volume->id) );
             break;
 
         case 'join_all_pages':
             $volume->joinAllPages();
-            Webpage_Admin::sendMessage( _('Pages joined.'),
+            Webpage_Admin::sendMessage( dgettext('webpage', 'Pages joined.'),
                                         sprintf('edit_webpage&tab=page_1&volume_id=%s', $volume->id) );
             break;
 
@@ -194,12 +194,12 @@ class Webpage_Admin {
                 PHPWS_Core::errorPage('404');
             }
             $volume->dropPage((int)$_REQUEST['page_id']);
-            Webpage_Admin::sendMessage(_('Page removed.'),
+            Webpage_Admin::sendMessage(dgettext('webpage', 'Page removed.'),
                                        'edit_webpage&tab=header&volume_id=' . $volume->id);
             break;
 
         case 'approval_view':
-            $title = _('Approval view');
+            $title = dgettext('webpage', 'Approval view');
             if (!isset($_REQUEST['version_id'])) {
                 PHPWS_Core::errorPage('404');
             }
@@ -208,40 +208,40 @@ class Webpage_Admin {
 
         case 'approve_webpage':
             if (!Current_User::isUnRestricted('webpage')) {
-                Current_User::disallow(_('Attempted to approve a webpage.'));
+                Current_User::disallow(dgettext('webpage', 'Attempted to approve a webpage.'));
                 return;
             }
             if (Webpage_Admin::approveWebpage()) {
-                Webpage_Admin::sendMessage(_('Web page approved.'),'approve');
+                Webpage_Admin::sendMessage(dgettext('webpage', 'Web page approved.'),'approve');
             } else {
-                Webpage_Admin::sendMessage(_('A problem occurred when trying to approve a web page.'),'approve');
+                Webpage_Admin::sendMessage(dgettext('webpage', 'A problem occurred when trying to approve a web page.'),'approve');
             }
             break;
 
         case 'edit_page':
             $pagePanel->setCurrentTab('page_' . $page->page_number);
-            $title = sprintf(_('Edit Page %s'),$page->page_number);
+            $title = sprintf(dgettext('webpage', 'Edit Page %s'),$page->page_number);
             $content = Webpage_Forms::editPage($page, $version);
             break;
 
         case 'add_page':
-            $title = sprintf(_('Add page: %s'), $volume->title);
+            $title = sprintf(dgettext('webpage', 'Add page: %s'), $volume->title);
             $content = Webpage_Forms::editPage($page, $version);
             break;
 
         case 'edit_header':
             $pagePanel->setCurrentTab('header');
-            $title = sprintf(_('Edit header: %s'), $volume->title);
+            $title = sprintf(dgettext('webpage', 'Edit header: %s'), $volume->title);
             $content = Webpage_Forms::editHeader($volume, $version);
             break;
 
         case 'post_header':
             if (PHPWS_Core::isPosted()) {
                 if ($volume->id) {
-                    Webpage_Admin::sendMessage(_('Ignoring repeat post.'),
+                    Webpage_Admin::sendMessage(dgettext('webpage', 'Ignoring repeat post.'),
                                                'edit_webpage&tab=header&volume_id=' . $volume->id);
                 } else {
-                    Webpage_Admin::sendMessage(_('Ignoring repeat post.'), 'new');
+                    Webpage_Admin::sendMessage(dgettext('webpage', 'Ignoring repeat post.'), 'new');
                 }
                 break;
             }
@@ -250,7 +250,7 @@ class Webpage_Admin {
 
             if (is_array($result)) {
                 // errors occurred
-                $title = sprintf(_('Edit header page: %s'), $volume->title);
+                $title = sprintf(dgettext('webpage', 'Edit header page: %s'), $volume->title);
                 $content = Webpage_Forms::editHeader($volume, $version);
                 $message = implode('<br />', $result);
             } else {
@@ -258,34 +258,34 @@ class Webpage_Admin {
                 $result = $volume->save();
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
-                    Webpage_Admin::sendMessage(_('An error occurred. Please check your logs.'), 'list');
+                    Webpage_Admin::sendMessage(dgettext('webpage', 'An error occurred. Please check your logs.'), 'list');
                 } else {
-                    Webpage_Admin::sendMessage(_('Header saved successfully.'), 
+                    Webpage_Admin::sendMessage(dgettext('webpage', 'Header saved successfully.'), 
                                                'edit_webpage&tab=header&volume_id=' . $volume->id . '&version_id=' . $version_id);
                 }
             }
             break;
 
         case 'post_page':
-            $title = sprintf(_('Administrate page: %s'), $volume->title);
+            $title = sprintf(dgettext('webpage', 'Administrate page: %s'), $volume->title);
 
             $result = $page->post();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
-                Webpage_Admin::sendMessage(_('An error occurred while saving your page. Please check the error log.'),
+                Webpage_Admin::sendMessage(dgettext('webpage', 'An error occurred while saving your page. Please check the error log.'),
                                            sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s&version_id=%s',
                                                    $page->page_number, $volume->id, $page->id, $version_id));
                 
                 break;
             } elseif (is_array($result)) {
-                $title = sprintf(_('Edit Page %s'),$page->page_number);
+                $title = sprintf(dgettext('webpage', 'Edit Page %s'),$page->page_number);
                 $message = implode('<br />', $result);
                 $content = WebpageForms::editPage($page, $version);
             } else {
                 $result = $page->save();
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
-                    Webpage_Admin::sendMessage(_('An error occurred while saving your page. Please check the error log.'),
+                    Webpage_Admin::sendMessage(dgettext('webpage', 'An error occurred while saving your page. Please check the error log.'),
                                                sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s&version_id=%s',
                                                        $page->page_number, $volume->id, $page->id, $version_id));
                 }
@@ -295,15 +295,15 @@ class Webpage_Admin {
 
                     if (PEAR::isError($force_result)) {
                         PHPWS_Error::log($force_result);
-                        Webpage_Admin::sendMessage(_('Error: Unable to force template.'),
+                        Webpage_Admin::sendMessage(dgettext('webpage', 'Error: Unable to force template.'),
                                                    sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s&version_id=%s',
                                                            $page->page_number, $volume->id, $page->id, $version_id));
                     }
                 }
                 if (!$page->approved) {
-                    $message = _('Page held for approval.');
+                    $message = dgettext('webpage', 'Page held for approval.');
                 } else {
-                    $message = _('Page saved successfully.');
+                    $message = dgettext('webpage', 'Page saved successfully.');
                 }
                 Webpage_Admin::sendMessage($message,
                                            sprintf('edit_webpage&tab=page_%s&volume_id=%s&page_id=%s&version_id=%s',
@@ -312,7 +312,7 @@ class Webpage_Admin {
             break;
 
         case 'list':
-            $title = _('List Web Pages');
+            $title = dgettext('webpage', 'List Web Pages');
             $content = Webpage_Forms::wp_list();
             break;
 
@@ -341,8 +341,8 @@ class Webpage_Admin {
             $result = Webpage_Admin::deleteWebpages();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
-                $title = _('Error');
-                $content = _('A problem occurred when trying to delete your webpage.');
+                $title = dgettext('webpage', 'Error');
+                $content = dgettext('webpage', 'A problem occurred when trying to delete your webpage.');
             } else {
                 Webpage_Admin::goBack();
             }
@@ -383,20 +383,20 @@ class Webpage_Admin {
             break;
 
         case 'restore_page':
-            $title = sprintf(_('Restore Page %s'), $page->page_number);
+            $title = sprintf(dgettext('webpage', 'Restore Page %s'), $page->page_number);
             $content = Webpage_Admin::restorePage($volume, $page);
             break;
 
         case 'restore_volume':
-            $title = _('Restore Web Page Header');
+            $title = dgettext('webpage', 'Restore Web Page Header');
             $content = Webpage_Admin::restoreVolume($volume);
             break;
 
         case 'post_settings':
             Webpage_Admin::postSettings();
-            $message = _('Settings saved.');
+            $message = dgettext('webpage', 'Settings saved.');
         case 'settings':
-            $title = _('Settings');
+            $title = dgettext('webpage', 'Settings');
             $content = Webpage_Admin::settings();
             break;
 
@@ -526,19 +526,19 @@ class Webpage_Admin {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link['link'] = 'index.php?module=webpage';
 
-        $link['title'] = _('New');
+        $link['title'] = dgettext('webpage', 'New');
         $tabs['new'] = $link;
 
-        $link['title'] = _('List');
+        $link['title'] = dgettext('webpage', 'List');
         $tabs['list'] = $link;
 
-        $link['title'] = _('Settings');
+        $link['title'] = dgettext('webpage', 'Settings');
         $tabs['settings'] = $link;
 
         $version = new Version('webpage_volume');
         $unapproved = $version->countUnapproved();
 
-        $link['title'] = sprintf(_('Approval(%s)'), $unapproved);
+        $link['title'] = sprintf(dgettext('webpage', 'Approval(%s)'), $unapproved);
         $tabs['approve'] = $link;
 
         $panel = new PHPWS_Panel('wp_main_panel');
@@ -608,34 +608,34 @@ class Webpage_Admin {
 
         $template['PAGE_TITLE'] = $volume->title;
         $template['SUMMARY']    = $volume->getSummary();
-        $template['SUMMARY_LABEL'] = _('Summary');
+        $template['SUMMARY_LABEL'] = dgettext('webpage', 'Summary');
 
         if (!empty($volume->_pages)) {
             foreach ($volume->_pages as $page) {
                 $subtpl = $page->getTplTags(FALSE, FALSE, $version->id);
-                $subtpl['PAGE_NUMBER_LABEL'] = _('Page');
+                $subtpl['PAGE_NUMBER_LABEL'] = dgettext('webpage', 'Page');
                 $template['multiple'][] = $subtpl;
             }
         } else {
-            $template['PAGE_MESSAGE'] = _('No pages have been created.');
+            $template['PAGE_MESSAGE'] = dgettext('webpage', 'No pages have been created.');
         }
 
         $vars['wp_admin'] = 'approve';
-        $options[] = PHPWS_Text::secureLink(_('Approval list'), 'webpage', $vars);
+        $options[] = PHPWS_Text::secureLink(dgettext('webpage', 'Approval list'), 'webpage', $vars);
 
         $vars['version_id'] = $version->id;
         $vars['volume_id']  = $volume->id;
 
         $vars['wp_admin']   = 'edit_webpage';
-        $options[] = PHPWS_Text::secureLink(_('Edit'), 'webpage', $vars);
+        $options[] = PHPWS_Text::secureLink(dgettext('webpage', 'Edit'), 'webpage', $vars);
 
         if (!$version->vr_approved && Current_User::isUnrestricted('webpage')) {
             $vars['wp_admin']   = 'approve_webpage';
 
-            $options[] = PHPWS_Text::secureLink(_('Approve'), 'webpage', $vars);
+            $options[] = PHPWS_Text::secureLink(dgettext('webpage', 'Approve'), 'webpage', $vars);
 
             $vars['wp_admin'] = 'disapprove_webpage';
-            $options[] = PHPWS_Text::secureLink(_('Disapprove'), 'webpage', $vars);
+            $options[] = PHPWS_Text::secureLink(dgettext('webpage', 'Disapprove'), 'webpage', $vars);
         }
 
 
@@ -730,9 +730,8 @@ class Webpage_Admin {
 
         $form->addCheckbox('add_images', 1);
         $form->setMatch('add_images', PHPWS_Settings::get('webpage', 'add_images'));
-        $form->setLabel('add_images', _('Simple image forms'));
-
-        $form->addSubmit('save', _('Save settings'));
+        $form->setLabel('add_images', dgettext('webpage', 'Simple image forms'));
+        $form->addSubmit('save', dgettext('webpage', 'Save settings'));
         
         $tpl = $form->getTemplate();
         return PHPWS_Template::process($tpl, 'webpage', 'forms/settings.tpl');
