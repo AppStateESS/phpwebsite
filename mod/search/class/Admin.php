@@ -62,7 +62,7 @@ class Search_Admin {
                 PHPWS_Core::goBack();
             }
             Search_Admin::addParseWord($_REQUEST['keyword']);
-            Search_Admin::sendMessage(_('Keywords added to admin menu.'), 'keyword');
+            Search_Admin::sendMessage(dgettext('search', 'Keywords added to admin menu.'), 'keyword');
             break;
 
         case 'drop_keyword':
@@ -189,11 +189,11 @@ class Search_Admin {
                     $vars['key_id'] = $key->id;
                     $link['WORD'] = $vars['kw'] = $keyword;
                     $vars['command'] = 'remove_searchword';
-                    $link['DROP_LINK'] = PHPWS_Text::secureLink(_('Drop'), 'search', $vars);
+                    $link['DROP_LINK'] = PHPWS_Text::secureLink(dgettext('search', 'Drop'), 'search', $vars);
                     $tpl['current-words'][] = $link;
                 }
             }
-            $tpl['CURRENT_TITLE'] = _('Current keywords');
+            $tpl['CURRENT_TITLE'] = dgettext('search', 'Current keywords');
         }
 
 
@@ -202,24 +202,24 @@ class Search_Admin {
                 $link = $vars = NULL;
                 $link['WORD'] = $vars['kw'] = $keyword;
                 $vars['command'] = 'drop_keyword';
-                $link['DROP_LINK'] = PHPWS_Text::secureLink(_('Drop'), 'search', $vars);
+                $link['DROP_LINK'] = PHPWS_Text::secureLink(dgettext('search', 'Drop'), 'search', $vars);
                 
                 if ($on_page) {
                     if (!in_array($keyword, $search->keywords)) {
                         $vars['key_id'] = $key->id;
                         $vars['command'] = 'add_keyword';
-                        $link['ADD_LINK'] = PHPWS_Text::secureLink(_('Add'), 'search', $vars);
+                        $link['ADD_LINK'] = PHPWS_Text::secureLink(dgettext('search', 'Add'), 'search', $vars);
                     }
                 }
                 
                 $tpl['add-words'][] = $link;
             }
-            $tpl['BANK_TITLE'] = _('Clipped words');
+            $tpl['BANK_TITLE'] = dgettext('search', 'Clipped words');
         }
 
-        $tpl['TITLE'] = _('Search Admin');
+        $tpl['TITLE'] = dgettext('search', 'Search Admin');
 
-        $tpl['CLOSE_LINK'] = PHPWS_Text::secureLink(_('Close'), 'search', array('module'=>'search', 'command'=>'close_admin'));
+        $tpl['CLOSE_LINK'] = PHPWS_Text::secureLink(dgettext('search', 'Close'), 'search', array('module'=>'search', 'command'=>'close_admin'));
 
         $content = PHPWS_Template::process($tpl, 'search', 'mini_menu.tpl');
 
@@ -230,7 +230,7 @@ class Search_Admin {
     {
         PHPWS_Core::initCoreClass('DBPager.php');
 
-        $tpl['TITLE'] = _('Keywords');
+        $tpl['TITLE'] = dgettext('search', 'Keywords');
 
         PHPWS_Core::initModClass('search', 'Stats.php');
 
@@ -240,13 +240,13 @@ class Search_Admin {
         $pager->addRowTags('getTplTags');
 
 	$options['keyword'] = '';
-        $options['delete_keyword'] = _('Delete');
+        $options['delete_keyword'] = dgettext('search', 'Delete');
 
         // if entered in search box, remove
-        $options['add_ignore'] = _('Ignore');
+        $options['add_ignore'] = dgettext('search', 'Ignore');
 
         // remember word to add to items
-        $options['add_parse_word'] = _('Clip word');
+        $options['add_parse_word'] = dgettext('search', 'Clip word');
 
         $form = new PHPWS_Form('keywords');
         $form->setMethod('get');
@@ -255,19 +255,19 @@ class Search_Admin {
 
         $template = $form->getTemplate();
 
-        $js_vars['value'] = _('Go');
+        $js_vars['value'] = dgettext('search', 'Go');
         $js_vars['select_id'] = $form->getId('command');
         $js_vars['action_match'] = 'delete_keyword';
-        $js_vars['message'] = _('Are you sure you want to delete the checked item(s)?');
+        $js_vars['message'] = dgettext('search', 'Are you sure you want to delete the checked item(s)?');
         $template['SUBMIT'] = javascript('select_confirm', $js_vars);
         
         $template['CHECK_ALL'] = javascript('check_all', array('checkbox_name' => 'keyword[]'));
-        $template['KEYWORD_LABEL'] = _('Keyword');
-        $template['SUCCESS_LABEL'] = _('Success');
-        $template['FAILURE_LABEL'] = _('Failure');
-        $template['LAST_CALL_DATE_LABEL'] = _('Last called');
-        $template['HIGHEST_RESULT_LABEL'] = _('Highest result');
-        $template['MIXED_LABEL'] = _('Mixed');
+        $template['KEYWORD_LABEL'] = dgettext('search', 'Keyword');
+        $template['SUCCESS_LABEL'] = dgettext('search', 'Success');
+        $template['FAILURE_LABEL'] = dgettext('search', 'Failure');
+        $template['LAST_CALL_DATE_LABEL'] = dgettext('search', 'Last called');
+        $template['HIGHEST_RESULT_LABEL'] = dgettext('search', 'Highest result');
+        $template['MIXED_LABEL'] = dgettext('search', 'Mixed');
         $pager->addPageTags($template);
         $pager->addToggle('class="bgcolor1"');
         $pager->setSearch('keyword');
@@ -283,7 +283,7 @@ class Search_Admin {
     {
         PHPWS_Core::initCoreClass('DBPager.php');
 
-        $tpl['TITLE'] = _('Ignored');
+        $tpl['TITLE'] = dgettext('search', 'Ignored');
 
         PHPWS_Core::initModClass('search', 'Stats.php');
 
@@ -293,10 +293,10 @@ class Search_Admin {
         $pager->addRowTags('getTplTags');
 
 	$options['keyword'] = '';
-        $options['delete_keyword'] = _('Delete');
+        $options['delete_keyword'] = dgettext('search', 'Delete');
 
         // if entered in search box, remove
-        $options['remove_ignore'] = _('Allow');
+        $options['remove_ignore'] = dgettext('search', 'Allow');
 
         $form = new PHPWS_Form;
         $form->setMethod('get');
@@ -305,17 +305,17 @@ class Search_Admin {
 
         $template = $form->getTemplate();
 
-        $js_vars['value'] = _('Go');
+        $js_vars['value'] = dgettext('search', 'Go');
         $js_vars['select_id'] = 'command';
         $js_vars['action_match'] = 'delete_keyword';
-        $js_vars['message'] = _('Are you sure you want to delete the checked item(s)?');
+        $js_vars['message'] = dgettext('search', 'Are you sure you want to delete the checked item(s)?');
 
         $template['SUBMIT'] = javascript('select_confirm', $js_vars);
         
         $template['CHECK_ALL'] = javascript('check_all', array('checkbox_name' => 'keyword[]'));
-        $template['KEYWORD_LABEL'] = _('Keyword');
-        $template['TOTAL_QUERY_LABEL'] = _('Total queries');
-        $template['LAST_CALL_DATE_LABEL'] = _('Last called');
+        $template['KEYWORD_LABEL'] = dgettext('search', 'Keyword');
+        $template['TOTAL_QUERY_LABEL'] = dgettext('search', 'Total queries');
+        $template['LAST_CALL_DATE_LABEL'] = dgettext('search', 'Last called');
         $pager->addPageTags($template);
         $pager->addToggle('class="bgcolor1"');
         $pager->setSearch('keyword');
@@ -341,8 +341,8 @@ class Search_Admin {
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=search';
-        $tab['keyword'] = array ('title'=>_('Keywords'), 'link'=> $link);
-        $tab['ignore'] = array ('title'=>_('Ignore'), 'link'=> $link);
+        $tab['keyword'] = array ('title'=>dgettext('search', 'Keywords'), 'link'=> $link);
+        $tab['ignore'] = array ('title'=>dgettext('search', 'Ignore'), 'link'=> $link);
 
         $panel = new PHPWS_Panel('search');
         $panel->quickSetTabs($tab);

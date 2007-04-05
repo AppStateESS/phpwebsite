@@ -3,14 +3,12 @@
    * @version $Id$
    * @author Matthew McNaney <mcnaney at gmail dot com>
    */
-translate('search');
-$link[] = array('label'       => _('Search'),
+
+$link[] = array('label'       => dgettext('search', 'Search'),
 		'restricted'  => TRUE,
 		'url'         => 'index.php?module=search&amp;tab=keyword',
-		'description' => _('Administrate and see information on searches.'),
+		'description' => dgettext('search', 'Administrate and see information on searches.'),
 		'image'       => 'search.png',
 		'tab'         => 'admin'
 		);
-translate();
-
 ?>

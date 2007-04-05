@@ -41,12 +41,12 @@ class Search_User {
         $form->addHidden('module', 'search');
         $form->addHidden('user', 'search');
         $form->addText('search', SEARCH_DEFAULT);
-        $form->setLabel('search', _('Search'));
+        $form->setLabel('search', dgettext('search', 'Search'));
 
         if (isset($onclick)) {
             $form->setExtra('search', $onclick);
         }
-        $form->addSubmit('go', _('Search'));
+        $form->addSubmit('go', dgettext('search', 'Search'));
 
         $mod_list = Search_User::getModList();
 
@@ -75,7 +75,7 @@ class Search_User {
             $result = NULL;
         }
 
-        $mod_list = array('all'=> _('All modules'));
+        $mod_list = array('all'=> dgettext('search', 'All modules'));
         if (!empty($result)) {
             $mod_list = array_merge($mod_list, $result);
         }
@@ -127,13 +127,13 @@ class Search_User {
         $form->setMethod('get');
         $form->addHidden('module', 'search');
         $form->addHidden('user', 'search');
-        $form->addSubmit(_('Search'));
+        $form->addSubmit(dgettext('search', 'Search'));
         $form->addText('search', $search_phrase);
         $form->setSize('search', 40);
-        $form->setLabel('search', _('Search for:'));
+        $form->setLabel('search', dgettext('search', 'Search for:'));
 
         $form->addCheck('exact_only', 1);
-        $form->setLabel('exact_only', _('Exact matches only'));
+        $form->setLabel('exact_only', dgettext('search', 'Exact matches only'));
         if (isset($_REQUEST['exact_only'])) {
             $exact_match = TRUE;
             $form->setMatch('exact_only', 1);
@@ -143,7 +143,7 @@ class Search_User {
 
         $mod_list = Search_User::getModList();
         $form->addSelect('mod_title', $mod_list);
-        $form->setLabel('mod_title', _('Module list'));
+        $form->setLabel('mod_title', dgettext('search', 'Module list'));
         if (isset($_REQUEST['mod_title'])) {
             $form->setMatch('mod_title', $_REQUEST['mod_title']); 
         }
@@ -153,7 +153,7 @@ class Search_User {
             include($file);
             
             if (!empty($alternate_search_engine) && is_array($alternate_search_engine)) {
-                $alternate_sites['local'] = _('Local');
+                $alternate_sites['local'] = dgettext('search', 'Local');
                 foreach ($alternate_search_engine as $title=>$altSite) {
                     $alternate_sites[$title] = $altSite['title'];
                 }
@@ -172,21 +172,21 @@ class Search_User {
             $module = NULL;
         }
 
-        $template['SEARCH_LOCATION'] = _('Search location');
-        $template['ADVANCED_LABEL'] = _('Advanced Search');
+        $template['SEARCH_LOCATION'] = dgettext('search', 'Search location');
+        $template['ADVANCED_LABEL'] = dgettext('search', 'Advanced Search');
 
         $result = Search_User::getResults($search_phrase, $module, $exact_match);
 
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            $template['SEARCH_RESULTS'] = _('A problem occurred during your search.');
+            $template['SEARCH_RESULTS'] = dgettext('search', 'A problem occurred during your search.');
         } elseif (empty($result)) {
-            $template['SEARCH_RESULTS'] = _('No results found.');
+            $template['SEARCH_RESULTS'] = dgettext('search', 'No results found.');
         } else {
             $template['SEARCH_RESULTS'] = $result;
         }
 
-        $template['SEARCH_RESULTS_LABEL'] = _('Search Results');
+        $template['SEARCH_RESULTS_LABEL'] = dgettext('search', 'Search Results');
 
         $content = PHPWS_Template::process($template, 'search', 'search_page.tpl');
 
@@ -206,8 +206,8 @@ class Search_User {
         PHPWS_Core::initModClass('search', 'Stats.php');
 
         $pageTags = array();
-        $pageTags['MODULE_LABEL'] = _('Module');
-        $pageTags['TITLE_LABEL']    = _('Title');
+        $pageTags['MODULE_LABEL'] = dgettext('search', 'Module');
+        $pageTags['TITLE_LABEL']    = dgettext('search', 'Title');
 
         $ignore = Search_User::getIgnore();
         if (PEAR::isError($ignore)) {
@@ -225,7 +225,7 @@ class Search_User {
             $words_removed = array_intersect($words, $ignore);
 
             if (!empty($words_removed)) {
-                $pageTags['REMOVED_LABEL'] = _('The following search words were ignored');
+                $pageTags['REMOVED_LABEL'] = dgettext('search', 'The following search words were ignored');
                 $pageTags['IGNORED_WORDS'] = implode(' ', $words_removed);
                 foreach ($words_removed as $remove) {
                     $key = array_search($remove, $words);
@@ -265,7 +265,7 @@ class Search_User {
             return null;
         }
 
-        $pager->setEmptyMessage(_('Nothing found'));
+        $pager->setEmptyMessage(dgettext('search', 'Nothing found'));
         $pager->db->setGroupConj(1, 'AND');
 
         if ($module) {

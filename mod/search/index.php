@@ -7,19 +7,16 @@
    * @version $Id$
    */
 
-
 if (!defined('PHPWS_SOURCE_DIR')) {
     include '../../config/core/404.html';
     exit();
 }
 
-translate('search');
 if (isset($_REQUEST['tab']) || isset($_REQUEST['command'])) {
     PHPWS_Core::initModClass('search', 'Admin.php');
     Search_Admin::main();
  } else {
     Search_User::main();
  }
-translate();
 
 ?>
