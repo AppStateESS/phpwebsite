@@ -20,15 +20,15 @@ class Version_Admin {
 
         switch ($command) {
         case 'settings':
-            $title = _('Version settings');
+            $title = dgettext('version', 'Version settings');
             $content = Version_Admin::settings();
             break;
 
         case 'post_setting':
             PHPWS_Settings::set('version', 'saved_versions', $_REQUEST['saved_versions']);
             PHPWS_Settings::save('version');
-            $title = _('Version settings');
-            $message = _('Settings saved.');
+            $title = dgettext('version', 'Version settings');
+            $message = dgettext('version', 'Settings saved.');
             $content = Version_Admin::settings();
             break;
             
@@ -41,10 +41,9 @@ class Version_Admin {
         Layout::add(PHPWS_ControlPanel::display(PHPWS_Template::process($template, 'version', 'main.tpl')));
     }
 
-
     function settings()
     {
-        $versions[0] = _('Keep all versions');
+        $versions[0] = dgettext('version', 'Keep all versions');
         $versions[5] = 5;
         $versions[10] = 10;
         $versions[25] = 25;
@@ -58,13 +57,12 @@ class Version_Admin {
         $form->addSelect('saved_versions', $versions);
         $form->setMatch('saved_versions', $version_number);
 
-        $form->addSubmit(_('Save'));
+        $form->addSubmit(dgettext('version', 'Save'));
         $template = $form->getTemplate();
 
         $content = PHPWS_Template::process($template, 'version', 'settings.tpl');
         return $content;
     }
-
 }
 
 ?>

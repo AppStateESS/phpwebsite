@@ -124,10 +124,10 @@ class Version_Approval {
 
     function getList($restrict_approval=TRUE)
     {
-        translate('version');
+        
         if (!PHPWS_DB::isTable($this->version_table)) {
-            $msg = _('No items for approval.');
-            translate();
+            $msg = dgettext('version', 'No items for approval.');
+            
             return $msg;
         }
 
@@ -143,22 +143,22 @@ class Version_Approval {
         }
 
         if (empty($result)) {
-            $msg =  _('No items for approval.');
-            translate();
+            $msg =  dgettext('version', 'No items for approval.');
+            
             return $msg;
         }
         $temp_count = 0;
         foreach ($result as $app_item) {
             $links = array();
 
-            $row_tpl['CREATE_DATE_LABEL'] = _('Created');
+            $row_tpl['CREATE_DATE_LABEL'] = dgettext('version', 'Created');
             $row_tpl['CREATE_DATE']       = strftime('%c', $app_item['vr_create_date']);
 
-            $row_tpl['AUTHOR_LABEL']      = _('Author');
+            $row_tpl['AUTHOR_LABEL']      = dgettext('version', 'Author');
             if (!empty($app_item['username'])) {
                 $row_tpl['AUTHOR']        = $app_item['username'];
             } else {
-                $row_tpl['AUTHOR']        = _('Anonymous');
+                $row_tpl['AUTHOR']        = dgettext('version', 'Anonymous');
             }
             // prevent the repeat
             unset($app_item['username']);
@@ -199,22 +199,22 @@ class Version_Approval {
             if (!$restrict_approval || !Current_User::isRestricted($this->module)) {
                 $links[] = sprintf('<a href="%s">%s</a>',
                                    $this->approve_url . '&amp;version_id=' . $app_item['id'],
-                                   _('Approve'));
+                                   dgettext('version', 'Approve'));
         
                 $links[] = sprintf('<a href="%s">%s</a>',
                                    $this->disapprove_url . '&amp;version_id=' . $app_item['id'],
-                                   _('Disapprove'));
+                                   dgettext('version', 'Disapprove'));
             }
 
 
             if (isset($this->view_url)) {
                 $links[] = sprintf('<a href="%s">%s</a>',
-                                   $this->view_url . '&amp;version_id=' . $app_item['id'], _('View'));
+                                   $this->view_url . '&amp;version_id=' . $app_item['id'], dgettext('version', 'View'));
             }
 
             if (isset($this->edit_url)) {
                 $links[] = sprintf('<a href="%s">%s</a>',
-                                   $this->edit_url . '&amp;version_id=' . $app_item['id'], _('Edit'));
+                                   $this->edit_url . '&amp;version_id=' . $app_item['id'], dgettext('version', 'Edit'));
             }
 
             if (!empty($links)) {
@@ -224,7 +224,7 @@ class Version_Approval {
             $template['approval-rows'][$temp_count] = $row_tpl;
             $temp_count++;
         }
-        translate();
+        
         return PHPWS_Template::process($template, 'version', $template_file);
     }
 

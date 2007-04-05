@@ -78,20 +78,20 @@ class Version_Restore {
 
     function getList()
     {
-        translate('version');
+        
         if ( !PHPWS_DB::isTable($this->version_table) || empty($this->backup_list) ) {
-            $msg = _('No backup versions available.');
-            translate();
+            $msg = dgettext('version', 'No backup versions available.');
+            
             return $msg;
         }
 
         $temp_count = 0;
         foreach ($this->backup_list as $version) {
             $links = array();
-            $row_tpl['CREATE_DATE_LABEL'] = _('Created');
+            $row_tpl['CREATE_DATE_LABEL'] = dgettext('version', 'Created');
             $row_tpl['CREATE_DATE']       = strftime('%c', $version['vr_create_date']);
 
-            $row_tpl['AUTHOR_LABEL']      = _('Author');
+            $row_tpl['AUTHOR_LABEL']      = dgettext('version', 'Author');
             $row_tpl['AUTHOR']            = $version['username'];
             // prevent the repeat
             unset($version['username']);
@@ -131,11 +131,11 @@ class Version_Restore {
 
             if (Current_User::isUnrestricted($this->module)) {
                 $links[] = sprintf('<a href="%s">%s</a>',
-                                   $this->restore_url . '&amp;version_id=' . $version['id'], _('Restore'));
+                                   $this->restore_url . '&amp;version_id=' . $version['id'], dgettext('version', 'Restore'));
 
-                $jsvars['QUESTION'] = _('Are you sure you want to remove this version?');
+                $jsvars['QUESTION'] = dgettext('version', 'Are you sure you want to remove this version?');
                 $jsvars['ADDRESS']  = $this->remove_url . '&amp;version_id=' . $version['id'];
-                $jsvars['LINK']     = _('Remove');
+                $jsvars['LINK']     = dgettext('version', 'Remove');
                 $links[] = javascript('confirm', $jsvars);
             }
 
@@ -145,17 +145,14 @@ class Version_Restore {
         }
 
         if (empty($template)) {
-            $msg = _('A problem occurred when trying to process the restoration list.');
-            translate();
+            $msg = dgettext('version', 'A problem occurred when trying to process the restoration list.');
+            
             return $msg;
         } else {
-            translate();
+            
             return PHPWS_Template::process($template, 'version', $template_file);
         }
-        
     }
-
 }
-
 
 ?>

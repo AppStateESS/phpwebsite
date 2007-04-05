@@ -42,12 +42,11 @@ function version_unregister($module, &$content)
         $result = PHPWS_DB::dropTable($version_table);
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            $content[] = _('There was an error removing a version table.');
+            $content[] = dgettext('version', 'There was an error removing a version table.');
         } else {
-            $content[] = sprintf(_('Version table removed: %s'), $version_table);
+            $content[] = sprintf(dgettext('version', 'Version table removed: %s'), $version_table);
         }
     }
-
 }
 
 ?>
