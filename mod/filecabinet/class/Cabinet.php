@@ -295,7 +295,7 @@ class Cabinet {
         PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
         $this->loadFolder(IMAGE_FOLDER);
         $this->image_mgr = new FC_Image_Manager;
-        $this->image_mgr->cabinet = $this;
+        $this->image_mgr->cabinet = & $this;
     }
 
     function loadDocumentManager()
@@ -303,7 +303,7 @@ class Cabinet {
         PHPWS_Core::initModClass('filecabinet', 'Document_Manager.php');
         $this->loadFolder(DOCUMENT_FOLDER);
         $this->document_mgr = new FC_Document_Manager;
-        $this->document_mgr->cabinet = $this;
+        $this->document_mgr->cabinet = & $this;
     }
 
     function loadFolder($ftype=IMAGE_FOLDER, $folder_id=0)
@@ -325,7 +325,7 @@ class Cabinet {
     {
         PHPWS_Core::initModClass('filecabinet', 'Forms.php');
         $this->forms = new Cabinet_Form;
-        $this->forms->cabinet = $this;
+        $this->forms->cabinet = & $this;
     }
 
     function passImages()
