@@ -5,6 +5,7 @@ its own separate CHANGELOG file.
 5 April 2007
 + Added German translation files.
 + Further updates to Language.txt documentation
++ Small change in Init to ensure core's default status.
 
 4 April 2007
 + Database - Fixed bug with addTable / changed all booleans to lower

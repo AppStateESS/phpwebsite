@@ -66,7 +66,9 @@ function initializei18n()
         define('PHPWS_TRANSLATION', TRUE);
         initLanguage();
         $core_locale = PHPWS_SOURCE_DIR . 'locale'; 
-        bindtextdomain('messages', $core_locale); 
+
+        bindtextdomain('core', $core_locale); 
+        textdomain('core');
  
         $handle = opendir(PHPWS_SOURCE_DIR . "mod/"); 
  
