@@ -8,7 +8,7 @@
 $link[] = array('label'       => 'Whodis?',
 		'restricted'  => TRUE,
 		'url'         => 'index.php?module=whodis',
-		'description' => _('Records the href referrers from who is visiting your site.'),
+		'description' => dgettext('whodis', 'Records the href referrers from who is visiting your site.'),
 		'image'       => 'whodis.png',
 		'tab'         => 'admin'
 		);

@@ -89,7 +89,7 @@ class Whodis {
             Current_User::disallow();
         }
 
-        translate('whodis');
+        
         if (isset($_REQUEST['op'])) {
             switch ($_REQUEST['op']) {
             case 'purge':
@@ -148,8 +148,8 @@ class Whodis {
         $form->addHidden('op', 'filters_option');
         $form->addText('add_filter');
         $form->setSize('add_filter', 30, 60);
-        $form->addSubmit('add_filter_button', _('Add filter'));
-        $form->addSubmit('delete_checked', _('Delete checked'));
+        $form->addSubmit('add_filter_button', dgettext('whodis', 'Add filter'));
+        $form->addSubmit('delete_checked', dgettext('whodis', 'Delete checked'));
 
         $page_tags = $form->getTemplate();
 
@@ -160,13 +160,13 @@ class Whodis {
         $pager->setSearch('filter');
 
         $vars['op'] = 'list';
-        $links[] = PHPWS_Text::moduleLink(_('Referrers'), 'whodis', $vars);
+        $links[] = PHPWS_Text::moduleLink(dgettext('whodis', 'Referrers'), 'whodis', $vars);
 
         $vars['op'] = 'filters';
-        $links[] = PHPWS_Text::moduleLink(_('Filters'), 'whodis', $vars);
+        $links[] = PHPWS_Text::moduleLink(dgettext('whodis', 'Filters'), 'whodis', $vars);
 
         $page_tags['ADMIN_LINKS']  = implode(' | ', $links);
-        $page_tags['FILTER_LABEL'] = _('Filters');
+        $page_tags['FILTER_LABEL'] = dgettext('whodis', 'Filters');
 
         $limits[4]  = 10;
         $limits[9]  = 25;
@@ -196,23 +196,23 @@ class Whodis {
         $form = new PHPWS_Form('purge');
         $form->addHidden('module', 'whodis');
         $form->addHidden('op', 'purge');
-        $days = array(0     => _('- Referrer age -'),
-                      1     => _('1 day old'),
-                      3     => _('3 days old'),
-                      7     => _('1 week old'),
-                      14    => _('2 weeks old'),
-                      30    => _('1 month old'),
-                      90    => _('3 months old'),
-                      365   => _('1 year old'),
-                      'all' => _('Everything'));
+        $days = array(0     => dgettext('whodis', '- Referrer age -'),
+                      1     => dgettext('whodis', '1 day old'),
+                      3     => dgettext('whodis', '3 days old'),
+                      7     => dgettext('whodis', '1 week old'),
+                      14    => dgettext('whodis', '2 weeks old'),
+                      30    => dgettext('whodis', '1 month old'),
+                      90    => dgettext('whodis', '3 months old'),
+                      365   => dgettext('whodis', '1 year old'),
+                      'all' => dgettext('whodis', 'Everything'));
 
         $form->addSelect('days_old', $days);
 
         $form->addText('visit_limit');
         $form->setSize('visit_limit', 4, 4);
-        $form->addSubmit(_('Purge'));
-        $form->setLabel('visit_limit', _('Visits'));
-        $form->addSubmit('delete_checked', _('Delete checked'));
+        $form->addSubmit(dgettext('whodis', 'Purge'));
+        $form->setLabel('visit_limit', dgettext('whodis', 'Visits'));
+        $form->addSubmit('delete_checked', dgettext('whodis', 'Delete checked'));
 
         $page_tags = $form->getTemplate();
 
@@ -224,16 +224,16 @@ class Whodis {
         $pager->setSearch('url');
 
         $vars['op'] = 'list';
-        $links[] = PHPWS_Text::moduleLink(_('Referrers'), 'whodis', $vars);
+        $links[] = PHPWS_Text::moduleLink(dgettext('whodis', 'Referrers'), 'whodis', $vars);
 
         $vars['op'] = 'filters';
-        $links[] = PHPWS_Text::moduleLink(_('Filters'), 'whodis', $vars);
+        $links[] = PHPWS_Text::moduleLink(dgettext('whodis', 'Filters'), 'whodis', $vars);
         $page_tags['ADMIN_LINKS']   = implode(' | ', $links);
 
-        $page_tags['URL_LABEL']     = _('Referrer');
-        $page_tags['CREATED_LABEL'] = _('First visit');
-        $page_tags['UPDATED_LABEL'] = _('Last visit');
-        $page_tags['VISITS_LABEL']  = _('Total visits');
+        $page_tags['URL_LABEL']     = dgettext('whodis', 'Referrer');
+        $page_tags['CREATED_LABEL'] = dgettext('whodis', 'First visit');
+        $page_tags['UPDATED_LABEL'] = dgettext('whodis', 'Last visit');
+        $page_tags['VISITS_LABEL']  = dgettext('whodis', 'Total visits');
 
         $limits[4]  = 10;
         $limits[9]  = 25;
