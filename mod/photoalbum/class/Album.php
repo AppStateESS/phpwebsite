@@ -128,8 +128,8 @@ class PHPWS_Album extends PHPWS_Item {
         }
 
    
-        $options = array(0=>_('Visible'),
-                         1=>_('Hidden'));
+        $options = array(0=>dgettext('photoalbum', 'Visible'),
+                         1=>dgettext('photoalbum', 'Hidden'));
 
         $hidden = 0;
         if($this->isHidden()) {
@@ -155,7 +155,7 @@ class PHPWS_Album extends PHPWS_Item {
         $form->setTab('Album_ext', 4);
         $form->useEditor('Album_ext');
 
-        $form->add('Album_save', 'submit', _('Save'));
+        $form->add('Album_save', 'submit', dgettext('photoalbum', 'Save'));
         $form->setTab('Album_save', 5);
  
         $form->add('module', 'hidden', 'photoalbum');
@@ -164,20 +164,20 @@ class PHPWS_Album extends PHPWS_Item {
         $tags = array();
         $tags = $form->getTemplate();
 
-        $tags['NAME_TEXT'] = _('Name');
-        $tags['SHORT_TEXT'] = _('Short');
-        $tags['HIDDEN_TEXT'] = _('Activity');
-        $tags['EXT_TEXT'] = _('Extended');
+        $tags['NAME_TEXT'] = dgettext('photoalbum', 'Name');
+        $tags['SHORT_TEXT'] = dgettext('photoalbum', 'Short');
+        $tags['HIDDEN_TEXT'] = dgettext('photoalbum', 'Activity');
+        $tags['EXT_TEXT'] = dgettext('photoalbum', 'Extended');
 
         $id = $this->getId();
         if(isset($id)) {
-            $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=view">' . _('Back') . '</a>';
+            $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=view">' . dgettext('photoalbum', 'Back') . '</a>';
 
             if(Current_User::allow('photoalbum', 'delete_album')) {
-                $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=delete">' . _('Delete Album') . '</a>';
+                $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=delete">' . dgettext('photoalbum', 'Delete Album') . '</a>';
             }
         } else {
-            $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_AlbumManager_op=list">' . _('Back') . '</a>';
+            $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_AlbumManager_op=list">' . dgettext('photoalbum', 'Back') . '</a>';
         }
 
         $tags['LINKS'] = implode('&#160;|&#160;', $links);
@@ -224,7 +224,7 @@ class PHPWS_Album extends PHPWS_Item {
         }
 
         if(PHPWS_Error::isError($error)) {
-            $message =  _('You must enter a name for the Photo Album.');
+            $message =  dgettext('photoalbum', 'You must enter a name for the Photo Album.');
             javascript('alert', array('content' => $message));
             $_REQUEST['PHPWS_Album_op'] = 'edit';
             $this->action();
@@ -233,7 +233,7 @@ class PHPWS_Album extends PHPWS_Item {
 
         $error = $this->commit();
         if(PHPWS_Error::isError($error)) {
-            $message = _('The Photo Album could not be updated to the database.');
+            $message = dgettext('photoalbum', 'The Photo Album could not be updated to the database.');
             javascript('alert', array('content' => $message));
      
             $_REQUEST['PHPWS_Album_op'] = 'edit';
@@ -245,11 +245,11 @@ class PHPWS_Album extends PHPWS_Item {
             $directory = PHOTOALBUM_DIR . $this->getId() . '/';
 
             if(!is_dir($directory) && !@mkdir($directory)) {
-                $message = _('The photo album image directory could not be created.');
+                $message = dgettext('photoalbum', 'The photo album image directory could not be created.');
                 PHPWS_Error::log(PHOTOALBUM_NO_DIRECTORY, 'photoalbum', 'PHPWS_Album::_save', $directory);
                 $_REQUEST['PHPWS_Album_op'] = 'edit';
             } else {
-                $message = sprintf(_('The Photo Album "%s" was successfully saved.'), $this->getLabel());
+                $message = sprintf(dgettext('photoalbum', 'The Photo Album "%s" was successfully saved.'), $this->getLabel());
                 $_REQUEST['PHPWS_Album_op'] = 'view';
             }
 
@@ -275,7 +275,7 @@ class PHPWS_Album extends PHPWS_Item {
 
             PHPWS_File::rmdir('images/photoalbum/' . $this->getId() . '/');
 
-            $message = sprintf(_('The album %s and all its photos were successfully deleted from the database.'), '<b><i>' . $this->getLabel() . '</i></b>');
+            $message = sprintf(dgettext('photoalbum', 'The album %s and all its photos were successfully deleted from the database.'), '<b><i>' . $this->getLabel() . '</i></b>');
             javascript('alert', array('content' => $message));
             Layout::add($message);
 
@@ -284,29 +284,29 @@ class PHPWS_Album extends PHPWS_Item {
             unset($this);
 
         } else if(isset($_REQUEST['Album_no'])) {
-            $message = _('No album was deleted from the database.');
+            $message = dgettext('photoalbum', 'No album was deleted from the database.');
             $_SESSION['PHPWS_AlbumManager']->message = $message;
 
             $_REQUEST['PHPWS_Album_op'] = 'view';
             $_SESSION['PHPWS_AlbumManager']->album->action();
 
         } else {
-            $title = _('Delete Album Confirmation');
+            $title = dgettext('photoalbum', 'Delete Album Confirmation');
 
             $form = new PHPWS_Form('PHPWS_Album_delete');
             $form->add('module', 'hidden', 'photoalbum');
             $form->add('PHPWS_Album_op', 'hidden', 'delete');
 
-            $form->add('Album_yes', 'submit', _('Yes'));
-            $form->add('Album_no', 'submit', _('No'));
+            $form->add('Album_yes', 'submit', dgettext('photoalbum', 'Yes'));
+            $form->add('Album_no', 'submit', dgettext('photoalbum', 'No'));
       
             $tags = array();
             $tags = $form->getTemplate();
-            $tags['MESSAGE'] = _('Are you sure you want to delete this album and all the photos associated with it?');
+            $tags['MESSAGE'] = dgettext('photoalbum', 'Are you sure you want to delete this album and all the photos associated with it?');
       
             $content = PHPWS_Template::processTemplate($tags, 'photoalbum', 'deleteAlbum.tpl');
 
-            $newLayout['TITLE']   = _('Photo Album') . ':&#160;' . $_SESSION['PHPWS_AlbumManager']->album->getLabel();
+            $newLayout['TITLE']   = dgettext('photoalbum', 'Photo Album') . ':&#160;' . $_SESSION['PHPWS_AlbumManager']->album->getLabel();
             $newLayout['CONTENT'] = "<h3>$title</h3>$content";
             $newLayout['CONTENT'] .= $this->_view();
       
@@ -330,7 +330,7 @@ class PHPWS_Album extends PHPWS_Item {
         $pager = new DBPager('mod_photoalbum_photos');
         $pager->setModule('photoalbum');
         $pager->setTemplate('photos/list.tpl');
-        $pager->setEmptyMessage(_('No photos found.'));
+        $pager->setEmptyMessage(dgettext('photoalbum', 'No photos found.'));
         $pager->setDefaultLimit(9);
         $pager->addWhere('album', $id);
         if (isset($_REQUEST['missing_desc']) && Current_User::allow('photoalbum', 'edit_photo')) {
@@ -346,11 +346,11 @@ class PHPWS_Album extends PHPWS_Item {
         $pager->setLimitList($limits);
 
         if ($this->isHidden()) {
-            $listTags['HIDDEN_INFO'] = _('This album is currently hidden from the public.');
+            $listTags['HIDDEN_INFO'] = dgettext('photoalbum', 'This album is currently hidden from the public.');
         }
         $listTags['ALBUM_LINKS'] = implode('&#160;|&#160;', $this->getAlbumLinks());
-        $listTags['ORDER_LABEL'] = _('Order By');
-        $listTags['FIRST_LABEL'] = _('First');
+        $listTags['ORDER_LABEL'] = dgettext('photoalbum', 'Order By');
+        $listTags['FIRST_LABEL'] = dgettext('photoalbum', 'First');
         $listTags['BLURB0'] = PHPWS_Text::parseOutput($this->_blurb0);
         $listTags['BLURB1'] = PHPWS_Text::parseOutput($this->_blurb1);
         $listTags['CREATED'] = $this->getCreated();
@@ -365,12 +365,12 @@ class PHPWS_Album extends PHPWS_Item {
 
         if($pager->orderby_dir == 'desc') {
             $link_val['orderby_dir'] = 'asc';
-            $listTags['ASC_ORDER_LINK'] = PHPWS_Text::moduleLink(_('Oldest'), 'photoalbum', $link_val);
-            $listTags['DESC_ORDER_LINK'] = _('Newest');
+            $listTags['ASC_ORDER_LINK'] = PHPWS_Text::moduleLink(dgettext('photoalbum', 'Oldest'), 'photoalbum', $link_val);
+            $listTags['DESC_ORDER_LINK'] = dgettext('photoalbum', 'Newest');
         } else {
             $link_val['orderby_dir'] = 'desc';
-            $listTags['DESC_ORDER_LINK'] = PHPWS_Text::moduleLink(_('Newest'), 'photoalbum', $link_val);
-            $listTags['ASC_ORDER_LINK'] = _('Oldest');
+            $listTags['DESC_ORDER_LINK'] = PHPWS_Text::moduleLink(dgettext('photoalbum', 'Newest'), 'photoalbum', $link_val);
+            $listTags['ASC_ORDER_LINK'] = dgettext('photoalbum', 'Oldest');
         }
 
         $pager->addPageTags($listTags);
@@ -390,7 +390,7 @@ class PHPWS_Album extends PHPWS_Item {
         $id = $this->getId();
         $authorize = TRUE;
         if(!Current_User::allow('photoalbum', 'add_photo')) {
-            $message = _('You do not have permission to add photos within an album.');
+            $message = dgettext('photoalbum', 'You do not have permission to add photos within an album.');
             $authorize = FALSE;
         }
 
@@ -419,8 +419,8 @@ class PHPWS_Album extends PHPWS_Item {
 
         $form->add('Num_forms', 'select', $uploads);
         $form->setMatch('Num_forms', $numForms);
-        $form->add('Photos_update', 'submit', _('Update'));
-        $form->add('Photos_save', 'submit', _('Save'));
+        $form->add('Photos_update', 'submit', dgettext('photoalbum', 'Update'));
+        $form->add('Photos_save', 'submit', dgettext('photoalbum', 'Save'));
         $form->add('module', 'hidden', 'photoalbum');
         $form->add('PHPWS_Album_op', 'hidden', 'batchSave');
         $form->setEncode(TRUE);
@@ -428,18 +428,18 @@ class PHPWS_Album extends PHPWS_Item {
         $formTags = array();
         $formTags = $form->getTemplate();
 
-        $formTags['BACK_LINK'] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=view">' . _('Back to album') . '</a>';
-        $formTags['NUM_FORMS_TEXT'] = _('Number of photos (select before uploading)');
+        $formTags['BACK_LINK'] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=view">' . dgettext('photoalbum', 'Back to album') . '</a>';
+        $formTags['NUM_FORMS_TEXT'] = dgettext('photoalbum', 'Number of photos (select before uploading)');
         $formTags['PHOTO_FORMS'] = '';
 
-        $options = array(0=>_('Visible'),
-                         1=>_('Hidden'));
+        $options = array(0=>dgettext('photoalbum', 'Visible'),
+                         1=>dgettext('photoalbum', 'Hidden'));
 
         $tags = array();
-        $tags['PHOTO_TEXT'] = _('Upload Image');
-        $tags['SHORT_TEXT'] = _('Short');
-        $tags['HIDDEN_TEXT'] = _('Activity');
-        $tags['PHOTO_NUMBER_TEXT'] = _('Photo Number');
+        $tags['PHOTO_TEXT'] = dgettext('photoalbum', 'Upload Image');
+        $tags['SHORT_TEXT'] = dgettext('photoalbum', 'Short');
+        $tags['HIDDEN_TEXT'] = dgettext('photoalbum', 'Activity');
+        $tags['PHOTO_NUMBER_TEXT'] = dgettext('photoalbum', 'Photo Number');
 
         for($i = 0; $i < $numForms; $i++) {      
             if(isset($this->_batch[$i]['error'])) {
@@ -558,32 +558,32 @@ class PHPWS_Album extends PHPWS_Item {
                         }
                     } else {
                         $error = TRUE;
-                        $this->_batch[$key]['error'] = _('The image uploaded was not an allowed image type.');
+                        $this->_batch[$key]['error'] = dgettext('photoalbum', 'The image uploaded was not an allowed image type.');
                     }
                 } else {
                     $error = TRUE;
-                    $this->_batch[$key]['error'] = _('There was a problem uploading the specified file.');
+                    $this->_batch[$key]['error'] = dgettext('photoalbum', 'There was a problem uploading the specified file.');
                 }
 
                 if(!(strlen($this->_batch[$key]['label']) > 0)) {
                     $error = TRUE;
-                    $this->_batch[$key]['error'] = _('A file was uploaded but no short description was given.');
+                    $this->_batch[$key]['error'] = dgettext('photoalbum', 'A file was uploaded but no short description was given.');
                 }
             } else if($value == 4) {
                 if(!(isset($this->_batch[$key]['name']) && (strlen($this->_batch[$key]['label']) > 0))) {
                     $error = TRUE;
                     if(strlen($this->_batch[$key]['label']) > 0) {
-                        $this->_batch[$key]['error'] = _('A short description was added but no file was uploaded.');
+                        $this->_batch[$key]['error'] = dgettext('photoalbum', 'A short description was added but no file was uploaded.');
                     } else if(isset($this->_batch[$key]['name'])) {
-                        $this->_batch[$key]['error'] = _('A file was uploaded but no short description was given.');
+                        $this->_batch[$key]['error'] = dgettext('photoalbum', 'A file was uploaded but no short description was given.');
                     } else {
-                        $this->_batch[$key]['error'] = _('No file was uploaded and no short description was given.');
+                        $this->_batch[$key]['error'] = dgettext('photoalbum', 'No file was uploaded and no short description was given.');
                     }
                 }
             } else {
                 $error = TRUE;
                 if($value != 4) {
-                    $this->_batch[$key]['error'] = _('The uploaded file exceeded the max file size allowed.');
+                    $this->_batch[$key]['error'] = dgettext('photoalbum', 'The uploaded file exceeded the max file size allowed.');
                 }
             }
         }
@@ -691,7 +691,7 @@ class PHPWS_Album extends PHPWS_Item {
                 break;
         
             case 'edit':
-                $title = _('Edit Album');
+                $title = dgettext('photoalbum', 'Edit Album');
                 $content = $this->_edit();
                 break;
         
@@ -704,7 +704,7 @@ class PHPWS_Album extends PHPWS_Item {
                 break;
         
             case 'view':
-                $title = _('Photo Album') . ': ' . $this->getLabel();
+                $title = dgettext('photoalbum', 'Photo Album') . ': ' . $this->getLabel();
                 $content = $this->_view();
                 break;
         
@@ -713,7 +713,7 @@ class PHPWS_Album extends PHPWS_Item {
                     Current_User::disallow();
                 }
 
-                $title = _('Batch Add Photos');
+                $title = dgettext('photoalbum', 'Batch Add Photos');
                 $content = $this->_batchAdd();
                 break;
         
@@ -722,7 +722,7 @@ class PHPWS_Album extends PHPWS_Item {
                 break;
         
             case 'slideShow':
-                $title = _('Slide Show');
+                $title = dgettext('photoalbum', 'Slide Show');
                 $content = $this->_slideShow();
                 break;
             }
@@ -748,22 +748,22 @@ class PHPWS_Album extends PHPWS_Item {
     function getAlbumLinks()
     {
         if(Current_User::allow('photoalbum', 'add_photo')) {
-            $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=new">' . _('New Photo') . '</a>';
-            $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=batch">' . _('Batch Add') . '</a>';
+            $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=new">' . dgettext('photoalbum', 'New Photo') . '</a>';
+            $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=batch">' . dgettext('photoalbum', 'Batch Add') . '</a>';
         }
         
-        $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_AlbumManager_op=list">' . _('List Albums') . '</a>';
+        $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_AlbumManager_op=list">' . dgettext('photoalbum', 'List Albums') . '</a>';
         
         $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=slideShow">' . 
-            _('Slide Show') . '</a>';
+            dgettext('photoalbum', 'Slide Show') . '</a>';
         
         if(Current_User::allow('photoalbum', 'edit_album')) {
             if (!isset($_REQUEST['missing_desc'])) {
-                $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=view&amp;missing_desc=1">' . _('Missing Descriptions') . '</a>';
+                $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=view&amp;missing_desc=1">' . dgettext('photoalbum', 'Missing Descriptions') . '</a>';
             } else {
-                $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=view">' . _('All photos') . '</a>';
+                $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=view">' . dgettext('photoalbum', 'All photos') . '</a>';
             }
-            $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=edit">' . _('Settings') . '</a>';
+            $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=edit">' . dgettext('photoalbum', 'Settings') . '</a>';
         }
         return $links;
     }

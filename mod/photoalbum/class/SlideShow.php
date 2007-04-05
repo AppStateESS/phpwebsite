@@ -72,38 +72,38 @@ class SlideShow {
         $jsTags['IMAGE_BLURBS'] = substr($blurbs, 0, -2);
         $jsTags['IMAGE_HEIGHTS'] = substr($heights, 0, -2);
         $jsTags['IMAGE_WIDTHS'] = substr($widths, 0, -2);
-        $jsTags['PAUSE_TEXT'] = _('Stop Show');
-        $jsTags['PLAY_TEXT'] = _('Start Show');
+        $jsTags['PAUSE_TEXT'] = dgettext('photoalbum', 'Stop Show');
+        $jsTags['PLAY_TEXT'] = dgettext('photoalbum', 'Start Show');
         $tags['QUIT_SLIDESHOW'] = sprintf('<a href="./index.php?module=photoalbum&amp;PHPWS_Album_op=view&amp;PHPWS_Album_id=%s">%s</a>',
                                           $_SESSION['PHPWS_AlbumManager']->album->_id,
-                                          _('Back to Album'));
+                                          dgettext('photoalbum', 'Back to Album'));
     
-        $speedOptions = array('2000'  =>_('Two Seconds'),
-                              '3000'  =>_('Three Seconds'),
-                              '5000'  =>_('Five Seconds'),
-                              '7000'  =>_('Seven Seconds'),
-                              '10000' =>_('Ten Seconds'),
-                              '30000' =>_('Thirty Seconds'),
-                              '60000' =>_('One Minute'),
-                              '120000'=>_('Two Minutes'));
+        $speedOptions = array('2000'  =>dgettext('photoalbum', 'Two Seconds'),
+                              '3000'  =>dgettext('photoalbum', 'Three Seconds'),
+                              '5000'  =>dgettext('photoalbum', 'Five Seconds'),
+                              '7000'  =>dgettext('photoalbum', 'Seven Seconds'),
+                              '10000' =>dgettext('photoalbum', 'Ten Seconds'),
+                              '30000' =>dgettext('photoalbum', 'Thirty Seconds'),
+                              '60000' =>dgettext('photoalbum', 'One Minute'),
+                              '120000'=>dgettext('photoalbum', 'Two Minutes'));
     
-        $ieFilters = array('blendTrans(duration=1)' => _('Fade'),
-                           'revealTrans(duration=1, transition=0)' => _('Box In'),
-                           'revealTrans( transition=1, duration=1)' => _('Box Out'),
-                           'progid:DXImageTransform.Microsoft.Pixelate(duration=3)' => _('Pixellate'),
-                           'revealTrans(duration=1, transition=2)' => _('Circle In'),
-                           'revealTrans(duration=1, transition=3)' => _('Circle Out'),
-                           'revealTrans(duration=1, transition=10)' => _('Horizontal Checkerboard'),
-                           'revealTrans(duration=1, transition=11)' => _('Vertical Checkerboard'),
-                           'revealTrans(duration=1, transition=12)' => _('Dissolve'),
-                           'revealTrans(duration=1, transition=4)' => _('Wipe Up'),
-                           'progid:DXImageTransform.Microsoft.gradientWipe(duration=1)' => _('Gradient Wipe'),
-                           'progid:DXImageTransform.Microsoft.Spiral(duration=3, GridSizeX=205, GridSizeY=205)' => _('Spiral'),
-                           'progid:DXImageTransform.Microsoft.Wheel((duration=3, spokes=10)' => _('Wheel'),
-                           'progid:DXImageTransform.Microsoft.RadialWipe(duration=3)' => _('Radial Wipe'),
-                           'progid:DXImageTransform.Microsoft.Iris((duration=3)' => _('Iris'),
-                           'revealTrans(duration=3, transition=20)' => _('Strips'),
-                           'revealTrans(duration=3, transition=14)' => _('Barn'));
+        $ieFilters = array('blendTrans(duration=1)' => dgettext('photoalbum', 'Fade'),
+                           'revealTrans(duration=1, transition=0)' => dgettext('photoalbum', 'Box In'),
+                           'revealTrans( transition=1, duration=1)' => dgettext('photoalbum', 'Box Out'),
+                           'progid:DXImageTransform.Microsoft.Pixelate(duration=3)' => dgettext('photoalbum', 'Pixellate'),
+                           'revealTrans(duration=1, transition=2)' => dgettext('photoalbum', 'Circle In'),
+                           'revealTrans(duration=1, transition=3)' => dgettext('photoalbum', 'Circle Out'),
+                           'revealTrans(duration=1, transition=10)' => dgettext('photoalbum', 'Horizontal Checkerboard'),
+                           'revealTrans(duration=1, transition=11)' => dgettext('photoalbum', 'Vertical Checkerboard'),
+                           'revealTrans(duration=1, transition=12)' => dgettext('photoalbum', 'Dissolve'),
+                           'revealTrans(duration=1, transition=4)' => dgettext('photoalbum', 'Wipe Up'),
+                           'progid:DXImageTransform.Microsoft.gradientWipe(duration=1)' => dgettext('photoalbum', 'Gradient Wipe'),
+                           'progid:DXImageTransform.Microsoft.Spiral(duration=3, GridSizeX=205, GridSizeY=205)' => dgettext('photoalbum', 'Spiral'),
+                           'progid:DXImageTransform.Microsoft.Wheel((duration=3, spokes=10)' => dgettext('photoalbum', 'Wheel'),
+                           'progid:DXImageTransform.Microsoft.RadialWipe(duration=3)' => dgettext('photoalbum', 'Radial Wipe'),
+                           'progid:DXImageTransform.Microsoft.Iris((duration=3)' => dgettext('photoalbum', 'Iris'),
+                           'revealTrans(duration=3, transition=20)' => dgettext('photoalbum', 'Strips'),
+                           'revealTrans(duration=3, transition=14)' => dgettext('photoalbum', 'Barn'));
     
         $form = new PHPWS_Form;
         $form->addSelect('adjustSpeedField', $speedOptions);
@@ -139,14 +139,14 @@ class SlideShow {
         $get_var["SS_mode"] = "nojsmode";
 
         $tags["LOW_TECH_LINK"] .= PHPWS_Text::moduleLink($linkText, 'photoalbum', $get_var);
-        $tags["LOW_TECH_LINK"] .= _(' mode.');
+        $tags["LOW_TECH_LINK"] .= dgettext('photoalbum', ' mode.');
     
         $jsContent = PHPWS_Template::processTemplate($jsTags, 'photoalbum', 'slideshow/js.tpl');
     
         Layout::addJSHeader($jsContent);
 
         if(count($photos) == 0) {
-            $tags['DEFAULT_TITLE'] = _('Album Contains No Photos');
+            $tags['DEFAULT_TITLE'] = dgettext('photoalbum', 'Album Contains No Photos');
         }
         else {
             $tags['IMAGE'] = ' ';

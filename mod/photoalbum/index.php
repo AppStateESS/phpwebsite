@@ -9,7 +9,7 @@
 if(!defined('PHPWS_SOURCE_DIR')) {
     exit();
  }
-translate('photoalbum');
+
 $CNT_photoalbum['content'] = NULL;
 
 
@@ -32,5 +32,5 @@ if(isset($_REQUEST['module']) && ($_REQUEST['module'] != 'photoalbum')) {
     unset($_SESSION['PHPWS_AlbumManager']);
  }
 
-translate();
+
 ?>

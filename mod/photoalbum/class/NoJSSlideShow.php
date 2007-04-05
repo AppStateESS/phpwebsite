@@ -122,7 +122,7 @@ class NoJSSlideShow {
             if($this->mode == 'switched')
                 $get_var['SS_mode'] = 'nojsmode';
 
-            $linkText = _('Previous');
+            $linkText = dgettext('photoalbum', 'Previous');
 
             $tags['PREVIOUS'] =
                 PHPWS_Text::moduleLink($linkImage, 'photoalbum', $get_var) . '&nbsp;' .
@@ -131,7 +131,7 @@ class NoJSSlideShow {
 
         if($this->indexNotAtEnd()) {
             $address = './index.php';
-            $linkText = _('Next');
+            $linkText = dgettext('photoalbum', 'Next');
             $linkImage = " <img border='0' src='images/mod/photoalbum/forward_arrow.jpg' />";
 
             $get_var['PHPWS_Album_op'] = 'slideShow';
@@ -148,21 +148,21 @@ class NoJSSlideShow {
         $tags['IMAGE_SRC'] = $this->filenames[$this->index];
         $tags['IMAGE_NAME'] = $this->names[$this->index];
         $tags['IMAGE_BLURB'] = $this->descriptions[$this->index];
-        $tags['IMAGE_INDEX_INFO'] = _('Image ') .
-            ($this->index + 1) . ' ' . _('of') . ' '.$this->max_images;
+        $tags['IMAGE_INDEX_INFO'] = dgettext('photoalbum', 'Image ') .
+            ($this->index + 1) . ' ' . dgettext('photoalbum', 'of') . ' '.$this->max_images;
         $tags['IMAGE_WIDTH'] = $this->widths[$this->index];
         $tags['IMAGE_HEIGHT'] = $this->heights[$this->index];
 
         if($this->mode == 'switched') {
-            $tags['HIGH_TECH_LINK'] = _('Return to ');
+            $tags['HIGH_TECH_LINK'] = dgettext('photoalbum', 'Return to ');
 
             $address = './index.php';
-            $linkText = _('high tech');
+            $linkText = dgettext('photoalbum', 'high tech');
             $get_var['PHPWS_Album_op'] = 'slideShow';
 
             $tags['HIGH_TECH_LINK'] .= PHPWS_Text::moduleLink($linkText, 'photoalbum', $get_var);
 
-            $tags['HIGH_TECH_LINK'] .= _(' mode.');
+            $tags['HIGH_TECH_LINK'] .= dgettext('photoalbum', ' mode.');
         }
 
         return PHPWS_Template::processTemplate($tags, 'photoalbum',

@@ -49,7 +49,7 @@ class PHPWS_AlbumManager {
         }
 
         PHPWS_Core::initCoreClass('DBPager.php');
-        $template['TITLE'] = _('Photo Albums');
+        $template['TITLE'] = dgettext('photoalbum', 'Photo Albums');
         $template['CONTENT'] = NULL;
 
         $pager = new DBPager('mod_photoalbum_albums');
@@ -57,17 +57,17 @@ class PHPWS_AlbumManager {
         $pager->setTemplate('albums/list.tpl');
 
         if(Current_User::allow('photoalbum', 'add_album')) {
-            $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_AlbumManager_op=new">' . _('New Album') . '</a>';
+            $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_AlbumManager_op=new">' . dgettext('photoalbum', 'New Album') . '</a>';
         }
 
-        $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_AlbumManager_op=list">' . _('List Albums') . '</a>';
+        $links[] = '<a href="./index.php?module=photoalbum&amp;PHPWS_AlbumManager_op=list">' . dgettext('photoalbum', 'List Albums') . '</a>';
 
         $pageTags['LINKS']         = implode(' | ', $links);
-        $pageTags['IMAGE_LABEL']   = _('Last image');
-        $pageTags['LABEL_LABEL']   = _('Album name');
-        $pageTags['BLURB_LABEL']   = _('Information');
-        $pageTags['UPDATED_LABEL'] = _('Last updated');
-        $pageTags['ACTION_LABEL']  = _('Action');
+        $pageTags['IMAGE_LABEL']   = dgettext('photoalbum', 'Last image');
+        $pageTags['LABEL_LABEL']   = dgettext('photoalbum', 'Album name');
+        $pageTags['BLURB_LABEL']   = dgettext('photoalbum', 'Information');
+        $pageTags['UPDATED_LABEL'] = dgettext('photoalbum', 'Last updated');
+        $pageTags['ACTION_LABEL']  = dgettext('photoalbum', 'Action');
 
         $pager->addPageTags($pageTags);
         $pager->addRowFunction(array('PHPWS_Album', 'AlbumRow'));
@@ -77,7 +77,7 @@ class PHPWS_AlbumManager {
         }
 
         $pager->setOrder('updated', 'DESC');
-        $pager->setEmptyMessage(_('No albums found.'));
+        $pager->setEmptyMessage(dgettext('photoalbum', 'No albums found.'));
         $content = $pager->get();
 
         Layout::add($content);
@@ -90,10 +90,10 @@ class PHPWS_AlbumManager {
 
     function _accessDenied() {
         if(PHPWS_Error::isError($this->error)) {
-            $this->error->message('CNT_photoalbum', _('Access Denied!'));
+            $this->error->message('CNT_photoalbum', dgettext('photoalbum', 'Access Denied!'));
             $this->error = NULL;
         } else {
-            $message = _('Access denied function was called without a proper error initialized.');
+            $message = dgettext('photoalbum', 'Access denied function was called without a proper error initialized.');
             $error = new PHPWS_Error('photoalbum', 'PHPWS_AlbumManager::_accessDenied()', $message, 'exit', 1);
             $error->message();
         }

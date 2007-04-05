@@ -6,13 +6,13 @@
  */
 
 /* Labels */
-$label     = _('Name');
-$editor    = _('Editor');
-$updated   = _('Updated');
-$desc      = _('Description');
-$thumbnail = _('Thumbnail');
-$short     = _('Short');
-$hidden    = _('Hidden');
+$label     = dgettext('photoalbum', 'Name');
+$editor    = dgettext('photoalbum', 'Editor');
+$updated   = dgettext('photoalbum', 'Updated');
+$desc      = dgettext('photoalbum', 'Description');
+$thumbnail = dgettext('photoalbum', 'Thumbnail');
+$short     = dgettext('photoalbum', 'Short');
+$hidden    = dgettext('photoalbum', 'Hidden');
 
 $lists = array('albums'     => 'approved=\'1\'',
 	       'description'=> 'blurb IS NULL OR blurb=\'\'');
