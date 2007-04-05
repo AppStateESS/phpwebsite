@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+5 April 2007
++ Added German translation files.
++ Further updates to Language.txt documentation
+
 4 April 2007
 + Database - Fixed bug with addTable / changed all booleans to lower
              case

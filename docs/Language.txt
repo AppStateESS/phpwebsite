@@ -19,37 +19,33 @@ Getting started
 ---------------------------------------------------------------------
 
 As you are writing, you will need to indicate which code portions need
-translating. You do this with the gettext function:
+translating. You do this with the dgettext function:
 
-echo gettext("Hello World!");
+echo dgettext('mymod', 'Hello World!');
 
-You can also use a simple underscore like so:
-
-echo _("Hello World!");
-
-We recommend the latter. It is far simplier to type in.
+"mymod" would be the name of your module. This lets phpWebSite know
+where to find you translation file.
 
 Please take time to read some rules about using gettext here:
 http://www.gnu.org/software/gettext/manual/html_node/gettext_15.html#SEC15
-
 
 Sometimes you may have to put some variables in your text. While it
 may be tempting to use '$', don't. Instead use printf or sprintf.
 
 Example:
 
-$content = sprintf(_("Hello %s! You have logged in %d times!"),
+$content = sprintf(dgettext('mymod', 'Hello %s! You have logged in %d times!'),
 	           $name, $logged_times);
 
 If you have multiple variables of the same type, use this format:
 
-$content = sprintf(_("Hello %1/$s! Your ranking is %2/$s!"),
+$content = sprintf(dgettext('mymod', 'Hello %1/$s! Your ranking is %2/$s!'),
 	           $name, $ranking);
 
 This format maintains the variable association. If you used the
 following:
 
-$content = sprintf(_("Hello %s! Your ranking is %s!"),
+$content = sprintf(dgettext('mymod', 'Hello %s! Your ranking is %s!'),
 	           $name, $ranking);
 
 and it was translated with the ranking portion first, then your
@@ -64,14 +60,11 @@ to exchange what you originally wrote into another language.
 
 To create our po file, we will use xgettext
 
-xgettext --keyword=_ testing.php
-
-Note: The --keyword portion is necessary if you are using the
-_("Hello!") method of gettext.
+xgettext testing.php
 
 This would create a message file for just the testing.php file.
 
-xgettext --keyword=_ *.php
+xgettext *.php
 
 This would create a message file for all the files in the current
 directory ending in php.
@@ -79,13 +72,13 @@ directory ending in php.
 However, since there can be many files through different directories,
 it might be easier to just create a list of files to translate.
 
-grep -lr --include="*.php" "_(" * > translate_list.txt
+grep -lr --include='*.php' 'dgettext' * > translate_list.txt
 
 Open the list and make sure the file list looks correct. Now run
 xgettext against it. Make sure you run the list from where it was
 created. If you don't the file locations will be incorrect.
 
-xgettext -s --no-location --language=PHP --keyword=_ -f translate_list.txt
+xgettext -s --no-location --language=PHP -f translate_list.txt
 
 A couple of switches were added here:
 
@@ -127,7 +120,7 @@ Translating the your module
 ---------------------------------------------------------------------
 The messages file has an id and a blank translation for every string
 you marked in your code. If a translation is blank, gettext will just
-return the original phrase. So if _("Hello") is left blank for a
+return the original phrase. So if dgettext('mymod', 'Hello') is left blank for a
 particular language, then "Hello" is what you will see.
 
 If I didn't create my translation file, then, obviously, all my
@@ -165,30 +158,4 @@ msgmerge old_messages_file.po messages.po --output-file=new_messages_file.po
 
 Translations will then be made on the new_messages_file and then
 complied. The compiled .mo file must still be named message.mo.
-
-
-Making sure your module translates
----------------------------------------------------------------------
-As different modules are called, phpWebSite will tell gettext where
-your language modules are located. If somehow phpWebSite gets lost and
-can't find you files you can just call the translate function:
-
-translate("module_name");
-
-Calling this function tells gettext where it should be looking for the
-proper translations. For example:
-
-function called_from_other_module(){
-    translate("my_module");
-    return _("Important data");
-}
-
-
-Conclusion
----------------------------------------------------------------------
-This document is the first draft of instructions to use phpWebSite's
-gettext ability. If you find it complicated, incomplete, or otherwise
-are unable to translate your module, please let me know at:
-
-matt at tux dot appstate dot edu
 

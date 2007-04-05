@@ -1,0 +1,1238 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPWS1_1_0,Core1_4_2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-02-21 12:08-0500\n"
+"PO-Revision-Date: 2007-03-05 11:31+0100\n"
+"Last-Translator: Peter Heppner <heppner@gmx.de>\n"
+"Language-Team: Peter Heppner <heppner@gmx.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#, php-format
+msgid "%s days ago"
+msgstr "%s Tage vorher"
+
+#, php-format
+msgid "%s hours ago"
+msgstr "%s Stunden vorher"
+
+#, php-format
+msgid "%s mins ago"
+msgstr "%s Minuten vorher"
+
+#, php-format
+msgid "%s weeks ago"
+msgstr "%s Wochen vorher"
+
+msgid "1 day ago"
+msgstr "1 Tag vorher"
+
+msgid "1 hour ago"
+msgstr "1 Stunde vorher"
+
+msgid "1 week ago"
+msgstr "Eine Woche vorher"
+
+msgid "Action"
+msgstr "Aktion"
+
+msgid "Add"
+msgstr "Hinzufügen"
+
+msgid "After you finish installing your modules in Boost, you should make your config and template directories non-writable."
+msgstr "Nach der Installation der Module in Boost sollten die Konfigurations und Vorlagenverzeichnisse nicht beschreibbar gemacht werden."
+
+msgid "Albums converted and keyed."
+msgstr "Modul Albums konvertiert."
+
+msgid "All"
+msgstr "Alle"
+
+msgid "All done!"
+msgstr "Alles erledigt!"
+
+msgid "An error occurred when accessing the conversion database."
+msgstr "Ein Fehler ist beim Zugriff auf die Konversionsdatenbank aufgetreten."
+
+msgid "An error occurred when trying to copy your mod_phatform_checkbox table."
+msgstr "Ein Fehler ist beim Kopieren der mod_phatform_checkbox Tabelle aufgetreten."
+
+msgid "An error occurred when trying to copy your mod_phatform_dropbox table."
+msgstr "Ein Fehler ist beim Kopieren der mod_phatform_dropbox Tabelle aufgetreten."
+
+msgid "An error occurred when trying to copy your mod_phatform_multiselect table."
+msgstr "Ein Fehler ist beim Kopieren der mod_phatform_multiselect Tabelle aufgetreten."
+
+msgid "An error occurred when trying to copy your mod_phatform_options table."
+msgstr "Ein Fehler ist beim Kopieren der mod_phatform_options Tabelle aufgetreten."
+
+msgid "An error occurred when trying to copy your mod_phatform_radiobutton table."
+msgstr "Ein Fehler ist beim Kopieren der mod_phatform_radiobutton Tabelle aufgetreten."
+
+msgid "An error occurred when trying to copy your mod_phatform_textarea table."
+msgstr "Ein Fehler ist beim Kopieren der mod_phatform_textarea Tabelle aufgetreten."
+
+msgid "An error occurred when trying to copy your mod_phatform_textfield table."
+msgstr "Ein Fehler ist beim Kopieren der mod_phatform_textfield Tabelle aufgetreten."
+
+msgid "An error occurred when trying to copy your mod_photoalbum_photos table."
+msgstr "Ein Fehler ist beim Kopieren der mod_photoalbum_photos Tabelle aufgetreten."
+
+msgid "An error occurred while accessing your mod_blockmaker_data table."
+msgstr "Ein Fehler ist beim Zugriff auf die mod_blockmaker_data Tabelle aufgetreten."
+
+msgid "An error occurred while accessing your mod_documents_files table."
+msgstr "Ein Fehler ist beim Zugriff auf die mod_documents_files Tabelle aufgetreten."
+
+msgid "An error occurred while converting your old blocks."
+msgstr "Ein Fehler ist beim Konvertieren der alten Blöcke aufgetreten."
+
+msgid "An error occurred while converting your old documents."
+msgstr "Ein Fehler ist beim Konvertieren der alten Dokumente aufgetreten."
+
+msgid "An error occurred while trying to install your modules."
+msgstr "Ein Fehler ist beim Installieren der Module aufgetreten."
+
+msgid "An unrecoverable error occurred. Check your logs."
+msgstr "Ein Fehler ist aufgetreten. Bitte Logdatei prüfen."
+
+msgid "Announcements is not installed in this database."
+msgstr "Ankündigungen ist nicht in der Datenbank installiert."
+
+msgid "Any content modules using FatCat should be converted BEFORE continuing."
+msgstr "Jedes Modul, das FATCAT benutzt, sollte vorher konvertiert werden."
+
+msgid "Any content modules using Menu Manager should be converted BEFORE continuing.."
+msgstr "Jedes Modul, das Menümanager benutzt, sollte vorher konvertiert werden."
+
+msgid "Approved"
+msgstr "Akzeptiert"
+
+msgid "Array contained no values."
+msgstr "Array enthält keine Werte."
+
+msgid "Attempted cross-site scripting attack."
+msgstr "Versuchter XSS-Angriff."
+
+msgid "Automatic mode converts the data without your interaction."
+msgstr "Der Automatikmodus konvertiert alle Daten ohne Benutzereingriff."
+
+msgid "Batch previously run."
+msgstr "Batch previously run."
+
+msgid "Begin Installation"
+msgstr "Installation starten..."
+
+msgid "Blank module title sent to get function."
+msgstr "Leerer Modultitel wurde geschickt um Funktion herauszufinden."
+
+msgid "Block is already converted."
+msgstr "Modul Block ist schon konvertiert."
+
+msgid "Block is not installed."
+msgstr "Modul Block ist nicht installiert."
+
+msgid "Blocks converted."
+msgstr "Blöcke konvertiert."
+
+msgid "Blog has already been converted."
+msgstr "Modul Blog ist schon konvertiert."
+
+msgid "Blog is not installed."
+msgstr "Modul Blog ist nicht installiert."
+
+msgid "Cache Lite is disabled."
+msgstr "Cache Lite ist abgeschaltet."
+
+msgid "Cache Lite is enabled."
+msgstr "Cache Lite ist eingeschaltet."
+
+msgid "Calendar has already been converted."
+msgstr "Modul Kalender ist schon konvertiert."
+
+msgid "Calendar is not installed in other database."
+msgstr "Kalender ist nicht in der anderen Datenbank installiert."
+
+msgid "Calendar is not installed."
+msgstr "Modul Calendar ist nicht installiert."
+
+msgid "Can not change name. Already in use."
+msgstr "Name kann nicht geändert werden. Wird schon benutzt."
+
+msgid "Cannot read file."
+msgstr "Datei kann nicht gelesen werden."
+
+msgid "Categories has already been converted."
+msgstr "Kategorien ist schon konvertiert."
+
+msgid "Change to"
+msgstr "Wechseln zu"
+
+msgid "Check Directory Permissions is enabled so be sure to secure your config and templates directories!"
+msgstr "Verzeichnisrechte prüfen ist aktiviert, deswegen achte darauf, dass die Verzeichnisse für Konfiguration und Vorlagen gesichert sind."
+
+msgid "Check all"
+msgstr "Alle überprüfen"
+
+msgid "Check box table failed to copy successfully."
+msgstr "Checkboxtabelle konnte nicht kopiert werden."
+
+msgid "Check box table imported successfully."
+msgstr "Checkboxtabelle importiert."
+
+msgid "Check your configuration settings."
+msgstr "Bitte Einstellungen überprüfen."
+
+msgid "Class Name"
+msgstr "Klassenname"
+
+msgid "Class does not contain variables."
+msgstr "Klasse enthält keine Variablen."
+
+msgid "Class does not exist."
+msgstr "Klasse existiert nicht."
+
+msgid "Class not found."
+msgstr "Klasse nicht gefunden."
+
+msgid "Class not set."
+msgstr "Klasse nicht gesetzt."
+
+msgid "Click on the method you wish to use."
+msgstr "Klicke auf die zu benutzende Methode."
+
+msgid "Click the link below to continue or change your connection settings."
+msgstr "Klicke auf die Verknüpfung um weiterzumachen oder die Verbindungseinstellungen zu ändern."
+
+msgid "Click to continue anyway."
+msgstr "Klick um fortzufahren."
+
+msgid "Close"
+msgstr "Schliessen"
+
+#, php-format
+msgid "Coming from: %s"
+msgstr "Kommentar von: %s"
+
+msgid "Connect"
+msgstr "Verbinden"
+
+#, php-format
+msgid "Connected to database \"%s\""
+msgstr "Verbunden mit Datenbank \"%s\""
+
+msgid "Continue"
+msgstr "Fortführen..."
+
+msgid "Continue conversion. . ."
+msgstr "Konvertierung fortführen..."
+
+msgid "Continue to Module Installation"
+msgstr "Mit Modulinstallation fortführen."
+
+msgid "Continue to convert category elements."
+msgstr "Weiter um Kategorienelemente zu konvertieren."
+
+msgid "Continue to convert menu links."
+msgstr "Weiter um Menüverknüpfungen zu konvertieren."
+
+msgid "Continue: Convert everyone."
+msgstr "Weiter um alles zu konvertieren."
+
+msgid "Continue: Only those logged on within 6 months."
+msgstr ""
+
+msgid "Continue: Only those logged on within the last year."
+msgstr ""
+
+msgid "Conversion"
+msgstr "Konvertierung"
+
+msgid "Conversion site"
+msgstr "Konvertiere Site"
+
+msgid "Conversion will begin as soon as you make your choice."
+msgstr "Die Konvertierung wird nach Auswahl gestartet."
+
+msgid "Convert everyone."
+msgstr "Konvertiere alles."
+
+msgid "Convert menu links"
+msgstr "Menütabellen konvertiert."
+
+msgid "Convert menus"
+msgstr "Menüs konvertieren"
+
+msgid "Convert!"
+msgstr "Konvertiere!"
+
+msgid "Converted"
+msgstr "Konvertiert"
+
+msgid "Core installation successful."
+msgstr "Coreinstallation erfolgreich."
+
+#, php-format
+msgid "Could not find info file. File : %s"
+msgstr "Kann Infodatei %s nicht finden."
+
+msgid "Could not find key unregister file."
+msgstr "Konnte Keyunregisterdatei nicht finden."
+
+msgid "Could not find key unregister function."
+msgstr "Konnte Keyunregisterfunktion nicht finden."
+
+msgid "Create Config File"
+msgstr "Einstellungsdatei erstellt"
+
+msgid "Create Core"
+msgstr "Core erstellt"
+
+msgid "Create Database"
+msgstr "Datenbank erstellt"
+
+msgid "Current sessions:"
+msgstr "Aktuelle Sessions:"
+
+msgid "DB Operator:"
+msgstr "DB Operator:"
+
+msgid "Database Help"
+msgstr "Datenbank Hilfe"
+
+msgid "Database Name"
+msgstr "Datenbankname"
+
+msgid "Database Password"
+msgstr "Datenbankkennwort"
+
+msgid "Database Type"
+msgstr "Datenbanktyp"
+
+msgid "Database User"
+msgstr "Datenbankbenutzer"
+
+msgid "Database columns not set."
+msgstr "Datenbankspalten nicht gesetzt."
+
+msgid "Database import failed."
+msgstr "Datenbankimport fehlgeschlagen."
+
+msgid "Database name"
+msgstr "Datenbankname"
+
+msgid "Database password may contain alphanumeric characters or underscores only."
+msgstr "Datenbankkennwort darf nur Buchstaben und Unterstriche enthalten."
+
+msgid "Declared classes:"
+msgstr "Deklarierte Klassen:"
+
+msgid "Description"
+msgstr "Beschreibung"
+
+msgid "Directories are not secure."
+msgstr "Verzeichnisse sind nicht sicher."
+
+msgid "Directory Permissions"
+msgstr "Verzeichnisberechtigungen"
+
+msgid "Directory is not writable."
+msgstr "Verzeichnis ist nicht beschreibbar."
+
+msgid "Directory not set."
+msgstr "Verzeichnis nicht gesetzt."
+
+msgid "Do you want phpWebSite to create the database?"
+msgstr "Soll phpWebsite die Datenbank erstellen?"
+
+msgid "Document not found."
+msgstr "Dokument nicht gefunden."
+
+#, php-format
+msgid "Document was %sK making it larger than %sK size limit."
+msgstr ""
+
+msgid "Documents converted."
+msgstr "Dokumente konvertiert."
+
+msgid "Documents module is not installed on the current database."
+msgstr "Dokumentmodul ist in der aktuellen Datenbank nicht installiert."
+
+msgid "Drop box table failed to copy successfully."
+msgstr "Dropboxtabelle wurde nicht kopiert."
+
+msgid "Drop box table imported successfully."
+msgstr "Dropboxtabelle importiert."
+
+msgid "Edit permission column does not exist."
+msgstr "Rechtespalte bearbeiten ist nicht vorhanden."
+
+msgid "Enter the database's user password here."
+msgstr "Das Datenbankkennwort hier eingeben."
+
+msgid "Error"
+msgstr "Fehler"
+
+msgid "Events pulled from 0.10.x calendar module."
+msgstr ""
+
+#, php-format
+msgid "Execution time: %s seconds."
+msgstr "Ausführungszeit: %s Sekunden."
+
+msgid "Expecting an object variable."
+msgstr "Objektvariablen erwartet."
+
+msgid "Failed to connect."
+msgstr "Fehler bei Verbindung."
+
+msgid "Failed to make connection with the requested branch site."
+msgstr "Die Verbindung mit der Branchsite konnte nicht hergestellt werden."
+
+msgid "Failed to run batch. Check your session settings."
+msgstr "Batch konnte nicht gestartet werden. Bitte Sitzungseinstellungen überprüfen.."
+
+msgid "Failed to write cookie."
+msgstr ""
+
+msgid "File Cabinet has already converted Documents files."
+msgstr "Filecabinet hat Dokumentdateien schon konvertiert."
+
+msgid "File not found in _FILES array."
+msgstr "Datei nicht in _FILES Array gefunden."
+
+msgid "File not found."
+msgstr "Datei nicht gefunden."
+
+msgid "File not uploaded."
+msgstr "Datei nicht hochgeladen."
+
+msgid "Filename not set."
+msgstr "Dateiname nicht gesetzt."
+
+msgid "Finished converting Photo Album."
+msgstr "Fotoalbum wurde konvertiert."
+
+msgid "Finished converting categories!"
+msgstr "Kategorien wurden konvertiert."
+
+msgid "Finished converting category items!"
+msgstr "Kategorienelemente wurden konvertiert."
+
+msgid "Finished converting links."
+msgstr "Links wurde konvertiert."
+
+msgid "Form"
+msgstr "Formular"
+
+msgid "Form Generator does not appear to be installed in the source database."
+msgstr "Formulargenerator nicht in Quelldatenbank installiert."
+
+msgid "Form Generator has already been converted."
+msgstr "Formulargenerator schon konvertiert."
+
+msgid "Form Generator is not installed in the supplied database."
+msgstr "Formulargenerator ist nicht in Datenbank installiert."
+
+msgid "Form Generator is not installed locally."
+msgstr "Formulargenerator ist nicht installiert."
+
+msgid "Form generator forms converted and keyed!"
+msgstr "Formulargenerator Formulare konvertiert!"
+
+msgid "Function expected a string variable."
+msgstr "Funktion erwartet eine Stringvariable."
+
+msgid "Function name not found."
+msgstr "Funktionsname nicht gefunden."
+
+msgid "Function was expecting a \"where\" parameter."
+msgstr "Funktion erwartet einen \"where\" Parameter."
+
+msgid "GD image libraries do not support this image type."
+msgstr "GD Bildbibliothek unterstützt diesen Bildtyp nicht."
+
+msgid "Go"
+msgstr "Los!"
+
+msgid "Go back to main menu."
+msgstr "Gehe zurück zum Hauptmenü."
+
+msgid "Go to my new website!"
+msgstr "Gehe zu meiner neuen Website!"
+
+msgid "Help option not found in help configuration file."
+msgstr "Hilfeoption nicht in Hilfekonfigurationsdatei gefunden."
+
+msgid "Hidden"
+msgstr "Versteckt"
+
+msgid "Highlight Text"
+msgstr "Hervorgehobener Text"
+
+msgid "Home"
+msgstr "Home"
+
+msgid "Host"
+msgstr "Host"
+
+msgid "Host Specification"
+msgstr "Hostbeschreibung"
+
+msgid "Host Specification Port"
+msgstr "Hostbeschreibung Port"
+
+msgid "Hub site"
+msgstr "Hubsite"
+
+msgid "I want to install phpWebSite in this database."
+msgstr "Ich möchte phpWebsite in dieser Datenbank installieren."
+
+msgid "Id and table not set."
+msgstr "ID und Tabelle nicht gesetzt."
+
+msgid "If not, you will need to create the database yourself and return to the setup."
+msgstr "Wenn nicht, muss die Datenbank von Dir selbst erstellt werden. Komme danach zum Setup zurück."
+
+msgid "If the first user on your old site is not you, then you will need to recreate them."
+msgstr "Wenn der erste Benutzer nicht Du selbst bist, muss er erneut erstellt werden."
+
+msgid "If you are installing phpWebSite in a shared environment, you may assign a prefix to tables.<br />We recommend you run without one."
+msgstr ""
+
+msgid "If you do not change it now, your next page will be an error screen."
+msgstr "Wenn Du es jetzt nicht änderst, wird die nächste Seite eine Fehlermeldung sein."
+
+msgid "If you encounter problems, you should use manual mode."
+msgstr "Wenn Probleme auftreten, versuche den manuellen Modus."
+
+msgid "If you experienced any error messages, check your error.log file."
+msgstr "Wenn Fehler auftreten, schaue in der error.log Datei nach."
+
+msgid "If your database is on the same server as your phpWebSite installation, leave this as &#x22;localhost&#x22;."
+msgstr ""
+
+msgid "If your host specification requires access via a specific port, enter it here."
+msgstr ""
+
+#, php-format
+msgid "Image height was %spx, making it larger than %d pixel limit."
+msgstr ""
+
+msgid "Image not found"
+msgstr "Bild nicht gefunden"
+
+#, php-format
+msgid "Image was %sK making it larger than %sK size limit."
+msgstr ""
+
+#, php-format
+msgid "Image width was %spx, making it larger than %d pixel limit."
+msgstr ""
+
+msgid "Importing core database file."
+msgstr "Importiere Coredatenbankdatei."
+
+msgid "Improper column name."
+msgstr "Spaltenname nicht erlaubt."
+
+msgid "Improper table name."
+msgstr "Tabellenname nicht erlaubt."
+
+msgid "Improperly formated text."
+msgstr "Text ist fehlerhaft formatiert."
+
+msgid "Input type not set."
+msgstr "Eingabetyp nicht gesetzt"
+
+msgid "Insert HTML"
+msgstr "HTML einfügen"
+
+msgid "Install Modules"
+msgstr "Module installieren"
+
+msgid "Installation of phpWebSite is complete."
+msgstr "Installation von phpWebsite ist komplett."
+
+msgid "Installed modules"
+msgstr "Installierte Module"
+
+msgid "Invalid value."
+msgstr "Falscher Wert."
+
+msgid "Join database does not exist."
+msgstr "Datenbankverbund existiert nicht."
+
+msgid "KEY"
+msgstr "KEY"
+
+msgid "Key can not restrict items on phpws_key table alone."
+msgstr ""
+
+msgid "Key not found."
+msgstr "Key nicht gefunden."
+
+msgid "Limit"
+msgstr "Grenze"
+
+msgid "List columns not set."
+msgstr "Spaltenliste nicht gesetzt."
+
+msgid "Log in"
+msgstr "Anmelden"
+
+msgid "Log out"
+msgstr "Abmelden"
+
+msgid "Login page"
+msgstr "Anmeldeseite"
+
+msgid "Login to Site Manager"
+msgstr "Anmeldung beim Sitemanager"
+
+msgid "Main"
+msgstr "Hauptseite"
+
+msgid "Main Menu"
+msgstr "Hauptmenü"
+
+msgid "Main page"
+msgstr "Hauptseite"
+
+msgid "Manager cannot initialize, the module was not set."
+msgstr ""
+
+msgid "Manager configuration file is an improper format."
+msgstr ""
+
+#, php-format
+msgid "Manager configuration file not found for module: %s"
+msgstr ""
+
+msgid "Manager was not fully initialized to get a list."
+msgstr ""
+
+msgid "Manual mode requires you to click through the conversion process."
+msgstr ""
+
+msgid "Match for must be an array for a multiple input."
+msgstr ""
+
+msgid "Menu conversion finished."
+msgstr "Menükonversion beendet!"
+
+msgid "Menu has already been converted."
+msgstr "Modul Menü wurde schon konvertiert."
+
+msgid "Menu is not installed."
+msgstr "Modul Menü ist nicht installiert."
+
+msgid "Method 1 - Each section is placed into a separate page."
+msgstr "Methode 1 - Jedes Teil bekommt eine eigene Seite."
+
+msgid "Method 2 - Each section is collected into ONE page."
+msgstr "Methode 1 - Alle Teile kommen auf eine Seite."
+
+msgid "Method does not exist in specified class."
+msgstr "Methode existiert nicht in der Klasse."
+
+msgid "Missing a database name."
+msgstr "Fehlender Datenbankname."
+
+msgid "Missing a database password."
+msgstr "Fehlendes Datenbankkennwort."
+
+msgid "Missing a database user name."
+msgstr "Fehlender Datenbankbenutzername."
+
+msgid "Missing column to select."
+msgstr "Fehlende Spalte auswählen."
+
+msgid "Module not found."
+msgstr "Modul nicht gefunden."
+
+msgid "Module not set."
+msgstr "Modul nicht gesetzt."
+
+msgid "Module title"
+msgstr "Modultitel"
+
+msgid "Module was not set."
+msgstr "Modul nicht gesetzt."
+
+msgid "Move on to Step 2"
+msgstr "Weiter zu Schritt 2"
+
+msgid "Multi-select table failed to copy successfully."
+msgstr ""
+
+msgid "Multi-select table imported successfully."
+msgstr ""
+
+msgid "Name not set."
+msgstr "Name nicht gesetzt."
+
+msgid "No Images"
+msgstr "Keine Bilder"
+
+msgid "No active modules installed."
+msgstr "Keine aktiven Module installiert."
+
+msgid "No albums to convert."
+msgstr "Kein Album zu konvertieren."
+
+msgid "No announcements to convert."
+msgstr "Kein Ankündigungen zu konvertieren."
+
+msgid "No blocks found."
+msgstr "Keine Blöcke gefunden."
+
+msgid "No error message file found."
+msgstr "Keine Fehlermeldungsdatei gefunden."
+
+msgid "No events to convert."
+msgstr "Keine Ereignisse zu konvertieren."
+
+msgid "No files found."
+msgstr "Keine Datei gefunden."
+
+msgid "No form elements have been created."
+msgstr "Keine Formularelement erstellt."
+
+msgid "No forms to convert."
+msgstr "Keine Formulare zu konvertieren."
+
+msgid "No image"
+msgstr "Kein Bild"
+
+msgid "No items for the current list."
+msgstr "Keine Elemente in der aktuellen Liste."
+
+msgid "No items passed."
+msgstr "Keine Elemente durchgeführt."
+
+msgid "No menu links to convert."
+msgstr "Keine Menüverknüpfungen zu konvertieren."
+
+msgid "No menus found."
+msgstr "Keine Menüs gefunden."
+
+msgid "No modules to convert."
+msgstr "Keine Menüs zu konvertieren."
+
+msgid "No pages found."
+msgstr "Keine Seiten gefunden."
+
+msgid "No pages to convert."
+msgstr "Keine Seiten zu konvertieren."
+
+msgid "No result returned from database."
+msgstr "Kein Ergebnis aus der Datenbank."
+
+msgid "No rows found."
+msgstr "Keine Zeilen gefunden."
+
+msgid "No users to convert."
+msgstr "Keine Benutzer zu konvertieren."
+
+msgid "No values were set before the query"
+msgstr "Keine Werte vor der Abfrage gesetzt."
+
+msgid "No variables in object."
+msgstr "Keine Variablen im Objekt."
+
+msgid "Not a convert file."
+msgstr "Keine Konvertierungsdatei."
+
+msgid "Not an acceptable operator."
+msgstr "Operator nicht erlaubt."
+
+msgid "Note: if you have not made this database yet, you should do so before continuing."
+msgstr ""
+
+msgid "Note: it is a good idea to give each phpWebSite installation its own user."
+msgstr ""
+
+msgid "One or more errors occurred while copying over Form Generator tables. Please check your logs, clear your database tables, and try again."
+msgstr ""
+
+msgid "Only those logged on within 6 months."
+msgstr ""
+
+msgid "Only those logged on within the last year."
+msgstr ""
+
+msgid "Op not set."
+msgstr "Operator nicht gesetzt."
+
+msgid "Options table failed to copy successfully."
+msgstr "Optionstabelle konnte nicht kopiert werden."
+
+msgid "Options table imported successfully."
+msgstr "Optionentabelle importiert."
+
+msgid "Otherwise, click on the \"Main page\" link above."
+msgstr ""
+
+msgid "Otherwise, enter the ip or dns to the database server."
+msgstr ""
+
+#, php-format
+msgid "PHPWS_Debug: testObject received a/an %s variable, not an object."
+msgstr ""
+
+msgid "PHPWS_File received an unknown construct."
+msgstr ""
+
+msgid "Page"
+msgstr "Seite"
+
+msgid "Password"
+msgstr "Kennwort"
+
+msgid "Pear Configuration"
+msgstr "PEAR Konfiguration"
+
+msgid "Permission Help"
+msgstr "Berechtigungshilfe"
+
+msgid "Photo Album has already been converted."
+msgstr "Fotoalbum schon konvertiert."
+
+msgid "Photo Album is not installed locally."
+msgstr "Fotoalbum ist nicht installiert."
+
+msgid "Photos table failed to copy successfully."
+msgstr "Fototabelle konnte nicht kopiert werden."
+
+msgid "Photos table imported successfully."
+msgstr "Fototabelle importiert."
+
+msgid "PhpWebSite was able to connect but the database itself does not exist."
+msgstr "PhpWebsite hat sich verbunden, aber die Datenbank existiert nicht."
+
+msgid "PhpWebSite was able to connect, but the database already contained tables."
+msgstr "PhpWebsite hat sich verbunden, aber die Datenbank hat schon Tabellen."
+
+msgid "Please check your directory permissions and try again."
+msgstr "Überprüfe die Verzeichnisrechte und versuche es noch einmal."
+
+msgid "Please check your error log file."
+msgstr "Bitte Logdatei überprüfen."
+
+msgid "Please check your error logs and try again."
+msgstr "Überprüfe die Fehlerlogs und versuche es noch einmal."
+
+msgid "Please enter the connect information for the database you wish to convert from."
+msgstr "Die Verbindungsinformationen der Datenbank, die konvertiert werden soll."
+
+msgid "Please login"
+msgstr "Bitte anmelden"
+
+msgid "Please note that the user with an index of 1 was ignored by the conversion."
+msgstr "Beachte, dass der Benutzer mit dem Index 1 bei der Konvertierung ignoriert wurde."
+
+msgid "Please wait..."
+msgstr "Bitte warten..."
+
+msgid "Port"
+msgstr "Port"
+
+msgid "Radio button table failed to copy successfully."
+msgstr "Radiobuttontabelle konnte nicht kopiert werden."
+
+msgid "Radio button table imported successfully."
+msgstr "Radiobuttontabelle importiert."
+
+msgid "Recursive array"
+msgstr "rekursives Array"
+
+msgid "Recursive object:"
+msgstr "Recursive object:"
+
+msgid "Remove"
+msgstr "Entfernen"
+
+msgid "Remove the following file and refresh to continue:"
+msgstr "Entferne die folgende Datei und \"refresh\" zum weitermachen:"
+
+msgid "Request"
+msgstr "Anforderung"
+
+msgid "Return to main page if you change your mind. Click the above link to continue."
+msgstr "Zurück zur Hauptseite, wenn Du deine Meinung geändert hast. Klicke die obenstehende Verknüpfung wenn Du weitermachen willst."
+
+msgid "Return to main page."
+msgstr "Zurück zur Hauptseite."
+
+msgid "Return to previous page."
+msgstr "Zurück zur vorherigen Seite."
+
+msgid "Return to the main page."
+msgstr "Zurück zur Hauptseite."
+
+msgid "Search"
+msgstr "Suche"
+
+msgid "Select returned an empty result."
+msgstr "Select lieferte ein leeres Ergebnis."
+
+msgid "Sessions Help"
+msgstr "Sessionhilfe"
+
+msgid "Since you set a table prefix, you may force an installation into this database."
+msgstr ""
+
+msgid "Site Hash"
+msgstr "Sitehash"
+
+msgid "Site Setup"
+msgstr "Sitesetup"
+
+msgid "Site hash may not be empty."
+msgstr "Sitehash darf nicht leer sein."
+
+msgid "Some errors occurred when trying to convert the following pages:"
+msgstr "Es sind Fehler bei der Konvertierung folgender Seiten aufgetreten:"
+
+msgid "Some errors occurred while creating the core database tables."
+msgstr "Es sind Fehler bei der Erstellung der Coredatenbanktabellen aufgetreten:"
+
+msgid "Some menus did not convert over properly. Please see logs."
+msgstr "Einige Menüs konnten nicht konvertiert werden. Bitte Logdateien überprüfen."
+
+msgid "Some users caused conversion errors."
+msgstr "Einige Benutzer haben zu Konvertierungsfehlern geführt."
+
+msgid "Sort ascending"
+msgstr "Aufsteigend sortieren"
+
+msgid "Sort descending"
+msgstr "Absteigend sortieren"
+
+msgid "Source Directory"
+msgstr "Quellverzeichnis"
+
+msgid "Spoiler"
+msgstr "Spoiler"
+
+msgid "Table does not exist."
+msgstr "Tabelle existiert nicht."
+
+msgid "Table is blank"
+msgstr "Tabelle ist leer."
+
+msgid "Table name not set."
+msgstr "Tabellenname nicht gesetzt."
+
+msgid "Table not set."
+msgstr "Tabelle nicht gesetzt."
+
+msgid "Table prefix"
+msgstr "Tabellenprefix"
+
+msgid "Table prefix must be alphanumeric characters or underscores only"
+msgstr "Tabellenprefix darf nur aus Buchstaben und Unterstrichen bestehen"
+
+msgid "Template error."
+msgstr "Vorlagenfehler."
+
+msgid "Template was not set."
+msgstr "Vorlage nicht gesetzt."
+
+msgid "Text area table failed to copy successfully."
+msgstr "Textareatabelle konnte nicht kopiert werden."
+
+msgid "Text area table imported successfully."
+msgstr "Textareatabelle importiert."
+
+msgid "Text field table failed to copy successfully."
+msgstr "Textfeldertabelle konnte nicht kopiert werden."
+
+msgid "Text field table imported successfully."
+msgstr "Textfeldertabelle importiert."
+
+msgid "The File Cabinet module is not installed."
+msgstr "Das Modul Filecabinet ist nicht installiert."
+
+msgid "The character string below differentiates your site from others on the same server."
+msgstr ""
+
+msgid "The database creation succeeded!"
+msgstr "Datenbankerstellung erfolgreich!"
+
+msgid "The database's name into which you are installing phpWebSite."
+msgstr "Der Datenbankname in die phpWebsite installiert werden soll."
+
+msgid "The example is randomly generated."
+msgstr "Das Beispiel wird zufällig generiert."
+
+msgid "The following directories are not writable:"
+msgstr "Folgende Verzeichnisse sind nicht beschreibbar:"
+
+msgid "The following directories need to be created:"
+msgstr "Folgende Verzeichnisse müssen erstellt werden:"
+
+msgid "The submitted template is not an array."
+msgstr "Die übergebene Vorlage ist kein Array."
+
+msgid "There are two methods for converting your webpages:"
+msgstr "Es gibt 2 Methoden um Webseiten zu konvertieren:"
+
+msgid "There aren't any conversion files in the convert/modules directory."
+msgstr "Es gibt keine Konvertierungsdateien im convert/modules Verzeichnis."
+
+msgid "There is a problem with your sessions."
+msgstr "Ein Problem ist mit Sessions aufgetreten."
+
+msgid "There was a problem loading the image file."
+msgstr "Ein Problem ist beim Laden des Bildes aufgetreten."
+
+msgid "This is an incomplete object. If this is a sessioned object, make sure to declare the class before the variable."
+msgstr ""
+
+msgid "This is the directory where phpWebSite is installed."
+msgstr "Das Verzeichnis in dem phpWebsite installiert werden soll."
+
+msgid "This is the user name that phpWebSite will use to access its database."
+msgstr "Der Benutzername den phpWebsite zum Zugriff auf die Datenbank benutzen soll."
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Type"
+msgstr "Typ"
+
+msgid "Unable to connect to the database with the information provided."
+msgstr "Keine Verbindung zur Datenbank mit den übergebenen Informationen."
+
+msgid "Unable to connect."
+msgstr "Keine Verbindung."
+
+msgid "Unable to create file directory."
+msgstr "Verzeichnis konnte nicht erstellt werden."
+
+msgid "Unable to create the database."
+msgstr "Datenbank konnte nicht erstellt werden."
+
+msgid "Unable to delete directory."
+msgstr "Verzeichnis konnte nicht gelöscht werden."
+
+msgid "Unable to delete file."
+msgstr "Datei konnte nicht gelöscht werden."
+
+msgid "Unable to derive class variables."
+msgstr ""
+
+#, php-format
+msgid "Unable to find element \"%s\"."
+msgstr "Element \"%s\" konnte nicht gefunden werden."
+
+msgid "Unable to find the specified editor type."
+msgstr ""
+
+msgid "Unable to find your module's settings.php file."
+msgstr ""
+
+msgid "Unable to locate the source directory:"
+msgstr "Quellverzeichnis konnte nicht gefunden werden."
+
+msgid "Unable to log in to the database. Please check your settings."
+msgstr "Keine Anmeldung zur datenbank möglich. Bitte Einstellungen überprüfen."
+
+msgid "Unable to save file in selected directory."
+msgstr "Kann Datei nicht in angegebenem Verzeichnis speichern."
+
+msgid "Unable to verify source directory. Check PHPWS_SOURCE_DIR."
+msgstr ""
+
+msgid "Unacceptable document type."
+msgstr "Unzulässiger Dokumenttyp."
+
+msgid "Unacceptable image type."
+msgstr "Unzulässiger Bildtyp."
+
+msgid "Unapproved"
+msgstr "Ungenehmigt"
+
+msgid "Uncheck all"
+msgstr "Alle Kreuze entfernen"
+
+msgid "Uninstall"
+msgstr "Uninstalliere"
+
+msgid "Unknown"
+msgstr "Unbekannt"
+
+msgid "Unknown Error."
+msgstr "Unbekannter Fehler."
+
+msgid "Unknown column type:"
+msgstr "Unbekannter Spaltentyp:"
+
+msgid "Unknown error code."
+msgstr "Unbekannter Fehlercode."
+
+msgid "Unknown module."
+msgstr "Unbekanntes Modul"
+
+msgid "Unknown or incorrect class."
+msgstr ""
+
+msgid "Unknown source"
+msgstr "Unbekannte Quelle"
+
+msgid "Unknown user"
+msgstr "Unbekannter Benutzer."
+
+msgid "Unrecognized form type."
+msgstr "Unbekannter Formulartyp."
+
+msgid "Unsorted"
+msgstr "Unsortiert"
+
+msgid "Upload directory not set in file object."
+msgstr ""
+
+msgid "Upload file size is larger than allowed."
+msgstr ""
+
+msgid "Use Pear files included with phpWebSite (recommended)."
+msgstr ""
+
+msgid "Use server's Pear library files (not recommended)."
+msgstr ""
+
+msgid "User name"
+msgstr "Benutzername"
+
+msgid "User tried to post a file beyond server limits."
+msgstr ""
+
+msgid "Username"
+msgstr "Benutzername"
+
+msgid "Username and password combination not found."
+msgstr "Benutzername und Kennwort nicht gefunden."
+
+msgid "Using configuration files directly from module's directory."
+msgstr ""
+
+msgid "Using local configuration files."
+msgstr ""
+
+msgid "Using local templates, not module's."
+msgstr ""
+
+msgid "Using module template, not local."
+msgstr ""
+
+msgid "VALUE"
+msgstr "Wert"
+
+#, php-format
+msgid "Variable is a %s, not an object."
+msgstr "Variable ist ein %s und kein Objekt."
+
+msgid "Variable name not found in_FILES array."
+msgstr "Variable nicht in _FILES Array gefunden."
+
+msgid "Visible"
+msgstr "Sichtbar"
+
+msgid "Warning"
+msgstr "Warnung"
+
+msgid "We suggest you use the library files included with phpWebSite."
+msgstr ""
+
+msgid "Web Page is not installed."
+msgstr "Modul Webpage ist nicht installiert."
+
+msgid "Web pages have already been converted."
+msgstr "Webseiten sind schon konvertiert."
+
+msgid "Wrong data type."
+msgstr "Falscher Datentyp."
+
+msgid "Wrong element type for procedure."
+msgstr ""
+
+msgid "Wrong variable type."
+msgstr "Falscher Variablentyp."
+
+msgid "You can now finish the creation of your config file."
+msgstr ""
+
+msgid "You may change it if you wish."
+msgstr ""
+
+msgid "You may choose to ignore users who haven't logged in for a while."
+msgstr ""
+
+msgid "You may convert two different ways."
+msgstr ""
+
+#, php-format
+msgid "You may not use \"%s\" as a form element name."
+msgstr "Der Name \"%s\" darf nicht für dieses Formularelement benutzt werden."
+
+msgid "You must be a deity to run Site Manager."
+msgstr ""
+
+msgid "You will need to change the permissions."
+msgstr "Berechtigungen müssen geändert werden."
+
+msgid "You will need to create it manually and rerun the setup."
+msgstr ""
+
+msgid "Your configuration file already exists."
+msgstr "Die Konfigurationsdatei existiert schon."
+
+msgid "Your configuration file could not be written into the following directory:"
+msgstr "Die Konfigurationsdatei konnte nicht in das folgende Verzeichnis geschieben werden:"
+
+msgid "Your configuration file was written successfully!"
+msgstr "Die Konfigurationsdatei wurde geschrieben!"
+
+msgid "Your core config.php file is missing. Please create one and return."
+msgstr ""
+
+msgid "\\1 wrote"
+msgstr "\\1 schrieb"
+
+msgid "a heartbeat ago"
+msgstr "Kurz vorher"
+
+msgid "loadObject expected the object to have an id or where clause."
+msgstr ""
+
+msgid "of"
+msgstr "von"
+
+#, php-format
+msgid "phpWebSite %s Setup"
+msgstr ""
+
+msgid "phpWebSite 1.0.0 Convert"
+msgstr ""
+
+msgid "phpWebSite depends on sessions to move data between pages."
+msgstr ""
+
+msgid "phpWebSite supports several databases. Choose the type your server currently is running."
+msgstr ""
+
+msgid "phpWebSite uses the Pear library extensively."
+msgstr ""
+
