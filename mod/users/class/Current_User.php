@@ -92,13 +92,11 @@ class Current_User {
 
     function getLogin()
     {
-        translate('users');
         PHPWS_Core::initModClass('users', 'Form.php');
         $login = User_Form::logBox();
         if (!empty($login)) {
             Layout::set($login, 'users', 'login_box', FALSE);
         }
-        translate();
     }
 
     /**
@@ -268,7 +266,7 @@ class Current_User {
                 $content = PHPWS_Template::process($tpl, 'users', 'forms/permission_menu.tpl');
                 Layout::add($content, 'users', 'permissions');
             } else {
-                $links[] = Current_User::popupPermission($key->id, sprintf(_('Set permissions'), $key->title));
+                $links[] = Current_User::popupPermission($key->id, sprintf(dgettext('users', 'Set permissions'), $key->title));
                 MiniAdmin::add('users', $links);
             }
         }
@@ -277,7 +275,7 @@ class Current_User {
     function popupPermission($key_id, $label=NULL)
     {
         if (empty($label)) {
-            $js_vars['label'] = _('Permission');
+            $js_vars['label'] = dgettext('users', 'Permission');
         } else {
             $js_vars['label'] = strip_tags($label);
         }

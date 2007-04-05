@@ -1,3 +1,6 @@
+5 April 2007
++ Updated translation functions.
+
 4 April 2007
 + Changed form names on login templates since both have ids and may
   appear on same page.

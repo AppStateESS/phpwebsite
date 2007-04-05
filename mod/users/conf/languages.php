@@ -5,8 +5,6 @@
    * @version $Id$
    */
 
-translate('users');
-
 $languages['aa_AA'] = 'Afar';
 $languages['ab_AB'] = 'Abkhazian';
 $languages['af_AF'] = 'Afrikaans';

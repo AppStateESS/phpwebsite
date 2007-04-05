@@ -255,26 +255,26 @@ class PHPWS_Group {
         $linkVar['group_id'] = $id;
 
         $linkVar['command'] = 'edit_group';
-        $links[] = PHPWS_Text::secureLink(_('Edit'), 'users', $linkVar, NULL, _('Edit Group'));
+        $links[] = PHPWS_Text::secureLink(dgettext('users', 'Edit'), 'users', $linkVar, NULL, dgettext('users', 'Edit Group'));
 
         $linkVar['command'] = 'setGroupPermissions';
-        $links[] = PHPWS_Text::secureLink(_('Permissions'), 'users', $linkVar);
+        $links[] = PHPWS_Text::secureLink(dgettext('users', 'Permissions'), 'users', $linkVar);
 
         $linkVar['command'] = 'manageMembers';
-        $links[] = PHPWS_Text::secureLink(_('Members'), 'users', $linkVar);
+        $links[] = PHPWS_Text::secureLink(dgettext('users', 'Members'), 'users', $linkVar);
     
         if ($this->active){
             $linkVar['command'] = 'deactivateGroup';
-            $links[] = PHPWS_Text::moduleLink(_('Deactivate'), 'groups', $linkVar);
+            $links[] = PHPWS_Text::moduleLink(dgettext('users', 'Deactivate'), 'groups', $linkVar);
         } else {
             $linkVar['command'] = 'activateGroup';
-            $links[] = PHPWS_Text::moduleLink(_('Activate'), 'groups', $linkVar);
+            $links[] = PHPWS_Text::moduleLink(dgettext('users', 'Activate'), 'groups', $linkVar);
         }
     
         $linkVar['command'] = 'remove_group';
         $removelink['ADDRESS'] = PHPWS_Text::linkAddress('users', $linkVar, TRUE);
-        $removelink['QUESTION'] = _('Are you SURE you want to remove this group?');
-        $removelink['LINK'] = _('Remove');
+        $removelink['QUESTION'] = dgettext('users', 'Are you SURE you want to remove this group?');
+        $removelink['LINK'] = dgettext('users', 'Remove');
         $links[] = Layout::getJavascript('confirm', $removelink);
 
         $template['ACTIONS'] = implode(' | ', $links);

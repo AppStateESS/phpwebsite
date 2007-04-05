@@ -9,7 +9,6 @@
 
 function my_page()
 {
-    translate('users');
     PHPWS_Core::initModClass('help', 'Help.php');
     if (isset($_REQUEST['subcommand'])) {
         $subcommand = $_REQUEST['subcommand'];
@@ -19,13 +18,13 @@ function my_page()
     }
 
     $user = $_SESSION['User'];
-    $template['TITLE'] = _('Change my Settings');
+    $template['TITLE'] = dgettext('users', 'Change my Settings');
 
     switch ($subcommand){
     case 'updateSettings':
 
         if (isset($_GET['save'])) {
-            $template['MESSAGE'] = _('User settings updated.');
+            $template['MESSAGE'] = dgettext('users', 'User settings updated.');
         }
 
         $content = User_Settings::userForm($user);
@@ -48,7 +47,7 @@ function my_page()
     }
 
     $template['CONTENT'] = $content;
-    translate();
+    
     return PHPWS_Template::process($template, 'users', 'my_page/main.tpl'); 
 }
 
@@ -64,25 +63,25 @@ class User_Settings {
 
         if (Current_User::allow('users') || $user->display_name == $user->username) {
             $form->addText('display_name', $user->display_name);
-            $form->setLabel('display_name', _('Display Name'));
+            $form->setLabel('display_name', dgettext('users', 'Display Name'));
         } else {
-            $form->addTplTag('DISPLAY_NAME_LABEL', _('Display Name'));
+            $form->addTplTag('DISPLAY_NAME_LABEL', dgettext('users', 'Display Name'));
             $form->addTplTag('DISPLAY_NAME', PHPWS_Help::show_link('users', 'display_name_change', $user->display_name));
         }
 
         if ($user->canChangePassword()){
             $form->addPassword('password1');
             $form->addPassword('password2');
-            $form->setTitle('password2', _('Password confirm'));
-            $form->setLabel('password1', _('Password'));
+            $form->setTitle('password2', dgettext('users', 'Password confirm'));
+            $form->setLabel('password1', dgettext('users', 'Password'));
         } else {
-            $tpl['PASSWORD1_LABEL'] =  _('Password');
-            $tpl['PASSWORD1'] = PHPWS_Help::show_link('users', 'no_password', _('Why can\'t I change my password?'));
+            $tpl['PASSWORD1_LABEL'] =  dgettext('users', 'Password');
+            $tpl['PASSWORD1'] = PHPWS_Help::show_link('users', 'no_password', dgettext('users', 'Why can\'t I change my password?'));
         }
 
         $form->addText('email', $user->getEmail());
         $form->setSize('email', 40);
-        $form->setLabel('email', _('Email Address'));
+        $form->setLabel('email', dgettext('users', 'Email Address'));
 
         if (isset($tpl)) {
             $form->mergeTemplate($tpl);
@@ -90,7 +89,7 @@ class User_Settings {
 
         $tz_list = PHPWS_Time::getTZList();
 
-        $timezones['server'] = _('-- Use server\'s time zone --');
+        $timezones['server'] = dgettext('users', '-- Use server\'s time zone --');
         foreach ($tz_list as $tz) {
             if (!empty($tz['codes'])) {
                 $timezones[$tz['id']] = sprintf('%s : %s', $tz['id'], $tz['codes'][0]);
@@ -109,7 +108,7 @@ class User_Settings {
         }
 
         $form->addSelect('timezone', $timezones);
-        $form->setLabel('timezone', _('Time Zone'));
+        $form->setLabel('timezone', dgettext('users', 'Time Zone'));
         $form->setMatch('timezone', $user_tz);
 
         if (isset($_REQUEST['dst']) && $_REQUEST['timezone'] != 'server') {
@@ -120,10 +119,10 @@ class User_Settings {
 
         $form->addCheckbox('dst', 1);
         $form->setMatch('dst', $dst);
-        $form->setLabel('dst', _('Use Daylight Savings Time'));
+        $form->setLabel('dst', dgettext('users', 'Use Daylight Savings Time'));
 
         $form->addHidden('userId', $user->getId());
-        $form->addSubmit('submit', _('Update my information'));
+        $form->addSubmit('submit', dgettext('users', 'Update my information'));
 
         if (!DISABLE_TRANSLATION && !FORCE_DEFAULT_LANGUAGE) {
             $language_file = PHPWS_Core::getConfigFile('users', 'languages.php');
@@ -131,7 +130,7 @@ class User_Settings {
             if ($language_file) {
                 include $language_file;
                 $form->addSelect('language', $languages);
-                $form->setLabel('language', _('Language preference'));
+                $form->setLabel('language', dgettext('users', 'Language preference'));
                 if (isset($_COOKIE['phpws_default_language'])) {
                     $language = preg_replace('/\W/', '', $_COOKIE['phpws_default_language']);
                     $form->setMatch('language', $language);
@@ -140,7 +139,7 @@ class User_Settings {
         }
 
         $editor_list = Editor::getEditorList();
-        $all_editors['none'] = _('None');
+        $all_editors['none'] = dgettext('users', 'None');
         foreach ($editor_list as $value) {
             if (Editor::willWork($value)) {
                 $all_editors[$value] = $value;
@@ -153,7 +152,7 @@ class User_Settings {
         }
 
         $form->addSelect('editor', $all_editors);
-        $form->setLabel('editor', _('Preferred editor (admins only)'));
+        $form->setLabel('editor', dgettext('users', 'Preferred editor (admins only)'));
         $form->setMatch('editor', $user_type);
 
         $template = $form->getTemplate();

@@ -3,7 +3,7 @@
    * @version $Id$
    * @author Matthew McNaney <mcnaney at gmail dot com>
    */
-translate('users');
+
 if (!defined('PHPWS_SOURCE_DIR')) {
     include '../../config/core/404.html';
     exit();
@@ -39,5 +39,4 @@ switch ($_REQUEST['action']){
 
 }// End area switch
 
-translate();
 ?>

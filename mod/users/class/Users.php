@@ -11,7 +11,6 @@ PHPWS_Core::initModClass('users', 'Permission.php');
 PHPWS_Core::requireConfig('users');
 require_once PHPWS_SOURCE_DIR . 'mod/users/inc/errorDefines.php';
 
-
 if (!defined('ALLOWED_USERNAME_CHARACTERS')) {
     define('ALLOWED_USERNAME_CHARACTERS'. '\w');
 }
@@ -678,9 +677,8 @@ class PHPWS_User {
 
     function disallow($message=null)
     {
-        translate('users');
         if (!isset($message)){
-            $message = _('Improper permission level for action requested.');
+            $message = dgettext('users', 'Improper permission level for action requested.');
         }
         Security::log($message);
         PHPWS_Core::errorPage('403');
@@ -795,34 +793,34 @@ class PHPWS_User {
 
         if (Current_User::isDeity() && !Current_User::isUser($this->id)) {
             if ($this->isDeity()) {
-                $dvars['QUESTION'] = _('Are you sure you want to remove deity status?');
+                $dvars['QUESTION'] = dgettext('users', 'Are you sure you want to remove deity status?');
                 $dvars['ADDRESS']  = PHPWS_Text::linkAddress('users', array('action'=>'admin', 'command'=>'mortalize_user', 'user_id'=>$this->id), 1);
-                $dvars['LINK']     = _('Deity');
+                $dvars['LINK']     = dgettext('users', 'Deity');
                 $links[] = javascript('confirm', $dvars);
             } else {
-                $dvars['QUESTION'] = _('Are you sure you want to deify this user?');
+                $dvars['QUESTION'] = dgettext('users', 'Are you sure you want to deify this user?');
                 $dvars['ADDRESS']  = PHPWS_Text::linkAddress('users', array('action'=>'admin', 'command'=>'deify_user', 'user_id'=>$this->id), 1);
-                $dvars['LINK']     = _('Mortal');
+                $dvars['LINK']     = dgettext('users', 'Mortal');
                 $links[] = javascript('confirm', $dvars);
             }
         }
 
         if ($this->isActive()) {
             $linkVar['command'] = 'deactivateUser';
-            $links[] = PHPWS_Text::secureLink(_('Deactivate'), 'users', $linkVar);
+            $links[] = PHPWS_Text::secureLink(dgettext('users', 'Deactivate'), 'users', $linkVar);
 
-            $template['ACTIVE'] =  _('Yes');
+            $template['ACTIVE'] =  dgettext('users', 'Yes');
         } else {
             $linkVar['command'] = 'activateUser';
-            $links[] = PHPWS_Text::secureLink(_('Activate'), 'users', $linkVar);
+            $links[] = PHPWS_Text::secureLink(dgettext('users', 'Activate'), 'users', $linkVar);
 
-            $template['ACTIVE'] = _('No');
+            $template['ACTIVE'] = dgettext('users', 'No');
         }
 
         $logged = $this->getLastLogged('%c');
 
         if (empty($logged)) {
-            $template['LAST_LOGGED'] =  _('Never');
+            $template['LAST_LOGGED'] =  dgettext('users', 'Never');
         } else {
             $template['LAST_LOGGED'] = $logged;
         }
@@ -832,18 +830,18 @@ class PHPWS_User {
         $linkVar['action'] = 'admin';
         $linkVar['user_id'] = $this->id;
 
-        $jsvar['QUESTION'] = sprintf(_('Are you certain you want to delete the user &quot;%s&quot; permanently?'),
+        $jsvar['QUESTION'] = sprintf(dgettext('users', 'Are you certain you want to delete the user &quot;%s&quot; permanently?'),
                                      $this->getUsername());
         $jsvar['ADDRESS']  = 'index.php?module=users&amp;action=admin&amp;command=deleteUser&amp;user_id='
             . $this->id . '&amp;authkey=' . Current_User::getAuthKey();
-        $jsvar['LINK']     = _('Delete');
+        $jsvar['LINK']     = dgettext('users', 'Delete');
     
     
         $linkVar['command'] = 'editUser';
-        $links[] = PHPWS_Text::secureLink(_('Edit'), 'users', $linkVar);
+        $links[] = PHPWS_Text::secureLink(dgettext('users', 'Edit'), 'users', $linkVar);
 
         $linkVar['command'] = 'setUserPermissions';
-        $links[] = PHPWS_Text::secureLink(_('Permissions'), 'users', $linkVar);
+        $links[] = PHPWS_Text::secureLink(dgettext('users', 'Permissions'), 'users', $linkVar);
 
         if (!$this->isDeity() && ($this->id != Current_User::getId())) {
             $links[] = Layout::getJavascript('confirm', $jsvar);

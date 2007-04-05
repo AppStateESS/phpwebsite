@@ -6,10 +6,8 @@
    * @version $Id$
    */
 
-
 function users_install(&$content)
 {
-    translate('users');
     PHPWS_Core::initModClass('users', 'Users.php');
     PHPWS_Core::initModClass('users', 'Action.php');
     PHPWS_Core::configRequireOnce('users', 'config.php');
@@ -22,12 +20,12 @@ function users_install(&$content)
 
         if (PEAR::isError($deities)) {
             PHPWS_Error::log($deities);
-            $content[] = _('Could not access hub database.');
+            $content[] = dgettext('users', 'Could not access hub database.');
             return FALSE;
         }
         elseif (empty($deities)) {
-            $content[] = _('Could not find any hub deities.');
-            translate();
+            $content[] = dgettext('users', 'Could not find any hub deities.');
+            
             return FALSE;
         } else {
             Branch::restoreBranchDB();
@@ -40,7 +38,7 @@ function users_install(&$content)
                 $result = $auth_db->insert();
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
-                    $content[] = _('Unable to copy deity login to branch.');
+                    $content[] = dgettext('users', 'Unable to copy deity login to branch.');
                     continue;
                 }
                 unset($deity['password']);
@@ -49,27 +47,27 @@ function users_install(&$content)
                 
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
-                    $content[] = _('Unable to copy deity users to branch.');
+                    $content[] = dgettext('users', 'Unable to copy deity users to branch.');
                     Branch::loadBranchDB();
                     return FALSE;
                 }
                 $auth_db->reset();
                 $user_db->reset();
             }
-            $content[] = _('Deity users copied to branch.');
+            $content[] = dgettext('users', 'Deity users copied to branch.');
         }
 
         $db = new PHPWS_DB('users_auth_scripts');
-        $db->addValue('display_name', _('Local'));
+        $db->addValue('display_name', dgettext('users', 'Local'));
         $db->addValue('filename', 'local.php');
         $authorize_id = $db->insert();
         if (PEAR::isError($authorize_id)) {
             PHPWS_Error::log($authorize_id);
-            $content[] = _('Unable to create authorization script.');
-            translate();
+            $content[] = dgettext('users', 'Unable to create authorization script.');
+            
             return FALSE;
         }
-        translate();
+        
         return TRUE;
     }
 
@@ -81,7 +79,7 @@ function users_install(&$content)
         $result = User_Action::postUser($user);
         if (!is_array($result)) {
             $db = new PHPWS_DB('users_auth_scripts');
-            $db->addValue('display_name', _('Local'));
+            $db->addValue('display_name', dgettext('users', 'Local'));
             $db->addValue('filename', 'local.php');
             $authorize_id = $db->insert();
 
@@ -96,20 +94,20 @@ function users_install(&$content)
 
             PHPWS_Settings::set('users', array('site_contact' => $user->getEmail()));
             PHPWS_Settings::save('users');
-            $content[] = _('User created successfully.');
-            $content[] = _('User\'s email used as contact email address.');
+            $content[] = dgettext('users', 'User created successfully.');
+            $content[] = dgettext('users', 'User\'s email used as contact email address.');
         } else {
             $content[] = userForm($user, $result);
-            translate();
+            
             return FALSE;
         }
     } else {
-        $content[] = _('Please create a user to administrate the site.') . '<br />';
+        $content[] = dgettext('users', 'Please create a user to administrate the site.') . '<br />';
         $content[] = userForm($user);
-        translate();
+        
         return FALSE;
     }
-    translate();
+    
     return TRUE;
 }
 
@@ -118,9 +116,7 @@ function userForm(&$user, $errors=NULL){
     PHPWS_Core::initCoreClass('Form.php');
     PHPWS_Core::initModClass('users', 'Form.php');
 
-    translate('users');
     $form = new PHPWS_Form;
-
 
     if (isset($_REQUEST['module'])) {
         $form->addHidden('module', $_REQUEST['module']);
@@ -134,11 +130,11 @@ function userForm(&$user, $errors=NULL){
     $form->addPassword('password1');
     $form->addPassword('password2');
 
-    $form->setLabel('username', _('Username'));
-    $form->setLabel('password1', _('Password'));
-    $form->setLabel('email', _('Email'));
+    $form->setLabel('username', dgettext('users', 'Username'));
+    $form->setLabel('password1', dgettext('users', 'Password'));
+    $form->setLabel('email', dgettext('users', 'Email'));
 
-    $form->addSubmit('submit', _('Add User'));
+    $form->addSubmit('submit', dgettext('users', 'Add User'));
   
     $template = $form->getTemplate();
 

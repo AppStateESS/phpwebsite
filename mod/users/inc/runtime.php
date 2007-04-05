@@ -4,7 +4,6 @@
    * @version $Id$
    */
 
-
 if (!class_exists('PHPWS_User')){
     return;
  }
@@ -12,8 +11,7 @@ if (!class_exists('PHPWS_User')){
 if (!isset($_SESSION['User'])){
     $_SESSION['User'] = new PHPWS_User;
  }
-translate('users');
+
 Current_User::getLogin();
-translate();
 
 ?>

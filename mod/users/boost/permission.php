@@ -5,18 +5,16 @@
    * @version $Id$
    */
 
-translate('users');
 $use_permissions = TRUE;
 
-$permissions['edit_users']       = _('Edit Users');
-$permissions['delete_users']     = _('Delete Users');
-$permissions['add_edit_groups']  = _('Add / Edit Groups');
-$permissions['delete_groups']    = _('Delete Groups');
-$permissions['edit_permissions'] = _('Edit Permissions');
+$permissions['edit_users']       = dgettext('users', 'Edit Users');
+$permissions['delete_users']     = dgettext('users', 'Delete Users');
+$permissions['add_edit_groups']  = dgettext('users', 'Add / Edit Groups');
+$permissions['delete_groups']    = dgettext('users', 'Delete Groups');
+$permissions['edit_permissions'] = dgettext('users', 'Edit Permissions');
 /**
  * Also controls individual user authorization setting
  */
-$permissions['settings']         = _('Authorization/Settings');
+$permissions['settings']         = dgettext('users', 'Authorization/Settings');
 
-translate();
 ?>

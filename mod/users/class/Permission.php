@@ -42,20 +42,20 @@ class Users_Permission {
 
 
         $columnSetting = 'smallint NOT NULL default \'0\'';
-        translate('users');
+        
         foreach ($permissions as $perm_name => $perm_proper) {
             if (in_array($perm_name, $columns)) {
                 continue;
             }
             $result = $db->addTableColumn($perm_name, $columnSetting);
             if (PEAR::isError($result)) {
-                $content[] = sprintf(_('Could not create "%s" permission column.'), $perm_name);
+                $content[] = sprintf(dgettext('users', 'Could not create "%s" permission column.'), $perm_name);
                 PHPWS_Error::log($result);
             } else {
-                $content[] = sprintf(_('"%s" permission column created.'), $perm_name);
+                $content[] = sprintf(dgettext('users', '"%s" permission column created.'), $perm_name);
             }
         }
-        translate();
+        
         return TRUE;
     }
 

@@ -9,7 +9,7 @@ class My_Page {
 
     function main()
     {
-        translate('users');
+        
         if (!Current_User::isLogged()) {
             PHPWS_Core::errorPage('403');
         }
@@ -18,10 +18,10 @@ class My_Page {
 
         if (PEAR::isError($result)){
             PHPWS_Error::log($result);
-            Layout::add(PHPWS_ControlPanel::display(_('The is a problem with My Page.')));
+            Layout::add(PHPWS_ControlPanel::display(dgettext('users', 'The is a problem with My Page.')));
             return;
         } elseif (!$result) {
-            Layout::add(PHPWS_ControlPanel::display(_('No modules are registered to My Page.')));
+            Layout::add(PHPWS_ControlPanel::display(dgettext('users', 'No modules are registered to My Page.')));
             return;
         }
 
@@ -30,7 +30,7 @@ class My_Page {
         $module = $panel->getCurrentTab();
 
         if (!$this->moduleIsRegistered($module)){
-            Layout::add(_('This module is not registered with My Page'));
+            Layout::add(dgettext('users', 'This module is not registered with My Page'));
             return;
         }
 
@@ -96,8 +96,7 @@ class My_Page {
 
         if (!is_file($final_file)){
             PHPWS_Error::log(PHPWS_FILE_NOT_FOUND, 'users', 'userOption', $final_file);
-            translate('users');
-            return _('There was a problem with this module\'s My Page file.');
+            return dgettext('users', 'There was a problem with this module\'s My Page file.');
         }
 
         include $final_file;

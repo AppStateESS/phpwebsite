@@ -4,7 +4,6 @@
    * @version $Id$
    */ 
 
-translate('users');
 define('BAD_PASSWORDS',
        serialize(array('pass',
 		       'password',
@@ -27,9 +26,9 @@ define('UNRESTRICTED_PERMISSION',    2);
 define('RESTRICTED_PERMISSION', 1);
 define('NO_PERMISSION',      0);
 
-define('FULL_PERM_NAME', _('Unrestricted'));
-define('PART_PERM_NAME', _('Restricted'));
-define('NO_PERM_NAME', _('None'));
+define('FULL_PERM_NAME', dgettext('users', 'Unrestricted'));
+define('PART_PERM_NAME', dgettext('users', 'Restricted'));
+define('NO_PERM_NAME', dgettext('users', 'None'));
 
 /**
  * reg exp characters to strip from username default is '\w'
@@ -51,8 +50,8 @@ define('USERNAME_LENGTH', 4);
 define('DISPLAY_NAME_LENGTH', 4);
 define('GROUPNAME_LENGTH', 4);
 
-define('LOGIN_BUTTON', _('Login'));
-define('USER_SIGNUP_QUESTION', _('Want to join?'));
+define('LOGIN_BUTTON', dgettext('users', 'Login'));
+define('USER_SIGNUP_QUESTION', dgettext('users', 'Want to join?'));
 
 // phpWebSite uses Pear's graphic confirmation class
 // You must set the correct font path and file for it to 
@@ -70,5 +69,4 @@ define('GC_HEIGHT', 70);
 define('LOCAL_AUTHORIZATION', 1);
 define('GLOBAL_AUTHORIZATION', 2);
 
-translate();
 ?>
