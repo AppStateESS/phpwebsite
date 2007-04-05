@@ -3,14 +3,13 @@
    * @version $Id$
    * @author Matthew McNaney <mcnaney at gmail dot com>
    */
-translate('profiler');
-$link[] = array('label'       => _('Profiler'),
+
+$link[] = array('label'       => dgettext('profiler', 'Profiler'),
 		'restricted'  => TRUE,
 		'url'         => 'index.php?module=profiler',
-		'description' => _('Create profiles on individuals for display on site.'),
+		'description' => dgettext('profiler', 'Create profiles on individuals for display on site.'),
 		'image'       => 'profile.png',
 		'tab'         => 'content'
 		);
-translate();
 
 ?>

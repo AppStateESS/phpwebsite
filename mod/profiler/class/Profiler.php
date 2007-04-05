@@ -43,7 +43,7 @@ class Profiler {
             if (Current_User::allow('profiler')) {
                 $vars['command']    = 'edit';
                 $vars['profile_id'] = $profile->id;
-                $link = PHPWS_Text::secureLink(_('Edit profile'), 'profiler', $vars);
+                $link = PHPWS_Text::secureLink(dgettext('profiler', 'Edit profile'), 'profiler', $vars);
                 MiniAdmin::add('profiler', $link);
             }
             
@@ -78,7 +78,7 @@ class Profiler {
         $result = $db->loadObject($profile);
 
         if (empty($result)) {
-            return _('Please create a profile in this category.');
+            return dgettext('profiler', 'Please create a profile in this category.');
         }
 
         return $profile->display($template);
@@ -113,12 +113,12 @@ class Profiler {
         switch ($command) {
         case 'new':
             $profile = new Profile;
-            $title = _('Create New Profile');
+            $title = dgettext('profiler', 'Create New Profile');
             $content = Profile_Forms::edit($profile);
             break;
 
         case 'edit':
-            $title = _('Update Profile');
+            $title = dgettext('profiler', 'Update Profile');
             $content = Profile_Forms::edit($profile);
             break;
 
@@ -130,12 +130,12 @@ class Profiler {
                 $profile->delete();
             }
         case 'list':
-            $title = _('Current Profiles');
+            $title = dgettext('profiler', 'Current Profiles');
             $content = Profile_Forms::profileList();
             break;
 
         case 'division':
-            $title = _('Divisions');
+            $title = dgettext('profiler', 'Divisions');
             $content = Profile_Forms::divisionList();
             break;
 
@@ -149,7 +149,7 @@ class Profiler {
 
             if ($division->error) {
                 PHPWS_Error::log($division->error);
-                $content = _('There is a problem with this Profiler division.');
+                $content = dgettext('profiler', 'There is a problem with this Profiler division.');
                 return;
             }
 
@@ -167,7 +167,7 @@ class Profiler {
 
             if ($division->error) {
                 PHPWS_Error::log($division->error);
-                $content = _('There is a problem with this Profiler division.');
+                $content = dgettext('profiler', 'There is a problem with this Profiler division.');
                 return;
             }
 
@@ -186,8 +186,8 @@ class Profiler {
 
         case 'post_profile':
             if (!isset($_POST['profile_id']) && PHPWS_Core::isPosted()) {
-                $title = _('You recently posted this identical profile.');
-                $content = _('Ignoring the repeat.');
+                $title = dgettext('profiler', 'You recently posted this identical profile.');
+                $content = dgettext('profiler', 'Ignoring the repeat.');
                 break;
             }
 
@@ -198,9 +198,9 @@ class Profiler {
 
             if (is_array($result)) {
                 if ($profile->id) {
-                    $title = _('Update Profile');
+                    $title = dgettext('profiler', 'Update Profile');
                 } else {
-                    $title = _('Create New Profile');
+                    $title = dgettext('profiler', 'Create New Profile');
                 }
                 $message = implode('<br />', $result);
                 $content = Profile_Forms::edit($profile);
@@ -208,14 +208,14 @@ class Profiler {
                 $result = $profile->save();
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
-                    $title = _('Sorry');
-                    $content = _('An error occurred when saving your profile.');
+                    $title = dgettext('profiler', 'Sorry');
+                    $content = dgettext('profiler', 'An error occurred when saving your profile.');
                 } else {
-                    $title = _('Success');
+                    $title = dgettext('profiler', 'Success');
                     if ($profile->approved) {
-                        $content = _('Profile saved successfully.');
+                        $content = dgettext('profiler', 'Profile saved successfully.');
                     } else {
-                        $content = _('Profile saved for approval.');
+                        $content = dgettext('profiler', 'Profile saved for approval.');
                     }
                     Layout::metaRoute('index.php?module=profiler&authkey=' . Current_User::getAuthKey());
                 }
@@ -223,7 +223,7 @@ class Profiler {
             break;
 
         case 'settings':
-            $title = _('Settings');
+            $title = dgettext('profiler', 'Settings');
             $content = Profile_Forms::settings();
             break;
 
@@ -235,11 +235,11 @@ class Profiler {
             $result = Profiler::saveSettings();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
-                $title = _('Uh oh');
-                $content = _('There was a problem saving your settings.');
+                $title = dgettext('profiler', 'Uh oh');
+                $content = dgettext('profiler', 'There was a problem saving your settings.');
             } else {
-                $title = _('Setting saved');
-                $content = PHPWS_Text::secureLink(_('Go back to the Settings page.'), 'profiler');
+                $title = dgettext('profiler', 'Setting saved');
+                $content = PHPWS_Text::secureLink(dgettext('profiler', 'Go back to the Settings page.'), 'profiler');
             }
             break;
 
@@ -261,11 +261,11 @@ class Profiler {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=profiler';
 
-        $tabs['new']       = array ('title'=> _('New'), 'link'=> $link);
-        $tabs['list']      = array ('title'=> _('List'), 'link'=> $link);
-        $tabs['division']  = array ('title'=> _('Division'), 'link'=>$link);
-        $tabs['settings']  = array ('title'=> _('Settings'), 'link'=> $link);
-        //        $tabs['approval']  = array ('title'=> _('Approval'), 'link'=> $link);
+        $tabs['new']       = array ('title'=> dgettext('profiler', 'New'), 'link'=> $link);
+        $tabs['list']      = array ('title'=> dgettext('profiler', 'List'), 'link'=> $link);
+        $tabs['division']  = array ('title'=> dgettext('profiler', 'Division'), 'link'=>$link);
+        $tabs['settings']  = array ('title'=> dgettext('profiler', 'Settings'), 'link'=> $link);
+        //        $tabs['approval']  = array ('title'=> dgettext('profiler', 'Approval'), 'link'=> $link);
 
         $panel = new PHPWS_Panel('profiler');
         $panel->quickSetTabs($tabs);

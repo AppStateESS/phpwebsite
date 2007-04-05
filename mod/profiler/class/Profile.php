@@ -85,12 +85,12 @@ class Profile {
 
         $template['FULLSTORY'] = $this->getFullstory();
         $template['CAPTION'] = $this->getCaption();
-        $template['READ_MORE'] = sprintf('<a href="%s">%s</a>', $link, _('Read more. . .'));
-        $template['WEBSITE_LABEL'] = _('Web site');
+        $template['READ_MORE'] = sprintf('<a href="%s">%s</a>', $link, dgettext('profiler', 'Read more. . .'));
+        $template['WEBSITE_LABEL'] = dgettext('profiler', 'Web site');
         $template['WEBSITE'] = $this->getWebsite();
 
         $template['EMAIL'] = $this->getEmail();
-        $template['EMAIL_LABEL'] = _('Email address');
+        $template['EMAIL_LABEL'] = dgettext('profiler', 'Email address');
         
         return PHPWS_Template::process($template, 'profiler', 'views/' . $template_name . '.tpl');
     }
@@ -102,7 +102,7 @@ class Profile {
         }
         
         
-        return sprintf('<a class="email" href="mailto:%s"><img src="images/mod/profiler/email.png" alt="%s" title="%s" /></a>', $this->email, _('Email'), _('Email'));
+        return sprintf('<a class="email" href="mailto:%s"><img src="images/mod/profiler/email.png" alt="%s" title="%s" /></a>', $this->email, dgettext('profiler', 'Email'), dgettext('profiler', 'Email'));
     }
 
     function getWebsite()
@@ -111,7 +111,7 @@ class Profile {
             return null;
         }
 
-        return sprintf('<a class="url" href="%s"><img src="images/mod/profiler/website.png" alt="%s" title="%s" /></a>', $this->website, _('Web site'), _('Web site'));
+        return sprintf('<a class="url" href="%s"><img src="images/mod/profiler/website.png" alt="%s" title="%s" /></a>', $this->website, dgettext('profiler', 'Web site'), dgettext('profiler', 'Web site'));
     }
 
     function loadImages()
@@ -209,7 +209,7 @@ class Profile {
         if (isset($all_profiles[$this->profile_type])) {
             return $all_profiles[$this->profile_type];
         } else {
-            return _('Profile not set.');
+            return dgettext('profiler', 'Profile not set.');
         }
     }
 
@@ -237,13 +237,13 @@ class Profile {
         }
 
         if (empty($_POST['firstname'])) {
-            $error[] = _('Please enter a first name.');
+            $error[] = dgettext('profiler', 'Please enter a first name.');
         }
 
         $this->setFirstName($_POST['firstname']);
 
         if (empty($_POST['lastname'])) {
-            $error[] = _('Please enter a last name.');
+            $error[] = dgettext('profiler', 'Please enter a last name.');
         }
 
         $this->setLastName($_POST['lastname']);
@@ -268,7 +268,7 @@ class Profile {
             $link = PHPWS_Text::checkLink($_POST['website']);
             $this->website = $link;
             if (!PHPWS_Text::isValidInput($link, 'url')) {
-                $error[] = _('Web site address does not appear valid.');
+                $error[] = dgettext('profiler', 'Web site address does not appear valid.');
             }
         } else {
             $this->website = null;
@@ -277,7 +277,7 @@ class Profile {
         if (isset($_POST['email'])) {
             $this->email = $_POST['email'];
             if (!PHPWS_Text::isValidInput($this->email, 'email')) {
-                $error[] = _('Email address does not appear valid.');
+                $error[] = dgettext('profiler', 'Email address does not appear valid.');
             }
         } else {
             $this->email = null;
@@ -305,15 +305,15 @@ class Profile {
 
         $vars['profile_id'] = $this->id;
         $vars['command'] = 'edit';
-        $links[] = PHPWS_Text::secureLink(_('Edit'), 'profiler', $vars);
+        $links[] = PHPWS_Text::secureLink(dgettext('profiler', 'Edit'), 'profiler', $vars);
 
         $tpl['SUBMIT_DATE'] = strftime(PRF_SUBMIT_DATE_FORMAT, $this->submit_date);
 
         if (Current_User::allow('profiler', 'delete_profiles')){
             $vars['command'] = 'delete';
-            $confirm_vars['QUESTION'] = _('Are you sure you want to permanently delete this profile?');
+            $confirm_vars['QUESTION'] = dgettext('profiler', 'Are you sure you want to permanently delete this profile?');
             $confirm_vars['ADDRESS'] = PHPWS_Text::linkAddress('profiler', $vars, TRUE);
-            $confirm_vars['LINK'] = _('Delete');
+            $confirm_vars['LINK'] = dgettext('profiler', 'Delete');
             $links[] = Layout::getJavascript('confirm', $confirm_vars);
         }
 
