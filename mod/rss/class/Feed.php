@@ -60,28 +60,28 @@ class RSS_Feed {
     {
         $vars['command'] = 'reset_feed';
         $vars['feed_id'] = $this->id;
-        $links[] = PHPWS_Text::secureLink(_('Reset'), 'rss', $vars);
+        $links[] = PHPWS_Text::secureLink(dgettext('rss', 'Reset'), 'rss', $vars);
 
         $jsvars['address'] = sprintf('index.php?module=rss&command=edit_feed&feed_id=%s&authkey=%s',
                                    $this->id, Current_User::getAuthKey());
-        $jsvars['label'] = _('Edit');
+        $jsvars['label'] = dgettext('rss', 'Edit');
         $jsvars['height'] = '280';
         $links[] = javascript('open_window', $jsvars);
 
-        $js['QUESTION'] = _('Are you sure you want to delete this RSS feed?');
+        $js['QUESTION'] = dgettext('rss', 'Are you sure you want to delete this RSS feed?');
         $js['ADDRESS']  = sprintf('index.php?module=rss&command=delete_feed&feed_id=%s&authkey=%s',
                                   $this->id, Current_User::getAuthKey());
-        $js['LINK']     = _('Delete');
+        $js['LINK']     = dgettext('rss', 'Delete');
         $links[] = javascript('confirm', $js);
 
         $tpl['ACTION'] = implode(' | ', $links);
 
         if ($this->display) {
             $vars['command'] = 'turn_off_display';
-            $tpl['DISPLAY'] = PHPWS_Text::secureLink(_('Yes'), 'rss', $vars);
+            $tpl['DISPLAY'] = PHPWS_Text::secureLink(dgettext('rss', 'Yes'), 'rss', $vars);
         } else {
             $vars['command'] = 'turn_on_display';
-            $tpl['DISPLAY'] = PHPWS_Text::secureLink(_('No'), 'rss', $vars);
+            $tpl['DISPLAY'] = PHPWS_Text::secureLink(dgettext('rss', 'No'), 'rss', $vars);
         }
 
         $hours   = floor($this->refresh_time / 3600);
@@ -95,26 +95,26 @@ class RSS_Feed {
         $time = NULL;
         
         if ($seconds) {
-            $time = sprintf(_('%d seconds'), $seconds);
+            $time = sprintf(dgettext('rss', '%d seconds'), $seconds);
         }
 
         if ($minutes) {
             if (isset($time)) {
-                $time = sprintf(_('%d minutes, '), $minutes) . $time;
+                $time = sprintf(dgettext('rss', '%d minutes, '), $minutes) . $time;
             } else {
-                $time = sprintf(_('%d minutes'), $minutes) . $time;
+                $time = sprintf(dgettext('rss', '%d minutes'), $minutes) . $time;
             }
         }
 
         if ($hours) {
             if (isset($time)) {
-                $time = sprintf(_('%d hours, '), $hours) . $time;
+                $time = sprintf(dgettext('rss', '%d hours, '), $hours) . $time;
             } else {
-                $time = sprintf(_('%d hours'), $hours) . $time;
+                $time = sprintf(dgettext('rss', '%d hours'), $hours) . $time;
             }
         }
 
-        $refresh_time = sprintf(_('Every %s'), $time);
+        $refresh_time = sprintf(dgettext('rss', 'Every %s'), $time);
 
 
         $tpl['REFRESH_TIME'] = $refresh_time;
@@ -172,13 +172,13 @@ class RSS_Feed {
         }
 
         if (!isset($_POST['address'])) {
-            $error[] = _('You must enter an address.');
+            $error[] = dgettext('rss', 'You must enter an address.');
         }
 
         $this->setAddress($_POST['address']);
 
         if (!$this->loadParser(FALSE)) {
-            $error[] = _('Invalid feed address.');
+            $error[] = dgettext('rss', 'Invalid feed address.');
         }
 
         $item_limit = (int)$_POST['item_limit'];
@@ -186,7 +186,7 @@ class RSS_Feed {
         if (empty($item_limit)) {
             $this->item_limit = RSS_FEED_LIMIT;
         } elseif ($item_limit > RSS_MAX_FEED) {
-            $error[] = sprintf(_('You may not pull more than %s feeds.'), RSS_MAX_FEED);
+            $error[] = sprintf(dgettext('rss', 'You may not pull more than %s feeds.'), RSS_MAX_FEED);
             $this->item_limit = RSS_FEED_LIMIT;
         } else {
             $this->item_limit = $item_limit;
@@ -196,10 +196,10 @@ class RSS_Feed {
         $refresh_time = (int)$_POST['refresh_time'];
         
         if ($refresh_time < 60) {
-            $error[] = _('Refresh time is too low. It must be over 60 seconds.');
+            $error[] = dgettext('rss', 'Refresh time is too low. It must be over 60 seconds.');
             $this->refresh_time = RSS_FEED_REFRESH;
         } elseif ($refresh_time > 2592000) {
-            $error[] = _('You should refresh more often than every month.');
+            $error[] = dgettext('rss', 'You should refresh more often than every month.');
             $this->refresh_time = RSS_FEED_REFRESH;
         } else {
             $this->refresh_time = &$refresh_time;
@@ -235,7 +235,7 @@ class RSS_Feed {
     function view()
     {
         if (!$this->loadParser()) {
-            $tpl['MESSAGE'] = _('Sorry, unable to grab feed.');
+            $tpl['MESSAGE'] = dgettext('rss', 'Sorry, unable to grab feed.');
         } else {
             if (isset($this->mapped['ITEMS'])) {
                 $count = 0;
@@ -253,7 +253,7 @@ class RSS_Feed {
                     $count++;
                 }
             } else {
-                $tpl['MESSAGE'] = _('Unable to list feed.');
+                $tpl['MESSAGE'] = dgettext('rss', 'Unable to list feed.');
             }
         }
         $tpl['FEED_LINK']  = &$this->mapped['CHANNEL']['LINK'];

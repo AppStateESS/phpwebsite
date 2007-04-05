@@ -12,7 +12,7 @@ class RSS {
         $reg_file = PHPWS_Core::getConfigFile($module, 'rss.php');
 
         if ($reg_file == FALSE) {
-            PHPWS_Boost::addLog($module, _('No RSS file found.'));
+            PHPWS_Boost::addLog($module, dgettext('rss', 'No RSS file found.'));
             return FALSE;
         }
 
@@ -23,8 +23,8 @@ class RSS {
         $oChannel->module = $module;
 
         if (!isset($channel) || !is_array($channel)) {
-            $content[] = _('RSS file found but no channel information.');
-            PHPWS_Boost::addLog($module, _('RSS file found but no channel information.'));
+            $content[] = dgettext('rss', 'RSS file found but no channel information.');
+            PHPWS_Boost::addLog($module, dgettext('rss', 'RSS file found but no channel information.'));
         }
 
         $oModule = new PHPWS_Module($module);
@@ -48,11 +48,11 @@ class RSS {
         $result = $oChannel->save();
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            PHPWS_Boost::addLog($module, _('An error occurred registering to RSS module.'));
-            $content[] = _('An error occurred registering to RSS module.');
+            PHPWS_Boost::addLog($module, dgettext('rss', 'An error occurred registering to RSS module.'));
+            $content[] = dgettext('rss', 'An error occurred registering to RSS module.');
             return NULL;
         } else {
-            $content[] = sprintf(_('RSS registration to %s module successful.'), $oModule->proper_name);
+            $content[] = sprintf(dgettext('rss', 'RSS registration to %s module successful.'), $oModule->proper_name);
             return TRUE;
         }
     }

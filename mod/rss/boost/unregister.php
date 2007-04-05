@@ -6,18 +6,15 @@
 
 function rss_unregister($module, &$content)
 {
-    translate('rss');
     $db = new PHPWS_DB('rssfeeds');
     $db->addWhere('module', $module);
     $result = $db->delete();
     if (PEAR::isError($result)) {
         PHPWS_Error::log($result);
-        $content[] = _('An error occurred trying to unregister this module from RSSFeeds.');
-        translate();
+        $content[] = dgettext('rss', 'An error occurred trying to unregister this module from RSSFeeds.');
         return FALSE;
     } else {
-        $content[] = _('Module unregistered from RSSFeeds.');
-        translate();
+        $content[] = dgettext('rss', 'Module unregistered from RSSFeeds.');
         return TRUE;
     }
 }

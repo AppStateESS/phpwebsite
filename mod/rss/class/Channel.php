@@ -48,7 +48,7 @@ class RSS_Channel {
         if (isset($_POST['title'])) {
             $this->title = $_POST['title'];
         } else {
-            $errors[] = _('You must enter a title.');
+            $errors[] = dgettext('rss', 'You must enter a title.');
         }
 
         if (isset($_POST['description'])) {
@@ -83,7 +83,7 @@ class RSS_Channel {
     {
         $vars['channel_id'] = $this->id;
         $vars['command'] = 'edit_channel';
-        $links[] = PHPWS_Text::secureLink(_('Edit'), 'rss', $vars);
+        $links[] = PHPWS_Text::secureLink(dgettext('rss', 'Edit'), 'rss', $vars);
 
         return $links;
     }

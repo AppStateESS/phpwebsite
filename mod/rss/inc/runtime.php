@@ -7,9 +7,7 @@
 PHPWS_Core::initModClass('rss', 'RSS.php');
 
 if (!isset($_REQUEST['module'])) {
-    translate('rss');
     RSS::showFeeds();
-    translate();
- }
+}
 
 ?>

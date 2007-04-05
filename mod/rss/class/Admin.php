@@ -70,9 +70,9 @@ class RSS_Admin {
             } else {
                 $result = $channel->save();
                 if (PEAR::isError($result)) {
-                    RSS_Admin::sendMessage(_('An error occurred when saving your channel.'), 'channels');
+                    RSS_Admin::sendMessage(dgettext('rss', 'An error occurred when saving your channel.'), 'channels');
                 } else {
-                    RSS_Admin::sendMessage(_('Channel saved.'), 'channels');
+                    RSS_Admin::sendMessage(dgettext('rss', 'Channel saved.'), 'channels');
                 }
             }
             break;
@@ -153,10 +153,10 @@ class RSS_Admin {
     {
         $opt['link'] = 'index.php?module=rss';
 
-        $opt['title'] = _('Channels'); 
+        $opt['title'] = dgettext('rss', 'Channels'); 
         $tab['channels'] = $opt;
 
-        $opt['title'] = _('Import');
+        $opt['title'] = dgettext('rss', 'Import');
         $tab['import'] = $opt;
 
         $panel = new PHPWS_Panel('rss_admin');
@@ -169,23 +169,23 @@ class RSS_Admin {
         $form = new PHPWS_Form;
         $form->addHidden('module', 'rss');
         $form->addHidden('command', 'post_channel');
-        $form->addSubmit(_('Save Channel'));
+        $form->addSubmit(dgettext('rss', 'Save Channel'));
 
         if ($channel->id) {
             $form->addHidden('channel_id', $channel->id);
         }
 
         $form->addText('title', $channel->title);
-        $form->setLabel('title', _('Title'));
+        $form->setLabel('title', dgettext('rss', 'Title'));
 
         $form->addTextArea('description', $channel->description);
-        $form->setLabel('description', _('Description'));
+        $form->setLabel('description', dgettext('rss', 'Description'));
 
         $formtpl = $form->getTemplate();
         
         $tpl['CONTENT'] = PHPWS_Template::processTemplate($formtpl, 'rss', 'channel_form.tpl');
 
-        $tpl['TITLE'] = _('Edit channel');
+        $tpl['TITLE'] = dgettext('rss', 'Edit channel');
 
         return $tpl;
 
@@ -194,18 +194,18 @@ class RSS_Admin {
     function channels()
     {
         PHPWS_Core::initModClass('rss', 'Channel.php');
-        $final_tpl['TITLE'] = _('Administrate RSS Feeds');
+        $final_tpl['TITLE'] = dgettext('rss', 'Administrate RSS Feeds');
 
         $db = new PHPWS_DB('rss_channel');
         $db->addOrder('title');
         $channels = $db->getObjects('RSS_Channel');
         
         if (empty($channels)) {
-            $final_tpl['CONTENT'] = _('No channels have been registered.');
+            $final_tpl['CONTENT'] = dgettext('rss', 'No channels have been registered.');
             return $final_tpl;
         } elseif (PEAR::isError($channels)) {
             PHPWS_Error::log($channels);
-            $final_tpl['CONTENT'] = _('An error occurred when trying to access your RSS channels.');
+            $final_tpl['CONTENT'] = dgettext('rss', 'An error occurred when trying to access your RSS channels.');
             return $final_tpl;
         }
 
@@ -213,17 +213,17 @@ class RSS_Admin {
             $row['TITLE'] = $oChannel->getTitle();
             $row['ACTION'] = implode(' | ', $oChannel->getActionLinks());
             if ($oChannel->active) {
-                $row['ACTIVE'] = _('Yes');
+                $row['ACTIVE'] = dgettext('rss', 'Yes');
             } else {
-                $row['ACTIVE'] = _('No');
+                $row['ACTIVE'] = dgettext('rss', 'No');
             }
 
             $tpl['channels'][] = $row;
         }
 
-        $tpl['TITLE_LABEL']  = _('Title');
-        $tpl['ACTIVE_LABEL'] = _('Active');
-        $tpl['ACTION_LABEL'] = _('Action');
+        $tpl['TITLE_LABEL']  = dgettext('rss', 'Title');
+        $tpl['ACTIVE_LABEL'] = dgettext('rss', 'Active');
+        $tpl['ACTION_LABEL'] = dgettext('rss', 'Action');
 
         $final_tpl['CONTENT'] = PHPWS_Template::process($tpl, 'rss', 'channel_list.tpl');
 
@@ -240,34 +240,34 @@ class RSS_Admin {
         $form->addHidden('command', 'save_feed');
 
         $form->addText('address', $feed->address);
-        $form->setLabel('address', _('Address'));
+        $form->setLabel('address', dgettext('rss', 'Address'));
         $form->setSize('address', '40');
 
         $form->addText('title', $feed->title);
-        $form->setLabel('title', _('Title'));
+        $form->setLabel('title', dgettext('rss', 'Title'));
         $form->setSize('title', '40');
 
-        $form->addSubmit('submit', _('Save'));
+        $form->addSubmit('submit', dgettext('rss', 'Save'));
         
-        $form->addButton('cancel', _('Cancel'));
+        $form->addButton('cancel', dgettext('rss', 'Cancel'));
         $form->setExtra('cancel', 'onclick="window.close()"');
 
         $form->addText('item_limit', $feed->item_limit);
         $form->setSize('item_limit', 2);
-        $form->setLabel('item_limit', _('Item limit'));
+        $form->setLabel('item_limit', dgettext('rss', 'Item limit'));
 
         $form->addText('refresh_time', $feed->refresh_time);
         $form->setSize('refresh_time', 5);
-        $form->setLabel('refresh_time', _('Refresh time'));
+        $form->setLabel('refresh_time', dgettext('rss', 'Refresh time'));
 
         $template = $form->getTemplate();
         
-        $template['TITLE_WARNING'] = _('Feed title will be used if left empty');
-        $template['REFRESH_WARNING'] = _('In seconds');
+        $template['TITLE_WARNING'] = dgettext('rss', 'Feed title will be used if left empty');
+        $template['REFRESH_WARNING'] = dgettext('rss', 'In seconds');
 
         $content = PHPWS_Template::process($template, 'rss', 'add_feed.tpl');
 
-        $tpl['TITLE'] = _('Add Feed');
+        $tpl['TITLE'] = dgettext('rss', 'Add Feed');
         $tpl['CONTENT'] = $content;
         return $tpl;
     }
@@ -277,8 +277,8 @@ class RSS_Admin {
         PHPWS_Core::requireConfig('rss');
         
         if (!ini_get('allow_url_fopen')) {
-            $tpl['TITLE'] = _('Sorry');
-            $tpl['CONTENT'] = _('You must enable allow_url_fopen in your php.ini file.');
+            $tpl['TITLE'] = dgettext('rss', 'Sorry');
+            $tpl['CONTENT'] = dgettext('rss', 'You must enable allow_url_fopen in your php.ini file.');
             return $tpl;
         }
         
@@ -287,15 +287,15 @@ class RSS_Admin {
         $content = NULL;
         
         $vars['address'] = 'index.php?module=rss&command=add_feed';
-        $vars['label'] = _('Add feed');
+        $vars['label'] = dgettext('rss', 'Add feed');
         $vars['height'] = '280';
         $template['ADD_LINK'] = javascript('open_window', $vars);
 
-        $template['TITLE_LABEL']   = _('Title');
-        $template['ADDRESS_LABEL'] = _('Address');
-        $template['DISPLAY_LABEL'] = _('Display?');
-        $template['ACTION_LABEL']  = _('Action');
-        $template['REFRESH_TIME_LABEL'] = _('Refresh feed');
+        $template['TITLE_LABEL']   = dgettext('rss', 'Title');
+        $template['ADDRESS_LABEL'] = dgettext('rss', 'Address');
+        $template['DISPLAY_LABEL'] = dgettext('rss', 'Display?');
+        $template['ACTION_LABEL']  = dgettext('rss', 'Action');
+        $template['REFRESH_TIME_LABEL'] = dgettext('rss', 'Refresh feed');
 
         $pager = new DBPager('rss_feeds', 'RSS_Feed');
         $pager->setModule('rss');
@@ -304,10 +304,10 @@ class RSS_Admin {
         $pager->addRowTags('pagerTags');
         $content = $pager->get();
 
-        $tpl['TITLE'] = _('Import RSS Feeds');
+        $tpl['TITLE'] = dgettext('rss', 'Import RSS Feeds');
         $tpl['CONTENT'] = $content;
         if (!defined('ALLOW_CACHE_LITE') || !ALLOW_CACHE_LITE) {
-            $tpl['MESSAGE'] = _('Please enable Cache Lite in your config/core/config.php file.');
+            $tpl['MESSAGE'] = dgettext('rss', 'Please enable Cache Lite in your config/core/config.php file.');
         }
 
         return $tpl;
