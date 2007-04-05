@@ -11,18 +11,18 @@ class Related_Action {
 
     function create(&$related)
     {
-        $template['TITLE_LBL'] = _('Title');
-        $template['MODULE_LBL'] = _('Module');
+        $template['TITLE_LBL'] = dgettext('related', 'Title');
+        $template['MODULE_LBL'] = dgettext('related', 'Module');
 
-        $instructions[] = _('Currently, nothing is associated with this item.');
-        $instructions[] = _('If you want to add related information to this item, click the "Build Related" link.');
+        $instructions[] = dgettext('related', 'Currently, nothing is associated with this item.');
+        $instructions[] = dgettext('related', 'If you want to add related information to this item, click the "Build Related" link.');
 
         $template['INSTRUCTIONS'] = implode('<br />', $instructions);
 
         $vars['action'] = 'start';
         $vars['key'] = $related->key_id;
 
-        $template['LINK'] = PHPWS_Text::secureLink(_('Build Related'), 'related', $vars);
+        $template['LINK'] = PHPWS_Text::secureLink(dgettext('related', 'Build Related'), 'related', $vars);
         $template['TITLE'] = $related->getUrl(TRUE);
 
         $module = new PHPWS_Module($related->_key->module);
@@ -34,13 +34,13 @@ class Related_Action {
     {
         PHPWS_Core::initCoreClass('Module.php');
         $related = & Related_Action::getBank();
-        $template['TITLE_LBL'] = _('Title');
-        $template['MODULE_LBL'] = _('Module');
+        $template['TITLE_LBL'] = dgettext('related', 'Title');
+        $template['MODULE_LBL'] = dgettext('related', 'Module');
         $template['TITLE'] = $related->getUrl(TRUE);
 
         $id = $related->id;
 
-        $js['question'] = _('What do you want the title to be?');
+        $js['question'] = dgettext('related', 'What do you want the title to be?');
         $js['address'] = 'index.php?module=related&action=postTitle';
         $js['answer'] = $related->title;
         $js['value_name'] = 'new_title';
@@ -52,12 +52,12 @@ class Related_Action {
 
         if ($related->key_id != $current->key_id && !$related->isFriend($current)) {
             $template['ADD_LINK'] = '<a href="index.php?module=related&amp;action=add">'
-                . _('Add item') . '</a>';
+                . dgettext('related', 'Add item') . '</a>';
 
 
             if (!empty($current->friends)) {
                 $extra_friends = $current->listFriends();
-                $template['EXTRA_INSTRUCTIONS'] = _('This item is related to the following:');
+                $template['EXTRA_INSTRUCTIONS'] = dgettext('related', 'This item is related to the following:');
         
                 if (is_array($extra_friends)) {
                     foreach ($extra_friends as $key=>$friend_item){
@@ -68,7 +68,7 @@ class Related_Action {
         }
 
         $template['QUIT_LINK'] = '<a href="index.php?module=related&amp;action=quit">'
-            . _('Quit') . '</a>';
+            . dgettext('related', 'Quit') . '</a>';
 
         Related_Action::setCurrent($current);
 
@@ -77,7 +77,7 @@ class Related_Action {
 
         if (!empty($related->friends)) {
             $template['SAVE_LINK'] = '<a href="index.php?module=related&amp;action=save">'
-                . _('Save') . '</a>';
+                . dgettext('related', 'Save') . '</a>';
 
             $friends = $related->listFriends();
 
@@ -95,7 +95,7 @@ class Related_Action {
                 }
             }
         } else {
-            $template['FRIEND_NAME'] = _('View other items to add them to the list.');
+            $template['FRIEND_NAME'] = dgettext('related', 'View other items to add them to the list.');
         }
         return PHPWS_Template::process($template, 'related', 'edit.tpl');
     }
@@ -118,7 +118,7 @@ class Related_Action {
             $linkvars = array('action' => 'edit',
                               'id'     => $related->id
                               );
-            $template['EDIT_LINK'] = PHPWS_Text::moduleLink(_('Edit'), 'related', $linkvars);
+            $template['EDIT_LINK'] = PHPWS_Text::moduleLink(dgettext('related', 'Edit'), 'related', $linkvars);
         }
 
         foreach ($friends as $key=>$friend_item){
@@ -184,11 +184,11 @@ class Related_Action {
     function add()
     {
         if (!isset($_SESSION['Related_Bank'])) {
-            return _('Bank not created.');
+            return dgettext('related', 'Bank not created.');
         }
 
         if (!isset($_SESSION['Current_Friend'])) {
-            return _('Friend not created.');
+            return dgettext('related', 'Friend not created.');
         }
 
         $related = & $_SESSION['Related_Bank'];
@@ -208,11 +208,11 @@ class Related_Action {
     function up()
     {
         if (!isset($_SESSION['Related_Bank'])) {
-            return _('Bank not created.');
+            return dgettext('related', 'Bank not created.');
         }
 
         if (!isset($_REQUEST['pos'])) {
-            return _('Missing position.');
+            return dgettext('related', 'Missing position.');
         }
 
         $_SESSION['Related_Bank']->moveFriendUp($_REQUEST['pos']);
@@ -222,11 +222,11 @@ class Related_Action {
     function down()
     {
         if (!isset($_SESSION['Related_Bank'])) {
-            return _('Bank not created.');
+            return dgettext('related', 'Bank not created.');
         }
 
         if (!isset($_REQUEST['pos'])) {
-            return _('Missing position.');
+            return dgettext('related', 'Missing position.');
         }
 
         $_SESSION['Related_Bank']->moveFriendDown($_REQUEST['pos']);
@@ -236,11 +236,11 @@ class Related_Action {
     function remove()
     {
         if (!isset($_SESSION['Related_Bank'])) {
-            return _('Bank not created.');
+            return dgettext('related', 'Bank not created.');
         }
 
         if (!isset($_REQUEST['pos'])) {
-            return _('Missing position.');
+            return dgettext('related', 'Missing position.');
         }
 
         $_SESSION['Related_Bank']->removeFriend($_REQUEST['pos']);
@@ -250,14 +250,14 @@ class Related_Action {
     function save()
     {
         if (!isset($_SESSION['Related_Bank'])) {
-            return _('Bank not created.');
+            return dgettext('related', 'Bank not created.');
         }
 
         $result = $_SESSION['Related_Bank']->save();
 
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            Layout::add(_('The Related module encountered a database error.'));
+            Layout::add(dgettext('related', 'The Related module encountered a database error.'));
             return;
         }
     
@@ -266,7 +266,7 @@ class Related_Action {
 
     function changeForm()
     {
-        $template['PAGE_TITLE'] = _('Change Related Title');
+        $template['PAGE_TITLE'] = dgettext('related', 'Change Related Title');
 
         $related = Related_Action::getBank();
 

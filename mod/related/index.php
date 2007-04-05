@@ -14,7 +14,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 if (!defined('PHPWS_SOURCE_DIR') || !isset($_REQUEST['action'])) {
     return NULL;
  }
-translate('related');
+
 PHPWS_CORE::initModClass('related', 'Related.php');
 PHPWS_CORE::initModClass('related', 'Action.php');
 
@@ -63,6 +63,5 @@ switch ($_REQUEST['action']) {
      Related_Action::postTitle();
      break;
  }
-translate();
 
 ?>
