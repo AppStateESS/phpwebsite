@@ -10,7 +10,6 @@
 class Security {
     function log($message)
     {
-        translate('core');
         if (class_exists('Current_User')) {
             $username = Current_User::getUsername();
         } else {
@@ -29,7 +28,6 @@ class Security {
         $infraction = sprintf('%s@%s %s -- %s', $username, $ip, $via, $message);
         
         PHPWS_Core::log(escapeshellcmd($infraction), 'security.log', _('Warning'));
-        translate();
     }
 }
 

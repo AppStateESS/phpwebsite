@@ -1,6 +1,5 @@
 <?php
 
-translate('core');
 define ('DBPAGER_DEFAULT_LIMIT', 10);
 define ('DBPAGER_PAGE_LIMIT', 8);
 define ('DBPAGER_DEFAULT_EMPTY_MESSAGE', _('No rows found.'));
@@ -892,7 +891,7 @@ class DBPager {
      */
     function get($return_blank_results=TRUE)
     {
-        translate('core');
+        
         $template = array();
 
         if (empty($this->display_rows)) {
@@ -959,7 +958,7 @@ class DBPager {
 
         DBPager::plugPageTags($template);
         $this->final_template = &$template;
-        translate();
+        
         return PHPWS_Template::process($template, $this->module, $this->template);
     }
 

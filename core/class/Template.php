@@ -207,7 +207,6 @@ class PHPWS_Template extends HTML_Template_Sigma {
 
         if (PEAR::isError($tpl->error)) {
             PHPWS_Error::log($tpl->error);
-            translate('core');
             return _('Template error.');
         }
 

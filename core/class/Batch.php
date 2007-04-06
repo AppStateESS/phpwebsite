@@ -17,7 +17,6 @@ class Batches {
     var $current_batch      = 1;
     var $finished           = FALSE;
 
-
     var $last_batch_time    = 0; // Time it took to run the last batch
     var $batches_so_far     = 0; // Batches run so far
     var $average_batch_time = 0; // Average time per batch
@@ -132,18 +131,15 @@ class Batches {
 
     function continueLink($continue_link=NULL)
     {
-        translate('core');
         if (empty($continue_link)) {
             $continue_link = _('Continue');
         }
 
         $url = $this->getAddress();
 
-        translate();
         return sprintf('<a href="%s">%s</a>', $url, $continue_link);
     }
 
 }
-
 
 ?>

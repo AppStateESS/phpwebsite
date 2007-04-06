@@ -51,9 +51,7 @@ class PHPWS_Error {
         if (isset($errors[$value])) {
             $message = $errors[$value];
         } else {
-            translate('core');
             $message = _('Unknown error code.');
-            translate();
         }
 
         $fullError[] = ' - ' . $message;
@@ -84,7 +82,7 @@ class PHPWS_Error {
         }
 
         $final = PHPWS_Error::printError($error);
-        translate('core');
+        
         PHPWS_Core::log($final, 'error.log', _('Error'));
     }
 

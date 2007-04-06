@@ -192,14 +192,13 @@ class PHPWS_Time {
      */
     function relativeTime($timestamp, $format='%c')
     {
-        translate('core');
         $rel   = time() - $timestamp;
         $mins  = floor($rel / 60);
         $hours = floor($mins / 60);
         $days  = floor($hours / 24);
         $weeks = floor($days/ 7);
       
-        if    ($mins < 2) {
+        if ($mins < 2) {
             return _('a heartbeat ago');
         }
         elseif($mins < 60) {
@@ -226,7 +225,6 @@ class PHPWS_Time {
         else {
             return strftime($format, $timestamp);
         }
-        
     }
 }
 

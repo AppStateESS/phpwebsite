@@ -540,7 +540,6 @@ class PHPWS_Core {
         if (!isset($_GET['check_overpost'])) {
             return TRUE;
         } elseif (empty($_POST) && isset($_SERVER['CONTENT_LENGTH'])) {
-            translate('core');
             Security::log(_('User tried to post a file beyond server limits.'));
             PHPWS_Core::errorPage('overpost');
         }

@@ -171,7 +171,6 @@ function initLanguage()
 
 function loadBrowserInformation()
 {
-    translate('core');
     $allowed_platforms = array('linux', 'mac', 'windows');
     if (!isset($_SERVER['HTTP_USER_AGENT'])) {
         $GLOBALS['browser_info'] = NULL;
