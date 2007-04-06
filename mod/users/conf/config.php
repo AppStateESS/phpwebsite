@@ -46,7 +46,7 @@ define('NEW_SIGNUP_WINDOW', 48);
 // Enter the minimum character
 // count allowed for each
 define('PASSWORD_LENGTH', 5);
-define('USERNAME_LENGTH', 4);
+define('USERNAME_LENGTH', 3);
 define('DISPLAY_NAME_LENGTH', 4);
 define('GROUPNAME_LENGTH', 4);
 
