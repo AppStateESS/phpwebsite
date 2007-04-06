@@ -1,3 +1,6 @@
+5 April 2007
++ Bug #1688342 - Added htmlentities to title to allow foreign characters
+
 4 April 2007
 + Added German translation
 + Updated language functions.

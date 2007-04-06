@@ -168,6 +168,7 @@ class Menu_Link {
             $this->link_order = $this->_getOrder();
         }
 
+        $this->title = htmlentities($this->title, ENT_QUOTES, 'UTF-8');
         $db = $this->getDB();
         return $db->saveObject($this);
     }
@@ -269,7 +270,7 @@ class Menu_Link {
                 $prompt_js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE);
                 $prompt_js['label']   = MENU_LINK_EDIT;
                 $prompt_js['width']   = 500;
-                $prompt_js['height']  = 200;
+                $prompt_js['height']  = 240;
                 $template['EDIT_LINK'] = javascript('open_window', $prompt_js);
             }
 

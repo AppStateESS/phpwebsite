@@ -104,7 +104,7 @@ class Menu {
         $js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE, FALSE);
         $js['label'] = MENU_LINK_ADD_SITE;
         $js['width'] = 500;
-        $js['height'] = 200;
+        $js['height'] = 240;
 
         return javascript('open_window', $js);
     }
