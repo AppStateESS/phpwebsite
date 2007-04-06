@@ -1,7 +1,8 @@
 6 April 2007
 + Bug #1695102 - Added permission check before each module install or
   update.
-
++ Increase edit popup window height slightly
++ Added currentDone function.
 
 4 April 2007
 + Added German files

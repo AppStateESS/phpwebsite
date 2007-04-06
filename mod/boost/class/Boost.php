@@ -51,6 +51,11 @@ class PHPWS_Boost {
         return true;
     }
 
+    function currentDone()
+    {
+        return ($this->status[$this->current] == BOOST_DONE) ? true : false;
+    }
+
     function getRegisteredModules($module)
     {
         $db = new PHPWS_DB('modules');
