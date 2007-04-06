@@ -1,5 +1,5 @@
 <?php
-translate('core');
+
 // Generic 1 - 99
 $errors[PHPWS_UNKNOWN]               = _('Unknown Error.');
 $errors[PHPWS_FILE_NOT_FOUND]        = _('File not found.');
