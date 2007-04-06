@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+6 April 2007
++ Removed imageselect function from Form. Not used.
++ Removed translate functions throughout core.
+
 5 April 2007
 + Added German translation files.
 + Further updates to Language.txt documentation
