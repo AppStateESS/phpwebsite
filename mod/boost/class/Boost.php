@@ -99,9 +99,13 @@ class PHPWS_Boost {
 
     function install($inBoost=true, $inBranch=false, $home_dir=NULL)
     {
-        
         $continue = false;
         $content = array();
+
+        if (!$this->checkDirectories($content)) {
+            return implode('<br />', $content);
+        }
+
         if (!$this->isModules()) {
             return PHPWS_Error::get(BOOST_NO_MODULES_SET, 'boost', 'install');
         }
@@ -370,6 +374,10 @@ class PHPWS_Boost {
     {
         if (!$this->isModules()) {
             return PHPWS_Error::get(BOOST_NO_MODULES_SET, 'boost', 'update');
+        }
+
+        if (!$this->checkDirectories($content)) {
+            return false;
         }
         
         foreach ($this->modules as $title => $mod) {
@@ -943,12 +951,10 @@ class PHPWS_Boost {
         if (isset($writableDir)) {
             $content[] = dgettext('boost', 'The following directories are not writable:');
             $content[] = '<pre>' . implode(chr(10), $writableDir) . '</pre>';
-            $content[] = dgettext('boost', 'You will need to change the permissions.');
-            $content[] = '<a href="setup/help/permissions.' . DEFAULT_LANGUAGE . '.txt">' . dgettext('boost', 'Permission Help') . '</a><br />';
             $errorDir = false;
         }
 
-        $files = array('boost.log', 'error.log', 'security.log');
+        $files = array('boost.log', 'error.log');
         foreach ($files as $log_name) {
             if (is_file('logs/' . $log_name) && (!is_readable('logs/' . $log_name) || !is_writable('logs/' . $log_name))) {
                 $content[] = sprintf(dgettext('boost', 'Your logs/%s file must be readable and writable.'), $log_name);

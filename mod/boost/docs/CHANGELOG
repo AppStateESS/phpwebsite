@@ -1,3 +1,8 @@
+6 April 2007
++ Bug #1695102 - Added permission check before each module install or
+  update.
+
+
 4 April 2007
 + Added German files
 + Changed over to new language format
