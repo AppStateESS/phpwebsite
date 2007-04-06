@@ -49,7 +49,7 @@ PHPWS_Core::initModClass('boost', 'Boost.php');
 PHPWS_Core::initModClass('users', 'Current_User.php');
 
 session_start();
-
+$forward = false;
 $content = array();
 $setup = & new Setup;
 $title = 'phpWebSite 1.1.0 - ';
@@ -99,11 +99,15 @@ switch ($step){
      $result = $setup->installModules($content);
      if ($result) {
          $setup->finish($content);
+     } elseif ($_SESSION['Boost']->currentDone()) {
+         $forward = true;
      }
+
+
      break;
  }
 
-echo Setup::show($content, $title);
+echo Setup::show($content, $title, $forward);
 
 /**
  * Returns true if server OS is Windows

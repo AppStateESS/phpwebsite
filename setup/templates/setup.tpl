@@ -1,5 +1,6 @@
 <html>
 <head>
+{META}
 <title>{TITLE}</title>
 <style type="text/css">
 body {

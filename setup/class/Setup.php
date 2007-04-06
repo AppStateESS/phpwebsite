@@ -534,7 +534,7 @@ class Setup{
         return $errorDir;
     }
 
-    function show($content, $title=NULL)
+    function show($content, $title=NULL, $forward=false)
     {
         include 'core/conf/version.php';
         $tpl = new PHPWS_Template;
@@ -543,6 +543,11 @@ class Setup{
             $title = sprintf(_('phpWebSite %s Setup'), $version);
         }
 
+        if ($forward && AUTO_FORWARD) {
+            $time = 2;
+            $address = 'index.php?step=3';
+            $setupData['META'] =  sprintf('<meta http-equiv="refresh" content="%s; url=%s" />', $time, $address);
+        }
         $setupData['TITLE'] = $title;
         $setupData['MAIN_CONTENT'] = implode('<br />', $content);
         $tpl->setData($setupData);
@@ -627,7 +632,7 @@ class Setup{
                 . ' ' . _('Please check your error logs and try again.');
             return TRUE;
         } else {
-            $content[] =  $result;
+            $content[] = $result;
         }
 
         if ($_SESSION['Boost']->isFinished()) {

@@ -24,7 +24,7 @@ phpwebsite/images/
 phpwebsite/files/
 phpwebsite/logs/
 
-These two directories need to be writable only during a module install
+These three directories need to be writable only during a module install
 or update:
 
 phpwebsite/templates/
