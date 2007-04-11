@@ -1,5 +1,6 @@
 11 April 2007
 + Added extra checks for anonymous submission
++ Changed coding of image manager call.
 
 4 April 2007
 + Changed to new language functionality.

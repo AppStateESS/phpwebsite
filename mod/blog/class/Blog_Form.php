@@ -55,8 +55,10 @@ class Blog_Form {
                 $manager = Cabinet::imageManager($blog->image_id, 'image_id',
                                                  PHPWS_Settings::get('blog', 'max_width'),
                                                  PHPWS_Settings::get('blog', 'max_height'));
-                $form->addTplTag('IMAGE_MANAGER', $manager->get());
-                $form->addTplTag('IMAGE_LABEL', dgettext('blog', 'Image'));
+                if ($manager) {
+                    $form->addTplTag('IMAGE_MANAGER', $manager->get());
+                    $form->addTplTag('IMAGE_LABEL', dgettext('blog', 'Image'));
+                }
             }
         }
 
