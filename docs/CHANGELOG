@@ -2,6 +2,12 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+
+11 April 2007
++ Removed Item include from Init.php, now up to module.
++ Added ENCODE_PARSED_TEXT define to text_settings.php
++ Added ability to prohibit encoding of text during parsing.
+
 6 April 2007
 + Removed imageselect function from Form. Not used.
 + Removed translate functions throughout core.
