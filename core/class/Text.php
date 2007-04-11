@@ -19,6 +19,10 @@ if (!defined('PHPWS_HOME_HTTP')) {
 
 PHPWS_Core::configRequireOnce('core', 'text_settings.php');
 
+if (!defined('ENCODE_PARSED_TEXT')) {
+    define('ENCODE_PARSED_TEXT', true);
+ }
+
 class PHPWS_Text {
     var $use_profanity  = ALLOW_PROFANITY;
     var $use_breaker    = true;
@@ -36,7 +40,7 @@ class PHPWS_Text {
         $this->setText($text, $encoded, $smilies);
     }
 
-    function setText($text, $decode=true, $smilies=false)
+    function setText($text, $decode=ENCODE_PARSED_TEXT, $smilies=false)
     {
         if (empty($text) || !is_string($text)) {
             return;
@@ -277,7 +281,7 @@ class PHPWS_Text {
         return $text;
     }
 
-    function parseInput($text, $encode=TRUE){
+    function parseInput($text, $encode=ENCODE_PARSED_TEXT){
         $text = trim($text);
 
         if (MAKE_ADDRESSES_RELATIVE) {
@@ -301,7 +305,7 @@ class PHPWS_Text {
      * @param   boolean decode       Whether entity_decoding should take place.
      * @return  string  text         Stripped text
      */
-    function parseOutput($text, $decode=TRUE, $smilies=false)
+    function parseOutput($text, $decode=ENCODE_PARSED_TEXT, $smilies=false)
     {
         $t = & new PHPWS_Text;
         $t->setText($text, $decode, $smilies);
