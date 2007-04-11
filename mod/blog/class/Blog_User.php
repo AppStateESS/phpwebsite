@@ -41,10 +41,13 @@ class Blog_User {
         case 'submit':
             if (Current_User::allow('blog', 'edit_blog')) {
                 PHPWS_Core::reroute(PHPWS_Text::linkAddress('blog', array('action'=>'admin', 'tab'=>'new'), 1));
+            } elseif (PHPWS_Settings::get('blog', 'allow_anonymous_submits')) {
+                // Must create a new blog. Don't use above shortcut
+                $blog = new Blog;
+                $content = Blog_User::submitAnonymous($blog);
+            } else {
+                $content = dgettext('blog', 'Site is not accepting anonymous submissions.');
             }
-            // Must create a new blog. Don't use above shortcut
-            $blog = new Blog;
-            $content = Blog_User::submitAnonymous($blog);
             break;
 
         case 'post_suggestion':
@@ -64,6 +67,10 @@ class Blog_User {
 
     function postSuggestion(&$blog)
     {
+        if (!PHPWS_Settings::get('blog', 'allow_anonymous_submits')) {
+            return dgettext('blog', 'Site does not accepting anonymous submissions.');
+        }
+
         if (PHPWS_Core::isPosted()) {
             $tpl['TITLE'] = dgettext('blog', 'Repeat submission');
             $tpl['CONTENT'] =  dgettext('blog', 'Your submission is still awaiting approval.');

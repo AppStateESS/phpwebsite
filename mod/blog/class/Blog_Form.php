@@ -8,6 +8,10 @@
 PHPWS_Core::initCoreClass('Form.php');
 
 class Blog_Form {
+
+    /**
+     * @param boolean limited   If true, use anonymous submission form
+     */
     function edit(&$blog, $version_id=NULL, $limited=false)
     {
         $form = new PHPWS_Form;
