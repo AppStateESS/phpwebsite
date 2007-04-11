@@ -3,9 +3,8 @@
     <div class="box-title"><h1>{MINIADMIN_TITLE}</h1></div>
     <div class="box-content">
     <!-- BEGIN module -->
-    <h2>{MODULE}</h2>
       <ul class="no-bullet">
-        <!-- BEGIN links --><li>{ADMIN_LINK}</li><!-- END links -->
+        <!-- BEGIN links --><li>{LINE_MODULE} / {ADMIN_LINK}</li><!-- END links -->
       </ul>
     <!-- END module -->
     </div>

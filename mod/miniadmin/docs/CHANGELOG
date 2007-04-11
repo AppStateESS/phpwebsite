@@ -1,3 +1,8 @@
+11 April 2007
++ Added ability to pick different miniadmin template
++ Updated files : conf/config.php, templates/mini_admin.tpl,
+                  templates/alt_mini_admin.tpl 
+
 4 April 2007
 + Updated language functions
 
