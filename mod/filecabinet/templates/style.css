@@ -65,12 +65,29 @@ div#fc-folder-list {
      overflow : auto;
 }
 
+
+div.pin-list {
+   overflow : hidden;
+}
+
+div.fc-file {
+   text-align : center;
+   float : left;
+   display : inline;
+   margin-left : 10px;
+   margin-bottom : 10px;
+}
+
 div.fc-icon {
    text-align : center;
    float : left;
    display : inline;
    margin-left : 50px;
    margin-bottom : 50px;
+}
+
+div.fc-files {
+   overflow : hidden;            
 }
 
 ul#image-folders {

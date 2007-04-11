@@ -44,7 +44,15 @@ class Folder {
         }
     }
 
-
+    function getPublic()
+    {
+        if ($this->public_folder) {
+            return dgettext('filecabinet', 'Public');
+        } else {
+            return dgettext('filecabinet', 'Private');
+        }
+    }
+    
     function deleteLink()
     {
         $vars['QUESTION'] = dgettext('filecabinet', 'Are you certain you want to delete this folder and all its contents?');
@@ -108,12 +116,28 @@ class Folder {
         }
     }
 
+    function unpinLink()
+    {
+        $img = '<img style="float : right" src="images/mod/filecabinet/remove.png" />';
+        $key = Key::getCurrent();
+        return PHPWS_Text::secureLink($img, 'filecabinet', array('aop'=>'unpin', 'folder_id'=>$this->id, 'key_id'=>$key->id));
+    }
+
+    function uploadLink()
+    {
+        if ($this->ftype == DOCUMENT_FOLDER) {
+            return $this->documentUploadLink();
+        } else {
+            return $this->imageUploadLink();
+        }
+    }
+
     function imageUploadLink()
     {
         $vars['address'] = 'index.php?module=filecabinet&aop=upload_image_form&folder_id=' . $this->id;
         $vars['width']   = 540;
         $vars['height']  = 460;
-        $vars['label']   = dgettext('filecabinet', 'Add image');
+        $vars['title'] = $vars['label']   = dgettext('filecabinet', 'Add image');
         return javascript('open_window', $vars);
     }
 
@@ -123,7 +147,7 @@ class Folder {
         $vars['address'] = 'index.php?module=filecabinet&aop=upload_document_form&folder_id=' . $this->id;
         $vars['width']   = 540;
         $vars['height']  = 400;
-        $vars['label']   = dgettext('filecabinet', 'Add document');
+        $vars['title'] = $vars['label']   = dgettext('filecabinet', 'Add document');
         return javascript('open_window', $vars);
     }
 
@@ -135,6 +159,18 @@ class Folder {
     function setTitle($title)
     {
         $this->title = strip_tags($title);
+    }
+
+    function viewLink($formatted=true)
+    {
+        $link = sprintf('index.php?module=filecabinet&amp;uop=view_folder&amp;folder_id=%s', $this->id);
+
+        if (!$formatted) {
+            return $link;
+        } else {
+            return sprintf('<a href="%s" title="%s">%s</a>', $link, dgettext('filecabinet', 'View folder'),
+                           $this->title);
+        }
     }
 
     function setDescription($description)
@@ -213,7 +249,7 @@ class Folder {
         $key->setItemName('folder');
         $key->setItemId($this->id);
         $key->setEditPermission('edit_folders');
-        $key->setUrl('view_folder');
+        $key->setUrl($this->viewLink(false));
         $key->setTitle($this->title);
         $key->setSummary($this->description);
         $result = $key->save();
@@ -312,7 +348,13 @@ class Folder {
             $links[] =  Current_User::popupPermission($this->key_id);
             $links[] = $this->deleteLink();
         }
-        $tpl['LINKS'] = implode(' | ', $links);
+
+        $tpl['PUBLIC'] = $this->getPublic();
+
+        if (@$links) {
+            $tpl['LINKS'] = implode(' | ', $links);
+        }
+
         return $tpl;
     }
 
@@ -353,6 +395,67 @@ class Folder {
 
         $db->addWhere('folder_id', $this->id);
         return $db->count();
+    }
+
+    function getPinned($key_id)
+    {
+        $db = new PHPWS_DB('folders');
+        $db->addWhere('filecabinet_pins.key_id', $key_id);
+        $db->addWhere('id', 'filecabinet_pins.folder_id');
+        Key::restrictView($db, 'filecabinet');
+        $result = $db->getObjects('Folder');
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            return;
+        } elseif (!$result) {
+            return;
+        }
+        Layout::addStyle('filecabinet');
+        foreach ($result as $folder) {
+            $folder->showPinned(false);
+        }
+    }
+
+    function showPinned($single=true)
+    {
+        $tpl['FOLDER_TITLE'] = $this->viewLink();
+
+        $this->loadFiles();
+
+        if  (empty($this->_files)) {
+            $tpl['CONTENT'] = dgettext('filecabinet', 'Folder is empty.');
+        }
+
+        if ($this->ftype == IMAGE_FOLDER) {
+            $max = PHPWS_Settings::get('filecabinet', 'max_pinned_images');
+        } else {
+            $max = PHPWS_Settings::get('filecabinet', 'max_pinned_documents');
+        }
+
+        if (!$max) {
+            $max = 999;
+        }
+
+        $count = 1;
+
+        foreach ($this->_files as $file) {
+            if ($count > $max) {
+                break;
+            }
+            $count++;
+            $tpl['files'][] = $file->pinTags();
+        }
+
+        $tpl['UNPIN'] = $this->unpinLink();
+
+        if (count($this->_files) > $count) {
+            $tpl['MORE'] = sprintf('<a href="%s">%s</a>', $this->viewLink(false),
+                                   dgettext('filecabinet', 'More...'));
+        }
+
+
+        $content = PHPWS_Template::process($tpl, 'filecabinet', 'pinned.tpl');
+        Layout::add($content, 'filecabinet', 'pinfolder');
     }
 }
 

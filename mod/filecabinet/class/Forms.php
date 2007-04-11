@@ -16,11 +16,13 @@ class Cabinet_Form {
         PHPWS_Core::initCoreClass('DBPager.php');
         $folder = new Folder;
         $folder->ftype = $type;
-        $links[] = $folder->editLink();
-
-        $pagetags['LINKS'] = implode(' | ', $links);
+        if (Current_User::allow('filecabinet', 'edit_folders', null, null, true)) {
+            $links[] = $folder->editLink();
+            $pagetags['LINKS'] = implode(' | ', $links);
+        }
         $pagetags['TITLE_LABEL'] = dgettext('filecabinet', 'Title');
         $pagetags['ITEM_LABEL']  = dgettext('filecabinet', 'Items');
+        $pagetags['PUBLIC_LABEL'] = dgettext('filecabinet', 'Public/Private');
 
         $pager = new DBPager('folders', 'Folder');
         $pager->setModule('filecabinet');
@@ -76,15 +78,12 @@ class Cabinet_Form {
 
         if ($folder->ftype == IMAGE_FOLDER) {
             PHPWS_Core::initModClass('filecabinet', 'Image.php');
-            $pagetags['ADD'] = $folder->imageUploadLink();
             $pager = new DBPager('images', 'PHPWS_Image');
             $pager->setTemplate('image_grid.tpl');
             $limits[9]  = 9;
             $limits[16] = 16;
             $limits[25] = 25;
-
         } elseif ($folder->ftype == DOCUMENT_FOLDER) {
-            $pagetags['ADD'] = $folder->documentUploadLink();
             $pager = new DBPager('documents', 'PHPWS_Document');
             $pager->setTemplate('file_list.tpl');
             $pager->addToggle('class="bgcolor1"');
@@ -93,17 +92,31 @@ class Cabinet_Form {
             $limits[50] =  50;
         }
 
-        $pagetags['ACTION_LABEL'] = dgettext('filecabinet', 'Action');
-        $pagetags['SIZE_LABEL'] = dgettext('filecabinet', 'Size');
+        if (Current_User::allow('filecabinet', 'edit_folders', $folder->id)) {
+            $links[] = $folder->uploadLink();
+            $links[] = $folder->editLink();
+        }
+
+        if ($this->cabinet->panel) {
+            $links[] = PHPWS_Text::moduleLink(dgettext('filecabinet', 'Back to folder list'),
+                                                       'filecabinet', array('tab'=>$this->cabinet->panel->getCurrentTab()));
+        }
+
+        if (@$links) {
+            $pagetags['ADMIN_LINKS'] = implode(' | ', $links);
+        }
+
+        $pagetags['ACTION_LABEL']    = dgettext('filecabinet', 'Action');
+        $pagetags['SIZE_LABEL']      = dgettext('filecabinet', 'Size');
         $pagetags['FILE_NAME_LABEL'] = dgettext('filecabinet', 'File name');
         $pagetags['FILE_TYPE_LABEL'] = dgettext('filecabinet', 'File type');
-        $pagetags['TITLE_LABEL'] = dgettext('filecabinet', 'Title');
+        $pagetags['TITLE_LABEL']     = dgettext('filecabinet', 'Title');
 
+        $pager->setLink($folder->viewLink(false));
         $pager->setLimitList($limits);
         $pager->setDefaultLimit(16);
 
         $pager->setSearch('file_name', 'title');
-
         $pager->addWhere('folder_id', $folder->id);
         $pager->setOrder('title', 'asc', true);
         $pager->setModule('filecabinet');
@@ -111,6 +124,38 @@ class Cabinet_Form {
         $pager->addRowTags('rowTags', $pick_image);
         $pager->setEmptyMessage(dgettext('filecabinet', 'Folder is empty.'));
         $this->cabinet->content = $pager->get();
+    }
+
+    function pinFolder($key_id)
+    {
+        $key = new Key($key_id);
+
+        $this->cabinet->title = sprintf(dgettext('filecabinet', 'Pin folder to "%s"'), $key->title);
+
+        $db = new PHPWS_DB('folders');
+        $db->addWhere('public_folder', 1);
+        $db->addColumn('title');
+        $db->addColumn('id');
+        $db->setIndexBy('id');
+        $result = $db->select('col');
+        if (empty($result)) {
+            $this->cabinet->title = dgettext('filecabinet', 'Sorry..');
+            $this->cabinet->content = dgettext('filecabinet', 'No public folders are available.');
+            return;
+        }
+
+        $form = new PHPWS_Form('pinfolders');
+        $form->addHidden('module', 'filecabinet');
+        $form->addHidden('aop', 'pin_folder');
+        $form->addHidden('key_id', $key_id);
+        $form->addSelect('folder_id', $result);
+        $form->setLabel('folder_id', dgettext('filecabinet', 'Folder'));
+        $form->addSubmit('submit', dgettext('filecabinet', 'Pin folder'));
+        $tpl = $form->getTemplate();
+
+        $tpl['CANCEL'] = javascript('close_window', array('value'=>dgettext('filecabinet', 'Cancel')));
+
+        $this->cabinet->content = PHPWS_Template::process($tpl, 'filecabinet', 'pin_folder.tpl');
     }
 
     function settings()
@@ -138,6 +183,14 @@ class Cabinet_Form {
         $form->addText('max_document_size', PHPWS_Settings::get('filecabinet', 'max_document_size'));
         $form->setLabel('max_document_size', dgettext('filecabinet', 'Maximum document file size (in bytes)'));
         $form->setSize('max_document_size', 10, 10);
+
+        $form->addText('max_pinned_images', PHPWS_Settings::get('filecabinet', 'max_pinned_images'));
+        $form->setLabel('max_pinned_images', dgettext('filecabinet', 'Maximum pinned images shown (0 for all)'));
+        $form->setSize('max_pinned_images', 3, 3);
+
+        $form->addText('max_pinned_documents', PHPWS_Settings::get('filecabinet', 'max_pinned_documents'));
+        $form->setLabel('max_pinned_documents', dgettext('filecabinet', 'Maximum pinned documents shown (0 for all)'));
+        $form->setSize('max_pinned_documents', 3, 3);
 
         $form->addSubmit(dgettext('filecabinet', 'Save settings'));
         $tpl = $form->getTemplate();

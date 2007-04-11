@@ -321,6 +321,11 @@ class PHPWS_Image extends File_Common {
         return true;
     }
 
+    function pinTags()
+    {
+        $tpl['TN'] = $this->getJSView(true);
+        return $tpl;
+    }
     
     function rowTags()
     {

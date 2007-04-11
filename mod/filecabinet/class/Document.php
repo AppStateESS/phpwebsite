@@ -99,6 +99,14 @@ class PHPWS_Document extends File_Common {
         $this->_allowed_types = unserialize(ALLOWED_DOCUMENT_TYPES);
     }
 
+    function pinTags()
+    {
+        $tpl['TN'] = $this->getViewLink(true, 'icon');
+        $tpl['TITLE'] = $this->getViewLink(true, 'title');
+
+        return $tpl;
+    }
+
     function rowTags()
     {
         $links = null;

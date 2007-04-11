@@ -7,3 +7,8 @@ CREATE TABLE folders (
   icon varchar(255) not null,
   primary key (id)
 );
+
+CREATE TABLE filecabinet_pins (
+key_id INT NOT NULL default 0 ,
+folder_id INT NOT NULL default 0
+);

@@ -3,3 +3,4 @@
 <!-- BEGIN message --><h2>{MESSAGE}</h2><!-- END message -->
 <div class="box-content">{CONTENT}</div>
 </div>
+

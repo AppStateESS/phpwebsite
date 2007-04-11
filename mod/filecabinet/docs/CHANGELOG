@@ -1,3 +1,19 @@
+11 April 2007
++ Added filecabinet_pins table to install
++ Reduced all permissions to just folders
++ Added ability to pin folders to pages.
++ Added extra security checks
++ Users must now have File Cabinet permissions to use image manager
++ Added the clip image ability.
++ Added ability to limit files listed in pinned folders.
++ Unpin not finished.
++ Folder listing now show public/private status
++ Updated files: in templates/
+                 file_list.tpl, folder_list.tpl, image_grid.tpl,
+                 javascript.tpl, pin_folder.tpl, pinned.tpl,
+                 plain.tpl, settings.tpl, style.css
+
+
 4 April 2007
 + Added German files (which will need updating)
 + Updated to new language format.

@@ -1,8 +1,9 @@
-{LINKS}
+{ADMIN_LINKS}
 <table cellpadding="6" cellspacing="1" width="100%">
   <tr>
     <th width="5%">&nbsp;</th>
     <th>{TITLE_SORT} {TITLE_LABEL}</th>
+    <th>{PUBLIC_FOLDER_SORT} {PUBLIC_LABEL}</th>
     <th>{ITEM_LABEL}</th>
     <th>&nbsp;</th>
   </tr>
@@ -10,6 +11,7 @@
   <tr {TOGGLE}>
     <td>{ICON}</td>
     <td>{TITLE}</td>
+    <td>{PUBLIC}</td>
     <td>{ITEMS}</td>
     <td>{LINKS}</td>
   </tr>

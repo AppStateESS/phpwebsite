@@ -27,8 +27,8 @@ class FC_Document_Manager {
         PHPWS_Core::initCoreClass('File.php');
 
         $form = new PHPWS_FORM;
-        $form->addHidden('module', 'filecabinet');
-        $form->addHidden('aop',      'post_document_upload');
+        $form->addHidden('module',    'filecabinet');
+        $form->addHidden('aop',       'post_document_upload');
         $form->addHidden('ms',        $this->max_size);
         $form->addHidden('folder_id', $this->cabinet->folder->id);
 

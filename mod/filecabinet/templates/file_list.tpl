@@ -1,6 +1,6 @@
 <div id="fc-file-list">
 <p>
-{ADD}
+<!-- BEGIN admin-links -->{LINKS}<br /><!-- END admin-links -->
 </p>
 <hr />
 <table width="100%">

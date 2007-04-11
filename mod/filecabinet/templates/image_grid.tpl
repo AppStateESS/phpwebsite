@@ -1,6 +1,7 @@
 <div id="fc-folder-list">
 <p>
-{ADD} | {TITLE_SORT} {TITLE_LABEL}
+<!-- BEGIN links -->{LINKS}<br /><!-- END links --> 
+{TITLE_SORT} {TITLE_LABEL}
 </p>
 <hr />
 <!-- BEGIN listrows -->

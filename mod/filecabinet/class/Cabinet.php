@@ -26,17 +26,29 @@ class Cabinet {
     {
         $javascript = false; // if true, sends to nakedDisplay
         
-        if (!Current_User::allow('filecabinet')){
-            Current_User::disallow();
-            return;
-        }
-
         $this->loadPanel();
 
         if (isset($_REQUEST['aop'])) {
             $aop = $_REQUEST['aop'];
         } else {
             $aop = $this->panel->getCurrentTab();
+        }
+
+        if (!Current_User::allow('filecabinet')){
+            Current_User::disallow();
+            return;
+        }
+
+        // Requires an unrestricted user
+        switch ($aop) {
+        case 'pin_folder':
+        case 'delete_folder':
+        case 'save_settings':
+        case 'unpin':
+        case 'settings':
+            if (Current_User::isRestricted('filecabinet')) {
+                Current_User::disallow();
+            }
         }
 
         switch ($aop) {
@@ -53,6 +65,46 @@ class Cabinet {
             $this->addFolder();
             break;
 
+        case 'pin_folder':
+            if (!Current_User::authorized('filecabinet', 'edit_folders')) {
+                Current_User::disallow();
+            }
+
+            $javascript = true;
+            $this->pinFolder();
+            javascript('close_refresh');
+            break;
+
+        case 'unpin':
+            if (Current_User::authorized('filecabinet')) {
+                Current_User::disallow();
+            }
+
+            Cabinet::unpinFolder();
+            PHPWS_Core::goBack();
+            break;
+
+        case 'pin_form':
+            $javascript = true;
+            @$key_id = (int)$_GET['key_id'];
+            if (!$key_id) {
+                javascript('close_refresh', array('refresh'=>0));
+                break;
+            }
+
+            $this->loadForms();
+            $this->forms->pinFolder($key_id);
+            break;
+
+        case 'clip_image':
+            PHPWS_Core::initModClass('filecabinet', 'Image.php');
+            $image = new PHPWS_Image($_GET['image_id']);
+            if ($image->id) {
+                Clipboard::copy($image->title, '[filecabinet:image:' . $image->id . ']');
+            }
+            PHPWS_Core::goBack();
+            break;
+
         case 'clip_document':
             PHPWS_Core::initModClass('filecabinet', 'Document.php');
             $document = new PHPWS_Document($_GET['document_id']);
@@ -63,6 +115,9 @@ class Cabinet {
             break;
 
         case 'delete_folder':
+            if (!Current_User::authorized('filecabinet', 'delete_folders')) {
+                Current_User::disallow();
+            }
             $this->loadFolder();
             $this->folder->delete();
             PHPWS_Core::goBack();
@@ -70,12 +125,19 @@ class Cabinet {
 
         case 'delete_document':
             $this->loadDocumentManager();
+            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->document_mgr->document->folder_id)) {
+                Current_User::disallow();
+            }
+
             $this->document_mgr->document->delete();
             PHPWS_Core::goBack();
             break;
 
         case 'delete_image':
             $this->loadImageManager();
+            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->image_mgr->document->folder_id)) {
+                Current_User::disallow();
+            }
             $this->image_mgr->image->delete();
             PHPWS_Core::goBack();
             break;
@@ -90,6 +152,7 @@ class Cabinet {
         case 'edit_folder':
             $javascript = true;
             $this->loadFolder(IMAGE_FOLDER);
+            // permission check in function below
             $this->editFolder();
             break;
 
@@ -103,17 +166,28 @@ class Cabinet {
         case 'post_document_upload':
             $javascript = true;
             $this->loadDocumentManager();
+            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->document_mgr->document->folder_id)) {
+                Current_User::disallow();
+            }
             $this->document_mgr->postDocumentUpload();
             break;
 
         case 'post_image_upload':
             $javascript = true;
             $this->loadImageManager();
+            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->image_mgr->document->folder_id)) {
+                Current_User::disallow();
+            }
+
             $this->image_mgr->postImageUpload();
             break;
 
         case 'post_folder':
             $this->loadFolder();
+            if (!Current_User::authorized('filecabinet', 'edit_folders')) {
+                Current_User::disallow();
+            }
+
             if ($this->folder->post()) {
                 if (!$this->folder->save()) {
                     Layout::nakedDisplay(dgettext('filecabinet', 'Failed to create folder. Please check your logs.'));
@@ -188,6 +262,7 @@ class Cabinet {
         PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
         $document = new PHPWS_Document($document_id);
+
         if (!empty($document->_errors)) {
             foreach ($this->_errors as $err) {
                 PHPWS_Error::log($err);
@@ -245,6 +320,10 @@ class Cabinet {
 
     function imageManager($image_id, $itemname, $width, $height)
     {
+        if (!Current_User::allow('filecabinet')) {
+            return null;
+        }
+
         PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
         $manager = new FC_Image_Manager($image_id);
         $manager->setItemname($itemname);
@@ -280,6 +359,10 @@ class Cabinet {
 
     function editFolder()
     {
+        if (!Current_User::allow('filecabinet', 'edit_folders', $this->folder->id)) {
+            Current_User::disallow();
+        }
+
         $this->loadForms();
         if ($this->folder->ftype == IMAGE_FOLDER) {
             $this->title   = dgettext('filecabinet', 'Update image folder');
@@ -328,6 +411,43 @@ class Cabinet {
         $this->forms->cabinet = & $this;
     }
 
+    function unpinFolder()
+    {
+        if (!isset($_REQUEST['folder_id']) || !isset($_REQUEST['key_id'])) {
+            return;
+        }
+
+        $folder_id = (int)$_REQUEST['folder_id'];
+        $key_id    = (int)$_REQUEST['key_id'];
+
+        $db = new PHPWS_DB('filecabinet_pins');
+        $db->addWhere('folder_id', $folder_id);
+        $db->addWhere('key_id', $key_id);
+        $db->delete();
+    }
+
+    function pinFolder()
+    {
+        if (!isset($_POST['folder_id']) || !isset($_POST['key_id'])) {
+            return;
+        }
+
+        $folder_id = (int)$_POST['folder_id'];
+        $key_id = (int)$_POST['key_id'];
+
+        $db = new PHPWS_DB('filecabinet_pins');
+        $db->addWhere('folder_id', $folder_id);
+        $db->addWhere('key_id', $key_id);
+        $db->delete();
+
+        $db->addValue('folder_id', $folder_id);
+        $db->addValue('key_id', $key_id);
+        $result = $db->insert();
+        if (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+        }
+    }
+
     function passImages()
     {
         header("Content-type: text/plain");
@@ -348,7 +468,7 @@ class Cabinet {
 
         $tabs['image']    = $image_command;
         $tabs['document'] = $document_command;
-        if (Current_User::isDeity()) {
+        if (Current_User::isUnrestricted('filecabinet')) {
             $tabs['settings']  = array('title'=> dgettext('filecabinet', 'Settings'), 'link' => $link);
         }
 
@@ -411,6 +531,18 @@ class Cabinet {
             }
         }
 
+        if (empty($_POST['max_pinned_images'])) {
+            PHPWS_Settings::set('filecabinet', 'max_pinned_images', 0);
+        } else {
+            PHPWS_Settings::set('filecabinet', 'max_pinned_images', (int)$_POST['max_pinned_images']);
+        }
+
+        if (empty($_POST['max_pinned_documents'])) {
+            PHPWS_Settings::set('filecabinet', 'max_pinned_documents', 0);
+        } else {
+            PHPWS_Settings::set('filecabinet', 'max_pinned_documents', (int)$_POST['max_pinned_documents']);
+        }
+
         PHPWS_Settings::save('filecabinet');
         if (isset($errors)) {
             return $errors;
@@ -422,13 +554,12 @@ class Cabinet {
     function userViewFolder()
     {
         $this->loadFolder();
-        if (!$this->folder->id) {
+        if (!$this->folder->id || !$this->folder->public_folder) {
             PHPWS_Core::errorPage('404');
         }
         $this->title = $this->folder->title;
         $this->loadForms();
         $this->forms->folderContents($this->folder);
-        
     }
 
     function viewFolder()
@@ -437,11 +568,11 @@ class Cabinet {
         if (!$this->folder->id) {
             PHPWS_Core::errorPage('404');
         }
-        $this->title = $this->folder->title;
+
+        $this->title = sprintf('%s - %s', $this->folder->title, $this->folder->getPublic());
         $this->loadForms();
         $this->forms->folderContents($this->folder);
     }
-
 }
 
 ?>
