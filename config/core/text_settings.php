@@ -23,6 +23,20 @@ define('PHPWS_ALLOWED_TAGS', '<pre>
 <fieldset><legend><code>
 ');
 
+/***************** HTML ENCODING ********************************
+ * Before any user text passed into parseInput and out of
+ * parseOutput is html encoded by default.
+ * This is done as a security measure and to help with database
+ * differences. If this is disabled (set to false) , most text
+ * will be saved in an undecoded state.
+ * Warning! Changing this at any time other than right after
+ * installation could adversely affect your site.  Don't 
+ * change it unless you are sure of the consequences.
+ */
+
+define('ENCODE_PARSED_TEXT', true);
+
+
 /******************* RELATIVE ADDRESSING ***********************
  * The parseInput function the Text class will remove urls
  * and replace them with relative addresses if this option is TRUE
