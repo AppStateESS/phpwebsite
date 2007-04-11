@@ -1,3 +1,7 @@
+11 April 2007
++ Removed redundant class calls in init.php
+
+
 6 April 2007
 + Changed default username size to 3
 
