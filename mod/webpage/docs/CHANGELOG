@@ -1,3 +1,8 @@
+12 April 2007
++ Updated image manager function call
++ Added translation to image label.
++ Updated files: templates/forms/edit_page.tpl
+
 5 April 2007
 + Added translation functions.
 + Added German translation files.

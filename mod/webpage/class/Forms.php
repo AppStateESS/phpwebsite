@@ -114,15 +114,12 @@ class Webpage_Forms {
         $form->setLabel('force_template', dgettext('webpage', 'Force all pages to use this template'));
         
         if (PHPWS_Settings::get('webpage', 'add_images')) {
-            //            $form->addHidden('image_id', $page->image_id);
-            PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
-            $manager = new FC_Image_Manager($page->image_id);
-            $manager->setMaxWidth(640);
-            $manager->setMaxHeight(480);
-            $manager->setMaxSize(100000);
-            $manager->setModule('webpage');
-            $manager->setItemname('image_id');
-            $form->addTplTag('PAGE_IMAGE', $manager->get());
+            PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+            $manager = Cabinet::imageManager($page->image_id, 'image_id', 640, 480);
+            if ($manager) {
+                $form->addTplTag('PAGE_IMAGE', $manager->get());
+                $form->addTplTag('IMAGE_LABEL', dgettext('webpage', 'Image'));
+            }
         }
 
         $template = $form->getTemplate();
