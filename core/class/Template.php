@@ -13,6 +13,10 @@ require_once PHPWS_HOME_DIR . 'config/core/template.php';
  * @package Core
  */
 
+if (!defined('CACHE_TPL_LOCALLY')) {
+    define('CACHE_TPL_LOCALLY', false);
+ }
+
 class PHPWS_Template extends HTML_Template_Sigma {
     var $module           = NULL;
     var $error            = NULL;
@@ -54,14 +58,31 @@ class PHPWS_Template extends HTML_Template_Sigma {
 
     function setCache()
     {
-        if (!PHPWS_Template::allowSigmaCache() ||
-            !defined('CACHE_DIRECTORY')        ||
-            !defined('CACHE_LIFETIME')         ||
-            !is_writable(CACHE_DIRECTORY)
-            )
+        if (!PHPWS_Template::allowSigmaCache()) {
             return;
+        }
 
-        $this->setCacheRoot(CACHE_DIRECTORY);
+        static $root_dir = null;
+
+        if (empty($root_dir) && defined('CACHE_LIFETIME')) {
+            if (CACHE_TPL_LOCALLY) {
+                $root_dir = 'templates/cache/';
+            } elseif(defined('CACHE_DIRECTORY')) {
+                $root_dir = CACHE_DIRECTORY;
+            } else {
+                $root_dir = 'unusable';
+                return;
+            }
+            
+            if (!is_writable($root_dir)) {
+                $root_dir = 'unusable';
+                return;
+            }
+        } elseif ($root_dir == 'unusable') {
+            return;
+        }
+
+        $this->setCacheRoot($root_dir);
     }
 
     function allowSigmaCache()

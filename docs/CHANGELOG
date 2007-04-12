@@ -3,7 +3,11 @@ This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
 12 April 2007
-+ Convert Blog, Web Pages - Added parseInput to try and fix foreign characters
++ Convert Blog, Web Pages - Added parseInput to try and fix foreign
+  characters
++ Made default template directory local.
++ Updated setup's config template with new local cache define.
+
 
 11 April 2007
 + Removed Item include from Init.php, now up to module.
