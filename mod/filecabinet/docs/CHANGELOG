@@ -1,3 +1,8 @@
+12 April 2007
++ Fixed admin links in admin templates
++ Updated files: templates/file_list.tpl, templates/image_grid.tpl
++ Refactored popup height when viewing images.
+
 11 April 2007
 + Added filecabinet_pins table to install
 + Reduced all permissions to just folders

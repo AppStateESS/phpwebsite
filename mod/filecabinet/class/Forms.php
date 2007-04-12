@@ -18,7 +18,7 @@ class Cabinet_Form {
         $folder->ftype = $type;
         if (Current_User::allow('filecabinet', 'edit_folders', null, null, true)) {
             $links[] = $folder->editLink();
-            $pagetags['LINKS'] = implode(' | ', $links);
+            $pagetags['ADMIN_LINKS'] = implode(' | ', $links);
         }
         $pagetags['TITLE_LABEL'] = dgettext('filecabinet', 'Title');
         $pagetags['ITEM_LABEL']  = dgettext('filecabinet', 'Items');

@@ -109,7 +109,7 @@ class PHPWS_Image extends File_Common {
         $padded_height = $this->height + 100;
 
         if (!empty($this->description)) {
-            $padded_height += strlen($this->description) * 3;
+            $padded_height += round( (strlen(strip_tags($this->description)) / ($this->width / 12)) * 12);
         }
 
         if ( $padded_width > FC_MAX_IMAGE_POPUP_WIDTH || $padded_height > FC_MAX_IMAGE_POPUP_HEIGHT ) {
@@ -339,7 +339,7 @@ class PHPWS_Image extends File_Common {
             $vars['folder_id'] = $this->folder_id;
             
             $jsvars['width'] = 550;
-            $jsvars['height'] = 480;
+            $jsvars['height'] = 580;
             $jsvars['address'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
 
             $jsvars['label'] = dgettext('filecabinet', 'Edit');

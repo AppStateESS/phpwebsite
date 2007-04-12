@@ -1,6 +1,6 @@
 <div id="fc-folder-list">
 <p>
-<!-- BEGIN links -->{LINKS}<br /><!-- END links --> 
+<!-- BEGIN links -->{ADMIN_LINKS}<br /><!-- END links --> 
 {TITLE_SORT} {TITLE_LABEL}
 </p>
 <hr />
