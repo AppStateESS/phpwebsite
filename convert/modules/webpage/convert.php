@@ -115,7 +115,7 @@ function convertPage($page)
     $db = new PHPWS_DB('webpage_volume');
     $user_id = Current_User::getId();
     $val['id']             = $page['id'];
-    $val['title']          = strip_tags($page['title']);
+    $val['title']          = PHPWS_Text::parseInput(strip_tags($page['title']));
     $val['date_created']   = strtotime($page['created_date']);
     $val['date_updated']   = strtotime($page['updated_date']);
     $val['created_user']   = $page['created_username'];
@@ -189,7 +189,7 @@ function saveSections($sections, $volume_id, $title, $key_id)
             $page->approved  = 1;
 
             if (!empty($sec['title'])) {
-                $page->title = strip_tags($sec['title']);
+                $page->title = PHPWS_Text::parseInput(strip_tags($sec['title']));
             } else {
                 $page->title = null;
             }
@@ -198,7 +198,7 @@ function saveSections($sections, $volume_id, $title, $key_id)
         } else {
             if (!empty($sec['title'])) {
                 if (!$title_set) {
-                    $page->title = strip_tags($sec['title']);
+                    $page->title = PHPWS_Text::parseInput(strip_tags($sec['title']));
                     $title_set = true;
                 } else {
                     $page_content[] = '<h2>' . $sec['title'] . '</h2>';

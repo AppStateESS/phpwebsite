@@ -19,7 +19,7 @@ define('IGNORE_BEFORE', '2006-01-01');
 
 
 // If you do not want to convert comments, set this to false
-define('CONVERT_COMMENTS', TRUE);
+define('CONVERT_COMMENTS', false);
 
 
 PHPWS_Core::initModClass('search', 'Search.php');
@@ -142,11 +142,11 @@ function convertAnnouncement($entry)
     }
 
     $val['id']      = $entry['id'];
-    $val['title']   = strip_tags($entry['subject']);
-    $val['summary'] = $entry['summary'];
+    $val['title']   = PHPWS_Text::parseInput(strip_tags($entry['subject']));
+    $val['summary'] = PHPWS_Text::parseInput($entry['summary']);
 
     if (!empty($entry['body'])) {
-        $val['entry'] = $entry['body'];
+        $val['entry'] = PHPWS_Text::parseInput($entry['body']);
     }
 
     $val['author']  = $entry['userCreated'];
