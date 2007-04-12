@@ -279,7 +279,12 @@ conf/language.php
 + Browser identification broadened.
 + Database column select bug fixed.
 + Removed fake French translation (as should you!!!)';
+
+    case version_compare($version, '1.5.0', '<'):
+        // not finished
+        @mkdir('templates/cache/');
     }
+
     return true;
 }
 
