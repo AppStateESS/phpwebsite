@@ -130,6 +130,10 @@ class Branch {
             return FALSE;
         }
 
+        if (!mkdir($this->directory . 'templates/cache/')) {
+            return FALSE;
+        }
+
         if (!mkdir($this->directory . 'themes/')) {
             return FALSE;
         }

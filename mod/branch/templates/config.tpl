@@ -203,7 +203,11 @@ define('ABSOLUTE_UPLOAD_LIMIT', '5000000');
  * updates. You will need to decide what is the optimal number.
  * The default is 3600 seconds (1 hour)
  *
- * 
+ * If CACHE_TPL_LOCALLY is true (the default), template caching 
+ * will be stored in the installation's templates/cache directory.
+ * If false, the caching will be stored in the CACHE_DIRECTORY
+ * setting.
+ *
  * The cache directory MUST BE WRITABLE by the webserver or it will
  * not work. Read the line above one more time. Make sure the
  * CACHE_DIRECTORY is set to writable directory. PHP normally uses
@@ -213,7 +217,9 @@ define('ABSOLUTE_UPLOAD_LIMIT', '5000000');
 define('ALLOW_CACHE_LITE', TRUE);
 define('ALLOW_SIGMA_CACHE', TRUE);
 define('CACHE_LIFETIME', 3600);
+define('CACHE_TPL_LOCALLY', TRUE);
 define('CACHE_DIRECTORY', '{cache_directory}');
+
 
 /******************** MOD_REWRITE *******************************/
 /**

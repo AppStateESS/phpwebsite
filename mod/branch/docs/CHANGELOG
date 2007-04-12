@@ -1,3 +1,8 @@
+12 April 2007
++ Added local template caching define to config template 
++ updated files: templates/config.tpl
++ Branch now creates cache directory.
+
 4 April 2007
 + Changed to new language format.
 
