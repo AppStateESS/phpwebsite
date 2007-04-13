@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+13 April 2007
++ Added utf8_encode to all conversions to try and prevent foreign
+  character corruption (Thanks Mabhobs)
+
 12 April 2007
 + Convert Blog, Web Pages - Added parseInput to try and fix foreign
   characters
