@@ -191,6 +191,10 @@ function filecabinet_update(&$content, $version)
         $document_db->addValue('file_directory', $document_folder->getFullDirectory());
         $document_db->update();
 
+        if (@mkdir('')) {
+
+        }
+
         $files = array('conf/config.php', 'conf/error.php', 'conf/icons.php',
                        'img/icons/audio.png', 'img/icons/document.png',
                        'img/icons/flash_icon.png', 'img/icons/spreadsheet.png',
@@ -202,8 +206,15 @@ function filecabinet_update(&$content, $version)
                        'javascript/refresh_manager/head.js', 'templates/edit_folder.tpl',
                        'templates/file_list.tpl', 'templates/folder_list.tpl',
                        'templates/image_folders.tpl', 'templates/image_grid.tpl',
-                       'templates/image.xml', 'templates/javascript.tpl', 'templates/plain.tpl');
-        PHPWS_Boost::updateFiles($files, 'filecabinet');
+                       'templates/image.xml', 'templates/javascript.tpl', 'templates/plain.tpl',
+                       'templates/manager/pick.tpl');
+        if (PHPWS_Boost::updateFiles($files, 'filecabinet')) {
+            $content[] = '+ Copied the following files:';
+        } else {
+            $content[] = '+ FAILED copying the following files:';
+        }
+
+        $content[] = "\n    " . implode("\n    ", $files);    
     }
 
     return true;
