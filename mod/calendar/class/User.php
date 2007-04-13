@@ -707,9 +707,31 @@ class Calendar_User {
             $this->calendar->loadDefaultSchedule();
         }
 
+        if (!$this->calendar->schedule->id) {
+            
+        }
+
         if ($this->calendar->schedule->checkPermissions()) {
-            $allowed = true;
-            MiniAdmin::add('calendar', $this->calendar->schedule->addEventLink($this->calendar->current_date));
+            if ($this->calendar->schedule->id) {
+                $allowed = true;
+                MiniAdmin::add('calendar', $this->calendar->schedule->addEventLink($this->calendar->current_date));
+            } else {
+                $vars = array('aop'=>'create_schedule');
+                $label = dgettext('calendar', 'Create schedule');
+
+                if (javascriptEnabled()) {
+                    $vars['js'] = 1;
+                    $js_vars['address'] = PHPWS_Text::linkAddress('calendar', $vars);
+                    $js_vars['label']   = $label;
+                    $js_vars['width']   = 640;
+                    $js_vars['height']  = 500;
+                    $add_schedule = javascript('open_window', $js_vars);
+
+                } else {
+                    $add_schedule = PHPWS_Text::secureLink($label, 'calendar', $vars);
+                }
+                MiniAdmin::add('calendar', $add_schedule);
+            }
         } else {
             $allowed = false;
         }

@@ -1,3 +1,8 @@
+13 April 2007
++ Bug # 1699659 - Calendar will not show 'Add Event' link if a
+  schedule has not been created. Instead, the create schedule link
+  will appear.
+
 4 April 2007
 + Updated language format
 
