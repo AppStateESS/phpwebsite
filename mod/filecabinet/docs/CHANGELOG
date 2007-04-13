@@ -1,3 +1,6 @@
+13 April 2007
++ Added missing manager/pick.tpl file to update.
+
 12 April 2007
 + Fixed admin links in admin templates
 + Updated files: templates/file_list.tpl, templates/image_grid.tpl
