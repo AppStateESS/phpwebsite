@@ -49,7 +49,7 @@ function convertAlbum()
         $key->setItemId($row['id']);
         $key->setEditPermission('edit_album');
         $key->setUrl($link);
-        $key->setTitle($row['label']);
+        $key->setTitle(utf8_encode($row['label']));
         $key->setSummary($row['blurb0']);
         $result = $key->save();
         $row['key_id'] = $key->id;

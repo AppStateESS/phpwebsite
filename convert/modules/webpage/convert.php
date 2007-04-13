@@ -115,7 +115,7 @@ function convertPage($page)
     $db = new PHPWS_DB('webpage_volume');
     $user_id = Current_User::getId();
     $val['id']             = $page['id'];
-    $val['title']          = PHPWS_Text::parseInput(strip_tags($page['title']));
+    $val['title']          = PHPWS_Text::parseInput(strip_tags(utf8_encode($page['title'])));
     $val['date_created']   = strtotime($page['created_date']);
     $val['date_updated']   = strtotime($page['updated_date']);
     $val['created_user']   = $page['created_username'];
@@ -130,7 +130,7 @@ function convertPage($page)
     $key->setModule('webpage');
     $key->setItemName('volume');
     $key->setEditPermission('edit_page');
-    $key->setTitle($val['title']);
+    $key->setTitle(utf8_encode($val['title']));
 
     $url = 'index.php?module=webpage&amp;id=' . $val['id'];
 
@@ -189,7 +189,7 @@ function saveSections($sections, $volume_id, $title, $key_id)
             $page->approved  = 1;
 
             if (!empty($sec['title'])) {
-                $page->title = PHPWS_Text::parseInput(strip_tags($sec['title']));
+                $page->title = PHPWS_Text::parseInput(strip_tags(utf8_encode($sec['title'])));
             } else {
                 $page->title = null;
             }
@@ -198,21 +198,21 @@ function saveSections($sections, $volume_id, $title, $key_id)
         } else {
             if (!empty($sec['title'])) {
                 if (!$title_set) {
-                    $page->title = PHPWS_Text::parseInput(strip_tags($sec['title']));
+                    $page->title = PHPWS_Text::parseInput(strip_tags(utf8_encode($sec['title'])));
                     $title_set = true;
                 } else {
-                    $page_content[] = '<h2>' . $sec['title'] . '</h2>';
+                    $page_content[] = '<h2>' . utf8_encode($sec['title']) . '</h2>';
                 }
             }
         }
 
-        $page_content[] = $sec['text'];
+        $page_content[] = utf8_encode($sec['text']);
 
         if (!empty($sec['image'])) {
             $image = @unserialize($sec['image']);
             if (is_array($image) && isset($image['name'])) {
                 $image_link = sprintf('<img src="%s" width="%s" height="%s" alt="%s" title="%s" />',
-                                      'images/webpage/' . $image['name'],
+                                      'images/webpage/' . utf8_encode($image['name']),
                                       $image['width'],
                                       $image['height'],
                                       $image['alt'],

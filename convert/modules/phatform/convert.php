@@ -275,7 +275,7 @@ function convertPhatforms()
                 $key->restricted = 1;
             }
         
-            $key->setTitle($row['label']);
+            $key->setTitle(utf8_encode($row['label']));
             $key->setSummary($row['blurb0']);
             $key->save();
             $row['key_id'] = $key->id;

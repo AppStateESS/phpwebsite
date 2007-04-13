@@ -50,7 +50,7 @@ function convertMenu()
     foreach ($result as $menu) {
         //        $val['id']         = $menu['menu_id'];
         $old_id = $menu['menu_id'];
-        $val['title']      = $menu['menu_title'];
+        $val['title']      = utf8_encode($menu['menu_title']);
         $val['template']   = 'basic.tpl';
         $val['restricted'] = 0;
         $val['pin_all']    = 1;

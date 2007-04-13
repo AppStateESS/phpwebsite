@@ -182,14 +182,14 @@ function convertEvent($event, &$schedule, &$admin)
     $new_event = & new Calendar_Event;
     $new_event->_schedule = $schedule;
 
-    $new_event->summary = $event['title'];
+    $new_event->summary = utf8_encode($event['title']);
 
     if (!empty($event['image'])) {
         $image = explode(':', $event['image']);
         $prefix = 'images/calendar/';
         $image_tag = sprintf('<img src="%s" width="%s" height="%s" />', $prefix . $image[0], $image[1], $image[2]);
         if (!empty($event['description'])) {
-            $event['description'] = sprintf('<table width="100%%" cellpadding="5"><tr><td>%s</td><td>%s</td></tr></table>', $event['description'], $image_tag);
+            $event['description'] = sprintf('<table width="100%%" cellpadding="5"><tr><td>%s</td><td>%s</td></tr></table>', utf8_encode($event['description']), $image_tag);
         } else {
             $event['description'] = $image_tag;
         }

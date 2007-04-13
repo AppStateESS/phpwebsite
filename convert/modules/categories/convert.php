@@ -140,8 +140,8 @@ function runCatBatch(&$db, &$batch)
             if ($oldCat['cat_id']) {
                 $val['id']          = $oldCat['cat_id'];
             }
-            $val['title']       = $oldCat['title'];
-            $val['description'] = $oldCat['description'];
+            $val['title']       = utf8_encode($oldCat['title']);
+            $val['description'] = utf8_encode($oldCat['description']);
             $val['parent']      = $oldCat['parent'];
             $newdb->addValue($val);
             $result = $newdb->insert(FALSE);
