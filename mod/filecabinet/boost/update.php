@@ -191,10 +191,6 @@ function filecabinet_update(&$content, $version)
         $document_db->addValue('file_directory', $document_folder->getFullDirectory());
         $document_db->update();
 
-        if (@mkdir('')) {
-
-        }
-
         $files = array('conf/config.php', 'conf/error.php', 'conf/icons.php',
                        'img/icons/audio.png', 'img/icons/document.png',
                        'img/icons/flash_icon.png', 'img/icons/spreadsheet.png',
