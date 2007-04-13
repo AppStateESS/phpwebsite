@@ -171,7 +171,7 @@ class PHPWS_Image extends File_Common {
 
     function thumbnailPath()
     {
-        return $this->thumbnailDirectory() . $this->thumbnailName();
+        return $this->thumbnailDirectory() . $this->file_name;
     }
 
     function getTag()
@@ -199,12 +199,6 @@ class PHPWS_Image extends File_Common {
     function loadAllowedTypes()
     {
         $this->_allowed_types = unserialize(ALLOWED_IMAGE_TYPES);
-    }
-
-
-    function thumbnailName()
-    {
-        return preg_replace('/\.(jpg|gif)$/', '.png', $this->file_name);
     }
 
 
@@ -294,7 +288,7 @@ class PHPWS_Image extends File_Common {
 
     function makeThumbnail()
     {
-        return $this->resize($this->thumbnailPath(), 100, 100, true);
+        return $this->resize($this->thumbnailPath(), 100, 100);
     }
 
 
