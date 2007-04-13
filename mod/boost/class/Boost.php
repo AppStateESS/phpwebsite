@@ -1031,7 +1031,6 @@ class PHPWS_Boost {
                 return false;
             }
 
-
             if ($module == 'core') {
                 if ($source_root == 'javascript') {
                     $source_file = sprintf('%s%s', PHPWS_SOURCE_DIR, $filename);
@@ -1047,6 +1046,22 @@ class PHPWS_Boost {
 
             if (!is_file($source_file)) {
                 continue;
+            }
+
+            if (preg_match('@/@', $source_filename)) {
+                $extra_dir = explode('/', $source_filename);
+                $filename = array_pop($extra_dir);
+                $sofar = null;
+                foreach ($extra_dir as $subdir) {
+                    $subdir .= '/';
+                    $make_dir = $local_root . $sofar . $subdir;
+                    if (!is_dir($make_dir)) {
+                        if (!@mkdir($make_dir)) {
+                            return false;
+                        }
+                    }
+                    $sofar .= $subdir;
+                }
             }
 
             if (is_file($local_file)) {
