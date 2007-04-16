@@ -31,12 +31,14 @@
     <td>{TIMEZONE}</td>
   </tr>
   <tr>
-    <td class="label"><label for="timezone">{EDITOR_LABEL}</td>
-    <td>{EDITOR}</td>
+    <td colspan="2">{DST} {DST_LABEL}</td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
-    <td>{DST} {DST_LABEL}</td>
+    <td colspan="2">{REMEMBER_ME} {REMEMBER_ME_LABEL}</td>
+  </tr>
+  <tr>
+    <td class="label"><label for="timezone">{EDITOR_LABEL}</td>
+    <td>{EDITOR}</td>
   </tr>
 </table>
 {SUBMIT}

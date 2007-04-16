@@ -6,9 +6,12 @@
   </tr>
   <tr>
     <td>{HIDE_LOGIN_LABEL}</td>
-    <td>{HIDE_LOGIN} {AFFIRM}
-    </td>
+    <td>{HIDE_LOGIN} {AFFIRM}</td>
   </tr>
+  <!-- BEGIN allow-remember --><tr>
+    <td>{ALLOW_REMEMBER_LABEL}</td>
+    <td>{ALLOW_REMEMBER} {AFFIRM}</td>
+  </tr><!-- END allow-remember -->
   <tr>
     <td><strong>{USER_SIGNUP_LABEL}</strong></td>
     <td>

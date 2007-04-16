@@ -4,13 +4,21 @@
    * @version $Id$
    */
 
-if (!class_exists('PHPWS_User')){
-    return;
+if (!class_exists('PHPWS_User')) {
+    include '../../config/core/404.html';
+    exit();
  }
 
-if (!isset($_SESSION['User'])){
+if (@$_REQUEST['module'] == 'users' && $_REQUEST['action'] == 'reset') {
     $_SESSION['User'] = new PHPWS_User;
- }
+ } else if (!isset($_SESSION['User'])) {
+    $_SESSION['User'] = new PHPWS_User;
+    if (Current_User::allowRememberMe()) {
+        if (PHPWS_Settings::get('users', 'allow_remember')) {
+            Current_User::rememberLogin();
+        }
+    }
+}
 
 Current_User::getLogin();
 

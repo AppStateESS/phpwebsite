@@ -69,4 +69,16 @@ define('GC_HEIGHT', 70);
 define('LOCAL_AUTHORIZATION', 1);
 define('GLOBAL_AUTHORIZATION', 2);
 
+/**
+ * This should remain untouched. You do not want deities to automatically
+ * be able to log in to the system using Remember Me. If you
+ * REALLY want to allow this, change it to true.
+ */
+define('ALLOW_DEITY_REMEMBER_ME', false);
+
+/**
+ * number of days a remember me cookie should last
+ */
+define('REMEMBER_ME_LIFE', 365);
+
 ?>

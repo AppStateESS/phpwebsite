@@ -756,16 +756,6 @@ class User_Form {
                                dgettext('users', 'Email Verification')
                                );
 
-        /*
-         // Add later
-        $signup_labels = array(dgettext('users', 'Not allowed'),
-                               dgettext('users', 'Immediate'),
-                               dgettext('users', 'Email Verification'),
-                               dgettext('users', 'Approval with Email Verification')
-                               );
-        $signup_modes = array(0, AUTO_SIGNUP, CONFIRM_SIGNUP, APPROVE_SIGNUP);
-        */
-
         $form->addRadio('user_signup', $signup_modes);
         $form->setLabel('user_signup', $signup_labels);
         $form->addTplTag('USER_SIGNUP_LABEL', dgettext('users', 'User Signup Mode'));
@@ -789,6 +779,11 @@ class User_Form {
         $form->setMatch('hide_login', PHPWS_Settings::get('users', 'hide_login'));
         $form->setLabel('hide_login', dgettext('users', 'Hide login box'));
         $form->addTplTag('AFFIRM', dgettext('users', 'Yes'));
+
+        $form->addCheckBox('allow_remember', 1);
+        $form->setMatch('allow_remember', PHPWS_Settings::get('users', 'allow_remember'));
+        $form->setLabel('allow_remember', dgettext('users', 'Allow Remember Me'));
+
 
         $template = $form->getTemplate();
         return PHPWS_Template::process($template, 'users', 'forms/settings.tpl');

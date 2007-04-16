@@ -1,3 +1,10 @@
+16 April 2007
++ Implemented RFE 1628318 - Remember me option on users module.
++ Rewrote logout functionality to work with remember me
++ Updated files: conf/config.php, templates/forms/settings.tpl,
+  templates/my_page/user_setting.tpl
++ Hitting user's index.php forwards to the 404 page
+
 11 April 2007
 + Removed redundant class calls in init.php
 

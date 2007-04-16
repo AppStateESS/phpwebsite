@@ -369,7 +369,7 @@ class User_Action {
             } else {
                 $message = $result;
             }
-                $content = User_Form::settings();
+            $content = User_Form::settings();
             break;
 
         default:
@@ -698,7 +698,7 @@ class User_Action {
 
         case 'logout':
             PHPWS_Core::killAllSessions();
-            PHPWS_Core::home();
+            PHPWS_Core::reroute('index.php?module=users&action=reset');
             break;
 
         case 'login_page':
@@ -991,6 +991,12 @@ class User_Action {
             $settings['hide_login'] = 1;
         } else {
             $settings['hide_login'] = 0;
+        }
+
+        if (isset($_POST['allow_remember'])) {
+            $settings['allow_remember'] = 1;
+        } else {
+            $settings['allow_remember'] = 0;
         }
 
         if (isset($_POST['graphic_confirm'])) {

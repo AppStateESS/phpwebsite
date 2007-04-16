@@ -37,6 +37,10 @@ switch ($_REQUEST['action']){
      exit();
      break;
 
+ case 'reset':
+     $_SESSION['User'] = new PHPWS_User;
+     PHPWS_Core::home();
+     break;
 }// End area switch
 
 ?>

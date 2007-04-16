@@ -9,6 +9,10 @@
    * @version $Id$
    */
 
+if (!defined('ALLOW_DEITY_REMEMBER_ME')) {
+    define('ALLOW_DEITY_REMEMBER_ME', false);
+ }
+
 PHPWS_Core::initModClass('users', 'Users.php');
 
 class Current_User {
@@ -409,6 +413,78 @@ class Current_User {
         PHPWS_Core::bookmark();
         $url = 'index.php?module=users&action=user&command=login_page';
         PHPWS_Core::reroute($url);
+    }
+
+    function rememberLogin()
+    {
+        if (!isset($_SESSION['User'])) {
+            return false;
+        }
+
+        $remember = PHPWS_Cookie::read('remember_me');
+        if (!$remember) {
+            return false;
+        }
+
+        $rArray =  @unserialize($remember);
+
+        if (!is_array($rArray)) {
+            return false;
+        }
+        if (!isset($rArray['username']) || !isset($rArray['password'])) {
+            return false;
+        }
+
+        if (preg_match('/\W/', $rArray['password'])) {
+            return false;
+        }
+        
+        $username = strtolower($rArray['username']);
+        if (preg_match('/\'|"/', html_entity_decode($username, ENT_QUOTES))) {
+            Security::log(dgettext('users', 'User tried to login using Remember Me with a malformed cookie.'));
+            return false;
+        }
+
+        $db = new PHPWS_DB('user_authorization');
+        $db->addWhere('username', $username);
+        $db->addWhere('password', $rArray['password']);
+        $result = $db->select('row');
+
+        if (!$result) {
+            return false;
+        } elseif (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            return false;
+        }
+
+        $db2 = new PHPWS_DB('users');
+        $db2->addWhere('username', $username);
+        $db2->addWhere('approved', 1);
+        $db2->addWhere('active', 1);
+        if (!ALLOW_DEITY_REMEMBER_ME) {
+            $db2->addWhere('deity', 0);
+        }
+        $result = $db2->loadObject($_SESSION['User']);
+
+        if (!$result) {
+            return false;
+        } elseif (PEAR::isError($result)) {
+            PHPWS_Error::log($result);
+            return false;
+        }
+
+        $_SESSION['User']->login();
+        return true;
+    }
+
+    function allowRememberMe()
+    {
+        if ( PHPWS_Settings::get('users', 'allow_remember') &&
+             ( !Current_User::isDeity() || ALLOW_DEITY_REMEMBER_ME ) ) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

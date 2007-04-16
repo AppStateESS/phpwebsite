@@ -7,6 +7,11 @@
    * @version $Id$
    */
 
+  // Number of days a remember me cookie will last
+if (!defined('REMEMBER_ME_LIFE')) {
+    define('REMEMBER_ME_LIFE', 365);
+ }
+
 function my_page()
 {
     PHPWS_Core::initModClass('help', 'Help.php');
@@ -18,11 +23,10 @@ function my_page()
     }
 
     $user = $_SESSION['User'];
-    $template['TITLE'] = dgettext('users', 'Change my Settings');
 
+    $template['TITLE'] = dgettext('users', 'Change my Settings');
     switch ($subcommand){
     case 'updateSettings':
-
         if (isset($_GET['save'])) {
             $template['MESSAGE'] = dgettext('users', 'User settings updated.');
         }
@@ -33,6 +37,7 @@ function my_page()
     case 'postUser':
         User_Settings::setTZ();
         User_Settings::setEditor();
+        User_Settings::rememberMe();
         $result = User_Action::postUser($user, FALSE);
 
         if (is_array($result)) {
@@ -121,6 +126,17 @@ class User_Settings {
         $form->setMatch('dst', $dst);
         $form->setLabel('dst', dgettext('users', 'Use Daylight Savings Time'));
 
+        if (Current_User::allowRememberMe()) {
+            // User must authorize locally
+            if ($_SESSION['User']->authorize == 1) {
+                $form->addCheckbox('remember_me', 1);
+                if (PHPWS_Cookie::read('remember_me')) {
+                    $form->setMatch('remember_me', 1);
+                }
+                $form->setLabel('remember_me', dgettext('users', 'Remember me'));
+            }
+        }
+
         $form->addHidden('userId', $user->getId());
         $form->addSubmit('submit', dgettext('users', 'Update my information'));
 
@@ -191,6 +207,32 @@ class User_Settings {
     {
         if (!preg_match('/\W/', $_POST['editor'])) {
             PHPWS_Cookie::write('phpws_editor', $_POST['editor']);
+        }
+    }
+
+    function rememberMe()
+    {
+        // User must authorize locally
+        if ( PHPWS_Settings::get('users', 'allow_remember') && $_SESSION['User']->authorize == 1) {
+            if (isset($_POST['remember_me'])) {
+                $db = new PHPWS_DB('user_authorization');
+                $db->addColumn('password');
+                $db->addWhere('username', $_SESSION['User']->username);
+                $password = $db->select('one');
+                if (empty($password)) {
+                    return false;
+                } elseif (PEAR::isError($password)) {
+                    PHPWS_Error::log($password);
+                    return false;
+                }
+
+                $remember['username'] = $_SESSION['User']->username;
+                $remember['password'] = $password;
+                $time_to_live = time() + (86400 * REMEMBER_ME_LIFE);
+                PHPWS_Cookie::write('remember_me', serialize($remember), $time_to_live);
+            } else {
+                PHPWS_Cookie::delete('remember_me');
+            }
         }
     }
 }
