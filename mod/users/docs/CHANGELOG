@@ -5,6 +5,7 @@
   templates/my_page/user_setting.tpl
 + Hitting user's index.php forwards to the 404 page
 
+
 11 April 2007
 + Removed redundant class calls in init.php
 
