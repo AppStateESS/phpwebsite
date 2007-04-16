@@ -6,7 +6,7 @@
 
   // Limits the number of characters a menu link can be
   // 0 means no limit
-define('MENU_TITLE_LIMIT', 20);
+define('MENU_TITLE_LIMIT', 25);
 
 define('MENU_CURRENT_LINK_STYLE', 'current-link');
 

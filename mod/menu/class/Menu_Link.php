@@ -92,10 +92,12 @@ class Menu_Link {
 
     function setTitle($title)
     {
-        $this->title = strip_tags(trim($title));
-        if (MENU_TITLE_LIMIT > 0 && strlen($this->title) > MENU_TITLE_LIMIT) {
-            $this->title = substr($this->title, 0, MENU_TITLE_LIMIT);
+        $title = strip_tags(trim($title));
+
+        if (MENU_TITLE_LIMIT > 0 && strlen($title) > MENU_TITLE_LIMIT) {
+            $title = substr($title, 0, MENU_TITLE_LIMIT);
         }
+        $this->title = htmlentities($title, ENT_QUOTES, 'UTF-8');
     }
 
     function setUrl($url)
@@ -168,7 +170,6 @@ class Menu_Link {
             $this->link_order = $this->_getOrder();
         }
 
-        $this->title = htmlentities($this->title, ENT_QUOTES, 'UTF-8');
         $db = $this->getDB();
         return $db->saveObject($this);
     }
