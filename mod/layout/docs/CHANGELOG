@@ -1,3 +1,10 @@
+16 April 2007
++ Layout now checks and forces a user to enable cookies on their
+  browser. 
++ Rewrote Javascript detection. Was buggy before as session
+  destruction could disrupt it.
++ Updated files: templates/no_cookie.tpl
+
 4 April 2007
 + Added German translations
 + Updated language functions

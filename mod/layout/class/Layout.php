@@ -754,7 +754,7 @@ class Layout {
      * Unlike the add function, which appends a content variable's
      * data, set OVERWRITES the current values
      */
-    function set($text, $module, $contentVar)
+    function set($text, $module=null, $contentVar=null)
     {
         Layout::checkSettings();
         if (!isset($contentVar)) {
@@ -1086,41 +1086,28 @@ class Layout {
             Layout::extraStyle($style);
         }
     }
-
-    /**
-     * Checks user's browser for javascript condition
-     */
-    function checkJavascript()
-    {
-        if (!isset($_SESSION['Javascript_Enabled']) && !isset($_SESSION['Javascript_Check'])) {
-            $_SESSION['Javascript_Check'] = TRUE;
-            Layout::getJavascript('test');
-        } else {
-            if (isset($_SESSION['Javascript_Enabled'])) {
-                $GLOBALS['browser_info']['javascript'] = $_SESSION['Javascript_Enabled'];
-            } else {
-                if (isset($_COOKIE['js_check'])) {
-                    $_SESSION['Javascript_Enabled'] = TRUE;
-                    $GLOBALS['browser_info']['javascript'] = TRUE;
-                } else {
-                    $_SESSION['Javascript_Enabled'] = FALSE;
-                    $GLOBALS['browser_info']['javascript'] = FALSE;
-                }
-                setcookie ('js_check', '', time() - 3600);
-                unset($_SESSION['Javascript_Check']);
-            }
-        }
-    }
 }
 
 function javascriptEnabled()
 {
-    if (isset($_SESSION['Javascript_Enabled'])) {
-        return $_SESSION['Javascript_Enabled'];
-    } elseif (isset($GLOBALS['browser_info']['javascript'])) {
-        return $GLOBALS['browser_info']['javascript'];
+    $js = PHPWS_Cookie::read('js_enabled');
+
+    if (!$js) {
+        javascript('test');
+        PHPWS_Cookie::write('js_enabled', 'testing');
+    } elseif ($js == 'yes') {
+        return true;
+    } elseif ($js == 'testing') {
+        if (isset($_COOKIE['js_check'])) {
+            PHPWS_Cookie::write('js_enabled', 'yes');
+            setcookie ('js_check', '', time() - 3600);
+            return true;
+        } else {
+            PHPWS_Cookie::write('js_enabled', 'no');
+            return false;
+        }
     } else {
-        Layout::checkJavascript();
+        return false;
     }
 }
 
@@ -1129,5 +1116,22 @@ function javascript($directory, $data=NULL)
 {
     return Layout::getJavascript($directory, $data);
 }
+
+function check_cookie()
+{
+    $cookie = PHPWS_Cookie::read('cookie_enabled');
+    if (!$cookie) {
+        if (!isset($_GET['cc'])) {
+            PHPWS_Cookie::write('cookie_enabled', 'y');
+            PHPWS_Core::reroute('index.php?cc=1');
+        } else {
+            $tpl['MESSAGE'] = dgettext('layout', 'This site requires you to enable cookies on your browser.');
+            $message = PHPWS_Template::process($tpl, 'layout', 'no_cookie.tpl');
+            Layout::nakedDisplay($message);
+        }
+    }
+}
+
+
 
 ?>
