@@ -2,6 +2,12 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+16 April 2007
++ Cookie - changed default time to 0 instead of null
++ Editor - moved FORCE_EDITOR variable to config.php. Changed define
+           to a defined check with a default of false.
++ Setup - Added FORCE_EDITOR setting
+
 13 April 2007
 + Added utf8_encode to all conversions to try and prevent foreign
   character corruption (Thanks Mabhobs)

@@ -179,6 +179,7 @@ define('PHPWS_LIST_TOGGLE_CLASS', ' class="bgcolor1"');
  */
 define('USE_WYSIWYG_EDITOR', true);
 define('DEFAULT_EDITOR_TOOL', 'FCKeditor');
+define('FORCE_EDITOR', false);
 
 /******************* ABSOLUTE LIMIT ***************************/
 /**

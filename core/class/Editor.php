@@ -10,7 +10,9 @@
 PHPWS_Core::initCoreClass('File.php');
 
 // If true, then force the usage of the selected editor
-define ('FORCE_EDITOR', false);
+if (!defined('FORCE_EDITOR')) {
+    define ('FORCE_EDITOR', false);
+ }
 
 class Editor {
     var $data       = NULL; // Contains the editor text

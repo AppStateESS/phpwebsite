@@ -10,11 +10,13 @@ define('COOKIE_HASH', md5(SITE_HASH . $_SERVER['HTTP_HOST']));
 
 class PHPWS_Cookie {
 
-    function write($name, $value, $time=NULL)
+    function write($name, $value, $time=0)
     {
         if (empty($time)) {
             $time = time() + 31536000;
         }
+        $time = (int)$time;
+
         $cookie_index = sprintf('%s[%s]', COOKIE_HASH, $name);
         if (!setcookie($cookie_index, $value, $time)) {
             return PHPWS_Error::get(COOKIE_SET_FAILED, 'core', 'PHPWS_Cookie::write');
