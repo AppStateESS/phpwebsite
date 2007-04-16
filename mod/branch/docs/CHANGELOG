@@ -1,3 +1,6 @@
+16 April 2007
++ Added FORCE_EDITOR define
+
 12 April 2007
 + Added local template caching define to config template 
 + updated files: templates/config.tpl
