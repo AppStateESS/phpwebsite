@@ -135,6 +135,11 @@ ul.no-bullet {
    list-style-type : none;
 }
 
+.required-input {
+   color : red;
+   background-color : inherit;
+   font-size : 1.3em;
+}
 
 /* ------------- Table ------------- */
 

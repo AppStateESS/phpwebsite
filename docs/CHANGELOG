@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+17 April 2007
++ RFE 1639645 - added setRequired function to Form
+
 16 April 2007
 + Cookie - changed default time to 0 instead of null
 + Editor - moved FORCE_EDITOR variable to config.php. Changed define

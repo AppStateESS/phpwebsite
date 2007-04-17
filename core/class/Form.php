@@ -28,7 +28,7 @@
  *
  */
 
-PHPWS_Core::configRequireOnce('core', 'formConfig.php', TRUE);
+PHPWS_Core::configRequireOnce('core', 'formConfig.php', true);
 PHPWS_Core::initCoreClass('Editor.php');
 
 class PHPWS_Form {
@@ -49,7 +49,7 @@ class PHPWS_Form {
      * @var    string
      * @access private
      */
-    var $_action = NULL;
+    var $_action = null;
 
     /**
      * How the form is sent.
@@ -63,28 +63,28 @@ class PHPWS_Form {
      * @var    string
      * @access private
      */
-    var $_encode = NULL;
+    var $_encode = null;
 
     /**
      * Holds an extra template to merge with the final
      * @var    array
      * @access private
      */
-    var $_template = NULL;
+    var $_template = null;
 
     var $types = array();
 
     var $tagReplace = array();
 
-    var $allowFormName = FALSE;
+    var $allowFormName = false;
   
-    var $use_auth_key = TRUE;
+    var $use_auth_key = true;
 
-    var $_autocomplete = TRUE;
+    var $_autocomplete = true;
 
     var $max_file_size = 0;
 
-    var $_multipart = FALSE;
+    var $_multipart = false;
 
     /**
      * If true, form will use a generic fieldset to comply with XHTML
@@ -97,12 +97,12 @@ class PHPWS_Form {
      * If true, then getTemplate will print multiple valued elements
      * using the sigma template multi row format
      */
-    var $row_repeat = FALSE;
+    var $row_repeat = false;
     
     /**
      * Constructor for class
      */
-    function PHPWS_Form($id=NULL)
+    function PHPWS_Form($id=null)
     {
         if (!defined('ABSOLUTE_UPLOAD_LIMIT')) {
             $this->max_file_size = FORM_MAX_FILE_SIZE;
@@ -116,12 +116,12 @@ class PHPWS_Form {
         $this->reset();
     }
 
-    function setEncode($encode=TRUE)
+    function setEncode($encode=true)
     {
         if ($encode) {
             $this->_encode = ' enctype="multipart/form-data"';
         } else {
-            $this->_encode = FALSE;
+            $this->_encode = false;
         }
             
     }
@@ -132,14 +132,14 @@ class PHPWS_Form {
     }
 
  
-    function useFieldset($fieldset=TRUE)
+    function useFieldset($fieldset=true)
     {
         $this->use_fieldset = (bool)$fieldset;
     }
 
     function setLegend($legend)
     {
-        $this->use_fieldset = TRUE;
+        $this->use_fieldset = true;
         $this->legend = strip_tags($legend);
     }
 
@@ -159,17 +159,17 @@ class PHPWS_Form {
      */
     function turnOffAutocomplete()
     {
-        $this->_autocomplete = FALSE;
+        $this->_autocomplete = false;
     }
 
     function turnOnAutocomplete()
     {
-        $this->_autocomplete = TRUE;
+        $this->_autocomplete = true;
     }
 
     function noAuthKey()
     {
-        $this->use_auth_key = FALSE;
+        $this->use_auth_key = false;
     }
 
     /**
@@ -177,20 +177,20 @@ class PHPWS_Form {
      */
     function useRowRepeat()
     {
-        $this->row_repeat = TRUE;
+        $this->row_repeat = true;
     }
 
     function reset()
     {
         $this->_elements = array();
-        $this->_action   = NULL;
+        $this->_action   = null;
         $this->_method   = 'post';
-        $this->_encode   = NULL;
+        $this->_encode   = null;
     }
 
     function allowFormName()
     {
-        $this->allowFormName = TRUE;
+        $this->allowFormName = true;
     }
 
     function getFormId()
@@ -206,17 +206,17 @@ class PHPWS_Form {
         $this->_method = $method;
     }
 
-    function addText($name, $value=NULL)
+    function addText($name, $value=null)
     {
         return $this->add($name, 'text', $value);
     }
 
-    function addTextField($name, $value=NULL)
+    function addTextField($name, $value=null)
     {
         return $this->add($name, 'text', $value);
     }
 
-    function addTextarea($name, $value=NULL)
+    function addTextarea($name, $value=null)
     {
         return $this->add($name, 'textarea', $value);
     }
@@ -226,7 +226,7 @@ class PHPWS_Form {
         return $this->add($name, 'file');
     }
 
-    function addSubmit($name, $value=NULL)
+    function addSubmit($name, $value=null)
     {
         if (empty($value)) {
             $value = $name;
@@ -235,7 +235,7 @@ class PHPWS_Form {
         return $this->add($name, 'submit', $value);
     }
 
-    function addButton($name, $value=NULL)
+    function addButton($name, $value=null)
     {
         if (empty($value)) {
             $value = $name;
@@ -244,7 +244,7 @@ class PHPWS_Form {
         return $this->add($name, 'button', $value);
     }
 
-    function addPassword($name, $value=NULL)
+    function addPassword($name, $value=null)
     {
         return $this->add($name, 'password', $value);
     }
@@ -264,12 +264,12 @@ class PHPWS_Form {
         return $this->add($name, 'multiple', $value);
     }
 
-    function addRadio($name, $value=NULL)
+    function addRadio($name, $value=null)
     {
         return $this->add($name, 'radio', $value);
     }
 
-    function addRadioButton($name, $value=NULL)
+    function addRadioButton($name, $value=null)
     {
         return $this->add($name, 'radio', $value);
     }
@@ -284,7 +284,7 @@ class PHPWS_Form {
         return $this->add($name, 'check', $value);
     }
 
-    function addHidden($name, $value=NULL)
+    function addHidden($name, $value=null)
     {
         if (is_array($name)) {
             return $this->duplicate($name, 'hidden');
@@ -301,7 +301,7 @@ class PHPWS_Form {
                 return $result;
             }
         }
-        return TRUE;
+        return true;
     }
 
     /**
@@ -324,7 +324,7 @@ class PHPWS_Form {
      * @param string type  The type of form element (text, check, radio, etc)
      * @param mixed  value The default value of the form element
      */
-    function add($name, $type=NULL, $value=NULL)
+    function add($name, $type=null, $value=null)
     {
         if (preg_match('/[^\[\]\w]+/i', $name)) {
             return PHPWS_Error::get(PHPWS_FORM_BAD_NAME, 'core', 'PHPWS_Form::add', array($name));
@@ -338,7 +338,7 @@ class PHPWS_Form {
         if (is_array($result)) {
             foreach ($result as $element){
                 if ($type != 'radio') {
-                    $element->isArray = TRUE;
+                    $element->isArray = true;
                 }
                 
                 $element->_form = &$this;
@@ -349,8 +349,8 @@ class PHPWS_Form {
             }
         } else {
             if (isset($this->_elements[$name])) {
-                $this->_elements[$name][0]->isArray = TRUE;
-                $result->isArray = TRUE;
+                $this->_elements[$name][0]->isArray = true;
+                $result->isArray = true;
             }
             $result->_form = &$this;
             $this->_elements[$name][] = $result;
@@ -361,7 +361,7 @@ class PHPWS_Form {
         }
 
         $this->types[$name] = $type;
-        return TRUE;
+        return true;
     }
 
     function getKey($name)
@@ -371,7 +371,7 @@ class PHPWS_Form {
         return $current_key;
     }
 
-    function useEditor($name, $value=TRUE, $limited=false)
+    function useEditor($name, $value=true, $limited=false)
     {
         if (!$this->testName($name)) {
             return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::useEditor', array($name));
@@ -405,7 +405,7 @@ class PHPWS_Form {
     /**
      * Sets an element's disabled status
      */
-    function setDisabled($name, $value=TRUE)
+    function setDisabled($name, $value=true)
     {
         if (!$this->testName($name)) {
             return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setDisabled', array($name));
@@ -422,7 +422,7 @@ class PHPWS_Form {
     /**
      * Sets an element's readonly status
      */
-    function setReadOnly($name, $value=TRUE)
+    function setReadOnly($name, $value=true)
     {
         if (!$this->testName($name)) {
             return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setReadonly', array($name));
@@ -439,11 +439,12 @@ class PHPWS_Form {
 
     function makeLabel($name, $label)
     {
-        return sprintf('<label class="%s-label" for="%s">%s</label>', $this->type, $name, $label);
+        $required = $this->getRequired();
+        return sprintf('%s<label class="%s-label" for="%s">%s</label>', $required, $this->type, $name, $label);
     }
 
 
-    function setLabel($name, $label=NULL)
+    function setLabel($name, $label=null)
     {
         if (!$this->testName($name)) {
             return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setLabel', array($name));
@@ -466,6 +467,26 @@ class PHPWS_Form {
             }
         }
     }
+
+    /**
+     * Adds a prefix to a label to indicate it is a required field
+     */
+    function setRequired($name)
+    {
+        if (!$this->testName($name)) {
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setLabel', array($name));
+        }
+
+        foreach ($this->_elements[$name] as $key => $element){
+            $result = $this->_elements[$name][$key]->setRequired();
+
+            if (PEAR::isError($result)) {
+                return $result;
+            }
+        }
+    }
+
+
 
     function getId($name)
     {
@@ -515,7 +536,7 @@ class PHPWS_Form {
             }
         }
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -541,7 +562,7 @@ class PHPWS_Form {
                 return $result;
             }
         }
-        return TRUE;
+        return true;
     }
 
     /**
@@ -570,7 +591,7 @@ class PHPWS_Form {
                 return $result;
             }
         }
-        return TRUE;
+        return true;
     }
 
     /**
@@ -594,7 +615,7 @@ class PHPWS_Form {
                 return $result;
             }
         }
-        return TRUE;
+        return true;
     }
 
     /**
@@ -619,7 +640,7 @@ class PHPWS_Form {
                 return $result;
             }
         }
-        return TRUE;
+        return true;
     }
 
     /**
@@ -643,7 +664,7 @@ class PHPWS_Form {
                 return $result;
             }
         }
-        return TRUE;
+        return true;
     }
 
     /**
@@ -670,7 +691,7 @@ class PHPWS_Form {
                 return $result;
             }
         }
-        return TRUE;
+        return true;
     }
 
     /**
@@ -681,7 +702,7 @@ class PHPWS_Form {
      * @param string name Name of element to set the type
      * @param string size Size to make the element
      */
-    function setSize($name, $size, $maxsize=NULL)
+    function setSize($name, $size, $maxsize=null)
     {
         if (!$this->testName($name)) {
             return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setSize', array($name));
@@ -699,7 +720,7 @@ class PHPWS_Form {
                 return $result;
             }
         }
-        return TRUE;
+        return true;
     }
 
     /**
@@ -717,7 +738,7 @@ class PHPWS_Form {
                 return $result;
             }
         }
-        return TRUE;
+        return true;
     }
 
     /**
@@ -791,15 +812,15 @@ class PHPWS_Form {
      * match, for it to register, it must come as an array.
      *
      * Also, match will ONLY match to the VALUE of a select box unless you set
-     * optionMatch to TRUE.
+     * optionMatch to true.
      *
      * @author                    Matthew McNaney <matt at tux dot appstate dot edu>
      * @param string name         Name of element to set the type
      * @param string match        Value to match against the element's value
-     * @param boolean optionMatch If TRUE, then a select box will try to match
+     * @param boolean optionMatch If true, then a select box will try to match
      *                            the value to the option not the value
      */
-    function setMatch($name, $match, $optionMatch=FALSE)
+    function setMatch($name, $match, $optionMatch=false)
     {
         if (!$this->testName($name)) {
             return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setMatch', array($name));
@@ -853,7 +874,7 @@ class PHPWS_Form {
                 return $result;
             }
         }
-        return TRUE;
+        return true;
     }
 
     /**
@@ -879,7 +900,7 @@ class PHPWS_Form {
      *
      * @author         Matthew McNaney<matt at tux dot appstate dot edu>
      * @param  string  name Name to check if exists
-     * @return boolean TRUE if the element exists, FALSE otherwise
+     * @return boolean true if the element exists, false otherwise
      */
     function testName($name)
     {
@@ -918,7 +939,7 @@ class PHPWS_Form {
             break;
 
         case 'file':
-            $this->_multipart = TRUE;
+            $this->_multipart = true;
             $this->_encode = ' enctype="multipart/form-data"';
             $obj = new Form_File($name);
             return $obj;
@@ -996,17 +1017,17 @@ class PHPWS_Form {
         $this->_action = $directory;
     }
 
-    function get($name, $all=FALSE)
+    function get($name, $all=false)
     {
         if (!isset($this->_elements[$name])) {
             return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::get', array($name));
         }
 
         if (count($this->_elements[$name]) > 1) {
-            $multiple = TRUE;
+            $multiple = true;
         }
 
-        if ($all == FALSE) {
+        if ($all == false) {
             foreach ($this->_elements[$name] as $key => $element) {
                 $content[] = $element->get($key);
             }
@@ -1014,7 +1035,7 @@ class PHPWS_Form {
         } else {
             foreach ($this->_elements[$name] as $key => $element){
                 $content['elements'][$key] = $element->get($key);
-                $content['labels'][$key] = $element->getLabel(TRUE, TRUE);
+                $content['labels'][$key] = $element->getLabel(true, true);
             }
             return $content;
         }
@@ -1049,19 +1070,19 @@ class PHPWS_Form {
      * This is the fruit of your labor. After calling this you will get an associative array
      * of all you form elements. The keys of the template are the capitalized names of the elements.
      * The template also includes START_FORM and END_FORM tags to make creating the form easier.
-     * Hidden variables will AUTOMATICALLY be added to the START_FORM tag. If helperTags == FALSE
+     * Hidden variables will AUTOMATICALLY be added to the START_FORM tag. If helperTags == false
      * they will be placed in a tag named HIDDEN.
      * It will also create a DEFAULT_SUBMIT button.
      * 
      * Hidden variables will be added on to START_FORM. They will NOT have their own template tag.
      *
      * @author                     Matthew McNaney<matt at tux dot appstate dot edu>
-     * @param  boolean phpws       If TRUE and the action is missing, phpWebSite will attempt to use your directory settings instead
-     * @param  boolean helperTags  If TRUE START and END_FORM tags will be created, otherwise they will not
+     * @param  boolean phpws       If true and the action is missing, phpWebSite will attempt to use your directory settings instead
+     * @param  boolean helperTags  If true START and END_FORM tags will be created, otherwise they will not
      * @param  array   template    If a current template is supplied, form will add to it.
      * @return array   template    Array of completed form
      */
-    function getTemplate($phpws=TRUE, $helperTags=TRUE, $template=NULL)
+    function getTemplate($phpws=true, $helperTags=true, $template=null)
     {
         if (count($this->_elements) < 1) {
             return PHPWS_Error::get(PHPWS_FORM_NO_ELEMENTS, 'core', 'PHPWS_Form::getTemplate');
@@ -1093,12 +1114,12 @@ class PHPWS_Form {
         }
 
         foreach ($this->_elements as $elementName=>$element){
-            $multiple = FALSE;
+            $multiple = false;
             $count = 1;
             $mult_count = 0;
 
             if (count($element) > 1) {
-                $multiple = TRUE;
+                $multiple = true;
             }
 
             foreach ($element as $subElement){
@@ -1114,7 +1135,7 @@ class PHPWS_Form {
                 }
 
                 $tagName = $subElement->getTag();
-                $label = $subElement->getLabel(TRUE);
+                $label = $subElement->getLabel(true);
 
                 if ($this->row_repeat && $multiple) {
                     if (!empty($label)) {
@@ -1158,7 +1179,7 @@ class PHPWS_Form {
             $template = array_merge($this->_template, $template);
         }
 
-        if ($phpws == TRUE) {
+        if ($phpws == true) {
             return $template;
         } else {
             return implode("\n", $template);
@@ -1172,9 +1193,9 @@ class PHPWS_Form {
         return implode("\n", $form);
     }
 
-    function getMethod($tagMode=FALSE)
+    function getMethod($tagMode=false)
     {
-        if ($tagMode == TRUE) {
+        if ($tagMode == true) {
             return 'method="' . $this->_method . '"';
         }
         else {
@@ -1199,26 +1220,26 @@ class PHPWS_Form {
                 $formName = 'id="' . $this->id . '" ';
             }
         } else {
-            $formName = NULL;
+            $formName = null;
         }
 
         if (!$this->_autocomplete) {
             $autocomplete = 'autocomplete="off" ';
         } else {
-            $autocomplete = NULL;
+            $autocomplete = null;
         }
 
-        return '<form class="phpws-form" ' . $autocomplete . $formName . 'action="' . $this->_action . '" ' . $this->getMethod(TRUE) . $this->_encode . '>';
+        return '<form class="phpws-form" ' . $autocomplete . $formName . 'action="' . $this->_action . '" ' . $this->getMethod(true) . $this->_encode . '>';
     }
 
-    function formTextField($name, $value, $size=30, $maxsize=255, $label=NULL)
+    function formTextField($name, $value, $size=30, $maxsize=255, $label=null)
     {
         $element = new Form_Textfield($name, $value);
         $element->setSize($size, $maxsize);
         return $element->get();
     }
 
-    function formTextArea ($name, $value=NULL, $rows=5, $cols=40, $label=NULL)
+    function formTextArea ($name, $value=null, $rows=5, $cols=40, $label=null)
     {
         $element = new Form_TextArea($name, $value);
         $element->setRows($rows);
@@ -1233,20 +1254,20 @@ class PHPWS_Form {
     }
 
 
-    function formRadio($name, $value, $match=NULL, $match_diff=NULL, $label=NULL) 
+    function formRadio($name, $value, $match=null, $match_diff=null, $label=null) 
     {
         $element = new Form_RadioButton($name, $value);
         $element->setMatch($match);
         return $element->get() . ' ' . $label;
     }
 
-    function formSubmit($value, $name=NULL, $class=NULL)
+    function formSubmit($value, $name=null, $class=null)
     {
         $element = new Form_Submit($name, $value);
         return $element->get();
     }
 
-    function formSelect($name, $opt_array, $match = NULL, $ignore_index = FALSE, $match_to_value = FALSE, $onchange = NULL, $label = NULL)
+    function formSelect($name, $opt_array, $match = null, $ignore_index = false, $match_to_value = false, $onchange = null, $label = null)
     {
         $element = new Form_Select($name, $opt_array);
         $element->setMatch($match);
@@ -1256,7 +1277,7 @@ class PHPWS_Form {
         return $element->get();
     }
 
-    function formMultipleSelect($name, $opt_array, $match = NULL, $ignore_index = FALSE, $match_to_value = FALSE, $onchange = NULL, $label = NULL)
+    function formMultipleSelect($name, $opt_array, $match = null, $ignore_index = false, $match_to_value = false, $onchange = null, $label = null)
     {
         $element = new Form_Multiple($name, $opt_array);
         $element->setMatch($match);
@@ -1266,13 +1287,13 @@ class PHPWS_Form {
         return $element->get();
     }
 
-    function formHidden($name, $value=NULL)
+    function formHidden($name, $value=null)
     {
         $element = new Form_Hidden($name, $value);
         return $element->get();
     }
 
-    function formCheckBox($name, $value = 1, $match = NULL, $match_diff = NULL, $label = NULL) 
+    function formCheckBox($name, $value = 1, $match = null, $match_diff = null, $label = null) 
     {
         $element = new Form_Checkbox($name, $value);
         $element->setMatch($match);
@@ -1280,7 +1301,7 @@ class PHPWS_Form {
     }
 
 
-    function makeForm($name, $action, $elements, $method='post', $breaks=FALSE, $file=FALSE)
+    function makeForm($name, $action, $elements, $method='post', $breaks=false, $file=false)
     {
         return sprintf('<form name="%s" method="%s" action="%s">%s</form>', 
                        $name, $method, $action, implode("\n", $elements));
@@ -1295,13 +1316,13 @@ class Form_TextField extends Form_Element {
     function get()
     {
         return '<input type="text" '
-            . $this->getName(TRUE) 
-            . $this->getTitle(TRUE)
+            . $this->getName(true) 
+            . $this->getTitle(true)
             . $this->getDisabled()
             . $this->getReadOnly()
-            . $this->getValue(TRUE) 
-            . $this->getWidth(TRUE)
-            . $this->getClass(TRUE)
+            . $this->getValue(true) 
+            . $this->getWidth(true)
+            . $this->getClass(true)
             . $this->getData() . ' />';
     }
 
@@ -1314,12 +1335,12 @@ class Form_Submit extends Form_Element {
     {
         
         return '<input type="submit" '
-            . $this->getName(TRUE) 
-            . $this->getValue(TRUE) 
+            . $this->getName(true) 
+            . $this->getValue(true) 
             . $this->getDisabled()
             . $this->getReadOnly()
-            . $this->getWidth(TRUE)
-            . $this->getClass(TRUE)
+            . $this->getWidth(true)
+            . $this->getClass(true)
             . $this->getData() . ' />';
     }
 
@@ -1332,12 +1353,12 @@ class Form_Button extends Form_Element {
     {
         
         return '<input type="button" '
-            . $this->getName(TRUE) 
-            . $this->getValue(TRUE) 
+            . $this->getName(true) 
+            . $this->getValue(true) 
             . $this->getDisabled()
             . $this->getReadOnly()
-            . $this->getWidth(TRUE)
-            . $this->getClass(TRUE)
+            . $this->getWidth(true)
+            . $this->getClass(true)
             . $this->getData() . ' />';
     }
 
@@ -1350,8 +1371,8 @@ class Form_Hidden extends Form_Element {
     {
         
         return '<input type="hidden" ' 
-            . $this->getName(TRUE)
-            . $this->getValue(TRUE)
+            . $this->getName(true)
+            . $this->getValue(true)
             . '/>';
     }
 }
@@ -1363,12 +1384,12 @@ class Form_File extends Form_Element {
     {
         
         return '<input type="file" '
-            . $this->getName(TRUE) 
-            . $this->getTitle(TRUE)
+            . $this->getName(true) 
+            . $this->getTitle(true)
             . $this->getDisabled()
             . $this->getReadOnly()
-            . $this->getWidth(TRUE)
-            . $this->getClass(TRUE)
+            . $this->getWidth(true)
+            . $this->getClass(true)
             . $this->getData()
             . ' />';
     }
@@ -1377,24 +1398,24 @@ class Form_File extends Form_Element {
 class Form_Password extends Form_Element {
     var $type = 'password';
 
-    function Form_Password($name, $value=NULL)
+    function Form_Password($name, $value=null)
     {
         $this->setName($name);
         $this->setValue($value);
-        $this->allowValue = FALSE;
+        $this->allowValue = false;
     }
 
     function get()
     {
         
         return '<input type="password" '
-            . $this->getName(TRUE) 
-            . $this->getTitle(TRUE)
+            . $this->getName(true) 
+            . $this->getTitle(true)
             . $this->getDisabled()
             . $this->getReadOnly()
-            . $this->getValue(TRUE)
-            . $this->getWidth(TRUE)
-            . $this->getClass(TRUE)
+            . $this->getValue(true)
+            . $this->getWidth(true)
+            . $this->getClass(true)
             . $this->getData()
             . ' />';
     }
@@ -1404,8 +1425,8 @@ class Form_TextArea extends Form_Element {
     var $type          = 'textarea';
     var $rows          = DFLT_ROWS;
     var $cols          = DFLT_COLS;
-    var $height        = NULL;
-    var $_use_editor   = FALSE;
+    var $height        = null;
+    var $_use_editor   = false;
     var $_limit_editor = false;
 
     function setRows($rows)
@@ -1415,10 +1436,10 @@ class Form_TextArea extends Form_Element {
         }
 
         $this->rows = $rows;
-        return TRUE;
+        return true;
     }
 
-    function getRows($formMode=FALSE)
+    function getRows($formMode=false)
     {
         if ($formMode) {
             return sprintf('rows="%s"', $this->rows);
@@ -1435,10 +1456,10 @@ class Form_TextArea extends Form_Element {
         }
 
         $this->cols = $cols;
-        return TRUE;
+        return true;
     }
 
-    function getCols($formMode=FALSE)
+    function getCols($formMode=false)
     {
         if ($formMode) {
             return sprintf('cols="%s"', $this->cols);
@@ -1483,13 +1504,13 @@ class Form_TextArea extends Form_Element {
         if (isset($this->width)) {
             $style[] = 'width : ' . $this->width;
         } else {
-            $dimensions[] = $this->getCols(TRUE);
+            $dimensions[] = $this->getCols(true);
         }
 
         if (isset($this->height)) {
             $style[] = 'height : ' . $this->height;
         } else {
-            $dimensions[] = $this->getRows(TRUE);
+            $dimensions[] = $this->getRows(true);
         }
 
         if (isset($style)) {
@@ -1497,11 +1518,11 @@ class Form_TextArea extends Form_Element {
         }
 
         return '<textarea '
-            . $this->getName(TRUE) 
-            . $this->getTitle(TRUE)
+            . $this->getName(true) 
+            . $this->getTitle(true)
             . $this->getDisabled()
             . $this->getReadOnly()
-            . $this->getClass(TRUE)
+            . $this->getClass(true)
             . implode(' ', $dimensions) . ' '
             . $this->getData()
             . sprintf('>%s</textarea>', $value);
@@ -1511,19 +1532,19 @@ class Form_TextArea extends Form_Element {
 
 class Form_Select extends Form_Element {
     var $type = 'select';
-    var $match = NULL;
+    var $match = null;
 
     function get()
     {
         
         $content[] = '<select '
-            . $this->getName(TRUE)
-            . $this->getClass(TRUE)
+            . $this->getName(true)
+            . $this->getClass(true)
             . $this->getDisabled()
             . $this->getData() . '>';
 
         if (empty($this->value) || !is_array($this->value)) {
-            return NULL;
+            return null;
         }
 
         foreach($this->value as $value=>$label){
@@ -1550,26 +1571,26 @@ class Form_Select extends Form_Element {
     function isMatch($match)
     {
         if (!isset($this->match)) {
-            return FALSE;
+            return false;
         }
 
-        return ((string)$this->match == (string)$match) ? TRUE : FALSE;
+        return ((string)$this->match == (string)$match) ? true : false;
     }
 
 }
 
 class Form_Multiple extends Form_Element {
     var $type = 'multiple';
-    var $isArray = TRUE;
-    var $match = NULL;
+    var $isArray = true;
+    var $match = null;
 
     function get()
     {
-        $content[] = '<select ' . $this->getName(TRUE) . 'multiple="multiple" ' 
+        $content[] = '<select ' . $this->getName(true) . 'multiple="multiple" ' 
             . $this->getData()
-            . $this->getWidth(TRUE)
+            . $this->getWidth(true)
             . $this->getDisabled()
-            . $this->getClass(TRUE)
+            . $this->getClass(true)
             . '>';
         foreach($this->value as $value=>$label) {
             if ($this->isMatch($value)) {
@@ -1597,10 +1618,10 @@ class Form_Multiple extends Form_Element {
     function isMatch($match)
     {
         if (!isset($this->match)) {
-            return FALSE;
+            return false;
         }
 
-        return (in_array($match, $this->match)) ? TRUE : FALSE;
+        return (in_array($match, $this->match)) ? true : false;
     }
 
 }
@@ -1608,7 +1629,7 @@ class Form_Multiple extends Form_Element {
 
 
 class Form_Checkbox extends Form_Element {
-    var $match = FALSE;
+    var $match = false;
     var $type  = 'checkbox';
 
     function setMatch($match)
@@ -1626,18 +1647,18 @@ class Form_Checkbox extends Form_Element {
             return 'checked="checked" ';
         }
         else {
-            return NULL;
+            return null;
         }
     }
 
     function get()
     {
-        return '<input type="checkbox" ' . $this->getName(TRUE)
-            . $this->getTitle(TRUE)
-            . $this->getValue(TRUE)
+        return '<input type="checkbox" ' . $this->getName(true)
+            . $this->getTitle(true)
+            . $this->getValue(true)
             . $this->getDisabled()
             . $this->getReadOnly()
-            . $this->getClass(TRUE)
+            . $this->getClass(true)
             . $this->getMatch()
             . $this->getData()
             . ' />';
@@ -1648,7 +1669,7 @@ class Form_Checkbox extends Form_Element {
 
 class Form_RadioButton extends Form_Element {
     var $type  = 'radio';
-    var $match = FALSE;
+    var $match = false;
 
     function setMatch($match)
     {
@@ -1661,18 +1682,18 @@ class Form_RadioButton extends Form_Element {
             return 'checked="checked" ';
         }
         else {
-            return NULL;
+            return null;
         }
     }
 
     function get()
     {
-        return '<input type="radio" ' . $this->getName(TRUE)
-            . $this->getTitle(TRUE)
-            . $this->getValue(TRUE)
+        return '<input type="radio" ' . $this->getName(true)
+            . $this->getTitle(true)
+            . $this->getValue(true)
             . $this->getDisabled()
             . $this->getReadOnly()
-            . $this->getClass(TRUE)
+            . $this->getClass(true)
             . $this->getMatch()
             . $this->getData()
             . ' />';
@@ -1683,28 +1704,29 @@ class Form_RadioButton extends Form_Element {
 
 class Form_Element {
     var $key         = 0;
-    var $type        = NULL;
-    var $name        = NULL;
-    var $value       = NULL;
-    var $disabled    = FALSE;
-    var $read_only   = FALSE;
-    var $css_class   = NULL;
-    var $style       = NULL;
-    var $tab         = NULL;
-    var $width       = NULL;
-    var $allowValue  = TRUE;
-    var $isArray     = FALSE;
-    var $tag         = NULL;
-    var $label       = NULL;
-    var $id          = NULL;
-    var $title       = NULL;
-    var $_form       = NULL;
+    var $type        = null;
+    var $name        = null;
+    var $value       = null;
+    var $disabled    = false;
+    var $read_only   = false;
+    var $css_class   = null;
+    var $style       = null;
+    var $tab         = null;
+    var $width       = null;
+    var $allowValue  = true;
+    var $isArray     = false;
+    var $tag         = null;
+    var $label       = null;
+    var $id          = null;
+    var $title       = null;
+    var $required    = false;
+    var $_form       = null;
 
     // When multiple values are sent to an element, this variable
     // stores the position for labels and titles
     var $place       = 0;
   
-    function Form_Element($name, $value=NULL)
+    function Form_Element($name, $value=null)
     {
         $this->setName($name);
         if (isset($value)) {
@@ -1727,7 +1749,7 @@ class Form_Element {
         if ($this->disabled) {
             return 'disabled="disabled" ';
         }
-        return NULL;
+        return null;
     }
 
     function getReadOnly()
@@ -1735,7 +1757,7 @@ class Form_Element {
         if ($this->read_only) {
             return 'readonly="readonly" ';
         }
-        return NULL;
+        return null;
     }
 
 
@@ -1744,7 +1766,7 @@ class Form_Element {
         $this->title = strip_tags($title);
     }
 
-    function getTitle($formMode=FALSE)
+    function getTitle($formMode=false)
     {
         if ($formMode) {
             if (isset($this->title)) {
@@ -1757,17 +1779,17 @@ class Form_Element {
 
                 return sprintf('title="%s" ', $title);
             } elseif (isset($this->label)) {
-                $title = $this->getLabel(TRUE, FALSE);
+                $title = $this->getLabel(true, false);
                 return sprintf('title="%s" ', $title);
             } else {
-                return NULL;
+                return null;
             }
         }
     }
 
     function allowValue()
     {
-        $this->allowValue = TRUE;
+        $this->allowValue = true;
     }
 
 
@@ -1776,7 +1798,21 @@ class Form_Element {
         $this->label = $label;
     }
 
-    function getLabel($formMode=FALSE, $tagMode=TRUE)
+    function setRequired()
+    {
+        $this->required = true;
+    }
+
+    function getRequired()
+    {
+        if ($this->required) {
+            return '<span class="required-input">*</span>';
+        } else {
+            return null;
+        }
+    }
+
+    function getLabel($formMode=false, $tagMode=true)
     {
         if ($formMode) {
             if (isset($this->label)) {
@@ -1785,7 +1821,7 @@ class Form_Element {
                     if (isset($this->label[$key])) {
                         $label = $this->label[$key];
                     } else {
-                        $label = NULL;
+                        $label = null;
                     }
                 } else {
                     $label = $this->label;
@@ -1797,7 +1833,7 @@ class Form_Element {
                     return $label;
                 }
             } else {
-                return NULL;
+                return null;
             }
         } else {
             return $this->label;
@@ -1824,7 +1860,7 @@ class Form_Element {
         $this->id = $this->_form->id . '_' . $id;
     }
 
-    function getName($formMode=FALSE, $show_id=TRUE)
+    function getName($formMode=false, $show_id=true)
     {
         if ($this->isArray) {
             if ($this->type == 'multiple') {
@@ -1851,13 +1887,13 @@ class Form_Element {
         $this->value = $value;
     }
 
-    function getValue($formMode=FALSE)
+    function getValue($formMode=false)
     {
         if ($formMode) {
             if ($this->allowValue) {
                 return 'value="' . $this->value . '" ';
             } else {
-                return NULL;
+                return null;
             }
         }
         else {
@@ -1870,10 +1906,10 @@ class Form_Element {
         $this->css_class = $css_class;
     }
 
-    function getClass($formMode=FALSE)
+    function getClass($formMode=false)
     {
         if ($formMode) {
-            return (isset($this->css_class)) ? 'class="' . $this->css_class . '"' : NULL;
+            return (isset($this->css_class)) ? 'class="' . $this->css_class . '"' : null;
         }
         else {
             return $this->css_class;
@@ -1888,7 +1924,7 @@ class Form_Element {
     function getStyle($formMode)
     {
         if ($formMode) {
-            return (isset($this->style)) ? 'style="' . $this->style . '"' : NULL;
+            return (isset($this->style)) ? 'style="' . $this->style . '"' : null;
         }
         else {
             return $this->style;
@@ -1900,7 +1936,7 @@ class Form_Element {
         $this->tab = (int)$order;
     }
 
-    function getTab($formMode=FALSE)
+    function getTab($formMode=false)
     {
         if ($formMode) {
             return sprintf('tabindex="%s"', $this->tab);
@@ -1928,7 +1964,7 @@ class Form_Element {
         }
     }
 
-    function getSize($formMode=FALSE)
+    function getSize($formMode=false)
     {
         if ($formMode) {
             return 'size="' . $this->size . '" ';
@@ -1943,14 +1979,14 @@ class Form_Element {
         $this->maxsize = (int)$maxsize;
     }
 
-    function getMaxSize($formMode=FALSE)
+    function getMaxSize($formMode=false)
     {
         if ($formMode) {
             if (isset($this->maxsize)) {
                 return 'maxlength="' . $this->maxsize . '"';
             }
             else {
-                return NULL;
+                return null;
             }
         }
         else {
@@ -1963,14 +1999,14 @@ class Form_Element {
         $this->width = $width;
     }
 
-    function getWidth($formMode=FALSE)
+    function getWidth($formMode=false)
     {
         if ($formMode) {
             if (isset($this->width)) {
                 return 'style="width : ' . $this->width . '" ';
             }
             else {
-                return NULL;
+                return null;
             }
         }
         else {
@@ -1986,11 +2022,11 @@ class Form_Element {
     function getData()
     {
         if (isset($this->style)) {
-            $extra[] = $this->getStyle(TRUE);
+            $extra[] = $this->getStyle(true);
         }
 
         if (isset($this->class)) {
-            $extra[] = $this->getClass(TRUE);
+            $extra[] = $this->getClass(true);
         }
 
         if (isset($this->extra)) {
@@ -1998,21 +2034,21 @@ class Form_Element {
         }
 
         if (isset($this->size)) {
-            $extra[] = $this->getSize(TRUE);
+            $extra[] = $this->getSize(true);
         }
 
         if (isset($this->maxsize)) {
-            $extra[] = $this->getMaxSize(TRUE);
+            $extra[] = $this->getMaxSize(true);
         }
 
         if (isset($this->tab)) {
-            $extra[] = $this->getTab(TRUE);
+            $extra[] = $this->getTab(true);
         }
 
         if (isset($extra)) {
             return implode('', $extra);
         } else {
-            return NULL;
+            return null;
         }
     }
 
