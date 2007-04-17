@@ -102,12 +102,13 @@ class Menu_Link {
 
     function setUrl($url)
     {
-        if (!preg_match('/^index\.php/', $url)) {
+        if (preg_match('/\w+\.\w{2,3}($|\/)/', $url)) {
             $url = PHPWS_Text::checkLink($url);
-            PHPWS_Text::makeRelative($url);
         }
 
-        $this->url = str_replace('&amp;', '&', trim($url));
+        PHPWS_Text::makeRelative($url);
+
+        $url = str_replace('&amp;', '&', trim($url));
         $this->url = preg_replace('/&?authkey=\w{32}/i', '', $url);
     }
 
