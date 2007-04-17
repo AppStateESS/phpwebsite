@@ -4,6 +4,7 @@ its own separate CHANGELOG file.
 
 17 April 2007
 + RFE 1639645 - added setRequired function to Form
++ Core - isPosted can now return the number of repeats
 
 16 April 2007
 + Cookie - changed default time to 0 instead of null

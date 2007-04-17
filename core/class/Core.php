@@ -193,12 +193,14 @@ class PHPWS_Core {
      */
     function setLastPost()
     {
+        $key = PHPWS_Core::_getPostKey();
         if (!PHPWS_Core::isPosted()) {
-            $key = PHPWS_Core::_getPostKey();
             $_SESSION['PHPWS_LastPost'][] = $key;
             if (count($_SESSION['PHPWS_LastPost']) > MAX_POST_TRACK) {
                 array_shift($_SESSION['PHPWS_LastPost']);
             }
+        } else {
+            $_SESSION['PHPWS_Post_Count'][$key]++;
         }
     }
 
@@ -224,14 +226,28 @@ class PHPWS_Core {
      * Checks to see if the currently post is in the LastPost
      * session. If so, it returns TRUE. Function can be used to 
      * prevent double posts.
+     * If return_count is true, it returns the number of attempts
+     * made with the same post.
      */
-    function isPosted()
+    function isPosted($return_count=false)
     {
         if (!isset($_SESSION['PHPWS_LastPost']) || !isset($_POST)) {
-            return FALSE;
+            return false;
         }
+
         $key = PHPWS_Core::_getPostKey();
-        return in_array($key, $_SESSION['PHPWS_LastPost']);
+
+        if (!isset($_SESSION['PHPWS_Post_Count'])) {
+            $_SESSION['PHPWS_Post_Count'][$key] = 1;
+        }
+
+        $result = in_array($key, $_SESSION['PHPWS_LastPost']);
+
+        if ($result && $return_count) {
+            return $_SESSION['PHPWS_Post_Count'][$key];
+        } else {
+            return $result;
+        }
     }
  
     function atHome()
