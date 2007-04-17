@@ -614,9 +614,10 @@ class Menu_Admin {
         } else {
             $link->key_id  = 0;
         }
-        if ($_GET['link_id']) {
+        if (!empty($_GET['link_id'])) {
             $link->parent = (int)$_GET['link_id'];
         }
+
         $link->save();
         unset($_SESSION['Menu_Pin_Links']);
     }

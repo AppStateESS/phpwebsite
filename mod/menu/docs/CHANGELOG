@@ -1,3 +1,8 @@
+17 April 2007
++ Fixed bug with pinning links
++ Fixed notice call in Menu_Admin
++ Changed pin keys to use title and url
+
 16 April 2007
 + Moved htmlentity call to the setTitle function.
 + Raised default menu link length.

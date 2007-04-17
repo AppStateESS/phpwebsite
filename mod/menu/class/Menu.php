@@ -151,7 +151,7 @@ class Menu {
 
     function pinLink($title, $url, $key_id=0)
     {
-        $key = substr(md5($title), 0, 8);
+        $key = substr(md5($title . $url), 0, 8);
         $_SESSION['Menu_Pin_Links'][$key]['title'] = strip_tags($title);
         $_SESSION['Menu_Pin_Links'][$key]['url'] = strip_tags($url);
         if ($key_id) {
