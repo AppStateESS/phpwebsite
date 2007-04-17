@@ -1,3 +1,10 @@
+17 April 2007
++ Started password reset and user name reminder options.
++ Added comments to user menu template to prevent extra characters
++ Updated files: conf/config.php, templates/usermenus/top.tpl,
+  templates/forms/forgot.tpl 
+
+
 16 April 2007
 + Implemented RFE 1628318 - Remember me option on users module.
 + Rewrote logout functionality to work with remember me

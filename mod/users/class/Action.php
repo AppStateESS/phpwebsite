@@ -8,6 +8,11 @@
  */
 
 require_once PHPWS_SOURCE_DIR . 'mod/users/inc/errorDefines.php';
+PHPWS_Core::requireConfig('users');
+
+if (!defined('ALLOW_DEITY_FORGET')) {
+    define('ALLOW_DEITY_FORGET', false);
+ }
 
 class User_Action {
 
@@ -625,6 +630,7 @@ class User_Action {
      */
     function userAction()
     {
+        $content = $title = null;
         if (isset($_REQUEST['command'])) {
             $command = $_REQUEST['command'];
         }
@@ -722,6 +728,21 @@ class User_Action {
  If you did not log in within the time frame specified in your email, please apply for another account.');
             }
             User_Action::cleanUpConfirm();
+            break;
+
+        case 'forgot_password':
+            if (Current_User::isLogged()) {
+                PHPWS_Core::home();
+            }
+            $title = dgettext('users', 'Forgot Password');
+            $content = User_Form::forgotForm();
+            break;
+
+        case 'post_forgot':
+            $title = dgettext('users', 'Forgot Password');
+            if (!User_Action::postForgot($content)) {
+                $content .= User_Form::forgotForm();
+            }
             break;
 
         default:
@@ -1075,6 +1096,112 @@ class User_Action {
         $db = new PHPWS_DB('users_auth_scripts');
         $db->addWhere('id', (int)$script_id);
         return $db->delete();
+    }
+
+    function postForgot(&$content)
+    {
+
+        if (empty($_POST['fg_username']) && empty($_POST['fg_email'])) {
+            $content = dgettext('users', 'You must enter either a username or email address.');
+            return false;
+        }
+
+        if (!empty($_POST['fg_username'])) {
+            $username = $_POST['fg_username'];
+            if (preg_match('/\'|"/', html_entity_decode(strip_tags($username), ENT_QUOTES))) {
+                $content = dgettext('users', 'User name not found. Check your spelling or enter an email address instead.');
+                return false;
+            }
+
+            $db = new PHPWS_DB('users');
+            $db->addWhere('username', strtolower($username));
+            $db->addColumn('email');
+            $db->addColumn('id');
+            $db->addColumn('deity');
+            $user_search = $db->select('row');
+            if (PEAR::isError($user_search)) {
+                PHPWS_Error::log($user_search);
+                $content = dgettext('users', 'User name not found. Check your spelling or enter an email address instead.');
+                return false;
+            } elseif (empty($user_search)) {
+                $content = dgettext('users', 'User name not found. Check your spelling or enter an email address instead.');
+                return false;
+            } else {
+                if ($user_search['deity'] && !ALLOW_DEITY_FORGET) {
+                    Security::log(dgettext('users', 'Forgotten password attempt made on a deity account.'));
+                    $content = dgettext('users', 'User name not found. Check your spelling or enter an email address instead.');
+                    return false;
+                }
+
+                if (PHPWS_Core::isPosted()) {
+                    $content = dgettext('users', 'Please check your email for a response.');
+                    return true;
+                }
+
+                if (empty($user_search['email'])) {
+                    $content = dgettext('users', 'Your email address is missing from your account. Please contact the site administrators.');
+                    PHPWS_Error::log(USER_ERR_NO_EMAIL, 'users', 'User_Action::postForgot');
+                    return true;
+                }
+
+                if (User_Action::emailPasswordReset($user_search['id'], $user_search['email'])) {
+                    $content = dgettext('users', 'We have sent you an email to reset your password.');
+                    return true;
+                } else {
+                    $content = dgettext('users', 'We are currently unable to send out email reminders. Try again later.');
+                    return true;
+                }
+            }
+
+        } elseif (!empty($_POST['fg_email'])) {
+            $email = $_POST['fg_email'];
+            if (preg_match('/\'|"/', html_entity_decode(strip_tags($email), ENT_QUOTES))) {
+                $content = dgettext('users', 'Email address not found. Please try again.');
+                return false;
+            }
+
+            if (!PHPWS_Text::isValidInput($email, 'email')) {
+                $content = dgettext('users', 'Email address not found. Please try again.');
+                return false;
+            }
+
+            $db = new PHPWS_DB('users');
+            $db->addWhere('email', $email);
+            $db->addColumn('username');
+            $db->addColumn('id');
+            $user_search = $db->select('row');
+            if (PEAR::isError($user_search)) {
+                PHPWS_Error::log($user_search);
+                $content = dgettext('users', 'Email address not found. Please try again.');
+                return false;
+            } elseif (empty($user_search)) {
+                $content = dgettext('users', 'Email address not found. Please try again.');
+                return false;
+            } else {
+                if (PHPWS_Core::isPosted()) {
+                    $content = dgettext('users', 'Please check your email for a response.');
+                    return true;
+                }
+
+                if (User_Action::emailUsernameReminder($user_search['id'], $email)) {
+                    $content = dgettext('users', 'We have sent you an user name reminder. Please check your email and return to log in.');
+                    return true;
+                } else {
+                    $content = dgettext('users', 'We are currently unable to send out email reminders. Try again later.');
+                    return true;
+                }
+            }
+        }
+    }
+
+    function emailPasswordReset($user_id, $email)
+    {
+        return true;
+    }
+
+    function emailUsernameReminder($user_id, $email)
+    {
+        return true;
     }
 
 }

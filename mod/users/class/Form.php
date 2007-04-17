@@ -84,6 +84,10 @@ class User_Form {
             $template['NEW_ACCOUNT'] = PHPWS_Text::moduleLink(USER_SIGNUP_QUESTION, 'users', $signup_vars);
         }
 
+        $fg_vars = array('action'  => 'user',
+                         'command' => 'forgot_password');
+        $template['FORGOT'] = PHPWS_Text::moduleLink(dgettext('users', 'Forgot password?'), 'users', $fg_vars);
+
         $usermenu = PHPWS_User::getUserSetting('user_menu');
 
         return PHPWS_Template::process($template, 'users', 'usermenus/' . $usermenu);
@@ -999,7 +1003,27 @@ class User_Form {
         } else {
             return NULL;
         }
-        
+    }
+
+    function forgotForm()
+    {
+        $form = new PHPWS_Form('forgot-password');
+        $form->addHidden('module', 'users');
+        $form->addHidden('action', 'user');
+        $form->addHidden('command', 'post_forgot');
+
+        $form->addText('fg_username');
+        $form->setLabel('fg_username', dgettext('users', 'Enter your user name.'));
+
+        $form->addText('fg_email');
+        $form->setSize('fg_email', 40);
+        $form->setLabel('fg_email', dgettext('users', 'Forgotten your user name? Enter your email address instead.'));
+
+        $form->addSubmit(dgettext('users', 'Send reminder'));
+
+        $tpl = $form->getTemplate();
+
+        return PHPWS_Template::process($tpl, 'users', 'forms/forgot.tpl');
     }
 
 }

@@ -2,9 +2,10 @@
 <!-- BEGIN login-form -->
 {START_FORM}
 <!-- BEGIN links -->
-<!-- BEGIN forgot -->{FORGOT}<!-- END forgot -->
+<!-- BEGIN forgot -->{FORGOT} | <!-- END forgot -->
 <!-- END links -->
-{NEW_ACCOUNT} | {PHPWS_USERNAME_LABEL} {PHPWS_USERNAME} 
+<!-- BEGIN new-account -->{NEW_ACCOUNT} | <!-- END new-account -->
+{PHPWS_USERNAME_LABEL} {PHPWS_USERNAME} 
 {PHPWS_PASSWORD_LABEL} {PHPWS_PASSWORD} 
 {SUBMIT}
 {END_FORM}

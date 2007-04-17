@@ -33,7 +33,7 @@ define('NO_PERM_NAME', dgettext('users', 'None'));
 /**
  * reg exp characters to strip from username default is '\w'
  * or only alphanumeric characters or an underline
- * read up about regular expressions before editting
+ * read up about regular expressions before editing
  */
 define('ALLOWED_USERNAME_CHARACTERS', '\w');
 
@@ -80,5 +80,13 @@ define('ALLOW_DEITY_REMEMBER_ME', false);
  * number of days a remember me cookie should last
  */
 define('REMEMBER_ME_LIFE', 365);
+
+/**
+ * The default value for this is false. Deities should not
+ * have their passwords reset. They should be able to fix them manually.
+ * That said, if you set this to true, phpWebSite will allow the 
+ * reset. It should be changed back to false after logging in.
+ */
+define('ALLOW_DEITY_FORGET', false);
 
 ?>
