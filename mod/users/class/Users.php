@@ -61,6 +61,7 @@ class PHPWS_User {
         $result = $db->loadObject($this);
 
         if (PEAR::isError($result)) {
+            $this->id = 0;
             return $result;
         }
 

@@ -1007,6 +1007,7 @@ class User_Form {
 
     function forgotForm()
     {
+        PHPWS_Core::initCoreClass('Captcha.php');
         $form = new PHPWS_Form('forgot-password');
         $form->addHidden('module', 'users');
         $form->addHidden('action', 'user');
@@ -1019,12 +1020,47 @@ class User_Form {
         $form->setSize('fg_email', 40);
         $form->setLabel('fg_email', dgettext('users', 'Forgotten your user name? Enter your email address instead.'));
 
+        $form->addText('captcha');
+        $form->setLabel('captcha', dgettext('users', 'Enter the word from the image above.'));
+
         $form->addSubmit(dgettext('users', 'Send reminder'));
 
         $tpl = $form->getTemplate();
+        $tpl['CAPTCHA_IMAGE'] = Captcha::get();
 
         return PHPWS_Template::process($tpl, 'users', 'forms/forgot.tpl');
     }
+
+    function resetPassword($user_id, $authhash)
+    {
+        $user = new PHPWS_User((int)$user_id);
+
+        if (!$user->id) {
+            return dgettext('users', 'Sorry there is a problem with your account.');
+        }
+
+        if ($user->authorize != 1) {
+            return dgettext('users', 'Sorry but you do not authorize from this site.');
+        }
+
+        $form = new PHPWS_Form('reset-password');
+        $form->addHidden('module', 'users');
+        $form->addHidden('action', 'user');
+        $form->addHidden('command', 'reset_pw');
+        $form->addHidden('user_id', $user->id);
+        $form->addHidden('authhash', $authhash);
+
+        $form->addPassword('password1');
+        $form->setLabel('password1', dgettext('users', 'Enter your new password'));
+        $form->addPassword('password2');
+        $form->setLabel('password2', dgettext('users', 'Repeat it here please'));
+        $form->addSubmit('submit', dgettext('users', 'Update password'));
+   
+        $tpl = $form->getTemplate();
+
+        return PHPWS_Template::process($tpl, 'users', 'forms/reset_password.tpl');
+    }
+
 
 }
 

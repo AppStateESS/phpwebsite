@@ -70,9 +70,21 @@ function users_update(&$content, $currentVersion)
 + Added new function requireLogin that forwards a user to the login
   screen
 </pre>';
-            } // End of switch statement
+
+    case version_compare($currentVersion, '2.3.2', '<'):
+        $new_table = 'CREATE TABLE users_pw_reset (
+user_id INT NOT NULL default 0,
+authhash CHAR( 32 ) NOT NULL default 0,
+timeout INT NOT NULL default 0,
+);';
+        PHPWS_DB::import($new_table);
+        
+
+
+    } // End of switch statement
 
     return TRUE;
+
 }
 
 ?>
