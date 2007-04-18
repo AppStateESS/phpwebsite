@@ -1,3 +1,9 @@
+18 April 2007
++ Added Forgot password and Forgot username functionality
++ Updated files: templates/forms/reset_password.tpl,
+  templates/forms/forgot.tpl
+
+
 17 April 2007
 + Started password reset and user name reminder options.
 + Added comments to user menu template to prevent extra characters
