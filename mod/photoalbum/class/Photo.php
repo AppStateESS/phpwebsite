@@ -291,7 +291,7 @@ class PHPWS_Photo extends PHPWS_Item {
                 chmod($file, 0644);
                 $info = @getimagesize($file);
 
-                if (PHPWS_Image::allowType($_FILES['Photo']['type'])) {
+                if (PHPWS_Image::allowImageType($_FILES['Photo']['type'])) {
                     $this->_name = $name;
                     $this->_type = $_FILES['Photo']['type'];
                     $this->_width = $info[0];
