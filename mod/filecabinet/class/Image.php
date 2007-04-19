@@ -73,6 +73,11 @@ class PHPWS_Image extends File_Common {
         return true;
     }
 
+    function allowImageType($type)
+    {
+        $image = new PHPWS_Image;
+        return $image->allowType($type);
+    }
 
     function allowDimensions()
     {

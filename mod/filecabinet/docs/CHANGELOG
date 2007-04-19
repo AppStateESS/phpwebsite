@@ -1,3 +1,7 @@
+19 April 2007
++ Added two stand-alone functions to check whether an image or
+  document is allowed. allowImageType & allowDocumentType
+
 13 April 2007
 + Added missing manager/pick.tpl file to update.
 
