@@ -31,6 +31,12 @@
       </td>
    </tr>
    <tr>
+      <td>{ANONYMOUS_COMMENTS_LABEL}
+      </td>
+      <td>{ANONYMOUS_COMMENTS}
+      </td>
+   </tr>
+   <tr>
       <td>{HOME_PAGE_DISPLAY_LABEL}
       </td>
       <td>{HOME_PAGE_DISPLAY}

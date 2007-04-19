@@ -300,6 +300,12 @@ class Blog_Admin {
             PHPWS_Settings::set('blog', 'allow_comments', 0);
         }
 
+        if (isset($_POST['anonymous_comments'])) {
+            PHPWS_Settings::set('blog', 'anonymous_comments', 1);
+        } else {
+            PHPWS_Settings::set('blog', 'anonymous_comments', 0);
+        }
+
         if (isset($_POST['cache_view'])) {
             PHPWS_Settings::set('blog', 'cache_view', 1);
         } else {

@@ -1,3 +1,9 @@
+19 April 2007
++ Added setting to control whether to allow anonymous comments by
+  default on new blog entries
++ Updated files: templates/settings.tpl
+
+
 11 April 2007
 + Added extra checks for anonymous submission
 + Changed coding of image manager call.

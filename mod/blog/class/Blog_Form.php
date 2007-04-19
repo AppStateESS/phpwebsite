@@ -43,11 +43,13 @@ class Blog_Form {
             $form->setMatch('allow_comments', $blog->allow_comments);
             
             $form->addCheck('allow_anon', 1);
-            $form->setLabeL('allow_anon', dgettext('blog', 'Allow anonymous comments'));
+            $form->setLabel('allow_anon', dgettext('blog', 'Allow anonymous comments'));
             if ($blog->id) {
                 PHPWS_Core::initModClass('comments', 'Comments.php');
                 $thread = Comments::getThread($blog->key_id);
                 $form->setMatch('allow_anon', $thread->allow_anon);
+            } else {
+                $form->setMatch('allow_anon', PHPWS_Settings::get('blog', 'anonymous_comments'));
             }
 
             if (PHPWS_Settings::get('blog', 'simple_image')) {
@@ -114,6 +116,10 @@ class Blog_Form {
         $form->addCheck('allow_comments', 1);
         $form->setLabel('allow_comments', dgettext('blog', 'Allow comments by default'));
         $form->setMatch('allow_comments', PHPWS_Settings::get('blog', 'allow_comments'));
+
+        $form->addCheck('anonymous_comments', 1);
+        $form->setLabel('anonymous_comments', dgettext('blog', 'Allow anonymous comments by default'));
+        $form->setMatch('anonymous_comments', PHPWS_Settings::get('blog', 'anonymous_comments'));
 
         $form->addCheck('simple_image', 1);
         $form->setLabel('simple_image', dgettext('blog', 'Use Image Manager'));

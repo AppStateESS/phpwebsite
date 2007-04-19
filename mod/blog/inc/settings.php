@@ -14,5 +14,6 @@ $settings['cache_view']              = 1;
 $settings['simple_image']            = 1;
 $settings['max_width']               = 300;
 $settings['max_height']              = 300;
+$settings['anonymous_comments']      = 1;
 
 ?>
