@@ -7,8 +7,10 @@
  * @author Matthew McNaney <matt at tux dot appstate dot edu>
  */
 
-
 PHPWS_Core::initModClass('blog', 'Blog_Form.php');
+if (!defined('MAX_BLOG_CACHE_PAGES')) {
+    define('MAX_BLOG_CACHE_PAGES', 3);
+ }
 
 class Blog_Admin {
 
@@ -163,7 +165,7 @@ class Blog_Admin {
             break;
 
         case 'delete':
-            PHPWS_Cache::remove(BLOG_CACHE_KEY);
+            Blog_Admin::resetCache();
             $result = $blog->delete();
             Blog_Admin::setForward(dgettext('blog', 'Blog entry deleted.'), 'list');
             break;
@@ -204,7 +206,7 @@ class Blog_Admin {
                 Current_User::disallow();
                 return;
             }
-            PHPWS_Cache::remove(BLOG_CACHE_KEY);
+            Blog_Admin::resetCache();
             Blog_Admin::restoreBlog($_REQUEST['version_id']);
             Blog_Admin::setForward(dgettext('blog', 'Blog entry restored.'), 'list');
             break;
@@ -223,20 +225,21 @@ class Blog_Admin {
 
         case 'post_entry':
             $title = dgettext('blog', 'Blog Archive');
-
             $panel->setCurrentTab('list');
-
-            $result = $blog->post_entry();
+            $blog->post_entry();
 
             $link_back = PHPWS_Text::linkAddress('blog', array('action' => 'admin', 'tab'=>'list'), TRUE);
 
-            if (is_array($result)) {
-                $message = implode('<br />', $result);
+            if ($blog->_error) {
                 if (empty($blog->id)) {
                     $panel->setCurrentTab('new');
                 }
                 $content = Blog_Form::edit($blog);
             } else {
+                if (!isset($_POST['blog_id']) && PHPWS_Core::isPosted()) {
+                    Blog_Admin::setForward(dgettext('blog', 'Entry saved successfully.'), 'list');
+                }
+
                 $result = $blog->save();
                 if (PEAR::isError($result)) {
                     $message = dgettext('blog', 'An error occurred when trying to save your entry. Please check your logs.');
@@ -249,12 +252,11 @@ class Blog_Admin {
                 } else {
                     Blog_Admin::setForward(dgettext('blog', 'Entry saved successfully.'), 'list');
                 }
-
             }
             break;
 
         case 'reset_cache':
-            PHPWS_Cache::remove(BLOG_CACHE_KEY);
+            Blog_Admin::resetCache();
             PHPWS_Core::goBack();
             break;
 
@@ -312,16 +314,22 @@ class Blog_Admin {
             PHPWS_Settings::set('blog', 'cache_view', 0);
         }
 
+        if (isset($_POST['captcha_submissions'])) {
+            PHPWS_Settings::set('blog', 'captcha_submissions', 1);
+        } else {
+            PHPWS_Settings::set('blog', 'captcha_submissions', 0);
+        }
+
         if (isset($_POST['home_page_display'])) {
             PHPWS_Settings::set('blog', 'home_page_display', 1);
         } else {
             PHPWS_Settings::set('blog', 'home_page_display', 0);
         }
 
-        if (isset($_POST['allow_anonymous_submit'])) {
-            PHPWS_Settings::set('blog', 'allow_anonymous_submit', 1);
+        if (isset($_POST['allow_anonymous_submits'])) {
+            PHPWS_Settings::set('blog', 'allow_anonymous_submits', 1);
         } else {
-            PHPWS_Settings::set('blog', 'allow_anonymous_submit', 0);
+            PHPWS_Settings::set('blog', 'allow_anonymous_submits', 0);
         }
 
         if (isset($_POST['simple_image'])) {
@@ -569,6 +577,16 @@ class Blog_Admin {
                 $db->update();
                 $count++;
             }
+        }
+    }
+
+    /**
+     * Clears Blog's anonymous cache
+     */
+    function resetCache()
+    {
+        for ($i=1; $i <= MAX_BLOG_CACHE_PAGES; $i++) {
+            PHPWS_Cache::remove(BLOG_CACHE_KEY . $i);
         }
     }
 }

@@ -7,6 +7,10 @@
    */
 
 define('BLOG_CACHE_KEY', 'front_blog_page');
+if (!defined('MAX_BLOG_CACHE_PAGES')) {
+    define('MAX_BLOG_CACHE_PAGES', 3);
+ }
+
 
 class Blog_User {
 
@@ -54,6 +58,9 @@ class Blog_User {
             // Must create a new blog. Don't use above shortcut
             $blog = new Blog;
             $content = Blog_User::postSuggestion($blog);
+            if (empty($content)) {
+                $content = Blog_User::submitAnonymous($blog);
+            }
             break;
             
         default:
@@ -70,13 +77,8 @@ class Blog_User {
         if (!PHPWS_Settings::get('blog', 'allow_anonymous_submits')) {
             return dgettext('blog', 'Site does not accepting anonymous submissions.');
         }
-
-        if (PHPWS_Core::isPosted()) {
-            $tpl['TITLE'] = dgettext('blog', 'Repeat submission');
-            $tpl['CONTENT'] =  dgettext('blog', 'Your submission is still awaiting approval.');
-            return PHPWS_Template::process($tpl, 'blog', 'user_main.tpl');
-        }
-
+        
+       
         if (empty($_POST['title'])) {
             $blog->title = dgettext('blog', 'No title');
         } else {
@@ -89,10 +91,32 @@ class Blog_User {
         }
 
         // Do not let anonymous users use html tags
-        $blog->setSummary(strip_tags($_POST['summary']));
+        $summary = strip_tags($_POST['summary']);
+        if (empty($summary)) {
+            $blog->_error[] = dgettext('blog', 'Your submission must have a summary.');
+        } else {
+            $blog->setSummary($summary);
+        }
+
         $blog->setEntry(strip_tags($_POST['entry']));
 
         $blog->approved = false;
+
+        if (PHPWS_Settings::get('blog', 'captcha_submissions')) {
+            PHPWS_Core::initCoreClass('Captcha.php');
+            if (!Captcha::verify($_POST['captcha'])) {
+                $blog->_error[] = dgettext('blog', 'Please enter word in image correctly.');
+            }
+        }  elseif (PHPWS_Core::isPosted() && empty($blog->_error)) {
+            $tpl['TITLE'] = dgettext('blog', 'Repeat submission');
+            $tpl['CONTENT'] =  dgettext('blog', 'Your submission is still awaiting approval.');
+            return PHPWS_Template::process($tpl, 'blog', 'user_main.tpl');
+        }
+
+
+        if ($blog->_error) {
+            return null;
+        }
         $result = $blog->save();
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
@@ -153,9 +177,15 @@ class Blog_User {
             $offset = ($page - 1) * $limit;
         }
 
-        $key = BLOG_CACHE_KEY . $page;
+        if ($page == 0) {
+            $key = BLOG_CACHE_KEY . '1';
+        } else {
+            $key = BLOG_CACHE_KEY . $page;
+        }
 
-        if (!Current_User::isLogged()    &&
+        // we are only caching the first three pages
+        if ($page <= MAX_BLOG_CACHE_PAGES &&
+            !Current_User::isLogged() &&
             !Current_User::allow('blog') &&
             PHPWS_Settings::get('blog', 'cache_view') &&
             $content = PHPWS_Cache::get($key)) {
@@ -163,7 +193,6 @@ class Blog_User {
         }
 
         $db = new PHPWS_DB('blog_entries');
-
 
         $result = Blog_User::getEntries($db, $limit, $offset);
 
@@ -219,7 +248,9 @@ class Blog_User {
 
         $content = PHPWS_Template::process($tpl, 'blog', 'list_view.tpl');
 
-        if (!Current_User::isLogged() && !Current_User::allow('blog') &&
+        // again only caching first pages
+        if ($page <= MAX_BLOG_CACHE_PAGES && 
+            !Current_User::isLogged() && !Current_User::allow('blog') &&
             PHPWS_Settings::get('blog', 'cache_view')) {
             PHPWS_Cache::save($key, $content);
         } elseif (Current_User::allow('blog', 'edit_blog')) {

@@ -1,5 +1,5 @@
 {START_FORM}
-<table class="form-table" width="99%">
+<table class="form-table" cellpadding="6">
    <tr>
       <td>{CACHE_VIEW_LABEL}<br /><span class="smaller">{RESET_CACHE}</span>
       </td>
@@ -19,9 +19,14 @@
       </td>
    </tr>
    <tr>
-      <td>{ALLOW_ANONYMOUS_SUBMIT_LABEL}<br /><span class="smaller">{MENU_LINK}</span>
+      <td>{ALLOW_ANONYMOUS_SUBMITS_LABEL}<br /><span class="smaller">{MENU_LINK}</span>
       </td>
-      <td>{ALLOW_ANONYMOUS_SUBMIT}
+      <td>{ALLOW_ANONYMOUS_SUBMITS}
+      </td>
+   </tr>
+   <tr>
+      <td>{CAPTCHA_SUBMISSIONS_LABEL}</td>
+      <td>{CAPTCHA_SUBMISSIONS}
       </td>
    </tr>
    <tr>

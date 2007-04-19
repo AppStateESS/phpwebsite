@@ -1,7 +1,11 @@
 19 April 2007
 + Added setting to control whether to allow anonymous comments by
   default on new blog entries
-+ Updated files: templates/settings.tpl
++ Added Captcha option to submissions.
++ Fixed cache reset
++ Added define to determine the highest amount of blog pages to cache
++ Updated files: templates/settings.tpl, templates/edit.tpl,
+                 conf/config.php 
 
 
 11 April 2007

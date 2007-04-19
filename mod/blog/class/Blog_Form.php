@@ -18,8 +18,17 @@ class Blog_Form {
         $form->addHidden('module', 'blog');
 
         if ($limited) {
+            PHPWS_Core::initCoreClass('Captcha.php');
+
             $form->addHidden('action', 'post_suggestion');
             $form->addSubmit('submit', dgettext('blog', 'Suggest entry'));
+
+            if (PHPWS_Settings::get('blog', 'captcha_submissions')) {
+                $form->addText('captcha');
+                $form->setLabel('captcha', dgettext('blog', 'Type the word seen in the image.'));
+                $form->addTplTag('CAPTCHA_IMAGE', Captcha::get());
+            }
+
         } else {
             $form->addHidden('action', 'admin');
             $form->addHidden('command', 'post_entry');
@@ -94,7 +103,11 @@ class Blog_Form {
 
         $template = $form->getTemplate();
 
+
         $template['EXAMPLE'] = 'YYMMDD HH:MM';
+        if ($blog->_error) {
+            $template['MESSAGE'] = implode('<br />', $blog->_error);
+        }
         return PHPWS_Template::process($template, 'blog', 'edit.tpl');
     }
 
@@ -116,6 +129,10 @@ class Blog_Form {
         $form->addCheck('allow_comments', 1);
         $form->setLabel('allow_comments', dgettext('blog', 'Allow comments by default'));
         $form->setMatch('allow_comments', PHPWS_Settings::get('blog', 'allow_comments'));
+
+        $form->addCheck('captcha_submissions', 1);
+        $form->setLabel('captcha_submissions', dgettext('blog', 'CAPTCHA submissions'));
+        $form->setMatch('captcha_submissions', PHPWS_Settings::get('blog', 'captcha_submissions'));
 
         $form->addCheck('anonymous_comments', 1);
         $form->setLabel('anonymous_comments', dgettext('blog', 'Allow anonymous comments by default'));
@@ -142,9 +159,9 @@ class Blog_Form {
             }
         }
 
-        $form->addCheck('allow_anonymous_submit', 1);
-        $form->setLabel('allow_anonymous_submit', dgettext('blog', 'Allow anonymous submissions'));
-        $form->setMatch('allow_anonymous_submit', PHPWS_Settings::get('blog', 'allow_anonymous_submit'));
+        $form->addCheck('allow_anonymous_submits', 1);
+        $form->setLabel('allow_anonymous_submits', dgettext('blog', 'Allow anonymous submissions'));
+        $form->setMatch('allow_anonymous_submits', PHPWS_Settings::get('blog', 'allow_anonymous_submits'));
 
         $form->addTextField('max_width', PHPWS_Settings::get('blog', 'max_width'));
         $form->setLabel('max_width', dgettext('blog', 'Maximum image width (50-2048)'));

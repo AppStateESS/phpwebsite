@@ -1,3 +1,4 @@
+<!-- BEGIN error --><span class="error">{MESSAGE}</span><!-- END error -->
 {START_FORM}
 <div class="top-label">
     <div class="padded">{TITLE_LABEL}<br />{TITLE}</div>
@@ -28,6 +29,13 @@
     </td>
     </tr>
     </table>
+    <!-- BEGIN captcha -->
+    <p class="padded">
+    {CAPTCHA_IMAGE}<br />
+    {CAPTCHA} {CAPTCHA_LABEL}
+    </p>
+    <!-- END captcha -->
+
 </div>
 {SUBMIT}
 {END_FORM}

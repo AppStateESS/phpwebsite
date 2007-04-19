@@ -431,23 +431,22 @@ class Blog {
         
         if ($this->id && !Current_User::authorized('blog', 'edit_blog')) {
             Current_User::disallow();
-            return false;
         } elseif (empty($this->id) && !Current_User::authorized('blog')) {
             Current_User::disallow();
-            return false;
-        }
-
-        if (!isset($_POST['blog_id']) && PHPWS_Core::isPosted()) {
-            return true;
         }
 
         if (empty($_POST['title'])) {
-            return array(dgettext('blog', 'Missing title.'));
+            $this->_error[] = dgettext('blog', 'Missing title.');
         } else {
             $this->title = strip_tags($_POST['title']);
         }
 
-        $this->setSummary($_POST['summary']);
+        $summary = $_POST['summary'];
+        if (empty($summary)) {
+            $this->_error[] = dgettext('blog', 'Your submission must have a summary.');
+        } else {
+            $this->setSummary($summary);
+        }
         $this->setEntry($_POST['entry']);
 
         if (isset($_POST['image_id'])) {
