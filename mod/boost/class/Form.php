@@ -218,6 +218,10 @@ class Boost_Form {
         $tpl['CHECK_FOR_UPDATES'] = PHPWS_Text::secureLink(dgettext('boost', 'Check all'), 'boost',
                                                            array('action' => 'check_all', 'tab' => $type));
         $tpl['LATEST_LABEL'] = dgettext('boost', 'Latest version');
+
+        $release_version = PHPWS_Core::releaseVersion();
+        $tpl['PHPWS_VERSION'] = $release_version;
+
         $result = PHPWS_Template::process($tpl, 'boost', 'module_list.tpl');
         return $result;
     }

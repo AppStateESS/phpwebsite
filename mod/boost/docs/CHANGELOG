@@ -1,3 +1,7 @@
+19 April 2007
++ RFE 1680787 - Boost module list shows full package title
++ updated files: templates/module_list.tpl
+
 13 April 2007
 + Added code to create missing directories in updateFiles
 

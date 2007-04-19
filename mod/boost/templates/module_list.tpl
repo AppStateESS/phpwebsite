@@ -1,5 +1,8 @@
+<!-- BEGIN warning -->
 {DIRECTORIES}
 <strong>{WARNING}</strong>
+<!-- END warning -->
+<h1>phpWebSite {PHPWS_VERSION}</h1><br />
 <table width="99%" cellpadding="4">
 <tr>
   <th>{TITLE_LABEL}</th>
