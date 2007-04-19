@@ -1,6 +1,9 @@
 CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
+19 April 2007
++ Added a function to Core to return the full package version.
+
 
 17 April 2007
 + RFE 1639645 - added setRequired function to Form

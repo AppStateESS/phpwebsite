@@ -200,7 +200,11 @@ class PHPWS_Core {
                 array_shift($_SESSION['PHPWS_LastPost']);
             }
         } else {
-            $_SESSION['PHPWS_Post_Count'][$key]++;
+            if (isset($_SESSION['PHPWS_Post_Count'][$key])) {
+                $_SESSION['PHPWS_Post_Count'][$key]++;
+            } else {
+                $_SESSION['PHPWS_Post_Count'][$key] = 1;
+            }
         }
     }
 
@@ -719,6 +723,15 @@ class PHPWS_Core {
         } else {
             return FALSE;
         }
+    }
+
+    /**
+     * returns the full phpwebsite release version
+     */
+    function releaseVersion()
+    {
+        include 'core/conf/version.php';
+        return $version;
     }
 
     /**
