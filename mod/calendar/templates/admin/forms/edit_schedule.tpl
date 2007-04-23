@@ -1,24 +1,22 @@
 {START_FORM}
-<table class="form-table">
 <!-- BEGIN schedule-type -->
-  <tr>
-    <td><strong>{PUBLIC_LABEL}</strong></td>
-    <td>{PUBLIC}
-      {PUBLIC_1} {PUBLIC_1_LABEL}<br />
-      {PUBLIC_2} {PUBLIC_2_LABEL}
-    </td>
-  </tr>
+<p class="padded">
+<strong>{PUBLIC_LABEL}</strong><br />
+{PUBLIC}
+{PUBLIC_1} {PUBLIC_1_LABEL}
+{PUBLIC_2} {PUBLIC_2_LABEL}
+</p>
 <!-- END schedule-type -->
-  <tr>
-    <td class="label">{TITLE_LABEL}</td>
-    <td>{TITLE}</td>
-  </tr>
-  <tr>
-    <td class="label">{SUMMARY_LABEL}</td>
-    <td>{SUMMARY}</td>
-  </tr>
-</table>
-<div class="align-center">{SUBMIT}
-<hr />
-{CLOSE}</div>
+<p class="padded">
+<strong>{SHOW_UPCOMING_LABEL}</strong><br />
+{SHOW_UPCOMING}
+</p>
+<p class="padded">
+<strong>{TITLE_LABEL}</strong><br />
+{TITLE}
+</p>
+<p class="padded"><strong>{SUMMARY_LABEL}</strong><br />
+{SUMMARY}</p>
+<p class="padded">{SUBMIT}
+{CLOSE}</p>
 {END_FORM}

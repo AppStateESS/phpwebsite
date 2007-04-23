@@ -71,6 +71,13 @@ class Calendar_Schedule {
     var $contact_number = null;
 
     /**
+     * if > 0, show upcoming events under mini calendar
+     * 
+     * @var integer
+     */
+    var $show_upcoming = 0;
+
+    /**
      * Last error recorded by the class
      * @var object
      */
@@ -230,6 +237,15 @@ class Calendar_Schedule {
             $form->addHidden('public', 1);
         }
 
+        $upcoming[0] = dgettext('calendar', 'Do not show upcoming events');
+        $upcoming[1] = dgettext('calendar', 'Show upcoming week');
+        $upcoming[2] = dgettext('calendar', 'Show next two weeks');
+        $upcoming[3] = dgettext('calendar', 'Show upcoming month');
+
+        $form->addSelect('show_upcoming', $upcoming);
+        $form->setLabel('show_upcoming', dgettext('calendar', 'Show upcoming events'));
+        $form->setMatch('show_upcoming', $this->show_upcoming);
+
         $form->addSubmit(dgettext('calendar', 'Save'));
         
         $template = $form->getTemplate();
@@ -330,6 +346,7 @@ class Calendar_Schedule {
         return $event;
     }
 
+
     /**
      * Apply the results from the scheduler form
      */
@@ -348,6 +365,9 @@ class Calendar_Schedule {
         if (!$this->public && !$this->id) {
             $this->user_id = Current_User::getId();
         }
+
+        $this->show_upcoming = (int)$_POST['show_upcoming'];
+
         return true;
     }
 
@@ -469,6 +489,41 @@ class Calendar_Schedule {
 
             return true;
         }
+    }
+
+    function getEvents($start_search, $end_search)
+    {
+        $event_table = $this->getEventTable();
+        if (!$event_table) {
+            return null;
+        }
+
+        PHPWS_Core::initModClass('calendar', 'Event.php');
+
+        $db = new PHPWS_DB($event_table);
+
+        $db->addWhere('start_time', $start_search, '>=', null,  'start');
+        $db->addWhere('start_time', $end_search,   '<',  'AND', 'start');
+
+        $db->addWhere('end_time',   $end_search,   '<=', null,  'end');
+        $db->addWhere('end_time',   $start_search, '>',  'AND', 'end');
+
+        $db->addWhere('start_time', $start_search, '<',  null,  'middle');
+        $db->addWhere('end_time',   $end_search,   '>',  'AND', 'middle');
+
+        $db->setGroupConj('end', 'OR');
+        $db->setGroupConj('middle', 'OR');
+
+        $db->addOrder('start_time');
+        $db->addOrder('end_time desc');
+        $db->setIndexBy('id');
+        
+        $result = $db->getObjects('Calendar_Event', $this);
+        if (PHPWS_Error::logIfError($result)) {
+            return null;
+        }
+
+        return $result;
     }
 
     function saveKey()

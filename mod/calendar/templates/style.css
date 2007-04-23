@@ -197,3 +197,7 @@ div.event-tabs {
     overflow : auto;
     max-height : 200px;
 }
+
+div.upcoming-schedule {
+   font-size : .9em;                         
+}

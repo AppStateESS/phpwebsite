@@ -809,7 +809,6 @@ class Calendar_Admin {
                 }
 
                 if(PHPWS_Calendar::isJS()) {
-                    $this->sendMessage(dgettext('calendar', 'Schedule saved.'), null, false);
                     javascript('close_refresh');
                     Layout::nakedDisplay();
                     exit();

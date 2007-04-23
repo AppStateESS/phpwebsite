@@ -94,7 +94,7 @@ class PHPWS_Calendar {
     }
 
 
-    function getEvents($start_search=null, $end_search=null, $schedules=null) {
+    function getEvents($start_search=null, $end_search=null) {
 
         PHPWS_Core::initModClass('calendar', 'Event.php');
         if (!isset($start_search)) {
@@ -106,37 +106,7 @@ class PHPWS_Calendar {
             $end_search = mktime(0,0,0,1,1,2050);
         }
 
-        $event_table = $this->schedule->getEventTable();
-        if (!$event_table) {
-            return null;
-        }
-
-        $db = new PHPWS_DB($event_table);
-
-        $db->addWhere('start_time', $start_search, '>=', null,  'start');
-        $db->addWhere('start_time', $end_search,   '<',  'AND', 'start');
-
-        $db->addWhere('end_time',   $end_search,   '<=', null,  'end');
-        $db->addWhere('end_time',   $start_search, '>',  'AND', 'end');
-
-        $db->addWhere('start_time', $start_search, '<',  null,  'middle');
-        $db->addWhere('end_time',   $end_search,   '>',  'AND', 'middle');
-
-        $db->setGroupConj('end', 'OR');
-        $db->setGroupConj('middle', 'OR');
-
-        $db->addOrder('start_time');
-        $db->addOrder('end_time desc');
-        $db->setIndexBy('id');
-        
-        $result = $db->getObjects('Calendar_Event', $this->schedule);
-
-        if (PEAR::isError($result)) {
-            PHPWS_Error::log($result);
-            return null;
-        }
-
-        return $result;
+        return $this->schedule->getEvents($start_search, $end_search);
     }
 
 

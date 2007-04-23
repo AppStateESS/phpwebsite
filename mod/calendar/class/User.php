@@ -1002,6 +1002,60 @@ class Calendar_User {
         }
     }
 
+    function upcomingEvents()
+    {
+        $db = new PHPWS_DB('calendar_schedule');
+        $db->addWhere('show_upcoming', 0, '>');
+        $db->addWhere('public', 1);
+        Key::restrictView($db, 'calendar');
+
+        $result = $db->getObjects('Calendar_Schedule');
+        if (PHPWS_Error::logIfError($result) || !$result) {
+            return null;
+        }
+
+        $startdate = mktime();
+
+        foreach ($result as $schedule) {
+            switch ($schedule->show_upcoming) {
+            case 1:
+                // one week
+                $days_ahead = 7;
+                break;
+
+            case 2:
+                // two weeks
+                $days_ahead = 14;
+                break;
+
+            case 3:
+                // one month
+                $days_ahead = 30;
+                break;
+            }
+
+            $enddate = $startdate + (86400 * $days_ahead);
+            $result = $schedule->getEvents($startdate, $enddate);
+            if (!$result) {
+                continue;
+            }
+
+            $tpl['TITLE'] = $schedule->getViewLink();
+
+            foreach ($result as $event) {
+                $tpl['events'][] = $event->getTpl();
+            }
+            $upcoming[] = PHPWS_Template::process($tpl, 'calendar', 'view/upcoming.tpl');
+        }
+
+        if ($upcoming) {
+            $ftpl['TITLE'] = dgettext('calendar', 'Upcoming events');
+            $ftpl['CONTENT'] = implode("\n", $upcoming);
+            return PHPWS_Template::process($ftpl, 'calendar', 'user_main.tpl');
+        } else {
+            return null;
+        }
+    }
 }
 
 ?>

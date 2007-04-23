@@ -91,6 +91,14 @@ function calendar_update(&$content, $version)
 + Days made linkable in month list view.
 + Added a sync dates button on the edit event form.';
 
+    case version_compare($version, '1.5.0', '<'):
+        $db = new PHPWS_DB('calendar_schedule');
+        $result = $db->addTableColumn('show_upcoming', 'SMALLINT NOT NULL DEFAULT 0');
+        if (PHPWS_Error::logIfError($result)) {
+            $content[] = 'Could not create show_upcoming column in calendar_schedule table.';
+            return false;
+        }
+        
     } // end of switch
 
     return true;
