@@ -19,6 +19,16 @@ class PHPWS_Error {
         return PEAR::isError($item);
     }
 
+    function logIfError($item)
+    {
+        if (PEAR::isError($item)) {
+            PHPWS_Error::log($item);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     function get($value, $module, $funcName=NULL, $extraInfo=NULL){
         setLanguage(DEFAULT_LANGUAGE);
         $errorFile = PHPWS_Core::getConfigFile($module, 'error.php');

@@ -199,7 +199,7 @@ class PHPWS_Core {
             if (count($_SESSION['PHPWS_LastPost']) > MAX_POST_TRACK) {
                 array_shift($_SESSION['PHPWS_LastPost']);
             }
-        } else {
+        } elseif (isset($_SESSION['PHPWS_Post_Count'][$key])) {
             if (isset($_SESSION['PHPWS_Post_Count'][$key])) {
                 $_SESSION['PHPWS_Post_Count'][$key]++;
             } else {
