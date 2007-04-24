@@ -1,3 +1,8 @@
+24 April 2007
++ Added day listing to upcoming events list.
++ Some other small edits.
++ Updated files: templates/view/upcoming.tpl, templates/style.css
+
 23 April 2007
 + Can now choose to show upcoming events.
 + Removed schedule created message when using javascript popup

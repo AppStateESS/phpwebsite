@@ -1,7 +1,7 @@
-<div class="upcoming-schedule">
-   <h2>{TITLE}</h2>
-   <hr />
+<div class="upcoming">
+   <div class="title">{TITLE}</div>
    <!-- BEGIN events -->
+   <!-- BEGIN day-name --><h3 class="day">{DAY}</h3><!-- END day-name -->
    <div class="vevent">
       <span class="summary">{SUMMARY}</span><br />
       <abbr class="dtstart" title="{DTSTART}">{START_TIME}</abbr>

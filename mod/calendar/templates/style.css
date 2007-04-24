@@ -198,6 +198,18 @@ div.event-tabs {
     max-height : 200px;
 }
 
-div.upcoming-schedule {
+div.upcoming {
    font-size : .9em;                         
+}
+
+div.upcoming div.title {
+   font-size : 1.2em;
+   text-align : center;
+}
+
+div.upcoming h3.day {
+   margin : 0px;
+   padding : 0px;
+   margin-top : 1em;
+   border-bottom : 1px solid black;
 }
