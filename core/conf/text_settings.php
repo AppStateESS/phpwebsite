@@ -23,7 +23,6 @@ define('PHPWS_ALLOWED_TAGS', '<pre>
 <fieldset><legend><code>
 ');
 
-
 /***************** HTML ENCODING ********************************
  * Before any user text passed into parseInput and out of
  * parseOutput is html encoded by default.
@@ -36,6 +35,21 @@ define('PHPWS_ALLOWED_TAGS', '<pre>
  */
 
 define('ENCODE_PARSED_TEXT', true);
+
+
+/*********************** FILTERS *******************************
+ * phpWebSite filters outgoing text with a BB filter by default.
+ * You can decide which filters, if any, phpWebSite uses.
+ * If you use more than one filter, separate them with commas 
+ * (e.g. 'bb,wiki') in the TEXT_FILTERS define. Be aware that order
+ * is important!
+ */
+
+// If FALSE, phpWebSite will not use any text filters to display text
+define('ALLOW_TEXT_FILTERS', true);
+
+define('TEXT_FILTERS', 'bb');
+
 
 /******************* RELATIVE ADDRESSING ***********************
  * The parseInput function the Text class will remove urls
@@ -50,25 +64,14 @@ define('ENCODE_PARSED_TEXT', true);
  * If for some reason you don't want this to happen, change to
  * FALSE
  */
-
 define('MAKE_ADDRESSES_RELATIVE', TRUE);
-
-
-/********************* BBCode ***************************/
-// Set whether you want to allow bbcode to get parsed by default.
-define('ALLOW_BB_CODE', TRUE);
-// If TRUE, then 'smilies' will be parsed. The above MUST be TRUE.
-define('ALLOW_BB_SMILIES', TRUE);
-
-// If TRUE, users can post with the [img] tag
-define('ALLOW_BB_IMAGES', FALSE);
-
-// Either "fieldset" or "blockquote"
-define('BBCODE_QUOTE_TYPE', 'fieldset');
 
 // parseOutput/getPrint fixes bare anchors to become relative to
 // the current page
 define('FIX_ANCHORS', true);
+
+
+/******************* COLLAPSE URLS ***********************/
 
 // if true, parseOutput will collapse long urls into a shorter size
 define('COLLAPSE_URLS', true);
@@ -76,6 +79,7 @@ define('COLLAPSE_URLS', true);
 // The collapsed url will ALWAYS contain the root address.
 // You can't set this so low that the root is abbreviated.
 define('COLLAPSE_LIMIT', 30);
+
 
 /******************* Profanity Filter ********************
  *

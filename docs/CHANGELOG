@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+24 April 2007
++ RFE 1704305 - Split bb encoding out into filters
++ Updated files: conf/text_settings.php
+
 23 April 2007
 + Added logIfError function to Error class
 
