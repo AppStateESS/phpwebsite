@@ -1,3 +1,6 @@
+24 April 2007
++ Bug 1705106 - Fixed install.sql typo
+
 18 April 2007
 + Added Forgot password and Forgot username functionality
 + Updated files: templates/forms/reset_password.tpl,

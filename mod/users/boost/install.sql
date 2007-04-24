@@ -58,6 +58,6 @@ CREATE INDEX userssignup_idx on users_signup (authkey);
 CREATE TABLE users_pw_reset (
 user_id INT NOT NULL default 0,
 authhash CHAR( 32 ) NOT NULL default 0,
-timeout INT NOT NULL default 0,
+timeout INT NOT NULL default 0
 );
 
