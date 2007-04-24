@@ -60,7 +60,7 @@ class PHPWS_Panel_Link {
 
     function setLabel($label)
     {
-        $this->label = $label;
+        $this->label = strip_tags($label);
     }
 
     function getLabel()
@@ -76,7 +76,7 @@ class PHPWS_Panel_Link {
 
     function setDescription($description)
     {
-        $this->description = $description;
+        $this->description = strip_tags($description);
     }
 
 

@@ -1,3 +1,8 @@
+24 April 2007
++ RFE 1665181 - Can now edit control panel tabs and links.
++ Updated files: templates/link_form.tpl, templates/panelList.tpl,
+                 templates/tab_form.tpl
+
 4 April 2007
 + Updated language functions.
 + Added German translation.

@@ -8,14 +8,14 @@
  */
 
 class PHPWS_Panel_Tab {
-    var $id           = NULL;
-    var $title        = NULL;
-    var $link         = NULL;
-    var $tab_order    = NULL;
-    var $itemname     = NULL;
+    var $id           = null;
+    var $title        = null;
+    var $link         = null;
+    var $tab_order    = null;
+    var $itemname     = null;
     var $_secure      = TRUE;
 
-    function PHPWS_Panel_Tab($id=NULL) {
+    function PHPWS_Panel_Tab($id=null) {
         if(isset($id)) {
             $this->setId($id);
             $this->init();
@@ -28,7 +28,10 @@ class PHPWS_Panel_Tab {
 
     function init(){
         $DB = new PHPWS_DB('controlpanel_tab');
-        $DB->loadObject($this);
+        $result = $DB->loadObject($this);
+        if (PHPWS_Error::logIfError($result) || !$result) {
+            $this->id = null;
+        }
     }
 
     function setTitle($title){
@@ -118,10 +121,11 @@ class PHPWS_Panel_Tab {
         $db->addWhere('theme_var', $this->getThemeVar());
         $db->addColumn('box_order', 'max');
         $max = $db->select('one');
-        if (isset($max))
+        if (isset($max)) {
             return $max + 1;
-        else
+        } else {
             return 1;
+        }
     }
 
 

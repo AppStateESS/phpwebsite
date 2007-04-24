@@ -16,6 +16,45 @@ class CP_Action {
         }
 
         switch ($command){
+        case 'post_tab':
+            if (!empty($_POST['title'])) {
+                $tab = new PHPWS_Panel_Tab($_POST['tab_id']);
+                $tab->setTitle($_POST['title']);
+                PHPWS_Error::logIfError($tab->save());
+                unset($_SESSION['Control_Panel_Tabs']);
+                $content = javascript('close_refresh');
+                break;
+            }
+        case 'edit_tab_title':
+            $tab = new PHPWS_Panel_Tab($_REQUEST['tab_id']);
+
+            $content = CP_Action::editTabTitle($tab);
+            if (empty($content)) {
+                $content = javascript('close_refresh');
+            }
+            Layout::nakedDisplay($content);
+            break;
+
+        case 'post_link':
+            if (!empty($_POST['label'])) {
+                $link = new PHPWS_Panel_Link($_POST['link_id']);
+                $link->setLabel($_POST['label']);
+                $link->setDescription($_POST['description']);
+                PHPWS_Error::logIfError($link->save());
+                unset($_SESSION['CP_All_links']);
+                $content = javascript('close_refresh');
+                break;
+            }
+        case 'edit_link':
+            $link = new PHPWS_Panel_Link($_REQUEST['link_id']);
+
+            $content = CP_Action::editLink($link);
+            if (empty($content)) {
+                $content = javascript('close_refresh');
+            }
+            Layout::nakedDisplay($content);
+            break;
+
         case 'admin_menu':
             $content = CP_Action::adminMenu();
             break;
@@ -86,10 +125,11 @@ class CP_Action {
         foreach ($tabs as $tab_obj){
             $taction = array();
             if (isset($links[$tab_obj->id])){
-                if (count($links[$tab_obj->id]) > 1)
+                if (count($links[$tab_obj->id]) > 1) {
                     $move_links = TRUE;
-                else
+                } else {
                     $move_links = FALSE;
+                }
                 foreach ($links[$tab_obj->id] as $link_obj){
                     $laction = array();
                     if ($move_links){
@@ -101,8 +141,16 @@ class CP_Action {
                         $laction[] = PHPWS_Text::moduleLink($down_link, 'controlpanel', $lvalues);
                     }
 
+                    $lvalues['command'] = 'edit_link';
+                    $jslink['address'] = PHPWS_Text::linkAddress('controlpanel', $lvalues);
+                    $jslink['label'] = dgettext('controlpanel', 'Edit');
+                    $jslink['width'] = 360;
+                    $jslink['height'] = 350;
+                    $edit_link = javascript('open_window', $jslink, true);
+
                     $tpl->setCurrentBlock('link-list');
-                    $tpl->setData(array('LINK'=>$link_obj->getLabel(), 'LACTION'=>implode('', $laction)));
+                    $tpl->setData(array('LINK'=>$link_obj->getLabel(), 'LACTION'=>implode('', $laction),
+                                        'EDIT_LINK' =>  $edit_link));
                     $tpl->parseCurrentBlock();
                 }
             }
@@ -116,13 +164,67 @@ class CP_Action {
                 $taction[] = PHPWS_Text::secureLink($down_tab, 'controlpanel', $tvalues);
             }
 
+            $tvalues['command'] = 'edit_tab_title';
+            $jstab['address'] = PHPWS_Text::linkAddress('controlpanel', $tvalues);
+            $jstab['label'] = dgettext('controlpanel', 'Edit');
+            $jstab['width'] = 260;
+            $jstab['height'] = 180;
+            $edit_tab = javascript('open_window', $jstab, true);
+
             $tpl->setCurrentBlock('tab-list');
-            $tpl->setData(array('TAB'=>$tab_obj->getTitle(), 'TACTION'=>implode('', $taction)));
+            $tpl->setData(array('TAB'=>$tab_obj->getTitle(), 'TACTION'=>implode('', $taction), 'EDIT_TAB' => $edit_tab));
             $tpl->parseCurrentBlock();
         }
-
+        
         $content = $tpl->get();
         return $content;
+    }
+
+    function editTabTitle($tab)
+    {
+        if (!$tab->id) {
+            return false;
+        }
+        $form = new PHPWS_Form;
+        $form->addHidden('module', 'controlpanel');
+        $form->addHidden('command', 'post_tab');
+        $form->addHidden('action', 'admin');
+        $form->addHidden('tab_id', $tab->id);
+
+        $form->addText('title', $tab->title);
+        $form->setLabel('title', dgettext('controlpanel', 'Title'));
+
+        $form->addSubmit(dgettext('controlpanel', 'Save'));
+        $tpl = $form->getTemplate();
+
+        $tpl['CLOSE'] = javascript('close_window');
+        $tpl['FORM_TITLE'] = dgettext('controlpanel', 'Edit tab');
+        return PHPWS_Template::process($tpl, 'controlpanel', 'tab_form.tpl');
+    }
+
+    function editLink($link)
+    {
+        if (!$link->id) {
+            return false;
+        }
+        $form = new PHPWS_Form;
+        $form->addHidden('module', 'controlpanel');
+        $form->addHidden('command', 'post_link');
+        $form->addHidden('action', 'admin');
+        $form->addHidden('link_id', $link->id);
+
+        $form->addText('label', $link->label);
+        $form->setLabel('label', dgettext('controlpanel', 'Label'));
+
+        $form->addTextArea('description', $link->description);
+        $form->setLabel('description', dgettext('controlpanel', 'Description'));
+
+        $form->addSubmit(dgettext('controlpanel', 'Save'));
+        $tpl = $form->getTemplate();
+
+        $tpl['CLOSE'] = javascript('close_window');
+        $tpl['FORM_TITLE'] = dgettext('controlpanel', 'Edit link');
+        return PHPWS_Template::process($tpl, 'controlpanel', 'link_form.tpl');
     }
 }
 
