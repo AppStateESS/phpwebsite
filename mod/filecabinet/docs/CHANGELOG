@@ -4,7 +4,9 @@
 + If a folder's directory is already created, fc doesn't try to create
   a new one, preventing an error message and preventing a bad key.
 + Thumbnail size has is set in a define
-+ Updated : conf/config.php
++ Changed logic with oversize. Instead of forbidding use of an
+  oversized image, hitting cancel will use the graphic anyway.
++ Updated : conf/config.php, javascript/pick_image/head.js
 
 19 April 2007
 + Added two stand-alone functions to check whether an image or

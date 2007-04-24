@@ -258,12 +258,11 @@ class PHPWS_Image extends File_Common {
         $proportion_X = $this->width / $new_width;
         $proportion_Y = $this->height / $new_height;
 
-        if($proportion_X > $proportion_Y ){
+        if($proportion_X > $proportion_Y ) {
             $proportion = $proportion_Y;
-        }else{
+        } else {
             $proportion = $proportion_X ;
         }
-
             
         $target['width'] = $new_width * $proportion;
         $target['height'] = $new_height * $proportion;

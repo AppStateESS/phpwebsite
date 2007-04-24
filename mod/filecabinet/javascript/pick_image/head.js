@@ -16,13 +16,15 @@ function pick_image(image_id, src, title) {
   window.close();
 }
 
-function oversized(image_id, width, height) {
+function oversized(image_id, width, height, src, title) {
     var link = 'index.php?module=filecabinet&aop=resize_image&authkey={authkey}&mw=' + width + '&mh=' + height + '&image_id=' + image_id;
     var success = 'resize_update(requester.responseXML)';
     var failure = 'alert("{failure_message}")';
 
     if (confirm('{confirmation}')) {
         loadRequester(link, success, failure);
+    } else {
+        pick_image(image_id, src, title);
     }
     return false;
 }
@@ -36,7 +38,7 @@ function resize_update(response)
     if (!response) {
         alert("{failure_message}");
     } else {
-        pick_image(image_id, src, title,1);
+        pick_image(image_id, src, title);
         window.location.href = window.location.href;
     }
 }

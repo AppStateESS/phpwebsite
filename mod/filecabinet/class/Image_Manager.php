@@ -66,8 +66,8 @@ class FC_Image_Manager {
                     }
 
                     if ( ($this->max_width < $image->width) || ($this->max_height < $image->height) ) {
-                        $tpl['THUMBNAIL'] = sprintf('<a href="#" onclick="oversized(%s, %s, %s); return false">%s</a>',
-                                                    $image->id, $this->max_width, $this->max_height, $image->getThumbnail());
+                        $tpl['THUMBNAIL'] = sprintf('<a href="#" onclick="oversized(%s, %s, %s, \'%s\', \'%s\'); return false">%s</a>',
+                                                    $image->id, $this->max_width, $this->max_height, $image->thumbnailPath(), addslashes($image->title), $image->getThumbnail());
                     } else {
                         $tpl['THUMBNAIL'] = sprintf('<a href="#" onclick="pick_image(%s, \'%s\', \'%s\'); return false">%s</a>',
                                                     $image->id, $image->thumbnailPath(), addslashes($image->title), $image->getThumbnail());
