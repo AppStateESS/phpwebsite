@@ -394,10 +394,9 @@ class User_Action {
 
     function popupPermission()
     {
-        if (!isset($_REQUEST['key_id'])) {
+        if (!isset($_GET['key_id'])) {
             echo dgettext('users', 'Missing key information.');
         }
-
         $key = new Key((int)$_GET['key_id']);
 
         if (!Key::checkKey($key, false)) {
@@ -449,9 +448,7 @@ class User_Action {
 
         $result = $key->save();
         if (isset($_POST['popbox'])) {
-            $tpl['TITLE'] = dgettext('users', 'Permissions saved.');
-            $tpl['BUTTON'] = sprintf('<input type="button" name="close_window" value="%s" onclick="window.close()" />', dgettext('users', 'Close window'));
-            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'users', 'close.tpl'));
+            Layout::nakedDisplay(javascript('close_refresh', array('refresh'=>0)));
         } else {
             if (PHPWS_Error::logIfError($result)) {
                 $_SESSION['Permission_Message'] = dgettext('users', 'An error occurred.');

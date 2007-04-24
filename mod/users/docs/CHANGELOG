@@ -1,5 +1,8 @@
 24 April 2007
 + Bug 1705106 - Fixed install.sql typo
++ Permissions just close the popup window instead of displaying
+  message.
++ Moved include to prevent pre-defined error.
 
 18 April 2007
 + Added Forgot password and Forgot username functionality

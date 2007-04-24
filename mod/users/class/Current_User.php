@@ -9,11 +9,11 @@
    * @version $Id$
    */
 
+PHPWS_Core::initModClass('users', 'Users.php');
+
 if (!defined('ALLOW_DEITY_REMEMBER_ME')) {
     define('ALLOW_DEITY_REMEMBER_ME', false);
  }
-
-PHPWS_Core::initModClass('users', 'Users.php');
 
 class Current_User {
 
