@@ -4,7 +4,7 @@
 CREATE TABLE blog_entries (
 id INT NOT NULL,
 key_id INT NOT NULL,
-title VARCHAR( 60 ) NOT NULL ,
+title VARCHAR( 100 ) NOT NULL ,
 summary TEXT NULL,
 entry TEXT NOT NULL,
 author_id INT NOT NULL default 0,
