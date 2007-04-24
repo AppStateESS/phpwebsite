@@ -11,6 +11,24 @@
 PHPWS_Core::requireConfig('filecabinet');
 PHPWS_Core::initModClass('filecabinet', 'File_Common.php');
 
+// Normally set in config/core/file_types.php
+if (!defined('ALLOWED_IMAGE_TYPES')) {
+    define('ALLOWED_IMAGE_TYPES', serialize(array('image/jpeg',
+                                                  'image/jpg',
+                                                  'image/pjpeg',
+                                                  'image/png',
+                                                  'image/x-png',
+                                                  'image/gif',
+                                                  'image/wbmp')));
+ }
+
+if (!defined('FC_THUMBNAIL_WIDTH')) {
+    define('FC_THUMBNAIL_WIDTH', 100);
+ }
+
+if (!defined('FC_THUMBNAIL_HEIGHT')) {
+    define('FC_THUMBNAIL_HEIGHT', 100);
+ }
 
 class PHPWS_Image extends File_Common {
     var $width            = NULL;
@@ -246,6 +264,7 @@ class PHPWS_Image extends File_Common {
             $proportion = $proportion_X ;
         }
 
+            
         $target['width'] = $new_width * $proportion;
         $target['height'] = $new_height * $proportion;
 
@@ -257,14 +276,16 @@ class PHPWS_Image extends File_Common {
 
         $crop = round($original['diagonal_center'] - $target['diagonal_center']);
 
-        if($proportion_X < $proportion_Y ){
+        if ($this->width < $new_width && $this->height >= $new_height ||
+            $this->height < $new_height && $this->width >= $new_width) {
+            $target['y'] = $target['x'] = 0;
+        } else if($proportion_X < $proportion_Y ) {
             $target['x'] = 0;
             $target['y'] = round((($this->height/2)*$crop)/$target['diagonal_center']);
-        }else{
+        } else {
             $target['x'] =  round((($this->width/2)*$crop)/$target['diagonal_center']);
             $target['y'] = 0;
         }
-
 
         if(PHPWS_File::chkgd2()) {
             $resampled_image = imagecreatetruecolor($new_width, $new_height);
@@ -293,7 +314,7 @@ class PHPWS_Image extends File_Common {
 
     function makeThumbnail()
     {
-        return $this->resize($this->thumbnailPath(), 100, 100);
+        return $this->resize($this->thumbnailPath(), FC_THUMBNAIL_WIDTH, FC_THUMBNAIL_HEIGHT);
     }
 
 
@@ -414,7 +435,7 @@ class PHPWS_Image extends File_Common {
             }
         }
 
-        $this->makeThumbnail(100,100);
+        $this->makeThumbnail();
 
         $db = new PHPWS_DB('images');
 

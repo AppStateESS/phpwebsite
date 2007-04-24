@@ -557,6 +557,15 @@ class Cabinet {
         if (!$this->folder->id || !$this->folder->public_folder) {
             PHPWS_Core::errorPage('404');
         }
+        if (!$this->folder->allow()) {
+            if (Current_User::isLogged()) {
+                $this->title = dgettext('filecabinet', 'Sorry');
+                $this->content = dgettext('filecabinet', 'You do not have permission to view this folder.');
+            } else {
+                Current_User::requireLogin();
+            }
+            return;
+        }
         $this->title = $this->folder->title;
         $this->loadForms();
         $this->forms->folderContents($this->folder);

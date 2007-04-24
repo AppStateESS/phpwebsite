@@ -19,4 +19,7 @@ define('FC_NONE_IMAGE_SRC', 'images/mod/filecabinet/none.png');
 define('FC_MAX_IMAGE_POPUP_WIDTH', 1024);
 define('FC_MAX_IMAGE_POPUP_HEIGHT', 768);
 
+define('FC_THUMBNAIL_WIDTH', 100);
+define('FC_THUMBNAIL_HEIGHT', 100);
+
 ?>

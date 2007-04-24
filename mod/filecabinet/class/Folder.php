@@ -208,21 +208,27 @@ class Folder {
 
         $db = new PHPWS_DB('folders');
         $result = $db->saveObject($this);
-        if (PEAR::isError($result)) {
-            PHPWS_Error::log($result);
+        if (PHPWS_Error::logIfError($result)) {
             return false;
         }
 
         if ($new_folder) {
             $full_dir = $this->getFullDirectory();
-            $result = @mkdir($full_dir);
+            if (!is_dir($full_dir)) {
+                $result = @mkdir($full_dir);
+            } else {
+                $result = true;
+            }
+
             if ($result) {
                 if ($this->ftype == IMAGE_FOLDER) {
                     $thumb_dir = $full_dir . '/tn/';
-                    $result = @mkdir($thumb_dir);
-                    if (!$result) {
-                        @rmdir($full_dir);
-                        return false;
+                    if (!is_dir($thumb_dir)) {
+                        $result = @mkdir($thumb_dir);
+                        if (!$result) {
+                            @rmdir($full_dir);
+                            return false;
+                        }
                     }
                 }
             } else {
@@ -344,8 +350,11 @@ class Folder {
             } else {
                 $links[] = $this->documentUploadLink();
             }
-            
-            $links[] =  Current_User::popupPermission($this->key_id);
+
+            if ($this->key_id) {
+                $links[] =  Current_User::popupPermission($this->key_id);
+            }
+
             $links[] = $this->deleteLink();
         }
 
