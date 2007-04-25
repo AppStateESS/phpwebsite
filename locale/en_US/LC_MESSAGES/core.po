@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-21 12:08-0500\n"
+"POT-Creation-Date: 2007-04-25 10:46-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -485,9 +485,6 @@ msgstr ""
 msgid "Hidden"
 msgstr ""
 
-msgid "Highlight Text"
-msgstr ""
-
 msgid "Home"
 msgstr ""
 
@@ -573,9 +570,6 @@ msgstr ""
 msgid "Input type not set."
 msgstr ""
 
-msgid "Insert HTML"
-msgstr ""
-
 msgid "Install Modules"
 msgstr ""
 
@@ -616,9 +610,6 @@ msgid "Login page"
 msgstr ""
 
 msgid "Login to Site Manager"
-msgstr ""
-
-msgid "Main"
 msgstr ""
 
 msgid "Main Menu"
@@ -728,9 +719,6 @@ msgid "No form elements have been created."
 msgstr ""
 
 msgid "No forms to convert."
-msgstr ""
-
-msgid "No image"
 msgstr ""
 
 msgid "No items for the current list."
@@ -1139,7 +1127,8 @@ msgstr ""
 msgid "Upload directory not set in file object."
 msgstr ""
 
-msgid "Upload file size is larger than allowed."
+#, php-format
+msgid "Upload file size is larger than the server %s maximum."
 msgstr ""
 
 msgid "Use Pear files included with phpWebSite (recommended)."
