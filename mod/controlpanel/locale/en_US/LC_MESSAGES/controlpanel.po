@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-15 10:21-0500\n"
+"POT-Creation-Date: 2007-04-25 11:25-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,6 +44,9 @@ msgstr ""
 msgid "Control Panel Administration"
 msgstr ""
 
+msgid "Control Panel file not implemented."
+msgstr ""
+
 msgid "Control Panel links and tabs have been removed."
 msgstr ""
 
@@ -55,10 +58,31 @@ msgstr ""
 msgid "Control Panel tabs created for %s."
 msgstr ""
 
+msgid "Control Panel tabs not implemented."
+msgstr ""
+
+msgid "Control Panel unregisteration file not implemented."
+msgstr ""
+
 msgid "Copying source image directory for module."
 msgstr ""
 
+msgid "Description"
+msgstr ""
+
 msgid "Developer"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Edit link"
+msgstr ""
+
+msgid "Edit tab"
+msgstr ""
+
+msgid "Label"
 msgstr ""
 
 msgid "Missing link."
@@ -82,22 +106,16 @@ msgstr ""
 msgid "Move tab order up"
 msgstr ""
 
-msgid "Control Panel unregisteration file not implemented."
-msgstr ""
-
-msgid "Control Panel file not implemented."
-msgstr ""
-
-msgid "Control Panel links not implemented."
-msgstr ""
-
-msgid "Control Panel tabs not implemented."
+msgid "No Control Panel links found."
 msgstr ""
 
 msgid "No tabs available in the Control Panel."
 msgstr ""
 
 msgid "Remove Tab"
+msgstr ""
+
+msgid "Save"
 msgstr ""
 
 msgid "Source image directory copied successfully."
@@ -116,6 +134,9 @@ msgid "Tabs must be in an array."
 msgstr ""
 
 msgid "There was a problem trying to save a Control Panel link."
+msgstr ""
+
+msgid "Title"
 msgstr ""
 
 msgid "Unable to create tab."
