@@ -95,10 +95,35 @@ function calendar_update(&$content, $version)
         $db = new PHPWS_DB('calendar_schedule');
         $result = $db->addTableColumn('show_upcoming', 'SMALLINT NOT NULL DEFAULT 0');
         if (PHPWS_Error::logIfError($result)) {
-            $content[] = 'Could not create show_upcoming column in calendar_schedule table.';
+            $content[] = '--- Could not create show_upcoming column in calendar_schedule table.';
             return false;
         }
-        
+        $content[] = '<pre>';
+        $files = array('img/calendar.png', 'conf/config.php', 
+                       'templates/admin/forms/edit_schedule.tpl',
+                       'templates/style.css', 'templates/view/upcoming.tpl');
+
+        if (PHPWS_Boost::updateFiles($files, 'calendar')) {
+            $content[] = '-- Successfully updated the following files:';
+        } else {
+            $content[] = '-- Unable to update the following files:';
+        }
+        $content[] = '    ' . implode("\n    ", $files);
+
+        $content[] = '
+1.5.0 Changes
+---------------------
++ Can now choose to show upcoming events.
++ Removed schedule created message when using javascript popup
++ Moved getEvents function in the Schedule class
++ Increase calendar event form\'s popup height
++ Reformated schedule form
++ Bug # 1699659 - Calendar will not show "Add Event" link if a
+  schedule has not been created. Instead, the "Create schedule" link
+  will appear.
++ Updated language format
+</pre>';
+
     } // end of switch
 
     return true;
