@@ -75,7 +75,7 @@ class Blog_User {
     function postSuggestion(&$blog)
     {
         if (!PHPWS_Settings::get('blog', 'allow_anonymous_submits')) {
-            return dgettext('blog', 'Site does not accepting anonymous submissions.');
+            return dgettext('blog', 'Site is not accepting anonymous submissions.');
         }
         
        
