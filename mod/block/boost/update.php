@@ -70,6 +70,15 @@ function block_update(&$content, $currentVersion)
 + Added translate functions.
 + Removed table format from edit form
 </pre>';
+
+    case version_compare($currentVersion, '1.1.2', '<'):
+        PHPWS_Boost::updateFiles(array('img/block.png'), 'block');
+        $content[] = '<pre>1.1.2 changes
+-------------
++ Added German files
++ Use new translation format
++ Changed control panel icon
+</pre>';
     }
     
     return TRUE;
