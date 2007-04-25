@@ -120,20 +120,20 @@ class SlideShow {
         $tags['ADJUST_SPEED_TEXT_FIELD'] = $form->get('adjustSpeedField');
 
         $tags["ADJUST_SPEED_LABEL"] =
-            _("Set Speed: &nbsp;");
+            dgettext('photoalbum', "Set Speed: &nbsp;");
 
         $jsTags["IE_FILTER_LABEL"] =
-            _("Transition Effect: &nbsp;");
+            dgettext('photoalbum', "Transition Effect: &nbsp;");
     
-        $tags["LOOP_LABEL"] = _("Loop:  ");
-        $jsTags["LOADING_NEXT_TXT"] = _("Loading Next Image...");
-        $jsTags["LOADING_TXT"] = _("Loading Image...");
+        $tags["LOOP_LABEL"] = dgettext('photoalbum', "Loop:  ");
+        $jsTags["LOADING_NEXT_TXT"] = dgettext('photoalbum', "Loading Next Image...");
+        $jsTags["LOADING_TXT"] = dgettext('photoalbum', "Loading Image...");
     
-        $tags["LOW_TECH_LINK"] = _("Not working, try " .
+        $tags["LOW_TECH_LINK"] = dgettext('photoalbum', "Not working, try " .
                                    "the ");
         $jsTags["PRE_FILLER"] = "'images/modphotoalbum/img/pre_filler.gif'";
     
-        $linkText = _("low tech");
+        $linkText = dgettext('photoalbum', "low tech");
 
         $get_var["PHPWS_Album_op"] = "slideShow";
         $get_var["SS_mode"] = "nojsmode";

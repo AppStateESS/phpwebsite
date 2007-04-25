@@ -109,7 +109,7 @@ class NoJSSlideShow {
             "<a href='./index.php?module=photoalbum&amp;" .
             "PHPWS_Album_op=view&amp;PHPWS_Album_id=".
             $_SESSION['PHPWS_AlbumManager']->album->_id . "'>" .
-            _("Back&nbsp;to&nbsp;Album") . "</a>";
+            dgettext('photoalbum', "Back&nbsp;to&nbsp;Album") . "</a>";
 
         if($this->indexNotAtStart()) {
             $address = './index.php';
