@@ -66,6 +66,11 @@ function access_update(&$content, $version)
 </pre>
 ';
 
+    case version_compare($version, '0.2.1', '<'):
+        $content[] = '<pre>0.2.1 changes
+---------------
++ Updated to new language format.</pre>';
+        
     }
 
     return true;
