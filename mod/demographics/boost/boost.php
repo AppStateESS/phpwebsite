@@ -5,7 +5,7 @@
    */
 
 $proper_name  = 'Demographics';
-$version      = '0.0.2';
+$version      = '0.1.0';
 $register     = TRUE;
 $unregister   = TRUE;
 $import_sql   = TRUE;
