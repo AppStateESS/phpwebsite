@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-15 10:20-0500\n"
+"POT-Creation-Date: 2007-04-25 11:25-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -88,6 +88,9 @@ msgid "Check all"
 msgstr ""
 
 msgid "Check your logs for more information."
+msgstr ""
+
+msgid "Click here to force an uninstall."
 msgstr ""
 
 msgid "Continue installation..."
@@ -184,6 +187,9 @@ msgstr ""
 msgid "Installation complete!"
 msgstr ""
 
+msgid "Installation file not implemented."
+msgstr ""
+
 msgid "Installing"
 msgstr ""
 
@@ -247,9 +253,6 @@ msgstr ""
 msgid "Needs upgrading"
 msgstr ""
 
-msgid "Installation file not implemented."
-msgstr ""
-
 msgid "No modules available."
 msgstr ""
 
@@ -275,9 +278,6 @@ msgid "Other Modules"
 msgstr ""
 
 msgid "Passed!"
-msgstr ""
-
-msgid "Permission Help"
 msgstr ""
 
 msgid "Please check your error logs."
@@ -426,9 +426,6 @@ msgstr ""
 msgid ""
 "WARNING: Only deities can uninstall core modules. Doing so may corrupt your "
 "installation!"
-msgstr ""
-
-msgid "You will need to change the permissions."
 msgstr ""
 
 #, php-format
