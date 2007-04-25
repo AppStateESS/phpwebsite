@@ -43,7 +43,14 @@ function branch_update(&$content, $version)
 + Branch now copies htaccess file to branch site.
 + Trying different method of getting branch dsn.
 + Changed control panel icon</pre>';
-        
+
+    case version_compare($version, '1.1.0', '<'):
+        PHPWS_Boost::updateFiles(array('templates/config.tpl'), 'branch');
+        $content[] = '<pre>1.1.0 Changes
+-------------
++ Conforms with all new Core changes.
++ Changed to new language format.
+</pre>';
     }
     return true;
 }

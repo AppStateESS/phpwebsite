@@ -1,3 +1,5 @@
+Version 1.1.0
+-----------------------------------------------------------
 16 April 2007
 + Added FORCE_EDITOR define
 
@@ -15,6 +17,8 @@
 19 March 2007
 + Removed follow sym links from htaccess file.
 
+Version 1.0.5
+--------------------------------------------------------
 7 March 2007
 + Branch now copies htaccess file to branch site.
 
