@@ -6,7 +6,7 @@
    */
 
 $proper_name  = 'Clipboard';
-$version      = '0.0.3';
+$version      = '1.0.0';
 $register     = FALSE;
 $unregister   = FALSE;
 $import_sql   = FALSE;
