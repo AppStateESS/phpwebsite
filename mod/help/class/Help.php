@@ -57,13 +57,13 @@ class PHPWS_Help{
         } elseif (is_file($default)) {
             $help_info = @parse_ini_file($default, TRUE);
         } else {
-            echo _('No help file exists for this module.');
+            echo dgettext('help', 'No help file exists for this module.');
             exit();
         }
 
 
         if (!isset($help_info[$option])) {
-            echo _('No help exists for this topic.');
+            echo dgettext('help', 'No help exists for this topic.');
         }
 
         if (isset($help_info[$option]['title'])) {
