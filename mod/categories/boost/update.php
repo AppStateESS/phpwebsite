@@ -37,6 +37,15 @@ function categories_update(&$content, $currentVersion)
 + Added translate functions.
 + Updated message translation files.
 + Increase category list size limits.</pre>';
+
+   case version_compare($currentVersion, '2.1.8', '<'):
+       PHPWS_Boost::updateFiles(array('img/categories.png'), 'categories');
+       $content[] = '<pre>
+2.1.8 Changes
+-------------------
++ Updated language format.
++ New icon.
+</pre>';
     }
     return true;
 }
