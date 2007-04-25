@@ -1,3 +1,5 @@
+Version 2.1.0
+------------------------------------------------------
 19 April 2007
 + RFE 1680787 - Boost module list shows full package title
 + updated files: templates/module_list.tpl
