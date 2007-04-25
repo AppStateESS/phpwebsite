@@ -462,7 +462,7 @@ class PHPWS_Boost {
             $configDest   = $homeDir . '/config/' . $mod->title . '/';
             if ($overwrite == true || !is_dir($configDest)) {
                 $content[] = dgettext('boost', 'Copying configuration files.');
-                $this->addLog($mod->title, sprintf(_("Copying directory %1\$s to %2\$s"), $configSource, $configDest));
+                $this->addLog($mod->title, sprintf(dgettext('boost', "Copying directory %1\$s to %2\$s"), $configSource, $configDest));
                 PHPWS_File::recursiveFileCopy($configSource, $configDest);
             }
         }
@@ -472,7 +472,7 @@ class PHPWS_Boost {
             $javascriptDest   = $homeDir . '/javascript/modules/' . $mod->title . '/';
             if ($overwrite == true || !is_dir($javascriptDest)) {
                 $content[] = dgettext('boost', 'Copying javascript directories.');
-                $this->addLog($mod->title, sprintf(_("Copying directory %1\$s to %2\$s"), $javascriptSource, $javascriptDest));
+                $this->addLog($mod->title, sprintf(dgettext('boost', "Copying directory %1\$s to %2\$s"), $javascriptSource, $javascriptDest));
                 PHPWS_File::recursiveFileCopy($javascriptSource, $javascriptDest);
             }
         }
@@ -482,7 +482,7 @@ class PHPWS_Boost {
             $templateDest   = $homeDir . '/templates/' . $mod->title . '/';
             if ($overwrite == true || !is_dir($templateDest)) {
                 $content[] = dgettext('boost', 'Copying template files.');
-                $this->addLog($mod->title, sprintf(_("Copying directory %1\$s to %2\$s"), $templateSource, $templateDest));
+                $this->addLog($mod->title, sprintf(dgettext('boost', "Copying directory %1\$s to %2\$s"), $templateSource, $templateDest));
                 PHPWS_File::recursiveFileCopy($templateSource, $templateDest);
             }
         }
@@ -514,7 +514,7 @@ class PHPWS_Boost {
         $modSource = $mod->getDirectory() . 'img/';
         if (is_dir($modSource)){
             $modImage = $homeDir . '/images/mod/' . $mod->title . '/';
-            $this->addLog($mod->title, sprintf(_("Copying directory %1\$s to %2\$s"), $modSource, $modImage));
+            $this->addLog($mod->title, sprintf(dgettext('boost', "Copying directory %1\$s to %2\$s"), $modSource, $modImage));
 
             $content[] = dgettext('boost', 'Copying source image directory for module.');
      
@@ -771,7 +771,7 @@ class PHPWS_Boost {
             $content[] = PHPWS_Error::log($result);
         } elseif ($result == true) {
             PHPWS_Boost::setRegistered($register_to_mod->title, $register_mod->title);
-            $content[] = sprintf(_("%1\$s successfully registered to %2\$s."), $register_mod->getProperName(true), $register_to_mod->getProperName(true));
+            $content[] = sprintf(dgettext('boost', "%1\$s successfully registered to %2\$s."), $register_mod->getProperName(true), $register_to_mod->getProperName(true));
         }
         return true;
     }
@@ -800,7 +800,7 @@ class PHPWS_Boost {
             PHPWS_Boost::addLog($register_mod->title, $result->getMessage());
         } elseif ($result == true) {
             PHPWS_Boost::unsetRegistered($unregister_from_mod->title, $register_mod->title);
-            $content[] = sprintf(_("%1\$s successfully unregistered from %2\$s."), $register_mod->getProperName(true), $unregister_from_mod->getProperName(true));
+            $content[] = sprintf(dgettext('boost', "%1\$s successfully unregistered from %2\$s."), $register_mod->getProperName(true), $unregister_from_mod->getProperName(true));
         }
     }
 
