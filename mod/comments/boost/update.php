@@ -61,6 +61,15 @@ function comments_update(&$content, $currentVersion)
 + Added translate functions.
 + Fixed isPosted check to prevent extra posts
 </pre>';
+
+    case version_compare($currentVersion, '0.6.0', '<'):
+        PHPWS_Boost::updateFiles(array('img/comments.png'), 'comments');
+        $content[] = '<pre>
+0.6.0 Changes
+-------------
++ Changed control panel icon.
++ Updated language functions.
+</pre>';
     }
             
     return true;
