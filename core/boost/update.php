@@ -281,8 +281,106 @@ conf/language.php
 + Removed fake French translation (as should you!!!)';
 
     case version_compare($version, '1.5.0', '<'):
-        // not finished
-        @mkdir('templates/cache/');
+        $content[] = '<pre>';
+        if (!is_dir('templates/cache') && !@mkdir('templates/cache/')) {
+            $content[] = '--- Unable to create "cache" directory under the "templates" directory.';
+            return false;
+        } else {
+            $content[] = '--- Successfully created the "cache" directory under the "templates" directory.';
+        }
+
+        if (PHPWS_Boost::updateFiles(array('conf/text_settings.php'), 'core')) {
+            $content[] = '--- Successfully copied text_settings.php file.';
+        } else {
+            $content[] = '--- Failed to copy text_settings.php file successfully.';
+        }
+
+        $content[] = '
+1.5.0 Changes
+--------------
+
+Bug fixes
+------------------------------------
++ Forms.php
+  o Changed id display in Forms.php. Arrays with square brackets are 
+    not xhtml compliant.
+  o Bug #1690757 - Added space to radio button to help with formatting
+
++ Database.php
+  o Update, insert, and delete functions no longer pull multiple tables 
+  o Fixed bug with addTable
+
++ DBPager.php
+  o Added checks to prevent some developer-created fatal errors
+  o The search query was put into it own "where" group to prevent conflicts.
+
++ Settings - changed upper limit on small int detection
+
++ Debug.php - test function identifies empty values better
+
++ Text.php - Bug #1689289 : Changed makeRelative\'s inline mode to only 
+             change src and href addresses.
+
++ Module.php - Changed isInstalled slightly. If on initialization, there
+               is a "not installed" error, we can assume the module is not
+               installed and return false. Otherwise, we check in the
+               normal way.
+
++ Init.php - change ensures Core\'s default status.
+
++ Conversion - Added utf8_encode to all conversions to try and prevent foreign
+               character corruption (Thanks Mabhobs)
+
++ Cookie - changed default time to 0 instead of null
+
+Library additions/changes
+------------------------------------
+Core.php
++ isPosted can now return the number of repeats
++ Added releaseVersion function to return the full package version.
+
+Text.php
++ Added ENCODE_PARSED_TEXT define to text_settings.php
++ Added ability to prohibit encoding of text during parsing.
++ RFE 1704305 - Split special html encoding out into separate filter files.
+
+Form.php
++ Removed imageselect function from Form. Not used.
++ RFE 1639645 - added setRequired function to Form
+
+Init.php
++ Removed Item include from Init.php, now up to module to include.
+
+Cache
++ Template caching is now stored in templates/cache. Prevents branch overlaps.
+
+Editor.php
++ Moved FORCE_EDITOR variable to config.php. Changed define to a defined
+  check with a default of false.
+
+Error.php
++ Added logIfError function to Error class
+
+
+Documentation
+------------------------------------
+Access.txt - added a lot of new information on functionality.
+Language.txt - now reflects changes made in Init.php
+
+
+Language and internationalization
+------------------------------------
++ Removed translate functions throughout core.
++ Core now uses new language translation method recommended by Ortwin Pinke
++ Added German translation files.
+
+
+Javascript
+------------------------------------
++ Rewrote ajax javascript functionality
++ open_window lets you label the windows now
++ js_calendar - fixed style sheet to make xhtml compliant
+</pre>';
     }
 
     return true;
