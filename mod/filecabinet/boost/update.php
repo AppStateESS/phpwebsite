@@ -89,62 +89,99 @@ function filecabinet_update(&$content, $version)
 </pre>';
 
     case version_compare($version, '1.0.0', '<'):
+        PHPWS_Core::initModClass('filecabinet', 'Folder.php');
+        PHPWS_Core::initModClass('filecabinet', 'Image.php');
         $content[] = '<pre>';
         PHPWS_Boost::registerMyModule('filecabinet', 'users', $content);
         PHPWS_Boost::registerMyModule('filecabinet', 'controlpanel', $content);
         if (!PHPWS_DB::isTable('folders')) {
             if (PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/folders.sql')) {
-                $content[] = 'Folders table created successfully.';
+                $content[] = '--- Folders table created successfully.';
             } else {
-                $content[] = 'Failed to create folders table.</pre>';
+                $content[] = '--- Failed to create folders table.</pre>';
                 return false;
             }
         }
 
         $image_db = new PHPWS_DB('images');
-        $result = $image_db->dropTableColumn('key_id');
-        if (PEAR::isError($result)) {
-            PHPWS_Error::log($result);
-            $content[] = 'Unable to remove key_id column from images table.';
-            return false;
-        } else {
-            $content[] = 'Removed key_id column from images table.';
+
+        if ($image_db->isTableColumn('key_id')) {
+            $image_db->addColumn('key_id');
+            $keys = $image_db->select('col');
+            if (!empty($keys)) {
+                foreach ($keys as $ky) {
+                    $key = new Key($ky);
+                    $key->delete();
+                }
+                $content[] = '--- Removed image keys.';
+            }
+            
+            $image_db->reset();
+
+            $result = $image_db->dropTableColumn('key_id');
+            if (PHPWS_Error::logIfError($result)) {
+                $content[] = '--- Unable to remove key_id column from images table.';
+                return false;
+            } else {
+                $content[] = '--- Removed key_id column from images table.';
+            }
         }
 
-        $result = $image_db->dropTableColumn('thumbnail_source');
-        if (PEAR::isError($result)) {
-            PHPWS_Error::log($result);
-            $content[] = 'Unable to remove thumbnail_source column from images table.';
-            return false;
-        } else {
-            $content[] = 'Removed thumbnail_source column from images table.';
+        if ($image_db->isTableColumn('thumbnail_source')) {
+            $image_db->addWhere('thumbnail_source', 0, '>');
+            $image_db->delete();
+            $image_db->reset();
+
+            $result = $image_db->dropTableColumn('thumbnail_source');
+            if (PHPWS_Error::logIfError($result)) {
+                $content[] = '--- Unable to remove thumbnail_source column from images table.';
+                return false;
+            } else {
+                $content[] = '--- Removed thumbnail_source column from images table.';
+            }
         }
 
-        $result = $image_db->addTableColumn('folder_id', 'int NOT NULL default 0');
-        if (PEAR::isError($result)) {
-            PHPWS_Error::log($result);
-            $content[] = 'Unable to add folder_id column to images table.';
-            return false;
+        if (!$image_db->isTableColumn('folder_id')) {
+            $result = $image_db->addTableColumn('folder_id', 'int NOT NULL default 0');
+            if (PHPWS_Error::logIfError($result)) {
+                $content[] = '--- Unable to add folder_id column to images table.';
+                return false;
+            }
         }
 
         $document_db = new PHPWS_DB('documents');
-        $result = $document_db->dropTableColumn('key_id');
-        if (PEAR::isError($result)) {
-            PHPWS_Error::log($result);
-            $content[] = 'Unable to remove key_id column from documents table.';
-            return false;
-        } else {
-            $content[] = 'Removed key_id column from documents table.';
+
+        if ($document_db->isTableColumn('key_id')) {
+            $document_db->addColumn('key_id');
+            $keys = $document_db->select('col');
+            if (!empty($keys)) {
+                foreach ($keys as $ky) {
+                    $key = new Key($ky);
+                    $key->delete();
+                }
+                $content[] = '--- Removed document keys.';
+            }
+            
+            $document_db->reset();
+
+            $result = $document_db->dropTableColumn('key_id');
+            if (PHPWS_Error::logIfError($result)) {
+                $content[] = '--- Unable to remove key_id column from documents table.';
+                return false;
+            } else {
+                $content[] = '--- Removed key_id column from documents table.';
+            }
         }
 
-        $result = $document_db->addTableColumn('folder_id', 'int NOT NULL default 0');
-        if (PEAR::isError($result)) {
-            PHPWS_Error::log($result);
-            $content[] = 'Unable to add folder_id column to documents table.';
-            return false;
+        if (!$document_db->isTableColumn('folder_id')) {
+            $result = $document_db->addTableColumn('folder_id', 'int NOT NULL default 0');
+            if (PEAR::isError($result)) {
+                PHPWS_Error::log($result);
+                $content[] = '--- Unable to add folder_id column to documents table.';
+                return false;
+            }
         }
 
-        PHPWS_Core::initModClass('filecabinet', 'Folder.php');
         $image_folder = new Folder;
         $image_folder->title = 'Images';
         $image_folder->ftype = IMAGE_FOLDER;
@@ -158,6 +195,9 @@ function filecabinet_update(&$content, $version)
 
         if (!empty($all_images)) {
             foreach ($all_images as $image) {
+                if ($image['file_directory'] == $image_folder_dir) {
+                    continue;
+                }
                 $dir = $image['file_directory'] . $image['file_name'];
                 copy($dir, $image_folder_dir . $image['file_name']);
             }
@@ -176,6 +216,9 @@ function filecabinet_update(&$content, $version)
 
         if (!empty($all_documents)) {
             foreach ($all_documents as $document) {
+                if ($document['file_directory'] == $document_folder_dir) {
+                    continue;
+                }
                 $dir = $document['file_directory'] . $document['file_name'];
                 copy($dir, $document_folder_dir . $document['file_name']);
             }
@@ -185,6 +228,15 @@ function filecabinet_update(&$content, $version)
         $image_db->addValue('folder_id', $image_folder->id);
         $image_db->addValue('file_directory', $image_folder->getFullDirectory());
         $image_db->update();
+
+        $image_db->reset();
+        $all_images = $image_db->getObjects('PHPWS_Image');
+        if (!empty($all_images)) {
+            foreach ($all_images as $img) {
+                $img->makeThumbnail();
+            }
+            $content[] = '--- New thumbnails created.';
+        }
 
         $document_db->reset();
         $document_db->addValue('folder_id', $document_folder->id);
@@ -205,12 +257,29 @@ function filecabinet_update(&$content, $version)
                        'templates/image.xml', 'templates/javascript.tpl', 'templates/plain.tpl',
                        'templates/manager/pick.tpl');
         if (PHPWS_Boost::updateFiles($files, 'filecabinet')) {
-            $content[] = '+ Copied the following files:';
+            $content[] = '--- Copied the following files:';
         } else {
-            $content[] = '+ FAILED copying the following files:';
+            $content[] = '--- FAILED copying the following files:';
         }
 
-        $content[] = "\n    " . implode("\n    ", $files);    
+        $content[] = "\n    " . implode("\n    ", $files);
+
+        $content[] = '
+Notice: File Cabinet has been completely rewritten
+
+1.0.0 changes
+-----------------------
++ Images and documents are stored in folders.
++ File Cabinet now controls the directories files are stored 
+  in so users do not have to.
++ The Image Manager in File Cabinet will now let the user 
+  resize their image based on the maximum width and height designated
+  by the module.
++ You can pin image and document folders to keyed items.
++ Thumbnails use new resize/cropping logic.
++ Folders now have permissions, not images and documents.
+</pre>';
+
     }
 
     return true;
