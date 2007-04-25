@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-26 15:18-0500\n"
+"POT-Creation-Date: 2007-04-25 11:25-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -55,7 +55,13 @@ msgstr ""
 msgid "Are you sure you want to unpin this menu from this page?"
 msgstr ""
 
+msgid "Cancel"
+msgstr ""
+
 msgid "Cannot locate any menu templates. Cannot continue."
+msgstr ""
+
+msgid "Clear from list"
 msgstr ""
 
 msgid "Clip"
@@ -160,6 +166,9 @@ msgstr ""
 msgid "Pin links"
 msgstr ""
 
+msgid "Pin page"
+msgstr ""
+
 msgid "Pin to all pages"
 msgstr ""
 
@@ -167,6 +176,9 @@ msgid "Pin to item"
 msgstr ""
 
 msgid "Pinned links"
+msgstr ""
+
+msgid "Save"
 msgstr ""
 
 msgid "Save link"
@@ -215,4 +227,7 @@ msgid "Url"
 msgstr ""
 
 msgid "User attempted access to Menu administration."
+msgstr ""
+
+msgid "You must enter a link title."
 msgstr ""
