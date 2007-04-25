@@ -112,6 +112,33 @@ function blog_update(&$content, $currentVersion)
 + Changed Control Panel icon.
 </pre>';
 
+    case version_compare($currentVersion, '1.5.0', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/settings.tpl', 'templates/edit.tpl', 'conf/config.php', 'templates/list_view.tpl');
+        if (PHPWS_Boost::updateFiles($files, 'blog')) {
+            $content[] = '--- Successfully updated the following files:';
+        } else {
+            $content[] = '--- Was unable to copy the following files:';
+        }
+        $content[] = "     " . implode("\n     ", $files);
+
+        $content[] = '
+1.5.0 Changes
+-------------
++ Increased default blog entry title size to 100.
++ Added setting to control whether to allow anonymous comments by
+  default on new blog entries
++ Added Captcha option to submissions.
++ Fixed cache reset
++ Added define to determine the highest amount of blog pages to cache
++ Added extra checks for anonymous submission
++ Changed coding of image manager call.
++ Changed to new language functionality.
++ Fixed: logErrors called on blog object instead of image object
+  on empty image id.
++ Fixed pagination on list view.
++ Now uses new File Cabinet module.
+</pre>';
     } // end of switch
     return true;
 }
