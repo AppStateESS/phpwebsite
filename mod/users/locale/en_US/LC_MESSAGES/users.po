@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-26 15:18-0500\n"
+"POT-Creation-Date: 2007-04-25 11:25-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,6 +34,11 @@ msgid ""
 msgstr ""
 
 msgid "A problem occurred when trying to register this module to My Page."
+msgstr ""
+
+msgid ""
+"A problem occurred when trying to update your password. Please try again "
+"later."
 msgstr ""
 
 msgid "Account created successfully!"
@@ -73,6 +78,9 @@ msgid "Add this user to this group."
 msgstr ""
 
 msgid "All visitors"
+msgstr ""
+
+msgid "Allow Remember Me"
 msgstr ""
 
 msgid ""
@@ -120,13 +128,13 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
+msgid "Captcha information was incorrect."
+msgstr ""
+
 msgid "Change my Settings"
 msgstr ""
 
 msgid "Click here if you are not redirected."
-msgstr ""
-
-msgid "Close window"
 msgstr ""
 
 msgid "Closest matches below."
@@ -190,6 +198,12 @@ msgstr ""
 msgid "Delete Users"
 msgstr ""
 
+msgid "Did you forget your password at our site?"
+msgstr ""
+
+msgid "Did you forget your user name at our site?"
+msgstr ""
+
 msgid "Display Name"
 msgstr ""
 
@@ -238,6 +252,36 @@ msgstr ""
 msgid "Email address already in use."
 msgstr ""
 
+msgid "Email address not found. Please try again."
+msgstr ""
+
+msgid "Enter the word from the image above."
+msgstr ""
+
+msgid "Enter your new password"
+msgstr ""
+
+msgid "Enter your user name."
+msgstr ""
+
+msgid "Forgot Password"
+msgstr ""
+
+msgid "Forgot password?"
+msgstr ""
+
+msgid "Forgot your password?"
+msgstr ""
+
+msgid "Forgot your user name?"
+msgstr ""
+
+msgid "Forgotten password attempt made on a deity account."
+msgstr ""
+
+msgid "Forgotten your user name? Enter your email address instead."
+msgstr ""
+
 msgid "Group Name"
 msgstr ""
 
@@ -256,10 +300,20 @@ msgstr ""
 msgid "Hello"
 msgstr ""
 
+msgid "Here is the address to return to our site:"
+msgstr ""
+
 msgid "Hide login box"
 msgstr ""
 
 msgid "Home"
+msgstr ""
+
+msgid "If so, you may click the link below to reset it."
+msgstr ""
+
+msgid ""
+"If you did not wish to reset your password, you may ignore this message."
 msgstr ""
 
 msgid "Immediate"
@@ -329,6 +383,9 @@ msgid "Missing an email address."
 msgstr ""
 
 msgid "Missing authorization script."
+msgstr ""
+
+msgid "Missing key information."
 msgstr ""
 
 msgid "Missing my_page function."
@@ -437,6 +494,9 @@ msgstr ""
 msgid "Passwords must be reentered on user name change."
 msgstr ""
 
+msgid "Passwords were not acceptable for the following reason:"
+msgstr ""
+
 msgid "Permission"
 msgstr ""
 
@@ -450,9 +510,6 @@ msgid "Permissions"
 msgstr ""
 
 msgid "Permissions file not implemented."
-msgstr ""
-
-msgid "Permissions saved."
 msgstr ""
 
 msgid "Permissions table created successfully."
@@ -473,6 +530,9 @@ msgstr ""
 msgid "Permissions updated."
 msgstr ""
 
+msgid "Please check your email for a response."
+msgstr ""
+
 msgid "Please create a user to administrate the site."
 msgstr ""
 
@@ -488,7 +548,16 @@ msgstr ""
 msgid "Preferred editor (admins only)"
 msgstr ""
 
+msgid "Remember me"
+msgstr ""
+
 msgid "Remove"
+msgstr ""
+
+msgid "Repeat it here please"
+msgstr ""
+
+msgid "Reset my password"
 msgstr ""
 
 msgid "Restricted"
@@ -498,6 +567,9 @@ msgid "Save permissions"
 msgstr ""
 
 msgid "Script Filename"
+msgstr ""
+
+msgid "Send reminder"
 msgstr ""
 
 msgid "Set Group Permissions"
@@ -522,6 +594,18 @@ msgstr ""
 msgid "Sorry"
 msgstr ""
 
+msgid "Sorry but you do not authorize from this site."
+msgstr ""
+
+#, php-format
+msgid ""
+"Sorry but your authorization is not checked on this site. Please contact %s "
+"for information on reseting your password."
+msgstr ""
+
+msgid "Sorry there is a problem with your account."
+msgstr ""
+
 msgid "Sorry, we are not accepting new users at this time."
 msgstr ""
 
@@ -529,6 +613,10 @@ msgid "Specific group(s)"
 msgstr ""
 
 msgid "The is a problem with My Page."
+msgstr ""
+
+#, php-format
+msgid "The user name associated with your email address is \"%s\""
 msgstr ""
 
 msgid ""
@@ -602,6 +690,9 @@ msgstr ""
 msgid "Update my information"
 msgstr ""
 
+msgid "Update password"
+msgstr ""
+
 msgid "Use Daylight Savings Time"
 msgstr ""
 
@@ -638,6 +729,10 @@ msgstr ""
 msgid "User name already in use."
 msgstr ""
 
+msgid ""
+"User name not found. Check your spelling or enter an email address instead."
+msgstr ""
+
 msgid "User remains a deity."
 msgstr ""
 
@@ -648,6 +743,9 @@ msgid "User settings updated."
 msgstr ""
 
 msgid "User transformed into a lowly mortal."
+msgstr ""
+
+msgid "User tried to login using Remember Me with a malformed cookie."
 msgstr ""
 
 #, php-format
@@ -687,6 +785,17 @@ msgstr ""
 msgid "Want to join?"
 msgstr ""
 
+msgid "We are currently unable to send out email reminders. Try again later."
+msgstr ""
+
+msgid "We have sent you an email to reset your password."
+msgstr ""
+
+msgid ""
+"We have sent you an user name reminder. Please check your email and return "
+"to log in."
+msgstr ""
+
 msgid "Welcome!"
 msgstr ""
 
@@ -705,6 +814,12 @@ msgstr ""
 msgid "You already have an account."
 msgstr ""
 
+msgid "You have one hour to respond."
+msgstr ""
+
+msgid "You must enter either a username or email address."
+msgstr ""
+
 msgid "You need to set a site contact address."
 msgstr ""
 
@@ -717,6 +832,14 @@ msgid ""
 msgstr ""
 
 msgid "Your account has been successfully activated. Please log in."
+msgstr ""
+
+msgid ""
+"Your email address is missing from your account. Please contact the site "
+"administrators."
+msgstr ""
+
+msgid "Your password request was not found or timed out. Please apply again."
 msgstr ""
 
 msgid ""
