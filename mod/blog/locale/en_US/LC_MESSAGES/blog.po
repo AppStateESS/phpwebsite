@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-07 12:33-0500\n"
+"POT-Creation-Date: 2007-04-25 12:16-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,6 +35,9 @@ msgid "Add new blog"
 msgstr ""
 
 msgid "Allow anonymous comments"
+msgstr ""
+
+msgid "Allow anonymous comments by default"
 msgstr ""
 
 msgid "Allow anonymous submissions"
@@ -103,6 +106,9 @@ msgid "Blog tables removed."
 msgstr ""
 
 msgid "Blog view limit"
+msgstr ""
+
+msgid "CAPTCHA submissions"
 msgstr ""
 
 msgid "Cache anonymous view"
@@ -189,6 +195,9 @@ msgstr ""
 msgid "Number of past entries"
 msgstr ""
 
+msgid "Please enter word in image correctly."
+msgstr ""
+
 msgid "Post current thoughts, happenings, and discussions."
 msgstr ""
 
@@ -240,6 +249,9 @@ msgstr ""
 msgid "Show blog on home page"
 msgstr ""
 
+msgid "Site is not accepting anonymous submissions."
+msgstr ""
+
 msgid "Sorry"
 msgstr ""
 
@@ -271,6 +283,9 @@ msgid "Title"
 msgstr ""
 
 msgid "Tried to edit an unapproved item."
+msgstr ""
+
+msgid "Type the word seen in the image."
 msgstr ""
 
 msgid "Unsticky"
@@ -307,4 +322,7 @@ msgid "Your entry is being held for approval."
 msgstr ""
 
 msgid "Your submission is still awaiting approval."
+msgstr ""
+
+msgid "Your submission must have a summary."
 msgstr ""
