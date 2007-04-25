@@ -20,6 +20,25 @@ function controlpanel_update(&$content, $currentVersion)
 + Added translate functions.
 </pre>';
 
+    case version_compare($currentVersion, '2.1.0', '<'):
+        $files = array('templates/link_form.tpl','templates/panelList.tpl','templates/tab_form.tpl', 'img/controlpanel.png');
+        $content[] = '<pre>';
+        if (PHPWS_Boost::updateFiles($files, 'calendar')) {
+            $content[] = '-- Successfully updated the following files:';
+        } else {
+            $content[] = '-- Unable to update the following files:';
+        }
+        $content[] = '    ' . implode("\n    ", $files);
+        $content[] = '
+2.1.0 Changes
+--------------
++ RFE 1665181 - Can now edit control panel tabs and links.
++ Updated language functions.
++ Added German translation.
++ Removed border from icons. not xhtml compliant
++ changed style sheet to work under IE7 again
++ Changed control panel icon
+</pre>';
     }
     return true;
 }
