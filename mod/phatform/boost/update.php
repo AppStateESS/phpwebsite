@@ -39,6 +39,15 @@ function phatform_update(&$content, $version)
 + Fixed email bug.
 </pre>';
 
+    case version_compare($version, '3.1.0', '<'):
+        PHPWS_Boost::updateFiles(array('img/phatform.png'), 'phatform');
+        $content[] = '<pre>
+3.1.0 changes
+-------------
++ Added German translations
++ Update language functions.
++ Changed control panel icon
+</pre>';
     }
     return true;
 }
