@@ -43,7 +43,16 @@ function search_update(&$content, $currentVersion)
 0.2.1 Changes
 -------------
 + Added translate functions.
+</pre>';
+
+    case version_compare($currentVersion, '0.2.2', '<'):
+        $content[] = '<pre>
+0.2.2 Changes
+-------------
++ Updated translation functions.
++ Added German translation files.
 </pre>';        
+
     }
 
     return TRUE;
