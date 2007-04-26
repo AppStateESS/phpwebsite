@@ -390,7 +390,7 @@ class Current_User {
                 return FALSE;
             }
 
-            include $file;
+            require_once $file;
             if (function_exists('authorize')){
                 $result = authorize($user, $password);
                 return $result;

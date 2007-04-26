@@ -1,5 +1,7 @@
 Version 2.4.0
 ------------------------------------------------------------------
+26 April 2007
++ Changed authorize to use require_once instead of include (Thanks Daniel)
 
 24 April 2007
 + Bug 1705106 - Fixed install.sql typo
