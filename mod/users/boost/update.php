@@ -71,15 +71,52 @@ function users_update(&$content, $currentVersion)
   screen
 </pre>';
 
-    case version_compare($currentVersion, '2.3.2', '<'):
-        $new_table = 'CREATE TABLE users_pw_reset (
+    case version_compare($currentVersion, '2.4.0', '<'):
+        if (!PHPWS_DB::isTable('users_pw_reset')) {
+            $new_table = 'CREATE TABLE users_pw_reset (
 user_id INT NOT NULL default 0,
 authhash CHAR( 32 ) NOT NULL default 0,
 timeout INT NOT NULL default 0,
 );';
-        PHPWS_DB::import($new_table);
-        
+            if (!PHPWS_DB::import($new_table)) {
+                $content[] = 'Unable to create users_pw_reset table.';
+                return false;
+            } else {
+                $content[] = 'Created new table: users_pw_reset';
+            }
+        }
+        $files = array('templates/forms/reset_password.tpl', 'templates/forms/forgot.tpl',
+                       'conf/config.php', 'templates/usermenus/top.tpl', 'templates/forms/settings.tpl',
+                       'templates/my_page/user_setting.tpl');
+        $content[] = '<pre>';
+        if (PHPWS_Boost::updateFiles($files, 'layout')) {
+            $content[] = '--- Successfully updated the following files:';
+        } else {
+            $content[] = '--- Was unable to copy the following files:';
+        }
+        $content[] = '     ' . implode("\n     ", $files);
 
+        $content[] = '
++ Permissions just close the popup window instead of displaying
+  message.
++ Moved include to prevent pre-defined error.
++ Added Forgot password and Forgot username functionality
++ Started password reset and user name reminder options.
++ Added comments to user menu template to prevent extra characters
++ Implemented RFE 1628318 - Remember me option on users module.
++ Rewrote logout functionality to work with remember me
++ Hitting user\'s index.php forwards to the 404 page
++ Removed redundant class calls in init.php
++ Changed default username size to 3
++ Updated translation functions.
++ Changed form names on login templates since both have ids and may
+  appear on same page.
++ Removed return by reference from Current_User::getUserObj
++ Changed popuppermission to echo error instead of using goBack
+  function.
++ Fixed error code call in Permissions.php. Needed to call core code.
++ Added German translation files
+</pre>';
 
     } // End of switch statement
 
