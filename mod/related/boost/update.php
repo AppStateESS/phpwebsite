@@ -21,6 +21,15 @@ function related_update(&$content, $version)
 --------------
 + Added translate functions
 </pre>';
+
+    case version_compare($version, '0.1.3', '<'):
+        $content[] = '<pre>
+0.1.3 changes
+--------------
++ Added German translation.
++ Updated translation functions.
+</pre>';
+
     }
 
     return true;
