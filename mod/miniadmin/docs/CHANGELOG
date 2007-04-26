@@ -1,3 +1,5 @@
+Version 1.1.0
+---------------------------------------------------
 11 April 2007
 + Added ability to pick different miniadmin template
 + Updated files : conf/config.php, templates/mini_admin.tpl,
