@@ -19,6 +19,16 @@ function notes_update(&$content, $version) {
 + Added translate functions.
 </pre>
 ';
+
+    case version_compare($version, '0.2.0', '<'):
+        $content[] = '<pre>
+0.2.0 changes
+--------------
++ Updated to new translation functions.
++ Added German files.
+</pre>
+';
+
     }
 
     return true;
