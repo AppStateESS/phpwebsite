@@ -29,6 +29,16 @@ function rss_update(&$content, $version)
 + Added translate functions
 </pre>';
 
+    case version_compare($version, '0.1.4', '<'):
+        PHPWS_Boost::updateFiles(array('img/rss.png'), 'rss');
+        $content[] = '<pre>
+0.1.4 changes
+-------------
++ Add German translation files.
++ Updated language functions.
++ Changed control panel icon
+</pre>';
+
 
     }
 
