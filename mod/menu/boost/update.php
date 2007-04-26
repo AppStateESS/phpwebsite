@@ -60,6 +60,29 @@ $content[] = '<pre>1.1.1 Changes
 + Menu now allows you pin any non-admin page into the menu.
 + Changed menu margins so both FF and IE could access the popup menu.</pre>';
 
+    case version_compare($currentVersion, '1.2.0', '<'):
+        $files = array('templates/menu_layout/basic.tpl', '');
+        $content[] = '<pre>';
+        if (PHPWS_Boost::updateFiles($files, 'menu')) {
+            $content[] = '--- Successfully updated the following files:';
+        } else {
+            $content[] = '--- Was unable to copy the following files:';
+        }
+        $content[] = '     ' . implode("\n     ", $files);
+        $content[] = '
+1.2.0 changes
+-------------
++ Changed css id to class in basic layout.
++ Fixed bug with pinning links
++ Fixed notice call in Menu_Admin
++ Changed pin keys to use title and url
++ Raised default menu link length.
++ Bug #1688342 - Added htmlentities to title to allow foreign characters
++ Added German translation
++ Updated language functions.
+</pre>';
+
+
     }
     return true;
 }

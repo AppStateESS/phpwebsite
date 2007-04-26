@@ -1,3 +1,5 @@
+Version 1.2.0
+------------------------------------------------------------------
 24 April 2007
 + Changed id to class in basic layout.
 + Updated files: templates/menu_layout/basic.tpl
