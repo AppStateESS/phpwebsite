@@ -35,10 +35,15 @@ function photoalbum_update(&$content, $version) {
 + Linked the Album image
 </pre>';
 
-    case version_compare($version, '1.3.4', '<'):
+    case version_compare($version, '1.4.0', '<'):
+        PHPWS_Boost::updateFiles(array('img/photo.png'), 'photoalbum');
         $content[] = '<pre>
 1.4.0 changes
 -------------
++ Changed functional call to conform with new File Cabinet
++ Added German translation
++ Updated language functions
++ Changed control panel icon
 </pre>';
 
     }

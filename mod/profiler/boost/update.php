@@ -20,6 +20,17 @@ function profiler_update(&$content, $currentVersion)
 </pre>
 ';
 
+    case version_compare($currentVersion, '0.3.2', '<'):
+        PHPWS_Boost::updateFiles(array('img/profile.png'), 'profiler');
+        $content[] = '<pre>
+0.3.2 changes
+----------------
++ Updated language version
++ Added German files
++ Changed control panel icon
+</pre>
+';
+
     }     
     
     return true;
