@@ -37,6 +37,15 @@ function version_update(&$content, $currentVersion)
 + Added translate functions
 </pre>';
 
+    case version_compare($currentVersion, '0.1.3', '<'):
+        $content[] = '<pre>
+0.1.3 changes
+-------------
++ Updated translation functions.
++ Added German translation files.
++ Changed control panel icon
+</pre>';
+
     }
     return TRUE;
 }
