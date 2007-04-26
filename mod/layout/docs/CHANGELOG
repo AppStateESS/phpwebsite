@@ -1,3 +1,5 @@
+Version 2.4.0
+-------------------------------------------------------------------
 16 April 2007
 + Layout now checks and forces a user to enable cookies on their
   browser. 

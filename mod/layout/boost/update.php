@@ -36,6 +36,32 @@ function layout_update(&$content, $currentVersion)
 + Added missing media parameters to XML mode.
 </pre>';
 
+    case version_compare($currentVersion, '2.4.0', '<'):
+        $files = array('img/layout.png', 'templates/no_cookie.tpl');
+        $content[] = '<pre>';
+        if (PHPWS_Boost::updateFiles($files, 'layout')) {
+            $content[] = '--- Successfully updated the following files:';
+        } else {
+            $content[] = '--- Was unable to copy the following files:';
+        }
+        $content[] = '     ' . implode("\n     ", $files);
+        $content[] = '
+2.4.0 changes
+-------------
++ Layout now checks and forces a user to enable cookies on their
+  browser. 
++ Rewrote Javascript detection. Was buggy before as session
+  destruction could disrupt it.
++ Added German translations
++ Updated language functions
++ Fixed: bug in Layout confused a user\'s style sheet settings after
+  the theme was changed.
++ Rewrote theme change code.
++ Added ability to force theme on layout settings construction.
++ Changed Control Panel icon
+</pre>';
+
+
     }
     return true;
 }
