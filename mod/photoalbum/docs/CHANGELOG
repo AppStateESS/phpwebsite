@@ -1,5 +1,7 @@
-Note: this log is only for work done since the conversion for 1.0
+Note: this log is only for work done since the conversion for 1.x
 
+Version 1.4.0
+----------------------------------------------------------------
 19 April 2007
 + Changed functional call to conform with new File Cabinet
 ! Dependency needs updating
