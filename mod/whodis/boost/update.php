@@ -74,6 +74,15 @@ CREATE TABLE whodis_filters (
 + Added validity check of referrer url.
 + Fixed bug preventing duplicate recording.</pre>';
 
+    case version_compare($version, '0.1.0', '<'):
+        PHPWS_Boost::updateFiles(array('img/whodis.png'), 'whodis');
+        $content[] = '<pre>0.1.0 changes
+---------------
++ Updated translation functions
++ Added German translation files.
++ Changed control panel icon
+</pre>
+';
     }
     return true;
 }
