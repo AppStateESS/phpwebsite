@@ -1,7 +1,7 @@
 <?php
 
 define ('DBPAGER_DEFAULT_LIMIT', 10);
-define ('DBPAGER_PAGE_LIMIT', 8);
+define ('DBPAGER_PAGE_LIMIT', 12);
 define ('DBPAGER_DEFAULT_EMPTY_MESSAGE', _('No rows found.'));
 
 /**
@@ -522,87 +522,102 @@ class DBPager {
             $total_pages = $this->total_pages;
         }
 
-        $limit_pages = ($this->total_pages > DBPAGER_PAGE_LIMIT) ? TRUE : FALSE;
-    
-        if ($limit_pages){
-            $limitList[] = 1;
-            $limitList[] = 2;
-
-            $limitList[] = $this->current_page - 1;
-            $limitList[] = $this->current_page;
-            $limitList[] = $this->current_page + 1;
-      
-            $paddingPoint = $limitList[] = $this->total_pages - 1;
-            $limitList[] = $this->total_pages;
-        }
-
         $values = $this->getLinkValues();
+        unset($values['page']);
 
-        if ($current_page != 1){
-            $values['page'] = $this->current_page - 1;
-            foreach ($values as $key => $value) {
-                $link_pairs1[] = "$key=$value";
-            }
+        $url_base = $this->getLinkBase();
 
-            $pages[] = sprintf("<a href=\"%s?%s\">%s</a>\n",
-                               $this->getLinkBase(),
-                               implode('&amp;', $link_pairs1),
-                               $this->page_turner_left);
+        foreach ($values as $key => $value) {
+            $link_pairs[] = "$key=$value";
         }
 
-        for ($i=1; $i <= $total_pages; $i++){
-            if ($limit_pages && !in_array($i, $limitList)){
+        $url = sprintf('%s?%s', $url_base, implode('&amp;',$link_pairs));
 
-                if (!isset($padding1)){
-                    $pages[] = '...';
-                    $padding1 = TRUE;
-                    continue;
-                }
 
-                if (isset($padding1) && !isset($padding2) && isset($recock)){
-                    $pages[] = '...';
-                    $padding2 = TRUE;
-                }
-                continue;
-            }
-            if (isset($padding1)) {
-                $recock = TRUE;
+        // page one
+        if ($current_page != 1) {
+            if ($total_pages > 500 && $current_page > 50) {
+                $pageList[] = sprintf('<a href="%s&amp;page=%s" title="%s">&lt;&lt;&lt;</a>',$url, $current_page - 50, _('Back 50 pages'));
             }
 
+            if ($total_pages > 100 && $current_page > 10) {
+                $pageList[] = sprintf('<a href="%s&amp;page=%s" title="%s">&lt;&lt;</a>',$url, $current_page - 10, _('Back 10 pages'));
+            }
+            $pageList[] = sprintf('<a href="%s&amp;page=%s" title="%s">&lt;</a>',$url, $current_page - 1, _('Back one page'));
+            $pageList[] = sprintf('<a href="%s&amp;page=1">1</a>',$url);
+        } else {
+            $pageList[] = '[1]';
+        }
 
-            $values['page'] = $i;
+        if ($this->total_pages > DBPAGER_PAGE_LIMIT) {
 
-            if ($this->current_page != $i) {
-                $link_pairs2 = array();
-                foreach ($values as $key => $value) {
-                    $link_pairs2[] = "$key=$value";
+            // break up pages
+
+            $divider = floor(DBPAGER_PAGE_LIMIT / 2);
+            if ($current_page <= $divider) {
+                $divider = DBPAGER_PAGE_LIMIT - 2;
+                if ($current_page != 1) {
+                    $divider--;
+                    for ($i=2; $i < $current_page; $i++) {
+                        $pageList[] = sprintf('<a href="%s&amp;page=%s">%s</a>',$url, $i, $i);
+                        $divider--;
+                    }
+
+                    $pageList[] = '[' . $current_page . ']';
                 }
-                $pages[] = sprintf('<a href="%s?%s">%s</a>', $this->getLinkBase(), implode('&amp;', $link_pairs2), $i) . "\n";
+                $remaining_pages = $total_pages - $current_page;
+                $skip = floor($remaining_pages / $divider);
+
+                for ($i=0,$j = $current_page + $skip; $i < $divider; $i++,$j += $skip) {
+                    $pageList[] = sprintf('<a href="%s&amp;page=%s">%s</a>',$url, $j, $j);
+                }
             } else {
-                $pages[] = $i;
-            }
+                $beginning_pages = $current_page - 1;
+                $remaining_pages = $total_pages - $current_page;
 
-            if ( $limit_pages &&
-                 !isset($padding2) &&
-                 !in_array($i, $limitList)
-                 )
-                {
-                    $pages[] = '...';
-                    $padding2 = TRUE;
+                if ($remaining_pages < $divider) {
+                    if (!$remaining_pages) {
+                        $divider *= 2;
+                        $front_skip = floor($total_pages / (DBPAGER_PAGE_LIMIT - 1));
+                        $back_skip = 0;
+                    } else {
+                        $divider += $remaining_pages;
+                        $front_skip = floor($beginning_pages / $divider);
+                        $back_skip = 1;
+                    }
+                } else {
+                    $front_skip = round($beginning_pages / $divider);
+                    $back_skip = round($remaining_pages / $divider);
                 }
-        }
+                for ($i=0,$j = 1 + $front_skip; $i < $divider - 1 && $j < $current_page; $i++,$j += $front_skip) {
+                    $pageList[] = sprintf('<a href="%s&amp;page=%s">%s</a>',$url, $j, $j);
+                }
 
-        if ($this->current_page != $this->total_pages){
-            $values['page'] = $this->current_page + 1;
-            foreach ($values as $key => $value) {
-                $link_pairs3[] = "$key=$value";
+                $pageList[] = "[$current_page]";
+
+                if ($back_skip) {
+                    for ($i=0,$j = $current_page + $back_skip; $i < $divider - 1 && $j < $total_pages; $i++,$j += $back_skip) {
+                        $pageList[] = sprintf('<a href="%s&amp;page=%s">%s</a>',$url, $j, $j);
+                    }
+                }
             }
-            $pages[] = sprintf('<a href="%s?%s">%s</a>', $this->getLinkBase(),
-                               implode('&amp;', $link_pairs3),
-                               $this->page_turner_right) . "\n";
-        }
 
-        return implode(' ', $pages);
+            // list all pages
+
+            if ($total_pages != $current_page) {
+                $pageList[] = sprintf('<a href="%s&amp;page=%s">%s</a>',$url, $total_pages, $total_pages);
+                $pageList[] = sprintf('<a href="%s&amp;page=%s" title="%s">&gt;</a>',$url, $current_page + 1, _('Forward one page'));
+                if ($total_pages > 100 && ($total_pages - 10) >= $current_page) {
+                    $pageList[] = sprintf('<a href="%s&amp;page=%s" title="%s">&gt;&gt;</a>',$url, $current_page + 10, _('Forward 10 pages'));
+                }
+
+                if ($total_pages > 500 && ($total_pages - 50) >= $current_page) {
+                    $pageList[] = sprintf('<a href="%s&amp;page=%s" title="%s">&gt;&gt;&gt;</a>',$url, $current_page + 50, _('Forward 50 pages'));
+                }
+            }
+            
+            return implode(' ', $pageList);
+        }
     }
 
     /**

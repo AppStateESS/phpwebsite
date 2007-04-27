@@ -4,6 +4,9 @@ its own separate CHANGELOG file.
 
 Version 1.5.0
 -----------------------------------------------------------------------
+27 April 2007
++ DBPager - rewrote paging code
+
 24 April 2007
 + RFE 1704305 - Split bb encoding out into filters
 + Updated files: conf/text_settings.php

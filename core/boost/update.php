@@ -361,6 +361,8 @@ Editor.php
 Error.php
 + Added logIfError function to Error class
 
+DBPager.php
++ Rewrote paging code.
 
 Documentation
 ------------------------------------
