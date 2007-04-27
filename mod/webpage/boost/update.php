@@ -109,6 +109,25 @@ $content[] = '
 + Requesting a restricted page forwards user to the login screen.
 + Added "select option" to drop down menu on page listing (FR#1674326)
 </pre>';
+
+    case version_compare($currentVersion, '0.5.2', '<'):
+        $content[] = '<pre>';
+        if (PHPWS_Boost::updateFiles(array('templates/forms/edit_page.tpl'), 'webpage')) {
+            $content[] = '--- Updated templates/webpage/forms/edit_page.tpl';
+        } else {
+            $content[] = '--- Unable to update templates/webpage/forms/edit_page.tpl';
+        }
+        $content[] = '
+0.5.2 Changes
+--------------
++ Updated image manager function call
++ Added translation to image label.
++ Added updated translation functions.
++ Added German translation files.
++ Removed page and volume links from titles.
+</pre>';
+        break;
+
     }
 
     return TRUE;

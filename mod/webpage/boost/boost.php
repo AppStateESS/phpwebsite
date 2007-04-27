@@ -4,7 +4,7 @@
    * @version $Id$
    */
 $proper_name  = 'Web Pages';
-$version      = '0.5.1';
+$version      = '0.5.2';
 $import_sql   = TRUE;
 $image_dir    = TRUE;
 $file_dir     = FALSE;
