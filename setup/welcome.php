@@ -8,16 +8,24 @@ include 'core/conf/version.php';
 
 $content[] = "<b>Welcome to the phpWebSite $version</b><br />
 <p>The 1.x series is an upgrade to the phpWebSite version 0.x software.
-It has been redesigned and coded from the ground up.</p>
+<br />Please note that 0.x modules will not work natively in 1.x. They must be converted specifically for the new core.</p>
 
-<p>We have added MANY new features to phpWebSite to benefit users and developers alike.<br />
-We are hoping to receive bug reports from those interested in the software.<br />Please report any problems to Sourceforge:<br />
-<a href=\"https://sourceforge.net/projects/phpwebsite\" target=\"_blank\">https://sourceforge.net/projects/phpwebsite</a>
+<p>If you are having problems with your installation, please refer to the following sources:<br />
+<ul>
+<li><a href=\"../docs/INSTALL\">Installation documentation</a></li>
+<li><a href=\"../docs/Editor.txt\">WYSIWYG editor information</a></li>
+<li><a href=\"../docs/Theme_Creation.txt\">Theme creation documentation</a></li>
+<li><a href=\"http://sourceforge.net/forum/forum.php?forum_id=556851\">phpWebSite 1.0 forum</a></li>
+<li><a href=\"http://phpwebsite-comm.sourceforge.net/wiki/index.php?title=En_Main_Page\">phpWebSite Wiki</a></li>
+<li><a href=\"http://ezine.dc4db.net/is20070201.en.html\">Theming Step by Step</a></li>
+<li><a href=\"http://phpwsforums.com/\">Unofficial Help Forums</a></li>
+<li>Visit our chatroom at irc.freenode.net - #phpwebsite</li>
+</ul>
+
 </p>
 
-<p>If you have any questions, you may want to look through the <a href=\"../docs/\">documentation directory</a>.</p>
-<p>If you have questions about its functioning and API, please visit '
-. 'us at irc: freenode.net #phpwebsite </p>
+<p>You may want to look through the <a href=\"../docs/\">documentation directory</a> as well.</p>
+
 ";
 
 ?>
