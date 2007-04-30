@@ -1,0 +1,52 @@
+Text filters in phpWebSite
+by Matt McNaney
+---------------------------
+
+A text filter decodes user input. You may wish to force users to
+encode their text to prevent having to save insecure or site breaking
+html tags. phpWebSites uses "BB encoding" by default (see bbcode.txt).
+
+You are not limited by nor forced to use a specific encoding
+method. If you open your "text_settings.php" configuration file (look
+in the config/core/ directory) you will see a section for text
+filters. The ALLOW_TEXT_FILTERS and TEXT_FILTERS defines allow you to
+control which filters may be used.
+
+If ALLOW_TEXT_FILTERS is set to "false", phpWebSite will not decode
+any text. By default, It is set to "true."
+
+TEXT_FILTERS defines which filters to use. Currently, phpWebSite ships
+with only one filter, the bb filter. If other filters are present on
+your system, you may enable them by changing the TEXT_FILTERS
+setting. For example, say you had a wiki filter:
+
+define('TEXT_FILTERS', 'wiki');
+
+You can also use multiple filters. Say you wanted to use bb and wiki
+together. You would enter them both separated by a comma:
+
+define('TEXT_FILTERS', 'bb,wiki');
+
+You may add as many filters as you wish in this method. Be aware that
+the order is important. If both filters decode similiar structures,
+the first filter will have precedence.
+
+Adding or Creating Filters
+--------------------------
+If you want to add a filter, use the included bb filter as an
+example. Look in the core/class/filters/ directory. Notice the bb.php
+file. The file name MUST match the name given in the TEXT_FILTER
+define.
+
+Open the bb.php file. Notice the name of the first function:
+bb_filter. Again, naming is important. If we use the above wiki
+example, the file name would be "wiki.php" and the decoding function
+would be named "wiki_filter."
+
+The first parameter is the input string. The function should then
+return the decoded text.
+
+Conclusion
+--------------------------
+If you would like to contribute a text filter to the project, please
+post an RFE to http://sourceforge.net/projects/phpwebsite
