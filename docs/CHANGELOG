@@ -10,8 +10,9 @@ Version 1.5.0
 + Fixed setup's permission help file link.
 + Fixed setup's hardcoded version strings
 + Updated Cache_Lit, Clipboard, Developer Rules, Forms, Known_Errors,
-README, WYSIWYG, Converting_Modules
+  README, WYSIWYG, Converting_Modules
 + Removed Related.txt
++ Rewrote welcome.php message#
 
 27 April 2007
 + DBPager - rewrote paging code
