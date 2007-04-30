@@ -1,9 +1,9 @@
-Welcome to phpWebSite 1.0.0
+Welcome to phpWebSite 1.x
 ----------------------------
 
 This version is a complete rewrite of phpWebSite. Modules written for
 0.10.x will NOT work with this code. Most of the modules written by
-Appalachian State have either been rewritten for 1.0.0 or "converted."
+Appalachian State have either been rewritten for 1.x or "converted."
 
 The two converted modules are Form Generator and Photo Album. Please
 note that both modules still have some the problems of their previous
@@ -15,7 +15,7 @@ versions:
 
 2) Both do not function under Postgresql.
 
-Eventually, both modules will be rewritten for 1.0.0 with new features
+Eventually, both modules will be rewritten for 1.x with new features
 and better compatibility.
 
 
@@ -24,7 +24,7 @@ Starting the install
 If you are not reading this from the distribution, download the latest
 tarball from http://phpwebsite.appstate.edu.
 
-Although 1.0.0 is an upgrade to 0.10.x, it is different enough to
+Although 1.x is an upgrade to 0.10.x, it is different enough to
 require a fresh directory. Do not untar inside or copy the result to
 an old 0.10.x directory.
 
@@ -63,14 +63,14 @@ web root. Change the PHPWS_LOG_DIRECTORY definition to do so.
 
 Database setup
 --------------
-phpWebSite 1.0.0 currently works with Postgresql and MySQL. More
+phpWebSite 1.x currently works with Postgresql and MySQL. More
 databases will become available should the need arise.
 
 If using MySQL, the phpWebSite setup will allow you to create a new
-database. The Postgresql setup will not; you will need to create it
+database. The Postgresql setup will NOT; you will need to create it
 beforehand.
 
-Currently, phpWebSite 1.0.0 uses the UTF-8 character standard for
+Currently, phpWebSite 1.x uses the UTF-8 character standard for
 storage and display. If you are using MySQL version prior to 4.1, you
 may encounter some problems with accented characters.
 
@@ -104,12 +104,17 @@ bottom. Boost informs you which modules have updated versions. If Core
 and/or Boost have new versions, you should download them. Afterwards,
 get new copies of any other modules you wish to install.
 
+Note: Core is also refered to as "Base" when updating. A core
+installation includes the foundation of phpWebSite. It should not be
+confused with the "core" directory which contains the class library.
+
 Core modules are installed by default. Other modules are optional.
 Click the install link next to each. You may return later to check the
 update status of modules.
 
 When finished installing and updating, you should change the write
-permissions of your config, templates, and javascript directories.
+permissions of your config, templates, and javascript directories to
+unwritable.
 
 
 Problems
