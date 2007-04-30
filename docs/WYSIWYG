@@ -2,7 +2,6 @@ First pick an editor. PhpWebSite supports the following:
 
 FCKeditor - http://www.fckeditor.net/
 TinyMCE   - http://tinymce.moxiecode.com/
-HtmlArea  - http://www.htmlarea.com/ (discontinued)
 
 Get the tarball/zip and decompress them into the appropiate
 javascript/editor directory.

@@ -7,9 +7,6 @@ bbcode - tells you how to use bbcode in phpwebsite
 
 Cache_Lite - instructions on how to cache content
 
-Categories - instructions on how to use categories (currently
-out-of-date)
-
 Clipboard - instructions for using the clipboard module (not complete)
 
 Converting_Modules - explains how to convert 0.x modules to 1.x
@@ -29,7 +26,7 @@ Demographics - Describe the demographics module. Incomplete
 Developer_Rules - rules to follow for creating phpwebsite modules
 
 Editor - instructions on using the wysiwyg editors in your
-installation (out of date)
+installation
 
 Forms - Instructions for using the Forms core class.
 
@@ -49,15 +46,13 @@ menu, in your module.
 
 Mod_Rewrite - explains how mod_rewrite works. Apache required
 
-Module_Development - a horribly out of date file on creating
-modules. Will be updated
+Module_Development - a "work-in-progress". Eventually will be a
+step-by-step guide to writing a module.
 
 My_Page - very brief instructions for utilizing My Page, a user tab
 under the control panel.
 
 README - that's me!
-
-Related - info on the Related module. Out of date
 
 Search - Brief directions for using the search in your module.
 

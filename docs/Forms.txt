@@ -1,7 +1,6 @@
 Form Class by Matthew McNaney
 -------------------------------
 
-
 Version History
 -------------------------------
 0.1 First draft April 20, 2006

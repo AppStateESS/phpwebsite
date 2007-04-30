@@ -28,7 +28,7 @@ $name = 'Joe Shmoe';
 
 Clipboard::copy($title, $name);
 
-There you are done.
+You are done.
 
 The Clipboard box will appear on all the pages. Just click the title
 (That name you wanted to copy) and a box will pop up with a text

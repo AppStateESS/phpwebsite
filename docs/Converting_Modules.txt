@@ -10,7 +10,7 @@ the previous version.
 
 A decision had to be made. Do we want to limit the features of 1.x to
 allow full compatibility? I tried to balance them instead. Old modules
-will work in 1.0, but they require some modification.
+will work in 1.x, but they require some modification.
 
 I have tried to keep the amount of changes to a minimum: I have to
 make them in all my modules as well.
@@ -46,12 +46,12 @@ the conf/ directory. Here is what it looks like:
 
 $use_permissions = TRUE;
 
-$permissions['add_album']    = _('Add album');
-$permissions['edit_album']   = _('Edit album');
-$permissions['add_photo']    = _('Add photo');
-$permissions['edit_photo']   = _('Edit photo');
-$permissions['delete_album'] = _('Delete album');
-$permissions['delete_photo'] = _('Delete photo');
+$permissions['add_album']    = dgettext('photoalbum', 'Add album');
+$permissions['edit_album']   = dgettext('photoalbum', 'Edit album');
+$permissions['add_photo']    = dgettext('photoalbum', 'Add photo');
+$permissions['edit_photo']   = dgettext('photoalbum', 'Edit photo');
+$permissions['delete_album'] = dgettext('photoalbum', 'Delete album');
+$permissions['delete_photo'] = dgettext('photoalbum', 'Delete photo');
 
 //$item_permissions = TRUE;
 ?>
@@ -156,23 +156,21 @@ $_SESSION['translate']->it('Hello World');
 
 to
 
-_('Hello World');
+dgettext('module_name', 'Hello World');
 
-I think you will find, this is much easier to type as well :)
-
-Rhe quickest way to fix this is to replace
+The quickest way to fix this is to replace
 
 $_SESSION["translate"]->it("
 to
- _("
+dgettext('module_name', '
 
 Make sure to try other searches such as:
 
-$_SESSION['translate']->it("  to  _("
-$_SESSION["translate"]->it('  to  _('  
-$_SESSION["translate"]->it("  to  _("
+$_SESSION['translate']->it("  to  dgettext('module_name', "
+$_SESSION["translate"]->it('  to  dgettext('module_name', '  
+$_SESSION["translate"]->it("  to  dgettext('module_name', "
 
-Notice the quote difference: very important.
+Notice the quote difference. It is very important.
 
 After you have changed all these translations, you will need to
 perform one last search and replace. The old translation system used
@@ -180,10 +178,15 @@ perform one last search and replace. The old translation system used
 do that. So search for "[var" and add the 'sprintf' function.
 
 Here is an example:
-$message = _("The Photo Album [var1] was successfully saved.", "<b><i>" . $this->getLabel() . "</i></b>") . "<br />\n";
+$message = dgettext('module_name', "The Photo Album [var1] was
+           successfully saved.","<b><i>" . $this->getLabel() . 
+           "</i></b>") . "<br />\n";
 
 change this to:
-$message = sprintf(_('The Photo Album %s was successfully saved.'), '<b><i>' . $this->getLabel() . '</i></b>') . "<br />\n";
+
+$message = sprintf(dgettext('module_name', 'The Photo Album %s
+           was successfully saved.'), '<b><i>' . $this->getLabel()
+           . '</i></b>') . "<br />\n";
 
 If you don't fix these first, you will get syntax errors.
 
@@ -216,7 +219,7 @@ if(javascriptEnabled()) {
 WYSIWYG
 -----------------------------------
 The old javascript wysiwyg (what you see is what you get) interface
-was... just awful let's face it.
+was really simplistic.
 
 You should allow users to access the new available interfaces. Look
 for something like the following:
@@ -282,11 +285,11 @@ Here are my changes.
       $directory = PHOTOALBUM_DIR . $this->getId() . "/";
 
       if(!@mkdir($directory)) {
-           $message = _('The photo album image directory could not be created.');
+           $message = dgettext('module_name', 'The photo album image directory could not be created.');
            PHPWS_Error::log(PHOTOALBUM_NO_DIRECTORY, 'photoalbum', 'PHPWS_Album::_save', $directory);
            $_REQUEST['PHPWS_Album_op'] = "edit";
       } else {
-           $message = sprintf(_("The Photo Album %s was successfully saved."), "<b><i>" . $this->getLabel() . "</i></b>") . "<br />\n";
+           $message = sprintf(dgettext('module_name', "The Photo Album %s was successfully saved."), "<b><i>" . $this->getLabel() . "</i></b>") . "<br />\n";
            $_REQUEST['PHPWS_Album_op'] = "view";
       }
 
@@ -414,10 +417,14 @@ File types
 All file types (documents and images) are now kept in
 config/core/file_types.php.
 
-You can check if an image is allowed by using:
+You can check if an image is allowed by using classes within the File
+Cabinet module:
+
+PHPWS_Core::initModClass('filecabinet', 'Image.php');
 PHPWS_Image::allowType($filetype);
 
 For other documents use:
+PHPWS_Core::initModClass('filecabinet', 'Document.php');
 PHPWS_Document::allowType($filetype);
 
 

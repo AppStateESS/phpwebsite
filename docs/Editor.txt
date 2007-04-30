@@ -2,18 +2,13 @@ Browser Editors in phpWebSite
 by Matthew McNaney <matt at tux dot appstate dot edu>
 ------------------------------
 
-
-Although phpWebSite does not supply a javascript wysiwyg editor, it does
-contain the editors you need to use them.
-
 Currently Supported Editor
 -----------------------------
 PhpWebSite ships with the following wysiwyg editors ready for use:
 
-Htmlarea (project discontinued)
 FCKeditor
 TinyMCE
-
+simple (an improvement over the old 0.x wysiwyg)
 
 
 Plugging in a Supported Editor
@@ -36,6 +31,10 @@ for EDITOR.
 Set the USE_WYSIWYG_EDITOR define to 'TRUE'.
 Set the DEFAULT_EDITOR_TOOL to the editor you are using. The editor
 name will be the same as the editor's directory.
+
+If FORCE_EDITOR is set to "true", phpWebSite will ignore an editor's
+support settings and try to force the editor to appear on all
+browsers.
 
 You should customize your editor via a file specified by readme.txt
 file. In most cases you do not want to make customizations in the
@@ -131,7 +130,7 @@ of what is required. You should look for two main instructions:
    for the text area's value. Look at current head.js files for an
    example.
    
-2) What does the editor return to the body when called? This
+2) What does the editor return to the page when called? This
    information will go into the body.js file. So if an editor returned
    the actual textfield or iframe content, this call would go into
    body.js. Again, see current files for an example.
@@ -149,10 +148,10 @@ file to test it.
 
 Troubleshooting
 ---------------------------
-Bad directory pathing is the problem most experienced when creating a
+Bad directory pathing is the top problem experienced when creating a
 new editor. Most editors expect to be plopped down in the web
 root. Since you are moving it over to the javascript/editors directory
-instead you will need to make sure it knows where it is located.
+instead, you will need to make sure it knows where it is located.
 
 Check the script for a base dir value. Try replacing it with directory
 to the editor from the root (e.g. ./javascript/editors/my_wysiwyg).

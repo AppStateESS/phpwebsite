@@ -64,3 +64,7 @@ If you need to clear the cache then use the clearCache function:
 PHPWS_Cache::clearCache();
 
 This will clear all the caches for the site so use it sparingly.
+
+If you want to remove the cache for just your process:
+
+PHPWS_Cache::remove($key);

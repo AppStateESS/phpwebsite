@@ -24,8 +24,11 @@
 7) Always parse user submitted information. Don't let bad information
    make it to the database query. If it does and it returns a negative
    result, recover gracefully. Let me repeat, parse ALL user
-   data. Every GET, every POST.
+   data. Every GET, every POST, every cookie read.
 
 8) Use the database class when you can. It has security measures built
    in. If you use a straight query, you are expected to scour any user
    data that makes it to the query string. Very important.
+
+9) Finally, just because I said to, doesn't mean I always did. And if
+   I did, point it out so I can fix it.

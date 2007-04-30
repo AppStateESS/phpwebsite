@@ -4,6 +4,15 @@ its own separate CHANGELOG file.
 
 Version 1.5.0
 -----------------------------------------------------------------------
+30 April 2007
++ Added information to Cache.txt on removing a specific key
++ Added filters.txt documentation
++ Fixed setup's permission help file link.
++ Fixed setup's hardcoded version strings
++ Updated Cache_Lit, Clipboard, Developer Rules, Forms, Known_Errors,
+README, WYSIWYG, Converting_Modules
++ Removed Related.txt
+
 27 April 2007
 + DBPager - rewrote paging code
 
