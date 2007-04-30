@@ -5,6 +5,8 @@ its own separate CHANGELOG file.
 Version 1.5.0
 -----------------------------------------------------------------------
 30 April 2007
++ Added slight error check to Database class
++ Added missing DBPager page listing for pages under the limit
 + Added information to Cache.txt on removing a specific key
 + Added filters.txt documentation
 + Fixed setup's permission help file link.

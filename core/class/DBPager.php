@@ -549,7 +549,7 @@ class DBPager {
             $pageList[] = '[1]';
         }
 
-        if ($this->total_pages > DBPAGER_PAGE_LIMIT) {
+        if ($total_pages > DBPAGER_PAGE_LIMIT) {
 
             // break up pages
 
@@ -602,22 +602,27 @@ class DBPager {
                 }
             }
 
-            // list all pages
+        } else {
+            for($i=2; $i < $total_pages; $i++) {
+                $pageList[] = sprintf('<a href="%s&amp;page=%s">%s</a>',$url, $i, $i);
+            }
+        }
 
-            if ($total_pages != $current_page) {
-                $pageList[] = sprintf('<a href="%s&amp;page=%s">%s</a>',$url, $total_pages, $total_pages);
-                $pageList[] = sprintf('<a href="%s&amp;page=%s" title="%s">&gt;</a>',$url, $current_page + 1, _('Forward one page'));
-                if ($total_pages > 100 && ($total_pages - 10) >= $current_page) {
-                    $pageList[] = sprintf('<a href="%s&amp;page=%s" title="%s">&gt;&gt;</a>',$url, $current_page + 10, _('Forward 10 pages'));
-                }
-
-                if ($total_pages > 500 && ($total_pages - 50) >= $current_page) {
-                    $pageList[] = sprintf('<a href="%s&amp;page=%s" title="%s">&gt;&gt;&gt;</a>',$url, $current_page + 50, _('Forward 50 pages'));
-                }
+        if ($total_pages != $current_page) {
+            $pageList[] = sprintf('<a href="%s&amp;page=%s">%s</a>',$url, $total_pages, $total_pages);
+            $pageList[] = sprintf('<a href="%s&amp;page=%s" title="%s">&gt;</a>',$url, $current_page + 1, _('Forward one page'));
+            if ($total_pages > 100 && ($total_pages - 10) >= $current_page) {
+                $pageList[] = sprintf('<a href="%s&amp;page=%s" title="%s">&gt;&gt;</a>',$url, $current_page + 10, _('Forward 10 pages'));
             }
             
-            return implode(' ', $pageList);
+            if ($total_pages > 500 && ($total_pages - 50) >= $current_page) {
+                $pageList[] = sprintf('<a href="%s&amp;page=%s" title="%s">&gt;&gt;&gt;</a>',$url, $current_page + 50, _('Forward 50 pages'));
+            }
+        } else {
+            $pageList[] = "[$current_page]";
         }
+
+        return implode(' ', $pageList);
     }
 
     /**
@@ -888,7 +893,7 @@ class DBPager {
         if (PEAR::isError($pages)) {
             return $pages;
         }
-
+        
         $template['PAGES']       = $pages;
         $template['PAGE_LABEL']  = _('Page');
         $template['LIMIT_LABEL'] = _('Limit');

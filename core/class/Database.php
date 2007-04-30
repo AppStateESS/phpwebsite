@@ -1655,6 +1655,10 @@ class PHPWS_DB {
 
     function disconnect()
     {
+        if (empty($GLOBALS['PHPWS_DB']['dbs'])) {
+            return;
+        }
+
         foreach ($GLOBALS['PHPWS_DB']['dbs'] as $db) {
             if (!empty($db['connection'])) {
                 $db['connection']->disconnect();
