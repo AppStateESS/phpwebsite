@@ -52,7 +52,9 @@ session_start();
 $forward = false;
 $content = array();
 $setup = & new Setup;
-$title = 'phpWebSite 1.1.0 - ';
+
+include 'core/conf/version.php';
+$title = "phpWebSite $version - ";
 
 if (!$setup->checkSession($content) || !isset($_REQUEST['step'])) {
     $step = 0;
