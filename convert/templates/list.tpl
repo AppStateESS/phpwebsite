@@ -5,7 +5,7 @@
     <th></th>
   </tr>
 <!-- BEGIN convert_mods -->
-  <tr>
+  <tr {TOGGLE}>
     <td>{TITLE}</td>
     <td>{DESCRIPTION}</td>
     <td>{LINK}</td>

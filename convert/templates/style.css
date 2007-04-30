@@ -292,3 +292,7 @@ margin : 4px;
 div.category-menu-bar {
   margin  : 3px 0 3px 0;             
 }
+
+.toggle {
+   background-color : #dee2bd;
+}

@@ -288,6 +288,8 @@ class Convert {
 
     function convertLinkTpl($info_file, $mod_dir)
     {
+        static $toggle = true;
+
         $convert_info = parse_ini_file($info_file);
         if (isset($convert_info['convert']) && Convert::isConverted($convert_info['convert'])) {
             $link = _('Converted');
@@ -298,6 +300,13 @@ class Convert {
         $tpl['TITLE'] = $convert_info['title'];
         $tpl['DESCRIPTION'] = $convert_info['description'];
         $tpl['LINK']    = $link;
+        if (!$toggle) {
+            $tpl['TOGGLE'] = 'class="toggle"';
+            $toggle = true;
+        } else {
+            $tpl['TOGGLE'] = null;
+            $toggle = false;
+        }
         return $tpl;
     }
 
