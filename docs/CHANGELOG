@@ -4,6 +4,16 @@ its own separate CHANGELOG file.
 
 Version 1.5.0
 -----------------------------------------------------------------------
+1 May 2007
++ Globaled the branch object in case needed
++ Fixed: File Cabinet was not properly converting branch installations
++ Core.php
+  o changed version.php call to use copy in config/core/. Was
+    breaking branch.
+  o update now copies version.php file locally.
+
++ DBPager - single pages returned properly now.
+
 30 April 2007
 + Rewrote file cabinet conversion to work with new version. Also included
   phatfile instruction.
