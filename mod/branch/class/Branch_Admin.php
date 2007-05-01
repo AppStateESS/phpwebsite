@@ -199,6 +199,9 @@ class Branch_Admin {
                                                           'branch', array('command' => 'branch_modules',
                                                                           'branch_id' => $this->branch->id));
                 $this->resetAdmin();
+            } elseif ($_SESSION['Boost']->currentDone()) {
+                $meta = sprintf('index.php?module=branch&command=core_module_installation&branch_id=%s&authkey=%s', $this->branch->id, Current_User::getAuthKey());
+                Layout::metaRoute($meta);
             }
             break;
 
@@ -432,6 +435,7 @@ class Branch_Admin {
 
         PHPWS_DB::loadDB($this->getDSN(), $this->dbprefix);
 
+        
         $this->title = dgettext('branch', 'Installing core modules');
 
         $result = $_SESSION['Boost']->install(false, true, $this->branch->directory);

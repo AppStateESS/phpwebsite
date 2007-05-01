@@ -50,6 +50,7 @@ function branch_update(&$content, $version)
 -------------
 + Conforms with all new Core changes.
 + Changed to new language format.
++ Added meta routing to core module installation section.
 </pre>';
     }
     return true;

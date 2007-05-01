@@ -1,5 +1,8 @@
 Version 1.1.0
 -----------------------------------------------------------
+1 May 2007
++ Added a meta route to core module installation
+
 16 April 2007
 + Added FORCE_EDITOR define
 
