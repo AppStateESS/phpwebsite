@@ -10,7 +10,7 @@
    */
 
   // number of users to convert
-define('BATCH_SET', 20);
+define('BATCH_SET', 100);
 
 function convert()
 {
