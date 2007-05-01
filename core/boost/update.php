@@ -289,10 +289,10 @@ conf/language.php
             $content[] = '--- Successfully created the "cache" directory under the "templates" directory.';
         }
 
-        if (PHPWS_Boost::updateFiles(array('conf/text_settings.php'), 'core')) {
-            $content[] = '--- Successfully copied text_settings.php file.';
+        if (PHPWS_Boost::updateFiles(array('conf/text_settings.php', 'conf/version.php'), 'core')) {
+            $content[] = '--- Successfully copied text_settings.php and version.php files.';
         } else {
-            $content[] = '--- Failed to copy text_settings.php file successfully.';
+            $content[] = '--- Failed to copy text_settings.php and version.php files successfully.';
         }
 
         $content[] = '
