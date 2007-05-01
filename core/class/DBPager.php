@@ -522,6 +522,10 @@ class DBPager {
             $total_pages = $this->total_pages;
         }
 
+        if ($total_pages == 1) {
+            return '[1]';
+        }
+
         $values = $this->getLinkValues();
         unset($values['page']);
 
@@ -549,10 +553,9 @@ class DBPager {
             $pageList[] = '[1]';
         }
 
+
         if ($total_pages > DBPAGER_PAGE_LIMIT) {
-
             // break up pages
-
             $divider = floor(DBPAGER_PAGE_LIMIT / 2);
             if ($current_page <= $divider) {
                 $divider = DBPAGER_PAGE_LIMIT - 2;
