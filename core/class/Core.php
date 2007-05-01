@@ -730,7 +730,7 @@ class PHPWS_Core {
      */
     function releaseVersion()
     {
-        include 'core/conf/version.php';
+        include 'config/core/version.php';
         return $version;
     }
 
