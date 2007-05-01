@@ -220,7 +220,7 @@ function filecabinet_update(&$content, $version)
                     continue;
                 }
                 $dir = $document['file_directory'] . $document['file_name'];
-                copy($dir, $document_folder_dir . $document['file_name']);
+                @copy($dir, $document_folder_dir . $document['file_name']);
             }
         }
 
