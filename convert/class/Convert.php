@@ -108,7 +108,6 @@ class Convert {
     function &getSourceDB($table)
     {
         $dsn = $_SESSION['OTHER_DATABASE'];
-
         if (!empty($_SESSION['Convert_Tbl_Prefix'])) {
             $prefix = & $_SESSION['Convert_Tbl_Prefix'];
         } else {
@@ -451,6 +450,7 @@ class Convert {
                 }
                 $branch->loadDSN();
             }
+            $GLOBALS['BRANCH'] = $branch;
             return $branch->loadBranchDB();
         }
     }
