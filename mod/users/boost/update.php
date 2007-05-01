@@ -97,6 +97,8 @@ timeout INT NOT NULL default 0,
         $content[] = '     ' . implode("\n     ", $files);
 
         $content[] = '
+2.4.0 changes
+------------------------
 + Permissions just close the popup window instead of displaying
   message.
 + Moved include to prevent pre-defined error.
