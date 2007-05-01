@@ -22,10 +22,29 @@ function convert()
         return _('The File Cabinet module is not installed.');
     }
 
-    $source_directory = PHPWS_HOME_DIR . 'files/filecabinet/';
+    if (isset($GLOBALS['BRANCH'])) {
+        $base_dir = $GLOBALS['BRANCH']->directory;
+        
+        // We have to check the branch settings or they will get a default
+        // based on the core settings
+        $settings = new PHPWS_DB('mod_settings');
+        $settings->addWhere('module', 'filecabinet');
+        $settings->addWhere('setting_name', 'base_doc_directory');
+        $result = $settings->select();
+
+        if (empty($result)) {
+            PHPWS_Settings::set('filecabinet', 'base_doc_directory', $base_dir . 'files/filecabinet/');
+            PHPWS_Settings::save('filecabinet');
+        }
+    } else {
+        $base_dir = PHPWS_SOURCE_DIR;
+    }
+
+    $source_directory =  $base_dir . 'files/filecabinet/';
+
     $directory_contents = PHPWS_File::readDirectory($source_directory,false, true);
     if (empty($directory_contents)) {
-        return _('Copy all the files you need converted into your files/filecabinet/ directory.');
+        return sprintf(_('Copy all the files you need converted into your %s directory.'), $source_directory);
     }
 
     $docs = Convert::getSourceDB('mod_documents_docs');
@@ -65,7 +84,7 @@ function convert()
                     $aok = false;
                     break;
                 }
-
+                
                 $doc_to_folder[$doc['id']] = $folder;
             }
 
