@@ -1,3 +1,9 @@
+Version 1.0.1
+---------------------------------
+2 May 2007
++ Changed variable name in javascript file to work under IE
++ Updated files javascript/folder_contents/head.js
+
 Version 1.0.0
 ---------------------------------
 24 April 2007
