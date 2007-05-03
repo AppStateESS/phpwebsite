@@ -2,15 +2,16 @@ Version 1.0.1 (not created)
 ---------------------------------
 3 May 2007
 + Fixed several bugs popping up in IE7
++ Fixed bug if a user picks an image that has already been resized.
++ Added choice (via config) to make extra resized images instead of previous
 + Added close button to image manager.
 + Updated files : templates/style.css, templates/image_folders.tpl,
                   templates/javascript.tpl,
                   templates/manager/javascript.tpl,
                   javascript/folder_contents/head.js,
                   javascript/pick_image/body.js,
-                  javascript/pick_image/head.js
-
-
+                  javascript/pick_image/head.js,
+                  conf/config.php
 
 2 May 2007
 + Changed variable name in javascript file to work under IE

@@ -8,6 +8,10 @@
 PHPWS_Core::requireConfig('filecabinet');
 PHPWS_Core::initModClass('filecabinet', 'Image.php');
 
+if (!defined('RESIZE_IMAGE_USE_DUPLICATE')) {
+    define('RESIZE_IMAGE_USE_DUPLICATE', true);
+}
+
 class FC_Image_Manager {
     var $image      = null;
     var $itemname   = null;
@@ -69,11 +73,8 @@ class FC_Image_Manager {
                         $tpl['THUMBNAIL'] = sprintf('<a href="#" onclick="oversized(%s, %s, %s, \'%s\', \'%s\'); return false">%s</a>',
                                                     $image->id, $this->max_width, $this->max_height, $image->thumbnailPath(), addslashes($image->title), $image->getThumbnail());
                     } else {
-                        /*
+
                         $tpl['THUMBNAIL'] = sprintf('<a href="#" onclick="pick_image(%s, \'%s\', \'%s\'); return false">%s</a>',
-                                                    $image->id, $image->thumbnailPath(), addslashes($image->title), $image->getThumbnail());
-                        */
-                        $tpl['THUMBNAIL'] = sprintf('<a href="javascript:pick_image(%s, \'%s\', \'%s\')">%s</a>',
                                                     $image->id, $image->thumbnailPath(), addslashes($image->title), $image->getThumbnail());
 
                     }
@@ -360,6 +361,15 @@ class FC_Image_Manager {
         $this->cabinet->content = PHPWS_Template::process($tpl, 'filecabinet', 'image_folders.tpl');
     }
 
+
+    /**
+     * Resizes an image outside a modules defined boundaries.
+     *
+     * If the resized image already exists, we use the copy.
+     * Although the original could have changed, we don't delete the resized and replace it.
+     * The resize may be in use somewhere else, so we don't want the image to change.
+     * Also, if the image changes the thumbnail would have to change as well.
+     */
     function resizeImage()
     {
         $directory = $this->image->file_directory;
@@ -368,20 +378,34 @@ class FC_Image_Manager {
         $a_image = explode('.', $image_name);
         $ext = array_pop($a_image);
         $image_name = sprintf('%s_%sx%s.%s', implode('.', $a_image), $this->max_width, $this->max_height, $ext);
+
         $copy_dir = $directory . $image_name;
 
         if (is_file($copy_dir)) {
-            // A copy already exists
-            $image = new PHPWS_Image;
-            $db = new PHPWS_DB('images');
-            $db->addWhere('folder_id', $this->image->folder_id);
-            $db->addWhere('file_name', $image_name);
-            if ($db->loadObject($image)) {
-                header('Content-type: text/xml');
-                exit();
+            if (RESIZE_IMAGE_USE_DUPLICATE) {
+                // use duplicate instead
+                $image = new PHPWS_Image;
+                $db = new PHPWS_DB('images');
+                $db->addWhere('folder_id', $this->image->folder_id);
+                $db->addWhere('file_name', $image_name);
+                if ($db->loadObject($image)) {
+                    header('Content-type: text/xml');
+                    echo $image->xmlFormat();
+                    exit();
+                } else {
+                    // image not in system, delete it and move on
+                    @unlink($copy_dir);
+                }
             } else {
-                // image not in system, delete it and move on
-                @unlink($copy_dir);
+                // don't use duplicate, make a new file
+                for ($i=2; $i<50; $i++) {
+                    $image_name = sprintf('%s_%sx%s_v%s.%s', implode('.', $a_image), $this->max_width, $this->max_height, $i, $ext);
+                    $copy_dir = $directory . $image_name;
+                    if (!is_file($copy_dir)) {
+                        // found a replacement, breaking loop
+                        $i = 50;
+                    }
+                }
             }
         }
 
