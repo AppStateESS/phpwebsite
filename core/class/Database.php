@@ -2441,7 +2441,7 @@ class PHPWS_DB_Where {
                 break;
 
             case 'BETWEEN':
-                $value = sprintf("'{%s}' AND '{%s}'", $this->value[0], $this->$value[1]);
+                $value = sprintf("'{%s}' AND '{%s}'", $this->value[0], $this->value[1]);
                 break;
             }
             return $value;

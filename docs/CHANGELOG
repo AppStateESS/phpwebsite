@@ -2,6 +2,11 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+Version 1.5.1
+-----------------------------------------------------------------------
++ Added error check to mysql.php file to prevent over valued CHARs
++ Fixed bug #1708507. Extra string character.
+
 Version 1.5.0
 -----------------------------------------------------------------------
 1 May 2007
