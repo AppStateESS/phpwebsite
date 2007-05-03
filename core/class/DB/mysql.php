@@ -24,7 +24,12 @@ class mysql_PHPWS_SQL {
             break;
     
         case 'string':
-            $setting = 'CHAR(' . $info['len'] . ')';
+            if (!is_numeric($info['len']) || $info['len'] > 255) {
+                $length = 255;
+            } else {
+                $length = $info['len'];
+            }
+            $setting = "CHAR($length)";
             break;
     
         case 'date':
