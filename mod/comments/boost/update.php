@@ -70,6 +70,23 @@ function comments_update(&$content, $currentVersion)
 + Changed control panel icon.
 + Updated language functions.
 </pre>';
+
+    case version_compare($currentVersion, '0.6.1', '<'):
+        $files = array('templates/alt_view.tpl', 'templates/view.tpl');
+        $content[] = '<pre>';
+        if (PHPWS_Boost::updateFiles($files, 'comments')) {
+            $content[] = '---The following templates copied locally.';
+        } else {
+            $content[] = '---The following templates failed to copy locally.';
+        }
+        $content[] = '    ' . implode("\n    ", $files);
+
+        $content[] = '0.6.1 Changes
+-------------
++ Added a "comments" anchor.
++ Changed translatation method for numbering comments.
+</pre>';
+
     }
             
     return true;

@@ -53,18 +53,12 @@ class Comment_Thread {
 
     function countComments($formatted=FALSE)
     {
-        
         if ($formatted) {
-
             if (empty($this->total_comments)) {
-                $msg = dgettext('comments', 'No comments');
-            } elseif ($this->total_comments == 1) {
-                $msg = dgettext('comments', '1 comment');
+                return dgettext('comments', 'No comments');
             } else {
-                $msg = sprintf(dgettext('comments', '%s comments'), $this->total_comments);
+                return sprintf(dngettext('comments', '%d comment', '%d comments', $this->total_comments), $this->total_comments);
             }
-            
-            return $msg;
         } else {
             return $this->total_comments;
         }
