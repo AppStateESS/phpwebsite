@@ -2,18 +2,17 @@
 //<![CDATA[
 
 function pick_image(image_id, src, title) {
-  span = opener.document.getElementById('{itemname}-current-image');
-  image = opener.document.getElementById('{itemname}-current-image').firstChild.firstChild;
-  hidden = opener.document.getElementById('{itemname}_hidden_value');
-  image.src = src;
-  image.title = title;
+    span = opener.document.getElementById('{itemname}-current-image');
+    image = opener.document.getElementById('image-thumbnail-{itemname}');
+    hidden = opener.document.getElementById('{itemname}_hidden_value');
+    image.src = src;
+    image.title = title;
 
-  hidden.setAttribute('value', image_id);
+    hidden.setAttribute('value', image_id);
+    span_update = span.innerHTML.replace(/current=\d*\'/gi, 'current=' + image_id + '\'');
 
-  span_update = span.innerHTML.replace(/current=\d*\'/gi, 'current=' + image_id + '\'');
-
-  span.innerHTML = span_update;
-  window.close();
+    span.innerHTML = span_update;
+    window.close();
 }
 
 function oversized(image_id, width, height, src, title) {

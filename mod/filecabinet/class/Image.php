@@ -211,11 +211,14 @@ class PHPWS_Image extends File_Common {
         return implode(' ', $tag);
     }
 
-    function getThumbnail()
+    function getThumbnail($css_id=null)
     {
-        return sprintf('<img src="%s" title="%s" />',
+        if (empty($css_id)) {
+            $css_id = $this->id;
+        }
+        return sprintf('<img src="%s" title="%s" id="image-thumbnail-%s" />',
                        $this->thumbnailPath(),
-                       $this->title);
+                       $this->title, $css_id);
     }
 
 
@@ -231,6 +234,7 @@ class PHPWS_Image extends File_Common {
      * http://www.php.net/manual/en/function.imagecopyresized.php
      */
     function resize($dst, $new_width, $new_height, $force_png=false) {
+
         if (!extension_loaded('gd')) {
             if (!dl('gd.so')) {
                 @copy(PHPWS_HOME_DIR . 'images/mod/filecabinet/nogd.png', $dst);
@@ -247,9 +251,10 @@ class PHPWS_Image extends File_Common {
 
         if ($this->file_type == 'image/gif') {
             $source_image = imagecreatefromgif($source_image_path);
-        } elseif ($this->file_type == 'image/jpeg') {
+        } elseif ( $this->file_type == 'image/jpeg' || $this->file_type == 'image/pjpeg' ||
+                   $this->file_type == 'image/jpg' ) {
             $source_image = imagecreatefromjpeg($source_image_path);
-        } elseif ($this->file_type == 'image/png') {
+        } elseif ( $this->file_type == 'image/png' || $this->file_type == 'image/x-png' ) {
             $source_image = imagecreatefrompng($source_image_path);
         } else {
             return false;
@@ -300,11 +305,12 @@ class PHPWS_Image extends File_Common {
 
         imagedestroy($source_image);
 
-        if ($force_png && $this->file_type == 'image/png') {
+        if ( $force_png && $this->file_type == 'image/png'|| $this->file_type == 'image/x-png' ) {
             return imagepng($resampled_image, $dst);
         } elseif ($this->file_type == 'image/gif') {
             return imagegif($resampled_image, $dst);
-        } elseif ($this->file_type == 'image/jpeg') {
+        } elseif ( $this->file_type == 'image/jpeg' || $this->file_type == 'image/pjpeg' ||
+                   $this->file_type == 'image/jpg' ) {
             return imagejpeg($resampled_image, $dst);
         } else {
             return FALSE;

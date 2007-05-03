@@ -69,8 +69,13 @@ class FC_Image_Manager {
                         $tpl['THUMBNAIL'] = sprintf('<a href="#" onclick="oversized(%s, %s, %s, \'%s\', \'%s\'); return false">%s</a>',
                                                     $image->id, $this->max_width, $this->max_height, $image->thumbnailPath(), addslashes($image->title), $image->getThumbnail());
                     } else {
+                        /*
                         $tpl['THUMBNAIL'] = sprintf('<a href="#" onclick="pick_image(%s, \'%s\', \'%s\'); return false">%s</a>',
                                                     $image->id, $image->thumbnailPath(), addslashes($image->title), $image->getThumbnail());
+                        */
+                        $tpl['THUMBNAIL'] = sprintf('<a href="javascript:pick_image(%s, \'%s\', \'%s\')">%s</a>',
+                                                    $image->id, $image->thumbnailPath(), addslashes($image->title), $image->getThumbnail());
+
                     }
                     $tpl['TITLE']     = $image->title;
                     $tpl['VIEW']      = $image->getJSView();
@@ -206,7 +211,7 @@ class FC_Image_Manager {
         }
 
         if ($this->image->id) {
-            $label = $this->image->getThumbnail();
+            $label = $this->image->getThumbnail($this->itemname);
         } else {
             $label = $this->noImage();
         }
@@ -243,9 +248,9 @@ class FC_Image_Manager {
     function noImage()
     {
         $no_image = dgettext('filecabinet', 'No image');
-        return sprintf('<img src="%s" width="%s" height="%s" title="%s" alt="%s" />',
+        return sprintf('<img src="%s" width="%s" height="%s" title="%s" alt="%s" id="image-thumbnail-%s" />',
                              FC_NONE_IMAGE_SRC, 100, 
-                             100, $no_image, $no_image);
+                             100, $no_image, $no_image, $this->itemname);
     }
 
     function getClearLink()
@@ -332,6 +337,8 @@ class FC_Image_Manager {
             $image_button = sprintf('<input id="add-image" type="button" name="add_image" value="%s" onclick="%s" />', dgettext('filecabinet', 'Add image'), $image_window);
             $tpl['ADD_IMAGE'] = $image_button;
         }
+
+        $tpl['CLOSE_IMAGE'] = sprintf('<input type="button" onclick="javascript:window.close()" value="%s" id="close-image" />', dgettext('filecabinet', 'Close'));
 
         if ($folder->id) {
             $show_images = $this->showImages($folder, $image->id);

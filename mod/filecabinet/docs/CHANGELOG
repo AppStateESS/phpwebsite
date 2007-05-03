@@ -1,5 +1,17 @@
-Version 1.0.1
+Version 1.0.1 (not created)
 ---------------------------------
+3 May 2007
++ Fixed several bugs popping up in IE7
++ Added close button to image manager.
++ Updated files : templates/style.css, templates/image_folders.tpl,
+                  templates/javascript.tpl,
+                  templates/manager/javascript.tpl,
+                  javascript/folder_contents/head.js,
+                  javascript/pick_image/body.js,
+                  javascript/pick_image/head.js
+
+
+
 2 May 2007
 + Changed variable name in javascript file to work under IE
 + Updated files javascript/folder_contents/head.js

@@ -130,16 +130,16 @@ class Cabinet {
             }
 
             $this->document_mgr->document->delete();
-            PHPWS_Core::goBack();
+            PHPWS_Core::returnToBookmark();
             break;
 
         case 'delete_image':
             $this->loadImageManager();
-            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->image_mgr->document->folder_id)) {
+            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->image_mgr->image->folder_id)) {
                 Current_User::disallow();
             }
             $this->image_mgr->image->delete();
-            PHPWS_Core::goBack();
+            PHPWS_Core::returnToBookmark();
             break;
 
         case 'document':
@@ -175,7 +175,7 @@ class Cabinet {
         case 'post_image_upload':
             $javascript = true;
             $this->loadImageManager();
-            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->image_mgr->document->folder_id)) {
+            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->image_mgr->image->folder_id)) {
                 Current_User::disallow();
             }
 

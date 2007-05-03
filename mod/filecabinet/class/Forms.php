@@ -73,6 +73,7 @@ class Cabinet_Form {
 
     function folderContents($folder, $pick_image=false)
     {
+        PHPWS_Core::bookmark();
         Layout::addStyle('filecabinet');
         PHPWS_Core::initCoreClass('DBPager.php');
 

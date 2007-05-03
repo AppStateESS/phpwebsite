@@ -136,6 +136,12 @@ left : 320px;
 top : 552px;
 }
 
+input#close-image {
+position : absolute;
+left : 500px;
+top : 552px;
+}
+
 ul#image-list li {
 display : inline;
 list-style-type : none;
