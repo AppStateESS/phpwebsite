@@ -273,6 +273,7 @@ class PHPWS_Core {
         if (isset($_SESSION['PHPWS_Bookmark'])) {
             $bm = $_SESSION['PHPWS_Bookmark'];
             if ($clear_bm) {
+                $_SESSION['PHPWS_Bookmark'] = null;
                 unset($_SESSION['PHPWS_Bookmark']);
             }
                 
