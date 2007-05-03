@@ -280,6 +280,31 @@ Notice: File Cabinet has been completely rewritten
 + Folders now have permissions, not images and documents.
 </pre>';
 
+    case version_compare($version, '1.0.1', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/style.css', 'templates/image_folders.tpl',
+                       'templates/javascript.tpl',
+                       'templates/manager/javascript.tpl',
+                       'javascript/folder_contents/head.js',
+                       'javascript/pick_image/body.js',
+                       'javascript/pick_image/head.js',
+                       'conf/config.php');
+
+        if (PHPWS_Boost::updateFiles($files, 'filecabinet')) {
+            $content[] = '--- Copied the following files:';
+        } else {
+            $content[] = '--- FAILED copying the following files:';
+        }
+
+        $content[] = "    " . implode("\n    ", $files);
+
+        $content[] = '
+1.0.1 changes
+-----------------------
++ Fixed several image manager bugs popping up in IE7
++ Fixed bug caused when an user picked an image that was already resized.
++ Added choice (via config) to make extra resized images instead of previous
++ Added close button to image manager.</pre>';
     }
 
     return true;
