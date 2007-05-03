@@ -82,6 +82,11 @@ $content[] = '<pre>1.1.1 Changes
 + Updated language functions.
 </pre>';
 
+    case version_compare($currentVersion, '1.2.1', '<'):
+        $content[] = '<pre>1.2.1 changes
+-----------------
++ Fixed bug with making home link.
+</pre>';
 
     }
     return true;
