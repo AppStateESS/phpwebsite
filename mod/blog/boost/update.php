@@ -139,6 +139,13 @@ function blog_update(&$content, $currentVersion)
 + Fixed pagination on list view.
 + Now uses new File Cabinet module.
 </pre>';
+
+    case version_compare($currentVersion, '1.5.1', '<'):
+        $content[] = '<pre>
+1.5.1 Changes
+-------------
++ Comments link points to comments anchor.</pre>';
+
     } // end of switch
     return true;
 }

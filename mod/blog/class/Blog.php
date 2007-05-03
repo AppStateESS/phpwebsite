@@ -337,8 +337,12 @@ class Blog {
            
             if ($summarized && !empty($comments)) {
                 $link = $comments->countComments(true);
-                $template['COMMENT_LINK'] = PHPWS_Text::rewriteLink($link, 'blog', $this->id);
-                
+                if (MOD_REWRITE_ENABLED) {
+                    $template['COMMENT_LINK'] = sprintf('<a href="blog/%d#comments">%s</a>', $this->id, $link);
+                } else {
+                    $template['COMMENT_LINK'] = sprintf('<a href="index.php?module=blog&amp;id=%d#comments">%s</a>', $this->id, $link);
+                }
+
                 $last_poster = $comments->getLastPoster();
                 
                 if (!empty($last_poster)) {

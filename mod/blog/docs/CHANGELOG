@@ -1,3 +1,7 @@
+3 May 2007
++ Fixed bug 1707618 - Comments link now goes to comments anchor
++ Requires comments version 0.6.1
+
 Version 1.5.0
 ------------------------------------------------------------------
 24 April 2007
