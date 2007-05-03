@@ -97,10 +97,9 @@ th {
 
 
 /* -------- Form color ---------- */
-
 input, textarea {
     color: #000;
-    background: #ADB583;
+    background-color: #ADB583;
     border: #000 solid 1px;
 }
 
@@ -109,9 +108,10 @@ input:focus, textarea:focus {
     color : black;
 }
 
-input[type="submit"] {
+
+input[type="submit"], input[type="button"]{
     color: #000;
-    background: #ADB583;
+    background-color: #ADB583;
     border: 1px #000 outset;
     cursor : default;
     cursor : pointer;

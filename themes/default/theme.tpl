@@ -5,9 +5,13 @@
 {METATAGS}
 {JAVASCRIPT}
 {STYLE}
-<!--[if IE 6]>
+<!--[if lt IE 7]>
   <link rel="stylesheet" type="text/css" href="themes/default/hacks.css" />
 <![endif]-->
+<!--[if IE 7]>
+  <link rel="stylesheet" type="text/css" href="themes/default/ie7.css" />
+<![endif]-->
+
 </head>
 <body>
 {SAMPLE}
