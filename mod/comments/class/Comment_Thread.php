@@ -223,6 +223,16 @@ class Comment_Thread {
         $pager = new DBPager('comments_items', 'Comment_Item');
         $pager->saveLastView();
         $form = new PHPWS_Form;
+
+        $getVals = PHPWS_Text::getGetValues();
+        if (!empty($getVals)) {
+            $referer[] = 'index.php?';
+            foreach ($getVals as $key=>$val) {
+                $referer[] = "$key=$val";
+            }
+            $form->addHidden('referer', urlencode(implode('&', $referer)));
+        }
+
         $form->addHidden('module', 'comments');
         $form->addHidden('user_action', 'change_view');
         $form->addSelect('time_period', $time_period);

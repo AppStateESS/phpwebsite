@@ -206,7 +206,11 @@ class Comments {
     function changeView()
     {
         $getValues = PHPWS_Text::getGetValues();
-        $referer = PHPWS_Text::getGetValues($_SERVER['HTTP_REFERER']);
+        if (isset($_GET['referer'])) {
+            $referer = PHPWS_Text::getGetValues(urldecode($_GET['referer']));
+        } else {
+            $referer = PHPWS_Text::getGetValues($_SERVER['HTTP_REFERER']);
+        }
 
         $referer['time_period'] = $getValues['time_period'];
         $referer['order'] = $getValues['order'];
@@ -217,7 +221,6 @@ class Comments {
         
         $link = 'index.php?' . implode('&', $url);
         PHPWS_Core::reroute($link);
-        
         return;
     }
   

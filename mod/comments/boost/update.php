@@ -87,6 +87,10 @@ function comments_update(&$content, $currentVersion)
 + Changed translatation method for numbering comments.
 </pre>';
 
+    case version_compare($currentVersion, '0.6.2', '<'):
+        $content[] = '<pre>0.6.2 Changes
+-------------
++ Fixed bug with age ordering.</pre>';
     }
             
     return true;
