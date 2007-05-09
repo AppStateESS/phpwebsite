@@ -46,6 +46,12 @@ function version_update(&$content, $currentVersion)
 + Changed control panel icon
 </pre>';
 
+    case version_compare($currentVersion, '0.1.4', '<'):
+        $content[] = '<pre>
+0.1.4 changes
+-------------
++ Fixed Bug #1713230 : Changed getList to only pull specific columns if set.
+</pre>';
     }
     return TRUE;
 }

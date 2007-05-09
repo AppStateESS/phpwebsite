@@ -1,3 +1,5 @@
+Version 0.1.4
+---------------------------------------------------------------------
 9 May 2007
 + Bug #1713230 : Changed getList to only pull specific columns if set.
   Thanks Eloi.
