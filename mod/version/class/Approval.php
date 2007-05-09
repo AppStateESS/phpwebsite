@@ -99,7 +99,14 @@ class Version_Approval {
      */
     function get($obj_mode=TRUE)
     {
-        $this->_db->addColumn('*');
+        if (!empty($this->columns)) {
+            foreach ($this->columns as $value) {
+                $this->_db->addColumn($value);
+            }
+        } else {
+            $this->_db->addColumn('*');
+        }
+
         $this->_db->addColumn('users.username');
         $this->_db->addWhere('vr_approved', 0);
         $this->_db->addJoin('left', $this->_db->tables[0], 'users', 'vr_creator', 'id');
