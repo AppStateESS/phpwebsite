@@ -383,8 +383,17 @@ Javascript
 + open_window lets you label the windows now
 + js_calendar - fixed style sheet to make xhtml compliant
 </pre>';
-    }
 
+    case version_compare($version, '1.5.1', '<'):
+        $content[] = '<pre>1.5.1 changes
+--------------
++ Added error check to mysql.php file to prevent over-valued CHARs
++ Fixed bug #1708507. Extra string character.
++ Database - bug #1713219 - Added auto detect parameter to insert
+             function in saveObject
+</pre>';
+        
+    }
     return true;
 }
 

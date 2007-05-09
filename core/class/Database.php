@@ -2060,12 +2060,10 @@ class PHPWS_DB {
             $this->addValue($column, $value);
         }
 
-        if (isset($this->qwhere) ||
-            ((isset($this->where) && count($this->where)))) {
+        if (isset($this->qwhere) || !empty($this->where)) {
             $result = $this->update();
-        }
-        else {
-            $result = $this->insert();
+        } else {
+            $result = $this->insert($autodetect_id);
 
             if (is_numeric($result)) {
                 if (array_key_exists('id', $object_vars)) {
