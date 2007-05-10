@@ -2,6 +2,11 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
++ Added two functions to DBPager: setAnchor and getAnchor. setAnchor
+  allows an anchor to be added to all navigation links. getAnchor is
+  used internally to help.
+
+
 Version 1.5.1
 -----------------------------------------------------------------------
 + Added error check to mysql.php file to prevent over valued CHARs
