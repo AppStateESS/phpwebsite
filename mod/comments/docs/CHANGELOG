@@ -1,3 +1,5 @@
++ Added setAnchor to comments. Needs newest version of DBPager.
+
 Version 0.6.2
 -------------------------------------------------------------------
 + Fixed bug with ordering comments by age.

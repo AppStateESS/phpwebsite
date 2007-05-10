@@ -221,6 +221,7 @@ class Comment_Thread {
 
 
         $pager = new DBPager('comments_items', 'Comment_Item');
+        $pager->setAnchor('comments');
         $pager->saveLastView();
         $form = new PHPWS_Form;
 
