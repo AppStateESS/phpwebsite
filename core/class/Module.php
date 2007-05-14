@@ -128,6 +128,7 @@ class PHPWS_Module {
             $this->setImportSQL(true);
             $this->setProperName('Core');
             $this->setVersionHttp($version_http);
+            $this->setAbout(true);
         } else {
             $this->setDirectory(PHPWS_SOURCE_DIR . "mod/$title/");
             if ($file == true) {

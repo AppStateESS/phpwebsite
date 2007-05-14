@@ -392,7 +392,12 @@ Javascript
 + Database - bug #1713219 - Added auto detect parameter to insert
              function in saveObject
 </pre>';
-        
+
+    case version_compare($version, '1.5.2', '<'):
+        $content[] = '<pre>1.5.2 changes
+--------------
++ Added setAnchor function to DBPager.
+</pre>';
     }
     return true;
 }
