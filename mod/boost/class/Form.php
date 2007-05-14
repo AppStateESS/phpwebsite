@@ -34,12 +34,13 @@ class Boost_Form {
         PHPWS_Core::initCoreClass('File.php');
         PHPWS_Core::initModClass('boost', 'Boost.php');
 
-        $allow_update = TRUE;
+        $allow_update = true;
+        $core_update_needed = false;
 
         $dir_content = array();
         if (!PHPWS_Boost::checkDirectories($dir_content)) {
             $tpl['DIRECTORIES'] = implode('<br />', $dir_content);
-            $allow_update = FALSE;
+            $allow_update = false;
         }
 
         $core_mods      = PHPWS_Core::coreModList();
@@ -59,7 +60,7 @@ class Boost_Form {
         $dir_mods = array_diff($dir_mods, $core_mods);
 
         if ($type == 'core_mods') {
-            $allowUninstall = FALSE;
+            $allowUninstall = false;
             $modList = $core_mods;
 
             $core_file = new PHPWS_Module('core');
@@ -77,6 +78,14 @@ class Boost_Form {
                 $link_title = dgettext('boost', 'Check');
             }
 
+            if ($core_file->isAbout()){
+                $address = PHPWS_Text::linkAddress('boost',
+                                                   array('action' => 'aboutView', 'aboutmod'=> $core_file->title),
+                                                   true);
+                $aboutView = array('label'=>dgettext('boost', 'About'), 'address'=>$address);
+                $template['ABOUT'] = Layout::getJavascript('open_window', $aboutView);
+            }
+
 
             $link_command['opmod'] = 'core';            
             $link_command['action'] = 'check';
@@ -86,6 +95,8 @@ class Boost_Form {
                 if ($core_file->checkDependency()) {
                     $link_command['action'] = 'update_core';
                     $core_links[] = PHPWS_Text::secureLink(dgettext('boost', 'Update'), 'boost', $link_command);
+                    $tpl['WARNING'] = dgettext('boost', 'The Core requires updating! You should do so before any modules.');
+                    $core_update_needed = true;
                 } else {
                     $link_command['action'] = 'show_dependency';
                     $core_links[] = PHPWS_Text::secureLink(dgettext('boost', 'Missing dependency'), 'boost', $link_command);
@@ -101,7 +112,7 @@ class Boost_Form {
             $template['ROW']     = 1;
             $tpl['mod-row'][] = $template;
         } else {
-            $allowUninstall = TRUE;
+            $allowUninstall = true;
             $modList = $dir_mods;
         }
 
@@ -170,7 +181,7 @@ class Boost_Form {
                     $db_mod = new PHPWS_Module($mod->title, false);
                     $template['VERSION'] = $db_mod->version . ' &gt; ' . $mod->version;
                     if ($mod->checkDependency()) {
-                        if ($title == 'boost') {
+                        if ($title == 'boost' && !$core_update_needed) {
                             $tpl['WARNING'] = dgettext('boost', 'Boost requires updating! You should do so before any other module!');
                         }
                         $link_title = dgettext('boost', 'Update');
@@ -190,7 +201,7 @@ class Boost_Form {
                     } else {
                         $uninstallVars = array('opmod'=>$title, 'action'=>'uninstall');
                         $js['QUESTION'] = dgettext('boost', 'Are you sure you want to uninstall this module? All data will be deleted.');
-                        $js['ADDRESS'] = PHPWS_Text::linkAddress('boost', $uninstallVars, TRUE);
+                        $js['ADDRESS'] = PHPWS_Text::linkAddress('boost', $uninstallVars, true);
                         $js['LINK'] = dgettext('boost', 'Uninstall');
                         $links[] = javascript('confirm', $js);
                     }

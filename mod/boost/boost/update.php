@@ -62,6 +62,13 @@ function boost_update(&$content, $currentVersion)
 + Changed backLink call to definite url to prevent loops.
 + Added ability to uninstall a module despite dependency settings.
 </pre>';
+
+    case version_compare($currentVersion, '2.1.1', '<'):
+        $files = array('templates/module_list.tpl');
+        PHPWS_Boost::updateFiles($files, 'boost');
+        $content[] = '<pre>2.1.1 Changes
++ Boost now warns admin if Core update is needed.
+</pre>';
     }
 
     return TRUE;
