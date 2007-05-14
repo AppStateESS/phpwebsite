@@ -91,6 +91,23 @@ function comments_update(&$content, $currentVersion)
         $content[] = '<pre>0.6.2 Changes
 -------------
 + Fixed bug with age ordering.</pre>';
+
+    case version_compare($currentVersion, '0.6.3', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/alt_view.tpl', 'templates/view.tpl');
+        if (PHPWS_Boost::updateFiles($files, 'comments')) {
+            $content[] = '---The following templates copied locally.';
+        } else {
+            $content[] = '---The following templates failed to copy locally.';
+        }
+        $content[] = '    ' . implode("\n    ", $files);
+        $content[] = '
+0.6.3 Changes
+-------------
++ Added setAnchor to comments.
++ Changed anchor tag to conform with Safari.
+</pre>';
+
     }
             
     return true;

@@ -1,4 +1,7 @@
+Version 0.6.3
+-------------------------------------------------------------------
 + Added setAnchor to comments. Needs newest version of DBPager.
++ Changed anchor tag to conform with Safari.
 
 Version 0.6.2
 -------------------------------------------------------------------

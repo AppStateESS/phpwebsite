@@ -1,5 +1,5 @@
 <div class="comments">
-    <a name="comments" />
+    <a name="comments"></a>
     <div class="page-select bgcolor1">
         {START_FORM}<!-- BEGIN page-select --><strong>{PAGE_LABEL}:</strong> {PAGES}&nbsp;|&nbsp;
         <!-- END page-select -->{NEW_POST_LINK}
