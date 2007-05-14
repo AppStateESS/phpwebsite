@@ -11,7 +11,7 @@ $register     = FALSE;
 $unregister   = FALSE;
 $import_sql   = TRUE;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/block/check.xml';
-$about        = FALSE;
+$about        = true;
 $priority     = 50;
 
 ?>

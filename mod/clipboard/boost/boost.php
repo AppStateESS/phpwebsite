@@ -7,13 +7,8 @@
 
 $proper_name  = 'Clipboard';
 $version      = '1.0.0';
-$register     = FALSE;
-$unregister   = FALSE;
-$import_sql   = FALSE;
-$image_dir    = FALSE;
-$file_dir     = FALSE;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/clipboard/check.xml';
-$about        = FALSE;
+$about        = true;
 $priority     = 50;
 
 ?>

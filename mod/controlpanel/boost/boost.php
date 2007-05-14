@@ -7,9 +7,8 @@
 $proper_name = 'Control Panel';
 $version     = '2.1.0';
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/controlpanel/check.xml';
-$register    = TRUE;
-$unregister  = TRUE;
-$import_sql  = TRUE;
-$image_dir   = FALSE;
-$file_dir    = FALSE;
+$register    = true;
+$unregister  = true;
+$import_sql  = true;
+$about       = true;
 ?>

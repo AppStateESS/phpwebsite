@@ -5,13 +5,11 @@
    */
 $proper_name  = 'Notes';
 $version      = '0.2.0';
-$register     = FALSE;
-$unregister   = FALSE;
-$import_sql   = TRUE;
-$image_dir    = FALSE;
-$file_dir     = FALSE;
+$register     = false;
+$unregister   = false;
+$import_sql   = true;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/notes/check.xml';
-$about        = FALSE;
+$about        = true;
 $priority     = 50;
 $dependency   = true;
 ?>

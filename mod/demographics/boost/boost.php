@@ -10,4 +10,5 @@ $register     = TRUE;
 $unregister   = TRUE;
 $import_sql   = TRUE;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/demographics/check.xml';
+$about        = true;
 ?>

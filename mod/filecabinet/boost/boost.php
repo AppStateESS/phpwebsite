@@ -6,13 +6,13 @@
 
 $proper_name  = 'File Cabinet';
 $version      = '1.0.1';
-$register     = FALSE;
-$unregister   = FALSE;
-$import_sql   = TRUE;
-$image_dir    = TRUE;
-$file_dir     = TRUE;
+$register     = false;
+$unregister   = false;
+$import_sql   = true;
+$image_dir    = true;
+$file_dir     = true;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/filecabinet/check.xml';
-$about        = FALSE;
+$about        = true;
 $priority     = 50;
 
 ?>

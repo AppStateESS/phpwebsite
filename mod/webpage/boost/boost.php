@@ -6,8 +6,6 @@
 $proper_name  = 'Web Pages';
 $version      = '0.5.2';
 $import_sql   = TRUE;
-$image_dir    = TRUE;
-$file_dir     = FALSE;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/webpage/check.xml';
 $about        = TRUE;
 $priority     = 50;

@@ -10,10 +10,8 @@ $version      = '2.1.8';
 $register     = false;
 $unregister   = TRUE;
 $import_sql   = TRUE;
-$image_dir    = TRUE;
-$file_dir     = FALSE;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/categories/check.xml';
-$about        = FALSE;
+$about        = true;
 $priority     = 20;
 
 ?>

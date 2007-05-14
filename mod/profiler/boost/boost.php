@@ -11,7 +11,5 @@ $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/profiler/check
 $register     = FALSE;
 $unregister   = FALSE;
 $import_sql   = TRUE;
-$image_dir    = TRUE;
-$file_dir     = FALSE;
-
+$about        = true;
 ?>

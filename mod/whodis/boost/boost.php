@@ -10,7 +10,7 @@ $register     = FALSE;
 $unregister   = FALSE;
 $import_sql   = TRUE;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/whodis/check.xml';
-$about        = false;
+$about        = true;
 $priority     = 50;
 
 ?>
