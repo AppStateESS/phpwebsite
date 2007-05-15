@@ -89,9 +89,10 @@ class Webpage_Page {
     function getTemplateList()
     {
         $directory = $this->getTemplateDirectory();
+        $files = @scandir($directory);
 
-        $files = scandir($directory);
         if (empty($files)) {
+            PHPWS_Error::log(WP_PAGE_DIRECTORY, 'webpage', 'Webpage_Page::getTemplateList', $directory);
             return null;
         }
 

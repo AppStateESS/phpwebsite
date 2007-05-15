@@ -105,8 +105,13 @@ class Webpage_Forms {
         $form->setCols('content', 90);
         $form->setLabel('content', dgettext('webpage', 'Content'));
 
+        $page_templates = $page->getTemplateList();
 
-        $form->addSelect('template', $page->getTemplateList());
+        if (empty($page_templates)) {
+            return dgettext('webpage', 'There is a problem with your page templates. Check your error log.');
+        }
+        
+        $form->addSelect('template', $page_templates);
         $form->setMatch ('template', $page->template);
         $form->setLabel('template', dgettext('webpage', 'Page template'));
 

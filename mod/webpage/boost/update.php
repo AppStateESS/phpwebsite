@@ -126,7 +126,20 @@ $content[] = '
 + Added German translation files.
 + Removed page and volume links from titles.
 </pre>';
-        break;
+
+    case version_compare($currentVersion, '0.5.3', '<'):
+        $content[] = '<pre>';
+        if (PHPWS_Boost::updateFiles(array('conf/error.php'), 'webpage')) {
+            $content[] = '--- Updated conf/error.php';
+        } else {
+            $content[] = '--- Unable to update conf/error.php';
+        }
+        $content[] = '
+0.5.3 Changes
+--------------
++ Added error catch to page template function.
+</pre>';
+
 
     }
 
