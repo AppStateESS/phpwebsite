@@ -81,8 +81,14 @@ CREATE TABLE whodis_filters (
 + Updated translation functions
 + Added German translation files.
 + Changed control panel icon
-</pre>
-';
+</pre>';
+
+    case version_compare($version, '0.1.1', '<'):
+        $content[] = '<pre>0.1.1 changes
+---------------
++ Added about file.
++ Repackaged because of distro problem with 0.1.0
+</pre>';
     }
     return true;
 }
