@@ -30,6 +30,14 @@ function related_update(&$content, $version)
 + Updated translation functions.
 </pre>';
 
+    case version_compare($version, '0.1.4', '<'):
+        $content[] = '<pre>
+0.1.4 changes
+--------------
++ Added uninstall.php file.
++ Removed uninstall.sql.
+</pre>';
+
     }
 
     return true;

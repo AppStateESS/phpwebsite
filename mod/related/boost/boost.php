@@ -4,7 +4,7 @@
    * @version $Id$
    */
 $proper_name  = 'Related';
-$version      = '0.1.3';
+$version      = '0.1.4';
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/related/check.xml';
 $register     = FALSE;
 $unregister   = FALSE;
@@ -12,5 +12,6 @@ $import_sql   = TRUE;
 $image_dir    = FALSE;
 $file_dir     = FALSE;
 $priority     = 50;
+$about        = true;
 
 ?>
