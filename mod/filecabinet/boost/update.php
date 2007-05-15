@@ -305,6 +305,37 @@ Notice: File Cabinet has been completely rewritten
 + Fixed bug caused when an user picked an image that was already resized.
 + Added choice (via config) to make extra resized images instead of previous
 + Added close button to image manager.</pre>';
+
+    case version_compare($version, '1.0.2', '<'):
+        $content[] = '<pre>';
+        $db = new PHPWS_DB('folders');
+        if (!$db->isTableColumn('key_id')) {
+            if (PHPWS_Error::logIfError($db->addTableColumn('key_id', 'int NOT NULL default 0'))) {
+                $content[] = '--- An error occurred when trying to add key_id as a column to the folders table.</pre>';
+                return false;
+            }
+            $content[] = '--- Successfully added key_id column to folders table.';
+
+            $db2 = new PHPWS_DB('phpws_key');
+            $db2->addWhere('module', 'filecabinet');
+            $db2->delete();
+            $content[] = '--- Deleted false folder keys.';
+
+            $db->reset();
+            PHPWS_Core::initModClass('filecabinet', 'Folder.php');
+            $result = $db->getObjects('Folder');
+            if (!empty($result)) {
+                foreach ($result as $folder) {
+                    $folder->saveKey(true);
+                }
+            }
+        }
+        $content[] = '
+1.0.2 changes
+--------------
++ 1.0.0 update was missing key_id column addition to folders table.
+</pre>';
+
     }
 
     return true;
