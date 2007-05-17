@@ -8,7 +8,7 @@
    * @author Matthew McNaney <mcnaney at gmail dot com>
    */
 
-define('DEFAULT_CONDITION', 'RewriteCond %{REQUEST_FILENAME} !-d');
+define('DEFAULT_CONDITION', "RewriteCond %{REQUEST_FILENAME} !-f\nRewriteCond %{REQUEST_FILENAME} !-d");
 define('DEFAULT_REWRITE_1', 'RewriteRule ^([a-z0-9]+)/([a-z0-9]+)/?$ index.php?module=$1&id=$2 [L,NC]');
 define('DEFAULT_REWRITE_2', 'RewriteRule ^([a-z0-9]+)/([a-z0-9]+)/([a-z0-9]+)/?$ index.php?module=$1&id=$2&page=$3 [L,NC]');
 ?>

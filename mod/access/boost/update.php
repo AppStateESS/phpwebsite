@@ -44,7 +44,7 @@ function access_update(&$content, $version)
                        'templates/forms/administrator.tpl',
                        'templates/forms/update_file.tpl',
                        'img/access.png');
-        if (PHPWS_Boost::updateFiles($files, 'menu')) {
+        if (PHPWS_Boost::updateFiles($files, 'access')) {
             $content[] = '+ The following files were updated successfully.';
         } else {
             $content[] = '+ The following files were not updated successfully.';
@@ -70,7 +70,28 @@ function access_update(&$content, $version)
         $content[] = '<pre>0.2.1 changes
 ---------------
 + Updated to new language format.</pre>';
-        
+
+    case version_compare($version, '0.2.2', '<'):
+        $content[] = '<pre>';
+        $files = array('conf/error.php',
+                       'templates/forms/administrator.tpl',
+                       'templates/forms/update_file.tpl',
+                       'img/access.png',
+                       'conf/config.php');
+        if (PHPWS_Boost::updateFiles($files, 'access')) {
+            $content[] = '+ The following files were updated successfully.';
+        } else {
+            $content[] = '+ The following files were not updated successfully.';
+        }
+        $content[] = '    ' . implode("\n    ", $files);
+
+        $content[] = '
+0.2.2 changes
+---------------
++ The default rewrite conditional was missing a file check.
++ Previous update had updated files going to incorrect directory.
++ Template was removing curly brackets from review mode. Fixed.
+</pre>';
     }
 
     return true;

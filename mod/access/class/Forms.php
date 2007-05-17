@@ -145,12 +145,20 @@ class Access_Forms {
         $template['HTACCESS'] = $allow_deny;
         $template['HTACCESS'] .= Access::getRewrite();
 
+        $template['HTACCESS'] = str_replace('{', '&#123;', $template['HTACCESS']);
+        $template['HTACCESS'] = str_replace('}', '&#125;', $template['HTACCESS']);
+
         $template['CURRENT'] = file_get_contents(PHPWS_HOME_DIR . '.htaccess');
         $template['CURRENT_LABEL'] = dgettext('access', 'Current .htaccess file');
 
-        return PHPWS_Template::process($template, 'access', 'forms/update_file.tpl');
-        
+        $template['CURRENT'] = str_replace('{', '&#123;', $template['CURRENT']);
+        $template['CURRENT'] = str_replace('}', '&#125;', $template['CURRENT']);
+
+
+        $content = PHPWS_Template::process($template, 'access', 'forms/update_file.tpl');
+        return $content;
     }
+
 
     function denyAllowForm()
     {
@@ -178,7 +186,7 @@ class Access_Forms {
         $db = new PHPWS_DB('access_allow_deny');
         $result = $db->getObjects('Access_Allow_Deny');
 
-        $options['none']      = '';
+        $options['none']      = dgettext('access', '-- Choose option --');
         $options['active']    = dgettext('access', 'Activate');
         $options['deactive']  = dgettext('access', 'Deactivate');
         $options['delete']    = dgettext('access', 'Delete');
