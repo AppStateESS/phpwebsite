@@ -4,7 +4,6 @@
    * @version $Id$
    */
 
-check_cookie();
 javascriptEnabled();
 Layout::checkSettings();
 ?>

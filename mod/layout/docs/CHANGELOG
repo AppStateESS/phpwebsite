@@ -1,3 +1,7 @@
+22 May 2007
++ The cookie check was interfering with the rss feed. Cut off the page
+  too quickly. Moved cookie check to the close.php file.
+
 Version 2.4.0
 -------------------------------------------------------------------
 16 April 2007

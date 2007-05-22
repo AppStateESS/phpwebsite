@@ -11,6 +11,6 @@ if (Current_User::allow('layout')) {
  }
 
 Layout::showKeyStyle();
-
+check_cookie();
 echo Layout::display();
 ?>
