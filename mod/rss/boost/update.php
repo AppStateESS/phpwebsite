@@ -39,7 +39,27 @@ function rss_update(&$content, $version)
 + Changed control panel icon
 </pre>';
 
+    case version_compare($version, '0.2.0', '<'):
+        $db = new PHPWS_DB('rss_channel');
+        PHPWS_Error::logIfError($db->dropTableColumn('last_build_date'));
+        $content[] = '<pre>';
+        $files = array('templates/rss20.tpl', 'templates/settings.tpl');
+        if (PHPWS_Boost::updateFiles($files, 'rss')) {
+            $content[] = '--- Successfully updated the following files:';
+        } else {
+            $content[] = '--- Could NOT update the following files successfully:';
+        }
 
+        $content[] = '    ' . implode("\n    ", $files);
+
+        $content[] = '
+0.2.0 changes
+---------------
++ RSS 2.0 is now useable.
++ Added settings page for some of the RSS 2.0 options
++ Removed a header line that caused some verification errors in the 2.0 template.
++ Changed template process. Some fields were missing from the feeds.
+';
     }
 
     return true;

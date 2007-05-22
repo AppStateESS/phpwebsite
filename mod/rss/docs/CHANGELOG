@@ -1,3 +1,11 @@
+Version 0.2.0 (not uploaded)
+-------------------------------------------------------------------------------
+22 May 2007
++ RSS 2.0 is now useable.
++ Added settings page for some of the RSS 2.0 options
++ Removed a header line that caused some verification errors in the 2.0 template.
++ Changed template process. Some fields were missing from the feeds.
+
 Version 0.1.4
 -------------------------------------------------------------------------------
 5 April 2007

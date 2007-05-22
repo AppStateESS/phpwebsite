@@ -45,6 +45,21 @@ class RSS_Admin {
             $tpl = RSS_Admin::channels();
             break;
 
+        case 'settings':
+            $tpl = RSS_Admin::settings();
+            break;
+
+        case 'save_settings':
+            $result = RSS_Admin::save_settings();
+
+            if (!$result) {
+                PHPWS_Settings::save('rss');
+                $result = dgettext('rss', 'Settings saved successfully.');
+            }
+            $tpl = RSS_Admin::settings();
+            $tpl['MESSAGE'] = &$result;
+            break;
+
         case 'save_feed':
             $result = $feed->post();
             if (is_array($result)) {
@@ -159,6 +174,9 @@ class RSS_Admin {
         $opt['title'] = dgettext('rss', 'Import');
         $tab['import'] = $opt;
 
+        $opt['title'] = dgettext('rss', 'Settings');
+        $tab['settings'] = $opt;
+
         $panel = new PHPWS_Panel('rss_admin');
         $panel->quickSetTabs($tab);
         return $panel;
@@ -189,6 +207,72 @@ class RSS_Admin {
 
         return $tpl;
 
+    }
+
+    function settings()
+    {
+        $form = new PHPWS_Form('rss-settings');
+        $form->addHidden('module', 'rss');
+        $form->addHidden('command', 'save_settings');
+
+        $files = array(1=>'1', 2=>'2');
+        $filenames = array(1=>'RSS 1.0', 2=>'RSS 2.0');
+        $form->addRadio('rssfeed', $files);
+        $form->setLabel('rssfeed', $filenames);
+        $form->setMatch('rssfeed', PHPWS_Settings::get('rss', 'rssfeed'));
+        
+
+        $form->addText('editor', PHPWS_Settings::get('rss', 'editor'));
+        $form->setLabel('editor', dgettext('rss', 'Managing editor email address'));
+        $form->setSize('editor', 30);
+
+        $form->addText('webmaster', PHPWS_Settings::get('rss', 'webmaster'));
+        $form->setLabel('webmaster', dgettext('rss', 'Webmaster email address'));
+        $form->setSize('webmaster', 30);
+
+        $form->addText('copyright', PHPWS_Settings::get('rss', 'copyright'));
+        $form->setLabel('copyright', dgettext('rss', 'Copyright'));
+        $form->setSize('copyright', 40);
+        $form->addSubmit(dgettext('rss', 'Save settings'));
+
+        $tpl = $form->getTemplate();
+
+        $fc['TITLE']   = dgettext('rss', 'General Settings');
+        $fc['CONTENT'] = PHPWS_Template::process($tpl, 'rss', 'settings.tpl');
+        
+        return $fc;
+    }
+
+    function save_settings()
+    {
+        $message = null;
+        PHPWS_Settings::set('rss', 'rssfeed', (int)$_POST['rssfeed']);
+
+        if (!empty($_POST['editor'])) {
+            if (PHPWS_Text::isValidInput($_POST['editor'], 'email')) {
+                PHPWS_Settings::set('rss', 'editor', $_POST['editor']);
+            } else {
+                $message = dgettext('rss', 'Please check editor email format.');
+            }
+        } else {
+            PHPWS_Settings::set('rss', 'editor', '');
+        }
+
+        if (!empty($_POST['webmaster'])) {
+            if (PHPWS_Text::isValidInput($_POST['webmaster'], 'email')) {
+                PHPWS_Settings::set('rss', 'webmaster', $_POST['webmaster']);
+            } else {
+                $message = dgettext('rss', 'Please check webmaster email format.');
+            }
+        } else {
+            PHPWS_Settings::set('rss', 'webmaster', '');
+        }
+
+        if (!empty($_POST['copyright'])) {
+            PHPWS_Settings::set('rss', 'copyright', strip_tags($_POST['copyright']));
+        }
+        
+        return $message;
     }
 
     function channels()

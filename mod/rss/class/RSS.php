@@ -88,9 +88,8 @@ class RSS {
         }
 
         $channel->loadFeeds();
-
+        
         header('Content-type: text/xml');
-        header(sprintf('Content-Disposition: inline; filename="feed%s.xml"', time()));
         echo $channel->view();
         exit();
     }
