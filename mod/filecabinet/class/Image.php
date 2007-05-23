@@ -305,7 +305,7 @@ class PHPWS_Image extends File_Common {
 
         imagedestroy($source_image);
 
-        if ( $force_png && $this->file_type == 'image/png'|| $this->file_type == 'image/x-png' ) {
+        if ( $force_png || $this->file_type == 'image/png'|| $this->file_type == 'image/x-png' ) {
             return imagepng($resampled_image, $dst);
         } elseif ($this->file_type == 'image/gif') {
             return imagegif($resampled_image, $dst);
