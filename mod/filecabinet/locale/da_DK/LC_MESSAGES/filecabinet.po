@@ -1,0 +1,290 @@
+# Localization for Danish.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Claus Iversen <ci dot internet at post dot tele dot dk>, 2007.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.00\n"
+"Report-Msgid-Bugs-To: ci dot internet at post dot tele dot dk \n"
+"POT-Creation-Date: 2007-02-15 10:21-0500\n"
+"PO-Revision-Date: 2007-04-21 23:00 CETMI+ZONE\n"
+"Last-Translator: Claus Iversen <ci dot internet at post dot tele dot dk>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "You may change it if you wish."
+msgstr "Du m&aring; &aelig;ndre det hvis du vil."
+
+msgid " (system wide)"
+msgstr " (globalt)"
+
+msgid "Action"
+msgstr "Handling"
+
+msgid "Alternate text"
+msgstr "Alternativ text"
+
+msgid "An error occurred when trying to delete a document."
+msgstr "Der opstod en fejl under sletningen af et dokument."
+
+msgid "An error occurred when trying to save your image."
+msgstr "Der opstod en fejl imens dit billede blev gemt."
+
+msgid "An error occurred while saving your document."
+msgstr "Der opstod en fejl imens dit dokument blev gemt."
+
+msgid "Are you sure you want to delete this document?"
+msgstr "Er du sikker p&aring; du vil slette dette dokument?"
+
+msgid "Are you sure you want to delete this image?"
+msgstr "Er du sikker p&aring; du vil slette dette billede?"
+
+msgid "Are you sure you want to permanently delete this image?"
+msgstr "Er du sikker p&aring; du vil slette dette billede?"
+
+msgid "Base document directory"
+msgstr "Hoved mappe"
+
+msgid "Cancel"
+msgstr "Fortryd"
+
+msgid "Change Thumbnail"
+msgstr "&AElig;ndre thumbnail"
+
+msgid "Choose a image first."
+msgstr "V&aelig;lg et billede f&oslash;rst."
+
+msgid "Clear image"
+msgstr "Ryd billede"
+
+msgid "Clip"
+msgstr "Klip"
+
+msgid "Close window"
+msgstr "Luk vindue"
+
+msgid "Copy"
+msgstr "Kopi&eacute;r"
+
+msgid "Could not delete file."
+msgstr "Kunne ikke slette fil."
+
+msgid "Could not write to directory."
+msgstr "Kunne ikke skrive til mappe."
+
+msgid "Current document"
+msgstr "Nuv&aelig;rende dokument"
+
+msgid "Current image"
+msgstr "Nuv&aelig;rende billede"
+
+msgid "Default document directory may not be blank"
+msgstr "Standard dokument mappe m&aring; ikke v&aelig;re blank"
+
+msgid "Delete"
+msgstr "Slet"
+
+msgid "Delete files"
+msgstr "Slet filer"
+
+msgid "Delete images"
+msgstr "Slet billeder"
+
+msgid "Description"
+msgstr "Beskrivelse"
+
+msgid "Directory"
+msgstr "Mappe"
+
+msgid "Directory not set."
+msgstr "Mappe er ikke sat"
+
+msgid "Document"
+msgstr "Dokument"
+
+msgid "Document deleted."
+msgstr "Dokumenter slettet."
+
+msgid "Document directory does not exist."
+msgstr "Dokument mappe findes ikke."
+
+msgid "Document location"
+msgstr "Dokument placering"
+
+msgid "Document not found."
+msgstr "Dokument ikke fundet."
+
+msgid "Document saved successfully."
+msgstr "Dokument gemt."
+
+msgid "Document was %sK making it larger than %sK size limit."
+msgstr "Dokument var %sK, som g&oslash;r det st&oslash;rre end gr&aelig;nsen p&aring; %sK."
+
+msgid "Documents"
+msgstr "Dokumenter"
+
+msgid "Edit"
+msgstr "&AElig;ndre"
+
+msgid "Edit Image"
+msgstr "&AElig;ndre billede"
+
+msgid "Edit files"
+msgstr "&AElig;ndre filer"
+
+msgid "Edit images"
+msgstr "&AElig;ndre billeder"
+
+msgid "File Cabinet"
+msgstr "Fil kabinet"
+
+msgid "File name"
+msgstr "Fil navn"
+
+msgid "File not uploaded."
+msgstr "Fil ej gemt."
+
+msgid "File type"
+msgstr "Fil type"
+
+msgid "Filename not set."
+msgstr "Filnavn ikke skrevet."
+
+msgid "Image Browser"
+msgstr "Billed stifinder"
+
+msgid "Image height was %spx, making it larger than %d pixel limit."
+msgstr "Billede h&oslash;jde er %spx, som g&oslash;r det st&oslash;rre den %d pixel gr&aelig;nsen."
+
+msgid "Image is %spx by %spx, the maximum dimensions are %spx by %spx."
+msgstr "Billede er %spx gange %spc, maksimum dimensioner er %spx gang %spx."
+
+msgid "Image location"
+msgstr "Billede placering"
+
+msgid "Image not found"
+msgstr "Billede er ikke fundet"
+
+msgid "Image uploaded!"
+msgstr "Billede gemt!"
+
+msgid "Image was %sK making it larger than %sK size limit."
+msgstr "Billede var %sK, hvilket g&oslash;r det st&oslash;rre en gr&aelig;nsen p&aring; %sK."
+
+msgid "Image width was %spx, making it larger than %d pixel limit."
+msgstr "Billed bredden var %spx, hvilet g&oslash;r det st&oslash;rre end %d pixel gr&aelig;nsen."
+
+msgid "Images"
+msgstr "Billeder"
+
+msgid "Manage Documents"
+msgstr "H&aring;ndt&eacute;r dokumenter"
+
+msgid "Manage Images"
+msgstr "H&aring;ndt&eacute;r billeder"
+
+msgid "Manages images and documents uploaded to your site."
+msgstr "H&aring;ndt&eacute;rer billeder og dokumenter, gemt p&aring; dit websted."
+
+msgid "Maximum file size"
+msgstr "Maksimum fil st&oslash;rrelse"
+
+msgid "Maximum height"
+msgstr "Maksimum h&oslash;jde"
+
+msgid "Maximum width"
+msgstr "Maksimum bredde"
+
+msgid "No documents found."
+msgstr "Ingen dokumenter fundet."
+
+msgid "No image"
+msgstr "Intet billede"
+
+msgid "No images found."
+msgstr "Intet billede fundet."
+
+msgid "No items found."
+msgstr "Ingen emner fundet."
+
+msgid "No thumbnail"
+msgstr "Ingen mini-visning"
+
+msgid "Ok"
+msgstr ""
+
+msgid "Please check your logs."
+msgstr "Kontroll&eacute;r logb&oslash;gerne."
+
+msgid "Save directory"
+msgstr "Gem mappe"
+
+msgid "Save settings"
+msgstr "Gem indstillinger"
+
+msgid "Settings"
+msgstr "Indstillinger"
+
+msgid "Settings saved."
+msgstr "Indstillinger gemt."
+
+msgid "Size"
+msgstr "St&oslash;rrelse"
+
+msgid "Sorry"
+msgstr "Beklager"
+
+msgid "Sorry but this file is inaccessible at this time."
+msgstr "Beklager, denne fil er ikke tilg&aelig;ngelig lige nu."
+
+msgid "Sorry, you are not allowed access to this file."
+msgstr "Beklager, du har ikke rettighed til at se denne fil."
+
+msgid "There was a problem loading the image file."
+msgstr "Der opstod et problem under tilgang af billedet."
+
+msgid "Thumbnail"
+msgstr "Mini-visning"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Unable to move the file to its new directory."
+msgstr "Kunne ikke flytte filen til dets nye mappe."
+
+msgid "Unable to read document directory."
+msgstr "Kunne ikke l&aelig;se dokument mappen."
+
+msgid "Unable to write to document directory."
+msgstr "Kan ikke skrive til dokument mappe."
+
+msgid "Unacceptable document type."
+msgstr "Ugyldig dokument type."
+
+msgid "Unacceptable image type."
+msgstr "Ugyldig billed type."
+
+msgid "Update"
+msgstr "Opdat&eacute;r"
+
+msgid "Upload"
+msgstr "Upload"
+
+msgid "Upload document"
+msgstr "Upload dokument"
+
+msgid "Upload image"
+msgstr "Upload billede"
+
+msgid "Upload new document"
+msgstr "Upload nyt dokument"
+
+msgid "View full image"
+msgstr "Se fuld billede"
+
+msgid "images"
+msgstr "billeder"

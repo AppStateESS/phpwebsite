@@ -1,0 +1,287 @@
+# Localization for Danish.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Claus Iversen <ci dot internet at post dot tele dot dk>, 2007.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.00\n"
+"Report-Msgid-Bugs-To: ci dot internet at post dot tele dot dk \n"
+"POT-Creation-Date: 2007-03-07 12:32-0500\n"
+"PO-Revision-Date: 2007-04-21 23:00 CETMI+ZONE\n"
+"Last-Translator: Claus Iversen <ci dot internet at post dot tele dot dk>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid ".htaccess detected on hub. Attempting to create default file on branch."
+msgstr "Fandt .htaccess p&aring; serveren. Fors&oslash;ger at lave standard fil p&aring; undermodul."
+
+msgid "Action"
+msgstr "Handling"
+
+msgid "All done!"
+msgstr "Udf&oslash;rt!"
+
+msgid "An error occurred when trying to connect to the database."
+msgstr "Der opstod en fejl, under tilgang til databasen."
+
+msgid "An error occurred when trying to save the module list."
+msgstr "Der opstod en fejl imens modul listen blev gemt."
+
+msgid "An error occurred while saving your branch."
+msgstr "Der opstod en fejl imens undersiden blev oprettet."
+
+msgid "An error occurred while trying to install your modules."
+msgstr "Der opstod en fejl imens du installerede dine moduler."
+
+msgid "Branch"
+msgstr "www-sideskud"
+
+msgid "Branch List"
+msgstr "List over www-sideskud"
+
+msgid "Branch created successfully."
+msgstr "www-sideskud oprettet."
+
+msgid "Branch directory does not exist."
+msgstr "www-sideskud eksisterer ikke."
+
+msgid "Branch name"
+msgstr "Navn p&aring; www-sideskud."
+
+msgid "Branch specifications"
+msgstr "Specifikationer over www-sideskud."
+
+msgid "Config file created successfully."
+msgstr "Ops&aelig;tningsfil er dannet korrekt."
+
+msgid "Connected successfully, but the database does not exist."
+msgstr "Forbundet, men databasen findes ikke."
+
+msgid "Connected successfully, but this database already contains tables."
+msgstr "Forbundet, men databasen indeholder allerede tabeller."
+
+msgid "Connection Port"
+msgstr "Port"
+
+msgid "Connection successful. Database available."
+msgstr "Forbindelse ok. Databasen er klar."
+
+msgid "Continue to install branch core"
+msgstr "Forts&aelig;t med at installere kernen til www-sideskud"
+
+msgid "Continue..."
+msgstr "Forts&aelig;t..."
+
+msgid "Copied admin file to branch."
+msgstr "Administrations fil til www-sideskud kopieret."
+
+msgid "Copied config files to branch."
+msgstr "Konfigurations fil kopieret til www-sideskud."
+
+msgid "Copied core images."
+msgstr "Kopierede kerne billeder."
+
+msgid "Copied javascript files to branch."
+msgstr "Kopierede javascript filer til www-sideskud."
+
+msgid "Copied successfully."
+msgstr "Kopiering ok"
+
+msgid "Copied themes to branch."
+msgstr "Kopierede temaer til www-sideskud."
+
+msgid "Core SQL import failed."
+msgstr "Kerne SQL fejlede lykkedes."
+
+msgid "Core SQL import successful."
+msgstr "Kerne SQL import lykkedes."
+
+msgid "Core installed successfully. Continue to core module installation."
+msgstr "Kerne installeret. Forts&aelig;t til kerne modul installation."
+
+msgid "Could not connect to the database."
+msgstr "Kunne ikke tilg&aring; database."
+
+msgid "Create branch directories"
+msgstr "Dan mapper til www-sideskud"
+
+msgid "Create branch information"
+msgstr "Dan information til www-sideskud"
+
+msgid "Create new database"
+msgstr "Dan ny database"
+
+msgid "Database Host"
+msgstr "Database v&aelig;rt"
+
+msgid "Database created successfully."
+msgstr "Database dannet!"
+
+msgid "Database information"
+msgstr "Database information"
+
+msgid "Database name"
+msgstr "Database navn"
+
+msgid "Database syntax"
+msgstr ""
+
+msgid "Directory"
+msgstr "Mappe"
+
+msgid "Directory creation successful."
+msgstr "Mappe opretttet."
+
+msgid "Directory exists but already contains files."
+msgstr "Mappe ekstisterer, men indeholder allerede filer."
+
+msgid "Directory exists but is not writable."
+msgstr "Mappe eksisterer men er skrivebeskyttet."
+
+msgid "Edit"
+msgstr "&AElig;ndre"
+
+msgid "Edit branch"
+msgstr "&AElig;ndre www-sideskud"
+
+msgid "Enter your site's url address."
+msgstr "Skriv din side's URL adresse."
+
+msgid "Failed to copy admin file to branch."
+msgstr "Fejlede at kopiere administrationsfiler til www-sideskud."
+
+msgid "Failed to copy core config files to branch."
+msgstr "Fejlede at kopiere kerne konfigurationsfiler til www-sideskud."
+
+msgid "Failed to copy core images to branch."
+msgstr "Fejlede at kopiere kerne biller til www-sideskud."
+
+msgid "Failed to copy javascript files to branch."
+msgstr "Fejlede at kopiere javascript filer til www-sideskud."
+
+msgid "Failed to copy theme files to branch."
+msgstr "Fejlede at kopiere tema filer til www-sideskud."
+
+msgid "Failed to create config.php file in the branch."
+msgstr "Fejlede at danne config.php fil i www-sideskud."
+
+msgid "ID hash"
+msgstr ""
+
+msgid "Incorrect or missing branch id."
+msgstr "Forkert eller manglende www-sideskud ID."
+
+msgid "Install and update branch sites."
+msgstr "Install&eacute;r og opdater www-sideskud."
+
+msgid "Install branch core"
+msgstr "Installerer www-sideskud kerne"
+
+msgid "Installing core modules"
+msgstr "Installerer kerne moduler"
+
+msgid "List"
+msgstr ""
+
+msgid "Module access for \"%s\""
+msgstr "Modul adgang for \"%s\""
+
+msgid "Module list saved successfully."
+msgstr "Module liste er gemt."
+
+msgid "Modules"
+msgstr "Moduler"
+
+msgid "New"
+msgstr "Ny"
+
+msgid "Permission user"
+msgstr "Tilladelse bruger"
+
+msgid "Please check your error logs and try again."
+msgstr "Kontroll&eacute;r log filerne og pr&oslash;v igen."
+
+msgid "Remove"
+msgstr "Fjern"
+
+msgid ""
+"Removing this branch will make it inaccessible.\nThe database and files "
+"will remain behind.\\nIf you are sure you want to remove the branch, type "
+"the branch name:"
+msgstr ""
+"Fjernes dette www-sideskud, vil g&oslash;re det utilg&aelig;ngelig.\\n. Databasen og filerne "
+"vil bibeholdes.\\n Hvis du er sikeker p&aring; du vil fjerne sideskuddet, skriv "
+"navnet:"
+
+msgid "Save"
+msgstr "Gem"
+
+msgid "Set up allowed modules"
+msgstr "S&aelig;t tilladte moduler"
+
+msgid "Setup branch database"
+msgstr "Lav setup p&aring; www-sidskud database"
+
+msgid "Sorry, but Branch failed to make the proper directories."
+msgstr "Beklager, men www-sideskud kunne ikke oprette de relevante mapper."
+
+msgid "Table prefix"
+msgstr "Tabel prefix"
+
+msgid "Table prefix must be alphanumeric characters or underscores only"
+msgstr "Tabel prefix m&aring; kun best&aring; af alfanumeriske tegn og underscore"
+
+msgid "This database name is not allowed."
+msgstr "Database navn ikke tilladt."
+
+msgid "URL"
+msgstr ""
+
+msgid "Unable to copy .htaccess file."
+msgstr "Kunne ikke kopiere .htaccess fil."
+
+msgid "Unable to create branch directories."
+msgstr "Kunne ikke danne www-sideskud mapper."
+
+msgid "Unable to create the database. You will need to create it manually."
+msgstr "Kunne ikke danne databasen. Du skal danne den manuelt."
+
+msgid "Unable to create the directory. You will need to create it manually."
+msgstr "Kunne ikke danne mappen. Du skal danne den manuelt."
+
+msgid "Unable to get database connect information. Please try again."
+msgstr "Kunne ikke tilg&aring; database. Pr&oslash;v igen."
+
+msgid "Unchecked modules cannot be installed on this branch."
+msgstr "Afmarkerede moduler kan ikke blive installerert."
+
+msgid "Update"
+msgstr "Opdat&eacute;r"
+
+msgid "Url"
+msgstr ""
+
+msgid "Use hub values"
+msgstr "Brug standard v&aelig;rdier"
+
+msgid "User password"
+msgstr "Bruger kodeord"
+
+msgid "You may not use that branch name."
+msgstr "Du m&aring; ikke bruge dette www-sideskuds navn."
+
+msgid "You must name your branch."
+msgstr "Du skal navngive dit www-sideskud."
+
+msgid "You must type a database name."
+msgstr "Du skal skrive et database navn."
+
+msgid "You must type a database user."
+msgstr "Du skal skrive en database bruger."
+
+msgid "Your branch site must have a site_hash."
+msgstr "Dit www-sideskud skal have en site_hash."

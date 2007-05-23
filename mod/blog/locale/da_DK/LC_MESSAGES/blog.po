@@ -1,0 +1,308 @@
+# Localization for Danish.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Claus Iversen <ci dot internet at post dot tele dot dk>, 2007.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.00\n"
+"Report-Msgid-Bugs-To: ci dot internet at post dot tele dot dk \n"
+"POT-Creation-Date: 2007-03-07 12:33-0500\n"
+"PO-Revision-Date: 2007-04-21 23:00 CETMI+ZONE\n"
+"Last-Translator: Claus Iversen <ci dot internet at post dot tele dot dk>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "A problem occured with your submission. Please try again later."
+msgstr "Der opstod et problem under afsendelsen af data. Pr&oslash;v venligst igen senere"
+
+msgid "A problem occurred when trying to disapprove this entry."
+msgstr "Der opstod et problem, imens du fors&oslash;gte at afvise dette objekt."
+
+msgid "A version of this entry is awaiting approval."
+msgstr "En version af dette objekt, afventer godkendelse."
+
+msgid "Action"
+msgstr "Ativitet"
+
+msgid "Add entry"
+msgstr "Tilf&oslash;j indl&aelig;g"
+
+msgid "Add new blog"
+msgstr "Tilf&oslash;j ny blog"
+
+msgid "Allow anonymous comments"
+msgstr "Tillad anonyme kommentarer"
+
+msgid "Allow anonymous submissions"
+msgstr "Tillad anonym oprettelse af emner"
+
+msgid "Allow comments"
+msgstr "Tillad kommentarer"
+
+msgid "Allow comments by default"
+msgstr "Tillad kommentarer som standard"
+
+msgid "An error occurred when saving your version."
+msgstr "Der opstod en fejl imens din version blev gemt."
+
+msgid "An error occurred when trying to save your entry. Please check your logs."
+msgstr "Der opstod en fejl imens dit indl&aelig;g blev gemt. Se error.log"
+
+msgid "Anonymous"
+msgstr "Anonym"
+
+msgid "Approval (%s)"
+msgstr "Godkendelser (%s)"
+
+msgid "Approval list"
+msgstr "Godkendelses liste"
+
+msgid "Approve"
+msgstr "Godkend"
+
+msgid "Are you sure you want to permanently delete this blog entry?"
+msgstr "Er du sikker p&aring; du vil slette denne blog?"
+
+msgid "Blog Archive"
+msgstr "Blog arkiv"
+
+msgid "Blog Entries Awaiting Approval"
+msgstr "Blog venter p&aring; godkendelse"
+
+msgid "Blog Restore"
+msgstr "Gendannelse af blog"
+
+msgid "Blog Settings"
+msgstr "Blog indstillinger"
+
+msgid "Blog entry approved."
+msgstr "Blog godkendt."
+
+msgid "Blog entry deleted."
+msgstr "Blog slettet."
+
+msgid "Blog entry disapproved."
+msgstr "Blog ikke godkendt."
+
+msgid "Blog entry removed."
+msgstr "Blog fjernet."
+
+msgid "Blog entry restored."
+msgstr "Blog gendannet."
+
+msgid "Blog settings saved."
+msgstr "Blog indstillinger gemt."
+
+msgid "Blog tables removed."
+msgstr "Blog tabeller fjernet."
+
+msgid "Blog view limit"
+msgstr "Blog visnings gr&aelig;nse."
+
+msgid "Cache anonymous view"
+msgstr "Gem anonym visning"
+
+msgid "Change settings (Unrestricted only)"
+msgstr "&AElig;ndre indstillinger (kun fuld adgang)"
+
+msgid "Clip for menu"
+msgstr "Klip for at aktivere menu"
+
+msgid "Create first blog entry!"
+msgstr "Dan f&oslash;rste blog!"
+
+msgid "Creation"
+msgstr "Oprettelse"
+
+msgid "Delete"
+msgstr "Slet"
+
+msgid "Delete blog"
+msgstr "Slet blog"
+
+msgid "Disapprove"
+msgstr "Afvis"
+
+msgid "Edit"
+msgstr "&AElig;ndre"
+
+msgid "Edit blog"
+msgstr "&AElig;ndre blog"
+
+msgid "Edit blogs"
+msgstr "&AElig;ndre blogs"
+
+msgid "Entry"
+msgstr "Indl&aelig;g"
+
+msgid "Entry saved successfully."
+msgstr "Indl&aelig;g gemt!"
+
+msgid "Expire"
+msgstr "Udl&oslash;ber"
+
+msgid "Expire date/time"
+msgstr "Udl&oslash;bs tid"
+
+msgid "Image"
+msgstr "Billede"
+
+msgid "Last poster"
+msgstr "Seneste afsender"
+
+msgid "List"
+msgstr "Oversigt"
+
+msgid "Maximum image height (50-2048)"
+msgstr "Maksimum billede h&oslash;jde (50-2048)"
+
+msgid "Maximum image width (50-2048)"
+msgstr "Maksimum billede bredde (50-2048)"
+
+msgid "Missing title."
+msgstr "Manglende titel."
+
+msgid "New"
+msgstr "Ny"
+
+msgid "New Blog Entry"
+msgstr "Ny blog"
+
+msgid "Next page"
+msgstr "N&aelig;ste side"
+
+msgid "No action"
+msgstr "Ingen handling"
+
+msgid "No expiration"
+msgstr "Intet udl&oslash;b"
+
+msgid "No title"
+msgstr "Ingen titel"
+
+msgid "Number of past entries"
+msgstr "Antal af forrige emner"
+
+msgid "Post current thoughts, happenings, and discussions."
+msgstr "Send nuv&aelig;rende tanker, aktiviteter og diskussioner."
+
+msgid "Posted by"
+msgstr "Sendt af"
+
+msgid "Posted on"
+msgstr "Sendt den"
+
+msgid "Previous blog entries"
+msgstr "Forrige blog"
+
+msgid "Previous page"
+msgstr "Forrige side"
+
+msgid "Publish"
+msgstr "Offentligg&oslash;r"
+
+msgid "Publish date/time"
+msgstr "Offentligg&oslash;relses tid"
+
+msgid "Read more"
+msgstr "L&aelig;s mere"
+
+msgid "Recent blog entries"
+msgstr "Hidtidige blogs"
+
+msgid "Repeat submission"
+msgstr "Gentag forsendelse"
+
+msgid "Reset cache"
+msgstr "Nulstil cache"
+
+msgid "Restore"
+msgstr "Gendan"
+
+msgid "Save Changes and Approve"
+msgstr "Gem &aelig;ndringer og godkend"
+
+msgid "Save settings"
+msgstr "Gem indstillinger"
+
+msgid "Set to zero to prevent display"
+msgstr "S&aelig;t til 0 for at forhindre visning"
+
+msgid "Settings"
+msgstr "Indstillinger"
+
+msgid "Show blog on home page"
+msgstr "Vis blog p&aring; hjemmeside"
+
+msgid "Sorry"
+msgstr "Beklager"
+
+msgid "Sticky"
+msgstr "Tr&aelig;g"
+
+msgid "Submit Entry"
+msgstr "Sendt Emne"
+
+msgid "Submit entry"
+msgstr "Sendt emne"
+
+msgid "Suggest entry"
+msgstr "Foresl&aring; emne"
+
+msgid "Summary"
+msgstr "Resum&eacute;"
+
+msgid "System caching disabled."
+msgstr "System cache slukket."
+
+msgid "Thank you"
+msgstr "Tak"
+
+msgid "This version has not been approved."
+msgstr "Denne version er ikke godkendt."
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Tried to edit an unapproved item."
+msgstr "Pr&oslash;vede at &aelig;ndre et ikke godkendt emne."
+
+msgid "Unsticky"
+msgstr "Ikke tr&aelig;g"
+
+msgid "Update Blog Entry"
+msgstr "Opdat&eacute;r Blog"
+
+msgid "Update Unapproved Blog Entry"
+msgstr "Opdat&eacute;r ikke godkendt Blog"
+
+msgid "Update entry"
+msgstr "Opdat&eacute;r emne"
+
+msgid "Use Image Manager"
+msgstr "Brug Billed Manager"
+
+msgid "User attempted access to Blog administration."
+msgstr "Bruger fors&oslash;gte at tilg&aring; Blog administration."
+
+msgid "User tried to edit a blog."
+msgstr "Bruger fors&oslash;gte at &aelig;ndre en blog."
+
+msgid "View"
+msgstr "Vis"
+
+msgid "View version"
+msgstr "Se versioner"
+
+msgid "Your entry has been submitted for review."
+msgstr "Dit indl&aelig;g er blevet sendt til godkendelse."
+
+msgid "Your entry is being held for approval."
+msgstr "Dit indl&aelig;g er blevet holdt tilbage, indtil godkendelse"
+
+msgid "Your submission is still awaiting approval."
+msgstr "Dit indl&aelig;g afventer stadig godkendelse."

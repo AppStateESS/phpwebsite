@@ -1,0 +1,271 @@
+# Localization for Danish.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Claus Iversen <ci dot internet at post dot tele dot dk>, 2007.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.00\n"
+"Report-Msgid-Bugs-To: ci dot internet at post dot tele dot dk \n"
+"POT-Creation-Date: 2007-02-15 10:20-0500\n"
+"PO-Revision-Date: 2007-04-21 23:00 CETMI+ZONE\n"
+"Last-Translator: Claus Iversen <ci dot internet at post dot tele dot dk>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid ".htaccess File Options"
+msgstr ".htaccess fil indstillinger"
+
+msgid ".htaccess file is missing."
+msgstr ".htaccess fil mangler."
+
+msgid ".htaccess file written."
+msgstr ".htaccess fil skrevet"
+
+msgid "A serious error occurred. Please check your error.log."
+msgstr "Det opstod en alvorlig fejl. Se Error.log"
+
+msgid "Access"
+msgstr "Adgang"
+
+msgid "Access has saved your shortcut."
+msgstr "Adgang har gemt din genvej"
+
+msgid "Access needs a higher administrator's attention before you may use it."
+msgstr "Adgang anvender en administrator's rettigheder, f&oslash;r du m&aring; bruge den."
+
+msgid "Access tables removed."
+msgstr "Adgang tabeller er slettet."
+
+msgid "Action"
+msgstr "aktivitet"
+
+msgid "Activate"
+msgstr "Aktiv&eacute;r"
+
+msgid "Active?"
+msgstr "Aktive?"
+
+msgid "Add allowed IP"
+msgstr "Tilf&oslash;j tilladt IP"
+
+msgid "Add denied IP"
+msgstr "Tilf&oslash;j blokeret IP"
+
+msgid "Administrative options"
+msgstr "Administrative indstillinger"
+
+msgid "Administrator"
+msgstr "Administrator"
+
+msgid "Allow all"
+msgstr "Tillad alle"
+
+msgid "Allow file update"
+msgstr "Tillad opdatering af filer"
+
+msgid "Allowed IPs"
+msgstr "Tilladte IP adresser"
+
+msgid "An administrator will need to approve it before it is functional."
+msgstr "En administrator skal f&oslash;rst godkende dette."
+
+msgid "An error occurred when deleting your shortcut."
+msgstr "Der opstod en fejl under sletningen af genvejen."
+
+msgid ""
+"An error occurred when trying to access the allowed and denied ip records. "
+"Please check your logs."
+msgstr "Der opstod en fejl, imens der fors&oslash;gtes adgang til tabellen over tilladte IP adresser"
+"Se mere i error.log."
+
+msgid "An error occurred when updating your .htaccess file."
+msgstr "Der opstod en fejl imens din .htaccess fil blev gemt."
+
+msgid "An error occurred."
+msgstr "Der opstod en fejl."
+
+msgid "An error occurred:"
+msgstr "Der opstod en fejl:"
+
+msgid "Are you sure you want to delete the checked ips?"
+msgstr "Er du sikker p&aring; du vil slette de markerede IP adresser?"
+
+msgid "Are you sure you want to delete the checked shortcuts?"
+msgstr "Er du sikker p&aring; du vil slette de markerede genveje?"
+
+msgid "Are you sure you want to delete this shortcut?"
+msgstr "Er du sikker p&aring; du vil slette denne genvej?"
+
+msgid "Bad keyword. Use only alphanumeric characters and underlines."
+msgstr "Ugyldigt ord. Brug kun alfanumeriske tegn og underscore."
+
+msgid "Cancel"
+msgstr "Afbryd"
+
+msgid "Close window"
+msgstr "Luk vindue"
+
+msgid "Controls the .htaccess file for Apache and creates shortcuts."
+msgstr "Bestemmer .htaccess filen for Apache servere og danner genveje."
+
+msgid "Deactivate"
+msgstr "Deaktivere"
+
+msgid "Delete"
+msgstr "Slet"
+
+msgid "Denied IPs"
+msgstr "Blokerede IP"
+
+msgid "Deny all"
+msgstr "Bloker alle"
+
+msgid "Deny/Allow"
+msgstr "Blok&eacute;r/Tillad"
+
+msgid "Denys and Allows"
+msgstr "Blokeringer og tilladelser"
+
+msgid "Do not allow all"
+msgstr "Blok&eacute;r alle"
+
+msgid "Do not deny all"
+msgstr "Tillad alle"
+
+msgid "Edit"
+msgstr "&AElig;ndre"
+
+msgid "Go"
+msgstr "G&aring;"
+
+msgid "IP Address"
+msgstr "IP adresse"
+
+msgid "IP address deleted."
+msgstr "IP adresse slettet."
+
+msgid "IP address was not formatted correctly or not allowed."
+msgstr "IP adresse var ikke formateret korrekt"
+
+msgid "Keyword already in use. Choose another."
+msgstr "N&oslash;gleord anvendes allerede. Anvend et andet."
+
+msgid "Keywords"
+msgstr "N&oslash;gleord"
+
+msgid "Look in your installation directory and give Apache write access."
+msgstr "Se i din installations mape og giv Apache skrive adgang."
+
+msgid "Missing keyword."
+msgstr "Mangler n&oslash;gleord."
+
+msgid "Missing url."
+msgstr "Mangler URL."
+
+msgid "Mod Rewrite Options"
+msgstr "Mod Rewrite indstillinger"
+
+msgid "No"
+msgstr "Nej"
+
+msgid "No allowed ip addresses found."
+msgstr "Der er ikke fundet tilladte IP adresser."
+
+msgid "No denied ip addresses found."
+msgstr "Igen forbudte IP adresser fundet."
+
+msgid "Open your config/core/config.php file in a text editor."
+msgstr "Open config/core/config.php file i en text editor."
+
+msgid "Please check your error.log."
+msgstr "Kontroll&eacute;r error.log."
+
+msgid "Please check your logs."
+msgstr "Kontroll&eacute;r logb&oslash;gerne."
+
+msgid ""
+"Remember to \"Update\" your access file when finished changing IP rules."
+msgstr ""
+"Husk at \"Opdatere\" din access fil n&aring;r du er f&aring;rdig med at &aelig;ndre IP regler."
+
+msgid "Return to previous page."
+msgstr "Return&eacute;r til forrige side."
+
+msgid "Rewrite engine on"
+msgstr "Gedan engine p&aring;"
+
+msgid "Save settings"
+msgstr "Gem indstillinger"
+
+msgid "Set your \"MOD_REWRITE_ENABLED\" define equal to TRUE."
+msgstr "S&aelig;t \"MOD_REWRITE_ENABLED\" definition til TRUE."
+
+msgid "Settings saved."
+msgstr "Indstilling gemt."
+
+msgid "Shortcuts"
+msgstr "Genveje"
+
+msgid "Shortcut deleted"
+msgstr "Genvej slettet"
+
+msgid "Shortcut"
+msgstr "Genvej"
+
+msgid "Shortcuts enabled"
+msgstr "Genveje aktiveret"
+
+msgid "Sorry"
+msgstr "Beklager"
+
+msgid "The files/access/ directory is not writable."
+msgstr "Fil/adgang/mappe er skrivebeskyttet"
+
+msgid "Type keyword here"
+msgstr "Skriv dit n&oslash;gleord her"
+
+msgid "Unable to save .htaccess file."
+msgstr "Kunne ikke gemme .htaccess fil."
+
+msgid "Unable to write .htaccess file."
+msgstr "Kunne ikke skrive .htaccess file."
+
+msgid "Update"
+msgstr "Opdat&eacute;r"
+
+msgid "Update .htaccess file"
+msgstr "Opdat&eacute;r .htaccess fil"
+
+msgid "Url"
+msgstr "URL"
+
+msgid "When active, you will be able to use the following link:"
+msgstr "Hvis aktiv, kan du bruge dette link:"
+
+msgid "Write .htaccess file"
+msgstr "Skriv .htaccess fil"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "You can access this item with the following link:"
+msgstr "Du kan tilg&aring; dette emne med f&oslash;lgende genvej."
+
+msgid "You do not have mod rewrite enabled."
+msgstr "Du har ikke MOD REWRITE aktiveret."
+
+msgid "You have \"Allow all\" enabled. All rows below will be ignored."
+msgstr "Du har \"Tillad alle\" aktiveret. Alle r&aelig;kker herunder vil blive ignoreret."
+ 
+msgid "You have \"Deny all\" enabled. All rows below will be ignored."
+msgstr "Du har \"Blok&eacute;r alle\" aktiveret. Alle r&aelig;kker herunder vil blive ignoreret."
+
+msgid "Your .htaccess file will contain the below:"
+msgstr "Din .htaccess fil vil indeholde dette:"
+
+msgid "Your <b>.htaccess</b> file is not writable."
+msgstr "Din <b>.htacces</b> fil er skrivebeskyttet."

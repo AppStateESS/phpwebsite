@@ -1,0 +1,256 @@
+# Localization for Danish.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Claus Iversen <ci dot internet at post dot tele dot dk>, 2007.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.00\n"
+"Report-Msgid-Bugs-To: ci dot internet at post dot tele dot dk \n"
+"POT-Creation-Date: 2007-02-26 15:18-0500\n"
+"PO-Revision-Date: 2007-04-21 23:00 CETMI+ZONE\n"
+"Last-Translator: Claus Iversen <ci dot internet at post dot tele dot dk>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "-- Use default style --"
+msgstr "-- Brug standard --"
+
+msgid "Adjust Boxes"
+msgstr "Juster bokse"
+
+msgid "Allow indexing"
+msgstr "Tillad indeksering"
+
+msgid "Allow link following"
+msgstr "Tillad at f&oslash;lge genveje"
+
+msgid "Available styles"
+msgstr "Brugbare tema"
+
+msgid "Box move off"
+msgstr "Boks placering deaktiveret."
+
+msgid "Box order is out of sequence."
+msgstr "Boks r&aelig;kkef&oslash;lge ikke korrekt."
+
+msgid "Box positioning"
+msgstr "Boks placering"
+
+msgid "Boxes"
+msgstr "Bokse"
+
+msgid "Cancel"
+msgstr "Fortryd"
+
+msgid "Change CSS"
+msgstr "&AElig;ndre CSS"
+
+msgid "Change settings"
+msgstr "&AElig;ndre indstillinger"
+
+msgid "Change style"
+msgstr "&AElig;ndre stil"
+
+msgid "Complete the theme change"
+msgstr "F&aelig;rdigg&oslash;r &aelig;ndring af tema"
+
+msgid "Confirm Theme Change"
+msgstr "Bekr&aelig;ft tema &aelig;ndring"
+
+msgid "Control the layout of your site."
+msgstr "Bestem layout af din side."
+
+msgid "Data was not an array."
+msgstr "Data var ikke et array."
+
+msgid "Default Robot Settings"
+msgstr "S&aelig;t Robot indstillinger"
+
+msgid "Default Theme"
+msgstr "Standard tema"
+
+msgid "Description"
+msgstr "Beskrivelse"
+
+msgid "Disable"
+msgstr "Deaktiv&eacute;r"
+
+msgid "Display settings"
+msgstr "Vis indstillinger"
+
+msgid "Don't reset"
+msgstr "Nultil ikke"
+
+msgid "Done"
+msgstr "F&aelig;rdig"
+
+msgid "Edit Footer"
+msgstr "&AElig;ndre bund"
+
+msgid "Edit Header"
+msgstr "&AElig;ndre top"
+
+msgid "Edit Meta Tags"
+msgstr "&AElig;ndre META tags"
+
+msgid "Enable"
+msgstr "Aktiver"
+
+msgid "Error"
+msgstr "Fejl"
+
+msgid "Expect an error theme when finished."
+msgstr "Forvent et fejlagtigt tema."
+
+msgid ""
+"Failure to respond in ten seconds, reverts phpWebSite to the default theme."
+msgstr ""
+"Intet svar modtaget inden for 10 sekunder. phpWebSite g&aring;r i fejlsikret tilstand."
+
+msgid "Footer"
+msgstr "Sidebund"
+
+msgid "Footer updated."
+msgstr "Sidebund opdateret."
+
+msgid "Header"
+msgstr "Overskrift"
+
+msgid "Header updated."
+msgstr "Overskrift opdateret."
+
+msgid "If you are happy with the change, click the appropiate button."
+msgstr "Klik p&aring; den tilsvarende knap, hvis du er tilfres med &aelig;ndringerne."
+
+msgid "Javascript file was not found."
+msgstr "Javascript fil er ikke fundet."
+
+msgid "Keywords"
+msgstr "N&oslash;gleord"
+
+msgid "Layout"
+msgstr "Layout"
+
+msgid "Layout did not receive any data for display"
+msgstr "Layout modtog ingen data at vise"
+
+msgid "Layout session not set"
+msgstr "Layout er ikke sat"
+
+msgid "Layout settings updated."
+msgstr "Layout indstillinger opdateret."
+
+msgid "Meta Tags"
+msgstr ""
+
+msgid "Meta Tags updated."
+msgstr "Meta Tags opdateret."
+
+msgid "Meta tags"
+msgstr ""
+
+msgid "Move"
+msgstr "Flyt"
+
+msgid "Move Down"
+msgstr "Flyt ned"
+
+msgid "Move to bottom"
+msgstr "Flyt til bunden"
+
+msgid "Move to top"
+msgstr "Flyt til toppen"
+
+msgid "Move Up"
+msgstr "Flyt op"
+
+msgid "No alternate style sheets available."
+msgstr "Ingen alternativ skabelonfil er fundet."
+
+msgid "No themes installed."
+msgstr "Ingen temaer installeret."
+
+msgid "Only show footer on front page"
+msgstr "Vis kun sidefod p&aring; forsiden"
+
+msgid "Only show header on front page"
+msgstr "Vi kun sidehoved p&aring; forsiden"
+
+msgid "Page Title"
+msgstr "Side titel"
+
+msgid "Page Title: Name of your web site"
+msgstr "Side titel: Navnet p&aring; din hjemmeside"
+
+msgid "Pick a theme"
+msgstr "V&aelig;lg et tema"
+
+msgid "Please enter a page title."
+msgstr "Indtast side titlen."
+
+msgid "Removing old layout components."
+msgstr "Fjerner gamle skabelon komponenter."
+
+msgid "Reset boxes"
+msgstr "Nulstil kasser"
+
+msgid "Restore the default theme"
+msgstr "Gendan standard tema"
+
+msgid "Restore to default"
+msgstr "Gendan til standard"
+
+msgid "Save"
+msgstr "Gem"
+
+msgid "Save settings"
+msgstr "Gem indstillinger"
+
+msgid "Send to"
+msgstr "Send til"
+
+msgid "Set meta tags"
+msgstr "S&aelig;t meta tags"
+
+msgid "Settings changed."
+msgstr "Indstilling &aelig;ndret."
+
+msgid "Settings saved"
+msgstr "Indstillinger gemt"
+
+msgid "Style sheet"
+msgstr "CSS"
+
+msgid "The theme.ini file is missing for the default theme."
+msgstr "Theme.ini filen mangler for standard tema."
+
+msgid "Theme settings updated."
+msgstr "Tema indstillinger opdateret."
+
+msgid "Themes"
+msgstr "Tema"
+
+msgid "There was a problem reading the theme directories."
+msgstr "Der opstod et problem under tilgang til tema mappen."
+
+msgid "There was a problem updating the settings."
+msgstr "Der opstod et problem imens dine indstillinger blev opdatet."
+
+msgid "Unable to receive theme information."
+msgstr "Kunne ikke hente tema information."
+
+msgid "Update"
+msgstr "Opdat&eacute;r"
+
+msgid "Update Footer"
+msgstr "Opdat&eacute;r sidefod"
+
+msgid "Update Header"
+msgstr "Opdat&eacute;r sidehoved"
+
+msgid "Update Theme Settings"
+msgstr "Opdat&eacute;r Tema indstillinger"

@@ -1,0 +1,750 @@
+# Localization for Danish.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Claus Iversen <ci dot internet at post dot tele dot dk>, 2007.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.00\n"
+"Report-Msgid-Bugs-To: ci dot internet at post dot tele dot dk \n"
+"POT-Creation-Date: 2007-02-26 15:18-0500\n"
+"PO-Revision-Date: 2007-04-21 23:00 CETMI+ZONE\n"
+"Last-Translator: Claus Iversen <ci dot internet at post dot tele dot dk>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, php-format
+msgid "\"%s\" permission column created."
+msgstr "\"%s\" kolonne over rettigheder er dannet."
+
+msgid "Forgot password?"
+msgstr "Glemt kodeord?"
+
+msgid "Remember me"
+msgstr "Husk mig"
+
+msgid "Forgot password"
+msgstr "Glemt kodeord"
+
+msgid "Enter your user name."
+msgstr "Indtast bruger navn."
+
+msgid "Send reminder"
+msgstr "Send kodeord"
+
+msgid "Forgotten your user name? Enter your email address instead."
+msgstr "Glemt dit bruger navn? Indtast din email adresse i stedet."
+
+msgid "Enter the word from the image above."
+msgstr "Indtast ordet fra billedet herover."
+
+msgid "Captcha information was incorrect."
+msgstr "Ord indtastet forkert."
+
+msgid "-- Use server's time zone --"
+msgstr "-- Brug serverens tids zone --"
+
+msgid "A deity can not make themselves mortal."
+msgstr "En guddommelig kan ikke g&oslash;re sig selv d&oslash;delig"
+
+msgid "A group with this name already exists."
+msgstr "Der findes allerede en gruppe med dette navn."
+
+msgid "A problem occurred when accessing user information. Please try again later."
+msgstr "Der opstod et problem under tilgang af brugerdata. Pr&oslash;v venligst senere."
+
+msgid "A problem occurred when trying to register this module to My Page."
+msgstr "Der opstod et problem, imens der blev registreret et modul til Min Side"
+
+msgid "Account created successfully!"
+msgstr "Konto oprettet!"
+
+msgid "Action"
+msgstr "Handling"
+
+msgid "Actions"
+msgstr "Handlinger"
+
+msgid "Activate"
+msgstr "Aktiv&eacute;r"
+
+msgid "Active"
+msgstr "Aktiv"
+
+msgid "Add"
+msgstr "Tilf&oslash;j"
+
+msgid "Add / Edit Groups"
+msgstr "Tilf&oslash;j / &AElig;ndre grupper"
+
+msgid "Add Group"
+msgstr "Tilf&oslash;j gruppe"
+
+msgid "Add Member"
+msgstr "Tilf&oslash;j medlem"
+
+msgid "Add Script File"
+msgstr "Tilf&oslash;j script fil"
+
+msgid "Add User"
+msgstr "Tilf&oslash;j bruger"
+
+msgid "Add this user to this group."
+msgstr "Tilf&oslash;j denne bruger til denne gruppe"
+
+msgid "All visitors"
+msgstr "Alle bes&oslash;gende"
+
+msgid ""
+"An error occurred when trying to create your account. Please try again later."
+msgstr ""
+"Der opstod en fejl under dannelsen af din konto. Pr&oslash;v igen senere."
+
+msgid "An error occurred when trying to save the group."
+msgstr "Der opstod en fejl imens en gruppe blev gemt."
+
+msgid "An error occurred."
+msgstr "Der opstod en fejl."
+
+msgid "Are you SURE you want to remove this group?"
+msgstr "Er du SIKKER p&aring; du vil fjerne denne gruppe"
+
+msgid ""
+"Are you certain you want this user to have complete control of this web site?"
+msgstr ""
+"Er du SIKKER p&aring; du vil have denne bruger at have fuld kontrol over denne hjemmeside?"
+
+msgid "Are you certain you want to delete the user &quot;%s&quot; permanently?"
+msgstr "Er du sikker p&aring; du vil slette bruger &quot;%s&quot; permanent?"
+
+msgid "Are you sure you want to deify this user?"
+msgstr "Er du sikker p&aring; du vil g&oslash;re denne bruger ud&oslash;delig?"
+
+msgid "Are you sure you want to drop this authorization script?"
+msgstr "Er du sikker p&aring; du vil slette dette authorization script?"
+
+msgid "Are you sure you want to remove deity status?"
+msgstr "Er du sikker p&aring; du vil fjerne den guddommelige status?"
+
+msgid "Authorization"
+msgstr "Autorisation"
+
+msgid "Authorization Scripts"
+msgstr "Autorisation script"
+
+msgid "Authorization updated."
+msgstr "Autorisations opdateret"
+
+msgid "Authorization/Settings"
+msgstr "Autorisation/indstillinger"
+
+msgid "Cancel"
+msgstr "Fortryd"
+
+msgid "Change my Settings"
+msgstr "&AElig;ndre mine indstillinger"
+
+msgid "Click here if you are not redirected."
+msgstr "Clik her, hvis du ikke bliver stillet om."
+
+msgid "Close window"
+msgstr "Luk vindue"
+
+msgid "Closest matches below."
+msgstr "N&aelig;rmeste match her nedenunder."
+
+msgid "Confirm"
+msgstr "Bekr&aelig;ft"
+
+msgid "Confirm Graphic"
+msgstr "Bekr&aelig;ftelses grafik"
+
+msgid "Confirm text"
+msgstr "Bekr&aelig;ft tekst"
+
+msgid "Confirmation email"
+msgstr "Bekr&aelig;ftelses mail"
+
+msgid "Confirmation phrase is not correct."
+msgstr "Bekr&aelig;ftelses frase ikke korrekt."
+
+msgid "Control Panel"
+msgstr "Kontrol Panel"
+
+msgid "Could not access hub database."
+msgstr "Kunne ikke forbinde til standard database"
+
+msgid "Could not create \"%s\" permission column."
+msgstr "Kunne ikke danne \"%s\" tilladelses kolonne."
+
+msgid "Could not find any hub deities."
+msgstr "Kunne ikke finde standard brugere med guddommelige rettigheder."
+
+msgid "Create Group"
+msgstr "Opret gruppe"
+
+msgid "Create User"
+msgstr "Dan bruger"
+
+msgid "Current Members"
+msgstr "Nuv&aelig;rende medlemmer"
+
+msgid "Deactivate"
+msgstr "Deaktiver"
+
+msgid "Default"
+msgstr "Standard"
+
+msgid "Deity"
+msgstr "Guddommelighed"
+
+msgid "Deity users copied to branch."
+msgstr "Guddommelige brugere kopieret til www-sideskud."
+
+msgid "Delete"
+msgstr "Slet"
+
+msgid "Delete Groups"
+msgstr "Slet grupper"
+
+msgid "Delete Users"
+msgstr "Slet brugere"
+
+msgid "Display Name"
+msgstr "Visnings navn"
+
+msgid "Display name"
+msgstr "Visnings navn"
+
+msgid "Display name is improperly formatted."
+msgstr "Visnings navn er ikke korrekt formatteret."
+
+msgid "Drop"
+msgstr "Slet"
+
+msgid "Drop this member from the group."
+msgstr "Slet dette medlem fra gruppen."
+
+msgid "Edit"
+msgstr "&AElig;ndre"
+
+msgid "Edit Authorization Script"
+msgstr "&AElig;ndre autorisations script"
+
+msgid "Edit Group"
+msgstr "&AElig;ndre gruppe"
+
+msgid "Edit Permissions"
+msgstr "&AElig;ndre rettigheder"
+
+msgid "Edit User"
+msgstr "&AElig;ndre bruger"
+
+msgid "Edit Users"
+msgstr "&AElig;ndre brugere"
+
+msgid "Edit restrictions"
+msgstr "&AElig;ndre rettigheder"
+
+msgid "Email"
+msgstr ""
+
+msgid "Email Address"
+msgstr "E-mail addresse"
+
+msgid "Email Verification"
+msgstr "Email bekr&aelig;ftelse"
+
+msgid "Email address already in use."
+msgstr "Email adresse allerede i brug."
+
+msgid "Group name"
+msgstr "Gruppenavn"
+
+msgid "Group created."
+msgstr "Gruppe dannet."
+
+msgid "Group does not exist."
+msgstr "Gruppe eksisterer ikke."
+
+msgid "Group Name"
+msgstr "Gruppenavn"
+
+msgid "Groups"
+msgstr "Grupper"
+
+msgid "Hello"
+msgstr "Hej!"
+
+msgid "Hide login box"
+msgstr "Skjul login billede"
+
+msgid "Home"
+msgstr "Hjem"
+
+msgid "Immediate"
+msgstr "Umiddelbar"
+
+msgid "Improper permission level for action requested."
+msgstr "Forkert autorisationsniveau for &oslash;nsket handling."
+
+msgid "Improperly formatted group name."
+msgstr "Forkert formatteret gruppe navn."
+
+msgid "Invalid variable name."
+msgstr "Ukorrekt v&aelig;rdi"
+
+msgid "Language preference"
+msgstr "Sprog valg"
+
+msgid "Last Logged"
+msgstr "Senest logget"
+
+msgid "Lets you create and edit users and groups."
+msgstr "Tillader dig at oprette og &aelig;ndre bruger og grupper."
+
+msgid "Local"
+msgstr "Lokal"
+
+msgid "Log out"
+msgstr "Log ud"
+
+msgid "Logged visitors"
+msgstr "Registrerede brugere"
+
+msgid "Login"
+msgstr ""
+
+msgid "Login Page"
+msgstr "Login side"
+
+msgid "Login page"
+msgstr "Login side"
+
+msgid "Manage Groups"
+msgstr "H&aring;ndt&eacute;r grupper"
+
+msgid "Manage Members"
+msgstr "H&aring;ndt&eacute;r medlemmer"
+
+msgid "Manage Users"
+msgstr "H&aring;ndt&eacute;r brugere"
+
+msgid "Member added."
+msgstr "Medlem tilf&oslash;jet."
+
+msgid "Member not found."
+msgstr "Medlem ikke fundet."
+
+msgid "Member removed."
+msgstr "Medlem fjernet."
+
+msgid "Members"
+msgstr "Medlemmer"
+
+msgid "Members found."
+msgstr "Medlem fundet."
+
+msgid "Missing an email address."
+msgstr "Mangler en email adresse."
+
+msgid "Missing authorization script."
+msgstr "Mangler autorisations script."
+
+msgid "Missing my_page function."
+msgstr "Mangler my_page funktion."
+
+msgid "Mistyped username."
+msgstr "Fejlskrevet brugernavn."
+
+msgid "Module does not exist."
+msgstr "Modul eksisterer ikke."
+
+msgid "Module tried to detect a non-existant permission."
+msgstr "Modul fors&oslash;gte at finde en ikke-eksisterende tilladelse."
+
+msgid "Module's item permission file is missing."
+msgstr "Tilladelses fil for modul mangler."
+
+msgid "Module's permission file is missing."
+msgstr "Tilaldelses fil for modul mangler."
+
+msgid "Mortal"
+msgstr "D&oslash;delig"
+
+msgid "My Page"
+msgstr "Min Side"
+
+msgid "My Page registered to Users module."
+msgstr "Min Side er registreret til Brugere modul."
+
+msgid "Never"
+msgstr "Aldrig"
+
+msgid "New Account Sign-up"
+msgstr "Ny konto"
+
+msgid "New Group"
+msgstr "Ny gruppe"
+
+msgid "New User"
+msgstr "Ny bruger"
+
+msgid "New user signup is currently disabled."
+msgstr "Det kan ikke registreres nye brugere i &oslash;jeblikket."
+
+msgid "New user signup not allowed."
+msgstr "Der kan ikke registreres nye brugere."
+
+msgid "No"
+msgstr "Nej"
+
+msgid "No groups found."
+msgstr "Ingen grupper fundet."
+
+msgid "No matches found."
+msgstr "Ingen overensstemmelse fundet"
+
+msgid "No members."
+msgstr "Ingen medlemmer."
+
+msgid "No modules are registered to My Page."
+msgstr "Ingen moduler er registreret p&aring; Min Side"
+
+msgid "No new scripts found"
+msgstr "Ingen nye scripts fundet"
+
+msgid "No restricted edit groups found."
+msgstr "Ingen bundne &aelig;ndrings grupper fundet."
+
+msgid "No, leave them as a deity."
+msgstr "Nej, hold dem guddommelige."
+
+msgid "No, leave them as a mortal."
+msgstr "Nej, hold dem d&oslash;delige."
+
+msgid "None"
+msgstr "Ingen"
+
+msgid "None found"
+msgstr "Ingen fundet"
+
+msgid "Not allowed"
+msgstr "Ikke tilladt"
+
+msgid "Only another deity can create a deity."
+msgstr "Kun en anden guddommelig kan skabe guddommelig."
+
+msgid "Only another deity can create a mortal."
+msgstr "Kunden en anden guddommelig kan skabe en d&oslash;delig."
+
+msgid "Password"
+msgstr "Kodeord"
+
+msgid "Password confirm"
+msgstr "Bekr&aelig;ft kodeord"
+
+msgid "Password is too easy to guess."
+msgstr "Kodeordet er for nemt."
+
+msgid "Password must be at least %s characters in length."
+msgstr "Kodeord skal v&aelig;re mindst %s tegn langt."
+
+msgid "Passwords do not match."
+msgstr "Kodeord passer ikke."
+
+msgid "Passwords must be reentered on user name change."
+msgstr "Kodeord skal genindtastes."
+
+msgid "Permissions"
+msgstr "Tilladelser"
+
+msgid "Permission table name already exists."
+msgstr "Tabel over tilladelser findes allerede."
+
+msgid "Permission table not found."
+msgstr "Tabeller over tilladelser ikke fundet."
+
+msgid "Permissions file not found."
+msgstr "Tilladelses fil ikke fundet."
+
+msgid "Permissions saved."
+msgstr "Tilladelser gemt."
+
+msgid "Permissions table created successfully."
+msgstr "Tilladelses tabel dannet."
+
+msgid "Permissions table not created successfully."
+msgstr "Tilladelses tabel ikke dannet."
+
+msgid "Permissions table not removed successfully."
+msgstr "Tilladelses tabel ikke fjernet."
+
+msgid "Permissions table removed successfully."
+msgstr "Tilladelses tabel fjernet."
+
+msgid "Permissions updated"
+msgstr "Tilladelser opdateret"
+
+msgid "Permissions updated."
+msgstr "Tilladelser opdateret."
+
+msgid "Please create a user to administrate the site."
+msgstr "Opret en bruger for at adminsitrere denne side."
+
+msgid "Please enter a valid email address as a site contact."
+msgstr "Indtast en gyldig mail adresse som en kontakt p&aring; siden."
+
+msgid "Please try another user name."
+msgstr "Pr&oslash;v med et andet user navn."
+
+msgid "Please type the word seen in the image."
+msgstr "Skriv ordet, som det vises herover."
+
+msgid "Preferred editor (admins only)"
+msgstr "Foretrukken editor"
+
+msgid "Remove"
+msgstr "Fjern"
+
+msgid "Restricted"
+msgstr "Bundet"
+
+msgid "Save permissions"
+msgstr "Gem rettigheder"
+
+msgid "Script Filename"
+msgstr "Script filnavn"
+
+msgid "Set Group Permissions"
+msgstr "S&aelig;t gruppe rettigheder"
+
+msgid "Set User Permissions"
+msgstr "S&aelig;t bruger rettigheder"
+
+msgid "Set permissions"
+msgstr "S&aelig;t rettigheder"
+
+msgid "Settings"
+msgstr "Indstillinger"
+
+msgid "Sign up"
+msgstr "Registr&eacute;r"
+
+msgid "Site contact email"
+msgstr "www kontakt email"
+
+msgid "Sorry"
+msgstr "Beklager"
+
+msgid "Sorry, we are not accepting new users at this time."
+msgstr "Beklager, vi kan ikke registrere nye brugere lige nu."
+
+msgid "Specific group(s)"
+msgstr "Specifik gruppe"
+
+msgid "The is a problem with My Page."
+msgstr "Der er et problem med Min Side."
+
+msgid ""
+"There is a problem with your authentication method. Contact the site "
+"administrator."
+msgstr ""
+"Der er et problem med din sikkerhedsl&oslash;sning. Kontakt "
+"adminstrator."
+
+msgid "There was a problem with this module's My Page file."
+msgstr "Der opstod et problem med dette modul's Min Side fil."
+
+msgid "There was problem creating your acccount. Check back later."
+msgstr "Der opstod et problem mens din konto blev gemt. Pr&oslash;v igen senere."
+
+msgid ""
+"This authentication does not exist.<br />\\n"
+" If you did not log in within the time frame specified in your email, please "
+"apply for another account."
+msgstr ""
+"Denne verificering eksistrerer ikke.<br />\\n"
+"Er dit login udl&oslash;bet, i henhold til din E-mail, skal "
+"du oprette et nyt login."
+
+msgid "This email address cannot be used."
+msgstr "Denne E-mail adresse kan ikke bruges."
+
+msgid "This module is not registered with My Page"
+msgstr "Dette modul er ikke registreret p&aring; Min Side"
+
+msgid "Time Zone"
+msgstr "Tidszone"
+
+msgid "Tried to perform an admin function in Users."
+msgstr "Pr&oslash;vede at foretage en administrators funktion i Brugere."
+
+msgid "Unable to copy deity login to branch."
+msgstr "Kunne ikke kopiere guddommeligt login til www-sideskud."
+
+msgid "Unable to copy deity users to branch."
+msgstr "Kunne ikke kopiere guddommelige brugere til www-sideskud."
+
+msgid "Unable to create authorization script."
+msgstr "Kunne ikke danne autorisations script."
+
+msgid "Unable to find font file for graphic confirmation."
+msgstr "Kunne ikke finde font fil for grafisk godkendelse."
+
+msgid "Unable to save user information."
+msgstr "Kunne ikke gemme bruger information."
+
+msgid "Unable to write confirmation graphic to server."
+msgstr "Kan ikke skrive bekr&aelig;ftelses grafik til server."
+
+msgid "Unknown Error."
+msgstr "Ukendt fejl."
+
+msgid "Unrestricted"
+msgstr "Ubegr&aelig;nset"
+
+msgid "Update"
+msgstr "Opdat&eacute;r"
+
+msgid "Update Default"
+msgstr "Opdat&eacute;r standard"
+
+msgid "Update Group"
+msgstr "Opdat&eacute;r gruppe"
+
+msgid "Update Settings"
+msgstr "Opdat&eacute;r indstillinger"
+
+msgid "Update User"
+msgstr "Opdat&eacute;r Bruger"
+
+msgid "Update my information"
+msgstr "Opdat&eacute;r min information"
+
+msgid "Use Daylight Savings Time"
+msgstr "Brug sommer tid"
+
+msgid "Use graphic authentication"
+msgstr "Brug grafisk brugergodkendelse"
+
+msgid "User Administration"
+msgstr "Bruger administration"
+
+msgid "User Menu"
+msgstr "Bruger menu"
+
+msgid "User Signup Mode"
+msgstr "Bruger registrerings modus"
+
+msgid "User created successfully."
+msgstr "Bruger oprettet."
+
+msgid "User created successfully. Check your email for your login information."
+msgstr "Bruger oprettet! Kontroll&eacute;r din mail for login informationer."
+
+msgid "User created."
+msgstr "Bruger opretttet."
+
+msgid "User deified."
+msgstr "Bruger gjort guddommelig."
+
+msgid "User deleted."
+msgstr "Bruger slettet."
+
+msgid "User is missing their permission group"
+msgstr "Bruger mangler deres rettighedsgruppe"
+
+msgid "User name already in use."
+msgstr "Brugernavn anvendes allerede."
+
+msgid "User remains a deity."
+msgstr "Bruger forbliver guddommelig."
+
+msgid "User remains a lowly mortal."
+msgstr "Bruger forbliver d&oslash;delig."
+
+msgid "User settings updated."
+msgstr "Bruger indstillinger opdateret."
+
+msgid "User transformed into a lowly mortal."
+msgstr "Bruger omdannet til en almindelige d&oslash;delig."
+
+msgid "User tried to send bad hash (%s) to confirm user."
+msgstr "Bruger fors&oslash;gte en ukorrekt hash (%S) for at bekr&aelig;fte bruger."
+
+msgid "User updated."
+msgstr "Bruger opdateret."
+
+msgid "User's email address is missing or malformed."
+msgstr "Bruger E-mail adresse mangler eller er forkert"
+
+msgid "User's email address is missing."
+msgstr "Brugers E-mail adresse mangler."
+
+msgid "User's email used as contact email address."
+msgstr "Brugers E-mail brugt som kontakt email adresse."
+
+msgid "Username"
+msgstr "Brugernavn"
+
+msgid "Username and password combination not found."
+msgstr "Brugernavn og kodeord ikke fundet."
+
+msgid "Username and password refused."
+msgstr "Brugernavn og kodeord afvist."
+
+msgid "Username is improperly formatted."
+msgstr "Brugernavn er ikke gyldigt"
+
+msgid "Users"
+msgstr "Brugere"
+
+msgid "View restrictions"
+msgstr "Se begr&aelig;nsninger"
+
+msgid "Want to join?"
+msgstr "Vil du tilmeldes?"
+
+msgid "Welcome!"
+msgstr "Velkommen!"
+
+msgid "Why can't I change my password?"
+msgstr "Hvorfor kan jeg ikke &aelig;ndre mit kodeord?"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "Yes, make them a deity."
+msgstr "Ja, g&oslash;r dem guddommelige."
+
+msgid "Yes, make them a mortal."
+msgstr "Ja, g&oslash;r dem d&oslash;delige."
+
+msgid "You already have an account."
+msgstr "Du har allerede en konto."
+
+msgid "You need to set a site contact address."
+msgstr "Du skal angive en kontakt adresse."
+
+msgid "You will return to the home page in five seconds."
+msgstr "Du vil returnere til hjemme siden om fem sekunder."
+
+msgid ""
+"Your account has been deactivated. You will need to contact a site "
+"administrator to have it reactivated."
+msgstr ""
+"Din konto er blevet deaktiveret. Du skal kontakte side "
+"administratoren for at aktivere den igen."
+
+msgid "Your account has been successfully activated. Please log in."
+msgstr "Din konto er blevet aktiveret. Du kan nu logge ind."
+
+msgid ""
+"Your user account has not been approved yet. Make sure you have responded to "
+"your authentication email."
+msgstr ""
+"Din bruger konto er ikke godkendt endnu. Du skal svare p&aring; din bekr&aelig;ftelses mail."

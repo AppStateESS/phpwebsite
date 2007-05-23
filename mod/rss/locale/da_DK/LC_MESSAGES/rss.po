@@ -1,0 +1,190 @@
+# Localization for Danish.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Claus Iversen <ci dot internet at post dot tele dot dk>, 2007.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.00\n"
+"Report-Msgid-Bugs-To: ci dot internet at post dot tele dot dk \n"
+"POT-Creation-Date: 2007-02-15 10:21-0500\n"
+"PO-Revision-Date: 2007-04-21 23:00 CETMI+ZONE\n"
+"Last-Translator: Claus Iversen <ci dot internet at post dot tele dot dk>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, php-format
+msgid "%d hours"
+msgstr "%d timer"
+
+#, php-format
+msgid "%d hours, "
+msgstr "%d timer, "
+
+#, php-format
+msgid "%d minutes"
+msgstr "%d minutter"
+
+#, php-format
+msgid "%d minutes, "
+msgstr "%d minutter, "
+
+#, php-format
+msgid "%d seconds"
+msgstr "%d sekunder"
+
+msgid "Action"
+msgstr "Handling"
+
+msgid "Active"
+msgstr "Aktiv"
+
+msgid "Add Feed"
+msgstr "Tilf&oslash;j Feed"
+
+msgid "Add feed"
+msgstr "Tilf&oslash;j Feed"
+
+msgid "Address"
+msgstr "Adresse"
+
+msgid "Administrate RSS Feeds"
+msgstr "Administr&eacute;r RSS feeds"
+
+msgid "Administrative panel for setting RSS feeds."
+msgstr "Administrative indstillinger for RSS feeds."
+
+msgid "An error occurred registering to RSS module."
+msgstr "Der opstod en fejl under registrering til RSS"
+
+msgid "An error occurred trying to unregister this module from RSSFeeds."
+msgstr "Der opstod en fejl, imens model afregistreredes RSS."
+
+msgid "An error occurred when saving your channel."
+msgstr "Der opstod en fejl imens din kanal blev gemt."
+
+msgid "An error occurred when trying to access your RSS channels."
+msgstr "Der opstod en fejl, under tilgang til dine RSS kanaler."
+
+msgid "Are you sure you want to delete this RSS feed?"
+msgstr "Er du sikker p&aring; du vil slette denne RSS feed?"
+
+msgid "Cancel"
+msgstr "Fortryd"
+
+msgid "Channel saved."
+msgstr "Kanal er gemt."
+
+msgid "Channels"
+msgstr "Kanaler"
+
+msgid "Delete"
+msgstr "Slet"
+
+msgid "Description"
+msgstr "Beskrivelse"
+
+msgid "Display?"
+msgstr "Vis?"
+
+msgid "Edit"
+msgstr "&AElig;ndre"
+
+msgid "Edit channel"
+msgstr "&AElig;ndre kanal"
+
+msgid "Every %s"
+msgstr "Hver %s"
+
+msgid "Feed title will be used if left empty"
+msgstr "Feed titel vil blive brugt, hvis feltet efterlades tomt"
+
+msgid "Import"
+msgstr "Import"
+
+msgid "Import RSS Feeds"
+msgstr "Import&eacute;r RSS feeds"
+
+msgid "In seconds"
+msgstr "Sekunder"
+
+msgid "Invalid feed address."
+msgstr "Ukorrekt Feed adresse."
+
+msgid "Item limit"
+msgstr "Emne maksimum"
+
+msgid "Module unregistered from RSSFeeds."
+msgstr "Module fjernet fra RSSFeeds."
+
+msgid "No"
+msgstr "Nej"
+
+msgid "No RSS file found."
+msgstr "Ingen RSS fil fundet."
+
+msgid "No channels have been registered."
+msgstr "Der er ikke registreret nogen kanaler"
+
+msgid "Please enable Cache Lite in your config/core/config.php file."
+msgstr "Aktiv&eacute;r Cache Lite i din config/core/config.php fil."
+
+msgid "RSS Feeds"
+msgstr "RSS feeds"
+
+msgid "RSS file found but no channel information."
+msgstr "RSS fil fundet, men ingen kanal information."
+
+msgid "RSS registration to %s module successful."
+msgstr "RSS registrering til %S modulet lykkedes."
+
+msgid "Refresh feed"
+msgstr "Genlad feed"
+
+msgid "Refresh time"
+msgstr "Genlade tid"
+
+msgid "Refresh time is too low. It must be over 60 seconds."
+msgstr "Genlade tid er for langsom. Den skal skal v&aelig;re over 60 sekunder."
+
+msgid "Reset"
+msgstr "Nulstil"
+
+msgid "Save"
+msgstr "Gem"
+
+msgid "Save Channel"
+msgstr "Gem kanal"
+
+msgid "Sorry"
+msgstr "Beklager"
+
+msgid "Sorry, unable to grab feed."
+msgstr "Beklager, men er ikke stand til at hente Feed."
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Unable to list feed."
+msgstr "Kunne ikke vise Feed."
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "You may not pull more than %s feeds."
+msgstr "Du m&aring; ikke kalde mere end %s Feeds."
+
+msgid "You must enable allow_url_fopen in your php.ini file."
+msgstr "Du skal aktivere allow_url_fopen i din php.ini fil."
+
+msgid "You must enter a title."
+msgstr "Du skal indtaste en titel."
+
+msgid "You must enter an address."
+msgstr "Du skal indstaste en adresse."
+
+msgid "You should refresh more often than every month."
+msgstr "Du b&oslash;r opdatere mere end &eacute;n gang i m&aring;neden."

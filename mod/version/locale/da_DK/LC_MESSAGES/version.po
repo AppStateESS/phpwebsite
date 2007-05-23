@@ -1,0 +1,98 @@
+# Localization for Danish.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Claus Iversen <ci dot internet at post dot tele dot dk>, 2007.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.00\n"
+"Report-Msgid-Bugs-To: ci dot internet at post dot tele dot dk \n"
+"POT-Creation-Date: 2007-02-15 10:21-0500\n"
+"PO-Revision-Date: 2007-04-21 23:00 CETMI+ZONE\n"
+"Last-Translator: Claus Iversen <ci dot internet at post dot tele dot dk>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "A problem occurred when trying to process the restoration list."
+msgstr "Det opstod et problem, imens gendannelses listen blev behandlet."
+
+msgid "Anonymous"
+msgstr "Anonym"
+
+msgid "Approve"
+msgstr "Godkend"
+
+msgid "Are you sure you want to remove this version?"
+msgstr "Er du sikker p&aring; du vil fjerne dennne version?"
+
+msgid "Author"
+msgstr "Forfatter"
+
+msgid "Controls the versioning settings."
+msgstr "Bestemmer versions indstillinger."
+
+msgid "Created"
+msgstr "Oprettet"
+
+msgid "Disapprove"
+msgstr "Afvis"
+
+msgid "Edit"
+msgstr "&AElig;ndre"
+
+msgid "Keep all versions"
+msgstr "Behold alle versioner"
+
+msgid "Missing columns.php file"
+msgstr "Mangler colonne.php fil"
+
+msgid "Missing source data."
+msgstr "Mangler kilde data."
+
+msgid "No backup versions available."
+msgstr "Der er ingen backup versioner."
+
+msgid "No items for approval."
+msgstr "Igen emner at godkende."
+
+msgid "Remove"
+msgstr "Fjern"
+
+msgid "Restore"
+msgstr "Gendan"
+
+msgid "Save"
+msgstr "Gem"
+
+msgid "Set variable must be an object or an array."
+msgstr "S&aelig;t variabel skal v&aelig;re et objekt eller et array."
+
+msgid "Settings saved."
+msgstr "Indstillinger gemt."
+
+msgid "Source table not found."
+msgstr "Kilde tabel ikke fundet."
+
+msgid "There was an error removing a version table."
+msgstr "Der opstod en fejl, imens versions tabellen blev fjernet."
+
+msgid "Unknown module"
+msgstr "Ukendt modul"
+
+msgid "Version"
+msgstr "Version"
+
+msgid "Version function requires an item id."
+msgstr "Version funktion kr&aelig;ver et emne id."
+
+msgid "Version settings"
+msgstr "Version indstillinger"
+
+msgid "Version table removed: %s"
+msgstr "Version tabel fjernet: %s"
+
+msgid "View"
+msgstr "Se"

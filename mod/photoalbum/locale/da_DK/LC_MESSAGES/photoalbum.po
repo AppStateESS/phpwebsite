@@ -1,0 +1,434 @@
+# Localization for Danish.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Claus Iversen <ci dot internet at post dot tele dot dk>, 2007.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.00\n"
+"Report-Msgid-Bugs-To: ci dot internet at post dot tele dot dk \n"
+"POT-Creation-Date: 2007-02-15 10:21-0500\n"
+"PO-Revision-Date: 2007-04-21 23:00 CETMI+ZONE\n"
+"Last-Translator: Claus Iversen <ci dot internet at post dot tele dot dk>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid " mode."
+msgstr " tilstand."
+
+msgid "A file was uploaded but no short description was given."
+msgstr "En fil er blevet uploaded, men der er ingen beskrivelse til."
+
+msgid "A short description was added but no file was uploaded."
+msgstr "En kort beskrivelse er blevet tilf&oslash;jet, men der er ikke gemt nogen fil"
+
+msgid "Access Denied!"
+msgstr "Adgang n&aelig;gtet!"
+
+msgid "Access denied function was called without a proper error initialized."
+msgstr "Funktionen Adgang N&aelig;gtet blev aktiveret, uden at kalde en fejl."
+
+msgid "Action"
+msgstr "Handling"
+
+msgid "Activity"
+msgstr "Aktivitet"
+
+msgid "Add album"
+msgstr "Tilf&oslash;j album"
+
+msgid "Add photo"
+msgstr "Tilf&oslash;j billede"
+
+msgid "Album Contains No Photos"
+msgstr "Album indeholder ingen billeder"
+
+msgid "Album name"
+msgstr "Album navn"
+
+msgid "All photos"
+msgstr "Alle billeder"
+
+msgid ""
+"Are you sure you want to delete this album and all the photos associated "
+"with it?"
+msgstr ""
+
+msgid "Are you sure you want to delete this photo?"
+msgstr "Er du sikker p&aring; du vil slette dette billede?"
+
+msgid "Back"
+msgstr "Tilbage"
+
+msgid "Back to Album"
+msgstr "Tilbage til album"
+
+msgid "Back to album"
+msgstr "tilbage til album"
+
+msgid "Back&nbsp;to&nbsp;Album"
+msgstr "Tilbage&nbsp;til&nbsp;album"
+
+msgid "Barn"
+msgstr "Skur"
+
+msgid "Batch Add"
+msgstr "Masse tilf&oslash;j"
+
+msgid "Batch Add Photos"
+msgstr "Tilf&oslash;j mange billeder"
+
+msgid "Box In"
+msgstr ""
+
+msgid "Box Out"
+msgstr ""
+
+msgid "Circle In"
+msgstr ""
+
+msgid "Circle Out"
+msgstr ""
+
+msgid "Delete"
+msgstr "Slet"
+
+msgid "Delete Album"
+msgstr "Slet album"
+
+msgid "Delete Album Confirmation"
+msgstr "Slet album bekr&aelig;ftelse"
+
+msgid "Delete Photo Confirmation"
+msgstr "Slet billede godkendelse"
+
+msgid "Delete album"
+msgstr "Slet album"
+
+msgid "Delete photo"
+msgstr "Slet billede"
+
+msgid "Description"
+msgstr "Beskrivelse"
+
+msgid "Dissolve"
+msgstr "Opl&oslash;s"
+
+msgid "Edit"
+msgstr "&AElig;ndre"
+
+msgid "Edit Album"
+msgstr "&AElig;ndre album"
+
+msgid "Edit Photo"
+msgstr "&AElig;ndre foto"
+
+msgid "Edit channel"
+msgstr "&AElig;ndre kanal"
+
+msgid "Edit photo"
+msgstr "&AElig;ndre billede"
+
+msgid "Editor"
+msgstr ""
+
+msgid "Extended"
+msgstr "Udvidet"
+
+msgid "Fade"
+msgstr "Udvisk"
+
+msgid "First"
+msgstr "F&oslash;rste"
+
+msgid "Five Seconds"
+msgstr "Fem sekunder"
+
+msgid "Gradient Wipe"
+msgstr "Gradient tone"
+
+msgid "Height"
+msgstr "H&oslash;jde"
+
+msgid "Hidden"
+msgstr "Skjult"
+
+msgid "Horizontal Checkerboard"
+msgstr "Horisontalt skakbr&aelig;t"
+
+msgid "Image "
+msgstr "Billede "
+
+msgid "Information"
+msgstr "Information"
+
+msgid "Iris"
+msgstr ""
+
+msgid "Last image"
+msgstr "Sidste billede"
+
+msgid "Last updated"
+msgstr "Sidst opdateret"
+
+msgid "List Albums"
+msgstr "Vis album"
+
+msgid "Loading Image..."
+msgstr "Hent billeder..."
+
+msgid "Loading Next Image..."
+msgstr "Hent n&aelig;ste billede..."
+
+msgid "Loop:  "
+msgstr "Gentag: "
+
+msgid "Missing Descriptions"
+msgstr "Vis, hvor beskrivelser mangler"
+
+msgid "Name"
+msgstr "Navn"
+
+msgid "New Album"
+msgstr "Nyt album"
+
+msgid "New Photo"
+msgstr "Nyt billede"
+
+msgid "Newest"
+msgstr "Nyeste"
+
+msgid "Next"
+msgstr "N&aelig;ste"
+
+msgid "No"
+msgstr "Nej"
+
+msgid "No album was deleted from the database."
+msgstr "Intet album var slettet fra databasen."
+
+msgid "No albums found."
+msgstr "Ingen album fundet."
+
+msgid "No file was uploaded and no short description was given."
+msgstr "Ingen fil var gemt. Det var heller ikke nogen kort beskrivelse."
+
+msgid "No photo was deleted from the database."
+msgstr "Intet billede var slettet."
+
+msgid "No photos found."
+msgstr "Ingen billeder fundet."
+
+msgid "Not working, try "
+msgstr "Virker ikke, pr&oslash;v " 
+
+msgid "Number of photos (select before uploading)"
+msgstr "Antal af billeder (v&aelig;lg f&oslash;r du gemmer)"
+
+msgid "Oldest"
+msgstr "&AElig;ldst"
+
+msgid "One Minute"
+msgstr "&Eacute;t minut"
+
+msgid "Order By"
+msgstr "Sort&eacute;r"
+
+msgid "Photo Album"
+msgstr "Foto album"
+
+msgid "Photo Albums"
+msgstr "Foto albums"
+
+msgid "Photo Number"
+msgstr "Foto nummer"
+
+msgid "Pixellate"
+msgstr "Pixell&eacute;r"
+
+msgid "Prev"
+msgstr "Forrige"
+
+msgid "Previous"
+msgstr "Forrige"
+
+msgid "Print"
+msgstr ""
+
+msgid "Radial Wipe"
+msgstr "Radial udtv&aelig;ring"
+
+msgid "Remove Image"
+msgstr "Fjern billede"
+
+msgid "Return to "
+msgstr "Return&eacute;r til"
+
+msgid "Save"
+msgstr "Gem"
+
+msgid "Set Speed: &nbsp;"
+msgstr "S&aelig;t hastighed: &nbsp;"
+
+msgid "Settings"
+msgstr "Indstillinger"
+
+msgid "Seven Seconds"
+msgstr "Syv sekunder"
+
+msgid "Short"
+msgstr "Kort"
+
+msgid "Slide Show"
+msgstr "Dias show"
+
+msgid "Spiral"
+msgstr "Spiral"
+
+msgid "Start Show"
+msgstr ""
+
+msgid "Stop Show"
+msgstr "Stop show"
+
+msgid "Strips"
+msgstr "Fjerner"
+
+msgid "Ten Seconds"
+msgstr "Ti sekunder"
+
+msgid ""
+"The Photo %s was saved but their was a problem creating the thumbnail image."
+msgstr ""
+"Billedet %s blev gemt, men der opstod et problem med at lave frim&aelig;rke."
+
+msgid "The Photo %s was successfully saved."
+msgstr "Billedet %s blev gemt."
+
+msgid "The Photo Album \"%s\" was successfully saved."
+msgstr "Foto album \"%s\" blev gemt."
+
+msgid "The Photo Album could not be updated to the database."
+msgstr "Foto album kunne ikke opdateres."
+
+msgid ""
+"The album %s and all its photos were successfully deleted from the database."
+msgstr ""
+"Albumet %s og alle billeder blev slettet."
+
+msgid "The file uploaded exceeded the max size allowed."
+msgstr "Filen som gemmes er st&oslash;rre en den tilladte v&aelig;rdi."
+
+msgid "The image uploaded was not an allowed image type."
+msgstr "De gemte billede er ikke en tilladt type."
+
+msgid "The image was successfully removed."
+msgstr "Dette billede blev fjernet."
+
+msgid "The photo %s was successfully deleted from the database."
+msgstr "Billedet %s blev slettet fra databasen."
+
+msgid "The photo album image directory could not be created."
+msgstr "Foto album billedet kunne ikke dannes."
+
+msgid "The uploaded file exceeded the max file size allowed."
+msgstr "Upload filen er st&oslash;rre end den tilladte v&aelig;rdi."
+
+msgid "There was a problem removing the image."
+msgstr "Der opstod et problem under sletning af billede."
+
+msgid "There was a problem saving the information to the database."
+msgstr "Der opstod et problem imens informationer blev gemt til databasen."
+
+msgid "There was a problem uploading the specified file."
+msgstr "Der opstod et problem imens den specificerede fil blev gemt."
+
+msgid "There was a problem uploading the specified image."
+msgstr "Der opstod en fejl, imens det specificerede billede blev gemt."
+
+msgid "Thirty Seconds"
+msgstr "30 sekunder"
+
+msgid "This album is currently hidden from the public."
+msgstr "Dette album er gemt for offentligheden."
+
+msgid "This photo is currently hidden from the public."
+msgstr "Dette billede er gemt for offentligheden."
+
+msgid "Three Seconds"
+msgstr "Tre sekunder"
+
+msgid "Thumbnail"
+msgstr "Mini Visning"
+
+msgid "Transition Effect: &nbsp;"
+msgstr "Bev&aelig;gelse effekt: &nbsp;"
+
+msgid "Two Minutes"
+msgstr "To minutter"
+
+msgid "Two Seconds"
+msgstr "To sekunder"
+
+msgid "Type"
+msgstr ""
+
+msgid "Update"
+msgstr "Opdat&eacute;r"
+
+msgid "Updated"
+msgstr "Opdateret"
+
+msgid "Upload Image"
+msgstr "Upload billede"
+
+msgid "User tried to upload duplicate image."
+msgstr "Bruger fors&oslash;gte at uploade samme billede igen."
+
+msgid "Vertical Checkerboard"
+msgstr "Vertikal skakbr&aelig;t"
+
+msgid "View Photo"
+msgstr "Se foto"
+
+msgid "Visible"
+msgstr "Synlig"
+
+msgid "Wheel"
+msgstr "Hjul"
+
+msgid "Width"
+msgstr "Bredde"
+
+msgid "Wipe Up"
+msgstr "Oprydning"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "You do not have permission to add photos within an album."
+msgstr "Du har ikke tilladelse til at tilf&oslash;je billeder i et album."
+
+msgid "You must enter a name for the Photo Album."
+msgstr "Du skal indtaste et navn for Foto Album."
+
+msgid "You must enter a short description for the photo."
+msgstr "Du skal indtaste en kort beskrivelse for fotoet."
+
+msgid "You must remove the image before uploading a new one."
+msgstr "Du skal fjerne billedet f&oslash;r du uploader et nyt."
+
+msgid "high tech"
+msgstr ""
+
+msgid "low tech"
+msgstr ""
+
+msgid "of"
+msgstr "af"
+
+msgid "the "
+msgstr " "

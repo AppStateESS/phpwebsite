@@ -1,0 +1,218 @@
+# Localization for Danish.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Claus Iversen <ci dot internet at post dot tele dot dk>, 2007.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.00\n"
+"Report-Msgid-Bugs-To: ci dot internet at post dot tele dot dk \n"
+"POT-Creation-Date: 2007-02-26 15:18-0500\n"
+"PO-Revision-Date: 2007-04-21 23:00 CETMI+ZONE\n"
+"Last-Translator: Claus Iversen <ci dot internet at post dot tele dot dk>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "A problem occurred when saving your link."
+msgstr "Der opstod et problem imens din genvej blev gemt."
+
+msgid "Action"
+msgstr "Handling"
+
+msgid "Add Other Link"
+msgstr "Tilf&oslash;j et andet link"
+
+msgid "Add link"
+msgstr "Tilf&oslash;j genvej"
+
+msgid "Add other link"
+msgstr "Tilf&oslash;j andet link"
+
+msgid "Add to menu"
+msgstr "Tilf&oslash;j til menu"
+
+msgid "Admin"
+msgstr "Administr&eacute;r"
+
+msgid "Admin mode off"
+msgstr " "
+
+msgid "Admin mode on"
+msgstr "Administrator tilstand"
+
+msgid "Are you sure you want to delete this link: "
+msgstr "Er du sikker p&aring; du vil slette denne genvej: "
+
+msgid "Are you sure you want to delete this menu and all its links."
+msgstr "Er du sikker p&aring; du vil slette denne menu og alle dens genveje."
+
+msgid "Are you sure you want to unpin this menu from all pages?"
+msgstr "Er du sikker p&aring; du vil fjerne denne menu fra alle sider?"
+
+msgid "Are you sure you want to unpin this menu from this page?"
+msgstr "Er du sikker p&aring; du vil fjerne denne menu fra denne side?"
+
+msgid "Cannot locate any menu templates. Cannot continue."
+msgstr "Kan ikke finde menu tabeller. Kan ikke forts&aelig;tte"
+
+msgid "Clip"
+msgstr "Klip"
+
+msgid "Close"
+msgstr "Luk"
+
+msgid "Controls the layout and positioning of your menus."
+msgstr "Bestemmer layout og position af dine menuer."
+
+msgid "Create"
+msgstr "Opret"
+
+msgid "Create Link"
+msgstr "Dan genvej"
+
+msgid "Create New Menu"
+msgstr "Dan ny menu"
+
+msgid "Create New Menus"
+msgstr "Dan nye menuer"
+
+msgid "Default menu created successfully."
+msgstr "Standard menu er oprettet."
+
+msgid "Delete"
+msgstr "Slet"
+
+msgid "Delete Menus"
+msgstr "Slet menuer"
+
+msgid "Delete link"
+msgstr "Slet genvej"
+
+msgid "Disable Administration Mode"
+msgstr "D&eacute;aktiver Administrations tilstand"
+
+msgid "Edit"
+msgstr "&AElig;ndre"
+
+msgid "Edit link title"
+msgstr "&AElig;ndre titel p&aring; genvej"
+
+msgid "Enable Administration Mode"
+msgstr "Aktiver administrations tilstand"
+
+msgid "Enter link title"
+msgstr "Tast genvejs titel"
+
+msgid "Error"
+msgstr "Fejl"
+
+msgid "Link is missing a title, url, or menu id."
+msgstr "Genvej mangler titel, url eller menu ID."
+
+msgid "List"
+msgstr "Vis"
+
+msgid "Main Menu"
+msgstr "Hoved menu"
+
+msgid "Menu"
+msgstr ""
+
+msgid "Menu Settings"
+msgstr "Menu indstillinger"
+
+msgid "Menu deleted."
+msgstr "Menu slettet."
+
+msgid "Menu saved"
+msgstr "Menu gemt"
+
+msgid "Menu tables removed."
+msgstr "Menu tabeller fjernet."
+
+msgid "Missing menu title."
+msgstr "Mangler menu titel."
+
+msgid "Missing title."
+msgstr "Mangler titel."
+
+msgid "Missing url."
+msgstr "Mangler URL."
+
+msgid "Move down"
+msgstr "Flyt ned"
+
+msgid "Move up"
+msgstr "Flyt op"
+
+msgid "New"
+msgstr "Ny"
+
+msgid "No links in queue."
+msgstr "Ingen genveje i k&oslash;."
+
+msgid "Pin"
+msgstr "Opslag"
+
+msgid "Pin links"
+msgstr "S&aelig;t genveje"
+
+msgid "Pin to all pages"
+msgstr "S&aelig;t til alle sider"
+
+msgid "Pin to item"
+msgstr "S&aelig;t til emne"
+
+msgid "Pinned links"
+msgstr "Opsatte genveje"
+
+msgid "Save link"
+msgstr "Gem link"
+
+msgid "Settings"
+msgstr "Indstillinger"
+
+msgid "Site map"
+msgstr "www kort"
+
+msgid "Sorry"
+msgstr "Beklager"
+
+msgid "Template"
+msgstr "Skabelon"
+
+msgid "There was a problem saving your link."
+msgstr "Der opstod et problem imens genvejen blev gemt."
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Type the new title for this link."
+msgstr "Skriv en ny titel for denne genvej."
+
+msgid "Unable to save menu. Please check error logs."
+msgstr "Kunne ikke gemme menu. Kontroll&eacute;r error.log."
+
+msgid "Unclip"
+msgstr "Fortryd klip"
+
+msgid "Unpin"
+msgstr "Afmark&eacute;r"
+
+msgid "Unpin menu"
+msgstr "Afmark&eacute;r menu"
+
+msgid "Update"
+msgstr "Opdat&eacute;r"
+
+msgid "Update Menu"
+msgstr "Opdat&eacute;r Menu"
+
+msgid "Url"
+msgstr "URL"
+
+msgid "User attempted access to Menu administration."
+msgstr "Bruger fors&oslash;gte at tilg&aring; Menu administration."
