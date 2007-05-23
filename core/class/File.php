@@ -502,7 +502,7 @@ class PHPWS_File {
      *
      * @modified Shaun Murray <shaun@NOSPAM.aegisdesign.co.uk>
      * @param    string $file   The string file name
-     * @param    int    $maxlen Maximun permited string lenght
+     * @param    int    $maxlen Maximun permited string length
      * @return   string Formatted file name
      */
     function nameToSafe($name, $maxlen=250)
