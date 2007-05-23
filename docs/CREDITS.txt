@@ -73,8 +73,14 @@ http://www.hotscripts.com/
 FCKeditor
 http://www.fckeditor.net/
 
+TinyMCE
+http://tinymce.moxiecode.com/
+
 Howard Yeend
 http://www.puremango.co.uk/
+
+Corz (BB decoder)
+http://corz.org/
 
 --------------------------------------------------------------------------
 The phpWebSite team would also like to thank the following people in
@@ -88,6 +94,7 @@ Wendall Cada
 Eloi George/aDarkling
 Darren Greene
 Peter Heppner (German translations)
+Claus Iversen (Danish translations)
 Bobby Kennedy/fatman
 Rene Kiesler/rck
 Greg Meiste/blindman1344

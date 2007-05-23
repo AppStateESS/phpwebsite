@@ -2,6 +2,11 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
++ Added Danish translation files supplied by Claus Iversen.
++ Added Claus to CREDITS file
++ Typo fixed in File.php comment
++ Removed related as a core module.
+
 
 Version 1.5.2
 -----------------------------------------------------------------------
