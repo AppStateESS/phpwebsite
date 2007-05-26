@@ -1,5 +1,5 @@
 {START_FORM}
-<table class="form-table">
+<table>
   <tr>
     <td class="label">{PHPWS_USERNAME_LABEL}
     </td>
