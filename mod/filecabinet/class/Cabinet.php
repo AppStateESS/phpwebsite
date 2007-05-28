@@ -76,7 +76,7 @@ class Cabinet {
             break;
 
         case 'unpin':
-            if (Current_User::authorized('filecabinet')) {
+            if (!Current_User::authorized('filecabinet')) {
                 Current_User::disallow();
             }
 
