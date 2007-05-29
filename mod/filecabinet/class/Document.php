@@ -159,7 +159,7 @@ class PHPWS_Document extends File_Common {
             if ($this->folder_id) {
                 $folder = new Folder($_POST['folder_id']);
                 if ($folder->id) {
-                    $this->file_directory = $folder->getFullDirectory();
+                    $this->setDirectory($folder->getFullDirectory());
                 } else {
                     return PHPWS_Error::get(FC_MISSING_FOLDER, 'filecabinet', 'PHPWS_Document::save');
                 }

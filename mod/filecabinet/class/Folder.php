@@ -5,8 +5,9 @@
    * @author Matthew McNaney <mcnaney at gmail dot com>
    */
 
-define('IMAGE_FOLDER', 1);
-define('DOCUMENT_FOLDER', 2);
+define('IMAGE_FOLDER',      1);
+define('DOCUMENT_FOLDER',   2);
+define('MULTIMEDIA_FOLDER', 3);
 
 class Folder {
     var $id              = 0;
@@ -111,8 +112,10 @@ class Folder {
     {
         if ($this->ftype == DOCUMENT_FOLDER) {
             $this->_base_directory = PHPWS_Settings::get('filecabinet', 'base_doc_directory');
-        } else {
+        } elseif ($this->ftype == IMAGE_FOLDER) {
             $this->_base_directory = 'images/filecabinet/';
+        } else {
+            $this->_base_directory = 'files/filecabinet/multimedia/';
         }
     }
 
@@ -127,8 +130,10 @@ class Folder {
     {
         if ($this->ftype == DOCUMENT_FOLDER) {
             return $this->documentUploadLink();
-        } else {
+        } elseif ($this->ftype == IMAGE_FOLDER) {
             return $this->imageUploadLink();
+        } else {
+            return $this->multimediaUploadLink();
         }
     }
 
@@ -148,6 +153,15 @@ class Folder {
         $vars['width']   = 540;
         $vars['height']  = 400;
         $vars['title'] = $vars['label']   = dgettext('filecabinet', 'Add document');
+        return javascript('open_window', $vars);
+    }
+
+    function multimediaUploadLink()
+    {
+        $vars['address'] = 'index.php?module=filecabinet&aop=upload_multimedia_form&folder_id=' . $this->id;
+        $vars['width']   = 540;
+        $vars['height']  = 400;
+        $vars['title'] = $vars['label']   = dgettext('filecabinet', 'Add file');
         return javascript('open_window', $vars);
     }
 
@@ -221,7 +235,7 @@ class Folder {
             }
 
             if ($result) {
-                if ($this->ftype == IMAGE_FOLDER) {
+                if ($this->ftype == IMAGE_FOLDER || $this->ftype == MULTIMEDIA_FOLDER) {
                     $thumb_dir = $full_dir . '/tn/';
                     if (!is_dir($thumb_dir)) {
                         $result = @mkdir($thumb_dir);
@@ -292,9 +306,12 @@ class Folder {
             $db = new PHPWS_DB('images');
         } elseif ($this->ftype == DOCUMENT_FOLDER) {
             $db = new PHPWS_DB('documents');
+        } elseif ($this->ftype == MULTIMEDIA_FOLDER) {
+            $db = new PHPWS_DB('multimedia');
         } else {
             return false;
         }
+
         $db->addWhere('folder_id', $this->id);
         $db->delete();
 
@@ -347,8 +364,10 @@ class Folder {
             $links[] = $this->editLink();
             if ($this->ftype == IMAGE_FOLDER) {
                 $links[] = $this->imageUploadLink();
-            } else {
+            } elseif ($this->ftype == DOCUMENT_FOLDER) {
                 $links[] = $this->documentUploadLink();
+            } else {
+                $links[] = $this->multimediaUploadLink();
             }
 
             if ($this->key_id) {
@@ -378,6 +397,10 @@ class Folder {
             PHPWS_Core::initModClass('filecabinet', 'Document.php');
             $db = new PHPWS_DB('documents');
             $obj_name = 'PHPWS_Document';
+        } elseif ($this->ftype == MULTIMEDIA_FOLDER) {
+            PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+            $db = new PHPWS_DB('multimedia');
+            $obj_name = 'PHPWS_Multimedia';
         }
 
         $db->addWhere('folder_id', $this->id);
@@ -400,6 +423,8 @@ class Folder {
             $db = new PHPWS_DB('images');
         } elseif ($this->ftype == DOCUMENT_FOLDER) {
             $db = new PHPWS_DB('documents');
+        } elseif ($this->ftype == MULTIMEDIA_FOLDER) {
+            $db = new PHPWS_DB('multimedia');
         }
 
         $db->addWhere('folder_id', $this->id);
@@ -437,8 +462,10 @@ class Folder {
 
         if ($this->ftype == IMAGE_FOLDER) {
             $max = PHPWS_Settings::get('filecabinet', 'max_pinned_images');
-        } else {
+        } elseif ($this->ftype = DOCUMENT_FOLDER) {
             $max = PHPWS_Settings::get('filecabinet', 'max_pinned_documents');
+        } else {
+            $max = PHPWS_Settings::get('filecabinet', 'max_pinned_multimedia');
         }
 
         if (!$max) {

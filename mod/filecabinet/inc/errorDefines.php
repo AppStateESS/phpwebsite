@@ -24,5 +24,7 @@ define('FC_BAD_DIRECTORY',         -115);
 define('FC_MISSING_FOLDER',        -116);
 define('FC_MAX_FORM_UPLOAD',       -117);
 define('FC_MISSING_TMP',           -118);
-
+define('FC_MULTIMEDIA_SIZE',       -119);
+define('FC_MULTIMEDIA_WRONG_TYPE', -120);
+define('FC_MULTIMEDIA_NOT_FOUND',  -121);
 ?>

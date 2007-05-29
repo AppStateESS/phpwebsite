@@ -54,6 +54,9 @@ class FC_Image_Manager {
     }
 
 
+    /**
+     * shows image choices from pop up menu
+     */
     function showImages($folder, $image_id=0)
     {
         if (!$folder->id) {
@@ -78,6 +81,10 @@ class FC_Image_Manager {
                                                     $image->id, $image->thumbnailPath(), addslashes($image->title), $image->getThumbnail());
 
                     }
+
+
+                    $tpl['EDIT'] = $image->editLink(true);
+
                     $tpl['TITLE']     = $image->title;
                     $tpl['VIEW']      = $image->getJSView();
                     $tpl['ID']        = $image->id;
@@ -100,7 +107,6 @@ class FC_Image_Manager {
      */
     function edit()
     {
-        $this->cabinet->title = dgettext('filecabinet', 'Upload image');
         $form = new PHPWS_Form;
         $form->addHidden('module', 'filecabinet');
 
@@ -118,6 +124,9 @@ class FC_Image_Manager {
 
         if ($this->image->id) {
             $form->addHidden('image_id', $this->image->id);
+            $this->cabinet->title = dgettext('filecabinet', 'Update image');
+        } else {
+            $this->cabinet->title = dgettext('filecabinet', 'Upload image');
         }
 
         $form->addFile('file_name');
@@ -137,6 +146,39 @@ class FC_Image_Manager {
         $form->addTextArea('description', $this->image->description);
         $form->setLabel('description', dgettext('filecabinet', 'Description'));
 
+        $link_choice['none'] = dgettext('filecabinet', 'Do not link image');
+        $link_choice['url']  = dgettext('filecabinet', 'Link image with url below');
+
+        if ($this->image->parent_id) {
+            $link_choice['parent'] = dgettext('filecabinet', 'Link image to original, full sized image');
+        }
+
+       
+        $form->addSelect('link', $link_choice);
+        $form->setLabel('link', dgettext('filecabinet', 'Link image'));
+        $form->setExtra('link', 'onchange=testing(this)');
+
+        $form->addText('url');
+        $form->setSize('url', 50, 255);
+        $form->setLabel('url', dgettext('filecabinet', 'Image link url'));
+
+
+
+        switch (1) {
+        case empty($this->image->url):
+            $form->setMatch('link', 'none');
+            break;
+
+        case $this->image->url == 'parent':
+            $form->setMatch('link', 'parent');
+            break;
+
+        default:
+            $form->setMatch('link', 'url');
+            $form->setValue('url', $this->image->url);
+            break;
+        }
+
 
         if (!empty($this->image->id)) {
             $form->addSubmit(dgettext('filecabinet', 'Update'));
@@ -151,6 +193,7 @@ class FC_Image_Manager {
         if ($this->image->id) {
             $template['CURRENT_IMAGE_LABEL'] = dgettext('filecabinet', 'Current image');
             $template['CURRENT_IMAGE']       = $this->image->getJSView(TRUE);
+            $template['SIZE']                = sprintf('%s x %s', $this->image->width, $this->image->height);
         }
         $template['MAX_SIZE_LABEL']   = dgettext('filecabinet', 'Maximum file size');
         $template['MAX_WIDTH_LABEL']  = dgettext('filecabinet', 'Maximum width');
@@ -189,6 +232,28 @@ class FC_Image_Manager {
             javascript('close_refresh', $vars);
             return;
         } elseif ($result) {
+            switch ($_POST['link']) {
+            case 'url':
+                if (empty($_POST['url'])) {
+                    $this->image->url = null;
+                } else {
+                    $this->image->url = $_POST['url'];
+                }
+                $this->url = $_POST['link'];
+                break;
+
+            case 'parent':
+                if ($this->image->parent_id) {
+                    $this->image->url = 'parent';
+                } else {
+                    $this->image->url = null;
+                }
+                break;
+
+            default:
+                $this->image->url = null;
+            }
+
             $result = $this->image->save();
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
@@ -422,6 +487,7 @@ class FC_Image_Manager {
             $image->title          = $this->image->title;
             $image->description    = $this->image->description;
             $image->alt            = $this->image->alt;
+            $image->parent_id      = $this->image->id;
             $image->loadDimensions();
             $result = $image->save();
             $result = null;

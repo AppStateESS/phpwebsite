@@ -22,11 +22,15 @@ define('FC_MAX_IMAGE_POPUP_HEIGHT', 768);
 define('FC_THUMBNAIL_WIDTH', 100);
 define('FC_THUMBNAIL_HEIGHT', 100);
 
+
 /**
  * if true (the default) and a file already has a resized version,
  * the image manager will pick it automatically.
  * If false, then the image manager will create a new resized version
  */
 define('RESIZE_IMAGE_USE_DUPLICATE', true);
+
+
+define('FC_INCOMING_DIRECTORY', 'files/filecabinet/incoming/');
 
 ?>

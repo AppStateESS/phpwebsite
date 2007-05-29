@@ -88,10 +88,6 @@ class FC_Document_Manager {
 
     function loadSettings()
     {
-        if (isset($_REQUEST['itemname'])) {
-            $this->setItemname($_REQUEST['itemname']);
-        }
-
         if (isset($_REQUEST['ms']) && $_REQUEST['ms'] > 1000) {
             $this->setMaxSize($_REQUEST['ms']);
         } else {

@@ -1,3 +1,14 @@
+<script type="text/javascript">
+function testing(foo) {
+    spanner = document.getElementById('link-url');
+    if (foo.value == 'url') {
+        spanner.style.visibility = 'visible';
+    } else {
+        spanner.style.visibility = 'hidden';
+    }
+}
+</script>
+
 {START_FORM}
 <!-- BEGIN error-list -->
 <ul>
@@ -8,9 +19,11 @@
 <!-- END error-list -->
 
 <table class="form-table">
+<!-- BEGIN current-image -->
   <tr>
-    <td><strong>{CURRENT_IMAGE_LABEL}</strong></td><td>{CURRENT_IMAGE}</td>
+    <td><strong>{CURRENT_IMAGE_LABEL}</strong></td><td>{CURRENT_IMAGE}<br />{SIZE}</td>
   </tr>
+<!-- END current-image -->
   <tr>
     <td>{FILE_NAME_LABEL}</td><td>{FILE_NAME}</td>
   </tr>
@@ -22,6 +35,14 @@
   </tr>
   <tr>
     <td>{DESCRIPTION_LABEL}</td><td>{DESCRIPTION}</td>
+  </tr>
+  <tr>
+    <td>{LINK_LABEL}</td>
+    <td>{LINK}</td>
+  </tr>
+  <tr style="visibility : hidden;" id="link-url">
+    <td>{URL_LABEL}</td>
+    <td>{URL}</td>
   </tr>
 </table>
 {SUBMIT} {CANCEL}

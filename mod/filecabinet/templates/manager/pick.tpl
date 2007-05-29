@@ -3,7 +3,7 @@
 <li id="image_{ID}" class="{SELECT}">
    {THUMBNAIL}
    <p class="dimensions">
-   {VIEW}
+   {VIEW} {EDIT}
    {WIDTH} x {HEIGHT}
    </p>
 </li>

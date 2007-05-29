@@ -13,14 +13,15 @@
 PHPWS_Core::initModClass('filecabinet', 'Folder.php');
 
 class Cabinet {
-    var $title        = null;
-    var $message      = null;
-    var $content      = null;
-    var $forms        = null;
-    var $panel        = null;
-    var $folder       = null;
-    var $image_mgr    = null;
-    var $document_mgr = null;
+    var $title          = null;
+    var $message        = null;
+    var $content        = null;
+    var $forms          = null;
+    var $panel          = null;
+    var $folder         = null;
+    var $image_mgr      = null;
+    var $document_mgr   = null;
+    var $multimedia_mgr = null;
 
     function admin()
     {
@@ -59,6 +60,13 @@ class Cabinet {
             $this->forms->getFolders(IMAGE_FOLDER);
             break;
 
+        case 'multimedia':
+            $this->panel->setCurrentTab('multimedia');
+            $this->title = dgettext('filecabinet', 'Multimedia folders');
+            $this->loadForms();
+            $this->forms->getFolders(MULTIMEDIA_FOLDER);
+            break;
+
         case 'add_folder':
             $javascript = true;
             $this->loadFolder();
@@ -73,6 +81,35 @@ class Cabinet {
             $javascript = true;
             $this->pinFolder();
             javascript('close_refresh');
+            break;
+
+        case 'classify':
+            $this->loadForms();
+            $this->forms->classifyFileList();
+            break;
+
+        case 'classify_file':
+            $this->loadForms();
+            if (!empty($_POST['file_list'])) {
+                $this->forms->classifyFile($_POST['file_list']);
+            } elseif (isset($_GET['file'])) {
+                $this->forms->classifyFile($_GET['file']);
+            } else {
+                $this->forms->classifyFileList();
+            }
+            break;
+
+        case 'post_classifications':
+            if (!Current_User::authorized('filecabinet')) {
+                Current_User::disallow();
+            }
+
+            $result = $this->classifyFiles();
+            if (is_array($result)) {
+                $this->message = implode('<br />', $result);
+            }
+            $this->loadForms();
+            $this->forms->classifyFileList();
             break;
 
         case 'unpin':
@@ -182,6 +219,16 @@ class Cabinet {
             $this->image_mgr->postImageUpload();
             break;
 
+        case 'post_multimedia_upload':
+            $javascript = true;
+            $this->loadMultimediaManager();
+            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->multimedia_mgr->multimedia->folder_id)) {
+                Current_User::disallow();
+            }
+            $this->multimedia_mgr->postMultimediaUpload();
+            break;
+
+
         case 'post_folder':
             $this->loadFolder();
             if (!Current_User::authorized('filecabinet', 'edit_folders')) {
@@ -230,6 +277,13 @@ class Cabinet {
             $this->image_mgr->edit();
             break;
 
+        case 'upload_multimedia_form':
+            $javascript = true;
+            $this->loadMultimediaManager();
+            $this->multimedia_mgr->edit();
+            break;
+
+
         case 'view_folder':
             $this->viewFolder();
             break;
@@ -241,9 +295,9 @@ class Cabinet {
 
         }
 
-        $template['TITLE']   = $this->title;
-        $template['MESSAGE'] = $this->message;
-        $template['CONTENT'] = $this->content;
+        $template['TITLE']   = &$this->title;
+        $template['MESSAGE'] = &$this->message;
+        $template['CONTENT'] = &$this->content;
 
         if ($javascript) {
             $main = PHPWS_Template::process($template, 'filecabinet', 'javascript.tpl');
@@ -351,8 +405,10 @@ class Cabinet {
         $this->loadForms();
         if ($this->folder->ftype == IMAGE_FOLDER) {
             $this->title   = dgettext('filecabinet', 'Create image folder');
-        } else {
+        } elseif ($this->folder->ftype == DOCUMENT_FOLDER) {
             $this->title   = dgettext('filecabinet', 'Create document folder');
+        } else {
+            $this->title   = dgettext('filecabinet', 'Create multimedia folder');
         }
         $this->content = $this->forms->editFolder($this->folder);
     }
@@ -366,8 +422,10 @@ class Cabinet {
         $this->loadForms();
         if ($this->folder->ftype == IMAGE_FOLDER) {
             $this->title   = dgettext('filecabinet', 'Update image folder');
-        } else {
+        } elseif ($this->folder->ftype == DOCUMENT_FOLDER) {
             $this->title   = dgettext('filecabinet', 'Update document folder');
+        } else {
+            $this->title   = dgettext('filecabinet', 'Update multimedia folder');
         }
         $this->content = $this->forms->editFolder($this->folder);
     }
@@ -387,6 +445,14 @@ class Cabinet {
         $this->loadFolder(DOCUMENT_FOLDER);
         $this->document_mgr = new FC_Document_Manager;
         $this->document_mgr->cabinet = & $this;
+    }
+
+    function loadMultimediaManager()
+    {
+        PHPWS_Core::initModClass('filecabinet', 'Multimedia_Manager.php');
+        $this->loadFolder(MULTIMEDIA_FOLDER);
+        $this->multimedia_mgr = new FC_Multimedia_Manager;
+        $this->multimedia_mgr->cabinet = & $this;
     }
 
     function loadFolder($ftype=IMAGE_FOLDER, $folder_id=0)
@@ -463,11 +529,18 @@ class Cabinet {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=filecabinet';
 
-        $image_command    = array('title'=>dgettext('filecabinet', 'Image folders'), 'link'=> $link);
-        $document_command = array('title'=>dgettext('filecabinet', 'Document folders'), 'link'=> $link);
+        $image_command      = array('title'=>dgettext('filecabinet', 'Image folders'), 'link'=> $link);
+        $document_command   = array('title'=>dgettext('filecabinet', 'Document folders'), 'link'=> $link);
+        $multimedia_command = array('title'=>dgettext('filecabinet', 'Multimedia folders'), 'link'=> $link);
+        $classify_command   = array('title'=>dgettext('filecabinet', 'Classify'), 'link'=> $link);
+        $embedded_command   = array('title'=>dgettext('filecabinet', 'Embedded'), 'link'=> $link);
 
-        $tabs['image']    = $image_command;
-        $tabs['document'] = $document_command;
+        $tabs['image']      = $image_command;
+        $tabs['document']   = $document_command;
+        $tabs['multimedia'] = $multimedia_command;
+        $tabs['embedded']   = $embedded_command;
+        $tabs['classify']   = $classify_command;
+
         if (Current_User::isUnrestricted('filecabinet')) {
             $tabs['settings']  = array('title'=> dgettext('filecabinet', 'Settings'), 'link' => $link);
         }
@@ -581,6 +654,148 @@ class Cabinet {
         $this->title = sprintf('%s - %s', $this->folder->title, $this->folder->getPublic());
         $this->loadForms();
         $this->forms->folderContents($this->folder);
+    }
+
+    function fileInfo($file)
+    {
+        static $images = null;
+        static $mm     = null;
+        static $docs   = null;
+
+        PHPWS_Core::requireConfig('core', 'file_types.php');
+
+        if (empty($images)) {
+            $images = unserialize(ALLOWED_IMAGE_TYPES);
+        }
+
+        if (empty($mm)) {
+            $mm     = unserialize(ALLOWED_MULTIMEDIA_TYPES);
+        }
+
+        if (empty($docs)) {
+            $docs   = unserialize(ALLOWED_DOCUMENT_TYPES);
+        }
+
+        if (!is_file($file)) {
+            return null;
+        }
+
+        $file_type = mime_content_type($file);
+        
+        // some files are not correctly identified
+        if ($file_type == 'text/plain') {
+            $ext = PHPWS_File::getFileExtension($file);
+            if ($ext != 'txt') {
+                if (isset($images[$ext])) {
+                    $file_type = $images[$ext];
+                } elseif (isset($mm[$ext])) {
+                    $file_type = $mm[$ext];
+                } elseif (isset($docs[$ext])) {
+                    $file_type = $docs[$ext];
+                }
+            }
+        }
+
+        if (in_array($file_type, $images)) {
+            $info['image'] = true;
+        } else {
+            $info['image'] = false;
+        }
+
+        if (in_array($file_type, $docs)) {
+            $info['document'] = true;
+        } else {
+            $info['document'] = false;
+        }
+
+        if (in_array($file_type, $mm)) {
+            $info['multimedia'] = true;
+        } else {
+            $info['multimedia'] = false;
+        }
+
+        $info['file_type'] = $file_type;
+
+        return $info;
+    }
+
+    /**
+     * Saves files posted in the forms classifyFileList function
+     */
+    function classifyFiles()
+    {
+        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+        PHPWS_Core::initModClass('filecabinet', 'Document.php');
+        PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+
+        if (empty($_POST['file_count'])) {
+            return false;
+        }
+
+        foreach ($_POST['file_count'] as $key=>$filename) {
+            $folder_id = $_POST['folder'][$key];
+            $folder = new Folder($folder_id);
+
+            if (empty($_POST['file_title'][$key])) {
+                $error[$filename] = dgettext('filecabinet', 'Missing title.');
+            }
+
+            // initialize a new file object
+            switch ($folder->ftype) {
+            case IMAGE_FOLDER:
+                $file_obj = new PHPWS_Image;
+                break;
+
+            case DOCUMENT_FOLDER:
+                $file_obj = new PHPWS_Document;
+                break;
+
+            case MULTIMEDIA_FOLDER:
+                $file_obj = new PHPWS_Multimedia;
+                break;
+            }
+
+            // save the folder id and basic information
+
+            $file_obj->folder_id = $folder->id;
+            $file_obj->file_name = $filename;
+
+            $file_obj->setTitle($_POST['file_title'][$key]);
+            $file_obj->setDirectory($folder->getFullDirectory());
+
+            if (!empty($_POST['file_description'][$key])) {
+                $file_obj->setDescription($_POST['file_description'][$key]);
+            }
+
+            // move the file from the incoming directory
+            $incoming_file = FC_INCOMING_DIRECTORY . $filename;
+            $folder_directory = $file_obj->getPath();
+
+
+            if (!@rename($incoming_file, $folder_directory)) {
+                $errors[$filename] = sprintf(dgettext('filecabinet', 'Could not move file "%s" to "%s" folder directory.'), $filename, $folder->title);
+                PHPWS_Error::log(FC_FILE_MOVE, 'filecabinet', 'Cabinet::classifyFiles', $folder_directory);
+                continue;
+            }
+
+            $file_info = $this->fileInfo($file_obj->getPath());
+            $file_obj->file_type = $file_info['file_type'];
+            $file_obj->loadFileSize();
+
+            // if image is getting saved, need to process
+            if ($folder->ftype == IMAGE_FOLDER) {
+                $file_obj->loadDimensions();
+                $file_obj->save(true, false);
+            } else {
+                $file_obj->save(false);
+            }
+        }
+
+        if (isset($errors)) {
+            return $errors;
+        } else {
+            return true;
+        }
     }
 }
 

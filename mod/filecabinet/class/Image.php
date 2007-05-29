@@ -35,6 +35,13 @@ class PHPWS_Image extends File_Common {
     var $height           = NULL;
     var $alt              = NULL;
     var $border           = 0;
+    /**
+     * If an image is a smaller version of a main image,
+     * the parent_id is the link to the parent.
+     */
+    var $parent_id        = 0;
+    var $url              = null;
+    
     var $_classtype       = 'image';
     var $_max_width       = 0;
     var $_max_height      = 0;
@@ -158,13 +165,17 @@ class PHPWS_Image extends File_Common {
         return array(FC_MAX_IMAGE_POPUP_WIDTH, FC_MAX_IMAGE_POPUP_HEIGHT);
     }
 
-    function getJSView($thumbnail=FALSE)
+    function getJSView($thumbnail=FALSE, $link_override=null)
     {
-        if ($thumbnail) {
-            $values['label'] = $this->getThumbnail();
+        if ($link_override) {
+            $values['label'] = $link_override;
         } else {
-            $values['label'] = sprintf('<img src="images/mod/filecabinet/viewmag+.png" width="16" height="16" title="%s" />',
-                                   dgettext('filecabinet', 'View full image'));
+            if ($thumbnail) {
+                $values['label'] = $this->getThumbnail();
+            } else {
+                $values['label'] = sprintf('<img src="images/mod/filecabinet/viewmag+.png" width="16" height="16" title="%s" />',
+                                           dgettext('filecabinet', 'View full image'));
+            }
         }
 
         $size = $this->popupSize();
@@ -200,7 +211,6 @@ class PHPWS_Image extends File_Common {
     function getTag()
     {
         $tag[] = '<img';
-
         $tag[] = 'src="'    . $this->getPath() . '"';
         $tag[] = 'alt="'    . $this->getAlt(TRUE)   . '"';
         $tag[] = 'title="'  . $this->title . '"';
@@ -208,7 +218,22 @@ class PHPWS_Image extends File_Common {
         $tag[] = 'height="' . $this->height    . '"';
         $tag[] = 'border="' . $this->border    . '"';
         $tag[] = '/>';
-        return implode(' ', $tag);
+
+        $image_tag = implode(' ', $tag);
+
+        if (!empty($this->url)) {
+            if ($this->url == 'parent' && $this->parent_id) {
+                $parent = new PHPWS_Image($this->parent_id);
+                if ($parent->id) {
+                    $image_tag = $parent->getJSView(false, $image_tag);
+                }
+            } else {
+                $image_tag = sprintf('<a href="%s">%s</a>', $this->url, $image_tag);
+            }
+        }
+
+
+        return $image_tag;
     }
 
     function getThumbnail($css_id=null)
@@ -249,6 +274,7 @@ class PHPWS_Image extends File_Common {
             return @copy($source_image_path, $dst);
         }
 
+
         if ($this->file_type == 'image/gif') {
             $source_image = imagecreatefromgif($source_image_path);
         } elseif ( $this->file_type == 'image/jpeg' || $this->file_type == 'image/pjpeg' ||
@@ -265,18 +291,17 @@ class PHPWS_Image extends File_Common {
 
         if($proportion_X > $proportion_Y ) {
             $proportion = $proportion_Y;
+            $pure = $proportion_X / $proportion_Y;
         } else {
             $proportion = $proportion_X ;
+            $pure = $proportion_Y / $proportion_X;
         }
             
         $target['width'] = $new_width * $proportion;
         $target['height'] = $new_height * $proportion;
 
-        $original['diagonal_center'] =
-            round(sqrt(($this->width*$this->width)+($this->height*$this->height))/2);
-        $target['diagonal_center'] =
-            round(sqrt(($target['width']*$target['width'])+
-                       ($target['height']*$target['height']))/2);
+        $original['diagonal_center'] = round( sqrt( ($this->width*$this->width) + ($this->height*$this->height) ) / 2);
+        $target['diagonal_center'] = round( sqrt( ($target['width']*$target['width']) + ($target['height']*$target['height']) ) / 2);
 
         $crop = round($original['diagonal_center'] - $target['diagonal_center']);
 
@@ -285,9 +310,9 @@ class PHPWS_Image extends File_Common {
             $target['y'] = $target['x'] = 0;
         } else if($proportion_X < $proportion_Y ) {
             $target['x'] = 0;
-            $target['y'] = round((($this->height/2)*$crop)/$target['diagonal_center']);
+            $target['y'] = round((($this->height/2)*$crop)/$original['diagonal_center']);
         } else {
-            $target['x'] =  round((($this->width/2)*$crop)/$target['diagonal_center']);
+            $target['x'] =  round((($this->width/2)*$crop)/$original['diagonal_center']);
             $target['y'] = 0;
         }
 
@@ -298,7 +323,6 @@ class PHPWS_Image extends File_Common {
         } else {
             $resampled_image = imagecreate($new_width, $new_height);
         }
-
 
         imagecopyresampled($resampled_image,  $source_image,  0, 0, $target['x'],
                             $target['y'], $new_width, $new_height, $target['width'], $target['height']);
@@ -352,13 +376,8 @@ class PHPWS_Image extends File_Common {
         return $tpl;
     }
     
-    function rowTags()
+    function editLink($icon=false)
     {
-        if (Current_User::allow('filecabinet', 'edit_folder', $this->folder_id)) {
-            $links[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Clip'), 'filecabinet',
-                                              array('aop'=>'clip_image',
-                                                    'image_id' => $this->id));
-            
             $vars['aop'] = 'upload_image_form';
             $vars['image_id'] = $this->id;
             $vars['folder_id'] = $this->folder_id;
@@ -366,19 +385,42 @@ class PHPWS_Image extends File_Common {
             $jsvars['width'] = 550;
             $jsvars['height'] = 580;
             $jsvars['address'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
+            $jsvars['window_name'] = 'edit_link';
 
-            $jsvars['label'] = dgettext('filecabinet', 'Edit');
-            $links[] = javascript('open_window', $jsvars);
-        
+            if ($icon) {
+                $jsvars['label'] =sprintf('<img src="images/mod/filecabinet/edit.png" width="16" height="16" title="%s" />', dgettext('filecabinet', 'Edit image'));
+            } else {
+                $jsvars['label'] = dgettext('filecabinet', 'Edit');
+            }
+            return javascript('open_window', $jsvars);
+    }
+
+
+    function deleteLink()
+    {
             $vars['aop'] = 'delete_image';
+            $vars['image_id'] = $this->id;
+            $vars['folder_id'] = $this->folder_id;
+
             $js['QUESTION'] = dgettext('filecabinet', 'Are you sure you want to delete this image?');
             $js['ADDRESS']  = PHPWS_Text::linkAddress('filecabinet', $vars, true);
             $js['LINK']     = dgettext('filecabinet', 'Delete');
-            $links[] = javascript('confirm', $js);
+            return javascript('confirm', $js);
+    }
+
+    function rowTags()
+    {
+        $links[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Clip'), 'filecabinet',
+                                          array('aop'=>'clip_image',
+                                                'image_id' => $this->id));
         
-            $tpl['ACTION'] = implode(' | ', $links);
+        if (Current_User::allow('filecabinet', 'edit_folder', $this->folder_id)) {
+            
+            $links[] = $this->editLink();
+            $links[] = $this->deleteLink();
         }
 
+        $tpl['ACTION'] = implode(' | ', $links);
         $tpl['SIZE'] = $this->getSize(TRUE);
         $tpl['FILE_NAME'] = $this->file_name;
         $tpl['THUMBNAIL'] = $this->getJSView(TRUE);
@@ -403,13 +445,13 @@ class PHPWS_Image extends File_Common {
     }
 
 
-    function save($no_dupes=TRUE, $write=TRUE)
+    function save($no_dupes=true, $write=true, $thumbnail=true)
     {
         if (empty($this->file_directory)) {
             if ($this->folder_id) {
                 $folder = new Folder($_POST['folder_id']);
                 if ($folder->id) {
-                    $this->file_directory = $folder->getFullDirectory();
+                    $this->setFileDirectory($folder->getFullDirectory());
                 } else {
                     return PHPWS_Error::get(FC_MISSING_FOLDER, 'filecabinet', 'PHPWS_Image::save');
                 }
@@ -440,7 +482,9 @@ class PHPWS_Image extends File_Common {
             }
         }
 
-        $this->makeThumbnail();
+        if ($thumbnail) {
+            $this->makeThumbnail();
+        }
 
         $db = new PHPWS_DB('images');
 

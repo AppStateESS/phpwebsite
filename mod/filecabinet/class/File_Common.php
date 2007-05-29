@@ -14,7 +14,7 @@ class File_Common {
     var $file_name       = null;
     var $file_directory  = null;
     var $folder_id       = 0;
-    var $ext             = null;
+    //    var $ext             = null;
     var $file_type       = null;
     var $title           = null;
     var $description     = null;
@@ -147,22 +147,26 @@ class File_Common {
             $this->setSize($file_vars['size']);
 
             $this->file_type = $file_vars['type'];
-            $this->ext  = $file_vars['ext'];
+            //            $this->ext  = $file_vars['ext'];
 
             if (!$this->allowSize()) {
                 if ($this->_classtype == 'document') {
-                    $this->_errors[] = PHPWS_Error::get(FC_DOCUMENT_SIZE, 'filecabinet', 'PHPWS_Document::importPost', array($this->size, $this->_max_size));
+                    $this->_errors[] = PHPWS_Error::get(FC_DOCUMENT_SIZE, 'filecabinet', 'File_Common::importPost', array($this->size, $this->_max_size));
+                } elseif ($this->_classtype == 'image') {
+                    $this->_errors[] = PHPWS_Error::get(FC_IMG_SIZE, 'filecabinet', 'File_Common::importPost', array($this->size, $this->_max_size));
                 } else {
-                    $this->_errors[] = PHPWS_Error::get(FC_IMG_SIZE, 'filecabinet', 'PHPWS_Document::importPost', array($this->size, $this->_max_size));
+                    $this->_errors[] = PHPWS_Error::get(FC_MULTIMEDIA_SIZE, 'filecabinet', 'File_Common::importPost', array($this->size, $this->_max_size));
                 }
                 return false;
             }
 
             if (!$this->allowType()) {
                 if ($this->_classtype == 'document') {
-                    $this->_errors[] = PHPWS_Error::get(FC_DOCUMENT_WRONG_TYPE, 'filecabinet', 'PHPWS_Document::importPost');
+                    $this->_errors[] = PHPWS_Error::get(FC_DOCUMENT_WRONG_TYPE, 'filecabinet', 'File_Common::importPost');
+                } elseif ($this->_classtype == 'image') {
+                    $this->_errors[] = PHPWS_Error::get(FC_IMG_WRONG_TYPE, 'filecabinet', 'File_Common::importPost');
                 } else {
-                    $this->_errors[] = PHPWS_Error::get(FC_IMG_WRONG_TYPE, 'filecabinet', 'PHPWS_Document::importPost');
+                    $this->_errors[] = PHPWS_Error::get(FC_MULTIMEDIA_WRONG_TYPE, 'filecabinet', 'File_Common::importPost');
                 }
                 return false;
             }
@@ -171,7 +175,7 @@ class File_Common {
                 list($this->width, $this->height, $image_type, $image_attr) = getimagesize($this->_upload->upload['tmp_name']);
 
                 if(!$this->allowDimensions()) {
-                    $this->_errors[] = PHPWS_Error::get(FC_IMAGE_DIMENSION, 'filecabinet', 'PHPWS_Document::importPost', array($this->width, $this->height, $this->_max_width, $this->_max_height));                
+                    $this->_errors[] = PHPWS_Error::get(FC_IMAGE_DIMENSION, 'filecabinet', 'File_Common::importPost', array($this->width, $this->height, $this->_max_width, $this->_max_height));                
                     return false;
                 }
             }
@@ -193,6 +197,15 @@ class File_Common {
     function getDescription()
     {
         return $this->description;
+    }
+
+    function setDirectory($directory)
+    {
+        if (!preg_match('@/$@', $directory)) {
+            $directory .= '/';
+        }
+
+        $this->file_directory = $directory;
     }
 
     function setFilename($filename)

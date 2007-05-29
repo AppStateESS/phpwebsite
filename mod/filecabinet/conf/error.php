@@ -23,5 +23,8 @@ $errors[FC_BAD_DIRECTORY]          = dgettext('filecabinet', 'Could not write to
 $errors[FC_MISSING_FOLDER]         = dgettext('filecabinet', 'Missing folder information.');
 $errors[FC_MAX_FORM_UPLOAD]        = dgettext('filecabinet', 'File uploaded exceeded %sK size limit.');
 $errors[FC_MISSING_TMP]            = dgettext('filecabinet', 'Missing temporary upload directory.');
+$errors[FC_MULTIMEDIA_SIZE]        = dgettext('filecabinet', 'Multimedia file was %sK making it larger than %sK size limit.');
+$errors[FC_MULTIMEDIA_WRONG_TYPE]  = dgettext('filecabinet', 'Unacceptable multimedia file type.');
+$errors[FC_MULTIMEDIA_NOT_FOUND]   = dgettext('filecabinet', 'Multimedia file not found.');
 
 ?>

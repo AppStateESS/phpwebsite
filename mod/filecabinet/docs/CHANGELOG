@@ -1,3 +1,45 @@
+20 May 2007
+>> NON-DEVELOPERS!!! DO NOT UPDATE STABLE CODE WITH CHANGES! <<
+
++ Added Multimedia folders
++ Added Multimedia files.
++ Added ability to classify uploaded files.
++ Removed itemname variable from Document_Manager
++ Created setDirectory function for File_Common. Assures trailing
+  forward slash on directory name.
++ Commented out ext variable in File_Common. Doesn't appear to be in
+  use.
++ Fixed some error messages in File_Common.
++ Added multimedia options in File_Common.
++ Added writable directory check before allowing new folders to be
+  created.
++ Clip option moved outside edit_folder permissions when viewing images.
++ Added option to link images.
++ Added option for resized images to link to their parent, full-size
+  image.
++ Moved edit and delete links into their own function in Image
+
++ Database changes
+  o Added parent_id and url column to image
+  o Added new multimedia table.
+
++ Updated files:
+  conf
+  ----------------------------
+  config.php, error.php
+
+  templates
+  ---------------------------
+  embedded/quicktime.tpl, filters/flash.tpl, filters/quicktime.tpl, 
+  filters/realplay.tpl, filters/windows.tpl, manager/pick.tpl,
+  classify_file.tpl, classify_list.tpl, image_edit.tpl,
+  multimedia_edit.tpl, multimedia_grid.tpl, style.css
+
+17 May 2007
++ Fixed authorized check in unpinning folders.
++ Added ability for image to be made linkable to urls and source
+  images after resizing.
+
 Version 1.0.2
 ---------------------------------
 15 May 2007
