@@ -443,6 +443,25 @@ class PHPWS_Form {
         return sprintf('%s<label class="%s-label" for="%s">%s</label>', $required, $this->type, $name, $label);
     }
 
+    
+    function setOptgroup($name, $value, $label)
+    {
+        if (!$this->testName($name)) {
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setOptgroup', array($name));
+        }
+
+        foreach ($this->_elements[$name] as $key => $element) {
+            if ($element->type != 'select' && $element->type != 'multiple') {
+                continue;
+            }
+            $result = $this->_elements[$name][$key]->setOptgroup($value, $label);
+
+            if (PEAR::isError($result)) {
+                return $result;
+            }
+        }
+    }
+
 
     function setLabel($name, $label=null)
     {
@@ -754,6 +773,10 @@ class PHPWS_Form {
      */
     function setTag($name, $tag)
     {
+        if (!$this->testName($name)) {
+            return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::setTag', array($name));
+        }
+
         foreach ($this->_elements[$name] as $key=>$element){
             $result = $this->_elements[$name][$key]->setTag($tag);
             if (PEAR::isError($result)) {
@@ -1531,8 +1554,9 @@ class Form_TextArea extends Form_Element {
 }
 
 class Form_Select extends Form_Element {
-    var $type = 'select';
-    var $match = null;
+    var $type     = 'select';
+    var $match    = null;
+    var $optgroup = null;
 
     function get()
     {
@@ -1551,6 +1575,15 @@ class Form_Select extends Form_Element {
             if (!is_string($value) && !is_numeric($value)) {
                 continue;
             }
+            
+            if ($this->optgroup && isset($this->optgroup[$value])) {
+                if (isset($current_opt)) {
+                    $content[] = '</optgroup>';
+                }
+                $current_opt = $value;
+                $content[] = sprintf('<optgroup label="%s">', $this->optgroup[$value]);
+            }
+
 
             if ($this->isMatch($value)) {
                 $content[] = sprintf('<option value="%s" selected="selected">%s</option>', $value, $label);
@@ -1558,9 +1591,18 @@ class Form_Select extends Form_Element {
                 $content[] = sprintf('<option value="%s">%s</option>', $value, $label);
             }
         }
+        if (isset($current_opt)) {
+            $content[] = '</optgroup>';
+        }
+
         $content[] = '</select>';
 
         return implode("\n", $content);
+    }
+
+    function setOptgroup($value, $label)
+    {
+        $this->optgroup[$value] = $label;
     }
 
     function setMatch($match)
@@ -1583,6 +1625,7 @@ class Form_Multiple extends Form_Element {
     var $type = 'multiple';
     var $isArray = true;
     var $match = null;
+    var $optgroup = null;
 
     function get()
     {
@@ -1593,6 +1636,19 @@ class Form_Multiple extends Form_Element {
             . $this->getClass(true)
             . '>';
         foreach($this->value as $value=>$label) {
+            if (!is_string($value) && !is_numeric($value)) {
+                continue;
+            }
+
+            if ($this->optgroup && isset($this->optgroup[$value])) {
+                if (isset($current_opt)) {
+                    $content[] = '</optgroup>';
+                }
+                $current_opt = $value;
+                $content[] = sprintf('<optgroup label="%s">', $this->optgroup[$value]);
+            }
+
+
             if ($this->isMatch($value)) {
                 $content[] = sprintf('<option value="%s" selected="selected">%s</option>', $value, $label);
             }
@@ -1600,6 +1656,10 @@ class Form_Multiple extends Form_Element {
                 $content[] = sprintf('<option value="%s">%s</option>', $value, $label);
             }
         }
+        if (isset($current_opt)) {
+            $content[] = '</optgroup>';
+        }
+
         $content[] = '</select>';
 
         return implode("\n", $content);
@@ -1613,6 +1673,11 @@ class Form_Multiple extends Form_Element {
         else {
             $this->match = $match;
         }
+    }
+
+    function setOptgroup($value, $label)
+    {
+        $this->optgroup[$value] = $label;
     }
 
     function isMatch($match)
