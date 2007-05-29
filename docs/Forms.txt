@@ -400,6 +400,59 @@ $form->setMatch('toppings', $top_match);
 </select>
 
 
+Optgroups
+--------------------------------------
+Optgroups define a set of options in a single or multiple select form
+element. The form class allows some limited optgroup capabilities.
+
+$form = new PHPWS_Form;
+
+// The list of elements for the select element
+$produce = array( 'apple'=>'Apple',
+                  'grapes'=>'Grapes',
+                  'strawberry'=>'Strawberries',
+                  'celery'=>'Celery',
+                  'carrot'=>'Carrot'
+                );
+
+$form->addSelect('produce', $produce);
+
+// The first parameter is the element I want to add the optGroup to.
+// The second parameter tells form which element starts the group
+// The last parameter is the group's label
+$form->setOptgroup('produce', 'apple', 'Fruit');
+$form->setOptgroup('produce', 'celery', 'Vegetable');
+
+$result = $form->getTemplate();
+
+echo implode('', $result);
+
+Here is the output
+------------------------------------------------------------------------
+<form class="phpws-form" id="phpws_form" action="index.php" method="post">
+<div>
+<select name="produce" id="phpws_form_produce" >
+<optgroup label="Fruit">
+<option value="apple">Apple</option>
+<option value="grapes">Grapes</option>
+<option value="strawberry">Strawberries</option>
+</optgroup>
+<optgroup label="Vegetable">
+<option value="celery">Celery</option>
+<option value="carrot">Carrot</option>
+</optgroup>
+</select>
+</div>
+</form>
+
+You can also use setOptgroup on a multiple form element:
+
+$form->addMultiple('produce', $produce);
+$form->setOptgroup('produce', 'apple', 'Fruit');
+$form->setOptgroup('produce', 'celery', 'Vegetable');
+
+setOptgroup will fail on any other type of element.
+
 
 Creating your template
 ---------------------------------------
