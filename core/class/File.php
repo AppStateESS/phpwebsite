@@ -516,5 +516,12 @@ class PHPWS_File {
         return preg_replace('/[^\w\.]/i', '_', $name);
     }
 
+
+    function getFileExtension($filename)
+    {
+        $last_dot = strrpos($filename, '.') + 1;
+        $ext = strlen($filename) - $last_dot;
+        return substr($filename, $last_dot, $ext);
+    }
 }
 ?>
