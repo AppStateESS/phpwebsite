@@ -10,6 +10,7 @@ its own separate CHANGELOG file.
 + Form.php  - added setOptgroup function for select and multiple form
               elements
 + Forms.txt - added directions for use of setOptgroup in Form class
++ Added Danish translation files for core supplied by Claus Iversen.
 + Updated files : config/file_types.php
 
 
