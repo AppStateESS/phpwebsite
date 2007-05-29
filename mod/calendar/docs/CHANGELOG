@@ -1,3 +1,8 @@
+22 May 2007
++ Changed the default hour format to "I" (eye) from l (ell) in
+  config.php. Some php configurations do not recognize it.
++ Updated files: conf/config.php
+
 Version 1.5.0
 -----------------------------------------------------------------
 24 April 2007
