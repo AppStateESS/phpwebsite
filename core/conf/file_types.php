@@ -2,18 +2,43 @@
 /**
  * allowed image and document types
  *
+ * Some extensions can have different mime types depending
+ * on platform. To retain index integrity, the extensions may not 
+ * actually exist.
+ *
  * make sure to BACKUP this file before making changes
  * $author Matt McNaney <mcnaney at gmail dot com>
  * @version $Id$
  */
+$allowedImageTypes = array('jpeg' => 'image/jpeg',
+			   'jpe'  => 'image/jpeg',
+			   'jpg'  => 'image/jpg',
+			   'pjpeg'=> 'image/pjpeg',
+			   'png'  => 'image/png',
+			   'xpng' => 'image/x-png',
+			   'gif'  => 'image/gif',
+			   'bmp'  => 'image/wbmp'
+                           );
 
-$allowedImageTypes = array('image/jpeg',
-			   'image/jpg',
-			   'image/pjpeg',
-			   'image/png',
-			   'image/x-png',
-			   'image/gif',
-			   'image/wbmp');
+$allowedMultimediaTypes = array(
+                                'wma'  => 'audio/x-ms-wma',
+                                'wax'  => 'audio/x-ms-wax',
+                                'flv'  => 'video/x-flv',
+                                'xflv' => 'application/x-extension-flv',
+                                'avi'  => 'video/x-msvideo',
+                                'mov'  => 'video/quicktime',
+                                'mpeg' => 'video/mpeg',
+                                'mpg'  => 'video/mpeg',
+                                'mpe'  => 'video/mpeg',
+                                'asf'  => 'video/x-ms-asf',
+                                'asx'  => 'video/x-ms-asf',
+                                'wvx'  => 'video/x-ms-wvx',
+                                'wm'   => 'video/x-ms-wm',
+                                'wmx'  => 'video/x-ms-wmx',
+                                'wmv'  => 'video/x-ms-wmv',
+                                'wmz'  => 'application/x-ms-wmz',
+                                'wmd'  => 'application/x-ms-wmd'
+                                );
 
 $allowedDocumentTypes = array('doc'   => 'application/msword',
                               'pdf'   => 'application/pdf',
@@ -28,6 +53,8 @@ $allowedDocumentTypes = array('doc'   => 'application/msword',
                               'xhtml' => 'application/xhtml+xml',
                               'xht'   => 'application/xhtml+xml',
                               'zip'   => 'application/zip',
+                              'wmz'   => 'application/x-ms-wmz',
+                              'wmd'   => 'application/x-ms-wmd',
                               'au'    => 'audio/basic',
                               'snd'   => 'audio/basic',
                               'mid'   => 'audio/midi',
@@ -41,6 +68,8 @@ $allowedDocumentTypes = array('doc'   => 'application/msword',
                               'rpm'   => 'audio/x-pn-realaudio-plugin',
                               'ra'    => 'audio/x-realaudio',
                               'wav'   => 'audio/x-wav',
+                              'wma'   => 'audio/x-ms-wma',
+                              'wax'   => 'audio/x-ms-wax',
                               'gif'   => 'image/gif',
                               'jpeg'  => 'image/jpeg',
                               'jpg'   => 'image/jpeg',
@@ -59,6 +88,11 @@ $allowedDocumentTypes = array('doc'   => 'application/msword',
                               'sgm'   => 'text/sgml',
                               'xsl'   => 'text/xml',
                               'xml'   => 'text/xml',
+                              'asf'   => 'video/x-ms-asf',
+                              'asx'   => 'video/x-ms-asf',
+                              'wvx'   => 'video/x-ms-wvx',
+                              'wm'    => 'video/x-ms-wm',
+                              'wmx'   => 'video/x-ms-wmx',
                               'mpeg'  => 'video/mpeg',
                               'mpg'   => 'video/mpeg',
                               'mpe'   => 'video/mpeg',
@@ -66,9 +100,11 @@ $allowedDocumentTypes = array('doc'   => 'application/msword',
                               'mov'   => 'video/quicktime',
                               'mxu'   => 'video/vnd.mpegurl',
                               'avi'   => 'video/x-msvideo',
+                              'wmv'   => 'video/x-ms-wmv'
                               );
 
 define('ALLOWED_IMAGE_TYPES', serialize($allowedImageTypes));
 define('ALLOWED_DOCUMENT_TYPES', serialize($allowedDocumentTypes));
+define('ALLOWED_MULTIMEDIA_TYPES', serialize($allowedMultimediaTypes));
 
 ?>
