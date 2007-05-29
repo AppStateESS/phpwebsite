@@ -10,12 +10,12 @@
  */
 
 class PHPWS_Debug {
-
     function test($value, $show_recursive=FALSE)
     {
         if (empty($value)) {
             $value = PHPWS_Debug::emptyVal($value);
         }
+
         switch(1) {
         case is_object($value):
             return PHPWS_Debug::testObject($value, 1, $show_recursive);
@@ -172,6 +172,8 @@ class PHPWS_Debug {
                         $value = PHPWS_Debug::testObject($value, $displayTags, $show_recursive);
                     } else if($displayTags && is_string($value)) {
                         $value = htmlspecialchars($value);
+                    } else if(is_bool($value)) {
+                        $value = '<pre>bool(TRUE)</pre>';
                     } else {
                         $value = '<pre>' . $value . '</pre>';
                     }
