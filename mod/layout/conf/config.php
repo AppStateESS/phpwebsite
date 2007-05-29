@@ -24,4 +24,12 @@ define('LAYOUT_ALLOW_STYLE_LINKS', TRUE);
  */ 
 define('XML_MODE', false);
 
+
+/**
+ * If true, Layout will prevent users from using the site until
+ * they enable cookies in their browser. May cause problems 
+ * with crawlers.
+ */
+define('LAYOUT_CHECK_COOKIE', false);
+
 ?>

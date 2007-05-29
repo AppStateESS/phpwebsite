@@ -1,3 +1,7 @@
+29 May 2007
++ The cookie check is not determined by a define in the config file.
++ Updated files: conf/config.php
+
 22 May 2007
 + The cookie check was interfering with the rss feed. Cut off the page
   too quickly. Moved cookie check to the close.php file.
