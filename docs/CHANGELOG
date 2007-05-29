@@ -2,6 +2,22 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+29 May 2007
++ Added new file types and multimedia setting to file_types.php
++ Debug.php - Boolean true was showing up as "1" with test.
++ File.php  - Added getFileExtension function. Returns the last
+              characters after the period on a filename.
++ Form.php  - added setOptgroup function for select and multiple form
+              elements
++ Forms.txt - added directions for use of setOptgroup in Form class
++ Updated files : config/file_types.php
+
+
+
+25 May 2007
++  RFE #1714587 - Added XML_serializer
+
+22 May 2007
 + Added Danish translation files supplied by Claus Iversen.
 + Added Claus to CREDITS file
 + Typo fixed in File.php comment
