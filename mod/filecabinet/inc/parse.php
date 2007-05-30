@@ -5,11 +5,11 @@
    * @version $Id$
    */
 
-function filecabinet_document($file_type, $document_id)
+function filecabinet_document($file_type, $file_id)
 {
     if ($file_type == 'doc') {
         PHPWS_Core::initModClass('filecabinet', 'Document.php');
-        $document = new PHPWS_Document((int)$document_id);
+        $document = new PHPWS_Document((int)$file_id);
         if (empty($document->id)) {
             $document->logErrors();
             return NULL;
@@ -18,13 +18,23 @@ function filecabinet_document($file_type, $document_id)
         return $document->getViewLink(TRUE);
     } elseif ($file_type == 'image') {
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
-        $image = new PHPWS_Image((int)$document_id);
+        $image = new PHPWS_Image((int)$file_id);
 
         if (empty($image->id)) {
             $image->logErrors();
             return NULL;
         }
         return $image->getTag();
+    } elseif ($file_type == 'mm') {
+        PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+        $multimedia = new PHPWS_Multimedia((int)$file_id);
+
+        if (empty($multimedia->id)) {
+            $multimedia->logErrors();
+            return NULL;
+        }
+
+        return $multimedia->getTag();
     }
 }
 

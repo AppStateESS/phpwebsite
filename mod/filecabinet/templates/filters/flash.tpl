@@ -1,19 +1,22 @@
-<object type="application/x-shockwave-flash" data="FlowPlayerLP.swf" 
-	width="{WIDTH}" height="{HEIGHT}" id="FlowPlayerLP">
-	<param name="allowScriptAccess" value="sameDomain" />
-	<param name="movie" value="{CURRENT_DIRECTORY}flash/FlowPlayerLP.swf" />
-	<param name="quality" value="high" />
-	<param name="scale" value="noScale" />
-	<param name="wmode" value="transparent" />
-	<param name="flashvars" value="config={ 
-		autoPlay: true, 
-		loop: false, 
-		initialScale: 'scale',
-		showLoopButton: false,
-		showPlayListButtons: false,
-		playList: [
-			{ url: 'play-button-328x240.jpg' },
-			{ url: '{VIDEO_PATH}' }
-		]
-		}" />
-</object>
+<div id="{ID}">
+		<strong>You need to upgrade your Flash Player</strong>
+		This is replaced by the Flash content. 
+		Place your alternate content here and users without the Flash plugin or with 
+		Javascript turned off will see this. Content here allows you to leave out <code>noscript</code> 
+		tags. Include a link to <a href="swfobject.html?detectflash=false">bypass the detection</a> if you wish.
+</div>
+
+<script type="text/javascript">
+		// <![CDATA[
+		var so = new SWFObject("templates/filecabinet/filters/flash/FlowPlayerLP.swf", "FlowPlayerLP", "{WIDTH}", "{HEIGHT}", "8", "#ffffff");
+                // this line is optional, but this example uses the variable and displays this text inside the flash movie
+                so.addParam("allowScriptAccess", "sameDomain");
+                so.addParam("movie", "FlowPlayerLP.swf");
+                so.addParam("quality", "high");
+                so.addParam("scale", "noScale");
+                so.addParam("wmode", "transparent");
+                so.addParam("flashvars", "config={initialScale: 'scale',autoPlay: false, autoBuffering : false,showLoopButton: false, loop: false, showPlayListButtons: false, playList: [{ url: '{START_SCREEN}' },{ url: '{VIDEO_PATH}' }]}");
+		so.write("{ID}");
+		
+		// ]]>
+</script>

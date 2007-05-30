@@ -274,6 +274,10 @@ class Cabinet_Form {
         $form->setLabel('max_document_size', dgettext('filecabinet', 'Maximum document file size (in bytes)'));
         $form->setSize('max_document_size', 10, 10);
 
+        $form->addText('max_multimedia_size', PHPWS_Settings::get('filecabinet', 'max_multimedia_size'));
+        $form->setLabel('max_multimedia_size', dgettext('filecabinet', 'Maximum multimedia file size (in bytes)'));
+        $form->setSize('max_multimedia_size', 10, 10);
+
         $form->addText('max_pinned_images', PHPWS_Settings::get('filecabinet', 'max_pinned_images'));
         $form->setLabel('max_pinned_images', dgettext('filecabinet', 'Maximum pinned images shown (0 for all)'));
         $form->setSize('max_pinned_images', 3, 3);

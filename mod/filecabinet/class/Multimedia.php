@@ -108,8 +108,32 @@ class PHPWS_Multimedia extends File_Common {
     
     function getTag()
     {
+        $filter_tpl = $this->getFilter();
 
+        $tpl['WIDTH']  = $this->width;
+        $tpl['HEIGHT'] = $this->height;
+        $tpl['VIDEO_PATH'] = PHPWS_Core::getHomeHttp() . $this->getPath();
+
+        // check for filter file
+        $filter = 'templates/filecabinet/' . str_replace('.tpl', '', $filter_tpl) . '/filter.php';
+
+        if (is_file($filter)) {
+            include $filter;
+        }
+        return PHPWS_Template::process($tpl, 'filecabinet', $filter_tpl);
     }
+
+    function getFilter()
+    {
+        switch ($this->file_type) {
+        case 'application/x-extension-flv':
+        case 'video/x-flv':
+            return 'filters/flash.tpl';
+            break;
+            
+        }
+    }
+
 
     function getThumbnail($css_id=null)
     {

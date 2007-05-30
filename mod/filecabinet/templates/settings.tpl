@@ -11,6 +11,8 @@
 {MAX_IMAGE_SIZE}</p>
 <p style="margin-bottom : 1em"><strong>{MAX_DOCUMENT_SIZE_LABEL}</strong> 
 {MAX_DOCUMENT_SIZE}</p>
+<p style="margin-bottom : 1em"><strong>{MAX_MULTIMEDIA_SIZE_LABEL}</strong> 
+{MAX_MULTIMEDIA_SIZE}</p>
 <p style="margin-bottom : 1em"><strong>{MAX_PINNED_IMAGES_LABEL}</strong> 
 {MAX_PINNED_IMAGES}</p>
 <p style="margin-bottom : 1em"><strong>{MAX_PINNED_DOCUMENTS_LABEL}</strong> 

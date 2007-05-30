@@ -1,4 +1,12 @@
-20 May 2007
+30 May 2007 
++ Added the ability to clip multimedia files to content.
++ Added multimedia max upload size to settings.
++ getTag function works in the Multimedia class for flash video files.
++ Updated files: templates/settings.tpl, templates/filters/flash.tpl,
+                 entire filters/flash/ directory. 
+
+
+29 May 2007
 >> NON-DEVELOPERS!!! DO NOT UPDATE STABLE CODE WITH CHANGES! <<
 
 + Added Multimedia folders

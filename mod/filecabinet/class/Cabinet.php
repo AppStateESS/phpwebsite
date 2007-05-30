@@ -142,6 +142,15 @@ class Cabinet {
             PHPWS_Core::goBack();
             break;
 
+        case 'clip_multimedia':
+            PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+            $multimedia = new PHPWS_Multimedia($_GET['multimedia_id']);
+            if ($multimedia->id) {
+                Clipboard::copy($multimedia->title, '[filecabinet:mm:' . $multimedia->id . ']');
+            }
+            PHPWS_Core::goBack();
+            break;
+
         case 'clip_document':
             PHPWS_Core::initModClass('filecabinet', 'Document.php');
             $document = new PHPWS_Document($_GET['document_id']);
@@ -601,6 +610,17 @@ class Cabinet {
                 $errors[] = sprintf(dgettext('filecabinet', 'Your maximum document size exceeds the server limit of %sMB.'), $max_file_upload);
             } else {
                 PHPWS_Settings::set('filecabinet', 'max_document_size', $max_document_size);
+            }
+        }
+
+        if (empty($_POST['max_multimedia_size'])) {
+            $errors[] = dgettext('filecabinet', 'You must set a maximum multimedia file size.');
+        } else {
+            $max_multimedia_size = (int)$_POST['max_multimedia_size'];
+            if ( ($max_multimedia_size / 1000000) > (int)$max_file_upload ) {
+                $errors[] = sprintf(dgettext('filecabinet', 'Your maximum multimedia size exceeds the server limit of %sMB.'), $max_file_upload);
+            } else {
+                PHPWS_Settings::set('filecabinet', 'max_multimedia_size', $max_multimedia_size);
             }
         }
 
