@@ -66,7 +66,10 @@ class PHPWS_Multimedia extends File_Common {
 
     function thumbnailPath()
     {
-        $directory = $this->thumbnailDirectory() . $this->file_name;
+        $last_dot = strrpos($this->file_name, '.');
+        $thumbnail_file = substr($this->file_name, 0, $last_dot) . '.jpg';
+
+        $directory = $this->thumbnailDirectory() . $thumbnail_file;
         if (is_file($directory)) {
             return $directory;
         } else {
@@ -147,9 +150,42 @@ class PHPWS_Multimedia extends File_Common {
 
     function makeThumbnail()
     {
-        if (PHPWS_Settings::get('filecabinet', 'multimedia_thumbnail')) {
-            
+        if (!PHPWS_Settings::get('filecabinet', 'use_ffmpeg')) {
+            return;
         }
+
+        $ffmpeg_directory = PHPWS_Settings::get('filecabinet', 'ffmpeg_directory');
+        if (!is_file($ffmpeg_directory . 'ffmpeg')) {
+            return;
+        }
+
+        $tmp_name = mt_rand();
+
+        /**
+         * -i        filename
+         * -an       disable audio
+         * -ss       seek to position
+         * -r        frame rate
+         * -vframes  number of video frames to record
+         * -y        overwrite output files
+         * -f        force format
+         */
+
+        $thumbnail_directory = $this->file_directory . 'tn/';
+
+        if (!is_writable($thumbnail_directory)) {
+            return;
+        }
+
+        $last_dot = strrpos($this->file_name, '.');
+        $thumbnail_file = substr($this->file_name, 0, $last_dot) . '.jpg';
+
+
+        $command = sprintf('%sffmpeg -i %s -an -s 160x120 -ss 00:00:05 -r 1 -vframes 1 -y -f mjpeg %s%s',
+                           $ffmpeg_directory, $this->getPath(), $thumbnail_directory, $thumbnail_file);
+
+        $result = system($command);
+        return true;
     }
     
     function delete()

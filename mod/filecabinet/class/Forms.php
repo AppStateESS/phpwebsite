@@ -254,6 +254,10 @@ class Cabinet_Form {
         $form->addHidden('module', 'filecabinet');
         $form->addHidden('aop', 'save_settings');
 
+        $form->addTplTag('DOCUMENT_SETTINGS', dgettext('filecabinet', 'Document settings'));
+        $form->addTplTag('IMAGE_SETTINGS', dgettext('filecabinet', 'Image settings'));
+        $form->addTplTag('MULTIMEDIA_SETTINGS', dgettext('filecabinet', 'Multimedia settings'));
+
         $form->addText('base_doc_directory', PHPWS_Settings::get('filecabinet', 'base_doc_directory'));
         $form->setSize('base_doc_directory', '50');
         $form->setLabel('base_doc_directory', dgettext('filecabinet', 'Base document directory'));
@@ -285,6 +289,25 @@ class Cabinet_Form {
         $form->addText('max_pinned_documents', PHPWS_Settings::get('filecabinet', 'max_pinned_documents'));
         $form->setLabel('max_pinned_documents', dgettext('filecabinet', 'Maximum pinned documents shown (0 for all)'));
         $form->setSize('max_pinned_documents', 3, 3);
+
+
+        $form->addCheck('use_ffmpeg', 1);
+        $form->setMatch('use_ffmpeg', PHPWS_Settings::get('filecabinet', 'use_ffmpeg'));
+
+
+        $ffmpeg_directory = PHPWS_Settings::get('filecabinet', 'ffmpeg_directory');
+        if (empty($ffmpeg_directory) || !is_file($ffmpeg_directory . 'ffmpeg')) {
+            $form->setDisabled('use_ffmpeg');
+            $form->setLabel('use_ffmpeg', dgettext('filecabinet', 'Enable FFMpeg thumbnails (enabled on ffmpeg confirmation)'));
+        } else {
+            $form->setLabel('use_ffmpeg', dgettext('filecabinet', 'Enable FFMpeg thumbnails'));
+        }
+
+
+        $form->addText('ffmpeg_directory', $ffmpeg_directory);
+        $form->setLabel('ffmpeg_directory', dgettext('filecabinet', 'FFMpeg directory'));
+        $form->setSize('ffmpeg_directory', 40);
+
 
         $form->addSubmit(dgettext('filecabinet', 'Save settings'));
         $tpl = $form->getTemplate();

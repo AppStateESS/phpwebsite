@@ -636,6 +636,29 @@ class Cabinet {
             PHPWS_Settings::set('filecabinet', 'max_pinned_documents', (int)$_POST['max_pinned_documents']);
         }
 
+        if (isset($_POST['use_ffmpeg'])) {
+            PHPWS_Settings::set('filecabinet', 'use_ffmpeg', 1);
+        } else {
+            PHPWS_Settings::set('filecabinet', 'use_ffmpeg', 0);
+        }
+
+
+        $ffmpeg_dir = strip_tags($_POST['ffmpeg_directory']);
+        if (empty($ffmpeg_dir)) {
+            PHPWS_Settings::set('filecabinet', 'ffmpeg_directory', null);
+            PHPWS_Settings::set('filecabinet', 'use_ffmpeg', 0);
+        } else {
+            if (!preg_match('@/$@', $ffmpeg_dir)) {
+                $ffmpeg_dir .= '/';
+            }
+            PHPWS_Settings::set('filecabinet', 'ffmpeg_directory', $ffmpeg_dir);
+            if (!is_file($ffmpeg_dir . 'ffmpeg')) {
+                $errors[] = dgettext('filecabinet', 'Could not find ffmpeg executable.');
+                PHPWS_Settings::set('filecabinet', 'use_ffmpeg', 0);
+            }
+        }
+        
+
         PHPWS_Settings::save('filecabinet');
         if (isset($errors)) {
             return $errors;

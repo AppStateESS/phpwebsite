@@ -1,3 +1,8 @@
+31 May 2007
++ Added option to use ffmpeg to create thumbnails
++ Restructured settings form.
++ Updated files: templates/settings.tpl
+
 30 May 2007 
 + Added the ability to clip multimedia files to content.
 + Added multimedia max upload size to settings.
