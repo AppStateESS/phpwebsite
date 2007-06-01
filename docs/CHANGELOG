@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+1 June 2007
++ Fixed bad directions in Language.txt
+
 29 May 2007
 + Added new file types and multimedia setting to file_types.php
 + Debug.php - Boolean true was showing up as "1" with test.

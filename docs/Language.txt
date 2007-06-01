@@ -39,7 +39,7 @@ $content = sprintf(dgettext('mymod', 'Hello %s! You have logged in %d times!'),
 
 If you have multiple variables of the same type, use this format:
 
-$content = sprintf(dgettext('mymod', 'Hello %1/$s! Your ranking is %2/$s!'),
+$content = sprintf(dgettext('mymod', 'Hello %1$s! Your ranking is %2$s!'),
 	           $name, $ranking);
 
 This format maintains the variable association. If you used the
