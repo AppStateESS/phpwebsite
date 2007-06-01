@@ -102,7 +102,7 @@ class Setup{
     function postGeneralConfig(&$content, &$messages)
     {
         $check = TRUE;
-        $source_dir = $_POST['source_dir'];
+        $source_dir = addslashes($_POST['source_dir']);
         $match = sprintf('/%s$/', preg_quote(DIRECTORY_SLASH, '/'));
         if (!preg_match($match, $source_dir)) {
             $source_dir = $source_dir . DIRECTORY_SLASH;
