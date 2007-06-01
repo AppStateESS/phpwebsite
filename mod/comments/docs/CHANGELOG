@@ -1,3 +1,6 @@
+1 June 2007
++ Added permission check on single comment view.
+
 Version 0.6.3
 -------------------------------------------------------------------
 + Added setAnchor to comments. Needs newest version of DBPager.

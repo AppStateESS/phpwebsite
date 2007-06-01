@@ -191,6 +191,10 @@ class Comments {
             $comment = new Comment_Item($_REQUEST['cm_id']);
             $thread = new Comment_Thread($comment->thread_id);
             $key = new Key($thread->key_id);
+
+            if (!$key->allowView()) {
+                Current_User::requireLogin();
+            }
             $title = sprintf(dgettext('comments', 'Comment from: %s'), $key->getUrl());
             $content[] = Comments::viewComment($comment);
             break;
