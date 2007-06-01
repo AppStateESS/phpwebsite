@@ -1171,23 +1171,6 @@ class PHPWS_Boost {
         return $dir_mods;
     }
 
-    function oldModList()
-    {
-        if (!isset($GLOBALS['Boost_Old_Mods'])) {
-            return null;
-        }
-
-        $old_mods = & $GLOBALS['Boost_Old_Mods'];
-
-        $content[] = dgettext('boost', 'The following modules will not function in phpWebSite 1.x.');
-        foreach ($old_mods as $mod) {
-            include sprintf('%smod/%s/conf/boost.php', PHPWS_SOURCE_DIR, $mod);
-            $content[] = $mod_pname;
-        }
-
-        return implode('<br />', $content);
-    }
-
 }
 
 ?>
