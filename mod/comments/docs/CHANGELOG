@@ -1,5 +1,7 @@
 1 June 2007
++ RFE #1720589 - Added ability to show most recent comments in a popup.
 + Added permission check on single comment view.
++ Updated files: templates/settings_form.tpl, templates/recent.tpl
 
 Version 0.6.3
 -------------------------------------------------------------------

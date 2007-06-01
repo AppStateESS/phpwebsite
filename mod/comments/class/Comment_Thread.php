@@ -201,7 +201,6 @@ class Comment_Thread {
 
     function view($parent_id=0)
     {
-        
         if (Current_User::allow('comments')) {
             $this->miniAdmin();
         }
@@ -292,6 +291,8 @@ class Comment_Thread {
         }
 
         $content = $pager->get();
+
+        $GLOBALS['comments_viewed'] = true;
         
         return $content;
     }

@@ -452,13 +452,13 @@ class Comments {
             $settings['local_avatars'] = 0;
         }
 
-
         if (@$_POST['anonymous_naming']) {
             $settings['anonymous_naming'] = 1;
         } else {
             $settings['anonymous_naming'] = 0;
         }
 
+        $settings['recent_comments'] = (int)$_POST['recent_comments'];
 
         PHPWS_Settings::set('comments', $settings);
         PHPWS_Settings::save('comments');
@@ -498,6 +498,15 @@ class Comments {
         $form->setLabel('anonymous_naming', dgettext('comments', 'Allow anonymous naming'));
         $form->setMatch('anonymous_naming', $settings['anonymous_naming']);
 
+        $cmt_count[0]  = dgettext('comments', 'Do not show');
+        $cmt_count[5]  = sprintf(dgettext('comments', 'Show last %d'), 5);
+        $cmt_count[10] = sprintf(dgettext('comments', 'Show last %d'), 10);
+        $cmt_count[15] = sprintf(dgettext('comments', 'Show last %d'), 15);
+
+        $form->addSelect('recent_comments', $cmt_count);
+        $form->setLabel('recent_comments', dgettext('comments', 'Recent comment'));
+        $form->setMatch ('recent_comments', $settings['recent_comments']);
+
         $order_list = array('old_all'  => dgettext('comments', 'Oldest first'),
                             'new_all'  => dgettext('comments', 'Newest first'));
 
@@ -521,6 +530,61 @@ class Comments {
 
         $tpl['TITLE'] = dgettext('comments', 'Comment settings');
         return PHPWS_Template::process($tpl, 'comments', 'settings_form.tpl');
+    }
+
+
+    /**
+     * Shows a box with recent comments listed within
+     */
+    function showRecentComments($limit)
+    {
+        $db = new PHPWS_DB('comments_items');
+        $db->setLimit($limit);
+        $db->addOrder('create_time desc');
+        $db->addColumn('comments_items.id');
+        $db->addColumn('comments_users.display_name');
+        $db->addColumn('comments_items.subject');
+        $db->addColumn('comments_items.create_time');
+        $db->addColumn('comments_threads.key_id');
+        $db->addColumn('phpws_key.url');
+        $db->addWhere('comments_items.author_id', 'comments_users.user_id');
+        $db->addWhere('comments_items.thread_id', 'comments_threads.id');
+        $db->addWhere('comments_threads.key_id', 'phpws_key.id');
+        $db->addWhere('phpws_key.active', 1);
+
+        if (!Current_User::isLogged()) {
+            $db->addWhere('phpws_key.restricted', 0); 
+        }
+        
+        $result = $db->select();
+
+        if (empty($result)) {
+            return;
+        }
+        
+
+        foreach ($result as $comment) {
+            $date = PHPWS_Time::relativeTime($comment['create_time'], '%e %b');
+            $from = sprintf(dgettext('comments', '%1$s - by %2$s from %3$s'),
+                            $comment['subject'], 
+                            $comment['display_name'],
+                            $date);
+
+            $subtpl['TITLE']  = sprintf('<a href="%s#cm_%s" title="%s">%s</a>',
+                                        $comment['url'], 
+                                        $comment['id'],
+                                        $from,
+                                        $comment['subject']);
+
+            $subtpl['AUTHOR'] = $comment['display_name'];
+            $subtpl['DATE']   = $date;
+            $tpl['comment-row'][] = $subtpl; 
+        }
+
+        $tpl['BOX_TITLE'] = dgettext('comments', 'Recent comments');
+
+        $content = PHPWS_Template::process($tpl, 'comments', 'recent.tpl');
+        Layout::add($content, 'comments', 'recent');
     }
 
 }

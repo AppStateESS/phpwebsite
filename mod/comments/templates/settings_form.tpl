@@ -29,6 +29,9 @@
     <td>{ANONYMOUS_NAMING_LABEL}</td>
     <td>{ANONYMOUS_NAMING}</td>
   </tr>
-</table>
+  <tr>
+    <td>{RECENT_COMMENTS_LABEL}</td>
+    <td>{RECENT_COMMENTS}</td>
+  </tr> </table>
 {SUBMIT}
 {END_FORM}
