@@ -24,3 +24,8 @@
 <!-- END mod-row -->
 </table>
 <div class="align-center">{CHECK_FOR_UPDATES}</div>
+<!-- BEGIN old-mods -->
+<div style="border : 4px double black; padding : 5px">
+{OLD_MODS}
+</div>
+<!-- END old-mods -->

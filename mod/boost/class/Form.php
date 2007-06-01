@@ -226,6 +226,7 @@ class Boost_Form {
             $count++;
         }
 
+        $tpl['OLD_MODS'] = Boost_Form::oldModList();
         $tpl['CHECK_FOR_UPDATES'] = PHPWS_Text::secureLink(dgettext('boost', 'Check all'), 'boost',
                                                            array('action' => 'check_all', 'tab' => $type));
         $tpl['LATEST_LABEL'] = dgettext('boost', 'Latest version');
@@ -236,6 +237,27 @@ class Boost_Form {
         $result = PHPWS_Template::process($tpl, 'boost', 'module_list.tpl');
         return $result;
     }
+
+    function oldModList()
+    {
+        if (!isset($GLOBALS['Boost_Old_Mods'])) {
+            return null;
+        }
+
+        $old_mods = & $GLOBALS['Boost_Old_Mods'];
+
+        $content[] = dgettext('boost', 'The following modules are from an earlier version of phpWebSite and will not function.');
+        $content[] = dgettext('boost', 'Please remove them from the mod directory.');
+        foreach ($old_mods as $mod) {
+            include sprintf('%smod/%s/conf/boost.php', PHPWS_SOURCE_DIR, $mod);
+            $directory = sprintf('%smod/%s/', PHPWS_SOURCE_DIR, $mod); 
+            $content[] = sprintf(' - %s : %s', $mod_pname, $directory);
+        }
+
+        return implode('<br />', $content);
+    }
+
+
 }
 
 ?>
