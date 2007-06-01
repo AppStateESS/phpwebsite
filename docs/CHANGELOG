@@ -4,6 +4,8 @@ its own separate CHANGELOG file.
 
 1 June 2007
 + Fixed bad directions in Language.txt
++ Added addslashes to the source directory setting. Why you'd want
+  apostrophes in your directory structure is beyond me.
 
 29 May 2007
 + Added new file types and multimedia setting to file_types.php
