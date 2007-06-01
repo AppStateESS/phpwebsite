@@ -22,6 +22,9 @@ define('FC_MAX_IMAGE_POPUP_HEIGHT', 768);
 define('FC_THUMBNAIL_WIDTH', 100);
 define('FC_THUMBNAIL_HEIGHT', 100);
 
+define('FC_MAX_MULTIMEDIA_POPUP_WIDTH', 1024);
+define('FC_MAX_MULTIMEDIA_POPUP_HEIGHT', 768);
+
 
 /**
  * if true (the default) and a file already has a resized version,

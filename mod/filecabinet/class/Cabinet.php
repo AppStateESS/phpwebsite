@@ -188,6 +188,17 @@ class Cabinet {
             PHPWS_Core::returnToBookmark();
             break;
 
+
+        case 'delete_multimedia':
+            $this->loadMultimediaManager();
+            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->multimedia_mgr->multimedia->folder_id)) {
+                Current_User::disallow();
+            }
+            $this->multimedia_mgr->multimedia->delete();
+            PHPWS_Core::returnToBookmark();
+            break;
+
+
         case 'document':
             $this->panel->setCurrentTab('document');
             $this->title = dgettext('filecabinet', 'Document folders');
@@ -404,7 +415,21 @@ class Cabinet {
         $tpl['IMAGE'] = $image->getTag();
         $tpl['DESCRIPTION'] = $image->getDescription();
         $tpl['CLOSE'] = javascript('close_window');
-        $content = PHPWS_Template::process($tpl, 'filecabinet', 'view.tpl');
+        $content = PHPWS_Template::process($tpl, 'filecabinet', 'image_view.tpl');
+
+        Layout::nakedDisplay($content);
+    }
+
+    function viewMultimedia($id)
+    {
+        Layout::addStyle('filecabinet');
+        PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+        $multimedia = new PHPWS_Multimedia($id);
+        $tpl['TITLE'] = $multimedia->title;
+        $tpl['MULTIMEDIA'] = $multimedia->getTag();
+        $tpl['DESCRIPTION'] = $multimedia->getDescription();
+        $tpl['CLOSE'] = javascript('close_window');
+        $content = PHPWS_Template::process($tpl, 'filecabinet', 'multimedia_view.tpl');
 
         Layout::nakedDisplay($content);
     }

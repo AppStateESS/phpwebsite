@@ -378,34 +378,34 @@ class PHPWS_Image extends File_Common {
     
     function editLink($icon=false)
     {
-            $vars['aop'] = 'upload_image_form';
-            $vars['image_id'] = $this->id;
-            $vars['folder_id'] = $this->folder_id;
+        $vars['aop'] = 'upload_image_form';
+        $vars['image_id'] = $this->id;
+        $vars['folder_id'] = $this->folder_id;
             
-            $jsvars['width'] = 550;
-            $jsvars['height'] = 580;
-            $jsvars['address'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
-            $jsvars['window_name'] = 'edit_link';
+        $jsvars['width'] = 550;
+        $jsvars['height'] = 580;
+        $jsvars['address'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
+        $jsvars['window_name'] = 'edit_link';
 
-            if ($icon) {
-                $jsvars['label'] =sprintf('<img src="images/mod/filecabinet/edit.png" width="16" height="16" title="%s" />', dgettext('filecabinet', 'Edit image'));
-            } else {
-                $jsvars['label'] = dgettext('filecabinet', 'Edit');
-            }
-            return javascript('open_window', $jsvars);
+        if ($icon) {
+            $jsvars['label'] =sprintf('<img src="images/mod/filecabinet/edit.png" width="16" height="16" title="%s" />', dgettext('filecabinet', 'Edit image'));
+        } else {
+            $jsvars['label'] = dgettext('filecabinet', 'Edit');
+        }
+        return javascript('open_window', $jsvars);
     }
 
 
     function deleteLink()
     {
-            $vars['aop'] = 'delete_image';
-            $vars['image_id'] = $this->id;
-            $vars['folder_id'] = $this->folder_id;
+        $vars['aop'] = 'delete_image';
+        $vars['image_id'] = $this->id;
+        $vars['folder_id'] = $this->folder_id;
 
-            $js['QUESTION'] = dgettext('filecabinet', 'Are you sure you want to delete this image?');
-            $js['ADDRESS']  = PHPWS_Text::linkAddress('filecabinet', $vars, true);
-            $js['LINK']     = dgettext('filecabinet', 'Delete');
-            return javascript('confirm', $js);
+        $js['QUESTION'] = dgettext('filecabinet', 'Are you sure you want to delete this image?');
+        $js['ADDRESS']  = PHPWS_Text::linkAddress('filecabinet', $vars, true);
+        $js['LINK']     = dgettext('filecabinet', 'Delete');
+        return javascript('confirm', $js);
     }
 
     function rowTags()
@@ -415,7 +415,6 @@ class PHPWS_Image extends File_Common {
                                                 'image_id' => $this->id));
         
         if (Current_User::allow('filecabinet', 'edit_folder', $this->folder_id)) {
-            
             $links[] = $this->editLink();
             $links[] = $this->deleteLink();
         }

@@ -92,21 +92,110 @@ class PHPWS_Multimedia extends File_Common {
         $tpl['ACTION'] = implode(' | ', $links);
         $tpl['SIZE'] = $this->getSize(TRUE);
         $tpl['FILE_NAME'] = $this->file_name;
-        $tpl['THUMBNAIL'] = $this->getThumbnail();
+        $tpl['THUMBNAIL'] = $this->getJSView(true);
         $tpl['TITLE']     = $this->title;
         $tpl['DIMENSIONS'] = sprintf('%s x %s', $this->width, $this->height);
 
         return $tpl;
     }
 
-    function editLink()
+    function popupAddress()
     {
-        return 'Edit';
+        if (MOD_REWRITE_ENABLED) {
+            return sprintf('filecabinet/%s/multimedia', $this->id);
+        } else {
+            return sprintf('index.php?module=filecabinet&amp;page=multimedia&amp;id=%s', $this->id);
+        }
+
+    }
+
+
+    function popupSize()
+    {
+        $padded_width = $this->width + 40;
+        $padded_height = $this->height + 120;
+
+        if (!empty($this->description)) {
+            $padded_height += round( (strlen(strip_tags($this->description)) / ($this->width / 12)) * 12);
+        }
+
+        if ( $padded_width > FC_MAX_MULTIMEDIA_POPUP_WIDTH || $padded_height > FC_MAX_MULTIMEDIA_POPUP_HEIGHT ) {
+            return array(FC_MAX_MULTIMEDIA_POPUP_WIDTH, FC_MAX_MULTIMEDIA_POPUP_HEIGHT);
+        }
+
+        $final_width = $final_height = 0;
+
+        for ($lmt = 200; $lmt += 50; $lmt < 1300) {
+            if (!$final_width && $padded_width < $lmt) {
+                $final_width = $lmt;
+            }
+
+            if (!$final_height && $padded_height < $lmt ) {
+                $final_height = $lmt;
+            }
+
+            if ($final_width && $final_height) {
+                return array($final_width, $final_height);
+            }
+        }
+
+        return array(FC_MAX_MULTIMEDIA_POPUP_WIDTH, FC_MAX_MULTIMEDIA_POPUP_HEIGHT);
+    }
+
+    function getJSView($thumbnail=FALSE, $link_override=null)
+    {
+        if ($link_override) {
+            $values['label'] = $link_override;
+        } else {
+            if ($thumbnail) {
+                $values['label'] = $this->getThumbnail();
+            } else {
+                $values['label'] = sprintf('<img src="images/mod/filecabinet/viewmag+.png" width="16" height="16" title="%s" />',
+                                           dgettext('filecabinet', 'View full image'));
+            }
+        }
+
+        $size = $this->popupSize();
+
+        $values['address']     = $this->popupAddress();
+        $values['width']       = $size[0];
+        $values['height']      = $size[1];
+        $values['window_name'] = 'multimedia_view';
+
+        return Layout::getJavascript('open_window', $values);
+    }
+
+
+    function editLink($icon=false)
+    {
+        $vars['aop'] = 'upload_multimedia_form';
+        $vars['multimedia_id'] = $this->id;
+        $vars['folder_id'] = $this->folder_id;
+        
+        $jsvars['width'] = 550;
+        $jsvars['height'] = 580;
+        $jsvars['address'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
+        $jsvars['window_name'] = 'edit_link';
+        
+        if ($icon) {
+            $jsvars['label'] =sprintf('<img src="images/mod/filecabinet/edit.png" width="16" height="16" title="%s" />', dgettext('filecabinet', 'Edit multimedia file'));
+        } else {
+            $jsvars['label'] = dgettext('filecabinet', 'Edit');
+        }
+        return javascript('open_window', $jsvars);
+
     }
 
     function deleteLink()
     {
-        return 'Delete';
+        $vars['aop'] = 'delete_multimedia';
+        $vars['multimedia_id'] = $this->id;
+        $vars['folder_id'] = $this->folder_id;
+        
+        $js['QUESTION'] = dgettext('filecabinet', 'Are you sure you want to delete this multimedia file?');
+        $js['ADDRESS']  = PHPWS_Text::linkAddress('filecabinet', $vars, true);
+        $js['LINK']     = dgettext('filecabinet', 'Delete');
+        return javascript('confirm', $js);
     }
     
     function getTag()
@@ -161,7 +250,9 @@ class PHPWS_Multimedia extends File_Common {
 
         $tmp_name = mt_rand();
 
-        /**
+        /**define('FC_MAX_IMAGE_POPUP_WIDTH', 1024);
+define('FC_MAX_IMAGE_POPUP_HEIGHT', 768);
+
          * -i        filename
          * -an       disable audio
          * -ss       seek to position

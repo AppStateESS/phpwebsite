@@ -1,3 +1,13 @@
+1 June 2007
++ Added link to delete multimedia files
++ Added edit link for multimedia files
++ Thumbnails now clickable to open video in popup window.
++ Tidy in Image.php
++ Updated files: config/config.php, templates/image_view.tpl,
+                 templates/multimedia_view.tpl,
++ Removed view.tpl
+
+
 31 May 2007
 + Added option to use ffmpeg to create thumbnails
 + Restructured settings form.

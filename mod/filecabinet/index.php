@@ -17,8 +17,12 @@ if (isset($_REQUEST['uop'])) {
 } elseif (isset($_REQUEST['aop']) || isset($_REQUEST['tab'])) {
     $cabinet->admin();
 } elseif ( isset($_GET['id']) ) {
-    if (isset($_GET['page']) && strtolower($_GET['page']) == 'image') {
-        $cabinet->viewImage($_GET['id']);
+    if (isset($_GET['page'])) {
+        if(strtolower($_GET['page']) == 'image') {
+            $cabinet->viewImage($_GET['id']);
+        } elseif (strtolower($_GET['page']) == 'multimedia') {
+            $cabinet->viewMultimedia($_GET['id']);
+        }
     } elseif (isset($_GET['page']) && strtolower($_GET['page']) == 'folder') {
         $_REQUEST['uop'] = 'view_folder';
         $_REQUEST['folder_id'] = (int)$_GET['id'];
