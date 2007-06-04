@@ -6,7 +6,7 @@
     </div>
     <div class="box-content">
         {ADD_EVENT}
-        <div>{MESSAGE}</div>
+        <!-- BEGIN message -->{MESSAGE}<!-- END message -->
         <div id="day-view">
         <!-- BEGIN calendar-events -->
             <!-- BEGIN hour --><div class="hour bgcolor2">{HOUR}</div><!-- END hour -->

@@ -5,7 +5,8 @@
         <div class="align-center smaller">{SCHEDULE_PICK}</div>
     </div>
     <div class="box-content">
-    {MESSAGE}
+    {ADD_EVENT}
+    <!-- BEGIN message --><p>{MESSAGE}</p><!-- END message -->
         <div class="month-view">
         <!-- BEGIN message -->{MESSAGE}<!-- END message -->
         <!-- BEGIN days -->

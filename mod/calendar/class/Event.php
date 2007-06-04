@@ -12,6 +12,10 @@ define('CALENDAR_EVENT_TYPE_ENDS'  ,  4);
 
 PHPWS_Core::requireInc('calendar', 'error_defines.php');
 
+if (!defined('CALENDAR_SAME_DAY_MDY')) {
+    define('CALENDAR_SAME_DAY_MDY', true);
+ }
+
 class Calendar_Event {
     /**
      * @var integer
@@ -375,6 +379,7 @@ class Calendar_Event {
                 $tpl['DTEND']       = PHPWS_Time::getDTTime($this->end_time + 1, 'all_day');
             }
         } else {
+            // Not an all day event
             if (date('Ymd', $this->start_time) != date('Ymd', $this->end_time)) {
                 // If this event happens over 2 or more day
                 if (date('Y', $this->start_time) != date('Y', $this->end_time)) {
@@ -385,7 +390,11 @@ class Calendar_Event {
                 $tpl['END_TIME']   = $this->getEndTime(CALENDAR_TIME_FORMAT . ', ' . $month_day_mode . ', %Y');
             } else {
                 $tpl['START_TIME']   = $this->getStartTime(CALENDAR_TIME_FORMAT);
-                $tpl['END_TIME'] = $this->getEndTime(CALENDAR_TIME_FORMAT . ', ' . $month_day_mode . ', %Y');
+                if (CALENDAR_SAME_DAY_MDY) {
+                    $tpl['END_TIME'] = $this->getEndTime(CALENDAR_TIME_FORMAT . ', ' . $month_day_mode . ', %Y');
+                } else {
+                    $tpl['END_TIME'] = $this->getEndTime(CALENDAR_TIME_FORMAT);
+                }
             }
             $tpl['DTSTART']     = PHPWS_Time::getDTTime($this->start_time, 'user');
             $tpl['DTEND']       = PHPWS_Time::getDTTime($this->end_time, 'user');
@@ -399,8 +408,6 @@ class Calendar_Event {
             $tpl['LINKS'] = implode(' | ', $link);
         }
         
-
-
         if (!empty($this->location)) {
             $tpl['LOCATION_LABEL'] = dgettext('calendar', 'Location');
 

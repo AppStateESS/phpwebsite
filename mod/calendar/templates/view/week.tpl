@@ -6,7 +6,8 @@
     </div>
     <div class="box-content">
         <div class="week-view">
-            <!-- BEGIN message -->{MESSAGE}<!-- END message -->
+            {ADD_EVENT}
+            <!-- BEGIN message --><p>{MESSAGE}</p><!-- END message -->
             <!-- BEGIN days -->
             <div class="day bgcolor1">{FULL_WEEKDAY} {DAY_NUMBER}</div>
             <!-- BEGIN calendar-events -->

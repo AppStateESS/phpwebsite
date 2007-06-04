@@ -1,3 +1,9 @@
+4 June 2007
++ Added define to prevent day month year on same day events
++ Add event links put in view templates.
++ Updated files : conf/config.php, templates/view/month/list.tpl,
+  templates/view/day.tpl, templates/view/week.tpl
+
 22 May 2007
 + Changed the default hour format to "I" (eye) from l (ell) in
   config.php. Some php configurations do not recognize it.

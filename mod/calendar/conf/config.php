@@ -53,4 +53,7 @@ define('CALENDAR_MAXIMUM_REPEATS', 50);
 // Total amount of allowed calendar suggestions
 define('CALENDAR_TOTAL_SUGGESTIONS', 5);
 
+// If true, events with single day start and end times will
+// show the month, day, or year
+define('CALENDAR_SAME_DAY_MDY', true);
 ?>

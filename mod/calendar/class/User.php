@@ -162,12 +162,15 @@ class Calendar_User {
             $template['MESSAGE'] = dgettext('calendar', 'No events on this day');
         }
 
-        $template['VIEW_LINKS'] = $this->viewLinks('day');
+        $template['VIEW_LINKS']     = $this->viewLinks('day');
         $template['SCHEDULE_TITLE'] = $this->calendar->schedule->title;
-        $template['DATE'] = strftime(CALENDAR_DAY_HEADER, $startdate);
-        $template['SCHEDULE_PICK'] = $this->schedulePick();
-        $template['PICK'] = $this->getDatePick();
-        $template['SUGGEST'] = $this->suggestLink();
+        $template['DATE']           = strftime(CALENDAR_DAY_HEADER, $startdate);
+        $template['SCHEDULE_PICK']  = $this->schedulePick();
+        $template['PICK']           = $this->getDatePick();
+        $template['SUGGEST']        = $this->suggestLink();
+        if ($this->calendar->schedule->checkPermissions()) {
+            $template['ADD_EVENT'] = $this->calendar->schedule->addEventLink($this->calendar->current_date);
+        }
 
         $tpl->setCurrentBlock('day');
         $tpl->setData($template);
@@ -566,6 +569,9 @@ class Calendar_User {
         $main_tpl['SCHEDULE_PICK']   = $this->schedulePick();
         $main_tpl['PICK']            = $date_pick;
         $main_tpl['SUGGEST']         = $this->suggestLink();
+        if ($this->calendar->schedule->checkPermissions()) {
+            $main_tpl['ADD_EVENT'] = $this->calendar->schedule->addEventLink($this->calendar->current_date);
+        }
 
         $tpl->setData($main_tpl);
         $content = $tpl->get();
@@ -910,6 +916,7 @@ class Calendar_User {
 
     function week()
     {
+        strftime('%c', $this->calendar->current_date);
         if (PHPWS_Settings::get('calendar', 'use_calendar_style')) {
             Layout::addStyle('calendar');
         }
@@ -974,6 +981,10 @@ class Calendar_User {
         $main_tpl['SCHEDULE_PICK']  = $this->schedulePick();
         $main_tpl['PICK']           = $this->getDatePick();
         $main_tpl['SUGGEST']        = $this->suggestLink();
+        if ($this->calendar->schedule->checkPermissions()) {
+            $main_tpl['ADD_EVENT']      = $this->calendar->schedule->addEventLink($this->calendar->current_date);
+        }
+
         $tpl->setData($main_tpl);
 
         return $tpl->get();
