@@ -32,7 +32,7 @@ class Menu {
         }
 
         if (empty($result)) {
-            return NULL;
+            return null;
         }
 
         $GLOBALS['Pinned_Menus'] = $result;
@@ -90,34 +90,41 @@ class Menu {
         return $url == $compare;
     }
 
-    function getSiteLink($menu_id, $parent_id=0, $isKeyed=false)
+    function getSiteLink($menu_id, $parent_id=0, $isKeyed=false, $popup=false)
     {
         $vars['command']   = 'add_site_link';
         $vars['menu_id']   = $menu_id;
         $vars['parent_id'] = $parent_id;
 
         if (!$isKeyed) {
-            $vars['dadd'] = urlencode(PHPWS_Core::getCurrentUrl(false));
+            if (isset($_GET['curl'])) {
+                $vars['dadd'] = urlencode($_GET['curl']);
+            } else {
+                $vars['dadd'] = urlencode(PHPWS_Core::getCurrentUrl(false));
+            }
         }
 
-        $js['link_title'] = dgettext('menu', 'Add Other Link');
+        $js['link_title'] = dgettext('menu', 'Add other link');
         $js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE, FALSE);
         $js['label'] = MENU_LINK_ADD_SITE;
+        if ($popup) {
+            $js['label'] .= ' ' . dgettext('menu', 'Add other link');
+        }
         $js['width'] = 500;
-        $js['height'] = 240;
+        $js['height'] = 250;
 
         return javascript('open_window', $js);
     }
 
-    function getAddLink($menu_id, $parent_id=NULL)
+    function getAddLink($menu_id, $parent_id=null, $popup=false)
     {
         $key = Key::getCurrent();
         if (empty($key->url)) {
-            return NULL;
+            return null;
         }
 
         if (empty($key)) {
-            return NULL;
+            return null;
         }
 
         $vars['command'] = 'add_link';
@@ -128,22 +135,30 @@ class Menu {
             $vars['parent'] = 0;
         }
 
+        $link = MENU_LINK_ADD;
+        if ($popup) {
+            $link .= ' ' . dgettext('menu', 'Add current page');
+            $vars['pu'] = 1;
+        }
+
+
         if ($key->id) {
             $vars['key_id'] = $key->id;
-            return PHPWS_Text::secureLink(MENU_LINK_ADD, 'menu', $vars);
+            return PHPWS_Text::secureLink($link, 'menu', $vars);
         } else {
             // for dummy keys
             if (empty($key->title)) {
                 $vars['url']      = urlencode($key->url);
                 $js['question']   = dgettext('menu', 'Enter link title');
                 $js['address']    = PHPWS_Text::linkAddress('menu', $vars, TRUE, FALSE);
-                $js['link']       = MENU_LINK_ADD;
+                $js['link'] = $link;
                 $js['value_name'] = 'link_title';
                 return javascript('prompt', $js);
             } else {
                 $vars['link_title'] = urlencode($key->title);
                 $vars['url']        = urlencode($key->url);
-                return PHPWS_Text::secureLink(MENU_LINK_ADD, 'menu', $vars);
+
+                return PHPWS_Text::secureLink($link, 'menu', $vars);
             }
         }
 
@@ -186,7 +201,11 @@ class Menu {
 
     function isAdminMode()
     {
-        return isset($_SESSION['Menu_Admin_Mode']);
+        if (isset($_SESSION['Menu_Admin_Mode'])) {
+            return $_SESSION['Menu_Admin_Mode'];
+        } else {
+            return false;
+        }
     }
 
     function siteMap()

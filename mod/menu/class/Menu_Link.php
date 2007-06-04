@@ -197,7 +197,6 @@ class Menu_Link {
             in_array($this->parent, $current_parent)) {
 
             $link = $this->getUrl();
-
             $this->_loadAdminLinks($template);
 
             $template['LINK'] = $link;
@@ -243,44 +242,103 @@ class Menu_Link {
     }
 
 
-    function _loadAdminLinks(&$template)
+    function _loadAdminLinks(&$template, $popup=false)
     {
         if ( empty($_POST) && Menu::isAdminMode() && Current_User::allow('menu') ) {
-            $template['PIN_LINK'] = Menu_Item::getPinLink($this->menu_id, $this->id);
-            $template['ADD_LINK'] = Menu::getAddLink($this->menu_id, $this->id);
-            $template['ADD_SITE_LINK'] = Menu::getSiteLink($this->menu_id, $this->id);
-            
-            $vars['link_id'] = $this->id;
-            $vars['command'] = 'delete_link';
-            $js['QUESTION'] = dgettext('menu', 'Are you sure you want to delete this link: ' . addslashes($this->title));
-            $js['ADDRESS'] = PHPWS_Text::linkAddress('menu', $vars, TRUE);
-            $js['LINK'] = MENU_LINK_DELETE;
-            $template['DELETE_LINK'] = javascript('confirm', $js);
 
-            if ($this->key_id) {
-                $vars['command'] = 'edit_link_title';
-                $prompt_js['question'] = dgettext('menu', 'Type the new title for this link.');
-                $prompt_js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE);
-                $prompt_js['answer'] = addslashes($this->title);
-                $prompt_js['value_name'] = 'link_title';
-                $prompt_js['link']       = MENU_LINK_EDIT;
-                $template['EDIT_LINK'] = javascript('prompt', $prompt_js);
+            $key = Key::getCurrent();
+
+            if (Key::checkKey($key)) {
+                $keyed = true;
             } else {
-                $vars['command'] = 'edit_link';
-                $prompt_js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE);
-                $prompt_js['label']   = MENU_LINK_EDIT;
-                $prompt_js['width']   = 500;
-                $prompt_js['height']  = 240;
-                $template['EDIT_LINK'] = javascript('open_window', $prompt_js);
+                $keyed = false;
             }
 
-            $vars['command'] = 'move_link_up';
-            $template['MOVE_LINK_UP'] = PHPWS_Text::secureLink(MENU_LINK_UP, 'menu', $vars);
-            $vars['command'] = 'move_link_down';
-            $template['MOVE_LINK_DOWN'] = PHPWS_Text::secureLink(MENU_LINK_DOWN, 'menu', $vars);
+            $vars['link_id'] = $this->id;
 
-            $template['ADMIN'] = MENU_LINK_ADMIN;
+            if ($popup || PHPWS_Settings::get('menu', 'float_mode')) {
+                $template['PIN_LINK']      = Menu_Item::getPinLink($this->menu_id, $this->id, $popup);
+                $template['ADD_LINK']      = Menu::getAddLink($this->menu_id, $this->id, $popup);
+                $template['ADD_SITE_LINK'] = Menu::getSiteLink($this->menu_id, $this->id, $keyed, $popup);
+                $template['EDIT_LINK']     = $this->editLink($popup);
+                $template['DELETE_LINK']   = $this->deleteLink($popup);
+
+                $vars['command'] = 'move_link_up';
+                $up_link = MENU_LINK_UP;
+                if ($popup) {
+                    $up_link .= ' ' . dgettext('menu', 'Move link up');
+                    $vars['pu'] = 1;
+                }
+                $template['MOVE_LINK_UP'] = PHPWS_Text::secureLink($up_link, 'menu', $vars);
+
+                $down_link = MENU_LINK_DOWN;
+                if ($popup) {
+                    $down_link .= ' ' . dgettext('menu', 'Move link down');
+                    $vars['pu'] = 1;
+                }
+                $vars['command'] = 'move_link_down';
+                $template['MOVE_LINK_DOWN'] = PHPWS_Text::secureLink($down_link, 'menu', $vars);
+            }
+
+            $vars['command'] = 'popup_admin';
+            $vars['curl'] = urlencode(PHPWS_Core::getCurrentUrl(false));
+            if ($keyed) {
+                $vars['key_id'] = $key->id;
+            }
+
+            $js['address'] = PHPWS_Text::linkAddress('menu', $vars, true);
+            $js['label'] = MENU_LINK_ADMIN;
+            $js['width'] = 200;
+            $js['height'] = 200;
+            
+            $template['ADMIN'] = javascript('open_window', $js);
+        } elseif (isset($_POST)) {
+            $template['ADMIN'] = NO_POST;
         }
+    }
+
+    function editLink($popup=false)
+    {
+        $vars['link_id'] = $this->id;
+        $link = MENU_LINK_EDIT;
+        if ($popup) {
+            $link .= ' ' . dgettext('menu', 'Edit link');
+            $vars['pu'] = 1;
+        }
+
+        if ($this->key_id) {
+            $vars['command'] = 'edit_link_title';
+            $prompt_js['question'] = dgettext('menu', 'Type the new title for this link.');
+            $prompt_js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE);
+            $prompt_js['answer'] = addslashes($this->title);
+            $prompt_js['value_name'] = 'link_title';
+            $prompt_js['link']       = $link;
+            return javascript('prompt', $prompt_js);
+        } else {
+            $vars['command'] = 'edit_link';
+            $prompt_js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE);
+            $prompt_js['label']   = $link;
+            $prompt_js['width']   = 500;
+            $prompt_js['height']  = 240;
+            return javascript('open_window', $prompt_js);
+        }
+    }
+
+
+    function deleteLink($popup=false)
+    {
+        $js['LINK'] = MENU_LINK_DELETE;
+        if ($popup) {
+            $js['LINK'] .= ' ' . dgettext('menu', 'Delete link');
+            $vars['pu'] = 1;
+        }
+
+        $vars['link_id'] = $this->id;
+        $vars['command'] = 'delete_link';
+        $js['QUESTION'] = dgettext('menu', 'Are you sure you want to delete this link: ' . 
+                                   addslashes($this->title));
+        $js['ADDRESS'] = PHPWS_Text::linkAddress('menu', $vars, TRUE);
+        return javascript('confirm', $js);
     }
 
     function delete($save_links=FALSE)

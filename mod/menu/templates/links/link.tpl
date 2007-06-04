@@ -3,6 +3,7 @@
         <!-- BEGIN add-link -->
         <span class="menu-admin">
             {ADMIN}
+            <!-- BEGIN admin-links -->
             <div class="menu-link-pop">
                 {PIN_LINK}
                 {ADD_LINK}
@@ -12,6 +13,7 @@
                 {MOVE_LINK_UP}
                 {MOVE_LINK_DOWN}
             </div>
+            <!-- END admin-links -->
         </span>
         <!-- END add-link -->
         {LINK}

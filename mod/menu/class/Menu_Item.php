@@ -265,9 +265,9 @@ class Menu_Item {
     }
 
     /**
-     * This link lets you pin a stored link to the menu
+     * This link lets you add a stored link to the menu
      */
-    function getPinLink($menu_id, $link_id=0)
+    function getPinLink($menu_id, $link_id=0, $title=false)
     {
         if (!isset($_SESSION['Menu_Pin_Links'])) {
             return null;
@@ -283,7 +283,11 @@ class Menu_Item {
         $js['height']  = '100';
 
         $js['address'] = PHPWS_Text::linkAddress('menu', $vars, true);
-        $js['label'] = MENU_PIN_LINK;
+        if ($title) {
+            $js['label'] = sprintf('%s %s', MENU_PIN_LINK, dgettext('menu', 'Add stored page'));
+        } else {
+            $js['label'] = MENU_PIN_LINK;
+        }
 
         return javascript('open_window', $js);
     }

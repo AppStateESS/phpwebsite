@@ -44,6 +44,10 @@ class Menu_Admin {
             Layout::nakedDisplay();
             break;
 
+        case 'popup_admin':
+            Layout::nakedDisplay(Menu_Admin::popupLinkAdmin());
+            break;
+
         case 'pin_page_post':
             if (empty($_POST['title'])) {
                 Menu_Admin::pinPageForm($_POST['url'], true);
@@ -76,8 +80,9 @@ class Menu_Admin {
         case 'enable_admin_mode':
         case 'disable_admin_mode':
             if ($command == 'enable_admin_mode') {
-                $_SESSION['Menu_Admin_Mode'] = TRUE;
+                $_SESSION['Menu_Admin_Mode'] = true;
             } else {
+                $_SESSION['Menu_Admin_Mode'] = false;
                 unset($_SESSION['Menu_Admin_Mode']);
             }
             if (isset($_REQUEST['return'])) {
@@ -91,13 +96,13 @@ class Menu_Admin {
         case 'move_link_up':
             $link = new Menu_Link($_REQUEST['link_id']);
             $link->moveUp();
-            PHPWS_Core::goBack();
+            Menu_Admin::finish();
             break;
 
         case 'move_link_down':
             $link = new Menu_Link($_REQUEST['link_id']);
             $link->moveDown();
-            PHPWS_Core::goBack();
+            Menu_Admin::finish();
             break;
 
         case 'edit_menu':
@@ -112,7 +117,7 @@ class Menu_Admin {
                 $title = dgettext('menu', 'Sorry');
                 $content = dgettext('menu', 'A problem occurred when saving your link.');
             } else {
-                PHPWS_Core::goBack();
+                Menu_Admin::finish();
             }
             break;
 
@@ -123,7 +128,7 @@ class Menu_Admin {
 
         case 'delete_link':
             Menu::deleteLink($_REQUEST['link_id']);
-            PHPWS_Core::goBack();
+            Menu_Admin::finish();
             break;
 
         case 'list':
@@ -154,11 +159,11 @@ class Menu_Admin {
             } elseif (isset($_REQUEST['url'])) {
                 $result = Menu_Admin::addRawLink($menu, $_REQUEST['link_title'], $_REQUEST['url'], $parent_id);
             } else {
-                PHPWS_Core::goBack();
+                Menu_Admin::finish();
             }
 
             if ($result) {
-                PHPWS_Core::goBack();
+                Menu_Admin::finish();
             } else {
                 $title = dgettext('menu', 'Error');
                 $content = dgettext('menu', 'There was a problem saving your link.');
@@ -166,6 +171,8 @@ class Menu_Admin {
             break;
 
         case 'add_site_link':
+            $script = '<script type="text/javascript">window.resizeTo(500,250);</script>';
+            Layout::addJSHeader($script,'resize');
             $link = new Menu_Link;
             $link->parent = $_REQUEST['parent_id'];
             if (isset($_REQUEST['dadd'])) {
@@ -230,6 +237,13 @@ class Menu_Admin {
             $menu->save();
             $title = ('Menu List');
             $content = Menu_Admin::menuList();
+            break;
+
+        case 'save_settings':
+            Menu_Admin::saveSettings();
+            $message = dgettext('menu', 'Settings updated.');
+            $title = dgettext('menu', 'Menu Settings');
+            $content = Menu_Admin::settings();
             break;
         } // end command switch
 
@@ -376,10 +390,10 @@ class Menu_Admin {
         $result = $menu->addLink($key_id, $parent);
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            return FALSE;
+            return false;
         }
 
-        return TRUE;
+        return true;
     }
 
 
@@ -388,10 +402,10 @@ class Menu_Admin {
         $result = $menu->addRawLink($title, $url, $parent);
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
-            return FALSE;
+            return false;
         }
 
-        return TRUE;
+        return true;
     }
 
 
@@ -457,7 +471,7 @@ class Menu_Admin {
     function editLinkTitle($link_id, $title)
     {
         if (empty($title)) {
-            return TRUE;
+            return true;
         }
 
         $link = new Menu_Link($link_id);
@@ -520,15 +534,28 @@ class Menu_Admin {
 
     function settings()
     {
-        if (!isset($_SESSION['Menu_Admin_Mode'])) {
-            $vars['command'] = 'enable_admin_mode';
-            $tpl['ADMIN_LINK'] = PHPWS_Text::secureLink(dgettext('menu', 'Enable Administration Mode'),
-                                                        'menu', $vars);
+        $form = new PHPWS_Form('menu-settings');
+        $form->addHidden('module', 'menu');
+        $form->addHidden('command', 'save_settings');
+
+        $form->addRadio('admin_mode', array('on', 'off'));
+        $form->setLabel('admin_mode', array(dgettext('menu', 'On'), dgettext('menu', 'Off')));
+
+        if (isset($_SESSION['Menu_Admin_Mode']) && $_SESSION['Menu_Admin_Mode'] == true) {
+            $form->setMatch('admin_mode', 'on');
         } else {
-            $vars['command'] = 'disable_admin_mode';
-            $tpl['ADMIN_LINK'] = PHPWS_Text::secureLink(dgettext('menu', 'Disable Administration Mode'),
-                                                        'menu', $vars);
+            $form->setMatch('admin_mode', 'off');
         }
+
+        $form->addCheck('float_mode', 1);
+        $form->setLabel('float_mode', dgettext('menu', 'Use floating admin links'));
+        $form->setMatch('float_mode', PHPWS_Settings::get('menu', 'float_mode'));
+
+        $form->addSubmit('submit', dgettext('menu', 'Save settings'));
+
+        $tpl = $form->getTemplate();
+        $tpl['ADMIN_MODE_NOTE'] = dgettext('menu', 'Admin mode status');
+
         return PHPWS_Template::process($tpl, 'menu', 'admin/settings.tpl');
     }
 
@@ -594,7 +621,7 @@ class Menu_Admin {
         if (isset($error)) {
             return $error;
         } else {
-            return TRUE;
+            return true;
         }
     }
 
@@ -620,6 +647,58 @@ class Menu_Admin {
 
         $link->save();
         unset($_SESSION['Menu_Pin_Links']);
+    }
+
+    function popupLinkAdmin()
+    {
+        $link = new Menu_Link($_GET['link_id']);
+
+        if (isset($_GET['key_id'])) {
+            if ($_GET['key_id']) {
+                $key = new Key($_GET['key_id']);
+            } else {
+                $key = Key::getHomeKey();
+            }
+            $key->flag();
+        } 
+
+        $template = array();
+        $link->_loadAdminLinks($template, true);
+
+        $template['CLOSE'] = javascript('close_window');
+
+        $content = PHPWS_Template::process($template, 'menu', 'popup_admin.tpl');
+
+        return $content;
+    }
+
+    function finish()
+    {
+        if (isset($_GET['pu'])) {
+            javascript('close_refresh');
+            Layout::nakedDisplay();
+        } else {
+            PHPWS_Core::goBack();
+        }
+    }
+
+    function saveSettings()
+    {
+        if ($_POST['admin_mode'] == 'on') {
+            $_SESSION['Menu_Admin_Mode'] = true;
+        } else {
+            $_SESSION['Menu_Admin_Mode'] = false;
+            unset($_SESSION['Menu_Admin_Mode']);
+        }
+
+        if (isset($_POST['float_mode'])) {
+            PHPWS_Settings::set('menu', 'float_mode', 1);
+        } else {
+            PHPWS_Settings::set('menu', 'float_mode', 0);
+        }
+
+        PHPWS_Settings::save('menu');
+
     }
 }
 
