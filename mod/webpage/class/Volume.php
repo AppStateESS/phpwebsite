@@ -237,13 +237,16 @@ class Webpage_Volume {
 
         $links[] = $this->getViewLink();
 
-        if (Current_User::isUnrestricted('webpage') && Current_User::allow('webpage', 'delete_page')) {
-            $vars['wp_admin'] = 'delete_wp';
-            $js_vars['QUESTION'] = sprintf(dgettext('webpage', 'Are you sure you want to delete &quot;%s&quot and all its pages?'),
-                                           $this->title);
-            $js_vars['ADDRESS'] = PHPWS_Text::linkAddress('webpage', $vars, true);
-            $js_vars['LINK'] = dgettext('webpage', 'Delete');
-            $links[] = javascript('confirm', $js_vars);
+        if (Current_User::isUnrestricted('webpage')) {
+            $links[] =         Current_User::popupPermission($this->key_id);
+            if (Current_User::allow('webpage', 'delete_page')) {
+                $vars['wp_admin'] = 'delete_wp';
+                $js_vars['QUESTION'] = sprintf(dgettext('webpage', 'Are you sure you want to delete &quot;%s&quot and all its pages?'),
+                                               $this->title);
+                $js_vars['ADDRESS'] = PHPWS_Text::linkAddress('webpage', $vars, true);
+                $js_vars['LINK'] = dgettext('webpage', 'Delete');
+                $links[] = javascript('confirm', $js_vars);
+            }
         }
 
         $tpl['DATE_CREATED'] = $this->getDateCreated();
