@@ -450,7 +450,7 @@ class PHPWS_Image extends File_Common {
             if ($this->folder_id) {
                 $folder = new Folder($_POST['folder_id']);
                 if ($folder->id) {
-                    $this->setFileDirectory($folder->getFullDirectory());
+                    $this->setDirectory($folder->getFullDirectory());
                 } else {
                     return PHPWS_Error::get(FC_MISSING_FOLDER, 'filecabinet', 'PHPWS_Image::save');
                 }
