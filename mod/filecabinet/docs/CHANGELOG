@@ -1,3 +1,10 @@
+6 June 2007
++ Started embedded functionality code.
++ Updated files: conf/embedded.php, templates/edit_embed.tpl,
+                 templates/embedded.tpl,
+                 templates/embedded/youtube.tpl
+
+
 1 June 2007
 + Added link to delete multimedia files
 + Added edit link for multimedia files

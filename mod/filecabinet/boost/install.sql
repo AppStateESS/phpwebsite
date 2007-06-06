@@ -58,3 +58,11 @@ CREATE TABLE filecabinet_pins (
 key_id INT NOT NULL ,
 folder_id INT NOT NULL
 );
+
+CREATE TABLE fc_embedded (
+ id INT NOT NULL ,
+ title VARCHAR( 100 ) NOT NULL ,
+ url VARCHAR( 255 ) NOT NULL ,
+ etype VARCHAR( 20 ) NOT NULL ,
+ PRIMARY KEY ( id )
+);

@@ -206,6 +206,12 @@ class Cabinet {
             $this->forms->getFolders(DOCUMENT_FOLDER);
             break;
 
+        case 'embedded':
+            $this->loadForms();
+            $this->forms->embedded();
+            break;
+
+
         case 'edit_folder':
             $javascript = true;
             $this->loadFolder(IMAGE_FOLDER);
@@ -218,6 +224,10 @@ class Cabinet {
             PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
             $this->loadImageManager();
             $this->image_mgr->editImage();
+            break;
+
+        case 'post_embedded':
+            $this->postEmbedded();
             break;
 
         case 'post_document_upload':
@@ -311,6 +321,13 @@ class Cabinet {
         case 'resize_image':
             $this->loadImageManager();
             echo $this->image_mgr->resizeImage();
+            break;
+
+        case 'edit_embed':
+            $javascript = true;
+            $this->loadForms();
+            $embed = $this->loadEmbedded();
+            $this->forms->editEmbedded($embed);
             break;
 
         }
@@ -863,6 +880,44 @@ class Cabinet {
             return $errors;
         } else {
             return true;
+        }
+    }
+
+    function loadEmbedded()
+    {
+        PHPWS_Core::initModClass('filecabinet', 'Embedded.php');
+        if (!empty($_REQUEST['embed_id'])) {
+            $embed = new FC_Embedded($_REQUEST['embed_id']);
+        } else {
+            $embed = new FC_Embedded;
+        }
+        return $embed;
+    }
+
+    function postEmbedded()
+    {
+        $embed = $this->loadEmbedded();
+        if (empty($_POST['url']) || !PHPWS_Text::isValidInput($_POST['url'], 'url')) {
+            $errors[] = dgettext('filecabinet', 'Please enter the url again.');
+        } else {
+            $embed->setUrl($_POST['url']);
+        }
+
+        $embed->setTitle($_POST['title']);
+        if (empty($embed->title)) {
+            $errors[] = dgettext('filecabinet', 'You must enter a title.');
+        }
+
+        $embed->etype = $_POST['etype'];
+
+        if (isset($errors)) {
+            $this->message = implode('<br />', $errors);
+            $this->loadForms();
+            $this->forms->editEmbedded($embed);
+        } else {
+            PHPWS_Error::logIfError($embed->save());
+            javascript('close_refresh');
+            Layout::nakedDisplay();
         }
     }
 }
