@@ -9,7 +9,7 @@ if (!class_exists('PHPWS_User')) {
     exit();
  }
 
-if (@$_REQUEST['module'] == 'users' && $_REQUEST['action'] == 'reset') {
+if (@$_REQUEST['module'] == 'users' && @$_REQUEST['action'] == 'reset') {
     $_SESSION['User'] = new PHPWS_User;
  } else if (!isset($_SESSION['User'])) {
     $_SESSION['User'] = new PHPWS_User;
