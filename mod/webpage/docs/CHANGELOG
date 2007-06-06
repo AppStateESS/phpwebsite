@@ -1,5 +1,6 @@
 6 June 2007
 + RFE #1690681 - Added permissions link on volume list view.
++ RFE #1719299 - Page titles added to volume tabs.
 
 Version 0.5.3
 ------------------------------------------------------------------------

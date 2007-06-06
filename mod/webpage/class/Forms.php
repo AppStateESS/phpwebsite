@@ -21,7 +21,11 @@ class Webpage_Forms {
 
         if (!empty($volume->_pages)) {
             foreach ($volume->_pages as $page_id => $page) {
-                $link['title'] = sprintf(dgettext('webpage', 'Page %s'), $page->page_number);
+                if (!empty($page->title)) {
+                    $link['title'] = sprintf('%d. %s', $page->page_number, $page->title);
+                } else {
+                    $link['title'] = sprintf(dgettext('webpage', '%d. (Untitled)'), $page->page_number);
+                }
                 $link['link'] = sprintf('index.php?module=webpage&wp_admin=edit_webpage&page_id=%s&volume_id=%s', $page_id, $volume->id);
                 if ($version_id) {
                     $link['link'] .= '&version_id=' . $version_id;
