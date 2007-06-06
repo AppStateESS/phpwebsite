@@ -1,3 +1,12 @@
+Version 1.3.0
+-----------------------------------------------------------------
+6 June 2007
++ Fixed admin icon bug
+
+5 June 2007
++ Wrote update scripts
++ Fixed admin logic
+
 4 June 2007
 + Admin icon for links is now clickable. Pulls up window of options.
 + Added ability to disable floating admin links.

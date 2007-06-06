@@ -53,13 +53,13 @@ class Menu_Link {
     }
 
     function &getDB()
-    {
-        if (empty($this->_db)) {
-            $this->_db = new PHPWS_DB('menu_links');
+        {
+            if (empty($this->_db)) {
+                $this->_db = new PHPWS_DB('menu_links');
+            }
+            $this->_db->reset();
+            return $this->_db;
         }
-        $this->_db->reset();
-        return $this->_db;
-    }
 
     /**
      * Grabs all the child links under the current link
@@ -244,56 +244,57 @@ class Menu_Link {
 
     function _loadAdminLinks(&$template, $popup=false)
     {
-        if ( empty($_POST) && Menu::isAdminMode() && Current_User::allow('menu') ) {
+        if ( Menu::isAdminMode() && Current_User::allow('menu') ) {
+            if (empty($_POST)) {
+                $key = Key::getCurrent();
 
-            $key = Key::getCurrent();
-
-            if (Key::checkKey($key)) {
-                $keyed = true;
-            } else {
-                $keyed = false;
-            }
-
-            $vars['link_id'] = $this->id;
-
-            if ($popup || PHPWS_Settings::get('menu', 'float_mode')) {
-                $template['PIN_LINK']      = Menu_Item::getPinLink($this->menu_id, $this->id, $popup);
-                $template['ADD_LINK']      = Menu::getAddLink($this->menu_id, $this->id, $popup);
-                $template['ADD_SITE_LINK'] = Menu::getSiteLink($this->menu_id, $this->id, $keyed, $popup);
-                $template['EDIT_LINK']     = $this->editLink($popup);
-                $template['DELETE_LINK']   = $this->deleteLink($popup);
-
-                $vars['command'] = 'move_link_up';
-                $up_link = MENU_LINK_UP;
-                if ($popup) {
-                    $up_link .= ' ' . dgettext('menu', 'Move link up');
-                    $vars['pu'] = 1;
+                if (Key::checkKey($key)) {
+                    $keyed = true;
+                } else {
+                    $keyed = false;
                 }
-                $template['MOVE_LINK_UP'] = PHPWS_Text::secureLink($up_link, 'menu', $vars);
 
-                $down_link = MENU_LINK_DOWN;
-                if ($popup) {
-                    $down_link .= ' ' . dgettext('menu', 'Move link down');
-                    $vars['pu'] = 1;
+                $vars['link_id'] = $this->id;
+
+                if ($popup || PHPWS_Settings::get('menu', 'float_mode')) {
+                    $template['PIN_LINK']      = Menu_Item::getPinLink($this->menu_id, $this->id, $popup);
+                    $template['ADD_LINK']      = Menu::getAddLink($this->menu_id, $this->id, $popup);
+                    $template['ADD_SITE_LINK'] = Menu::getSiteLink($this->menu_id, $this->id, $keyed, $popup);
+                    $template['EDIT_LINK']     = $this->editLink($popup);
+                    $template['DELETE_LINK']   = $this->deleteLink($popup);
+
+                    $vars['command'] = 'move_link_up';
+                    $up_link = MENU_LINK_UP;
+                    if ($popup) {
+                        $up_link .= ' ' . dgettext('menu', 'Move link up');
+                        $vars['pu'] = 1;
+                    }
+                    $template['MOVE_LINK_UP'] = PHPWS_Text::secureLink($up_link, 'menu', $vars);
+
+                    $down_link = MENU_LINK_DOWN;
+                    if ($popup) {
+                        $down_link .= ' ' . dgettext('menu', 'Move link down');
+                        $vars['pu'] = 1;
+                    }
+                    $vars['command'] = 'move_link_down';
+                    $template['MOVE_LINK_DOWN'] = PHPWS_Text::secureLink($down_link, 'menu', $vars);
                 }
-                $vars['command'] = 'move_link_down';
-                $template['MOVE_LINK_DOWN'] = PHPWS_Text::secureLink($down_link, 'menu', $vars);
-            }
 
-            $vars['command'] = 'popup_admin';
-            $vars['curl'] = urlencode(PHPWS_Core::getCurrentUrl(false));
-            if ($keyed) {
-                $vars['key_id'] = $key->id;
-            }
+                $vars['command'] = 'popup_admin';
+                $vars['curl'] = urlencode(PHPWS_Core::getCurrentUrl(false));
+                if ($keyed) {
+                    $vars['key_id'] = $key->id;
+                }
 
-            $js['address'] = PHPWS_Text::linkAddress('menu', $vars, true);
-            $js['label'] = MENU_LINK_ADMIN;
-            $js['width'] = 200;
-            $js['height'] = 200;
+                $js['address'] = PHPWS_Text::linkAddress('menu', $vars, true);
+                $js['label'] = MENU_LINK_ADMIN;
+                $js['width'] = 200;
+                $js['height'] = 200;
             
-            $template['ADMIN'] = javascript('open_window', $js);
-        } elseif (isset($_POST)) {
-            $template['ADMIN'] = NO_POST;
+                $template['ADMIN'] = javascript('open_window', $js);
+            } else {
+                $template['ADMIN'] = NO_POST;
+            }
         }
     }
 

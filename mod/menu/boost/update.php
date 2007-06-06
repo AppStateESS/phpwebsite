@@ -88,6 +88,24 @@ $content[] = '<pre>1.1.1 Changes
 + Fixed bug with making home link.
 </pre>';
 
+    case version_compare($currentVersion, '1.3.0', '<'):
+        $files = array('conf/config.php', 'templates/admin/settings.tpl',
+                       'templates/links/link.tpl', 'templates/popup_admin.tpl');
+        $content[] = '<pre>';
+        if (PHPWS_Boost::updateFiles($files, 'menu')) {
+            $content[] = '--- Successfully updated the following files:';
+        } else {
+            $content[] = '--- Was unable to copy the following files:';
+        }
+        $content[] = '     ' . implode("\n     ", $files);
+        $content[] = '
+<pre>1.3.0 changes
+-----------------
++ Admin icon for links is now clickable. Pulls up window of options.
++ Added ability to disable floating admin links.
++ Updated files: 
+</pre>';
+
     }
     return true;
 }
