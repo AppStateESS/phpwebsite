@@ -432,63 +432,6 @@ class Cabinet_Form {
         $this->cabinet->title = dgettext('filecabinet', 'Classify Files');
         $this->cabinet->content = PHPWS_Template::process($form_template, 'filecabinet', 'classify_file.tpl');
     }
-
-    function embedded()
-    {
-        PHPWS_Core::initCoreClass('DBPager.php');
-        PHPWS_Core::initModClass('filecabinet', 'Embedded.php');
-        $pager = new DBPager('fc_embedded', 'FC_Embedded');
-        $pager->setModule('filecabinet');
-        $pager->setTemplate('embedded.tpl');
-
-        $linkvars['aop']  = 'edit_embed';
-        $addjs['address'] = PHPWS_Text::linkAddress('filecabinet', $linkvars, true);
-        $addjs['width']   = '300';
-        $addjs['height']  = '250';
-        $addjs['label']   = dgettext('filecabinet', 'Add embedded');
-
-        $page_tpl['ADD'] = javascript('open_window', $addjs);
-        $pager->addPageTags($page_tpl);
-
-        $this->cabinet->title = dgettext('filecabinet', 'Embedded');
-        $this->cabinet->content = $pager->get();
-    }
-
-
-    function editEmbedded($embed)
-    {
-        $form = new PHPWS_Form('embedded');
-        $form->addHidden('module', 'filecabinet');
-        $form->addHidden('aop', 'post_embedded');
-
-        if ($embed->id) {
-            $form->addHidden('embed_id', $embed->id);
-            $form->addSubmit(dgettext('filecabinet', 'Update'));
-            $this->cabinet->title = dgettext('filecabinet', 'Update embedded');
-        } else {
-            $form->addSubmit(dgettext('filecabinet', 'Create'));
-            $this->cabinet->title = dgettext('filecabinet', 'Create embedded');
-        }
-
-        $etype_list = array('youtube'=>'YouTube');
-
-        $form->addText('title', $embed->title);
-        $form->setLabel('title', dgettext('filecabinet', 'Title'));
-        $form->setSize('title', 40, 100);
-
-        $form->addText('url', $embed->url);
-        $form->setLabel('url', dgettext('filecabinet', 'Url'));
-        $form->setSize('url', 40, 255);
-
-        $form->addSelect('etype', $etype_list);
-        $form->setLabel('etype', 'Embedded type');
-
-        $tpl = $form->getTemplate();
-
-        $tpl['CLOSE'] = javascript('close_window');
-
-        $this->cabinet->content = PHPWS_Template::process($tpl, 'filecabinet', 'edit_embed.tpl');
-    }
 }
 
 ?>

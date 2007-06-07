@@ -1,3 +1,6 @@
+7 June 2007
++ Removing the embedded code. Decided it wasn't useful.
+
 6 June 2007
 + Started embedded functionality code.
 + Updated files: conf/embedded.php, templates/edit_embed.tpl,

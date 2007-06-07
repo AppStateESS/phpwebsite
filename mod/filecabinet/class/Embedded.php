@@ -10,6 +10,8 @@ class FC_Embedded {
     var $title  = null;
     var $url    = null;
     var $etype  = null;
+    var $width  = 0;
+    var $height = 0;
     var $_error = null;
 
     function FC_Embedded($id=0)
@@ -56,7 +58,7 @@ class FC_Embedded {
         $this->url = trim(strip_tags($url));
     }
 
-    function get()
+    function getFilterInfo()
     {
         static $filters = null;
 
@@ -64,7 +66,12 @@ class FC_Embedded {
             include 'config/filecabinet/embedded.php';
         }
 
-        $f_info = @$filters[$this->etype];
+        return @$filters[$this->etype];
+    }
+
+    function view()
+    {
+        $f_info = $this->getFilterInfo();
 
         if (empty($f_info) || !isset($f_info['template'])) {
             return null;
@@ -78,8 +85,42 @@ class FC_Embedded {
         return PHPWS_Template::process($tpl, 'filecabinet', $embedded_tpl);
     }
 
+    function viewLink()
+    {
+        $vars['uop'] = 'view_embedded';
+        $vars['embed_id'] = $this->id;
+
+        $jsvars['width'] = $this->width + 50;
+        $jsvars['height'] = $this->height + 50;
+        $jsvars['address'] = PHPWS_Text::linkAddress('filecabinet', $vars);
+        $jsvars['label'] = $this->title;
+
+        return javascript('open_window', $jsvars);
+    }
+
+
+    function rowTags()
+    {
+        $links[] = 'Clip';
+
+        $links[] = 'Edit';
+
+        $links[] = 'Delete';
+
+        $tpl['ACTION'] = implode(' | ', $links);
+        $tpl['TITLE'] = $this->viewLink();
+
+        return $tpl;
+    }
+
     function save()
     {
+        if ($this->width < 100 || $this->height < 100) {
+            $filter = $this->getFilterInfo();
+            $this->width = $filter['width'];
+            $this->height = $filter['height'];
+        }
+
         $db = new PHPWS_DB('fc_embedded');
         return $db->saveObject($this);
     }

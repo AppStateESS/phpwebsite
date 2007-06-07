@@ -206,12 +206,6 @@ class Cabinet {
             $this->forms->getFolders(DOCUMENT_FOLDER);
             break;
 
-        case 'embedded':
-            $this->loadForms();
-            $this->forms->embedded();
-            break;
-
-
         case 'edit_folder':
             $javascript = true;
             $this->loadFolder(IMAGE_FOLDER);
@@ -224,10 +218,6 @@ class Cabinet {
             PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
             $this->loadImageManager();
             $this->image_mgr->editImage();
-            break;
-
-        case 'post_embedded':
-            $this->postEmbedded();
             break;
 
         case 'post_document_upload':
@@ -323,13 +313,6 @@ class Cabinet {
             echo $this->image_mgr->resizeImage();
             break;
 
-        case 'edit_embed':
-            $javascript = true;
-            $this->loadForms();
-            $embed = $this->loadEmbedded();
-            $this->forms->editEmbedded($embed);
-            break;
-
         }
 
         $template['TITLE']   = &$this->title;
@@ -392,10 +375,6 @@ class Cabinet {
         }
 
         switch($op) {
-        case 'view_image':
-
-            break;
-
         case 'view_folder':
             $this->userViewFolder();
             break;
@@ -584,12 +563,10 @@ class Cabinet {
         $document_command   = array('title'=>dgettext('filecabinet', 'Document folders'), 'link'=> $link);
         $multimedia_command = array('title'=>dgettext('filecabinet', 'Multimedia folders'), 'link'=> $link);
         $classify_command   = array('title'=>dgettext('filecabinet', 'Classify'), 'link'=> $link);
-        $embedded_command   = array('title'=>dgettext('filecabinet', 'Embedded'), 'link'=> $link);
 
         $tabs['image']      = $image_command;
         $tabs['document']   = $document_command;
         $tabs['multimedia'] = $multimedia_command;
-        $tabs['embedded']   = $embedded_command;
         $tabs['classify']   = $classify_command;
 
         if (Current_User::isUnrestricted('filecabinet')) {
@@ -880,44 +857,6 @@ class Cabinet {
             return $errors;
         } else {
             return true;
-        }
-    }
-
-    function loadEmbedded()
-    {
-        PHPWS_Core::initModClass('filecabinet', 'Embedded.php');
-        if (!empty($_REQUEST['embed_id'])) {
-            $embed = new FC_Embedded($_REQUEST['embed_id']);
-        } else {
-            $embed = new FC_Embedded;
-        }
-        return $embed;
-    }
-
-    function postEmbedded()
-    {
-        $embed = $this->loadEmbedded();
-        if (empty($_POST['url']) || !PHPWS_Text::isValidInput($_POST['url'], 'url')) {
-            $errors[] = dgettext('filecabinet', 'Please enter the url again.');
-        } else {
-            $embed->setUrl($_POST['url']);
-        }
-
-        $embed->setTitle($_POST['title']);
-        if (empty($embed->title)) {
-            $errors[] = dgettext('filecabinet', 'You must enter a title.');
-        }
-
-        $embed->etype = $_POST['etype'];
-
-        if (isset($errors)) {
-            $this->message = implode('<br />', $errors);
-            $this->loadForms();
-            $this->forms->editEmbedded($embed);
-        } else {
-            PHPWS_Error::logIfError($embed->save());
-            javascript('close_refresh');
-            Layout::nakedDisplay();
         }
     }
 }
