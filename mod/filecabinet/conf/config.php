@@ -34,6 +34,13 @@ define('FC_MAX_MULTIMEDIA_POPUP_HEIGHT', 768);
 define('RESIZE_IMAGE_USE_DUPLICATE', true);
 
 
-define('FC_INCOMING_DIRECTORY', 'files/filecabinet/incoming/');
+/**
+ * If you don't want site admins to set the classify directory, change
+ * the below to false. The system will use the FC_CLASSIFY_DIRECTORY 
+ * instead. If the FC_CLASSIFY_DIRECTORY is not present or null, then
+ * classification will not work at all
+ */
+define('FC_ALLOW_CLASSIFY_DIR_SETTING', true);
+define('FC_CLASSIFY_DIRECTORY', 'files/filecabinet/incoming/');
 
 ?>

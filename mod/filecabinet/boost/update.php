@@ -336,6 +336,77 @@ Notice: File Cabinet has been completely rewritten
 + 1.0.0 update was missing key_id column addition to folders table.
 </pre>';
 
+    case version_compare($version, '1.1.0', '<'):
+        $content[] = '<pre>';
+
+        $source_dir = PHPWS_SOURCE_DIR . 'mod/filecabinet/templates/filters/';
+        $dest_dir   = './templates/filecabinet/filters/';
+
+        if (!is_dir($dest_dir)) {
+            if (!PHPWS_File::copy_directory($source_dir, $dest_dir)) {
+                $content[] = '--- FAILED copying templates/filters/ directory locally.</pre>';
+                return false;
+            }
+        }
+
+        $files = array('templates/manager/pick.tpl', 'templates/classify_file.tpl', 
+                       'templates/classify_list.tpl', 'templates/image_edit.tpl', 
+                       'templates/multimedia_edit.tpl', 'templates/multimedia_grid.tpl',
+                       'templates/style.css', 'templates/settings/tpl', 'conf/config.php');
+        
+        if (PHPWS_Boost::updateFiles($files, 'filecabinet')) {
+            $content[] = '--- Copied the following files:';
+        } else {
+            $content[] = '--- FAILED copying the following files:';
+        }
+
+        $content[] = "    " . implode("\n    ", $files);
+
+        $db = new PHPWS_DB('images');
+        if (!$db->isTableColumn('parent_id')) {
+            if (PHPWS_Error::logIfError($db->addTableColumn('parent_id', 'int NOT NULL default 0'))) {
+                $content[] = 'Could not create parent_id column in images table.</pre>';
+                return false;
+            }
+        }
+
+        if (!$db->isTableColumn('url')) {
+            if (PHPWS_Error::logIfError($db->addTableColumn('url', 'varchar(255) NULL'))) {
+                $content[] = 'Could not create url column in images table.</pre>';
+                return false;
+            }
+        }
+
+        if (!PHPWS_DB::isTable('multimedia')) {
+            if (PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/multimedia.sql')) {
+                $content[] = '--- Multimedia table created successfully.';
+            } else {
+                $content[] = '--- Failed to create multimedia table.</pre>';
+                return false;
+            }
+        }
+
+        
+        $content[] = '
+1.1.0 changes
+--------------
++ Fixed authorized check when unpinning folders
++ Images can now be linked to other pages.
++ Resized images can now be linked to their parent image.
++ Clip option moved outside edit_folder permissions when viewing images.
++ Added writable directory check before allowing new folders to be
+  created.
++ Fixed some error messages in File_Common.
++ Commented out ext variable in File_Common. Doesn\'t appear to be in
+  use.
++ Created setDirectory function for File_Common. Assures trailing
+  forward slash on directory name.
++ Removed itemname variable from Document_Manager
++ Added ability to classify uploaded files.
++ New folder class - Multimedia
++ Multimedia files can be clipped and pasted via SmartTags.
+</pre>
+';
     }
 
     return true;

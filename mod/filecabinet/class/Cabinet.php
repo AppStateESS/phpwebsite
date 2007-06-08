@@ -11,6 +11,7 @@
  */
 
 PHPWS_Core::initModClass('filecabinet', 'Folder.php');
+PHPWS_Core::requireConfig('filecabinet');
 
 class Cabinet {
     var $title          = null;
@@ -188,6 +189,11 @@ class Cabinet {
             PHPWS_Core::returnToBookmark();
             break;
 
+        case 'delete_incoming':
+            $this->deleteIncoming();
+            $this->loadForms();
+            $this->forms->classifyFileList();
+            break;
 
         case 'delete_multimedia':
             $this->loadMultimediaManager();
@@ -311,6 +317,11 @@ class Cabinet {
         case 'resize_image':
             $this->loadImageManager();
             echo $this->image_mgr->resizeImage();
+            break;
+
+        case 'multimedia_manager':
+            $this->loadMultimediaManager();
+            $this->multimedia_mgr->editMultimedia();
             break;
 
         }
@@ -676,7 +687,22 @@ class Cabinet {
                 PHPWS_Settings::set('filecabinet', 'use_ffmpeg', 0);
             }
         }
-        
+
+        if (FC_ALLOW_CLASSIFY_DIR_SETTING) {
+            if (!empty($_POST['classify_directory'])) {
+                $classify_dir = $_POST['classify_directory'];
+                if (!preg_match('@/$@', $classify_dir)) {
+                    $classify_dir .= '/';
+                }
+                if (!is_dir($classify_dir)) {
+                    $errors[] = dgettext('filecabinet', 'Classify directory could not be found.');
+                } elseif(!is_writable($classify_dir)) {
+                    $errors[] = dgettext('filecabinet', 'The web server does not have permissions for the classify directory.');
+                } else {
+                    PHPWS_Settings::set('filecabinet', 'classify_directory', $classify_dir);
+                }
+            }
+        }
 
         PHPWS_Settings::save('filecabinet');
         if (isset($errors)) {
@@ -830,7 +856,11 @@ class Cabinet {
             }
 
             // move the file from the incoming directory
-            $incoming_file = FC_INCOMING_DIRECTORY . $filename;
+            $classify_dir = $this->getClassifyDir();
+            if (empty($classify_dir)) {
+                return array(dgettext('filecabinet', 'The web server does not have permission to access files in the classify directory.'));
+            }
+            $incoming_file = $classify_dir . $filename;
             $folder_directory = $file_obj->getPath();
 
 
@@ -857,6 +887,49 @@ class Cabinet {
             return $errors;
         } else {
             return true;
+        }
+    }
+
+    function deleteIncoming()
+    {
+        if (empty($_POST['file_list'])) {
+            if (isset($_GET['file'])) {
+                $file_list[] = $_GET['file'];
+            } else {
+                return;
+            }
+        } else {
+            $file_list = & $_POST['file_list'];
+        }
+
+        $classify_dir = $this->getClassifyDir();
+
+        if (empty($classify_dir)) {
+            $this->message = dgettext('filecabinet', 'The web server does not have permission to delete files from the classify directory.');
+        }
+
+        if (!is_array($file_list)) {
+            return;
+        }
+
+        foreach ($file_list as $filename) {
+            $file = $classify_dir . $filename;
+            @unlink($classify_dir . $filename);
+        }
+    }
+
+    function getClassifyDir()
+    {
+        if (FC_ALLOW_CLASSIFY_DIR_SETTING) {
+            $directory = PHPWS_Settings::get('filecabinet', 'classify_directory');
+        } else {
+            $directory = FC_CLASSIFY_DIRECTORY;
+        }
+
+        if (is_writable($directory)) {
+            return $directory;
+        } else {
+            return null;
         }
     }
 }

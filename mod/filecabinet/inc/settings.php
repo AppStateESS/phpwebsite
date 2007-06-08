@@ -14,6 +14,7 @@ $settings = array('base_doc_directory'   => PHPWS_HOME_DIR . 'files/filecabinet/
                   'max_pinned_documents' => 0,
                   'default_mm_width'     => 320,
                   'default_mm_height'    => 240,
-                  'multimedia_thumbnail' => false);
+                  'multimedia_thumbnail' => false,
+                  'classify_directory'   => null);
 
 ?>

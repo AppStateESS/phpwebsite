@@ -32,5 +32,12 @@
     {FFMPEG_DIRECTORY}</p>
     
 </fieldset>
+<!-- BEGIN classify-settings -->
+<fieldset>
+    <legend>{CLASSIFY_SETTINGS}</legend>
+    <p style="margin-bottom : 1em"><strong>{CLASSIFY_DIRECTORY_LABEL}</strong><br />
+    {CLASSIFY_DIRECTORY}</p>
+</fieldset>
+<!-- END classify-settings -->
 {SUBMIT}
 {END_FORM}

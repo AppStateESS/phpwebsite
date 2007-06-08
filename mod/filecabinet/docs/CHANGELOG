@@ -1,3 +1,15 @@
+8 June 2007
++ Wrote update scripts.
++ Added missing new columns to image table in install.sql
++ Added multimedia.sql file for update to 1.1.0
++ Added ability to delete incoming files.
++ Added directory permission checks to classify.
++ Classify directory can now be set in fc settings.
++ Created classify override in config.php file.
++ Updated files: conf/config.php, templates/settings.tpl
++ Updated locale file.
+
+
 7 June 2007
 + Removing the embedded code. Decided it wasn't useful.
 

@@ -8,6 +8,7 @@
 PHPWS_Core::initModClass('filecabinet', 'Image.php');
 PHPWS_Core::initModClass('filecabinet', 'Document.php');
 
+
 class Cabinet_Form {
 
     function getFolders($type)
@@ -45,16 +46,17 @@ class Cabinet_Form {
      */
     function classifyFileList()
     {
-        $classify_dir = FC_INCOMING_DIRECTORY;
-
-        $allowed_file_types = unserialize(ALLOWED_DOCUMENT_TYPES);
         $this->cabinet->title = dgettext('filecabinet', 'Classify files');
 
-        if (!is_dir($classify_dir)) {
-            $this->cabinet->content = dgettext('filecabinet', 'Could not find your incoming file directory.');
-            PHPWS_Error::log(FC_MISSING_TMP, 'filecabinet', 'Cabinet_Form::classifyFiles', $classify_dir);
+        $classify_dir = $this->cabinet->getClassifyDir();
+        
+        if (empty($classify_dir) || !is_dir($classify_dir)) {
+            $this->cabinet->content = dgettext('filecabinet', 
+                                               'Unable to locate the classify directory. Please check your File Cabinet settings, configuration file and directory permissions.');
             return;
         }
+
+        $allowed_file_types = unserialize(ALLOWED_DOCUMENT_TYPES);
 
         $result = PHPWS_File::readDirectory($classify_dir, false, true);
 
@@ -71,13 +73,18 @@ class Cabinet_Form {
         $form = new PHPWS_Form('classify_file_list');
         $form->addHidden('module', 'filecabinet');
 
-        $options['classify'] = dgettext('filecabinet', '-- Pick option --');
-        $options['classify_file'] = dgettext('filecabinet', 'Classify checked');
+        $options['classify']        = dgettext('filecabinet', '-- Pick option --');
+        $options['classify_file']   = dgettext('filecabinet', 'Classify checked');
         $options['delete_incoming'] = dgettext('filecabinet', 'Delete checked');
 
         $form->addSelect('aop', $options);
-        $form->addSubmit(dgettext('filecabinet', 'Go'));
         $tpl = $form->getTemplate();
+
+        $js_vars['value']        = dgettext('filecabinet', 'Go');
+        $js_vars['select_id']    = 'classify_file_list_aop';
+        $js_vars['action_match'] = 'delete_incoming';
+        $js_vars['message']      = dgettext('filecabinet', 'Are you sure you wish to delete these files?');
+        $tpl['SUBMIT'] = javascript('select_confirm', $js_vars);
 
         $tpl['CHECK_ALL'] = javascript('check_all', array('checkbox_name'=>'file_list[]'));
 
@@ -99,7 +106,10 @@ class Cabinet_Form {
             }
 
             $vars['aop'] = 'delete_incoming';
-            $links[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Delete'), 'filecabinet', $vars);
+            $cnf_js['QUESTION'] = dgettext('filecabinet', 'Are you sure you want to delete this file?');
+            $cnf_js['ADDRESS'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
+            $cnf_js['LINK'] = dgettext('filecabinet', 'Delete');
+            $links[] = javascript('confirm', $cnf_js);
 
             $rowtpl['ACTION'] = implode(' | ', $links);
 
@@ -303,10 +313,16 @@ class Cabinet_Form {
         }
 
 
+        $form->addTplTag('CLASSIFY_SETTINGS', dgettext('filecabinet', 'Classify settings'));
         $form->addText('ffmpeg_directory', $ffmpeg_directory);
         $form->setLabel('ffmpeg_directory', dgettext('filecabinet', 'FFMpeg directory'));
         $form->setSize('ffmpeg_directory', 40);
-
+        
+        if (FC_ALLOW_CLASSIFY_DIR_SETTING) {            
+            $form->addText('classify_directory', PHPWS_Settings::get('filecabinet', 'classify_directory'));
+            $form->setLabel('classify_directory', dgettext('filecabinet', 'Incoming classify directory'));
+            $form->setSize('classify_directory', 50, 255);
+        }
 
         $form->addSubmit(dgettext('filecabinet', 'Save settings'));
         $tpl = $form->getTemplate();
@@ -314,7 +330,14 @@ class Cabinet_Form {
     }
 
     function classifyFile($files) {
-        $classify_dir = 'files/filecabinet/incoming/';
+        $this->cabinet->title = dgettext('filecabinet', 'Classify Files');
+        $classify_dir = $this->cabinet->getClassifyDir();
+
+        if (empty($classify_dir) || !is_dir($classify_dir)) {
+            $this->cabinet->content = dgettext('filecabinet',
+                                               'Unable to locate the classify directory. Please check your File Cabinet settings, configuration file and directory permissions.');
+            return;
+        }
 
         if (!is_array($files)) {
             $files = array($files);
@@ -429,7 +452,6 @@ class Cabinet_Form {
 
         $form_template = $form->getTemplate(true,true,$tpl);
 
-        $this->cabinet->title = dgettext('filecabinet', 'Classify Files');
         $this->cabinet->content = PHPWS_Template::process($form_template, 'filecabinet', 'classify_file.tpl');
     }
 }
