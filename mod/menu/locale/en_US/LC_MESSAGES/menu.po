@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-25 11:25-0400\n"
+"POT-Creation-Date: 2007-06-08 13:35-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,13 +22,16 @@ msgstr ""
 msgid "Action"
 msgstr ""
 
-msgid "Add Other Link"
+msgid "Add current page"
 msgstr ""
 
 msgid "Add link"
 msgstr ""
 
 msgid "Add other link"
+msgstr ""
+
+msgid "Add stored page"
 msgstr ""
 
 msgid "Add to menu"
@@ -41,6 +44,9 @@ msgid "Admin mode off"
 msgstr ""
 
 msgid "Admin mode on"
+msgstr ""
+
+msgid "Admin mode status"
 msgstr ""
 
 msgid "Are you sure you want to delete this link: "
@@ -97,16 +103,13 @@ msgstr ""
 msgid "Delete link"
 msgstr ""
 
-msgid "Disable Administration Mode"
-msgstr ""
-
 msgid "Edit"
 msgstr ""
 
-msgid "Edit link title"
+msgid "Edit link"
 msgstr ""
 
-msgid "Enable Administration Mode"
+msgid "Edit link title"
 msgstr ""
 
 msgid "Enter link title"
@@ -151,13 +154,28 @@ msgstr ""
 msgid "Move down"
 msgstr ""
 
+msgid "Move link down"
+msgstr ""
+
+msgid "Move link up"
+msgstr ""
+
 msgid "Move up"
 msgstr ""
 
 msgid "New"
 msgstr ""
 
+msgid "No admin options"
+msgstr ""
+
 msgid "No links in queue."
+msgstr ""
+
+msgid "Off"
+msgstr ""
+
+msgid "On"
 msgstr ""
 
 msgid "Pin"
@@ -184,7 +202,13 @@ msgstr ""
 msgid "Save link"
 msgstr ""
 
+msgid "Save settings"
+msgstr ""
+
 msgid "Settings"
+msgstr ""
+
+msgid "Settings updated."
 msgstr ""
 
 msgid "Site map"
@@ -224,6 +248,9 @@ msgid "Update Menu"
 msgstr ""
 
 msgid "Url"
+msgstr ""
+
+msgid "Use floating admin links"
 msgstr ""
 
 msgid "User attempted access to Menu administration."
