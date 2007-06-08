@@ -43,3 +43,24 @@ happens.
 
 If 'delete' was NOT the value of 'list_action' the form is submitted
 as normal.
+
+
+IMPORTANT
+------------------------------------------------------
+If you are using the form class, make sure you include the form name
+in the select_id.
+
+For example
+
+$form = new PHPWS_Form('my_pets');
+$form->addSelect('dogs', array('view'=>'View', 'delete'=>'Delete'));
+
+$tpl = $form->getTemplate();
+
+$js_vars['value']        = 'Go';
+$js_vars['select_id']    = 'my_pets_dogs';
+$js_vars['action_match'] = 'delete';
+$js_vars['message']      = 'Are you sure you wish to delete these dogs?';
+$tpl['SUBMIT'] = javascript('select_confirm', $js_vars);
+
+The form name is prefixed to each element to form its id.

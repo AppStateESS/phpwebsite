@@ -2,6 +2,11 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+8 June 2007
++ Added some extra instruction to javascript's select_confirm
+  documentation.
+
+
 1 June 2007
 + Fixed bad directions in Language.txt
 + Added addslashes to the source directory setting. Why you'd want
