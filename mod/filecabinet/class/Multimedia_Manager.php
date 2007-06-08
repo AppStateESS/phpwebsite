@@ -114,6 +114,7 @@ class FC_Multimedia_Manager {
             javascript('close_refresh', $vars);
             return;
         } elseif ($result) {
+
             $result = $this->multimedia->save();
 
             if (PEAR::isError($result)) {

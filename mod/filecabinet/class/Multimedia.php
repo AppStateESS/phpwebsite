@@ -70,10 +70,15 @@ class PHPWS_Multimedia extends File_Common {
         $thumbnail_file = substr($this->file_name, 0, $last_dot) . '.jpg';
 
         $directory = $this->thumbnailDirectory() . $thumbnail_file;
+
         if (is_file($directory)) {
             return $directory;
         } else {
-            return 'images/mod/filecabinet/video_generic.png';
+            if ($this->isVideo()) {
+                return 'images/mod/filecabinet/video_generic.png';
+            } else {
+                return 'images/mod/filecabinet/video_generic.png';
+            }
         }
     }
 
@@ -93,8 +98,11 @@ class PHPWS_Multimedia extends File_Common {
         $tpl['SIZE'] = $this->getSize(TRUE);
         $tpl['FILE_NAME'] = $this->file_name;
         $tpl['THUMBNAIL'] = $this->getJSView(true);
-        $tpl['TITLE']     = $this->title;
-        $tpl['DIMENSIONS'] = sprintf('%s x %s', $this->width, $this->height);
+        $tpl['TITLE']     = $this->getJSView(false, $this->title);
+        
+        if ($this->isVideo()) {
+            $tpl['DIMENSIONS'] = sprintf('%s x %s', $this->width, $this->height);
+        }
 
         return $tpl;
     }
@@ -142,7 +150,7 @@ class PHPWS_Multimedia extends File_Common {
         return array(FC_MAX_MULTIMEDIA_POPUP_WIDTH, FC_MAX_MULTIMEDIA_POPUP_HEIGHT);
     }
 
-    function getJSView($thumbnail=FALSE, $link_override=null)
+    function getJSView($thumbnail=false, $link_override=null)
     {
         if ($link_override) {
             $values['label'] = $link_override;
@@ -202,9 +210,11 @@ class PHPWS_Multimedia extends File_Common {
     {
         $filter_tpl = $this->getFilter();
 
-        $tpl['WIDTH']  = $this->width;
-        $tpl['HEIGHT'] = $this->height;
-        $tpl['VIDEO_PATH'] = PHPWS_Core::getHomeHttp() . $this->getPath();
+        if ($this->isVideo()) {
+            $tpl['WIDTH']  = $this->width;
+            $tpl['HEIGHT'] = $this->height;
+        }
+        $tpl['FILE_PATH'] = PHPWS_Core::getHomeHttp() . $this->getPath();
 
         // check for filter file
         $filter = 'templates/filecabinet/' . str_replace('.tpl', '', $filter_tpl) . '/filter.php';
@@ -222,7 +232,10 @@ class PHPWS_Multimedia extends File_Common {
         case 'video/x-flv':
             return 'filters/flash.tpl';
             break;
-            
+
+        case 'audio/mpeg':
+            return 'filters/mp3.tpl';
+            break;
         }
     }
 
@@ -232,6 +245,7 @@ class PHPWS_Multimedia extends File_Common {
         if (empty($css_id)) {
             $css_id = $this->id;
         }
+
         return sprintf('<img src="%s" title="%s" id="multimedia-thumbnail-%s" />',
                        $this->thumbnailPath(),
                        $this->title, $css_id);
@@ -328,14 +342,42 @@ define('FC_MAX_IMAGE_POPUP_HEIGHT', 768);
             }
         }
 
-        if ($thumbnail) {
-            $this->makeThumbnail();
+        if ($this->isVideo()) {
+            if ($thumbnail) {
+                $this->makeThumbnail();
+            }
+        } else {
+            $this->height = $this->width = 0;
         }
 
         $db = new PHPWS_DB('multimedia');
         return $db->saveObject($this);
     }
 
+    function isVideo()
+    {
+        $videos = array('flv'  => 'video/x-flv',
+                        'xflv' => 'application/x-extension-flv',
+                        'avi'  => 'video/x-msvideo',
+                        'mov'  => 'video/quicktime',
+                        'mpeg' => 'video/mpeg',
+                        'mpg'  => 'video/mpeg',
+                        'mpe'  => 'video/mpeg',
+                        'asf'  => 'video/x-ms-asf',
+                        'asx'  => 'video/x-ms-asf',
+                        'wvx'  => 'video/x-ms-wvx',
+                        'wm'   => 'video/x-ms-wm',
+                        'wmx'  => 'video/x-ms-wmx',
+                        'wmv'  => 'video/x-ms-wmv',
+                        'wmz'  => 'application/x-ms-wmz',
+                        'wmd'  => 'application/x-ms-wmd'
+                        );
+        if (in_array($this->file_type, $videos)) {
+            return true;
+        } else {
+            return false;
+        }
+    } 
 
 }
 ?>

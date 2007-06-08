@@ -15,7 +15,7 @@
                 so.addParam("quality", "high");
                 so.addParam("scale", "noScale");
                 so.addParam("wmode", "transparent");
-                so.addParam("flashvars", "config={initialScale: 'scale',autoPlay: false, autoBuffering : false,showLoopButton: false, loop: false, showPlayListButtons: false, playList: [{ url: '{START_SCREEN}' },{ url: '{VIDEO_PATH}' }]}");
+                so.addParam("flashvars", "config={initialScale: 'scale',autoPlay: false, autoBuffering : false,showLoopButton: false, loop: false, showPlayListButtons: false, playList: [{ url: '{START_SCREEN}' },{ url: '{FILE_PATH}' }]}");
 		so.write("{ID}");
 		
 		// ]]>
