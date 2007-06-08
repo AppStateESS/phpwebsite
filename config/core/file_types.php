@@ -20,7 +20,8 @@ $allowedImageTypes = array('jpeg' => 'image/jpeg',
 			   'bmp'  => 'image/wbmp'
                            );
 
-$allowedMultimediaTypes = array(
+$allowedMultimediaTypes = array('wav'  => 'audio/x-wav',
+                                'mp3'  => 'audio/mpeg',
                                 'wma'  => 'audio/x-ms-wma',
                                 'wax'  => 'audio/x-ms-wax',
                                 'flv'  => 'video/x-flv',
