@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-26 15:18-0500\n"
+"POT-Creation-Date: 2007-06-08 13:35-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,17 +17,20 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #, php-format
-msgid "%s comments"
+msgid "%1$s - by %2$s from %3$s"
 msgstr ""
+
+#, php-format
+msgid "%d comment"
+msgid_plural "%d comments"
+msgstr[0] ""
+msgstr[1] ""
 
 #, php-format
 msgid "%s's Website"
 msgstr ""
 
 msgid "(Anon)"
-msgstr ""
-
-msgid "1 comment"
 msgstr ""
 
 msgid "A problem occurred when trying to save your comment."
@@ -116,6 +119,9 @@ msgid "Delete comments"
 msgstr ""
 
 msgid "Disable anonymous posting"
+msgstr ""
+
+msgid "Do not show"
 msgstr ""
 
 msgid "Don't use"
@@ -214,6 +220,12 @@ msgstr ""
 msgid "Reason for edit"
 msgstr ""
 
+msgid "Recent comment"
+msgstr ""
+
+msgid "Recent comments"
+msgstr ""
+
 msgid "Removing module's comments."
 msgstr ""
 
@@ -227,6 +239,10 @@ msgid "Save avatars locally"
 msgstr ""
 
 msgid "Settings saved."
+msgstr ""
+
+#, php-format
+msgid "Show last %d"
 msgstr ""
 
 msgid "Signature"
