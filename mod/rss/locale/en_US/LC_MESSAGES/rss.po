@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-15 10:21-0500\n"
+"POT-Creation-Date: 2007-06-08 13:35-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -81,6 +81,9 @@ msgstr ""
 msgid "Channels"
 msgstr ""
 
+msgid "Copyright"
+msgstr ""
+
 msgid "Delete"
 msgstr ""
 
@@ -103,6 +106,9 @@ msgstr ""
 msgid "Feed title will be used if left empty"
 msgstr ""
 
+msgid "General Settings"
+msgstr ""
+
 msgid "Import"
 msgstr ""
 
@@ -118,6 +124,9 @@ msgstr ""
 msgid "Item limit"
 msgstr ""
 
+msgid "Managing editor email address"
+msgstr ""
+
 msgid "Module unregistered from RSSFeeds."
 msgstr ""
 
@@ -128,6 +137,12 @@ msgid "No RSS file found."
 msgstr ""
 
 msgid "No channels have been registered."
+msgstr ""
+
+msgid "Please check editor email format."
+msgstr ""
+
+msgid "Please check webmaster email format."
 msgstr ""
 
 msgid "Please enable Cache Lite in your config/core/config.php file."
@@ -161,6 +176,15 @@ msgstr ""
 msgid "Save Channel"
 msgstr ""
 
+msgid "Save settings"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Settings saved successfully."
+msgstr ""
+
 msgid "Sorry"
 msgstr ""
 
@@ -171,6 +195,9 @@ msgid "Title"
 msgstr ""
 
 msgid "Unable to list feed."
+msgstr ""
+
+msgid "Webmaster email address"
 msgstr ""
 
 msgid "Yes"
