@@ -124,6 +124,36 @@ function calendar_update(&$content, $version)
 + Updated language format
 </pre>';
 
+    case version_compare($version, '1.5.1', '<'):
+        $db = new PHPWS_DB('calendar_schedule');
+        if (!$db->isTableColumn('show_upcoming')) {
+            $result = $db->addTableColumn('show_upcoming', 'SMALLINT NOT NULL DEFAULT 0');
+            if (PHPWS_Error::logIfError($result)) {
+                $content[] = '--- Could not create show_upcoming column in calendar_schedule table.</pre>';
+                return false;
+            }
+        }
+        $content[] = '<pre>';
+        $files = array('conf/config.php', 'templates/view/month/list.tpl',
+                       'templates/view/day.tpl', 'templates/view/week.tpl');
+
+        if (PHPWS_Boost::updateFiles($files, 'calendar')) {
+            $content[] = '-- Successfully updated the following files:';
+        } else {
+            $content[] = '-- Unable to update the following files:';
+        }
+        $content[] = '    ' . implode("\n    ", $files);
+
+        $content[] = '
+1.5.1 Changes
+---------------------
++ 1.5.0 installations sql import was missing the show_upcoming column.
++ Added define to prevent day month year printing on same day events.
++ "Add event" links added to some views.
++ Changed the default hour format to "I" (eye) from l (ell) in
+  config.php. Some php configurations do not recognize it.
+</pre>';
+
     } // end of switch
 
     return true;

@@ -1,3 +1,8 @@
+Version 1.5.1
+-----------------------------------------------------------------
+11 June 2007
++ New version fixes import oversite in install.sql. Missing column.
+
 4 June 2007
 + Added define to prevent day month year on same day events
 + Add event links put in view templates.

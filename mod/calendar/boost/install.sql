@@ -6,6 +6,7 @@ CREATE TABLE calendar_schedule (
   key_id int NOT NULL default 0,
   user_id int NOT NULL default 0,
   title varchar(60) NOT NULL,
+  show_upcoming smallint NOT NULL default 0,
   summary text,
   public smallint NOT NULL default 0,
   PRIMARY KEY (id)
