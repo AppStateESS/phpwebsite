@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-25 10:46-0400\n"
+"POT-Creation-Date: 2007-06-08 14:04-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -91,16 +91,22 @@ msgstr ""
 msgid "An error occurred when trying to copy your mod_photoalbum_photos table."
 msgstr ""
 
-msgid "An error occurred while accessing your mod_blockmaker_data table."
+msgid "An error occurred while accessing your Document tables."
 msgstr ""
 
-msgid "An error occurred while accessing your mod_documents_files table."
+msgid "An error occurred while accessing your mod_blockmaker_data table."
 msgstr ""
 
 msgid "An error occurred while converting your old blocks."
 msgstr ""
 
 msgid "An error occurred while converting your old documents."
+msgstr ""
+
+msgid "An error occurred while converting your old phatfiles."
+msgstr ""
+
+msgid "An error occurred while trying to convert your old file modules."
 msgstr ""
 
 msgid "An error occurred while trying to install your modules."
@@ -130,6 +136,15 @@ msgid "Attempted cross-site scripting attack."
 msgstr ""
 
 msgid "Automatic mode converts the data without your interaction."
+msgstr ""
+
+msgid "Back 10 pages"
+msgstr ""
+
+msgid "Back 50 pages"
+msgstr ""
+
+msgid "Back one page"
 msgstr ""
 
 msgid "Batch previously run."
@@ -286,7 +301,15 @@ msgstr ""
 msgid "Converted"
 msgstr ""
 
+#, php-format
+msgid "Copy all the files you need converted into your %s directory."
+msgstr ""
+
 msgid "Core installation successful."
+msgstr ""
+
+#, php-format
+msgid "Could not copy file %s to %s."
 msgstr ""
 
 #, php-format
@@ -297,6 +320,10 @@ msgid "Could not find key unregister file."
 msgstr ""
 
 msgid "Could not find key unregister function."
+msgstr ""
+
+#, php-format
+msgid "Could not locate file: %s"
 msgstr ""
 
 msgid "Create Config File"
@@ -370,10 +397,13 @@ msgstr ""
 msgid "Document was %sK making it larger than %sK size limit."
 msgstr ""
 
-msgid "Documents converted."
+msgid "Documents module converted."
 msgstr ""
 
-msgid "Documents module is not installed on the current database."
+msgid "Documents module did not contain any files."
+msgstr ""
+
+msgid "Documents module not installed or empty."
 msgstr ""
 
 msgid "Drop box table failed to copy successfully."
@@ -389,6 +419,9 @@ msgid "Enter the database's user password here."
 msgstr ""
 
 msgid "Error"
+msgstr ""
+
+msgid "Error when creating a new folder."
 msgstr ""
 
 msgid "Events pulled from 0.10.x calendar module."
@@ -411,6 +444,9 @@ msgid "Failed to run batch. Check your session settings."
 msgstr ""
 
 msgid "Failed to write cookie."
+msgstr ""
+
+msgid "File Cabinet converted."
 msgstr ""
 
 msgid "File Cabinet has already converted Documents files."
@@ -456,6 +492,15 @@ msgid "Form Generator is not installed locally."
 msgstr ""
 
 msgid "Form generator forms converted and keyed!"
+msgstr ""
+
+msgid "Forward 10 pages"
+msgstr ""
+
+msgid "Forward 50 pages"
+msgstr ""
+
+msgid "Forward one page"
 msgstr ""
 
 msgid "Function expected a string variable."
@@ -694,6 +739,9 @@ msgstr ""
 msgid "No Images"
 msgstr ""
 
+msgid "No PhatFile files were found."
+msgstr ""
+
 msgid "No active modules installed."
 msgstr ""
 
@@ -710,9 +758,6 @@ msgid "No error message file found."
 msgstr ""
 
 msgid "No events to convert."
-msgstr ""
-
-msgid "No files found."
 msgstr ""
 
 msgid "No form elements have been created."
@@ -815,6 +860,12 @@ msgid "Pear Configuration"
 msgstr ""
 
 msgid "Permission Help"
+msgstr ""
+
+msgid "PhatFile module not installed."
+msgstr ""
+
+msgid "Phatfile files converted."
 msgstr ""
 
 msgid "Photo Album has already been converted."
