@@ -66,19 +66,19 @@ class PHPWS_Multimedia extends File_Common {
 
     function thumbnailPath()
     {
-        $last_dot = strrpos($this->file_name, '.');
-        $thumbnail_file = substr($this->file_name, 0, $last_dot) . '.jpg';
-
-        $directory = $this->thumbnailDirectory() . $thumbnail_file;
-
-        if (is_file($directory)) {
-            return $directory;
-        } else {
-            if ($this->isVideo()) {
-                return 'images/mod/filecabinet/video_generic.png';
+        if ($this->isVideo()) {
+            $last_dot = strrpos($this->file_name, '.');
+            $thumbnail_file = substr($this->file_name, 0, $last_dot) . '.jpg';
+            
+            $directory = $this->thumbnailDirectory() . $thumbnail_file;
+            
+            if (is_file($directory)) {
+                return $directory;
             } else {
                 return 'images/mod/filecabinet/video_generic.png';
             }
+        } else {
+            return 'images/mod/filecabinet/audio.png';
         }
     }
 
@@ -133,7 +133,7 @@ class PHPWS_Multimedia extends File_Common {
 
         $final_width = $final_height = 0;
 
-        for ($lmt = 200; $lmt += 50; $lmt < 1300) {
+        for ($lmt = 250; $lmt += 50; $lmt < 1300) {
             if (!$final_width && $padded_width < $lmt) {
                 $final_width = $lmt;
             }
@@ -347,7 +347,8 @@ define('FC_MAX_IMAGE_POPUP_HEIGHT', 768);
                 $this->makeThumbnail();
             }
         } else {
-            $this->height = $this->width = 0;
+            $this->height = 0;
+            $this->width = 0;
         }
 
         $db = new PHPWS_DB('multimedia');
