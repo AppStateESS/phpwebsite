@@ -211,7 +211,7 @@ class Cabinet_Form {
         $pagetags['FILE_TYPE_LABEL'] = dgettext('filecabinet', 'File type');
         $pagetags['TITLE_LABEL']     = dgettext('filecabinet', 'Title');
 
-        $pager->setLink($folder->viewLink(false));
+        //        $pager->setLink($folder->viewLink(false));
         $pager->setLimitList($limits);
         $pager->setDefaultLimit(16);
 

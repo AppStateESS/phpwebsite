@@ -1,7 +1,14 @@
 <?php
 
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
+
 PHPWS_Core::requireConfig('filecabinet');
 PHPWS_Core::initModClass('filecabinet', 'File_Common.php');
+
+define('GENERIC_VIDEO_ICON', 'images/mod/filecabinet/video_generic.png');
 
 class PHPWS_Multimedia extends File_Common {
     var $width  = 0;
@@ -12,7 +19,7 @@ class PHPWS_Multimedia extends File_Common {
     function PHPWS_Multimedia($id=0)
     {
         $this->loadAllowedTypes();
-        $this->loadDefaultDimensions();
+        //        $this->loadDefaultDimensions();
         $this->setMaxSize(PHPWS_Settings::get('filecabinet', 'max_multimedia_size'));
 
         if (empty($id)) {
@@ -46,6 +53,35 @@ class PHPWS_Multimedia extends File_Common {
         $this->_allowed_types = unserialize(ALLOWED_MULTIMEDIA_TYPES);
     }
 
+    function getID3()
+    {
+        require_once PHPWS_SOURCE_DIR . 'lib/getid3/getid3/getid3.php';
+        $getID3 = new getID3;
+
+        // File to get info from
+        $file_location = $this->getPath();
+
+        // Get information from the file
+        $fileinfo = $getID3->analyze($file_location);
+        getid3_lib::CopyTagsToComments($fileinfo);
+        return $fileinfo;
+    }
+
+    function loadVideoDimensions()
+    {
+        $fileinfo = $this->getID3();
+
+        if (isset($fileinfo['video']['resolution_x'])) {
+            $this->width = & $fileinfo['video']['resolution_x'];
+            $this->height = & $fileinfo['video']['resolution_y'];
+        } elseif (isset($fileinfo['video']['streams'][2]['resolution_x'])) {
+            $this->width = & $fileinfo['video']['streams'][2]['resolution_x'];
+            $this->height = & $fileinfo['video']['streams'][2]['resolution_y'];
+        } else {
+            $this->loadDefaultDimensions();
+        }
+    }
+
     function loadDefaultDimensions()
     {
         $this->width = PHPWS_Settings::get('filecabinet', 'default_mm_width');
@@ -75,7 +111,7 @@ class PHPWS_Multimedia extends File_Common {
             if (is_file($directory)) {
                 return $directory;
             } else {
-                return 'images/mod/filecabinet/video_generic.png';
+                return GENERIC_VIDEO_ICON;
             }
         } else {
             return 'images/mod/filecabinet/audio.png';
@@ -99,7 +135,7 @@ class PHPWS_Multimedia extends File_Common {
         $tpl['FILE_NAME'] = $this->file_name;
         $tpl['THUMBNAIL'] = $this->getJSView(true);
         $tpl['TITLE']     = $this->getJSView(false, $this->title);
-        
+
         if ($this->isVideo()) {
             $tpl['DIMENSIONS'] = sprintf('%s x %s', $this->width, $this->height);
         }
@@ -120,6 +156,12 @@ class PHPWS_Multimedia extends File_Common {
 
     function popupSize()
     {
+        static $sizes = null;
+
+        $dimensions = array(FC_MAX_MULTIMEDIA_POPUP_WIDTH, FC_MAX_MULTIMEDIA_POPUP_HEIGHT);
+        if (isset($sizes[$this->id])) {
+            return $sizes[$this->id];
+        }
         $padded_width = $this->width + 40;
         $padded_height = $this->height + 120;
 
@@ -127,27 +169,26 @@ class PHPWS_Multimedia extends File_Common {
             $padded_height += round( (strlen(strip_tags($this->description)) / ($this->width / 12)) * 12);
         }
 
-        if ( $padded_width > FC_MAX_MULTIMEDIA_POPUP_WIDTH || $padded_height > FC_MAX_MULTIMEDIA_POPUP_HEIGHT ) {
-            return array(FC_MAX_MULTIMEDIA_POPUP_WIDTH, FC_MAX_MULTIMEDIA_POPUP_HEIGHT);
+        if ( $padded_width < FC_MAX_MULTIMEDIA_POPUP_WIDTH && $padded_height < FC_MAX_MULTIMEDIA_POPUP_HEIGHT ) {
+            $final_width = $final_height = 0;
+            
+            for ($lmt = 250; $lmt += 50; $lmt < 1300) {
+                if (!$final_width && ($padded_width + 25) < $lmt) {
+                    $final_width = $lmt;
+                }
+                
+                if (!$final_height && ($padded_height + 25) < $lmt ) {
+                    $final_height = $lmt;
+                }
+                
+                if ($final_width && $final_height) {
+                    $dimensions = array($final_width, $final_height);
+                    break;
+                }
+            }
         }
-
-        $final_width = $final_height = 0;
-
-        for ($lmt = 250; $lmt += 50; $lmt < 1300) {
-            if (!$final_width && $padded_width < $lmt) {
-                $final_width = $lmt;
-            }
-
-            if (!$final_height && $padded_height < $lmt ) {
-                $final_height = $lmt;
-            }
-
-            if ($final_width && $final_height) {
-                return array($final_width, $final_height);
-            }
-        }
-
-        return array(FC_MAX_MULTIMEDIA_POPUP_WIDTH, FC_MAX_MULTIMEDIA_POPUP_HEIGHT);
+        $sizes[$this->id] = $dimensions;
+        return $dimensions;
     }
 
     function getJSView($thumbnail=false, $link_override=null)
@@ -164,12 +205,10 @@ class PHPWS_Multimedia extends File_Common {
         }
 
         $size = $this->popupSize();
-
         $values['address']     = $this->popupAddress();
         $values['width']       = $size[0];
         $values['height']      = $size[1];
         $values['window_name'] = 'multimedia_view';
-
         return Layout::getJavascript('open_window', $values);
     }
 
@@ -227,6 +266,7 @@ class PHPWS_Multimedia extends File_Common {
 
     function getFilter()
     {
+
         switch ($this->file_type) {
         case 'application/x-extension-flv':
         case 'video/x-flv':
@@ -235,6 +275,16 @@ class PHPWS_Multimedia extends File_Common {
 
         case 'audio/mpeg':
             return 'filters/mp3.tpl';
+            break;
+
+        case 'video/quicktime':
+            return 'filters/quicktime.tpl';
+            break;
+
+        case 'video/mpeg':
+        case 'video/x-msvideo':
+        case 'video/x-ms-wmv':
+            return 'filters/windows.tpl';
             break;
         }
     }
@@ -253,12 +303,27 @@ class PHPWS_Multimedia extends File_Common {
 
     function makeThumbnail()
     {
+        $thumbnail_directory = $this->file_directory . 'tn/';
+
+        if (!is_writable($thumbnail_directory)) {
+            return;
+        }
+
+        $last_dot = strrpos($this->file_name, '.');
+        $thumbnail_file = substr($this->file_name, 0, $last_dot) . '.jpg';
+
+        // in case the above fails
+        $thumbnail_png = substr($this->file_name, 0, $last_dot) . '.png';
+        
+
         if (!PHPWS_Settings::get('filecabinet', 'use_ffmpeg')) {
+            copy('images/mod/filecabinet/video_generic.png', $thumbnail_directory . $thumbnail_png);
             return;
         }
 
         $ffmpeg_directory = PHPWS_Settings::get('filecabinet', 'ffmpeg_directory');
         if (!is_file($ffmpeg_directory . 'ffmpeg')) {
+            copy('images/mod/filecabinet/video_generic.png', $thumbnail_directory . $thumbnail_png);
             return;
         }
 
@@ -275,15 +340,6 @@ define('FC_MAX_IMAGE_POPUP_HEIGHT', 768);
          * -y        overwrite output files
          * -f        force format
          */
-
-        $thumbnail_directory = $this->file_directory . 'tn/';
-
-        if (!is_writable($thumbnail_directory)) {
-            return;
-        }
-
-        $last_dot = strrpos($this->file_name, '.');
-        $thumbnail_file = substr($this->file_name, 0, $last_dot) . '.jpg';
 
 
         $command = sprintf('%sffmpeg -i %s -an -s 160x120 -ss 00:00:05 -r 1 -vframes 1 -y -f mjpeg %s%s',
@@ -308,9 +364,14 @@ define('FC_MAX_IMAGE_POPUP_HEIGHT', 768);
             PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'PHPWS_Multimedia::delete', $path);
         }
 
-        $tn = $this->thumbnailPath();
-        if (!@unlink($tn)) {
-            PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'PHPWS_Multimedia::delete', $path);
+        if ($this->isVideo()) {
+            $tn = $this->thumbnailPath();
+            if ($tn == GENERIC_VIDEO_ICON) {
+                return true;
+            }       
+            if (!@unlink($tn)) {
+                PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'PHPWS_Multimedia::delete', $path);
+            }
         }
 
         return true;
@@ -343,6 +404,9 @@ define('FC_MAX_IMAGE_POPUP_HEIGHT', 768);
         }
 
         if ($this->isVideo()) {
+            if (!$this->width && !$this->height) {
+                $this->loadVideoDimensions();
+            }
             if ($thumbnail) {
                 $this->makeThumbnail();
             }
@@ -351,34 +415,9 @@ define('FC_MAX_IMAGE_POPUP_HEIGHT', 768);
             $this->width = 0;
         }
 
+
         $db = new PHPWS_DB('multimedia');
         return $db->saveObject($this);
     }
-
-    function isVideo()
-    {
-        $videos = array('flv'  => 'video/x-flv',
-                        'xflv' => 'application/x-extension-flv',
-                        'avi'  => 'video/x-msvideo',
-                        'mov'  => 'video/quicktime',
-                        'mpeg' => 'video/mpeg',
-                        'mpg'  => 'video/mpeg',
-                        'mpe'  => 'video/mpeg',
-                        'asf'  => 'video/x-ms-asf',
-                        'asx'  => 'video/x-ms-asf',
-                        'wvx'  => 'video/x-ms-wvx',
-                        'wm'   => 'video/x-ms-wm',
-                        'wmx'  => 'video/x-ms-wmx',
-                        'wmv'  => 'video/x-ms-wmv',
-                        'wmz'  => 'application/x-ms-wmz',
-                        'wmd'  => 'application/x-ms-wmd'
-                        );
-        if (in_array($this->file_type, $videos)) {
-            return true;
-        } else {
-            return false;
-        }
-    } 
-
 }
 ?>

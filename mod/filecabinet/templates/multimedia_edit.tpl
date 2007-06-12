@@ -21,6 +21,12 @@
   <tr>
     <td>{DESCRIPTION_LABEL}</td><td>{DESCRIPTION}</td>
   </tr>
+  <!-- BEGIN dimensions --><tr>
+    <td>{WIDTH_LABEL}</td><td>{WIDTH}</td>
+  </tr>
+  <tr>
+    <td>{HEIGHT_LABEL}</td><td>{HEIGHT}</td>
+  </tr><!-- END dimensions -->
 </table>
 {SUBMIT} {CANCEL}
 {END_FORM}

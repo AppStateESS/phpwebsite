@@ -60,9 +60,17 @@ class FC_Multimedia_Manager {
         $form->addTextArea('description', $this->multimedia->description);
         $form->setLabel('description', dgettext('filecabinet', 'Description'));
 
-        if (!empty($this->multimedia->id)) {
+        if ($this->multimedia->id) {
             $form->addHidden('multimedia_id', $this->multimedia->id);
             $form->addSubmit('submit', dgettext('filecabinet', 'Update'));
+
+            $form->addText('width', $this->multimedia->width);
+            $form->setSize('width', 5, 5);
+            $form->setLabel('width', dgettext('filecabinet', 'Width'));
+            
+            $form->addText('height', $this->multimedia->height);
+            $form->setSize('height', 5, 5);
+            $form->setLabel('height', dgettext('filecabinet', 'Height'));
         } else {
             $form->addSubmit('submit', dgettext('filecabinet', 'Upload'));
         }

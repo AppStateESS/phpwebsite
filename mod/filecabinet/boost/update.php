@@ -339,6 +339,21 @@ Notice: File Cabinet has been completely rewritten
     case version_compare($version, '1.1.0', '<'):
         $content[] = '<pre>';
 
+        if (!is_dir('./files/filecabinet/multimedia')) {
+            if (is_writable('./files/filecabinet/') && @mkdir('./files/filecabinet/multimedia')) {
+                $content[] = '--- "files/filecabinet/multimedia" directory created.';
+            } else {
+                $content[] = 'File Cabinet 1.1.0 requires the creation of a "multimedia" directory.
+Please place it in the files/filecabinet/ directory.
+Example: mkdir phpwebsite/files/filecabinet/multimedia/</pre>';
+                return false;
+            }
+        } elseif (!is_writable('multimedia')) {
+            $content[] = 'Your files/filecabinet/multimedia directory is not writable by the web server.
+ Please change its permissions and return.</pre>';
+            return false;
+        }
+
         $source_dir = PHPWS_SOURCE_DIR . 'mod/filecabinet/templates/filters/';
         $dest_dir   = './templates/filecabinet/filters/';
 
@@ -352,7 +367,7 @@ Notice: File Cabinet has been completely rewritten
         $files = array('templates/manager/pick.tpl', 'templates/classify_file.tpl', 
                        'templates/classify_list.tpl', 'templates/image_edit.tpl', 
                        'templates/multimedia_edit.tpl', 'templates/multimedia_grid.tpl',
-                       'templates/style.css', 'templates/settings/tpl', 'conf/config.php');
+                       'templates/style.css', 'templates/settings.tpl', 'conf/config.php');
         
         if (PHPWS_Boost::updateFiles($files, 'filecabinet')) {
             $content[] = '--- Copied the following files:';

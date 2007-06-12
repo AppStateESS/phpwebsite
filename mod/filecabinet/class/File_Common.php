@@ -104,6 +104,22 @@ class File_Common {
             $this->description = null;
         }
 
+        if ($this->id && $this->isVideo()) {
+            if (isset($_POST['width'])) {
+                $width = (int)$_POST['width'];
+                if ($width > 20) {
+                    $this->width = & $width;
+                }
+            }
+            
+            if (isset($_POST['height'])) {
+                $height = (int)$_POST['height'];
+                if ($height > 20) {
+                    $this->height = & $height;
+                }
+            }
+        }
+
         if (!empty($_FILES[$var_name]['error'])) {
             switch ($_FILES[$var_name]['error']) {
             case UPLOAD_ERR_INI_SIZE:
@@ -136,7 +152,7 @@ class File_Common {
             $this->_errors[] = $this->_upload();
             return false;
         }
-
+       
 
         if ($this->_upload->isValid()) {
             $file_vars = $this->_upload->getProp();
@@ -274,6 +290,35 @@ class File_Common {
 
         $this->size = filesize($this->getPath());
     }
+
+    function isVideo()
+    {
+        if ($this->_classtype != 'multimedia') {
+            return false;
+        }
+        $videos = array('flv'  => 'video/x-flv',
+                        'xflv' => 'application/x-extension-flv',
+                        'avi'  => 'video/x-msvideo',
+                        'mov'  => 'video/quicktime',
+                        'mpeg' => 'video/mpeg',
+                        'mpg'  => 'video/mpeg',
+                        'mpe'  => 'video/mpeg',
+                        'asf'  => 'video/x-ms-asf',
+                        'asx'  => 'video/x-ms-asf',
+                        'wvx'  => 'video/x-ms-wvx',
+                        'wm'   => 'video/x-ms-wm',
+                        'wmx'  => 'video/x-ms-wmx',
+                        'wmv'  => 'video/x-ms-wmv',
+                        'wmz'  => 'application/x-ms-wmz',
+                        'wmd'  => 'application/x-ms-wmd'
+                        );
+        if (in_array($this->file_type, $videos)) {
+            return true;
+        } else {
+            return false;
+        }
+    } 
+
 
 }
 ?>
