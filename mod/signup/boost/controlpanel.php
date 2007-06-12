@@ -7,7 +7,7 @@
 
 $link[] = array('label'       => 'Signup',
 		'restricted'  => true,
-		'url'         => 'index.php?module=blog&amp;aop=menu',
+		'url'         => 'index.php?module=signup&amp;aop=menu',
 		'description' => 'signup', 'Create signup forms for activities.',
                 'image'       => 'signup.png',
 		'tab'         => 'content'
