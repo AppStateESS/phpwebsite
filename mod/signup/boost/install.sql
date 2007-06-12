@@ -10,7 +10,7 @@ CREATE TABLE signup_sheet (
 
 CREATE TABLE signup_peeps (
     id int not null default 0,
-    form_id int not null default 0,
+    sheet_id int not null default 0,
     slot_id int not null default 0,
     hash char(32),
     timeout int not null default 0,
@@ -20,7 +20,7 @@ CREATE TABLE signup_peeps (
 
 CREATE TABLE signup_slots (
     id int not null default 0,
-    form_id int not null default 0,
+    sheet_id int not null default 0,
     start_time int not null default 0,
     duration smallint not null default 0,
     primary key (id)

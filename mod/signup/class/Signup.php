@@ -38,10 +38,15 @@ class Signup {
                 $this->loadForm('edit');
             } else {
                 if ($this->postSheet()) {
+                    $updated = (bool)$this->sheet->id;
                     if (PHPWS_Error::logIfError($this->sheet->save())) {
                         $this->message = dgettext('signup', 'Error occurred when saving sheet.');
                     } else {
                         $this->message = dgettext('signup', 'Sheet saved successfully.');
+                        if (!$updated) {
+                            $this->loadForm('edit_slots');
+                            break;
+                        }
                     }
                     $this->loadForm('list');
                 } else {

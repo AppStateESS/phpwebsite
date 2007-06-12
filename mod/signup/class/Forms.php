@@ -22,8 +22,21 @@ class Signup_Forms {
             $this->signup->panel->setCurrentTab('list');
             $this->listSignup();
             break;
+
+        case 'edit_slots':
+            $this->editSlots();
+            break;
         }
 
+    }
+
+    function editSlots()
+    {
+        $form = new PHPWS_Form;
+        $form->addHidden('module', 'signup');
+        $form->addHidden('aop', 'post_slot');
+        $form->addSubmit('add_slot', dgettext('signup', 'Add slot'));
+        $tpl = $form->getTemplate();
     }
 
     function editSheet()
