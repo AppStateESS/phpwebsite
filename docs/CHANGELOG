@@ -2,6 +2,14 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+14 June 2007
++ Moved XMLParser file out from RSS and into the core.
++ Added a "format" function to better synthesis XML information
+
+
+11 June 2007
++ Added getid3 library 
+
 8 June 2007
 + Added some extra instruction to javascript's select_confirm
   documentation.
