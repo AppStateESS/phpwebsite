@@ -5,7 +5,7 @@
    * @version $Id$
    */
 
-PHPWS_Core::initModClass('rss', 'XMLParser.php');
+PHPWS_Core::initCoreClass('XMLParser.php');
 
 PHPWS_Core::requireConfig('rss');
 
