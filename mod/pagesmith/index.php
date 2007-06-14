@@ -8,16 +8,18 @@
 if (!defined('PHPWS_SOURCE_DIR')) {
     include '../../config/core/404.html';
     exit();
- }
+}
 
-$idk = new Idkhtml;
+PHPWS_Core::initModClass('pagesmith', 'PageSmith.php');
+
+$pageSmith = new PageSmith;
 
 if (isset($_REQUEST['uop'])) {
-    $idk->user();
+    $pageSmith->user();
 } elseif (isset($_REQUEST['aop'])) {
-    $idk->admin();
+    $pageSmith->admin();
 } elseif ($_GET['id']) {
-    $idk->viewPage();
+    $pageSmith->viewPage();
 }
 
 

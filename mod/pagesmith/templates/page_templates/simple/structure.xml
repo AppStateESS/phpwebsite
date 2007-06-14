@@ -1,14 +1,21 @@
 <?xml version="1.0"?>
-<section>
-   <type>text</type>
-   <tag>title</tag>
-</section>
-<section>
-   <type>text</type>
-   <tag>main_content</tag>
-</section>
-<section>
-   <type>block</type>
-   <maxWidth>300</maxWidth>
-   <maxHeight>300</maxHeight>
-</section>
+<template>
+<title>Simple</title>
+<summary>One large text area with right float block.</summary>
+<thumbnail>simple.png</thumbnail>
+<structure>
+   <section>
+      <type>text</type>
+      <tag>title</tag>
+   </section>
+   <section>
+      <type>text</type>
+      <tag>main_content</tag>
+   </section>
+   <section>
+      <type>block</type>
+      <maxWidth>300</maxWidth>
+      <maxHeight>300</maxHeight>
+   </section>
+</structure>
+</template>
