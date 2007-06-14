@@ -14,7 +14,7 @@
    *
    * @author raphael at schwarzschmid dot de
    * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
+   * @version $Id: XMLParser.php 3535 2006-08-28 20:04:42Z matt $
    */ 
 
 
@@ -69,11 +69,16 @@ class XMLParser {
     function dataHandler($parser, $data) {
         //Trims everything except for spaces
         if($data = trim($data, "\t\n\r\0\x0B")) {
+            $test = str_replace(' ', '', $data);
+            if (empty($test)) {
+                $data = null;
+            }
             $index = count($this->data) - 1;
             if(isset($this->data[$index]['content'])) {
                 $this->data[$index]['content'] .= $data;
+            } else {
+                $this->data[$index]['content'] = $data;
             }
-            else $this->data[$index]['content'] = $data;
         }
     }
 
@@ -83,6 +88,36 @@ class XMLParser {
             $data = array_pop($this->data);
             $index = count($this->data) - 1;
             $this->data[$index]['child'][] = $data;
+        }
+    }
+
+    function format()
+    {
+        return $this->subformat($this->data[0]);
+    }
+
+
+    function subformat($foo, $hold=null)
+    {
+        if (isset($foo['child'])) {
+            $content = array();
+            foreach ($foo['child'] as $bar) {
+                $result = $this->subformat($bar);
+                if (isset($bar['child'])) {
+                    list($key,$value) = each($result);
+                    if (count($value) > 1) {
+                        $content[$key][] = $value;
+                    } else {
+                        $content[$key] = $value;
+                    }
+                } else {
+                    $content = $content + $result;
+                }
+            }
+
+            return array($foo['name']=>$content);
+        } else {
+            return array($foo['name']=>$foo['content']);
         }
     }
 
