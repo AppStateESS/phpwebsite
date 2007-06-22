@@ -560,7 +560,8 @@ class PHPWS_DB {
         }
 
         if (is_array($value) && !empty($value)) {
-            if (!empty($operator) && $operator != 'IN' && $operator != 'BETWEEN') {
+            if (!empty($operator) && $operator != 'IN' && $operator != 'NOT IN' &&
+                $operator != 'BETWEEN' && $operator != 'NOT BETWEEN') {
                 $search_in = true;
             } else {
                 if (empty($operator)) {
@@ -568,8 +569,8 @@ class PHPWS_DB {
                 }
                 $search_in = false;
             }
-            
-            foreach ($value as $newVal){
+
+            foreach ($value as $newVal) {
                 if ($search_in) {
                     $result = $this->addWhere($column, $newVal, $operator, $conj, $group);
                     if (PEAR::isError($result)) {
@@ -627,10 +628,8 @@ class PHPWS_DB {
 	}
 
         $where->setValue($value);
-
         $where->setConj($conj);
         $where->setOperator($operator);
-
 
         if (isset($group)) {
             $this->where[$group]['values'][] = $where;
@@ -657,6 +656,7 @@ class PHPWS_DB {
                          'IN',
                          'NOT IN',
                          'BETWEEN',
+                         'NOT BETWEEN',
                          'IS',
                          'IS NOT');
 
@@ -2427,6 +2427,7 @@ class PHPWS_DB_Where {
         if (is_array($value)) {
             switch ($this->operator){
             case 'IN':
+            case 'NOT IN':
                 foreach ($value as $temp_val) {
                     if ($temp_val != 'NULL') {
                         $temp_val_list[] = "'$temp_val'";
@@ -2439,6 +2440,7 @@ class PHPWS_DB_Where {
                 break;
 
             case 'BETWEEN':
+            case 'NOT BETWEEN':
                 $value = sprintf("'{%s}' AND '{%s}'", $this->value[0], $this->value[1]);
                 break;
             }
