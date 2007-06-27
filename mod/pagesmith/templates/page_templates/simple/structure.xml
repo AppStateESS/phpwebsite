@@ -3,19 +3,21 @@
 <title>Simple</title>
 <summary>One large text area with right float block.</summary>
 <thumbnail>simple.png</thumbnail>
+<style>page.css</style>
 <structure>
    <section>
-      <type>text</type>
-      <tag>title</tag>
+      <name>header1</name>
+      <type>header</type>
    </section>
    <section>
+      <name>text1</name>
       <type>text</type>
-      <tag>main_content</tag>
    </section>
    <section>
-      <type>block</type>
-      <maxWidth>300</maxWidth>
-      <maxHeight>300</maxHeight>
+      <name>image1</name>
+      <type>image</type>
+      <width>300</width>
+      <height>300</height>
    </section>
 </structure>
 </template>

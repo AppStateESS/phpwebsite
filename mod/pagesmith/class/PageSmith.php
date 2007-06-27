@@ -22,46 +22,92 @@ class PageSmith {
         if (!Current_User::allow('pagesmith')) {
             Current_User::disallow();
         }
+        $this->loadPanel();
 
+        $javascript = false;
         switch ($_REQUEST['aop']) {
         case 'menu':
             $this->loadForms();
-            if (!isset($_GET['tab']) || $_GET['tab'] == 'new') {
+            if (!isset($_GET['tab'])) {
+                $tab = $this->panel->getCurrentTab();
+            } else {
+                $tab = & $_GET['tab'];
+            } 
+
+            switch ($tab) {
+            case 'new':
                 $this->loadPage();
                 $this->forms->editPage();
-            } else {
+                break;
+            case 'list':
                 $this->forms->pageList();
+                break;
             }
             break;
+
+        case 'edit_page':
+            $this->loadForms();
+            $this->loadPage();
+            $this->page->loadSections(true, true);
+            $this->forms->pageLayout();
+            break;
+
+        case 'pick_template':
+            $this->killSaved();
+            $this->loadForms();
+            $this->loadPage();
+            $this->page->loadTemplate();
+            $this->page->loadSections(true, true);
+            $this->forms->editPage();
+            break;
+
+        case 'edit_page_header':
+            $this->loadForms();
+            $this->loadPage();
+            $this->page->loadTemplate();
+            $this->page->loadSections(true,true);
+            $this->forms->editPageHeader();
+            $javascript = true;
+            break;
+
+        case 'edit_page_text':
+            $this->loadForms();
+            $this->loadPage();
+            $this->page->loadTemplate();
+            $this->page->loadSections(true,true);
+            $this->forms->editPageText();
+            $javascript = true;
+            break;
+            
+        case 'post_header':
+            $this->postHeader();
+            break;
+
+        case 'post_text':
+            $this->postText();
+            break;
+
+        case 'post_page':
+            $this->postPage();
+            PHPWS_Core::reroute('index.php?module=pagesmith&aop=menu&tab=list');
+            break;
+
+        default:
+            PHPWS_Core::errorPage('404');
+            break;
         }
-
-
-        $this->loadPanel();
 
         $tpl['TITLE']   = $this->title;
         $tpl['CONTENT'] = $this->content;
         $tpl['MESSAGE'] = $this->message;
 
         $content = PHPWS_Template::process($tpl, 'pagesmith', 'admin_main.tpl');
-        Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
-    }
-
-    function getPageTemplate($tpl_name)
-    {
-        $tpl_dir = $this->pageTplDir() . $tpl_name . '/structure.xml';
-
-        if (!is_file($tpl_dir)) {
-            return null;
+        if ($javascript) {
+            Layout::nakedDisplay($content);
+        } else {
+            $this->panel->setContent($content);
+            Layout::add(PHPWS_ControlPanel::display($this->panel->display($content)));
         }
-
-        PHPWS_Core::initCoreClass('XMLParser.php');
-        $xml = new XMLParser($tpl_dir);
-        if (PHPWS_Error::isError($xml->error)) {
-            return $xml->error;
-        }
-
-        $result = $xml->format();
-        test($result);
     }
 
 
@@ -75,10 +121,13 @@ class PageSmith {
     function loadPage()
     {
         PHPWS_Core::initModClass('pagesmith', 'PS_Page.php');
-        if (@$_REQUEST['pid']) {
-            $this->page = new PS_Page($_REQUEST['pid']);
+        if (@$_REQUEST['id']) {
+            $this->page = new PS_Page($_REQUEST['id']);
         } else {
             $this->page = new PS_Page;
+            if (isset($_REQUEST['tpl'])) {
+                $this->page->template = $_REQUEST['tpl'];
+            }
         }
     }
 
@@ -101,16 +150,105 @@ class PageSmith {
     }
 
 
+    function postPage()
+    {
+        $this->loadPage();
+        $this->page->loadTemplate();
+        $this->page->loadSections(false);
+
+        $this->page->title = strip_tags($_POST['title']);
+
+        foreach ($_POST['sections'] as $section_name) {
+            $section = & $this->page->_sections[$section_name];
+            if ($section->sectype != 'image') {
+                $section->content = $_POST[$section_name];
+            } else {
+                // set content to trigger test below
+                $section->type_id = $_POST[$section_name];
+                $section->content = 'image';
+            }
+
+            // If this page is an update, or the section has some content
+            // put it in the section list.
+            if ($this->page->id || !empty($section->content)) {
+                $sections[$section_name] = & $section;
+            }
+        }
+
+        if (!isset($sections)) {
+            // All sections were empty, return false
+            return false;
+        }
+
+        // reset page sections and save
+        $this->page->_sections = $sections;
+        $this->page->save();
+
+        return true;
+    }
+
     function user()
     {
-
+        switch ($_GET['uop']) {
+        case 'view_page':
+            $this->viewPage();
+            break;
+        }
     }
 
 
     function viewPage()
     {
-
+        $this->loadPage();
+        if ($this->page->id) {
+            Layout::add($this->page->view());
+        } else {
+            PHPWS_Core::errorPage('404');
+        }
     }
+
+    function killSaved()
+    {
+        $_SESSION['PS_Page'] = null;
+        PHPWS_Core::killSession('PS_Page');
+    }
+
+    function postHeader()
+    {
+        PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
+        $header = strip_tags($_POST['header'], '<b><strong><i><u><em>');
+
+        $section = new PS_Text;
+        $section->secname = $_POST['section_name'];
+        $section->content = PHPWS_Text::parseInput($header);
+        $section->setSaved();
+
+        $vars['cnt_section_name'] = $_POST['tpl'] . '-' . $_POST['section_name'];
+        $vars['hdn_section_name'] = sprintf('pagesmith_%s', $_POST['section_name']);
+        $vars['content'] = addslashes($section->content);
+        $vars['hidden_value'] = $section->content;
+
+        Layout::nakedDisplay(javascript('modules/pagesmith/update', $vars));
+    }
+
+    function postText()
+    {
+        PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
+        $text = & $_POST['text'];
+
+        $section = new PS_Text;
+        $section->secname = $_POST['section_name'];
+        $section->content =  preg_replace("@\r\n|\r|\n@", '', $text);
+        $section->setSaved();
+
+        $vars['cnt_section_name'] = $_POST['tpl'] . '-' . $_POST['section_name'];
+        $vars['hdn_section_name'] = sprintf('pagesmith_%s', $_POST['section_name']);
+        $vars['content'] = addslashes($section->content);
+        $vars['hidden_value'] = PHPWS_Text::parseInput($section->content);
+
+        Layout::nakedDisplay(javascript('modules/pagesmith/update', $vars));
+    }
+
 }
 
 ?>

@@ -1,0 +1,15 @@
+div#simple-image1 {
+   float : right;
+   display : inline;
+   margin : 0px 0px 10px 10px;
+}
+
+div#simple-page {
+   background-color : white;
+   color : inherit;
+   padding : 10px;
+}
+
+div#simple-page h1 {
+   margin-bottom : 1em;
+}

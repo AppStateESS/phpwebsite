@@ -1,0 +1,13 @@
+div#twocolumns-image1 img {
+   text-align : center;
+}
+
+div#twocolumns-page {
+   background-color : white;
+   color : inherit;
+   padding : 10px;
+}
+
+div#twocolumns-page h2 {
+   margin-bottom : 1em;
+}
