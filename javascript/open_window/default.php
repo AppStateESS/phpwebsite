@@ -16,4 +16,10 @@ $default['titlebar']    = 'no';
 $default['link_title']  = '';
 $default['window_name'] = 'default';
 
+if (isset($data['type'])) {
+    if ($data['type'] = 'button') {
+        $bodyfile = $base . 'javascript/open_window/body2.js';
+    }
+ }
+
 ?>
