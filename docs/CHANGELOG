@@ -2,6 +2,28 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+27 June 2007
++ Core - Changed error messages for log file writing.
++ Editor - Added ability to set editor width and height
++ Form - changed to reflect width and height changes in Editor
+
++ Javascript
+  o fckeditor : now uses width and height settings
+                fixed directory setting
+  o tinymce   : now uses width and height settings
+
+  o open_window : can now choose the 'type' of interface: button or
+    link
+
++ Setup - removed the compatibility mode from config.tpl
++ default theme
+  o fixed float-left and float-right margins
+  o Added pagesmith setting
+                
+
+22 June 2007
++ Database - added missing NOT IN and NOT BETWEEN where conditions.
+
 14 June 2007
 + Moved XMLParser file out from RSS and into the core.
 + Added a "format" function to better synthesis XML information
