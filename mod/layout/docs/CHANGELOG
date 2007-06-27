@@ -1,3 +1,6 @@
+27 June 2007
++ Bug #1741111 - Fixed moving a top box up and a bottom box down.
+
 29 May 2007
 + The cookie check is not determined by a define in the config file.
 + Updated files: conf/config.php

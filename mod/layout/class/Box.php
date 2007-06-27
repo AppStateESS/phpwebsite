@@ -167,7 +167,7 @@ class Layout_Box {
         switch ($dest) {
         case 'move_box_up':
             if ($this->box_order == 1) {
-                $this->move('bottom');
+                $this->move('move_box_bottom');
                 return;
             } else {
                 $this->box_order--;
@@ -180,7 +180,7 @@ class Layout_Box {
             
         case 'move_box_down':
             if ($this->box_order == (count($boxes) + 1)) {
-                $this->move('top');
+                $this->move('move_box_top');
                 return;
             } else {
                 $this->box_order++;
