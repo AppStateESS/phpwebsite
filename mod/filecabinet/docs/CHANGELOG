@@ -1,3 +1,12 @@
+27 June 2007
++ File Cabinet's Image Manager no longer shows small thumbnail.
+  Instead, it shows a full image set to the current dimension limits.
++ Cabinet - added error check
++ Image - getTag function now allows an "id" parameter that will be
+          added to the image tag (i.e. id="css-id-name")
++ Changed "no image chosen" graphic.
++ Updated files: img/no_image.png, conf/config.php
+
 11 June 2007
 + Added audio thumbnail
 + Updated files: img/audio.png

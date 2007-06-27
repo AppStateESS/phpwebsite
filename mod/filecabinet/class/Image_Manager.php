@@ -72,13 +72,17 @@ class FC_Image_Manager {
                         $tpl['SELECT'] = '';
                     }
 
+                    $width = & $image->width;
+                    $height = & $image->height;
+                    $image_url = $image->getPath();
+
                     if ( ($this->max_width < $image->width) || ($this->max_height < $image->height) ) {
-                        $tpl['THUMBNAIL'] = sprintf('<a href="#" onclick="oversized(%s, %s, %s, \'%s\', \'%s\'); return false">%s</a>',
-                                                    $image->id, $this->max_width, $this->max_height, $image->thumbnailPath(), addslashes($image->title), $image->getThumbnail());
+                        $tpl['THUMBNAIL'] = sprintf('<a href="#" onclick="oversized(%s, %s, %s, \'%s\', \'%s\', %s, %s); return false">%s</a>',
+                                                    $image->id, $this->max_width, $this->max_height, $image_url, addslashes($image->title), $width, $height, $image->getThumbnail());
                     } else {
 
-                        $tpl['THUMBNAIL'] = sprintf('<a href="#" onclick="pick_image(%s, \'%s\', \'%s\'); return false">%s</a>',
-                                                    $image->id, $image->thumbnailPath(), addslashes($image->title), $image->getThumbnail());
+                        $tpl['THUMBNAIL'] = sprintf('<a href="#" onclick="pick_image(%s, \'%s\', \'%s\', %s, %s); return false">%s</a>',
+                                                    $image->id, $image_url, addslashes($image->title), $width, $height, $image->getThumbnail());
 
                     }
 
@@ -277,7 +281,7 @@ class FC_Image_Manager {
         }
 
         if ($this->image->id) {
-            $label = $this->image->getThumbnail($this->itemname);
+            $label = $this->image->getTag('image-manager-' . $this->itemname);
         } else {
             $label = $this->noImage();
         }
@@ -314,16 +318,16 @@ class FC_Image_Manager {
     function noImage()
     {
         $no_image = dgettext('filecabinet', 'No image');
-        return sprintf('<img src="%s" width="%s" height="%s" title="%s" alt="%s" id="image-thumbnail-%s" />',
-                             FC_NONE_IMAGE_SRC, 100, 
-                             100, $no_image, $no_image, $this->itemname);
+        return sprintf('<img src="%s" width="%s" height="%s" title="%s" alt="%s" id="image-manager-%s" />',
+                       FC_NONE_IMAGE_SRC, $this->max_width, 
+                       $this->max_height, $no_image, $no_image, $this->itemname);
     }
 
     function getClearLink()
     {
         $js_vars['src']      = FC_NONE_IMAGE_SRC;
-        $js_vars['width']    = 100;
-        $js_vars['height']   = 100;
+        $js_vars['width'] = $this->max_width;
+        $js_vars['height'] = $this->max_height;
         $js_vars['title']    = $js_vars['alt'] = dgettext('filecabinet', 'No image');
         $js_vars['itemname'] = $this->itemname;
         $js_vars['label']    = dgettext('filecabinet', 'Clear image');
@@ -419,7 +423,7 @@ class FC_Image_Manager {
             if (empty($folders)) {
                 $tpl['IMAGE_LIST'] = dgettext('filecabinet', 'Please create a new folder.');
             } else {
-                $tpl['IMAGE_LIST'] = dgettext('filecabinet', 'Please choose a new folder.');
+                $tpl['IMAGE_LIST'] = dgettext('filecabinet', 'Choose a folder.');
             }
         }
 

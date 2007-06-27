@@ -477,6 +477,9 @@ class Cabinet {
         PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
         $this->loadFolder(IMAGE_FOLDER);
         $this->image_mgr = new FC_Image_Manager;
+        if (isset($_GET['tn']) && $_GET['tn'] == 0) {
+            $this->image_mgr->thumbnail = false;
+        }
         $this->image_mgr->cabinet = & $this;
     }
 

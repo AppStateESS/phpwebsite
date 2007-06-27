@@ -208,7 +208,7 @@ class PHPWS_Image extends File_Common {
         return $this->thumbnailDirectory() . $this->file_name;
     }
 
-    function getTag()
+    function getTag($id=null)
     {
         $tag[] = '<img';
         $tag[] = 'src="'    . $this->getPath() . '"';
@@ -217,6 +217,9 @@ class PHPWS_Image extends File_Common {
         $tag[] = 'width="'  . $this->width     . '"';
         $tag[] = 'height="' . $this->height    . '"';
         $tag[] = 'border="' . $this->border    . '"';
+        if ($id) {
+            $tag[] = 'id="' . $id .'"';
+        }
         $tag[] = '/>';
 
         $image_tag = implode(' ', $tag);
@@ -259,7 +262,6 @@ class PHPWS_Image extends File_Common {
      * http://www.php.net/manual/en/function.imagecopyresized.php
      */
     function resize($dst, $new_width, $new_height, $force_png=false) {
-
         if (!extension_loaded('gd')) {
             if (!dl('gd.so')) {
                 @copy(PHPWS_HOME_DIR . 'images/mod/filecabinet/nogd.png', $dst);
@@ -296,7 +298,7 @@ class PHPWS_Image extends File_Common {
             $proportion = $proportion_X ;
             $pure = $proportion_Y / $proportion_X;
         }
-            
+
         $target['width'] = $new_width * $proportion;
         $target['height'] = $new_height * $proportion;
 
@@ -324,7 +326,10 @@ class PHPWS_Image extends File_Common {
             $resampled_image = imagecreate($new_width, $new_height);
         }
 
-        imagecopyresampled($resampled_image,  $source_image,  0, 0, $target['x'],
+        $destination_x = 0;
+        $destination_y = 0;
+
+        imagecopyresampled($resampled_image,  $source_image,  $destination_x, $destination_y, $target['x'],
                             $target['y'], $new_width, $new_height, $target['width'], $target['height']);
 
         imagedestroy($source_image);
@@ -440,6 +445,7 @@ class PHPWS_Image extends File_Common {
             $tpl['rows'][] = array('key'=>$key, 'value'=>addslashes($value));
         }
         $tpl['rows'][] = array('key'=>'thumbnail', 'value'=>$this->thumbnailPath());
+        $tpl['rows'][] = array('key'=>'path', 'value'=>$this->getPath());
         return PHPWS_Template::process($tpl, 'filecabinet', 'image.xml');
     }
 
