@@ -494,8 +494,13 @@ class PHPWS_Core {
         require_once 'Log.php';
 
         if (!is_writable(PHPWS_LOG_DIRECTORY)) {
-            exit('Unable to write to log directory ' . PHPWS_LOG_DIRECTORY);
+            exit(_('Unable to write to log directory.'));
         }
+
+        if (!is_writable(PHPWS_LOG_DIRECTORY . $filename)) {
+            exit(sprintf(_('Unable to write %s file.'), $filename));
+        }
+
 
         $conf = array('mode' => LOG_PERMISSION, 'timeFormat' => LOG_TIME_FORMAT);
         $log  = &Log::singleton('file', PHPWS_LOG_DIRECTORY . $filename, $type, $conf, PEAR_LOG_NOTICE);
