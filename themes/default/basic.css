@@ -88,13 +88,13 @@ img {
 
 img.float-left {
     float : left;
-    margin-right : 10px;
+    margin : 0px 10px 10px 0px;
     display : inline;
 }
 
 img.float-right {
     float : right;
-    margin-left : 10px;
+    margin : 0px 0px 10px 10px;
     display : inline;
 }
 

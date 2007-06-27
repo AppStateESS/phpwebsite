@@ -288,3 +288,11 @@ div.breadcrumb span.current-bc {
    font-weight : bold;
 }
 
+
+/*---- PageSmith ----*/
+div#simple-page {
+   background-color : #ebedd1;
+   color : inherit;
+}
+
+
