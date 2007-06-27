@@ -232,13 +232,4 @@ define('CACHE_DIRECTORY', '{cache_directory}');
 
 define('MOD_REWRITE_ENABLED', FALSE);
 
-
-/******************* Compatibility Mode *************************
- * If you are using modules created prior to 1.0.0, this needs
- * to be set to TRUE.
- * Otherwise, you can change it to FALSE
- */
-
-define('USE_CRUTCH_FILES', TRUE);
-
 ?>
