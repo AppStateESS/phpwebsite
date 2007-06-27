@@ -371,7 +371,7 @@ class PHPWS_Form {
         return $current_key;
     }
 
-    function useEditor($name, $value=true, $limited=false)
+    function useEditor($name, $value=true, $limited=false, $width=0, $height=0)
     {
         if (!$this->testName($name)) {
             return PHPWS_Error::get(PHPWS_FORM_MISSING_NAME, 'core', 'PHPWS_Form::useEditor', array($name));
@@ -383,6 +383,9 @@ class PHPWS_Form {
             }
             $this->_elements[$name][$key]->_use_editor = $value;
             $this->_elements[$name][$key]->_limit_editor = $limited;
+            if ($width > 100 && $height > 100) {
+                $this->_elements[$name][$key]->_editor_dm = array($width, $height);
+            }
         }
     }
 
@@ -1451,6 +1454,7 @@ class Form_TextArea extends Form_Element {
     var $height        = null;
     var $_use_editor   = false;
     var $_limit_editor = false;
+    var $_editor_dm    = null;
 
     function setRows($rows)
     {
@@ -1512,6 +1516,10 @@ class Form_TextArea extends Form_Element {
             $t->fix_anchors   = false;
             $text = $t->getPrint();
             $editor = new Editor($this->name, $text, $this->id);
+            if ($this->_editor_dm) {
+                $editor->width = (int)$this->_editor_dm[0];
+                $editor->height = (int)$this->_editor_dm[1];
+            }
             $editor->useLimited($this->_limit_editor);
             return $editor->get();
         }
