@@ -22,6 +22,8 @@ class Editor {
     var $editorList = NULL;
     var $error      = NULL;
     var $limited    = false;
+    var $width      = 0;
+    var $height     = 0;
 
     function Editor($name=NULL, $data=NULL, $id=NULL, $type=NULL)
     {
@@ -67,6 +69,13 @@ class Editor {
         $formData['ID']      = $this->id;
         $formData['VALUE']   = $this->data;
         $formData['LIMITED'] = $this->limited;
+        if ($this->width > 200) {
+            $formData['WIDTH'] = (int)$this->width;
+        }
+
+        if ($this->height > 200) {
+            $formData['HEIGHT'] = (int)$this->height;
+        }
         return Layout::getJavascript('editors/' . $this->type, $formData);
     }
 
