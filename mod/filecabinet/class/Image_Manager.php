@@ -66,10 +66,18 @@ class FC_Image_Manager {
                 $js_vars['itemname']  = $this->itemname;
                 
                 foreach ($folder->_files as $image) {
-                    if ($image->id == $image_id) {
-                        $tpl['SELECT'] = 'image-select';
+                    if (!$image->parent_id || $image->id == $image_id) {
+                        $tpl['DISPLAY'] = 'inline';
+                        $tpl['STATUS'] = 'parent-image';
                     } else {
-                        $tpl['SELECT'] = '';
+                        $tpl['DISPLAY'] = 'none';
+                        $tpl['STATUS'] = 'child-image';
+                    }
+
+                    if ($image->id == $image_id) {
+                        $tpl['HIGHLIGHT'] = 'background-color : #D4D4D4;';
+                    } else {
+                        $tpl['HIGHLIGHT'] = null;
                     }
 
                     $width = & $image->width;
@@ -77,15 +85,13 @@ class FC_Image_Manager {
                     $image_url = $image->getPath();
 
                     if ( ($this->max_width < $image->width) || ($this->max_height < $image->height) ) {
-                        $tpl['THUMBNAIL'] = sprintf('<a href="#" onclick="oversized(%s, %s, %s, \'%s\', \'%s\', %s, %s); return false">%s</a>',
-                                                    $image->id, $this->max_width, $this->max_height, $image_url, addslashes($image->title), $width, $height, $image->getThumbnail());
+                        $tpl['THUMBNAIL'] = sprintf('<a href="#" onclick="oversized(%s, \'%s\', \'%s\', %s, %s); return false">%s</a>',
+                                                    $image->id, $image_url, addslashes($image->title), $image->width, $image->height, $image->getThumbnail());
                     } else {
 
                         $tpl['THUMBNAIL'] = sprintf('<a href="#" onclick="pick_image(%s, \'%s\', \'%s\', %s, %s); return false">%s</a>',
-                                                    $image->id, $image_url, addslashes($image->title), $width, $height, $image->getThumbnail());
-
+                                                    $image->id, $image_url, addslashes($image->title), $image->width, $image->height, $image->getThumbnail());
                     }
-
 
                     $tpl['EDIT'] = $image->editLink(true);
 
@@ -289,7 +295,7 @@ class FC_Image_Manager {
         $link_vars = $this->getSettings();
         $link_vars['aop']    = 'edit_image';
         $link_vars['current']   = $this->image->id;
-   
+
         $vars['address'] = PHPWS_Text::linkAddress('filecabinet', $link_vars);
         $vars['width']   = 700;
         $vars['height']  = 600;
@@ -372,15 +378,20 @@ class FC_Image_Manager {
         Layout::addStyle('filecabinet');
         $this->cabinet->title = dgettext('filecabinet', 'Choose an image folder');
 
-        // Needed only for image view popups.
+        // Needed for image view popups
         javascript('open_window');
-        $js['itemname'] = $this->itemname;
+        // don't delete above
 
+        $js['itemname'] = $this->itemname;
         $js['failure_message'] = addslashes(dgettext('filecabinet', 'Unable to resize image.'));
         $js['confirmation'] = sprintf(dgettext('filecabinet', 'This image is larger than the %s x %s limit. Do you want to resize the image to fit?'),
                                       $this->max_width,
                                       $this->max_height);
         $js['authkey'] = Current_User::getAuthKey();
+
+        $js['maxwidth'] = $this->max_width;
+        $js['maxheight'] = $this->max_height;
+        $js['maxsize'] = $this->max_size;
 
         javascript('modules/filecabinet/pick_image', $js);
 
@@ -426,6 +437,9 @@ class FC_Image_Manager {
                 $tpl['IMAGE_LIST'] = dgettext('filecabinet', 'Choose a folder.');
             }
         }
+
+        $tpl['ORIGINAL'] = '<input id="original-only" type="checkbox" name="original_only" value="1" checked="checked" onclick="source_trigger(this)" />';
+        $tpl['ORIGINAL_LABEL'] = dgettext('pagesmith', 'Show source images only');
 
         $this->cabinet->content = PHPWS_Template::process($tpl, 'filecabinet', 'image_folders.tpl');
     }

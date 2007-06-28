@@ -11,3 +11,4 @@
 <div id="images">{IMAGE_LIST}</div>
 {ADD_FOLDER} <div id="image-button" style="visibility : {IMG_DISPLAY}">{ADD_IMAGE}</div>
 {CLOSE_IMAGE}
+<div id="original">{ORIGINAL} {ORIGINAL_LABEL}</div>

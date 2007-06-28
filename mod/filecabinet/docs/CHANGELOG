@@ -1,3 +1,14 @@
+28 June 2007
++ added translation to tallied item count. also changed "items" to
+  "images"
++ Folder now loads files in filename order.
++ Added checkbox that allows you to hide child images
++ Updated files: javascript/folder_contents/head.js,
+                 javascript/pick_image/head.js
+                 templates/image_folders.tpl, templates/style.css
+                 
+
+
 27 June 2007
 + File Cabinet's Image Manager no longer shows small thumbnail.
   Instead, it shows a full image set to the current dimension limits.

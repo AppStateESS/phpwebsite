@@ -1,12 +1,19 @@
 <script type="text/javascript">
 //<![CDATA[
 
-function pick_image(image_id, src, title) {
-    span = opener.document.getElementById('{itemname}-current-image');
-    image = opener.document.getElementById('image-thumbnail-{itemname}');
-    hidden = opener.document.getElementById('{itemname}_hidden_value');
+var itemname = '{itemname}';
+var maxsize = {maxsize};
+var maxwidth = {maxwidth};
+var maxheight = {maxheight};
+
+function pick_image(image_id, src, title, width, height) {
+    span = opener.document.getElementById(itemname + '-current-image');
+    image = opener.document.getElementById('image-manager-' + itemname);
+    hidden = opener.document.getElementById(itemname + '_hidden_value');
     image.src = src;
     image.title = title;
+    image.width = width;
+    image.height = height;
 
     hidden.setAttribute('value', image_id);
     span_update = span.innerHTML.replace(/current=\d*\'/gi, 'current=' + image_id + '\'');
@@ -15,15 +22,15 @@ function pick_image(image_id, src, title) {
     window.close();
 }
 
-function oversized(image_id, width, height, src, title) {
-    var link = 'index.php?module=filecabinet&aop=resize_image&authkey={authkey}&mw=' + width + '&mh=' + height + '&image_id=' + image_id;
+function oversized(image_id, src, title, width, height) {
+    var link = 'index.php?module=filecabinet&aop=resize_image&authkey={authkey}&mw=' + maxwidth + '&mh=' + maxheight + '&image_id=' + image_id;
     var success = 'resize_update(requester.responseXML)';
     var failure = 'alert("{failure_message}")';
 
     if (confirm('{confirmation}')) {
         loadRequester(link, success, failure);
     } else {
-        pick_image(image_id, src, title);
+        pick_image(image_id, src, title, width, height);
     }
     return false;
 }

@@ -326,11 +326,15 @@ class Folder {
         }
     }
 
+    /**
+     * Image link that pops the image manager menu to the users
+     */
     function imageTags($max_width, $max_height)
     {
         $icon = sprintf('<img src="%s" alt="%s" title="%s" />', $this->icon, $this->title, $this->title);
         $tpl['TITLE'] = $this->title;
-        $tpl['ITEMS'] = sprintf('%s item(s)', $this->tallyItems());
+        $items = $this->tallyItems();
+        $tpl['ITEMS'] = sprintf(dngettext('filecabinet', '%s image', '%s images', $items), $items);
 
         $vars['aop'] = 'get_images';
         $vars['folder_id'] = $this->id;
@@ -386,7 +390,10 @@ class Folder {
         return $tpl;
     }
 
-
+    /**
+     * Loads the files in the current folder into the _files variable
+     * $original_only applies to images
+     */
     function loadFiles()
     {
         if ($this->ftype == IMAGE_FOLDER) {
@@ -404,8 +411,9 @@ class Folder {
         }
 
         $db->addWhere('folder_id', $this->id);
+        $db->addOrder('file_name');
         $result = $db->getObjects($obj_name);
-        
+
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             return false;

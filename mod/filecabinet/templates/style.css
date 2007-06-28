@@ -136,6 +136,12 @@ left : 320px;
 top : 552px;
 }
 
+div#original {
+position : absolute;
+left : 250px;
+top : 10px;
+}
+
 input#close-image {
 position : absolute;
 left : 500px;
