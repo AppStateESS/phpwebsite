@@ -3,7 +3,10 @@ CREATE TABLE ps_block (
   pid int NOT NULL default 0,
   btype varchar(10) NOT NULL,
   type_id int NOT NULL default 0,
-  tag varchar(20) NOT NULL,
+  secname varchar(30) NOT NULL,
+  sectype varchar(20) NOT NULL,
+  width smallint default 0,
+  height smallint default 0,
   PRIMARY KEY  (id)
 );
 
@@ -15,7 +18,7 @@ CREATE TABLE ps_page (
   title varchar(255) NOT NULL,
   template varchar(20) NOT NULL,
   create_date int not null default 0,
-  last_updated int not null default 0
+  last_updated int not null default 0,
   PRIMARY KEY  (id)
 );
 
@@ -26,7 +29,8 @@ CREATE TABLE ps_text (
   id int NOT NULL default 0,
   pid int NOT NULL default 0,
   content text NOT NULL,
-  tag varchar(30) NOT NULL,
+  secname varchar(30) NOT NULL,
+  sectype varchar(20) NOT NULL,
   PRIMARY KEY  (id)
 );
 

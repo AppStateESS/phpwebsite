@@ -1,6 +1,12 @@
+28 June 2007
++ Fixed install.sql
++ Copied javascript folder over
++ Created uninstall file
+
 27 June 2007
-+ Basic functionality in place. Can create, edit, and view.
-+ Little else working.
++ Basic functionality in place. Can create, edit, and view. Little
+  else working.
++ New page template added.
 
 13 June 2007
 + Commited foundation
