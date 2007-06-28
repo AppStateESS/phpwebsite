@@ -497,7 +497,7 @@ class PHPWS_Core {
             exit(_('Unable to write to log directory.'));
         }
 
-        if (!is_writable(PHPWS_LOG_DIRECTORY . $filename)) {
+        if (is_file(PHPWS_LOG_DIRECTORY . $filename) && !is_writable(PHPWS_LOG_DIRECTORY . $filename)) {
             exit(sprintf(_('Unable to write %s file.'), $filename));
         }
 
