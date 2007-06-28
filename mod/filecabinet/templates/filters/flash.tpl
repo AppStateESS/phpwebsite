@@ -1,9 +1,5 @@
 <div id="{ID}">
-		<strong>You need to upgrade your Flash Player</strong>
-		This is replaced by the Flash content. 
-		Place your alternate content here and users without the Flash plugin or with 
-		Javascript turned off will see this. Content here allows you to leave out <code>noscript</code> 
-		tags. Include a link to <a href="swfobject.html?detectflash=false">bypass the detection</a> if you wish.
+<strong>You need to upgrade your Flash Player</strong>
 </div>
 
 <script type="text/javascript">
