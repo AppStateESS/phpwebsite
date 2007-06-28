@@ -372,6 +372,11 @@ class PHPWS_Image extends File_Common {
             PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'PHPWS_Image::delete', $path);
         }
 
+        $db->reset();
+        $db->addWhere('parent_id', $this->id);
+        $db->addValue('parent_id', 0);
+        PHPWS_Error::logIfError($db->update());
+
         return true;
     }
 

@@ -3,6 +3,8 @@
   "images"
 + Folder now loads files in filename order.
 + Added checkbox that allows you to hide child images
++ Deleting a parent image makes all child images parents.
++ Changed wording on image linking to urls
 + Updated files: javascript/folder_contents/head.js,
                  javascript/pick_image/head.js
                  templates/image_folders.tpl, templates/style.css

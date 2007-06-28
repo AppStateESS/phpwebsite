@@ -157,7 +157,7 @@ class FC_Image_Manager {
         $form->setLabel('description', dgettext('filecabinet', 'Description'));
 
         $link_choice['none'] = dgettext('filecabinet', 'Do not link image');
-        $link_choice['url']  = dgettext('filecabinet', 'Link image with url below');
+        $link_choice['url']  = dgettext('filecabinet', 'Link image to web site');
 
         if ($this->image->parent_id) {
             $link_choice['parent'] = dgettext('filecabinet', 'Link image to original, full sized image');
