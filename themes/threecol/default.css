@@ -5,6 +5,10 @@ body {
 
 /* ---------- Block colors ----------- */
 
+#container {
+    border: 5px solid #FFF;
+}
+
 #container, #header {
     background-color: #ADB583;
     color : black;

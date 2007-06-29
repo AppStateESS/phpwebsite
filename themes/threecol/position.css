@@ -1,27 +1,33 @@
 /* --------- Layout and positioning ------------ */
 
+html, body, div {
+margin : 0px;
+padding : 0px;
+}
+
 #container {
-        border: 5px solid #FFF;
-        margin : 10px 10px;
+    overflow : auto;
+    margin : 10px;
 }
 
 #sidepanel {
-position: absolute;
-left:20px;
-top:78px;
-width:200px;
-}
-
-#right-panel {
-position: absolute;
-right:22px;
-top:78px;
-width:200px;
+position : absolute;
+width : 18%;
+left : 20px;
+top : 78px;
 }
 
 #main-content {
-margin-left: 214px;
-margin-right:214px;
+margin : 0px;
+margin-left : 20%;
+margin-right : 20%;
+}
+
+#right-panel {
+position : absolute;
+width : 18%;
+right : 20px;
+top : 78px;
 }
 
 #content h1, h2 {
@@ -35,7 +41,7 @@ margin-right:214px;
 #header img {
         padding : 0px;
 }
-
+/*
 #footer {
         clear: both;
         font-size : 90%;
@@ -43,7 +49,7 @@ margin-right:214px;
         margin-top: 15px;
         border-top : white 1px solid;
 }
-
+*/
 #top-menu {
     padding : 5px 5px 8px 5px;
     text-align : right;
