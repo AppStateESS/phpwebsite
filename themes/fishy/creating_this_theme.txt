@@ -1,0 +1,90 @@
+Creating this theme (catchy title eh?)
+by Matt McNaney
+
+
+Introduction
+---------------
+Making themes in phpWebSite 1.x is not as difficult as it seems. It
+may seem daunting because of all the options demonstrated in the
+default theme. Many of these can be safely ignored.
+
+I have whipped up this theme called Fishy as an example. Let me warn
+you in advance that it was done in a few hours and I am a horrible
+designer.
+
+
+The HTML
+----------------
+The first thing I did is save a copy of the default page in Firefox. I
+was not logged in and looking at the home page. I saved the copy
+as html only. I have included the file I used: theme.html. You can use
+it instead if you don't want to make your own.
+
+Next, I created a new directory in my themes directory. My directory
+is named "fishy." I copied the theme.html file into it.
+
+I removed all the style sheet <link> tags and replaced them with a
+single:
+<link href="style.css" rel="stylesheet" type="text/css" />
+I also removed the <base> tag line. If you don't, your test file won't
+find the style sheet.
+
+Using a flat html file will cause some problems when you are testing
+because phpWebSite uses style sheets from different modules. That is
+ok though because we will go back and clean up later.
+
+Next I looked at the file by going to themes/fishy/theme.html in
+Firefox. It had no layout, color, or anything else. It was just
+text. This is where I wanted to start.
+
+Once that was set up, I created the background image with the fish and
+the background tile in Photoshop. Next I cropped the image into a left
+side image with the fish and a vertical tile. I then opened
+Dreamweaver to experiment with the layout. I realized that I was more
+confortable doing the rest of the layout in emacs, so I saved the
+style.css file I created and copied it over to my themes directory.
+
+Once I was able to see my background in my test file, I was ready to
+start attacking the layout. I use a Firefox tool called Web
+Developer. It allows me to target different elements and retrieve the
+styles acting upon them. For each element that looked out of place, I
+highlighted it and made a rule for it.
+
+Eventually, I had a suitable rule for each element. The page was
+pretty close to how I wanted it. Next I had to get my theme template
+to conform to the changes. 
+
+The Theme Template
+--------------------
+The default theme had everything I needed (remember that I used it as
+the foundation of the theme.html file). I copied theme.tpl and
+theme.ini over to the fishy directory.
+
+Next I made some edits to the theme.ini file. The default file has a
+bunch of examples I didn't want to use. Take a look at the fishy
+theme.ini file and compare it to the default file. Notice there is
+only one style sheet. I also dropped the BOTTOM variable and the
+locked information.
+
+Now I wanted to test the theme out. I logged in, went into the Layout
+module and changed the theme to "fishy." The site looked usable, so I
+accepted the change.
+
+
+Cleaning up
+---------------------
+Now that I was running Fishy, I needed to make some final touches. The
+menu, calendar, miniadmin, and controlpanel modules all needed a
+little work. So I again went through, isolated the element, and added
+new rules to the style.css.
+
+One more step remained. I opened the theme in IE7. Fortunately, it
+worked as well as Firefox. I was done and ready to write this
+document.
+
+
+Conclusion
+---------------------
+Hopefully, you should see that theme creation is not as hard as some
+have made it out to be. There are many options open to you, but you
+can safely ignore many of them.
