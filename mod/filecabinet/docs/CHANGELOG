@@ -1,3 +1,14 @@
+2 July 2007
++ Moved video types into video_types.php config file. Need to move
+  filter detection into a config as well.
++ multimedia folder will be placed in files/multimedia/ not
+  files/filecabinet/multimedia/
++ Each folder tab now checks the write status of each directory
+  separately.
++ added extra multimedia type to icon check
++ Added install.php to create multimedia folder.
++ Updated files: conf/video_types.php
+
 28 June 2007
 + added translation to tallied item count. also changed "items" to
   "images"

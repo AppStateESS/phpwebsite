@@ -247,6 +247,10 @@ class File_Common {
         if ($this->_upload) {
             $this->_upload->setName($this->file_name);
             $directory = preg_replace('@[/\\\]$@', '', $this->file_directory);
+
+            if (!is_dir($directory)) {
+                return PHPWS_Error::get(FC_BAD_DIRECTORY, 'filecabinet', 'File_Common::write', $directory);
+            }
             $moved = $this->_upload->moveTo($directory);
             if (!PEAR::isError($moved)) {
                 return $moved;
@@ -291,27 +295,27 @@ class File_Common {
         $this->size = filesize($this->getPath());
     }
 
+    function getVideoTypes()
+    {
+        static $video_types = null;
+
+        if (empty($video_types)) {
+            PHPWS_Core::requireConfig('filecabinet', 'video_types.php');
+            $video_types = unserialize(FC_VIDEO_TYPES);
+        }
+
+        return $video_types;
+    }
+
     function isVideo()
     {
+
         if ($this->_classtype != 'multimedia') {
             return false;
         }
-        $videos = array('flv'  => 'video/x-flv',
-                        'xflv' => 'application/x-extension-flv',
-                        'avi'  => 'video/x-msvideo',
-                        'mov'  => 'video/quicktime',
-                        'mpeg' => 'video/mpeg',
-                        'mpg'  => 'video/mpeg',
-                        'mpe'  => 'video/mpeg',
-                        'asf'  => 'video/x-ms-asf',
-                        'asx'  => 'video/x-ms-asf',
-                        'wvx'  => 'video/x-ms-wvx',
-                        'wm'   => 'video/x-ms-wm',
-                        'wmx'  => 'video/x-ms-wmx',
-                        'wmv'  => 'video/x-ms-wmv',
-                        'wmz'  => 'application/x-ms-wmz',
-                        'wmd'  => 'application/x-ms-wmd'
-                        );
+
+        $videos = $this->getVideoTypes();
+
         if (in_array($this->file_type, $videos)) {
             return true;
         } else {

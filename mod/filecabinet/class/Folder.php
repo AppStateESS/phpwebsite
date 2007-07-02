@@ -115,7 +115,7 @@ class Folder {
         } elseif ($this->ftype == IMAGE_FOLDER) {
             $this->_base_directory = 'images/filecabinet/';
         } else {
-            $this->_base_directory = 'files/filecabinet/multimedia/';
+            $this->_base_directory = 'files/multimedia/';
         }
     }
 
@@ -246,6 +246,7 @@ class Folder {
                     }
                 }
             } else {
+                $this->delete();
                 return false;
             }
         }

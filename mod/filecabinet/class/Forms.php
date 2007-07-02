@@ -16,13 +16,29 @@ class Cabinet_Form {
         PHPWS_Core::initCoreClass('DBPager.php');
         $folder = new Folder;
         $folder->ftype = $type;
+        $folder->loadDirectory();
 
-        if (!is_writable(PHPWS_Settings::get('filecabinet', 'base_doc_directory'))) {
-            $this->cabinet->message = dgettext('filecabinet', 'Your base document directory is not writable.');
-        } else {
-            if (Current_User::allow('filecabinet', 'edit_folders', null, null, true)) {
-                $links[] = $folder->editLink();
-                $pagetags['ADMIN_LINKS'] = implode(' | ', $links);
+        if (Current_User::allow('filecabinet')) {
+            if (!is_writable($folder->_base_directory)) {
+                switch ($folder->ftype) {
+                case IMAGE_FOLDER:
+                $this->cabinet->message = dgettext('filecabinet', 'Your images directory is not writable.');
+                    break;
+
+                case DOCUMENT_FOLDER:
+                $this->cabinet->message = dgettext('filecabinet', 'Your documents directory is not writable.');
+                    break;
+
+                case MULTIMEDIA_FOLDER:
+                    $this->cabinet->message = dgettext('filecabinet', 'Your multimedia directory is not writable.');
+                    break;
+                }
+
+            } else {
+                if (Current_User::allow('filecabinet', 'edit_folders', null, null, true)) {
+                    $links[] = $folder->editLink();
+                    $pagetags['ADMIN_LINKS'] = implode(' | ', $links);
+                }
             }
         }
 

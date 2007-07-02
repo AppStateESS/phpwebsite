@@ -261,6 +261,7 @@ class PHPWS_Multimedia extends File_Common {
         if (is_file($filter)) {
             include $filter;
         }
+
         return PHPWS_Template::process($tpl, 'filecabinet', $filter_tpl);
     }
 
@@ -270,6 +271,7 @@ class PHPWS_Multimedia extends File_Common {
         switch ($this->file_type) {
         case 'application/x-extension-flv':
         case 'video/x-flv':
+        case 'application/x-flash-video':
             return 'filters/flash.tpl';
             break;
 
@@ -414,7 +416,6 @@ define('FC_MAX_IMAGE_POPUP_HEIGHT', 768);
             $this->height = 0;
             $this->width = 0;
         }
-
 
         $db = new PHPWS_DB('multimedia');
         return $db->saveObject($this);
