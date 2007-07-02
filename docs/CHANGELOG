@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+2 July 2007
++ Added yet another mime type for FLV files to file_types.php
+
 28 June 2007
 + Core - log error check failed if the file didn't exist. Fixed it.
 
