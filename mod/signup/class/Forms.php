@@ -26,17 +26,101 @@ class Signup_Forms {
         case 'edit_slots':
             $this->editSlots();
             break;
+
+        case 'edit_peep':
+            $this->editPeep();
+            break;
         }
 
     }
 
-    function editSlots()
+    function editPeep()
+    {
+        $peep = & $this->signup->peep;
+
+        $form = new PHPWS_Form;
+        $form->addHidden('module', 'signup');
+        $form->addHidden('aop', 'post_peep');
+
+        if ($peep->id) {
+            $form->addSubmit(dgettext('signup', 'Update'));
+            $form->addHidden('peep_id', $peep->id);
+            $this->signup->title = dgettext('signup', 'Update applicant');
+        } else {
+            $form->addSubmit(dgettext('signup', 'Add'));
+            $this->signup->title = dgettext('signup', 'Add applicant');
+        }
+
+        $form->addHidden('slot_id', $this->signup->slot->id);
+
+        $form->addText('first_name', $peep->first_name);
+        $form->addText('last_name', $peep->last_name);
+
+        $form->addText('email', $peep->email);
+
+        $form->addText('phone', $peep->getPhone());
+        
+        
+        $tpl = $form->getTemplate();
+            
+        $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'edit_peep.tpl');
+    }
+
+    function editSlotPopup()
     {
         $form = new PHPWS_Form;
         $form->addHidden('module', 'signup');
         $form->addHidden('aop', 'post_slot');
+        $form->addHidden('sheet_id', $this->signup->sheet->id);
+        if ($this->signup->slot->id) {
+            $this->signup->title = dgettext('signup', 'Update slot');
+            $form->addHidden('slot_id', $this->signup->slot->id);
+            $form->addSubmit(dgettext('signup', 'Update'));
+        } else {
+            $this->signup->title = dgettext('signup', 'Add slot');
+            $form->addSubmit(dgettext('signup', 'Add'));
+        }
+
         $form->addSubmit('add_slot', dgettext('signup', 'Add slot'));
+
+        $form->addText('title', $this->slot->title);
+        $form->setSize('title', 40);
+        $form->setLabel('title', dgettext('signup', 'Title'));
+
+        $form->addText('openings'. $this->slot->openings);
+        $form->setSize('openings', 5);
+        $form->setLabel('openings', dgettext('signup', 'Number of openings'));
+
         $tpl = $form->getTemplate();
+
+        $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'edit_slot.tpl');
+    }
+
+    function editSlots()
+    {
+        $this->signup->title = sprintf(dgettext('signup', 'Slot setup for %s'), $this->signup->sheet->title);
+
+        $vars['aop'] = 'edit_slot_popup';
+        $vars['sheet_id'] = $this->signup->sheet->id;
+        $vars['slot_id'] = 0;
+        $js['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
+        $js['label'] = dgettext('signup', 'Add slot');
+        $tpl['ADD_SLOT'] = javascript('open_window', $js);
+
+        $slots = $this->signup->sheet->getAllSlots();
+
+        if (PHPWS_Error::logIfError($slots)) {
+            $this->signup->content = dgettext('signup', 'An error occurred when accessing this sheet\'s slots.');
+            return;
+        }
+
+        if ($slots) {
+            foreach ($slots as $slot) {
+                $tpl['current-slots'][] = $slot->viewTpl();
+            }
+        }
+
+        $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'slot_setup.tpl');
     }
 
     function editSheet()
@@ -47,9 +131,10 @@ class Signup_Forms {
         $form->addHidden('module', 'signup');
         $form->addHidden('aop', 'post_sheet');
         if ($sheet->id) {
-            $form->addHidden('s_id', $sheet->id);
+            $form->addHidden('id', $sheet->id);
             $form->addSubmit(dgettext('signup', 'Update'));
             $this->signup->title = dgettext('signup', 'Update signup sheet');
+            $form->addTplTag('EDIT_SLOT', $this->signup->sheet->editSlotLink());
         } else {
             $form->addSubmit(dgettext('signup', 'Create'));
             $this->signup->title = dgettext('signup', 'Create signup sheet');

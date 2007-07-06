@@ -78,18 +78,65 @@ class Signup_Sheet {
         $this->end_time = mktime(0,0,0,1,1,2020);
     }
 
-    function save()
+    function delete()
     {
+        if (!$this->id) {
+            return;
+        }
+
         $db = new PHPWS_DB('signup_sheet');
-        return $db->saveObject($this);
+        $db->addWhere('id', $this->id);
+        PHPWS_Error::logIfError($db->delete());
+
+        $db = new PHPWS_DB('signup_slots');
+        $db->addWhere('sheet_id', $this->id);
+        PHPWS_Error::logIfError($db->delete());
+
+        $db = new PHPWS_DB('signup_peeps');
+        $db->addWhere('sheet_id', $this->id);
+        PHPWS_Error::logIfError($db->delete());
+    }
+
+    function editSlotLink()
+    {
+        $vars['aop'] = 'edit_slots';
+        $vars['id']  = $this->id;
+        return PHPWS_Text::moduleLink(dgettext('signup', 'Edit slots'), 'signup', $vars);
+    }
+
+    function getAllSlots()
+    {
+        PHPWS_Core::initModClass('signup', 'Slots.php');
+        $db = new PHPWS_DB('signup_slots');
+        $db->addOrder('s_order');
+        $db->addWhere('sheet_id', $this->id);
+        $result = $db->getObjects('Signup_Slot');
+        return $result;
     }
 
     function rowTag()
     {
-        $vars['s_id'] = $this->id;
+        $vars['id'] = $this->id;
         $vars['aop']  = 'edit_sheet';
-        $tpl['ACTION'] = PHPWS_Text::secureLink(dgettext('signup', 'Edit'), 'signup', $vars);
+        $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Edit'), 'signup', $vars);
+
+        $vars['aop']  = 'edit_slots';
+        $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Slots'), 'signup', $vars);
+
+        $vars['aop'] = 'delete_sheet';
+        $js['ADDRESS'] = PHPWS_Text::linkAddress('signup', $vars, true);
+        $js['QUESTION'] = dgettext('signup', 'Are you sure you want to delete this sheet?\nAll slots and signup information will be permanently removed.');
+        $js['LINK'] = dgettext('signup', 'Delete');
+        $links[] = javascript('confirm', $js);
+
+        $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
+    }
+
+    function save()
+    {
+        $db = new PHPWS_DB('signup_sheet');
+        return $db->saveObject($this);
     }
 }
 

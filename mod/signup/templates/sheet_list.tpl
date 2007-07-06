@@ -1,4 +1,4 @@
-<table width="!00%" cellpadding="4">
+<table width="99%" cellpadding="4">
   <tr>
     <th>{TITLE_HEADER} {TITLE_SORT}</th>
     <th>&nbsp;</th>
