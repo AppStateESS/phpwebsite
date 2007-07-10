@@ -6,7 +6,6 @@
 
 class Signup_Forms {
     var $signup = null;
-
     function get($type)
     {
         switch ($type) {
@@ -30,6 +29,11 @@ class Signup_Forms {
         case 'edit_peep':
             $this->editPeep();
             break;
+
+        case 'edit_slot_popup':
+            $this->editSlotPopup();
+            break;
+
         }
 
     }
@@ -51,17 +55,24 @@ class Signup_Forms {
             $this->signup->title = dgettext('signup', 'Add applicant');
         }
 
+        $form->addHidden('sheet_id', $this->signup->sheet->id);
         $form->addHidden('slot_id', $this->signup->slot->id);
 
         $form->addText('first_name', $peep->first_name);
+        $form->setLabel('first_name', dgettext('signup', 'First name'));
+
         $form->addText('last_name', $peep->last_name);
+        $form->setLabel('last_name', dgettext('signup', 'Last name'));
 
         $form->addText('email', $peep->email);
+        $form->setLabel('email', dgettext('signup', 'Email address'));
 
         $form->addText('phone', $peep->getPhone());
-        
+        $form->setLabel('phone', dgettext('signup', 'Phone number'));
         
         $tpl = $form->getTemplate();
+
+        $tpl['CLOSE'] = javascript('close_window');
             
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'edit_peep.tpl');
     }
@@ -73,25 +84,25 @@ class Signup_Forms {
         $form->addHidden('aop', 'post_slot');
         $form->addHidden('sheet_id', $this->signup->sheet->id);
         if ($this->signup->slot->id) {
-            $this->signup->title = dgettext('signup', 'Update slot');
+            $this->signup->title = sprintf(dgettext('signup', 'Update %s slot'), $this->signup->sheet->title);
             $form->addHidden('slot_id', $this->signup->slot->id);
             $form->addSubmit(dgettext('signup', 'Update'));
         } else {
-            $this->signup->title = dgettext('signup', 'Add slot');
+            $this->signup->title = sprintf(dgettext('signup', 'Add slot to %s'), $this->signup->sheet->title);
             $form->addSubmit(dgettext('signup', 'Add'));
         }
 
-        $form->addSubmit('add_slot', dgettext('signup', 'Add slot'));
-
-        $form->addText('title', $this->slot->title);
+        $form->addText('title', $this->signup->slot->title);
         $form->setSize('title', 40);
         $form->setLabel('title', dgettext('signup', 'Title'));
 
-        $form->addText('openings'. $this->slot->openings);
+        $form->addText('openings', $this->signup->slot->openings);
         $form->setSize('openings', 5);
         $form->setLabel('openings', dgettext('signup', 'Number of openings'));
 
         $tpl = $form->getTemplate();
+
+        $tpl['CLEAR'] = javascript('close_window');
 
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'edit_slot.tpl');
     }

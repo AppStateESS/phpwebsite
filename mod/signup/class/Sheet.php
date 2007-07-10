@@ -136,7 +136,50 @@ class Signup_Sheet {
     function save()
     {
         $db = new PHPWS_DB('signup_sheet');
-        return $db->saveObject($this);
+        $result = $db->saveObject($this);
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        $this->saveKey();
+
+    }
+
+
+    function saveKey()
+    {
+        if (empty($this->key_id)) {
+            $key = new Key;
+        } else {
+            $key = new Key($this->key_id);
+            if (PEAR::isError($key->_error)) {
+                $key = new Key;
+            }
+        }
+
+        $key->setModule('signup');
+        $key->setItemName('sheet');
+        $key->setItemId($this->id);
+        $key->setEditPermission('edit_sheet');
+        $key->setUrl($this->viewLink(true));
+        $key->setTitle($this->title);
+        $result = $key->save();
+        if (PHPWS_Error::logIfError($result)) {
+            return false;
+        }
+
+        if (!$this->key_id) {
+            $this->key_id = $key->id;
+            $db = new PHPWS_DB('signup_sheet');
+            $db->addValue('key_id', $this->key_id);
+            PHPWS_Error::logIfError($db->update());
+        }
+        return true;
+    }
+
+    function viewLink()
+    {
+        return PHPWS_Text::rewriteLink($this->title, 'signup', $this->id);
     }
 }
 

@@ -1,5 +1,5 @@
 <!-- BEGIN people -->
-<table cellpadding="4" border="1" width="200px">
+<table cellpadding="4" border="1" width="100%">
   <tr>
     <th>{NAME_LABEL}</th>
     <th>{EMAIL_LABEL}</th>
@@ -16,4 +16,4 @@
 <!-- END peep-row -->
 </table>
 <!-- END people -->
-<p>{ADD_PEEP}</p>
+

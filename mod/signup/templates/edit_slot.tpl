@@ -1,7 +1,9 @@
 {START_FORM}
-<table width="100%">
-<tr><td width="30%"><strong>{TITLE_LABEL}</strong></td><td>{TITLE}</td></tr>
-<tr><td><strong>{OPENINGS_LABEL}</strong></td><td>{OPENINGS}</td></tr>
-</table>
-{ADD_SLOT}
+<p><strong>{TITLE_LABEL}</strong><br />{TITLE}</p>
+<br />
+<p><strong>{OPENINGS_LABEL}</strong><br />{OPENINGS}</p>
+<br />
+<p class="align-center">{SUBMIT}</p>
+<br />
+<p class="align-center">{CLEAR}</p>
 {END_FORM}

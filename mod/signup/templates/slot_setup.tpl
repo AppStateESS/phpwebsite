@@ -6,6 +6,7 @@
 {OPENINGS}<br />
 {LEFT}
 {PEEPS}
+<p>{LINKS}</p>
 </div>
 <hr />
 <!-- END current-slots -->

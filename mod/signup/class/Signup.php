@@ -24,10 +24,11 @@ class Signup {
         $this->loadPanel();
         $javascript = false;
 
+        $this->loadMessage();
+
         switch($_REQUEST['aop']) {
         case 'add_slot_peep':
             $javascript = true;
-            $this->loadSlot();
             $this->loadPeep();
             $this->loadForm('edit_peep');
             break;
@@ -49,6 +50,42 @@ class Signup {
             
         case 'edit_sheet':
             $this->loadForm('edit_sheet');
+            break;
+
+        case 'edit_slot_peep':
+            $javascript = true;
+            $this->loadPeep();
+            $this->loadForm('edit_peep');
+            break;
+
+        case 'edit_slot_popup':
+            $javascript = true;
+            $this->loadSlot();
+            $this->loadForm('edit_slot_popup');
+            break;
+
+
+        case 'edit_slots':
+            $this->loadSheet();
+            $this->loadForm('edit_slots');
+            break;
+
+        case 'post_peep':
+            $javascript = true;
+            if (!Current_User::authorized('signup')) {
+                Current_User::disallow();
+            }
+            if ($this->postPeep()) {
+                // Since added by an admin, automatically registered
+                $this->peep->registered = 1;
+                if (PHPWS_Error::logIfError($this->peep->save())) {
+                    $this->forwardMessage(dgettext('signup', 'Error occurred when saving applicant.'));
+                } else {
+                    $this->forwardMessage(dgettext('signup', 'Applicant saved successfully.'));
+                }
+            } else {
+                $this->loadForm('edit_peep');
+            }
             break;
 
         case 'post_sheet':
@@ -75,25 +112,23 @@ class Signup {
             break;
 
         case post_slot:
+            $javascript = true;
             if (!Current_User::authorized('signup')) {
                 Current_User::disallow();
             }
 
             if ($this->postSlot()) {
+                javascript('close_refresh');
                 if (PHPWS_Error::logIfError($this->slot->save())) {
-                    $this->message = dgettext('signup', 'Error occurred when saving slot.');
+                    $this->forwardMessage(dgettext('signup', 'Error occurred when saving slot.'));
                 } else {
-                    $this->message = dgettext('signup', 'Slot saved successfully.');
+                    $this->forwardMessage(dgettext('signup', 'Slot saved successfully.'));
                 }
-
+            } else {
+                $this->loadForm('edit_slot_popup');
             }
-            $this->loadForm('edit_slots');
             break;
-            
-        case 'edit_slots':
-            $this->loadSheet();
-            $this->loadForm('edit_slots');
-            break;
+           
         }
 
 
@@ -108,6 +143,22 @@ class Signup {
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
 
+    }
+
+
+    function forwardMessage($message)
+    {
+        $_SESSION['SU_Message'] = $message;
+        javascript('close_refresh');
+        Layout::nakedDisplay();
+    }
+
+    function loadMessage()
+    {
+        if (isset($_SESSION['SU_Message'])) {
+            $this->message = $_SESSION['SU_Message'];
+            PHPWS_Core::killSession('SU_Message');
+        }
     }
 
     function loadForm($type)
@@ -126,12 +177,29 @@ class Signup {
         } else {
             $this->peep = new Signup_Peep;
         }
+
+        if (empty($this->slot)) {
+            if ($this->peep->slot_id) {
+                $this->loadSlot($this->peep->slot_id);
+            } else {
+                $this->loadSlot();
+                $this->peep->slot_id = $this->slot->id;
+            }
+        }
+        
+        // Sheet construction will be done by the loadSlot
+        if (!$this->peep->sheet_id) {
+            $this->peep->sheet_id = $this->sheet->id;
+        }
     }
 
-    function loadSheet()
+    function loadSheet($id=0)
     {
         PHPWS_Core::initModClass('signup', 'Sheet.php');
-        if (isset($_REQUEST['sheet_id'])) {
+
+        if ($id) {
+            $this->sheet = new Signup_Sheet($id);
+        } elseif (isset($_REQUEST['sheet_id'])) {
             $this->sheet = new Signup_Sheet($_REQUEST['sheet_id']);
         } elseif (isset($_REQUEST['id'])) {
             $this->sheet = new Signup_Sheet($_REQUEST['id']);
@@ -140,14 +208,26 @@ class Signup {
         }
     }
 
-    function loadSlot()
+    function loadSlot($id=0)
     {
         PHPWS_Core::initModClass('signup', 'Slots.php');
-        if (isset($_REQUEST['slot_id'])) {
+        if ($id) {
+            $this->slot = new Signup_Slot($id);
+        } elseif (isset($_REQUEST['slot_id'])) {
             $this->slot = new Signup_Slot($_REQUEST['slot_id']);
         } else {
             $this->slot = new Signup_Slot;
         }
+
+        if (empty($this->sheet)) {
+            if ($this->slot->sheet_id) {
+                $this->loadSheet($this->slot->sheet_id);
+            } else {
+                $this->loadSheet();
+                $this->slot->sheet_id = $this->sheet->id;
+            }
+        }
+
     }
 
     function userMenu()
@@ -170,9 +250,43 @@ class Signup {
         $this->panel->quickSetTabs($tags);
     }
 
+    function postPeep()
+    {
+        $this->loadPeep();
+        $this->peep->setFirstName($_POST['first_name']);
+        $this->peep->setLastName($_POST['last_name']);
+
+        if (empty($this->peep->first_name)) {
+            $errors[] = dgettext('signup', 'Please enter a first name.');
+        }
+
+        if (empty($this->peep->last_name)) {
+            $errors[] = dgettext('signup', 'Please enter a last name.');
+        }
+
+        if (empty($_POST['email']) || !PHPWS_Text::isValidInput($_POST['email'], 'email')) {
+            $errors[] = dgettext('signup', 'Unsuitable email address.');
+        } else {
+            $this->peep->email = trim($_POST['email']);
+        }
+
+        $this->peep->setPhone($_POST['phone']);
+        
+        if (empty($this->peep->phone) || strlen($this->peep->phone) < 7) {
+            $errors[] = dgettext('signup', 'Please enter a contact phone number.');
+        }
+
+        if (isset($errors)) {
+            $this->message = implode('<br />', $errors);
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
     function postSlot()
     {
-        $this->loadSheet();
         $this->loadSlot();
 
         $this->slot->setTitle($_POST['title']);
@@ -183,7 +297,7 @@ class Signup {
 
         $this->slot->setOpenings($_POST['openings']);
         if (empty($this->slot->openings)) {
-            $errors[] = dgettext('signup', 'Please specify an opening amount.');
+            $errors[] = dgettext('signup', 'Please specify an openings amount.');
         }
 
         $this->slot->setSheetId($_POST['sheet_id']);

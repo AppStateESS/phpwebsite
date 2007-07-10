@@ -8,7 +8,7 @@ class Signup_Slot {
 
     var $id         = 0;
     var $sheet_id   = 0;
-    var $title      = 0;
+    var $title      = null;
     var $openings   = 0;
     var $s_order    = 1;
 
@@ -46,7 +46,7 @@ class Signup_Slot {
         }
 
         $db->addOrder('last_name');
-        $peeps = $db->getObjects('Signup_Peeps');
+        $peeps = $db->getObjects('Signup_Peep');
 
         if (PHPWS_Error::logIfError($peeps)) {
             return false;
@@ -100,18 +100,36 @@ class Signup_Slot {
         return $db->saveObject($this);
     }
 
+    function slotLinks()
+    {
+        $vars['slot_id'] = $this->id;
+
+        $total_peeps = count($this->_peeps);
+        if ($total_peeps < $this->openings) {
+            $vars['aop']      = 'add_slot_peep';
+            $jsadd['label']   = dgettext('signup', 'Add applicant');
+            $jsadd['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
+            $jsadd['width'] = 350;
+            $jsadd['height'] = 380;
+            $links[] = javascript('open_window', $jsadd);
+        }
+
+        if (empty($this->_peeps)) {
+            $vars['aop'] = 'delete_slot';
+            $jsconf['QUESTION'] = dgettext('signup', 'Are you certain you want to delete this slot?');
+            $jsconf['ADDRESS'] = PHPWS_Text::linkAddress('signup', $vars, true);
+            $jsconf['LINK'] = dgettext('signup', 'Delete slot');
+            $links[] = javascript('confirm', $jsconf);
+        }
+
+        return implode(' | ', $links);
+    }
+
     function showPeeps()
     {
-        $jspop['label']   = dgettext('signup', 'Edit');
-
         $jsconf['QUESTION'] = dgettext('signup', 'Are you sure you want to delete this person from their signup slot?');
         $jsconf['LINK'] = dgettext('signup', 'Delete');
-
-        $vars['slot_id'] = $this->id;
-        $vars['aop']      = 'add_slot_peep';
-        $jsadd['label']   = dgettext('signup', 'Add');
-        $jsadd['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
-        $tpl['ADD_PEEP']  = javascript('open_window', $jsadd);
+        $jspop['label']   = dgettext('signup', 'Edit');
 
         for ($i = 0; $i < $this->openings; $i++) {
             $subtpl = null;
@@ -160,6 +178,8 @@ class Signup_Slot {
         $tpl['LEFT'] = sprintf(dgettext('signup', 'Slots left: %s'), $left);
 
         $tpl['PEEPS'] = $this->showPeeps();
+        $tpl['LINKS'] = $this->slotLinks();
+
         return $tpl;
     }
 
