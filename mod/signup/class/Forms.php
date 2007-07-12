@@ -34,6 +34,10 @@ class Signup_Forms {
             $this->editSlotPopup();
             break;
 
+        case 'user_signup':
+            $this->userSignup();
+            break;
+
         }
 
     }
@@ -187,6 +191,69 @@ class Signup_Forms {
 
         $this->signup->content = $pager->get();
         $this->signup->title = dgettext('signup', 'Signup Sheets');
+    }
+
+    function userSignup()
+    {
+        $sheet = & $this->signup->sheet;
+        $peep  = & $this->signup->peep;
+
+        $slots = $sheet->getAllSlots();
+        $slots_filled = $sheet->totalSlotsFilled();
+
+        foreach ($slots as $slot) {
+            // if the slots are filled, don't offer it
+            if ( $slots_filled &&
+                 $slots_filled[$slot->id]) {
+                $filled = & $slots_filled[$slot->id];
+                if ($filled >= $slot->openings) {
+                    continue;
+                } else {
+                    $openings_left = $slot->openings - $filled;
+                }
+            } else {
+                $openings_left = & $slot->openings;
+            }
+
+            $options[$slot->id] = sprintf('%s (%s openings)', $slot->title, $openings_left);
+        }
+
+        if (!isset($options)) {
+            $tpl['MESSAGE'] = dgettext('signup', 'Sorry, but all available slots are full. Please check back later for possible cancellations.');
+        } else {
+            $form = new PHPWS_Form('slots');
+            $form->useFieldset();
+            $form->setLegend(dgettext('signup', 'Signup form'));
+            $form->addHidden('module', 'signup');
+            $form->addHidden('uop', 'slot_signup');
+            $form->addHidden('sheet_id', $this->signup->sheet->id);
+
+            $form->addSelect('slot_id', $options);
+            $form->setLabel('slot_id', dgettext('signup', 'Available slots'));
+
+            $form->addText('first_name', $peep->first_name);
+            $form->setLabel('first_name', dgettext('signup', 'First name'));
+
+            $form->addText('last_name', $peep->last_name);
+            $form->setLabel('last_name', dgettext('signup', 'Last name'));
+
+            $form->addText('email', $peep->email);
+            $form->setLabel('email', dgettext('signup', 'Email address'));
+
+            $form->addText('phone', $peep->getPhone());
+            $form->setLabel('phone', dgettext('signup', 'Phone number'));
+
+            $form->addSubmit(dgettext('signup', 'Submit'));
+            
+            $tpl = $form->getTemplate();
+        }
+
+
+        $this->signup->title = & $sheet->title;
+        $tpl['MESSAGE'] = $this->signup->message;
+
+        $tpl['DESCRIPTION'] = $sheet->getDescription();
+        $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'signup_form.tpl');
     }
 
 }

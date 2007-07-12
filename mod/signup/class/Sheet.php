@@ -129,6 +129,7 @@ class Signup_Sheet {
         $js['LINK'] = dgettext('signup', 'Delete');
         $links[] = javascript('confirm', $js);
 
+        $tpl['TITLE'] = $this->viewLink();
         $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
     }
@@ -177,10 +178,34 @@ class Signup_Sheet {
         return true;
     }
 
+    function totalSlotsFilled()
+    {
+        $db = new PHPWS_DB('signup_peeps');
+        $db->addWhere('sheet_id', $this->id);
+        $db->addWhere('registered', 1);
+        $db->addColumn('slot_id');
+        $taken = $db->select('col');
+
+        if (!$taken) {
+            return null;
+        }
+
+        foreach ($taken as $slot_id) {
+            if (empty($totals[$slot_id])) {
+                $totals[$slot_id] = 1;
+            } else {
+                $totals[$slot_id]++;
+            }
+        }
+
+        return $totals;
+    }
+
     function viewLink()
     {
         return PHPWS_Text::rewriteLink($this->title, 'signup', $this->id);
     }
+
 }
 
 ?>

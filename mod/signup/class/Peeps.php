@@ -36,6 +36,11 @@ class Signup_Peep {
         return strip_tags(trim($text));
     }
 
+    function emailRegistration()
+    {
+
+    }
+
     function init()
     {
         $db = new PHPWS_DB('signup_peeps');

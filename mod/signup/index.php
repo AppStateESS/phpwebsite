@@ -15,6 +15,8 @@ if (isset($_REQUEST['aop'])) {
     $signup->adminMenu();
 } elseif (isset($_REQUEST['uop'])) {
     $signup->userMenu();
+} elseif (isset($_REQUEST['id'])) {
+    $signup->userMenu('signup_sheet');
 } else {
     PHPWS_Core::goHome();
 }

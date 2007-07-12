@@ -22,6 +22,11 @@ class Signup_Slot {
         }
     }
 
+    function getOpenings()
+    {
+        $db = new PHPWS_DB('');
+    }
+
     function init()
     {
         $db = new PHPWS_DB('signup_slots');

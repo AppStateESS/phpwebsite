@@ -6,6 +6,10 @@
 
 PHPWS_Core::requireInc('signup', 'errordefines.php');
 
+if (!defined('SIGNUP_WINDOW')) {
+    define('SIGNUP_WINDOW', 3600);
+}
+
 class Signup {
     var $forms   = null;
     var $panel   = null;
@@ -230,12 +234,94 @@ class Signup {
 
     }
 
-    function userMenu()
+    function userMenu($action=null)
     {
-        
+        if (empty($action)) {
+            if (!isset($_REQUEST['uop'])) {
+                PHPWS_Core::errorPage('404');
+            }
+
+            $action = $_REQUEST['uop'];
+        }
+            
+        switch ($action) {
+        case 'signup_sheet':
+            $this->loadPeep();
+            $this->loadForm('user_signup');
+            break;
+
+        case 'slot_signup':
+            if ($this->postPeep()) {
+                if ($this->saveUnregistered()) {
+                    $this->title = dgettext('signup', 'Thank you');
+                    $this->content = dgettext('signup', 'You should receive an email allowing you to verify your application.');
+                } else {
+                    $this->loadForm('user_signup');
+                }
+            } else {
+                $this->loadForm('user_signup');
+            }
+
+            break;
+            
+        }
+
+        $tpl['TITLE']   = $this->title;
+        $tpl['CONTENT'] = $this->content;
+
+        if ($javascript) {
+            Layout::nakedDisplay(PHPWS_Template::process($tpl, 'signup', 'usermain.tpl'));
+        } else {
+            Layout::add(PHPWS_Template::process($tpl, 'signup', 'usermain.tpl'));
+        }
 
     }
 
+    function saveUnregistered()
+    {
+        $peep = & $this->peep;
+        $slot = & $this->slot;
+
+        $db = new PHPWS_DB('signup_peeps');
+        $db->addWhere('slot_id', $peep->slot_id);
+
+        // lock carries over to saving of peep.
+        $db->setLock('signup_peeps', 'read');
+        $db->addColumn('id', null, null, true);
+        $db->addWhere('registered', 1);
+        $filled = $db->select('one');
+        $db->reset();
+        $db->addWhere('email', $peep->email);
+        $db->addColumn('id');
+        $previous = $db->select('one');
+
+        if (PHPWS_Error::logIfError($previous)) {
+            $this->message = dgettext('signup', 'Sorry, an error occurred when trying to save your application.');
+            return false;
+        } elseif ($previous) {
+            $this->message = dgettext('signup', 'You cannot signup for more than one slot.');
+            return false;
+        }
+
+        if ($slot->openings <= $filled) {
+            $this->message = dgettext('signup', 'Sorry, the slot you chose is no longer available.');
+            return false;
+        }
+        
+        $peep->registered = 0;
+        $peep->hash = md5(rand());
+        $peep->timeout = mktime() + SIGNUP_WINDOW;
+
+        if (PHPWS_Error::logIfError($peep->save())) {
+            $db->unlockTables();
+            return false;
+        } else {
+            // success
+            $db->unlockTables();
+            $peep->emailRegistration();
+            return true;
+        }
+    }
 
     function loadPanel()
     {
@@ -280,7 +366,12 @@ class Signup {
             $this->message = implode('<br />', $errors);
             return false;
         } else {
-            return true;
+            if ($this->peep->slot_id && $this->peep->sheet_id) {
+                return true;
+            } else {
+                $this->message = dgettext('signup', 'Missing internal information.');
+                return false;
+            }
         }
 
     }
@@ -317,7 +408,7 @@ class Signup {
     function postSheet()
     {
         $this->loadSheet();
-        if (empty($_POST['title'])) {
+        if (empty($_P2OST['title'])) {
             $errors[] = dgettext('signup', 'You must give this signup sheet a title.');
         } else {
             $this->sheet->setTitle($_POST['title']);
@@ -354,7 +445,6 @@ class Signup {
             return true;
         }
     }
-
 }
 
 ?>
