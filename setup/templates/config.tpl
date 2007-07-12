@@ -40,6 +40,16 @@ define('DB_ALLOW_TABLE_INDEX', true);
 
 
 /**
+ * Some modules may try to lock tables when processing the database.
+ * Some admins don't want to allow LOCK permissions, in which case
+ * you can set the ALLOW_TABLE_LOCKS define to false. If you have
+ * a large site, you know a module uses locks, and you have the permission
+ * set the below to true.
+ */
+define('ALLOW_TABLE_LOCKS', false);
+
+
+/**
  * The core will occasionally save cookies. They do not contain
  * important information. This is the time until they expire.
  */

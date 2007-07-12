@@ -217,6 +217,23 @@ class pgsql_PHPWS_SQL {
         return $extra;
     }
 
+    function lockTables($locked)
+    {
+        foreach ($locked as $lck) {
+            if ($lck['status'] == 'read') {
+                $tbls[] = sprintf('%s ROW EXCLUSIVE MODE', $lck['table']);
+            } elseif ($lck['status'] == 'write') {
+                $tbls[] = sprintf('%s EXCLUSIVE MODE', $lck['table']);
+            }
+        }
+
+        return sprintf("BEGIN WORK;\nLOCK TABLES %s", implode(', ', $tbls));
+    }
+
+    function unlockTables()
+    {
+        return 'COMMIT WORK;';
+    }
 }
 
 ?>

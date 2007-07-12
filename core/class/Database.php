@@ -19,6 +19,10 @@ if (!defined('DB_ALLOW_TABLE_INDEX')) {
     define ('DB_ALLOW_TABLE_INDEX', true);
  }
 
+if (!defined('ALLOW_TABLE_LOCKS')) {
+    define('ALLOW_TABLE_LOCKS', false);
+}
+
 class PHPWS_DB {
     var $tables      = NULL;
     var $where       = array();
@@ -31,6 +35,7 @@ class PHPWS_DB {
     var $qwhere      = NULL;
     var $indexby     = NULL;
     var $groupby     = NULL;
+    var $locked      = NULL;
 
     /**
      * allows you to group together where queries
@@ -794,7 +799,7 @@ class PHPWS_DB {
         $this->_distinct = (bool)$distinct;
     }
 
-    function addColumn($column, $max_min=NULL, $as=NULL)
+    function addColumn($column, $max_min=NULL, $as=NULL, $count=false)
     {
         if (!in_array(strtolower($max_min), array('max', 'min'))) {
             $max_min = NULL;
@@ -819,6 +824,7 @@ class PHPWS_DB {
         $col['table']    = $table;
         $col['name']     = $column;
         $col['max_min']  = $max_min;
+        $col['count']    = $count;
         if ($column != '*') {
             $col['as']       = $as;
         }
@@ -841,13 +847,18 @@ class PHPWS_DB {
                 foreach ($this->columns as $col) {
                     $as = null;
                     extract($col);
+                    if ($count) {
+                        $table_name = sprintf('count(%s.%s)', $table, $name);
+                    } else {
+                        $table_name = sprintf('%s.%s', $table, $name);
+                    }
                     if ($max_min) {
-                        $columns[] = strtoupper($max_min) . "($table.$name)";
+                        $columns[] = strtoupper($max_min) . "($table_name)";
                     } else {
                         if (!empty($as)) {
-                            $columns[] = "$table.$name AS $as";
+                            $columns[] = "$table_name AS $as";
                         } else {
-                            $columns[] = "$table.$name";
+                            $columns[] = "$table_name";
                         }
                     }
                 }
@@ -1030,6 +1041,11 @@ class PHPWS_DB {
         return $GLOBALS['PHPWS_DB']['connection']->affectedRows();
     }
 
+    /**
+     * Resets where, values, limits, order, columns, indexby, and qwhere
+     * Does NOT reset locked tables but does remove any tables beyond the
+     * initiating one
+     */
     function reset()
     {
         $this->resetWhere();
@@ -1039,6 +1055,9 @@ class PHPWS_DB {
         $this->resetColumns();
         $this->indexby = NULL;
         $this->qwhere  = NULL;
+        $tmp_table = $this->tables[0];
+        $this->tables = null;
+        $this->tables = array($tmp_table);
     }
 
     function lastQuery()
@@ -2353,10 +2372,62 @@ class PHPWS_DB {
             $aTable = explode(' ', $sql);
             $tables[] = preg_replace('/\W/', '', $aTable[1]);
             break;
+
+        case 'lock':
+            $sql = preg_replace('/lock tables/i', '', $sql);
+            $aTable = explode(',', $sql);
+
+            foreach ($aTable as $tbl) {
+                $tables[] = substr($tbl, 0, strpos(trim($tbl) + 1, ' '));
+            }
+            break;
         }
 
         return $tables;
     }
+
+    function setLock($table, $status='write')
+    {
+        if (!is_string($table) || !is_string($status)) {
+            return false;
+        }
+
+        $status = strtolower($status);
+
+        if ($status != 'read' && $status != 'write') {
+            return false;
+        }
+
+        if (in_array($table, $this->tables)) {
+            $this->locked[] = array('table' => $table,
+                                    'status' => $status);
+        }
+    }
+
+    function lockTables()
+    {
+        if (!ALLOW_TABLE_LOCKS) {
+            return true;
+        }
+
+        if (empty($this->locked)) {
+            return false;
+        }
+
+        $query = $GLOBALS['PHPWS_DB']['lib']->lockTables($this->locked);
+        return $this->query($query);
+    }
+
+    function unlockTables()
+    {
+        if (!ALLOW_TABLE_LOCKS) {
+            return true;
+        }
+
+        $query = $GLOBALS['PHPWS_DB']['lib']->unlockTables();
+        return $this->query($query);
+    }
+
 }
 
 class PHPWS_DB_Where {
