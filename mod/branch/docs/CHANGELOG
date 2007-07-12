@@ -1,3 +1,6 @@
+12 July 2007
++ added table lock define to config.tpl
+
 27 June 2007
 + Removed compatibility mode from the config.tpl file
 + Updated file: templates/config.tpl
