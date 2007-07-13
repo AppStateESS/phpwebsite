@@ -133,6 +133,8 @@ class Signup_Forms {
             foreach ($slots as $slot) {
                 $tpl['current-slots'][] = $slot->viewTpl();
             }
+        } else {
+            $tpl['EMPTY'] = dgettext('signup', 'Click on "Add slot" to allow applicants to sign up.');
         }
 
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'slot_setup.tpl');
@@ -163,14 +165,18 @@ class Signup_Forms {
 
         $form->addText('start_time', $sheet->getStartTime());
         $form->setLabel('start_time', dgettext('signup', 'Start signup'));
-        $js_vars['date_name'] = 'start_time';
-        $js_vars['type'] = 'text';
-        $form->addTplTag('ST_JS', javascript('js_calendar', $js_vars));
 
-        $js_vars['date_name'] = 'end_time';
         $form->addText('end_time', $sheet->getEndTime());
         $form->setLabel('end_time', dgettext('signup', 'Close signup'));
+
+        /*
+        $js_vars['date_name'] = 'start_time';
+        $js_vars['type'] = 'text';
+        $js_vars['form_name'] = 'signup_sheet';
+        $form->addTplTag('ST_JS', javascript('js_calendar', $js_vars));
+        $js_vars['date_name'] = 'end_time';
         $form->addTplTag('ET_JS', javascript('js_calendar', $js_vars));
+        */
 
         $tpl = $form->getTemplate();
 
@@ -195,11 +201,21 @@ class Signup_Forms {
 
     function userSignup()
     {
+        if (!$this->signup->sheet->id) {
+            PHPWS_Core::errorPage('404');
+        }
+
         $sheet = & $this->signup->sheet;
         $peep  = & $this->signup->peep;
 
         $slots = $sheet->getAllSlots();
         $slots_filled = $sheet->totalSlotsFilled();
+
+        if (empty($slots)) {
+            $this->signup->title = dgettext('signup', 'Sorry');
+            $this->signup->content = dgettext('signup', 'There is a problem with this signup sheet. Please check back later.');
+            return;
+        }
 
         foreach ($slots as $slot) {
             // if the slots are filled, don't offer it

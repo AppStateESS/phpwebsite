@@ -132,14 +132,12 @@ class Signup_Slot {
 
     function showPeeps()
     {
-        $jsconf['QUESTION'] = dgettext('signup', 'Are you sure you want to delete this person from their signup slot?');
-        $jsconf['LINK'] = dgettext('signup', 'Delete');
-        $jspop['label']   = dgettext('signup', 'Edit');
+        if ($this->_peeps) {
+            $jsconf['QUESTION'] = dgettext('signup', 'Are you sure you want to delete this person from their signup slot?');
+            $jsconf['LINK'] = dgettext('signup', 'Delete');
+            $jspop['label']   = dgettext('signup', 'Edit');
 
-        for ($i = 0; $i < $this->openings; $i++) {
-            $subtpl = null;
-            if (isset($this->_peeps[$i])) {
-                $peep = & $this->_peeps[$i];
+            foreach ($this->_peeps as $peep) {
                 $subtpl['FIRST_NAME'] = $peep->first_name;
                 $subtpl['LAST_NAME'] = $peep->last_name;
                 $subtpl['EMAIL'] = $peep->getEmail();
@@ -157,21 +155,18 @@ class Signup_Slot {
 
                 $links[] = '<select><option>Move it</option></select>';
                 $subtpl['ACTION'] = implode(' | ', $links);
-            }
-            if ($subtpl) {
                 $tpl['peep-row'][] = $subtpl;
             }
-        }
 
-        if (!empty($tpl['peep-row'])) {
             $tpl['NAME_LABEL']   = dgettext('signup', 'Name');
             $tpl['EMAIL_LABEL']  = dgettext('signup', 'Email');
             $tpl['PHONE_LABEL']  = dgettext('signup', 'Phone');
             $tpl['ACTION_LABEL'] = dgettext('signup', 'Action');
+            
+            return PHPWS_Template::process($tpl, 'signup', 'peeps.tpl');
         }
-
-        return PHPWS_Template::process($tpl, 'signup', 'peeps.tpl');
     }
+
 
     function viewTpl()
     {

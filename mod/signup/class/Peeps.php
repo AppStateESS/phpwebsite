@@ -4,8 +4,6 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-PHPWS_Core::requireConfig('signup');
-
 class Signup_Peep {
     var $id         = 0;
     var $sheet_id   = 0;
@@ -36,10 +34,6 @@ class Signup_Peep {
         return strip_tags(trim($text));
     }
 
-    function emailRegistration()
-    {
-
-    }
 
     function init()
     {
@@ -113,6 +107,13 @@ class Signup_Peep {
     {
         $db = new PHPWS_DB('signup_peeps');
         return $db->saveObject($this);
+    }
+
+    function delete()
+    {
+        $db = new PHPWS_DB('signup_peeps');
+        $db->addWhere('id', $this->id);
+        $db->delete();
     }
 
 }

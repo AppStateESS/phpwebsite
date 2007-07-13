@@ -5,6 +5,7 @@
    */
 
 PHPWS_Core::requireInc('signup', 'errordefines.php');
+PHPWS_Core::requireConfig('signup');
 
 if (!defined('SIGNUP_WINDOW')) {
     define('SIGNUP_WINDOW', 3600);
@@ -87,6 +88,8 @@ class Signup {
                 } else {
                     $this->forwardMessage(dgettext('signup', 'Applicant saved successfully.'));
                 }
+                javascript('close_refresh');
+                Layout::nakedDisplay();
             } else {
                 $this->loadForm('edit_peep');
             }
@@ -97,11 +100,11 @@ class Signup {
                 Current_User::disallow();
             }
 
-            if (PHPWS_Core::isPosted()) {
-                $this->message = dgettext('signup', 'Sheet previously posted.');
-                $this->loadForm('edit_sheet');
-            } else {
-                if ($this->postSheet()) {
+            if ($this->postSheet()) {
+                if (PHPWS_Core::isPosted()) {
+                    $this->message = dgettext('signup', 'Sheet previously posted.');
+                    $this->loadForm('edit_sheet');
+                } else {
                     if (PHPWS_Error::logIfError($this->sheet->save())) {
                         $this->message = dgettext('signup', 'Error occurred when saving sheet.');
                         $this->loadForm('list');
@@ -109,25 +112,27 @@ class Signup {
                         $this->message = dgettext('signup', 'Sheet saved successfully.');
                         $this->loadForm('edit_slots');
                     }
-                } else {
-                    $this->loadForm('edit');
                 }
+            } else {
+                $this->loadForm('edit');
             }
+
             break;
 
-        case post_slot:
+        case 'post_slot':
             $javascript = true;
             if (!Current_User::authorized('signup')) {
                 Current_User::disallow();
             }
 
             if ($this->postSlot()) {
-                javascript('close_refresh');
                 if (PHPWS_Error::logIfError($this->slot->save())) {
                     $this->forwardMessage(dgettext('signup', 'Error occurred when saving slot.'));
                 } else {
                     $this->forwardMessage(dgettext('signup', 'Slot saved successfully.'));
                 }
+                javascript('close_refresh');
+                Layout::nakedDisplay();
             } else {
                 $this->loadForm('edit_slot_popup');
             }
@@ -149,18 +154,28 @@ class Signup {
 
     }
 
-
-    function forwardMessage($message)
+    function sendMessage()
     {
-        $_SESSION['SU_Message'] = $message;
-        javascript('close_refresh');
-        Layout::nakedDisplay();
+        PHPWS_Core::reroute('index.php?module=signup&amp;uop=message');
+    }
+
+    function forwardMessage($message, $title=null)
+    {
+        $_SESSION['SU_Message']['message'] = $message;
+        if ($title) {
+            $_SESSION['SU_Message']['title'] = $title;
+        }
+        if (!$message_page) {
+        } else {
+
+        }
     }
 
     function loadMessage()
     {
         if (isset($_SESSION['SU_Message'])) {
-            $this->message = $_SESSION['SU_Message'];
+            $this->message = $_SESSION['SU_Message']['message'];
+            $this->title = $_SESSION['SU_Message']['title'];
             PHPWS_Core::killSession('SU_Message');
         }
     }
@@ -236,6 +251,7 @@ class Signup {
 
     function userMenu($action=null)
     {
+        $javascript = false;
         if (empty($action)) {
             if (!isset($_REQUEST['uop'])) {
                 PHPWS_Core::errorPage('404');
@@ -245,6 +261,14 @@ class Signup {
         }
             
         switch ($action) {
+        case 'message':
+            $this->loadMessage();
+            if (empty($this->message)) {
+                PHPWS_Core::home();
+            }
+            $this->title = dgettext('signup', 'Signup');
+            break;
+
         case 'signup_sheet':
             $this->loadPeep();
             $this->loadForm('user_signup');
@@ -253,8 +277,8 @@ class Signup {
         case 'slot_signup':
             if ($this->postPeep()) {
                 if ($this->saveUnregistered()) {
-                    $this->title = dgettext('signup', 'Thank you');
-                    $this->content = dgettext('signup', 'You should receive an email allowing you to verify your application.');
+                    $this->forwardMessage(dgettext('signup', 'You should receive an email allowing you to verify your application.'), dgettext('signup', 'Thank you'));
+                    $this->sendMessage();
                 } else {
                     $this->loadForm('user_signup');
                 }
@@ -267,6 +291,7 @@ class Signup {
         }
 
         $tpl['TITLE']   = $this->title;
+        $tpl['MESSAGE'] = $this->message;
         $tpl['CONTENT'] = $this->content;
 
         if ($javascript) {
@@ -296,10 +321,12 @@ class Signup {
         $previous = $db->select('one');
 
         if (PHPWS_Error::logIfError($previous)) {
-            $this->message = dgettext('signup', 'Sorry, an error occurred when trying to save your application.');
+            $this->forwardMessage(dgettext('signup', 'An error occurred when trying to save your application.'), dgettext('signup', 'Sorry'));
+            $this->sendMessage();
             return false;
         } elseif ($previous) {
-            $this->message = dgettext('signup', 'You cannot signup for more than one slot.');
+            $this->forwardMessage(dgettext('signup', 'You cannot signup for more than one slot.'), dgettext('signup', 'Sorry'));
+            $this->sendMessage();
             return false;
         }
 
@@ -318,10 +345,62 @@ class Signup {
         } else {
             // success
             $db->unlockTables();
-            $peep->emailRegistration();
-            return true;
+            if (PHPWS_Error::logIfError($this->emailRegistration())) {
+                $peep->delete();
+                $this->forwardMessage(dgettext('signup', 'There is a problem with our email server. Please try again later.'), dgettext('signup', 'Sorry'));
+                $this->sendMessage();
+                return false;
+            } else {
+                return true;
+            }
         }
     }
+
+    function emailRegistration()
+    {
+        $peep  = & $this->peep;
+        $sheet = & $this->sheet;
+        $slot  = & $this->slot;
+
+        PHPWS_Core::initCoreClass('Mail.php');
+        $full_name = $peep->first_name . $peep->last_name;
+
+        if (preg_match('@["\'\.]@', $full_name)) {
+            $name = str_replace('"', "'", $peep->first_name . ' ' . $peep->last_name);
+            $send_to = sprintf('"%s" <%s>', $name, $peep->email);
+        } else { 
+            $send_to = sprintf('%s %s <%s>', $peep->first_name, $peep->last_name, $peep->email);
+        }
+
+        $subject = dgettext('signup', 'Signup confirmation');
+
+        $from = PHPWS_Settings::get('users', 'site_contact');
+        $reply_to = PHPWS_Settings::get('users', 'site_contact');
+
+        $site_title = Layout::getPageTitle(true);
+        $link = PHPWS_Core::getHomeHttp() . 'index.php?module=signup&uop=confirm&h=' . 
+            $peep->hash . '&p=' . $peep->id;
+
+        $message[] = sprintf(dgettext('signup', 'Greetings from %s,'), $site_title);
+        $message[] = '';
+        $message[] = dgettext('signup', 'Click the link below to confirm your participation in the following:');
+        $message[] = sprintf(dgettext('signup', 'Signup event : %s'), $sheet->title);
+        $message[] = sprintf(dgettext('signup', 'Slot : %s'), $slot->title);
+        $message[] = $link;
+        $message[] = '';
+        $message[] = dgettext('signup', 'You have one hour to confirm your application.');
+        
+        
+        $mail = & new PHPWS_Mail;
+        
+        $mail->addSendTo($send_to);
+        $mail->setSubject($subject);
+        $mail->setFrom($from);
+        $mail->setReplyTo($reply_to);
+        $mail->setMessageBody(implode("\n", $message));
+        return $mail->send();
+    }
+
 
     function loadPanel()
     {
@@ -408,7 +487,7 @@ class Signup {
     function postSheet()
     {
         $this->loadSheet();
-        if (empty($_P2OST['title'])) {
+        if (empty($_POST['title'])) {
             $errors[] = dgettext('signup', 'You must give this signup sheet a title.');
         } else {
             $this->sheet->setTitle($_POST['title']);
