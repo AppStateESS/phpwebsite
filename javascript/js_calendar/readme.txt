@@ -18,29 +18,34 @@ of drop down selects or just a text box.
 
 -- For a text box:
 
-echo '<input type="text" name="my_date" />';
+echo '
+  <form id="example_form">
+     <input type="text" name="my_date" />
+  </form>';
 
+$js_vars['form_name'] = 'example_form';
 $js_vars['date_name'] = 'my_date';
 $js_vars['type']      = 'text';
 echo javascript('js_calendar', $js_vars);
 
 -- For a select input:
+<form id="select_example">
 <select name='my_date_month'> <month inputs ...> </select>
 <select name='my_date_day'> <day inputs ...> </select>
 <select name='my_date_year'> <year inputs ...> </select>
+</form>
 
+$js_vars['form_name'] = 'select_example';
 $js_vars['date_name'] = 'my_date';
 $js_vars['type']      = 'text';
 echo javascript('js_calendar', $js_vars);
 
 
--- Quick and dirty
-echo '<input type="text" name="date" />';
-echo javascript('js_calendar');
-
-
 The variables
 ----------------------------
+form_name : id of the form containing the input. The default value is
+            'phpws_form' to match the Form class
+
 date_name : name of the form input linked to the script.
             Defaults to 'date'.
             If you are using the select feature, the 3 select boxes

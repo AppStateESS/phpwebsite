@@ -5,7 +5,7 @@
    */
 
 if (!isset($data['form_name'])) {
-     $data['form_name'] = '0';
+     $data['form_name'] = 'phpws_form';
 } else {
      $data['form_name'] = $data['form_name'];
 }

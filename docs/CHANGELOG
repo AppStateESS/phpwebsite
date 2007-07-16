@@ -5,6 +5,7 @@ its own separate CHANGELOG file.
 16 July 2007
 + Changed Editor and Form to default to normal text areas if the
   editor is missing.
++ Changed javascript calendar's default form to phpws_form
 
 12 July 2007
 + Database
