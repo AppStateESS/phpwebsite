@@ -188,13 +188,23 @@ class Signup {
         $this->forms->get($type);
     }
 
-    function loadPeep()
+    function loadPeep($id=0)
     {
         PHPWS_Core::initModClass('signup', 'Peeps.php');
-        if (isset($_REQUEST['peep_id'])) {
+        if ($id) {
+            $this->peep = new Signup_Peep($id);
+        } elseif (isset($_REQUEST['peep_id'])) {
             $this->peep = new Signup_Peep($_REQUEST['peep_id']);
         } else {
             $this->peep = new Signup_Peep;
+            if (isset($_SESSION['SU_Temp_Peep'])) {
+                extract($_SESSION['SU_Temp_Peep']);
+                $this->peep->first_name = $first_name;
+                $this->peep->last_name  = $last_name;
+                $this->peep->email      = $email;
+                $this->peep->phone      = $phone;
+                PHPWS_Core::killSession('SU_Temp_Peep');
+            }
         }
 
         if (empty($this->slot)) {
@@ -285,7 +295,11 @@ class Signup {
             } else {
                 $this->loadForm('user_signup');
             }
+            break;
 
+        case 'confirm':
+            $this->confirmPeep();
+            $this->purgeOverdue();
             break;
             
         }
@@ -336,7 +350,7 @@ class Signup {
         }
         
         $peep->registered = 0;
-        $peep->hash = md5(rand());
+        $peep->hashcheck = md5(rand());
         $peep->timeout = mktime() + SIGNUP_WINDOW;
 
         if (PHPWS_Error::logIfError($peep->save())) {
@@ -379,17 +393,17 @@ class Signup {
 
         $site_title = Layout::getPageTitle(true);
         $link = PHPWS_Core::getHomeHttp() . 'index.php?module=signup&uop=confirm&h=' . 
-            $peep->hash . '&p=' . $peep->id;
+            $peep->hashcheck . '&p=' . $peep->id;
 
         $message[] = sprintf(dgettext('signup', 'Greetings from %s,'), $site_title);
         $message[] = '';
         $message[] = dgettext('signup', 'Click the link below to confirm your participation in the following:');
+        $message[] = '';
         $message[] = sprintf(dgettext('signup', 'Signup event : %s'), $sheet->title);
         $message[] = sprintf(dgettext('signup', 'Slot : %s'), $slot->title);
         $message[] = $link;
         $message[] = '';
         $message[] = dgettext('signup', 'You have one hour to confirm your application.');
-        
         
         $mail = & new PHPWS_Mail;
         
@@ -523,6 +537,66 @@ class Signup {
         } else {
             return true;
         }
+    }
+
+    function confirmPeep()
+    {
+        if (!isset($_REQUEST['h']) || !isset($_REQUEST['p'])) {
+            return false;
+        }
+
+        $hash = & $_REQUEST['h'];
+        $id = & $_REQUEST['p'];
+        $this->loadPeep($id);
+
+        if ($this->peep->registered) {
+            $this->title = dgettext('signup', 'Congratulations!');
+            $this->content = dgettext('signup', 'You are already registered. There isn\'t any need to return to this page.');
+            return;
+        }
+
+        if (!$this->peep->id ||
+            $this->peep->hashcheck != $hash ||
+            $this->peep->timeout < mktime()) {
+            $this->title = dgettext('signup', 'Sorry');
+            $this->content = dgettext('signup', 'Your application could not be verified. If over a hour has passed since you applied, you may want to try again.');
+            return;
+        } else {
+            $slots_filled = $this->sheet->totalSlotsFilled();
+            if ($slots_filled) {
+                if ($this->slot->openings <= $slots_filled[$this->slot->id]) {
+                    $this->title = dgettext('signup', 'Sorry');
+                    $content[] = dgettext('signup', 'Your slot filled up before you could confirm your application.');
+                    $content[] = dgettext('signup', 'Please check if there are any more available slots by clicking the link below.');
+                    $content[] = $this->sheet->viewLink();
+                    $this->content = implode('<br />', $content);
+                    $_SESSION['SU_Temp_Peep'] = array('first_name'=> $this->peep->first_name,
+                                                      'last_name' => $this->peep->last_name,
+                                                      'email'     => $this->peep->email,
+                                                      'phone'     => $this->peep->phone);
+                    return;
+                }
+            }
+
+            $this->peep->registered = 1;
+            if (PHPWS_Error::logIfError($this->peep->save())) {
+                $this->title = dgettext('signup', 'Sorry');
+                $this->content = dgettext('signup', 'A problem occurred when trying to register your application. If you continue to receive this message, please contact the site admistrator.');
+                return;
+            } else {
+                $this->title = dgettext('signup', 'Congratulations!');
+                $this->content = sprintf(dgettext('signup', 'You are registered for the following event: %s'), $this->sheet->title);
+                return;
+            }
+        }
+    }
+
+    function purgeOverdue()
+    {
+        $db = new PHPWS_DB('signup_peeps');
+        $db->addWhere('registered', 0);
+        $db->addWhere('timeout', mktime(), '<');
+        PHPWS_Error::logIfError($db->delete());
     }
 }
 

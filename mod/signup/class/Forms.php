@@ -254,9 +254,11 @@ class Signup_Forms {
             $form->setLabel('last_name', dgettext('signup', 'Last name'));
 
             $form->addText('email', $peep->email);
+            $form->setSize('email', 30);
             $form->setLabel('email', dgettext('signup', 'Email address'));
 
             $form->addText('phone', $peep->getPhone());
+            $form->setSize('phone', 15);
             $form->setLabel('phone', dgettext('signup', 'Phone number'));
 
             $form->addSubmit(dgettext('signup', 'Submit'));

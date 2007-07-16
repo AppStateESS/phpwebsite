@@ -24,7 +24,7 @@ class Signup_Slot {
 
     function getOpenings()
     {
-        $db = new PHPWS_DB('');
+        
     }
 
     function init()

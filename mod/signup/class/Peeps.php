@@ -12,7 +12,7 @@ class Signup_Peep {
     var $last_name  = null;
     var $email      = null;
     var $phone      = null;
-    var $hash       = null;
+    var $hashcheck  = null;
     var $timeout    = 0;
     var $registered = 0;
 

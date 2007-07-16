@@ -4,7 +4,7 @@
   <!-- BEGIN message --><h2>{MESSAGE}</h2><!-- END message -->
    <table width="100%" cellpadding="4">
      <tr>
-       <td><strong>{SLOT_ID_LABEL}</strong></td>
+       <td width="20%"><strong>{SLOT_ID_LABEL}</strong></td>
        <td>{SLOT_ID}</td>
      </tr>
      <tr>
