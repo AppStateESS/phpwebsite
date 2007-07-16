@@ -1521,7 +1521,10 @@ class Form_TextArea extends Form_Element {
                 $editor->height = (int)$this->_editor_dm[1];
             }
             $editor->useLimited($this->_limit_editor);
-            return $editor->get();
+            $result = $editor->get();
+            if (!empty($result)) {
+                return $result;
+            }
         }
 
         $value = $this->getValue();

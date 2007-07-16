@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+16 July 2007
++ Changed Editor and Form to default to normal text areas if the
+  editor is missing.
+
 12 July 2007
 + Database
   o Added setLock, lockTables, and unlockTables functions. Factory
@@ -54,7 +58,6 @@ its own separate CHANGELOG file.
 11 June 2007
 + Added getid3 library 
 
->>>>>>> .r4887
 8 June 2007
 + Added some extra instruction to javascript's select_confirm
   documentation.

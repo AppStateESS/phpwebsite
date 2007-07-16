@@ -31,7 +31,8 @@ class Editor {
 
         if (PEAR::isError($editorList)) {
             PHPWS_Error::log($editorList);
-            PHPWS_Core::errorPage();
+            $this->type = null;
+            return;
         }
 
         if (empty($type)) {
@@ -43,7 +44,8 @@ class Editor {
             $result = $this->setType($type);
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
-                PHPWS_Core::errorPage();
+                $this->type = null;
+                return;
             }
         }
 
@@ -65,6 +67,9 @@ class Editor {
 
     function get()
     {
+        if (empty($this->type)) {
+            return null;
+        }
         $formData['NAME']    = $this->name;
         $formData['ID']      = $this->id;
         $formData['VALUE']   = $this->data;
@@ -104,8 +109,11 @@ class Editor {
             if (preg_match('/\W/', $user_type)) {
                 return DEFAULT_EDITOR_TOOL;
             }
+
             if (Editor::isType($user_type)) {
                 return $user_type;
+            } else {
+                PHPWS_Cookie::delete('phpws_editor');
             }
         }
 
