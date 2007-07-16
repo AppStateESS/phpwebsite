@@ -336,6 +336,7 @@ Notice: File Cabinet has been completely rewritten
 + 1.0.0 update was missing key_id column addition to folders table.
 </pre>';
 
+
     case version_compare($version, '1.1.0', '<'):
         $content[] = '<pre>';
 
@@ -422,6 +423,51 @@ Example: mkdir phpwebsite/files/filecabinet/multimedia/</pre>';
 + Multimedia files can be clipped and pasted via SmartTags.
 </pre>
 ';
+
+
+
+    case version_compare($version, '1.2.0', '<'):
+        $content[] = '<pre>';
+        $files = array('img/no_image.png', 'conf/config.php', 'conf/video_types.php',
+                       'conf/embedded.php',
+                       'javascript/folder_contents/head.js',
+                       'javascript/pick_image/head.js',
+                       'templates/image_folders.tpl', 'templates/settings.tpl',
+                       'templates/style.css', 'templates/image_view.tpl',
+                       'templates/multimedia_view.tpl', 'templates/style.css');
+
+        if (PHPWS_Boost::updateFiles($files, 'filecabinet')) {
+            $content[] = '--- Copied the following files:';
+        } else {
+            $content[] = '--- FAILED copying the following files:';
+        }
+
+        $content[] = "    " . implode("\n    ", $files);
+        
+ $content[] = '
+1.2.0 changes
+--------------
++ Each folder tab now checks the write status of each directory
+  separately.
++ Added multimedia folders, file types, icons and ability to playback.
++ Folder now loads files in filename order.
++ Added checkbox that allows you to hide child images
++ Deleting a parent image makes all child images parents.
++ Changed wording on image linking to urls
++ File Cabinet\'s Image Manager no longer shows small thumbnail.
+  Instead, it shows a full image set to the current dimension limits.
++ Image - getTag function now allows an "id" parameter that will be
+          added to the image tag (i.e. id="css-id-name")
++ Changed "no image chosen" graphic.
++ Added missing new columns to image table in install.sql
++ Added ability to delete incoming files.
++ Added directory permission checks to classify.
++ Classify directory can now be set in fc settings.
++ Created classify override in config.php file.
++ Option to use ffmpeg to create thumbnails
+</pre>
+';
+
     }
 
     return true;

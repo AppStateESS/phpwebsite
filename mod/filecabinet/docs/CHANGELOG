@@ -1,3 +1,9 @@
+Version 1.2.0 Unreleased
+-------------------------------------------------------------
+16 July 2007
++ Removed files: edit_embed.tpl
+
+
 2 July 2007
 + Moved video types into video_types.php config file. Need to move
   filter detection into a config as well.
@@ -31,6 +37,8 @@
 + Changed "no image chosen" graphic.
 + Updated files: img/no_image.png, conf/config.php
 
+
+
 11 June 2007
 + Added audio thumbnail
 + Updated files: img/audio.png
@@ -54,8 +62,8 @@
 6 June 2007
 + Started embedded functionality code.
 + Updated files: conf/embedded.php, templates/edit_embed.tpl,
-                 templates/embedded.tpl,
-                 templates/embedded/youtube.tpl
+                 templates/embedded.tpl (removed later),
+                 templates/embedded/youtube.tpl (removed later)
 
 
 1 June 2007
@@ -72,6 +80,11 @@
 + Added option to use ffmpeg to create thumbnails
 + Restructured settings form.
 + Updated files: templates/settings.tpl
+
+
+Version 1.1.0 Unreleased
+-------------------------------------------------------------
+
 
 30 May 2007 
 + Added the ability to clip multimedia files to content.
