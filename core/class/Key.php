@@ -349,6 +349,10 @@ class Key {
 
     function setUrl($url, $local=TRUE)
     {
+        if (preg_match('/^<a/', trim($url))) {
+            $url = preg_replace('/<a href="(.*)".*<\/a>/iU', '\\1', $url);
+        }
+
         if ($local) {
             PHPWS_Text::makeRelative($url, false);
         }
