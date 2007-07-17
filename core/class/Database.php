@@ -1594,7 +1594,7 @@ class PHPWS_DB {
     {
         $table = $this->getTable(false);
         if (!$table) {
-            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::addColumn');
+            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::renameTableColumn');
         }
 
         $specs = $this->getColumnInfo($old_name, true);
@@ -1618,7 +1618,7 @@ class PHPWS_DB {
     {
         $table = $this->getTable(false);
         if (!$table) {
-            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::addColumn');
+            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::addTableColumn');
         }
 
         if (!PHPWS_DB::allowed($column)) {
