@@ -157,7 +157,7 @@ class PHPWS_Mail {
             return FALSE;
         }
         
-        return !preg_match('/[^\w\s<>\.@\-]/', $email_address);
+        return !preg_match('/[^\w\s<>\.@\-\'"]/', $email_address);
     }
 
     function send()
