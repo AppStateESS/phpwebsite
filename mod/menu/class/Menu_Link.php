@@ -8,6 +8,10 @@
 
 define('MENU_MISSING_INFO', 1);
 
+if (!defined('NO_POST')) {
+    define('NO_POST', '');
+}
+
 class Menu_Link {
     var $id         = 0;
     var $menu_id    = 0;
