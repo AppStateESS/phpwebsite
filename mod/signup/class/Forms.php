@@ -219,8 +219,7 @@ class Signup_Forms {
 
         foreach ($slots as $slot) {
             // if the slots are filled, don't offer it
-            if ( $slots_filled &&
-                 $slots_filled[$slot->id]) {
+            if ( $slots_filled && isset($slots_filled[$slot->id])) {
                 $filled = & $slots_filled[$slot->id];
                 if ($filled >= $slot->openings) {
                     continue;
@@ -272,6 +271,7 @@ class Signup_Forms {
 
         $tpl['DESCRIPTION'] = $sheet->getDescription();
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'signup_form.tpl');
+        $this->signup->sheet->flag();
     }
 
 }

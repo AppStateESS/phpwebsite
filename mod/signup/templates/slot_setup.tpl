@@ -1,13 +1,12 @@
 {ADD_SLOT}
-<fieldset><legend>Slots</legend>
 {EMPTY}
 <!-- BEGIN current-slots -->
 <div class="slot">
-<strong>{TITLE}</strong><br />
+<fieldset><legend>{TITLE}</legend>
 <p>{OPENINGS} | {LEFT}</p>
 {PEEPS}
 <p>{LINKS}</p>
 </div>
-<hr />
-<!-- END current-slots -->
 </fieldset>
+<!-- END current-slots -->
+

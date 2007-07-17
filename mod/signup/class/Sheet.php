@@ -123,6 +123,14 @@ class Signup_Sheet {
         $vars['aop']  = 'edit_slots';
         $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Slots'), 'signup', $vars);
 
+        $vars['aop'] = 'report';
+        $jswin['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
+        $jswin['label'] = dgettext('signup', 'Report');
+        $jswin['width'] = 640;
+        $jswin['height'] = 480;
+
+        $links[] = javascript('open_window', $jswin);
+
         $vars['aop'] = 'delete_sheet';
         $js['ADDRESS'] = PHPWS_Text::linkAddress('signup', $vars, true);
         $js['QUESTION'] = dgettext('signup', 'Are you sure you want to delete this sheet?\nAll slots and signup information will be permanently removed.');
@@ -143,7 +151,6 @@ class Signup_Sheet {
         }
 
         $this->saveKey();
-
     }
 
 
@@ -162,7 +169,13 @@ class Signup_Sheet {
         $key->setItemName('sheet');
         $key->setItemId($this->id);
         $key->setEditPermission('edit_sheet');
-        $key->setUrl($this->viewLink(true));
+
+        if (MOD_REWRITE_ENABLED) {
+            $key->setUrl('signup/' . $this->id);
+        } else {
+            $key->setUrl('index.php?module=signup&amp;id=' . $this->id);
+        }
+
         $key->setTitle($this->title);
         $result = $key->save();
         if (PHPWS_Error::logIfError($result)) {
@@ -204,6 +217,12 @@ class Signup_Sheet {
     function viewLink()
     {
         return PHPWS_Text::rewriteLink($this->title, 'signup', $this->id);
+    }
+
+    function flag()
+    {
+        $key = new Key($this->key_id);
+        $key->flag();
     }
 
 }

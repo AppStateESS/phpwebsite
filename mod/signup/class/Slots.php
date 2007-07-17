@@ -22,11 +22,6 @@ class Signup_Slot {
         }
     }
 
-    function getOpenings()
-    {
-        
-    }
-
     function init()
     {
         $db = new PHPWS_DB('signup_slots');
@@ -127,6 +122,13 @@ class Signup_Slot {
             $links[] = javascript('confirm', $jsconf);
         }
 
+
+        $vars['aop'] = 'move_up';
+        $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Up'), 'signup', $vars);
+
+        $vars['aop'] = 'move_down';
+        $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Down'), 'signup', $vars);
+
         return implode(' | ', $links);
     }
 
@@ -138,6 +140,7 @@ class Signup_Slot {
             $jspop['label']   = dgettext('signup', 'Edit');
 
             foreach ($this->_peeps as $peep) {
+                $links = array();
                 $subtpl['FIRST_NAME'] = $peep->first_name;
                 $subtpl['LAST_NAME'] = $peep->last_name;
                 $subtpl['EMAIL'] = $peep->getEmail();
@@ -181,6 +184,59 @@ class Signup_Slot {
         $tpl['LINKS'] = $this->slotLinks();
 
         return $tpl;
+    }
+
+    function moveUp()
+    {
+        $db = new PHPWS_DB('signup_slots');
+        $db->addWhere('sheet_id', $this->sheet_id);
+        $db->addColumn('id', null, null, true);
+        $slot_count = $db->select('one');
+
+        if ($this->s_order == 1) {
+            $db->reduceColumn('s_order', 1);
+            $this->s_order = $slot_count;
+            $this->save();
+        } else {
+            $db->resetColumns();
+            $db->addWhere('s_order', $this->s_order - 1);
+            $db->addValue('s_order', $this->s_order);
+            $db->update();
+            $this->s_order--;
+            $this->save();
+        }
+    }
+
+    function moveDown()
+    {
+        $db = new PHPWS_DB('signup_slots');
+        $db->addWhere('sheet_id', $this->sheet_id);
+        $db->addColumn('id', null, null, true);
+        $slot_count = $db->select('one');
+
+        if ($this->s_order == $slot_count) {
+            $db->incrementColumn('s_order', 1);
+            $this->s_order = 1;
+            $this->save();
+        } else {
+            $db->resetColumns();
+            $db->addWhere('s_order', $this->s_order + 1);
+            $db->addValue('s_order', $this->s_order);
+            $db->update();
+            $this->s_order++;
+            $this->save();
+        }
+    }
+
+    function delete()
+    {
+        $db = new PHPWS_DB('signup_slots');
+        $db->addWhere('id', $this->id);
+        $db->delete();
+
+        $db->reset();
+        $db->addWhere('s_order', $this->s_order, '>');
+        $db->reduceColumn('s_order', 1);
     }
 
     

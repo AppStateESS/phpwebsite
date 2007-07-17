@@ -107,10 +107,10 @@ class Signup {
                 } else {
                     if (PHPWS_Error::logIfError($this->sheet->save())) {
                         $this->message = dgettext('signup', 'Error occurred when saving sheet.');
-                        $this->loadForm('list');
+                        PHPWS_Core::reroute('index.php?module=signup&aop=list');
                     } else {
                         $this->message = dgettext('signup', 'Sheet saved successfully.');
-                        $this->loadForm('edit_slots');
+                        PHPWS_Core::reroute('index.php?module=signup&aop=edit_slots&id=' . $this->sheet->id);
                     }
                 }
             } else {
@@ -137,7 +137,33 @@ class Signup {
                 $this->loadForm('edit_slot_popup');
             }
             break;
-           
+
+        case 'move_up':
+            $this->loadSlot();
+            $this->slot->moveUp();
+            $this->loadForm('edit_slots');
+            break;
+
+
+        case 'delete_slot_peep':
+            $this->loadPeep();
+            $this->peep->delete();
+            PHPWS_Core::goBack();
+            break;
+
+        case 'move_down':
+            $this->loadSlot();
+            $this->slot->moveDown();
+            $this->loadForm('edit_slots');
+            break;
+
+        case 'report':
+            if (!Current_User::authorized('signup')) {
+                Current_User::disallow();
+            }
+            // prints report and exits
+            $this->report();
+            break;
         }
 
 
@@ -175,7 +201,9 @@ class Signup {
     {
         if (isset($_SESSION['SU_Message'])) {
             $this->message = $_SESSION['SU_Message']['message'];
-            $this->title = $_SESSION['SU_Message']['title'];
+            if (isset($_SESSION['SU_Message']['title'])) {
+                $this->title = $_SESSION['SU_Message']['title'];
+            }
             PHPWS_Core::killSession('SU_Message');
         }
     }
@@ -338,7 +366,8 @@ class Signup {
             $this->forwardMessage(dgettext('signup', 'An error occurred when trying to save your application.'), dgettext('signup', 'Sorry'));
             $this->sendMessage();
             return false;
-        } elseif ($previous) {
+            // delete the FALSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        } elseif (false && $previous) {
             $this->forwardMessage(dgettext('signup', 'You cannot signup for more than one slot.'), dgettext('signup', 'Sorry'));
             $this->sendMessage();
             return false;
@@ -514,20 +543,20 @@ class Signup {
         }
 
         if (empty($_POST['start_time'])) {
-            $this->defaultStart();
+            $this->sheet->defaultStart();
         } else {
-            $this->start_time = strtotime($_POST['start_time']);
-            if ($this->start_time < mktime(0,0,0,1,1,1970)) {
-                $this->defaultStart();
+            $this->sheet->start_time = strtotime($_POST['start_time']);
+            if ($this->sheet->start_time < mktime(0,0,0,1,1,1970)) {
+                $this->sheet->defaultStart();
             }
         }
 
         if (empty($_POST['end_time'])) {
-            $this->defaultEnd();
+            $this->sheet->defaultEnd();
         } else {
-            $this->end_time = strtotime($_POST['end_time']);
-            if ($this->end_time < mktime(0,0,0,1,1,1970)) {
-                $this->defaultEnd();
+            $this->sheet->end_time = strtotime($_POST['end_time']);
+            if ($this->sheet->end_time < mktime(0,0,0,1,1,1970)) {
+                $this->sheet->defaultEnd();
             }
         }
 
@@ -563,10 +592,11 @@ class Signup {
             return;
         } else {
             $slots_filled = $this->sheet->totalSlotsFilled();
-            if ($slots_filled) {
+
+            if ($slots_filled && isset($slots_filled[$this->slot->id])) {
                 if ($this->slot->openings <= $slots_filled[$this->slot->id]) {
                     $this->title = dgettext('signup', 'Sorry');
-                    $content[] = dgettext('signup', 'Your slot filled up before you could confirm your application.');
+                    $content[] = dgettext('signup', 'This slot filled up before you could confirm your application.');
                     $content[] = dgettext('signup', 'Please check if there are any more available slots by clicking the link below.');
                     $content[] = $this->sheet->viewLink();
                     $this->content = implode('<br />', $content);
@@ -589,6 +619,50 @@ class Signup {
                 return;
             }
         }
+    }
+
+    function report()
+    {
+        $this->loadSheet();
+        $slots = $this->sheet->getAllSlots();
+        
+        $tpl = new PHPWS_Template('signup');
+        $tpl->setFile('report.tpl');
+
+        foreach ($slots as $slot) {
+            $slot->loadPeeps();
+
+            $peep_count = 0;
+            if ($slot->_peeps) {
+                foreach ($slot->_peeps as $peep) {
+                    $tpl->setCurrentBlock('peeps');
+                    $tpl->setData(array('FIRST_NAME' => $peep->first_name,
+                                        'LAST_NAME' => $peep->last_name));
+                    $tpl->parseCurrentBlock();
+                    $peep_count++;
+                }
+            }
+
+            $openings_left = $slot->openings - $peep_count;
+
+            if ($openings_left) {
+                for($i=0; $i < $openings_left; $i++) {
+                    $tpl->setCurrentBlock('spaces');
+                    $tpl->setData(array('SPACE' => '&nbsp;'));
+                    $tpl->parseCurrentBlock();
+                }
+            }
+
+            $tpl->setCurrentBlock('slot');
+            $tpl->setData(array('SLOT_TITLE' => $slot->title,
+                                'PRINT'=>dgettext('signup', 'Print page')));
+            $tpl->parseCurrentBlock();
+        }
+
+        $tpl->setData(array('REPORT_TITLE' => $this->sheet->title));
+
+        echo $tpl->get();
+        exit();
     }
 
     function purgeOverdue()
