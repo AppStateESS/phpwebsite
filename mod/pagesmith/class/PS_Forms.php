@@ -148,7 +148,7 @@ class PS_Forms {
                 if ($section->sectype == 'header') {
                     $js['link_title'] = dgettext('pagesmith', 'Change header');
                     $vars['aop'] = 'edit_page_header';
-                    $js['width'] = 300;
+                    $js['width'] = 400;
                     $js['height'] = 200;
                 } else {
                     $js['link_title'] = dgettext('pagesmith', 'Change text');
