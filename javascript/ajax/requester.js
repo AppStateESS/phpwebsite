@@ -22,24 +22,17 @@ function loadRequester(file_directory, success, failure) {
      
      requester.open('GET', file_directory);   
      requester.send(null);
-
-     success_function = new Function(success);
-     failure_function = new Function(failure);
-
-     requester.onreadystatechange = stateHandler;
-     return true;
+     requester.onreadystatechange = stateHandler(success, failure);
  }
 
 function stateHandler(success, failure)
 {
     if (requester.readyState == 4) {
         if (requester.status == 200) {
-            success_function();
+            eval(success);
         }
         else {
-            failure_function();
+            eval(failure);
         }
     }
-
-    return true;
 }

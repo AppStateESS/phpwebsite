@@ -2,6 +2,18 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+18 July 2007
++ Javascript:Ajax - Hopefully fixed some goofiness with the loadRequester
+
+
+17 July 2007
++ Database - Fixed some error messages. wrong function named
++ Mail - added single and double quotes to allow characters
++ Key - Added a little code to strip a url from an link if sent by
+        mistake
+
+
+
 16 July 2007
 + Changed Editor and Form to default to normal text areas if the
   editor is missing.
