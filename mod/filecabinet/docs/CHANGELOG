@@ -1,8 +1,16 @@
 Version 1.2.0 Unreleased
 -------------------------------------------------------------
+18 July 2007
++ Subbed the current url for the # in the src for the folder onclick
+  link. For some pain-in-my-ass reason, firefox loads the root
+  regardless of the return false on the end.
++ javascript altered. Resampled image was using thumbnail image. I
+  thought I had fixed that. Guess not. Also plugged in width and height
+  just in case.
++ Updated files: javascript/pick_image/head.js
+
 16 July 2007
 + Removed files: edit_embed.tpl
-
 
 2 July 2007
 + Moved video types into video_types.php config file. Need to move

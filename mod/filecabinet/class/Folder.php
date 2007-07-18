@@ -345,7 +345,8 @@ class Folder {
         $jsvars['success_function'] = sprintf('show_images(requester.responseText, %s)', $this->id);
         $jsvars['failure_function'] = "alert('A problem occurred')"; 
 
-        $tpl['ICON'] = sprintf('<a href="#" onclick="loadRequester(\'%s\', \'%s\', \'%s\'); return false">%s</a>', 
+        $tpl['ICON'] = sprintf('<a href="%s"  onclick="loadRequester(\'%s\', \'%s\', \'%s\'); return false">%s</a>',
+                               PHPWS_Core::getCurrentUrl(),
                                PHPWS_Text::linkAddress('filecabinet', $vars, true, false, false),
                                addslashes($jsvars['success_function']),
                                addslashes($jsvars['failure_function']),

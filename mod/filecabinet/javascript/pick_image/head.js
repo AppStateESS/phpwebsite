@@ -37,14 +37,16 @@ function oversized(image_id, src, title, width, height) {
 
 function resize_update(response)
 {
-    src = response.documentElement.getElementsByTagName('thumbnail')[0].firstChild.data;
+    src = response.documentElement.getElementsByTagName('path')[0].firstChild.data;
     image_id = response.documentElement.getElementsByTagName('id')[0].firstChild.data;
     title = response.documentElement.getElementsByTagName('title')[0].firstChild.data;
+    width = response.documentElement.getElementsByTagName('width')[0].firstChild.data;
+    height = response.documentElement.getElementsByTagName('height')[0].firstChild.data;
 
     if (!response) {
         alert("{failure_message}");
     } else {
-        pick_image(image_id, src, title);
+        pick_image(image_id, src, title, width, height);
         window.location.href = window.location.href;
     }
 }
