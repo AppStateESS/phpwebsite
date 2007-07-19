@@ -1418,6 +1418,10 @@ class PHPWS_DB {
     {
         $amount = (int)$amount;
 
+        if ($amount == 0) {
+            return true;
+        }
+
         $table = $this->getTable(false);
         if (!$table) {
             return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::incrementColumn');
@@ -1428,7 +1432,13 @@ class PHPWS_DB {
             $where = 'WHERE ' . $where;
         }
 
-        $query = "UPDATE $table SET $column_name = $column_name + $amount $where";
+        if ($amount < 0) {
+            $math = $amount;
+        } else {
+            $math = "+ $amount";
+        }
+
+        $query = "UPDATE $table SET $column_name = $column_name $math $where";
         $result = PHPWS_DB::query($query);
 
         if (DB::isError($result)) {

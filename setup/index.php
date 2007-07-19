@@ -25,6 +25,20 @@ if (!is_file('lib/pear/DB.php')) {
     exit();
 }
 
+if (!is_dir('config/core/')) {
+    require 'core/class/File.php';
+    if (!is_writable('config/')) {
+        echo 'Please make your config/ directory writable to continue.<br />';
+        exit();
+    } else {
+        PHPWS_File::copy_directory('core/conf/', 'config/core/');
+        if (!is_dir('config/core/')) {
+            echo 'Unable to copy core/conf/ directory to config/core/. Please do so manually.';
+            exit();
+        }
+    }
+}
+
 if (isset($_REQUEST['step']) && $_REQUEST['step'] > 1) {
     if (!is_file('./config/core/config.php')) {
         header('location: index.php');
