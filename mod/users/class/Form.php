@@ -916,7 +916,7 @@ class User_Form {
         $form->addHidden('action', 'permission');
         $form->addHidden('key_id', $key->id);
         $form->addRadio('view_permission', array(0, 1, 2));
-        $form->setExtra('view_permission', 'onchange="hideSelect(this.value)"');
+        $form->setExtra('view_permission', 'onclick="hideSelect(this.value)"');
         $form->setLabel('view_permission', array(dgettext('users', 'All visitors'),
                                                  dgettext('users', 'Logged visitors'),
                                                  dgettext('users', 'Specific group(s)')));
