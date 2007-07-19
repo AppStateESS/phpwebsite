@@ -15,6 +15,7 @@ class PHPWS_ControlPanel {
 
         $panel = new PHPWS_Panel('controlpanel');
         $panel->disableSecure();
+        $current_mod = PHPWS_Core::getCurrentModule();
 
         if (!isset($_SESSION['Control_Panel_Tabs'])){
             PHPWS_ControlPanel::loadTabs($panel);
@@ -24,13 +25,11 @@ class PHPWS_ControlPanel {
         }
 
         $allLinks = PHPWS_ControlPanel::getAllLinks();
-
         $checkTabs = $panel->getTabs();
 
         if (empty($checkTabs)){
             PHPWS_Error::log(CP_NO_TABS, 'controlpanel', 'display');
             PHPWS_ControlPanel::makeDefaultTabs();
-            ;
             PHPWS_ControlPanel::reset();
             PHPWS_Core::errorPage();
             exit();
@@ -44,9 +43,19 @@ class PHPWS_ControlPanel {
 
         if (!empty($allLinks)) {
             $links = array_keys($allLinks);
+            if ($current_mod != 'controlpanel') {
+                foreach ($allLinks as $key => $tablinks) {
+                    foreach($tablinks as $link) {
+                        if ($link->itemname == $current_mod) {
+                            $current_tab = $key;
+                            break 2;
+                        }
+                    }
+                }
+            }
         }
 
-        foreach ($checkTabs as $tab){
+        foreach ($checkTabs as $tab) {
             if ($tab->getItemname() == 'controlpanel' &&
                 in_array($tab->id, $tabList) &&
                 (!isset($links) || !in_array($tab->id, $links))
@@ -59,7 +68,7 @@ class PHPWS_ControlPanel {
             return dgettext('controlpanel', 'No tabs available in the Control Panel.');
         }
 
-        if (!isset($content) && PHPWS_Core::getCurrentModule() == 'controlpanel') {
+        if (!isset($content) && $current_mod == 'controlpanel') {
             if (isset($allLinks[$panel->getCurrentTab()])) {
                 foreach ($allLinks[$panel->getCurrentTab()] as $id => $link) {
                     $link_content[] = $link->view();
@@ -70,6 +79,10 @@ class PHPWS_ControlPanel {
             }
         } else {
             $panel->setContent($content);
+        }
+
+        if (isset($current_tab)) {
+            $panel->setCurrentTab($current_tab);
         }
 
         if (!isset($panel->tabs[$panel->getCurrentTab()])) {
@@ -88,7 +101,6 @@ class PHPWS_ControlPanel {
             ){
             PHPWS_Core::reroute($link);
         }
-
 
         $_SESSION['Control_Panel_Tabs'] = $panel->getTabs();
         return $panel->display();
