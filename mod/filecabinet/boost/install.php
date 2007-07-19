@@ -16,6 +16,7 @@ function filecabinet_install(&$content)
             $content[] = dgettext('filecabinet', 'files/multimedia directory created successfully.');
         }
     }
+    return true;
 }
 
 ?>

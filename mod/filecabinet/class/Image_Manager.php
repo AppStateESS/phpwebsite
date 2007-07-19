@@ -12,6 +12,9 @@ if (!defined('RESIZE_IMAGE_USE_DUPLICATE')) {
     define('RESIZE_IMAGE_USE_DUPLICATE', true);
 }
 
+define('FC_MAX_WIDTH_DISPLAY', 400);
+define('FC_MAX_HEIGHT_DISPLAY', 400);
+
 class FC_Image_Manager {
     var $image      = null;
     var $itemname   = null;
@@ -300,7 +303,6 @@ class FC_Image_Manager {
         $vars['width']   = 700;
         $vars['height']  = 600;
         $vars['label']   = $label;
-        //        $vars['toolbar'] = 'yes';
 
         $tpl['IMAGE'] = javascript('open_window', $vars);
         
@@ -324,9 +326,21 @@ class FC_Image_Manager {
     function noImage()
     {
         $no_image = dgettext('filecabinet', 'No image');
+        if ($this->max_width > FC_MAX_WIDTH_DISPLAY) {
+            $width = FC_MAX_WIDTH_DISPLAY;
+        } else {
+            $width = & $this->max_width;
+        }
+
+        if ($this->max_height > FC_MAX_HEIGHT_DISPLAY) {
+            $height = FC_MAX_HEIGHT_DISPLAY;
+        } else {
+            $height = & $this->max_height;
+        }
+
         return sprintf('<img src="%s" width="%s" height="%s" title="%s" alt="%s" id="image-manager-%s" />',
-                       FC_NONE_IMAGE_SRC, $this->max_width, 
-                       $this->max_height, $no_image, $no_image, $this->itemname);
+                       FC_NONE_IMAGE_SRC, $width, 
+                       $height, $no_image, $no_image, $this->itemname);
     }
 
     function getClearLink()

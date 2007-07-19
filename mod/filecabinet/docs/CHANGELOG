@@ -1,5 +1,10 @@
 Version 1.2.0 Unreleased
 -------------------------------------------------------------
+19 July 2007
++ Added missing "return true" to the install.php
++ Added upper limit on image dimension should a module have a high
+  tolerance for its size.
+
 18 July 2007
 + Subbed the current url for the # in the src for the folder onclick
   link. For some pain-in-my-ass reason, firefox loads the root
