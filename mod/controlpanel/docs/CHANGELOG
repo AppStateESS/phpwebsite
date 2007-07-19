@@ -1,8 +1,8 @@
 19 July 2007
 + Put Link.php and Tab.php back in to the inc/init.php. They are
   needed for one of the sessions.
-+ Added coding for control panel to try and use the correct master tab
-  depending on which module you are using.
++ Bug #1665174 - Added coding for control panel to try and use the correct master tab
+  depending on which module you are using. Thanks Shaun
 + style.css - removed panel width
 
 Version 2.1.0
