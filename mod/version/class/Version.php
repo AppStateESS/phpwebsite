@@ -62,16 +62,16 @@ class Version {
         return $this->id;
     }
 
-    function getCreationDate($format=FALSE){
-        if ($format = TRUE) {
+    function getCreationDate($format=false){
+        if ($format = true) {
             return strftime('%c', $this->vr_create_date);
         } else {
             return $this->vr_create_date;
         }
     }
 
-    function getEditedDate($format=FALSE){
-        if ($format = TRUE) {
+    function getEditedDate($format=false){
+        if ($format = true) {
             return strftime('%c', $this->vr_edit_date);
         } else {
             return $this->vr_edit_date;
@@ -116,7 +116,7 @@ class Version {
         }
     }
 
-    function getSource($include_id=TRUE){
+    function getSource($include_id=true){
         if (empty($this->source_data)) {
             return NULL;
         }
@@ -150,7 +150,7 @@ class Version {
             $this->source_id = $this->source_data['id'];
         }
 
-        return TRUE;
+        return true;
     }
 
     function setSourceId($id){
@@ -253,7 +253,7 @@ class Version {
             $this->id = $result;
             $this->cleanupVersions();
         }
-        return TRUE;
+        return true;
     }
 
 
@@ -302,10 +302,10 @@ class Version {
         return $version_db->count();
     }
 
-    function getUnapproved($restrict=FALSE){
+    function getUnapproved($restrict=false){
         $version_db = new PHPWS_DB($this->version_table);
 
-        if ($restrict == TRUE) {
+        if ($restrict == true) {
             $version_db->addWhere('vr_creator', Current_User::getId());
         }
 
@@ -327,24 +327,24 @@ class Version {
 
     function _plugInVersion($data){
         if (!is_array($data)) {
-            return FALSE;
+            return false;
         }
         PHPWS_Core::plugObject($this, $data);
         $diff = array_diff_assoc($data, get_object_vars($this));
         $this->setSource($diff);
 
-        return TRUE;
+        return true;
     }
 
     function _copyVersionColumn($col_name){
         $source_db = new PHPWS_DB($this->source_table);
         $version_db = new PHPWS_DB($this->version_table);
 
-        $col_info = $source_db->getColumnInfo($col_name, TRUE);
+        $col_info = $source_db->getColumnInfo($col_name, true);
         if (isset($col_info['index'])) {
-            $index = TRUE;
+            $index = true;
         } else {
-            $index = FALSE;
+            $index = false;
         }
 
         return $version_db->addTableColumn($col_name, $col_info['parameters'], NULL, $index);
@@ -393,13 +393,13 @@ class Version {
             }
         }
 
-        return TRUE;
+        return true;
     }
 
     function _buildVersionTable(){
 
         $source_db = new PHPWS_DB($this->source_table);
-        $allColumns = $source_db->getTableColumns(TRUE);
+        $allColumns = $source_db->getTableColumns(true);
 
         foreach ($allColumns as $editCol){
             $newColumns[] = $editCol;
@@ -436,7 +436,7 @@ class Version {
         $db = new PHPWS_DB($this->version_table);
         $db->createTableIndex('source_id');
 
-        return TRUE;
+        return true;
     }
 
     /**
@@ -447,10 +447,10 @@ class Version {
     function loadObject(&$object){
         $data = $this->getSource();
         if (!$data) {
-            return FALSE;
+            return false;
         }
         PHPWS_Core::plugObject($object, $data);
-        return TRUE;
+        return true;
     }
 
     function isWaitingApproval(){
@@ -475,12 +475,12 @@ class Version {
 
     /**
      * Removes a version from the version table. It will also remove
-     * the source item if this is the first version
+     * the source item if this is the last version
      */
-    function delete($clean_up=TRUE)
+    function delete($clean_up=true)
     {
         if (empty($this->id)) {
-            return FALSE;
+            return false;
         }
 
         $db = new PHPWS_DB($this->version_table);
@@ -491,37 +491,30 @@ class Version {
             return $result;
         }
 
-        // If this is the first version, kill the source
-        if ($clean_up && !$this->vr_number == 1) {
-            $source = new PHPWS_DB($this->source_table);
-            $source->addWhere('id', $this->source_id);
-            $result = $source->delete();
-            if (PEAR::isError($result)) {
-                return $result;
+        // If this is the last version, kill the source
+        if ($clean_up) {
+            $db->resetWhere();
+            $db->addWhere('source_id', $this->source_id);
+            $db->addColumn('id', null, null, true);
+            $version_count = $db->select('one');
+            if (!PHPWS_Error::logIfError($version_count)) {
+                if (!$version_count) {
+                    $source = new PHPWS_DB($this->source_table);
+                    $source->addWhere('id', $this->source_id);
+                    $result = $source->delete();
+                    if (PEAR::isError($result)) {
+                        return $result;
+                    } else {
+                        return true;
+                    }
+                }
             }
         }
 
         $db->resetWhere();
         $db->addWhere('source_id', $this->source_id);
-        $db->addOrder('vr_number');
-        $db->addColumn('id');
-        $reindex_list = $db->select();
-        if (empty($reindex_list) || PEAR::isError($reindex_list)) {
-            return $reindex_list;
-        }
-
-        $count = 1;
-        foreach ($reindex_list as $version) {
-            $db->reset();
-            $db->addWhere('id', $version['id']);
-            $db->addValue('vr_number', $count);
-            $result = $db->update();
-            if (PEAR::isError($result)) {
-                return $result;
-            }
-            $count++;
-        }
-        return TRUE;
+        $db->addWhere('vr_number', $this->vr_number, '>');
+        return $db->reduceColumn('vr_number');
     }
 
 
@@ -541,7 +534,7 @@ class Version {
 
         unset($this->id);
         $this->setSource($data);
-        $this->setApproved(TRUE);
+        $this->setApproved(true);
         $this->vr_number = $this->_getVersionNumber();
         return $this->save();
     }
