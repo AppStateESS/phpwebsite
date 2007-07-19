@@ -192,7 +192,7 @@ class Webpage_Page {
             }
 
             $vars['wp_admin'] = 'edit_page';
-            $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Edit'), 'webpage', $vars);
+            $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Edit page'), 'webpage', $vars);
 
             if ($admin) {
                 $this->moreAdminLinks($links);
