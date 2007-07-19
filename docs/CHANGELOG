@@ -11,6 +11,7 @@ its own separate CHANGELOG file.
 + Dropped config/core from subversion. Was a long time coming. Didn't
   need to have two sets of files.
 + Setup - Now copied the core/conf directory into config/core/
++ Conversion - patched category conversion with Eloi's fix (#1742987)
 + Updated files : conf/version.php
 
 18 July 2007
