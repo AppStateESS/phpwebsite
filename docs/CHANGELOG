@@ -5,6 +5,7 @@ its own separate CHANGELOG file.
 20 July 2007
 + DBPager - changed 'page' variable to 'pg' to try and prevent
   problems with mod_rewrite
++ Added mp3player and flowplayer credits
 
 19 July 2007
 + Database
