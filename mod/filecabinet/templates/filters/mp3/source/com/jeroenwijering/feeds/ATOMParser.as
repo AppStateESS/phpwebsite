@@ -2,7 +2,7 @@
 * Parses ATOM feeds and returns an indexed array with all elements
 *
 * @author	Jeroen Wijering
-* @version	1.1
+* @version	1.3
 **/
 
 
@@ -14,7 +14,7 @@ class com.jeroenwijering.feeds.ATOMParser extends AbstractParser {
 
 
 	/** Contructor **/
-	function ATOMParser(enc:Boolean,pre:String) { super(enc,pre); };
+	function ATOMParser() { super(); };
 
 
 	/** build an array with all regular elements **/
@@ -59,25 +59,23 @@ class com.jeroenwijering.feeds.ATOMParser extends AbstractParser {
 						}
 					} else if(nnm=="link" && nod.attributes.rel=="enclosure"){
 						var typ = nod.attributes.type.toLowerCase();
-						if(mimetypes[typ] != undefined) {
-							obj["file"] = prefix + nod.attributes.href;
+						if(mimetypes[typ] != undefined && obj['type']!="flv"){
+							obj["file"] = nod.attributes.href;
 							obj["type"] = mimetypes[typ];
 							if(obj["file"].substr(0,4) == "rtmp") {
 								obj["type"] == "rtmp";
 							}
 						}
-					} else if(nnm=="link" && nod.attributes.rel=="captions"){
+					} else if (nnm=="link" && nod.attributes.rel=="captions"){
 						obj["captions"] = nod.attributes.href;
-					} else if(nnm=="link" && nod.attributes.rel=="audio"){
+					} else if (nnm=="link" && nod.attributes.rel=="audio"){
 						obj["audio"] = nod.attributes.href;
-					} else if(nnm=="link" && nod.attributes.rel=="image"){
+					} else if (nnm=="link" && nod.attributes.rel=="image"){
 						obj["image"] = nod.attributes.href;
 					}
 				}
 				obj["author"] == undefined ? obj["author"] = ttl: null;
-				if(obj["type"] != undefined || enclosures == false) {
-					arr.push(obj);
-				}
+				arr.push(obj);
 			} else if (tpl.nodeName == "title") { 
 				var ttl = tpl.firstChild.nodeValue;
 			}

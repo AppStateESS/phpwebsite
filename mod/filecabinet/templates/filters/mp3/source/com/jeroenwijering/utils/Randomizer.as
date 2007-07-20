@@ -26,7 +26,10 @@ class com.jeroenwijering.utils.Randomizer {
 	public function pick():Number {
 		if(bufferArray.length == 0) {
 			for(var k=0; k<originalArray.length; k++) {
-				bufferArray.push(k);
+				if(originalArray[k]['category'] != "preroll" &&
+					originalArray[k]['category'] != "postroll") {
+					bufferArray.push(k);
+				}
 			}
 		}
 		var ran:Number = random(bufferArray.length);

@@ -2,7 +2,7 @@
 * MP3 model class of the players MCV pattern.
 *
 * @author	Jeroen Wijering
-* @version	1.3
+* @version	1.4
 **/
 
 
@@ -24,8 +24,6 @@ class com.jeroenwijering.players.MP3Model extends AbstractModel {
 	private var currentLoaded:Number = 0;
 	/** interval ID of the position update function **/
 	private var positionInterval:Number;
-	/** current position of the sound that is playing **/
-	private var currentPosition:Number;
 	/** Duration of the current sound **/
 	private var soundDuration:Number = 0;
 	/** current state of the sound that is playing **/
@@ -58,6 +56,13 @@ class com.jeroenwijering.players.MP3Model extends AbstractModel {
 				ref.currentState = 3;
 				ref.sendUpdate("state",3);
 				ref.sendCompleteEvent();
+			};
+			soundObject.onLoad = function(scs:Boolean) {
+				if(scs == false) {
+					ref.currentState = 3;
+					ref.sendUpdate("state",3);
+					ref.sendCompleteEvent();
+				}
 			};
 			soundObject.loadSound(currentURL,true);
 			soundObject.setVolume(currentVolume);

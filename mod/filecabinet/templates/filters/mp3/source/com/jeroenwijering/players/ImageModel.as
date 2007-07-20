@@ -2,7 +2,7 @@
 * Image model class of the players MCV pattern.
 *
 * @author	Jeroen Wijering
-* @version	1.3
+* @version	1.5
 **/
 
 
@@ -21,8 +21,6 @@ class com.jeroenwijering.players.ImageModel extends AbstractModel {
 	private var imageClip:MovieClip;
 	/** image or SWF duration **/
 	private var imageLength:Number;
-	/** interval ID of image duration function **/
-	private var currentPosition:Number = 0;
 	/** interval ID of image duration function **/
 	private var positionInterval:Number;
 	/** current state **/
@@ -48,18 +46,16 @@ class com.jeroenwijering.players.ImageModel extends AbstractModel {
 			ref.currentState = 2;
 			ref.sendUpdate("state",2);
 			ref.sendUpdate("load",100);
-			ref.sendUpdate("size",this.targetClip._width,this.targetClip._height);
-			if(ref.isSWF == true) {
-				ref.imageLength = ref.imageClip.mc._totalframes/20;
-				if(ref.imageLength < ref.config["rotatetime"]) { 
-					ref.imageLength = ref.config["rotatetime"];
-				}
-				ref.currentPosition = ref.imageClip.mc._currentframe/20 +1;
-			}
 		};
 		imageLoader.onLoadProgress = function(tgt,btl,btt) {
 			ref.sendUpdate("load",Math.round(btl/btt*100));
-		}
+		};
+		imageLoader.onMetaData = function() {
+			ref.sendUpdate("size",this.sourceWidth,this.sourceHeight);
+			if(this.sourceLength > ref.imageLength) {
+				ref.imageLength = this.sourceLength;
+			}
+		};
 	};
 
 
@@ -101,10 +97,9 @@ class com.jeroenwijering.players.ImageModel extends AbstractModel {
 
 	/** Read and broadcast the current position of the song **/
 	private function updatePosition() {
-		if(currentState == 2) { 
+		if(currentState == 2) {
 			currentPosition += 0.2;
-			if(currentPosition >= imageLength || (isSWF == true && 
-				imageClip.mc._currentframe > imageClip.mc._totalframes-5)) {
+			if(currentPosition >= imageLength) {
 				currentState = 3;
 				sendUpdate("state",3);
 				sendCompleteEvent();

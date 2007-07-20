@@ -7,7 +7,6 @@
 
 
 import com.jeroenwijering.players.*;
-import com.jeroenwijering.utils.CaptionsParser;
 import flash.filters.DropShadowFilter;
 
 
@@ -77,7 +76,6 @@ class com.jeroenwijering.players.CaptionsView extends AbstractView {
 			feeder.feed[idx]["captions"] == "true") {
 			captionate = true;
 			var tck = Number(feeder.feed[idx]["captions"].substr(-1));
-			trace("TRACK: "+tck);
 			if(isNaN(tck)) { 
 				capTrack = 0;
 			} else {
@@ -91,13 +89,11 @@ class com.jeroenwijering.players.CaptionsView extends AbstractView {
 
 	/** Check elapsed time, evaluate captions every second. **/
 	private function setTime(elp:Number,rem:Number) {
-		if(Math.round(elp) != currentTime) {
-			currentTime = Math.round(elp);
-			if (captionate == false) {
-				setCaption();
-			} else if (Math.abs(elp-capTime) > 5) {
-				clip.txt.htmlText = "&nbsp;<br />&nbsp;";
-			}
+		currentTime = elp;
+		if (captionate == false) {
+			setCaption();
+		} else if (Math.abs(elp-capTime) > 5) {
+			clip.txt.htmlText = "&nbsp;<br />&nbsp;";
 		}
 	};
 

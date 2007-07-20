@@ -2,7 +2,7 @@
 * Parses ATOM feeds and returns an indexed array with all elements
 *
 * @author	Jeroen Wijering
-* @version	1.1
+* @version	1.4
 **/
 
 
@@ -14,7 +14,7 @@ class com.jeroenwijering.feeds.RSSParser extends AbstractParser {
 
 
 	/** Contructor **/
-	function RSSParser(enc:Boolean,pre:String) { super(enc,pre); };
+	function RSSParser() { super(); };
 
 
 	/** build an array with all regular elements **/
@@ -60,10 +60,9 @@ class com.jeroenwijering.feeds.RSSParser extends AbstractParser {
 						obj["city"] = nod.attributes.city;
 					} else if(nnm == "enclosure" || nnm == "media:content") {
 						var typ = nod.attributes.type.toLowerCase();
-						if(mimetypes[typ] != undefined) {
+						if(mimetypes[typ]!=undefined  && obj['type']!="flv") {
 							obj["type"] = mimetypes[typ];
-							obj["file"] = prefix +
-								nod.attributes.url.toLowerCase();
+							obj["file"] = nod.attributes.url;
 							if(obj["file"].substr(0,4) == "rtmp") {
 								obj["type"] == "rtmp";
 							}
@@ -81,15 +80,17 @@ class com.jeroenwijering.feeds.RSSParser extends AbstractParser {
 							if(ncn == "media:content") {
 								var ftp = nod.childNodes[
 									k].attributes.type.toLowerCase();
-								if(mimetypes[ftp] != undefined){
-									obj["file"] = prefix + 
+								if(mimetypes[ftp] != undefined && 
+									obj['type'] != "flv") {
+									obj["file"] = 
 										nod.childNodes[k].attributes.url;
 									obj["type"]=mimetypes[ftp];
 									if(obj["file"].substr(0,4) == "rtmp") {
 										obj["type"] == "rtmp";
 									}
 								}
-							} else if(ncn == "media:thumbnail") {
+							}
+							if(ncn == "media:thumbnail"){
 								obj["image"]=nod.childNodes[k].attributes.url;
 							}
 						}
@@ -99,19 +100,23 @@ class com.jeroenwijering.feeds.RSSParser extends AbstractParser {
 					obj["latitude"] = lat;
 					obj["longitude"] = lng;
 				}
-				if(obj["image"]==undefined && obj["file"].indexOf(".jpg")>0){
-					obj["image"] = obj["file"];
+				if(obj["image"] == undefined) {
+					if(obj["file"].indexOf(".jpg") > 0) {
+						obj["image"] = obj["file"];
+					} else  if( img != undefined) {
+						obj["image"] = img;
+					} 
 				}
-				if(obj["author"] == undefined) { obj["author"] = ttl; } 
-				if(obj["type"] != undefined || enclosures == false) {
-					arr.push(obj);
-				}
+				if(obj["author"] == undefined) { obj["author"] = ttl; }
+				arr.push(obj);
 			} else if (tpl.nodeName == "title") {
 				var ttl = tpl.firstChild.nodeValue;
 			} else if (tpl.nodeName == "geo:lat") { 
 				var lat = tpl.firstChild.nodeValue; 
 			} else if (tpl.nodeName == "geo:long") { 
 				var lng = tpl.firstChild.nodeValue;
+			} else if (tpl.nodeName == "itunes:image") { 
+				var img = tpl.attributes.href;
 			}
 			tpl = tpl.nextSibling;
 		}

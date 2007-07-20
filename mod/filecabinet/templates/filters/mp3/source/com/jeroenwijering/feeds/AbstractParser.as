@@ -2,7 +2,7 @@
 * General functionality of all feedtype-parsers.
 *
 * @author	Jeroen Wijering
-* @version	1.1
+* @version	1.2
 **/
 
 
@@ -11,15 +11,11 @@ import com.jeroenwijering.utils.StringMagic;
 
 class com.jeroenwijering.feeds.AbstractParser {
 
-	
-	/** Filter the feed for enclosures. **/
-	private var enclosures:Boolean;
+
 	/** All elements that can be parsed without manipulations **/
 	private var elements:Object;
 	/** Accepted mimetypes for enclosures **/
 	private var mimetypes:Object;
-	/** A prefix string for all files **/
-	private var prefix:String;
 	/** Timezone abbreviation offsets **/
 	private var timezones:Object = { IDLW:-12,NT:-11,AHST:-10,CAT:-10,HST:-10,
 		YST:-9,PST:-8,MST:-7,PDT:-7,CST:-6,EST:-5,EDT:-4,ADT:-3,WBT:-4,AST:-4,
@@ -32,9 +28,7 @@ class com.jeroenwijering.feeds.AbstractParser {
 
 
 	/** Constructor. **/
-	function AbstractParser(enc:Boolean,pre:String) {
-		enclosures = enc;
-		prefix = pre;
+	function AbstractParser(pre:String) {
 		setElements();
 		setMimes();
 	};
@@ -61,6 +55,7 @@ class com.jeroenwijering.feeds.AbstractParser {
 		mimetypes["gif"] = "gif";
 		mimetypes["image/gif"] = "gif";
 		mimetypes["rtmp"] = "rtmp";
+		mimetypes["swf"] = "swf";
 		mimetypes["application/x-shockwave-flash"] = "swf";
 		mimetypes["rtmp"] = "rtmp";
 		mimetypes["application/x-fcs"] = "rtmp";
@@ -123,7 +118,6 @@ class com.jeroenwijering.feeds.AbstractParser {
 					stamp = stamp - hr*3600 - mn*60;
 				} else {
 					stamp += hr*3600 + mn*60;
-					trace(stamp);
 				}
 				var dat = new Date(stamp*1000);
 			}

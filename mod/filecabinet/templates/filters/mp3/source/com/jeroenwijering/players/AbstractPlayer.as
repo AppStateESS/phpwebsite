@@ -26,29 +26,26 @@ class com.jeroenwijering.players.AbstractPlayer implements FeedListener {
 	public function AbstractPlayer(tgt:MovieClip) {
 		config["clip"] = tgt;
 		config["clip"]._visible = false;
+		Stage.width  > 0 ? config["width"]  = Stage.width:  null;
+		Stage.height > 0 ? config["height"] = Stage.height: null;
 		loadConfig();
 	};
 
 
 	/** Set config variables or load them from flashvars. **/
 	private function loadConfig() {
-		config["width"] = Stage.width;
-		config["height"] = Stage.height;
 		for(var cfv in config) {
 			if(_root[cfv] != undefined) {
 				config[cfv] = unescape(_root[cfv]);
 			}
 		}
-		if(config['largecontrols'] == "true") { config["controlbar"] *= 2; }
-		if (config["displayheight"] == undefined) {
-			config["displayheight"] = config["height"] - config['controlbar'];
-		} else if(Number(config["displayheight"])>Number(config["height"])) {
-			config["displayheight"] = config["height"];
-		}
-		if (config["displaywidth"] == undefined) {
-			config["displaywidth"] = config["width"];
-		}
-		feeder = new FeedManager(true,config["enablejs"],_root.prefix);
+		loadFile();
+	};
+
+
+	/** Load the file or playlist **/
+	private function loadFile(str:String) {
+		feeder = new FeedManager(true,config["enablejs"],_root.prefix,str);
 		feeder.addListener(this);
 		feeder.loadFile({file:config["file"]});
 	};

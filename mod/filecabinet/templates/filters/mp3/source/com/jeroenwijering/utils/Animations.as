@@ -39,7 +39,8 @@ class com.jeroenwijering.utils.Animations {
 	* @param inc	Speed of the fade (increment per frame).
 	* @param rmv	Remove the clip after fadeout.
 	**/
-	public static function fadeOut(tgt:MovieClip,end:Number,spd:Number,rmv:Boolean):Void {
+	public static function fadeOut(tgt:MovieClip,end:Number,
+		spd:Number,rmv:Boolean):Void {
 		arguments.length < 4 ? rmv = false: null;
 		arguments.length < 3 ? spd = 20: null;
 		arguments.length < 2 ? end = 0: null;
@@ -85,12 +86,14 @@ class com.jeroenwijering.utils.Animations {
 	* @param yps	Final y position.
 	* @param spd	Speed of the ease (1 to 10)
 	**/
-	public static function easeTo(tgt:MovieClip,xps:Number,yps:Number,spd:Number):Void {
+	public static function easeTo(tgt:MovieClip,xps:Number,yps:Number,
+		spd:Number):Void {
 		arguments.length < 4 ? spd = 2: null;
 		tgt.onEnterFrame = function() {
 			this._x = xps-(xps-this._x)/(1+1/spd);
 			this._y = yps-(yps-this._y)/(1+1/spd);
-			if (this._x>xps-1 && this._x<xps+1 && this._y>yps-1 && this._y<yps+1) {
+			if (this._x>xps-1 && this._x<xps+1 && 
+				this._y>yps-1 && this._y<yps+1) {
 				this._x = Math.round(xps);
 				this._y = Math.round(yps);
 				delete this.onEnterFrame;
@@ -104,19 +107,22 @@ class com.jeroenwijering.utils.Animations {
 	*
 	* @param tgt	Movieclip to draw the shape into.
 	* @param rnd	Random number of frames to wait.
-	* @param txt	(optionally) text to write (else tf's current text is used)
+	* @param txt	(optionally) text to write (else the current is used)
 	**/
-	public static function easeText(tgt:MovieClip,rnd:Number,txt:String) {
-		if (arguments.length == 2) {
+	public static function easeText(tgt:MovieClip,rnd:Number,
+		txt:String,spd:Number) {
+		if (arguments.length < 3) {
 			tgt.str = tgt.tf.text;
 			tgt.hstr = tgt.tf.htmlText;
 		} else { tgt.str = tgt.hstr = txt; }
+		if (arguments.length < 4) { spd = 1.4; }
 		tgt.tf.text = "";
 		tgt.i = 0;
 		tgt.rnd = rnd;
 		tgt.onEnterFrame = function() {
 			if(this.i > this.rnd) { 
-				this.tf.text = this.str.substr(0, this.str.length - Math.floor((this.str.length - this.tf.text.length)/1.4));
+				this.tf.text = this.str.substr(0, this.str.length - 
+					Math.floor((this.str.length - this.tf.text.length)/spd));
 			}
 			if(this.tf.text == this.str) {
 				this.tf.htmlText = this.hstr;
@@ -127,6 +133,79 @@ class com.jeroenwijering.utils.Animations {
 		};
 	};
 
+
+	/** 
+	* Overwrite the contents of a textfield letter by letter with a new value
+	*
+	* @param tgt	Movieclip to draw the shape into.
+	* @param txt	(optionally) text to write (else the current is used)
+	**/
+	public static function overwrite(tgt:MovieClip,txt:String) {
+		var prv = tgt.tf.text;
+		var nxt = txt;
+		var arr = new Array();
+		if (prv.length < nxt.length) {
+			var dif = nxt.length-prv.length;
+			for (var i=0; i<dif; i++) { 
+				prv += " ";
+			}
+		} else if (nxt.length < prv.length) {
+				var dif = prv.length-nxt.length;
+			for (var i=0; i<dif; i++) { 
+				nxt += " ";
+			}
+		}
+		for (var i=0; i<nxt.length; i++) { arr.push(i); }
+		tgt.tf.text = prv;
+		tgt.onEnterFrame = function() {
+			if (arr.length == 0) {
+				delete this.onEnterFrame;
+				return;
+			}
+			var idx = random(arr.length);
+			var nmb = arr[idx];
+			arr.splice(idx,1);
+			this.tf.text = this.tf.text.substr(0,nmb) + 
+				nxt.charAt(nmb) + this.tf.text.substr(nmb+1);
+		};
+	};
+
+
+	/** 
+	* Overwrite the contents of a textfield letter by letter with a new value
+	*
+	* @param tgt	Movieclip to draw the shape into.
+	* @param txt	(optionally) text to write (else the current is used)
+	**/
+	public static function write(tgt:MovieClip,txt:String) {
+		var stg = 0;
+		var num = 8;
+		tgt.onEnterFrame = function() {
+			if(stg == 0) {
+				this.tf.text = tgt.tf.text.substr(0,this.tf.text.length-1);
+				this.tf.text.length == 0 ? stg = 1: null;
+			} else if(stg == 1) {
+				this.tf.text == "" ? this.tf.text = "_": this.tf.text = "";
+				num--;
+				num == 0 ? stg = 2: null;
+			} else if (stg == 2) {
+				this.tf.text += txt.charAt(tgt.tf.text.length);
+				this.tf.text.length == txt.length ? stg = 3: null;
+			} else if (stg == 3) {
+				if(this.tf.text.charAt(this.tf.text.length-1) == "_") {
+					this.tf.text = this.tf.text.substr(0,
+						this.tf.text.length-1)+" ";
+				} else {
+					this.tf.text = this.tf.text.substr(0,
+						this.tf.text.length-1)+"_";
+				}
+				num++;
+				num == 8 ? stg = 4: null;
+			} else {
+				delete this.onEnterFrame;
+			}
+		};
+	};
 
 	/**
 	* Make a Movieclip jump to a specific scale
@@ -157,7 +236,8 @@ class com.jeroenwijering.utils.Animations {
 	* @param blu	Blue channel offset.
 	* @param dur	Duration of the transformation (1 to 100).
 	**/
-	public static function setColor(tgt:MovieClip,red:Number,gre:Number,blu:Number,dur:Number):Void {
+	public static function setColor(tgt:MovieClip,red:Number,gre:Number,
+		blu:Number,dur:Number):Void {
 		arguments.length < 5 ? dur = 5: null;
 		tgt.col = new Color(tgt);
 		tgt.cr = tgt.cg = tgt.cb = 0;
@@ -166,7 +246,8 @@ class com.jeroenwijering.utils.Animations {
 			this.cg = this.cg+(gre-this.cg)/dur;
 			this.cb = this.cb+(blu-this.cb)/dur;
 			this.col.setTransform({rb:this.cr, gb:this.cg, bb:this.cb});
-			if (Math.abs(this.cr-red)<2 && Math.abs(this.cg-gre)<2 && Math.abs(this.cb-blu)<2) {
+			if (Math.abs(this.cr-red)<2 && Math.abs(this.cg-gre)<2 && 
+				Math.abs(this.cb-blu)<2) {
 				delete this.onEnterFrame;
 				this.col.setTransform({rb:red, gb:gre, bb:blu}); 
 			}  

@@ -152,6 +152,35 @@ class com.jeroenwijering.players.RotatorView extends AbstractView {
 					};
 				};
 			}
+			if(feeder.audio == true) {
+				tgt.audioBtn.col1 = new Color(tgt.audioBtn.bck);
+				tgt.audioBtn.col2 = new Color(tgt.audioBtn.icnOn);
+				tgt.audioBtn.col3 = new Color(tgt.audioBtn.icnOff);
+				tgt.audioBtn.col1.setRGB(config["backcolor"]);
+				tgt.audioBtn.col2.setRGB(config["frontcolor"]);
+				tgt.audioBtn.col3.setRGB(config["frontcolor"]);
+				tgt.audioBtn.onRollOver = function() {
+					this.col2.setRGB(ref.config["lightcolor"]);
+					this.col3.setRGB(ref.config["lightcolor"]);
+				};
+				tgt.audioBtn.onRollOut = function() {
+					this.col2.setRGB(ref.config["frontcolor"]);
+					this.col3.setRGB(ref.config["frontcolor"]);
+				};
+				tgt.audioBtn.onPress = function() {
+					ref.sendEvent("audio");
+					this.col2.setRGB(ref.config["frontcolor"]);
+					this.col3.setRGB(ref.config["frontcolor"]);
+				};
+				if(config['useaudio'] == "true") {
+					tgt.audioBtn.icnOff._visible = false;
+				} else {
+					tgt.audioBtn.icnOn._visible = false;
+				}
+			} else {
+				tgt.audioBtn._x = 0;
+				tgt.audioBtn._visible = false;
+			}
 		} else {
 			tgt._visible = false;
 		}
@@ -184,7 +213,7 @@ class com.jeroenwijering.players.RotatorView extends AbstractView {
 		tgt.titleBtn.mid._width = len + 16;
 		tgt.titleBtn.right._x = len + 20;
 		tgt.nextBtn._x = len + 95;
-		if(feeder.audio == true) { tgt.muteBtn._x = len + 120; }
+		if(feeder.audio == true) { tgt.audioBtn._x = len + 120; }
 		tgt._x = Math.round(config["width"]/2 - tgt._width/2);
 	};
 

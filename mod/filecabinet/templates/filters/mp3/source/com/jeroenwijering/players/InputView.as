@@ -40,22 +40,22 @@ class com.jeroenwijering.players.InputView extends AbstractView {
 			sendEvent("playpause"); 
 		} else if (Key.getCode() == 37) {
 			if(feeder.feed.length == 1) {
-				sendEvent("scrub",currentTime-5);
-				currentTime -= 5;
+				sendEvent("scrub",currentTime-15);
 			} else {
 				 sendEvent("prev");
 			}
 		} else if (Key.getCode() == 39) {
 			if(feeder.feed.length == 1) {
-				sendEvent("scrub",currentTime+5);
-				currentTime += 5;
+				sendEvent("scrub",currentTime+15);
 			} else {
-				 sendEvent("next");
+				sendEvent("next");
 			}
 		} else if (Key.getCode() == 38) {
 			sendEvent("volume",currentVolume+10);
 		} else if (Key.getCode() == 40) {
 			sendEvent("volume",currentVolume-10);
+		} else if (Key.getCode() == 77) {
+			sendEvent("volume",0);
 		}
 	};
 

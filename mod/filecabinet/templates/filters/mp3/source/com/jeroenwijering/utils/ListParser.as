@@ -23,33 +23,40 @@ class com.jeroenwijering.utils.ListParser {
 	function ListParser() {};
 
 
-	/** 
-	* Parse an XML list.
-	*
-	* @param url	URL of the playlist that should be parsed.
-	**/
-	public function parse(url:String):Void {
+	/** Parse a simple XML list file **/
+	public function parse(url:String) {
 		var ref = this;
+		trace("URL: "+url);
 		parseURL = url;
 		parseArray = new Array();
 		parseXML = new XML();
 		parseXML.ignoreWhite = true;
 		parseXML.onLoad = function(success:Boolean) {
-			if(success) { ref.parseList(); } 
-			else { parseArray.push( {title:"Feed not found: "+ref.parseURL}); }
-			parseArray.length == 0 ? parseArray.push({title:"Empty feed: "+ref.parseURL}): null;
+			if(success) { 
+				ref.parseList(); 
+			} else { 
+				parseArray.push( {title:"Feed not found: "+ref.parseURL}); 
+			}
+			if(parseArray.length == 0) { 
+				parseArray.push({title:"Empty feed: "+ref.parseURL});
+			}
 			delete ref.parseXML;
 			ref.onParseComplete();
 		};
-		if(_root._url.indexOf("file://") > -1) { parseXML.load(parseURL); } 
-		else if(parseURL.indexOf('?') > -1) { parseXML.load(parseURL+'&'+random(999)); } 
-		else { parseXML.load(parseURL+'?'+random(999)); }
+		if(_root._url.indexOf("file://") > -1) { 
+			parseXML.load(parseURL); 
+		} else if(parseURL.indexOf('?') > -1) { 
+			parseXML.load(parseURL+'&'+random(999)); 
+		} else { 
+			parseXML.load(parseURL+'?'+random(999));
+		}
 	};
 
 
 	/** Covert general XML list to array. **/
-	private function parseList():Void {
-		if(parseXML.firstChild.childNodes[0].nodeName == parseXML.firstChild.childNodes[1].nodeName) {
+	private function parseList() {
+		if(parseXML.firstChild.childNodes[0].nodeName == 
+			parseXML.firstChild.childNodes[1].nodeName) {
 			isNumeric = true;
 		}
 		for(var i=0; i<parseXML.firstChild.childNodes.length; i++) {
@@ -64,9 +71,11 @@ class com.jeroenwijering.utils.ListParser {
 				parseArray[i] = new Object();
 				for(var j=0; j<itm.childNodes.length; j++) {
 					if(isNaN(itm.childNodes[j].firstChild.nodeValue)){ 
-						parseArray[i][itm.childNodes[j].nodeName] = itm.childNodes[j].firstChild.nodeValue;
+						parseArray[i][itm.childNodes[j].nodeName] = 
+							itm.childNodes[j].firstChild.nodeValue;
 					} else { 
-						parseArray[i][itm.childNodes[j].nodeName] = Number(itm.childNodes[j].firstChild.nodeValue);
+						parseArray[i][itm.childNodes[j].nodeName] = 
+							Number(itm.childNodes[j].firstChild.nodeValue);
 					}
 				}
 			}

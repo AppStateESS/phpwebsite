@@ -2,7 +2,7 @@
 * Controlbar user interface management of the players MCV pattern.
 *
 * @author	Jeroen Wijering
-* @version	1.9
+* @version	1.11
 **/
 
 
@@ -13,6 +13,8 @@ import com.jeroenwijering.utils.*;
 class com.jeroenwijering.players.ControlbarView extends AbstractView { 
 
 
+	/** currently active item **/
+	private var currentItem:Number;
 	/** full width of the scrubbars **/
 	private var barWidths:Number;
 	/** duration of the currently playing item **/
@@ -140,6 +142,17 @@ class com.jeroenwijering.players.ControlbarView extends AbstractView {
 		tgt.au.onPress = function() {
 			ref.sendEvent("audio");
 		};
+		tgt.dl.col = new Color(tgt.dl.icn);
+		tgt.dl.col.setRGB(ref.config["frontcolor"]);
+		tgt.dl.onRollOver = function() { 
+			this.col.setRGB(ref.config["lightcolor"]); 
+		};
+		tgt.dl.onRollOut = function() { 
+			this.col.setRGB(ref.config["frontcolor"]);
+		};
+		tgt.dl.onPress = function() {
+			ref.sendEvent("getlink",ref.currentItem);
+		};
 		tgt.vol.col = new Color(tgt.vol.bar);
 		tgt.vol.col.setRGB(config["frontcolor"]);
 		tgt.vol.col2 = new Color(tgt.vol.bck);
@@ -217,14 +230,47 @@ class com.jeroenwijering.players.ControlbarView extends AbstractView {
 		}
 		tgt.back._width = cbw;
 		// all buttons
-		if(feeder.feed.length == 1) {
+		if(feeder.feed.length - feeder.numads == 1 ||
+			(config["displayheight"] < config["height"] - 50 && cbw < 200) ||
+			(config["displaywidth"] < config["width"] - 50 && cbw < 200)) {
 			tgt.prev._visible = tgt.next._visible = false;
-			tgt.scrub.shd._width = cbw-54;
+			tgt.scrub.shd._width = cbw-17;
 			tgt.scrub._x = 17;
 		} else {
 			tgt.prev._visible = tgt.next._visible = true;
-			tgt.scrub.shd._width = cbw-88;
+			tgt.scrub.shd._width = cbw-51;
 			tgt.scrub._x = 51;
+		}
+		var xp = cbw;
+		if(cbw > 50 && config["showvolume"] == "true") {
+			xp -= 37;
+			tgt.scrub.shd._width -= 37;
+			tgt.vol._x = xp;
+		} else {
+			xp -= 1;
+			tgt.scrub.shd._width -= 1;
+			tgt.vol._x = xp;
+		}
+		if (feeder.audio == true) {
+			xp -= 17;
+			tgt.scrub.shd._width -= 17;
+			tgt.au._x = xp;
+		} else {
+			tgt.au._visible = false;
+		}
+		if (feeder.captions == true) {
+			xp -= 17;
+			tgt.scrub.shd._width -= 17;
+			tgt.cc._x = xp;
+		} else {
+			tgt.cc._visible = false;
+		}
+		if (config["showdownload"] == "true") {
+			xp -= 17;
+			tgt.scrub.shd._width -= 17;
+			tgt.dl._x = xp;
+		} else {
+			tgt.dl._visible = false;
 		}
 		if((Stage["displayState"] == undefined ||
 			config["usefullscreen"] == "false" ||
@@ -232,23 +278,9 @@ class com.jeroenwijering.players.ControlbarView extends AbstractView {
 			config["fsbuttonlink"] == undefined) {
 			tgt.fs._visible = false;
 		} else {
+			xp -= 18;
 			tgt.scrub.shd._width -= 18;
-			tgt.fs._x = cbw - 55;
-		}
-		if (feeder.captions == true) {
-			tgt.cc._x = cbw - 54;
-			tgt.scrub.shd._width -= 17;
-			tgt.fs._x -= 17;
-		} else {
-			tgt.cc._visible = false;
-		}
-		if (feeder.audio == true) {
-			if(feeder.captions == true) { tgt.cc._x = cbw - 71; }
-			tgt.au._x = cbw - 54;
-			tgt.scrub.shd._width -= 17;
-			tgt.fs._x -= 17;
-		} else {
-			tgt.au._visible = false;
+			tgt.fs._x = xp;
 		}
 		if(config["showdigits"] == "false" || tgt.scrub.shd._width < 120 ||
 			System.capabilities.version.indexOf("7,0,") > -1) {
@@ -261,7 +293,6 @@ class com.jeroenwijering.players.ControlbarView extends AbstractView {
 			barWidths = tgt.scrub.bck._width = tgt.scrub.shd._width - 84;
 			tgt.scrub.remTxt._x = tgt.scrub.shd._width - 39;
 		}
-		if(cbw > 20) { tgt.vol._x = cbw - 37; }
 	};
 
 
@@ -290,8 +321,8 @@ class com.jeroenwijering.players.ControlbarView extends AbstractView {
 		itemLength = elp + rem;
 		itemProgress = Math.round(rem/(itemLength)*100);
 		var tgt = config["clip"].controlbar.scrub;
-		tgt.bar._width = Math.floor(elp/(elp+rem)*barWidths)-2;
-		elp == 0 ? tgt.bar._width = 0: null;
+		var w = Math.floor(elp/(elp+rem)*barWidths) - 2;
+		elp == 0 || w < 2 ? tgt.bar._width = 0: tgt.bar._width = w - 2;
 		tgt.icn._x = tgt.bar._width + tgt.bar._x + 1;
 		tgt.elpTxt.text = StringMagic.addLeading(elp/60) + ":" +
 			StringMagic.addLeading(elp%60);
@@ -308,7 +339,16 @@ class com.jeroenwijering.players.ControlbarView extends AbstractView {
 
 
 	/** New item is loaded **/ 
-	private function setItem(prm:Number) { wasLoaded = false; };
+	private function setItem(prm:Number) { 
+		wasLoaded = false; 
+		currentItem = prm;
+		if(feeder.feed[currentItem]['category'] == "preroll" ||
+			feeder.feed[currentItem]['category'] == "postroll") {
+			config["clip"].controlbar.scrub.icn._alpha = 0;
+		} else {
+			config["clip"].controlbar.scrub.icn._alpha = 100;
+		}
+	};
 
 
 	/** Print current buffer amount to controlbar **/

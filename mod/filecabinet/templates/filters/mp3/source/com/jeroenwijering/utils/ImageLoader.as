@@ -7,7 +7,7 @@
 * myLoader.loadImage("somephoto.jpg");
 * 
 * @author	Jeroen Wijering
-* @version	1.9
+* @version	1.10
 **/
 
 
@@ -25,12 +25,22 @@ class com.jeroenwijering.utils.ImageLoader {
 	private var targetWidth:Number;
 	/** Target Height **/
 	private var targetHeight:Number;
+	/** Source URL **/
+	private var sourceURL:String;
+	/** Source Width **/
+	private var sourceWidth:Number;
+	/** Source Height **/
+	private var sourceHeight:Number;
+	/** Source Length (for SWF) **/
+	private var sourceLength:Number;
 	/** Overstretch Boolean **/
 	private var overStretch:String = "none";
 	/** Boolean that checks whether an SWF is loaded **/
 	private var useSmoothing:Boolean;
 	/** Color of a solid background the BitmapArray might detect **/
 	private var backColor:String;
+	/** Interval for SWF meta checking **/
+	private var metaInt:Number;
 
 
 	/**
@@ -67,8 +77,12 @@ class com.jeroenwijering.utils.ImageLoader {
 			targetClip.mc.removeMovieClip();
 			delete targetClip.mc;
 			scaleImage(targetClip.smc);
+			onLoadFinished();
 		} else {
-			scaleImage(targetClip.mc);
+			if(sourceURL.toLowerCase().indexOf(".swf") == -1) {
+				scaleImage(targetClip.mc);
+			}
+			onLoadFinished();
 		}
 	};
 
@@ -98,8 +112,11 @@ class com.jeroenwijering.utils.ImageLoader {
 		targetClip._xscale = targetClip._yscale = 100;
 		var tcf = tgt._currentframe;
 		tgt.gotoAndStop(1);
-		var xsr:Number = targetWidth/tgt._width;
-		var ysr:Number = targetHeight/tgt._height;
+		sourceWidth = tgt._width;
+		sourceHeight = tgt._height;
+		sourceLength = tgt._totalframes/20;
+		var xsr:Number = targetWidth/sourceWidth;
+		var ysr:Number = targetHeight/sourceHeight;
 		if (overStretch == "fit" || Math.abs(xsr-ysr) < 0.1) {
 			tgt._width = targetWidth;
 			tgt._height = targetHeight;
@@ -116,7 +133,7 @@ class com.jeroenwijering.utils.ImageLoader {
 			tgt._y = targetHeight/2 - tgt._height/2;
 		}
 		tgt.gotoAndPlay(tcf);
-		onLoadFinished();
+		onMetaData();
 	};
 
 
@@ -126,6 +143,7 @@ class com.jeroenwijering.utils.ImageLoader {
 	 * @param img	URL of the image to load.
 	 */
 	public function loadImage(img:String):Void {
+		sourceURL = img;
 		targetClip.mc.clear();
 		targetClip.smc.unloadMovie();
 		targetClip.smc.removeMovieClip();
@@ -135,6 +153,9 @@ class com.jeroenwijering.utils.ImageLoader {
 		mcLoader.loadClip(img,raw);
 		if(backColor != undefined) {
 			targetClip.bck.removeMovieClip();
+		}
+		if(img.toLowerCase().indexOf(".swf") > -1) {
+			metaInt = setInterval(this,"setSWFMeta",200);
 		}
 	};
 
@@ -157,12 +178,25 @@ class com.jeroenwijering.utils.ImageLoader {
 	};
 
 
+	/** Check when to set the SWF metadata **/
+	private function setSWFMeta() {
+		if(targetClip.mc._totalframes > 0) {
+			clearInterval(metaInt);
+			scaleImage(targetClip.mc);
+		}
+	};
+
+
 	/** Event handler; invoked when loading is in progress. **/
 	public function onLoadProgress(tgt:MovieClip,btl:Number,btt:Number) {};
 
 
 	/** Event handler; invoked when image is loaded. **/
 	public function onLoadFinished() { };
+
+
+	/** Event handler; invoked when metadata is received. **/
+	public function onMetaData() { };
 
 
 }

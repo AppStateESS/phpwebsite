@@ -2,7 +2,7 @@
 * Abstract model class of the players MCV pattern, extended by all models.
 *
 * @author	Jeroen Wijering
-* @version	1.3
+* @version	1.4
 **/
 
 
@@ -28,6 +28,8 @@ class com.jeroenwijering.players.AbstractModel {
 	private var mediatypes:Array;
 	/** boolean to check if a model is currently active **/
 	private var isActive:Boolean;
+	/** current playhead position **/
+	private var currentPosition:Number;
 
 
 	/** Constructor. **/
@@ -74,6 +76,9 @@ class com.jeroenwijering.players.AbstractModel {
 			if(feeder.feed[idx]["type"] == mediatypes[i]) {
 				fnd = true;
 			}
+		}
+		if(feeder.feed[idx]["start"] != undefined) {
+			currentPosition = feeder.feed[idx]["start"];
 		}
 		if(fnd == true) {
 			isActive = true;

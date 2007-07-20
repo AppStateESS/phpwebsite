@@ -2,7 +2,7 @@
 * Rotator extension of the controller.
 *
 * @author	Jeroen Wijering
-* @version	1.4
+* @version	1.5
 **/
 
 
@@ -126,6 +126,24 @@ class com.jeroenwijering.players.RotatorController extends AbstractController{
 			}
 			setPlayitem(i);
 		}
+	};
+
+
+	/** Audiotrack toggle **/
+	private function setAudio() {
+		if(config["useaudio"] == "true") {
+			config["useaudio"] = "false";
+			config["clip"].audio.setStop();
+			config["clip"].navigation.audioBtn.icnOff._visible = true;
+			config["clip"].navigation.audioBtn.icnOn._visible = false;
+		} else {
+			config["useaudio"] = "true";
+			config["clip"].audio.setStart();
+			config["clip"].navigation.audioBtn.icnOff._visible = false;
+			config["clip"].navigation.audioBtn.icnOn._visible = true;
+		}
+		playerSO.data.useaudio = config["useaudio"];
+		playerSO.flush();
 	};
 
 

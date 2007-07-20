@@ -2,7 +2,7 @@
 * Display user interface management of the players MCV pattern.
 *
 * @author	Jeroen Wijering
-* @version	1.6
+* @version	1.8
 **/
 
 
@@ -56,28 +56,32 @@ class com.jeroenwijering.players.DisplayView extends AbstractView {
 		// display items
 		var tgt = config["clip"].display;
 		tgt.setMask(config["clip"].mask);
-		if(config["showicons"] == "false") { 
+		if(config["showicons"] == "false") {
 			tgt.playicon._visible = false;
+			tgt.muteicon._visible = false;
 		}
 		tgt.activity._visible = false;
 		tgt.back.tabEnabled = false;
-		if(config["linkfromdisplay"] == "true") {
-			tgt.playicon._visible = false;
-			tgt.back.onRelease = function() {
-				ref.sendEvent("getlink",ref.currentItem);
+		if(config["autostart"] == "muted") {
+			tgt.back.onRelease = function() { 
+				ref.sendEvent("volume",80);
+				ref.firstClick();
+			};
+		} else if (config["autostart"] == "false") {
+			tgt.muteicon._visible = false;
+			tgt.back.onRelease = function() { 
+				ref.sendEvent("playpause");
+				ref.firstClick();
 			};
 		} else {
-			tgt.back.onRelease = function() {
-				ref.sendEvent("playpause"); 
-			};
+			ref.firstClick();
 		}
 		if(config["logo"] != "undefined") {
 			var lll = new ImageLoader(tgt.logo,"none");
 			lll.onLoadFinished = function() {
 				tgt.logo._x = ref.config["displaywidth"] - 
 					tgt.logo._width - 10;
-				tgt.logo._y = ref.config["displayheight"] - 
-					tgt.logo._height - 10;
+				tgt.logo._y = 10;
 			};
 			lll.loadImage(config["logo"]);
 			tgt.logo.onRelease = function() { 
@@ -118,26 +122,25 @@ class com.jeroenwijering.players.DisplayView extends AbstractView {
 			config["clip"].mask._height = 
 				tgt.back._height = config["displayheight"];
 		}
-		tgt.playicon._x = tgt.activity._x = Math.round(tgt.back._width/2);
-		tgt.playicon._y = tgt.activity._y = Math.round(tgt.back._height/2);
+		tgt.playicon._x = tgt.activity._x = tgt.muteicon._x =
+			Math.round(tgt.back._width/2);
+		tgt.playicon._y = tgt.activity._y = tgt.muteicon._y =
+			Math.round(tgt.back._height/2);
 		if(Stage["displayState"] == "fullScreen") {
 			tgt.playicon._xscale = tgt.playicon._yscale = 
+				tgt.muteicon._xscale = tgt.muteicon._yscale =
 				tgt.activity._xscale = tgt.activity._yscale = 
 				tgt.logo._xscale = tgt.logo._yscale = 200;
 			tgt.logo._x = Stage.width - tgt.logo._width - 20;
-			tgt.logo._y = Stage.height - tgt.logo._height - 20;
+			tgt.logo._y = 20;
 		} else {
-			if(config["largecontrols"] == "true") {
-				tgt.playicon._xscale = tgt.playicon._yscale = 
-					tgt.activity._xscale = tgt.activity._yscale = 200;
-			} else {
-				tgt.playicon._xscale = tgt.playicon._yscale = 
-					tgt.activity._xscale = tgt.activity._yscale =
-					tgt.logo._xscale = tgt.logo._yscale = 100;
-			}
+			tgt.playicon._xscale = tgt.playicon._yscale = 
+				tgt.muteicon._xscale = tgt.muteicon._yscale =
+				tgt.activity._xscale = tgt.activity._yscale =
+				tgt.logo._xscale = tgt.logo._yscale = 100;
 			if(tgt.logo._height > 1) {
 				tgt.logo._x= config["displaywidth"]-tgt.logo._width -10;
-				tgt.logo._y= config["displayheight"]-tgt.logo._height-10;
+				tgt.logo._y = 10;
 			}
 		}
 	};
@@ -149,7 +152,9 @@ class com.jeroenwijering.players.DisplayView extends AbstractView {
 		switch(stt) {
 			case 0:
 				if (config["linkfromdisplay"] == "false" && 
-					config["showicons"] == "true") {
+					config["showicons"] == "true" &&
+					feeder.feed[currentItem]['category'] != 'preroll' &&
+					feeder.feed[currentItem]['category'] != 'postroll') {
 					tgt.playicon._visible = true;
 				}
 				tgt.activity._visible = false;
@@ -237,6 +242,25 @@ class com.jeroenwijering.players.DisplayView extends AbstractView {
 	/** Catches fullscreen escape  **/
 	public function onFullScreen(fs:Boolean) {
 		if(fs == false) { setDimensions(); }
+	};
+
+
+	/** Catches the first display click to reset unmute / displayclick **/
+	private function firstClick() {
+		var ref = this;
+		var tgt = config["clip"].display;
+		tgt.playicon._visible = false;
+		tgt.muteicon._visible = false;
+		if(config["linkfromdisplay"] == "true") {
+			tgt.back.onRelease = function() { 
+				ref.sendEvent("getlink",ref.currentItem); 
+			};
+		} else {
+			tgt.back.onRelease = function() { 
+				ref.sendEvent("playpause",1);
+			};
+		}
+		
 	};
 
 

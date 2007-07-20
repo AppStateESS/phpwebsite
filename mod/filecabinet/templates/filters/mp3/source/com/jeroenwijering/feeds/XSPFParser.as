@@ -2,7 +2,7 @@
 * Parses ATOM feeds and returns an indexed array with all elements.
 *
 * @author	Jeroen Wijering
-* @version	1.1
+* @version	1.3
 **/
 
 
@@ -14,7 +14,7 @@ class com.jeroenwijering.feeds.XSPFParser extends AbstractParser {
 
 
 	/** Contructor **/
-	function XSPFParser(enc:Boolean,pre:String) { super(enc,pre); };
+	function XSPFParser() { super(); };
 
 
 	/** build an array with all regular elements **/
@@ -42,8 +42,8 @@ class com.jeroenwijering.feeds.XSPFParser extends AbstractParser {
 						var nnm = nod.nodeName.toLowerCase();
 						if(elements[nnm]!=undefined) {
 							obj[elements[nnm]] = nod.firstChild.nodeValue;
-						} else if(nnm == "location") {
-							obj["file"] = prefix + nod.firstChild.nodeValue;
+						} else if(nnm == "location"  && obj['type']!="flv") {
+							obj["file"] = nod.firstChild.nodeValue;
 							var typ = obj["file"].substr(-3).toLowerCase();
 							if(obj["file"].substr(0,4) == "rtmp") {
 								obj["type"] == "rtmp";
@@ -67,9 +67,7 @@ class com.jeroenwijering.feeds.XSPFParser extends AbstractParser {
 							obj["type"] = nod.firstChild.nodeValue;
 						}
 					}
-					if(obj["type"] != undefined || enclosures == false) {
-						arr.push(obj);
-					}
+					arr.push(obj);
 				}
 			}
 			tpl = tpl.nextSibling;

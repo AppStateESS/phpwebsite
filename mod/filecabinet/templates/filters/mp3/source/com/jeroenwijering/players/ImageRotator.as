@@ -2,7 +2,7 @@
 * Manages startup and overall control of the Flash Image Rotator
 *
 * @author	Jeroen Wijering
-* @version	1.5
+* @version	1.6
 **/
 
 
@@ -31,10 +31,12 @@ class com.jeroenwijering.players.ImageRotator extends AbstractPlayer {
 		repeat:"true",
 		rotatetime:5,
 		shuffle:"true",
+		volume:80,
 		enablejs:"false",
 		javascriptid:"",
-		linkfromdisplay:"true",
-		linktarget:"_self"
+		linkfromdisplay:"false",
+		linktarget:"_self",
+		useaudio:"true"
 	};
 
 
@@ -53,6 +55,10 @@ class com.jeroenwijering.players.ImageRotator extends AbstractPlayer {
 		if(config["enablejs"] == "true") {
 			var jsv = new JavascriptView(controller,config,feeder);
 			vws.push(jsv);
+		}
+		if(feeder.audio == true) {
+			var bav = new AudioView(controller,config,feeder,false);
+			vws.push(bav);
 		}
 		config["displayheight"] = config["height"];
 		var im1=new ImageModel(vws,controller,config,feeder,

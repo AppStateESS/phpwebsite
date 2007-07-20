@@ -19,7 +19,8 @@ class com.jeroenwijering.utils.Draw {
 	* @param tck	(optional) Stroke Thickness.
 	* @param cls	(optional) Stroke color.
 	**/
-	public static function square(tgt:MovieClip,wth:Number,hei:Number,clr:Number,tck:Number,cls:Number):Void {
+	public static function square(tgt:MovieClip,wth:Number,hei:Number,
+		clr:Number,tck:Number,cls:Number):Void {
 		tgt.clear();
 		if(tck != undefined) { tgt.lineStyle(tck,cls,100); }
 		tgt.beginFill(clr,100);
@@ -46,7 +47,9 @@ class com.jeroenwijering.utils.Draw {
 	* @param yof	(optional) Y offset value.
 	* @param alp	(optional) fill alpha value.
 	**/
-	public static function roundedSquare(tgt:MovieClip,wth:Number,hei:Number,rad:Number,clr:Number,tck:Number,cls:Number,xof:Number,yof:Number,alp:Number):Void {
+	public static function roundedSquare(tgt:MovieClip,wth:Number,hei:Number,
+		rad:Number,clr:Number,tck:Number,cls:Number,
+		xof:Number,yof:Number,alp:Number):Void {
 		tgt.clear();
 		if(tck > 0) { tgt.lineStyle(tck,cls,100); }
 		if(xof == undefined) { xof = yof = 0; }

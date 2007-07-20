@@ -2,7 +2,7 @@
 * Abstract controller class of the MCV pattern, extended by all controlllers.
 *
 * @author	Jeroen Wijering
-* @version	1.6
+* @version	1.7
 **/
 
 
@@ -30,19 +30,33 @@ class com.jeroenwijering.players.AbstractController
 	private var isPlaying:Boolean;
 	/** Number of items played: used for repeat=list **/
 	private var itemsPlayed:Number = 0;
+	/** use SharedObject to save current file, item and volume **/
+	private var playerSO:SharedObject;
 
 
 	/** Constructor. **/
 	function AbstractController(cfg:Object,fed:Object) {
 		config = cfg;
 		feeder = fed;
-		if(config["shuffle"] == "false") {
-			currentItem = 0;
-		} else {
+		if(config["shuffle"] == "true") {
 			randomizer = new Randomizer(feeder.feed);
 			currentItem = randomizer.pick();
+		} else {
+			currentItem = 0;
 		}
 		feeder.addListener(this);
+		playerSO = SharedObject.getLocal("com.jeroenwijerin.players", "/");
+		if(playerSO.data.volume != undefined && _root.volume == undefined) {
+			config["volume"] = playerSO.data.volume;
+		}
+		if(playerSO.data.usecaptions != undefined && 
+			_root.usecaptions == undefined) {
+			config["usecaptions"] = playerSO.data.usecaptions;
+		}
+		if(playerSO.data.useaudio != undefined && 
+			_root.useaudio == undefined) {
+			config["useaudio"] = playerSO.data.useaudio;
+		}
 	};
 
 
@@ -52,16 +66,10 @@ class com.jeroenwijering.players.AbstractController
 
 	/** Receive events from the views. **/
 	public function getEvent(typ:String,prm:Number) {
-		if(feeder.feed[currentItem]["category"] == "commercial" && 
-			(typ=="prev" || typ=="next" || typ=="scrub" || typ=="playitem")){
-			return;
-			trace("controller: not allowed by commercial");
-		} else {
-			trace("controller: "+typ+": "+prm);
-		}
+		trace("controller: "+typ+": "+prm);
 		switch(typ) {
 			case "playpause": 
-				setPlaypause();
+				setPlaypause(prm);
 				break;
 			case "prev":
 				setPrev();
