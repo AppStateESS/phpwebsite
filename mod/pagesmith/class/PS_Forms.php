@@ -144,13 +144,14 @@ class PS_Forms {
             $form->addHidden('sections', $name);
             $tpl[$name] = $section->getContent();
             if ($section->sectype != 'image') {
-                $js['label'] = dgettext('pagesmith', 'Edit');
                 if ($section->sectype == 'header') {
+                    $js['label'] = dgettext('pagesmith', 'Edit header');
                     $js['link_title'] = dgettext('pagesmith', 'Change header');
                     $vars['aop'] = 'edit_page_header';
                     $js['width'] = 400;
                     $js['height'] = 200;
                 } else {
+                    $js['label'] = dgettext('pagesmith', 'Edit text');
                     $js['link_title'] = dgettext('pagesmith', 'Change text');
                     $vars['aop'] = 'edit_page_text';
                     $js['width'] = 800;

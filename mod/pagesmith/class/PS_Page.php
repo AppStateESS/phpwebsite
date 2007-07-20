@@ -163,11 +163,60 @@ class PS_Page {
         $this->last_updated = mktime();
 
         $db = new PHPWS_DB('ps_page');
-        $db->saveObject($this);
+        if (PHPWS_Error::logIfError($db->saveObject($this))) {
+            return false;
+        }
+
+        $this->saveKey();
 
         foreach ($this->_sections as $section) {
             $section->pid = $this->id;
-            $section->save();
+            PHPWS_Error::logIfError($section->save());
+        }
+    }
+
+    function saveKey()
+    {
+        if (empty($this->key_id)) {
+            $key = new Key;
+        } else {
+            $key = new Key($this->key_id);
+            if (PEAR::isError($key->_error)) {
+                $key = new Key;
+            }
+        }
+
+        $key->setModule('pagesmith');
+        $key->setItemName('page');
+        $key->setItemId($this->id);
+        $key->setEditPermission('edit');
+
+        if (MOD_REWRITE_ENABLED) {
+            $key->setUrl('pagesmith/' . $this->id);
+        } else {
+            $key->setUrl('index.php?module=pagesmith&amp;id=' . $this->id);
+        }
+
+        $key->setTitle($this->title);
+        $result = $key->save();
+        if (PHPWS_Error::logIfError($result)) {
+            return false;
+        }
+
+        if (!$this->key_id) {
+            $this->key_id = $key->id;
+            $db = new PHPWS_DB('ps_page');
+            $db->addValue('key_id', $this->key_id);
+            PHPWS_Error::logIfError($db->update());
+        }
+        return true;
+    }
+
+    function flag()
+    {
+        if ($this->key_id) {
+            $key = new Key($this->key_id);
+            $key->flag();
         }
     }
 
@@ -181,6 +230,9 @@ class PS_Page {
         if (!empty($this->title)) {
             Layout::addPageTitle($this->title);
         }
+
+        $this->flag();
+
         return PHPWS_Template::process($this->_content, 'pagesmith', $this->_tpl->page_path . 'page.tpl');
     }
 }
