@@ -346,8 +346,9 @@ class FC_Image_Manager {
     function getClearLink()
     {
         $js_vars['src']      = FC_NONE_IMAGE_SRC;
-        $js_vars['width'] = $this->max_width;
-        $js_vars['height'] = $this->max_height;
+        $js_vars['width']    = $this->max_width;
+        $js_vars['height']   = $this->max_height;
+        $js_vars['alt']      = 
         $js_vars['title']    = $js_vars['alt'] = dgettext('filecabinet', 'No image');
         $js_vars['itemname'] = $this->itemname;
         $js_vars['label']    = dgettext('filecabinet', 'Clear image');
