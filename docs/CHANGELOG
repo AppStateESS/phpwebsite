@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+20 July 2007
++ DBPager - changed 'page' variable to 'pg' to try and prevent
+  problems with mod_rewrite
+
 19 July 2007
 + Database
   o Small change on increment to prevent "column_name + -1". I don't think

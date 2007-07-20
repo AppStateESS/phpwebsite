@@ -179,8 +179,8 @@ class DBPager {
 
         if (isset($_REQUEST['change_page'])) {
             $this->current_page = (int)$_REQUEST['change_page'];
-        } elseif (isset($_REQUEST['page'])) {
-            $this->current_page = (int)$_REQUEST['page'];
+        } elseif (isset($_REQUEST['pg'])) {
+            $this->current_page = (int)$_REQUEST['pg'];
         }
 
         if (!$this->current_page) {
@@ -543,7 +543,7 @@ class DBPager {
         }
 
         $values = $this->getLinkValues();
-        unset($values['page']);
+        unset($values['pg']);
 
         $url_base = $this->getLinkBase();
 
@@ -558,14 +558,14 @@ class DBPager {
         // page one
         if ($current_page != 1) {
             if ($total_pages > 500 && $current_page > 50) {
-                $pageList[] = sprintf('<a href="%s&amp;page=%s%s" title="%s">&lt;&lt;&lt;</a>',$url, $current_page - 50, $anchor, _('Back 50 pages'));
+                $pageList[] = sprintf('<a href="%s&amp;pg=%s%s" title="%s">&lt;&lt;&lt;</a>',$url, $current_page - 50, $anchor, _('Back 50 pages'));
             }
 
             if ($total_pages > 100 && $current_page > 10) {
-                $pageList[] = sprintf('<a href="%s&amp;page=%s%s" title="%s">&lt;&lt;</a>',$url, $current_page - 10, $anchor,  _('Back 10 pages'));
+                $pageList[] = sprintf('<a href="%s&amp;pg=%s%s" title="%s">&lt;&lt;</a>',$url, $current_page - 10, $anchor,  _('Back 10 pages'));
             }
-            $pageList[] = sprintf('<a href="%s&amp;page=%s%s" title="%s">&lt;</a>',$url, $current_page - 1, $anchor, _('Back one page'));
-            $pageList[] = sprintf('<a href="%s&amp;page=1%s">1</a>',$url, $anchor);
+            $pageList[] = sprintf('<a href="%s&amp;pg=%s%s" title="%s">&lt;</a>',$url, $current_page - 1, $anchor, _('Back one page'));
+            $pageList[] = sprintf('<a href="%s&amp;pg=1%s">1</a>',$url, $anchor);
         } else {
             $pageList[] = '[1]';
         }
@@ -579,7 +579,7 @@ class DBPager {
                 if ($current_page != 1) {
                     $divider--;
                     for ($i=2; $i < $current_page; $i++) {
-                        $pageList[] = sprintf('<a href="%s&amp;page=%s%s">%s</a>',$url, $i, $anchor, $i);
+                        $pageList[] = sprintf('<a href="%s&amp;pg=%s%s">%s</a>',$url, $i, $anchor, $i);
                         $divider--;
                     }
 
@@ -589,7 +589,7 @@ class DBPager {
                 $skip = floor($remaining_pages / $divider);
 
                 for ($i=0,$j = $current_page + $skip; $i < $divider; $i++,$j += $skip) {
-                    $pageList[] = sprintf('<a href="%s&amp;page=%s%s">%s</a>',$url, $j, $anchor, $j);
+                    $pageList[] = sprintf('<a href="%s&amp;pg=%s%s">%s</a>',$url, $j, $anchor, $j);
                 }
             } else {
                 $beginning_pages = $current_page - 1;
@@ -610,33 +610,33 @@ class DBPager {
                     $back_skip = round($remaining_pages / $divider);
                 }
                 for ($i=0,$j = 1 + $front_skip; $i < $divider - 1 && $j < $current_page; $i++,$j += $front_skip) {
-                    $pageList[] = sprintf('<a href="%s&amp;page=%s%s">%s</a>',$url, $j, $anchor, $j);
+                    $pageList[] = sprintf('<a href="%s&amp;pg=%s%s">%s</a>',$url, $j, $anchor, $j);
                 }
 
                 $pageList[] = "[$current_page]";
 
                 if ($back_skip) {
                     for ($i=0,$j = $current_page + $back_skip; $i < $divider - 1 && $j < $total_pages; $i++,$j += $back_skip) {
-                        $pageList[] = sprintf('<a href="%s&amp;page=%s%s">%s</a>',$url, $j, $anchor, $j);
+                        $pageList[] = sprintf('<a href="%s&amp;pg=%s%s">%s</a>',$url, $j, $anchor, $j);
                     }
                 }
             }
 
         } else {
             for($i=2; $i < $total_pages; $i++) {
-                $pageList[] = sprintf('<a href="%s&amp;page=%s%s">%s</a>',$url, $i, $anchor, $i);
+                $pageList[] = sprintf('<a href="%s&amp;pg=%s%s">%s</a>',$url, $i, $anchor, $i);
             }
         }
 
         if ($total_pages != $current_page) {
-            $pageList[] = sprintf('<a href="%s&amp;page=%s%s">%s</a>',$url, $total_pages, $anchor, $total_pages);
-            $pageList[] = sprintf('<a href="%s&amp;page=%s%s" title="%s">&gt;</a>',$url, $current_page + 1, $anchor, _('Forward one page'));
+            $pageList[] = sprintf('<a href="%s&amp;pg=%s%s">%s</a>',$url, $total_pages, $anchor, $total_pages);
+            $pageList[] = sprintf('<a href="%s&amp;pg=%s%s" title="%s">&gt;</a>',$url, $current_page + 1, $anchor, _('Forward one page'));
             if ($total_pages > 100 && ($total_pages - 10) >= $current_page) {
-                $pageList[] = sprintf('<a href="%s&amp;page=%s%s" title="%s">&gt;&gt;</a>',$url, $current_page + 10, $anchor, _('Forward 10 pages'));
+                $pageList[] = sprintf('<a href="%s&amp;pg=%s%s" title="%s">&gt;&gt;</a>',$url, $current_page + 10, $anchor, _('Forward 10 pages'));
             }
             
             if ($total_pages > 500 && ($total_pages - 50) >= $current_page) {
-                $pageList[] = sprintf('<a href="%s&amp;page=%s%s" title="%s">&gt;&gt;&gt;</a>',$url, $current_page + 50, $anchor, _('Forward 50 pages'));
+                $pageList[] = sprintf('<a href="%s&amp;pg=%s%s" title="%s">&gt;&gt;&gt;</a>',$url, $current_page + 50, $anchor, _('Forward 50 pages'));
             }
         } else {
             $pageList[] = "[$current_page]";
@@ -703,7 +703,7 @@ class DBPager {
             $this->limit = DBPAGER_DEFAULT_LIMIT;
         }
 
-        $values['page'] = $this->current_page;
+        $values['pg'] = $this->current_page;
         $values['limit'] = $this->limit;
 
         if (!empty($this->search)) {
