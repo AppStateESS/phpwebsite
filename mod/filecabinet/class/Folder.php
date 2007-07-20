@@ -401,6 +401,7 @@ class Folder {
         if ($this->ftype == IMAGE_FOLDER) {
             PHPWS_Core::initModClass('filecabinet', 'Image.php');
             $db = new PHPWS_DB('images');
+            $db->addWhere('parent_id', 0);
             $obj_name = 'PHPWS_Image';
         } elseif ($this->ftype == DOCUMENT_FOLDER) {
             PHPWS_Core::initModClass('filecabinet', 'Document.php');

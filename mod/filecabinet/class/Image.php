@@ -30,6 +30,11 @@ if (!defined('FC_THUMBNAIL_HEIGHT')) {
     define('FC_THUMBNAIL_HEIGHT', 100);
  }
 
+if (!defined('FC_MIN_POPUP_SIZE')) {
+    define('FC_MIN_POPUP_SIZE', 400);
+ }
+
+
 class PHPWS_Image extends File_Common {
     var $width            = NULL;
     var $height           = NULL;
@@ -148,7 +153,7 @@ class PHPWS_Image extends File_Common {
 
         $final_width = $final_height = 0;
 
-        for ($lmt = 200; $lmt += 50; $lmt < 1300) {
+        for ($lmt = FC_MIN_POPUP_SIZE; $lmt += 50; $lmt < 1300) {
             if (!$final_width && $padded_width < $lmt) {
                 $final_width = $lmt;
             }

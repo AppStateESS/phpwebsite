@@ -356,7 +356,7 @@ Example: mkdir phpwebsite/files/filecabinet/multimedia/</pre>';
         }
 
         $source_dir = PHPWS_SOURCE_DIR . 'mod/filecabinet/templates/filters/';
-        $dest_dir   = './templates/filecabinet/filters/';
+        $dest_dir   = PHPWS_Boost::getHomeDir() . 'templates/filecabinet/filters/';
 
         if (!is_dir($dest_dir)) {
             if (!PHPWS_File::copy_directory($source_dir, $dest_dir)) {
@@ -423,8 +423,6 @@ Example: mkdir phpwebsite/files/filecabinet/multimedia/</pre>';
 + Multimedia files can be clipped and pasted via SmartTags.
 </pre>
 ';
-
-
 
     case version_compare($version, '1.2.0', '<'):
         $content[] = '<pre>';

@@ -1,9 +1,13 @@
 Version 1.2.0 Unreleased
 -------------------------------------------------------------
 20 July 2007
++ Pinned image folders only show original thumbnails
++ Added minimum pop up window size
 + Added alt tag to no image
 + Fixed clear image link
-+ Updated file: javascript/clear_image/head.js
++ Updated mp3player
++ Added missing branch directory to copy process in 1.1.0 update
++ Updated file: javascript/clear_image/head.js, conf/config.php
 
 19 July 2007
 + Added missing "return true" to the install.php
