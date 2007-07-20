@@ -1,5 +1,6 @@
 20 July 2007
 + Added key saving.
++ Added option to delete pages.
 
 28 June 2007
 + Fixed install.sql

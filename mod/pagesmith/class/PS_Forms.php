@@ -128,6 +128,7 @@ class PS_Forms {
         $pager->setModule('pagesmith');
         $pager->setTemplate('page_list.tpl');
         $pager->addRowTags('row_tags');
+        $pager->setEmptyMessage(dgettext('pagesmith', 'No pages have been created.'));
 
         $this->ps->title   = dgettext('pagesmith', 'Pages');
         $this->ps->content = $pager->get();

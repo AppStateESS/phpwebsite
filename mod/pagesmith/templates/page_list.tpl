@@ -1,3 +1,4 @@
+{TOTAL_ROWS}
 <table width="99%" cellpadding="5">
   <tr>
     <th>{ID_SORT} {ID_LABEL}</th>
@@ -12,3 +13,9 @@
   </tr>
 <!-- END listrows -->
 </table>
+{EMPTY_MESSAGE}
+<div align="center">
+  <b>{PAGE_LABEL}</b><br />
+  {PAGES}<br />
+  {LIMITS}
+</div>

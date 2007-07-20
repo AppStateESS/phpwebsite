@@ -138,10 +138,10 @@ class PS_Page {
     {
         $vars['id']  = $this->id;
         $vars['aop'] = 'delete_page';
-        $js['ADDRESS'] = PHPWS_Text::linkAddress('pagesmith', $vars);
+        $js['ADDRESS'] = PHPWS_Text::linkAddress('pagesmith', $vars,true);
         $js['QUESTION'] = dgettext('pagesmith', 'Are you sure you want to delete this page?');
+        $js['LINK'] = dgettext('pagesmith', 'Delete');
         return javascript('confirm', $js);
-
     }
 
     function editLink($label=null)
@@ -234,6 +234,18 @@ class PS_Page {
         $this->flag();
 
         return PHPWS_Template::process($this->_content, 'pagesmith', $this->_tpl->page_path . 'page.tpl');
+    }
+
+    function delete()
+    {
+        $db = new PHPWS_DB('ps_page');
+        $db->addWhere('id', $this->id);
+        $result = $db->delete();
+        if (PHPWS_Error::logIfError($result)) {
+            return false;
+        }
+        Key::drop($this->key_id);
+        return true;
     }
 }
 

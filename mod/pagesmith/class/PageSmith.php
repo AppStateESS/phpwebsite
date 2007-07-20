@@ -61,6 +61,16 @@ class PageSmith {
             $this->forms->editPage();
             break;
 
+        case 'delete_page':
+            if (!Current_User::authorized('pagesmith', 'delete')) {
+                Current_User::disallow();
+            }
+            $this->loadPage();
+            $this->page->delete();
+            $this->loadForms();
+            $this->forms->pageList();
+            break;
+
         case 'edit_page_header':
             $this->loadForms();
             $this->loadPage();
