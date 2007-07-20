@@ -1,5 +1,10 @@
 Version 1.2.0 Unreleased
 -------------------------------------------------------------
+20 July 2007
++ Added alt tag to no image
++ Fixed clear image link
++ Updated file: javascript/clear_image/head.js
+
 19 July 2007
 + Added missing "return true" to the install.php
 + Added upper limit on image dimension should a module have a high
