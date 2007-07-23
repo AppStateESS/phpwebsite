@@ -20,4 +20,10 @@ define('PHOTOALBUM_DEFAULT_SORT', 1);
 define('PHOTOALBUM_MAX_WIDTH', 640);
 define('PHOTOALBUM_MAX_HEIGHT', 800);
 
+/* auto-resize originals, true or false */
+define("PHOTOALBUM_RS", TRUE);
+/* max width/height of resized originals */
+define("PHOTOALBUM_RS_WIDTH", 500);
+define("PHOTOALBUM_RS_HEIGHT", 500);
+
 ?>

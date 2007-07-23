@@ -4,6 +4,7 @@
    * @version $Id: Album.php 28 2006-11-15 16:26:47Z matt $
    * @author  Steven Levin
    * @modified Matthew McNaney <mcnaney at gmail dot com>
+   * @modified Verdon Vaillancourt
    */
 
 require_once(PHPWS_SOURCE_DIR . 'core/class/Item.php');
@@ -530,6 +531,7 @@ class PHPWS_Album extends PHPWS_Item {
                 }
 
                 $name = PHPWS_File::nameToSafe($_FILES['Photo']['name'][$key]);
+                $name = strtolower($name);
                 $file = PHOTOALBUM_DIR . $this->getId() . '/' . $name;
                 if(is_file($file)) {
                     $name = time() . '_' . $name;
@@ -554,6 +556,14 @@ class PHPWS_Album extends PHPWS_Item {
                                 $this->_batch[$key]['tnname'] = $thumbnail[0];
                                 $this->_batch[$key]['tnwidth'] = $thumbnail[1];
                                 $this->_batch[$key]['tnheight'] = $thumbnail[2];
+                            }
+                            if(PHOTOALBUM_RS) {
+                                $resized = PHPWS_File::makeThumbnail($this->_batch[$key]['name'], $dir,
+                                                                     $dir, PHOTOALBUM_RS_WIDTH, PHOTOALBUM_RS_HEIGHT, TRUE);
+                                if(is_file($dir . $resized[0])) {
+                                    $this->_batch[$key]['width'] = $resized[1];
+                                    $this->_batch[$key]['height'] = $resized[2];
+                                }
                             }
                         }
                     } else {

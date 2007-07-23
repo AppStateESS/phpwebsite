@@ -3,6 +3,7 @@
   /**
    * @version $Id: Photo.php 20 2006-10-18 18:36:05Z matt $
    * @author  Steven Levin <steven at NOSPAM tux[dot]appstate[dot]edu>
+   * @modified Verdon Vaillancourt
    */
 
 define('PHOTOALBUM_DUPLICATE_IMAGE', 2);
@@ -325,6 +326,16 @@ class PHPWS_Photo extends PHPWS_Item {
                     return;
                 }         
             } else {
+                if(PHOTOALBUM_RS) {
+                    $resized = PHPWS_File::makeThumbnail($this->_name, $dir, $dir,
+                                                         PHOTOALBUM_RS_WIDTH, PHOTOALBUM_RS_HEIGHT, TRUE);
+                    if(!is_array($resized))
+                        $resized->message("CNT_photoalbum");
+                    if(is_file(PHOTOALBUM_DIR . $this->_album . "/" . $resized[0])) {
+                        $this->_width = $resized[1];
+                        $this->_height = $resized[2];
+                    }
+                }                
                 $_SESSION['PHPWS_AlbumManager']->message = dgettext('photoalbum', 'There was a problem uploading the specified image.');
                 $_REQUEST['PHPWS_Photo_op'] = 'edit';
                 $this->action();
