@@ -11,11 +11,11 @@ $rows = 20;
 $cols = 70;
 
 if (!empty($data['WIDTH'])) {
-    $cols = floor($data['WIDTH'] / 6);
+    $cols = floor($data['WIDTH'] / 7);
  }
 
 if (!empty($data['HEIGHT'])) {
-    $rows = floor($data['HEIGHT'] / 21);
+    $rows = floor($data['HEIGHT'] / 19);
  }
 
 $data['rows'] = $rows;

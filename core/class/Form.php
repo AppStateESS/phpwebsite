@@ -1265,7 +1265,7 @@ class PHPWS_Form {
         return $element->get();
     }
 
-    function formTextArea ($name, $value=null, $rows=5, $cols=40, $label=null)
+    function formTextArea ($name, $value=null, $rows=DFLT_ROWS, $cols=DFLT_COLS, $label=null)
     {
         $element = new Form_TextArea($name, $value);
         $element->setRows($rows);
@@ -1516,6 +1516,7 @@ class Form_TextArea extends Form_Element {
             $t->fix_anchors   = false;
             $text = $t->getPrint();
             $editor = new Editor($this->name, $text, $this->id);
+
             if ($this->_editor_dm) {
                 $editor->width = (int)$this->_editor_dm[0];
                 $editor->height = (int)$this->_editor_dm[1];

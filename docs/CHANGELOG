@@ -2,6 +2,14 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+23 July 2007
++ Default rows and columns for text areas now comes for the form
+config file.
++ Javascript
+  o Tinymce editor - changed method for determining height and width
+
++ Updated file: formConfig.php
+
 20 July 2007
 + DBPager - changed 'page' variable to 'pg' to try and prevent
   problems with mod_rewrite
