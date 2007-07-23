@@ -1,3 +1,7 @@
+23 July 2007
++ default item id on permission check functions is now zero instead of
+  null. This will make checking permissions a little easier on new items.
+
 19 July 2007
 + Bug #1690657 - Changed group select js property to onclick instead
   of onchange. Thanks singletrack.

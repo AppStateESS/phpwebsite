@@ -44,7 +44,7 @@ class Current_User {
      *                                     priviledges for that module regardless of 
      *                                     module, subpermission, or item id
      */
-    function allow($module, $subpermission=NULL, $item_id=NULL, $itemname=NULL, $unrestricted_only=false)
+    function allow($module, $subpermission=NULL, $item_id=0, $itemname=NULL, $unrestricted_only=false)
     {
         if ($unrestricted_only && Current_User::isRestricted($module)) {
                 return false;
@@ -63,7 +63,7 @@ class Current_User {
      *                                     priviledges for that module regardless of 
      *                                     module, subpermission, or item id
      */
-    function authorized($module, $subpermission=NULL, $item_id=NULL, $itemname=NULL, $unrestricted_only=false)
+    function authorized($module, $subpermission=NULL, $item_id=0, $itemname=NULL, $unrestricted_only=false)
     {
         if ($unrestricted_only && Current_User::isRestricted($module)) {
                 return false;

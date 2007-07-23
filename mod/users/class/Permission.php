@@ -91,7 +91,7 @@ class Users_Permission {
         }
     }
 
-    function allow($module, $subpermission=NULL, $item_id=NULL, $itemname=NULL)
+    function allow($module, $subpermission=NULL, $item_id=0, $itemname=NULL)
     {
         // If permissions object is not set, load it
         if (!isset($this->permissions[$module])) {
@@ -113,7 +113,7 @@ class Users_Permission {
 
                 $allow = $this->permissions[$module]['permissions'][$subpermission];
                 if ((bool)$allow) {
-                    if (isset($item_id)) {
+                    if ($item_id) {
                         // subpermission is set as is item id
                         return $this->allowedItem($module, $item_id, $itemname);
                     } else {
@@ -125,7 +125,7 @@ class Users_Permission {
                     return FALSE;
                 }
             } else {
-                if (isset($item_id)) {
+                if ($item_id) {
                     // subpermission is not set and item id is set
                     return $this->itemIsAllowed($module, $item_id, $itemname);
                 } else {

@@ -132,15 +132,12 @@ class User_Form {
 
         $vars['action']   = 'admin';
         if (!$group->user_id) {
-
             $vars['group_id'] = $group->id;
             $vars['command']  = 'manageMembers';
             $links[] = PHPWS_Text::secureLink(dgettext('users', 'Members'), 'users', $vars);
             
             $vars['command']  = 'edit_group';
             $links[] = PHPWS_Text::secureLink(dgettext('users', 'Edit'), 'users', $vars);
-            
-
         } else {
             $vars['user_id'] = $group->user_id;
             $vars['command'] = 'editUser';
