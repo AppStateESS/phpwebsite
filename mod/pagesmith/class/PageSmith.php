@@ -5,6 +5,7 @@
    */
 
 PHPWS_Core::requireInc('pagesmith', 'error_defines.php');
+PHPWS_Core::requireConfig('pagesmith');
 
 class PageSmith {
     var $forms   = null;
@@ -48,6 +49,9 @@ class PageSmith {
         case 'edit_page':
             $this->loadForms();
             $this->loadPage();
+            if (!Current_User::allow('pagesmith', 'edit_page', $this->page->id)) {
+                Current_User::disallow();
+            }
             $this->page->loadSections(true, true);
             $this->forms->pageLayout();
             break;
@@ -62,7 +66,7 @@ class PageSmith {
             break;
 
         case 'delete_page':
-            if (!Current_User::authorized('pagesmith', 'delete')) {
+            if (!Current_User::authorized('pagesmith', 'delete_page')) {
                 Current_User::disallow();
             }
             $this->loadPage();
@@ -167,6 +171,10 @@ class PageSmith {
         $this->page->loadSections(false);
 
         $this->page->title = strip_tags($_POST['title']);
+
+        if (empty($this->page->title)) {
+            $this->page->title = dgettext('pagesmith', '(Untitled)');
+        }
 
         foreach ($_POST['sections'] as $section_name) {
             $section = & $this->page->_sections[$section_name];

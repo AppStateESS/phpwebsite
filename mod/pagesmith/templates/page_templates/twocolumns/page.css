@@ -1,6 +1,11 @@
-div#twocolumns-image1 img {
-   text-align : center;
+td.twocolumns-col {
+   width : 50%;
 }
+
+td.twocolumns-col div#twocolumns-image1, 
+td.twocolumns-col div#twocolumns-image2{
+   text-align : center;
+} 
 
 div#twocolumns-page {
    background-color : white;

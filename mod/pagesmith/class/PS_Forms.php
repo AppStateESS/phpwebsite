@@ -49,30 +49,39 @@ class PS_Forms {
 
     function pageLayout()
     {
+        $page = & $this->ps->page;
+
+        $pg_tpl_name = & $page->_tpl->name;
         $this->ps->killSaved();
+
         $form = new PHPWS_Form('pagesmith');
         $form->addHidden('module', 'pagesmith');
         $form->addHidden('aop', 'post_page');
-        $form->addHidden('tpl', $this->ps->page->template);
+        $form->addHidden('tpl', $page->template);
 
-        $form->addText('title', $this->ps->page->title);
+        $form->addText('title', $page->title);
         $form->setSize('title', 40, 255);
+        $form->setExtra('title', 'onchange="update_title()"');
         $form->setLabel('title', dgettext('pagesmith', 'Page title'));
 
-        if ($this->ps->page->id) {
+        if ($page->id) {
             $this->ps->title = dgettext('pagesmith', 'Update page');
-            $form->addHidden('id', $this->ps->page->id);
+            $form->addHidden('id', $page->id);
         } else {
             $this->ps->title = dgettext('pagesmith', 'Create page');
         }
 
-        if (empty($this->ps->page->_tpl) || $this->ps->page->_tpl->error) {
+        if (empty($page->_tpl) || $page->_tpl->error) {
             $this->ps->content = dgettext('pagesmith', 'Unable to load page template.');
             return;
         }
         $form->addSubmit('submit', dgettext('pagesmith', 'Save page'));
         $this->pageTemplateForm($form);
         $tpl = $form->getTemplate();
+
+        $jsvars['page_title_input'] = 'pagesmith_title';
+        $jsvars['page_title_id'] = sprintf('%s-page-title', $pg_tpl_name);
+        javascript('modules/pagesmith/pagetitle', $jsvars);
 
         $this->ps->content = PHPWS_Template::process($tpl, 'pagesmith', 'page_form.tpl');
     }
@@ -137,11 +146,13 @@ class PS_Forms {
 
     function pageTemplateForm(&$form)
     {
-        $this->ps->page->_tpl->loadStyle();
-        $vars['id'] = $this->ps->page->id;
-        $vars['tpl'] = $this->ps->page->template;
+        $page = & $this->ps->page;
 
-        foreach ($this->ps->page->_sections as $name=>$section) {
+        $page->_tpl->loadStyle();
+        $vars['id'] = $page->id;
+        $vars['tpl'] = $page->template;
+
+        foreach ($page->_sections as $name=>$section) {
             $form->addHidden('sections', $name);
             $tpl[$name] = $section->getContent();
             if ($section->sectype != 'image') {
@@ -160,19 +171,25 @@ class PS_Forms {
                 }
 
                 $vars['section'] = $name;
-                $js['type'] = 'button';
+                //                $js['type'] = 'button';
+                $js['label'] = PS_EDIT;
                 $js['address'] = PHPWS_Text::linkAddress('pagesmith', $vars, 1);
                 $tpl[$name . '_edit'] = javascript('open_window', $js);
 
                 // section session?
-                if ($this->ps->page->id) {
+                if ($page->id) {
                     $form->addHidden($name, htmlspecialchars($section->content));
                 } else {
                     $form->addHidden($name, '');
                 }
             }
         }
-        $template_file = $this->ps->page->_tpl->page_path . 'page.tpl';
+        $template_file = $page->_tpl->page_path . 'page.tpl';
+
+        if (empty($page->title)) {
+            $tpl['page_title'] = dgettext('pagesmith', 'Page Title (edit above)');
+        }
+
         $pg_tpl =  PHPWS_Template::process($tpl, 'pagesmith', $template_file);
 
         $form->addTplTag('PAGE_TEMPLATE', $pg_tpl);

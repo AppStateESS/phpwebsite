@@ -1,0 +1,73 @@
+Creating Page Templates for PageSmith
+by Matthew McNaney
+
+
+All page templates should reside in the page_templates directory under
+the templates/pagesmith directory:
+
+For example, if you page template was named my_template
+
+templates/pagesmith/page_templates/my_template
+
+PageSmith's default templates reside in
+mod/pagesmith/templates/page_templates. Should they get updated, the
+results will be copied into the templates/pagesmith/page_templates
+directory.
+
+
+Page Template files
+----------------------
+All files related to the page template reside in these directories.
+
+
+structure.xml
+-------------
+Your page template directory requires a structure.xml file. The
+following example is from the simple template:
+
+<?xml version="1.0"?>
+<template>
+<title>Simple</title>
+<summary>One large text area with right float block.</summary>
+<thumbnail>simple.png</thumbnail>
+<style>page.css</style>
+<structure>
+   <section>
+      <name>header1</name>
+      <type>header</type>
+   </section>
+   <section>
+      <name>text1</name>
+      <type>text</type>
+   </section>
+   <section>
+      <name>image1</name>
+      <type>image</type>
+      <width>300</width>
+      <height>300</height>
+   </section>
+</structure>
+</template>
+
+The <title> appears over the <thumbnail> on the selection screen. The
+<summary> describes the page layout. If present, the <style> tag
+indicates which style sheet to use when the page is displayed.
+
+The last tag, <structure> contains the <section>s that make up the
+page template.
+
+Each <section> contains at least its <name> and <type>. The <name>
+labels an area of the page template. The <type> tells PageSmith what
+kind of section to expect when editing and displaying.
+
+If the section is an image, the maximum <width> and <height> should be
+set as well.
+
+
+page.tpl
+------------
+The page template itself should be named 'page.tpl'. The template
+needs to be specially contructed so that it will not only display
+properly, but also so site users can edit it.
+
+

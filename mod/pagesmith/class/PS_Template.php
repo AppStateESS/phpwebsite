@@ -89,7 +89,8 @@ class PS_Template {
     function pickTpl()
     {
         $tpl['THUMBNAIL'] = $this->getPickLink();
-        $tpl['TITLE'] = $this->title;
+        $tpl['TITLE']     = $this->title;
+        $tpl['SUMMARY']   = $this->summary;
         return $tpl;
     }
 

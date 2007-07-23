@@ -1,3 +1,11 @@
+div#pick-templates div.ps-tpl {
+    text-align : center;
+    display : inline;
+    float : left;
+    width : 180px;
+    margin-left : 10px;
+}
+
 div#pick-templates img {
     border : 1px black solid;
     margin-right : 10px;
