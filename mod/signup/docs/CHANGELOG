@@ -1,3 +1,6 @@
+23 July 2007
++ Added missing key purge to sheet delete.
+
 10 July 2007
 + added edit_sheet permission to config file
 + Edit slot link works

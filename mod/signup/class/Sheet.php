@@ -88,6 +88,8 @@ class Signup_Sheet {
         $db->addWhere('id', $this->id);
         PHPWS_Error::logIfError($db->delete());
 
+        PHPWS_Key::drop($this->key_id);
+
         $db = new PHPWS_DB('signup_slots');
         $db->addWhere('sheet_id', $this->id);
         PHPWS_Error::logIfError($db->delete());
