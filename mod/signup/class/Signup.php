@@ -78,6 +78,15 @@ class Signup {
             exit();
             break;
 
+        case 'slot_listing':
+            if (!Current_User::authorized('signup')) {
+                Current_User::disallow();
+            }
+            $this->loadSheet();
+            $this->slotListing();
+            exit();
+            break;
+
         case 'csv_applicants':
             if (!Current_User::authorized('signup')) {
                 Current_User::disallow();
@@ -648,9 +657,8 @@ class Signup {
         }
     }
 
-    function slotCheckReport()
+    function slotListing()
     {
-        $this->loadSheet();
         $slots = $this->sheet->getAllSlots();
         
         $tpl = new PHPWS_Template('signup');

@@ -1,4 +1,4 @@
-{PRINT} | {CSV}
+{PRINT} | {CSV} | {SLOT_LISTING}
 <table cellpadding="5" width="100%">
   <tr>
     <th>{LAST_NAME_SORT} {LAST_NAME_LABEL}</th>

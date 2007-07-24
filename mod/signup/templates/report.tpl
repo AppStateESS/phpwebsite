@@ -17,7 +17,7 @@ window.print();
 
 body {
    font-family : sans, sans-serif, helvetica;
-   font-size : 12pt;
+   font-size : 10pt;
 }
 
 h1 {

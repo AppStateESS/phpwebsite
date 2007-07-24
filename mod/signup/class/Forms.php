@@ -210,14 +210,20 @@ class Signup_Forms {
         $page_tags['CSV'] = PHPWS_Text::secureLink(dgettext('signup', 'CSV file'), 'signup', $vars);
 
         $vars['aop'] = 'print_applicants';
-
         $js['label'] = dgettext('signup', 'Print list');
         $js['width'] = '1024';
         $js['height'] = '768';
         $js['menubar'] = 'yes';
         $js['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
-
         $page_tags['PRINT'] = javascript('open_window', $js);
+
+
+        $vars['aop'] = 'slot_listing';
+        $js['label'] = dgettext('signup', 'Slot listing');
+        $js['menubar'] = 'yes';
+        $js['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
+        $page_tags['SLOT_LISTING'] = javascript('open_window', $js);
+
 
         $page_tags['LAST_NAME_LABEL'] = dgettext('signup', 'Last name');
         $page_tags['FIRST_NAME_LABEL'] = dgettext('signup', 'First name');
