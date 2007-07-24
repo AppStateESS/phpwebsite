@@ -132,8 +132,22 @@ class Signup_Slot {
         return implode(' | ', $links);
     }
 
+
     function showPeeps()
     {
+        $sheet = new Signup_Sheet($this->sheet_id);
+        $total_slots = $sheet->totalSlotsFilled();
+        $all_slots = $sheet->getAllSlots();
+
+        foreach ($all_slots as $slot) {
+            if ($slot->id == $this->id) {
+                continue;
+            } elseif (!isset($total_slots[$slot->id]) ||
+                      $slot->openings <= $total_slots[$slot->id]) {
+                $options[$slot->id] = $slot->title;
+            }
+        }
+
         if ($this->_peeps) {
             $jsconf['QUESTION'] = dgettext('signup', 'Are you sure you want to delete this person from their signup slot?');
             $jsconf['LINK'] = dgettext('signup', 'Delete');
@@ -145,6 +159,7 @@ class Signup_Slot {
                 $subtpl['LAST_NAME'] = $peep->last_name;
                 $subtpl['EMAIL'] = $peep->getEmail();
                 $subtpl['PHONE'] = $peep->getPhone();
+                $subtpl['ORGANIZATION'] = $peep->organization;
 
                 $vars['peep_id'] = $peep->id;
                 $vars['aop']     = 'edit_slot_peep';
@@ -156,16 +171,35 @@ class Signup_Slot {
                 $jsconf['ADDRESS'] = PHPWS_Text::linkAddress('signup', $vars, true);
                 $links[] = javascript('confirm', $jsconf);
 
-                $links[] = '<select><option>Move it</option></select>';
                 $subtpl['ACTION'] = implode(' | ', $links);
+
+                if (!empty($options)) {
+                    $form = new PHPWS_Form;
+                    $form->addHidden('module', 'signup');
+                    $form->addHidden('aop', 'move_peep');
+                    $form->addHidden('peep_id', $peep->id);
+                    $form->addSelect('mv_slot', $options);
+                    $form->addSubmit(dgettext('signup', 'Go'));
+                    $tmptpl = $form->getTemplate();
+                    $subtpl['MOVE'] = implode("\n", $tmptpl);
+                } else {
+                    $subtpl['MOVE'] = dgettext('signup', 'No open slots');
+                }
+
                 $tpl['peep-row'][] = $subtpl;
+
+
             }
 
-            $tpl['NAME_LABEL']   = dgettext('signup', 'Name');
-            $tpl['EMAIL_LABEL']  = dgettext('signup', 'Email');
-            $tpl['PHONE_LABEL']  = dgettext('signup', 'Phone');
-            $tpl['ACTION_LABEL'] = dgettext('signup', 'Action');
-            
+
+
+            $tpl['NAME_LABEL']         = dgettext('signup', 'Name');
+            $tpl['EMAIL_LABEL']        = dgettext('signup', 'Email');
+            $tpl['PHONE_LABEL']        = dgettext('signup', 'Phone');
+            $tpl['ACTION_LABEL']       = dgettext('signup', 'Action');
+            $tpl['ORGANIZATION_LABEL'] = dgettext('signup', 'Organization');
+            $tpl['MOVE_LABEL']         = dgettext('signup', 'Move');
+
             return PHPWS_Template::process($tpl, 'signup', 'peeps.tpl');
         }
     }

@@ -126,12 +126,7 @@ class Signup_Sheet {
         $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Slots'), 'signup', $vars);
 
         $vars['aop'] = 'report';
-        $jswin['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
-        $jswin['label'] = dgettext('signup', 'Report');
-        $jswin['width'] = 640;
-        $jswin['height'] = 480;
-
-        $links[] = javascript('open_window', $jswin);
+        $links[] = PHPWS_Text::secureLink(dgettext('signup', 'Report'), 'signup', $vars);
 
         $vars['aop'] = 'delete_sheet';
         $js['ADDRESS'] = PHPWS_Text::linkAddress('signup', $vars, true);
@@ -193,6 +188,10 @@ class Signup_Sheet {
         return true;
     }
 
+    /**
+     * Returns an array indexed by slot id containing the number
+     * of slots filled so far.
+     */
     function totalSlotsFilled()
     {
         $db = new PHPWS_DB('signup_peeps');

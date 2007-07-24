@@ -69,6 +69,23 @@ class Signup {
             $this->loadForm('edit_slot_popup');
             break;
 
+        case 'print_applicants':
+            if (!Current_User::authorized('signup')) {
+                Current_User::disallow();
+            }
+            $this->loadSheet();
+            $this->printApplicants();
+            exit();
+            break;
+
+        case 'csv_applicants':
+            if (!Current_User::authorized('signup')) {
+                Current_User::disallow();
+            }
+            $this->loadSheet();
+            $this->csvExport();
+            exit(); 
+            break;
 
         case 'edit_slots':
             $this->loadSheet();
@@ -161,8 +178,8 @@ class Signup {
             if (!Current_User::authorized('signup')) {
                 Current_User::disallow();
             }
-            // prints report and exits
-            $this->report();
+            $this->loadSheet();
+            $this->loadForm('report');
             break;
         }
 
@@ -366,8 +383,7 @@ class Signup {
             $this->forwardMessage(dgettext('signup', 'An error occurred when trying to save your application.'), dgettext('signup', 'Sorry'));
             $this->sendMessage();
             return false;
-            // delete the FALSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        } elseif (false && $previous) {
+        } elseif ($previous) {
             $this->forwardMessage(dgettext('signup', 'You cannot signup for more than one slot.'), dgettext('signup', 'Sorry'));
             $this->sendMessage();
             return false;
@@ -482,6 +498,12 @@ class Signup {
         
         if (empty($this->peep->phone) || strlen($this->peep->phone) < 7) {
             $errors[] = dgettext('signup', 'Please enter a contact phone number.');
+        }
+
+        if (empty($_POST['organization'])) {
+            $this->organization = null;
+        } else {
+            $this->peep->setOrganization($_POST['organization']);
         }
 
         if (isset($errors)) {
@@ -606,7 +628,12 @@ class Signup {
                                                       'phone'     => $this->peep->phone);
                     return;
                 }
-            }
+            }        $js['label'] = dgettext('signup', 'Print list');
+        $js['width'] = '1024';
+        $js['height'] = '768';
+        $js['menubar'] = 'yes';
+        $js['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
+
 
             $this->peep->registered = 1;
             if (PHPWS_Error::logIfError($this->peep->save())) {
@@ -621,7 +648,7 @@ class Signup {
         }
     }
 
-    function report()
+    function slotCheckReport()
     {
         $this->loadSheet();
         $slots = $this->sheet->getAllSlots();
@@ -664,6 +691,80 @@ class Signup {
         echo $tpl->get();
         exit();
     }
+
+    function csvExport()
+    {
+        PHPWS_Core::initModClass('signup', 'Peeps.php');
+
+        $db = new PHPWS_DB('signup_peeps');
+        $db->addWhere('sheet_id', $this->sheet->id);
+        $db->addWhere('registered', 1);
+
+        $result = $db->getObjects('Signup_Peep');
+        $data[] = sprintf('"%s","%s","%s","%s","%s"',
+                          dgettext('signup', 'firstname'), dgettext('signup', 'lastname'),
+                          dgettext('signup', 'phone'), dgettext('signup', 'email'),
+                          dgettext('signup', 'organization'));
+        if (!empty($result)) {
+            foreach ($result as $peep) {
+                $data[] = sprintf('"%s","%s","%s","%s","%s"',
+                        $peep->first_name, $peep->last_name,
+                        $peep->getPhone(), $peep->email,
+                        $peep->organization);
+            }
+        }
+
+        $content = implode("\n", $data);
+        header('Content-type: text/csv');
+        header('Content-Disposition: attachment; filename="report.csv"');
+        echo $content;
+        exit();
+    }
+
+    function printApplicants()
+    {
+        PHPWS_Core::initModClass('signup', 'Peeps.php');
+
+        $db = new PHPWS_DB('signup_peeps');
+        $db->addWhere('sheet_id', $this->sheet->id);
+        $db->addWhere('registered', 1);
+        if (isset($_REQUEST['orderby'])) {
+            $db->addOrder($_REQUEST['orderby'] . ' ' . $_REQUEST['orderby_dir']);
+        }
+
+        if (isset($_REQUEST['search'])) {
+            $search = explode(' ', $_REQUEST['search']);
+            foreach ($search as $s) {
+                $db->addWhere('first_name', "%$s%", 'like', 'or', 1);
+                $db->addWhere('last_name',  "%$s%", 'like', 'or', 1);
+                $db->addWhere('organization',  "%$s%", 'like', 'or', 1);
+            }
+        }
+
+        $result = $db->getObjects('Signup_Peep');
+        if (!empty($result)) {
+            foreach ($result as $peep) {
+                $tpl['FIRST_NAME']   = $peep->first_name;
+                $tpl['LAST_NAME']    = $peep->last_name;
+                $tpl['PHONE']        = $peep->getPhone();
+                $tpl['EMAIL']        = $peep->email;
+                $tpl['ORGANIZATION'] = $peep->organization;
+                $template['rows'][] = $tpl;
+            }
+        }
+
+        $template['NAME_LABEL']         = dgettext('signup', 'Name');
+        $template['PHONE_LABEL']        = dgettext('signup', 'Phone');
+        $template['ORGANIZATION_LABEL'] = dgettext('signup', 'Organization');
+        $template['EMAIL_LABEL']        = dgettext('signup', 'Email');
+        $template['REPORT_TITLE']       = dgettext('signup', 'Applicant Listing');
+        $template['SHEET_TITLE']        = $this->sheet->title;
+        $template['PRINT']              = sprintf('<input type="button" id="print" value="%s" onclick="print_page()" />', dgettext('signup', 'Print'));
+
+        echo PHPWS_Template::process($template, 'signup', 'print_applicants.tpl');
+        exit();
+    }
+
 
     function purgeOverdue()
     {

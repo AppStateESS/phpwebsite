@@ -16,6 +16,7 @@ CREATE TABLE signup_peeps (
   last_name varchar(60) NOT NULL,
   email varchar(100) NOT NULL,
   phone varchar(30) NOT NULL,
+  organization varchar(100) default NULL,
   hashcheck char(32) default NULL,
   timeout int NOT NULL default 0,
   registered smallint NOT NULL default 0,

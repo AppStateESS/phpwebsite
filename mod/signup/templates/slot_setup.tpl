@@ -1,5 +1,5 @@
 {ADD_SLOT}
-{EMPTY}
+<!-- BEGIN empty --><p>{EMPTY}</p><!-- END empty -->
 <!-- BEGIN current-slots -->
 <div class="slot">
 <fieldset><legend>{TITLE}</legend>

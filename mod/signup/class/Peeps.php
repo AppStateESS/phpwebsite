@@ -5,18 +5,19 @@
  */
 
 class Signup_Peep {
-    var $id         = 0;
-    var $sheet_id   = 0;
-    var $slot_id    = 0;
-    var $first_name = null;
-    var $last_name  = null;
-    var $email      = null;
-    var $phone      = null;
-    var $hashcheck  = null;
-    var $timeout    = 0;
-    var $registered = 0;
+    var $id           = 0;
+    var $sheet_id     = 0;
+    var $slot_id      = 0;
+    var $first_name   = null;
+    var $last_name    = null;
+    var $email        = null;
+    var $phone        = null;
+    var $organization = null;
+    var $hashcheck    = null;
+    var $timeout      = 0;
+    var $registered   = 0;
 
-    var $_error     = null;
+    var $_error       = null;
 
 
     function Signup_Peep($id=0)
@@ -31,7 +32,7 @@ class Signup_Peep {
 
     function clean($text)
     {
-        return strip_tags(trim($text));
+        return preg_replace('/[^\w\'\s\-\.]/', '', strip_tags(trim($text)));
     }
 
 
@@ -103,6 +104,11 @@ class Signup_Peep {
 
     }
 
+    function setOrganization($organization)
+    {
+        $this->organization = $this->clean($organization);
+    }
+
     function save()
     {
         $db = new PHPWS_DB('signup_peeps');
@@ -114,6 +120,13 @@ class Signup_Peep {
         $db = new PHPWS_DB('signup_peeps');
         $db->addWhere('id', $this->id);
         $db->delete();
+    }
+
+    function rowtags()
+    {
+        $tpl['PHONE'] = $this->getPhone();
+        $tpl['EMAIL'] = $this->getEmail();
+        return $tpl;
     }
 
 }

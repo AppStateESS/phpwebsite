@@ -17,7 +17,7 @@ window.print();
 
 body {
    font-family : sans, sans-serif, helvetica;
-   font-size : 12pt;
+   font-size : 11pt;
 }
 
 h1 {
@@ -41,7 +41,12 @@ div.print {
    text-align : right;
 }
 
+th {
+   border-bottom : 1px solid black;
+}
+
 </style>
+
 <style type="text/css" media="print">
 #print {
     display : none;
@@ -50,19 +55,23 @@ div.print {
 
   </head>
   <body>
-<div class="print"><input id="print" type="button" value="{PRINT}" onclick="print_page(); return false" /></div>
-  <h1>{REPORT_TITLE}</h1>
-
-<!-- BEGIN slot -->
-<div class="slot">
-     <h2>{SLOT_TITLE}</h2>
-     <!-- BEGIN peeps -->
-     <p class="peep">{FIRST_NAME} {LAST_NAME}</p>
-     <!-- END peeps -->
-     <!-- BEGIN spaces -->
-     <p class="space">{SPACE}</p>
-     <!-- END spaces -->
-</div>
-<!-- END slot -->
-  </body
+<h1>{SHEET_TITLE}</h1>
+{PRINT}
+<table cellpadding="0" cellspacing="10" width="100%">
+<tr>
+<th>{NAME_LABEL}</th>
+<th>{ORGANIZATION_LABEL}</th>
+<th>{PHONE_LABEL}</th>
+<th>{EMAIL_LABEL}</th>
+</tr>
+<!-- BEGIN rows -->
+<tr>
+<td>{FIRST_NAME} {LAST_NAME}</td>
+<td>{ORGANIZATION}</td>
+<td>{PHONE}</td>
+<td>{EMAIL}</td>
+</tr>
+<!-- END rows -->
+</table>
+</body>
 </html>

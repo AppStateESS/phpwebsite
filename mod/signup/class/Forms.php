@@ -38,6 +38,10 @@ class Signup_Forms {
             $this->userSignup();
             break;
 
+        case 'report':
+            $this->report();
+            break;
+
         }
 
     }
@@ -73,6 +77,9 @@ class Signup_Forms {
 
         $form->addText('phone', $peep->getPhone());
         $form->setLabel('phone', dgettext('signup', 'Phone number'));
+
+        $form->addText('organization', $peep->organization);
+        $form->setLabel('organization', dgettext('signup', 'Organization'));
         
         $tpl = $form->getTemplate();
 
@@ -163,11 +170,14 @@ class Signup_Forms {
         $form->addTextArea('description', $sheet->description);
         $form->setLabel('description', dgettext('signup', 'Description'));
 
+        // Functionality not finished. Hide for now.
+        /*
         $form->addText('start_time', $sheet->getStartTime());
         $form->setLabel('start_time', dgettext('signup', 'Start signup'));
 
         $form->addText('end_time', $sheet->getEndTime());
         $form->setLabel('end_time', dgettext('signup', 'Close signup'));
+        */
 
         /*
         $js_vars['date_name'] = 'start_time';
@@ -182,6 +192,54 @@ class Signup_Forms {
 
         $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'edit_sheet.tpl');
     }
+
+    function report()
+    {
+        PHPWS_Core::initCoreClass('DBPager.php');
+        PHPWS_Core::initModClass('signup', 'Peeps.php');
+
+        $pager = new DBPager('signup_peeps', 'Signup_Peep');
+        $pager->addWhere('sheet_id', $this->signup->sheet->id);
+        $pager->addWhere('registered', 1);
+        $pager->setModule('signup');
+        $pager->setTemplate('applicants.tpl');
+        $pager->addRowTags('rowtags');
+
+        $vars['sheet_id'] = $this->signup->sheet->id;
+        $vars['aop'] = 'csv_applicants';
+        $page_tags['CSV'] = PHPWS_Text::secureLink(dgettext('signup', 'CSV file'), 'signup', $vars);
+
+        $vars['aop'] = 'print_applicants';
+
+        $js['label'] = dgettext('signup', 'Print list');
+        $js['width'] = '1024';
+        $js['height'] = '768';
+        $js['menubar'] = 'yes';
+        $js['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
+
+        $page_tags['PRINT'] = javascript('open_window', $js);
+
+        $page_tags['LAST_NAME_LABEL'] = dgettext('signup', 'Last name');
+        $page_tags['FIRST_NAME_LABEL'] = dgettext('signup', 'First name');
+        $page_tags['EMAIL_LABEL'] = dgettext('signup', 'Email');
+        $page_tags['PHONE_LABEL'] = dgettext('signup', 'Phone');
+        $page_tags['ORGANIZATION_LABEL'] = dgettext('signup', 'Organization');
+
+        $pager->addPageTags($page_tags);
+        $pager->setSearch('last_name', 'first_name', 'organization');
+
+        $limits[25]  = 25;
+        $limits[50]  = 50;
+        $limits[100] = 100;
+        $pager->setLimitList($limits);
+
+
+        $this->signup->title = sprintf(dgettext('signup', '%s Participants'), $this->signup->sheet->title);
+        $this->signup->content = $pager->get();
+    }
+
+
+
 
     function listSignup()
     {
