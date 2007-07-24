@@ -1,5 +1,10 @@
 Version 1.2.0 Unreleased
 -------------------------------------------------------------
+24 July 2007
++ Fixed image url text field in edit form. Added default http://
++ Made description textarea smaller.
++ Updated files: templates/image_edit.tpl
+
 20 July 2007
 + Pinned image folders only show original thumbnails
 + Added minimum pop up window size

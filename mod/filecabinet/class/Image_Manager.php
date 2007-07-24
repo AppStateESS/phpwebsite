@@ -157,6 +157,8 @@ class FC_Image_Manager {
         $form->setLabel('alt', dgettext('filecabinet', 'Alternate text'));
 
         $form->addTextArea('description', $this->image->description);
+        $form->setRows('description', 8);
+        $form->setCols('description', 45);
         $form->setLabel('description', dgettext('filecabinet', 'Description'));
 
         $link_choice['none'] = dgettext('filecabinet', 'Do not link image');
@@ -165,30 +167,31 @@ class FC_Image_Manager {
         if ($this->image->parent_id) {
             $link_choice['parent'] = dgettext('filecabinet', 'Link image to original, full sized image');
         }
-
        
         $form->addSelect('link', $link_choice);
         $form->setLabel('link', dgettext('filecabinet', 'Link image'));
-        $form->setExtra('link', 'onchange=testing(this)');
+        $form->setExtra('link', 'onchange=voila(this)');
 
         $form->addText('url');
         $form->setSize('url', 50, 255);
         $form->setLabel('url', dgettext('filecabinet', 'Image link url'));
 
-
-
         switch (1) {
         case empty($this->image->url):
             $form->setMatch('link', 'none');
+            $form->addTplTag('VISIBLE', 'hidden');
+            $form->setValue('url', 'http://');
             break;
 
         case $this->image->url == 'parent':
             $form->setMatch('link', 'parent');
+            $form->addTplTag('VISIBLE', 'hidden');
             break;
 
         default:
             $form->setMatch('link', 'url');
             $form->setValue('url', $this->image->url);
+            $form->addTplTag('VISIBLE', 'visible');
             break;
         }
 

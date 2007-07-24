@@ -1,5 +1,5 @@
 <script type="text/javascript">
-function testing(foo) {
+function voila(foo) {
     spanner = document.getElementById('link-url');
     if (foo.value == 'url') {
         spanner.style.visibility = 'visible';
@@ -40,7 +40,7 @@ function testing(foo) {
     <td>{LINK_LABEL}</td>
     <td>{LINK}</td>
   </tr>
-  <tr style="visibility : hidden;" id="link-url">
+  <tr style="visibility : {VISIBLE};" id="link-url">
     <td>{URL_LABEL}</td>
     <td>{URL}</td>
   </tr>
