@@ -131,6 +131,9 @@ class PS_Page {
         $links[] = $this->deleteLink();
 
         $tpl['ACTION'] = implode(' | ', $links);
+        $tpl['CREATE_DATE'] = strftime('%d %b %y, %X', $this->create_date);
+        $tpl['LAST_UPDATED'] = strftime('%d %b %y, %X', $this->last_updated);
+
         return $tpl;
     }
 
@@ -206,6 +209,7 @@ class PS_Page {
         if (!$this->key_id) {
             $this->key_id = $key->id;
             $db = new PHPWS_DB('ps_page');
+            $db->addWhere('id', $this->id);
             $db->addValue('key_id', $this->key_id);
             PHPWS_Error::logIfError($db->update());
         }

@@ -11,4 +11,6 @@ style="float : left; margin-right : 5px;" width="16px" height="16px" />',
 
 define('PS_EDIT', $edit_img);
 
+define('PS_ALLOWED_HEADER_TAGS', '<b><strong><i><u><em>');
+
 ?>

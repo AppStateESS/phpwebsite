@@ -1,3 +1,10 @@
+Version 1.0.0
+------------------------------------------------------------------
+24 July 2007
++ Added created and updated dates to page listing
++ Added search to page listing
++ Fixed header display, tags allowed for headers moved to config file
+
 23 July 2007
 + Changed permission names
 + Page title now appears after typing if included on template

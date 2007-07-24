@@ -7,6 +7,10 @@
 PHPWS_Core::requireInc('pagesmith', 'error_defines.php');
 PHPWS_Core::requireConfig('pagesmith');
 
+if (!defined('PS_ALLOWED_HEADER_TAGS')) {
+    define('PS_ALLOWED_HEADER_TAGS', '<b><strong><i><u><em>');
+}
+
 class PageSmith {
     var $forms   = null;
     var $panel   = null;
@@ -234,7 +238,7 @@ class PageSmith {
     function postHeader()
     {
         PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
-        $header = strip_tags($_POST['header'], '<b><strong><i><u><em>');
+        $header = strip_tags($_POST['header'], PS_ALLOWED_HEADER_TAGS);
 
         $section = new PS_Text;
         $section->secname = $_POST['section_name'];
@@ -243,7 +247,7 @@ class PageSmith {
 
         $vars['cnt_section_name'] = $_POST['tpl'] . '-' . $_POST['section_name'];
         $vars['hdn_section_name'] = sprintf('pagesmith_%s', $_POST['section_name']);
-        $vars['content'] = addslashes($section->content);
+        $vars['content'] = addslashes(PHPWS_Text::parseOutput($section->content));
         $vars['hidden_value'] = $section->content;
 
         Layout::nakedDisplay(javascript('modules/pagesmith/update', $vars));
