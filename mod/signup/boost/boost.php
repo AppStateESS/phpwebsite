@@ -9,7 +9,7 @@ $proper_name  = 'Signup';
 $version      = '1.0.0';
 $import_sql   = true;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/signup/check.xml';
-$about        = TRUE;
+$about        = true;
 $priority     = 50;
 $dependency   = true;
 

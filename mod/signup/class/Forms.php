@@ -171,13 +171,14 @@ class Signup_Forms {
         $form->setLabel('description', dgettext('signup', 'Description'));
 
         // Functionality not finished. Hide for now.
+
         /*
         $form->addText('start_time', $sheet->getStartTime());
         $form->setLabel('start_time', dgettext('signup', 'Start signup'));
+        */
 
         $form->addText('end_time', $sheet->getEndTime());
         $form->setLabel('end_time', dgettext('signup', 'Close signup'));
-        */
 
         /*
         $js_vars['date_name'] = 'start_time';
@@ -271,6 +272,12 @@ class Signup_Forms {
 
         $sheet = & $this->signup->sheet;
         $peep  = & $this->signup->peep;
+
+        if ($sheet->end_time < mktime()) {
+            $this->signup->title = dgettext('signup', 'Sorry');
+            $this->signup->content = dgettext('signup', 'We are no longer accepting applications.');
+            return;
+        }
 
         $slots = $sheet->getAllSlots();
         $slots_filled = $sheet->totalSlotsFilled();
