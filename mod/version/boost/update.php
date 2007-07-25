@@ -52,6 +52,16 @@ function version_update(&$content, $currentVersion)
 -------------
 + Fixed Bug #1713230 : Changed getList to only pull specific columns if set.
 </pre>';
+
+    case version_compare($currentVersion, '0.1.5', '<'):
+        $content[] = '<pre>
+0.1.5 changes
+-------------
++ Fixed logic for version deletion as recommended by blindman on bug
+  #1678115
+</pre>';
+
+
     }
     return TRUE;
 }
