@@ -52,6 +52,26 @@ function branch_update(&$content, $version)
 + Changed to new language format.
 + Added meta routing to core module installation section.
 </pre>';
+
+    case version_compare($version, '1.1.1', '<'):
+        $files = array('templates/config.tpl');
+        $content[] = '<pre>';
+        if (PHPWS_Boost::updateFiles($files, 'branch')) {
+            $content[] = '--- Updated the following files:';
+        } else {
+            $content[] = '--- Failed to update the following files:';
+        }
+
+        $content[] = '    ' . implode("\n    ", $files);
+
+        $content[] = '
+1.1.1 Changes
+-------------
++ Added table lock define to config.tpl
++ Removed compatibility mode from the config.tpl file
+</pre>';
+
+
     }
     return true;
 }
