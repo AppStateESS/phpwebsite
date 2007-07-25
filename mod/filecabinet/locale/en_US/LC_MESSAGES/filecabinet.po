@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-08 13:35-0400\n"
+"POT-Creation-Date: 2007-07-25 09:50-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,6 +24,12 @@ msgstr ""
 msgid "%d bytes (system wide)"
 msgstr ""
 
+#, php-format
+msgid "%s image"
+msgid_plural "%s images"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "-- Pick option --"
 msgstr ""
 
@@ -31,9 +37,6 @@ msgid "Action"
 msgstr ""
 
 msgid "Add document"
-msgstr ""
-
-msgid "Add embedded"
 msgstr ""
 
 msgid "Add file"
@@ -93,6 +96,9 @@ msgstr ""
 msgid "Change settings (Unrestricted only)"
 msgstr ""
 
+msgid "Choose a folder."
+msgstr ""
+
 msgid "Choose an image folder"
 msgstr ""
 
@@ -132,9 +138,6 @@ msgstr ""
 msgid "Could not find ffmpeg executable."
 msgstr ""
 
-msgid "Could not find your incoming file directory."
-msgstr ""
-
 #, php-format
 msgid "Could not move file \"%s\" to \"%s\" folder directory."
 msgstr ""
@@ -142,13 +145,7 @@ msgstr ""
 msgid "Could not write to directory."
 msgstr ""
 
-msgid "Create"
-msgstr ""
-
 msgid "Create document folder"
-msgstr ""
-
-msgid "Create embedded"
 msgstr ""
 
 msgid "Create folder"
@@ -227,9 +224,6 @@ msgstr ""
 msgid "Edit multimedia file"
 msgstr ""
 
-msgid "Embedded"
-msgstr ""
-
 msgid "Enable FFMpeg thumbnails"
 msgstr ""
 
@@ -237,6 +231,9 @@ msgid "Enable FFMpeg thumbnails (enabled on ffmpeg confirmation)"
 msgstr ""
 
 msgid "FFMpeg directory"
+msgstr ""
+
+msgid "Failed to create files/multimedia directory."
 msgstr ""
 
 msgid "Failed to create folder. Please check your logs."
@@ -271,6 +268,9 @@ msgid "Folder is empty."
 msgstr ""
 
 msgid "Go"
+msgstr ""
+
+msgid "Height"
 msgstr ""
 
 msgid "Image folders"
@@ -316,7 +316,7 @@ msgstr ""
 msgid "Link image to original, full sized image"
 msgstr ""
 
-msgid "Link image with url below"
+msgid "Link image to web site"
 msgstr ""
 
 msgid "Manages images and documents uploaded to your site."
@@ -396,13 +396,7 @@ msgstr ""
 msgid "Pin folder to \"%s\""
 msgstr ""
 
-msgid "Please choose a new folder."
-msgstr ""
-
 msgid "Please create a new folder."
-msgstr ""
-
-msgid "Please enter the url again."
 msgstr ""
 
 msgid "Private"
@@ -421,6 +415,9 @@ msgid "Settings"
 msgstr ""
 
 msgid "Settings saved."
+msgstr ""
+
+msgid "Show source images only"
 msgstr ""
 
 msgid "Size"
@@ -504,9 +501,6 @@ msgstr ""
 msgid "Update document folder"
 msgstr ""
 
-msgid "Update embedded"
-msgstr ""
-
 msgid "Update folder"
 msgstr ""
 
@@ -531,13 +525,13 @@ msgstr ""
 msgid "Upload multimedia"
 msgstr ""
 
-msgid "Url"
-msgstr ""
-
 msgid "View folder"
 msgstr ""
 
 msgid "View full image"
+msgstr ""
+
+msgid "Width"
 msgstr ""
 
 msgid "You do not have permission to view this folder."
@@ -555,9 +549,6 @@ msgstr ""
 msgid "You must create an image folder."
 msgstr ""
 
-msgid "You must enter a title."
-msgstr ""
-
 msgid "You must entitle your folder."
 msgstr ""
 
@@ -570,7 +561,10 @@ msgstr ""
 msgid "You must set a maximum multimedia file size."
 msgstr ""
 
-msgid "Your base document directory is not writable."
+msgid "Your documents directory is not writable."
+msgstr ""
+
+msgid "Your images directory is not writable."
 msgstr ""
 
 #, php-format
@@ -583,4 +577,10 @@ msgstr ""
 
 #, php-format
 msgid "Your maximum multimedia size exceeds the server limit of %sMB."
+msgstr ""
+
+msgid "Your multimedia directory is not writable."
+msgstr ""
+
+msgid "files/multimedia directory created successfully."
 msgstr ""
