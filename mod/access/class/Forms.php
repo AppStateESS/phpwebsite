@@ -72,8 +72,13 @@ class Access_Forms {
             $content[] = dgettext('access', 'Set your "MOD_REWRITE_ENABLED" define equal to TRUE.');
             return implode('<br />', $content);
         } elseif (!Access::check_htaccess()) {
-            $content[] = dgettext('access', 'Your <b>.htaccess</b> file is not writable.');
-            $content[] = dgettext('access', 'Look in your installation directory and give Apache write access.');
+            if (!is_file('.htaccess')) {
+                $content[] = dgettext('access', 'Your <b>.htaccess</b> file does not exist.');
+                $content[] = dgettext('access', 'Go to the Update tab and try to create a new file.');
+            } else {
+                $content[] = dgettext('access', 'Your <b>.htaccess</b> file is not writable.');
+                $content[] = dgettext('access', 'Look in your installation directory and give Apache write access.');
+            }
             return implode('<br />', $content);
         }
 
@@ -148,7 +153,14 @@ class Access_Forms {
         $template['HTACCESS'] = str_replace('{', '&#123;', $template['HTACCESS']);
         $template['HTACCESS'] = str_replace('}', '&#125;', $template['HTACCESS']);
 
-        $template['CURRENT'] = file_get_contents(PHPWS_HOME_DIR . '.htaccess');
+        if (is_file(PHPWS_HOME_DIR . '.htaccess')) {
+            $template['CURRENT'] = file_get_contents(PHPWS_HOME_DIR . '.htaccess');
+        } else {
+            $template['CURRENT'] = dgettext('access', '.htaccess file is currently absent.');
+            if (!is_writable(PHPWS_HOME_DIR)) {
+                $template['CURRENT']  .= '<br />' . dgettext('access', 'Your installation directory must be writable if you want to create a new .htaccess file.');
+            }
+        }
         $template['CURRENT_LABEL'] = dgettext('access', 'Current .htaccess file');
 
         $template['CURRENT'] = str_replace('{', '&#123;', $template['CURRENT']);

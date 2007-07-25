@@ -120,7 +120,11 @@ class Access {
                 if ($result) {
                     $message = dgettext('access', '.htaccess file written.');
                 } else {
-                    $message = dgettext('access', 'Unable to save .htaccess file.');
+                    if (is_file('.htaccess')) {
+                        $message = dgettext('access', 'Unable to save .htaccess file.');
+                    } elseif (!is_writable(PHPWS_HOME_DIR)) {
+                        $message = dgettext('access', 'Cannot create a new .htaccess file because the installation directory is not writable.');
+                    }
                 }
                 Access::sendMessage($message, 'update');
                 break;
@@ -195,7 +199,7 @@ class Access {
             PHPWS_Error::log($result);
             $content[] = dgettext('access', 'A serious error occurred. Please check your error.log.');
         } else {
-            if (PHPWS_Settings::get('access', 'allow_file_update')) {
+            if (Access::check_htaccess() && PHPWS_Settings::get('access', 'allow_file_update')) {
                 $result = Access::writeAccess();
                 if (!$result) {
                     $tpl['TITLE'] = dgettext('access', 'An error occurred.');
@@ -347,15 +351,14 @@ class Access {
             PHPWS_Error::log(ACCESS_FILES_DIR, 'access', 'Access::writeAccess'); 
             return false;
         }
-        
+
         if (!is_file('.htaccess')) {
             PHPWS_Error::log(ACCESS_HTACCESS_MISSING, 'access', 'Access::writeAccess');
-            return false;
-        }
-
-        if (!@copy('./.htaccess', './files/access/htaccess_' . mktime())) {
-            PHPWS_Error::log(ACCESS_FILES_DIR, 'access', 'Access::writeAccess'); 
-            return false;
+        } else {
+            if (!@copy('./.htaccess', './files/access/htaccess_' . mktime())) {
+                PHPWS_Error::log(ACCESS_FILES_DIR, 'access', 'Access::writeAccess'); 
+                return false;
+            }
         }
 
         $allow_deny = Access::getAllowDenyList() . "\n";
