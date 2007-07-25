@@ -120,6 +120,25 @@ timeout INT NOT NULL default 0,
 + Added German translation files
 </pre>';
 
+    case version_compare($currentVersion, '2.4.1', '<'):
+        $content[] = '<pre>';
+        $files = array('conf/languages.php');
+        if (PHPWS_Boost::updateFiles($files, 'users')) {
+            $content[] = 'Successfully updated conf/languages.php file.';
+        } else {
+            $content[] = 'Unable to update conf/languages.php file.';
+        }
+        $content[] = '
+2.4.1 changes
+------------------------
++ Default item id on permission check functions is now zero instead of
+  null. This will make checking permissions a little easier on new items.
++ Bug #1690657 - Changed group select js property to onclick instead
+  of onchange. Thanks singletrack.
++ Changed the language abbreviation for Danish
+</pre>
+';
+
     } // End of switch statement
 
     return TRUE;
