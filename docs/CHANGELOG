@@ -2,6 +2,8 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+Version 1.6.0
+------------------------------------------------------------------
 23 July 2007
 + Default rows and columns for text areas now comes for the form
 config file.
@@ -47,7 +49,7 @@ config file.
 12 July 2007
 + Database
   o Added setLock, lockTables, and unlockTables functions. Factory
-    files updated as well thought postgresql is untested.
+    files updated as well though postgresql is untested.
   o Added fourth parameter to addColumn. Lets you perform single
     column counts
   o The reset function now cleans out the tables array leaving only

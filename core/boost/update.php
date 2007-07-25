@@ -16,373 +16,11 @@ function core_update(&$content, $version) {
     }
 
     $content[] = '';
-    switch ($version) {
-
-        // Removed older versions 15 Feb 2007
-    case version_compare($version, '1.3.3', '<'):
-        $content[] = 'Sorry, but versions under 1.3.3 require the 1.3.7 update.';
-        return false;
-
-
-    case version_compare($version, '1.3.5', '<'):
-        $content[] = '<pre>
-1.3.5 Changes
---------------
-+ Conversion - added note to readme
-+ Core.php - Fixed bug with getHomeHttp function
-+ Javascript
-  o Rewrote portions of FCKeditor file manager. Works better now.
-  o Rewrote FCKeditor upload to work better with links.
-</pre>';
-
-
-    case version_compare($version, '1.3.6', '<'):
-        $content[] = '<pre>
-1.3.6 Changes
---------------
-+ Pear - added mime file for email class
-+ Convert
-  o Convert class now allows the user to pick a destination branch.
-  o siteDB function added. Used in developer\'s convert.php file to
-    restore the branch connection after a disconnect.
-  o Fixed File Cabinet conversion typo (bug #1608912).
-+ Documentation
-  o Settings_Class - Fixed directory for settings file
-+ Settings
-  o Set password character limits
-  o Moved error messages to appropriate areas
-  o Now allows null settings.
-+ Javascript
-  o Added suggested js_calendar fix. Thanks Verdon.
-</pre>';
-
-
-   case version_compare($version, '1.3.7', '<'):
-       if (PHPWS_Boost::updateFiles(array('conf/text_settings.php'), 'core')) {
-           $content[] = '+ Configuration file text_settings.php updated.';
-       } else {
-           $content[] = '+ Configuration file text_settings.php could not be updated.';
-       }
-        $content[] = '<pre>
-1.3.7 Changes
---------------
-+ Editor
-  o Added a "limited" option to allow the wysiwyg stub developer to
-    have a second set of tools.
-
-+ Form
-  o useEditor function will now accept a limited parameter.
-
-+ Text
-  o Added parameter to makeRelative to force a change only inside link
-    tags
-  o makeRelative is run before htmlentities is called.
-  o makeRelative only changes urls next to the characters =". This
-    should prevent displayed addresses from being relativized.
-  o Added function to collapse long urls.
-
-+ Documentation
-  o Added a small note to DB_Pager.txt to inform the user that basic
-    instruction does not end at the $pager->get() function.
-  o Editor.txt - Added instructions on using the Editor class with the
-    Form class. 
-  o Settings_Class.txt - fixed the path location for the settings.php
-    file. 
-
-+ Javascript
-  o FCKEditor - added ability to show limited wysiwyg tool
-
-+ Setup
-  o Error messages now appear under incorrect setting
-
-+ DBPager
-  o Current page set back to page 1 after a new search or if current
-    page is set to zero
-  o setOrder function now has a default of \'asc\' (ascending).
-  o Fixed instant where searches were joined with AND instead of OR
-  o Pager search variable is reset when a new search is
-    called. Prevents empty variable in GET string.
-  o Pager now grabs navigation and sort buttons regardless of row
-    status. 
-</pre>';
-        
-    case version_compare($version, '1.4.0', '<'):
-        $content[] = '<pre>';
-       if (PHPWS_Boost::updateFiles(array('conf/language.php'), 'core')) {
-           $content[] = 'Configuration file language.php created.';
-       } else {
-           $content[] = 'Configuration file language.php could not be created.';
-       }
-        $content[] = '
-1.4.0 Changes
---------------
-Core classes
-------------
-+ Database class
-  o addTableColumn checks for a column\'s existence and returning false if so.
-    Prevents error lock ups.
-  o Fixed getObjects. Extra parameters were passed to constructors BUT
-    the object is not passed by reference in php 4. Once the object
-    was created, it was cleared.
-  o Fixed some mixups in the setLimit function
-  o Added limit error check to mysql.php and mysqli.php.
-  o Limit variables passed by reference instead of copied
-  o Added Hilmar\'s prefixing code to prevent table prefixing inside single
-    quotes. 
-
-+ Module
-  o Default image and file directory setting is "false".
-
-+ Settings class
-  o Bug 1659055 - if a single setting is saved without loading the
-    module, all settings would get reset. Made change to only clear
-    items getting saved.
-  o Now changes numeric strings to integers
-
-+ Init script
-  o Changed Init.php translate function. Should now track previous
-    directory setting properly.
-  o Removed textdomain function from Init.php. It was a redundant call.
-  o Strips the UTF8 off the end of locale to match preference file
-
-+ File class
-  o Rewrote readDirectory function.
-  o Fixed bug in rmdir function preventing files inside directories
-    from being deleted. 
-
-+ Core class
-  o Added check for leading slash in url sent to reroute function
-  o Added setLastPost to reroute function. Function was getting skipped.
-  o Changed Branch checking method (Bug #1638042)
-  o Added error checks to goBack to prevent endless loop
-  o Added bookmark and returnToBookmark functions
-
-+ DBPager 
-  o Part of setLimit problem was pager was working around the error by
-    sending backward data. Fixed.
-  o Fixed pagination if the limit was raised on a high page count
-  o Removing resetColumns function from getTotalRows function.
-  o Error check added before calling javascriptEnabled function.
-
-Javascript
-----------
-+ Editors
-  o Fixed FCKeditor\'s style sheet
-  o Removed dependence on SCRIPT_FILENAME variable for FCKeditor\'s file
-    manager
-  o Fixed the style settings in the FCKeditor
-  o Added style settings note to FCKeditor readme file
-  o Converted current 0.10.x wysiwyg to editor named "simple"
-
-
-Default theme
----------------
-+ Changed padded style from px to em
-+ Added new form style for dropping out of form tables.
-+ Added code to prevent image overlap in blog and webpage
-+ Added margin to bottom of blog
-+ Added theme.php file.
-
-
-Language
---------
-+ Added several translate functions throughout the base classes.
-+ Moved language settings to a new config file : language.php 
-+ Updated po file
-+ Removed language setting from setup config template
-+ Changing xgettext method for creating message files. No longer
-  listing translation line and file numbers. Old method caused
-  complex diffs. Also sorting the source alphabetically.
-
-Documentation
--------------
-+ Theme_Creation.txt - added information on locking variables and
-  using the theme.php file.
-+ Created Captcha.txt documentation for Captcha class.
-+ Language.txt - Changed xgettext method.
-
-
-Conversion
-----------
-+ Error checked added to Blog to assure Announcements was installed.
-
-
-Updated files:
-conf/language.php
-';
-
-    case version_compare($version, '1.4.1', '<'):
-        $content[] = '<pre>';
-        if (PHPWS_Boost::updateFiles(array('conf/i18n/en_US.php', 'conf/text_settings.php'), 'core')) {
-           $content[] = 'Added config/core/i18n/en_US.php file and updated config/core/text_settings.php.';
-       } else {
-           $content[] = 'Unable to add config/core/i18n/en_US.php or update config/core/text_settings.php file.';
-       }
-        $content[] = '
-1.4.1 Changes
---------------
-+ Removed constructor references from Template.php
-+ phpws_info can now list browser info.
-+ Editor
-  o Removed htmlarea directory
-  o Added supported.php files to FCK and tinymce (simple doesn\'t need
-    it)
-  o Editor will now check the user cookie for an Editor choice. It
-    defaults to the core config.php setting.
-  o Set support settings for safari in tinymce
-
-+ Translate
-  o fixed i18n files. en_EN.php changed to en_US.php
-
-+ Function
-  o Added a parse check on a PHP 4 function name for Compat mode.
-
-+ DB_Pager
-  o Cleaned up translate functions.
-  o Added alt and title parameters to sorting images for xhtml
-    compliance.
-
-+ Documentation - fixed typo in DB_Pager.txt
-';
-
-    case version_compare($version, '1.4.2', '<'):
-        $content[] = '<pre>
-1.4.2 Changes
---------------
-+ Fixed shorten url function in Text.php
-</pre>';
-
-    case version_compare($version, '1.4.3', '<'):
-        $content[] = '<pre>1.4.3 Changes
---------------';
-        $files = array('conf/language.php',
-                       'javascript/editors/FCKeditor/supported.php',
-                       'javascript/editors/tinymce/supported.php',
-                       'javascript/editors/FCKeditor/editor/phpwsstyles.xml');
-        if (PHPWS_Boost::updateFiles($files, 'core')) {
-            $content[] = '+ Copied the following files:';
-        } else {
-            $content[] = '+ Unable to copy the following files:';
-        }
-        $content[] = '    ' . implode("\n    ", $files);
-
-        if (is_dir('javascript/editors/htmlarea/')) {
-            if (@rmdir('javascript/editors/htmlarea/')) {
-                $content[] = '+ Deleted htmlarea editor directory.';
-            } else {
-                $content[] = '+ Tried to delete htmlarea editor directory but failed.';
-            }
-        }
-        $content[] = '+ Fixed issue with selecting columns with setindex in Database class.
-+ Web Page conversion adds missing create_user_id.
-+ Removed Windows version types from browser indentification.
-+ Browser identification broadened.
-+ Database column select bug fixed.
-+ Removed fake French translation (as should you!!!)';
-
+    // Versions previous to 1.5.0 removed 25Jul2007.
+    switch (1) {
     case version_compare($version, '1.5.0', '<'):
-        $content[] = '<pre>';
-        if (!is_dir('templates/cache') && !@mkdir('templates/cache/')) {
-            $content[] = '--- Unable to create "cache" directory under the "templates" directory.';
-            return false;
-        } else {
-            $content[] = '--- Successfully created the "cache" directory under the "templates" directory.';
-        }
-
-        if (PHPWS_Boost::updateFiles(array('conf/text_settings.php', 'conf/version.php'), 'core')) {
-            $content[] = '--- Successfully copied text_settings.php and version.php files.';
-        } else {
-            $content[] = '--- Failed to copy text_settings.php and version.php files successfully.';
-        }
-
-        $content[] = '
-1.5.0 Changes
---------------
-
-Bug fixes
-------------------------------------
-+ Forms.php
-  o Changed id display in Forms.php. Arrays with square brackets are 
-    not xhtml compliant.
-  o Bug #1690757 - Added space to radio button to help with formatting
-
-+ Database.php
-  o Update, insert, and delete functions no longer pull multiple tables 
-  o Fixed bug with addTable
-
-+ DBPager.php
-  o Added checks to prevent some developer-created fatal errors
-  o The search query was put into it own "where" group to prevent conflicts.
-
-+ Settings - changed upper limit on small int detection
-
-+ Debug.php - test function identifies empty values better
-
-+ Text.php - Bug #1689289 : Changed makeRelative\'s inline mode to only 
-             change src and href addresses.
-
-+ Module.php - Changed isInstalled slightly. If on initialization, there
-               is a "not installed" error, we can assume the module is not
-               installed and return false. Otherwise, we check in the
-               normal way.
-
-+ Init.php - change ensures Core\'s default status.
-
-+ Conversion - Added utf8_encode to all conversions to try and prevent foreign
-               character corruption (Thanks Mabhobs)
-
-+ Cookie - changed default time to 0 instead of null
-
-Library additions/changes
-------------------------------------
-Core.php
-+ isPosted can now return the number of repeats
-+ Added releaseVersion function to return the full package version.
-
-Text.php
-+ Added ENCODE_PARSED_TEXT define to text_settings.php
-+ Added ability to prohibit encoding of text during parsing.
-+ RFE 1704305 - Split special html encoding out into separate filter files.
-
-Form.php
-+ Removed imageselect function from Form. Not used.
-+ RFE 1639645 - added setRequired function to Form
-
-Init.php
-+ Removed Item include from Init.php, now up to module to include.
-
-Cache
-+ Template caching is now stored in templates/cache. Prevents branch overlaps.
-
-Editor.php
-+ Moved FORCE_EDITOR variable to config.php. Changed define to a defined
-  check with a default of false.
-
-Error.php
-+ Added logIfError function to Error class
-
-DBPager.php
-+ Rewrote paging code.
-
-Documentation
-------------------------------------
-Access.txt - added a lot of new information on functionality.
-Language.txt - now reflects changes made in Init.php
-
-
-Language and internationalization
-------------------------------------
-+ Removed translate functions throughout core.
-+ Core now uses new language translation method recommended by Ortwin Pinke
-+ Added German translation files.
-
-
-Javascript
-------------------------------------
-+ Rewrote ajax javascript functionality
-+ open_window lets you label the windows now
-+ js_calendar - fixed style sheet to make xhtml compliant
-</pre>';
+        $content[] = '<pre>Core version prior to version 1.5.0 are not supported. Please download version 1.5.2 or earlier.</pre>';
+        break;
 
     case version_compare($version, '1.5.1', '<'):
         $content[] = '<pre>1.5.1 changes
@@ -397,6 +35,128 @@ Javascript
         $content[] = '<pre>1.5.2 changes
 --------------
 + Added setAnchor function to DBPager.
+</pre>';
+
+    case version_compare($version, '1.6.0', '<'):
+        $files = array('conf/formConfig.php', 'conf/version.php',
+                       'conf/file_types.php');
+        $content[] = '<pre>';
+
+        if (PHPWS_Boost::updateFiles($files, 'core')) {
+            $content[] = "--- Files copied successfully:";
+
+        } else {
+            $content[] = "--- Failed to copy files:";
+        }
+
+        $content[] = "    " . implode("\n    ", $files);
+        $content[] = '';
+        $content[] = '
+1.6.0 changes
+--------------
+Class files
+---------------------------------
+Core.php
++ Log error check failed if the file didn\'t exist. Fixed it.
++ Changed some error messages for log file writing
+
+
+Database.php
++ Small change on increment to prevent "column_name + -1". I don\'t think
+  it matters but I prefer a cleaner approach with "column_name -1"
++ If the increment amount is 0, function returns true.
++ Fixed some error messages. wrong function named
++ Added setLock, lockTables, and unlockTables functions. Factory
+  files updated as well though postgresql is untested.
++ Added fourth parameter to addColumn. Lets you perform single
+  column counts
++ The reset function now cleans out the tables array leaving only
+  the initial table
++ Added missing NOT IN and NOT BETWEEN where conditions.
+
+
+DBPager.php
++ changed \'page\' variable to \'pg\' to try and prevent
+  problems with mod_rewrite
++ Fixed bug #1747940 - changed dbpager direction arrows.
+
+
+Debug.php
++ Boolean true was showing up as "1" with test.
+
+
+Editor.php
++ Added ability to set editor width and height
+
+
+File.php
++ Added getFileExtension function. Returns the last characters after
+  the period on a filename. 
+
+
+Form.php
++ Default rows and columns for text areas now comes for the form
+  config file.
++ Changed Editor and Form to default to normal text areas if the
+  editor is missing.
++ Changed to reflect width and height changes in Editor
++ Added setOptgroup function for select and multiple form elements
+
+
+Key.php
++ Added a little code to strip a url from an link if sent by mistake
+
+
+Mail.php
++ Added single and double quotes to the allowed characters in the address
+
+
+XMLParser.php
++ Moved out of the RSS module into the core.
++ Added a "format" function to better synthesis XML information 
+
+
+Javascript
+----------------------------------------
++ Tinymce editor - changed method for determining height and width
++ Ajax - Hopefully fixed some goofiness with the loadRequester
++ Changed javascript calendar\'s default form to phpws_form
++ FCKeditor and Tinymce now use width and height settings from Editor
++ Open Window lets you pick a button or link interface
++ Added some extra instruction to javascript\'s select_confirm
+  documentation.
+
+
+Conversion
+-----------------------------------------
++ Patched category image conversion with Eloi\'s fix (#1742987)
+
+
+Documents
+-----------------------------------------
++ Updated CREDITS
++ Fixed bad directions in Language.txt
++ Forms.txt - added directions for use of setOptgroup in Form class
+
+Themes
+-----------------------------------------
++ Fixed float-left and float-right margins
+
+
+Other
+-----------------------------------------
++ Previous phpwebsite versions had a config/core directory. It was a
+  complete copy of the core/conf directory. This is no longer the
+  case. Now Setup copies that directory on install.
++ Added define to setup config.tpl turn off table lock ability for
+  those that don\'t have those permissions.
++ Added yet another mime type for FLV files to file_types.php
++ Removed the compatibility mode from config.tpl in Setup
++ Added getid3 library for use in File Cabinet
++ Added addslashes to the source directory setting for those wacky
+  windows folk.
++ Added Danish translation files for core supplied by Claus Iversen.
++ Related is no longer a core module.
 </pre>';
     }
     return true;
