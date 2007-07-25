@@ -70,4 +70,42 @@ The page template itself should be named 'page.tpl'. The template
 needs to be specially contructed so that it will not only display
 properly, but also so site users can edit it.
 
+Ids control not only the css layout, but they allow the edit form to
+change them on-the-fly. Each id contains the page template name and
+the section name. Here is simple's page.tpl:
 
+<div id="simple-page">
+   <h1 id="simple-page-title">{page_title}</h1>
+   <!-- BEGIN image1 --><div id="simple-image1">{image1}</div><!-- BEGIN image1 -->
+   <!-- BEGIN header1 -->{header1_edit}<h2 id="simple-header1">{header1}</h2><!-- END header1 -->
+   {text1_edit}<div id="simple-text1">{text1}</div>
+</div>
+
+The id "simple-page" is not important. It is for styling purposes
+only.
+
+Notice the id format:
+
+name of page template (dash) section name
+
+Here are the section id from the structure.xml
+simple-image1
+simple-header1
+simple-text1
+
+The areas that actually display the content do not contain the page
+template name:
+{image1}
+{header1}
+{text1}
+
+The {page_title} tag and page-title id are special cases. They are
+predefined meaning you do not need to add them to your structure file.
+
+Note also the edit tags:
+{header1_edit}
+{text1_edit}
+
+For each text or header area in your structure file, you need to add
+an edit tag the user can click on to change that page. Keep in mind
+these icons will not be shown when the page is displayed.
