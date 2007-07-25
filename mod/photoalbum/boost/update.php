@@ -46,6 +46,13 @@ function photoalbum_update(&$content, $version) {
 + Changed control panel icon
 </pre>';
 
+    case version_compare($version, '1.4.1', '<'):
+        $content[] = '<pre>
+1.4.1 changes
+-------------
++ RFE #1757050 - Added resizing code from Verdon
+</pre>';
+
     }
 
     return true;
