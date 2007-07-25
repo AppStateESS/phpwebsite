@@ -1,0 +1,344 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-07-25 09:50-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, php-format
+msgid "%s Participants"
+msgstr ""
+
+msgid ""
+"A problem occurred when trying to register your application. If you continue "
+"to receive this message, please contact the site admistrator."
+msgstr ""
+
+msgid "Action"
+msgstr ""
+
+msgid "Add"
+msgstr ""
+
+msgid "Add applicant"
+msgstr ""
+
+msgid "Add slot"
+msgstr ""
+
+#, php-format
+msgid "Add slot to %s"
+msgstr ""
+
+msgid "An error occurred when accessing this sheet's slots."
+msgstr ""
+
+msgid "An error occurred when trying to save your application."
+msgstr ""
+
+msgid "Applicant Listing"
+msgstr ""
+
+msgid "Applicant saved successfully."
+msgstr ""
+
+msgid "Are you certain you want to delete this slot?"
+msgstr ""
+
+msgid "Are you sure you want to delete this person from their signup slot?"
+msgstr ""
+
+msgid ""
+"Are you sure you want to delete this sheet?\\nAll slots and signup "
+"information will be permanently removed."
+msgstr ""
+
+msgid "Available slots"
+msgstr ""
+
+msgid "CSV file"
+msgstr ""
+
+msgid "Click on \"Add slot\" to allow applicants to sign up."
+msgstr ""
+
+msgid "Click the link below to confirm your participation in the following:"
+msgstr ""
+
+msgid "Congratulations!"
+msgstr ""
+
+msgid "Create"
+msgstr ""
+
+msgid "Create signup sheet"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Delete slot"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Down"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Edit sheets"
+msgstr ""
+
+msgid "Edit slots"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Email address"
+msgstr ""
+
+msgid "Error occurred when saving applicant."
+msgstr ""
+
+msgid "Error occurred when saving sheet."
+msgstr ""
+
+msgid "Error occurred when saving slot."
+msgstr ""
+
+msgid "Fatal error: Cannot create slot. Missing sheet id."
+msgstr ""
+
+msgid "First name"
+msgstr ""
+
+msgid "Go"
+msgstr ""
+
+#, php-format
+msgid "Greetings from %s,"
+msgstr ""
+
+msgid "Last name"
+msgstr ""
+
+msgid "List"
+msgstr ""
+
+msgid "Missing internal information."
+msgstr ""
+
+msgid "Move"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "New"
+msgstr ""
+
+msgid "No open slots"
+msgstr ""
+
+msgid "Number of openings"
+msgstr ""
+
+msgid "Organization"
+msgstr ""
+
+msgid "Phone"
+msgstr ""
+
+msgid "Phone number"
+msgstr ""
+
+msgid ""
+"Please check if there are any more available slots by clicking the link "
+"below."
+msgstr ""
+
+msgid "Please enter a contact phone number."
+msgstr ""
+
+msgid "Please enter a first name."
+msgstr ""
+
+msgid "Please enter a last name."
+msgstr ""
+
+msgid "Please specify an openings amount."
+msgstr ""
+
+msgid "Print"
+msgstr ""
+
+msgid "Print list"
+msgstr ""
+
+msgid "Print page"
+msgstr ""
+
+msgid "Report"
+msgstr ""
+
+msgid "Sheet previously posted."
+msgstr ""
+
+msgid "Sheet saved successfully."
+msgstr ""
+
+msgid "Signup"
+msgstr ""
+
+msgid "Signup Sheets"
+msgstr ""
+
+msgid "Signup confirmation"
+msgstr ""
+
+#, php-format
+msgid "Signup event : %s"
+msgstr ""
+
+msgid "Signup form"
+msgstr ""
+
+msgid "Signup sheet deleted."
+msgstr ""
+
+msgid "Signup tables dropped."
+msgstr ""
+
+#, php-format
+msgid "Slot : %s"
+msgstr ""
+
+msgid "Slot is missing sheet id."
+msgstr ""
+
+msgid "Slot listing"
+msgstr ""
+
+msgid "Slot saved successfully."
+msgstr ""
+
+#, php-format
+msgid "Slot setup for %s"
+msgstr ""
+
+msgid "Slots"
+msgstr ""
+
+#, php-format
+msgid "Slots left: %s"
+msgstr ""
+
+msgid "Sorry"
+msgstr ""
+
+msgid ""
+"Sorry, but all available slots are full. Please check back later for "
+"possible cancellations."
+msgstr ""
+
+msgid "Sorry, the slot you chose is no longer available."
+msgstr ""
+
+msgid "Submit"
+msgstr ""
+
+msgid "Thank you"
+msgstr ""
+
+msgid "There is a problem with our email server. Please try again later."
+msgstr ""
+
+msgid "There is a problem with this signup sheet. Please check back later."
+msgstr ""
+
+msgid "This slot filled up before you could confirm your application."
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+#, php-format
+msgid "Total openings: %s"
+msgstr ""
+
+msgid "Unsuitable email address."
+msgstr ""
+
+msgid "Up"
+msgstr ""
+
+msgid "Update"
+msgstr ""
+
+#, php-format
+msgid "Update %s slot"
+msgstr ""
+
+msgid "Update applicant"
+msgstr ""
+
+msgid "Update signup sheet"
+msgstr ""
+
+msgid ""
+"You are already registered. There isn't any need to return to this page."
+msgstr ""
+
+#, php-format
+msgid "You are registered for the following event: %s"
+msgstr ""
+
+msgid "You cannot signup for more than one slot."
+msgstr ""
+
+msgid "You have one hour to confirm your application."
+msgstr ""
+
+msgid "You must give this signup sheet a title."
+msgstr ""
+
+msgid "You must give your slot a title."
+msgstr ""
+
+msgid "You should receive an email allowing you to verify your application."
+msgstr ""
+
+msgid ""
+"Your application could not be verified. If over a hour has passed since you "
+"applied, you may want to try again."
+msgstr ""
+
+msgid "email"
+msgstr ""
+
+msgid "firstname"
+msgstr ""
+
+msgid "lastname"
+msgstr ""
+
+msgid "organization"
+msgstr ""
+
+msgid "phone"
+msgstr ""
