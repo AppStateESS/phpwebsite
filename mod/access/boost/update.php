@@ -92,6 +92,15 @@ function access_update(&$content, $version)
 + Previous update had updated files going to incorrect directory.
 + Template was removing curly brackets from review mode. Fixed.
 </pre>';
+
+    case version_compare($version, '0.2.3', '<'):
+        $content[] = '<pre>
+0.2.3 changes
+---------------
++ Fixed bug #1690698: Cannot create a new .htaccess file if original
+  is deleted. Thanks singletrack
++ Fixed bug #1690544: If the .htaccess file is not writable or
+  missing, give the user a warning message.</pre>';
     }
 
     return true;

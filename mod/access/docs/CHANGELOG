@@ -1,3 +1,5 @@
+Version 0.2.3 -- 25 July 2007
+-----------------------------------------------------------------------------------
 25 July 2007
 + Fixed bug #1690698: Cannot create a new .htaccess file if original
   is deleted. Thanks singletrack
@@ -6,6 +8,14 @@
 
 8 June 2007
 + Locale file updated.
+
+
+Version 0.2.2 -- 17 May 2007
+------------------------------------------------------------------------------------
++ The default rewrite conditional was missing a file check.
++ Previous update had updated files going to incorrect directory.
++ Template was removing curly brackets from review mode. Fixed.
+
 
 Version 0.2.1
 ------------------------------------------------------------------------------------
