@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-08 13:35-0400\n"
+"POT-Creation-Date: 2007-07-25 09:50-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "-- Choose option --"
+msgstr ""
+
+msgid ".htaccess file is currently absent."
 msgstr ""
 
 msgid ".htaccess file is missing."
@@ -117,6 +120,11 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
+msgid ""
+"Cannot create a new .htaccess file because the installation directory is not "
+"writable."
+msgstr ""
+
 msgid "Close window"
 msgstr ""
 
@@ -154,6 +162,9 @@ msgid "Edit"
 msgstr ""
 
 msgid "Go"
+msgstr ""
+
+msgid "Go to the Update tab and try to create a new file."
 msgstr ""
 
 msgid "IP Address"
@@ -283,5 +294,13 @@ msgstr ""
 msgid "Your .htaccess file will contain the below:"
 msgstr ""
 
+msgid "Your <b>.htaccess</b> file does not exist."
+msgstr ""
+
 msgid "Your <b>.htaccess</b> file is not writable."
+msgstr ""
+
+msgid ""
+"Your installation directory must be writable if you want to create a new ."
+"htaccess file."
 msgstr ""
