@@ -7,12 +7,12 @@
 $errors[FC_FILENAME_NOT_SET]       = dgettext('filecabinet', 'Filename not set.');
 $errors[FC_DIRECTORY_NOT_SET]      = dgettext('filecabinet', 'Directory not set.');
 $errors[FC_BOUND_FAILED]           = dgettext('filecabinet', 'There was a problem loading the image file.');
-$errors[FC_IMG_SIZE]               = dgettext('filecabinet', 'Image was %sK making it larger than %s byte size limit.');
+$errors[FC_IMG_SIZE]               = dgettext('filecabinet', 'Image was %s bytes making it larger than %s byte size limit.');
 $errors[FC_IMG_WIDTH]              = dgettext('filecabinet', 'Image width was %spx, making it larger than %d pixel limit.');
 $errors[FC_IMG_HEIGHT]             = dgettext('filecabinet', 'Image height was %spx, making it larger than %d pixel limit.');
 $errors[FC_IMG_WRONG_TYPE]         = dgettext('filecabinet', 'Unacceptable image type.');
 $errors[FC_IMG_NOT_FOUND]          = dgettext('filecabinet', 'Image not found');
-$errors[FC_DOCUMENT_SIZE]          = dgettext('filecabinet', 'Document was %sK making it larger than %s byte size limit.');
+$errors[FC_DOCUMENT_SIZE]          = dgettext('filecabinet', 'Document was %s bytes making it larger than %s byte size limit.');
 $errors[FC_DOCUMENT_WRONG_TYPE]    = dgettext('filecabinet', 'Unacceptable document type.');
 $errors[FC_DOCUMENT_NOT_FOUND]     = dgettext('filecabinet', 'Document not found.');
 $errors[FC_NO_UPLOAD]              = dgettext('filecabinet', 'File not uploaded.');
@@ -23,7 +23,7 @@ $errors[FC_BAD_DIRECTORY]          = dgettext('filecabinet', 'Could not write to
 $errors[FC_MISSING_FOLDER]         = dgettext('filecabinet', 'Missing folder information.');
 $errors[FC_MAX_FORM_UPLOAD]        = dgettext('filecabinet', 'File uploaded exceeded %sK size limit.');
 $errors[FC_MISSING_TMP]            = dgettext('filecabinet', 'Missing temporary upload directory.');
-$errors[FC_MULTIMEDIA_SIZE]        = dgettext('filecabinet', 'Multimedia file was %sK making it larger than %s byte size limit.');
+$errors[FC_MULTIMEDIA_SIZE]        = dgettext('filecabinet', 'Multimedia file was %s bytes making it larger than %s byte size limit.');
 $errors[FC_MULTIMEDIA_WRONG_TYPE]  = dgettext('filecabinet', 'Unacceptable multimedia file type.');
 $errors[FC_MULTIMEDIA_NOT_FOUND]   = dgettext('filecabinet', 'Multimedia file not found.');
 
