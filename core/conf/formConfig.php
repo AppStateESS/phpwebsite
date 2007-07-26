@@ -11,7 +11,7 @@
 define('DFLT_ROWS', 10);
 
 //default number of cols in a textarea
-define('DFLT_COLS', 50);
+define('DFLT_COLS', 40);
 
 define('USE_DEFAULT_SIZES', FALSE);
 
