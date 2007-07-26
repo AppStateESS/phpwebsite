@@ -1,0 +1,38 @@
+Upload memory limits
+---------------------
+
+There are several places an upload file limit can be set. The lowest
+limit will always take precedent. If you are having problems with File
+Cabinet uploads, this is the document to read.
+
+Here is where to look:
+
+1) The module settings
+The module you are using (File Cabinet for example) may have limits
+imposed on the system. See the module has a settings screen or a
+config file that is controlling the maximum bytes allowed.
+
+2) The Form Class
+phpWebSite's form class is governed by two upload limits. The first is
+set in the config/core/formConfig.php file:
+
+define('FORM_MAX_FILE_SIZE', 5000000);
+
+3) phpWebSite's Upload Limit
+The core libraries have an absolute limit. This is set in the
+config/core/config.php
+
+define('ABSOLUTE_UPLOAD_LIMIT', '5000000');
+
+This setting exists because the form limit can be set by a
+developer. So a module could allow an 100MB upload and enforce this
+value in the form object. Setting an absolute limit prevents this from
+happening.
+
+
+4) The server setting
+No matter what you have set in phpWebSite, the server trumps all
+values. If you need to increase the server upload limit, look for the
+php.ini file. Look in /etc/php5/apache2/, /etc/php/conf/, etc. or run
+a find . -type f -name 'php.ini'
+

@@ -104,7 +104,7 @@ class PHPWS_Form {
      */
     function PHPWS_Form($id=null)
     {
-        if (!defined('ABSOLUTE_UPLOAD_LIMIT')) {
+        if (!defined('ABSOLUTE_UPLOAD_LIMIT') || ABSOLUTE_UPLOAD_LIMIT > FORM_MAX_FILE_SIZE) {
             $this->max_file_size = FORM_MAX_FILE_SIZE;
         } else {
             $this->max_file_size = ABSOLUTE_UPLOAD_LIMIT;
