@@ -1,6 +1,7 @@
 Version 1.2.0 -- 26 July 2007
 -------------------------------------------------------------
 26 July 2007
++ Added default classify directory
 + Increased popup size for file forms
 + Removed K (kilobyte) from error file.
 + Added missing video png to update
