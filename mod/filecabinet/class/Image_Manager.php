@@ -214,9 +214,30 @@ class FC_Image_Manager {
         $template['MAX_SIZE_LABEL']   = dgettext('filecabinet', 'Maximum file size');
         $template['MAX_WIDTH_LABEL']  = dgettext('filecabinet', 'Maximum width');
         $template['MAX_HEIGHT_LABEL'] = dgettext('filecabinet', 'Maximum height');
-        $template['MAX_SIZE']         = $this->max_size;
+
         $template['MAX_WIDTH']        = $this->max_width;
         $template['MAX_HEIGHT']       = $this->max_height;
+
+        $sys_size = str_replace('M', '', ini_get('upload_max_filesize'));
+        $sys_size = $sys_size * 1000000;
+        $form_max = $form->max_file_size;
+
+        if ($form_max < $sys_size && $form_max < $this->max_size) {
+            $max_size = & $form_max;
+        } elseif ($sys_size < $form_max && $sys_size < $this->max_size) {
+            $max_size = & $sys_size;
+        } else {
+            $max_size = & $this->max_size;
+        }
+
+        if ($max_size >= 1000000) {
+            $template['MAX_SIZE'] = sprintf(dgettext('filecabinet', '%dMB (%d bytes)'), floor($max_size / 1000000), $max_size);
+        } elseif ($max_size >= 1000) {
+            $template['MAX_SIZE'] = sprintf(dgettext('filecabinet', '%dKB (%d bytes)'), floor($max_size / 1000), $max_size);
+        } else {
+            $template['MAX_SIZE'] = sprintf(dgettext('filecabinet', '%d bytes'), $max_size);
+        }
+
 
         $this->cabinet->content = PHPWS_Template::process($template, 'filecabinet', 'image_edit.tpl');
     }

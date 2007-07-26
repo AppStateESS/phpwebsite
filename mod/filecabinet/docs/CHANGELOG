@@ -1,6 +1,10 @@
-Version 1.2.0 -- 25 July 2007
+Version 1.2.0 -- 26 July 2007
 -------------------------------------------------------------
 26 July 2007
++ Added missing video png to update
++ Oversized files were passing through without warning. Added error
+  notifications.
++ Added human readable byte counts (kilo and mega)
 + Fixed multimedia table sql file
 + Added classify directory creation to update
 + Path for multimedia directory in update was wrong

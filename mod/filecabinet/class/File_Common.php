@@ -128,6 +128,7 @@ class File_Common {
 
             case UPLOAD_ERR_FORM_SIZE:
                 $this->_errors[] = PHPWS_Error::get(FC_MAX_FORM_UPLOAD, 'filecabinet', 'PHPWS_Document::importPost', array($this->_max_size));
+                return false;
                 break;
 
             case UPLOAD_ERR_NO_FILE:
@@ -141,6 +142,7 @@ class File_Common {
 
             case UPLOAD_ERR_NO_TMP_DIR:
                 $this->_errors[] = PHPWS_Error::get(FC_MISSING_TMP, 'filecabinet', 'PHPWS_Document::importPost', array($this->_max_size));
+                return false;
             }
         }
 
@@ -152,7 +154,6 @@ class File_Common {
             $this->_errors[] = $this->_upload();
             return false;
         }
-       
 
         if ($this->_upload->isValid()) {
             $file_vars = $this->_upload->getProp();
@@ -198,6 +199,9 @@ class File_Common {
 
         } elseif ($this->_upload->isError()) {
             $this->_errors[] = $this->_upload->getMessage();
+            return false;
+        } elseif ($this->_upload->isMissing()) {
+            $this->_errors[] = PHPWS_Error::get(FC_IMG_SIZE, 'filecabinet', 'File_Common::importPost', array($this->size, $this->_max_size));
             return false;
         }
 

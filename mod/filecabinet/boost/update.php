@@ -152,7 +152,8 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                        'javascript/pick_image/head.js',
                        'templates/image_folders.tpl', 'templates/settings.tpl',
                        'templates/style.css', 'templates/image_view.tpl',
-                       'templates/multimedia_view.tpl', 'templates/style.css');
+                       'templates/multimedia_view.tpl', 'templates/style.css',
+                       'img/video_generic.png', 'templates/image_edit.tpl');
 
         if (PHPWS_Boost::updateFiles($files, 'filecabinet')) {
             $content[] = '--- Copied the following files:';
