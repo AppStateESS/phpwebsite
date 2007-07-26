@@ -113,15 +113,15 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
             }
         }
 
-        if (!PHPWS_DB::isTable('multimedia')) {
-            if (PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/multimedia.sql')) {
+       if (!PHPWS_DB::isTable('multimedia')) {
+            $result = PHPWS_DB::importFile(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/multimedia.sql');
+            if (!PHPWS_Error::logIfError($result)) {
                 $content[] = '--- Multimedia table created successfully.';
             } else {
                 $content[] = '--- Failed to create multimedia table.</pre>';
                 return false;
             }
         }
-
         
         $content[] = '
 1.1.0 changes
