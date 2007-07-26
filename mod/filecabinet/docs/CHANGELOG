@@ -1,6 +1,8 @@
 Version 1.2.0 -- 26 July 2007
 -------------------------------------------------------------
 26 July 2007
++ Increased popup size for file forms
++ Removed K (kilobyte) from error file.
 + Added missing video png to update
 + Oversized files were passing through without warning. Added error
   notifications.

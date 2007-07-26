@@ -151,7 +151,7 @@ class Folder {
     {
         $vars['address'] = 'index.php?module=filecabinet&aop=upload_document_form&folder_id=' . $this->id;
         $vars['width']   = 540;
-        $vars['height']  = 400;
+        $vars['height']  = 460;
         $vars['title'] = $vars['label']   = dgettext('filecabinet', 'Add document');
         return javascript('open_window', $vars);
     }
@@ -160,7 +160,7 @@ class Folder {
     {
         $vars['address'] = 'index.php?module=filecabinet&aop=upload_multimedia_form&folder_id=' . $this->id;
         $vars['width']   = 540;
-        $vars['height']  = 400;
+        $vars['height']  = 460;
         $vars['title'] = $vars['label']   = dgettext('filecabinet', 'Add file');
         return javascript('open_window', $vars);
     }
