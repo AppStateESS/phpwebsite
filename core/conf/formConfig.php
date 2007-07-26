@@ -8,10 +8,10 @@
 /* These are the default values for various form elements */
 
 // default number of rows in a textarea
-define('DFLT_ROWS', 15);
+define('DFLT_ROWS', 10);
 
 //default number of cols in a textarea
-define('DFLT_COLS', 60);
+define('DFLT_COLS', 50);
 
 define('USE_DEFAULT_SIZES', FALSE);
 
