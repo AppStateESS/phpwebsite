@@ -159,6 +159,8 @@ class Cabinet_Form {
         $form->setLabel('title', dgettext('filecabinet', 'Title'));
 
         $form->addTextArea('description', $folder->description);
+        $form->setCols('description', 40);
+        $form->setRows('description', 8);
         $form->setLabel('description', dgettext('filecabinet', 'Description'));
 
         $form->addRadio('public_folder', array(0, 1));
