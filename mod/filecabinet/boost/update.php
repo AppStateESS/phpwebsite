@@ -47,23 +47,36 @@ Please download version 1.0.2.</pre>';
     case version_compare($version, '1.1.0', '<'):
         $content[] = '<pre>';
 
-        if (!is_dir('./files/filecabinet/multimedia')) {
-            if (is_writable('./files/filecabinet/') && @mkdir('./files/filecabinet/multimedia')) {
-                $content[] = '--- "files/filecabinet/multimedia" directory created.';
+        $home_dir = PHPWS_Boost::getHomeDir();
+
+        if (!is_dir($home_dir . 'files/multimedia')) {
+            if (is_writable($home_dir . 'files/') && @mkdir($home_dir . 'files/multimedia')) {
+                $content[] = '--- "files/multimedia" directory created.';
             } else {
                 $content[] = 'File Cabinet 1.1.0 requires the creation of a "multimedia" directory.
-Please place it in the files/filecabinet/ directory.
-Example: mkdir phpwebsite/files/filecabinet/multimedia/</pre>';
+Please place it in the files/ directory.
+Example: mkdir phpwebsite/files/multimedia/</pre>';
                 return false;
             }
-        } elseif (!is_writable('multimedia')) {
-            $content[] = 'Your files/filecabinet/multimedia directory is not writable by the web server.
+        } elseif (!is_writable($home_dir . 'files/multimedia')) {
+            $content[] = 'Your files/multimedia directory is not writable by the web server.
  Please change its permissions and return.</pre>';
             return false;
         }
 
+        if (!is_dir($home_dir . 'files/filecabinet/incoming')) {
+            if (is_writable($home_dir . 'files/filecabinet') && @mkdir($home_dir . 'files/filecabinet/incoming')) {
+                $content[] = '--- "files/filecabinet/incoming" directory created.';
+            } else {
+                $content[] = 'File Cabinet 1.1.0 is unable to create a "filecabinet/incoming" directory.
+It is not required but if you want to classify files you will need to create it yourself.
+Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
+                return false;
+            }
+        }
+
         $source_dir = PHPWS_SOURCE_DIR . 'mod/filecabinet/templates/filters/';
-        $dest_dir   = PHPWS_Boost::getHomeDir() . 'templates/filecabinet/filters/';
+        $dest_dir   = $home_dir . 'templates/filecabinet/filters/';
 
         if (!is_dir($dest_dir)) {
             if (!PHPWS_File::copy_directory($source_dir, $dest_dir)) {

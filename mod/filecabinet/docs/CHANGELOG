@@ -1,5 +1,10 @@
 Version 1.2.0 -- 25 July 2007
 -------------------------------------------------------------
+26 July 2007
++ Added classify directory creation to update
++ Path for multimedia directory in update was wrong
++ Added boost directories for branch sites.
+
 24 July 2007
 + Fixed image url text field in edit form. Added default http://
 + Made description textarea smaller.
