@@ -937,7 +937,7 @@ class PHPWS_Boost {
         $directory[] = 'templates/';
         $directory[] = 'files/';
         $directory[] = 'logs/';
-        $directory[] = 'javascript/modules/';
+        $directory[] = 'javascript/';
 
         foreach ($directory as $id=>$check){
             if (!is_dir($check)) {
@@ -1133,7 +1133,7 @@ class PHPWS_Boost {
         }
 
         $keys = array_keys($this->status);
-
+        $GLOBALS['Boost_In_Branch'] = true;
         foreach ($branches as $branch) {
             // used as the "local" directory in updateFiles
             $GLOBALS['boost_branch_dir'] = $branch->directory;
@@ -1153,7 +1153,7 @@ class PHPWS_Boost {
                 $content[] = dgettext('boost', 'Unable to update branch.');
             }
         }
-
+        $GLOBALS['Boost_In_Branch'] = false;
         PHPWS_DB::disconnect();
     }
 
@@ -1169,6 +1169,15 @@ class PHPWS_Boost {
 
         }
         return $dir_mods;
+    }
+
+    function inBranch()
+    {
+        if (isset($GLOBALS['Boost_In_Branch'])) {
+            return $GLOBALS['Boost_In_Branch'];
+        } else {
+            return false;
+        }
     }
 
 }

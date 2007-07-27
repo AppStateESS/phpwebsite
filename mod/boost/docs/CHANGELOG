@@ -1,5 +1,10 @@
 Version 2.1.2
 -----------------------------------------------------
+27 July 2007
++ Boost now expects the javascript directory to be writable as
+  well as the module directory.
++ Added inBranch function for modules
+
 8 June 2007
 + Locale file updated
 
