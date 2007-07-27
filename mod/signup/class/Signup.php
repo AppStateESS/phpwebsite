@@ -132,18 +132,18 @@ class Signup {
                     $this->loadForm('edit_sheet');
                 } else {
                     if (PHPWS_Error::logIfError($this->sheet->save())) {
-                        $this->message = dgettext('signup', 'Error occurred when saving sheet.');
+                        $this->forwardMessage(dgettext('signup', 'Error occurred when saving sheet.'));
                         PHPWS_Core::reroute('index.php?module=signup&aop=list');
                     } else {
-                        $this->message = dgettext('signup', 'Sheet saved successfully.');
+                        $this->forwardMessage(dgettext('signup', 'Sheet saved successfully.'));
                         PHPWS_Core::reroute('index.php?module=signup&aop=edit_slots&id=' . $this->sheet->id);
                     }
                 }
             } else {
                 $this->loadForm('edit');
             }
-
             break;
+
 
         case 'post_slot':
             $javascript = true;
@@ -162,6 +162,15 @@ class Signup {
             } else {
                 $this->loadForm('edit_slot_popup');
             }
+            break;
+
+        case 'move_peep':
+            $this->loadPeep();
+            $result = $this->movePeep();
+            if (PHPWS_Error::logIfError($result) || !$result) {
+                $this->forwardMessage(dgettext('signup', 'Error occurred when moving applicant. Slot may be full.'));
+            }
+            PHPWS_Core::reroute('index.php?module=signup&id=1&aop=edit_slots&authkey=' . Current_User::getAuthKey());
             break;
 
         case 'move_up':
@@ -216,10 +225,6 @@ class Signup {
         $_SESSION['SU_Message']['message'] = $message;
         if ($title) {
             $_SESSION['SU_Message']['title'] = $title;
-        }
-        if (!$message_page) {
-        } else {
-
         }
     }
 
@@ -780,6 +785,18 @@ class Signup {
         $db->addWhere('registered', 0);
         $db->addWhere('timeout', mktime(), '<');
         PHPWS_Error::logIfError($db->delete());
+    }
+    
+    function movePeep()
+    {
+        $this->loadSlot($_POST['mv_slot']);
+        $current_openings = $this->slot->currentOpenings();
+        if ($current_openings < 1) {
+            return false;
+        } else {
+            $this->peep->slot_id = $this->slot->id;
+            return $this->peep->save();
+        } 
     }
 }
 

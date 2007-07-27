@@ -143,7 +143,7 @@ class Signup_Slot {
             if ($slot->id == $this->id) {
                 continue;
             } elseif (!isset($total_slots[$slot->id]) ||
-                      $slot->openings <= $total_slots[$slot->id]) {
+                      $slot->openings != $total_slots[$slot->id]) {
                 $options[$slot->id] = $slot->title;
             }
         }
@@ -183,7 +183,7 @@ class Signup_Slot {
                     $tmptpl = $form->getTemplate();
                     $subtpl['MOVE'] = implode("\n", $tmptpl);
                 } else {
-                    $subtpl['MOVE'] = dgettext('signup', 'No open slots');
+                    $subtpl['MOVE'] = dgettext('signup', 'Other slots full');
                 }
 
                 $tpl['peep-row'][] = $subtpl;
@@ -273,6 +273,20 @@ class Signup_Slot {
         $db->reduceColumn('s_order', 1);
     }
 
-    
+    function currentOpenings()
+    {
+        $db = new PHPWS_DB('signup_peeps');
+        $db->addWhere('slot_id', $this->id);
+        $db->addColumn('id', null, null, true);
+
+        $applicants = $db->select('one');
+
+        if (PHPWS_Error::logIfError($applicants)) {
+            return 0;
+        } else {
+            return $this->openings - $applicants;
+        }
+    }
+   
 }
 ?>
