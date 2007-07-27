@@ -12,4 +12,5 @@ $register     = FALSE;
 $unregister   = FALSE;
 $import_sql   = TRUE;
 $about        = true;
+$dependency   = true;
 ?>

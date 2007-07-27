@@ -9,6 +9,6 @@ $version      = '2.1.2';
 $register     = TRUE;
 $import_sql   = FALSE;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/boost/check.xml';
-$dependency   = TRUE;
+$dependency   = true;
 $about        = true;
 ?>

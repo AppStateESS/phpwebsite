@@ -10,5 +10,5 @@ $version      = '1.0.0';
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/clipboard/check.xml';
 $about        = true;
 $priority     = 50;
-
+$dependency   = true;
 ?>

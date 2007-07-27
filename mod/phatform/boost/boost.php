@@ -9,4 +9,5 @@ $import_sql = TRUE;
 $priority = 50;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/phatform/check.xml';
 $about = true;
+$dependency = true;
 ?>

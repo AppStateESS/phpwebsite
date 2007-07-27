@@ -10,5 +10,5 @@ $import_sql   = TRUE;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/branch/check.xml';
 $about        = true;
 $priority     = 50;
-
+$dependency   = true;
 ?>

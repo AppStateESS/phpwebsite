@@ -11,4 +11,5 @@ $register    = true;
 $unregister  = true;
 $import_sql  = true;
 $about       = true;
+$dependency  = true;
 ?>

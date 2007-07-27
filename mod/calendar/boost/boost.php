@@ -10,4 +10,5 @@ $version      = '1.5.1';
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/calendar/check.xml';
 $import_sql   = true;
 $about        = true;
+$dependency   = true;
 ?>

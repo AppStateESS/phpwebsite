@@ -11,4 +11,5 @@ $import_sql    = true;
 $image_dir     = true;
 $version_http  = 'http://phpwebsite.appstate.edu/downloads/modules/photoalbum/check.xml';
 $about         = true;
+$dependency    = true;
 ?>

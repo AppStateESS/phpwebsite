@@ -11,4 +11,5 @@ $image_dir    = TRUE;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/comments/check.xml';
 $about        = TRUE;
 $priority     = 50;
+$dependency   = true;
 ?>

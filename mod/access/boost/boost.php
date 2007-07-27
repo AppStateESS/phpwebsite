@@ -11,5 +11,5 @@ $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/access/check.x
 $about        = TRUE;
 $file_dir     = TRUE; // required for backup access files
 $priority     = 50;
-$dependency   = FALSE;
+$dependency   = true;
 ?>

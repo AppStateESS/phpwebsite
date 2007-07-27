@@ -13,5 +13,5 @@ $import_sql   = TRUE;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/categories/check.xml';
 $about        = true;
 $priority     = 20;
-
+$dependency   = true;
 ?>

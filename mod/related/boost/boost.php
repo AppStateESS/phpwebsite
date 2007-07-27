@@ -13,5 +13,5 @@ $image_dir    = FALSE;
 $file_dir     = FALSE;
 $priority     = 50;
 $about        = true;
-
+$dependency   = true;
 ?>

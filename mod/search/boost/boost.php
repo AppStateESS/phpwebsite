@@ -14,5 +14,5 @@ $file_dir     = FALSE;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/search/check.xml';
 $about        = TRUE;
 $priority     = 50;
-$dependency   = FALSE;
+$dependency   = true;
 ?>

@@ -14,5 +14,5 @@ $file_dir     = true;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/filecabinet/check.xml';
 $about        = true;
 $priority     = 50;
-
+$dependency   = true;
 ?>
