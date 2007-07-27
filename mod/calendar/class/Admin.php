@@ -1095,7 +1095,7 @@ class Calendar_Admin {
             $js_vars['address'] = PHPWS_Text::linkAddress('calendar', $vars);
             $js_vars['label']   = $label;
             $js_vars['width']   = 640;
-            $js_vars['height']  = 500;
+            $js_vars['height']  = 600;
             $page_tags['ADD_CALENDAR']       = javascript('open_window', $js_vars);
         } else {
             $page_tags['ADD_CALENDAR'] = PHPWS_Text::secureLink($label, 'calendar', $vars);

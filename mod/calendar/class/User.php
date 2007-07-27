@@ -730,7 +730,7 @@ class Calendar_User {
                     $js_vars['address'] = PHPWS_Text::linkAddress('calendar', $vars);
                     $js_vars['label']   = $label;
                     $js_vars['width']   = 640;
-                    $js_vars['height']  = 500;
+                    $js_vars['height']  = 600;
                     $add_schedule = javascript('open_window', $js_vars);
 
                 } else {
