@@ -4,6 +4,9 @@ its own separate CHANGELOG file.
 
 Version 1.6.0
 ------------------------------------------------------------------
+27 July 2007
++ Core was missing javascript update information for branches.
+
 26 July 2007
 + Changed Forms class to use the lower upload limit: system or
 setting.

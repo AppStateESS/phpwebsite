@@ -6,6 +6,8 @@
    */
 
 function core_update(&$content, $version) {
+    $home_directory = PHPWS_Boost::getHomeDir();
+    
     $boost_module = new PHPWS_Module('boost');
     if (version_compare($boost_module->version, '2.0.0', '<')) {
         $content[] = '<h1>Important!</h1>
@@ -38,8 +40,31 @@ function core_update(&$content, $version) {
 </pre>';
 
     case version_compare($version, '1.6.0', '<'):
+        if (isset($GLOBALS['boost_branch_dir'])) {
+            $fck_destination = $home_directory . 'javascript/editors/fckeditor';
+            $fck_source = PHPWS_SOURCE_DIR . 'javascript/editors/fckeditor';
+            
+            if (!is_dir($fck_destination)) {
+                if (!is_writable($home_directory . 'javascript/editors/')) {
+                    $content[] = '<pre>The following must be writable for the core update to continue:';
+                    $content[] = $home_directory . 'javascript/editors/</pre>';
+                    return false;
+            }
+                if (PHPWS_File::copy_directory($fck_source, $fck_destination)) {
+                    $content[] = 'Successfully copied the fckeditor directory to the branch site.';
+                } else {
+                    $content[] = 'Was unable to copy the fckeditor directory to the branch site.';
+                }
+            }
+        }
+
         $files = array('conf/formConfig.php', 'conf/version.php',
-                       'conf/file_types.php');
+                       'conf/file_types.php', 'javascript/select_confirm/README.txt',
+                       'javascript/open_window/default.php', 'javascript/open_window/body2.js',
+                       'javascript/js_calendar/default.php', 'javascript/js_calendar/readme.txt',
+                       'javascript/ajax/requester.js', 'javascript/ajax/default.php', 
+                       'javascript/ajax/readme.txt', 'javascript/ajax/head.js',
+                       'javascript/editors/tinymce/default.php', 'javascript/editors/tinymce/body.js');
         $content[] = '<pre>';
 
         if (PHPWS_Boost::updateFiles($files, 'core')) {
