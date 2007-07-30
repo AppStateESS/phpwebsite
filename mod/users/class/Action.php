@@ -638,6 +638,7 @@ class User_Action {
             if ( !Current_User::isLogged() && isset($_POST['phpws_username']) &&
                  isset($_POST['phpws_password']) ) {
                 $result = Current_User::loginUser($_POST['phpws_username'], $_POST['phpws_password']);
+
                 if (!$result) {
                     $title = dgettext('users', 'Login page');
                     $message = dgettext('users', 'Username and password combination not found.');
@@ -1103,16 +1104,9 @@ class User_Action {
             }
         }
 
-
-        if (isset($_POST['default_authorization'])){
-            $db = new PHPWS_DB('users_config');
-            $db->addValue('default_authorization', (int)$_POST['default_authorization']);
-            $result = $db->update();
-
-            if (PEAR::isError($result)) {
-                return $result;
-            }
-            PHPWS_User::resetUserSettings();
+        if (isset($_POST['default_authorization'])) {
+            PHPWS_Settings::set('users', 'default_authorization', (int)$_POST['default_authorization']);
+            PHPWS_Settings::save('users');
         }
         return true;
     }

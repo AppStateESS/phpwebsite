@@ -329,6 +329,7 @@ class Current_User {
         if ($result == FALSE){
             $authorize = PHPWS_User::getUserSetting('default_authorization');
             $createUser = TRUE;
+            $user->setUsername($username);
         } else {
             if (!$user->approved) {
                 return PHPWS_Error::get(USER_NOT_APPROVED, 'users', 'Current_User::loginUser');
@@ -385,13 +386,15 @@ class Current_User {
         if (isset($result[$authorize])) { 
             extract($result[$authorize]);
             $file = PHPWS_SOURCE_DIR . 'mod/users/scripts/' . $filename;
+
             if(!is_file($file)){
                 PHPWS_Error::log(USER_ERR_MISSING_AUTH, 'users', 'authorize', $file);
                 return FALSE;
             }
 
             require_once $file;
-            if (function_exists('authorize')){
+
+            if (function_exists('authorize')) {
                 $result = authorize($user, $password);
                 return $result;
             } else {

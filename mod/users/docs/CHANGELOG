@@ -1,5 +1,9 @@
 Version 2.4.1 -- 25 July 2007
 ------------------------------------------------------------------
+30 July 2007
++ Fixed default authorization not getting saved.
++ Fixed default authorization was not working for new users.
+
 23 July 2007
 + default item id on permission check functions is now zero instead of
   null. This will make checking permissions a little easier on new items.
