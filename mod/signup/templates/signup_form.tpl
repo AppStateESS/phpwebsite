@@ -23,6 +23,10 @@
        <td><strong>{PHONE_LABEL}</strong></td>
        <td>{PHONE}</td>
      </tr>
+     <tr>
+       <td><strong>{ORGANIZATION_LABEL}</strong></td>
+       <td>{ORGANIZATION}</td>
+     </tr>
    </table>
    <p class="align-center" style="margin-top : 1em">{SUBMIT}</p>
    {END_FORM}

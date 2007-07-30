@@ -346,6 +346,9 @@ class Signup_Forms {
             $form->setSize('phone', 15);
             $form->setLabel('phone', dgettext('signup', 'Phone number'));
 
+            $form->addText('organization', $peep->organization);
+            $form->setLabel('organization', dgettext('signup', 'Organization'));
+
             $form->addSubmit(dgettext('signup', 'Submit'));
             
             $tpl = $form->getTemplate();
