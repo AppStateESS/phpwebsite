@@ -1,5 +1,8 @@
 Version 1.0.0 -- 25 July 2007
 ------------------------------------------------------------------
+30 July 2007
++ Print application now observes pager settings.
+
 25 July 2007
 + Sheet expiration works
 

@@ -210,7 +210,28 @@ class Signup_Forms {
         $vars['aop'] = 'csv_applicants';
         $page_tags['CSV'] = PHPWS_Text::secureLink(dgettext('signup', 'CSV file'), 'signup', $vars);
 
+        $vars['aop'] = 'slot_listing';
+        $js['label'] = dgettext('signup', 'Slot listing');
+        $js['menubar'] = 'yes';
+        $js['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
+        $page_tags['SLOT_LISTING'] = javascript('open_window', $js);
+
+
         $vars['aop'] = 'print_applicants';
+
+        if (!empty($pager->search)) {
+            if (isset($pager->searchColumn)) {
+                $vars['search'] = implode('+', $pager->searchColumn);
+            } else {
+                $vars['search'] = $pager->search;
+            }
+        }
+
+        if ($pager->orderby) {
+            $vars['orderby'] = $pager->orderby;
+            $vars['orderby_dir'] = $pager->orderby_dir;
+        }
+
         $js['label'] = dgettext('signup', 'Print list');
         $js['width'] = '1024';
         $js['height'] = '768';
@@ -218,12 +239,6 @@ class Signup_Forms {
         $js['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
         $page_tags['PRINT'] = javascript('open_window', $js);
 
-
-        $vars['aop'] = 'slot_listing';
-        $js['label'] = dgettext('signup', 'Slot listing');
-        $js['menubar'] = 'yes';
-        $js['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
-        $page_tags['SLOT_LISTING'] = javascript('open_window', $js);
 
 
         $page_tags['LAST_NAME_LABEL'] = dgettext('signup', 'Last name');

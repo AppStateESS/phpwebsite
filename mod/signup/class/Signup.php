@@ -741,12 +741,13 @@ class Signup {
         $db = new PHPWS_DB('signup_peeps');
         $db->addWhere('sheet_id', $this->sheet->id);
         $db->addWhere('registered', 1);
+
         if (isset($_REQUEST['orderby'])) {
             $db->addOrder($_REQUEST['orderby'] . ' ' . $_REQUEST['orderby_dir']);
         }
 
         if (isset($_REQUEST['search'])) {
-            $search = explode(' ', $_REQUEST['search']);
+            $search = explode('+', $_REQUEST['search']);
             foreach ($search as $s) {
                 $db->addWhere('first_name', "%$s%", 'like', 'or', 1);
                 $db->addWhere('last_name',  "%$s%", 'like', 'or', 1);
