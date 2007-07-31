@@ -56,7 +56,24 @@ function core_update(&$content, $version) {
                     $content[] = 'Was unable to copy the fckeditor directory to the branch site.';
                 }
             }
+
+            $cal_destination = $home_directory . 'javascript/js_calendar';
+            $cal_source = PHPWS_SOURCE_DIR . 'javascript/js_calendar';
+            
+            if (!is_dir($cal_destination)) {
+                if (!is_writable($home_directory . 'javascript/')) {
+                    $content[] = '<pre>The following must be writable for the core update to continue:';
+                    $content[] = $home_directory . 'javascript/</pre>';
+                    return false;
+            }
+                if (PHPWS_File::copy_directory($cal_source, $cal_destination)) {
+                    $content[] = 'Successfully copied the js_calendar directory to the branch site.';
+                } else {
+                    $content[] = 'Was unable to copy the js_calendar directory to the branch site.';
+                }
+            }
         }
+
 
         $files = array('conf/formConfig.php', 'conf/version.php',
                        'conf/file_types.php', 'javascript/select_confirm/README.txt',
