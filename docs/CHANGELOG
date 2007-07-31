@@ -4,6 +4,10 @@ its own separate CHANGELOG file.
 
 Version 1.6.0
 ------------------------------------------------------------------
+31 July 2007
++ Updated js_calendar
+
+
 27 July 2007
 + Core was missing javascript update information for branches.
 
