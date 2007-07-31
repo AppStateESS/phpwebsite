@@ -1,1 +1,1 @@
-<img src='./javascript/js_calendar/images/calendar.png' onclick="displayCalendar(document.forms['{form_name}'].{date_name}, 'yyyy/mm/dd', this)" onmouseover="this.style.cursor='pointer'" alt="Pick date" />
+<img src='./javascript/js_calendar/images/calendar.png' onclick="displayCalendar(document.forms['{form_name}'].{date_name}, 'yyyy/mm/dd', this)" onmouseover="this.style.cursor='pointer'" alt="{alt}" />

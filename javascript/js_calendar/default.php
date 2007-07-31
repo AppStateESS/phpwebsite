@@ -20,7 +20,9 @@ if ( !isset($data['type']) ||
 
 if ($data['type'] == 'select') {
     $bodyfile = $base . 'javascript/js_calendar/body2.js';
- }
+} elseif ($data['type'] = 'select_clock') {
+    $bodyfile = $base . 'javascript/js_calendar/body4.js';
+}
 
 if ($data['type'] == 'pick') {
     if (empty($data['year'])) {
@@ -37,5 +39,7 @@ if ($data['type'] == 'pick') {
 
     $bodyfile = $base . 'javascript/js_calendar/body3.js';
  }
+
+$data['alt'] = _('Pick date');
 
 ?>

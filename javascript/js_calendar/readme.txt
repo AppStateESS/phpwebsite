@@ -40,6 +40,12 @@ $js_vars['date_name'] = 'my_date';
 $js_vars['type']      = 'text';
 echo javascript('js_calendar', $js_vars);
 
+Month and day must be in double digit format.
+
+If you want to use the clock select from the calendar, use type
+"select_clock" instead. You will obviously need a "hour" and "minute"
+select box.
+
 
 The variables
 ----------------------------

@@ -20,11 +20,20 @@
 	padding-left:2px;
 }
 
+#calendarDiv .selectBoxTime,#calendarDiv .selectBoxTimeOver{	
+	line-height:12px;
+	padding:1px;
+	cursor:pointer;
+	padding-left:2px;
+}
+
 #calendarDiv td{
 	padding:3px;
 	margin:0px;
 	font-size:10px;
 }
+
+
 
 #calendarDiv .selectBox{
 	border:1px solid #E2EBED;		
@@ -37,6 +46,16 @@
 	color: #FFF;
 	position:relative;
 }
+#calendarDiv .selectBoxTime{
+	border:1px solid #317082;		
+	color: #317082;
+	position:relative;
+}
+#calendarDiv .selectBoxTimeOver{
+	border:1px solid #216072;	
+	color: #216072;
+	position:relative;
+}
 
 #calendarDiv .topBar{
 	height:16px;
@@ -45,7 +64,9 @@
 
 
 }
-
+#calendarDiv .activeDay{	/* Active day in the calendar */
+	color:#FF0000;
+}
 #calendarDiv .todaysDate{
 	height:17px;
 	line-height:17px;
@@ -56,6 +77,26 @@
 	bottom:0px;
 	width:201px;
 }
+#calendarDiv .todaysDate div{
+	float:left;
+}
+	
+#calendarDiv .timeBar{
+	height:17px;
+	line-height:17px;
+	background-color: #E2EBED;
+	width:72px;
+	color:#FFF;
+	position:absolute;
+	right:0px;
+}
+
+#calendarDiv .timeBar div{
+	float:left;
+	margin-right:1px;
+}
+
+
 #calendarDiv .monthYearPicker{
 	background-color: #E2EBED;
 	border:1px solid #AAAAAA;
