@@ -389,6 +389,7 @@ class Signup {
         $db->addWhere('registered', 1);
         $filled = $db->select('one');
         $db->reset();
+        $db->addWhere('sheet_id', $peep->sheet_id);
         $db->addWhere('email', $peep->email);
         $db->addColumn('id');
         $previous = $db->select('one');
