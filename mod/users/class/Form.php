@@ -67,7 +67,9 @@ class User_Form {
         $form->addHidden('action', 'user');
         $form->addHidden('command', 'login');
         $form->addText('phpws_username', $username);
+        $form->setSize('phpws_username', 10);
         $form->addPassword('phpws_password');
+        $form->setSize('phpws_password', 10);
         $form->addSubmit('submit', LOGIN_BUTTON);
 
         $form->setLabel('phpws_username', dgettext('users', 'Username'));
