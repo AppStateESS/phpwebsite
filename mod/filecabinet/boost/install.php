@@ -19,6 +19,16 @@ function filecabinet_install(&$content)
         }
     }
 
+    $files_dir = $home_dir . 'files/filecabinet/';
+    if (!is_dir($files_dir)) {
+        if (!@mkdir($files_dir)) {
+            $content[] = dgettext('filecabinet', 'Failed to create files/filecabinet/ directory.');
+            return false;
+        } else {
+            $content[] = dgettext('filecabinet', 'files/filecabinet/ directory created successfully.');
+        }
+    }
+
     $classify_dir = $home_dir . 'files/filecabinet/incoming';
     if (!is_dir($classify_dir)) {
         if (!@mkdir($classify_dir)) {
