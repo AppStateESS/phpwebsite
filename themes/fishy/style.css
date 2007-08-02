@@ -12,9 +12,9 @@ body {
 	background-image: url(tile.jpg);
 	background-repeat: repeat-x;
 	background-color: white;
-        font-family : arial;
+        font-family : arial, sans, sans-serif, helvetica;
         color : #0932E5;
-        font-size : 14px;
+        font-size : 12px;
 }
 
 #container {
@@ -40,6 +40,15 @@ body {
        left : 200px;
        top : 10px;
        color : white;
+}
+
+#top-menu {
+       text-align : right;
+       font-size : .9em;
+}
+
+.smaller {
+       font-size : .9em;
 }
 
 #container #top-menu a {
@@ -99,12 +108,6 @@ div.menu div.box {
        border : 1px solid white;
 }
 
-#top-menu {
-       text-align : right;
-       font-size : .8em;
-       width : 800px;
-}
-
 #top-menu hr {
 display : none;
 }
@@ -121,13 +124,18 @@ display : none;
 }
 
 #user-login {
-       position : absolute;
-       right : 0px;
-       top : 10px;
+      float : right;
+      margin-right : 20px;
+}
+
+div.breadcrumb {
+      margin-right : 20px;
+      margin-top : 20px;
+      clear : both;
 }
 
 #main-content div.box-title h1 {
-      font-size : 1.3em;
+      font-size : 1.2em;
       margin : 0px;
       margin-top : 2px;
       padding : 0px;
@@ -243,4 +251,8 @@ div.menu-link a:hover {
 .error {
      color : red;
      font-weight : bold;
+}
+
+.align-center {
+    text-align : center;
 }

@@ -5,10 +5,8 @@
 {METATAGS}
 {JAVASCRIPT}
 {STYLE}
-<!--[if lt IE 7]>
-  <link rel="stylesheet" type="text/css" href="themes/default/hacks.css" />
-<![endif]-->
-<!--[if IE 7]>  <link rel="stylesheet" type="text/css" href="themes/default/ie7.css" />
+<!--[if IE]>
+  <link rel="stylesheet" type="text/css" href="themes/fishy/hacks.css" />
 <![endif]-->
 
 </head>
