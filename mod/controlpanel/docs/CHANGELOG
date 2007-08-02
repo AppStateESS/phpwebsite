@@ -1,5 +1,8 @@
 Version 2.1.1 - 25 July 2007
 --------------------------------------------------------------
+2 Aug 2007
++ Panel style - changed overflow:auto to hidden
+
 19 July 2007
 + Put Link.php and Tab.php back in to the inc/init.php. They are
   needed for one of the sessions.
