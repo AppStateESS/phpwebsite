@@ -51,11 +51,17 @@ class PHPWS_Mail {
     var $blind_copy        = NULL;
     var $message_body      = NULL;
     var $message_tpl       = NULL;
+    var $send_individually = true;
     var $backend_type      = MAIL_BACKEND;
 
     function addSendTo($address)
     {
         return $this->_addAddress('send_to', $address);
+    }
+
+    function sendIndividually($send=true)
+    {
+        $this->send_individually = (bool)$send;
     }
 
     function setSubject($subject_line)
@@ -159,7 +165,13 @@ class PHPWS_Mail {
         
         return !preg_match('/[^\w\s<>\.@\-\'"]/', $email_address);
     }
-
+    
+    /**
+     * @returns If sent individually and an error occurs, a false statement 
+     *          is returned and the error is logged after the mailing is complete.
+     *          If sent altogether, the error itself is returned. If all goes well,
+     *          true is returned.
+     */
     function send()
     {
         $param = array();
@@ -181,7 +193,6 @@ class PHPWS_Mail {
             $headers['Reply-To'] = $this->reply_to_address;
         }
 
-        $recipients['To']   = implode(',', $this->send_to);
         if (!empty($this->carbon_copy)) {
             $headers['Cc'] = implode(',', $this->carbon_copy);
         }
@@ -231,7 +242,24 @@ class PHPWS_Mail {
         }
 
         $mail_object =& Mail::factory($this->backend_type, $param);
-        return $mail_object->send($recipients, $headers, $body);
+
+        if ($this->send_individually) {
+            foreach($this->send_to as $address) {
+                $recipients['To']   = $address;
+                $result = $mail_object->send($recipients, $headers, $body);
+                if (PHPWS_Error::logIfError($result)) {
+                    $error_found = true;
+                }
+            }
+            if (isset($error_found)) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            $recipients['To']   = implode(',', $this->send_to);
+            return $mail_object->send($recipients, $headers, $body);
+        }
     }
 
 }

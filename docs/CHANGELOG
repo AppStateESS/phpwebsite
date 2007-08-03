@@ -4,6 +4,10 @@ its own separate CHANGELOG file.
 
 Version 1.6.0
 ------------------------------------------------------------------
+3 August 2007
++ Added option in Mail class to send emails individually instead of
+  altogether.
+
 31 July 2007
 + Updated js_calendar
 
