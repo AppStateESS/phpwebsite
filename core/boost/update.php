@@ -78,7 +78,6 @@ function core_update(&$content, $version) {
         $files = array('conf/formConfig.php', 'conf/version.php',
                        'conf/file_types.php', 'javascript/select_confirm/README.txt',
                        'javascript/open_window/default.php', 'javascript/open_window/body2.js',
-                       'javascript/js_calendar/default.php', 'javascript/js_calendar/readme.txt',
                        'javascript/ajax/requester.js', 'javascript/ajax/default.php', 
                        'javascript/ajax/readme.txt', 'javascript/ajax/head.js',
                        'javascript/editors/tinymce/default.php', 'javascript/editors/tinymce/body.js');
@@ -151,6 +150,7 @@ Key.php
 
 Mail.php
 + Added single and double quotes to the allowed characters in the address
++ Added option in Mail class to send emails individually.
 
 
 XMLParser.php
@@ -167,6 +167,7 @@ Javascript
 + Open Window lets you pick a button or link interface
 + Added some extra instruction to javascript\'s select_confirm
   documentation.
++ JS_Calendar updated to newer version. Can set hours and minutes now.
 
 
 Conversion
