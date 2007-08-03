@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-25 09:50-0400\n"
+"POT-Creation-Date: 2007-08-03 13:38-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,6 +44,9 @@ msgstr ""
 msgid "An error occurred when accessing this sheet's slots."
 msgstr ""
 
+msgid "An error occurred when pulling applicants."
+msgstr ""
+
 msgid "An error occurred when trying to save your application."
 msgstr ""
 
@@ -74,6 +77,9 @@ msgid "Click on \"Add slot\" to allow applicants to sign up."
 msgstr ""
 
 msgid "Click the link below to confirm your participation in the following:"
+msgstr ""
+
+msgid "Close signup"
 msgstr ""
 
 msgid "Congratulations!"
@@ -109,7 +115,20 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
+#, php-format
+msgid "Email %s applicants"
+msgstr ""
+
 msgid "Email address"
+msgstr ""
+
+msgid "Emails not sent"
+msgstr ""
+
+msgid "Emails sent"
+msgstr ""
+
+msgid "Error occurred when moving applicant. Slot may be full."
 msgstr ""
 
 msgid "Error occurred when saving applicant."
@@ -127,6 +146,9 @@ msgstr ""
 msgid "First name"
 msgstr ""
 
+msgid "From"
+msgstr ""
+
 msgid "Go"
 msgstr ""
 
@@ -134,10 +156,16 @@ msgstr ""
 msgid "Greetings from %s,"
 msgstr ""
 
+msgid "Invalid reply address."
+msgstr ""
+
 msgid "Last name"
 msgstr ""
 
 msgid "List"
+msgstr ""
+
+msgid "Message"
 msgstr ""
 
 msgid "Missing internal information."
@@ -152,13 +180,13 @@ msgstr ""
 msgid "New"
 msgstr ""
 
-msgid "No open slots"
-msgstr ""
-
 msgid "Number of openings"
 msgstr ""
 
 msgid "Organization"
+msgstr ""
+
+msgid "Other slots full"
 msgstr ""
 
 msgid "Phone"
@@ -181,7 +209,16 @@ msgstr ""
 msgid "Please enter a last name."
 msgstr ""
 
+msgid "Please enter a message."
+msgstr ""
+
+msgid "Please enter a subject."
+msgstr ""
+
 msgid "Please specify an openings amount."
+msgstr ""
+
+msgid "Please wait"
 msgstr ""
 
 msgid "Print"
@@ -194,6 +231,15 @@ msgid "Print page"
 msgstr ""
 
 msgid "Report"
+msgstr ""
+
+msgid "Returning to applicant listing."
+msgstr ""
+
+msgid "Send emails"
+msgstr ""
+
+msgid "Sending emails"
 msgstr ""
 
 msgid "Sheet previously posted."
@@ -219,6 +265,9 @@ msgid "Signup form"
 msgstr ""
 
 msgid "Signup sheet deleted."
+msgstr ""
+
+msgid "Signup sheet did not contain any applicants."
 msgstr ""
 
 msgid "Signup tables dropped."
@@ -259,6 +308,9 @@ msgstr ""
 msgid "Sorry, the slot you chose is no longer available."
 msgstr ""
 
+msgid "Subject"
+msgstr ""
+
 msgid "Submit"
 msgstr ""
 
@@ -281,6 +333,9 @@ msgstr ""
 msgid "Total openings: %s"
 msgstr ""
 
+msgid "Unable to send emails. Signup sheet does not exist."
+msgstr ""
+
 msgid "Unsuitable email address."
 msgstr ""
 
@@ -298,6 +353,9 @@ msgid "Update applicant"
 msgstr ""
 
 msgid "Update signup sheet"
+msgstr ""
+
+msgid "We are no longer accepting applications."
 msgstr ""
 
 msgid ""
@@ -320,7 +378,9 @@ msgstr ""
 msgid "You must give your slot a title."
 msgstr ""
 
-msgid "You should receive an email allowing you to verify your application."
+msgid ""
+"You should receive an email allowing you to verify your application.<br /"
+">You have one hour to confirm your application."
 msgstr ""
 
 msgid ""
