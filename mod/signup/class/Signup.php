@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 PHPWS_Core::requireInc('signup', 'errordefines.php');
 PHPWS_Core::requireConfig('signup');
@@ -20,6 +20,7 @@ class Signup {
     var $sheet   = null;
     var $slot    = null;
     var $peep    = null;
+    var $email   = null;
 
     function adminMenu()
     {
@@ -78,6 +79,28 @@ class Signup {
             exit();
             break;
 
+        case 'email_applicants':
+            if (!Current_User::authorized('signup')) {
+                Current_User::disallow();
+            }
+            $this->loadEmail();
+            $this->loadSheet();
+            $this->loadForm('email_applicants');
+            break;
+            
+        case 'post_email':
+            if (!Current_User::authorized('signup')) {
+                Current_User::disallow();
+            }
+            $this->loadEmail();
+            $this->loadSheet();
+            if ($this->postEmail()) {
+                $this->sendEmail();
+            } else {
+                $this->loadForm('email_applicants');
+            }
+            break;
+
         case 'slot_listing':
             if (!Current_User::authorized('signup')) {
                 Current_User::disallow();
@@ -94,6 +117,13 @@ class Signup {
             $this->loadSheet();
             $this->csvExport();
             exit(); 
+            break;
+
+        case 'send_email':
+            if (!Current_User::authorized('signup')) {
+                Current_User::disallow();
+            }
+            $this->sendEmail();
             break;
 
         case 'edit_slots':
@@ -227,6 +257,45 @@ class Signup {
             $_SESSION['SU_Message']['title'] = $title;
         }
     }
+    
+    function loadEmail()
+    {
+        $this->email['from'] = null;
+        $this->email['subject'] = null;
+        $this->email['message'] = null;
+    }
+
+    function postEmail()
+    {
+        if (!PHPWS_Text::isValidInput($_POST['from'], 'email')) {
+            $errors[] = dgettext('signup', 'Invalid reply address.');
+        } else {
+            $this->email['from'] = & $_POST['from'];
+        }
+
+        $subject = trim(strip_tags($_POST['subject']));
+        if (empty($subject)) {
+            $errors[] = dgettext('signup', 'Please enter a subject.');
+        } else {
+            $this->email['subject'] = & $subject;
+        }
+
+        $message = trim(strip_tags($_POST['message']));
+
+        if (empty($message)) {
+            $errors[] = dgettext('signup', 'Please enter a message.');
+        } else {
+            $this->email['message'] = & $message;
+        }
+
+        if (isset($errors)) {
+            $this->message = implode('<br />', $errors);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 
     function loadMessage()
     {
@@ -346,7 +415,7 @@ class Signup {
         case 'slot_signup':
             if ($this->postPeep()) {
                 if ($this->saveUnregistered()) {
-                    $this->forwardMessage(dgettext('signup', 'You should receive an email allowing you to verify your application.'), dgettext('signup', 'Thank you'));
+                    $this->forwardMessage(dgettext('signup', 'You should receive an email allowing you to verify your application.<br />You have one hour to confirm your application.'), dgettext('signup', 'Thank you'));
                     $this->sendMessage();
                 } else {
                     $this->loadForm('user_signup');
@@ -473,6 +542,82 @@ class Signup {
         $mail->setReplyTo($reply_to);
         $mail->setMessageBody(implode("\n", $message));
         return $mail->send();
+    }
+
+    /**
+     * Sends everyone (limited by search) in a specific sheet an email
+     */
+    function sendEmail()
+    {
+        PHPWS_Core::initCoreClass('Mail.php');
+
+        if (!isset($_SESSION['Email_Applicants'])) {
+            $_SESSION['Email_Applicants']['email'] = & $this->email;
+            $_SESSION['Email_Applicants']['sheet_id'] = $this->sheet->id;
+            $_SESSION['Email_Applicants']['search'] = @ $_REQUEST['search'];
+            $vars['aop'] = 'send_email';
+            Layout::metaRoute(PHPWS_Text::linkAddress('signup', $vars, true), 1);
+            $this->title = dgettext('signup', 'Sending emails');
+            $this->content = dgettext('signup', 'Please wait');
+            return;
+        }
+
+        $email_session = & $_SESSION['Email_Applicants'];
+
+        $mail = new PHPWS_Mail;
+        $mail->setSubject($email_session['email']['subject']);
+        $mail->setFrom($email_session['email']['from']);
+        $mail->setReplyTo($email_session['email']['from']);
+        $mail->setMessageBody($email_session['email']['message']);
+        $mail->sendIndividually(false);
+
+        $this->loadSheet($email_session['sheet_id']);
+
+        if (!$this->sheet->id) {
+            $this->title = dgettext('signup', 'Sorry');
+            $this->content = dgettext('signup', 'Unable to send emails. Signup sheet does not exist.');
+            PHPWS_Core::killSession('Email_Applicants');
+            return;
+        }
+
+        $db = new PHPWS_DB('signup_peeps');
+        $db->addColumn('email');
+        $db->addWhere('sheet_id', $this->sheet->id);
+
+        if (isset($email_session['search'])) {
+            $search = explode('+', $email_session['search']);
+            foreach ($search as $s) {
+                $db->addWhere('first_name', "%$s%", 'like', 'or', 1);
+                $db->addWhere('last_name',  "%$s%", 'like', 'or', 1);
+                $db->addWhere('organization',  "%$s%", 'like', 'or', 1);
+            }
+        }
+
+        $result = $db->select('col');
+        if (empty($result)) {
+            $this->title = dgettext('signup', 'Emails not sent');
+            $this->content = dgettext('signup', 'Signup sheet did not contain any applicants.');
+            return;
+        } elseif (PHPWS_Error::logIfError($result)) {
+            $this->title = dgettext('signup', 'Emails not sent');
+            $this->content = dgettext('signup', 'An error occurred when pulling applicants.');
+            return;
+        }
+
+        foreach ($result as $address) {
+            $mail->addSendTo($address);
+        }
+
+        $mail->send();
+
+        $vars['aop'] = 'report';
+        $vars['id'] = $this->sheet->id;
+        $link = PHPWS_Text::linkAddress('signup', $vars, true);
+
+        $this->title = dgettext('signup', 'Emails sent');
+        $this->content = dgettext('signup', 'Returning to applicant listing.');
+        Layout::metaRoute($link, 5);
+        PHPWS_Core::killSession('Email_Applicants');
     }
 
 
@@ -644,10 +789,10 @@ class Signup {
                     return;
                 }
             }        $js['label'] = dgettext('signup', 'Print list');
-        $js['width'] = '1024';
-        $js['height'] = '768';
-        $js['menubar'] = 'yes';
-        $js['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
+            $js['width'] = '1024';
+            $js['height'] = '768';
+            $js['menubar'] = 'yes';
+            $js['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
 
 
             $this->peep->registered = 1;
@@ -722,9 +867,9 @@ class Signup {
         if (!empty($result)) {
             foreach ($result as $peep) {
                 $data[] = sprintf('"%s","%s","%s","%s","%s"',
-                        $peep->first_name, $peep->last_name,
-                        $peep->getPhone(), $peep->email,
-                        $peep->organization);
+                                  $peep->first_name, $peep->last_name,
+                                  $peep->getPhone(), $peep->email,
+                                  $peep->organization);
             }
         }
 

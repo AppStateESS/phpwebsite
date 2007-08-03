@@ -42,9 +42,46 @@ class Signup_Forms {
             $this->report();
             break;
 
+        case 'email_applicants':
+            $this->emailApplicants();
+            break;
         }
 
     }
+
+    function emailApplicants()
+    {
+        $email = & $this->signup->email;
+
+        $form = new PHPWS_Form('email');
+        $form->addHidden('module', 'signup');
+        $form->addHidden('aop', 'post_email');
+        $form->addHidden('sheet_id', $this->signup->sheet->id);
+
+        if (!empty($_REQUEST['search'])) {
+            $form->addHidden('search', $_REQUEST['search']);
+        }
+
+        $form->addText('subject', $email['subject']);
+        $form->setLabel('subject', dgettext('signup', 'Subject'));
+        $form->setSize('subject', 30);
+
+        $form->addText('from', $email['from']);
+        $form->setLabel('from', dgettext('signup', 'From'));
+        $form->setSize('from', 30);
+
+        $form->addTextArea('message', $email['message']);
+        $form->setLabel('message', dgettext('signup', 'Message'));
+        $form->setCols('message', 50);
+
+        $form->addSubmit(dgettext('signup', 'Send emails'));
+
+        $tpl = $form->getTemplate();
+
+        $this->signup->title = sprintf(dgettext('signup', 'Email %s applicants'), $this->signup->sheet->title);
+        $this->signup->content = PHPWS_Template::process($tpl, 'signup', 'email_form.tpl');
+    }
+
 
     function editPeep()
     {
@@ -216,7 +253,6 @@ class Signup_Forms {
         $js['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
         $page_tags['SLOT_LISTING'] = javascript('open_window', $js);
 
-
         $vars['aop'] = 'print_applicants';
 
         if (!empty($pager->search)) {
@@ -239,7 +275,8 @@ class Signup_Forms {
         $js['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
         $page_tags['PRINT'] = javascript('open_window', $js);
 
-
+        $vars['aop'] = 'email_applicants';
+        $page_tags['EMAIL'] = PHPWS_Text::secureLink(dgettext('signup', 'Email'), 'signup', $vars);
 
         $page_tags['LAST_NAME_LABEL'] = dgettext('signup', 'Last name');
         $page_tags['FIRST_NAME_LABEL'] = dgettext('signup', 'First name');
