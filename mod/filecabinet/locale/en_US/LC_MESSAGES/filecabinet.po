@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-26 13:04-0400\n"
+"POT-Creation-Date: 2007-08-03 13:38-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -215,7 +215,7 @@ msgid "Document settings"
 msgstr ""
 
 #, php-format
-msgid "Document was %sK making it larger than %s byte size limit."
+msgid "Document was %s bytes making it larger than %s byte size limit."
 msgstr ""
 
 msgid "Download"
@@ -240,6 +240,9 @@ msgid "Enable FFMpeg thumbnails (enabled on ffmpeg confirmation)"
 msgstr ""
 
 msgid "FFMpeg directory"
+msgstr ""
+
+msgid "Failed to create files/filecabinet/ directory."
 msgstr ""
 
 msgid "Failed to create files/filecabinet/classify directory."
@@ -309,7 +312,7 @@ msgid "Image settings"
 msgstr ""
 
 #, php-format
-msgid "Image was %sK making it larger than %s byte size limit."
+msgid "Image was %s bytes making it larger than %s byte size limit."
 msgstr ""
 
 #, php-format
@@ -380,7 +383,7 @@ msgid "Multimedia file not found."
 msgstr ""
 
 #, php-format
-msgid "Multimedia file was %sK making it larger than %s byte size limit."
+msgid "Multimedia file was %s bytes making it larger than %s byte size limit."
 msgstr ""
 
 msgid "Multimedia folders"
@@ -592,6 +595,9 @@ msgid "Your maximum multimedia size exceeds the server limit of %sMB."
 msgstr ""
 
 msgid "Your multimedia directory is not writable."
+msgstr ""
+
+msgid "files/filecabinet/ directory created successfully."
 msgstr ""
 
 msgid "files/filecabinet/classify directory created successfully."
