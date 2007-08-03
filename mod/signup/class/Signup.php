@@ -788,12 +788,7 @@ class Signup {
                                                       'phone'     => $this->peep->phone);
                     return;
                 }
-            }        $js['label'] = dgettext('signup', 'Print list');
-            $js['width'] = '1024';
-            $js['height'] = '768';
-            $js['menubar'] = 'yes';
-            $js['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
-
+            }
 
             $this->peep->registered = 1;
             if (PHPWS_Error::logIfError($this->peep->save())) {
