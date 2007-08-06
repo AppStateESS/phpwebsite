@@ -392,6 +392,7 @@ class FC_Image_Manager {
         $js_vars['title']    = $js_vars['alt'] = dgettext('filecabinet', 'No image');
         $js_vars['itemname'] = $this->itemname;
         $js_vars['label']    = dgettext('filecabinet', 'Clear image');
+        $js_vars['id'] = $this->itemname . '-clear';
         return javascript('modules/filecabinet/clear_image', $js_vars);
     }
 
