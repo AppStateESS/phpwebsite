@@ -12,8 +12,13 @@ if (!defined('RESIZE_IMAGE_USE_DUPLICATE')) {
     define('RESIZE_IMAGE_USE_DUPLICATE', true);
 }
 
-define('FC_MAX_WIDTH_DISPLAY', 400);
-define('FC_MAX_HEIGHT_DISPLAY', 400);
+if (!defined('FC_MAX_WIDTH_DISPLAY')) {
+    define('FC_MAX_WIDTH_DISPLAY', 300);
+}
+
+if (!defined('FC_MAX_HEIGHT_DISPLAY')) {
+    define('FC_MAX_HEIGHT_DISPLAY', 300);
+}
 
 class FC_Image_Manager {
     var $image      = null;
@@ -370,8 +375,19 @@ class FC_Image_Manager {
     function getClearLink()
     {
         $js_vars['src']      = FC_NONE_IMAGE_SRC;
-        $js_vars['width']    = $this->max_width;
-        $js_vars['height']   = $this->max_height;
+
+        if ($this->max_width > FC_MAX_WIDTH_DISPLAY) {
+            $js_vars['width'] = FC_MAX_WIDTH_DISPLAY;
+        } else {
+            $js_vars['width'] = & $this->max_width;
+        }
+
+        if ($this->max_height > FC_MAX_HEIGHT_DISPLAY) {
+            $js_vars['height'] = FC_MAX_HEIGHT_DISPLAY;
+        } else {
+            $js_vars['height'] = & $this->max_height;
+        }
+
         $js_vars['alt']      = 
         $js_vars['title']    = $js_vars['alt'] = dgettext('filecabinet', 'No image');
         $js_vars['itemname'] = $this->itemname;
