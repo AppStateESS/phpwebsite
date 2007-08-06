@@ -11,8 +11,8 @@ define('MAX_TN_IMAGE_HEIGHT', 200);
 define('FC_VIEW_MARGIN_WIDTH', 20);
 define('FC_VIEW_MARGIN_HEIGHT', 100);
 
-define('FC_UPLOAD_WIDTH', 450);
-define('FC_UPLOAD_HEIGHT', 450);
+define('FC_UPLOAD_WIDTH', 200);
+define('FC_UPLOAD_HEIGHT', 200);
 
 define('FC_NONE_IMAGE_SRC', 'images/mod/filecabinet/no_image.png');
 
@@ -24,6 +24,14 @@ define('FC_THUMBNAIL_HEIGHT', 100);
 
 define('FC_MAX_MULTIMEDIA_POPUP_WIDTH', 1024);
 define('FC_MAX_MULTIMEDIA_POPUP_HEIGHT', 768);
+
+/**
+ * If no image has been selected, these are the maximum
+ * dimensions the no-image graphic will display. A selected
+ * image will overwrite these dimensions.
+ */
+define('FC_MAX_WIDTH_DISPLAY', 200);
+define('FC_MAX_HEIGHT_DISPLAY', 200);
 
 /**
  * For image popups, this is the minumum dimension of the 
