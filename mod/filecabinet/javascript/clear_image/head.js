@@ -4,11 +4,11 @@
     function clear_image(itemname) {
         image = document.getElementById('image-manager-' + itemname);
         hidden = document.getElementById(itemname + '_hidden_value');
-        link = document.getElementById(itemname + '-current-image').childNodes[1];
-        url = link.getAttribute('onclick');
+        link = document.getElementById(itemname + '-clear');
+        url = link.href;
         url_new = url.replace(/current=\d*'/gi, "current=0'");
 
-        link.setAttribute('onclick', url_new);
+        link.href = url;
 
         if (image) {
             image.src = '{src}';
