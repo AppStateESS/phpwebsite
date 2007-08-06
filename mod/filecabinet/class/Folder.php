@@ -342,13 +342,13 @@ class Folder {
         $vars['mw'] = $max_width;
         $vars['mh'] = $max_height;
 
-        $jsvars['success_function'] = sprintf('show_images(requester.responseText, %s)', $this->id);
-        $jsvars['failure_function'] = "alert('A problem occurred')"; 
+        $jsvars['success'] = sprintf('show_images(requester.responseText, %s)', $this->id);
+        $jsvars['failure'] = "alert('A problem occurred')"; 
 
         $tpl['ICON'] = sprintf('<a href="#"  onclick="loadRequester(\'%s\', \'%s\', \'%s\'); return false">%s</a>',
                                PHPWS_Text::linkAddress('filecabinet', $vars, true, false, false),
-                               addslashes($jsvars['success_function']),
-                               addslashes($jsvars['failure_function']),
+                               addslashes($jsvars['success']),
+                               addslashes($jsvars['failure']),
                                $icon);
 
         javascript('ajax', $jsvars);
