@@ -1,11 +1,11 @@
 <script type="text/javascript" src="javascript/ajax/requester.js"></script>
 <script type="text/javascript">
 //<![CDATA[
-<!-- BEGIN trigger-onload -->
-{trigger_onload}
-<!-- END trigger-onload -->
+<!-- BEGIN trigger-onload -->{trigger_onload}<!-- END trigger-onload -->
 
+var success = "{success}";
+var failure = "{failure}";
 var requester = null;
 
- //]]>
+//]]>
 </script>
