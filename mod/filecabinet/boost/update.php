@@ -149,6 +149,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
         $files = array('img/no_image.png', 'conf/config.php', 'conf/video_types.php',
                        'conf/embedded.php',
                        'javascript/folder_contents/head.js',
+                       'javascript/clear_image/head.js',
                        'javascript/pick_image/head.js',
                        'templates/image_folders.tpl', 'templates/settings.tpl',
                        'templates/style.css', 'templates/image_view.tpl',
