@@ -118,7 +118,7 @@ class Webpage_User {
 
         foreach ($result as $volume) {
             $volume->loadPages();
-            Layout::add($volume->view(), 'webpage', 'page_view', TRUE);
+            Layout::add($volume->view(null, false), 'webpage', 'page_view', TRUE);
         }
     }
 }

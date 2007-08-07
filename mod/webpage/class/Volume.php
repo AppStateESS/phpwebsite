@@ -523,7 +523,7 @@ class Webpage_Volume {
         return $db->update();
     }
     
-    function view($page=null)
+    function view($page=null, $show_page_title=true)
     {
         $this->loadKey();
 
@@ -532,7 +532,9 @@ class Webpage_Volume {
         }
 
         Layout::addStyle('webpage');
-        Layout::addPageTitle($this->title);
+        if ($show_page_title) {
+            Layout::addPageTitle($this->title);
+        }
 
         if (!empty($page)) {
             $this->_current_page = (int)$page;
