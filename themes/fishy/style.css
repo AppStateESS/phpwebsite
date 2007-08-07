@@ -23,17 +23,33 @@ body {
 }
 
 #container #sidepanel {
-	background-image: url(leftbackground.jpg);
+ 	background-image: url(leftbackground.jpg); 
 	background-repeat: no-repeat;
 	background-position: left top;
 	position: absolute;
-	z-index: 2;
 	left: 0px;
 	top: 0px;
 	padding-left: 20px;
 	padding-top: 260px;
         width : 260px;
+        z-index : 0;
 }
+
+#top-menu {
+       text-align : right;
+       font-size : .9em;
+       position : absolute;
+       z-index : 1;
+}
+
+
+#search-box {
+       position : absolute;
+       left : 0px;
+       top : 10px;
+       z-index : 2;
+}
+
 
 #container #top-menu {
        position: absolute;
@@ -42,10 +58,6 @@ body {
        color : white;
 }
 
-#top-menu {
-       text-align : right;
-       font-size : .9em;
-}
 
 .smaller {
        font-size : .9em;
@@ -116,12 +128,6 @@ display : none;
        font-size : .8em;
 }
 
-#search-box {
-       position : absolute;
-       left : 0px;
-       top : 10px;
-       z-index : 3;
-}
 
 #user-login {
       float : right;
