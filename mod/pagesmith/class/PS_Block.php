@@ -37,28 +37,33 @@ class PS_Block extends PS_Section {
         }
     }
 
-    function loadContent($form_mode=false)
+    function loadFiller()
     {
-        if ($form_mode) {
-            PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
-            $manager = Cabinet::imageManager($this->type_id, $this->secname, $this->width, $this->height, false);
-            $this->content = $manager->get();
-        } else {
+        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
+        $manager = Cabinet::imageManager($this->type_id, $this->secname, $this->width, $this->height, false);
+        $this->content = $manager->get();
+    }
+
+    function loadSaved()
+    {
+        $this->loadFiller();
+        return true;
+    }
+    
+    function getContent()
+    {
+        if (empty($this->content)) {
             switch ($this->btype) {
             case 'image':
                 PHPWS_Core::initModClass('filecabinet', 'Image.php');
                 $image = new PHPWS_Image($this->type_id);
-                $this->content = $image->getTag();
+                if ($image->id) {
+                    $this->content = $image->getTag();
+                }
             }
         }
-    }
-
-
-    function getContent()
-    {
         return $this->content;
     }
-
 
     function save()
     {

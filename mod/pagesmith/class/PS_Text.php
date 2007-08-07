@@ -33,35 +33,9 @@ class PS_Text extends PS_Section {
         }
     }
 
-    function getSaved()
-    {
-        if (isset($_SESSION['PS_Page'][$this->pid][$this->secname])) {
-            return $_SESSION['PS_Page'][$this->pid][$this->secname];
-        }
-        return null;
-    }
-
     function setSaved()
     {
         $_SESSION['PS_Page'][$this->pid][$this->secname] = & $this->content;
-    }
-
-    function loadContent($form_mode=false)
-    {
-        if ($form_mode) {
-            $content = $this->getSaved();
-            if ($content) {
-                $this->content = & $content;
-            } else {
-                $this->loadFiller();
-                $this->setSaved();
-            }
-        }
-    }
-
-    function getContent()
-    {
-        return PHPWS_Text::parseOutput($this->content);
     }
 
     function loadFiller()
@@ -76,7 +50,27 @@ class PS_Text extends PS_Section {
             }
             $this->content =  PHPWS_Text::breaker($lorum);
         }
+        $this->setSaved();
     }
+
+    function loadSaved()
+    {
+        if (isset($_SESSION['PS_Page'][$this->pid][$this->secname])) {
+            $this->content = $_SESSION['PS_Page'][$this->pid][$this->secname];
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function getContent()
+    {
+        if (empty($this->content)) {
+            return '&nbsp;';
+        }
+        return PHPWS_Text::parseOutput($this->content);
+    }
+
 
     function save()
     {

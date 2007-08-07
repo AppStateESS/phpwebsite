@@ -51,12 +51,13 @@ class PageSmith {
             break;
 
         case 'edit_page':
+            $this->killSaved();
             $this->loadForms();
             $this->loadPage();
             if (!Current_User::allow('pagesmith', 'edit_page', $this->page->id)) {
                 Current_User::disallow();
             }
-            $this->page->loadSections(true, true);
+            $this->page->loadSections(true);
             $this->forms->pageLayout();
             break;
 
@@ -65,7 +66,7 @@ class PageSmith {
             $this->loadForms();
             $this->loadPage();
             $this->page->loadTemplate();
-            $this->page->loadSections(true, true);
+            $this->page->loadSections(true);
             $this->forms->editPage();
             break;
 
@@ -83,7 +84,7 @@ class PageSmith {
             $this->loadForms();
             $this->loadPage();
             $this->page->loadTemplate();
-            $this->page->loadSections(true,true);
+            $this->page->loadSections(true);
             $this->forms->editPageHeader();
             $javascript = true;
             break;
@@ -92,7 +93,7 @@ class PageSmith {
             $this->loadForms();
             $this->loadPage();
             $this->page->loadTemplate();
-            $this->page->loadSections(true,true);
+            $this->page->loadSections(true);
             $this->forms->editPageText();
             $javascript = true;
             break;
@@ -203,7 +204,7 @@ class PageSmith {
         }
 
         // reset page sections and save
-        $this->page->_sections = $sections;
+        //        $this->page->_sections = $sections;
         $this->page->save();
 
         return true;

@@ -52,15 +52,32 @@ class PS_Page {
     }
 
 
-    function loadSections($load_content=true, $form_mode=false)
+    function loadSections($form_mode=false)
     {
+
         PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
         PHPWS_Core::initModClass('pagesmith', 'PS_Block.php');
 
         if (empty($this->_tpl)) {
             $this->loadTemplate();
         }
-        
+
+        foreach ($this->_tpl->structure as $section_xml) {
+            if ($section_xml['TYPE'] == 'image') {
+                $section = new PS_Block;
+            } else {
+                $section = new PS_Text;
+            }
+            $section->plugSection($section_xml, $this->id);
+
+            if ($form_mode) {
+                if (!$section->loadSaved()) {
+                    $section->loadFiller();
+                }
+            }
+            $this->_sections[$section->secname] = $section;
+        }
+
         if ($this->id) {
             // load sections from database
             // load sections should handle template 
@@ -73,35 +90,29 @@ class PS_Page {
             $text_db->setIndexBy('secname');
             $block_db->setIndexBy('secname');
 
-            $text_sections = $text_db->getObjects('PS_Text');
-            $block_sections = $block_db->getObjects('PS_Block');
+            $text_sections = $text_db->select();
+            $block_sections = $block_db->select();
+
 
             if (!empty($text_sections)) {
                 foreach ($text_sections as $secname=>$section) {
-                    $this->_sections[$secname] = $section;
+                    PHPWS_Core::plugObject($this->_sections[$secname], $section);
+                    /*
+                    if ($form_mode && empty($this->_sections[$secname]->content)) {
+                        if (!$this->_sections[$secname]->loadSaved()) {
+                            $this->_sections[$secname]->loadFiller();
+                        }
+                    }
+                    */
                     $this->_content[$secname] = $this->_sections[$secname]->getContent();
                 }
             }
 
             if (!empty($block_sections)) {
                 foreach ($block_sections as $secname=>$section) {
-                    $section->loadContent($form_mode);
-                    $this->_sections[$secname] = $section;
-                    $this->_content[$secname] = & $this->_sections[$secname]->content;
+                    PHPWS_Core::plugObject($this->_sections[$secname], $section);
+                    $this->_content[$secname] = $this->_sections[$secname]->getContent();
                 }
-            }
-        } else {
-            foreach ($this->_tpl->structure as $section_xml) {
-                if ($section_xml['TYPE'] == 'image') {
-                    $section = new PS_Block;
-                } else {
-                    $section = new PS_Text;
-                }
-                $section->plugSection($section_xml, $this->id);
-                if ($load_content) {
-                    $section->loadContent($form_mode);
-                }
-                $this->_sections[$section->secname] = $section;
             }
         }
     }
@@ -249,6 +260,15 @@ class PS_Page {
             return false;
         }
         Key::drop($this->key_id);
+
+        $db = new PHPWS_DB('ps_text');
+        $db->addWhere('pid', $this->id);
+        $db->delete();
+
+        $db = new PHPWS_DB('ps_block');
+        $db->addWhere('pid', $this->id);
+        $db->delete();
+
         return true;
     }
 }
