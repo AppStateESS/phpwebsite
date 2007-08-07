@@ -150,6 +150,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                        'conf/embedded.php',
                        'javascript/folder_contents/head.js',
                        'javascript/clear_image/head.js',
+                       'javascript/clear_image/body.js',
                        'javascript/pick_image/head.js',
                        'templates/image_folders.tpl', 'templates/settings.tpl',
                        'templates/style.css', 'templates/image_view.tpl',
