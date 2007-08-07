@@ -93,6 +93,10 @@ switch ($_REQUEST['action']){
      $content[] = Boost_Action::showDependedUpon($_REQUEST['opmod']);
      break;
 
+ case 'copy_local':
+     $content[] = Boost_Action::copyLocal($_REQUEST['opmod']);
+     break;
+
 }// End area switch
 
 $boostPanel->setContent(implode('', $content));

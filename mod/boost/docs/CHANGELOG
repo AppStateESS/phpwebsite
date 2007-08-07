@@ -1,5 +1,8 @@
 Version 2.1.2
 -----------------------------------------------------
+7 August 2007
++ Added revert option to copy a module's files locally.
+
 27 July 2007
 + Boost now expects the javascript directory to be writable as
   well as the module directory.

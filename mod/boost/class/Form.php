@@ -1,19 +1,21 @@
 <?php
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 class Boost_Form {
 
-    function boostTab(&$panel){
+    function boostTab(&$panel)
+    {
         if (!isset($_REQUEST['tab']))
             return $panel->getCurrentTab();
         else
             return $_REQUEST['tab'];
     }
 
-    function setTabs(&$panel){
+    function setTabs(&$panel)
+    {
         $link = dgettext('boost', 'index.php?module=boost&amp;action=admin');
     
         $core_links['title'] = dgettext('boost', 'Core Modules');
@@ -27,7 +29,8 @@ class Boost_Form {
         $panel->quickSetTabs($tabs);
     }
 
-    function listModules($type){
+    function listModules($type)
+    {
         Layout::addStyle('boost');
         PHPWS_Core::initCoreClass('Module.php');
         PHPWS_Core::initCoreClass('Text.php');
@@ -78,7 +81,7 @@ class Boost_Form {
                 $link_title = dgettext('boost', 'Check');
             }
 
-            if ($core_file->isAbout()){
+            if ($core_file->isAbout()) {
                 $address = PHPWS_Text::linkAddress('boost',
                                                    array('action' => 'aboutView', 'aboutmod'=> $core_file->title),
                                                    true);
@@ -105,7 +108,10 @@ class Boost_Form {
                 $template['VERSION'] =sprintf('%s &gt; %s', $core_db->version, $core_file->version); 
                 $template['COMMAND'] = implode(' | ', $core_links);
             } else {
-                $template['COMMAND'] = dgettext('boost', 'None');
+                $js_file['QUESTION'] = dgettext('boost', 'Clicking OK will copy the core\\\'s configuration, image and (if on a branch site) javascript directories locally.\nNo backups will occur and all local files will be overwritten.\nAre you certain you want to do this?');
+                $js_file['ADDRESS'] = PHPWS_Text::linkAddress('boost', array('opmod'=>'core', 'action'=>'copy_local'), true);
+                $js_file['LINK'] = dgettext('boost', 'Revert');
+                $template['COMMAND'] = javascript('confirm', $js_file);
             }
 
 
@@ -153,7 +159,7 @@ class Boost_Form {
 
             $version_check = $mod->getVersionHttp();
             
-            if (isset($version_check)){
+            if (isset($version_check)) {
                 if (isset($_SESSION['Boost_Needs_Update'][$mod->title])) {
                     $link_title = $_SESSION['Boost_Needs_Update'][$mod->title];
                     if (version_compare($mod->version, $_SESSION['Boost_Needs_Update'][$mod->title], '<')) {
@@ -205,10 +211,16 @@ class Boost_Form {
                         $js['LINK'] = dgettext('boost', 'Uninstall');
                         $links[] = javascript('confirm', $js);
                     }
+
                 }
+
+                $js_file['QUESTION'] = dgettext('boost', 'Clicking OK will copy this module\\\'s configuration, image, templates, and javascript folders locally.\nNo backups will occur and all local files will be overwritten.\nAre you certain you want to do this?');
+                $js_file['ADDRESS'] = PHPWS_Text::linkAddress('boost', array('opmod'=>$title, 'action'=>'copy_local'), true);
+                $js_file['LINK'] = dgettext('boost', 'Revert');
+                $links[] = javascript('confirm', $js_file);
             }
 
-            if ($mod->isAbout()){
+            if ($mod->isAbout()) {
                 $address = PHPWS_Text::linkAddress('boost',
                                                    array('action' => 'aboutView', 'aboutmod'=> $mod->title),
                                                    true);

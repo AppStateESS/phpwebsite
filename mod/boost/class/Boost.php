@@ -454,12 +454,12 @@ class PHPWS_Boost {
     {
         PHPWS_Core::initCoreClass('File.php');
         if (!isset($homeDir)) {
-            $homeDir = getcwd();
+            $homeDir = $this->getHomeDir();
         }
 
         $configSource = $mod->getDirectory() . 'conf/';
         if (is_dir($configSource)) {
-            $configDest   = $homeDir . '/config/' . $mod->title . '/';
+            $configDest   = $homeDir . 'config/' . $mod->title . '/';
             if ($overwrite == true || !is_dir($configDest)) {
                 $content[] = dgettext('boost', 'Copying configuration files.');
                 $this->addLog($mod->title, sprintf(dgettext('boost', "Copying directory %1\$s to %2\$s"), $configSource, $configDest));
@@ -469,7 +469,7 @@ class PHPWS_Boost {
 
         $javascriptSource = $mod->getDirectory() . 'javascript/';
         if (is_dir($javascriptSource)) {
-            $javascriptDest   = $homeDir . '/javascript/modules/' . $mod->title . '/';
+            $javascriptDest   = $homeDir . 'javascript/modules/' . $mod->title . '/';
             if ($overwrite == true || !is_dir($javascriptDest)) {
                 $content[] = dgettext('boost', 'Copying javascript directories.');
                 $this->addLog($mod->title, sprintf(dgettext('boost', "Copying directory %1\$s to %2\$s"), $javascriptSource, $javascriptDest));
@@ -479,7 +479,7 @@ class PHPWS_Boost {
 
         $templateSource = $mod->getDirectory() . 'templates/';
         if (is_dir($templateSource)) {
-            $templateDest   = $homeDir . '/templates/' . $mod->title . '/';
+            $templateDest   = $homeDir . 'templates/' . $mod->title . '/';
             if ($overwrite == true || !is_dir($templateDest)) {
                 $content[] = dgettext('boost', 'Copying template files.');
                 $this->addLog($mod->title, sprintf(dgettext('boost', "Copying directory %1\$s to %2\$s"), $templateSource, $templateDest));
@@ -487,14 +487,14 @@ class PHPWS_Boost {
             }
         }
 
-        if (!is_dir($homeDir . '/images/mod/')) {
+        if (!is_dir($homeDir . 'images/mod/')) {
             $content[] = dgettext('boost', 'Creating module image directory.');
-            $this->addLog($mod->title, dgettext('boost', 'Created directory') . ' $homeDir/images/mod/');
-            mkdir($homeDir . '/images/mod');
+            $this->addLog($mod->title, dgettext('boost', 'Created directory') . ' ' . $homeDir . 'images/mod/');
+            mkdir($homeDir . 'images/mod');
         }
 
         if ($mod->isFileDir()) {
-            $filesDir = $homeDir . '/files/' . $mod->title;
+            $filesDir = $homeDir . 'files/' . $mod->title;
             if (!is_dir($filesDir)){
                 $content[] = dgettext('boost', 'Creating files directory for module.');
                 $this->addLog($mod->title, dgettext('boost', 'Created directory') . ' ' . $filesDir);
@@ -503,7 +503,7 @@ class PHPWS_Boost {
         }
 
         if ($mod->isImageDir()) {
-            $imageDir = $homeDir . '/images/' . $mod->title;
+            $imageDir = $homeDir . 'images/' . $mod->title;
             if (!is_dir($imageDir)){
                 $this->addLog($mod->title, dgettext('boost', 'Created directory') . ' ' . $imageDir);
                 $content[] = dgettext('boost', 'Creating image directory for module.');
@@ -513,7 +513,7 @@ class PHPWS_Boost {
 
         $modSource = $mod->getDirectory() . 'img/';
         if (is_dir($modSource)){
-            $modImage = $homeDir . '/images/mod/' . $mod->title . '/';
+            $modImage = $homeDir . 'images/mod/' . $mod->title . '/';
             $this->addLog($mod->title, sprintf(dgettext('boost', "Copying directory %1\$s to %2\$s"), $modSource, $modImage));
 
             $content[] = dgettext('boost', 'Copying source image directory for module.');
@@ -531,10 +531,10 @@ class PHPWS_Boost {
     {
         PHPWS_Core::initCoreClass('File.php');
         if (!isset($homeDir)) {
-            $homeDir = getcwd();
+            $this->getHomeDir();
         }
 
-        $configDir = $homeDir. '/config/' . $mod->title . '/';
+        $configDir = $homeDir. 'config/' . $mod->title . '/';
         if (is_dir($configDir)) {
             $content[] = sprintf(dgettext('boost', 'Removing directory %s'), $configDir);
             $this->addLog($mod->title, sprintf(dgettext('boost', 'Removing directory %s'), $configDir));
@@ -544,7 +544,7 @@ class PHPWS_Boost {
             }
         }
 
-        $javascriptDir = $homeDir. '/javascript/modules/' . $mod->title . '/';
+        $javascriptDir = $homeDir. 'javascript/modules/' . $mod->title . '/';
         if (is_dir($javascriptDir)) {
             $content[] = sprintf(dgettext('boost', 'Removing directory %s'), $javascriptDir);
             $this->addLog($mod->title, sprintf(dgettext('boost', 'Removing directory %s'), $javascriptDir));
@@ -554,7 +554,7 @@ class PHPWS_Boost {
             }
         }
 
-        $templateDir = $homeDir . '/templates/' . $mod->title . '/';
+        $templateDir = $homeDir . 'templates/' . $mod->title . '/';
         if (is_dir($templateDir)) {
             $content[] = sprintf(dgettext('boost', 'Removing directory %s'), $templateDir);
             $this->addLog($mod->title, sprintf(dgettext('boost', 'Removing directory %s'), $templateDir));
@@ -564,7 +564,7 @@ class PHPWS_Boost {
             }
         }
 
-        $imageDir = $homeDir . '/images/' . $mod->title . '/';
+        $imageDir = $homeDir . 'images/' . $mod->title . '/';
         if ($mod->isImageDir() && is_dir($imageDir)) {
             $content[] = sprintf(dgettext('boost', 'Removing directory %s'), $imageDir);
             $this->addLog($mod->title, sprintf(dgettext('boost', 'Removing directory %s'), $imageDir));
@@ -574,7 +574,7 @@ class PHPWS_Boost {
             }
         }
 
-        $fileDir = $homeDir . '/files/' . $mod->title . '/';
+        $fileDir = $homeDir . 'files/' . $mod->title . '/';
         if ($mod->isFileDir() && is_dir($fileDir)) {
             $content[] = sprintf(dgettext('boost', 'Removing directory %s'), $fileDir);
             $this->addLog($mod->title, sprintf(dgettext('boost', 'Removing directory %s'), $fileDir));
@@ -584,7 +584,7 @@ class PHPWS_Boost {
             }
         }
 
-        $imageModDir = $homeDir . '/images/mod/' . $mod->title . '/';
+        $imageModDir = $homeDir . 'images/mod/' . $mod->title . '/';
         if (is_dir($imageModDir)) {
             $content[] = sprintf(dgettext('boost', 'Removing directory %s'), $imageModDir);
             $this->addLog($mod->title, sprintf(dgettext('boost', 'Removing directory %s'), $imageModDir));
@@ -975,7 +975,7 @@ class PHPWS_Boost {
         if (isset($GLOBALS['boost_branch_dir'])) {
             return $GLOBALS['boost_branch_dir'];
         } else {
-            return './';
+            return getcwd() . '/';
         }
     }
 
