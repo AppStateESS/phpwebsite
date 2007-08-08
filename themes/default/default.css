@@ -15,6 +15,11 @@ body {
     border : white 2px solid;
 }
 
+.toggle0 { 
+    color : #A03E19; 
+    background-color : #DEE2BD; 
+    font-weight: bold; 
+} 
 
 .toggle1 {
     background-color : #EDF4D1;
