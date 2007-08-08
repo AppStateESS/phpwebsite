@@ -97,13 +97,6 @@ class PS_Page {
             if (!empty($text_sections)) {
                 foreach ($text_sections as $secname=>$section) {
                     PHPWS_Core::plugObject($this->_sections[$secname], $section);
-                    /*
-                    if ($form_mode && empty($this->_sections[$secname]->content)) {
-                        if (!$this->_sections[$secname]->loadSaved()) {
-                            $this->_sections[$secname]->loadFiller();
-                        }
-                    }
-                    */
                     $this->_content[$secname] = $this->_sections[$secname]->getContent();
                 }
             }
@@ -111,6 +104,11 @@ class PS_Page {
             if (!empty($block_sections)) {
                 foreach ($block_sections as $secname=>$section) {
                     PHPWS_Core::plugObject($this->_sections[$secname], $section);
+                    if ($form_mode && $this->_sections[$secname]->type_id) {
+                        //reload the image form if the image is set
+                        $this->_sections[$secname]->loadFiller();
+                    }
+
                     $this->_content[$secname] = $this->_sections[$secname]->getContent();
                 }
             }
