@@ -14,6 +14,10 @@ Version 1.6.0
 + parseOutputs third parameter determines if text filtering will be
   enabled.
 
+7 August 2007
++ Ajax javascript should work under IE7 properly now.
++ Fishy works under IE7
+
 
 3 August 2007
 + Added option in Mail class to send emails individually instead of
