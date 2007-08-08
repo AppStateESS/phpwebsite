@@ -168,6 +168,9 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
  $content[] = '
 1.2.0 changes
 --------------
++ Oversized files do not post without a warning anymore.
++ Image manager\'s empty image can have an upper limit to prevent
+  enormous dimensions from wrecking a form.
 + Each folder tab now checks the write status of each directory
   separately.
 + Added multimedia folders, file types, icons and ability to playback.

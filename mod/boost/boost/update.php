@@ -34,6 +34,10 @@ Please download update 2.1.1.</pre>';
 --------------------
 + RFE #1720749 - Boost now detects and warns users of old module
   installs.
++ Boost now expects the javascript directory to be writable as
+  well as the module directory.
++ Added inBranch function for modules
++ Added revert option to copy a module\'s files locally.
 </pre>';
     }
 

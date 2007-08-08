@@ -153,6 +153,9 @@ Form.php
 Key.php
 + Added a little code to strip a url from an link if sent by mistake
 
+Text.php
++ Admin text is not BB filtered by default now.
++ Added pear BB filter
 
 Mail.php
 + Added single and double quotes to the allowed characters in the address
@@ -190,6 +193,7 @@ Documents
 Themes
 -----------------------------------------
 + Fixed float-left and float-right margins
++ Fishy works under IE7
 
 
 Other
