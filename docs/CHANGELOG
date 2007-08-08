@@ -5,14 +5,15 @@ its own separate CHANGELOG file.
 Version 1.6.0
 ------------------------------------------------------------------
 8 August 2007
-+ Removed use_smilies setting
-+ Fixed bb filter : was making smilies inside tags
-+ Added pear bb filter
++ Text class
+ o Removed use_smilies setting
+ o Fixed bb filter : was making smilies inside tags
+ o Added pear bb filter
+ o ALLOW_TEXT_FILTERS = false will now turn off all text filtering mods
+ o parseOutputs third parameter determines if text filtering will be
+   enabled.
 + Updated main pear class, added bb parsing libs to pear distro
-+ Simplified pre-editor parsing
-+ ALLOW_TEXT_FILTERS = false will now turn off all text filtering mods
-+ parseOutputs third parameter determines if text filtering will be
-  enabled.
++ Form class :  Simplified pre-editor parsing
 
 7 August 2007
 + Ajax javascript should work under IE7 properly now.
@@ -22,6 +23,10 @@ Version 1.6.0
 3 August 2007
 + Added option in Mail class to send emails individually instead of
   altogether.
+
+2 August 2007
++ added default char type to utf-8 to setup template
++ Default theme - dumped the paragraph margin
 
 31 July 2007
 + Updated js_calendar

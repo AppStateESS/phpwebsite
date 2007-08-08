@@ -1,5 +1,14 @@
 Version 1.2.0 -- 26 July 2007
 -------------------------------------------------------------
+6 August 2007
++ changed folder icon link back to '#'. Would not work on some systems
+  (IE) 
++ clear image now checks max height and width display
+
+1 August 2007
++ new installs of filecabinet were failing because Boost hadn't
+  created the files directory yet 
+
 26 July 2007
 + Added default classify directory
 + Increased popup size for file forms
