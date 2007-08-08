@@ -109,8 +109,8 @@ class Signup_Slot {
             $vars['aop']      = 'add_slot_peep';
             $jsadd['label']   = dgettext('signup', 'Add applicant');
             $jsadd['address'] = PHPWS_Text::linkAddress('signup', $vars, true);
-            $jsadd['width'] = 350;
-            $jsadd['height'] = 380;
+            $jsadd['width'] = 300;
+            $jsadd['height'] = 410;
             $links[] = javascript('open_window', $jsadd);
         }
 
@@ -266,11 +266,14 @@ class Signup_Slot {
     {
         $db = new PHPWS_DB('signup_slots');
         $db->addWhere('id', $this->id);
-        $db->delete();
+        if (PHPWS_Error::logIfError($db->delete())) {
+            return false;
+        }
 
         $db->reset();
         $db->addWhere('s_order', $this->s_order, '>');
         $db->reduceColumn('s_order', 1);
+        return true;
     }
 
     function currentOpenings()

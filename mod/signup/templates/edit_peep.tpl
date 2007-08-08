@@ -6,6 +6,5 @@
 <p><strong>{ORGANIZATION_LABEL}</strong><br />{ORGANIZATION}</p>
 <br />
 <p class="align-center">{SUBMIT}</p>
-<br />
 <p class="align-center">{CLOSE}</p>
 {END_FORM}

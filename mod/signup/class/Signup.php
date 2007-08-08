@@ -210,6 +210,11 @@ class Signup {
             break;
 
 
+        case 'delete_slot':
+            $this->loadSlot();
+            $this->deleteSlot();
+            break;
+
         case 'delete_slot_peep':
             $this->loadPeep();
             $this->peep->delete();
@@ -939,6 +944,23 @@ class Signup {
             $this->peep->slot_id = $this->slot->id;
             return $this->peep->save();
         } 
+    }
+
+    function deleteSlot()
+    {
+        $openings = $this->slot->currentOpenings();
+        if ($openings == $this->slot->openings) {
+            if ($this->slot->delete()) {
+                $this->title = dgettext('signup', 'Slot deleted successfully.');
+            } else {
+                $this->title = dgettext('signup', 'Slot could not be deleted successfully.');
+            }
+        } else {
+            $this->title = dgettext('signup', 'Slot can not be deleted until cleared of applicants.');
+        }
+        $this->content = PHPWS_Text::secureLink(dgettext('signup', 'Return to slot page'), 'signup',
+                                                array('id'=>$this->sheet->id, 'aop'=>'edit_slots'));
+        
     }
 }
 
