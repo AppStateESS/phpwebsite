@@ -17,50 +17,58 @@ PHPWS_Core::configRequireOnce('core', 'text_settings.php');
 
 if (!defined('PHPWS_HOME_HTTP')) {
     define('PHPWS_HOME_HTTP', './');
- }
+}
 
 if (!defined('ALLOW_TEXT_FILTERS')) {
     define('ALLOW_TEXT_FILTERS', true);
- }
+}
 
 if (!defined('ENCODE_PARSED_TEXT')) {
     define('ENCODE_PARSED_TEXT', true);
- }
+}
 
 if (!defined('TEXT_FILTERS')) {
-    define('TEXT_FILTERS', 'bb');
- }
+    define('TEXT_FILTERS', 'pear');
+}
 
 class PHPWS_Text {
     var $use_profanity  = ALLOW_PROFANITY;
     var $use_breaker    = true;
     var $use_strip_tags = true;
-    var $use_filters    = ALLOW_TEXT_FILTERS;
+    var $use_filters    = false;
     var $fix_anchors    = FIX_ANCHORS;
     var $collapse_urls  = COLLAPSE_URLS;
     var $_allowed_tags  = NULL;
 
 
-    function PHPWS_Text($text=NULL, $encoded=FALSE, $smilies=false)
+    function PHPWS_Text($text=NULL, $encoded=FALSE)
     {
         $this->resetAllowedTags();
-        $this->setText($text, $encoded, $smilies);
+        $this->setText($text, $encoded);
     }
 
-    function setText($text, $decode=ENCODE_PARSED_TEXT, $smilies=false)
+    function decodeText($text) {
+        if (version_compare(phpversion(), '5.0.0', '>=')) {
+            return html_entity_decode($text, ENT_QUOTES, 'UTF-8');
+        } else {
+            return $this->decode_entities($text);
+        }
+    }
+
+    function useFilters($filter)
     {
+        $this->use_filters = (bool)$filter;
+    }
+
+    function setText($text, $decode=ENCODE_PARSED_TEXT)
+    {
+
         if (empty($text) || !is_string($text)) {
             return;
         }
 
-        $this->use_smilies = $smilies;
-
         if ($decode) {
-            if (version_compare(phpversion(), '5.0.0', '>=')) {
-                $this->text = html_entity_decode($text, ENT_QUOTES, 'UTF-8');
-            } else {
-                $this->text = $this->decode_entities($text);
-            }
+            $this->text = $this->decodeText($text);
         } else {
             $this->text = $text;
         }
@@ -88,10 +96,6 @@ class PHPWS_Text {
         return utf8_encode($text);
     }
 
-
-    function useBBcode($use = TRUE) {
-        $this->use_bbcode = $use;
-    }
 
     function useProfanity($use = TRUE)
     {
@@ -144,7 +148,7 @@ class PHPWS_Text {
         
         $text = $this->text;
         
-        if ($this->use_filters) {
+        if (ALLOW_TEXT_FILTERS && $this->use_filters) {
             $text = PHPWS_Text::filterText($text);
         }
 
@@ -345,11 +349,11 @@ class PHPWS_Text {
      * @param   boolean decode       Whether entity_decoding should take place.
      * @return  string  text         Stripped text
      */
-    function parseOutput($text, $decode=ENCODE_PARSED_TEXT, $smilies=false)
+    function parseOutput($text, $decode=ENCODE_PARSED_TEXT, $use_filters=false)
     {
         $t = & new PHPWS_Text;
-        $t->setText($text, $decode, $smilies);
-
+        $t->setText($text, $decode);
+        $t->useFilters($use_filters);
         $text = $t->getPrint();
         return $text;
     }

@@ -46,8 +46,10 @@ define('ENCODE_PARSED_TEXT', true);
  */
 
 // If FALSE, phpWebSite will not use any text filters to display text
+// and will overwrite setting made by the module.
 define('ALLOW_TEXT_FILTERS', true);
 
+//define('TEXT_FILTERS', 'pear');
 define('TEXT_FILTERS', 'bb');
 
 

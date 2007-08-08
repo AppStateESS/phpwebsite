@@ -98,7 +98,7 @@ class PHPWS_Form {
      * using the sigma template multi row format
      */
     var $row_repeat = false;
-    
+
     /**
      * Constructor for class
      */
@@ -1509,12 +1509,9 @@ class Form_TextArea extends Form_Element {
     function get()
     {
         if ($this->_use_editor && Editor::willWork()) {
-            $t = new PHPWS_Text;
-            $t->setText($this->value);
-            $t->use_profanity = true;
-            $t->use_bbcode    = false;
-            $t->fix_anchors   = false;
-            $text = $t->getPrint();
+            $text = PHPWS_Text::decodeText($this->value);
+            $text = PHPWS_Text::encodeXHTML($text);
+
             $editor = new Editor($this->name, $text, $this->id);
 
             if ($this->_editor_dm) {

@@ -12,7 +12,7 @@
    */
 
 
-// If TRUE, then 'smilies' will be parsed. The above MUST be TRUE.
+// If TRUE, then 'smilies' will be parsed.
 define('ALLOW_BB_SMILIES', true);
 
 // If TRUE, users can post with the [img] tag
@@ -171,11 +171,12 @@ function getSmilie($bbcode)
             if (count($icon) < 3) {
                 continue;
             }
-            $search[] = '@' . preg_quote($icon[2]) . '@';
+            $search[] = '@(?!<.*?)' . preg_quote($icon[2]) . '(?![^<>]*?>)@si';
             $replace[] = sprintf('<img src="images/core/smilies/%s" title="%s" alt="%s" />',
                                  $icon[0], $icon[1], $icon[1]);
 
         }
+
         $GLOBALS['Smilie_Search']['code'] = $search;
         $GLOBALS['Smilie_Search']['img'] = $replace;
     }
