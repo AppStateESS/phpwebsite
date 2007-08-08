@@ -74,6 +74,12 @@ function core_update(&$content, $version) {
             }
         }
 
+        if (PHPWS_File::rmdir($home_directory . 'javascript/editors/FCKeditor/')) {
+            $content[] = 'Removed FCKeditor directory.';
+        } else {
+            $content[] = 'Could not remove FCKeditor directory. May be some confusion with old version.';
+        }
+
 
         $files = array('conf/formConfig.php', 'conf/version.php',
                        'conf/file_types.php', 'javascript/select_confirm/README.txt',
