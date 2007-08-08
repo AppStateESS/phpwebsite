@@ -4,6 +4,17 @@ its own separate CHANGELOG file.
 
 Version 1.6.0
 ------------------------------------------------------------------
+8 August 2007
++ Removed use_smilies setting
++ Fixed bb filter : was making smilies inside tags
++ Added pear bb filter
++ Updated main pear class, added bb parsing libs to pear distro
++ Simplified pre-editor parsing
++ ALLOW_TEXT_FILTERS = false will now turn off all text filtering mods
++ parseOutputs third parameter determines if text filtering will be
+  enabled.
+
+
 3 August 2007
 + Added option in Mail class to send emails individually instead of
   altogether.
