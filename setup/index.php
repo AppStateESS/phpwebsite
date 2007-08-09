@@ -31,6 +31,8 @@ if (!is_dir('config/core/')) {
         echo 'Please make your config/ directory writable to continue.<br />';
         exit();
     } else {
+        // in case they run php 4
+        require_once 'lib/pear/Compat/Function/scandir.php';
         PHPWS_File::copy_directory('core/conf/', 'config/core/');
         if (!is_dir('config/core/')) {
             echo 'Unable to copy core/conf/ directory to config/core/. Please do so manually.';
