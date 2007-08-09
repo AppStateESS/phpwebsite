@@ -331,9 +331,7 @@ class PHPWS_Multimedia extends File_Common {
 
         $tmp_name = mt_rand();
 
-        /**define('FC_MAX_IMAGE_POPUP_WIDTH', 1024);
-define('FC_MAX_IMAGE_POPUP_HEIGHT', 768);
-
+        /**
          * -i        filename
          * -an       disable audio
          * -ss       seek to position
@@ -346,7 +344,6 @@ define('FC_MAX_IMAGE_POPUP_HEIGHT', 768);
 
         $command = sprintf('%sffmpeg -i %s -an -s 160x120 -ss 00:00:05 -r 1 -vframes 1 -y -f mjpeg %s%s',
                            $ffmpeg_directory, $this->getPath(), $thumbnail_directory, $thumbnail_file);
-
         $result = system($command);
         return true;
     }
