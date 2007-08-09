@@ -213,7 +213,7 @@ class Blog_User {
             $past_entries = PHPWS_Settings::get('blog', 'past_entries');
 
             if ($past_entries) {
-                $db->setLimit($past_entries, $past_entries);
+                $db->setLimit($past_entries, $limit);
                 $past = $db->getObjects('Blog');
 
                 if (PEAR::isError($past)) {

@@ -146,6 +146,13 @@ function blog_update(&$content, $currentVersion)
 -------------
 + Comments link points to comments anchor.</pre>';
 
+  case version_compare($currentVersion, '1.5.2', '<'):
+        $content[] = '<pre>
+1.5.2 Changes
+-------------
++ Fixed previous blog listing.</pre>';
+
+
     } // end of switch
     return true;
 }
