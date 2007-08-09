@@ -71,7 +71,7 @@ function layout_update(&$content, $currentVersion)
         }
         $content[] = '     ' . implode("\n     ", $files);
         $content[] = '
-2.4.0 changes
+2.4.1 changes
 -------------
 + Bug #1741111 - Fixed moving a top box up and a bottom box down.
 + The cookie check is not determined by a define in the config file.
