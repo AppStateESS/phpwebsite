@@ -51,7 +51,7 @@ class PHPWS_Text {
         if (version_compare(phpversion(), '5.0.0', '>=')) {
             return html_entity_decode($text, ENT_QUOTES, 'UTF-8');
         } else {
-            return $this->decode_entities($text);
+            return PHPWS_Text::decode_entities($text);
         }
     }
 
