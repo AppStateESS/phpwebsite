@@ -229,6 +229,9 @@ class PHPWS_Photo extends PHPWS_Item {
         return PHPWS_Template::processTemplate($tags, 'photoalbum', 'editPhoto.tpl');
     }
 
+    /**
+     * @modified Verdon Vaillancourt
+     */
     function _save() {
         PHPWS_Core::initModClass('filecabinet', 'Image.php');
         $id = $this->getId();
@@ -280,6 +283,7 @@ class PHPWS_Photo extends PHPWS_Item {
             }
 
             $name = PHPWS_File::nameToSafe($_FILES['Photo']['name']);
+            $name = strtolower($name);
             $file = PHOTOALBUM_DIR . $this->_album . '/' . $name;
 
             if(is_file($file)) {
@@ -325,17 +329,16 @@ class PHPWS_Photo extends PHPWS_Item {
                     $this->action();
                     return;
                 }         
-            } else {
                 if(PHOTOALBUM_RS) {
-                    $resized = PHPWS_File::makeThumbnail($this->_name, $dir, $dir,
-                                                         PHOTOALBUM_RS_WIDTH, PHOTOALBUM_RS_HEIGHT, TRUE);
+                    $resized = PHPWS_File::makeThumbnail($this->_name, $dir, $dir, PHOTOALBUM_RS_WIDTH, PHOTOALBUM_RS_HEIGHT, TRUE);
                     if(!is_array($resized))
-                        $resized->message("CNT_photoalbum");
+                      exit('Resizing error');
                     if(is_file(PHOTOALBUM_DIR . $this->_album . "/" . $resized[0])) {
-                        $this->_width = $resized[1];
-                        $this->_height = $resized[2];
+                      $this->_width = $resized[1];
+                      $this->_height = $resized[2];
                     }
-                }                
+                }
+            } else {
                 $_SESSION['PHPWS_AlbumManager']->message = dgettext('photoalbum', 'There was a problem uploading the specified image.');
                 $_REQUEST['PHPWS_Photo_op'] = 'edit';
                 $this->action();
