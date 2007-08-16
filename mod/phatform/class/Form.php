@@ -514,7 +514,7 @@ class PHAT_Form extends PHPWS_Item {
      * @return mixed   A templated string on success, or a FALSE on failure.
      * @access public
      */
-    function view($edit = FALSE) {
+    function view($edit = FALSE, $error=null) {
         if(($this->isHidden() && !$edit) || (!$this->isSaved() && !Current_User::allow('phatform', 'edit_forms'))) {
             return dgettext('phatform', 'This form is not available for viewing at this time.');
         }
@@ -650,6 +650,10 @@ class PHAT_Form extends PHPWS_Item {
 
         $key = new Key($this->_key_id);
         $key->flag();
+
+        if ($error) {
+            $viewTags['WARNING'] = $error->getMessage();
+        }
 
         return PHPWS_Template::processTemplate($viewTags, 'phatform', 'form/view.tpl');
     }// END FUNC view()
@@ -938,9 +942,9 @@ class PHAT_Form extends PHPWS_Item {
                 if(PHPWS_Error::isError($error)) {
                     javascript('alert', array('content' => PHPWS_Error::printError($error)));
                     if(Current_User::allow('phatform')) {
-                        $content = $_SESSION['PHAT_FormManager']->menu() . $this->view();
+                        $content = $_SESSION['PHAT_FormManager']->menu() . $this->view(false, $error);
                     } else {
-                        $content = $this->view();
+                        $content = $this->view(false, $error);
                     }
                     return $content;
                 } else {
