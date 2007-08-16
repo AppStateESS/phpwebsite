@@ -158,12 +158,13 @@ class Demographics {
 
     /**
      * Creates a new field (column) for demographics
+     * @modified Eloi George <adarkling at users dot sourceforge dot net>
      */
     function createField($field_name, $stats)
     {
-        $stat_types = array('text', 'smallint', 'integer');
+        $stat_types = array('text', 'smallint', 'integer', 'boolean');
 
-        if (!isset($stats['type']) || in_array($stats['type'], $stat_types)) {
+        if (!isset($stats['type']) || !in_array($stats['type'], $stat_types)) {
             $type = 'text';
         } else {
             $type = &$stats['type'];
@@ -184,11 +185,11 @@ class Demographics {
 
         case 'boolean':
         case 'smallint':
-            $parameter = 'smallint NOT NULL default=\'0\'';
+            $parameter = 'smallint NOT NULL default 0';
             break;
 
         case 'integer':
-            $parameter = 'smallint NOT NULL default=\'0\'';
+            $parameter = 'int NOT NULL default 0';
             break;
         }
 
