@@ -53,6 +53,13 @@ function photoalbum_update(&$content, $version) {
 + RFE #1757050 - Added resizing code from Verdon
 </pre>';
 
+    case version_compare($version, '1.4.2', '<'):
+        $content[] = '<pre>
+1.4.2 changes
+-------------
++ Image resize patch from Verdon Vaillancourt.
+</pre>';
+
     }
 
     return true;
