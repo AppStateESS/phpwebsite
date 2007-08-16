@@ -19,9 +19,9 @@ function demographics_update(&$content, $version)
 + Added German translation</pre>';
 
     case version_compare($version, '1.0.0', '<'):
-        $content[] = '1.0.0 changes
+        $content[] = '<pre>1.0.0 changes
 --------------
-+ Implemented patch 1773655 from Eloi George. Fixes column type identification.
++ Implemented patch 1773655 from Eloi George. Fixes column type identification.</pre>
 ';
 
     }
