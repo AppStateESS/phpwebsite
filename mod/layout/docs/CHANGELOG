@@ -1,3 +1,7 @@
+22 August 2007
++ Rewrote Layout's move box code. Removed drop down boxes.
++ Updated: conf/error.php, templates/move_box_select.tpl
+
 Version 2.4.1 -- 25 July 2007
 -------------------------------------------------------------------
 27 June 2007

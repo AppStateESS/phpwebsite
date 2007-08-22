@@ -114,9 +114,9 @@ class Layout_Admin{
 
         case 'moveBox':
             $result = Layout_Admin::moveBox();
-            if ($result === TRUE) {
-                PHPWS_Core::reroute($_SERVER['HTTP_REFERER']);
-            }
+            PHPWS_Error::logIfError($result);
+            javascript('close_refresh');
+            Layout::nakedDisplay();
             break;
 
         case 'postMeta':
@@ -174,6 +174,13 @@ class Layout_Admin{
                 javascript('close_refresh');
             }
             Layout::nakedDisplay($content, dgettext('layout', 'Set meta tags'));
+            break;
+
+        case 'move_popup':
+            if (!Current_User::authorized('layout')) {
+                Current_User::disallow();
+            }
+            Layout_Admin::moveBoxMenu();
             break;
         }
 
@@ -434,8 +441,8 @@ class Layout_Admin{
     function moveBox()
     {
         PHPWS_Core::initModClass('layout', 'Box.php');
-        $box = new Layout_Box($_POST['box_source']);
-        $result = $box->move($_POST['box_dest']);
+        $box = new Layout_Box($_GET['box_source']);
+        $result = $box->move($_GET['box_dest']);
 
         if (PEAR::isError($result)){
             PHPWS_Error::log($result);
@@ -553,6 +560,48 @@ class Layout_Admin{
         $content = Layout_Admin::metaForm($key_id);
         return $content;
     }
+
+    function moveBoxMenu()
+    {
+        $box = new Layout_Box($_GET['box']);
+        $vars['action'] = 'admin';
+        $vars['command'] = 'moveBox';
+        $vars['box_source'] = $box->id;
+
+        $vars['box_dest'] = 'move_box_top';
+        $step_links[] = PHPWS_Text::secureLink(dgettext('layout', 'Move to top'), 'layout', $vars);
+
+        $vars['box_dest'] = 'move_box_up';
+        $step_links[] = PHPWS_Text::secureLink(dgettext('layout', 'Move up'), 'layout', $vars);
+
+        $vars['box_dest'] = 'move_box_down';
+        $step_links[] = PHPWS_Text::secureLink(dgettext('layout', 'Move down'), 'layout', $vars);
+
+        $vars['box_dest'] = 'move_box_bottom';
+        $step_links[] = PHPWS_Text::secureLink(dgettext('layout', 'Move to bottom'), 'layout', $vars);
+
+        $themeVars = $_SESSION['Layout_Settings']->getAllowedVariables();
+        foreach ($themeVars as $var){
+            if ($box->theme_var == $var) {
+                continue;
+            }
+            $vars['box_dest'] = $var;
+            $theme_links[] = PHPWS_Text::secureLink(sprintf(dgettext('layout', 'Send to %s'), $var),
+                                              'layout', $vars);
+        }
+
+        $vars['box_dest'] = 'restore';
+        $template['RESTORE'] = PHPWS_Text::secureLink(dgettext('layout', 'Restore to default'), 'layout', $vars);
+
+        $template['STEP_LINKS'] = implode('<br>', $step_links);
+        $template['THEME_LINKS'] = implode('<br>', $theme_links);
+        $template['CANCEL'] = sprintf('<a href="." onclick="window.close()">%s</a>', dgettext('layout', 'Cancel'));
+        $template['TITLE'] = sprintf(dgettext('layout', 'Move box: %s'), $box->content_var);
+
+        $content = PHPWS_Template::process($template, 'layout', 'move_box_select.tpl');
+        Layout::nakedDisplay($content);
+    }
+
 }
 
 ?>

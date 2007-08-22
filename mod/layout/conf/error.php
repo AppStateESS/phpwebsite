@@ -11,7 +11,8 @@ $errors = array(
 		LAYOUT_BAD_JS_DATA       => dgettext('layout', 'Data was not an array.'),
 		LAYOUT_JS_FILE_NOT_FOUND => dgettext('layout', 'Javascript file was not found.'),
                 LAYOUT_BOX_ORDER_BROKEN  => dgettext('layout', 'Box order is out of sequence.'),
-                LAYOUT_INI_FILE          => dgettext('layout', 'The theme.ini file is missing for the default theme.')
+                LAYOUT_INI_FILE          => dgettext('layout', 'The theme.ini file is missing for the default theme.'),
+                LAYOUT_BAD_THEME_VAR     => dgettext('layout', 'An instruction was requested on a missing theme variable.');
                 );
 
 ?>

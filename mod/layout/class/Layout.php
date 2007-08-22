@@ -17,6 +17,7 @@ define('LAYOUT_BAD_JS_DATA',        -4);
 define('LAYOUT_JS_FILE_NOT_FOUND',  -5);
 define('LAYOUT_BOX_ORDER_BROKEN',   -6);
 define('LAYOUT_INI_FILE',           -7);
+define('LAYOUT_BAD_THEME_VAR',      -8);
 
 if (!defined('LAYOUT_THEME_EXEC')) {
     define('LAYOUT_THEME_EXEC', false);
@@ -392,8 +393,8 @@ class Layout {
             foreach ($themeVarList as $theme_var){
                 ksort($unsortedLayout[$theme_var]);
                 $upper_theme_var = strtoupper($theme_var);
-                if (Layout::isMoveBox()) {
-                    $bodyLayout[$upper_theme_var] = '<div class="layout-variable">' . $theme_var .  implode('', $unsortedLayout[$theme_var]) . '</div>';
+                if (Layout::isMoveBox() && !isset($GLOBALS['Layout_Plugs'][$theme_var])) {
+                    $bodyLayout[$upper_theme_var] = '<fieldset class="layout-variable"><legend>' . $theme_var .  '</legend>' . implode('', $unsortedLayout[$theme_var]) . '</fieldset>';
                 } else {
                     $bodyLayout[$upper_theme_var] = implode('', $unsortedLayout[$theme_var]);
                 }
@@ -461,7 +462,8 @@ class Layout {
                     // the _MAIN content variable will return an empty box
                     // This is the BODY tag which cannot be moved
                     if (!empty($box)) {
-                        $contentList[] = Layout::moveBoxesTag($box);
+                        array_unshift($contentList, Layout::moveBoxesTag($box));
+                        //                        $contentList[] = Layout::moveBoxesTag($box);
                     }
                 }
                 $list[$module][$contentVar] = implode('', $contentList);
@@ -1009,33 +1011,18 @@ class Layout {
      * Makes a select form option to move boxes to other parts
      * of the layout
      */
-    function moveBoxesTag($box){
-        PHPWS_Core::initCoreClass('Form.php');
+    function moveBoxesTag($box)
+    {
+        $vars['action']  = 'admin';
+        $vars['command'] = 'move_popup';
+        $vars['box']     = $box->id;
 
-        $themeVars = $_SESSION['Layout_Settings']->getAllowedVariables();
-        $menu['move_box_top'] = dgettext('layout', 'Move to top');
-        $menu['move_box_up'] = dgettext('layout', 'Move up');
-        $menu['move_box_down'] = dgettext('layout', 'Move down');
-        $menu['move_box_bottom'] = dgettext('layout', 'Move to bottom');
-        $menu['restore'] = dgettext('layout', 'Restore to default');
-        foreach ($themeVars as $var){
-            if ($box->theme_var == $var) {
-                continue;
-            }
-            $menu[$var] = dgettext('layout', 'Send to') . ' ' . $var;
-        }
-
-        $form = new PHPWS_Form;
-        $form->addHidden('module', 'layout');
-        $form->addHidden('action', 'admin');
-        $form->addHidden('command', 'moveBox');
-        $form->addHidden('box_source', $box->id);
-        $form->addSelect('box_dest', $menu);
-        $form->setMatch('box_dest', $box->theme_var);
-        $form->addSubmit('move', dgettext('layout', 'Move'));
-
-        $template = $form->getTemplate();
-        return PHPWS_Template::process($template, 'layout', 'move_box_select.tpl');
+        $js['width']   = 300;
+        $js['height']  = 250;
+        $js['address'] = PHPWS_Text::linkAddress('layout', $vars, true);
+        $js['label']   = '-' . dgettext('layout', 'Click to move') . '-';
+        $js['class']   = 'move-popup';
+        return '<div align="center">' . javascript('open_window', $js) . '</div>';
     }
 
     /**

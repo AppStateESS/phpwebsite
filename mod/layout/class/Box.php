@@ -16,7 +16,7 @@ class Layout_Box {
     var $module      = NULL;
     var $theme_var   = NULL;
     var $box_order   = NULL;
-    var $active      = NULL;
+    var $active      = 1;
 
     function Layout_Box($id=NULL)
     {
@@ -102,21 +102,17 @@ class Layout_Box {
         $db->addWhere('content_var', $this->content_var);
         $db->addWhere('theme', $this->theme);
         $result = $db->select('one');
-
+            
         if (PEAR::isError($result)) {
             return $result;
-        } elseif (!empty($result) && $result != $this->id) {
+        } elseif ($result && $result != $this->id) {
             return FALSE;
         }
 
         $db->reset();
 
-        if (!isset($this->box_order)) {
+        if (empty($this->box_order)) {
             $this->box_order = $this->nextBox();
-        }
-
-        if (!isset($this->active)) {
-            $this->active = 1;
         }
 
         return $db->saveObject($this);
@@ -127,22 +123,23 @@ class Layout_Box {
      */
     function move($dest)
     {
+
         if ($dest != 'move_box_up'     &&
             $dest != 'move_box_down'   &&
             $dest != 'move_box_top'    &&
             $dest != 'move_box_bottom' &&
             $dest != 'restore') {
 
-            $themeVar = $this->theme_var;
-            $this->setThemeVar($_POST['box_dest']);
-            $this->setBoxOrder(NULL);
-            $this->save();
-            $this->reorderBoxes($this->theme, $themeVar);
-            return;
-        }
+            $themeVars = $_SESSION['Layout_Settings']->getAllowedVariables();
 
-        if ($dest == 'restore') {
-            $this->kill();
+            if (!in_array($dest, $themeVars)) {
+                return PHPWS_Error::get(LAYOUT_BAD_THEME_VAR, 'layout', 'Layout_Box::move', $dest);
+            }
+            $themeVar = $this->theme_var;
+            $this->setThemeVar($dest);
+            $this->setBoxOrder(NULL);
+
+            $this->save();
             $this->reorderBoxes($this->theme, $themeVar);
             return;
         }
@@ -165,28 +162,39 @@ class Layout_Box {
         }
 
         switch ($dest) {
+        case 'restore':
+            $this->kill();
+            $this->reorderBoxes($this->theme, $this->theme_var);
+            Layout::resetBoxes();
+            return;
+            break;
+
         case 'move_box_up':
             if ($this->box_order == 1) {
                 $this->move('move_box_bottom');
                 return;
             } else {
+                $old_box = & $boxes[$this->box_order - 1];
+                $old_box->box_order++;
                 $this->box_order--;
-                $this->save();
-                $boxes[$this->box_order]->box_order++;
-                $boxes[$this->box_order]->save();
+                if (!PHPWS_Error::logIfError($old_box->save())) {
+                    PHPWS_Error::logIfError($this->save());
+                }
                 return;
             }
             break;
-            
+
         case 'move_box_down':
             if ($this->box_order == (count($boxes) + 1)) {
                 $this->move('move_box_top');
                 return;
             } else {
+                $old_box = & $boxes[$this->box_order + 1];
+                $old_box->box_order--;
                 $this->box_order++;
-                $this->save();
-                $boxes[$this->box_order]->box_order--;
-                $boxes[$this->box_order]->save();
+                if (!PHPWS_Error::logIfError($old_box->save())) {
+                    PHPWS_Error::logIfError($this->save());
+                }
                 return;
             }
             break;

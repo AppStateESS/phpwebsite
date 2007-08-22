@@ -1,3 +1,5 @@
-{START_FORM}
-<div class="move-box smaller">{BOX_DEST}{MOVE}</div>
-{END_FORM}
+<h1>{TITLE}</h1>
+<p>{STEP_LINKS}</p>
+<p>{THEME_LINKS}</p>
+<p>{RESTORE}</p>
+<div class="align-center">{CANCEL}</div>
