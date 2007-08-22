@@ -1,6 +1,6 @@
   <div class="hentry box">
     <div class="box-title">
-    <h1 class="entry-title">{TITLE}</h1>
+    <h2 class="entry-title">{TITLE}</h2>
     <h3>{POSTED_BY} <abbr class="author">{AUTHOR}</abbr></h3>
     <h3>{POSTED_ON} <abbr class="published" title="{PUBLISHED_DATE}">{LOCAL_DATE}</abbr></h3>
     </div>
