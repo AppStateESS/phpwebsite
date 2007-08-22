@@ -73,17 +73,19 @@ div.controlpanel {
 div.link {
     font-size : .8em;
     margin : 5px;
+    margin-bottom : 10px;
     padding : 5px;
     float : left;
     width : 150px;
-    height : 90px;
+    height : 95px;
     display : inline;
+
 }
 
 div.link img {
     float : left;
-    margin-right : .5em;
-    margin-bottom : 20%;
+    margin-right : 5px;
+    margin-bottom : 5px;
     display : inline;
 }
 
