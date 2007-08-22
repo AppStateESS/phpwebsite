@@ -15,6 +15,7 @@ $default['height']      = '300';
 $default['titlebar']    = 'no';
 $default['link_title']  = '';
 $default['window_name'] = 'default';
+$default['class']       = 'js-open-window';
 
 if (isset($data['type'])) {
     if ($data['type'] = 'button') {

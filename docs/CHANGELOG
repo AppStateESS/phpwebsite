@@ -2,7 +2,12 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
-Version 1.6.0
+22 August 2007
++ Added ability to add a class to the open_window javascript link or
+button.
++ Default theme : some style adjustments for Layout's benefit
+
+Version 1.6.0 9 August 2007
 ------------------------------------------------------------------
 8 August 2007
 + Text class
