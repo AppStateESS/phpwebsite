@@ -325,11 +325,11 @@ class RSS_Admin {
 
         $form->addText('address', $feed->address);
         $form->setLabel('address', dgettext('rss', 'Address'));
-        $form->setSize('address', '40');
+        $form->setSize('address', '30');
 
         $form->addText('title', $feed->title);
         $form->setLabel('title', dgettext('rss', 'Title'));
-        $form->setSize('title', '40');
+        $form->setSize('title', '30');
 
         $form->addSubmit('submit', dgettext('rss', 'Save'));
         
@@ -372,7 +372,8 @@ class RSS_Admin {
         
         $vars['address'] = 'index.php?module=rss&command=add_feed';
         $vars['label'] = dgettext('rss', 'Add feed');
-        $vars['height'] = '280';
+        $vars['width'] = '450';
+        $vars['height'] = '350';
         $template['ADD_LINK'] = javascript('open_window', $vars);
 
         $template['TITLE_LABEL']   = dgettext('rss', 'Title');
