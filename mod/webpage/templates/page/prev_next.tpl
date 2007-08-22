@@ -1,3 +1,4 @@
+<div class="webpage-page">
 <div class="box">
   <div class="box-title">
     <h1>{PAGE_TITLE}</h1>
@@ -22,4 +23,5 @@
     <p>{ADMIN_LINKS}</p>
     <!-- END edit-page -->
   </div>
+</div>
 </div>

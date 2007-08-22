@@ -1,3 +1,8 @@
+22 August 2007
++ Wrapped each page template with webpage-page classed div.
++ Updated: templates/page/basic.tpl, ...prev_next.tpl,
+           ...short_links.tpl, ...verbose_links.tpl 
+
 Version 0.5.4 -- 25 July 2007
 ------------------------------------------------------------------------
 7 Aug 2007
