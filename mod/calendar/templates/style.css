@@ -11,7 +11,7 @@ div.month-view-full table {
   border-collapse : collapse;
   border-width : 1px;
   border-style : solid;
-  border-color : #A03E19;;
+  border-color : #888;
 }
 
 div.month-view-full table tr {
@@ -23,14 +23,14 @@ div.month-view-full table td {
   border-collapse : collapse;
   border-width : 1px;
   border-style : solid;
-  border-color : #A03E19;
+  border-color : #888;
   text-align : left;
   padding : 3px;
   height : 100px;
 }
 
 div.month-view-full table th {
-  background-color : #A03E19;
+  background-color : #888;
   color : white;
   text-align : center;
 }
@@ -41,7 +41,7 @@ div.month-view-mini table {
   border-collapse : collapse;
   border-width : 1px;
   border-style : solid;
-  border-color : #A03E19;
+  border-color : #888;
 }
 
 div.month-view-mini table td {
@@ -49,22 +49,22 @@ div.month-view-mini table td {
   border-collapse : collapse;
   border-width : 1px;
   border-style : solid;
-  border-color : #A03E19;
+  border-color : #888;
   text-align : center;
 }
 
 div.month-view-mini table th {
-  background-color : #A03E19;
+  background-color : #888;
   color : white;
   text-align : center;
 }
 
 td.day-empty {
-  background-color : #ADB583;
+  background-color : #a2a2a2;
 }
 
 td.day-current {
-  background-color : #A03E19;
+  background-color : #888;
   color : white;
 }
 
@@ -74,7 +74,7 @@ td.day-current a {
 
 
 td.day-normal {
-  background-color : #DEE2BD;
+  background-color : #cdcdcd;
 }
 
 div.cal-events {
