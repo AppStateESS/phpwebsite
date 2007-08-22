@@ -56,7 +56,7 @@ class MiniAdmin {
         $oTpl->setData($tpl);
         $content = $oTpl->get();
         
-        Layout::set($content, 'users', 'mini_admin');
+        Layout::set($content, 'miniadmin', 'mini_admin');
     }
 }
 
