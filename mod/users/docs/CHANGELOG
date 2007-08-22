@@ -1,3 +1,8 @@
+22 August 2007
++ HOME tag no longer sent to template if logging in
++ Moved box around Default user menu for easier styling.
++ Updated: templates/usermenus/Default.tpl
+
 Version 2.4.1 -- 25 July 2007
 ------------------------------------------------------------------
 30 July 2007

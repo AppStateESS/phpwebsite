@@ -49,7 +49,7 @@ class User_Form {
                                                      'users',
                                                      array('action'=>'user', 'command'=>'logout'));
         $template['HOME_USER_PANEL'] = $template['HOME'] = PHPWS_Text::moduleLink(dgettext('users', 'Home'));
-    
+
         $usermenu = PHPWS_User::getUserSetting('user_menu');
         return PHPWS_Template::process($template, 'users', 'usermenus/' . $usermenu);
     }
@@ -80,7 +80,7 @@ class User_Form {
         $signup_vars = array('action'  => 'user',
                              'command' => 'signup_user');
 
-        $template['HOME_LOGIN'] = $template['HOME'] = PHPWS_Text::moduleLink(dgettext('users', 'Home'));
+        $template['HOME_LOGIN'] = PHPWS_Text::moduleLink(dgettext('users', 'Home'));
 
         if (PHPWS_Settings::get('users', 'new_user_method')) {
             $template['NEW_ACCOUNT'] = PHPWS_Text::moduleLink(USER_SIGNUP_QUESTION, 'users', $signup_vars);
@@ -91,7 +91,6 @@ class User_Form {
         $template['FORGOT'] = PHPWS_Text::moduleLink(dgettext('users', 'Forgot password?'), 'users', $fg_vars);
 
         $usermenu = PHPWS_User::getUserSetting('user_menu');
-
         return PHPWS_Template::process($template, 'users', 'usermenus/' . $usermenu);
     }
 

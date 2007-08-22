@@ -1,4 +1,5 @@
 <div id="user-login">
+<div class="box">
     <!-- BEGIN login-form -->
     {START_FORM}
     {PHPWS_USERNAME_LABEL}<br />{PHPWS_USERNAME}<br />
@@ -19,7 +20,7 @@
 <!-- END links -->
 <!-- END login-form -->
 <!-- BEGIN logged-in -->
-<div class="box">
+
     <div class="box-title"><h1>{DISPLAY_NAME}</h1></div>
     <div class="box-content">
         {HOME}<br />
@@ -27,6 +28,6 @@
         <hr />
         {LOGOUT}
     </div>
-</div>
 <!-- END logged-in -->
+</div>
 </div>
