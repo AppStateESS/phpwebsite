@@ -1,6 +1,6 @@
 <div class="box">
 <div class="box-content">
-<h1>{ADVANCED_LABEL}</h1>
+<h2>{ADVANCED_LABEL}</h2>
 {START_FORM}
 <table class="form-table">
   <tr>
@@ -25,7 +25,7 @@
 {SUBMIT}
 {END_FORM}
 <hr />
-<h1>{SEARCH_RESULTS_LABEL}</h1>
+<h2>{SEARCH_RESULTS_LABEL}</h2>
 {SEARCH_RESULTS}
 </div>
 </div>
