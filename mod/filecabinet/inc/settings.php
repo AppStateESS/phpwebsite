@@ -15,6 +15,7 @@ $settings = array('base_doc_directory'   => PHPWS_HOME_DIR . 'files/filecabinet/
                   'default_mm_width'     => 320,
                   'default_mm_height'    => 240,
                   'multimedia_thumbnail' => false,
+                  'auto_link_parent'     => true,
                   'classify_directory'   => PHPWS_HOME_DIR . 'files/filecabinet/incoming/');
 
 ?>

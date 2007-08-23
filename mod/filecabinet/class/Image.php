@@ -213,7 +213,7 @@ class PHPWS_Image extends File_Common {
         return $this->thumbnailDirectory() . $this->file_name;
     }
 
-    function getTag($id=null)
+    function getTag($id=null, $linked=true)
     {
         $tag[] = '<img';
         $tag[] = 'src="'    . $this->getPath() . '"';
@@ -229,7 +229,7 @@ class PHPWS_Image extends File_Common {
 
         $image_tag = implode(' ', $tag);
 
-        if (!empty($this->url)) {
+        if ($linked && !empty($this->url)) {
             if ($this->url == 'parent' && $this->parent_id) {
                 $parent = new PHPWS_Image($this->parent_id);
                 if ($parent->id) {
@@ -377,6 +377,14 @@ class PHPWS_Image extends File_Common {
             PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'PHPWS_Image::delete', $path);
         }
 
+        // if child linked to parent, remove link
+        $db->reset();
+        $db->addWhere('parent_id', $this->id);
+        $db->addWhere('url', 'parent');
+        $db->addValue('url', null);
+        PHPWS_Error::logIfError($db->update());
+
+        // now remove link to parent entirely.
         $db->reset();
         $db->addWhere('parent_id', $this->id);
         $db->addValue('parent_id', 0);
@@ -398,7 +406,7 @@ class PHPWS_Image extends File_Common {
         $vars['folder_id'] = $this->folder_id;
             
         $jsvars['width'] = 550;
-        $jsvars['height'] = 580;
+        $jsvars['height'] = 550 + FC_THUMBNAIL_HEIGHT;
         $jsvars['address'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
         $jsvars['window_name'] = 'edit_link';
 
@@ -517,6 +525,7 @@ class PHPWS_Image extends File_Common {
 
             $db->reset();
         }
+
         return $db->saveObject($this);
     }
 

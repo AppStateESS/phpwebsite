@@ -352,8 +352,7 @@ class Folder {
                                $icon);
 
         javascript('ajax', $jsvars);
-        Layout::getModuleJavascript('filecabinet', 'folder_contents', array('error_message'=>dgettext('filecabinet', 'Bad folder id.')));
-
+        javascript('modules/filecabinet/folder_contents', array('error_message'=>dgettext('filecabinet', 'Bad folder id.')));
         return $tpl;
     }
 
@@ -395,12 +394,14 @@ class Folder {
      * Loads the files in the current folder into the _files variable
      * $original_only applies to images
      */
-    function loadFiles()
+    function loadFiles($original_only=false)
     {
         if ($this->ftype == IMAGE_FOLDER) {
             PHPWS_Core::initModClass('filecabinet', 'Image.php');
             $db = new PHPWS_DB('images');
-            $db->addWhere('parent_id', 0);
+            if ($original_only) {
+                $db->addWhere('parent_id', 0);
+            }
             $obj_name = 'PHPWS_Image';
         } elseif ($this->ftype == DOCUMENT_FOLDER) {
             PHPWS_Core::initModClass('filecabinet', 'Document.php');

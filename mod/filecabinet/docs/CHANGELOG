@@ -1,3 +1,13 @@
+23 August 2007
++ Option add to auto link child resized images to parent.
++ Fixed bug where child images were not getting loaded on image
+  selection.
++ File cabinet was pulling a file from the mod directory instead of
+  locally. I think I misread the function.
++ Resize the image edit window to account for thumbnail.
++ Image selection would get corrupted by linked images. Fixed.
++ Updated: templates/settings.tpl
+
 Version 1.2.0 -- 26 July 2007
 -------------------------------------------------------------
 6 August 2007

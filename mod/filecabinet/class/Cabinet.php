@@ -675,6 +675,12 @@ class Cabinet {
             PHPWS_Settings::set('filecabinet', 'use_ffmpeg', 0);
         }
 
+        if (isset($_POST['auto_link_parent'])) {
+            PHPWS_Settings::set('filecabinet', 'auto_link_parent', 1);
+        } else {
+            PHPWS_Settings::set('filecabinet', 'auto_link_parent', 0);
+        }
+
 
         $ffmpeg_dir = strip_tags($_POST['ffmpeg_directory']);
         if (empty($ffmpeg_dir)) {

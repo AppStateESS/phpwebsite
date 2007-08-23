@@ -289,6 +289,10 @@ class Cabinet_Form {
         $form->setSize('base_doc_directory', '50');
         $form->setLabel('base_doc_directory', dgettext('filecabinet', 'Base document directory'));
 
+        $form->addCheck('auto_link_parent', 1);
+        $form->setMatch('auto_link_parent', PHPWS_Settings::get('filecabinet', 'auto_link_parent'));
+        $form->setLabel('auto_link_parent', dgettext('filecabinet', 'Automatically link child images to parent'));
+
         $form->addText('max_image_width', PHPWS_Settings::get('filecabinet', 'max_image_width'));
         $form->setLabel('max_image_width', dgettext('filecabinet', 'Maximum image pixel width'));
         $form->setSize('max_image_width', 4, 4);

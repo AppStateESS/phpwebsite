@@ -319,7 +319,7 @@ class FC_Image_Manager {
         }
 
         if ($this->image->id) {
-            $label = $this->image->getTag('image-manager-' . $this->itemname);
+            $label = $this->image->getTag('image-manager-' . $this->itemname, false);
         } else {
             $label = $this->noImage();
         }
@@ -470,7 +470,7 @@ class FC_Image_Manager {
 
         if (Current_User::allow('filecabinet', 'edit_folders', $folder->id)) {
             $address = PHPWS_Text::linkAddress('filecabinet', array('aop'=>'upload_image_form', 'im'=>1, 'folder_id'=>$folder->id), true);
-            $image_window = sprintf("javascript:open_window('%s', %s, %s, 'new_image'); return false", $address, 540, 460);
+            $image_window = sprintf("javascript:open_window('%s', %s, %s, 'new_image'); return false", $address, 600, 550);
             $image_button = sprintf('<input id="add-image" type="button" name="add_image" value="%s" onclick="%s" />', dgettext('filecabinet', 'Add image'), $image_window);
             $tpl['ADD_IMAGE'] = $image_button;
         }
@@ -562,6 +562,9 @@ class FC_Image_Manager {
             $image->description    = $this->image->description;
             $image->alt            = $this->image->alt;
             $image->parent_id      = $this->image->id;
+            if (PHPWS_Settings::get('filecabinet', 'auto_link_parent')) {
+                $image->url        = 'parent';
+            }
             $image->loadDimensions();
             $result = $image->save();
             $result = null;
