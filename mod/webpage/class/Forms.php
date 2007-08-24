@@ -22,7 +22,12 @@ class Webpage_Forms {
         if (!empty($volume->_pages)) {
             foreach ($volume->_pages as $page_id => $page) {
                 if (!empty($page->title)) {
-                    $link['title'] = sprintf('%d. %s', $page->page_number, $page->title);
+                    if (strlen($page->title) > 12) {
+                        $title = substr($page->title, 0, 10);
+                    } else {
+                        $title = & $page->title;
+                    }
+                    $link['title'] = sprintf('%d. %s', $page->page_number, $title);
                 } else {
                     $link['title'] = sprintf(dgettext('webpage', '%d. (Untitled)'), $page->page_number);
                 }

@@ -1,3 +1,6 @@
+23 August 2007
++ Put a ten character limit on the page title appearing in the tab
+
 22 August 2007
 + Wrapped each page template with webpage-page classed div.
 + Updated: templates/page/basic.tpl, ...prev_next.tpl,
