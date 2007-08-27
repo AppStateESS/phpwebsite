@@ -19,7 +19,6 @@ function encode(str) {
 		else result += str.charAt(i);
 	}
         return result;
-	#return escape(result);
 }
 
 //]]>
