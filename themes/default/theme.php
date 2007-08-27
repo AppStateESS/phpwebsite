@@ -14,6 +14,6 @@
    * in the theme.tpl file.
    */ 
 
-Layout::plug('This is a sample of the theme.php file.', 'sample');
+#Layout::plug('This is a sample of the theme.php file.', 'sample');
 
 ?>

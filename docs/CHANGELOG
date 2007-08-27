@@ -2,6 +2,12 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+27 August 2007
++ Database
+  o Added portability mode to database factory files.
+  o Portability allowed removal of autoTrim function.
++ Default Theme - added theme tag and styling for a top menu
+
 26 August 2007
 + Javascript - prompt no longer runs escape function on result
 + File.php - copy_directory fixes added. 

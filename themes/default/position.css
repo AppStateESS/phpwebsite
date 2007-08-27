@@ -37,9 +37,11 @@
 }
 
 #top-menu {
+    position : relative;
     padding : 5px 5px 8px 5px;
     text-align : right;
     margin-bottom : 5px;
+    overflow : none;
 }
 
 #search-box {
@@ -61,4 +63,8 @@ div.block-embedded {
 
 #blog-list-view {
    margin-bottom : 2em;
+}
+
+div.horizonal-menu {
+   position : absolute;
 }

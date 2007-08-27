@@ -8,6 +8,12 @@
  */
 
 class mysql_PHPWS_SQL {
+    var $portability = null;
+
+    function mysql_PHPWS_SQL()
+    {
+    }
+
     function export(&$info)
     {
         switch ($info['type']){

@@ -300,4 +300,6 @@ div#simple-page {
    color : inherit;
 }
 
-
+div.horzontal-menu ul li div {
+   background-color : #EBEDD1;
+}

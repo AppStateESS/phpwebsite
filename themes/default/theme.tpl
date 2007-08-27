@@ -17,7 +17,9 @@
 {SAMPLE}
 {LAYOUT_HEADER}
 <div id="container">
-   <div id="top-menu">{SEARCH_SEARCH_BOX}{USERS_LOGIN_BOX}<hr />{BREADCRUMB_VIEW}</div>
+   <div id="top-menu">{SEARCH_SEARCH_BOX}{USERS_LOGIN_BOX}<hr />{BREADCRUMB_VIEW}
+   {TOP_MENU}
+   </div>
    <div id="sidepanel">
      {MENU_MENU_1}
      {DEFAULT}

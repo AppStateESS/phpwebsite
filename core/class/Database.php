@@ -151,7 +151,12 @@ class PHPWS_DB {
         }
 
         $class_name = $type . '_PHPWS_SQL';
-        $GLOBALS['PHPWS_DB']['dbs'][$key]['lib']        = new $class_name;
+        $dblib = new $class_name;
+        if (!empty($dblib->portability)) {
+            $connect->setOption('portability', $dblib->portability);
+        }
+
+        $GLOBALS['PHPWS_DB']['dbs'][$key]['lib']        = $dblib;
         $GLOBALS['PHPWS_DB']['dbs'][$key]['dsn']        = $dsn;
         $GLOBALS['PHPWS_DB']['dbs'][$key]['connection'] = $connect;
         $GLOBALS['PHPWS_DB']['dbs'][$key]['tbl_prefix'] = $tbl_prefix;
@@ -1256,7 +1261,7 @@ class PHPWS_DB {
 
         switch ($type){
         case 'assoc':
-            return PHPWS_DB::autoTrim($GLOBALS['PHPWS_DB']['connection']->getAssoc($sql, NULL,NULL, $mode), $type);
+            return $GLOBALS['PHPWS_DB']['connection']->getAssoc($sql, NULL,NULL, $mode);
             break;
 
         case 'col':
@@ -1266,7 +1271,7 @@ class PHPWS_DB {
 
             if (isset($indexby)) {
                 PHPWS_DB::logDB($sql);
-                $result = PHPWS_DB::autoTrim($GLOBALS['PHPWS_DB']['connection']->getAll($sql, NULL, $mode), $type);
+                $result = $GLOBALS['PHPWS_DB']['connection']->getAll($sql, NULL, $mode);
                 if (PEAR::isError($result)) {
                     return $result;
                 }
@@ -1274,21 +1279,19 @@ class PHPWS_DB {
                 return PHPWS_DB::_indexBy($result, $indexby, true);
             }
             PHPWS_DB::logDB($sql);
-            return PHPWS_DB::autoTrim($GLOBALS['PHPWS_DB']['connection']->getCol($sql), $type);
+            return $GLOBALS['PHPWS_DB']['connection']->getCol($sql);
             break;
 
         case 'min':
         case 'max':
         case 'one':
             PHPWS_DB::logDB($sql);
-            $value = $GLOBALS['PHPWS_DB']['connection']->getOne($sql, NULL, $mode);
-            db_trim($value);
-            return $value;
+            return $GLOBALS['PHPWS_DB']['connection']->getOne($sql, NULL, $mode);
             break;
 
         case 'row':
             PHPWS_DB::logDB($sql);
-            return PHPWS_DB::autoTrim($GLOBALS['PHPWS_DB']['connection']->getRow($sql, array(), $mode), $type);
+            return $GLOBALS['PHPWS_DB']['connection']->getRow($sql, array(), $mode);
             break;
 
         case 'count':
@@ -1312,7 +1315,7 @@ class PHPWS_DB {
         case 'all':
         default:
             PHPWS_DB::logDB($sql);
-            $result = PHPWS_DB::autoTrim($GLOBALS['PHPWS_DB']['connection']->getAll($sql, NULL, $mode), $type);
+            $result = $GLOBALS['PHPWS_DB']['connection']->getAll($sql, NULL, $mode);
             if (PEAR::isError($result)) {
                 return $result;
             }
@@ -2160,38 +2163,6 @@ class PHPWS_DB {
         return preg_replace('/\W/', '', $name);
     }
 
-    /**
-     * Postgres adds an extra space on the end of select results.
-     * autoTrim removes it.
-     */
-
-    function autoTrim($sql, $type)
-    {
-        if (PEAR::isError($sql) || !is_array($sql)) {
-            return $sql;
-        }
-
-        if (!count($sql)) {
-            return NULL;
-        }
-
-        if ($GLOBALS['PHPWS_DB']['connection']->phptype != 'pgsql') {
-            return $sql;
-        }
-
-        switch ($type){
-        case 'col':
-            array_walk($sql, 'db_trim');
-            break;
-
-        default:
-            array_walk($sql, 'db_trim');
-            break;
-        }
-
-        return $sql;
-    }
-
     function updateSequenceTable()
     {
         $this->addColumn('id', 'max');
@@ -2546,24 +2517,5 @@ class PHPWS_DB_Where {
         return sprintf('%s %s %s', $column, $operator, $value);
     }
 } // END PHPWS_DB_Where
-
-
-/**
- * See autoTrim for information
- */
-
-function db_trim(&$value)
-{
-    if (PEAR::isError($value) || !isset($value)) {
-        return;
-    }
-
-    if (is_array($value)){
-        array_walk($value, 'db_trim');
-        return;
-    }
-    
-    $value = rtrim($value);
-}
 
 ?>

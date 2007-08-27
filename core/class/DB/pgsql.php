@@ -8,6 +8,12 @@
  */
 
 class pgsql_PHPWS_SQL {
+    var $portability = null;
+
+    function pgsql_PHPWS_SQL()
+    {
+        $this->portability = DB_PORTABILITY_RTRIM;
+    }
 
     function export(&$info){
         switch ($info['type']){
