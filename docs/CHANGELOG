@@ -3,6 +3,7 @@ This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
 26 August 2007
++ Javascript - prompt no longer runs escape function on result
 + File.php - copy_directory fixes added. 
   o New error messages written to log depending on reason for file
     failure
