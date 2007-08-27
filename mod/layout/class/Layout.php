@@ -1020,7 +1020,7 @@ class Layout {
         $vars['box']     = $box->id;
 
         $js['width']   = 300;
-        $js['height']  = 250;
+        $js['height']  = 400;
         $js['address'] = PHPWS_Text::linkAddress('layout', $vars, true);
         $js['label']   = '-' . dgettext('layout', 'Click to move') . '-';
         $js['class']   = 'move-popup';
