@@ -91,7 +91,11 @@ class Current_User {
      */
     function disallow($message=NULL)
     {
-        PHPWS_User::disallow($message);
+        if (Current_User::requireLogin()) {
+            return;
+        } else {
+            PHPWS_User::disallow($message);
+        }
     }
 
     function getLogin()

@@ -1,3 +1,7 @@
+27 August 2007
++ Changed default disallow action on anonymous users. Now forwards
+  them to the login screen.
+
 22 August 2007
 + HOME tag no longer sent to template if logging in
 + Moved box around Default user menu for easier styling.
