@@ -18,8 +18,8 @@ function encode(str) {
 		if (str.charAt(i) == " ") result += "+";
 		else result += str.charAt(i);
 	}
-	
-	return escape(result);
+        return result;
+	#return escape(result);
 }
 
 //]]>
