@@ -87,6 +87,8 @@ $errors[PHPWS_FILE_DIR_NONWRITE]      = _('Unable to save file in selected direc
 $errors[PHPWS_FILE_NO_TMP]            = _('Upload directory not set in file object.');
 $errors[PHPWS_FILE_SIZE]              = sprintf(_('Upload file size is larger than the server %s maximum.'), ini_get('post_max_size'));
 $errors[PHPWS_GD_ERROR]               = _('GD image libraries do not support this image type.');
+$errors[PHPWS_FILE_NOT_WRITABLE]      = _('File not writable.');
+$errors[PHPWS_FILE_NO_COPY]           = _('Unable to copy file.');
 
 // Image.php and Document.php 900 - 999
 $errors[PHPWS_FILENAME_NOT_SET]       = _('Filename not set.');

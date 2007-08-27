@@ -2,10 +2,20 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+26 August 2007
++ File.php - copy_directory fixes added. 
+  o New error messages written to log depending on reason for file
+    failure
+  o Fixed bad logic on slash additions to directory.
+  o copy_directory doesn't fail completely on one bad copy
+
 22 August 2007
 + Added ability to add a class to the open_window javascript link or
 button.
 + Default theme : some style adjustments for Layout's benefit
+
+10 August 2007
++ Removed $this call in PHPWS_Text::decodeText function
 
 Version 1.6.0 9 August 2007
 ------------------------------------------------------------------

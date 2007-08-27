@@ -156,11 +156,11 @@ class PHPWS_File {
      * @author Matthew McNaney <mcnaney at gmail dot com>
      */
     function copy_directory($source_directory, $dest_directory) {
-        if (preg_match('/\/?/', $source_directory)) {
+        if (!preg_match('/\/?/', $source_directory)) {
             $source_directory .= '/';
         }
 
-        if (preg_match('/\/?/', $dest_directory)) {
+        if (!preg_match('/\/?/', $dest_directory)) {
             $dest_directory .= '/';
         }
 
@@ -169,6 +169,11 @@ class PHPWS_File {
                 PHPWS_Error::log(PHPWS_DIR_CANT_CREATE, 'core', 'PHPWS_File::recursiveFileCopy', $dest_directory);
                 return FALSE;
             }
+        }
+
+        if (!is_writable($dest_directory)) {
+            PHPWS_Error::log(PHPWS_DIR_NOT_WRITABLE, 'core', 'PHPWS_File::recursiveFileCopy', $dest_directory);
+            return FALSE;
         }
 
         $source_files = scandir($source_directory);
@@ -183,16 +188,18 @@ class PHPWS_File {
                 continue;
             }
 
+            $dest_file = $dest_directory . $file_name;
+
             if (is_file($source_directory . $file_name)) {
-                if (!is_writable($dest_directory)) {
-                    PHPWS_Error::log(PHPWS_DIR_NOT_WRITABLE, 'core', 'PHPWS_File::recursiveFileCopy', $dest_directory);
-                    return FALSE;
-                }
-                if (!@copy($source_directory . $file_name, $dest_directory . $file_name)) {
-                    return FALSE;
+                if (!@copy($source_directory . $file_name, $dest_file)) {
+                    if (!is_writable($dest_file)) {
+                        PHPWS_Error::log(PHPWS_FILE_NOT_WRITABLE, 'core', 'PHPWS_File::recursiveFileCopy', $dest_file);
+                    } else {
+                        PHPWS_Error::log(PHPWS_FILE_NO_COPY, 'core', 'PHPWS_File::recursiveFileCopy', $dest_file);
+                    }
                 }
             }  elseif (is_dir($source_directory . $file_name)) {
-                if(!PHPWS_File::copy_directory($source_directory . $file_name . '/', $dest_directory . $file_name . '/')) {
+                if(!PHPWS_File::copy_directory($source_directory . $file_name . '/', $dest_file . '/')) {
                     return FALSE;
                 }
             }
