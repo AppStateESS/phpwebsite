@@ -1,3 +1,7 @@
+27 August 2007
++ addStyle function now allows multiple style sheets per module. Still
+  only includes a file once.
+
 22 August 2007
 + Rewrote Layout's move box code. Removed drop down boxes.
 + Updated: conf/error.php, templates/move_box_select.tpl

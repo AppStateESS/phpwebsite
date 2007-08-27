@@ -181,15 +181,17 @@ class Layout {
             return NULL;
         }
 
-        if (isset($GLOBALS['Style'][$module])) {
-            return;
-        }
-
         if (!isset($filename)) {
             $filename = 'style.css';
         }
 
-        $cssFile['tag'] = $module;
+        $tag = md5($module . $filename);
+
+        if (isset($GLOBALS['Style'][$tag])) {
+            return;
+        }
+
+        $cssFile['tag'] = & $tag;
         $cssFile['import'] = TRUE;
 
         $templateLoc = "templates/$module/$filename";
