@@ -180,8 +180,8 @@ class Menu_Link {
     function view($level='1')
     {
         static $current_parent = array();
-        $current_link = FALSE;
 
+        $current_link = FALSE;
         $current_key = Key::getCurrent();
 
         if (!empty($current_key)) {
@@ -197,7 +197,7 @@ class Menu_Link {
         }
 
  
-        if ($current_link || $this->parent == 0         ||
+        if ($this->_menu->_show_all || $current_link || $this->parent == 0 ||
             in_array($this->parent, $current_parent)) {
 
             $link = $this->getUrl();
@@ -206,6 +206,7 @@ class Menu_Link {
             $template['LINK'] = $link;
             if (!empty($this->_children)) {
                 foreach ($this->_children as $kid) {
+                    $kid->_menu = & $this->_menu;
                     if ($kid_link = $kid->view($level+1)) {
                         $sublinks[] = $kid_link;
                     }
@@ -217,7 +218,8 @@ class Menu_Link {
             }
 
             $template['LEVEL'] = $level;
-            return PHPWS_Template::process($template, 'menu', 'links/link.tpl');
+            $tpl_file = 'menu_layout/' . $this->_menu->template . '/link.tpl';
+            return PHPWS_Template::process($template, 'menu', $tpl_file);
         } else {
             return NULL;
         }

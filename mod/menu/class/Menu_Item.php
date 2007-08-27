@@ -7,12 +7,16 @@
 
 PHPWS_Core::initModClass('menu', 'Menu_Link.php');
 
+define('MENU_MISSING_TPL', -2);
+
 class Menu_Item {
     var $id         = 0;
     var $title      = NULL;
     var $template   = NULL;
     var $pin_all    = 0;
     var $_db        = NULL;
+    var $_show_all  = false;
+    var $_style     = null;
     var $_error     = NULL;
 
     function Menu_Item($id=NULL)
@@ -77,8 +81,16 @@ class Menu_Item {
 
     function getTemplateList()
     {
-        $result = PHPWS_Template::listTemplates('menu', 'menu_layout');
-        return $result;
+        $result = PHPWS_File::listDirectories(PHPWS_Template::getTemplateDirectory('menu') . 'menu_layout/');
+        if (PHPWS_Error::logIfError($result)) {
+            return null;
+        }
+        
+        foreach  ($result as $dir) {
+            $directories[$dir] = $dir;
+        }
+
+        return $directories;
     }
 
     function post()
@@ -134,7 +146,7 @@ class Menu_Item {
                 $link_list[] = $i;
             }
         }
-
+        
         return implode("\n", $link_list);
     }
 
@@ -170,6 +182,7 @@ class Menu_Item {
 
         foreach ($result as $link) {
             $link->loadChildren();
+            $link->_menu = & $this;
             $final[$link->id] = $link;
         }
 
@@ -292,6 +305,26 @@ class Menu_Item {
         return javascript('open_window', $js);
     }
 
+
+    function parseIni()
+    {
+        $inifile = PHPWS_Template::getTemplateDirectory('menu') . 'menu_layout/' . $this->template . '/options.ini';
+        if (!is_file($inifile)) {
+            return;
+        }
+
+        $results = parse_ini_file($inifile);
+        if (!empty($results['show_all'])) {
+            $this->_show_all = (bool)$results['show_all'];;
+        }
+
+        if (!empty($results['style_sheet'])) {
+            $this->_style = $results['style_sheet'];
+        }
+        
+    }
+
+
     /**
      * Returns a menu and its links for display
      */
@@ -303,8 +336,22 @@ class Menu_Item {
             return;
         }
 
+        $tpl_dir = PHPWS_Template::getTemplateDirectory('menu');
+
         $edit = FALSE;
-        $file = 'menu_layout/' . $this->template;
+        $file = 'menu_layout/' . $this->template . '/menu.tpl';
+        if (!is_file($tpl_dir . $file)) {
+            PHPWS_Error::log(MENU_MISSING_TPL, 'menu', 'Menu_Item::view', $file);
+            return false;
+        }
+
+        $this->parseIni();
+
+        if ($this->_style) {
+            $style = sprintf('menu_layout/%s/%s', $this->template, $this->_style);
+            Layout::addStyle('menu', $style);
+        }
+
         $content_var = 'menu_' . $this->id;
 
         if ( !$pin_mode && Current_User::allow('menu') ) {
