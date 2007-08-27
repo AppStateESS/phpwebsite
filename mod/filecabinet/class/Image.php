@@ -340,15 +340,19 @@ class PHPWS_Image extends File_Common {
         imagedestroy($source_image);
 
         if ( $force_png || $this->file_type == 'image/png'|| $this->file_type == 'image/x-png' ) {
-            return imagepng($resampled_image, $dst);
+            $result = imagepng($resampled_image, $dst);
         } elseif ($this->file_type == 'image/gif') {
-            return imagegif($resampled_image, $dst);
+            $result = imagegif($resampled_image, $dst);
         } elseif ( $this->file_type == 'image/jpeg' || $this->file_type == 'image/pjpeg' ||
                    $this->file_type == 'image/jpg' ) {
-            return imagejpeg($resampled_image, $dst);
+            $result = imagejpeg($resampled_image, $dst);
         } else {
             return FALSE;
         }
+        if ($result) {
+            chmod($dst, 0644);
+        }
+        return $result;
     }
 
     function makeThumbnail()

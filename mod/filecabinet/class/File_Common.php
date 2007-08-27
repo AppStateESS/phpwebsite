@@ -164,7 +164,6 @@ class File_Common {
             $this->setSize($file_vars['size']);
 
             $this->file_type = $file_vars['type'];
-            //            $this->ext  = $file_vars['ext'];
 
             if (!$this->allowSize()) {
                 if ($this->_classtype == 'document') {
@@ -255,8 +254,10 @@ class File_Common {
             if (!is_dir($directory)) {
                 return PHPWS_Error::get(FC_BAD_DIRECTORY, 'filecabinet', 'File_Common::write', $directory);
             }
+
             $moved = $this->_upload->moveTo($directory);
             if (!PEAR::isError($moved)) {
+                chmod($directory . '/' . $moved, 0644);
                 return $moved;
             }
         }
