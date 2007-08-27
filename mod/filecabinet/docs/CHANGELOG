@@ -1,3 +1,6 @@
+26 August 2007
++ Fixed update script. Was missing filecabinet_pins table creation.
+
 23 August 2007
 + Option add to auto link child resized images to parent.
 + Fixed bug where child images were not getting loaded on image

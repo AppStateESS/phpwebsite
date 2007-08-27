@@ -57,6 +57,6 @@ CREATE TABLE folders (
 );
 
 CREATE TABLE filecabinet_pins (
-key_id INT NOT NULL ,
-folder_id INT NOT NULL
+key_id INT NOT NULL default 0,
+folder_id INT NOT NULL default 0
 );

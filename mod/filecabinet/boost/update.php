@@ -192,6 +192,17 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 </pre>
 ';
 
+    case version_compare($version, '1.2.1', '<'):
+        if (!PHPWS_DB::isTable('filecabinet_pins')) {
+            $db = new PHPWS_DB('filecabinet_pins');
+            $db->addValue('key_id', 'int not null default 0');
+            $db->addValue('folder_id', 'int not null default 0');
+            if (PHPWS_Error::logIfError($db->createTable())) {
+                $content[] = 'Failed to create filecabinet_pins table.';
+                return false;
+            }
+            $content[] = 'Created filecabinet_pins table.';
+        }
     }
 
     return true;
