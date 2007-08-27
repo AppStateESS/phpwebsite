@@ -1,5 +1,7 @@
 27 August 2007
-+ Changing file rights after upload to 644
++ Changing image file rights after upload and resizing to 644
++ Document permissions written as 640
+
 
 26 August 2007
 + Fixed update script. Was missing filecabinet_pins table creation.

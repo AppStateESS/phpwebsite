@@ -173,7 +173,7 @@ class PHPWS_Document extends File_Common {
         }
 
         if ($write) {
-            $result = $this->write();
+            $result = $this->write(false);
             if (PEAR::isError($result)) {
                 return $result;
             }

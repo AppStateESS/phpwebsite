@@ -245,7 +245,7 @@ class File_Common {
     /**
      * Writes the file to the server
      */
-    function write()
+    function write($public=true)
     {
         if ($this->_upload) {
             $this->_upload->setName($this->file_name);
@@ -257,7 +257,11 @@ class File_Common {
 
             $moved = $this->_upload->moveTo($directory);
             if (!PEAR::isError($moved)) {
-                chmod($directory . '/' . $moved, 0644);
+                if ($public) {
+                    chmod($directory . '/' . $moved, 0644);
+                } else {
+                    chmod($directory . '/' . $moved, 0640);
+                }
                 return $moved;
             }
         }
