@@ -450,9 +450,6 @@ class Blog_Admin {
 
         $panel = new PHPWS_Panel('blog');
         $panel->quickSetTabs($tabs);
-
-        $panel->setModule('blog');
-        $panel->setPanel('panel.tpl');
         return $panel;
     }
 
