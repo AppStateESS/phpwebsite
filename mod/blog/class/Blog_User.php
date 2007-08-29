@@ -288,6 +288,23 @@ class Blog_User {
      */
     function showSide()
     {
+        switch(PHPWS_Settings::get('blog', 'show_recent')) {
+        case 0:
+            // don't show
+            return;
+
+        case 1:
+            // home page only
+            if (!PHPWS_Core::atHome()) {
+                return;
+            }
+            break;
+
+        case 2:
+            // everywhere
+            break;
+        }
+
         $db = new PHPWS_DB('blog_entries');
         $limit = PHPWS_Settings::get('blog', 'blog_limit');
         $result = Blog_User::getEntries($db, $limit);

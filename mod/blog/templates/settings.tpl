@@ -47,6 +47,12 @@
       <td>{HOME_PAGE_DISPLAY}
       </td>
    </tr>
+   <tr>
+      <td>{SHOW_RECENT_LABEL}
+      </td>
+      <td>{SHOW_RECENT}
+      </td>
+   </tr>
 </table>
 <fieldset><legend>{SIMPLE_IMAGE} {SIMPLE_IMAGE_LABEL}</legend>
 {MAX_WIDTH_LABEL} {MAX_WIDTH}<br /><br />

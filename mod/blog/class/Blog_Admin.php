@@ -326,6 +326,10 @@ class Blog_Admin {
             PHPWS_Settings::set('blog', 'home_page_display', 0);
         }
 
+        if (isset($_POST['show_recent'])) {
+            PHPWS_Settings::set('blog', 'show_recent', $_POST['show_recent']);
+        }
+
         if (isset($_POST['allow_anonymous_submits'])) {
             PHPWS_Settings::set('blog', 'allow_anonymous_submits', 1);
         } else {

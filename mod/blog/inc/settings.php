@@ -16,5 +16,6 @@ $settings['max_width']               = 300;
 $settings['max_height']              = 300;
 $settings['anonymous_comments']      = 1;
 $settings['captcha_submissions']     = 1;
+$settings['show_recent']             = 1;
 
 ?>
