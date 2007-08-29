@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+29 August 2007
++ Added pears XML libs to default installation
++ Adding modified version of Eloi George's xml-rpc server
+
 27 August 2007
 + Database
   o Added portability mode to database factory files.
