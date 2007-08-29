@@ -9,7 +9,16 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
 }
 
+
 PHPWS_Core::initModClass('blog', 'Blog.php');
+
+if (isset($_REQUEST['xmlrpc']))
+{
+    PHPWS_Core::initModClass('blog', 'Blog_XML.php');
+    $xml = new Blog_XML;
+    return;
+}
+
 
 if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'admin' &&
     Current_User::allow('blog')) {

@@ -7,14 +7,17 @@
    */
 
 class Blog {
-    var $id             = null;
+    var $id             = 0;
     var $key_id         = 0;
     var $title          = null;
     var $summary        = null;
     var $entry          = null;
     var $author_id      = 0;
     var $author         = null;
-    var $create_date    = null;
+    var $create_date    = 0;
+    var $updater_id     = 0;
+    var $updater        = null;
+    var $update_date    = 0;
     var $allow_comments = 0;
     var $approved       = 0;
     var $allow_anon     = 0;
@@ -26,6 +29,8 @@ class Blog {
 
     function Blog($id=null)
     {
+        $this->update_date = mktime();
+
         if (empty($id)) {
             $this->allow_comments = PHPWS_Settings::get('blog', 'allow_comments');
             return;
@@ -162,10 +167,10 @@ class Blog {
         PHPWS_Core::initModClass('version', 'Version.php');
         $db = new PHPWS_DB('blog_entries');
         if (empty($this->id)) {
-            if ($this->publish_date > mktime()) {
-                $this->create_date = $this->publish_date;
-            } else {
-                $this->create_date = mktime();
+            $this->create_date = mktime();
+            
+            if (!$this->publish_date) {
+                $this->publish_date = $this->create_date;
             }
 
             if (Current_User::isLogged()) {
@@ -177,7 +182,21 @@ class Blog {
             }
         }
 
+        if (Current_User::isLogged()) {
+            $this->updater_id = Current_User::getId();
+            $this->updater    = Current_User::getDisplayName();
+        } elseif (empty($this->updater)) {
+            $this->updater_id = 0;
+            $this->updater    = dgettext('blog', 'Anonymous');
+        }
+
+        $this->update_date = mktime();
+
         $version = new Version('blog_entries');
+
+        if (empty($this->entry)) {
+            $this->entry = '';
+        }
 
         if ($this->approved || !$this->id) {
             $result = $db->saveObject($this);

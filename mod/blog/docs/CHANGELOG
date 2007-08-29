@@ -1,3 +1,12 @@
+29 August 2007
++ Added setting to control recent blog entries block
++ Started XML-RPC controls to Blog
++ Added new variables: updater_id, updater, update_date
+  Need to alter database install/update
++ Blogs sorted by publish date not create date.
++ Publish date defaults to create date now, not other way around.
++ Updated: templates/settings.tpl
+
 26 August 2007
 + Removed redundant commands
 

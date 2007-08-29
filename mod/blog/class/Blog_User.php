@@ -159,7 +159,7 @@ class Blog_User {
 
         $db->setLimit($limit, $offset);
         $db->addOrder('sticky desc'); 
-        $db->addOrder('create_date desc');
+        $db->addOrder('publish_date desc');
         Key::restrictView($db, 'blog');
         return $db->getObjects('Blog');
     }
