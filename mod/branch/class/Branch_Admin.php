@@ -348,7 +348,7 @@ class Branch_Admin {
             $template['WINDOWS_PEAR'] = '//';
         }
 
-        $file_content = PHPWS_Template::process($template, 'branch', 'config.tpl');
+        $file_content = PHPWS_Template::process($template, 'branch', 'core/inc/config.tpl', true);
 
         $file_directory = $this->branch->directory . 'config/core/config.php';
         
