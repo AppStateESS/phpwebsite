@@ -111,6 +111,14 @@ class PageSmith {
             PHPWS_Core::reroute('index.php?module=pagesmith&aop=menu&tab=list');
             break;
 
+        case 'front_page_toggle':
+            $this->loadPage();
+            $this->page->front_page = (bool)$_GET['fp'];
+            $this->page->save();
+            $this->loadForms();
+            $this->forms->pageList();
+            break;
+            
         default:
             PHPWS_Core::errorPage('404');
             break;

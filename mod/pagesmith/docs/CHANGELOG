@@ -1,3 +1,9 @@
+30 August 2007
++ Front page placement
++ widened the action column in page list
++ New column: ps_page.front_page
++ Updated: templates/page_list.tpl
+
 Version 1.0.0 -- 25 July 2007
 ------------------------------------------------------------------
 8 August 2007

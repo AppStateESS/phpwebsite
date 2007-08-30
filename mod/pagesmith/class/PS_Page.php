@@ -11,6 +11,7 @@ class PS_Page {
     var $template     = null;
     var $create_date  = 0;
     var $last_updated = 0;
+    var $front_page   = 0;
 
     var $_tpl         = null;
     var $_sections    = array();
@@ -138,6 +139,8 @@ class PS_Page {
 
         $links[] = $this->editLink();
         $links[] = $this->deleteLink();
+        $links[] = $this->frontPageToggle();
+
 
         $tpl['ACTION'] = implode(' | ', $links);
         $tpl['CREATE_DATE'] = strftime('%d %b %y, %X', $this->create_date);
@@ -164,6 +167,25 @@ class PS_Page {
         $vars['id']  = $this->id;
         $vars['aop'] = 'edit_page';
         return PHPWS_Text::secureLink($label, 'pagesmith', $vars);
+    }
+
+    function frontPageToggle()
+    {
+        if ($this->front_page) {
+            $label = dgettext('pagesmith', 'On&nbsp;front');
+            $title = dgettext('pagesmith', 'Click to remove from front page');
+            $vars['fp'] = 0;
+        } else {
+            $label = dgettext('pagesmith', 'Off&nbsp;front');
+            $title = dgettext('pagesmith', 'Click to display on front page');
+            $vars['fp'] = 1;
+
+        }
+
+        $vars['aop'] = 'front_page_toggle';
+        $vars['id'] = $this->id;
+
+        return PHPWS_Text::secureLink($label, 'pagesmith', $vars, null, $title);
     }
 
     function save()
@@ -236,7 +258,7 @@ class PS_Page {
     function view()
     {
         if (Current_User::allow('pagesmith', 'edit', $this->id)) {
-            MiniAdmin::add('pagesmith', $this->editLink(dgettext('pagesmith', 'Edit page')));
+            MiniAdmin::add('pagesmith', $this->editLink(sprintf(dgettext('pagesmith', 'Edit %s'), $this->title)));
         }
         $this->loadSections();
         $this->_tpl->loadStyle();

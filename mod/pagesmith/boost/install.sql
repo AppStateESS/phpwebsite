@@ -19,6 +19,7 @@ CREATE TABLE ps_page (
   template varchar(20) NOT NULL,
   create_date int not null default 0,
   last_updated int not null default 0,
+  front_page smallint NOT NULL default 0,
   PRIMARY KEY  (id)
 );
 
