@@ -1,3 +1,9 @@
+30 August 2007
++ Rewrote Box settings to Arrange tab.
++ Box move and reset boxes are now links, not form buttons.
++ Additional authorized checks added
++ Updated: remove templates/BoxControl.tpl, add templates/arrange.tpl
+
 27 August 2007
 + addStyle function now allows multiple style sheets per module. Still
   only includes a file once.

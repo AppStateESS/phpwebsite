@@ -12,14 +12,13 @@
 define('DEFAULT_LAYOUT_TAB', 'boxes');
 
 class Layout_Admin{
-
     function admin()
     {
         if (!Current_User::allow('layout')) {
             Current_User::disallow();
         }
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
-        $content = NULL;
+        $content = null;
         $panel = Layout_Admin::adminPanel();
 
         if (isset($_REQUEST['command'])) {
@@ -30,13 +29,13 @@ class Layout_Admin{
         }
 
         switch ($command){
-        case 'boxes':
-            $title = dgettext('layout', 'Adjust Boxes');
-            $content[] = Layout_Admin::boxesForm();
+        case 'arrange':
+            $title = dgettext('layout', 'Arrange Layout');
+            $content[] = Layout_Admin::arrangeForm();
             break;
 
         case 'turn_off_box_move':
-            Layout::moveBoxes(FALSE);
+            Layout::moveBoxes(false);
             PHPWS_Core::goBack();
             break;
 
@@ -48,17 +47,29 @@ class Layout_Admin{
             javascript('close_refresh');
             break;
 
-        case 'changeBoxSettings':
-            Layout_Admin::saveBoxSettings();
-            if ($_REQUEST['reset_boxes']) {
-                unset($_SESSION['Layout_Settings']);
-                PHPWS_Core::reroute('index.php?module=layout&action=admin&authkey=' . Current_User::getAuthKey());
+        case 'reset_boxes':
+            if (!Current_User::authorized('layout')) {
+                Current_User::disallow();
             }
+            Layout::resetDefaultBoxes();
+            unset($_SESSION['Layout_Settings']);
+            PHPWS_Core::reroute('index.php?module=layout&action=admin&authkey=' . Current_User::getAuthKey());
+            break;
 
-            $title = dgettext('layout', 'Adjust Boxes');
-            $template['MESSAGE'] = dgettext('layout', 'Settings changed.');
-            $content[] = Layout_Admin::boxesForm();
+        case 'move_boxes_on':
+            if (!Current_User::authorized('layout')) {
+                Current_User::disallow();
+            }
+            Layout::moveBoxes(true);
+            PHPWS_Core::goBack();
+            break;
 
+        case 'move_boxes_off':
+            if (!Current_User::authorized('layout')) {
+                Current_User::disallow();
+            }
+            Layout::moveBoxes(false);
+            PHPWS_Core::goBack();
             break;
 
         case 'confirmThemeChange':
@@ -74,6 +85,9 @@ class Layout_Admin{
             break;
 
         case 'edit_footer':
+            if (!Current_User::authorized('layout')) {
+                Current_User::disallow();
+            }
             $result = Layout_Admin::postFooter();
             if (PEAR::isError($result)){
                 PHPWS_Error::log($result);
@@ -87,6 +101,9 @@ class Layout_Admin{
 
 
         case 'edit_header':
+            if (!Current_User::authorized('layout')) {
+                Current_User::disallow();
+            }
             $result = Layout_Admin::postHeader();
             if (PEAR::isError($result)){
                 $title = dgettext('layout', 'Error');
@@ -112,6 +129,27 @@ class Layout_Admin{
             $content[] = Layout_Admin::metaForm();
             break;
 
+        case 'clear_templates':
+            if (!Current_User::authorized('layout')) {
+                Current_User::disallow();
+            }
+            $files = PHPWS_File::readDirectory('templates/cache', false, true);
+            if (!empty($files) && is_array($files)) {
+                foreach ($files as $fn) {
+                    @unlink('templates/cache/' . $fn);
+                } 
+            }
+            PHPWS_Core::goBack();
+            break;
+
+        case 'clear_cache':
+            if (!Current_User::authorized('layout')) {
+                Current_User::disallow();
+            }
+            PHPWS_Cache::clearCache();
+            PHPWS_Core::goBack();
+            break;
+
         case 'moveBox':
             $result = Layout_Admin::moveBox();
             PHPWS_Error::logIfError($result);
@@ -120,6 +158,9 @@ class Layout_Admin{
             break;
 
         case 'postMeta':
+            if (!Current_User::authorized('layout')) {
+                Current_User::disallow();
+            }
             Layout_Admin::postMeta();
             if (isset($_POST['key_id'])) {
                 javascript('close_refresh');
@@ -146,6 +187,9 @@ class Layout_Admin{
             break;
 
         case 'postTheme':
+            if (!Current_User::authorized('layout')) {
+                Current_User::disallow();
+            }
             if ($_POST['default_theme'] != $_SESSION['Layout_Settings']->current_theme) {
                 Layout::reset($_POST['default_theme']);
                 PHPWS_Core::reroute('index.php?module=layout&action=admin&command=demo_theme&authkey=' . Current_User::getAuthKey());
@@ -202,7 +246,7 @@ class Layout_Admin{
         $styles = Layout::getExtraStyles();
 
         if (empty($styles) || !isset($_REQUEST['key_id'])) {
-            return FALSE;
+            return false;
         }
         $styles[0] = dgettext('layout', '-- Use default style --');
         ksort($styles, SORT_NUMERIC);
@@ -240,7 +284,7 @@ class Layout_Admin{
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=layout&amp;action=admin';
-        $tabs['boxes']     = array('title'=>dgettext('layout', 'Boxes'),     'link'=>$link);
+        $tabs['arrange']     = array('title'=>dgettext('layout', 'Arrange'),     'link'=>$link);
         $tabs['meta']      = array('title'=>dgettext('layout', 'Meta Tags'), 'link'=>$link);
         $tabs['theme']     = array('title'=>dgettext('layout', 'Themes'),    'link'=>$link);
         $tabs['header']    = array('title'=>dgettext('layout', 'Header'),    'link'=>$link);
@@ -274,31 +318,33 @@ class Layout_Admin{
         return PHPWS_Template::process($template, 'layout', 'themes.tpl');
     }
 
-    function boxesForm()
+    function arrangeForm()
     {
-        $form = new PHPWS_Form('boxes');
-        $form->addHidden('module', 'layout');
-        $form->addHidden('action', 'admin');
-        $form->addHidden('command', 'changeBoxSettings');
-        $form->addRadio('move_boxes',  array(0, 1));
-        $form->setLabel('move_boxes', array(dgettext('layout', 'Disable'), dgettext('layout', 'Enable')));
+        $vars['action'] = 'admin';
+        $vars['command'] = 'reset_boxes';
+        $template['RESET_BOXES'] = PHPWS_Text::secureLink(dgettext('layout', 'Reset boxes'), 'layout', $vars);
+
         if (Layout::isMoveBox()) {
-            $form->setMatch('move_boxes', 1);
+            $vars['command'] = 'move_boxes_off';
+            $label = dgettext('layout', 'Disable box move');
         } else {
-            $form->setMatch('move_boxes', 0);
+            $vars['command'] = 'move_boxes_on';
+            $label = dgettext('layout', 'Enable box move');
         }
 
+        $template['MOVE_BOXES']      = PHPWS_Text::secureLink($label, 'layout', $vars);
+        $template['MOVE_BOXES_DESC'] = dgettext('layout', 'When enabled, this allows you to shift content to other area of your layout. Movement options depend on the current theme.');
+        $template['RESET_DESC']      = dgettext('layout', 'Resets all content back to its original location. Use if problems with Box Move occurred.');
 
-        $form->addRadio('reset_boxes', array(0,1));
-        $form->setLabel('reset_boxes', array(dgettext('layout', 'Don\'t reset'), dgettext('layout', 'Reset boxes')));
-        $form->setMatch('reset_boxes', 0);
+        $vars['command'] = 'clear_templates';
+        $template['CLEAR_TEMPLATES']      = PHPWS_Text::secureLink(dgettext('layout', 'Clear templates'), 'layout', $vars);
+        $template['CLEAR_TEMPLATES_DESC'] = dgettext('layout', 'Removes all files from the current template cache directory. Good to try if your theme is not displaying properly.');
 
-        $form->addSubmit('submit', dgettext('layout', 'Change Settings'));
+        $vars['command'] = 'clear_cache';
+        $template['CLEAR_CACHE']      = PHPWS_Text::secureLink(dgettext('layout', 'Clear cache'), 'layout', $vars);
+        $template['CLEAR_CACHE_DESC'] = dgettext('layout', 'Clears all Cache Lite files. Good to try if module updates do not display.');
 
-        $template = $form->getTemplate();
-        $template['RESET_LEGEND'] = dgettext('layout', 'Reset boxes');
-        $template['MOVE_LEGEND'] = dgettext('layout', 'Box positioning');
-        return PHPWS_Template::process($template, 'layout', 'BoxControl.tpl');
+        return PHPWS_Template::process($template, 'layout', 'arrange.tpl');
     }
 
 
@@ -452,7 +498,7 @@ class Layout_Admin{
 
         Layout::resetBoxes();
 
-        return TRUE;
+        return true;
     }
 
     function postStyleChange()
@@ -538,20 +584,6 @@ class Layout_Admin{
             $db = new PHPWS_DB('layout_config');
             $db->addValue($values);
             return $db->update();
-        }
-    }
-
-    function saveBoxSettings()
-    {
-        if ($_REQUEST['move_boxes'] == 1) {
-            Layout::moveBoxes(TRUE);
-        }
-        else {
-            Layout::moveBoxes(FALSE);
-        }
-
-        if ($_REQUEST['reset_boxes'] == '1') {
-            Layout::resetDefaultBoxes();
         }
     }
 
