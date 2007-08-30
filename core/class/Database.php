@@ -2028,22 +2028,28 @@ class PHPWS_DB {
      * constructor.
      *
      * @author Matthew McNaney <matt at tux dot appstate dot edu>
-     * @param string $className Name of object class
-     * @return array $items     Array of objects
+     * @param string $className  Name of object class
+     * @param string $module     Module having class_file
+     * @param string $class_file Name of file having className
+     * @return array $items      Array of objects
      * @access public
      */
-    function getObjects($className)
+    function getObjects($className, $module=null, $class_file=null)
     {
-        if (!class_exists($className)) {
-            return PHPWS_Error::get(PHPWS_CLASS_NOT_EXIST, 'core', 'PHPWS_DB::getObjects', $className);
-        }
-
         $items = NULL;
         
         $result = $this->select();
 
         if (PEAR::isError($result) || !isset($result)) {
             return $result;
+        }
+
+        if (!empty($module) && !empty($class_file)) {
+            PHPWS_Core::initModClass($module, $class_file);
+        }
+
+        if (!class_exists($className)) {
+            return PHPWS_Error::get(PHPWS_CLASS_NOT_EXIST, 'core', 'PHPWS_DB::getObjects', $className);
         }
 
         $num_args = func_num_args();

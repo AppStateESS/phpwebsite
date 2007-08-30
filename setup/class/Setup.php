@@ -93,7 +93,7 @@ class Setup{
         }
 
         $tpl = new PHPWS_Template;
-        $tpl->setFile('setup/templates/config.tpl', TRUE);
+        $tpl->setFile('core/inc/config.tpl', TRUE);
         $tpl->setData($_SESSION['configSettings']);
         $configFile = $tpl->get();
         return File::write($location . 'config.php', $configFile, FILE_MODE_WRITE);

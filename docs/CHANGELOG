@@ -2,6 +2,21 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+30 August 2007
++ Database - getObjects now accepts the module and class filename as
+  the second and third parameter. Prevents the class getting loaded
+  until the results are verified.
++ xmlrpc - too many changes to list. The following is working:
+  o listing entries
+  o listing categories
+  o posting new entry
+  o editing previous entry (except in bloGTK)
+  o deleting entry
++ There will only be one config.tpl in the new core and it will reside
+  in core/inc. Branch and setup have been changed to grab the file
+  from there.
+  
+
 29 August 2007
 + Added pears XML libs to default installation
 + Adding modified version of Eloi George's xml-rpc server
