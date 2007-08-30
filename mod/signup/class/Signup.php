@@ -200,7 +200,7 @@ class Signup {
             if (PHPWS_Error::logIfError($result) || !$result) {
                 $this->forwardMessage(dgettext('signup', 'Error occurred when moving applicant. Slot may be full.'));
             }
-            PHPWS_Core::reroute('index.php?module=signup&id=1&aop=edit_slots&authkey=' . Current_User::getAuthKey());
+            PHPWS_Core::reroute('index.php?module=signup&id=' . $this->sheet->id . '&aop=edit_slots&authkey=' . Current_User::getAuthKey());
             break;
 
         case 'move_up':
@@ -234,6 +234,16 @@ class Signup {
             $this->loadSheet();
             $this->loadForm('report');
             break;
+
+        case 'reset_slot_order':
+            if (!Current_User::authorized('signup')) {
+                Current_User::disallow();
+            }
+            $this->loadSheet();
+            $this->resetSlots();
+            $this->forwardMessage(dgettext('signup', 'Slot order reset.'));
+            PHPWS_Core::reroute('index.php?module=signup&id=' . $this->sheet->id . '&aop=edit_slots&authkey=' . Current_User::getAuthKey());
+            break;
         }
 
 
@@ -248,6 +258,30 @@ class Signup {
             Layout::add(PHPWS_ControlPanel::display($this->panel->display()));
         }
 
+    }
+
+    function resetSlots()
+    {
+        $db = new PHPWS_DB('signup_slots');
+        $db->addWhere('sheet_id', $this->sheet->id);
+        $db->addColumn('id');
+        $db->addOrder('s_order');
+        $slots = $db->select('col');
+        if (empty($slots)) {
+            return true;
+        } elseif (PHPWS_Error::logIfError($slots)) {
+            return false;
+        }
+        $count = 1;
+        foreach ($slots as $id) {
+            $db->reset();
+            $db->addWhere('id', $id);
+            $db->addValue('s_order', $count);
+            PHPWS_Error::logIfError($db->update());
+            $count++;
+        }
+
+        return true;
     }
 
     function sendMessage()

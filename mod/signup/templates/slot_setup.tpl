@@ -1,4 +1,4 @@
-{ADD_SLOT}
+{ADD_SLOT} | {RESET}
 <!-- BEGIN empty --><p>{EMPTY}</p><!-- END empty -->
 <!-- BEGIN current-slots -->
 <div class="slot">

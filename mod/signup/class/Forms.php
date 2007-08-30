@@ -166,6 +166,9 @@ class Signup_Forms {
         $js['label'] = dgettext('signup', 'Add slot');
         $tpl['ADD_SLOT'] = javascript('open_window', $js);
 
+        $vars['aop'] = 'reset_slot_order';
+        $tpl['RESET'] = PHPWS_Text::secureLink(dgettext('signup', 'Reset order'), 'signup', $vars);
+
         $slots = $this->signup->sheet->getAllSlots();
 
         if (PHPWS_Error::logIfError($slots)) {

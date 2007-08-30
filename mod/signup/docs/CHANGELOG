@@ -1,3 +1,8 @@
+30 August 2007
++ Added ability to reset slot order should it come unraveled.
++ Fixed reroute link that was hard coded to go to sheet id 1.
++ Updated: templates/slot_setup.tpl
+
 Version 1.0.0 -- 25 July 2007
 ------------------------------------------------------------------
 8 August 2007
