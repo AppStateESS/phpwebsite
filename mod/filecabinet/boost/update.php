@@ -193,16 +193,43 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 ';
 
     case version_compare($version, '1.2.1', '<'):
+        $content[] = '<pre>';
         if (!PHPWS_DB::isTable('filecabinet_pins')) {
             $db = new PHPWS_DB('filecabinet_pins');
             $db->addValue('key_id', 'int not null default 0');
             $db->addValue('folder_id', 'int not null default 0');
             if (PHPWS_Error::logIfError($db->createTable())) {
-                $content[] = 'Failed to create filecabinet_pins table.';
+                $content[] = 'Failed to create filecabinet_pins table.</pre>';
                 return false;
             }
-            $content[] = 'Created filecabinet_pins table.';
+            $content[] = '--- Created filecabinet_pins table.';
         }
+
+        $files = array('templates/settings.tpl');
+
+        if (PHPWS_Boost::updateFiles($files, 'filecabinet')) {
+            $content[] = '--- Copied the following files:';
+        } else {
+            $content[] = '--- FAILED copying the following files:';
+        }
+
+        $content[] = "    " . implode("\n    ", $files);
+        
+ $content[] = '
+1.2.1 changes
+--------------
++ Changing image file rights after upload and resizing to 644
++ Document permissions written as 640
++ Fixed update script. Was missing filecabinet_pins table creation.
++ Option add to auto link child resized images to parent.
++ Fixed bug where child images were not getting loaded on image
+  selection.
++ File cabinet was pulling a file from the mod directory instead of
+  locally. I think I misread the function.
++ Resize the image edit window to account for thumbnail.
++ Image selection would get corrupted by linked images. Fixed.
+</pre>';
+
     }
 
     return true;
