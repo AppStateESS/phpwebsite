@@ -88,10 +88,12 @@ class Current_User {
     /**
      * sends a user to the 403 error page and logs a message (if specified)
      * to the security log
+     * @param string  message  Message sent to log
+     * @param boolean login    If true, then allow change to login
      */
-    function disallow($message=NULL)
+    function disallow($message=NULL, $login=true)
     {
-        if (Current_User::requireLogin()) {
+        if ($login && Current_User::requireLogin()) {
             return;
         } else {
             PHPWS_User::disallow($message);

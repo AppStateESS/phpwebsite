@@ -1,3 +1,6 @@
+30 August 2007
++ Added parameter to disallow which determines whether to check login.
+
 27 August 2007
 + Changed default disallow action on anonymous users. Now forwards
   them to the login screen.
