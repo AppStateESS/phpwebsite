@@ -10,6 +10,10 @@ if (!defined('PHPWS_SOURCE_DIR')) {
     exit();
  }
 
+if (!Current_User::isLogged()) {
+    Current_User::requireLogin();
+}
+
 if (isset($_GET['cp_image_toggle'])){
     PHPWS_ControlPanel_Tab::toggleImage($_GET['tab']);
  }
