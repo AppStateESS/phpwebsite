@@ -45,7 +45,7 @@ class Blog {
 
     function init()
     {
-        if (!isset($this->id)) {
+        if (!$this->id) {
             return false;
         }
 
@@ -54,7 +54,7 @@ class Blog {
         if (PEAR::isError($result)) {
             return $result;
         } elseif (!$result) {
-            $this->id = null;
+            $this->id = 0;
         }
     }
 

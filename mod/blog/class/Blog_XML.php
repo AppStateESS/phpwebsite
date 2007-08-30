@@ -1,7 +1,6 @@
 <?php
 
 PHPWS_Core::initCoreClass('xmlrpc.php');
-PHPWS_Core::requireConfig('blog');
 
 class Blog_XML extends MyServer {
 
@@ -10,13 +9,43 @@ class Blog_XML extends MyServer {
         $this->MyServer();
     }
 
-    function allow()
+    function delete($id)
     {
-        if (!Current_User::allow('blog', 'edit_blog') || Current_User::isRestricted('blog')) {
-            return new IXR_Error(4000, XMLRPC_CANNOT_AUTHENTICATE);
-        } else {
+        $blog = new Blog($id);
+        if ($blog->delete()) {
             return true;
+        } else {
+            return new IXR_Error(4040, 'Unable to delete entry.');
         }
+    }
+
+    function allow($permission)
+    {
+        if (Current_User::isRestricted('blog')) {
+            return new IXR_Error(4010, 'You do not have permission to access Blog.');
+        }
+
+        switch ($permission) {
+        case 'new':
+        case 'list':
+        case 'edit':
+        case 'category':
+            if (!Current_User::allow('blog', 'edit_blog')) {
+                return new IXR_Error(4020, 'You do not have permission to edit entries.');
+            }
+            break;
+
+        case 'delete':
+            if (!Current_User::allow('blog', 'delete_blog')) {
+                return new IXR_Error(4030, 'You do not have permission to delete entries.');
+            }
+            break;
+
+        default:
+            return false;
+        }
+
+        return true;
     }
 
     function getRecent($limit)
@@ -41,15 +70,30 @@ class Blog_XML extends MyServer {
         return $blogs;
     }
 
-    function post($title, $description, $publish, $read_more, $excerpt)
+    function post($id, $details, $publish)
     {
         // Blog doesn't use excerpt
+        ob_start();
+        var_dump($details);
+        $show = ob_get_contents();
+        record(__FUNCTION__, $show);
+        ob_clean();
+
+        extract($details);
 
         if (!Current_User::allow('blog', 'edit_blog') || Current_User::isRestricted('blog')) {
             return new IXR_Error(4000, XMLRPC_CANNOT_AUTHENTICATE);
         }
 
-        $blog = new Blog;
+        if ($id) {
+            $blog = new Blog($id);
+            if (!$blog->id) {
+                return new IXR_Error(5010, 'Database Error!  Post not saved.');
+            }
+        } else {
+            $blog = new Blog;
+        }
+
         if (empty($title)) {
             return new IXR_Error(4010, 'Missing title.');
         }
@@ -61,12 +105,22 @@ class Blog_XML extends MyServer {
         $blog->setTitle($title);
         $blog->setSummary($description);
 
-        if (!empty($more_text)) {
-            $blog->setEntry($more_text);
+        if (!empty($mt_text_more)) {
+            $blog->setEntry($mt_text_more);
+        }
+
+        if (isset($mt_allow_comments)) {
+            $blog->allow_comments = (bool)$mt_allow_comments;
+        } else {
+            $blog->allow_comments = PHPWS_Settings::get('blog', 'allow_comments');
+        }
+
+        if (PHPWS_Settings::get('blog', 'obey_publish')) {
+            $blog->approved = $publish;
+        } else {
+            $blog->approved = 1;
         }
         
-        $blog->allow_comments = PHPWS_Settings::get('blog', 'allow_comments');
-        $blog->approved = 1;
         $result = $blog->save();
 
         if (PHPWS_Error::logIfError($result)) {
@@ -79,36 +133,32 @@ class Blog_XML extends MyServer {
     function getRPC($blog)
     {
         $d = array();
-        $d['userid']      = $blog->author_id;
-        $d['dateCreated'] = new IXR_Date($blog->create_date);
-        $d['pubDate']     = new IXR_Date($blog->publish_date);
-        $d['postid']      = $blog->id;
-        $d['description'] = $blog->getEntry(true);
-
-        if (empty($d['description'])) {
-            $d['description'] = $blog->getSummary(true);
-        } else {
-            $d['mt_excerpt'] = $blog->getSummary(true);
-        }
+        $d['userid']       = $blog->author_id;
+        $d['dateCreated']  = new IXR_Date($blog->create_date);
+        $d['pubDate']      = new IXR_Date($blog->publish_date);
+        $d['postid']       = $blog->id;
+        $d['description']  = $blog->getSummary(true);
+        $d['mt_text_more'] = $blog->getEntry();
         $d['title'] = $blog->title;
 
-        $d['link'] = 'http://' . PHPWS_Core::getHomeHttp() . 'blog/' . $id;
-        $d['permalink'] = 'http://' . PHPWS_Core::getHomeHttp() . 'index.php?module=blog&action=view_comments&id=' . $blog->id;
+        $d['link'] = PHPWS_Core::getHomeHttp() . 'blog/' . $blog->id;
+        $d['permalink'] = PHPWS_Core::getHomeHttp() . 'index.php?module=blog&action=view_comments&id=' . $blog->id;
 
         $d['mt_allow_comments'] = $blog->allow_comments;
         $d['mt_allow_pings'] = 0;
         $d['mt_convert_breaks'] = 0;
-        $result = Layout::getMetaPage($this->key_id);
+        $result = Layout::getMetaPage($blog->key_id);
 
-        if (!$result) {
-            $db = new PHPWS_DB('layout_config');
-            $result = $db->select('row');
+        if ($result) {
+            $d['mt_keywords'] = $result['meta_keywords'];
+        } else {
+            $d['mt_keywords'] = '';
         }
 
-        $d['mt_keywords'] = $result['meta_keywords'];
+
 		
         /* Get category list */
-        $d['categories'] = Categories::getCategories('list');
+        //$d['categories'] = Categories::getCategories('list');
         return $d;
     }
 

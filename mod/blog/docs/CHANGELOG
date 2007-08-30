@@ -1,3 +1,11 @@
+30 August 2007
++ default id is zero now not null
++ Blog_XML - many fixes and additions. See core update to see
+  functionality.
++ settings now has obey_publish. This needs to be added to settings.
+  If true, then the XMLRPC will acknowledge a false publish as
+  approved=0 
+
 29 August 2007
 + Added setting to control recent blog entries block
 + Started XML-RPC controls to Blog
