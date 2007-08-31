@@ -2,6 +2,12 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+31 August 2007
++ Text
+   o Bug #1781552. Shortened urls now adds 3 characters to balance
+     '...' replacement.
+   o Added newline check to collapseUrl function.
+
 30 August 2007
 + Database - getObjects now accepts the module and class filename as
   the second and third parameter. Prevents the class getting loaded

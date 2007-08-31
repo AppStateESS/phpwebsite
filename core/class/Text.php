@@ -785,14 +785,15 @@ class PHPWS_Text {
             return $text;
         }
 
-        return str_replace('\"', '"', preg_replace('/(<a .*?>http(s)?:\/\/)(.*?)(<\/a>)/ie',
+        return str_replace('\"', '"', preg_replace('/(<a .*?>\s*http(s)?:\/\/)(.*?)(\s*<\/a>)/ie',
                                                    "'\\1' . PHPWS_Text::shortenUrl('\\3', $limit) . '\\4'",
                                                    $text));
     }
 
-    function shortenUrl($url, $limit=30)
+    function shortenUrl($url, $limit=COLLAPSE_LIMIT)
     {
-        if (!(int)$limit || strlen($url) < $limit) {
+        // + 3 takes the "..." into account
+        if (!(int)$limit || strlen($url) < $limit + 3) {
             return $url;
         }
 
@@ -801,7 +802,7 @@ class PHPWS_Text {
         if (!$url_length) {
             $url_length = floor($limit/2);
         }
-
+        
         $pickup = $limit - $url_length;
         if ($pickup < 3) {
             $pickup = 3;
