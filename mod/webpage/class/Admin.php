@@ -280,7 +280,7 @@ class Webpage_Admin {
             } elseif (is_array($result)) {
                 $title = sprintf(dgettext('webpage', 'Edit Page %s'),$page->page_number);
                 $message = implode('<br />', $result);
-                $content = WebpageForms::editPage($page, $version);
+                $content = Webpage_Forms::editPage($page, $version);
             } else {
                 $result = $page->save();
                 if (PEAR::isError($result)) {

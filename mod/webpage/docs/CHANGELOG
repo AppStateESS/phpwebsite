@@ -1,3 +1,8 @@
+31 August 2007
++ Fixed Bug #1784432. Missing underline caused missing class
+  error. Thanks Lionscub
+
+
 23 August 2007
 + Put a ten character limit on the page title appearing in the tab
 
