@@ -56,3 +56,4 @@ FCKConfig.FlashUploadDeniedExtensions	= "" ; // empty for all
 FCKConfig.SpellChecker = 'SpellerPages' ;
 FCKConfig.StylesXmlPath		= 'phpwsstyles.xml' ;
 FCKConfig.ProcessHTMLEntities	= false ;
+FCKConfig.Plugins.Add( 'autogrow' ) ;

@@ -7,6 +7,9 @@ its own separate CHANGELOG file.
    o Bug #1781552. Shortened urls now adds 3 characters to balance
      '...' replacement.
    o Added newline check to collapseUrl function.
++ Editors
+  o added yui, Yahoo!'s Rich text editor
+  o Added autogrow to fckeditor and increased the height.
 
 30 August 2007
 + Database - getObjects now accepts the module and class filename as
