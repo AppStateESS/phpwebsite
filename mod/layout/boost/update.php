@@ -79,9 +79,26 @@ function layout_update(&$content, $currentVersion)
   too quickly. Moved cookie check to the close.php file.
 </pre>';
 
+    case version_compare($currentVersion, '2.4.2', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/arrange.tpl', 'conf/error.php', 'templates/move_box_select.tpl');
+        layoutUpdateFiles($files, $content);
 
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/layout/boost/changes/2_4_2.txt');
+        }
+        $content[] = '</pre>';
     }
     return true;
 }
 
+function layoutUpdateFiles($files, &$content)
+{
+    if (PHPWS_Boost::updateFiles($files, 'layout')) {
+        $content[] = '--- Updated the following files:';
+    } else {
+        $content[] = '--- Unable to update the following files:';
+    }
+    $content[] = "     " . implode("\n     ", $files);
+}
 ?>

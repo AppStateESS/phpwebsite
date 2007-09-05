@@ -1,3 +1,5 @@
+Version 2.4.2
+-------------------------------------------------------------------
 30 August 2007
 + Rewrote Box settings to Arrange tab.
 + Box move and reset boxes are now links, not form buttons.

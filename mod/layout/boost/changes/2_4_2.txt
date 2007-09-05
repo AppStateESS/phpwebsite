@@ -1,0 +1,16 @@
+2.4.2 Changes
+-----------------------------------------------------------------------
++ Rewrote Box settings to Arrange tab.
++ Box move and reset boxes are now links, not form buttons.
++ Additional authorized checks added
++ addStyle function now allows multiple style sheets per module. Still
+  only includes a file once.
++ Increased height of move box popup
++ Rewrote Layout's move box code. Removed drop down boxes.
+
+Updated files:
+removed - templates/BoxControl.tpl
+added   - templates/arrange.tpl
+
+conf/error.php
+templates/move_box_select.tpl
