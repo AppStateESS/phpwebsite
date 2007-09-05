@@ -139,8 +139,9 @@ function blog_update(&$content, $currentVersion)
         $columns['updater']     = 'varchar(50) NOT NULL';
         $columns['updater_id']  = 'int not null default 0';
 
+        $db = new PHPWS_DB('blog_entries');
         foreach ($columns as $column_name => $col_info) {
-            $result = $db->addTableColumn($column_name, $column_name, 'create_date');
+            $result = $db->addTableColumn($column_name, $col_info, 'create_date');
             if (PHPWS_Error::logIfError($result)) {
                 $content[] = "--- Unable to create table column '$column_name' on blog_entries table.</pre>";
                 return false;
