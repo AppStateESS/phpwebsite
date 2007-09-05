@@ -15,7 +15,8 @@ function showFP()
     $db = new PHPWS_DB('ps_page');
     $db->addWhere('front_page', 1);
     Key::restrictView($db, 'pagesmith');
-    $result = $db->getObjects('PS_Page', 'pagesmith', 'PS_Page.php');
+    $db->loadClass('pagesmith', 'PS_Page.php');
+    $result = $db->getObjects('PS_Page');
     if (!PHPWS_Error::logIfError($result) && !empty($result)) {
         PHPWS_Core::initModClass('pagesmith', 'PageSmith.php');
         foreach ($result as $page) {

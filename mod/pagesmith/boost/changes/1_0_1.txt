@@ -1,0 +1,9 @@
+1.0.1 Changes
+-------------------------------------------------------------
++ Front page placement now available
++ Widened the action column in page list
+
+New column: ps_page.front_page
+
+Updated files:
+templates/page_list.tpl
