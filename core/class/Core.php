@@ -822,6 +822,10 @@ class PHPWS_Core {
         }
     }
 
+    /**
+     * Will return true if the current process is a branch accessing the
+     * hub files.
+     */
     function isBranch()
     {
         return $GLOBALS['Is_Branch'];

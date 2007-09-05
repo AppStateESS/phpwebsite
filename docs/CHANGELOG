@@ -2,6 +2,27 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+
+Version 1.6.1
+------------------------------------------------------------------
+5 September 2007
++ File - Really, truly fixed the slash detection on copy_directory
+  function. 
++ Database
+  o Lowercased nulls.
+  o loadObject will return an error if an object is submitted without
+    an id. Added the name of the class to the error log to assist with
+    debugging.
+  o Adding module and class_name to getObjects was a big mistake. I
+    forgot that extra args are sent to the class contructor. Created a
+    function in Database called loadClass to replicate the
+    functionality.
++ Comment added to Core
++ Moved Eloi's name up in credits for xmlrpc.
++ Core changes moved into new directory in
+  core/boost/changes/. Shortens update file.
+
+
 31 August 2007
 + Text
    o Bug #1781552. Shortened urls now adds 3 characters to balance

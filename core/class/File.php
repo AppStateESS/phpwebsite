@@ -156,11 +156,11 @@ class PHPWS_File {
      * @author Matthew McNaney <mcnaney at gmail dot com>
      */
     function copy_directory($source_directory, $dest_directory) {
-        if (!preg_match('/\/?/', $source_directory)) {
+        if (!preg_match('/\/$/', $source_directory)) {
             $source_directory .= '/';
         }
 
-        if (!preg_match('/\/?/', $dest_directory)) {
+        if (!preg_match('/\/$/', $dest_directory)) {
             $dest_directory .= '/';
         }
 
@@ -189,7 +189,6 @@ class PHPWS_File {
             }
 
             $dest_file = $dest_directory . $file_name;
-
             if (is_file($source_directory . $file_name)) {
                 if (!@copy($source_directory . $file_name, $dest_file)) {
                     if (!is_writable($dest_file)) {

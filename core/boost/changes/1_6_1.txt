@@ -1,0 +1,45 @@
+1.6.1 changes
+-------------------------------------------------------------
++ Text
+   o Bug #1781552. Shortened urls now adds 3 characters to balance
+     '...' replacement.
+   o Added newline check to collapseUrl function.
+   o Removed $this call in decodeText function
+
++ Database
+  o Added loadClass function. Accepts the module and class name you
+    wish to get loaded on a successful loadObject or getObjects select
+    query. 
+  o Added portability mode to database factory files.
+  o Portability allowed removal of autoTrim function.
+
++ xmlrpc - new core class based on Eloi George's XML-RPC Articles
+  server script. Works with updated Blog.
+
++ Added pears XML libs to default installation
+
++ There will only be one config.tpl in the new core and it will reside
+  in core/inc. Branch and setup have been changed to grab the file
+  from there.
+
++ Default Theme - added theme tag and styling for a top menu
+
++ Javascript - prompt no longer runs escape function on result
+
++ File.php - copy_directory fixes added. 
+  o New error messages written to log depending on reason for file
+    failure
+  o Fixed bad logic on slash additions to directory.
+  o copy_directory doesn't fail completely on one bad copy
+
++ Added ability to add a class to the open_window javascript link or
+  button.
+
++ Default theme : some style adjustments for Layout's benefit
+
+Local file updates:
+javascript/editors/yui/ - whole directory
+javascript/editors/fckeditor/default.php
+javascript/editors/fckeditor/editor/custom.js
+core/conf/error.php
+

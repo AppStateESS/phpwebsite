@@ -24,37 +24,43 @@ if (!defined('ALLOW_TABLE_LOCKS')) {
 }
 
 class PHPWS_DB {
-    var $tables      = NULL;
+    var $tables      = null;
     var $where       = array();
     var $order       = array();
     var $values      = array();
     var $mode        = DEFAULT_MODE;
-    var $limit       = NULL;
-    var $index       = NULL;
-    var $columns     = NULL;
-    var $qwhere      = NULL;
-    var $indexby     = NULL;
-    var $groupby     = NULL;
-    var $locked      = NULL;
+    var $limit       = null;
+    var $index       = null;
+    var $columns     = null;
+    var $qwhere      = null;
+    var $indexby     = null;
+    var $groupby     = null;
+    var $locked      = null;
+
+    /**
+     * Holds module and class file names to be loaded on
+     * the success of a loadObject or getObjects select query.
+     */
+    var $load_class  = null;
 
     /**
      * allows you to group together where queries
      */
     var $group_in    = array();
     // This variable holds a sql query string
-    var $sql         = NULL;
-    var $_allColumns = NULL;
-    var $_columnInfo = NULL;
+    var $sql         = null;
+    var $_allColumns = null;
+    var $_columnInfo = null;
     var $_lock       = false;
 
     // contains the database specific factory class
     var $_distinct   = false;
     var $_test_mode  = false;
-    var $_join       = NULL;
-    var $_join_tables = NULL;
+    var $_join       = null;
+    var $_join_tables = null;
 
 
-    function PHPWS_DB($table=NULL)
+    function PHPWS_DB($table=null)
     {
         PHPWS_DB::touchDB();
         if (isset($table)) {
@@ -202,16 +208,16 @@ class PHPWS_DB {
             }
         }
         else {
-            return NULL;
+            return null;
         }
     }
 
-    function inDatabase($table, $column=NULL)
+    function inDatabase($table, $column=null)
     {
         $table = PHPWS_DB::addPrefix($table);
 
         PHPWS_DB::touchDB();
-        static $database_info = NULL;
+        static $database_info = null;
 
         $column = trim($column);
         $answer = false;
@@ -342,7 +348,7 @@ class PHPWS_DB {
         return $GLOBALS['PHPWS_DB']['connection']->getlistOf('databases');
     }
 
-    function addJoin($join_type, $join_from, $join_to, $join_on_1=NULL, $join_on_2=NULL)
+    function addJoin($join_type, $join_from, $join_to, $join_on_1=null, $join_on_2=null)
     {
         if (!preg_match('/left|right/i', $join_type)) {
             return false;
@@ -375,9 +381,9 @@ class PHPWS_DB {
     function setTable($table)
     {
         $this->tables = array();
-        $this->_join_tables = NULL;
-        $this->_columnInfo = NULL;
-        $this->_allColumns = NULL;
+        $this->_join_tables = null;
+        $this->_columnInfo = null;
+        $this->_allColumns = null;
         return $this->addTable($table);
     }
 
@@ -407,12 +413,12 @@ class PHPWS_DB {
             }
         }
 
-        return NULL;
+        return null;
     }
 
     function _getJoinOn($join_on_1, $join_on_2, $table1, $table2) {
         if (empty($join_on_1) || empty($join_on_2)) {
-            return NULL;
+            return null;
         }
 
         if (is_array($join_on_1) && is_array($join_on_2)) {
@@ -432,7 +438,7 @@ class PHPWS_DB {
     function getJoin()
     {
         if (empty($this->_join_tables)) {
-            return NULL;
+            return null;
         }
 
         $join_info['tables'] = array();
@@ -526,7 +532,7 @@ class PHPWS_DB {
     {
         if ((bool)$dbReady == true) {
             if (empty($this->groupBy)) {
-                return NULL;
+                return null;
             } else {
                 return 'GROUP BY ' . implode(', ', $this->groupBy);
             }
@@ -548,7 +554,7 @@ class PHPWS_DB {
     }
 
 
-    function addWhere($column, $value=NULL, $operator=NULL, $conj=NULL, $group=NULL, $join=false)
+    function addWhere($column, $value=null, $operator=null, $conj=null, $group=null, $join=false)
     {
         PHPWS_DB::touchDB();
         $where = new PHPWS_DB_Where;
@@ -692,18 +698,18 @@ class PHPWS_DB {
     function getWhere($dbReady=false)
     {
         $sql = array();
-        $ignore_list = $where = NULL;
+        $ignore_list = $where = null;
 
         if (empty($this->where)) {
             if (isset($this->qwhere)) {
                 return ' (' . $this->qwhere['where'] .')';
             }
-            return NULL;
+            return null;
         }
         $startMain = false;
         if ($dbReady) {
             foreach ($this->where as $group_name => $groups) {
-                $hold = NULL;
+                $hold = null;
                 $subsql = array();
                 if (!isset($groups['values'])) {
                     continue;
@@ -804,10 +810,10 @@ class PHPWS_DB {
         $this->_distinct = (bool)$distinct;
     }
 
-    function addColumn($column, $max_min=NULL, $as=NULL, $count=false)
+    function addColumn($column, $max_min=null, $as=null, $count=false)
     {
         if (!in_array(strtolower($max_min), array('max', 'min'))) {
-            $max_min = NULL;
+            $max_min = null;
         }
 
         $table = $this->tables[0];
@@ -917,7 +923,7 @@ class PHPWS_DB {
     function getOrder($dbReady=false)
     {
         if (empty($this->order)) {
-            return NULL;
+            return null;
         }
 
         if ($dbReady) {
@@ -940,7 +946,7 @@ class PHPWS_DB {
         $this->order = array();
     }
 
-    function addValue($column, $value=NULL)
+    function addValue($column, $value=null)
     {
         if (is_array($column)) {
             foreach ($column as $colKey=>$colVal){
@@ -961,7 +967,7 @@ class PHPWS_DB {
     function getValue($column)
     {
         if (empty($this->values) || !isset($this->values[$column])) {
-            return NULL;
+            return null;
         }
 
         return $this->values[$column];
@@ -975,14 +981,14 @@ class PHPWS_DB {
     function getAllValues()
     {
         if (!isset($this->values) || empty($this->values)) {
-            return NULL;
+            return null;
         }
 
         return $this->values;
     }
 
 
-    function setLimit($limit, $offset=NULL)
+    function setLimit($limit, $offset=null)
     {
         unset($this->limit);
 
@@ -1012,7 +1018,7 @@ class PHPWS_DB {
     function getLimit($dbReady=false)
     {
         if (empty($this->limit)) {
-            return NULL;
+            return null;
         }
     
         if ($dbReady) {
@@ -1030,7 +1036,7 @@ class PHPWS_DB {
 
     function resetColumns()
     {
-        $this->columns = NULL;
+        $this->columns = null;
     }
 
 
@@ -1058,8 +1064,8 @@ class PHPWS_DB {
         $this->resetLimit();
         $this->resetOrder();
         $this->resetColumns();
-        $this->indexby = NULL;
-        $this->qwhere  = NULL;
+        $this->indexby = null;
+        $this->qwhere  = null;
         $tmp_table = $this->tables[0];
         $this->tables = null;
         $this->tables = array($tmp_table);
@@ -1155,7 +1161,7 @@ class PHPWS_DB {
     function getSelectSQL($type)
     {
         if ($type == 'count' && empty($this->columns)) {
-            $columns = NULL;
+            $columns = null;
         } else {
             $columns = implode(', ', $this->getAllColumns());
         }
@@ -1192,7 +1198,7 @@ class PHPWS_DB {
      * All returns an associate array containing the requested information.
      *
      */
-    function select($type=NULL, $sql=NULL)
+    function select($type=null, $sql=null)
     {
         if (empty($sql)) {
             if (!empty($this->sql)) {
@@ -1241,7 +1247,7 @@ class PHPWS_DB {
             if ($this->isDistinct()) {
                 $distinct = 'DISTINCT';
             } else {
-                $distinct = NULL;
+                $distinct = null;
             }
 
 
@@ -1261,7 +1267,7 @@ class PHPWS_DB {
 
         switch ($type){
         case 'assoc':
-            return $GLOBALS['PHPWS_DB']['connection']->getAssoc($sql, NULL,NULL, $mode);
+            return $GLOBALS['PHPWS_DB']['connection']->getAssoc($sql, null,null, $mode);
             break;
 
         case 'col':
@@ -1271,7 +1277,7 @@ class PHPWS_DB {
 
             if (isset($indexby)) {
                 PHPWS_DB::logDB($sql);
-                $result = $GLOBALS['PHPWS_DB']['connection']->getAll($sql, NULL, $mode);
+                $result = $GLOBALS['PHPWS_DB']['connection']->getAll($sql, null, $mode);
                 if (PEAR::isError($result)) {
                     return $result;
                 }
@@ -1286,7 +1292,7 @@ class PHPWS_DB {
         case 'max':
         case 'one':
             PHPWS_DB::logDB($sql);
-            return $GLOBALS['PHPWS_DB']['connection']->getOne($sql, NULL, $mode);
+            return $GLOBALS['PHPWS_DB']['connection']->getOne($sql, null, $mode);
             break;
 
         case 'row':
@@ -1315,7 +1321,7 @@ class PHPWS_DB {
         case 'all':
         default:
             PHPWS_DB::logDB($sql);
-            $result = $GLOBALS['PHPWS_DB']['connection']->getAll($sql, NULL, $mode);
+            $result = $GLOBALS['PHPWS_DB']['connection']->getAll($sql, null, $mode);
             if (PEAR::isError($result)) {
                 return $result;
             }
@@ -1525,7 +1531,7 @@ class PHPWS_DB {
         return PHPWS_DB::query($sql);
     }
 
-    function dropTableIndex($name=NULL)
+    function dropTableIndex($name=null)
     {
         $table = $this->getTable(false);
         if (!$table) {
@@ -1546,7 +1552,7 @@ class PHPWS_DB {
      * on the table name. Setting your index name might be a smart thing to do
      * in case you ever need to DROP it.
      */
-    function createTableIndex($column, $name=NULL)
+    function createTableIndex($column, $name=null)
     {
         if(!DB_ALLOW_TABLE_INDEX) {
             return false;
@@ -1627,7 +1633,7 @@ class PHPWS_DB {
      * @param boolean indexed   Create an index on the column if true
      * @returns mixed
      */
-    function addTableColumn($column, $parameter, $after=NULL, $indexed=false)
+    function addTableColumn($column, $parameter, $after=null, $indexed=false)
     {
         $table = $this->getTable(false);
         if (!$table) {
@@ -1836,7 +1842,7 @@ class PHPWS_DB {
 
         }
         else {
-            $flags = NULL;
+            $flags = null;
         }
 
         if ($strip_name == true) {
@@ -1917,7 +1923,7 @@ class PHPWS_DB {
         $temp = explode(' ', trim($sql_value));
         
         if (!is_array($temp)) {
-            return NULL;
+            return null;
         }
         foreach ($temp as $whatever){
             if (empty($whatever)) {
@@ -1927,7 +1933,7 @@ class PHPWS_DB {
         }
 
         if (empty($format)) {
-            return NULL;
+            return null;
         }
 
         switch (trim(strtolower($format[0]))) {
@@ -1968,7 +1974,7 @@ class PHPWS_DB {
      * @return mixed $value The prepared value
      * @access public
      */
-    function dbReady($value=NULL) 
+    function dbReady($value=null) 
     {
         if (is_array($value) || is_object($value)) {
             return PHPWS_DB::dbReady(serialize($value));
@@ -1982,6 +1988,33 @@ class PHPWS_DB {
             return $value;
         }
     }// END FUNC dbReady()
+
+    /**
+     * Adds module title and class name to the load_class variable.
+     * This list is called on the successful query of a loadObject or
+     * getObjects. The list of files is erased as the files would not
+     * need to be required again.
+     */
+    function loadClass($module, $file)
+    {
+        $this->load_class[] = array($module, $file);
+    }
+
+    /**
+     * Requires the classes, if any, in the load_class variable
+     */
+    function requireClasses()
+    {
+        if ($this->load_class && is_array($this->load_class)) {
+            foreach ($this->load_class as $files) {
+                if (!is_array($files)) {
+                    continue;
+                }
+                PHPWS_Core::initModClass($files[0], $files[1]);
+            }
+            $this->load_class = null;
+        }
+    }
 
     /**
      * @author Matt McNaney <matt at tux dot appstate dot edu>
@@ -1998,7 +2031,7 @@ class PHPWS_DB {
         }
 
         if ($require_where && empty($object->id) && empty($this->where)) {
-            return PHPWS_Error::get(PHPWS_DB_NO_ID, 'core', 'PHPWS_DB::loadObject');
+            return PHPWS_Error::get(PHPWS_DB_NO_ID, 'core', 'PHPWS_DB::loadObject', get_class($object));
         }
 
         if ($require_where && empty($this->where)) {
@@ -2010,8 +2043,10 @@ class PHPWS_DB {
         if (PEAR::isError($variables)) {
             return $variables;
         } elseif (empty($variables)) {
-            return NULL;
+            return null;
         }
+
+        $this->requireClasses();
 
         return PHPWS_Core::plugObject($object, $variables);
     }// END FUNC loadObject
@@ -2024,43 +2059,38 @@ class PHPWS_DB {
      * Note that your class variables and column names MUST match exactly.
      * Unmatched pairs will be ignored.
      *
-     * Any extra parameters after classname are piped into the object 
-     * constructor.
+     * --- Any extra parameters after class_name are piped into ---
+     * ---          the object constructor.                     ---
      *
      * @author Matthew McNaney <matt at tux dot appstate dot edu>
-     * @param string $className  Name of object class
-     * @param string $module     Module having class_file
-     * @param string $class_file Name of file having className
+     * @param string $class_name Name of class used in object
      * @return array $items      Array of objects
      * @access public
      */
-    function getObjects($className, $module=null, $class_file=null)
+    function getObjects($class_name)
     {
-        $items = NULL;
-        
+        $items = null;
         $result = $this->select();
 
         if (PEAR::isError($result) || !isset($result)) {
             return $result;
         }
 
-        if (!empty($module) && !empty($class_file)) {
-            PHPWS_Core::initModClass($module, $class_file);
-        }
+        $this->requireClasses();
 
-        if (!class_exists($className)) {
-            return PHPWS_Error::get(PHPWS_CLASS_NOT_EXIST, 'core', 'PHPWS_DB::getObjects', $className);
+        if (!class_exists($class_name)) {
+            return PHPWS_Error::get(PHPWS_CLASS_NOT_EXIST, 'core', 'PHPWS_DB::getObjects', $class_name);
         }
 
         $num_args = func_num_args();
         $args = func_get_args();
         array_shift($args);
         foreach ($result as $indexby => $itemResult) {
-            $genClass = new $className;
+            $genClass = new $class_name;
 
             if ($num_args > 1) {
                 // reference is necessary for genClass in php 4
-                call_user_func_array(array(&$genClass, $className), $args);
+                call_user_func_array(array(&$genClass, $class_name), $args);
             }
 
             PHPWS_Core::plugObject($genClass, $itemResult);
@@ -2418,9 +2448,9 @@ class PHPWS_DB {
 }
 
 class PHPWS_DB_Where {
-    var $table      = NULL;
-    var $column     = NULL;
-    var $value      = NULL;
+    var $table      = null;
+    var $column     = null;
+    var $value      = null;
     var $operator   = '=';
     var $conj       = 'AND';
     var $join       = false;

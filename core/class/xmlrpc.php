@@ -638,6 +638,9 @@ class MyServer extends IXR_IntrospectionServer {
 
 }
 
+/**
+ * A debugging tool
+ */
 function record($file, $info, $append=true) {
     if (!LOG_RESULTS) {
         return;

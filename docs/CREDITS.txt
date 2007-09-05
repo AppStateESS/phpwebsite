@@ -70,6 +70,9 @@ http://sourceforge.net
 Hotscripts
 http://www.hotscripts.com/
 
+Freshmeat
+http://freshmeat.net/
+
 FCKeditor
 http://www.fckeditor.net/
 
@@ -86,10 +89,12 @@ Jeroen Wijering
 MP3Player
 http://www.jeroenwijering.com/
 
-
 Anssi Piirainen and Geoff Stearns
 FlowPlayer
 http://flowplayer.sourceforge.net/
+
+Eloi George/aDarkling
+Created foundation of xmlrpc
 
 --------------------------------------------------------------------------
 The phpWebSite team would also like to thank the following people in
@@ -100,7 +105,6 @@ Scott Baer
 Dr. Greg Blimling
 Fridtjof Busse
 Wendall Cada
-Eloi George/aDarkling
 Darren Greene
 Peter Heppner (German translations)
 Claus Iversen (Danish translations)
