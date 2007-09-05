@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-03 13:48-0400\n"
+"POT-Creation-Date: 2007-09-05 10:02-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -459,6 +459,9 @@ msgid "File not found."
 msgstr ""
 
 msgid "File not uploaded."
+msgstr ""
+
+msgid "File not writable."
 msgstr ""
 
 msgid "Filename not set."
@@ -1094,6 +1097,9 @@ msgid "Unable to connect to the database with the information provided."
 msgstr ""
 
 msgid "Unable to connect."
+msgstr ""
+
+msgid "Unable to copy file."
 msgstr ""
 
 msgid "Unable to create file directory."
