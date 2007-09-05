@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-25 09:50-0400\n"
+"POT-Creation-Date: 2007-09-05 09:53-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,6 +34,12 @@ msgstr ""
 msgid "Change text"
 msgstr ""
 
+msgid "Click to display on front page"
+msgstr ""
+
+msgid "Click to remove from front page"
+msgstr ""
+
 msgid "Could not find any page templates."
 msgstr ""
 
@@ -53,6 +59,10 @@ msgid "Delete page"
 msgstr ""
 
 msgid "Edit"
+msgstr ""
+
+#, php-format
+msgid "Edit %s"
 msgstr ""
 
 msgid "Edit header"
@@ -77,6 +87,12 @@ msgid "New"
 msgstr ""
 
 msgid "No pages have been created."
+msgstr ""
+
+msgid "Off&nbsp;front"
+msgstr ""
+
+msgid "On&nbsp;front"
 msgstr ""
 
 msgid "Page Title (edit above)"
