@@ -825,6 +825,8 @@ class PHPWS_Core {
     /**
      * Will return true if the current process is a branch accessing the
      * hub files.
+     * If a module needs to check if it is in the hub working on a branch, PHPWS_Boost::inBranch
+     * should be used instead.
      */
     function isBranch()
     {

@@ -88,15 +88,8 @@ function core_update(&$content, $version) {
                        'javascript/ajax/readme.txt', 'javascript/ajax/head.js',
                        'javascript/editors/tinymce/default.php', 'javascript/editors/tinymce/body.js');
         $content[] = '<pre>';
+        coreUpdateFiles($files, $content);
 
-        if (PHPWS_Boost::updateFiles($files, 'core')) {
-            $content[] = "--- Files copied successfully:";
-
-        } else {
-            $content[] = "--- Failed to copy files:";
-        }
-
-        $content[] = "    " . implode("\n    ", $files);
         $content[] = '';
         $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/1_6_0.txt');
         $content[] = '</pre>';
@@ -104,7 +97,7 @@ function core_update(&$content, $version) {
     case version_compare($version, '1.6.1', '<'):
         $content[] = '<pre>';
 
-        if (PHPWS_Boost::inBranch()) {
+        if (PHPWS_Boost::inBranch() || PHPWS_Core::isBranch()) {
             $yui_destination = $home_directory . 'javascript/editors/yui';
             $yui_source = PHPWS_SOURCE_DIR . 'javascript/editors/yui';
             
@@ -125,12 +118,7 @@ function core_update(&$content, $version) {
 
         $files = array('conf/error.php', 'javascript/editors/fckeditor/default.php', 
                        'javascript/editors/fckeditor/editor/custom.js');
-        if (PHPWS_Boost::updateFiles($files, 'core')) {
-            $content[] = "--- Files copied successfully:";
-        } else {
-            $content[] = "--- Failed to copy files:";
-        }
-        $content[] = "    " . implode("\n    ", $files);
+        coreUpdateFiles($files, $content);
         $content[] = '';
         if (!PHPWS_Boost::inBranch()) {
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/1_6_1.txt');
@@ -138,6 +126,16 @@ function core_update(&$content, $version) {
         $content[] = '</pre>';
     }
     return true;
+}
+
+function coreUpdateFiles($files, &$content)
+{
+    if (PHPWS_Boost::updateFiles($files, 'core')) {
+        $content[] = '--- Updated the following files:';
+    } else {
+        $content[] = '--- Unable to update the following files:';
+    }
+    $content[] = "     " . implode("\n     ", $files);
 }
 
 
