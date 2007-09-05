@@ -1033,6 +1033,12 @@ class PHPWS_Boost {
 
             if ($module == 'core') {
                 if ($source_root == 'javascript') {
+                    /**
+                     * If not in a branch, don't need to copy javascript files
+                     */
+                    if (!PHPWS_Boost::inBranch()) {
+                        continue;
+                    }
                     $source_file = sprintf('%s%s', PHPWS_SOURCE_DIR, $filename);
                 } else {
                     $source_file = sprintf('%score/%s', PHPWS_SOURCE_DIR, $filename);
@@ -1173,6 +1179,10 @@ class PHPWS_Boost {
 
     function inBranch()
     {
+        if (PHPWS_Core::isBranch()) {
+            return true;
+        }
+
         if (isset($GLOBALS['Boost_In_Branch'])) {
             return $GLOBALS['Boost_In_Branch'];
         } else {

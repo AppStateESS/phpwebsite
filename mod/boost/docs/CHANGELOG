@@ -1,3 +1,7 @@
+5 September 2007
++ Boost doesn't copy javascript files if in hub.
++ inBranch now checks core's inBranch function as well.
+
 Version 2.1.2
 -----------------------------------------------------
 7 August 2007
