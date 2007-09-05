@@ -12,7 +12,7 @@ if (!defined('PHPWS_SOURCE_DIR')) {
 
 PHPWS_Core::initModClass('blog', 'Blog.php');
 
-if (isset($_REQUEST['xmlrpc']))
+if (isset($_GET['xmlrpc']))
 {
     PHPWS_Core::initModClass('blog', 'Blog_XML.php');
     $xml = new Blog_XML;

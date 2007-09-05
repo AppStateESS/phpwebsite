@@ -1,0 +1,20 @@
+1.6.0 Changes
+-----------------------------------------------------------------------------
++ Blog entry default id is zero now not null
++ Started XML-RPC controls to Blog.
+  Accessed via index.php?module=blog&xmlrpc=1
++ Settings now has obey_publish. This needs to be added to settings.
+  If true, then the XMLRPC will acknowledge a false publish as
+  approved=0 
++ Added setting to control recent blog entries block
++ Added new variables: updater_id, updater, update_date
+  Need to alter database install/update
++ Blogs sorted by publish date not create date.
++ Publish date defaults to create date now, not other way around.
++ Removed redundant commands
++ changed entry-title to contain h2 instead of h1
+
+
+Updated files:
+templates/settings.tpl
+templates/view.tpl

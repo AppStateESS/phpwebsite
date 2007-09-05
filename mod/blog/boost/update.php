@@ -38,15 +38,7 @@ function blog_update(&$content, $currentVersion)
                        'templates/user_main.tpl',
                        'templates/list_view.tpl');
 
-        $content[] = '+ Updated template files';
-        if (PHPWS_Boost::updateFiles($files, 'blog')) {
-            $content[] = " o Files copied successfully:";
-
-        } else {
-            $content[] = " o Failed to copy files:";
-        }
-
-        $content[] = "    " . implode("\n    ", $files);
+        blogUpdateFiles($files, $content);
         $content[] = '
 1.4.1 Changes
 -------------
@@ -64,11 +56,7 @@ function blog_update(&$content, $currentVersion)
     case version_compare($currentVersion, '1.4.2', '<'):
         $content[] = '<pre>';
         $files = array('templates/list.tpl');
-        if (PHPWS_Boost::updateFiles($files, 'blog')) {
-            $content[] = '+ Updated templates/blog/list.tpl file.';
-        } else {
-            $content[] = '+ Unable to update templates/blog/list.tpl file.';
-        }
+        blogUpdateFiles($files, $content);
         $content[] = '1.4.2 Changes
 -------------
 + Fixed bug causing error message when Blog listing moved off front page.
@@ -99,12 +87,8 @@ function blog_update(&$content, $currentVersion)
         }
   
         $files = array('img/blog.png', 'templates/edit.tpl', 'templates/list.tpl');
-        if (PHPWS_Boost::updateFiles($files, 'blog')) {
-            $content[] = '+ Updated the following files:';
-        } else {
-            $content[] = '+ Unable to update the following files:';
-        }
-        $content[] = '    ' . implode("\n    ", $files);
+        blogUpdateFiles($files, $content);
+
         $content[] = '+ Priviledged blog entries now forward to login page.
 + Added sticky option.
 + Added expiration options.
@@ -115,12 +99,7 @@ function blog_update(&$content, $currentVersion)
     case version_compare($currentVersion, '1.5.0', '<'):
         $content[] = '<pre>';
         $files = array('templates/settings.tpl', 'templates/edit.tpl', 'conf/config.php', 'templates/list_view.tpl');
-        if (PHPWS_Boost::updateFiles($files, 'blog')) {
-            $content[] = '--- Successfully updated the following files:';
-        } else {
-            $content[] = '--- Was unable to copy the following files:';
-        }
-        $content[] = "     " . implode("\n     ", $files);
+        blogUpdateFiles($files);
 
         $content[] = '
 1.5.0 Changes
@@ -146,15 +125,49 @@ function blog_update(&$content, $currentVersion)
 -------------
 + Comments link points to comments anchor.</pre>';
 
-  case version_compare($currentVersion, '1.5.2', '<'):
+    case version_compare($currentVersion, '1.5.2', '<'):
         $content[] = '<pre>
 1.5.2 Changes
 -------------
 + Fixed previous blog listing.</pre>';
 
+    case version_compare($currentVersion, '1.6.0', '<'):
+        $content[] = '<pre>';
 
+        $columns = array();
+        $columns['update_date'] = 'int not null default 0';
+        $columns['updater']     = 'varchar(50) NOT NULL';
+        $columns['updater_id']  = 'int not null default 0';
+
+        foreach ($columns as $column_name => $col_info) {
+            $result = $db->addTableColumn($column_name, $column_name, 'create_date');
+            if (PHPWS_Error::logIfError($result)) {
+                $content[] = "--- Unable to create table column '$column_name' on blog_entries table.</pre>";
+                return false;
+            } else {
+                $content[] = "--- Created '$column_name' column on blog_entries table.";
+            }
+        }
+
+        $files = array('templates/settings.tpl', 'templates/view.tpl');
+        blogUpdateFiles($files, $content);
+        
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/blog/boost/changes/1_6_0.txt');
+        }
+        $content[] = '</pre>';
     } // end of switch
     return true;
+}
+
+function blogUpdateFiles($files, &$content)
+{
+    if (PHPWS_Boost::updateFiles($files, 'blog')) {
+        $content[] = '--- Updated the following files:';
+    } else {
+        $content[] = '--- Unable to update the following files:';
+    }
+    $content[] = "     " . implode("\n     ", $files);
 }
 
 ?>
