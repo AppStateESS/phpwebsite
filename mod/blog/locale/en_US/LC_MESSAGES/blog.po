@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-25 12:16-0400\n"
+"POT-Creation-Date: 2007-09-05 09:53-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,6 +47,9 @@ msgid "Allow comments"
 msgstr ""
 
 msgid "Allow comments by default"
+msgstr ""
+
+msgid "Always"
 msgstr ""
 
 msgid "An error occurred when saving your version."
@@ -135,6 +138,9 @@ msgstr ""
 msgid "Disapprove"
 msgstr ""
 
+msgid "Do not show"
+msgstr ""
+
 msgid "Edit"
 msgstr ""
 
@@ -195,6 +201,9 @@ msgstr ""
 msgid "Number of past entries"
 msgstr ""
 
+msgid "Only on home page"
+msgstr ""
+
 msgid "Please enter word in image correctly."
 msgstr ""
 
@@ -247,6 +256,9 @@ msgid "Settings"
 msgstr ""
 
 msgid "Show blog on home page"
+msgstr ""
+
+msgid "Show recent entries"
 msgstr ""
 
 msgid "Site is not accepting anonymous submissions."
