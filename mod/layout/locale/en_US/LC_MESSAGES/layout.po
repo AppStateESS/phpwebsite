@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-25 11:25-0400\n"
+"POT-Creation-Date: 2007-09-05 09:53-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,13 +19,19 @@ msgstr ""
 msgid "-- Use default style --"
 msgstr ""
 
-msgid "Adjust Boxes"
-msgstr ""
-
 msgid "Allow indexing"
 msgstr ""
 
 msgid "Allow link following"
+msgstr ""
+
+msgid "An instruction was requested on a missing theme variable."
+msgstr ""
+
+msgid "Arrange"
+msgstr ""
+
+msgid "Arrange Layout"
 msgstr ""
 
 msgid "Available styles"
@@ -37,22 +43,26 @@ msgstr ""
 msgid "Box order is out of sequence."
 msgstr ""
 
-msgid "Box positioning"
-msgstr ""
-
-msgid "Boxes"
-msgstr ""
-
 msgid "Cancel"
 msgstr ""
 
 msgid "Change CSS"
 msgstr ""
 
-msgid "Change Settings"
+msgid "Change style"
 msgstr ""
 
-msgid "Change style"
+msgid "Clear cache"
+msgstr ""
+
+msgid "Clear templates"
+msgstr ""
+
+msgid ""
+"Clears all Cache Lite files. Good to try if module updates do not display."
+msgstr ""
+
+msgid "Click to move"
 msgstr ""
 
 msgid "Complete the theme change"
@@ -76,13 +86,10 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-msgid "Disable"
+msgid "Disable box move"
 msgstr ""
 
 msgid "Display settings"
-msgstr ""
-
-msgid "Don't reset"
 msgstr ""
 
 msgid "Done"
@@ -97,7 +104,7 @@ msgstr ""
 msgid "Edit Meta Tags"
 msgstr ""
 
-msgid "Enable"
+msgid "Enable box move"
 msgstr ""
 
 msgid "Error"
@@ -152,7 +159,8 @@ msgstr ""
 msgid "Meta tags"
 msgstr ""
 
-msgid "Move"
+#, php-format
+msgid "Move box: %s"
 msgstr ""
 
 msgid "Move down"
@@ -191,10 +199,20 @@ msgstr ""
 msgid "Please enter a page title."
 msgstr ""
 
+msgid ""
+"Removes all files from the current template cache directory. Good to try if "
+"your theme is not displaying properly."
+msgstr ""
+
 msgid "Removing old layout components."
 msgstr ""
 
 msgid "Reset boxes"
+msgstr ""
+
+msgid ""
+"Resets all content back to its original location. Use if problems with Box "
+"Move occurred."
 msgstr ""
 
 msgid "Restore the default theme"
@@ -209,13 +227,11 @@ msgstr ""
 msgid "Save settings"
 msgstr ""
 
-msgid "Send to"
+#, php-format
+msgid "Send to %s"
 msgstr ""
 
 msgid "Set meta tags"
-msgstr ""
-
-msgid "Settings changed."
 msgstr ""
 
 msgid "Settings saved"
@@ -255,4 +271,9 @@ msgid "Update Header"
 msgstr ""
 
 msgid "Update Theme Settings"
+msgstr ""
+
+msgid ""
+"When enabled, this allows you to shift content to other area of your layout. "
+"Movement options depend on the current theme."
 msgstr ""
