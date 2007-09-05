@@ -1177,12 +1177,13 @@ class PHPWS_Boost {
         return $dir_mods;
     }
 
+    /**
+     * Returns true if Boost is installing/updating/uninstalling a branch site from the hub.
+     * If a module needs to check if it is running from a branch, PHPWS_Core::isBranch should
+     * be used.
+     */
     function inBranch()
     {
-        if (PHPWS_Core::isBranch()) {
-            return true;
-        }
-
         if (isset($GLOBALS['Boost_In_Branch'])) {
             return $GLOBALS['Boost_In_Branch'];
         } else {
