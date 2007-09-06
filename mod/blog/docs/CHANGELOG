@@ -1,3 +1,10 @@
+Version 1.6.0
+----------------------------------------------------------------
+6 September 2007
++ Blog_XML
+  o appending url to images. Need full path for editors.
+  o additional check for mod_rewrite_enabled before using url
+
 30 August 2007
 + default id is zero now not null
 + Blog_XML - many fixes and additions. See core update to see

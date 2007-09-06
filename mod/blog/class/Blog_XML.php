@@ -76,15 +76,19 @@ class Blog_XML extends MyServer {
         return $blogs;
     }
 
+    function getPost($id)
+    {
+        $blog = new Blog($id);
+        if (!$blog->id) {
+            return new IXR_Error(22, "Blog not found");
+        } else {
+            return $this->getRPC($blog);
+        }
+    }
+
     function post($id, $details, $publish)
     {
         // Blog doesn't use excerpt
-        ob_start();
-        var_dump($details);
-        $show = ob_get_contents();
-        record(__FUNCTION__, $show);
-        ob_clean();
-
         extract($details);
 
         if (!Current_User::allow('blog', 'edit_blog') || Current_User::isRestricted('blog')) {
@@ -143,11 +147,15 @@ class Blog_XML extends MyServer {
         $d['dateCreated']  = new IXR_Date($blog->create_date);
         $d['pubDate']      = new IXR_Date($blog->publish_date);
         $d['postid']       = $blog->id;
-        $d['description']  = $blog->getSummary(true);
-        $d['mt_text_more'] = $blog->getEntry();
+        $d['description']  = $this->appendImages($blog->getSummary(true));
+        $d['mt_text_more'] = $this->appendImages($blog->getEntry());
         $d['title'] = $blog->title;
 
-        $d['link'] = PHPWS_Core::getHomeHttp() . 'blog/' . $blog->id;
+        if (MOD_REWRITE_ENABLED) {
+            $d['link'] = PHPWS_Core::getHomeHttp() . 'blog/' . $blog->id;
+        } else {
+            $d['link'] = PHPWS_Core::getHomeHttp() . 'index.php?module=blog&action=view_comments&id=' . $blog->id;
+        }
         $d['permalink'] = PHPWS_Core::getHomeHttp() . 'index.php?module=blog&action=view_comments&id=' . $blog->id;
 
         $d['mt_allow_comments'] = $blog->allow_comments;
@@ -160,8 +168,6 @@ class Blog_XML extends MyServer {
         } else {
             $d['mt_keywords'] = '';
         }
-
-
 		
         /* Get category list */
         //$d['categories'] = Categories::getCategories('list');
