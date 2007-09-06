@@ -7,6 +7,8 @@
 
 function blog_update(&$content, $currentVersion)
 {
+    $home_directory = PHPWS_Boost::getHomeDir();
+
     switch ($currentVersion) {
 
     case version_compare($currentVersion, '1.2.2', '<'):
@@ -150,9 +152,22 @@ function blog_update(&$content, $currentVersion)
             }
         }
 
+        $image_dir = $home_directory . 'images/blog/';
+
+        if (!is_dir($image_dir)) {
+            if (@mkdir($image_dir)) {
+                $content[] = '--- Created Blog image directory for xmlrpc.';
+            } else {
+                $content[] = '--- Unable to created Blog image directory for xmlrpc.';
+            }
+        } elseif (!is_writable($image_dir)) {
+                $content[] = '--- images/blog directory is not writable. XMLRPC upload will not function.';
+        }
+
         $files = array('templates/settings.tpl', 'templates/view.tpl');
         blogUpdateFiles($files, $content);
-        
+  
+      
         if (!PHPWS_Boost::inBranch()) {
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/blog/boost/changes/1_6_0.txt');
         }

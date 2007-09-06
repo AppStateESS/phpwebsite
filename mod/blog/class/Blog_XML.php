@@ -1,8 +1,13 @@
 <?php
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 PHPWS_Core::initCoreClass('xmlrpc.php');
 
 class Blog_XML extends MyServer {
+    var $image_directory = 'images/blog/';
 
     function Blog_XML()
     {
@@ -30,6 +35,7 @@ class Blog_XML extends MyServer {
         case 'list':
         case 'edit':
         case 'category':
+        case 'media':
             if (!Current_User::allow('blog', 'edit_blog')) {
                 return new IXR_Error(4020, 'You do not have permission to edit entries.');
             }
