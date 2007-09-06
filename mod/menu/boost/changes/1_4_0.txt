@@ -1,0 +1,14 @@
++ Rewrote menu templating.
+  o Each menu template is now in its own directory along with its link
+    and style
+  o Added a horizontal menu as example.
+  o Removed basic.tpl and links directory.
+  o Menu template can indicate whether it is always open or if it
+    collapses (show_all variable)
+
++ Changed style a little for new menu layout
++ Added style for menu popup link to make sure it stands out
+
+Updated files: templates/menu_layout/basic/
+               templates/menu_layout/horizontal/
+               conf/error.php
