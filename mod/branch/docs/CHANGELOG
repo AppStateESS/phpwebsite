@@ -1,3 +1,5 @@
+Version 1.1.2
+-----------------------------------------------------------
 30 August 2007
 + Branch now gets its config.tpl from the core/inc directory.
 

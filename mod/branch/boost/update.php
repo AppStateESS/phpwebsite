@@ -71,6 +71,11 @@ function branch_update(&$content, $version)
 + Removed compatibility mode from the config.tpl file
 </pre>';
 
+    case version_compare($version, '1.1.2', '<'):
+        $content[] = '<pre>
+1.1.2 Changes
+-------------
++ Branch uses config.tpl from core/inc directory.</pre>';
 
     }
     return true;
