@@ -46,10 +46,27 @@ function categories_update(&$content, $currentVersion)
 + Updated language format.
 + New icon.
 </pre>';
+
+    case version_compare($currentVersion, '2.1.9', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/list.tpl', 'templates/style.css');
+        categoryUpdateFiles($files, $content);
+        $content[] = '2.1.9 changes
+----------------
++ Rewrote and simplified category horizontal menu.</pre>';
     }
     return true;
 }
 
+function categoryUpdateFiles($files, &$content)
+{
+    if (PHPWS_Boost::updateFiles($files, 'categories')) {
+        $content[] = '--- Updated the following files:';
+    } else {
+        $content[] = '--- Unable to update the following files:';
+    }
+    $content[] = "     " . implode("\n     ", $files);
+}
 
 
 ?>
