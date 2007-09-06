@@ -154,9 +154,27 @@ function calendar_update(&$content, $version)
   config.php. Some php configurations do not recognize it.
 </pre>';
 
+    case version_compare($version, '1.5.2', '<'):
+        $content[] = '<pre>';
+        calendarUpdateFiles(array('templates/style.css'), $content);
+        $content[] = '1.5.2 changes
+-----------
++ Removed calendar colors that matched default theme.
++ Added Spanish translation.</pre>';
+
     } // end of switch
 
     return true;
+}
+
+function calendarUpdateFiles($files, &$content) {
+    if (PHPWS_Boost::updateFiles($files, 'calendar')) {
+        $content[] = '-- Successfully updated the following files:';
+    } else {
+        $content[] = '-- Unable to update the following files:';
+    }
+    $content[] = '    ' . implode("\n    ", $files);
+    $content[] = '';
 }
 
 ?>
