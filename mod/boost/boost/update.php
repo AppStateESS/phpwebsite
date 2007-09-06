@@ -39,6 +39,13 @@ Please download update 2.1.1.</pre>';
 + Added inBranch function for modules
 + Added revert option to copy a module\'s files locally.
 </pre>';
+
+    case version_compare($currentVersion, '2.1.3', '<'):
+        $content[] = '<pre>';
+        $content[] = '2.1.3 changes
+---------------------
++ Minor update - Boost copies javascript directory properly.</pre>';
+
     }
 
     return TRUE;
