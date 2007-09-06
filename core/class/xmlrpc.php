@@ -459,13 +459,6 @@ class MyServer extends IXR_IntrospectionServer {
 
     function mt_getRecentPostTitles($args)
     {
-        ob_start();
-        var_dump($args);
-        $show = ob_get_contents();
-        ob_clean();
-        
-        file_put_contents('files/xml/mt_getrecentposttitles.txt', $show);
-
         return new IXR_Error(2, 'mt.getRecentPostTitles not supported yet.');
     }
 
@@ -488,6 +481,11 @@ class MyServer extends IXR_IntrospectionServer {
 
     function mt_getPostCategories($args)
     {
+        $logged = $this->logUser($args[1], $args[2], 'category');
+        if ($logged !== true) {
+            return $logged;
+        }
+
         $id = $args[0];
         $key_id = $this->getKeyId($id);
         if (!$key_id) {
@@ -533,12 +531,6 @@ class MyServer extends IXR_IntrospectionServer {
 
     function mt_supportedMethods($args)
     {
-        ob_start();
-        var_dump($args);
-        $show = ob_get_contents();
-        ob_clean();
-        file_put_contents('files/xml/mt_supportedmethods.txt', $show);
-
         return $this->listMethods();
     }
 
