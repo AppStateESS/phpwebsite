@@ -6,6 +6,10 @@
    Site:   http://scripts.incutio.com/xmlrpc/
    Manual: http://scripts.incutio.com/xmlrpc/manual.php
    Made available under the Artistic License: http://www.opensource.org/licenses/artistic-license.php
+
+   This script has been modified for phpWebSite by Matthew McNaney. The following changes were made
+   - trim added to base64_decode
+   - fixed date sending the year for month and day
 */
 
 
@@ -609,15 +613,19 @@ class IXR_Date {
     function IXR_Date($time) {
         // $time can be a PHP timestamp or an ISO one
         if (is_numeric($time)) {
-            $this->parseTimestamp($time);
+            if (phpversion('tidy') >= '5.0') {
+                return date('c', $time);
+            } else {
+                $this->parseTimestamp($time);
+            }
         } else {
             $this->parseIso($time);
         }
     }
     function parseTimestamp($timestamp) {
         $this->year = date('Y', $timestamp);
-        $this->month = date('Y', $timestamp);
-        $this->day = date('Y', $timestamp);
+        $this->month = date('m', $timestamp);
+        $this->day = date('d', $timestamp);
         $this->hour = date('H', $timestamp);
         $this->minute = date('i', $timestamp);
         $this->second = date('s', $timestamp);
