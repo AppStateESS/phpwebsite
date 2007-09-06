@@ -8,8 +8,11 @@ Version 1.6.1
 6 September 2007
 + XMLRPC now handles media (i.e. graphic) uploads
 + Added appendSlash function to File. Was a often repeated function.
-+ Unfortunately, had to change IXR_Library.inc.php. media function
-  needed to trim information.
++ Fixed IXR_Library.inc.php. media function to trim string.
++ Fixed IXR date formatting.
++ Fixed several issues to make XMLRPC more compatible.
++ Added appendImages function to place url at front of image tags
++ removed record calls. Refined record function.
 
 5 September 2007
 + File - Really, truly fixed the slash detection on copy_directory

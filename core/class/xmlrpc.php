@@ -18,20 +18,28 @@ require_once PHPWS_SOURCE_DIR . '/lib/xml/XML-RPC/IXR_Library.inc.php';
 define('XMLRPC_CANNOT_AUTHENTICATE', 'Unable to authenticate user.');
 define('XMLRPC_BAD_RESULT', 'Unexpected results.');
 
-// Until I work out all the kinks, I am leaving in my testing 
-define('LOG_RESULTS', false);
+/**
+ * Some xmlrpc clients submit images as a octet-stream instead of a proper image type
+ */
+define('ALLOW_OCTET_STREAM', true);
+
+
+
+/**
+ * Until I work out all the kinks, I am leaving in my testing 
+ */
+
+define('LOG_RESULTS', true);
 define('LOG_DIR', 'files/xml/');
 
 class MyServer extends IXR_IntrospectionServer {
     var $validuser      = false;
 
     function MyServer() {
-        /*
-        ob_start();
-        var_dump($GLOBALS['HTTP_RAW_POST_DATA']);
-        record(__FUNCTION__, ob_get_contents(), false);
-        ob_clean();
-        */
+        if (isset($GLOBALS['HTTP_RAW_POST_DATA'])) {
+            record(__FUNCTION__,$GLOBALS['HTTP_RAW_POST_DATA']);
+        }
+
         $this->IXR_IntrospectionServer();
         /*  Don't want to support an API that's obsolete 2 times over, don't know if I have to.
 
@@ -201,11 +209,6 @@ class MyServer extends IXR_IntrospectionServer {
 
     function removeCategoryItems($key_id)
     {
-        ob_start();
-        var_dump($args);
-        record(__FUNCTION__, ob_get_contents());
-        ob_clean();
-
         $db = new PHPWS_DB('category_items');
         $db->addWhere('key_id', (int)$key_id);
         return $db->delete();
@@ -216,9 +219,7 @@ class MyServer extends IXR_IntrospectionServer {
         PHPWS_Core::initModClass('categories', 'Categories.php');
         PHPWS_Core::initModClass('categories', 'Action.php');
 
-        record(__FUNCTION__, "id is $id");
         $key_id = $this->getKeyId($id);
-        record(__FUNCTION__, "key_id is $key_id");
 
         if (empty($key_id)) {
             return new IXR_Error(4999, 'Database Error! Data could not be found.');
@@ -258,12 +259,6 @@ class MyServer extends IXR_IntrospectionServer {
 
     function blogger_deletePost($args)
     {
-        ob_start();
-        var_dump($args);
-        $show = ob_get_contents();
-        record(__FUNCTION__, $show);
-        ob_clean();
-
         $logged = $this->logUser($args[2], $args[3], 'delete');
         if ($logged !== true) {
             return $logged;
@@ -274,17 +269,11 @@ class MyServer extends IXR_IntrospectionServer {
 
 
     function blogger_getUsersBlogs($args) {
-        record(__FUNCTION__, 'just returning address');
         return array(array('url'=>PHPWS_Core::getHomeHttp(), 'blogid'=>'1', 'blogName'=>Layout::getPageTitle(true)));
     }
 
 
     function metaWeblog_newPost($args) {
-        ob_start();
-        var_dump($args);
-        $show = ob_get_contents();
-        record(__FUNCTION__, $show);
-        ob_clean();
         /* Login the user */
         $logged = $this->logUser($args[1], $args[2], 'new');
         if ($logged !== true) {
@@ -303,20 +292,16 @@ class MyServer extends IXR_IntrospectionServer {
             return $id;
         }
 
+        
         if(!empty($args[3]['categories'])) {
             $this->saveCategories($id, $args[3]['categories'], 'metaWeblog');
         }
-    
+       
         return $id;
     }
 
 
     function metaWeblog_editPost($args) {
-        ob_start();
-        var_dump($args);
-        $show = ob_get_contents();
-        record(__FUNCTION__, $show);
-        ob_clean();
         /* Login the user */
         $logged = $this->logUser($args[1], $args[2], 'edit');
         if ($logged !== true) {
@@ -345,12 +330,12 @@ class MyServer extends IXR_IntrospectionServer {
     }
 
     function metaWeblog_getPost($args) {
-        ob_start();
-        var_dump($args);
-        record(__FUCTION__, ob_get_contents());
-        ob_clean();
+        $logged = $this->logUser($args[1], $args[2], 'edit');
+        if ($logged !== true) {
+            return $logged;
+        }
 
-        return new IXR_Error(1, 'metaWeblog.getPost not supported yet.');
+        return $this->getPost($args[0]);
     }
 
     /**
@@ -412,11 +397,6 @@ class MyServer extends IXR_IntrospectionServer {
 
         $result = $this->getRecent($limit);
 
-        ob_start();
-        var_dump($result);
-        record(__FUNCTION__, ob_get_contents(),false);
-        ob_clean();
-
         return $result;
     }
 
@@ -440,12 +420,13 @@ class MyServer extends IXR_IntrospectionServer {
         $filetype = $args[3]['type'];
         $ext = PHPWS_File::getFileExtension($filename);
 
-        if (!isset($allowed_images[$ext])) {
-            return new IXR_Error(-653, "File extension '$ext' not allowed.");
+        if ( !(ALLOW_OCTET_STREAM && $filetype == 'application/octet-stream') 
+             && !in_array($filetype, $allowed_images)) {
+            return new IXR_Error(-652, "File type '$filetype' not allowed.");
         }
 
-        if (!in_array($filetype, $allowed_images)) {
-            return new IXR_Error(-652, "File type '$filetype' not allowed.");
+        if (!isset($allowed_images[$ext])) {
+            return new IXR_Error(-653, "File extension '$ext' not allowed.");
         }
 
         if (isset($this->image_directory)) {
@@ -473,11 +454,6 @@ class MyServer extends IXR_IntrospectionServer {
     }
 
     function metaWeblog_getCategories($args) {
-        ob_start();
-        var_dump($args);
-        record(__FUNCTION__, ob_get_contents());
-        ob_clean();
-        
         return array_values(Categories::getCategories('list'));
     }
 
@@ -501,7 +477,7 @@ class MyServer extends IXR_IntrospectionServer {
         if (!empty($list)) {
             foreach($list as $key=>$value) {
                 $struct = array();
-                $struct['categoryId'] = $key;
+                $struct['categoryId'] = (string)$key;
                 $struct['categoryName'] = $value;
                 $result[] = $struct;
             }
@@ -512,22 +488,40 @@ class MyServer extends IXR_IntrospectionServer {
 
     function mt_getPostCategories($args)
     {
-        ob_start();
-        var_dump($args);
-        $show = ob_get_contents();
-        record(__FUNCTION__, $show);
-        ob_clean();
+        $id = $args[0];
+        $key_id = $this->getKeyId($id);
+        if (!$key_id) {
+            return false;
+        }
 
-        return new IXR_Error(3, 'mt.getPostCategories not supported yet.');
+        $db = new PHPWS_DB('categories');
+        $db->addWhere('category_items.key_id', $key_id);
+        $db->addWhere('id', 'category_items.cat_id');
+        $result = $db->select();
+
+        if (empty($result)) {
+            return false;
+        } elseif (PHPWS_Error::logIfError($result)) {
+            return false;
+        }
+
+        if (count($result) > 1) {
+            $primary = true;
+        } else {
+            $primary = false;
+        }
+
+        foreach ($result as $cat) {
+            $cat_result[] = array('categoryName'=>$cat['title'],
+                                  'categoryId' => (string)$cat['id'],
+                                  'isPrimary'=>$primary);
+        }
+
+        return $cat_result;
     }
 
     function mt_setPostCategories($args)
     {
-        ob_start();
-        var_dump($args);
-        record(__FUNCTION__, ob_get_contents());
-        ob_clean();
-
         /* Login the user */
         $logged = $this->logUser($args[1], $args[2], 'category');
         if ($logged !== true) {
@@ -550,52 +544,36 @@ class MyServer extends IXR_IntrospectionServer {
 
     function mt_supportedTextFilters($args)
     {
-        ob_start();
-        var_dump($args);
-        $show = ob_get_contents();
-        record(__FUNCTION__, $show);
-        ob_clean();
-
         return array();
     }
 
     function mt_getTrackbackPings($args)
     {
-        ob_start();
-        var_dump($args);
-        $show = ob_get_contents();
-        record(__FUNCTION__, $show);
-        ob_clean();
-
         return array();
     }
 
     function mt_publishPost($args)
     {
-        ob_start();
-        var_dump($args);
-        $show = ob_get_contents();
-        record(__FUNCTION__, $show);
-        ob_clean();
-
         return 1;
     }
 
 
     function isLoggedIn($args)
     {
-        ob_start();
-        var_dump($args);
-        $show = ob_get_contents();
-        record(__FUNCTION__, $show);
-        ob_clean();
-        
-
         if (!$this->logUser($args[0], $args[1])) {
             return 'Not a User! Username:'.trim($args[0]).' Password:'.$args[1];
         }  else {
             return 'Username is "'.Current_User::getUsername().'"';
         }
+    }
+
+    /**
+     * Adds the full url to relative image links
+     */
+    function appendImages($text)
+    {
+        $url = PHPWS_Core::getHomeHttp();
+        return preg_replace('@(src=")\./(images)@', '\\1' . $url . '\\2', $text);
     }
 
     
@@ -638,6 +616,14 @@ function record($file, $info, $append=true) {
     if (empty($info)) {
         $info = 'empty';
     }
+
+    if (is_array($info)) {
+        ob_start();
+        var_dump($info);
+        $info = ob_get_contents();
+        ob_clean();
+    }
+
     if ($append) {
         file_put_contents(LOG_DIR . $file . '.txt', strftime('%T') . ' ' . $info . "\n", FILE_APPEND);
     } else {
