@@ -1,86 +1,37 @@
-        
-div.category-tabs {
-   margin-bottom : 60px;
+div#cookie-menu {
+   height : 30px;
+   margin-bottom : 20px;
+   position : relative;
 }
 
-ul.link-list {
-  padding : 0;
+div#cookie-menu ul li {
+   position : relative;
+   display : inline;
+   float : left;
+   margin-right : 5px;
+   background-color : white;
 }
 
-ul.link-list li {
-  margin-left : 0px;    
+div#cookie-menu ul li {
+   border : 1px black solid;
 }
 
-/* -------- View Categories --------- */
 
-#cookie-menu {
-margin-bottom : 10px;
+div#cookie-menu ul li a {
+   height : 25px;
+   font-size : 13px;
+   display : block;
+   padding : 0px 5px 0px 5px;
+   text-decoration : none;
 }
 
-/*  List by James N Pope via http://css.maxdesign.com.au/ */
-
-ul#navlist { font-family: sans-serif; }
-
-ul#navlist a
-{
-font-weight: bold;
-text-decoration: none;
+div#cookie-menu ul li ul li {
+   display : none;
+   position : absolute;
+   top : 25px;
+   left : 0px;
 }
 
-ul#navlist, ul#navlist ul, ul#navlist li
-{
-margin: 0px;
-padding: 0px;
-list-style-type: none;
-}
-
-ul#navlist li { 
-    float: left;
-    display : inline;
-}
-
-ul#navlist li a
-{
-//color: #ffffff;
-//background-color: #000000;
-padding: 3px;
-border: 1px #ffffff outset;
-}
-
-ul#navlist li a:hover
-{
-color: white;
-background-color: grey;
-}
-
-ul#navlist li a:active
-{
-color: #cccccc;
-background-color: #000000;
-border: 1px #ffffff inset;
-}
-
-ul#subnavlist { display: none; }
-ul#subnavlist li { float: none; }
-
-ul#subnavlist li a
-{
-padding: 0px;
-margin: 0px;
-}
-
-ul#navlist li:hover ul#subnavlist
-{
-display: block;
-position: absolute;
-font-size: 8pt;
-padding-top: 5px;
-}
-
-ul#navlist li:hover ul#subnavlist li a
-{
-display: block;
-width: 10em;
-border: none;
-padding: 2px;
+div#cookie-menu ul li:hover ul li {
+   display : block;
 }
