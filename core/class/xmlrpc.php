@@ -8,10 +8,10 @@ require_once PHPWS_SOURCE_DIR . '/lib/xml/XML-RPC/IXR_Library.inc.php';
  * Originally written by Eloi George for the Article Manager.
  * Docs coming. See blog's Blog_XML.php for examples
  *
- * @version $Id$
  *
  * @author Eloi George <eloi@NOSPAM.bygeorgeware.com>
  * @modified Matt McNaney
+ * @version $Id$
  * @module core
  */
 
@@ -26,6 +26,12 @@ class MyServer extends IXR_IntrospectionServer {
     var $validuser      = false;
 
     function MyServer() {
+        /*
+        ob_start();
+        var_dump($GLOBALS['HTTP_RAW_POST_DATA']);
+        record(__FUNCTION__, ob_get_contents(), false);
+        ob_clean();
+        */
         $this->IXR_IntrospectionServer();
         /*  Don't want to support an API that's obsolete 2 times over, don't know if I have to.
 
@@ -193,19 +199,12 @@ class MyServer extends IXR_IntrospectionServer {
         $this->serve();
     }
 
-    function _get_article($id) {
-        // returns article
-        // see original 
-    }
-
-
     function removeCategoryItems($key_id)
     {
         ob_start();
         var_dump($args);
-        $show = ob_get_contents();
+        record(__FUNCTION__, ob_get_contents());
         ob_clean();
-        file_put_contents('files/xml/remove_cat_items.txt', $show);
 
         $db = new PHPWS_DB('category_items');
         $db->addWhere('key_id', (int)$key_id);
@@ -214,7 +213,6 @@ class MyServer extends IXR_IntrospectionServer {
 
     function saveCategories($id, $categories, $api_type)
     {
-        record(__FUNCTION__, 'in function');
         PHPWS_Core::initModClass('categories', 'Categories.php');
         PHPWS_Core::initModClass('categories', 'Action.php');
 
@@ -260,7 +258,6 @@ class MyServer extends IXR_IntrospectionServer {
 
     function blogger_deletePost($args)
     {
-        record(__FUNCTION__, 'in function');
         ob_start();
         var_dump($args);
         $show = ob_get_contents();
@@ -283,7 +280,6 @@ class MyServer extends IXR_IntrospectionServer {
 
 
     function metaWeblog_newPost($args) {
-        record(__FUNCTION__, 'in function');
         ob_start();
         var_dump($args);
         $show = ob_get_contents();
@@ -316,7 +312,6 @@ class MyServer extends IXR_IntrospectionServer {
 
 
     function metaWeblog_editPost($args) {
-        record(__FUNCTION__, 'in function');
         ob_start();
         var_dump($args);
         $show = ob_get_contents();
@@ -350,18 +345,12 @@ class MyServer extends IXR_IntrospectionServer {
     }
 
     function metaWeblog_getPost($args) {
-        record(__FUNCTION__, 'in function');
         ob_start();
         var_dump($args);
         record(__FUCTION__, ob_get_contents());
         ob_clean();
 
-        if(!$result = $this->_get_article($args[0]))
-            return new IXR_Error(5020, 'Database Error! Article data could not be found.');
-        elseif(count($result->order)>1)
-            return new IXR_Error(5030, 'Usage Error! This is a multi-section article.  You\'ll have to edit it online.');
-        else
-            return $result;
+        return new IXR_Error(1, 'metaWeblog.getPost not supported yet.');
     }
 
     /**
@@ -412,7 +401,6 @@ class MyServer extends IXR_IntrospectionServer {
 
     function metaWeblog_getRecentPosts($args)
     {
-        record(__FUNCTION__, 'in function');
         $logged = $this->logUser($args[1], $args[2], 'list');
         if ($logged !== true) {
             return $logged;
@@ -432,12 +420,59 @@ class MyServer extends IXR_IntrospectionServer {
         return $result;
     }
 
+    /**
+     * The IXR library required a change to make this work.
+     * If you update that file, make sure the base64 decode contains
+     * a trim call on the currentTagContents variable.
+     */
     function metaWeblog_newMediaObject($args) {
-        return '';
+        PHPWS_Core::requireConfig('core', 'file_types.php');
+        PHPWS_Core::initCoreClass('File.php');
+        $allowed_images = unserialize(ALLOWED_IMAGE_TYPES);
+
+        /* Login the user */
+        $logged = $this->logUser($args[1], $args[2], 'media');
+        if ($logged !== true) {
+            return $logged;
+        }
+
+        $filename = PHPWS_File::nameToSafe($args[3]['name']);
+        $filetype = $args[3]['type'];
+        $ext = PHPWS_File::getFileExtension($filename);
+
+        if (!isset($allowed_images[$ext])) {
+            return new IXR_Error(-653, "File extension '$ext' not allowed.");
+        }
+
+        if (!in_array($filetype, $allowed_images)) {
+            return new IXR_Error(-652, "File type '$filetype' not allowed.");
+        }
+
+        if (isset($this->image_directory)) {
+            $img_directory = & $this->image_directory;
+        } else {
+            $img_directory = 'images/';
+        }
+
+        PHPWS_File::appendSlash($img_directory);
+
+        $source_file = $img_directory . $filename;
+        @unlink($source_file);
+        $handle = @ fopen($source_file, 'wb');
+        if (!$handle) {
+            return new IXR_Error(-2323, 'Unable to open file.');
+        }
+        $image = $args[3]['bits'];
+
+        if (!@fwrite($handle, $image)) {
+            return new IXR_Error(-651, "Unable to write file - $filename.");
+        }
+        fclose($handle);
+        $url = PHPWS_Core::getHomeHttp() . $img_directory . $filename;
+        return $url;
     }
 
     function metaWeblog_getCategories($args) {
-        record(__FUNCTION__, 'in function');
         ob_start();
         var_dump($args);
         record(__FUNCTION__, ob_get_contents());
@@ -448,7 +483,6 @@ class MyServer extends IXR_IntrospectionServer {
 
     function mt_getRecentPostTitles($args)
     {
-        record(__FUNCTION__, 'in function');
         ob_start();
         var_dump($args);
         $show = ob_get_contents();
@@ -456,35 +490,11 @@ class MyServer extends IXR_IntrospectionServer {
         
         file_put_contents('files/xml/mt_getrecentposttitles.txt', $show);
 
-        $db = & new PHPWS_DB('mod_article');
-        $db->addColumn('id');
-        $db->addColumn('created_date');
-        $db->addColumn('created_username');
-        $db->addColumn('title');
-    	$db->addWhere('sectioncount', '1');
-        Key::restrictView($db, 'article');
-        $db->addOrder('updated_date desc');
-        $db->setLimit($args[3]);
-        $id_array = $db->select('col');
-        if (PEAR::isError($id_array)) 
-            return new IXR_Error(5010, $result->getMessage());
-        if (empty($id_array)) 
-            return new IXR_Error(5010, 'No articles were found.');
-
-        $list = array();
-        foreach ($id_array AS $row);
-        {
-            $list[]['postid'] = $row['id'];
-            $list[]['userid'] = $row['created_username'];
-            $list[]['title'] = $row['title'];
-            $list[]['dateCreated'] = new IXR_Date($row['created_date']);
-        }
-      	return $list;
+        return new IXR_Error(2, 'mt.getRecentPostTitles not supported yet.');
     }
 
     function mt_getCategoryList($args)
     {
-        record(__FUNCTION__, 'in function');
         $result = array();
 
         $list = Categories::getCategories('list');
@@ -502,34 +512,17 @@ class MyServer extends IXR_IntrospectionServer {
 
     function mt_getPostCategories($args)
     {
-        record(__FUNCTION__, 'in function');
         ob_start();
         var_dump($args);
         $show = ob_get_contents();
         record(__FUNCTION__, $show);
         ob_clean();
 
-        $db = new PHPWS_DB('categories');
-        $db->addColumn('id');
-        $db->addColumn('title');
-        $db->addWhere('mod_article.id', $args[0]);
-        $db->addWhere('category_items.key_id', 'mod_article.key_id');
-        $db->addWhere('categories.id', 'category_items.cat_id');
-        $result = $db->select();
-        $list = array();
-        foreach($result as $row) {
-            $struct = array();
-            $struct['categoryName'] = $row['title'];
-            $struct['categoryId'] = $row['id'];
-            $struct['isPrimary'] = false;
-            $list[] = $struct;
-        }
-        return $list;
+        return new IXR_Error(3, 'mt.getPostCategories not supported yet.');
     }
 
     function mt_setPostCategories($args)
     {
-        record(__FUNCTION__, 'in function');
         ob_start();
         var_dump($args);
         record(__FUNCTION__, ob_get_contents());
@@ -546,7 +539,6 @@ class MyServer extends IXR_IntrospectionServer {
 
     function mt_supportedMethods($args)
     {
-        record(__FUNCTION__, 'in function');
         ob_start();
         var_dump($args);
         $show = ob_get_contents();
@@ -558,7 +550,6 @@ class MyServer extends IXR_IntrospectionServer {
 
     function mt_supportedTextFilters($args)
     {
-        record(__FUNCTION__, 'in function');
         ob_start();
         var_dump($args);
         $show = ob_get_contents();
@@ -570,8 +561,7 @@ class MyServer extends IXR_IntrospectionServer {
 
     function mt_getTrackbackPings($args)
     {
-        record(__FUNCTION__, 'in function');
-        echo 'sd';
+        ob_start();
         var_dump($args);
         $show = ob_get_contents();
         record(__FUNCTION__, $show);
@@ -582,14 +572,18 @@ class MyServer extends IXR_IntrospectionServer {
 
     function mt_publishPost($args)
     {
-        record(__FUNCTION__, 'in function');
+        ob_start();
+        var_dump($args);
+        $show = ob_get_contents();
+        record(__FUNCTION__, $show);
+        ob_clean();
+
         return 1;
     }
 
 
     function isLoggedIn($args)
     {
-        record(__FUNCTION__, 'in function');
         ob_start();
         var_dump($args);
         $show = ob_get_contents();
@@ -606,29 +600,24 @@ class MyServer extends IXR_IntrospectionServer {
 
     
     function getDate($args) {
-        record(__FUNCTION__, 'in function');
         return date('r');
     }
 
     function getTime($args) {
-        record(__FUNCTION__, 'in function');
         return date('H:i:s');
     }
 
 
     function helloWorld($args) {
-        record(__FUNCTION__, 'in function');
         return 'Hello, World!';
     }
 
     function ooh($args) {
-        record(__FUNCTION__, 'in function');
         return new IXR_Error(4000, 'ha ha ha');
     }
 
 
     function times10($value) {
-        record(__FUNCTION__, 'in function');
         return array(
                      'times10' => (int)$value * 10,
                      'times100' => (int)$value * 10,

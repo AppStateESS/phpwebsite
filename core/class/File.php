@@ -35,9 +35,7 @@ class PHPWS_File {
     {
         $directories = NULL;
 
-        if (!preg_match('/\/$/', $root_dir)) {
-            $root_dir .= '/';
-        }
+        PHPWS_File::appendSlash($root_dir);
 
         if (!is_dir($root_dir) || !is_readable($root_dir)) {
             return FALSE;
@@ -83,9 +81,7 @@ class PHPWS_File {
         static $first_path = null;
         $listing = null;
 
-        if (!preg_match('/\/$/', $path)) {
-            $path .= '/';
-        }
+        PHPWS_File::appendSlash($path);
 
         if (empty($first_path)) {
             $first_path = $path;
@@ -156,13 +152,8 @@ class PHPWS_File {
      * @author Matthew McNaney <mcnaney at gmail dot com>
      */
     function copy_directory($source_directory, $dest_directory) {
-        if (!preg_match('/\/$/', $source_directory)) {
-            $source_directory .= '/';
-        }
-
-        if (!preg_match('/\/$/', $dest_directory)) {
-            $dest_directory .= '/';
-        }
+        PHPWS_File::appendSlash($source_directory);
+        PHPWS_File::appendSlash($dest_directory);
 
         if (!is_dir($dest_directory)) {
             if(!@mkdir($dest_directory)) {
@@ -439,9 +430,7 @@ class PHPWS_File {
 
     function rmdir($dir) 
     {
-        if (!preg_match('/\/$/', $dir)) {
-            $dir .= '/';
-        }
+        PHPWS_File::appendSlash($dir);
 
         if(is_dir($dir)) {
             $handle = opendir($dir);
@@ -528,6 +517,13 @@ class PHPWS_File {
         $last_dot = strrpos($filename, '.') + 1;
         $ext = strlen($filename) - $last_dot;
         return substr($filename, $last_dot, $ext);
+    }
+
+    function appendSlash(&$directory)
+    {
+        if (!preg_match('/\/$/', $directory)) {
+            $directory .= '/';
+        }
     }
 }
 ?>
