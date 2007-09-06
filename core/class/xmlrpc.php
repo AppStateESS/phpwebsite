@@ -29,7 +29,7 @@ define('ALLOW_OCTET_STREAM', true);
  * Until I work out all the kinks, I am leaving in my testing 
  */
 
-define('LOG_RESULTS', true);
+define('LOG_RESULTS', false);
 define('LOG_DIR', 'files/xml/');
 
 class MyServer extends IXR_IntrospectionServer {
