@@ -1,3 +1,5 @@
+Version 1.0.1
+------------------------------------------------------------------
 30 August 2007
 + Added ability to reset slot order should it come unraveled.
 + Fixed reroute link that was hard coded to go to sheet id 1.

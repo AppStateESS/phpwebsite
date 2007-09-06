@@ -1,5 +1,8 @@
+Version 1.1.1
+----------------------------------------------------
 22 August 2007
-+ Miniadmin was sending its content using 'users' as the module. Fixed.
++ Miniadmin was sending its content using 'users' as the
+  module. Fixed. 
 
 Version 1.1.0
 ---------------------------------------------------

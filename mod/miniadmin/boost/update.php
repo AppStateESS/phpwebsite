@@ -37,6 +37,12 @@ function miniadmin_update(&$content, $version)
 + Updated language functions.
 </pre>';
 
+    case version_compare($version, '1.1.1', '<'):
+        $content[] = '<pre>
+1.1.1 changes
+------------------
++  Miniadmin was sending its content using "users" as the module.</pre>';
+
     }
     return true;
 }

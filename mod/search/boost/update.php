@@ -53,9 +53,27 @@ function search_update(&$content, $currentVersion)
 + Added German translation files.
 </pre>';        
 
+    case version_compare($currentVersion, '0.2.3', '<'):
+        $content[] = '<pre>';
+        searchUpdateFiles(array('templates/search_page.tpl'), $content);
+        $content[] = '0.2.3 Changes
+-------------
++ Changed h1 headers to h2
+</pre>';        
+
     }
 
     return TRUE;
+}
+
+function searchUpdateFiles($files, &$content)
+{
+    if (PHPWS_Boost::updateFiles($files, 'search')) {
+        $content[] = '--- Updated the following files:';
+    } else {
+        $content[] = '--- Unable to update the following files:';
+    }
+    $content[] = "    " . implode("\n    ", $files);
 }
 
 

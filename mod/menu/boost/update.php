@@ -9,6 +9,8 @@
 
 function menu_update(&$content, $currentVersion)
 {
+    $home_directory = PHPWS_Boost::getHomeDir();
+
     switch ($currentVersion) {
     case version_compare($currentVersion, '1.2.0', '<'):
         $content[] = '<pre>Menu versions prior to 1.2.0 are not supported for update.
@@ -53,8 +55,50 @@ Please download 1.2.1.</pre>';
 + Bug # 1609737. Fixed site_map.tpl file. Thanks Andy.
 </pre>';
 
+    case version_compare($currentVersion, '1.4.0', '<'):
+        $content[] = '<pre>';
+
+        $basic_dir = $home_directory . 'templates/menu/menu_layout/basic/';
+        $horz_dir  = $home_directory . 'templates/menu/menu_layout/horizontal/';
+
+        if (!is_dir($basic_dir)) {
+            if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/menu/templates/menu_layout/basic/', $basic_dir)) {
+                $content[] = "--- Successfully copied directory: $basic_dir";
+            } else {
+                $content[] = "--- Failed to copy directory: $basic_dir</pre>";
+                return false;
+            }
+        }
+
+        if (!is_dir($horz_dir)) {
+            if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/menu/templates/menu_layout/horizontal/', $horz_dir)) {
+                $content[] = "Successfully copied directory: $horz_dir";
+            } else {
+                $content[] = "Failed to copy directory: $horz_dir</pre>";
+                return false;
+            }
+        }
+
+        menuUpdateFiles(array('conf/error.php'), $content);
+                        
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/menu/boost/changes/1_4_0.txt');
+        }
+                        
+        $content[] = '</pre>';
     }
     return true;
 }
+
+function menuUpdateFiles($files, &$content)
+{
+    if (PHPWS_Boost::updateFiles($files, 'menu')) {
+        $content[] = '--- Updated the following files:';
+    } else {
+        $content[] = '--- Unable to update the following files:';
+    }
+    $content[] = "     " . implode("\n     ", $files);
+}
+
 
 ?>
