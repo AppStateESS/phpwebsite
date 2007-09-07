@@ -9,26 +9,21 @@ function controlpanel_update(&$content, $currentVersion)
 {
     switch (1) {
     case version_compare($currentVersion, '2.0.3', '<'):
-        $content[] = '<pre>2.0.3 Changes
-------------';
+        $content[] = '<pre>';
         $files = array('templates/style.css');
-        $content[] = '+ Updated style.css to work better with IE/Safari (thanks singletrack).';
-        if (!PHPWS_Boost::updateFiles($files, 'controlpanel')) {
-            $content[] = 'Warning: style.css could not be copied locally to templates/controlpanel.';
-        }
-        $content[] = '+ Fixed problem with unregister function.
+        filecabUpdate($files, $content);
+
+        $content[] = '2.0.3 Changes
+------------
++ Updated style.css to work better with IE/Safari (thanks singletrack).
++ Fixed problem with unregister function.
 + Added translate functions.
 </pre>';
 
     case version_compare($currentVersion, '2.1.0', '<'):
         $files = array('templates/link_form.tpl','templates/panelList.tpl','templates/tab_form.tpl', 'img/controlpanel.png');
         $content[] = '<pre>';
-        if (PHPWS_Boost::updateFiles($files, 'controlpanel')) {
-            $content[] = '-- Successfully updated the following files:';
-        } else {
-            $content[] = '-- Unable to update the following files:';
-        }
-        $content[] = '    ' . implode("\n    ", $files);
+        filecabUpdate($files, $content);
         $content[] = '
 2.1.0 Changes
 --------------
@@ -43,12 +38,7 @@ function controlpanel_update(&$content, $currentVersion)
     case version_compare($currentVersion, '2.1.1', '<'):
         $files = array('templates/link_form.tpl','templates/panelList.tpl','templates/tab_form.tpl', 'img/controlpanel.png', 'templates/style.css');
         $content[] = '<pre>';
-        if (PHPWS_Boost::updateFiles($files, 'controlpanel')) {
-            $content[] = '-- Successfully updated the following files:';
-        } else {
-            $content[] = '-- Unable to update the following files:';
-        }
-        $content[] = '    ' . implode("\n    ", $files);
+        filecabUpdate($files, $content);
         $content[] = '
 2.1.1 Changes
 --------------
@@ -59,6 +49,27 @@ function controlpanel_update(&$content, $currentVersion)
 + Removed panel width from style.css. Caused problems in panels.
 + Corrected file copy from previous version update. They were labeled as calendar files.
 </pre>';
+
+    case version_compare($currentVersion, '2.1.2', '<'):
+        $content[] = '<pre>';
+        filecabUpdate(array('templates/style.css'), $content);
+        $content[] = '2.1.2 changes
+----------------
++ Control panel will now direct a user to login if their session times
+  out during panel view.
++ Changed icon image layout a touch to try and make more space.
+</pre>';
     }
     return true;
 }
+
+function filecabUpdate($files, &$content) {
+    if (PHPWS_Boost::updateFiles($files, 'controlpanel')) {
+        $content[] = '-- Successfully updated the following files:';
+    } else {
+        $content[] = '-- Unable to update the following files:';
+    }
+    $content[] = '    ' . implode("\n    ", $files);
+}
+
+?>

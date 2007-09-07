@@ -1,3 +1,5 @@
+Version 2.1.2
+--------------------------------------------------------------
 30 August 2007
 + Control panel will now direct a user to login if their session times
   out during panel view.
