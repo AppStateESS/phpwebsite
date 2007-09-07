@@ -38,6 +38,13 @@ function related_update(&$content, $version)
 + Removed uninstall.sql.
 </pre>';
 
+    case version_compare($version, '0.1.5', '<'):
+        $content[] = '<pre>
+0.1.5 changes
+--------------
++ Updated English translation.
+</pre>';
+
     }
 
     return true;
