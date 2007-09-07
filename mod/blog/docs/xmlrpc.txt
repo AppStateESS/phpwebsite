@@ -1,0 +1,5 @@
+To use XMLRPC with Blog, go to the following url:
+
+http://your.site.address/index.php?module=blog&xmlrpc=1
+
+The XMLRPC server has been tested mainly with Wordpress.
