@@ -72,9 +72,9 @@ Please download 1.2.1.</pre>';
 
         if (!is_dir($horz_dir)) {
             if (PHPWS_File::copy_directory(PHPWS_SOURCE_DIR . 'mod/menu/templates/menu_layout/horizontal/', $horz_dir)) {
-                $content[] = "Successfully copied directory: $horz_dir";
+                $content[] = "--- Successfully copied directory: $horz_dir";
             } else {
-                $content[] = "Failed to copy directory: $horz_dir</pre>";
+                $content[] = "--- Failed to copy directory: $horz_dir</pre>";
                 return false;
             }
         }
