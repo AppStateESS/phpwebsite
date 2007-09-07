@@ -60,6 +60,14 @@ function rss_update(&$content, $version)
 + Removed a header line that caused some verification errors in the 2.0 template.
 + Changed template process. Some fields were missing from the feeds.
 ';
+
+    case version_compare($version, '0.2.1', '<'):
+        $content[] = '<pre>
+0.2.1 changes
+-------------
++ Changed rss popup window dimensions and form text length
+</pre>';
+
     }
 
     return true;
