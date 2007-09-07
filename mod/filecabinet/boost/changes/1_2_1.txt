@@ -1,0 +1,12 @@
+1.2.1 changes
+--------------
++ Changing image file rights after upload and resizing to 644
++ Document permissions written as 640
++ Fixed update script. Was missing filecabinet_pins table creation.
++ Option add to auto link child resized images to parent.
++ Fixed bug where child images were not getting loaded on image
+  selection.
++ File cabinet was pulling a file from the mod directory instead of
+  locally. I think I misread the function.
++ Resize the image edit window to account for thumbnail.
++ Image selection would get corrupted by linked images. Fixed.

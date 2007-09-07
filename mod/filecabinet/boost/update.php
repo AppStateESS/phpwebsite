@@ -164,33 +164,11 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
         }
 
         $content[] = "    " . implode("\n    ", $files);
-        
- $content[] = '
-1.2.0 changes
---------------
-+ Oversized files do not post without a warning anymore.
-+ Image manager\'s empty image can have an upper limit to prevent
-  enormous dimensions from wrecking a form.
-+ Each folder tab now checks the write status of each directory
-  separately.
-+ Added multimedia folders, file types, icons and ability to playback.
-+ Folder now loads files in filename order.
-+ Added checkbox that allows you to hide child images
-+ Deleting a parent image makes all child images parents.
-+ Changed wording on image linking to urls
-+ File Cabinet\'s Image Manager no longer shows small thumbnail.
-  Instead, it shows a full image set to the current dimension limits.
-+ Image - getTag function now allows an "id" parameter that will be
-          added to the image tag (i.e. id="css-id-name")
-+ Changed "no image chosen" graphic.
-+ Added missing new columns to image table in install.sql
-+ Added ability to delete incoming files.
-+ Added directory permission checks to classify.
-+ Classify directory can now be set in fc settings.
-+ Created classify override in config.php file.
-+ Option to use ffmpeg to create thumbnails
-</pre>
-';
+
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/changes/1_2_0.txt');
+        }
+        $content[] = '</pre>';
 
     case version_compare($version, '1.2.1', '<'):
         $content[] = '<pre>';
@@ -214,21 +192,11 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
         }
 
         $content[] = "    " . implode("\n    ", $files);
-        
- $content[] = '
-1.2.1 changes
---------------
-+ Changing image file rights after upload and resizing to 644
-+ Document permissions written as 640
-+ Fixed update script. Was missing filecabinet_pins table creation.
-+ Option add to auto link child resized images to parent.
-+ Fixed bug where child images were not getting loaded on image
-  selection.
-+ File cabinet was pulling a file from the mod directory instead of
-  locally. I think I misread the function.
-+ Resize the image edit window to account for thumbnail.
-+ Image selection would get corrupted by linked images. Fixed.
-</pre>';
+
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/changes/1_2_1.txt');
+        }
+        $content[] = '</pre>';
 
     }
 

@@ -1,0 +1,23 @@
+1.2.0 changes
+--------------
++ Oversized files do not post without a warning anymore.
++ Image manager\'s empty image can have an upper limit to prevent
+  enormous dimensions from wrecking a form.
++ Each folder tab now checks the write status of each directory
+  separately.
++ Added multimedia folders, file types, icons and ability to playback.
++ Folder now loads files in filename order.
++ Added checkbox that allows you to hide child images
++ Deleting a parent image makes all child images parents.
++ Changed wording on image linking to urls
++ File Cabinet\'s Image Manager no longer shows small thumbnail.
+  Instead, it shows a full image set to the current dimension limits.
++ Image - getTag function now allows an "id" parameter that will be
+          added to the image tag (i.e. id="css-id-name")
++ Changed "no image chosen" graphic.
++ Added missing new columns to image table in install.sql
++ Added ability to delete incoming files.
++ Added directory permission checks to classify.
++ Classify directory can now be set in fc settings.
++ Created classify override in config.php file.
++ Option to use ffmpeg to create thumbnails
