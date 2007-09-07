@@ -1,5 +1,9 @@
 Version 1.0.1
 -----------------------------------------------------------------
+7 September 2007
++ Fixed h1 not appearing on home page.
++ Adding caching to page view.
+
 5 September 2007
 + Updated Database's class inclusion function
 

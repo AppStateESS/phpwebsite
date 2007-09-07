@@ -2,6 +2,7 @@
 -------------------------------------------------------------
 + Front page placement now available
 + Widened the action column in page list
++ Caching added to page display.
 
 New column: ps_page.front_page
 

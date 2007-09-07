@@ -26,9 +26,6 @@ class PS_Page {
 
         $this->id = (int)$id;
         $this->init();
-        if ($this->id) {
-            $this->_content['page_title'] = & $this->title;
-        }
     }
 
     function init()
@@ -260,15 +257,28 @@ class PS_Page {
         if (Current_User::allow('pagesmith', 'edit', $this->id)) {
             MiniAdmin::add('pagesmith', $this->editLink(sprintf(dgettext('pagesmith', 'Edit %s'), $this->title)));
         }
-        $this->loadSections();
+
+        $key = 'pagesmith' . $this->id;
+        $content = PHPWS_Cache::get($key);
+
+        $this->loadTemplate();
         $this->_tpl->loadStyle();
+        
+        if (!empty($content)) {
+            return $content;
+        }
+
+        $this->loadSections();
         if (!empty($this->title)) {
             Layout::addPageTitle($this->title);
         }
 
+        $this->_content['page_title'] = & $this->title;
         $this->flag();
+        $content = PHPWS_Template::process($this->_content, 'pagesmith', $this->_tpl->page_path . 'page.tpl');
 
-        return PHPWS_Template::process($this->_content, 'pagesmith', $this->_tpl->page_path . 'page.tpl');
+        PHPWS_Cache::save($key, $content);
+        return $content;
     }
 
     function delete()
