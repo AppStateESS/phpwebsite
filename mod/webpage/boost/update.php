@@ -36,10 +36,36 @@ Please download version 0.5.3</pre>';
 + RFE #1719299 - Page titles added to volume tabs.
 </pre>';
 
+    case version_compare($currentVersion, '0.5.5', '<'):
+        $content[] = '<pre>';
+        
+        $files = array('templates/page/basic.tpl', 'templates/page/prev_next.tpl',
+                       'templates/page/short_links.tpl', 'templates/page/verbose_links.tpl');
+        webpageUpdateFiles($files, $content);
+        
+
+        $content[] = '0.5.5 Changes
+--------------
++ Fixed Bug #1784432. Missing underline caused missing class
+  error.
++ Put a ten character limit on the page title appearing in the tab
++ Wrapped each page template with webpage-page classed div.
+</pre>';
+
     }
 
     return TRUE;
 }
 
+function webpageUpdateFiles($files, &$content)
+{
+    if (PHPWS_Boost::updateFiles($files, 'webpage')) {
+        $content[] = '--- Successfully updated the following files:';
+    } else {
+        $content[] = '--- Was unable to copy the following files:';
+    }
+    $content[] = '     ' . implode("\n     ", $files);
+    $content[] = '';
+}
 
 ?>
