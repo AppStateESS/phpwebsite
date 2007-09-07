@@ -1,0 +1,9 @@
+2.4.2 Changes
+---------------
++ Added parameter to disallow which determines whether to check login.
++ Changed default disallow action on anonymous users. Now forwards
+  them to the login screen.
++ HOME tag no longer sent to template if logging in
++ Moved box around Default user menu for easier styling.
+
+Updated files: templates/usermenus/Default.tpl

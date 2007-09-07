@@ -1,0 +1,30 @@
+2.4.0 Changes
+------------------
++ Changed authorize to use require_once instead of include (Thanks Daniel)
++ Bug 1705106 - Fixed install.sql typo
++ Permissions just close the popup window instead of displaying
+  message.
++ Moved include to prevent pre-defined error.
++ Added Forgot password and Forgot username functionality
++ Started password reset and user name reminder options.
++ Added comments to user menu template to prevent extra characters
++ Implemented RFE 1628318 - Remember me option on users module.
++ Rewrote logout functionality to work with remember me
++ Hitting user's index.php forwards to the 404 page
++ Removed redundant class calls in init.php
++ Changed default username size to 3
++ Updated translation functions.
++ Changed form names on login templates since both have ids and may
+  appear on same page.
++ Removed return by reference from Current_User::getUserObj
++ Changed popuppermission to echo error instead of using goback
+  function.
++ Fixed error code call in Permissions.php. Needed to call core code.
++ Added German translation files
+
++ Updated files: templates/forms/reset_password.tpl
+                 templates/forms/forgot.tpl
+                 conf/config.php
+                 templates/usermenus/top.tpl
+                 templates/forms/settings.tpl
+                 templates/my_page/user_setting.tpl

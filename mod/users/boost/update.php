@@ -40,11 +40,8 @@ function users_update(&$content, $currentVersion)
     case version_compare($currentVersion, '2.3.1', '<'):
         $content[] = '<pre>';
         $files = array('templates/my_page/user_setting.tpl');
-        if (PHPWS_Boost::updateFiles($files, 'users')) {
-            $content[] = 'Successfully updated my_page/user_setting.tpl file.';
-        } else {
-            $content[] = 'Unable to update my_page/user_setting.tpl file.';
-        }
+        userUpdateFiles($files, $content);
+
         $content[] = '
 2.3.1 changes
 ------------------------
@@ -55,12 +52,8 @@ function users_update(&$content, $currentVersion)
     case version_compare($currentVersion, '2.3.2', '<'):
         $content[] = '<pre>2.3.2 changes';
         $files = array('img/users.png', 'templates/user_main.tpl');
-        if (PHPWS_Boost::updateFiles(array('img/users.png'), 'users')) {
-            $content[] = '+ Updated the following files:';
-        } else {
-            $content[] = '+ Unable to update the following files:';
-        }
-        $content[] = '    ' . implode("\n    ", $files);
+        userUpdateFiles($files, $content);
+
         $content[] = '+ Added error check to login.
 + Changed user control panel icon.
 + Fixed template typo that broke IE login.
@@ -89,45 +82,18 @@ timeout INT NOT NULL default 0,
                        'conf/config.php', 'templates/usermenus/top.tpl', 'templates/forms/settings.tpl',
                        'templates/my_page/user_setting.tpl');
         $content[] = '<pre>';
-        if (PHPWS_Boost::updateFiles($files, 'layout')) {
-            $content[] = '--- Successfully updated the following files:';
-        } else {
-            $content[] = '--- Was unable to copy the following files:';
-        }
-        $content[] = '     ' . implode("\n     ", $files);
+        userUpdatefiles($files, $content);
 
-        $content[] = '
-2.4.0 changes
-------------------------
-+ Permissions just close the popup window instead of displaying
-  message.
-+ Moved include to prevent pre-defined error.
-+ Added Forgot password and Forgot username functionality
-+ Started password reset and user name reminder options.
-+ Added comments to user menu template to prevent extra characters
-+ Implemented RFE 1628318 - Remember me option on users module.
-+ Rewrote logout functionality to work with remember me
-+ Hitting user\'s index.php forwards to the 404 page
-+ Removed redundant class calls in init.php
-+ Changed default username size to 3
-+ Updated translation functions.
-+ Changed form names on login templates since both have ids and may
-  appear on same page.
-+ Removed return by reference from Current_User::getUserObj
-+ Changed popuppermission to echo error instead of using goBack
-  function.
-+ Fixed error code call in Permissions.php. Needed to call core code.
-+ Added German translation files
-</pre>';
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/users/boost/changes/2_4_0.txt');
+        }
+        $content[] = '</pre>';
 
     case version_compare($currentVersion, '2.4.1', '<'):
         $content[] = '<pre>';
         $files = array('conf/languages.php');
-        if (PHPWS_Boost::updateFiles($files, 'users')) {
-            $content[] = 'Successfully updated conf/languages.php file.';
-        } else {
-            $content[] = 'Unable to update conf/languages.php file.';
-        }
+        userUpdateFiles($files, $content);
+
         $content[] = '
 2.4.1 changes
 ------------------------
@@ -139,10 +105,32 @@ timeout INT NOT NULL default 0,
 </pre>
 ';
 
+    case version_compare($currentVersion, '2.4.2', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/usermenus/Default.tpl');
+        userUpdateFiles($files, $content);
+
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/users/boost/changes/2_4_2.txt');
+        }
+        $content[] = '</pre>';
+
     } // End of switch statement
 
     return TRUE;
 
+}
+
+function userUpdateFiles($files, &$content)
+{
+    if (PHPWS_Boost::updateFiles($files, 'users')) {
+        $content[] = '--- Successfully updated the following files:';
+    } else {
+        $content[] = '--- Was unable to copy the following files:';
+    }
+    $content[] = '     ' . implode("\n     ", $files);
+    $content[] = '';
+    
 }
 
 ?>
