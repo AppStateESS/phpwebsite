@@ -51,6 +51,12 @@ function initializei18n()
         define('CURRENT_LANGUAGE', 'en_US');
         define('PHPWS_TRANSLATION', FALSE);
 
+        if (!function_exists('gettext')) {
+            function gettext($mod, $text) {
+                return $text;
+            }
+        }
+
         if (!function_exists('dgettext')) {
             function dgettext($mod, $text) {
                 return $text;
