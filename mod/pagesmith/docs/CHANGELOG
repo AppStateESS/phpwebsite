@@ -9,7 +9,13 @@ Version 1.0.1
   the layout. nbsp are only used now for form layout.
 + Javascript changed to add nbsp on blank entry to prevent collapsing
   forms. 
-+ Updated files: javascript/update/head.js
++ Added box-title and box-content divs to page templates to help with
+  styling.
++ Added an error check for bad template directories.
+
++ Updated files: javascript/update/head.js, conf/error.php,
+                 templates/page_templates/simple/page.tpl,
+                 templates/page_templates/twocolumns/page.tpl
 
 7 September 2007
 + Fixed h1 not appearing on home page.

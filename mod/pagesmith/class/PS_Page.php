@@ -52,12 +52,16 @@ class PS_Page {
 
     function loadSections($form_mode=false, $filler=true)
     {
-
         PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
         PHPWS_Core::initModClass('pagesmith', 'PS_Block.php');
 
         if (empty($this->_tpl)) {
             $this->loadTemplate();
+        }
+
+        if (empty($this->_tpl->structure)) {
+            PHPWS_Error::log(PS_PG_TPL_ERROR, 'pagesmith', 'PS_Page::loadSections', $this->_tpl->file);
+            PHPWS_Core::errorPage();
         }
 
         foreach ($this->_tpl->structure as $section_xml) {

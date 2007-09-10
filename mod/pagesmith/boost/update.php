@@ -19,7 +19,8 @@ function pagesmith_update(&$content, $currentVersion)
         } else {
             $content[] = "--- Created 'front_page' column on ps_page table.";
         }
-        $files = array('templates/page_list.tpl', 'javascript/update/head.js');
+        $files = array('templates/page_list.tpl', 'javascript/update/head.js', 'conf/error.php',
+                       'templates/page_templates/simple/page.tpl', 'templates/page_templates/twocolumns/page.tpl');
         pagesmithUpdateFiles($files, $content);
 
         if (!PHPWS_Boost::inBranch()) {
