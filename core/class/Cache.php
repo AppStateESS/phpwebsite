@@ -59,8 +59,9 @@ class PHPWS_Cache {
     function save($key, $content, $lifetime=CACHE_LIFETIME){
         $key .= SITE_HASH . CURRENT_LANGUAGE;
 
-        if (!PHPWS_Cache::isEnabled())
+        if (!PHPWS_Cache::isEnabled()) {
             return;
+        }
 
         if (!is_string($content)) {
             return PHPWS_Error::get(PHPWS_VAR_TYPE, 'core', __CLASS__ . '::' .__FUNCTION__);
