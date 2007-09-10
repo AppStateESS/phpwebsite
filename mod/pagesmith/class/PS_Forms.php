@@ -158,7 +158,13 @@ class PS_Forms {
 
         foreach ($page->_sections as $name=>$section) {
             $form->addHidden('sections', $name);
-            $tpl[$name] = $section->getContent();
+            $content = $section->getContent();
+            if (empty($content)) {
+                $tpl[$name] = '&nbsp;';
+            } else {
+                $tpl[$name] = $content;
+            }
+
             if ($section->sectype != 'image') {
                 if ($section->sectype == 'header') {
                     $js['label'] = dgettext('pagesmith', 'Edit header');

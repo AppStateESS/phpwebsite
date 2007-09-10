@@ -76,6 +76,7 @@ class PageSmith {
             }
             $this->loadPage();
             $this->page->delete();
+            PHPWS_Cache::clearCache();
             $this->loadForms();
             $this->forms->pageList();
             break;
@@ -84,7 +85,7 @@ class PageSmith {
             $this->loadForms();
             $this->loadPage();
             $this->page->loadTemplate();
-            $this->page->loadSections(true);
+            $this->page->loadSections(true, false);
             $this->forms->editPageHeader();
             $javascript = true;
             break;
@@ -93,7 +94,7 @@ class PageSmith {
             $this->loadForms();
             $this->loadPage();
             $this->page->loadTemplate();
-            $this->page->loadSections(true);
+            $this->page->loadSections(true, false);
             $this->forms->editPageText();
             $javascript = true;
             break;
@@ -108,7 +109,8 @@ class PageSmith {
 
         case 'post_page':
             $this->postPage();
-            PHPWS_Core::reroute('index.php?module=pagesmith&aop=menu&tab=list');
+            PHPWS_Cache::clearCache();
+            PHPWS_Core::reroute($this->page->url());
             break;
 
         case 'front_page_toggle':
@@ -230,7 +232,9 @@ class PageSmith {
 
     function viewPage()
     {
-        $this->loadPage();
+        if (empty($this->page)) {
+            $this->loadPage();
+        }
         if ($this->page->id) {
             Layout::add($this->page->view());
         } else {

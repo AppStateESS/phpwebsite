@@ -50,7 +50,7 @@ class PS_Page {
     }
 
 
-    function loadSections($form_mode=false)
+    function loadSections($form_mode=false, $filler=true)
     {
 
         PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
@@ -70,7 +70,9 @@ class PS_Page {
 
             if ($form_mode) {
                 if (!$section->loadSaved()) {
-                    $section->loadFiller();
+                    if ($filler) {
+                        $section->loadFiller();
+                    }
                 }
             }
             $this->_sections[$section->secname] = $section;
@@ -263,6 +265,7 @@ class PS_Page {
 
         $this->loadTemplate();
         $this->_tpl->loadStyle();
+        $this->flag();
         
         if (!empty($content)) {
             return $content;
@@ -274,7 +277,6 @@ class PS_Page {
         }
 
         $this->_content['page_title'] = & $this->title;
-        $this->flag();
         $content = PHPWS_Template::process($this->_content, 'pagesmith', $this->_tpl->page_path . 'page.tpl');
 
         PHPWS_Cache::save($key, $content);
@@ -300,6 +302,18 @@ class PS_Page {
         $db->delete();
 
         return true;
+    }
+
+    function url()
+    {
+        $vars['uop'] = 'view_page';
+        $vars['id'] = $this->id;
+        
+        if (MOD_REWRITE_ENABLED) {
+            return 'pagesmith/' . $vars['id'];
+        } else {
+            return PHPWS_Text::linkAddress('pagesmith', $vars);
+        }
     }
 }
 

@@ -1,5 +1,16 @@
 Version 1.0.1
 -----------------------------------------------------------------
+10 September 2007
++ Clearing the lorum ipsum text each new page is redundant. Changed
+  to only showing on new page.
++ Moved key flag above returning of cached page data.
++ Clearing cache after page edit and deletion.
++ Was using nbsp to fill blank content. This gave false positives in
+  the layout. nbsp are only used now for form layout.
++ Javascript changed to add nbsp on blank entry to prevent collapsing
+  forms. 
++ Updated files: javascript/update/head.js
+
 7 September 2007
 + Fixed h1 not appearing on home page.
 + Adding caching to page view.

@@ -3,8 +3,15 @@
 + Front page placement now available
 + Widened the action column in page list
 + Caching added to page display.
++ Clearing the lorum ipsum text each new page is redundant. Changed
+  to only showing on new page.
++ Was using nbsp to fill blank content. This gave false positives in
+  the layout. nbsp are only used now for form layout.
++ Javascript changed to add nbsp on blank entry to prevent collapsing
+  forms. 
 
 New column: ps_page.front_page
 
 Updated files:
 templates/page_list.tpl
+javascript/update/head.js

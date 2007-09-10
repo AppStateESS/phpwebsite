@@ -1,8 +1,8 @@
 <?php
-  /**
-   * @version $Id$
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   */
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 PHPWS_Core::initModClass('pagesmith', 'PS_Section.php');
 
@@ -66,7 +66,7 @@ class PS_Text extends PS_Section {
     function getContent()
     {
         if (empty($this->content)) {
-            return '&nbsp;';
+            return null;
         }
         return PHPWS_Text::parseOutput($this->content);
     }
