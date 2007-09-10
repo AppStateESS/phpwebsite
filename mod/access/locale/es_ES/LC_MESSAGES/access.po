@@ -1,0 +1,310 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-07-25 09:50-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: boricua <boricua@despiertapr.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "-- Choose option --"
+msgstr "Escoja opción"
+
+msgid ".htaccess file is currently absent."
+msgstr "No se encontro el fichero .htaccess"
+
+msgid ".htaccess file is missing."
+msgstr "No se encontro el fichero .htaccess"
+
+msgid ".htaccess file options"
+msgstr "Opciones a .htaccess"
+
+msgid ".htaccess file written."
+msgstr ".htaccess ha sido creádo"
+
+msgid "A serious error occurred. Please check your error.log."
+msgstr "Un error ocurrió, verifique el error.log"
+
+msgid "Access"
+msgstr ""
+
+msgid "Access has saved your shortcut."
+msgstr "Access guardó el atajo"
+
+msgid "Access needs a higher administrator's attention before you may use it."
+msgstr "Access necesita la atención de un administrador antes de usted poder usarlo"
+
+msgid "Access tables removed."
+msgstr "Tables de access han sido removidas"
+
+msgid "Action"
+msgstr "Acción"
+
+msgid "Activate"
+msgstr "Activar"
+
+msgid "Active?"
+msgstr "Activo?"
+
+msgid "Add allowed IP"
+msgstr "Añada IP permitidos"
+
+msgid "Add denied IP"
+msgstr "Añada IP a denegar"
+
+msgid "Administrative options"
+msgstr "Opciones administrativas"
+
+msgid "Administrator"
+msgstr "Administrador"
+
+msgid "Allow all"
+msgstr "Permitir todos"
+
+msgid "Allow file update"
+msgstr "Permitir Actualizar fichero"
+
+msgid "Allow/Deny"
+msgstr "Permitir/denegar"
+
+msgid "Allow/Deny enabled"
+msgstr "Permitir/denegar activado"
+
+msgid "Allowed IPs"
+msgstr "IPs permitidos"
+
+msgid "An administrator will need to approve it before it is functional."
+msgstr "Necesita aprobacion de un administrador"
+
+msgid "An error occurred when deleting your shortcut."
+msgstr "Un error ocurrio al remover atajo"
+
+msgid ""
+"An error occurred when trying to access the allowed and denied ip records. "
+"Please check your logs."
+msgstr ""
+"Un error ocurrió al tratar de entrar al record de ip "
+"permitidos y denegados, verifique los logs"
+
+msgid "An error occurred when updating your .htaccess file."
+msgstr "Un error ocurrio al actualizar el fichero .htaccess"
+
+msgid "An error occurred."
+msgstr "Ocurrió un error"
+
+msgid "An error occurred:"
+msgstr "Ocurrió un error"
+
+msgid "Are you sure you want to delete the checked ips?"
+msgstr "Está seguro quiere remover los ips escogidos"
+
+msgid "Are you sure you want to delete the checked shortcuts?"
+msgstr "Está seguro quiere remover los atajos escogidos"
+
+msgid "Are you sure you want to delete this shortcut?"
+msgstr "Está seguro quiere remover ese atajo"
+
+msgid "Are you sure you want to restore the default .htaccess file?"
+msgstr "Está seguro quiere restaurar el fichero .htaccess de comienzo"
+
+msgid "Bad keyword. Use only alphanumeric characters, dashes and spaces."
+msgstr "Mala clave, use solo letras guiones y espacios"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid ""
+"Cannot create a new .htaccess file because the installation directory is not "
+"writable."
+msgstr ""
+"No se pudo crear el fichero .htaccess por que la estalación no lo permitio"
+
+msgid "Close window"
+msgstr "Cerrar ventana"
+
+msgid "Controls the .htaccess file for Apache and creates shortcuts."
+msgstr "Controla el fichero .htaccess para apache y crea atajos"
+
+msgid "Current .htaccess file"
+msgstr "Actual fichero .htaccess"
+
+msgid "Deactivate"
+msgstr "Deactivar"
+
+msgid "Default .htaccess file restored."
+msgstr "Fichero .htaccess de comienzo restaurado"
+
+msgid "Delete"
+msgstr "Remover"
+
+msgid "Denied IPs"
+msgstr "IPs denegados"
+
+msgid "Deny all"
+msgstr "Deniegue todos"
+
+msgid "Denys and Allows"
+msgstr "Denegar y permitir"
+
+msgid "Do not allow all"
+msgstr "No permita todos"
+
+msgid "Do not deny all"
+msgstr "No denigue todos"
+
+msgid "Edit"
+msgstr "Editar"
+
+msgid "Go"
+msgstr "Avanze"
+
+msgid "Go to the Update tab and try to create a new file."
+msgstr "Valla al tab de actualizar e intente crear un nuevo fichero"
+
+msgid "IP Address"
+msgstr "Dirección de IP"
+
+msgid "IP address deleted."
+msgstr "IP removido"
+
+msgid "IP address was not formatted correctly or not allowed."
+msgstr "IP no fue formateado correctamente o no permitido"
+
+msgid "Keyword already in use. Choose another."
+msgstr "Clave ya ha sido usado, escoga otra"
+
+msgid "Keywords"
+msgstr "Claves"
+
+msgid "Look in your installation directory and give Apache write access."
+msgstr "Busque en su instalacion de apache y de accesso de escribir"
+
+msgid "Missing keyword."
+msgstr "Clave desaparecidas"
+
+msgid "Missing url."
+msgstr "URL desaparecida"
+
+msgid "Mod Rewrite options"
+msgstr "Opciones de Mod-rewrite"
+
+msgid "No"
+msgstr ""
+
+msgid "No allowed ip addresses found."
+msgstr "Ningun IP permitido fue encontrado"
+
+msgid "No denied ip addresses found."
+msgstr "Ningun IP denegado fue encontrado"
+
+msgid "Open your config/core/config.php file in a text editor."
+msgstr "Abra el fichero config/core/config.php en un editor"
+
+msgid "Please check your error.log."
+msgstr "Verifique su error.log"
+
+msgid "Please check your logs."
+msgstr "Verifique el log"
+
+msgid ""
+"Remember to \"Update\" your access file when finished changing IP rules."
+msgstr ""
+"Recuerda actualizar su fichero de access al terminar las reglar de IP"
+
+msgid "Restore default .htaccess"
+msgstr "Restaure el fichero .htaccess"
+
+msgid "Return to previous page."
+msgstr "Retornar a página anterior"
+
+msgid "Rewrite engine on"
+msgstr ""
+
+msgid "Save settings"
+msgstr "Guardar ajuestes"
+
+msgid "Set your \"MOD_REWRITE_ENABLED\" define equal to TRUE."
+msgstr ""
+
+msgid "Settings saved."
+msgstr "Ajustes guardados"
+
+msgid "Shortcut"
+msgstr "Atajos"
+
+msgid "Shortcut deleted"
+msgstr "Atajo removido"
+
+msgid "Shortcuts"
+msgstr "Atajos"
+
+msgid "Shortcuts enabled"
+msgstr "Atajos activado"
+
+msgid "Sorry"
+msgstr "Disculpe"
+
+msgid "The files/access/ directory is not writable."
+msgstr "El directorio de access no permite escribir"
+
+msgid "Unable to restore default .htaccess file."
+msgstr "No se pudo restaurar el fichero .htaccess"
+
+msgid "Unable to save .htaccess file."
+msgstr "No se pudo guardar el fichero .htaccess"
+
+msgid "Unable to write .htaccess file."
+msgstr "No se pudo escribir el fichero .htaccess"
+
+msgid "Update"
+msgstr "Actualizar"
+
+msgid "Update .htaccess file"
+msgstr "Actualizar el fichero .htaccess"
+
+msgid "Url"
+msgstr ""
+
+msgid "When active, you will be able to use the following link:"
+msgstr "Cuando se active podrá utilizar el enlace"
+
+msgid "Write .htaccess file"
+msgstr "Escribir fichero .htaccess "
+
+msgid "Yes"
+msgstr "Si"
+
+msgid "You can access this item with the following link:"
+msgstr "Puede accesar este elemento con el siguiente enlace"
+
+msgid "You do not have mod rewrite enabled."
+msgstr "No tiene mod-rewite activado"
+
+msgid "You have \"Allow all\" enabled. All rows below will be ignored."
+msgstr "Tiene \"permitir todos\" activiado, todas ls filas serán ignoradas"
+
+msgid "You have \"Deny all\" enabled. All rows below will be ignored."
+msgstr "Tiene \"denegar todos\" activado, todoas las filas seran ignoradas"
+
+msgid "Your .htaccess file will contain the below:"
+msgstr "Su fichero .htaccess incluira lo siguiente"
+
+msgid "Your <b>.htaccess</b> file does not exist."
+msgstr "No existe el fichero .htaccess"
+
+msgid "Your <b>.htaccess</b> file is not writable."
+msgstr "No se pudo modificar el fichero .htaccess"
+
+msgid ""
+"Your installation directory must be writable if you want to create a new ."
+"htaccess file."
+msgstr "Su instalación debe permitir la creacón de un nuevo fichero .htaccess"
