@@ -5,6 +5,9 @@ its own separate CHANGELOG file.
 
 Version 1.6.1
 ------------------------------------------------------------------
+10 September 2007
++ Init.php - added dngettext replacement function 
+
 6 September 2007
 + XMLRPC now handles media (i.e. graphic) uploads
 + Added appendSlash function to File. Was a often repeated function.
