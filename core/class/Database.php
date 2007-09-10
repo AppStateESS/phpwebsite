@@ -2200,11 +2200,11 @@ class PHPWS_DB {
     }
 
     function updateSequenceTable()
-    {
+    {      
         $this->addColumn('id', 'max');
-
+        
         $max_id = $this->select('one');
-
+        
         if (PEAR::isError($max_id)) {
             return $max_id;
         }
@@ -2217,8 +2217,17 @@ class PHPWS_DB {
             }
 
             $seq = new PHPWS_DB($seq_table);
+	    $result = $seq->select('one');
+            if (PHPWS_Error::logIfError($result)) {
+                return false;
+            }
+            
             $seq->addValue('id', $max_id);
-            return $seq->update();
+            if (!$result) {
+                return $seq->insert(false);
+            } else {
+                return $seq->update();
+            }
         }
 
         return true;
