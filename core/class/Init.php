@@ -56,6 +56,13 @@ function initializei18n()
                 return $text;
             }
         }
+
+        if (!function_exists('dngettext')) {
+            function dngettext($mod, $text) {
+                return $text;
+            }
+        }
+
         if (!function_exists('_')) {
             function _($text) {
                 return $text;
