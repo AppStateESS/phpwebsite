@@ -114,7 +114,9 @@ function core_update(&$content, $version) {
             } else {
                 $content[] = '--- Was unable to copy the yui (Yahoo editor) directory to the branch site.';
             }
-       }
+        }
+
+        @copy(PHPWS_SOURCE_DIR . 'core/conf/version.php', 'config/core/version.php');
 
         $files = array('conf/error.php', 'javascript/editors/fckeditor/default.php', 
                        'javascript/editors/fckeditor/editor/custom.js');
