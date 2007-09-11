@@ -58,6 +58,7 @@ function controlpanel_update(&$content, $currentVersion)
 + Control panel will now direct a user to login if their session times
   out during panel view.
 + Changed icon image layout a touch to try and make more space.
++ A tab link can be now be sent in strict mode to prevent appending.
 </pre>';
     }
     return true;
