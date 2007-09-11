@@ -67,6 +67,17 @@ $link = "index.php?module=myMod&amp;command=main_menu";
 and then alter the 'catching code' appropiately. In most cases, it is
 easier to rely on the tab name however.
 
+Strict mode
+------------------------------------------------------------
+If you want to add linked tab, but don't want the control panel to
+append the tab information to the link, send it in strict mode:
+
+$link = array('title'=>'Special',
+              'link' =>'javascript:alert(\'Hello World\')',
+              'strict' => true);
+
+$tabs['special'] = $link;
+
 
 Creating the Panel Object
 ------------------------------------------------------------
