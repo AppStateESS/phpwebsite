@@ -104,6 +104,11 @@ class Menu_Link {
         $this->title = htmlentities($title, ENT_QUOTES, 'UTF-8');
     }
 
+    function getTitle()
+    {
+        return PHPWS_Text::decodeText($this->title);
+    }
+
     function setUrl($url)
     {
         if (!preg_match('/^index.php/i', $url) && preg_match('/\w+\.\w{2,3}($|\/)/', $url)) {
@@ -315,9 +320,9 @@ class Menu_Link {
 
         if ($this->key_id) {
             $vars['command'] = 'edit_link_title';
-            $prompt_js['question'] = dgettext('menu', 'Type the new title for this link.');
-            $prompt_js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE);
-            $prompt_js['answer'] = addslashes($this->title);
+            $prompt_js['question']   = dgettext('menu', 'Type the new title for this link.');
+            $prompt_js['address']    = PHPWS_Text::linkAddress('menu', $vars, TRUE);
+            $prompt_js['answer']     = addslashes($this->getTitle());
             $prompt_js['value_name'] = 'link_title';
             $prompt_js['link']       = $link;
             return javascript('prompt', $prompt_js);
@@ -343,7 +348,7 @@ class Menu_Link {
         $vars['link_id'] = $this->id;
         $vars['command'] = 'delete_link';
         $js['QUESTION'] = dgettext('menu', 'Are you sure you want to delete this link: ' . 
-                                   addslashes($this->title));
+                                   addslashes($this->getTitle()));
         $js['ADDRESS'] = PHPWS_Text::linkAddress('menu', $vars, TRUE);
         return javascript('confirm', $js);
     }
