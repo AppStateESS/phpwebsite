@@ -9,7 +9,7 @@ Here is where to look:
 
 1) The module settings
 The module you are using (File Cabinet for example) may have limits
-imposed on the system. See the module has a settings screen or a
+imposed on the system. See if the module has a settings screen or a
 config file that is controlling the maximum bytes allowed.
 
 2) The Form Class
@@ -33,6 +33,6 @@ happening.
 4) The server setting
 No matter what you have set in phpWebSite, the server trumps all
 values. If you need to increase the server upload limit, look for the
-php.ini file. Look in /etc/php5/apache2/, /etc/php/conf/, etc. or run
+php.ini file. Look in /etc/php5/apache2/, /etc/php/conf/, or run
 a find . -type f -name 'php.ini'
 
