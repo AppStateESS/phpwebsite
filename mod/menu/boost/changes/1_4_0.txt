@@ -8,6 +8,7 @@
 
 + Changed style a little for new menu layout
 + Added style for menu popup link to make sure it stands out
++ Fixed bugs with apostrophed links.
 
 Updated files: templates/menu_layout/basic/
                templates/menu_layout/horizontal/
