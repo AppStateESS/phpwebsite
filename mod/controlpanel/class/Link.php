@@ -8,17 +8,17 @@
 
 class PHPWS_Panel_Link {
     var $id          = 0;
-    var $label       = NULL;
+    var $label       = null;
     var $active      = 1;
-    var $itemname    = NULL;
-    var $restricted  = TRUE;
-    var $tab         = NULL;
-    var $url         = NULL;
-    var $description = NULL;
-    var $image       = NULL;
-    var $link_order  = NULL;
+    var $itemname    = null;
+    var $restricted  = true;
+    var $tab         = null;
+    var $url         = null;
+    var $description = null;
+    var $image       = null;
+    var $link_order  = null;
 
-    function PHPWS_Panel_Link($id=NULL)
+    function PHPWS_Panel_Link($id=null)
     {
         if (!isset($id))
             return;
@@ -85,16 +85,16 @@ class PHPWS_Panel_Link {
         $this->image = $image;
     }
 
-    function getImage($tag=FALSE, $linkable=FALSE)
+    function getImage($tag=false, $linkable=false)
     {
-        if ($tag == FALSE) {
+        if ($tag == false) {
             return $this->image;
         }
 
         if ($this->restricted) {
             $authkey = '&amp;authkey=' . Current_User::getAuthKey();
         } else {
-            $authkey = NULL;
+            $authkey = null;
         }
 
         if (is_file($this->image)) {
@@ -102,10 +102,10 @@ class PHPWS_Panel_Link {
                              $this->image, $this->getLabel(),
                              sprintf(dgettext('controlpanel', '%s module icon'), $this->getLabel()));
         } else {
-            return NULL;
+            return null;
         }
 
-        if ($linkable == TRUE) {
+        if ($linkable == true) {
             $image = sprintf('<a href="%s%s">%s</a>', $this->url, $authkey, $image);
         }
 
@@ -117,12 +117,12 @@ class PHPWS_Panel_Link {
         $this->url = $url;
     }
   
-    function getUrl($tag=FALSE)
+    function getUrl($tag=false)
     {
         if ($this->restricted) {
             $authkey = '&amp;authkey=' . Current_User::getAuthKey();
         } else {
-            $authkey = NULL;
+            $authkey = null;
         }
 
 
@@ -191,8 +191,8 @@ class PHPWS_Panel_Link {
 
     function view()
     {
-        $tpl['IMAGE']       = $this->getImage(TRUE, TRUE);
-        $tpl['NAME']        = $this->getUrl(TRUE);
+        $tpl['IMAGE']       = $this->getImage(true, true);
+        $tpl['NAME']        = $this->getUrl(true);
         $tpl['DESCRIPTION'] = $this->getDescription();
 
         return PHPWS_Template::process($tpl, 'controlpanel', 'link.tpl');
@@ -276,7 +276,7 @@ class PHPWS_Panel_Link {
             return $result;
 
         if (empty($result))
-            return TRUE;
+            return true;
 
         $count = 1;
         foreach ($result as $link){

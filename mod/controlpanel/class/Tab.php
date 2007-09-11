@@ -13,20 +13,26 @@ class PHPWS_Panel_Tab {
     var $link         = null;
     var $tab_order    = null;
     var $itemname     = null;
-    var $_secure      = TRUE;
+    var $_secure      = true;
 
-    function PHPWS_Panel_Tab($id=null) {
+    // If strict == true, tab links are returned as is and not appended.
+    var $_strict      = false;
+
+    function PHPWS_Panel_Tab($id=null)
+    {
         if(isset($id)) {
             $this->setId($id);
             $this->init();
         }
     }
 
-    function setId($id){
+    function setId($id)
+    {
         $this->id = $id;
     }
 
-    function init(){
+    function init()
+    {
         $DB = new PHPWS_DB('controlpanel_tab');
         $result = $DB->loadObject($this);
         if (PHPWS_Error::logIfError($result) || !$result) {
@@ -34,26 +40,37 @@ class PHPWS_Panel_Tab {
         }
     }
 
-    function setTitle($title){
+    function isStrict()
+    {
+        $this->_strict = true;
+    }
+
+    function setTitle($title)
+    {
         $this->title = strip_tags($title);
     }
 
-    function getTitle($noBreak=TRUE){
+    function getTitle($noBreak=true)
+    {
         if ($noBreak)
             return str_replace(' ', '&nbsp;', $this->title);
         else
             return $this->title;
     }
 
-    function setLink($link){
+    function setLink($link)
+    {
         $this->link = $link;
     }
 
-    function getLink($addTitle=TRUE){
+    function getLink($addTitle=true)
+    {
         if ($addTitle){
             $title = $this->getTitle();
-            $link = $this->getLink(FALSE);
-            if ($this->_secure) {
+            $link = $this->getLink(false);
+            if ($this->_strict) {
+                return sprintf('<a href="%s">%s</a>', $link, $title);
+            } elseif ($this->_secure) {
                 $authkey = Current_User::getAuthKey();
                 return sprintf('<a href="%s&amp;tab=%s&amp;authkey=%s">%s</a>',
                                $link, $this->id, $authkey, $title);
@@ -67,11 +84,13 @@ class PHPWS_Panel_Tab {
     }
 
 
-    function setOrder($order){
+    function setOrder($order)
+    {
         $this->tab_order = $order;
     }
 
-    function getOrder(){
+    function getOrder()
+    {
         if (isset($this->tab_order))
             return $this->tab_order;
 
@@ -88,34 +107,38 @@ class PHPWS_Panel_Tab {
             return 1;
     }
 
-    function setItemname($itemname){
+    function setItemname($itemname)
+    {
         $this->itemname = $itemname;
     }
 
-    function getItemname(){
+    function getItemname()
+    {
         return $this->itemname;
     }
 
     function disableSecure()
     {
-        $this->_secure = FALSE;
+        $this->_secure = false;
     }
 
     function enableSecure()
     {
-        $this->_secure = TRUE;
+        $this->_secure = true;
     }
 
-    function save(){
+    function save()
+    {
         $db = new PHPWS_DB('controlpanel_tab');
         $db->addWhere('id', $this->id);
         $db->delete();
         $db->resetWhere();
         $this->tab_order = $this->getOrder();
-        return $db->saveObject($this, FALSE, FALSE);
+        return $db->saveObject($this, false, false);
     }
 
-    function nextBox(){
+    function nextBox()
+    {
         $db = new PHPWS_DB('controlpanel_tab');
         $db->addWhere('theme', $this->getTheme());
         $db->addWhere('theme_var', $this->getThemeVar());
@@ -133,7 +156,8 @@ class PHPWS_Panel_Tab {
      * Moves the tab 'up' the order, which is actually a lower
      * order number
      */ 
-    function moveUp(){
+    function moveUp()
+    {
         $db = new PHPWS_DB('controlpanel_tab');
         $db->setIndexBy('tab_order');
         $db->addOrder('tab_order');
@@ -158,7 +182,8 @@ class PHPWS_Panel_Tab {
         }
     }
 
-    function moveDown(){
+    function moveDown()
+    {
         $db = new PHPWS_DB('controlpanel_tab');
         $db->setIndexBy('tab_order');
         $db->addOrder('tab_order');

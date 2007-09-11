@@ -9,7 +9,7 @@ PHPWS_Core::initModClass('controlpanel', 'Panel.php');
 
 class PHPWS_ControlPanel {
 
-    function display($content=NULL)
+    function display($content=null)
     {
         Layout::addStyle('controlpanel');
 
@@ -89,7 +89,7 @@ class PHPWS_ControlPanel {
             return dgettext('controlpanel', 'An error occurred while accessing the Control Panel.');
         }
         $tab = $panel->tabs[$panel->getCurrentTab()];
-        $link = str_replace('&amp;', '&', $tab->getLink(FALSE)) . '&tab=' . $tab->id;
+        $link = str_replace('&amp;', '&', $tab->getLink(false)) . '&tab=' . $tab->id;
         $current_link = ereg_replace($_SERVER['PHP_SELF'] . '\?', '', $_SERVER['REQUEST_URI']);
 
         // Headers to the tab's link if it is not a control panel
@@ -132,7 +132,7 @@ class PHPWS_ControlPanel {
     function getAllLinks()
     {
         PHPWS_Core::initModClass('controlpanel', 'Link.php');
-        $allLinks = NULL;
+        $allLinks = null;
 
         // This session prevents the DB query and link
         // creation from being repeated.
@@ -172,7 +172,7 @@ class PHPWS_ControlPanel {
 
         if (!is_file($cpFile)){
             PHPWS_Boost::addLog($module, dgettext('controlpanel', 'Control Panel file not implemented.'));
-            return FALSE;
+            return false;
         }
 
         $modSource = PHPWS_SOURCE_DIR . 'mod/' . $module . '/img';
@@ -226,7 +226,7 @@ class PHPWS_ControlPanel {
                 if (PEAR::isError($result)) {
                     $content[] = dgettext('controlpanel', 'An error occurred when trying to save a controlpanel tab.');
                     PHPWS_Error::log($result);
-                    return FALSE;
+                    return false;
                 }
             }
             $content[] = sprintf(dgettext('controlpanel', 'Control Panel tabs created for %s.'), $module);
@@ -286,7 +286,7 @@ class PHPWS_ControlPanel {
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
                     $content[] = dgettext('controlpanel', 'There was a problem trying to save a Control Panel link.');
-                    return FALSE;
+                    return false;
                 }
                 $db->resetWhere();
             }
@@ -296,7 +296,7 @@ class PHPWS_ControlPanel {
         }
 
         PHPWS_ControlPanel::reset();
-        return TRUE;
+        return true;
     }
 
     function makeDefaultTabs()

@@ -9,14 +9,15 @@ PHPWS_Core::requireConfig('controlpanel');
 PHPWS_Core::initModClass('controlpanel', 'Tab.php');
 
 class PHPWS_Panel{
-    var $itemname     = NULL;
-    var $tabs         = NULL;
-    var $content      = NULL;
-    var $module       = NULL;
-    var $panel        = NULL;
-    var $_secure      = FALSE;
+    var $itemname     = null;
+    var $tabs         = null;
+    var $content      = null;
+    var $module       = null;
+    var $panel        = null;
+    var $_secure      = false;
 
-    function PHPWS_Panel($itemname=NULL){
+    function PHPWS_Panel($itemname=null)
+    {
         if (isset($itemname)) {
             $this->setItemname($itemname);
         }
@@ -24,12 +25,12 @@ class PHPWS_Panel{
 
     function disableSecure()
     {
-        $this->_secure = FALSE;
+        $this->_secure = false;
     }
 
     function enableSecure()
     {
-        $this->_secure = TRUE;
+        $this->_secure = true;
     }
 
     function quickSetTabs($tabs)
@@ -51,19 +52,25 @@ class PHPWS_Panel{
                 $tab->setLink($info['link']);
             }
 
-            if (!isset($info['itemname']))
+            if (!isset($info['itemname'])) {
                 $tab->setItemname($this->itemname);
+            }
+
+            if (isset($info['strict'])) {
+                $tab->isStrict();
+            }
 
             $tab->setOrder($count);
             $count++;
             $this->tabs[$id] = $tab;
         }
 
-        return TRUE;
+        return true;
     }
 
 
-    function setTabs($tabs){
+    function setTabs($tabs)
+    {
         if (!is_array($tabs)) {
             return PHPWS_Error::get(CP_BAD_TABS, 'controlpanel', 'setTabs');
         }
@@ -71,53 +78,65 @@ class PHPWS_Panel{
         $this->tabs = $tabs;
     }
 
-    function getTabs(){
+    function getTabs()
+    {
         return $this->tabs;
     }
 
-    function dropTab($id){
+    function dropTab($id)
+    {
         unset($this->tabs[$id]);
     }
 
-    function setContent($content){
+    function setContent($content)
+    {
         $this->content = $content;
     }
 
-    function getContent(){
+    function getContent()
+    {
         return $this->content;
     }
 
-    function setItemname($itemname){
+    function setItemname($itemname)
+    {
         $this->itemname = $itemname;
     }
 
-    function getItemname(){
+    function getItemname()
+    {
         return $this->itemname;
     }
 
 
-    function setModule($module){
+    function setModule($module)
+    {
         $this->module = $module;
     }
 
-    function getModule(){
+    function getModule()
+    {
         return $this->module;
     }
 
-    function setPanel($panel){
+    function setPanel($panel)
+    {
         $this->panel = $panel;
     }
 
-    function getPanel(){
+    function getPanel()
+    {
         return $this->panel;
     }
 
-    function setCurrentTab($tab){
+    function setCurrentTab($tab)
+    {
         $itemname = $this->getItemname();
         $_SESSION['Panel_Current_Tab'][$itemname] = $tab;
     }
 
-    function getCurrentTab(){
+    function getCurrentTab()
+    {
         $itemname = $this->getItemname();
 
         if (isset($_REQUEST['tab']) && 
@@ -135,9 +154,10 @@ class PHPWS_Panel{
         }
     }
 
-    function getFirstTab(){
+    function getFirstTab()
+    {
         PHPWS_Core::initModClass('controlpanel', 'Tab.php');
-        $result = NULL;
+        $result = null;
 
         $tabs = $this->getTabs();
 
@@ -148,7 +168,8 @@ class PHPWS_Panel{
         return $result;
     }
 
-    function display(){
+    function display()
+    {
         $itemname   = $this->getItemname();
         $currentTab = $this->getCurrentTab();
         $tabs       = $this->getTabs();
