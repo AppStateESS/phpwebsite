@@ -292,6 +292,9 @@ class RSS_Feed {
             case 'ITEMS':
                 if ($version == '1.0') {
                     $items = &$child[0]['child'];
+                    if (empty($items)) {
+                        continue;
+                    }
                     foreach ($items as $item) {
                         list(,$resource) = each($item['attributes']);
                         $this->mapped['CHANNEL']['ITEM_RESOURCES'][] = $resource;
