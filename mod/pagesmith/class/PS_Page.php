@@ -252,7 +252,7 @@ class PS_Page {
 
     function flag()
     {
-        if ($this->key_id) {
+        if (!$this->front_page && $this->key_id) {
             $key = new Key($this->key_id);
             $key->flag();
         }
