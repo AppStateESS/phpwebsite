@@ -1,3 +1,5 @@
+1.4.0 changes
+---------------------------
 + Rewrote menu templating.
   o Each menu template is now in its own directory along with its link
     and style
