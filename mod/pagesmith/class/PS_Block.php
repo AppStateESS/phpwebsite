@@ -8,6 +8,8 @@ PHPWS_Core::initModClass('pagesmith', 'PS_Section.php');
 
 class PS_Block extends PS_Section {
     var $btype   = null;
+
+    // Id to the element tracked by this block e.g. the image id
     var $type_id = 0;
     var $width   = 0;
     var $height  = 0;
