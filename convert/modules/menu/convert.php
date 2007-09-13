@@ -7,9 +7,23 @@
    * @version $Id$
    */
 
+/**
+ * Put your web address here to strip from links
+ * example somesite.com
+ * Don't add http://
+ */
+define('RELATIVE_URL', 'op.appstate.edu');
+
 function convert()
 {
-    if (!Convert::isConverted('webpage') && !isset($_GET['ignore'])) {
+    if (Convert::isConverted('pagesmith')) {
+        $GLOBALS['Convert_mod'] = 'pagesmith';
+    } elseif (Convert::isConverted('webpage')) {
+        $GLOBALS['Convert_mod'] = 'webpage';
+    }
+
+
+    if (!isset($GLOBALS['Convert_mod']) && !isset($_GET['ignore'])) {
         $content[] = _('Any content modules using Menu Manager should be converted BEFORE continuing..');
         $content[] = sprintf('<a href="index.php?command=convert&amp;package=menu&amp;ignore=1">%s</a>', _('Click to continue anyway.'));
         $content[] = _('Otherwise, click on the "Main page" link above.');
@@ -45,24 +59,22 @@ function convertMenu()
     $db->disconnect();
     Convert::siteDB();
 
-    $newdb = & new PHPWS_DB('menus');
+    $newdb = new PHPWS_DB('menus');
+    $newdb->truncateTable();
+    $newdb->dropTable('menus_seq', true, false);
 
     foreach ($result as $menu) {
-        //        $val['id']         = $menu['menu_id'];
-        $old_id = $menu['menu_id'];
+        $val['id']         = $menu['menu_id'];
         $val['title']      = utf8_encode($menu['menu_title']);
-        $val['template']   = 'basic.tpl';
+        $val['template']   = 'basic';
         $val['restricted'] = 0;
         $val['pin_all']    = 1;
         $newdb->addValue($val);
-        $result = $newdb->insert();
+        $result = $newdb->insert(false);
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             $errors[] = $val['title'];
-        } else {
-            $_SESSION['Menu_New_Id'][$old_id] = $result;
         }
-        
         $newdb->reset();
     }
 
@@ -70,6 +82,8 @@ function convertMenu()
         $content[] = _('Some menus did not convert over properly. Please see logs.');
     } else {
         Convert::addConvert('menus');
+        PHPWS_Core::killSession('Menu_New_Id');
+        PHPWS_Core::killSession('');
         $content[] = _('Menu conversion finished.');
         $content[] = sprintf('<a href="index.php?command=convert&amp;package=menu">%s</a>',
                              _('Continue to convert menu links.'));
@@ -109,6 +123,8 @@ function convertLinks()
     if (!$batch->isFinished()) {
         $content[] =  $batch->continueLink();
     } else {
+        resetLinkOrders();
+
         createSeqTables();
         $batch->clear();
         PHPWS_Core::killSession('Menu_New_Id');
@@ -117,6 +133,34 @@ function convertLinks()
     }
     
     return implode('<br />', $content);
+}
+
+function resetLinkOrders()
+{
+    $db = new PHPWS_DB('menu_links');
+    $db->setIndexBy('parent');
+    $db->addOrder('link_order');
+    $result = $db->select();
+
+    $db->reset();
+
+    foreach ($result as $parent_id => $links) {
+        $count = 1;
+        if (isset($links[0])) {
+            foreach ($links as $link) {
+                $db->addValue('link_order', $count);
+                $db->addWhere('id', $link['id']);
+                $db->update();
+                $db->reset();
+                $count++;
+            }
+        } else {
+            $db->addValue('link_order', 1);
+            $db->addWhere('id', $links['id']);
+            $db->update();
+            $db->reset();
+        }
+    }
 }
 
 function linkBatch($db, $batch)
@@ -143,47 +187,63 @@ function linkBatch($db, $batch)
 }
 
 function convertLink($link) {
-    $db = new PHPWS_DB('menu_links');
-
     $val['id']         = $link['menu_item_id'];
-    $old_id = & $link['menu_id'];
-    $val['menu_id']    = $_SESSION['Menu_New_Id'][$old_id];
-    if ($link['menu_item_pid'] != $val['id']) {
+    $val['menu_id']    = $link['menu_id'];
+
+    if ($link['menu_item_pid'] != $link['menu_item_id']) {
         $val['parent'] = $link['menu_item_pid'];
     } else {
         $val['parent'] = 0;
     }
     $val['title']      = $link['menu_item_title'];
-    processUrl($val, $link['menu_item_url']);
-    $val['link_order'] = $link['menu_item_order'];
+    $val['url']        = processUrl($link['menu_item_url']);
 
-    $db->addValue($val);
-    return $db->insert(FALSE);
-}
+    if (isset($GLOBALS['Convert_mod'])) {
+        $key_id = 0;
+        $mod = $GLOBALS['Convert_mod'];
+        $page_id = (int)preg_replace('/.*=(\d+)$/', '\\1', $val['url']);
 
-function processUrl(&$val, $link)
-{
-    $link = str_replace('&amp;', '&', $link);
-    if (preg_match('/PAGE_id=\d+$/U', $link)) {
-        $id = (int) preg_replace('/.+PAGE_id=(\d+)$/U', '\\1', $link);
-        if ($id > 0) {
-            $db = & new PHPWS_DB('phpws_key');
-            $db->addWhere('module', 'webpage');
-            $db->addWhere('item_name', 'volume');
-            $db->addWhere('item_id', $id);
+        if ($page_id) {
+            $db = new PHPWS_DB('phpws_key');
             $db->addColumn('id');
+            $db->addWhere('item_id', $page_id);
+            $db->addWhere('module', $mod);
             $key_id = $db->select('one');
-            if (PEAR::isError($key_id)) {
-                PHPWS_Error::log($key_id);
-            } else {
+
+            if (!PHPWS_Error::logIfError($key_id) && $key_id) {
                 $val['key_id'] = $key_id;
-                $val['url']    = 'index.php?module=webpage&id=' . $id;
             }
         }
-    } else {
-        $val['url']    = $link;
-        $val['key_id'] = 0;
     }
+
+    $val['link_order'] = $link['menu_item_order'];
+
+    $db = new PHPWS_DB('menu_links');
+    $db->addValue($val);
+    return $db->insert(false);
+}
+
+function processUrl($link)
+{
+    if (isset($GLOBALS['Convert_mod'])) {
+        $mod = $GLOBALS['Convert_mod']; 
+    } else {
+        $mod = null;
+    }
+
+    $relative = RELATIVE_URL;
+
+    if (!empty($relative)) {
+        $url = preg_quote($relative);
+        $link = preg_replace("/http(s)?:\/\/(www\.)?$relative\//i", './', $link);
+    }
+
+    $link = str_replace('&amp;', '&', $link);
+    if ($mod) {
+        $link = preg_replace('/index.php\?module=pagemaster&page_user_op=view_page&page_id=(\d+).*/i', 'index.php?module=' . $mod . '&id=\\1', $link);
+    }
+
+    return $link;
 }
 
 function createSeqTables()
