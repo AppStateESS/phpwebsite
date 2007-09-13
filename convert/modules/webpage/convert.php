@@ -76,6 +76,7 @@ function convert()
         createSeqTables();
         $batch->clear();
         Convert::addConvert('webpage');
+        Convert::addConvert('pagesmith');
         unset($_SESSION['Webpage_Method']);
         $content[] =  _('All done!');
         $content[] = '<a href="index.php">' . _('Go back to main menu.') . '</a>';
