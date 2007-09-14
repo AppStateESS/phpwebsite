@@ -98,8 +98,10 @@ class Menu_Link {
     {
         $title = strip_tags(trim($title));
 
-        if (MENU_TITLE_LIMIT > 0 && strlen($title) > MENU_TITLE_LIMIT) {
-            $title = substr($title, 0, MENU_TITLE_LIMIT);
+        $char_limit = PHPWS_Settings::get('menu', 'max_link_characters');
+        
+        if ($char_limit > 0 && strlen($title) > $char_limit) {
+            $title = substr($title, 0, $char_limit);
         }
         $this->title = htmlentities($title, ENT_QUOTES, 'UTF-8');
     }
@@ -194,14 +196,13 @@ class Menu_Link {
                 $current_parent[] = $this->id;
             }
 
-            if ( (!$current_key->isDummy() && $current_key->id == $this->key_id) || ($current_key->url == $this->url) ) {
+            if ( (!$current_key->isDummy(true) && $current_key->id == $this->key_id) || ($current_key->url == $this->url) ) {
                 $current_link = TRUE;
                 $current_parent[] = $this->id;
                 $template['CURRENT_LINK'] = MENU_CURRENT_LINK_STYLE;
             }
         }
 
- 
         if ($this->_menu->_show_all || $current_link || $this->parent == 0 ||
             in_array($this->parent, $current_parent)) {
 

@@ -1,6 +1,10 @@
 {START_FORM}
 <table cellpadding="4">
   <tr>
+    <td><strong>{MAX_LINK_CHARACTERS_LABEL}</strong></td>
+    <td>{MAX_LINK_CHARACTERS}</td>
+  </tr>
+  <tr>
     <td><strong>{ADMIN_MODE_NOTE}</strong></td>
     <td>
        {ADMIN_MODE_1} {ADMIN_MODE_1_LABEL}<br />

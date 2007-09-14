@@ -4,9 +4,9 @@
    * @author Matthew McNaney <mcnaney at gmail dot com>
    */
 
-  // Limits the number of characters a menu link can be
-  // 0 means no limit
-define('MENU_TITLE_LIMIT', 25);
+  // This limit is now set in the menu settings tab. You
+  // you can ignore the below
+  // define('MENU_TITLE_LIMIT', 32);
 
 define('MENU_CURRENT_LINK_STYLE', 'current-link');
 

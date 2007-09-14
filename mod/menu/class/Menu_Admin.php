@@ -551,6 +551,10 @@ class Menu_Admin {
         $form->setLabel('float_mode', dgettext('menu', 'Use floating admin links'));
         $form->setMatch('float_mode', PHPWS_Settings::get('menu', 'float_mode'));
 
+        $form->addText('max_link_characters', PHPWS_Settings::get('menu', 'max_link_characters'));
+        $form->setLabel('max_link_characters', dgettext('menu', 'Maximum link characters'));
+        $form->setSize('max_link_characters', 3, 3);
+
         $form->addSubmit('submit', dgettext('menu', 'Save settings'));
 
         $tpl = $form->getTemplate();
@@ -571,9 +575,10 @@ class Menu_Admin {
         $form->addHidden('parent_id', $link->parent);
         $form->addText('title', $link->title);
         $form->setLabel('title', dgettext('menu', 'Title'));
-        if (MENU_TITLE_LIMIT > 0) {
-            $form->setSize('title', MENU_TITLE_LIMIT);
-            $form->setMaxSize('title', MENU_TITLE_LIMIT);
+        $char_limit = PHPWS_Settings::get('menu', 'max_link_characters');
+        if ($char_limit > 0) {
+            $form->setSize('title', $char_limit);
+            $form->setMaxSize('title', $char_limit);
         }
 
         $form->addText('url', $link->url);
@@ -689,6 +694,13 @@ class Menu_Admin {
         } else {
             $_SESSION['Menu_Admin_Mode'] = false;
             unset($_SESSION['Menu_Admin_Mode']);
+        }
+
+        if (!empty($_POST['max_link_characters'])) {
+            $chars = (int)$_POST['max_link_characters'];
+            if ($chars > 10 && $chars < 1000) {
+                PHPWS_Settings::set('menu', 'max_link_characters', $chars);
+            }
         }
 
         if (isset($_POST['float_mode'])) {

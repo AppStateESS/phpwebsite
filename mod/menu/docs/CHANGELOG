@@ -1,3 +1,8 @@
+14 September 2007
++ Maximum link size is now set in Menu's settings tab
++ Home links will now expand.
++ Updated files: templates/admin/settings.tpl
+
 Version 1.4.0
 -----------------------------------------------------------------
 11 September 2007
