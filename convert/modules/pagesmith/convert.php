@@ -180,6 +180,7 @@ function saveSections($sections, $id, $title, $key_id)
     $image_sec['secname']   = 'image1';
     $image_sec['sectype']   = 'image';
 
+    $image_set = false;
     foreach ($sections as $sec) {
         if (!empty($sec['title'])) {
             if (!$title_set) {
@@ -197,13 +198,28 @@ function saveSections($sections, $id, $title, $key_id)
             $image = @unserialize($sec['image']);
             $image_obj = convertImage($image);
             if ($image_obj && $image_obj->id) {
-                $image_sec['type_id'] = $image_obj->id;
-                $image_sec['width']   = $image_obj->width;
-                $image_sec['height']  = $image_obj->height;
-                $db = new PHPWS_DB('ps_block');
-                $db->addValue($image_sec);
-                if (PHPWS_Error::logIfError($db->insert())) {
-                    PHPWS_Core::log("Failed to save page block.", 'conversion.log');
+                if ($image_set) {
+                    switch ($sec['template']) {
+                    case 'image_left.tpl':
+                    case 'image_top_left.tpl':
+                    case 'image_float_left.tpl':
+                        $page_content[] = sprintf('<div style="float: left; display : inline; margin : 0px 10px 10px 0px">%s</div>', $image_obj->getTag());
+                        break;
+
+                    default:
+                        $page_content[] = sprintf('<div style="float : right; display : inline; margin : 0px 0px 10px 10px">%s</div>', $image_obj->getTag());
+                    }
+                } else {
+                    $image_sec['type_id'] = $image_obj->id;
+                    $image_sec['width']   = $image_obj->width;
+                    $image_sec['height']  = $image_obj->height;
+                    $db = new PHPWS_DB('ps_block');
+                    $db->addValue($image_sec);
+                    if (PHPWS_Error::logIfError($db->insert())) {
+                        PHPWS_Core::log("Failed to save page block.", 'conversion.log');
+                        continue;
+                    }
+                    $image_set = true;
                 }
             }
         }
