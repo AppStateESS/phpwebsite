@@ -1,3 +1,7 @@
+15 September 2007
++ Fixed edit link using "Create" as a title.
++ Edit window now resizes from small popup window.
+
 14 September 2007
 + Maximum link size is now set in Menu's settings tab
 + Home links will now expand.

@@ -331,8 +331,8 @@ class Menu_Link {
             $vars['command'] = 'edit_link';
             $prompt_js['address'] = PHPWS_Text::linkAddress('menu', $vars, TRUE);
             $prompt_js['label']   = $link;
-            $prompt_js['width']   = 500;
-            $prompt_js['height']  = 240;
+            $prompt_js['width']   = 425;
+            $prompt_js['height']  = 225;
             return javascript('open_window', $prompt_js);
         }
     }

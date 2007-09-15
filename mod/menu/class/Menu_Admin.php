@@ -589,7 +589,11 @@ class Menu_Admin {
 
         $template = $form->getTemplate();
 
-        $template['FORM_TITLE'] = dgettext('menu', 'Create Link');
+        if ($link->id) {
+            $template['FORM_TITLE'] = dgettext('menu', 'Edit Link');
+        } else {
+            $template['FORM_TITLE'] = dgettext('menu', 'Create Link');
+        }
         $template['CANCEL'] = javascript('close_window');
 
         if ($errors) {
@@ -597,6 +601,7 @@ class Menu_Admin {
         }
 
         $content = PHPWS_Template::process($template, 'menu', 'admin/offsite.tpl');
+        Layout::addJSHeader('<script type="text/javascript">self.resizeTo(425,225);</script>');
         Layout::nakedDisplay($content);
     }
 
