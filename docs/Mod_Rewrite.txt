@@ -2,6 +2,12 @@ Using Mod_Rewrite with phpWebSite
 by Matthew McNaney
 ---------------------------------------------------------------------
 
+Warning: please read this:
+http://httpd.apache.org/docs/2.0/howto/htaccess.html#when
+
+If you agree with their sentiment, then you can stop reading
+here. Without .htaccess, phpWebSite can not use mod_rewrite.
+
 When writing a module, you may find that some of your links are
 getting rather complicated.
 
@@ -27,14 +33,51 @@ First off, you have to be running Apache. If you are not, it won't
 work. There may be solutions for Microsoft IIS and other web servers
 but you will have to learn the differences yourself.
 
-Second, you need to configure Apache to use mod_rewrite. Look in your
-httpd.conf file for this line:
-LoadModule rewrite_module modules/mod_rewrite.so
-Add it if it is not there and restart your server.
+Second, you need to configure Apache to use mod_rewrite. If you don't
+have access to Apache configuration files you will need to ask the
+server admin to set these settings for you. If they refuse, then you
+can't use mod_rewrite.
 
-Third, look in your phpWebSite root directory and you should see a file
-named ".htaccess" (note the period). Uncomment all the lines by
-removing the pound sign (#) in front of each line.
+In Apache, look in your httpd.conf file for this line:
+LoadModule rewrite_module modules/mod_rewrite.so
+
+In Apache2, look for your mods-enabled directory (start looking in
+/etc/apache2/). List the directory and you will see several symbolic
+links. You should see one that looks something like this:
+rewrite.load -> ../mods-available/rewrite.load
+
+If you don't, create it:
+ln -s ../mods-available/rewrite.load
+
+If rewrite.load isn't in the mods-available directory, you will have
+to make it:
+
+Example of mods-available/rewrite.load
+LoadModule rewrite_module /usr/lib/apache2/modules/mod_rewrite.so
+
+If you don't have the module file, well, it is beyond the scope of
+this document.
+
+There is one more file to edit. In Apache, you will have a httpd.conf
+file. Open it and search for AllowOverride. There may be more than
+one. You are looking for the one that lists the directory where your
+sites are located:
+
+<Directory "/var/www/mysites">
+
+Change AllowOverride from None to All.
+
+In Apache2, go to the sites-available directory and look for your
+apache config file. If you only have one site, look for a "default"
+file. Follow the same steps above for locating your AllowOverride and
+change it to All.
+
+Now restart the Apache server. Go to your site. If you get a 500
+error, you did something wrong or I gave you bad advice. Restore your
+backup files or reverse my instructions and restart the server.
+
+Third, look in your phpWebSite root directory and verify the existance
+of a file named ".htaccess" (note the period).
 
 Finally, you will need to configure phpWebSite to use mod_rewrite. Go
 into your config/core/config.php file and change the define to:
