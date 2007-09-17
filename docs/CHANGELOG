@@ -5,6 +5,13 @@ its own separate CHANGELOG file.
 17 September 2007
 + Added notes to Mod_Rewrite doc.
 + More work on Web Pages, PageSmith, and Menu conversion.
++ Added rotate and resize image functions to File class. Resize is a
+  copy of file cabinet's.
++ Added some focus function calls to the open_window
+  javascript. Supposed to prevent window from getting lost behind the
+  parent window.
+
++ Updated: javascript/open_window/head.js
 
 13 September 2007
 + Uploaded PageSmith conversion. Still working out Menu kinks.

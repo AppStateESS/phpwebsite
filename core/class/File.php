@@ -310,6 +310,159 @@ class PHPWS_File {
         return $dirCreated;
     }
 
+
+    function imageCopy($path, $file_type)
+    {
+        if ($file_type == 'image/gif') {
+            return imagecreatefromgif($path);
+        } elseif ( $file_type == 'image/jpeg' || $file_type == 'image/pjpeg' ||
+                   $file_type == 'image/jpg' ) {
+            return imagecreatefromjpeg($path);
+        } elseif ( $file_type == 'image/png' || $file_type == 'image/x-png' ) {
+            return imagecreatefrompng($path);
+        } else {
+            return false;
+        }
+    }
+
+    function rotateImage($source_dir, $dest_dir, $degrees)
+    {
+        if (!extension_loaded('gd')) {
+            return false;
+        }
+
+        $size = getimagesize($source_dir);
+        if (empty($size)) {
+            return false;
+        }
+
+        $width     = & $size[0];
+        $height    = & $size[1];
+        $file_type = & $size['mime'];
+
+
+        if ($degrees > 360) {
+            $degrees = $degrees % 360;
+        }
+
+        $source = PHPWS_File::imageCopy($source_dir, $file_type);
+        $rotate = imagerotate($source, $degrees, 0);
+
+        if ($file_type == 'image/png'|| $file_type == 'image/x-png' ) {
+            $result = imagepng($rotate, $dest_dir);
+        } elseif ($file_type == 'image/gif') {
+            $result = imagegif($rotate, $dest_dir);
+        } elseif ( $file_type == 'image/jpeg' || $file_type == 'image/pjpeg' ||
+                   $file_type == 'image/jpg' ) {
+            $result = imagejpeg($rotate, $dest_dir);
+        } else {
+            return FALSE;
+        }
+
+        imagedestroy($rotate);        
+        if ($result) {
+            chmod($dest_dir, 0644);
+        }
+
+        return $result;
+    }
+
+    /**
+     * This is a modified version of the script written by feip at feip dot net.
+     * It was copied from php.net at:
+     * http://www.php.net/manual/en/function.imagecopyresized.php
+     */
+    function resizeImage($source_dir, $dest_dir, $new_width, $new_height, $force_png=false) {
+        if (empty($new_width) || empty($new_height)) {
+            return false;
+        }
+
+        if (!extension_loaded('gd')) {
+            if (!dl('gd.so')) {
+                @copy(PHPWS_HOME_DIR . 'images/mod/filecabinet/nogd.png', $dest_dir);
+                return true;
+            }
+        }
+
+        $size = getimagesize($source_dir);
+        if (empty($size)) {
+            return false;
+        }
+
+        $width     = & $size[0];
+        $height    = & $size[1];
+        $file_type = & $size['mime'];
+
+        if ( ($width < $new_width) &&
+             ($height < $new_height) ) {
+            return @copy($source_dir, $dest_dir);
+        }
+
+        $source_image = PHPWS_File::imageCopy($source_dir, $file_type);
+
+        $proportion_X = $width / $new_width;
+        $proportion_Y = $height / $new_height;
+
+        if($proportion_X > $proportion_Y ) {
+            $proportion = $proportion_Y;
+            $pure = $proportion_X / $proportion_Y;
+        } else {
+            $proportion = $proportion_X ;
+            $pure = $proportion_Y / $proportion_X;
+        }
+
+        $target['width'] = $new_width * $proportion;
+        $target['height'] = $new_height * $proportion;
+
+        $original['diagonal_center'] = round( sqrt( ($width*$width) + ($height*$height) ) / 2);
+        $target['diagonal_center'] = round( sqrt( ($target['width']*$target['width']) + ($target['height']*$target['height']) ) / 2);
+
+        $crop = round($original['diagonal_center'] - $target['diagonal_center']);
+
+        if ($width < $new_width && $height >= $new_height ||
+            $height < $new_height && $width >= $new_width) {
+            $target['y'] = $target['x'] = 0;
+        } else if($proportion_X < $proportion_Y ) {
+            $target['x'] = 0;
+            $target['y'] = round((($height/2)*$crop)/$original['diagonal_center']);
+        } else {
+            $target['x'] =  round((($width/2)*$crop)/$original['diagonal_center']);
+            $target['y'] = 0;
+        }
+
+        if(PHPWS_File::chkgd2()) {
+            $resampled_image = imagecreatetruecolor($new_width, $new_height);
+            imagealphablending($resampled_image, false);
+            imagesavealpha($resampled_image, true);
+        } else {
+            $resampled_image = imagecreate($new_width, $new_height);
+        }
+
+        $destination_x = 0;
+        $destination_y = 0;
+
+        imagecopyresampled($resampled_image,  $source_image,  $destination_x, $destination_y, $target['x'],
+                            $target['y'], $new_width, $new_height, $target['width'], $target['height']);
+
+        imagedestroy($source_image);
+
+        if ( $force_png || $file_type == 'image/png'|| $file_type == 'image/x-png' ) {
+            $result = imagepng($resampled_image, $dest_dir);
+        } elseif ($file_type == 'image/gif') {
+            $result = imagegif($resampled_image, $dest_dir);
+        } elseif ( $file_type == 'image/jpeg' || $file_type == 'image/pjpeg' ||
+                   $file_type == 'image/jpg' ) {
+            $result = imagejpeg($resampled_image, $dest_dir);
+        } else {
+            return FALSE;
+        }
+        if ($result) {
+            chmod($dest_dir, 0644);
+        }
+        imagedestroy($resampled_image);
+        return $result;
+    }
+
     /**
      * Creates a thumbnail of a jpeg, gif or png image.  (Gif images are converted to
      * jpeg thumbnails due to licensing issues.)  The thumbnail file is created as
@@ -526,4 +679,71 @@ class PHPWS_File {
         }
     }
 }
+
+
+/**
+ * This function was written by Thomaschaaf
+ * and copied from php.net
+ * http://us.php.net/manual/en/function.imagerotate.php
+ */
+if (!function_exists('imagerotate')) {
+    function imagerotate($image, $degrees) {
+        
+        $src_x = imagesx($image);
+        $src_y = imagesy($image);
+        if ($degrees == 180) {
+            $dest_x = $src_x;
+            $dest_y = $src_y;
+        } else {
+            $dest_x = $src_y;
+            $dest_y = $src_x;
+        }
+        /*
+        elseif ($src_x <= $src_y) {
+            $dest_x = $src_y;
+            $dest_y = $src_x;
+        }
+        elseif ($src_x >= $src_y) {
+            $dest_x = $src_y;
+            $dest_y = $src_x;
+        }
+        */
+
+        $rotate=imagecreatetruecolor($dest_x,$dest_y);
+        imagealphablending($rotate, false);
+               
+        switch ($degrees) {
+        case 270:
+            for ($y = 0; $y < ($src_y); $y++) {
+                for ($x = 0; $x < ($src_x); $x++) {
+                    $color = imagecolorat($image, $x, $y);
+                    imagesetpixel($rotate, $dest_x - $y - 1, $x, $color);
+                }
+            }
+            break;
+        case 90:
+            for ($y = 0; $y < ($src_y); $y++) {
+                for ($x = 0; $x < ($src_x); $x++) {
+                    $color = imagecolorat($image, $x, $y);
+                    imagesetpixel($rotate, $y, $dest_y - $x - 1, $color);
+                }
+            }
+            break;
+        case 180:
+            for ($y = 0; $y < ($src_y); $y++) {
+                for ($x = 0; $x < ($src_x); $x++) {
+                    $color = imagecolorat($image, $x, $y);
+                    imagesetpixel($rotate, $dest_x - $x - 1, $dest_y - $y - 1, $color);
+                }
+            }
+            break;
+        default:
+            $rotate = $image;
+        }
+        return $rotate;
+    }
+}
+
+
+
 ?>
