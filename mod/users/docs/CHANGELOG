@@ -1,3 +1,7 @@
+17 September 2007
++ Applied patch for item #1795677. Uses user status not logged status
+for the User->allow function. Thanks Eloi.
+
 Version 2.4.2
 ------------------------------------------------------------------
 30 August 2007

@@ -446,7 +446,7 @@ class PHPWS_User {
 
     function allow($module, $subpermission=null, $item_id=null, $itemname=null, $verify=false)
     {
-        if (!$this->isLogged() || !isset($this->_permission)) {
+        if (!$this->isUser() || !isset($this->_permission)) {
             return false;
         }
 
