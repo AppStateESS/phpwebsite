@@ -83,18 +83,12 @@ class PageSmith {
 
         case 'edit_page_header':
             $this->loadForms();
-            $this->loadPage();
-            $this->page->loadTemplate();
-            $this->page->loadSections(true, false);
             $this->forms->editPageHeader();
             $javascript = true;
             break;
 
         case 'edit_page_text':
             $this->loadForms();
-            $this->loadPage();
-            $this->page->loadTemplate();
-            $this->page->loadSections(true, false);
             $this->forms->editPageText();
             $javascript = true;
             break;

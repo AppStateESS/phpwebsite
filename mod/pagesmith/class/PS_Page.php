@@ -79,6 +79,7 @@ class PS_Page {
                     }
                 }
             }
+
             $this->_sections[$section->secname] = $section;
         }
 
@@ -260,7 +261,7 @@ class PS_Page {
 
     function view()
     {
-        if (Current_User::allow('pagesmith', 'edit', $this->id)) {
+        if (Current_User::allow('pagesmith', 'edit_page', $this->id)) {
             MiniAdmin::add('pagesmith', $this->editLink(sprintf(dgettext('pagesmith', 'Edit %s'), $this->title)));
         }
 

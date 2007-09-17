@@ -1,3 +1,9 @@
+Version 1.0.2
+-----------------------------------------------------------------
+17 September 2007
++ Fixed page title not appearing on form.
++ Fixed inability to edit a text area more than once.
+
 12 September 2007
 + Pages pinned to front no longer flag their key.
 

@@ -78,7 +78,6 @@ class PS_Forms {
         $form->addSubmit('submit', dgettext('pagesmith', 'Save page'));
         $this->pageTemplateForm($form);
         $tpl = $form->getTemplate();
-
         $jsvars['page_title_input'] = 'pagesmith_title';
         $jsvars['page_title_id'] = sprintf('%s-page-title', $pg_tpl_name);
         javascript('modules/pagesmith/pagetitle', $jsvars);
@@ -90,12 +89,17 @@ class PS_Forms {
     function editPageHeader()
     {
         $section_name = $_GET['section'];
-        $form = new PHPWS_Form('edit_header');
+
+        $vars['parent_section'] = 'pagesmith_' . $section_name;
+        $vars['edit_input']     = 'edit_header';
+        javascript('modules/pagesmith/passinfo', $vars);
+
+        $form = new PHPWS_Form('edit');
         $form->addHidden('tpl', $_GET['tpl']);
         $form->addHidden('module', 'pagesmith');
         $form->addHidden('aop', 'post_header');
         $form->addHidden('section_name', $section_name);
-        $form->addText('header', $this->ps->page->getSectionContent($section_name));
+        $form->addText('header');
         $form->setLabel('header', dgettext('pagesmith', 'Header'));
         $form->setSize('header', 40);
         $form->addSubmit(dgettext('pagesmith', 'Update'));
@@ -109,12 +113,17 @@ class PS_Forms {
     function editPageText()
     {
         $section_name = $_GET['section'];
-        $form = new PHPWS_Form('edit_header');
+
+        $vars['parent_section'] = 'pagesmith_' . $section_name;
+        $vars['edit_input']     = 'edit_text';
+        javascript('modules/pagesmith/passinfo', $vars);
+
+        $form = new PHPWS_Form('edit');
         $form->addHidden('tpl', $_GET['tpl']);
         $form->addHidden('module', 'pagesmith');
         $form->addHidden('aop', 'post_text');
         $form->addHidden('section_name', $section_name);
-        $form->addTextArea('text', $this->ps->page->getSectionContent($section_name));
+        $form->addTextArea('text');
         $form->useEditor('text', true, false, 720, 480);
         $form->addSubmit(dgettext('pagesmith', 'Update'));
         $tpl = $form->getTemplate();
@@ -182,7 +191,7 @@ class PS_Forms {
 
                 $vars['section'] = $name;
                 //                $js['type'] = 'button';
-                $js['label'] = PS_EDIT;
+                $js['label']   = PS_EDIT;
                 $js['address'] = PHPWS_Text::linkAddress('pagesmith', $vars, 1);
                 $tpl[$name . '_edit'] = javascript('open_window', $js);
 
@@ -198,6 +207,8 @@ class PS_Forms {
 
         if (empty($page->title)) {
             $tpl['page_title'] = dgettext('pagesmith', 'Page Title (edit above)');
+        } else {
+            $tpl['page_title'] = $page->title;
         }
 
         $pg_tpl =  PHPWS_Template::process($tpl, 'pagesmith', $template_file);

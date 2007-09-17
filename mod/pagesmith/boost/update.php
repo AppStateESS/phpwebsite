@@ -7,6 +7,8 @@
 
 function pagesmith_update(&$content, $currentVersion)
 {
+    $home_dir = PHPWS_Boost::getHomeDir();
+
     switch ($currentVersion) {
     case version_compare($currentVersion, '1.0.1', '<'):
         $content[] = '<pre>';
@@ -27,6 +29,36 @@ function pagesmith_update(&$content, $currentVersion)
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/pagesmith/boost/changes/1_0_1.txt');
         }
         $content[] = '</pre>';
+
+    case version_compare($currentVersion, '1.0.2', '<'):
+        $content[] = '<pre>';
+        $dest_dir   = $home_dir . 'javascript/modules/pagesmith/passinfo/';
+
+        if (!is_dir($dest_dir)) {
+            if (is_writable($home_dir . 'javascript/modules/pagesmith/') && @mkdir($dest_dir)) {
+                $content[] = '--- SUCCEEDED creating "javascript/modules/passinfo/" directory.';
+            } else {
+                $content[] = 'PageSmith 1.0.2 requires the javascript/modules/pagesmith/ directory be writable.</pre>';
+                return false;
+            }
+        } elseif (!is_writable($dest_dir)) {
+            $content[] = 'PageSmith 1.0.2 requires the javascript/modules/pagesmith/passinfo/ directory be writable.</pre>';
+            return false;
+        }
+
+        $source_dir = PHPWS_SOURCE_DIR . 'mod/pagesmith/javascript/passinfo/';
+        if (!PHPWS_File::copy_directory($source_dir, $dest_dir)) {
+            $content[] = "--- FAILED copying to $dest_dir.</pre>";
+            return false;
+        } else {
+            $content[] = "--- SUCCEEDED copying to $dest_dir directory.";
+        }
+
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/pagesmith/boost/changes/1_0_2.txt');
+        }
+        $content[] = '</pre>';
+
     } // end switch
 
     return true;

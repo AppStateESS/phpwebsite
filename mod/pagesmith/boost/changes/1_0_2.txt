@@ -1,0 +1,5 @@
+1.0.2 changes
+---------------
++ Fixed page title not appearing on form.
++ Fixed inability to edit a text area more than once.
++ Pages pinned to front no longer flag their key.
