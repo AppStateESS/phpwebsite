@@ -21,8 +21,8 @@ function convert()
         return _('PageSmith has already been converted.');
     }
 
-    if (!is_dir('images/pagesmith') || !is_writable('images/pagesmith')) {
-        return _('Please create a writable directory in images/ named "pagesmith". Copy all images from the old Web Pages image directory into it.');
+    if (!is_dir('images/pagemaster')) {
+        return _('Please create a directory in images/ named "pagemaster". Copy all images from the old Web Pages image directory into it.');
     }
 
     $mod_list = PHPWS_Core::installModList();
@@ -58,7 +58,7 @@ function convert()
 
     $percent = $batch->percentDone();
     $content[] = Convert::getGraph($percent);
-    //    $content[] = sprintf('%s&#37; done<br>', $batch->percentDone());
+
 
     $batch->completeBatch();
     
@@ -68,9 +68,9 @@ function convert()
         createSeqTables();
         $batch->clear();
         Convert::addConvert('pagesmith');
-        Convert::addConvert('webpage');
         PHPWS_Core::killSession('Folder_Id');
-        $content[] =  _('All done!');
+        $content[] = _('All done!');
+        $content[] = _('You may delete your images/pagemaster/ directory if you wish.');
         $content[] = '<a href="index.php">' . _('Go back to main menu.') . '</a>';
     }
     
@@ -230,6 +230,12 @@ function saveSections($sections, $id, $title, $key_id)
     }
 
     $text_sec['content'] = implode("\n", $page_content);
+
+    $search = new Search($key_id);
+
+    $search->addKeywords($text_sec['content']);
+    $search->addKeywords($header_sec['content']);
+    $search->save();
     
     $db = new PHPWS_DB('ps_text');
     $db->addValue($text_sec);
@@ -244,7 +250,7 @@ function convertImage($data)
 
     if (!isset($_SESSION['Folder_Id'])) {
         $folder = new Folder;
-        $folder->title = _('Conversion images');
+        $folder->title = _('PageSmith conversion');
         $folder->description = _('Images copied during a 0.10.x conversion.');
         if (PHPWS_Error::logIfError($folder->save())) {
             PHPWS_Core::log("Error creating saving conversion folder.", 'conversion.log');
@@ -267,7 +273,7 @@ function convertImage($data)
 
     $image_dir = $image->getPath();
 
-    $source_image = 'images/pagesmith/' . $image->file_name;
+    $source_image = 'images/pagemaster/' . $image->file_name;
 
     if (!is_file($source_image)) {
         PHPWS_Core::log("Missing source image: $source_image.", 'conversion.log');

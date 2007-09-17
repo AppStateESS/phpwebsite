@@ -10,11 +10,19 @@
 PHPWS_Core::initModClass('search', 'Search.php');
 PHPWS_Core::initModClass('webpage', 'Volume.php');
 PHPWS_Core::initModClass('webpage', 'Page.php');
+PHPWS_Core::initModClass('filecabinet', 'Folder.php');
+PHPWS_Core::initModClass('filecabinet', 'Image.php');
+
 
 function convert()
 {
     if (Convert::isConverted('webpage')) {
-        return _('Web pages have already been converted.');
+        return _('Web Pages have already been converted.');
+    }
+
+
+    if (!is_dir('images/pagemaster')) {
+        return _('Please create a directory in images/ named "pagemaster". Copy all images from the old Web Pages image directory into it.');
     }
 
     $mod_list = PHPWS_Core::installModList();
@@ -27,6 +35,10 @@ function convert()
         if (isset($_GET['webpage_method'])) {
             $_SESSION['Webpage_Method'] = $_GET['webpage_method'];
         } else {
+            if (Convert::isConverted('pagesmith')) {
+                $content[] = _('PageSmith has been converted as well. Make sure to check the defines in the menu convert.php file before running.');
+            }
+
             $content[] = _('There are two methods for converting your webpages:');
             $content[] = sprintf('<a href="index.php?command=convert&amp;package=webpage&amp;webpage_method=sep">%s</a>',
                                  _('Method 1 - Each section is placed into a separate page.'));
@@ -65,18 +77,16 @@ function convert()
 
     $percent = $batch->percentDone();
     $content[] = Convert::getGraph($percent);
-    //    $content[] = sprintf('%s&#37; done<br>', $batch->percentDone());
 
     $batch->completeBatch();
     
     if (!$batch->isFinished()) {
         Convert::forward($batch->getAddress());
-        //        $content[] =  $batch->continueLink();
     } else {
         createSeqTables();
         $batch->clear();
         Convert::addConvert('webpage');
-        Convert::addConvert('pagesmith');
+        PHPWS_Core::killSession('Folder_Id');
         unset($_SESSION['Webpage_Method']);
         $content[] =  _('All done!');
         $content[] = '<a href="index.php">' . _('Go back to main menu.') . '</a>';
@@ -192,7 +202,7 @@ function saveSections($sections, $volume_id, $title, $key_id)
             if (!empty($sec['title'])) {
                 $page->title = PHPWS_Text::parseInput(strip_tags(utf8_encode($sec['title'])));
             } else {
-                $page->title = null;
+                $page->title = _('Untitled');
             }
             $page->page_number = $pages;
             $page->template = 'basic.tpl';
@@ -207,20 +217,26 @@ function saveSections($sections, $volume_id, $title, $key_id)
             }
         }
 
-        $page_content[] = utf8_encode($sec['text']);
-
         if (!empty($sec['image'])) {
             $image = @unserialize($sec['image']);
-            if (is_array($image) && isset($image['name'])) {
-                $image_link = sprintf('<img src="%s" width="%s" height="%s" alt="%s" title="%s" />',
-                                      'images/webpage/' . utf8_encode($image['name']),
-                                      $image['width'],
-                                      $image['height'],
-                                      $image['alt'],
-                                      $image['alt']);
-                $page_content[] = $image_link;
+            $image_obj = convertImage($image);
+            if ($image_obj && $image_obj->id) {
+                switch ($sec['template']) {
+                case 'image_left.tpl':
+                case 'image_top_left.tpl':
+                case 'image_float_left.tpl':
+                    $page_content[] = sprintf('<div style="float: left; display : inline; margin : 0px 10px 10px 0px">%s</div>', $image_obj->getTag());
+                    break;
+                    
+                default:
+                    $page_content[] = sprintf('<div style="float : right; display : inline; margin : 0px 0px 10px 10px">%s</div>', $image_obj->getTag());
+                }
             }
         }
+
+
+        $page_content[] = preg_replace('/module=pagemaster(&|&amp;)page_user_op=view_page(&|&amp;)page_id=/i', 'module=webpage&id=',
+                                       utf8_encode($sec['text']));
 
         $pages++;
 
@@ -245,6 +261,71 @@ function saveSections($sections, $volume_id, $title, $key_id)
         }
     }
 }
+
+function convertImage($data)
+{
+    if (empty($data['name'])) {
+        return false;
+    }
+
+    if (!isset($_SESSION['Folder_Id'])) {
+        $folder = new Folder;
+        $folder->title = _('Web Page conversion');
+        $folder->description = _('Images copied during a 0.10.x conversion.');
+        if (PHPWS_Error::logIfError($folder->save())) {
+            PHPWS_Core::log("Error creating saving conversion folder.", 'conversion.log');
+            return false;
+        } else {
+            $_SESSION['Folder_Id'] = $folder->id;
+        }
+    } else {
+        $folder = new Folder($_SESSION['Folder_Id']);
+        if (!$folder->id) {
+            PHPWS_Core::log("Unable to load folder.", 'conversion.log');
+            return false;
+        }
+    }
+
+    $image = new PHPWS_Image;
+    $image->folder_id = $folder->id;
+    $image->file_name = $data['name'];
+    $image->file_directory = $folder->getFullDirectory();
+
+    $image_dir = $image->getPath();
+
+    $source_image = 'images/pagemaster/' . $image->file_name;
+
+    if (!is_file($source_image)) {
+        PHPWS_Core::log("Missing source image: $source_image.", 'conversion.log');
+        return false;
+    } else {
+        if (!@copy($source_image, $image_dir)) {
+            PHPWS_Core::log("Failed to copy $source_image to $image_dir", 'conversion.log');
+            return false;
+        }
+    }
+
+    $size = @getimagesize($image_dir);
+
+    if (!$size) {
+        return false;
+    }
+
+    $image->file_type = $size['mime'];
+    $image->size = filesize($image_dir);
+    $image->width = $size[0];
+    $image->height = $size[1];
+    $image->alt = $data['alt'];
+    $image->title = $data['alt'];
+
+    if (PHPWS_Error::logIfError($image->save(true, false, true))) {
+        PHPWS_Core::log("Failed to save Image object.", 'conversion.log');
+        return false;
+    } else {
+        return $image;
+    }
+}
+
 
 function createSeqTables()
 {

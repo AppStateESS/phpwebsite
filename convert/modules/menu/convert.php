@@ -13,15 +13,17 @@
  * Don't add http://
  */
 define('RELATIVE_URL', 'op.appstate.edu');
+define('FORCE_WEBPAGE_MODULE', false);
 
 function convert()
 {
-    if (Convert::isConverted('pagesmith')) {
+    if (FORCE_WEBPAGE_MODULE && Convert::isConverted('webpage')) {
+        $GLOBALS['Convert_mod'] = 'webpage';
+    } elseif (Convert::isConverted('pagesmith')) {
         $GLOBALS['Convert_mod'] = 'pagesmith';
     } elseif (Convert::isConverted('webpage')) {
         $GLOBALS['Convert_mod'] = 'webpage';
     }
-
 
     if (!isset($GLOBALS['Convert_mod']) && !isset($_GET['ignore'])) {
         $content[] = _('Any content modules using Menu Manager should be converted BEFORE continuing..');
