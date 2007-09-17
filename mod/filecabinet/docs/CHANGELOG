@@ -1,3 +1,14 @@
+17 September 2007
++ Fixed mislabeled error messages in File_Common
++ Added option to resize a large image on upload.
++ Added option to turn an image 90 degrees clockwise or counter clock
+  wise or 180 degrees on upload.
++ Increase image upload size to fit new options.
++ Moved resize function to Core File class.
+
+Updated: templates/image_edit.tpl
+
+
 Version 1.2.1
 --------------------------------------------------------------
 27 August 2007

@@ -136,7 +136,8 @@ class File_Common {
                 if ($this->id) {
                     return true;
                 } else {
-                    $this->_errors[] = PHPWS_Error::get(FC_NO_UPLOAD, 'filecabinet', 'PHPWS_Document::importPost', array($this->_max_size));
+                    $this->_errors[] = PHPWS_Error::get(FC_NO_UPLOAD, 'filecabinet', 'PHPWS_Document::importPost');
+                    return false;
                 }
                 break;
 
@@ -165,7 +166,7 @@ class File_Common {
 
             $this->file_type = $file_vars['type'];
 
-            if (!$this->allowSize()) {
+            if ($this->size && !$this->allowSize()) {
                 if ($this->_classtype == 'document') {
                     $this->_errors[] = PHPWS_Error::get(FC_DOCUMENT_SIZE, 'filecabinet', 'File_Common::importPost', array($this->size, $this->_max_size));
                 } elseif ($this->_classtype == 'image') {
@@ -189,18 +190,26 @@ class File_Common {
 
             if ($this->_classtype == 'image') {
                 list($this->width, $this->height, $image_type, $image_attr) = getimagesize($this->_upload->upload['tmp_name']);
-
-                if(!$this->allowDimensions()) {
-                    $this->_errors[] = PHPWS_Error::get(FC_IMAGE_DIMENSION, 'filecabinet', 'File_Common::importPost', array($this->width, $this->height, $this->_max_width, $this->_max_height));                
+                
+                $result = $this->prewriteResize();
+                if (PEAR::isError($result)) {
+                    $this->errors[] = $result;
                     return false;
                 }
+                
+                $result = $this->prewriteRotate();
+                if (PEAR::isError($result)) {
+                    $this->errors[] = $result;
+                    return false;
+                }
+                
             }
 
         } elseif ($this->_upload->isError()) {
             $this->_errors[] = $this->_upload->getMessage();
             return false;
         } elseif ($this->_upload->isMissing()) {
-            $this->_errors[] = PHPWS_Error::get(FC_IMG_SIZE, 'filecabinet', 'File_Common::importPost', array($this->size, $this->_max_size));
+            $this->_errors[] = PHPWS_Error::get(FC_NO_UPLOAD, 'filecabinet', 'File_Common::importPost');
             return false;
         }
 

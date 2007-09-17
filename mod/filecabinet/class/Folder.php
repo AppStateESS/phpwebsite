@@ -140,8 +140,8 @@ class Folder {
     function imageUploadLink()
     {
         $vars['address'] = 'index.php?module=filecabinet&aop=upload_image_form&folder_id=' . $this->id;
-        $vars['width']   = 540;
-        $vars['height']  = 460;
+        $vars['width']   = 600;
+        $vars['height']  = 600;
         $vars['title'] = $vars['label']   = dgettext('filecabinet', 'Add image');
         return javascript('open_window', $vars);
     }

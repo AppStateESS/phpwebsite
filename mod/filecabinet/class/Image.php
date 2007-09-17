@@ -186,8 +186,8 @@ class PHPWS_Image extends File_Common {
         $size = $this->popupSize();
 
         $values['address']     = $this->popupAddress();
-        $values['width']       = $size[0];
-        $values['height']      = $size[1];
+        $values['width']       = $size[0] + 50;
+        $values['height']      = $size[1] + 100;
         $values['window_name'] = 'image_view';
 
         return Layout::getJavascript('open_window', $values);
@@ -261,98 +261,9 @@ class PHPWS_Image extends File_Common {
     }
 
 
-    /**
-     * This is a modified version of the script written by feip at feip dot net.
-     * It was copied from php.net at:
-     * http://www.php.net/manual/en/function.imagecopyresized.php
-     */
-    function resize($dst, $new_width, $new_height, $force_png=false) {
-        if (!extension_loaded('gd')) {
-            if (!dl('gd.so')) {
-                @copy(PHPWS_HOME_DIR . 'images/mod/filecabinet/nogd.png', $dst);
-                return true;
-            }
-        }
-
-        $source_image_path = $this->getPath();
-
-        if ( ($this->width < $new_width) &&
-             ($this->height < $new_height) ) {
-            return @copy($source_image_path, $dst);
-        }
-
-
-        if ($this->file_type == 'image/gif') {
-            $source_image = imagecreatefromgif($source_image_path);
-        } elseif ( $this->file_type == 'image/jpeg' || $this->file_type == 'image/pjpeg' ||
-                   $this->file_type == 'image/jpg' ) {
-            $source_image = imagecreatefromjpeg($source_image_path);
-        } elseif ( $this->file_type == 'image/png' || $this->file_type == 'image/x-png' ) {
-            $source_image = imagecreatefrompng($source_image_path);
-        } else {
-            return false;
-        }
-
-        $proportion_X = $this->width / $new_width;
-        $proportion_Y = $this->height / $new_height;
-
-        if($proportion_X > $proportion_Y ) {
-            $proportion = $proportion_Y;
-            $pure = $proportion_X / $proportion_Y;
-        } else {
-            $proportion = $proportion_X ;
-            $pure = $proportion_Y / $proportion_X;
-        }
-
-        $target['width'] = $new_width * $proportion;
-        $target['height'] = $new_height * $proportion;
-
-        $original['diagonal_center'] = round( sqrt( ($this->width*$this->width) + ($this->height*$this->height) ) / 2);
-        $target['diagonal_center'] = round( sqrt( ($target['width']*$target['width']) + ($target['height']*$target['height']) ) / 2);
-
-        $crop = round($original['diagonal_center'] - $target['diagonal_center']);
-
-        if ($this->width < $new_width && $this->height >= $new_height ||
-            $this->height < $new_height && $this->width >= $new_width) {
-            $target['y'] = $target['x'] = 0;
-        } else if($proportion_X < $proportion_Y ) {
-            $target['x'] = 0;
-            $target['y'] = round((($this->height/2)*$crop)/$original['diagonal_center']);
-        } else {
-            $target['x'] =  round((($this->width/2)*$crop)/$original['diagonal_center']);
-            $target['y'] = 0;
-        }
-
-        if(PHPWS_File::chkgd2()) {
-            $resampled_image = imagecreatetruecolor($new_width, $new_height);
-            imagealphablending($resampled_image, false);
-            imagesavealpha($resampled_image, true);
-        } else {
-            $resampled_image = imagecreate($new_width, $new_height);
-        }
-
-        $destination_x = 0;
-        $destination_y = 0;
-
-        imagecopyresampled($resampled_image,  $source_image,  $destination_x, $destination_y, $target['x'],
-                            $target['y'], $new_width, $new_height, $target['width'], $target['height']);
-
-        imagedestroy($source_image);
-
-        if ( $force_png || $this->file_type == 'image/png'|| $this->file_type == 'image/x-png' ) {
-            $result = imagepng($resampled_image, $dst);
-        } elseif ($this->file_type == 'image/gif') {
-            $result = imagegif($resampled_image, $dst);
-        } elseif ( $this->file_type == 'image/jpeg' || $this->file_type == 'image/pjpeg' ||
-                   $this->file_type == 'image/jpg' ) {
-            $result = imagejpeg($resampled_image, $dst);
-        } else {
-            return FALSE;
-        }
-        if ($result) {
-            chmod($dst, 0644);
-        }
-        return $result;
+    function resize($dst, $new_width, $new_height, $force_png=false)
+    {
+        return PHPWS_File::resizeImage($this->getPath(), $dst, $new_width, $new_height, $force_png);
     }
 
     function makeThumbnail()
@@ -557,6 +468,84 @@ class PHPWS_Image extends File_Common {
     {
         $this->_max_height = (int)$height;
     }
+
+    function prewriteResize()
+    {
+        $size = explode('x', $_POST['resize']);
+
+        $req_width  = $size[0];
+        $req_height = $size[1];
+
+        if ($req_width < $this->width && $req_height < $this->height) {
+            $resize_width  = &$req_width;
+            $resize_height = &$req_height;
+        } elseif ($this->width > $this->_max_width || $this->height > $this->_max_height) {
+            $resize_width  = &$this->_max_width;
+            $resize_height = &$this->_max_height;
+        } else {
+            // The request is greater in size than the original.
+            return true;
+        }
+
+        $tmp_file = $this->_upload->upload['tmp_name'];
+        $cpy_file = $tmp_file . '.rs';
+        $result = PHPWS_File::resizeImage($cpy_file, $tmp_file, $resize_width, $resize_height);
+
+
+        if (!PHPWS_Error::logIfError($result) && !$result) {
+            return PHPWS_Error::get(FC_IMAGE_DIMENSION, 'filecabinet', 'File_Common::importPost', array($this->width, $this->height, $this->_max_width, $this->_max_height));                        
+        } else {
+            if (!@copy($cpy_file, $tmp_file)) {
+                return PHPWS_Error::get(FC_IMAGE_DIMENSION, 'filecabinet', 'File_Common::importPost', array($this->width, $this->height, $this->_max_width, $this->_max_height));
+            } else {
+                list($this->width, $this->height, $image_type, $image_attr) = getimagesize($tmp_file);
+                $image_name = $this->file_name;
+                $a_image = explode('.', $image_name);
+                $ext = array_pop($a_image);
+                $this->file_name = sprintf('%s_%sx%s.%s', implode('.', $a_image), $this->width, $this->height, $ext);
+            }
+        }
+        return true;
+    }
+
+    function prewriteRotate()
+    {
+        switch ($_POST['rotate']) {
+        case '90cw':
+            $degrees = 270;
+            break;
+
+        case '90ccw':
+            $degrees = 90;
+            break;
+
+        case '180':
+            $degrees = 180;
+            break;
+            
+        default:
+            return;
+        }
+
+        $tmp_file = $this->_upload->upload['tmp_name'];
+        $cpy_file = $tmp_file . '.rs';
+
+        $result = PHPWS_File::rotateImage($tmp_file, $cpy_file, $degrees);
+
+        if (!PHPWS_Error::logIfError($result) && !$result) {
+            return PHPWS_Error::get(FC_IMAGE_DIMENSION, 'filecabinet', 'File_Common::importPost', array($this->width, $this->height, $this->_max_width, $this->_max_height));                        
+        } else {
+            if (!@copy($cpy_file, $tmp_file)) {
+                return PHPWS_Error::get(FC_IMAGE_DIMENSION, 'filecabinet', 'File_Common::importPost', array($this->width, $this->height, $this->_max_width, $this->_max_height));
+            } else {
+                list($this->width, $this->height, $image_type, $image_attr) = getimagesize($tmp_file);
+                return true;
+            }
+        }
+        return true;
+
+    }
+
 }
 
 ?>

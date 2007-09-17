@@ -181,6 +181,48 @@ class FC_Image_Manager {
         $form->setSize('url', 50, 255);
         $form->setLabel('url', dgettext('filecabinet', 'Image link url'));
 
+
+        if ($this->max_width >= 1280 && $this->max_height >= 1024) {
+            $resizes['1280x1024'] = '1280x1024';
+        }
+
+        if ($this->max_width >= 1280 && $this->max_height >= 960) {
+            $resizes['1280x960'] = '1280x960';
+        }
+
+        if ($this->max_width >= 1024 && $this->max_height >= 768) {
+            $resizes['1024x768'] = '1024x768';
+        }
+
+        if ($this->max_width >= 800 && $this->max_height >= 600) {
+            $resizes['800x600']  = '800x600';
+        }
+
+        if ($this->max_width >= 640 && $this->max_height >= 480) {
+            $resizes['640x480']  = '640x480';
+        }
+
+        if (isset($resizes)) {
+            $temp = array_reverse($resizes, true);
+            $id = $this->max_width . 'x' . $this->max_height;
+            $temp[$id] = sprintf(dgettext('filecabinet', '%sx%s (limit)'), $this->max_width, $this->max_height);
+            $resizes = array_reverse($temp, true);
+        }
+
+        if (!empty($resizes)) {
+            $form->addSelect('resize', $resizes);
+            $form->setLabel('resize', dgettext('filecabinet', 'Scale down'));
+        }
+
+        $rotate['none']  = dgettext('filecabinet', 'None');
+        $rotate['90cw']  = dgettext('filecabinet', '90 degrees clockwise');
+        $rotate['90ccw'] = dgettext('filecabinet', '90 degrees counter clockwise');
+        $rotate['180']   = dgettext('filecabinet', '180 degrees');
+
+        $form->addSelect('rotate', $rotate);
+        $form->setLabel('rotate', dgettext('filecabinet', 'Rotate image'));
+
+
         switch (1) {
         case empty($this->image->url):
             $form->setMatch('link', 'none');
@@ -315,7 +357,7 @@ class FC_Image_Manager {
     function get()
     {
         if (!Current_User::allow('filecabinet')) {
-            return null;
+            return $this->image->getTag();
         }
 
         if ($this->image->id) {

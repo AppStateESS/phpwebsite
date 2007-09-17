@@ -40,6 +40,14 @@ function voila(foo) {
     <td>{LINK_LABEL}</td>
     <td>{LINK}</td>
   </tr>
+  <tr>
+    <td>{RESIZE_LABEL}</td>
+    <td>{RESIZE}</td>
+  </tr>
+  <tr>
+    <td>{ROTATE_LABEL}</td>
+    <td>{ROTATE}</td>
+  </tr>
   <tr style="visibility : {VISIBLE};" id="link-url">
     <td>{URL_LABEL}</td>
     <td>{URL}</td>
