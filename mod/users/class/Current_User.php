@@ -40,7 +40,7 @@ class Current_User {
      * @param  string   subpermission      Name of the module permission to verify
      * @param  integer  item_id            Id of the item to verify
      * @param  string   itename            Name of the item permission
-     * @param  boolean  unrestricted_only  If true, user must be have unrestricted 
+     * @param  boolean  unrestricted_only  If true, user must have unrestricted 
      *                                     priviledges for that module regardless of 
      *                                     module, subpermission, or item id
      */
