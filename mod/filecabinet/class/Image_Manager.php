@@ -3,6 +3,7 @@
   /**
    * @version $Id$
    * @author Matthew McNaney <mcnaney at gmail dot com>
+   * @modified Eloi George
    */
 
 PHPWS_Core::requireConfig('filecabinet');
@@ -10,14 +11,6 @@ PHPWS_Core::initModClass('filecabinet', 'Image.php');
 
 if (!defined('RESIZE_IMAGE_USE_DUPLICATE')) {
     define('RESIZE_IMAGE_USE_DUPLICATE', true);
-}
-
-if (!defined('FC_MAX_WIDTH_DISPLAY')) {
-    define('FC_MAX_WIDTH_DISPLAY', 300);
-}
-
-if (!defined('FC_MAX_HEIGHT_DISPLAY')) {
-    define('FC_MAX_HEIGHT_DISPLAY', 300);
 }
 
 class FC_Image_Manager {
@@ -28,6 +21,8 @@ class FC_Image_Manager {
     var $max_width  = 0;
     var $max_height = 0;
     var $max_size   = 0;
+    var $_noimage_max_width = 300;
+    var $_noimage_max_height = 300;
 
     function FC_Image_Manager($image_id=0)
     {
@@ -55,6 +50,15 @@ class FC_Image_Manager {
         $this->max_width = (int)$width;
     }
 
+    function setNoimageMaxWidth($width)
+    {
+        $this->_noimage_max_width = (int)$width;
+    }
+
+    function setNoimageMaxHeight($height)
+    {
+        $this->_noimage_max_height = (int)$height;
+    }
 
     function setMaxHeight($height)
     {
@@ -397,14 +401,15 @@ class FC_Image_Manager {
     function noImage()
     {
         $no_image = dgettext('filecabinet', 'No image');
-        if ($this->max_width > FC_MAX_WIDTH_DISPLAY) {
-            $width = FC_MAX_WIDTH_DISPLAY;
+
+        if ($this->max_width > $this->_noimage_max_width) {
+            $width = $this->_noimage_max_width;
         } else {
             $width = & $this->max_width;
         }
 
-        if ($this->max_height > FC_MAX_HEIGHT_DISPLAY) {
-            $height = FC_MAX_HEIGHT_DISPLAY;
+        if ($this->max_height > $this->_noimage_max_height) {
+            $height = $this->_noimage_max_height;
         } else {
             $height = & $this->max_height;
         }

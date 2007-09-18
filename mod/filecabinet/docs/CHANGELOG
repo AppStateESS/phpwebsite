@@ -1,3 +1,8 @@
+Version 1.2.2
+--------------------------------------------------------------
+18 September 2007
++ Added patch #1776068 to allow setting default no image size.
+
 17 September 2007
 + Fixed mislabeled error messages in File_Common
 + Added option to resize a large image on upload.

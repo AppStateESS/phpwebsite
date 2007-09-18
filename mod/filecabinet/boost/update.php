@@ -157,13 +157,7 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                        'templates/multimedia_view.tpl', 'templates/style.css',
                        'img/video_generic.png', 'templates/image_edit.tpl', 'conf/error.php');
 
-        if (PHPWS_Boost::updateFiles($files, 'filecabinet')) {
-            $content[] = '--- Copied the following files:';
-        } else {
-            $content[] = '--- FAILED copying the following files:';
-        }
-
-        $content[] = "    " . implode("\n    ", $files);
+        fc_updatefiles($files, $content);
 
         if (!PHPWS_Boost::inBranch()) {
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/changes/1_2_0.txt');
@@ -185,22 +179,37 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 
         $files = array('templates/settings.tpl');
 
-        if (PHPWS_Boost::updateFiles($files, 'filecabinet')) {
-            $content[] = '--- Copied the following files:';
-        } else {
-            $content[] = '--- FAILED copying the following files:';
-        }
-
-        $content[] = "    " . implode("\n    ", $files);
+        fc_updatefiles($files, $content);
 
         if (!PHPWS_Boost::inBranch()) {
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/changes/1_2_1.txt');
         }
         $content[] = '</pre>';
 
+    case version_compare($version, '1.2.2', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/image_edit.tpl');
+        fc_updatefiles($files, $content);
+
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/changes/1_2_2.txt');
+        }
+        $content[] = '</pre>';
     }
 
     return true;
+}
+
+function fc_updatefiles($files, &$content)
+{
+    if (PHPWS_Boost::updateFiles($files, 'filecabinet')) {
+        $content[] = '--- Copied the following files:';
+    } else {
+        $content[] = '--- FAILED copying the following files:';
+        }
+    
+    $content[] = '    ' . implode("\n    ", $files);
+    $content[] = '';
 }
 
 

@@ -489,7 +489,7 @@ class PHPWS_Image extends File_Common {
 
         $tmp_file = $this->_upload->upload['tmp_name'];
         $cpy_file = $tmp_file . '.rs';
-        $result = PHPWS_File::resizeImage($cpy_file, $tmp_file, $resize_width, $resize_height);
+        $result = PHPWS_File::resizeImage($tmp_file, $cpy_file, $resize_width, $resize_height);
 
 
         if (!PHPWS_Error::logIfError($result) && !$result) {
