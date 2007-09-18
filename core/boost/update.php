@@ -121,9 +121,20 @@ function core_update(&$content, $version) {
         $files = array('conf/error.php', 'javascript/editors/fckeditor/default.php', 
                        'javascript/editors/fckeditor/editor/custom.js');
         coreUpdateFiles($files, $content);
-        $content[] = '';
+
         if (!PHPWS_Boost::inBranch()) {
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/1_6_1.txt');
+        }
+        $content[] = '</pre>';
+
+    case version_compare($version, '1.6.2', '<'):
+        $content[] = '<pre>';
+
+        $files = array('javascript/open_window/head.js');
+        coreUpdateFiles($files, $content);
+        
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/1_6_2.txt');
         }
         $content[] = '</pre>';
     }
@@ -138,6 +149,7 @@ function coreUpdateFiles($files, &$content)
         $content[] = '--- Unable to update the following files:';
     }
     $content[] = "     " . implode("\n     ", $files);
+    $content[] = '';
 }
 
 

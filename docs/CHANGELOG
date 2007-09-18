@@ -2,6 +2,8 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+Version 1.6.2
+-------------------------------------------------------------------
 17 September 2007
 + Added notes to Mod_Rewrite doc.
 + More work on Web Pages, PageSmith, and Menu conversion.
