@@ -82,7 +82,7 @@ class Menu_Item {
     function getTemplateList()
     {
         $result = PHPWS_File::listDirectories(PHPWS_Template::getTemplateDirectory('menu') . 'menu_layout/');
-        if (PHPWS_Error::logIfError($result)) {
+        if (PHPWS_Error::logIfError($result) || empty($result)) {
             return null;
         }
         
