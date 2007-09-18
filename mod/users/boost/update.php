@@ -115,6 +115,14 @@ timeout INT NOT NULL default 0,
         }
         $content[] = '</pre>';
 
+    case version_compare($currentVersion, '2.4.3', '<'):
+        $content[] = '<pre>';
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/users/boost/changes/2_4_3.txt');
+        }
+        $content[] = '</pre>';
+
+
     } // End of switch statement
 
     return TRUE;

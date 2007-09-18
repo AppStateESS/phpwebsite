@@ -1,0 +1,4 @@
+2.4.3 changes
+---------------
++ Applied patch for item #1795677. Uses user status not logged status
+for the User->allow function. Thanks Eloi.
