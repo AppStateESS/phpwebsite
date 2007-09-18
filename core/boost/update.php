@@ -130,7 +130,11 @@ function core_update(&$content, $version) {
     case version_compare($version, '1.6.2', '<'):
         $content[] = '<pre>';
 
-        $files = array('javascript/open_window/head.js', 'javascript/js_calendar/default.php');
+        $files = array('javascript/open_window/head.js', 'javascript/js_calendar/default.php',
+                       'javascript/js_calendar/dhtmlgoodies_calendar/dhtmlgoodies_calendar.css',
+                       'javascript/js_calendar/dhtmlgoodies_calendar/dhtmlgoodies_calendar.js',
+                       'javascript/js_calendar/head.js', 'javascript/js_calendar/phpws_addon.js');
+
         coreUpdateFiles($files, $content);
         
         if (!PHPWS_Boost::inBranch()) {
