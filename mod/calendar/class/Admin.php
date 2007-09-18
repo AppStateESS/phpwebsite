@@ -352,6 +352,7 @@ class Calendar_Admin {
 
         $tpl = $form->getTemplate();
 
+        $js_vars['form_name'] = 'event_form';
         if (javascriptEnabled()) {
             $js_vars['date_name'] = 'start_date';
             $tpl['START_CAL'] = javascript('js_calendar', $js_vars);
