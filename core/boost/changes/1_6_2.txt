@@ -1,5 +1,6 @@
 1.6.2 changes
 --------------------------------------------------------------------
++ Fixed bug with js_calendar.
 + Added notes to Mod_Rewrite doc.
 + Added conversion for PageSmith.
 + Web Pages and Menu conversion should work better.
@@ -11,3 +12,4 @@
 + Added extra logic for Database to try to indexBy better.
 
 + Updated: javascript/open_window/head.js
+           javascript/js_calendar/default.php

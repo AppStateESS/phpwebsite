@@ -4,6 +4,9 @@ its own separate CHANGELOG file.
 
 Version 1.6.2
 -------------------------------------------------------------------
+18 September 2007
++ Fixed bug with js_calendar. Thanks Jeff.
+
 17 September 2007
 + Added notes to Mod_Rewrite doc.
 + More work on Web Pages, PageSmith, and Menu conversion.
