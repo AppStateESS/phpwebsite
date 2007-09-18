@@ -5,5 +5,7 @@ Version 1.4.1
 + Edit window now resizes from small popup window.
 + Maximum link size is now set in Menu's settings tab
 + Home links will now expand.
++ Added empty message to menu list.
 
 + Updated files: templates/admin/settings.tpl
+                 templates/admin/menu_list.tpl

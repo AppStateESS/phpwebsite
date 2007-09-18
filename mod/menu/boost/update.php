@@ -90,7 +90,7 @@ Please download 1.2.1.</pre>';
     case version_compare($currentVersion, '1.4.1', '<'):
         $content[] = '<pre>';
         
-        $files = array('templates/admin/settings.tpl');
+        $files = array('templates/admin/settings.tpl', 'templates/admin/menu_list.tpl');
         menuUpdateFiles($files, $content);
         if (!PHPWS_Boost::inBranch()) {
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/menu/boost/changes/1_4_1.txt');
