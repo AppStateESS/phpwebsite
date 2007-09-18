@@ -1,3 +1,6 @@
+12 September 2007
++ Added line of code to Feed to prevent error on bad data.
+
 Version 0.2.1
 -------------------------------------------------------------------------------
 22 August 2007
