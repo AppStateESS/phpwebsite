@@ -86,6 +86,17 @@ Please download 1.2.1.</pre>';
         }
                         
         $content[] = '</pre>';
+
+    case version_compare($currentVersion, '1.4.1', '<'):
+        $content[] = '<pre>';
+        
+        $files = array('templates/admin/settings.tpl');
+        menuUpdateFiles($files, $content);
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/menu/boost/changes/1_4_1.txt');
+        }
+                        
+        $content[] = '</pre>';
     }
     return true;
 }

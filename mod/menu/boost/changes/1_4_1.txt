@@ -1,0 +1,9 @@
+Version 1.4.1
+----------------------------------------------------------------
++ Error check added to Menu_Item.php
++ Fixed edit link using "Create" as a title.
++ Edit window now resizes from small popup window.
++ Maximum link size is now set in Menu's settings tab
++ Home links will now expand.
+
++ Updated files: templates/admin/settings.tpl

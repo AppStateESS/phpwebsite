@@ -10,3 +10,4 @@
   </tr>
 <!-- END listrows -->
 </table>
+{EMPTY_MESSAGE}
