@@ -162,6 +162,14 @@ function calendar_update(&$content, $version)
 + Removed calendar colors that matched default theme.
 + Added Spanish translation.</pre>';
 
+    case version_compare($version, '1.5.3', '<'):
+        $content[] = '<pre>';
+        calendarUpdateFiles(array('templates/style.css'), $content);
+        $content[] = '1.5.3 change
+-----------
++ Fixed issue with js_calendar.</pre>';
+
+
     } // end of switch
 
     return true;
