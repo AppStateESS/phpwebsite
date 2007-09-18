@@ -167,7 +167,7 @@ function calendar_update(&$content, $version)
         calendarUpdateFiles(array('templates/style.css'), $content);
         $content[] = '1.5.3 change
 -----------
-+ Fixed issue with js_calendar.</pre>';
++ Fixed issues with js_calendar.</pre>';
 
 
     } // end of switch
