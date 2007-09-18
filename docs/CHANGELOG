@@ -7,8 +7,8 @@ Version 1.6.2
 18 September 2007
 + Fixed several bugs with js_calendar. Thanks Jeff.
 + Updated files: 
-  javascript/js_calendar/dhtmlgoodies_calendar/dhtml_goodies_calendar.css
-  javascript/js_calendar/dhtmlgoodies_calendar/dhtml_goodies_calendar.js
+  javascript/js_calendar/dhtmlgoodies_calendar/dhtmlgoodies_calendar.css
+  javascript/js_calendar/dhtmlgoodies_calendar/dhtmlgoodies_calendar.js
   javascript/js_calendar/head.js
   javascript/js_calendar/phpws_addon.js
 

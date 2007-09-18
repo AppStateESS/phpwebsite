@@ -1,6 +1,6 @@
 1.6.2 changes
 --------------------------------------------------------------------
-+ Fixed bug with js_calendar.
++ Fixed js_calendar bugs.
 + Added notes to Mod_Rewrite doc.
 + Added conversion for PageSmith.
 + Web Pages and Menu conversion should work better.
