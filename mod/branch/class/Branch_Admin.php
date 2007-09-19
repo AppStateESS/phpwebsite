@@ -572,6 +572,7 @@ class Branch_Admin {
     {
         $connection = $this->checkConnection();
         PHPWS_DB::loadDB();
+
         switch ($connection) {
         case BRANCH_CONNECT_NO_DB:
             // connection made, but database does not exist
@@ -596,6 +597,7 @@ class Branch_Admin {
             break;
 
         case BRANCH_NO_CONNECTION:
+        case BRANCH_CONNECT_BAD_DB:
             // Failed connection
             $this->message[] = dgettext('branch', 'Could not connect to the database.');
             $this->edit_db();
@@ -782,6 +784,7 @@ class Branch_Admin {
             $content[] = dgettext('branch', 'Table prefix must be alphanumeric characters or underscores only');
             $result = false;
         }
+
         return $result;
     }
 
