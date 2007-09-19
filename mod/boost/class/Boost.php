@@ -107,6 +107,10 @@ class PHPWS_Boost {
         $continue = false;
         $content = array();
 
+        if ($inBranch && !empty($home_dir)) {
+            $GLOBALS['boost_branch_dir'] = $home_dir;
+        }
+
         if (!$this->checkDirectories($content)) {
             return implode('<br />', $content);
         }
@@ -932,12 +936,14 @@ class PHPWS_Boost {
     function checkDirectories(&$content)
     {
         $errorDir = true;
-        $directory[] = 'config/';
-        $directory[] = 'images/';
-        $directory[] = 'templates/';
-        $directory[] = 'files/';
-        $directory[] = 'logs/';
-        $directory[] = 'javascript/';
+        $home_dir = PHPWS_Boost::getHomeDir();
+
+        $directory[] = $home_dir . 'config/';
+        $directory[] = $home_dir . 'images/';
+        $directory[] = $home_dir . 'templates/';
+        $directory[] = $home_dir . 'files/';
+        $directory[] = $home_dir . 'logs/';
+        $directory[] = $home_dir . 'javascript/';
 
         foreach ($directory as $id=>$check){
             if (!is_dir($check)) {
