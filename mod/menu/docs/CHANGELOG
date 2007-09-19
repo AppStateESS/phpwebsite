@@ -1,3 +1,10 @@
+19 September 2007
++ Added option for the admin mode link to be in miniadmin instead of
+  under the menu.
++ Added option to automatically add a Home link to a new menu.
++ Added loadClass functions
++ Updated: templates/admin/settings.tpl
+
 Version 1.4.1
 ----------------------------------------------------------------
 18 September 2007

@@ -552,9 +552,22 @@ class Menu_Admin {
         $form->setLabel('float_mode', dgettext('menu', 'Use floating admin links'));
         $form->setMatch('float_mode', PHPWS_Settings::get('menu', 'float_mode'));
 
+        $form->addCheck('miniadmin', 1);
+        $form->setLabel('miniadmin', dgettext('menu', 'Use MiniAdmin instead of Admin mode link'));
+        $form->setMatch('miniadmin', PHPWS_Settings::get('menu', 'miniadmin'));
+
+        $form->addCheck('home_link', 1);
+        $form->setLabel('home_link', dgettext('menu', 'Add home link on new menus'));
+        $form->setMatch('home_link', PHPWS_Settings::get('menu', 'home_link'));
+
         $form->addText('max_link_characters', PHPWS_Settings::get('menu', 'max_link_characters'));
         $form->setLabel('max_link_characters', dgettext('menu', 'Maximum link characters'));
         $form->setSize('max_link_characters', 3, 3);
+
+        $form->addText('max_link_characters', PHPWS_Settings::get('menu', 'max_link_characters'));
+        $form->setLabel('max_link_characters', dgettext('menu', 'Maximum link characters'));
+        $form->setSize('max_link_characters', 3, 3);
+
 
         $form->addSubmit('submit', dgettext('menu', 'Save settings'));
 
@@ -713,6 +726,18 @@ class Menu_Admin {
             PHPWS_Settings::set('menu', 'float_mode', 1);
         } else {
             PHPWS_Settings::set('menu', 'float_mode', 0);
+        }
+
+        if (isset($_POST['miniadmin'])) {
+            PHPWS_Settings::set('menu', 'miniadmin', 1);
+        } else {
+            PHPWS_Settings::set('menu', 'miniadmin', 0);
+        }
+
+        if (isset($_POST['home_link'])) {
+            PHPWS_Settings::set('menu', 'home_link', 1);
+        } else {
+            PHPWS_Settings::set('menu', 'home_link', 0);
         }
 
         PHPWS_Settings::save('menu');

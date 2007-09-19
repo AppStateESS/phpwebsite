@@ -15,6 +15,14 @@
     <td><strong>{FLOAT_MODE_LABEL}</strong></td>
     <td>{FLOAT_MODE}</td>
   </tr>
+  <tr>
+    <td><strong>{MINIADMIN_LABEL}</strong></td>
+    <td>{MINIADMIN}</td>
+  </tr>
+  <tr>
+    <td><strong>{HOME_LINK_LABEL}</strong></td>
+    <td>{HOME_LINK}</td>
+  </tr>
 </table>
 {SUBMIT}
 {END_FORM}

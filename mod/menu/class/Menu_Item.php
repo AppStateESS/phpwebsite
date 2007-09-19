@@ -128,7 +128,21 @@ class Menu_Item {
         }
 
         $this->resetdb();
-        return $this->_db->saveObject($this);
+        $result = $this->_db->saveObject($this);
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+
+        if (PHPWS_Settings::get('menu', 'home_link')) {
+            $link = new Menu_Link;
+            $link->menu_id = $this->id;
+            $link->title   = _('Home');
+            $link->url     = 'index.php';
+            $link->key_id  = 0;
+            PHPWS_Error::logIfError($link->save());
+        }
+
+        return true;
     }
 
     /**
@@ -351,6 +365,8 @@ class Menu_Item {
             $style = sprintf('menu_layout/%s/%s', $this->template, $this->_style);
             Layout::addStyle('menu', $style);
         }
+        
+        $admin_link = !PHPWS_Settings::get('menu', 'miniadmin');
 
         $content_var = 'menu_' . $this->id;
 
@@ -385,14 +401,16 @@ class Menu_Item {
                     $tpl['CLIP'] = Menu::getUnpinLink($this->id, -1, $this->pin_all);
                 }
 
-                $vars['command'] = 'disable_admin_mode';
-                $vars['return'] = 1;
-                $tpl['ADMIN_LINK'] = PHPWS_Text::moduleLink(MENU_ADMIN_OFF, 'menu', $vars);
+                if ($admin_link) {
+                    $vars['command'] = 'disable_admin_mode';
+                    $vars['return'] = 1;
+                    $tpl['ADMIN_LINK'] = PHPWS_Text::moduleLink(MENU_ADMIN_OFF, 'menu', $vars);
+                }
 
                 if (isset($_SESSION['Menu_Pin_Links'])) {
                     $tpl['PIN_LINK'] = $this->getPinLink($this->id);
                 }
-            } else {
+            } elseif ($admin_link) {
                 $vars['command'] = 'enable_admin_mode';
                 $vars['return'] = 1;
                 $tpl['ADMIN_LINK'] = PHPWS_Text::moduleLink(MENU_ADMIN_ON, 'menu', $vars);

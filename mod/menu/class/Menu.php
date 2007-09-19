@@ -21,9 +21,9 @@ class Menu {
     function showPinned()
     {
         Layout::addStyle('menu');
-        PHPWS_Core::initModClass('menu', 'Menu_Item.php');
         $db = new PHPWS_DB('menus');
         $db->addWhere('pin_all', 1);
+        $db->loadClass('menu', 'Menu_Item.php');
         $result = $db->getObjects('Menu_Item');
 
         if (PEAR::isError($result)) {
@@ -42,6 +42,26 @@ class Menu {
         }
     }
     
+    function miniadmin()
+    {
+        if (!PHPWS_Settings::get('menu', 'miniadmin') ||
+            !Current_User::allow('menu')) {
+            return;
+        }
+
+        if (Menu::isAdminMode()) {
+            $vars['command'] = 'disable_admin_mode';
+            $vars['return'] = 1;
+            MiniAdmin::add('menu', PHPWS_Text::moduleLink(MENU_ADMIN_OFF, 'menu', $vars));
+        } else {
+            $vars['command'] = 'enable_admin_mode';
+            $vars['return'] = 1;
+            MiniAdmin::add('menu', PHPWS_Text::moduleLink(MENU_ADMIN_ON, 'menu', $vars));
+        }
+
+    }
+
+
     /**
      * Function called by mod developer to add their
      * link or to just show the menu on that item
@@ -56,11 +76,11 @@ class Menu {
         }
 
         Layout::addStyle('menu');
-        PHPWS_Core::initModClass('menu', 'Menu_Item.php');
 
         $db = new PHPWS_DB('menus');
         $db->addWhere('menu_assoc.key_id', $key->id);
         $db->addWhere('id', 'menu_assoc.menu_id');
+        $db->loadClass('menu', 'Menu_Item.php');
         $result = $db->getObjects('Menu_Item');
 
         if (PEAR::isError($result)) {
