@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+19 September 2007
++ Added '#' to characters looked for in the bb.php filter.
+
 Version 1.6.2
 -------------------------------------------------------------------
 18 September 2007
