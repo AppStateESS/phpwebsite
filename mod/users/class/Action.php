@@ -406,7 +406,8 @@ class User_Action {
 
         if (Current_User::isRestricted($key->module) ||
             !$key->allowEdit()) {
-            Current_User::disallow();
+            javascript('close_refresh', array('location'=>'index.php?module=users&action=user&command=login_page'));
+            Layout::nakedDisplay();
         }
 
         $content = User_Action::getPermissionForm($key);

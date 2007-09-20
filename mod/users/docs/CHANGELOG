@@ -1,3 +1,7 @@
+20 September 2007
++ Session timeout on permission popup refreshes parent to login
+  screen. 
+
 19 September 2007
 + Increase popup permission height.
 + A group can no longer be a member of itself.
