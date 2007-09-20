@@ -86,7 +86,7 @@ class Webpage_Admin {
         case 'restore_volume':
         case 'restore_page':
             if ( ( $volume->id 
-                   && ( !Current_User::isUser($volume->create_user_id) && !Current_User::authorized('webpage', 'edit_page', $volume->id) ) )
+                   && ( !Current_User::isUser($volume->create_user_id) && !Current_User::authorized('webpage', 'edit_page', $volume->id, 'volume') ) )
                  || ( !Current_User::authorized('webpage', 'edit_page') ) ) {
                 Current_User::disallow();
             }
@@ -94,7 +94,6 @@ class Webpage_Admin {
             $pagePanel = Webpage_Forms::pagePanel($volume, $version_id);
             $pagePanel->enableSecure();
         }
-
         switch ($command) {
             // web page admin
         case 'new':
@@ -538,8 +537,10 @@ class Webpage_Admin {
         $version = new Version('webpage_volume');
         $unapproved = $version->countUnapproved();
 
-        $link['title'] = sprintf(dgettext('webpage', 'Approval(%s)'), $unapproved);
-        $tabs['approve'] = $link;
+        if (Current_User::isUnrestricted('webpage')) {
+            $link['title'] = sprintf(dgettext('webpage', 'Approval(%s)'), $unapproved);
+            $tabs['approve'] = $link;
+        }
 
         $panel = new PHPWS_Panel('wp_main_panel');
         $panel->quickSetTabs($tabs);
@@ -602,10 +603,6 @@ class Webpage_Admin {
 
     function approvalView(&$volume, &$version)
     {
-        $approval = new Version_Approval('webpage', 'webpage_page', 'Webpage_Page');
-        $approval->_db->addOrder('page_number');
-        $pages = $approval->get();
-
         $template['PAGE_TITLE'] = $volume->title;
         $template['SUMMARY']    = $volume->getSummary();
         $template['SUMMARY_LABEL'] = dgettext('webpage', 'Summary');
@@ -670,6 +667,7 @@ class Webpage_Admin {
         $version = new Version('webpage_volume', $_GET['version_id']);
         $volume = new Webpage_Volume;
         $version->loadObject($volume);
+
         $pages = new Version_Approval('webpage', 'webpage_page');
         $pages->addWhere('volume_id', $volume->id);
         $unapproved_pages = $pages->get(TRUE);
@@ -695,7 +693,12 @@ class Webpage_Admin {
         }
 
         $volume->approved = 1;
-        $result = $volume->save();
+
+        // If this is a newly approved page, mark it so we can
+        // authorize the creator
+        $new_volume = $volume->key_id ? false : true;
+
+        $result = $volume->save(true);
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             return FALSE;
@@ -707,6 +710,10 @@ class Webpage_Admin {
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             return FALSE;
+        }
+
+        if ($new_volume) {
+            $version->authorizeCreator($volume->_key);
         }
         return TRUE;
     }

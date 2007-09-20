@@ -183,8 +183,7 @@ class Webpage_Page {
         $template['CONTENT'] = $this->getContent();
         $template['CURRENT_PAGE'] = $this->page_number;
 
-        if ( (Current_User::allow('webpage', 'edit_page') && Current_User::isUser($this->_volume->create_user_id))
-             || Current_User::allow('webpage', 'edit_page', $this->volume_id) ) {
+        If (Current_User::allow('webpage', 'edit_page', $this->volume_id, 'volume') ) {
             $vars = array('page_id'   => $this->id,
                           'volume_id' => $this->volume_id);
             if ($version) {
@@ -328,7 +327,7 @@ class Webpage_Page {
         
         if ( Current_User::isLogged() &&
              ( Current_User::isUser($this->_volume->create_user_id) || 
-               Current_User::allow('webpage', 'edit_page', $this->volume_id) ) ) {
+               Current_User::allow('webpage', 'edit_page', $this->volume_id, 'volume') ) ) {
             $vars = array('wp_admin'  => 'edit_page',
                           'page_id'   => $this->id,
                           'volume_id' => $this->volume_id);

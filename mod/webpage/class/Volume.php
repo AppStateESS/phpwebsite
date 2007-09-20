@@ -61,6 +61,7 @@ class Webpage_Volume {
         $this->loadPages();
         $approval = new Version_Approval('webpage', 'webpage_page', 'Webpage_Page');
         $approval->_db->addOrder('page_number');
+        $approval->_db->addWhere('volume_id', $this->id);
         $pages = $approval->get();
 
         if (!empty($pages)) {
@@ -222,7 +223,14 @@ class Webpage_Volume {
     function rowTags()
     {
         $vars['volume_id'] = $this->id;
-        if (Current_User::allow('webpage', 'edit_page', $this->id, 'volume')) {
+
+        /**
+         * Show edit link if volume is not approved and the last person to update
+         * is currently logged in. Otherwise allow to edit if user has normal 
+         * permissions.
+         */
+        if ( (!$this->approved && $this->update_user_id == Current_User::getId())
+             || Current_User::allow('webpage', 'edit_page', $this->id, 'volume')) {
             $vars['wp_admin'] = 'edit_webpage';
             if (Current_User::isRestricted('webpage')) {
                 $version = new Version('webpage_volume');
@@ -238,7 +246,7 @@ class Webpage_Volume {
         $links[] = $this->getViewLink();
 
         if (Current_User::isUnrestricted('webpage')) {
-            $links[] =         Current_User::popupPermission($this->key_id);
+            $links[] = Current_User::popupPermission($this->key_id);
             if (Current_User::allow('webpage', 'delete_page')) {
                 $vars['wp_admin'] = 'delete_wp';
                 $js_vars['QUESTION'] = sprintf(dgettext('webpage', 'Are you sure you want to delete &quot;%s&quot and all its pages?'),
@@ -254,16 +262,19 @@ class Webpage_Volume {
         $tpl['ACTION']       = implode(' | ', $links);
 
         $tpl['TITLE'] = sprintf('<a href="%s">%s</a>', $this->getViewLink(true), $this->title);
+        if (!$this->approved) {
+            $tpl['TITLE'] .= ' ' . dgettext('webpage', '[Unapproved]');
+        }
 
         $tpl['CHECKBOX'] = sprintf('<input type="checkbox" name="webpage[]" id="webpage" value="%s" />', $this->id);
 
-        if (Current_User::isUnrestricted('webpage') && Current_User::allow('webpage', 'delete_page')) {
-            if ($this->frontpage) {
-                $tpl['FRONTPAGE'] = dgettext('webpage', 'Yes');
-            } else {
-                $tpl['FRONTPAGE'] = dgettext('webpage', 'No');
-            }
+        if ($this->frontpage) {
+            $tpl['FRONTPAGE'] = dgettext('webpage', 'Yes');
+        } else {
+            $tpl['FRONTPAGE'] = dgettext('webpage', 'No');
+        }
 
+        if (Current_User::isUnrestricted('webpage')) {
             if ($this->active) {
                 $vars['wp_admin'] = 'deactivate_vol';
                 $active = PHPWS_Text::secureLink(dgettext('webpage', 'Yes'), 'webpage', $vars);
@@ -272,6 +283,8 @@ class Webpage_Volume {
                 $active = PHPWS_Text::secureLink(dgettext('webpage', 'No'), 'webpage', $vars);
             }
             $tpl['ACTIVE'] = $active;
+        } else {
+            $tpl['ACTIVE'] = $this->active ? dgettext('webpage', 'Yes') : dgettext('webpage', 'No');
         }
 
         return $tpl;
@@ -305,7 +318,7 @@ class Webpage_Volume {
         return true;
     }
 
-    function save()
+    function save($version_update=false)
     {
         PHPWS_Core::initModClass('version', 'Version.php');
 
@@ -313,9 +326,11 @@ class Webpage_Volume {
             return PHPWS_Error::get(WP_TPL_TITLE_MISSING, 'webpages', 'Volume::save');
         }
 
-        $this->update_user_id = Current_User::getId();
-        $this->updated_user   = Current_User::getUsername();
-        $this->date_updated   = mktime();
+        if (!$version_update) {
+            $this->update_user_id = Current_User::getId();
+            $this->updated_user   = Current_User::getUsername();
+            $this->date_updated   = mktime();
+        }
 
         if (!$this->id) {
             $new_vol = true;
@@ -338,27 +353,24 @@ class Webpage_Volume {
         if ($this->approved) {
             $update = (!$this->key_id) ? true : false;
 
-            $key = $this->saveKey();
+            $this->_key = $this->saveKey();
             if ($update) {
                 $this->_db->saveObject($this);
             }
             $search = new Search($this->key_id);
             $search->addKeywords($this->title);
             $search->addKeywords($this->summary);
-            $result = $search->save();
-            if (PEAR::isError($result)) {
-                return $result;
-            }
+            PHPWS_Error::logIfError($search->save());
         }
 
-        $version = new Version('webpage_volume');
-        $version->setSource($this);
-        $version->setApproved($this->approved);
-        if ($this->approved) {
-            $version->authorizeCreator($key);
+        if (!$version_process) {
+            $version = new Version('webpage_volume');
+            $version->setSource($this);
+            $version->setApproved($this->approved);
+            
+            return $version->save();
         }
-
-        return $version->save();
+        return true;
     }
 
     function saveKey()
@@ -378,7 +390,9 @@ class Webpage_Volume {
         $key->setSummary($this->summary);
         $key->setUrl($this->getViewLink(true));
 
-        $result = $key->save();
+        if (PHPWS_Error::logIfError($key->save())) {
+            return null;
+        }
         $this->key_id = $key->id;
         return $key;
     }
@@ -472,7 +486,7 @@ class Webpage_Volume {
         }
 
         if ( (Current_User::allow('webpage', 'edit_page') && Current_User::isUser($this->create_user_id)) || 
-             Current_User::allow('webpage', 'edit_page', $this->id)) {
+             Current_User::allow('webpage', 'edit_page', $this->id, 'volume')) {
             $vars['wp_admin'] = 'edit_header';
             $vars['volume_id'] = $this->id;
             if ($version) {

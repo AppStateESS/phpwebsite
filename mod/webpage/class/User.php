@@ -33,7 +33,6 @@ class Webpage_User {
             $volume->loadKey();
             if (!$volume->_key->allowView()) {
                 Current_User::requireLogin();
-                //                PHPWS_Core::errorPage(404);
             }
             @$page = $_GET['page'];
             Layout::add($volume->view($page));
@@ -41,7 +40,7 @@ class Webpage_User {
             break;
 
         default:
-            echo $command;
+            PHPWS_Core::errorPage('404');
             break;
         }
 

@@ -183,8 +183,10 @@ class Webpage_Forms {
         $pager->addRowTags('rowTags');
         $pager->addToggle(' ');
         $pager->setSearch('title');
-        $pager->addWhere('approved', 1);
-
+        $pager->db->addWhere('approved', 1);
+        $pager->db->addWhere('approved', 0, '=', 'or', 'up');
+        $pager->db->addWhere('update_user_id', Current_User::getId(), '=', 'and', 'up');
+        $pager->db->setGroupConj('up', 'or');
         $content = $pager->get();
 
         return $content;

@@ -1,15 +1,15 @@
 {TOTAL_ROWS}
 {START_FORM}
 <table width="100%">
-  <tr>
+  <tr class="smaller">
     <th width="1%">&nbsp;</th>
     <th>{TITLE_SORT} {TITLE_LABEL}</th>
-    <th>{DATE_CREATED_SORT}&nbsp;{DATE_CREATED_LABEL}<br />
+    <th width="20%">{DATE_CREATED_SORT}&nbsp;{DATE_CREATED_LABEL}<br />
         {DATE_UPDATED_SORT}&nbsp;{DATE_UPDATED_LABEL}</th>
-    <th>{CREATED_USER_SORT}&nbsp;{CREATED_USER_LABEL}<br />
+    <th width="15%">{CREATED_USER_SORT}&nbsp;{CREATED_USER_LABEL}<br />
         {UPDATED_USER_SORT}&nbsp;{UPDATED_USER_LABEL}</th>
-    <th>{FRONTPAGE_SORT}&nbsp;{FRONTPAGE_LABEL}</th>
-    <th>{ACTIVE_SORT}&nbsp;{ACTIVE_LABEL}</th>
+    <th width="10%">{ACTIVE_SORT}&nbsp;{ACTIVE_LABEL}<br />
+        {FRONTPAGE_SORT}&nbsp;{FRONTPAGE_LABEL}</th>
     <th>{ACTION_LABEL}</th>
   </tr>
 <!-- BEGIN listrows -->
@@ -18,8 +18,7 @@
     <td>{TITLE}</td>
     <td>{DATE_CREATED}<br />{DATE_UPDATED}</td>
     <td>{CREATED_USER}<br />{UPDATED_USER}</td>
-    <td>{FRONTPAGE}</td>
-    <td>{ACTIVE}</td>
+    <td>{ACTIVE}<br />{FRONTPAGE}</td>
     <td>{ACTION}</td>
   </tr>
 <!-- END listrows -->

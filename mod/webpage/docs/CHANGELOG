@@ -1,3 +1,30 @@
+20 September 2007
++ Several permission checks were not using the correct item name
+  (volume).
++ Approval tab is no longer seen by restricted users.
++ Removed duplicate approval call.
++ Fixed: Approval pages where not limited by volume number causing all
+  unapproved pages to list when a volume was viewed.
++ Unapproved volumes will appear on the list by for the person who
+  last updated them. This will allow them to edit while still in the
+  queue.
++ Unapproved pages are listed with an [Unapproved] label in the volume
+  listing. 
++ Fixed: Restricted users were not seeing the front page and active
+  status. 
++ Fixed: When volumes were approved, the approver was getting the
+  update status applied to them. There is a parameter on the save
+  function to prevent that now.
++ Fixed: The key save for the volume was not error checked.
++ Incorrect commands to the user class will forward to a 404 page.
++ The creator of a web page is no longer given edit rights by default.
++ After approved, edit item rights are given to the user's
+  groups. Groups must have edit rights to receive item rights.
++ Altered column widths and joined active and front page.
++ Tidied the header.tpl to not show bars for admin options.
+
++ Updated: templates/forms/list.tpl, templates/header.tpl
+
 Version 0.5.5
 ------------------------------------------------------------------------
 31 August 2007
