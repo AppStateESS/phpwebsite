@@ -1,3 +1,5 @@
+Version 1.0.0
+-------------------------------------------------------------------------
 20 September 2007
 + Several permission checks were not using the correct item name
   (volume).

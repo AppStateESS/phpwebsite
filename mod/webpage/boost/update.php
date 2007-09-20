@@ -52,6 +52,15 @@ Please download version 0.5.3</pre>';
 + Wrapped each page template with webpage-page classed div.
 </pre>';
 
+    case version_compare($currentVersion, '1.0.0', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/forms/list.tpl', 'templates/header.tpl');
+        webpageUpdateFiles($files, $content);
+      
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/webpage/boost/changes/1_0_0.txt');
+        }
+        $content[] = '</pre>';
     }
 
     return TRUE;
