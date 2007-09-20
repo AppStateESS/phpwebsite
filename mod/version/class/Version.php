@@ -50,19 +50,23 @@ class Version {
         }
     }
 
-    function setId($id){
+    function setId($id)
+    {
         $this->id = (int)$id;
     }
 
-    function getId(){
+    function getId()
+    {
         return $this->id;
     }
 
-    function getVersionId(){
+    function getVersionId()
+    {
         return $this->id;
     }
 
-    function getCreationDate($format=false){
+    function getCreationDate($format=false)
+    {
         if ($format = true) {
             return strftime('%c', $this->vr_create_date);
         } else {
@@ -70,7 +74,8 @@ class Version {
         }
     }
 
-    function getEditedDate($format=false){
+    function getEditedDate($format=false)
+    {
         if ($format = true) {
             return strftime('%c', $this->vr_edit_date);
         } else {
@@ -78,19 +83,23 @@ class Version {
         }
     }
 
-    function getCreator(){
+    function getCreator()
+    {
         return $this->vr_creator;
     }
 
-    function getEditor(){
+    function getEditor()
+    {
         return $this->vr_editor;
     }
 
-    function setApproved($approve){
+    function setApproved($approve)
+    {
         $this->vr_approved = (int)$approve;
     }
 
-    function isApproved(){
+    function isApproved()
+    {
         return (bool)$this->vr_approved;
     }
 
@@ -116,7 +125,8 @@ class Version {
         }
     }
 
-    function getSource($include_id=true){
+    function getSource($include_id=true)
+    {
         if (empty($this->source_data)) {
             return NULL;
         }
@@ -134,7 +144,8 @@ class Version {
         return $source;
     }
 
-    function setSource($source_data){
+    function setSource($source_data)
+    {
         if (is_object($source_data)) {
             $data_values = get_object_vars($source_data);
         }
@@ -153,11 +164,13 @@ class Version {
         return true;
     }
 
-    function setSourceId($id){
+    function setSourceId($id)
+    {
         $this->source_id = (int)$id;
     }
 
-    function getSourceId(){
+    function getSourceId()
+    {
         return $this->source_id;
     }
 
@@ -285,7 +298,8 @@ class Version {
         return $db->delete();
     }
 
-    function _clearCurrents(){
+    function _clearCurrents()
+    {
         $db = new PHPWS_DB($this->version_table);
         $db->addWhere('source_id', $this->source_id);
         $db->addValue('vr_current', 0);
@@ -302,7 +316,8 @@ class Version {
         return $version_db->count();
     }
 
-    function getUnapproved($restrict=false){
+    function getUnapproved($restrict=false)
+    {
         $version_db = new PHPWS_DB($this->version_table);
 
         if ($restrict == true) {
@@ -325,7 +340,8 @@ class Version {
         return $unapproved_list;
     }
 
-    function _plugInVersion($data){
+    function _plugInVersion($data)
+    {
         if (!is_array($data)) {
             return false;
         }
@@ -336,7 +352,8 @@ class Version {
         return true;
     }
 
-    function _copyVersionColumn($col_name){
+    function _copyVersionColumn($col_name)
+    {
         $source_db = new PHPWS_DB($this->source_table);
         $version_db = new PHPWS_DB($this->version_table);
 
@@ -350,7 +367,8 @@ class Version {
         return $version_db->addTableColumn($col_name, $col_info['parameters'], NULL, $index);
     }
 
-    function _getVersionNumber(){
+    function _getVersionNumber()
+    {
         if (empty($this->source_id)) {
             return 1;
         }
@@ -396,7 +414,8 @@ class Version {
         return true;
     }
 
-    function _buildVersionTable(){
+    function _buildVersionTable()
+    {
 
         $source_db = new PHPWS_DB($this->source_table);
         $allColumns = $source_db->getTableColumns(true);
@@ -444,7 +463,8 @@ class Version {
      * If the source data is empty
      * @returns true upon success, false is source is empty
      */
-    function loadObject(&$object){
+    function loadObject(&$object)
+    {
         $data = $this->getSource();
         if (!$data) {
             return false;
@@ -453,7 +473,8 @@ class Version {
         return true;
     }
 
-    function isWaitingApproval(){
+    function isWaitingApproval()
+    {
         $db = new PHPWS_DB($this->version_table);
         $db->addWhere('source_id', $this->source_id);
         $db->addWhere('vr_approved', 0);
@@ -461,7 +482,8 @@ class Version {
         return $db->select('one');
     }
 
-    function authorizeCreator(&$key){
+    function authorizeCreator(&$key)
+    {
         return Users_Permission::giveItemPermission($this->getCreator(), $key);
     }
 
@@ -521,7 +543,8 @@ class Version {
     /**
      * Replaces a current version with an older version
      */
-    function restore(){
+    function restore()
+    {
         $db = new PHPWS_DB($this->source_table);
         $db->addWhere('id', $this->source_id);
         $data = $this->getSource();
