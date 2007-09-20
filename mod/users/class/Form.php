@@ -290,6 +290,7 @@ class User_Form {
             $_SESSION['Last_Member_Search'] = preg_replace('/[\W]+/', '', $_POST['search_member']);
             $db = new PHPWS_DB('users_groups');
             $db->addWhere('name', $_SESSION['Last_Member_Search']);
+            $db->addWhere('name', $group->name, '!=');
             $db->addColumn('id');
             $result = $db->select('one');
 

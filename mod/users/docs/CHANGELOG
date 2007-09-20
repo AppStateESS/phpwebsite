@@ -1,4 +1,8 @@
-17 September 2007
+19 September 2007
++ A group can no longer be a member of itself.
++ Group file tidied. allow parameter renamed module for clarity.
++ giveItemPermission now checks each group for edit permission before
+  giving them item rights.
 
 Version 2.4.3
 --------------------------------------------------------------------

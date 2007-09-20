@@ -488,7 +488,10 @@ class Users_Permission {
         return $db->delete();
     }
 
-
+    /**
+     * Although called via Current_User, this functions gives
+     * a group with edit permissions the right to edit this item.
+     */
     function giveItemPermission($user_id, &$key)
     {
         $user = new PHPWS_User($user_id);
@@ -499,9 +502,17 @@ class Users_Permission {
         }
 
         if (empty($key->_edit_groups)) {
-            $key->_edit_groups = $groups;
-        } else {
-            $key->_edit_groups = array_merge($key->_edit_groups, $groups);
+            $key->_edit_groups = array();
+        }
+
+        PHPWS_Core::initModClass('users', 'Group.php');
+
+        foreach ($groups as $group_id) {
+            $group_obj = new PHPWS_Group($group_id, false);
+            if ( !in_array($group_id, $key->_edit_groups) &&
+                 $group_obj->allow($key->module, $key->edit_permission) ) {
+                $key->_edit_groups[] = $group_id;
+            }
         }
         return $key->save();
     }

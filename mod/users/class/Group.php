@@ -217,30 +217,33 @@ class PHPWS_Group {
         $this->clearMembership();
     }
 
-    function allow($itemName, $permission=NULL, $item_id=NULL, $itemname=NULL)
+    function allow($module, $permission=NULL, $item_id=NULL, $itemname=NULL)
     {
         PHPWS_Core::initModClass('users', 'Permission.php');
 
-        if (!isset($this->_permission))
+        if (!isset($this->_permissions)) {
             $this->loadPermissions();
+        }
 
-        return $this->_permission->allow($itemName, $permission, $item_id, $itemname);
+        return $this->_permission->allow($module, $permission, $item_id, $itemname);
     }
 
     function getPermissionLevel($module)
     {
         PHPWS_Core::initModClass('users', 'Permission.php');
 
-        if (!isset($this->_permission))
+        if (!isset($this->_permission)) {
             $this->loadPermissions();
+        }
 
         return $this->_permission->getPermissionLevel($module);
     }
 
     function loadPermissions($loadAll=TRUE)
     {
-        if ($loadAll && isset($this->_groups))
+        if ($loadAll && isset($this->_groups)) {
             $groups = $this->_groups;
+        }
 
         $groups[] = $this->getId();
         $this->_permission = new Users_Permission($groups);
