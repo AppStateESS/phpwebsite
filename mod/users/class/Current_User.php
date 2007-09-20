@@ -291,7 +291,7 @@ class Current_User {
         }
 
         $js_vars['width'] = 350;
-        $js_vars['height'] = 325;
+        $js_vars['height'] = 350;
 
         $js_vars['address'] = sprintf('index.php?module=users&action=popup_permission&key_id=%s&authkey=%s',$key_id, Current_User::getAuthKey());
 
