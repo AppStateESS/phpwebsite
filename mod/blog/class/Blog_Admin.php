@@ -430,16 +430,18 @@ class Blog_Admin {
         $listLink = 'index.php?module=blog&amp;action=admin';
         $listCommand = array ('title'=>dgettext('blog', 'List'), 'link'=> $listLink);
 
-        $version = new Version('blog_entries');
-        $unapproved = $version->countUnapproved();
-
-        if (PEAR::isError($unapproved)) {
-            PHPWS_Error::log($unapproved);
-            $unapproved = '??';
+        if (Current_User::isUnrestricted('blog')) {
+            $version = new Version('blog_entries');
+            $unapproved = $version->countUnapproved();
+            
+            if (PEAR::isError($unapproved)) {
+                PHPWS_Error::log($unapproved);
+                $unapproved = '??';
+            }
+            $approvalLink = 'index.php?module=blog&amp;action=admin';
+            $approvalCommand = array ('title'=>sprintf(dgettext('blog', 'Approval (%s)'), $unapproved), 'link'=> $approvalLink);
         }
-        $approvalLink = 'index.php?module=blog&amp;action=admin';
-        $approvalCommand = array ('title'=>sprintf(dgettext('blog', 'Approval (%s)'), $unapproved), 'link'=> $approvalLink);
-
+         
         $tabs['new'] = &$newCommand;
 
         if (Current_User::allow('blog', 'edit_blog')) {
