@@ -4,9 +4,9 @@
   (volume).
 + Approval tab is no longer seen by restricted users.
 + Removed duplicate approval call.
-+ Fixed: Approval pages where not limited by volume number causing all
++ Fixed: Approval pages were not limited by volume number causing all
   unapproved pages to list when a volume was viewed.
-+ Unapproved volumes will appear on the list by for the person who
++ Unapproved volumes will appear on the list for the person who
   last updated them. This will allow them to edit while still in the
   queue.
 + Unapproved pages are listed with an [Unapproved] label in the volume
