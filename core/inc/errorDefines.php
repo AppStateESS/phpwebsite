@@ -132,6 +132,7 @@ define('KEY_PERM_COLUMN_MISSING',     -1401);
 define('KEY_UNREG_FILE_MISSING',      -1402);
 define('KEY_UNREG_FUNC_MISSING',      -1403);
 define('KEY_RESTRICT_NO_TABLE',       -1404);
+define('KEY_DUPLICATE',               -1405);
 
 /*********** Cookie.php ******************/
 define('COOKIE_SET_FAILED',           -1600);
