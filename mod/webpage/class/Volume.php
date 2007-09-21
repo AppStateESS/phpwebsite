@@ -542,7 +542,8 @@ class Webpage_Volume {
         $this->loadKey();
 
         if (!$this->_key->allowView()) {
-            Current_User::requireLogin();
+            Current_User::disallow();
+            return;
         }
 
         Layout::addStyle('webpage');

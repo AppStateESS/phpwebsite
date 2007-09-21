@@ -1,5 +1,15 @@
 Version 1.0.0
 -------------------------------------------------------------------------
+21 September 2007
++ New volumes will forward the user to the add page form after header
+  creation. 
++ View permissions are now observed in the list pages screen.
++ Using new link_title option in Control Panel so the shortened tabs
+  have more information.
++ Fixed: On failing allowView, the volume would forward the user to
+  the login screen. If the user was already logged in however, they
+  would get to see the Volume anyway.
+
 20 September 2007
 + Several permission checks were not using the correct item name
   (volume).

@@ -22,6 +22,7 @@ class Webpage_Forms {
         if (!empty($volume->_pages)) {
             foreach ($volume->_pages as $page_id => $page) {
                 if (!empty($page->title)) {
+                    $link['link_title'] = & $page->title;
                     if (strlen($page->title) > 12) {
                         $title = substr($page->title, 0, 10);
                     } else {
@@ -183,6 +184,7 @@ class Webpage_Forms {
         $pager->addRowTags('rowTags');
         $pager->addToggle(' ');
         $pager->setSearch('title');
+        Key::restrictView($pager->db);
         $pager->db->addWhere('approved', 1);
         $pager->db->addWhere('approved', 0, '=', 'or', 'up');
         $pager->db->addWhere('update_user_id', Current_User::getId(), '=', 'and', 'up');

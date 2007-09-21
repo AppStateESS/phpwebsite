@@ -224,6 +224,7 @@ class Webpage_Admin {
             break;
 
         case 'add_page':
+            $pagePanel->setCurrentTab('add_page');
             $title = sprintf(dgettext('webpage', 'Add page: %s'), $volume->title);
             $content = Webpage_Forms::editPage($page, $version);
             break;
@@ -254,13 +255,21 @@ class Webpage_Admin {
                 $message = implode('<br />', $result);
             } else {
                 PHPWS_Core::initModClass('webpage', 'Forms.php');
+                $new_vol = (bool)$volume->id ? false : true;
                 $result = $volume->save();
                 if (PEAR::isError($result)) {
                     PHPWS_Error::log($result);
                     Webpage_Admin::sendMessage(dgettext('webpage', 'An error occurred. Please check your logs.'), 'list');
                 } else {
-                    Webpage_Admin::sendMessage(dgettext('webpage', 'Header saved successfully.'), 
-                                               'edit_webpage&tab=header&volume_id=' . $volume->id . '&version_id=' . $version_id);
+                    if ($new_vol) {
+                        Webpage_Admin::sendMessage(dgettext('webpage', 'Header saved successfully.'), 
+                                                   sprintf('add_page&volume_id=%s&version_id=%s',
+                                                           $volume->id, $version_id)
+                                                   );
+                    } else {
+                        Webpage_Admin::sendMessage(dgettext('webpage', 'Header saved successfully.'), 
+                                                   'edit_webpage&tab=header&volume_id=' . $volume->id . '&version_id=' . $version_id);
+                    }
                 }
             }
             break;
