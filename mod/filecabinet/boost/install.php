@@ -32,10 +32,10 @@ function filecabinet_install(&$content)
     $classify_dir = $home_dir . 'files/filecabinet/incoming';
     if (!is_dir($classify_dir)) {
         if (!@mkdir($classify_dir)) {
-            $content[] = dgettext('filecabinet', 'Failed to create files/filecabinet/classify directory.');
+            $content[] = dgettext('filecabinet', 'Failed to create files/filecabinet/incoming directory.');
             return false;
         } else {
-            $content[] = dgettext('filecabinet', 'files/filecabinet/classify directory created successfully.');
+            $content[] = dgettext('filecabinet', 'files/filecabinet/incoming directory created successfully.');
         }
     }
 
