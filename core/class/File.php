@@ -151,7 +151,7 @@ class PHPWS_File {
      *
      * @author Matthew McNaney <mcnaney at gmail dot com>
      */
-    function copy_directory($source_directory, $dest_directory) {
+    function copy_directory($source_directory, $dest_directory, $overwrite=true) {
         PHPWS_File::appendSlash($source_directory);
         PHPWS_File::appendSlash($dest_directory);
 
@@ -182,6 +182,10 @@ class PHPWS_File {
 
             $dest_file = $dest_directory . $file_name;
             if (is_file($source_directory . $file_name)) {
+                if (!$overwrite && is_file($file_name)) {
+                    continue;
+                }
+
                 if (!@copy($source_directory . $file_name, $dest_file)) {
                     @chmod($dest_file, 0644);
                     if (!is_writable($dest_file)) {
