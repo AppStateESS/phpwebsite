@@ -4,7 +4,6 @@
  *
  * @version $Id$
  * @author  Matt McNaney <matt at tux dot appstate dot edu>
- * @package Core
  */
 
 class PHPWS_Panel_Tab {
@@ -13,6 +12,7 @@ class PHPWS_Panel_Tab {
     var $link         = null;
     var $tab_order    = null;
     var $itemname     = null;
+    var $link_title   = null;
     var $_secure      = true;
 
     // If strict == true, tab links are returned as is and not appended.
@@ -50,6 +50,11 @@ class PHPWS_Panel_Tab {
         $this->title = strip_tags($title);
     }
 
+    function setLinkTitle($link_title)
+    {
+        $this->link_title = strip_tags($link_title);
+    }
+
     function getTitle($noBreak=true)
     {
         if ($noBreak)
@@ -63,20 +68,33 @@ class PHPWS_Panel_Tab {
         $this->link = $link;
     }
 
+
+    function getLinkTitle()
+    {
+        if (!$this->link_title) {
+            return null;
+        } else {
+            return " title=\"$this->link_title\"";
+        }
+    }
+    
+
     function getLink($addTitle=true)
     {
         if ($addTitle){
             $title = $this->getTitle();
             $link = $this->getLink(false);
+            $link_title = $this->getLinkTitle();
+
             if ($this->_strict) {
-                return sprintf('<a href="%s">%s</a>', $link, $title);
+                return sprintf('<a href="%s"%s>%s</a>', $link, $link_title, $title);
             } elseif ($this->_secure) {
                 $authkey = Current_User::getAuthKey();
-                return sprintf('<a href="%s&amp;tab=%s&amp;authkey=%s">%s</a>',
-                               $link, $this->id, $authkey, $title);
+                return sprintf('<a href="%s&amp;tab=%s&amp;authkey=%s"%s>%s</a>',
+                               $link, $this->id, $authkey, $link_title, $title);
             } else {
-                return sprintf('<a href="%s&amp;tab=%s">%s</a>',
-                               $link, $this->id, $title);
+                return sprintf('<a href="%s&amp;tab=%s"%s>%s</a>',
+                               $link, $this->id, $link_title, $title);
             }
         } else {
             return $this->link;

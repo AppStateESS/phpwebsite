@@ -59,7 +59,11 @@ class PHPWS_Panel{
             if (isset($info['strict'])) {
                 $tab->isStrict();
             }
-
+            
+            if (isset($info['link_title'])) {
+                $tab->setLinkTitle($info['link_title']); 
+            }
+            
             $tab->setOrder($count);
             $count++;
             $this->tabs[$id] = $tab;

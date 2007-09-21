@@ -1,3 +1,7 @@
+21 September 2007
++ Developers can now add a link_title to quickSetTabs. This allows the
+  user to mouse over tabs to get extended information.
+
 Version 2.1.2
 --------------------------------------------------------------
 30 August 2007
