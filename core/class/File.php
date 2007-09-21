@@ -160,6 +160,7 @@ class PHPWS_File {
                 PHPWS_Error::log(PHPWS_DIR_CANT_CREATE, 'core', 'PHPWS_File::recursiveFileCopy', $dest_directory);
                 return FALSE;
             }
+            @chmod($dest_directory, 0755);
         }
 
         if (!is_writable($dest_directory)) {

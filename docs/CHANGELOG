@@ -3,6 +3,7 @@ This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
 21 September 2007
++ Added a chmod command to the copy_directory function.
 + Adding a check for the language.php file in setup as well as the
   existance of the config/core/ directory.
 + Changed allowView function in Key. Before the change, any user with
