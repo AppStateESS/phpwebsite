@@ -2,6 +2,12 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+21 September 2007
++ Changed allowView function in Key. Before the change, any user with
+  rights in the module could view an item regardless of the view
+  rights. Now, a user must have edit rights for that item or be on the
+  allowable groups to see the item.
+
 20 September 2007
 + Key checks for duplicate keys before saving new rows.
 + New error message for above.

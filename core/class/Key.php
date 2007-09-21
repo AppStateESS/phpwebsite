@@ -179,7 +179,6 @@ class Key {
         return $this->_edit_groups;
     }
 
-
     function allowView()
     {
         if (Current_User::allow($this->module, $this->edit_permission,
@@ -195,7 +194,7 @@ class Key {
             if ($this->restricted == KEY_LOGGED_RESTRICTED) {
                 return Current_User::isLogged();
             } elseif ($this->restricted == KEY_GROUP_RESTRICTED) {
-                if (Current_User::allow($this->module)) {
+                if ($this->edit_permission && Current_User::allow($this->module, $this->edit_permission, $this->item_id, $this->item_name)) {
                     return true;
                 } else {
                     $user_groups = Current_User::getGroups();
