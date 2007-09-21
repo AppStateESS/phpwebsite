@@ -25,7 +25,7 @@ if (!is_file('lib/pear/DB.php')) {
     exit();
 }
 
-if (!is_dir('config/core/')) {
+if (!is_dir('config/core/') || !is_file('config/core/language.php')) {
     require 'core/class/File.php';
     if (!is_writable('config/')) {
         echo 'Please make your config/ directory writable to continue.<br />';

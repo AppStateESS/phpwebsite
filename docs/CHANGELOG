@@ -3,6 +3,8 @@ This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
 21 September 2007
++ Adding a check for the language.php file in setup as well as the
+  existance of the config/core/ directory.
 + Changed allowView function in Key. Before the change, any user with
   rights in the module could view an item regardless of the view
   rights. Now, a user must have edit rights for that item or be on the
