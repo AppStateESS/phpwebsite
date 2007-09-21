@@ -183,6 +183,7 @@ class PHPWS_File {
             $dest_file = $dest_directory . $file_name;
             if (is_file($source_directory . $file_name)) {
                 if (!@copy($source_directory . $file_name, $dest_file)) {
+                    @chmod($dest_file, 0644);
                     if (!is_writable($dest_file)) {
                         PHPWS_Error::log(PHPWS_FILE_NOT_WRITABLE, 'core', 'PHPWS_File::recursiveFileCopy', $dest_file);
                     } else {
