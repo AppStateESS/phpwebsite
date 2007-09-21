@@ -343,6 +343,8 @@ class Signup_Forms {
             return;
         }
 
+        $this->signup->title = & $sheet->title;
+
         foreach ($slots as $slot) {
             // if the slots are filled, don't offer it
             if ( $slots_filled && isset($slots_filled[$slot->id])) {
@@ -360,7 +362,8 @@ class Signup_Forms {
         }
 
         if (!isset($options)) {
-            $tpl['MESSAGE'] = dgettext('signup', 'Sorry, but all available slots are full. Please check back later for possible cancellations.');
+            $this->signup->content = dgettext('signup', 'Sorry, but all available slots are full. Please check back later for possible cancellations.');
+            return;
         } else {
             $form = new PHPWS_Form('slots');
             $form->useFieldset();
@@ -393,9 +396,6 @@ class Signup_Forms {
             
             $tpl = $form->getTemplate();
         }
-
-
-        $this->signup->title = & $sheet->title;
         $tpl['MESSAGE'] = $this->signup->message;
 
         $tpl['DESCRIPTION'] = $sheet->getDescription();
