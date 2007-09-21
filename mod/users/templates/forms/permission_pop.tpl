@@ -38,11 +38,9 @@ function hideSelect(radio_value)
   <table cellpadding="4" width="100%">
     <tr>
       <td>
-        <ul class="no-bullet smaller">
-          <li>{VIEW_PERMISSION_1} {VIEW_PERMISSION_1_LABEL}</li>
-          <li>{VIEW_PERMISSION_2} {VIEW_PERMISSION_2_LABEL}</li>
-          <li>{VIEW_PERMISSION_3} {VIEW_PERMISSION_3_LABEL}</li>
-        </ul>
+          {VIEW_PERMISSION_1} {VIEW_PERMISSION_1_LABEL}<br />
+          {VIEW_PERMISSION_2} {VIEW_PERMISSION_2_LABEL}<br />
+          {VIEW_PERMISSION_3} {VIEW_PERMISSION_3_LABEL}
       </td>
       <td>
         <div class="smaller">{VIEW_SELECT}</div>

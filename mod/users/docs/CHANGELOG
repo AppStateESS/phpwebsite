@@ -1,3 +1,7 @@
+21 September 2007
++ Removed the line item formatting for the permission radio buttons.
++ Updated: templates/forms/permission_pop.tpl
+
 20 September 2007
 + Session timeout on permission popup refreshes parent to login
   screen. 
