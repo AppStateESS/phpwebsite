@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+24 September 2007
++ added getHomeDir function to Convert class to help with branch
+  conversions.
+
 21 September 2007
 + Added a no overwrite option to copy_directory function.
 + Added a chmod command to the copy_directory function.
