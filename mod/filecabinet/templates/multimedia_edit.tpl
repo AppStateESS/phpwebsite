@@ -9,8 +9,8 @@
 
 <table class="form-table">
   <tr>
-    <td><strong>{CURRENT_MULTIMEDIA_LABEL}</strong></td><td>{CURRENT_MULTIMEDIA_ICON} 
-{CURRENT_MULTIMEDIA_FILE}</td>
+    <td><strong>{CURRENT_MULTIMEDIA_LABEL}</strong></td><td><div style="float : left; margin-right : 10px">{CURRENT_MULTIMEDIA_ICON}</div>
+{CURRENT_MULTIMEDIA_FILE}<br /> {EDIT_THUMBNAIL}</td>
   </tr>
   <tr>
     <td>{FILE_NAME_LABEL}</td><td>{FILE_NAME}</td>

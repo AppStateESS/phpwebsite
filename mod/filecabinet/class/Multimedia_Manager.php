@@ -86,12 +86,21 @@ class FC_Multimedia_Manager {
             $template['CURRENT_MULTIMEDIA_LABEL'] = dgettext('filecabinet', 'Current multimedia');
             $template['CURRENT_MULTIMEDIA_ICON']  = $this->multimedia->getThumbnail();
             $template['CURRENT_MULTIMEDIA_FILE']  = $this->multimedia->file_name;
+            $ow['address'] = PHPWS_Text::linkAddress('filecabinet', array('aop' =>'change_tn',
+                                                                          'type'=>'mm',
+                                                                          'id'  =>$this->multimedia->id),
+                                                     true);
+            $ow['label'] = 'Change thumbnail';
+            $ow['width'] = 400;
+            $ow['height'] = 250;
+            $template['EDIT_THUMBNAIL'] = javascript('open_window', $ow);
         }
+
         $template['MAX_SIZE_LABEL'] = dgettext('filecabinet', 'Maximum file size');
 
-        $sys_size = str_replace('M', '', ini_get('upload_max_filesize'));
-        $sys_size = $sys_size * 1000000;
-        $form_max = $form->max_file_size;
+        $size_max = Cabinet::getMaxSizes();
+        $sys_size = & $size_max['system'];
+        $form_max = & $size_max['form'];
 
         if ($form_max < $sys_size && $form_max < $this->max_size) {
             $max_size = & $form_max;
@@ -131,9 +140,12 @@ class FC_Multimedia_Manager {
             javascript('close_refresh', $vars);
             return;
         } elseif ($result) {
-
-            $result = $this->multimedia->save();
-
+            if (empty($_FILES['file_name']['name'])) {
+                $result = $this->multimedia->save(false, false);
+            } else {
+                $result = $this->multimedia->save();
+            }
+            
             if (PEAR::isError($result)) {
                 PHPWS_Error::log($result);
             }

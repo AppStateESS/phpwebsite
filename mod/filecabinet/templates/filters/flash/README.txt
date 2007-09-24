@@ -1,5 +1,50 @@
-FlowPlayer Version history 
-==========================
+FlowPlayer Version history (latest release on top)
+=================================================
+
+1.20
+	- Suggestions a.k.a. related videos
+	- Loading of configuration using RTMP from a streaming server
+	- The native full screen ads were removed and replaced by a flowplayer.org logo
+	- Added a new clip type 'video' that ensures correct playback for h.264 videos supported
+	  by the latest Flash player 3 beta
+	Fixes:
+	- RTMP recorded streams were not played to the end
+	- Fixed the sample HTML files
+
+1.19
+	- Skinning kit
+	- Added all dependencies to the source distribution package
+	Fixes:
+	- videoHeight does not have any effect in full screen mode any more, now resizes to fit the full area
+	- configured progress bar, buffering bar etc. colors were ignored
+
+1.18
+	- Smoothing of FLV videos (antialiasing of scaled video)
+	- Native Flash full screen mode added.
+	- The Long Play version (FlowPlayerLP.swf) now resizes to full screen
+	- Addes mouse over states to buttons.
+	- Added 'overlay' to image clips. Can be used to overlay a play button image on top of another image clip.
+	- Addes a built-in Big Play Button overlay.
+	- Added new clip specific configuration variable 'liveStream' to specify that the clip is a live stream
+	  played from a media server.
+	- Changed the background of the video area to be black. Now the player does not show the video (shows the black
+	  background instead) before the buffer is filled an the playback starts.
+	- Added new clip specific setting 'showOnLoadBegin'. Turn this to false and the video will not be shown
+	  before the buffer has been filled and the playback starts.
+	- All methods of the JavaScript API are now available in LocalConnection API as well. You can now
+	  control FlowPlayer from another Flash movie.
+	- By default the loop button is no longer shown. You have to specify showLoopButton: true to make it visible.
+	- New maximum play count for clips in the playlist. Controlled with a clip specific 'maxPlayCount' setting.
+	Fixes:
+	- Progress bar now better seeks to the end of videos.
+	- The embed area is centered horizontally also in full screen mode.
+	- The time display was corrupted with videos longer than 60 minutes. Now uses a smaller font so that
+	the time values fit properly.
+	- JS full screen works with external config file
+	- Setting showFullScreenButton to False Shortens Progress Bar - now fixed
+	- The Long Play version does not redraw the thumbs strip unnecessarily
+
+Older releases in in version number order:
 
 0.9     Initial public release. All basic features are in place.
 
@@ -82,6 +127,10 @@ FlowPlayer Version history
 	Bug fixes:
 	- Seeking using the dragger button is more accurate. Now it is possible to
 	  seek to the very beginning of a clip.
+	- Stops playing in the launching player when the full screen player is opened. This
+	  way the full screen player can begin buffering the video immediately. Previously
+	  the launching player was paused and continued buffering and it prevented the full
+	  screen player from buffering.
 
 1.6
 	Bug fixes:
@@ -257,6 +306,8 @@ FlowPlayer Version history
 	Fixes:
 	- Fixed user interface problems introduced in 1.17 
 	(see: http://sourceforge.net/forum/forum.php?thread_id=1733937&forum_id=453550)
+
+
 	  
 How to use it
 =============
@@ -274,7 +325,7 @@ You need to specify locations for these in the build.xml. Modify the file accord
 
 To compile FlowPlayer you need following tools:
 * mtasc compiler (http://www.mtasc.org)
-* swfmill (http://iterative.org/swfmill)
+* swfmill (http://iterative.org/swfmill, you should use swfmill version 0.2.11, will not work with the newer version)
 * Ant (http://ant.apache.org)
 * as2ant (http://www.as2lib.org)
 * as2lib (http://sourceforge.net/projects/as2lib)
@@ -294,7 +345,7 @@ To build run: ant build
 To test cd to 'build' directory and open FlowPlayer.html using a browser. 
 Change the parameters in FlowPlayer.html to try with your own videos.
 
-Bug reports, questions, contributing 
-==================================== 
-If you have bug reports, questions or would like to contribute, please send a
-message to: api@iki.fi
+Support, comments, bug reports and feedback:
+--------------------------------------------
+Please post support requests and feedback to the forums at http://sourceforge.net/projects/flowplayer 
+You can also contact the author directly: api@iki.fi

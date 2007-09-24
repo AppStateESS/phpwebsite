@@ -10,13 +10,15 @@
 
 $tpl['HEIGHT'] = $tpl['HEIGHT'] + 22; //the FlowPlayer requires 22 extra height pixels
 
-/**
- * originally I was using transbutton.jpg for the overlay. It is a transparent png that
- * allows you to see the first frame of the flv underneath. Unfortunately, you have 
- * to click the player twice to get it to play. So I using the default play-button jpeg.
- */
+$fa = explode('.', $this->file_name);
+array_pop($fa);
+$tn = $this->file_directory . 'tn/' . implode('.', $fa) . '.jpg';
 
-$tpl['START_SCREEN'] = 'templates/filecabinet/filters/flash/play-button-328x240.jpg';
+if (is_file($tn)) {
+    $tpl['START_SCREEN'] = "overlayId: 'play',url: '$tn'";
+} else {
+    $tpl['START_SCREEN'] = "url: 'templates/filecabinet/filters/flash/play-button-328x240.jpg'";
+}
 $tpl['ID'] = mt_rand();
 
 Layout::addJSHeader('<script type="text/javascript" src="templates/filecabinet/filters/flash/swfobject.js"></script>', 'swfobject');

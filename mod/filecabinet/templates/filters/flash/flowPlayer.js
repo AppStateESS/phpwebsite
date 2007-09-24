@@ -14,6 +14,27 @@
  */
 {
 	/*
+	 * Instructs the player to load the configuration from an external config file.
+	 * This can be a abosulte URL or a relative url (relative to the HTML page
+	 * where the player is embedded).
+	 */
+//	configFileName: 'flowPlayer.js',
+
+	/*
+	 * Instructs the player to load the configuration from a RTMP server.
+	 * The player connects to the server listening in the address specified
+	 * by this URL and calls a method 'getStreamPlayerConfig' that should return a
+	 * valid FP configuration object.
+	 */
+//	rtmpConfigUrl: 'rtmp://localhost/myapp',
+
+	/*
+	 * A param value to be passed to getStreamPlayerConfig(). A value 'foobar'
+	 * will make the player to call getStreamPlayerConfig('foobsr')
+	 */
+//	rtmpConfigParam: 'anssi',
+	
+	/*
 	 * Name of the video file. Used if only one video is shown.
 	 *
 	 * Note for testing locally: Specify an empty baseURL '', if you want to load
@@ -41,15 +62,20 @@
 
 	/*
 	 * Playlist is used to publish several videos using one player instance.
-	 * The clips in the playlist may have following properties:
+	 * You can also have images in the playlist. The playback pauses in the
+	 * image unless a 'duration' property is given for the image:
+
+ * 	 * The clips in the playlist may have following properties:
 	 *
 	 * name: Name for the clip to be shown in the playlist view. If this is
 	 *       not given, the clip will be hidden from the view.
 	 *
 	 * url: The URL used to load the clip.
 	 * 
-	 * type: One of 'flv', 'swf', 'jpg'. Optional, determined from the URL's filename extension
-	 *       if that is present. Defaults to 'flv' if the extension is not present in the URL.
+	 * type: One of 'video', 'flv', 'swf', 'jpg'. Optional, determined from the URL's filename extension
+	 *       if that is present. 'video' means a video file in any format supported by Flash.
+	 *       'flv' is present here for backward compatibility, use 'video' in new FlowPlayer installations
+	 *       now. Defaults to 'video' if the extension is not present in the URL.
 	 *
 	 * start: The start time (seconds) from where to start the playback. A nonzero
 	 *        value can only be used when using a streaming server!!
@@ -76,10 +102,31 @@
 	 *
 	 * allowResize: (true/false) Allow resizing this clip according to the menu selection.
 	 *              Optional, defaults to true.
-	 *
-	 * You can also have images in the playlist. The playback pauses in the
-	 * image unless a 'duration' property is given for the image:
-	 *
+	 *              
+	 * overlay: A filename pointing to an image that will be placed on top of this image clip. This
+	 *          is only applicable to image clips (jpg or png files). Essentially this layers two images
+	 *          on top of each other. Typically the image on top is a big play button that is used on
+	 *          top of an image taken from the main movie.
+	 * 
+	 * overlayId: ID that specifies a built-in overlay to be used. Currently the player supports
+	 * 			  one built-in overlay with ID 'play'. It renders a large play button with mouse hover color change.
+	 * 			  You can use this on top of image clips (one clip with both the 'url' property and
+	 * 			  'overlayId' property). 
+	 * 			  You can also specify a clip that only has this ID. In that
+	 * 			  case you should place it immediately before or after a FLV clip. This overlay-only
+	 * 			  clip is then rendered on top of the first or the last frame of the FLV video.
+	 * 
+	 * live: (true/false) Is this a live stream (played from a media server)?
+	 * 
+	 * showOnLoadBegin: (true/false) If true, make this clip visible when the fist bits have been loaded.
+	 * If false, do not show this clip (show the background instead) before the buffer is filled
+	 * and the playback starts. Optional, defaults to true.
+	 * 
+	 * maxPlayCount: The maximum play count for this clip. The clip is removed from the playlist when
+	 * the playcount reaches this amount.
+	 * 
+	 * suggestedClipsInfoUrl:  URL used to fetch suggestions (related videos) information from the server
+	 * 
 	 * See also: 'baseURL' is prefixed with each URL
 	 */
 	playList: [
@@ -88,15 +135,6 @@
 	{ name: 'River', url: 'river.flv' },
 	{ name: 'Ounasvaara', url: 'ounasvaara.flv' }
 	],
-	
-	/*
-	 * Specifies wether the playlist should be shown in the player SWF component or not.
-	 * Optional, defaults to false. 
-	 *
-	 * I think it's better to have the visible part of the playlist in HTML 
-	 * and use JavaScript to control the player (see FlowPlayerJs.html for an example).
-	 */
-	showPlayList: true,
 	
 	/*
 	 * Specifies wether the playlist control buttons should be shown in the player SWF component or not.
@@ -109,6 +147,12 @@
 	 * You don't need this with lighttpd, just use the streamingServer setting (see below) with it.
 	 */
 //	 streamingServerURL: 'rtmp://localahost:oflaDemo',
+	
+	/*
+	 * Is this a live stream? Only makes sense when using a streaming server.
+	 * Optional, defaults to false.
+	 */
+//	liveStream: true,
 	
 	/* 
 	 * baseURL specifies the URL that is appended in front of different file names
@@ -208,9 +252,9 @@
 	
 	/*
 	 * Specifies wether the loop toggle button should be shown in the player SWF component or not.
-	 * Optional, defaults to true. 
+	 * Optional, defaults to false. 
 	 */
-//	showLoopButton: false,
+//	showLoopButton: true,
 	
 	/*
 	 * Specifies the height to be allocated for the video display. This is the
@@ -269,19 +313,6 @@
 	 * See also: 'skinImagesBaseURL' that affects this variable
 	 */
 //	useEmbeddedButtonImages: false,
-	
-	/*
-	 * Optional logo image file. Specify this variable if you want to include
-	 * a logo image on the right side of the progress bar. 'skinImagesBaseURL'
-	 * will be prefixed to the URL used in loading.
-	 * 
-	 * NOTE: If you set a value for this, you need to have the logo file available
-	 * on the server! Otherwise the player will not show up at all or will show
-	 * up corrupted.
-	 *
-	 * See also: 'skinImagesBaseURL' that affects this variable
-	 */
-//	logoFile: 'Logo.jpg',
 	
 	/*
 	 * 'splashImageFile' specifies an image file to be used as a splash image.
@@ -411,5 +442,9 @@
 	 */
 //	showFullScreenButton: false,
 
+	/*
+	 * Use the Flash 9 native full screen mode.
+	 */
+//	useNativeFullScreen: true,
 }
 

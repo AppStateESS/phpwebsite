@@ -48,7 +48,7 @@ class PHPWS_Document extends File_Common {
     }
 
 
-    function getIconView()
+    function getIconView($small=false)
     {
         static $icon_list = NULL;
 
@@ -62,9 +62,38 @@ class PHPWS_Document extends File_Common {
         }
 
         if (!@$graphic = $icon_list[$this->file_type]) {
-            return sprintf('<img src="./images/mod/filecabinet/icons/document.png" title="%s" alt="%s" />', $this->title, $this->title);
+            if ($small) {
+                return sprintf('<img src="./images/mod/filecabinet/icons/document_small.png" title="%s" alt="%s" />', $this->title, $this->title);
+            } else {
+                return sprintf('<img src="./images/mod/filecabinet/icons/document.png" title="%s" alt="%s" />', $this->title, $this->title);
+            }
         } else {
+            if ($small) {
+                $ga = explode('.', $graphic);
+                $ext = array_pop($ga);
+                $last_node = array_pop($ga);
+                $ga[] = $last_node . '_small';
+                $ga[] = $ext;
+                $graphic = implode('.', $ga);
+            }
             return sprintf('<img src="./images/mod/filecabinet/icons/%s" title="%s" alt="%s" />', $graphic, $this->title, $this->title);
+        }
+    }
+
+    /**
+     * Returns the download path if document is under the install directory.
+     * Returns null otherwise.
+     */
+    function getDownloadPath()
+    {
+        $path = $this->getPath();
+
+        $testpath = preg_quote(PHPWS_HOME_DIR);
+
+        if (preg_match("@$testpath@", $path)) {
+            return str_replace(PHPWS_HOME_DIR, '', $this->getPath());
+        } else {
+            return null;
         }
     }
 
@@ -83,6 +112,10 @@ class PHPWS_Document extends File_Common {
 
             case 'icon':
                 return sprintf('<a href="%s">%s</a>', $link, $this->getIconView());
+
+            case 'smallicon':
+                return sprintf('<a href="%s">%s</a>', $link, $this->getIconView(true));
+
 
             case 'filename':
                 return sprintf('<a href="%s">%s</a>', $link, $this->file_name);
@@ -119,9 +152,15 @@ class PHPWS_Document extends File_Common {
     {
         $links = null;
 
-        $tpl['SIZE'] = $this->getSize(true);
-        $tpl['FILE_NAME'] = $this->file_name;
-        $tpl['ICON'] = $this->getViewLink(true, 'icon');
+        $tpl['SIZE']      = $this->getSize(true);
+        $dpath = $this->getDownloadPath();
+        if ($dpath) {
+            $tpl['FILE_NAME'] = sprintf('<a href="%s">%s</a>', $dpath, $this->file_name);
+        } else {
+            $tpl['FILE_NAME'] = $this->file_name;
+        }
+
+        $tpl['ICON']      = $this->getViewLink(true, 'smallicon');
         $tpl['TITLE']     = $this->title;
 
         if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id)) {
@@ -132,8 +171,8 @@ class PHPWS_Document extends File_Common {
             $js['width'] = 550;
             $js['height'] = 430;
             $links[] = javascript('open_window', $js);
-            
-            $vars['aop'] = 'clip_document';
+
+            $vars['aop']      = 'clip_document';
             $links[] = PHPWS_Text::moduleLink(dgettext('filecabinet', 'Clip'), 'filecabinet', $vars);
             
             $vars['aop'] = 'delete_document';

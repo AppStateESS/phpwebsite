@@ -40,5 +40,11 @@
     {CLASSIFY_DIRECTORY}</p>
 </fieldset>
 <!-- END classify-settings -->
+<fieldset>
+    <legend>{SYSTEM_SIZE}</legend>
+    <p><strong>{SYSTEM_LABEL}</strong> : {MAX_SYSTEM_SIZE}<br />
+       <strong>{FORM_LABEL}</strong> : {MAX_FORM_SIZE}<br />
+       <strong>{ABSOLUTE_LABEL}</strong> : {ABSOLUTE_SIZE}</p>
+</fieldset>
 {SUBMIT}
 {END_FORM}

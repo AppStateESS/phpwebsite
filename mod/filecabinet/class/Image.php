@@ -471,10 +471,15 @@ class PHPWS_Image extends File_Common {
 
     function prewriteResize()
     {
-        $size = explode('x', $_POST['resize']);
+        if (isset($_POST['resize'])) {
+            $size = explode('x', $_POST['resize']);
 
-        $req_width  = $size[0];
-        $req_height = $size[1];
+            $req_width  = $size[0];
+            $req_height = $size[1];
+        } else {
+            $req_width = $this->_max_width;
+            $req_height = $this->_max_height;
+        }
 
         if ($req_width < $this->width && $req_height < $this->height) {
             $resize_width  = &$req_width;

@@ -169,16 +169,14 @@ div#fc-file-list td.fc-size{
   text-align : right;
 }
 
-div#fc-file-list td, div#fc-file-list th {
+div#fc-file-list th {
   padding : 5px;
-}
-
-
-div#fc-file-list td {
-  padding : 0px 10px;
 }
 
 div#fc-file-list td.fc-icon {
    padding : 0px;
 }
 
+td.fc-icon {
+   width : 1px;
+}

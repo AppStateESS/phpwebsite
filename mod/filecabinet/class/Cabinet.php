@@ -226,6 +226,21 @@ class Cabinet {
             $this->image_mgr->editImage();
             break;
 
+        case 'change_tn':
+            $javascript = true;
+            $this->changeTN();
+            break;
+
+        case 'post_thumbnail':
+            $javascript = true;
+            if ($this->postTN()) {
+                javascript('close_refresh');
+            } else {
+                $this->message = dgettext('filecabinet', 'Could not save thumbnail image.');
+                $this->changeTN();
+            }
+            break;
+
         case 'post_document_upload':
             $javascript = true;
             $this->loadDocumentManager();
@@ -927,6 +942,22 @@ class Cabinet {
         }
     }
 
+    function getMaxSizes()
+    {
+        $sys_size = str_replace('M', '', ini_get('upload_max_filesize'));
+        $sys_size = $sys_size * 1000000;
+        $form = new PHPWS_Form;
+
+        $sizes['system']     = & $sys_size;
+        $sizes['form']       = & $form->max_file_size;
+        $sizes['document']   = PHPWS_Settings::get('filecabinet', 'max_document_size');
+        $sizes['image']      = PHPWS_Settings::get('filecabinet', 'max_image_size');
+        $sizes['multimedia'] = PHPWS_Settings::get('filecabinet', 'max_multimedia_size');
+        $sizes['absolute']   = ABSOLUTE_UPLOAD_LIMIT;
+
+        return $sizes;
+    }
+
     function getClassifyDir()
     {
         if (FC_ALLOW_CLASSIFY_DIR_SETTING) {
@@ -940,6 +971,61 @@ class Cabinet {
         } else {
             return null;
         }
+    }
+
+    function changeTN()
+    {
+        $form = new PHPWS_Form('thumbnail');
+        $form->addHidden('module', 'filecabinet');
+        $form->addHidden('aop', 'post_thumbnail');
+        $form->addHidden('type', $_REQUEST['type']);
+        $form->addHidden('id', $_REQUEST['id']);
+        $form->addFile('thumbnail');
+        $form->setLabel('thumbnail', dgettext('filecabinet', 'Upload thumbnail'));
+        $form->addSubmit(dgettext('filecabinet', 'Upload'));
+        
+        $tpl = $form->getTemplate();
+
+        $tpl['CLOSE'] = javascript('close_window');
+
+        $warnings[] = sprintf(dgettext('filecabinet', 'Max thumbnail size : %sx%s.'), MAX_TN_IMAGE_WIDTH, MAX_TN_IMAGE_HEIGHT);
+        if ($_REQUEST['type'] == 'mm') {
+            $warnings[] = dgettext('filecabinet', 'Image must be a jpeg file.');
+        }
+
+        $tpl['WARNINGS'] = implode('<br />', $warnings);
+        $this->title = dgettext('filecabinet', 'Upload new thumbnail');
+
+        $this->content = PHPWS_Template::process($tpl, 'filecabinet', 'thumbnail.tpl');
+    }
+
+    function postTN()
+    {
+        PHPWS_Core::initModClass('filecabinet', 'Image.php');
+
+        if ($_POST['type'] == 'mm') {
+            PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+            $mm = new PHPWS_Multimedia($_POST['id']);
+            if (!$mm->id) {
+                return false;
+            }
+        }
+
+        $image = new PHPWS_Image;
+        $image->setMaxWidth(MAX_TN_IMAGE_WIDTH);
+        $image->setMaxHeight(MAX_TN_IMAGE_HEIGHT);
+        if (!$image->importPost('thumbnail')) {
+            return false;
+        }
+
+        if ($image->file_type != 'image/jpeg' && $image->file_type != 'image/jpg') {
+            return false;
+        }
+
+        $image->file_directory = $mm->thumbnailDirectory();
+        $image->file_name = $mm->dropExtension();
+        $image->write();
+        return true;
     }
 }
 

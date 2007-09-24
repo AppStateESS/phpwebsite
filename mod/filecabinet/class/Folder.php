@@ -150,8 +150,8 @@ class Folder {
     function documentUploadLink()
     {
         $vars['address'] = 'index.php?module=filecabinet&aop=upload_document_form&folder_id=' . $this->id;
-        $vars['width']   = 540;
-        $vars['height']  = 460;
+        $vars['width']   = 600;
+        $vars['height']  = 600;
         $vars['title'] = $vars['label']   = dgettext('filecabinet', 'Add document');
         return javascript('open_window', $vars);
     }
@@ -159,8 +159,8 @@ class Folder {
     function multimediaUploadLink()
     {
         $vars['address'] = 'index.php?module=filecabinet&aop=upload_multimedia_form&folder_id=' . $this->id;
-        $vars['width']   = 540;
-        $vars['height']  = 460;
+        $vars['width']   = 600;
+        $vars['height']  = 600;
         $vars['title'] = $vars['label']   = dgettext('filecabinet', 'Add file');
         return javascript('open_window', $vars);
     }
@@ -294,6 +294,10 @@ class Folder {
 
     function allow()
     {
+        if (!$this->public_folder && !Current_User::isLogged()) {
+            return false;
+        }
+
         if (!$this->key_id) {
             return true;
         }

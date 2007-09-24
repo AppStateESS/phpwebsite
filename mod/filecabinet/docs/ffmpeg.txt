@@ -1,0 +1,44 @@
+FFMpeg Use in File Cabinet
+by Matthew McNaney
+---------------------------
+
+Introduction
+-------------
+After uploading a FLV video, you may have noticed the generic image icon
+that accompanies it. In order to have a proper screenshot, you will
+need to enable FFMpeg.
+
+
+What is FFMpeg?
+---------------
+FFMpeg is a superb open source video tool. Read more about it here:
+http://ffmpeg.mplayerhq.hu/
+
+This documentation is limited to phpWebSite use only.
+
+Enabling FFMpeg
+---------------
+First, find out where it is installed.
+
+> which ffmpeg
+/usr/bin/ffmpeg
+
+Now go to the Settings tab in File Cabinet and type the directory
+without the application name:
+
+/usr/bin/
+
+If phpWebSite finds the executable, the "Enable FFMpeg thumbnails"
+checkbox will no longer be grayed out. Click on it to check and update
+your settings.
+
+File Cabinet should now attempt to create a screen shot from the
+video.
+
+
+Troubleshooting
+---------------
+Make sure that you have downloaded the proper FLV codecs. Without
+them, FFMpeg can't process your Flash or AVI video. If you are not
+getting thumbnails, then you probably don't have the codec on your
+server.

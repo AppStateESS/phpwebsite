@@ -5,8 +5,8 @@
    * @version $Id$
    */
 
-define('MAX_TN_IMAGE_WIDTH', 200);
-define('MAX_TN_IMAGE_HEIGHT', 200);
+define('MAX_TN_IMAGE_WIDTH', 150);
+define('MAX_TN_IMAGE_HEIGHT', 150);
 
 define('FC_VIEW_MARGIN_WIDTH', 20);
 define('FC_VIEW_MARGIN_HEIGHT', 100);

@@ -1,10 +1,11 @@
-FlowPlayer's JavaScript API supports a subset of the JavaScript API
+FlowPlayer API supports a subset of the JavaScript API
 available in mplayer browser plug-in (http://mplayerplug-in.sourceforge.net/).
 Additionally it defines some methods that are not available in mplayer 
 plug-in. mplayer plug-in's API is documented in javascript.txt that can be found 
 in the plugin's source distribution package.
 
-FlowPlayer supports the following JavaScript methods
+FlowPlayer supports the following methods. These are available to JavaScript and
+to other Flash movies via Flash's LocalConnection.
 
 
 methods (same as in mplayer plug-in):

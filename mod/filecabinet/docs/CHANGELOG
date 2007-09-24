@@ -1,6 +1,32 @@
+24 September 2007
++ Added code to change thumbnails on multimedia files.
++ Updated flowplayer
++ Private folders are not viewable to the anoymous public.
++ Added function to Cabinet to get all file size limitations.
++ The settings form now lists all the above limitations.
++ Added ability to force a size to prewriteResize
++ Going to have icons thumbnails for audio. Not done yet.
++ Multimedia icon's file size is checked. If zero, replaced by the
+  default.
++ Increased default thumbnail size.
++ Thumbnail should overlay on video properly now.
++ Added a short doc about ffmpeg
+
++ Updated: conf/config.php, templates/filters/flash.tpl
+           templates/file_list.tpl, templates/multimedia_edit.tpl,
+           templates/settings.tpl, templates/style.css
+           templates/thumbnail.tpl
+
++ Copy directory - templates/filters/flash/
+
+
 21 September 2007
 + Changed install to print 'incoming' instead of 'classify' as the
   directory name. Was confusing.
++ Added small file type icons for list view.
++ File name in list view is now a direct link to the document.
+
++ *** Note: update needs to copy img/icons/ directory ***
 
 Version 1.2.2
 --------------------------------------------------------------

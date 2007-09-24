@@ -9,6 +9,7 @@ PHPWS_Core::requireConfig('filecabinet');
 PHPWS_Core::initModClass('filecabinet', 'File_Common.php');
 
 define('GENERIC_VIDEO_ICON', 'images/mod/filecabinet/video_generic.png');
+define('GENERIC_AUDIO_ICON', 'images/mod/filecabinet/audio.png');
 
 class PHPWS_Multimedia extends File_Common {
     var $width  = 0;
@@ -100,21 +101,23 @@ class PHPWS_Multimedia extends File_Common {
         return $this->file_directory . 'tn/';
     }
 
+    function dropExtension()
+    {
+        $last_dot = strrpos($this->file_name, '.');
+        return substr($this->file_name, 0, $last_dot) . '.jpg';
+    }
+
     function thumbnailPath()
     {
-        if ($this->isVideo()) {
-            $last_dot = strrpos($this->file_name, '.');
-            $thumbnail_file = substr($this->file_name, 0, $last_dot) . '.jpg';
-            
-            $directory = $this->thumbnailDirectory() . $thumbnail_file;
-            
-            if (is_file($directory)) {
-                return $directory;
-            } else {
-                return GENERIC_VIDEO_ICON;
-            }
+        $thumbnail_file = $this->dropExtension();
+        $directory = $this->thumbnailDirectory() . $thumbnail_file;
+        
+        if (is_file($directory)) {
+            return $directory;
+        } elseif ($this->isVideo()) {
+            return GENERIC_VIDEO_ICON;
         } else {
-            return 'images/mod/filecabinet/audio.png';
+            return GENERIC_AUDIO_ICON;
         }
     }
 
@@ -220,7 +223,7 @@ class PHPWS_Multimedia extends File_Common {
         $vars['folder_id'] = $this->folder_id;
         
         $jsvars['width'] = 550;
-        $jsvars['height'] = 580;
+        $jsvars['height'] = 620;
         $jsvars['address'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
         $jsvars['window_name'] = 'edit_link';
         
@@ -314,18 +317,16 @@ class PHPWS_Multimedia extends File_Common {
         $last_dot = strrpos($this->file_name, '.');
         $thumbnail_file = substr($this->file_name, 0, $last_dot) . '.jpg';
 
-        // in case the above fails
-        $thumbnail_png = substr($this->file_name, 0, $last_dot) . '.png';
-        
-
         if (!PHPWS_Settings::get('filecabinet', 'use_ffmpeg')) {
-            copy('images/mod/filecabinet/video_generic.png', $thumbnail_directory . $thumbnail_png);
+            copy('images/mod/filecabinet/video_generic.png', $thumb_path);
             return;
         }
 
+        $thumb_path  = $thumbnail_directory . $thumbnail_file;
+
         $ffmpeg_directory = PHPWS_Settings::get('filecabinet', 'ffmpeg_directory');
         if (!is_file($ffmpeg_directory . 'ffmpeg')) {
-            copy('images/mod/filecabinet/video_generic.png', $thumbnail_directory . $thumbnail_png);
+            @copy('images/mod/filecabinet/video_generic.png', $thumbnail_directory . $thumbnail_png);
             return;
         }
 
@@ -344,7 +345,14 @@ class PHPWS_Multimedia extends File_Common {
 
         $command = sprintf('%sffmpeg -i %s -an -s 160x120 -ss 00:00:05 -r 1 -vframes 1 -y -f mjpeg %s%s',
                            $ffmpeg_directory, $this->getPath(), $thumbnail_directory, $thumbnail_file);
-        $result = system($command);
+
+        system($command);
+
+        if (!is_file($thumb_path) || filesize($thumb_path) < 10) {
+            @unlink($thumb_path);
+            @copy('images/mod/filecabinet/video_generic.png', $thumb_path);
+        }
+        
         return true;
     }
     

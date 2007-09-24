@@ -3,7 +3,7 @@
 <!-- BEGIN admin-links -->{ADMIN_LINKS}<br /><!-- END admin-links -->
 </p>
 <hr />
-<table width="100%">
+<table width="100%" cellpadding="2">
   <tr>
     <th>{TITLE_SORT} {TITLE_LABEL}</th>
     <th>{FILE_NAME_SORT} {FILE_NAME_LABEL}</th>
@@ -12,7 +12,7 @@
     <th>{ACTION_LABEL}</th>
   </tr>
 <!-- BEGIN listrows -->
-  <tr {TOGGLE}>
+  <tr {TOGGLE}
     <td class="fc-title">{TITLE}</td>
     <td class="fc-file-name">{FILE_NAME}</td>
     <td class="fc-icon">{ICON}</td>

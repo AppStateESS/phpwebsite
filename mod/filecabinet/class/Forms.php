@@ -277,6 +277,8 @@ class Cabinet_Form {
 
     function settings()
     {
+        $sizes = Cabinet::getMaxSizes();
+
         $form = new PHPWS_FORM;
         $form->addHidden('module', 'filecabinet');
         $form->addHidden('aop', 'save_settings');
@@ -301,15 +303,15 @@ class Cabinet_Form {
         $form->setLabel('max_image_height', dgettext('filecabinet', 'Maximum image pixel height'));
         $form->setSize('max_image_height', 4, 4);
 
-        $form->addText('max_image_size', PHPWS_Settings::get('filecabinet', 'max_image_size'));
+        $form->addText('max_image_size', $sizes['image']);
         $form->setLabel('max_image_size', dgettext('filecabinet', 'Maximum image file size (in bytes)'));
         $form->setSize('max_image_size', 10, 10);
 
-        $form->addText('max_document_size', PHPWS_Settings::get('filecabinet', 'max_document_size'));
+        $form->addText('max_document_size', $sizes['document']);
         $form->setLabel('max_document_size', dgettext('filecabinet', 'Maximum document file size (in bytes)'));
         $form->setSize('max_document_size', 10, 10);
 
-        $form->addText('max_multimedia_size', PHPWS_Settings::get('filecabinet', 'max_multimedia_size'));
+        $form->addText('max_multimedia_size', $sizes['multimedia']);
         $form->setLabel('max_multimedia_size', dgettext('filecabinet', 'Maximum multimedia file size (in bytes)'));
         $form->setSize('max_multimedia_size', 10, 10);
 
@@ -348,6 +350,16 @@ class Cabinet_Form {
 
         $form->addSubmit(dgettext('filecabinet', 'Save settings'));
         $tpl = $form->getTemplate();
+
+        $tpl['SYSTEM_SIZE'] = dgettext('filecabinet', 'System upload limits');
+        $tpl['SYSTEM_LABEL'] = dgettext('filecabinet', 'Server upload limit');
+        $tpl['FORM_LABEL'] = dgettext('filecabinet', 'Form upload limit');
+        $tpl['ABSOLUTE_LABEL'] = dgettext('filecabinet', 'Absolute upload limit');
+
+        $tpl['MAX_SYSTEM_SIZE'] = sprintf(dgettext('filecabinet', '%s bytes'), $sizes['system']);
+        $tpl['MAX_FORM_SIZE']   = sprintf(dgettext('filecabinet', '%s bytes'), $sizes['form']);
+        $tpl['ABSOLUTE_SIZE']   = sprintf(dgettext('filecabinet', '%s bytes'), $sizes['absolute']);
+
         return PHPWS_Template::process($tpl, 'filecabinet', 'settings.tpl');
     }
 
