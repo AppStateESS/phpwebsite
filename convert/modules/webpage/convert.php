@@ -20,9 +20,11 @@ function convert()
         return _('Web Pages have already been converted.');
     }
 
+    $home_dir = Convert::getHomeDir();
 
-    if (!is_dir('images/pagemaster')) {
-        return _('Please create a directory in images/ named "pagemaster". Copy all images from the old Web Pages image directory into it.');
+    if (!is_dir($home_dir . 'images/pagemaster')) {
+        return sprintf(_('Please create a directory in %simages/ named "pagemaster". Copy all images from the old Web Pages image directory into it.'),
+                       $home_dir);
     }
 
     $mod_list = PHPWS_Core::installModList();
@@ -268,6 +270,8 @@ function convertImage($data)
         return false;
     }
 
+    $home_dir = Convert::getHomeDir();
+
     if (!isset($_SESSION['Folder_Id'])) {
         $folder = new Folder;
         $folder->title = _('Web Page conversion');
@@ -293,7 +297,7 @@ function convertImage($data)
 
     $image_dir = $image->getPath();
 
-    $source_image = 'images/pagemaster/' . $image->file_name;
+    $source_image = $home_dir . 'images/pagemaster/' . $image->file_name;
 
     if (!is_file($source_image)) {
         PHPWS_Core::log("Missing source image: $source_image.", 'conversion.log');

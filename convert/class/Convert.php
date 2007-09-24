@@ -311,7 +311,11 @@ class Convert {
 
     function show($content, $title=NULL){
         if (!isset($title)) {
-            $title = _('phpWebSite 1.0.0 Convert');
+            $title = _('phpWebSite 1.x.x Convert');
+        }
+
+        if (isset($GLOBALS['branch_name'])) {
+            $title .= ' -- ' .  sprintf(_('Branch : %s'), $GLOBALS['branch_name']); 
         }
 
         if (isset($GLOBALS['Convert_Forward'])) {
@@ -445,6 +449,8 @@ class Convert {
             PHPWS_Core::initModClass('branch', 'Branch.php');
             if (!$branch) {
                 $branch = new Branch($_SESSION['SITE']);
+                $GLOBALS['branch_dir'] = $branch->directory;
+                $GLOBALS['branch_name'] = $branch->branch_name;
                 if (empty($branch->branch_name)) {
                     Convert::branchError();
                 }
@@ -463,6 +469,15 @@ class Convert {
             return $result;
         } else  {
             return !empty($result);
+        }
+    }
+
+    function getHomeDir()
+    {
+        if ($GLOBALS['branch_dir']) {
+            return $GLOBALS['branch_dir'];
+        } else {
+            return './';
         }
     }
 
