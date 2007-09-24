@@ -147,6 +147,8 @@ class User_Form {
 
         $template['LINKS'] = implode(' | ', $links);
 
+        $template['CHECK_ALL'] = javascript('modules/users/check_all', $vars);
+
         $tpl->setData($template);
         
         $content = $tpl->get();

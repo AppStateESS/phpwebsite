@@ -1,0 +1,12 @@
+2.4.4 Changes
+------------------
++ Added check all buttons to permissions form.
++ Changed bad key error in the popup permission menu.
++ Removed the line item formatting for the permission radio buttons.
++ Session timeout on permission popup refreshes parent to login
+  screen. 
++ Increase popup permission height.
++ A group can no longer be a member of itself.
++ Group file tidied. allow parameter renamed module for clarity.
++ giveItemPermission now checks each group for edit permission before
+  giving them item rights.

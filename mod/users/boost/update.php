@@ -8,6 +8,8 @@
 
 function users_update(&$content, $currentVersion)
 {
+    $home_dir = PHPWS_Boost::getHomeDir();
+
     switch ($currentVersion) {
 
     case version_compare($currentVersion, '2.2.0', '<'):
@@ -119,6 +121,26 @@ timeout INT NOT NULL default 0,
         $content[] = '<pre>';
         if (!PHPWS_Boost::inBranch()) {
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/users/boost/changes/2_4_3.txt');
+        }
+        $content[] = '</pre>';
+
+    case version_compare($currentVersion, '2.4.4', '<'):
+        $content[] = '<pre>';
+
+        $source_dir = PHPWS_SOURCE_DIR . 'mod/users/javascript/';
+        $dest_dir   = $home_dir . 'javascript/modules/users/';
+
+        if (PHPWS_File::copy_directory($source_dir, $dest_dir, true)) {
+            $content[] = "--- Successfully copied $source_dir to $dest_dir";
+        } else {
+            $content[] = "--- Could not copy $source_dir to $dest_dir";
+        }
+        
+        $files = array('conf/error.php', 'templates/forms/permissions.tpl', 'templates/forms/permission_pop.tpl');
+        userUpdateFiles($files, $content);
+
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/users/boost/changes/2_4_4.txt');
         }
         $content[] = '</pre>';
 

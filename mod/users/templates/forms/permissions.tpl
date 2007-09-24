@@ -1,6 +1,6 @@
 <div class="align-right">{LINKS}</div>
 {START_FORM}
-{UPDATE}
+{CHECK_ALL} {UPDATE}
 <!-- BEGIN module -->
 <div class="permission">
 <h2 class="bgcolor2" style="padding : 4px">{MODULE_NAME}</h2>
@@ -22,3 +22,4 @@
 <!-- END module -->
 {UPDATE}
 {END_FORM}
+

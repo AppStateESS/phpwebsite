@@ -400,8 +400,9 @@ class User_Action {
         $key = new Key((int)$_GET['key_id']);
 
         if (!Key::checkKey($key, false)) {
-            PHPWS_Core::errorPage();
-            return;
+            PHPWS_Error::log(USER_BAD_KEY, 'users', 'User_Action::popupPermission', "Key : " . $_GET['key_id']);
+            echo dgettext('users', 'Unable to set permissions. Bad key data.');
+            Layout::nakedDisplay();
         }
 
         if (Current_User::isRestricted($key->module) ||

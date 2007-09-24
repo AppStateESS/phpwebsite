@@ -1,3 +1,11 @@
+Version 2.4.4
+--------------------------------------------------------------------
+24 September 2007
++ Added check all buttons to permissions form.
++ Changed bad key error in the popup permission menu.
++ Updated: conf/error.php, templates/forms/permissions.tpl
++ Copy directory: javascript/check_all/
+
 21 September 2007
 + Removed the line item formatting for the permission radio buttons.
 + Updated: templates/forms/permission_pop.tpl

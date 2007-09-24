@@ -43,6 +43,8 @@ define('USER_ERR_MISSING_AUTH',    -50);
 /* My Page errors */
 define('USER_MISSING_MY_PAGE',     -60);
 
+define('USER_BAD_KEY',             -70);
+
 /* Login errors */
 define('USER_BAD_CHARACTERS',      'L1');
 define('USER_AUTH_MISSING',        'L2');
