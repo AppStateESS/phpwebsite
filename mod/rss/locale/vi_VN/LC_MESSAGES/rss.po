@@ -1,0 +1,220 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-06-08 13:35-0400\n"
+"PO-Revision-Date: 2007-09-25 02:00+0700\n"
+"Last-Translator: Dang Hoai Phuc <danghoaiphuc@yahoo.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, php-format
+msgid "%d hours"
+msgstr "%d giờ"
+
+#, php-format
+msgid "%d hours, "
+msgstr "%d giờ,"
+
+#, php-format
+msgid "%d minutes"
+msgstr "%d phút"
+
+#, php-format
+msgid "%d minutes, "
+msgstr "%d phút,"
+
+#, php-format
+msgid "%d seconds"
+msgstr "%d giây"
+
+msgid "Action"
+msgstr "Tác vụ"
+
+msgid "Active"
+msgstr "Hoạt động"
+
+msgid "Add Feed"
+msgstr "Thêm đầu tin"
+
+msgid "Add feed"
+msgstr "Thêm đầu tin"
+
+msgid "Address"
+msgstr "Địa chỉ"
+
+msgid "Administrate RSS Feeds"
+msgstr "Quản lý đầu tin RSS"
+
+msgid "Administrative panel for setting RSS feeds."
+msgstr "Bảng quản lý cấu hình tin RSS"
+
+msgid "An error occurred registering to RSS module."
+msgstr "Có lỗi xảy ra khi đăng ký vào mô-đun RSS"
+
+msgid "An error occurred trying to unregister this module from RSSFeeds."
+msgstr "Có lỗi xảy ra khi xóa đăng ký mô-đun này từ RSS"
+
+msgid "An error occurred when saving your channel."
+msgstr "Có lỗi xảy ra khi lưu kênh"
+
+msgid "An error occurred when trying to access your RSS channels."
+msgstr "Có lỗi xảy ra khi truy nhập vào kênh RSS của bạn"
+
+msgid "Are you sure you want to delete this RSS feed?"
+msgstr "Bạn có chắc muốn xóa tin RSS này ?"
+
+msgid "Cancel"
+msgstr "Hủy"
+
+msgid "Channel saved."
+msgstr "Kênh đã lưu"
+
+msgid "Channels"
+msgstr "Kênh"
+
+msgid "Copyright"
+msgstr "Bản quyền"
+
+msgid "Delete"
+msgstr "Xóa"
+
+msgid "Description"
+msgstr "Mô tả"
+
+msgid "Display?"
+msgstr "Hiển thị ?"
+
+msgid "Edit"
+msgstr "Chỉnh sửa"
+
+msgid "Edit channel"
+msgstr "Chỉnh sửa kênh"
+
+#, php-format
+msgid "Every %s"
+msgstr "Mọi %s"
+
+msgid "Feed title will be used if left empty"
+msgstr "Tiêu đề của tin sẽ được dùng nếu để trống"
+
+msgid "General Settings"
+msgstr "Cấu hình chung"
+
+msgid "Import"
+msgstr "Nhập"
+
+msgid "Import RSS Feeds"
+msgstr "Nhập tin RSS"
+
+msgid "In seconds"
+msgstr "giây"
+
+msgid "Invalid feed address."
+msgstr "Địa chỉ tin không đúng"
+
+msgid "Item limit"
+msgstr "Hạn chế số mục"
+
+msgid "Managing editor email address"
+msgstr "Quản lý địa chỉ email của biên tập viên"
+
+msgid "Module unregistered from RSSFeeds."
+msgstr "Mô-đun được xóa đăng ký khỏi tin RSS"
+
+msgid "No"
+msgstr "Không"
+
+msgid "No RSS file found."
+msgstr "Không tìm thấy file RSS"
+
+msgid "No channels have been registered."
+msgstr "Không có kênh nào được đăng ký"
+
+msgid "Please check editor email format."
+msgstr "Xin kiểm tra định dạng email của biên tập viên"
+
+msgid "Please check webmaster email format."
+msgstr "Xin kiểm tra định dạng email của webmaster"
+
+msgid "Please enable Cache Lite in your config/core/config.php file."
+msgstr "Xin kích hoạt Cahe Lite trong file config/core/config.php"
+
+msgid "RSS Feeds"
+msgstr "Tin RSS"
+
+msgid "RSS file found but no channel information."
+msgstr "Tìm thấy file RSS nhưng không có thông tin kênh"
+
+#, php-format
+msgid "RSS registration to %s module successful."
+msgstr "RSS đăng ký vào mô-đun %s thành công"
+
+msgid "Refresh feed"
+msgstr "Làm mới tin"
+
+msgid "Refresh time"
+msgstr "Thời gian làm mới"
+
+msgid "Refresh time is too low. It must be over 60 seconds."
+msgstr "Thời gian làm mới quá chậm. Có thể hơn 60 giây"
+
+msgid "Reset"
+msgstr "Khởi động lại"
+
+msgid "Save"
+msgstr "Lưu"
+
+msgid "Save Channel"
+msgstr "Lưu kênh"
+
+msgid "Save settings"
+msgstr "Lưu cấu hình"
+
+msgid "Settings"
+msgstr "Cấu hình"
+
+msgid "Settings saved successfully."
+msgstr "Cấu hình đã lưu thành công"
+
+msgid "Sorry"
+msgstr "Xin lỗi"
+
+msgid "Sorry, unable to grab feed."
+msgstr "Xin lỗi, không thể bắt được tin"
+
+msgid "Title"
+msgstr "Tiêu đề"
+
+msgid "Unable to list feed."
+msgstr "Không thể liệt kê đầu tin"
+
+msgid "Webmaster email address"
+msgstr "Địa chỉ email của webmaster"
+
+msgid "Yes"
+msgstr "Vâng"
+
+#, php-format
+msgid "You may not pull more than %s feeds."
+msgstr "Bạn không thể kéo hơn %s đầu tin"
+
+msgid "You must enable allow_url_fopen in your php.ini file."
+msgstr "Bạn phải kích hoạt allow_url_fopen trong file php.ini"
+
+msgid "You must enter a title."
+msgstr "Bạn phải nhập một tiêu đề"
+
+msgid "You must enter an address."
+msgstr "Bạn phải nhập một địa chỉ"
+
+msgid "You should refresh more often than every month."
+msgstr "Bạn nên làm mới lại thường xuyên hơn mỗi tháng"
+
