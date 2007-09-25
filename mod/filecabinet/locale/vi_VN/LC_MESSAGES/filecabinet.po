@@ -1,0 +1,602 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-08-03 13:38-0400\n"
+"PO-Revision-Date: 2007-09-25 01:58+0700\n"
+"Last-Translator: Dang Hoai Phuc <danghoaiphuc@yahoo.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#, php-format
+msgid "%d bytes"
+msgstr "%d bytes"
+
+#, php-format
+msgid "%d bytes (system wide)"
+msgstr "%d bytes (mở rộng hệ thống)"
+
+#, php-format
+msgid "%dKB (%d bytes)"
+msgstr "%dKB (%d bytes)"
+
+#, php-format
+msgid "%dMB (%d bytes)"
+msgstr "%dMB (%d bytes)"
+
+#, php-format
+msgid "%s image"
+msgid_plural "%s images"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "-- Pick option --"
+msgstr "-- tùy chọn --"
+
+msgid "Action"
+msgstr "hành động"
+
+msgid "Add document"
+msgstr "thêm tài liệu"
+
+msgid "Add file"
+msgstr "thêm tập tin"
+
+msgid "Add folder"
+msgstr "thêm danh mục"
+
+msgid "Add image"
+msgstr "chèn ảnh"
+
+msgid "Alternate text"
+msgstr "văn bản luân phiên"
+
+msgid "An error occurred when trying to read your incoming file directory."
+msgstr "Có lỗi xảy ra trong khi đọc bản mục lục mới"
+
+msgid "An error occurred when trying to save your document."
+msgstr "Có lỗi xảy ra trong khi lưu tài liệu."
+
+msgid "An error occurred when trying to save your image."
+msgstr "Có lỗi xảy ra trong khi lưu ảnh."
+
+msgid "An error occurred when trying to save your multimedia file."
+msgstr "Có lỗi xảy ra trong khi lưu tập tin đa phương tiện."
+
+msgid "Are you certain you want to delete this folder and all its contents?"
+msgstr "Bạn có chắc là muốn xóa danh mục này và tòan bộ nội dung của nó không?"
+
+msgid "Are you sure you want to delete this document?"
+msgstr "Bạn có chắc là muốn xóa tài liêu này không?"
+
+msgid "Are you sure you want to delete this file?"
+msgstr "Bạn có chắc là muốn xóa tập tin này không?"
+
+msgid "Are you sure you want to delete this image?"
+msgstr "Bạn có chắc là muốn xóa ảnh này không?"
+
+msgid "Are you sure you want to delete this multimedia file?"
+msgstr "Bạn có chắc là muốn xóa tập tin đa phương tiện này không?"
+
+msgid "Are you sure you wish to delete these files?"
+msgstr "Bạn có chắc là muốn xóa những tập tin này không?"
+
+msgid "Automatically link child images to parent"
+msgstr "Tự động liên kết các ảnh cấp con đến cấp cha"
+
+msgid "Back to folder list"
+msgstr "trở về danh sách các danh mục"
+
+msgid "Bad folder id."
+msgstr "sai số xác nhận danh mục"
+
+msgid "Base document directory"
+msgstr "thư mục tài liệu cơ bản"
+
+msgid "Cancel"
+msgstr "thôi"
+
+msgid "Change settings (Unrestricted only)"
+msgstr "Thay đổi sự sắp đặt (khu vục không giới hạn)"
+
+msgid "Choose a folder."
+msgstr "Chọn danh mục"
+
+msgid "Choose an image folder"
+msgstr "Chọn thư mục hình ảnh"
+
+msgid "Classify"
+msgstr "Phân lọai"
+
+msgid "Classify Files"
+msgstr "Phân lọai tập tin"
+
+msgid "Classify checked"
+msgstr "Phân lọai kiểm tra"
+
+msgid "Classify directory could not be found."
+msgstr "Phân lọai thư mục không được tìm thấy."
+
+msgid "Classify files"
+msgstr "Phân lọai tập tin"
+
+msgid "Classify files (Unrestricted only)"
+msgstr "Phân lọai tập tin (khu vực không giới hạn)"
+
+msgid "Classify settings"
+msgstr "Phân lọai sắp xếp"
+
+msgid "Clear image"
+msgstr "Xóa ảnh"
+
+msgid "Clip"
+msgstr "đọan"
+
+msgid "Close"
+msgstr "Đóng"
+
+msgid "Could not delete file."
+msgstr "Không thể xóa tập tin này."
+
+msgid "Could not find ffmpeg executable."
+msgstr "Không thể tìm thấy tập tin thi hành ffmpeg."
+
+#, php-format
+msgid "Could not move file \"%s\" to \"%s\" folder directory."
+msgstr "Không thể di chuyển tập tin \"%s\" đến thư mục \"%s\""
+
+msgid "Could not write to directory."
+msgstr "Không thể viết lên thư mục này"
+
+msgid "Create document folder"
+msgstr "Khởi tạo thư mục tài liệu"
+
+msgid "Create folder"
+msgstr "Khởi tạo thư mục"
+
+msgid "Create image folder"
+msgstr "Khởi tạo thư mục hình ảnh"
+
+msgid "Create multimedia folder"
+msgstr "Khởi tạo thư mục đa truyền thông"
+
+msgid "Current document"
+msgstr "tài liệu hiện hành"
+
+msgid "Current image"
+msgstr "Ảnh hiện hành"
+
+msgid "Current multimedia"
+msgstr "tập tin đa truyền thông hiện hành"
+
+msgid "Decription"
+msgstr "Giải mã"
+
+msgid "Default document directory may not be blank"
+msgstr "Thư mục thư liệu mặc định không thể bỏ trống."
+
+msgid "Delete"
+msgstr "Xóa"
+
+msgid "Delete checked"
+msgstr "sự xóa đã được kiểm tra"
+
+msgid "Delete folders (Unrestricted only)"
+msgstr "xóa thư mục (khu vục không giới hạn)"
+
+msgid "Description"
+msgstr "Mô tả"
+
+msgid "Directory not set."
+msgstr "Thư mục chưa được thiết lập"
+
+msgid "Do not link image"
+msgstr "Không được dẫn tập tin hình ảnh vào"
+
+msgid "Document directory does not exist."
+msgstr "Thư mục tài liệu không tồn tại"
+
+msgid "Document folders"
+msgstr "danh mục tài liệu"
+
+msgid "Document location"
+msgstr "vi trí tài liệu"
+
+msgid "Document not found."
+msgstr "Không tìm thấy tài liệu này"
+
+msgid "Document settings"
+msgstr "quản lý tài liệu"
+
+#, php-format
+msgid "Document was %s bytes making it larger than %s byte size limit."
+msgstr "Dung lượng tập tin tài liệu là %s bytes.Xin hãy tăng kích cỡ giới hạn lên %s byte"
+
+msgid "Download"
+msgstr "Tải xuống"
+
+msgid "Edit"
+msgstr "hiệu chỉnh"
+
+msgid "Edit folders"
+msgstr "hiệu chỉnh danh mục"
+
+msgid "Edit image"
+msgstr "hiệu chỉnh hình ảnh"
+
+msgid "Edit multimedia file"
+msgstr "hiệu chỉnh tập tin đa truyền thông"
+
+msgid "Enable FFMpeg thumbnails"
+msgstr "bật chế độ chân dung FFMpeg"
+
+msgid "Enable FFMpeg thumbnails (enabled on ffmpeg confirmation)"
+msgstr "bật chế độ chân dung FFMpeg (bật trên bảng xác nhận ffmpeg)"
+
+msgid "FFMpeg directory"
+msgstr "thư mục ffmpeg"
+
+msgid "Failed to create files/filecabinet/ directory."
+msgstr "Khởi tạo thư mục tập tin/tủ tập tin/ thất bại."
+
+msgid "Failed to create files/filecabinet/classify directory."
+msgstr "Khởi tạo thư mục tập tin/tủ tập tin/phân lọai thất bại."
+
+msgid "Failed to create files/multimedia directory."
+msgstr "Khởi tạo thư mục tập tin/tập tin đa truyền thông/ thất bại."
+
+msgid "Failed to create folder. Please check your logs."
+msgstr "Khởi tạo danh mục thất bại.Xin hãy kiểm tra lại bảng báo lỗi."
+
+msgid "File Cabinet"
+msgstr "tủ tập tin"
+
+msgid "File name"
+msgstr "tên tập tin"
+
+msgid "File not uploaded."
+msgstr "Không thể tải lên tập tin này."
+
+msgid "File type"
+msgstr "Lọai tập tin"
+
+#, php-format
+msgid "File uploaded exceeded %sK size limit."
+msgstr "Tập tin tải lên không được quá %sK."
+
+msgid "Filename not set."
+msgstr "Tên tập tin chưa được thiết lập."
+
+msgid "Folder"
+msgstr "danh mục"
+
+msgid "Folder empty."
+msgstr "Danh mục trống"
+
+msgid "Folder is empty."
+msgstr "Danh mục bị bỏ trống."
+
+msgid "Go"
+msgstr "Đi tới"
+
+msgid "Height"
+msgstr "độ cao"
+
+msgid "Image folders"
+msgstr "thư mục hình ảnh"
+
+#, php-format
+msgid "Image height was %spx, making it larger than %d pixel limit."
+msgstr "Chiều cao ảnh hiện giờ là %spx.Hãy làm nó lớn hơn nhưng không được quá %d điểm ảnh."
+
+#, php-format
+msgid "Image is %spx by %spx, the maximum dimensions are %spx by %spx."
+msgstr "Kích cỡ ảnh hiện giờ là %spx x %spx. Kích thước tối đa là %spx x %spx."
+
+msgid "Image link url"
+msgstr "Đường dẫn đến địa chỉ hình ảnh"
+
+msgid "Image location"
+msgstr "Vị trí ảnh"
+
+msgid "Image not found"
+msgstr "Không tìm thấy ảnh nào"
+
+msgid "Image settings"
+msgstr "Sắp xếp hình ảnh"
+
+#, php-format
+msgid "Image was %s bytes making it larger than %s byte size limit."
+msgstr "Dung lượng ảnh hiện giờ là %s bytes. Hãy tăng dung lượng ảnh lên %s byte là tối đa."
+
+#, php-format
+msgid "Image width was %spx, making it larger than %d pixel limit."
+msgstr "Chiều rộng của ảnh hiện giờ là %spx. Hãy tăng nó lên %d là tối đa."
+
+msgid "Incoming classify directory"
+msgstr "Phân lọai thư mục mới đến"
+
+msgid "Items"
+msgstr "mục chọn"
+
+msgid "Link image"
+msgstr "liên kết hình ảnh"
+
+msgid "Link image to original, full sized image"
+msgstr "liên kết đến ảnh gốc,kích thước tối đa của ảnh."
+
+msgid "Link image to web site"
+msgstr "dẫn liên kết ảnh đến trang web."
+
+msgid "Manages images and documents uploaded to your site."
+msgstr "Quản lý nhhững tập tin hình ảnh và tài liệu đã được tải lên trang của bạn."
+
+msgid "Maximum document file size (in bytes)"
+msgstr "dung lượng tập tin tài liệu tối đa (tính bằng bytes)"
+
+msgid "Maximum file size"
+msgstr "dung lượng tập tin tối đa"
+
+msgid "Maximum height"
+msgstr "chiều cao tối đa"
+
+msgid "Maximum image file size (in bytes)"
+msgstr "dung lượng ảnh tối đa (tính bằng bytes)"
+
+msgid "Maximum image pixel height"
+msgstr "chiều cao điểm ảnh tối đa"
+
+msgid "Maximum image pixel width"
+msgstr "Chiều rộng điểm ảnh tối đa"
+
+msgid "Maximum multimedia file size (in bytes)"
+msgstr "Dung lượng tập tin đa phương tiện tối đa (tính bằng bytes)"
+
+msgid "Maximum pinned documents shown (0 for all)"
+msgstr "Số lượng tài liệu được ghim hiển thị tối đa (từ 0 đến hết)"
+
+msgid "Maximum pinned images shown (0 for all)"
+msgstr "Số lượng hình ảnh được ghim hiển thị tối đa (từ 0 đến hết)"
+
+msgid "Maximum width"
+msgstr "Chiều rộng tối đa"
+
+msgid "Missing folder information."
+msgstr "Thiếu thông tin danh mục "
+
+msgid "Missing temporary upload directory."
+msgstr "Thiếu thư mục tải lên tạm thời."
+
+msgid "Missing title."
+msgstr "Thiếu nhan đề."
+
+msgid "More..."
+msgstr "hơn nữa..."
+
+msgid "Multimedia file not found."
+msgstr "Không tìm thấy tập tin đa truyền thông nào."
+
+#, php-format
+msgid "Multimedia file was %s bytes making it larger than %s byte size limit."
+msgstr "Dung lượng tập tin đa truyền thông hiện thời là %s bytes. Hãy tăng nó lên s% byte là tối đa."
+
+msgid "Multimedia folders"
+msgstr "danh mục đa phương tiện"
+
+msgid "Multimedia location"
+msgstr "Vị trí danh mục đa phương tiện"
+
+msgid "Multimedia settings"
+msgstr "Sắp xếp danh mục đa phương tiện"
+
+msgid "No folders found."
+msgstr "Không danh mục nào được tìm thấy"
+
+msgid "No image"
+msgstr "Không có ảnh nào"
+
+msgid "No public folders are available."
+msgstr "Không có danh mục công cộng nào được tạo sẵn."
+
+msgid "Pin folder"
+msgstr "Ghim danh mục này"
+
+#, php-format
+msgid "Pin folder to \"%s\""
+msgstr "ghim danh mục này lên \"%s\""
+
+msgid "Please create a new folder."
+msgstr "Xin hãy tạo một danh mục mới"
+
+msgid "Private"
+msgstr "riêng"
+
+msgid "Public"
+msgstr "công cộng"
+
+msgid "Public/Private"
+msgstr "công cộng/riêng"
+
+msgid "Save settings"
+msgstr "lưu sắp xếp"
+
+msgid "Settings"
+msgstr "sắp xếp"
+
+msgid "Settings saved."
+msgstr "sắp xếp đã được lưu"
+
+msgid "Show source images only"
+msgstr "Chỉ hiển thị nguồn ảnh"
+
+msgid "Size"
+msgstr "kích cỡ"
+
+msgid "Sorry"
+msgstr "Rất tiếc"
+
+msgid "Sorry but this file is inaccessible at this time."
+msgstr "Rất tiếc vì không thể truy xuất tập tin này bây giờ được."
+
+msgid "Sorry, you are not allowed access to this file."
+msgstr "Rất tiếc, bạn không có quyền truy xuất tập tin này."
+
+msgid "Sorry.."
+msgstr "Rất tiếc.."
+
+msgid "The incoming file directory is currently empty."
+msgstr "Thư mục mới đến tạm trời trống."
+
+msgid "The max image height must be greater than 50 pixels."
+msgstr "Chiều cao ảnh tối thiểu là 50 điểm ảnh"
+
+msgid "The max image width must be greater than 50 pixels."
+msgstr "Chiều rộng ảnh tối thiểu là 50 điểm ảnh"
+
+msgid "The web server does not have permission to access files in the classify directory."
+msgstr "Máy chủ không cho phép truy xuất các tập tin này trong thư mục được phân lọai."
+
+msgid "The web server does not have permission to delete files from the classify directory."
+msgstr "Máy chủ không cho phép xóa các tập tin này khỏi thư mục được phân lọai."
+
+msgid "The web server does not have permissions for the classify directory."
+msgstr "Máy chủ không cho phép phân lọai thư mục."
+
+msgid "There was a problem loading the image file."
+msgstr "Có trục trặc khi nạp tập tin hình ảnh vào."
+
+#, php-format
+msgid "This image is larger than the %s x %s limit. Do you want to resize the image to fit?"
+msgstr "Ảnh này đã vượt qua giới hạn cho phép là %s x %s. Bạn có muốn giảm kích cỡ cho vừa không?"
+
+msgid "Title"
+msgstr "Nhan đề"
+
+msgid "Unable to locate the classify directory. Please check your File Cabinet settings, configuration file and directory permissions."
+msgstr "Không thể xác định vị trí của thư mục được phân lọai.Xin hãy kiểm tra sự thiết lập của tử tập tin, tập tin cấu hình và thư mục cho phép."
+
+msgid "Unable to move the file to its new directory."
+msgstr "Không thể di chuyển tập tin này đến thư mục mới."
+
+msgid "Unable to read document directory."
+msgstr "Không thể đọc thư mục tài liệu này."
+
+msgid "Unable to resize image."
+msgstr "Không thể điều chỉnh kích cỡ ảnh."
+
+msgid "Unable to write to document directory."
+msgstr "Không chể ghi lên thư mục tài liệu này."
+
+msgid "Unacceptable document type."
+msgstr "Không chấp nhận loại tài liệu này."
+
+msgid "Unacceptable image type."
+msgstr "Không chấp nhận lọai ảnh này."
+
+msgid "Unacceptable multimedia file type."
+msgstr "Không chấp nhận kiểu tập tin đa truyền thông này."
+
+msgid "Update"
+msgstr "Cập nhật."
+
+msgid "Update document folder"
+msgstr "Cập nhật danh mục tài liệu."
+
+msgid "Update folder"
+msgstr "Cập nhật danh mục"
+
+msgid "Update image"
+msgstr "Cập nhật hình ảnh"
+
+msgid "Update image folder"
+msgstr "Cập nhật danh mục hình ảnh"
+
+msgid "Update multimedia folder"
+msgstr "Cập nhật danh mục đa phương tiện"
+
+msgid "Upload"
+msgstr "Tải lên"
+
+msgid "Upload document"
+msgstr "tải lên tài liệu"
+
+msgid "Upload image"
+msgstr "Tải hình ảnh lên"
+
+msgid "Upload multimedia"
+msgstr "tải tập tin đa truyền thông lên"
+
+msgid "View folder"
+msgstr "Xem danh mục"
+
+msgid "View full image"
+msgstr "Xem ảnh với kích cỡ lớn nhất."
+
+msgid "Width"
+msgstr "Chiều rộng"
+
+msgid "You do not have permission to view this folder."
+msgstr "Bạn không được phép xem danh mục này."
+
+msgid "You must create a document folder."
+msgstr "Bạn phải khởi tạo một danh mục tài liệu mới"
+
+msgid "You must create a document or multimedia folder."
+msgstr "Bạn phải khởi tạo một danh mục tài liệu hay đa phương tiện mới."
+
+msgid "You must create a multimedia folder."
+msgstr "Bạn phải khởi tạo một danh mục đa phương tiện."
+
+msgid "You must create an image folder."
+msgstr "Bạn phải khởi tạo một danh mục hình ảnh."
+
+msgid "You must entitle your folder."
+msgstr "Bạn phải đặt tên danh mục của bạn."
+
+msgid "You must set a maximum document file size."
+msgstr "Bạn phải thiết lập giới hạn kích cỡ tập tin tài liệu lớn nhất."
+
+msgid "You must set a maximum image file size."
+msgstr "Bạn phải thiết lập giới hạn kích cỡ tập tin hình ảnh lớn nhất."
+
+msgid "You must set a maximum multimedia file size."
+msgstr "Bạn phải thiết lập giới hạn kích cỡ tập tin đa truyền thông lớn nhất."
+
+msgid "Your documents directory is not writable."
+msgstr "Những thư mục tài liệu này không được phép ghi."
+
+msgid "Your images directory is not writable."
+msgstr "Những thư mục hình ảnh này không được phép ghi."
+
+#, php-format
+msgid "Your maximum document size exceeds the server limit of %sMB."
+msgstr "Dung lượng tài liệu của bạn đã vượt quá giới hạn cho phép của máy chủ là %s MB"
+
+#, php-format
+msgid "Your maximum image size exceeds the server limit of %sMB."
+msgstr "Dung lượng hình ảnh của bạn đã vượt quá giới hạn cho phép của máy chủ là %s MB"
+
+#, php-format
+msgid "Your maximum multimedia size exceeds the server limit of %sMB."
+msgstr "Dung lượng tập tin đa phương tiện của bạn đã vượt quá giới hạn cho phép của máy chủ là %s MB"
+
+msgid "Your multimedia directory is not writable."
+msgstr "Thư mục đa truyền thông của bạn không được phép ghi."
+
+msgid "files/filecabinet/ directory created successfully."
+msgstr "Thư mục tập tin/tủ tập tin/ đã khởi tạo thành công"
+
+msgid "files/filecabinet/classify directory created successfully."
+msgstr "Thư mục tập tin/tủ tập tin/phân lọai đã khởi tạo thành công"
+
+msgid "files/multimedia directory created successfully."
+msgstr "Thư mục tập tin/đa phương tiện/ đã khởi tạo thành công"
+
