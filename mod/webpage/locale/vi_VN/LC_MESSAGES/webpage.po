@@ -1,0 +1,368 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-06-08 13:35-0400\n"
+"PO-Revision-Date: 2007-09-25 02:00+0700\n"
+"Last-Translator: Dang Hoai Phuc <danghoaiphuc@yahoo.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, php-format
+msgid "%d. (Untitled)"
+msgstr "%d (Không đề)"
+
+msgid "- Select option -"
+msgstr "- Chọn tùy chọn -"
+
+msgid "A problem occurred when trying to approve a web page."
+msgstr "Có lỗi xảy ra trong lúc chấp thuận một trang web"
+
+msgid "A problem occurred when trying to delete your webpage."
+msgstr "Có lỗi xảy ra trong lúc xóa trang web của bạn"
+
+msgid "Action"
+msgstr "Tác vụ"
+
+msgid "Activate"
+msgstr "Kích hoạt"
+
+msgid "Active"
+msgstr "Hoạt động"
+
+msgid "Add Page"
+msgstr "Thêm trang"
+
+msgid "Add new page"
+msgstr "Thêm trang mới"
+
+#, php-format
+msgid "Add page: %s"
+msgstr "Thêm trang: %s"
+
+#, php-format
+msgid "Administrate page: %s"
+msgstr "Quản trị trang: %s"
+
+msgid "An error occurred while saving your page. Please check the error log."
+msgstr "Có lỗi xảy ra trong lúc lưu trang của bạn. Xin kiểm tra nhật ký lỗi."
+
+msgid "An error occurred. Please check your logs."
+msgstr "Có lỗi xảy ra. Xin kiểm tra nhật ký."
+
+msgid "Approval list"
+msgstr "Danh sách chấp thuận"
+
+msgid "Approval view"
+msgstr "Xem được chấp thuận"
+
+#, php-format
+msgid "Approval(%s)"
+msgstr "Được chấp thuận(%s)"
+
+msgid "Approve"
+msgstr "Chấp thuận"
+
+#, php-format
+msgid "Are you sure you want to delete &quot;%s&quot and all its pages?"
+msgstr "Bạn có chắc muốn xóa \"%s\" và tất cả trang liên quan ?"
+
+msgid "Are you sure you want to delete the checked web pages?"
+msgstr "Bạn có chắc muốn xóa những trang được đánh dấu ?"
+
+msgid "Are you sure you want to join ALL the pages into just one page? Warning: You will lose all page backups!"
+msgstr "Bạn có chắc muốn ghép TẤT CẢ trang lại thành 1 trang ? Cảnh báo: Bạn sẽ mất tất cả trang sao lưu."
+
+msgid "Are you sure you want to join this page to the next?"
+msgstr "Bạn có chắc muốn ghép trang này vào trang kế ?"
+
+msgid "Are you sure you want to remove this page?"
+msgstr "Bạn có chắc muốn gỡ bỏ trang này ?"
+
+msgid "Attempted to approve a webpage."
+msgstr "Cố gắng chấp thuận trang web"
+
+msgid "Cannot find template file."
+msgstr "Không thể tìm thấy file mẫu"
+
+msgid "Content"
+msgstr "Nội dung"
+
+msgid "Create header"
+msgstr "Tạo đầu đề"
+
+msgid "Created by"
+msgstr "Tạo bởi"
+
+msgid "Created on"
+msgstr "Tạo vào"
+
+msgid "Creates web pages, articles, and the like."
+msgstr "Tạo trang web, các mục, v.v."
+
+msgid "Deactivate"
+msgstr "Vô hiệu hóa"
+
+msgid "Delete"
+msgstr "Xóa"
+
+msgid "Delete page"
+msgstr "Xóa trang"
+
+msgid "Disapprove"
+msgstr "Không chấp thuận"
+
+msgid "Down"
+msgstr "Xuống"
+
+msgid "Drop"
+msgstr "Thả"
+
+msgid "Edit"
+msgstr "Chỉnh sửa"
+
+#, php-format
+msgid "Edit Page %s"
+msgstr "Chỉnh sửa trang %s"
+
+msgid "Edit header"
+msgstr "Chỉnh sửa đầu đề"
+
+#, php-format
+msgid "Edit header page: %s"
+msgstr "Chỉnh sửa đầu đề trang : %s"
+
+#, php-format
+msgid "Edit header: %s"
+msgstr "Chỉnh sửa đầu đề: %s"
+
+msgid "Edit page"
+msgstr "Chỉnh sửa trang"
+
+msgid "Edit page header"
+msgstr "Chỉnh sửa đầu đề trang"
+
+msgid "Edit web page"
+msgstr "Chỉnh sửa trang web"
+
+msgid "Error"
+msgstr "Lỗi"
+
+msgid "Error occurred when trying to pull a page from the volume."
+msgstr "Có lỗi xảy ra khi kéo một trang ra khỏi tập"
+
+msgid "Error: Unable to force template."
+msgstr "Lỗi: Không thể bắt buộc mẫu"
+
+msgid "Feature"
+msgstr "Tính năng"
+
+msgid "Feature page"
+msgstr "Trang đặc trưng"
+
+msgid "Featured pages"
+msgstr "Những trang đặc trưng"
+
+msgid "Force all pages to use this template"
+msgstr "Buộc tất cả trang dùng mẫu này"
+
+msgid "Front page"
+msgstr "Trang đầu tiên"
+
+msgid "Go"
+msgstr "Đến"
+
+msgid "Go!"
+msgstr "Đến!"
+
+msgid "Header"
+msgstr "Đầu đề"
+
+msgid "Header restored."
+msgstr "Đầu đề được khôi phục"
+
+msgid "Header saved successfully."
+msgstr "Đầu đề được lưu thành công"
+
+msgid "Header version deleted."
+msgstr "Phiên bản đầu đề được xóa"
+
+msgid "Ignoring repeat post."
+msgstr "Bỏ qua những bài gửi lặp lại"
+
+msgid "Image"
+msgstr "Ảnh"
+
+msgid "List"
+msgstr "Danh sách"
+
+msgid "List Web Pages"
+msgstr "Liệt kê trang web"
+
+msgid "Missing page content."
+msgstr "Thiếu nội dung trang"
+
+msgid "Missing page title"
+msgstr "Thiếu tiêu đề trang"
+
+msgid "Missing template file."
+msgstr "Thiếu file mẫu"
+
+msgid "Missing volume id."
+msgstr "Thiếu id của tập"
+
+msgid "Move down"
+msgstr "Di chuyển xuống"
+
+msgid "Move off frontpage"
+msgstr "Di chuyển khỏi trang đầu tiên"
+
+msgid "Move to end"
+msgstr "Di chuyển tới cuối"
+
+msgid "Move to front"
+msgstr "Di chuyển tới đầu"
+
+msgid "Move to frontpage"
+msgstr "Di chuyển tới trang đầu"
+
+msgid "Move up"
+msgstr "Di chuyển lên"
+
+msgid "New"
+msgstr "Mới"
+
+msgid "Next page"
+msgstr "Trang kế"
+
+msgid "No"
+msgstr "Không"
+
+msgid "No pages have been created."
+msgstr "Không có trang nào được tạo"
+
+msgid "Page"
+msgstr "Trang"
+
+msgid "Page held for approval."
+msgstr "Trang được giữ lại chờ chấp thuận"
+
+msgid "Page is missing content."
+msgstr "Trang thiếu nội dung"
+
+msgid "Page is not complete."
+msgstr "Trang không hoàn chỉnh"
+
+msgid "Page joined."
+msgstr "Trang được ghép"
+
+msgid "Page moved."
+msgstr "Trang được di chuyển"
+
+msgid "Page removed."
+msgstr "Trang được gỡ bỏ"
+
+msgid "Page restored."
+msgstr "Trang được khôi phục"
+
+msgid "Page saved successfully."
+msgstr "Trang được lưu thành công"
+
+msgid "Page template"
+msgstr "Trang mẫu"
+
+msgid "Pages joined."
+msgstr "Trang được ghép"
+
+msgid "Previous page"
+msgstr "Trang trước"
+
+msgid "Restore"
+msgstr "Khôi phục"
+
+#, php-format
+msgid "Restore Page %s"
+msgstr "Khôi phục trang"
+
+msgid "Restore Web Page Header"
+msgstr "Khôi phục đầu đề trang"
+
+msgid "Save settings"
+msgstr "Lưu cấu hình"
+
+msgid "Set featured pages"
+msgstr "Thiết lập trang đặc trưng"
+
+msgid "Settings"
+msgstr "Cấu hình"
+
+msgid "Settings saved."
+msgstr "Cấu hình đã lưu"
+
+msgid "Simple image forms"
+msgstr "Biểu mẫu ảnh đơn giản"
+
+msgid "Sort"
+msgstr "Sắp xếp"
+
+msgid "Summary"
+msgstr "Tóm tắt"
+
+msgid "There is a problem with your page templates. Check your error log."
+msgstr "Có lỗi xảy ra với trang mẫu của bạn. Xin kiểm tra nhật ký lỗi"
+
+msgid "Title"
+msgstr "Tiêu đề"
+
+msgid "Unable to locate page template directory."
+msgstr "Không thể xác định thư mục trang mẫu"
+
+msgid "Up"
+msgstr "Lên"
+
+msgid "Update header"
+msgstr "Cập nhật đầu đề"
+
+msgid "Update page"
+msgstr "Cập nhật trang"
+
+msgid "Updated by"
+msgstr "Cập nhật bởi"
+
+msgid "Updated on"
+msgstr "Cập nhật vào"
+
+msgid "View"
+msgstr "Xem"
+
+msgid "View page list"
+msgstr "Xem danh sách trang"
+
+msgid "Volume is missing a title."
+msgstr "Tập thiếu tiêu đề"
+
+msgid "Web Page Approval"
+msgstr "Sự chấp thuận trang web"
+
+msgid "Web Page tables removed."
+msgstr "Bảng trang wen được gỡ bỏ"
+
+msgid "Web Pages"
+msgstr "Trang web"
+
+msgid "Web page approved."
+msgstr "Trang web được chấp thuận"
+
+msgid "Webpage title"
+msgstr "Tiêu đề trang web"
+
+msgid "Yes"
+msgstr "Vâng"
+
