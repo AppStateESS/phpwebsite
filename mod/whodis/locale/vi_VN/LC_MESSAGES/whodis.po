@@ -1,0 +1,77 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-02-26 15:18-0500\n"
+"PO-Revision-Date: 2007-09-25 02:00+0700\n"
+"Last-Translator: Dang Hoai Phuc <danghoaiphuc@yahoo.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "- Referrer age -"
+msgstr "- theo tuổi -"
+
+msgid "1 day old"
+msgstr "1 ngày tuổi"
+
+msgid "1 month old"
+msgstr "1 tháng tuổi"
+
+msgid "1 week old"
+msgstr "1 tuần tuổi"
+
+msgid "1 year old"
+msgstr "1 năm tuổi"
+
+msgid "2 weeks old"
+msgstr "2 tuần tuổi"
+
+msgid "3 days old"
+msgstr "3 ngày tuổi"
+
+msgid "3 months old"
+msgstr "3 tháng tuổi"
+
+msgid "Add filter"
+msgstr "thêm bộ lọc"
+
+msgid "Delete checked"
+msgstr "Bỏ đánh dấu"
+
+msgid "Everything"
+msgstr "Tất cả"
+
+msgid "Filters"
+msgstr "Bộ lọc"
+
+msgid "First visit"
+msgstr "lần thăm đầu tiên"
+
+msgid "Last visit"
+msgstr "lần thăm cuối cùng"
+
+msgid "Purge"
+msgstr "Xóa bỏ"
+
+msgid "Records the href referrers from who is visiting your site."
+msgstr "Lưu thông tin tra cứu href từ khánh đang xem trang của bạn"
+
+msgid "Referrer"
+msgstr "Thông tin tra cứu"
+
+msgid "Referrers"
+msgstr "Những thông tin tra cứu"
+
+msgid "Total visits"
+msgstr "Tổng lượt xem"
+
+msgid "Visits"
+msgstr "Đến xem"
+
