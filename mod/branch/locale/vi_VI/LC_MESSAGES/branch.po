@@ -1,0 +1,288 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-03-07 12:32-0500\n"
+"PO-Revision-Date: 2007-09-25 01:57+0700\n"
+"Last-Translator: Dang Hoai Phuc <danghoaiphuc@yahoo.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid ".htaccess detected on hub. Attempting to create default file on branch."
+msgstr ".htacess phát hiện trong hub. Cố gắng tạo file mặc định trên nhánh"
+
+msgid "Action"
+msgstr "Tác vụ"
+
+msgid "All done!"
+msgstr "Tất cả xong !"
+
+msgid "An error occurred when trying to connect to the database."
+msgstr "Có lỗi xảy ra trong lúc kết nối với cơ sở dữ liệu"
+
+msgid "An error occurred when trying to save the module list."
+msgstr "Có lỗi xảy ra trong lúc lưu danh sách mô-đun"
+
+msgid "An error occurred while saving your branch."
+msgstr "Có lỗi xảy ra trong lúc lưu nhánh"
+
+msgid "An error occurred while trying to install your modules."
+msgstr "Có lỗi xảy ra trong lúc cài đặt mô-đun"
+
+msgid "Branch"
+msgstr "Nhánh"
+
+msgid "Branch List"
+msgstr "Danh sách nhánh"
+
+msgid "Branch created successfully."
+msgstr "Nhánh khởi tạo thành công"
+
+msgid "Branch directory does not exist."
+msgstr "Thư mục nhánh không tồn tại"
+
+msgid "Branch name"
+msgstr "Tên nhánh"
+
+msgid "Branch specifications"
+msgstr "Thông số nhánh"
+
+msgid "Config file created successfully."
+msgstr "tập tin cấu hình khởi tạo thành công"
+
+msgid "Connected successfully, but the database does not exist."
+msgstr "Kết nối thành công, nhưng cơ sở dữ liệu không tồn tại"
+
+msgid "Connected successfully, but this database already contains tables."
+msgstr "Kết nối thành công, nhưng cơ sở dữ liệu này đã có sẵn bảng"
+
+msgid "Connection Port"
+msgstr "Cổng kết nối"
+
+msgid "Connection successful. Database available."
+msgstr "Kết nối thành công. Cơ sở dữ liệu hiện hữu"
+
+msgid "Continue to install branch core"
+msgstr "Tiếp tục cài đặt nhân của nhánh"
+
+msgid "Continue..."
+msgstr "Tiếp tục..."
+
+msgid "Copied admin file to branch."
+msgstr "Đã sao chép file quản trị vào nhánh"
+
+msgid "Copied config files to branch."
+msgstr "Đã sao chép file cấu hình vào nhánh"
+
+msgid "Copied core images."
+msgstr "Đã sao chép ảnh nhân"
+
+msgid "Copied javascript files to branch."
+msgstr "Đã sao chép file javascript vào nhánh"
+
+msgid "Copied successfully."
+msgstr "Sao chép thành công"
+
+msgid "Copied themes to branch."
+msgstr "Đã sao chép chủ đề vào nhánh"
+
+msgid "Core SQL import failed."
+msgstr "Nhập nhân SQL thất bại"
+
+msgid "Core SQL import successful."
+msgstr "Nhập nhân SQL thành công"
+
+msgid "Core installed successfully. Continue to core module installation."
+msgstr "Cài đặt nhân thành công. Tiếp tục cài đặt mô-đun nhân"
+
+msgid "Could not connect to the database."
+msgstr "Không thể kết nối với cơ sở dữ liệu"
+
+msgid "Create branch directories"
+msgstr "Tạo thư mục nhánh"
+
+msgid "Create branch information"
+msgstr "Tạo thông tin nhánh"
+
+msgid "Create new database"
+msgstr "Tạo cơ sở dữ liệu mới"
+
+msgid "Database Host"
+msgstr "Máy chủ cơ sở dữ liệu"
+
+msgid "Database created successfully."
+msgstr "Tạo cơ sở dữ liệu thành công"
+
+msgid "Database information"
+msgstr "Thông tin cơ sở dữ liệu"
+
+msgid "Database name"
+msgstr "Tên cơ sở dữ liệu"
+
+msgid "Database syntax"
+msgstr "Công thức cơ sở dữ liệu"
+
+msgid "Directory"
+msgstr "Thư mục"
+
+msgid "Directory creation successful."
+msgstr "Tạo thư mục thành công"
+
+msgid "Directory exists but already contains files."
+msgstr "Thư mục hiện hữu nhưng đã có sẵn file"
+
+msgid "Directory exists but is not writable."
+msgstr "Thư mục hiện hữu nhưng không cho ghi"
+
+msgid "Edit"
+msgstr "Chỉnh sửa"
+
+msgid "Edit branch"
+msgstr "Chỉnh sửa nhánh"
+
+msgid "Enter your site's url address."
+msgstr "Nhập địa chỉ trang của bạn"
+
+msgid "Failed to copy admin file to branch."
+msgstr "Thất bại khi sao chép file quản trị vào nhánh"
+
+msgid "Failed to copy core config files to branch."
+msgstr "Thất bại khi sao chép file cấu hình nhân vào nhánh"
+
+msgid "Failed to copy core images to branch."
+msgstr "Thất bại khi sao chép ảnh nhân vào nhánh"
+
+msgid "Failed to copy javascript files to branch."
+msgstr "Thất bại khi sao chép file javascript vào nhánh"
+
+msgid "Failed to copy theme files to branch."
+msgstr "Thất bại khi sao chép file chủ đề vào nhánh"
+
+msgid "Failed to create config.php file in the branch."
+msgstr "Thất bại khi tạo file config.php trong nhánh"
+
+msgid "ID hash"
+msgstr "Số ID"
+
+msgid "Incorrect or missing branch id."
+msgstr "ID nhánh không đúng hoặc thiếu"
+
+msgid "Install and update branch sites."
+msgstr "Cái đặt và cập nhật trang nhánh"
+
+msgid "Install branch core"
+msgstr "Cài đặt nhân nhánh"
+
+msgid "Installing core modules"
+msgstr "Đang cài đặt nhân mô-đun"
+
+msgid "List"
+msgstr "Danh sách"
+
+#, php-format
+msgid "Module access for \"%s\""
+msgstr "Truy nhập mô-đun cho \"%s\""
+
+msgid "Module list saved successfully."
+msgstr "Danh sách mô-đun được lưu thành công"
+
+msgid "Modules"
+msgstr "Mô-đun"
+
+msgid "New"
+msgstr "Tạo mới"
+
+msgid "Permission user"
+msgstr "Quyền người dùng"
+
+msgid "Please check your error logs and try again."
+msgstr "Xin kiểm tra nhật ký lỗi và thử lại"
+
+msgid "Remove"
+msgstr "Gỡ bỏ"
+
+msgid ""
+"Removing this branch will make it inaccessible.\\n"
+"The database and files will remain behind.\\n"
+"If you are sure you want to remove the branch, type the branch name:"
+msgstr ""
+"Gỡ bỏ nhánh này sẽ làm nó không thể truy nhập. \\n"
+"Cơ sở dữ liệu và các file sẽ vẫn còn \\n"
+"Nếu chắc chắn muốn gỡ bỏ nhánh, nhập vào tên nhánh :"
+
+msgid "Save"
+msgstr "Lưu"
+
+msgid "Set up allowed modules"
+msgstr "Thiết lập mô-đun được cho phép"
+
+msgid "Setup branch database"
+msgstr "Thiết lập cơ sở dữ liệu nhánh"
+
+msgid "Sorry, but Branch failed to make the proper directories."
+msgstr "Xin lỗi , nhưng Nhánh không thể tạo thư mục đúng"
+
+msgid "Table prefix"
+msgstr "Tiền tố của bảng"
+
+msgid "Table prefix must be alphanumeric characters or underscores only"
+msgstr "Tiền tố của bảng phải là các kí tự [A..Z][0..9] hoặc dấu gạch_dưới "
+
+msgid "This database name is not allowed."
+msgstr "Tên cơ sở dữ liệu này không cho phép"
+
+msgid "URL"
+msgstr "URL (Uniform Resource Locator)"
+
+msgid "Unable to copy .htaccess file."
+msgstr "Không thể sao chép file .htaccess"
+
+msgid "Unable to create branch directories."
+msgstr "Không thể tạo thư mục nhánh"
+
+msgid "Unable to create the database. You will need to create it manually."
+msgstr "Không thể tạo cơ sở dữ liệu. Bạn cần tạo nó một cách thủ công"
+
+msgid "Unable to create the directory. You will need to create it manually."
+msgstr "Không thể tạo thư mục. Bạn cần tạo nó một cách thủ công"
+
+msgid "Unable to get database connect information. Please try again."
+msgstr "Không thể lấy thông tin kết nối cơ sở dữ liệu. Xin thử lại"
+
+msgid "Unchecked modules cannot be installed on this branch."
+msgstr "Những mô-đun không đánh dấu không thể cài đặt trên nhánh này"
+
+msgid "Update"
+msgstr "Cập nhật"
+
+msgid "Url"
+msgstr "Url"
+
+msgid "Use hub values"
+msgstr "Dùng giá trị hub"
+
+msgid "User password"
+msgstr "Mật khẩu người dùng"
+
+msgid "You may not use that branch name."
+msgstr "Bạn không thể dùng tên nhánh đó"
+
+msgid "You must name your branch."
+msgstr "Bạn phải đặt tên nhánh"
+
+msgid "You must type a database name."
+msgstr "Bạn phải nhập một tên cơ sở dữ liệu"
+
+msgid "You must type a database user."
+msgstr "Bạn phải nhập một tên người dùng cơ sở dữ liệu"
+
+msgid "Your branch site must have a site_hash."
+msgstr "Trang nhánh của bạn phải có một site_hash"
+
