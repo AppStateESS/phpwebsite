@@ -1,0 +1,830 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-04-25 11:25-0400\n"
+"PO-Revision-Date: 2007-09-25 02:00+0700\n"
+"Last-Translator: Dang Hoai Phuc <danghoaiphuc@yahoo.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, php-format
+msgid "\"%s\" permission column created."
+msgstr "\"%s\" cột cho phép đã được tạo"
+
+msgid "-- Use server's time zone --"
+msgstr "-- Dùng múi giờ của máy chủ --"
+
+msgid "A deity can not make themselves mortal."
+msgstr "Một chúa tể cũng không thể tự làm mình trọng đại."
+
+msgid "A group with this name already exists."
+msgstr "Nhóm với tên này đã có rồi"
+
+msgid "A problem occurred when accessing user information. Please try again later."
+msgstr "Có lỗi xảy ra khi truy nhập vào thông tin người dùng. Xin thử lại sau"
+
+msgid "A problem occurred when trying to register this module to My Page."
+msgstr "Có lỗi xảy ra khi đăng ký mô-đun này vào Trang của tôi"
+
+msgid "A problem occurred when trying to update your password. Please try again later."
+msgstr "Có lỗi xảy ra khi cập nhật mật khẩu của bạn. Xin thử lại sau"
+
+msgid "Account created successfully!"
+msgstr "Tài khoản được tạo thành công"
+
+msgid "Action"
+msgstr "Tác vụ"
+
+msgid "Actions"
+msgstr "Tác vụ"
+
+msgid "Activate"
+msgstr "Kích hoạt"
+
+msgid "Active"
+msgstr "Hoạt động"
+
+msgid "Add"
+msgstr "Thêm"
+
+msgid "Add / Edit Groups"
+msgstr "Thêm/Chỉnh sửa nhóm"
+
+msgid "Add Group"
+msgstr "Thêm nhóm"
+
+msgid "Add Member"
+msgstr "Thêm thành viên"
+
+msgid "Add Script File"
+msgstr "Thêm file script"
+
+msgid "Add User"
+msgstr "Thêm người dùng"
+
+msgid "Add this user to this group."
+msgstr "Thêm người dùng này vào nhóm"
+
+msgid "All visitors"
+msgstr "Tất cả khách thăm"
+
+msgid "Allow Remember Me"
+msgstr "Cho phép nhớ thông tin của tôi"
+
+msgid "An error occurred when trying to create your account. Please try again later."
+msgstr "Có lỗi xảy ra khi tạo tài khoản của bạn. Xin thử lại sau"
+
+msgid "An error occurred when trying to save the group."
+msgstr "Có lỗi xảy ra khi lưu nhóm"
+
+msgid "An error occurred."
+msgstr "Có lỗi xảy ra"
+
+msgid "Are you SURE you want to remove this group?"
+msgstr "Bạn có CHẮC muốn gỡ bỏ nhóm này ?"
+
+msgid "Are you certain you want this user to have complete control of this web site?"
+msgstr "Bạn có chắc muốn người dùng này có toàn quyền điều khiển trang web ?"
+
+#, php-format
+msgid "Are you certain you want to delete the user &quot;%s&quot; permanently?"
+msgstr "Bạn có chắc muốn xóa người dùng \"%s\" vĩnh viễn ?"
+
+msgid "Are you sure you want to deify this user?"
+msgstr "Bạn có chắc muốn phong chức cho người dùng này ?"
+
+msgid "Are you sure you want to drop this authorization script?"
+msgstr "Bạn có chắc muốn thả mã quyền quản trị này ?"
+
+msgid "Are you sure you want to remove deity status?"
+msgstr "Bạn có chắc muốn gỡ bỏ trạng thái phong chức ?"
+
+msgid "Authorization"
+msgstr "Quyền quản trị"
+
+msgid "Authorization Scripts"
+msgstr "Mã quyền quản trị"
+
+msgid "Authorization updated."
+msgstr "Quyền quản trị được cập nhật"
+
+msgid "Authorization/Settings"
+msgstr "Quản trị/Cấu hình"
+
+msgid "Cancel"
+msgstr "Hủy"
+
+msgid "Captcha information was incorrect."
+msgstr "thông tin CAPTCHA không đúng"
+
+msgid "Change my Settings"
+msgstr "Thay đổi cấu hình của tôi"
+
+msgid "Click here if you are not redirected."
+msgstr "Bấm vào đây nếu không tự chuyển"
+
+msgid "Closest matches below."
+msgstr "Gần đúng nhất ở bên dưới"
+
+msgid "Confirm"
+msgstr "Xác nhận"
+
+msgid "Confirm Graphic"
+msgstr "Xác nhận ảnh"
+
+msgid "Confirm text"
+msgstr "Xác nhận văn bản"
+
+msgid "Confirmation email"
+msgstr "Xác nhận email"
+
+msgid "Confirmation phrase is not correct."
+msgstr "Thông tin xác nhận không đúng"
+
+msgid "Control Panel"
+msgstr "Bảng điều khiển"
+
+msgid "Could not access hub database."
+msgstr "Không thể truy nhập dữ liệu phụ"
+
+#, php-format
+msgid "Could not create \"%s\" permission column."
+msgstr "Không thể tạo cột cho phép \"%s\""
+
+msgid "Could not find any hub deities."
+msgstr "Không thể tìm thấy chức phụ nào"
+
+msgid "Create Group"
+msgstr "Tạo nhóm"
+
+msgid "Create User"
+msgstr "Tạo người dùng"
+
+msgid "Current Members"
+msgstr "Người dùng hiện tại"
+
+msgid "Deactivate"
+msgstr "Vô hiệu hóa"
+
+msgid "Default"
+msgstr "Mặc định"
+
+msgid "Deity"
+msgstr "Chức vụ"
+
+msgid "Deity users copied to branch."
+msgstr "Người dùng có chức vụ được sao chep vào nhánh"
+
+msgid "Delete"
+msgstr "Xóa"
+
+msgid "Delete Groups"
+msgstr "Xóa nhóm"
+
+msgid "Delete Users"
+msgstr "Xóa người dùng"
+
+msgid "Did you forget your password at our site?"
+msgstr "Bạn có quên mật khẩu vào trang chúng tôi ?"
+
+msgid "Did you forget your user name at our site?"
+msgstr "Bạn có quên tên vào trang chúng tôi ?"
+
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+msgid "Display name"
+msgstr "Hiển thị tên"
+
+msgid "Display name is improperly formatted."
+msgstr "Tên hiển thị không định dạng đúng"
+
+msgid "Drop"
+msgstr "Thả"
+
+msgid "Drop this member from the group."
+msgstr "Thả thành viên này từ nhóm"
+
+msgid "Edit"
+msgstr "Chỉnh sứa"
+
+msgid "Edit Authorization Script"
+msgstr "Chỉnh sửa mã quản trị"
+
+msgid "Edit Group"
+msgstr "Chỉnh sửa nhóm"
+
+msgid "Edit Permissions"
+msgstr "Chỉnh sửa sự cho phép"
+
+msgid "Edit User"
+msgstr "Chỉnh sứa người dùng"
+
+msgid "Edit Users"
+msgstr "Chỉnh sửa người dùng"
+
+msgid "Edit restrictions"
+msgstr "Chỉnh sửa sự giới hạn"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Email Address"
+msgstr "Địa chỉ email"
+
+msgid "Email Verification"
+msgstr "Xác minh email"
+
+msgid "Email address already in use."
+msgstr "Địa chỉ email đã được dùng"
+
+msgid "Email address not found. Please try again."
+msgstr "Địa chỉ email không tìm thấy. Xin thử lại"
+
+msgid "Enter the word from the image above."
+msgstr "Nhập từ trong ảnh ở trên"
+
+msgid "Enter your new password"
+msgstr "Nhập mật khẩu mới"
+
+msgid "Enter your user name."
+msgstr "Nhập tên người dùng"
+
+msgid "Forgot Password"
+msgstr "Quên mật khẩu"
+
+msgid "Forgot password?"
+msgstr "Quên mật khẩu ?"
+
+msgid "Forgot your password?"
+msgstr "Quên mật khẩu ?"
+
+msgid "Forgot your user name?"
+msgstr "Quên tên người dùng ?"
+
+msgid "Forgotten password attempt made on a deity account."
+msgstr "Mật khẩu bị quên đã thử thực hiện trên tài khoản có chức vụ"
+
+msgid "Forgotten your user name? Enter your email address instead."
+msgstr "Bạn quên tên người dùng ? Nhập địa chỉ email của bạn thay thế"
+
+msgid "Group Name"
+msgstr "Tên nhóm"
+
+msgid "Group created."
+msgstr "Nhóm đã tạo"
+
+msgid "Group does not exist."
+msgstr "Nhóm không tồn tại"
+
+msgid "Group name"
+msgstr "Tên nhóm"
+
+msgid "Groups"
+msgstr "Nhóm"
+
+msgid "Hello"
+msgstr "Xin chào"
+
+msgid "Here is the address to return to our site:"
+msgstr "Đây là liên kết trở về trang của bạn"
+
+msgid "Hide login box"
+msgstr "Giấu hộp đăng nhập"
+
+msgid "Home"
+msgstr "Trang chủ"
+
+msgid "If so, you may click the link below to reset it."
+msgstr "Nếu vậy, hãy bấm vào liên kết dưới đây để khởi động lại nó"
+
+msgid "If you did not wish to reset your password, you may ignore this message."
+msgstr "Nếu bạn không muốn khởi tạo lại mật khẩu, hãy bỏ qua thông điệp này"
+
+msgid "Immediate"
+msgstr "Ngay lập tức"
+
+msgid "Improper permission level for action requested."
+msgstr "Cấp độ cho phép không phù hợp để thực hiện tác vụ yêu cầu"
+
+msgid "Improperly formatted group name."
+msgstr "Tên nhóm định dạng không đúng"
+
+msgid "Invalid variable name."
+msgstr "Tên biến không đúng"
+
+msgid "Language preference"
+msgstr "Lựa chọn ngôn ngữ"
+
+msgid "Last Logged"
+msgstr "Đăng nhập lần cuối"
+
+msgid "Lets you create and edit users and groups."
+msgstr "Để tạo và chỉnh sửa người dùng và nhóm"
+
+msgid "Local"
+msgstr "Cục bộ"
+
+msgid "Log Out"
+msgstr "Đăng xuất"
+
+msgid "Logged visitors"
+msgstr "Khách thăm đã đăng nhập"
+
+msgid "Login"
+msgstr "Đăng nhập"
+
+msgid "Login Page"
+msgstr "Trang đăng nhập"
+
+msgid "Login page"
+msgstr "Trang đăng nhập"
+
+msgid "Manage Groups"
+msgstr "Quản lý nhóm"
+
+msgid "Manage Members"
+msgstr "Quản lý thành viên"
+
+msgid "Manage Users"
+msgstr "Quản lý người dùng"
+
+msgid "Member added."
+msgstr "Thành viên đã thêm vào"
+
+msgid "Member not found."
+msgstr "Thành viên không tìm thấy"
+
+msgid "Member removed."
+msgstr "Thành viên đã gỡ bỏ"
+
+msgid "Members"
+msgstr "Thành viên"
+
+msgid "Members found."
+msgstr "Thành viên tìm thấy"
+
+msgid "Missing an email address."
+msgstr "Thiếu địa chỉ email"
+
+msgid "Missing authorization script."
+msgstr "Thiếu mã quyền quản trị"
+
+msgid "Missing key information."
+msgstr "Thiếu thông tin khóa"
+
+msgid "Missing my_page function."
+msgstr "Thiếu chức năng my_page"
+
+msgid "Mistyped username."
+msgstr "Tên người dùng nhập sai"
+
+msgid "Module does not exist."
+msgstr "Mô-đun không tồn tại"
+
+msgid "Module tried to detect a non-existant permission."
+msgstr "Mô-đun cố phát hiện quyền hạn không tồn tại"
+
+msgid "Module's item permission file is missing."
+msgstr "File quyền hạn các mục của mô-đun thiếu"
+
+msgid "Module's permission file is missing."
+msgstr "File quyền hạn mô-đun thiếu"
+
+msgid "Mortal"
+msgstr "Quan trọng"
+
+msgid "My Page"
+msgstr "Trang của tôi"
+
+msgid "My Page registered to Users module."
+msgstr "Trang của tôi đã đăng ký vào mô-đun người dùng"
+
+msgid "Never"
+msgstr "Không bao giờ"
+
+msgid "New Account Sign-up"
+msgstr "Tài khoản đăng ký mới"
+
+msgid "New Group"
+msgstr "Nhóm mới"
+
+msgid "New User"
+msgstr "Người dùng mới"
+
+msgid "New user signup is currently disabled."
+msgstr "Đăng ký người dùng mới hiện đang tạm khóa"
+
+msgid "New user signup not allowed."
+msgstr "Đăng ký người dùng mới không được phép"
+
+msgid "No"
+msgstr "Không"
+
+msgid "No groups found."
+msgstr "Không tìm thấy nhóm"
+
+msgid "No matches found."
+msgstr "Không tìm thấy kết quả nào"
+
+msgid "No members."
+msgstr "Không có thành viên"
+
+msgid "No modules are registered to My Page."
+msgstr "Không có mô-đun được đăng ký với Trang của tôi"
+
+msgid "No new scripts found"
+msgstr "Không tìm thấy mã mới"
+
+msgid "No restricted edit groups found."
+msgstr "Không tìm thấy nhóm chỉnh sửa có hạn chế"
+
+msgid "No, leave them as a deity."
+msgstr "Không, hãy để chúng là chức vụ"
+
+msgid "No, leave them as a mortal."
+msgstr "Không, hãy để chúng là quan trọng"
+
+msgid "None"
+msgstr "Không có gì"
+
+msgid "None found"
+msgstr "Không tìm thấy gì"
+
+msgid "Not allowed"
+msgstr "Không cho phép"
+
+msgid "Only another deity can create a deity."
+msgstr "Chỉ những chức vụ khác mới có thể tạo chức vụ"
+
+msgid "Only another deity can create a mortal."
+msgstr "Chỉ chức vụ khác mới có thể tạo quan trọng"
+
+msgid "Password"
+msgstr "Mật khẩu"
+
+msgid "Password confirm"
+msgstr "Xác nhận mật khẩu"
+
+msgid "Password is too easy to guess."
+msgstr "Mật khẩu quá dễ đoán"
+
+#, php-format
+msgid "Password must be at least %s characters in length."
+msgstr "Mật khẩu phải dài tối thiểu %s ký tự"
+
+msgid "Passwords do not match."
+msgstr "Mật khẩu không chính xác"
+
+msgid "Passwords must be reentered on user name change."
+msgstr "Mật khẩu phải được nhập lại khi thay đổi tên người dùng"
+
+msgid "Passwords were not acceptable for the following reason:"
+msgstr "Mật khẩu không được chấp nhận vì lý do sau :"
+
+msgid "Permission"
+msgstr "Quyền hạn"
+
+msgid "Permission table name already exists."
+msgstr "Tên bảng quyền hạn đã có"
+
+msgid "Permission table not found."
+msgstr "Bảng quyền hạn không tìm thấy"
+
+msgid "Permissions"
+msgstr "Quyền hạn"
+
+msgid "Permissions file not implemented."
+msgstr "File quyền hạn không được cung cấp"
+
+msgid "Permissions table created successfully."
+msgstr "Bảng quyền hạn khởi tạo thành công"
+
+msgid "Permissions table not created successfully."
+msgstr "Bảng quyền hạn khởi tạo không thành công"
+
+msgid "Permissions table not removed successfully."
+msgstr "Bảng quyền hạn không được gỡ bỏ thành công"
+
+msgid "Permissions table removed successfully."
+msgstr "Bảng quyền hạn được gỡ bỏ thành công"
+
+msgid "Permissions updated"
+msgstr "Quyền hạn được cập nhật"
+
+msgid "Permissions updated."
+msgstr "Quyền hạn được cập nhật"
+
+msgid "Please check your email for a response."
+msgstr "Xin kiểm tra email để có hồi đáp"
+
+msgid "Please create a user to administrate the site."
+msgstr "Xin tạo một người dùng để quản trị site"
+
+msgid "Please enter a valid email address as a site contact."
+msgstr "Xin nhập một đại chỉ email có thực làm đại chỉ liên hệ của site"
+
+msgid "Please try another user name."
+msgstr "Xin thử tên người dùng khác"
+
+msgid "Please type the word seen in the image."
+msgstr "Xin nhập từ thấy trong ảnh"
+
+msgid "Preferred editor (admins only)"
+msgstr "Trình biên tập ưa thích (chỉ có quản trị viên)"
+
+msgid "Remember me"
+msgstr "Ghi nhớ tôi"
+
+msgid "Remove"
+msgstr "Gỡ bỏ"
+
+msgid "Repeat it here please"
+msgstr "Xin lặp lại nó ở đây"
+
+msgid "Reset my password"
+msgstr "Khởi tạo lại mật khẩu của tôi"
+
+msgid "Restricted"
+msgstr "Bị hạn chế"
+
+msgid "Save permissions"
+msgstr "Lưu quyền hạn"
+
+msgid "Script Filename"
+msgstr "Tên file script"
+
+msgid "Send reminder"
+msgstr "Gửi nhắc nhở"
+
+msgid "Set Group Permissions"
+msgstr "Thiết lập quyền hạn nhóm"
+
+msgid "Set User Permissions"
+msgstr "Thiết lập quyền hạn người dùng"
+
+#, php-format
+msgid "Set permissions"
+msgstr "Thiết lập quyền hạn"
+
+msgid "Settings"
+msgstr "Cấu hình"
+
+msgid "Sign up"
+msgstr "Đăng ký"
+
+msgid "Site contact email"
+msgstr "email liên hệ của site"
+
+msgid "Sorry"
+msgstr "Xin lỗi"
+
+msgid "Sorry but you do not authorize from this site."
+msgstr "Xin lỗi nhưng bạn không quản lý site này"
+
+#, php-format
+msgid "Sorry but your authorization is not checked on this site. Please contact %s for information on reseting your password."
+msgstr "Xin lỗi nhưng quyền quản trị của bạn không được kiểm tra với site này. Xin liên hệ %s biết thêm về khởi tạo lại mật khẩu của bạn."
+
+msgid "Sorry there is a problem with your account."
+msgstr "Xin lỗi có vấn đề với tài khoản của bạn"
+
+msgid "Sorry, we are not accepting new users at this time."
+msgstr "Xin lỗi, chúng tôi hiện không tiếp nhận người dùng mới"
+
+msgid "Specific group(s)"
+msgstr "Nhóm đặc tả"
+
+msgid "The is a problem with My Page."
+msgstr "Có vấn đề với Trang của tôi"
+
+#, php-format
+msgid "The user name associated with your email address is \"%s\""
+msgstr "Tên người dùng đi theo địa chỉ email của bạn là \"%s\""
+
+msgid "There is a problem with your authentication method. Contact the site administrator."
+msgstr "Có lỗi xảy ra với phương pháp xác minh của bạn. Liên hệ quản trị site"
+
+msgid "There was a problem with this module's My Page file."
+msgstr "Có lỗi xảy ra với Trang của tôi của mô-đun này"
+
+msgid "There was problem creating your acccount. Check back later."
+msgstr "Có lỗi xảy ra khi tạo tài khoản của bạn. Xin kiểm tra lại sau."
+
+msgid ""
+"This authentication does not exist.<br />\n"
+" If you did not log in within the time frame specified in your email, please apply for another account."
+msgstr ""
+"Việc xác minh này không tồn tại <br/> \\n"
+"Nếu bạn không đăng nhập trong khoảng thời gian nêu rõ trong email, xin đăng ký tài khoản khác."
+
+msgid "This email address cannot be used."
+msgstr "Địa chỉ email này không thể dùng"
+
+msgid "This module is not registered with My Page"
+msgstr "Mô-đun này không đăng ký với Trang của tôi"
+
+msgid "Time Zone"
+msgstr "Múi giờ"
+
+msgid "Tried to perform an admin function in Users."
+msgstr "Cố gắng thực hiện chứa năng quản trị trong Người dùng"
+
+msgid "Unable to copy deity login to branch."
+msgstr "Không thể sao chép đăng nhập của chức vụ vào nhánh"
+
+msgid "Unable to copy deity users to branch."
+msgstr "Không thể sao chép người dùng có chức vụ vào nhánh"
+
+msgid "Unable to create authorization script."
+msgstr "Không thể tạo mã quyền quản trị"
+
+msgid "Unable to find font file for graphic confirmation."
+msgstr "Không thể tìm thấy tập tin font để xác nhận hình ảnh"
+
+msgid "Unable to save user information."
+msgstr "Không thể lưu thông tin người dùng"
+
+msgid "Unable to write confirmation graphic to server."
+msgstr "Không thể ghi hình ảnh xác nhận vào máy chủ"
+
+msgid "Unknown error."
+msgstr "Lỗi không xác định"
+
+msgid "Unrestricted"
+msgstr "Không hạn chế"
+
+msgid "Update"
+msgstr "Cập nhật"
+
+msgid "Update Default"
+msgstr "Cập nhật mặc định"
+
+msgid "Update Group"
+msgstr "Cập nhật nhóm"
+
+msgid "Update Settings"
+msgstr "Cập nhật cấu hình"
+
+msgid "Update User"
+msgstr "Cập nhật người dùng"
+
+msgid "Update my information"
+msgstr "Cập nhật thông tin của tôi"
+
+msgid "Update password"
+msgstr "Cập nhật mật khẩu"
+
+msgid "Use Daylight Savings Time"
+msgstr "Dùng giờ ban ngày trội thêm"
+
+msgid "Use graphic authentication"
+msgstr "Dùng cách xác minh hình ảnh"
+
+msgid "User Administration"
+msgstr "Quản trị người dùng"
+
+msgid "User Menu"
+msgstr "Menu người dùng"
+
+msgid "User Signup Mode"
+msgstr "Chế độ đăng ký người dùng"
+
+msgid "User created successfully."
+msgstr "Người dùng được tạo thành công"
+
+msgid "User created successfully. Check your email for your login information."
+msgstr "Người dùng được tạo thành công. Xin kiểm tra email để biết thông tin đăng nhập"
+
+msgid "User created."
+msgstr "Người dùng đã tạo"
+
+msgid "User deified."
+msgstr "Người dùng đã phong chức"
+
+msgid "User deleted."
+msgstr "Người dùng đã xóa"
+
+msgid "User is missing their permission group"
+msgstr "Người dùng thiếu nhóm quyền hạn"
+
+msgid "User name already in use."
+msgstr "Tên người dùng đã được sử dụng"
+
+msgid "User name not found. Check your spelling or enter an email address instead."
+msgstr "Tên người dùng không tìm thấy. Kiểm tra chính tả hoặc nhập địa chỉ email thay thế"
+
+msgid "User remains a deity."
+msgstr "Người dùng vẩn còn là chức vụ"
+
+msgid "User remains a lowly mortal."
+msgstr "Người dùng vẫn còn là quan trọng thấp"
+
+msgid "User settings updated."
+msgstr "Cài đặt người dùng đã cập nhật"
+
+msgid "User transformed into a lowly mortal."
+msgstr "Người dùng chuyển thành quan trọng thấp"
+
+msgid "User tried to login using Remember Me with a malformed cookie."
+msgstr "Người dùng cố gắng đăng nhập bằng Ghi nhớ tôi với cookie không bình thường."
+
+#, php-format
+msgid "User tried to send bad hash (%s) to confirm user."
+msgstr "Người dùng cố gắng gửi hash xấu (%s) để xác nhận người dùng"
+
+msgid "User updated."
+msgstr "Người dùng được cập nhật"
+
+msgid "User's email address is missing or malformed."
+msgstr "Địa chỉ email người dùng thiếu hoặc không bình thường"
+
+msgid "User's email address is missing."
+msgstr "Địa chỉ email người dùng thiếu"
+
+msgid "User's email used as contact email address."
+msgstr "Email người dùng cũng là địa chỉ email liên hệ"
+
+msgid "Username"
+msgstr "Tên người dùng"
+
+msgid "Username and password combination not found."
+msgstr "Tổ hợp tên người dùng và mật khẩu không tìm thấy"
+
+msgid "Username and password refused."
+msgstr "Tên người dùng và mật khẩu bị từ chối"
+
+msgid "Username is improperly formatted."
+msgstr "Tên người dùng định dạng không đúng"
+
+msgid "Users"
+msgstr "Người dùng"
+
+msgid "View restrictions"
+msgstr "Xem hạn chế"
+
+msgid "Want to join?"
+msgstr "Muốn tham gia ?"
+
+msgid "We are currently unable to send out email reminders. Try again later."
+msgstr "Chúng tôi hiện không thể gửi email nhắc nhở. Xin thử lại sau"
+
+msgid "We have sent you an email to reset your password."
+msgstr "Chúng tôi đã gửi cho bạn email để khởi tạo lại mật khẩu"
+
+msgid "We have sent you an user name reminder. Please check your email and return to log in."
+msgstr "Chúng tôi đã gửi cho bạn một nhắc nhở tên người dùng. Xin kiểm tra email và trở lại đăng nhập"
+
+msgid "Welcome!"
+msgstr "Chào mừng!"
+
+msgid "Why can't I change my password?"
+msgstr "Sao tôi không thể thay đổi mật khẩu?"
+
+msgid "Yes"
+msgstr "Vâng"
+
+msgid "Yes, make them a deity."
+msgstr "Vâng, cho họ thành chức vụ."
+
+msgid "Yes, make them a mortal."
+msgstr "Vâng, cho họ thành quan trọng."
+
+msgid "You already have an account."
+msgstr "Bạn đã có tài khoản."
+
+msgid "You have one hour to respond."
+msgstr "Bạn có 1 giờ để hồi đáp"
+
+msgid "You must enter either a username or email address."
+msgstr "Bạn phải nhập tên người dùng hoặc địa chỉ email"
+
+msgid "You need to set a site contact address."
+msgstr "Bạn cần thiết lập địa chỉ liên hệ site"
+
+msgid "You will return to the home page in five seconds."
+msgstr "Bạn sẽ trở về trang chủ trong 5 giây"
+
+msgid "Your account has been deactivated. You will need to contact a site administrator to have it reactivated."
+msgstr "Tài khoản của bạn đã bị khóa. Xin liên hệ quản trị site để khôi phục tài khoản."
+
+msgid "Your account has been successfully activated. Please log in."
+msgstr "Tài khoản của bạn được kích hoạt thành công. Xin đăng nhập"
+
+msgid "Your email address is missing from your account. Please contact the site administrators."
+msgstr "Tài khoản của bạn thiếu địa chỉ email. Xin liên hệ quản trị site."
+
+msgid "Your password request was not found or timed out. Please apply again."
+msgstr "Yêu cầu mật khẩu của bạn không tìm thấy hoặc đã quá thời gian. Xin thực hiện lại."
+
+msgid "Your user account has not been approved yet. Make sure you have responded to your authentication email."
+msgstr "Tài khoản người dùng của bạn chưa được chấp thuận. Xin chắc rằng bạn đã hồi đáp email xác nhận."
+
