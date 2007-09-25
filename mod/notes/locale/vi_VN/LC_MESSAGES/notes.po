@@ -1,0 +1,128 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-02-15 10:21-0500\n"
+"PO-Revision-Date: 2007-09-25 01:59+0700\n"
+"Last-Translator: Dang Hoai Phuc <danghoaiphuc@yahoo.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "- Search again -"
+msgstr "- Tìm lần nữa -"
+
+msgid "Allow user name searching"
+msgstr "Cho phép tìm kiếm tên người dùng"
+
+msgid "An error occurred when accessing the database."
+msgstr "Một lỗi xảy ra trong lúc truy xuất dữ liệu"
+
+msgid "Associate note"
+msgstr "Lưu ý phụ"
+
+#, php-format
+msgid "Associate note to item: %s"
+msgstr "Lưu ý phụ cho mục : %s"
+
+msgid "Associated Notes"
+msgstr "Những lưu ý được kết hợp"
+
+msgid "Cancel"
+msgstr "Hủy bỏ"
+
+msgid "Could not find match."
+msgstr "Không thể tìm thấy sự trùng khớp"
+
+msgid "Date sent"
+msgstr "Dữ liệu đã được gửi"
+
+msgid "Delete"
+msgstr "Xóa"
+
+msgid "Delete and close"
+msgstr "Xóa và đóng lại"
+
+msgid "In reference to"
+msgstr "Tham chiếu với"
+
+msgid "Message"
+msgstr "Thông điệp"
+
+msgid "Message deleted."
+msgstr "Thông điệp đã bị xóa"
+
+msgid "No"
+msgstr "Không"
+
+msgid "No notes found."
+msgstr "Không có lưu ý được tìm thấy"
+
+msgid "Note sent successfully."
+msgstr "Lưu ý đã được gửi thành công"
+
+msgid "Note was not sent successfully."
+msgstr "Lưu ý đã không được gửi thành công"
+
+msgid "Notes"
+msgstr "Những lưu ý"
+
+msgid "Read"
+msgstr "Đọc"
+
+msgid "Read note"
+msgstr "Đọc lưu ý"
+
+msgid "Read notes"
+msgstr "Đọc những lưu ý"
+
+msgid "Recipient"
+msgstr "Người nhận"
+
+msgid "Send note"
+msgstr "Gửi lưu ý"
+
+#, php-format
+msgid "Send note to %s"
+msgstr "Gửi lưu ý đến %s"
+
+msgid "Sent by"
+msgstr "Được gửi bởi"
+
+msgid "Sent on"
+msgstr "Được gửi đi"
+
+msgid "System message"
+msgstr "Thông điệp hệ thống"
+
+msgid "Title"
+msgstr "Tiêu đề"
+
+msgid "Unable to resolve user name."
+msgstr "Không thể giải quyết tên người dùng"
+
+msgid "Unknown user."
+msgstr "Người dùng vô danh"
+
+msgid "Unsuitable user name characters."
+msgstr "Những ký tự tên người dùng không phù hợp"
+
+msgid "Yes"
+msgstr "Có"
+
+#, php-format
+msgid "You have %d unread notes."
+msgstr "Bạn có %d lưu ý chưa đọc"
+
+msgid "You must enter a username."
+msgstr "Bạn phải nhập một tên người dùng"
+
+msgid "You need to enter a title or some content."
+msgstr "Bạn cần nhập một tiêu đề hoặc một vài nội dung"
+
