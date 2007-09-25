@@ -1,0 +1,341 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPWebsite1.3.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-04-25 12:16-0400\n"
+"PO-Revision-Date: 2007-09-25 01:48+0700\n"
+"Last-Translator: Dang Hoai Phuc <danghoaiphuc@yahoo.com>\n"
+"Language-Team: quannho.net <translation@quannho.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Vietnamese\n"
+"X-Poedit-Country: VIET NAM\n"
+
+msgid "A problem occured with your submission. Please try again later."
+msgstr "Có lỗi xảy ra trong quá trình gửi thông tin của bạn. Hãy thử lại sau"
+
+msgid "A problem occurred when trying to disapprove this entry."
+msgstr "Có lỗi xảy ra khi thử không chấp nhận bài viết này"
+
+msgid "A version of this entry is awaiting approval."
+msgstr "Một bản của bài viết này đang đợi phê duyệt"
+
+msgid "Action"
+msgstr "Tác vụ"
+
+msgid "Add entry"
+msgstr "Thêm bài viết mới"
+
+msgid "Add new blog"
+msgstr "Thêm nhật ký điện tử mới"
+
+msgid "Allow anonymous comments"
+msgstr "Cho phép nhận xét ẩn danh"
+
+msgid "Allow anonymous comments by default"
+msgstr "Mặc định cho phép nhận xét ẩn danh"
+
+msgid "Allow anonymous submissions"
+msgstr "Cho phép gửi thông tin ẩn danh"
+
+msgid "Allow comments"
+msgstr "Cho phép nhận xét"
+
+msgid "Allow comments by default"
+msgstr "Mặc định cho phép nhận xét"
+
+msgid "Always"
+msgstr "Luôn luôn"
+
+msgid "An error occurred when saving your version."
+msgstr "Có lỗi xảy ra khi lưu bài viết của bạn"
+
+msgid "An error occurred when trying to save your entry. Please check your logs."
+msgstr "Có lỗi xảy ra khi lưu bài viết của bạn. Xin kiểm tra nhật ký"
+
+msgid "Anonymous"
+msgstr "Ẩn danh"
+
+#, php-format
+msgid "Approval (%s)"
+msgstr "Chấp thuận (%s)"
+
+msgid "Approval list"
+msgstr "Chấp thuận danh sách"
+
+msgid "Approve"
+msgstr "Chấp thuận"
+
+msgid "Are you sure you want to permanently delete this blog entry?"
+msgstr "Bạn có chắc muốn xóa bài viết này vĩnh viễn ?"
+
+msgid "Blog Archive"
+msgstr "Kho lưu trữ nhật ký điện tử"
+
+msgid "Blog Entries Awaiting Approval"
+msgstr "Bài viết blog đang đợi chấp thuận"
+
+msgid "Blog Restore"
+msgstr "Khôi phục nhật ký điện tử"
+
+msgid "Blog Settings"
+msgstr "Cấu hình nhật ký điện tử"
+
+msgid "Blog entry approved."
+msgstr "Bài viết blog được chấp thuận"
+
+msgid "Blog entry deleted."
+msgstr "Bài viết blog đã được xóa"
+
+msgid "Blog entry disapproved."
+msgstr "Bài viết blog không được chấp thuận"
+
+msgid "Blog entry removed."
+msgstr "Bài viết blog đã được gỡ bỏ"
+
+msgid "Blog entry restored."
+msgstr "Bài viết blog được khôi phục"
+
+msgid "Blog settings saved."
+msgstr "Cấu hình nhật ký điện tử được lưu"
+
+msgid "Blog tables removed."
+msgstr "Bảng nhật ký điện tử được gỡ bỏ"
+
+msgid "Blog view limit"
+msgstr "Giới hạn lượt xem nhật ký điện tử"
+
+msgid "CAPTCHA submissions"
+msgstr "Gửi thông tinh CAPTCHA"
+
+msgid "Cache anonymous view"
+msgstr "Lưu trước để xem ẩn danh"
+
+msgid "Change settings (Unrestricted only)"
+msgstr "Thay đổi cấu hình (chỉ với không giới hạn)"
+
+msgid "Clip for menu"
+msgstr "Đoạn phim cho menu"
+
+msgid "Create first blog entry!"
+msgstr "Tạo bài viết blog đầu tiên !"
+
+msgid "Creation"
+msgstr "Khởi tạo"
+
+msgid "Delete"
+msgstr "Xóa"
+
+msgid "Delete blog"
+msgstr "Xóa nhật ký điện tử"
+
+msgid "Disapprove"
+msgstr "Không chấp thuận"
+
+msgid "Do not show"
+msgstr "Không hiển thị"
+
+msgid "Edit"
+msgstr "Chỉnh sửa"
+
+msgid "Edit blog"
+msgstr "Chỉnh sửa blog"
+
+msgid "Edit blogs"
+msgstr "Chỉnh sửa các blog"
+
+msgid "Entry"
+msgstr "Bài viết"
+
+msgid "Entry saved successfully."
+msgstr "Bài viết được lưu thành công"
+
+msgid "Expire"
+msgstr "Hết hạn"
+
+msgid "Expire date/time"
+msgstr "Ngày/giờ hết hạn"
+
+msgid "Image"
+msgstr "Ảnh"
+
+msgid "Last poster"
+msgstr "Người gửi cuối"
+
+msgid "List"
+msgstr "Danh sách"
+
+msgid "Maximum image height (50-2048)"
+msgstr "Chiều cao ảnh tối đa (50-2048)"
+
+msgid "Maximum image width (50-2048)"
+msgstr "Chiều rộng ảnh tối đa (50-2048)"
+
+msgid "Missing title."
+msgstr "Đề mục thiếu"
+
+msgid "New"
+msgstr "Mới"
+
+msgid "New Blog Entry"
+msgstr "Bài viết blog mới"
+
+msgid "Next page"
+msgstr "Trang kế"
+
+msgid "No action"
+msgstr "Không có tác vụ"
+
+msgid "No expiration"
+msgstr "Không hết hạn"
+
+msgid "No title"
+msgstr "Không tiêu đề"
+
+msgid "Number of past entries"
+msgstr "Số bài viết đã qua"
+
+msgid "Only on home page"
+msgstr "Chỉ trên trang chủ"
+
+msgid "Please enter word in image correctly."
+msgstr "Xin nhập dòng chữ trong ảnh một cách chính xác"
+
+msgid "Post current thoughts, happenings, and discussions."
+msgstr "Gửi những suy nghĩa, điều xảy ra và thảo luận hiện thời"
+
+msgid "Posted by"
+msgstr "Gửi bởi"
+
+msgid "Posted on"
+msgstr "Gửi vào lúc"
+
+msgid "Previous blog entries"
+msgstr "Bài viết blog trước"
+
+msgid "Previous page"
+msgstr "Trang trước"
+
+msgid "Publish"
+msgstr "Xuất bản"
+
+msgid "Publish date/time"
+msgstr "Xuất bản ngày/giờ"
+
+msgid "Read more"
+msgstr "Xem thêm"
+
+msgid "Recent blog entries"
+msgstr "Những bài viết blog gần đây"
+
+msgid "Repeat submission"
+msgstr "Lặp lại tác vụ gửi thông tin"
+
+msgid "Reset cache"
+msgstr "Khởi tạo lại vùng lưu trước"
+
+msgid "Restore"
+msgstr "Khôi phục"
+
+msgid "Save Changes and Approve"
+msgstr "Lưu thay đổi và chấp thuận"
+
+msgid "Save settings"
+msgstr "Lưu cấu hình"
+
+msgid "Set to zero to prevent display"
+msgstr "Đặt bằng 0 để không hiển thị"
+
+msgid "Settings"
+msgstr "Cấu hình"
+
+msgid "Show blog on home page"
+msgstr "Hiển thị blog trên trang chủ"
+
+msgid "Show recent entries"
+msgstr "Hiển thị những bài viết gần nhất"
+
+msgid "Site is not accepting anonymous submissions."
+msgstr "Trang này không chấp nhận gửi thông tin ẩn danh"
+
+msgid "Sorry"
+msgstr "Xin lỗi"
+
+msgid "Sticky"
+msgstr "Cần chú ý"
+
+msgid "Submit Entry"
+msgstr "Gửi bài viết"
+
+msgid "Submit entry"
+msgstr "Gửi bài viết"
+
+msgid "Suggest entry"
+msgstr "Đề nghị bài viết"
+
+msgid "Summary"
+msgstr "Tóm tắt"
+
+msgid "System caching disabled."
+msgstr "Vùng lưu trước của hệ thống bị vô hiệu"
+
+msgid "Thank you"
+msgstr "Cảm ơn"
+
+msgid "This version has not been approved."
+msgstr "Bản lưu này chưa được chấp thuận"
+
+msgid "Title"
+msgstr "Tiêu đề"
+
+msgid "Tried to edit an unapproved item."
+msgstr "Cố thử chỉnh sửa thứ chưa được chấp thuận"
+
+msgid "Type the word seen in the image."
+msgstr "Nhập vào chữ thấy trong ảnh"
+
+msgid "Unsticky"
+msgstr "Không cần chú ý"
+
+msgid "Update Blog Entry"
+msgstr "Cập nhật bài viết blog"
+
+msgid "Update Unapproved Blog Entry"
+msgstr "Cập nhật bài viết blog không được chấp thuận"
+
+msgid "Update entry"
+msgstr "Cập nhật bài viết"
+
+msgid "Use Image Manager"
+msgstr "Dùng trình quản lý ảnh"
+
+msgid "User attempted access to Blog administration."
+msgstr "Người dùng thử truy nhập vào vùng quản trị blog"
+
+msgid "User tried to edit a blog."
+msgstr "Người dùng đã có chỉnh sửa blog"
+
+msgid "View"
+msgstr "Xem"
+
+msgid "View version"
+msgstr "Xem bản lưu"
+
+msgid "Your entry has been submitted for review."
+msgstr "Bài viết của bạn đã được gửi để xem trước"
+
+msgid "Your entry is being held for approval."
+msgstr "Bài viết của bạn đang tạm giữ để chờ chấp thuận"
+
+msgid "Your submission is still awaiting approval."
+msgstr "Thông tin bạn gửi vẫn đang chờ chấp thuận"
+
+msgid "Your submission must have a summary."
+msgstr "Thông tin bạn gửi phải có 1 bản tóm tắt"
+
