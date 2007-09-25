@@ -1,0 +1,74 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-06-08 13:35-0400\n"
+"PO-Revision-Date: 2007-09-25 02:00+0700\n"
+"Last-Translator: Dang Hoai Phuc <danghoaiphuc@yahoo.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Add item"
+msgstr "Thêm mục"
+
+msgid "Bank not created."
+msgstr "Khoảng trống không được tạo"
+
+msgid "Build Related"
+msgstr "Tạo mục liên quan"
+
+msgid "Change Related Title"
+msgstr "Thay đổi tiêu đề liên quan"
+
+msgid "Currently, nothing is associated with this item."
+msgstr "Hiện thời không có gì liên quan tới mục này"
+
+msgid "Edit"
+msgstr "Chỉnh sửa"
+
+msgid "Friend not created."
+msgstr "Bạn không được tạo"
+
+msgid "If you want to add related information to this item, click the \"Build Related\" link."
+msgstr "Nếu muốn thêm thông tin liên quan đến mục này, bấm vào đường dẫn \"Tạo mục liên quan\""
+
+msgid "Missing position."
+msgstr "Vị trí thiếu"
+
+msgid "Module"
+msgstr "Mô-đun"
+
+msgid "Quit"
+msgstr "Thoát"
+
+msgid "Related Topics"
+msgstr "Tiêu đề liên quan"
+
+msgid "Related tables removed."
+msgstr "Bảng liên quan đã được gỡ bỏ"
+
+msgid "Save"
+msgstr "Lưu"
+
+msgid "The Related module encountered a database error."
+msgstr "Mô-đun liên quan gặp lỗi cơ sở dữ liệu"
+
+msgid "This item is related to the following:"
+msgstr "Mục này liên quan tới những mục sau:"
+
+msgid "Title"
+msgstr "Tiêu đề"
+
+msgid "View other items to add them to the list."
+msgstr "Xem những mục khác để thêm vào danh sách"
+
+msgid "What do you want the title to be?"
+msgstr "Bạn muốn đặt tiêu đề là gì ?"
+
