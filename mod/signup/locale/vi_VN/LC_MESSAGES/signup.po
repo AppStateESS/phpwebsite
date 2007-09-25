@@ -1,0 +1,413 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-08-08 13:05-0400\n"
+"PO-Revision-Date: 2007-09-25 02:00+0700\n"
+"Last-Translator: Dang Hoai Phuc <danghoaiphuc@yahoo.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, php-format
+msgid "%s Participants"
+msgstr "%s người tham gia"
+
+msgid "A problem occurred when trying to register your application. If you continue to receive this message, please contact the site admistrator."
+msgstr "Có lỗi xảy ra trong quá trình đăng ký của bạn. Nếu bạn vẫn tiếp tục gặp thông báo này, xin liên hệ với quản trị site của bạn"
+
+msgid "Action"
+msgstr "Tác vụ"
+
+msgid "Add"
+msgstr "Thêm"
+
+msgid "Add applicant"
+msgstr "Thêm đơn đăng ký"
+
+msgid "Add slot"
+msgstr "Thêm chỗ"
+
+#, php-format
+msgid "Add slot to %s"
+msgstr "Thêm chỗ vào %s"
+
+msgid "An error occurred when accessing this sheet's slots."
+msgstr "Có lỗi xảy ra khi truy nhập vào chỗ trong bảng này"
+
+msgid "An error occurred when pulling applicants."
+msgstr "Có lỗi xảy ra khi kéo đơn đăng ký"
+
+msgid "An error occurred when trying to save your application."
+msgstr "Có lỗi xảy ra khi lưu đơn của bạn"
+
+msgid "Applicant Listing"
+msgstr "Danh sách đơn"
+
+msgid "Applicant saved successfully."
+msgstr "Đơn đăng ký lưu thành công"
+
+msgid "Are you certain you want to delete this slot?"
+msgstr "Bạn có chắc muốn xóa chỗ này"
+
+msgid "Are you sure you want to delete this person from their signup slot?"
+msgstr "Bạn có chắc muốn xóa người này khỏi chỗ đăng ký của họ"
+
+msgid ""
+"Are you sure you want to delete this sheet?\\n"
+"All slots and signup information will be permanently removed."
+msgstr ""
+"Bạn có chắc muốn xóa bảng này ? \\n"
+"Tất cả chỗ và thông tin đăng ký sẽ bị xóa vĩnh viễn"
+
+msgid "Available slots"
+msgstr "Chỗ còn trống"
+
+msgid "CSV file"
+msgstr "File CSV"
+
+msgid "Click on \"Add slot\" to allow applicants to sign up."
+msgstr "Bấm vào \"Thêm chỗ\" để cho phép đơn được đăng ký"
+
+msgid "Click the link below to confirm your participation in the following:"
+msgstr "Bấm vào đường dẫn dưới đây để chấp nhận tham gia vào các mục:"
+
+msgid "Close signup"
+msgstr "Đóng đăng ký"
+
+msgid "Congratulations!"
+msgstr "Chúc mừng!"
+
+msgid "Create"
+msgstr "Khởi tạo"
+
+msgid "Create signup sheet"
+msgstr "Tạo bảng đăng ký"
+
+msgid "Delete"
+msgstr "Xóa"
+
+msgid "Delete slot"
+msgstr "Xóa chỗ"
+
+msgid "Description"
+msgstr "Mô tả"
+
+msgid "Down"
+msgstr "Xuống"
+
+msgid "Edit"
+msgstr "Chỉnh sửa"
+
+msgid "Edit sheets"
+msgstr "Chỉnh sửa bãng"
+
+msgid "Edit slots"
+msgstr "Chỉnh sửa chỗ"
+
+msgid "Email"
+msgstr "Email"
+
+#, php-format
+msgid "Email %s applicants"
+msgstr "Gửi email cho %s người đăng ký"
+
+msgid "Email address"
+msgstr "Địa chỉ email"
+
+msgid "Emails not sent"
+msgstr "Email chưa được gửi"
+
+msgid "Emails sent"
+msgstr "Email đã gửi"
+
+msgid "Error occurred when moving applicant. Slot may be full."
+msgstr "Có lỗi xảy ra trong lúc di chuyển đơn. Có thể chỗ đã đầy"
+
+msgid "Error occurred when saving applicant."
+msgstr "Có lỗi xảy ra khi lưu đơn"
+
+msgid "Error occurred when saving sheet."
+msgstr "Có lỗi xảy ra khi lưu bảng"
+
+msgid "Error occurred when saving slot."
+msgstr "Có lỗi xảy ra khi lưu chỗ"
+
+msgid "Fatal error: Cannot create slot. Missing sheet id."
+msgstr "Lỗi nghiêm trọng : Không thể tạo chỗ. Thiếu ID của bảng"
+
+msgid "First name"
+msgstr "Tên"
+
+msgid "From"
+msgstr "Từ"
+
+msgid "Go"
+msgstr "Đến"
+
+#, php-format
+msgid "Greetings from %s,"
+msgstr "Lời chào từ %s,"
+
+msgid "Invalid reply address."
+msgstr "Địa chỉ thư trả lời không đúng"
+
+msgid "Last name"
+msgstr "Họ"
+
+msgid "List"
+msgstr "Danh sách"
+
+msgid "Message"
+msgstr "Thông điệp"
+
+msgid "Missing internal information."
+msgstr "Thiếu thông tin nội tại"
+
+msgid "Move"
+msgstr "Di chuyển"
+
+msgid "Name"
+msgstr "Tên"
+
+msgid "New"
+msgstr "Mới"
+
+msgid "Number of openings"
+msgstr "Số lượng tuyển"
+
+msgid "Organization"
+msgstr "Tổ chức"
+
+msgid "Other slots full"
+msgstr "Những chỗ khác đã đầy"
+
+msgid "Phone"
+msgstr "Điện thoại"
+
+msgid "Phone number"
+msgstr "Số điện thoại"
+
+msgid "Please check if there are any more available slots by clicking the link below."
+msgstr "Xin kiểm tra có còn chỗ nào bằng cách bấm vào link dưới đây"
+
+msgid "Please enter a contact phone number."
+msgstr "Xin nhập số điện thoại liên hệ"
+
+msgid "Please enter a first name."
+msgstr "Xin nhập tên"
+
+msgid "Please enter a last name."
+msgstr "Xin nhập họ"
+
+msgid "Please enter a message."
+msgstr "Xin nhập một thông điệp"
+
+msgid "Please enter a subject."
+msgstr "Xin nhập một đối tượng"
+
+msgid "Please specify an openings amount."
+msgstr "Xin chỉ rõ số lượng tuyển"
+
+msgid "Please wait"
+msgstr "Xin đợi"
+
+msgid "Print"
+msgstr "In"
+
+msgid "Print list"
+msgstr "In danh sách"
+
+msgid "Print page"
+msgstr "In trang"
+
+msgid "Report"
+msgstr "Báo cáo"
+
+msgid "Reset order"
+msgstr "Xác lập lại thứ tự"
+
+msgid "Return to slot page"
+msgstr "Trở về trang các chỗ"
+
+msgid "Returning to applicant listing."
+msgstr "Đang trở về danh sách đơn"
+
+msgid "Send emails"
+msgstr "Gửi email"
+
+msgid "Sending emails"
+msgstr "Đang gửi email"
+
+msgid "Sheet previously posted."
+msgstr "Bảng được gửi lên trước đó"
+
+msgid "Sheet saved successfully."
+msgstr "Bảng đã lưu thành công"
+
+msgid "Signup"
+msgstr "Đăng ký"
+
+msgid "Signup Sheets"
+msgstr "Bảng đăng ký"
+
+msgid "Signup confirmation"
+msgstr "Thông tin đăng ký"
+
+#, php-format
+msgid "Signup event : %s"
+msgstr "Đăng ký sự kiện: %s"
+
+msgid "Signup form"
+msgstr "Đơn đăng ký"
+
+msgid "Signup sheet deleted."
+msgstr "Bảng đăng ký đã được xóa"
+
+msgid "Signup sheet did not contain any applicants."
+msgstr "Bảng đăng ký không có đơn nào"
+
+msgid "Signup tables dropped."
+msgstr "Bảng đăng ký được thả"
+
+#, php-format
+msgid "Slot : %s"
+msgstr "Chỗ: %s"
+
+msgid "Slot can not be deleted until cleared of applicants."
+msgstr "Chỗ không thể xóa nếu không xóa các đơn"
+
+msgid "Slot could not be deleted successfully."
+msgstr "Chỗ không được xóa thành công"
+
+msgid "Slot deleted successfully."
+msgstr "Chỗ được xóa thành công"
+
+msgid "Slot is missing sheet id."
+msgstr "Chỗ thiếu ID của bảng"
+
+msgid "Slot listing"
+msgstr "Danh sách chỗ"
+
+msgid "Slot order reset."
+msgstr "Slot order reset."
+
+msgid "Slot saved successfully."
+msgstr "Chỗ lưu thành công"
+
+#, php-format
+msgid "Slot setup for %s"
+msgstr "Chỗ được lập cho %s"
+
+msgid "Slots"
+msgstr "Chỗ"
+
+#, php-format
+msgid "Slots left: %s"
+msgstr "Chỗ còn lại : %s"
+
+msgid "Sorry"
+msgstr "Xin lỗi"
+
+msgid "Sorry, but all available slots are full. Please check back later for possible cancellations."
+msgstr "Xin lỗi, nhưng tất cả chỗ đã hết. Xin kiểm tra lại sau để có thể hủy"
+
+msgid "Sorry, the slot you chose is no longer available."
+msgstr "Xin lỗi, nhưng chỗ bạn đóng thì không còn hiện hữu"
+
+msgid "Subject"
+msgstr "Tiêu đề"
+
+msgid "Submit"
+msgstr "Gửi"
+
+msgid "Thank you"
+msgstr "Cảm ơn"
+
+msgid "There is a problem with our email server. Please try again later."
+msgstr "Có vấn đề với máy chủ email của chúng tôi. Xin thử lại sau"
+
+msgid "There is a problem with this signup sheet. Please check back later."
+msgstr "Có lỗi với bảng đăng ký này. Xin trở lại sau"
+
+msgid "This slot filled up before you could confirm your application."
+msgstr "Chỗ này đã đầy trước khi bạn chấp nhập đơn của bạn"
+
+msgid "Title"
+msgstr "Tiêu đề"
+
+#, php-format
+msgid "Total openings: %s"
+msgstr "Tống số lượng tuyển: %s"
+
+msgid "Unable to send emails. Signup sheet does not exist."
+msgstr "Không thể gửi email. Bảng đăng ký không tồn tại"
+
+msgid "Unsuitable email address."
+msgstr "Địa chỉ email không phù hợp"
+
+msgid "Up"
+msgstr "Lên"
+
+msgid "Update"
+msgstr "Cập nhật"
+
+#, php-format
+msgid "Update %s slot"
+msgstr "Cập nhật chỗ %s"
+
+msgid "Update applicant"
+msgstr "Cập nhật đơn"
+
+msgid "Update signup sheet"
+msgstr "Cập nhật bảng đăng ký"
+
+msgid "We are no longer accepting applications."
+msgstr "Chúng tôi hiện không tiếp nhận đơn đăng ký nữa"
+
+msgid "You are already registered. There isn't any need to return to this page."
+msgstr "Bạn đã được đăng ký. Không cần trở lại trang này nữa"
+
+#, php-format
+msgid "You are registered for the following event: %s"
+msgstr "Bạn đã được đăng ký cho các sự kiện sau: %s"
+
+msgid "You cannot signup for more than one slot."
+msgstr "Bạn không thể đăng ký nhiều hơn 1 chỗ"
+
+msgid "You have one hour to confirm your application."
+msgstr "Bạn có 1 giờ để xác minh đơn của bạn"
+
+msgid "You must give this signup sheet a title."
+msgstr "Bạn phải đặt tên cho bảng đăng ký này"
+
+msgid "You must give your slot a title."
+msgstr "Bảng phải đăt tên cho chỗ của bạn"
+
+msgid "You should receive an email allowing you to verify your application.<br />You have one hour to confirm your application."
+msgstr "Bạn sẽ nhận 1 email cho phép xác minh đơn của bạn. <br/>Bạn có 1 giờ để xác minh đơn."
+
+msgid "Your application could not be verified. If over a hour has passed since you applied, you may want to try again."
+msgstr "Đơn của bạn không thể xác minh. Nếu đã hơn 1 giờ từ lúc bạn đăng ký, hay thử lại lần nữa."
+
+msgid "email"
+msgstr "Email"
+
+msgid "firstname"
+msgstr "Tên"
+
+msgid "lastname"
+msgstr "Họ"
+
+msgid "organization"
+msgstr "Tổ chức"
+
+msgid "phone"
+msgstr "Điện thoại"
+
