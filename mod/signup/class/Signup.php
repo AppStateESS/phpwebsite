@@ -608,7 +608,7 @@ class Signup {
         $mail->setFrom($email_session['email']['from']);
         $mail->setReplyTo($email_session['email']['from']);
         $mail->setMessageBody($email_session['email']['message']);
-        $mail->sendIndividually(false);
+        $mail->sendIndividually(true);
 
         $this->loadSheet($email_session['sheet_id']);
 
