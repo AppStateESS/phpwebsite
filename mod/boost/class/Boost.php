@@ -106,13 +106,14 @@ class PHPWS_Boost {
     {
         $continue = false;
         $content = array();
+        $dir_content = array();
 
         if ($inBranch && !empty($home_dir)) {
             $GLOBALS['boost_branch_dir'] = $home_dir;
         }
 
-        if (!$this->checkDirectories($content)) {
-            return implode('<br />', $content);
+        if (!$this->checkDirectories($dir_content, null, false)) {
+            return implode('<br />', $dir_content);
         }
 
         if (!$this->isModules()) {
@@ -385,7 +386,7 @@ class PHPWS_Boost {
             return PHPWS_Error::get(BOOST_NO_MODULES_SET, 'boost', 'update');
         }
 
-        if (!$this->checkDirectories($content)) {
+        if (!$this->checkDirectories($content, null, false)) {
             return false;
         }
         
@@ -933,10 +934,12 @@ class PHPWS_Boost {
      * This one also checks the write and read capabilities of
      * the log files.
      */
-    function checkDirectories(&$content)
+    function checkDirectories(&$content, $home_dir=null, $check_branch=true)
     {
         $errorDir = true;
-        $home_dir = PHPWS_Boost::getHomeDir();
+        if (empty($home_dir)) {
+            $home_dir = PHPWS_Boost::getHomeDir();
+        }
 
         $directory[] = $home_dir . 'config/';
         $directory[] = $home_dir . 'images/';
@@ -944,6 +947,7 @@ class PHPWS_Boost {
         $directory[] = $home_dir . 'files/';
         $directory[] = $home_dir . 'logs/';
         $directory[] = $home_dir . 'javascript/';
+        $directory[] = $home_dir . 'javascript/modules/';
 
         foreach ($directory as $id=>$check){
             if (!is_dir($check)) {
@@ -955,13 +959,13 @@ class PHPWS_Boost {
 
         if (isset($dirExist)) {
             $content[] = dgettext('boost', 'The following directories need to be created:');
-            $content[] = '<pre>' . implode("\n", $dirExist) . '</pre>';
+            $content[] = implode("\n", $dirExist);
             $errorDir = false;
         }
 
         if (isset($writableDir)) {
             $content[] = dgettext('boost', 'The following directories are not writable:');
-            $content[] = '<pre>' . implode(chr(10), $writableDir) . '</pre>';
+            $content[] = implode(chr(10), $writableDir);
             $errorDir = false;
         }
 
@@ -970,6 +974,36 @@ class PHPWS_Boost {
             if (is_file('logs/' . $log_name) && (!is_readable('logs/' . $log_name) || !is_writable('logs/' . $log_name))) {
                 $content[] = sprintf(dgettext('boost', 'Your logs/%s file must be readable and writable.'), $log_name);
                 $errorDir = false;
+            }
+        }
+
+        if (!isset($GLOBALS['Boost_Ready'])) {
+            $GLOBALS['Boost_Ready'] = $errorDir;
+        }
+        
+        if (!$errorDir) {
+            $GLOBALS['Boost_Current_Directory'] = false;
+        }
+        if ($check_branch && !PHPWS_Core::isBranch() && PHPWS_Core::moduleExists('branch')) {
+            $db = new PHPWS_DB('branch_sites');
+            $db->addColumn('branch_name');
+            $db->addColumn('directory');
+            $result = $db->select();
+            if (!empty($result)) {
+                if (PHPWS_Error::logIfError($result)) {
+                    $content[] = dgettext('boost', 'An error occurred when tryingt to access your branch site listing.');
+                    $content[] = dgettext('boost', 'Branches could not be checked.');
+                    return $errorDir;
+                }
+                foreach ($result as $branch) {
+                    $content[] = '';
+                    $content[] = sprintf(dgettext('boost', 'Checking branch "%s"'), $branch['branch_name']);
+                    if (!PHPWS_Boost::checkDirectories($content, $branch['directory'], false)) {
+                        $errorDir = false;
+                    } else {
+                        $content[] = dgettext('boost', 'Branch directories are ready.');
+                    }
+                }
             }
         }
 

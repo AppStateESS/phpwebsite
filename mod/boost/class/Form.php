@@ -96,8 +96,12 @@ class Boost_Form {
 
             if (version_compare($core_db->version, $core_file->version, '<')) {
                 if ($core_file->checkDependency()) {
-                    $link_command['action'] = 'update_core';
-                    $core_links[] = PHPWS_Text::secureLink(dgettext('boost', 'Update'), 'boost', $link_command);
+                    if ($allow_update) {
+                        $link_command['action'] = 'update_core';
+                        $core_links[] = PHPWS_Text::secureLink(dgettext('boost', 'Update'), 'boost', $link_command);
+                    } else {
+                        $core_links[] = dgettext('boost', 'Update');
+                    }
                     $tpl['WARNING'] = dgettext('boost', 'The Core requires updating! You should do so before any modules.');
                     $core_update_needed = true;
                 } else {
@@ -107,11 +111,13 @@ class Boost_Form {
 
                 $template['VERSION'] =sprintf('%s &gt; %s', $core_db->version, $core_file->version); 
                 $template['COMMAND'] = implode(' | ', $core_links);
-            } else {
+            } elseif ($allow_update) {
                 $js_file['QUESTION'] = dgettext('boost', 'Clicking OK will copy the core\\\'s configuration, image and (if on a branch site) javascript directories locally.\nNo backups will occur and all local files will be overwritten.\nAre you certain you want to do this?');
-                $js_file['ADDRESS'] = PHPWS_Text::linkAddress('boost', array('opmod'=>'core', 'action'=>'copy_local'), true);
+                $js_file['ADDRESS']  = PHPWS_Text::linkAddress('boost', array('opmod'=>'core', 'action'=>'copy_local'), true);
                 $js_file['LINK'] = dgettext('boost', 'Revert');
                 $template['COMMAND'] = javascript('confirm', $js_file);
+            } else {
+                $template['COMMAND'] = dgettext('boost', 'None');
             }
 
 
@@ -181,11 +187,17 @@ class Boost_Form {
                     $link_title = dgettext('boost', 'Missing dependency');
                     $link_command['action'] = 'show_dependency';
                 }
-                $links[] = PHPWS_Text::secureLink($link_title, 'boost', $link_command);
+
+                if ($GLOBALS['Boost_Ready']) {
+                    $links[] = PHPWS_Text::secureLink($link_title, 'boost', $link_command);
+                } else {
+                    $links[] = & $link_title;
+                }
             } else {
                 if ($mod->needsUpdate()) {
                     $db_mod = new PHPWS_Module($mod->title, false);
                     $template['VERSION'] = $db_mod->version . ' &gt; ' . $mod->version;
+
                     if ($mod->checkDependency()) {
                         if ($title == 'boost' && !$core_update_needed) {
                             $tpl['WARNING'] = dgettext('boost', 'Boost requires updating! You should do so before any other module!');
@@ -196,7 +208,11 @@ class Boost_Form {
                         $link_title = dgettext('boost', 'Missing dependency');
                         $link_command['action'] = 'show_dependency';
                     }
-                    $links[] = PHPWS_Text::secureLink($link_title, 'boost', $link_command);
+                    if ($allow_update) {
+                        $links[] = PHPWS_Text::secureLink($link_title, 'boost', $link_command);
+                    } else {
+                        $links[] = & $link_title;
+                    }
                 }
 
                 if ($type != 'core_mods' || Current_User::isDeity() && DEITIES_CAN_UNINSTALL) {
@@ -213,11 +229,14 @@ class Boost_Form {
                     }
 
                 }
-
-                $js_file['QUESTION'] = dgettext('boost', 'Clicking OK will copy this module\\\'s configuration, image, templates, and javascript folders locally.\nNo backups will occur and all local files will be overwritten.\nAre you certain you want to do this?');
-                $js_file['ADDRESS'] = PHPWS_Text::linkAddress('boost', array('opmod'=>$title, 'action'=>'copy_local'), true);
-                $js_file['LINK'] = dgettext('boost', 'Revert');
-                $links[] = javascript('confirm', $js_file);
+                if ($allow_update) {
+                    $js_file['QUESTION'] = dgettext('boost', 'Clicking OK will copy this module\\\'s configuration, image, templates, and javascript folders locally.\nNo backups will occur and all local files will be overwritten.\nAre you certain you want to do this?');
+                    $js_file['ADDRESS'] = PHPWS_Text::linkAddress('boost', array('opmod'=>$title, 'action'=>'copy_local'), true);
+                    $js_file['LINK'] = dgettext('boost', 'Revert');
+                    $links[] = javascript('confirm', $js_file);
+                } else {
+                    $links[] = dgettext('boost', 'Revert');
+                }
             }
 
             if ($mod->isAbout()) {
