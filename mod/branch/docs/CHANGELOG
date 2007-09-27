@@ -1,3 +1,7 @@
+27 September 2007
++ Added page limits and navigations to branch listing
++ Updated : templates/branch_list.tpl
+
 19 September 2007
 + Branch was missing a follow-thru if branch was unable to connect to
   a specific database.

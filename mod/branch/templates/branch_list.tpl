@@ -1,3 +1,4 @@
+{TOTAL_ROWS}
 <table width="98%" cellpadding="4" cellspacing="1">
     <tr>
         <th>{BRANCH_NAME_LABEL} {BRANCH_NAME_SORT}</th>
@@ -15,3 +16,8 @@
 <!-- END listrows -->
 </table>
 {EMPTY_MESSAGE}
+<div style="text-align : center">
+  <b>{PAGE_LABEL}</b><br />
+  {PAGES}<br />
+  {LIMITS}
+</div>
