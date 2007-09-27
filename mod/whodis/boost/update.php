@@ -89,8 +89,30 @@ CREATE TABLE whodis_filters (
 + Added about file.
 + Repackaged because of distro problem with 0.1.0
 </pre>';
+
+    case version_compare($version, '0.1.2', '<'):
+        if (!PHPWS_DB::isTable('whodis_filters')) {
+            $db = new PHPWS_DB('whodis_filters');
+            $db->addValue('id', 'int not null default 0');
+            $db->addValue('filter', 'varchar(255) not null default \'\'');
+            
+            if (PHPWS_Error::logIfError($db->createTable())) {
+                $content[] = 'Could not create whodis_filters table.';
+                return false;
+            } else {
+                $db->reset();
+                PHPWS_Error::logIfError($db->createPrimaryKey());
+            }
+        }
+
+        $content[] = '<pre>0.1.2 changes
+---------------
++ Installs made after 0.0.5 were missing the filters table.
+</pre>';
+
     }
     return true;
 }
+
 
 ?>
