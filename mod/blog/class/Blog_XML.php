@@ -18,6 +18,7 @@ class Blog_XML extends MyServer {
     {
         $blog = new Blog($id);
         if ($blog->delete()) {
+            PHPWS_Cache::clearCache();
             return true;
         } else {
             return new IXR_Error(4040, 'Unable to delete entry.');
@@ -136,6 +137,7 @@ class Blog_XML extends MyServer {
         if (PHPWS_Error::logIfError($result)) {
             return new IXR_Error(5010, 'Database Error!  Post not saved.');
         } else {
+            PHPWS_Cache::clearCache();
             return $blog->id;
         }
     }
