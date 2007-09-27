@@ -145,6 +145,26 @@ class User_Action {
             $content = User_Form::setPermissions($user->getUserGroup());
             break;
 
+        case 'deactivateUser':
+            if (!Current_User::authorized('users')){
+                PHPWS_User::disallow();
+                return;
+            }
+            
+            User_Action::activateUser($_REQUEST['user_id'], false);
+            PHPWS_Core::goBack();
+            break;
+
+        case 'activateUser':
+            if (!Current_User::authorized('users')){
+                PHPWS_User::disallow();
+                return;
+            }
+
+            User_Action::activateUser($_REQUEST['user_id'], true);
+            PHPWS_Core::goBack();
+            break;
+
             /** End User Forms **/
 
             /********************** Group Forms ************************/
@@ -374,6 +394,15 @@ class User_Action {
                 $message = $result;
             }
             $content = User_Form::settings();
+            break;
+
+        case 'check_permission_tables':
+            if (!Current_User::authorized('users', 'settings')) {
+                PHPWS_User::disallow();
+                return;
+            }
+            $title = dgettext('users', 'Register Module Permissions');
+            $content = User_Action::checkPermissionTables();
             break;
 
         default:
@@ -649,6 +678,8 @@ class User_Action {
                     if (preg_match('/L\d/', $result->code)) {
                         $title = dgettext('users', 'Sorry');
                         $content = $result->getMessage();
+                        $content .= ' ' . sprintf('<a href="mailto:%s">%s</a>', PHPWS_User::getUserSetting('site_contact'),
+                                            dgettext('users', 'Contact the site administrator'));
                     } else {
                         PHPWS_Error::log($result);
                         $message = dgettext('users', 'A problem occurred when accessing user information. Please try again later.');
@@ -1368,6 +1399,37 @@ class User_Action {
             return 1;
         }
 
+    }
+
+    function checkPermissionTables()
+    {
+        PHPWS_Core::initModClass('users', 'Permission.php');
+        $db = new PHPWS_DB('modules');
+        $db->addWhere('active', 1);
+        $db->addColumn('title');
+        $result = $db->select('col');
+
+        foreach ($result as $mod_title) {
+            $content[] = '<br />';
+            $content[] = sprintf(dgettext('users', 'Checking %s module'), $mod_title);
+
+            $result = Users_Permission::registerPermissions($mod_title, $content);
+            if (!$result) {
+                $content[] = dgettext('users', 'No permissions file found.');
+                continue;
+            }
+        }
+
+        return implode('<br />', $content);
+    }
+
+    function activateUser($user_id, $value)
+    {
+        $db = new PHPWS_DB('users');
+        $db->addWhere('id', (int)$user_id);
+        $db->addWhere('deity', 0);
+        $db->addValue('active', $value ? 1 : 0);
+        PHPWS_Error::logIfError($db->update());
     }
 }
 

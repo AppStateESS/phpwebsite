@@ -1,3 +1,13 @@
+27 September 2007
++ Added missing ability to activate and deactivate users.
++ Added error page should deactivated user attempt to log in.
++ Added link to settings page that re-registers module permissions.
++ Moved Activate and Deactivate commands to the Active Yes/No column.
++ Deities cannot be deactivated.
++ Fixed Vietnamese language abbreviation.
++ Updated: conf/error.php, conf/languages.php,
+  templates/forms/settings.tpl 
+
 Version 2.4.4
 --------------------------------------------------------------------
 24 September 2007

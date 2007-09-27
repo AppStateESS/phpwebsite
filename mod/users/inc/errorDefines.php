@@ -26,6 +26,7 @@ define('USER_ERR_FONT_MISSING',    -17);
 define('USER_ERR_WRITE_CONFIRM',   -18);
 define('USER_ERR_BAD_DISPLAY_NAME',-19);
 
+
 /* User Variable Errors */
 define('USER_ERR_NO_MODULE',       -20);
 define('USER_ERR_BAD_VAR',         -21);
@@ -43,12 +44,15 @@ define('USER_ERR_MISSING_AUTH',    -50);
 /* My Page errors */
 define('USER_MISSING_MY_PAGE',     -60);
 
+/* Bad ids */
 define('USER_BAD_KEY',             -70);
+define('USER_NOT_FOUND',           -71);
 
 /* Login errors */
 define('USER_BAD_CHARACTERS',      'L1');
 define('USER_AUTH_MISSING',        'L2');
 define('USER_NOT_APPROVED',        'L3');
 define('USER_NOT_ACTIVE',          'L4');
+define('USER_DEACTIVATED',         'L5');
 
 ?>

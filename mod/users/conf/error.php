@@ -36,6 +36,8 @@ $errors = array(
                 USER_AUTH_MISSING         => dgettext('users', 'There is a problem with your authentication method. Contact the site administrator.'),
                 USER_NOT_APPROVED         => dgettext('users', 'Your user account has not been approved yet. Make sure you have responded to your authentication email.'),
                 USER_NOT_ACTIVE           => dgettext('users', 'Your account has been deactivated. You will need to contact a site administrator to have it reactivated.'),
-                USER_BAD_KEY              => dgettext('users', 'Unable to load key.')
+                USER_BAD_KEY              => dgettext('users', 'Unable to load key.'),
+                USER_NOT_FOUND            => dgettext('users', 'Could not find user.'),
+                USER_DEACTIVATED          => dgettext('users', 'User account deactivated.')
 		);
 ?>

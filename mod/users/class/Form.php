@@ -789,8 +789,14 @@ class User_Form {
         $form->setMatch('allow_remember', PHPWS_Settings::get('users', 'allow_remember'));
         $form->setLabel('allow_remember', dgettext('users', 'Allow Remember Me'));
 
-
         $template = $form->getTemplate();
+
+        $vars['action'] = 'admin';
+        $vars['command'] = 'check_permission_tables';
+        $template['VERIFY_PERMISSIONS'] = PHPWS_Text::secureLink(dgettext('users', 'Register user permissions'), 'users', $vars);
+
+        $template['VERIFY_EXPLAIN'] = dgettext('users', 'Users module will re-register each module\'s permissions.');
+
         return PHPWS_Template::process($template, 'users', 'forms/settings.tpl');
     }
 

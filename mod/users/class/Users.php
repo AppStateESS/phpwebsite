@@ -806,17 +806,25 @@ class PHPWS_User {
             }
         }
 
+        $linkVar['action'] = 'admin';
+        $linkVar['user_id'] = $this->id;
+
         if ($this->isActive()) {
-            $linkVar['command'] = 'deactivateUser';
-            $links[] = PHPWS_Text::secureLink(dgettext('users', 'Deactivate'), 'users', $linkVar);
-
-            $template['ACTIVE'] =  dgettext('users', 'Yes');
+            if (!$this->deity) {
+                $linkVar['command'] = 'deactivateUser';
+                $template['ACTIVE'] = PHPWS_Text::secureLink(dgettext('users', 'Yes'), 'users', $linkVar, null, dgettext('users', 'Deactivate this user'));
+            } else {
+                $template['ACTIVE'] =  dgettext('users', 'Yes');
+            }
         } else {
-            $linkVar['command'] = 'activateUser';
-            $links[] = PHPWS_Text::secureLink(dgettext('users', 'Activate'), 'users', $linkVar);
-
-            $template['ACTIVE'] = dgettext('users', 'No');
+            if (!$this->deity) {
+                $linkVar['command'] = 'activateUser';
+                $template['ACTIVE'] =  PHPWS_Text::secureLink(dgettext('users', 'No'), 'users', $linkVar, null, dgettext('users', 'Activate this user'));
+            } else {
+                $template['ACTIVE'] = dgettext('users', 'No');
+            }
         }
+
 
         $logged = $this->getLastLogged('%c');
 
@@ -827,9 +835,7 @@ class PHPWS_User {
         }
 
         $template['EMAIL'] = $this->getEmail(true, true);
-    
-        $linkVar['action'] = 'admin';
-        $linkVar['user_id'] = $this->id;
+   
 
         $jsvar['QUESTION'] = sprintf(dgettext('users', 'Are you certain you want to delete the user &quot;%s&quot; permanently?'),
                                      $this->getUsername());
@@ -856,7 +862,6 @@ class PHPWS_User {
 
         return $template;
     }
-
 
     function registerPermissions($module)
     {

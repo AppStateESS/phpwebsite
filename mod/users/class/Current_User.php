@@ -23,7 +23,7 @@ class Current_User {
     function init($id)
     {
         $_SESSION['User'] = new PHPWS_User($id);
-        $_SESSION['User']->setLogged(TRUE);
+        $_SESSION['User']->setLogged(true);
         Current_User::updateLastLogged();
         Current_User::getLogin();
     }
@@ -44,12 +44,12 @@ class Current_User {
      *                                     priviledges for that module regardless of 
      *                                     module, subpermission, or item id
      */
-    function allow($module, $subpermission=NULL, $item_id=0, $itemname=NULL, $unrestricted_only=false)
+    function allow($module, $subpermission=null, $item_id=0, $itemname=null, $unrestricted_only=false)
     {
         if ($unrestricted_only && Current_User::isRestricted($module)) {
                 return false;
         }
-        return $_SESSION['User']->allow($module, $subpermission, $item_id, $itemname, FALSE);
+        return $_SESSION['User']->allow($module, $subpermission, $item_id, $itemname, false);
     }
 
     /**
@@ -63,16 +63,16 @@ class Current_User {
      *                                     priviledges for that module regardless of 
      *                                     module, subpermission, or item id
      */
-    function authorized($module, $subpermission=NULL, $item_id=0, $itemname=NULL, $unrestricted_only=false)
+    function authorized($module, $subpermission=null, $item_id=0, $itemname=null, $unrestricted_only=false)
     {
         if ($unrestricted_only && Current_User::isRestricted($module)) {
                 return false;
         }
 
-        return $_SESSION['User']->allow($module, $subpermission, $item_id, $itemname, TRUE);
+        return $_SESSION['User']->allow($module, $subpermission, $item_id, $itemname, true);
     }
 
-    function allowedItem($module, $item_id, $itemname=NULL)
+    function allowedItem($module, $item_id, $itemname=null)
     {
         return $_SESSION['User']->allowedItem($module, $item_id, $itemname);
     }
@@ -91,7 +91,7 @@ class Current_User {
      * @param string  message  Message sent to log
      * @param boolean login    If true, then allow change to login
      */
-    function disallow($message=NULL, $login=true)
+    function disallow($message=null, $login=true)
     {
         if ($login && Current_User::requireLogin()) {
             return;
@@ -105,7 +105,7 @@ class Current_User {
         PHPWS_Core::initModClass('users', 'Form.php');
         $login = User_Form::logBox();
         if (!empty($login)) {
-            Layout::set($login, 'users', 'login_box', FALSE);
+            Layout::set($login, 'users', 'login_box', false);
         }
     }
 
@@ -125,7 +125,7 @@ class Current_User {
     function getAuthKey()
     {
         if (!isset($_SESSION['User'])) {
-            return NULL;
+            return null;
         }
         return $_SESSION['User']->getAuthKey();
     }
@@ -149,11 +149,11 @@ class Current_User {
     function isRestricted($module)
     {
         if (Current_User::isDeity()) {
-            return FALSE;
+            return false;
         }
      
         $level = $_SESSION['User']->getPermissionLevel($module);
-        return $level == RESTRICTED_PERMISSION ? TRUE : FALSE;
+        return $level == RESTRICTED_PERMISSION ? true : false;
     }
 
     /**
@@ -167,7 +167,7 @@ class Current_User {
         if (!$id) {
             return false;
         }
-        return ($_SESSION['User']->id == $id) ? TRUE : FALSE;
+        return ($_SESSION['User']->id == $id) ? true : false;
     }
 
     /**
@@ -177,19 +177,19 @@ class Current_User {
     function isUnrestricted($module)
     {
         if (Current_User::isDeity()) {
-            return TRUE;
+            return true;
         }
 
         if (empty($module)) {
-            return FALSE;
+            return false;
         }
 
         if (!Current_User::allow($module)) {
-            return FALSE;
+            return false;
         }
 
         $level = $_SESSION['User']->getPermissionLevel($module);
-        return $level == UNRESTRICTED_PERMISSION ? TRUE : FALSE;
+        return $level == UNRESTRICTED_PERMISSION ? true : false;
     }
 
     function updateLastLogged()
@@ -210,7 +210,7 @@ class Current_User {
         return $_SESSION['User']->getDisplayName();
     }
 
-    function getEmail($html=FALSE,$showAddress=FALSE)
+    function getEmail($html=false,$showAddress=false)
     {
         return $_SESSION['User']->getEmail($html,$showAddress);
     }
@@ -255,7 +255,7 @@ class Current_User {
     function getGroups()
     {
         if (empty($_SESSION['User']->_groups)) {
-            return NULL;
+            return null;
         }
         return $_SESSION['User']->_groups;
     }
@@ -282,7 +282,7 @@ class Current_User {
         }
     }
 
-    function popupPermission($key_id, $label=NULL)
+    function popupPermission($key_id, $label=null)
     {
         if (empty($label)) {
             $js_vars['label'] = dgettext('users', 'Permission');
@@ -320,7 +320,7 @@ class Current_User {
             return PHPWS_Error::get(USER_BAD_CHARACTERS, 'users', 'Current_User::loginUser');
         }
 
-        $createUser = FALSE;
+        $createUser = false;
         // First check if they are currently a user
         $user = new PHPWS_User;
         $db = new PHPWS_DB('users');
@@ -332,9 +332,9 @@ class Current_User {
         }
 
         // if result is blank then check against the default authorization
-        if ($result == FALSE){
+        if ($result == false){
             $authorize = PHPWS_User::getUserSetting('default_authorization');
-            $createUser = TRUE;
+            $createUser = true;
             $user->setUsername($username);
         } else {
             if (!$user->approved) {
@@ -353,8 +353,8 @@ class Current_User {
             return $result;
         }
 
-        if ($result == TRUE){
-            if ($createUser == TRUE){
+        if ($result == true){
+            if ($createUser == true){
                 $result = $user->setUsername($username);
 
                 if (PEAR::isError($result)){
@@ -362,8 +362,8 @@ class Current_User {
                 }
 
                 $user->setAuthorize($authorize);
-                $user->setActive(TRUE);
-                $user->setApproved(TRUE);
+                $user->setActive(true);
+                $user->setApproved(true);
 
                 if (function_exists('post_authorize')) {
                     post_authorize($user);
@@ -372,11 +372,16 @@ class Current_User {
                 $user->save();
             }
 
+            if (!$user->active) {
+                return PHPWS_Error::get(USER_DEACTIVATED, 'users', 'Current_User:loginUser', $user->username);
+            }
+
             $user->login();
             $_SESSION['User'] = $user;
-            return TRUE;
-        } else
-            return FALSE;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     function authorize($authorize, &$user, $password)
@@ -386,7 +391,7 @@ class Current_User {
         $result = $db->select();
 
         if (empty($result)) {
-            return FALSE;
+            return false;
         }
 
         if (isset($result[$authorize])) { 
@@ -395,7 +400,7 @@ class Current_User {
 
             if(!is_file($file)){
                 PHPWS_Error::log(USER_ERR_MISSING_AUTH, 'users', 'authorize', $file);
-                return FALSE;
+                return false;
             }
 
             require_once $file;
@@ -405,10 +410,10 @@ class Current_User {
                 return $result;
             } else {
                 PHPWS_Error::log(USER_ERR_MISSING_AUTH, 'users', 'authorize');
-                return FALSE;
+                return false;
             }
         } else {
-            return FALSE;
+            return false;
         }
 
         return $result;

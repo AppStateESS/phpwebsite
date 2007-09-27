@@ -1,6 +1,10 @@
 {START_FORM}
 <table class="form-table">
   <tr>
+    <td width="30%">{VERIFY_PERMISSIONS}</td>
+    <td>{VERIFY_EXPLAIN}</td>
+  </tr>
+  <tr>
     <td>{SITE_CONTACT_LABEL}</td>
     <td>{SITE_CONTACT}</td>
   </tr>
@@ -13,7 +17,7 @@
     <td>{ALLOW_REMEMBER} {AFFIRM}</td>
   </tr><!-- END allow-remember -->
   <tr>
-    <td><strong>{USER_SIGNUP_LABEL}</strong></td>
+    <td>{USER_SIGNUP_LABEL}</td>
     <td>
         {USER_SIGNUP_1} {USER_SIGNUP_1_LABEL}<br />
         {USER_SIGNUP_2} {USER_SIGNUP_2_LABEL}<br />
@@ -35,3 +39,4 @@
 <br />
 {SUBMIT}
 {END_FORM}
+
