@@ -48,7 +48,11 @@ class Categories_Action {
             break;
 
         case 'deleteCategory':
-            Categories::delete($category);
+            if (Current_User::authorized('categories', 'delete_categories')) {
+                Categories::delete($category);
+            } else {
+                Current_User::disallow();
+            }
             PHPWS_Core::goBack();
             break;
 
