@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @version $Id$
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ */
 
 // first %s is for query string
 // second %s is for the site

@@ -42,6 +42,8 @@ class Search_User {
         $form->addHidden('user', 'search');
         $form->addText('search', SEARCH_DEFAULT);
         $form->setLabel('search', dgettext('search', 'Search'));
+        
+        Search_User::addAlternates($form);
 
         if (isset($onclick)) {
             $form->setExtra('search', $onclick);
@@ -148,21 +150,7 @@ class Search_User {
             $form->setMatch('mod_title', $_REQUEST['mod_title']); 
         }
 
-        $file = PHPWS_Core::getConfigFile('search', 'alternate.php');
-        if ($file) {
-            include($file);
-            
-            if (!empty($alternate_search_engine) && is_array($alternate_search_engine)) {
-                $alternate_sites['local'] = dgettext('search', 'Local');
-                foreach ($alternate_search_engine as $title=>$altSite) {
-                    $alternate_sites[$title] = $altSite['title'];
-                }
-
-                $form->addRadio('alternate', array_keys($alternate_sites));
-                $form->setLabel('alternate', $alternate_sites);
-                $form->setMatch('alternate', 'local');
-            }
-        }
+        Search_User::addAlternates($form);
         
         $template = $form->getTemplate();
 
@@ -191,6 +179,25 @@ class Search_User {
         $content = PHPWS_Template::process($template, 'search', 'search_page.tpl');
 
         Layout::add($content);
+    }
+
+    function addAlternates(&$form)
+    {
+        $file = PHPWS_Core::getConfigFile('search', 'alternate.php');
+        if ($file) {
+            include($file);
+            
+            if (!empty($alternate_search_engine) && is_array($alternate_search_engine)) {
+                $alternate_sites['local'] = dgettext('search', 'Local');
+                foreach ($alternate_search_engine as $title=>$altSite) {
+                    $alternate_sites[$title] = $altSite['title'];
+                }
+
+                $form->addRadio('alternate', array_keys($alternate_sites));
+                $form->setLabel('alternate', $alternate_sites);
+                $form->setMatch('alternate', 'local');
+            }
+        }
     }
 
     function getIgnore()

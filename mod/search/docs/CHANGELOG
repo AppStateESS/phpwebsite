@@ -1,3 +1,7 @@
+27 September 2007
++ Added ability to put search radio buttons on search bar.
++ Updated: templates/search_box.tpl
+
 Version 0.2.3
 ------------------------------------------------------------------------
 22 August 2007
