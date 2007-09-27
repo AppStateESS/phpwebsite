@@ -301,7 +301,7 @@ class Menu_Link {
                 $js['address'] = PHPWS_Text::linkAddress('menu', $vars, true);
                 $js['label'] = MENU_LINK_ADMIN;
                 $js['width'] = 200;
-                $js['height'] = 200;
+                $js['height'] = 300;
             
                 $template['ADMIN'] = javascript('open_window', $js);
             } else {
