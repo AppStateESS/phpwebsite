@@ -277,7 +277,7 @@ class PHAT_FormManager extends PHPWS_Manager {
 
 
     function _editOptions() {
-        if($_SESSION['OBJ_user']->allow('phatform', 'edit_options')) {
+        if(Current_User::allow('phatform', 'edit_options')) {
             if((isset($_REQUEST['PHAT_OptionSetId']) && !is_numeric($_REQUEST['PHAT_OptionSetId'])) || isset($_REQUEST['PHAT_OptionBack'])) {
                 $_REQUEST['PHAT_MAN_OP'] = 'Options';
                 $this->action();
@@ -304,7 +304,9 @@ class PHAT_FormManager extends PHPWS_Manager {
                     $db->update();
                 }
             } else if(isset($_REQUEST['PHAT_delete'])) {
-                PHPWS_DB::sqlDelete('mod_phatform_options', 'id', $optionSetId);
+                $db = new PHPWS_DB('mod_phatform_options');
+                $db->addWhere('id', $optionSetId);
+                $db->delete();
                 $_REQUEST['PHAT_MAN_OP'] = 'Options';
                 $this->action();
                 return;
