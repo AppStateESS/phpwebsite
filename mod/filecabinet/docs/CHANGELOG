@@ -1,6 +1,16 @@
 28 September 2007
 + Increased file_name size beyond 50 because people give files crazy
   long names.
++ More work on thumbnail changes including audio files.
++ Added dropExtension function to File_Common.
++ Added get extenstion function to Image.
++ Added some error codes to help with video thumbnail debugging.
+
+
++ Updated: sql - increased file_name size
+                 thumbnail column to multimedia
+
++ Updated: conf/error.php, templates/filters/flash/filter.php
 
 24 September 2007
 + Added code to change thumbnails on multimedia files.
