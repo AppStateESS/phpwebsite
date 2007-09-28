@@ -1,5 +1,8 @@
 Note: this log is only for notes post-1.0-conversion
 
+28 September 2007
++ Fixed bug #1785639. Unable to move elements up and down.
+
 22 August 2007
 + Reduced control panel info.
 

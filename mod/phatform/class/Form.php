@@ -844,7 +844,7 @@ class PHAT_Form extends PHPWS_Item {
         $actions['moveUp'] = dgettext('phatform', 'Move Up');
         $actions['moveDown'] = dgettext('phatform', 'Move Down');
 
-        $editor = PHPWS_Form::formSelect('PHAT_Action_$key', $actions);
+        $editor = PHPWS_Form::formSelect("PHAT_Action_$key", $actions);
         $editor .= PHPWS_Form::formSubmit(dgettext('phatform', 'Go'), "go_$key");
 
         return $editor;
@@ -863,8 +863,8 @@ class PHAT_Form extends PHPWS_Item {
             if(isset($_REQUEST["go_$key"])) {
                 $elementInfo = explode(':', $elementInfo);
                 $this->element = new $elementInfo[0]($elementInfo[1]);
-
-                switch($_REQUEST["PHAT_Action_key"]) {
+                
+                switch($_REQUEST["PHAT_Action_$key"]) {
                 case 'edit':
                     $content = $this->element->edit();
                     break;
@@ -875,14 +875,21 @@ class PHAT_Form extends PHPWS_Item {
 
                 case 'moveUp':
                     if($key > 0) {
-                        PHPWS_Array::swap($this->_elements, $key, $key-1);
+                        $hold = $this->_elements[$key-1];
+                        $this->_elements[$key-1] = $this->_elements[$key];
+                        $this->_elements[$key] = $hold;
                     } else {
                         $temp = array($this->_elements[$key]);
                         unset($this->_elements[$key]);
                         $this->_elements = array_merge($this->_elements, $temp);
                         $this->_position = sizeof($this->_elements) - (sizeof($this->_elements) % $this->_pageLimit);
                     }
-                    PHPWS_Array::reindex($this->_elements);
+                    $new_array = array();
+                    foreach ($this->_elements as $j) {
+                        $new_array[] = $j;
+                    }
+                    $this->_elements = $new_array;
+
                     $this->commit();
                     $content = $_SESSION['PHAT_FormManager']->menu();
                     $content .= $this->view(TRUE);
@@ -890,14 +897,20 @@ class PHAT_Form extends PHPWS_Item {
 
                 case 'moveDown':
                     if($key < sizeof($this->_elements) - 1) {
-                        PHPWS_Array::swap($this->_elements, $key, $key+1);
+                        $hold = $this->_elements[$key+1];
+                        $this->_elements[$key+1] = $this->_elements[$key];
+                        $this->_elements[$key] = $hold;
                     } else {
                         $temp = array($this->_elements[$key]);
                         unset($this->_elements[$key]);
                         $this->_elements = array_merge($temp, $this->_elements);
                         $this->_position = 0;
                     }
-                    PHPWS_Array::reindex($this->_elements);
+                    $new_array = array();
+                    foreach ($this->_elements as $j) {
+                        $new_array[] = $j;
+                    }
+                    $this->_elements = $new_array;
                     $this->commit();
                     $content = $_SESSION['PHAT_FormManager']->menu();
                     $content .= $this->view(TRUE);
@@ -1675,6 +1688,7 @@ class PHAT_Form extends PHPWS_Item {
      * @access public
      */
     function action() {
+
         if(isset($_SESSION['PHAT_Message'])) {
             $content = $_SESSION['PHAT_Message'];
             $GLOBALS['CNT_phatform']['content'] .= $content;
@@ -1755,6 +1769,7 @@ class PHAT_Form extends PHPWS_Item {
             break;
 
         case 'EditAction':
+
             if(Current_User::allow('phatform', 'edit_forms')) {
                 if(isset($_REQUEST['PHAT_Submit']) || isset($_REQUEST['PHAT_Next']) || isset($_REQUEST['PHAT_Back'])) {
                     $content = $_SESSION['PHAT_FormManager']->menu();
