@@ -96,18 +96,24 @@ http://flowplayer.sourceforge.net/
 Eloi George/aDarkling
 Created foundation of xmlrpc
 
+
+--------------------------------------------------------------------------
+To those who translate, we salute you.
+--------------------------------------------------------------------------
+Peter Heppner (German translations)
+Claus Iversen (Danish translations)
+Dang Hoai Phuc (Vietnamese translations)
+
+
 --------------------------------------------------------------------------
 The phpWebSite team would also like to thank the following people in
 alphabetical order for their contributions and support:
 --------------------------------------------------------------------------
-
 Scott Baer
 Dr. Greg Blimling
 Fridtjof Busse
 Wendall Cada
 Darren Greene
-Peter Heppner (German translations)
-Claus Iversen (Danish translations)
 Bobby Kennedy/fatman
 Rene Kiesler/rck
 Greg Meiste/blindman1344

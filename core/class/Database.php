@@ -1590,6 +1590,15 @@ class PHPWS_DB {
         return $this->query($sql);
     }
 
+    function createPrimaryKey($column='id')
+    {
+        $table = $this->getTable(false);
+        if (!$table) {
+            return PHPWS_Error::get(PHPWS_DB_ERROR_TABLE, 'core', 'PHPWS_DB::createTableIndex');
+        }
+        $sql = sprintf('alter table %s add primary key(%s)', $table, $column);
+        return $this->query($sql);
+    }
 
     function createTable()
     {

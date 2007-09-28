@@ -9,9 +9,15 @@
  * @package Core
  */
 
+define('DEITY_ONLY_TEST', false);
+
 class PHPWS_Debug {
     function test($value, $show_recursive=FALSE)
     {
+        if ( DEITY_ONLY_TEST && ( !class_exists('Current_User') || !Current_User::isDeity()) ) {
+                return;
+        }
+
         if (empty($value)) {
             $value = PHPWS_Debug::emptyVal($value);
         }
