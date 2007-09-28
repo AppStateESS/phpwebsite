@@ -7,6 +7,8 @@ its own separate CHANGELOG file.
 + Added define to Debug - DEITY_ONLY_TEST. If true, the test will only
   echo if the user is a deity. This can help if you need to debug on a
   live site.
++ Added Dang and moved translators to their own section.
+
 
 24 September 2007
 + added getHomeDir function to Convert class to help with branch
