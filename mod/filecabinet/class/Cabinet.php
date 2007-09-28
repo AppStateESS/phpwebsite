@@ -983,13 +983,21 @@ class Cabinet {
         $form->addFile('thumbnail');
         $form->setLabel('thumbnail', dgettext('filecabinet', 'Upload thumbnail'));
         $form->addSubmit(dgettext('filecabinet', 'Upload'));
-        
+
+        if ($_REQUEST['type'] == 'mm') {
+            PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
+            $mm = new PHPWS_Multimedia($_REQUEST['id']);
+            if (!$mm->id) {
+                return false;
+            }
+        }
+
         $tpl = $form->getTemplate();
 
         $tpl['CLOSE'] = javascript('close_window');
 
         $warnings[] = sprintf(dgettext('filecabinet', 'Max thumbnail size : %sx%s.'), MAX_TN_IMAGE_WIDTH, MAX_TN_IMAGE_HEIGHT);
-        if ($_REQUEST['type'] == 'mm') {
+        if ($mm->isVideo()) {
             $warnings[] = dgettext('filecabinet', 'Image must be a jpeg file.');
         }
 
@@ -1005,8 +1013,8 @@ class Cabinet {
 
         if ($_POST['type'] == 'mm') {
             PHPWS_Core::initModClass('filecabinet', 'Multimedia.php');
-            $mm = new PHPWS_Multimedia($_POST['id']);
-            if (!$mm->id) {
+            $obj = new PHPWS_Multimedia($_POST['id']);
+            if (!$obj->id) {
                 return false;
             }
         }
@@ -1018,13 +1026,18 @@ class Cabinet {
             return false;
         }
 
-        if ($image->file_type != 'image/jpeg' && $image->file_type != 'image/jpg') {
+        if ($obj->isVideo() && $image->file_type != 'image/jpeg' && $image->file_type != 'image/jpg') {
             return false;
         }
 
-        $image->file_directory = $mm->thumbnailDirectory();
-        $image->file_name = $mm->dropExtension();
+        $image->file_directory = $obj->thumbnailDirectory();
+        $image->file_name = $obj->dropExtension() . '.' . $image->getExtension();
         $image->write();
+
+        if ($obj->_classtype == 'multimedia') {
+            $obj->thumbnail = & $image->file_name;
+            $obj->save(false, false);
+        }
         return true;
     }
 }

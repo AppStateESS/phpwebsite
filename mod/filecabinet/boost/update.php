@@ -206,8 +206,8 @@ function fc_updatefiles($files, &$content)
         $content[] = '--- Copied the following files:';
     } else {
         $content[] = '--- FAILED copying the following files:';
-        }
-    
+    }
+
     $content[] = '    ' . implode("\n    ", $files);
     $content[] = '';
 }

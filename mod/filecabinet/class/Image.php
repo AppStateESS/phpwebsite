@@ -548,7 +548,29 @@ class PHPWS_Image extends File_Common {
             }
         }
         return true;
+    }
+    
+    function getExtension()
+    {
+        switch ($this->file_type) {
+        case 'image/jpeg':
+        case 'image/jpg':
+        case 'image/pjpeg':
+            return 'jpg';
 
+        case 'image/png':
+        case 'image/x-png':
+            return 'png';
+
+        case 'image/gif':
+            return 'gif';
+
+        case 'image/wbmp':
+            return 'bmp';
+
+        default:
+                return null;
+        }
     }
 
 }

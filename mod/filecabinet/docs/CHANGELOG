@@ -1,3 +1,7 @@
+28 September 2007
++ Increased file_name size beyond 50 because people give files crazy
+  long names.
+
 24 September 2007
 + Added code to change thumbnails on multimedia files.
 + Updated flowplayer

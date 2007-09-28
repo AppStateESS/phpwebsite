@@ -341,6 +341,10 @@ class File_Common {
         }
     } 
 
-
+    function dropExtension()
+    {
+        $last_dot = strrpos($this->file_name, '.');
+        return substr($this->file_name, 0, $last_dot);
+    }
 }
 ?>

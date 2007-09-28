@@ -3,7 +3,7 @@
 
 CREATE TABLE documents (
   id int NOT NULL default 0,
-  file_name varchar(50) NOT NULL,
+  file_name varchar(255) NOT NULL,
   file_directory varchar(255) NOT NULL,
   folder_id int not null default 0,
   file_type varchar(30) NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE documents (
 
 CREATE TABLE images (
   id int NOT NULL default 0,
-  file_name varchar(50) NOT NULL,
+  file_name varchar(255) NOT NULL,
   file_directory varchar(255) NOT NULL,
   folder_id int not null default 0,
   file_type varchar(30) NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE images (
 
 CREATE TABLE multimedia (
   id int NOT NULL default 0,
-  file_name varchar(50) NOT NULL,
+  file_name varchar(255) NOT NULL,
   file_directory varchar(255) NOT NULL,
   folder_id int NOT NULL default 0,
   file_type varchar(30) NOT NULL,
@@ -42,6 +42,7 @@ CREATE TABLE multimedia (
   size int NOT NULL default 0,
   width smallint NOT NULL default 0,
   height smallint NOT NULL default 0,
+  thumbnail varchar(255) not null,
   PRIMARY KEY  (id)
 );
 

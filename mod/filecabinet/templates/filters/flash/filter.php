@@ -12,7 +12,7 @@ $tpl['HEIGHT'] = $tpl['HEIGHT'] + 22; //the FlowPlayer requires 22 extra height 
 
 $fa = explode('.', $this->file_name);
 array_pop($fa);
-$tn = $this->file_directory . 'tn/' . implode('.', $fa) . '.jpg';
+$tn = $this->thumbnailPath();
 
 if (is_file($tn)) {
     $tpl['START_SCREEN'] = "overlayId: 'play',url: '$tn'";

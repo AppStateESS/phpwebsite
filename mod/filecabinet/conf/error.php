@@ -26,5 +26,7 @@ $errors[FC_MISSING_TMP]            = dgettext('filecabinet', 'Missing temporary 
 $errors[FC_MULTIMEDIA_SIZE]        = dgettext('filecabinet', 'Multimedia file was %s bytes making it larger than %s byte size limit.');
 $errors[FC_MULTIMEDIA_WRONG_TYPE]  = dgettext('filecabinet', 'Unacceptable multimedia file type.');
 $errors[FC_MULTIMEDIA_NOT_FOUND]   = dgettext('filecabinet', 'Multimedia file not found.');
+$errors[FC_THUMBNAIL_NOT_WRITABLE] = dgettext('filecabinet', 'Thumbnail directory not writable.');
+$errors[FC_FFMPEG_NOT_FOUND]       = dgettext('filecabinet', 'FFMpeg file not found.');
 
 ?>

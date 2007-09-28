@@ -12,8 +12,9 @@ define('GENERIC_VIDEO_ICON', 'images/mod/filecabinet/video_generic.png');
 define('GENERIC_AUDIO_ICON', 'images/mod/filecabinet/audio.png');
 
 class PHPWS_Multimedia extends File_Common {
-    var $width  = 0;
-    var $height = 0;
+    var $width     = 0;
+    var $height    = 0;
+    var $thumbnail = null;
 
     var $_classtype       = 'multimedia';
 
@@ -101,24 +102,9 @@ class PHPWS_Multimedia extends File_Common {
         return $this->file_directory . 'tn/';
     }
 
-    function dropExtension()
-    {
-        $last_dot = strrpos($this->file_name, '.');
-        return substr($this->file_name, 0, $last_dot) . '.jpg';
-    }
-
     function thumbnailPath()
     {
-        $thumbnail_file = $this->dropExtension();
-        $directory = $this->thumbnailDirectory() . $thumbnail_file;
-        
-        if (is_file($directory)) {
-            return $directory;
-        } elseif ($this->isVideo()) {
-            return GENERIC_VIDEO_ICON;
-        } else {
-            return GENERIC_AUDIO_ICON;
-        }
+        return $this->thumbnailDirectory() . $this->thumbnail;
     }
 
 
@@ -306,78 +292,107 @@ class PHPWS_Multimedia extends File_Common {
                        $this->title, $css_id);
     }
 
-    function makeThumbnail()
+    function genericTN($file_name)
     {
-        $thumbnail_directory = $this->file_directory . 'tn/';
+        $this->thumbnail = $file_name . '.png';
+        @copy('images/mod/filecabinet/video_generic.png', $thumbnail_directory . $this->thumbnail);
+    }
+
+    function makeVideoThumbnail()
+    {
+        $thumbnail_directory = $this->thumbnailDirectory();
 
         if (!is_writable($thumbnail_directory)) {
-            return;
+            PHPWS_Error::log(FC_THUMBNAIL_NOT_WRITABLE, 'filecabinet',
+                             'Multimedia::makeVideoThumbnail', $thumbnail_directory);
+            return false;
         }
 
-        $last_dot = strrpos($this->file_name, '.');
-        $thumbnail_file = substr($this->file_name, 0, $last_dot) . '.jpg';
+        $raw_file_name = $this->dropExtension();
 
         if (!PHPWS_Settings::get('filecabinet', 'use_ffmpeg')) {
-            copy('images/mod/filecabinet/video_generic.png', $thumb_path);
+            $this->genericTN($raw_file_name);
             return;
+        } else {
+            $ffmpeg_directory = PHPWS_Settings::get('filecabinet', 'ffmpeg_directory');
+
+            if (!is_file($ffmpeg_directory . 'ffmpeg')) {
+                PHPWS_Error::log(FC_FFMPREG_NOT_FOUND, 'filecabinet',
+                             'Multimedia::makeVideoThumbnail', $ffmpeg_directory);
+                $this->genericTN($raw_file_name);
+                return true;
+            }
+
+            $tmp_name = mt_rand();
+            /**
+             * -i        filename
+             * -an       disable audio
+             * -ss       seek to position
+             * -r        frame rate
+             * -vframes  number of video frames to record
+             * -y        overwrite output files
+             * -f        force format
+             */
+            
+            $jpeg = $raw_file_name . '.jpg';
+            $thumb_path = $thumbnail_directory . $jpeg;
+
+            $command = sprintf('%sffmpeg -i %s -an -s 160x120 -ss 00:00:05 -r 1 -vframes 1 -y -f mjpeg %s%s',
+                               $ffmpeg_directory, $this->getPath(), $thumbnail_directory, $jpeg);
+            system($command);
+            
+            if (!is_file($thumb_path) || filesize($thumb_path) < 10) {
+                @unlink($thumb_path);
+                $this->genericTN($raw_file_name);
+                return false;
+            } else {
+                $this->thumbnail = & $jpeg;
+            }
         }
-
-        $thumb_path  = $thumbnail_directory . $thumbnail_file;
-
-        $ffmpeg_directory = PHPWS_Settings::get('filecabinet', 'ffmpeg_directory');
-        if (!is_file($ffmpeg_directory . 'ffmpeg')) {
-            @copy('images/mod/filecabinet/video_generic.png', $thumbnail_directory . $thumbnail_png);
-            return;
-        }
-
-        $tmp_name = mt_rand();
-
-        /**
-         * -i        filename
-         * -an       disable audio
-         * -ss       seek to position
-         * -r        frame rate
-         * -vframes  number of video frames to record
-         * -y        overwrite output files
-         * -f        force format
-         */
-
-
-        $command = sprintf('%sffmpeg -i %s -an -s 160x120 -ss 00:00:05 -r 1 -vframes 1 -y -f mjpeg %s%s',
-                           $ffmpeg_directory, $this->getPath(), $thumbnail_directory, $thumbnail_file);
-
-        system($command);
-
-        if (!is_file($thumb_path) || filesize($thumb_path) < 10) {
-            @unlink($thumb_path);
-            @copy('images/mod/filecabinet/video_generic.png', $thumb_path);
-        }
-        
         return true;
+    }
+
+    function makeAudioThumbnail()
+    {
+        $thumbnail_directory = $this->thumbnailDirectory();
+
+        if (!is_writable($thumbnail_directory)) {
+            PHPWS_Error::log(FC_THUMBNAIL_NOT_WRITABLE, 'filecabinet',
+                             'Multimedia::makeAudioThumbnail', $thumbnail_directory);
+
+            return false;
+        }
+
+        $file_name = $this->dropExtension();
+        $this->thumbnail = $file_name . '.png';
+        return @copy('images/mod/filecabinet/audio.png', $thumbnail_directory . $this->thumbnail);
     }
     
     function delete()
     {
+
         $db = new PHPWS_DB('multimedia');
         $db->addWhere('id', $this->id);
         $result = $db->delete();
+
         if (PEAR::isError($result)) {
             return $result;
         }
         
         $path = $this->getPath();
 
+        
         if (!@unlink($path)) {
             PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'PHPWS_Multimedia::delete', $path);
         }
-
+        
         if ($this->isVideo()) {
-            $tn = $this->thumbnailPath();
-            if ($tn == GENERIC_VIDEO_ICON) {
-                return true;
-            }       
-            if (!@unlink($tn)) {
-                PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'PHPWS_Multimedia::delete', $path);
+            $tn_path = $this->thumbnailDirectory() . $this->dropExtension() . '.*';
+            
+            foreach (glob($tn_path) as $filename) {
+                if (!@unlink($filename)) {
+                    PHPWS_Error::log(FC_COULD_NOT_DELETE, 'filecabinet', 'PHPWS_Multimedia::delete', $filename);
+                }
             }
         }
 
@@ -410,12 +425,18 @@ class PHPWS_Multimedia extends File_Common {
             }
         }
 
+        if ($thumbnail) {
+            if ($this->isVideo()) {
+                $this->makeVideoThumbnail();
+            } else {
+                $this->makeAudioThumbnail();
+            }
+        }
+
+
         if ($this->isVideo()) {
             if (!$this->width && !$this->height) {
                 $this->loadVideoDimensions();
-            }
-            if ($thumbnail) {
-                $this->makeThumbnail();
             }
         } else {
             $this->height = 0;
