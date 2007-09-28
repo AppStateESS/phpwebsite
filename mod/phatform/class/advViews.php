@@ -334,7 +334,7 @@ class advViews {
         }
 
         if(sizeof($files) > 0) {
-            $data = PHPWS_Array::paginateDataArray($files, 'index.php?module=phatform&amp;PHAT_MAN_OP=viewExports', $this->pageLimit, TRUE, array('<b>[ ', ' ]</b>'), NULL, 10, TRUE);
+            $data = paginateDataArray($files, 'index.php?module=phatform&amp;PHAT_MAN_OP=viewExports', $this->pageLimit, TRUE, array('<b>[ ', ' ]</b>'), NULL, 10, TRUE);
         }
 
         if(isset($data) && is_array($data[0]) && (sizeof($data[0]) > 0)) {
@@ -444,7 +444,7 @@ class advViews {
         }
 
         if(sizeof($files) > 0) {
-            $data = PHPWS_Array::paginateDataArray($files, 'index.php?module=phatform&amp;PHAT_MAN_OP=viewArchives', $this->pageLimit, TRUE, array('<b>[ ', ' ]</b>'), NULL, 10, TRUE);
+            $data = paginateDataArray($files, 'index.php?module=phatform&amp;PHAT_MAN_OP=viewArchives', $this->pageLimit, TRUE, array('<b>[ ', ' ]</b>'), NULL, 10, TRUE);
         }
 
         if(isset($data) && is_array($data[0]) && (sizeof($data[0]) > 0)) {
@@ -570,6 +570,126 @@ class advViews {
 
 }
 
+
+/**
+ * paginateDataArray
+ * 
+ * This function will paginate an array of data. While using this function remember to always pass it the same content array
+ * and DO NOT alter array during usage unless you are starting back at zero.
+ *
+ * @author Steven Levin <steven@NOSPAM.tux.appstate.edu>
+ * @param  array    $content        Rows of data to be displayed
+ * @param  string   $link_back      Link to where data is being displayed (ie. ./index.php?module=search&SEA_search_op=view_results)
+ * @param  integer  $default_limit  Number of items to show per page
+ * @param  boolean  $make_sections  Flag controls weather section links show up
+ * @param  resource $curr_sec_decor HTML to decorate the current section
+ * @param  string   $link_class     Style sheet class to use for navigation links
+ * @param  integer  $break_point    Number of sections at which the section display will insert ... to show range
+ * @return array 0=>string of rows to be displayed, 1=>navigation links for the paginated data, 2=>current section information
+ * @access public
+ */
+function paginateDataArray($content, $link_back, $default_limit=10, $make_sections=FALSE, $curr_sec_decor=NULL, $link_class=NULL, $break_point=20, $return_array=FALSE){
+    
+    if (is_null($curr_sec_decor))
+        $curr_sec_decor = array("<b>[ ", " ]</b>");
+
+    if(isset($_REQUEST['PDA_limit'])){
+        $limit = $_REQUEST['PDA_limit'];
+    } else {
+        $limit = $default_limit;
+    }
+    
+    if(isset($_REQUEST['PDA_start'])){
+        $start = $_REQUEST['PDA_start'];
+    } else {
+        $start = 0;
+    }
+    
+    if(isset($_REQUEST['PDA_section'])){
+        $current_section = $_REQUEST['PDA_section'];
+    } else {
+        $current_section = 1;
+    }
+  
+    if(is_array($content)){
+        $numrows = count($content);
+        $sections = ceil($numrows / $limit);
+        $content_keys = array_keys($content);
+        $string_of_items = "";
+        $array_of_items = array();
+        $nav_links = "";
+        $item_count = 0;
+        $pad = 3;
+      
+        if (isset($link_class)) {
+            $link_class = " class=\"$link_class\"";
+        }
+
+        reset($content_keys);
+        for($x = 0; $x < $start; $x++){
+            next($content_keys);
+        }
+        while((list($content_key, $content_value) = each($content_keys)) && (($item_count < $limit) && (($start + $item_count) < $numrows ))){
+            if($return_array) {
+                $array_of_items[] = $content[$content_keys[$content_key]];
+            } else {
+                $string_of_items .= $content[$content_keys[$content_key]] . "\n";
+            }
+
+            $item_count++;
+        }
+
+        if($start == 0){
+            $nav_links = "&#60;&#60;\n";
+        } else {
+            $nav_links = "<a href=\"" . $link_back . "&amp;PDA_limit=" . $limit . "&#38;PDA_start=" . ($start - $limit) . "&#38;PDA_section=" . ($current_section - 1). "\"" . $link_class . "\" title=\"&#60;&#60;\">&#60;&#60;</a>\n";
+        }
+      
+        if($make_sections && ($sections <= $break_point)){
+            for($x = 1; $x <= $sections; $x++){
+                if($x == $current_section){
+                    $nav_links .= "&#160;" . $curr_sec_decor[0] . $x . $curr_sec_decor[1] . "&#160;\n";
+                } else {
+                    $nav_links .= "&#160;<a href=\"" . $link_back . "&amp;PDA_limit=" . $limit . "&#38;PDA_start=" . ($limit * ($x - 1)) . "&#38;PDA_section=" . $x . "\"" . $link_class . "\" title=\"" . $x . "\">" . $x . "</a>&#160;\n";
+                }
+            }
+        } else if($make_sections && ($sections > $break_point)){
+            for($x = 1; $x <= $sections; $x++){
+                if($x == $current_section){
+                    $nav_links .= "&#160;" . $curr_sec_decor[0] . $x . $curr_sec_decor[1] . "&#160;\n";
+                } else if($x == 1 || $x == 2){
+                    $nav_links .= "&#160;<a href=\"" . $link_back . "&amp;PDA_limit=" . $limit . "&#38;PDA_start=" . ($limit * ($x - 1)) . "&#38;PDA_section=" . $x . "\"" . $link_class . "\" title=\"" . $x . "\">" . $x . "</a>&#160;\n";
+                } else if(($x == $sections) || ($x == ($sections - 1))){
+                    $nav_links .= "&#160;<a href=\"" . $link_back . "&amp;PDA_limit=" . $limit . "&#38;PDA_start=" . ($limit * ($x - 1)) . "&#38;PDA_section=" . $x . "\"" . $link_class . "\" title=\"" . $x . "\">" . $x . "</a>&#160;\n";
+                } else if(($current_section == ($x - $pad)) || ($current_section == ($x + $pad))){
+                    $nav_links .= "&#160;<b>. . .</b>&#160;";
+                } else if(($current_section > ($x - $pad)) && ($current_section < ($x + $pad))){
+                    $nav_links .= "&#160;<a href=\"" . $link_back . "&amp;PDA_limit=" . $limit . "&#38;PDA_start=" . ($limit * ($x - 1)) . "&#38;PDA_section=" . $x . "\"" . $link_class . "\" title=\"" . $x . "\">" . $x . "</a>&#160;\n";
+                }
+            }
+        } else {
+            $nav_links .= "&#160;&#160;\n";
+        }
+
+        if(($start + $limit) >= $numrows){
+            $nav_links .= "&#62;&#62;\n";
+            $section_info = ($start + 1) . " - " . ($start + $item_count) . ' ' . dgettext('phatform','of') . ' ' . $numrows . "\n";
+        } else {
+            $nav_links .= "<a href=\"" . $link_back . "&amp;PDA_limit=" . $limit . "&#38;PDA_start=" . ($start + $limit) . "&#38;PDA_section=" . ($current_section + 1) . "\"" . $link_class . "\" title=\"&#62;&#62;\">&#62;&#62;</a>\n";
+            $section_info = ($start + 1) . " - " . ($start + $limit) . ' ' . dgettext('phatform','of') . ' ' .$numrows . "\n";
+        }
+      
+    } else {
+        exit("Argument 1 to function paginateDataArray not an array.");
+    }
+    
+
+    if($return_array) {
+        return array(0=>$array_of_items, 1=>$nav_links, 2=>$section_info);
+    } else {
+        return array("0"=>"$string_of_items", "1"=>"$nav_links", "2"=>"$section_info");
+    }
+  }// END FUNC paginateDataArray()
 
 
 ?>
