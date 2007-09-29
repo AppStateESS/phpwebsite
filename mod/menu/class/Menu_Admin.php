@@ -245,6 +245,13 @@ class Menu_Admin {
             $title = dgettext('menu', 'Menu Settings');
             $content = Menu_Admin::settings();
             break;
+
+        case 'reorder_links':
+            if (!empty($_GET['menu_id'])) {
+                $menu->reorderLinks();
+            }
+            PHPWS_Core::goBack();
+            break;
         } // end command switch
 
         $tpl['TITLE']   = $title;

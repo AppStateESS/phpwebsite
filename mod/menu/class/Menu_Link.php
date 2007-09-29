@@ -361,6 +361,9 @@ class Menu_Link {
         $db->delete();
         $db->reset();
 
+        $menu = new Menu_Item($this->menu_id);
+        $menu->reorderLinks();
+
         $db->addWhere('parent', $this->id);
         if ($save_links) {
             $db->addValue('parent', $this->parent);

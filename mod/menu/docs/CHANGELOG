@@ -1,3 +1,7 @@
+29 September 2007
++ Added option to menu list to reindex link order
++ Deleting a link didn't fix link order
+
 27 September 2007
 + Increased popup height.
 

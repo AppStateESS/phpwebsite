@@ -239,6 +239,11 @@ class Menu_Item {
         $js['LINK'] = dgettext('menu', 'Delete');
         $links[] = javascript('confirm', $js);
 
+        $links[] = PHPWS_Text::secureLink(dgettext('menu', 'Reorder links'), 'menu',
+                                          array('command'=>'reorder_links',
+                                                'menu_id'=>$this->id));
+
+
         $tpl['ACTION'] = implode(' | ', $links);
         return $tpl;
     }
@@ -435,7 +440,36 @@ class Menu_Item {
 
         Layout::set($content, 'menu', $content_var);
     }
+    
+    function reorderLinks()
+    {
+        if (!$this->id) {
+            return false;
+        }
+        $db = new PHPWS_DB('menu_links');
+        $db->addWhere('menu_id', $this->id);
+        $db->addColumn('id');
+        $db->addColumn('parent');
+        $db->addOrder('link_order');
+        $db->setIndexBy('parent');
 
+        $result = $db->select();
+        if (empty($result)) {
+            return;
+        }
+
+        foreach ($result as $parent_id => $links) {
+            $count = 1;
+            foreach ($links as $link) {
+                $db->reset();
+                $db->addWhere('id', $link['id']);
+                $db->addValue('link_order', $count);
+                $db->update();
+                $count++;
+            }
+        }
+        return true;
+    }
 }
 
 ?>
