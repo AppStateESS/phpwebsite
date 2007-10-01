@@ -1,0 +1,8 @@
+2.4.5 changes
+---------------------------------------------------------------------
++ Added missing ability to activate and deactivate users.
++ Added error page should deactivated user attempt to log in.
++ Added link to settings page that re-registers module permissions.
++ Moved Activate and Deactivate commands to the Active Yes/No column.
++ Deities cannot be deactivated.
++ Added Vietnamese language abbreviation.

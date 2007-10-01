@@ -1,0 +1,8 @@
+2.2.0 changes
+------------------------------------------------------------------
++ Boost now checks all branch directories before allowing updates.
++ Boost will not allow installation if directories are not set.
++ Boost will show the options available should the directories get
+  fixed. Before, it wouldn't show the link.
++ Fixed: On a branch install, Boost was checking the hub's directory
+  permissions instead of the branch's.
