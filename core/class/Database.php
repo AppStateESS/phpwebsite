@@ -1403,7 +1403,6 @@ class PHPWS_DB {
     function _expandIndex(&$rows, $index, $item, &$stacked)
     {
         if (isset($rows[$index])) {
-            echo $index;
             if (is_array($rows[$index]) && !isset($rows[$index][0])) {
                 $hold = $rows[$index];
                 $rows[$index] = array();
