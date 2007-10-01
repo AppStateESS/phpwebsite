@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-05 09:53-0400\n"
+"POT-Creation-Date: 2007-10-01 10:32-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,12 +34,32 @@ msgid "%dMB (%d bytes)"
 msgstr ""
 
 #, php-format
+msgid "%s bytes"
+msgstr ""
+
+#, php-format
 msgid "%s image"
 msgid_plural "%s images"
 msgstr[0] ""
 msgstr[1] ""
 
+#, php-format
+msgid "%sx%s (limit)"
+msgstr ""
+
 msgid "-- Pick option --"
+msgstr ""
+
+msgid "180 degrees"
+msgstr ""
+
+msgid "90 degrees clockwise"
+msgstr ""
+
+msgid "90 degrees counter clockwise"
+msgstr ""
+
+msgid "Absolute upload limit"
 msgstr ""
 
 msgid "Action"
@@ -154,6 +174,9 @@ msgstr ""
 msgid "Could not move file \"%s\" to \"%s\" folder directory."
 msgstr ""
 
+msgid "Could not save thumbnail image."
+msgstr ""
+
 msgid "Could not write to directory."
 msgstr ""
 
@@ -245,10 +268,13 @@ msgstr ""
 msgid "FFMpeg directory"
 msgstr ""
 
+msgid "FFMpeg file not found."
+msgstr ""
+
 msgid "Failed to create files/filecabinet/ directory."
 msgstr ""
 
-msgid "Failed to create files/filecabinet/classify directory."
+msgid "Failed to create files/filecabinet/incoming directory."
 msgstr ""
 
 msgid "Failed to create files/multimedia directory."
@@ -285,6 +311,9 @@ msgstr ""
 msgid "Folder is empty."
 msgstr ""
 
+msgid "Form upload limit"
+msgstr ""
+
 msgid "Go"
 msgstr ""
 
@@ -306,6 +335,9 @@ msgid "Image link url"
 msgstr ""
 
 msgid "Image location"
+msgstr ""
+
+msgid "Image must be a jpeg file."
 msgstr ""
 
 msgid "Image not found"
@@ -338,6 +370,10 @@ msgid "Link image to web site"
 msgstr ""
 
 msgid "Manages images and documents uploaded to your site."
+msgstr ""
+
+#, php-format
+msgid "Max thumbnail size : %sx%s."
 msgstr ""
 
 msgid "Maximum document file size (in bytes)"
@@ -407,6 +443,9 @@ msgstr ""
 msgid "No public folders are available."
 msgstr ""
 
+msgid "None"
+msgstr ""
+
 msgid "Pin folder"
 msgstr ""
 
@@ -426,7 +465,16 @@ msgstr ""
 msgid "Public/Private"
 msgstr ""
 
+msgid "Rotate image"
+msgstr ""
+
 msgid "Save settings"
+msgstr ""
+
+msgid "Scale down"
+msgstr ""
+
+msgid "Server upload limit"
 msgstr ""
 
 msgid "Settings"
@@ -451,6 +499,9 @@ msgid "Sorry, you are not allowed access to this file."
 msgstr ""
 
 msgid "Sorry.."
+msgstr ""
+
+msgid "System upload limits"
 msgstr ""
 
 msgid "The incoming file directory is currently empty."
@@ -482,6 +533,9 @@ msgstr ""
 msgid ""
 "This image is larger than the %s x %s limit. Do you want to resize the image "
 "to fit?"
+msgstr ""
+
+msgid "Thumbnail directory not writable."
 msgstr ""
 
 msgid "Title"
@@ -541,6 +595,12 @@ msgid "Upload image"
 msgstr ""
 
 msgid "Upload multimedia"
+msgstr ""
+
+msgid "Upload new thumbnail"
+msgstr ""
+
+msgid "Upload thumbnail"
 msgstr ""
 
 msgid "View folder"
@@ -603,7 +663,7 @@ msgstr ""
 msgid "files/filecabinet/ directory created successfully."
 msgstr ""
 
-msgid "files/filecabinet/classify directory created successfully."
+msgid "files/filecabinet/incoming directory created successfully."
 msgstr ""
 
 msgid "files/multimedia directory created successfully."
