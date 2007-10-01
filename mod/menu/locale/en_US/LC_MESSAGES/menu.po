@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-05 09:53-0400\n"
+"POT-Creation-Date: 2007-10-01 10:32-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,6 +23,9 @@ msgid "Action"
 msgstr ""
 
 msgid "Add current page"
+msgstr ""
+
+msgid "Add home link on new menus"
 msgstr ""
 
 msgid "Add link"
@@ -106,6 +109,9 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
+msgid "Edit Link"
+msgstr ""
+
 msgid "Edit link"
 msgstr ""
 
@@ -118,6 +124,9 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
+msgid "Home"
+msgstr ""
+
 msgid "Link is missing a title, url, or menu id."
 msgstr ""
 
@@ -125,6 +134,9 @@ msgid "List"
 msgstr ""
 
 msgid "Main menu"
+msgstr ""
+
+msgid "Maximum link characters"
 msgstr ""
 
 msgid "Menu"
@@ -172,6 +184,9 @@ msgstr ""
 msgid "No links in queue."
 msgstr ""
 
+msgid "No menus found. Click on \"New\" to create one."
+msgstr ""
+
 msgid "Off"
 msgstr ""
 
@@ -194,6 +209,9 @@ msgid "Pin to item"
 msgstr ""
 
 msgid "Pinned links"
+msgstr ""
+
+msgid "Reorder links"
 msgstr ""
 
 msgid "Save"
@@ -251,6 +269,9 @@ msgid "Update Menu"
 msgstr ""
 
 msgid "Url"
+msgstr ""
+
+msgid "Use MiniAdmin instead of Admin mode link"
 msgstr ""
 
 msgid "Use floating admin links"
