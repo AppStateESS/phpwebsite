@@ -17,6 +17,12 @@ function signup_update(&$content, $currentVersion)
 ----------------
 + Added ability to reset slot order should it come unraveled.
 + Fixed reroute link that was hard coded to go to sheet id 1.</pre>';
+
+    case version_compare($currentVersion, '1.0.2', '<'):
+        $content[] = '<pre>1.0.2 changes
+----------------
++ Changed email to send individually.
++ Fixed: "All slots full" message was not displaying.</pre>';
     }
     return true;
 }

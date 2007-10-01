@@ -17,7 +17,7 @@ div.controlpanel {
     padding : 5px;
     border-left : 1px solid #696969;
     border-top : 1px solid #696969;
-    overflow : hidden;
+    overflow : auto;
 }
 
 

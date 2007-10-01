@@ -1,3 +1,8 @@
+Version 1.6.1
+----------------------------------------------------------------
+1 October 2007
++ Added loadClass to getEntries to prevent loading Blog class until needed.
+
 27 September 2007
 + Blog resets cache on entry post or deletion.
 

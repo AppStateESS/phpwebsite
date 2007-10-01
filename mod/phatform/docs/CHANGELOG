@@ -1,5 +1,7 @@
 Note: this log is only for notes post-1.0-conversion
 
+Version 3.1.1
+-----------------------------------------------------------------
 28 September 2007
 + Fixed bug #1785639. Unable to move elements up and down.
 + Fixed bug #1785626. Unable to delete option set.

@@ -5,7 +5,7 @@
    */
 
 $proper_name  = 'Boost';
-$version      = '2.1.3';
+$version      = '2.2.0';
 $register     = TRUE;
 $import_sql   = FALSE;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/boost/check.xml';

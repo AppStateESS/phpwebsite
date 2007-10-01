@@ -68,6 +68,15 @@ function rss_update(&$content, $version)
 + Changed rss popup window dimensions and form text length
 </pre>';
 
+    case version_compare($version, '0.2.2', '<'):
+        $content[] = '<pre>
+0.2.2 changes
+-------------
++ Added line of code to Feed to prevent error on bad data.
++ Added Vietnamese translation.
+</pre>';
+
+
     }
 
     return true;

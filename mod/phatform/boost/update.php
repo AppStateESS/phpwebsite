@@ -48,6 +48,17 @@ function phatform_update(&$content, $version)
 + Update language functions.
 + Changed control panel icon
 </pre>';
+
+    case version_compare($version, '3.1.1', '<'):
+        $content[] = '<pre>
+3.1.1 changes
+-------------
++ Fixed bug #1785639. Unable to move elements up and down.
++ Fixed bug #1785626. Unable to delete option set.
++ Fixed bug #1785585. List archive would not function.
++ Reduced control panel info.
+</pre>';
+
     }
     return true;
 }

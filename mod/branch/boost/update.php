@@ -56,13 +56,7 @@ function branch_update(&$content, $version)
     case version_compare($version, '1.1.1', '<'):
         $files = array('templates/config.tpl');
         $content[] = '<pre>';
-        if (PHPWS_Boost::updateFiles($files, 'branch')) {
-            $content[] = '--- Updated the following files:';
-        } else {
-            $content[] = '--- Failed to update the following files:';
-        }
-
-        $content[] = '    ' . implode("\n    ", $files);
+        branch_update_files($files, $content);
 
         $content[] = '
 1.1.1 Changes
@@ -77,8 +71,31 @@ function branch_update(&$content, $version)
 -------------
 + Branch uses config.tpl from core/inc directory.</pre>';
 
+    case version_compare($version, '1.1.3', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/branch_list.tpl');
+        branch_update_files($files, $content);
+        $content[] = '1.1.3 Changes
+-------------
++ Added page limits and navigations to branch listing
++ Branch was missing a follow-thru if branch was unable to connect to
+  a specific database.
+</pre>';
+
     }
     return true;
+}
+
+function branch_update_files($files, &$content)
+{
+    if (PHPWS_Boost::updateFiles($files, 'branch')) {
+        $content[] = '--- Updated the following files:';
+    } else {
+        $content[] = '--- Failed to update the following files:';
+    }
+    
+    $content[] = '    ' . implode("\n    ", $files);
+    $content[] = '';
 }
 
 ?>

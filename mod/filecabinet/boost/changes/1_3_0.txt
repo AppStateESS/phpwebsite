@@ -1,0 +1,22 @@
+1.3.0 changes
+---------------------------------------------------------------------
++ Increased file_name size beyond 50 because people give files crazy
+  long names.
++ Added dropExtension function to File_Common.
++ Added get extension function to Image.
++ Added some error codes to help with video thumbnail debugging.
++ Added code to change thumbnails on multimedia files.
++ Updated flowplayer
++ Private folders are not viewable to the anonymous public.
++ Added function to Cabinet to get all file size limitations.
++ The settings form now lists all the above limitations.
++ Added ability to force a size to prewriteResize
++ Multimedia icon's file size is checked. If zero, replaced by the
+  default.
++ Increased default thumbnail size.
++ Thumbnail should overlay on video properly now.
++ Added a short doc about ffmpeg
++ Changed install to print 'incoming' instead of 'classify' as the
+  directory name. Was confusing.
++ Added small file type icons for list view.
++ File name in list view is now a direct link to the document.

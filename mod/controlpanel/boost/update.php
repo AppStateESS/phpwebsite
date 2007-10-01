@@ -60,6 +60,15 @@ function controlpanel_update(&$content, $currentVersion)
 + Changed icon image layout a touch to try and make more space.
 + A tab link can be now be sent in strict mode to prevent appending.
 </pre>';
+
+    case version_compare($currentVersion, '2.1.3', '<'):
+        $content[] = '<pre>';
+        $content[] = '2.1.3 changes
+----------------
++ Developers can now add a link_title to quickSetTabs. This allows the
+  user to mouse over tabs to get extended information.
+</pre>';
+
     }
     return true;
 }

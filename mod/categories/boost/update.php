@@ -54,6 +54,16 @@ function categories_update(&$content, $currentVersion)
         $content[] = '2.1.9 changes
 ----------------
 + Rewrote and simplified category horizontal menu.</pre>';
+
+    case version_compare($currentVersion, '2.1.10', '<'):
+        $content[] = '<pre>';
+        PHPWS_Boost::registerMyModule('categories', 'users', $content);
+        $content[] = '2.1.10 changes
+----------------
++ Fixed: Permissions were not being used.
++ Added Vietnamese translations.
+</pre>';
+
     }
     return true;
 }

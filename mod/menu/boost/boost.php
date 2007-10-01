@@ -5,7 +5,7 @@
    */
 
 $proper_name  = 'Menu';
-$version      = '1.4.1';
+$version      = '1.4.2';
 $register     = FALSE;
 $import_sql   = TRUE;
 $version_http = 'http://phpwebsite.appstate.edu/downloads/modules/menu/check.xml';

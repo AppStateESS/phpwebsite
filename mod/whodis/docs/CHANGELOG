@@ -1,3 +1,6 @@
+Version 0.1.2
+---------------------------------------------------------------------
+
 27 September 2007
 + Fixed: was missing whodis_filters table on install. Added check to
   update.

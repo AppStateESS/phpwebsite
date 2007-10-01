@@ -61,6 +61,14 @@ function search_update(&$content, $currentVersion)
 + Changed h1 headers to h2
 </pre>';        
 
+    case version_compare($currentVersion, '0.3.0', '<'):
+        $content[] = '<pre>';
+        searchUpdateFiles(array('templates/search_box.tpl'), $content);
+        $content[] = '0.3.0 changes
+-------------
++ Added ability to put search radio buttons on search bar.
+</pre>';        
+
     }
 
     return TRUE;
@@ -74,6 +82,7 @@ function searchUpdateFiles($files, &$content)
         $content[] = '--- Unable to update the following files:';
     }
     $content[] = "    " . implode("\n    ", $files);
+    $content[] = '';
 }
 
 

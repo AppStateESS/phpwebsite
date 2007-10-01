@@ -3,7 +3,7 @@
   <module>
     <title>core</title>
     <properName>phpWebSite Core</properName>
-    <version>1.6.0</version>
+    <version>1.6.3</version>
     <url>http://phpwebsite.appstate.edu/downloads/modules/base/</url>
   </module>
 </dependency>

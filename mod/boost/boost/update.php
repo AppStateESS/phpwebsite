@@ -46,9 +46,28 @@ Please download update 2.1.1.</pre>';
 ---------------------
 + Minor update - Boost copies javascript directory properly.</pre>';
 
+    case version_compare($currentVersion, '2.2.0', '<'):
+        $content[] = '<pre>';
+        $files = array('templates/module_list.tpl');
+        update_boost_files($files, $content);
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/boost/boost/changes/2_2_0.txt');
+        }
+        $content[] = '</pre>';
     }
 
     return TRUE;
 }
+
+function update_boost_files($files, &$content) {
+    if (PHPWS_Boost::updateFiles($files, 'boost')) {
+        $content[] = '--- The following files were updated successfully:';
+    } else {
+        $content[] = '--- Failed to update the following files:';
+    }
+
+    $content[] = '    ' . implode("\n    ", $files);
+    $content[] = '';
+}    
 
 ?>

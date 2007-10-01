@@ -1,0 +1,9 @@
+1.4.2 changes
+-------------------------------------------------------------
++ Added option to menu list to reindex link order
++ Deleting a link didn't fix link order
++ Increased popup height.
++ Added option for the admin mode link to be in miniadmin instead of
+  under the menu.
++ Added option to automatically add a Home link to a new menu.
++ Added loadClass functions to reduce memory.

@@ -161,6 +161,7 @@ class Blog_User {
         $db->addOrder('sticky desc'); 
         $db->addOrder('publish_date desc');
         Key::restrictView($db, 'blog');
+        $db->loadClass('blog', 'Blog.php');
         return $db->getObjects('Blog');
     }
 

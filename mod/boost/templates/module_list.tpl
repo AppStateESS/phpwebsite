@@ -1,6 +1,6 @@
 <h1>phpWebSite {PHPWS_VERSION}</h1>
+<!-- BEGIN directories --><div style="height : 80px; overflow : auto; border : 1px solid black; padding : 3px"><pre>{DIRECTORIES}</pre></div><!-- END directories -->
 <!-- BEGIN warning -->
-<div style="height : 80px; overflow : auto; border : 1px solid black; padding : 3px"><pre>{DIRECTORIES}</pre></div>
 <span class="error"><strong>{WARNING}</strong></span><br /><br />
 <!-- END warning -->
 <table width="99%" cellpadding="4">

@@ -144,6 +144,17 @@ timeout INT NOT NULL default 0,
         }
         $content[] = '</pre>';
 
+    case version_compare($currentVersion, '2.4.5', '<'):
+        $content[] = '<pre>';
+
+        $files = array('conf/error.php', 'conf/languages.php', 'templates/forms/settings.tpl');
+        userUpdateFiles($files, $content);
+
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/users/boost/changes/2_4_5.txt');
+        }
+        $content[] = '</pre>';
+
 
     } // End of switch statement
 

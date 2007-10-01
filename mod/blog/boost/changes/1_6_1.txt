@@ -1,0 +1,7 @@
+1.6.1 Changes
+-----------------------------------------------------------------------------
++ Added loadClass to getEntries to prevent loading Blog class until
+  needed.
++ Blog resets cache on entry post or deletion.
++ Approval tab no longer appears during restricted access.
++ Added Vietnamese translation.

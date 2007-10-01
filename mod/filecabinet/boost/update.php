@@ -6,7 +6,7 @@
 
 function filecabinet_update(&$content, $version)
 {
-
+    $home_dir = PHPWS_Boost::getHomeDir();
     switch ($version) {
     case version_compare($version, '1.0.1', '<'):
         $content[] = '<pre>File Cabinet versions prior to 1.0.1 are not supported.
@@ -46,9 +46,6 @@ Please download version 1.0.2.</pre>';
 
     case version_compare($version, '1.1.0', '<'):
         $content[] = '<pre>';
-
-        $home_dir = PHPWS_Boost::getHomeDir();
-
         if (!is_dir($home_dir . 'files/multimedia')) {
             if (is_writable($home_dir . 'files/') && @mkdir($home_dir . 'files/multimedia')) {
                 $content[] = '--- "files/multimedia" directory created.';
@@ -193,6 +190,41 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
 
         if (!PHPWS_Boost::inBranch()) {
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/changes/1_2_2.txt');
+        }
+        $content[] = '</pre>';
+
+    case version_compare($version, '1.3.0', '<'):
+        $content[] = '<pre>';
+  
+        $s1 = PHPWS_SOURCE_DIR . 'mod/filecabinet/templates/filters/flash/';
+        $d1 = $home_dir . 'templates/filecabinet/filters/flash/';
+
+        $s2 = PHPWS_SOURCE_DIR . 'mod/filecabinet/img/icons/';
+        $d2 = $home_dir . 'images/mod/filecabinet/icons/';
+
+        if (PHPWS_File::copy_directory($s1, $d1)) {
+            $content[] = "--- Successfully copied $s1 to $d1";
+        } else {
+            $content[] = "--- Failed to copy $s1 to $d1";
+            return false;
+        }
+
+        if (PHPWS_File::copy_directory($s2, $d2)) {
+            $content[] = "--- Successfully copied $s2 to $d2";
+        } else {
+            $content[] = "--- Failed to copy $s2 to 
+$d2";
+            return false;
+        }
+        $content[] = '';
+        $files = array('conf/error.php', 'conf/config.php',
+                       'templates/filters/flash.tpl', 'templates/file_list.tpl',
+                       'templates/multimedia_edit.tpl', 'templates/settings.tpl',
+                       'templates/style.css', 'templates/thumbnail.tpl');
+
+        fc_updatefiles($files, $content);
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/filecabinet/boost/changes/1_3_0.txt');
         }
         $content[] = '</pre>';
     }
