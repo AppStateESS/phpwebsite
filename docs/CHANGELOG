@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+1 October 2007
++ Added getGraph function to Batch
++ Updated: templates/graph.tpl, img/ajax-loader.gif
+
 29 September 2007
 + Bug fix on _indexBy function. stacked variable wasn't getting set.
 

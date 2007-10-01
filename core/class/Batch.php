@@ -8,6 +8,9 @@
    */
 
 define('DEFAULT_BATCH_SET', 50);
+if (!defined('GRAPH_MULTIPLIER')) {
+    define('GRAPH_MULTIPLIER', 2);
+}
 
 class Batches {
     var $total_items        = 1; // Total items to run
@@ -138,6 +141,26 @@ class Batches {
         $url = $this->getAddress();
 
         return sprintf('<a href="%s">%s</a>', $url, $continue_link);
+    }
+
+    function getGraph()
+    {
+        $show_wait = true;
+
+        $percentage = ceil($this->percentDone());
+        if ($percentage < 100) {
+            if ($show_wait) {
+                $template['please_wait'] = _('Please wait...');
+                $template['wait_graphic'] = '<img src="images/core/ajax-loader.gif" />';
+            }
+        } else {
+            $percentage = 100;
+        }
+
+        $template['percentage'] = $percentage . '%';
+        $template['total_width'] = floor(100 * GRAPH_MULTIPLIER);
+        $template['progress_width'] = floor($percentage * GRAPH_MULTIPLIER);
+        return PHPWS_Template::process($template, '', 'templates/core/graph.tpl', TRUE);
     }
 
 }
