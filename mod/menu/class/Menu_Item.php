@@ -136,7 +136,7 @@ class Menu_Item {
         if (PHPWS_Settings::get('menu', 'home_link')) {
             $link = new Menu_Link;
             $link->menu_id = $this->id;
-            $link->title   = _('Home');
+            $link->title   = dgettext('menu', 'Home');
             $link->url     = 'index.php';
             $link->key_id  = 0;
             PHPWS_Error::logIfError($link->save());
