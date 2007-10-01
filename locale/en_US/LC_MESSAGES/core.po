@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-05 10:02-0400\n"
+"POT-Creation-Date: 2007-10-01 10:30-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -169,6 +169,10 @@ msgid "Blog has already been converted."
 msgstr ""
 
 msgid "Blog is not installed."
+msgstr ""
+
+#, php-format
+msgid "Branch : %s"
 msgstr ""
 
 msgid "Cache Lite is disabled."
@@ -412,6 +416,9 @@ msgstr ""
 msgid "Drop box table imported successfully."
 msgstr ""
 
+msgid "Duplicate key found."
+msgstr ""
+
 msgid "Edit permission column does not exist."
 msgstr ""
 
@@ -601,6 +608,9 @@ msgstr ""
 
 #, php-format
 msgid "Image width was %spx, making it larger than %d pixel limit."
+msgstr ""
+
+msgid "Images copied during a 0.10.x conversion."
 msgstr ""
 
 msgid "Importing core database file."
@@ -856,6 +866,20 @@ msgstr ""
 msgid "Page"
 msgstr ""
 
+msgid "PageSmith conversion"
+msgstr ""
+
+msgid "PageSmith has already been converted."
+msgstr ""
+
+msgid ""
+"PageSmith has been converted as well. Make sure to check the defines in the "
+"menu convert.php file before running."
+msgstr ""
+
+msgid "PageSmith is not installed."
+msgstr ""
+
 msgid "Password"
 msgstr ""
 
@@ -900,6 +924,12 @@ msgid "Please check your error log file."
 msgstr ""
 
 msgid "Please check your error logs and try again."
+msgstr ""
+
+#, php-format
+msgid ""
+"Please create a directory in %simages/ named \"pagemaster\". Copy all images "
+"from the old Web Pages image directory into it."
 msgstr ""
 
 msgid ""
@@ -1191,6 +1221,9 @@ msgstr ""
 msgid "Unsorted"
 msgstr ""
 
+msgid "Untitled"
+msgstr ""
+
 msgid "Upload directory not set in file object."
 msgstr ""
 
@@ -1247,10 +1280,13 @@ msgstr ""
 msgid "We suggest you use the library files included with phpWebSite."
 msgstr ""
 
+msgid "Web Page conversion"
+msgstr ""
+
 msgid "Web Page is not installed."
 msgstr ""
 
-msgid "Web pages have already been converted."
+msgid "Web Pages have already been converted."
 msgstr ""
 
 msgid "Wrong data type."
@@ -1272,6 +1308,9 @@ msgid "You may choose to ignore users who haven't logged in for a while."
 msgstr ""
 
 msgid "You may convert two different ways."
+msgstr ""
+
+msgid "You may delete your images/pagemaster/ directory if you wish."
 msgstr ""
 
 #, php-format
@@ -1316,7 +1355,7 @@ msgstr ""
 msgid "phpWebSite %s Setup"
 msgstr ""
 
-msgid "phpWebSite 1.0.0 Convert"
+msgid "phpWebSite 1.x.x Convert"
 msgstr ""
 
 msgid "phpWebSite depends on sessions to move data between pages."
