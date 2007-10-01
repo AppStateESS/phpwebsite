@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-25 11:25-0400\n"
+"POT-Creation-Date: 2007-10-01 10:32-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,6 +51,9 @@ msgid "Actions"
 msgstr ""
 
 msgid "Activate"
+msgstr ""
+
+msgid "Activate this user"
 msgstr ""
 
 msgid "Active"
@@ -134,6 +137,16 @@ msgstr ""
 msgid "Change my Settings"
 msgstr ""
 
+msgid "Check all restricted"
+msgstr ""
+
+msgid "Check all unrestricted"
+msgstr ""
+
+#, php-format
+msgid "Checking %s module"
+msgstr ""
+
 msgid "Click here if you are not redirected."
 msgstr ""
 
@@ -155,6 +168,9 @@ msgstr ""
 msgid "Confirmation phrase is not correct."
 msgstr ""
 
+msgid "Contact the site administrator"
+msgstr ""
+
 msgid "Control Panel"
 msgstr ""
 
@@ -168,6 +184,9 @@ msgstr ""
 msgid "Could not find any hub deities."
 msgstr ""
 
+msgid "Could not find user."
+msgstr ""
+
 msgid "Create Group"
 msgstr ""
 
@@ -178,6 +197,9 @@ msgid "Current Members"
 msgstr ""
 
 msgid "Deactivate"
+msgstr ""
+
+msgid "Deactivate this user"
 msgstr ""
 
 msgid "Default"
@@ -451,6 +473,9 @@ msgstr ""
 msgid "No new scripts found"
 msgstr ""
 
+msgid "No permissions file found."
+msgstr ""
+
 msgid "No restricted edit groups found."
 msgstr ""
 
@@ -546,6 +571,12 @@ msgid "Please type the word seen in the image."
 msgstr ""
 
 msgid "Preferred editor (admins only)"
+msgstr ""
+
+msgid "Register Module Permissions"
+msgstr ""
+
+msgid "Register user permissions"
 msgstr ""
 
 msgid "Remember me"
@@ -660,10 +691,22 @@ msgstr ""
 msgid "Unable to find font file for graphic confirmation."
 msgstr ""
 
+msgid "Unable to load key."
+msgstr ""
+
 msgid "Unable to save user information."
 msgstr ""
 
+msgid "Unable to set permissions. Bad key data."
+msgstr ""
+
 msgid "Unable to write confirmation graphic to server."
+msgstr ""
+
+msgid "Uncheck all restricted"
+msgstr ""
+
+msgid "Uncheck all unrestricted"
 msgstr ""
 
 msgid "Unknown error."
@@ -706,6 +749,9 @@ msgid "User Menu"
 msgstr ""
 
 msgid "User Signup Mode"
+msgstr ""
+
+msgid "User account deactivated."
 msgstr ""
 
 msgid "User created successfully."
@@ -777,6 +823,9 @@ msgid "Username is improperly formatted."
 msgstr ""
 
 msgid "Users"
+msgstr ""
+
+msgid "Users module will re-register each module's permissions."
 msgstr ""
 
 msgid "View restrictions"
