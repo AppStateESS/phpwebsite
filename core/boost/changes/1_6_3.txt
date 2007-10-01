@@ -1,0 +1,24 @@
+1.6.3 changes
+-----------------------------------------------------------------------
++ Added Vietnamese translations courtesy of Dang Hoai Phuc.
++ Added getGraph function to Batch
++ Bug fix on _indexBy function. stacked variable wasn't getting set.
++ Added createPrimaryKey function.
++ Added define to Debug - DEITY_ONLY_TEST. If true, the test will only
+  echo if the user is a deity. This can help if you need to debug on a
+  live site.
++ Added Dang and moved translators to their own section.
++ added getHomeDir function to Convert class to help with branch
+  conversions.
++ Added a no overwrite option to copy_directory function.
++ Added a chmod command to the copy_directory function.
++ Adding a check for the language.php file in setup as well as the
+  existance of the config/core/ directory.
++ Changed allowView function in Key. Before the change, any user with
+  rights in the module could view an item regardless of the view
+  rights. Now, a user must have edit rights for that item or be on the
+  allowable groups to see the item.
++ Key checks for duplicate keys before saving new rows.
++ New error message for above.
++ Tidying to key class.
++ Added '#' to characters looked for in the bb.php filter.

@@ -2,6 +2,8 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+Version 1.6.3
+-------------------------------------------------------------------
 1 October 2007
 + Added getGraph function to Batch
 + Updated: templates/graph.tpl, img/ajax-loader.gif

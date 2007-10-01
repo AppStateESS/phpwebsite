@@ -141,6 +141,20 @@ function core_update(&$content, $version) {
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/1_6_2.txt');
         }
         $content[] = '</pre>';
+
+    case version_compare($version, '1.6.3', '<'):
+        $content[] = '<pre>';
+
+        $files = array('templates/graph.tpl', 'img/ajax-loader.gif', 'conf/error.php');
+
+        coreUpdateFiles($files, $content);
+        
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'core/boost/changes/1_6_3.txt');
+        }
+        $content[] = '</pre>';
+
+
     }
     return true;
 }
