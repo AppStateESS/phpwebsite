@@ -196,6 +196,15 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
     case version_compare($version, '1.3.0', '<'):
         $content[] = '<pre>';
   
+        $db = new PHPWS_DB('multimedia');
+        $result = $db->addTableColumn('thumbnail', 'varchar(255) not null');
+        if (PHPWS_Error::logIfError($result)) {
+            $content[] = '--- Unable to add thumbnail column to multimedia table.</pre>';
+            return false;
+        } else {
+            $content[] = '--- Added thumbnail column to multimedia table.';
+        }
+
         $s1 = PHPWS_SOURCE_DIR . 'mod/filecabinet/templates/filters/flash/';
         $d1 = $home_dir . 'templates/filecabinet/filters/flash/';
 
@@ -205,22 +214,21 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
         if (PHPWS_File::copy_directory($s1, $d1)) {
             $content[] = "--- Successfully copied $s1 to $d1";
         } else {
-            $content[] = "--- Failed to copy $s1 to $d1";
+            $content[] = "--- Failed to copy $s1 to $d1</pre>";
             return false;
         }
 
         if (PHPWS_File::copy_directory($s2, $d2)) {
             $content[] = "--- Successfully copied $s2 to $d2";
         } else {
-            $content[] = "--- Failed to copy $s2 to 
-$d2";
+            $content[] = "--- Failed to copy $s2 to $d2</pre>";
             return false;
         }
         $content[] = '';
         $files = array('conf/error.php', 'conf/config.php',
                        'templates/filters/flash.tpl', 'templates/file_list.tpl',
                        'templates/multimedia_edit.tpl', 'templates/settings.tpl',
-                       'templates/style.css', 'templates/thumbnail.tpl');
+                       'templates/style.css', 'templates/thumbnail.tpl', 'templates/image_edit.tpl');
 
         fc_updatefiles($files, $content);
         if (!PHPWS_Boost::inBranch()) {

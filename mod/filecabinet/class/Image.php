@@ -261,9 +261,24 @@ class PHPWS_Image extends File_Common {
     }
 
 
-    function resize($dst, $new_width, $new_height, $force_png=false)
+    function resize($dst, $max_width, $max_height)
     {
-        return PHPWS_File::resizeImage($this->getPath(), $dst, $new_width, $new_height, $force_png);
+        if ($this->width > $this->height) {
+            $new_width = $new_height = round($this->height * 0.8);
+        } else {
+            $new_width = $new_height = round($this->width * 0.8);
+        }
+
+        if ($new_width < $max_width) {
+            $new_width = $max_width;
+        }
+
+        if ($new_height < $max_height) {
+            $new_height = $max_height;
+        }
+
+        PHPWS_File::cropImage($this->getPath(), $dst, $new_width, $new_height);
+        return PHPWS_File::scaleImage($dst, $dst, $max_width, $max_height);
     }
 
     function makeThumbnail()
@@ -321,7 +336,7 @@ class PHPWS_Image extends File_Common {
         $vars['folder_id'] = $this->folder_id;
             
         $jsvars['width'] = 550;
-        $jsvars['height'] = 550 + FC_THUMBNAIL_HEIGHT;
+        $jsvars['height'] = 600 + FC_THUMBNAIL_HEIGHT;
         $jsvars['address'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);
         $jsvars['window_name'] = 'edit_link';
 
@@ -380,6 +395,55 @@ class PHPWS_Image extends File_Common {
         $tpl['rows'][] = array('key'=>'thumbnail', 'value'=>$this->thumbnailPath());
         $tpl['rows'][] = array('key'=>'path', 'value'=>$this->getPath());
         return PHPWS_Template::process($tpl, 'filecabinet', 'image.xml');
+    }
+
+    /**
+     * Rotates an image
+     */
+    function rotate($save=true)
+    {
+        $degrees = $this->_getDegrees();
+
+        if (!$degrees) {
+            return true;
+        }
+
+        $tmp_file = $this->file_directory . mktime() . $this->file_name;
+
+        if (PHPWS_File::rotateImage($this->getPath(), $tmp_file, $degrees)) {
+            @copy($tmp_file, $this->getPath());
+            $this->loadDimensions();
+            $this->makeThumbnail();
+            @unlink($tmp_file);
+
+            if ($save) {
+                return $this->save();
+            }
+
+            return true;
+        } else {
+            @unlink($tmp_file);
+            return false;
+        }
+        
+    }
+
+
+    function _getDegrees()
+    {
+        switch (@$_REQUEST['rotate']) {
+        case '90cw':
+            return 270;
+
+        case '90ccw':
+            return 90;
+
+        case '180':
+            return 180;
+            
+        default:
+            return 0;
+        }
     }
 
 
@@ -472,16 +536,13 @@ class PHPWS_Image extends File_Common {
     function prewriteResize()
     {
         if (isset($_POST['resize'])) {
-            $size = explode('x', $_POST['resize']);
-
-            $req_width  = $size[0];
-            $req_height = $size[1];
+            $req_height = $req_width  = $_POST['resize'];
         } else {
             $req_width = $this->_max_width;
             $req_height = $this->_max_height;
         }
 
-        if ($req_width < $this->width && $req_height < $this->height) {
+        if ($req_width < $this->width || $req_height < $this->height) {
             $resize_width  = &$req_width;
             $resize_height = &$req_height;
         } elseif ($this->width > $this->_max_width || $this->height > $this->_max_height) {
@@ -494,14 +555,14 @@ class PHPWS_Image extends File_Common {
 
         $tmp_file = $this->_upload->upload['tmp_name'];
         $cpy_file = $tmp_file . '.rs';
-        $result = PHPWS_File::resizeImage($tmp_file, $cpy_file, $resize_width, $resize_height);
 
+        $result = PHPWS_File::scaleImage($tmp_file, $cpy_file, $resize_width, $resize_height);
 
         if (!PHPWS_Error::logIfError($result) && !$result) {
-            return PHPWS_Error::get(FC_IMAGE_DIMENSION, 'filecabinet', 'File_Common::importPost', array($this->width, $this->height, $this->_max_width, $this->_max_height));                        
+            return PHPWS_Error::get(FC_IMAGE_DIMENSION, 'filecabinet', 'PHPWS_Image::prewriteResize', array($this->width, $this->height, $this->_max_width, $this->_max_height));                        
         } else {
             if (!@copy($cpy_file, $tmp_file)) {
-                return PHPWS_Error::get(FC_IMAGE_DIMENSION, 'filecabinet', 'File_Common::importPost', array($this->width, $this->height, $this->_max_width, $this->_max_height));
+                return PHPWS_Error::get(FC_IMAGE_DIMENSION, 'filecabinet', 'PHPWS_Image::prewriteResize', array($this->width, $this->height, $this->_max_width, $this->_max_height));
             } else {
                 list($this->width, $this->height, $image_type, $image_attr) = getimagesize($tmp_file);
                 $image_name = $this->file_name;
@@ -515,21 +576,9 @@ class PHPWS_Image extends File_Common {
 
     function prewriteRotate()
     {
-        switch ($_POST['rotate']) {
-        case '90cw':
-            $degrees = 270;
-            break;
-
-        case '90ccw':
-            $degrees = 90;
-            break;
-
-        case '180':
-            $degrees = 180;
-            break;
-            
-        default:
-            return;
+        $degrees = $this->_getDegrees();
+        if (!$degrees) {
+            return true;
         }
 
         $tmp_file = $this->_upload->upload['tmp_name'];

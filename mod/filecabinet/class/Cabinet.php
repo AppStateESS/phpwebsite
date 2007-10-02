@@ -625,17 +625,12 @@ class Cabinet {
             PHPWS_Settings::set('filecabinet', 'base_doc_directory', $dir);
         }
 
-        if (empty($_POST['max_image_width']) || $_POST['max_image_width'] < 50) {
-            $errors[] = dgettext('filecabinet', 'The max image width must be greater than 50 pixels.');
+        if (empty($_POST['max_image_dimension']) || $_POST['max_image_dimension'] < 50) {
+            $errors[] = dgettext('filecabinet', 'The max image dimension must be greater than 50 pixels.');
         } else {
-            PHPWS_Settings::set('filecabinet', 'max_image_width', $_POST['max_image_width']);
+            PHPWS_Settings::set('filecabinet', 'max_image_dimension', $_POST['max_image_dimension']);
         }
 
-        if (empty($_POST['max_image_height']) || $_POST['max_image_height'] < 50) {
-            $errors[] = dgettext('filecabinet', 'The max image height must be greater than 50 pixels.');
-        } else {
-            PHPWS_Settings::set('filecabinet', 'max_image_height', $_POST['max_image_height']);
-        }
 
         $max_file_upload = preg_replace('/\D/', '', ini_get('upload_max_filesize'));
 

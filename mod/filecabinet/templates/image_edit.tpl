@@ -57,5 +57,5 @@ function voila(foo) {
 {END_FORM}
 <br />
 {MAX_SIZE_LABEL}: {MAX_SIZE}<br />
-{MAX_WIDTH_LABEL}: {MAX_WIDTH}px<br />
-{MAX_HEIGHT_LABEL}: {MAX_HEIGHT}px<br />
+{MAX_DIMENSION_LABEL}: {MAX_DIMENSION}px<br />
+

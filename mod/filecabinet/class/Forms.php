@@ -295,13 +295,9 @@ class Cabinet_Form {
         $form->setMatch('auto_link_parent', PHPWS_Settings::get('filecabinet', 'auto_link_parent'));
         $form->setLabel('auto_link_parent', dgettext('filecabinet', 'Automatically link child images to parent'));
 
-        $form->addText('max_image_width', PHPWS_Settings::get('filecabinet', 'max_image_width'));
-        $form->setLabel('max_image_width', dgettext('filecabinet', 'Maximum image pixel width'));
-        $form->setSize('max_image_width', 4, 4);
-
-        $form->addText('max_image_height', PHPWS_Settings::get('filecabinet', 'max_image_height'));
-        $form->setLabel('max_image_height', dgettext('filecabinet', 'Maximum image pixel height'));
-        $form->setSize('max_image_height', 4, 4);
+        $form->addText('max_image_dimension', PHPWS_Settings::get('filecabinet', 'max_image_dimension'));
+        $form->setLabel('max_image_dimension', dgettext('filecabinet', 'Maximum image pixel dimension'));
+        $form->setSize('max_image_dimension', 4, 4);
 
         $form->addText('max_image_size', $sizes['image']);
         $form->setLabel('max_image_size', dgettext('filecabinet', 'Maximum image file size (in bytes)'));

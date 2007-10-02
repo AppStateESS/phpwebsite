@@ -294,8 +294,8 @@ class File_Common {
 
     function printErrors()
     {
-        if ( !empty($this->_errors) && is_array($this->_errors) ) {
-            foreach ($this->_errors as $error) {
+        if ( !empty($this->errors) && is_array($this->errors) ) {
+            foreach ($this->errors as $error) {
                 $foo[] = $error->getMessage();
             }
             return implode('<br />', $foo);

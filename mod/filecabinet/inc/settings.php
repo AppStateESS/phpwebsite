@@ -5,8 +5,7 @@
    */
 
 $settings = array('base_doc_directory'   => PHPWS_HOME_DIR . 'files/filecabinet/',
-                  'max_image_width'      => 1024,
-                  'max_image_height'     => 768,
+                  'max_image_dimension'  => 1400,
                   'max_image_size'       => 1000000,
                   'max_document_size'    => 5000000,
                   'max_multimedia_size'  => 10000000,

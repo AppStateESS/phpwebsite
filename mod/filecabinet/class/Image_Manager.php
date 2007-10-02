@@ -185,37 +185,38 @@ class FC_Image_Manager {
         $form->setSize('url', 50, 255);
         $form->setLabel('url', dgettext('filecabinet', 'Image link url'));
 
+        switch (1) {
+        case $this->max_width >= 2000:
+            $resizes[2000] = '2000px';
 
-        if ($this->max_width >= 1280 && $this->max_height >= 1024) {
-            $resizes['1280x1024'] = '1280x1024';
-        }
+        case $this->max_width >= 1750:
+            $resizes[1750] = '1750px';
 
-        if ($this->max_width >= 1280 && $this->max_height >= 960) {
-            $resizes['1280x960'] = '1280x960';
-        }
+        case $this->max_width >= 1500:
+            $resizes[1500] = '1500px';
 
-        if ($this->max_width >= 1024 && $this->max_height >= 768) {
-            $resizes['1024x768'] = '1024x768';
-        }
+        case $this->max_width >= 1250:
+            $resizes[1250] = '1250px';
 
-        if ($this->max_width >= 800 && $this->max_height >= 600) {
-            $resizes['800x600']  = '800x600';
-        }
+        case $this->max_width >= 1000:
+            $resizes[1000] = '1000px';
 
-        if ($this->max_width >= 640 && $this->max_height >= 480) {
-            $resizes['640x480']  = '640x480';
+        case $this->max_width >= 800:
+            $resizes[800] = '800px';
+
+        case $this->max_width >= 600:
+            $resizes[600] = '600px';
         }
 
         if (isset($resizes)) {
             $temp = array_reverse($resizes, true);
-            $id = $this->max_width . 'x' . $this->max_height;
-            $temp[$id] = sprintf(dgettext('filecabinet', '%sx%s (limit)'), $this->max_width, $this->max_height);
+            $temp[$this->max_width] = $this->max_width . 'px';
             $resizes = array_reverse($temp, true);
         }
 
         if (!empty($resizes)) {
             $form->addSelect('resize', $resizes);
-            $form->setLabel('resize', dgettext('filecabinet', 'Scale down'));
+            $form->setLabel('resize', dgettext('filecabinet', 'Resize image if over'));
         }
 
         $rotate['none']  = dgettext('filecabinet', 'None');
@@ -263,11 +264,9 @@ class FC_Image_Manager {
             $template['SIZE']                = sprintf('%s x %s', $this->image->width, $this->image->height);
         }
         $template['MAX_SIZE_LABEL']   = dgettext('filecabinet', 'Maximum file size');
-        $template['MAX_WIDTH_LABEL']  = dgettext('filecabinet', 'Maximum width');
-        $template['MAX_HEIGHT_LABEL'] = dgettext('filecabinet', 'Maximum height');
+        $template['MAX_DIMENSION_LABEL']  = dgettext('filecabinet', 'Maximum image dimension');
 
-        $template['MAX_WIDTH']        = $this->max_width;
-        $template['MAX_HEIGHT']       = $this->max_height;
+        $template['MAX_DIMENSION']        = $this->max_width;
 
         $sys_size = str_replace('M', '', ini_get('upload_max_filesize'));
         $sys_size = $sys_size * 1000000;
@@ -311,7 +310,6 @@ class FC_Image_Manager {
     {
         // importPost in File_Common
         $result = $this->image->importPost('file_name');
-
         if (PEAR::isError($result)) {
             PHPWS_Error::log($result);
             $vars['timeout'] = '3';
@@ -340,6 +338,10 @@ class FC_Image_Manager {
 
             default:
                 $this->image->url = null;
+            }
+
+            if ($this->image->id) {
+                $this->image->rotate(false);
             }
 
             $result = $this->image->save();
@@ -387,6 +389,7 @@ class FC_Image_Manager {
         
         return PHPWS_Template::process($tpl, 'filecabinet', 'manager/javascript.tpl');
     }
+
 
     function getSettings()
     {
@@ -458,13 +461,13 @@ class FC_Image_Manager {
         if (isset($_REQUEST['mh']) && $_REQUEST['mh'] > 50) {
             $this->setMaxHeight($_REQUEST['mh']);
         } else {
-            $this->setMaxHeight(PHPWS_Settings::get('filecabinet', 'max_image_height'));
+            $this->setMaxHeight(PHPWS_Settings::get('filecabinet', 'max_image_dimension'));
         }
 
         if (isset($_REQUEST['mw']) && $_REQUEST['mw'] > 50) {
             $this->setMaxWidth($_REQUEST['mw']);
         } else {
-            $this->setMaxWidth(PHPWS_Settings::get('filecabinet', 'max_image_width'));
+            $this->setMaxWidth(PHPWS_Settings::get('filecabinet', 'max_image_dimension'));
         }
     }
 
@@ -561,6 +564,9 @@ class FC_Image_Manager {
         $directory = $this->image->file_directory;
         $image_name = $this->image->file_name;
 
+        // Remove old size label
+        $image_name = preg_replace('/_\d+x\d+\./', '.', $image_name);
+
         $a_image = explode('.', $image_name);
         $ext = array_pop($a_image);
         $image_name = sprintf('%s_%sx%s.%s', implode('.', $a_image), $this->max_width, $this->max_height, $ext);
@@ -584,14 +590,7 @@ class FC_Image_Manager {
                 }
             } else {
                 // don't use duplicate, make a new file
-                for ($i=2; $i<50; $i++) {
-                    $image_name = sprintf('%s_%sx%s_v%s.%s', implode('.', $a_image), $this->max_width, $this->max_height, $i, $ext);
-                    $copy_dir = $directory . $image_name;
-                    if (!is_file($copy_dir)) {
-                        // found a replacement, breaking loop
-                        $i = 50;
-                    }
-                }
+                $image_name = sprintf('%s_%sx%s_%s.%s', implode('.', $a_image), $this->max_width, $this->max_height, mktime(), $ext);
             }
         }
 

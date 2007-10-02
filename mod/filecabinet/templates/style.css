@@ -84,6 +84,8 @@ div.fc-icon {
    display : inline;
    margin-left : 50px;
    margin-bottom : 50px;
+   width : 125px;
+   height : 150px;
 }
 
 div.fc-files {
