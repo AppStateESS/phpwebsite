@@ -1,24 +1,24 @@
 <?php
 
-  /**
-   * Returns the contents of a directory in an array
-   * 
-   * If directoriesOnly is TRUE, then only directories will be listed.
-   * If filesOnly is TRUE, then only files will be listed.
-   * Function returns directory names and file names by default.
-   * Special directories '.', '..', and 'CVS' are not returned.
-   *
-   * @author                            Matt McNaney <matt@NOSPAM.tux.appstate.edu>
-   * @modified                          Adam Morton <adam@NOSPAM.tux.appstate.edu>
-   * @param    string   path            The path to directory to be read
-   * @param    boolean  directoriesOnly If TRUE, return directory names only
-   * @param    boolean  filesOnly       If TRUE, return file names only
-   * @param    boolean  recursive       If TRUE, readDirectory will recurse through the given directory and all directories 'beneath' it.
-   * @param    array    extensions      An array containing file extensions of files you wish to have returned.
-   * @param    boolean  appendPath      Whether or not to append the full path to all entries returned
-   * @return   array    directory       An array containing the names of directories and/or files in the specified directory.
-   * @access   public
-   */
+/**
+ * Returns the contents of a directory in an array
+ * 
+ * If directoriesOnly is TRUE, then only directories will be listed.
+ * If filesOnly is TRUE, then only files will be listed.
+ * Function returns directory names and file names by default.
+ * Special directories '.', '..', and 'CVS' are not returned.
+ *
+ * @author                            Matt McNaney <matt@NOSPAM.tux.appstate.edu>
+ * @modified                          Adam Morton <adam@NOSPAM.tux.appstate.edu>
+ * @param    string   path            The path to directory to be read
+ * @param    boolean  directoriesOnly If TRUE, return directory names only
+ * @param    boolean  filesOnly       If TRUE, return file names only
+ * @param    boolean  recursive       If TRUE, readDirectory will recurse through the given directory and all directories 'beneath' it.
+ * @param    array    extensions      An array containing file extensions of files you wish to have returned.
+ * @param    boolean  appendPath      Whether or not to append the full path to all entries returned
+ * @return   array    directory       An array containing the names of directories and/or files in the specified directory.
+ * @access   public
+ */
 
 
 class PHPWS_File {
@@ -317,7 +317,7 @@ class PHPWS_File {
     }
 
 
-    function imageCopy($path, $file_type)
+    function _imageCopy($path, $file_type)
     {
         if ($file_type == 'image/gif') {
             return imagecreatefromgif($path);
@@ -330,6 +330,34 @@ class PHPWS_File {
             return false;
         }
     }
+
+    function _writeImageCopy($resampled_image, $dest_dir, $file_type)
+    {
+        $result = false;
+
+        if ( $file_type == 'image/png'|| $file_type == 'image/x-png' ) {
+            $result = imagepng($resampled_image, $dest_dir);
+        } elseif ($file_type == 'image/gif') {
+            $result = imagegif($resampled_image, $dest_dir);
+        } elseif ( $file_type == 'image/jpeg' || $file_type == 'image/pjpeg' ||
+                   $file_type == 'image/jpg' ) {
+            $result = imagejpeg($resampled_image, $dest_dir);
+        }
+        return $result;
+    }
+
+    function _resampleImage($new_width, $new_height)
+    {
+        if(PHPWS_File::chkgd2()) {
+            $resampled_image = imagecreatetruecolor($new_width, $new_height);
+            imagealphablending($resampled_image, false);
+            imagesavealpha($resampled_image, true);
+        } else {
+            $resampled_image = imagecreate($new_width, $new_height);
+        }
+        return $resampled_image;
+    }
+
 
     function rotateImage($source_dir, $dest_dir, $degrees)
     {
@@ -351,41 +379,158 @@ class PHPWS_File {
             $degrees = $degrees % 360;
         }
 
-        $source = PHPWS_File::imageCopy($source_dir, $file_type);
+        $source = PHPWS_File::_imageCopy($source_dir, $file_type);
         $rotate = imagerotate($source, $degrees, 0);
 
-        if ($file_type == 'image/png'|| $file_type == 'image/x-png' ) {
-            $result = imagepng($rotate, $dest_dir);
-        } elseif ($file_type == 'image/gif') {
-            $result = imagegif($rotate, $dest_dir);
-        } elseif ( $file_type == 'image/jpeg' || $file_type == 'image/pjpeg' ||
-                   $file_type == 'image/jpg' ) {
-            $result = imagejpeg($rotate, $dest_dir);
-        } else {
-            return FALSE;
+        $result = PHPWS_File::_writeImageCopy($rotate, $dest_dir, $file_type);
+
+        if (!$result) {
+            imagedestroy($rotate);
+            return false;
         }
 
+        chmod($dest_dir, 0644);
         imagedestroy($rotate);        
-        if ($result) {
-            chmod($dest_dir, 0644);
-        }
-
         return $result;
     }
 
+
+    function cropPercent($source_dir, $dest_dir, $percentage, $origin=5)
+    {
+        if ($percentage > 99) {
+            return false;
+        }
+
+        $size = getimagesize($source_dir);
+        if (empty($size)) {
+            return false;
+        }
+
+        $width     = & $size[0];
+        $height    = & $size[1];
+        $new_width = round($width * ((int)$percentage / 100));
+        $new_height = round($height * ((int)$percentage / 100));
+        
+        return PHPWS_File::cropImage($source_dir, $dest_dir, $new_width, $new_height, $origin);
+    }
+    
     /**
-     * This is a modified version of the script written by feip at feip dot net.
-     * It was copied from php.net at:
-     * http://www.php.net/manual/en/function.imagecopyresized.php
+     * origins : top-left      = 1
+     *           top-center    = 2
+     *           top-right     = 3
+     *           center-left   = 4
+     *           center        = 5
+     *           center-right  = 6
+     *           bottom-left   = 7
+     *           bottom-center = 8
+     *           bottom-right  = 9
+     * percentage : percentage of crop reduction
      */
-    function resizeImage($source_dir, $dest_dir, $new_width, $new_height, $force_png=false) {
-        if (empty($new_width) || empty($new_height)) {
+    function cropImage($source_dir, $dest_dir, $new_width, $new_height, $origin=5) {
+        $size = getimagesize($source_dir);
+        if (empty($size)) {
+            return false;
+        }
+
+        $width     = & $size[0];
+        $height    = & $size[1];
+        $file_type = & $size['mime'];
+
+        /*
+         * Can't crop to a higher value
+         */
+        if ($new_width > $width) {
+            $new_width = $width;
+        }
+
+        if ($new_height > $height) {
+            $new_height = $height;
+        }
+        
+        $source_image = PHPWS_File::_imageCopy($source_dir, $file_type);
+        $resampled_image = PHPWS_File::_resampleImage($new_width, $new_height);
+
+        $sx = $sy = 0;
+        switch ($origin) {
+        case 1:
+            $sx = 0;
+            $sy = 0;
+            break;
+
+        case 2:
+            $sx = round(($width - $new_width) / 2);
+            $sy = 0;
+            break;
+
+        case 3:
+            $sx = $width - $new_width;
+            $sy = 0;
+            break;
+
+        case 4:
+            $sx = 0;
+            $sy = round(($height - $new_height) / 2);
+            break;
+
+        default:
+        case 5:
+            $sx = round(($width - $new_width) / 2);
+            $sy = round(($height - $new_height) / 2);
+            break;
+        
+        case 6:
+            $sx = ($width - $new_width);
+            $sy = round(($height - $new_height) / 2);
+            break;
+
+        case 7:
+            $sx = 0;
+            $sy = $height - $new_height;
+            break;
+
+        case 8:
+            $sx = round(($width - $new_width) / 2);
+            $sy = $height - $new_height;
+            break;
+
+        case 9:
+            $sx = $width - $new_width;
+            $sy =  $height - $new_height;
+            break;
+
+        }
+
+        imagecopyresampled($resampled_image,  $source_image,  0, 0, $sx, $sy,
+                           $new_width, $new_height, $new_width, $new_height);
+
+        imagedestroy($source_image);
+
+        $result = PHPWS_File::_writeImageCopy($resampled_image, $dest_dir, $file_type);
+
+        if (!$result) {
+            imagedestroy($resampled_image);
+            return false;
+        }
+
+        chmod($dest_dir, 0644);
+        imagedestroy($resampled_image);
+        return true;
+    }
+
+
+    /**
+     * Scales an image down to smaller than the max_width and max_height.
+     * You cannot scale an image to a higher resolution.
+     */ 
+    function scaleImage($source_dir, $dest_dir, $max_width, $max_height)
+    {
+        if (empty($max_width) || empty($max_height)) {
             return false;
         }
 
         if (!extension_loaded('gd')) {
             if (!dl('gd.so')) {
-                @copy(PHPWS_HOME_DIR . 'images/mod/filecabinet/nogd.png', $dest_dir);
+                @copy('images/core/nogd.png', $dest_dir);
                 return true;
             }
         }
@@ -399,193 +544,55 @@ class PHPWS_File {
         $height    = & $size[1];
         $file_type = & $size['mime'];
 
-        if ( ($width < $new_width) &&
-             ($height < $new_height) ) {
+        if ($width < $max_width && $height < $max_height) {
             return @copy($source_dir, $dest_dir);
         }
 
-        $source_image = PHPWS_File::imageCopy($source_dir, $file_type);
-
-        $proportion_X = $width / $new_width;
-        $proportion_Y = $height / $new_height;
-
-        if($proportion_X > $proportion_Y ) {
-            $proportion = $proportion_Y;
-            $pure = $proportion_X / $proportion_Y;
+        if ($width > $height) {
+            $diff = $max_width / $width;
+            $new_width = $max_width;
+            $new_height = round($height * $diff);
         } else {
-            $proportion = $proportion_X ;
-            $pure = $proportion_Y / $proportion_X;
+            $diff = $max_height / $height;
+            $new_height = $max_height;
+            $new_width = round($width * $diff);
         }
 
-        $target['width'] = $new_width * $proportion;
-        $target['height'] = $new_height * $proportion;
+        $source_image = PHPWS_File::_imageCopy($source_dir, $file_type);
+        $resampled_image = PHPWS_File::_resampleImage($new_width, $new_height);
 
-        $original['diagonal_center'] = round( sqrt( ($width*$width) + ($height*$height) ) / 2);
-        $target['diagonal_center'] = round( sqrt( ($target['width']*$target['width']) + ($target['height']*$target['height']) ) / 2);
-
-        $crop = round($original['diagonal_center'] - $target['diagonal_center']);
-
-        if ($width < $new_width && $height >= $new_height ||
-            $height < $new_height && $width >= $new_width) {
-            $target['y'] = $target['x'] = 0;
-        } else if($proportion_X < $proportion_Y ) {
-            $target['x'] = 0;
-            $target['y'] = round((($height/2)*$crop)/$original['diagonal_center']);
-        } else {
-            $target['x'] =  round((($width/2)*$crop)/$original['diagonal_center']);
-            $target['y'] = 0;
-        }
-
-        if(PHPWS_File::chkgd2()) {
-            $resampled_image = imagecreatetruecolor($new_width, $new_height);
-            imagealphablending($resampled_image, false);
-            imagesavealpha($resampled_image, true);
-        } else {
-            $resampled_image = imagecreate($new_width, $new_height);
-        }
-
-        $destination_x = 0;
-        $destination_y = 0;
-
-        imagecopyresampled($resampled_image,  $source_image,  $destination_x, $destination_y, $target['x'],
-                            $target['y'], $new_width, $new_height, $target['width'], $target['height']);
+        imagecopyresampled($resampled_image,  $source_image,  0, 0, 0, 0,
+                           $new_width, $new_height, $width, $height);
 
         imagedestroy($source_image);
 
-        if ( $force_png || $file_type == 'image/png'|| $file_type == 'image/x-png' ) {
-            $result = imagepng($resampled_image, $dest_dir);
-        } elseif ($file_type == 'image/gif') {
-            $result = imagegif($resampled_image, $dest_dir);
-        } elseif ( $file_type == 'image/jpeg' || $file_type == 'image/pjpeg' ||
-                   $file_type == 'image/jpg' ) {
-            $result = imagejpeg($resampled_image, $dest_dir);
-        } else {
-            return FALSE;
+    
+        $result = PHPWS_File::_writeImageCopy($resampled_image, $dest_dir, $file_type);
+
+        if (!$result) {
+            imagedestroy($resampled_image);
+            return false;
         }
-        if ($result) {
-            chmod($dest_dir, 0644);
-        }
+
+        chmod($dest_dir, 0644);
         imagedestroy($resampled_image);
-        return $result;
+        return true;
     }
 
     /**
-     * Creates a thumbnail of a jpeg, gif or png image.  (Gif images are converted to
-     * jpeg thumbnails due to licensing issues.)  The thumbnail file is created as
-     * a separate "_tn" file or, if desired, as a replacement for the original.
-     *
-     * @author   Jeremy Agee <jagee@NOSPAM.tux.appstate.edu>
-     * @modified Adam Morton <adam@NOSPAM.tux.appstate.edu>
-     * @modified Steven Levin <steven@NOSPAM.tux.appstate.edu>
-     * @modified George Brackett <gbrackett@NOSPAM.luceatlux.com>
-     * @modified Matt McNaney <matt at tux dot appstate dot edu>
-     * @param    string  $fileName          The file name of the image you want thumbnailed.
-     * @param    string  $directory         Path to the file you want thumbnailed
-     * @param    string  $tndirectory       The path to where the new thumbnail file is stored
-     * @param    integer $maxHeight         Set width of the thumbnail if you do not want to use the default 
-     * @param    integer $maxWidth          Set height of the thumbnail if you do not want to use the default
-     * @param        boolean $replaceFile           Set TRUE if thumbnail should replace original file
-     * @return   array   0=>thumbnailFileName, 1=>thumbnailWidth, 2=>thumbnailHeight 
-     * @access   public
+     * Backward compatibility
+     */
+    function resizeImage($source_dir, $dest_dir, $new_width, $new_height, $force_png=false) {
+        return PHPWS_File::scaleImage($source_dir, $dest_dir, $new_width, $new_height);
+    }
+
+    /**
+     * Backward compatibility
      */
     function makeThumbnail($fileName, $directory, $tndirectory, $maxWidth=125, $maxHeight=125, $replaceFile=FALSE) {
-        $image = $directory . $fileName;
-        $imageInfo = getimagesize($image);
-
-        // Check to make sure gd will support the specified type
-        $supported = FALSE;
-        // Index 2 is a flag indicating the type of the image: 1 = GIF, 2 = JPG, 3 = PNG, 
-        // 4 = SWF, 5 = PSD, 6 = BMP, 7 = TIFF(intel byte order), 8 = TIFF(motorola byte order), 
-        // 9 = JPC, 10 = JP2, 11 = JPX, 12 = JB2, 13 = SWC, 14 = IFF, 15 = WBMP, 16 = XBM.
-        switch($imageInfo[2]) {
-        case 1:         // we're converting GIF to JPG
-        case 2:
-            if(imagetypes() & IMG_JPG)
-                $supported = TRUE;
-            break;
-        case 3:
-            if(imagetypes() & IMG_PNG)
-                $supported = TRUE;
-            break;
-        }
-    
-        if (!$supported) {
-            return PHPWS_Error::get(PHPWS_GD_ERROR, 'core', 'PHPWS_File::makeThumbnail', $imageInfo['mime']);
-        }
-
-        $currentWidth = &$imageInfo[0];
-        $currentHeight = &$imageInfo[1];
-
-        if(($currentWidth < $maxWidth) && ($currentHeight < $maxHeight)) {
-            return array($fileName, $currentWidth, $currentHeight);
-        } else {
-            $widthScale  = $maxWidth / $currentWidth;
-            $heightScale = $maxHeight / $currentHeight;
-
-            $adjusted_h_to_w = floor($currentHeight * $widthScale);
-            $adjusted_w_to_w = floor($currentWidth * $widthScale);
-
-            if ( ($adjusted_h_to_w <= $maxHeight) &&
-                 ($adjusted_w_to_w <= $maxWidth)) {
-                $finalScale = $widthScale;
-            } else {
-                $finalScale = $heightScale;
-            }
-        }
-
-        $thumbnailWidth = round($finalScale * $currentWidth);
-        $thumbnailHeight = round($finalScale * $currentHeight);
-        $thumbnailImage = NULL;
-      
-        // create image space in memory
-        if(PHPWS_File::chkgd2()) {
-            $thumbnailImage = ImageCreateTrueColor($thumbnailWidth, $thumbnailHeight);
-            imageAlphaBlending($thumbnailImage, false);
-            imageSaveAlpha($thumbnailImage, true);
-        } else {
-            $thumbnailImage = ImageCreate($thumbnailWidth, $thumbnailHeight);
-        }
-        // now pull in image data
-        switch($imageInfo[2]) {
-        case 1:
-            $fullImage = ImageCreateFromGIF($image);
-            break;
-        case 2:
-            $fullImage = ImageCreateFromJPEG($image);
-            break;
-        case 3:
-            $fullImage = ImageCreateFromPNG($image);
-        }
-    
-        // now create the thumbnail image in memory
-        if(PHPWS_File::chkgd2()) {
-            ImageCopyResampled($thumbnailImage, $fullImage, 0, 0, 0, 0, $thumbnailWidth, $thumbnailHeight, ImageSX($fullImage), ImageSY($fullImage));
-        } else {
-            ImageCopyResized($thumbnailImage, $fullImage, 0, 0, 0, 0, $thumbnailWidth, $thumbnailHeight, ImageSX($fullImage), ImageSY($fullImage));
-        }
-    
-        ImageDestroy($fullImage);
-        $thumbnailFileName = explode('.', $fileName);
-    
-        if($replaceFile) {
-            unlink($image);
-        }
-    
-        switch($imageInfo[2]) {
-        case 1:         // convert gif to jpg
-        case 2:
-            $thumbnailFileName = $thumbnailFileName[0] . ($replaceFile ? '.jpg' : '_tn.jpg');
-            imagejpeg($thumbnailImage, $tndirectory . $thumbnailFileName);
-            break;
-        case 3:
-            $thumbnailFileName = $thumbnailFileName[0] . ($replaceFile ? '.png' : '_tn.png');
-            imagepng($thumbnailImage, $tndirectory . $thumbnailFileName);
-            break;
-        }
-
-        return array($thumbnailFileName, $thumbnailWidth, $thumbnailHeight);
-    
-    } // END FUNC makeThumbnail()
+        $source_dir = $directory . $fileName;
+        return PHPWS_File::scaleImage($source_dir, $tndirectory, $maxWidth, $maxHeight);
+    }
 
     function rmdir($dir) 
     {

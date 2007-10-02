@@ -21,4 +21,5 @@
 + Key checks for duplicate keys before saving new rows.
 + New error message for above.
 + Tidying to key class.
++ Broke up resizeImage function into scaleImage and cropImage.
 + Added '#' to characters looked for in the bb.php filter.

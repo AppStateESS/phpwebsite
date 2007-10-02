@@ -4,6 +4,11 @@ its own separate CHANGELOG file.
 
 Version 1.6.3
 -------------------------------------------------------------------
+2 October 2007
++ More changes to File.php. Separated the resizeImage function from
+  the cropping. Now have three functions: scaleImage, cropPercent, and
+  cropImage. 
+
 1 October 2007
 + Added getGraph function to Batch
 + Updated: templates/graph.tpl, img/ajax-loader.gif
