@@ -147,6 +147,10 @@ class PHPWS_ControlPanel {
         $DB->setIndexBy('id');
         $result = $DB->getObjects('PHPWS_Panel_Link');
 
+        if (empty($result)) {
+            return null;
+        }
+
         foreach ($result as $link){
             if (!$link->isRestricted() || Current_User::allow($link->itemname)) {
                 $allLinks[$link->tab][] = $link;
@@ -170,7 +174,7 @@ class PHPWS_ControlPanel {
 
         $cpFile = sprintf('%smod/%s/boost/controlpanel.php', PHPWS_SOURCE_DIR, $module);
 
-        if (!is_file($cpFile)){
+        if (!is_file($cpFile)) {
             PHPWS_Boost::addLog($module, dgettext('controlpanel', 'Control Panel file not implemented.'));
             return false;
         }
@@ -321,6 +325,9 @@ class PHPWS_ControlPanel {
 
         $count = 1;
 
+        if (empty($result)) {
+            return null;
+        }
         foreach ($result as $link){
             $link->setTab($defaultId);
             $link->setLinkOrder($count);
