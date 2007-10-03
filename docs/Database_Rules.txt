@@ -1,0 +1,28 @@
+Database Rules
+--------------
+
+phpWebSite attempts to allow modules to be database OS independent. In
+order to do so, please follow the rules below. 
+
+- If importing a sql file, remember different databases quote methods
+  vary. MySQL quotes like so:
+  create table `example`;
+
+  Other databases do not observe this format. Remove the ticks,
+  quotes, etc. like so:
+  create table example;
+
+- Table names should not be named after database processes. In other
+  words, no tables named "create", "select", etc. The same goes for
+  columns.
+
+- If importing an sql file, don't use "if exists" or "if not exists"
+  in your create table query. If this is your install.sql file, the
+  table shouldn't exist. If you want to be sure, add a drop table
+  before the create.
+
+- Use basic queries only: create table, alter table, insert, update,
+  drop, truncate, etc. Don't use database specific commands.
+
+- Columns should not share the name of the table they are in. This can
+  confused the table prefixer.

@@ -11,7 +11,7 @@ CREATE TABLE modules (
 
 CREATE TABLE registered ( 
 	module CHAR(40) NOT NULL, 
-	registered CHAR(40) NOT NULL
+	registered_to CHAR(40) NOT NULL
 	);
 
 

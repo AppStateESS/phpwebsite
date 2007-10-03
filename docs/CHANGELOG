@@ -4,6 +4,15 @@ its own separate CHANGELOG file.
 
 Version 1.6.3
 -------------------------------------------------------------------
+3 October 2007
++ Renamed registered column in registered table to
+  registered_to. Columns with the same name as the table don't work
+  with table prefixing. Changed in update.php.
++ Added logDB to the 'assoc' select option.
++ Changed the prefix search to try and prevent incorrect prefixing on
+  column names.
++ Added short document on database rules.
+
 2 October 2007
 + More changes to File.php. Separated the resizeImage function from
   the cropping. Now have three functions: scaleImage, cropPercent, and

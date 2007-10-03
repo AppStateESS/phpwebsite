@@ -145,8 +145,17 @@ function core_update(&$content, $version) {
     case version_compare($version, '1.6.3', '<'):
         $content[] = '<pre>';
 
-        $files = array('templates/graph.tpl', 'img/ajax-loader.gif', 'conf/error.php');
+        $db = new PHPWS_DB('registered');
+        if (!$db->isTableColumn('registered_to')) {
+            if (PHPWS_Error::logIfError($db->renameTableColumn('registered', 'registered_to'))) {
+                $content[] = '--- Could not rename registered table\'s registered column to registered_to.</pre>';
+                return false;
+            } else {
+                $content[] = '--- Renamed registered table\'s registered column to registered_to.';
+            }
+        }
 
+        $files = array('templates/graph.tpl', 'img/ajax-loader.gif', 'conf/error.php');
         coreUpdateFiles($files, $content);
         
         if (!PHPWS_Boost::inBranch()) {
