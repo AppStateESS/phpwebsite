@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-05 09:53-0400\n"
+"POT-Creation-Date: 2007-10-03 16:05-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -160,6 +160,9 @@ msgid "Expire"
 msgstr ""
 
 msgid "Expire date/time"
+msgstr ""
+
+msgid "Hide general image folders"
 msgstr ""
 
 msgid "Image"
