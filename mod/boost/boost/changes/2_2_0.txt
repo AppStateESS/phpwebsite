@@ -1,5 +1,7 @@
 2.2.0 changes
 ------------------------------------------------------------------
++ Boost conforms to registered table change.
++ Added more error logging.
 + Boost now checks all branch directories before allowing updates.
 + Boost will not allow installation if directories are not set.
 + Boost will show the options available should the directories get

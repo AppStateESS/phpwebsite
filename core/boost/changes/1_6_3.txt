@@ -1,5 +1,14 @@
 1.6.3 changes
 -----------------------------------------------------------------------
++ Renamed registered column in registered table to
+  registered_to. Columns with the same name as the table don't work
+  with table prefixing. Changed in update.php.
++ Added logDB to the 'assoc' select option.
++ Changed the prefix search to try and prevent incorrect prefixing on
+  column names.
++ Separated the resizeImage function from the cropping.
+  Now have three functions: scaleImage, cropPercent, and cropImage. 
++ Added short document on database rules.
 + Added Vietnamese translations courtesy of Dang Hoai Phuc.
 + Added getGraph function to Batch
 + Bug fix on _indexBy function. stacked variable wasn't getting set.
@@ -21,5 +30,4 @@
 + Key checks for duplicate keys before saving new rows.
 + New error message for above.
 + Tidying to key class.
-+ Broke up resizeImage function into scaleImage and cropImage.
 + Added '#' to characters looked for in the bb.php filter.

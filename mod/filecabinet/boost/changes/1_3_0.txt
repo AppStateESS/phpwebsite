@@ -1,5 +1,29 @@
 1.3.0 changes
 ---------------------------------------------------------------------
++ Added module_created column to folders table to track which module
+  made the folder.
++ Fifth parameter added to Cabinet::imageManager function. If true,
+  then the image manager will only show folders created by the current
+  module.
++ Users can access image folders without having to have File Cabinet
+  permission.
++ Private folders give a warning instead of a 404.
++ Can now set whether general user folder views will show resized
+  images along with their parents.
++ Folders are private by default now.
++ Folder title in list view is linkable as well as icon.
++ Images can be made to link to their folder.
++ Clip link won't show for anonymous users viewing a folder.
++ Added code to pick_image to prevent it from being called statically.
++ Using new scaleImage and cropImage functions in File.
++ Added missing column thumbnail to multimedia table in update.php.
++ Image dimension limits compare against only one value now by
+  default.
++ Uploading resizes using just one value now.
++ User can rotate images on edit.
++ File_Common was not using correct variable to pull errors.
++ Images with awkward ratios resize and thumbnail better.
++ Trying defined widths and heights for thumbnail listing.
 + Increased file_name size beyond 50 because people give files crazy
   long names.
 + Added dropExtension function to File_Common.

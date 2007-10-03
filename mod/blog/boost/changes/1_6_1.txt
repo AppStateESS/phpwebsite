@@ -1,5 +1,7 @@
 1.6.1 Changes
------------------------------------------------------------------------------
+--------------------------------------------------------------------
++ Added new file cabinet options for only showing module specific
+  folders.
 + Added loadClass to getEntries to prevent loading Blog class until
   needed.
 + Blog resets cache on entry post or deletion.

@@ -6,3 +6,5 @@
 + Moved Activate and Deactivate commands to the Active Yes/No column.
 + Deities cannot be deactivated.
 + Added Vietnamese language abbreviation.
++ Added search to groups listing.
++ Added missing pager navigation to groups listing.
