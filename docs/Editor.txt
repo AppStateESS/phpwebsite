@@ -9,7 +9,7 @@ PhpWebSite ships with the following wysiwyg editors ready for use:
 FCKeditor
 TinyMCE
 simple (an improvement over the old 0.x wysiwyg)
-
+Yahoo! User Interface Rich Text Editor (yui)
 
 Plugging in a Supported Editor
 -----------------------------
@@ -36,9 +36,13 @@ If FORCE_EDITOR is set to "true", phpWebSite will ignore an editor's
 support settings and try to force the editor to appear on all
 browsers.
 
-You should customize your editor via a file specified by readme.txt
-file. In most cases you do not want to make customizations in the
-editor's original files.
+You should customize your editor via a file specified by a readme.txt
+located in the editor's directory. In most cases you do not want to
+make customizations in the editor's original files.
+
+Note: If you are running Linux, you will probably want to edit
+FCKeditor to allow spell checking. See the documentation in that
+directory for more information.
 
 
 Using the Editor in your Module

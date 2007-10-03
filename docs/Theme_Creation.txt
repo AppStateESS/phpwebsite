@@ -16,6 +16,9 @@ right at home. You can probably skip the first couple of
 sections. Newcomers should continue. It is assumed you know how to
 create a page using just HTML encoding.
 
+If you would like to jump in, take a look at the fishy theme's
+creating_this_theme.txt file. It gives a tutorial of sorts.
+
 
 Templates
 --------------------------------------------------------------------
