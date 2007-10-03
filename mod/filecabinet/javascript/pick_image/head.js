@@ -1,6 +1,10 @@
 <script type="text/javascript">
 //<![CDATA[
 
+if (!opener) {
+    document.location.href = 'index.php';
+}
+
 var itemname = '{itemname}';
 var maxsize = {maxsize};
 var maxwidth = {maxwidth};

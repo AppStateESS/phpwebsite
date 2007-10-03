@@ -36,7 +36,12 @@ class Cabinet {
             $aop = $this->panel->getCurrentTab();
         }
 
-        if (!Current_User::allow('filecabinet')){
+        if (!Current_User::isLogged()) {
+            Current_User::disallow();
+            return;
+        }
+
+        if ( ($aop != 'edit_image' && $aop != 'get_images') && !Current_User::allow('filecabinet') ){
             Current_User::disallow();
             return;
         }
@@ -223,6 +228,9 @@ class Cabinet {
             $javascript = true;
             PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
             $this->loadImageManager();
+            if (!$this->image_mgr->authenticate()) {
+                Current_User::disallow(null, false);
+            }
             $this->image_mgr->editImage();
             break;
 
@@ -289,6 +297,10 @@ class Cabinet {
             break;
 
         case 'get_images':
+            $this->loadImageManager();
+            if (!$this->image_mgr->authenticate()) {
+                Current_User::disallow(null, false);
+            }
             $this->passImages();
             break;
             
@@ -414,17 +426,14 @@ class Cabinet {
         Layout::add($main);
     }
 
-    function imageManager($image_id, $itemname, $width, $height)
+    function imageManager($image_id, $itemname, $width, $height, $module_only=false)
     {
-        if (!Current_User::allow('filecabinet')) {
-            return null;
-        }
-
         PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
         $manager = new FC_Image_Manager($image_id);
         $manager->setItemname($itemname);
         $manager->setMaxWidth($width);
         $manager->setMaxHeight($height);
+        $manager->module_only = (bool)$module_only;
         return $manager;
     }
 
@@ -691,6 +700,12 @@ class Cabinet {
             PHPWS_Settings::set('filecabinet', 'auto_link_parent', 0);
         }
 
+        if (isset($_POST['no_kids'])) {
+            PHPWS_Settings::set('filecabinet', 'no_kids', 1);
+        } else {
+            PHPWS_Settings::set('filecabinet', 'no_kids', 0);
+        }
+
 
         $ffmpeg_dir = strip_tags($_POST['ffmpeg_directory']);
         if (empty($ffmpeg_dir)) {
@@ -735,7 +750,9 @@ class Cabinet {
     {
         $this->loadFolder();
         if (!$this->folder->id || !$this->folder->public_folder) {
-            PHPWS_Core::errorPage('404');
+            $this->title = dgettext('filecabinet', 'Sorry');
+            $this->content = dgettext('filecabinet', 'This is a private folder.');
+            return;
         }
         if (!$this->folder->allow()) {
             if (Current_User::isLogged()) {
@@ -748,7 +765,8 @@ class Cabinet {
         }
         $this->title = $this->folder->title;
         $this->loadForms();
-        $this->forms->folderContents($this->folder);
+        $kids = PHPWS_Settings::get('filecabinet', 'no_kids');
+        $this->forms->folderContents($this->folder, false, $kids);
     }
 
     function viewFolder()

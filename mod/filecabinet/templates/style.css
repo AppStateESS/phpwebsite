@@ -182,3 +182,7 @@ div#fc-file-list td.fc-icon {
 td.fc-icon {
    width : 1px;
 }
+
+ul#image-folders li {
+   list-style : none;
+}

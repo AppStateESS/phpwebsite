@@ -235,12 +235,14 @@ class PHPWS_Image extends File_Common {
                 if ($parent->id) {
                     $image_tag = $parent->getJSView(false, $image_tag);
                 }
+            } elseif($this->url == 'folder') {
+                $link =   $link = sprintf('index.php?module=filecabinet&amp;uop=view_folder&amp;folder_id=%s', $this->folder_id);
+                $image_tag =  sprintf('<a href="%s" title="%s">%s</a>', $link, dgettext('filecabinet', 'View all images in folder'),
+                                      $image_tag);
             } else {
                 $image_tag = sprintf('<a href="%s">%s</a>', $this->url, $image_tag);
             }
         }
-
-
         return $image_tag;
     }
 
@@ -363,16 +365,20 @@ class PHPWS_Image extends File_Common {
 
     function rowTags()
     {
-        $links[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Clip'), 'filecabinet',
-                                          array('aop'=>'clip_image',
-                                                'image_id' => $this->id));
-        
+        if (Current_User::isLogged()) {
+            $links[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Clip'), 'filecabinet',
+                                              array('aop'=>'clip_image',
+                                                    'image_id' => $this->id));
+        }
+
         if (Current_User::allow('filecabinet', 'edit_folder', $this->folder_id)) {
             $links[] = $this->editLink();
             $links[] = $this->deleteLink();
         }
 
-        $tpl['ACTION'] = implode(' | ', $links);
+        if (isset($links)) {
+            $tpl['ACTION'] = implode(' | ', $links);
+        }
         $tpl['SIZE'] = $this->getSize(TRUE);
         $tpl['FILE_NAME'] = $this->file_name;
         $tpl['THUMBNAIL'] = $this->getJSView(TRUE);

@@ -22,13 +22,13 @@ class Cabinet_Form {
             if (!is_writable($folder->_base_directory)) {
                 switch ($folder->ftype) {
                 case IMAGE_FOLDER:
-                $this->cabinet->message = dgettext('filecabinet', 'Your images directory is not writable.');
+                    $this->cabinet->message = dgettext('filecabinet', 'Your images directory is not writable.');
                     break;
-
+                    
                 case DOCUMENT_FOLDER:
-                $this->cabinet->message = dgettext('filecabinet', 'Your documents directory is not writable.');
+                    $this->cabinet->message = dgettext('filecabinet', 'Your documents directory is not writable.');
                     break;
-
+                    
                 case MULTIMEDIA_FOLDER:
                     $this->cabinet->message = dgettext('filecabinet', 'Your multimedia directory is not writable.');
                     break;
@@ -42,9 +42,13 @@ class Cabinet_Form {
             }
         }
 
+        if ($folder->ftype == IMAGE_FOLDER) {
+            $pagetags['MODULE_CREATED_LABEL'] = dgettext('filecabinet', 'Created in');
+        }
+
         $pagetags['TITLE_LABEL'] = dgettext('filecabinet', 'Title');
         $pagetags['ITEM_LABEL']  = dgettext('filecabinet', 'Items');
-        $pagetags['PUBLIC_LABEL'] = dgettext('filecabinet', 'Public/Private');
+        $pagetags['PUBLIC_LABEL'] = dgettext('filecabinet', 'Public');
 
         $pager = new DBPager('folders', 'Folder');
         $pager->setModule('filecabinet');
@@ -147,6 +151,10 @@ class Cabinet_Form {
         $form->addHidden('aop', 'post_folder');
         $form->addHidden('ftype', $folder->ftype);
 
+        if (isset($_GET['module_created'])) {
+            $form->addHidden('module_created', $_GET['module_created']);
+        }
+
         if ($folder->id) {
             $form->addHidden('folder_id', $folder->id);
             $form->addSubmit('submit', dgettext('filecabinet', 'Update folder'));
@@ -178,7 +186,7 @@ class Cabinet_Form {
         return PHPWS_Template::process($tpl, 'filecabinet', 'edit_folder.tpl');
     }
 
-    function folderContents($folder, $pick_image=false)
+    function folderContents($folder, $pick_image=false, $no_kids=false)
     {
         PHPWS_Core::bookmark();
         Layout::addStyle('filecabinet');
@@ -188,6 +196,9 @@ class Cabinet_Form {
             PHPWS_Core::initModClass('filecabinet', 'Image.php');
             $pager = new DBPager('images', 'PHPWS_Image');
             $pager->setTemplate('image_grid.tpl');
+            if ($no_kids) {
+                $pager->addWhere('parent_id', 0);
+            }
             $limits[9]  = 9;
             $limits[16] = 16;
             $limits[25] = 25;
@@ -229,7 +240,6 @@ class Cabinet_Form {
         $pagetags['FILE_TYPE_LABEL'] = dgettext('filecabinet', 'File type');
         $pagetags['TITLE_LABEL']     = dgettext('filecabinet', 'Title');
 
-        //        $pager->setLink($folder->viewLink(false));
         $pager->setLimitList($limits);
         $pager->setDefaultLimit(16);
 
@@ -294,6 +304,10 @@ class Cabinet_Form {
         $form->addCheck('auto_link_parent', 1);
         $form->setMatch('auto_link_parent', PHPWS_Settings::get('filecabinet', 'auto_link_parent'));
         $form->setLabel('auto_link_parent', dgettext('filecabinet', 'Automatically link child images to parent'));
+
+        $form->addCheck('no_kids', 1);
+        $form->setMatch('no_kids', PHPWS_Settings::get('filecabinet', 'no_kids'));
+        $form->setLabel('no_kids', dgettext('filecabinet', 'Don\'t show resized images when viewing folders publicly.'));
 
         $form->addText('max_image_dimension', PHPWS_Settings::get('filecabinet', 'max_image_dimension'));
         $form->setLabel('max_image_dimension', dgettext('filecabinet', 'Maximum image pixel dimension'));

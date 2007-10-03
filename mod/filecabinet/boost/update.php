@@ -196,6 +196,17 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
     case version_compare($version, '1.3.0', '<'):
         $content[] = '<pre>';
   
+        $db = new PHPWS_DB('folders');
+        if (!$db->isTableColumn('module_created')) {
+            if (PHPWS_Error::logIfError($db->addTableColumn('module_created', 'varchar(40) default null'))) {
+                $content[] = '--- Could not create column module_created on folders table.</pre>';
+                return false;
+            } else {
+                $content[] = '--- Created module_created column on folders table.';
+            }
+        }
+
+
         $db = new PHPWS_DB('multimedia');
         $result = $db->addTableColumn('thumbnail', 'varchar(255) not null');
         if (PHPWS_Error::logIfError($result)) {
@@ -228,7 +239,8 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
         $files = array('conf/error.php', 'conf/config.php',
                        'templates/filters/flash.tpl', 'templates/file_list.tpl',
                        'templates/multimedia_edit.tpl', 'templates/settings.tpl',
-                       'templates/style.css', 'templates/thumbnail.tpl', 'templates/image_edit.tpl');
+                       'templates/style.css', 'templates/thumbnail.tpl', 'templates/image_edit.tpl',
+                       'javascript/pick_image/head.js', 'templates/folder_list.tpl');
 
         fc_updatefiles($files, $content);
         if (!PHPWS_Boost::inBranch()) {

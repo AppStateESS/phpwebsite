@@ -15,8 +15,9 @@ class Folder {
     var $title           = null;
     var $description     = null;
     var $ftype           = IMAGE_FOLDER;
-    var $public_folder   = 1;
+    var $public_folder   = 0;
     var $icon            = null;
+    var $module_created  = null;
     // An array of file objects
     var $_files          = 0;
     var $_error          = 0;
@@ -203,6 +204,10 @@ class Folder {
 
         $this->setDescription($_POST['description']);
 
+        if (isset($_POST['module_created'])) {
+            $this->module_created = $_POST['module_created'];
+        }
+
         $this->ftype = $_POST['ftype'];
         $this->public_folder = $_POST['public_folder'];
         return true;
@@ -341,10 +346,10 @@ class Folder {
         $items = $this->tallyItems();
         $tpl['ITEMS'] = sprintf(dngettext('filecabinet', '%s image', '%s images', $items), $items);
 
-        $vars['aop'] = 'get_images';
+        $vars['aop']       = 'get_images';
         $vars['folder_id'] = $this->id;
-        $vars['mw'] = $max_width;
-        $vars['mh'] = $max_height;
+        $vars['mw']        = $max_width;
+        $vars['mh']        = $max_height;
 
         $jsvars['success'] = sprintf('show_images(requester.responseText, %s)', $this->id);
         $jsvars['failure'] = "alert('A problem occurred')"; 
@@ -366,6 +371,7 @@ class Folder {
         $vars['aop'] = 'view_folder';
         $vars['folder_id'] = $this->id;
         $tpl['ICON'] = PHPWS_Text::moduleLink($icon, 'filecabinet', $vars);
+        $tpl['TITLE'] = PHPWS_Text::moduleLink($this->title, 'filecabinet', $vars);
         $tpl['ITEMS'] = $this->tallyItems();
 
         if (Current_User::allow('filecabinet', 'edit_folders', $this->id)) {
@@ -383,6 +389,14 @@ class Folder {
             }
 
             $links[] = $this->deleteLink();
+        }
+
+        if ($this->ftype == IMAGE_FOLDER) {
+            if ($this->module_created) {
+                $tpl['MODULE_CREATED'] = $this->module_created;
+            } else {
+                $tpl['MODULE_CREATED'] = dgettext('filecabinet', 'General');
+            }
         }
 
         $tpl['PUBLIC'] = $this->getPublic();

@@ -14,13 +14,18 @@ if (!defined('RESIZE_IMAGE_USE_DUPLICATE')) {
 }
 
 class FC_Image_Manager {
-    var $image      = null;
-    var $itemname   = null;
-    var $cabinet    = null;
-    var $current    = 0;
-    var $max_width  = 0;
-    var $max_height = 0;
-    var $max_size   = 0;
+    var $module      = null;
+    var $image       = null;
+    var $itemname    = null;
+    var $cabinet     = null;
+    var $current     = 0;
+    var $max_width   = 0;
+    var $max_height  = 0;
+    var $max_size    = 0;
+    /**
+     * If true, manager will only show image folders for the current module
+     */
+    var $module_only = false;
     var $_noimage_max_width = 300;
     var $_noimage_max_height = 300;
 
@@ -31,8 +36,9 @@ class FC_Image_Manager {
     }
 
     // backward compatibility
-    function setModule($foo)
+    function setModule($module)
     {
+        $this->module = $module;
     }
 
     function setMaxSize($size)
@@ -176,6 +182,13 @@ class FC_Image_Manager {
         if ($this->image->parent_id) {
             $link_choice['parent'] = dgettext('filecabinet', 'Link image to original, full sized image');
         }
+
+        if ($this->image->folder_id) {
+            $folder = new Folder($this->image->folder_id);
+            if ($folder->public_folder) {
+                $link_choice['folder'] = dgettext('filecabinet', 'Link to image folder');
+            }
+        }
        
         $form->addSelect('link', $link_choice);
         $form->setLabel('link', dgettext('filecabinet', 'Link image'));
@@ -237,6 +250,11 @@ class FC_Image_Manager {
 
         case $this->image->url == 'parent':
             $form->setMatch('link', 'parent');
+            $form->addTplTag('VISIBLE', 'hidden');
+            break;
+
+        case $this->image->url == 'folder':
+            $form->setMatch('link', 'folder');
             $form->addTplTag('VISIBLE', 'hidden');
             break;
 
@@ -336,6 +354,10 @@ class FC_Image_Manager {
                 }
                 break;
 
+            case 'folder':
+                $this->image->url = 'folder';
+                break;
+
             default:
                 $this->image->url = null;
             }
@@ -360,11 +382,23 @@ class FC_Image_Manager {
         }
     }
 
+    function authenticate()
+    {
+        if (empty($this->module)) {
+            return false;
+        }
+        return Current_User::allow($this->module);
+    }
+
+    function loadAuthMod()
+    {
+        $this->module = $_REQUEST['module'];
+        $_SESSION['IM_Auth_Mod'] = $_REQUEST['module'];
+    }
+
     function get()
     {
-        if (!Current_User::allow('filecabinet')) {
-            return $this->image->getTag();
-        }
+        $this->loadAuthMod();
 
         if ($this->image->id) {
             $label = $this->image->getTag('image-manager-' . $this->itemname, false);
@@ -373,8 +407,9 @@ class FC_Image_Manager {
         }
 
         $link_vars = $this->getSettings();
-        $link_vars['aop']    = 'edit_image';
-        $link_vars['current']   = $this->image->id;
+        $link_vars['aop']      = 'edit_image';
+        $link_vars['current']  = $this->image->id;
+        $link_vars['mod_only'] = $this->module_only;
 
         $vars['address'] = PHPWS_Text::linkAddress('filecabinet', $link_vars);
         $vars['width']   = 700;
@@ -452,6 +487,12 @@ class FC_Image_Manager {
             $this->setItemname($_REQUEST['itemname']);
         }
 
+        if (isset($_SESSION['IM_Auth_Mod'])) {
+            $this->module = $_SESSION['IM_Auth_Mod'];
+        }
+
+        $this->module_only = (bool)@$_GET['mod_only'];
+
         if (isset($_REQUEST['ms']) && $_REQUEST['ms'] > 1000) {
             $this->setMaxSize($_REQUEST['ms']);
         } else {
@@ -502,6 +543,9 @@ class FC_Image_Manager {
         javascript('modules/filecabinet/pick_image', $js);
 
         $db = new PHPWS_DB('folders');
+        if ($this->module_only) {
+            $db->addWhere('module_created', $this->module);
+        }
         $db->addWhere('ftype', IMAGE_FOLDER);
         $db->addOrder('title');
         $folders = $db->getObjects('Folder');
@@ -513,7 +557,7 @@ class FC_Image_Manager {
         }
 
         if (Current_User::allow('filecabinet', 'edit_folders')) {
-            $address = PHPWS_Text::linkAddress('filecabinet', array('aop'=>'add_folder', 'ftype'=>IMAGE_FOLDER), true);
+            $address = PHPWS_Text::linkAddress('filecabinet', array('aop'=>'add_folder', 'ftype'=>IMAGE_FOLDER, 'module_created'=>$this->module), true);
             $folder_window = sprintf("javascript:open_window('%s', %s, %s, 'new_folder'); return false", $address, 370, 420);
             $tpl['ADD_FOLDER'] = sprintf('<input id="add-folder" type="button" name="add_folder" value="%s" onclick="%s" />', dgettext('filecabinet', 'Add folder'), $folder_window);
         }
