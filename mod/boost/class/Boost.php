@@ -619,8 +619,9 @@ class PHPWS_Boost {
         $db->addWhere('title', $module->title);
         $db->delete();
         $db->resetWhere();
-        if (!$module->getProperName())
+        if (!$module->getProperName()) {
             $module->setProperName($module->getProperName(true));
+        }
 
         $result = $module->save();
 
@@ -706,10 +707,10 @@ class PHPWS_Boost {
     function setRegistered($module, $registered)
     {
         $db = new PHPWS_DB('registered');
-        $db->addValue('registered', $registered);
+        $db->addValue('registered_to', $registered);
         $db->addValue('module', $module);
         $result = $db->insert();
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::logIfError($result)) {
             return $result;
         } else {
             return (bool)$result;
@@ -719,11 +720,11 @@ class PHPWS_Boost {
     function unsetRegistered($module, $registered)
     {
         $db = new PHPWS_DB('registered');
-        $db->addWhere('registered', $registered);
+        $db->addWhere('registered_to', $registered);
         $db->addWhere('module', $module);
         $result = $db->delete();
 
-        if (PEAR::isError($result)) {
+        if (PHPWS_Error::logIfError($result)) {
             return $result;
         } else {
             return (bool)$result;
@@ -734,7 +735,7 @@ class PHPWS_Boost {
     function isRegistered($module, $registered)
     {
         $db = new PHPWS_DB('registered');
-        $db->addWhere('registered', $registered);
+        $db->addWhere('registered_to', $registered);
         $db->addWhere('module', $module);
         $result = $db->select('one');
         if (PEAR::isError($result)) {
@@ -826,7 +827,7 @@ class PHPWS_Boost {
         foreach ($modules as $register_mod){
             $register_mod->init();
             if ($register_mod->isRegister()) {
-                $result = $this->registerModToMod($register_mod, $module, $content);
+                PHPWS_Error::logIfError($this->registerModToMod($register_mod, $module, $content));
             }
         }
     }
@@ -845,7 +846,7 @@ class PHPWS_Boost {
             $register_mod->init();
 
             if ($register_mod->isUnregister()) {
-                $result = $this->unregisterModToMod($register_mod, $module, $content);
+                PHPWS_Error::logIfError($this->unregisterModToMod($register_mod, $module, $content));
             }
         }
     }
@@ -858,14 +859,13 @@ class PHPWS_Boost {
         $content[] = dgettext('boost', 'Registering other modules to this module.');
 
         $modules = PHPWS_Boost::getInstalledModules();
-
         if (!is_array($modules)) {
             return;
         }
 
         foreach ($modules as $register_mod){
             $register_mod->init();
-            $result = $this->registerModToMod($module, $register_mod, $content);
+            PHPWS_Error::logIfError($this->registerModToMod($module, $register_mod, $content));
         }
     }
 
@@ -883,14 +883,14 @@ class PHPWS_Boost {
 
         foreach ($modules as $register_mod){
             $register_mod->init();
-            $result = $this->unregisterModToMod($module, $register_mod, $content);
+            PHPWS_Error::logIfError($this->unregisterModToMod($module, $register_mod, $content));
         }
     }
 
     function unregisterAll($module)
     {
         $db = new PHPWS_DB('registered');
-        $db->addWhere('registered', $module->title);
+        $db->addWhere('registered_to', $module->title);
         $db->addWhere('module', $module->title, '=', 'or');
         return $db->delete();
     }

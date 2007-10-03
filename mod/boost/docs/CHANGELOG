@@ -1,5 +1,11 @@
 Version 2.2.0
 -----------------------------------------------------
+3 October 2007
++ Removed registered variable from Boost as it doesn't register
+  modules to itself.
++ Added more error logging.
++ Changed Boost to conform with Core 1.6.3 registration change.
+
 26 September 2007
 + Boost now checks all branch directories before allowing updates.
 + Boost will not allow installation if directories are not set.
