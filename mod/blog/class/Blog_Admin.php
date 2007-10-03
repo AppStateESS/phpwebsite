@@ -340,6 +340,12 @@ class Blog_Admin {
 
         if (isset($_POST['simple_image'])) {
             PHPWS_Settings::set('blog', 'simple_image', 1);
+            if (isset($_POST['mod_folders_only'])) {
+                PHPWS_Settings::set('blog', 'mod_folders_only', 1);
+            } else {
+                PHPWS_Settings::set('blog', 'mod_folders_only', 0);
+            }
+
             if ( !empty($_POST['max_width']) ) {
                 $max_width = (int)$_POST['max_width'];
                 if ($max_width >= 50 && $max_width <= 2048 ) {

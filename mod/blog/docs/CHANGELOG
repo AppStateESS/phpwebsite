@@ -1,5 +1,10 @@
 Version 1.6.1
 ----------------------------------------------------------------
+3 October 2007
++ Added new file cabinet options for only showing module specific
+  folders.
++ Updated: templates/settings.tpl
+
 1 October 2007
 + Added loadClass to getEntries to prevent loading Blog class until needed.
 

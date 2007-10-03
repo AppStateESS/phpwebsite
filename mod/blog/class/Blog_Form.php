@@ -65,7 +65,8 @@ class Blog_Form {
                 PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
                 $manager = Cabinet::imageManager($blog->image_id, 'image_id',
                                                  PHPWS_Settings::get('blog', 'max_width'),
-                                                 PHPWS_Settings::get('blog', 'max_height'));
+                                                 PHPWS_Settings::get('blog', 'max_height'),
+                                                 PHPWS_Settings::get('blog', 'mod_folders_only'));
                 if ($manager) {
                     $form->addTplTag('IMAGE_MANAGER', $manager->get());
                     $form->addTplTag('IMAGE_LABEL', dgettext('blog', 'Image'));
@@ -141,6 +142,10 @@ class Blog_Form {
         $form->addCheck('simple_image', 1);
         $form->setLabel('simple_image', dgettext('blog', 'Use Image Manager'));
         $form->setMatch('simple_image', PHPWS_Settings::get('blog', 'simple_image'));
+
+        $form->addCheck('mod_folders_only', 1);
+        $form->setLabel('mod_folders_only', dgettext('blog', 'Hide general image folders'));
+        $form->setMatch('mod_folders_only', PHPWS_Settings::get('blog', 'mod_folders_only'));
 
         $form->addCheck('home_page_display', 1);
         $form->setLabel('home_page_display', dgettext('blog', 'Show blog on home page'));

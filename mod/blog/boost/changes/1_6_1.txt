@@ -5,3 +5,5 @@
 + Blog resets cache on entry post or deletion.
 + Approval tab no longer appears during restricted access.
 + Added Vietnamese translation.
++ New setting allows only showing image folders created specifically
+  in Blog.

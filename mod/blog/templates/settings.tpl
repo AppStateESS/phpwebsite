@@ -55,8 +55,9 @@
    </tr>
 </table>
 <fieldset><legend>{SIMPLE_IMAGE} {SIMPLE_IMAGE_LABEL}</legend>
-{MAX_WIDTH_LABEL} {MAX_WIDTH}<br /><br />
-{MAX_HEIGHT_LABEL} {MAX_HEIGHT}
+<p>{MOD_FOLDERS_ONLY} {MOD_FOLDERS_ONLY_LABEL}</p>
+<p>{MAX_WIDTH_LABEL} {MAX_WIDTH}</p>
+<p>{MAX_HEIGHT_LABEL} {MAX_HEIGHT}</p>
 </fieldset>
 {SUBMIT}
 {END_FORM}

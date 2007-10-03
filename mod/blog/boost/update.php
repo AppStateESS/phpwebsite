@@ -175,7 +175,9 @@ function blog_update(&$content, $currentVersion)
 
     case version_compare($currentVersion, '1.6.1', '<'):
         $content[] = '<pre>';
-
+        
+        blogUpdateFiles(array('templates/settings.tpl'), $content);
+        
         if (!PHPWS_Boost::inBranch()) {
             $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/blog/boost/changes/1_6_1.txt');
         }
