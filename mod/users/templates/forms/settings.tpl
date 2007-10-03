@@ -35,6 +35,11 @@
     <td>{USER_MENU}
     </td>
   </tr>
+  <tr>
+    <td>{FORBIDDEN_USERNAMES_LABEL}</td>
+    <td>{FORBIDDEN_USERNAMES}
+    </td>
+  </tr>
 </table>
 <br />
 {SUBMIT}

@@ -790,6 +790,9 @@ class User_Form {
         $form->setMatch('allow_remember', PHPWS_Settings::get('users', 'allow_remember'));
         $form->setLabel('allow_remember', dgettext('users', 'Allow Remember Me'));
 
+        $form->addTextArea('forbidden_usernames', PHPWS_Settings::get('users', 'forbidden_usernames'));
+        $form->setLabel('forbidden_usernames', dgettext('users', 'Forbidden usernames (one per line)'));
+
         $template = $form->getTemplate();
 
         $vars['action'] = 'admin';

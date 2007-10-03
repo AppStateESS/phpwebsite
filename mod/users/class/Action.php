@@ -521,6 +521,10 @@ class User_Action {
             $error['USERNAME_ERROR'] = dgettext('users', 'Please try another user name.');
         }
 
+        if (!User_Action::testForbidden($user)) {
+            $user->username = null;
+            $error['USERNAME_ERROR'] = dgettext('users', 'Please try another user name.');
+        }
 
         if (!$user->isUser() || (!empty($_POST['password1']) || !empty($_POST['password2']))){
             $result = $user->checkPassword($_POST['password1'], $_POST['password2']);
@@ -1088,6 +1092,7 @@ class User_Action {
         }
 
         $settings['user_menu'] = $_POST['user_menu'];
+        $settings['forbidden_usernames'] = str_replace(' ', "\n", strtolower(strip_tags($_POST['forbidden_usernames'])));
 
         PHPWS_Settings::set('users', $settings);        
         if ($error) {
@@ -1430,6 +1435,24 @@ class User_Action {
         $db->addWhere('deity', 0);
         $db->addValue('active', $value ? 1 : 0);
         PHPWS_Error::logIfError($db->update());
+    }
+
+    function testForbidden($user)
+    {
+        $forbidden = PHPWS_Settings::get('users', 'forbidden_usernames');
+        if (empty($forbidden)) {
+            return true;
+        }
+
+        $names = explode("\n", $forbidden);
+        foreach ($names as $bad_name) {
+            $bad_name = preg_quote(trim($bad_name));
+            if (preg_match("/$bad_name/i", $user->username)) {
+                return false;
+            }
+        }
+        
+        return true;
     }
 }
 

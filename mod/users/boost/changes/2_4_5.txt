@@ -1,5 +1,6 @@
 2.4.5 changes
 ---------------------------------------------------------------------
++ RFE #1757530 added - admin can set reserved user name list.
 + Added missing ability to activate and deactivate users.
 + Added error page should deactivated user attempt to log in.
 + Added link to settings page that re-registers module permissions.
