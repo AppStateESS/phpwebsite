@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-01 10:32-0400\n"
+"POT-Creation-Date: 2007-10-03 16:05-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,10 +42,6 @@ msgid "%s image"
 msgid_plural "%s images"
 msgstr[0] ""
 msgstr[1] ""
-
-#, php-format
-msgid "%sx%s (limit)"
-msgstr ""
 
 msgid "-- Pick option --"
 msgstr ""
@@ -192,6 +188,9 @@ msgstr ""
 msgid "Create multimedia folder"
 msgstr ""
 
+msgid "Created in"
+msgstr ""
+
 msgid "Current document"
 msgstr ""
 
@@ -242,6 +241,9 @@ msgstr ""
 
 #, php-format
 msgid "Document was %s bytes making it larger than %s byte size limit."
+msgstr ""
+
+msgid "Don't show resized images when viewing folders publicly."
 msgstr ""
 
 msgid "Download"
@@ -314,6 +316,9 @@ msgstr ""
 msgid "Form upload limit"
 msgstr ""
 
+msgid "General"
+msgstr ""
+
 msgid "Go"
 msgstr ""
 
@@ -369,6 +374,9 @@ msgstr ""
 msgid "Link image to web site"
 msgstr ""
 
+msgid "Link to image folder"
+msgstr ""
+
 msgid "Manages images and documents uploaded to your site."
 msgstr ""
 
@@ -382,16 +390,13 @@ msgstr ""
 msgid "Maximum file size"
 msgstr ""
 
-msgid "Maximum height"
+msgid "Maximum image dimension"
 msgstr ""
 
 msgid "Maximum image file size (in bytes)"
 msgstr ""
 
-msgid "Maximum image pixel height"
-msgstr ""
-
-msgid "Maximum image pixel width"
+msgid "Maximum image pixel dimension"
 msgstr ""
 
 msgid "Maximum multimedia file size (in bytes)"
@@ -401,9 +406,6 @@ msgid "Maximum pinned documents shown (0 for all)"
 msgstr ""
 
 msgid "Maximum pinned images shown (0 for all)"
-msgstr ""
-
-msgid "Maximum width"
 msgstr ""
 
 msgid "Missing folder information."
@@ -462,16 +464,13 @@ msgstr ""
 msgid "Public"
 msgstr ""
 
-msgid "Public/Private"
+msgid "Resize image if over"
 msgstr ""
 
 msgid "Rotate image"
 msgstr ""
 
 msgid "Save settings"
-msgstr ""
-
-msgid "Scale down"
 msgstr ""
 
 msgid "Server upload limit"
@@ -507,10 +506,7 @@ msgstr ""
 msgid "The incoming file directory is currently empty."
 msgstr ""
 
-msgid "The max image height must be greater than 50 pixels."
-msgstr ""
-
-msgid "The max image width must be greater than 50 pixels."
+msgid "The max image dimension must be greater than 50 pixels."
 msgstr ""
 
 msgid ""
@@ -533,6 +529,9 @@ msgstr ""
 msgid ""
 "This image is larger than the %s x %s limit. Do you want to resize the image "
 "to fit?"
+msgstr ""
+
+msgid "This is a private folder."
 msgstr ""
 
 msgid "Thumbnail directory not writable."
@@ -601,6 +600,9 @@ msgid "Upload new thumbnail"
 msgstr ""
 
 msgid "Upload thumbnail"
+msgstr ""
+
+msgid "View all images in folder"
 msgstr ""
 
 msgid "View folder"
