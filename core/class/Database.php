@@ -1267,6 +1267,7 @@ class PHPWS_DB {
 
         switch ($type){
         case 'assoc':
+            PHPWS_DB::logDB($sql);
             return $GLOBALS['PHPWS_DB']['connection']->getAssoc($sql, null,null, $mode);
             break;
 
@@ -2298,8 +2299,8 @@ class PHPWS_DB {
 
         foreach ($ar as $v) {
             if ($repl) {
-                $subsql[] = preg_replace("/$tbl(\W)|$tbl$/",
-                                         $GLOBALS['PHPWS_DB']['tbl_prefix'] . $tbl . '\\1', $v);
+                $subsql[] = preg_replace("/([\s\W])$tbl(\W)|([\s\W])$tbl$/",
+                                         '\\1\\3' . $GLOBALS['PHPWS_DB']['tbl_prefix'] . $tbl . '\\2', $v);
                 $repl = false;
             } else {
                 $subsql[] = $v;
