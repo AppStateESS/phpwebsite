@@ -16,7 +16,11 @@
 {EMPTY_MESSAGE}
 {DEFAULT_SUBMIT}
 <br />
-<!-- BEGIN navigation -->
-<div class="align-center">{NAV_BACKWARD}&#160;{NAV_SECTIONS}&#160;{NAV_FORWARD}<br />{NAV_LIMITS}</div>
-<!-- END navigation -->
-{SEARCH_LABEL}{SEARCH}
+<div class="align-center">
+{TOTAL_ROWS}<br />
+{PAGE_LABEL} {PAGES}<br />
+{LIMIT_LABEL} {LIMITS}
+</div>
+<div class="align-right">
+{SEARCH}
+</div>

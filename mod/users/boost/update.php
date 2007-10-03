@@ -147,7 +147,8 @@ timeout INT NOT NULL default 0,
     case version_compare($currentVersion, '2.4.5', '<'):
         $content[] = '<pre>';
 
-        $files = array('conf/error.php', 'conf/languages.php', 'templates/forms/settings.tpl');
+        $files = array('conf/error.php', 'conf/languages.php', 'templates/forms/settings.tpl',
+                       'templates/manager/groups.tpl');
         userUpdateFiles($files, $content);
 
         if (!PHPWS_Boost::inBranch()) {

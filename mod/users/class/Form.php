@@ -269,6 +269,7 @@ class User_Form {
         $pager->addToggle('class="toggle1"');
         $pager->addToggle('class="toggle2"');
         $pager->addWhere('user_id', 0);
+        $pager->setSearch('name');
 
         return $pager->get();
     }

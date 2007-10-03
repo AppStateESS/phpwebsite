@@ -1,5 +1,10 @@
 Version 2.4.5
 --------------------------------------------------------------------
+3 October 2007
++ Added search to groups listing.
++ Added missing pager navigation to groups listing.
++ Updated: templates/manager/groups.tpl
+
 27 September 2007
 + Added missing ability to activate and deactivate users.
 + Added error page should deactivated user attempt to log in.
