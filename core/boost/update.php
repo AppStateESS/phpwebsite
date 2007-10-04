@@ -155,7 +155,7 @@ function core_update(&$content, $version) {
             }
         }
 
-        $files = array('templates/graph.tpl', 'img/ajax-loader.gif', 'conf/error.php');
+        $files = array('templates/graph.tpl', 'img/ajax-loader.gif', 'conf/error.php', 'conf/version.php');
         coreUpdateFiles($files, $content);
         
         if (!PHPWS_Boost::inBranch()) {
