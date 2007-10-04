@@ -1636,6 +1636,10 @@ class PHPWS_DB {
         }
 
         $specs = $this->getColumnInfo($old_name, true);
+        if (empty($specs)) {
+            return PHPWS_Error::get(PHPWS_DB_BAD_COL_NAME, 'core', 'PHPWS_DB::renameTableColumn', $old_name);
+        }
+
         $sql = $GLOBALS['PHPWS_DB']['lib']->renameColumn($table, $old_name, $new_name, $specs);
 
         return $this->query($sql, false);
