@@ -1,5 +1,8 @@
 1.6.3 changes
 -----------------------------------------------------------------------
++ Updated Pear DB class.
++ Added modifier to query function that disables table prefixing.
++ Fixed renameTableColumn double prefixing bug.
 + Renamed registered column in registered table to
   registered_to. Columns with the same name as the table don't work
   with table prefixing. Changed in update.php.
