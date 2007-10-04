@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-15 10:21-0500\n"
+"POT-Creation-Date: 2007-10-04 14:59-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -103,6 +103,9 @@ msgstr ""
 msgid "Nothing found"
 msgstr ""
 
+msgid "Save settings"
+msgstr ""
+
 msgid "Search"
 msgstr ""
 
@@ -112,10 +115,22 @@ msgstr ""
 msgid "Search Results"
 msgstr ""
 
+msgid "Search Settings"
+msgstr ""
+
 msgid "Search for:"
 msgstr ""
 
 msgid "Search location"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Settings saved"
+msgstr ""
+
+msgid "Show alternate options"
 msgstr ""
 
 msgid "Success"
