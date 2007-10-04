@@ -181,14 +181,16 @@ class PHPWS_DB {
         PHPWS_Core::log($sql, 'db.log');
     }
 
-    function query($sql)
+    function query($sql, $prefix=true)
     {
         if (isset($this) && !empty($this->_test_mode)) {
             exit($sql);
         }
 
         PHPWS_DB::touchDB();
-        $sql = PHPWS_DB::prefixQuery($sql);
+        if ($prefix) {
+            $sql = PHPWS_DB::prefixQuery($sql);
+        }
 
         PHPWS_DB::logDB($sql);
         return $GLOBALS['PHPWS_DB']['connection']->query($sql);
@@ -1624,6 +1626,7 @@ class PHPWS_DB {
      * Renames a table column
      * Because databases disagree on their commands to change column
      * names, this function requires different factory files.
+     * Factory files must handle the prefixing.
      */
     function renameTableColumn($old_name, $new_name)
     {
@@ -1634,7 +1637,8 @@ class PHPWS_DB {
 
         $specs = $this->getColumnInfo($old_name, true);
         $sql = $GLOBALS['PHPWS_DB']['lib']->renameColumn($table, $old_name, $new_name, $specs);
-        return $this->query($sql);
+
+        return $this->query($sql, false);
     }
 
     /**
@@ -2272,7 +2276,7 @@ class PHPWS_DB {
      */
     function prefixQuery($sql)
     {
-        if (empty($GLOBALS['PHPWS_DB']['tbl_prefix'])) {
+        if (!$GLOBALS['PHPWS_DB']['tbl_prefix']) {
             return $sql;
         }
         $tables = PHPWS_DB::pullTables($sql);
