@@ -94,22 +94,6 @@ define('PHPWS_GD_ERROR',              -809);
 define('PHPWS_FILE_NOT_WRITABLE',     -810);
 define('PHPWS_FILE_NO_COPY',          -811);
 
-
-/******** Image.php & Document.php ********/
-define('PHPWS_FILENAME_NOT_SET',      -900);
-define('PHPWS_DIRECTORY_NOT_SET',     -901);
-define('PHPWS_BOUND_FAILED',          -902);
-define('PHPWS_IMG_SIZE',              -903);
-define('PHPWS_IMG_HEIGHT',            -904);
-define('PHPWS_IMG_WIDTH',             -905);
-define('PHPWS_IMG_WRONG_TYPE',        -906);
-define('PHPWS_IMG_NOT_FOUND',         -907);
-define('PHPWS_DOCUMENT_SIZE',         -908);
-define('PHPWS_DOCUMENT_WRONG_TYPE',   -909);
-define('PHPWS_DOCUMENT_NOT_FOUND',    -910);
-define('PHPWS_NO_UPLOAD',             -911);
-
-
 /*************** Text.php *****************/
 define('PHPWS_TEXT_NOT_STRING',       -1000);
 
