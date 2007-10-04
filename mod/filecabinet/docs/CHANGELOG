@@ -1,5 +1,8 @@
 Version 1.3.0
 ---------------------------------------------------------------------
+4 October 2007
++ Fixed problems with presizing images.
+
 3 October 2007
 + Added module_created column to folders table to track which module
   made the folder.

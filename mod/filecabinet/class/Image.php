@@ -54,8 +54,8 @@ class PHPWS_Image extends File_Common {
     function PHPWS_Image($id=NULL)
     {
         $this->loadAllowedTypes();
-        $this->setMaxWidth(PHPWS_Settings::get('filecabinet', 'max_image_width'));
-        $this->setMaxHeight(PHPWS_Settings::get('filecabinet', 'max_image_height'));
+        $this->setMaxWidth(PHPWS_Settings::get('filecabinet', 'max_image_dimension'));
+        $this->setMaxHeight(PHPWS_Settings::get('filecabinet', 'max_image_dimension'));
         $this->setMaxSize(PHPWS_Settings::get('filecabinet', 'max_image_size'));
 
         if (empty($id)) {
