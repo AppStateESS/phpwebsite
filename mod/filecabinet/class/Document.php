@@ -163,7 +163,7 @@ class PHPWS_Document extends File_Common {
         $tpl['ICON']      = $this->getViewLink(true, 'smallicon');
         $tpl['TITLE']     = $this->title;
 
-        if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id)) {
+        if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
             $vars['document_id'] = $this->id;
             $vars['aop'] = 'upload_document_form';
             $js['address'] = PHPWS_Text::linkAddress('filecabinet', $vars, true);

@@ -351,7 +351,7 @@ class PHPWS_Image extends File_Common {
     }
 
 
-    function deleteLink()
+    function deleteLink($icon=false)
     {
         $vars['aop'] = 'delete_image';
         $vars['image_id'] = $this->id;
@@ -359,7 +359,12 @@ class PHPWS_Image extends File_Common {
 
         $js['QUESTION'] = dgettext('filecabinet', 'Are you sure you want to delete this image?');
         $js['ADDRESS']  = PHPWS_Text::linkAddress('filecabinet', $vars, true);
-        $js['LINK']     = dgettext('filecabinet', 'Delete');
+
+        if ($icon) {
+            $js['LINK'] = '<img src="images/mod/filecabinet/delete.png" />';
+        } else {
+            $js['LINK'] = dgettext('filecabinet', 'Delete');
+        }
         return javascript('confirm', $js);
     }
 
@@ -367,11 +372,11 @@ class PHPWS_Image extends File_Common {
     {
         if (Current_User::isLogged()) {
             $links[] = PHPWS_Text::secureLink(dgettext('filecabinet', 'Clip'), 'filecabinet',
-                                              array('aop'=>'clip_image',
+                                              array('aop'      => 'clip_image',
                                                     'image_id' => $this->id));
         }
 
-        if (Current_User::allow('filecabinet', 'edit_folder', $this->folder_id)) {
+        if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
             $links[] = $this->editLink();
             $links[] = $this->deleteLink();
         }

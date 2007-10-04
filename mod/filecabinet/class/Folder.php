@@ -374,20 +374,25 @@ class Folder {
         $tpl['TITLE'] = PHPWS_Text::moduleLink($this->title, 'filecabinet', $vars);
         $tpl['ITEMS'] = $this->tallyItems();
 
-        if (Current_User::allow('filecabinet', 'edit_folders', $this->id)) {
+        if (Current_User::allow('filecabinet', 'edit_folders', $this->id, 'folder')) {
             $links[] = $this->editLink();
-            if ($this->ftype == IMAGE_FOLDER) {
-                $links[] = $this->imageUploadLink();
-            } elseif ($this->ftype == DOCUMENT_FOLDER) {
-                $links[] = $this->documentUploadLink();
-            } else {
-                $links[] = $this->multimediaUploadLink();
-            }
+        }
 
+        if ($this->ftype == IMAGE_FOLDER) {
+            $links[] = $this->imageUploadLink();
+        } elseif ($this->ftype == DOCUMENT_FOLDER) {
+            $links[] = $this->documentUploadLink();
+        } else {
+            $links[] = $this->multimediaUploadLink();
+        }
+
+        if (Current_User::allow('filecabinet', 'edit_folders', $this->id, 'folder', true)) {
             if ($this->key_id) {
                 $links[] =  Current_User::popupPermission($this->key_id);
             }
+        }
 
+        if (Current_User::allow('filecabinet', 'delete_folders', null, null, true)) {
             $links[] = $this->deleteLink();
         }
 

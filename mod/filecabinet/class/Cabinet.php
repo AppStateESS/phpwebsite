@@ -167,7 +167,7 @@ class Cabinet {
             break;
 
         case 'delete_folder':
-            if (!Current_User::authorized('filecabinet', 'delete_folders')) {
+            if (!Current_User::authorized('filecabinet', 'delete_folders', null, null, true)) {
                 Current_User::disallow();
             }
             $this->loadFolder();
@@ -177,7 +177,7 @@ class Cabinet {
 
         case 'delete_document':
             $this->loadDocumentManager();
-            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->document_mgr->document->folder_id)) {
+            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->document_mgr->document->folder_id, 'folder')) {
                 Current_User::disallow();
             }
 
@@ -187,7 +187,7 @@ class Cabinet {
 
         case 'delete_image':
             $this->loadImageManager();
-            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->image_mgr->image->folder_id)) {
+            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->image_mgr->image->folder_id, 'folder')) {
                 Current_User::disallow();
             }
             $this->image_mgr->image->delete();
@@ -202,7 +202,7 @@ class Cabinet {
 
         case 'delete_multimedia':
             $this->loadMultimediaManager();
-            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->multimedia_mgr->multimedia->folder_id)) {
+            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->multimedia_mgr->multimedia->folder_id, 'folder')) {
                 Current_User::disallow();
             }
             $this->multimedia_mgr->multimedia->delete();
@@ -252,7 +252,7 @@ class Cabinet {
         case 'post_document_upload':
             $javascript = true;
             $this->loadDocumentManager();
-            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->document_mgr->document->folder_id)) {
+            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->document_mgr->document->folder_id, 'folder')) {
                 Current_User::disallow();
             }
             $this->document_mgr->postDocumentUpload();
@@ -261,7 +261,7 @@ class Cabinet {
         case 'post_image_upload':
             $javascript = true;
             $this->loadImageManager();
-            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->image_mgr->image->folder_id)) {
+            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->image_mgr->image->folder_id, 'folder')) {
                 Current_User::disallow();
             }
 
@@ -271,7 +271,7 @@ class Cabinet {
         case 'post_multimedia_upload':
             $javascript = true;
             $this->loadMultimediaManager();
-            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->multimedia_mgr->multimedia->folder_id)) {
+            if (!Current_User::authorized('filecabinet', 'edit_folders', $this->multimedia_mgr->multimedia->folder_id, 'folder')) {
                 Current_User::disallow();
             }
             $this->multimedia_mgr->postMultimediaUpload();
@@ -480,7 +480,7 @@ class Cabinet {
 
     function editFolder()
     {
-        if (!Current_User::allow('filecabinet', 'edit_folders', $this->folder->id)) {
+        if (!Current_User::allow('filecabinet', 'edit_folders', $this->folder->id, 'folder')) {
             Current_User::disallow();
         }
 

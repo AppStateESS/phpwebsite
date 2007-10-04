@@ -2,6 +2,9 @@ Version 1.3.0
 ---------------------------------------------------------------------
 4 October 2007
 + Fixed problems with presizing images.
++ Fixed permissioning problems with folders.
++ Added delete image option to image viewer.
++ Updated: templates/manager/pick.tpl, templates/style.css
 
 3 October 2007
 + Added module_created column to folders table to track which module
@@ -19,7 +22,6 @@ Version 1.3.0
 + Images can be made to link to their folder.
 + Clip link won't show for anonymous users viewing a folder.
 + Added code to pick_image to prevent it from being called statically.
-
 + Updated: javascript/pick_image/head.js, templates/folder_list.tpl,
            templates/settings.tpl, templates/style.css
 

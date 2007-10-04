@@ -1,5 +1,8 @@
 1.3.0 changes
 ---------------------------------------------------------------------
++ Fixed problems with presizing images.
++ Fixed permissioning problems with folders.
++ Added delete image option to image viewer.
 + Added module_created column to folders table to track which module
   made the folder.
 + Fifth parameter added to Cabinet::imageManager function. If true,

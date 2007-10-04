@@ -240,7 +240,8 @@ Example: mkdir phpwebsite/files/filecabinet/incoming/</pre>';
                        'templates/filters/flash.tpl', 'templates/file_list.tpl',
                        'templates/multimedia_edit.tpl', 'templates/settings.tpl',
                        'templates/style.css', 'templates/thumbnail.tpl', 'templates/image_edit.tpl',
-                       'javascript/pick_image/head.js', 'templates/folder_list.tpl');
+                       'javascript/pick_image/head.js', 'templates/folder_list.tpl',
+                       'templates/manager/pick.tpl', 'img/delete.png');
 
         fc_updatefiles($files, $content);
         if (!PHPWS_Boost::inBranch()) {

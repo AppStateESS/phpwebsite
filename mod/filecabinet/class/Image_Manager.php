@@ -111,7 +111,10 @@ class FC_Image_Manager {
                                                     $image->id, $image_url, addslashes($image->title), $image->width, $image->height, $image->getThumbnail());
                     }
 
-                    $tpl['EDIT'] = $image->editLink(true);
+                    if (Current_User::allow('filecabinet', 'edit_folders', $folder->id, 'folder')) {
+                        $tpl['DELETE']    = $image->deleteLink(true);
+                        $tpl['EDIT']      = $image->editLink(true);
+                    }
 
                     $tpl['TITLE']     = $image->title;
                     $tpl['VIEW']      = $image->getJSView();
@@ -562,7 +565,7 @@ class FC_Image_Manager {
             $tpl['ADD_FOLDER'] = sprintf('<input id="add-folder" type="button" name="add_folder" value="%s" onclick="%s" />', dgettext('filecabinet', 'Add folder'), $folder_window);
         }
 
-        if (Current_User::allow('filecabinet', 'edit_folders', $folder->id)) {
+        if (Current_User::allow('filecabinet', 'edit_folders', $folder->id, 'folder')) {
             $address = PHPWS_Text::linkAddress('filecabinet', array('aop'=>'upload_image_form', 'im'=>1, 'folder_id'=>$folder->id), true);
             $image_window = sprintf("javascript:open_window('%s', %s, %s, 'new_image'); return false", $address, 600, 550);
             $image_button = sprintf('<input id="add-image" type="button" name="add_image" value="%s" onclick="%s" />', dgettext('filecabinet', 'Add image'), $image_window);

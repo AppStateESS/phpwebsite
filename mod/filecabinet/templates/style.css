@@ -51,12 +51,6 @@ div.tn-image-block {
      background-repeat : no-repeat;
 }
 
-div.dimensions {
-     font-size : .8em;
-     position : relative;
-     bottom : 2px;
-}
-
 #image-manager-list {
 margin-top : 20px;
 }
@@ -161,6 +155,7 @@ padding : 2px 3px 1px 3px;
 ul#image-list li p.dimensions {
 text-align : center;
 font-size : .9em;
+margin : 0px;
 }
 
 li.image-select {

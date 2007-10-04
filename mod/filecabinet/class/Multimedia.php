@@ -114,7 +114,7 @@ class PHPWS_Multimedia extends File_Common {
                                           array('aop'=>'clip_multimedia',
                                                 'multimedia_id' => $this->id));
         
-        if (Current_User::allow('filecabinet', 'edit_folder', $this->folder_id)) {
+        if (Current_User::allow('filecabinet', 'edit_folders', $this->folder_id, 'folder')) {
             $links[] = $this->editLink();
             $links[] = $this->deleteLink();
         }

@@ -35,7 +35,7 @@ class Cabinet_Form {
                 }
 
             } else {
-                if (Current_User::allow('filecabinet', 'edit_folders', null, null, true)) {
+                if (Current_User::allow('filecabinet', 'edit_folders')) {
                     $links[] = $folder->editLink();
                     $pagetags['ADMIN_LINKS'] = implode(' | ', $links);
                 }
@@ -220,7 +220,7 @@ class Cabinet_Form {
             $limits[25] = 25;
         }
 
-        if (Current_User::allow('filecabinet', 'edit_folders', $folder->id)) {
+        if (Current_User::allow('filecabinet', 'edit_folders', $folder->id, 'folder')) {
             $links[] = $folder->uploadLink();
             $links[] = $folder->editLink();
         }
