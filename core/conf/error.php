@@ -90,22 +90,6 @@ $errors[PHPWS_GD_ERROR]               = _('GD image libraries do not support thi
 $errors[PHPWS_FILE_NOT_WRITABLE]      = _('File not writable.');
 $errors[PHPWS_FILE_NO_COPY]           = _('Unable to copy file.');
 
-// Image.php and Document.php 900 - 999
-$errors[PHPWS_FILENAME_NOT_SET]       = _('Filename not set.');
-$errors[PHPWS_DIRECTORY_NOT_SET]      = _('Directory not set.');
-$errors[PHPWS_BOUND_FAILED]           = _('There was a problem loading the image file.');
-$errors[PHPWS_IMG_SIZE]               = _('Image was %sK making it larger than %sK size limit.');
-$errors[PHPWS_IMG_WIDTH]              = _('Image width was %spx, making it larger than %d pixel limit.');
-$errors[PHPWS_IMG_HEIGHT]             = _('Image height was %spx, making it larger than %d pixel limit.');
-$errors[PHPWS_IMG_WRONG_TYPE]         = _('Unacceptable image type.');
-$errors[PHPWS_IMG_NOT_FOUND]          = _('Image not found');
-$errors[PHPWS_DOCUMENT_SIZE]          = _('Document was %sK making it larger than %sK size limit.');
-$errors[PHPWS_DOCUMENT_WRONG_TYPE]    = _('Unacceptable document type.');
-$errors[PHPWS_DOCUMENT_NOT_FOUND]     = _('Document not found.');
-$errors[PHPWS_NO_UPLOAD]              = _('File not uploaded.');
-
-
-
 // Text.php 1000-1099
 $errors[PHPWS_TEXT_NOT_STRING]        = _('Function expected a string variable.');
 
