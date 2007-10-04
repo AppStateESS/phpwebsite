@@ -14,7 +14,7 @@ Look below that for FCKConfig.SpellChecker. Again, if you can't get
 the script to work, you can comment this out.
 
 Now look in:
-javascript/editors/FCKeditor/editor/dialog/fck_spellerpages/spellerpages/server-scripts/spellchecker.php
+javascript/editors/fckeditor/editor/dialog/fck_spellerpages/spellerpages/server-scripts/spellchecker.php
 
 This file comes from FCKeditor so we can't offer a default version (it
 would get overwritten when you unzip FCK).
