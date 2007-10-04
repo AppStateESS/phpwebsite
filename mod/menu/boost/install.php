@@ -10,7 +10,7 @@ function menu_install(&$content)
     PHPWS_Core::initModClass('menu', 'Menu_Item.php');
     $menu = new Menu_Item;
     $menu->title = dgettext('menu', 'Main menu');
-    $menu->template = 'basic.tpl';
+    $menu->template = 'basic';
     $menu->pin_all = 1;
     $result = $menu->save();
     if (PEAR::isError($result)) {

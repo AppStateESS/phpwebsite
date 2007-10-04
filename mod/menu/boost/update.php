@@ -101,6 +101,15 @@ Please download 1.2.1.</pre>';
     case version_compare($currentVersion, '1.4.2', '<'):
         $content[] = '<pre>';
         
+        $db = new PHPWS_DB('menus');
+        $db->addWhere('template', 'basic.tpl');
+        $db->addValue('template', 'basic');
+        if (PHPWS_Error::logIfError($db->update())) {
+            $content[] = '--- Failed to update menus table.';
+        } else {
+            $content[] = '--- Updated menu table with correct template directory.';
+        }
+
         $files = array('templates/admin/settings.tpl');
         menuUpdateFiles($files, $content);
         if (!PHPWS_Boost::inBranch()) {

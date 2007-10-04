@@ -356,11 +356,11 @@ class Menu_Item {
         }
 
         $tpl_dir = PHPWS_Template::getTemplateDirectory('menu');
-
         $edit = FALSE;
         $file = 'menu_layout/' . $this->template . '/menu.tpl';
+
         if (!is_file($tpl_dir . $file)) {
-            PHPWS_Error::log(MENU_MISSING_TPL, 'menu', 'Menu_Item::view', $file);
+            PHPWS_Error::log(MENU_MISSING_TPL, 'menu', 'Menu_Item::view', $tpl_dir . $file);
             return false;
         }
 

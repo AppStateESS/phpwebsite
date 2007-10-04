@@ -7,3 +7,4 @@
   under the menu.
 + Added option to automatically add a Home link to a new menu.
 + Added loadClass functions to reduce memory.
++ Fixed bug with disappearing menus from previous update.
