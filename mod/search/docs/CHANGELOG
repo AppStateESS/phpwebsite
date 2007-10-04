@@ -1,5 +1,9 @@
 Version 0.3.0
 -----------------------------------------------------------------------
+4 October 2007
++ Added settings tab to control alternate display options.
++ Updated: templates/settings.tpl
+
 27 September 2007
 + Added ability to put search radio buttons on search bar.
 + Updated: templates/search_box.tpl

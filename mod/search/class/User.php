@@ -43,7 +43,9 @@ class Search_User {
         $form->addText('search', SEARCH_DEFAULT);
         $form->setLabel('search', dgettext('search', 'Search'));
         
-        Search_User::addAlternates($form);
+        if (PHPWS_Settings::get('search', 'show_alternates')) {
+            Search_User::addAlternates($form);
+        }
 
         if (isset($onclick)) {
             $form->setExtra('search', $onclick);

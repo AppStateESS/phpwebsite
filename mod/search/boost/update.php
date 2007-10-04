@@ -63,7 +63,7 @@ function search_update(&$content, $currentVersion)
 
     case version_compare($currentVersion, '0.3.0', '<'):
         $content[] = '<pre>';
-        searchUpdateFiles(array('templates/search_box.tpl'), $content);
+        searchUpdateFiles(array('templates/search_box.tpl', 'templates/settings.tpl'), $content);
         $content[] = '0.3.0 changes
 -------------
 + Added ability to put search radio buttons on search bar.

@@ -46,6 +46,10 @@ class Search_Admin {
             $template = Search_Admin::ignore();
             break;
 
+        case 'settings':
+            $template = Search_Admin::settings();
+            break;
+
         case 'close_admin':
             unset($_SESSION['Search_Add_Words']);
             unset($_SESSION['Search_Admin']);
@@ -74,7 +78,6 @@ class Search_Admin {
             }
             PHPWS_Core::goBack();
             break;
-
 
         case 'add_keyword':
             if (!isset($_GET['kw']) || !isset($_GET['key_id'])) {
@@ -110,6 +113,10 @@ class Search_Admin {
             PHPWS_Core::goBack();
             break;
 
+        case 'save_settings':
+            Search_Admin::saveSettings();
+            Search_Admin::sendMessage(dgettext('search', 'Settings saved'), 'settings');
+            break;
         }
 
         $template['MESSAGE'] = Search_Admin::getMessage();
@@ -224,6 +231,26 @@ class Search_Admin {
         $content = PHPWS_Template::process($tpl, 'search', 'mini_menu.tpl');
 
         Layout::add($content, 'search', 'admin_box');
+    }
+
+    function settings()
+    {
+        $main['TITLE'] = dgettext('search', 'Search Settings');
+
+        $form = new PHPWS_Form('settings');
+        $form->addHidden('module', 'search');
+        $form->addHidden('command', 'save_settings');
+
+        $form->addCheckBox('show_alternates');
+        $form->setLabel('show_alternates', dgettext('search', 'Show alternate options'));
+        $form->setMatch('show_alternates', PHPWS_Settings::get('search', 'show_alternates'));
+
+        $form->addSubmit(dgettext('search', 'Save settings'));
+
+        $tpl = $form->getTemplate();
+
+        $main['CONTENT'] = PHPWS_Template::process($tpl, 'search', 'settings.tpl');
+        return $main;
     }
 
     function keyword()
@@ -341,8 +368,9 @@ class Search_Admin {
     {
         PHPWS_Core::initModClass('controlpanel', 'Panel.php');
         $link = 'index.php?module=search';
-        $tab['keyword'] = array ('title'=>dgettext('search', 'Keywords'), 'link'=> $link);
-        $tab['ignore'] = array ('title'=>dgettext('search', 'Ignore'), 'link'=> $link);
+        $tab['keyword']  = array ('title'=>dgettext('search', 'Keywords'), 'link'=> $link);
+        $tab['ignore']   = array ('title'=>dgettext('search', 'Ignore'), 'link'=> $link);
+        $tab['settings'] = array ('title'=>dgettext('search', 'Settings'), 'link'=> $link);
 
         $panel = new PHPWS_Panel('search');
         $panel->quickSetTabs($tab);
@@ -367,6 +395,16 @@ class Search_Admin {
         return true;
     }
 
+    function saveSettings()
+    {
+        if (isset($_POST['show_alternates'])) {
+            PHPWS_Settings::set('search', 'show_alternates', 1);
+        } else {
+            PHPWS_Settings::set('search', 'show_alternates', 0);
+        }
+
+        PHPWS_Settings::save('search');
+    }
 }
 
 ?>
