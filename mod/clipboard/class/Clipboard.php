@@ -72,9 +72,11 @@ class Clipboard
         foreach ($_SESSION['Clipboard']->components as $key => $component){
             $clipVars['key'] = $key;
             $drop = PHPWS_Text::moduleLink(CLIPBOARD_DROP_LINK, 'clipboard', $clipVars);
-            $data['address'] = 'index.php?module=clipboard&action=showclip&key=' . $key;
-            $data['label'] = $component->title;
-            $data['height'] = 200;
+            $data['address']     = 'index.php?module=clipboard&action=showclip&key=' . $key;
+            $data['label']       = $component->title;
+            $data['width']       = 300;
+            $data['height']      = 200;
+            $data['window_name'] = 'clipboard-' . $component->title;
             $content[] = Layout::getJavascript('open_window', $data) . ' ' . $drop;
         }
 
