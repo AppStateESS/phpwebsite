@@ -1,0 +1,8 @@
+Version 1.0.3
+-----------------------------------------------------------------
++ Added SmartTag to page display.
++ Fixed section listing to allow a single section template
++ Added an edit link to page views beside miniadmin
++ PageSmith gives a warning if you exceed the character limit.
++ Option for PageSmith to ignore the character limit.
++ Added text_only page template.

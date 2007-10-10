@@ -11,6 +11,11 @@ if (!defined('PS_ALLOWED_HEADER_TAGS')) {
     define('PS_ALLOWED_HEADER_TAGS', '<b><strong><i><u><em>');
 }
 
+if (!defined('PS_CHECK_CHAR_LENGTH')) {
+    define('PS_CHECK_CHAR_LENGTH', true);
+}
+
+
 class PageSmith {
     var $forms   = null;
     var $panel   = null;
@@ -185,7 +190,13 @@ class PageSmith {
             $this->page->title = dgettext('pagesmith', '(Untitled)');
         }
 
-        foreach ($_POST['sections'] as $section_name) {
+        if (!is_array($_POST['sections'])) {
+            $section_list[] = $_POST['sections'];
+        } else {
+            $section_list = & $_POST['sections'];
+        }
+
+        foreach ($section_list as $section_name) {
             $section = & $this->page->_sections[$section_name];
             if ($section->sectype != 'image') {
                 $section->content = $_POST[$section_name];
@@ -230,7 +241,11 @@ class PageSmith {
             $this->loadPage();
         }
         if ($this->page->id) {
-            Layout::add($this->page->view());
+            $content = $this->page->view();
+            if (Current_User::allow('pagesmith', 'edit_page', $this->page->id)) {
+                $content .= sprintf('<p class="pagesmith-edit">%s</p>', $this->page->editLink());
+            }
+            Layout::add($content);
         } else {
             PHPWS_Core::errorPage('404');
         }
@@ -262,20 +277,26 @@ class PageSmith {
 
     function postText()
     {
+        $warning = null;
         PHPWS_Core::initModClass('pagesmith', 'PS_Text.php');
         $text = & $_POST['text'];
 
         $section = new PS_Text;
         $section->secname = $_POST['section_name'];
         $section->content =  preg_replace("@\r\n|\r|\n@", '', $text);
+        if (PS_CHECK_CHAR_LENGTH && strlen($section->content) > 65535) {
+            $warning = dgettext('pagesmith', "You have exceeded the allowed character limit. The page will not save correctly. Click ok to save the text anyway, cancel to return to previous version.");
+        }
         $section->setSaved();
 
         $vars['cnt_section_name'] = $_POST['tpl'] . '-' . $_POST['section_name'];
         $vars['hdn_section_name'] = sprintf('pagesmith_%s', $_POST['section_name']);
         $vars['content'] = addslashes($section->content);
         $vars['hidden_value'] = PHPWS_Text::parseInput($section->content);
-
-        Layout::nakedDisplay(javascript('modules/pagesmith/update', $vars));
+        if ($warning) {
+            $vars['warning'] = addslashes($warning);
+        }
+        Layout::nakedDisplay( javascript('modules/pagesmith/update', $vars));
     }
 
 }

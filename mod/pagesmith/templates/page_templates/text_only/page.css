@@ -1,0 +1,10 @@
+div#text-only-page {
+   background-color : white;
+   color : inherit;
+   padding : 10px;
+   overflow : hidden;
+}
+
+div#text-only-page h1 {
+   margin-bottom : 1em;
+}

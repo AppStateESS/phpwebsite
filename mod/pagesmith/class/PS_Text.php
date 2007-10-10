@@ -68,14 +68,14 @@ class PS_Text extends PS_Section {
         if (empty($this->content)) {
             return null;
         }
-        return PHPWS_Text::parseOutput($this->content);
+        return PHPWS_Text::parseTag(PHPWS_Text::parseOutput($this->content));
     }
 
 
     function save()
     {
         $db = new PHPWS_DB('ps_text');
-        $db->saveObject($this);
+        return $db->saveObject($this);
     }
 
 }

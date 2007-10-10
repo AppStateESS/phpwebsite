@@ -59,6 +59,32 @@ function pagesmith_update(&$content, $currentVersion)
         }
         $content[] = '</pre>';
 
+    case version_compare($currentVersion, '1.0.3', '<'):
+        $content[] = '<pre>';
+
+        $source_dir = PHPWS_SOURCE_DIR . 'mod/pagesmith/templates/page_templates/text_only/';
+        $dest_dir   = $home_dir . 'templates/pagesmith/page_templates/text_only/';
+
+        /*
+        if (!is_dir($dest_dir)) {
+            @mkdir($dest_dir);
+        }
+        */
+        if (PHPWS_File::copy_directory($source_dir, $dest_dir)) {
+            $content[] = "--- Successfully copied $source_dir\n    to $dest_dir\n";
+        } else {
+            $content[] = "--- Failed to copy $source_dir to $dest_dir</pre>";
+            return false;
+        }
+        $files = array('conf/config.php');
+        pagesmithUpdateFiles($files, $content);
+
+        if (!PHPWS_Boost::inBranch()) {
+            $content[] = file_get_contents(PHPWS_SOURCE_DIR . 'mod/pagesmith/boost/changes/1_0_3.txt');
+        }
+        $content[] = '</pre>';
+
+
     } // end switch
 
     return true;
