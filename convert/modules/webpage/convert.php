@@ -236,9 +236,10 @@ function saveSections($sections, $volume_id, $title, $key_id)
             }
         }
 
+        $content = preg_replace('/module=pagemaster(&|&amp;)page_user_op=view_page(&|&amp;)page_id=/i', 'module=webpage&id=', $sec['text']);
+        $content = preg_replace('/&MMN_position=\d+:\d+/', '', $content);
 
-        $page_content[] = preg_replace('/module=pagemaster(&|&amp;)page_user_op=view_page(&|&amp;)page_id=/i', 'module=webpage&id=',
-                                       utf8_encode($sec['text']));
+        $page_content[] = utf8_encode($content);
 
         $pages++;
 

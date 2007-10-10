@@ -2,6 +2,13 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+10 October 2007
++ PageSmith and Web Page conversions remove the old menu suffixes.
++ Added note to freecap CAPTCHA
++ Added random number to open_window window title to allow multiple
+  popups.
+
+
 Version 1.6.3
 -------------------------------------------------------------------
 4 October 2007

@@ -35,7 +35,7 @@ function convert()
     }
 
     $db = Convert::getSourceDB('mod_pagemaster_pages');
-    
+
     $batch = new Batches('convert_pagemaster');
     $total_pages = $db->count();
     if ($total_pages < 1) {
@@ -228,6 +228,7 @@ function saveSections($sections, $id, $title, $key_id)
         }
 
         $content = preg_replace('/module=pagemaster(&|&amp;)page_user_op=view_page(&|&amp;)page_id=/i', 'module=pagesmith&id=', $sec['text']);
+        $content = preg_replace('/&MMN_position=\d+:\d+/', '', $content);
 
         $page_content[] = PHPWS_Text::parseInput(utf8_encode($content));
     }
