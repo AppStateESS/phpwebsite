@@ -1,3 +1,7 @@
+10 October 2007
++ All links without parents were opening when on the home page.
+  Changed code to prevent it.
+
 Version 1.4.2
 ----------------------------------------------------------------
 29 September 2007

@@ -195,8 +195,8 @@ class Menu_Link {
             if ($this->childIsCurrent($current_key)) {
                 $current_parent[] = $this->id;
             }
-
-            if ( (!$current_key->isDummy(true) && $current_key->id == $this->key_id) || ($current_key->url == $this->url) ) {
+           
+            if ( (!$current_key->isDummy() && $current_key->id == $this->key_id) || ($current_key->url == $this->url) ) {
                 $current_link = TRUE;
                 $current_parent[] = $this->id;
                 $template['CURRENT_LINK'] = MENU_CURRENT_LINK_STYLE;
