@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+11 October 2007
++ Small change in Database to allow numerical prefixes.
+
 10 October 2007
 + PageSmith and Web Page conversions remove the old menu suffixes.
 + Added note to freecap CAPTCHA

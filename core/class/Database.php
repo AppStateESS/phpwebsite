@@ -191,8 +191,10 @@ class PHPWS_DB {
         if ($prefix) {
             $sql = PHPWS_DB::prefixQuery($sql);
         }
-
+        echo $sql . '<br><br />';
+        return true;
         PHPWS_DB::logDB($sql);
+
         return $GLOBALS['PHPWS_DB']['connection']->query($sql);
     }
 
@@ -2308,7 +2310,7 @@ class PHPWS_DB {
         foreach ($ar as $v) {
             if ($repl) {
                 $subsql[] = preg_replace("/([\s\W])$tbl(\W)|([\s\W])$tbl$/",
-                                         '\\1\\3' . $GLOBALS['PHPWS_DB']['tbl_prefix'] . $tbl . '\\2', $v);
+                                         '$1${3}' . $GLOBALS['PHPWS_DB']['tbl_prefix'] . $tbl . '$2', $v);
                 $repl = false;
             } else {
                 $subsql[] = $v;
