@@ -191,7 +191,7 @@ class PHPWS_DB {
         if ($prefix) {
             $sql = PHPWS_DB::prefixQuery($sql);
         }
-        echo $sql . '<br><br />';
+
         return true;
         PHPWS_DB::logDB($sql);
 
@@ -1147,7 +1147,10 @@ class PHPWS_DB {
             $columns[] = $index . ' = ' . PHPWS_DB::dbReady($data);
         }
 
-        $query = "UPDATE $table SET " . implode(', ', $columns) ." $where";
+        $limit = $this->getLimit(true);
+        $order = $this->getOrder(true);
+
+        $query = "UPDATE $table SET " . implode(', ', $columns) ." $where $order $limit";
         $result = PHPWS_DB::query($query);
 
         if (DB::isError($result)) {
@@ -1486,11 +1489,13 @@ class PHPWS_DB {
         }
 
         $where = $this->getWhere(true);
+        $limit = $this->getLimit(true);
+        $order = $this->getOrder(true);
 
         if (!empty($where)) {
             $where = 'WHERE ' . $where;
         }
-        $sql = "DELETE FROM $table $where";
+        $sql = "DELETE FROM $table $where $order $limit";
         return PHPWS_DB::query($sql);
     }
   
