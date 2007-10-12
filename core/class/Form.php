@@ -274,6 +274,16 @@ class PHPWS_Form {
         return $this->add($name, 'radio', $value);
     }
 
+    function addRadioAssoc($name, $assoc)
+    {
+        if (!is_array($assoc)) {
+            return false;
+        }
+
+        $this->add($name, 'radio', array_keys($assoc));
+        $this->setLabel($name, array_values($assoc));
+    }
+
     function addCheck($name, $value=1)
     {
         return $this->add($name, 'check', $value);
