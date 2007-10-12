@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<dependency>
+  <module>
+    <title>core</title>
+    <properName>phpWebSite Core</properName>
+    <version>1.6.3</version>
+    <url>http://phpwebsite.appstate.edu/downloads/modules/base/</url>
+  </module>
+  <module>
+    <title>filecabinet</title>
+    <properName>File Cabinet</properName>
+    <version>1.3.0</version>
+    <url>http://phpwebsite.appstate.edu/downloads/modules/filecabinet/</url>
+  </module>
+  <module>
+    <title>rss</title>
+    <properName>RSS</properName>
+    <version>0.2.2</version>
+    <url>http://phpwebsite.appstate.edu/downloads/modules/rss</url>
+  </module>
+</dependency>
