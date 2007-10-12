@@ -192,7 +192,6 @@ class PHPWS_DB {
             $sql = PHPWS_DB::prefixQuery($sql);
         }
 
-        return true;
         PHPWS_DB::logDB($sql);
 
         return $GLOBALS['PHPWS_DB']['connection']->query($sql);
@@ -2052,7 +2051,8 @@ class PHPWS_DB {
      * @param  object $object        Object variable filled with result.
      * @param  object $require_where If true, require a where parameter or
      *                               have the id set
-     * @return boolean               Returns true if plugObject is successful
+     * @return mixed                 Returns true if object properly populated and false otherwise
+     *                               Returns error object if something goes wrong
      * @access public
      */
     function loadObject(&$object, $require_where=true)
@@ -2074,10 +2074,8 @@ class PHPWS_DB {
         if (PEAR::isError($variables)) {
             return $variables;
         } elseif (empty($variables)) {
-            return null;
+            return false;
         }
-
-        $this->requireClasses();
 
         return PHPWS_Core::plugObject($object, $variables);
     }// END FUNC loadObject
