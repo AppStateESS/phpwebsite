@@ -942,11 +942,11 @@ class DBPager {
         }
 
         if (!isset($this->module)) {
-            return PHPWS_Error::get(DBPAGER_MODULE_NOT_SET, 'core', 'DBPager::get()');
+            return PHPWS_Error::get(DBPAGER_MODULE_NOT_SET, 'core', 'DBPager::get');
         }
 
         if (!isset($this->template)) {
-            return PHPWS_Error::get(DBPAGER_TEMPLATE_NOT_SET, 'core', 'DBPager::get()');
+            return PHPWS_Error::get(DBPAGER_TEMPLATE_NOT_SET, 'core', 'DBPager::get');
         }
 
         $rows = $this->getPageRows();
