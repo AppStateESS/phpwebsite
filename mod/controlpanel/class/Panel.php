@@ -172,14 +172,22 @@ class PHPWS_Panel{
         return $result;
     }
 
-    function display()
+    function display($content=null, $title=null, $message=null)
     {
         $itemname   = $this->getItemname();
         $currentTab = $this->getCurrentTab();
         $tabs       = $this->getTabs();
         $panel      = $this->getPanel();
         $module     = $this->getModule();
-        $content    = $this->getContent();
+
+        if (empty($content)) {
+            $content    = $this->getContent();
+        } else {
+            $settpl['TITLE']   = & $title;
+            $settpl['MESSAGE'] = & $message;
+            $settpl['CONTENT'] = & $content;
+            $content = PHPWS_Template::process($settpl, 'controlpanel', 'default.tpl');
+        }
 
         if (!isset($module)) {
             $module = 'controlpanel';
