@@ -2,8 +2,16 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+12 October 2007
++ Form.php - added function addRadioAssoc, allows you to send an
+  associative array to create a set of radio buttons. The array keys
+  are the input values and the array values are the labels. 
++ Updated ControlPanel.txt with information on adding link_titles and
+  using Panel's new display parameters.
+
 11 October 2007
 + Small change in Database to allow numerical prefixes.
++ Added order and limit to update and delete function.
 
 10 October 2007
 + PageSmith and Web Page conversions remove the old menu suffixes.

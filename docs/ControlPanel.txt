@@ -28,6 +28,12 @@ $link = "index.php?module=myMod";
 $command1 = array ("title" => "Main Menu", "link" => $link);
 $command2 = array ("title" => "Add New", "link" => $link);
 
+Note: you can also add a "link_title" key and value to this array to
+label the link. This information would appear only on mouse-over"
+
+$command1 = array ("title" => "Main Menu", "link" => $link,
+                   "link_title"=> "Go to the Main Menu");
+
 // Now we put the title and the link array into the tab array.
 // The index of the $tabs array is the identifier. This is what will
 // appear in the address field when clicked on
@@ -135,6 +141,20 @@ $finalPanel = $panel->display();
 
 Put that information in Layout and you are done!
 Layout::add($finalPanel);
+
+
+Alternate Display option
+------------------------------------------------------------
+You can save some steps by displaying the data like so:
+
+Layout::add($panel->display($content, $title, $message));
+
+or to make an embedded tabbed panel:
+
+Layout::add(PHPWS_ControlPanel::display($panel->display($content, $title, $message)));
+
+This way you do not use setContent. Instead you use the
+default.tpl template file that comes with the ControlPanel module.
 
 
 Changing the Look of your Control Panel
