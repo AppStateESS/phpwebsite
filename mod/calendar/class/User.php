@@ -1075,7 +1075,7 @@ class Calendar_User {
             $upcoming[] = PHPWS_Template::process($tpl, 'calendar', 'view/upcoming.tpl');
         }
 
-        if ($upcoming) {
+        if (!empty($upcoming)) {
             $ftpl['TITLE'] = dgettext('calendar', 'Upcoming events');
             $ftpl['CONTENT'] = implode("\n", $upcoming);
             return PHPWS_Template::process($ftpl, 'calendar', 'user_main.tpl');
