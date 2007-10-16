@@ -192,7 +192,7 @@ class DBPager {
         }
 
         if (isset($_REQUEST['orderby'])) {
-            $this->orderby = preg_replace('/\W/', '', $_REQUEST['orderby']);
+            $this->orderby = preg_replace('/[^\w.]/', '', $_REQUEST['orderby']);
         }
 
         if (isset($_REQUEST['orderby_dir'])) {
@@ -656,7 +656,7 @@ class DBPager {
         foreach ($this->table_columns as $varname){
             $vars = array();
             $values = $this->getLinkValues();
-            $buttonname = $varname . '_SORT';
+            $buttonname = str_replace('.', '_', $varname) . '_SORT';
 
             $values['orderby'] = $varname;
 
