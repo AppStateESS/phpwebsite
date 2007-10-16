@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+16 October 2007
++ Added Eloi George's patch #1814159 to DBPager.php.
++ Added area tag to breaker function in Text class.
+
 12 October 2007
 + Form.php - added function addRadioAssoc, allows you to send an
   associative array to create a set of radio buttons. The array keys
