@@ -28,12 +28,19 @@ class Alert {
     var $forms = null;
     var $panel      = null;
 
+    function user()
+    {
+        echo 'in user';
+    }
+
     function admin()
     {
         if (!Current_User::allow('alert')) {
             Current_User::disallow();
             return;
         }
+
+        $this->loadMessage();
 
         $this->loadPanel();
 
@@ -47,11 +54,37 @@ class Alert {
 
         switch ($command) {
         case 'new':
+        case 'edit_alert':
             $this->loadAlert();
             $this->loadForms();
             $this->forms->editAlert();
             break;
 
+        case 'list':
+            $this->panel->setCurrentTab('list');
+            $this->loadForms();
+            $this->forms->manageItems();
+            break;
+
+        case 'post_alert':
+            $this->loadAlert();
+            if ($this->postItem()) {
+                // need to process after save
+                if (PHPWS_Error::logIfError($this->item->save())) {
+                    $this->sendMessage(dgettext('alert', 'An error occurred. Could not save alert.'), 'list');
+                } else {
+                    $this->sendMessage(dgettext('alert', 'Alert saved.'), 'list');
+                }
+            } else {
+                $this->loadForms();
+                $this->forms->editAlert();
+            }
+            break;
+
+        case 'types':
+            $this->loadForms();
+            $this->forms->manageTypes();
+            break;
 
         case 'edit_type':
             $this->loadType();
@@ -59,12 +92,36 @@ class Alert {
             $this->forms->editType();
             break;
 
-        case 'types':
-            $this->loadForms();
-            $this->forms->manageTypes();
+        case 'post_type':
+            $this->loadType();
+            if ($this->postType()) {
+                if (PHPWS_Error::logIfError($this->type->save())) {
+                    $this->sendMessage(dgettext('alert', 'An error occurred. Could not save alert type.'), 'types');
+                } else {
+                    $this->sendMessage(dgettext('alert', 'Type saved.'), 'types');
+                }
+            } else {
+                $this->loadForms();
+                $this->forms->editType();
+            }
+            break;
         }
 
         Layout::add(PHPWS_ControlPanel::display($this->panel->display($this->content, $this->title, $this->message)));
+    }
+
+    function sendMessage($message, $aop)
+    {
+        $_SESSION['Alert_Message'] = $message;
+        PHPWS_Core::reroute(PHPWS_Text::linkAddress('alert', array('aop'=>$aop), true));
+    }
+
+    function loadMessage()
+    {
+        if (isset($_SESSION['Alert_Message'])) {
+            $this->message = $_SESSION['Alert_Message'];
+            PHPWS_Core::killSession('Alert_Message');
+        }
     }
 
     function loadAlert()
@@ -134,6 +191,81 @@ class Alert {
         }
     }
 
+    function postItem()
+    {
+        $allgood = true;
+
+        if (!isset($_POST['type_id'])) {
+            $this->message = dgettext('alert', 'Error: Missing alert type id.');
+            return false;
+        }
+
+        $item = & $this->item;
+        if (empty($_POST['title'])) {
+            $this->message = dgettext('alert', 'Please give your alert a title.');
+            $allgood = false;
+        } else {
+            $item->setTitle($_POST['title']);
+        }
+
+        if (empty($_POST['description'])) {
+            $this->message = dgettext('alert', 'Please give your alert a description.');
+            $allgood = false;
+        } else {
+            $item->setDescription($_POST['description']);
+        }
+
+        return $allgood;
+    }
+
+    function postType()
+    {
+        $allgood = true;
+
+        $type = & $this->type;
+        if (empty($_POST['title'])) {
+            $this->message = dgettext('alert', 'Please give your alert type a title.');
+            $allgood = false;
+        } else {
+            $type->setTitle($_POST['title']);
+        }
+
+        $type->email     = (int)isset($_POST['email']);
+        $type->rssfeed   = (int)isset($_POST['rssfeed']);
+        $type->post_type = $_POST['post_type'];
+
+        $type->setDefaultAlert($_POST['default_alert']);
+
+        return $allgood;
+    }
+    
+    function canDeleteType($type_id)
+    {
+        static $types_in_use = null;
+
+        if (!Current_User::allow('alert', 'delete_type')) {
+            return false;
+        }
+
+        if (empty($types_in_use)) {
+            $db = new PHPWS_DB('alert_item');
+            $db->addColumn('type_id');
+            $db->setDistinct(true);
+            $types_in_use = $db->select('col');
+            if (PHPWS_Error::logIfError($types_in_use)) {
+                return false;
+            }
+            if (empty($types_in_use)) {
+                $types_in_use = 'none';
+            }
+        }
+
+        if ($types_in_use == 'none') {
+            return true;
+        }
+
+        return !in_array($type_id, $types_in_use);
+    }
 
 }
 

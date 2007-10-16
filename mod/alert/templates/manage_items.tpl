@@ -1,16 +1,12 @@
-<p>{ADD_TYPE}</p>
+<p>{ADD_ITEM}</p>
 <table cellpadding="4" cellspacing="1" width="98%">
   <tr style="vertical-align : top">
     <th>{TITLE_SORT} {TITLE_LABEL}</th>
-    <th width="20%">{EMAIL_LABEL}</th>
-    <th width="15%">{RSSFEED_LABEL}</th>
     <th width="20%">{ACTION_LABEL}</th>
   </tr>
 <!-- BEGIN listrows -->
   <tr {TOGGLE}>
     <td>{TITLE}</td>
-    <td>{EMAIL}</td>
-    <td>{RSSFEED}</td>
     <td>{ACTION}</td>
   </tr>
 <!-- END listrows -->

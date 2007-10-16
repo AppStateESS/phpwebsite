@@ -8,7 +8,7 @@ class Alert_Type {
     var $id = 0;
     var $title = null;
     var $email = false;
-    var $xssfeed = false;
+    var $rssfeed = false;
     var $post_type = 0;
     var $default_alert = null;
 
@@ -35,6 +35,24 @@ class Alert_Type {
         return true;
     }
 
+    function rowTags()
+    {
+        $links[] = PHPWS_Text::secureLink(dgettext('alert', 'Edit'), 'alert', array('aop'=>'edit_type', 'type_id'=>$this->id));
+
+        if (Alert::canDeleteType($this->id)) {
+            $js['question'] = dgettext('alert', 'Are you sure you want to delete this alert type?');
+            $js['link']     = dgettext('alert', 'Delete');
+            $js['address']  = PHPWS_Text::linkAddress('alert', array('aop'=>'delete_type', 'type_id'=>$this->id), true);
+            $links[] = javascript('confirm', $js);
+        }
+
+        $tpl['EMAIL'] = $this->email ? dgettext('alert', 'Yes') : dgettext('alert', 'No');
+        $tpl['RSSFEED'] = $this->rssfeed ? dgettext('alert', 'Yes') : dgettext('alert', 'No');
+
+        $tpl['ACTION'] = implode(' | ', $links);
+        return $tpl;
+    }
+
     function getDefaultAlert()
     {
         return PHPWS_Text::parseOutput($this->default_alert);
@@ -43,6 +61,17 @@ class Alert_Type {
     function setDefaultAlert($text)
     {
         $this->default_alert = PHPWS_Text::parseInput($text);
+    }
+
+    function setTitle($title)
+    {
+        $this->title = trim(strip_tags($title));
+    }
+
+    function save()
+    {
+        $db = new PHPWS_DB('alert_type');
+        return $db->saveObject($this);
     }
 
 }
