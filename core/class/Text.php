@@ -307,6 +307,8 @@ class PHPWS_Text {
                               '/(<\/ol>)\n/iU',
                               '/(<ul.*>|<\/ul>)\n/iU',
                               '/(<\/li>)\n/iU',
+                              '/(<area.*>)\n/iU',
+                              '/(<\/area>)\n/iU',
                               '/(<\/p>)\n/iU',
                               '/(<br \/>|<br>)\n/iU',
                               '/(<\/dd>)\n/iU',
