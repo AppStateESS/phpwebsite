@@ -1,3 +1,17 @@
+17 October 2007
++ Labeled Feature and Delete page permissions as Unrestricted only
++ Moved permission checks out to individual commands.
++ Added missing disapprove function.
++ Restricted users can no longer join, move, de/activate pages.
++ When restricted users added pages, they weren't showing up when
+  trying to edit again.
++ Removed delete, de/activate and move options from web page listing
+  for restricted users.
++ Added canEdit function to volume to ease permission checks.
++ Commented drop down box on page listing to hide area for restricted
+  users. 
++ Updated: templates/forms/list.tpl
+
 Version 1.0.0
 -------------------------------------------------------------------------
 21 September 2007

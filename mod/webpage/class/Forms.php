@@ -114,7 +114,6 @@ class Webpage_Forms {
         $form->setRows('content', 20);
         $form->setCols('content', 90);
         $form->setLabel('content', dgettext('webpage', 'Content'));
-
         $page_templates = $page->getTemplateList();
 
         if (empty($page_templates)) {
@@ -144,18 +143,28 @@ class Webpage_Forms {
     function wp_list()
     {
         $select_op['list'] = dgettext('webpage', '- Select option -');
-        $select_op['delete_wp']          = dgettext('webpage', 'Delete');
-        $select_op['move_to_frontpage']  = dgettext('webpage', 'Move to frontpage');
-        $select_op['move_off_frontpage'] = dgettext('webpage', 'Move off frontpage');
-        $select_op['activate']           = dgettext('webpage', 'Activate');
-        $select_op['deactivate']         = dgettext('webpage', 'Deactivate');
+
+        if (Current_User::allow('webpage', 'delete_page', null, null, true)) {
+            $select_op['delete_wp']          = dgettext('webpage', 'Delete');
+        }
+        if (Current_User::isUnrestricted('webpage')) {
+            $select_op['move_to_frontpage']  = dgettext('webpage', 'Move to frontpage');
+            $select_op['move_off_frontpage'] = dgettext('webpage', 'Move off frontpage');
+            $select_op['activate']           = dgettext('webpage', 'Activate');
+            $select_op['deactivate']         = dgettext('webpage', 'Deactivate');
+        }
+
         if (Current_User::allow('webpage', 'featured')) {
             $select_op['feature']            = dgettext('webpage', 'Feature page');
         }
 
         $form = new PHPWS_Form;
         $form->addHidden('module', 'webpage');
-        $form->addSelect('wp_admin', $select_op);
+
+        if (count($select_op) > 1) {
+            $form->addSelect('wp_admin', $select_op);
+        }
+
         $tags = $form->getTemplate();
 
         $tags['TITLE_LABEL']        = dgettext('webpage', 'Title');
@@ -166,14 +175,17 @@ class Webpage_Forms {
         $tags['FRONTPAGE_LABEL']    = dgettext('webpage', 'Front page');
         $tags['ACTIVE_LABEL']       = dgettext('webpage', 'Active');
         $tags['ACTION_LABEL']       = dgettext('webpage', 'Action');
-        $tags['CHECK_ALL'] = javascript('check_all', array('checkbox_name' => 'webpage'));
 
-        $js['value']        = dgettext('webpage', 'Go');
-        $js['select_id']    = $form->getId('wp_admin');
-        $js['action_match'] = 'delete_wp';
-        $js['message']      = dgettext('webpage', 'Are you sure you want to delete the checked web pages?');
+        if (count($select_op) > 1) {
+            $tags['CHECK_ALL'] = javascript('check_all', array('checkbox_name' => 'webpage'));
+            $js['value']        = dgettext('webpage', 'Go');
+            $js['select_id']    = $form->getId('wp_admin');
+            $js['action_match'] = 'delete_wp';
+            $js['message']      = dgettext('webpage', 'Are you sure you want to delete the checked web pages?');
+            
+            $tags['SUBMIT'] = javascript('select_confirm', $js);
+        }
 
-        $tags['SUBMIT'] = javascript('select_confirm', $js);
 
         PHPWS_Core::initCoreClass('DBPager.php');
         $pager = new DBPager('webpage_volume', 'Webpage_Volume');
@@ -184,11 +196,11 @@ class Webpage_Forms {
         $pager->addRowTags('rowTags');
         $pager->addToggle(' ');
         $pager->setSearch('title');
-        Key::restrictView($pager->db);
         $pager->db->addWhere('approved', 1);
         $pager->db->addWhere('approved', 0, '=', 'or', 'up');
         $pager->db->addWhere('update_user_id', Current_User::getId(), '=', 'and', 'up');
         $pager->db->setGroupConj('up', 'or');
+
         $content = $pager->get();
 
         return $content;

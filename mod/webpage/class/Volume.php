@@ -229,8 +229,7 @@ class Webpage_Volume {
          * is currently logged in. Otherwise allow to edit if user has normal 
          * permissions.
          */
-        if ( (!$this->approved && $this->update_user_id == Current_User::getId())
-             || Current_User::allow('webpage', 'edit_page', $this->id, 'volume')) {
+        if ($this->canEdit()) {
             $vars['wp_admin'] = 'edit_webpage';
             if (Current_User::isRestricted('webpage')) {
                 $version = new Version('webpage_volume');
@@ -690,6 +689,24 @@ class Webpage_Volume {
         $all_search_content[] = implode(' ', $content);
         $search->addKeywords($all_search_content);
         return $search->save();
+    }
+
+    /**
+     * Decides if a user can edit a volume.
+     */
+    function canEdit()
+    {
+        // If this is a new volume or unapproved and the current user created it
+        // let them edit
+        if ( (!$this->id || !$this->approved) && $this->create_user_id == Current_User::getId()) {
+            return true;
+        }
+      
+        if (Current_User::allow('webpage', 'edit_page', $volume->id, 'volume')) {
+            return true;
+        }
+
+        return false;
     }
 
 }

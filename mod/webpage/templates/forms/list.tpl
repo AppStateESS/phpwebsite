@@ -23,7 +23,7 @@
   </tr>
 <!-- END listrows -->
 </table>
-<div class="bgcolor2 padded">{WP_ADMIN} {SUBMIT} {CHECK_ALL}</div>
+<!-- BEGIN drop-down --><div class="bgcolor2 padded">{WP_ADMIN} {SUBMIT} {CHECK_ALL}</div><!-- END drop-down -->
 {END_FORM}
 {EMPTY_MESSAGE}
 <!-- BEGIN navigate -->

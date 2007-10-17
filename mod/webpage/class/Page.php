@@ -183,7 +183,7 @@ class Webpage_Page {
         $template['CONTENT'] = $this->getContent();
         $template['CURRENT_PAGE'] = $this->page_number;
 
-        If (Current_User::allow('webpage', 'edit_page', $this->volume_id, 'volume') ) {
+        if ($this->_volume->canEdit()) {
             $vars = array('page_id'   => $this->id,
                           'volume_id' => $this->volume_id);
             if ($version) {
@@ -191,29 +191,15 @@ class Webpage_Page {
             }
 
             $vars['wp_admin'] = 'edit_page';
+            
             $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Edit page'), 'webpage', $vars);
 
             if ($admin) {
                 $this->moreAdminLinks($links);
-                $vars['wp_admin'] = 'page_up';
-                if ($this->page_number > 1) {
-                    $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Move up'), 'webpage', $vars);
-                } elseif (count($this->_volume->_pages) > 1) {
-                    $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Move to end'), 'webpage', $vars);
-                }
-
-                $total_pages = $this->_volume->getTotalPages();
-                $vars['wp_admin'] = 'page_down';
-                if ($this->page_number < $total_pages) {
-                    $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Move down'), 'webpage', $vars);
-                } elseif (count($this->_volume->_pages) > 1) {
-                    $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Move to front'), 'webpage', $vars);
-                }
             } else {
                 $vars['wp_admin'] = 'edit_webpage';
                 $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Sort'), 'webpage', $vars);
             }
-
 
             $template['ADMIN_LINKS'] = implode(' | ', $links);
         }
@@ -227,7 +213,7 @@ class Webpage_Page {
 
     function moreAdminLinks(&$links)
     {
-        if (Current_User::isUnrestricted('webpage') && Current_User::allow('webpage', 'delete_page')) {
+        if (Current_User::allow('webpage', 'delete_page', null, null, true)) {
             $jsvar['QUESTION'] = dgettext('webpage', 'Are you sure you want to remove this page?');
             $jsvar['ADDRESS'] = sprintf('index.php?module=webpage&amp;wp_admin=delete_page&amp;page_id=%s&amp;volume_id=%s&amp;authkey=%s',
                                         $this->id, $this->volume_id, Current_User::getAuthKey());
@@ -236,7 +222,7 @@ class Webpage_Page {
             $links[] = javascript('confirm', $jsvar);
         }
 
-        if (Current_User::allow('webpage', 'edit_page', $this->volume_id, 'volume', true)) {
+        if (Current_User::allow('webpage', 'edit_page', null, null, true)) {
             $vars = array('wp_admin'=>'restore_page', 'volume_id'=>$this->volume_id, 'page_id'=>$this->id);
             $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Restore'), 'webpage', $vars);
 
@@ -252,6 +238,21 @@ class Webpage_Page {
                                             $this->volume_id, Current_User::getAuthKey());
                 $jsvar['LINK'] = ('Join all');
                 $links[] = javascript('confirm', $jsvar);
+            }
+
+            $vars['wp_admin'] = 'page_up';
+            if ($this->page_number > 1) {
+                $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Move up'), 'webpage', $vars);
+            } elseif (count($this->_volume->_pages) > 1) {
+                $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Move to end'), 'webpage', $vars);
+            }
+            
+            $total_pages = $this->_volume->getTotalPages();
+            $vars['wp_admin'] = 'page_down';
+            if ($this->page_number < $total_pages) {
+                $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Move down'), 'webpage', $vars);
+            } elseif (count($this->_volume->_pages) > 1) {
+                $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Move to front'), 'webpage', $vars);
             }
         }
     }
