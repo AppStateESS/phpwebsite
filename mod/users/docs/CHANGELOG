@@ -1,3 +1,6 @@
+17 October 2007
++ Current_User was calling giveItemPermissions incorrectly.
+
 Version 2.4.5
 --------------------------------------------------------------------
 3 October 2007
