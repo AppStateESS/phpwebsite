@@ -444,13 +444,13 @@ class FC_Image_Manager {
         $no_image = dgettext('filecabinet', 'No image');
 
         if ($this->max_width > $this->_noimage_max_width) {
-            $width = $this->_noimage_max_width;
+            $width = & $this->_noimage_max_width;
         } else {
             $width = & $this->max_width;
         }
 
         if ($this->max_height > $this->_noimage_max_height) {
-            $height = $this->_noimage_max_height;
+            $height = & $this->_noimage_max_height;
         } else {
             $height = & $this->max_height;
         }
