@@ -22,6 +22,9 @@ function showFP()
         foreach ($result as $page) {
             $content = $page->view();
             if ($content && !PHPWS_Error::logIfError($content)) {
+                if (Current_User::allow('pagesmith', 'edit_page', $page->id)) {
+                    $content .= sprintf('<p class="pagesmith-edit">%s</p>', $page->editLink());
+                }
                 Layout::add($content, 'pagesmith', 'view_' . $page->id, TRUE);
             }
         }
