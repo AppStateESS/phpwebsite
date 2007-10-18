@@ -1,3 +1,7 @@
+18 October 2007
++ Bug #1814628 : Menu will only add a home link on new menus, not
+  updated ones. 
+  
 10 October 2007
 + All links without parents were opening when on the home page.
   Changed code to prevent it.

@@ -127,13 +127,15 @@ class Menu_Item {
             return FALSE;
         }
 
+        $new_menu = !(bool)$this->id;
+
         $this->resetdb();
         $result = $this->_db->saveObject($this);
         if (PEAR::isError($result)) {
             return $result;
         }
 
-        if (PHPWS_Settings::get('menu', 'home_link')) {
+        if ($new_menu && PHPWS_Settings::get('menu', 'home_link')) {
             $link = new Menu_Link;
             $link->menu_id = $this->id;
             $link->title   = dgettext('menu', 'Home');
