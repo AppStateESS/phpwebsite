@@ -225,9 +225,8 @@ class PS_Page {
         }
 
         $key->setModule('pagesmith');
-        $key->setItemName('page');
         $key->setItemId($this->id);
-        $key->setEditPermission('edit');
+        $key->setEditPermission('edit_page');
 
         if (MOD_REWRITE_ENABLED) {
             $key->setUrl('pagesmith/' . $this->id);

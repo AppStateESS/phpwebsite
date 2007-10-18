@@ -1,4 +1,5 @@
 18 October 2007
++ Fixed pagesmith edit permission.
 + PageSmith home pages were missing edit link.
 
 Version 1.0.3
