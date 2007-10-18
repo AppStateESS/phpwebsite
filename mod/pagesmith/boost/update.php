@@ -84,6 +84,21 @@ function pagesmith_update(&$content, $currentVersion)
         }
         $content[] = '</pre>';
 
+    case version_compare($currentVersion, '1.0.4', '<'):
+        $content[] = '<pre>';
+        $db = new PHPWS_DB('phpws_key');
+        $db->addWhere('module', 'pagesmith');
+        $db->addValue('edit_permission', 'edit_page');
+        if (PHPWS_Error::logIfError($db->update())) {
+            $content[] = 'Unable to update phpws_key table.</pre>';
+            return false;
+        } else {
+            $content[] = 'Updated phpws_key table.';
+        }
+        $content[] = '1.0.4 changes
+------------------
++ Fixed pagesmith edit permission.
++ PageSmith home pages were missing edit link.</pre>';
 
     } // end switch
 
