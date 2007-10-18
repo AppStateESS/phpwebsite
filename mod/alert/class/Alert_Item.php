@@ -4,10 +4,13 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
+PHPWS_Core::initModClass('filecabinet', 'Image.php');
+
 class Alert_Item {
     var $id               = 0;
     var $title            = null;
     var $description      = null;
+    var $image_id         = 0;
     var $create_date      = 0;
     var $update_date      = 0;
     var $created_by_id    = 0;
@@ -53,16 +56,24 @@ class Alert_Item {
     function rowTags()
     {
         $tpl = array();
+        $vars['id'] = $this->id;
 
-        $links[] = PHPWS_Text::secureLink(dgettext('alert', 'Edit'), 'alert', array('aop' => 'edit_item',
-                                                                                    'id'  => $this->id));
+        $vars['aop'] = 'edit_item';
+        $links[] = PHPWS_Text::secureLink(dgettext('alert', 'Edit'), 'alert', $vars);
         if (Current_User::allow('alert', 'delete_items')) {
             $js['question'] = dgettext('alert', 'Are you sure you want to delete this alert?');
             $js['link']     = dgettext('alert', 'Delete');
-            $js['address']  = PHPWS_Text::linkAddress('alert', array('aop'=>'delete_item', 'id'=>$this->id), true);
+            $vars['aop'] = 'delete_item';
+            $js['address']  = PHPWS_Text::linkAddress('alert', $vars, true);
             $links[] = javascript('confirm', $js);
         }
 
+        $vars['aop'] = 'activate_item';
+        $yes_link = PHPWS_Text::secureLink(dgettext('alert', 'Yes'), 'alert', $vars);
+        $vars['aop'] = 'deactivate_item';
+        $no_link = PHPWS_Text::secureLink(dgettext('alert', 'No'), 'alert', $vars);
+
+        $tpl['ACTIVE'] = $this->active ? $yes_link : $no_link;
         $tpl['ACTION'] = implode(' | ', $links);
 
         return $tpl;
@@ -82,6 +93,27 @@ class Alert_Item {
 
         $db = new PHPWS_DB('alert_item');
         return $db->saveObject($this);
+    }
+
+    function delete()
+    {
+        $db = new PHPWS_DB('alert_item');
+        $db->addWhere('id', $this->id);
+        return !(PHPWS_Error::logIfError($db->delete()));
+    }
+
+    function view()
+    {
+        $tpl['TITLE']       = $this->title;
+        $tpl['DESCRIPTION'] = $this->getDescription();
+        if ($this->image_id) {
+            $image = new PHPWS_Image($this->image_id);
+            $tpl['IMAGE'] = $image->getTag();
+        } else {
+            $tpl['IMAGE'] = null;
+        }
+
+        return PHPWS_Template::process($tpl, 'alert', 'view_item.tpl');
     }
 }
 

@@ -4,17 +4,14 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
-define('APST_NONE',   0);
-define('APST_DAILY',  1);
-define('APST_WEEKLY', 2);
-define('APST_PERM',   3);
-
 class Alert_Forms {
     var $alert = null;
 
-    function editAlert()
+    function editItem()
     {
+        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         $item = & $this->alert->item;
+        $manager = Cabinet::imageManager($this->image_id, 'image_id', 500, 500, 1);
 
         $form = new PHPWS_Form('alert-item');
 
@@ -26,7 +23,8 @@ class Alert_Forms {
         }
 
         $form->addHidden('module', 'alert');
-        $form->addHidden('aop', 'post_alert');
+        $form->addHidden('aop', 'post_item');
+        $form->addHidden('image_id', $this->image_id);
 
         $form->addText('title', $item->title);
         $form->setSize('title', 40);
@@ -53,8 +51,12 @@ class Alert_Forms {
         $form->addSubmit(dgettext('alert', 'Save'));
 
         $tpl = $form->getTemplate();
+        $manager->setNoimageMaxWidth(200);
+        $manager->setNoimageMaxHeight(200);
+        $tpl['IMAGE'] = $manager->get();
+        $tpl['IMAGE_LABEL'] = dgettext('alert', 'Image');
 
-        $this->alert->content = PHPWS_Template::process($tpl, 'alert', 'edit_alert.tpl');
+        $this->alert->content = PHPWS_Template::process($tpl, 'alert', 'edit_item.tpl');
     }
     
 
@@ -66,6 +68,7 @@ class Alert_Forms {
 
         if ($type->id) {
             $this->alert->title = dgettext('alert', 'Update alert type');
+            $form->addHidden('type_id', $type->id);
         } else {
             $this->alert->title = dgettext('alert', 'Create alert type');
         }
@@ -77,15 +80,17 @@ class Alert_Forms {
         $form->setLabel('title', dgettext('alert', 'Title'));
 
         $form->addCheckBox('email', 1);
+        $form->setMatch('email', $type->email);
         $form->setLabel('email', dgettext('alert', 'Email participants'));
 
         $form->addCheckBox('rssfeed', 1);
+        $form->setMatch('rssfeed', $type->rssfeed);
         $form->setLabel('rssfeed', dgettext('alert', 'Create RSS feed'));
 
-        $post_types[APST_NONE] = dgettext('alert', 'Do not post on front page');
-        $post_types[APST_DAILY] = dgettext('alert', 'Daily listing');
+        $post_types[APST_NONE]   = dgettext('alert', 'Do not post on front page');
         $post_types[APST_WEEKLY] = dgettext('alert', 'Weekly listing');
-        $post_types[APST_PERM] = dgettext('alert', 'Permanent top');
+        $post_types[APST_DAILY]  = dgettext('alert', 'Daily listing');
+        $post_types[APST_PERM]   = dgettext('alert', 'High alert!');
 
         $form->addRadioAssoc('post_type', $post_types);
         $form->setMatch('post_type', $type->post_type);
@@ -107,7 +112,8 @@ class Alert_Forms {
         $pagetags['TITLE_LABEL'] = dgettext('alert', 'Title');
         $pagetags['ADD_ITEM'] = PHPWS_Text::secureLink(dgettext('alert', 'Add alert'),
                                                        'alert', array('aop'=>'edit_item'));
-        $pagetags['ACTION_LABEL']    = dgettext('alert', 'Action');
+        $pagetags['ACTION_LABEL'] = dgettext('alert', 'Action');
+        $pagetags['ACTIVE_LABEL'] = dgettext('alert', 'Active');
 
         $pager = new DBPager('alert_item', 'Alert_Item');
         $pager->setModule('alert');

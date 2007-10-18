@@ -4,6 +4,11 @@
  * @author Matthew McNaney <mcnaney at gmail dot com>
  */
 
+define('APST_NONE',   0);
+define('APST_WEEKLY', 1);
+define('APST_DAILY',  2);
+define('APST_PERM',   3);
+
 class Alert {
     /**
      * First three variables display the content of the module
@@ -22,6 +27,8 @@ class Alert {
      */
     var $type  = null;
 
+    var $type_list = null;
+
     /**
      * The forms object. Initialized with loadForms.
      */
@@ -32,6 +39,88 @@ class Alert {
     {
         echo 'in user';
     }
+
+    function viewItems()
+    {
+        $high_alert = false;
+
+        $this->loadTypes();
+
+        if (empty($this->type_list)) {
+            return;
+        }
+
+        $db = new PHPWS_DB('alert_item');
+        $db->loadClass('alert', 'Alert_Item.php');
+        $db->setIndexBy('id');
+        $db->addOrder('create_date desc');
+
+        foreach ($this->type_list as $type) {
+            $content = null;
+            $db->resetWhere();
+            $db->addWhere('active', 1);
+            $db->addWhere('type_id', $type->id);
+
+            switch ($type->post_type) {
+            case APST_NONE:
+                continue;
+
+            case APST_DAILY:
+                $alert_type = 'daily_alerts';
+                $db->addWhere('create_date', mktime() - 86400, '>');
+                break;
+
+            case APST_WEEKLY:
+                $alert_type = 'weekly_alerts';
+                $db->addWhere('create_date', mktime() - (86400 * 7), '>');
+                break;
+
+            case APST_PERM:
+                $alert_type = 'high_alerts';
+                break;
+            }
+
+            $result = $db->getObjects('Alert_Item');
+
+            if (PHPWS_Error::logIfError($result)) {
+                continue;
+            }
+
+            if (empty($result) && !empty($type->default_alert)) {
+                $tpl['CONTENT'] = $type->getDefaultAlert();
+            } else {
+                foreach($result as $item) {
+                    $content[] = $item->view();
+                }
+                $high_alert = true;
+                $tpl['CONTENT'] = implode('', $content);
+            }
+
+            $tpl['TITLE'] = $type->title;
+            $tpl['CLASS'] = sprintf('alert-type-%s', $type->id);
+
+            Layout::add(PHPWS_Template::process($tpl, 'alert', 'view_type.tpl'), 'alert', $alert_type, true);
+            if ($high_alert) {
+                return;
+            }
+        }
+    }
+
+    function loadTypes()
+    {
+        $db = new PHPWS_DB('alert_type');
+        $db->addOrder('post_type desc');
+        $db->loadClass('alert', 'Alert_Type.php');
+        $db->setIndexBy('id');
+        $result = $db->getObjects('Alert_Type');
+
+        if (PHPWS_Error::logIfError($result)) {
+            $this->type_list = null;
+            return;
+        }
+        $this->type_list = & $result;
+    }
+
 
     function admin()
     {
@@ -54,10 +143,10 @@ class Alert {
 
         switch ($command) {
         case 'new':
-        case 'edit_alert':
-            $this->loadAlert();
+        case 'edit_item':
+            $this->loadItem();
             $this->loadForms();
-            $this->forms->editAlert();
+            $this->forms->editItem();
             break;
 
         case 'list':
@@ -66,8 +155,8 @@ class Alert {
             $this->forms->manageItems();
             break;
 
-        case 'post_alert':
-            $this->loadAlert();
+        case 'post_item':
+            $this->loadItem();
             if ($this->postItem()) {
                 // need to process after save
                 if (PHPWS_Error::logIfError($this->item->save())) {
@@ -77,7 +166,25 @@ class Alert {
                 }
             } else {
                 $this->loadForms();
-                $this->forms->editAlert();
+                $this->forms->editItem();
+            }
+            break;
+
+        case 'delete_item':
+            $this->loadItem();
+            if ($this->item->delete()) {
+                $this->sendMessage(dgettext('alert', 'Deleted alert.'), 'list');
+            } else {
+                $this->sendMessage(dgettext('alert', 'Could not delete alert.'), 'list');
+            }
+            break;
+
+        case 'delete_type':
+            $this->loadType();
+            if ($this->type->delete()) {
+                $this->sendMessage(dgettext('alert', 'Deleted alert type.'), 'types');
+            } else {
+                $this->sendMessage(dgettext('alert', 'Could not delete alert type.'), 'types');
             }
             break;
 
@@ -124,7 +231,7 @@ class Alert {
         }
     }
 
-    function loadAlert()
+    function loadItem()
     {
         PHPWS_Core::initModClass('alert', 'Alert_Item.php');
         if ($_REQUEST['id']) {
@@ -201,6 +308,10 @@ class Alert {
         }
 
         $item = & $this->item;
+
+        $item->image_id = (int)$_POST['image_id'];
+        $item->type_id = (int)$_POST['type_id'];
+
         if (empty($_POST['title'])) {
             $this->message = dgettext('alert', 'Please give your alert a title.');
             $allgood = false;
@@ -230,43 +341,14 @@ class Alert {
             $type->setTitle($_POST['title']);
         }
 
-        $type->email     = (int)isset($_POST['email']);
-        $type->rssfeed   = (int)isset($_POST['rssfeed']);
+        $type->email     = isset($_POST['email']);
+        $type->rssfeed   = isset($_POST['rssfeed']);
         $type->post_type = $_POST['post_type'];
-
         $type->setDefaultAlert($_POST['default_alert']);
 
         return $allgood;
     }
     
-    function canDeleteType($type_id)
-    {
-        static $types_in_use = null;
-
-        if (!Current_User::allow('alert', 'delete_type')) {
-            return false;
-        }
-
-        if (empty($types_in_use)) {
-            $db = new PHPWS_DB('alert_item');
-            $db->addColumn('type_id');
-            $db->setDistinct(true);
-            $types_in_use = $db->select('col');
-            if (PHPWS_Error::logIfError($types_in_use)) {
-                return false;
-            }
-            if (empty($types_in_use)) {
-                $types_in_use = 'none';
-            }
-        }
-
-        if ($types_in_use == 'none') {
-            return true;
-        }
-
-        return !in_array($type_id, $types_in_use);
-    }
-
 }
 
 ?>

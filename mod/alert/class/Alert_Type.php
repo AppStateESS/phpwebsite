@@ -5,12 +5,13 @@
  */
 
 class Alert_Type {
-    var $id = 0;
-    var $title = null;
-    var $email = false;
-    var $rssfeed = false;
-    var $post_type = 0;
+    var $id            = 0;
+    var $title         = null;
+    var $email         = false;
+    var $rssfeed       = false;
+    var $post_type     = 0;
     var $default_alert = null;
+    var $_accessed     = false;
 
     function Alert_Type($id=0)
     {
@@ -27,8 +28,9 @@ class Alert_Type {
 
     function init()
     {
-        $db = new PHPWS_DB('alert_item');
+        $db = new PHPWS_DB('alert_type');
         $result = $db->loadObject($this);
+
         if (!$result || PHPWS_Error::isError($result)) {
             return $result;
         }
@@ -39,13 +41,13 @@ class Alert_Type {
     {
         $links[] = PHPWS_Text::secureLink(dgettext('alert', 'Edit'), 'alert', array('aop'=>'edit_type', 'type_id'=>$this->id));
 
-        if (Alert::canDeleteType($this->id)) {
+        if (Current_User::allow('alert', 'delete_type')) {
             $js['question'] = dgettext('alert', 'Are you sure you want to delete this alert type?');
             $js['link']     = dgettext('alert', 'Delete');
             $js['address']  = PHPWS_Text::linkAddress('alert', array('aop'=>'delete_type', 'type_id'=>$this->id), true);
             $links[] = javascript('confirm', $js);
         }
-
+    
         $tpl['EMAIL'] = $this->email ? dgettext('alert', 'Yes') : dgettext('alert', 'No');
         $tpl['RSSFEED'] = $this->rssfeed ? dgettext('alert', 'Yes') : dgettext('alert', 'No');
 
@@ -72,6 +74,13 @@ class Alert_Type {
     {
         $db = new PHPWS_DB('alert_type');
         return $db->saveObject($this);
+    }
+
+    function delete()
+    {
+        $db = new PHPWS_DB('alert_type');
+        $db->addWhere('id', $this->id);
+        return $db->delete();
     }
 
 }
