@@ -448,7 +448,10 @@ You can use many of the same parameters (where, order, indexby) that
 you used for select.
 
 Make sure that you require the class file before you try to make
-objects from it.
+objects from it. You could also have Database require the class only
+if it finds results using the loadClass function.
+
+Example:  $db->loadClass('module_title', 'Class_File.php');
 
 GetObjects can take extra parameters that you wish to pass to the
 constructor. For example if the class constructor looked like so:

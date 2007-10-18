@@ -4,10 +4,9 @@ by Matthew McNaney
 
 Introduction
 ------------
-Image Manager is a small javascript app that assist with image form
+Image Manager is a small javascript app that assists with image form
 insertion. It does away with associating image files to an element
 with a file form input method.
-
 
 
 Getting started
@@ -15,27 +14,39 @@ Getting started
 Image Manager is a component of the File Manager module and you will
 need to include the manager class file.
 
-PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
+PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
 
-Now you need to construct the manager object.
+Now you need to get the manager object.
 
-$manager = new FC_Image_Manager($image_id);
+/**************************************************************
+image_id
+The id of the current image. You need to store this with your
+item. This can be zero if the image has not been set. 
 
-Next, set the name of your module:
+input_name
+The name of the image. You will need to create a hidden variable with
+this name as well. See below for more details.
 
-$manager->setModule('my_mod');
+max_width
+The maximum image pixel width you want to allow. The image manager will give
+the user to resize the image if it is larger.
 
-Finally, you need to set your item name:
+max_height
+The maximum image pixel height. See above.
 
-$manager->setItemname('my_mod_image');
+mod_folder_only
+If true, the image manager will only show folders made by your
+module. Public image folders will be hidden.
 
-Keep track of your item name. We will need it when we add the Manager
-to your form.
+***************************************************************/
+$image_id        = 5;
+$input_name      = 'my_mod_image';
+$max_width       = 300;
+$max_height      = 300;
+$mod_folder_only = true;
 
-File Cabinet indexes all the images used with Image Manager. Your
-module will need to store this id number and present it when accessing
-the Image Manager. If your module's content item does not have an
-image associated with it yet, then the image_id would be zero.
+$manager = Cabinet::imageManager($image_id, $input_name, $max_width,
+                                 $max_height, $mod_folder_only);
 
 
 Setting parameters
@@ -46,12 +57,6 @@ constructed.
 $manager->setMaxWidth(640);
 $manager->setMaxHeight(480);
 $manager->setMaxSize(100000);
-
-In the above example, the Image Manager will refuse any image that is:
-1) wider than 640 pixels,
-2) higher than 480 pixels, or
-3) has a file size larger than 100000 bytes.
-
 
 Form inclusion
 --------------
