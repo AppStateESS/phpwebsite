@@ -1,0 +1,4 @@
+{START_FORM}
+<p><strong>{DATE_FORMAT_LABEL}</strong> {DATE_FORMAT}</p>
+{SUBMIT}
+{END_FORM}

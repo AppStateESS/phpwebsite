@@ -199,6 +199,26 @@ class Alert {
             $this->forms->editType();
             break;
 
+        case 'send_email':
+            if (!Current_User::authorized('alert', 'allow_contact')) {
+                Current_User::disallow();
+            }
+            $this->loadItem();
+            $this->sendContact();
+            break;
+
+        case 'settings':
+            $this->loadForms();
+            $this->forms->settings();
+            break;
+
+        case 'post_settings':
+            $this->postSettings();
+            $this->loadForms();
+            $this->forms->settings();
+            break;
+            
+
         case 'post_type':
             $this->loadType();
             if ($this->postType()) {
@@ -276,6 +296,9 @@ class Alert {
         $tabs['types'] = array('title'=>dgettext('alert', 'Alert Types'), 'link'=>$link, 
                                'link_title'=>dgettext('alert', 'Create, update and define alert types.'));
 
+        $tabs['settings'] = array('title'=>dgettext('alert', 'Settings'), 'link'=>$link, 
+                                  'link_title'=>dgettext('alert', 'Display settings for Alert module.'));
+
         $this->panel->quickSetTabs($tabs);
     }
 
@@ -348,7 +371,50 @@ class Alert {
 
         return $allgood;
     }
-    
+
+    function postSettings()
+    {
+        if (empty($_POST['date_format'])) {
+            $this->message = dgettext('alert', 'Date format can not be empty.');
+            $settings['date_format'] = '%c';
+        } else {
+            $settings['date_format'] = strip_tags(trim($_POST['date_format']));
+        }
+
+        PHPWS_Settings::set('alert', $settings);
+        PHPWS_Settings::save('alert');
+    }
+
+    function contactNeeded()
+    {
+        $db = new PHPWS_DB('alert_item');
+        $db->loadClass('alert', 'Alert_Item.php');
+        $db->addWhere('alert_type.email', 1, '=', 'and', 1);
+        $db->addWhere('alert_item.type_id', 'alert_type.id', '=', 'and', 1);
+        $db->addWhere('active', 1);
+        $db->addWhere('contact_complete', 2, '<');
+
+        return $db->getObjects('Alert_Item');
+    }
+  
+    function sendContact()
+    {
+        $item = & $this->item;
+        if (!$item->id || $item->contact_complete == 2) {
+            return false;
+        }
+
+        // If contact has not started, copy all participants onto alert_contact table.
+
+        // Set item contact_complete to 1
+
+        // Grab alert_contact participants, limit by batch
+
+        // If no more results from contact_complete, we are finished.
+
+        // Set item contact_complete to 2
+    }
+  
 }
 
 ?>

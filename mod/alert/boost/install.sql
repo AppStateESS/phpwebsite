@@ -13,8 +13,9 @@ INDEX ( prt_id , type_id )
 
 CREATE TABLE alert_contact (
 prt_id INT NOT NULL default 0 ,
-alert_id INT NOT NULL default 0
-) ENGINE = MYISAM ;
+alert_id INT NOT NULL default 0,
+email varchar(60) NOT NULL
+);
 
 CREATE TABLE alert_item (
 id INT NOT NULL default 0 ,

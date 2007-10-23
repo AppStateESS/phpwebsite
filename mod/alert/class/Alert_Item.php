@@ -18,7 +18,12 @@ class Alert_Item {
     var $updated_by_id    = 0;
     var $updated_name     = null;
     var $type_id          = 0;
-    var $contact_complete = false;
+    /**
+     * 0 = not done
+     * 1 = partially done
+     * 2 = all done
+     */
+    var $contact_complete = 0;
     var $active           = true;
 
     function Alert_Item($id=0)
@@ -75,6 +80,9 @@ class Alert_Item {
 
         $tpl['ACTIVE'] = $this->active ? $yes_link : $no_link;
         $tpl['ACTION'] = implode(' | ', $links);
+
+        $tpl['CREATE_DATE'] = strftime(PHPWS_Settings::get('alert', 'date_format'), $this->create_date);
+        $tpl['UPDATE_DATE'] = strftime(PHPWS_Settings::get('alert', 'date_format'), $this->update_date);
 
         return $tpl;
     }

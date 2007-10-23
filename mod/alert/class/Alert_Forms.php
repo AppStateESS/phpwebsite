@@ -106,6 +106,9 @@ class Alert_Forms {
 
     function manageItems()
     {
+
+        $pagetags['CONTACT_ALERT'] = $this->contactAlert();
+
         PHPWS_Core::initModClass('alert', 'Alert_Item.php');
         PHPWS_Core::initCoreClass('DBPager.php');
 
@@ -114,6 +117,10 @@ class Alert_Forms {
                                                        'alert', array('aop'=>'edit_item'));
         $pagetags['ACTION_LABEL'] = dgettext('alert', 'Action');
         $pagetags['ACTIVE_LABEL'] = dgettext('alert', 'Active');
+        $pagetags['CREATE_DATE_LABEL'] = dgettext('alert', 'Created');
+        $pagetags['UPDATE_DATE_LABEL'] = dgettext('alert', 'Updated');
+
+        $pagetags['NAME_LABEL'] = dgettext('alert', 'by');
 
         $pager = new DBPager('alert_item', 'Alert_Item');
         $pager->setModule('alert');
@@ -125,6 +132,39 @@ class Alert_Forms {
 
         $this->alert->title = dgettext('alert', 'Manage Alerts');
         $this->alert->content = & $content;
+    }
+
+    function contactAlert()
+    {
+        if (!Current_User::allow('alert', 'allow_contact')) {
+            return null;
+        }
+
+        $contact_needed = $this->alert->contactNeeded();
+
+        if (empty($contact_needed)) {
+            return null;
+        }
+
+        if (PHPWS_Error::logIfError($contact_needed)) {
+            return dgettext('alert', 'An error occurred while checking contact status.');
+        } else {
+            $tpl['TITLE'] = dgettext('alert', 'The following alerts need to send email notices.');
+            foreach ($contact_needed as $item) {
+                $subtpl['ITEM_TITLE'] = $item->title;
+                if ($item->contact_complete == 1) {
+                    $label = dgettext('alert', 'Finish incomplete mailing');
+                } else {
+                    $label = dgettext('alert', 'Start mailing');
+                }
+                $subtpl['STATUS'] = PHPWS_Text::secureLink($label, 'alert', array('aop'=>'send_email', 'id'=> $item->id));
+                $tpl['rows'][] = $subtpl;
+            }
+
+        }
+        Layout::addStyle('alert');
+        return PHPWS_Template::process($tpl, 'alert', 'contact_links.tpl');
+
     }
 
     function manageTypes()
@@ -150,6 +190,24 @@ class Alert_Forms {
 
         $this->alert->title = dgettext('alert', 'Manage Alert Types');
         $this->alert->content = & $content;
+    }
+
+    function settings()
+    {
+        $settings = PHPWS_Settings::get('alert');
+
+        $form = new PHPWS_Form('alert-settings');
+        $form->addHidden('module', 'alert');
+        $form->addHidden('aop', 'post_settings');
+
+        $form->addText('date_format', $settings['date_format']);
+        $form->setTitle('date_format', 'Format uses PHP strftime standard');
+        $form->setLabel('date_format', dgettext('alert', 'Date format'));
+        $form->addSubmit('submit', dgettext('alert', 'Save settings'));
+
+        $tpl = $form->getTemplate();
+        $this->alert->title = dgettext('alert', 'Alert Settings');
+        $this->alert->content = PHPWS_Template::process($tpl, 'alert', 'settings.tpl');
     }
 
 }
