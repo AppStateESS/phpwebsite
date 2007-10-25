@@ -1,9 +1,9 @@
 <?php
 
-  /**
-   * @author Matthew McNaney <mcnaney at gmail dot com>
-   * @version $Id$
-   */
+/**
+ * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
+ */
 
 PHPWS_Core::requireConfig('rss');
 
@@ -129,7 +129,6 @@ class RSS_Channel {
      */
     function view()
     {
-
         $cache_key = $this->module . '_cache_key';
         $content = PHPWS_Cache::get($cache_key);
 
@@ -142,9 +141,9 @@ class RSS_Channel {
         $template['CHANNEL_ADDRESS']     = $this->getAddress();
         $template['HOME_ADDRESS']        = $home_http;
         $template['CHANNEL_DESCRIPTION'] = $this->description;
-        $template['LANGUAGE']            = 'en-us'; // change later
+        $template['LANGUAGE']            = CURRENT_LANGUAGE; // change later
         $template['SEARCH_LINK'] = sprintf('%sindex.php?module=search&amp;mod_title=%s&amp;user=search',
-                                               $home_http, $this->module);
+                                           $home_http, $this->module);
         $template['SEARCH_DESCRIPTION'] = sprintf('Search in %s', $this->title);
         $template['SEARCH_NAME'] = 'search';
 
@@ -154,26 +153,28 @@ class RSS_Channel {
 
         $template['LAST_BUILD_DATE'] = $this->_last_build_date;
 
-        foreach ($this->_feeds as $key) {
-            $itemTpl = NULL;
-            $url = preg_replace('/^\.\//', '', $key->url);
-            $itemTpl['ITEM_LINK']         = $home_http .  preg_replace('/&(?!amp;)/', '&amp;', $url);
-            $itemTpl['ITEM_TITLE']        = $key->title;
-            $itemTpl['ITEM_GUID']         = $home_http . preg_replace('/&(?!amp;)/', '&amp;', $key->url);
-            $itemTpl['ITEM_LINK']         = $home_http . preg_replace('/&(?!amp;)/', '&amp;', $key->url);
-            $itemTpl['ITEM_SOURCE']       = sprintf('%sindex.php?module=rss&amp;mod_title=%s', $home_http, $this->module);
+        if ($this->_feeds) {
+            foreach ($this->_feeds as $key) {
+                $itemTpl = NULL;
+                $url = preg_replace('/^\.\//', '', $key->url);
+                $itemTpl['ITEM_LINK']         = $home_http .  preg_replace('/&(?!amp;)/', '&amp;', $url);
+                $itemTpl['ITEM_TITLE']        = $key->title;
+                $itemTpl['ITEM_GUID']         = $home_http . preg_replace('/&(?!amp;)/', '&amp;', $key->url);
+                $itemTpl['ITEM_LINK']         = $home_http . preg_replace('/&(?!amp;)/', '&amp;', $key->url);
+                $itemTpl['ITEM_SOURCE']       = sprintf('%sindex.php?module=rss&amp;mod_title=%s', $home_http, $this->module);
 
-            $itemTpl['ITEM_DESCRIPTION']  = strip_tags(trim($key->summary));
-            $itemTpl['ITEM_AUTHOR']       = $key->creator;
-            $itemTpl['ITEM_PUBDATE']      = $key->getCreateDate('%a, %d %b %Y %T GMT');
+                $itemTpl['ITEM_DESCRIPTION']  = strip_tags(trim($key->summary));
+                $itemTpl['ITEM_AUTHOR']       = $key->creator;
+                $itemTpl['ITEM_PUBDATE']      = $key->getCreateDate('%a, %d %b %Y %T GMT');
 
-            $itemTpl['ITEM_DC_DATE']      = $key->getCreateDate('%Y-%m-%dT%H:%M');
-            $itemTpl['ITEM_DC_TYPE']      = 'Text'; //pull from db later
-            $itemTpl['ITEM_DC_CREATOR']   = $key->creator;
+                $itemTpl['ITEM_DC_DATE']      = $key->getCreateDate('%Y-%m-%dT%H:%M');
+                $itemTpl['ITEM_DC_TYPE']      = 'Text'; //pull from db later
+                $itemTpl['ITEM_DC_CREATOR']   = $key->creator;
 
-            $itemTpl['ITEM_SOURCE_TITLE'] = $this->title;
+                $itemTpl['ITEM_SOURCE_TITLE'] = $this->title;
 
-            $template['item-listing'][] = $itemTpl;
+                $template['item-listing'][] = $itemTpl;
+            }
         }
 
         if (PHPWS_Settings::get('rss', 'rssfeed') == 2) {
