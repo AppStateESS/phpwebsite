@@ -16,3 +16,4 @@ width      = 400
 height     = 300
 titlebar   = no/yes
 link_title = ''
+type       = link/button (default link)

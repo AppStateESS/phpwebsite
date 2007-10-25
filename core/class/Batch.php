@@ -97,6 +97,7 @@ class Batches {
 
         if (@$saved_batch = $_SESSION['Batches'][$this->title]['last_batch']) {
             if ($saved_batch >= $this->current_batch) {
+                $this->current_batch++;
                 return FALSE;
             }
         }
@@ -132,6 +133,11 @@ class Batches {
         return $new_url;
     }
 
+    function nextPage()
+    {
+        Layout::metaRoute($this->getAddress(), 0);
+    }
+
     function continueLink($continue_link=NULL)
     {
         if (empty($continue_link)) {
@@ -158,9 +164,10 @@ class Batches {
         }
 
         $template['percentage'] = $percentage . '%';
-        $template['total_width'] = floor(100 * GRAPH_MULTIPLIER);
-        $template['progress_width'] = floor($percentage * GRAPH_MULTIPLIER);
-        return PHPWS_Template::process($template, '', 'templates/core/graph.tpl', TRUE);
+        // 8 is a 4px padding each side
+        $template['total_width'] = round(100 * GRAPH_MULTIPLIER) + 8;
+        $template['progress_width'] = round($percentage * GRAPH_MULTIPLIER);
+        return PHPWS_Template::process($template, 'core', 'templates/core/graph.tpl', TRUE);
     }
 
 }

@@ -1,0 +1,50 @@
+Batch example
+
+Eventually I will write some documentation for Batch. For now, here is
+a quick and dirty example.
+
+PHPWS_Core::initCoreClass('Batch.php');
+
+$batches = new Batches('name_of_batch');
+
+// Reset batch to start over
+//$batches->clear();
+
+
+// Total number of records
+$batches->setTotalItems($total_items);
+
+// Number of records to parse each iteration
+$batches->setBatchSet($batch_number);
+
+
+
+// Gets the batch number from the url and loads internal info
+if (!$batches->load()) {
+   exit('Batch was previously run.');
+}
+
+$start = $batches->getStart();
+$limit = $batches->getLimit();
+
+$db = new PHPWS_DB('some_table');
+$db->setLimit($limit, $start);
+test($db->select());
+
+// Shows a simple completion graph
+echo $batch->getGraph();
+
+// We are done with this batch
+$batch->completeBatch();
+
+if ($batch->isFinished()) {
+   exit('All Done!');
+} else {
+   // send user to same page meta redirect
+   // Layout MUST render the page.
+   $batch->nextPage();
+
+   // or to use a header
+   // header('location: ' . $batch->getAddress());
+}
+
