@@ -35,13 +35,9 @@
   <tr>
     <td>{KEYWORDS_LABEL}</td>
     <td>
-      <table>
-        <tr>
-          <td><strong>{PHOTO_LARGE_LABEL}</strong><br />{PHOTO_LARGE}</td>
-          <td><strong>{PHOTO_MEDIUM_LABEL}</strong><br />{PHOTO_MEDIUM}</td>
-          <td><strong>{PHOTO_SMALL_LABEL}</strong><br />{PHOTO_SMALL}</td>
-        </tr>
-      </table>
+    <p><strong>{PHOTO_LARGE_LABEL}</strong><br />{PHOTO_LARGE}</p>
+    <p><strong>{PHOTO_MEDIUM_LABEL}</strong><br />{PHOTO_MEDIUM}</p>
+    <p><strong>{PHOTO_SMALL_LABEL}</strong><br />{PHOTO_SMALL}</p>
     </td>
   </tr>
 </table>

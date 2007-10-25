@@ -22,7 +22,7 @@ class Profile_Forms {
 
     function edit($profile)
     {
-        PHPWS_Core::initModClass('filecabinet', 'Image_Manager.php');
+        PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         $div = new PHPWS_DB('profiler_division');
         $div->addWhere('show_homepage', 1);
         $div->addOrder('title');
@@ -78,9 +78,13 @@ class Profile_Forms {
         $template = $form->getTemplate();
 
 
-        $template['PHOTO_LARGE'] = Profile_Forms::getManager($profile->photo_large, 'photo_large');
-        $template['PHOTO_MEDIUM'] = Profile_Forms::getManager($profile->photo_medium, 'photo_medium');
-        $template['PHOTO_SMALL'] = Profile_Forms::getManager($profile->photo_small, 'photo_small');
+        $lmanager = Cabinet::imageManager($profile->photo_large, 'photo_large', 720, 300);
+        $mmanager = Cabinet::imageManager($profile->photo_large, 'photo_large', 200, 200);
+        $smanager = Cabinet::imageManager($profile->photo_large, 'photo_large', 150, 150);
+
+        $template['PHOTO_LARGE']  = $lmanager->get();
+        $template['PHOTO_MEDIUM'] = $mmanager->get();
+        $template['PHOTO_SMALL']  = $smanager->get();
 
 
         $template['PHOTO_LARGE_LABEL'] = dgettext('profiler', 'Large photo');
