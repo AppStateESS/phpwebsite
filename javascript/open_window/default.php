@@ -5,6 +5,7 @@
    * @version $Id$
    */
 
+$default['label']       = 'No label';
 $default['toolbar']     = 'no';
 $default['menubar']     = 'no';
 $default['location']    = 'no';
