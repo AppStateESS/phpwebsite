@@ -65,6 +65,15 @@ class Alert_Item {
 
         $vars['aop'] = 'edit_item';
         $links[] = PHPWS_Text::secureLink(dgettext('alert', 'Edit'), 'alert', $vars);
+
+        if (Current_User::allow('alert', 'reset_items')) {
+            $js['question'] = dgettext('alert', 'Are you sure you want to reset this alert\\\'s contact status?');
+            $js['link']     = dgettext('alert', 'Reset');
+            $vars['aop'] = 'reset_item';
+            $js['address']  = PHPWS_Text::linkAddress('alert', $vars, true);
+            $links[] = javascript('confirm', $js);
+        }
+
         if (Current_User::allow('alert', 'delete_items')) {
             $js['question'] = dgettext('alert', 'Are you sure you want to delete this alert?');
             $js['link']     = dgettext('alert', 'Delete');
@@ -72,6 +81,8 @@ class Alert_Item {
             $js['address']  = PHPWS_Text::linkAddress('alert', $vars, true);
             $links[] = javascript('confirm', $js);
         }
+        
+
 
         $vars['aop'] = 'activate_item';
         $yes_link = PHPWS_Text::secureLink(dgettext('alert', 'Yes'), 'alert', $vars);
@@ -123,6 +134,13 @@ class Alert_Item {
 
         return PHPWS_Template::process($tpl, 'alert', 'view_item.tpl');
     }
+
+    function reset()
+    {
+        $this->contact_complete = 0;
+        return $this->save();
+    }
+
 }
 
 ?>

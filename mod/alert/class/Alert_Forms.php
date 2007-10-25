@@ -106,7 +106,6 @@ class Alert_Forms {
 
     function manageItems()
     {
-
         $pagetags['CONTACT_ALERT'] = $this->contactAlert();
 
         PHPWS_Core::initModClass('alert', 'Alert_Item.php');
@@ -134,6 +133,66 @@ class Alert_Forms {
         $this->alert->content = & $content;
     }
 
+    function manageParticipants()
+    {
+        PHPWS_Core::initCoreClass('DBPager.php');
+        $pager = new DBPager('alert_participant');
+
+        $form = new PHPWS_Form('participants-form');
+        $form->addHidden('module', 'alert');
+        $form->addHidden('aop', 'assign_participants');
+        $form->addSubmit(dgettext('alert', 'Update participants'));
+        $pagetags = $form->getTemplate();
+
+        $vars['aop'] = 'add_multiple';
+        $js['address'] = PHPWS_Text::linkAddress('alert', $vars, true);
+        $js['label'] = dgettext('alert', 'Add multiple');
+        $js['height'] = 480;
+        $js['height'] = 360;
+        $pagetags['ADD_MULTIPLE'] = javascript('open_window', $js);
+
+        $vars['aop'] = 'subtract_multiple';
+        $js['label'] = dgettext('alert', 'Subtract multiple');
+        $js['address'] = PHPWS_Text::linkAddress('alert', $vars, true);
+        $pagetags['SUBTRACT_MULTIPLE'] = javascript('open_window', $js);
+
+
+        $types = $this->alert->getTypes('obj');
+
+        if (!empty($types)) {
+            $GLOBALS['Alert_Types'] = & $types;
+            $pager->addRowFunction(array('Alert_Forms', '_checkboxTypes'));
+            foreach ($types as $type) {
+                $pagetags['th'][]= array('TYPE_LABEL'=>sprintf('<abbr title="%s">%s</abbr>', $type->title, substr($type->title, 0, 3)));
+            }
+            // Requires _checkboxTypes 
+            $pagetags['CHECK_ALL'] = javascript('check_all', array('checkbox_name'=>'type_id[]'));
+        }
+
+        $pagetags['EMAIL_LABEL'] = dgettext('alert', 'Email address');
+
+        $pager->setLimitList(array(10=>10, 25=>25, 50=>50, 100=>100));
+        $pager->setDefaultLimit(25);
+        $pager->addPageTags($pagetags);
+        $pager->setModule('alert');
+        $pager->setTemplate('manage_participants.tpl');
+
+        $this->alert->title = dgettext('alert', 'Participants');
+        $this->alert->content = $pager->get();
+    }
+
+    function _checkboxTypes($value)
+    {
+        if (empty($GLOBALS['Alert_Types'])) {
+            return null;
+        }
+
+        foreach ($GLOBALS['Alert_Types'] as $type) {
+            $cbs[] = sprintf('<input type="checkbox" name="type_id[]" value="%s:%s" />', $type->id, $value['id']);
+        }
+        return array('TYPES' => '</td><td>' . implode('</td><td>', $cbs));
+    }
+
     function contactAlert()
     {
         if (!Current_User::allow('alert', 'allow_contact')) {
@@ -157,7 +216,9 @@ class Alert_Forms {
                 } else {
                     $label = dgettext('alert', 'Start mailing');
                 }
-                $subtpl['STATUS'] = PHPWS_Text::secureLink($label, 'alert', array('aop'=>'send_email', 'id'=> $item->id));
+                $link = PHPWS_Text::linkAddress('alert', array('aop'=>'send_email', 'id'=> $item->id), true);
+                $subtpl['STATUS'] = javascript('open_window', array('address'=>$link, 'label'=>$label,
+                                                                    'type'=>'button', 'width'=>460, 'height'=>230));
                 $tpl['rows'][] = $subtpl;
             }
 
@@ -176,8 +237,10 @@ class Alert_Forms {
         $pagetags['ADD_TYPE'] = PHPWS_Text::secureLink(dgettext('alert', 'Add alert type'),
                                                        'alert', array('aop'=>'edit_type'));
         $pagetags['POST_TYPE_LABEL'] = dgettext('alert', 'Post type');
-        $pagetags['EMAIL_LABEL']     = dgettext('alert', 'Email participants');
-        $pagetags['RSSFEED_LABEL']   = dgettext('alert', 'RSS feed');
+        $pagetags['EMAIL_ABBR']     = dgettext('alert', 'Email');
+        $pagetags['EMAIL_LABEL']     = dgettext('alert', 'Contact participants via email when new alerts created');
+        $pagetags['RSSFEED_ABBR']   = dgettext('alert', 'RSS');
+        $pagetags['RSSFEED_LABEL']   = dgettext('alert', 'RSS feed available');
         $pagetags['ACTION_LABEL']    = dgettext('alert', 'Action');
 
         $pager = new DBPager('alert_type', 'Alert_Type');
@@ -203,11 +266,32 @@ class Alert_Forms {
         $form->addText('date_format', $settings['date_format']);
         $form->setTitle('date_format', 'Format uses PHP strftime standard');
         $form->setLabel('date_format', dgettext('alert', 'Date format'));
+
+        $form->addText('email_batch_number', $settings['email_batch_number']);
+        $form->setTitle('email_batch_number', 'Number of emails to send per batch.');
+        $form->setLabel('email_batch_number', dgettext('alert', 'Email batch'));
+
         $form->addSubmit('submit', dgettext('alert', 'Save settings'));
 
         $tpl = $form->getTemplate();
         $this->alert->title = dgettext('alert', 'Alert Settings');
         $this->alert->content = PHPWS_Template::process($tpl, 'alert', 'settings.tpl');
+    }
+
+    function addMultiple()
+    {
+        $form = new PHPWS_Form('add-multiple');
+        $form->addHidden('module', 'alert');
+        $form->addHidden('aop', 'post_multiple_adds');
+        $form->addTextArea('multiple');
+        $form->addSubmit(dgettext('alert', 'Save'));
+        $tpl = $form->getTemplate();
+        
+        $tpl['INSTRUCTIONS'] = dgettext('alert', 'Enter the email addresses for each participant. Separate them with new lines.');
+        $tpl['CANCEL'] = javascript('close_window');
+        
+        $this->alert->title = dgettext('alert', 'Add Multiple Participants');
+        $this->alert->content = PHPWS_Template::process($tpl, 'alert', 'multiple.tpl');
     }
 
 }

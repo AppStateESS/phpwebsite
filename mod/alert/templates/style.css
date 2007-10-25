@@ -6,3 +6,9 @@ div#alert-contact-needed {
 div#alert-contact-needed table td {
    padding : 0px 8px;
 }
+
+div.alert-image {
+   float : right;
+   margin : 0px 0px 10px 10px;
+   display : inline;
+}

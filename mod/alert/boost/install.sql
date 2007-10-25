@@ -4,6 +4,8 @@ email VARCHAR( 50 ) NOT NULL ,
 PRIMARY KEY ( id )
 );
 
+ALTER TABLE alert_participant ADD UNIQUE (email);
+
 CREATE TABLE alert_prt_to_type (
 prt_id INT NOT NULL default 0 ,
 type_id INT NOT NULL default 0 ,
@@ -13,7 +15,7 @@ INDEX ( prt_id , type_id )
 
 CREATE TABLE alert_contact (
 prt_id INT NOT NULL default 0 ,
-alert_id INT NOT NULL default 0,
+item_id INT NOT NULL default 0,
 email varchar(60) NOT NULL
 );
 
