@@ -464,17 +464,20 @@ class FC_Image_Manager {
     {
         $js_vars['src']      = FC_NONE_IMAGE_SRC;
 
-        if ($this->max_width > FC_MAX_WIDTH_DISPLAY) {
-            $js_vars['width'] = FC_MAX_WIDTH_DISPLAY;
+        if ($this->max_width > $this->_noimage_max_width) {
+            $width = & $this->_noimage_max_width;
         } else {
-            $js_vars['width'] = & $this->max_width;
+            $width = & $this->max_width;
         }
 
-        if ($this->max_height > FC_MAX_HEIGHT_DISPLAY) {
-            $js_vars['height'] = FC_MAX_HEIGHT_DISPLAY;
+        if ($this->max_height > $this->_noimage_max_height) {
+            $height = & $this->_noimage_max_height;
         } else {
-            $js_vars['height'] = & $this->max_height;
+            $height = & $this->max_height;
         }
+
+        $js_vars['width'] = & $width;
+        $js_vars['height'] = & $height;
 
         $js_vars['alt']      = 
         $js_vars['title']    = $js_vars['alt'] = dgettext('filecabinet', 'No image');

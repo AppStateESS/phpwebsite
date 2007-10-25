@@ -1,3 +1,8 @@
+25 October 2007
++ Fixed clear Image link. Wasn't returning clear image to correct
+  size.
++ Updated: javascript/clear_image/body.js, javascript/clear_image/head.js
+
 Version 1.3.0
 ---------------------------------------------------------------------
 4 October 2007
