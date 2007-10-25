@@ -74,36 +74,21 @@ class Profile_Forms {
             $form->addSubmit('submit', dgettext('profiler', 'Create profile'));
         }
 
-
         $template = $form->getTemplate();
 
-
         $lmanager = Cabinet::imageManager($profile->photo_large, 'photo_large', 720, 300);
-        $mmanager = Cabinet::imageManager($profile->photo_large, 'photo_large', 200, 200);
-        $smanager = Cabinet::imageManager($profile->photo_large, 'photo_large', 150, 150);
+        $mmanager = Cabinet::imageManager($profile->photo_medium, 'photo_medium', 200, 200);
+        $smanager = Cabinet::imageManager($profile->photo_small, 'photo_small', 150, 150);
 
         $template['PHOTO_LARGE']  = $lmanager->get();
         $template['PHOTO_MEDIUM'] = $mmanager->get();
         $template['PHOTO_SMALL']  = $smanager->get();
-
 
         $template['PHOTO_LARGE_LABEL'] = dgettext('profiler', 'Large photo');
         $template['PHOTO_MEDIUM_LABEL'] = dgettext('profiler', 'Medium photo');
         $template['PHOTO_SMALL_LABEL'] = dgettext('profiler', 'Small photo');
 
         return PHPWS_Template::process($template, 'profiler', 'forms/edit.tpl');
-    }
-
-    function getManager($image_id, $image_name)
-    {
-        $manager = new FC_Image_Manager($image_id);
-        $manager->setMaxWidth(MAX_PHOTO_WIDTH);
-        $manager->setMaxHeight(MAX_PHOTO_HEIGHT);
-        $manager->setMaxSize(PR_MAX_FILE_SIZE);
-        $manager->setModule('profiler');
-        $manager->setItemname($image_name);
-
-        return $manager->get();
     }
 
     function profileList()
