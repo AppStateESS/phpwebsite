@@ -40,7 +40,7 @@ class Blog_Form {
                 }
             }
 
-            if (isset($blog->id) || isset($version_id)){
+            if ($blog->id || isset($version_id)){
                 $form->addHidden('blog_id', $blog->id);
                 $form->addSubmit('submit', dgettext('blog', 'Update entry'));
             } else {
