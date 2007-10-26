@@ -549,9 +549,12 @@ class Webpage_Volume {
     
     function view($page=null, $show_page_title=true)
     {
-        if ($this->canView()) {
-            Current_User::disallow();
-            return;
+        if (!$this->canView()) {
+            if ($this->frontpage && PHPWS_Core::atHome()) {
+                return null;
+            } else {
+                return dgettext('webpage', 'Sorry, this web page is restricted.');
+            }
         }
 
         Layout::addStyle('webpage');
@@ -571,7 +574,7 @@ class Webpage_Volume {
 
                 if (!is_object($oPage)) {
                     PHPWS_Error::log(WP_PAGE_FROM_VOLUME, 'webpage', 'Webpage_Volume::view');
-                    PHPWS_Core::errorPage();
+                    return null;
                 }
                 $content = $oPage->view();
             }
