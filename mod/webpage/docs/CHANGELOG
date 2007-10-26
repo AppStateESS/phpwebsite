@@ -1,3 +1,6 @@
+26 October 2007
++ canEdit function in Volume fixed.
+
 17 October 2007
 + Labeled Feature and Delete page permissions as Unrestricted only
 + Moved permission checks out to individual commands.

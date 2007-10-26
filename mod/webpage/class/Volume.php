@@ -242,7 +242,9 @@ class Webpage_Volume {
             $links[] = PHPWS_Text::secureLink(dgettext('webpage', 'Edit'), 'webpage', $vars);
         }
 
-        $links[] = $this->getViewLink();
+        if ($this->canView()) {
+            $links[] = $this->getViewLink();
+        }
 
         if (Current_User::isUnrestricted('webpage')) {
             $links[] = Current_User::popupPermission($this->key_id);
@@ -258,9 +260,16 @@ class Webpage_Volume {
 
         $tpl['DATE_CREATED'] = $this->getDateCreated();
         $tpl['DATE_UPDATED'] = $this->getDateUpdated();
-        $tpl['ACTION']       = implode(' | ', $links);
+        if (!empty($links)) {
+            $tpl['ACTION']       = implode(' | ', $links);
+        }
 
-        $tpl['TITLE'] = sprintf('<a href="%s">%s</a>', $this->getViewLink(true), $this->title);
+        if ($this->canView()) {
+            $tpl['TITLE'] = sprintf('<a href="%s">%s</a>', $this->getViewLink(true), $this->title);
+        } else {
+            $tpl['TITLE'] = $this->title;
+        }
+
         if (!$this->approved) {
             $tpl['TITLE'] .= ' ' . dgettext('webpage', '[Unapproved]');
         }
@@ -452,7 +461,7 @@ class Webpage_Volume {
 
     function getTplTags($page_links=true, $version=0)
     {
-        $template['PAGE_TITLE'] = $this->getTitle();
+        $template['PAGE_TITLE'] = $this->title;
         $template['SUMMARY'] = $this->getSummary();
 
         if ($page_links && count($this->_pages) > 1) {
@@ -540,9 +549,7 @@ class Webpage_Volume {
     
     function view($page=null, $show_page_title=true)
     {
-        $this->loadKey();
-
-        if (!$this->_key->allowView()) {
+        if ($this->canView()) {
             Current_User::disallow();
             return;
         }
@@ -709,6 +716,12 @@ class Webpage_Volume {
         }
 
         return false;
+    }
+
+    function canView()
+    {
+        $this->loadKey();
+        return $this->_key->allowView();
     }
 
 }
