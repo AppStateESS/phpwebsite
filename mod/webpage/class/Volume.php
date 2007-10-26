@@ -265,7 +265,9 @@ class Webpage_Volume {
             $tpl['TITLE'] .= ' ' . dgettext('webpage', '[Unapproved]');
         }
 
-        $tpl['CHECKBOX'] = sprintf('<input type="checkbox" name="webpage[]" id="webpage" value="%s" />', $this->id);
+        if (Current_User::isUnrestricted('webpage')) {
+            $tpl['CHECKBOX'] = sprintf('<input type="checkbox" name="webpage[]" id="webpage" value="%s" />', $this->id);
+        }
 
         if ($this->frontpage) {
             $tpl['FRONTPAGE'] = dgettext('webpage', 'Yes');
@@ -702,7 +704,7 @@ class Webpage_Volume {
             return true;
         }
       
-        if (Current_User::allow('webpage', 'edit_page', $volume->id, 'volume')) {
+        if (Current_User::allow('webpage', 'edit_page', $this->id, 'volume')) {
             return true;
         }
 
