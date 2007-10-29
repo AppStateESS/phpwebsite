@@ -423,7 +423,10 @@ class Webpage_Admin {
 
             if (isset($_POST['webpage'])) {
                 Webpage_Admin::setFrontPage($_POST['webpage'], 1);
+            } elseif($volume->id) {
+                Webpage_Admin::setFrontPage(array($volume->id), 1);
             }
+
             Webpage_Admin::goBack();
             break;
 
@@ -434,6 +437,8 @@ class Webpage_Admin {
 
             if (isset($_POST['webpage'])) {
                 Webpage_Admin::setFrontPage($_POST['webpage'], 0);
+            } elseif($volume->id) {
+                Webpage_Admin::setFrontPage(array($volume->id), 0);
             }
             Webpage_Admin::goBack();
             break;

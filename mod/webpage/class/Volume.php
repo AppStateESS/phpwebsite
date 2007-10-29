@@ -278,10 +278,17 @@ class Webpage_Volume {
             $tpl['CHECKBOX'] = sprintf('<input type="checkbox" name="webpage[]" id="webpage" value="%s" />', $this->id);
         }
 
-        if ($this->frontpage) {
-            $tpl['FRONTPAGE'] = dgettext('webpage', 'Yes');
+        if (Current_User::isUnrestricted('webpage')) {
+            if ($this->frontpage) {
+                $vars['wp_admin'] = 'move_off_frontpage';
+                $fp = PHPWS_Text::secureLink(dgettext('webpage', 'Yes'), 'webpage', $vars);
+            } else {
+                $vars['wp_admin'] = 'move_to_frontpage';
+                $fp = PHPWS_Text::secureLink(dgettext('webpage', 'No'), 'webpage', $vars);
+            }
+            $tpl['FRONTPAGE'] = $fp;
         } else {
-            $tpl['FRONTPAGE'] = dgettext('webpage', 'No');
+            $tpl['FRONTPAGE'] = $this->frontpage ? dgettext('webpage', 'Yes') : dgettext('webpage', 'No');
         }
 
         if (Current_User::isUnrestricted('webpage')) {
