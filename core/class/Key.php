@@ -281,12 +281,18 @@ class Key {
             $db->reset();
         }
 
+
         $result = $db->saveObject($this);
         if (PEAR::isError($result)) {
             $this->_error = $result;
             return $result;
         }
 
+        return true;
+    }
+
+    function savePermissions()
+    {
         $view_db = new PHPWS_DB('phpws_key_view');
         $view_db->addWhere('key_id', $this->id);
         $result = $view_db->delete();
@@ -300,22 +306,20 @@ class Key {
         if (PEAR::isError($result)) {
             return $result;
         }
-        
+
         // we don't care if restricted is 0 because everyone can view
         // we don't care if it is KEY_LOGGED_RESTRICTED either because
         // just checking log status covers it
-
         if ($this->restricted == KEY_GROUP_RESTRICTED) {
             if (!empty($this->_view_groups) && is_array($this->_view_groups)) {
                 $view_db->reset();
-
                 $this->_view_groups = array_unique($this->_view_groups);
 
                 foreach ($this->_view_groups as $group_id) {
                     $view_db->resetValues();
                     $view_db->addValue('key_id', $this->id);
                     $view_db->addValue('group_id', $group_id);
-                    $view_db->insert();
+                    PHPWS_Error::logIfError($view_db->insert());
                 }
             }
         }
@@ -323,14 +327,14 @@ class Key {
         if (!empty($this->_edit_groups) && is_array($this->_edit_groups)) {
             $edit_db->reset();
             $this->_edit_groups = array_unique($this->_edit_groups);
+
             foreach ($this->_edit_groups as $group_id) {
                 $edit_db->resetValues();
                 $edit_db->addValue('key_id', $this->id);
                 $edit_db->addValue('group_id', $group_id);
-                $edit_db->insert();
+                PHPWS_Error::logIfError($edit_db->insert());
             }
         }
-
         return true;
     }
 

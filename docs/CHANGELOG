@@ -2,6 +2,10 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+29 October 2007
++ Moved permissions updates from save to savePermissions function. Key
+  was removing permissions after each successful save.
+
 25 October 2007
 + Added default 'No label' to open_window if one is not entered.
 + Added nextPage function to Batch. Automatically adds the meta tag
