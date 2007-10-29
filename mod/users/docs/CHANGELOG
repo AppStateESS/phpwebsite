@@ -1,3 +1,6 @@
+29 October 2007
++ Using new savePermissions function instead of save.
+
 17 October 2007
 + Current_User was calling giveItemPermissions incorrectly.
 

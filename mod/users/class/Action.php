@@ -477,7 +477,7 @@ class User_Action {
         Users_Permission::postViewPermissions($key);
         Users_Permission::postEditPermissions($key);
 
-        $result = $key->save();
+        $result = $key->savePermissions();
         if (isset($_POST['popbox'])) {
             Layout::nakedDisplay(javascript('close_refresh', array('refresh'=>0)));
         } else {
