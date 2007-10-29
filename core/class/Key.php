@@ -293,6 +293,16 @@ class Key {
 
     function savePermissions()
     {
+        if (!$this->id) {
+            return false;
+        }
+
+        $db = new PHPWS_DB('phpws_key');
+        $db->addValue('restricted', $this->restricted);
+        if (PHPWS_Error::logIfError($db->saveObject($this))) {
+            return false;
+        }
+
         $view_db = new PHPWS_DB('phpws_key_view');
         $view_db->addWhere('key_id', $this->id);
         $result = $view_db->delete();
