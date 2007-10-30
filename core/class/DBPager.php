@@ -473,7 +473,7 @@ class DBPager {
      * This function pulls the database information then plugs
      * the data it gets into the object.
      */
-    function initialize()
+    function initialize($load_rows=true)
     {
         if (isset($this->error)) {
             return $this->error;
@@ -511,6 +511,10 @@ class DBPager {
             $this->db->addOrder($this->orderby . ' ' . $this->orderby_dir);
         } elseif (isset($this->default_order)) {
             $this->db->addOrder($this->default_order . ' ' . $this->default_order_dir);
+        }
+
+        if (!$load_rows) {
+            return true;
         }
 
         if (empty($this->class)) {
@@ -783,6 +787,7 @@ class DBPager {
      */
     function getPageRows()
     {
+        $template = null;
         $count = 0;
 
         if (!isset($this->display_rows)) {
