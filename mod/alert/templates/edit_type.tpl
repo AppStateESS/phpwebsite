@@ -1,14 +1,21 @@
 {START_FORM}
 <p><strong>{TITLE_LABEL}</strong><br />{TITLE}</p>
-<p>{EMAIL} {EMAIL_LABEL}<br />
-{RSSFEED} {RSSFEED_LABEL}</p>
-<strong>{POST_TYPE_LABEL}</strong>
-<ul style="list-style : none">
-<li>{POST_TYPE_1} {POST_TYPE_1_LABEL}</li>
-<li>{POST_TYPE_2} {POST_TYPE_2_LABEL}</li>
-<li>{POST_TYPE_3} {POST_TYPE_3_LABEL}</li>
-<li>{POST_TYPE_4} {POST_TYPE_4_LABEL}</li>
-</ul>
+<table cellpadding="5">
+   <tr><td><strong>{EMAIL_LABEL}</strong></td><td>{EMAIL}</td></tr>
+   <tr><td><strong>{FEEDNAME_LABEL}</strong></td><td>{FEEDNAME}</td></tr>
+   <tr><td><strong>{RSSFEED_LABEL}</strong></td><td>{RSSFEED}</td></tr>
+   <tr><td><strong>{POST_TYPE_LABEL}</strong></td>
+       <td><ul style="list-style : none; margin : 0">
+           <li>{POST_TYPE_1} {POST_TYPE_1_LABEL}</li>
+           <li>{POST_TYPE_2} {POST_TYPE_2_LABEL}</li>
+           <li>{POST_TYPE_3} {POST_TYPE_3_LABEL}</li>
+           <li>{POST_TYPE_4} {POST_TYPE_4_LABEL}</li>
+           </ul>
+       </td>
+   </tr>
+</table>
+
+
 <p><strong>{DEFAULT_ALERT_LABEL}</strong><br />{DEFAULT_ALERT}</p>
 {SUBMIT}
 {END_FORM}

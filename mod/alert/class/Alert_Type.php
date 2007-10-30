@@ -9,6 +9,7 @@ class Alert_Type {
     var $title         = null;
     var $email         = false;
     var $rssfeed       = false;
+    var $feedname      = null;
     var $post_type     = 0;
     var $default_alert = null;
     var $_accessed     = false;
@@ -35,6 +36,12 @@ class Alert_Type {
             return $result;
         }
         return true;
+    }
+
+    function setFeedName($feedname)
+    {
+        $feedname = str_replace(' ', '_', $feedname);
+        $this->feedname = preg_replace('/\W/', '', $feedname);
     }
 
     function rowTags()
@@ -102,7 +109,7 @@ class Alert_Type {
     {
         $db = new PHPWS_DB('alert_item');
         $db->addWhere('type_id', $this->id);
-        $db->addWhere('active', 0);
+        $db->addWhere('active', 1);
         $db->addOrder('create_date desc');
         switch($this->post_type) {
         case APST_NONE:

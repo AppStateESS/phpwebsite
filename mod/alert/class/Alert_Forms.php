@@ -87,6 +87,9 @@ class Alert_Forms {
         $form->setMatch('rssfeed', $type->rssfeed);
         $form->setLabel('rssfeed', dgettext('alert', 'Create RSS feed'));
 
+        $form->addText('feedname', $type->feedname);
+        $form->setLabel('feedname', dgettext('alert', 'Feed name'));
+
         $post_types[APST_NONE]   = dgettext('alert', 'Do not post on front page');
         $post_types[APST_WEEKLY] = dgettext('alert', 'Weekly listing');
         $post_types[APST_DAILY]  = dgettext('alert', 'Daily listing');
@@ -100,6 +103,8 @@ class Alert_Forms {
         $form->setLabel('default_alert', dgettext('alert', 'Default message'));
         $form->addSubmit(dgettext('alert', 'Save'));
         $tpl = $form->getTemplate();
+
+        $tpl['POST_TYPE_LABEL'] = dgettext('alert', 'Post type');
 
         $this->alert->content = PHPWS_Template::process($tpl, 'alert', 'edit_type.tpl');
     }

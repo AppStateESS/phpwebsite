@@ -1,7 +1,8 @@
 <?php
 /**
- * @version $Id$
+ *
  * @author Matthew McNaney <mcnaney at gmail dot com>
+ * @version $Id$
  */
 
 define('APST_NONE',   0);
@@ -20,12 +21,12 @@ class Alert {
     /**
      * An alert item
      */
-    var $item  = null;
+    var $item = null;
 
     /**
      * An alert type object
      */
-    var $type  = null;
+    var $type = null;
 
     var $type_list = null;
 
@@ -33,21 +34,42 @@ class Alert {
      * The forms object. Initialized with loadForms.
      */
     var $forms = null;
-    var $panel      = null;
+    var $panel = null;
+    var $rssfeed = null;
 
     function user()
     {
-        if (isset($_GET['uop'])) {
+        if (isset($_GET['rssfeed'])) {
+            $command = 'rss';
+            $this->rssfeed = strip_tags($_GET['rssfeed']);
+        } elseif (isset($_GET['uop'])) {
             $command = & $_GET['uop'];
+        } elseif (!empty($_GET['id'])) {
+            $command = 'view';
         } else {
-            $command = 'homepage';
+            PHPWS_Core::home();
         }
 
         switch($command) {
         case 'rss':
             $this->showRSS();
             break;
+
+        case 'view':
+            $this->loadItem();
+            if ($this->item->id && $this->item->active) {
+                Layout::add($this->item->view());
+            } else {
+                $this->title = dgettext('alert', 'Sorry');
+                $this->content = dgettext('alert', 'Alert could not be located.');
+            }
+            break;
         }
+        $tpl['TITLE']   = $this->title;
+        $tpl['MESSAGE'] = $this->message;
+        $tpl['CONTENT'] = $this->content;
+
+        Layout::add(PHPWS_Template::process($tpl, 'alert', 'user.tpl'));
     }
 
     function viewItems()
@@ -207,6 +229,20 @@ class Alert {
             }
             break;
 
+        case 'deactivate_item':
+            $this->loadItem();
+            $this->item->active = 0;
+            PHPWS_Error::logIfError($this->item->save());
+            PHPWS_Core::goBack();
+            break;
+
+        case 'activate_item':
+            $this->loadItem();
+            $this->item->active = 1;
+            PHPWS_Error::logIfError($this->item->save());
+            PHPWS_Core::goBack();
+            break;
+
         case 'types':
             $this->loadForms();
             $this->forms->manageTypes();
@@ -359,6 +395,25 @@ class Alert {
         }
     }
 
+    function loadTypeByFeed()
+    {
+        PHPWS_Core::initModClass('alert', 'Alert_Type.php');
+
+        $db = new PHPWS_DB('alert_type');
+        $db->addWhere('feedname', $this->rssfeed);
+        $db->setLimit(1);
+        $row = $db->select('row');
+        if ($row) {
+            if (PHPWS_Error::logIfError($row)) {
+                $this->type = null;
+                return false;
+            } else {
+                $this->type = new Alert_Type;
+                PHPWS_Core::plugObject($this->type, $row);
+            }
+        }
+    }
+
     function loadType($type_id=0)
     {
         PHPWS_Core::initModClass('alert', 'Alert_Type.php');
@@ -487,6 +542,16 @@ class Alert {
 
         $type->email     = isset($_POST['email']);
         $type->rssfeed   = isset($_POST['rssfeed']);
+
+        if (isset($_POST['feedname'])) {
+            $type->setFeedName($_POST['feedname']);
+        }
+
+        if ($type->rssfeed && empty($type->feedname)) {
+            $this->addMessage(dgettext('alert', 'Please give your rss feed an access name.'));
+            $allgood = false;
+        }
+
         $type->post_type = $_POST['post_type'];
         $type->setDefaultAlert($_POST['default_alert']);
 
@@ -695,19 +760,20 @@ class Alert {
 
     function showRSS()
     {
-        $this->loadTypes();
-        test($this->type_list,1);
+        $this->loadTypeByFeed();
 
-        foreach ($this->type_list as $type) {
-            if (!$type->rssfeed) {
-                continue;
-            }
-
-            
+        $items = $this->type->getItems();
+        if (PHPWS_Error::logIfError($items) || empty($items)) {
+            exit();
+        }
+        
+        foreach ($items as $item) {
+            $feeds[] = $item->createFeed();
         }
 
         PHPWS_Core::initModClass('rss', 'Channel.php');
         $channel = new RSS_Channel;
+        $channel->_feeds = $feeds;
         $channel->module = 'alert';
         $channel->title = 'Testing';
         $channel->description = 'Testing rss feed for alert';

@@ -84,9 +84,9 @@ class Alert_Item {
         
 
 
-        $vars['aop'] = 'activate_item';
-        $yes_link = PHPWS_Text::secureLink(dgettext('alert', 'Yes'), 'alert', $vars);
         $vars['aop'] = 'deactivate_item';
+        $yes_link = PHPWS_Text::secureLink(dgettext('alert', 'Yes'), 'alert', $vars);
+        $vars['aop'] = 'activate_item';
         $no_link = PHPWS_Text::secureLink(dgettext('alert', 'No'), 'alert', $vars);
 
         $tpl['ACTIVE'] = $this->active ? $yes_link : $no_link;
@@ -139,6 +139,15 @@ class Alert_Item {
     {
         $this->contact_complete = 0;
         return $this->save();
+    }
+
+    function createFeed()
+    {
+        PHPWS_Core::initModClass('rss', 'Feed.php');
+        $feed = new Key;
+        $feed->title = $this->title;
+        $feed->url = 'index.php?module=alert&id=' . $this->id;
+        return $feed;
     }
 
 }

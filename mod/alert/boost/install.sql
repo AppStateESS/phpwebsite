@@ -41,6 +41,7 @@ id INT NOT NULL default 0 ,
 title VARCHAR( 255 ) NOT NULL ,
 email SMALLINT NOT NULL default 0 ,
 rssfeed SMALLINT NOT NULL default 0 ,
+feedname varchar(30) NULL, 
 post_type SMALLINT NOT NULL default 0 ,
 default_alert TEXT NULL ,
 PRIMARY KEY ( id )
