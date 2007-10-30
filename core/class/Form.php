@@ -1025,8 +1025,20 @@ class PHPWS_Form {
             break;
 
         case 'hidden':
-            $obj = new Form_Hidden($name, $value);
-            return $obj;
+            if (is_array($value)) {
+                foreach ($value as $key=>$sub) {
+                    $hidden = new Form_Hidden($name, $sub);
+                    $hidden->setId();
+                    $hidden->isArray = true;
+                    $hidden->key = $sub;
+                    $hidden->place = $key;
+                    $allHidden[$sub] = $hidden;
+                }
+                return $allHidden;
+            } else {
+                $obj = new Form_Hidden($name, $value);
+                return $obj;
+            }
             break;
 
         default:
@@ -1405,7 +1417,6 @@ class Form_Hidden extends Form_Element {
 
     function get()
     {
-        
         return '<input type="hidden" ' 
             . $this->getName(true)
             . $this->getValue(true)
@@ -1934,7 +1945,7 @@ class Form_Element {
         $id = $this->getName();
         // changed 20070312
         // Square brackets are not allowed as id names.
-        $id = preg_replace('/\[(\w)\]/', '_\\1', $id);
+        $id = preg_replace('/\[(\w+)\]/', '_\\1', $id);
 
         // changed 6/14/06
         if ($this->type == 'radio') {
