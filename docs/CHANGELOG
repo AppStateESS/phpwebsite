@@ -2,6 +2,14 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+30 October 2007
++ Fixed: Form wasn't properly creating id tags on array elements.
++ DBPager: initialize function now has optional parameter that delays
+           the row loading.
++ DBPager: Error prevention added to getPageRows function.
++ Mail: added HTML email capabilities.
+
+
 29 October 2007
 + Moved permissions updates from save to savePermissions function. Key
   was removing permissions after each successful save.
