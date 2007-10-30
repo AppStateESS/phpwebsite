@@ -23,7 +23,7 @@
  * $message  = 'Hello. This is a test message. This message is subject to change during testing.';
  *
  *
- * $mail = & new PHPWS_Mail;
+ * $mail = new PHPWS_Mail;
  *
  * $mail->addSendTo($send_to);
  * $mail->setSubject($subject);
@@ -44,13 +44,14 @@ PHPWS_Core::requireConfig('core', 'mail_settings.php');
 
 class PHPWS_Mail {
     var $send_to           = array();
-    var $subject_line      = NULL;
-    var $from_address      = NULL;
-    var $reply_to_address  = NULL;
-    var $carbon_copy       = NULL;
-    var $blind_copy        = NULL;
-    var $message_body      = NULL;
-    var $message_tpl       = NULL;
+    var $subject_line      = null;
+    var $from_address      = null;
+    var $reply_to_address  = null;
+    var $carbon_copy       = null;
+    var $blind_copy        = null;
+    var $message_body      = null;
+    var $html_body         = null;
+    var $message_tpl       = null;
     var $send_individually = true;
     var $backend_type      = MAIL_BACKEND;
 
@@ -125,16 +126,15 @@ class PHPWS_Mail {
         }
     }
 
+    function setHTMLBody($html_body)
+    {
+        $this->html_body = $html_body;
+    }
+
     function setMessageBody($message_body)
     {
         $this->message_body = $message_body;
     }
-
-    function getMessageBody()
-    {
-        return $this->message_body;
-    }
-
 
     function setBackend($backend)
     {
@@ -177,17 +177,26 @@ class PHPWS_Mail {
         $param = array();
 
         require_once 'Mail.php';
-        if (empty($this->send_to) || empty($this->from_address) || empty($this->message_body)) {
+        require_once 'Mail/mime.php';
+
+        if (empty($this->send_to) || empty($this->from_address) || 
+            ( empty($this->message_body) && empty($this->html_body) ) ) {
             return FALSE;
         }
 
-        /*
-        $headers['MIME-Version'] = '1.0';
-        $headers['Content-type'] = 'text/html; charset=iso-8859-1';
-        */
+        $message = new Mail_mime();
+        if (!empty($this->message_body)) {
+            $message->setTXTBody($this->message_body);
+        }
 
-        $headers['From'] = &$this->from_address;
-        $headers['Subject'] = &$this->subject_line;
+        if (!empty($this->html_body)) {
+            $message->setHTMLBody($this->html_body);
+        }
+
+        $body = $message->get();
+
+        $headers['From']    = & $this->from_address;
+        $headers['Subject'] = & $this->subject_line;
 
         if (isset($this->reply_to_address)) {
             $headers['Reply-To'] = $this->reply_to_address;
@@ -199,11 +208,6 @@ class PHPWS_Mail {
 
         if (!empty($this->blind_copy)) {
             $headers['Bcc'] = implode(',', $this->blind_copy);
-        }
-
-        $body = $this->getMessageBody();
-        if (empty($body)) {
-            return FALSE;
         }
 
         switch ($this->backend_type) {
@@ -241,12 +245,13 @@ class PHPWS_Mail {
 
         }
 
-        $mail_object =& Mail::factory($this->backend_type, $param);
+        $m_headers = $message->headers($headers);
+        $mail_object = Mail::factory($this->backend_type, $param);
 
         if ($this->send_individually) {
             foreach($this->send_to as $address) {
                 $recipients['To']   = $address;
-                $result = $mail_object->send($recipients, $headers, $body);
+                $result = $mail_object->send($recipients, $m_headers, $body);
                 if (PHPWS_Error::logIfError($result)) {
                     $error_found = true;
                 }
@@ -258,7 +263,7 @@ class PHPWS_Mail {
             }
         } else {
             $recipients['To']   = implode(',', $this->send_to);
-            return $mail_object->send($recipients, $headers, $body);
+            return $mail_object->send($recipients, $m_headers, $body);
         }
     }
 
