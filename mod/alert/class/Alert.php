@@ -285,6 +285,11 @@ class Alert {
             $this->forms->settings();
             break;
 
+        case 'assign_participants':
+            $this->assignParticipants();
+            PHPWS_Core::goBack();
+            break;
+
         case 'remove_all_participants':
             $this->removeAllParticipants();
             PHPWS_Core::goBack();
@@ -319,6 +324,37 @@ class Alert {
         Layout::add(PHPWS_ControlPanel::display($this->panel->display($this->content, $this->title, $this->getMessage())));
     }
 
+
+    function assignParticipants()
+    {
+        if (empty($_POST['type_id'])) {
+            return;
+        }
+
+        $db = new PHPWS_DB('alert_prt_to_type');
+        $count = 0;
+
+        $add = isset($_POST['add_checked_participants']);
+        $remove = isset($_POST['remove_checked_participants']);
+
+        foreach ($_POST['type_id'] as $type_id=>$participants) {
+            $db->reset();
+            if ($add) {
+                foreach ($participants as $prt) {
+                    $db->addValue('type_id', $type_id);
+                    $db->addValue('prt_id', $prt);
+                    PHPWS_Error::logIfError($db->insert());
+                    $db->resetValues();
+                }
+            } elseif ($remove) {
+                $db->addWhere('type_id', $type_id);
+                $db->addWhere('prt_id', $participants);
+                PHPWS_Error::logIfError($db->delete());
+            }
+        }
+
+
+    }
 
     function removeAllParticipants()
     {
@@ -385,7 +421,7 @@ class Alert {
     function loadItem()
     {
         PHPWS_Core::initModClass('alert', 'Alert_Item.php');
-        if ($_REQUEST['id']) {
+        if (isset($_REQUEST['id'])) {
             $this->item = new Alert_Item($_REQUEST['id']);
             if (!$this->item->id) {
                 $this->addMessage(dgettext('alert', 'Could not locate alert item.'));
@@ -543,8 +579,10 @@ class Alert {
         $type->email     = isset($_POST['email']);
         $type->rssfeed   = isset($_POST['rssfeed']);
 
-        if (isset($_POST['feedname'])) {
+        if (!empty($_POST['feedname'])) {
             $type->setFeedName($_POST['feedname']);
+        } else {
+            $type->setFeedName($type->title);
         }
 
         if ($type->rssfeed && empty($type->feedname)) {
@@ -591,7 +629,6 @@ class Alert {
   
     function sendContact()
     {
-       
         $this->title = sprintf(dgettext('alert', 'Send Notices for %s'), $this->item->title);
         $item = & $this->item;
         if (!$item->id || $item->contact_complete == 2) {
@@ -601,6 +638,7 @@ class Alert {
         $this->loadType($item->type_id);
 
         if (!$this->type->id || !$this->type->email) {
+            $this->content = dgettext('alert', 'An error occurred within the alert type.');
             return false;
         }
 
@@ -613,7 +651,14 @@ class Alert {
                 return;
             }
             $result = Alert::copyContacts();
-            if (!$result || PHPWS_Error::logIfError($result)) {
+            if (PHPWS_Error::logIfError($result)) {
+                $this->content = dgettext('alert', 'An error occurred when trying to copy participants to the contact list.');
+                return false;
+            } elseif (!$result) {
+                $this->content = dgettext('alert', 'No participants have been assigned to this alert type. No emails were sent.');
+                $this->content .= '<p style="text-align : center">' . javascript('close_window') . '</p>';
+                $item->contact_complete = 2;
+                $item->save();
                 return false;
             }
             // Set item contact_complete to 1
@@ -633,6 +678,7 @@ class Alert {
             $db->addColumn('prt_id');
             $result = $db->count();
             if (PHPWS_Error::logIfError($result)) {
+                $this->content = dgettext('alert', 'An error occurred when trying to determine the total number of participants.');
                 return false;
             }
             $_SESSION['Total_Participants'] = $result;
@@ -642,6 +688,7 @@ class Alert {
         $batch->setTotalItems($_SESSION['Total_Participants']);
         $batch_set = PHPWS_Settings::get('alert', 'email_batch_number');
         if (empty($batch_set)) {
+            $this->content = dgettext('alert', 'Cannot continue processing batches. The batch has been set to zero.');
             return false;
         }
         $batch->setBatchSet($batch_set);
@@ -669,7 +716,9 @@ class Alert {
 
         if (!empty($result)) {
             foreach ($result as $prt_id=>$email) {
-                // send email function needed here
+                if (!$this->_emailParticipant($email)) {
+                    $error = true;
+                }
                 $db->reset();
                 $db->addWhere('prt_id', $prt_id);
                 $db->addWhere('item_id', $item->id);
@@ -691,16 +740,37 @@ class Alert {
             $this->content = implode('<br />', $content);
             $item->save();
         } else {
+            if ($error) {
+                $content[] = dgettext('alert', 'Notice!!! An error occurred in the last batch. Check your logs.');
+            }
             $content[] = '<p style="font-weight : bold; text-align : center">' . dgettext('alert', 'Email in progress. Do not close this window.') . '</p>';
             $this->content = implode('<br />', $content);
             $batch->nextPage();
         }
 
-
-
         // Set item contact_complete to 2
     }
   
+    function _emailParticipant($email_address)
+    {
+        PHPWS_Core::initCoreClass('Mail.php');
+        $subject = sprintf('%s: %s', $this->type->title, $this->item->title);
+
+        $mail = new PHPWS_Mail;
+        $mail->addSendTo($email_address);
+        $mail->setSubject($subject);
+        $mail->setFrom(PHPWS_Settings::get('alert', 'contact_reply_address'));
+        $mail->setReplyTo(PHPWS_Settings::get('alert', 'contact_reply_address'));
+
+        $mail->setHTMLBody($this->item->getHTML());
+        $mail->setMessageBody($this->item->getBody());
+        if (PHPWS_Error::logIfError($mail->send())) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     function copyContacts()
     {
         $db = new PHPWS_DB('alert_participant');
@@ -712,7 +782,7 @@ class Alert {
         $db->addWhere('id', 'alert_prt_to_type.prt_id');
         $result = $db->select();
         if (empty($result) || PHPWS_Error::logIfError($result)) {
-            return;
+            return $result;
         }
 
         $db = new PHPWS_DB('alert_contact');

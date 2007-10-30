@@ -11,7 +11,7 @@ class Alert_Forms {
     {
         PHPWS_Core::initModClass('filecabinet', 'Cabinet.php');
         $item = & $this->alert->item;
-        $manager = Cabinet::imageManager($this->image_id, 'image_id', 500, 500, 1);
+        $manager = Cabinet::imageManager($item->image_id, 'image_id', 500, 500, 1);
 
         $form = new PHPWS_Form('alert-item');
 
@@ -24,7 +24,7 @@ class Alert_Forms {
 
         $form->addHidden('module', 'alert');
         $form->addHidden('aop', 'post_item');
-        $form->addHidden('image_id', $this->image_id);
+        $form->addHidden('image_id', $item->image_id);
 
         $form->addText('title', $item->title);
         $form->setSize('title', 40);
@@ -140,14 +140,26 @@ class Alert_Forms {
 
     function manageParticipants()
     {
+        javascript('modules/alert/check_all');
         PHPWS_Core::initCoreClass('DBPager.php');
         $pager = new DBPager('alert_participant');
+        $pager->initialize(false);
+        $pager->db->addColumn('id');
+        $part_id_list = $pager->db->select('col');
 
+        $db = new PHPWS_DB('alert_prt_to_type');
+        $db->addColumn('prt_id');
+        $db->addColumn('type_id');
+        $db->addWhere('prt_id', $part_id_list);
+        $db->setIndexBy('prt_id');
+        $GLOBALS['PRT_matches'] = $db->select('col');
+
+        $pager->db->reset();
         $form = new PHPWS_Form('participants-form');
         $form->addHidden('module', 'alert');
         $form->addHidden('aop', 'assign_participants');
-        $form->addSubmit(dgettext('alert', 'Update participants'));
-        $pagetags = $form->getTemplate();
+        $form->addSubmit('add_checked_participants', dgettext('alert', 'Added checked'));
+        $form->addSubmit('remove_checked_participants', dgettext('alert', 'Remove checked'));
 
         $vars['aop'] = 'add_multiple';
         $js['address'] = PHPWS_Text::linkAddress('alert', $vars, true);
@@ -161,20 +173,26 @@ class Alert_Forms {
         $js['address'] = PHPWS_Text::linkAddress('alert', $vars, true);
         $pagetags['SUBTRACT_MULTIPLE'] = javascript('open_window', $js);
 
-
         $types = $this->alert->getTypes('obj');
 
         if (!empty($types)) {
             $GLOBALS['Alert_Types'] = & $types;
             $pager->addRowFunction(array('Alert_Forms', '_checkboxTypes'));
             foreach ($types as $type) {
-                $pagetags['th'][]= array('TYPE_LABEL'=>sprintf('<abbr title="%s">%s</abbr>', $type->title, substr($type->title, 0, 3)));
+                $type_ids[] = $type->id;
+                $link = sprintf('<a href="#" onclick="AlertCheckAll(this, \'%s\'); return false">+</a>', $type->id);
+                $pagetags['th'][]= array('TYPE_LABEL'=>sprintf('%s&nbsp;<abbr title="%s">%s</abbr>',
+                                                               $link, $type->title,
+                                                               substr($type->title, 0, 3)));
             }
             // Requires _checkboxTypes 
             $pagetags['CHECK_ALL'] = javascript('check_all', array('checkbox_name'=>'type_id[]'));
         }
 
         $pagetags['EMAIL_LABEL'] = dgettext('alert', 'Email address');
+
+        $formtags = $form->getTemplate();
+        $pagetags = $formtags + $pagetags;
 
         $pager->setLimitList(array(10=>10, 25=>25, 50=>50, 100=>100));
         $pager->setDefaultLimit(25);
@@ -188,12 +206,22 @@ class Alert_Forms {
 
     function _checkboxTypes($value)
     {
+        $matches = $GLOBALS['PRT_matches'];
         if (empty($GLOBALS['Alert_Types'])) {
             return null;
         }
 
         foreach ($GLOBALS['Alert_Types'] as $type) {
-            $cbs[] = sprintf('<input type="checkbox" name="type_id[]" value="%s:%s" />', $type->id, $value['id']);
+            @$match = $matches[$value['id']];
+            if ($match &&
+                (is_array($match) && in_array($type->id, $match)) ||
+                $match == $type->id) {
+                $member = dgettext('alert', 'Yes');
+            } else {
+                $member = dgettext('alert', 'No');
+            }
+            $cbs[] = sprintf('<input type="checkbox" name="type_id[%s][]" value="%s"/>%s',
+                             $type->id, $value['id'], $member);
         }
         return array('TYPES' => '</td><td>' . implode('</td><td>', $cbs));
     }

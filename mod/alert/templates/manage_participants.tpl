@@ -5,7 +5,7 @@
 <tr>
 <th>{EMAIL_SORT} {EMAIL_LABEL}</th>
 <!-- BEGIN th -->
-<th width="2%">{TYPE_LABEL}</th>
+<th>{TYPE_LABEL}</th>
 <!-- END th -->
 </tr>
 <!-- BEGIN listrows -->
@@ -14,8 +14,8 @@
 </tr>
 <!-- END listrows -->
 </table>
-<p>{CHECK_ALL} {SUBMIT}</p>
 {EMPTY_MESSAGE}
+<p>{CHECK_ALL} {ADD_CHECKED_PARTICIPANTS} {REMOVE_CHECKED_PARTICIPANTS}</p>
 <div class="align-center">
 {TOTAL_ROWS}<br />
 {PAGE_LABEL} {PAGES}<br />

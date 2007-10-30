@@ -150,6 +150,24 @@ class Alert_Item {
         return $feed;
     }
 
+    function getHTML()
+    {
+        $body[] = '<html><body>';
+        $body[] =  $this->view();
+        $body[] = '</body></html>';
+
+        $content = implode('', $body);
+        // Fixed relative links
+        $content = str_replace('images/filecabinet', PHPWS_Core::getHomeHttp() . 'images/filecabinet', $content);
+        
+        return $content;
+    }
+
+    function getBody()
+    {
+        return strip_tags($this->view());
+    }
+
 }
 
 ?>
