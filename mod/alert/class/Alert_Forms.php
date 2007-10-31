@@ -304,6 +304,10 @@ class Alert_Forms {
         $form->setTitle('email_batch_number', 'Number of emails to send per batch.');
         $form->setLabel('email_batch_number', dgettext('alert', 'Email batch'));
 
+        $form->addText('contact_reply_address', $settings['contact_reply_address']);
+        $form->setTitle('contact_reply_address', 'From and Reply-to address used for contact emails.');
+        $form->setLabel('contact_reply_address', dgettext('alert', 'Email contact'));
+
         $form->addSubmit('submit', dgettext('alert', 'Save settings'));
 
         $tpl = $form->getTemplate();

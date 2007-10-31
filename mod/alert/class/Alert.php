@@ -352,8 +352,6 @@ class Alert {
                 PHPWS_Error::logIfError($db->delete());
             }
         }
-
-
     }
 
     function removeAllParticipants()
@@ -611,6 +609,12 @@ class Alert {
             $settings['email_batch_number'] = (int)$_POST['email_batch_number'];
         }
 
+        if (empty($_POST['contact_reply_address']) || !PHPWS_Text::isValidInput($_POST['contact_reply_address'], 'email')) {
+            $this->addMessage(dgettext('alert', 'Please enter an acceptable contact email address.'));
+        } else {
+            $settings['contact_reply_address'] = $_POST['contact_reply_address'];
+        }
+
         PHPWS_Settings::set('alert', $settings);
         PHPWS_Settings::save('alert');
     }
@@ -845,8 +849,8 @@ class Alert {
         $channel = new RSS_Channel;
         $channel->_feeds = $feeds;
         $channel->module = 'alert';
-        $channel->title = 'Testing';
-        $channel->description = 'Testing rss feed for alert';
+        $channel->title = $this->type->title;
+        $channel->description = '';
         $channel->pub_date = mktime();
         header('Content-type: text/xml');
         echo $channel->view();

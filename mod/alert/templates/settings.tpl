@@ -1,5 +1,6 @@
 {START_FORM}
 <p><strong>{DATE_FORMAT_LABEL}</strong> {DATE_FORMAT}</p>
 <p><strong>{EMAIL_BATCH_NUMBER_LABEL}</strong> {EMAIL_BATCH_NUMBER}</p>
+<p><strong>{CONTACT_REPLY_ADDRESS_LABEL}</strong> {CONTACT_REPLY_ADDRESS}</p>
 {SUBMIT}
 {END_FORM}
