@@ -4,6 +4,7 @@ its own separate CHANGELOG file.
 
 1 November 2007
 + Added new function, dateSelect. Works sort of like the old dateForm.
++ Changed incorrect detail in Demographics document.
 
 30 October 2007
 + Fixed: Form wasn't properly creating id tags on array elements.
