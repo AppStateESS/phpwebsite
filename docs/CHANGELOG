@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+1 November 2007
++ Added new function, dateSelect. Works sort of like the old dateForm.
+
 30 October 2007
 + Fixed: Form wasn't properly creating id tags on array elements.
 + DBPager: initialize function now has optional parameter that delays

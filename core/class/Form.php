@@ -322,6 +322,61 @@ class PHPWS_Form {
         unset($this->_elements[$name]);
     }
 
+    function dateSelect($name, $month_format= '%B', $years_past=1, $years_ahead=3)
+    {
+        $allowed_month_formats = array('%b', '%B', '%m');
+
+        if (!in_array($month_format, $allowed_month_formats)) {
+            $month_format = '%B';
+        }
+
+        if ($years_past < 0) {
+            $years_past = 1;
+        }
+
+        if ($years_ahead < 0) {
+            $years_ahead = 3;
+        }
+
+        $current_year = (int)date('Y');
+
+        for ($i = $current_year - $years_past; $i <= $current_year + $years_ahead; $i++) {
+            $years[$i] = $i;
+        }
+
+        for ($i = 1; $i < 13; $i++) {
+            $months[$i] = strftime($month_format, mktime(0,0,0,$i,1,2004));
+        }
+
+        for ($i = 1; $i < 32; $i++) {
+            $days[$i] = $i;
+        }
+
+        for ($i = 1; $i < 13; $i++) {
+            $hours_12[$i] = strftime('%I', mktime($i));
+        }
+
+        for ($i = 0; $i < 24; $i++) {
+            $hours_24[$i] = strftime('%H', mktime($i));
+        }
+
+        for ($i = 0; $i < 60; $i += 5) {
+            $minutes[$i] = strftime('%M', mktime(1, $i));;
+        }
+
+        $am_pm[0] = strftime('%p', mktime(1));
+        $am_pm[1] = strftime('%p', mktime(15));
+
+        $this->addSelect(sprintf('%s_year', $name), $years);
+        $this->addSelect(sprintf('%s_month', $name), $months);
+        $this->addSelect(sprintf('%s_day', $name), $days);
+        $this->addSelect(sprintf('%s_12hour', $name), $hours_12);
+        $this->addSelect(sprintf('%s_24hour', $name), $hours_24);
+        $this->addSelect(sprintf('%s_minute', $name), $minutes);
+        $this->addSelect(sprintf('%s_ampm', $name), $am_pm);
+    }
+
+
     /**
      * Adds a form element to the class
      *

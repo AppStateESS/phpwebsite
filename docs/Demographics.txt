@@ -17,7 +17,7 @@ across several modules.
 Registering your Module
 --------------------------------------------------
 When your module is installed, Demographics will look for a file named
-"demographics.php" in your module's conf directory. The file should
+"demographics.php" in your module's boost directory. The file should
 appear like the following example from Comments:
 // default fields used
 $default[] = 'contact_email';
