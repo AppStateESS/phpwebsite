@@ -1,0 +1,11 @@
+div#start-location {
+   float : left;
+   display : inline;
+   margin-right : 3em;
+}
+
+label {
+   display : block;
+   margin-bottom : .8em;
+   font-weight : bold;
+}
