@@ -219,6 +219,12 @@ class Menu {
     }
 
 
+    function enableAdminMode()
+    {
+        $_SESSION['Menu_Admin_Mode'] = true;
+    }
+
+
     function isAdminMode()
     {
         if (isset($_SESSION['Menu_Admin_Mode'])) {

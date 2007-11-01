@@ -1,3 +1,6 @@
+1 November 2007
++ Added enableAdminMode function to menu. Called statically.
+
 18 October 2007
 + Bug #1814628 : Menu will only add a home link on new menus, not
   updated ones. 
