@@ -58,6 +58,8 @@ class Rideboard {
 
     function offerRide()
     {
+        $title = $content = null;
+
         $this->panel->setCurrentTab('offer_ride');
         $passenger_panel = & $this->offerPanel();
 
@@ -75,7 +77,13 @@ class Rideboard {
             break;
 
         case 'offer_ride':
-            $tpl['TITLE'] = dgettext('rideboard', 'Offer Ride');
+            $this->loadForms();
+            $title = dgettext('rideboard', 'Offer Ride');
+            $content = $this->forms->OfferRide();
+            break;
+
+        case 'post_request':
+            test($_POST);
             break;
 
         }
@@ -123,6 +131,28 @@ class Rideboard {
 
     function postRequest()
     {
+        $this->testRide();
+    }
+
+
+    function testRide()
+    {
+        $error = false;
+
+        if ($_POST['s_location'] == $_POST['d_location']) {
+            $this->addMessage(dgettext('rideboard', 'Start and destination location may not be the same.'));
+            $error = true;
+        }
+
+        $departure_time = PHPWS_Form::getPostedDate('departure_time');
+        $return_time    = PHPWS_Form::getPostedDate('return_time');
+
+        if ($departure_time >= $return_time) {
+            $this->addMessage(dgettext('rideboard', 'Your departure time needs to be before your return time.'));
+            $error = true;
+        }
+
+        return !$error;
     }
 
     function loadForms()

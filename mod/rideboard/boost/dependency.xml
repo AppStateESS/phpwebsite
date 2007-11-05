@@ -6,4 +6,10 @@
     <version>1.6.3</version>
     <url>http://phpwebsite.appstate.edu/downloads/modules/base/</url>
   </module>
+  <module>
+    <title>menu</title>
+    <properName>Menu Manager</properName>
+    <version>1.4.2</version>
+    <url>http://phpwebsite.appstate.edu/downloads/modules/menu</url>
+  </module>
 </dependency>

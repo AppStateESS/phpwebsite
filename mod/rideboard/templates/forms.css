@@ -1,4 +1,4 @@
-div#start-location {
+div.left {
    float : left;
    display : inline;
    margin-right : 3em;
@@ -7,6 +7,14 @@ div#start-location {
 form#rideboard-form label {
    font-weight : bold;
    line-height : 1.5em;
+}
+
+form#rideboard-form div.section {
+   margin-bottom : 2em;
+}
+
+form#rideboard-form p.radio-buttons {
+   padding-left : 2em;
 }
 
 form#rideboard-form p.radio-buttons label {
