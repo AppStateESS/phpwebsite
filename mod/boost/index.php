@@ -23,6 +23,8 @@ if (!isset($_REQUEST['action'])) {
     PHPWS_Core::errorPage(404);
  }
 
+$js = false;
+
 $content = array();
 PHPWS_Core::initModClass('boost', 'Form.php');
 PHPWS_Core::initModClass('controlpanel', 'Panel.php');
@@ -56,6 +58,7 @@ switch ($_REQUEST['action']){
      break;
 
  case 'install':
+     $js = javascriptEnabled();
      $content[] =  $backToBoost . '<br />';
 
      $result = Boost_Action::installModule($_REQUEST['opmod']);
@@ -69,7 +72,6 @@ switch ($_REQUEST['action']){
      break;
 
  case 'uninstall':
-
      $content[] =  $backToBoost . '<br />';
      $content[] = '<br />';
      $content[] = Boost_Action::uninstallModule($_REQUEST['opmod']);
@@ -81,11 +83,13 @@ switch ($_REQUEST['action']){
      break;
 
  case 'update':
+     $js = javascriptEnabled();
      $content[] =  $backToBoost . '<br />';
      $content[] = Boost_Action::updateModule($_REQUEST['opmod']);
      break;
 
  case 'show_dependency':
+     $js = javascriptEnabled();
      $content[] = Boost_Action::showDependency($_REQUEST['opmod']);
      break;
 
@@ -99,8 +103,15 @@ switch ($_REQUEST['action']){
 
 }// End area switch
 
-$boostPanel->setContent(implode('', $content));
-$finalContent = $boostPanel->display();
-Layout::add(PHPWS_ControlPanel::display($finalContent));
+if ($js) {
+    javascript('close_refresh', array('use_link'=>true));
+    $content[] = sprintf('<p style="text-align : center"><input type="button" onclick="closeWindow(); return false" value="%s" /></p>',
+                         dgettext('boost', 'Close window'));
+    Layout::nakedDisplay(implode('', $content));
+} else {
+    $boostPanel->setContent(implode('', $content));
+    $finalContent = $boostPanel->display();
+    Layout::add(PHPWS_ControlPanel::display($finalContent));
+}
 
 ?>

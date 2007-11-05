@@ -189,7 +189,16 @@ class Boost_Form {
                 }
 
                 if ($GLOBALS['Boost_Ready']) {
-                    $links[] = PHPWS_Text::secureLink($link_title, 'boost', $link_command);
+                    if (javascriptEnabled()) {
+                        $js['address'] = PHPWS_Text::linkAddress('boost', $link_command, true);
+                        $js['label'] = $link_title;
+                        $js['width'] = 640;
+                        $js['height'] = 480;
+                        $links[] = javascript('open_window', $js);
+                        unset($js);
+                    } else {
+                        $links[] = PHPWS_Text::secureLink($link_title, 'boost', $link_command);
+                    }
                 } else {
                     $links[] = & $link_title;
                 }
