@@ -322,6 +322,42 @@ class PHPWS_Form {
         unset($this->_elements[$name]);
     }
 
+    function getPostedDate($name)
+    {
+        $year   = (int)date('Y');
+        $month  = (int)date('m');
+        $day    = (int)date('j');
+        $hour   = 0;
+        $minute = 0;
+
+        if (isset($_POST[sprintf('%s_year', $name)])) {
+            $year = $_POST[sprintf('%s_year', $name)];
+        }
+
+        if (isset($_POST[sprintf('%s_month', $name)])) {
+            $month = $_POST[sprintf('%s_month', $name)];
+        }
+
+        if (isset($_POST[sprintf('%s_day', $name)])) {
+            $day = $_POST[sprintf('%s_day', $name)];
+        }
+
+        if (isset($_POST[sprintf('%s_24hour', $name)])) {
+            $hour = $_POST[sprintf('%s_24hour', $name)];
+        } elseif (isset($_POST[sprintf('%s_12hour', $name)])) {
+            $hour = $_POST[sprintf('%s_12hour', $name)];
+            if (isset($_POST[sprintf('%s_ampm', $name)])) {
+                $hour += 12 * (int)$_POST[sprintf('%s_ampm', $name)];
+            }
+        }
+
+        if (isset($_POST[sprintf('%s_minute', $name)])) {
+            $minute = $_POST[sprintf('%s_minute', $name)];
+        }
+        
+        return mktime($hour, $minute, 0, $month, $day, $year);
+    }
+
     function dateSelect($name, $month_format= '%B', $years_past=1, $years_ahead=3)
     {
         $allowed_month_formats = array('%b', '%B', '%m');

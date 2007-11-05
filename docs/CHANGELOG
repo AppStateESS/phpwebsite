@@ -2,6 +2,9 @@ CHANGELOG
 This is the change log for the phpWebSite base only. Each module has
 its own separate CHANGELOG file.
 
+5 November 2007
++ Added getPostedDate. Returns unix time from last posted dateSelect.
+
 1 November 2007
 + Added new function, dateSelect. Works sort of like the old dateForm.
 + Changed incorrect detail in Demographics document.
