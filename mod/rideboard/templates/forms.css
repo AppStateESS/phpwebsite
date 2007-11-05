@@ -4,8 +4,15 @@ div#start-location {
    margin-right : 3em;
 }
 
-label {
-   display : block;
-   margin-bottom : .8em;
+form#rideboard-form label {
    font-weight : bold;
+   line-height : 1.5em;
+}
+
+form#rideboard-form p.radio-buttons label {
+   font-weight : normal;
+}
+
+form#rideboard-form br:after {
+   margin-bottom : 1em;
 }

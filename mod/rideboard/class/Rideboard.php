@@ -25,13 +25,14 @@ class Rideboard {
             $this->myRides();
             break;
 
-        case 'passenger':
-            $this->passenger();
+        case 'offer_ride':
+            $this->offerRide();
             break;
 
-        case 'driver':
-            $this->driver();
+        case 'need_ride':
+            $this->needRide();
             break;
+
         }
 
         $this->panel->setContent($this->content);
@@ -55,13 +56,13 @@ class Rideboard {
         $this->panel->setCurrentTab('my_rides');
     }
 
-    function passenger()
+    function offerRide()
     {
-        $this->panel->setCurrentTab('passenger');
-        $passenger_panel = & $this->passengerPanel();
+        $this->panel->setCurrentTab('offer_ride');
+        $passenger_panel = & $this->offerPanel();
 
-        if (isset($_REQUEST['dop'])) {
-            $command = $_REQUEST['dop'];
+        if (isset($_REQUEST['oop'])) {
+            $command = $_REQUEST['oop'];
         } else {
             $command = $passenger_panel->getCurrentTab();
         }
@@ -73,11 +74,10 @@ class Rideboard {
             $content = $this->forms->searchForPassenger();
             break;
 
-        case 'need_driver':
-            $this->loadForms();
-            $title = dgettext('rideboard', 'Need Driver');
-            $content = $this->forms->needDriver();
+        case 'offer_ride':
+            $tpl['TITLE'] = dgettext('rideboard', 'Offer Ride');
             break;
+
         }
 
         $tpl['TITLE']   = & $title;
@@ -87,29 +87,42 @@ class Rideboard {
         $this->content = $passenger_panel->display();
     }
 
-    function driver()
+    function needRide()
     {
-        $this->panel->setCurrentTab('driver');
-        $driver_panel = & $this->driverPanel();
+        $this->panel->setCurrentTab('need_ride');
+        $driver_panel = & $this->needPanel();
 
-        if (isset($_REQUEST['dop'])) {
-            $command = $_REQUEST['dop'];
+        if (isset($_REQUEST['nop'])) {
+            $command = $_REQUEST['nop'];
         } else {
             $command = $driver_panel->getCurrentTab();
         }
 
         switch ($command) {
         case 'search_for_driver':
-            $tpl['TITLE'] = dgettext('rideboard', 'Search for Driver');
+            $title = dgettext('rideboard', 'Search for Driver');
+            break;
+            
+        case 'request_ride':
+            $this->loadForms();
+            $title = dgettext('rideboard', 'Request Ride');
+            $content = $this->forms->requestRide();
             break;
 
-        case 'need_passengers':
-            $tpl['TITLE'] = dgettext('rideboard', 'Need Passengers');
+        case 'post_request':
+            $this->postRequest();
             break;
         }
 
+        $tpl['TITLE']   = & $title;
+        $tpl['CONTENT'] = & $content;
+
         $driver_panel->setContent(PHPWS_Template::process($tpl, 'rideboard', 'main.tpl'));
         $this->content = $driver_panel->display();
+    }
+
+    function postRequest()
+    {
     }
 
     function loadForms()
@@ -119,14 +132,14 @@ class Rideboard {
         $this->forms->rideboard = & $this;
     }
 
-    function driverPanel()
+    function needPanel()
     {
-        $link = 'index.php?module=rideboard&amp;uop=driver';
+        $link = 'index.php?module=rideboard&amp;uop=need_ride';
 
-        $tabs['search_for_driver'] = array('title' => dgettext('rideboard', 'Search for driver'),
+        $tabs['search_for_offers'] = array('title' => dgettext('rideboard', 'Search ride offers'),
                                            'link'  => $link);
 
-        $tabs['need_passengers'] = array('title' => dgettext('rideboard', 'Need passengers'),
+        $tabs['request_ride'] = array('title' => dgettext('rideboard', 'Request ride'),
                                          'link'  => $link);
 
         $panel = new PHPWS_Panel('driver');
@@ -134,15 +147,15 @@ class Rideboard {
         return $panel;
     }
 
-    function passengerPanel()
+    function offerPanel()
     {
-        $link = 'index.php?module=rideboard&amp;uop=passenger';
+        $link = 'index.php?module=rideboard&amp;uop=offer_ride';
 
         $tabs['search_for_passenger'] = array('title' => dgettext('rideboard', 'Search for passengers'),
-                                           'link'  => $link);
+                                              'link'  => $link);
 
-        $tabs['need_driver'] = array('title' => dgettext('rideboard', 'Need driver'),
-                                         'link'  => $link);
+        $tabs['offer_ride'] = array('title' => dgettext('rideboard', 'Offer ride'),
+                                    'link'  => $link);
 
         $panel = new PHPWS_Panel('passenger');
         $panel->quickSetTabs($tabs);
@@ -158,13 +171,13 @@ class Rideboard {
                                    'link'       => $link,
                                    'link_title' => dgettext('rideboard', 'See who has responded to your ride requests'));
 
-        $tabs['passenger'] = array('title'      => dgettext('rideboard', 'Passengers'),
+        $tabs['need_ride'] = array('title'      => dgettext('rideboard', 'I need a ride'),
                                    'link'       => $link,
-                                   'link_title' => dgettext('rideboard', 'Search for passengers'));
+                                   'link_title' => dgettext('rideboard', 'If you need a ride, go here.'));
 
-        $tabs['driver']    = array('title'      => dgettext('rideboard', 'Drivers'),
-                                   'link'       => $link,
-                                   'link_title' => dgettext('rideboard', 'Search for drivers'));
+        $tabs['offer_ride']    = array('title'      => dgettext('rideboard', 'I can offer a ride'),
+                                       'link'       => $link,
+                                       'link_title' => dgettext('rideboard', 'If you can offer a ride to passengers, go here.'));
                                   
         $this->panel = new PHPWS_Panel('rb_user_panel');
         $this->panel->quickSetTabs($tabs);
